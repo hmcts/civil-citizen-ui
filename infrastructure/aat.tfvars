@@ -5,12 +5,11 @@ capacity = "1"
 #================================================================================================
 # Azure Monitor
 #================================================================================================
+civil_ci_alert_slack_email_secret_name = "civil-ci-alert-slack-group-email"
+
 monitor_action_group = {
-  "civil-ci-slack-alert" = {
-    short_name = "civilci"
-    webhook_receiver = [
-      { name = "civil-ci-alerts-web-hook" }
-    ]
+  "aat-civil-ci-slack-alert" = {
+    short_name = "cvlci-aat"
   }
 }
 
@@ -34,7 +33,7 @@ monitor_metric_alerts = {
     ]
     action = [
       {
-        action_group_name = "civil-ci-slack-alert"
+        action_group_name = "aat-civil-ci-slack-alert"
       }
     ]
   }
@@ -57,7 +56,7 @@ monitor_metric_alerts = {
     ]
     action = [
       {
-        action_group_name = "civil-ci-slack-alert"
+        action_group_name = "aat-civil-ci-slack-alert"
       }
     ]
   }
@@ -80,7 +79,7 @@ monitor_metric_alerts = {
     ]
     action = [
       {
-        action_group_name = "civil-ci-slack-alert"
+        action_group_name = "aat-civil-ci-slack-alert"
       }
     ]
   }
@@ -103,30 +102,7 @@ monitor_metric_alerts = {
     ]
     action = [
       {
-        action_group_name = "civil-ci-slack-alert"
-      }
-    ]
-  }
-  "aat-civil-citizen-ui-draft-store-cpu-information" = {
-    description  = "AAT Civil Citizen UI draft store CPU usage equal to or above 7%",
-    severity     = 4,
-    enabled      = true,
-    frequency    = "PT1M",
-    autoMitigate = true,
-    window_size  = "PT5M"
-    criteria = [
-      {
-        operator             = "GreaterThanOrEqual",
-        threshold            = 7,
-        metricNamespace      = "Microsoft.Cache/Redis",
-        metricName           = "percentProcessorTime",
-        aggregation          = "Maximum",
-        skipMetricValidation = false,
-      }
-    ]
-    action = [
-      {
-        action_group_name = "civil-ci-slack-alert"
+        action_group_name = "aat-civil-ci-slack-alert"
       }
     ]
   }
