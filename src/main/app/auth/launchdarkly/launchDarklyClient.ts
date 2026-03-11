@@ -3,7 +3,7 @@ import {init, LDClient, LDFlagValue, LDUser} from '@launchdarkly/node-server-sdk
 import {TestData} from '@launchdarkly/node-server-sdk/integrations';
 
 let ldClient: LDClient;
-let testData: TestData;
+let testData: InstanceType<typeof TestData>;
 
 const CASEWORKER_EVENTS = 'cui-case-events-enabled';
 const SHUTTER_CUI_SERVICE = 'shutter-cui-service';
@@ -28,7 +28,7 @@ async function getClient(): Promise<void> {
   if (launchDarklyTestSdk) {
     let client;
     if (process.env.NODE_ENV === 'e2eTest') {
-      testData = TestData();
+      testData = new TestData();
       await testData.update(testData.flag(SHUTTER_CUI_SERVICE).booleanFlag().variationForAll(false));
       await testData.update(testData.flag(SHUTTER_PCQ).booleanFlag().variationForAll(false));
       await testData.update(testData.flag(CUI_RELEASE_TWO_ENABLED).booleanFlag().variationForAll(false));
@@ -44,11 +44,12 @@ async function getClient(): Promise<void> {
       await testData.update(testData.flag(LR_QUERY_MANAGEMENT).booleanFlag().variationForAll(false));
       await testData.update(testData.flag(CUI_GA_NRO).booleanFlag().variationForAll(false));
 
-      client = init(launchDarklyTestSdk, { updateProcessor: testData });
+      client = init(launchDarklyTestSdk, { updateProcessor: testData.getFactory() });
     } else {
       client = init(launchDarklyTestSdk);
     }
-    ldClient = await client.waitForInitialization();
+    ldClient = client;
+    await client.waitForInitialization();
   }
 }
 

@@ -15,7 +15,7 @@ const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.MockedFuncti
 const buildRequest = (): AppRequest => ({
   params: {id: '1'},
   session: {user: {id: '1234'}} as AppSession,
-} as AppRequest);
+} as unknown as AppRequest);
 
 const buildClaim = (): Claim => {
   const claim = new Claim();
