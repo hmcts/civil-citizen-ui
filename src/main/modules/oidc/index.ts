@@ -22,6 +22,13 @@ import {
   CONTACT_MEDIATION_URL,
 } from 'routes/urls';
 
+import {
+  getPaymentConfirmationUrl,
+  getUserId,
+  saveOriginalPaymentConfirmationUrl,
+  deletePaymentSessionData,
+} from 'modules/draft-store/paymentSessionStoreService';
+
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('IDAMlogs');
 
@@ -122,10 +129,10 @@ export class OidcMiddleware {
           }
 
           logger.info('login user id ', req.session.user.id);
-          const paymentConfirmationUrl = await getPaymentConfirmationUrl(req.session.user.id, app);
+          const paymentConfirmationUrl = await getPaymentConfirmationUrl(req.session.user.id);
           logger.info('Payment conf url ', paymentConfirmationUrl);
           if (paymentConfirmationUrl) {
-            await app.locals.draftStoreClient.del(req.session.user.id + 'userIdForPayment');
+            await deletePaymentSessionData(req.session.user.id);
             return res.redirect(paymentConfirmationUrl);
           }
           if (req.session.user?.roles?.includes(citizenRole)) {
@@ -193,9 +200,9 @@ export class OidcMiddleware {
           if (!claimId) {
             logger.info('claim id does not exist from payment confirmation url ', claimId);
           } else {
-            const userId = await getUserId(claimId, app);
+            const userId = await getUserId(claimId);
             logger.info('User id ', userId);
-            await saveOriginalPaymentConfirmationUrl(userId, req.originalUrl, app);
+            await saveOriginalPaymentConfirmationUrl(userId, req.originalUrl);
           }
         }
         return res.redirect(SIGN_IN_URL);
@@ -206,18 +213,6 @@ export class OidcMiddleware {
     });
   }
 }
-
-export const saveOriginalPaymentConfirmationUrl = async (userId: string, originalUrl: string, app: Application) => {
-  await app.locals.draftStoreClient.set(userId + 'userIdForPayment', originalUrl);
-};
-
-export const getUserId = async (claimId: string, app: Application): Promise<string> => {
-  return await app.locals.draftStoreClient.get(claimId + 'userIdForPayment');
-};
-
-export const getPaymentConfirmationUrl = async (userId: string, app: Application): Promise<string> => {
-  return await app.locals.draftStoreClient.get(userId + 'userIdForPayment');
-};
 
 const getClaimId = (originalUrl: string) => {
   const regex = /\/(\d{16})\//;

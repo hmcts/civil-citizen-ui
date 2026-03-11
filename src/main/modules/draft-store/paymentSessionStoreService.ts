@@ -1,15 +1,50 @@
-import {app} from '../../app';
+import {app} from '../../app-instance';
 
 const {Logger} = require('@hmcts/nodejs-logging');
-const logger = Logger.getLogger('claimFeeBreakDownController');
+const logger = Logger.getLogger('paymentSessionStoreService');
 
 export const saveUserId = async (claimId: string, userId: string) => {
   try {
-    const draftStoreClient = app.locals.draftStoreClient;
-    await draftStoreClient.set(claimId + 'userIdForPayment', userId);
+    await app.locals.draftStoreClient.set(claimId + 'userIdForPayment', userId);
     logger.info('Draft store claim id ' + claimId + ' user id ' + userId);
   } catch (err) {
-    logger.info('Error while saving the userid for payment confirmation ' + err);
+    logger.error('Error while saving the userid for payment confirmation ' + err);
+    throw err;
+  }
+};
+
+export const getUserId = async (claimId: string): Promise<string> => {
+  try {
+    return await app.locals.draftStoreClient.get(claimId + 'userIdForPayment');
+  } catch (err) {
+    logger.error('Error while getting the userid for payment confirmation ' + err);
+    throw err;
+  }
+};
+
+export const saveOriginalPaymentConfirmationUrl = async (userId: string, originalUrl: string) => {
+  try {
+    await app.locals.draftStoreClient.set(userId + 'userIdForPayment', originalUrl);
+  } catch (err) {
+    logger.error('Error while saving the original payment confirmation url ' + err);
+    throw err;
+  }
+};
+
+export const getPaymentConfirmationUrl = async (userId: string): Promise<string> => {
+  try {
+    return await app.locals.draftStoreClient.get(userId + 'userIdForPayment');
+  } catch (err) {
+    logger.error('Error while getting the payment confirmation url ' + err);
+    throw err;
+  }
+};
+
+export const deletePaymentSessionData = async (key: string): Promise<void> => {
+  try {
+    await app.locals.draftStoreClient.del(key + 'userIdForPayment');
+  } catch (err) {
+    logger.error('Error while deleting the payment session data ' + err);
     throw err;
   }
 };

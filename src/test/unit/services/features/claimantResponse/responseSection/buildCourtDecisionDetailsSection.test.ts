@@ -8,6 +8,11 @@ import { Party } from 'models/party';
 import { RepaymentDecisionType } from 'common/models/claimantResponse/RepaymentDecisionType';
 import { PaymentIntention } from 'form/models/admission/paymentIntention';
 
+jest.mock('i18next', () => ({
+  t: (i: string | unknown) => i,
+  use: jest.fn(),
+}));
+
 describe('Check Answers Page :Court Decision Section', () => {
   describe('Build check answers for pay by set date either for part admit or full admit ', () => {
     let claim: Claim;
