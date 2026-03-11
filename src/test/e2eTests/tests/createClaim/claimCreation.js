@@ -5,9 +5,8 @@ const {stubPostcodeLookup} = require('../../helpers/postcodeMock');
 
 Feature('Claim creation journey').tag('@e2e');
 
-Before(async ({ I }) => {
+Before(async () => {
   await stubPostcodeLookup();
-  
 });
 
 Scenario('Claim creation journey with interest with fess reference', () => {
