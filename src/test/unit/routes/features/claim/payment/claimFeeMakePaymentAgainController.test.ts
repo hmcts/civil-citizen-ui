@@ -19,7 +19,7 @@ jest.mock('../../../../../../main/modules/draft-store/paymentSessionStoreService
   getUserId: jest.fn(),
   saveOriginalPaymentConfirmationUrl: jest.fn(),
   getPaymentConfirmationUrl: jest.fn(),
-  deletePaymentSessionData: jest.fn(),
+  deleteUserId: jest.fn(),
 }));
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService', () => ({
   getCaseDataFromStore: jest.fn(),
