@@ -12,6 +12,7 @@ import * as paymentConfirmationService from 'services/features/caseProgression/h
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store/paymentSessionStoreService', () => ({
   saveUserId: jest.fn(),
+  deletePaymentSessionData: jest.fn(),
 }));
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService', () => ({
   getCaseDataFromStore: jest.fn(),
