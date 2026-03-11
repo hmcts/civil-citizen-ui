@@ -11,6 +11,7 @@ import {CivilServiceClient} from '../../../../../../main/app/client/civilService
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
 
 const mockGetCaseDataFromStore = draftStoreService.getCaseDataFromStore as jest.MockedFunction<typeof draftStoreService.getCaseDataFromStore>;
+const mockGenerateRedisKey = draftStoreService.generateRedisKey as jest.MockedFunction<typeof draftStoreService.generateRedisKey>;
 const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.MockedFunction<typeof draftStoreService.saveDraftClaim>;
 
 const buildRequest = (): AppRequest => ({
@@ -43,6 +44,7 @@ describe('Extend ResponseDeadline Service', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     req = buildRequest();
+    mockGenerateRedisKey.mockReturnValue('11234');
     submitAgreedResponseExtensionDateEventSpy = jest
       .spyOn(CivilServiceClient.prototype, 'submitAgreedResponseExtensionDateEvent')
       .mockResolvedValue({} as Claim);
