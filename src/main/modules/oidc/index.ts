@@ -26,7 +26,7 @@ import {
   getPaymentConfirmationUrl,
   getUserId,
   saveOriginalPaymentConfirmationUrl,
-  deletePaymentSessionData,
+  deletePaymentConfirmationUrl,
 } from 'modules/draft-store/paymentSessionStoreService';
 
 const {Logger} = require('@hmcts/nodejs-logging');
@@ -132,7 +132,7 @@ export class OidcMiddleware {
           const paymentConfirmationUrl = await getPaymentConfirmationUrl(req.session.user.id);
           logger.info('Payment conf url ', paymentConfirmationUrl);
           if (paymentConfirmationUrl) {
-            await deletePaymentSessionData(req.session.user.id);
+            await deletePaymentConfirmationUrl(req.session.user.id);
             return res.redirect(paymentConfirmationUrl);
           }
           if (req.session.user?.roles?.includes(citizenRole)) {
