@@ -45,6 +45,7 @@ resource "azurerm_monitor_metric_alert" "civil-ci-alerts" {
   window_size         = try(each.value.window_size, null)
   auto_mitigate       = try(each.value.autoMitigate, null)
   scopes              = [data.azurerm_redis_cache.draft_store.id]
+  tags                = var.common_tags
 
   dynamic "criteria" {
     for_each = try(each.value.criteria, {})
