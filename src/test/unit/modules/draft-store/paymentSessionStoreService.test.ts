@@ -4,7 +4,8 @@ import {
   getUserId,
   saveOriginalPaymentConfirmationUrl,
   getPaymentConfirmationUrl,
-  deletePaymentSessionData,
+  deletePaymentConfirmationUrl,
+  deleteUserId,
 } from 'modules/draft-store/paymentSessionStoreService';
 import {TestMessages} from '../../../utils/errorMessageTestConstants';
 
@@ -66,11 +67,19 @@ describe('Payment session store service', () => {
     expect(mockDraftStoreClient.get).toHaveBeenCalledWith('user123userIdForPayment');
   });
 
-  it('should delete payment session data', async () => {
-    const key = '12345';
+  it('should delete user id', async () => {
+    const claimId = '12345';
 
-    await deletePaymentSessionData(key);
+    await deleteUserId(claimId);
 
     expect(mockDraftStoreClient.del).toHaveBeenCalledWith('12345userIdForPayment');
+  });
+
+  it('should delete payment confirmation url', async () => {
+    const userId = 'user123';
+
+    await deletePaymentConfirmationUrl(userId);
+
+    expect(mockDraftStoreClient.del).toHaveBeenCalledWith('user123userIdForPayment');
   });
 });
