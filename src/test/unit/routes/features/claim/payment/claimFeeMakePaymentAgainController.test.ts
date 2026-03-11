@@ -16,6 +16,10 @@ jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/paymentSessionStoreService', () => ({
   saveUserId: jest.fn(),
+  getUserId: jest.fn(),
+  saveOriginalPaymentConfirmationUrl: jest.fn(),
+  getPaymentConfirmationUrl: jest.fn(),
+  deletePaymentSessionData: jest.fn(),
 }));
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService', () => ({
   getCaseDataFromStore: jest.fn(),
