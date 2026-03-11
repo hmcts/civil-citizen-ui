@@ -15,7 +15,6 @@ const ldClientMock = {
   waitUntilReady: jest.fn(),
 };
 jest.mock('ioredis', () => jest.requireActual('ioredis-mock'));
-jest.mock('launchdarkly-node-server-sdk', () => ({
+jest.mock('@launchdarkly/node-server-sdk', () => ({
   init: jest.fn().mockReturnValue(ldClientMock),
 }));
-
