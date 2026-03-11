@@ -35,7 +35,7 @@ module.exports = {
     ccdDataStore: process.env.CCD_DATA_STORE_URL || 'http://ccd-data-store-api-demo.service.core-compute-demo.internal',
     dmStore: process.env.DM_STORE_URL || 'http://dm-store-demo.service.core-compute-demo.internal',
     idamApi: process.env.IDAM_API_URL || 'https://idam-api.demo.platform.hmcts.net',
-    idamTestSupportApi: process.env.IDAM_TEST_URL || 'https://idam-testing-support-api.demo.platform.hmcts.net',
+    idamTestSupportApi: process.env.IDAM_TEST_SUPPORT_API_URL || 'https://idam-testing-support-api.demo.platform.hmcts.net',
     idamWeb: process.env.IDAM_WEB_URL || 'https://idam-web-public.demo.platform.hmcts.net',
     civilService: process.env.CIVIL_SERVICE_URL || 'http://civil-service-demo.service.core-compute-demo.internal',
     waTaskMgmtApi: process.env.WA_TASK_MGMT_URL || 'http://wa-task-management-api-demo.service.core-compute-demo.internal',
