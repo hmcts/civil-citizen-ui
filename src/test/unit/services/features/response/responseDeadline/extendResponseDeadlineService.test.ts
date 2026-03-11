@@ -1,78 +1,92 @@
-import {
-  submitExtendedResponseDeadline,
-} from 'services/features/response/responseDeadline/extendResponseDeadlineService';
-import * as requestModels from '../../../../../../main/common/models/AppRequest';
-import * as draftStoreService from '../../../../../../main/modules/draft-store/draftStoreService';
+import {submitExtendedResponseDeadline} from 'services/features/response/responseDeadline/extendResponseDeadlineService';
 import {Claim} from 'models/claim';
 import {PartyType} from 'models/partyType';
-import nock from 'nock';
-import config from 'config';
 import {ResponseOptions} from 'form/models/responseDeadline';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import {AppSession, UserDetails} from '../../../../../../main/common/models/AppRequest';
+import {AppRequest, AppSession} from 'models/AppRequest';
+import * as draftStoreService from '../../../../../../main/modules/draft-store/draftStoreService';
+import {CivilServiceClient} from '../../../../../../main/app/client/civilServiceClient';
 
-jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
-declare const appRequest: requestModels.AppRequest;
-const mockedAppRequest = requestModels as jest.Mocked<typeof appRequest>;
-mockedAppRequest.params = {id: '1'};
-mockedAppRequest.session = <AppSession>{user: <UserDetails>{id: '1234'}};
-const mockGetCaseDataFromStore = draftStoreService.getCaseDataFromStore as jest.Mock;
-const claim = new Claim();
-claim.applicant1 = {
-  partyDetails: {
-    partyName: 'Mr. James Bond',
-  },
-  type: PartyType.INDIVIDUAL,
+
+const mockGetCaseDataFromStore = draftStoreService.getCaseDataFromStore as jest.MockedFunction<typeof draftStoreService.getCaseDataFromStore>;
+const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.MockedFunction<typeof draftStoreService.saveDraftClaim>;
+
+const buildRequest = (): AppRequest => ({
+  params: {id: '1'},
+  session: {user: {id: '1234'}} as AppSession,
+} as AppRequest);
+
+const buildClaim = (): Claim => {
+  const claim = new Claim();
+  claim.applicant1 = {
+    partyDetails: {
+      partyName: 'Mr. James Bond',
+    },
+    type: PartyType.INDIVIDUAL,
+  };
+  claim.responseDeadline = {
+    agreedResponseDeadline: new Date('2024-01-10T00:00:00.000Z'),
+    calculatedResponseDeadline: new Date('2024-01-10T00:00:00.000Z'),
+    option: ResponseOptions.ALREADY_AGREED,
+  };
+
+  return claim;
 };
-claim.responseDeadline = {
-  agreedResponseDeadline: new Date(),
-  calculatedResponseDeadline: new Date(),
-  option: ResponseOptions.ALREADY_AGREED,
-};
-const citizenBaseUrl: string = config.get('services.civilService.url');
 
 describe('Extend ResponseDeadline Service', () => {
-  describe('submitExtendedResponseDeadline', () => {
-    beforeEach(() => {
-      jest.clearAllMocks();
-    });
+  let req: AppRequest;
+  let submitAgreedResponseExtensionDateEventSpy: jest.SpyInstance;
 
+  beforeEach(() => {
+    jest.clearAllMocks();
+    req = buildRequest();
+    submitAgreedResponseExtensionDateEventSpy = jest
+      .spyOn(CivilServiceClient.prototype, 'submitAgreedResponseExtensionDateEvent')
+      .mockResolvedValue({} as Claim);
+  });
+
+  afterEach(() => {
+    submitAgreedResponseExtensionDateEventSpy.mockRestore();
+  });
+
+  describe('submitExtendedResponseDeadline', () => {
     it('should submit event when task is incomplete', async () => {
-      //Given
-      nock(citizenBaseUrl)
-        .post('/cases/1/citizen/1234/event')
-        .reply(200, {});
-      mockGetCaseDataFromStore.mockImplementation(async () => claim);
-      const spy = jest.spyOn(draftStoreService, 'saveDraftClaim');
-      //When
-      await submitExtendedResponseDeadline(mockedAppRequest);
-      //Then
-      if (!nock.isDone()) {
-        nock.cleanAll();
-      }
-      expect(spy).toHaveBeenCalled();
+      const claim = buildClaim();
+      mockGetCaseDataFromStore.mockResolvedValue(claim);
+
+      await submitExtendedResponseDeadline(req);
+
+      expect(submitAgreedResponseExtensionDateEventSpy).toHaveBeenCalledWith(
+        '1',
+        {
+          respondentSolicitor1AgreedDeadlineExtension: claim.responseDeadline.calculatedResponseDeadline,
+          respondent1LiPResponse: {
+            respondent1ResponseLanguage: 'BOTH',
+          },
+        },
+        req,
+      );
+      expect(mockSaveDraftClaim).toHaveBeenCalledWith('11234', claim);
     });
 
     it('should not submit event when task is complete', async () => {
-      //Given
-      claim.respondentSolicitor1AgreedDeadlineExtension = new Date();
-      mockGetCaseDataFromStore.mockImplementation(async () => claim);
-      const spy = jest.spyOn(draftStoreService, 'saveDraftClaim');
-      //When
-      await submitExtendedResponseDeadline(mockedAppRequest);
-      //Then
-      expect(spy).not.toHaveBeenCalled();
-      spy.mockClear();
+      const claim = buildClaim();
+      claim.respondentSolicitor1AgreedDeadlineExtension = new Date('2024-01-11T00:00:00.000Z');
+      mockGetCaseDataFromStore.mockResolvedValue(claim);
+
+      await submitExtendedResponseDeadline(req);
+
+      expect(submitAgreedResponseExtensionDateEventSpy).not.toHaveBeenCalled();
+      expect(mockSaveDraftClaim).not.toHaveBeenCalled();
     });
 
     it('should rethrow exception when redis throws exception', async () => {
-      //Given
-      mockGetCaseDataFromStore.mockImplementation(async () => {
-        throw new Error(TestMessages.REDIS_FAILURE);
-      });
-      //Then
-      await expect(submitExtendedResponseDeadline(mockedAppRequest)).rejects.toThrow(TestMessages.REDIS_FAILURE);
+      mockGetCaseDataFromStore.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
+
+      await expect(submitExtendedResponseDeadline(req)).rejects.toThrow(TestMessages.REDIS_FAILURE);
+      expect(submitAgreedResponseExtensionDateEventSpy).not.toHaveBeenCalled();
+      expect(mockSaveDraftClaim).not.toHaveBeenCalled();
     });
   });
 });
