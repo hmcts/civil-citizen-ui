@@ -1,6 +1,7 @@
 import {submitExtendedResponseDeadline} from 'services/features/response/responseDeadline/extendResponseDeadlineService';
 import {Claim} from 'models/claim';
 import {PartyType} from 'models/partyType';
+import {ClaimBilingualLanguagePreference} from 'models/claimBilingualLanguagePreference';
 import {ResponseOptions} from 'form/models/responseDeadline';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {AppRequest, AppSession} from 'models/AppRequest';
@@ -30,6 +31,7 @@ const buildClaim = (): Claim => {
     calculatedResponseDeadline: new Date('2024-01-10T00:00:00.000Z'),
     option: ResponseOptions.ALREADY_AGREED,
   };
+  claim.claimBilingualLanguagePreference = ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH;
 
   return claim;
 };
