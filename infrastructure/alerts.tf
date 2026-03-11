@@ -1,11 +1,6 @@
-data "azurerm_key_vault_secrets" "all_secrets" {
-  key_vault_id = module.key-vault.key_vault_id
-}
-
-
 data "azurerm_key_vault_secret" "civil-ci-alert-slack-email" {
-  count        = contains(data.azurerm_key_vault_secrets.all_secrets.names, "civil-ci-alert-slack-group-email") ? 1 : 0
-  name         = "civil-ci-alert-slack-group-email"
+  count        = var.civil_ci_alert_slack_email_secret_name != null ? 1 : 0
+  name         = var.civil_ci_alert_slack_email_secret_name
   key_vault_id = module.key-vault.key_vault_id
 }
 
@@ -50,6 +45,7 @@ resource "azurerm_monitor_metric_alert" "civil-ci-alerts" {
   window_size         = try(each.value.window_size, null)
   auto_mitigate       = try(each.value.autoMitigate, null)
   scopes              = [data.azurerm_redis_cache.draft_store.id]
+  tags                = var.common_tags
 
   dynamic "criteria" {
     for_each = try(each.value.criteria, {})
