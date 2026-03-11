@@ -1,11 +1,12 @@
-require('dotenv').config({path: '.env'});
+require('dotenv').config({path: '.env.tests.local'});
+
 const PropertiesVolume = require('./secretsConfig');
 
 const defaultPassword = process.env.CITIZEN_PASSWORD;
 const defaultPasswordSystemUser = process.env.SYSTEM_USER_PASSWORD;
 const judgeDefaultPassword = process.env.JUDGE_PASSWORD;
 const wluDefaultPassword = process.env.WLU_DEFAULT_PASSWORD;
-const testUrl = process.env.TEST_URL || 'https://moneyclaims.demo.platform.hmcts.net';
+const testUrl = process.env.TEST_URL;
 const testHeadlessBrowser = process.env.TEST_HEADLESS ? process.env.TEST_HEADLESS === 'true' : true;
 
 if (!process.env.TEST_PASSWORD) {

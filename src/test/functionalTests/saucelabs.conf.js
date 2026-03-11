@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-require('dotenv').config();
+require('dotenv').config({path: '.env.tests.local'});
 const supportedBrowsers = require('../crossbrowser/supportedBrowsers.js');
 const testConfig = require('../config.js');
 const {unAssignAllUsers} = require('./specClaimHelpers/api/caseRoleAssignmentHelper');
