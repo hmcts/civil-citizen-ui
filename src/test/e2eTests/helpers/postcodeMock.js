@@ -35,13 +35,14 @@ const buildMapping = (postcode) => ({
 });
 
 const stubPostcodeLookup = async (postcode = 'W1J 7NT') => {
-  if (process.env.CI !== 'true') {
+  if (!process.env.CI) {
     return;
   }
-  if (!url.wiremockServiceE2e) {
+  const wiremockBaseUrl = process.env.WIREMOCK_E2E_URL || url.wiremockServiceE2e;
+  if (!wiremockBaseUrl) {
     return;
   }
-  const wiremockAdminUrl = `${url.wiremockServiceE2e}/__admin/mappings`;
+  const wiremockAdminUrl = `${wiremockBaseUrl}/__admin/mappings`;
   try {
     await restHelper.request(wiremockAdminUrl, headers, buildMapping(postcode), 'POST');
   } catch (error) {
