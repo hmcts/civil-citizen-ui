@@ -1,20 +1,13 @@
 const config = require('../../../config');
 const ClaimCreation = require('../../createClaim/steps/claimCreation');
 const {yesAndNoCheckBoxOptionValue} = require('../../commons/eligibleVariables');
+const {stubPostcodeLookup} = require('../../helpers/postcodeMock');
 
 Feature('Claim creation journey').tag('@e2e');
 
 Before(async ({ I }) => {
-  I.mockRoute('**/postcode/**', {
-    status: 200,
-    body: {
-      status: 200,
-      result: {
-        postcode: 'W1J 7NT',
-        country_code: 'E',
-      },
-    },
-  });
+  await stubPostcodeLookup();
+  
 });
 
 Scenario('Claim creation journey with interest with fess reference', () => {
