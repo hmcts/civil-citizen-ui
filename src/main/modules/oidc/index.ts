@@ -24,7 +24,6 @@ import {
 
 import {
   getPaymentConfirmationUrl,
-  getUserId,
   saveOriginalPaymentConfirmationUrl,
   deletePaymentConfirmationUrl,
 } from 'modules/draft-store/paymentSessionStoreService';
@@ -196,17 +195,10 @@ export class OidcMiddleware {
 
         logger.info('redirecting url ', req.originalUrl);
         if (isPaymentConfirmationUrl(req)) {
-          const claimId = getClaimId(req.originalUrl);
           logger.info('Condition satisfied for payment confirmation ', req.originalUrl);
-          logger.info('Claim id ', claimId);
-          if (!claimId) {
-            logger.info('claim id does not exist from payment confirmation url ', claimId);
-          } else {
-            const userId = await getUserId(claimId);
-            logger.info('User id ', userId);
-            await saveOriginalPaymentConfirmationUrl(userId, req.originalUrl);
-          }
+          await saveOriginalPaymentConfirmationUrl(req.originalUrl);
         }
+
         return res.redirect(SIGN_IN_URL);
       } catch (err) {
         logger.info('Error in the middleware of while session check ', err);
@@ -216,10 +208,3 @@ export class OidcMiddleware {
   }
 }
 
-const getClaimId = (originalUrl: string) => {
-  const regex = /\/(\d{16})\//;
-  const match = originalUrl?.match(regex);
-  if (match && match.length >=2 && match[1].length === 16) {
-    return match[1];
-  }
-};
