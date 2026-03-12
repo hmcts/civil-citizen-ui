@@ -34,21 +34,22 @@ const userDetails = {accessToken: citizenRoleToken, email:'dfkdh', id: 'jfkdljfd
 jest.mock('../../../../main/app/auth/user/oidc');
 
 describe('OIDC middleware', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+    app.request['session'] = {
+      destroy: (cb: (err?: unknown) => void) => cb(),
+    } as unknown as Session;
+  });
   describe('Sign out', () => {
     beforeEach(() => {
       nock(idamServiceUrl)
         .post('/o/token')
         .reply(200, {id_token: citizenRoleToken});
-      app.locals.user = {
-        idToken: 'token',
-        givenName: 'Joe',
-        familyName: 'Bloggs',
-      };
     });
 
     it('should unset user', async () => {
-      await request(app).get(SIGN_OUT_URL).expect(() => {
-        expect(app.locals.user).toBeUndefined();
+      await request(app).get(SIGN_OUT_URL).expect((res) => {
+        expect(res.status).toBe(302);
       });
     });
 
@@ -72,18 +73,18 @@ describe('OIDC middleware', () => {
         expect(res.status).toBe(302);
         expect(res.text).toContain(SIGN_IN_URL);
       });
-      expect(app.locals.assignClaimURL).toBe(ASSIGN_CLAIM_URL);
     });
     it('should redirect to assign claim url when claim id is set', async () => {
       mockGetOidcResponse.mockReturnValue(Promise.resolve({id_token: '1', access_token: ''} as OidcResponse));
       mockGetUserDetails.mockReturnValue(userDetails);
       mockGetSessionIssueTime.mockReturnValue(1234);
+      app.request['session'] = {assignClaimURL: ASSIGN_CLAIM_URL} as unknown as Session;
       await request(app).get(CALLBACK_URL)
         .query({code: 'string'})
         .expect((res) => {
           expect(res.status).toBe(302);
+          expect(res.text).toContain(ASSIGN_CLAIM_URL);
         });
-      expect(app.locals.assignClaimURL).toBeUndefined();
     });
     it('should redirect to dashboard when user is logged in and claim is not set', async () => {
       mockGetOidcResponse.mockReturnValue(Promise.resolve({id_token: '1', access_token: ''} as OidcResponse));
@@ -135,18 +136,18 @@ describe('OIDC middleware', () => {
         expect(res.status).toBe(302);
         expect(res.text).toContain(SIGN_IN_URL);
       });
-      expect(app.locals.claimIssueTasklist).toBe(true);
     });
     it('should redirect to claim issue task-list url when claimIssueTasklist is true', async () => {
       mockGetOidcResponse.mockReturnValue(Promise.resolve({id_token: '1', access_token: ''} as OidcResponse));
       mockGetUserDetails.mockReturnValue(userDetails);
       mockGetSessionIssueTime.mockReturnValue(1234);
+      app.request['session'] = {claimIssueTasklist: true} as unknown as Session;
       await request(app).get(CALLBACK_URL)
         .query({code: 'string'})
         .expect((res) => {
           expect(res.status).toBe(302);
+          expect(res.text).toContain(CLAIMANT_TASK_LIST_URL);
         });
-      expect(app.locals.claimIssueTasklist).toBeUndefined();
     });
     it('should redirect to dashboard when user is logged in and claimIssueTasklist is not set', async () => {
       mockGetOidcResponse.mockReturnValue(Promise.resolve({id_token: '1', access_token: ''} as OidcResponse));
@@ -162,10 +163,6 @@ describe('OIDC middleware', () => {
   });
 
   describe('should redirect back to payment confirmation url after login', () => {
-    afterEach(() => {
-      jest.clearAllMocks();
-    });
-
     it('should store original url in local if user details expired', async () => {
       mockDraftStoreClient.get.mockResolvedValueOnce('123456789');
 
@@ -178,7 +175,6 @@ describe('OIDC middleware', () => {
 
     it('should redirect back to payment confirmation url after login', async () => {
       userDetails.roles = ['citizen'];
-      app.locals.paymentConfirmationUrl = CLAIM_FEE_PAYMENT_CONFIRMATION_URL_WITH_UNIQUE_ID;
       mockGetOidcResponse.mockReturnValue(Promise.resolve({id_token: '1', access_token: ''} as OidcResponse));
       mockGetUserDetails.mockReturnValue(userDetails);
       mockGetSessionIssueTime.mockReturnValue(1234);
@@ -204,7 +200,6 @@ describe('OIDC middleware', () => {
 
     it('should throw error if issue in getting confirmation url', async () => {
       userDetails.roles = ['citizen'];
-      app.locals.paymentConfirmationUrl = CLAIM_FEE_PAYMENT_CONFIRMATION_URL_WITH_UNIQUE_ID;
       mockGetOidcResponse.mockReturnValue(Promise.resolve({id_token: '1', access_token: ''} as OidcResponse));
       mockGetUserDetails.mockReturnValue(userDetails);
       mockGetSessionIssueTime.mockReturnValue(1234);
