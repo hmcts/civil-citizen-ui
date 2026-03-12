@@ -20,8 +20,11 @@ import config from 'config';
 const responseDeadlineOptionsController = Router();
 const responseDeadlineOptionsViewPath = 'features/response/response-deadline-options';
 const responseDeadlineService = new ResponseDeadlineService();
-const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
-const civilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
+
+const getCivilServiceClient = (): CivilServiceClient => {
+  const baseUrl = config.get<string>('services.civilService.url');
+  return new CivilServiceClient(baseUrl);
+};
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('responseDeadlineOptionsController');
@@ -48,7 +51,7 @@ const getDeadlineTime = (value?: Date | string): number | undefined => {
 const syncDeadlineFromClaimStore = async (req: AppRequest, claim: Claim, redisKey: string): Promise<Claim> => {
   try {
     const claimId = req.params.id;
-    const claimFromCivilService = await civilServiceClient.retrieveClaimDetails(claimId, req);
+    const claimFromCivilService = await getCivilServiceClient().retrieveClaimDetails(claimId, req);
     const storeDeadline = getDeadlineTime(claimFromCivilService?.respondent1ResponseDeadline);
     const redisDeadline = getDeadlineTime(claim?.respondent1ResponseDeadline);
 
