@@ -4,14 +4,14 @@ const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('paymentSessionStoreService');
 const userIdForPayment = 'userIdForPayment';
 
-export const saveUserId = async (claimId: string, userId: string) => {
+export const saveUserId = async (claimId: string, feeType: string, userId: string) => {
   try {
-    const existingUserId = await getUserId(claimId);
+    const existingUserId = await getUserId(claimId, feeType);
     if (existingUserId && existingUserId !== userId) {
       logger.warn(`Overwriting existing userId ${existingUserId} with ${userId} for claimId ${claimId}`);
     }
 
-    await app.locals.draftStoreClient.set(claimId + userIdForPayment, userId);
+    await app.locals.draftStoreClient.set(claimId + feeType + userIdForPayment, userId);
     logger.info('Draft store claim id ' + claimId + ' user id ' + userId);
   } catch (err) {
     logger.error('Error while saving the userid for payment confirmation ' + err);
@@ -19,17 +19,23 @@ export const saveUserId = async (claimId: string, userId: string) => {
   }
 };
 
-export const getUserId = async (claimId: string): Promise<string> => {
+export const getUserId = async (claimId: string, feeType: string): Promise<string> => {
   try {
-    return await app.locals.draftStoreClient.get(claimId + userIdForPayment);
+    let userId =  await app.locals.draftStoreClient.get(claimId + feeType + userIdForPayment);
+    if(!userId){
+      //Fallback to OLD key format for backward compatibility
+      userId = await app.locals.draftStoreClient.get(claimId + userIdForPayment);
+    }
+    return userId;
   } catch (err) {
     logger.error('Error while getting the userid for payment confirmation ' + err);
     throw err;
   }
 };
 
-export const deleteUserId = async (claimId: string): Promise<void> => {
+export const deleteUserId = async (claimId: string, feeType: string): Promise<void> => {
   try {
+    await app.locals.draftStoreClient.del(claimId + feeType + userIdForPayment);
     await app.locals.draftStoreClient.del(claimId + userIdForPayment);
   } catch (err) {
     logger.error('Error while deleting the userid for payment confirmation ' + err);
