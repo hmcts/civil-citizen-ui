@@ -1,6 +1,7 @@
 import {getLng} from 'common/utils/languageToggleUtils';
+import {escapeHtml} from 'common/utils/escapeHtml';
 import {t} from 'i18next';
-import {SummaryRow, summaryRow} from 'models/summaryList/summaryList';
+import {SummaryRow, summaryRow, summaryRowWithTextValue} from 'models/summaryList/summaryList';
 import {YesNoUpperCamelCase, YesNoUpperCase} from 'form/models/yesNo';
 import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
 import {HearingTypeOptions} from 'models/generalApplication/hearingArrangement';
@@ -197,13 +198,12 @@ export const addOrderJudgeRow = (application: ApplicationResponse, index: number
   const rows: SummaryRow[] = [];
   if (application.case_data.generalAppDetailsOfOrderColl?.[index]) {
     const orderForCost = application.case_data.generalAppAskForCosts === YesNoUpperCamelCase.YES ? 'PAGES.GENERAL_APPLICATION.ORDER_FOR_COSTS' : '';
-    const html = `<p class="govuk-body">${application.case_data.generalAppDetailsOfOrderColl[index].value} <br> ${t(orderForCost, {lng})}</p>`;
+    const html = `<p class="govuk-body">${escapeHtml(application.case_data.generalAppDetailsOfOrderColl[index].value)} <br> ${t(orderForCost, {lng})}</p>`;
     rows.push(
       summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHAT_ORDER', {lng}), html),
     );
   } else if (application.case_data?.generalAppDetailsOfOrder) {
-    //LR has only one information
-    const LrHtml = `<p class="govuk-body">${application.case_data.generalAppDetailsOfOrder}</p>`;
+    const LrHtml = `<p class="govuk-body">${escapeHtml(application.case_data.generalAppDetailsOfOrder)}</p>`;
     rows.push(
       summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHAT_ORDER', {lng}), LrHtml),
     );
@@ -216,11 +216,10 @@ export const addRequestingReasonRow = (application: ApplicationResponse, index: 
   const rows: SummaryRow[] = [];
   if (application.case_data.generalAppReasonsOfOrderColl?.[index]) {
     rows.push(
-      summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_REQUESTING', {lng}), application.case_data.generalAppReasonsOfOrderColl[index].value),
+      summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_REQUESTING', {lng}), escapeHtml(application.case_data.generalAppReasonsOfOrderColl[index].value)),
     );
   } else if (application.case_data?.generalAppReasonsOfOrder) {
-    //LR has only one information
-    const LrHtml = `<p class="govuk-body">${application.case_data.generalAppReasonsOfOrder}</p>`;
+    const LrHtml = `<p class="govuk-body">${escapeHtml(application.case_data.generalAppReasonsOfOrder)}</p>`;
     rows.push(
       summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_REQUESTING', {lng}), LrHtml),
     );
@@ -260,7 +259,7 @@ export const addHearingArrangementsRows = (application: ApplicationResponse, lan
         t(`PAGES.GENERAL_APPLICATION.APPLICATION_HEARING_ARRANGEMENTS.HEARING_TYPE_VIEW_APPLICATION.${hearingPreferredType}`, {lng})),
     );
     rows.push(
-      summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_PREFER', {lng}),
+      summaryRowWithTextValue(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_PREFER', {lng}),
         application.case_data.generalAppHearingDetails.ReasonForPreferredHearingType),
     );
     const courtLocationText = application.case_data.generalAppHearingDetails.HearingPreferredLocation

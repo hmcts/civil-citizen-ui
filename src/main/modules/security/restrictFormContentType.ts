@@ -4,10 +4,13 @@ import { Request, Response, NextFunction } from 'express';
  * Paths that must only accept form-encoded POSTs so that the Web Application Firewall (WAF)
  * can inspect all submitted content. Accepting application/json on these routes would allow
  * attackers to bypass WAF rules (e.g. XSS) by sending the same payload as JSON.
+ * Includes claim, general-application and query-management so HTML injection is blocked consistently.
  */
 const FORM_ONLY_PATH_PATTERNS = [
+  /^\/claim(\/|$)/,
   /^\/case\/[^/]+\/general-application(\/|$)/,
   /^\/case\/[^/]+\/response\/general-application(\/|$)/,
+  /^\/case\/[^/]+\/qm(\/|$)/,
 ];
 
 const ALLOWED_CONTENT_TYPES = [

@@ -1,7 +1,7 @@
 import { Claim } from 'models/claim';
 import { getLng } from 'common/utils/languageToggleUtils';
 import { t } from 'i18next';
-import { SummaryRow, summaryRow } from 'models/summaryList/summaryList';
+import { SummaryRow, summaryRow, summaryRowWithTextValue } from 'models/summaryList/summaryList';
 import {
   APPLICATION_TYPE_URL,
   GA_AGREEMENT_FROM_OTHER_PARTY_URL,
@@ -117,7 +117,7 @@ export const addOrderJudgeRow = (claimId: string, claim: Claim, orderJudgeIndex:
     const orderJudge = claim.generalApplication.orderJudges[orderJudgeIndex];
     const href = `${constructResponseUrlWithIdParams(claimId, ORDER_JUDGE_URL)}?index=${orderJudgeIndex}`;
     rows.push(
-      summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHAT_ORDER', {lng}), orderJudge.text,
+      summaryRowWithTextValue(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHAT_ORDER', {lng}), orderJudge.text,
         href, changeLabel(), undefined),
     );
   }
@@ -132,7 +132,7 @@ export const addRequestingReasonRow = (claimId: string, claim: Claim, requesting
     const requestingReason = claim.generalApplication.requestingReasons[requestingReasonIndex];
     const href = `${constructResponseUrlWithIdParams(claimId, GA_REQUESTING_REASON_URL)}?index=${requestingReasonIndex}`;
     rows.push(
-      summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_REQUESTING', {lng}), requestingReason.text,
+      summaryRowWithTextValue(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_REQUESTING', {lng}), requestingReason.text,
         href, changeLabel(), undefined),
     );
   }
@@ -190,7 +190,7 @@ export const addHearingArrangementsRows = (claimId: string, claim: Claim, lang: 
         constructResponseUrlWithIdParams(claimId, GA_HEARING_ARRANGEMENT_URL), changeLabel()),
     );
     rows.push(
-      summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_PREFER', {lng}),
+      summaryRowWithTextValue(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_PREFER', {lng}),
         claim.generalApplication.hearingArrangement.reasonForPreferredHearingType,
         constructResponseUrlWithIdParams(claimId, GA_HEARING_ARRANGEMENT_URL), changeLabel()),
     );
