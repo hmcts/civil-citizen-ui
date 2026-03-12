@@ -5490,7 +5490,7 @@ __metadata:
     jsdom: "npm:^24.1.0"
     jwt-decode: "npm:^3.1.2"
     launchdarkly-node-client-sdk: "npm:^3.0.0"
-    launchdarkly-node-server-sdk: "npm:^7.0.1"
+    launchdarkly-node-server-sdk: "npm:^7.0.4"
     lodash: "npm:^4.17.23"
     luxon: "npm:^3.2.1"
     mini-css-extract-plugin: "npm:^2.7.2"
@@ -10480,18 +10480,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"launchdarkly-node-server-sdk@npm:^7.0.1":
-  version: 7.0.1
-  resolution: "launchdarkly-node-server-sdk@npm:7.0.1"
+"launchdarkly-node-server-sdk@npm:^7.0.4":
+  version: 7.0.4
+  resolution: "launchdarkly-node-server-sdk@npm:7.0.4"
   dependencies:
     async: "npm:^3.2.4"
     launchdarkly-eventsource: "npm:1.4.4"
     lru-cache: "npm:^6.0.0"
     node-cache: "npm:^5.1.0"
-    semver: "npm:^7.3.0"
+    semver: "npm:^7.5.4"
     tunnel: "npm:0.0.6"
     uuid: "npm:^8.3.2"
-  checksum: 10/e14b542896a2cd6e7164d0d959c97262e5ff8634bc1a13c9570a49a2b6fbb26b9f7478c7071fa27c2c69113056e02d61386f61b2e46b8b8b08cc501dc61b1868
+  checksum: 10/52a524002b5ff645135b2e20c2a7bd8812f3c430c834e9fd39bd1dcf58355e216aacd6a2f5103a8eb82bac0f275c55bebc4c2594868b903b1c740d5a5fe762a5
   languageName: node
   linkType: hard
 
