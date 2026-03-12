@@ -20,6 +20,9 @@ import {
   PRIVACY_POLICY_URL,
   CONTACT_CNBC_URL,
   CONTACT_MEDIATION_URL,
+  HEARING_FEE_PAYMENT_CONFIRMATION_URL,
+  CLAIM_FEE_PAYMENT_CONFIRMATION_URL,
+  APPLICATION_FEE_PAYMENT_CONFIRMATION_URL,
 } from 'routes/urls';
 
 import {
@@ -27,6 +30,7 @@ import {
   saveOriginalPaymentConfirmationUrl,
   deletePaymentConfirmationUrl, getUserId,
 } from 'modules/draft-store/paymentSessionStoreService';
+import {FeeType} from 'form/models/helpWithFees/feeType';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('IDAMlogs');
@@ -37,9 +41,9 @@ const requestIsForAssigningClaimForDefendant = (req: Request): boolean => {
 
 const isPaymentConfirmationUrl = (req: Request): boolean => {
   const paymentUrls = [
-    '/hearing-payment-confirmation',
-    '/claim-issued-payment-confirmation',
-    '/general-application/payment-confirmation',
+    HEARING_FEE_PAYMENT_CONFIRMATION_URL.split('/:id')[0],
+    CLAIM_FEE_PAYMENT_CONFIRMATION_URL.split('/:id')[0],
+    APPLICATION_FEE_PAYMENT_CONFIRMATION_URL.split('/:id')[0],
   ];
   return paymentUrls.some(url => req.originalUrl.startsWith(url));
 };
@@ -201,7 +205,7 @@ export class OidcMiddleware {
           if (!claimIdExtracted) {
             logger.error(`claim id does not exist from payment confirmation url: ${req.originalUrl} `);
           } else {
-            const userIdExtracted = await getUserId(claimIdExtracted);
+            const userIdExtracted = await getUserId(claimIdExtracted, getFeeTypeFromUrl(req.originalUrl));
             if (!userIdExtracted) {
               logger.warn(`user id does not exist from claim id: ${claimIdExtracted} `);
             } else {
@@ -226,4 +230,11 @@ const getClaimId = (originalUrl: string) => {
   if (match && match.length >=2 && match[1].length === 16) {
     return match[1];
   }
+};
+
+export const getFeeTypeFromUrl = (url: string): string => {
+  if (url.includes(HEARING_FEE_PAYMENT_CONFIRMATION_URL.split('/:id')[0])) return FeeType.HEARING;
+  if (url.includes(CLAIM_FEE_PAYMENT_CONFIRMATION_URL.split('/:id')[0])) return FeeType.CLAIMISSUED;
+  if (url.includes(APPLICATION_FEE_PAYMENT_CONFIRMATION_URL.split('/:id')[0])) return FeeType.GENERALAPPLICATION;
+  return '';
 };
