@@ -25,7 +25,7 @@ import {
 import {
   getPaymentConfirmationUrl,
   saveOriginalPaymentConfirmationUrl,
-  deletePaymentConfirmationUrl,
+  deletePaymentConfirmationUrl, getUserId,
 } from 'modules/draft-store/paymentSessionStoreService';
 
 const {Logger} = require('@hmcts/nodejs-logging');
@@ -196,7 +196,19 @@ export class OidcMiddleware {
         logger.info('redirecting url ', req.originalUrl);
         if (isPaymentConfirmationUrl(req)) {
           logger.info('Condition satisfied for payment confirmation ', req.originalUrl);
-          await saveOriginalPaymentConfirmationUrl(req.originalUrl);
+
+          const claimIdExtracted = getClaimId(req.originalUrl);
+          if (!claimIdExtracted) {
+            logger.error(`claim id does not exist from payment confirmation url: ${req.originalUrl} `);
+          } else {
+            const userIdExtracted = await getUserId(claimIdExtracted); // todo two users same claim ?
+            if (!userIdExtracted) {
+              logger.warn(`user id does not exist from claim id: ${claimIdExtracted} `);
+            } else {
+              await saveOriginalPaymentConfirmationUrl(userIdExtracted, req.originalUrl);
+              logger.info(`Saved Payment Confirmation URL for claimId: ${claimIdExtracted} userId: ${userIdExtracted}`);
+            }
+          }
         }
 
         return res.redirect(SIGN_IN_URL);
@@ -208,3 +220,10 @@ export class OidcMiddleware {
   }
 }
 
+const getClaimId = (originalUrl: string) => {
+  const regex = /\/(\d{16})\//;
+  const match = originalUrl?.match(regex);
+  if (match && match.length >=2 && match[1].length === 16) {
+    return match[1];
+  }
+};
