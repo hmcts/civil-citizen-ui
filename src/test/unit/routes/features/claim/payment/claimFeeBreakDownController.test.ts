@@ -39,6 +39,7 @@ jest.mock('../../../../../../main/modules/draft-store/paymentSessionStoreService
   saveOriginalPaymentConfirmationUrl: jest.fn(),
   getPaymentConfirmationUrl: jest.fn(),
   deleteUserId: jest.fn(),
+  deletePaymentConfirmationUrl: jest.fn(),
 }));
 
 describe('on GET', () => {
