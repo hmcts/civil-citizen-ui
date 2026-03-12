@@ -20,6 +20,7 @@ env:
   WIREMOCK_E2E_URL: http://localhost:1111
   TEST_URL: http://localhost:3001
   IDAM_API_URL: http://localhost:1111
+  IDAM_WEB_URL: http://localhost:1111
   ENVIRONMENT: preview
   LAUNCH_DARKLY_SDK: test
 
