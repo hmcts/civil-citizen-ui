@@ -1004,10 +1004,11 @@ export class Claim {
   }
 
   private sixWeeksBeforeHearingDate(): Date {
-    const hearingDateTime = new Date(this.caseProgressionHearing.hearingDate).getTime();
-    const sixWeeksMilli = 42 * 24 * 60 * 60 * 1000;
-    const dateAtStartOfDay = new Date(hearingDateTime - sixWeeksMilli).setHours(0, 0, 0, 0);
-    return new Date(dateAtStartOfDay);
+    const hearingDate = new Date(this.caseProgressionHearing.hearingDate);
+    const date = new Date(hearingDate); // clone
+    date.setDate(date.getDate() - 42);  // subtract 6 weeks (42 days)
+    date.setHours(0, 0, 0, 0);          // normalize to start of day
+    return date;
   }
 
   hasRespondent1NotAgreedMediation() {

@@ -1,8 +1,13 @@
 const config = require('../../../../config');
 const Response = require('../../../response/steps/response');
 const {responseType, paymentType} = require('../../../commons/responseVariables');
+const {stubPostcodeLookup} = require('../../../helpers/postcodeMock');
 
 Feature('Response journey defendant Full admit').tag('@e2e');
+
+Before(async () => {
+  await stubPostcodeLookup();
+});
 
 Scenario('Pay immediately', () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
@@ -39,4 +44,3 @@ Scenario(' by installments', () => {
     Response.checkAndSubmitYourResponse(false);
   }
 });
-

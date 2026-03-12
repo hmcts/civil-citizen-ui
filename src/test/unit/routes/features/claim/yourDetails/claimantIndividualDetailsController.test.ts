@@ -11,12 +11,15 @@ import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftSto
 import {PartyDetails} from 'form/models/partyDetails';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import * as launchDarklyClient from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
+import * as ordnanceSurveyService from '../../../../../../main/modules/ordance-survey-key/ordanceSurveyKeyService';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
+jest.mock('../../../../../../main/modules/ordance-survey-key/ordanceSurveyKeyService');
 
+const mockLookupByPostcode = ordnanceSurveyService.lookupByPostcodeAndDataSet as jest.Mock;
 const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 const mockSaveDraftClaim = saveDraftClaim as jest.Mock;
 
@@ -76,6 +79,10 @@ describe('Claimant Individual Details page', () => {
 
   beforeEach(() => {
     jest.resetAllMocks();
+    mockLookupByPostcode.mockResolvedValue({
+      valid: true,
+      addresses: [{ country: 'England' }],
+    });
     const mockClaim = { submittedDate: new Date(2024, 5, 23) } as Claim;
     getCaseDataFromStoreSpy(mockClaim);
     carmToggleSpy(true);
