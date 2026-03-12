@@ -201,7 +201,7 @@ export class OidcMiddleware {
           if (!claimIdExtracted) {
             logger.error(`claim id does not exist from payment confirmation url: ${req.originalUrl} `);
           } else {
-            const userIdExtracted = await getUserId(claimIdExtracted); // todo two users same claim ?
+            const userIdExtracted = await getUserId(claimIdExtracted);
             if (!userIdExtracted) {
               logger.warn(`user id does not exist from claim id: ${claimIdExtracted} `);
             } else {
