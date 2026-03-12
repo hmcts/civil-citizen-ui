@@ -13,7 +13,6 @@ import {
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {PartyType} from 'models/partyType';
 import {ResponseOptions} from 'form/models/responseDeadline';
-import {mockRedisFailure} from '../../../../utils/mockDraftStore';
 import { isCUIReleaseTwoEnabled } from 'app/auth/launchdarkly/launchDarklyClient';
 import {CivilServiceClient} from 'client/civilServiceClient';
 
