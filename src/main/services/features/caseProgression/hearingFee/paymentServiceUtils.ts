@@ -31,7 +31,7 @@ export const getRedirectUrlCommon = async (claimId: string, req: AppRequest): Pr
   } else {
     logger.info('redis key before saving the hearing payment ' + redisClaimId);
     await saveCaseProgression(req, paymentRedirectInformation, paymentInformation, hearing);
-    await saveUserId(claimId, req.session.user.id);
+    await saveUserId(claimId, req.session.user.id, FeeType.HEARING);
 
     const paymentStatus = await getFeePaymentStatus(claimId, paymentRedirectInformation.paymentReference, FeeType.HEARING, req);
     logger.info(`Existing hearing payment status for claim id ${claimId}, payment reference ${paymentRedirectInformation.paymentReference}: ${paymentStatus?.status}`);
@@ -54,8 +54,7 @@ export const getRedirectUrlCommon = async (claimId: string, req: AppRequest): Pr
 async function getRedirectInformation(req: AppRequest) {
   logger.info(`getRedirectInformation called for claimId: ${req.params.id}`);
   try {
-    const redirectInformation = await getFeePaymentRedirectInformation(req.params.id, FeeType.HEARING, req);
-    return redirectInformation;
+    return await getFeePaymentRedirectInformation(req.params.id, FeeType.HEARING, req);
   } catch (error) {
     logger.error(`Error fetching redirect information for claimId: ${req.params.id}`, error);
     const claim = await getClaimById(req.params.id, req, true);

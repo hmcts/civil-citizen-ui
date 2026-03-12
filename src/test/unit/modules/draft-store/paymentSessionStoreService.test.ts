@@ -24,50 +24,68 @@ describe('Payment session store service', () => {
 
   it('should save the userId to the draft store and log the action', async () => {
     const claimId = '12345';
+    const feeType = 'HEARING';
     const userId = 'user123';
 
-    await saveUserId(claimId, userId);
+    await saveUserId(claimId, feeType, userId);
 
-    expect(mockDraftStoreClient.set).toHaveBeenCalledWith('12345userIdForPayment', userId);
+    expect(mockDraftStoreClient.set).toHaveBeenCalledWith('12345HEARINGuserIdForPayment', userId);
   });
 
   it('should log a warning when overwriting an existing userId for a claimId', async () => {
     const claimId = '12345';
+    const feeType = 'HEARING';
     const existingUserId = 'user123';
     const newUserId = 'user456';
     mockDraftStoreClient.get.mockResolvedValueOnce(existingUserId);
 
-    await saveUserId(claimId, newUserId);
+    await saveUserId(claimId, feeType, newUserId);
 
-    expect(mockDraftStoreClient.get).toHaveBeenCalledWith('12345userIdForPayment');
-    expect(mockDraftStoreClient.set).toHaveBeenCalledWith('12345userIdForPayment', newUserId);
+    expect(mockDraftStoreClient.get).toHaveBeenCalledWith('12345HEARINGuserIdForPayment');
+    expect(mockDraftStoreClient.set).toHaveBeenCalledWith('12345HEARINGuserIdForPayment', newUserId);
   });
 
   it('should NOT log a warning when the same userId is saved for a claimId', async () => {
     const claimId = '12345';
+    const feeType = 'HEARING';
     const userId = 'user123';
     mockDraftStoreClient.get.mockResolvedValueOnce(userId);
 
-    await saveUserId(claimId, userId);
+    await saveUserId(claimId, feeType, userId);
 
-    expect(mockDraftStoreClient.get).toHaveBeenCalledWith('12345userIdForPayment');
-    expect(mockDraftStoreClient.set).toHaveBeenCalledWith('12345userIdForPayment', userId);
+    expect(mockDraftStoreClient.get).toHaveBeenCalledWith('12345HEARINGuserIdForPayment');
+    expect(mockDraftStoreClient.set).toHaveBeenCalledWith('12345HEARINGuserIdForPayment', userId);
   });
 
   it('should throw while save the userId to the draft store and log the action', async () => {
     const claimId = '12345';
+    const feeType = 'HEARING';
     const userId = 'user123';
     mockDraftStoreClient.set.mockRejectedValueOnce(new Error(TestMessages.SOMETHING_WENT_WRONG));
-    await expect(saveUserId(claimId, userId)).rejects.toThrow(TestMessages.SOMETHING_WENT_WRONG);
+    await expect(saveUserId(claimId, feeType, userId)).rejects.toThrow(TestMessages.SOMETHING_WENT_WRONG);
   });
 
   it('should get user id', async () => {
     const claimId = '12345';
+    const feeType = 'HEARING';
     mockDraftStoreClient.get.mockResolvedValueOnce('user123');
 
-    const result = await getUserId(claimId);
+    const result = await getUserId(claimId, feeType);
 
     expect(result).toBe('user123');
+    expect(mockDraftStoreClient.get).toHaveBeenCalledWith('12345HEARINGuserIdForPayment');
+  });
+
+  it('should fallback to OLD key format if NEW key is not found', async () => {
+    const claimId = '12345';
+    const feeType = 'HEARING';
+    mockDraftStoreClient.get.mockResolvedValueOnce(null); // New key miss
+    mockDraftStoreClient.get.mockResolvedValueOnce('user123_old'); // Old key hit
+
+    const result = await getUserId(claimId, feeType);
+
+    expect(result).toBe('user123_old');
+    expect(mockDraftStoreClient.get).toHaveBeenCalledWith('12345HEARINGuserIdForPayment');
     expect(mockDraftStoreClient.get).toHaveBeenCalledWith('12345userIdForPayment');
   });
 
@@ -115,9 +133,11 @@ describe('Payment session store service', () => {
 
   it('should delete user id', async () => {
     const claimId = '12345';
+    const feeType = 'HEARING';
 
-    await deleteUserId(claimId);
+    await deleteUserId(claimId, feeType);
 
+    expect(mockDraftStoreClient.del).toHaveBeenCalledWith('12345HEARINGuserIdForPayment');
     expect(mockDraftStoreClient.del).toHaveBeenCalledWith('12345userIdForPayment');
   });
 
