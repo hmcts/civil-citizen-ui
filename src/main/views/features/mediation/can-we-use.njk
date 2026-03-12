@@ -41,7 +41,12 @@
                   label: pTextEnterPhone}, t)
               }}
               {% endset %}
-              {{ yesNoRadioButton(t,id,name,'',form,'',{noHtml:noHtml}) }}
+              <fieldset class="govuk-fieldset">
+                <legend class="govuk-visually-hidden">
+                  {{ title if respondentTelNumber else titleEnterPhone }}
+                </legend>
+                {{ yesNoRadioButton(t,id,name,'',form,'',{noHtml:noHtml}) }}
+              </fieldset>
             {% else %}
               {{ telephone(form, {id: "mediationPhoneNumber",
                   name: "mediationPhoneNumber",
