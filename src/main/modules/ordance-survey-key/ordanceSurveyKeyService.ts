@@ -1,26 +1,63 @@
 import config from 'config';
 import axios from 'axios';
-import {Address, AddressInfoResponse, Point} from 'models/ordanceSurveyKey/ordanceSurveyKey';
+import { Address, AddressInfoResponse, Point } from 'models/ordanceSurveyKey/ordanceSurveyKey';
 import {AssertionError} from 'assert';
 
 export async function lookupByPostcodeAndDataSet(postCode: string): Promise<AddressInfoResponse> {
   const apiKey = config.get<string>('services.postcodeLookup.ordnanceSurveyApiKey');
   const url = config.get<string>('services.postcodeLookup.ordnanceSurveyApiUrl');
-  const response = await axios.get(`${url}/search/places/v1/postcode?dataset=DPA,LPI&postcode=${postCode}"&key=` + apiKey);
-  if (response?.data?.results) {
-    let addresses = response.data.results.map((jsonAddress: any) => {
-      if (!jsonAddress.DPA) {
-        return new Address(jsonAddress.LPI.UPRN, jsonAddress.LPI.ORGANISATION, jsonAddress.LPI.DEPARTMENT_NAME, jsonAddress.LPI.PO_BOX_NUMBER, jsonAddress.LPI.PAO_TEXT, jsonAddress.LPI.SAO_TEXT, jsonAddress.LPI.BUILDING_NUMBER, jsonAddress.LPI.STREET_DESCRIPTION, jsonAddress.LPI.DEPENDENT_THOROUGHFARE_NAME, jsonAddress.LPI.DEPENDENT_LOCALITY, jsonAddress.LPI.DOUBLE_DEPENDENT_LOCALITY, jsonAddress.LPI.TOWN_NAME, jsonAddress.LPI.POSTCODE_LOCATOR, jsonAddress.LPI.POSTAL_ADDRESS_CODE, jsonAddress.LPI.ADDRESS, new Point('Point', [jsonAddress.LPI.X_COORDINATE, jsonAddress.LPI.Y_COORDINATE]), jsonAddress.LPI.USRN);
-      } else {
-        return new Address(jsonAddress.DPA.UPRN, jsonAddress.DPA.ORGANISATION_NAME, jsonAddress.DPA.DEPARTMENT_NAME, jsonAddress.DPA.PO_BOX_NUMBER, jsonAddress.DPA.BUILDING_NAME, jsonAddress.DPA.SUB_BUILDING_NAME, jsonAddress.DPA.BUILDING_NUMBER, jsonAddress.DPA.THOROUGHFARE_NAME, jsonAddress.DPA.DEPENDENT_THOROUGHFARE_NAME, jsonAddress.DPA.DEPENDENT_LOCALITY, jsonAddress.DPA.DOUBLE_DEPENDENT_LOCALITY, jsonAddress.DPA.POST_TOWN, jsonAddress.DPA.POSTCODE, jsonAddress.DPA.POSTAL_ADDRESS_CODE, jsonAddress.DPA.ADDRESS, new Point('Point', [jsonAddress.DPA.X_COORDINATE, jsonAddress.DPA.Y_COORDINATE]), jsonAddress.DPA.UDPRN);
-      }
+
+  // Fixed URL string
+  const response = await axios.get(`${url}/search/places/v1/postcode?dataset=DPA,LPI&postcode=${postCode}&key=${apiKey}`);
+
+  const results = response?.data?.results ?? [];
+  if (results.length === 0) {
+    throw new AssertionError({
+      message: 'Postcode is incorrect or no results returned',
     });
-    addresses = addresses.filter((addresses: any, index: any, self: any[]) =>
-      index === self.findIndex((t: any) =>
-        (t.formattedAddress === addresses.formattedAddress),
-      ));
-    return new AddressInfoResponse(addresses, true);
-  } else {
-    throw new AssertionError({message: 'PostCode is Incorrect'});
   }
+
+  // Map results to Address objects using options object
+  let addresses = results.map((jsonAddress: any) => {
+    const source = jsonAddress.DPA ?? jsonAddress.LPI;
+    if (!source) return null;
+
+    let country: string;
+    switch (source.COUNTRY_CODE) {
+      case 'E':
+        country = 'England';
+        break;
+      case 'W':
+        country = 'Wales';
+        break;
+    }
+
+    return new Address({
+      uprn: source.UPRN,
+      organisationName: source.ORGANISATION_NAME ?? source.ORGANISATION,
+      departmentName: source.DEPARTMENT_NAME,
+      poBoxNumber: source.PO_BOX_NUMBER,
+      buildingName: source.BUILDING_NAME ?? source.PAO_TEXT,
+      subBuildingName: source.SUB_BUILDING_NAME ?? source.SAO_TEXT,
+      buildingNumber: source.BUILDING_NUMBER,
+      thoroughfareName: source.THOROUGHFARE_NAME ?? source.STREET_DESCRIPTION,
+      dependentThoroughfareName: source.DEPENDENT_THOROUGHFARE_NAME,
+      dependentLocality: source.DEPENDENT_LOCALITY,
+      doubleDependentLocality: source.DOUBLE_DEPENDENT_LOCALITY,
+      postTown: source.POST_TOWN ?? source.TOWN_NAME,
+      postcode: source.POSTCODE ?? source.POSTCODE_LOCATOR,
+      postcodeType: source.POSTAL_ADDRESS_CODE,
+      formattedAddress: source.ADDRESS,
+      point: new Point('Point', [source.X_COORDINATE, source.Y_COORDINATE]),
+      udprn: source.UDPRN ?? source.USRN,
+      country,
+    });
+  });
+
+  // Remove duplicates based on formattedAddress
+  addresses = addresses.filter((addr: Address, index: number, self: Address[]) =>
+    index === self.findIndex((t: Address) => t.formattedAddress === addr.formattedAddress),
+  );
+
+  return new AddressInfoResponse(addresses, true);
 }
