@@ -87,7 +87,12 @@
             </div>
             {% endset %}
 
-            {{ yesNoRadioButton(t,id,name, title, form, description, {yesHtml: yesHtml, yes:'COMMON.VARIATION_2.YES', no: 'COMMON.VARIATION_2.NO'}) }}
+            <fieldset class="govuk-fieldset">
+              <legend class="govuk-visually-hidden">
+                {{ t('PAGES.CCJ_DEFENDANT_DOB.TITLE') }}
+              </legend>
+              {{ yesNoRadioButton(t,id,name, '', form, description, {yesHtml: yesHtml, yes:'COMMON.VARIATION_2.YES', no: 'COMMON.VARIATION_2.NO'}) }}
+            </fieldset>
 
             <div class="govuk-form-group">
               {{ govukButton({
