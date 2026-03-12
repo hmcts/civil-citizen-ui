@@ -6,7 +6,7 @@
 
 <fieldset class="govuk-fieldset">
   <legend class="govuk-visually-hidden">
-    {{ t("PAGES.QM.WHAT_DO_YOU_WANT_TODO_TITLE") }}
+    {% if caption %}{{ t(caption) }} {% endif %}{{ t(title) }}
   </legend>
 
   {{ govukRadios({
@@ -20,6 +20,4 @@
 </fieldset>
 
 {% endblock %}
-
-
 
