@@ -5,6 +5,11 @@ const logger = Logger.getLogger('paymentSessionStoreService');
 
 export const saveUserId = async (claimId: string, userId: string) => {
   try {
+    const existingUserId = await getUserId(claimId);
+    if (existingUserId && existingUserId !== userId) {
+      logger.warn(`Overwriting existing userId ${existingUserId} with ${userId} for claimId ${claimId}`);
+    }
+
     await app.locals.draftStoreClient.set(claimId + 'userIdForPayment', userId);
     logger.info('Draft store claim id ' + claimId + ' user id ' + userId);
   } catch (err) {
@@ -31,25 +36,17 @@ export const deleteUserId = async (claimId: string): Promise<void> => {
   }
 };
 
-export const saveOriginalPaymentConfirmationUrl = async (originalUrl: string) => {
-
-  const claimId = getClaimId(originalUrl);
-  logger.info('Claim id ', claimId);
-  if (!claimId) {
-    logger.info('claim id does not exist from payment confirmation url ', originalUrl);
-  } else {
-    const userId = await getUserId(claimId);
-    logger.info('User id ', userId);
-    if (!userId) {
-      logger.info('user id does not exist from claim id ', claimId);
-    } else {
-      try {
-        await app.locals.draftStoreClient.set(userId + 'userIdForPayment', originalUrl);
-      } catch (err) {
-        logger.error('Error while saving the original payment confirmation url ' + err);
-        throw err;
-      }
+export const saveOriginalPaymentConfirmationUrl = async (userId: string, url: string) => {
+  try {
+    const existingUrl = await getPaymentConfirmationUrl(userId);
+    if (existingUrl && existingUrl !== url) {
+      logger.warn(`Overwriting existing payment confirmation url ${existingUrl} with ${url} for userId ${userId}`);
     }
+
+    await app.locals.draftStoreClient.set(userId + 'userIdForPayment', url);
+  } catch (err) {
+    logger.error('Error while saving the original payment confirmation url ' + err);
+    throw err;
   }
 };
 
@@ -68,13 +65,5 @@ export const deletePaymentConfirmationUrl = async (userId: string): Promise<void
   } catch (err) {
     logger.error('Error while deleting the payment confirmation url ' + err);
     throw err;
-  }
-};
-
-const getClaimId = (originalUrl: string) => {
-  const regex = /\/(\d{16})\//;
-  const match = originalUrl?.match(regex);
-  if (match && match.length >=2 && match[1].length === 16) {
-    return match[1];
   }
 };
