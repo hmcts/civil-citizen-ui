@@ -76,6 +76,7 @@ describe('Claimant Individual Details page', () => {
 
   beforeEach(() => {
     jest.resetAllMocks();
+    app.request.session = { user: { id: '123' } } as any;
     const mockClaim = { submittedDate: new Date(2024, 5, 23) } as Claim;
     getCaseDataFromStoreSpy(mockClaim);
     carmToggleSpy(true);
@@ -192,6 +193,7 @@ describe('Claimant Individual Details page', () => {
     });
     await request(app)
       .post(CLAIMANT_INDIVIDUAL_DETAILS_URL)
+      .set('Cookie', ['eligibilityCompleted=true'])
       .send({
         addressLine1: ['Flat 3A Middle Road',''],
         addressLine2: ['',''],
@@ -213,6 +215,7 @@ describe('Claimant Individual Details page', () => {
     });
     await request(app)
       .post(CLAIMANT_INDIVIDUAL_DETAILS_URL)
+      .set('Cookie', ['eligibilityCompleted=true'])
       .send({
         addressLine1: ['Flat 3A Middle Road','Flat 3A Middle Road'],
         addressLine2: ['',''],
@@ -442,6 +445,7 @@ describe('Claimant Individual Details page', () => {
     });
     await request(app)
       .post(CLAIMANT_INDIVIDUAL_DETAILS_URL)
+      .set('Cookie', ['eligibilityCompleted=true'])
       .send(validDataForPost)
       .expect((res) => {
         expect(res.status).toBe(302);

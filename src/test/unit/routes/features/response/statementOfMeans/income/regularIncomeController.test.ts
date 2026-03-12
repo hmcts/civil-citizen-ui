@@ -13,6 +13,7 @@ jest.mock('../../../../../../../main/modules/oidc');
 describe('Regular Income Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamServiceUrl: string = config.get('services.idam.url');
+  const monthlyIncomeUrl = CITIZEN_MONTHLY_INCOME_URL.replace(':id', '123');
 
   beforeAll(() => {
     nock(idamServiceUrl)
@@ -20,12 +21,15 @@ describe('Regular Income Controller', () => {
       .reply(200, {id_token: citizenRoleToken});
     jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
   });
+  beforeEach(() => {
+    app.request.session = { user: { id: '123' } } as any;
+  });
 
   describe('on GET', () => {
     test('should display page successfully', async () => {
       app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
       await request(app)
-        .get(CITIZEN_MONTHLY_INCOME_URL)
+        .get(monthlyIncomeUrl)
         .expect((res: Response) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('PAGES.REGULAR_INCOME.WHAT_REGULAR_INCOME'));
@@ -34,7 +38,7 @@ describe('Regular Income Controller', () => {
     test('it should return status 500 when error occurs', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
-        .get(CITIZEN_MONTHLY_INCOME_URL)
+        .get(monthlyIncomeUrl)
         .expect((res: Response) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(t('ERRORS.SOMETHING_WENT_WRONG'));
@@ -47,7 +51,7 @@ describe('Regular Income Controller', () => {
     });
     test('should display errors when job is selected but no amount or schedule are specified', async () => {
       await request(app)
-        .post(CITIZEN_MONTHLY_INCOME_URL)
+        .post(monthlyIncomeUrl)
         .send({
           declared: 'job', model: {
             job: {
@@ -67,7 +71,7 @@ describe('Regular Income Controller', () => {
 
     test('should display errors when universal credit is selected but no amount or schedule are specified', async () => {
       await request(app)
-        .post(CITIZEN_MONTHLY_INCOME_URL)
+        .post(monthlyIncomeUrl)
         .send({
           declared: 'job', model: {
             job: {
@@ -87,7 +91,7 @@ describe('Regular Income Controller', () => {
 
     test('should display errors when Jobseeker income based is selected but no amount or schedule are specified', async () => {
       await request(app)
-        .post(CITIZEN_MONTHLY_INCOME_URL)
+        .post(monthlyIncomeUrl)
         .send({
           declared: 'job', model: {
             job: {
@@ -107,7 +111,7 @@ describe('Regular Income Controller', () => {
 
     test('should display errors when Jobseeker contribution is selected but no amount or schedule are specified', async () => {
       await request(app)
-        .post(CITIZEN_MONTHLY_INCOME_URL)
+        .post(monthlyIncomeUrl)
         .send({
           declared: 'job', model: {
             job: {
@@ -127,7 +131,7 @@ describe('Regular Income Controller', () => {
 
     test('should display errors when income support is selected but no amount or schedule are specified', async () => {
       await request(app)
-        .post(CITIZEN_MONTHLY_INCOME_URL)
+        .post(monthlyIncomeUrl)
         .send({
           declared: 'job', model: {
             job: {
@@ -147,7 +151,7 @@ describe('Regular Income Controller', () => {
 
     test('should display errors when Working Tax Credit is selected but no amount or schedule are specified', async () => {
       await request(app)
-        .post(CITIZEN_MONTHLY_INCOME_URL)
+        .post(monthlyIncomeUrl)
         .send({
           declared: 'job', model: {
             job: {
@@ -167,7 +171,7 @@ describe('Regular Income Controller', () => {
 
     test('should display errors when Child Tax Credit is selected but no amount or schedule are specified', async () => {
       await request(app)
-        .post(CITIZEN_MONTHLY_INCOME_URL)
+        .post(monthlyIncomeUrl)
         .send({
           declared: 'job', model: {
             job: {
@@ -187,7 +191,7 @@ describe('Regular Income Controller', () => {
 
     test('should display errors when Child Benefit is selected but no amount or schedule are specified', async () => {
       await request(app)
-        .post(CITIZEN_MONTHLY_INCOME_URL)
+        .post(monthlyIncomeUrl)
         .send({
           declared: 'job', model: {
             job: {
@@ -207,7 +211,7 @@ describe('Regular Income Controller', () => {
 
     test('should display errors when Council Tax Support is selected but no amount or schedule are specified', async () => {
       await request(app)
-        .post(CITIZEN_MONTHLY_INCOME_URL)
+        .post(monthlyIncomeUrl)
         .send({
           declared: 'job', model: {
             job: {
@@ -227,7 +231,7 @@ describe('Regular Income Controller', () => {
 
     test('should display errors when Pension is selected but no amount or schedule are specified', async () => {
       await request(app)
-        .post(CITIZEN_MONTHLY_INCOME_URL)
+        .post(monthlyIncomeUrl)
         .send({
           declared: 'job', model: {
             job: {
@@ -247,7 +251,7 @@ describe('Regular Income Controller', () => {
 
     test('should display errors when other is selected but no amount or schedule are specified', async () => {
       await request(app)
-        .post(CITIZEN_MONTHLY_INCOME_URL)
+        .post(monthlyIncomeUrl)
         .send({
           declared: 'job', model: {
             job: {
@@ -267,7 +271,7 @@ describe('Regular Income Controller', () => {
 
     test('should display errors for  Income from your job amount when amount has more than two decimal places', async () => {
       await request(app)
-        .post(CITIZEN_MONTHLY_INCOME_URL)
+        .post(monthlyIncomeUrl)
         .send({
           declared: 'job', model: {
             job: {
@@ -286,7 +290,7 @@ describe('Regular Income Controller', () => {
 
     test('should display errors for Universal Credit amount when amount has more than two decimal places', async () => {
       await request(app)
-        .post(CITIZEN_MONTHLY_INCOME_URL)
+        .post(monthlyIncomeUrl)
         .send({
           declared: 'job', model: {
             job: {
@@ -304,7 +308,7 @@ describe('Regular Income Controller', () => {
     });
     test('should display errors for Jobseeker’s Allowance (income based) amount when amount has more than two decimal places', async () => {
       await request(app)
-        .post(CITIZEN_MONTHLY_INCOME_URL)
+        .post(monthlyIncomeUrl)
         .send({
           declared: 'job', model: {
             job: {
@@ -322,7 +326,7 @@ describe('Regular Income Controller', () => {
     });
     test('should display errors for Jobseeker’s Allowance (contribution based) amount when amount has more than two decimal places', async () => {
       await request(app)
-        .post(CITIZEN_MONTHLY_INCOME_URL)
+        .post(monthlyIncomeUrl)
         .send({
           declared: 'job', model: {
             job: {
@@ -340,7 +344,7 @@ describe('Regular Income Controller', () => {
     });
     test('should display errors for Income Support amount when amount has more than two decimal places', async () => {
       await request(app)
-        .post(CITIZEN_MONTHLY_INCOME_URL)
+        .post(monthlyIncomeUrl)
         .send({
           declared: 'job', model: {
             job: {
@@ -358,7 +362,7 @@ describe('Regular Income Controller', () => {
     });
     test('should display errors for Working Tax Credit amount when amount has more than two decimal places', async () => {
       await request(app)
-        .post(CITIZEN_MONTHLY_INCOME_URL)
+        .post(monthlyIncomeUrl)
         .send({
           declared: 'job', model: {
             job: {
@@ -376,7 +380,7 @@ describe('Regular Income Controller', () => {
     });
     test('should display errors for Child Tax Credit amount when amount has more than two decimal places', async () => {
       await request(app)
-        .post(CITIZEN_MONTHLY_INCOME_URL)
+        .post(monthlyIncomeUrl)
         .send({
           declared: 'job', model: {
             job: {
@@ -394,7 +398,7 @@ describe('Regular Income Controller', () => {
     });
     test('should display errors for Child Benefit amount when amount has more than two decimal places', async () => {
       await request(app)
-        .post(CITIZEN_MONTHLY_INCOME_URL)
+        .post(monthlyIncomeUrl)
         .send({
           declared: 'job', model: {
             job: {
@@ -412,7 +416,7 @@ describe('Regular Income Controller', () => {
     });
     test('should display errors for Council Tax Support amount when amount has more than two decimal places', async () => {
       await request(app)
-        .post(CITIZEN_MONTHLY_INCOME_URL)
+        .post(monthlyIncomeUrl)
         .send({
           declared: 'job', model: {
             job: {
@@ -430,7 +434,7 @@ describe('Regular Income Controller', () => {
     });
     test('should display errors for Pension amount when amount has more than two decimal places', async () => {
       await request(app)
-        .post(CITIZEN_MONTHLY_INCOME_URL)
+        .post(monthlyIncomeUrl)
         .send({
           declared: 'job', model: {
             job: {
@@ -448,7 +452,7 @@ describe('Regular Income Controller', () => {
     });
     test('should display errors for other income amount when amount has more than two decimal places', async () => {
       await request(app)
-        .post(CITIZEN_MONTHLY_INCOME_URL)
+        .post(monthlyIncomeUrl)
         .send({
           declared: 'job', model: {
             job: {
@@ -467,7 +471,7 @@ describe('Regular Income Controller', () => {
 
     test('should display errors for amount when amount is negative', async () => {
       await request(app)
-        .post(CITIZEN_MONTHLY_INCOME_URL)
+        .post(monthlyIncomeUrl)
         .send({
           declared: 'job', model: {
             job: {
@@ -485,7 +489,7 @@ describe('Regular Income Controller', () => {
     });
     test('should show errors when other is selected and data for other is not correctly selected', async () => {
       await request(app)
-        .post(CITIZEN_MONTHLY_INCOME_URL)
+        .post(monthlyIncomeUrl)
         .send({
           declared: 'other', model: {
             other: {
@@ -512,7 +516,7 @@ describe('Regular Income Controller', () => {
     });
     test('should redirect when all values are correct', async () => {
       await request(app)
-        .post(CITIZEN_MONTHLY_INCOME_URL)
+        .post(monthlyIncomeUrl)
         .send({
           declared: 'job', model: {
             job: {
@@ -525,13 +529,13 @@ describe('Regular Income Controller', () => {
         })
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CITIZEN_EXPLANATION_URL);
+          expect(res.header.location).toEqual(CITIZEN_EXPLANATION_URL.replace(':id', '123'));
         });
     });
     test('should return 500 status when error occurs', async () => {
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
-        .post(CITIZEN_MONTHLY_INCOME_URL)
+        .post(monthlyIncomeUrl)
         .send({
           declared: 'job', model: {
             job: {

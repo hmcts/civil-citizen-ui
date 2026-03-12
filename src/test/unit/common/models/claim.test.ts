@@ -1672,7 +1672,17 @@ describe('Documents', () => {
   });
 
   describe('test of method isSixWeeksOrLessFromTrial', () => {
+    const baseNow = new Date('2025-01-15T12:00:00Z');
     const claim = new Claim();
+
+    beforeAll(() => {
+      jest.useFakeTimers();
+      jest.setSystemTime(baseNow);
+    });
+
+    afterAll(() => {
+      jest.useRealTimers();
+    });
 
     it('should return true if a date is exactly six weeks from trial', () => {
       //Given

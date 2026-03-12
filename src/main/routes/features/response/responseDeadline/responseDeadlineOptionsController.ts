@@ -14,7 +14,7 @@ import {ResponseDeadlineService} from 'services/features/response/responseDeadli
 import {deadLineGuard} from 'routes/guards/deadLineGuard';
 import {AppRequest} from 'common/models/AppRequest';
 import {isCuiGaNroEnabled, isCUIReleaseTwoEnabled} from 'app/auth/launchdarkly/launchDarklyClient';
-import {CivilServiceClient} from 'app/client/civilServiceClient';
+import {CivilServiceClient} from 'client/civilServiceClient';
 import config from 'config';
 
 const responseDeadlineOptionsController = Router();
