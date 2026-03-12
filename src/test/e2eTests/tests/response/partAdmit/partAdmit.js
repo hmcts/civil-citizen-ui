@@ -2,8 +2,13 @@ const config = require('../../../../config');
 const PartAdmit = require('../../../response/steps/response');
 const {paymentType} = require('../../../commons/responseVariables');
 const {yesAndNoCheckBoxOptionValue} = require('../../../commons/eligibleVariables');
+const {stubPostcodeLookup} = require('../../../helpers/postcodeMock');
 
 Feature('Response journey defendant Part Admit').tag('@e2e');
+
+Before(async () => {
+  await stubPostcodeLookup();
+});
 
 Scenario.skip('already paid', () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
