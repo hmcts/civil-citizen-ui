@@ -15,6 +15,7 @@ import {PartyType} from 'models/partyType';
 import {ResponseOptions} from 'form/models/responseDeadline';
 import {mockRedisFailure} from '../../../../utils/mockDraftStore';
 import { isCUIReleaseTwoEnabled } from 'app/auth/launchdarkly/launchDarklyClient';
+import {CivilServiceClient} from 'app/client/civilServiceClient';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -23,6 +24,7 @@ jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 
 const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 const mockSaveCaseData = saveDraftClaim as jest.Mock;
+const mockRetrieveClaimDetails = jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails');
 const mockClaim = new Claim();
 mockClaim.applicant1 = {
   type: PartyType.INDIVIDUAL,
@@ -43,9 +45,34 @@ describe('Response Deadline Options Controller', () => {
 
   beforeEach(() => {
     (isCUIReleaseTwoEnabled as jest.Mock).mockReturnValueOnce(false);
+    mockRetrieveClaimDetails.mockResolvedValue(mockClaim);
+    mockSaveCaseData.mockClear();
   });
 
   describe('on GET', () => {
+    it('should sync response deadline from claim store when it changes', async () => {
+      const redisClaim = Object.assign(new Claim(), mockClaim, {
+        respondent1ResponseDeadline: new Date('2025-01-01T00:00:00.000Z'),
+      });
+      const storeClaim = Object.assign(new Claim(), mockClaim, {
+        respondent1ResponseDeadline: new Date('2025-02-01T00:00:00.000Z'),
+      });
+
+      mockGetCaseData.mockImplementation(async () => redisClaim);
+      mockRetrieveClaimDetails.mockResolvedValueOnce(storeClaim);
+
+      await request(app).get(RESPONSE_DEADLINE_OPTIONS_URL).expect(200);
+      expect(mockSaveCaseData).toHaveBeenCalled();
+    });
+
+    it('should not sync response deadline when claim store returns error', async () => {
+      mockGetCaseData.mockImplementation(async () => mockClaim);
+      mockRetrieveClaimDetails.mockRejectedValueOnce(new Error('Claim store error'));
+
+      await request(app).get(RESPONSE_DEADLINE_OPTIONS_URL).expect(200);
+      expect(mockSaveCaseData).not.toHaveBeenCalled();
+    });
+
     it('should render the page if response deadline option is not set', async () => {
       mockGetCaseData.mockImplementation(async () => mockClaim);
       await request(app).get(RESPONSE_DEADLINE_OPTIONS_URL).expect((res) => {

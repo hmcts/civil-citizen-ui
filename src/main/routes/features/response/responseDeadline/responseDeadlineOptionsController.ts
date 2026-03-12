@@ -5,7 +5,7 @@ import {
   REQUEST_MORE_TIME_URL,
   RESPONSE_DEADLINE_OPTIONS_URL, APPLICATION_TYPE_URL,
 } from 'routes/urls';
-import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {generateRedisKey, getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {GenericForm} from 'form/models/genericForm';
 import {ResponseDeadline, ResponseOptions} from 'form/models/responseDeadline';
 import {Claim} from 'models/claim';
@@ -14,10 +14,17 @@ import {ResponseDeadlineService} from 'services/features/response/responseDeadli
 import {deadLineGuard} from 'routes/guards/deadLineGuard';
 import {AppRequest} from 'common/models/AppRequest';
 import {isCuiGaNroEnabled, isCUIReleaseTwoEnabled} from 'app/auth/launchdarkly/launchDarklyClient';
+import {CivilServiceClient} from 'app/client/civilServiceClient';
+import config from 'config';
 
 const responseDeadlineOptionsController = Router();
 const responseDeadlineOptionsViewPath = 'features/response/response-deadline-options';
 const responseDeadlineService = new ResponseDeadlineService();
+
+const getCivilServiceClient = (): CivilServiceClient => {
+  const baseUrl = config.get<string>('services.civilService.url');
+  return new CivilServiceClient(baseUrl);
+};
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('responseDeadlineOptionsController');
@@ -35,12 +42,37 @@ async function renderView(res: Response, form: GenericForm<ResponseDeadline>, cl
   });
 }
 
+const getDeadlineTime = (value?: Date | string): number | undefined => {
+  if (!value) return undefined;
+  const time = new Date(value).getTime();
+  return Number.isNaN(time) ? undefined : time;
+};
+
+const syncDeadlineFromClaimStore = async (req: AppRequest, claim: Claim, redisKey: string): Promise<Claim> => {
+  try {
+    const claimId = req.params.id;
+    const claimFromCivilService = await getCivilServiceClient().retrieveClaimDetails(claimId, req);
+    const storeDeadline = getDeadlineTime(claimFromCivilService?.respondent1ResponseDeadline);
+    const redisDeadline = getDeadlineTime(claim?.respondent1ResponseDeadline);
+
+    if (storeDeadline && storeDeadline !== redisDeadline) {
+      claim.respondent1ResponseDeadline = claimFromCivilService.respondent1ResponseDeadline;
+      await saveDraftClaim(redisKey, claim, true);
+    }
+  } catch (error) {
+    logger.error(`Error when syncing response deadline from claim store - ${error.message}`);
+  }
+  return claim;
+};
+
 responseDeadlineOptionsController.get(RESPONSE_DEADLINE_OPTIONS_URL, deadLineGuard,
   (async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const claim = await getCaseDataFromStore(generateRedisKey(<AppRequest>req));
+      const redisKey = generateRedisKey(<AppRequest>req);
+      const claim = await getCaseDataFromStore(redisKey);
+      const syncedClaim = await syncDeadlineFromClaimStore(<AppRequest>req, claim, redisKey);
       const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-      renderView(res, new GenericForm(new ResponseDeadline(claim.responseDeadline?.option)), claim, lang, req.params.id);
+      renderView(res, new GenericForm(new ResponseDeadline(syncedClaim.responseDeadline?.option)), syncedClaim, lang, req.params.id);
     } catch (error) {
       logger.error(`Error when GET : response deadline options - ${error.message}`);
       next(error);
@@ -56,6 +88,7 @@ responseDeadlineOptionsController.post(RESPONSE_DEADLINE_OPTIONS_URL, deadLineGu
       const redisKey = generateRedisKey(<AppRequest>req);
       const lang = req.query.lang ? req.query.lang : req.cookies.lang;
       const claim = await getCaseDataFromStore(redisKey);
+      const syncedClaim = await syncDeadlineFromClaimStore(<AppRequest>req, claim, redisKey);
       switch (req.body['option']) {
         case 'already-agreed':
           responseOption = ResponseOptions.ALREADY_AGREED;
@@ -80,7 +113,7 @@ responseDeadlineOptionsController.post(RESPONSE_DEADLINE_OPTIONS_URL, deadLineGu
       await form.validate();
       if (form.hasErrors()) {
         logger.info(`form has error - ${form.hasErrors()}`);
-        renderView(res, form, claim, lang, claimId);
+        renderView(res, form, syncedClaim, lang, claimId);
       } else {
         await responseDeadlineService.saveDeadlineResponse(redisKey, responseOption);
         res.redirect(redirectUrl);
