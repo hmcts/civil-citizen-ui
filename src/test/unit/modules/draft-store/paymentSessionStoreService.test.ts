@@ -49,10 +49,10 @@ describe('Payment session store service', () => {
   });
 
   it('should save original payment confirmation url', async () => {
-    const userId = 'user123';
-    const originalUrl = 'url';
+    const originalUrl = 'url/1234567890123456/';
 
-    await saveOriginalPaymentConfirmationUrl(userId, originalUrl);
+    mockDraftStoreClient.get.mockResolvedValueOnce('user123');
+    await saveOriginalPaymentConfirmationUrl(originalUrl);
 
     expect(mockDraftStoreClient.set).toHaveBeenCalledWith('user123userIdForPayment', originalUrl);
   });
