@@ -223,7 +223,7 @@ describe('dateTimeFormat', () => {
     const utcDateString = '2024-01-01T12:00:00.000Z';
     const formattedDate = dateTimeFormat(utcDateString, 'cy', true);
 
-    expect(formattedDate).toBe('1 Ionawr 2024, 12:00:00 yh');
+    expect(formattedDate).toBe('1 Ionawr 2024, 12:00:00 PM');
   });
 
   test('should correctly format a UTC date in BST to Welsh full date and time', () => {
@@ -231,7 +231,7 @@ describe('dateTimeFormat', () => {
     const utcDateString = '2024-07-01T12:00:00.000Z';
     const formattedDate = dateTimeFormat(utcDateString, 'cy', true);
 
-    expect(formattedDate).toBe('1 Gorffennaf 2024, 1:00:00 yh');
+    expect(formattedDate).toBe('1 Gorffennaf 2024, 1:00:00 PM');
   });
 
   test('should correctly format a GMT date in GMT to Welsh full date and time', () => {
@@ -239,7 +239,7 @@ describe('dateTimeFormat', () => {
     const dateString = '2024-01-01T12:00:00.483971';
     const formattedDate = dateTimeFormat(dateString, 'cy');
 
-    expect(formattedDate).toBe('1 Ionawr 2024, 12:00:00 yh');
+    expect(formattedDate).toBe('1 Ionawr 2024, 12:00:00 PM');
   });
 
   test('should correctly format a BST date in BST to Welsh full date and time', () => {
@@ -247,6 +247,6 @@ describe('dateTimeFormat', () => {
     const dateString = '2024-07-01T13:00:00.483971';
     const formattedDate = dateTimeFormat(dateString, 'cy');
 
-    expect(formattedDate).toBe('1 Gorffennaf 2024, 1:00:00 yh');
+    expect(formattedDate).toBe('1 Gorffennaf 2024, 1:00:00 PM');
   });
 });
