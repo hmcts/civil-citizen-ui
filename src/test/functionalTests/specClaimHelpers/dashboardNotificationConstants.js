@@ -179,8 +179,8 @@ module.exports = {
   },
   defendantResponseConfirmYouHavePaidAJudgmentCCJDebt: () => {
     return {
-      title: 'A judgment has been made against you',
-      content: ['The judgment formalises the payment plan you’ve agreed with the claimant.'],
+      title: 'The claimant has been paid the full amount that they were owed',
+      content: ['The claim is now settled and there’s no further action any party needs to take.'],
       //nextSteps: 'confirm that they’ve paid you the full amount that you’re owed',
     };
   },
