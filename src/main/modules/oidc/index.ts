@@ -132,10 +132,11 @@ export class OidcMiddleware {
           }
 
           logger.info('login user id ', req.session.user.id);
-          const paymentConfirmationUrl = await getPaymentConfirmationUrl(req.session.user.id);
+          const feeTypeExtracted = getFeeTypeFromUrl(req.originalUrl);
+          const paymentConfirmationUrl = await getPaymentConfirmationUrl(req.session.user.id, feeTypeExtracted);
           logger.info('Payment conf url ', paymentConfirmationUrl);
           if (paymentConfirmationUrl) {
-            await deletePaymentConfirmationUrl(req.session.user.id);
+            await deletePaymentConfirmationUrl(req.session.user.id, feeTypeExtracted);
             return res.redirect(paymentConfirmationUrl);
           }
           if (req.session.user?.roles?.includes(citizenRole)) {
@@ -205,11 +206,12 @@ export class OidcMiddleware {
           if (!claimIdExtracted) {
             logger.error(`claim id does not exist from payment confirmation url: ${req.originalUrl} `);
           } else {
-            const userIdExtracted = await getUserId(claimIdExtracted, getFeeTypeFromUrl(req.originalUrl));
+            const feeTypeExtracted = getFeeTypeFromUrl(req.originalUrl);
+            const userIdExtracted = await getUserId(claimIdExtracted, feeTypeExtracted);
             if (!userIdExtracted) {
               logger.warn(`user id does not exist from claim id: ${claimIdExtracted} `);
             } else {
-              await saveOriginalPaymentConfirmationUrl(userIdExtracted, req.originalUrl);
+              await saveOriginalPaymentConfirmationUrl(userIdExtracted, feeTypeExtracted, req.originalUrl);
               logger.info(`Saved Payment Confirmation URL for claimId: ${claimIdExtracted} userId: ${userIdExtracted}`);
             }
           }

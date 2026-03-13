@@ -9,7 +9,12 @@ import * as applicationFeePaymentConfirmationService from 'services/features/gen
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../../../main/modules/draft-store/paymentSessionStoreService', () => ({
+  saveUserId: jest.fn(),
+  getUserId: jest.fn(),
+  saveOriginalPaymentConfirmationUrl: jest.fn(),
+  getPaymentConfirmationUrl: jest.fn(),
   deleteUserId: jest.fn(),
+  deletePaymentConfirmationUrl: jest.fn(),
 }));
 describe('application Fees - Payment Status', () => {
   const idamServiceUrl: string = config.get('services.idam.url');

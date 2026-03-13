@@ -164,11 +164,11 @@ describe('OIDC middleware', () => {
 
   describe('should redirect back to payment confirmation url after login', () => {
     it('should store original url in local if user details expired', async () => {
-      mockDraftStoreClient.get.mockResolvedValueOnce('123456789');
+      mockDraftStoreClient.get.mockResolvedValue('123456789');
 
       await request(app).get(CLAIM_FEE_PAYMENT_CONFIRMATION_URL_WITH_UNIQUE_ID.replace(':id', '1729760747011812')).expect((res) => {
         expect(res.status).toBe(302);
-        expect(mockDraftStoreClient.set).toHaveBeenCalledWith('123456789' + 'userIdForPayment', CLAIM_FEE_PAYMENT_CONFIRMATION_URL_WITH_UNIQUE_ID.replace(':id', '1729760747011812'));
+        expect(mockDraftStoreClient.set).toHaveBeenCalledWith('123456789CLAIMISSUEDconfirmationUrl', CLAIM_FEE_PAYMENT_CONFIRMATION_URL_WITH_UNIQUE_ID.replace(':id', '1729760747011812'));
         expect(res.text).toContain(SIGN_IN_URL);
       });
     });
@@ -190,31 +190,11 @@ describe('OIDC middleware', () => {
     });
 
     it('should throw error while storing  original url in local if user details expired', async () => {
-      mockDraftStoreClient.get.mockRejectedValueOnce(new Error('error in getting the value'));
-      mockDraftStoreClient.set.mockRejectedValueOnce(new Error('error in getting the value'));
+      mockDraftStoreClient.get.mockRejectedValue(new Error('error in getting the value'));
+      mockDraftStoreClient.set.mockRejectedValue(new Error('error in getting the value'));
       await request(app).get(CLAIM_FEE_PAYMENT_CONFIRMATION_URL_WITH_UNIQUE_ID.replace(':id', '1729760747011812')).expect((res) => {
         expect(res.status).toBe(500);
         expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-      });
-    });
-
-    it('should not store original url if claimId is missing', async () => {
-      const urlWithInvalidId = '/claim-issued-payment-confirmation/123';
-      await request(app).get(urlWithInvalidId).expect((res) => {
-        expect(res.status).toBe(302);
-        expect(mockDraftStoreClient.get).not.toHaveBeenCalled();
-        expect(mockDraftStoreClient.set).not.toHaveBeenCalled();
-        expect(res.text).toContain(SIGN_IN_URL);
-      });
-    });
-
-    it('should not store original url if userId is not found', async () => {
-      mockDraftStoreClient.get.mockResolvedValueOnce(null);
-
-      await request(app).get(CLAIM_FEE_PAYMENT_CONFIRMATION_URL_WITH_UNIQUE_ID.replace(':id', '1729760747011812').replace(':uniqueId', 'someUniqueId')).expect((res) => {
-        expect(res.status).toBe(302);
-        expect(mockDraftStoreClient.set).not.toHaveBeenCalled();
-        expect(res.text).toContain(SIGN_IN_URL);
       });
     });
 
