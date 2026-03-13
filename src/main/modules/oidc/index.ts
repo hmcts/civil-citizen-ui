@@ -203,17 +203,17 @@ export class OidcMiddleware {
           logger.info('Condition satisfied for payment confirmation ', req.originalUrl);
 
           const claimIdExtracted = getClaimId(req.originalUrl);
-          if (!claimIdExtracted) {
-            logger.error(`claim id does not exist from payment confirmation url: ${req.originalUrl} `);
-          } else {
+          if (claimIdExtracted) {
             const feeTypeExtracted = getFeeTypeFromUrl(req.originalUrl);
             const userIdExtracted = await getUserId(claimIdExtracted, feeTypeExtracted);
-            if (!userIdExtracted) {
-              logger.warn(`user id does not exist from claim id: ${claimIdExtracted} `);
-            } else {
+            if (userIdExtracted) {
               await saveOriginalPaymentConfirmationUrl(userIdExtracted, feeTypeExtracted, req.originalUrl);
               logger.info(`Saved Payment Confirmation URL for claimId: ${claimIdExtracted} userId: ${userIdExtracted}`);
+            } else {
+              logger.warn(`user id does not exist from claim id: ${claimIdExtracted} `);
             }
+          } else {
+            logger.error(`claim id does not exist from payment confirmation url: ${req.originalUrl} `);
           }
         }
 
@@ -226,9 +226,9 @@ export class OidcMiddleware {
   }
 }
 
-const getClaimId = (originalUrl: string) => {
+export const getClaimId = (originalUrl: string) => {
   const regex = /\/(\d{16})\//;
-  const match = originalUrl?.match(regex);
+  const match = regex.exec(originalUrl);
   if (match && match.length >=2 && match[1].length === 16) {
     return match[1];
   }
