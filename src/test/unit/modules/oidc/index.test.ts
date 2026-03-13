@@ -127,6 +127,16 @@ describe('OIDC middleware', () => {
           expect(res.text).toContain(DASHBOARD_URL);
         });
     });
+
+    it('should throw error when getOidcResponse fails', async () => {
+      mockGetOidcResponse.mockRejectedValueOnce(new Error('IDAM error'));
+      await request(app).get(CALLBACK_URL)
+        .query({code: 'string'})
+        .expect((res) => {
+          expect(res.status).toBe(500);
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
+        });
+    });
   });
 
   describe('claim issue task-list', () => {
@@ -167,11 +177,11 @@ describe('OIDC middleware', () => {
     });
 
     it('should store original url in local if user details expired', async () => {
-      mockDraftStoreClient.get.mockResolvedValueOnce('123456789');
+      mockDraftStoreClient.get.mockResolvedValue('123456789');
 
       await request(app).get(CLAIM_FEE_PAYMENT_CONFIRMATION_URL_WITH_UNIQUE_ID.replace(':id', '1729760747011812')).expect((res) => {
         expect(res.status).toBe(302);
-        expect(mockDraftStoreClient.set).toHaveBeenCalledWith('123456789' + 'userIdForPayment', CLAIM_FEE_PAYMENT_CONFIRMATION_URL_WITH_UNIQUE_ID.replace(':id', '1729760747011812'));
+        expect(mockDraftStoreClient.set).toHaveBeenCalledWith('123456789CLAIMISSUEDconfirmationUrl', CLAIM_FEE_PAYMENT_CONFIRMATION_URL_WITH_UNIQUE_ID.replace(':id', '1729760747011812'));
         expect(res.text).toContain(SIGN_IN_URL);
       });
     });
@@ -194,8 +204,8 @@ describe('OIDC middleware', () => {
     });
 
     it('should throw error while storing  original url in local if user details expired', async () => {
-      mockDraftStoreClient.get.mockRejectedValueOnce(new Error('error in getting the value'));
-      mockDraftStoreClient.set.mockRejectedValueOnce(new Error('error in getting the value'));
+      mockDraftStoreClient.get.mockRejectedValue(new Error('error in getting the value'));
+      mockDraftStoreClient.set.mockRejectedValue(new Error('error in getting the value'));
       await request(app).get(CLAIM_FEE_PAYMENT_CONFIRMATION_URL_WITH_UNIQUE_ID.replace(':id', '1729760747011812')).expect((res) => {
         expect(res.status).toBe(500);
         expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
@@ -217,6 +227,24 @@ describe('OIDC middleware', () => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
+    });
+  });
+
+  describe('Other routes', () => {
+    it('should redirect to IDAM login on SIGN_IN_URL', async () => {
+      await request(app).get(SIGN_IN_URL).expect((res) => {
+        expect(res.status).toBe(302);
+        expect(res.text).toContain('client_id=');
+        expect(res.text).toContain('response_type=code');
+        expect(res.text).toContain('callback');
+      });
+    });
+
+    it('should redirect to DASHBOARD_URL on root /', async () => {
+      await request(app).get('/').expect((res) => {
+        expect(res.status).toBe(302);
+        expect(res.text).toContain(DASHBOARD_URL);
+      });
     });
   });
 });
