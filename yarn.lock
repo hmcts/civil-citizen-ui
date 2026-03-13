@@ -3112,10 +3112,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/cookiejar@npm:*":
-  version: 2.1.2
-  resolution: "@types/cookiejar@npm:2.1.2"
-  checksum: 10/f6e1903454007f86edd6c3520cbb4d553e1d4e17eaf1f77f6f75e3270f48cc828d74397a113a36942f5fe52f9fa71067bcfa738f53ad468fcca0bc52cb1cbd28
+"@types/cookiejar@npm:^2.1.5":
+  version: 2.1.5
+  resolution: "@types/cookiejar@npm:2.1.5"
+  checksum: 10/04d5990e87b6387532d15a87d9ec9b2eb783039291193863751dcfd7fc723a3b3aa30ce4c06b03975cba58632e933772f1ff031af23eaa3ac7f94e71afa6e073
   languageName: node
   linkType: hard
 
@@ -3323,6 +3323,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/methods@npm:^1.1.4":
+  version: 1.1.4
+  resolution: "@types/methods@npm:1.1.4"
+  checksum: 10/ad2a7178486f2fd167750f3eb920ab032a947ff2e26f55c86670a6038632d790b46f52e5b6ead5823f1e53fc68028f1e9ddd15cfead7903e04517c88debd72b1
+  languageName: node
+  linkType: hard
+
 "@types/mime@npm:*":
   version: 3.0.1
   resolution: "@types/mime@npm:3.0.1"
@@ -3477,22 +3484,25 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/superagent@npm:*":
-  version: 4.1.16
-  resolution: "@types/superagent@npm:4.1.16"
+"@types/superagent@npm:^8.1.0":
+  version: 8.1.9
+  resolution: "@types/superagent@npm:8.1.9"
   dependencies:
-    "@types/cookiejar": "npm:*"
+    "@types/cookiejar": "npm:^2.1.5"
+    "@types/methods": "npm:^1.1.4"
     "@types/node": "npm:*"
-  checksum: 10/c4d20c69c89a01dccaff55b1a354295fc89dae941d9c1b30e906384f9f0da3d690ef5c0831db4f9b472be57f4d7969673abe147e4a87a2ed3b4a17ef72818911
+    form-data: "npm:^4.0.0"
+  checksum: 10/6d9687b0bc3d693b900ef76000b02437a70879c3219b28606879c086d786bb1e48429813e72e32dd0aafc94c053a78a2aa8be67c45bc8e6b968ca62d6d5cc554
   languageName: node
   linkType: hard
 
-"@types/supertest@npm:^2.0.12":
-  version: 2.0.12
-  resolution: "@types/supertest@npm:2.0.12"
+"@types/supertest@npm:^7.0.0":
+  version: 7.2.0
+  resolution: "@types/supertest@npm:7.2.0"
   dependencies:
-    "@types/superagent": "npm:*"
-  checksum: 10/f0e2b44f86bec2f708d6a3d0cb209055b487922040773049b0f8c6b557af52d4b5fa904e17dfaa4ce6e610172206bbec7b62420d158fa57b6ffc2de37b1730d3
+    "@types/methods": "npm:^1.1.4"
+    "@types/superagent": "npm:^8.1.0"
+  checksum: 10/5a322e29b81033e90ac50ab315d49559b21809ee39b5681ab7386819463e30d68e29c63c946023a1c353e7f13fb3f20d64dcb89d3d8a0fff569450501aff786c
   languageName: node
   linkType: hard
 
@@ -5440,7 +5450,7 @@ __metadata:
     "@types/nunjucks": "npm:^3.2.1"
     "@types/require-directory": "npm:^2.1.1"
     "@types/serve-favicon": "npm:^2.5.1"
-    "@types/supertest": "npm:^2.0.12"
+    "@types/supertest": "npm:^7.0.0"
     "@types/uuid": "npm:^10.0.0"
     "@typescript-eslint/eslint-plugin": "npm:^5.50.0"
     "@typescript-eslint/parser": "npm:^5.50.0"
