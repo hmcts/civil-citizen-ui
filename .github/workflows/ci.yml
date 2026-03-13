@@ -15,8 +15,12 @@ env:
   CI: true
   NODE_OPTIONS: --max-old-space-size=4096
   CIVIL_SERVICE_URL: http://localhost:1111
+  ORDNANCE_SURVEY_API_URL: http://localhost:1111
+  ORDNANCE_SURVEY_API_KEY: test
+  WIREMOCK_E2E_URL: http://localhost:1111
   TEST_URL: http://localhost:3001
   IDAM_API_URL: http://localhost:1111
+  IDAM_WEB_URL: http://localhost:1111
   ENVIRONMENT: preview
   LAUNCH_DARKLY_SDK: test
 
