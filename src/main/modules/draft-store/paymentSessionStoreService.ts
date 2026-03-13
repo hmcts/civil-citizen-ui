@@ -1,8 +1,10 @@
 import {app} from '../../app-instance';
 
+const userIdForPayment = 'userIdForPayment';
+const confirmationUrl = 'confirmationUrl';
+
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('paymentSessionStoreService');
-const userIdForPayment = 'userIdForPayment';
 
 export const saveUserId = async (claimId: string, feeType: string, userId: string) => {
   try {
@@ -26,6 +28,9 @@ export const getUserId = async (claimId: string, feeType: string): Promise<strin
       //Fallback to OLD key format for backward compatibility
       userId = await app.locals.draftStoreClient.get(claimId + userIdForPayment);
     }
+    if(!userId){
+      logger.warn(`User ID not found for claimId ${claimId} with ${feeType} `);
+    }
     return userId;
   } catch (err) {
     logger.error('Error while getting the userid for payment confirmation ' + err);
@@ -43,31 +48,40 @@ export const deleteUserId = async (claimId: string, feeType: string): Promise<vo
   }
 };
 
-export const saveOriginalPaymentConfirmationUrl = async (userId: string, url: string) => {
+export const saveOriginalPaymentConfirmationUrl = async (userId: string, feeType: string, url: string) => {
   try {
-    const existingUrl = await getPaymentConfirmationUrl(userId);
+    const existingUrl = await getPaymentConfirmationUrl(userId, feeType);
     if (existingUrl && existingUrl !== url) {
       logger.warn(`Overwriting existing payment confirmation url ${existingUrl} with ${url} for userId ${userId}`);
     }
 
-    await app.locals.draftStoreClient.set(userId + userIdForPayment, url);
+    await app.locals.draftStoreClient.set(userId + feeType + confirmationUrl, url);
   } catch (err) {
     logger.error('Error while saving the original payment confirmation url ' + err);
     throw err;
   }
 };
 
-export const getPaymentConfirmationUrl = async (userId: string): Promise<string> => {
+export const getPaymentConfirmationUrl = async (userId: string, feeType: string): Promise<string> => {
   try {
-    return await app.locals.draftStoreClient.get(userId + userIdForPayment);
+    let url =  await app.locals.draftStoreClient.get(userId + feeType + confirmationUrl);
+    if(!url){
+      //Fallback to OLD key format for backward compatibility
+      url =  await app.locals.draftStoreClient.get(userId + userIdForPayment);
+    }
+    if(!url){
+      logger.warn(`Confirmation Url not found for userId ${userId} with ${feeType} `);
+    }
+    return url;
   } catch (err) {
     logger.error('Error while getting the payment confirmation url ' + err);
     throw err;
   }
 };
 
-export const deletePaymentConfirmationUrl = async (userId: string): Promise<void> => {
+export const deletePaymentConfirmationUrl = async (userId: string, feeType: string): Promise<void> => {
   try {
+    await app.locals.draftStoreClient.del(userId + feeType + confirmationUrl);
     await app.locals.draftStoreClient.del(userId + userIdForPayment);
   } catch (err) {
     logger.error('Error while deleting the payment confirmation url ' + err);
