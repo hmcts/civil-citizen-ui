@@ -27,7 +27,8 @@ async function renderView(req: AppRequest, res: Response, claim: Claim, lang: st
 judgmentAmountSummaryController.get(CCJ_PAID_AMOUNT_SUMMARY_URL, async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-    const claim = await getCaseDataFromStore(generateRedisKey(req));
+    const redisId = generateRedisKey(req);
+    const claim = await getCaseDataFromStore(redisId);
     const claimFee = convertToPoundsFilter(claim.claimFee?.calculatedAmountInPence);
     await renderView(req, res, claim, lang, claimFee);
   } catch (error) {
@@ -36,7 +37,8 @@ judgmentAmountSummaryController.get(CCJ_PAID_AMOUNT_SUMMARY_URL, async (req: App
 });
 
 judgmentAmountSummaryController.post(CCJ_PAID_AMOUNT_SUMMARY_URL, async (req: AppRequest, res: Response) => {
-  res.redirect(constructResponseUrlWithIdParams(req.params.id, CCJ_PAYMENT_OPTIONS_URL));
+  const claimId = req.params.id;
+  res.redirect(constructResponseUrlWithIdParams(claimId, CCJ_PAYMENT_OPTIONS_URL));
 });
 
 export default judgmentAmountSummaryController;

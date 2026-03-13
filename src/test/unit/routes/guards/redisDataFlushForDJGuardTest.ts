@@ -17,6 +17,7 @@ describe('redisDataFlushForDJ', () => {
   const mockReq: any = {
     params: {id: 'test-case-id'},
     body: {},
+    session: { user: {id : 'test-user-id'}},
   };
 
   const mockRes: any = {};
@@ -33,7 +34,7 @@ describe('redisDataFlushForDJ', () => {
     await redisDataFlushForDJ(mockReq, mockRes, mockNext);
 
     expect(refreshDraftStoreClaimFrom).toHaveBeenCalledWith(mockReq, true);
-    expect(saveDraftClaim).toHaveBeenCalledWith('mockRedisKey', {id: 'test-case-id', refreshDataForDJ: false});
+    expect(saveDraftClaim).toHaveBeenCalledWith('mockRedisKey', {id: 'test-case-id', refreshDataForDJ: false}, false, 'test-user-id');
     expect(mockNext).toHaveBeenCalled();
   });
 
