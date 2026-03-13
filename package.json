@@ -131,7 +131,7 @@
     "@types/git-rev-sync": "^2.0.2",
     "@types/jest": "^29.5.14",
     "@types/js-yaml": "^4",
-    "@types/supertest": "^2.0.12",
+    "@types/supertest": "^7.0.0",
     "@typescript-eslint/eslint-plugin": "^5.50.0",
     "@typescript-eslint/parser": "^5.50.0",
     "allure-codeceptjs": "^3.4.2",
