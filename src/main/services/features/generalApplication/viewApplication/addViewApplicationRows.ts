@@ -183,7 +183,7 @@ export const addInformOtherPartiesRow = (application: ApplicationResponse, lang:
     );
     if (application.case_data.generalAppInformOtherParty?.isWithNotice === YesNoUpperCamelCase.NO) {
       rows.push(
-        summaryRow(
+        summaryRowWithTextValue(
           t('PAGES.GENERAL_APPLICATION.INFORM_OTHER_PARTIES.WHY_DO_NOT_WANT_COURT', {lng}),
           application.case_data.generalAppInformOtherParty?.reasonsForWithoutNotice,
         ),
@@ -277,11 +277,11 @@ export const addHearingContactDetailsRows = (application: ApplicationResponse, l
   const rows: SummaryRow[] = [];
   if (application.case_data.generalAppHearingDetails.HearingDetailsTelephoneNumber) {
     rows.push(
-      summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PREFERRED_TELEPHONE', {lng}),
+      summaryRowWithTextValue(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PREFERRED_TELEPHONE', {lng}),
         application.case_data.generalAppHearingDetails.HearingDetailsTelephoneNumber),
     );
     rows.push(
-      summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PREFERRED_EMAIL', {lng}),
+      summaryRowWithTextValue(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PREFERRED_EMAIL', {lng}),
         application.case_data.generalAppHearingDetails.HearingDetailsEmailID),
     );
   }
@@ -373,9 +373,9 @@ export const addEvidenceOfDebtPaymentRow = (application: ApplicationResponse, la
                         ${t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.COSC.UPLOAD_EVIDENCE_PAID_IN_FULL_NO', {lng})}</p>`;
 
       rowValue += `<p class="govuk-!-padding-bottom-2 govuk-!-margin-top-0">
-        ${application.case_data.certOfSC.debtPaymentEvidence.provideDetails}</p>`;
+        ${escapeHtml(application.case_data.certOfSC.debtPaymentEvidence.provideDetails)}</p>`;
       rows.push(
-        summaryRow(t('PAGES.GENERAL_APPLICATION.DEBT_PAYMENT.DO_YOU_WANT_PROVIDE_EVIDENCE', {lng}), t(rowValue, {lng})));
+        summaryRow(t('PAGES.GENERAL_APPLICATION.DEBT_PAYMENT.DO_YOU_WANT_PROVIDE_EVIDENCE', {lng}), rowValue));
     } else {
       const evidenceDetails = getEvidencePaymentOption(application.case_data.certOfSC.debtPaymentEvidence.debtPaymentOption);
       rows.push(

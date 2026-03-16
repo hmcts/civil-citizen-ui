@@ -29,6 +29,7 @@ import {
 } from 'models/generalApplication/applicationType';
 import {debtPaymentOptions} from 'models/generalApplication/debtPaymentOptions';
 import {getListOfNotAllowedAdditionalAppType} from 'services/features/generalApplication/generalApplicationService';
+import {escapeHtml} from 'common/utils/escapeHtml';
 
 export const addApplicationTypeRow = (
   claimId: string,
@@ -83,7 +84,7 @@ export const addInformOtherPartiesRow = (claimId: string, claim: Claim, lang: st
     );
     if (informOtherParties === YesNoUpperCase.NO) {
       rows.push(
-        summaryRow(
+        summaryRowWithTextValue(
           t('PAGES.GENERAL_APPLICATION.INFORM_OTHER_PARTIES.WHY_DO_NOT_WANT_COURT', {lng}),
           claim.generalApplication?.informOtherParties.reasonForCourtNotInformingOtherParties,
           constructResponseUrlWithIdParams(claimId, INFORM_OTHER_PARTIES_URL),
@@ -212,12 +213,12 @@ export const addHearingContactDetailsRows = (claimId: string, claim: Claim, lang
   const rows: SummaryRow[] = [];
   if (claim.generalApplication?.hearingContactDetails) {
     rows.push(
-      summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PREFERRED_TELEPHONE', {lng}),
+      summaryRowWithTextValue(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PREFERRED_TELEPHONE', {lng}),
         claim.generalApplication.hearingContactDetails.telephoneNumber,
         constructResponseUrlWithIdParams(claimId, GA_HEARING_CONTACT_DETAILS_URL), changeLabel()),
     );
     rows.push(
-      summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PREFERRED_EMAIL', {lng}),
+      summaryRowWithTextValue(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PREFERRED_EMAIL', {lng}),
         claim.generalApplication.hearingContactDetails.emailAddress,
         constructResponseUrlWithIdParams(claimId, GA_HEARING_CONTACT_DETAILS_URL), changeLabel()),
     );
@@ -330,7 +331,7 @@ export const addHasEvidenceOfDebtPaymentRow = (claimId: string, claim: Claim, la
                         ${t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.COSC.UPLOAD_EVIDENCE_PAID_IN_FULL_NO', {lng})}</p>`;
 
       rowValue += `<p class="govuk-!-padding-bottom-2 govuk-!-margin-top-0">
-        ${claim.generalApplication.certificateOfSatisfactionOrCancellation.debtPaymentEvidence.provideDetails}</p>`;
+        ${escapeHtml(claim.generalApplication.certificateOfSatisfactionOrCancellation.debtPaymentEvidence.provideDetails)}</p>`;
       rows.push(
         summaryRow(t('PAGES.GENERAL_APPLICATION.DEBT_PAYMENT.DO_YOU_WANT_PROVIDE_EVIDENCE', {lng}), rowValue, href, changeLabel()));
     }
