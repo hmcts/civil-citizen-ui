@@ -36,7 +36,7 @@ civil-service:
   java:
     applicationPort: 4000
     releaseNameOverride: ${SERVICE_NAME}-civil-service
-    image: hmctspublic.azurecr.io/civil/service:${CIVIL_SERVICE_IMAGE}
+    image: hmctsprod.azurecr.io/civil/service:${CIVIL_SERVICE_IMAGE}
     imagePullPolicy: Always
     ingressHost: ${SERVICE_NAME}-civil-service.preview.platform.hmcts.net
     devcpuRequests: 1000m
@@ -152,7 +152,7 @@ civil-service:
       enabled: true
       releaseNameOverride: ${SERVICE_NAME}-postgresql
       image:
-        registry: hmctspublic.azurecr.io
+        registry: hmctsprod.azurecr.io
         repository: imported/bitnami/postgresql
         tag: '11.6.0'
       primary:
@@ -238,7 +238,7 @@ civil-service:
 
     ccd-api-gateway-web:
       nodejs:
-        image: hmctspublic.azurecr.io/ccd/api-gateway-web:latest
+        image: hmctsprod.azurecr.io/ccd/api-gateway-web:latest
         imagePullPolicy: Always
         environment:
           ADDRESS_LOOKUP_TOKEN: ${ADDRESS_LOOKUP_TOKEN}
@@ -257,7 +257,7 @@ civil-service:
         devcpuLimits: 4000m
         releaseNameOverride: ${SERVICE_NAME}-am-role-assignment-service
         imagePullPolicy: Always
-        image: hmctspublic.azurecr.io/am/role-assignment-service:latest
+        image: hmctsprod.azurecr.io/am/role-assignment-service:latest
         ingressHost: am-role-assignment-${SERVICE_FQDN}
         environment:
           RELEASE_REVISION: "{{ .Release.Revision }}"
@@ -325,7 +325,7 @@ civil-service:
           cpu: "25m"
           memory: "512Mi"
     logstash:
-      image: hmctspublic.azurecr.io/ccd/logstash
+      image: hmctsprod.azurecr.io/ccd/logstash
       imageTag: "latest"
       extraEnvs:
         - name: DATA_STORE_URL
@@ -398,7 +398,7 @@ civil-service:
     nodejs:
       imagePullPolicy: Always
       releaseNameOverride: ${SERVICE_NAME}-xui-webapp
-      image: hmctspublic.azurecr.io/xui/webapp:latest
+      image: hmctsprod.azurecr.io/xui/webapp:latest
       ingressHost: xui-${SERVICE_FQDN}
       devcpuRequests: 500m
       devmemoryRequests: 1Gi
@@ -436,7 +436,7 @@ civil-service:
       ingressHost: manage-case-assignment-${SERVICE_NAME}.preview.platform.hmcts.net
       imagePullPolicy: Always
       releaseNameOverride: ${SERVICE_NAME}-aac-manage-case-assignment
-      image: hmctspublic.azurecr.io/aac/manage-case-assignment:latest
+      image: hmctsprod.azurecr.io/aac/manage-case-assignment:latest
       environment:
         IDAM_API_URL: https://idam-api.aat.platform.hmcts.net
         IDAM_OIDC_URL: https://idam-web-public.aat.platform.hmcts.net
@@ -462,7 +462,7 @@ civil-service:
     java:
       imagePullPolicy: Always
       releaseNameOverride: ${SERVICE_NAME}-em-stitching
-      image: hmctspublic.azurecr.io/em/stitching:latest
+      image: hmctsprod.azurecr.io/em/stitching:latest
       ingressHost: em-stitching-${SERVICE_FQDN}
       environment:
         IDAM_API_BASE_URI: https://idam-api.aat.platform.hmcts.net
@@ -492,7 +492,7 @@ civil-service:
   em-ccdorc:
     enabled: true
     java:
-      image: hmctspublic.azurecr.io/em/ccdorc:latest
+      image: hmctsprod.azurecr.io/em/ccdorc:latest
       releaseNameOverride: ${SERVICE_NAME}-em-ccdorc
       ingressHost: em-ccdorc-${SERVICE_FQDN}
       environment:
@@ -517,7 +517,7 @@ civil-service:
     java:
       releaseNameOverride: ${SERVICE_NAME}-cdam
       imagePullPolicy: Always
-      image: hmctspublic.azurecr.io/ccd/case-document-am-api:latest
+      image: hmctsprod.azurecr.io/ccd/case-document-am-api:latest
       ingressHost: ccd-case-document-am-api-${SERVICE_FQDN}
       environment:
         IDAM_API_URL: https://idam-api.aat.platform.hmcts.net
