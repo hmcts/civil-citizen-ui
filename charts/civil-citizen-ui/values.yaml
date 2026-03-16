@@ -10,7 +10,7 @@ servicebus:
 nodejs:
   applicationPort: 3001
   ingressHost: civil-citizen-ui.{{ .Values.global.environment }}.platform.hmcts.net
-  image: hmctspublic.azurecr.io/civil/citizen-ui:latest
+  image: hmctsprod.azurecr.io/civil/citizen-ui:latest
   aadIdentityName: civil
   memoryRequests: 1024Mi
   cpuRequests: 2500m
