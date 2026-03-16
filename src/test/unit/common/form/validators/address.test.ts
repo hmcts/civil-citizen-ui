@@ -1,7 +1,11 @@
 import { Address } from 'common/form/models/address';
 import { GenericForm } from 'common/form/models/genericForm';
 import * as launchDarkly from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
+import * as ordnanceSurveyService from '../../../../../main/modules/ordance-survey-key/ordanceSurveyKeyService';
 
+jest.mock('../../../../../main/modules/ordance-survey-key/ordanceSurveyKeyService');
+
+const mockLookupByPostcode = ordnanceSurveyService.lookupByPostcodeAndDataSet as jest.Mock;
 const string51charLong = 'This is a 51 char address aAbBcCdDeEfFgGhHiIjJkKlLm';
 const string50charLong = 'This is a 50 char address aAbBcCdDeEfFgGhHiIjJkKlL';
 const string36charLong = 'This is a 36 char address aAbBcCdDeE';
@@ -13,6 +17,16 @@ const stringWithSpecialChar3 = ' SpecialChar ´ 3';
 const stringWithSpecialChar4 = ' SpecialChar ¨ 4';
 
 describe(('For Address Form'), () => {
+  beforeEach(() => {
+    jest.resetAllMocks();
+
+    // Default: postcode always valid (England)
+    mockLookupByPostcode.mockResolvedValue({
+      valid: true,
+      addresses: [{ country: 'England' }],
+    });
+  });
+
   describe('isJudgmentOnlineLive flag OFF', () => {
     it('should not throw error if address length OK and flag OFF', async () => {
       //Given
