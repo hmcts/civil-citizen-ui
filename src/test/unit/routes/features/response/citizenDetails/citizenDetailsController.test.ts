@@ -13,11 +13,13 @@ import {PartyPhone} from 'models/PartyPhone';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import * as enVars from '../../../../../../main/modules/i18n/locales/en.json';
 import * as launchDarklyClient from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
+import * as ordnanceSurveyService from '../../../../../../main/modules/ordance-survey-key/ordanceSurveyKeyService';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../../main/services/features/common/defendantDetailsService');
 jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
+jest.mock('../../../../../../main/modules/ordance-survey-key/ordanceSurveyKeyService');
 
 const mockGetRespondentInformation = getDefendantInformation as jest.Mock;
 const mockSaveRespondent = saveDefendantProperty as jest.Mock;
@@ -78,6 +80,7 @@ const validDataForPost = {
   postToThisAddress: 'no',
 };
 
+const mockLookupByPostcode = ordnanceSurveyService.lookupByPostcodeAndDataSet as jest.Mock;
 const configureSpy = (service: any, method: string) => jest.spyOn(service, method).mockReset();
 const getCaseDataFromStoreSpy = (claim: Claim) => jest.spyOn(draftStoreService, 'getCaseDataFromStore')
   .mockReturnValue(Promise.resolve(claim));
@@ -96,6 +99,10 @@ describe('Confirm Details page', () => {
 
   beforeEach(() => {
     jest.resetAllMocks();
+    mockLookupByPostcode.mockResolvedValue({
+      valid: true,
+      addresses: [{ country: 'England' }],
+    });
     const mockClaim = { submittedDate: new Date(2024, 5, 23) } as Claim;
     getCaseDataFromStoreSpy(mockClaim);
     carmToggleSpy(true);
