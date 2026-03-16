@@ -45,11 +45,6 @@ describe('OIDC middleware', () => {
       nock(idamServiceUrl)
         .post('/o/token')
         .reply(200, {id_token: citizenRoleToken});
-      app.locals.user = {
-        idToken: 'token',
-        givenName: 'Joe',
-        familyName: 'Bloggs',
-      };
     });
 
     it('should unset user', async () => {
@@ -91,6 +86,7 @@ describe('OIDC middleware', () => {
         .query({code: 'string'})
         .expect((res) => {
           expect(res.status).toBe(302);
+          expect(res.text).toContain(ASSIGN_CLAIM_URL);
         });
     });
     it('should redirect to dashboard when user is logged in and claim is not set', async () => {
@@ -166,6 +162,7 @@ describe('OIDC middleware', () => {
         .query({code: 'string'})
         .expect((res) => {
           expect(res.status).toBe(302);
+          expect(res.text).toContain(CLAIMANT_TASK_LIST_URL);
         });
     });
     it('should redirect to dashboard when user is logged in and claimIssueTasklist is not set', async () => {
@@ -198,7 +195,6 @@ describe('OIDC middleware', () => {
 
     it('should redirect back to payment confirmation url after login', async () => {
       userDetails.roles = ['citizen'];
-      app.locals.paymentConfirmationUrl = CLAIM_FEE_PAYMENT_CONFIRMATION_URL_WITH_UNIQUE_ID;
       mockGetOidcResponse.mockReturnValue(Promise.resolve({id_token: '1', access_token: ''} as OidcResponse));
       mockGetUserDetails.mockReturnValue(userDetails);
       mockGetSessionIssueTime.mockReturnValue(1234);
