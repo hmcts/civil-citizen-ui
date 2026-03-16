@@ -233,7 +233,7 @@ export class OidcMiddleware {
 
         return res.redirect(SIGN_IN_URL);
       } catch (err) {
-        logger.info('Error in the middleware of while session check ', err);
+        logger.error('Error in the middleware of while session check ', err);
         throw err;
       }
     });
