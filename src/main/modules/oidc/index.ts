@@ -88,7 +88,7 @@ const isMakeClaimPage = (requestUrl: string): boolean => {
   return requestUrl.startsWith(MAKE_CLAIM);
 };
 
-const buildAssignClaimUrlWithId = (req: AppRequest, app: Application): string => {
+const buildAssignClaimUrlWithId = (req: AppRequest): string => {
   req.session.assignClaimURL = undefined;
   return `${ASSIGN_CLAIM_URL}`;
 };
@@ -114,41 +114,56 @@ export class OidcMiddleware {
 
     app.get(CALLBACK_URL, async (req: AppRequest, res: Response) => {
       try {
-        if (typeof req.query.code === 'string') {
+        if (typeof req.query.code !== 'string') {
+          return res.redirect(DASHBOARD_URL);
+        }
 
-          const responseData = await getOidcResponse(redirectUri, req.query.code);
-          req.session.user = getUserDetails(responseData);
-          req.session.issuedAt = getSessionIssueTime(responseData);
+        const responseData = await getOidcResponse(redirectUri, req.query.code);
+        req.session.user = getUserDetails(responseData);
+        req.session.issuedAt = getSessionIssueTime(responseData);
 
-          logger.info('After login payment confirmation ', app.locals.paymentConfirmationUrl);
-          if (req.session.assignClaimURL) {
-            const assignClaimUrlWithClaimId = buildAssignClaimUrlWithId(req, app);
-            return res.redirect(assignClaimUrlWithClaimId);
+        if (req.session.assignClaimURL || req.session.claimIssueTasklist) {
+          return req.session.save((err) => {
+            if (err) {
+              logger.error('Error while saving session', err);
+              return res.redirect(UNAUTHORISED_URL);
+            }
+
+            if (req.session.assignClaimURL) {
+              const assignClaimUrlWithClaimId = buildAssignClaimUrlWithId(req);
+              return res.redirect(assignClaimUrlWithClaimId);
+            }
+            if (req.session.claimIssueTasklist) {
+              req.session.claimIssueTasklist = undefined;
+              return res.redirect(CLAIMANT_TASK_LIST_URL);
+            }
+          });
+        }
+
+        logger.info('login user id ', req.session.user.id);
+        const feeTypeExtracted = getFeeTypeFromUrl(req.originalUrl);
+        const paymentConfirmationUrl = await getPaymentConfirmationUrl(req.session.user.id, feeTypeExtracted);
+        logger.info('Payment conf url ', paymentConfirmationUrl);
+
+        req.session.save((err) => {
+          if (err) {
+            logger.error('Error while saving session', err);
+            return res.redirect(UNAUTHORISED_URL);
           }
 
-          if (req.session.claimIssueTasklist) {
-            req.session.claimIssueTasklist = undefined;
-            return res.redirect(CLAIMANT_TASK_LIST_URL);
-          }
-
-          logger.info('login user id ', req.session.user.id);
-          const feeTypeExtracted = getFeeTypeFromUrl(req.originalUrl);
-          const paymentConfirmationUrl = await getPaymentConfirmationUrl(req.session.user.id, feeTypeExtracted);
-          logger.info('Payment conf url ', paymentConfirmationUrl);
           if (paymentConfirmationUrl) {
-            await deletePaymentConfirmationUrl(req.session.user.id, feeTypeExtracted);
+            deletePaymentConfirmationUrl(req.session.user.id, feeTypeExtracted);
             return res.redirect(paymentConfirmationUrl);
           }
           if (req.session.user?.roles?.includes(citizenRole)) {
             return res.redirect(DASHBOARD_URL);
           }
           return res.redirect(UNAUTHORISED_URL);
-        } else {
-          res.redirect(DASHBOARD_URL);
-        }
+        });
       } catch (err) {
-        logger.info('Error in the callback of idam ', err);
+        logger.error('Error in the callback of idam', err);
         throw err;
+        //Alt: res.redirect(UNAUTHORISED_URL); instead of throw err -> 'Something went wrong'
       }
     });
 
@@ -159,7 +174,6 @@ export class OidcMiddleware {
       });
 
       req.session.destroy(() => {
-        req.session = undefined;
         res.redirect(idamSignOutUrl + '?' + params.toString());
       });
     });

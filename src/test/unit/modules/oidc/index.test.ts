@@ -35,9 +35,9 @@ jest.mock('../../../../main/app/auth/user/oidc');
 
 describe('OIDC middleware', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
     app.request['session'] = {
-      destroy: (cb: (err?: unknown) => void) => cb(),
+      save: (callback: (err?: any) => void) => callback(),
+      destroy: (callback: () => void) => callback(),
     } as unknown as Session;
   });
   describe('Sign out', () => {
@@ -78,7 +78,10 @@ describe('OIDC middleware', () => {
       mockGetOidcResponse.mockReturnValue(Promise.resolve({id_token: '1', access_token: ''} as OidcResponse));
       mockGetUserDetails.mockReturnValue(userDetails);
       mockGetSessionIssueTime.mockReturnValue(1234);
-      app.request['session'] = {assignClaimURL: ASSIGN_CLAIM_URL} as unknown as Session;
+      app.request['session'] = {
+        assignClaimURL: ASSIGN_CLAIM_URL,
+        save: (callback: (err?: any) => void) => callback(),
+      } as unknown as Session;
       await request(app).get(CALLBACK_URL)
         .query({code: 'string'})
         .expect((res) => {
@@ -129,7 +132,7 @@ describe('OIDC middleware', () => {
         });
     });
 
-    it('should throw error when getOidcResponse fails', async () => {
+    it('should redirect to unauthorised when getOidcResponse fails', async () => {
       mockGetOidcResponse.mockRejectedValueOnce(new Error('IDAM error'));
       await request(app).get(CALLBACK_URL)
         .query({code: 'string'})
@@ -151,7 +154,10 @@ describe('OIDC middleware', () => {
       mockGetOidcResponse.mockReturnValue(Promise.resolve({id_token: '1', access_token: ''} as OidcResponse));
       mockGetUserDetails.mockReturnValue(userDetails);
       mockGetSessionIssueTime.mockReturnValue(1234);
-      app.request['session'] = {claimIssueTasklist: true} as unknown as Session;
+      app.request['session'] = {
+        claimIssueTasklist: true,
+        save: (callback: (err?: any) => void) => callback(),
+      } as unknown as Session;
       await request(app).get(CALLBACK_URL)
         .query({code: 'string'})
         .expect((res) => {
@@ -173,6 +179,10 @@ describe('OIDC middleware', () => {
   });
 
   describe('should redirect back to payment confirmation url after login', () => {
+    afterEach(() => {
+      jest.clearAllMocks();
+    });
+
     it('should store original url in local if user details expired', async () => {
       mockDraftStoreClient.get.mockResolvedValue('123456789');
 
@@ -188,7 +198,10 @@ describe('OIDC middleware', () => {
       mockGetOidcResponse.mockReturnValue(Promise.resolve({id_token: '1', access_token: ''} as OidcResponse));
       mockGetUserDetails.mockReturnValue(userDetails);
       mockGetSessionIssueTime.mockReturnValue(1234);
-      app.request['session'] = {user: {id: 'jfkdljfd'}} as unknown as Session;
+      app.request['session'] = {
+        user: {id: 'jfkdljfd'},
+        save: (callback: (err?: any) => void) => callback(),
+      } as unknown as Session;
       mockDraftStoreClient.get.mockResolvedValueOnce(CLAIM_FEE_PAYMENT_CONFIRMATION_URL_WITH_UNIQUE_ID);
 
       await request(app).get(CALLBACK_URL)
@@ -208,13 +221,21 @@ describe('OIDC middleware', () => {
       });
     });
 
-    it('should throw error if issue in getting confirmation url', async () => {
+    it('should redirect to unauthorised if issue in getting confirmation url', async () => {
       userDetails.roles = ['citizen'];
       mockGetOidcResponse.mockReturnValue(Promise.resolve({id_token: '1', access_token: ''} as OidcResponse));
       mockGetUserDetails.mockReturnValue(userDetails);
       mockGetSessionIssueTime.mockReturnValue(1234);
-      app.request['session'] = {user: {id: 'jfkdljfd'}} as unknown as Session;
-      mockDraftStoreClient.get.mockRejectedValueOnce(new Error('error in getting the value'));
+      app.request['session'] = {
+        user: {id: 'jfkdljfd'},
+        save: (callback: (err?: any) => void) => callback(),
+      } as unknown as Session;
+      mockDraftStoreClient.get.mockImplementation((key: string) => {
+        if (key.includes('confirmationUrl') || key.includes('userIdForPayment')) {
+          return Promise.reject(new Error('error in getting the value'));
+        }
+        return Promise.resolve(null);
+      });
 
       await request(app).get(CALLBACK_URL)
         .query({code: 'string'})
