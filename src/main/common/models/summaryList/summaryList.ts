@@ -91,6 +91,22 @@ export function summaryRowWithTextValue(key?: string, value?: string, href?: str
   return row;
 }
 
+/**
+ * Convenience helper for rows whose value comes from user-supplied text.
+ * Internally uses summaryRowWithTextValue so the value is rendered as plain text.
+ */
+export function userTextRow(key?: string, value?: string, href?: string, hrefText?: string, hiddenText?: string): SummaryRow {
+  return summaryRowWithTextValue(key, value, href, hrefText, hiddenText);
+}
+
+/**
+ * Convenience helper for rows whose value is trusted/system HTML (e.g. built from translations).
+ * Internally uses summaryRow so the value is rendered as HTML.
+ */
+export function systemHtmlRow(key?: string, html?: string, href?: string, hrefText?: string, hiddenText?: string): SummaryRow {
+  return summaryRow(key, html, href, hrefText, hiddenText);
+}
+
 export interface TitledSummaryRowElement {
   title?: string,
   value?: string

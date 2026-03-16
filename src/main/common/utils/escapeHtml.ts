@@ -13,3 +13,17 @@ export function escapeHtml(text: string | undefined): string {
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#039;');
 }
+
+/**
+ * Wraps escaped text in a GOV.UK body paragraph.
+ */
+export function escapedParagraph(text: string | undefined, classes = 'govuk-body'): string {
+  return `<p class="${classes}">${escapeHtml(text)}</p>`;
+}
+
+/**
+ * Wraps escaped text in a list item.
+ */
+export function escapedListItem(text: string | undefined): string {
+  return `<li>${escapeHtml(text)}</li>`;
+}
