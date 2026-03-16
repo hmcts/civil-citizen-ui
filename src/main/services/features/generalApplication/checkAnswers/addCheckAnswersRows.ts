@@ -29,7 +29,7 @@ import {
 } from 'models/generalApplication/applicationType';
 import {debtPaymentOptions} from 'models/generalApplication/debtPaymentOptions';
 import {getListOfNotAllowedAdditionalAppType} from 'services/features/generalApplication/generalApplicationService';
-import {escapeHtml} from 'common/utils/escapeHtml';
+import {escapeHtml, escapedListItem} from 'common/utils/escapeHtml';
 
 export const addApplicationTypeRow = (
   claimId: string,
@@ -267,13 +267,19 @@ export const addHearingSupportRows = (claimId: string, claim: Claim, lang: strin
       supportHtml += `<li>${t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.HEARING_LOOP', {lng})}</li>`;
     }
     if (claim.generalApplication.hearingSupport.signLanguageInterpreter?.selected) {
-      supportHtml += `<li>${t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.SIGN_LANGUAGE_INTERPRETER', {lng})} - '${claim.generalApplication.hearingSupport.signLanguageInterpreter.content}'</li>`;
+      supportHtml += escapedListItem(
+        `${t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.SIGN_LANGUAGE_INTERPRETER', {lng})} - '${claim.generalApplication.hearingSupport.signLanguageInterpreter.content}'`,
+      );
     }
     if (claim.generalApplication.hearingSupport.languageInterpreter?.selected) {
-      supportHtml += `<li>${t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.LANGUAGE_INTERPRETER', {lng})} - '${claim.generalApplication.hearingSupport.languageInterpreter.content}'</li>`;
+      supportHtml += escapedListItem(
+        `${t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.LANGUAGE_INTERPRETER', {lng})} - '${claim.generalApplication.hearingSupport.languageInterpreter.content}'`,
+      );
     }
     if (claim.generalApplication.hearingSupport.otherSupport?.selected) {
-      supportHtml += `<li>${t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.OTHER', {lng})} - '${claim.generalApplication.hearingSupport.otherSupport.content}'</li>`;
+      supportHtml += escapedListItem(
+        `${t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.OTHER', {lng})} - '${claim.generalApplication.hearingSupport.otherSupport.content}'`,
+      );
     }
     supportHtml += '</ul>';
     rows.push(
