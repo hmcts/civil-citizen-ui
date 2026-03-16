@@ -2,12 +2,17 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
     "local>hmcts/.github:renovate-config",
-    "local>hmcts/.github//renovate/automerge-minor"
+    "local>hmcts/.github//renovate/automerge-all"
   ],
   "labels": [
     "dependencies",
     "pr-values:elasticsearch"
   ],
+  "automergeSchedule": ["after 8am and before 4pm every weekday"],
+  "schedule": ["after 8am and before 12am every weekday"],
+  "rebaseWhen": "conflicted",
+  "automergeStrategy": "squash",
+  "prConcurrentLimit": 5,
   "helmv3": {
     "bumpVersion": "patch"
   },
@@ -21,28 +26,64 @@
       ]
     }
   ],
-  "automergeSchedule": ["after 8am and before 10am every weekday"],
-  "schedule": ["after 8am and before 10am every weekday"],
-  "rebaseWhen": "conflicted",
-  "prConcurrentLimit": 5,
   "packageRules": [
     {
       "matchUpdateTypes": ["minor", "patch"],
       "groupName": "All non-major updates",
       "groupSlug": "all-non-major",
-      "automerge": true
+      "automerge": true,
+      "automergeType": "pr",
+      "automergeSchedule": ["before 4pm every weekday"]
     },
     {
       "matchManagers": ["helmv3"],
       "groupName": "Helm chart updates",
       "groupSlug": "helm-charts",
-      "automerge": true
+      "automerge": true,
+      "automergeType": "pr",
+      "automergeSchedule": ["before 4pm every weekday"]
     },
     {
       "matchManagers": ["dockerfile"],
       "groupName": "Dockerfile updates",
       "groupSlug": "dockerfile",
-      "automerge": true
+      "automerge": true,
+      "automergeType": "pr",
+      "automergeSchedule": ["before 4pm every weekday"]
+    },
+    {
+      "matchPackageNames": ["@playwright/test", "playwright-core", "@axe-core/playwright"],
+      "groupName": "Playwright",
+      "groupSlug": "playwright",
+      "automerge": true,
+      "automergeType": "pr",
+      "automergeSchedule": ["before 4pm every weekday"]
+    },
+    {
+      "matchPackagePatterns": ["^allure-"],
+      "groupName": "Allure reporting",
+      "groupSlug": "allure",
+      "automerge": true,
+      "automergeType": "pr",
+      "automergeSchedule": ["before 4pm every weekday"]
+    },
+    {
+      "matchPackageNames": ["eslint", "typescript-eslint"],
+      "matchPackagePatterns": ["^@eslint/", "^@typescript-eslint/", "^eslint-"],
+      "groupName": "ESLint",
+      "groupSlug": "eslint",
+      "automerge": true,
+      "automergeType": "pr",
+      "automergeSchedule": ["before 4pm every weekday"]
+    },
+    {
+      "matchPackageNames": ["typescript"],
+      "matchPackagePatterns": ["^@types/"],
+      "groupName": "TypeScript",
+      "groupSlug": "typescript",
+      "automerge": true,
+      "automergeType": "pr",
+      "automergeSchedule": ["before 4pm every weekday"]
     }
   ]
 }
