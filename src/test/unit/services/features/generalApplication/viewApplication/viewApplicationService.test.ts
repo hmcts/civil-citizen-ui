@@ -519,7 +519,7 @@ describe('View Application service', () => {
       });
       expect(result).toContainEqual({
         key: { text: 'PAGES.GENERAL_APPLICATION.INFORM_OTHER_PARTIES.WHY_DO_NOT_WANT_COURT'},
-        value: { html: 'test'},
+        value: { text: 'test'},
       });
     });
 
