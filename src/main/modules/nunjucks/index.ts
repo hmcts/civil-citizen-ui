@@ -43,7 +43,6 @@ import {AppRequest} from 'models/AppRequest';
 import {ApplicationTypeOption} from 'common/models/generalApplication/applicationType';
 import {HearingTypeOptions} from 'common/models/generalApplication/hearingArrangement';
 import { ProposedPaymentPlanOption } from 'common/models/generalApplication/response/acceptDefendantOffer';
-import {getLanguage} from 'modules/i18n/languageService';
 
 const packageDotJson = require('../../../../package.json');
 
@@ -125,7 +124,6 @@ export class Nunjucks {
     nunjucksEnv.addFilter('formatDate', formatDate);
     nunjucksEnv.addFilter('replaceSpaces', replaceSpace);
     nunjucksEnv.addGlobal('t', t);
-    nunjucksEnv.addGlobal('getLanguage', getLanguage);
     nunjucksEnv.addGlobal('translateErrors', translateErrors);
     nunjucksEnv.addGlobal('ResponseType', ResponseType);
     nunjucksEnv.addGlobal('YesNo', YesNo);

@@ -112,17 +112,17 @@ import {dateFilter} from "modules/nunjucks/filters/dateFilter";
         <div class="govuk-grid-column-full">
         {% if not selectedQueryItem.isQueryClosed %}
           {% if not isClaimOffLine and selectedQueryItem.lastStatus == 'PAGES.QM.VIEW_QUERY.STATUS_RECEIVED' %}
-            <p class="govuk-body-m govuk-!-font-weight-bold"> {{ t('PAGES.QM.VIEW_QUERY_DETAILS.SEND_FOLLOW_UP_INFO.HEADER') }} <p>
-            <p class="govuk-body-m"> {{ t('PAGES.QM.VIEW_QUERY_DETAILS.SEND_FOLLOW_UP_INFO.LINE_1') }} <p>
-            <p class="govuk-body-m"> {{ t('PAGES.QM.VIEW_QUERY_DETAILS.SEND_FOLLOW_UP_INFO.LINE_2') }} <p>
+            <h2 class="govuk-heading-s">{{ t('PAGES.QM.VIEW_QUERY_DETAILS.SEND_FOLLOW_UP_INFO.HEADER') }}</h2>
+            <p class="govuk-body-m">{{ t('PAGES.QM.VIEW_QUERY_DETAILS.SEND_FOLLOW_UP_INFO.LINE_1') }}</p>
+            <p class="govuk-body-m">{{ t('PAGES.QM.VIEW_QUERY_DETAILS.SEND_FOLLOW_UP_INFO.LINE_2') }}</p>
             {{ govukButton({
               text: t('PAGES.QM.VIEW_QUERY_DETAILS.SEND_FOLLOW_UP'),
               classes: "govuk-button--secondary",
               href: followUpScreen
             }) }}
           {% else %}
-            <p class="govuk-body-m govuk-!-font-weight-bold"> {{ t('PAGES.QM.VIEW_QUERY_DETAILS.COURT_IS_REVIEWING_INFO.HEADER') }} <p>
-            <p class="govuk-body-m"> {{ t('PAGES.QM.VIEW_QUERY_DETAILS.COURT_IS_REVIEWING_INFO.LINE_1') }} <p>
+            <h2 class="govuk-heading-s">{{ t('PAGES.QM.VIEW_QUERY_DETAILS.COURT_IS_REVIEWING_INFO.HEADER') }}</h2>
+            <p class="govuk-body-m">{{ t('PAGES.QM.VIEW_QUERY_DETAILS.COURT_IS_REVIEWING_INFO.LINE_1') }}</p>
           {% endif %}
         {% else %}
           {{ govukWarningText({
