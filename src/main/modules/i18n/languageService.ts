@@ -1,10 +1,5 @@
-import {app} from '../../app';
 import {NextFunction, Request, Response} from 'express';
 export const setLanguage = (req: Request, res: Response, next: NextFunction) => {
-  app.locals.lang = req.query.lang ? req.query.lang : req.cookies.lang;
+  res.locals.lang = req.query.lang || req.cookies.lang || 'en';
   next();
-};
-
-export const getLanguage = () => {
-  return app.locals.lang;
 };
