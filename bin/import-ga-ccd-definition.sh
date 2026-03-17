@@ -1,22 +1,28 @@
 #!/usr/bin/env bash
 
+set -eu
+
 params="$1"
-branchName="$2"
+branchName="${2:-master}"
 
-#Checkout specific branch pf  civil camunda bpmn definition
-git clone https://github.com/hmcts/civil-general-apps-ccd-definition.git
-cd civil-general-apps-ccd-definition
+rm -rf ccd-definition civil-ccd-definition
 
-echo "Switch to ${branchName} branch on civil-general-apps-ccd-definition"
-git checkout ${branchName}
+git clone https://github.com/hmcts/civil-ccd-definition.git
+cd civil-ccd-definition
+
+echo "Switch to ${branchName} branch on civil-ccd-definition"
+git checkout "${branchName}"
 cd ..
 
-#Copy ccd definition files  to civil-ccd-def which contians bpmn files
-cp -r ./civil-general-apps-ccd-definition/ga-ccd-definition .
-rm -rf ./civil-general-apps-ccd-definition
+cp -r ./civil-ccd-definition/ccd-definition .
+rm -rf ./civil-ccd-definition
 
-definition_input_dir=$(realpath 'ga-ccd-definition')
+if [ ! -d "ccd-definition/generalapplication" ]; then
+  echo "Unable to locate general application CCD definition directory at ccd-definition/generalapplication."
+  exit 1
+fi
+
+definition_input_dir=$(realpath 'ccd-definition/generalapplication')
 definition_output_file="$(realpath ".")/build/ccd-development-config/ccd-civil-apps-dev.xlsx"
-params="$@"
 
 ./bin/utils/import-ccd-definition.sh "${definition_input_dir}" "${definition_output_file}" "${params}"

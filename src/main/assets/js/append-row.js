@@ -1,14 +1,33 @@
 /**
  * This adds a cloning functionality to a button with class name append-row.
- * Anything in a div wth name multiple-row will be cloned (duplicated). Indexes for the input elements would be increased accordingly.
+ * Anything in a div wth name row-container will be cloned (duplicated). Indexes for the input elements would be increased accordingly.
  * The input elements would be reset to their original state.
- * To use this functionality create a button with class name append-row, create a div with class name multiple-row.
- * Put all the elements that are needed to be cloned in the div with class name multiple-row
+ * To use this functionality create a button with class name append-row, create a div with class name row-container.
+ * Put all the elements that are needed to be cloned in the div with class name row-container
  * If you have a remove row button in your repeating section add remove-row class to it to enable it to remove rows
  * If there is only one row then remove button will be hidden
  */
 const {getCalculation, addCalculationEventListener} = require('./calculate-amount');
 const{addTotalClaimAmountCalculationEventListener} = require('./calculate-total-amount');
+const elementExists = element => element?.length > 0;
+const replaceOrAppend = (s, d) =>
+  /\d/.test(s) ? s.replace(/\d+(?!.*\d)/, d) : s.replace(/\s*$/, ` ${d}`);
+
+const updateLegends = (rowContainerElement, newRow) => {
+  const newRowIndex = rowContainerElement.length;
+  const legends = newRow.getElementsByClassName('table-row-legend-new');
+  if (!elementExists(legends)) return;
+  for (const legend of legends) {
+    legend.textContent = replaceOrAppend(legend.textContent, `${newRowIndex}`);
+    legend.class = `govuk-visually-hidden table-row-legend-${newRowIndex}`;
+    legend.setAttribute('id', `table-row-legend-${newRowIndex}`);
+  }
+};
+
+const getLastRow = multipleRowElement => {
+  const lastElementIndex = multipleRowElement.length - 1;
+  return multipleRowElement[lastElementIndex];
+};
 
 document.addEventListener('DOMContentLoaded', function () {
   const indexRegex = /\[(\d+)\]/;
@@ -35,7 +54,7 @@ document.addEventListener('DOMContentLoaded', function () {
       event.preventDefault();
       const topParent = element.parentNode.parentNode;
       topParent?.removeChild(element.parentNode);
-      const multipleRows = document.getElementsByClassName('multiple-row')?.length;
+      const multipleRows = document.getElementsByClassName('row-container')?.length;
       if (multipleRows < 2) {
         hideRemoveButton();
       }
@@ -48,9 +67,9 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function cloneRow() {
-    const multipleRowElement = document.getElementsByClassName('multiple-row');
-    if (elementExists(multipleRowElement)) {
-      const lastRow = getLastRow(multipleRowElement);
+    const rowContainerElement = document.getElementsByClassName('row-container');
+    if (elementExists(rowContainerElement)) {
+      const lastRow = getLastRow(rowContainerElement);
       const newRow = lastRow.cloneNode(true);
       const children = newRow.children;
       Array.from(children).forEach((child) => {
@@ -59,7 +78,7 @@ document.addEventListener('DOMContentLoaded', function () {
         removeErrors(child);
       });
       lastRow.parentNode.appendChild(newRow);
-      updateNewRow(document.getElementsByClassName('multiple-row'));
+      updateNewRow(rowContainerElement);
       if (elementExists(document.getElementsByClassName('civil-amountRow'))) {
         addCalculationEventListener();
       }
@@ -69,14 +88,10 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 
-  function getLastRow(multipleRowElement) {
-    const lastElementIndex = multipleRowElement.length - 1;
-    return multipleRowElement[lastElementIndex];
-  }
-
   function updateNewRow(addedRow) {
     const newRow = getLastRow(addedRow);
     removeErrors(newRow);
+    updateLegends(addedRow, newRow);
   }
 
   function removeErrors(newRow) {
@@ -126,7 +141,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function getNumberFromElementName() {
-    const elements = document.getElementsByClassName('multiple-row');
+    const elements = document.getElementsByClassName('row-container');
     const lastItem = elements[elements.length-1];
     const lastRadioInput = lastItem.getElementsByClassName('govuk-radios__input');
     const lastCheckboxInput = lastItem.getElementsByClassName('govuk-checkboxes__input');
@@ -138,7 +153,7 @@ document.addEventListener('DOMContentLoaded', function () {
       const number = lastCheckboxInput[0].id.split('-')[1];
       return Number(number) + 1;
     }
-    return document.getElementsByClassName('multiple-row').length;
+    return document.getElementsByClassName('row-container').length;
   }
 
   function incrementIndexOnNameAndId(element) {
@@ -210,10 +225,6 @@ document.addEventListener('DOMContentLoaded', function () {
     if (elementExists(removeButton)) {
       Array.from(removeButton).forEach(element => removeRowButtonEventListener(element));
     }
-  }
-
-  function elementExists(element) {
-    return element?.length > 0;
   }
 
   function addEventToAddedCheckbox(checkbox) {
