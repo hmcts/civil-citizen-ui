@@ -14,7 +14,7 @@ def component = "citizen-ui"
 def camundaBranch = "DTSCCI-4029"
 def dmnBranch = "master"
 def waStandaloneBranch = "master"
-def ccdBranch = "master"
+def ccdBranch = "DTSCCI-4029"
 AppPipelineConfig pipelineConf
 
 static Map<String, Object> secret(String secretName, String envVariable) {
