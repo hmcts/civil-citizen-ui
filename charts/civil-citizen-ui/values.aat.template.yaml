@@ -139,7 +139,7 @@ civil-service:
       enabled: true
       releaseNameOverride: ${SERVICE_NAME}-postgresql
       image:
-        registry: hmctspublic.azurecr.io
+        registry: hmctsprod.azurecr.io
         repository: imported/bitnami/postgresql
         tag: '11.6.0'
       primary:
@@ -178,7 +178,7 @@ civil-service:
     java:
       imagePullPolicy: Always
       releaseNameOverride: ${SERVICE_NAME}-aac-manage-case-assignment
-      image: hmctspublic.azurecr.io/aac/manage-case-assignment:latest
+      image: hmctsprod.azurecr.io/aac/manage-case-assignment:latest
       ingressHost: civil-cui-manage-case-assignment-staging.aat.platform.hmcts.net
       environment:
         IDAM_API_URL: https://idam-api.aat.platform.hmcts.net
@@ -216,7 +216,7 @@ civil-service:
       ingressHost: civil-cui-xui-staging.aat.platform.hmcts.net
       imagePullPolicy: Always
       releaseNameOverride: ${SERVICE_NAME}-xui-webapp
-      image: hmctspublic.azurecr.io/xui/webapp:latest
+      image: hmctsprod.azurecr.io/xui/webapp:latest
       memoryRequests: 2Gi
       cpuRequests: 2000m
       memoryLimits: 4Gi
@@ -273,7 +273,7 @@ civil-service:
     ccd-api-gateway-web:
       nodejs:
         disableKeyVaults: true
-        image: hmctspublic.azurecr.io/ccd/api-gateway-web:latest
+        image: hmctsprod.azurecr.io/ccd/api-gateway-web:latest
         imagePullPolicy: Always
         environment:
           ADDRESS_LOOKUP_TOKEN: ${ADDRESS_LOOKUP_TOKEN}
@@ -363,7 +363,7 @@ civil-service:
         disableKeyVaults: true
     elasticsearch:
       nameOverride: ${SERVICE_NAME}-es
-      image: hmctspublic.azurecr.io/imported/elastic/elasticsearch
+      image: hmctsprod.azurecr.io/imported/elastic/elasticsearch
       imageTag: "7.17.1"
       initResources:
         limits:
@@ -373,7 +373,7 @@ civil-service:
           cpu: "25m"
           memory: "512Mi"
     logstash:
-      image: hmctspublic.azurecr.io/ccd/logstash
+      image: hmctsprod.azurecr.io/ccd/logstash
       imageTag: "latest"
       extraEnvs:
         - name: DATA_STORE_URL
