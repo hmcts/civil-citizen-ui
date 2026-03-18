@@ -14,7 +14,6 @@ def component = "citizen-ui"
 def camundaBranch = "master"
 def dmnBranch = "master"
 def waStandaloneBranch = "master"
-def ccdBranch = "master"
 AppPipelineConfig pipelineConf
 
 static Map<String, Object> secret(String secretName, String envVariable) {
@@ -189,7 +188,6 @@ withPipeline(type, product, component) {
     env.PR_FT_GROUPS = getFunctionalTestsGroups()
     env.CIVIL_SERVICE_IMAGE = getCivilServiceImage()
     def civilCcdDefinitionBranch = getCivilCcdDefinitionBranch()
-    ccdBranch = civilCcdDefinitionBranch
     generalappCCDBranch = civilCcdDefinitionBranch
     loadVaultSecrets(secrets)
   }
