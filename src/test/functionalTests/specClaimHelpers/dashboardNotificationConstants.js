@@ -172,9 +172,9 @@ module.exports = {
 
   defendantResponseFullAdmitPayBySetDateClaimantCoSC: () => {
     return {
-      title: 'The claimant has been paid the full amount that they were owed',
-      content: ['The claim is now settled and there’s no further action any party needs to take.'],
-      //nextSteps: 'confirm that they’ve paid you the full amount that you’re owed',
+      title: 'A judgment against the defendant has been made',
+      content: ['The defendant should now pay you according to the terms of the judgment.'],
+      nextSteps: 'confirm that they’ve paid you the full amount that you’re owed',
     };
   },
   defendantResponseConfirmYouHavePaidAJudgmentCCJDebt: () => {
