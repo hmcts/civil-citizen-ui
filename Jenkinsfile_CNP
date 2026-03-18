@@ -79,7 +79,7 @@ def getCivilCcdDefinitionBranch() {
   for (label in githubApi.getLabelsbyPattern(env.BRANCH_NAME, "civilDefinitionBranch:")) {
     return label.minus("civilDefinitionBranch:").trim()
   }
-  return "master"
+  return ccdBranch
 }
 
 def getCivilServiceImage() {
@@ -188,6 +188,9 @@ withPipeline(type, product, component) {
     env.NODE_TLS_REJECT_UNAUTHORIZED = "0"
     env.PR_FT_GROUPS = getFunctionalTestsGroups()
     env.CIVIL_SERVICE_IMAGE = getCivilServiceImage()
+    def civilCcdDefinitionBranch = getCivilCcdDefinitionBranch()
+    ccdBranch = civilCcdDefinitionBranch
+    generalappCCDBranch = civilCcdDefinitionBranch
     loadVaultSecrets(secrets)
   }
   onMaster {
