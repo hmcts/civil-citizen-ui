@@ -7,14 +7,16 @@ properties([
 import uk.gov.hmcts.contino.AppPipelineConfig
 import uk.gov.hmcts.contino.GithubAPI
 import uk.gov.hmcts.contino.AppPipelineDsl
+import groovy.transform.Field
 
 def type = "nodejs"
 def product = "civil"
 def component = "citizen-ui"
-def camundaBranch = "master"
-def dmnBranch = "master"
-def waStandaloneBranch = "master"
-def ccdBranch = "master"
+@Field def camundaBranch = "master"
+@Field def dmnBranch = "master"
+@Field def waStandaloneBranch = "master"
+@Field def ccdBranch = "master"
+@Field def generalappCCDBranch = "master"
 AppPipelineConfig pipelineConf
 
 static Map<String, Object> secret(String secretName, String envVariable) {
