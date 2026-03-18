@@ -2,10 +2,10 @@
 FROM hmctsprod.azurecr.io/base/node:24-alpine as base
 
 RUN if ! grep -q '^hmcts:' /etc/group 2>/dev/null; then \
-      addgroup -S hmcts -g 1000; \
+      addgroup -S hmcts; \
     fi && \
     if ! grep -q '^hmcts:' /etc/passwd 2>/dev/null; then \
-      adduser -S hmcts -u 1000 -G hmcts -h /home/hmcts -s /sbin/nologin; \
+      adduser -S hmcts -G hmcts -h /home/hmcts -s /sbin/nologin; \
     fi
 
 COPY --chown=hmcts:hmcts . .
