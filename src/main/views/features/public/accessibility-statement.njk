@@ -22,7 +22,7 @@
   </ul>
   <p class="govuk-body">{{ t('PAGES.ACCESSIBILITY_STATEMENT.PARAGRAPH_AS_9') }}</p>
 
-  {% if getLanguage() =='cy' %}
+  {% if lang =='cy' %}
     <p class="govuk-body">
       {{ t('PAGES.ACCESSIBILITY_STATEMENT.PARAGRAPH_AS_10_TEXT_BEFORE') }}
       {{ externalLink(t, 'PAGES.ACCESSIBILITY_STATEMENT.PARAGRAPH_AS_10_LINK', externalURLs.abilityNetUrl, true, '', '') }}
