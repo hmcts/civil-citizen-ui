@@ -8,6 +8,7 @@ civil-service:
       HMC_HEARINGS_TOPIC_SUBSCRIPTION_NAME: "${SERVICE_NAME}-hmcsb-civil"
       HMC_HEARINGS_TOPIC_NAMESPACE: "hmc-servicebus-aat"
       ROLE_ASSIGNMENT_URL: https://am-role-assignment-civil-citizen-ui-pr-${CHANGE_ID}.preview.platform.hmcts.net
+      CORE_CASE_DATA_API_URL: https://ccd-data-store-api-civil-citizen-ui-pr-${CHANGE_ID}.preview.platform.hmcts.net
   camunda-bpm:
     enabled: false
   ccd:
