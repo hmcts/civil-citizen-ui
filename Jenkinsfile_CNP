@@ -90,14 +90,6 @@ def getCivilServiceImage() {
   return "latest"
 }
 
-def getCivilCcdDefinitionBranch() {
-  def githubApi = new GithubAPI(this)
-  for (label in githubApi.getLabelsbyPattern(env.BRANCH_NAME, "civilDefinitionBranch:")) {
-    return label.minus("civilDefinitionBranch:").trim()
-  }
-  return "master"
-}
-
 def secrets = [
   'rpx-${env}': [
     secret('mc-idam-client-secret', 'IDAM_CLIENT_SECRET'),
