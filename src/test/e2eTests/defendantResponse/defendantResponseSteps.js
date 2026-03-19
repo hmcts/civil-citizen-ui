@@ -11,7 +11,7 @@ class DefendantResponseSteps {
   }
 
   partAdmitPayBySetDateDefendantSignsSettlementAgreementConfirmation() {
-    I.see('You\'ve both signed a settlement agreement');
+    I.see('You\'ve both signed a settlement agreement', 60);
     I.see('The agreement says you\'ll repay by');
     I.see('The claimant can\'t request a County Court Judgment against you unless you break the terms.');
     I.see('Contact Miss Jane Doe if you need their payment details.');
