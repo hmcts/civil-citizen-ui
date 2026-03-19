@@ -123,7 +123,7 @@ export class OidcMiddleware {
         req.session.issuedAt = getSessionIssueTime(responseData);
 
         if (req.session.assignClaimURL || req.session.claimIssueTasklist) {
-          return req.session.save((err) => {
+          return req.session.save(async (err) => {
             if (err) {
               logger.error('Error while saving session', err);
               return res.redirect(UNAUTHORISED_URL);
@@ -145,14 +145,14 @@ export class OidcMiddleware {
         const paymentConfirmationUrl = await getPaymentConfirmationUrl(req.session.user.id, feeTypeExtracted);
         logger.info('Payment conf url ', paymentConfirmationUrl);
 
-        req.session.save((err) => {
+        req.session.save(async (err) => {
           if (err) {
             logger.error('Error while saving session', err);
             return res.redirect(UNAUTHORISED_URL);
           }
 
           if (paymentConfirmationUrl) {
-            deletePaymentConfirmationUrl(req.session.user.id, feeTypeExtracted);
+            await deletePaymentConfirmationUrl(req.session.user.id, feeTypeExtracted);
             return res.redirect(paymentConfirmationUrl);
           }
           if (req.session.user?.roles?.includes(citizenRole)) {
