@@ -186,8 +186,8 @@ module.exports = {
   },
   defendantResponseConfirmYouHavePaidAJudgmentCCJDebtForDJ: () => {
     return {
-      title: 'A judgment has been made against you',
-      content: ['make an application to set aside (remove) or vary the judgment'],
+      title: 'The claimant has been paid the full amount that they were owed',
+      content: ['The claim is now settled and there’s no further action any party needs to take.'],
       //nextSteps: 'confirm that they’ve paid you the full amount that you’re owed',
     };
   },
