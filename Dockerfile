@@ -1,5 +1,5 @@
 # ---- Base image ----
-FROM hmctsprod.azurecr.io/base/node:24-alpine as base
+FROM hmctsprod.azurecr.io/base/node:22-alpine as base
 
 RUN if ! grep -q '^hmcts:' /etc/group 2>/dev/null; then \
       addgroup -S hmcts; \
