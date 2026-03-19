@@ -14,7 +14,7 @@ module.exports = {
       await I.amOnPage('/dashboard');
       await I.click(claimNumber);
     }
-    const maxRetries = 4;
+    const maxRetries = 3;
     for (let tries = 1; tries <= maxRetries; tries++) {
       console.log('Verifying notification title and content... attempt', tries);
 
@@ -41,7 +41,7 @@ module.exports = {
         throw new Error('Notification could not be verified');
       }
 
-      await I.wait(4);
+      await I.wait(2);
       await I.refreshPage();
     }
   },

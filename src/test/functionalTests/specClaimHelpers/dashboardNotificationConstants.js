@@ -179,15 +179,15 @@ module.exports = {
   },
   defendantResponseConfirmYouHavePaidAJudgmentCCJDebt: () => {
     return {
-      title: 'The claimant has been paid the full amount that they were owed',
-      content: ['The claim is now settled and there’s no further action any party needs to take.'],
+      title: 'A judgment has been made against you',
+      content: ['The judgment formalises the payment plan you’ve agreed with the claimant.'],
       //nextSteps: 'confirm that they’ve paid you the full amount that you’re owed',
     };
   },
   defendantResponseConfirmYouHavePaidAJudgmentCCJDebtForDJ: () => {
     return {
-      title: 'The claimant has been paid the full amount that they were owed',
-      content: ['The claim is now settled and there’s no further action any party needs to take.'],
+      title: 'A judgment has been made against you',
+      content: ['make an application to set aside (remove) or vary the judgment'],
       //nextSteps: 'confirm that they’ve paid you the full amount that you’re owed',
     };
   },

@@ -10,10 +10,8 @@ Scenario('Response with PartAdmit-Defendant pay by set date - Claimant rejects c
     ClaimantResponseSteps.acceptOrRejectPartAdmitPayImmediately(caseId, 'Yes');
     ClaimantResponseSteps.acceptOrRejectRepaymentPlan(caseId);
     ClaimantResponseSteps.proposeAlternativePaymentPlan(caseId);
-    ClaimantResponseSteps.formaliseRepayment(caseId, 'Request a CCJ');
-    ClaimantResponseSteps.requestCCJ(caseId, false);
     ClaimantResponseSteps.checkAndSubmit(caseId);
-    ClaimantResponseSteps.partAdmitClaimantRequestsCCJConfirmation(caseId);
+    ClaimantResponseSteps.partAdmitClaimantSignsSettlementAgreementConfirmation(caseId);
     await ClaimantResponseSteps.resetWiremockScenario();
   }
 });

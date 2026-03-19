@@ -34,10 +34,8 @@ async function accessToken(user) {
 }
 
 async function addIdamUserToBeDeletedList(userEmail) {
-  if(!process.env.CLAIMANT_CITIZEN_EMAIL && !process.env.DEFENDANT_CITIZEN_EMAIL) {
-    console.log('Adding user {} to the to be deleted list', userEmail);
-    idamUsersCreated.add(userEmail);
-  }
+  console.log('Adding user {} to the to be deleted list', userEmail);
+  idamUsersCreated.add(userEmail);
 }
 
 async function createAccount(email, password) {
@@ -69,12 +67,10 @@ async function deleteAccount(email) {
 }
 
 async function deleteAllIdamTestUsers() {
-  if(!process.env.CLAIMANT_CITIZEN_EMAIL && !process.env.DEFENDANT_CITIZEN_EMAIL) {
-    console.log('Deleting all the idam users', idamUsersCreated);
-    for (const idamUserEmail of idamUsersCreated) {
-      console.log('Delete idamUserEmail...', idamUserEmail);
-      await deleteAccount(idamUserEmail);
-    }
+  console.log('Deleting all the idam users', idamUsersCreated);
+  for (const idamUserEmail of idamUsersCreated) {
+    console.log('Delete idamUserEmail...', idamUserEmail);
+    await deleteAccount(idamUserEmail);
   }
 }
 

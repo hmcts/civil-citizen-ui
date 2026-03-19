@@ -49,7 +49,7 @@ Scenario('Claimant rejects full admit', async () => {
     ClaimantResponseSteps.acceptOrRejectRepaymentPlan(caseId);
     ClaimantResponseSteps.proposeAlternativePaymentPlanInstallments(caseId);
     ClaimantResponseSteps.checkAndSubmit(caseId);
-    ClaimantResponseSteps.fullAdmitClaimantProposesRepaymentPlan();
+    ClaimantResponseSteps.fullAdmitClaimantRejectsRepaymentPlan();
     await ClaimantResponseSteps.resetWiremockScenario();
   }
 });
