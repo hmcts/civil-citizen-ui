@@ -123,21 +123,19 @@ export class OidcMiddleware {
         req.session.issuedAt = getSessionIssueTime(responseData);
 
         if (req.session.assignClaimURL || req.session.claimIssueTasklist) {
-          return req.session.save(async (err) => {
-            if (err) {
-              logger.error('Error while saving session', err);
-              return res.redirect(UNAUTHORISED_URL);
-            }
-
-            if (req.session.assignClaimURL) {
-              const assignClaimUrlWithClaimId = buildAssignClaimUrlWithId(req);
-              return res.redirect(assignClaimUrlWithClaimId);
-            }
-            if (req.session.claimIssueTasklist) {
-              req.session.claimIssueTasklist = undefined;
-              return res.redirect(CLAIMANT_TASK_LIST_URL);
-            }
+          await new Promise<void>((resolve, reject) => {
+            req.session.save((err) => (err ? reject(err) : resolve()));
           });
+
+          if (req.session.assignClaimURL) {
+            const assignClaimUrlWithClaimId = buildAssignClaimUrlWithId(req);
+            return res.redirect(assignClaimUrlWithClaimId);
+          }
+          if (req.session.claimIssueTasklist) {
+            req.session.claimIssueTasklist = undefined;
+            return res.redirect(CLAIMANT_TASK_LIST_URL);
+          }
+          return res.redirect(UNAUTHORISED_URL);
         }
 
         logger.info('login user id ', req.session.user.id);
@@ -145,21 +143,18 @@ export class OidcMiddleware {
         const paymentConfirmationUrl = await getPaymentConfirmationUrl(req.session.user.id, feeTypeExtracted);
         logger.info('Payment conf url ', paymentConfirmationUrl);
 
-        req.session.save(async (err) => {
-          if (err) {
-            logger.error('Error while saving session', err);
-            return res.redirect(UNAUTHORISED_URL);
-          }
-
-          if (paymentConfirmationUrl) {
-            await deletePaymentConfirmationUrl(req.session.user.id, feeTypeExtracted);
-            return res.redirect(paymentConfirmationUrl);
-          }
-          if (req.session.user?.roles?.includes(citizenRole)) {
-            return res.redirect(DASHBOARD_URL);
-          }
-          return res.redirect(UNAUTHORISED_URL);
+        await new Promise<void>((resolve, reject) => {
+          req.session.save((err) => (err ? reject(err) : resolve()));
         });
+
+        if (paymentConfirmationUrl) {
+          await deletePaymentConfirmationUrl(req.session.user.id, feeTypeExtracted);
+          return res.redirect(paymentConfirmationUrl);
+        }
+        if (req.session.user?.roles?.includes(citizenRole)) {
+          return res.redirect(DASHBOARD_URL);
+        }
+        return res.redirect(UNAUTHORISED_URL);
       } catch (err) {
         logger.error('Error in the callback of idam', err);
         throw err;
@@ -233,7 +228,7 @@ export class OidcMiddleware {
 
         return res.redirect(SIGN_IN_URL);
       } catch (err) {
-        logger.info('Error in the middleware of while session check ', err);
+        logger.error('Error in the middleware of while session check ', err);
         throw err;
       }
     });
