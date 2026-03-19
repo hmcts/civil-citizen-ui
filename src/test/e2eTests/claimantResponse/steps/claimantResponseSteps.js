@@ -408,7 +408,7 @@ class ClaimantResponseSteps {
   }
 
   partAdmitClaimantProposesRepaymentPlanConfirmation() {
-    I.see('You\'ve proposed a different repayment plan', 60);
+    I.waitForContent('You\'ve proposed a different repayment plan', 60);
     I.see('What happens next');
     I.see('You\'ve requested a County Court Judgment against Sir John Doe.');
     I.see('When we\'ve processed your request we\'ll post a copy of judgment to you and to Sir John Doe.');
@@ -455,7 +455,7 @@ class ClaimantResponseSteps {
   }
 
   fullAdmitClaimantRejectsInstallmentsRepaymentPlan() {
-    I.see('You\'ve proposed a different repayment plan', 60);
+    I.waitForContent('You\'ve proposed a different repayment plan', 60);
     I.see('What happens next');
     I.see('You\'ve requested a County Court Judgment against Sir John Doe.');
     I.see('When we\'ve processed your request we\'ll post a copy of judgment to you and to Sir John Doe');
