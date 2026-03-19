@@ -48,10 +48,8 @@ Scenario('Claimant rejects full admit', async () => {
     ClaimantResponseSteps.viewDefendantResponseFullAdmit(caseId, 'bySetDate');
     ClaimantResponseSteps.acceptOrRejectRepaymentPlan(caseId);
     ClaimantResponseSteps.proposeAlternativePaymentPlanInstallments(caseId);
-    ClaimantResponseSteps.formaliseRepayment(caseId, 'Request a CCJ');
-    ClaimantResponseSteps.requestCCJ(caseId, true);
     ClaimantResponseSteps.checkAndSubmit(caseId);
-    ClaimantResponseSteps.fullAdmitClaimantRejectsRepaymentPlan();
+    ClaimantResponseSteps.fullAdmitClaimantProposesRepaymentPlan();
     await ClaimantResponseSteps.resetWiremockScenario();
   }
 });

@@ -455,6 +455,16 @@ class ClaimantResponseSteps {
     I.see('When we\'ve processed your request we\'ll post a copy of judgment to you and to Sir John Doe.');
   }
 
+  fullAdmitClaimantProposesRepaymentPlan() {
+    I.waitForContent('You\'ve proposed a different repayment plan', 60);
+    I.see('You\'ve proposed a different repayment plan');
+    I.see('What happens next');
+    I.see('You\'ve requested a County Court Judgment against Sir John Doe.');
+    I.see('When we\'ve processed your request we\'ll post a copy of judgment to you and to Sir John Doe');
+    I.see('A judge will decide what Sir John Doe can afford to pay, based on their financial details.');
+    I.see('We\'ll contact both you and Sir John Doe to tell you what to do next.');
+  }
+
   fullAdmitClaimantRejectsInstallmentsRepaymentPlan() {
     I.waitForContent('County Court Judgment requested', 60);
     I.see('County Court Judgment requested');
