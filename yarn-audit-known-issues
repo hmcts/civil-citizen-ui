@@ -1,1 +1,4 @@
-{"value":"launchdarkly-node-server-sdk","children":{"ID":"launchdarkly-node-server-sdk (deprecation)","Issue":"This package has been replaced by @launchdarkly/node-server-sdk","Severity":"moderate","Vulnerable Versions":"7.0.1","Tree Versions":["7.0.1"],"Dependents":["civil-citizen-ui@workspace:."]}}
+[
+{"value":"launchdarkly-node-server-sdk","children":{"ID":"launchdarkly-node-server-sdk (deprecation)","Issue":"This package has been replaced by @launchdarkly/node-server-sdk","Severity":"moderate","Vulnerable Versions":"7.0.1","Tree Versions":["7.0.1"],"Dependents":["civil-citizen-ui@workspace:."]}},
+{"value":"flatted","children":{"ID":"1114934","Issue":"Prototype Pollution via parse() in NodeJS flatted","URL":"https://github.com/advisories/GHSA-rf6f-7fwh-wjgh","Severity":"high","Vulnerable Versions":"<= 3.4.1","Patched Versions":"3.4.2","Recommendation":"Upgrade to 3.4.2","Tree Versions":["3.4.0"],"Dependents":["flat-cache@npm:5.0.0"]}}
+]
