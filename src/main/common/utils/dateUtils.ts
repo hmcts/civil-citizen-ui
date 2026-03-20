@@ -55,7 +55,11 @@ export const formatDateToFullDate = (date: Date, lang?: string): string => {
 export function dateTimeFormat(value: string, lang?: string,  isUTC = false): string {
   const language = lang === 'cy' ? 'cy' : 'en-gb';
   const date = isUTC ?  DateTime.fromJSDate(new Date(value), { zone: 'Europe/London' }) : DateTime.fromJSDate(new Date(value));
-  return date.setLocale(language).toFormat('d LLLL yyyy, h:mm:ss a');
+  let format = date.setLocale(language).toFormat('d LLLL yyyy, h:mm:ss a');
+  if (language === 'cy') {
+    format = format.replace('AM', 'yb').replace('PM', 'yh');
+  }
+  return format;
 }
 
 export const getNumberOfDaysBetweenTwoDays = (startDay: Date | string, endDay: Date | string) => {
