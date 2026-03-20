@@ -1,44 +1,52 @@
 {% from "govuk/components/input/macro.njk" import govukInput %}
 
 {% macro claimAmount(claimAmountModel, index, form, t) %}
-  {% set amountValue =  '' + claimAmountModel.amount %}
-  <div class="row-container govuk-form-group">
+  {% set amountValue = '' + claimAmountModel.amount %}
+  {% set rowNumber = index + 1 %}
+  <div class="row-container govuk-form-group govuk-!-margin-bottom-6">
     <div class="multiple-row civil-amount-breakdown-row">
       <div class="govuk-grid-column-one-half govuk-grid-column-two-thirds-from-desktop">
       {{ govukInput({
-        id: "claimAmountRows["+index+"][reason]",
-        name: "claimAmountRows["+index+"][reason]",
+        id: "claimAmountRows[" + index + "][reason]",
+        name: "claimAmountRows[" + index + "][reason]",
         value: claimAmountModel.reason,
         classes: "govuk-grid-column-full",
         spellcheck: false,
+        describedBy: "claim-reason-heading",
         label: {
-          text: t('PAGES.CLAIM_AMOUNT_BREAKDOWN.REASON'),
-          classes: 'govuk-visually-hidden'
+          text: t('PAGES.CLAIM_AMOUNT_BREAKDOWN.REASON') + " " + t('COMMON.ROW') + " " + rowNumber,
+          classes: "govuk-visually-hidden table-row-legend-new"
         },
         errorMessage: {
-          text: t(form.errorFor("claimAmountRows["+index+"][reason]"))
-        } if form.hasFieldError( "claimAmountRows["+index+"][reason]")
+          text: t(form.errorFor("claimAmountRows[" + index + "][reason]"))
+       } if form.hasFieldError("claimAmountRows[" + index + "][reason]")
       }) }}
       </div>
       <div class="govuk-grid-column-one-half govuk-grid-column-one-third-from-desktop">
       {{ govukInput({
-        id: "claimAmountRows["+index+"][amount]",
-        name: "claimAmountRows["+index+"][amount]",
+        id: "claimAmountRows[" + index + "][amount]",
+        name: "claimAmountRows[" + index + "][amount]",
         value: amountValue,
         prefix: {
           text: "£"
         },
         autocomplete: "number",
         type: "number",
-        classes: "govuk-grid-column-full civil-claim-amount",
+        inputmode: "decimal",
+        classes: "govuk-grid-column-full civil-claim-amount govuk-input--width-10",
         spellcheck: false,
+          describedBy: "claim-amount-heading",
         label: {
-          text: t('PAGES.CLAIM_AMOUNT_BREAKDOWN.AMOUNT'),
+          text: t('COMMON.CLAIM_AMOUNT') + " " + t('COMMON.ROW')  + " " + rowNumber,
+          classes: "govuk-visually-hidden table-row-legend-new"
+        },
+        hint: {
+          text: t('COMMON.CLAIM_AMOUNT_HINT_TEXT'),
           classes: 'govuk-visually-hidden'
         },
         errorMessage: {
-          text: t(form.errorFor("claimAmountRows["+index+"][amount]"))
-        } if form.hasFieldError( "claimAmountRows["+index+"][amount]")
+          text: t(form.errorFor("claimAmountRows[" + index + "][amount]"))
+        } if form.hasFieldError("claimAmountRows[" + index + "][amount]")
       }) }}
       </div>
     </div>
