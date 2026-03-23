@@ -109,11 +109,13 @@ export class OidcMiddleware {
           const responseData = await getOidcResponse(redirectUri, req.query.code);
           req.session.user = getUserDetails(responseData);
           req.session.issuedAt = getSessionIssueTime(responseData);
+
           logger.info('After login payment confirmation ', app.locals.paymentConfirmationUrl);
           if (req.session.assignClaimURL) {
             const assignClaimUrlWithClaimId = buildAssignClaimUrlWithId(req, app);
             return res.redirect(assignClaimUrlWithClaimId);
           }
+
           if (req.session.claimIssueTasklist) {
             req.session.claimIssueTasklist = undefined;
             return res.redirect(CLAIMANT_TASK_LIST_URL);
@@ -177,12 +179,14 @@ export class OidcMiddleware {
         ) {
           return next();
         }
+
         if (requestIsForAssigningClaimForDefendant(req)) {
           appReq.session.assignClaimURL = ASSIGN_CLAIM_URL;
         }
         if (requestIsForClaimIssueTaskList(req)) {
           appReq.session.claimIssueTasklist = true;
         }
+
         logger.info('redirecting url ', req.originalUrl);
         if (isPaymentConfirmationUrl(req)) {
           const claimId = getClaimId(req.originalUrl);
