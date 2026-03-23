@@ -316,7 +316,6 @@ civil-service:
 
     elasticsearch:
       nameOverride: ${SERVICE_NAME}-es
-      imageTag: "7.17.1"
       initResources:
         limits:
           cpu: "500m"
@@ -325,8 +324,8 @@ civil-service:
           cpu: "25m"
           memory: "512Mi"
     logstash:
-      image: hmctsprod.azurecr.io/ccd/logstash
-      imageTag: "latest"
+      image: hmctspublic.azurecr.io/imported/elastic/logstash
+      imageTag: 9.2.4
       extraEnvs:
         - name: DATA_STORE_URL
           value: jdbc:postgresql://${SERVICE_NAME}-postgresql:5432/data-store?ssl=disable&stringtype=unspecified
@@ -365,6 +364,7 @@ civil-service:
 
     ccd-definition-store-api:
       java:
+        image: hmctspublic.azurecr.io/ccd/definition-store-api:pr-1611
         imagePullPolicy: Always
         devcpuRequests: 1000m
         devmemoryRequests: 2048Mi
