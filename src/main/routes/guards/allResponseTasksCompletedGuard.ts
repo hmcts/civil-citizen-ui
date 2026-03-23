@@ -16,12 +16,16 @@ export class AllResponseTasksCompletedGuard {
         const appReq: AppRequest = <AppRequest>req;
         const lang = req?.query?.lang ? req.query.lang : req?.cookies?.lang;
         const caseId = req.params.id;
+
         const caseData: Claim = await getClaimById(caseId, req, true);
         const carmApplicable = await isCarmEnabledForCase(caseData.submittedDate);
         const mintiApplicable = await isMintiEnabledForCase(caseData.submittedDate);
+
         await setResponseDeadline(caseData, appReq);
+
         const taskLists = getTaskLists(caseData,  caseId, lang, carmApplicable, mintiApplicable);
         assert(taskLists && taskLists.length > 0, 'Task list cannot be empty');
+
         const outstandingTasks: Task[] = outstandingTasksFromTaskLists(taskLists);
         const allTasksCompleted = outstandingTasks?.length === 0;
 
