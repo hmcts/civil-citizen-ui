@@ -154,6 +154,7 @@ export class OidcMiddleware {
         if (req.session.user?.roles?.includes(citizenRole)) {
           return res.redirect(DASHBOARD_URL);
         }
+
         return res.redirect(UNAUTHORISED_URL);
       } catch (err) {
         logger.error('Error in the callback of idam', err);
@@ -185,6 +186,7 @@ export class OidcMiddleware {
             return next();
           }
         }
+
         if (
           requestIsForPinAndPost(req) ||
           requestIsForDownloadPdf(req) ||
