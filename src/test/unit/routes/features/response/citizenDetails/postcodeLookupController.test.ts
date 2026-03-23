@@ -3,7 +3,7 @@ import config from 'config';
 import request from 'supertest';
 import {POSTCODE_LOOKUP_URL} from 'routes/urls';
 
-import {lookupByPostcodeAndDataSet} from 'modules/ordance-survey-key/ordanceSurveyKeyService';
+import {lookupAddressesByPostcodeAndDataSet} from 'modules/ordance-survey-key/ordanceSurveyKeyService';
 import {MOCK_API_ADDRESS} from '../../../../../utils/mocks/ordanceSurvey/osMocks';
 
 jest.mock('../../../../../../main/modules/oidc');
@@ -11,7 +11,7 @@ jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('modules/ordance-survey-key/ordanceSurveyKeyService');
 const nock = require('nock');
 
-const mockLookupByPostcodeAndDataSet = lookupByPostcodeAndDataSet as jest.Mock;
+const mockLookupAddressesByPostcodeAndDataSet = lookupAddressesByPostcodeAndDataSet as jest.Mock;
 
 const createResponse = (statusCode: number) => {
   return {
@@ -26,7 +26,7 @@ describe('Postcode Lookup Controller - HTTP status', () => {
 
   it('should return 500 as postcode incomplete', async () => {
     const error = createResponse(500);
-    mockLookupByPostcodeAndDataSet.mockRejectedValue(error);
+    mockLookupAddressesByPostcodeAndDataSet.mockRejectedValue(error);
 
     await request(app)
       .get(POSTCODE_LOOKUP_URL + '?postcode=BT')
@@ -37,7 +37,7 @@ describe('Postcode Lookup Controller - HTTP status', () => {
 
   it('should return 400 as postcode not provided', async () => {
     const error = createResponse(400);
-    mockLookupByPostcodeAndDataSet.mockRejectedValue(error);
+    mockLookupAddressesByPostcodeAndDataSet.mockRejectedValue(error);
 
     await request(app)
       .get(POSTCODE_LOOKUP_URL + '?postcode=')
@@ -60,7 +60,7 @@ describe('Postcode Lookup Controller', () => {
 
   it('should return list of addresses', async () => {
 
-    mockLookupByPostcodeAndDataSet.mockReturnValue({data : MOCK_API_ADDRESS});
+    mockLookupAddressesByPostcodeAndDataSet.mockReturnValue(MOCK_API_ADDRESS);
     await request(app)
       .get(POSTCODE_LOOKUP_URL + '?postcode=CV56GQ')
       .expect((res) => {

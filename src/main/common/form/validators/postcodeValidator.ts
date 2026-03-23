@@ -39,20 +39,14 @@ export class PostcodeValidator implements ValidatorConstraintInterface {
       // Lookup postcode using Ordnance Survey
       const response: AddressInfoResponse = await lookupByPostcodeAndDataSet(trimmed);
 
-      if (!response.valid || response.addresses.length === 0) {
+      if (!response.valid) {
         return false;
       }
-
-      // Check country
-      const country = response.addresses[0].country;
-      if (country) {
-        return country === 'England' || country === 'Wales';
-      }
+      return true;
     } catch (err) {
       logger.info('Failed to fetch postcode info', trimmed, err);
       return false;
     }
-    return false;
   }
 
   defaultMessage(): string {

@@ -4,6 +4,20 @@ import { Address, AddressInfoResponse, Point } from 'models/ordanceSurveyKey/ord
 import {AssertionError} from 'assert';
 
 export async function lookupByPostcodeAndDataSet(postCode: string): Promise<AddressInfoResponse> {
+  const trimmedPostcode = postCode.trim();
+  const response = await axios.get(`https://api.postcodes.io/postcodes/${encodeURIComponent(trimmedPostcode)}/validate`);
+  const isValid = response?.data?.result === true;
+
+  if (!isValid) {
+    throw new AssertionError({
+      message: 'Postcode is incorrect or no results returned',
+    });
+  }
+
+  return new AddressInfoResponse([], true);
+}
+
+export async function lookupAddressesByPostcodeAndDataSet(postCode: string): Promise<AddressInfoResponse> {
   const apiKey = config.get<string>('services.postcodeLookup.ordnanceSurveyApiKey');
   const url = config.get<string>('services.postcodeLookup.ordnanceSurveyApiUrl');
 

@@ -29,14 +29,14 @@ describe('PostcodeValidator', () => {
     expect(validator.defaultMessage()).toBe('ERRORS.DEFENDANT_POSTCODE_NOT_VALID');
   });
 
-  it('should return false if Ordnance Survey lookup fails', async () => {
+  it('should return false if postcode validation API fails', async () => {
     jest.spyOn(osService, 'lookupByPostcodeAndDataSet').mockRejectedValue(new Error('API error'));
 
     const result = await validator.validate('SW1A 1AA');
     expect(result).toBe(false);
   });
 
-  it('should return false if Ordnance Survey says postcode is invalid or no addresses', async () => {
+  it('should return false if postcode validation API says postcode is invalid', async () => {
     jest.spyOn(osService, 'lookupByPostcodeAndDataSet').mockResolvedValue(
       new AddressInfoResponse([], false),
     );
@@ -44,44 +44,12 @@ describe('PostcodeValidator', () => {
     expect(await validator.validate('SW1A 1AA')).toBe(false);
   });
 
-  it('should return true for valid UK postcode in England or Wales', async () => {
+  it('should return true for valid postcode from postcode validation API', async () => {
     jest.spyOn(osService, 'lookupByPostcodeAndDataSet').mockResolvedValue(
-      new AddressInfoResponse(
-        [
-          {
-            uprn: '1',
-            postTown: 'London',
-            postcode: 'SW1A 1AA',
-            formattedAddress: 'Street, London, SW1A 1AA',
-            point: { type: 'Point', coordinates: [0, 0] },
-            country: 'England',
-          } as any,
-        ],
-        true,
-      ),
+      new AddressInfoResponse([], true),
     );
 
     expect(await validator.validate('SW1A 1AA')).toBe(true);
     expect(validator.lengthError).toBe(false);
-  });
-
-  it('should return false for valid postcode but country not England or Wales', async () => {
-    jest.spyOn(osService, 'lookupByPostcodeAndDataSet').mockResolvedValue(
-      new AddressInfoResponse(
-        [
-          {
-            uprn: '2',
-            postTown: 'Edinburgh',
-            postcode: 'EH1 1AA',
-            formattedAddress: 'Street, Edinburgh, EH1 1AA',
-            point: { type: 'Point', coordinates: [0, 0] },
-            country: 'Scotland',
-          } as any,
-        ],
-        true,
-      ),
-    );
-
-    expect(await validator.validate('EH1 1AA')).toBe(false);
   });
 });

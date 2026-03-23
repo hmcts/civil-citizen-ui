@@ -1,7 +1,7 @@
 import { NextFunction, Router } from 'express';
 import { POSTCODE_LOOKUP_URL } from 'routes/urls';
 import { AddressInfoResponse } from 'models/ordanceSurveyKey/ordanceSurveyKey';
-import { lookupByPostcodeAndDataSet } from 'modules/ordance-survey-key/ordanceSurveyKeyService';
+import { lookupAddressesByPostcodeAndDataSet } from 'modules/ordance-survey-key/ordanceSurveyKeyService';
 
 export default Router().get(POSTCODE_LOOKUP_URL, async (req, res, next: NextFunction) => {
   try {
@@ -13,7 +13,7 @@ export default Router().get(POSTCODE_LOOKUP_URL, async (req, res, next: NextFunc
     }
 
     const postcode = raw.trim();
-    const response: AddressInfoResponse = await lookupByPostcodeAndDataSet(postcode);
+    const response: AddressInfoResponse = await lookupAddressesByPostcodeAndDataSet(postcode);
 
     res.status(200).json(response);
   } catch (error: any) {

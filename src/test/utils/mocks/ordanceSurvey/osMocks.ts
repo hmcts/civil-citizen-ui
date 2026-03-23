@@ -1,5 +1,17 @@
 import { Address, AddressInfoResponse, Point } from 'models/ordanceSurveyKey/ordanceSurveyKey';
 
+export const MOCK_POSTCODE_VALIDATE_RESPONSE = {
+  status: 200,
+  result: true,
+};
+
+export const MOCK_POSTCODE_INVALIDATE_RESPONSE = {
+  status: 200,
+  result: false,
+};
+
+export const MOCK_POSTCODE_VALIDATE_ADDRESS_RESPONSE: AddressInfoResponse = new AddressInfoResponse([], true);
+
 export const MOCK_API_RESPONSE = [
   {
     DPA: {
