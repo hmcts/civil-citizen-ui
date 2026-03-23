@@ -316,6 +316,7 @@ civil-service:
 
     elasticsearch:
       nameOverride: ${SERVICE_NAME}-es
+      imageTag: 9.2.4
       initResources:
         limits:
           cpu: "500m"
