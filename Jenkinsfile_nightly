@@ -186,15 +186,6 @@ withNightlyPipeline(type, product, component) {
   boolean forceGreenBuild = env.FORCE_GREEN_BUILD.toBoolean()
   boolean runPrevFailedAndNotExecutedTestFiles = env.RUN_PREV_FAILED_AND_NOT_EXECUTED_TEST_FILES.toBoolean()
 
-  if(!runPrevFailedAndNotExecutedTestFiles && !forceGreenBuild) {
-    enableCrossBrowserTest()
-
-    afterAlways('crossBrowserTest') {
-      steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'output/**/*'
-      env.IS_CROSSBROWSER = false
-    }
-  }
-
   enableFullFunctionalTest(200)
 
   if(!forceGreenBuild) {
