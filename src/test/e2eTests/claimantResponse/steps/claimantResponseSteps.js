@@ -6,7 +6,7 @@ const {date} = require('../../../functionalTests/specClaimHelpers/api/dataHelper
 
 const paths = {
   links: {
-    view_defendants_response: '//a[.="View the defendant\'s response"]',
+    view_defendants_response: '//a[contains(., "View the defendant\'s response")]',
     accept_or_reject: '//a[.=\'Accept or reject the £1000.00\']',
     accept_or_reject_their_response: '//a[.=\'Accept or reject their response\']',
     accept_or_reject_the_payment_plan: '//a[contains(.,\'Accept or reject their repayment plan\')]',
