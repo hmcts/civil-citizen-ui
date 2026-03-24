@@ -9,11 +9,13 @@ import {refreshDraftStoreClaimFrom} from 'modules/utilityService';
 
 export const redisDataFlushForDJ = async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    let claim = await getCaseDataFromStore(generateRedisKey(req));
+    const redisKey = generateRedisKey(req);
+    let claim = await getCaseDataFromStore(redisKey);
     if (claim.refreshDataForDJ) {
       claim = await refreshDraftStoreClaimFrom(req, true);
       claim.refreshDataForDJ = false;
-      await saveDraftClaim(generateRedisKey(req), claim);
+      const userId = (<AppRequest>req).session.user?.id;
+      await saveDraftClaim(generateRedisKey(req), claim, false, userId);
     }
     next();
   } catch (error) {

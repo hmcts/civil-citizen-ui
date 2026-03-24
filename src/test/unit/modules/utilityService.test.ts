@@ -4,8 +4,9 @@ import {Claim} from 'models/claim';
 import {BusinessProcess} from 'models/businessProcess';
 import {AppRequest, AppSession} from 'models/AppRequest';
 import {Party} from 'models/party';
-import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {getCaseDataFromStore, getDraftClaimFromStore} from 'modules/draft-store/draftStoreService';
 import {syncCaseReferenceCookie} from 'modules/cookie/caseReferenceCookie';
+import {ClaimantResponse} from 'models/claimantResponse';
 
 jest.mock('modules/draft-store/draftStoreService', () => ({
   generateRedisKey: jest.fn(),
@@ -13,6 +14,7 @@ jest.mock('modules/draft-store/draftStoreService', () => ({
   saveDraftClaim: jest.fn(),
   deleteDraftClaimFromStore: jest.fn(),
   getClaimById: jest.fn(),
+  getDraftClaimFromStore: jest.fn(),
 }));
 
 jest.mock('modules/cookie/caseReferenceCookie', () => ({
@@ -147,6 +149,11 @@ describe('Utility service', () => {
       qmShareConfirmed: false,
       ...overrides,
     }) as AppSession;
+
+    const getDraftClaimFromStoreMock = getDraftClaimFromStore as jest.Mock;
+    const oldClaim = new Claim();
+    oldClaim.claimantResponse = new ClaimantResponse();
+    getDraftClaimFromStoreMock.mockResolvedValueOnce(oldClaim);
 
     const createRequest = (sessionOverrides: Partial<AppSession> = {}): AppRequest => ({
       session: createSession(sessionOverrides),
