@@ -1,4 +1,4 @@
-# Civil Citizen UI
+# Civil Citizen U ßI
 
 [![Greenkeeper badge](https://badges.greenkeeper.io/hmcts/civil-citizen-ui.svg)](https://greenkeeper.io/)
 
