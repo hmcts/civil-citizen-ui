@@ -26,7 +26,8 @@ function renderView(form: GenericForm<RepaymentPlanInstalments>, totalClaimAmoun
 
 repaymentPlanInstalmentsController.get(CCJ_REPAYMENT_PLAN_INSTALMENTS_URL, async (req:AppRequest, res:Response, next: NextFunction) => {
   try {
-    const claim = await getCaseDataFromStore(generateRedisKey(req as unknown as AppRequest));
+    const redisId = generateRedisKey(req as unknown as AppRequest);
+    const claim = await getCaseDataFromStore(redisId);
     const claimantResponse = claim.claimantResponse ? claim.claimantResponse : new ClaimantResponse();
     const repaymentPlanInstalments = claimantResponse.ccjRequest
       ? claimantResponse.ccjRequest.repaymentPlanInstalments
@@ -56,7 +57,8 @@ repaymentPlanInstalmentsController.post(CCJ_REPAYMENT_PLAN_INSTALMENTS_URL, asyn
     } else {
       const claimantResponsePropertyName = 'repaymentPlanInstalments';
       const parentPropertyName = 'ccjRequest';
-      await saveClaimantResponse(redisKey, form.model, claimantResponsePropertyName, parentPropertyName);
+      const userId = (<AppRequest>req).session.user?.id;
+      await saveClaimantResponse(redisKey, form.model, claimantResponsePropertyName, parentPropertyName, userId);
       res.redirect(constructResponseUrlWithIdParams(claimId, CCJ_CHECK_AND_SEND_URL));
     }
   } catch (error) {

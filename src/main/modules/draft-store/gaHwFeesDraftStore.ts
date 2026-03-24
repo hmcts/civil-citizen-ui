@@ -7,7 +7,7 @@ const logger = Logger.getLogger('draftStoreService');
 export const saveDraftGAHWFDetails = async (redisKey: string, response: GaHelpWithFees) => {
   try {
     const draftStoreClient = app.locals.draftStoreClient;
-    draftStoreClient.set(redisKey, JSON.stringify(response));
+    await draftStoreClient.set(redisKey, JSON.stringify(response));
   } catch (err) {
     logger.error('issue on saving respondent response' + err);
     throw err;

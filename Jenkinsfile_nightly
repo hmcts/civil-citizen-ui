@@ -177,7 +177,6 @@ withNightlyPipeline(type, product, component) {
   env.CIVIL_SERVICE_URL = civilServiceUrl
   env.AAC_API_URL = aacApiUrl
   env.TESTS_FOR_ACCESSIBILITY = false
-  env.UNASSIGN_CASES = true
   overrideVaultEnvironments([
     'aat': params.ENVIRONMENT == 'preview' ? 'aat' : params.ENVIRONMENT
   ])
