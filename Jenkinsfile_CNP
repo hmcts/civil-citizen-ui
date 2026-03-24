@@ -232,7 +232,6 @@ withPipeline(type, product, component) {
 
   before('functionalTest:preview') {
     env.IDAM_STUB_ENABLED='false'
-    env.UNASSIGN_CASES = true
     copyPreviousAllureHistory()
     if(checkForRunAllFunctionalTests(env.BRANCH_NAME)) {
       env.RUN_ALL_FUNCTIONAL_TESTS = true
@@ -286,7 +285,6 @@ withPipeline(type, product, component) {
 
 
   before('functionalTest:aat') {
-    env.UNASSIGN_CASES = true
     env.NODE_TLS_REJECT_UNAUTHORIZED = "0"
     copyPrevFailedAndNotExecutedTestFilesJson()
     copyPreviousAllureHistory()
