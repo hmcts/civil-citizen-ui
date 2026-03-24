@@ -6,7 +6,7 @@ const {date} = require('../../../functionalTests/specClaimHelpers/api/dataHelper
 
 const paths = {
   links: {
-    view_defendants_response: '//a[.="View the defendant\'s response"]',
+    view_defendants_response: '//a[contains(., "View the defendant\'s response")]',
     accept_or_reject: '//a[.=\'Accept or reject the £1000.00\']',
     accept_or_reject_their_response: '//a[.=\'Accept or reject their response\']',
     accept_or_reject_the_payment_plan: '//a[contains(.,\'Accept or reject their repayment plan\')]',
@@ -398,22 +398,22 @@ class ClaimantResponseSteps {
   }
 
   partAdmitClaimantSignsSettlementAgreementConfirmation() {
-    I.see('You\'ve signed a settlement agreement');
-    I.see('What happens next');
-    I.see('We\'ve emailed Sir John Doe your proposed repayment plan and settlement agreement for them to sign.');
-    I.see('They must respond before 4pm on 13 August 2024. We\'ll email you when they respond.');
-    I.see('If they sign the agreement, this claim is put on hold.');
-    I.see('If they don\'t sign the agreement or reject it, you can request a CCJ against them which orders them to pay in line with the terms of the repayment plan.');
-    I.see('If they don\'t think they can afford the plan, they can ask for a judge to make a different plan.');
+    I.waitForContent('You\'ve signed a settlement agreement',60);
+    I.waitForContent('What happens next',60);
+    I.waitForContent('We\'ve emailed Sir John Doe your proposed repayment plan and settlement agreement for them to sign.',60);
+    I.waitForContent('They must respond before 4pm on 13 August 2024. We\'ll email you when they respond.',60);
+    I.waitForContent('If they sign the agreement, this claim is put on hold.',60);
+    I.waitForContent('If they don\'t sign the agreement or reject it, you can request a CCJ against them which orders them to pay in line with the terms of the repayment plan.',60);
+    I.waitForContent('If they don\'t think they can afford the plan, they can ask for a judge to make a different plan.',60);
   }
 
   partAdmitClaimantProposesRepaymentPlanConfirmation() {
-    I.see('You\'ve proposed a different repayment plan');
-    I.see('What happens next');
-    I.see('You\'ve requested a County Court Judgment against Sir John Doe.');
-    I.see('When we\'ve processed your request we\'ll post a copy of judgment to you and to Sir John Doe.');
-    I.see('A judge will decide what Sir John Doe can afford to pay, based on their financial details.');
-    I.see('We\'ll contact both you and Sir John Doe to tell you what to do next.');
+    I.waitForContent('You\'ve proposed a different repayment plan', 60);
+    I.waitForContent('What happens next', 60);
+    I.waitForContent('You\'ve requested a County Court Judgment against Sir John Doe.', 60);
+    I.waitForContent('When we\'ve processed your request we\'ll post a copy of judgment to you and to Sir John Doe.',60);
+    I.waitForContent('A judge will decide what Sir John Doe can afford to pay, based on their financial details.',60);
+    I.waitForContent('We\'ll contact both you and Sir John Doe to tell you what to do next.',60);
   }
 
   fullAdmitJudgementByAdmissionPayImmediatelyConfirmation() {
@@ -448,19 +448,19 @@ class ClaimantResponseSteps {
   }
 
   fullAdmitClaimantRejectsRepaymentPlan() {
-    I.see('County Court Judgment requested');
-    I.see('What happens next');
-    I.see('You\'ve rejected the defendant\'s repayment plan and a County Court Judgment has been requested against them.');
-    I.see('When we\'ve processed your request we\'ll post a copy of judgment to you and to Sir John Doe.');
+    I.waitForContent('County Court Judgment requested',60);
+    I.waitForContent('What happens next',60);
+    I.waitForContent('You\'ve rejected the defendant\'s repayment plan and a County Court Judgment has been requested against them.',60);
+    I.waitForContent('When we\'ve processed your request we\'ll post a copy of judgment to you and to Sir John Doe.',60);
   }
 
   fullAdmitClaimantRejectsInstallmentsRepaymentPlan() {
-    I.see('You\'ve proposed a different repayment plan');
-    I.see('What happens next');
-    I.see('You\'ve requested a County Court Judgment against Sir John Doe.');
-    I.see('When we\'ve processed your request we\'ll post a copy of judgment to you and to Sir John Doe');
-    I.see('A judge will decide what Sir John Doe can afford to pay, based on their financial details.');
-    I.see('We\'ll contact both you and Sir John Doe to tell you what to do next.');
+    I.waitForContent('You\'ve proposed a different repayment plan', 60);
+    I.waitForContent('What happens next',60);
+    I.waitForContent('You\'ve requested a County Court Judgment against Sir John Doe.',60);
+    I.waitForContent('When we\'ve processed your request we\'ll post a copy of judgment to you and to Sir John Doe',60);
+    I.waitForContent('A judge will decide what Sir John Doe can afford to pay, based on their financial details.',60);
+    I.waitForContent('We\'ll contact both you and Sir John Doe to tell you what to do next.',60);
   }
 
   verifyDefendantsResponseFullAdmitPayByRepaymentPlan(option) {
