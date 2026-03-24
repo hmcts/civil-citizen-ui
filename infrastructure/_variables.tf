@@ -60,4 +60,35 @@ variable "capacity" {
   description = "The size of the Redis cache to deploy. Valid values are 1, 2, 3, 4, 5"
 }
 
+variable "maxmemory_reserved" {
+  default     = "125"
+  description = "Value in megabytes reserved for non-cache usage e.g. failover"
+}
+
+variable "maxfragmentationmemory_reserved" {
+  default     = "125"
+  description = "Value in megabytes reserved to accommodate for memory fragmentation"
+}
+
+variable "maxmemory_delta" {
+  default     = "125"
+  description = "The max-memory delta for this Redis instance."
+}
+
 variable "aks_subscription_id" {}
+
+#================================================================================================
+# Monitor Variables
+#================================================================================================
+variable "monitor_action_group" {
+  default = {}
+}
+variable "monitor_metric_alerts" {
+  default = {}
+}
+
+variable "civil_ci_alert_slack_email_secret_name" {
+  type        = string
+  description = "The name of the Key Vault secret containing the slack email group"
+  default     = null
+}

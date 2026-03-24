@@ -3,6 +3,7 @@ import {
   EvidenceUploadExpert,
   EvidenceUploadTrial,
   EvidenceUploadWitness,
+  OtherManageUpload,
 } from 'models/document/documentType';
 import {CCDClaim} from 'models/civilClaimResponse';
 import {CaseProgression} from 'models/caseProgression/caseProgression';
@@ -12,7 +13,7 @@ import {
   UploadEvidenceDocumentType,
   UploadEvidenceElementCCD,
   UploadEvidenceExpert,
-  UploadEvidenceWitness,
+  UploadEvidenceWitness, UploadOtherDocumentType,
 } from 'models/caseProgression/uploadDocumentsType';
 import {Document} from 'models/document/document';
 import {toCCDEvidenceUpload} from 'services/translation/caseProgression/convertToCCDEvidenceUpload';
@@ -33,7 +34,18 @@ const witnessDocument = {
     document_binary_url: 'http://dm-store:8080/documents/e9fd1e10-baf2-4d95-bc79-bdeb9f3a2ab6/binary',
   } as Document,
   createdDatetime: new Date(0),
-};
+} as UploadEvidenceWitness;
+
+const managedDocument = {
+  documentType: 'type',
+  documentName: 'name',
+  documentLink: {
+    document_url: 'http://dm-store:8080/documents/e9fd1e10-baf2-4d95-bc79-bdeb9f3a2ab6',
+    document_filename: 'document_type.pdf',
+    document_binary_url: 'http://dm-store:8080/documents/e9fd1e10-baf2-4d95-bc79-bdeb9f3a2ab6/binary',
+  } as Document,
+  createdDatetime: new Date(0),
+} as UploadOtherDocumentType;
 
 const expertDocument = {
   expertOptionName: 'expert name',
@@ -73,7 +85,7 @@ const documentReferred = {
     document_binary_url: 'http://dm-store:8080/documents/e9fd1e10-baf2-4d95-bc79-bdeb9f3a2ab6/binary',
   } as Document,
   createdDatetime: new Date(0),
-};
+} as UploadEvidenceDocumentType;
 
 const documentForWitness = {
   document_url: 'http://dm-store:8080/documents/e9fd1e10-baf2-4d95-bc79-bdeb9f3a2ab6',
@@ -97,7 +109,7 @@ const documentTypeAsParameter = new UploadEvidenceDocumentType(null,'type', new 
 const documentReferredAsParameter = new UploadEvidenceDocumentType('witness name','type', new Date(0), documentForType, new Date(0));
 const witnessAsParameter = new UploadEvidenceWitness('witness name', new Date(0), documentForWitness, new Date(0));
 const expertAsParameter = new UploadEvidenceExpert('expert name', 'expertise','expertises','other party', 'document question', 'document answer', new Date(0), documentForExpert, new Date(0));
-
+const otherAsParameter = new UploadOtherDocumentType('type', 'name', managedDocument.documentLink, new Date(0));
 const uuid = '1221';
 
 describe('toCCDEvidenceUpload', () => {
@@ -269,7 +281,7 @@ it('should handle partial & multiple filled properties of Defendant CaseProgress
   expect(actualOutputDefendant).toEqual(expectedOutputDefendant);
 });
 
-function getCaseProgressionDocuments(documentType: EvidenceUploadDisclosure | EvidenceUploadWitness | EvidenceUploadExpert | EvidenceUploadTrial)
+function getCaseProgressionDocuments(documentType: EvidenceUploadDisclosure | EvidenceUploadWitness | EvidenceUploadExpert | EvidenceUploadTrial | OtherManageUpload)
   : UploadEvidenceElementCCD[] {
 
   const uploadEvidenceElementCCD = new UploadEvidenceElementCCD();
@@ -300,6 +312,9 @@ function getCaseProgressionDocuments(documentType: EvidenceUploadDisclosure | Ev
     case EvidenceUploadTrial.DOCUMENTARY:
       uploadEvidenceElementCCD.value = typeDocument;
       break;
+    case OtherManageUpload.OTHER_MANAGE_DOCUMENT:
+      uploadEvidenceElementCCD.value = managedDocument;
+      break;
   }
 
   return [uploadEvidenceElementCCD];
@@ -326,6 +341,7 @@ function createCCDClaim(isClaimant: boolean): CCDClaim {
       documentAuthorities: getCaseProgressionDocuments(EvidenceUploadTrial.AUTHORITIES),
       documentCosts: getCaseProgressionDocuments(EvidenceUploadTrial.COSTS),
       documentEvidenceForTrial: getCaseProgressionDocuments(EvidenceUploadTrial.DOCUMENTARY),
+      manageDocuments: getCaseProgressionDocuments(OtherManageUpload.OTHER_MANAGE_DOCUMENT),
       caseDocumentUploadDate: new Date(),
     };
   } else {
@@ -345,6 +361,7 @@ function createCCDClaim(isClaimant: boolean): CCDClaim {
       documentAuthoritiesRes: getCaseProgressionDocuments(EvidenceUploadTrial.AUTHORITIES),
       documentCostsRes: getCaseProgressionDocuments(EvidenceUploadTrial.COSTS),
       documentEvidenceForTrialRes: getCaseProgressionDocuments(EvidenceUploadTrial.DOCUMENTARY),
+      manageDocuments: getCaseProgressionDocuments(OtherManageUpload.OTHER_MANAGE_DOCUMENT),
       caseDocumentUploadDateRes: new Date(),
     };
   }
@@ -355,9 +372,9 @@ function createCCDClaim(isClaimant: boolean): CCDClaim {
 function createCUIClaim(): CaseProgression {
   return {
     claimantUploadDocuments:
-      new UploadDocuments(getUploadDocumentList('disclosure'), getUploadDocumentList('witness'), getUploadDocumentList('expert'), getUploadDocumentList('trial')),
+      new UploadDocuments(getUploadDocumentList('disclosure'), getUploadDocumentList('witness'), getUploadDocumentList('expert'), getUploadDocumentList('trial'), getUploadDocumentList('other')),
     defendantUploadDocuments:
-      new UploadDocuments(getUploadDocumentList('disclosure'), getUploadDocumentList('witness'), getUploadDocumentList('expert'), getUploadDocumentList('trial')),
+      new UploadDocuments(getUploadDocumentList('disclosure'), getUploadDocumentList('witness'), getUploadDocumentList('expert'), getUploadDocumentList('trial'), getUploadDocumentList('other')),
     claimantLastUpload: new Date (),
     defendantLastUpload: new Date(),
   } as CaseProgression;
@@ -419,6 +436,11 @@ function getUploadDocumentList(documentCategory: string): UploadDocumentTypes[] 
       );
       uploadDocumentTypes.push(
         new UploadDocumentTypes(false, documentTypeAsParameter, EvidenceUploadTrial.DOCUMENTARY, uuid),
+      );
+      break;
+    case 'other':
+      uploadDocumentTypes.push(
+        new UploadDocumentTypes(false, otherAsParameter, OtherManageUpload.OTHER_MANAGE_DOCUMENT, uuid),
       );
       break;
   }

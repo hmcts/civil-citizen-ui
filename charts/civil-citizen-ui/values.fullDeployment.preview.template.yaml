@@ -3,6 +3,12 @@ civil-service:
     environment:
       TASK_MANAGEMENT_ENABLED: true
       TASK_MANAGEMENT_API_URL: http://{{ .Release.Name }}-wa-task-management-api
+      HMC_HEARINGS_SUBSCRIPTION_ENABLED: true
+      HMC_HEARINGS_TOPIC_NAME: "hmc-to-cft-aat"
+      HMC_HEARINGS_TOPIC_SUBSCRIPTION_NAME: "${SERVICE_NAME}-hmcsb-civil"
+      HMC_HEARINGS_TOPIC_NAMESPACE: "hmc-servicebus-aat"
+      ROLE_ASSIGNMENT_URL: https://am-role-assignment-civil-citizen-ui-pr-${CHANGE_ID}.preview.platform.hmcts.net
+      CORE_CASE_DATA_API_URL: https://ccd-data-store-api-civil-citizen-ui-pr-${CHANGE_ID}.preview.platform.hmcts.net
   camunda-bpm:
     enabled: false
   ccd:
@@ -36,17 +42,19 @@ civil-service:
   xui-webapp:
     nodejs:
       environment:
+        SERVICES_CCD_DATA_STORE_API: https://ccd-data-store-api-civil-citizen-ui-pr-${CHANGE_ID}.preview.platform.hmcts.net
+        HEARINGS_JURISDICTIONS: CIVIL
+        SERVICES_HEARINGS_COMPONENT_API_CIVIL: http://${SERVICE_NAME}-civil-service
+        ENABLE_HEARING_DATA_SOURCE_HEADERS: "true"
+        PREVIEW_DEPLOYMENT_ID: "civil-cui-${CHANGE_ID}"
         WA_SUPPORTED_JURISDICTIONS: "IA,PRIVATELAW,CIVIL"
         SERVICES_ROLE_ASSIGNMENT_MAPPING_API: https://am-org-role-mapping-service-${SERVICE_FQDN}
         SERVICES_EM_ANNO_API: http://${SERVICE_NAME}-ccd-api-gw
         SERVICES_IDAM_API_URL: https://idam-api.aat.platform.hmcts.net
         SERVICES_S2S: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
-        SERVICES_HEARINGS_COMPONENT_API: http://jurisdiction-hearings-api-aat.service.core-compute-aat.internal
-        SERVICES_HMC_HEARINGS_COMPONENT_API: http://${SERVICE_NAME}-hmc-cft-hearing-service
         SERVICES_PRD_LOCATION_API: http://rd-location-ref-api-aat.service.core-compute-aat.internal
         SERVICES_PRD_JUDICIAL_API: http://rd-judicial-api-aat.service.core-compute-aat.internal
         SERVICES_PRD_COMMONDATA_API: http://rd-commondata-api-aat.service.core-compute-aat.internal
-        SERVICES_DOCUMENTS_API_V2: http://${SERVICE_NAME}-cdam
         HEALTH_ROLE_ASSIGNMENT_API: http://${SERVICE_NAME}-am-role-assignment-service/health
         GLOBAL_SEARCH_SERVICES: IA,CIVIL,PRIVATELAW,PUBLICLAW,SSCS
         FEATURE_WORKALLOCATION_ENABLED: true
@@ -70,6 +78,24 @@ civil-service:
             - mc-idam-client-secret
             - system-user-name
             - system-user-password
+
+hmcsb:
+  enabled: true
+  resourceGroup: hmc-shared-aat
+  sbNamespace: hmc-servicebus-aat
+  #Each topic/queue matches up to one used in the config above
+  setup:
+    topics:
+      - name: civil
+        fullName: hmc-to-cft-aat
+        create: false
+        subscriptionNeeded: yes
+        ignoreSubscriptionDeletion: true
+        rules:
+          - name: "servicefilter"
+            filterType: SqlFilter
+            sqlFilter:
+              sqlExpression: "hmctsServiceId IN ('AAA7','AAA6') AND hmctsDeploymentId = 'civil-cui-${CHANGE_ID}'"
 
 servicebus:
   enabled: true
@@ -100,18 +126,6 @@ wa:
   wa:
     postgresql:
       enabled: false
-  wa-message-cron-service:
-    job:
-      schedule: "*/1 * * * *"
-  wa-initiation-batch:
-    job:
-      schedule: "*/1 * * * *"
-  wa-reconfiguration-batch:
-    job:
-      schedule: "*/1 * * * *"
-  wa-termination-batch:
-    job:
-      schedule: "*/1 * * * *"
   wa-case-event-handler:
     java:
       ingressHost: wa-case-event-handler-${SERVICE_FQDN}

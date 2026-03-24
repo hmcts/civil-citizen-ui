@@ -14,8 +14,6 @@ def component = "citizen-ui"
 def camundaBranch = "master"
 def dmnBranch = "master"
 def waStandaloneBranch = "master"
-def ccdBranch = "master"
-def generalappCCDBranch = "master"
 AppPipelineConfig pipelineConf
 
 static Map<String, Object> secret(String secretName, String envVariable) {
@@ -75,6 +73,14 @@ def getFunctionalTestsGroups() {
   return functionalTestGroups.join(",")
 }
 
+def getCivilCcdDefinitionBranch() {
+  def githubApi = new GithubAPI(this)
+  for (label in githubApi.getLabelsbyPattern(env.BRANCH_NAME, "civilDefinitionBranch:")) {
+    return label.minus("civilDefinitionBranch:").trim()
+  }
+  return "master"
+}
+
 def getCivilServiceImage() {
   def githubApi = new GithubAPI(this)
   for (label in githubApi.getLabelsbyPattern(env.BRANCH_NAME, "civilServicePr:") ) {
@@ -131,6 +137,7 @@ def secrets = [
 
 def setUrls(suffix) {
   env.IDAM_API_URL = "https://idam-api.aat.platform.hmcts.net"
+  env.IDAM_TEST_SUPPORT_API_URL = "https://idam-testing-support-api.aat.platform.hmcts.net"
   env.IDAM_WEB_URL = "https://idam-web-public.aat.platform.hmcts.net"
   env.SERVICE_AUTH_PROVIDER_API_BASE_URL = "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
 
@@ -180,6 +187,8 @@ withPipeline(type, product, component) {
     env.NODE_TLS_REJECT_UNAUTHORIZED = "0"
     env.PR_FT_GROUPS = getFunctionalTestsGroups()
     env.CIVIL_SERVICE_IMAGE = getCivilServiceImage()
+    def civilCcdDefinitionBranch = getCivilCcdDefinitionBranch()
+    generalappCCDBranch = civilCcdDefinitionBranch
     loadVaultSecrets(secrets)
   }
   onMaster {
@@ -206,8 +215,8 @@ withPipeline(type, product, component) {
           ./bin/pull-latest-camunda-files.sh ${camundaBranch}
           ./bin/pull-latest-dmn-files.sh ${dmnBranch}
           ./bin/pull-latest-camunda-wa-files.sh ${waStandaloneBranch}
-          ./bin/import-ccd-definition.sh "-e *-prod.json,*HNL-nonprod.json,*-shuttered.json" ${ccdBranch}
-          ./bin/import-ga-ccd-definition.sh "-e *-prod.json" ${generalappCCDBranch}
+          ./bin/import-ccd-definition.sh "-e *-prod.json,*HNL-nonprod.json,*-shuttered.json" ${getCivilCcdDefinitionBranch()}
+          ./bin/import-ga-ccd-definition.sh "-e *-prod.json" ${getCivilCcdDefinitionBranch()}
           ./bin/add-org-roles-to-users.sh
         """
   }
@@ -264,8 +273,8 @@ withPipeline(type, product, component) {
       ./bin/pull-latest-camunda-files.sh ${camundaBranch}
       ./bin/pull-latest-dmn-files.sh ${dmnBranch}
       ./bin/pull-latest-camunda-wa-files.sh ${waStandaloneBranch}
-      ./bin/import-ccd-definition.sh "-e *-nonprod.json,*COS-nonprod.json,AuthorisationCaseType-shuttered.json" ${ccdBranch}
-      ./bin/import-ga-ccd-definition.sh "-e *-prod.json" ${generalappCCDBranch}
+      ./bin/import-ccd-definition.sh "-e *-nonprod.json,*COS-nonprod.json,AuthorisationCaseType-shuttered.json" ${getCivilCcdDefinitionBranch()}
+      ./bin/import-ga-ccd-definition.sh "-e *-prod.json" ${getCivilCcdDefinitionBranch()}
     """
     setUrls("aat")
   }
