@@ -398,13 +398,13 @@ class ClaimantResponseSteps {
   }
 
   partAdmitClaimantSignsSettlementAgreementConfirmation() {
-    I.see('You\'ve signed a settlement agreement');
-    I.see('What happens next');
-    I.see('We\'ve emailed Sir John Doe your proposed repayment plan and settlement agreement for them to sign.');
-    I.see('They must respond before 4pm on 13 August 2024. We\'ll email you when they respond.');
-    I.see('If they sign the agreement, this claim is put on hold.');
-    I.see('If they don\'t sign the agreement or reject it, you can request a CCJ against them which orders them to pay in line with the terms of the repayment plan.');
-    I.see('If they don\'t think they can afford the plan, they can ask for a judge to make a different plan.');
+    I.waitForContent('You\'ve signed a settlement agreement',60);
+    I.waitForContent('What happens next',60);
+    I.waitForContent('We\'ve emailed Sir John Doe your proposed repayment plan and settlement agreement for them to sign.',60);
+    I.waitForContent('They must respond before 4pm on 13 August 2024. We\'ll email you when they respond.',60);
+    I.waitForContent('If they sign the agreement, this claim is put on hold.',60);
+    I.waitForContent('If they don\'t sign the agreement or reject it, you can request a CCJ against them which orders them to pay in line with the terms of the repayment plan.',60);
+    I.waitForContent('If they don\'t think they can afford the plan, they can ask for a judge to make a different plan.',60);
   }
 
   partAdmitClaimantProposesRepaymentPlanConfirmation() {
