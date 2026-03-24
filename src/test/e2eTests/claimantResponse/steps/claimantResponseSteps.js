@@ -411,9 +411,9 @@ class ClaimantResponseSteps {
     I.waitForContent('You\'ve proposed a different repayment plan', 60);
     I.waitForContent('What happens next', 60);
     I.waitForContent('You\'ve requested a County Court Judgment against Sir John Doe.', 60);
-    I.see('When we\'ve processed your request we\'ll post a copy of judgment to you and to Sir John Doe.');
-    I.see('A judge will decide what Sir John Doe can afford to pay, based on their financial details.');
-    I.see('We\'ll contact both you and Sir John Doe to tell you what to do next.');
+    I.waitForContent('When we\'ve processed your request we\'ll post a copy of judgment to you and to Sir John Doe.',60);
+    I.waitForContent('A judge will decide what Sir John Doe can afford to pay, based on their financial details.',60);
+    I.waitForContent('We\'ll contact both you and Sir John Doe to tell you what to do next.',60);
   }
 
   fullAdmitJudgementByAdmissionPayImmediatelyConfirmation() {
