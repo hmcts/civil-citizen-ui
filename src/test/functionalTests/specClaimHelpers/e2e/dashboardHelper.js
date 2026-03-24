@@ -41,7 +41,7 @@ module.exports = {
         throw new Error('Notification could not be verified');
       }
 
-      await I.wait(4);
+      await I.wait(2);
       await I.refreshPage();
     }
   },
