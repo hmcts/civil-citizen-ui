@@ -450,17 +450,17 @@ class ClaimantResponseSteps {
   fullAdmitClaimantRejectsRepaymentPlan() {
     I.waitForContent('County Court Judgment requested',60);
     I.waitForContent('What happens next',60);
-    I.see('You\'ve rejected the defendant\'s repayment plan and a County Court Judgment has been requested against them.');
-    I.see('When we\'ve processed your request we\'ll post a copy of judgment to you and to Sir John Doe.');
+    I.waitForContent('You\'ve rejected the defendant\'s repayment plan and a County Court Judgment has been requested against them.',60);
+    I.waitForContent('When we\'ve processed your request we\'ll post a copy of judgment to you and to Sir John Doe.',60);
   }
 
   fullAdmitClaimantRejectsInstallmentsRepaymentPlan() {
     I.waitForContent('You\'ve proposed a different repayment plan', 60);
     I.waitForContent('What happens next',60);
-    I.see('You\'ve requested a County Court Judgment against Sir John Doe.');
-    I.see('When we\'ve processed your request we\'ll post a copy of judgment to you and to Sir John Doe');
-    I.see('A judge will decide what Sir John Doe can afford to pay, based on their financial details.');
-    I.see('We\'ll contact both you and Sir John Doe to tell you what to do next.');
+    I.waitForContent('You\'ve requested a County Court Judgment against Sir John Doe.',60);
+    I.waitForContent('When we\'ve processed your request we\'ll post a copy of judgment to you and to Sir John Doe',60);
+    I.waitForContent('A judge will decide what Sir John Doe can afford to pay, based on their financial details.',60);
+    I.waitForContent('We\'ll contact both you and Sir John Doe to tell you what to do next.',60);
   }
 
   verifyDefendantsResponseFullAdmitPayByRepaymentPlan(option) {
