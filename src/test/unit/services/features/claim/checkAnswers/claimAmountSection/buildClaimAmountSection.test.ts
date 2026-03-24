@@ -4,6 +4,7 @@ import {
   CLAIM_INTEREST_TYPE_URL,
   CLAIM_INTEREST_URL,
   CLAIM_INTEREST_RATE_URL,
+  CLAIM_INTEREST_START_DATE_URL,
 } from 'routes/urls';
 import {
   claimWithClaimAmountDifferentRate,
@@ -39,11 +40,11 @@ describe('Citizen Claim amount Section', () => {
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[2].actions?.items.length).toBe(1);
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[2].actions?.items[0].href).toBe(CLAIM_INTEREST_TYPE_URL);
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[3].key.text).toBe('PAGES.CLAIMANT_INTEREST_RATE.TITLE');
-    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[3].value.html).toBe('10%');
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[3].value.text).toBe('10%');
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[3].actions?.items.length).toBe(1);
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[3].actions?.items[0].href).toBe(CLAIM_INTEREST_RATE_URL);
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[4].key.text).toBe('PAGES.CLAIMANT_INTEREST_RATE.REASON');
-    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[4].value.html).toBe('Reason');
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[4].value.text).toBe('Reason');
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[4].actions?.items.length).toBe(1);
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[4].actions?.items[0].href).toBe(CLAIM_INTEREST_RATE_URL);
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[5].key.text).toBe('PAGES.CLAIM_JOURNEY.WHEN_CLAIM_INTEREST_FROM.TITLE');
@@ -55,8 +56,9 @@ describe('Citizen Claim amount Section', () => {
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[6].actions?.items.length).toBe(1);
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[6].actions?.items[0].href).toBe(CLAIM_INTEREST_DATE_URL);
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[7].key.text).toBe('PAGES.CLAIM_JOURNEY.WHEN_CLAIM_INTEREST_FROM.REASON');
-    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[7].value.html).toBe('Reason');
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[7].value.text).toBe('Reason');
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[7].actions?.items.length).toBe(1);
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[7].actions?.items[0].href).toBe(CLAIM_INTEREST_START_DATE_URL);
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[8].key.text).toBe('PAGES.CLAIM_JOURNEY.INTEREST_END_DATE.TITLE');
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[8].value.html).toBe('PAGES.CLAIM_JOURNEY.INTEREST_END_DATE.UNTIL_SETTLED_OR_JUDGEMENT_MADE');
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[8].actions?.items.length).toBe(1);
@@ -77,15 +79,15 @@ describe('Citizen Claim amount Section', () => {
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[2].key.text).toBe('PAGES.INTEREST_CLAIM_OPTIONS.TITLE');
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[2].value.html).toBe('PAGES.INTEREST_CLAIM_OPTIONS.SAME_RATE_INTEREST');
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[3].key.text).toBe('PAGES.CLAIMANT_INTEREST_RATE.TITLE');
-    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[3].value.html).toBe('10%');
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[3].value.text).toBe('10%');
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[4].key.text).toBe('PAGES.CLAIMANT_INTEREST_RATE.REASON');
-    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[4].value.html).toBe('Reason');
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[4].value.text).toBe('Reason');
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[5].key.text).toBe('PAGES.CLAIM_JOURNEY.WHEN_CLAIM_INTEREST_FROM.TITLE');
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[5].value.html).toBe('PAGES.CLAIM_JOURNEY.WHEN_CLAIM_INTEREST_FROM.FROM_A_SPECIFIC_DATE');
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[6].key.text).toBe('PAGES.CLAIM_JOURNEY.WHEN_CLAIM_INTEREST_FROM.DATE_INTEREST');
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[6].value.html).toBe('1 February 2011');
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[7].key.text).toBe('PAGES.CLAIM_JOURNEY.WHEN_CLAIM_INTEREST_FROM.REASON');
-    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[7].value.html).toBe('Reason');
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[7].value.text).toBe('Reason');
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[8].key.text).toBe('PAGES.CLAIM_JOURNEY.INTEREST_END_DATE.TITLE');
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[8].value.html).toBe('PAGES.CLAIM_JOURNEY.INTEREST_END_DATE.UNTIL_SETTLED_OR_JUDGEMENT_MADE');
   });
@@ -105,15 +107,15 @@ describe('Citizen Claim amount Section', () => {
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[2].key.text).toBe('PAGES.INTEREST_CLAIM_OPTIONS.TITLE');
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[2].value.html).toBe('PAGES.INTEREST_CLAIM_OPTIONS.SAME_RATE_INTEREST');
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[3].key.text).toBe('PAGES.CLAIMANT_INTEREST_RATE.TITLE');
-    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[3].value.html).toBe('10%');
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[3].value.text).toBe('10%');
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[4].key.text).toBe('PAGES.CLAIMANT_INTEREST_RATE.REASON');
-    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[4].value.html).toBe('Reason');
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[4].value.text).toBe('Reason');
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[5].key.text).toBe('PAGES.CLAIM_JOURNEY.WHEN_CLAIM_INTEREST_FROM.TITLE');
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[5].value.html).toBe('PAGES.CLAIM_JOURNEY.WHEN_CLAIM_INTEREST_FROM.FROM_A_SPECIFIC_DATE');
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[6].key.text).toBe('PAGES.CLAIM_JOURNEY.WHEN_CLAIM_INTEREST_FROM.DATE_INTEREST');
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[6].value.html).toBe('1 February 2011');
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[7].key.text).toBe('PAGES.CLAIM_JOURNEY.WHEN_CLAIM_INTEREST_FROM.REASON');
-    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[7].value.html).toBe('Reason');
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[7].value.text).toBe('Reason');
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[8].key.text).toBe('PAGES.CLAIM_JOURNEY.INTEREST_END_DATE.TITLE');
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[8].value.html).toBe('PAGES.CLAIM_JOURNEY.INTEREST_END_DATE.UNTIL_SETTLED_OR_JUDGEMENT_MADE');
   });
@@ -174,9 +176,9 @@ describe('Citizen Claim amount Section', () => {
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[0].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.CLAIM_AMOUNT_BREAKDOWN');
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[0].value.html).toBe('');
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[1].key.text).toBe('PAGES.CLAIMANT_INTEREST_RATE.TITLE');
-    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[1].value.html).toBe('10%');
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[1].value.text).toBe('10%');
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[2].key.text).toBe('PAGES.CLAIMANT_INTEREST_RATE.REASON');
-    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[2].value.html).toBe('Reason');
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[2].value.text).toBe('Reason');
   });
   it('should return claim with help with fee reference number', async () => {
     //Given
@@ -188,7 +190,7 @@ describe('Citizen Claim amount Section', () => {
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[0].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.CLAIM_AMOUNT_BREAKDOWN');
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[0].value.html).toBe('');
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[1].key.text).toBe('PAGES.HELP_WITH_FEES.REFERENCE_NUMBER');
-    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[1].value.html).toBe('HWF-2AB-DC3');
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[1].value.text).toBe('HWF-2AB-DC3');
   });
   it('should return claim with help with fee reference number none', async () => {
     //Given

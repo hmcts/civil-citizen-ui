@@ -4,7 +4,7 @@ import {
   WelshLanguageRequirements,
 } from 'models/directionsQuestionnaire/welshLanguageRequirements/welshLanguageRequirements';
 import {LanguageOptions} from 'models/directionsQuestionnaire/languageOptions';
-import {SummaryRow, summaryRow} from 'models/summaryList/summaryList';
+import {SummaryRow, summaryRow, summaryRowWithTextValue} from 'models/summaryList/summaryList';
 import {YesNo} from 'common/form/models/yesNo';
 import {
   VulnerabilityQuestions,
@@ -698,7 +698,7 @@ describe('Common Hearing Requirements Section', () => {
       //WHEN
       const specificCourtLocation: SummaryRow =
         displaySpecificCourtLocation( claimId, lng, claim.directionQuestionnaire);
-      const mockSummarySection: SummaryRow = summaryRow(
+      const mockSummarySection: SummaryRow = summaryRowWithTextValue(
         'PAGES.SPECIFIC_COURT.SELECTED_COURT',
         courtLocations[0].label,
         '/case/validClaimId/directions-questionnaire/court-location',

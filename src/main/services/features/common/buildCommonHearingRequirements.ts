@@ -1,4 +1,4 @@
-import {summaryRow, SummaryRow} from 'models/summaryList/summaryList';
+import {summaryRow, summaryRowWithTextValue, SummaryRow} from 'models/summaryList/summaryList';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {
   DQ_DEFENDANT_WITNESSES_URL, DQ_GIVE_EVIDENCE_YOURSELF_URL,
@@ -186,7 +186,7 @@ export const displayUnavailabilityForHearing = ( claimId: string, lng: string, d
 
 export const displaySpecificCourtLocation = ( claimId: string, lng: string, directionQuestionnaire : DirectionQuestionnaire): SummaryRow => {
   const hasSpecificCourtLocation = directionQuestionnaire?.hearing?.specificCourtLocation?.courtLocation;
-  return summaryRow(
+  return summaryRowWithTextValue(
     t('PAGES.SPECIFIC_COURT.SELECTED_COURT', {lng}),
     hasSpecificCourtLocation,
     constructResponseUrlWithIdParams(claimId, DQ_COURT_LOCATION_URL),
@@ -196,7 +196,7 @@ export const displaySpecificCourtLocation = ( claimId: string, lng: string, dire
 
 export const getSpecificCourtLocationReason = (claimId: string, lng: string, directionQuestionnaire : DirectionQuestionnaire): SummaryRow => {
   const whySpecificCourtLocation = directionQuestionnaire?.hearing?.specificCourtLocation?.reason;
-  return summaryRow(
+  return summaryRowWithTextValue(
     t('PAGES.SPECIFIC_COURT.REASON', {lng}),
     whySpecificCourtLocation,
     constructResponseUrlWithIdParams(claimId, DQ_COURT_LOCATION_URL),

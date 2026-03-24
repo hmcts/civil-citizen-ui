@@ -1,6 +1,6 @@
 import {SummarySection, summarySection} from 'models/summaryList/summarySections';
 import {Claim} from 'models/claim';
-import {summaryRow} from 'models/summaryList/summaryList';
+import {summaryRow, summaryRowWithTextValue} from 'models/summaryList/summaryList';
 import {currencyFormatWithNoTrailingZeros} from 'common/utils/currencyFormat';
 import {t} from 'i18next';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
@@ -42,12 +42,12 @@ const addTimeline = (claimId: string, lang: string , section: SummarySection, ti
   for (const item of rows) {
     const timelineDate = formatDateToFullDate(new Date(item.date), lang);
     section.summaryList.rows.push(
-      summaryRow(timelineDate.toString(), item.description, yourTimelineHref, changeLabel(lang)),
+      summaryRowWithTextValue(timelineDate.toString(), item.description, yourTimelineHref, changeLabel(lang)),
     );
   }
 
   section.summaryList.rows.push(
-    summaryRow(t('PAGES.CHECK_YOUR_ANSWER.TIMELINE_COMMENTS', { lng: getLng(lang) }), comment, yourTimelineHref, changeLabel(lang)),
+    summaryRowWithTextValue(t('PAGES.CHECK_YOUR_ANSWER.TIMELINE_COMMENTS', { lng: getLng(lang) }), comment, yourTimelineHref, changeLabel(lang)),
   );
 };
 
