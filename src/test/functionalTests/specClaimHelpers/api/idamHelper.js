@@ -34,8 +34,10 @@ async function accessToken(user) {
 }
 
 async function addIdamUserToBeDeletedList(userEmail) {
-  console.log('Adding user {} to the to be deleted list', userEmail);
-  idamUsersCreated.add(userEmail);
+  if(!process.env.CLAIMANT_CITIZEN_EMAIL && !process.env.DEFENDANT_CITIZEN_EMAIL) {
+    console.log('Adding user {} to the to be deleted list', userEmail);
+    idamUsersCreated.add(userEmail);
+  }
 }
 
 async function createAccount(email, password) {
