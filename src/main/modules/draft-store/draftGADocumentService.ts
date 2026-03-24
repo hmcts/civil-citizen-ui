@@ -7,7 +7,7 @@ export const saveGADocumentsInDraftStore = async (redisKey: string, uploadGAFile
   try {
     redisKey += docKey;
     const draftStoreClient = app.locals.draftStoreClient;
-    draftStoreClient.set(redisKey, JSON.stringify(uploadGAFiles));
+    await draftStoreClient.set(redisKey, JSON.stringify(uploadGAFiles));
   } catch (err) {
     logger.error('issue on saving GA draft documents' + err);
     throw err;
