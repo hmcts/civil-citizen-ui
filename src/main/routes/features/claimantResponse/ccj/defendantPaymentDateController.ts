@@ -40,7 +40,8 @@ defendantPaymentDateController
         renderView(form, res);
       } else {
         try {
-          await saveClaimantResponse(generateRedisKey(req as unknown as AppRequest), form.model, 'defendantPaymentDate', 'ccjRequest');
+          const userId = (<AppRequest>req).session.user?.id;
+          await saveClaimantResponse(generateRedisKey(req as unknown as AppRequest), form.model, 'defendantPaymentDate', 'ccjRequest', userId);
           res.redirect(constructResponseUrlWithIdParams(claimId, CCJ_CHECK_AND_SEND_URL));
         } catch (error) {
           next(error);
