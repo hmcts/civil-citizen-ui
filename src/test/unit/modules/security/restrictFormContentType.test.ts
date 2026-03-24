@@ -158,4 +158,70 @@ describe('restrictFormContentType', () => {
     expect(next).not.toHaveBeenCalled();
     expect(res.status).toHaveBeenCalledWith(415);
   });
+
+  it('returns 415 for POST to directions-questionnaire path with application/json', () => {
+    req = {
+      method: 'POST',
+      path: '/case/123/directions-questionnaire/court-location',
+      get: mockGet('application/json'),
+    };
+    restrictFormContentType(req as Request, res as Response, next);
+    expect(next).not.toHaveBeenCalled();
+    expect(res.status).toHaveBeenCalledWith(415);
+  });
+
+  it('returns 415 for POST to statement-of-means path with application/json', () => {
+    req = {
+      method: 'POST',
+      path: '/case/123/response/statement-of-means/employment/employers',
+      get: mockGet('application/json'),
+    };
+    restrictFormContentType(req as Request, res as Response, next);
+    expect(next).not.toHaveBeenCalled();
+    expect(res.status).toHaveBeenCalledWith(415);
+  });
+
+  it('returns 415 for POST to statement-of-means court-orders with application/json', () => {
+    req = {
+      method: 'POST',
+      path: '/case/123/response/statement-of-means/court-orders',
+      get: mockGet('application/json'),
+    };
+    restrictFormContentType(req as Request, res as Response, next);
+    expect(next).not.toHaveBeenCalled();
+    expect(res.status).toHaveBeenCalledWith(415);
+  });
+
+  it('returns 415 for POST to response timeline path with application/json', () => {
+    req = {
+      method: 'POST',
+      path: '/case/123/response/timeline',
+      get: mockGet('application/json'),
+    };
+    restrictFormContentType(req as Request, res as Response, next);
+    expect(next).not.toHaveBeenCalled();
+    expect(res.status).toHaveBeenCalledWith(415);
+  });
+
+  it('returns 415 for POST to claim timeline with application/json', () => {
+    req = {
+      method: 'POST',
+      path: '/claim/timeline',
+      get: mockGet('application/json'),
+    };
+    restrictFormContentType(req as Request, res as Response, next);
+    expect(next).not.toHaveBeenCalled();
+    expect(res.status).toHaveBeenCalledWith(415);
+  });
+
+  it('returns 415 for POST to claim interest-rate with application/json', () => {
+    req = {
+      method: 'POST',
+      path: '/claim/interest-rate',
+      get: mockGet('application/json'),
+    };
+    restrictFormContentType(req as Request, res as Response, next);
+    expect(next).not.toHaveBeenCalled();
+    expect(res.status).toHaveBeenCalledWith(415);
+  });
 });
