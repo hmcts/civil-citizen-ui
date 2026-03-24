@@ -177,7 +177,6 @@ withNightlyPipeline(type, product, component) {
   env.CIVIL_SERVICE_URL = civilServiceUrl
   env.AAC_API_URL = aacApiUrl
   env.TESTS_FOR_ACCESSIBILITY = false
-  env.UNASSIGN_CASES = true
   overrideVaultEnvironments([
     'aat': params.ENVIRONMENT == 'preview' ? 'aat' : params.ENVIRONMENT
   ])
@@ -185,6 +184,15 @@ withNightlyPipeline(type, product, component) {
 
   boolean forceGreenBuild = env.FORCE_GREEN_BUILD.toBoolean()
   boolean runPrevFailedAndNotExecutedTestFiles = env.RUN_PREV_FAILED_AND_NOT_EXECUTED_TEST_FILES.toBoolean()
+
+  if(!runPrevFailedAndNotExecutedTestFiles && !forceGreenBuild) {
+    enableCrossBrowserTest()
+
+    afterAlways('crossBrowserTest') {
+      steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'output/**/*'
+      env.IS_CROSSBROWSER = false
+    }
+  }
 
   enableFullFunctionalTest(200)
 
