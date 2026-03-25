@@ -79,7 +79,6 @@ const isMakeClaimPage = (requestUrl: string): boolean => {
 };
 
 const buildAssignClaimUrlWithId = (req: AppRequest, app: Application): string => {
-  app.locals.assignClaimURL = undefined;
   req.session.assignClaimURL = undefined;
   return `${ASSIGN_CLAIM_URL}`;
 };
@@ -108,16 +107,17 @@ export class OidcMiddleware {
         if (typeof req.query.code === 'string') {
 
           const responseData = await getOidcResponse(redirectUri, req.query.code);
-          req.session.user = app.locals.user = getUserDetails(responseData);
+          req.session.user = getUserDetails(responseData);
           req.session.issuedAt = getSessionIssueTime(responseData);
+
           logger.info('After login payment confirmation ', app.locals.paymentConfirmationUrl);
-          if (app.locals.assignClaimURL || req.session.assignClaimURL) {
+          if (req.session.assignClaimURL) {
             const assignClaimUrlWithClaimId = buildAssignClaimUrlWithId(req, app);
             return res.redirect(assignClaimUrlWithClaimId);
           }
-          if (app.locals.claimIssueTasklist || req.session.claimIssueTasklist) {
+
+          if (req.session.claimIssueTasklist) {
             req.session.claimIssueTasklist = undefined;
-            app.locals.claimIssueTasklist = undefined;
             return res.redirect(CLAIMANT_TASK_LIST_URL);
           }
 
@@ -148,7 +148,7 @@ export class OidcMiddleware {
       });
 
       req.session.destroy(() => {
-        req.session = app.locals.user = undefined;
+        req.session = undefined;
         res.redirect(idamSignOutUrl + '?' + params.toString());
       });
     });
@@ -179,12 +179,14 @@ export class OidcMiddleware {
         ) {
           return next();
         }
+
         if (requestIsForAssigningClaimForDefendant(req)) {
-          app.locals.assignClaimURL = appReq.session.assignClaimURL = ASSIGN_CLAIM_URL;
+          appReq.session.assignClaimURL = ASSIGN_CLAIM_URL;
         }
         if (requestIsForClaimIssueTaskList(req)) {
-          app.locals.claimIssueTasklist = appReq.session.claimIssueTasklist = true;
+          appReq.session.claimIssueTasklist = true;
         }
+
         logger.info('redirecting url ', req.originalUrl);
         if (isPaymentConfirmationUrl(req)) {
           const claimId = getClaimId(req.originalUrl);
