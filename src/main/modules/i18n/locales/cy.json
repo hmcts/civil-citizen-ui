@@ -1473,9 +1473,11 @@
         "IF_YOU_WERE_UNABLE": "Os nad oeddech yn gallu mynd i’r apwyntiad cyfryngu oherwydd amgylchiadau eithriadol, gallwch esbonio pam gyda thystiolaeth ategol, megis nodyn gan feddyg neu ffotograffau o ddogfennau perthnasol. Weithiau gelwir hyn yn ffeilio cynrychiolaeth. Os yw’r barnwr yn derbyn eich rhesymau dros beidio â mynychu, ni fyddwch yn cael cosb.",
         "YOU_CANNOT_WITHDRAW": "Ni allwch dynnu dogfen yn ôl ar ôl i chi ei chyflwyno. Os ydych chi am ychwanegu mwy o wybodaeth at rywbeth rydych chi eisoes wedi’i gyflwyno, gallwch chi lwytho'r ddogfen eto. Dylech ychwanegu rhif fersiwn at yr enw, er enghraifft 'fersiwn2'.",
         "THE_OTHER_PARTIES": "Bydd y partïon eraill yn gallu gweld y dogfennau rydych chi wedi’u llwytho, a byddwch chi’n gallu gweld eu dogfennau nhw.",
+
         "DEADLINES_FOR_UPLOADING_TITLE": "Dyddiadau cau ar gyfer llwytho dogfennau",
         "YOU_HAVE_UNTIL": "Mae gennych hyd at 14 diwrnod cyn eich gwrandawiad i gyflwyno dogfennau.",
         "YOU_DO_NOT_HAVE": "Nid oes angen i chi lwytho eich holl ddogfennau ar unwaith. Gallwch ddod yn ôl i’w llwytho yn nes ymlaen.",
+
         "BEFORE_YOU_UPLOAD_TITLE": "Cyn ichi lwytho eich dogfennau",
         "BEFORE YOU UPLOAD": "Cyn i chi lwytho’r ddogfen, rhowch enw iddi sy’n dweud wrth y llys beth ydyw, er enghraifft “Datganiad cyfryngu di-bresenoldeb gan Jane Smith”/",
         "EACH_DOCUMENT_MUST": "Rhaid i bob dogfen fod yn llai na 100MB. Gallwch uwchlwytho'r mathau canlynol o ffeiliau: DOC/DOCX (Word), XLS/XLSX (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.",
@@ -3174,10 +3176,16 @@
       "TITLE": "Nid oes gennych awdurdod i weld yr hawliad!"
     },
     "FIRST_CONTACT_CLAIM_REFERENCE": {
-      "CLAIM_NUMBER": "Rhif hawlio",
-      "ENTER_CLAIM": "Rhowch y rhif hawlio o'r e-bost neu'r llythyr a anfonwyd gennym.",
-      "PAGE_TITLE": "Nodwch rif eich hawliad",
-      "TITLE": "Nodwch rif eich hawliad"
+      "CLAIM_NUMBER": "Rhif hawliad",
+      "ENTER_CLAIM": "Mae hwn yn rif 8 nod ac mae ar yr e-bost neu'r llythyr wnaethom ei anfon atoch. Mae'n cynnwys 3 rhif yna 2 lythyren yna 3 rhif, er enghraifft 305JE126.",
+      "PAGE_TITLE": "Rhowch eich rhif hawliad",
+      "TITLE": "Rhowch eich rhif hawliad",
+      "CLAIM_NUMBER_HINT": "Er enghraifft, 305JE126",
+      "HOW_IF_CLAIM_NUMBER_NOT_WORK": "Os nad yw eich rhif hawliad yn gweithio neu'n dilyn y fformat hwn",
+      "THE_LETTERS_IN_YOUR_CLAIM": "Dylai'r llythrennau yn eich rhif hawliad fod yn MC, JE, JF, JG neu JH. Os oes gennych rif hawliad gyda fformat gwahanol mae'n debyg eich bod yn y lle anghywir.",
+      "CHECK_THE_EMAIL_OR_LETTER": "Gwiriwch yr e-bost neu'r llythyr gawsoch chi pan wnaethoch glywed am yr hawliad yn eich erbyn chi. Gwnewch yn siŵr eich bod yn dilyn y ddolen gywir i ymateb i'r hawliad am arian neu ",
+      "READ_MORE_GUIDANCE": "darllenwch ganllawiau pellach ar GOV.UK.",
+      "IF_YOUR_CLAIM_NUMBER_STILL_NOT_WORK": "Os bydd eich rhif hawliad yn dal ddim yn gweithio yna cysylltwch â ni."
     },
     "FIRST_CONTACT_CLAIM_SUMMARY": {
       "CLAIM_NUMBER": "Rhif hawlio",
@@ -5498,7 +5506,7 @@
     "APPLICATION_TYPE_REQUIRED": "Dewiswch gais",
     "CHOOSE_TYPE_OF_INTEREST": "Dewis math o log",
     "CLAIM_DETAILS": "Claim details",
-    "CLAIM_NUMBER_REQUIRED": "Mae angen i chi nodi rhif yr hawliad",
+    "CLAIM_NUMBER_REQUIRED": "Rhowch eich rhif hawliad dilys o'r llythyr neu'r e-bost wnaethom ei anfon atoch - dylai gynnwys 3 rhif yna'r llythrennau MC, JE, JF, JG neu JH, yna 3 rhif, er enghraifft 305JE126",
     "CLAIM_LANGUAGE_REQUIRED": "Dewiswch ym mha iaith rydych chi eisiau gwneud eich cais",
     "RESPONSE_LANGUAGE_REQUIRED": "Dewiswch ym mha iaith rydych chi eisiau ymateb i’r hawliad hwn",
     "CLAIM_TYPE_REQUIRED": "Dewiswch dros bwy rydych chi'n gwneud hawliad",
@@ -5866,7 +5874,7 @@
     "VALID_CLAIM_INTEREST_FROM": "Dewiswch o ba bryd rydych chi’n hawlio llog?",
     "VALID_CLAIM_INTEREST_END_DATE": "Dewiswch pryd rydych chi am roi'r gorau i hawlio llog",
     "VALID_CLAIM_NUMBER": "Nodwch rif yr hawliad",
-    "VALID_CLAIM_REFERENCE_NUMBER": "Rhowch rif hawliad dilys",
+    "VALID_CLAIM_REFERENCE_NUMBER": "Rhowch eich rhif hawliad dilys o'r llythyr neu'r e-bost wnaethom ei anfon atoch - dylai gynnwys 3 rhif yna'r llythrennau MC, JE, JF, JG neu JH, yna 3 rhif, er enghraifft 305JE126",
     "VALID_DATE": "Rhowch ddyddiad dilys",
     "VALID_DATE_IN_PAST": "Nodwch ddyddiad cyn {{dateToday}}",
     "VALID_DATE_NOT_IN_PAST": "Nodwch ddyddiad heddiw neu ddyddiad yn y dyfodol",
