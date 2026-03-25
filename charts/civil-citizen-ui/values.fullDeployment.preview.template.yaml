@@ -1,5 +1,8 @@
-civil-service:
+global:
+  postgresHostname: civil-preview.postgres.database.azure.com
+  databaseNamePrefix: "pr-${CHANGE_ID}-"
 
+civil-service:
   java:
     environment:
       TASK_MANAGEMENT_ENABLED: true
