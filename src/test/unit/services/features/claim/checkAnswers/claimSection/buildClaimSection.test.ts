@@ -48,11 +48,11 @@ describe('Citizen Claim Section', () => {
     expect(summarySections.sections[constVal.INDEX_CLAIM_SECTION].summaryList.rows[5].actions?.items.length).toBe(1);
     expect(summarySections.sections[constVal.INDEX_CLAIM_SECTION].summaryList.rows[5].actions?.items[0].href).toBe(CLAIM_EVIDENCE_URL);
     expect(summarySections.sections[constVal.INDEX_CLAIM_SECTION].summaryList.rows[6].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.EVIDENCE_CONTRACTS_AND_AGREEMENTS');
-    expect(summarySections.sections[constVal.INDEX_CLAIM_SECTION].summaryList.rows[6].value.text).toBe('roof');
+    expect(summarySections.sections[constVal.INDEX_CLAIM_SECTION].summaryList.rows[6].value.html).toBe('roof');
     expect(summarySections.sections[constVal.INDEX_CLAIM_SECTION].summaryList.rows[6].actions?.items.length).toBe(1);
     expect(summarySections.sections[constVal.INDEX_CLAIM_SECTION].summaryList.rows[6].actions?.items[0].href).toBe(CLAIM_EVIDENCE_URL);
     expect(summarySections.sections[constVal.INDEX_CLAIM_SECTION].summaryList.rows[7].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.EVIDENCE_EXPERT_WITNESS');
-    expect(summarySections.sections[constVal.INDEX_CLAIM_SECTION].summaryList.rows[7].value.text).toBe('door');
+    expect(summarySections.sections[constVal.INDEX_CLAIM_SECTION].summaryList.rows[7].value.html).toBe('door');
     expect(summarySections.sections[constVal.INDEX_CLAIM_SECTION].summaryList.rows[7].actions?.items.length).toBe(1);
     expect(summarySections.sections[constVal.INDEX_CLAIM_SECTION].summaryList.rows[7].actions?.items[0].href).toBe(CLAIM_EVIDENCE_URL);
   });
