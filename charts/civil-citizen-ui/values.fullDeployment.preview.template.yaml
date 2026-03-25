@@ -103,7 +103,7 @@ civil-service:
             disabled: false
 
     logstash:
-      image: hmctsprod.azurecr.io/imported/logstash/logstash
+      image: hmctsprod.azurecr.io/ccd/logstash
       imageTag: "7.16.1"
       imagePullPolicy: "IfNotPresent"
       logstashJavaOpts: -Xmx1g -Xms512M
