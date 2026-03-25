@@ -1,8 +1,13 @@
 const config = require('../../../../config');
 const RejectAll = require('../../../response/steps/response');
 const {rejectOfClaimType} = require('../../../commons/responseVariables');
+const {stubPostcodeLookup} = require('../../../helpers/postcodeMock');
 
 Feature('Response journey defendant reject all').tag('@e2e');
+
+Before(async () => {
+  await stubPostcodeLookup();
+});
 
 Scenario('already paid', () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {

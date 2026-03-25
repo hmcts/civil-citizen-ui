@@ -15,6 +15,7 @@ const claimReferenceController = Router();
 const claimReferenceViewPath = 'features/public/firstContact/claim-reference';
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
+const CASE_REFERENCE_REGEX = /^\d{3}[A-Z]{2}\d{3}$/i;
 
 claimReferenceController.get(FIRST_CONTACT_CLAIM_REFERENCE_URL, (req: Request, res: Response) => {
   res.render(claimReferenceViewPath, { form: new GenericForm(new ClaimReference(req.body.claimReferenceValue)) });
@@ -29,7 +30,8 @@ claimReferenceController.post(FIRST_CONTACT_CLAIM_REFERENCE_URL, (async (req: Re
   } else {
     try {
       req.session = saveFirstContactData(req.session as AppSession, {claimReference: req.body.claimReferenceValue});
-      if (req.body.claimReferenceValue?.toUpperCase().includes('MC') && await civilServiceClient.isDefendantLinked(req.body.claimReferenceValue)) {
+      if (CASE_REFERENCE_REGEX.test(req.body.claimReferenceValue)
+        && await civilServiceClient.isDefendantLinked(req.body.claimReferenceValue)) {
         res.redirect(DASHBOARD_URL);
       } else {
         res.redirect(FIRST_CONTACT_PIN_URL);

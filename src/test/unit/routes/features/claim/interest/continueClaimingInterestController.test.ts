@@ -55,7 +55,7 @@ describe('Continue Claiming Interest page', () => {
         .post(CLAIM_INTEREST_CONTINUE_CLAIMING_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.VALID_YES_NO_SELECTION'));
+          expect(res.text).toContain(t('ERRORS.CLAIM_INTEREST_REQUIRED'));
         });
     });
 
