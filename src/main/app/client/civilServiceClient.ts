@@ -285,7 +285,10 @@ export class CivilServiceClient {
   async uploadDocument(req: AppRequest, file: FileUpload): Promise<CaseDocument> {
     try {
       const formData = new FormData();
-      formData.append('file', new Blob([file.buffer]) , file.originalname);
+      const binaryContent: ArrayBuffer = file.buffer instanceof Buffer
+        ? Uint8Array.from(file.buffer).buffer
+        : file.buffer as ArrayBuffer;
+      formData.append('file', new Blob([binaryContent]), file.originalname);
       const response= await this.client.post(CIVIL_SERVICE_UPLOAD_DOCUMENT_URL, formData,
         {headers: {'Content-Type': 'multipart/form-data', 'Authorization': `Bearer ${req.session?.user?.accessToken}`}});
       if (!response.data) {

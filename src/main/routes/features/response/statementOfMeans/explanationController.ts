@@ -15,7 +15,7 @@ const explanationController = Router();
 
 explanationController.get(CITIZEN_EXPLANATION_URL, async (req, res, next: NextFunction) => {
   try {
-    res.render(explanationViewPath, {form: new GenericForm(await getExplanation(generateRedisKey(<AppRequest>req)))});
+    res.render(explanationViewPath, {form: new GenericForm(await getExplanation(generateRedisKey(req as unknown as AppRequest)))});
   } catch (error) {
     next(error);
   }
@@ -30,7 +30,7 @@ explanationController.post(CITIZEN_EXPLANATION_URL,
       res.render(explanationViewPath, {form});
     } else {
       try {
-        await saveExplanation(generateRedisKey(<AppRequest>req), explanation);
+        await saveExplanation(generateRedisKey(req as unknown as AppRequest), explanation);
         res.redirect(constructResponseUrlWithIdParams(req.params.id, RESPONSE_TASK_LIST_URL));
       } catch (error) {
         next(error);
