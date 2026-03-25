@@ -205,6 +205,6 @@ describe('Citizen Claim amount Section', () => {
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[1].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.CLAIM_INTEREST');
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[1].value.html).toBe('COMMON.VARIATION.NO');
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[2].key.text).toBe('PAGES.HELP_WITH_FEES.REFERENCE_NUMBER');
-    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[2].value.html).toBe('PAGES.HELP_WITH_FEES.REFERENCE_NUMBER_NONE');
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[2].value.text).toBe('PAGES.HELP_WITH_FEES.REFERENCE_NUMBER_NONE');
   });
 });
