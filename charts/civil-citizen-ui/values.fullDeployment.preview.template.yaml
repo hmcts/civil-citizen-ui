@@ -8,7 +8,8 @@ civil-service:
       HMC_HEARINGS_TOPIC_NAME: "hmc-to-cft-aat"
       HMC_HEARINGS_TOPIC_SUBSCRIPTION_NAME: "${SERVICE_NAME}-hmcsb-civil"
       HMC_HEARINGS_TOPIC_NAMESPACE: "hmc-servicebus-aat"
-      ROLE_ASSIGNMENT_URL: ${ROLE_ASSIGNMENT_URL}
+      ROLE_ASSIGNMENT_URL: https://am-role-assignment-civil-citizen-ui-pr-${CHANGE_ID}.preview.platform.hmcts.net
+      CORE_CASE_DATA_API_URL: https://ccd-data-store-api-civil-citizen-ui-pr-${CHANGE_ID}.preview.platform.hmcts.net
       CMC_DB_HOST: civil-preview.postgres.database.azure.com
       CMC_DB_CONNECTION_OPTIONS: "?stringtype=unspecified&reWriteBatchedInserts=true&sslmode=require"
       CMC_DB_USERNAME: hmcts
@@ -283,7 +284,6 @@ civil-service:
               }
           }
 
-
   xui-webapp:
     nodejs:
       environment:
@@ -369,8 +369,17 @@ servicebus:
       - name: jrd-topic
         subscriptionNeeded: yes
 
+global:
+  jobKind: CronJob
+
 wa:
   enabled: true
+  global:
+    postgresUsername: hmcts
+    postgresSecret: postgres
+    postgresHost: ${SERVICE_NAME}-postgresql
+  #    postgresHost: civil-preview.postgres.database.azure.com
+  #    databaseNamePrefix: "pr-${CHANGE_ID}-"
   wa:
     postgresql:
       enabled: false
@@ -379,6 +388,14 @@ wa:
     java:
       ingressHost: wa-case-event-handler-${SERVICE_FQDN}
       releaseNameOverride: ${SERVICE_NAME}-wa-case-event-handler
+      secrets:
+        AZURE_SERVICE_BUS_CONNECTION_STRING:
+          secretRef: civil-sb-preview
+          key: connectionString
+        POSTGRES_PASSWORD:
+          secretRef: "{{ .Values.global.postgresSecret }}"
+          key: PASSWORD
+          disabled: true
       environment:
         CCD_URL: http://{{ .Release.Name }}-ccd-data-store-api
         CAMUNDA_URL: http://{{ .Release.Name }}-camunda/engine-rest
@@ -418,6 +435,17 @@ wa:
         POSTGRES_HOST: "{{ .Values.global.postgresHostname }}"
         POSTGRES_NAME: "{{ .Values.global.databaseNamePrefix }}cft-task-db"
         POSTGRES_USERNAME: hmcts
+        POSTGRES_CONNECTION_OPTIONS: "?stringtype=unspecified"
+        POSTGRES_HOST: "{{ .Release.Name }}-postgresql"
+        POSTGRES_REPLICA_HOST: "{{ .Release.Name }}-postgresql"
+        POSTGRES_REPLICA_PORT: 5432
+        POSTGRES_REPLICA_NAME: "cft_task_db_replica"
+        POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+        REPLICATION_USERNAME: postgres
+        REPLICATION_PASSWORD: ${POSTGRES_PASSWORD}
+        SPRING_PROFILES_ACTIVE: "preview"
+        DB_READER_USERNAME: postgres
+        WA_S2S_AUTHORIZED_SERVICES: ccd,ccd_data,ccd_gw,ccd_ps,iac,wa_task_management_api,xui_webapp,wa_task_monitor,camunda_bpm,wa_workflow_api,wa_case,civil_service
       secrets:
         POSTGRES_PASSWORD:
           secretRef: "{{ .Values.global.postgresSecret }}"

@@ -15,6 +15,8 @@
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
       {% set errors = form.getErrors() %}
+      {% set hasDateError = form.hasFieldError('date') or form.hasFieldError('day') or form.hasFieldError('month') or form.hasFieldError('year') %}
+      {% set dateError = form.errorFor('date') or form.errorFor('day') or form.errorFor('month') or form.errorFor('year') %}
       {% if form.hasErrors() %}
         {{ errorSummary(errors, t) }}
       {% endif %}
@@ -29,12 +31,7 @@
         <div class="govuk-grid-column-two-thirds">
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
-            <div class="govuk-form-group {% if form.hasErrors() %} govuk-form-group--error{% endif %}">
-              {% if form.hasErrors() %}
-                {% for error in errors %}
-                  <span class="govuk-error-message">{{ t(error.text) }}</span>
-                {% endfor %}
-              {% endif %}
+            <div class="govuk-form-group {% if hasDateError %} govuk-form-group--error{% endif %}">
               {{ govukDateInput({
                 id: "dateOfBirth",
                 type: "number",
@@ -51,6 +48,9 @@
                     date: today.getDate() + ' ' + today.getMonth() + ' ' + (today.getFullYear() - 18)
                   })
                 },
+                errorMessage: {
+                  text: t(dateError)
+                } if hasDateError,
                 items: [
                   {
                     classes: "govuk-input--width-2 govuk-input--error" if form.hasFieldError('day') else "govuk-input--width-2",
@@ -78,6 +78,8 @@
                   }
                 ]
               }) }}
+            </div>
+            <div class="govuk-form-group {% if form.hasFieldError('reason') %} govuk-form-group--error{% endif %}">
               {{ govukTextarea({
                 name: "reason",
                 id: "reason",
