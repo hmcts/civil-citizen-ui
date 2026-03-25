@@ -84,7 +84,7 @@ export const saveDraftClaim =async (claimId: string, claim: Claim, doNotThrowErr
       JSON.stringify(storedClaimResponse));
     await draftStoreClient.expireat(claimId, expirySeconds);
   }
-}
+};
 
 const createNewCivilClaimResponse = (claimId: string) => {
   const storedClaimResponse = new CivilClaimResponse();
