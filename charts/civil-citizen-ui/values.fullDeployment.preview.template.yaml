@@ -103,7 +103,7 @@ civil-service:
             disabled: false
 
     logstash:
-      image: hmctspublic.azurecr.io/imported/logstash/logstash
+      image: hmctsprod.azurecr.io/imported/logstash/logstash
       imageTag: "7.16.1"
       imagePullPolicy: "IfNotPresent"
       logstashJavaOpts: -Xmx1g -Xms512M
@@ -388,14 +388,6 @@ wa:
     java:
       ingressHost: wa-case-event-handler-${SERVICE_FQDN}
       releaseNameOverride: ${SERVICE_NAME}-wa-case-event-handler
-      secrets:
-        AZURE_SERVICE_BUS_CONNECTION_STRING:
-          secretRef: civil-sb-preview
-          key: connectionString
-        POSTGRES_PASSWORD:
-          secretRef: "{{ .Values.global.postgresSecret }}"
-          key: PASSWORD
-          disabled: true
       environment:
         CCD_URL: http://{{ .Release.Name }}-ccd-data-store-api
         CAMUNDA_URL: http://{{ .Release.Name }}-camunda/engine-rest
@@ -435,8 +427,6 @@ wa:
         POSTGRES_HOST: "{{ .Values.global.postgresHostname }}"
         POSTGRES_NAME: "{{ .Values.global.databaseNamePrefix }}cft-task-db"
         POSTGRES_USERNAME: hmcts
-        POSTGRES_CONNECTION_OPTIONS: "?stringtype=unspecified"
-        POSTGRES_HOST: "{{ .Release.Name }}-postgresql"
         POSTGRES_REPLICA_HOST: "{{ .Release.Name }}-postgresql"
         POSTGRES_REPLICA_PORT: 5432
         POSTGRES_REPLICA_NAME: "cft_task_db_replica"
