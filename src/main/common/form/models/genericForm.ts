@@ -80,11 +80,11 @@ export class GenericForm<Model> {
   }
 
   public async validate() {
-    this.errors = await validator.validate(this.model as unknown as object);
+    this.errors = await validator.validate(this.model as unknown as object, {forbidUnknownValues: false});
   }
 
   public validateSync() {
-    this.errors = validator.validateSync(this.model as unknown as object);
+    this.errors = validator.validateSync(this.model as unknown as object, {forbidUnknownValues: false});
   }
 
   private getAllChildrenErrors(error: ValidationError, parentProperty?: string): FormValidationError[] {
