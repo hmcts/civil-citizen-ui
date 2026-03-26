@@ -39,10 +39,6 @@ export const getRedirectUrl = async (claimId: string, req: AppRequest): Promise<
     return redirectingUrl;
   }
   catch (error) {
-    if (error instanceof Error && error.message?.includes('Case not found')) {
-      logger.warn(`Draft claim not found for claim id ${req.params.id}. Redirecting to dashboard.`);
-      return DASHBOARD_URL;
-    }
     logger.error(error);
     throw error;
   }
