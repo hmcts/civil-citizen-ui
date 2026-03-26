@@ -142,9 +142,9 @@ describe('Check Answers service', () => {
       expect(result[0].rows[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.APPLICATION_TYPE');
       expect(result[0].rows[0].value.html).toEqual('PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.MORE_TIME');
       expect(result[0].rows[1].key.text).toEqual('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHAT_ORDER');
-      expect(result[0].rows[1].value.html).toEqual('test1');
+      expect(result[0].rows[1].value.text).toEqual('test1');
       expect(result[0].rows[2].key.text).toEqual('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_REQUESTING');
-      expect(result[0].rows[2].value.html).toEqual('test1');
+      expect(result[0].rows[2].value.text).toEqual('test1');
     });
 
     it('should give correct row count for application type = SETTLE_BY_CONSENT', () => {
