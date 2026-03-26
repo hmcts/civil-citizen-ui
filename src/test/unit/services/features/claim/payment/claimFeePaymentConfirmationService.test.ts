@@ -77,4 +77,12 @@ describe('Claim Fee PaymentConfirmation Service', () => {
     );
   });
 
+  it('should redirect to dashboard when draft case is not found on repeat hit', async () => {
+    jest.spyOn(draftStoreService, 'getCaseDataFromStore').mockRejectedValueOnce(new Error('Case not found...'));
+
+    const actualPaymentRedirectUrl = await getRedirectUrl(claimId, mockedAppRequest);
+
+    expect(actualPaymentRedirectUrl).toBe(DASHBOARD_URL);
+  });
+
 });

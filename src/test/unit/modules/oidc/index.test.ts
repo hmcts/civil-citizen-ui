@@ -19,6 +19,7 @@ const mockDraftStoreClient = {
   set: jest.fn(),
   expireat: jest.fn(),
   get: jest.fn(),
+  keys: jest.fn(),
   del: jest.fn(),
 };
 app.locals.draftStoreClient = mockDraftStoreClient;
@@ -35,6 +36,8 @@ jest.mock('../../../../main/app/auth/user/oidc');
 
 describe('OIDC middleware', () => {
   beforeEach(() => {
+    jest.clearAllMocks();
+    mockDraftStoreClient.keys.mockResolvedValue([]);
     app.request['session'] = {
       save: (callback: (err?: any) => void) => callback(),
       destroy: (callback: () => void) => callback(),
@@ -188,7 +191,10 @@ describe('OIDC middleware', () => {
 
       await request(app).get(CLAIM_FEE_PAYMENT_CONFIRMATION_URL_WITH_UNIQUE_ID.replace(':id', '1729760747011812')).expect((res) => {
         expect(res.status).toBe(302);
-        expect(mockDraftStoreClient.set).toHaveBeenCalledWith('123456789CLAIMISSUEDconfirmationUrl', CLAIM_FEE_PAYMENT_CONFIRMATION_URL_WITH_UNIQUE_ID.replace(':id', '1729760747011812'));
+        expect(mockDraftStoreClient.set).toHaveBeenCalledWith(
+          '1729760747011812CLAIMISSUED123456789confirmationUrl',
+          CLAIM_FEE_PAYMENT_CONFIRMATION_URL_WITH_UNIQUE_ID.replace(':id', '1729760747011812'),
+        );
         expect(res.text).toContain(SIGN_IN_URL);
       });
     });

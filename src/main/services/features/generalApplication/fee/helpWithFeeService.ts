@@ -61,7 +61,7 @@ export const getRedirectUrl = async (claimId: string, applyHelpWithFees: Generic
         claim.generalApplication.applicationFeePaymentDetails = paymentRedirectInformation;
       }
       await saveDraftClaim(generateRedisKey(<AppRequest>req), claim, true);
-      await saveUserId(claimId, req.session.user.id, FeeType.GENERALAPPLICATION);
+      await saveUserId(claimId, FeeType.GENERALAPPLICATION, req.session.user.id);
       try {
         const paymentReference = claim.generalApplication.applicationFeePaymentDetails?.paymentReference;
         const paymentStatus = await getGaFeePaymentStatus(generalApplicationId, paymentReference, req);
