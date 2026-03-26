@@ -13,6 +13,7 @@ const mockDraftStoreClient = {
   set: jest.fn(),
   expireat: jest.fn(),
   get: jest.fn(),
+  keys: jest.fn(),
   del: jest.fn(),
 };
 app.locals.draftStoreClient = mockDraftStoreClient;
@@ -20,6 +21,7 @@ app.locals.draftStoreClient = mockDraftStoreClient;
 describe('Payment session store service', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    mockDraftStoreClient.keys.mockResolvedValue([]);
   });
 
   it('should save the userId to the draft store and log the action', async () => {
@@ -93,10 +95,11 @@ describe('Payment session store service', () => {
     const originalUrl = 'url/1234567890123456/';
     const userId = 'user123';
     const feeType = 'HEARING';
+    const claimId = '1234567890123456';
 
-    await saveOriginalPaymentConfirmationUrl(userId, feeType, originalUrl);
+    await saveOriginalPaymentConfirmationUrl(claimId, feeType, userId, originalUrl);
 
-    expect(mockDraftStoreClient.set).toHaveBeenCalledWith('user123HEARINGconfirmationUrl', originalUrl);
+    expect(mockDraftStoreClient.set).toHaveBeenCalledWith('1234567890123456HEARINGuser123confirmationUrl', originalUrl);
   });
 
   it('should log a warning when overwriting an existing payment confirmation url', async () => {
@@ -104,47 +107,51 @@ describe('Payment session store service', () => {
     const newUrl = 'url/new/';
     const userId = 'user123';
     const feeType = 'HEARING';
+    const claimId = '1234567890123456';
     mockDraftStoreClient.get.mockResolvedValueOnce(existingUrl);
 
-    await saveOriginalPaymentConfirmationUrl(userId, feeType, newUrl);
+    await saveOriginalPaymentConfirmationUrl(claimId, feeType, userId, newUrl);
 
-    expect(mockDraftStoreClient.get).toHaveBeenCalledWith('user123HEARINGconfirmationUrl');
-    expect(mockDraftStoreClient.set).toHaveBeenCalledWith('user123HEARINGconfirmationUrl', newUrl);
+    expect(mockDraftStoreClient.get).toHaveBeenCalledWith('1234567890123456HEARINGuser123confirmationUrl');
+    expect(mockDraftStoreClient.set).toHaveBeenCalledWith('1234567890123456HEARINGuser123confirmationUrl', newUrl);
   });
 
   it('should NOT log a warning when the same payment confirmation url is saved', async () => {
     const url = 'url/same/';
     const userId = 'user123';
     const feeType = 'HEARING';
+    const claimId = '1234567890123456';
     mockDraftStoreClient.get.mockResolvedValueOnce(url);
 
-    await saveOriginalPaymentConfirmationUrl(userId, feeType, url);
+    await saveOriginalPaymentConfirmationUrl(claimId, feeType, userId, url);
 
-    expect(mockDraftStoreClient.get).toHaveBeenCalledWith('user123HEARINGconfirmationUrl');
-    expect(mockDraftStoreClient.set).toHaveBeenCalledWith('user123HEARINGconfirmationUrl', url);
+    expect(mockDraftStoreClient.get).toHaveBeenCalledWith('1234567890123456HEARINGuser123confirmationUrl');
+    expect(mockDraftStoreClient.set).toHaveBeenCalledWith('1234567890123456HEARINGuser123confirmationUrl', url);
   });
 
   it('should get payment confirmation url', async () => {
     const userId = 'user123';
     const feeType = 'HEARING';
+    const claimId = '1234567890123456';
     mockDraftStoreClient.get.mockResolvedValueOnce('url');
 
-    const result = await getPaymentConfirmationUrl(userId, feeType);
+    const result = await getPaymentConfirmationUrl(claimId, feeType, userId);
 
     expect(result).toBe('url');
-    expect(mockDraftStoreClient.get).toHaveBeenCalledWith('user123HEARINGconfirmationUrl');
+    expect(mockDraftStoreClient.get).toHaveBeenCalledWith('1234567890123456HEARINGuser123confirmationUrl');
   });
 
   it('should fallback to OLD key format for payment confirmation url', async () => {
     const userId = 'user123';
     const feeType = 'HEARING';
+    const claimId = '1234567890123456';
     mockDraftStoreClient.get.mockResolvedValueOnce(null); // New key miss
     mockDraftStoreClient.get.mockResolvedValueOnce('url_old'); // Old key hit
 
-    const result = await getPaymentConfirmationUrl(userId, feeType);
+    const result = await getPaymentConfirmationUrl(claimId, feeType, userId);
 
     expect(result).toBe('url_old');
-    expect(mockDraftStoreClient.get).toHaveBeenCalledWith('user123HEARINGconfirmationUrl');
+    expect(mockDraftStoreClient.get).toHaveBeenCalledWith('1234567890123456HEARINGuser123confirmationUrl');
     expect(mockDraftStoreClient.get).toHaveBeenCalledWith('user123userIdForPayment');
   });
 
@@ -161,10 +168,11 @@ describe('Payment session store service', () => {
   it('should delete payment confirmation url', async () => {
     const userId = 'user123';
     const feeType = 'HEARING';
+    const claimId = '1234567890123456';
 
-    await deletePaymentConfirmationUrl(userId, feeType);
+    await deletePaymentConfirmationUrl(claimId, feeType, userId);
 
-    expect(mockDraftStoreClient.del).toHaveBeenCalledWith('user123HEARINGconfirmationUrl');
+    expect(mockDraftStoreClient.del).toHaveBeenCalledWith('1234567890123456HEARINGuser123confirmationUrl');
     expect(mockDraftStoreClient.del).toHaveBeenCalledWith('user123userIdForPayment');
   });
 
@@ -181,9 +189,10 @@ describe('Payment session store service', () => {
   it('should log warning when payment confirmation url is NOT found', async () => {
     const userId = 'user123';
     const feeType = 'HEARING';
+    const claimId = '1234567890123456';
     mockDraftStoreClient.get.mockResolvedValue(null);
 
-    const result = await getPaymentConfirmationUrl(userId, feeType);
+    const result = await getPaymentConfirmationUrl(claimId, feeType, userId);
 
     expect(result).toBeNull();
   });
@@ -207,18 +216,20 @@ describe('Payment session store service', () => {
   it('should throw error when saving original payment confirmation url fails', async () => {
     const userId = 'user123';
     const feeType = 'HEARING';
+    const claimId = '1234567890123456';
     const url = 'url';
     mockDraftStoreClient.set.mockRejectedValueOnce(new Error(TestMessages.SOMETHING_WENT_WRONG));
 
-    await expect(saveOriginalPaymentConfirmationUrl(userId, feeType, url)).rejects.toThrow(TestMessages.SOMETHING_WENT_WRONG);
+    await expect(saveOriginalPaymentConfirmationUrl(claimId, feeType, userId, url)).rejects.toThrow(TestMessages.SOMETHING_WENT_WRONG);
   });
 
   it('should throw error when getting payment confirmation url fails', async () => {
     const userId = 'user123';
     const feeType = 'HEARING';
+    const claimId = '1234567890123456';
     mockDraftStoreClient.get.mockRejectedValueOnce(new Error(TestMessages.SOMETHING_WENT_WRONG));
 
-    await expect(getPaymentConfirmationUrl(userId, feeType)).rejects.toThrow(TestMessages.SOMETHING_WENT_WRONG);
+    await expect(getPaymentConfirmationUrl(claimId, feeType, userId)).rejects.toThrow(TestMessages.SOMETHING_WENT_WRONG);
   });
 
   it('should throw error when deleting payment confirmation url fails', async () => {
@@ -226,6 +237,6 @@ describe('Payment session store service', () => {
     const feeType = 'HEARING';
     mockDraftStoreClient.del.mockRejectedValueOnce(new Error(TestMessages.SOMETHING_WENT_WRONG));
 
-    await expect(deletePaymentConfirmationUrl(userId, feeType)).rejects.toThrow(TestMessages.SOMETHING_WENT_WRONG);
+    await expect(deletePaymentConfirmationUrl(undefined, feeType, userId)).rejects.toThrow(TestMessages.SOMETHING_WENT_WRONG);
   });
 });

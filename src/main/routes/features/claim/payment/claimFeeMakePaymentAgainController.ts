@@ -11,7 +11,7 @@ claimFeeMakePaymentAgainController.get(CLAIM_FEE_MAKE_PAYMENT_AGAIN_URL, (async 
   try {
     const claimId = req.params.id;
     const redirectUrl = await getRedirectUrl(claimId, <AppRequest>req);
-    await saveUserId(claimId, req.session.user.id, FeeType.CLAIMISSUED);
+    await saveUserId(claimId, FeeType.CLAIMISSUED, req.session.user.id);
     res.redirect(redirectUrl);
   }catch (error) {
     next(error);

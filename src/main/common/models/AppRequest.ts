@@ -35,6 +35,8 @@ export interface AppSession extends Session {
   history?: string[];
   qmShareConfirmed: boolean;
   caseReference?: string;
+  paymentConfirmationFeeType?: string;
+  paymentConfirmationClaimId?: string;
 }
 
 export interface UserDetails {
