@@ -15,6 +15,7 @@ import {
 } from 'services/features/caseProgression/requestForReconsideration/requestForReviewContent';
 import {Claim} from 'models/claim';
 import {documentIdExtractor} from 'common/utils/stringUtils';
+import {normalizeRouteParam} from 'common/utils/routeParamUtils';
 
 const requestForReconsiderationConfirmationViewPath = 'features/caseProgression/requestForReconsideration/confirmation.njk';
 const requestForReconsiderationConfirmationController = Router();
@@ -23,7 +24,7 @@ const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServi
 
 requestForReconsiderationConfirmationController.get(REQUEST_FOR_RECONSIDERATION_CONFIRMATION_URL, (async (req, res, next: NextFunction) => {
   try {
-    const claimId = req.params.id;
+    const claimId = normalizeRouteParam(req.params.id);
     const claim: Claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const dashboardUrl = claim.caseRole === CaseRole.CLAIMANT

@@ -6,14 +6,15 @@ import {
 } from 'modules/draft-store/draftStoreService';
 import {getClaimById} from 'modules/utilityService';
 import {AppRequest} from 'models/AppRequest';
+import {normalizeRouteParam} from 'common/utils/routeParamUtils';
 
 const cancelController = Router();
 
 cancelController.get(CANCEL_URL, (async (req, res, next) => {
   try {
-    const claimId = req.params.id;
+    const claimId = normalizeRouteParam(req.params.id);
     const redisKey = generateRedisKey(<AppRequest>req);
-    const propertyName = req.params.propertyName;
+    const propertyName = normalizeRouteParam(req.params.propertyName);
     const claim = await getClaimById(claimId, req,true);
     await deleteFieldDraftClaimFromStore(redisKey, claim, propertyName);
 

@@ -19,6 +19,7 @@ import {DocumentUploadSections} from 'models/caseProgression/documentUploadSecti
 import {CivilServiceClient} from 'client/civilServiceClient';
 import config from 'config';
 import {getClaimById} from 'modules/utilityService';
+import {normalizeRouteParam} from 'common/utils/routeParamUtils';
 
 const checkAnswersViewPath = 'features/caseProgression/check-answers';
 const documentUploadCheckAnswerController = Router();
@@ -44,7 +45,7 @@ function renderView(res: Response, form: GenericForm<DocumentUploadSubmissionFor
 }
 
 documentUploadCheckAnswerController.get(CP_CHECK_ANSWERS_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
-  const claimId = req.params.id;
+  const claimId = normalizeRouteParam(req.params.id);
   const lang = (req.query.lang as string) || req.cookies.lang;
   try {
     req.session.previousUrl = req.originalUrl;
@@ -57,7 +58,7 @@ documentUploadCheckAnswerController.get(CP_CHECK_ANSWERS_URL, (async (req: AppRe
 })as RequestHandler);
 
 documentUploadCheckAnswerController.post(CP_CHECK_ANSWERS_URL, (async (req: Request | AppRequest, res: Response, next: NextFunction) => {
-  const claimId = req.params.id;
+  const claimId = normalizeRouteParam(req.params.id);
   const appReq = req as AppRequest;
   const lang = (req.query.lang as string) || req.cookies.lang;
 
