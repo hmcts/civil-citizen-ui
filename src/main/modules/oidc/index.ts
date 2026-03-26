@@ -97,6 +97,26 @@ export const isTestingSupportDraftUrl = (requestUrl: string): boolean => {
   return requestUrl.startsWith(TESTING_SUPPORT_URL);
 };
 
+const resolvePaymentConfirmationUrl = async (userId: string, originalUrl: string, sessionFeeType?: string) => {
+  let feeTypeExtracted = getFeeTypeFromUrl(originalUrl) || sessionFeeType;
+  let paymentConfirmationUrl = feeTypeExtracted
+    ? await getPaymentConfirmationUrl(userId, feeTypeExtracted)
+    : null;
+
+  if (!paymentConfirmationUrl) {
+    const paymentFeeTypes = [FeeType.CLAIMISSUED, FeeType.HEARING, FeeType.GENERALAPPLICATION];
+    for (const feeType of paymentFeeTypes) {
+      paymentConfirmationUrl = await getPaymentConfirmationUrl(userId, feeType);
+      if (paymentConfirmationUrl) {
+        feeTypeExtracted = getFeeTypeFromUrl(paymentConfirmationUrl) || feeType;
+        break;
+      }
+    }
+  }
+
+  return {feeTypeExtracted, paymentConfirmationUrl};
+};
+
 export class OidcMiddleware {
   public enableFor(app: Application): void {
     const loginUrl: string = config.get('services.idam.authorizationURL');
@@ -139,8 +159,11 @@ export class OidcMiddleware {
         }
 
         logger.info('login user id ', req.session.user.id);
-        const feeTypeExtracted = getFeeTypeFromUrl(req.originalUrl);
-        const paymentConfirmationUrl = await getPaymentConfirmationUrl(req.session.user.id, feeTypeExtracted);
+        const {feeTypeExtracted, paymentConfirmationUrl} = await resolvePaymentConfirmationUrl(
+          req.session.user.id,
+          req.originalUrl,
+          req.session.paymentConfirmationFeeType,
+        );
         logger.info('Payment conf url ', paymentConfirmationUrl);
 
         await new Promise<void>((resolve, reject) => {
@@ -148,12 +171,15 @@ export class OidcMiddleware {
         });
 
         if (paymentConfirmationUrl) {
-          await deletePaymentConfirmationUrl(req.session.user.id, feeTypeExtracted);
+          await deletePaymentConfirmationUrl(req.session.user.id, feeTypeExtracted || '');
+          req.session.paymentConfirmationFeeType = undefined;
           return res.redirect(paymentConfirmationUrl);
         }
+        req.session.paymentConfirmationFeeType = undefined;
         if (req.session.user?.roles?.includes(citizenRole)) {
           return res.redirect(DASHBOARD_URL);
         }
+
         return res.redirect(UNAUTHORISED_URL);
       } catch (err) {
         logger.error('Error in the callback of idam', err);
@@ -185,6 +211,7 @@ export class OidcMiddleware {
             return next();
           }
         }
+
         if (
           requestIsForPinAndPost(req) ||
           requestIsForDownloadPdf(req) ||
@@ -214,6 +241,7 @@ export class OidcMiddleware {
           const claimIdExtracted = getClaimId(req.originalUrl);
           if (claimIdExtracted) {
             const feeTypeExtracted = getFeeTypeFromUrl(req.originalUrl);
+            appReq.session.paymentConfirmationFeeType = feeTypeExtracted;
             const userIdExtracted = await getUserId(claimIdExtracted, feeTypeExtracted);
             if (userIdExtracted) {
               await saveOriginalPaymentConfirmationUrl(userIdExtracted, feeTypeExtracted, req.originalUrl);
