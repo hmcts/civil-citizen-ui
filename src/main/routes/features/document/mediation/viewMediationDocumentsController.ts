@@ -16,6 +16,7 @@ import {
 import {
   getClaimantMediationDocuments, getDefendantMediationDocuments,
 } from 'services/features/document/mediation/mediationDocumentService';
+import {normalizeRouteParam} from 'common/utils/routeParamUtils';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
@@ -52,7 +53,7 @@ const renderView = (res: Response, claimId: string, claim: Claim, lang: string):
 
 viewMediationDocuments.get(VIEW_MEDIATION_DOCUMENTS, (async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const claimId = req.params.id;
+    const claimId = normalizeRouteParam(req.params.id);
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
     renderView(res, claimId, claim, lang);

@@ -4,13 +4,14 @@ import {getUploadYourDocumentsContents} from 'services/features/caseProgression/
 import {getClaimById} from 'modules/utilityService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {isCuiGaNroEnabled} from '../../../app/auth/launchdarkly/launchDarklyClient';
+import {normalizeRouteParam} from 'common/utils/routeParamUtils';
 
 const uploadYourDocumentsViewPath = 'features/caseProgression/upload-your-documents';
 const uploadYourDocumentsController = Router();
 
 uploadYourDocumentsController.get(UPLOAD_YOUR_DOCUMENTS_URL, (async (req, res, next: NextFunction) => {
   try {
-    const claimId = req.params.id;
+    const claimId = normalizeRouteParam(req.params.id);
     const claim = await getClaimById(claimId, req,true);
     const isGaNroEnabled = await isCuiGaNroEnabled();
     let dashboardUrl;
