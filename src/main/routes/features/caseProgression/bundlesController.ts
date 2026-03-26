@@ -9,6 +9,7 @@ import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {getBundlesContent} from 'services/features/caseProgression/bundles/bundlesService';
 import {caseNumberPrettify} from 'common/utils/stringUtils';
+import {normalizeRouteParam} from 'common/utils/routeParamUtils';
 
 const bundlesController = Router();
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
@@ -17,7 +18,7 @@ const bundlesViewPath = 'features/caseProgression/bundles';
 
 bundlesController.get(BUNDLES_URL, (async (req:Request, res:Response, next: NextFunction) => {
   try {
-    const claimId = req.params.id;
+    const claimId = normalizeRouteParam(req.params.id);
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
 
