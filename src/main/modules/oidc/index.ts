@@ -1,6 +1,6 @@
 import {Application, NextFunction, Request, Response} from 'express';
 import config from 'config';
-import {AppRequest} from 'models/AppRequest';
+import {AppRequest, PaymentConfirmationContext} from 'models/AppRequest';
 import {getOidcResponse, getSessionIssueTime, getUserDetails} from '../../app/auth/user/oidc';
 import {
   ASSIGN_CLAIM_URL,
@@ -97,26 +97,29 @@ export const isTestingSupportDraftUrl = (requestUrl: string): boolean => {
   return requestUrl.startsWith(TESTING_SUPPORT_URL);
 };
 
-const resolvePaymentConfirmationUrl = async (userId: string, originalUrl: string, sessionFeeType?: string, sessionClaimId?: string) => {
-  let feeTypeExtracted = getFeeTypeFromUrl(originalUrl) || sessionFeeType;
-  let claimIdExtracted = getClaimId(originalUrl) || sessionClaimId;
-  let paymentConfirmationUrl = feeTypeExtracted
-    ? await getPaymentConfirmationUrl(claimIdExtracted, feeTypeExtracted, userId)
-    : null;
+const getPaymentConfirmationContextFromUrl = (url: string): PaymentConfirmationContext | undefined => {
+  const claimId = getClaimId(url);
+  const feeType = getFeeTypeFromUrl(url);
 
-  if (!paymentConfirmationUrl) {
-    const paymentFeeTypes = [FeeType.CLAIMISSUED, FeeType.HEARING, FeeType.GENERALAPPLICATION];
-    for (const feeType of paymentFeeTypes) {
-      paymentConfirmationUrl = await getPaymentConfirmationUrl(undefined, feeType, userId);
-      if (paymentConfirmationUrl) {
-        feeTypeExtracted = getFeeTypeFromUrl(paymentConfirmationUrl) || feeType;
-        claimIdExtracted = getClaimId(paymentConfirmationUrl) || claimIdExtracted;
-        break;
-      }
-    }
+  if (!claimId || !feeType) {
+    return undefined;
   }
 
-  return {feeTypeExtracted, claimIdExtracted, paymentConfirmationUrl};
+  return {claimId, feeType};
+};
+
+const clearPaymentConfirmationContext = (req: AppRequest): void => {
+  req.session.paymentConfirmationContext = undefined;
+};
+
+const resolvePaymentConfirmationUrl = async (userId: string, originalUrl: string, sessionContext?: PaymentConfirmationContext) => {
+  const context = getPaymentConfirmationContextFromUrl(originalUrl) || sessionContext;
+  const paymentConfirmationUrl = await getPaymentConfirmationUrl(context?.claimId, context?.feeType, userId);
+  const resolvedContext = paymentConfirmationUrl
+    ? getPaymentConfirmationContextFromUrl(paymentConfirmationUrl) || context
+    : context;
+
+  return {context: resolvedContext, paymentConfirmationUrl};
 };
 
 export class OidcMiddleware {
@@ -161,11 +164,10 @@ export class OidcMiddleware {
         }
 
         logger.info('login user id ', req.session.user.id);
-        const {feeTypeExtracted, claimIdExtracted, paymentConfirmationUrl} = await resolvePaymentConfirmationUrl(
+        const {context, paymentConfirmationUrl} = await resolvePaymentConfirmationUrl(
           req.session.user.id,
           req.originalUrl,
-          req.session.paymentConfirmationFeeType,
-          req.session.paymentConfirmationClaimId,
+          req.session.paymentConfirmationContext,
         );
         logger.info('Payment conf url ', paymentConfirmationUrl);
 
@@ -174,13 +176,11 @@ export class OidcMiddleware {
         });
 
         if (paymentConfirmationUrl) {
-          await deletePaymentConfirmationUrl(claimIdExtracted, feeTypeExtracted || '', req.session.user.id);
-          req.session.paymentConfirmationFeeType = undefined;
-          req.session.paymentConfirmationClaimId = undefined;
+          await deletePaymentConfirmationUrl(context?.claimId, context?.feeType, req.session.user.id);
+          clearPaymentConfirmationContext(req);
           return res.redirect(paymentConfirmationUrl);
         }
-        req.session.paymentConfirmationFeeType = undefined;
-        req.session.paymentConfirmationClaimId = undefined;
+        clearPaymentConfirmationContext(req);
         if (req.session.user?.roles?.includes(citizenRole)) {
           return res.redirect(DASHBOARD_URL);
         }
@@ -243,17 +243,15 @@ export class OidcMiddleware {
         if (isPaymentConfirmationUrl(req)) {
           logger.info('Condition satisfied for payment confirmation ', req.originalUrl);
 
-          const claimIdExtracted = getClaimId(req.originalUrl);
-          if (claimIdExtracted) {
-            const feeTypeExtracted = getFeeTypeFromUrl(req.originalUrl);
-            appReq.session.paymentConfirmationFeeType = feeTypeExtracted;
-            appReq.session.paymentConfirmationClaimId = claimIdExtracted;
-            const userIdExtracted = await getUserId(claimIdExtracted, feeTypeExtracted);
+          const paymentConfirmationContext = getPaymentConfirmationContextFromUrl(req.originalUrl);
+          if (paymentConfirmationContext) {
+            appReq.session.paymentConfirmationContext = paymentConfirmationContext;
+            const userIdExtracted = await getUserId(paymentConfirmationContext.claimId, paymentConfirmationContext.feeType);
             if (userIdExtracted) {
-              await saveOriginalPaymentConfirmationUrl(claimIdExtracted, feeTypeExtracted, userIdExtracted, req.originalUrl);
-              logger.info(`Saved Payment Confirmation URL for claimId: ${claimIdExtracted} userId: ${userIdExtracted}`);
+              await saveOriginalPaymentConfirmationUrl(paymentConfirmationContext.claimId, paymentConfirmationContext.feeType, userIdExtracted, req.originalUrl);
+              logger.info(`Saved Payment Confirmation URL for claimId: ${paymentConfirmationContext.claimId} userId: ${userIdExtracted}`);
             } else {
-              logger.warn(`user id does not exist from claim id: ${claimIdExtracted} `);
+              logger.warn(`user id does not exist from claim id: ${paymentConfirmationContext.claimId} `);
             }
           } else {
             logger.error(`claim id does not exist from payment confirmation url: ${req.originalUrl} `);
@@ -277,9 +275,9 @@ export const getClaimId = (originalUrl: string) => {
   }
 };
 
-export const getFeeTypeFromUrl = (url: string): string => {
+export const getFeeTypeFromUrl = (url: string): FeeType | undefined => {
   if (url.includes(HEARING_FEE_PAYMENT_CONFIRMATION_URL.split('/:id')[0])) return FeeType.HEARING;
   if (url.includes(CLAIM_FEE_PAYMENT_CONFIRMATION_URL.split('/:id')[0])) return FeeType.CLAIMISSUED;
   if (url.includes(APPLICATION_FEE_PAYMENT_CONFIRMATION_URL.split('/:id')[0])) return FeeType.GENERALAPPLICATION;
-  return '';
+  return undefined;
 };

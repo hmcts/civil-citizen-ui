@@ -1,4 +1,5 @@
 import {app} from '../../app-instance';
+import {FeeType} from 'form/models/helpWithFees/feeType';
 
 const userIdForPayment = 'userIdForPayment';
 const confirmationUrl = 'confirmationUrl';
@@ -14,7 +15,7 @@ const buildLegacyPaymentConfirmationUrlKey = (userId: string) => userId + userId
 
 export const saveUserId = async (claimId: string, feeType: string, userId: string) => {
   try {
-    const existingUserId = await getUserId(claimId, feeType);
+    const existingUserId = await getUserId(claimId, feeType, false);
     if (existingUserId && existingUserId !== userId) {
       logger.warn(`Overwriting existing userId ${existingUserId} with ${userId} for claimId ${claimId}`);
     }
@@ -27,10 +28,10 @@ export const saveUserId = async (claimId: string, feeType: string, userId: strin
   }
 };
 
-export const getUserId = async (claimId: string, feeType: string): Promise<string> => {
+export const getUserId = async (claimId: string, feeType: string, legacyFallback = true): Promise<string> => {
   try {
     let userId =  await app.locals.draftStoreClient.get(buildUserIdKey(claimId, feeType));
-    if(!userId){
+    if(!userId && legacyFallback){
       //Fallback to OLD key format for backward compatibility
       userId = await app.locals.draftStoreClient.get(buildLegacyUserIdKey(claimId));
     }
@@ -54,9 +55,9 @@ export const deleteUserId = async (claimId: string, feeType: string): Promise<vo
   }
 };
 
-export const saveOriginalPaymentConfirmationUrl = async (claimId: string, feeType: string, userId: string, url: string) => {
+export const saveOriginalPaymentConfirmationUrl = async (claimId: string, feeType: FeeType, userId: string, url: string) => {
   try {
-    const existingUrl = await getPaymentConfirmationUrl(claimId, feeType, userId);
+    const existingUrl = await getPaymentConfirmationUrl(claimId, feeType, userId, false);
     if (existingUrl && existingUrl !== url) {
       logger.warn(`Overwriting existing payment confirmation url ${existingUrl} with ${url} for userId ${userId} and claimId ${claimId}`);
     }
@@ -68,18 +69,23 @@ export const saveOriginalPaymentConfirmationUrl = async (claimId: string, feeTyp
   }
 };
 
-export const getPaymentConfirmationUrl = async (claimId: string | undefined, feeType: string, userId: string): Promise<string> => {
+export const getPaymentConfirmationUrl = async (
+  claimId: string | undefined,
+  feeType: FeeType | undefined,
+  userId: string,
+  legacyFallback = true,
+): Promise<string> => {
   try {
     let url: string = null;
-    if (claimId) {
+    if (claimId && feeType) {
       url =  await app.locals.draftStoreClient.get(buildPaymentConfirmationUrlKey(claimId, feeType, userId));
     }
-    if(!url){
+    if(!url && legacyFallback){
       //Fallback to OLD old key format for backward compatibility
       url =  await app.locals.draftStoreClient.get(buildLegacyPaymentConfirmationUrlKey(userId));
     }
     if(!url){
-      logger.warn(`Confirmation Url not found for userId ${userId} with ${feeType} `);
+      logger.warn(`Confirmation Url not found for userId ${userId} with ${feeType ?? 'UNKNOWN'} `);
     }
     return url;
   } catch (err) {
@@ -88,9 +94,9 @@ export const getPaymentConfirmationUrl = async (claimId: string | undefined, fee
   }
 };
 
-export const deletePaymentConfirmationUrl = async (claimId: string | undefined, feeType: string, userId: string): Promise<void> => {
+export const deletePaymentConfirmationUrl = async (claimId: string | undefined, feeType: FeeType | undefined, userId: string): Promise<void> => {
   try {
-    if (claimId) {
+    if (claimId && feeType) {
       await app.locals.draftStoreClient.del(buildPaymentConfirmationUrlKey(claimId, feeType, userId));
     }
     await app.locals.draftStoreClient.del(buildLegacyPaymentConfirmationUrlKey(userId));
