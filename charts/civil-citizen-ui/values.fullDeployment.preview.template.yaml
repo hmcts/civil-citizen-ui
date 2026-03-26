@@ -71,16 +71,7 @@ civil-service:
         HEALTH_ROLE_ASSIGNMENT_API: http://${SERVICE_NAME}-am-role-assignment-service/health
         GLOBAL_SEARCH_SERVICES: IA,CIVIL,PRIVATELAW,PUBLICLAW,SSCS
         FEATURE_WORKALLOCATION_ENABLED: true
-        FEATURE_REDIS_ENABLED: false
-        FEATURE_APP_INSIGHTS_ENABLED: false
-        FEATURE_SECURE_COOKIE_ENABLED: false
-        FEATURE_PROXY_ENABLED: false
-        FEATURE_TERMS_AND_CONDITIONS_ENABLED: false
-        FEATURE_HELMET_ENABLED: false
-        FEATURE_OIDC_ENABLED: false
         FEATURE_JRD_E_LINKS_V2_ENABLED: true
-        NOW: false
-        REDISCLOUD_URL: http://dummyrediscloudurl
         UV_THREADPOOL_SIZE: 128
         PROTOCOL: http
       keyVaults:
