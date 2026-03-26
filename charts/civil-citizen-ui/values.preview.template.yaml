@@ -1,3 +1,18 @@
+global:
+  ccdStitchUrl: http://${SERVICE_NAME}-emstitch
+  ccdApiGatewayIngress: http://${SERVICE_NAME}-ccd-api-gw
+  ccdDataStoreUrl: http://${SERVICE_NAME}-ccd-data-store-api
+  ccdDefinitionStoreUrl: http://${SERVICE_NAME}-ccd-definition-store-api
+  ccdUserProfileUrl: http://ccd-user-profile-api-aat.service.core-compute-aat.internal
+  dmStoreUrl: http://dm-store-aat.service.core-compute-aat.internal
+  idamApiUrl: https://idam-api.aat.platform.hmcts.net
+  idamWebUrl: https://idam-web-public.aat.platform.hmcts.net
+  postgresUsername: hmcts
+  postgresSecret: postgres
+  postgresHostname: ${SERVICE_NAME}-postgresql
+  postgresPassword: ${POSTGRES_PASSWORD}
+  s2sUrl: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
+
 nodejs:
   # Don't modify below here
   image: ${IMAGE_NAME}
@@ -221,20 +236,6 @@ civil-service:
         enabled: false
       elastic:
         enabled: true
-    global:
-      ccdStitchUrl: http://${SERVICE_NAME}-emstitch
-      ccdApiGatewayIngress: http://${SERVICE_NAME}-ccd-api-gw
-      ccdDataStoreUrl: http://${SERVICE_NAME}-ccd-data-store-api
-      ccdDefinitionStoreUrl: http://${SERVICE_NAME}-ccd-definition-store-api
-      ccdUserProfileUrl: http://ccd-user-profile-api-aat.service.core-compute-aat.internal
-      dmStoreUrl: http://dm-store-aat.service.core-compute-aat.internal
-      idamApiUrl: https://idam-api.aat.platform.hmcts.net
-      idamWebUrl: https://idam-web-public.aat.platform.hmcts.net
-      postgresUsername: hmcts
-      postgresPassword: ${POSTGRES_PASSWORD}
-      postgresSecret: postgres
-      postgresHostname: ${SERVICE_NAME}-postgresql
-      s2sUrl: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
 
     ccd-api-gateway-web:
       nodejs:
