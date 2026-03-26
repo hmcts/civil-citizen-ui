@@ -1,6 +1,7 @@
 import {Request} from 'express';
 import {Session} from 'express-session';
 import {Claim} from './claim';
+import {FeeType} from 'common/form/models/helpWithFees/feeType';
 
 import {TaskList} from 'common/models/taskList/taskList';
 
@@ -19,6 +20,11 @@ export interface FirstContact {
   pin?: string;
 }
 
+export interface PaymentConfirmationContext {
+  claimId: string;
+  feeType: FeeType;
+}
+
 export interface AppSession extends Session {
   user: UserDetails;
   lang: string | undefined;
@@ -35,8 +41,7 @@ export interface AppSession extends Session {
   history?: string[];
   qmShareConfirmed: boolean;
   caseReference?: string;
-  paymentConfirmationFeeType?: string;
-  paymentConfirmationClaimId?: string;
+  paymentConfirmationContext?: PaymentConfirmationContext;
 }
 
 export interface UserDetails {
