@@ -41,7 +41,10 @@ const respondentIncompleteSubmissionUrl = constructResponseUrlWithIdParams(CLAIM
 const MOCK_REQUEST = () => {
   return {
     session: {
-      claimId: CLAIM_ID,
+      claimId: undefined,
+    },
+    params: {
+      id: CLAIM_ID,
     },
   } as unknown as express.Request;
 };
