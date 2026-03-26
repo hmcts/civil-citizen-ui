@@ -40,11 +40,11 @@ export const getWitnesses = ( directionQuestionnaire : DirectionQuestionnaire, c
     const witnesses: OtherWitnessItems[] = directionQuestionnaire?.witnesses?.otherWitnesses?.witnessItems;
     witnesses.forEach((witness, index) => {
       summaryRows.push(summaryRow(`${t('PAGES.CHECK_YOUR_ANSWER.WITNESS', {lng})} ${index + 1}`, '', witnessesHref, changeLabel(lng)));
-      summaryRows.push(summaryRow(t('COMMON.INPUT_LABELS.FIRST_NAME', {lng}), getEmptyStringIfUndefined(witness.firstName)));
-      summaryRows.push(summaryRow(t('COMMON.INPUT_LABELS.LAST_NAME', {lng}), getEmptyStringIfUndefined(witness.lastName)));
-      summaryRows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.EMAIL_ADDRESS', {lng}), getEmptyStringIfUndefined(witness.email)));
-      summaryRows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.PHONE_NUMBER', {lng}), getEmptyStringIfUndefined(witness.telephone)));
-      summaryRows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.TELL_US_WHY', {lng}), getEmptyStringIfUndefined(witness.details)));
+      summaryRows.push(summaryRowWithTextValue(t('COMMON.INPUT_LABELS.FIRST_NAME', {lng}), getEmptyStringIfUndefined(witness.firstName)));
+      summaryRows.push(summaryRowWithTextValue(t('COMMON.INPUT_LABELS.LAST_NAME', {lng}), getEmptyStringIfUndefined(witness.lastName)));
+      summaryRows.push(summaryRowWithTextValue(t('PAGES.CHECK_YOUR_ANSWER.EMAIL_ADDRESS', {lng}), getEmptyStringIfUndefined(witness.email)));
+      summaryRows.push(summaryRowWithTextValue(t('PAGES.CHECK_YOUR_ANSWER.PHONE_NUMBER', {lng}), getEmptyStringIfUndefined(witness.telephone)));
+      summaryRows.push(summaryRowWithTextValue(t('PAGES.CHECK_YOUR_ANSWER.TELL_US_WHY', {lng}), getEmptyStringIfUndefined(witness.details)));
     });
   }
   return summaryRows;
