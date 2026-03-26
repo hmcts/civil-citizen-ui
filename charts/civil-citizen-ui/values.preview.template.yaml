@@ -315,7 +315,7 @@ civil-service:
 
     elasticsearch:
       nameOverride: ${SERVICE_NAME}-es
-      imageTag: "latest"
+      imageTag: "7.17.1"
       initResources:
         limits:
           cpu: "500m"
