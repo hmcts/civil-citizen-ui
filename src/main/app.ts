@@ -124,7 +124,7 @@ const cookieMaxAge = config.get<number>('cookieMaxAge');
 export const app = express();
 app.use(cookieParser());
 app.use(setLanguage);
-app.use(favicon(path.join(__dirname, 'public', 'assets', 'images', 'favicon.ico')));
+app.use(favicon(path.join(__dirname, 'public', 'assets', 'images', 'favicon.ico')) as any);
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(express.json({ limit: '500mb' }));
@@ -160,7 +160,7 @@ app.use(session({
     maxAge: cookieMaxAge,
     sameSite: 'lax',
   },
-}));
+}) as any);
 
 app.use(setCaseReferenceCookie({secure: productionMode, maxAge: cookieMaxAge}));
 

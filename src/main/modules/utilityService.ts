@@ -14,6 +14,7 @@ import RedisStore from 'connect-redis';
 import Redis from 'ioredis';
 import {BusinessProcess} from 'models/businessProcess';
 import {syncCaseReferenceCookie} from './cookie/caseReferenceCookie';
+import {normalizeRouteParam, RouteParam} from 'common/utils/routeParamUtils';
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('ccjCheckAnswersService');
 
@@ -27,13 +28,14 @@ const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServi
  * @param useRedisKey
  * @returns claim
  */
-export const getClaimById = async (claimId: string, req: Request, useRedisKey = false): Promise<Claim> => {
+export const getClaimById = async (claimId: RouteParam, req: Request, useRedisKey = false): Promise<Claim> => {
+  const normalizedClaimId = normalizeRouteParam(claimId);
   const userId = (<AppRequest>req)?.session?.user?.id;
-  const redisKey = useRedisKey && claimId !== userId ? generateRedisKey(<AppRequest>req) : claimId;
+  const redisKey = useRedisKey && normalizedClaimId !== userId ? generateRedisKey(<AppRequest>req) : normalizedClaimId;
   let claim: Claim = await getCaseDataFromStore(redisKey, true);
 
   if (claim.isEmpty() && redisKey !== userId) {
-    claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
+    claim = await civilServiceClient.retrieveClaimDetails(normalizedClaimId, <AppRequest>req);
     if (claim) {
       await saveDraftClaim(redisKey, claim, true);
     } else {
@@ -55,7 +57,7 @@ export const getClaimById = async (claimId: string, req: Request, useRedisKey = 
 };
 
 export const refreshDraftStoreClaimFrom = async (req: Request, useRedisKey = false): Promise<Claim> => {
-  const claimId = req.params?.id;
+  const claimId = normalizeRouteParam(req.params?.id);
   const userId = (<AppRequest>req)?.session?.user?.id;
   const redisKey = useRedisKey && claimId !== userId ? generateRedisKey(<AppRequest>req) : claimId;
   const oldClaim = await getDraftClaimFromStore(redisKey, true);
@@ -90,7 +92,7 @@ export const refreshDraftStoreClaimFrom = async (req: Request, useRedisKey = fal
  * @returns businessProcess
  */
 export const getClaimBusinessProcess = async (claimId: string, req: Request): Promise<BusinessProcess> => {
-  const claim: Claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
+  const claim: Claim = await civilServiceClient.retrieveClaimDetails(normalizeRouteParam(claimId), <AppRequest>req);
   if (claim) {
     return Object.assign(new BusinessProcess(), claim.businessProcess);
   } else {
