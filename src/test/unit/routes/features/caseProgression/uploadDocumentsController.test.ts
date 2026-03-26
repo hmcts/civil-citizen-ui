@@ -27,7 +27,7 @@ import {
 import {ClaimSummaryType} from 'form/models/claimSummarySection';
 import {FileUpload} from 'models/caseProgression/fileUpload';
 import {getClaimById} from 'modules/utilityService';
-import {getUploadDocumentsForm, saveCaseProgression} from 'services/features/caseProgression/caseProgressionService';
+import {addAnother, getUploadDocumentsForm, saveCaseProgression} from 'services/features/caseProgression/caseProgressionService';
 import {CaseDocument} from 'models/document/caseDocument';
 import {EvidenceUploadDisclosure} from 'models/document/documentType';
 
@@ -47,6 +47,7 @@ jest.mock('modules/utilityService', () => ({
 jest.mock('services/features/caseProgression/caseProgressionService', () => ({
   saveCaseProgression: jest.fn(),
   getUploadDocumentsForm: jest.fn(),
+  addAnother: jest.fn(),
   getRedisStoreForSession: jest.fn(),
 }));
 
@@ -956,5 +957,57 @@ describe('on POST', () => {
     expect(formWithMultipleDocs.trialAuthorities[0].caseDocument.documentName).toBe('Doc 1');
     expect(formWithMultipleDocs.trialAuthorities[1].caseDocument.documentName).toBe('Doc 3');
     expect(formWithMultipleDocs.trialAuthorities.some(d => d.caseDocument?.documentName === 'Doc 2')).toBe(false);
+  });
+
+  it('should handle add another action and render page', async () => {
+    const formWithDisclosure = new UploadDocumentsUserForm();
+    formWithDisclosure.documentsForDisclosure = [new TypeOfDocumentSection()];
+    (getUploadDocumentsForm as jest.Mock).mockReturnValue(formWithDisclosure);
+    (saveCaseProgression as jest.Mock).mockResolvedValue(true);
+
+    const response = await request(app)
+      .post(CP_UPLOAD_DOCUMENTS_URL)
+      .send({action: 'add_another-documentsForDisclosure'});
+
+    expect(response.status).toBe(200);
+    expect(addAnother).toHaveBeenCalledWith(formWithDisclosure, 'add_another-documentsForDisclosure');
+    expect(saveCaseProgression).toHaveBeenCalled();
+  });
+
+  it('should sanitize unknown/empty validation errors and redirect when no real errors remain', async () => {
+    const validForm = new UploadDocumentsUserForm();
+    validForm.documentsForDisclosure = [new TypeOfDocumentSection()];
+    validForm.documentsForDisclosure[0].typeOfDocument = 'Word';
+    validForm.documentsForDisclosure[0].dateInputFields.dateDay = '10';
+    validForm.documentsForDisclosure[0].dateInputFields.dateMonth = '10';
+    validForm.documentsForDisclosure[0].dateInputFields.dateYear = '2020';
+    validForm.documentsForDisclosure[0].dateInputFields.date = new Date(2020, 9, 10);
+    validForm.documentsForDisclosure[0].caseDocument = caseDoc;
+
+    (getUploadDocumentsForm as jest.Mock).mockReturnValue(validForm);
+    (saveCaseProgression as jest.Mock).mockResolvedValue(true);
+
+    const validateSyncSpy = jest.spyOn(GenericForm.prototype, 'validateSync').mockImplementation(function(this: GenericForm<unknown>) {
+      this.errors = [
+        {
+          property: 'placeholder',
+          constraints: {unknownValue: 'an unknown value was passed to the validate function'},
+          children: [],
+        },
+        {
+          property: 'emptyParent',
+          children: [],
+        },
+      ] as any;
+    });
+
+    await request(app)
+      .post(CP_UPLOAD_DOCUMENTS_URL)
+      .expect((res: express.Response) => {
+        expect(res.status).toBe(302);
+        expect(res.get('location')).toBe(CP_CHECK_ANSWERS_URL);
+      });
+
+    validateSyncSpy.mockRestore();
   });
 });
