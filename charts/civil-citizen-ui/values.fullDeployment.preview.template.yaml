@@ -50,7 +50,7 @@ civil-service:
             secretRef: civil-sb-preview
             key: connectionString
           DATA_STORE_DB_PASSWORD:
-            secretRef: "{{ .Values.global.postgresSecret }}"
+            secretRef: postgres
             key: PASSWORD
             disabled: false
 
@@ -76,7 +76,7 @@ civil-service:
           ROLE_ASSIGNMENT_DB_HOST: "{{ .Values.global.postgresHostname }}"
         secrets:
           DATA_STORE_DB_PASSWORD:
-            secretRef: "{{ .Values.global.postgresSecret }}"
+            secretRef: postgres
             key: PASSWORD
             disabled: false
 
@@ -88,7 +88,7 @@ civil-service:
           DATA_STORE_DB_USERNAME: "{{ .Values.global.postgresUsername }}"
         secrets:
           DATA_STORE_DB_PASSWORD:
-            secretRef: "{{ .Values.global.postgresSecret }}"
+            secretRef: postgres
             key: PASSWORD
             disabled: false
 
@@ -101,7 +101,7 @@ civil-service:
           DEFINITION_STORE_DB_USERNAME: "{{ .Values.global.postgresUsername }}"
         secrets:
           DEFINITION_STORE_DB_PASSWORD:
-            secretRef: "{{ .Values.global.postgresSecret }}"
+            secretRef: postgres
             key: PASSWORD
             disabled: false
 
@@ -401,7 +401,7 @@ wa:
           secretRef: civil-sb-preview
           key: connectionString
         POSTGRES_PASSWORD:
-          secretRef: "{{ .Values.global.postgresSecret }}"
+          secretRef: postgres
           key: PASSWORD
           disabled: false
 
@@ -423,7 +423,7 @@ wa:
         POSTGRES_USERNAME: hmcts
       secrets:
         POSTGRES_PASSWORD:
-          secretRef: "{{ .Values.global.postgresSecret }}"
+          secretRef: postgres
           key: PASSWORD
           disabled: false
 
@@ -437,7 +437,7 @@ wa:
         CAMUNDA_URL: https://camunda-${SERVICE_FQDN}/engine-rest/
       secrets:
         POSTGRES_PASSWORD:
-          secretRef: "{{ .Values.global.postgresSecret }}"
+          secretRef: postgres
           key: PASSWORD
           disabled: false
 
