@@ -22,6 +22,7 @@ import { queryParamNumber } from 'common/utils/requestUtils';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {isQueryManagementEnabled} from '../../../app/auth/launchdarkly/launchDarklyClient';
 import {YesNo} from 'form/models/yesNo';
+import {normalizeRouteParam} from 'common/utils/routeParamUtils';
 
 const applicationTypeController = Router();
 const viewPath = 'features/generalApplication/application-type';
@@ -38,7 +39,7 @@ applicationTypeController.get(APPLICATION_TYPE_URL, (async (req: AppRequest, res
       await deleteGAFromClaimsByUserId(req.session?.user?.id);
     }
 
-    const claimId = req.params.id;
+    const claimId = normalizeRouteParam(req.params.id);
     const claim = await getClaimById(claimId, req, true);
 
     const applicationTypeOption = getByIndex(claim.generalApplication?.applicationTypes, applicationIndex)?.option;
@@ -83,7 +84,8 @@ applicationTypeController.post(APPLICATION_TYPE_URL, (async (req: AppRequest | R
     if(!applicationIndex && applicationIndex != 0) {
       validateAdditionalApplicationtType(claim,form.errors,applicationType,req.body);
     }
-    const cancelUrl = await getCancelUrl( req.params.id, claim);
+    const claimId = normalizeRouteParam(req.params.id);
+    const cancelUrl = await getCancelUrl(claimId, claim);
     const backLinkUrl = BACK_URL;
 
     const showCCJ  = claim.isDefendant();
@@ -96,13 +98,13 @@ applicationTypeController.post(APPLICATION_TYPE_URL, (async (req: AppRequest | R
         applicationIndex = claim.generalApplication.applicationTypes.length - 1;
       }
       if (showCCJ && claim.joIsLiveJudgmentExists?.option === YesNo.YES && req.body.option === ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID) {
-        res.redirect(constructResponseUrlWithIdParams(req.params.id, GA_ASK_PROOF_OF_DEBT_PAYMENT_GUIDANCE_URL));
+        res.redirect(constructResponseUrlWithIdParams(claimId, GA_ASK_PROOF_OF_DEBT_PAYMENT_GUIDANCE_URL));
       } else {
         if (claim?.generalApplication?.applicationTypes?.length > 1){
-          res.redirect(constructResponseUrlWithIdParams(req.params.id,ORDER_JUDGE_URL )
+          res.redirect(constructResponseUrlWithIdParams(claimId,ORDER_JUDGE_URL )
             + (applicationIndex >= 0 ? `?index=${applicationIndex}` : ''));
         } else {
-          res.redirect(constructResponseUrlWithIdParams(req.params.id,GA_AGREEMENT_FROM_OTHER_PARTY_URL )
+          res.redirect(constructResponseUrlWithIdParams(claimId,GA_AGREEMENT_FROM_OTHER_PARTY_URL )
           + (applicationIndex >= 0 ? `?index=${applicationIndex}` : ''));
         }
       }

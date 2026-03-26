@@ -13,6 +13,7 @@ import {Claim} from 'models/claim';
 import {HearingContactDetails} from 'models/generalApplication/hearingContactDetails';
 import {constructResponseUrlWithIdParams, constructUrlWithIndex} from 'common/utils/urlFormatter';
 import {queryParamNumber} from 'common/utils/requestUtils';
+import {normalizeRouteParam} from 'common/utils/routeParamUtils';
 
 const hearingContactDetailsController = Router();
 const viewPath = 'features/generalApplication/hearing-contact-details';
@@ -26,7 +27,7 @@ async function renderView(claimId: string, claim: Claim, form: GenericForm<Heari
 
 hearingContactDetailsController.get(GA_HEARING_CONTACT_DETAILS_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const claimId = req.params.id;
+    const claimId = normalizeRouteParam(req.params.id);
     const claim = await getClaimById(claimId, req, true);
     const index  = queryParamNumber(req, 'index') || claim.generalApplication.applicationTypes.length - 1;
     const hearingContactDetails = claim.generalApplication?.hearingContactDetails || new HearingContactDetails();
@@ -39,7 +40,7 @@ hearingContactDetailsController.get(GA_HEARING_CONTACT_DETAILS_URL, (async (req:
 
 hearingContactDetailsController.post(GA_HEARING_CONTACT_DETAILS_URL, (async (req: AppRequest | Request, res: Response, next: NextFunction) => {
   try {
-    const claimId = req.params.id;
+    const claimId = normalizeRouteParam(req.params.id);
     const claim = await getClaimById(claimId, req, true);
     const redisKey = generateRedisKey(<AppRequest>req);
     const index  = queryParamNumber(req, 'index') || claim.generalApplication.applicationTypes.length - 1;

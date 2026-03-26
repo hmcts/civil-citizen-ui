@@ -10,13 +10,14 @@ import {getHelpAdditionalFeeSelectionPageContents, getButtonsContents}
   from 'services/features/generalApplication/additionalFee/helpWithAdditionalFeeContent';
 import {getDraftGAHWFDetails} from 'modules/draft-store/gaHwFeesDraftStore';
 import {generateRedisKeyForGA} from 'modules/draft-store/draftStoreService';
+import {normalizeRouteParam} from 'common/utils/routeParamUtils';
 
 const applyHelpWithApplicationFeeViewPath  = 'features/generalApplication/additionalFee/help-with-additional-fee';
 const payAdditionalFeeController = Router();
 const hwfPropertyName = 'applyAdditionalHelpWithFees';
 
 async function renderView(res: Response, req: AppRequest | Request, form: GenericForm<GenericYesNo>, claimId: string, redirectUrl: string, lng: string) {
-  const appId = req.params.appId;
+  const appId = normalizeRouteParam(req.params.appId);
   if (!form) {
     const gaHwFDetails = await getDraftGAHWFDetails(generateRedisKeyForGA(<AppRequest>req));
     form = new GenericForm(new GenericYesNo(gaHwFDetails?.applyAdditionalHelpWithFees?.option, t('ERRORS.GENERAL_APPLICATION.PAY_APPLICATION_FEE', { lng })));
@@ -35,7 +36,7 @@ async function renderView(res: Response, req: AppRequest | Request, form: Generi
 payAdditionalFeeController.get(GA_APPLY_HELP_ADDITIONAL_FEE_SELECTION_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
-    const claimId = req.params.id;
+    const claimId = normalizeRouteParam(req.params.id);
     const redirectUrl = constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL);
     await renderView(res, req, null, claimId, redirectUrl, lng);
   }catch (error) {
@@ -46,7 +47,7 @@ payAdditionalFeeController.get(GA_APPLY_HELP_ADDITIONAL_FEE_SELECTION_URL, (asyn
 payAdditionalFeeController.post(GA_APPLY_HELP_ADDITIONAL_FEE_SELECTION_URL, (async (req: AppRequest | Request, res: Response, next: NextFunction) => {
   try {
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
-    const claimId = req.params.id;
+    const claimId = normalizeRouteParam(req.params.id);
     const form = new GenericForm(new GenericYesNo(req.body.option, t('ERRORS.GENERAL_APPLICATION.APPLY_HELP_WITH_FEES', { lng })));
     await form.validate();
     if (form.hasErrors()) {

@@ -31,6 +31,7 @@ import {
   FILE_UPLOAD_SOURCE,
 } from 'common/utils/fileUploadUtils';
 import {redirectIfMulterError} from 'services/features/generalApplication/uploadEvidenceDocumentService';
+import {normalizeRouteParam} from 'common/utils/routeParamUtils';
 
 const respondentUploadEvidenceDocumentsController = Router();
 const viewPath = 'features/generalApplication/response/respondent-upload-documents';
@@ -41,7 +42,7 @@ async function renderView(req: AppRequest, form: GenericForm<UploadGAFiles>, cla
   const gaResponse = await getDraftGARespondentResponse(generateRedisKeyForGA(<AppRequest>req));
   const applicationType: string = getRespondToApplicationCaption(gaResponse.generalApplicationType, lang);
   const cancelUrl = await getCancelUrl(claimId, claim);
-  const currentUrl = constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_RESPONDENT_UPLOAD_DOCUMENT_URL);
+  const currentUrl = constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_RESPONDENT_UPLOAD_DOCUMENT_URL);
   const backLinkUrl = BACK_URL;
   res.render(viewPath, {
     form,
@@ -55,7 +56,8 @@ async function renderView(req: AppRequest, form: GenericForm<UploadGAFiles>, cla
 
 respondentUploadEvidenceDocumentsController.get(GA_RESPONDENT_UPLOAD_DOCUMENT_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const claimId = req.params.id;
+    const claimId = normalizeRouteParam(req.params.id);
+    const appId = normalizeRouteParam(req.params.appId);
     const claim = await getClaimById(claimId, req, true);
     const redisKeyForGA = generateRedisKeyForGA(req);
     const uploadEvidenceDocuments = new UploadGAFiles();
@@ -71,12 +73,12 @@ respondentUploadEvidenceDocumentsController.get(GA_RESPONDENT_UPLOAD_DOCUMENT_UR
     }
     if (req.query?.id) {
       await removeDocumentFromRedis(redisKeyForGA, Number(req.query.id) - 1);
-      const currentUrl = constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_RESPONDENT_UPLOAD_DOCUMENT_URL);
+      const currentUrl = constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_RESPONDENT_UPLOAD_DOCUMENT_URL);
       const redirectUrl = req.query?.lang ? `${currentUrl}?lang=${req.query.lang}` : currentUrl;
       return res.redirect(redirectUrl);
     }
-    await getSummaryList(formattedSummary, redisKeyForGA, claimId, req.params.appId);
-    await renderView(req, form, claim, claimId, res, req.params.appId, formattedSummary);
+    await getSummaryList(formattedSummary, redisKeyForGA, claimId, appId);
+    await renderView(req, form, claim, claimId, res, appId, formattedSummary);
   } catch (error) {
     next(error);
   }
@@ -84,10 +86,11 @@ respondentUploadEvidenceDocumentsController.get(GA_RESPONDENT_UPLOAD_DOCUMENT_UR
 
 respondentUploadEvidenceDocumentsController.post(GA_RESPONDENT_UPLOAD_DOCUMENT_URL, multerMiddleware, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const claimId = req.params.id;
+    const claimId = normalizeRouteParam(req.params.id);
+    const appId = normalizeRouteParam(req.params.appId);
     const redisKeyForGA = generateRedisKeyForGA(req);
     const gaResponse = await getDraftGARespondentResponse(redisKeyForGA);
-    const currentUrl = constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_RESPONDENT_UPLOAD_DOCUMENT_URL);
+    const currentUrl = constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_RESPONDENT_UPLOAD_DOCUMENT_URL);
 
     const formattedSummary = summarySection(
       {
@@ -100,7 +103,7 @@ respondentUploadEvidenceDocumentsController.post(GA_RESPONDENT_UPLOAD_DOCUMENT_U
     }
 
     if (req.body.action === 'uploadButton') {
-      await uploadSelectedFile(req, formattedSummary, claimId, req.params.appId);
+      await uploadSelectedFile(req, formattedSummary, claimId, appId);
       return res.redirect(`${currentUrl}`);
     }
 
@@ -113,7 +116,7 @@ respondentUploadEvidenceDocumentsController.post(GA_RESPONDENT_UPLOAD_DOCUMENT_U
       req.session.fileUploadSource = FILE_UPLOAD_SOURCE.GA_RESPONDENT_UPLOAD;
       return res.redirect(`${currentUrl}`);
     } else {
-      res.redirect(constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_RESPONDENT_HEARING_PREFERENCE_URL));
+      res.redirect(constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_RESPONDENT_HEARING_PREFERENCE_URL));
     }
   } catch (error) {
     next(error);

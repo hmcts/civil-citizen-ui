@@ -21,12 +21,13 @@ import {generateRedisKey, saveDraftClaim} from 'modules/draft-store/draftStoreSe
 import {YesNo} from 'form/models/yesNo';
 import {constructResponseUrlWithIdParams, constructUrlWithIndex} from 'common/utils/urlFormatter';
 import {queryParamNumber} from 'common/utils/requestUtils';
+import {normalizeRouteParam} from 'common/utils/routeParamUtils';
 
 const addAnotherApplicationController = Router();
 const viewPath = 'features/generalApplication/add-another-application';
 
 const renderView = async (req: AppRequest, res: Response, form?: GenericForm<GenericYesNo>): Promise<void> => {
-  const claimId = req.params.id;
+  const claimId = normalizeRouteParam(req.params.id);
   const redisKey = generateRedisKey(req);
   const claim = await getClaimById(redisKey, req, true);
   const applicationIndex = queryParamNumber(req, 'index') || claim.generalApplication.applicationTypes.length - 1;
@@ -62,7 +63,7 @@ addAnotherApplicationController.post(GA_ADD_ANOTHER_APPLICATION_URL, async (req:
       const redisKey = generateRedisKey(req);
       const claim = await getClaimById(redisKey, req, true);
 
-      const claimId = req.params.id;
+      const claimId = normalizeRouteParam(req.params.id);
       claim.generalApplication.addType = true;
       if (req.body.option === YesNo.YES) {
         await saveDraftClaim(redisKey, claim);

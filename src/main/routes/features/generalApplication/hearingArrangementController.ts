@@ -14,6 +14,7 @@ import {HearingArrangement} from 'models/generalApplication/hearingArrangement';
 import {getListOfCourtLocations} from 'services/features/directionsQuestionnaire/hearing/specificCourtLocationService';
 import {constructResponseUrlWithIdParams, constructUrlWithIndex} from 'common/utils/urlFormatter';
 import {queryParamNumber} from 'common/utils/requestUtils';
+import {normalizeRouteParam} from 'common/utils/routeParamUtils';
 
 const hearingArrangementController = Router();
 const viewPath = 'features/generalApplication/hearing-arrangement';
@@ -28,7 +29,7 @@ async function renderView(claimId: string, claim: Claim, form: GenericForm<Heari
 
 hearingArrangementController.get(GA_HEARING_ARRANGEMENT_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const claimId = req.params.id;
+    const claimId = normalizeRouteParam(req.params.id);
     const claim = await getClaimById(claimId, req, true);
     const hearingArrangement = claim.generalApplication?.hearingArrangement || new HearingArrangement();
     const form = new GenericForm(hearingArrangement);
@@ -40,7 +41,7 @@ hearingArrangementController.get(GA_HEARING_ARRANGEMENT_URL, (async (req: AppReq
 
 hearingArrangementController.post(GA_HEARING_ARRANGEMENT_URL, (async (req: AppRequest | Request, res: Response, next: NextFunction) => {
   try {
-    const claimId = req.params.id;
+    const claimId = normalizeRouteParam(req.params.id);
     const claim = await getClaimById(claimId, req, true);
     const redisKey = generateRedisKey(<AppRequest>req);
     const hearingArrangement: HearingArrangement = new HearingArrangement(req.body.option, req.body.reasonForPreferredHearingType, req.body.courtLocation);

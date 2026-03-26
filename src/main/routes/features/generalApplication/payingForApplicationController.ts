@@ -7,13 +7,14 @@ import {convertToPoundsFilter} from 'common/utils/currencyFormat';
 import {constructResponseUrlWithIdParams, constructUrlWithIndex} from 'common/utils/urlFormatter';
 import { gaApplicationFeeDetails } from 'services/features/generalApplication/feeDetailsService';
 import {queryParamNumber} from 'common/utils/requestUtils';
+import {normalizeRouteParam} from 'common/utils/routeParamUtils';
 
 const payingForApplicationController = Router();
 const viewPath = 'features/generalApplication/paying-for-application';
 
 payingForApplicationController.get(PAYING_FOR_APPLICATION_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const claimId = req.params.id;
+    const claimId = normalizeRouteParam(req.params.id);
     const index  = queryParamNumber(req, 'index');
     const claim = await getClaimById(claimId, req, true);
     const cancelUrl = await getCancelUrl(claimId, claim);

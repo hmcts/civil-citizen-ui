@@ -7,16 +7,17 @@ import {
 import {constructResponseUrlWithIdAndAppIdParams, constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {AppRequest} from 'models/AppRequest';
 import {getApplicationFeeContentPageDetails} from 'services/features/generalApplication/applicationFee/helpWithApplicationFeeContent';
+import {normalizeRouteParam} from 'common/utils/routeParamUtils';
 
 const applyHelpWithFeeViewPath  = 'features/generalApplication/applicationFee/help-with-application-fee-content';
 const helpWithFeesContentController: Router = Router();
 
 helpWithFeesContentController.get(GA_APPLY_HELP_WITH_FEES_START, (async (req: AppRequest, res: Response) => {
-  const claimId = req.params.id;
-  const genAppId = req.params.appId;
+  const claimId = normalizeRouteParam(req.params.id);
+  const genAppId = normalizeRouteParam(req.params.appId);
   const isAdditionalFeeType = req.query.additionalFeeTypeFlag === 'true';
   const redirectUrl = constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL);
-  const backLinkUrl = constructResponseUrlWithIdAndAppIdParams(req.params.id, genAppId, GA_APPLY_HELP_WITH_FEES +'?additionalFeeTypeFlag='+ isAdditionalFeeType);
+  const backLinkUrl = constructResponseUrlWithIdAndAppIdParams(claimId, genAppId, GA_APPLY_HELP_WITH_FEES +'?additionalFeeTypeFlag='+ isAdditionalFeeType);
   res.render(applyHelpWithFeeViewPath,
     {
       backLinkUrl,

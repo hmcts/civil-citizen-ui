@@ -19,6 +19,7 @@ import { buildPageContent } from 'services/features/generalApplication/orderJudg
 import { GeneralApplication } from 'common/models/generalApplication/GeneralApplication';
 import { queryParamNumber } from 'common/utils/requestUtils';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {normalizeRouteParam} from 'common/utils/routeParamUtils';
 
 const orderJudgeController = Router();
 const viewPath = 'features/generalApplication/order-judge';
@@ -26,7 +27,7 @@ const viewPath = 'features/generalApplication/order-judge';
 orderJudgeController.get(ORDER_JUDGE_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
-    const claimId = req.params.id;
+    const claimId = normalizeRouteParam(req.params.id);
     const claim = await getClaimById(claimId, req, true);
     const cancelUrl = await getCancelUrl(claimId, claim);
     const { applicationTypes, orderJudges } = claim.generalApplication || new GeneralApplication();
@@ -53,7 +54,7 @@ orderJudgeController.get(ORDER_JUDGE_URL, (async (req: AppRequest, res: Response
 orderJudgeController.post(ORDER_JUDGE_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
-    const claimId = req.params.id;
+    const claimId = normalizeRouteParam(req.params.id);
     const claim = await getClaimById(claimId, req, true);
     const cancelUrl = await getCancelUrl(claimId, claim);
     const redisKey = generateRedisKey(<AppRequest>req);
@@ -77,7 +78,7 @@ orderJudgeController.post(ORDER_JUDGE_URL, (async (req: AppRequest, res: Respons
       });
     } else {
       await saveOrderJudge(redisKey, orderJudge, index);
-      res.redirect(constructResponseUrlWithIdParams(req.params.id, GA_REQUESTING_REASON_URL)
+      res.redirect(constructResponseUrlWithIdParams(claimId, GA_REQUESTING_REASON_URL)
         + (index >= 0 ? `?index=${index}` : ''));
     }
   } catch (error) {

@@ -20,6 +20,7 @@ import {
 } from 'services/features/generalApplication/unavailableHearingDatesService';
 import {constructResponseUrlWithIdParams, constructUrlWithIndex} from 'common/utils/urlFormatter';
 import {queryParamNumber} from 'common/utils/requestUtils';
+import {normalizeRouteParam} from 'common/utils/routeParamUtils';
 
 const unavailableHearingDatesController = Router();
 const viewPath = 'features/generalApplication/unavailable-dates-hearing';
@@ -34,7 +35,7 @@ async function renderView(claimId: string, claim: Claim, form: GenericForm<Unava
 unavailableHearingDatesController.get(GA_UNAVAILABLE_HEARING_DATES_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
-    const claimId = req.params.id;
+    const claimId = normalizeRouteParam(req.params.id);
     const claim = await getClaimById(claimId, req, true);
     const index  = queryParamNumber(req, 'index') || (claim.generalApplication?.applicationTypes?.length - 1 || 0);
     const unavailableDates = claim.generalApplication?.unavailableDatesHearing;
@@ -50,7 +51,7 @@ unavailableHearingDatesController.post(GA_UNAVAILABLE_HEARING_DATES_URL, (async 
   try {
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
     const action = req.body.action;
-    const claimId = req.params.id;
+    const claimId = normalizeRouteParam(req.params.id);
     const claim = await getClaimById(claimId, req, true);
     const redisKey = generateRedisKey(<AppRequest>req);
     const index  = queryParamNumber(req, 'index') || (claim.generalApplication?.applicationTypes?.length - 1 || 0);

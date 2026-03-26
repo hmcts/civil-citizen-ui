@@ -10,6 +10,7 @@ import {AppRequest} from 'common/models/AppRequest';
 import {getClaimById} from 'modules/utilityService';
 import {getCancelUrl} from 'services/features/generalApplication/generalApplicationService';
 import {constructResponseUrlWithIdAndAppIdParams} from 'common/utils/urlFormatter';
+import {normalizeRouteParam} from 'common/utils/routeParamUtils';
 
 const respondentRequestChangeInformationController = Router();
 const viewPath = 'features/generalApplication/respondent-request-change-information';
@@ -18,8 +19,8 @@ const backLinkUrl = DASHBOARD_URL;
 respondentRequestChangeInformationController.get(GA_RESPONDENT_INFORMATION_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
-    const claimId = req.params.id;
-    const appId = req.params.appId;
+    const claimId = normalizeRouteParam(req.params.id);
+    const appId = normalizeRouteParam(req.params.appId);
     const claim = await getClaimById(claimId, req, true);
     const cancelUrl = await getCancelUrl(claimId, claim);
     const contentList = getUploadFormContent(lng, claimId, appId);

@@ -16,6 +16,7 @@ import { getApplicationCostsContent } from 'services/features/generalApplication
 import { gaApplicationFeeDetails } from 'services/features/generalApplication/feeDetailsService';
 import {constructResponseUrlWithIdParams, constructUrlWithIndex} from 'common/utils/urlFormatter';
 import {queryParamNumber} from 'common/utils/requestUtils';
+import {normalizeRouteParam} from 'common/utils/routeParamUtils';
 
 const applicationCostsController = Router();
 const viewPath = 'features/generalApplication/application-costs';
@@ -27,7 +28,7 @@ async function renderView(claim: Claim, req: AppRequest, res: Response): Promise
   const selectedAppType = applicationTypes[applicationTypes.length - 1]?.option;
   const applicationType = getApplicationTypeOptionByTypeAndDescription(selectedAppType, ApplicationTypeOptionSelection.BY_APPLICATION_TYPE);
   const gaFeeData = await gaApplicationFeeDetails(claim, req);
-  const nextPageUrl = getRedirectUrl(req.params.id, claim, selectedAppType, index);
+  const nextPageUrl = getRedirectUrl(normalizeRouteParam(req.params.id), claim, selectedAppType, index);
   const applicationCostsContent = getApplicationCostsContent(applicationTypes, gaFeeData, lang);
   const backLinkUrl = BACK_URL;
   res.render(viewPath, { backLinkUrl, nextPageUrl, applicationType, applicationCostsContent });
@@ -35,7 +36,7 @@ async function renderView(claim: Claim, req: AppRequest, res: Response): Promise
 
 applicationCostsController.get(GA_APPLICATION_COSTS_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const claimId = req.params.id;
+    const claimId = normalizeRouteParam(req.params.id);
     const claim = await getClaimById(claimId, req, true);
     await renderView(claim, req, res);
   } catch (error) {
