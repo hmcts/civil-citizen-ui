@@ -166,7 +166,7 @@ civil-service:
       CMC_DB_PASSWORD:
         secretRef: "{{ .Values.global.postgresSecret }}"
         key: PASSWORD
-        disabled:
+        disabled: false
 
     postgresql:
       enabled: true
