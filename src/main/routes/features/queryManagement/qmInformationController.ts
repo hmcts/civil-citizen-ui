@@ -41,6 +41,7 @@ import {getGaRedirectionUrl} from 'services/commons/generalApplicationHelper';
 import {AppRequest} from 'models/AppRequest';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
+import {normalizeRouteParam} from 'common/utils/routeParamUtils';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
@@ -328,7 +329,7 @@ const renderView = async (claimId: string, claim: Claim, isFollowUpScreen: boole
 
 qmInformationController.get([QM_FOLLOW_UP_URL, QM_INFORMATION_URL], (async (req, res , next) => {
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-  const claimId = req.params.id;
+  const claimId = normalizeRouteParam(req.params.id);
   const qmType = req.params.qmType as WhatToDoTypeOption;
   const claim: Claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
   const qualifyQuestionType = req.params.qmQualifyOption as QualifyingQuestionTypeOption || null;

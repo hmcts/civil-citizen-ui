@@ -70,6 +70,7 @@ import {GeneralAppUrgencyRequirement} from 'models/generalApplication/response/u
 import {exhaustiveMatchingGuard} from 'services/genericService';
 import {queryParamNumber} from 'common/utils/requestUtils';
 import {Request} from 'express';
+import {normalizeRouteParam} from 'common/utils/routeParamUtils';
 
 const { Logger } = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseService');
@@ -398,7 +399,8 @@ export const saveAndTriggerNotifyGaHwfEvent = async (req: AppRequest, gaHwf: App
     const gaHelpWithFees: CCDGaHelpWithFees = {
       generalAppHelpWithFees: toCCDGeneralAppHelpWithFees(gaHwf),
     };
-    await triggerNotifyHwfEvent(req.params.appId, gaHelpWithFees, req);
+    const appId = normalizeRouteParam(req.params.appId);
+    await triggerNotifyHwfEvent(appId, gaHelpWithFees, req);
   }
   catch (error) {
     logger.error(error);
@@ -511,7 +513,8 @@ export const saveWrittenRepText = async (redisKey: string, writtenRepText: strin
 
 export const getClaimDetailsById = async (req: AppRequest): Promise<Claim> => {
   try {
-    const claim = await getClaimById(req.params.id, req, true);
+    const claimId = normalizeRouteParam(req.params.id);
+    const claim = await getClaimById(claimId, req, true);
     const gaApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
     claim.generalApplication = gaApplication;
     return claim;
@@ -584,13 +587,14 @@ export const saveApplicationTypesToGaResponse = async (isAllowedToRespond: boole
 
 export const getViewAllApplicationLink = async (req: AppRequest, claim: Claim, isGAFlagEnable: boolean, lng: string) : Promise<iWantToLinks> => {
   if(isGAFlagEnable) {
-    let applications = await generalApplicationClient.getApplicationsByCaseId(req.params.id, req);
+    const claimId = normalizeRouteParam(req.params.id);
+    let applications = await generalApplicationClient.getApplicationsByCaseId(claimId, req);
     applications = claim.isClaimant() ? applications?.filter(hideGAAppAsRespondentForClaimant) : applications?.filter(isApplicationVisibleToRespondent);
     const allApplicationUrl = claim.isClaimant() ? GA_APPLICATION_SUMMARY_URL : GA_APPLICATION_RESPONSE_SUMMARY_URL;
     if(applications && applications.length > 0) {
       return {
         text: t('PAGES.DASHBOARD.SUPPORT_LINKS.VIEW_ALL_APPLICATIONS', {lng}),
-        url: constructResponseUrlWithIdParams(req.params.id, allApplicationUrl),
+        url: constructResponseUrlWithIdParams(claimId, allApplicationUrl),
       };
     }
   }
@@ -654,9 +658,11 @@ export const getAgreementFromOtherPartiesNextUrl = (req: AppRequest | Request, c
   const applicationIndex = queryParamNumber(req, 'index');
   const applicationType = getByIndexOrLast(claim.generalApplication?.applicationTypes, applicationIndex)?.option;
   if (req.body.option === YesNo.YES || options.indexOf(applicationType) !== -1  || claim?.generalApplication?.agreementFromOtherParty === YesNo.YES) {
-    return constructUrlWithIndex(constructResponseUrlWithIdParams(req.params.id, GA_APPLICATION_COSTS_URL), applicationIndex);
+    const claimId = normalizeRouteParam(req.params.id);
+    return constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, GA_APPLICATION_COSTS_URL), applicationIndex);
   } else {
-    return constructUrlWithIndex(constructResponseUrlWithIdParams(req.params.id, INFORM_OTHER_PARTIES_URL), applicationIndex);
+    const claimId = normalizeRouteParam(req.params.id);
+    return constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, INFORM_OTHER_PARTIES_URL), applicationIndex);
   }
 };
 
@@ -664,10 +670,12 @@ export const getRequestingReasonNextUrl = (req: AppRequest | Request, claim: Cla
   const options = [ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT, ApplicationTypeOption.SET_ASIDE_JUDGEMENT, ApplicationTypeOption.SETTLE_BY_CONSENT];
   const isAddAnotherApplicationNotAllowed = options.some(value => claim.generalApplication?.applicationTypes.some(obj => obj.option === value));
   if (isAddAnotherApplicationNotAllowed) {
-    return constructResponseUrlWithIdParams(req.params.id, GA_WANT_TO_UPLOAD_DOCUMENTS_URL);
+    const claimId = normalizeRouteParam(req.params.id);
+    return constructResponseUrlWithIdParams(claimId, GA_WANT_TO_UPLOAD_DOCUMENTS_URL);
   } else {
     const applicationIndex = queryParamNumber(req, 'index') || 0;
-    return constructUrlWithIndex(constructResponseUrlWithIdParams(req.params.id, GA_ADD_ANOTHER_APPLICATION_URL), applicationIndex);
+    const claimId = normalizeRouteParam(req.params.id);
+    return constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, GA_ADD_ANOTHER_APPLICATION_URL), applicationIndex);
   }
 };
 
@@ -678,6 +686,7 @@ export const getClaimApplicationCostNextUrl = (req: AppRequest | Request, claim:
     return getRequestingReasonNextUrl(req, claim);
   } else {
     const index  = queryParamNumber(req, 'index') || claim.generalApplication.applicationTypes.length - 1;
-    return constructUrlWithIndex(constructResponseUrlWithIdParams(req.params.id, ORDER_JUDGE_URL), index);
+    const claimId = normalizeRouteParam(req.params.id);
+    return constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, ORDER_JUDGE_URL), index);
   }
 };

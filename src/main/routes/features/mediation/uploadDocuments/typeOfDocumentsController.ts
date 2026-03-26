@@ -23,6 +23,7 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {caseNumberPrettify, convertToArrayOfStrings} from 'common/utils/stringUtils';
 import {TypeOfDocumentsForm} from 'form/models/mediation/uploadDocuments/typeOfDocumentsForm';
 import {TypeOfDocumentsItemForm} from 'form/models/mediation/uploadDocuments/typeOfDocumentsItemForm';
+import {normalizeRouteParam} from 'common/utils/routeParamUtils';
 
 const typeOfDocumentsViewPath = 'features/mediation/uploadDocuments/typeOfDocuments';
 const mediationTypeOfDocumentsController = Router();
@@ -56,7 +57,7 @@ async function renderView(form: GenericForm<TypeOfDocumentsForm>, res: Response,
 
 mediationTypeOfDocumentsController.get(MEDIATION_TYPE_OF_DOCUMENTS, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const claimId = req.params.id;
+    const claimId = normalizeRouteParam(req.params.id);
     req.session.previousUrl = req.originalUrl;
     const redisKey = generateRedisKey(req);
     const claim = await getCaseDataFromStore(redisKey);
@@ -76,7 +77,7 @@ mediationTypeOfDocumentsController.get(MEDIATION_TYPE_OF_DOCUMENTS, (async (req:
 
 mediationTypeOfDocumentsController.post(MEDIATION_TYPE_OF_DOCUMENTS, (async (req, res, next) => {
   try {
-    const claimId = req.params.id;
+    const claimId = normalizeRouteParam(req.params.id);
     const redisKey = generateRedisKey(<AppRequest>req);
     const claim = await getCaseDataFromStore(redisKey);
     const typeOfDocumentsForm = createTypeOfDocumentsForm();

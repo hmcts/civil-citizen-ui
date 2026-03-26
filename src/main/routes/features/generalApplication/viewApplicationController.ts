@@ -32,18 +32,19 @@ import {getClaimById} from 'modules/utilityService';
 import {deleteDraftClaimFromStore} from 'modules/draft-store/draftStoreService';
 import {canUploadAddlDoc} from 'services/features/generalApplication/additionalDocumentService';
 import {displayToEnumKey} from 'services/translation/convertToCUI/cuiTranslation';
+import {normalizeRouteParam} from 'common/utils/routeParamUtils';
 
 const viewApplicationController = Router();
 const viewPath = 'features/generalApplication/view-applications';
 
 viewApplicationController.get(GA_VIEW_APPLICATION_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const claimId = req.params.id;
-    const applicationId = req.params.appId ? String(req.params.appId) : null;
+    const claimId = normalizeRouteParam(req.params.id);
+    const applicationId = normalizeRouteParam(req.params.appId);
     const claim: Claim = await getClaimById(claimId, req, true);
     const applicationIndex = queryParamNumber(req, 'index') || await getApplicationIndex(claimId, applicationId, req, true);
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-    const applicationResponse: ApplicationResponse = await getApplicationFromGAService(req, req.params.appId);
+    const applicationResponse: ApplicationResponse = await getApplicationFromGAService(req, applicationId);
     const statusRow = getStatusRow(applicationResponse, lang);
     const applicationTypeCards = getSummaryCardSections(applicationResponse, lang);
     const {summaryRows, responseSummaries} = await getApplicationSections(req, applicationResponse, lang);
@@ -55,16 +56,16 @@ viewApplicationController.get(GA_VIEW_APPLICATION_URL, (async (req: AppRequest, 
     const isGACosc = displayToEnumKey(applicationResponse.case_data.applicationTypes) === 'CONFIRM_CCJ_DEBT_PAID';
     const isApplicationFeeAmountNotPaid = isApplicationFeeNotPaid(applicationResponse);
 
-    const payAdditionalFeeUrl = constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_PAY_ADDITIONAL_FEE_URL);
+    const payAdditionalFeeUrl = constructResponseUrlWithIdAndAppIdParams(claimId, applicationId, GA_PAY_ADDITIONAL_FEE_URL);
 
     if(isApplicationFeeAmountNotPaid) {
-      applicationFeeOptionUrl = constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_APPLY_HELP_WITH_FEE_SELECTION + '?appFee=' + convertToPoundsFilter(applicationResponse?.case_data?.generalAppPBADetails?.fee.calculatedAmountInPence));
+      applicationFeeOptionUrl = constructResponseUrlWithIdAndAppIdParams(claimId, applicationId, GA_APPLY_HELP_WITH_FEE_SELECTION + '?appFee=' + convertToPoundsFilter(applicationResponse?.case_data?.generalAppPBADetails?.fee.calculatedAmountInPence));
     }
     let additionalDocUrl : string = null;
     if(canUploadAddlDoc(applicationResponse)) {
-      additionalDocUrl = constructResponseUrlWithIdAndAppIdParams(req.params.id, req.params.appId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL);
+      additionalDocUrl = constructResponseUrlWithIdAndAppIdParams(claimId, applicationId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL);
     }
-    const responseFromCourt =  await getResponseFromCourtSection(req, req.params.appId, true, lang);
+    const responseFromCourt =  await getResponseFromCourtSection(req, applicationId, true, lang);
     const dashboardUrl = constructResponseUrlWithIdParams(claimId,DASHBOARD_CLAIMANT_URL);
     const caseProgressionCaseState =  isGACosc ? null : claim.isCaseProgressionCaseState();
     const uploadDocsTrialUrl = isGACosc ? null : constructResponseUrlWithIdParams(claimId, UPLOAD_YOUR_DOCUMENTS_URL);

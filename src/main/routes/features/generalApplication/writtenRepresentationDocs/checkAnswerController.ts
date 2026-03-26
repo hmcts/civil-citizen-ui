@@ -21,6 +21,7 @@ import { buildSummarySection } from 'services/features/generalApplication/writte
 import {
   getDraftGARespondentResponse,
 } from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
+import {normalizeRouteParam} from 'common/utils/routeParamUtils';
 
 const gaWrittenRepresentationCheckAnswersController = Router();
 const viewPath = 'features/generalApplication/additionalInfoUpload/checkYourAnswer';
@@ -29,7 +30,8 @@ const gaServiceClient: GaServiceClient = new GaServiceClient(generalAppApiBaseUr
 const headerCaption = 'PAGES.GENERAL_APPLICATION.UPLOAD_WRITTEN_REPRESENTATION_DOCUMENTS.PAGE_TITLE';
 gaWrittenRepresentationCheckAnswersController.get(GA_UPLOAD_WRITTEN_REPRESENTATION_DOCS_CYA_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const { appId, id: claimId } = req.params;
+    const appId = normalizeRouteParam(req.params.appId);
+    const claimId = normalizeRouteParam(req.params.id);
     const claimIdPrettified = caseNumberPrettify(claimId);
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
     const claim = await getClaimById(claimId, req, true);
@@ -47,7 +49,8 @@ gaWrittenRepresentationCheckAnswersController.get(GA_UPLOAD_WRITTEN_REPRESENTATI
 
 gaWrittenRepresentationCheckAnswersController.post(GA_UPLOAD_WRITTEN_REPRESENTATION_DOCS_CYA_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const { appId, id: claimId } = req.params;
+    const appId = normalizeRouteParam(req.params.appId);
+    const claimId = normalizeRouteParam(req.params.id);
     const uploadedDocumentList = await getGADocumentsFromDraftStore(generateRedisKeyForGA(req));
     const uploadedDocument = translateCUItoCCD(uploadedDocumentList);
     const gaResponse = await getDraftGARespondentResponse(generateRedisKeyForGA(req));
