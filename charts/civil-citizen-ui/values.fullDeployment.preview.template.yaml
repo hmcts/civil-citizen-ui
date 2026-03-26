@@ -108,8 +108,7 @@ civil-service:
 
     logstash:
       image: hmctsprod.azurecr.io/ccd/logstash
-      imageTag: "7.16.1"
-      imagePullPolicy: "IfNotPresent"
+      imageTag: "latest"
       logstashJavaOpts: -Xmx1g -Xms512M
       persistence:
         enabled: false

@@ -8,7 +8,7 @@ global:
   idamApiUrl: https://idam-api.aat.platform.hmcts.net
   idamWebUrl: https://idam-web-public.aat.platform.hmcts.net
   postgresUsername: hmcts
-  postgresSecret: postgres-password
+  postgresSecret: civil-aat
   postgresHostname: ${SERVICE_NAME}-postgresql
   postgresPassword: ${POSTGRES_PASSWORD}
   s2sUrl: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
@@ -165,7 +165,7 @@ civil-service:
     secrets:
       CMC_DB_PASSWORD:
         secretRef: "{{ .Values.global.postgresSecret }}"
-        key: PASSWORD
+        key: postgres-password
         disabled: false
 
     postgresql:
@@ -289,7 +289,7 @@ civil-service:
         secrets:
           ROLE_ASSIGNMENT_DB_PASSWORD:
             secretRef: "{{ .Values.global.postgresSecret }}"
-            key: PASSWORD
+            key: postgres-password
             disabled: false
 
     ccd-data-store-api:
@@ -322,7 +322,7 @@ civil-service:
         secrets:
           DATA_STORE_DB_PASSWORD:
             secretRef: "{{ .Values.global.postgresSecret }}"
-            key: PASSWORD
+            key: postgres-password
             disabled: false
 
     elasticsearch:
@@ -394,7 +394,7 @@ civil-service:
         secrets:
           DEFINITION_STORE_DB_PASSWORD:
             secretRef: "{{ .Values.global.postgresSecret }}"
-            key: PASSWORD
+            key: postgres-password
             disabled: false
         keyVaults: [ ]
         ingressHost: ccd-definition-store-${SERVICE_NAME}.preview.platform.hmcts.net
@@ -402,6 +402,7 @@ civil-service:
     postgresql:
       persistence:
         enabled: false
+
   xui-webapp:
     enabled: true
     memoryLimits: 1Gi
@@ -431,6 +432,7 @@ civil-service:
         JURISDICTIONS: CIVIL
         LAUNCH_DARKLY_CLIENT_ID: 5de6610b23ce5408280f2268
         WA_SUPPORTED_JURISDICTIONS: "IA,PRIVATELAW"
+
   idam-pr:
     releaseNameOverride: ${SERVICE_NAME}-xui-idam-pr
     enabled: true
@@ -439,6 +441,7 @@ civil-service:
         - https://${SERVICE_NAME}.preview.platform.hmcts.net/oauth2/callback
       XUI:
         - https://xui-${SERVICE_NAME}.preview.platform.hmcts.net/oauth2/callback
+
   aac-manage-case-assignment:
     enabled: true
     java:
@@ -467,6 +470,7 @@ civil-service:
         NOTIFY_MCA_API_KEY: ${NOTIFY_MCA_API_KEY}
       autoscaling:
         enabled: false
+
   em-stitching:
     enabled: true
     java:
@@ -491,8 +495,8 @@ civil-service:
         LOGGING_LEVEL_UK_GOV_HMCTS_REFORM_EM: DEBUG
       secrets:
         SPRING_DATASOURCE_PASSWORD:
-          secretRef: postgres
-          key: PASSWORD
+          secretRef: "{{ .Values.global.postgresSecret }}"
+          key: postgres-password
           disabled: false
       keyVaults:
         em-stitching:
