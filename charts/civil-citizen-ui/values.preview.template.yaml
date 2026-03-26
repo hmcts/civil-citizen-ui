@@ -314,7 +314,6 @@ civil-service:
             disabled: false
 
     elasticsearch:
-      image: hmctsprod.azurecr.io/ccd/elasticsearch
       nameOverride: ${SERVICE_NAME}-es
       imageTag: "latest"
       initResources:
