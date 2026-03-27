@@ -128,6 +128,14 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(express.json({ limit: '500mb' }));
 app.use(express.urlencoded({ limit: '500mb', extended: true }));
+// Express 5 leaves req.body undefined when no parser matches (e.g. empty POSTs).
+// Legacy controllers/tests assume an object and read req.body.action safely.
+app.use((req, _res, next) => {
+  if (req.body === undefined) {
+    req.body = {};
+  }
+  next();
+});
 app.locals.ENV = env;
 I18Next.enableFor(app);
 
