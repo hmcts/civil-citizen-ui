@@ -133,7 +133,7 @@ const multerMiddleware = createMulterErrorMiddleware('uploadDocumentsController'
 
 uploadDocumentsController.post(CP_UPLOAD_DOCUMENTS_URL, multerMiddleware, (async (req, res, next) => {
   const claimId = normalizeRouteParam(req.params.id);
-  const action = req.body.action;
+  const action = req.body?.action as string | undefined;
   const userId = (req as AppRequest)?.session?.user?.id;
   try {
     if ((req as any).multerError) {
