@@ -19,6 +19,7 @@ import {
   HasAnAgreementBeenReachedOptions,
 } from 'models/directionsQuestionnaire/mintiMultitrack/hasAnAgreementBeenReachedOptions';
 import {TypeOfDisclosureDocument} from 'models/directionsQuestionnaire/hearing/disclosureOfDocuments';
+import {normalizeRouteParam} from 'common/utils/routeParamUtils';
 
 const agreementReachedController = Router();
 const disclosureNonElectronicDocumentsViewPath = 'features/directionsQuestionnaire/mintiMultiTrack/agreement-reached';
@@ -40,7 +41,7 @@ function renderView(disclosureNonElectronicDocument: GenericForm<HasAnAgreementB
 
 agreementReachedController.get(DQ_MULTITRACK_AGREEMENT_REACHED_URL, (async (req, res, next: NextFunction) => {
   try {
-    const claimId = req.params.id;
+    const claimId = normalizeRouteParam(req.params.id);
 
     const directionQuestionnaire = await getDirectionQuestionnaire(generateRedisKey(<AppRequest>req));
     const hasAnAgreementBeenReachedForm = directionQuestionnaire.hearing?.hasAnAgreementBeenReached ?
@@ -53,7 +54,7 @@ agreementReachedController.get(DQ_MULTITRACK_AGREEMENT_REACHED_URL, (async (req,
 
 agreementReachedController.post(DQ_MULTITRACK_AGREEMENT_REACHED_URL, (async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const claimId = req.params.id;
+    const claimId = normalizeRouteParam(req.params.id);
     const directionQuestionnaire = await getDirectionQuestionnaire(generateRedisKey(<AppRequest>req));
     const hasAnAgreementBeenReachedForm = new GenericForm(new HasAnAgreementBeenReached(req.body.hasAnAgreementBeenReached));
     hasAnAgreementBeenReachedForm.validateSync();

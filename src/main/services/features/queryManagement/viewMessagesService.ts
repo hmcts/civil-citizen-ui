@@ -5,6 +5,7 @@ import {QM_VIEW_QUERY_URL} from 'routes/urls';
 import {t} from 'i18next';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {isQueryManagementEnabled} from '../../../app/auth/launchdarkly/launchDarklyClient';
+import {normalizeRouteParam} from 'common/utils/routeParamUtils';
 
 export const getViewMessagesLink = async (req: AppRequest, claim: Claim, lng: string): Promise<iWantToLinks> => {
   const isQueryManagementLipEnabled = await isQueryManagementEnabled(claim.submittedDate);
@@ -13,7 +14,7 @@ export const getViewMessagesLink = async (req: AppRequest, claim: Claim, lng: st
     if (messages && messages.caseMessages.length > 0) {
       return {
         text: t('PAGES.DASHBOARD.SUPPORT_LINKS.VIEW_ALL_MESSAGES', {lng}),
-        url: constructResponseUrlWithIdParams(req.params.id, QM_VIEW_QUERY_URL),
+        url: constructResponseUrlWithIdParams(normalizeRouteParam(req.params.id), QM_VIEW_QUERY_URL),
       };
     }
   }

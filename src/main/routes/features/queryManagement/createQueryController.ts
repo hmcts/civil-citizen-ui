@@ -18,13 +18,14 @@ import {Claim} from 'models/claim';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import { createMulterErrorMiddlewareForSingleField, getFileUploadErrorsForSource, FILE_UPLOAD_SOURCE } from 'common/utils/fileUploadUtils';
 import { redirectIfMulterError } from 'services/features/generalApplication/uploadEvidenceDocumentService';
+import {normalizeRouteParam} from 'common/utils/routeParamUtils';
 
 const createQueryController = Router();
 const viewPath = 'features/queryManagement/createQuery';
 const multerMiddleware = createMulterErrorMiddlewareForSingleField('selectedFile', 'createQueryController');
 
 async function renderView(form: GenericForm<CreateQuery>, claim: Claim, claimId: string, res: Response, formattedSummary: SummarySection, req: AppRequest, index?: number): Promise<void> {
-  const cancelUrl = getCancelUrl(req.params.id);
+  const cancelUrl = getCancelUrl(claimId);
   const currentUrl = constructResponseUrlWithIdParams(claimId, QUERY_MANAGEMENT_CREATE_QUERY);
   const backLinkUrl = BACK_URL;
   res.render(viewPath, {
@@ -44,7 +45,7 @@ const pageHeaders = {
 };
 
 createQueryController.get(QUERY_MANAGEMENT_CREATE_QUERY, (async (req: AppRequest, res: Response, next: NextFunction) => {
-  const claimId = req.params.id;
+  const claimId = normalizeRouteParam(req.params.id);
   const claim = await getClaimById(claimId, req, true);
   const createQuery = claim.queryManagement?.createQuery || new CreateQuery();
   let form = new GenericForm(createQuery);
@@ -65,7 +66,7 @@ createQueryController.get(QUERY_MANAGEMENT_CREATE_QUERY, (async (req: AppRequest
 
 createQueryController.post([QUERY_MANAGEMENT_CREATE_QUERY], multerMiddleware, (async (req:AppRequest, res: Response, next: NextFunction) => {
   try {
-    const claimId = req.params.id;
+    const claimId = normalizeRouteParam(req.params.id);
     const action = req.body.action;
     const claim = await getClaimById(claimId, req, true);
     const currentUrl = constructResponseUrlWithIdParams(claimId, QUERY_MANAGEMENT_CREATE_QUERY);

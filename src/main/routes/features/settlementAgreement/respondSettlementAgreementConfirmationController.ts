@@ -8,6 +8,7 @@ import {respondSettlementAgreementConfirmationGuard} from 'routes/guards/respond
 import {getClaimById} from 'modules/utilityService';
 import {deleteDraftClaimFromStore, generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'models/AppRequest';
+import {normalizeRouteParam} from 'common/utils/routeParamUtils';
 
 const respondSettlementAgreementConfirmationViewPath = 'features/settlementAgreement/respond-settlement-agreement-confirmation';
 const respondSettlementAgreementConfirmationController = Router();
@@ -15,7 +16,7 @@ const respondSettlementAgreementConfirmationController = Router();
 respondSettlementAgreementConfirmationController.get(DEFENDANT_SIGN_SETTLEMENT_AGREEMENT_CONFIRMATION, respondSettlementAgreementConfirmationGuard, (async (req: AppRequest, res, next) => {
   try {
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-    const claimId = req.params.id;
+    const claimId = normalizeRouteParam(req.params.id);
     const claim = await getClaimById(claimId, req, true);
     claim.id = claimId;
     const claimantResponseConfirmationContent = getRespondSettlementAgreementConfirmationContent(claim, getLng(lang));

@@ -18,7 +18,7 @@ paymentDateController
   .get(
     CITIZEN_PAYMENT_DATE_URL, async (req: Request, res: Response, next: NextFunction) => {
       try {
-        const paymentDate = await paymentDateService.getPaymentDate(generateRedisKey(<AppRequest>req), ResponseType.FULL_ADMISSION);
+        const paymentDate = await paymentDateService.getPaymentDate(generateRedisKey(req as unknown as AppRequest), ResponseType.FULL_ADMISSION);
         res.render(paymentDatePath, {
           form: new GenericForm(paymentDate), title,
         });
@@ -36,7 +36,7 @@ paymentDateController
         res.render(paymentDatePath, {form, title});
       } else {
         try {
-          await paymentDateService.savePaymentDate(generateRedisKey(<AppRequest>req), paymentDate.date, ResponseType.FULL_ADMISSION);
+          await paymentDateService.savePaymentDate(generateRedisKey(req as unknown as AppRequest), paymentDate.date, ResponseType.FULL_ADMISSION);
           res.redirect(constructResponseUrlWithIdParams(req.params.id, RESPONSE_TASK_LIST_URL));
         } catch (error) {
           next(error);

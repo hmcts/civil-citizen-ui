@@ -14,6 +14,7 @@ import {ResponseDeadlineService} from 'services/features/response/responseDeadli
 import {deadLineGuard} from 'routes/guards/deadLineGuard';
 import {AppRequest} from 'common/models/AppRequest';
 import {isCuiGaNroEnabled, isCUIReleaseTwoEnabled} from 'app/auth/launchdarkly/launchDarklyClient';
+import {normalizeRouteParam} from 'common/utils/routeParamUtils';
 
 const responseDeadlineOptionsController = Router();
 const responseDeadlineOptionsViewPath = 'features/response/response-deadline-options';
@@ -40,7 +41,8 @@ responseDeadlineOptionsController.get(RESPONSE_DEADLINE_OPTIONS_URL, deadLineGua
     try {
       const claim = await getCaseDataFromStore(generateRedisKey(<AppRequest>req));
       const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-      renderView(res, new GenericForm(new ResponseDeadline(claim.responseDeadline?.option)), claim, lang, req.params.id);
+      const claimId = normalizeRouteParam(req.params.id);
+      renderView(res, new GenericForm(new ResponseDeadline(claim.responseDeadline?.option)), claim, lang, claimId);
     } catch (error) {
       logger.error(`Error when GET : response deadline options - ${error.message}`);
       next(error);
@@ -52,7 +54,7 @@ responseDeadlineOptionsController.post(RESPONSE_DEADLINE_OPTIONS_URL, deadLineGu
     try {
       let responseOption;
       let redirectUrl;
-      const claimId = req.params.id;
+      const claimId = normalizeRouteParam(req.params.id);
       const redisKey = generateRedisKey(<AppRequest>req);
       const lang = req.query.lang ? req.query.lang : req.cookies.lang;
       const claim = await getCaseDataFromStore(redisKey);

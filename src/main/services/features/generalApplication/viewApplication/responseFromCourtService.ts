@@ -21,12 +21,13 @@ import { CourtResponseSummaryList, ResponseButton } from 'common/models/generalA
 import {ApplicationState} from 'models/generalApplication/applicationSummary';
 import {Claim} from 'models/claim';
 import {canUploadAddlDoc} from 'services/features/generalApplication/additionalDocumentService';
+import {normalizeRouteParam} from 'common/utils/routeParamUtils';
 
 /**
  * Creates Response from court summary list by sorting on response time.
  */
 export const buildResponseFromCourtSection = async (req : AppRequest, application: ApplicationResponse, showButtons: boolean, lang: string): Promise<CourtResponseSummaryList[]> => {
-  const claimId = req.params.id;
+  const claimId = normalizeRouteParam(req.params.id);
   const claim = await getClaimById(claimId, req, true);
   return [
     ...getJudgeDirectionWithNotice(claim, req, application, lang),
@@ -47,7 +48,7 @@ export const buildResponseFromCourtSection = async (req : AppRequest, applicatio
 export const getJudgeDirectionWithNotice = (claim: Claim, req: AppRequest, applicationResponse: ApplicationResponse, lng: string): CourtResponseSummaryList[] => {
   let courtResponseSummaryList : CourtResponseSummaryList[] = [];
   if (isGaApplicant(claim, applicationResponse)) {
-    const claimId = req.params.id;
+    const claimId = normalizeRouteParam(req.params.id);
     const makeWithNoticeDocs = applicationResponse?.case_data?.requestForInformationDocument;
     if (makeWithNoticeDocs) {
       courtResponseSummaryList = makeWithNoticeDocs
@@ -78,7 +79,7 @@ export const getJudgeDirectionWithNotice = (claim: Claim, req: AppRequest, appli
 
 export const getJudgesDirectionsOrder = (req: AppRequest, applicationResponse: ApplicationResponse, showButtons: boolean, lng: string): CourtResponseSummaryList[] => {
   let courtResponseSummaryList : CourtResponseSummaryList[] = [];
-  const claimId = req.params.id;
+  const claimId = normalizeRouteParam(req.params.id);
   const directionOrderDocuments = applicationResponse?.case_data?.directionOrderDocument;
   const judgesDirectionsOrderUrl = constructResponseUrlWithIdAndAppIdParams(claimId, applicationResponse.id, GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_URL);
   if (directionOrderDocuments) {
@@ -149,7 +150,8 @@ export const getHearingOrderResponses = (req: AppRequest, applicationResponse: A
   let courtResponseSummaryList : CourtResponseSummaryList[] = [];
   let uploadAddlDocsButton :ResponseButton = null;
   if(showButtons && canUploadAddlDoc(applicationResponse)) {
-    const uploadAddlDocsButtonHref = constructResponseUrlWithIdAndAppIdParams(req.params.id, applicationResponse.id, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL);
+    const normalizedClaimId = normalizeRouteParam(req.params.id);
+    const uploadAddlDocsButtonHref = constructResponseUrlWithIdAndAppIdParams(normalizedClaimId, applicationResponse.id, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL);
     uploadAddlDocsButton = new ResponseButton(t('COMMON.BUTTONS.UPLOAD_ADDITIONAL_DOCUMENTS', {lng}), uploadAddlDocsButtonHref);
   }
   if (hearingOrders) {
@@ -228,7 +230,7 @@ function createResponseToRequestButton(applicationResponse: ApplicationResponse,
 }
 
 export const getWrittenRepSequentialDocument = (req : AppRequest, applicationResponse: ApplicationResponse, lng: string) : CourtResponseSummaryList[] => {
-  const claimId = req.params.id;
+  const claimId = normalizeRouteParam(req.params.id);
   const writtenRepSequentialDocs = applicationResponse?.case_data?.writtenRepSequentialDocument;
   let courtResponseSummaryList : CourtResponseSummaryList[] = [];
 
@@ -252,7 +254,7 @@ export const getWrittenRepSequentialDocument = (req : AppRequest, applicationRes
 };
 
 export const getWrittenRepConcurrentDocument = (req : AppRequest, applicationResponse: ApplicationResponse, lng: string) : CourtResponseSummaryList[] => {
-  const claimId = req.params.id;
+  const claimId = normalizeRouteParam(req.params.id);
   const writtenRepConcurrentDocs = applicationResponse?.case_data?.writtenRepConcurrentDocument;
   let courtResponseSummaryList : CourtResponseSummaryList[] = [];
 

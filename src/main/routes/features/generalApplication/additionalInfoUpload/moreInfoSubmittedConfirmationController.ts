@@ -13,6 +13,7 @@ import {
   getConfirmationContent,
 } from 'services/features/generalApplication/additionalInfoUpload/uploadDocumentsForReqMoreInfoService';
 import {t} from 'i18next';
+import {normalizeRouteParam} from 'common/utils/routeParamUtils';
 
 const moreInfoSubmittedConfirmationController = Router();
 const viewPath = 'features/generalApplication/additionalInfoUpload/confirmation-screen';
@@ -20,7 +21,7 @@ const viewPath = 'features/generalApplication/additionalInfoUpload/confirmation-
 moreInfoSubmittedConfirmationController.get([GA_UPLOAD_WRITTEN_REPRESENTATION_DOCS_SUBMITTED_URL,GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_CONFIRMATION_URL], (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
-    const { id: claimId } = req.params;
+    const claimId = normalizeRouteParam(req.params.id);
     const claim = await getClaimById(claimId, req, true);
     const redisKey = generateRedisKeyForGA(req);
     await deleteDraftClaimFromStore(redisKey);

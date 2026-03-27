@@ -91,11 +91,9 @@ describe('General Application - Do you want to apply for help with fees Page', (
     it('should return Do you want to apply for help with fees page with request id', async () => {
       const mockGAHwF = new GaHelpWithFees();
       mockGetCaseData.mockImplementation(async () => mockGAHwF);
-      app.request.query = {
-        id : '12345',
-      };
       await request(app)
         .get(GA_APPLY_HELP_WITH_FEE_SELECTION)
+        .query({id: '12345'})
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.APPLY_HELP_WITH_FEE.HEADING'));

@@ -9,6 +9,7 @@ import {AppRequest} from 'common/models/AppRequest';
 import {ClaimSummarySection} from 'form/models/claimSummarySection';
 import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
 import {caseNumberPrettify} from 'common/utils/stringUtils';
+import {normalizeRouteParam} from 'common/utils/routeParamUtils';
 
 const checkAnswersViewPath = 'features/common/confirmation-page.njk';
 
@@ -40,7 +41,7 @@ function renderView(res: Response, claimId: string) {
 }
 
 mediationConfirmationController.get(MEDIATION_UPLOAD_DOCUMENTS_CONFIRMATION, (async (req: AppRequest, res: Response) => {
-  const claimId = req.params.id;
+  const claimId = normalizeRouteParam(req.params.id);
   renderView(res, claimId);
 })as RequestHandler);
 

@@ -11,12 +11,13 @@ import {constructResponseUrlWithIdParams, constructUrlWithIndex} from 'common/ut
 import { getDynamicHeaderForMultipleApplications } from 'services/features/generalApplication/generalApplicationService';
 import {getCancelUrl} from 'services/features/generalApplication/generalApplicationService';
 import {queryParamNumber} from 'common/utils/requestUtils';
+import {normalizeRouteParam} from 'common/utils/routeParamUtils';
 
 const hearingArrangementsGuidanceController = Router();
 const viewPath = 'features/generalApplication/hearing_arrangements_guidance';
 
 hearingArrangementsGuidanceController.get(GA_HEARING_ARRANGEMENTS_GUIDANCE_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
-  const claimId = req.params.id;
+  const claimId = normalizeRouteParam(req.params.id);
   const claim = await getClaimById(claimId, req, true);
   const index  = queryParamNumber(req, 'index');
   const backLinkUrl = BACK_URL;
@@ -25,7 +26,7 @@ hearingArrangementsGuidanceController.get(GA_HEARING_ARRANGEMENTS_GUIDANCE_URL, 
   const nextPageUrl = constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, GA_HEARING_ARRANGEMENT_URL), index);
   const cancelUrl = await getCancelUrl(claimId, claim);
   try {
-    res.render(viewPath, {claimId: req.params.id, headerTitle, backLinkUrl, nextPageUrl, cancelUrl});
+    res.render(viewPath, {claimId, headerTitle, backLinkUrl, nextPageUrl, cancelUrl});
   } catch (error) {
     next(error);
   }

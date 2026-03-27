@@ -29,6 +29,7 @@ import {
   FILE_UPLOAD_SOURCE,
 } from 'common/utils/fileUploadUtils';
 import {redirectIfMulterError} from 'services/features/generalApplication/uploadEvidenceDocumentService';
+import {normalizeRouteParam} from 'common/utils/routeParamUtils';
 
 const uploadEvidenceDocumentsForApplicationController = Router();
 const viewPath = 'features/generalApplication/upload_documents';
@@ -53,7 +54,7 @@ async function renderView(form: GenericForm<UploadGAFiles>, claim: Claim, claimI
 
 uploadEvidenceDocumentsForApplicationController.get([GA_UPLOAD_DOCUMENTS_URL, GA_UPLOAD_DOCUMENTS_COSC_URL], (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const claimId = req.params.id;
+    const claimId = normalizeRouteParam(req.params.id);
     const index  = queryParamNumber(req, 'index');
     const claim = await getClaimById(claimId, req, true);
     const redisKey = generateRedisKey(req);
@@ -84,7 +85,7 @@ uploadEvidenceDocumentsForApplicationController.get([GA_UPLOAD_DOCUMENTS_URL, GA
 
 uploadEvidenceDocumentsForApplicationController.post([GA_UPLOAD_DOCUMENTS_URL, GA_UPLOAD_DOCUMENTS_COSC_URL], multerMiddleware, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const claimId = req.params.id;
+    const claimId = normalizeRouteParam(req.params.id);
     const index  = queryParamNumber(req, 'index');
     const redisKey = generateRedisKey(req);
     const claim: Claim = await getCaseDataFromStore(redisKey);

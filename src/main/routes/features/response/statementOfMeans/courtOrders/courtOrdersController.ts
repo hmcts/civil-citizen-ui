@@ -6,6 +6,7 @@ import {courtOrdersService}
 import {CourtOrders} from 'form/models/statementOfMeans/courtOrders/courtOrders';
 import {AppRequest} from 'common/models/AppRequest';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
+import {normalizeRouteParam} from 'common/utils/routeParamUtils';
 
 const residenceViewPath = 'features/response/statementOfMeans/courtOrders/court-orders';
 
@@ -38,7 +39,8 @@ courtOrdersController
       } else {
         try {
           await courtOrdersService.saveCourtOrders(generateRedisKey(<AppRequest>req), courtOrders);
-          res.redirect(CITIZEN_PRIORITY_DEBTS_URL.replace(':id', req.params.id));
+          const claimId = normalizeRouteParam(req.params.id);
+          res.redirect(CITIZEN_PRIORITY_DEBTS_URL.replace(':id', claimId));
         } catch (error) {
           next(error);
         }

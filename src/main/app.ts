@@ -1,10 +1,8 @@
-import * as bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import express from 'express';
 import * as path from 'path';
 import favicon from 'serve-favicon';
 import session from 'express-session';
-import 'express-async-errors';
 
 import {AppInsights} from 'modules/appinsights';
 import {Helmet} from 'modules/helmet';
@@ -125,11 +123,19 @@ const cookieMaxAge = config.get<number>('cookieMaxAge');
 export const app = express();
 app.use(cookieParser());
 app.use(setLanguage);
-app.use(favicon(path.join(__dirname, 'public', 'assets', 'images', 'favicon.ico')));
+app.use(favicon(path.join(__dirname, 'public', 'assets', 'images', 'favicon.ico')) as any);
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(express.json({ limit: '500mb' }));
 app.use(express.urlencoded({ limit: '500mb', extended: true }));
+// Express 5 leaves req.body undefined when no parser matches (e.g. empty POSTs).
+// Legacy controllers/tests assume an object and read req.body.action safely.
+app.use((req, _res, next) => {
+  if (req.body === undefined) {
+    req.body = {};
+  }
+  next();
+});
 app.locals.ENV = env;
 I18Next.enableFor(app);
 
@@ -161,7 +167,7 @@ app.use(session({
     maxAge: cookieMaxAge,
     sameSite: 'lax',
   },
-}));
+}) as any);
 
 app.use(setCaseReferenceCookie({secure: productionMode, maxAge: cookieMaxAge}));
 
@@ -311,9 +317,6 @@ if(env !== 'test') {
   app.use(contactUsGuard);
   app.use(MEDIATION_PHONE_CONFIRMATION_URL, mediationClaimantPhoneRedirectionGuard);
 }
-app.use(bodyParser.json({limit: '500mb'}));
-app.use(bodyParser.urlencoded({ limit: '500mb', extended: true }));
-
 app.use((_req, res, next) => {
   res.setHeader(
     'Cache-Control',

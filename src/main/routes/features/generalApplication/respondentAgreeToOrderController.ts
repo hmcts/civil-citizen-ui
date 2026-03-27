@@ -21,16 +21,17 @@ import {
 } from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
 import {constructResponseUrlWithIdAndAppIdParams} from 'common/utils/urlFormatter';
 import {YesNo} from 'form/models/yesNo';
+import {normalizeRouteParam} from 'common/utils/routeParamUtils';
 
 const respondentAgreeToOrderController = Router();
 const viewPath = 'features/generalApplication/agree-to-order';
 
 respondentAgreeToOrderController.get(GA_AGREE_TO_ORDER_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const claimId = req.params.id;
+    const claimId = normalizeRouteParam(req.params.id);
     const claim = await getClaimById(claimId, req, true);
     const gaResponse = await getDraftGARespondentResponse(generateRedisKeyForGA(<AppRequest>req));
-    const cancelUrl = await getCancelUrl(req.params.id, claim);
+    const cancelUrl = await getCancelUrl(claimId, claim);
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const caption: string = getRespondToApplicationCaption(gaResponse.generalApplicationType, lang);
     const backLinkUrl = BACK_URL;
@@ -51,13 +52,13 @@ respondentAgreeToOrderController.get(GA_AGREE_TO_ORDER_URL, (async (req: AppRequ
 respondentAgreeToOrderController.post(GA_AGREE_TO_ORDER_URL, (async (req: AppRequest | Request, res: Response, next: NextFunction) => {
   try {
     const redisKey = generateRedisKeyForGA(<AppRequest>req);
-    const claimId = req.params.id;
-    const applicationId = req.params.appId;
+    const claimId = normalizeRouteParam(req.params.id);
+    const applicationId = normalizeRouteParam(req.params.appId);
     const claim = await getClaimById(claimId, req, true);
-    const cancelUrl = await getCancelUrl(req.params.id, claim);
+    const cancelUrl = await getCancelUrl(claimId, claim);
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
 
-    const backLinkUrl = constructResponseUrlWithIdAndAppIdParams(claimId, req.params.id, GA_RESPONSE_VIEW_APPLICATION_URL);
+    const backLinkUrl = constructResponseUrlWithIdAndAppIdParams(claimId, applicationId, GA_RESPONSE_VIEW_APPLICATION_URL);
     const form = new GenericForm(new GenericYesNo(req.body.option, 'ERRORS.GENERAL_APPLICATION.AGREE_TO_ORDER_NOT_SELECTED'));
 
     form.validateSync();

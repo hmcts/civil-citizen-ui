@@ -8,6 +8,7 @@ import { getClaimById } from 'modules/utilityService';
 import { buildRespondentApplicationSummaryRow, isApplicationVisibleToRespondent } from 'services/features/generalApplication/response/generalApplicationResponseService';
 import {Claim} from 'models/claim';
 import {CivilServiceClient} from 'client/civilServiceClient';
+import {normalizeRouteParam} from 'common/utils/routeParamUtils';
 
 const applicationSummaryController = Router();
 const viewPath = 'features/generalApplication/applications-summary';
@@ -20,7 +21,7 @@ const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServi
 applicationSummaryController.get(GA_APPLICATION_RESPONSE_SUMMARY_URL, async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const lng = req.query.lang || req.cookies.lang;
-    const claimId = req.params.id;
+    const claimId = normalizeRouteParam(req.params.id);
     const claim = await getClaimById(claimId, req, true);
     const ccdClaim: Claim = await civilServiceClient.retrieveClaimDetails(claimId, req);
     const applications = await generalApplicationServiceClient.getApplicationsByCaseId(claimId, req);

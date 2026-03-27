@@ -15,6 +15,7 @@ import {
   getCourtDocuments,
   getDefendantDocuments,
 } from 'services/features/dashboard/ordersAndNoticesService';
+import {normalizeRouteParam} from 'common/utils/routeParamUtils';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
@@ -42,7 +43,7 @@ const renderView = async (res: Response, claimId: string, claim: Claim, lang: st
 
 ordersAndNoticesController.get(VIEW_ORDERS_AND_NOTICES_URL, (async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const claimId = req.params.id;
+    const claimId = normalizeRouteParam(req.params.id);
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
     renderView(res, claimId, claim, lang);

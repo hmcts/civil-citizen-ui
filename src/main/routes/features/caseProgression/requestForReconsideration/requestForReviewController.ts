@@ -17,13 +17,14 @@ import {
 } from 'services/features/caseProgression/requestForReconsideration/requestForReviewContent';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {saveCaseProgression} from 'services/features/caseProgression/caseProgressionService';
+import {normalizeRouteParam} from 'common/utils/routeParamUtils';
 
 const requestForReviewViewPath = 'features/caseProgression/requestForReconsideration/request-for-review.njk';
 const requestForReviewController = Router();
 
 requestForReviewController.get(REQUEST_FOR_RECONSIDERATION_URL, (async (req, res, next: NextFunction) => {
   try {
-    const claimId = req.params.id;
+    const claimId = normalizeRouteParam(req.params.id);
     const claim = await getClaimById(claimId, req, true);
     const form = new GenericForm(getRequestForReviewForm(claim));
     await renderView(res, claimId, claim, form);
@@ -39,7 +40,7 @@ requestForReviewController.post(REQUEST_FOR_RECONSIDERATION_URL,(async (req, res
       textArea = '';
     }
     const form = new GenericForm(new RequestForReviewForm(textArea));
-    const claimId = req.params.id;
+    const claimId = normalizeRouteParam(req.params.id);
     const claim: Claim = await getClaimById(claimId, req,true);
     const dqPropertyName = getNameRequestForReconsideration(claim);
     await saveCaseProgression(req, form.model, dqPropertyName);

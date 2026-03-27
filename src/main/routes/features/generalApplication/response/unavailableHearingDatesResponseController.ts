@@ -25,6 +25,7 @@ import {
 } from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
 import {constructResponseUrlWithIdAndAppIdParams} from 'common/utils/urlFormatter';
 import {GaResponse} from 'models/generalApplication/response/gaResponse';
+import {normalizeRouteParam} from 'common/utils/routeParamUtils';
 
 const unavailableHearingDatesResponseController = Router();
 const viewPath = 'features/generalApplication/unavailable-dates-hearing';
@@ -32,7 +33,8 @@ const viewPath = 'features/generalApplication/unavailable-dates-hearing';
 async function renderView(claim: Claim, form: GenericForm<UnavailableDatesGaHearing>, gaResponse: GaResponse, req: AppRequest | Request, res: Response, lng: string): Promise<void> {
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
   const headerTitle = getRespondToApplicationCaption(gaResponse.generalApplicationType, lang);
-  const cancelUrl = await getCancelUrl(req.params.id, claim);
+  const claimId = normalizeRouteParam(req.params.id);
+  const cancelUrl = await getCancelUrl(claimId, claim);
   const backLinkUrl = BACK_URL;
   res.render(viewPath, { form, cancelUrl, backLinkUrl, headerTitle, headingTitle: t('PAGES.GENERAL_APPLICATION.UNAVAILABLE_HEARING_DATES.TITLE', {lng}) });
 }
@@ -40,7 +42,7 @@ async function renderView(claim: Claim, form: GenericForm<UnavailableDatesGaHear
 unavailableHearingDatesResponseController.get(GA_RESPONSE_UNAVAILABLE_HEARING_DATES_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
-    const claimId = req.params.id;
+    const claimId = normalizeRouteParam(req.params.id);
     const claim = await getClaimById(claimId, req, true);
     const gaResponse = await getDraftGARespondentResponse(generateRedisKeyForGA(req));
     const unavailableDates = gaResponse?.unavailableDatesHearing || new UnavailableDatesGaHearing();
@@ -55,7 +57,8 @@ unavailableHearingDatesResponseController.post(GA_RESPONSE_UNAVAILABLE_HEARING_D
   try {
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
     const action = req.body.action;
-    const claimId = req.params.id;
+    const claimId = normalizeRouteParam(req.params.id);
+    const appId = normalizeRouteParam(req.params.appId);
     const claim = await getClaimById(claimId, req, true);
     const gaRedisKey = generateRedisKeyForGA(<AppRequest>req);
     const gaResponse = await getDraftGARespondentResponse(gaRedisKey);
@@ -74,7 +77,7 @@ unavailableHearingDatesResponseController.post(GA_RESPONSE_UNAVAILABLE_HEARING_D
         await renderView(claim, form, gaResponse, req, res, lng);
       } else {
         await saveRespondentUnavailableDates(gaRedisKey, unavailableDatesForHearing);
-        res.redirect(constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_RESPONSE_HEARING_SUPPORT_URL));
+        res.redirect(constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_RESPONSE_HEARING_SUPPORT_URL));
       }
     }
   } catch (error) {

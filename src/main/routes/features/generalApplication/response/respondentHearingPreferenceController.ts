@@ -15,19 +15,21 @@ import {
 import {generateRedisKeyForGA} from 'modules/draft-store/draftStoreService';
 import { getCancelUrl } from 'services/features/generalApplication/generalApplicationService';
 import { getClaimById } from 'modules/utilityService';
+import {normalizeRouteParam} from 'common/utils/routeParamUtils';
 
 const respondentHearingPreferenceController = Router();
 const viewPath = 'features/generalApplication/response/respondent-hearing-preference';
 respondentHearingPreferenceController.get(GA_RESPONDENT_HEARING_PREFERENCE_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const claimId = req.params.id;
+    const claimId = normalizeRouteParam(req.params.id);
+    const appId = normalizeRouteParam(req.params.appId);
     const gaResponse = await getDraftGARespondentResponse(generateRedisKeyForGA(<AppRequest>req));
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const applicationType: string = getRespondToApplicationCaption(gaResponse.generalApplicationType, lang);
-    const continueLinkUrl = constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_RESPONSE_HEARING_ARRANGEMENT_URL);
+    const continueLinkUrl = constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_RESPONSE_HEARING_ARRANGEMENT_URL);
     const backLinkUrl = BACK_URL;
     const claim = await getClaimById(claimId, req, true);
-    const cancelUrl = await getCancelUrl(req.params.id, claim);
+    const cancelUrl = await getCancelUrl(claimId, claim);
 
     res.render(viewPath, {applicationType, backLinkUrl, continueLinkUrl, cancelUrl});
   } catch (error) {

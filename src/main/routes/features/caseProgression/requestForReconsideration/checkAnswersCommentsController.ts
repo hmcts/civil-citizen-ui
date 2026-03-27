@@ -20,6 +20,7 @@ import {
   getCommentsCYACaseInfoContents,
 } from 'services/features/caseProgression/requestForReconsideration/requestForReviewCommentsService';
 import {getClaimById} from 'modules/utilityService';
+import {normalizeRouteParam} from 'common/utils/routeParamUtils';
 
 const checkAnswersViewPath = 'features/caseProgression/requestForReconsideration/check-answers';
 const requestForReconsiderationCommentsCheckAnswersController = Router();
@@ -39,7 +40,7 @@ function renderView(res: Response, claim: Claim, claimId: string, lang: string) 
 requestForReconsiderationCommentsCheckAnswersController.get(REQUEST_FOR_RECONSIDERATION_COMMENTS_CYA_URL,
   (  async (req: AppRequest, res: Response, next: NextFunction) => {
     try {
-      const claimId = req.params.id;
+      const claimId = normalizeRouteParam(req.params.id);
       const lang = req.query.lang ? req.query.lang : req.cookies.lang;
       const claim = await getClaimById(claimId, req, true);
 
@@ -51,7 +52,7 @@ requestForReconsiderationCommentsCheckAnswersController.get(REQUEST_FOR_RECONSID
 
 requestForReconsiderationCommentsCheckAnswersController.post(REQUEST_FOR_RECONSIDERATION_COMMENTS_CYA_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const claimId = req.params.id;
+    const claimId = normalizeRouteParam(req.params.id);
     const claim = await getClaimById(claimId, req, true);
     const requestForReconsiderationCCD = translateDraftRequestForReconsiderationToCCD(claim);
     await civilServiceClient.submitRequestForReconsideration(claimId, requestForReconsiderationCCD, req);

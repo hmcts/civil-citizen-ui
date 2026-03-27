@@ -26,6 +26,7 @@ import {GaResponse} from 'models/generalApplication/response/gaResponse';
 import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
 import {formN245Url} from 'common/utils/externalURLs';
 import {documentIdExtractor} from 'common/utils/stringUtils';
+import {normalizeRouteParam} from 'common/utils/routeParamUtils';
 
 const acceptDefendantOfferController = Router();
 const viewPath = 'features/generalApplication/response/accept-defendant-offer';
@@ -44,8 +45,8 @@ const renderView = async (claimId: string, claim: Claim, form: GenericForm<Accep
 
 acceptDefendantOfferController.get(GA_ACCEPT_DEFENDANT_OFFER_URL, async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const claimId = req.params.id;
-    const applicationId = req.params.appId ? String(req.params.appId) : null;
+    const claimId = normalizeRouteParam(req.params.id);
+    const applicationId = normalizeRouteParam(req.params.appId);
     const lang = req.query.lang || req.cookies.lang;
     const redisKey = generateRedisKey(req);
     const claim = await getCaseDataFromStore(redisKey);
@@ -54,7 +55,7 @@ acceptDefendantOfferController.get(GA_ACCEPT_DEFENDANT_OFFER_URL, async (req: Ap
     const gaResponse = await getDraftGARespondentResponse(generateRedisKeyForGA(req));
     const acceptDefendantOffer = gaResponse?.acceptDefendantOffer || new AcceptDefendantOffer();
     const form = new GenericForm(acceptDefendantOffer);
-    renderView(claimId, claim, form, lang, req.params.appId, gaResponse, res, n245Doc);
+    renderView(claimId, claim, form, lang, applicationId, gaResponse, res, n245Doc);
   } catch (error) {
     next(error);
   }
@@ -73,20 +74,21 @@ acceptDefendantOfferController.post(GA_ACCEPT_DEFENDANT_OFFER_URL, (async (req: 
       req.body.reasonProposedSetDate,
     );
     const form = new GenericForm(acceptDefendantOffer);
-    const claimId = req.params.id;
+    const claimId = normalizeRouteParam(req.params.id);
     await form.validate();
     if (form.hasErrors()) {
       const redisKey = generateRedisKey(req);
       const claim = await getCaseDataFromStore(redisKey);
       const gaResponse = await getDraftGARespondentResponse(generateRedisKeyForGA(req));
       const lang = req.query.lang || req.cookies.lang;
-      const applicationId = req.params.appId ? String(req.params.appId) : null;
+      const applicationId = normalizeRouteParam(req.params.appId);
       const applicationResponse: ApplicationResponse = await getApplicationFromGAService(req, applicationId);
       const n245Doc = getN245(applicationResponse, applicationId);
-      return await renderView(claimId, claim, form, lang, req.params.appId, gaResponse, res, n245Doc);
+      return await renderView(claimId, claim, form, lang, applicationId, gaResponse, res, n245Doc);
     }
     await saveAcceptDefendantOffer(generateRedisKeyForGA(req), acceptDefendantOffer);
-    res.redirect(constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_RESPONDENT_WANT_TO_UPLOAD_DOCUMENT_URL));
+    const applicationId = normalizeRouteParam(req.params.appId);
+    res.redirect(constructResponseUrlWithIdAndAppIdParams(claimId, applicationId, GA_RESPONDENT_WANT_TO_UPLOAD_DOCUMENT_URL));
   } catch (error) {
     next(error);
   }

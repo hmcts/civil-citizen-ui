@@ -16,6 +16,7 @@ import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftS
 import {getDecisionOnClaimantProposedPlan} from 'services/features/claimantResponse/getDecisionOnClaimantProposedPlan';
 import {AppRequest} from 'models/AppRequest';
 import {clearClaimantSuggestion} from 'routes/features/claimantResponse/clearClaimantSuggestionService';
+import {normalizeRouteParam} from 'common/utils/routeParamUtils';
 
 const claimantSuggestedPaymentOptionViewPath = 'features/response/admission/payment-option';
 const claimantSuggestedPaymentOptionController = Router();
@@ -39,7 +40,7 @@ claimantSuggestedPaymentOptionController.get(CLAIMANT_RESPONSE_PAYMENT_OPTION_UR
 
 claimantSuggestedPaymentOptionController.post(CLAIMANT_RESPONSE_PAYMENT_OPTION_URL, (async (req: Request, res: Response, next) => {
   try {
-    const claimId = req.params.id;
+    const claimId = normalizeRouteParam(req.params.id);
     const claimantResponsePaymentOption = new PaymentOption(req.body.paymentType);
     const form = new GenericForm(claimantResponsePaymentOption);
     form.validateSync();

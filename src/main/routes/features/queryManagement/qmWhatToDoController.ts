@@ -21,6 +21,7 @@ import {
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'models/AppRequest';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {normalizeRouteParam} from 'common/utils/routeParamUtils';
 
 const qmWhatToDoController = Router();
 const qmStartViewPath = 'features/queryManagement/qm-questions-template.njk';
@@ -117,7 +118,7 @@ qmWhatToDoController.get(QM_WHAT_DO_YOU_WANT_TO_DO_URL, (async (req, res , next)
   try {
     const redisKey = generateRedisKey(<AppRequest>req);
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-    const claimId = req.params.id;
+    const claimId = normalizeRouteParam(req.params.id);
     const qmType = req.params.qmType as WhatToDoTypeOption;
     const queryManagement = await getQueryManagement(redisKey, req);
     const option = queryManagement.qualifyingQuestion?.option;
@@ -132,7 +133,7 @@ qmWhatToDoController.get(QM_WHAT_DO_YOU_WANT_TO_DO_URL, (async (req, res , next)
 qmWhatToDoController.post(QM_WHAT_DO_YOU_WANT_TO_DO_URL, (async (req, res , next) => {
   try {
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-    const claimId = req.params.id;
+    const claimId = normalizeRouteParam(req.params.id);
     const qmType = req.params.qmType as WhatToDoTypeOption;
     const redisKey = generateRedisKey(<AppRequest>req);
     const option = req.body.option;

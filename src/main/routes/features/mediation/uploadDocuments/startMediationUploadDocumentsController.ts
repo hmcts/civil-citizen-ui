@@ -8,6 +8,7 @@ import {Claim} from 'models/claim';
 import {caseNumberPrettify} from 'common/utils/stringUtils';
 import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
 import {getClaimById} from 'modules/utilityService';
+import {normalizeRouteParam} from 'common/utils/routeParamUtils';
 
 const startMediationUploadFileViewPath = 'features/common/static-page';
 const startMediationUploadDocumentsController = Router();
@@ -44,8 +45,8 @@ const getContents = (claimId: string, claim: Claim) => {
 
 startMediationUploadDocumentsController.get(START_MEDIATION_UPLOAD_FILES, (async (req, res, next: NextFunction) => {
   try {
-    const claimId = req.params.id;
-    const claim: Claim = await getClaimById(req.params.id, req, true);
+    const claimId = normalizeRouteParam(req.params.id);
+    const claim: Claim = await getClaimById(claimId, req, true);
     res.render(startMediationUploadFileViewPath, {pageTitle: pageTitle, contents: getContents(claimId, claim)});
   } catch (error) {
     next(error);

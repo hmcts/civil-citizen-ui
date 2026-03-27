@@ -46,6 +46,7 @@ import {
   isApplicationFullyVisibleToRespondentForClaimant,
 } from 'services/features/generalApplication/response/generalApplicationResponseService';
 import {isGaForWelshEnabled} from '../../../../app/auth/launchdarkly/launchDarklyClient';
+import {normalizeRouteParam} from 'common/utils/routeParamUtils';
 
 const viewApplicationToRespondentController = Router();
 const viewPathPreResponse = 'features/generalApplication/response/view-application';
@@ -53,9 +54,9 @@ const viewPathPostResponse = 'features/generalApplication/view-applications';
 
 viewApplicationToRespondentController.get(GA_RESPONSE_VIEW_APPLICATION_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const claimId = req.params.id;
+    const claimId = normalizeRouteParam(req.params.id);
     const claim: Claim = await getClaimById(claimId, req, true);
-    const applicationId = req.params.appId ? String(req.params.appId) : null;
+    const applicationId = normalizeRouteParam(req.params.appId);
     const applicationIndex = queryParamNumber(req, 'index') || await getApplicationIndex(claimId, applicationId, req, true);
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const applicationResponse: ApplicationResponse = await getApplicationFromGAService(req, applicationId);
@@ -69,7 +70,7 @@ viewApplicationToRespondentController.get(GA_RESPONSE_VIEW_APPLICATION_URL, (asy
     const applicationFullyVisible = claim.isClaimant()
       ? isApplicationFullyVisibleToRespondentForClaimant(applicationResponse)
       : isApplicationFullyVisibleToRespondent(applicationResponse);
-    const responseFromCourt = await getResponseFromCourtSection(req, req.params.appId, applicationFullyVisible, lang);
+    const responseFromCourt = await getResponseFromCourtSection(req, applicationId, applicationFullyVisible, lang);
     const dashboardUrl = constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL);
     const isAllowedToRespond = isRespondentAllowedToRespond(applicationResponse);
     const backLinkUrl = constructResponseUrlWithIdParams(claimId, GA_APPLICATION_RESPONSE_SUMMARY_URL);
@@ -82,7 +83,7 @@ viewApplicationToRespondentController.get(GA_RESPONSE_VIEW_APPLICATION_URL, (asy
     const uploadDocsTrialUrl = constructResponseUrlWithIdParams(claimId, UPLOAD_YOUR_DOCUMENTS_URL);
     let additionalDocUrl : string = null;
     if(canUploadAddlDoc(applicationResponse)) {
-      additionalDocUrl = constructResponseUrlWithIdAndAppIdParams(req.params.id, req.params.appId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL);
+      additionalDocUrl = constructResponseUrlWithIdAndAppIdParams(claimId, applicationId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL);
     }
     await deleteDraftClaimFromStore(claimId);
 

@@ -16,6 +16,7 @@ import {StatementOfTruthForm} from 'models/generalApplication/statementOfTruthFo
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {submitCoScApplication} from 'services/features/generalApplication/submitApplication';
 import {convertToPoundsFilter} from 'common/utils/currencyFormat';
+import {normalizeRouteParam} from 'common/utils/routeParamUtils';
 
 const coscCheckAnswersController = Router();
 const viewPath = 'features/generalApplication/check-answers';
@@ -33,7 +34,7 @@ async function renderView(claimId: string, claim: Claim, form: GenericForm<State
 
 coscCheckAnswersController.get(GA_CHECK_YOUR_ANSWERS_COSC_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const claimId = req.params.id;
+    const claimId = normalizeRouteParam(req.params.id);
     const claim = await getClaimById(claimId, req, true);
     const statementOfTruthForm = claim.generalApplication?.statementOfTruth || new StatementOfTruthForm();
     const form = new GenericForm(statementOfTruthForm);
@@ -45,7 +46,7 @@ coscCheckAnswersController.get(GA_CHECK_YOUR_ANSWERS_COSC_URL, (async (req: AppR
 
 coscCheckAnswersController.post(GA_CHECK_YOUR_ANSWERS_COSC_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const claimId = req.params.id;
+    const claimId = normalizeRouteParam(req.params.id);
     const claim = await getClaimById(claimId, req, true);
     const redisKey = generateRedisKey(<AppRequest>req);
     const statementOfTruth = new StatementOfTruthForm(req.body.signed, req.body.name);

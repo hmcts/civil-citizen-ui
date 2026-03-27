@@ -18,6 +18,7 @@ import {ClaimSummarySection} from 'form/models/claimSummarySection';
 import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
 import {caseNumberPrettify} from 'common/utils/stringUtils';
 import {saveMediationUploadedDocuments} from 'services/features/mediation/uploadDocuments/mediationCheckAnswersService';
+import {normalizeRouteParam} from 'common/utils/routeParamUtils';
 
 const checkAnswersViewPath = 'features/mediation/uploadDocuments/check-answers';
 const mediationDocumentUploadCheckAnswerController = Router();
@@ -58,7 +59,7 @@ function renderView(uploadDocuments: UploadDocuments, res: Response, form: Gener
 
 mediationDocumentUploadCheckAnswerController.get(MEDIATION_UPLOAD_DOCUMENTS_CHECK_AND_SEND, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const claimId = req.params.id;
+    const claimId = normalizeRouteParam(req.params.id);
     req.session.previousUrl = req.originalUrl;
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const redisKey = generateRedisKey(<AppRequest>req);
@@ -73,7 +74,7 @@ mediationDocumentUploadCheckAnswerController.get(MEDIATION_UPLOAD_DOCUMENTS_CHEC
 
 mediationDocumentUploadCheckAnswerController.post(MEDIATION_UPLOAD_DOCUMENTS_CHECK_AND_SEND, (async (req: Request | AppRequest, res: Response, next: NextFunction) => {
   try {
-    const claimId = req.params.id;
+    const claimId = normalizeRouteParam(req.params.id);
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const form = new GenericForm(new DocumentUploadSubmissionForm(req.body.signed));
     const redisKey = generateRedisKey(<AppRequest>req);

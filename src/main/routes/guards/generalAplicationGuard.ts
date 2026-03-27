@@ -6,6 +6,7 @@ import {
 import { getCancelUrl } from 'services/features/generalApplication/generalApplicationService';
 import {AppRequest} from 'models/AppRequest';
 import {getClaimById} from 'modules/utilityService';
+import {normalizeRouteParam} from 'common/utils/routeParamUtils';
 
 export const isGAForLiPEnabled = async (
   req: Request,
@@ -13,7 +14,8 @@ export const isGAForLiPEnabled = async (
   next: NextFunction,
 ): Promise<void> => {
   const isGAFlagEnable = await isGaForLipsEnabled();
-  const claim = await getClaimById(req.params.id, <AppRequest>req);
+  const claimId = normalizeRouteParam(req.params.id);
+  const claim = await getClaimById(claimId, <AppRequest>req);
   //If the application was originally created in English and the respondent replied in Welsh,
   // a new application will not be generated; however, the existing application will still be accessible online.
   const allowAppAccess = claim.generalApplications?.length > 0 ;
@@ -25,6 +27,6 @@ export const isGAForLiPEnabled = async (
   } else  if (isGAFlagEnable && !claim.isAnyPartyBilingual() || welshGaEnabled || allowAppAccess) {
     next();
   } else {
-    res.redirect(await getCancelUrl(req.params.id, claim));
+    res.redirect(await getCancelUrl(claimId, claim));
   }
 };

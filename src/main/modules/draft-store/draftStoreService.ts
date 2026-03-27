@@ -9,6 +9,7 @@ import {calculateExpireTimeForDraftClaimInSeconds} from 'common/utils/dateUtils'
 import {AppRequest} from 'common/models/AppRequest';
 import {getClaimById} from 'modules/utilityService';
 import {Request} from 'express';
+import {normalizeRouteParam} from 'common/utils/routeParamUtils';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('draftStoreService');
@@ -81,7 +82,7 @@ const createNewCivilClaimResponse = (claimId: string) => {
 };
 
 export const deleteDraftClaim = async (req: Request, useRedisKey = false): Promise<void> => {
-  const claimId = req.params.id;
+  const claimId = normalizeRouteParam(req.params.id);
   const userId = (<AppRequest>req)?.session?.user?.id;
   const redisKey = useRedisKey && claimId !== userId ? generateRedisKey(<AppRequest>req) : claimId;
   await deleteDraftClaimFromStore(redisKey);
@@ -121,11 +122,11 @@ export async function createDraftClaimInStoreWithExpiryTime(claimId: string) {
 }
 
 export function generateRedisKey(req: AppRequest) {
-  return req.params?.id + req.session.user?.id;
+  return normalizeRouteParam(req.params?.id) + req.session.user?.id;
 }
 
 export function generateRedisKeyForGA(req: AppRequest) {
-  return req.params.appId + req.session.user?.id;
+  return normalizeRouteParam(req.params.appId) + req.session.user?.id;
 }
 
 export const findClaimIdsbyUserId = async (userId: string): Promise<any> => {

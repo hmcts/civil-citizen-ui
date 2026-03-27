@@ -16,6 +16,7 @@ import {ResponseType} from 'form/models/responseType';
 import {GenericForm} from 'form/models/genericForm';
 import {PartAdmitGuard} from 'routes/guards/partAdmitGuard';
 import {AppRequest} from 'common/models/AppRequest';
+import {normalizeRouteParam} from 'common/utils/routeParamUtils';
 
 const partialAdmissionPaymentOptionController = Router();
 const citizenPaymentOptionViewPath = 'features/response/admission/payment-option';
@@ -35,7 +36,7 @@ function redirectToNextPage(claimId: string, form: PaymentOption, res: Response)
 let admittedPaymentAmount: number;
 
 partialAdmissionPaymentOptionController.get(CITIZEN_PARTIAL_ADMISSION_PAYMENT_OPTION_URL, PartAdmitGuard.apply(RESPONSE_TASK_LIST_URL), (async (req, res, next: NextFunction) => {
-  const claimId = req.params.id;
+  const claimId = normalizeRouteParam(req.params.id);
   const redisKey = generateRedisKey(<AppRequest>req);
   try {
     const claim: Claim = await getCaseDataFromStore(redisKey);
@@ -53,7 +54,7 @@ partialAdmissionPaymentOptionController.get(CITIZEN_PARTIAL_ADMISSION_PAYMENT_OP
 
 partialAdmissionPaymentOptionController.post(CITIZEN_PARTIAL_ADMISSION_PAYMENT_OPTION_URL, (async (req, res, next: NextFunction) => {
   try {
-    const claimId = req.params.id;
+    const claimId = normalizeRouteParam(req.params.id);
     const paymentOption = new PaymentOption(req.body.paymentType);
     const form = new GenericForm(paymentOption);
     await form.validate();
