@@ -3177,9 +3177,15 @@
     },
     "FIRST_CONTACT_CLAIM_REFERENCE": {
       "CLAIM_NUMBER": "Claim number",
-      "ENTER_CLAIM": "Enter the claim number from the email or letter we sent you.",
+      "ENTER_CLAIM": "This is an 8-character number and is on the email or letter we sent you. It has 3 numbers then 2 letters then 3 numbers, for example 305JE126.",
       "PAGE_TITLE": "Enter your claim number",
-      "TITLE": "Enter your claim number"
+      "TITLE": "Enter your claim number",
+      "CLAIM_NUMBER_HINT": "For example, 305JE126",
+      "HOW_IF_CLAIM_NUMBER_NOT_WORK": "If your claim number does not work or follow this format",
+      "THE_LETTERS_IN_YOUR_CLAIM": "The letters in your claim number should be MC, JE, JF, JG or JH. If you have a claim number with a different format it’s likely you’re in the wrong place.",
+      "CHECK_THE_EMAIL_OR_LETTER": "Check the email or letter you got when you heard about the claim against you. Make sure you follow the right link to respond to the money claim or ",
+      "READ_MORE_GUIDANCE": "read more guidance on GOV.UK.",
+      "IF_YOUR_CLAIM_NUMBER_STILL_NOT_WORK": "If your claim number still does not work then get in touch."
     },
     "FIRST_CONTACT_CLAIM_SUMMARY": {
       "CLAIM_NUMBER": "Claim number",
@@ -5500,7 +5506,7 @@
     "APPLICATION_TYPE_REQUIRED": "Select an application",
     "CHOOSE_TYPE_OF_INTEREST": "Choose a type of interest",
     "CLAIM_DETAILS": "Claim details",
-    "CLAIM_NUMBER_REQUIRED": "You need to enter the claim number",
+    "CLAIM_NUMBER_REQUIRED": "Enter your valid claim number from the letter or email we sent you - it should have 3 numbers then the letters MC, JE, JF, JG or JH, then 3 numbers, for example 305JE126",
     "CLAIM_LANGUAGE_REQUIRED": "Select which language you want to make your claim in",
     "RESPONSE_LANGUAGE_REQUIRED": "Select which language you want to respond to this claim in",
     "CLAIM_TYPE_REQUIRED": "Select who you're making the claim for",
@@ -5868,7 +5874,7 @@
     "VALID_CLAIM_INTEREST_FROM": "Select when you're claiming interest from",
     "VALID_CLAIM_INTEREST_END_DATE": "Select when you want to stop claiming interest",
     "VALID_CLAIM_NUMBER": "Enter a claim number",
-    "VALID_CLAIM_REFERENCE_NUMBER": "Enter a valid claim number",
+    "VALID_CLAIM_REFERENCE_NUMBER": "Enter your valid claim number from the letter or email we sent you - it should have 3 numbers then the letters MC, JE, JF, JG or JH, then 3 numbers, for example 305JE126",
     "VALID_DATE": "Please enter a valid date",
     "VALID_DATE_IN_PAST": "Enter date before {{dateToday}}",
     "VALID_DATE_NOT_IN_PAST": "Enter a date that is today or in the future",
