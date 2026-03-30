@@ -341,7 +341,7 @@ civil-service:
           value: "${SERVICE_NAME}-es-master"
       extraInitContainers: |
         - name: download-postgres-jdbc
-          image: hmctspublic.azurecr.io/curl:7.70.0
+          image: hmctsprod.azurecr.io/curl:7.70.0
           command: ['curl', '-L', 'https://jdbc.postgresql.org/download/postgresql-42.3.3.jar', '-o', '/logstash-lib/postgresql.jar']
           volumeMounts:
           - name: logstash-lib
