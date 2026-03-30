@@ -1,6 +1,6 @@
 import config from 'config';
 import Axios, {AxiosInstance, AxiosResponse} from 'axios';
-import {authenticator} from 'otplib';
+import { generateSync } from 'otplib';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('serviceAuthProviderClient');
@@ -49,7 +49,7 @@ const generateServiceToken = async (microservice: string, s2sSecret: string): Pr
   try {
 
     // TODO: re-use existing service access token if still valid instead of generating a new one each time
-    const oneTimePassword = authenticator.generate(s2sSecret);
+    const oneTimePassword = generateSync({ secret: s2sSecret });
 
     logger.info(`About to generate Service Authorisation Token for: ${microservice}`);
     const response: AxiosResponse<string> = await client.post(
