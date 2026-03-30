@@ -3,13 +3,9 @@ module.exports = {
   testRegex: '(/src/test/.test.*|\\.(test|spec))\\.(ts|js)$',
   testEnvironment: 'node',
   transform: {
-    '^.+\\.ts?$': 'ts-jest',
+    '^.+\\.ts?$': ['ts-jest', { isolatedModules: true }],
   },
-  globals: {
-            'ts-jest': {
-                isolatedModules: true
-            }
-        },
+  coverageProvider: 'v8',
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
   moduleNameMapper: {
     '^common/(.*)$': '<rootDir>/src/main/common/$1',

@@ -3,8 +3,9 @@ module.exports = {
   testRegex: '(/src/test/.*|\\.(test|spec))\\.(ts|js)$',
   testEnvironment: 'node',
   transform: {
-    '^.+\\.ts?$': ['ts-jest', { tsconfig: '<rootDir>/src/test/contract/tsconfig.pact.json' }],
+    '^.+\\.ts?$': ['ts-jest', { tsconfig: '<rootDir>/src/test/contract/tsconfig.pact.json', isolatedModules: true }],
   },
+  coverageProvider: 'v8',
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
   moduleNameMapper: {
     '^otplib$': '<rootDir>/__mocks__/otplib.js',

@@ -10,6 +10,7 @@ module.exports = {
   transformIgnorePatterns: [
     '/node_modules/(?!(@exodus/bytes|html-encoding-sniffer|@asamuzakjp/css-color|cssstyle|@csstools|parse5|jsdom|@tootallnate/once)/)',
   ],
+  coverageProvider: 'v8',
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
   moduleNameMapper: {
     '^otplib$': '<rootDir>/__mocks__/otplib.js',
