@@ -44,5 +44,11 @@
       "./node_modules/@types",
       "./typings"
     ]
-  }
+  },
+  "exclude": [
+    "node_modules",
+    "src/test",
+    "**/*.test.ts",
+    "**/*.spec.ts"
+  ]
 }

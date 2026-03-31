@@ -3,7 +3,10 @@ module.exports = {
   testRegex: '(/src/test/.*|\\.(test|spec))\\.(ts|js)$',
   testEnvironment: 'node',
   transform: {
-    '^.+\\.ts?$': ['ts-jest', {"isolatedModules": true}],
+    '^.+\\.ts?$': ['ts-jest', {
+      "isolatedModules": true,
+      "tsconfig": "tsconfig.test.json"
+    }],
     // ESM-only deps: transform so Jest can load them
     '.*/node_modules/(@exodus/bytes|html-encoding-sniffer|@asamuzakjp/css-color|cssstyle|@csstools|parse5|jsdom|@tootallnate/once)/.+\\.(js|mjs|cjs)$': 'babel-jest',
   },
