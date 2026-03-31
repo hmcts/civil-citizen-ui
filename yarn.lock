@@ -3301,7 +3301,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/express-serve-static-core@npm:*, @types/express-serve-static-core@npm:^5.0.0":
+"@types/express-serve-static-core@npm:*":
   version: 5.1.1
   resolution: "@types/express-serve-static-core@npm:5.1.1"
   dependencies:
@@ -3334,7 +3334,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/express@npm:*":
+"@types/express@npm:*, @types/express@npm:^4.17.21":
   version: 4.17.25
   resolution: "@types/express@npm:4.17.25"
   dependencies:
@@ -3343,17 +3343,6 @@ __metadata:
     "@types/qs": "npm:*"
     "@types/serve-static": "npm:^1"
   checksum: 10/c309fdb79fb8569b5d8d8f11268d0160b271f8b38f0a82c20a0733e526baf033eb7a921cd51d54fe4333c616de9e31caf7d4f3ef73baaf212d61f23f460b0369
-  languageName: node
-  linkType: hard
-
-"@types/express@npm:^5.0.6":
-  version: 5.0.6
-  resolution: "@types/express@npm:5.0.6"
-  dependencies:
-    "@types/body-parser": "npm:*"
-    "@types/express-serve-static-core": "npm:^5.0.0"
-    "@types/serve-static": "npm:^2"
-  checksum: 10/da2cc3de1b1a4d7f20ed3fb6f0a8ee08e99feb3c2eb5a8d643db77017d8d0e70fee9e95da38a73f51bcdf5eda3bb6435073c0271dc04fb16fda92e55daf911fa
   languageName: node
   linkType: hard
 
@@ -3618,16 +3607,6 @@ __metadata:
     "@types/node": "npm:*"
     "@types/send": "npm:<1"
   checksum: 10/d9be72487540b9598e7d77260d533f241eb2e5db5181bb885ef2d6bc4592dad1c9e8c0e27f465d59478b2faf90edd2d535e834f20fbd9dd3c0928d43dc486404
-  languageName: node
-  linkType: hard
-
-"@types/serve-static@npm:^2":
-  version: 2.2.0
-  resolution: "@types/serve-static@npm:2.2.0"
-  dependencies:
-    "@types/http-errors": "npm:*"
-    "@types/node": "npm:*"
-  checksum: 10/f2bad1304c7d0d3b7221faff3e490c40129d3803f4fb1b2fb84f31f561071c5e6a4b876c41bbbe82d5645034eea936e946bcaaf993dac1093ce68b56effad6e0
   languageName: node
   linkType: hard
 
@@ -5447,7 +5426,7 @@ __metadata:
     "@types/cookie-parser": "npm:^1.4.3"
     "@types/csurf": "npm:^1.9.36"
     "@types/es6-promisify": "npm:^6.0.1"
-    "@types/express": "npm:^5.0.6"
+    "@types/express": "npm:^4.17.21"
     "@types/express-session": "npm:^1.17.5"
     "@types/git-rev-sync": "npm:^2.0.2"
     "@types/glob": "npm:^8.0.0"
@@ -5541,7 +5520,7 @@ __metadata:
     ts-loader: "npm:^9.4.2"
     ts-node: "npm:^10.9.1"
     tsconfig-paths: "npm:^4.1.1"
-    typescript: "npm:^6.0.2"
+    typescript: "npm:^5.9.2"
     uuid: "npm:^9.0.0"
     validator: "npm:13.15.26"
     webdriverio: "npm:^8.3.2"
@@ -13635,23 +13614,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:6.0.2":
-  version: 6.0.2
-  resolution: "typescript@npm:6.0.2"
+"typescript@npm:5.9.2":
+  version: 5.9.2
+  resolution: "typescript@npm:5.9.2"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 10/b9fc2fcee7ee8e5ca6f5138181964550531e18e2d20ecb71b802d4d495881e3444e0ef94cbb6e84eb2ba41e913f6feae3ca33cc722b32e6e6dfadb32d23b80e6
+  checksum: 10/cc2fe6c822819de5d453fa25aa9f32096bf70dde215d481faa1ad84a283dfb264e33988ed8f6d36bc803dd0b16dbe943efa311a798ef76d5b3892a05dfbfd628
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@npm%3A6.0.2#optional!builtin<compat/typescript>":
-  version: 6.0.2
-  resolution: "typescript@patch:typescript@npm%3A6.0.2#optional!builtin<compat/typescript>::version=6.0.2&hash=5786d5"
+"typescript@patch:typescript@npm%3A5.9.2#optional!builtin<compat/typescript>":
+  version: 5.9.2
+  resolution: "typescript@patch:typescript@npm%3A5.9.2#optional!builtin<compat/typescript>::version=5.9.2&hash=5786d5"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 10/e5501dfcf8c5b6b9a61f6fa53decc40187cebe3a2b7b2bd51c615007ad4cf6d58298461fef63294f6be9d5f2f33019b2a2e2bf02d9cb7d7f6ec94372bf24ffa2
+  checksum: 10/bd810ab13e8e557225a8b5122370385440b933e4e077d5c7641a8afd207fdc8be9c346e3c678adba934b64e0e70b0acf5eef9493ea05170a48ce22bef845fdc7
   languageName: node
   linkType: hard
 
