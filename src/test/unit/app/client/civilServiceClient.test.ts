@@ -1462,7 +1462,7 @@ describe('Civil Service Client', () => {
   });
 
   describe('Throw errors', ()=> {
-    it('should throw error isDefendantLinked ', async () => {
+    it('should throw error isDefendantLinked', async () => {
       const mockGet = jest.fn().mockImplementation(() => {
         throw new Error('error');
       });
@@ -1470,6 +1470,18 @@ describe('Civil Service Client', () => {
       const civilServiceClient = new CivilServiceClient(baseUrl);
       //Then
       await expect(civilServiceClient.isDefendantLinked('123')).rejects.toThrow('error');
+    });
+    it('should return false for 404 error in isDefendantLinked', async () => {
+      const mockGet = jest.fn().mockImplementation(() => {
+        const error: any = new Error('Not Found');
+        error.response = { status: 404 };
+        throw error;
+      });
+      mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
+      //Then
+      const result = await civilServiceClient.isDefendantLinked('123');
+      expect(result).toBe(false);
     });
     it('should throw error getFeeRanges ', async () => {
       const mockGet = jest.fn().mockImplementation(() => {
