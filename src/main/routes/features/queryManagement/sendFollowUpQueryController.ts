@@ -11,7 +11,7 @@ import {
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import { createMulterErrorMiddlewareForSingleField, getFileUploadErrorsForSource, FILE_UPLOAD_SOURCE } from 'common/utils/fileUploadUtils';
-import { redirectIfMulterError } from 'services/features/generalApplication/uploadEvidenceDocumentService';
+import { handleMulterError } from 'services/features/generalApplication/uploadEvidenceDocumentService';
 
 const viewPath = 'features/queryManagement/sendFollowUpQuery';
 const sendFollowUpQueryController = Router();
@@ -85,20 +85,22 @@ sendFollowUpQueryController.post(QM_FOLLOW_UP_MESSAGE, multerMiddleware, (async 
         summaryRows: [],
       });
 
-    if (redirectIfMulterError(req, res, currentUrl, FILE_UPLOAD_SOURCE.QM_SEND_FOLLOW_UP)) {
-      return;
+    if (handleMulterError(req, FILE_UPLOAD_SOURCE.QM_SEND_FOLLOW_UP)) {
+      return req.session.save(() => {
+        res.redirect(`${currentUrl}`);
+      });
     }
 
     if (action === 'uploadButton') {
       await uploadSelectedFile(req, sendFollowUpQuery, true);
-      
+
       const fileUploadErrors = getFileUploadErrorsForSource(req, FILE_UPLOAD_SOURCE.QM_SEND_FOLLOW_UP);
       if (fileUploadErrors?.length) {
         const formWithErrors = new GenericForm(sendFollowUpQuery, fileUploadErrors);
         await getSummaryList(formattedSummary, req, true);
         return await renderView(formWithErrors, claimId, res, formattedSummary, req);
       }
-      
+
       return res.redirect(`${currentUrl}`);
     }
 
