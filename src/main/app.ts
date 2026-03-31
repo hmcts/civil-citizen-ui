@@ -4,7 +4,6 @@ import express from 'express';
 import * as path from 'path';
 import favicon from 'serve-favicon';
 import session from 'express-session';
-import 'express-async-errors';
 
 import {AppInsights} from 'modules/appinsights';
 import {Helmet} from 'modules/helmet';
