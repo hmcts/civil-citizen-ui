@@ -115,6 +115,9 @@ jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../main/modules/claimDetailsService');
+jest.mock('services/features/queryManagement/viewMessagesService', () => ({
+  getViewMessagesLink : jest.fn(()=>({text: 'View messages'})),
+}));
 
 jest.mock('services/dashboard/dashboardService', () => ({
   getNotifications: jest.fn(),
