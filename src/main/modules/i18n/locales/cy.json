@@ -179,7 +179,7 @@
       "VIEW_COOKIES": "Gweld cwcis"
     },
     "CREATE_DRAFT": {
-      "PAGE_TITLE": "Create draft claim"
+      "PAGE_TITLE": "Creu hawliad drafft"
     },
     "EVIDENCE_SUMMARY": {
       "TITLE": "Tystiolaeth",
@@ -1473,11 +1473,9 @@
         "IF_YOU_WERE_UNABLE": "Os nad oeddech yn gallu mynd i’r apwyntiad cyfryngu oherwydd amgylchiadau eithriadol, gallwch esbonio pam gyda thystiolaeth ategol, megis nodyn gan feddyg neu ffotograffau o ddogfennau perthnasol. Weithiau gelwir hyn yn ffeilio cynrychiolaeth. Os yw’r barnwr yn derbyn eich rhesymau dros beidio â mynychu, ni fyddwch yn cael cosb.",
         "YOU_CANNOT_WITHDRAW": "Ni allwch dynnu dogfen yn ôl ar ôl i chi ei chyflwyno. Os ydych chi am ychwanegu mwy o wybodaeth at rywbeth rydych chi eisoes wedi’i gyflwyno, gallwch chi lwytho'r ddogfen eto. Dylech ychwanegu rhif fersiwn at yr enw, er enghraifft 'fersiwn2'.",
         "THE_OTHER_PARTIES": "Bydd y partïon eraill yn gallu gweld y dogfennau rydych chi wedi’u llwytho, a byddwch chi’n gallu gweld eu dogfennau nhw.",
-
         "DEADLINES_FOR_UPLOADING_TITLE": "Dyddiadau cau ar gyfer llwytho dogfennau",
         "YOU_HAVE_UNTIL": "Mae gennych hyd at 14 diwrnod cyn eich gwrandawiad i gyflwyno dogfennau.",
         "YOU_DO_NOT_HAVE": "Nid oes angen i chi lwytho eich holl ddogfennau ar unwaith. Gallwch ddod yn ôl i’w llwytho yn nes ymlaen.",
-
         "BEFORE_YOU_UPLOAD_TITLE": "Cyn ichi lwytho eich dogfennau",
         "BEFORE YOU UPLOAD": "Cyn i chi lwytho’r ddogfen, rhowch enw iddi sy’n dweud wrth y llys beth ydyw, er enghraifft “Datganiad cyfryngu di-bresenoldeb gan Jane Smith”/",
         "EACH_DOCUMENT_MUST": "Rhaid i bob dogfen fod yn llai na 100MB. Gallwch uwchlwytho'r mathau canlynol o ffeiliau: DOC/DOCX (Word), XLS/XLSX (Excel), PPT/PPTX (PowerPoint), PDF, RTF, TXT, CSV, JPG/JPEG, PNG, BMP, TIF/TIFF.",
@@ -1485,7 +1483,7 @@
       }
     },
     "MEDIATION_ALTERNATIVE_TELEPHONE": {
-      "PAGE_TITLE": "Alternative Telephone",
+      "PAGE_TITLE": "Rhif ffôn amgen",
       "PAGE_TEXT": "Nodwch rif ffôn arall"
     },
     "UNAVAILABILITY_SELECT_DATES_MEDIATION": {
@@ -1970,7 +1968,7 @@
       "REASON_FOR_CLAIM": "Rheswm dros yr hawliad",
       "THE_CLAIM": "Yr hawliad",
       "TIMELINE": "Amserlen",
-      "TITLE": "Claim Details",
+      "TITLE": "Manylion yr hawliad",
       "VIEW_AMOUNT_BREAKDOWN": "Gweld dadansoddiad o’r swm",
       "VIEW_THE_CLAIM_PDF": "View the claim (PDF)"
     },
@@ -2947,7 +2945,7 @@
     "DETERMINATION_WITHOUT_HEARING": {
       "CLAIM_DETERMINATION_WITHOUT_HEARING": "A ydych yn credu bod yr hawliad hwn yn addas i’w benderfynu heb wrandawiad,",
       "IE": "h.y. gan farnwr yn darllen ac yn ystyried yr achos ar sail y papurau, y datganiadau tystion a dogfennau eraill a gaiff eu ffeilio gan y partïon, yn gwneud penderfyniad ac yn gwneud datganiad o resymau dros y penderfyniad hwnnw?",
-      "PAGE_TITLE": "Cwestiynau Penderfynu heb Wrandawiad",
+      "PAGE_TITLE": "Penderfyniad heb gwestiynau gwrandawiad",
       "TELL_US_WHY": "Dywedwch wrthym pam",
       "TITLE": "Cwestiynau Penderfynu heb Wrandawiad"
     },
@@ -2956,7 +2954,7 @@
       "TITLE": "A oes gennych anabledd?"
     },
     "INTEREST_START_DATE": {
-      "PAGE_TITLE": "hawlio llog gan",
+      "PAGE_TITLE": "Ffurflen llog hawliad",
       "TITLE": "Nodwch y dyddiad yr ydych am ddechrau hawlio llog",
       "REASON": "Esboniwch pam rydych chi'n hawlio o'r dyddiad hwn?"
     },
@@ -2988,7 +2986,7 @@
       "TITLE": "Dros bwy ydych chi’n gwneud hawliad?"
     },
     "ELIGIBILITY_DEFENDANT_ADDRESS": {
-      "PAGE_TITLE": "Mae cyfeiriad y diffynnydd yng Nghymru neu Loegr",
+      "PAGE_TITLE": "Cyfeiriad y diffynnydd yng Nghymru neu Loegr",
       "TITLE": "A oes gan yr unigolyn neu'r sefydliad rydych chi'n hawlio yn ei erbyn gyfeiriad post yng Nghymru neu Loegr?"
     },
     "ELIGIBILITY_DEFENDANT_AGE": {
@@ -3013,7 +3011,7 @@
       "WILL_NEED": "Bydd angen y rhif hwn arnoch i wneud eich cais pan fyddwch yn dychwelyd i'r gwasanaeth hwn."
     },
     "ELIGIBILITY_SINGLE_DEFENDANT": {
-      "PAGE_TITLE": "Hawliad unigol neu amlbarti",
+      "PAGE_TITLE": "Hawliad unigol neu aml-barti",
       "TITLE": "A yw'r hawliad hwn yn erbyn mwy nag un unigolyn neu sefydliad?"
     },
     "ELIGIBILITY_TOTAL_AMOUNT": {
@@ -3176,16 +3174,10 @@
       "TITLE": "Nid oes gennych awdurdod i weld yr hawliad!"
     },
     "FIRST_CONTACT_CLAIM_REFERENCE": {
-      "CLAIM_NUMBER": "Rhif hawliad",
-      "ENTER_CLAIM": "Mae hwn yn rif 8 nod ac mae ar yr e-bost neu'r llythyr wnaethom ei anfon atoch. Mae'n cynnwys 3 rhif yna 2 lythyren yna 3 rhif, er enghraifft 305JE126.",
-      "PAGE_TITLE": "Rhowch eich rhif hawliad",
-      "TITLE": "Rhowch eich rhif hawliad",
-      "CLAIM_NUMBER_HINT": "Er enghraifft, 305JE126",
-      "HOW_IF_CLAIM_NUMBER_NOT_WORK": "Os nad yw eich rhif hawliad yn gweithio neu'n dilyn y fformat hwn",
-      "THE_LETTERS_IN_YOUR_CLAIM": "Dylai'r llythrennau yn eich rhif hawliad fod yn MC, JE, JF, JG neu JH. Os oes gennych rif hawliad gyda fformat gwahanol mae'n debyg eich bod yn y lle anghywir.",
-      "CHECK_THE_EMAIL_OR_LETTER": "Gwiriwch yr e-bost neu'r llythyr gawsoch chi pan wnaethoch glywed am yr hawliad yn eich erbyn chi. Gwnewch yn siŵr eich bod yn dilyn y ddolen gywir i ymateb i'r hawliad am arian neu ",
-      "READ_MORE_GUIDANCE": "darllenwch ganllawiau pellach ar GOV.UK.",
-      "IF_YOUR_CLAIM_NUMBER_STILL_NOT_WORK": "Os bydd eich rhif hawliad yn dal ddim yn gweithio yna cysylltwch â ni."
+      "CLAIM_NUMBER": "Rhif hawlio",
+      "ENTER_CLAIM": "Rhowch y rhif hawlio o'r e-bost neu'r llythyr a anfonwyd gennym.",
+      "PAGE_TITLE": "Nodwch rif eich hawliad",
+      "TITLE": "Nodwch rif eich hawliad"
     },
     "FIRST_CONTACT_CLAIM_SUMMARY": {
       "CLAIM_NUMBER": "Rhif hawlio",
@@ -4308,14 +4300,14 @@
       "CONFIRM_YOUR_NUMBER": "Cadarnhewch eich rhif ffôn",
       "ENTER_PHONE_NUMBER": "Nodwch rif ffôn",
       "ENTER_PHONE_FOR_DIRECT_LINE": "Nodwch rif ffôn uniongyrchol gall y gwasanaeth cyfryngu ei ddefnyddio i gysylltu â chi.",
-      "PAGE_TITLE": "Cyfryngu - Darparwch rif ffôn",
+      "PAGE_TITLE": "Cyfryngu - darparu rhif ffôn",
       "WONT_GIVE_NUMBER": "Ni fyddwn yn rhoi'r rhif i rywun arall."
     },
     "MEDIATION_COMPANY_PHONE": {
       "CONFIRM_TELEPHONE_NUMBER": "Cadarnhau'r rhif ffôn",
       "ENTER_PHONE_NUMBER": "Rhowch rif ffôn yr unigolyn hwn, gan gynnwys rhif estyniad os oes angen",
       "FOR_EXAMPLE": "Er enghraifft, 02012346788 est. 153",
-      "PAGE_TITLE": "Cyfryngu - Darparwch rif cyswllt cwmni",
+      "PAGE_TITLE": "Cyfryngu - darparu rhif cyswllt y cwmni",
       "TITLE": "Pwy ddylai'r gwasanaeth cyfryngu ei ffonio?",
       "TITLE_WITH_PERSON": "Ai {{ contactPerson }} yw'r un y dylai'r gwasanaeth cyfryngu ei ffonio?"
     },
@@ -4531,7 +4523,7 @@
     },
     "PAYMENT_OPTION": {
       "PAGE_TITLE": "Opsiwn talu",
-      "PAGE_TITLE_FOR_PART_ADMIT": "Addef yn Rhannol - Opsiwn talu",
+      "PAGE_TITLE_FOR_PART_ADMIT": "Cyfaddefiad rhannol - opsiwn talu",
       "REQUEST": "Gall yr hawlydd wneud cais am Ddyfarniad Llys Sirol (CCJ) yn eich erbyn os na fyddwch yn talu ar unwaith.",
       "REPAYMENT": "Byddaf yn awgrymu cynllun ad-dalu",
       "TITLE": "Pryd ydych chi eisiau talu?",
@@ -5406,7 +5398,7 @@
       "START_NOW": "Dechrau nawr",
       "ARE_THERE_ANY_CHANGES": "A oes unrhyw newidiadau i’r cymorth o ran anghenion mynediad neu fregusrwydd i unrhyw un sy’n mynychu gwrandawiad llys?",
       "CONFIRMATION": {
-        "PAGE_TITLE": "Cwblhau trefniadau eich treial",
+        "PAGE_TITLE": "Cadarnhad trefniadau treial",
         "YOU_SAID_CASE_NOT_READY_FOR_TRIAL_OR_HEARING": "Rydych wedi dweud nad yw’r achos hwn yn barod ar gyfer treial",
         "WHAT_HAPPENS_NEXT": "Beth fydd yn digwydd nesaf",
         "YOU_WILL_NEED_TO_CALL": "Ar gyfer unrhyw newidiadau i’r gofynion hygyrchedd rhwng nawr a dyddiad y treial, bydd angen i chi ffonio 0300 303 5174.",
@@ -5449,7 +5441,7 @@
       "CHECK_ERROR_MESSAGE": "Cadarnhewch fod y swm llawn wedi'i dalu i chi"
     },
     "CONFIRM_YOU_HAVE_BEEN_PAID_CONFIRM": {
-      "PAGE_TITLE": "Cadarnhau eich bod wedi cael eich talu - Cadarnhad",
+      "PAGE_TITLE": "Cadarnhau eich bod wedi cael eich talu - cadarnhad",
       "YOU_CONFIRMED": "Rydych wedi cadarnhau eich bod wedi cael eich talu",
       "WHAT_NEXT": "Beth fydd yn digwydd nesaf",
       "NO_FURTHER": "Nid oes rhaid i chi gymryd unrhyw gamau pellach.",
@@ -5506,8 +5498,8 @@
     "ANNUAL_TURNOVER_REQUIRED": "A ydych yn siŵr bod hwn yn swm dilys?",
     "APPLICATION_TYPE_REQUIRED": "Dewiswch gais",
     "CHOOSE_TYPE_OF_INTEREST": "Dewis math o log",
-    "CLAIM_DETAILS": "Claim details",
-    "CLAIM_NUMBER_REQUIRED": "Rhowch eich rhif hawliad dilys o'r llythyr neu'r e-bost wnaethom ei anfon atoch - dylai gynnwys 3 rhif yna'r llythrennau MC, JE, JF, JG neu JH, yna 3 rhif, er enghraifft 305JE126",
+    "CLAIM_DETAILS": "Manylion yr hawliad",
+    "CLAIM_NUMBER_REQUIRED": "Mae angen i chi nodi rhif yr hawliad",
     "CLAIM_LANGUAGE_REQUIRED": "Dewiswch ym mha iaith rydych chi eisiau gwneud eich cais",
     "RESPONSE_LANGUAGE_REQUIRED": "Dewiswch ym mha iaith rydych chi eisiau ymateb i’r hawliad hwn",
     "CLAIM_TYPE_REQUIRED": "Dewiswch dros bwy rydych chi'n gwneud hawliad",
@@ -5875,7 +5867,7 @@
     "VALID_CLAIM_INTEREST_FROM": "Dewiswch o ba bryd rydych chi’n hawlio llog?",
     "VALID_CLAIM_INTEREST_END_DATE": "Dewiswch pryd rydych chi am roi'r gorau i hawlio llog",
     "VALID_CLAIM_NUMBER": "Nodwch rif yr hawliad",
-    "VALID_CLAIM_REFERENCE_NUMBER": "Rhowch eich rhif hawliad dilys o'r llythyr neu'r e-bost wnaethom ei anfon atoch - dylai gynnwys 3 rhif yna'r llythrennau MC, JE, JF, JG neu JH, yna 3 rhif, er enghraifft 305JE126",
+    "VALID_CLAIM_REFERENCE_NUMBER": "Rhowch rif hawliad dilys",
     "VALID_DATE": "Rhowch ddyddiad dilys",
     "VALID_DATE_IN_PAST": "Nodwch ddyddiad cyn {{dateToday}}",
     "VALID_DATE_NOT_IN_PAST": "Nodwch ddyddiad heddiw neu ddyddiad yn y dyfodol",
