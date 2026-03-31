@@ -3174,10 +3174,16 @@
       "TITLE": "Nid oes gennych awdurdod i weld yr hawliad!"
     },
     "FIRST_CONTACT_CLAIM_REFERENCE": {
-      "CLAIM_NUMBER": "Rhif hawlio",
-      "ENTER_CLAIM": "Rhowch y rhif hawlio o'r e-bost neu'r llythyr a anfonwyd gennym.",
-      "PAGE_TITLE": "Nodwch rif eich hawliad",
-      "TITLE": "Nodwch rif eich hawliad"
+      "CLAIM_NUMBER": "Rhif hawliad",
+      "ENTER_CLAIM": "Mae hwn yn rif 8 nod ac mae ar yr e-bost neu'r llythyr wnaethom ei anfon atoch. Mae'n cynnwys 3 rhif yna 2 lythyren yna 3 rhif, er enghraifft 305JE126.",
+      "PAGE_TITLE": "Rhowch eich rhif hawliad",
+      "TITLE": "Rhowch eich rhif hawliad",
+      "CLAIM_NUMBER_HINT": "Er enghraifft, 305JE126",
+      "HOW_IF_CLAIM_NUMBER_NOT_WORK": "Os nad yw eich rhif hawliad yn gweithio neu'n dilyn y fformat hwn",
+      "THE_LETTERS_IN_YOUR_CLAIM": "Dylai'r llythrennau yn eich rhif hawliad fod yn MC, JE, JF, JG neu JH. Os oes gennych rif hawliad gyda fformat gwahanol mae'n debyg eich bod yn y lle anghywir.",
+      "CHECK_THE_EMAIL_OR_LETTER": "Gwiriwch yr e-bost neu'r llythyr gawsoch chi pan wnaethoch glywed am yr hawliad yn eich erbyn chi. Gwnewch yn siŵr eich bod yn dilyn y ddolen gywir i ymateb i'r hawliad am arian neu ",
+      "READ_MORE_GUIDANCE": "darllenwch ganllawiau pellach ar GOV.UK.",
+      "IF_YOUR_CLAIM_NUMBER_STILL_NOT_WORK": "Os bydd eich rhif hawliad yn dal ddim yn gweithio yna cysylltwch â ni."
     },
     "FIRST_CONTACT_CLAIM_SUMMARY": {
       "CLAIM_NUMBER": "Rhif hawlio",
