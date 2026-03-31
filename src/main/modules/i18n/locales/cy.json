@@ -5404,6 +5404,7 @@
       "START_NOW": "Dechrau nawr",
       "ARE_THERE_ANY_CHANGES": "A oes unrhyw newidiadau i’r cymorth o ran anghenion mynediad neu fregusrwydd i unrhyw un sy’n mynychu gwrandawiad llys?",
       "CONFIRMATION": {
+
         "PAGE_TITLE": "Cadarnhad trefniadau treial",
         "YOU_SAID_CASE_NOT_READY_FOR_TRIAL_OR_HEARING": "Rydych wedi dweud nad yw’r achos hwn yn barod ar gyfer treial",
         "WHAT_HAPPENS_NEXT": "Beth fydd yn digwydd nesaf",
@@ -5505,7 +5506,7 @@
     "APPLICATION_TYPE_REQUIRED": "Dewiswch gais",
     "CHOOSE_TYPE_OF_INTEREST": "Dewis math o log",
     "CLAIM_DETAILS": "Manylion yr hawliad",
-    "CLAIM_NUMBER_REQUIRED": "Mae angen i chi nodi rhif yr hawliad",
+    "CLAIM_NUMBER_REQUIRED": "Rhowch eich rhif hawliad dilys o'r llythyr neu'r e-bost wnaethom ei anfon atoch - dylai gynnwys 3 rhif yna'r llythrennau MC, JE, JF, JG neu JH, yna 3 rhif, er enghraifft 305JE126",
     "CLAIM_LANGUAGE_REQUIRED": "Dewiswch ym mha iaith rydych chi eisiau gwneud eich cais",
     "RESPONSE_LANGUAGE_REQUIRED": "Dewiswch ym mha iaith rydych chi eisiau ymateb i’r hawliad hwn",
     "CLAIM_TYPE_REQUIRED": "Dewiswch dros bwy rydych chi'n gwneud hawliad",
