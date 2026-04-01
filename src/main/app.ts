@@ -119,6 +119,37 @@ const productionMode = env === 'production';
 const developmentMode = env === 'development';
 const e2eTestMode = env === 'e2eTest';
 const cookieMaxAge = config.get<number>('cookieMaxAge');
+const ensureBodyObject: express.RequestHandler = (req, _res, next) => {
+  // Express 5 leaves req.body undefined when no parser matches (e.g. empty POSTs).
+  // Legacy controllers/tests assume an object and read req.body.action safely.
+  if (req.body === undefined) {
+    req.body = {};
+  }
+  next();
+};
+const setDefaultHeaders: express.RequestHandler = (_req, res, next) => {
+  res.setHeader(
+    'Cache-Control',
+    'no-cache, max-age=0, must-revalidate, no-store',
+  );
+
+  res.setHeader(
+    'Access-Control-Allow-Origin',
+    '*',
+  );
+
+  res.setHeader(
+    'Access-Control-Allow-Headers',
+    'Origin, X-Requested-With, Content-Type, Accept',
+  );
+
+  res.setHeader(
+    'access-control-allow-methods',
+    'GET,POST,OPTIONS,PUT,DELETE',
+  );
+
+  next();
+};
 
 export const app = express();
 app.use(cookieParser());
@@ -128,14 +159,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(express.json({ limit: '500mb' }));
 app.use(express.urlencoded({ limit: '500mb', extended: true }));
-// Express 5 leaves req.body undefined when no parser matches (e.g. empty POSTs).
-// Legacy controllers/tests assume an object and read req.body.action safely.
-app.use((req, _res, next) => {
-  if (req.body === undefined) {
-    req.body = {};
-  }
-  next();
-});
+app.use(ensureBodyObject);
 app.locals.ENV = env;
 I18Next.enableFor(app);
 
@@ -183,7 +207,7 @@ if(!e2eTestMode){
 }
 
 if(e2eTestMode){
-  app.get(TEST_SUPPORT_TOGGLE_FLAG_ENDPOINT, async (req, res, next) => {
+  app.get(TEST_SUPPORT_TOGGLE_FLAG_ENDPOINT, async (req, res) => {
     try {
       const key = req.params.key;
       const booleanValue: boolean = JSON.parse(req.params.value);
@@ -317,29 +341,7 @@ if(env !== 'test') {
   app.use(contactUsGuard);
   app.use(MEDIATION_PHONE_CONFIRMATION_URL, mediationClaimantPhoneRedirectionGuard);
 }
-app.use((_req, res, next) => {
-  res.setHeader(
-    'Cache-Control',
-    'no-cache, max-age=0, must-revalidate, no-store',
-  );
-
-  res.setHeader(
-    'Access-Control-Allow-Origin',
-    '*',
-  );
-
-  res.setHeader(
-    'Access-Control-Allow-Headers',
-    'Origin, X-Requested-With, Content-Type, Accept',
-  );
-
-  res.setHeader(
-    'access-control-allow-methods',
-    'GET,POST,OPTIONS,PUT,DELETE',
-  );
-
-  next();
-});
+app.use(setDefaultHeaders);
 
 const checkServiceAvailability = async (_req: express.Request, res: express.Response, next: express.NextFunction) => {
   const serviceShuttered = await isServiceShuttered();

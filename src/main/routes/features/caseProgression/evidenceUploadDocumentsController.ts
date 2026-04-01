@@ -9,7 +9,7 @@ import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {caseNumberPrettify} from 'common/utils/stringUtils';
 import {getEvidenceUploadContent} from 'services/features/dashboard/evidenceUploadDocumentsService';
-import {normalizeRouteParam} from 'common/utils/routeParamUtils';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const evidenceUploadDocumentsController = Router();
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
@@ -18,7 +18,7 @@ const evidenceUploadDocumentsViewPath = 'features/caseProgression/evidence-uploa
 
 evidenceUploadDocumentsController.get(EVIDENCE_UPLOAD_DOCUMENTS_URL, (async (req:Request, res:Response, next: NextFunction) => {
   try {
-    const claimId = normalizeRouteParam(req.params.id);
+    const claimId = getRouteParam(req, 'id');
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
 

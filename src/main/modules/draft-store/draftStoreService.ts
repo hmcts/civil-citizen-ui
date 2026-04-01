@@ -9,7 +9,7 @@ import {calculateExpireTimeForDraftClaimInSeconds} from 'common/utils/dateUtils'
 import {AppRequest} from 'common/models/AppRequest';
 import {getClaimById} from 'modules/utilityService';
 import {Request} from 'express';
-import {normalizeRouteParam} from 'common/utils/routeParamUtils';
+import {getRouteParam, normalizeRouteParam} from 'common/utils/routeParamUtils';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('draftStoreService');
@@ -82,7 +82,7 @@ const createNewCivilClaimResponse = (claimId: string) => {
 };
 
 export const deleteDraftClaim = async (req: Request, useRedisKey = false): Promise<void> => {
-  const claimId = normalizeRouteParam(req.params.id);
+  const claimId = getRouteParam(req, 'id');
   const userId = (<AppRequest>req)?.session?.user?.id;
   const redisKey = useRedisKey && claimId !== userId ? generateRedisKey(<AppRequest>req) : claimId;
   await deleteDraftClaimFromStore(redisKey);

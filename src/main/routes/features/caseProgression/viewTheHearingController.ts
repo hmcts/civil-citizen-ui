@@ -9,7 +9,7 @@ import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {caseNumberPrettify} from 'common/utils/stringUtils';
 import {getHearingContent} from 'services/features/caseProgression/hearing/hearingService';
-import {normalizeRouteParam} from 'common/utils/routeParamUtils';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const viewTheHearingController = Router();
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
@@ -18,7 +18,7 @@ const hearingViewPath = 'features/caseProgression/view-the-hearing';
 
 viewTheHearingController.get(VIEW_THE_HEARING_URL, (async (req:Request, res:Response, next: NextFunction) => {
   try {
-    const claimId = normalizeRouteParam(req.params.id);
+    const claimId = getRouteParam(req, 'id');
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
 
