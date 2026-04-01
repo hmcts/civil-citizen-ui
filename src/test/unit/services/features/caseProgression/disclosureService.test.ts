@@ -37,9 +37,9 @@ describe('Disclosure service', () => {
 
     //Then
     expect(actualDisclosureContent.length).toEqual(2);
-    expect(actualDisclosureContent[0][0].contentSections.length).toEqual(4);
+    expect(actualDisclosureContent[0][0].contentSections.length).toEqual(5);
     expect(actualDisclosureContent[0][0].contentSections[0].data.text).toEqual('PAGES.UPLOAD_DOCUMENTS.DISCLOSURE.DISCLOSURE_DOCUMENTS');
-    expect(actualDisclosureContent[1][0].contentSections.length).toEqual(2);
+    expect(actualDisclosureContent[1][0].contentSections.length).toEqual(3);
     expect(actualDisclosureContent[1][0].contentSections[0].data.text).toEqual('PAGES.UPLOAD_DOCUMENTS.DISCLOSURE.DISCLOSURE_LIST');
   });
 
@@ -68,9 +68,9 @@ describe('Disclosure service', () => {
 
     //Then
     expect(actualDisclosureContent.length).toEqual(2);
-    expect(actualDisclosureContent[0][0].contentSections.length).toEqual(4);
+    expect(actualDisclosureContent[0][0].contentSections.length).toEqual(5);
     expect(actualDisclosureContent[0][0].contentSections[0].data.text).toEqual('PAGES.UPLOAD_DOCUMENTS.DISCLOSURE.DISCLOSURE_DOCUMENTS');
-    expect(actualDisclosureContent[1][0].contentSections.length).toEqual(2);
+    expect(actualDisclosureContent[1][0].contentSections.length).toEqual(3);
     expect(actualDisclosureContent[1][0].contentSections[0].data.text).toEqual('PAGES.UPLOAD_DOCUMENTS.DISCLOSURE.DISCLOSURE_LIST');
   });
 
@@ -85,7 +85,7 @@ describe('Disclosure service', () => {
 
     //Then
     expect(actualDisclosureContent.length).toEqual(1);
-    expect(actualDisclosureContent[0][0].contentSections.length).toEqual(4);
+    expect(actualDisclosureContent[0][0].contentSections.length).toEqual(5);
     expect(actualDisclosureContent[0][0].contentSections[0].data.text).toEqual('PAGES.UPLOAD_DOCUMENTS.DISCLOSURE.DISCLOSURE_DOCUMENTS');
   });
 
@@ -119,7 +119,7 @@ describe('Disclosure service', () => {
 
     //Then
     expect(actualDisclosureContent.length).toEqual(1);
-    expect(actualDisclosureContent[0][0].contentSections.length).toEqual(2);
+    expect(actualDisclosureContent[0][0].contentSections.length).toEqual(3);
     expect(actualDisclosureContent[0][0].contentSections[0].data.text).toEqual('PAGES.UPLOAD_DOCUMENTS.DISCLOSURE.DISCLOSURE_LIST');
   });
 

@@ -5,8 +5,6 @@ const HasAnythingChanged = require ('../pages/trialArrangements/hasAnythingChang
 const TrialDuration = require ('../pages/trialArrangements/trialDuration');
 const CheckYourAnswers = require ('../pages/trialArrangements/checkYourAnswers');
 const TrialArrangementsConfirmation = require ('../pages/trialArrangements/trialArrangementsConfirmation');
-const NoticesAndOrders = require('../pages/noticesAndOrders');
-const {isDashboardServiceToggleEnabled} = require('../../../specClaimHelpers/api/testingSupport');
 
 const I = actor(); // eslint-disable-line no-unused-vars
 const latestUpdateTab = new LatestUpdate();
@@ -16,7 +14,6 @@ const hasAnythingChanged = new HasAnythingChanged();
 const trialDuration = new TrialDuration();
 const checkYourAnswers = new CheckYourAnswers();
 const trialArrangementConfirmation = new TrialArrangementsConfirmation();
-const noticesAndOrders =  new NoticesAndOrders();
 
 const buttons = {
   startNow: {
@@ -37,15 +34,6 @@ class TrialArrangementSteps {
 
   async initiateTrialArrangementJourney(claimRef, claimType, caseNumber, claimAmount, deadline, readyForTrial, partyType,  language = 'en') {
     console.log('The value of the Claim Reference : ' + claimRef);
-    const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
-    if (!isDashboardServiceEnabled) {
-      if (partyType === 'LiPvLiP') {
-        I.amOnPage('/case/' + claimRef + '/case-progression/finalise-trial-arrangements');
-      } else {
-        latestUpdateTab.open(claimRef, claimType, true, false, true);
-        latestUpdateTab.nextAction('Finalise trial arrangements');
-      }
-    }
     trialArrangementsIntroduction.verifyPageContent(caseNumber, claimAmount, deadline);
     trialArrangementsIntroduction.nextAction(buttons.startNow[language]);
     isYourCaseReadyForTrial.verifyPageContent(caseNumber, claimAmount);
@@ -64,12 +52,6 @@ class TrialArrangementSteps {
   async verifyTrialArrangementsMade(readyForTrial) {
     trialArrangementConfirmation.verifyPageContent(readyForTrial);
     trialArrangementConfirmation.nextAction('Go to your account');
-    const isDashboardServiceEnabled = await isDashboardServiceToggleEnabled();
-    if (!isDashboardServiceEnabled) {
-      latestUpdateTab.verifyTrialArrangementsFinalisedTile(); //Latest update page - verify that the Trial Arrangement Tile appears.
-      latestUpdateTab.nextAction('[href=\'#notices-orders\']');
-      noticesAndOrders.verifyLatestUpdatePageContent();
-    }
   }
 
   verifyOtherPartyFinalisedTrialArrangementsJourney(claimRef, claimType) {

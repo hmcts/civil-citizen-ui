@@ -1,3 +1,4 @@
+require('dotenv').config({path: '.env.tests.local'});
 
 const PropertiesVolume = require('./secretsConfig');
 
@@ -5,7 +6,11 @@ const defaultPassword = process.env.CITIZEN_PASSWORD;
 const defaultPasswordSystemUser = process.env.SYSTEM_USER_PASSWORD;
 const judgeDefaultPassword = process.env.JUDGE_PASSWORD;
 const wluDefaultPassword = process.env.WLU_DEFAULT_PASSWORD;
+<<<<<<< HEAD
 const testUrl = process.env.TEST_URL || 'https://civil-citizen-ui-pr-7171.preview.platform.hmcts.net';
+=======
+const testUrl = process.env.TEST_URL;
+>>>>>>> 43eac41b7d7845e5dc1450be2f8eb3112546e34e
 const testHeadlessBrowser = process.env.TEST_HEADLESS ? process.env.TEST_HEADLESS === 'true' : true;
 
 if (!process.env.TEST_PASSWORD) {
@@ -13,7 +18,7 @@ if (!process.env.TEST_PASSWORD) {
 }
 module.exports = {
   TestUrl: testUrl,
-  env: process.env.ENVIRONMENT_NAME || 'local',
+  env: process.env.ENVIRONMENT || 'local',
   TestHeadlessBrowser: testHeadlessBrowser,
   TestSlowMo: 250,
   WaitForTimeout: 20000,
@@ -23,6 +28,7 @@ module.exports = {
     url: 'http://localhost:5555',
   },
   url: {
+<<<<<<< HEAD
     /*manageCase: process.env.URL || 'https://xui-civil-citizen-ui-pr-3591.preview.platform.hmcts.net',
     authProviderApi: process.env.SERVICE_AUTH_PROVIDER_API_BASE_URL || 'http://rpe-service-auth-provider-aat.service.core-compute-aat.internal',
     ccdDataStore: process.env.CCD_DATA_STORE_URL || 'https://ccd-data-store-api-civil-citizen-ui-pr-3591.preview.platform.hmcts.net',
@@ -49,6 +55,19 @@ module.exports = {
     idamApi: 'https://idam-api.aat.platform.hmcts.net',
     civilService: 'https://civil-citizen-ui-pr-7171-civil-service.preview.platform.hmcts.net',
     caseAssignmentService: 'https://manage-case-assignment-civil-citizen-ui-pr-7171.preview.platform.hmcts.net',
+=======
+    manageCase: process.env.URL,
+    authProviderApi: process.env.SERVICE_AUTH_PROVIDER_API_BASE_URL,
+    ccdDataStore: process.env.CCD_DATA_STORE_URL,
+    dmStore: process.env.DM_STORE_URL,
+    idamApi: process.env.IDAM_API_URL,
+    idamTestSupportApi: process.env.IDAM_TEST_SUPPORT_API_URL,
+    idamWeb: process.env.IDAM_WEB_URL,
+    civilService: process.env.CIVIL_SERVICE_URL,
+    waTaskMgmtApi: process.env.WA_TASK_MGMT_URL,
+    caseAssignmentService: process.env.AAC_API_URL,
+    wiremockServiceE2e: process.env.WIREMOCK_URL || 'http://localhost:1111',
+>>>>>>> 43eac41b7d7845e5dc1450be2f8eb3112546e34e
   },
   getDomain: (url) => new URL(url).host,
   s2s: {
@@ -78,15 +97,20 @@ module.exports = {
   },
   claimantCitizenUser: {
     password: defaultPassword,
+<<<<<<< HEAD
     email: `claimantcitizen-${Math.random().toString(36).slice(2, 9).toLowerCase()}@gmail.com`,
+=======
+    //email:'civilmoneyclaimsdemo@gmail.com',
+    email: process.env.CLAIMANT_CITIZEN_EMAIL || `claimantcitizen-${Math.random().toString(36).slice(2, 9).toLowerCase()}@gmail.com`,
+>>>>>>> 43eac41b7d7845e5dc1450be2f8eb3112546e34e
     type: 'claimant',
   },
   defendantCitizenUser: {
     password: defaultPassword,
-    email: `defendantcitizen-${Math.random().toString(36).slice(2, 9).toLowerCase()}@gmail.com`,
+    email: process.env.DEFENDANT_CITIZEN_EMAIL || `defendantcitizen-${Math.random().toString(36).slice(2, 9).toLowerCase()}@gmail.com`,
     type: 'defendant',
   },
-  defendantLRCitizenUser:{
+  defendantLRCitizenUser: {
     password: defaultPassword,
     email: 'cuiuseraat@gmail.com',
     type: 'defendant',
@@ -184,12 +208,12 @@ module.exports = {
   runWAApiTest: process.env.RUN_WA_API_TEST == 'true' || false,
   claimantSolicitorOrgId: process.env.ENVIRONMENT == 'demo' ? 'B04IXE4' : 'Q1KOKP2',
   defendant1SolicitorOrgId: process.env.ENVIRONMENT == 'demo' ? 'DAWY9LJ' : '79ZRSOU',
-  defendant2SolicitorOrgId: process.env.ENVIRONMENT =='demo' ? 'LCVTI1I' : 'H2156A0',
-  defendantSelectedCourt:'Leeds Combined Court Centre - The Court House, 1 Oxford Row - LS1 3BG',
-  claimantLRSelectedCourt:'Leeds Combined Court Centre - The Court House, 1 Oxford Row - LS1 3BG',
+  defendant2SolicitorOrgId: process.env.ENVIRONMENT == 'demo' ? 'LCVTI1I' : 'H2156A0',
+  defendantSelectedCourt: 'Leeds Combined Court Centre - The Court House, 1 Oxford Row - LS1 3BG',
+  claimantLRSelectedCourt: 'Leeds Combined Court Centre - The Court House, 1 Oxford Row - LS1 3BG',
   eaCourt: 'Derby Combined Court Centre - The Morledge - DE1 2XE',
-  nonEaCourt:'Central London County Court - Thomas More Building, Royal Courts of Justice, Strand, London - WC2A 2LL',
-  gaCourtToBeSelected:'Birmingham Civil and Family Justice Centre - Priory Courts, 33 Bull Street - B4 6DS',
+  nonEaCourt: 'Central London County Court - Thomas More Building, Royal Courts of Justice, Strand, London - WC2A 2LL',
+  gaCourtToBeSelected: 'Birmingham Civil and Family Justice Centre - Priory Courts, 33 Bull Street - B4 6DS',
   localMediationTests: false,
   localNoCTests: false,
   hwfEvents: {

@@ -2,6 +2,7 @@ import * as draftStoreService from '../../../../../main/modules/draft-store/draf
 import {Claim} from 'models/claim';
 import {
   getSummaryList,
+  handleMulterError,
   removeSelectedDocument,
   saveDocumentsToUploaded,
 } from 'services/features/generalApplication/uploadEvidenceDocumentService';
@@ -150,6 +151,22 @@ describe('Upload Evidence Document service', () => {
       expect(formattedSummary.summaryList.rows[1].key.text).toEqual('test.text');
       expect(formattedSummary.summaryList.rows[1].actions.items[0].href).toEqual('/case/1/general-application/cosc/upload-documents?id=2');
       expect(formattedSummary.summaryList.rows[1].actions.items[0].text).toEqual('Remove document');
+    });
+  });
+  describe('handleMulterError', () => {
+    it('should return false when req has no multerError', () => {
+      const req = { body: { action: 'uploadButton' }, session: { save: (cb: any) => cb() } } as any;
+      expect(handleMulterError(req)).toBe(false);
+    });
+    it('should return false when action is not uploadButton', () => {
+      const req = { body: { action: 'continue' }, session: { save: (cb: any) => cb() }, multerError: { code: 'LIMIT_FILE_SIZE' } } as any;
+      expect(handleMulterError(req)).toBe(false);
+    });
+    it('should set session fileUpload and return true when multerError and uploadButton', () => {
+      const req = { body: { action: 'uploadButton' }, session: { save: (cb: any) => cb() } as any, multerError: { code: 'LIMIT_FILE_SIZE' } } as any;
+      expect(handleMulterError(req)).toBe(true);
+      expect(req.session.fileUpload).toBeDefined();
+      expect(JSON.parse(req.session.fileUpload)).toHaveLength(1);
     });
   });
 });

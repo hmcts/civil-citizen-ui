@@ -14,7 +14,7 @@ const claimAmount = '£15,000';
 const feeAmount = '619';
 let caseData, claimNumber, claimRef, taskListItem, notification, fiveWeeksFromToday, hearingFeeDueDate, hearingDate, formattedCaseId;
 
-Feature('Case progression - Lip v Lip - Hearing Fee journey - Fast Track').tag('@ui-nightly-prod @ui-hearings');
+Feature('Case progression - Lip v Lip - Hearing Fee journey - Fast Track').tag('@civil-citizen-nightly @ui-hearings');
 
 Before(async ({api}) => {
   fiveWeeksFromToday = DateUtilsComponent.DateUtilsComponent.rollDateToCertainWeeks(10);
@@ -61,7 +61,7 @@ Scenario('Pay the Hearing Fee Journey - Fast Track',  async ({I, api}) => {
   notification = payTheHearingFeeClaimant(feeAmount, hearingFeeDueDate);
   await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
   await I.click(notification.nextSteps);
-  await HearingFeeSteps.payHearingFeeJourney(claimRef, feeAmount, hearingFeeDueDate);
+  await HearingFeeSteps.payHearingFeeJourney(feeAmount);
   await api.waitForFinishedBusinessProcess();
   notification = hearingFeePaidFull();
   await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);

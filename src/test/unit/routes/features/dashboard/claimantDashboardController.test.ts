@@ -30,6 +30,7 @@ import {ApplicationResponse, CCDApplication} from 'common/models/generalApplicat
 import { getContactCourtLink } from 'services/dashboard/dashboardService';
 import {ApplicationState} from 'models/generalApplication/applicationSummary';
 import {ClaimBilingualLanguagePreference} from 'models/claimBilingualLanguagePreference';
+import * as ClaimDetailsService from 'modules/claimDetailsService';
 
 jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 
@@ -113,6 +114,7 @@ const dashboard = new Dashboard(mockExpectedDashboardInfo);
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('../../../../../main/modules/claimDetailsService');
 
 jest.mock('services/dashboard/dashboardService', () => ({
   getNotifications: jest.fn(),
@@ -152,11 +154,15 @@ describe('claimant Dashboard Controller', () => {
   });
 
   describe('on GET', () => {
+    beforeEach(() => {
+      jest
+        .spyOn(ClaimDetailsService, 'getTotalAmountWithInterestAndFees')
+        .mockResolvedValueOnce(10);
+    });
     it('should return claimant dashboard page when only draft', async () => {
 
       jest.spyOn(UtilityService, 'getClaimById').mockReturnValueOnce(Promise.resolve(new Claim()));
       jest.spyOn(launchDarkly, 'isCUIReleaseTwoEnabled').mockResolvedValueOnce(true);
-
       await request(app).get(DASHBOARD_CLAIMANT_URL.replace(':id', 'draft')).expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).not.toContain('Mr. Jan Clark v Version 1');

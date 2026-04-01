@@ -72,7 +72,7 @@ describe('interest start date', () => {
           expect(res.text).toContain(t('ERRORS.VALID_DAY'));
           expect(res.text).toContain(t('ERRORS.VALID_MONTH'));
           expect(res.text).toContain(t('ERRORS.VALID_FOUR_DIGIT_YEAR'));
-          expect(res.text).toContain(t('ERRORS.VALID_WHY_FROM_PARTICULAR_DATE'));
+          expect(res.text).toMatch(/Enter why you(?:'|\u2019|&#39;|&apos;)re claiming from this date/);
         });
     });
     it('should return error on year less than 1872', async () => {

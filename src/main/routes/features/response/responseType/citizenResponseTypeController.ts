@@ -28,7 +28,7 @@ function renderView(form: GenericForm<CitizenResponseType>, res: Response, compo
 
 citizenResponseTypeController.get(CITIZEN_RESPONSE_TYPE_URL, (async (req, res, next: NextFunction) => {
   try {
-    const citizenResponseType = new GenericForm(new CitizenResponseType());
+    const citizenResponseType = new GenericForm(new CitizenResponseType(undefined, 'ERRORS.RESPONSE_TYPE_REQUIRED'));
     const claim = await getCaseDataFromStore(generateRedisKey(<AppRequest>req));
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     if (claim.respondent1?.responseType) {
@@ -45,7 +45,7 @@ citizenResponseTypeController.get(CITIZEN_RESPONSE_TYPE_URL, (async (req, res, n
 citizenResponseTypeController.post(CITIZEN_RESPONSE_TYPE_URL,
   (async (req, res, next: NextFunction) => {
     try {
-      const formResponseType: GenericForm<CitizenResponseType> = new GenericForm<CitizenResponseType>(new CitizenResponseType(req.body.responseType));
+      const formResponseType: GenericForm<CitizenResponseType> = new GenericForm<CitizenResponseType>(new CitizenResponseType(req.body.responseType, 'ERRORS.RESPONSE_TYPE_REQUIRED'));
       await formResponseType.validate();
       if (formResponseType.hasErrors()) {
         renderView(formResponseType, res);

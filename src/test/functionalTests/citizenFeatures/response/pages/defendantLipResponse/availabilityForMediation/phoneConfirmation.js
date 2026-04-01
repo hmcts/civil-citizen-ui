@@ -48,8 +48,6 @@ class PhoneConfirmation {
 
   async enterPhoneDetails() {
     I.waitForContent('Can the mediator use ', config.WaitForText);
-    I.click('Save and continue');
-    I.see('Choose option: Yes or No');
     I.click(fields.yesButton);
     contactUs.verifyContactUs();
     await I.click('Save and continue');

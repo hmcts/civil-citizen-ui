@@ -1,7 +1,8 @@
 import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {
   MEDIATION_UPLOAD_DOCUMENTS_CONFIRMATION,
-  MEDIATION_UPLOAD_DOCUMENTS_CHECK_AND_SEND, MEDIATION_UPLOAD_DOCUMENTS, CANCEL_URL,
+  MEDIATION_UPLOAD_DOCUMENTS_CHECK_AND_SEND, MEDIATION_UPLOAD_DOCUMENTS,
+  MEDIATION_UPLOAD_DOCUMENTS_CANCEL,
 } from 'routes/urls';
 
 import {deleteDraftClaimFromStore, generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
@@ -51,15 +52,14 @@ function renderView(uploadDocuments: UploadDocuments, res: Response, form: Gener
     summarySections,
     bottomPageContents,
     backLinkUrl: constructResponseUrlWithIdParams(claimId, MEDIATION_UPLOAD_DOCUMENTS),
-    cancelUrl: CANCEL_URL
-      .replace(':id', claimId)
-      .replace(':propertyName', 'mediationUploadDocuments'),
+    cancelUrl: constructResponseUrlWithIdParams(claimId, MEDIATION_UPLOAD_DOCUMENTS_CANCEL),
   });
 }
 
 mediationDocumentUploadCheckAnswerController.get(MEDIATION_UPLOAD_DOCUMENTS_CHECK_AND_SEND, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
+    req.session.previousUrl = req.originalUrl;
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const redisKey = generateRedisKey(<AppRequest>req);
     const claim = await getCaseDataFromStore(redisKey);

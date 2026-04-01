@@ -18,8 +18,14 @@
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
       {% set optionError = form.errorFor("option") %}
+      {% if optionError %}
+        {% set optionErrorText = t(optionError) | replace('[CLAIMANT]', claimantName) %}
+      {% endif %}
       {% if form.hasErrors() %}
-        {{ errorSummary(form.getErrors(), t) }}
+        {% set formatValues = [
+          { keyError: 'ERRORS.REJECT_ALL_REASON_REQUIRED', keyToReplace: '[CLAIMANT]', valueToReplace: claimantName }
+        ] %}
+        {{ errorSummary(form.getErrors(), t, formatValues) }}
       {% endif %}
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
@@ -55,7 +61,7 @@
                 }
               ],
               errorMessage: {
-                  text: t(optionError)
+                  text: optionErrorText
                 } if optionError,
                 attributes: {
                   "aria-describedby": "option-error" if optionError

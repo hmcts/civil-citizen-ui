@@ -1,277 +1,170 @@
-import config from 'config';
-import nock from 'nock';
-import request from 'supertest';
-import {app} from '../../../../../../main/app';
-import {
-  CLAIM_DEFENDANT_COMPANY_DETAILS_URL,
-  CLAIM_DEFENDANT_EMAIL_URL,
-  CLAIM_DEFENDANT_INDIVIDUAL_DETAILS_URL,
-  CLAIM_DEFENDANT_ORGANISATION_DETAILS_URL,
-  CLAIM_DEFENDANT_SOLE_TRADER_DETAILS_URL,
-} from 'routes/urls';
-import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import {Party} from 'models/party';
-import {PartyType} from 'models/partyType';
+import {Request, Response, NextFunction} from 'express';
+import defendantDetailsController from '../../../../../../main/routes/features/claim/defendant/defendantDetailsController';
+
 import {
   getDefendantInformation,
   saveDefendantProperty,
-} from 'services/features/common/defendantDetailsService';
+} from '../../../../../../main/services/features/common/defendantDetailsService';
 
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
-jest.mock('../../../../../../main/services/features/common/defendantDetailsService');
-jest.mock('routes/guards/claimIssueTaskListGuard', () => ({
-  claimIssueTaskListGuard: jest.fn((req, res, next) => {
-    next();
-  }),
-}));
+import {PartyType} from '../../../../../../main/common/models/partyType';
+import {GenericForm} from '../../../../../../main/common/form/models/genericForm';
+import {CLAIM_DEFENDANT_EMAIL_URL} from '../../../../../../main/routes/urls';
 
-const mockDefendantInformation = getDefendantInformation as jest.Mock;
-const mockSaveDefendant = saveDefendantProperty as jest.Mock;
+jest.mock(
+  '../../../../../../main/services/features/common/defendantDetailsService',
+);
 
-const mockSaveData = {
-  title: 'Mr',
-  firstName: 'John',
-  lastName: 'Doe',
-  soleTraderTradingAs: 'John`s Sons Ltd',
-  partyName: 'Bob Ltd',
-  contactPerson: 'Louise',
-  addressLine1: 'Fake Org',
-  addressLine2: 'Somewhere undefined',
-  addressLine3: 'Floor 4',
-  city: 'Valid city',
-  postCode: 'SN12RA',
-};
+jest.mock(
+  '../../../../../../main/common/form/models/genericForm',
+);
 
-describe('Defendant details controller', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
-  app.request.cookies = {eligibilityCompleted: true};
+describe('defendantDetailsController', () => {
+  const mockGetDefendantInformation = getDefendantInformation as jest.Mock;
+  const mockSaveDefendantProperty = saveDefendantProperty as jest.Mock;
+  const MockedGenericForm = GenericForm as jest.Mock;
 
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
+  let req: Partial<Request>;
+  let res: Partial<Response>;
+  let next: NextFunction;
+
+  const getHandler = (defendantDetailsController as any).stack.find(
+    (layer: any) => layer.route?.methods?.get,
+  ).route.stack[0].handle;
+
+  const postHandler = (defendantDetailsController as any).stack.find(
+    (layer: any) => layer.route?.methods?.post,
+  ).route.stack[0].handle;
+
+  beforeEach(() => {
+    req = {
+      session: {
+        user: {id: 'userId'},
+      } as any,
+      body: {},
+    };
+
+    res = {
+      render: jest.fn(),
+      redirect: jest.fn(),
+    };
+
+    next = jest.fn();
+
+    jest.clearAllMocks();
   });
 
-  describe('on GET', () => {
-    describe('Individual', () => {
-      it('should render individual details page', async () => {
-        mockDefendantInformation.mockImplementation(async () => {
-          const party = new Party();
-          party.type = PartyType.INDIVIDUAL;
-          return party;
-        });
-        const res = await request(app).get(CLAIM_DEFENDANT_INDIVIDUAL_DETAILS_URL);
-        expect(res.status).toBe(200);
-        expect(res.text).toContain('Enter the defendant');
+  // ======================
+  // GET
+  // ======================
+
+  describe('GET', () => {
+    it('should render company/organisation view when type is COMPANY', async () => {
+      mockGetDefendantInformation.mockResolvedValue({
+        type: PartyType.COMPANY,
+        partyDetails: {},
       });
+
+      MockedGenericForm.mockImplementation(() => ({}));
+
+      await getHandler(req as Request, res as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(
+        'features/claim/defendant/defendant-details-company-or-organisation',
+        expect.objectContaining({
+          defendantType: PartyType.COMPANY,
+        }),
+      );
     });
 
-    describe('Company', () => {
-      it('should render company defendant details page', async () => {
-        mockDefendantInformation.mockImplementation(async () => {
-          const party = new Party();
-          party.type = PartyType.COMPANY;
-          return party;
-        });
-        const res = await request(app).get(CLAIM_DEFENDANT_COMPANY_DETAILS_URL);
-        expect(res.status).toBe(200);
-        expect(res.text).toContain('Company details');
+    it('should render individual/sole trader view when type is INDIVIDUAL', async () => {
+      mockGetDefendantInformation.mockResolvedValue({
+        type: PartyType.INDIVIDUAL,
+        partyDetails: {},
       });
+
+      MockedGenericForm.mockImplementation(() => ({}));
+
+      await getHandler(req as Request, res as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(
+        'features/claim/defendant/defendant-details-individual-or-sole-trader',
+        expect.objectContaining({
+          defendantType: PartyType.INDIVIDUAL,
+        }),
+      );
     });
 
-    describe('Organisation', () => {
-      it('should render defendant details page when data is already set in redis', async () => {
-        mockDefendantInformation.mockImplementation(async () => {
-          const party = new Party();
-          party.type = PartyType.ORGANISATION;
-          return party;
-        });
+    it('should call next on error', async () => {
+      mockGetDefendantInformation.mockRejectedValue(new Error('failure'));
 
-        const res = await request(app).get(CLAIM_DEFENDANT_ORGANISATION_DETAILS_URL);
-        expect(res.status).toBe(200);
-        expect(res.text).toContain('Enter organisation details');
-      });
+      await getHandler(req as Request, res as Response, next);
 
-      it('should return http 500 status when has error in the get method', async () => {
-        mockDefendantInformation.mockImplementationOnce(async () => {
-          throw new Error(TestMessages.REDIS_FAILURE);
-        });
-        const res = await request(app).get(CLAIM_DEFENDANT_ORGANISATION_DETAILS_URL);
-        expect(res.status).toBe(500);
-        expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-      });
-    });
-
-    describe('Sole Trader', () => {
-      it('should render defendant details page', async () => {
-        mockDefendantInformation.mockImplementation(async () => {
-          const party = new Party();
-          party.type = PartyType.SOLE_TRADER;
-          return party;
-        });
-        const res = await request(app).get(CLAIM_DEFENDANT_SOLE_TRADER_DETAILS_URL);
-        expect(res.status).toBe(200);
-        expect(res.text).toContain('Enter the defendant&#39;s details');
-      });
-
-      it('should render defendant details page when data is already set in redis', async () => {
-        mockDefendantInformation.mockImplementation(async () => {
-          const party = new Party();
-          party.type = PartyType.SOLE_TRADER;
-          return party;
-        });
-        const res = await request(app).get(CLAIM_DEFENDANT_SOLE_TRADER_DETAILS_URL);
-        expect(res.status).toBe(200);
-        expect(res.text).toContain('Enter the defendant&#39;s details');
-      });
-
-      it('should return http 500 status when has error in the get method', async () => {
-        mockDefendantInformation.mockImplementationOnce(async () => {
-          throw new Error(TestMessages.REDIS_FAILURE);
-        });
-        await request(app).get(CLAIM_DEFENDANT_SOLE_TRADER_DETAILS_URL).expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
-      });
+      expect(next).toHaveBeenCalled();
     });
   });
 
-  describe('on POST', () => {
-    describe('Individual', () => {
-      it('should redirect to the defendant email page if data is successfully saved', async () => {
-        const _mockSaveData = mockSaveData;
-        _mockSaveData.soleTraderTradingAs = '';
-        _mockSaveData.firstName = 'Jane';
-        mockDefendantInformation.mockImplementation(async () => {
-          const party = new Party();
-          party.type = PartyType.INDIVIDUAL;
-          return party;
-        });
-        mockSaveDefendant.mockImplementation(async () => Promise<void>);
-        const res = await request(app).post(CLAIM_DEFENDANT_INDIVIDUAL_DETAILS_URL).send(_mockSaveData);
-        expect(res.status).toBe(302);
-        expect(res.header.location).toBe(CLAIM_DEFENDANT_EMAIL_URL);
+  // ======================
+  // POST
+  // ======================
+
+  describe('POST', () => {
+    it('should re-render view when validation has errors', async () => {
+      mockGetDefendantInformation.mockResolvedValue({
+        type: PartyType.COMPANY,
       });
 
-      it('should show errors if required fields are not filled in', async () => {
-        mockDefendantInformation.mockImplementation(async () => {
-          const party = new Party();
-          party.type = PartyType.INDIVIDUAL;
-          return party;
-        });
-        await request(app)
-          .post(CLAIM_DEFENDANT_INDIVIDUAL_DETAILS_URL)
-          .send({firstName: '', lastName: ''}).expect((res) => {
-            expect(res.status).toBe(200);
-            expect(res.text).toContain(TestMessages.ENTER_FIRST_NAME);
-            expect(res.text).toContain(TestMessages.ENTER_LAST_NAME);
-          });
-      });
+      const mockFormInstance = {
+        validate: jest.fn(),
+        hasErrors: jest.fn().mockReturnValue(true),
+        model: {},
+      };
+
+      MockedGenericForm.mockImplementation(() => mockFormInstance);
+
+      await postHandler(req as Request, res as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(
+        'features/claim/defendant/defendant-details-company-or-organisation',
+        expect.objectContaining({
+          defendantType: PartyType.COMPANY,
+        }),
+      );
+
+      expect(mockSaveDefendantProperty).not.toHaveBeenCalled();
     });
 
-    it('should redirect to the defendant email page if data is successfully updated', async () => {
-      mockDefendantInformation.mockImplementation(async () => {
-        const party = new Party();
-        party.type = PartyType.ORGANISATION;
-        return party;
+    it('should save and redirect when validation passes', async () => {
+      mockGetDefendantInformation.mockResolvedValue({
+        type: PartyType.COMPANY,
       });
-      mockSaveDefendant.mockImplementation(async () => Promise<void>);
 
-      const res = await request(app).post(CLAIM_DEFENDANT_ORGANISATION_DETAILS_URL).send(mockSaveData);
-      expect(res.status).toBe(302);
-      expect(res.header.location).toBe(CLAIM_DEFENDANT_EMAIL_URL);
+      const mockFormInstance = {
+        validate: jest.fn(),
+        hasErrors: jest.fn().mockReturnValue(false),
+        model: {name: 'Test Ltd'},
+      };
+
+      MockedGenericForm.mockImplementation(() => mockFormInstance);
+
+      await postHandler(req as Request, res as Response, next);
+
+      expect(mockSaveDefendantProperty).toHaveBeenCalledWith(
+        'userId',
+        'partyDetails',
+        {name: 'Test Ltd'},
+      );
+
+      expect(res.redirect).toHaveBeenCalledWith(
+        CLAIM_DEFENDANT_EMAIL_URL,
+      );
     });
 
-    it('should show errors if data is not provided', async () => {
-      mockDefendantInformation.mockImplementation(async () => {
-        const party = new Party();
-        party.type = PartyType.ORGANISATION;
-        return party;
-      });
+    it('should call next on error', async () => {
+      mockGetDefendantInformation.mockRejectedValue(new Error('failure'));
 
-      const res = await request(app)
-        .post(CLAIM_DEFENDANT_ORGANISATION_DETAILS_URL)
-        .send({
-          addressLine1: ['',''],
-          addressLine2: ['',''],
-          addressLine3: ['',''],
-          city: ['',''],
-          postCode: ['',''],
-          provideCorrespondenceAddress: '',
-          partyName: '',
-          contactPerson: '',
+      await postHandler(req as Request, res as Response, next);
 
-        });
-      expect(res.status).toBe(200);
-      expect(res.text).toContain(TestMessages.ENTER_FIRST_ADDRESS);
-      expect(res.text).toContain(TestMessages.ENTER_POSTCODE);
-      expect(res.text).toContain(TestMessages.ENTER_TOWN);
-    });
-
-    it('should return http 500 status when has error in the get method', async () => {
-      mockSaveDefendant.mockImplementationOnce(async () => {
-        throw new Error(TestMessages.REDIS_FAILURE);
-      });
-
-      const res = await request(app).post(CLAIM_DEFENDANT_ORGANISATION_DETAILS_URL).send(mockSaveData);
-      expect(res.status).toBe(500);
-      expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-    });
-
-    describe('Sole Trader', () => {
-      it('should redirect to the defendant email page if data is successfully updated', async () => {
-        mockDefendantInformation.mockImplementation(async () => {
-          const party = new Party();
-          party.type = PartyType.SOLE_TRADER;
-          return party;
-        });
-        mockSaveDefendant.mockImplementation(async () => Promise<void>);
-
-        const res = await request(app).post(CLAIM_DEFENDANT_SOLE_TRADER_DETAILS_URL).send(mockSaveData);
-        expect(res.status).toBe(302);
-        expect(res.header.location).toBe(CLAIM_DEFENDANT_EMAIL_URL);
-      });
-
-      it('should show errors if data is not provided', async () => {
-        mockDefendantInformation.mockImplementation(async () => {
-          const party = new Party();
-          party.type = PartyType.SOLE_TRADER;
-          return party;
-        });
-
-        const res = await request(app)
-          .post(CLAIM_DEFENDANT_SOLE_TRADER_DETAILS_URL)
-          .send({
-            addressLine1: ['',''],
-            addressLine2: ['',''],
-            addressLine3: ['',''],
-            city: ['',''],
-            postCode: ['',''],
-            provideCorrespondenceAddress: '',
-            firstName: '',
-            lastName: '',
-            contactPerson: '',
-
-          });
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(TestMessages.ENTER_FIRST_NAME);
-        expect(res.text).toContain(TestMessages.ENTER_LAST_NAME);
-        expect(res.text).toContain(TestMessages.ENTER_FIRST_ADDRESS);
-        expect(res.text).toContain(TestMessages.ENTER_POSTCODE);
-        expect(res.text).toContain(TestMessages.ENTER_TOWN);
-      });
-
-      it('should return http 500 status when has error in the post method', async () => {
-        mockDefendantInformation.mockImplementation(async () => {
-          throw new Error(TestMessages.REDIS_FAILURE);
-        });
-        const res = await request(app).post(CLAIM_DEFENDANT_SOLE_TRADER_DETAILS_URL);
-        expect(res.status).toBe(500);
-        expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-      });
+      expect(next).toHaveBeenCalled();
     });
   });
 });

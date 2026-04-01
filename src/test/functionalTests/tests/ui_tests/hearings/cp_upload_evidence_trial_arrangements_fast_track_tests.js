@@ -13,7 +13,7 @@ const claimType = 'FastTrack';
 const partyType = 'LRvLiP';
 let claimRef, caseData, claimNumber, taskListItem, notification, formattedCaseId, uploadDate, trialArrangementsDueDate;
 
-Feature('Case progression journey - Upload Evidence and Trial Arrangements - Fast Track').tag('@ui-hearings');
+Feature('Case progression journey - Upload Evidence and Trial Arrangements - Fast Track').tag('@civil-citizen-nightly @ui-hearings');
 
 Before(async ({api}) => {
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
@@ -62,5 +62,5 @@ Scenario.skip('Fast Track Response with RejectAll and DisputeAll - both parties 
   await I.amOnPage('/dashboard');
   await I.click(claimNumber);
   await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Done');
-}).tag('@ui-prod');
+}).tag('@civil-citizen-master @civil-citizen-pr');
 
