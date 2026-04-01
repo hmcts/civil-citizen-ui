@@ -282,7 +282,6 @@ app.use([
   INFORM_OTHER_PARTIES_URL,
   GA_CLAIM_APPLICATION_COST_URL,
   GA_APPLICATION_COSTS_URL,
-  GA_CLAIM_APPLICATION_COST_URL,
   GA_UPLOAD_N245_FORM_URL,
   GA_WANT_TO_UPLOAD_DOCUMENTS_URL,
   GA_UPLOAD_DOCUMENTS_URL,
@@ -362,4 +361,4 @@ if (env !== 'test') {
 app.use(routes);
 new ErrorHandler().enableFor(app);
 
-setupDev(app,developmentMode);
+setupDev(app, developmentMode);

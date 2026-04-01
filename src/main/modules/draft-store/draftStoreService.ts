@@ -9,7 +9,7 @@ import {calculateExpireTimeForDraftClaimInSeconds} from 'common/utils/dateUtils'
 import {AppRequest} from 'common/models/AppRequest';
 import {getClaimById} from 'modules/utilityService';
 import {Request} from 'express';
-import {getRouteParam, normalizeRouteParam} from 'common/utils/routeParamUtils';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('draftStoreService');
@@ -60,7 +60,7 @@ export const getCaseDataFromStore = async (claimId: string, doNotThrowError = fa
  * @param doNotThrowError
  * @param userId
  */
-export const saveDraftClaim =async (claimId: string, claim: Claim, doNotThrowError = false, userId?: string) => {
+export const saveDraftClaim = async (claimId: string, claim: Claim, doNotThrowError = false, userId?: string) => {
   logger.info(`Saving draft claim : userId: ${userId}  claimId: ${claimId} claimantResponse: ${claim.claimantResponse? JSON.stringify(claim.claimantResponse) : 'undefined'}`);
   let storedClaimResponse = await getDraftClaimFromStore(claimId, doNotThrowError);
   logger.info(`storedClaimResponse : userId: ${userId}  claimId: ${claimId} claimantResponse ccjRequest: ${storedClaimResponse.case_data?.ccjRequest ? JSON.stringify(storedClaimResponse.case_data?.ccjRequest) : 'undefined'}`);
@@ -122,11 +122,11 @@ export async function createDraftClaimInStoreWithExpiryTime(claimId: string) {
 }
 
 export function generateRedisKey(req: AppRequest) {
-  return normalizeRouteParam(req.params?.id) + req.session.user?.id;
+  return getRouteParam(req, 'id') + req.session.user?.id;
 }
 
 export function generateRedisKeyForGA(req: AppRequest) {
-  return normalizeRouteParam(req.params.appId) + req.session.user?.id;
+  return getRouteParam(req, 'appId') + req.session.user?.id;
 }
 
 export const findClaimIdsbyUserId = async (userId: string): Promise<any> => {
