@@ -86,7 +86,7 @@ describe('Response Payment Section', () => {
     const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'cimode');
     //Then
     expect(summarySections.sections[constVal.INDEX_RESPONSE_PAYMENT_SECTION].summaryList.rows[1].key.text).toBe(constVal.PAGES_EXPLANATION_TITLE);
-    expect(summarySections.sections[constVal.INDEX_RESPONSE_PAYMENT_SECTION].summaryList.rows[1].value.html).toBe('Reasons cannot pay immediately');
+    expect(summarySections.sections[constVal.INDEX_RESPONSE_PAYMENT_SECTION].summaryList.rows[1].value.text).toBe('Reasons cannot pay immediately');
   });
 
   it('should return reasons why can\'t pay when payment is set to \'INSTALMENTS\' ', async () => {
@@ -96,7 +96,7 @@ describe('Response Payment Section', () => {
     const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'cimode');
     //Then
     expect(summarySections.sections[constVal.INDEX_RESPONSE_PAYMENT_SECTION].summaryList.rows[4].key.text).toBe(constVal.PAGES_EXPLANATION_TITLE);
-    expect(summarySections.sections[constVal.INDEX_RESPONSE_PAYMENT_SECTION].summaryList.rows[4].value.html).toBe('Reasons cannot pay immediately');
+    expect(summarySections.sections[constVal.INDEX_RESPONSE_PAYMENT_SECTION].summaryList.rows[4].value.text).toBe('Reasons cannot pay immediately');
   });
 });
 
@@ -152,7 +152,7 @@ describe('Response Payment Section - PART ADMIT', () => {
     const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'cimode');
     //Then
     expect(summarySections.sections[constVal.INDEX_RESPONSE_PAYMENT_SECTION].summaryList.rows[1].key.text).toBe(constVal.PAGES_EXPLANATION_TITLE);
-    expect(summarySections.sections[constVal.INDEX_RESPONSE_PAYMENT_SECTION].summaryList.rows[1].value.html).toBe('Reasons cannot pay immediately');
+    expect(summarySections.sections[constVal.INDEX_RESPONSE_PAYMENT_SECTION].summaryList.rows[1].value.text).toBe('Reasons cannot pay immediately');
   });
 
   it('should return reasons why can\'t pay when payment is set to \'INSTALMENTS\' ', async () => {
@@ -162,7 +162,7 @@ describe('Response Payment Section - PART ADMIT', () => {
     const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'cimode');
     //Then
     expect(summarySections.sections[constVal.INDEX_RESPONSE_PAYMENT_SECTION].summaryList.rows[4].key.text).toBe(constVal.PAGES_EXPLANATION_TITLE);
-    expect(summarySections.sections[constVal.INDEX_RESPONSE_PAYMENT_SECTION].summaryList.rows[4].value.html).toBe('Reasons cannot pay immediately');
+    expect(summarySections.sections[constVal.INDEX_RESPONSE_PAYMENT_SECTION].summaryList.rows[4].value.text).toBe('Reasons cannot pay immediately');
     expect(summarySections.sections[constVal.INDEX_RESPONSE_PAYMENT_SECTION].title).toBe('PAGES.CHECK_YOUR_ANSWER.WHEN_PAY_TITLE');
     expect(summarySections.sections[constVal.INDEX_RESPONSE_PAYMENT_SECTION].summaryList.rows[0].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.WHEN_PAY');
     expect(summarySections.sections[constVal.INDEX_RESPONSE_PAYMENT_SECTION].summaryList.rows[0].value.html).toContain('COMMON.PAYMENT_OPTION.INSTALMENTS');
