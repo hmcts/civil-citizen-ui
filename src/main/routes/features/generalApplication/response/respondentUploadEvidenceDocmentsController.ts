@@ -105,7 +105,7 @@ respondentUploadEvidenceDocumentsController.post(GA_RESPONDENT_UPLOAD_DOCUMENT_U
     }
 
     if (req.body.action === 'uploadButton') {
-      await uploadSelectedFile(req, formattedSummary, claimId, req.params.appId);
+      await uploadSelectedFile(req, formattedSummary, claimId, appId);
       return req.session.save(() => {
         res.redirect(`${currentUrl}`);
       });
