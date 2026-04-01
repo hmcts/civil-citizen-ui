@@ -34,7 +34,7 @@
   {% for debtsItem in form.model.debtsItems %}
     {% set debtsErrors = formErrors %}
     {% set index = loop.index0 %}
-    <div class="multiple-row">
+    <div class="multiple-row row-container">
       <div class="govuk-grid-row govuk-!-padding-top-3 {% if debtsErrors.length>0 %} govuk-form-group--error{% endif %} ">
         {% if formErrors %}
           {% for error in formErrors %}
