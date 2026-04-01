@@ -135,7 +135,6 @@ test.describe('Payment Confirmation - Double Request / Replay', () => {
 
 test.describe('Payment Confirmation - Callback URL Tampering', () => {
   test('Payment confirmation with tampered claimId does not leak other claim data', async ({ request }) => {
-    const realClaimId = '1774884229545354';
     const tamperedClaimId = '9999999999999999';
     const response = await request.get(`${baseUrl()}/case/${tamperedClaimId}/hearing-payment-confirmation`, {
       maxRedirects: 0,

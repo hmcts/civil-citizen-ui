@@ -9,7 +9,7 @@ test.describe('XSS Injection - Payment & Case URLs', () => {
     { payload: '<script>alert(1)</script>', marker: '<script>' },
     { payload: '"><img src=x onerror=alert(1)>', marker: 'onerror=' },
     { payload: '%3Cscript%3Ealert(1)%3C%2Fscript%3E', marker: '%3Cscript%3E' },
-    { payload: "javascript:alert('XSS')", marker: "javascript:" },
+    { payload: 'javascript:alert(\'XSS\')', marker: 'javascript:' },
   ];
 
   for (const { payload, marker } of xssPayloads) {

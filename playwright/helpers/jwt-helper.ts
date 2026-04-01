@@ -2,7 +2,7 @@ function base64url(data: string): string {
   return Buffer.from(data).toString('base64url');
 }
 
-function buildJwt(header: object, payload: object, signature: string = ''): string {
+function buildJwt(header: object, payload: object, signature = ''): string {
   const encodedHeader = base64url(JSON.stringify(header));
   const encodedPayload = base64url(JSON.stringify(payload));
   return `${encodedHeader}.${encodedPayload}.${signature}`;

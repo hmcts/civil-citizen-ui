@@ -40,7 +40,7 @@ test.describe('Error Pages - No Information Leakage', () => {
 test.describe('Rate Limiting / Abuse Protection', () => {
   test('Rapid requests to login redirect do not cause 500', async ({ request }) => {
     const requests = Array.from({ length: 20 }, () =>
-      request.get(`${config.testUrl}/dashboard`, { maxRedirects: 0 })
+      request.get(`${config.testUrl}/dashboard`, { maxRedirects: 0 }),
     );
     const responses = await Promise.all(requests);
     for (const response of responses) {
@@ -50,7 +50,7 @@ test.describe('Rate Limiting / Abuse Protection', () => {
 
   test('Rapid requests to health endpoint remain stable', async ({ request }) => {
     const requests = Array.from({ length: 20 }, () =>
-      request.get(`${config.testUrl}/health`)
+      request.get(`${config.testUrl}/health`),
     );
     const responses = await Promise.all(requests);
     for (const response of responses) {

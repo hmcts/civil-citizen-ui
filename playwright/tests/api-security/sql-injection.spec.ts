@@ -8,13 +8,13 @@ import { config } from '../../helpers/env-config';
 test.describe('SQL Injection - Case URLs', () => {
   const sqlPayloads = [
     "' OR '1'='1",
-    "1; DROP TABLE claims;--",
+    '1; DROP TABLE claims;--',
     "' UNION SELECT * FROM users--",
     "1' AND 1=1--",
     "' HAVING 1=1--",
     "' ORDER BY 100--",
     "1; EXEC xp_cmdshell('whoami')--",
-    "CONVERT(int,(SELECT TOP 1 table_name FROM information_schema.tables))",
+    'CONVERT(int,(SELECT TOP 1 table_name FROM information_schema.tables))',
     "' OR 1=1; WAITFOR DELAY '0:0:5'--",
     "1' AND (SELECT COUNT(*) FROM users) > 0--",
   ];
