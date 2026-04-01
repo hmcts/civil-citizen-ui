@@ -4,10 +4,18 @@ import { Request, Response, NextFunction } from 'express';
  * Paths that must only accept form-encoded POSTs so that the Web Application Firewall (WAF)
  * can inspect all submitted content. Accepting application/json on these routes would allow
  * attackers to bypass WAF rules (e.g. XSS) by sending the same payload as JSON.
+ * Includes claim, case directions questionnaire, statement of means, defendant timeline,
+ * general-application and query-management so HTML injection is blocked consistently.
+ * Note: /claim/... already covers claim issue journeys (e.g. /claim/timeline, /claim/interest-rate).
  */
 const FORM_ONLY_PATH_PATTERNS = [
+  /^\/claim(\/|$)/,
+  /^\/case\/[^/]+\/directions-questionnaire(\/|$)/,
+  /^\/case\/[^/]+\/response\/statement-of-means(\/|$)/,
+  /^\/case\/[^/]+\/response\/timeline(\/|$)/,
   /^\/case\/[^/]+\/general-application(\/|$)/,
   /^\/case\/[^/]+\/response\/general-application(\/|$)/,
+  /^\/case\/[^/]+\/qm(\/|$)/,
 ];
 
 const ALLOWED_CONTENT_TYPES = [
@@ -29,8 +37,9 @@ function isFormOnlyPath(path: string): boolean {
 
 /**
  * Middleware that returns 415 Unsupported Media Type for POST/PUT/PATCH requests to
- * general-application (and response general-application) routes when Content-Type
- * is not application/x-www-form-urlencoded or multipart/form-data.
+ * form-only routes (claim issue, directions questionnaire, statement of means, defendant
+ * timeline, general-application, response general-application, query management) when
+ * Content-Type is not application/x-www-form-urlencoded or multipart/form-data.
  * This ensures the WAF can inspect all form submissions and prevents bypass via JSON.
  */
 export function restrictFormContentType(req: Request, res: Response, next: NextFunction): void {
