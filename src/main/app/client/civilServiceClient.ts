@@ -279,6 +279,11 @@ export class CivilServiceClient {
       }
       return response.data as boolean;
     } catch (err: unknown) {
+      const axiosError = err as AxiosError;
+      if (axiosError.response?.status === 404) {
+        logger.info(`Claim ${caseReference} not found or not linked, returning false`);
+        return false;
+      }
       logger.error(`Error when checking a claim ${caseReference} is linked to a defendant,caseReference - ${caseReference}`);
       throw err;
     }

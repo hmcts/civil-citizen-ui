@@ -17,8 +17,8 @@ import {
   getFileUploadErrorsForSource,
   FILE_UPLOAD_SOURCE,
 } from 'common/utils/fileUploadUtils';
-import {redirectIfMulterError} from 'services/features/generalApplication/uploadEvidenceDocumentService';
 import {normalizeRouteParam} from 'common/utils/routeParamUtils';
+import {handleMulterError} from 'services/features/generalApplication/uploadEvidenceDocumentService';
 
 const uploadAdditionalDocumentsController = Router();
 
@@ -63,18 +63,24 @@ uploadAdditionalDocumentsController.post(GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL, mul
     const claim = await getClaimDetailsById(req);
     const gaDetails = claim.generalApplication;
 
-    if (redirectIfMulterError(req, res, currentUrl, FILE_UPLOAD_SOURCE.GA_ADDITIONAL_DOCUMENTS)) {
-      return;
+    if (handleMulterError(req, FILE_UPLOAD_SOURCE.GA_ADDITIONAL_DOCUMENTS)) {
+      return req.session.save(() => {
+        res.redirect(`${currentUrl}`);
+      });
     }
 
     if (req.body.action === 'uploadButton') {
       await uploadSelectedFile(req, claim);
-      return res.redirect(`${currentUrl}`);
+      return req.session.save(() => {
+        res.redirect(`${currentUrl}`);
+      });
     }
     if (gaDetails.uploadAdditionalDocuments.length === 0) {
       req.session.fileUpload = JSON.stringify(createUploadOneFileError());
       req.session.fileUploadSource = FILE_UPLOAD_SOURCE.GA_ADDITIONAL_DOCUMENTS;
-      return res.redirect(`${currentUrl}`);
+      return req.session.save(() => {
+        res.redirect(`${currentUrl}`);
+      });
     }
     res.redirect(constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_CYA_URL));
   } catch (err) {

@@ -30,8 +30,8 @@ import {
   getFileUploadErrorsForSource,
   FILE_UPLOAD_SOURCE,
 } from 'common/utils/fileUploadUtils';
-import {redirectIfMulterError} from 'services/features/generalApplication/uploadEvidenceDocumentService';
 import {normalizeRouteParam} from 'common/utils/routeParamUtils';
+import {handleMulterError} from 'services/features/generalApplication/uploadEvidenceDocumentService';
 
 const respondentUploadEvidenceDocumentsController = Router();
 const viewPath = 'features/generalApplication/response/respondent-upload-documents';
@@ -98,13 +98,17 @@ respondentUploadEvidenceDocumentsController.post(GA_RESPONDENT_UPLOAD_DOCUMENT_U
         summaryRows: [],
       });
 
-    if (redirectIfMulterError(req, res, currentUrl, FILE_UPLOAD_SOURCE.GA_RESPONDENT_UPLOAD)) {
-      return;
+    if (handleMulterError(req, FILE_UPLOAD_SOURCE.GA_RESPONDENT_UPLOAD)) {
+      return req.session.save(() => {
+        res.redirect(`${currentUrl}`);
+      });
     }
 
     if (req.body.action === 'uploadButton') {
-      await uploadSelectedFile(req, formattedSummary, claimId, appId);
-      return res.redirect(`${currentUrl}`);
+      await uploadSelectedFile(req, formattedSummary, claimId, req.params.appId);
+      return req.session.save(() => {
+        res.redirect(`${currentUrl}`);
+      });
     }
 
     const uploadGaDoc = new UploadGAFiles();
@@ -114,7 +118,9 @@ respondentUploadEvidenceDocumentsController.post(GA_RESPONDENT_UPLOAD_DOCUMENT_U
       gaResponse?.uploadEvidenceDocuments?.length === 0)) {
       req.session.fileUpload = JSON.stringify(createUploadOneFileError());
       req.session.fileUploadSource = FILE_UPLOAD_SOURCE.GA_RESPONDENT_UPLOAD;
-      return res.redirect(`${currentUrl}`);
+      return req.session.save(() => {
+        res.redirect(`${currentUrl}`);
+      });
     } else {
       res.redirect(constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_RESPONDENT_HEARING_PREFERENCE_URL));
     }

@@ -31,8 +31,8 @@ import {
   getFileUploadErrorsForSource,
   FILE_UPLOAD_SOURCE,
 } from 'common/utils/fileUploadUtils';
-import {redirectIfMulterError} from 'services/features/generalApplication/uploadEvidenceDocumentService';
 import {normalizeRouteParam} from 'common/utils/routeParamUtils';
+import {handleMulterError} from 'services/features/generalApplication/uploadEvidenceDocumentService';
 
 const uploadDocumentsDirectionsOrderController = Router();
 const viewPath = 'features/generalApplication/directionsOrderUpload/upload-documents';
@@ -88,13 +88,17 @@ uploadDocumentsDirectionsOrderController.post(GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDE
     const uploadedDocuments = await getGADocumentsFromDraftStore(generateRedisKeyForGA(req));
     const currentUrl = constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_URL);
 
-    if (redirectIfMulterError(req, res, currentUrl, FILE_UPLOAD_SOURCE.GA_DIRECTIONS_ORDER)) {
-      return;
+    if (handleMulterError(req, FILE_UPLOAD_SOURCE.GA_DIRECTIONS_ORDER)) {
+      return req.session.save(() => {
+        res.redirect(`${currentUrl}`);
+      });
     }
 
     if (req.body.action === 'uploadButton') {
       await uploadSelectedFile(req, FILE_UPLOAD_SOURCE.GA_DIRECTIONS_ORDER);
-      return res.redirect(`${currentUrl}`);
+      return req.session.save(() => {
+        res.redirect(`${currentUrl}`);
+      });
     }
     const uploadDoc = new UploadGAFiles();
     const form = new GenericForm(uploadDoc);
@@ -102,7 +106,9 @@ uploadDocumentsDirectionsOrderController.post(GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDE
     if (form.hasFieldError('fileUpload') && uploadedDocuments?.length === 0) {
       req.session.fileUpload = JSON.stringify(createUploadOneFileError());
       req.session.fileUploadSource = FILE_UPLOAD_SOURCE.GA_DIRECTIONS_ORDER;
-      return res.redirect(`${currentUrl}`);
+      return req.session.save(() => {
+        res.redirect(`${currentUrl}`);
+      });
     } else {
       res.redirect(constructResponseUrlWithIdAndAppIdParams(claimId, appId,  GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_CYA_URL));
     }
