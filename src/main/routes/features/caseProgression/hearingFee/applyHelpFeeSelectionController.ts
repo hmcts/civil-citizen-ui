@@ -16,7 +16,7 @@ import {getRedirectUrl} from 'services/features/caseProgression/hearingFee/apply
 import {getClaimById, refreshDraftStoreClaimFrom} from 'modules/utilityService';
 import {t} from 'i18next';
 import {AppRequest} from 'models/AppRequest';
-import {normalizeRouteParam} from 'common/utils/routeParamUtils';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const applyHelpFeeSelectionViewPath  = 'features/caseProgression/hearingFee/apply-help-fee-selection';
 const applyHelpFeeSelectionController: Router = Router();
@@ -47,7 +47,7 @@ async function renderView(res: Response, req: AppRequest | Request, form: Generi
 applyHelpFeeSelectionController.get(HEARING_FEE_APPLY_HELP_FEE_SELECTION, (async (req, res, next: NextFunction) => {
   try {
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
-    const claimId = normalizeRouteParam(req.params.id);
+    const claimId = getRouteParam(req, 'id');
     const redirectUrl = constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL);
     await renderView(res, req, null, claimId, redirectUrl, lng);
   }catch (error) {
@@ -58,7 +58,7 @@ applyHelpFeeSelectionController.get(HEARING_FEE_APPLY_HELP_FEE_SELECTION, (async
 applyHelpFeeSelectionController.post(HEARING_FEE_APPLY_HELP_FEE_SELECTION, (async (req:any, res,next: NextFunction) => {
   try {
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
-    const claimId = normalizeRouteParam(req.params.id);
+    const claimId = getRouteParam(req, 'id');
     const form = new GenericForm(new GenericYesNo(req.body.option, t('ERRORS.VALID_YES_NO_SELECTION_UPPER', { lng })));
     form.validateSync();
     await form.validate();

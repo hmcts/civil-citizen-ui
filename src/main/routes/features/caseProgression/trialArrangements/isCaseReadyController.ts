@@ -16,7 +16,7 @@ import {
   getIsCaseReadyForm,
   getNameTrialArrangements,
 } from 'services/features/caseProgression/trialArrangements/trialArrangementsService';
-import {normalizeRouteParam} from 'common/utils/routeParamUtils';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const isCaseReadyViewPath = 'features/caseProgression/trialArrangements/is-case-ready';
 const isCaseReadyController = Router();
@@ -24,7 +24,7 @@ const dqPropertyName = 'isCaseReady';
 
 isCaseReadyController.get([IS_CASE_READY_URL], (async (req, res, next: NextFunction) => {
   try {
-    const claimId = normalizeRouteParam(req.params.id);
+    const claimId = getRouteParam(req, 'id');
     const claim = await getClaimById(claimId, req, true);
     const form = new GenericForm(getIsCaseReadyForm(claim));
     await renderView(res, claimId, claim, form);
@@ -38,7 +38,7 @@ isCaseReadyController.post([IS_CASE_READY_URL], (async (req, res, next) => {
     const option = req.body.option;
     const form = new GenericForm(new IsCaseReadyForm(option));
     await form.validate();
-    const claimId = normalizeRouteParam(req.params.id);
+    const claimId = getRouteParam(req, 'id');
     const claim: Claim = await getClaimById(claimId, req, true);
     if (form.hasErrors()) {
       await renderView(res, claimId, claim, form);

@@ -10,14 +10,14 @@ import {
 } from 'modules/draft-store/draftStoreService';
 import {getClaimById} from 'modules/utilityService';
 import {AppRequest} from 'models/AppRequest';
-import {normalizeRouteParam} from 'common/utils/routeParamUtils';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const cancelRequestForReconsiderationController = Router();
 
 cancelRequestForReconsiderationController.get(REQUEST_FOR_RECONSIDERATION_CANCEL_URL, (async (req, res, next) => {
   try {
-    const claimId = normalizeRouteParam(req.params.id);
-    const propertyName = normalizeRouteParam(req.params.propertyName);
+    const claimId = getRouteParam(req, 'id');
+    const propertyName = getRouteParam(req, 'propertyName');
     const claim = await getClaimById(claimId, req,true);
     await deleteFieldDraftClaimFromStore(generateRedisKey(<AppRequest>req), claim, propertyName);
 

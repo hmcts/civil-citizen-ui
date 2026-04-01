@@ -20,7 +20,7 @@ import {
   getOtherInformationForm,
   getNameTrialArrangements,
 } from 'services/features/caseProgression/trialArrangements/trialArrangementsService';
-import {normalizeRouteParam} from 'common/utils/routeParamUtils';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const hearingDurationViewPath = 'features/caseProgression/trialArrangements/hearing-duration-other-info';
 const hearingDurationController = Router();
@@ -28,7 +28,7 @@ const propertyName = 'otherTrialInformation';
 
 hearingDurationController.get(TRIAL_ARRANGEMENTS_HEARING_DURATION, (async (req, res, next: NextFunction) => {
   try {
-    const claimId: string = normalizeRouteParam(req.params.id);
+    const claimId: string = getRouteParam(req, 'id');
     const claim: Claim = await getClaimById(claimId, req, true);
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
     const backLinkUrl: string = constructResponseUrlWithIdParams(claimId, HAS_ANYTHING_CHANGED_URL);
@@ -45,7 +45,7 @@ hearingDurationController.get(TRIAL_ARRANGEMENTS_HEARING_DURATION, (async (req, 
 
 hearingDurationController.post(TRIAL_ARRANGEMENTS_HEARING_DURATION, (async (req, res, next) => {
   try {
-    const claimId = normalizeRouteParam(req.params.id);
+    const claimId = getRouteParam(req, 'id');
     let otherInfo = req.body.otherInformation;
     otherInfo = removeWhiteSpacesIfNoText(otherInfo);
     const form = new GenericForm(new OtherTrialInformation(otherInfo));

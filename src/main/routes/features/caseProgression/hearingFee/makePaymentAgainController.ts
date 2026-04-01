@@ -5,13 +5,13 @@ import {
 
 import {getRedirectUrl} from 'services/features/caseProgression/hearingFee/makePaymentAgainService';
 import {AppRequest} from 'models/AppRequest';
-import {normalizeRouteParam} from 'common/utils/routeParamUtils';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const makePaymentAgainController: Router = Router();
 
 makePaymentAgainController.get(HEARING_FEE_MAKE_PAYMENT_AGAIN_URL, (async (req:AppRequest | Request, res, next: NextFunction) => {
   try {
-    const claimId = normalizeRouteParam(req.params.id);
+    const claimId = getRouteParam(req, 'id');
     const redirectUrl = await getRedirectUrl(claimId, <AppRequest>req);
     res.redirect(redirectUrl);
   }catch (error) {

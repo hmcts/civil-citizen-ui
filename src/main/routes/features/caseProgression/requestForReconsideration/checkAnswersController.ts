@@ -18,7 +18,7 @@ import {
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {getClaimById} from 'modules/utilityService';
-import {normalizeRouteParam} from 'common/utils/routeParamUtils';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const checkAnswersViewPath = 'features/caseProgression/requestForReconsideration/check-answers';
 const requestForReconsiderationCheckAnswersController = Router();
@@ -38,7 +38,7 @@ function renderView(res: Response, claim: Claim, claimId: string, lang: string) 
 requestForReconsiderationCheckAnswersController.get(REQUEST_FOR_RECONSIDERATION_CYA_URL,
   (  async (req: AppRequest, res: Response, next: NextFunction) => {
     try {
-      const claimId = normalizeRouteParam(req.params.id);
+      const claimId = getRouteParam(req, 'id');
       const lang = req.query.lang ? req.query.lang : req.cookies.lang;
       const claim = await getClaimById(claimId, req, true);
       renderView(res, claim, claimId, lang);
@@ -49,7 +49,7 @@ requestForReconsiderationCheckAnswersController.get(REQUEST_FOR_RECONSIDERATION_
 
 requestForReconsiderationCheckAnswersController.post(REQUEST_FOR_RECONSIDERATION_CYA_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const claimId = normalizeRouteParam(req.params.id);
+    const claimId = getRouteParam(req, 'id');
     const claim = await getClaimById(claimId, req, true);
     const requestForReconsiderationCCD = translateDraftRequestForReconsiderationToCCD(claim);
     await civilServiceClient.submitRequestForReconsideration(claimId, requestForReconsiderationCCD, req);
