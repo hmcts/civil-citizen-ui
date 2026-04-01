@@ -1,5 +1,5 @@
 import { Pact } from '@pact-foundation/pact';
-import { authenticator } from 'otplib';
+import { generateSync } from 'otplib';
 import { PACT_DIRECTORY_PATH, PACT_LOG_PATH } from '../utils';
 import { generateServiceToken } from 'client/serviceAuthProviderClient';
 
@@ -49,7 +49,7 @@ describe('Service Authorisation Provider Pact Test', () => {
     });
 
     test('should receive a token when making a request to the lease endpoint', async () => {
-      (authenticator.generate as jest.Mock).mockImplementation(() => PASSWORD);
+      (generateSync as jest.Mock).mockImplementation(() => PASSWORD);
 
       const response = await generateServiceToken(MICRO_SERVICE_NAME, 'someS2sSecret');
 
