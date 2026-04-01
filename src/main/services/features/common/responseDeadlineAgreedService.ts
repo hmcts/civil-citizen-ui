@@ -4,11 +4,11 @@ import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {toCUIResponseDeadline} from 'services/translation/convertToCUI/convertToCUIResponseDeadline';
 import {generateRedisKey, saveDraftClaim} from 'modules/draft-store/draftStoreService';
-import {normalizeRouteParam} from 'common/utils/routeParamUtils';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 const setResponseDeadline = async (claim: Claim, req: AppRequest) => {
-  const claimId : string = normalizeRouteParam(req.params.id);
+  const claimId : string = getRouteParam(req, 'id');
   const agreedDeadlineDate : Date = await civilServiceClient.getAgreedDeadlineResponseDate(claimId, req);
   if(agreedDeadlineDate){
     agreedDeadlineDate.setUTCHours(16);

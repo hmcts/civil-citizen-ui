@@ -12,7 +12,7 @@ import {claimFeePaymentGuard} from 'routes/guards/claimFeePaymentGuard';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {saveUserId} from 'modules/draft-store/paymentSessionStoreService';
 import {PaymentInformation} from 'models/feePayment/paymentInformation';
-import {normalizeRouteParam} from 'common/utils/routeParamUtils';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimFeeBreakDownController');
@@ -23,7 +23,7 @@ const failed = 'Failed';
 
 claimFeeBreakDownController.get(CLAIM_FEE_BREAKUP, claimFeePaymentGuard, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const claimId = normalizeRouteParam(req.params.id);
+    const claimId = getRouteParam(req, 'id');
     const claim = await getClaimById(claimId, req, true);
     let paymentSyncError = false;
     if (claim.paymentSyncError) {
@@ -56,7 +56,7 @@ claimFeeBreakDownController.get(CLAIM_FEE_BREAKUP, claimFeePaymentGuard, (async 
 
 claimFeeBreakDownController.post(CLAIM_FEE_BREAKUP, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const claimId = normalizeRouteParam(req.params.id);
+    const claimId = getRouteParam(req, 'id');
     const redisKey = generateRedisKey(<AppRequest>req);
     const claim = await getCaseDataFromStore(redisKey);
     let paymentRedirectInformation: PaymentInformation;
@@ -107,12 +107,12 @@ claimFeeBreakDownController.post(CLAIM_FEE_BREAKUP, (async (req: AppRequest, res
 async function getRedirectInformation(req: AppRequest) {
   try {
     return await getFeePaymentRedirectInformation(
-      normalizeRouteParam(req.params.id),
+      getRouteParam(req, 'id'),
       FeeType.CLAIMISSUED,
       req,
     );
   } catch (error) {
-    const claim = await getClaimById(normalizeRouteParam(req.params.id), req, true);
+    const claim = await getClaimById(getRouteParam(req, 'id'), req, true);
     claim.paymentSyncError = true;
     await saveDraftClaim(generateRedisKey(<AppRequest>req), claim, true);
     return null;

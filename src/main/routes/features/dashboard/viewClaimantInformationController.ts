@@ -15,7 +15,7 @@ import { caseNumberPrettify } from 'common/utils/stringUtils';
 import {AppRequest} from 'models/AppRequest';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
-import {normalizeRouteParam} from 'common/utils/routeParamUtils';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const viewClaimantInformation = 'features/dashboard/contact-them-new';
 const viewClaimantInformationController = Router();
@@ -59,7 +59,7 @@ async function renderView(res: Response, claim: Claim, claimId: string) {
 viewClaimantInformationController.get(
   VIEW_CLAIMANT_INFO, async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const claimId = normalizeRouteParam(req.params.id);
+      const claimId = getRouteParam(req, 'id');
       const claim: Claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
       renderView(res, claim, claimId);
     } catch (error) {

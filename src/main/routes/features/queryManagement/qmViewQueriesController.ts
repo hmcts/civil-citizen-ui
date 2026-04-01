@@ -12,7 +12,7 @@ import {ViewQueriesService} from 'services/features/queryManagement/viewQueriesS
 import {getNotifications} from 'services/dashboard/dashboardService';
 import {ClaimantOrDefendant} from 'models/partyType';
 import {getTotalAmountWithInterestAndFees} from 'modules/claimDetailsService';
-import {normalizeRouteParam} from 'common/utils/routeParamUtils';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
@@ -46,7 +46,7 @@ async function recordNotificationClickForQueryResponse(claim: Claim, claimId: st
 
 qmViewQueriesController.get(QM_VIEW_QUERY_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const claimId = normalizeRouteParam(req.params.id);
+    const claimId = getRouteParam(req, 'id');
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const userId = req.session?.user?.id;
     const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);

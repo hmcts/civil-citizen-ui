@@ -18,7 +18,7 @@ import {getSystemGeneratedCaseDocumentIdByType} from 'models/document/systemGene
 import {documentIdExtractor} from 'common/utils/stringUtils';
 import {checkWelshHearingNotice} from 'services/features/caseProgression/hearing/hearingService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {normalizeRouteParam} from 'common/utils/routeParamUtils';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
@@ -27,10 +27,10 @@ const notificationRedirectController = Router();
 
 notificationRedirectController.get(DASHBOARD_NOTIFICATION_REDIRECT, (async function(req, res, next){
   const appRequest = <AppRequest> req;
-  const claimId = normalizeRouteParam(req.params.id);
+  const claimId = getRouteParam(req, 'id');
 
-  await civilServiceClient.recordClick(normalizeRouteParam(req.params.notificationId), appRequest);
-  const redirectUrl = await getDashboardNotificationRedirectUrl(normalizeRouteParam(req.params.locationName), claimId, <AppRequest>req);
+  await civilServiceClient.recordClick(getRouteParam(req, 'notificationId'), appRequest);
+  const redirectUrl = await getDashboardNotificationRedirectUrl(getRouteParam(req, 'locationName'), claimId, <AppRequest>req);
 
   res.redirect(redirectUrl);
 
@@ -38,10 +38,10 @@ notificationRedirectController.get(DASHBOARD_NOTIFICATION_REDIRECT, (async funct
 
 notificationRedirectController.get(DASHBOARD_NOTIFICATION_REDIRECT_DOCUMENT, (async function(req, res, next){
   const appRequest = <AppRequest> req;
-  const claimId = normalizeRouteParam(req.params.id);
+  const claimId = getRouteParam(req, 'id');
 
-  await civilServiceClient.recordClick(normalizeRouteParam(req.params.notificationId), appRequest);
-  const redirectUrl = await getDashboardNotificationRedirectUrl(normalizeRouteParam(req.params.locationName), claimId, <AppRequest>req);
+  await civilServiceClient.recordClick(getRouteParam(req, 'notificationId'), appRequest);
+  const redirectUrl = await getDashboardNotificationRedirectUrl(getRouteParam(req, 'locationName'), claimId, <AppRequest>req);
 
   res.redirect(redirectUrl);
 
@@ -87,7 +87,7 @@ async function getDashboardNotificationRedirectUrl(locationName: string, claimId
         redirectUrl = constructResponseUrlWithIdParams(claimId, claim.isClaimant() ? DASHBOARD_CLAIMANT_URL : DEFENDANT_SUMMARY_URL) + '?errorAwaitingTranslation';
         break;
       }
-      redirectUrl = CASE_DOCUMENT_VIEW_URL.replace(':id', claim.id).replace(':documentId', normalizeRouteParam(req.params.documentId));
+      redirectUrl = CASE_DOCUMENT_VIEW_URL.replace(':id', claim.id).replace(':documentId', getRouteParam(req, 'documentId'));
       break;
     case 'VIEW_DECISION_RECONSIDERATION':
       redirectUrl =  CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.DECISION_MADE_ON_APPLICATIONS));

@@ -17,7 +17,7 @@ import {getClaimById} from 'modules/utilityService';
 import {Claim} from 'models/claim';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import { createMulterErrorMiddlewareForSingleField, getFileUploadErrorsForSource, FILE_UPLOAD_SOURCE } from 'common/utils/fileUploadUtils';
-import {normalizeRouteParam} from 'common/utils/routeParamUtils';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 import { handleMulterError } from 'services/features/generalApplication/uploadEvidenceDocumentService';
 
 const createQueryController = Router();
@@ -45,7 +45,7 @@ const pageHeaders = {
 };
 
 createQueryController.get(QUERY_MANAGEMENT_CREATE_QUERY, (async (req: AppRequest, res: Response, next: NextFunction) => {
-  const claimId = normalizeRouteParam(req.params.id);
+  const claimId = getRouteParam(req, 'id');
   const claim = await getClaimById(claimId, req, true);
   const createQuery = claim.queryManagement?.createQuery || new CreateQuery();
   let form = new GenericForm(createQuery);
@@ -66,7 +66,7 @@ createQueryController.get(QUERY_MANAGEMENT_CREATE_QUERY, (async (req: AppRequest
 
 createQueryController.post([QUERY_MANAGEMENT_CREATE_QUERY], multerMiddleware, (async (req:AppRequest, res: Response, next: NextFunction) => {
   try {
-    const claimId = normalizeRouteParam(req.params.id);
+    const claimId = getRouteParam(req, 'id');
     const action = req.body.action;
     const claim = await getClaimById(claimId, req, true);
     const currentUrl = constructResponseUrlWithIdParams(claimId, QUERY_MANAGEMENT_CREATE_QUERY);

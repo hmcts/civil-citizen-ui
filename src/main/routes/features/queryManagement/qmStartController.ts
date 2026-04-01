@@ -24,7 +24,7 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {getGaRedirectionUrl} from 'services/commons/generalApplicationHelper';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
-import {normalizeRouteParam} from 'common/utils/routeParamUtils';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
@@ -81,7 +81,7 @@ qmStartController.get(QM_START_URL, (async (req:AppRequest, res , next) => {
     const redisKey = generateRedisKey(req);
     const linkFrom = req.query.linkFrom;
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-    const claimId = normalizeRouteParam(req.params.id);
+    const claimId = getRouteParam(req, 'id');
     if (linkFrom === 'start') {
       await deleteQueryManagement(redisKey, req);
     }
@@ -97,7 +97,7 @@ qmStartController.get(QM_START_URL, (async (req:AppRequest, res , next) => {
 qmStartController.post(QM_START_URL, (async (req, res , next) => {
   try {
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-    const claimId = normalizeRouteParam(req.params.id);
+    const claimId = getRouteParam(req, 'id');
     const redisKey = generateRedisKey(<AppRequest>req);
     const option = req.body.option;
     const form = new GenericForm(new WhatDoYouWantToDo(option, getItems(option, lang)));

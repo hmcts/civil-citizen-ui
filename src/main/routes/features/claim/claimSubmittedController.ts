@@ -4,7 +4,7 @@ import {formatDateToFullDate} from 'common/utils/dateUtils';
 import {AppRequest} from 'models/AppRequest';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import config from 'config';
-import {normalizeRouteParam} from 'common/utils/routeParamUtils';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const claimSubmittedView = 'features/claim/claim-submitted';
 const claimSubmittedController = Router();
@@ -13,7 +13,7 @@ const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServi
 
 claimSubmittedController.get(CLAIM_CONFIRMATION_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const claimId = normalizeRouteParam(req.params.id);
+    const claimId = getRouteParam(req, 'id');
     const claim = await civilServiceClient.retrieveClaimDetails(claimId, req);
     const lang = req.query.lang? req.query.lang : req.cookies.lang;
 

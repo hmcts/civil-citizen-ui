@@ -6,7 +6,7 @@ import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftS
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {AppRequest} from 'common/models/AppRequest';
 import {isCarmEnabledForCase} from '../../../app/auth/launchdarkly/launchDarklyClient';
-import {normalizeRouteParam} from 'common/utils/routeParamUtils';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 const incompleteSubmissionViewPath = 'features/response/incomplete-submission';
 const incompleteSubmissionController = Router();
 
@@ -15,7 +15,7 @@ const logger = Logger.getLogger('incompleteSubmissionController');
 
 incompleteSubmissionController.get(RESPONSE_INCOMPLETE_SUBMISSION_URL, (async (req, res, next: NextFunction) => {
   try {
-    const claimId = normalizeRouteParam(req.params.id);
+    const claimId = getRouteParam(req, 'id');
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const claim = await getCaseDataFromStore(generateRedisKey(<AppRequest>req));
     const carmApplicable = await isCarmEnabledForCase(claim.submittedDate);

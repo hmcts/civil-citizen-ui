@@ -14,7 +14,7 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {TimeLineOfEvents} from 'models/timelineOfEvents/timeLineOfEvents';
 import {AppRequest} from 'common/models/AppRequest';
-import {normalizeRouteParam} from 'common/utils/routeParamUtils';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const defendantTimelineController = Router();
 const defendantTimelineView = 'features/response/timelineOfEvents/defendant-timeline';
@@ -28,7 +28,7 @@ function renderView(form: GenericForm<DefendantTimeline>, theirTimeline: TimeLin
 defendantTimelineController.get(CITIZEN_TIMELINE_URL,
   (async (req, res, next: NextFunction) => {
     try {
-      const claimId = normalizeRouteParam(req.params.id);
+      const claimId = getRouteParam(req, 'id');
       const claim = await getCaseDataFromStore(generateRedisKey(<AppRequest>req));
       const theirTimeline = claim.timelineOfEvents;
       const pdfUrl = claim.extractDocumentId() && CASE_TIMELINE_DOCUMENTS_URL.replace(':id', claimId).replace(':documentId', claim.extractDocumentId());
@@ -41,7 +41,7 @@ defendantTimelineController.get(CITIZEN_TIMELINE_URL,
 
 defendantTimelineController.post(CITIZEN_TIMELINE_URL, (async (req, res, next: NextFunction) => {
   try {
-    const claimId = normalizeRouteParam(req.params.id);
+    const claimId = getRouteParam(req, 'id');
     const form = new GenericForm(DefendantTimeline.buildPopulatedForm(req.body.rows, req.body.comment));
     const redisKey = generateRedisKey(<AppRequest>req);
     await form.validate();

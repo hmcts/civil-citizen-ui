@@ -21,7 +21,7 @@ import {isMintiEnabledForCase, isCarmEnabledForCase} from '../../../app/auth/lau
 import {getClaimById} from 'modules/utilityService';
 import {SpecificCourtLocation} from 'models/directionsQuestionnaire/hearing/specificCourtLocation';
 import {ValidationError, Validator} from 'class-validator';
-import {normalizeRouteParam} from 'common/utils/routeParamUtils';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const checkAnswersViewPath = 'features/claimantResponse/check-answers';
 const validator = new Validator();
@@ -30,7 +30,7 @@ const claimantResponseCheckAnswersController = Router();
 async function renderView(req: AppRequest, res: Response, form: GenericForm<StatementOfTruthForm>, claim: Claim, isCarmApplicable: boolean, isMintiApplicable: boolean) {
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
   const claimFee = convertToPoundsFilter(claim.claimFee?.calculatedAmountInPence);
-  const summarySections = await getSummarySections(normalizeRouteParam(req.params.id), claim, lang, claimFee, isCarmApplicable, isMintiApplicable);
+  const summarySections = await getSummarySections(getRouteParam(req, 'id'), claim, lang, claimFee, isCarmApplicable, isMintiApplicable);
 
   res.render(checkAnswersViewPath, {
     form,
@@ -42,7 +42,7 @@ async function renderView(req: AppRequest, res: Response, form: GenericForm<Stat
 claimantResponseCheckAnswersController.get(CLAIMANT_RESPONSE_CHECK_ANSWERS_URL,claimantResponsecheckYourAnswersGuard,
   (async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const claimId = normalizeRouteParam(req.params.id);
+      const claimId = getRouteParam(req, 'id');
       const claim = await getClaimById(claimId, req, true);
       const isClaimantRejectedDefendantOffer = claim?.claimantResponse?.hasPartAdmittedBeenAccepted?.option === YesNo.NO;
       const form = new GenericForm(new StatementOfTruthForm(isClaimantRejectedDefendantOffer));
@@ -59,7 +59,7 @@ claimantResponseCheckAnswersController.post(CLAIMANT_RESPONSE_CHECK_ANSWERS_URL,
     const isClaimantRejectedDefendantOffer = req.body.isClaimantRejectedDefendantOffer === 'true';
     const form = new GenericForm(new StatementOfTruthForm(isClaimantRejectedDefendantOffer, req.body.type, true, req.body.directionsQuestionnaireSigned));
     await form.validate();
-    const claimId = normalizeRouteParam(req.params.id);
+    const claimId = getRouteParam(req, 'id');
     const redisKey = generateRedisKey(<AppRequest>req);
     const claim = await getClaimById(claimId, req, true);
     const carmEnabled = await isCarmEnabledForCase(claim.submittedDate);

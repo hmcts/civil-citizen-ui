@@ -19,7 +19,7 @@ import {isFirstTimeInPCQ} from 'routes/guards/pcqGuard';
 import {isMintiEnabledForCase, isCarmEnabledForCase} from '../../../app/auth/launchdarkly/launchDarklyClient';
 import {ValidationError, Validator} from 'class-validator';
 import {SpecificCourtLocation} from 'models/directionsQuestionnaire/hearing/specificCourtLocation';
-import {normalizeRouteParam} from 'common/utils/routeParamUtils';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const checkAnswersViewPath = 'features/response/check-answers';
 const validator = new Validator();
@@ -30,7 +30,7 @@ const logger = Logger.getLogger('checkAnswersController');
 
 function renderView(req: Request, res: Response, form: GenericForm<StatementOfTruthForm> | GenericForm<QualifiedStatementOfTruth>, claim: Claim, carmApplicable = false, mintiApplicable = false) {
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-  const claimId = normalizeRouteParam(req.params.id);
+  const claimId = getRouteParam(req, 'id');
   const summarySections = getSummarySections(claimId, claim, lang, carmApplicable, mintiApplicable);
   res.render(checkAnswersViewPath, {
     form,
@@ -68,7 +68,7 @@ checkAnswersController.post(RESPONSE_CHECK_ANSWERS_URL, (async (req: Request, re
       form.errors = validateFields(new GenericForm<SpecificCourtLocation>(SpecificCourtLocation.fromObject(claim.directionQuestionnaire.hearing?.specificCourtLocation as any)), form.errors);
     }
     if (form.hasErrors()) {
-      const claimId = normalizeRouteParam(req.params.id);
+      const claimId = getRouteParam(req, 'id');
       logger.info(`form has error -  ${claimId}`);
       renderView(req, res, form, claim);
       return;
@@ -77,7 +77,7 @@ checkAnswersController.post(RESPONSE_CHECK_ANSWERS_URL, (async (req: Request, re
       await saveStatementOfTruth(redisKey, form.model);
       await submitResponse(<AppRequest>req);
       await deleteDraftClaimFromStore(redisKey);
-      const claimId = normalizeRouteParam(req.params.id);
+      const claimId = getRouteParam(req, 'id');
       res.redirect(constructResponseUrlWithIdParams(claimId, CONFIRMATION_URL));
     }
   } catch (error) {

@@ -7,7 +7,7 @@ import {BACK_URL, QM_CONFIRMATION_URL, QM_CYA, QM_FOLLOW_UP_CYA} from 'routes/ur
 import {getCancelUrl, saveQueryManagement} from 'services/features/queryManagement/queryManagementService';
 import {createQuery, getSummarySections} from 'services/features/queryManagement/createQueryCheckYourAnswerService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {normalizeRouteParam} from 'common/utils/routeParamUtils';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const viewPath = 'features/queryManagement/createQueryCheckYourAnswer.njk';
 const createQueryCheckYourAnswerController = Router();
@@ -26,8 +26,8 @@ createQueryCheckYourAnswerController.get([QM_CYA, QM_FOLLOW_UP_CYA], (async (req
       caption: isFollowUpUrl? 'PAGES.QM.HEADINGS.FOLLOW_UP_CAPTION':'PAGES.QM.HEADINGS.CAPTION',
       heading: isFollowUpUrl? 'PAGES.QM.HEADINGS.FOLLOW_UP_HEADING':'PAGES.QM.SEND_MESSAGE_CYA.HEADING',
     };
-    const queryId = normalizeRouteParam(req.params.queryId);
-    const claimId = normalizeRouteParam(req.params.id);
+    const queryId = getRouteParam(req, 'queryId');
+    const claimId = getRouteParam(req, 'id');
     const claim = await getClaimById(claimId, req, true);
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const backLinkUrl = BACK_URL;

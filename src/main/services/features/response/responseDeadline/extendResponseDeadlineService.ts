@@ -6,7 +6,7 @@ import {Claim} from 'models/claim';
 import {getViewOptionsBeforeDeadlineTask} from 'common/utils/taskList/tasks/viewOptionsBeforeDeadline';
 import {TaskStatus} from 'models/taskList/TaskStatus';
 import {toCCDRespondentResponseLanguage} from 'services/translation/response/convertToCCDRespondentLiPResponse';
-import {normalizeRouteParam} from 'common/utils/routeParamUtils';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
@@ -34,7 +34,7 @@ const submitExtendedResponseDeadline = async (req: AppRequest) => {
   try {
     const redisKey = generateRedisKey(req);
     const claim = await getCaseDataFromStore(redisKey);
-    const claimId = normalizeRouteParam(req.params.id);
+    const claimId = getRouteParam(req, 'id');
     const viewOptionsBeforeDeadlineTask = getViewOptionsBeforeDeadlineTask(claim, claimId, 'en');
     if (viewOptionsBeforeDeadlineTask.status === TaskStatus.INCOMPLETE) {
       await civilServiceClient.submitAgreedResponseExtensionDateEvent(claimId, {

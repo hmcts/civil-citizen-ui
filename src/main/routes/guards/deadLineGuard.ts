@@ -7,13 +7,13 @@ import {TaskStatus} from '../../common/models/taskList/TaskStatus';
 import {constructResponseUrlWithIdParams} from '../../common/utils/urlFormatter';
 import {RESPONSE_TASK_LIST_URL} from '../../routes/urls';
 import {AppRequest} from 'common/models/AppRequest';
-import {normalizeRouteParam} from 'common/utils/routeParamUtils';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 export const deadLineGuard = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const unauthorized = await isUnauthorized(req);
     if (unauthorized) {
-      const claimId = normalizeRouteParam(req.params.id);
+      const claimId = getRouteParam(req, 'id');
       res.redirect(constructResponseUrlWithIdParams(claimId, RESPONSE_TASK_LIST_URL));
     } else {
       next();
@@ -26,7 +26,7 @@ export const deadLineGuard = async (req: Request, res: Response, next: NextFunct
 export const isUnauthorized = async (req: Request) => {
   const caseData: Claim = await getCaseDataFromStore(generateRedisKey(<AppRequest>req));
   const isDeadlinePassed = isPastDeadline(caseData.respondent1ResponseDeadline);
-  const claimId = normalizeRouteParam(req.params.id);
+  const claimId = getRouteParam(req, 'id');
   const viewOptionsBeforeDeadlineTask = getViewOptionsBeforeDeadlineTask(caseData, claimId, 'en');
 
   const isTaskComplete = viewOptionsBeforeDeadlineTask.status === TaskStatus.COMPLETE;

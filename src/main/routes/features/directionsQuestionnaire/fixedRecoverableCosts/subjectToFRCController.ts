@@ -14,7 +14,7 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {GenericYesNo} from 'form/models/genericYesNo';
 import {getWhatAreFixedRecoverableCostsContent} from 'services/commons/detailContents';
 import {YesNo} from 'form/models/yesNo';
-import {normalizeRouteParam} from 'common/utils/routeParamUtils';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const subjectToFRCController = Router();
 const subjectToFRCViewPath = 'features/directionsQuestionnaire/fixedRecoverableCosts/subject-to-frc';
@@ -36,7 +36,7 @@ function renderView(subjectToFRC: GenericForm<GenericYesNo>, claimId: string, re
 subjectToFRCController.get(SUBJECT_TO_FRC_URL, (async (req, res, next: NextFunction) => {
   try {
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-    const claimId = normalizeRouteParam(req.params.id);
+    const claimId = getRouteParam(req, 'id');
     const directionQuestionnaire = await getDirectionQuestionnaire(generateRedisKey(<AppRequest>req));
     const subjectToFRC = directionQuestionnaire.fixedRecoverableCosts?.subjectToFrc ?
       new GenericYesNo(directionQuestionnaire.fixedRecoverableCosts?.subjectToFrc?.option) : new GenericYesNo();
@@ -49,7 +49,7 @@ subjectToFRCController.get(SUBJECT_TO_FRC_URL, (async (req, res, next: NextFunct
 subjectToFRCController.post(SUBJECT_TO_FRC_URL, (async (req: Request, res: Response, next: NextFunction) => {
   try {
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-    const claimId = normalizeRouteParam(req.params.id);
+    const claimId = getRouteParam(req, 'id');
     const subjectToFRCForm = new GenericForm(new GenericYesNo(req.body.option, 'ERRORS.SUBJECT_TO_FRC'));
     subjectToFRCForm.validateSync();
     if (subjectToFRCForm.hasErrors()) {

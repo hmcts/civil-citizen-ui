@@ -4,14 +4,14 @@ import {GenericYesNo} from 'common/form/models/genericYesNo';
 import {ClaimBilingualLanguagePreference} from 'common/models/claimBilingualLanguagePreference';
 import {Request} from 'express';
 import {getClaimById} from 'modules/utilityService';
-import {normalizeRouteParam, RouteParam} from 'common/utils/routeParamUtils';
+import {getRouteParam, normalizeRouteParam, RouteParam} from 'common/utils/routeParamUtils';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('selfEmployedAsService');
 
 const getBilingualLangPreference = async (req: Request): Promise<GenericYesNo> => {
   try {
-    const claim = await getClaimById(normalizeRouteParam(req.params.id), req, true);
+    const claim = await getClaimById(getRouteParam(req, 'id'), req, true);
     if (claim.claimBilingualLanguagePreference) {
       return new GenericYesNo(claim.claimBilingualLanguagePreference);
     }

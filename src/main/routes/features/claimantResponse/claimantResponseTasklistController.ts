@@ -6,14 +6,14 @@ import {getClaimById} from 'modules/utilityService';
 import {getClaimantResponseTaskLists} from 'services/features/claimantResponse/claimantResponseTasklistService/claimantResponseTasklistService';
 import {Claim} from 'models/claim';
 import {isMintiEnabledForCase, isCarmEnabledForCase} from '../../../app/auth/launchdarkly/launchDarklyClient';
-import {normalizeRouteParam} from 'common/utils/routeParamUtils';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const claimantResponseTasklistViewPath = 'features/claimantResponse/claimant-response-task-list';
 const claimantResponseTasklistController = Router();
 
 claimantResponseTasklistController.get(CLAIMANT_RESPONSE_TASK_LIST_URL, async (req: AppRequest, res, next) => {
   try {
-    const claimId = normalizeRouteParam(req.params.id);
+    const claimId = getRouteParam(req, 'id');
     req.session.claimId = claimId;
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const claim: Claim = await getClaimById(claimId, req, true);

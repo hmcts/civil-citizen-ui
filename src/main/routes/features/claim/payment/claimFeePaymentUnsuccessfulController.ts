@@ -3,7 +3,7 @@ import {CLAIM_FEE_MAKE_PAYMENT_AGAIN_URL, DASHBOARD_CLAIMANT_URL, PAY_CLAIM_FEE_
 import {AppRequest} from 'models/AppRequest';
 import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {normalizeRouteParam} from 'common/utils/routeParamUtils';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const paymentUnsuccessfulController: Router = Router();
 
@@ -11,7 +11,7 @@ const paymentUnsuccessfulViewPath  = 'features/caseProgression/hearingFee/paymen
 
 paymentUnsuccessfulController.get(PAY_CLAIM_FEE_UNSUCCESSFUL_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const claimId = normalizeRouteParam(req.params.id);
+    const claimId = getRouteParam(req, 'id');
     const makePaymentAgainUrl = constructResponseUrlWithIdParams(claimId, CLAIM_FEE_MAKE_PAYMENT_AGAIN_URL);
     const claim = await getCaseDataFromStore(generateRedisKey(req));
     const claimNumber : string = claim.getFormattedCaseReferenceNumber(claimId);
@@ -28,7 +28,7 @@ paymentUnsuccessfulController.get(PAY_CLAIM_FEE_UNSUCCESSFUL_URL, (async (req: A
 
 paymentUnsuccessfulController.post(PAY_CLAIM_FEE_UNSUCCESSFUL_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    res.redirect(constructResponseUrlWithIdParams(normalizeRouteParam(req.params.id), DASHBOARD_CLAIMANT_URL));
+    res.redirect(constructResponseUrlWithIdParams(getRouteParam(req, 'id'), DASHBOARD_CLAIMANT_URL));
   } catch (error) {
     next(error);
   }

@@ -11,7 +11,7 @@ import {GenericForm} from 'form/models/genericForm';
 import {ShareQueryForm} from 'form/models/queryManagement/shareQueryForm';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {t} from 'i18next';
-import {normalizeRouteParam} from 'common/utils/routeParamUtils';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const shareQueryConfirmationController = Router();
 const viewPath = 'features/queryManagement/qm-share-query-confirmation.njk';
@@ -56,7 +56,7 @@ export const getPageContent = (lang:string) => {
 
 shareQueryConfirmationController.get(QM_SHARE_QUERY_CONFIRMATION, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const claimId = normalizeRouteParam(req.params.id);
+    const claimId = getRouteParam(req, 'id');
     const form = new GenericForm(new ShareQueryForm());
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     await renderView(lang, form, res, claimId, req);
@@ -67,7 +67,7 @@ shareQueryConfirmationController.get(QM_SHARE_QUERY_CONFIRMATION, (async (req: A
 
 shareQueryConfirmationController.post(QM_SHARE_QUERY_CONFIRMATION, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const claimId = normalizeRouteParam(req.params.id);
+    const claimId = getRouteParam(req, 'id');
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const {confirmed} = req.body;
     const form = new GenericForm(new ShareQueryForm(confirmed));

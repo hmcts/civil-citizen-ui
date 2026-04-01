@@ -21,7 +21,7 @@ import {CaseState} from 'form/models/claimDetails';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {AppRequest} from 'models/AppRequest';
-import {normalizeRouteParam} from 'common/utils/routeParamUtils';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const claimDetailsController = Router();
 const claimDetailsViewPathNew = 'features/response/claimDetails/claim-details-new';
@@ -34,7 +34,7 @@ const logger = Logger.getLogger('claimDetailsController');
 claimDetailsController.get(CLAIM_DETAILS_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const welshEnabled = await isWelshEnabledForMainCase();
-    const claimId = normalizeRouteParam(req.params.id);
+    const claimId = getRouteParam(req, 'id');
     const claim = await civilServiceClient.retrieveClaimDetails(claimId, req);
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const interestData = await getInterestDetails(claim);

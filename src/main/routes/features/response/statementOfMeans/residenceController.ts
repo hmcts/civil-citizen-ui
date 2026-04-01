@@ -9,7 +9,7 @@ import {
 } from '../../../../services/features/response/statementOfMeans/residence/residenceService';
 import {AppRequest} from 'common/models/AppRequest';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
-import {normalizeRouteParam} from 'common/utils/routeParamUtils';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const residenceViewPath = 'features/response/statementOfMeans/residence';
 
@@ -39,7 +39,7 @@ residenceController.post(
         res.render(residenceViewPath, {form});
       } else {
         await saveResidence(generateRedisKey(<AppRequest>req), residence);
-        const claimId = normalizeRouteParam(req.params.id);
+        const claimId = getRouteParam(req, 'id');
         res.redirect(CITIZEN_PARTNER_URL.replace(':id', claimId));
       }
     } catch (error) {

@@ -38,7 +38,7 @@ import {
   getMulterErrorConstraint,
   extractCategoryAndIndex,
 } from 'common/utils/fileUploadUtils';
-import {normalizeRouteParam} from 'common/utils/routeParamUtils';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const uploadDocumentViewPath = 'features/mediation/uploadDocuments/upload-documents';
 const mediationUploadDocumentsController = Router();
@@ -88,7 +88,7 @@ function renderView(form: GenericForm<UploadDocumentsForm>,uploadDocuments:Uploa
 
 mediationUploadDocumentsController.get(MEDIATION_UPLOAD_DOCUMENTS, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const claimId = normalizeRouteParam(req.params.id);
+    const claimId = getRouteParam(req, 'id');
     req.session.previousUrl = req.originalUrl;
     const redisKey = generateRedisKey(<AppRequest>req);
     const claim = await getCaseDataFromStore(redisKey);
@@ -101,7 +101,7 @@ mediationUploadDocumentsController.get(MEDIATION_UPLOAD_DOCUMENTS, (async (req: 
 
 mediationUploadDocumentsController.post(MEDIATION_UPLOAD_DOCUMENTS, multerMiddleware, (async (req, res, next) => {// nosonar
   try {
-    const claimId = normalizeRouteParam(req.params.id);
+    const claimId = getRouteParam(req, 'id');
     const action = req.body.action;
     const redisKey = generateRedisKey(<AppRequest>req);
     const claim = await getCaseDataFromStore(redisKey);

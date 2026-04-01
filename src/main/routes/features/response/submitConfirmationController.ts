@@ -8,7 +8,7 @@ import {AppRequest} from 'models/AppRequest';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
 import {responseSubmitDateGuard} from 'routes/guards/responseSubmitDateGuard';
 import {isCarmEnabledForCase} from '../../../app/auth/launchdarkly/launchDarklyClient';
-import {normalizeRouteParam} from 'common/utils/routeParamUtils';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const submitConfirmationController = Router();
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
@@ -19,7 +19,7 @@ const logger = Logger.getLogger('submitConfirmationController');
 
 submitConfirmationController.get(CONFIRMATION_URL, responseSubmitDateGuard, (async (req, res, next: NextFunction) => {
   try {
-    const claimId = normalizeRouteParam(req.params.id);
+    const claimId = getRouteParam(req, 'id');
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const submittedClaim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
     if (!submittedClaim.isEmpty()) {
@@ -31,7 +31,7 @@ submitConfirmationController.get(CONFIRMATION_URL, responseSubmitDateGuard, (asy
       res.render('features/response/submit-confirmation', {claimNumber, confirmationContent, responseSubmitDate});
     }
   } catch (error) {
-    const claimId = normalizeRouteParam(req.params.id);
+    const claimId = getRouteParam(req, 'id');
     logger.error(`Error when getting submitting confirmation, req.params.id - ${claimId}, error -  ${error.message}`);
     next(error);
   }

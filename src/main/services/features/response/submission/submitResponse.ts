@@ -8,7 +8,7 @@ import {addressHasChange} from './compareAddress';
 import {
   getClaimWithExtendedPaymentDeadline,
 } from 'services/features/response/submitConfirmation/submitConfirmationService';
-import {normalizeRouteParam} from 'common/utils/routeParamUtils';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('submitResponse');
@@ -19,7 +19,7 @@ const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServi
 export const submitResponse = async (req: AppRequest): Promise<Claim> => {
   try {
     logger.info(`submitting the response - ${req.params.id}`);
-    const claimId = normalizeRouteParam(req.params.id);
+    const claimId = getRouteParam(req, 'id');
     const claim = await getCaseDataFromStore(generateRedisKey(req));
     const claimFromCivilService = await civilServiceClient.retrieveClaimDetails(claimId, req);
     claim.respondentPaymentDeadline = await getClaimWithExtendedPaymentDeadline(claim, req);

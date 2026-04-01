@@ -9,7 +9,7 @@ import {
 } from './generalApplicationResponseStoreService';
 import {generateRedisKeyForGA} from 'modules/draft-store/draftStoreService';
 import {YesNoUpperCamelCase} from 'form/models/yesNo';
-import {normalizeRouteParam} from 'common/utils/routeParamUtils';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('submitApplicationResponse');
@@ -19,7 +19,7 @@ const gaServiceClient: GaServiceClient = new GaServiceClient(gaServiceApiBaseUrl
 
 export const submitApplicationResponse = async (req: AppRequest): Promise<Application> => {
   try {
-    const applicationId = normalizeRouteParam(req.params.appId);
+    const applicationId = getRouteParam(req, 'appId');
     const gaRedisKey = generateRedisKeyForGA(req);
     let application: Application;
     const gaRespondentResponse = await getDraftGARespondentResponse(gaRedisKey);

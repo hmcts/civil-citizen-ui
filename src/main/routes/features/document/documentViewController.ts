@@ -4,7 +4,7 @@ import {CASE_DOCUMENT_VIEW_URL} from '../../urls';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {viewFile} from 'common/utils/downloadUtils';
 import {AppRequest} from 'models/AppRequest';
-import {normalizeRouteParam} from 'common/utils/routeParamUtils';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const documentViewController = Router();
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
@@ -12,7 +12,7 @@ const civilServiceClientForDocRetrieve: CivilServiceClient = new CivilServiceCli
 
 documentViewController.get(CASE_DOCUMENT_VIEW_URL, (async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const document = await civilServiceClientForDocRetrieve.retrieveDocument(<AppRequest> req, normalizeRouteParam(req.params.documentId));
+    const document = await civilServiceClientForDocRetrieve.retrieveDocument(<AppRequest> req, getRouteParam(req, 'documentId'));
     viewFile(res, document);
   } catch (error) {
     next(error);

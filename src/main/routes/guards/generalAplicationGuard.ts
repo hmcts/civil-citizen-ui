@@ -6,7 +6,7 @@ import {
 import { getCancelUrl } from 'services/features/generalApplication/generalApplicationService';
 import {AppRequest} from 'models/AppRequest';
 import {getClaimById} from 'modules/utilityService';
-import {normalizeRouteParam} from 'common/utils/routeParamUtils';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 export const isGAForLiPEnabled = async (
   req: Request,
@@ -14,7 +14,7 @@ export const isGAForLiPEnabled = async (
   next: NextFunction,
 ): Promise<void> => {
   const isGAFlagEnable = await isGaForLipsEnabled();
-  const claimId = normalizeRouteParam(req.params.id);
+  const claimId = getRouteParam(req, 'id');
   const claim = await getClaimById(claimId, <AppRequest>req);
   //If the application was originally created in English and the respondent replied in Welsh,
   // a new application will not be generated; however, the existing application will still be accessible online.

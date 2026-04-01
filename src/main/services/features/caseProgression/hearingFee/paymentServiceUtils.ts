@@ -8,7 +8,7 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {HEARING_FEE_APPLY_HELP_FEE_SELECTION, HEARING_FEE_PAYMENT_CONFIRMATION_URL} from 'routes/urls';
 import {saveUserId} from 'modules/draft-store/paymentSessionStoreService';
 import {getClaimById} from 'modules/utilityService';
-import {normalizeRouteParam} from 'common/utils/routeParamUtils';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('PaymentServiceUtils');
@@ -53,7 +53,7 @@ export const getRedirectUrlCommon = async (claimId: string, req: AppRequest): Pr
 };
 
 async function getRedirectInformation(req: AppRequest) {
-  const claimId = normalizeRouteParam(req.params.id);
+  const claimId = getRouteParam(req, 'id');
   logger.info(`getRedirectInformation called for claimId: ${claimId}`);
   try {
     const redirectInformation = await getFeePaymentRedirectInformation(claimId, FeeType.HEARING, req);

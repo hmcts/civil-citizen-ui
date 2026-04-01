@@ -15,7 +15,7 @@ import {
 import {GenericForm} from 'form/models/genericForm';
 import {AppRequest} from 'common/models/AppRequest';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
-import {normalizeRouteParam} from 'common/utils/routeParamUtils';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const citizenEmploymentStatusViewPath = 'features/response/statementOfMeans/employment/employment-status';
 const employmentStatusController = Router();
@@ -57,7 +57,7 @@ employmentStatusController.post(CITIZEN_EMPLOYMENT_URL, (async (req, res, next: 
       renderView(form, res);
     } else {
       await saveEmploymentData(generateRedisKey(<AppRequest>req), form);
-      const claimId = normalizeRouteParam(req.params.id);
+      const claimId = getRouteParam(req, 'id');
       redirectToNextPage(form, claimId, res);
     }
   } catch (error) {
