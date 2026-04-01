@@ -11,14 +11,14 @@ import {gaApplicationFeeDetails} from 'services/features/generalApplication/feeD
 import {convertToPoundsFilter} from 'common/utils/currencyFormat';
 import {GeneralApplication} from 'models/generalApplication/GeneralApplication';
 import {ApplicationType, ApplicationTypeOption} from 'models/generalApplication/applicationType';
-import {normalizeRouteParam} from 'common/utils/routeParamUtils';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const askProofOfDebtPaymentGuidanceController = Router();
 const viewPath = 'features/generalApplication/certOfSorC/ask-proof-debtPayment-guidance';
 
 askProofOfDebtPaymentGuidanceController.get(GA_ASK_PROOF_OF_DEBT_PAYMENT_GUIDANCE_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const claimId = normalizeRouteParam(req.params.id);
+    const claimId = getRouteParam(req, 'id');
     const claim = await getClaimById(claimId, req, true);
     const cancelUrl = await getCancelUrl(claimId, claim);
     let backLinkUrl = BACK_URL;

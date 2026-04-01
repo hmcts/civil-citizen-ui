@@ -21,7 +21,7 @@ import {queryParamNumber} from 'common/utils/requestUtils';
 import {YesNo} from 'form/models/yesNo';
 import {AppRequest} from 'models/AppRequest';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
-import {normalizeRouteParam} from 'common/utils/routeParamUtils';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const viewPath = 'features/generalApplication/unavailable-dates-confirmation.njk';
 const gaUnavailabilityDatesConfirmationController = Router();
@@ -39,7 +39,7 @@ const renderView = async (claimId: string, claim: Claim, form: GenericForm<Gener
 
 gaUnavailabilityDatesConfirmationController.get(GA_UNAVAILABILITY_CONFIRMATION_URL, (async (req, res, next: NextFunction) => {
   try {
-    const claimId = normalizeRouteParam(req.params.id);
+    const claimId = getRouteParam(req, 'id');
     const claim = await getClaimById(claimId, req, true);
     const index  = queryParamNumber(req, 'index') || claim.generalApplication.applicationTypes.length - 1;
     const form = new GenericForm(new GenericYesNo(claim.generalApplication?.hasUnavailableDatesHearing));
@@ -51,7 +51,7 @@ gaUnavailabilityDatesConfirmationController.get(GA_UNAVAILABILITY_CONFIRMATION_U
 
 gaUnavailabilityDatesConfirmationController.post(GA_UNAVAILABILITY_CONFIRMATION_URL, (async (req, res, next: NextFunction) => {
   try {
-    const claimId = normalizeRouteParam(req.params.id);
+    const claimId = getRouteParam(req, 'id');
     const optionSelected = req.body.option;
     const claim = await getClaimById(claimId, req, true);
     const index  = queryParamNumber(req, 'index') || claim.generalApplication.applicationTypes.length - 1;

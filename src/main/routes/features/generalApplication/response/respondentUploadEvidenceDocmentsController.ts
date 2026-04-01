@@ -30,7 +30,7 @@ import {
   getFileUploadErrorsForSource,
   FILE_UPLOAD_SOURCE,
 } from 'common/utils/fileUploadUtils';
-import {normalizeRouteParam} from 'common/utils/routeParamUtils';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 import {handleMulterError} from 'services/features/generalApplication/uploadEvidenceDocumentService';
 
 const respondentUploadEvidenceDocumentsController = Router();
@@ -56,8 +56,8 @@ async function renderView(req: AppRequest, form: GenericForm<UploadGAFiles>, cla
 
 respondentUploadEvidenceDocumentsController.get(GA_RESPONDENT_UPLOAD_DOCUMENT_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const claimId = normalizeRouteParam(req.params.id);
-    const appId = normalizeRouteParam(req.params.appId);
+    const claimId = getRouteParam(req, 'id');
+    const appId = getRouteParam(req, 'appId');
     const claim = await getClaimById(claimId, req, true);
     const redisKeyForGA = generateRedisKeyForGA(req);
     const uploadEvidenceDocuments = new UploadGAFiles();
@@ -86,8 +86,8 @@ respondentUploadEvidenceDocumentsController.get(GA_RESPONDENT_UPLOAD_DOCUMENT_UR
 
 respondentUploadEvidenceDocumentsController.post(GA_RESPONDENT_UPLOAD_DOCUMENT_URL, multerMiddleware, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const claimId = normalizeRouteParam(req.params.id);
-    const appId = normalizeRouteParam(req.params.appId);
+    const claimId = getRouteParam(req, 'id');
+    const appId = getRouteParam(req, 'appId');
     const redisKeyForGA = generateRedisKeyForGA(req);
     const gaResponse = await getDraftGARespondentResponse(redisKeyForGA);
     const currentUrl = constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_RESPONDENT_UPLOAD_DOCUMENT_URL);

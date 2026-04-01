@@ -8,7 +8,7 @@ import {t} from 'i18next';
 import {deleteDraftClaimFromStore, generateRedisKeyForGA} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'models/AppRequest';
 import {getDraftGAHWFDetails} from 'modules/draft-store/gaHwFeesDraftStore';
-import {normalizeRouteParam} from 'common/utils/routeParamUtils';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const payFeeConfirmationScreenViewPath = 'features/generalApplication/applicationFee/pay-application-fee-confirmation';
 const payApplicationFeeConfirmationController = Router();
@@ -30,7 +30,7 @@ payApplicationFeeConfirmationController.get(GA_APPLICATION_FEE_CONFIRMATION_URL,
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
     const isAdditionalFeeType = req.query.additionalFeeTypeFlag === 'true';
     const gaHwFDetails = await getDraftGAHWFDetails(generateRedisKeyForGA(<AppRequest>req));
-    const claimId = normalizeRouteParam(req.params.id);
+    const claimId = getRouteParam(req, 'id');
     await deleteDraftClaimFromStore(generateRedisKeyForGA(<AppRequest>req));
     res.render(payFeeConfirmationScreenViewPath, {
       confirmationTitle : isAdditionalFeeType ? t('PAGES.GENERAL_APPLICATION.APPLY_HELP_WITH_FEE.CONFIRMATION_ADDITIONAL_TITLE', {lng}):t('PAGES.GENERAL_APPLICATION.APPLY_HELP_WITH_FEE.CONFIRMATION_TITLE', {lng}),

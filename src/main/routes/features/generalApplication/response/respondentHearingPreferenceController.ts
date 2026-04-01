@@ -15,14 +15,14 @@ import {
 import {generateRedisKeyForGA} from 'modules/draft-store/draftStoreService';
 import { getCancelUrl } from 'services/features/generalApplication/generalApplicationService';
 import { getClaimById } from 'modules/utilityService';
-import {normalizeRouteParam} from 'common/utils/routeParamUtils';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const respondentHearingPreferenceController = Router();
 const viewPath = 'features/generalApplication/response/respondent-hearing-preference';
 respondentHearingPreferenceController.get(GA_RESPONDENT_HEARING_PREFERENCE_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const claimId = normalizeRouteParam(req.params.id);
-    const appId = normalizeRouteParam(req.params.appId);
+    const claimId = getRouteParam(req, 'id');
+    const appId = getRouteParam(req, 'appId');
     const gaResponse = await getDraftGARespondentResponse(generateRedisKeyForGA(<AppRequest>req));
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const applicationType: string = getRespondToApplicationCaption(gaResponse.generalApplicationType, lang);

@@ -21,14 +21,14 @@ import {
 } from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
 import {constructResponseUrlWithIdAndAppIdParams} from 'common/utils/urlFormatter';
 import {YesNo} from 'form/models/yesNo';
-import {normalizeRouteParam} from 'common/utils/routeParamUtils';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const respondentAgreeToOrderController = Router();
 const viewPath = 'features/generalApplication/agree-to-order';
 
 respondentAgreeToOrderController.get(GA_AGREE_TO_ORDER_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const claimId = normalizeRouteParam(req.params.id);
+    const claimId = getRouteParam(req, 'id');
     const claim = await getClaimById(claimId, req, true);
     const gaResponse = await getDraftGARespondentResponse(generateRedisKeyForGA(<AppRequest>req));
     const cancelUrl = await getCancelUrl(claimId, claim);
@@ -52,8 +52,8 @@ respondentAgreeToOrderController.get(GA_AGREE_TO_ORDER_URL, (async (req: AppRequ
 respondentAgreeToOrderController.post(GA_AGREE_TO_ORDER_URL, (async (req: AppRequest | Request, res: Response, next: NextFunction) => {
   try {
     const redisKey = generateRedisKeyForGA(<AppRequest>req);
-    const claimId = normalizeRouteParam(req.params.id);
-    const applicationId = normalizeRouteParam(req.params.appId);
+    const claimId = getRouteParam(req, 'id');
+    const applicationId = getRouteParam(req, 'appId');
     const claim = await getClaimById(claimId, req, true);
     const cancelUrl = await getCancelUrl(claimId, claim);
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;

@@ -12,7 +12,7 @@ import {CertificateOfSatisfactionOrCancellation} from 'models/generalApplication
 import {
   getCertificateOfSatisfactionOrCancellation, saveCertificateOfSatisfactionOrCancellation,
 } from 'services/features/generalApplication/certOfSorC/certificateOfSatisfactionOrCancellationService';
-import {normalizeRouteParam} from 'common/utils/routeParamUtils';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const paymentDateViewPath = 'features/generalApplication/certOfSorC/final-payment-date';
 
@@ -23,7 +23,7 @@ defendantPaymentDateController
   .get(
     COSC_FINAL_PAYMENT_DATE_URL, async (req: Request, res: Response, next: NextFunction) => {
       try {
-        const claimId = normalizeRouteParam(req.params.id);
+        const claimId = getRouteParam(req, 'id');
         const cancelUrl = await getCancelUrl(claimId, null);
         const backLinkUrl = BACK_URL;
         const certificateOfSatisfactionOrCancellation: CertificateOfSatisfactionOrCancellation = await getCertificateOfSatisfactionOrCancellation(req);
@@ -37,7 +37,7 @@ defendantPaymentDateController
     })
   .post(
     COSC_FINAL_PAYMENT_DATE_URL, async (req, res, next: NextFunction) => {
-      const claimId = normalizeRouteParam(req.params.id);
+      const claimId = getRouteParam(req, 'id');
       const cancelUrl = await getCancelUrl(claimId, null);
       const backLinkUrl = BACK_URL;
       const defendantPaymentDate = new DefendantFinalPaymentDate(req.body.year, req.body.month, req.body.day);

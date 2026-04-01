@@ -18,7 +18,7 @@ import {
   saveHelpWithFeesDetails,
 } from 'services/features/generalApplication/generalApplicationService';
 import {getDraftGAHWFDetails} from 'modules/draft-store/gaHwFeesDraftStore';
-import {normalizeRouteParam} from 'common/utils/routeParamUtils';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const helpWithApplicationFeeContinueController = Router();
 const applyHelpWithFeesViewPath  = 'features/generalApplication/applicationFee/help-with-application-fee-continue';
@@ -30,9 +30,9 @@ async function renderView(res: Response, req: AppRequest | Request, form: Generi
   let backLinkUrl: string;
 
   if (feeTypeFlag) {
-    backLinkUrl = constructResponseUrlWithIdAndAppIdParams(normalizeRouteParam(req.params.id), normalizeRouteParam(req.params.appId), GA_APPLY_HELP_ADDITIONAL_FEE_SELECTION_URL + '?additionalFeeTypeFlag='+ feeTypeFlag);
+    backLinkUrl = constructResponseUrlWithIdAndAppIdParams(getRouteParam(req, 'id'), getRouteParam(req, 'appId'), GA_APPLY_HELP_ADDITIONAL_FEE_SELECTION_URL + '?additionalFeeTypeFlag='+ feeTypeFlag);
   } else {
-    backLinkUrl = constructResponseUrlWithIdAndAppIdParams(normalizeRouteParam(req.params.id), normalizeRouteParam(req.params.appId), GA_APPLY_HELP_WITH_FEE_SELECTION + '?additionalFeeTypeFlag='+ feeTypeFlag);
+    backLinkUrl = constructResponseUrlWithIdAndAppIdParams(getRouteParam(req, 'id'), getRouteParam(req, 'appId'), GA_APPLY_HELP_WITH_FEE_SELECTION + '?additionalFeeTypeFlag='+ feeTypeFlag);
   }
   if (!form) {
     form = new GenericForm(new GenericYesNo(gaHwFDetails?.helpWithFeesRequested));
@@ -48,7 +48,7 @@ async function renderView(res: Response, req: AppRequest | Request, form: Generi
 
 helpWithApplicationFeeContinueController.get(GA_APPLY_HELP_WITH_FEES, (async (req: AppRequest | Request, res: Response, next: NextFunction) => {
   try {
-    const claimId = normalizeRouteParam(req.params.id);
+    const claimId = getRouteParam(req, 'id');
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
     const isAdditionalFeeType = req.query.additionalFeeTypeFlag === 'true';
     await renderView(res, req, null, claimId, isAdditionalFeeType, lng);
@@ -59,10 +59,10 @@ helpWithApplicationFeeContinueController.get(GA_APPLY_HELP_WITH_FEES, (async (re
 
 helpWithApplicationFeeContinueController.post(GA_APPLY_HELP_WITH_FEES, (async (req: AppRequest | Request, res: Response, next: NextFunction) => {
   try {
-    const claimId = normalizeRouteParam(req.params.id);
+    const claimId = getRouteParam(req, 'id');
     const isAdditionalFeeType = req.query.additionalFeeTypeFlag === 'true';
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
-    const genAppId = normalizeRouteParam(req.params.appId);
+    const genAppId = getRouteParam(req, 'appId');
     const form = new GenericForm(new GenericYesNo(req.body.option, t('ERRORS.VALID_YES_NO_SELECTION_ALT', { lng })));
     await form.validate();
     if (form.hasErrors()) {

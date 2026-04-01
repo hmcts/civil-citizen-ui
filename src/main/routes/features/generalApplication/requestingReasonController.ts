@@ -21,7 +21,7 @@ import {
   ApplicationTypeOptionSelection,
   getApplicationTypeOptionByTypeAndDescription,
 } from 'models/generalApplication/applicationType';
-import {normalizeRouteParam} from 'common/utils/routeParamUtils';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const requestingReasonController = Router();
 const viewPath = 'features/generalApplication/requesting-reason';
@@ -29,7 +29,7 @@ const viewPath = 'features/generalApplication/requesting-reason';
 requestingReasonController.get(GA_REQUESTING_REASON_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
-    const claimId = normalizeRouteParam(req.params.id);
+    const claimId = getRouteParam(req, 'id');
     const claim = await getClaimById(claimId, req, true);
     const applicationIndex = queryParamNumber(req, 'index') || 0;
     const generalApplication = claim.generalApplication;
@@ -56,7 +56,7 @@ requestingReasonController.get(GA_REQUESTING_REASON_URL, (async (req: AppRequest
 requestingReasonController.post(GA_REQUESTING_REASON_URL, (async (req: AppRequest | Request, res: Response, next: NextFunction) => {
   try {
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
-    const claimId = normalizeRouteParam(req.params.id);
+    const claimId = getRouteParam(req, 'id');
     const claim = await getClaimById(claimId, req, true);
     const redisKey = generateRedisKey(<AppRequest>req);
     const requestingReason = new RequestingReason(req.body.text);

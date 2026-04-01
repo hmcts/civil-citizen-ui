@@ -12,7 +12,7 @@ import { getCancelUrl } from 'services/features/generalApplication/generalApplic
 import { NextFunction, RequestHandler, Response, Router } from 'express';
 import config from 'config';
 import { constructResponseUrlWithIdAndAppIdParams } from 'common/utils/urlFormatter';
-import {normalizeRouteParam} from 'common/utils/routeParamUtils';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const gaAdditionalDocCheckAnswerController = Router();
 const viewPath = 'features/generalApplication/additionalDocuments/check-answers';
@@ -21,8 +21,8 @@ const gaServiceClient: GaServiceClient = new GaServiceClient(generalAppApiBaseUr
 
 gaAdditionalDocCheckAnswerController.get(GA_UPLOAD_ADDITIONAL_DOCUMENTS_CYA_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const appId = normalizeRouteParam(req.params.appId);
-    const claimId = normalizeRouteParam(req.params.id);
+    const appId = getRouteParam(req, 'appId');
+    const claimId = getRouteParam(req, 'id');
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
     const claimIdPrettified = caseNumberPrettify(claimId);
     const claim = await getClaimDetailsById(req);
@@ -37,8 +37,8 @@ gaAdditionalDocCheckAnswerController.get(GA_UPLOAD_ADDITIONAL_DOCUMENTS_CYA_URL,
 
 gaAdditionalDocCheckAnswerController.post(GA_UPLOAD_ADDITIONAL_DOCUMENTS_CYA_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const appId = normalizeRouteParam(req.params.appId);
-    const claimId = normalizeRouteParam(req.params.id);
+    const appId = getRouteParam(req, 'appId');
+    const claimId = getRouteParam(req, 'id');
     const claim = await getClaimDetailsById(req);
     const uploadedDocuments = prepareCCDData(claim.generalApplication.uploadAdditionalDocuments);
     const generalApplication = {

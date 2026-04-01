@@ -46,7 +46,7 @@ import {
   isApplicationFullyVisibleToRespondentForClaimant,
 } from 'services/features/generalApplication/response/generalApplicationResponseService';
 import {isGaForWelshEnabled} from '../../../../app/auth/launchdarkly/launchDarklyClient';
-import {normalizeRouteParam} from 'common/utils/routeParamUtils';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const viewApplicationToRespondentController = Router();
 const viewPathPreResponse = 'features/generalApplication/response/view-application';
@@ -54,9 +54,9 @@ const viewPathPostResponse = 'features/generalApplication/view-applications';
 
 viewApplicationToRespondentController.get(GA_RESPONSE_VIEW_APPLICATION_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const claimId = normalizeRouteParam(req.params.id);
+    const claimId = getRouteParam(req, 'id');
     const claim: Claim = await getClaimById(claimId, req, true);
-    const applicationId = normalizeRouteParam(req.params.appId);
+    const applicationId = getRouteParam(req, 'appId');
     const applicationIndex = queryParamNumber(req, 'index') || await getApplicationIndex(claimId, applicationId, req, true);
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const applicationResponse: ApplicationResponse = await getApplicationFromGAService(req, applicationId);

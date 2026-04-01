@@ -7,7 +7,7 @@ import {
   getCancelUrl, shouldDisplaySyncWarning,
 } from 'services/features/generalApplication/generalApplicationService';
 import {getClaimById} from 'modules/utilityService';
-import {normalizeRouteParam} from 'common/utils/routeParamUtils';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 const applicationFeePaymentSuccessfulController: Router = Router();
 
 const paymentSuccessfulViewPath = 'features/generalApplication/payment-successful';
@@ -35,8 +35,8 @@ async function renderView(res: Response, req: AppRequest, claimId: string, appId
 
 applicationFeePaymentSuccessfulController.get([GA_PAYMENT_SUCCESSFUL_URL, GA_APPLICATION_SUBMITTED_URL, GA_PAYMENT_SUCCESSFUL_COSC_URL], (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const claimId = normalizeRouteParam(req.params.id);
-    const applicationId = normalizeRouteParam(req.params.appId);
+    const claimId = getRouteParam(req, 'id');
+    const applicationId = getRouteParam(req, 'appId');
     await renderView(res, req, claimId, applicationId);
   } catch (error) {
     next(error);

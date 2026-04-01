@@ -7,7 +7,7 @@ import {
 import {getClaimById} from 'modules/utilityService';
 import {constructResponseUrlWithIdAndAppIdParams} from 'common/utils/urlFormatter';
 import {AppRequest} from 'models/AppRequest';
-import {normalizeRouteParam} from 'common/utils/routeParamUtils';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const applicationPaymentUnsuccessfulViewPath = 'features/generalApplication/application-payment-unsuccessful';
 const applicationPaymentUnsuccessfulController: Router = Router();
@@ -15,8 +15,8 @@ const applicationPaymentUnsuccessfulController: Router = Router();
 applicationPaymentUnsuccessfulController.get([GA_PAYMENT_UNSUCCESSFUL_URL, GA_PAYMENT_UNSUCCESSFUL_COSC_URL], (req: AppRequest, res: Response, next: NextFunction) => {
   (async () => {
     try {
-      const claimId = normalizeRouteParam(req.params.id);
-      const appId = normalizeRouteParam(req.params.appId);
+      const claimId = getRouteParam(req, 'id');
+      const appId = getRouteParam(req, 'appId');
       const claim = await getClaimById(claimId, req, true);
       const applicationResponse = await getApplicationFromGAService(req, appId);
       const isAdditionalFee = !!applicationResponse?.case_data?.generalAppPBADetails?.additionalPaymentServiceRef;

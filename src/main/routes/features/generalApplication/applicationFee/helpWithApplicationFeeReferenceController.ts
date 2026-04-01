@@ -21,7 +21,7 @@ import {getHelpWithApplicationFeeReferenceContents,getButtonsContents}
 import {GenericYesNo} from 'form/models/genericYesNo';
 import {getDraftGAHWFDetails} from 'modules/draft-store/gaHwFeesDraftStore';
 import {ValidationError} from 'class-validator';
-import {normalizeRouteParam} from 'common/utils/routeParamUtils';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const applyHelpWithFeeReferenceViewPath  = 'features/generalApplication/applicationFee/help-with-application-fee-reference';
 const helpWithApplicationFeeReferenceController: Router = Router();
@@ -32,7 +32,7 @@ async function renderView(res: Response, req: AppRequest | Request, form: Generi
   if (!form.hasErrors()) {
     form = new GenericForm(gaHwFDetails?.helpFeeReferenceNumberForm);
   }
-  const backLinkUrl = constructResponseUrlWithIdAndAppIdParams(normalizeRouteParam(req.params.id), normalizeRouteParam(req.params.appId), GA_APPLY_HELP_WITH_FEES_START + '?additionalFeeTypeFlag='+ feeTypeFlag);
+  const backLinkUrl = constructResponseUrlWithIdAndAppIdParams(getRouteParam(req, 'id'), getRouteParam(req, 'appId'), GA_APPLY_HELP_WITH_FEES_START + '?additionalFeeTypeFlag='+ feeTypeFlag);
   const genericHelpFeeUrl : string = GENERIC_HELP_FEES_URL;
   res.render(applyHelpWithFeeReferenceViewPath,
     {
@@ -41,13 +41,13 @@ async function renderView(res: Response, req: AppRequest | Request, form: Generi
       genericHelpFeeUrl,
       redirectUrl,
       applyHelpWithFeeReferenceContents: getHelpWithApplicationFeeReferenceContents(feeTypeFlag),
-      applyHelpWithFeeReferenceButtonContents: getButtonsContents(claimId, normalizeRouteParam(req.params.appId)),
+      applyHelpWithFeeReferenceButtonContents: getButtonsContents(claimId, getRouteParam(req, 'appId')),
     });
 }
 
 helpWithApplicationFeeReferenceController.get(GA_APPLY_HELP_WITH_FEE_REFERENCE, (async (req, res, next: NextFunction) => {
   try{
-    const claimId = normalizeRouteParam(req.params.id);
+    const claimId = getRouteParam(req, 'id');
     const isAdditionalFeeType = req.query.additionalFeeTypeFlag === 'true';
     const redirectUrl = constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL);
     await renderView(res, req, new GenericForm(new ApplyHelpFeesReferenceForm()), claimId, redirectUrl, isAdditionalFeeType);
@@ -59,9 +59,9 @@ helpWithApplicationFeeReferenceController.get(GA_APPLY_HELP_WITH_FEE_REFERENCE, 
 helpWithApplicationFeeReferenceController.post(GA_APPLY_HELP_WITH_FEE_REFERENCE, (async (req: AppRequest | Request, res: Response, next) => {
   try{
 
-    const claimId = normalizeRouteParam(req.params.id);
+    const claimId = getRouteParam(req, 'id');
     const isAdditionalFeeType = req.query.additionalFeeTypeFlag === 'true';
-    const genAppId = normalizeRouteParam(req.params.appId);
+    const genAppId = getRouteParam(req, 'appId');
     const form = new GenericForm(new ApplyHelpFeesReferenceForm(req.body.option, req.body.referenceNumber));
     await form.validate();
     if (form.hasErrors()) {

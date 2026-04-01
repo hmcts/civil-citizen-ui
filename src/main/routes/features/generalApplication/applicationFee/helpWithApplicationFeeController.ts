@@ -20,7 +20,7 @@ import {
 import {getDraftGAHWFDetails} from 'modules/draft-store/gaHwFeesDraftStore';
 import {generateRedisKey, generateRedisKeyForGA} from 'modules/draft-store/draftStoreService';
 import {saveDraftClaim} from 'modules/draft-store/draftStoreService';
-import {normalizeRouteParam} from 'common/utils/routeParamUtils';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const applyHelpWithApplicationFeeViewPath  = 'features/generalApplication/applicationFee/help-with-application-fee';
 const helpWithApplicationFeeController = Router();
@@ -42,7 +42,7 @@ async function renderView(res: Response, req: AppRequest | Request, form: Generi
   if (req.query.id) {
     backLinkUrl = constructResponseUrlWithIdParams(claimId, GENERAL_APPLICATION_CONFIRM_URL) + '?id=' + req.query.id + '&appFee=' + Number(req.query.appFee);
   } else {
-    const appId = normalizeRouteParam(req.params.appId);
+    const appId = getRouteParam(req, 'appId');
     const index = await getApplicationIndex(claimId, appId, <AppRequest>req);
     backLinkUrl =`${constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_VIEW_APPLICATION_URL)}?index=${index + 1}`;
   }
@@ -58,7 +58,7 @@ async function renderView(res: Response, req: AppRequest | Request, form: Generi
 helpWithApplicationFeeController.get([GA_APPLY_HELP_WITH_FEE_SELECTION, GA_APPLY_HELP_WITH_OUT_APPID_FEE_SELECTION], (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
-    const claimId = normalizeRouteParam(req.params.id);
+    const claimId = getRouteParam(req, 'id');
     await renderView(res, req, null, claimId, lng);
   }catch (error) {
     next(error);
@@ -68,7 +68,7 @@ helpWithApplicationFeeController.get([GA_APPLY_HELP_WITH_FEE_SELECTION, GA_APPLY
 helpWithApplicationFeeController.post([GA_APPLY_HELP_WITH_FEE_SELECTION, GA_APPLY_HELP_WITH_OUT_APPID_FEE_SELECTION], (async (req: AppRequest | Request, res: Response, next: NextFunction) => {
   try {
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
-    const claimId = normalizeRouteParam(req.params.id);
+    const claimId = getRouteParam(req, 'id');
     const form = new GenericForm(new GenericYesNo(req.body.option, 'ERRORS.GENERAL_APPLICATION.PAY_APPLICATION_FEE'));
     await form.validate();
     if (form.hasErrors()) {

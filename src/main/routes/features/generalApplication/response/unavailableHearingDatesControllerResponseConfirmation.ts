@@ -25,7 +25,7 @@ import {
   getDraftGARespondentResponse,
 } from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
 import {GaResponse} from 'models/generalApplication/response/gaResponse';
-import {normalizeRouteParam} from 'common/utils/routeParamUtils';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const viewPath = 'features/generalApplication/unavailable-dates-confirmation.njk';
 const gaUnavailabilityDatesResponseConfirmationController = Router();
@@ -45,7 +45,7 @@ const renderView = async (claimId: string, gaResponse: GaResponse, claim: Claim,
 gaUnavailabilityDatesResponseConfirmationController.get(GA_UNAVAILABILITY_RESPONSE_CONFIRMATION_URL, (async (req, res, next: NextFunction) => {
   try {
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
-    const claimId = normalizeRouteParam(req.params.id);
+    const claimId = getRouteParam(req, 'id');
     const gaRedisKey = generateRedisKeyForGA(<AppRequest>req);
     const claim = await getClaimById(claimId, req, true);
     const gaResponse = await getDraftGARespondentResponse(gaRedisKey);
@@ -60,8 +60,8 @@ gaUnavailabilityDatesResponseConfirmationController.get(GA_UNAVAILABILITY_RESPON
 gaUnavailabilityDatesResponseConfirmationController.post(GA_UNAVAILABILITY_RESPONSE_CONFIRMATION_URL, (async (req, res, next: NextFunction) => {
   try {
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
-    const claimId = normalizeRouteParam(req.params.id);
-    const appId = normalizeRouteParam(req.params.appId);
+    const claimId = getRouteParam(req, 'id');
+    const appId = getRouteParam(req, 'appId');
     const optionSelected = req.body.option;
     const gaRedisKey = generateRedisKeyForGA(<AppRequest>req);
     const claim = await getClaimById(claimId, req, true);

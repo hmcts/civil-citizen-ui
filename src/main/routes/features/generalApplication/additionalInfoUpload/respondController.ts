@@ -26,7 +26,7 @@ import {
 import {YesNo} from 'form/models/yesNo';
 import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
 import {DocumentType} from 'models/document/documentType';
-import {normalizeRouteParam} from 'common/utils/routeParamUtils';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const respondAddInfoController = Router();
 const viewPath = 'features/generalApplication/additionalInfoUpload/additional-info';
@@ -34,8 +34,8 @@ const headerCaption = 'PAGES.GENERAL_APPLICATION.RESPONDENT_UPLOAD_OPTION.TITLE'
 
 respondAddInfoController.get(GA_RESPOND_ADDITIONAL_INFO_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const appId = normalizeRouteParam(req.params.appId);
-    const claimId = normalizeRouteParam(req.params.id);
+    const appId = getRouteParam(req, 'appId');
+    const claimId = getRouteParam(req, 'id');
     const currentUrl = constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_RESPOND_ADDITIONAL_INFO_URL);
     const claimIdPrettified = caseNumberPrettify(claimId);
     const claim = await getClaimById(claimId, req, true);
@@ -58,8 +58,8 @@ respondAddInfoController.post(GA_RESPOND_ADDITIONAL_INFO_URL, (async (req: AppRe
   try {
     const option = req.body.option;
     const text = req.body.additionalText;
-    const appId = normalizeRouteParam(req.params.appId);
-    const claimId = normalizeRouteParam(req.params.id);
+    const appId = getRouteParam(req, 'appId');
+    const claimId = getRouteParam(req, 'id');
     const currentUrl = constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_RESPOND_ADDITIONAL_INFO_URL);
     const respondAddInfo = new RespondAddInfo(
       option,

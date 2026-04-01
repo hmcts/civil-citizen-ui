@@ -20,7 +20,7 @@ import {constructResponseUrlWithIdParams, constructUrlWithIndex} from 'common/ut
 import {YesNo} from 'form/models/yesNo';
 import {removeAllUploadedDocuments} from 'services/features/generalApplication/uploadEvidenceDocumentService';
 import {queryParamNumber} from 'common/utils/requestUtils';
-import {normalizeRouteParam} from 'common/utils/routeParamUtils';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const wantToUploadDocumentsController = Router();
 const viewPath = 'features/generalApplication/want-to-upload-documents';
@@ -38,7 +38,7 @@ async function renderView(form: GenericForm<GenericYesNo>, claim: Claim, claimId
 
 wantToUploadDocumentsController.get(GA_WANT_TO_UPLOAD_DOCUMENTS_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const claimId = normalizeRouteParam(req.params.id);
+    const claimId = getRouteParam(req, 'id');
     const claim = await getClaimById(claimId, req, true);
     const index  = queryParamNumber(req, 'index') || claim.generalApplication.applicationTypes.length - 1;
     const form = new GenericForm(new GenericYesNo(claim.generalApplication?.wantToUploadDocuments));
@@ -50,7 +50,7 @@ wantToUploadDocumentsController.get(GA_WANT_TO_UPLOAD_DOCUMENTS_URL, (async (req
 
 wantToUploadDocumentsController.post(GA_WANT_TO_UPLOAD_DOCUMENTS_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const claimId = normalizeRouteParam(req.params.id);
+    const claimId = getRouteParam(req, 'id');
 
     const claim = await getClaimById(claimId, req, true);
     const index  = queryParamNumber(req, 'index') || claim.generalApplication.applicationTypes.length - 1;

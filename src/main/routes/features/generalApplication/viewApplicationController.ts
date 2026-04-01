@@ -32,15 +32,15 @@ import {getClaimById} from 'modules/utilityService';
 import {deleteDraftClaimFromStore} from 'modules/draft-store/draftStoreService';
 import {canUploadAddlDoc} from 'services/features/generalApplication/additionalDocumentService';
 import {displayToEnumKey} from 'services/translation/convertToCUI/cuiTranslation';
-import {normalizeRouteParam} from 'common/utils/routeParamUtils';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const viewApplicationController = Router();
 const viewPath = 'features/generalApplication/view-applications';
 
 viewApplicationController.get(GA_VIEW_APPLICATION_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const claimId = normalizeRouteParam(req.params.id);
-    const applicationId = normalizeRouteParam(req.params.appId);
+    const claimId = getRouteParam(req, 'id');
+    const applicationId = getRouteParam(req, 'appId');
     const claim: Claim = await getClaimById(claimId, req, true);
     const applicationIndex = queryParamNumber(req, 'index') || await getApplicationIndex(claimId, applicationId, req, true);
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;

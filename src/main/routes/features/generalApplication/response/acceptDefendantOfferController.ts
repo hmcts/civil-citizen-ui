@@ -26,7 +26,7 @@ import {GaResponse} from 'models/generalApplication/response/gaResponse';
 import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
 import {formN245Url} from 'common/utils/externalURLs';
 import {documentIdExtractor} from 'common/utils/stringUtils';
-import {normalizeRouteParam} from 'common/utils/routeParamUtils';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const acceptDefendantOfferController = Router();
 const viewPath = 'features/generalApplication/response/accept-defendant-offer';
@@ -45,8 +45,8 @@ const renderView = async (claimId: string, claim: Claim, form: GenericForm<Accep
 
 acceptDefendantOfferController.get(GA_ACCEPT_DEFENDANT_OFFER_URL, async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const claimId = normalizeRouteParam(req.params.id);
-    const applicationId = normalizeRouteParam(req.params.appId);
+    const claimId = getRouteParam(req, 'id');
+    const applicationId = getRouteParam(req, 'appId');
     const lang = req.query.lang || req.cookies.lang;
     const redisKey = generateRedisKey(req);
     const claim = await getCaseDataFromStore(redisKey);
@@ -74,20 +74,20 @@ acceptDefendantOfferController.post(GA_ACCEPT_DEFENDANT_OFFER_URL, (async (req: 
       req.body.reasonProposedSetDate,
     );
     const form = new GenericForm(acceptDefendantOffer);
-    const claimId = normalizeRouteParam(req.params.id);
+    const claimId = getRouteParam(req, 'id');
     await form.validate();
     if (form.hasErrors()) {
       const redisKey = generateRedisKey(req);
       const claim = await getCaseDataFromStore(redisKey);
       const gaResponse = await getDraftGARespondentResponse(generateRedisKeyForGA(req));
       const lang = req.query.lang || req.cookies.lang;
-      const applicationId = normalizeRouteParam(req.params.appId);
+      const applicationId = getRouteParam(req, 'appId');
       const applicationResponse: ApplicationResponse = await getApplicationFromGAService(req, applicationId);
       const n245Doc = getN245(applicationResponse, applicationId);
       return await renderView(claimId, claim, form, lang, applicationId, gaResponse, res, n245Doc);
     }
     await saveAcceptDefendantOffer(generateRedisKeyForGA(req), acceptDefendantOffer);
-    const applicationId = normalizeRouteParam(req.params.appId);
+    const applicationId = getRouteParam(req, 'appId');
     res.redirect(constructResponseUrlWithIdAndAppIdParams(claimId, applicationId, GA_RESPONDENT_WANT_TO_UPLOAD_DOCUMENT_URL));
   } catch (error) {
     next(error);

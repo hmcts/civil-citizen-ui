@@ -23,7 +23,7 @@ import {constructResponseUrlWithIdAndAppIdParams} from 'common/utils/urlFormatte
 import {GaResponse} from 'models/generalApplication/response/gaResponse';
 import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
 import {interpreterUrl} from 'common/utils/externalURLs';
-import {normalizeRouteParam} from 'common/utils/routeParamUtils';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const hearingSupportResponseController = Router();
 const viewPath = 'features/generalApplication/hearing-support';
@@ -31,7 +31,7 @@ const viewPath = 'features/generalApplication/hearing-support';
 async function renderView(gaResponse: GaResponse, claim: Claim, form: GenericForm<HearingSupport>, req: AppRequest | Request, res: Response): Promise<void> {
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
   const headerTitle = getRespondToApplicationCaption(gaResponse.generalApplicationType, lang);
-  const claimId = normalizeRouteParam(req.params.id);
+  const claimId = getRouteParam(req, 'id');
   const cancelUrl = await getCancelUrl(claimId, claim);
   const backLinkUrl = BACK_URL;
   const headingTitle = getHearingSupportCaption(lang);
@@ -41,7 +41,7 @@ async function renderView(gaResponse: GaResponse, claim: Claim, form: GenericFor
 
 hearingSupportResponseController.get(GA_RESPONSE_HEARING_SUPPORT_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const claimId = normalizeRouteParam(req.params.id);
+    const claimId = getRouteParam(req, 'id');
     const claim = await getClaimById(claimId, req, true);
     const gaResponse = await getDraftGARespondentResponse(generateRedisKeyForGA(req));
     const hearingSupport = gaResponse?.hearingSupport || new HearingSupport([]);
@@ -54,7 +54,7 @@ hearingSupportResponseController.get(GA_RESPONSE_HEARING_SUPPORT_URL, (async (re
 
 hearingSupportResponseController.post(GA_RESPONSE_HEARING_SUPPORT_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const claimId = normalizeRouteParam(req.params.id);
+    const claimId = getRouteParam(req, 'id');
     const claim = await getClaimById(claimId, req, true);
     const hearingSupport: HearingSupport = new HearingSupport(HearingSupport.convertToArray(req.body.requiredSupport),
       req.body.signLanguageContent, req.body.languageContent, req.body.otherContent);
@@ -66,7 +66,7 @@ hearingSupportResponseController.post(GA_RESPONSE_HEARING_SUPPORT_URL, (async (r
       await renderView(gaResponse, claim, form, req, res);
     } else {
       await saveRespondentHearingSupport(generateRedisKeyForGA(req), hearingSupport);
-      const appId = normalizeRouteParam(req.params.appId);
+      const appId = getRouteParam(req, 'appId');
       res.redirect(constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_RESPONSE_CHECK_ANSWERS_URL));
     }
   } catch (error) {

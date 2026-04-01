@@ -23,7 +23,7 @@ import { YesNoUpperCamelCase } from 'form/models/yesNo';
 import {
   isApplicationVisibleToRespondentForClaimant,
 } from 'services/features/generalApplication/response/generalApplicationResponseService';
-import {normalizeRouteParam} from 'common/utils/routeParamUtils';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const applicationSummaryController = Router();
 const viewPath = 'features/generalApplication/applications-summary';
@@ -36,7 +36,7 @@ const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServi
 applicationSummaryController.get(GA_APPLICATION_SUMMARY_URL, async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const lng = req.query.lang || req.cookies.lang;
-    const claimId = normalizeRouteParam(req.params.id);
+    const claimId = getRouteParam(req, 'id');
     const claim = await getClaimById(claimId, req, true);
     const ccdClaim: Claim = await civilServiceClient.retrieveClaimDetails(claimId, req);
     const applications = await generalApplicationServiceClient.getApplicationsByCaseId(claimId, req) || [];

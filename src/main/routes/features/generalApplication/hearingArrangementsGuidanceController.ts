@@ -11,13 +11,13 @@ import {constructResponseUrlWithIdParams, constructUrlWithIndex} from 'common/ut
 import { getDynamicHeaderForMultipleApplications } from 'services/features/generalApplication/generalApplicationService';
 import {getCancelUrl} from 'services/features/generalApplication/generalApplicationService';
 import {queryParamNumber} from 'common/utils/requestUtils';
-import {normalizeRouteParam} from 'common/utils/routeParamUtils';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const hearingArrangementsGuidanceController = Router();
 const viewPath = 'features/generalApplication/hearing_arrangements_guidance';
 
 hearingArrangementsGuidanceController.get(GA_HEARING_ARRANGEMENTS_GUIDANCE_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
-  const claimId = normalizeRouteParam(req.params.id);
+  const claimId = getRouteParam(req, 'id');
   const claim = await getClaimById(claimId, req, true);
   const index  = queryParamNumber(req, 'index');
   const backLinkUrl = BACK_URL;

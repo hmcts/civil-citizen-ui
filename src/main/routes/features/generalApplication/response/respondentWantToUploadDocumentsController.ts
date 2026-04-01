@@ -24,7 +24,7 @@ import {
   getDraftGARespondentResponse,
 } from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
 import {GaResponse} from 'models/generalApplication/response/gaResponse';
-import {normalizeRouteParam} from 'common/utils/routeParamUtils';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const respondentWantToUploadDocumentsController = Router();
 const viewPath = 'features/generalApplication/response/respondent-want-to-upload-documents';
@@ -32,7 +32,7 @@ const viewPath = 'features/generalApplication/response/respondent-want-to-upload
 async function renderView(req: AppRequest | Request, form: GenericForm<GenericYesNo>, claim: Claim, gaResponse: GaResponse, backLinkUrl: string, res: Response): Promise<void> {
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
   const applicationType: string = getRespondToApplicationCaption(gaResponse.generalApplicationType, lang);
-  const claimId = normalizeRouteParam(req.params.id);
+  const claimId = getRouteParam(req, 'id');
   const cancelUrl = await getCancelUrl(claimId, claim);
   res.render(viewPath, {
     form,
@@ -44,7 +44,7 @@ async function renderView(req: AppRequest | Request, form: GenericForm<GenericYe
 
 respondentWantToUploadDocumentsController.get(GA_RESPONDENT_WANT_TO_UPLOAD_DOCUMENT_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const claimId = normalizeRouteParam(req.params.id);
+    const claimId = getRouteParam(req, 'id');
     const claim = await getClaimById(claimId, req, true);
     const gaResponse = await getDraftGARespondentResponse(generateRedisKeyForGA(req));
     const backLinkUrl = BACK_URL;
@@ -57,8 +57,8 @@ respondentWantToUploadDocumentsController.get(GA_RESPONDENT_WANT_TO_UPLOAD_DOCUM
 
 respondentWantToUploadDocumentsController.post(GA_RESPONDENT_WANT_TO_UPLOAD_DOCUMENT_URL, (async (req: AppRequest | Request, res: Response, next: NextFunction) => {
   try {
-    const claimId = normalizeRouteParam(req.params.id);
-    const appId = normalizeRouteParam(req.params.appId);
+    const claimId = getRouteParam(req, 'id');
+    const appId = getRouteParam(req, 'appId');
     const claim = await getClaimById(claimId, req, true);
     const gaResponse = await getDraftGARespondentResponse(generateRedisKeyForGA(<AppRequest>req));
     const backLinkUrl = BACK_URL;

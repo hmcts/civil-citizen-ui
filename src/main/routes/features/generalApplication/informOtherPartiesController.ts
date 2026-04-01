@@ -15,13 +15,13 @@ import {
   getApplicationTypeOptionByTypeAndDescription,
 } from 'models/generalApplication/applicationType';
 import {queryParamNumber} from 'common/utils/requestUtils';
-import {normalizeRouteParam} from 'common/utils/routeParamUtils';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const viewPath = 'features/generalApplication/inform-other-parties';
 const informOtherPartiesController = Router();
 
 const renderView = async (req: AppRequest, res: Response, form?: GenericForm<InformOtherParties>): Promise<void> => {
-  const claimId = normalizeRouteParam(req.params.id);
+  const claimId = getRouteParam(req, 'id');
   const redisKey = generateRedisKey(req);
   const claim = await getCaseDataFromStore(redisKey);
   const cancelUrl = await getCancelUrl(claimId, claim);
@@ -54,7 +54,7 @@ informOtherPartiesController.post(INFORM_OTHER_PARTIES_URL, (async (req: AppRequ
     }
     await saveInformOtherParties(generateRedisKey(req), informOtherParties);
     const index  = queryParamNumber(req, 'index');
-    const claimId = normalizeRouteParam(req.params.id);
+    const claimId = getRouteParam(req, 'id');
     res.redirect(constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, GA_APPLICATION_COSTS_URL), index));
   } catch (error) {
     next(error);

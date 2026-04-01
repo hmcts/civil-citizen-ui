@@ -13,7 +13,7 @@ import {
   saveCertificateOfSatisfactionOrCancellation,
 } from 'services/features/generalApplication/certOfSorC/certificateOfSatisfactionOrCancellationService';
 import {CertificateOfSatisfactionOrCancellation} from 'models/generalApplication/CertificateOfSatisfactionOrCancellation';
-import {normalizeRouteParam} from 'common/utils/routeParamUtils';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const debtPaymentEvidenceController = Router();
 const debtPaymentEvidenceViewPath = 'features/generalApplication/certOfSorC/debt-payment-evidence';
@@ -33,7 +33,7 @@ function renderView(form: GenericForm<DebtPaymentEvidence>, res: Response, claim
 
 debtPaymentEvidenceController.get(GA_DEBT_PAYMENT_EVIDENCE_COSC_URL, (async (req, res, next: NextFunction) => {
   try {
-    const claimId = normalizeRouteParam(req.params.id);
+    const claimId = getRouteParam(req, 'id');
     const certificateOfSatisfactionOrCancellation: CertificateOfSatisfactionOrCancellation = await getCertificateOfSatisfactionOrCancellation(req);
     const cancelUrl = await getCancelUrl(claimId, null);
     const form: DebtPaymentEvidence = certificateOfSatisfactionOrCancellation?.debtPaymentEvidence
@@ -48,7 +48,7 @@ debtPaymentEvidenceController.post(GA_DEBT_PAYMENT_EVIDENCE_COSC_URL,
   (async (req: Request, res: Response, next: NextFunction) => {
     try {
       let nextPageUrl = '';
-      const claimId = normalizeRouteParam(req.params.id);
+      const claimId = getRouteParam(req, 'id');
       const cancelUrl = await getCancelUrl(claimId, null);
       const form = new GenericForm(new DebtPaymentEvidence(req.body.debtPaymentOption, req.body.provideDetails));
       form.validateSync();

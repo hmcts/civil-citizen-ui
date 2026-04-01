@@ -19,7 +19,7 @@ import {
 import {queryParamNumber} from 'common/utils/requestUtils';
 import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
 import {interpreterUrl} from 'common/utils/externalURLs';
-import {normalizeRouteParam} from 'common/utils/routeParamUtils';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const hearingSupportController = Router();
 const viewPath = 'features/generalApplication/hearing-support';
@@ -40,7 +40,7 @@ async function renderView(claimId: string, claim: Claim, form: GenericForm<Heari
 hearingSupportController.get(GA_HEARING_SUPPORT_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
-    const claimId = normalizeRouteParam(req.params.id);
+    const claimId = getRouteParam(req, 'id');
     const claim = await getClaimById(claimId, req, true);
     const index  = queryParamNumber(req, 'index') || (claim.generalApplication?.applicationTypes?.length - 1 || 0);
     const hearingSupport = claim.generalApplication?.hearingSupport || new HearingSupport([]);
@@ -54,7 +54,7 @@ hearingSupportController.get(GA_HEARING_SUPPORT_URL, (async (req: AppRequest, re
 hearingSupportController.post(GA_HEARING_SUPPORT_URL, (async (req: AppRequest | Request, res: Response, next: NextFunction) => {
   try {
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
-    const claimId = normalizeRouteParam(req.params.id);
+    const claimId = getRouteParam(req, 'id');
     const claim = await getClaimById(claimId, req, true);
     const redisKey = generateRedisKey(<AppRequest>req);
     const index  = queryParamNumber(req, 'index') || (claim.generalApplication?.applicationTypes?.length - 1 || 0);

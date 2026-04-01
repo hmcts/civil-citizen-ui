@@ -16,7 +16,7 @@ import { getUploadFormContent, uploadSelectedFile } from 'services/features/gene
 import {uploadN245FormControllerGuard} from 'routes/guards/generalApplication/uploadN245FormControllerGuard';
 import {UploadN245GAFiles} from 'models/generalApplication/uploadN245GAFiles';
 import { createMulterErrorMiddlewareForSingleField, getFileUploadErrorsForSource, FILE_UPLOAD_SOURCE } from 'common/utils/fileUploadUtils';
-import {normalizeRouteParam} from 'common/utils/routeParamUtils';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 import { handleMulterError } from 'services/features/generalApplication/uploadEvidenceDocumentService';
 
 const uploadN245FormController = Router();
@@ -30,7 +30,7 @@ const multerMiddleware = createMulterErrorMiddlewareForSingleField(selectedFile,
 uploadN245FormController.get(GA_UPLOAD_N245_FORM_URL, uploadN245FormControllerGuard, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
-    const claimId = normalizeRouteParam(req.params.id);
+    const claimId = getRouteParam(req, 'id');
     const claim = await getClaimById(claimId, req, true);
     const contentList = getUploadFormContent(lng);
     const redisKey = generateRedisKey(<AppRequest>req);
@@ -65,7 +65,7 @@ uploadN245FormController.get(GA_UPLOAD_N245_FORM_URL, uploadN245FormControllerGu
 uploadN245FormController.post(GA_UPLOAD_N245_FORM_URL, multerMiddleware, uploadN245FormControllerGuard, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
-    const claimId = normalizeRouteParam(req.params.id);
+    const claimId = getRouteParam(req, 'id');
     const currentUrl = constructResponseUrlWithIdParams(claimId, GA_UPLOAD_N245_FORM_URL);
     const redisKey = generateRedisKey(req);
     const claim: Claim = await getCaseDataFromStore(redisKey);

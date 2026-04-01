@@ -21,7 +21,7 @@ import {
   getDraftGARespondentResponse,
 } from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
 import {GaResponse} from 'models/generalApplication/response/gaResponse';
-import {normalizeRouteParam} from 'common/utils/routeParamUtils';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const hearingArrangementResponseController = Router();
 const viewPath = 'features/generalApplication/hearing-arrangement';
@@ -29,7 +29,7 @@ const viewPath = 'features/generalApplication/hearing-arrangement';
 async function renderView(gaResponse: GaResponse, claim: Claim, form: GenericForm<HearingArrangement>, req: AppRequest | Request, res: Response): Promise<void> {
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
   const headerTitle = getRespondToApplicationCaption(gaResponse.generalApplicationType, lang);
-  const claimId = normalizeRouteParam(req.params.id);
+  const claimId = getRouteParam(req, 'id');
   const cancelUrl = await getCancelUrl(claimId, claim);
   const courtLocations = await getListOfCourtLocations(<AppRequest> req);
   const backLinkUrl = BACK_URL;
@@ -39,7 +39,7 @@ async function renderView(gaResponse: GaResponse, claim: Claim, form: GenericFor
 
 hearingArrangementResponseController.get(GA_RESPONSE_HEARING_ARRANGEMENT_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const claimId = normalizeRouteParam(req.params.id);
+    const claimId = getRouteParam(req, 'id');
     const claim = await getClaimById(claimId, req, true);
     const gaResponse = await getDraftGARespondentResponse(generateRedisKeyForGA(req));
     const hearingArrangement = gaResponse?.hearingArrangement || new HearingArrangement();
@@ -52,7 +52,7 @@ hearingArrangementResponseController.get(GA_RESPONSE_HEARING_ARRANGEMENT_URL, (a
 
 hearingArrangementResponseController.post(GA_RESPONSE_HEARING_ARRANGEMENT_URL, (async (req: AppRequest | Request, res: Response, next: NextFunction) => {
   try {
-    const claimId = normalizeRouteParam(req.params.id);
+    const claimId = getRouteParam(req, 'id');
     const claim = await getClaimById(claimId, req, true);
     const hearingArrangement: HearingArrangement = new HearingArrangement(req.body.option, req.body.reasonForPreferredHearingType, req.body.courtLocation);
     const form = new GenericForm(hearingArrangement);
@@ -62,7 +62,7 @@ hearingArrangementResponseController.post(GA_RESPONSE_HEARING_ARRANGEMENT_URL, (
       await renderView(gaResponse, claim, form, req, res);
     } else {
       await saveRespondentHearingArrangement(generateRedisKeyForGA(<AppRequest>req), hearingArrangement);
-      const appId = normalizeRouteParam(req.params.appId);
+      const appId = getRouteParam(req, 'appId');
       res.redirect(constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_RESPONSE_HEARING_CONTACT_DETAILS_URL));
     }
   } catch (error) {

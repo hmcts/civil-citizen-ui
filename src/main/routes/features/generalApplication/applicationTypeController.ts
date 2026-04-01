@@ -22,7 +22,7 @@ import { queryParamNumber } from 'common/utils/requestUtils';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {isQueryManagementEnabled} from '../../../app/auth/launchdarkly/launchDarklyClient';
 import {YesNo} from 'form/models/yesNo';
-import {normalizeRouteParam} from 'common/utils/routeParamUtils';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const applicationTypeController = Router();
 const viewPath = 'features/generalApplication/application-type';
@@ -39,7 +39,7 @@ applicationTypeController.get(APPLICATION_TYPE_URL, (async (req: AppRequest, res
       await deleteGAFromClaimsByUserId(req.session?.user?.id);
     }
 
-    const claimId = normalizeRouteParam(req.params.id);
+    const claimId = getRouteParam(req, 'id');
     const claim = await getClaimById(claimId, req, true);
 
     const applicationTypeOption = getByIndex(claim.generalApplication?.applicationTypes, applicationIndex)?.option;
@@ -84,7 +84,7 @@ applicationTypeController.post(APPLICATION_TYPE_URL, (async (req: AppRequest | R
     if(!applicationIndex && applicationIndex != 0) {
       validateAdditionalApplicationtType(claim,form.errors,applicationType,req.body);
     }
-    const claimId = normalizeRouteParam(req.params.id);
+    const claimId = getRouteParam(req, 'id');
     const cancelUrl = await getCancelUrl(claimId, claim);
     const backLinkUrl = BACK_URL;
 

@@ -16,7 +16,7 @@ import {getGADocumentsFromDraftStore} from 'modules/draft-store/draftGADocumentS
 import {generateRedisKeyForGA} from 'modules/draft-store/draftStoreService';
 import {getClaimById} from 'modules/utilityService';
 import {translateCUItoCCD} from 'services/features/generalApplication/documentUpload/uploadDocumentsService';
-import {normalizeRouteParam} from 'common/utils/routeParamUtils';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const gaDirectionOrderCheckAnswersController = Router();
 const viewPath = 'features/generalApplication/directionsOrderUpload/check-answers';
@@ -25,8 +25,8 @@ const gaServiceClient: GaServiceClient = new GaServiceClient(generalAppApiBaseUr
 
 gaDirectionOrderCheckAnswersController.get(GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_CYA_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const appId = normalizeRouteParam(req.params.appId);
-    const claimId = normalizeRouteParam(req.params.id);
+    const appId = getRouteParam(req, 'appId');
+    const claimId = getRouteParam(req, 'id');
     const claimIdPrettified = caseNumberPrettify(claimId);
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
     const claim = await getClaimById(claimId, req, true);
@@ -42,8 +42,8 @@ gaDirectionOrderCheckAnswersController.get(GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_C
 
 gaDirectionOrderCheckAnswersController.post(GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_CYA_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const appId = normalizeRouteParam(req.params.appId);
-    const claimId = normalizeRouteParam(req.params.id);
+    const appId = getRouteParam(req, 'appId');
+    const claimId = getRouteParam(req, 'id');
     const uploadedDocumentList = await getGADocumentsFromDraftStore(generateRedisKeyForGA(req));
     const uploadedDocument = translateCUItoCCD(uploadedDocumentList);
     const generalApplication = {

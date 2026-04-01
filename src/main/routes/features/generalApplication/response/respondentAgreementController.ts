@@ -16,7 +16,7 @@ import {
 import { getDraftGARespondentResponse } from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
 import {GaResponse} from 'models/generalApplication/response/gaResponse';
 import {constructResponseUrlWithIdAndAppIdParams} from 'common/utils/urlFormatter';
-import {normalizeRouteParam} from 'common/utils/routeParamUtils';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const respondentAgreementController = Router();
 const viewPath = 'features/generalApplication/respondent-agreement';
@@ -33,8 +33,8 @@ const renderView = async (claimId: string, claim: Claim, form: GenericForm<Respo
 };
 
 respondentAgreementController.get(GA_RESPONDENT_AGREEMENT_URL, async (req: AppRequest, res: Response, next: NextFunction) => {
-  const claimId = normalizeRouteParam(req.params.id);
-  const appId = normalizeRouteParam(req.params.appId);
+  const claimId = getRouteParam(req, 'id');
+  const appId = getRouteParam(req, 'appId');
   const lang = req.query.lang || req.cookies.lang;
   const redisKey = generateRedisKey(req);
   const claim = await getCaseDataFromStore(redisKey);
@@ -52,8 +52,8 @@ respondentAgreementController.post(GA_RESPONDENT_AGREEMENT_URL, (async (req: App
     const { option, reasonForDisagreement } = req.body;
     const respondentAgreement = new RespondentAgreement(option, reasonForDisagreement);
     const form = new GenericForm(respondentAgreement);
-    const claimId = normalizeRouteParam(req.params.id);
-    const appId = normalizeRouteParam(req.params.appId);
+    const claimId = getRouteParam(req, 'id');
+    const appId = getRouteParam(req, 'appId');
     await form.validate();
     if (form.hasErrors()) {
       const redisKey = generateRedisKey(req);
