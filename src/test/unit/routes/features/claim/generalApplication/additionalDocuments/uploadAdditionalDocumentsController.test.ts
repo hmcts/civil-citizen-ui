@@ -220,7 +220,7 @@ describe('uploadAdditionalDocumentsController', () => {
       (getCancelUrl as jest.Mock).mockResolvedValue(cancelUrl);
       (getSummaryList as jest.Mock).mockReturnValue({});
       (removeSelectedDocument as jest.Mock).mockReturnValueOnce(void 0);
-      app.request.session = { fileUpload: JSON.stringify(errors), fileUploadSource: FILE_UPLOAD_SOURCE.GA_ADDITIONAL_DOCUMENTS } as unknown as Session;
+      app.request.session = { fileUpload: JSON.stringify(errors), fileUploadSource: FILE_UPLOAD_SOURCE.GA_ADDITIONAL_DOCUMENTS, save: (cb: any) => cb() } as unknown as Session;
       await request(app)
         .get(constructResponseUrlWithIdAndAppIdParams(claimId, gaId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL))
         .expect((res) => {
@@ -254,6 +254,8 @@ describe('uploadAdditionalDocumentsController', () => {
     });
 
     it('should redirect back when file over 100MB (multer LIMIT_FILE_SIZE)', async () => {
+      const save = jest.fn((cb: any) => cb());
+      app.request.session = { save } as unknown as Session;
       const largeBuffer = Buffer.alloc(101 * 1024 * 1024);
       largeBuffer.fill('x');
       const res = await request(app)
@@ -262,6 +264,7 @@ describe('uploadAdditionalDocumentsController', () => {
         .attach('selectedFile', largeBuffer, { filename: 'large.pdf', contentType: 'application/pdf' });
       expect(res.status).toBe(302);
       expect(res.header.location).toContain('upload-additional-documents');
+      expect(save).toHaveBeenCalledTimes(1);
     });
 
     it('should redirect to CYA page if documents are uploaded', async () => {
