@@ -2,7 +2,7 @@ import * as draftStoreService from '../../../../../main/modules/draft-store/draf
 import {Claim} from 'models/claim';
 import {
   getSummaryList,
-  redirectIfMulterError,
+  handleMulterError,
   removeSelectedDocument,
   saveDocumentsToUploaded,
 } from 'services/features/generalApplication/uploadEvidenceDocumentService';
@@ -153,26 +153,20 @@ describe('Upload Evidence Document service', () => {
       expect(formattedSummary.summaryList.rows[1].actions.items[0].text).toEqual('Remove document');
     });
   });
-  describe('redirectIfMulterError', () => {
+  describe('handleMulterError', () => {
     it('should return false when req has no multerError', () => {
-      const req = { body: { action: 'uploadButton' }, session: {} } as any;
-      const res = { redirect: jest.fn() } as any;
-      expect(redirectIfMulterError(req, res, '/current-url')).toBe(false);
-      expect(res.redirect).not.toHaveBeenCalled();
+      const req = { body: { action: 'uploadButton' }, session: { save: (cb: any) => cb() } } as any;
+      expect(handleMulterError(req)).toBe(false);
     });
     it('should return false when action is not uploadButton', () => {
-      const req = { body: { action: 'continue' }, session: {}, multerError: { code: 'LIMIT_FILE_SIZE' } } as any;
-      const res = { redirect: jest.fn() } as any;
-      expect(redirectIfMulterError(req, res, '/current-url')).toBe(false);
-      expect(res.redirect).not.toHaveBeenCalled();
+      const req = { body: { action: 'continue' }, session: { save: (cb: any) => cb() }, multerError: { code: 'LIMIT_FILE_SIZE' } } as any;
+      expect(handleMulterError(req)).toBe(false);
     });
-    it('should set session fileUpload, redirect to currentUrl and return true when multerError and uploadButton', () => {
-      const req = { body: { action: 'uploadButton' }, session: {} as any, multerError: { code: 'LIMIT_FILE_SIZE' } } as any;
-      const res = { redirect: jest.fn() } as any;
-      expect(redirectIfMulterError(req, res, '/current-url')).toBe(true);
+    it('should set session fileUpload and return true when multerError and uploadButton', () => {
+      const req = { body: { action: 'uploadButton' }, session: { save: (cb: any) => cb() } as any, multerError: { code: 'LIMIT_FILE_SIZE' } } as any;
+      expect(handleMulterError(req)).toBe(true);
       expect(req.session.fileUpload).toBeDefined();
       expect(JSON.parse(req.session.fileUpload)).toHaveLength(1);
-      expect(res.redirect).toHaveBeenCalledWith('/current-url');
     });
   });
 });
