@@ -97,12 +97,7 @@ module.exports = {
   },
   claimantCitizenUser: {
     password: defaultPassword,
-<<<<<<< HEAD
     email: `claimantcitizen-${Math.random().toString(36).slice(2, 9).toLowerCase()}@gmail.com`,
-=======
-    //email:'civilmoneyclaimsdemo@gmail.com',
-    email: process.env.CLAIMANT_CITIZEN_EMAIL || `claimantcitizen-${Math.random().toString(36).slice(2, 9).toLowerCase()}@gmail.com`,
->>>>>>> 43eac41b7d7845e5dc1450be2f8eb3112546e34e
     type: 'claimant',
   },
   defendantCitizenUser: {
