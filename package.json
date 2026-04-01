@@ -29,6 +29,8 @@
     "test:fullfunctional": "./src/test/functionalTests/run-full-functional-tests.sh",
     "test:crossbrowser-functional": "MOCHAWESOME_REPORTFILENAME=crossbrowser codeceptjs run-multiple --grep @crossbrowser ${BROWSER_GROUP:-'--all'} -c src/test/functionalTests/saucelabs.conf.js --reporter mocha-multi",
     "test:crossbrowser": "src/test/functionalTests/run-crossbrowser-tests.sh",
+    "test:cui-test1122": "MOCHAWESOME_REPORTFILENAME=cui FUNCTIONAL=true codeceptjs run-workers --suites 3 --grep @test1122 --reporter mocha-multi --verbose",
+    "test:cui-mediation": "MOCHAWESOME_REPORTFILENAME=cui FUNCTIONAL=true codeceptjs run-workers --suites 3 --grep @mediation --reporter mocha-multi --verbose",
     "test:debug": "codeceptjs run --grep @debug --plugins allure",
     "test:generate:e2e-ui-data": "node src/test/e2e-documentation/generator/e2e-data/generate-e2e-ui-data.js",
     "test:generate:e2e-api-data": "node src/test/e2e-documentation/generator/e2e-data/generate-e2e-api-data.js",

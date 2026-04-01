@@ -283,11 +283,11 @@ module.exports = {
       console.log('SmallClaim...');
       totalClaimAmount = '1500';
     }
-    payload = defendantResponse.createDefendantResponse(totalClaimAmount, responseType, claimType, partyType, language, respondentLanguage);
-    //console.log('The payload : ' + payload);
-    await apiRequest.setupTokens(user);
-    await apiRequest.startEventForCitizen(eventName, caseId, payload);
-    await waitForFinishedBusinessProcess(caseId);
+    // payload = defendantResponse.createDefendantResponse(totalClaimAmount, responseType, claimType, partyType, language, respondentLanguage);
+    // //console.log('The payload : ' + payload);
+    // await apiRequest.setupTokens(user);
+    // await apiRequest.startEventForCitizen(eventName, caseId, payload);
+    // await waitForFinishedBusinessProcess(caseId);
     console.log('End of performCitizenResponse()');
   },
 

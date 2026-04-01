@@ -44,7 +44,13 @@ async function createAccount(email, password) {
   try {
     const token = await accessToken(adminUser);
     let body = {'password': password, 'user': {'email': email, 'forename': 'forename', 'surname': 'surname', 'displayName': 'displayName', 'roleNames': ['citizen']}};
-    await restHelper.request(`${idamTestSupportUrl}/test/idam/users`, {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`}, body);
+    await restHelper.retriedRequest(
+      `${idamTestSupportUrl}/test/idam/users`,
+      {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
+      body,
+      'POST',
+      201,
+    );
 
     addIdamUserToBeDeletedList(email);
     console.log('Account created: ', email);
@@ -58,8 +64,13 @@ async function createAccount(email, password) {
 async function deleteAccount(email) {
   try {
     const token = await accessToken(adminUser);
-    let method = 'DELETE';
-    await restHelper.request(`${idamTestSupportUrl}/test/idam/users/${email}`, {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`}, undefined, method);
+    await restHelper.retriedRequest(
+      `${idamTestSupportUrl}/test/idam/users/${email}`,
+      {'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
+      undefined,
+      'DELETE',
+      204,
+    );
 
     console.log('Account deleted: ' + email);
   } catch (error) {

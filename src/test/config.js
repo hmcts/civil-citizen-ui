@@ -6,11 +6,7 @@ const defaultPassword = process.env.CITIZEN_PASSWORD;
 const defaultPasswordSystemUser = process.env.SYSTEM_USER_PASSWORD;
 const judgeDefaultPassword = process.env.JUDGE_PASSWORD;
 const wluDefaultPassword = process.env.WLU_DEFAULT_PASSWORD;
-<<<<<<< HEAD
-const testUrl = process.env.TEST_URL || 'https://civil-citizen-ui-pr-7171.preview.platform.hmcts.net';
-=======
-const testUrl = process.env.TEST_URL;
->>>>>>> 43eac41b7d7845e5dc1450be2f8eb3112546e34e
+const testUrl = process.env.TEST_URL || 'https://civil-citizen-ui-pr-7447.preview.platform.hmcts.net';
 const testHeadlessBrowser = process.env.TEST_HEADLESS ? process.env.TEST_HEADLESS === 'true' : true;
 
 if (!process.env.TEST_PASSWORD) {
@@ -28,7 +24,6 @@ module.exports = {
     url: 'http://localhost:5555',
   },
   url: {
-<<<<<<< HEAD
     /*manageCase: process.env.URL || 'https://xui-civil-citizen-ui-pr-3591.preview.platform.hmcts.net',
     authProviderApi: process.env.SERVICE_AUTH_PROVIDER_API_BASE_URL || 'http://rpe-service-auth-provider-aat.service.core-compute-aat.internal',
     ccdDataStore: process.env.CCD_DATA_STORE_URL || 'https://ccd-data-store-api-civil-citizen-ui-pr-3591.preview.platform.hmcts.net',
@@ -47,27 +42,15 @@ module.exports = {
     // generalApplication: process.env.CIVIL_GENERAL_APPLICATIONS_URL || 'http://civil-general-applications-demo.service.core-compute-demo.internal',
     // caseAssignmentService: process.env.AAC_API_URL || 'http://aac-manage-case-assignment-demo.service.core-compute-demo.internal',
     // wiremockServiceE2e: 'http://localhost:1111',
-    manageCase: 'https://xui-civil-citizen-ui-pr-7171.preview.platform.hmcts.net',
+    manageCase: 'https://xui-civil-citizen-ui-pr-7447.preview.platform.hmcts.net',
     authProviderApi: 'http://rpe-service-auth-provider-aat.service.core-compute-aat.internal/testing-support',
-    ccdDataStore: 'https://ccd-data-store-api-civil-citizen-ui-pr-7171.preview.platform.hmcts.net',
+    ccdDataStore: 'https://ccd-data-store-api-civil-citizen-ui-pr-7447.preview.platform.hmcts.net',
     dmStore: 'http://dm-store-aat.service.core-compute-aat.internal',
     idamWeb: 'https://idam-web-public.aat.platform.hmcts.net',
     idamApi: 'https://idam-api.aat.platform.hmcts.net',
-    civilService: 'https://civil-citizen-ui-pr-7171-civil-service.preview.platform.hmcts.net',
-    caseAssignmentService: 'https://manage-case-assignment-civil-citizen-ui-pr-7171.preview.platform.hmcts.net',
-=======
-    manageCase: process.env.URL,
-    authProviderApi: process.env.SERVICE_AUTH_PROVIDER_API_BASE_URL,
-    ccdDataStore: process.env.CCD_DATA_STORE_URL,
-    dmStore: process.env.DM_STORE_URL,
-    idamApi: process.env.IDAM_API_URL,
-    idamTestSupportApi: process.env.IDAM_TEST_SUPPORT_API_URL,
-    idamWeb: process.env.IDAM_WEB_URL,
-    civilService: process.env.CIVIL_SERVICE_URL,
-    waTaskMgmtApi: process.env.WA_TASK_MGMT_URL,
-    caseAssignmentService: process.env.AAC_API_URL,
-    wiremockServiceE2e: process.env.WIREMOCK_URL || 'http://localhost:1111',
->>>>>>> 43eac41b7d7845e5dc1450be2f8eb3112546e34e
+    idamTestSupportApi: 'https://idam-api.aat.platform.hmcts.net/testing-support',
+    civilService: 'https://civil-citizen-ui-pr-7447-civil-service.preview.platform.hmcts.net',
+    caseAssignmentService: 'https://manage-case-assignment-civil-citizen-ui-pr-7447.preview.platform.hmcts.net',
   },
   getDomain: (url) => new URL(url).host,
   s2s: {
