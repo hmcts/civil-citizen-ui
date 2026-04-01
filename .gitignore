@@ -39,6 +39,9 @@ coverage/
 smoke-output/
 functional-output/
 test-results/
+allure-results/
+allure-report/
+playwright-report/
 src/test/contract/pacts/
 src/test/contract/log/
 
