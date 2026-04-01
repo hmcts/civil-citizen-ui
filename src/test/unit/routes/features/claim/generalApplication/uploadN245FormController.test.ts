@@ -96,6 +96,8 @@ describe('General Application - upload n245 form', () => {
     });
 
     it('should redirect back when file over 100MB (multer LIMIT_FILE_SIZE)', async () => {
+      const save = jest.fn((cb: any) => cb());
+      app.request.session = { save } as any;
       const largeBuffer = Buffer.alloc(101 * 1024 * 1024);
       largeBuffer.fill('x');
       const res = await request(app)
@@ -104,6 +106,7 @@ describe('General Application - upload n245 form', () => {
         .attach('selectedFile', largeBuffer, { filename: 'large.pdf', contentType: 'application/pdf' });
       expect(res.status).toBe(302);
       expect(res.header.location).toContain('upload-n245-form');
+      expect(save).toHaveBeenCalledTimes(1);
     });
 
     it('should save the file and display', async () => {
