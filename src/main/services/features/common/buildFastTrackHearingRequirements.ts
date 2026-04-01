@@ -1,7 +1,7 @@
 import {Claim} from 'models/claim';
 import {SummarySection} from 'models/summaryList/summarySections';
 import {YesNo, YesNoUpperCase} from 'form/models/yesNo';
-import {SummaryRow, summaryRow} from 'models/summaryList/summaryList';
+import {SummaryRow, summaryRow, summaryRowWithTextValue} from 'models/summaryList/summaryList';
 import {t} from 'i18next';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {
@@ -103,7 +103,7 @@ export const whichBandQuestion = (claim: Claim, claimId: string, lng: string, di
 export const reasonForBandQuestion = (claim: Claim, claimId: string, lng: string, directionQuestionnaire : DirectionQuestionnaire): SummaryRow => {
   const reasons = directionQuestionnaire?.fixedRecoverableCosts?.reasonsForBandSelection;
   if (reasons) {
-    return summaryRow(
+    return summaryRowWithTextValue(
       t('PAGES.CHECK_YOUR_ANSWER.REASON_FOR_FRC_BAND', {lng}),
       reasons,
       constructResponseUrlWithIdParams(claimId, REASON_FOR_FRC_BAND_URL),
@@ -115,7 +115,7 @@ export const reasonForBandQuestion = (claim: Claim, claimId: string, lng: string
 export const whyNotFrcQuestion = (claim: Claim, claimId: string, lng: string, directionQuestionnaire : DirectionQuestionnaire): SummaryRow => {
   const reasons = directionQuestionnaire?.fixedRecoverableCosts?.reasonsForNotSubjectToFrc;
   if (reasons) {
-    return summaryRow(
+    return summaryRowWithTextValue(
       t('PAGES.CHECK_YOUR_ANSWER.REASON_FOR_NO_FRC_BAND', {lng}),
       reasons,
       constructResponseUrlWithIdParams(claimId, WHY_NOT_SUBJECT_TO_FRC_URL),
@@ -158,7 +158,7 @@ export const electronicDocsAgreementReachedQuestion = (claim: Claim, claimId: st
 export const electronicDocsIssuesQuestion = (claim: Claim, claimId: string, lng: string, directionQuestionnaire : DirectionQuestionnaire): SummaryRow => {
   if (directionQuestionnaire?.hearing?.hasAnAgreementBeenReached !== HasAnAgreementBeenReachedOptions.YES) {
     const issues = directionQuestionnaire?.hearing?.disclosureOfElectronicDocumentsIssues;
-    return summaryRow(
+    return summaryRowWithTextValue(
       t('PAGES.CHECK_YOUR_ANSWER.ELEC_DOCS_ISSUES', {lng}),
       issues,
       constructResponseUrlWithIdParams(claimId, DQ_MULTITRACK_DISCLOSURE_OF_ELECTRONIC_DOCUMENTS_ISSUES_URL),
@@ -169,7 +169,7 @@ export const electronicDocsIssuesQuestion = (claim: Claim, claimId: string, lng:
 
 export const nonElectronicDocsDisclosureQuestion = (claim: Claim, claimId: string, lng: string, directionQuestionnaire : DirectionQuestionnaire): SummaryRow => {
   const text = directionQuestionnaire?.hearing?.disclosureNonElectronicDocument;
-  return summaryRow(
+  return summaryRowWithTextValue(
     t('PAGES.CHECK_YOUR_ANSWER.NON_ELEC_DOCS_DISCLOSURE', {lng}),
     text,
     constructResponseUrlWithIdParams(claimId, DQ_MULTITRACK_DISCLOSURE_NON_ELECTRONIC_DOCUMENTS_URL),
@@ -193,7 +193,7 @@ export const mintiDocsToConsiderQuestion = (claim: Claim, claimId: string, lng: 
 export const mintiDocsToConsiderDetailsQuestion = (claim: Claim, claimId: string, lng: string, directionQuestionnaire : DirectionQuestionnaire): SummaryRow => {
   const text = directionQuestionnaire?.hearing?.documentsConsideredDetails;
 
-  return summaryRow(
+  return summaryRowWithTextValue(
     t(claim.isClaimantIntentionPending() ? 'PAGES.CHECK_YOUR_ANSWER.DEFENDANT_DOCS_TO_CONSIDER_DETAILS' : 'PAGES.CHECK_YOUR_ANSWER.CLAIMANT_DOCS_TO_CONSIDER_DETAILS', {lng}),
     text,
     constructResponseUrlWithIdParams(claimId, DQ_MULTITRACK_CLAIMANT_DOCUMENTS_TO_BE_CONSIDERED_DETAILS_URL),
@@ -217,7 +217,7 @@ export const considerClaimantDocQuestion = (claim: Claim, claimId: string, lng: 
 export const considerClaimantDocResponse = (claim: Claim, claimId: string, lng: string, directionQuestionnaire : DirectionQuestionnaire): SummaryRow => {
   const details = directionQuestionnaire?.hearing?.considerClaimantDocuments?.details;
 
-  return summaryRow(
+  return summaryRowWithTextValue(
     t('PAGES.CHECK_YOUR_ANSWER.GIVE_DOC_DETAILS', {lng}),
     getEmptyStringIfUndefined(details),
   );
