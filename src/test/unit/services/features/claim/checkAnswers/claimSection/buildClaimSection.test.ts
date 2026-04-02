@@ -33,15 +33,15 @@ describe('Citizen Claim Section', () => {
     expect(summarySections.sections[constVal.INDEX_CLAIM_SECTION].summaryList.rows[0].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.REASON_TITLE');
     expect(summarySections.sections[constVal.INDEX_CLAIM_SECTION].summaryList.rows[0].actions?.items[0].href).toBe(CLAIM_REASON_URL);
     expect(summarySections.sections[constVal.INDEX_CLAIM_SECTION].summaryList.rows[2].key.text).toBe('1 February 2000');
-    expect(summarySections.sections[constVal.INDEX_CLAIM_SECTION].summaryList.rows[2].value.html).toBe('contract');
+    expect(summarySections.sections[constVal.INDEX_CLAIM_SECTION].summaryList.rows[2].value.text).toBe('contract');
     expect(summarySections.sections[constVal.INDEX_CLAIM_SECTION].summaryList.rows[2].actions?.items.length).toBe(1);
     expect(summarySections.sections[constVal.INDEX_CLAIM_SECTION].summaryList.rows[2].actions?.items[0].href).toBe(CLAIM_TIMELINE_URL);
     expect(summarySections.sections[constVal.INDEX_CLAIM_SECTION].summaryList.rows[3].key.text).toBe('1 February 2002');
-    expect(summarySections.sections[constVal.INDEX_CLAIM_SECTION].summaryList.rows[3].value.html).toBe('meeting');
+    expect(summarySections.sections[constVal.INDEX_CLAIM_SECTION].summaryList.rows[3].value.text).toBe('meeting');
     expect(summarySections.sections[constVal.INDEX_CLAIM_SECTION].summaryList.rows[3].actions?.items.length).toBe(1);
     expect(summarySections.sections[constVal.INDEX_CLAIM_SECTION].summaryList.rows[3].actions?.items[0].href).toBe(CLAIM_TIMELINE_URL);
     expect(summarySections.sections[constVal.INDEX_CLAIM_SECTION].summaryList.rows[4].key.text).toBe('1 February 1999');
-    expect(summarySections.sections[constVal.INDEX_CLAIM_SECTION].summaryList.rows[4].value.html).toBe('damages');
+    expect(summarySections.sections[constVal.INDEX_CLAIM_SECTION].summaryList.rows[4].value.text).toBe('damages');
     expect(summarySections.sections[constVal.INDEX_CLAIM_SECTION].summaryList.rows[4].actions?.items.length).toBe(1);
     expect(summarySections.sections[constVal.INDEX_CLAIM_SECTION].summaryList.rows[4].actions?.items[0].href).toBe(CLAIM_TIMELINE_URL);
     expect(summarySections.sections[constVal.INDEX_CLAIM_SECTION].summaryList.rows[5].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.EVIDENCE_TITLE');

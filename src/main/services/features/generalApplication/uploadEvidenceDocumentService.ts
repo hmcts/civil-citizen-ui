@@ -13,7 +13,6 @@ import {CivilServiceClient} from 'client/civilServiceClient';
 import { FormValidationError } from 'common/form/validationErrors/formValidationError';
 import { t } from 'i18next';
 import {isConfirmYouPaidCCJAppType} from 'services/features/generalApplication/generalApplicationService';
-import { Response } from 'express';
 import { getMulterErrorConstraint, FILE_UPLOAD_SOURCE } from 'common/utils/fileUploadUtils';
 
 const {Logger} = require('@hmcts/nodejs-logging');
@@ -91,7 +90,7 @@ export const uploadSelectedFile = async (req: AppRequest, summarySection: Summar
   }
 };
 
-export const redirectIfMulterError = (req: AppRequest, res: Response, currentUrl: string, fileUploadSource?: string): boolean => {
+export const handleMulterError = (req: AppRequest, fileUploadSource?: string): boolean => {
   if (!(req as any).multerError || req.body?.action !== 'uploadButton') {
     return false;
   }
@@ -107,7 +106,6 @@ export const redirectIfMulterError = (req: AppRequest, res: Response, currentUrl
   const translatedErrors = translateErrors(errorStructure, t);
   req.session.fileUpload = JSON.stringify(translatedErrors);
   req.session.fileUploadSource = fileUploadSource ?? FILE_UPLOAD_SOURCE.GA_UPLOAD_EVIDENCE;
-  res.redirect(`${currentUrl}`);
   return true;
 };
 
