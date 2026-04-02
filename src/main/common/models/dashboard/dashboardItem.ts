@@ -276,7 +276,7 @@ export const translate = (translationKey: string, params?: DashboardStatusTransl
   if (params && params.length) {
     const keyValue: { [k: string]: string } = {};
     params.forEach(param => {
-      keyValue[param.key] = escapeSpecialChars(param.value);
+      keyValue[param.key] = String.raw`${param.value}`;
     });
     keyValue.lng = getLng(lang);
     return t(translationKey, keyValue);
@@ -305,7 +305,3 @@ export const toDraftClaimDashboardItem = (claim: Claim, isReleaseTwoEnabled: boo
     return undefined;
   }
 };
-
-export const escapeSpecialChars = (str: string) =>
-  str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-
