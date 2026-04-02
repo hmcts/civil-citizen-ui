@@ -1,6 +1,6 @@
 import {SummarySection, summarySection} from 'models/summaryList/summarySections';
 import {Claim} from 'models/claim';
-import {summaryRow} from 'models/summaryList/summaryList';
+import {summaryRow, summaryRowWithTextValue} from 'models/summaryList/summaryList';
 import {currencyFormatWithNoTrailingZeros} from 'common/utils/currencyFormat';
 import {t} from 'i18next';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
@@ -42,12 +42,12 @@ const addTimeline = (claimId: string, lang: string , section: SummarySection, ti
   for (const item of rows) {
     const timelineDate = formatDateToFullDate(new Date(item.date), lang);
     section.summaryList.rows.push(
-      summaryRow(timelineDate.toString(), item.description, yourTimelineHref, changeLabel(lang)),
+      summaryRowWithTextValue(timelineDate.toString(), item.description, yourTimelineHref, changeLabel(lang)),
     );
   }
 
   section.summaryList.rows.push(
-    summaryRow(t('PAGES.CHECK_YOUR_ANSWER.TIMELINE_COMMENTS', { lng: getLng(lang) }), comment, yourTimelineHref, changeLabel(lang)),
+    summaryRowWithTextValue(t('PAGES.CHECK_YOUR_ANSWER.TIMELINE_COMMENTS', { lng: getLng(lang) }), comment, yourTimelineHref, changeLabel(lang)),
   );
 };
 
@@ -63,12 +63,12 @@ const addEvidence = (claim: Claim, claimId: string, lang: string , section: Summ
     for (const item of evidenceItem) {
       const itemType = t(convertToEvidenceTypeToTranslationKey(item.type), {lng});
       section.summaryList.rows.push(
-        summaryRow(itemType, item.description, yourEvidenceHref, changeLabel(lang)),
+        summaryRowWithTextValue(itemType, item.description, yourEvidenceHref, changeLabel(lang)),
       );
     }
   }
   section.summaryList.rows.push(
-    summaryRow(t('PAGES.CHECK_YOUR_ANSWER.EVIDENCE_COMMENTS', {lng}), claim.evidence?.comment, yourEvidenceHref, changeLabel(lang)),
+    summaryRowWithTextValue(t('PAGES.CHECK_YOUR_ANSWER.EVIDENCE_COMMENTS', {lng}), claim.evidence?.comment, yourEvidenceHref, changeLabel(lang)),
   );
 };
 const isPaidAmountEqulGreaterThanTotalAmount = (claim: Claim) => {
@@ -89,12 +89,12 @@ const getSummaryRowsForPartAdmission = (claim: Claim, claimId: string, lang: str
     yourResponseDetailsSection.summaryList.rows.push(...[
       summaryRow(t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_DETAILS_MONEY_PAID', {lng: getLng(lang)}), currencyFormatWithNoTrailingZeros(Number(claim.partialAdmission.howMuchHaveYouPaid?.amount)), yourResponseDetailsHref, changeLabel(lang)),
       summaryRow(t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_DETAILS_WHEN_DID_YOU_PAY', {lng: getLng(lang)}), formatDateToFullDate(claim.partialAdmission.howMuchHaveYouPaid?.date, getLng(lang)), '', changeLabel(lang)),
-      summaryRow(t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_DETAILS_WHEN_DID_YOU_PAY_AMOUNT_CLAIMED', {lng: getLng(lang)}), claim.partialAdmission.howMuchHaveYouPaid?.text, '', changeLabel(lang)),
+      summaryRowWithTextValue(t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_DETAILS_WHEN_DID_YOU_PAY_AMOUNT_CLAIMED', {lng: getLng(lang)}), claim.partialAdmission.howMuchHaveYouPaid?.text, '', changeLabel(lang)),
     ]);
   }
 
   yourResponseDetailsSection.summaryList.rows.push(...[
-    summaryRow(t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_DETAILS_WHY_DO_YOU_DISAGREE', {lng: getLng(lang)}), claim.partialAdmission.whyDoYouDisagree?.text, yourReasonsToDisagreeHref, changeLabel(lang)),
+    summaryRowWithTextValue(t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_DETAILS_WHY_DO_YOU_DISAGREE', {lng: getLng(lang)}), claim.partialAdmission.whyDoYouDisagree?.text, yourReasonsToDisagreeHref, changeLabel(lang)),
   ]);
 };
 
@@ -107,10 +107,10 @@ const getSummaryRowsForFullReject = (claim: Claim, claimId: string, lang: string
     yourResponseDetailsSection.summaryList.rows.push(...[
       summaryRow(t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_DETAILS_HOW_MUCH_HAVE_YOU_PAID', {lng: getLng(lang)}), currencyFormatWithNoTrailingZeros(Number(claim.rejectAllOfClaim.howMuchHaveYouPaid.amount)), howMuchHaveYouPaidUrl, changeLabel(lang)),
       summaryRow(t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_DETAILS_WHEN_DID_YOU_PAY', {lng: getLng(lang)}), formatDateToFullDate(claim.rejectAllOfClaim.howMuchHaveYouPaid.date, getLng(lang)), howMuchHaveYouPaidUrl, changeLabel(lang)),
-      summaryRow(t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_DETAILS_HOW_DID_YOU_PAY_THIS_AMOUNT', {lng: getLng(lang)}), claim.rejectAllOfClaim.howMuchHaveYouPaid.text, howMuchHaveYouPaidUrl, changeLabel(lang)),
+      summaryRowWithTextValue(t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_DETAILS_HOW_DID_YOU_PAY_THIS_AMOUNT', {lng: getLng(lang)}), claim.rejectAllOfClaim.howMuchHaveYouPaid.text, howMuchHaveYouPaidUrl, changeLabel(lang)),
     ]);
   }
-  if (isPaidAmountEqulGreaterThanTotalAmount(claim)) yourResponseDetailsSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_DETAILS_WHY_DO_YOU_DISAGREE', {lng: getLng(lang)}), disagreeText, whyDoYouDisagreeUrl, changeLabel(lang)));
+  if (isPaidAmountEqulGreaterThanTotalAmount(claim)) yourResponseDetailsSection.summaryList.rows.push(summaryRowWithTextValue(t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_DETAILS_WHY_DO_YOU_DISAGREE', {lng: getLng(lang)}), disagreeText, whyDoYouDisagreeUrl, changeLabel(lang)));
 };
 
 export const buildYourResponseDetailsSection = (claim: Claim, claimId: string, lang: string ): SummarySection => {
