@@ -1,6 +1,7 @@
 import {getLng} from 'common/utils/languageToggleUtils';
+import {escapeHtml} from 'common/utils/escapeHtml';
 import {t} from 'i18next';
-import {SummaryRow, summaryRow} from 'models/summaryList/summaryList';
+import {SummaryRow, summaryRow, summaryRowWithTextValue} from 'models/summaryList/summaryList';
 import {YesNoUpperCamelCase, YesNoUpperCase} from 'form/models/yesNo';
 import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
 import {HearingTypeOptions} from 'models/generalApplication/hearingArrangement';
@@ -182,7 +183,7 @@ export const addInformOtherPartiesRow = (application: ApplicationResponse, lang:
     );
     if (application.case_data.generalAppInformOtherParty?.isWithNotice === YesNoUpperCamelCase.NO) {
       rows.push(
-        summaryRow(
+        summaryRowWithTextValue(
           t('PAGES.GENERAL_APPLICATION.INFORM_OTHER_PARTIES.WHY_DO_NOT_WANT_COURT', {lng}),
           application.case_data.generalAppInformOtherParty?.reasonsForWithoutNotice,
         ),
@@ -197,13 +198,12 @@ export const addOrderJudgeRow = (application: ApplicationResponse, index: number
   const rows: SummaryRow[] = [];
   if (application.case_data.generalAppDetailsOfOrderColl?.[index]) {
     const orderForCost = application.case_data.generalAppAskForCosts === YesNoUpperCamelCase.YES ? 'PAGES.GENERAL_APPLICATION.ORDER_FOR_COSTS' : '';
-    const html = `<p class="govuk-body">${application.case_data.generalAppDetailsOfOrderColl[index].value} <br> ${t(orderForCost, {lng})}</p>`;
+    const html = `<p class="govuk-body">${escapeHtml(application.case_data.generalAppDetailsOfOrderColl[index].value)} <br> ${t(orderForCost, {lng})}</p>`;
     rows.push(
       summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHAT_ORDER', {lng}), html),
     );
   } else if (application.case_data?.generalAppDetailsOfOrder) {
-    //LR has only one information
-    const LrHtml = `<p class="govuk-body">${application.case_data.generalAppDetailsOfOrder}</p>`;
+    const LrHtml = `<p class="govuk-body">${escapeHtml(application.case_data.generalAppDetailsOfOrder)}</p>`;
     rows.push(
       summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHAT_ORDER', {lng}), LrHtml),
     );
@@ -216,11 +216,10 @@ export const addRequestingReasonRow = (application: ApplicationResponse, index: 
   const rows: SummaryRow[] = [];
   if (application.case_data.generalAppReasonsOfOrderColl?.[index]) {
     rows.push(
-      summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_REQUESTING', {lng}), application.case_data.generalAppReasonsOfOrderColl[index].value),
+      summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_REQUESTING', {lng}), escapeHtml(application.case_data.generalAppReasonsOfOrderColl[index].value)),
     );
   } else if (application.case_data?.generalAppReasonsOfOrder) {
-    //LR has only one information
-    const LrHtml = `<p class="govuk-body">${application.case_data.generalAppReasonsOfOrder}</p>`;
+    const LrHtml = `<p class="govuk-body">${escapeHtml(application.case_data.generalAppReasonsOfOrder)}</p>`;
     rows.push(
       summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_REQUESTING', {lng}), LrHtml),
     );
@@ -260,7 +259,7 @@ export const addHearingArrangementsRows = (application: ApplicationResponse, lan
         t(`PAGES.GENERAL_APPLICATION.APPLICATION_HEARING_ARRANGEMENTS.HEARING_TYPE_VIEW_APPLICATION.${hearingPreferredType}`, {lng})),
     );
     rows.push(
-      summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_PREFER', {lng}),
+      summaryRowWithTextValue(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_PREFER', {lng}),
         application.case_data.generalAppHearingDetails.ReasonForPreferredHearingType),
     );
     const courtLocationText = application.case_data.generalAppHearingDetails.HearingPreferredLocation
@@ -278,11 +277,11 @@ export const addHearingContactDetailsRows = (application: ApplicationResponse, l
   const rows: SummaryRow[] = [];
   if (application.case_data.generalAppHearingDetails.HearingDetailsTelephoneNumber) {
     rows.push(
-      summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PREFERRED_TELEPHONE', {lng}),
+      summaryRowWithTextValue(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PREFERRED_TELEPHONE', {lng}),
         application.case_data.generalAppHearingDetails.HearingDetailsTelephoneNumber),
     );
     rows.push(
-      summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PREFERRED_EMAIL', {lng}),
+      summaryRowWithTextValue(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PREFERRED_EMAIL', {lng}),
         application.case_data.generalAppHearingDetails.HearingDetailsEmailID),
     );
   }
@@ -374,9 +373,9 @@ export const addEvidenceOfDebtPaymentRow = (application: ApplicationResponse, la
                         ${t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.COSC.UPLOAD_EVIDENCE_PAID_IN_FULL_NO', {lng})}</p>`;
 
       rowValue += `<p class="govuk-!-padding-bottom-2 govuk-!-margin-top-0">
-        ${application.case_data.certOfSC.debtPaymentEvidence.provideDetails}</p>`;
+        ${escapeHtml(application.case_data.certOfSC.debtPaymentEvidence.provideDetails)}</p>`;
       rows.push(
-        summaryRow(t('PAGES.GENERAL_APPLICATION.DEBT_PAYMENT.DO_YOU_WANT_PROVIDE_EVIDENCE', {lng}), t(rowValue, {lng})));
+        summaryRow(t('PAGES.GENERAL_APPLICATION.DEBT_PAYMENT.DO_YOU_WANT_PROVIDE_EVIDENCE', {lng}), rowValue));
     } else {
       const evidenceDetails = getEvidencePaymentOption(application.case_data.certOfSC.debtPaymentEvidence.debtPaymentOption);
       rows.push(
