@@ -3453,7 +3453,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/lodash@npm:^4.17.21":
+"@types/lodash@npm:^4.17.23":
   version: 4.17.24
   resolution: "@types/lodash@npm:4.17.24"
   checksum: 10/0f2082565f60f9787eefc046edc38458054512be5a8b3584ef0bad5fd9e85d0ab55ec5a1fbfae1ed6ba015cf1f9e837d5fb4da1f99fc60b8f74b2a46146fb00f
@@ -5442,7 +5442,7 @@ __metadata:
     "@types/glob": "npm:^8.0.0"
     "@types/jest": "npm:^29.5.14"
     "@types/js-yaml": "npm:^4"
-    "@types/lodash": "npm:^4.17.21"
+    "@types/lodash": "npm:^4.17.23"
     "@types/luxon": "npm:^3.2.0"
     "@types/multer": "npm:^1.4.7"
     "@types/node": "npm:^22.0.0"
