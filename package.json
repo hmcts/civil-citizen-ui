@@ -44,6 +44,7 @@
     "test:readme:ft-groups-api-table": "node src/test/e2e-documentation/readme/ft-groups-table/update-ft-groups-api-table.js",
     "cichecks": "yarn && yarn build && yarn lint && yarn test:coverage && yarn test:routes && yarn test:a11y",
     "cichecks:win": "yarn && yarn build && yarn lint:win && yarn test:coverage && yarn test:routes && yarn test:a11y",
+    "wiremock:pull": "./bin/pull-latest-wiremock-mappings.sh",
     "wiremock:start": "wiremock --root-dir ./wiremock --port 1111",
     "start:e2e": "NODE_ENV=e2eTest ./node_modules/.bin/ts-node -r tsconfig-paths/register src/main/server.ts",
     "test:e2e": "yarn testgalip:e2e && MOCHAWESOME_REPORTFILENAME=e2e codeceptjs run-workers --suites 4 --grep @e2e --reporter mocha-multi --verbose",
