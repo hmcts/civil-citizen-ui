@@ -8,7 +8,7 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {ResponseDeadlineService} from 'services/features/response/responseDeadlineService';
 import {deadLineGuard} from 'routes/guards/deadLineGuard';
 import {AppRequest} from 'common/models/AppRequest';
-import {isCuiGaNroEnabled, isCUIReleaseTwoEnabled} from 'app/auth/launchdarkly/launchDarklyClient';
+import {isCUIReleaseTwoEnabled} from 'app/auth/launchdarkly/launchDarklyClient';
 
 const requestMoreTimeController = Router();
 const requestMoreTimeViewPath = 'features/response/request-more-time';
@@ -19,7 +19,7 @@ const logger = Logger.getLogger('requestMoreTimeController');
 
 async function renderView(res: Response, form: GenericForm<AdditionalTime>, claim: Claim, language: string, claimId: string): Promise<void> {
   const isReleaseTwoEnabled = await isCUIReleaseTwoEnabled();
-  const isGaNroEnabled = await isCuiGaNroEnabled();
+  const isGaNroEnabled = false;
   res.render(requestMoreTimeViewPath, {
     additionalTimeOptions: AdditionalTimeOptions,
     form,
@@ -28,6 +28,7 @@ async function renderView(res: Response, form: GenericForm<AdditionalTime>, clai
     isReleaseTwoEnabled,
     applyGaApplication: constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL),
     isGaNroEnabled,
+    isQMFlagEnabled: false,
   });
 }
 
