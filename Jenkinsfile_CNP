@@ -57,7 +57,7 @@ def copyPreviousAllureHistory() {
 
       buildFound = true
       echo "Successfully imported Allure history from build ${buildNumber}"
-    } catch (Exception error) {
+    } catch (Exception ignored) {
       echo "Allure history artifact not found in build ${buildNumber}. Trying previous..."
       buildNumber--
     }
@@ -76,9 +76,9 @@ def getFunctionalTestsGroups() {
 def getCivilCcdDefinitionBranch() {
   def githubApi = new GithubAPI(this)
   for (label in githubApi.getLabelsbyPattern(env.BRANCH_NAME, "civilDefinitionBranch:")) {
-    return label.minus("civilDefinitionBranch:").trim()
+    return "DTSCCI-4344-4351"
   }
-  return "master"
+  return "DTSCCI-4344-4351"
 }
 
 def getCivilServiceImage() {
