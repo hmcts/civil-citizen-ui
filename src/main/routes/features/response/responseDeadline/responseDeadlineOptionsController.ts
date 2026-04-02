@@ -13,7 +13,7 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {ResponseDeadlineService} from 'services/features/response/responseDeadlineService';
 import {deadLineGuard} from 'routes/guards/deadLineGuard';
 import {AppRequest} from 'common/models/AppRequest';
-import {isCuiGaNroEnabled, isCUIReleaseTwoEnabled} from 'app/auth/launchdarkly/launchDarklyClient';
+import {isCUIReleaseTwoEnabled} from 'app/auth/launchdarkly/launchDarklyClient';
 
 const responseDeadlineOptionsController = Router();
 const responseDeadlineOptionsViewPath = 'features/response/response-deadline-options';
@@ -24,7 +24,7 @@ const logger = Logger.getLogger('responseDeadlineOptionsController');
 
 async function renderView(res: Response, form: GenericForm<ResponseDeadline>, claim: Claim, language: string, claimId: string): Promise<void> {
   const isReleaseTwoEnabled = await isCUIReleaseTwoEnabled();
-  const isGaNroEnabled = await isCuiGaNroEnabled();
+  const isGaNroEnabled = false;
   res.render(responseDeadlineOptionsViewPath, {
     form,
     responseDate: claim.formattedResponseDeadline(language),
