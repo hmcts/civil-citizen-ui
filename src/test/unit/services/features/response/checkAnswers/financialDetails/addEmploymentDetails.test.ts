@@ -56,20 +56,20 @@ describe('Employed and Self-Employed Details', () => {
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[10].actions?.items[0].href).toBe(CITIZEN_WHO_EMPLOYS_YOU_URL.replace(':id', constVal.CLAIM_ID));
 
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[11].key.text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_EMPLOYMENT_NAME);
-    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[11].value.html).toBe('Version 1');
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[11].value.text).toBe('Version 1');
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[12].key.text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_EMPLOYMENT_JOB_TITLE);
-    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[12].value.html).toBe('FE Developer');
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[12].value.text).toBe('FE Developer');
 
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[13].key.text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_EMPLOYMENT_NAME);
-    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[13].value.html).toBe('Version 1');
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[13].value.text).toBe('Version 1');
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[14].key.text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_EMPLOYMENT_JOB_TITLE);
-    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[14].value.html).toBe('BE Developer');
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[14].value.text).toBe('BE Developer');
 
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[15].key.text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_EMPLOYMENT_SELF_DETAILS);
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[15].actions?.items[0].href).toBe(CITIZEN_SELF_EMPLOYED_URL.replace(':id', constVal.CLAIM_ID));
 
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[16].key.text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_EMPLOYMENT_JOB_TITLE);
-    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[16].value.html).toBe('Developer');
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[16].value.text).toBe('Developer');
 
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[17].key.text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_EMPLOYMENT_SELF_ANNUAL_TURNOVER);
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[17].value.html).toBe('£50,000');
@@ -98,7 +98,7 @@ describe('Employed and Self-Employed Details', () => {
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[10].actions?.items[0].href).toBe(CITIZEN_SELF_EMPLOYED_URL.replace(':id', constVal.CLAIM_ID));
 
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[11].key.text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_EMPLOYMENT_JOB_TITLE);
-    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[11].value.html).toBe('Developer');
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[11].value.text).toBe('Developer');
 
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[12].key.text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_EMPLOYMENT_SELF_ANNUAL_TURNOVER);
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[12].value.html).toBe('£50,000');
@@ -109,7 +109,7 @@ describe('Employed and Self-Employed Details', () => {
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[14].value.html).toBe('£200');
 
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[15].key.text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_TAX_PAYMENT_REASON);
-    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[15].value.html).toBe('Tax payment reasons');
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[15].value.text).toBe('Tax payment reasons');
   });
 
   it('should return employemt with "Self-Employed" category selected and no tax payments behind when it exists', async () => {
@@ -125,7 +125,7 @@ describe('Employed and Self-Employed Details', () => {
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[10].actions?.items[0].href).toBe(CITIZEN_SELF_EMPLOYED_URL.replace(':id', constVal.CLAIM_ID));
 
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[11].key.text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_EMPLOYMENT_JOB_TITLE);
-    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[11].value.html).toBe('Developer');
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[11].value.text).toBe('Developer');
 
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[12].key.text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_EMPLOYMENT_SELF_ANNUAL_TURNOVER);
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[12].value.html).toBe('£50,000');
@@ -154,7 +154,7 @@ describe('Unemployemt Details', () => {
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[9].key.text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_EMPLOYMENT_TYPE);
 
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[9].key.text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_EMPLOYMENT_TYPE);
-    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[9].value.html).toBe('PAGES.CHECK_YOUR_ANSWER.UNEMPLOYMENT_FOR');
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[9].value.text).toBe('PAGES.CHECK_YOUR_ANSWER.UNEMPLOYMENT_FOR');
 
   });
 
@@ -165,7 +165,7 @@ describe('Unemployemt Details', () => {
     const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'eng');
     //Then
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[9].key.text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_EMPLOYMENT_TYPE);
-    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[9].value.html).toBe('PAGES.CHECK_YOUR_ANSWER.UNEMPLOYMENT_FOR');
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[9].value.text).toBe('PAGES.CHECK_YOUR_ANSWER.UNEMPLOYMENT_FOR');
   });
 
   it('should return unemployment details with unemployment category equal to "Retired" when it exists', async () => {
@@ -175,7 +175,7 @@ describe('Unemployemt Details', () => {
     const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'eng');
     //Then
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[9].key.text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_EMPLOYMENT_TYPE);
-    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[9].value.html).toBe('PAGES.UNEMPLOYMENT.RETIRED');
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[9].value.text).toBe('PAGES.UNEMPLOYMENT.RETIRED');
   });
 
   it('should return unemployment details with unemployment category equal to "Other" when it exists', async () => {
@@ -185,6 +185,6 @@ describe('Unemployemt Details', () => {
     const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'eng');
     //Then
     expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[9].key.text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_EMPLOYMENT_TYPE);
-    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[9].value.html).toBe('Other details here');
+    expect(summarySections.sections[constVal.INDEX_FINANCIAL_SECTION].summaryList.rows[9].value.text).toBe('Other details here');
   });
 });
