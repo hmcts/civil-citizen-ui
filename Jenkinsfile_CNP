@@ -14,7 +14,6 @@ def component = "citizen-ui"
 def camundaBranch = "master"
 def dmnBranch = "master"
 def waStandaloneBranch = "master"
-def ccdBranch = "DTSCCI-4344-4351"
 AppPipelineConfig pipelineConf
 
 static Map<String, Object> secret(String secretName, String envVariable) {
@@ -58,7 +57,7 @@ def copyPreviousAllureHistory() {
 
       buildFound = true
       echo "Successfully imported Allure history from build ${buildNumber}"
-    } catch (Exception error) {
+    } catch (Exception ignored) {
       echo "Allure history artifact not found in build ${buildNumber}. Trying previous..."
       buildNumber--
     }
@@ -85,9 +84,9 @@ def getCivilCcdDefinitionBranch() {
 def getCivilServiceImage() {
   def githubApi = new GithubAPI(this)
   for (label in githubApi.getLabelsbyPattern(env.BRANCH_NAME, "civilServicePr:") ) {
-    return "pr-7667"
+    return "pr-" + label.minus("civilServicePr:").trim()
   }
-  return "pr-7667"
+  return "latest"
 }
 
 def secrets = [
