@@ -276,7 +276,7 @@ export const translate = (translationKey: string, params?: DashboardStatusTransl
   if (params && params.length) {
     const keyValue: { [k: string]: string } = {};
     params.forEach(param => {
-      keyValue[param.key] = param.value;
+      keyValue[param.key] = String.raw`${param.value}`;
     });
     keyValue.lng = getLng(lang);
     return t(translationKey, keyValue);
