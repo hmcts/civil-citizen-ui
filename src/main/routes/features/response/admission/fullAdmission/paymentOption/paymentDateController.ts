@@ -9,6 +9,7 @@ import {
 import {ResponseType} from '../../../../../../common/form/models/responseType';
 import {AppRequest} from 'common/models/AppRequest';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const paymentDatePath = 'features/response/admission/payment-date';
 const paymentDateController = Router();
@@ -37,7 +38,8 @@ paymentDateController
       } else {
         try {
           await paymentDateService.savePaymentDate(generateRedisKey(req as unknown as AppRequest), paymentDate.date, ResponseType.FULL_ADMISSION);
-          res.redirect(constructResponseUrlWithIdParams(req.params.id, RESPONSE_TASK_LIST_URL));
+          const claimId = getRouteParam(req, 'id');
+          res.redirect(constructResponseUrlWithIdParams(claimId, RESPONSE_TASK_LIST_URL));
         } catch (error) {
           next(error);
         }

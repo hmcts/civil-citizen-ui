@@ -46,7 +46,7 @@ createQueryCheckYourAnswerController.get([QM_CYA, QM_FOLLOW_UP_CYA], (async (req
 createQueryCheckYourAnswerController.post([QM_CYA, QM_FOLLOW_UP_CYA], async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const isFollowUpUrl = isFollowUp(req.originalUrl);
-    const claimId = req.params.id;
+    const claimId = getRouteParam(req, 'id');
     const claim = await getClaimById(claimId, req, true);
     const updatedClaim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
     await createQuery(claim, updatedClaim, req, isFollowUpUrl);

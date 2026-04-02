@@ -9,6 +9,7 @@ import {Explanation} from '../../../../common/form/models/statementOfMeans/expla
 import {GenericForm} from '../../../../common/form/models/genericForm';
 import {AppRequest} from 'common/models/AppRequest';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const explanationViewPath = 'features/response/statementOfMeans/explanation';
 const explanationController = Router();
@@ -31,7 +32,8 @@ explanationController.post(CITIZEN_EXPLANATION_URL,
     } else {
       try {
         await saveExplanation(generateRedisKey(req as unknown as AppRequest), explanation);
-        res.redirect(constructResponseUrlWithIdParams(req.params.id, RESPONSE_TASK_LIST_URL));
+        const claimId = getRouteParam(req, 'id');
+        res.redirect(constructResponseUrlWithIdParams(claimId, RESPONSE_TASK_LIST_URL));
       } catch (error) {
         next(error);
       }

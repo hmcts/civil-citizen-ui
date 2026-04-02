@@ -9,6 +9,7 @@ import {ResponseType} from '../../../../../common/form/models/responseType';
 import {PartAdmitHowMuchHaveYouPaidGuard} from '../../../../../routes/guards/partAdmitHowMuchHaveYouPaidGuard';
 import {AppRequest} from 'common/models/AppRequest';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const howMuchHaveYouPaidPath = 'features/response/admission/how-much-have-you-paid';
 const howMuchHaveYouPaidController = Router();
@@ -42,7 +43,8 @@ howMuchHaveYouPaidController
       } else {
         try {
           await howMuchHaveYouPaidService.saveHowMuchHaveYouPaid(generateRedisKey(req as unknown as AppRequest), howMuchHaveYouPaid, ResponseType.PART_ADMISSION);
-          res.redirect(constructResponseUrlWithIdParams(req.params.id, RESPONSE_TASK_LIST_URL));
+          const claimId = getRouteParam(req, 'id');
+          res.redirect(constructResponseUrlWithIdParams(claimId, RESPONSE_TASK_LIST_URL));
         } catch (error) {
           next(error);
         }

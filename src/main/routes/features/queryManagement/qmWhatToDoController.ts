@@ -119,7 +119,7 @@ qmWhatToDoController.get(QM_WHAT_DO_YOU_WANT_TO_DO_URL, (async (req, res , next)
     const redisKey = generateRedisKey(<AppRequest>req);
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const claimId = getRouteParam(req, 'id');
-    const qmType = req.params.qmType as WhatToDoTypeOption;
+    const qmType = getRouteParam(req, 'qmType') as WhatToDoTypeOption;
     const queryManagement = await getQueryManagement(redisKey, req);
     const option = queryManagement.qualifyingQuestion?.option;
     const form = new GenericForm(
@@ -134,7 +134,7 @@ qmWhatToDoController.post(QM_WHAT_DO_YOU_WANT_TO_DO_URL, (async (req, res , next
   try {
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const claimId = getRouteParam(req, 'id');
-    const qmType = req.params.qmType as WhatToDoTypeOption;
+    const qmType = getRouteParam(req, 'qmType') as WhatToDoTypeOption;
     const redisKey = generateRedisKey(<AppRequest>req);
     const option = req.body.option;
     const form = new GenericForm(new QualifyingQuestion(option, getItems(option, qmType, lang), getValidationMessage(qmType)));
