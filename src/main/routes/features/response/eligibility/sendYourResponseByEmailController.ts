@@ -26,6 +26,7 @@ function renderView(res: Response, form: Claim, fees: [TableItem[]], lang: strin
     RejectAllOfClaimType,
     partyType: PartyType,
     responseDeadline,
+    isQMFlagEnabled: false,
   });
 }
 

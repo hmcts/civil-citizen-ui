@@ -28,6 +28,7 @@ async function renderView(res: Response, form: GenericForm<AdditionalTime>, clai
     isReleaseTwoEnabled,
     applyGaApplication: constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL),
     isGaNroEnabled,
+    isQMFlagEnabled: false,
   });
 }
 
