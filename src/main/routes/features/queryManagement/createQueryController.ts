@@ -17,7 +17,7 @@ import {getClaimById} from 'modules/utilityService';
 import {Claim} from 'models/claim';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import { createMulterErrorMiddlewareForSingleField, getFileUploadErrorsForSource, FILE_UPLOAD_SOURCE } from 'common/utils/fileUploadUtils';
-import { redirectIfMulterError } from 'services/features/generalApplication/uploadEvidenceDocumentService';
+import { handleMulterError } from 'services/features/generalApplication/uploadEvidenceDocumentService';
 
 const createQueryController = Router();
 const viewPath = 'features/queryManagement/createQuery';
@@ -90,20 +90,22 @@ createQueryController.post([QUERY_MANAGEMENT_CREATE_QUERY], multerMiddleware, (a
         summaryRows: [],
       });
 
-    if (redirectIfMulterError(req, res, currentUrl, FILE_UPLOAD_SOURCE.QM_CREATE_QUERY)) {
-      return;
+    if (handleMulterError(req, FILE_UPLOAD_SOURCE.QM_CREATE_QUERY)) {
+      return req.session.save(() => {
+        res.redirect(`${currentUrl}`);
+      });
     }
 
     if (action === 'uploadButton') {
       await uploadSelectedFile(req, createQuery);
-    
+
       const fileUploadErrors = getFileUploadErrorsForSource(req, FILE_UPLOAD_SOURCE.QM_CREATE_QUERY);
       if (fileUploadErrors?.length) {
         const formWithErrors = new GenericForm(createQuery, fileUploadErrors);
         await getSummaryList(formattedSummary, req);
         return await renderView(formWithErrors, claim, claimId, res, formattedSummary, req);
       }
-    
+
       return res.redirect(`${currentUrl}`);
     }
 
