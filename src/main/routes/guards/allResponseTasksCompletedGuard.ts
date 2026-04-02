@@ -15,12 +15,17 @@ export class AllResponseTasksCompletedGuard {
       try {
         const appReq: AppRequest = <AppRequest>req;
         const lang = req?.query?.lang ? req.query.lang : req?.cookies?.lang;
-        const caseData: Claim = await getClaimById(appReq.session.claimId, req, true);
+        const caseId = req.params.id;
+
+        const caseData: Claim = await getClaimById(caseId, req, true);
         const carmApplicable = await isCarmEnabledForCase(caseData.submittedDate);
         const mintiApplicable = await isMintiEnabledForCase(caseData.submittedDate);
+
         await setResponseDeadline(caseData, appReq);
-        const taskLists = getTaskLists(caseData,  appReq.session.claimId, lang, carmApplicable, mintiApplicable);
+
+        const taskLists = getTaskLists(caseData,  caseId, lang, carmApplicable, mintiApplicable);
         assert(taskLists && taskLists.length > 0, 'Task list cannot be empty');
+
         const outstandingTasks: Task[] = outstandingTasksFromTaskLists(taskLists);
         const allTasksCompleted = outstandingTasks?.length === 0;
 
@@ -28,7 +33,7 @@ export class AllResponseTasksCompletedGuard {
           return next();
         }
 
-        res.redirect(constructResponseUrlWithIdParams(appReq.session.claimId, redirectUrl));
+        res.redirect(constructResponseUrlWithIdParams(caseId, redirectUrl));
       } catch (error) {
         next(error);
       }
