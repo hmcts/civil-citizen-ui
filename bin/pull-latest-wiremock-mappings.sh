@@ -16,9 +16,10 @@ cd ..
 mkdir -p ./wiremock/mappings
 mkdir -p ./wiremock/__files
 
-# Copy mappings and __files to local wiremock directory
-cp -r ./civil-wiremock-mappings/mappings/* ./wiremock/mappings/
-cp -r ./civil-wiremock-mappings/__files/* ./wiremock/__files/
+# Copy only cui-specific mappings and __files to local wiremock directory
+# (civil-citizen-ui only needs the cui/ subdirectory contents)
+cp -r ./civil-wiremock-mappings/mappings/cui/* ./wiremock/mappings/
+cp -r ./civil-wiremock-mappings/__files/cui/* ./wiremock/__files/
 
 # Copy the load script
 cp ./civil-wiremock-mappings/bin/load-wiremock-mappings.sh ./bin/
@@ -26,4 +27,4 @@ cp ./civil-wiremock-mappings/bin/load-wiremock-mappings.sh ./bin/
 # Cleanup
 rm -rf ./civil-wiremock-mappings
 
-echo "Wiremock mappings pulled successfully"
+echo "Wiremock mappings pulled successfully (cui only)"
