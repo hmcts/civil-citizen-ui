@@ -21,9 +21,6 @@ mkdir -p ./wiremock/__files
 cp -r ./civil-wiremock-mappings/mappings/cui/* ./wiremock/mappings/
 cp -r ./civil-wiremock-mappings/__files/cui/* ./wiremock/__files/
 
-# Copy the load script
-cp ./civil-wiremock-mappings/bin/load-wiremock-mappings.sh ./bin/
-
 # Cleanup
 rm -rf ./civil-wiremock-mappings
 
