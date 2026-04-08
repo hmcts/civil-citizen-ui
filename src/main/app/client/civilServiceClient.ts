@@ -538,23 +538,23 @@ export class CivilServiceClient {
   filterDashboardNotificationItems(dashboardNotifications: DashboardNotification[], req: AppRequest): DashboardNotification[] {
     return dashboardNotifications.filter((notification) => {
 
-      const session = req?.session;
-      const sessionUser = session.user?.givenName + ' ' + session.user?.familyName;
-      const sessionStart = new Date(session.issuedAt * 1000);
+      const isClickAction = notification?.notificationAction?.actionPerformed === 'Click';
 
-      const timeToLive = notification.timeToLive;
-      const actionPerformed = notification?.notificationAction?.actionPerformed;
       const actionUser = notification?.notificationAction?.createdBy;
-      const actionPerformedTime = new Date(notification?.notificationAction?.createdAt);
+      const sessionUser = `${req?.session?.user?.givenName} ${req?.session?.user?.familyName}`;
+      const isSameUser = actionUser?.trim() === sessionUser?.trim();
 
-      return !(actionUser === sessionUser && actionPerformed === 'Click'
-          && (timeToLive === 'Click'
-              || (timeToLive === 'Session'
-                  && sessionStart > actionPerformedTime
-              )
-          )
-      );
+      const isClickTTL = notification.timeToLive === 'Click';
+      const isSessionTTL = notification.timeToLive === 'Session';
+      const sessionStart = new Date(req?.session?.issuedAt * 1000);
+      const isSessionAfterAction = sessionStart > new Date(notification?.notificationAction?.createdAt);
 
+      const isActionByAnotherUser = !isSameUser;
+      const isNotClickAction = !isClickAction;
+      const isNoTTL = !isClickTTL && !isSessionTTL;
+      const isSessionBeforeAction = isSessionTTL && !isSessionAfterAction;
+
+      return isActionByAnotherUser || isNotClickAction || isNoTTL || isSessionBeforeAction;
     });
   }
 
