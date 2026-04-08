@@ -539,12 +539,13 @@ export class CivilServiceClient {
     return dashboardNotifications.filter((notification) => {
 
       const session = req?.session;
-      const actionUser = notification?.notificationAction?.createdBy;
       const sessionUser = session.user?.givenName + ' ' + session.user?.familyName;
       const sessionStart = new Date(session.issuedAt * 1000);
-      const actionPerformed = notification?.notificationAction?.actionPerformed;
-      const actionPerformedTime = new Date(notification?.notificationAction?.createdAt);
+
       const timeToLive = notification.timeToLive;
+      const actionPerformed = notification?.notificationAction?.actionPerformed;
+      const actionUser = notification?.notificationAction?.createdBy;
+      const actionPerformedTime = new Date(notification?.notificationAction?.createdAt);
 
       return !(actionUser === sessionUser && actionPerformed === 'Click'
           && (timeToLive === 'Click'
