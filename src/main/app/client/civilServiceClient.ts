@@ -536,33 +536,39 @@ export class CivilServiceClient {
   }
 
   filterDashboardNotificationItems(dashboardNotifications: DashboardNotification[], req: AppRequest): DashboardNotification[] {
+    const sessionUser = `${req?.session?.user?.givenName} ${req?.session?.user?.familyName}`.trim().toLowerCase();
+    const sessionStart = new Date(req?.session?.issuedAt * 1000);
 
     return dashboardNotifications.filter((notification) => {
+      // Backward compatibility fall back
       const action = notification?.notificationAction;
 
-      // If no action data, keep it
-      if (!action) return true;
+      // The user who performed the action, use clickedBy or fall back to old notificationAction.createdBy
+      const actionUser = (notification?.clickedBy ?? action?.createdBy)?.trim().toLowerCase();
 
-      // If action done by a different user, keep it
-      const sessionUser = `${req?.session?.user?.givenName} ${req?.session?.user?.familyName}`.trim().toLowerCase();
-      if (action.createdBy?.trim().toLowerCase() !== sessionUser) return true;
+      // If no action user data, or action done by a different user, keep it
+      if (!actionUser || actionUser !== sessionUser) return true;
 
-      // If it wasn't a click, keep it
-      if (action.actionPerformed !== 'Click') return true;
+      // If it wasn't a click action, keep it.
+      // Presence of (clickedBy || clickedAt) || actionPerformed === 'Click' implies a click action
+      const isClick = !!notification?.clickedBy || !!notification?.clickedAt || action?.actionPerformed === 'Click';
+      if (!isClick) return true;
 
       // If TTL is neither Click nor Session, keep it
       const ttl = notification.timeToLive;
       if (ttl !== 'Click' && ttl !== 'Session') return true;
 
-      // Only compute action time if TTL is Session
+      // Only compute action time if TTL is Session, use clickedAt or fall back to old notificationAction.createdAt
+      const actionAt = notification?.clickedAt ?? action?.createdAt;
       if (ttl === 'Session') {
+        // If we don’t have an action time, keep it
+        if (!actionAt) return true;
         // Keep if the session started before the action
-        const sessionStart = new Date(req?.session?.issuedAt * 1000);
-        const actionTime = new Date(action.createdAt);
-        if (sessionStart <= actionTime) return true;
+        if (sessionStart <= new Date(actionAt)) return true;
       }
 
-      // All filter-out conditions met (same user, Click action, TTL Click or Session after session start)
+      // All filter-out conditions met:
+      // same user, 'Click' action, TTL 'Click' or (TTL 'Session' after session start)
       return false;
     });
   }

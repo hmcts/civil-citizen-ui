@@ -7,15 +7,17 @@ export class DashboardNotification {
   descriptionEn: string;
   descriptionCy: string;
   timeToLive: string;
-  notificationAction: DashboardNotificationAction;
+  notificationAction?: DashboardNotificationAction;
   params: Map<string, object>;
   createdAt: string;
   deadline: string;
+  clickedBy?: string;
+  clickedAt?: string;
 
-  constructor(id: string, titleEn: string, titleCy:string, descriptionEn: string,
-    descriptionCy: string, timeToLive: string,
-    notificationAction: DashboardNotificationAction, params: Map<string, object>,
-    createdAt: string, deadline: string) {
+  constructor(id?: string, titleEn?: string, titleCy?:string, descriptionEn?: string,
+    descriptionCy?: string, timeToLive?: string,
+    notificationAction?: DashboardNotificationAction, params?: Map<string, object>,
+    createdAt?: string, deadline?: string, clickedBy?: string, clickedAt?: string) {
     this.id = id;
     this.titleEn = titleEn;
     this.titleCy = titleCy;
@@ -26,5 +28,7 @@ export class DashboardNotification {
     this.params = params;
     this.createdAt = createdAt;
     this.deadline = deadline;
+    this.clickedBy = clickedBy;
+    this.clickedAt = clickedAt;
   }
 }

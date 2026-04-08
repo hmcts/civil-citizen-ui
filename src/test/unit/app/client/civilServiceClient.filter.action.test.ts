@@ -20,12 +20,22 @@ describe('CivilServiceClient.filterDashboardNotificationItems', () => {
   });
 
   const createNotification = (overrides: any = {}): DashboardNotification => {
-    const notification = new DashboardNotification('1', 'titleEn', 'titleCy', 'descEn', 'descCy', overrides.timeToLive ?? 'Click', undefined, undefined, overrides.createdAt ?? new Date(500000).toISOString(), undefined);
-    notification.notificationAction = {
-      createdBy: overrides.createdBy ?? 'Other User',
-      actionPerformed: overrides.actionPerformed ?? 'Click',
-      createdAt: overrides.createdAt ?? new Date(500000).toISOString(), // 500 seconds
-    } as any;
+    const notification = new DashboardNotification(
+      '1', 'titleEn', 'titleCy', 'descEn', 'descCy',
+      overrides.timeToLive ?? 'Click',
+      undefined, undefined,
+      overrides.createdAt ?? new Date(500000).toISOString(),
+      undefined,
+      overrides.clickedBy,
+      overrides.clickedAt,
+    );
+    if (overrides.createdBy || overrides.actionPerformed || overrides.createdAt) {
+      notification.notificationAction = {
+        createdBy: overrides.createdBy,
+        actionPerformed: overrides.actionPerformed ?? 'Click',
+        createdAt: overrides.createdAt ?? new Date(500000).toISOString(),
+      } as any;
+    }
     return notification;
   };
 
@@ -79,7 +89,7 @@ describe('CivilServiceClient.filterDashboardNotificationItems', () => {
   });
 
   it('should handle missing notificationAction gracefully (should NOT filter out)', () => {
-    const notification = new DashboardNotification('1', 'titleEn', 'titleCy', 'descEn', 'descCy', 'Click', undefined, undefined, undefined, undefined);
+    const notification = new DashboardNotification('1', 'titleEn', 'titleCy', 'descEn', 'descCy', 'Click', undefined, undefined, undefined, undefined, undefined, undefined);
     const result = client.filterDashboardNotificationItems([notification], mockReq);
     expect(result).toHaveLength(1);
   });
