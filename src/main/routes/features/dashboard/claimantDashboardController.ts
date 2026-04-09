@@ -96,7 +96,6 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
       const welshEnabled = await isWelshEnabledForMainCase();
       const showWelshPartyBanner = welshEnabled && claim.isAnyPartyBilingual();
       const showErrorAwaitingTranslation = welshEnabled && 'errorAwaitingTranslation' in req.query;
-      const claimNumber = claimIdPrettified ? claimIdPrettified : '';
 
       res.render(claimantDashboardViewPath, {
         claim: claim,
@@ -111,7 +110,6 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
         helpSupportLinks,
         lang: lng,
         pageTitle: 'PAGES.DASHBOARD.PAGE_TITLE',
-        claimNumber,
         isQMFlagEnabled,
         showWelshPartyBanner,
         showErrorAwaitingTranslation,
