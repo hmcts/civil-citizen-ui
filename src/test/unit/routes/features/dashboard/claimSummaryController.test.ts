@@ -587,7 +587,7 @@ describe('Claim Summary Controller Defendant', () => {
       { caseRole: CaseRole.DEFENDANT, ccdState: CaseState.HEARING_READINESS },
       { caseRole: CaseRole.DEFENDANT, ccdState: CaseState.PREPARE_FOR_HEARING_CONDUCT_HEARING },
       { caseRole: CaseRole.DEFENDANT, ccdState: CaseState.DECISION_OUTCOME },
-      { caseRole: CaseRole.DEFENDANT, ccdState: CaseState.All_FINAL_ORDERS_ISSUED },
+      { caseRole: CaseRole.DEFENDANT, ccdState: CaseState.ALL_FINAL_ORDERS_ISSUED },
     ];
 
     describe.each(testCases)('Query management dashboard links', (testCase) => {

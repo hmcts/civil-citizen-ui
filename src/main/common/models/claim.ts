@@ -552,7 +552,7 @@ export class Claim {
   }
 
   isAllFinalOrdersIssued(): boolean {
-    return this.ccdState === CaseState.All_FINAL_ORDERS_ISSUED;
+    return this.ccdState === CaseState.ALL_FINAL_ORDERS_ISSUED;
   }
 
   isBusiness(): boolean {
@@ -786,7 +786,7 @@ export class Claim {
   }
 
   isCCJCompleteForJo(isJudgmentOnlineLiveOn: boolean) {
-    return this.ccdState === CaseState.All_FINAL_ORDERS_ISSUED && this.claimantResponse?.ccjRequest?.paidAmount?.option != undefined && isJudgmentOnlineLiveOn;
+    return this.ccdState === CaseState.ALL_FINAL_ORDERS_ISSUED && this.claimantResponse?.ccjRequest?.paidAmount?.option != undefined && isJudgmentOnlineLiveOn;
   }
 
   getHowTheInterestCalculatedReason(): string {
@@ -1118,7 +1118,7 @@ export class Claim {
   isCaseProgressionCaseState(): boolean {
     return [CaseState.CASE_PROGRESSION, CaseState.HEARING_READINESS,
       CaseState.PREPARE_FOR_HEARING_CONDUCT_HEARING, CaseState.DECISION_OUTCOME,
-      CaseState.All_FINAL_ORDERS_ISSUED].includes(this.ccdState);
+      CaseState.ALL_FINAL_ORDERS_ISSUED].includes(this.ccdState);
   }
 
   isAnyPartyBilingual() : boolean {

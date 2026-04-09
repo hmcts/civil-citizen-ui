@@ -5,8 +5,8 @@ const chai = require('chai');
 const {queryResponseMessage, followUpQueryMessage, initialQueryMessage} = require('../fixtures/queryMessages');
 const {expect} = chai;
 
-const RAISE_QUERY_EVENT = 'queryManagementRaiseQuery';
-const RESPOND_QUERY_EVENT = 'queryManagementRespondQuery';
+const RAISE_QUERY_EVENT = 'QUERY_MANAGEMENT_RAISE_QUERY';
+const RESPOND_QUERY_EVENT = 'QUERY_MANAGEMENT_RESPOND_QUERY';
 
 const assertQueryMessage = (actualQueryMessage, expectedQueryMessage) => {
   expect(actualQueryMessage.id).equal(expectedQueryMessage.id);

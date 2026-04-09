@@ -140,7 +140,7 @@ const testCases = [
   { caseRole: CaseRole.CLAIMANT, ccdState: CaseState.HEARING_READINESS },
   { caseRole: CaseRole.CLAIMANT, ccdState: CaseState.PREPARE_FOR_HEARING_CONDUCT_HEARING },
   { caseRole: CaseRole.CLAIMANT, ccdState: CaseState.DECISION_OUTCOME },
-  { caseRole: CaseRole.CLAIMANT, ccdState: CaseState.All_FINAL_ORDERS_ISSUED },
+  { caseRole: CaseRole.CLAIMANT, ccdState: CaseState.ALL_FINAL_ORDERS_ISSUED },
 ];
 
 describe('claimant Dashboard Controller', () => {

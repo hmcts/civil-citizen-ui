@@ -144,7 +144,7 @@ const getSupportLinks = async (req: AppRequest, claim: Claim, claimId: string, l
     claim.ccdState === CaseState.HEARING_READINESS ||
     claim.ccdState === CaseState.PREPARE_FOR_HEARING_CONDUCT_HEARING ||
     claim.ccdState === CaseState.DECISION_OUTCOME ||
-    claim.ccdState === CaseState.All_FINAL_ORDERS_ISSUED;
+    claim.ccdState === CaseState.ALL_FINAL_ORDERS_ISSUED;
 
   const iWantToTitle = t('PAGES.DASHBOARD.SUPPORT_LINKS.I_WANT_TO', { lng });
   const iWantToLinks = [];

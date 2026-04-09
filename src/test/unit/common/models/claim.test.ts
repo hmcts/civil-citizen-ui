@@ -2412,7 +2412,7 @@ describe('isCcjCompleteForJo', () => {
   claim.claimantResponse.ccjRequest.paidAmount = new PaidAmount(YesNo.YES, 1000, 9000);
   it('should return true when ccj completed, state is correct and flag is on', async() => {
     //Given
-    claim.ccdState = CaseState.All_FINAL_ORDERS_ISSUED;
+    claim.ccdState = CaseState.ALL_FINAL_ORDERS_ISSUED;
     jest.spyOn(launchDarkly, 'isJudgmentOnlineLive').mockResolvedValue(true);
     //When
     const result = claim.isCCJCompleteForJo(true);
@@ -2421,7 +2421,7 @@ describe('isCcjCompleteForJo', () => {
   });
   it('should return false when ccj completed, state is correct and flag is off', async() => {
     //Given
-    claim.ccdState = CaseState.All_FINAL_ORDERS_ISSUED;
+    claim.ccdState = CaseState.ALL_FINAL_ORDERS_ISSUED;
     jest.spyOn(launchDarkly, 'isJudgmentOnlineLive').mockResolvedValue(false);
     //When
     const result = claim.isCCJCompleteForJo(false);
