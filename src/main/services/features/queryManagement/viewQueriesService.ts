@@ -11,6 +11,10 @@ export class ViewQueriesService {
     return claim.queries?.caseMessages || [];
   }
 
+  private static removeRoleMetadata(createdBy?: string): string {
+    return createdBy?.split('::')?.[0];
+  }
+
   public static getMessageThreads(claim:Claim) {
     const allMessages = this.getCaseMessages(claim)
       .map(messageItem => messageItem.value);
@@ -29,11 +33,14 @@ export class ViewQueriesService {
         const parentMessage = messageThread[0];
         const latestMessage = messageThread[messageThread.length - 1];
 
+        const parentCreatedBy = this.removeRoleMetadata(parentMessage.createdBy);
+        const latestCreatedBy = this.removeRoleMetadata(latestMessage.createdBy);
+
         const viewObject = {
           id: parentMessage.id,
           subject: parentMessage.subject,
           sentOn: dateTimeFormat(parentMessage.createdOn, lang, true),
-          createdBy: parentMessage.createdBy === userId ? 'PAGES.QM.VIEW_QUERY.UPDATED_BY_YOU' : parentMessage.name,
+          createdBy: parentCreatedBy === userId ? 'PAGES.QM.VIEW_QUERY.UPDATED_BY_YOU' : parentMessage.name,
           lastUpdatedOn: dateTimeFormat(latestMessage.createdOn, lang, true),
         } as ViewObjects;
 
@@ -45,7 +52,7 @@ export class ViewQueriesService {
         }
         else {
           return {...viewObject,
-            lastUpdatedBy: latestMessage.createdBy === userId ? 'PAGES.QM.VIEW_QUERY.UPDATED_BY_YOU' : latestMessage.name,
+            lastUpdatedBy: latestCreatedBy === userId ? 'PAGES.QM.VIEW_QUERY.UPDATED_BY_YOU' : latestMessage.name,
             status: 'PAGES.QM.VIEW_QUERY.STATUS_SENT',
           };
         }
@@ -66,6 +73,7 @@ export class ViewQueriesService {
       : messageThread.length % 2 === 0 ? 'PAGES.QM.VIEW_QUERY.STATUS_RECEIVED' : 'PAGES.QM.VIEW_QUERY.STATUS_SENT'  ;
     const formatted = messageThread.map((item, index) => {
       const { body, isHearingRelated, hearingDate, attachments, createdBy, createdOn, name } = item;
+      const createdByUserId = this.removeRoleMetadata(createdBy);
       const documents = attachments?.map(doc => {
         const { document_filename, document_binary_url } = doc.value ?? {};
         return {
@@ -78,11 +86,11 @@ export class ViewQueriesService {
         body,
         isHearingRelated,
         documents,
-        createdBy,
+        createdByUserId,
         name,
         dateTimeFormat(createdOn, lang, true),
         formatDateToFullDate(new Date(createdOn), lang),
-        item.createdBy === userId,
+        createdByUserId === userId,
         formatDateToFullDate(new Date(hearingDate), lang),
       );
     });
