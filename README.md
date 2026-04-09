@@ -104,7 +104,7 @@ $ yarn test:functional
 Running E2E tests:
 
 For that we need to follow three steps:
-1) Start wiremock server
+1) Start wiremock server (automatically pulls latest mappings from civil-wiremock-mappings)
 ```bash
 $ yarn wiremock:start
 ```
