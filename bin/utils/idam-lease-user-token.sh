@@ -6,6 +6,7 @@ username=${1}
 password=${2}
 
 IDAM_URL=${IDAM_API_BASE_URL:-http://localhost:5000}
+
 clientSecret=${CCD_API_GATEWAY_IDAM_CLIENT_SECRET:-ccd_gateway_secret}
 redirectUri=${CCD_IDAM_REDIRECT_URL:-http://localhost:3451/oauth2redirect}
 
