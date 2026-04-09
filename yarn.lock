@@ -5499,7 +5499,7 @@ __metadata:
     js-yaml: "npm:^4.1.1"
     jsdom: "npm:^28.0.0"
     jwt-decode: "npm:^3.1.2"
-    lodash: "npm:^4.18.0"
+    lodash: "npm:^4.18.1"
     luxon: "npm:^3.2.1"
     mini-css-extract-plugin: "npm:^2.7.2"
     minimatch: "npm:^10.2.3"
@@ -9812,7 +9812,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lodash@npm:^4.18.0":
+"lodash@npm:^4.18.1":
   version: 4.18.1
   resolution: "lodash@npm:4.18.1"
   checksum: 10/306fea53dfd39dad1f03d45ba654a2405aebd35797b673077f401edb7df2543623dc44b9effbb98f69b32152295fff725a4cec99c684098947430600c6af0c3f
