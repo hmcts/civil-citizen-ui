@@ -60,3 +60,6 @@ package-lock.json
 # .env
 .env
 .env.tests.local
+
+# WireMock mappings (pulled from civil-wiremock-mappings)
+wiremock/
