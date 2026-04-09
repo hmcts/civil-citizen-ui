@@ -8,10 +8,12 @@ const {expect} = chai;
 const RAISE_QUERY_EVENT = 'QUERY_MANAGEMENT_RAISE_QUERY';
 const RESPOND_QUERY_EVENT = 'QUERY_MANAGEMENT_RESPOND_QUERY';
 
+const removeRoleMetadata = (createdBy = '') => createdBy.split('::')[0];
+
 const assertQueryMessage = (actualQueryMessage, expectedQueryMessage) => {
   expect(actualQueryMessage.id).equal(expectedQueryMessage.id);
   expect(new Date(actualQueryMessage.createdOn).toISOString()).equal(new Date(expectedQueryMessage.createdOn).toISOString());
-  expect(actualQueryMessage.createdBy).equal(expectedQueryMessage.createdBy);
+  expect(removeRoleMetadata(actualQueryMessage.createdBy)).equal(expectedQueryMessage.createdBy);
   expect(actualQueryMessage.body).equal(expectedQueryMessage.body);
   expect(actualQueryMessage.isHearingRelated).equal(expectedQueryMessage.isHearingRelated);
   expect(actualQueryMessage.hearingDate).equal(expectedQueryMessage.hearingDate);
