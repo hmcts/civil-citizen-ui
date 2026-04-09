@@ -660,7 +660,6 @@ describe('claimant Dashboard Controller', () => {
         'features/dashboard/claim-summary-redesign',
         expect.objectContaining({
           lang: 'cy',
-          claimNumber: '',
           claimId: '12345',
           showWelshPartyBanner: false,
           showErrorAwaitingTranslation: false,
@@ -694,7 +693,7 @@ describe('claimant Dashboard Controller', () => {
         'features/dashboard/claim-summary-redesign',
         expect.objectContaining({
           lang: 'en',
-          claimNumber: '000MC001',
+          claimId: '12345',
           showWelshPartyBanner: true,
           showErrorAwaitingTranslation: true,
         }),
