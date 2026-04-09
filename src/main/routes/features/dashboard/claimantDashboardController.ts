@@ -96,7 +96,7 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
       const welshEnabled = await isWelshEnabledForMainCase();
       const showWelshPartyBanner = welshEnabled && claim.isAnyPartyBilingual();
       const showErrorAwaitingTranslation = welshEnabled && 'errorAwaitingTranslation' in req.query;
-      const claimNumber = claim.claimNumber ? claim.claimNumber : '';
+      const claimNumber = claimIdPrettified ? claimIdPrettified : '';
 
       res.render(claimantDashboardViewPath, {
         claim: claim,
