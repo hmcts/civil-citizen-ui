@@ -78,7 +78,7 @@ def getCivilCcdDefinitionBranch() {
   for (label in githubApi.getLabelsbyPattern(env.BRANCH_NAME, "civilDefinitionBranch:")) {
     return label.minus("civilDefinitionBranch:").trim()
   }
-  return "DTSCCI-3977-M"
+  return "DTSCCI-4130"
 }
 
 def getCivilServiceImage() {
