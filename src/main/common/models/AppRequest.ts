@@ -35,6 +35,10 @@ export interface AppSession extends Session {
   history?: string[];
   qmShareConfirmed: boolean;
   caseReference?: string;
+  uploadRateLimit?: {
+    windowStartMs: number;
+    requestCount: number;
+  };
 }
 
 export interface UserDetails {
