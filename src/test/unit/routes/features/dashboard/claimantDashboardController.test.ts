@@ -603,7 +603,6 @@ describe('claimant Dashboard Controller', () => {
   describe('route handler branches', () => {
     beforeEach(() => {
       jest.clearAllMocks();
-      jest.spyOn(launchDarkly, 'isCUIReleaseTwoEnabled').mockResolvedValue(true);
       jest.spyOn(launchDarkly, 'isCarmEnabledForCase').mockResolvedValue(false);
       jest.spyOn(launchDarkly, 'isGaForLipsEnabled').mockResolvedValue(false);
       jest.spyOn(launchDarkly, 'isQueryManagementEnabled').mockResolvedValue(false);

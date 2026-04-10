@@ -16,7 +16,6 @@ import {PaymentDetails, PaymentStatus} from 'models/PaymentDetails';
 import {CaseProgressionHearing} from 'models/caseProgression/caseProgressionHearing';
 import {CaseProgression} from 'models/caseProgression/caseProgression';
 import * as UtilityService from 'modules/utilityService';
-import * as launchDarkly from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
