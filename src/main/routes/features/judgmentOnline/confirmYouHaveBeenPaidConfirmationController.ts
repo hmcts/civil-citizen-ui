@@ -23,7 +23,8 @@ function renderView(res: Response, claimId: string) {
     dashboardUrl,
     pageTitle: 'PAGES.CONFIRM_YOU_HAVE_BEEN_PAID_CONFIRM.PAGE_TITLE',
     panel,
-    content});
+    content,
+    claimId});
 }
 
 confirmYouHaveBeenPaidConfirmController.get(CONFIRM_YOU_HAVE_BEEN_PAID_CONFIRMATION_URL, (async (req: AppRequest, res: Response) => {
