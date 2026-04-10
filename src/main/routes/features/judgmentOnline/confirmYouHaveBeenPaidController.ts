@@ -43,6 +43,7 @@ function renderView(form: GenericForm<DateYouHaveBeenPaidForm>, res: Response, l
       iWantToTitle,
       iWantToLinks,
       cancelUrl,
+      claimId,
     },
   );
 }
