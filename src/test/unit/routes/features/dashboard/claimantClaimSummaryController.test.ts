@@ -4,7 +4,6 @@ import request from 'supertest';
 import {app} from '../../../../../main/app';
 import {mockCivilClaim} from '../../../../utils/mockDraftStore';
 import {OLD_DASHBOARD_CLAIMANT_URL} from '../../../../../main/routes/urls';
-import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {PartyType} from 'common/models/partyType';
 import {PartyDetails} from 'common/form/models/partyDetails';
 import {Party} from 'common/models/party';
@@ -160,9 +159,9 @@ describe('claimant Dashboard Controller', () => {
     it('should redirect old claimant dashboard URL to the new claimant dashboard URL', async () => {
       await request(app)
         .get(OLD_DASHBOARD_CLAIMANT_URL)
-        .expect((res: Response) => {
+        .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toContain('/dashboard/:id/claimant');
+          expect(res.headers.location).toContain('/dashboard/:id/claimant');
         });
     });
   });
