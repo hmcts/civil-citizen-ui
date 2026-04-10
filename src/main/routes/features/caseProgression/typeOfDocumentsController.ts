@@ -51,7 +51,7 @@ async function renderView(res: Response, req: AppRequest, claimId: string, form:
 typeOfDocumentsController.get(TYPES_OF_DOCUMENTS_URL,
   (async (req: AppRequest, res: Response, next: NextFunction) => {
     try {
-      const claimId = req.params.id;
+      const claimId = req.params.id as string;
       const redisKey= generateRedisKey(req);
       const documentsList = await getDocuments(redisKey);
       const form = new GenericForm(documentsList);
@@ -64,7 +64,7 @@ typeOfDocumentsController.get(TYPES_OF_DOCUMENTS_URL,
 
 typeOfDocumentsController.post(TYPES_OF_DOCUMENTS_URL, (async (req, res, next) => {
   try {
-    const claimId = req.params.id;
+    const claimId = req.params.id as string;
     const claim =  await getClaimById(claimId, req,true);
     const typeDocumentList= getTypeDocumentForm(req);
     const form = new GenericForm(typeDocumentList);

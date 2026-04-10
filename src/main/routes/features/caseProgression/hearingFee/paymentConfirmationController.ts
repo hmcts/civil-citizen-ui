@@ -12,7 +12,7 @@ const paymentConfirmationController: Router = Router();
 
 paymentConfirmationController.get([HEARING_FEE_PAYMENT_CONFIRMATION_URL, HEARING_FEE_PAYMENT_CONFIRMATION_URL_WITH_UNIQUE_ID], (async (req:AppRequest | Request, res, next: NextFunction) => {
   try {
-    const claimId = req.params.id;
+    const claimId = req.params.id as string;
     await deleteDraftClaimFromStore(claimId + 'userIdForPayment');
     const redirectUrl = await getRedirectUrl(claimId,<AppRequest>req);
     res.redirect(constructResponseUrlWithIdParams(claimId, redirectUrl));
