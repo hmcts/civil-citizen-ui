@@ -9,6 +9,7 @@ import {RESPONSE_TASK_LIST_URL, NEW_RESPONSE_DEADLINE_URL} from '../../../../../
 import {PartyType} from '../../../../../../main/common/models/partyType';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {AppSession, UserDetails} from 'models/AppRequest';
+import {CivilServiceClient} from 'client/civilServiceClient';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -48,6 +49,7 @@ describe('Response - New response deadline', () => {
       const expectedDate = '31 October 2022';
 
       mockGetCaseDataFromStore.mockImplementation(async () => claim);
+      jest.spyOn(CivilServiceClient.prototype, 'calculateExtendedResponseDeadline').mockResolvedValue(extendedDate);
       await request(app).get(NEW_RESPONSE_DEADLINE_URL)
         .expect((res) => {
           expect(res.status).toBe(200);

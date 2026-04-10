@@ -157,24 +157,12 @@ describe('claimant Dashboard Controller', () => {
       });
     });
 
-    it('should return status 500 when error thrown', async () => {
-      jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
-        .mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
+    it('should redirect old claimant dashboard URL to the new claimant dashboard URL', async () => {
       await request(app)
         .get(OLD_DASHBOARD_CLAIMANT_URL)
         .expect((res: Response) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
-    });
-    it('should return status 500 when error thrown', async () => {
-      jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
-        .mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
-      await request(app)
-        .get(OLD_DASHBOARD_CLAIMANT_URL)
-        .expect((res: Response) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
+          expect(res.status).toBe(302);
+          expect(res.header.location).toContain('/dashboard/:id/claimant');
         });
     });
   });
