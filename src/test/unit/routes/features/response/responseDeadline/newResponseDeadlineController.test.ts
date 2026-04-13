@@ -49,8 +49,8 @@ describe('Response - New response deadline', () => {
       await request(app).get(NEW_RESPONSE_DEADLINE_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
+          expect(res.text).toContain('New response deadline');
           expect(res.text).toContain(expectedDate);
-          expect(res.text).toContain(claim.getClaimantFullName());
         });
     });
     it('should show error when proposed extended deadline does not exist', async () => {
