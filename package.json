@@ -103,11 +103,7 @@
     "js-yaml": "^4.1.1",
     "jsdom": "^28.0.0",
     "jwt-decode": "^3.1.2",
-<<<<<<< HEAD
-    "lodash": "4.18.1",
-=======
     "lodash": "^4.18.1",
->>>>>>> master
     "luxon": "^3.2.1",
     "minimatch": "^10.2.3",
     "multer": "^2.1.1",
