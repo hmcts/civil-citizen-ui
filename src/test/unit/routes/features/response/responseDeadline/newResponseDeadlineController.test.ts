@@ -23,7 +23,6 @@ const mockSubmitExtendedResponseDeadline = submitExtendedResponseDeadline as jes
 describe('Response - New response deadline', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamServiceUrl: string = config.get('services.idam.url');
-  const citizenBaseUrl: string = config.get('services.civilService.url');
   const extendedDate = new Date(2022, 9, 31);
   const claim = new Claim();
   claim.applicant1 = {
