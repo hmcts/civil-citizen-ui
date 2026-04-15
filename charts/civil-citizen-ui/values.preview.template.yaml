@@ -34,7 +34,6 @@ nodejs:
         - citizen-ui-idam-secret
         - ordnance-survey-api-key
         - cmc-s2s-secret
-        - mc-session-secret
         - citizen-draft-store-primary
         - citizen-draft-store-secondary
         - civil-citizen-ui-token-key
