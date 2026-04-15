@@ -13,6 +13,7 @@ global:
   postgresSecret: postgres
   s2sUrl: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
 
+
 nodejs:
   # Don't modify below here
   image: ${IMAGE_NAME}
