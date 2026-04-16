@@ -2,7 +2,6 @@ import * as RedisDraftStoreClient  from 'modules/draft-store/draftStoreService';
 import {getDraftClaimData} from 'services/dashboard/draftClaimService';
 jest.mock('../../../../main/modules/draft-store');
 jest.mock('../../../../main/modules/draft-store/draftStoreService');
-jest.mock('../../../../main/app/auth/launchdarkly/launchDarklyClient');
 
 const redisDraftClaimStore = jest.spyOn(RedisDraftStoreClient, 'getCaseDataFromStore');
 describe ('cui draft claim service', () => {

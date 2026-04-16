@@ -2,27 +2,24 @@ import {app} from '../../../../../../main/app';
 import request from 'supertest';
 import config from 'config';
 import nock from 'nock';
+import {CIVIL_SERVICE_CALCULATE_DEADLINE} from '../../../../../../main/app/client/civilServiceUrls';
+import {getCaseDataFromStore} from '../../../../../../main/modules/draft-store/draftStoreService';
 import {Claim} from '../../../../../../main/common/models/claim';
 import {RESPONSE_TASK_LIST_URL, NEW_RESPONSE_DEADLINE_URL} from '../../../../../../main/routes/urls';
 import {PartyType} from '../../../../../../main/common/models/partyType';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {AppSession, UserDetails} from 'models/AppRequest';
-import {
-  getClaimWithExtendedResponseDeadline,
-  submitExtendedResponseDeadline,
-} from '../../../../../../main/services/features/response/responseDeadline/extendResponseDeadlineService';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
-jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
-jest.mock('../../../../../../main/services/features/response/responseDeadline/extendResponseDeadlineService');
+jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
 
-const mockGetClaimWithExtendedResponseDeadline = getClaimWithExtendedResponseDeadline as jest.Mock;
-const mockSubmitExtendedResponseDeadline = submitExtendedResponseDeadline as jest.Mock;
+const mockGetCaseDataFromStore = getCaseDataFromStore as jest.Mock;
 
 describe('Response - New response deadline', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamServiceUrl: string = config.get('services.idam.url');
+  const citizenBaseUrl: string = config.get('services.civilService.url');
   const extendedDate = new Date(2022, 9, 31);
   const claim = new Claim();
   claim.applicant1 = {
@@ -40,22 +37,26 @@ describe('Response - New response deadline', () => {
     nock(idamServiceUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
+    nock('http://localhost:4000')
+      .post(CIVIL_SERVICE_CALCULATE_DEADLINE)
+      .reply(200, new Date(2022, 9, 31));
   });
 
   describe('on GET', () => {
     it('should return new deadline date successfully', async () => {
       const expectedDate = '31 October 2022';
-      mockGetClaimWithExtendedResponseDeadline.mockResolvedValue(claim);
+
+      mockGetCaseDataFromStore.mockImplementation(async () => claim);
       await request(app).get(NEW_RESPONSE_DEADLINE_URL)
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain('New response deadline');
           expect(res.text).toContain(expectedDate);
+          expect(res.text).toContain(claim.getClaimantFullName());
         });
     });
     it('should show error when proposed extended deadline does not exist', async () => {
       claim.responseDeadline.agreedResponseDeadline = undefined;
-      mockGetClaimWithExtendedResponseDeadline.mockRejectedValue(new Error('No extended response deadline found'));
+      mockGetCaseDataFromStore.mockImplementation(async () => claim);
       await request(app).get(NEW_RESPONSE_DEADLINE_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
@@ -63,7 +64,9 @@ describe('Response - New response deadline', () => {
         });
     });
     it('should show error when draft store throws error', async () => {
-      mockGetClaimWithExtendedResponseDeadline.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
+      mockGetCaseDataFromStore.mockImplementation(async () => {
+        throw new Error(TestMessages.REDIS_FAILURE);
+      });
       await request(app).get(NEW_RESPONSE_DEADLINE_URL)
         .expect((res) => {
           expect(res.status).toBe(500);
@@ -73,7 +76,10 @@ describe('Response - New response deadline', () => {
   });
   describe('On Post', () => {
     it('should redirect to task list successfully', async () => {
-      mockSubmitExtendedResponseDeadline.mockResolvedValue(undefined);
+      nock(citizenBaseUrl)
+        .post('/cases/:id/citizen/1234/event')
+        .reply(200, {});
+      mockGetCaseDataFromStore.mockImplementation(async () => claim);
       app.request.session = <AppSession>{user: <UserDetails>{id: '1234'}};
 
       await request(app).post(NEW_RESPONSE_DEADLINE_URL)
@@ -83,7 +89,9 @@ describe('Response - New response deadline', () => {
         });
     });
     it('should show error when there is error with the call to submit event', async () => {
-      mockSubmitExtendedResponseDeadline.mockRejectedValue(new Error('error'));
+      nock(citizenBaseUrl)
+        .post('/cases/:id/citizen/1234/event')
+        .reply(500, {error: 'error'});
       app.request.session = <AppSession>{user: <UserDetails>{id: '1234'}};
       await request(app).post(NEW_RESPONSE_DEADLINE_URL)
         .expect((res) => {
