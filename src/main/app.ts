@@ -1,6 +1,7 @@
 import * as bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import express from 'express';
+import {app} from './app-instance';
 import * as path from 'path';
 import favicon from 'serve-favicon';
 import session from 'express-session';
@@ -125,7 +126,7 @@ const developmentMode = env === 'development';
 const e2eTestMode = env === 'e2eTest';
 const cookieMaxAge = config.get<number>('cookieMaxAge');
 
-export const app = express();
+export {app};
 app.use(cookieParser());
 app.use(setLanguage);
 app.use(favicon(path.join(__dirname, 'public', 'assets', 'images', 'favicon.ico')));
