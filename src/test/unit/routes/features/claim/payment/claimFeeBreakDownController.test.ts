@@ -35,6 +35,11 @@ jest.mock('routes/guards/claimFeePaymentGuard', () => ({
 }));
 jest.mock('../../../../../../main/modules/draft-store/paymentSessionStoreService', () => ({
   saveUserId: jest.fn(),
+  getUserId: jest.fn(),
+  saveOriginalPaymentConfirmationUrl: jest.fn(),
+  getPaymentConfirmationUrl: jest.fn(),
+  deleteUserId: jest.fn(),
+  deletePaymentConfirmationUrl: jest.fn(),
 }));
 
 describe('on GET', () => {
