@@ -1,5 +1,6 @@
 import cookieParser from 'cookie-parser';
 import express from 'express';
+import {app} from './app-instance';
 import * as path from 'path';
 import favicon from 'serve-favicon';
 import session from 'express-session';
@@ -154,7 +155,7 @@ const setDefaultHeaders: express.RequestHandler = (_req, res, next) => {
   next();
 };
 
-export const app = express();
+export {app};
 app.use(cookieParser());
 app.use(setLanguage);
 app.use(favicon(path.join(__dirname, 'public', 'assets', 'images', 'favicon.ico')) as any);

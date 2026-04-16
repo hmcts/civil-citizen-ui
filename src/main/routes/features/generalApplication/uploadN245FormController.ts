@@ -45,7 +45,7 @@ uploadN245FormController.get(GA_UPLOAD_N245_FORM_URL, uploadN245FormControllerGu
     const currentUrl = constructResponseUrlWithIdParams(claimId, GA_UPLOAD_N245_FORM_URL);
     const backLinkUrl = BACK_URL;
     if (req.query?.action === removeDoc) {
-      saveN245Form(redisKey, claim, undefined);
+      await saveN245Form(redisKey, claim, undefined);
       documentName = undefined;
     }
     res.render(viewPath, {

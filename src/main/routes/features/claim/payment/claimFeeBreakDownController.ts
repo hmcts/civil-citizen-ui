@@ -73,7 +73,7 @@ claimFeeBreakDownController.post(CLAIM_FEE_BREAKUP, (async (req: AppRequest, res
       logger.info('redis key before saving the payment ' + redisKey);
       logger.info('saved redis payment reference ' + claim.claimDetails?.claimFeePayment?.paymentReference);
       await saveDraftClaim(redisKey, claim, true);
-      await saveUserId(claimId, req.session.user.id);
+      await saveUserId(claimId, FeeType.CLAIMISSUED, req.session.user.id);
       try {
         const paymentStatus = await getFeePaymentStatus(claimId, paymentRedirectInformation?.paymentReference, FeeType.CLAIMISSUED, req);
         logger.info(`Existing payment status for claim id ${claimId}: ${paymentStatus?.status}`);

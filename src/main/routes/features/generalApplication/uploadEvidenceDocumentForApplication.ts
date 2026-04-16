@@ -122,7 +122,7 @@ uploadEvidenceDocumentsForApplicationController.post([GA_UPLOAD_DOCUMENTS_URL, G
         res.redirect(`${currentUrl}`);
       });
     } else {
-      res.redirect(constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, nextPageUrl),index));
+      res.redirect(constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, nextPageUrl), index));
     }
   } catch (error) {
     next(error);

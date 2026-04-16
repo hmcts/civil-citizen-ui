@@ -32,7 +32,7 @@ export const getRedirectUrlCommon = async (claimId: string, req: AppRequest): Pr
   } else {
     logger.info('redis key before saving the hearing payment ' + redisClaimId);
     await saveCaseProgression(req, paymentRedirectInformation, paymentInformation, hearing);
-    await saveUserId(claimId, req.session.user.id);
+    await saveUserId(claimId, FeeType.HEARING, req.session.user.id);
 
     const paymentStatus = await getFeePaymentStatus(claimId, paymentRedirectInformation.paymentReference, FeeType.HEARING, req);
     logger.info(`Existing hearing payment status for claim id ${claimId}, payment reference ${paymentRedirectInformation.paymentReference}: ${paymentStatus?.status}`);

@@ -76,7 +76,7 @@ typeOfDocumentsController.post(TYPES_OF_DOCUMENTS_URL, (async (req, res, next) =
       await renderView(res, <AppRequest>req, claimId,form, constructResponseUrlWithIdParams(claimId, UPLOAD_YOUR_DOCUMENTS_URL));
     } else {
       await saveCaseProgression(req, form.model, isClaimant);
-      await deleteUntickedDocumentsFromStore(req,claim.isClaimant());
+      await deleteUntickedDocumentsFromStore(req, claim.isClaimant());
       res.redirect(constructResponseUrlWithIdParams(claimId, CP_UPLOAD_DOCUMENTS_URL));
     }
   } catch (error) {
