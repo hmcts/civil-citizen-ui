@@ -91,8 +91,8 @@ def getCivilServiceImage() {
 
 def getCivilServiceSharedBranch() {
   def githubApi = new GithubAPI(this)
-  for (label in githubApi.getLabelsbyPattern(env.BRANCH_NAME, "civilServiceSharedBranch:")) {
-    return label.minus("civilServiceSharedBranch:").trim()
+  for (label in githubApi.getLabelsbyPattern(env.BRANCH_NAME, "civilShared:")) {
+    return label.minus("civilShared:").trim()
   }
   return "master"
 }
