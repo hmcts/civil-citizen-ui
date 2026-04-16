@@ -13,7 +13,6 @@ global:
   postgresSecret: postgres
   s2sUrl: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
 
-
 nodejs:
   # Don't modify below here
   image: ${IMAGE_NAME}
@@ -80,7 +79,7 @@ civil-service:
             alias: CIVIL_PRD_ADMIN_PASSWORD
           - name: docmosis-api-key
             alias: docmosis.tornado.key
-          - name: gov-notify-pretends-api-key
+          - name: gov-notify-live-api-key
             alias: GOV_NOTIFY_API_KEY
           - name: sendgrid-api-key
             alias: SENDGRID_API_KEY
