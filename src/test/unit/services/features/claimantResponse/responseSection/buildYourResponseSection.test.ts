@@ -8,6 +8,11 @@ import {Claim} from 'models/claim';
 import {YesNo} from 'form/models/yesNo';
 import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 
+jest.mock('i18next', () => ({
+  t: (i: string | unknown) => i,
+  use: jest.fn(),
+}));
+
 describe('Full Defence - Your Response', () => {
   describe('Full Defence- Dispute the claim', () => {
     it('should return your response section', async () => {
