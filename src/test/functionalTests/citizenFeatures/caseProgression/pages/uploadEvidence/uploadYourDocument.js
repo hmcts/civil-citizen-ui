@@ -490,7 +490,7 @@ class UploadYourDocument {
     I.fillField('expertReport[0][dateInputFields][dateMonth]', '02');
     I.fillField('expertReport[0][dateInputFields][dateYear]', '2023');
     I.attachFile('expertReport[0][fileUpload]', 'src/test/functionalTests/citizenFeatures/caseProgression/data/TestPDF.pdf');
-    await I.click("//h2[contains(text(), \"Expert's report\")]/following::button[contains(text(), \"Add another\")][1]");
+    await I.click('//h2[contains(text(),"Expert\'s report")]/following::button[contains(text(),"Add another")][1]');
     I.click('(//*[@value="expertReport[0][uploadButton]"])');
     I.fillField('expertReport[1][expertName]', 'Expert Report - Expert Name 2');
     I.fillField('expertReport[1][fieldOfExpertise]', 'Expert Report - Field of Expertise 2');
@@ -523,7 +523,7 @@ class UploadYourDocument {
     I.fillField('questionsForExperts[0][questionDocumentName]', 'Questions for Expert Document Name 1');
     I.attachFile('questionsForExperts[0][fileUpload]', 'src/test/functionalTests/citizenFeatures/caseProgression/data/TestJPEG.jpeg');
     I.selectOption('questionsForExperts[0][otherPartyName]', 'Sir John Doe');
-    await I.click(`//h2[contains(text(), "Questions for other party's expert or joint expert")]/following::button[contains(text(), "Add another")][1]`);
+    await I.click('//h2[contains(text(), "Questions for other party\'s expert or joint expert")]/following::button[contains(text(), "Add another")][1]');
     I.click('(//*[@value="questionsForExperts[0][uploadButton]"])');
     I.fillField('questionsForExperts[1][expertName]', 'Questions for Expert 2');
     I.selectOption('questionsForExperts[1][otherPartyName]', 'Test Inc');
@@ -538,7 +538,7 @@ class UploadYourDocument {
     I.fillField('answersForExperts[0][otherPartyQuestionsDocumentName]', 'Answers for Expert Document Name 1');
     I.attachFile('answersForExperts[0][fileUpload]', 'src/test/functionalTests/citizenFeatures/caseProgression/data/TestTXT.txt');
     I.selectOption('answersForExperts[0][otherPartyName]', 'Sir John Doe');
-    await I.click("//h2[contains(text(), 'Answers to questions asked by other party')]/following::button[contains(text(), 'Add another')][1]");
+    await I.click('//h2[contains(text(), "Answers to questions asked by other party")]/following::button[contains(text(), "Add another")][1]');
     I.click('(//*[@value="answersForExperts[0][uploadButton]"])');
     I.fillField('answersForExperts[1][expertName]', 'Answers for Expert 2');
     I.selectOption('answersForExperts[1][otherPartyName]', 'Test Inc');
@@ -550,28 +550,28 @@ class UploadYourDocument {
     //Trial Documents - Section
     //Case Summary
     I.attachFile('trialCaseSummary[0][fileUpload]', 'src/test/functionalTests/citizenFeatures/caseProgression/data/TestTXT.txt');
-    await I.click("//h2[contains(text(), 'Case summary')]/following::button[contains(text(), 'Add another')][1]");
+    await I.click('//h2[contains(text(), "Case summary")]/following::button[contains(text(), "Add another")][1]');
     I.click('(//*[@value="trialCaseSummary[0][uploadButton]"])');
     I.attachFile('trialCaseSummary[1][fileUpload]', 'src/test/functionalTests/citizenFeatures/caseProgression/data/TestTXT.txt');
     I.click('(//*[@value="trialCaseSummary[1][uploadButton]"])');
 
     //Skeleton
     I.attachFile('trialSkeletonArgument[0][fileUpload]', 'src/test/functionalTests/citizenFeatures/caseProgression/data/TestTXT.txt');
-    await I.click("//h2[contains(text(), 'Skeleton argument')]/following::button[contains(text(), 'Add another')][1]");
+    await I.click('//h2[contains(text(), "Skeleton argument")]/following::button[contains(text(), "Add another")][1]');
     I.click('(//*[@value="trialSkeletonArgument[0][uploadButton]"])');
     I.attachFile('trialSkeletonArgument[1][fileUpload]', 'src/test/functionalTests/citizenFeatures/caseProgression/data/TestTXT.txt');
     I.click('(//*[@value="trialSkeletonArgument[1][uploadButton]"])');
 
     //Trial Authorities
     I.attachFile('trialAuthorities[0][fileUpload]', 'src/test/functionalTests/citizenFeatures/caseProgression/data/TestXLS.xls');
-    await I.click("//h2[contains(text(), 'Legal authorities')]/following::button[contains(text(), 'Add another')][1]");
+    await I.click('//h2[contains(text(), "Legal authorities")]/following::button[contains(text(), "Add another")][1]');
     I.click('(//*[@value="trialAuthorities[0][uploadButton]"])');
     I.attachFile('trialAuthorities[1][fileUpload]', 'src/test/functionalTests/citizenFeatures/caseProgression/data/TestXLSX.xlsx');
     I.click('(//*[@value="trialAuthorities[1][uploadButton]"])');
 
     //Costs
     I.attachFile('trialCosts[0][fileUpload]', 'src/test/functionalTests/citizenFeatures/caseProgression/data/TestTXT.txt');
-    await I.click("//h2[contains(text(), 'Costs')]/following::button[contains(text(), 'Add another')][1]");
+    await I.click('//h2[contains(text(), "Costs")]/following::button[contains(text(), "Add another")][1]');
     I.click('(//*[@value="trialCosts[0][uploadButton]"])');
     I.attachFile('trialCosts[1][fileUpload]', 'src/test/functionalTests/citizenFeatures/caseProgression/data/TestTXT.txt');
     I.click('(//*[@value="trialCosts[1][uploadButton]"])');
@@ -583,7 +583,7 @@ class UploadYourDocument {
     I.fillField('trialDocumentary[0][dateInputFields][dateYear]', '2023');
     I.attachFile('trialDocumentary[0][fileUpload]','src/test/functionalTests/citizenFeatures/caseProgression/data/TestTIF.tif');
     I.click('(//*[@value="trialDocumentary[0][uploadButton]"])');
-    await I.click("//h2[contains(text(), 'Documentary evidence for trial')]/following::button[contains(text(), 'Add another')][1]");
+    await I.click('//h2[contains(text(), "Documentary evidence for trial")]/following::button[contains(text(), "Add another")][1]');
     I.fillField('trialDocumentary[1][typeOfDocument]', 'Documentary evidence for the hearing - Type of Document 2');
     I.fillField('trialDocumentary[1][dateInputFields][dateDay]', '12');
     I.fillField('trialDocumentary[1][dateInputFields][dateMonth]', '02');
