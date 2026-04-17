@@ -89,7 +89,6 @@ Before(async ({api}) => {
 
 Scenario('Positive - More time order GA (non-urgent, with notice) - claimant creates, defendant responds @nightly', async ({
   I,
-  api,
 }) => {
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
 
