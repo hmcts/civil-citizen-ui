@@ -89,6 +89,14 @@ def getCivilServiceImage() {
   return "latest"
 }
 
+def getCivilServiceSharedBranch() {
+  def githubApi = new GithubAPI(this)
+  for (label in githubApi.getLabelsbyPattern(env.BRANCH_NAME, "civilShared:")) {
+    return label.minus("civilShared:").trim()
+  }
+  return "master"
+}
+
 def secrets = [
   'rpx-${env}': [
     secret('mc-idam-client-secret', 'IDAM_CLIENT_SECRET'),
@@ -211,7 +219,8 @@ withPipeline(type, product, component) {
     setUrls("civil-citizen-ui-pr-${CHANGE_ID}")
     sh """
           eval \$(./bin/variables/load-preview-environment-variables.sh ${CHANGE_ID})
-          ./bin/utils/idam-get-tokens.sh
+          ./bin/pull-latest-civil-shared.sh ${getCivilServiceSharedBranch()}
+          . ./bin/shared/idam-get-tokens.sh
           ./bin/add-roles.sh
           ./bin/pull-latest-camunda-files.sh ${camundaBranch}
           ./bin/pull-latest-dmn-files.sh ${dmnBranch}
@@ -288,7 +297,8 @@ withPipeline(type, product, component) {
   before('smoketest:aat') {
     sh """
       eval \$(./bin/variables/load-staging-environment-variables.sh)
-      ./bin/utils/idam-get-tokens.sh
+      ./bin/pull-latest-civil-shared.sh ${getCivilServiceSharedBranch()}
+      . ./bin/shared/idam-get-tokens.sh
       ./bin/add-roles.sh
       ./bin/pull-latest-camunda-files.sh ${camundaBranch}
       ./bin/pull-latest-dmn-files.sh ${dmnBranch}
