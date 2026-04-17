@@ -133,6 +133,8 @@ The standard preview deployment, i.e. without the github label present, intends 
 
 `civilServicePr:????` where ???? is the civil-service PR number you want to deploy against. e.g `civilServicePr:12345` will deploy `hmctspublic.azurecr.io/civil/service:pr-12345` in preview.
 
+`civilShared:????` where ???? is the civil-service shared scripts branch name you want to point to. e.g `civilShared:my-feature-branch` will use the shared scripts from this branch of civil-service.
+
 
 ```bash
 $ yarn test:crossbrowser
