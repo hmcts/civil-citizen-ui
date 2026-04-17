@@ -6,7 +6,7 @@ const totp = require('totp-generator');
 
 let incidentMessage;
 
-const MAX_RETRIES = 25;
+const MAX_RETRIES = 60;
 const RETRY_TIMEOUT_MS = 3000;
 
 const checkToggleEnabled = async (toggle) => {
