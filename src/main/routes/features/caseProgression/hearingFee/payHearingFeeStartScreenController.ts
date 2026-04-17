@@ -9,6 +9,7 @@ import {CivilServiceClient} from 'client/civilServiceClient';
 import {getHearingFeeStartPageContent} from 'services/features/caseProgression/hearingFee/hearingFeeStartPageContent';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {CaseRole} from 'form/models/caseRoles';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const payHearingFeeStartScreenViewPath = 'features/caseProgression/hearingFee/pay-hearing-fee-start';
 const payHearingFeeStartScreenController = Router();
@@ -18,7 +19,7 @@ const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServi
 payHearingFeeStartScreenController.get(PAY_HEARING_FEE_URL, (async (req, res, next: NextFunction) => {
   try {
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-    const claimId = req.params.id;
+    const claimId = getRouteParam(req, 'id');
     const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
     const dashboardUrl = claim.caseRole === CaseRole.CLAIMANT ? constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL) : constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL);
     res.render(payHearingFeeStartScreenViewPath, {

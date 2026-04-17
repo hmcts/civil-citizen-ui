@@ -17,6 +17,7 @@ import {saveDocumentsToExistingClaim} from 'services/caseDocuments/documentServi
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {isCUIReleaseTwoEnabled} from '../../../app/auth/launchdarkly/launchDarklyClient';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const claimSummaryViewPath = 'features/dashboard/claim-summary';
 const claimantClaimSummaryController = Router();
@@ -25,7 +26,7 @@ const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServi
 
 claimantClaimSummaryController.get(OLD_DASHBOARD_CLAIMANT_URL, (async (req:AppRequest, res:Response, next: NextFunction) => {
   try {
-    const claimId = req.params.id;
+    const claimId = getRouteParam(req, 'id');
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const isCUIR2Enable = await isCUIReleaseTwoEnabled();
     const claim = await civilServiceClient.retrieveClaimDetails(claimId, req);

@@ -11,6 +11,7 @@ import {Claim} from 'models/claim';
 import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {GenericForm} from 'form/models/genericForm';
 import {AppRequest} from 'common/models/AppRequest';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const citizenOtherDependantsViewPath = 'features/response/statementOfMeans/otherDependants/other-dependants';
 const otherDependantsController = Router();
@@ -35,6 +36,7 @@ otherDependantsController.get(CITIZEN_OTHER_DEPENDANTS_URL, (async (req, res, ne
 otherDependantsController.post(CITIZEN_OTHER_DEPENDANTS_URL,
   (async (req, res, next: NextFunction) => {
     try {
+      const claimId = getRouteParam(req, 'id');
       const redisKey = generateRedisKey(<AppRequest>req);
       const form: GenericForm<OtherDependants> = new GenericForm(new OtherDependants(
         req.body.option, req.body.numberOfPeople, req.body.details));
@@ -45,9 +47,9 @@ otherDependantsController.post(CITIZEN_OTHER_DEPENDANTS_URL,
         await otherDependantsService.saveOtherDependants(redisKey, form);
         const claim: Claim = await getCaseDataFromStore(redisKey);
         if (claim.isDefendantSeverelyDisabledOrDependentsDisabled()) {
-          res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_EMPLOYMENT_URL));
+          res.redirect(constructResponseUrlWithIdParams(claimId, CITIZEN_EMPLOYMENT_URL));
         } else {
-          res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_CARER_URL));
+          res.redirect(constructResponseUrlWithIdParams(claimId, CITIZEN_CARER_URL));
         }
       }
     } catch (error) {

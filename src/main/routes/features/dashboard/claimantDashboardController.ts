@@ -36,6 +36,7 @@ import { getViewAllApplicationLink } from 'services/features/generalApplication/
 import {YesNoUpperCamelCase} from 'form/models/yesNo';
 import {getViewMessagesLink} from 'services/features/queryManagement/viewMessagesService';
 import {getTotalAmountWithInterestAndFees} from 'modules/claimDetailsService';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const claimantDashboardViewPath = 'features/dashboard/claim-summary-redesign';
 const claimantDashboardController = Router();
@@ -46,7 +47,7 @@ const ResponseClaimTrack = 'responseClaimTrack';
 
 claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const claimId =  req.params.id;
+    const claimId =  getRouteParam(req, 'id');
     let claimIdPrettified;
     let claimAmountFormatted;
     const isCUIR2Enabled = await isCUIReleaseTwoEnabled();
