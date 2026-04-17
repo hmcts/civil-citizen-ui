@@ -29,7 +29,9 @@ describe('Response - New response deadline', () => {
   const claim = new Claim();
   claim.applicant1 = {
     partyDetails: {
-      partyName: 'Mr. James Bond',
+      title: 'Mr',
+      firstName: 'James',
+      lastName: 'Bond',
     },
     type: PartyType.INDIVIDUAL,
   };
