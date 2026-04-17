@@ -10,7 +10,7 @@ const uploadYourDocumentsController = Router();
 
 uploadYourDocumentsController.get(UPLOAD_YOUR_DOCUMENTS_URL, (async (req, res, next: NextFunction) => {
   try {
-    const claimId = req.params.id;
+    const claimId = req.params.id as string;
     const claim = await getClaimById(claimId, req,true);
     const isGaNroEnabled = await isCuiGaNroEnabled();
     let dashboardUrl;
