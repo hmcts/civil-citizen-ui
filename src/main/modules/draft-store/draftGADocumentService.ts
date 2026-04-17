@@ -1,5 +1,5 @@
 import { UploadGAFiles } from 'common/models/generalApplication/uploadGAFiles';
-import {app} from '../../app';
+import {app} from '../../app-instance';
 const { Logger } = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('draftStoreService');
 const docKey = 'DOCKEY';
