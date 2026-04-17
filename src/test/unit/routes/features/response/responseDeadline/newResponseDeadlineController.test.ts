@@ -56,7 +56,7 @@ describe('Response - New response deadline', () => {
           expect(res.status).toBe(200);
           expect(res.text).toContain('New response deadline');
           expect(res.text).toContain(expectedDate);
-          expect(res.text).toContain(claim.getClaimantFullName());
+          expect(res.text).toContain(`/case/${claimId}/response/agreed-to-more-time`);
         });
     });
     it('should show error when proposed extended deadline does not exist', async () => {
