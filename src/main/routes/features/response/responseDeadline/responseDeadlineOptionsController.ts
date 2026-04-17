@@ -28,7 +28,6 @@ async function renderView(res: Response, form: GenericForm<ResponseDeadline>, cl
     form,
     responseDate: claim.formattedResponseDeadline(language),
     claimantName: claim.getClaimantFullName(),
-    isReleaseTwoEnabled: true,
     applyGaApplication: constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL),
     isGaNroEnabled,
   });

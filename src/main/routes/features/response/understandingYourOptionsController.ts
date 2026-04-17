@@ -16,7 +16,6 @@ understandingYourOptionsController.get(UNDERSTANDING_RESPONSE_OPTIONS_URL, deadL
       const claim = await getCaseDataFromStore(generateRedisKey(<AppRequest>req));
       res.render('features/response/understanding-your-options', {
         responseDate: claim.formattedResponseDeadline(lang),
-        isReleaseTwoEnabled: true,
       });
     } catch (error) {
       logger.error(`Error when getting understanding your opinions, req.params.claimId  ${ req.params.claimId } -  ${error.message}`);

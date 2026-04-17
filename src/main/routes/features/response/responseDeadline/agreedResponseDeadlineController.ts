@@ -31,7 +31,6 @@ agreedResponseDeadlineController
           today: new Date(),
           claimantName: claim.getClaimantFullName(),
           backLink,
-          isReleaseTwoEnabled: true,
         });
       } catch (error) {
         logger.error(`Error when GET : agreed response - ${error.message}`);
@@ -56,7 +55,6 @@ agreedResponseDeadlineController
             today: new Date(),
             claimantName: claim.getClaimantFullName(),
             backLink,
-            isReleaseTwoEnabled: true,
           });
         } else {
           await responseDeadlineService.saveAgreedResponseDeadline(redisKey, agreedResponseDeadlineDate.date);

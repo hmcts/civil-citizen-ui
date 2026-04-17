@@ -21,5 +21,5 @@ const createDraftClaimUrl = (): string => {
 
 const getDraftClaim = async (_userToken: string, userId: string): Promise<DashboardClaimantItem> => {
   const claim = await getCaseDataFromStore(userId, true);
-  return toDraftClaimDashboardItem(claim, true);
+  return toDraftClaimDashboardItem(claim);
 };
