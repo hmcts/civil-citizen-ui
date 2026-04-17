@@ -1,0 +1,1 @@
+{"value":"follow-redirects","children":{"ID":1116560,"Issue":"follow-redirects leaks Custom Authentication Headers to Cross-Domain Redirect Targets","URL":"https://github.com/advisories/GHSA-r4q5-vmmm-2653","Severity":"moderate","Vulnerable Versions":"<=1.15.11","Tree Versions":["1.15.6","1.15.11"],"Dependents":["axios@npm:1.15.0","civil-citizen-ui@workspace:."]}}
