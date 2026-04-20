@@ -52,7 +52,7 @@ describe('Citizen Details Section', () => {
     const summarySections = await buildTheirDetailsSection(claim, CLAIM_ID, 'en');
     //Then
     expect(summarySections.title).toBe(t('PAGES.CHECK_YOUR_ANSWER.THEIR_DETAILS_TITLE_DEFENDANT'));
-    expect(summarySections.summaryList.rows[0].value.html).toBe(FULL_NAME);
+    expect(summarySections.summaryList.rows[0].value.html).toBe( `${FULL_NAME} T/A ${claim.respondent1.partyDetails.soleTraderTradingAs}`);
     expect(summarySections.summaryList.rows[1].value.html).toBe('test');
     expect(summarySections.summaryList.rows[2].value.html).toBe('contact');
     expect(summarySections.summaryList.rows[4].value.html).toBe(CORRESPONDENCE_ADDRESS);
