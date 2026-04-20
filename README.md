@@ -22,6 +22,20 @@ Running the application requires the following tools to be installed in your env
   * [yarn](https://yarnpkg.com/)
   * [Docker](https://www.docker.com)
 
+### Local Setup
+
+Before running CCD definition imports or integration scripts locally, pull the shared scripts from civil-service:
+
+```bash
+./bin/pull-latest-civil-shared.sh
+```
+
+This downloads the shared IDAM/CCD helper scripts to `bin/shared/`. You can optionally specify a branch:
+
+```bash
+./bin/pull-latest-civil-shared.sh feature-branch
+```
+
 ### Running the application
 
 Install dependencies by executing the following command:
