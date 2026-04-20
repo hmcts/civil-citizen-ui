@@ -260,19 +260,20 @@ withPipeline(type, product, component) {
       reportFiles: 'index.html',
       reportName: 'Non-Prod E2E Allure Report'
     ])
-    try {
-      sh './bin/run-preview-playwright-tests.sh'
-    } finally {
-      steps.sh 'npx allure generate test-results/security/allure-results -o test-results/security/allure-report || true'
-      publishHTML([
-        allowMissing         : true,
-        alwaysLinkToLastBuild: true,
-        keepAll              : true,
-        reportDir            : 'test-results/security/allure-report',
-        reportFiles          : 'index.html',
-        reportName           : 'API Security Test Report'
-      ])
-    }
+
+    // run security tests in playwright
+    sh './bin/run-preview-playwright-tests.sh'
+    steps.sh 'npx allure generate test-results/security/allure-results -o test-results/security/allure-report || true'
+    publishHTML([
+      allowMissing         : true,
+      alwaysLinkToLastBuild: true,
+      keepAll              : true,
+      reportDir            : 'test-results/security/allure-report',
+      reportFiles          : 'index.html',
+      reportName           : 'API Security Test Report'
+    ])
+
+    sh 'echo "=== Files in test-results before archiving ===" && find test-results -type f | head -30 || true'
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'test-results/**/*'
     junit allowEmptyResults: true, testResults: 'test-results/security/results.xml'
   }
