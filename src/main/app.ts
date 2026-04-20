@@ -124,6 +124,7 @@ const env = process.env.NODE_ENV || 'development';
 const productionMode = env === 'production';
 const developmentMode = env === 'development';
 const e2eTestMode = env === 'e2eTest';
+const enableAppInsightsTestError = process.env.ENABLE_APPINSIGHTS_TEST_ERROR !== 'false';
 const cookieMaxAge = config.get<number>('cookieMaxAge');
 
 export {app};
@@ -181,7 +182,7 @@ if(!e2eTestMode){
 }
 
 if(e2eTestMode){
-  app.get(TEST_SUPPORT_TOGGLE_FLAG_ENDPOINT, async (req, res, next) => {
+  app.get(TEST_SUPPORT_TOGGLE_FLAG_ENDPOINT, async (req, res) => {
     try {
       const key = req.params.key;
       const booleanValue: boolean = JSON.parse(req.params.value);
@@ -335,6 +336,13 @@ if(env !== 'test') {
   app.use(contactUsGuard);
   app.use(MEDIATION_PHONE_CONFIRMATION_URL, mediationClaimantPhoneRedirectionGuard);
 }
+
+if (enableAppInsightsTestError) {
+  app.get('/trigger-appinsights-error', (_req, _res, next) => {
+    next(new Error('Temporary App Insights exception test'));
+  });
+}
+
 app.use(bodyParser.json({limit: '500mb'}));
 app.use(bodyParser.urlencoded({ limit: '500mb', extended: true }));
 

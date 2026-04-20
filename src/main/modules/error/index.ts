@@ -1,5 +1,6 @@
 import express, {Application} from 'express';
 const {Logger} = require('@hmcts/nodejs-logging');
+const appInsights = require('applicationinsights');
 const logger = Logger.getLogger('errorHandler');
 import {HTTPError} from '../../HttpError';
 
@@ -13,14 +14,25 @@ export class ErrorHandler {
     });
 
     // error handler
-    app.use((err: Error, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
+    app.use((err: Error, req: express.Request, res: express.Response, _next: express.NextFunction) => {
       const errorMessage = err.message || 'Internal Server Error';
+      const status = (err as HTTPError)?.status || 500;
       logger.error(`${err.stack || errorMessage}`);
+      if (status >= 500) {
+        appInsights.defaultClient?.trackException({
+          exception: err,
+          properties: {
+            url: req.originalUrl,
+            method: req.method,
+            status: status.toString(),
+          },
+        });
+      }
 
       // set locals, only providing error in development
       res.locals.message = errorMessage;
       res.locals.error = env === 'development' ? err : {};
-      res.status((err as HTTPError)?.status || 500);
+      res.status(status);
       res.render('error', {error: res.locals.error});
     });
   }
