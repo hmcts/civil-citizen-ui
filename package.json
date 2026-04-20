@@ -52,7 +52,8 @@
     "testgalip:e2e": "MOCHAWESOME_REPORTFILENAME=galip codeceptjs run --grep @lipga --reporter mocha-multi --verbose",
     "test:pact": "jest -c jest.pact.config.js",
     "pact:publish": "ts-node src/test/contract/publish/publish.ts",
-    "test:pact:run-and-publish": "yarn test:pact && yarn pact:publish"
+    "test:pact:run-and-publish": "yarn test:pact && yarn pact:publish",
+    "postinstall": "./bin/pull-latest-civil-shared.sh || true"
   },
   "dependencies": {
     "@dr.pogodin/csurf": "^1.16.8",

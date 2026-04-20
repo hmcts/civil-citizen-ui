@@ -1,27 +1,46 @@
 #!/usr/bin/env bash
+# Pulls bin/shared scripts from civil-service using git sparse-checkout.
+# This only downloads the bin/shared directory, not the entire repo.
+#
+# Usage: ./pull-latest-civil-shared.sh [branch]
+#   branch: Optional branch/tag name (default: master)
+
 set -eu
 
-civilServiceRepo="civil-service"
-branchName=${1:-master}
+REPO_URL="https://github.com/hmcts/civil-service.git"
+BRANCH="${1:-master}"
+TEMP_DIR=".civil-service-sparse"
+TARGET_DIR="bin/shared"
 
-echo "Pulling bin/shared from civil-service (branch: ${branchName})"
+echo "Pulling ${TARGET_DIR} from civil-service (branch: ${BRANCH})"
 
-rm -rf "${civilServiceRepo}"
-git clone --depth 1 --branch "${branchName}" \
-  https://github.com/hmcts/${civilServiceRepo}.git
+# Clean up any previous temp directory
+rm -rf "${TEMP_DIR}"
 
-# Create bin/shared if it doesn't exist
-mkdir -p ./bin/shared
+# Initialize a new repo with sparse-checkout (only fetches specified paths)
+git clone --filter=blob:none --no-checkout --depth 1 --branch "${BRANCH}" \
+  "${REPO_URL}" "${TEMP_DIR}"
 
-if [ ! -d "./${civilServiceRepo}/bin/shared" ]; then
-  echo "ERROR: bin/shared not found in ${civilServiceRepo}@${branchName}. Ensure the civil-service branch has bin/shared scripts."
-  rm -rf "./${civilServiceRepo}"
+cd "${TEMP_DIR}"
+git sparse-checkout set --no-cone bin/shared
+git checkout
+cd ..
+
+# Validate source exists
+if [ ! -d "${TEMP_DIR}/bin/shared" ]; then
+  echo "ERROR: bin/shared not found in civil-service@${BRANCH}"
+  rm -rf "${TEMP_DIR}"
   exit 1
 fi
 
-# Copy only the shared scripts
-cp -r "./${civilServiceRepo}/bin/shared/"* ./bin/shared/
+# Create target and copy scripts
+mkdir -p "${TARGET_DIR}"
+cp -r "${TEMP_DIR}/bin/shared/"* "${TARGET_DIR}/"
 
-rm -rf "./${civilServiceRepo}"
+# Make all scripts executable
+find "${TARGET_DIR}" -name "*.sh" -exec chmod +x {} \;
 
-echo "bin/shared scripts updated from civil-service"
+# Clean up
+rm -rf "${TEMP_DIR}"
+
+echo "Done: ${TARGET_DIR} synced from civil-service@${BRANCH}"
