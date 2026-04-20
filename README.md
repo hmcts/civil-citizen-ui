@@ -96,11 +96,14 @@ the following command:
 $ yarn test
 ```
 
-Here's how to run functional tests (the template contains just one sample test):
+Here's how to run route integration tests (Jest + Supertest):
 
 ```bash
-$ yarn test:routes
+$ yarn test:integration
 ```
+
+(`yarn test:routes` is kept as an alias and is also used by `test:integration`.)
+These integration tests run in CI as part of the main pipeline.
 
 Running accessibility tests:
 
