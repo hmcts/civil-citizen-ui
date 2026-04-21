@@ -12,6 +12,7 @@ jest.mock('@hmcts/nodejs-logging', () => ({
 
 jest.mock('applicationinsights', () => ({
   defaultClient: {
+    trackTrace: jest.fn(),
     trackException: jest.fn(),
   },
 }));
@@ -27,7 +28,7 @@ describe('ErrorHandler', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     const appInsights = require('applicationinsights');
-    appInsights.defaultClient = {trackException: jest.fn()};
+    appInsights.defaultClient = {trackTrace: jest.fn(), trackException: jest.fn()};
     new ErrorHandler().enableFor(app as any);
   });
 

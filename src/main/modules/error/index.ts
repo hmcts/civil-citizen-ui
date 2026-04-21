@@ -18,6 +18,15 @@ export class ErrorHandler {
       const errorMessage = err.message || 'Internal Server Error';
       const status = (err as HTTPError)?.status || 500;
       logger.error(`${err.stack || errorMessage}`);
+      appInsights.defaultClient?.trackTrace({
+        message: 'TEMP_ERROR_MIDDLEWARE_REACHED',
+        properties: {
+          url: req.originalUrl,
+          method: req.method,
+          status: status.toString(),
+          errorMessage,
+        },
+      });
       if (status >= 500) {
         appInsights.defaultClient?.trackException({
           exception: err,
