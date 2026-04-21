@@ -100,7 +100,7 @@ uploadDocumentsForRequestMoreInfoController.post(GA_UPLOAD_DOCUMENT_FOR_ADDITION
         res.redirect(`${currentUrl}`);
       });
     } else {
-      res.redirect(constructResponseUrlWithIdAndAppIdParams(claimId, appId,  GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_CYA_URL));
+      res.redirect(constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_CYA_URL));
     }
   } catch (error) {
     next(error);
