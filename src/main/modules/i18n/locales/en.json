@@ -3148,7 +3148,7 @@
       "NEED_GIVE_DETAILS": "You need to give {{ applicant1Details }} details of your finances.",
       "PAGE_TITLE": "Your financial details",
       "SEND_STATEMENT_ACCOUNTS": "'You need to send ' {{ applicant1Details }} your company or organisation's most recent statement of accounts.",
-      "SEND_FINANCIAL_DETAILS": "Send {{ applicant1Details }} your financial details",
+      "SEND_FINANCIAL_DETAILS": "Send {{ applicant1Details | safe }} your financial details",
       "REJECT_PAY_SOONER": "They can reject your proposal if they believe you can pay sooner.",
       "REJECT_COURT_MAKE_NEW_PLAN": "If they reject your proposal, the court will make a new plan using your financial details.",
       "REVIEW_ACCOUNTS_REJECT_REPAYMENT_PLAN": "They'll review your accounts and can reject your suggested repayment plan if they believe you can pay sooner.",
