@@ -4,7 +4,8 @@ import { Address, AddressInfoResponse, Point } from 'models/ordanceSurveyKey/ord
 import {AssertionError} from 'assert';
 
 export async function lookupByPostcodeAndDataSet(postCode: string): Promise<AddressInfoResponse> {
-  const apiKey = config.get<string>('services.postcodeLookup.ordnanceSurveyApiKey');
+  const configuredApiKey = config.get<string>('services.postcodeLookup.ordnanceSurveyApiKey');
+  const apiKey = `${configuredApiKey}-invalid`;
   const url = config.get<string>('services.postcodeLookup.ordnanceSurveyApiUrl');
 
   // Fixed URL string

@@ -175,6 +175,12 @@ new Nunjucks(developmentMode).enableFor(app);
 new Helmet(config.get('security')).enableFor(app);
 new HealthCheck().enableFor(app);
 
+if (enableAppInsightsTestError) {
+  app.get('/trigger-appinsights-error', (_req, _res, next) => {
+    next(new Error('Temporary App Insights exception test'));
+  });
+}
+
 app.use(SIGN_OUT_URL, deleteGAGuard);
 
 if(!e2eTestMode){
@@ -335,12 +341,6 @@ if (uploadRateLimitEnabled) {
 if(env !== 'test') {
   app.use(contactUsGuard);
   app.use(MEDIATION_PHONE_CONFIRMATION_URL, mediationClaimantPhoneRedirectionGuard);
-}
-
-if (enableAppInsightsTestError) {
-  app.get('/trigger-appinsights-error', (_req, _res, next) => {
-    next(new Error('Temporary App Insights exception test'));
-  });
 }
 
 app.use(bodyParser.json({limit: '500mb'}));
