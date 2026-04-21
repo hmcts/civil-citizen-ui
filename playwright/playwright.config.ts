@@ -12,7 +12,7 @@ export default defineConfig({
     [
       'allure-playwright',
       {
-        outputFolder: '../allure-results',
+        resultsDir: 'test-results/security/allure-results',
         environmentInfo: {
           Environment: process.env.ENVIRONMENT || 'preview',
           TestUrl: process.env.TEST_URL || '',
@@ -22,7 +22,7 @@ export default defineConfig({
         },
       },
     ],
-    ['junit', { outputFile: '../playwright-report/results.xml' }],
+    ['junit', { outputFile: 'test-results/security/results.xml' }],
     ['list'],
   ],
   use: {
