@@ -14,11 +14,13 @@ jest.mock('applicationinsights', () => ({
   defaultClient: {
     trackTrace: jest.fn(),
     trackException: jest.fn(),
+    flush: jest.fn(),
   },
 }));
 
 describe('ErrorHandler', () => {
   const getTrackExceptionMock = () => require('applicationinsights').defaultClient.trackException as jest.Mock;
+  const getFlushMock = () => require('applicationinsights').defaultClient.flush as jest.Mock;
   const getErrorLoggerMock = () => require('@hmcts/nodejs-logging').Logger.getLogger('errorHandler').error as jest.Mock;
   const appUse = jest.fn();
   const app = {
@@ -28,7 +30,7 @@ describe('ErrorHandler', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     const appInsights = require('applicationinsights');
-    appInsights.defaultClient = {trackTrace: jest.fn(), trackException: jest.fn()};
+    appInsights.defaultClient = {trackTrace: jest.fn(), trackException: jest.fn(), flush: jest.fn()};
     new ErrorHandler().enableFor(app as any);
   });
 
@@ -51,6 +53,10 @@ describe('ErrorHandler', () => {
         method: 'GET',
         status: '500',
       },
+    });
+    expect(getFlushMock()).toHaveBeenCalledWith({
+      isAppCrashing: false,
+      callback: expect.any(Function),
     });
     expect(getErrorLoggerMock()).toHaveBeenCalled();
     expect(res.status).toHaveBeenCalledWith(500);
@@ -88,6 +94,7 @@ describe('ErrorHandler', () => {
     errorMiddleware(err, req, res, jest.fn());
 
     expect(getTrackExceptionMock()).not.toHaveBeenCalled();
+    expect(getFlushMock()).not.toHaveBeenCalled();
     expect(res.status).toHaveBeenCalledWith(400);
     expect(res.render).toHaveBeenCalledWith('error', {error: res.locals.error});
   });

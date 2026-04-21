@@ -28,12 +28,21 @@ export class ErrorHandler {
         },
       });
       if (status >= 500) {
-        appInsights.defaultClient?.trackException({
+        const appInsightsClient = appInsights.defaultClient;
+        appInsightsClient?.trackException({
           exception: err,
           properties: {
             url: req.originalUrl,
             method: req.method,
             status: status.toString(),
+          },
+        });
+        appInsightsClient?.flush({
+          isAppCrashing: false,
+          callback: (flushError: Error) => {
+            if (flushError) {
+              logger.error(`Failed to flush App Insights telemetry: ${flushError.message}`);
+            }
           },
         });
       }
