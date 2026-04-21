@@ -26,7 +26,6 @@ describe('CoSorS - defendant Payment date', () => {
   const idamServiceUrl: string = config.get('services.idam.url');
 
   beforeAll(() => {
-    jest.spyOn(launchDarkly, 'isCUIReleaseTwoEnabled').mockResolvedValueOnce(true);
     jest.spyOn(launchDarkly, 'isGaForLipsEnabled').mockResolvedValue(true);
     nock(idamServiceUrl)
       .post('/o/token')

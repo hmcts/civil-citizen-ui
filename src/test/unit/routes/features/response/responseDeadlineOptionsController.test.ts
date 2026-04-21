@@ -14,12 +14,10 @@ import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {PartyType} from 'models/partyType';
 import {ResponseOptions} from 'form/models/responseDeadline';
 import {mockRedisFailure} from '../../../../utils/mockDraftStore';
-import { isCUIReleaseTwoEnabled } from 'app/auth/launchdarkly/launchDarklyClient';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../main/modules/draft-store');
-jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 
 const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 const mockSaveCaseData = saveDraftClaim as jest.Mock;
@@ -39,10 +37,6 @@ describe('Response Deadline Options Controller', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
-  });
-
-  beforeEach(() => {
-    (isCUIReleaseTwoEnabled as jest.Mock).mockReturnValueOnce(false);
   });
 
   describe('on GET', () => {

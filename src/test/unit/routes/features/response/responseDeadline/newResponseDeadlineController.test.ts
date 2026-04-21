@@ -8,13 +8,11 @@ import {Claim} from '../../../../../../main/common/models/claim';
 import {RESPONSE_TASK_LIST_URL, NEW_RESPONSE_DEADLINE_URL} from '../../../../../../main/routes/urls';
 import {PartyType} from '../../../../../../main/common/models/partyType';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import { isCUIReleaseTwoEnabled } from 'app/auth/launchdarkly/launchDarklyClient';
 import {AppSession, UserDetails} from 'models/AppRequest';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
-jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 
 const mockGetCaseDataFromStore = getCaseDataFromStore as jest.Mock;
 
@@ -44,10 +42,6 @@ describe('Response - New response deadline', () => {
       .reply(200, new Date(2022, 9, 31));
   });
 
-  beforeEach(() => {
-    (isCUIReleaseTwoEnabled as jest.Mock).mockReturnValueOnce(false);
-  });
-
   describe('on GET', () => {
     it('should return new deadline date successfully', async () => {
       const expectedDate = '31 October 2022';
@@ -57,7 +51,6 @@ describe('Response - New response deadline', () => {
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(expectedDate);
-          expect(res.text).toContain(claim.getClaimantFullName());
         });
     });
     it('should show error when proposed extended deadline does not exist', async () => {

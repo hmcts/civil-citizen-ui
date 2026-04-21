@@ -22,9 +22,8 @@ import {GenericYesNo} from 'form/models/genericYesNo';
 import {FeeType} from 'form/models/helpWithFees/feeType';
 import {AppRequest} from 'models/AppRequest';
 import {getClaimById} from 'modules/utilityService';
-import { isCUIReleaseTwoEnabled } from 'app/auth/launchdarkly/launchDarklyClient';
 import { constructResponseUrlWithIdParams } from 'common/utils/urlFormatter';
-import { DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL, OLD_DASHBOARD_CLAIMANT_URL } from 'routes/urls';
+import { DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL } from 'routes/urls';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('caseProgressionService');
@@ -309,11 +308,7 @@ const bindRequestToFileOnlySectionObj = (request: NonNullable<unknown> ): FileOn
 
 export const getCaseProgressionCancelUrl = async (claimId: string, claim: Claim) => {
   if (claim.isClaimant()) {
-    const isCUIR2Enabled = await isCUIReleaseTwoEnabled();
-    if (isCUIR2Enabled) {
-      return constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL);
-    }
-    return constructResponseUrlWithIdParams(claimId, OLD_DASHBOARD_CLAIMANT_URL);
+    return constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL);
   }
   return constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL);
 };
@@ -369,4 +364,3 @@ const assignCaseDocumentIfPresent = <T extends { caseDocument?: CaseDocument }>(
     target.caseDocument = parsed;
   }
 };
-
