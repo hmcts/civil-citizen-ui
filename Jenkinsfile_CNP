@@ -261,9 +261,11 @@ withPipeline(type, product, component) {
       reportName: 'Non-Prod E2E Allure Report'
     ])
     sh 'echo "=== Files in test-results before archiving ===" && find test-results -type f || true'
+    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'test-results/functional/**/*'
 
     // run security tests in playwright
     sh './bin/run-preview-playwright-tests.sh'
+    sh 'echo "=== Files in test-results after security tests but BEFORE allure generate ===" && find test-results -type f || true'
     steps.sh 'npx allure generate test-results/security/allure-results -o test-results/security/allure-report || true'
     publishHTML([
       allowMissing         : true,
@@ -275,7 +277,7 @@ withPipeline(type, product, component) {
     ])
 
     sh 'echo "=== Files in test-results before archiving ===" && find test-results -type f || true'
-    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'test-results/**/*'
+    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'test-results/security/**/*'
     junit allowEmptyResults: true, testResults: 'test-results/security/results.xml'
   }
 
