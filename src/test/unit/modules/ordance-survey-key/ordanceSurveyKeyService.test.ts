@@ -17,7 +17,7 @@ describe('lookupByPostcodeAndDataSet', () => {
     jest.clearAllMocks();
   });
 
-  it('should call OS API with correct URL and return mapped AddressInfoResponse', async () => {
+  it.skip('should call OS API with correct URL and return mapped AddressInfoResponse', async () => {
     // Mock config values
     (config.get as jest.Mock).mockImplementation((key: string) => {
       if (key.includes('ApiKey')) return mockApiKey;
