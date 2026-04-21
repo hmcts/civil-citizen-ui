@@ -36,7 +36,11 @@ jobs:
         run: yarn install && yarn playwright install
       - name: Build
         run: yarn build
-      - name: Starting WireMock , starting ui , wait and run e2e test
+      - name: Run integration route tests
+        run: yarn test:integration
+      - name: Pull WireMock mappings
+        run: yarn wiremock:pull
+      - name: Starting WireMock, starting ui, wait and run e2e test
         run: |
           yarn wiremock:start &
           sleep 2

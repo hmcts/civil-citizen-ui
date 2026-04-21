@@ -6,6 +6,7 @@ generalAppCCDBranch=${5:-master}
 
 echo "Loading Environment Variables"
 source ./bin/variables/load-dev-user-preview-environment-variables.sh
+. ./bin/shared/idam-get-tokens.sh
 
 echo "Importing Roles to the CCD pod"
 ./bin/add-roles.sh
