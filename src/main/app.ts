@@ -183,6 +183,7 @@ new HealthCheck().enableFor(app);
 
 if (enableAppInsightsTestError) {
   app.get('/trigger-appinsights-error', (_req, _res, next) => {
+    logger.info('TEMP_TRIGGER_APPINSIGHTS_ERROR_ROUTE_HIT');
     next(new Error('Temporary App Insights exception test'));
   });
 }
