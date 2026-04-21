@@ -186,6 +186,30 @@ if (enableAppInsightsTestError) {
     logger.info('TEMP_TRIGGER_APPINSIGHTS_ERROR_ROUTE_HIT');
     next(new Error('Temporary App Insights exception test'));
   });
+
+  app.get('/health/ai-probe', (req, res) => {
+    const probeId = String(req.query.probeId || Date.now());
+    logger.info(`TEMP_AI_PROBE_ROUTE_HIT probeId=${probeId}`);
+    appInsights.defaultClient?.trackTrace({
+      message: 'TEMP_AI_PROBE_TRACE',
+      properties: {probeId, route: '/health/ai-probe'},
+    });
+    appInsights.defaultClient?.trackEvent({
+      name: 'TEMP_AI_PROBE_EVENT',
+      properties: {probeId, route: '/health/ai-probe'},
+    });
+    appInsights.defaultClient?.trackException({
+      exception: new Error('TEMP_AI_PROBE_EXCEPTION'),
+      properties: {probeId, route: '/health/ai-probe'},
+    });
+    appInsights.defaultClient?.flush({
+      isAppCrashing: false,
+      callback: (flushResult: unknown) => {
+        logger.info(`TEMP_AI_PROBE_FLUSH_CALLBACK probeId=${probeId} result=${JSON.stringify(flushResult)}`);
+      },
+    });
+    res.status(200).json({ok: true, probeId});
+  });
 }
 
 app.use(SIGN_OUT_URL, deleteGAGuard);
