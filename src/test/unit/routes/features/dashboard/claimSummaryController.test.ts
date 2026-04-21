@@ -26,7 +26,6 @@ import { constructResponseUrlWithIdParams } from 'common/utils/urlFormatter';
 import {APPLICATION_TYPE_URL, GA_APPLICATION_RESPONSE_SUMMARY_URL} from 'routes/urls';
 import { YesNoUpperCamelCase } from 'common/form/models/yesNo';
 import { getContactCourtLink } from 'services/dashboard/dashboardService';
-import * as launchDarkly from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {ClaimBilingualLanguagePreference} from 'models/claimBilingualLanguagePreference';
 
 const nock = require('nock');
@@ -587,7 +586,7 @@ describe('Claim Summary Controller Defendant', () => {
 
     describe.each(testCases)('Query management dashboard links', (testCase) => {
       it(`should display updated contact us information for case role: ${testCase.caseRole} with state: ${testCase.ccdState}`, async () => {
-        jest.spyOn(launchDarkly, 'isQueryManagementEnabled').mockResolvedValue(true);
+        jest.spyOn(launchDarklyClient, 'isQueryManagementEnabled').mockResolvedValue(true);
         isGAForLiPEnabledMock.mockResolvedValue(true);
         isDashboardEnabledForCase.mockResolvedValue(true);
         const claim = new Claim();

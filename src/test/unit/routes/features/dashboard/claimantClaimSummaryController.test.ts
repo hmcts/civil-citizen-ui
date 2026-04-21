@@ -1,6 +1,6 @@
 import request from 'supertest';
 import {app} from '../../../../../main/app';
-import {DASHBOARD_CLAIMANT_URL, OLD_DASHBOARD_CLAIMANT_URL} from '../../../../../main/routes/urls';
+import {DASHBOARD_CLAIMANT_URL, OLD_DASHBOARD_CLAIMANT_URL} from 'routes/urls';
 
 jest.mock('../../../../../main/modules/oidc');
 
@@ -17,6 +17,13 @@ describe('claimant Dashboard Controller', () => {
       await request(app).get(`${OLD_DASHBOARD_CLAIMANT_URL.replace(':id', '123')}?lang=cy`).expect((res) => {
         expect(res.status).toBe(302);
         expect(res.header.location).toEqual(`${DASHBOARD_CLAIMANT_URL.replace(':id', '123')}?lang=cy`);
+      });
+    });
+
+    it('should not preserve non-language query strings when redirecting old claimant dashboard URLs', async () => {
+      await request(app).get(`${OLD_DASHBOARD_CLAIMANT_URL.replace(':id', '123')}?next=https://example.com`).expect((res) => {
+        expect(res.status).toBe(302);
+        expect(res.header.location).toEqual(DASHBOARD_CLAIMANT_URL.replace(':id', '123'));
       });
     });
   });
