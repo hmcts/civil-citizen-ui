@@ -39,6 +39,9 @@ coverage/
 smoke-output/
 functional-output/
 test-results/
+allure-results/
+allure-report/
+playwright-report/
 src/test/contract/pacts/
 src/test/contract/log/
 
@@ -63,3 +66,8 @@ package-lock.json
 
 # WireMock mappings (pulled from civil-wiremock-mappings)
 wiremock/
+
+# Shared scripts pulled from civil-service (run bin/pull-latest-civil-shared.sh)
+bin/shared/*
+!bin/shared/.gitkeep
+.civil-service-sparse/

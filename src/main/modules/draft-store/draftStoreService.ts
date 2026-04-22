@@ -1,4 +1,4 @@
-import {app} from '../../app';
+import {app} from '../../app-instance';
 import {
   CCDClaim,
   CivilClaimResponse,
@@ -60,9 +60,9 @@ export const getCaseDataFromStore = async (claimId: string, doNotThrowError = fa
  * @param userId
  */
 export const saveDraftClaim =async (claimId: string, claim: Claim, doNotThrowError = false, userId?: string) => {
-  logger.info(`Saving draft claim : userId: ${userId}  claimId: ${claimId} claimantResponse: ${claim.claimantResponse? JSON.stringify(claim.claimantResponse) : 'undefined'}`);
+  logger.info(`Saving draft claim : userId: ${userId}  claimId: ${claimId}`);
   let storedClaimResponse = await getDraftClaimFromStore(claimId, doNotThrowError);
-  logger.info(`storedClaimResponse : userId: ${userId}  claimId: ${claimId} claimantResponse ccjRequest: ${storedClaimResponse.case_data?.ccjRequest ? JSON.stringify(storedClaimResponse.case_data?.ccjRequest) : 'undefined'}`);
+  logger.info(`storedClaimResponse : userId: ${userId}  claimId: ${claimId}`);
   if (isUndefined(storedClaimResponse.case_data)) {
     storedClaimResponse = createNewCivilClaimResponse(claimId);
   }

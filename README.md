@@ -22,6 +22,20 @@ Running the application requires the following tools to be installed in your env
   * [yarn](https://yarnpkg.com/)
   * [Docker](https://www.docker.com)
 
+### Local Setup
+
+Before running CCD definition imports or integration scripts locally, pull the shared scripts from civil-service:
+
+```bash
+./bin/pull-latest-civil-shared.sh
+```
+
+This downloads the shared IDAM/CCD helper scripts to `bin/shared/`. You can optionally specify a branch:
+
+```bash
+./bin/pull-latest-civil-shared.sh feature-branch
+```
+
 ### Running the application
 
 Install dependencies by executing the following command:
@@ -82,11 +96,14 @@ the following command:
 $ yarn test
 ```
 
-Here's how to run functional tests (the template contains just one sample test):
+Here's how to run route integration tests (Jest + Supertest):
 
 ```bash
-$ yarn test:routes
+$ yarn test:integration
 ```
+
+(`yarn test:routes` is kept as an alias and is also used by `test:integration`.)
+These integration tests run in CI as part of the main pipeline.
 
 Running accessibility tests:
 
@@ -130,6 +147,8 @@ The standard preview deployment, i.e. without the github label present, intends 
 `civilDefinitionBranch:????` where ???? is the civil-ccd-definition branch name you want to point to. e.g civilDefinitionBranch:DTSCCI-1699
 
 `civilServicePr:????` where ???? is the civil-service PR number you want to deploy against. e.g `civilServicePr:12345` will deploy `hmctspublic.azurecr.io/civil/service:pr-12345` in preview.
+
+`civilShared:????` where ???? is the civil-service shared scripts branch name you want to point to. e.g `civilShared:my-feature-branch` will use the shared scripts from this branch of civil-service.
 
 
 ```bash
