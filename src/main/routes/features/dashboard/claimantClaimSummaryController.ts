@@ -15,7 +15,6 @@ import {DocumentType} from 'common/models/document/documentType';
 import {getSystemGeneratedCaseDocumentIdByType} from 'common/models/document/systemGeneratedCaseDocuments';
 import {saveDocumentsToExistingClaim} from 'services/caseDocuments/documentService';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
-import {isCUIReleaseTwoEnabled} from '../../../app/auth/launchdarkly/launchDarklyClient';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {getRouteParam} from 'common/utils/routeParamUtils';
 
@@ -28,7 +27,7 @@ claimantClaimSummaryController.get(OLD_DASHBOARD_CLAIMANT_URL, (async (req:AppRe
   try {
     const claimId = getRouteParam(req, 'id');
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-    const isCUIR2Enable = await isCUIReleaseTwoEnabled();
+    const isCUIR2Enable = true;
     const claim = await civilServiceClient.retrieveClaimDetails(claimId, req);
     if (claim && !claim.isEmpty() && !isCUIR2Enable) {
       await saveDocumentsToExistingClaim(generateRedisKey(req), claim);

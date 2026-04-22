@@ -8,7 +8,7 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {ResponseDeadlineService} from 'services/features/response/responseDeadlineService';
 import {deadLineGuard} from 'routes/guards/deadLineGuard';
 import {AppRequest} from 'common/models/AppRequest';
-import {isCuiGaNroEnabled, isCUIReleaseTwoEnabled} from 'app/auth/launchdarkly/launchDarklyClient';
+import {isCuiGaNroEnabled} from 'app/auth/launchdarkly/launchDarklyClient';
 import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const requestMoreTimeController = Router();
@@ -19,7 +19,7 @@ const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('requestMoreTimeController');
 
 async function renderView(res: Response, form: GenericForm<AdditionalTime>, claim: Claim, language: string, claimId: string): Promise<void> {
-  const isReleaseTwoEnabled = await isCUIReleaseTwoEnabled();
+  const isReleaseTwoEnabled = true;
   const isGaNroEnabled = await isCuiGaNroEnabled();
   res.render(requestMoreTimeViewPath, {
     additionalTimeOptions: AdditionalTimeOptions,

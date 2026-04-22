@@ -11,7 +11,6 @@ import {
   getClaimWithExtendedResponseDeadline,
   submitExtendedResponseDeadline,
 } from 'services/features/response/responseDeadline/extendResponseDeadlineService';
-import { isCUIReleaseTwoEnabled } from 'app/auth/launchdarkly/launchDarklyClient';
 import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const newResponseDeadlineController = Router();
@@ -26,7 +25,7 @@ newResponseDeadlineController
       const claimId = getRouteParam(req, 'id');
       const claim = await getClaimWithExtendedResponseDeadline(req);
       const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-      const isReleaseTwoEnabled = await isCUIReleaseTwoEnabled();
+      const isReleaseTwoEnabled = true;
       res.render(newResponseDeadlineViewPath, {
         claimantName: claim.getClaimantFullName(),
         responseDeadline: formatDateToFullDate(claim.responseDeadline.calculatedResponseDeadline, lang),
