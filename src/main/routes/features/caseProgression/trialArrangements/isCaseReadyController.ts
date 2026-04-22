@@ -23,7 +23,7 @@ const dqPropertyName = 'isCaseReady';
 
 isCaseReadyController.get([IS_CASE_READY_URL], (async (req, res, next: NextFunction) => {
   try {
-    const claimId = req.params.id;
+    const claimId = req.params.id as string;
     const claim = await getClaimById(claimId, req, true);
     const form = new GenericForm(getIsCaseReadyForm(claim));
     await renderView(res, claimId, claim, form);
@@ -37,7 +37,7 @@ isCaseReadyController.post([IS_CASE_READY_URL], (async (req, res, next) => {
     const option = req.body.option;
     const form = new GenericForm(new IsCaseReadyForm(option));
     await form.validate();
-    const claimId = req.params.id;
+    const claimId = req.params.id as string;
     const claim: Claim = await getClaimById(claimId, req, true);
     if (form.hasErrors()) {
       await renderView(res, claimId, claim, form);

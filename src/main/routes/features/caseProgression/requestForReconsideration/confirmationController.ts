@@ -23,7 +23,7 @@ const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServi
 
 requestForReconsiderationConfirmationController.get(REQUEST_FOR_RECONSIDERATION_CONFIRMATION_URL, (async (req, res, next: NextFunction) => {
   try {
-    const claimId = req.params.id;
+    const claimId = req.params.id as string;
     const claim: Claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const dashboardUrl = claim.caseRole === CaseRole.CLAIMANT

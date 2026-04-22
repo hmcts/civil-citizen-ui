@@ -17,8 +17,8 @@ const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServi
 
 payHearingFeeStartScreenController.get(PAY_HEARING_FEE_URL, (async (req, res, next: NextFunction) => {
   try {
-    const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-    const claimId = req.params.id;
+    const lang = (req.query.lang ? req.query.lang : req.cookies.lang) as string;
+    const claimId = req.params.id as string;
     const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
     const dashboardUrl = claim.caseRole === CaseRole.CLAIMANT ? constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL) : constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL);
     res.render(payHearingFeeStartScreenViewPath, {
