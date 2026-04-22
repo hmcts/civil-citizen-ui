@@ -8,7 +8,6 @@ let testData: InstanceType<typeof TestData>;
 const CASEWORKER_EVENTS = 'cui-case-events-enabled';
 const SHUTTER_CUI_SERVICE = 'shutter-cui-service';
 const SHUTTER_PCQ = 'shutter-pcq';
-const CUI_RELEASE_TWO_ENABLED = 'cuiReleaseTwoEnabled';
 const GA_FOR_LIPS = 'GaForLips';
 const IS_JUDGMENT_ONLINE_LIVE = 'isJudgmentOnlineLive';
 const IS_DASHBOARD_ENABLED_FOR_CASE = 'is-dashboard-enabled-for-case';
@@ -19,7 +18,6 @@ const QUERY_MANAGEMENT = 'cui-query-management';
 const GA_FOR_WELSH = 'generalApplicationsForWelshParty';
 const WELSH_FOR_MAIN_CLAIM = 'enableWelshForMainCase';
 const IS_DEFENDANT_NOC_ONLINE_FOR_CASE = 'is-defendant-noc-online-for-case';
-const LR_QUERY_MANAGEMENT = 'query-management';
 const CUI_GA_NRO = 'cui-ga-nro';
 
 async function getClient(): Promise<void> {
@@ -31,7 +29,6 @@ async function getClient(): Promise<void> {
       testData = new TestData();
       await testData.update(testData.flag(SHUTTER_CUI_SERVICE).booleanFlag().variationForAll(false));
       await testData.update(testData.flag(SHUTTER_PCQ).booleanFlag().variationForAll(false));
-      await testData.update(testData.flag(CUI_RELEASE_TWO_ENABLED).booleanFlag().variationForAll(false));
       await testData.update(testData.flag(GA_FOR_LIPS).booleanFlag().variationForAll(false));
       await testData.update(testData.flag(IS_JUDGMENT_ONLINE_LIVE).booleanFlag().variationForAll(false));
       await testData.update(testData.flag(IS_DASHBOARD_ENABLED_FOR_CASE).booleanFlag().variationForAll(false));
@@ -41,7 +38,6 @@ async function getClient(): Promise<void> {
       await testData.update(testData.flag(EA_COURT_FOR_GA_LIPS).booleanFlag().variationForAll(false));
       await testData.update(testData.flag(QUERY_MANAGEMENT).booleanFlag().variationForAll(false));
       await testData.update(testData.flag(GA_FOR_WELSH).booleanFlag().variationForAll(false));
-      await testData.update(testData.flag(LR_QUERY_MANAGEMENT).booleanFlag().variationForAll(false));
       await testData.update(testData.flag(CUI_GA_NRO).booleanFlag().variationForAll(false));
 
       client = init(launchDarklyTestSdk, { updateProcessor: testData.getFactory() });
@@ -121,10 +117,6 @@ export async function isPcqShutterOn(): Promise<boolean> {
   return await getFlagValue(SHUTTER_PCQ) as boolean;
 }
 
-export async function isCUIReleaseTwoEnabled(): Promise<boolean> {
-  return await getFlagValue(CUI_RELEASE_TWO_ENABLED) as boolean;
-}
-
 export async function isGaForLipsEnabled(): Promise<boolean> {
   return await getFlagValue(GA_FOR_LIPS) as boolean;
 }
@@ -137,9 +129,8 @@ export async function isDashboardEnabledForCase(date: Date): Promise<boolean> {
   const { DateTime } = require('luxon');
   const systemTimeZone = DateTime.local().zoneName;
   const epoch = DateTime.fromISO(date, { zone: systemTimeZone }).toSeconds();
-  const cuiR2Flag = await getFlagValue(CUI_RELEASE_TWO_ENABLED) as boolean;
   const dashboardEnabledForR2Cases =  await getFlagValue(IS_DASHBOARD_ENABLED_FOR_CASE, epoch) as boolean;
-  return cuiR2Flag && dashboardEnabledForR2Cases;
+  return dashboardEnabledForR2Cases;
 }
 
 export async function isCarmEnabledForCase(date: Date): Promise<boolean> {
@@ -181,10 +172,6 @@ export async function isDefendantNoCOnlineForCase(date: Date): Promise<boolean> 
   const systemTimeZone = DateTime.local().zoneName;
   const epoch = DateTime.fromISO(date, { zone: systemTimeZone }).toSeconds();
   return await getFlagValue(IS_DEFENDANT_NOC_ONLINE_FOR_CASE, epoch) as boolean;
-}
-
-export async function isLRQueryManagementEnabled(): Promise<boolean> {
-  return await getFlagValue(LR_QUERY_MANAGEMENT) as boolean;
 }
 
 export async function isCuiGaNroEnabled(): Promise<boolean> {
