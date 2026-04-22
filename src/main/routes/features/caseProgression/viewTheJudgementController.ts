@@ -16,8 +16,8 @@ const judgementViewPath = 'features/caseProgression/view-the-judgement';
 
 viewTheJudgementController.get(VIEW_THE_JUDGMENT_URL, (async (req:Request, res:Response, next: NextFunction) => {
   try {
-    const claimId = req.params.id;
-    const lang = req.query.lang ? req.query.lang : req.cookies.lang;
+    const claimId = req.params.id as string;
+    const lang = (req.query.lang ? req.query.lang : req.cookies.lang) as string;
     const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
 
     const dashboardUrl = claim.isClaimant()
