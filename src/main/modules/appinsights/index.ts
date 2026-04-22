@@ -16,9 +16,14 @@ export class AppInsights {
         .setSendLiveMetrics(true)
         .start();
 
+      // Force full telemetry during investigation; ingestion currently reports "Telemetry sampled out."
+      appInsights.defaultClient.config.samplingPercentage = 100;
       appInsights.defaultClient.context.tags[appInsights.defaultClient.context.keys.cloudRole] = 'civil-citizen-ui';
       appInsights.defaultClient.trackTrace({message: 'App insights activated'});
-      logger.info(`APPINSIGHTS_INIT_SUCCESS defaultClientReady=${Boolean(appInsights.defaultClient)}`);
+      logger.info(
+        `APPINSIGHTS_INIT_SUCCESS defaultClientReady=${Boolean(appInsights.defaultClient)} ` +
+        `samplingPercentage=${appInsights.defaultClient.config.samplingPercentage}`,
+      );
     } else {
       logger.error(
         'APPINSIGHTS_INIT_SKIPPED missing appInsights.instrumentationKey. ' +
