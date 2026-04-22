@@ -811,27 +811,7 @@ export class Claim {
   }
 
   private getName(party: Party): string {
-    if (party?.type == PartyType.INDIVIDUAL) {
-      return this.getIndividualPartyName(party);
-    } else if (party?.type == PartyType.SOLE_TRADER) {
-      return this.getSoeTraderPartyName(party);
-    }
     return party?.partyDetails?.partyName;
-  }
-
-  private getSoeTraderPartyName(party: Party): string {
-    const partyName = this.getIndividualPartyName(party);
-    if (party.partyDetails?.soleTraderTradingAs) {
-      return `${partyName}` + String.raw` T/A ` + `${party.partyDetails?.soleTraderTradingAs}` ;
-    }
-    return partyName;
-  }
-  private getIndividualPartyName(party: Party): string {
-    if (party.partyDetails?.title) {
-      return `${party.partyDetails?.title} ${party.partyDetails?.firstName} ${party.partyDetails?.lastName}`;
-    } else {
-      return `${party.partyDetails?.firstName} ${party.partyDetails?.lastName}`;
-    }
   }
 
   get isFastTrackClaim(): boolean {
