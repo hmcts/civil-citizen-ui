@@ -39,6 +39,7 @@ describe('Cirizen Details Section', () => {
     const claim = createClaimWithApplicantIndividualDetails();
     claim.applicant1.type = PartyType.SOLE_TRADER;
     claim.applicant1.partyDetails.soleTraderTradingAs = 'test';
+    claim.applicant1.partyDetails.partyName = 'Mr John Richards T/A test';
     claim.applicant1.partyDetails.contactPerson = 'contact';
     claim.applicant1.partyDetails.primaryAddress = new Address('Test street', 'N1', null, 'London', '123');
     //When
