@@ -5,7 +5,7 @@ import { Request, Response, NextFunction } from 'express';
  * can inspect all submitted content. Accepting application/json on these routes would allow
  * attackers to bypass WAF rules (e.g. XSS) by sending the same payload as JSON.
  * Includes claim, case directions questionnaire, statement of means, defendant timeline,
- * general-application and query-management so HTML injection is blocked consistently.
+ * general-application and query management (`/qm` routes) so HTML injection is blocked consistently.
  * Note: /claim/... already covers claim issue journeys (e.g. /claim/timeline, /claim/interest-rate).
  */
 const FORM_ONLY_PATH_PATTERNS = [
