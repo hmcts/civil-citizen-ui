@@ -10,7 +10,7 @@ const cancelHearingFeeJourneyController: Router = Router();
 
 cancelHearingFeeJourneyController.get(HEARING_FEE_CANCEL_JOURNEY, (async (req, res) => {
   await deleteDraftClaim(req);
-  const claimId = req.params.id;
+  const claimId = req.params.id as string;
   res.redirect(constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL));
 }) as RequestHandler);
 

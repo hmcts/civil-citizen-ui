@@ -24,7 +24,7 @@ const dqPropertyName = 'hasAnythingChanged';
 
 hasAnythingChangedController.get(HAS_ANYTHING_CHANGED_URL, (async (req, res, next: NextFunction) => {
   try {
-    const claimId = req.params.id;
+    const claimId = req.params.id as string;
     const claim = await getClaimById(claimId, req, true);
     const form = new GenericForm(getHasAnythingChangedForm(claim));
     await renderView(res, claimId, claim, form);
@@ -39,7 +39,7 @@ hasAnythingChangedController.post(HAS_ANYTHING_CHANGED_URL,(async (req, res, nex
     const textArea = req.body.textArea;
     const form = new GenericForm(new HasAnythingChangedForm(option,textArea));
     await form.validate();
-    const claimId = req.params.id;
+    const claimId = req.params.id as string;
     const claim: Claim =  await getClaimById(claimId, req,true);
     if (form.hasErrors()) {
       await renderView(res, claimId, claim, form);
