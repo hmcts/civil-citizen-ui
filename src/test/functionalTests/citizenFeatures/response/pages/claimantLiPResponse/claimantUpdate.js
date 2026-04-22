@@ -10,14 +10,14 @@ const selectors = {
 class ClaimantUpdate {
   async respondToClaim(claimRef, notification) {
     console.log('notification..', notification);
-    I.amOnPage('/dashboard/' + claimRef + '/claimant');
+    I.amOnPage('/dashboard/' + claimRef + '/claimantNewDesign');
     await verifyNotificationTitleAndContent('', notification.title, notification.content);
     I.click(notification.nextSteps);
   }
 
   async viewAndRespondToClaim(claimRef, notification) {
     console.log('notification..', notification);
-    I.amOnPage('/dashboard/' + claimRef + '/claimant');
+    I.amOnPage('/dashboard/' + claimRef + '/claimantNewDesign');
     await verifyNotificationTitleAndContent('', notification.title, notification.content);
     I.click(notification.nextSteps);
   } 

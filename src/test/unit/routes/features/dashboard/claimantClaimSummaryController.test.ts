@@ -36,6 +36,24 @@ describe('claimant Dashboard Controller', () => {
         });
     });
 
+    it('should preserve allowed language query when redirecting old claimant dashboard URLs', async () => {
+      await request(app)
+        .get(`${OLD_DASHBOARD_CLAIMANT_URL.replace(':id', '123')}?lang=cy`)
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.headers.location).toBe(`${DASHBOARD_CLAIMANT_URL.replace(':id', '123')}?lang=cy`);
+        });
+    });
+
+    it('should not preserve non-language query strings when redirecting old claimant dashboard URLs', async () => {
+      await request(app)
+        .get(`${OLD_DASHBOARD_CLAIMANT_URL.replace(':id', '123')}?next=https://example.com`)
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.headers.location).toBe(DASHBOARD_CLAIMANT_URL.replace(':id', '123'));
+        });
+    });
+
     it('should return an error response when url construction fails', async () => {
       const constructResponseUrlWithIdParamsSpy = jest.spyOn(urlFormatter, 'constructResponseUrlWithIdParams')
         .mockImplementationOnce(() => {
