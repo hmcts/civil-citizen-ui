@@ -294,6 +294,7 @@ export const toDraftClaimDashboardItem = (claim: Claim): DashboardClaimantItem |
     draftClaim.claimNumber = 'PAGES.DASHBOARD.DRAFT_CLAIM_NUMBER';
     draftClaim.claimantName = claim.getClaimantFullName();
     draftClaim.defendantName = claim.getDefendantFullName();
+
     draftClaim.url = DASHBOARD_CLAIMANT_URL.replace(':id', 'draft');
     return draftClaim;
   } else {

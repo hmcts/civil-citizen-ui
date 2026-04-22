@@ -68,12 +68,24 @@ export const saveDraftClaim =async (claimId: string, claim: Claim, doNotThrowErr
   }
   storedClaimResponse.case_data = claim as any;
   const draftStoreClient = app.locals.draftStoreClient;
-  logger.info(`Updating claimant response : userId: ${userId}  claimId: ${claimId} ccjRequest: ${storedClaimResponse.case_data?.ccjRequest? JSON.stringify(storedClaimResponse.case_data?.ccjRequest) : 'undefined'}`);
-  await draftStoreClient.set(claimId, JSON.stringify(storedClaimResponse));
-  if (claim.draftClaimCreatedAt) {
-    await draftStoreClient.expireat(claimId, calculateExpireTimeForDraftClaimInSeconds(claim.draftClaimCreatedAt));
+  const ttl = await draftStoreClient.ttl(claimId);
+  if (ttl > 0) {
+    // TTL already exists — preserve it
+    await draftStoreClient.set(
+      claimId,
+      JSON.stringify(storedClaimResponse),
+      'KEEPTTL');
+  } else {
+    // No TTL — set a new one
+    const expiryBaseDate = claim.draftClaimCreatedAt ?? new Date();
+    const expirySeconds = calculateExpireTimeForDraftClaimInSeconds(expiryBaseDate);
+    await draftStoreClient.set(
+      claimId,
+      JSON.stringify(storedClaimResponse));
+    await draftStoreClient.expireat(claimId, expirySeconds);
   }
 };
+
 const createNewCivilClaimResponse = (claimId: string) => {
   const storedClaimResponse = new CivilClaimResponse();
   storedClaimResponse.id = claimId;
@@ -81,7 +93,7 @@ const createNewCivilClaimResponse = (claimId: string) => {
 };
 
 export const deleteDraftClaim = async (req: Request, useRedisKey = false): Promise<void> => {
-  const claimId = req.params.id;
+  const claimId = req.params.id as string;
   const userId = (<AppRequest>req)?.session?.user?.id;
   const redisKey = useRedisKey && claimId !== userId ? generateRedisKey(<AppRequest>req) : claimId;
   await deleteDraftClaimFromStore(redisKey);

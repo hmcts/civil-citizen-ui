@@ -8,18 +8,18 @@ export interface DraftClaimData {
 
 export const getDraftClaimData = async (userToken: string, userId:string):Promise<DraftClaimData> => {
   const draftUrl = createDraftClaimUrl();
-  const draftClaim = await getDraftClaim(userId);
+  const draftClaim = await getDraftClaim(userToken, userId);
   return {
     claimCreationUrl: draftUrl,
     draftClaim: draftClaim,
   };
 };
 
-const createDraftClaimUrl =  ():string => {
+const createDraftClaimUrl = (): string => {
   return '/eligibility';
 };
 
-const getDraftClaim = async (userId: string): Promise<DashboardClaimantItem> => {
+const getDraftClaim = async (_userToken: string, userId: string): Promise<DashboardClaimantItem> => {
   const claim = await getCaseDataFromStore(userId, true);
   return toDraftClaimDashboardItem(claim);
 };

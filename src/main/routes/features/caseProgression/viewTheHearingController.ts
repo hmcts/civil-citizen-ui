@@ -17,8 +17,8 @@ const hearingViewPath = 'features/caseProgression/view-the-hearing';
 
 viewTheHearingController.get(VIEW_THE_HEARING_URL, (async (req:Request, res:Response, next: NextFunction) => {
   try {
-    const claimId = req.params.id;
-    const lang = req.query.lang ? req.query.lang : req.cookies.lang;
+    const claimId = req.params.id as string;
+    const lang = (req.query.lang ? req.query.lang : req.cookies.lang) as string;
     const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
 
     const dashboardUrl = claim.isClaimant()

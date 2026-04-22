@@ -4,6 +4,9 @@ const {notEligibleReason, eligibleCheckBoxValue, yesAndNoCheckBoxOptionValue, cl
 
 Feature('Eligibility Journey R2').tag('@e2e');
 
+Before(() => { // or Background
+});
+
 Scenario('I don`t know the amount', () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
     Eligibility.start();

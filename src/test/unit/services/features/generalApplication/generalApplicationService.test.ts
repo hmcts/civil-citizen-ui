@@ -349,9 +349,19 @@ describe('General Application service', () => {
   });
 
   describe('Get cancel button url', () => {
-    it('should return claimant cancel url', async () => {
-      //Given
+    it('should return claimant new dashboard url when user is claimant and dashboard feature flag is enabled', async () => {
+      const claim = new Claim();
+      claim.caseRole = CaseRole.CLAIMANT;
 
+      claim.generalApplication = new GeneralApplication();
+
+      //When
+      const cancelUrl = await getCancelUrl('123', claim);
+      //Then
+      expect(cancelUrl).toEqual(CANCEL_URL.replace(':id', '123').replace(':propertyName', 'generalApplication'));
+    });
+
+    it('should return claimant old dashboard url when user is claimant and dashboard feature flag is disabled', async () => {
       const claim = new Claim();
       claim.caseRole = CaseRole.CLAIMANT;
 
@@ -364,8 +374,6 @@ describe('General Application service', () => {
     });
 
     it('should return defendant dashboard url when user is defendent', async () => {
-      //Given
-
       const claim = new Claim();
       claim.caseRole = CaseRole.DEFENDANT;
 
