@@ -60,9 +60,9 @@ export const getCaseDataFromStore = async (claimId: string, doNotThrowError = fa
  * @param userId
  */
 export const saveDraftClaim =async (claimId: string, claim: Claim, doNotThrowError = false, userId?: string) => {
-  logger.info(`Saving draft claim : userId: ${userId}  claimId: ${claimId} claimantResponse: ${claim.claimantResponse? JSON.stringify(claim.claimantResponse) : 'undefined'}`);
+  logger.info(`Saving draft claim : userId: ${userId}  claimId: ${claimId}`);
   let storedClaimResponse = await getDraftClaimFromStore(claimId, doNotThrowError);
-  logger.info(`storedClaimResponse : userId: ${userId}  claimId: ${claimId} claimantResponse ccjRequest: ${storedClaimResponse.case_data?.ccjRequest ? JSON.stringify(storedClaimResponse.case_data?.ccjRequest) : 'undefined'}`);
+  logger.info(`storedClaimResponse : userId: ${userId}  claimId: ${claimId}`);
   if (isUndefined(storedClaimResponse.case_data)) {
     storedClaimResponse = createNewCivilClaimResponse(claimId);
   }
@@ -81,7 +81,7 @@ const createNewCivilClaimResponse = (claimId: string) => {
 };
 
 export const deleteDraftClaim = async (req: Request, useRedisKey = false): Promise<void> => {
-  const claimId = req.params.id;
+  const claimId = req.params.id as string;
   const userId = (<AppRequest>req)?.session?.user?.id;
   const redisKey = useRedisKey && claimId !== userId ? generateRedisKey(<AppRequest>req) : claimId;
   await deleteDraftClaimFromStore(redisKey);

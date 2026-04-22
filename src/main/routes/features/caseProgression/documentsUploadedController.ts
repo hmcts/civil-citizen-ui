@@ -11,7 +11,7 @@ const documentsUploadedController = Router();
 
 documentsUploadedController.get(CP_EVIDENCE_UPLOAD_SUBMISSION_URL, (async (req:Request, res:Response, next: NextFunction) => {
   try {
-    const claimId = req.params.id;
+    const claimId = req.params.id as string;
     const uploadYourDocumentsUrl = UPLOAD_YOUR_DOCUMENTS_URL.replace(':id', claimId);
     const documentsPageUrl = EVIDENCE_UPLOAD_DOCUMENTS_URL.replace(':id', claimId);
     const caseNumber = caseNumberPrettify(claimId);
