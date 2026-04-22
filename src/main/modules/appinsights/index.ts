@@ -12,7 +12,6 @@ export class AppInsights {
         .setSendLiveMetrics(true)
         .start();
 
-      appInsights.defaultClient.config.samplingPercentage = 100;
       appInsights.defaultClient.context.tags[appInsights.defaultClient.context.keys.cloudRole] = 'civil-citizen-ui';
       appInsights.defaultClient.trackTrace({message: 'App insights activated'});
     } else {

@@ -124,7 +124,6 @@ const env = process.env.NODE_ENV || 'development';
 const productionMode = env === 'production';
 const developmentMode = env === 'development';
 const e2eTestMode = env === 'e2eTest';
-const enableAppInsightsTestError = process.env.ENABLE_APPINSIGHTS_TEST_ERROR !== 'false';
 const cookieMaxAge = config.get<number>('cookieMaxAge');
 
 export {app};
@@ -174,12 +173,6 @@ app.enable('trust proxy');
 new Nunjucks(developmentMode).enableFor(app);
 new Helmet(config.get('security')).enableFor(app);
 new HealthCheck().enableFor(app);
-
-if (enableAppInsightsTestError) {
-  app.get('/trigger-appinsights-error', (_req, _res, next) => {
-    next(new Error('Temporary App Insights exception test'));
-  });
-}
 
 app.use(SIGN_OUT_URL, deleteGAGuard);
 
