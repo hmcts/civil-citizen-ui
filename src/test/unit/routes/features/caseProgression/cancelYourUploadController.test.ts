@@ -18,12 +18,10 @@ import {CIVIL_SERVICE_CASES_URL} from 'client/civilServiceUrls';
 import {t} from 'i18next';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {Claim} from 'models/claim';
-import {isCUIReleaseTwoEnabled} from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/app/client/civilServiceClient');
-jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 
 const claim = require('../../../../utils/mocks/civilClaimResponseMock.json');
 const claimDefendant = require('../../../../utils/mocks/civilClaimResponseDefendantMock.json');
@@ -94,7 +92,6 @@ describe('Cancel document upload', () => {
         .reply(200, claimId);
       await testSession
         .get(CP_UPLOAD_DOCUMENTS_URL.replace(':id', '1111'));
-      (isCUIReleaseTwoEnabled as jest.Mock).mockReturnValueOnce(true);
       //When
       await testSession
         .post(CP_EVIDENCE_UPLOAD_CANCEL.replace(':id', '1111'))

@@ -37,7 +37,7 @@ function renderView(res: Response, claim: Claim, claimId: string, lang: string) 
 requestForReconsiderationCheckAnswersController.get(REQUEST_FOR_RECONSIDERATION_CYA_URL,
   (  async (req: AppRequest, res: Response, next: NextFunction) => {
     try {
-      const claimId = req.params.id;
+      const claimId = req.params.id as string;
       const lang = req.query.lang ? req.query.lang : req.cookies.lang;
       const claim = await getClaimById(claimId, req, true);
       renderView(res, claim, claimId, lang);
@@ -48,7 +48,7 @@ requestForReconsiderationCheckAnswersController.get(REQUEST_FOR_RECONSIDERATION_
 
 requestForReconsiderationCheckAnswersController.post(REQUEST_FOR_RECONSIDERATION_CYA_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const claimId = req.params.id;
+    const claimId = req.params.id as string;
     const claim = await getClaimById(claimId, req, true);
     const requestForReconsiderationCCD = translateDraftRequestForReconsiderationToCCD(claim);
     await civilServiceClient.submitRequestForReconsideration(claimId, requestForReconsiderationCCD, req);

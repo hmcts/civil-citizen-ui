@@ -44,7 +44,7 @@ hearingDurationController.get(TRIAL_ARRANGEMENTS_HEARING_DURATION, (async (req, 
 
 hearingDurationController.post(TRIAL_ARRANGEMENTS_HEARING_DURATION, (async (req, res, next) => {
   try {
-    const claimId = req.params.id;
+    const claimId = req.params.id as string;
     let otherInfo = req.body.otherInformation;
     otherInfo = removeWhiteSpacesIfNoText(otherInfo);
     const form = new GenericForm(new OtherTrialInformation(otherInfo));

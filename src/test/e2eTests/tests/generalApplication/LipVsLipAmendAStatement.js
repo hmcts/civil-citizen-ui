@@ -8,7 +8,6 @@ const requestMoreInformation = require('../../genralApplication/requestMoreInfor
 Feature('Lip V Lip Amend a statement without notice').tag('@lipga');
 Scenario('Claimant creates GA Application with application amend a statement without notice @summary', async () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
-    toggleFlag('cuiReleaseTwoEnabled', true);
     toggleFlag('is-dashboard-enabled-for-case', true);
     toggleFlag('GaForLips', true);
     const claimID = 1732788917671276;
@@ -40,7 +39,6 @@ Scenario('Claimant creates GA Application with application amend a statement wit
     requestMoreInformation.respondAdditionalInfo(claimID, appId, 'No');
     requestMoreInformation.cyaPage(claimID, appId);
     requestMoreInformation.verifySucessfullPage();
-    toggleFlag('cuiReleaseTwoEnabled', false);
     toggleFlag('is-dashboard-enabled-for-case', false);
     toggleFlag('GaForLips', false);
   }

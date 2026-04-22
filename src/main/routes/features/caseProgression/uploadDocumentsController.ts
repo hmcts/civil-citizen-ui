@@ -119,7 +119,7 @@ const civilServiceClientForDocRetrieve: CivilServiceClient = new CivilServiceCli
 
 uploadDocumentsController.get(CP_UPLOAD_DOCUMENTS_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const claimId = req.params.id;
+    const claimId = req.params.id as string;
     req.session.previousUrl = req.originalUrl;
     const claim: Claim = await getClaimById(claimId, req, true);
     await renderView(res, claim, claimId, null);
@@ -131,7 +131,7 @@ uploadDocumentsController.get(CP_UPLOAD_DOCUMENTS_URL, (async (req: AppRequest, 
 const multerMiddleware = createMulterErrorMiddleware('uploadDocumentsController');
 
 uploadDocumentsController.post(CP_UPLOAD_DOCUMENTS_URL, multerMiddleware, (async (req, res, next) => {
-  const claimId = req.params.id;
+  const claimId = req.params.id as string;
   const action = req.body.action;
   const userId = (req as AppRequest)?.session?.user?.id;
   try {
