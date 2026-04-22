@@ -36,7 +36,7 @@ function renderView(res: Response, claim: Claim, claimId: string, lang: string) 
 trialCheckAnswersController.get(TRIAL_ARRANGEMENTS_CHECK_YOUR_ANSWERS,
   (  async (req: AppRequest, res: Response, next: NextFunction) => {
     try {
-      const claimId = req.params.id;
+      const claimId = req.params.id as string;
       const lang = req.query.lang ? req.query.lang : req.cookies.lang;
       const claim = await getClaimById(claimId, req, true);
 
@@ -48,7 +48,7 @@ trialCheckAnswersController.get(TRIAL_ARRANGEMENTS_CHECK_YOUR_ANSWERS,
 
 trialCheckAnswersController.post(TRIAL_ARRANGEMENTS_CHECK_YOUR_ANSWERS, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const claimId = req.params.id;
+    const claimId = req.params.id as string;
     const claim = await getClaimById(claimId, req, true);
     const trialReadyCCD = translateDraftTrialArrangementsToCCD(claim);
     await civilServiceClient.submitTrialArrangement(claimId, trialReadyCCD, req);

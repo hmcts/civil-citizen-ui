@@ -22,10 +22,10 @@ const getHearingFeeConfirmationContent = (claimId: string, lng: string) => {
 
 payHearingFeeConfirmationController.get(HEARING_FEE_CONFIRMATION_URL, (async (req, res, next: NextFunction) => {
   try {
-    const lng = req.query.lang ? req.query.lang : req.cookies.lang;
+    const lng = (req.query.lang ? req.query.lang : req.cookies.lang) as string;
     const redisClaimId = generateRedisKey(<AppRequest>req);
     const claim: Claim = await getCaseDataFromStore(redisClaimId);
-    const claimId = req.params.id;
+    const claimId = req.params.id as string;
     res.render(payHearingFeeStartScreenViewPath, {
       confirmationTitle : t(`PAGES.PAY_HEARING_FEE.CONFIRMATION_PAGE.CONFIRMATION_TITLE.${FeeType.HEARING}`, {lng}),
       referenceNumber: claim.caseProgression.helpFeeReferenceNumberForm.referenceNumber,

@@ -10,7 +10,7 @@ const makePaymentAgainController: Router = Router();
 
 makePaymentAgainController.get(HEARING_FEE_MAKE_PAYMENT_AGAIN_URL, (async (req:AppRequest | Request, res, next: NextFunction) => {
   try {
-    const claimId = req.params.id;
+    const claimId = req.params.id as string;
     const redirectUrl = await getRedirectUrl(claimId, <AppRequest>req);
     res.redirect(redirectUrl);
   }catch (error) {
