@@ -3,7 +3,6 @@ import {
   BREATHING_SPACE_INFO_URL,
   DASHBOARD_CLAIMANT_URL,
   DATE_PAID_URL,
-  OLD_DASHBOARD_CLAIMANT_URL,
 } from '../../urls';
 import {
   extractOrderDocumentIdFromNotification,
@@ -20,7 +19,6 @@ import {AppRequest} from 'models/AppRequest';
 import {ClaimantOrDefendant} from 'models/partyType';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {
-  isCUIReleaseTwoEnabled,
   isCarmEnabledForCase,
   isGaForLipsEnabled,
   isQueryManagementEnabled, isWelshEnabledForMainCase,
@@ -49,75 +47,69 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
     const claimId =  req.params.id;
     let claimIdPrettified;
     let claimAmountFormatted;
-    const isCUIR2Enabled = await isCUIReleaseTwoEnabled();
-    if (isCUIR2Enabled){
-      const lng = req.query.lang ? req.query.lang : req.cookies.lang;
-      let claim: Claim;
-      let caseRole: ClaimantOrDefendant;
-      let dashboardId;
-      const userId = (<AppRequest>req)?.session?.user?.id.toString();
+    const lng = req.query.lang ? req.query.lang : req.cookies.lang;
+    let claim: Claim;
+    let caseRole: ClaimantOrDefendant;
+    let dashboardId;
+    const userId = (<AppRequest>req)?.session?.user?.id.toString();
 
-      if(claimId === 'draft') {
-        caseRole = ClaimantOrDefendant.CLAIMANT;
-        claim = await getClaimById(userId, req, true);
-        dashboardId = userId;
-      } else {
-        claim = await civilServiceClient.retrieveClaimDetails(claimId, req);
-        caseRole = claim.isClaimant()?ClaimantOrDefendant.CLAIMANT:ClaimantOrDefendant.DEFENDANT;
-        dashboardId = claimId;
-        claimIdPrettified = caseNumberPrettify(claimId);
-        claimAmountFormatted = currencyFormatWithNoTrailingZeros(claim.totalClaimAmount);
-        await updateFieldDraftClaimFromStore(claimId, <AppRequest>req, ResponseClaimTrack, claim.responseClaimTrack?.toString());
-        if (claim.specRespondentCorrespondenceAddressRequired === YesNoUpperCamelCase.YES) {
-          await updateFieldDraftClaimFromStore(claimId, <AppRequest>req, 'specRespondentCorrespondenceAddressdetails', claim.specRespondentCorrespondenceAddressdetails);
-        } else if(claim?.respondentSolicitorDetails) {
-          await updateFieldDraftClaimFromStore(claimId, <AppRequest>req, 'respondentSolicitorDetails', claim.respondentSolicitorDetails);
-        }
-        await updateFieldDraftClaimFromStore(claimId, <AppRequest>req, 'respondentSolicitor1EmailAddress', claim?.respondentSolicitor1EmailAddress);
-        await updateFieldDraftClaimFromStore(claimId, <AppRequest>req, 'specRespondent1Represented', claim.specRespondent1Represented);
-      }
-      const totalAmountWithInterestAndFees = (await getTotalAmountWithInterestAndFees(claim)).toString();
-      const carmEnabled = await isCarmEnabledForCase(claim.submittedDate);
-      const isCarmApplicable = isCarmApplicableAndSmallClaim(carmEnabled, claim);
-      const dashboardNotifications = await getNotifications(dashboardId, claim, totalAmountWithInterestAndFees, caseRole, req, lng);
-      claim.orderDocumentId = extractOrderDocumentIdFromNotification(dashboardNotifications);
-      const isGAFlagEnable = await isGaForLipsEnabled();
-      const isQMFlagEnabled = await isQueryManagementEnabled(claim.submittedDate);
-      const dashboard = await getDashboardForm(caseRole, claim, totalAmountWithInterestAndFees, dashboardId, req, isCarmApplicable, isGAFlagEnable);
-      const [iWantToTitle, iWantToLinks, helpSupportTitle, helpSupportLinks]
-        = await getSupportLinks(req, claim, claimId, lng, isGAFlagEnable);
-      const hearing = dashboard?.items[2]?.tasks ? dashboard?.items[2]?.tasks : [];
-      hearing.forEach((task) => {
-        if (task.taskNameEn.search(HearingUploadDocuments)>0){
-          req.session.dashboard = {taskIdHearingUploadDocuments:undefined};
-          req.session.dashboard.taskIdHearingUploadDocuments = task.id;
-        }
-      });
-      const welshEnabled = await isWelshEnabledForMainCase();
-      const showWelshPartyBanner = welshEnabled && claim.isAnyPartyBilingual();
-      const showErrorAwaitingTranslation = welshEnabled && 'errorAwaitingTranslation' in req.query;
-
-      res.render(claimantDashboardViewPath, {
-        claim: claim,
-        claimId,
-        claimIdPrettified,
-        claimAmountFormatted,
-        dashboardTaskList: dashboard,
-        dashboardNotifications,
-        iWantToTitle,
-        iWantToLinks,
-        helpSupportTitle,
-        helpSupportLinks,
-        lang: lng,
-        pageTitle: 'PAGES.DASHBOARD.PAGE_TITLE',
-        isQMFlagEnabled,
-        showWelshPartyBanner,
-        showErrorAwaitingTranslation,
-      });
-
+    if(claimId === 'draft') {
+      caseRole = ClaimantOrDefendant.CLAIMANT;
+      claim = await getClaimById(userId, req, true);
+      dashboardId = userId;
     } else {
-      res.redirect(constructResponseUrlWithIdParams(claimId, OLD_DASHBOARD_CLAIMANT_URL));
+      claim = await civilServiceClient.retrieveClaimDetails(claimId, req);
+      caseRole = claim.isClaimant()?ClaimantOrDefendant.CLAIMANT:ClaimantOrDefendant.DEFENDANT;
+      dashboardId = claimId;
+      claimIdPrettified = caseNumberPrettify(claimId);
+      claimAmountFormatted = currencyFormatWithNoTrailingZeros(claim.totalClaimAmount);
+      await updateFieldDraftClaimFromStore(claimId, <AppRequest>req, ResponseClaimTrack, claim.responseClaimTrack?.toString());
+      if (claim.specRespondentCorrespondenceAddressRequired === YesNoUpperCamelCase.YES) {
+        await updateFieldDraftClaimFromStore(claimId, <AppRequest>req, 'specRespondentCorrespondenceAddressdetails', claim.specRespondentCorrespondenceAddressdetails);
+      } else if(claim?.respondentSolicitorDetails) {
+        await updateFieldDraftClaimFromStore(claimId, <AppRequest>req, 'respondentSolicitorDetails', claim.respondentSolicitorDetails);
+      }
+      await updateFieldDraftClaimFromStore(claimId, <AppRequest>req, 'respondentSolicitor1EmailAddress', claim?.respondentSolicitor1EmailAddress);
+      await updateFieldDraftClaimFromStore(claimId, <AppRequest>req, 'specRespondent1Represented', claim.specRespondent1Represented);
     }
+    const totalAmountWithInterestAndFees = (await getTotalAmountWithInterestAndFees(claim)).toString();
+    const carmEnabled = await isCarmEnabledForCase(claim.submittedDate);
+    const isCarmApplicable = isCarmApplicableAndSmallClaim(carmEnabled, claim);
+    const dashboardNotifications = await getNotifications(dashboardId, claim, totalAmountWithInterestAndFees, caseRole, req, lng);
+    claim.orderDocumentId = extractOrderDocumentIdFromNotification(dashboardNotifications);
+    const isGAFlagEnable = await isGaForLipsEnabled();
+    const isQMFlagEnabled = await isQueryManagementEnabled(claim.submittedDate);
+    const dashboard = await getDashboardForm(caseRole, claim, totalAmountWithInterestAndFees, dashboardId, req, isCarmApplicable, isGAFlagEnable);
+    const [iWantToTitle, iWantToLinks, helpSupportTitle, helpSupportLinks]
+      = await getSupportLinks(req, claim, claimId, lng, isGAFlagEnable);
+    const hearing = dashboard?.items[2]?.tasks ? dashboard?.items[2]?.tasks : [];
+    hearing.forEach((task) => {
+      if (task.taskNameEn.search(HearingUploadDocuments)>0){
+        req.session.dashboard = {taskIdHearingUploadDocuments:undefined};
+        req.session.dashboard.taskIdHearingUploadDocuments = task.id;
+      }
+    });
+    const welshEnabled = await isWelshEnabledForMainCase();
+    const showWelshPartyBanner = welshEnabled && claim.isAnyPartyBilingual();
+    const showErrorAwaitingTranslation = welshEnabled && 'errorAwaitingTranslation' in req.query;
+
+    res.render(claimantDashboardViewPath, {
+      claim: claim,
+      claimId,
+      claimIdPrettified,
+      claimAmountFormatted,
+      dashboardTaskList: dashboard,
+      dashboardNotifications,
+      iWantToTitle,
+      iWantToLinks,
+      helpSupportTitle,
+      helpSupportLinks,
+      lang: lng,
+      pageTitle: 'PAGES.DASHBOARD.PAGE_TITLE',
+      isQMFlagEnabled,
+      showWelshPartyBanner,
+      showErrorAwaitingTranslation,
+    });
   } catch (error) {
     next(error);
   }

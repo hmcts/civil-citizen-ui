@@ -15,8 +15,8 @@ const cancelRequestForReconsiderationController = Router();
 
 cancelRequestForReconsiderationController.get(REQUEST_FOR_RECONSIDERATION_CANCEL_URL, (async (req, res, next) => {
   try {
-    const claimId = req.params.id;
-    const propertyName = req.params.propertyName;
+    const claimId = req.params.id as string;
+    const propertyName = req.params.propertyName as string;
     const claim = await getClaimById(claimId, req,true);
     await deleteFieldDraftClaimFromStore(generateRedisKey(<AppRequest>req), claim, propertyName);
 
