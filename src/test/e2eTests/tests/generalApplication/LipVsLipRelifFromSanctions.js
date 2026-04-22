@@ -9,7 +9,6 @@ Feature('Lip V Lip relief from sanctions with consent').tag('@lipga');
 Scenario('Claimant GA Application and respond to response with relief from sanctions with consent', async () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
 
-    toggleFlag('cuiReleaseTwoEnabled', true);
     toggleFlag('is-dashboard-enabled-for-case', true);
     toggleFlag('GaForLips', true);
     const claimID = 1732551952128739;
@@ -44,7 +43,6 @@ Scenario('Claimant GA Application and respond to response with relief from sanct
     RespondentResponse.submitApplication(claimID, appId);
     RespondentResponse.confirmationPage(claimID, appId);
     responseApplicationSummary.viewResponseApplicationSummary(claimID, appId, 'Order made');
-    toggleFlag('cuiReleaseTwoEnabled', false);
     toggleFlag('is-dashboard-enabled-for-case', false);
     toggleFlag('GaForLips', false);
   }

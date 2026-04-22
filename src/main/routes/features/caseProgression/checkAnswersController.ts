@@ -44,7 +44,7 @@ function renderView(res: Response, form: GenericForm<DocumentUploadSubmissionFor
 }
 
 documentUploadCheckAnswerController.get(CP_CHECK_ANSWERS_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
-  const claimId = req.params.id;
+  const claimId = req.params.id as string;
   const lang = (req.query.lang as string) || req.cookies.lang;
   try {
     req.session.previousUrl = req.originalUrl;
@@ -57,7 +57,7 @@ documentUploadCheckAnswerController.get(CP_CHECK_ANSWERS_URL, (async (req: AppRe
 })as RequestHandler);
 
 documentUploadCheckAnswerController.post(CP_CHECK_ANSWERS_URL, (async (req: Request | AppRequest, res: Response, next: NextFunction) => {
-  const claimId = req.params.id;
+  const claimId = req.params.id as string;
   const appReq = req as AppRequest;
   const lang = (req.query.lang as string) || req.cookies.lang;
 

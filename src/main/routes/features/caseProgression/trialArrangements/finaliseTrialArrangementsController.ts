@@ -17,7 +17,7 @@ const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServi
 
 finaliseTrialArrangementsController.get(CP_FINALISE_TRIAL_ARRANGEMENTS_URL, (async (req, res, next: NextFunction) => {
   try {
-    const claimId = req.params.id;
+    const claimId = req.params.id as string;
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
     await saveDraftClaim(generateRedisKey(<AppRequest>req), claim);
