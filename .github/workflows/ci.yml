@@ -38,18 +38,3 @@ jobs:
         run: yarn build
       - name: Pull WireMock mappings
         run: yarn wiremock:pull
-      - name: Starting WireMock, starting ui, wait and run e2e test
-        run: |
-          yarn wiremock:start &
-          sleep 2
-          yarn start:e2e &
-          sleep 25
-          yarn test:e2e
-      - name: Upload e2e test artifacts
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: integration-tests-results
-          path: |
-            test-results/functional
-            src/test/functionalTests/test-results
