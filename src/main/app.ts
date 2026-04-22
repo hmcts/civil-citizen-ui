@@ -1,4 +1,3 @@
-import * as bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import express from 'express';
 import {app} from './app-instance';
@@ -335,9 +334,6 @@ if(env !== 'test') {
   app.use(contactUsGuard);
   app.use(MEDIATION_PHONE_CONFIRMATION_URL, mediationClaimantPhoneRedirectionGuard);
 }
-app.use(bodyParser.json({limit: '500mb'}));
-app.use(bodyParser.urlencoded({ limit: '500mb', extended: true }));
-
 app.use((_req, res, next) => {
   res.setHeader(
     'Cache-Control',
