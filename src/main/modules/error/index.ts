@@ -30,7 +30,7 @@ export class ErrorHandler {
         });
         appInsightsClient?.flush({
           isAppCrashing: false,
-          callback: (): void => {},
+          callback: (): void => undefined,
         });
       }
 
