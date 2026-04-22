@@ -19,7 +19,7 @@ const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServi
 
 cancelYourUploadController.get(CP_EVIDENCE_UPLOAD_CANCEL, (async (req, res, next: NextFunction) => {
   try {
-    const claimId = req.params.id;
+    const claimId = req.params.id as string;
     const form = new GenericForm(new CancelDocuments());
     const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
     res.render(cancelYourUploadViewPath, {form, cancelYourUploadContents:getCancelYourUpload(claimId, claim)});
@@ -32,12 +32,12 @@ cancelYourUploadController.post(CP_EVIDENCE_UPLOAD_CANCEL, (async (req:any, res,
   try {
     const option = req.body.option;
     const url = req.session.previousUrl;
-    const claimId = req.params.id;
+    const claimId = req.params.id as string;
     const form = new GenericForm(new CancelDocuments(option));
     await form.validate();
     const claim: Claim = await getClaimById(claimId, req,true);
     if (form.hasErrors()) {
-      res.render(cancelYourUploadViewPath, {form, cancelYourUploadContents: getCancelYourUpload(req.params.id, claim)});
+      res.render(cancelYourUploadViewPath, {form, cancelYourUploadContents: getCancelYourUpload(claimId, claim)});
     } else if(form.model.option === YesNo.NO) {
       res.redirect(url);
     } else {

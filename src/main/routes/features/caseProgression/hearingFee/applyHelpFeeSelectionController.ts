@@ -45,8 +45,8 @@ async function renderView(res: Response, req: AppRequest | Request, form: Generi
 
 applyHelpFeeSelectionController.get(HEARING_FEE_APPLY_HELP_FEE_SELECTION, (async (req, res, next: NextFunction) => {
   try {
-    const lng = req.query.lang ? req.query.lang : req.cookies.lang;
-    const claimId = req.params.id;
+    const lng = (req.query.lang ? req.query.lang : req.cookies.lang) as string;
+    const claimId = req.params.id as string;
     const redirectUrl = constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL);
     await renderView(res, req, null, claimId, redirectUrl, lng);
   }catch (error) {
@@ -56,8 +56,8 @@ applyHelpFeeSelectionController.get(HEARING_FEE_APPLY_HELP_FEE_SELECTION, (async
 
 applyHelpFeeSelectionController.post(HEARING_FEE_APPLY_HELP_FEE_SELECTION, (async (req:any, res,next: NextFunction) => {
   try {
-    const lng = req.query.lang ? req.query.lang : req.cookies.lang;
-    const claimId = req.params.id;
+    const lng = (req.query.lang ? req.query.lang : req.cookies.lang) as string;
+    const claimId = req.params.id as string;
     const form = new GenericForm(new GenericYesNo(req.body.option, t('ERRORS.VALID_YES_NO_SELECTION_UPPER', { lng })));
     form.validateSync();
     await form.validate();
