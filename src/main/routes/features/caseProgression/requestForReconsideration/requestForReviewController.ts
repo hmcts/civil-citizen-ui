@@ -23,7 +23,7 @@ const requestForReviewController = Router();
 
 requestForReviewController.get(REQUEST_FOR_RECONSIDERATION_URL, (async (req, res, next: NextFunction) => {
   try {
-    const claimId = req.params.id;
+    const claimId = req.params.id as string;
     const claim = await getClaimById(claimId, req, true);
     const form = new GenericForm(getRequestForReviewForm(claim));
     await renderView(res, claimId, claim, form);
@@ -39,7 +39,7 @@ requestForReviewController.post(REQUEST_FOR_RECONSIDERATION_URL,(async (req, res
       textArea = '';
     }
     const form = new GenericForm(new RequestForReviewForm(textArea));
-    const claimId = req.params.id;
+    const claimId = req.params.id as string;
     const claim: Claim = await getClaimById(claimId, req,true);
     const dqPropertyName = getNameRequestForReconsideration(claim);
     await saveCaseProgression(req, form.model, dqPropertyName);
