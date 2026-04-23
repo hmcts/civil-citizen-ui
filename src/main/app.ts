@@ -181,7 +181,7 @@ if(!e2eTestMode){
 }
 
 if(e2eTestMode){
-  app.get(TEST_SUPPORT_TOGGLE_FLAG_ENDPOINT, async (req, res, next) => {
+  app.get(TEST_SUPPORT_TOGGLE_FLAG_ENDPOINT, async (req, res) => {
     try {
       const key = req.params.key;
       const booleanValue: boolean = JSON.parse(req.params.value);
@@ -335,6 +335,7 @@ if(env !== 'test') {
   app.use(contactUsGuard);
   app.use(MEDIATION_PHONE_CONFIRMATION_URL, mediationClaimantPhoneRedirectionGuard);
 }
+
 app.use(bodyParser.json({limit: '500mb'}));
 app.use(bodyParser.urlencoded({ limit: '500mb', extended: true }));
 
