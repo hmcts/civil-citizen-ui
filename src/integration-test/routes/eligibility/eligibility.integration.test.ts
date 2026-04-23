@@ -1,4 +1,4 @@
-import request, {Response, TestAgent} from 'supertest';
+import request, {Response, SuperTest, Test} from 'supertest';
 process.env.NODE_ENV = 'test';
 import '../../setup/sharedMocks';
 import {app} from '../../../main/app';
@@ -42,8 +42,15 @@ type JourneyStep = {
 
 const NOT_ELIGIBLE_TITLE = 'You can’t use this service';
 
-const postForm = async (agent: TestAgent, url: string, form: Record<string, string>): Promise<Response> => {
+const postForm = async (agent: SuperTest<Test>, url: string, form: Record<string, string>): Promise<Response> => {
   return agent.post(url).send(form);
+};
+
+const getSetCookieHeaders = (header: string | string[] | undefined): string[] | undefined => {
+  if (!header) {
+    return undefined;
+  }
+  return Array.isArray(header) ? header : [header];
 };
 
 const decodeEligibilityCookie = (setCookieHeader?: string[]): EligibilityCookie | undefined => {
@@ -61,14 +68,14 @@ const decodeEligibilityCookie = (setCookieHeader?: string[]): EligibilityCookie 
   return JSON.parse(withoutJsonPrefix) as EligibilityCookie;
 };
 
-const postStepAndAssertCookie = async (agent: TestAgent, step: JourneyStep): Promise<void> => {
+const postStepAndAssertCookie = async (agent: SuperTest<Test>, step: JourneyStep): Promise<void> => {
   const response = await postForm(agent, step.url, step.form);
   expect(response.status).toBe(302);
-  const eligibilityCookie = decodeEligibilityCookie(response.header['set-cookie']);
+  const eligibilityCookie = decodeEligibilityCookie(getSetCookieHeaders(response.header['set-cookie']));
   expect(eligibilityCookie?.[step.cookieKey]).toBe(step.expectedCookieValue);
 };
 
-const runJourney = async (agent: TestAgent, steps: JourneyStep[]): Promise<void> => {
+const runJourney = async (agent: SuperTest<Test>, steps: JourneyStep[]): Promise<void> => {
   for (const step of steps) {
     await postStepAndAssertCookie(agent, step);
   }
@@ -82,7 +89,7 @@ describe('Integration: Eligibility journey decision matrix', () => {
     expect(postResponse.status).toBe(302);
 
     expect(postResponse.header.location).toBe('/eligibility/not-eligible?reason=claim-value-not-known');
-    const eligibilityCookie = decodeEligibilityCookie(postResponse.header['set-cookie']);
+    const eligibilityCookie = decodeEligibilityCookie(getSetCookieHeaders(postResponse.header['set-cookie']));
     expect(eligibilityCookie?.totalAmount).toBe(TotalAmountOptions.UNKNOWN);
 
     const notEligibleResponse = await request(app).get(`${postResponse.header.location}&lang=en`).expect(200);
@@ -98,7 +105,7 @@ describe('Integration: Eligibility journey decision matrix', () => {
     expect(postResponse.status).toBe(302);
 
     expect(postResponse.header.location).toBe('/eligibility/not-eligible?reason=claim-value-over-25000');
-    const eligibilityCookie = decodeEligibilityCookie(postResponse.header['set-cookie']);
+    const eligibilityCookie = decodeEligibilityCookie(getSetCookieHeaders(postResponse.header['set-cookie']));
     expect(eligibilityCookie?.totalAmount).toBe(TotalAmountOptions.OVER_25000);
 
     const notEligibleResponse = await agent.get(`${postResponse.header.location}&lang=en`).expect(200);
@@ -119,7 +126,7 @@ describe('Integration: Eligibility journey decision matrix', () => {
     const response = await postForm(agent, ELIGIBILITY_SINGLE_DEFENDANT_URL, {option: YesNo.YES});
     expect(response.status).toBe(302);
     expect(response.header.location).toBe('/eligibility/not-eligible?reason=multiple-defendants');
-    const eligibilityCookie = decodeEligibilityCookie(response.header['set-cookie']);
+    const eligibilityCookie = decodeEligibilityCookie(getSetCookieHeaders(response.header['set-cookie']));
     expect(eligibilityCookie?.singleDefendant).toBe(YesNo.YES);
 
     const notEligibleResponse = await agent.get(`${response.header.location}&lang=en`).expect(200);
@@ -145,7 +152,7 @@ describe('Integration: Eligibility journey decision matrix', () => {
     const response = await postForm(agent, ELIGIBILITY_DEFENDANT_ADDRESS_URL, {option: YesNo.NO});
     expect(response.status).toBe(302);
     expect(response.header.location).toBe('/eligibility/not-eligible?reason=defendant-address');
-    const eligibilityCookie = decodeEligibilityCookie(response.header['set-cookie']);
+    const eligibilityCookie = decodeEligibilityCookie(getSetCookieHeaders(response.header['set-cookie']));
     expect(eligibilityCookie?.eligibleDefendantAddress).toBe(YesNo.NO);
 
     const notEligibleResponse = await agent.get(`${response.header.location}&lang=en`).expect(200);
@@ -177,7 +184,7 @@ describe('Integration: Eligibility journey decision matrix', () => {
     const response = await postForm(agent, ELIGIBILITY_CLAIM_TYPE_URL, {claimType: ClaimTypeOptions.MORE_THAN_ONE_PERSON_OR_ORGANISATION});
     expect(response.status).toBe(302);
     expect(response.header.location).toBe('/eligibility/not-eligible?reason=multiple-claimants');
-    const eligibilityCookie = decodeEligibilityCookie(response.header['set-cookie']);
+    const eligibilityCookie = decodeEligibilityCookie(getSetCookieHeaders(response.header['set-cookie']));
     expect(eligibilityCookie?.claimType).toBe(ClaimTypeOptions.MORE_THAN_ONE_PERSON_OR_ORGANISATION);
 
     const notEligibleResponse = await agent.get(`${response.header.location}&lang=en`).expect(200);
@@ -209,7 +216,7 @@ describe('Integration: Eligibility journey decision matrix', () => {
     const response = await postForm(agent, ELIGIBILITY_CLAIM_TYPE_URL, {claimType: ClaimTypeOptions.A_CLIENT});
     expect(response.status).toBe(302);
     expect(response.header.location).toBe('/eligibility/not-eligible?reason=claim-on-behalf');
-    const eligibilityCookie = decodeEligibilityCookie(response.header['set-cookie']);
+    const eligibilityCookie = decodeEligibilityCookie(getSetCookieHeaders(response.header['set-cookie']));
     expect(eligibilityCookie?.claimType).toBe(ClaimTypeOptions.A_CLIENT);
 
     const notEligibleResponse = await agent.get(`${response.header.location}&lang=en`).expect(200);
@@ -247,7 +254,7 @@ describe('Integration: Eligibility journey decision matrix', () => {
     const response = await postForm(agent, ELIGIBILITY_CLAIMANT_ADDRESS_URL, {option: YesNo.NO});
     expect(response.status).toBe(302);
     expect(response.header.location).toBe('/eligibility/not-eligible?reason=claimant-address');
-    const eligibilityCookie = decodeEligibilityCookie(response.header['set-cookie']);
+    const eligibilityCookie = decodeEligibilityCookie(getSetCookieHeaders(response.header['set-cookie']));
     expect(eligibilityCookie?.eligibleClaimantAddress).toBe(YesNo.NO);
 
     const notEligibleResponse = await agent.get(`${response.header.location}&lang=en`).expect(200);
@@ -291,7 +298,7 @@ describe('Integration: Eligibility journey decision matrix', () => {
     const response = await postForm(agent, ELIGIBILITY_TENANCY_DEPOSIT_URL, {option: YesNo.YES});
     expect(response.status).toBe(302);
     expect(response.header.location).toBe('/eligibility/not-eligible?reason=claim-is-for-tenancy-deposit');
-    const eligibilityCookie = decodeEligibilityCookie(response.header['set-cookie']);
+    const eligibilityCookie = decodeEligibilityCookie(getSetCookieHeaders(response.header['set-cookie']));
     expect(eligibilityCookie?.tenancyDeposit).toBe(YesNo.YES);
 
     const notEligibleResponse = await agent.get(`${response.header.location}&lang=en`).expect(200);
@@ -341,7 +348,7 @@ describe('Integration: Eligibility journey decision matrix', () => {
     const response = await postForm(agent, ELIGIBILITY_GOVERNMENT_DEPARTMENT_URL, {option: YesNo.YES});
     expect(response.status).toBe(302);
     expect(response.header.location).toBe('/eligibility/not-eligible?reason=government-department');
-    const eligibilityCookie = decodeEligibilityCookie(response.header['set-cookie']);
+    const eligibilityCookie = decodeEligibilityCookie(getSetCookieHeaders(response.header['set-cookie']));
     expect(eligibilityCookie?.governmentDepartment).toBe(YesNo.YES);
 
     const notEligibleResponse = await agent.get(`${response.header.location}&lang=en`).expect(200);
@@ -403,7 +410,7 @@ describe('Integration: Eligibility journey decision matrix', () => {
     const response = await postForm(agent, ELIGIBILITY_CLAIMANT_AGE_URL, {option: YesNo.NO});
     expect(response.status).toBe(302);
     expect(response.header.location).toBe('/eligibility/not-eligible?reason=under-18');
-    const eligibilityCookie = decodeEligibilityCookie(response.header['set-cookie']);
+    const eligibilityCookie = decodeEligibilityCookie(getSetCookieHeaders(response.header['set-cookie']));
     expect(eligibilityCookie?.claimantOver18).toBe(YesNo.NO);
 
     const notEligibleResponse = await agent.get(`${response.header.location}&lang=en`).expect(200);
@@ -471,7 +478,7 @@ describe('Integration: Eligibility journey decision matrix', () => {
     const response = await postForm(agent, ELIGIBILITY_HELP_WITH_FEES_URL, {option: YesNo.NO});
     expect(response.status).toBe(302);
     expect(response.header.location).toBe(ELIGIBLE_FOR_THIS_SERVICE_URL);
-    const eligibilityCookie = decodeEligibilityCookie(response.header['set-cookie']);
+    const eligibilityCookie = decodeEligibilityCookie(getSetCookieHeaders(response.header['set-cookie']));
     expect(eligibilityCookie?.eligibleHelpWithFees).toBe(YesNo.NO);
 
     const eligibleResponse = await agent.get(`${ELIGIBLE_FOR_THIS_SERVICE_URL}?lang=en`).expect(200);
