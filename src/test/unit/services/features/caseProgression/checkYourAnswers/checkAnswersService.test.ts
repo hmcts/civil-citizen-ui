@@ -40,7 +40,10 @@ jest.mock('services/features/caseProgression/checkYourAnswers/buildEvidenceUploa
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
-jest.mock('uuid', () => ({ v4: () => '1221' }));
+jest.mock('crypto', () => ({
+  ...jest.requireActual('crypto'),
+  randomUUID: jest.fn().mockReturnValue('1221'),
+}));
 const mockSubmitEvent = civilServiceClient.submitEvent as jest.Mock;
 const mockTranslate = t as jest.Mock;
 const mockWitnessSummarySection = getWitnessSummarySection as jest.Mock;

@@ -10,9 +10,9 @@ import {
   MediationMediationNonAttendanceDocs,
   MediationUploadDocumentsCCD,
 } from 'models/mediation/uploadDocuments/uploadDocumentsCCD';
-import {v4 as uuidv4} from 'uuid';
 import {mapperMediationDocumentToCCDDocuments} from 'models/mediation/uploadDocuments/mapperCaseDocumentToCCDDocuments';
 import {CivilClaimResponse} from 'models/civilClaimResponse';
+import * as crypto from 'crypto';
 
 export const CLAIMANT_ONE_MEDIATION_DOCS = 'ClaimantOneMediationDocs';
 export const DEFENDANT_ONE_MEDIATION_DOCS = 'DefendantOneMediationDocs';
@@ -57,7 +57,7 @@ export const getYourStatement = (): TypeOfDocumentYourNameSection[] => {
 export const getReferredDocumentCCD = (categoryId: string) => {
   return getReferredDocument().map((newDoc : TypeOfDocumentSection) => {
     const mediationUploadDocumentsCCD = new MediationUploadDocumentsCCD();
-    mediationUploadDocumentsCCD.id = uuidv4();
+    mediationUploadDocumentsCCD.id = crypto.randomUUID();
     mediationUploadDocumentsCCD.value = new MediationDocumentsReferred(mapperMediationDocumentToCCDDocuments(newDoc.caseDocument, categoryId), newDoc.dateInputFields.date, newDoc.typeOfDocument, new Date());
     return mediationUploadDocumentsCCD;
   });
@@ -66,7 +66,7 @@ export const getReferredDocumentCCD = (categoryId: string) => {
 export const getNonAttendanceDocumentsCCD = (categoryId: string) => {
   return getYourStatement().map((newDoc : TypeOfDocumentYourNameSection) => {
     const mediationUploadDocumentsCCD = new MediationUploadDocumentsCCD();
-    mediationUploadDocumentsCCD.id = uuidv4();
+    mediationUploadDocumentsCCD.id = crypto.randomUUID();
     mediationUploadDocumentsCCD.value = new MediationMediationNonAttendanceDocs(mapperMediationDocumentToCCDDocuments(newDoc.caseDocument, categoryId), newDoc.yourName, newDoc.dateInputFields.date, new Date());
     return mediationUploadDocumentsCCD;
   });

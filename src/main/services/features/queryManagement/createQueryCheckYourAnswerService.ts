@@ -10,8 +10,8 @@ import {YesNo, YesNoUpperCamelCase} from 'form/models/yesNo';
 import {documentIdExtractor} from 'common/utils/stringUtils';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
-import {v4 as uuidV4} from 'uuid';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
+import * as crypto from 'crypto';
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
@@ -118,10 +118,10 @@ export const createQuery = async (claim: Claim, updatedClaim: Claim, req: AppReq
     }
 
     queries.caseMessages.push({
-      'id': uuidV4(),
+      'id': crypto.randomUUID(),
       'value': {
         'parentId': parent.value.id,
-        'id': uuidV4(),
+        'id': crypto.randomUUID(),
         'body': claim.queryManagement.sendFollowUpQuery.messageDetails,
         'name': claim.isClaimant() ? claim.getClaimantFullName() : claim.getDefendantFullName(),
         'subject': parent.value.subject,
@@ -139,9 +139,9 @@ export const createQuery = async (claim: Claim, updatedClaim: Claim, req: AppReq
   }
 
   queries.caseMessages.push({
-    'id': uuidV4(),
+    'id': crypto.randomUUID(),
     'value': {
-      'id': uuidV4(),
+      'id': crypto.randomUUID(),
       'body': claim.queryManagement.createQuery.messageDetails,
       'name': claim.isClaimant() ? claim.getClaimantFullName() : claim.getDefendantFullName(),
       'subject': claim.queryManagement.createQuery.messageSubject,

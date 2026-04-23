@@ -28,9 +28,6 @@ import {ApplicationState} from 'models/generalApplication/applicationSummary';
 const { Logger } = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('additionalDocumentService');
 
-jest.mock('uuid', () => ({
-  v4: jest.fn().mockReturnValue('mocked-uuid'),
-}));
 jest.mock('../../../../../main/modules/draft-store/draftStoreService', () => ({
   saveDraftClaim: jest.fn(),
   generateRedisKey: jest.fn(),
@@ -46,6 +43,10 @@ jest.mock('../../../../../main/services/features/caseProgression/TypeOfDocumentS
 }));
 jest.mock('../../../../../main/services/features/generalApplication/generalApplicationService', () => ({
   isConfirmYouPaidCCJAppType: jest.fn(),
+}));
+jest.mock('crypto', () => ({
+  ...jest.requireActual('crypto'),
+  randomUUID: jest.fn().mockReturnValue('mocked-uuid'),
 }));
 
 describe('Additional Documents Service', () => {

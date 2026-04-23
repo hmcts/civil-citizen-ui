@@ -1,9 +1,9 @@
-const uuid = require('uuid');
+const {randomUUID} = require('crypto');
 const {element} = require('../api/dataHelper');
 const {uploadDocument} = require('../api/testingSupport');
 
 const initialQueryMessage = async (userName, userId, isHearingRelated) => element({
-  id: uuid.v1(),
+  id: randomUUID(),
   body: `This query was raised by ${userName}.`,
   name: userName,
   subject: `${userName} Query`,
@@ -15,7 +15,7 @@ const initialQueryMessage = async (userName, userId, isHearingRelated) => elemen
 });
 
 const queryResponseMessage = async ({id, subject, isHearingRelated, hearingDate, parentId}, userId, isClosed) => element({
-  id: uuid.v1(),
+  id: randomUUID(),
   body: isClosed ? 'Caseworker closing query' : 'Caseworker response to query.',
   name: 'Caseworker',
   subject,
@@ -31,7 +31,7 @@ const queryResponseMessage = async ({id, subject, isHearingRelated, hearingDate,
 const followUpQueryMessage = async ({id, subject, isHearingRelated, hearingDate, name, isClosed}, userId) => element({
   name,
   subject,
-  id: uuid.v1(),
+  id: randomUUID(),
   body: `${name}'s follow up to caseworker response.`,
   parentId: id,
   createdBy: userId,

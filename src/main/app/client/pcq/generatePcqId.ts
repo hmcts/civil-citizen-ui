@@ -1,5 +1,5 @@
-const {v4: uuidv4} = require('uuid');
+import * as crypto from 'crypto';
 
 export const generatePcqId = (): string => {
-  return uuidv4();
+  return crypto.randomUUID();
 };

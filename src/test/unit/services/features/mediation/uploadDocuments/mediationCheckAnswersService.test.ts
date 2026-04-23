@@ -14,8 +14,11 @@ import config from 'config';
 import {CaseRole} from 'form/models/caseRoles';
 
 jest.mock('client/civilServiceClient');
-jest.mock('uuid', () => ({ v4: () => '1221' }));
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('crypto', () => ({
+  ...jest.requireActual('crypto'),
+  randomUUID: jest.fn().mockReturnValue('1221'),
+}));
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);

@@ -19,8 +19,8 @@ import { getLng } from 'common/utils/languageToggleUtils';
 import { constructResponseUrlWithIdAndAppIdParams } from 'common/utils/urlFormatter';
 import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
 import {ApplicationState} from 'models/generalApplication/applicationSummary';
+import * as crypto from 'crypto';
 
-const { v4: uuIdv4 } = require('uuid');
 const { Logger } = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('additionalDocumentService');
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
@@ -87,7 +87,7 @@ export const getClaimDetailsById = async (req: AppRequest): Promise<Claim> => {
 export const prepareCCDData = (uploadAdditionalDocuments: UploadAdditionalDocument[]) => {
   return uploadAdditionalDocuments.map(doc => {
     return {
-      id: uuIdv4(),
+      id: crypto.randomUUID(),
       value: {
         typeOfDocument: doc.typeOfDocument,
         documentUpload: {

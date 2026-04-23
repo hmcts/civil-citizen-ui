@@ -14,7 +14,7 @@ import {
   EvidenceUploadWitness,
   OtherManageUpload,
 } from 'models/document/documentType';
-import {v4 as uuidv4} from 'uuid';
+import * as crypto from 'crypto';
 import {CCDClaim} from 'models/civilClaimResponse';
 
 export const toCCDEvidenceUpload = (cuiEvidenceUpload: CaseProgression, ccdClaim: CCDClaim, isClaimant: boolean): CCDClaim => {
@@ -106,7 +106,7 @@ const createCCDEvidenceUploadList = (evidenceList?: UploadDocumentTypes[],
           evidenceItem = element.caseDocument as UploadOtherDocumentType;
           break;
       }
-      id = element.uuid == null ? uuidv4() : element.uuid ;
+      id = element.uuid == null ? crypto.randomUUID() : element.uuid ;
 
       ccdEvidenceList.push({id: id, value: evidenceItem});
     }

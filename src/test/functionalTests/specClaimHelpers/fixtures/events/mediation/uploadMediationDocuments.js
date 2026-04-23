@@ -1,5 +1,5 @@
 const {date} = require('../../../api/dataHelper');
-const uuid = require('uuid');
+const {randomUUID} = require('crypto');
 
 module.exports = {
   uploadMediationDocumentsClaimantOne_Citizen: () => {
@@ -8,7 +8,7 @@ module.exports = {
       caseDataUpdate: {
         app1MediationDocumentsReferred: [
           {
-            id: uuid.v1(),
+            id: randomUUID(),
             value: {
               document: {
                 category_id: 'ClaimantOneMediationDocs',
@@ -24,7 +24,7 @@ module.exports = {
         ],
         app1MediationNonAttendanceDocs: [
           {
-            id: uuid.v1(),
+            id: randomUUID(),
             value: {
               document: {
                 category_id: 'ClaimantOneMediationDocs',
@@ -48,7 +48,7 @@ module.exports = {
       caseDataUpdate: {
         res1MediationDocumentsReferred: [
           {
-            id: uuid.v1(),
+            id: randomUUID(),
             value: {
               document: {
                 category_id: 'RespondentOneMediationDocs',
@@ -64,7 +64,7 @@ module.exports = {
         ],
         res1MediationNonAttendanceDocs: [
           {
-            id: uuid.v1(),
+            id: randomUUID(),
             value: {
               document: {
                 category_id: 'RespondentOneMediationDocs',

@@ -9,12 +9,12 @@ import {
   MediationDocumentsReferred, MediationMediationNonAttendanceDocs,
   MediationUploadDocumentsCCD,
 } from 'models/mediation/uploadDocuments/uploadDocumentsCCD';
-import {v4 as uuidv4} from 'uuid';
 import {mapperMediationDocumentToCCDDocuments} from 'models/mediation/uploadDocuments/mapperCaseDocumentToCCDDocuments';
 import {
   MediationTypeOfDocumentSection,
   TypeOfDocumentYourNameSection,
 } from 'form/models/mediation/uploadDocuments/uploadDocumentsForm';
+import * as crypto from 'crypto';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
@@ -25,7 +25,7 @@ const getMediationDocumentsReferredDocuments = (newMediationUploadDocuments: Upl
   const newDocumentsReferred: MediationTypeOfDocumentSection[] = newMediationUploadDocuments.typeOfDocuments.find((doc) => doc.type === TypeOfMediationDocuments.DOCUMENTS_REFERRED_TO_IN_STATEMENT)?.uploadDocuments as MediationTypeOfDocumentSection[];
   const newDocs =  newDocumentsReferred.map((newDoc) => {
     const mediationUploadDocumentsCCD = new MediationUploadDocumentsCCD();
-    mediationUploadDocumentsCCD.id = uuidv4();
+    mediationUploadDocumentsCCD.id = crypto.randomUUID();
     mediationUploadDocumentsCCD.value = new MediationDocumentsReferred(mapperMediationDocumentToCCDDocuments(newDoc.caseDocument, category), newDoc.dateInputFields.date, newDoc.typeOfDocument, new Date());
     return mediationUploadDocumentsCCD;
   });
@@ -36,7 +36,7 @@ const getMediationNonAttendanceDocuments = (newMediationUploadDocuments: UploadD
   const newDocumentsReferred: TypeOfDocumentYourNameSection[] = newMediationUploadDocuments.typeOfDocuments.find((doc) => doc.type === TypeOfMediationDocuments.YOUR_STATEMENT)?.uploadDocuments as TypeOfDocumentYourNameSection[];
   const newDocs =  newDocumentsReferred.map((newDoc) => {
     const mediationUploadDocumentsCCD = new MediationUploadDocumentsCCD();
-    mediationUploadDocumentsCCD.id = uuidv4();
+    mediationUploadDocumentsCCD.id = crypto.randomUUID();
     mediationUploadDocumentsCCD.value = new MediationMediationNonAttendanceDocs(mapperMediationDocumentToCCDDocuments(newDoc.caseDocument, category), newDoc.yourName, newDoc.dateInputFields.date, new Date());
     return mediationUploadDocumentsCCD;
   });

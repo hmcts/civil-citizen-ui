@@ -1,5 +1,5 @@
 const {listElementWithCode, date} = require('../../../api/dataHelper');
-const uuid = require('uuid');
+const {randomUUID} = require('crypto');
 
 module.exports = {
   uploadMediationDocuments: (user, sameDefendantSolicitor = false) => {
@@ -59,7 +59,7 @@ module.exports = {
         DocumentUpload: {
           nonAttendanceStatementForm: [
             {
-              id: uuid.v1(),
+              id: randomUUID(),
               value: {
                 document: {
                   document_url: '${TEST_DOCUMENT_URL}',
@@ -73,7 +73,7 @@ module.exports = {
           ],
           documentsReferredForm: [
             {
-              id: uuid.v1(),
+              id: randomUUID(),
               value: {
                 document: {
                   document_url: '${TEST_DOCUMENT_URL}',

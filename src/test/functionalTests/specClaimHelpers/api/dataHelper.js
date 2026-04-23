@@ -1,4 +1,4 @@
-const uuid = require('uuid');
+const {randomUUID} = require('crypto');
 const config = require('../../../config');
 const address = require('../fixtures/address');
 
@@ -18,7 +18,7 @@ module.exports = {
   },
 
   document: filename => {
-    const documentId = uuid.v1();
+    const documentId = randomUUID();
     return {
       document_url: `${config.url.dmStore}/documents/${documentId}`,
       document_filename: filename,
@@ -28,14 +28,14 @@ module.exports = {
 
   element: object => {
     return {
-      id: uuid.v1(),
+      id: randomUUID(),
       value: object,
     };
   },
 
   listElement: string => {
     return {
-      code: uuid.v1(),
+      code: randomUUID(),
       label: string,
     };
   },
