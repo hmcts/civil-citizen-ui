@@ -4,7 +4,6 @@ import {app} from '../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
 import {CLAIM_TOTAL_URL, CLAIMANT_TASK_LIST_URL} from 'routes/urls';
-import {isCUIReleaseTwoEnabled} from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {Claim} from 'models/claim';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {CivilServiceClient} from 'client/civilServiceClient';
@@ -14,14 +13,11 @@ jest.mock('../../../../../main/modules/claimDetailsService');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('services/features/claim/amount/claimFeesService');
-jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 jest.mock('routes/guards/claimIssueTaskListGuard', () => ({
   claimIssueTaskListGuard: jest.fn((req, res, next) => {
     next();
   }),
 }));
-
-const isReleaseTwo = isCUIReleaseTwoEnabled as jest.Mock;
 
 describe('Total amount', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -35,7 +31,6 @@ describe('Total amount', () => {
 
   describe('on GET', () => {
     it('should return total amount page', async () => {
-      isReleaseTwo.mockResolvedValue(true);
       const spySave = jest.spyOn(claimFeeService, 'saveClaimFee');
       const claim = new Claim();
       claim.draftClaimCreatedAt = new Date();

@@ -39,7 +39,7 @@ function renderView(res: Response, claim: Claim, claimId: string, lang: string) 
 requestForReconsiderationCommentsCheckAnswersController.get(REQUEST_FOR_RECONSIDERATION_COMMENTS_CYA_URL,
   (  async (req: AppRequest, res: Response, next: NextFunction) => {
     try {
-      const claimId = req.params.id;
+      const claimId = req.params.id as string;
       const lang = req.query.lang ? req.query.lang : req.cookies.lang;
       const claim = await getClaimById(claimId, req, true);
 
@@ -51,7 +51,7 @@ requestForReconsiderationCommentsCheckAnswersController.get(REQUEST_FOR_RECONSID
 
 requestForReconsiderationCommentsCheckAnswersController.post(REQUEST_FOR_RECONSIDERATION_COMMENTS_CYA_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const claimId = req.params.id;
+    const claimId = req.params.id as string;
     const claim = await getClaimById(claimId, req, true);
     const requestForReconsiderationCCD = translateDraftRequestForReconsiderationToCCD(claim);
     await civilServiceClient.submitRequestForReconsideration(claimId, requestForReconsiderationCCD, req);
