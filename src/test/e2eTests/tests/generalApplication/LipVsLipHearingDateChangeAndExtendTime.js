@@ -7,7 +7,6 @@ const responseApplicationSummary = require('../../genralApplication/responseAppl
 Feature('Lip V Lip creating multiple applications under one claim i.e extending time and hearing date').tag('@lipga');
 Scenario('Extending time with consent and change hearing date with out notice', async () => {
   if (['preview', 'demo'].includes(config.runningEnv)) {
-    toggleFlag('cuiReleaseTwoEnabled', true);
     toggleFlag('is-dashboard-enabled-for-case', true);
     toggleFlag('GaForLips', true);
     const claimID = 1732014426677369;
@@ -41,9 +40,7 @@ Scenario('Extending time with consent and change hearing date with out notice', 
     RespondentResponse.submitApplication(claimID, appId);
     RespondentResponse.confirmationPage(claimID, appId);
     responseApplicationSummary.viewResponseApplicationSummary(claimID, appId, 'Order made');
-    toggleFlag('cuiReleaseTwoEnabled', false);
     toggleFlag('GaForLips', false);
-    toggleFlag('cuiReleaseTwoEnabled', true);
     toggleFlag('GaForLips', true);
     appId = 1732018301268558;
     createGAApplication.start(claimID);
@@ -66,7 +63,6 @@ Scenario('Extending time with consent and change hearing date with out notice', 
     createGAApplication.submitConfirmation(claimID, 119);
     createGAApplication.selectFeeType(claimID, appId, 119);
     createGAApplication.verifyPaymentSuccessfullPage();
-    toggleFlag('cuiReleaseTwoEnabled', false);
     toggleFlag('is-dashboard-enabled-for-case', false);
     toggleFlag('GaForLips', false);
   }

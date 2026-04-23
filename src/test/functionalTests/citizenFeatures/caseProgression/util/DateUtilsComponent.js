@@ -154,6 +154,52 @@ class DateUtilsComponent {
     const year = date.getFullYear();
     return `${day}/${month}/${year}`;
   }
+
+  static async fetchBankHolidays() {
+    const fetch = (await import('node-fetch')).default;
+    const response = await fetch('https://www.gov.uk/bank-holidays.json');
+    const data = await response.json();
+    const holidays = new Set();
+    for (const event of data['england-and-wales'].events) {
+      holidays.add(event.date);
+    }
+    return holidays;
+  }
+
+  static isBankHoliday(date, bankHolidays) {
+    const dateStr = date.toISOString().substring(0, 10);
+    return bankHolidays.has(dateStr);
+  }
+
+  static isWorkingDay(date, bankHolidays) {
+    const day = date.getDay();
+    if (day === 0 || day === 6) return false;
+    return !DateUtilsComponent.isBankHoliday(date, bankHolidays);
+  }
+
+  static calculateWorkingDaysDeadline(fromDateTime, workingDays = 5, bankHolidays) {
+    let startDate = new Date(fromDateTime);
+
+    if (startDate.getHours() >= 16) {
+      startDate.setDate(startDate.getDate() + 1);
+    }
+
+    while (!DateUtilsComponent.isWorkingDay(startDate, bankHolidays)) {
+      startDate.setDate(startDate.getDate() + 1);
+    }
+
+    let count = 1;
+    let deadline = new Date(startDate);
+    while (count < workingDays) {
+      deadline.setDate(deadline.getDate() + 1);
+      if (DateUtilsComponent.isWorkingDay(deadline, bankHolidays)) {
+        count++;
+      }
+    }
+
+    deadline.setHours(16, 0, 0, 0);
+    return deadline;
+  }
 }
 
 const fourWeeksFroToday = DateUtilsComponent.rollDateToCertainWeeks(4);

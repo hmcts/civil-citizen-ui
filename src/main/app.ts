@@ -180,7 +180,7 @@ if(!e2eTestMode){
 }
 
 if(e2eTestMode){
-  app.get(TEST_SUPPORT_TOGGLE_FLAG_ENDPOINT, async (req, res, next) => {
+  app.get(TEST_SUPPORT_TOGGLE_FLAG_ENDPOINT, async (req, res) => {
     try {
       const key = req.params.key;
       const booleanValue: boolean = JSON.parse(req.params.value);
