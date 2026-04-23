@@ -5499,8 +5499,8 @@ __metadata:
     html-webpack-plugin: "npm:^5.5.0"
     html_codesniffer: "npm:^2.5.1"
     i18next: "npm:^22.4.6"
-    i18next-fs-backend: "npm:^2.1.1"
-    i18next-http-middleware: "npm:^3.2.1"
+    i18next-fs-backend: "npm:^2.6.4"
+    i18next-http-middleware: "npm:^3.9.3"
     ioredis: "npm:^5.3.2"
     ioredis-mock: "npm:^8.2.6"
     jest: "npm:^29.7.0"
@@ -5544,7 +5544,7 @@ __metadata:
     ts-node: "npm:^10.9.1"
     tsconfig-paths: "npm:^4.1.1"
     typescript: "npm:^4.9.5"
-    uuid: "npm:^9.0.0"
+    uuid: "npm:^14.0.0"
     validator: "npm:13.15.26"
     webdriverio: "npm:^8.3.2"
     webpack: "npm:^5.102.1"
@@ -8258,17 +8258,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"i18next-fs-backend@npm:^2.1.1":
-  version: 2.6.1
-  resolution: "i18next-fs-backend@npm:2.6.1"
-  checksum: 10/2c93cab111cee0472a2ff462cdaa3cac32a1d464fb7d8cb7a6c7171ac2fdaf39a6ba9e82a2700334389519cb228f2aef29dc44871635320140da65b5dfaadcbe
+"i18next-fs-backend@npm:^2.6.4":
+  version: 2.6.4
+  resolution: "i18next-fs-backend@npm:2.6.4"
+  checksum: 10/b618ff9af83b624ca43b530d8346182e911a8167e3970e54c1a417814a09a147994787d01c8bfed53aa09267a8301ad7404a32c20ff7f060a35d3efbb3d6c873
   languageName: node
   linkType: hard
 
-"i18next-http-middleware@npm:^3.2.1":
-  version: 3.9.2
-  resolution: "i18next-http-middleware@npm:3.9.2"
-  checksum: 10/b42de4d2381fadb0689a1af64e1162671ad185a95b2e52b9edf82f5ae7c0a9947b99769c660544dded3e0852a9415bdfc85015f11dfafe8c4aa8f8254abb5415
+"i18next-http-middleware@npm:^3.9.3":
+  version: 3.9.4
+  resolution: "i18next-http-middleware@npm:3.9.4"
+  checksum: 10/983c39c5bfea2df3477a69ad6f8f9590d62040750fc5f8e4ddaeb0eb5f11b718ef5bbc5adaf9370882a8dbd86c8a3752292555ed9e06ca19272ff3c8c32392e9
   languageName: node
   linkType: hard
 
@@ -13904,6 +13904,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"uuid@npm:^14.0.0":
+  version: 14.0.0
+  resolution: "uuid@npm:14.0.0"
+  bin:
+    uuid: dist-node/bin/uuid
+  checksum: 10/8ee9b98f9650e25555515f7a28d3c3ae9364e72f7bb19b9e08b681bc135338beba5509b2830f6ae1cfaba4d45401da0d16d4d109b977097bc3d6ba0c5583341b
+  languageName: node
+  linkType: hard
+
 "uuid@npm:^8.3.2":
   version: 8.3.2
   resolution: "uuid@npm:8.3.2"
@@ -13913,7 +13922,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"uuid@npm:^9.0, uuid@npm:^9.0.0":
+"uuid@npm:^9.0":
   version: 9.0.1
   resolution: "uuid@npm:9.0.1"
   bin:
