@@ -16,6 +16,7 @@ import {hasDisabledChildren} from 'services/features/response/statementOfMeans/d
 import {GenericForm} from 'form/models/genericForm';
 import {AppRequest} from 'common/models/AppRequest';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const dependantTeenagersViewPath = 'features/response/statementOfMeans/dependants/between_16_and_19';
 const betweenSixteenAndNineteenController = Router();
@@ -39,6 +40,7 @@ betweenSixteenAndNineteenController.get(CITIZEN_DEPENDANTS_EDUCATION_URL, (async
 }) as RequestHandler);
 
 betweenSixteenAndNineteenController.post(CITIZEN_DEPENDANTS_EDUCATION_URL, (async (req, res, next: NextFunction) => {
+  const claimId = getRouteParam(req, 'id');
   const form = convertToForm(req);
   try {
     form.validateSync();
@@ -47,9 +49,9 @@ betweenSixteenAndNineteenController.post(CITIZEN_DEPENDANTS_EDUCATION_URL, (asyn
     } else {
       const claim = await saveFormToDraftStore(generateRedisKey(<AppRequest>req), form);
       if (hasDisabledChildren(claim)) {
-        res.redirect(constructResponseUrlWithIdParams(req.params.id, CHILDREN_DISABILITY_URL));
+        res.redirect(constructResponseUrlWithIdParams(claimId, CHILDREN_DISABILITY_URL));
       } else {
-        res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_OTHER_DEPENDANTS_URL));
+        res.redirect(constructResponseUrlWithIdParams(claimId, CITIZEN_OTHER_DEPENDANTS_URL));
       }
     }
   } catch (error) {
