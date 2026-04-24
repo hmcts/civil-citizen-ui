@@ -19,6 +19,7 @@ import {
   translateDraftTrialArrangementsToCCD,
 } from 'services/translation/caseProgression/trialArrangements/convertToCCDTrialArrangements';
 import {getClaimById} from 'modules/utilityService';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const checkAnswersViewPath = 'features/caseProgression/trialArrangements/check-answers';
 const trialCheckAnswersController = Router();
@@ -36,7 +37,7 @@ function renderView(res: Response, claim: Claim, claimId: string, lang: string) 
 trialCheckAnswersController.get(TRIAL_ARRANGEMENTS_CHECK_YOUR_ANSWERS,
   (  async (req: AppRequest, res: Response, next: NextFunction) => {
     try {
-      const claimId = req.params.id as string;
+      const claimId = getRouteParam(req, 'id');
       const lang = req.query.lang ? req.query.lang : req.cookies.lang;
       const claim = await getClaimById(claimId, req, true);
 
@@ -48,7 +49,7 @@ trialCheckAnswersController.get(TRIAL_ARRANGEMENTS_CHECK_YOUR_ANSWERS,
 
 trialCheckAnswersController.post(TRIAL_ARRANGEMENTS_CHECK_YOUR_ANSWERS, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const claimId = req.params.id as string;
+    const claimId = getRouteParam(req, 'id');
     const claim = await getClaimById(claimId, req, true);
     const trialReadyCCD = translateDraftTrialArrangementsToCCD(claim);
     await civilServiceClient.submitTrialArrangement(claimId, trialReadyCCD, req);

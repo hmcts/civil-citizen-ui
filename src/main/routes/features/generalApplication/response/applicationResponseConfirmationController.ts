@@ -2,13 +2,14 @@ import {NextFunction, RequestHandler, Router} from 'express';
 import {DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL, GA_RESPONSE_CONFIRMATION_URL} from 'routes/urls';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {getClaimById} from 'modules/utilityService';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const submitGeneralApplicationConfirmationViewPath = 'features/generalApplication/response/application-response-confirmation';
 const applicationResponseConfirmationController = Router();
 
 applicationResponseConfirmationController.get(GA_RESPONSE_CONFIRMATION_URL, (async (req, res, next: NextFunction) => {
   try {
-    const claimId = req.params.id;
+    const claimId = getRouteParam(req, 'id');
     const claim = await getClaimById(claimId, req, true);
     let redirectUrl = constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL);
     if (claim.isClaimant()) {
