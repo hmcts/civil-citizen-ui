@@ -17,6 +17,7 @@ import {
   getFileUploadErrorsForSource,
   FILE_UPLOAD_SOURCE,
 } from 'common/utils/fileUploadUtils';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 import {handleMulterError} from 'services/features/generalApplication/uploadEvidenceDocumentService';
 
 const uploadAdditionalDocumentsController = Router();
@@ -26,7 +27,8 @@ const multerMiddleware = createMulterErrorMiddlewareForSingleField('selectedFile
 
 uploadAdditionalDocumentsController.get(GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const { appId:gaId, id } = req.params;
+    const gaId = getRouteParam(req, 'appId');
+    const id = getRouteParam(req, 'id');
     const uploadedDocument = new UploadAdditionalDocument();
     let form = new GenericForm(uploadedDocument);
     const redisKey = generateRedisKey(req);
@@ -55,7 +57,8 @@ uploadAdditionalDocumentsController.get(GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL, (asy
 
 uploadAdditionalDocumentsController.post(GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL, multerMiddleware, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const { appId, id: claimId } = req.params;
+    const appId = getRouteParam(req, 'appId');
+    const claimId = getRouteParam(req, 'id');
     const currentUrl = constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL);
     const claim = await getClaimDetailsById(req);
     const gaDetails = claim.generalApplication;

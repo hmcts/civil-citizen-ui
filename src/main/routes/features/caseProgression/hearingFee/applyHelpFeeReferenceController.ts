@@ -17,6 +17,7 @@ import {
 import {YesNo} from 'form/models/yesNo';
 import {triggerNotifyEvent} from 'services/features/caseProgression/hearingFee/hearingFeeService';
 import {getClaimById} from 'modules/utilityService';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const applyHelpFeeReferenceViewPath  = 'features/caseProgression/hearingFee/apply-help-fee-reference';
 const applyHelpFeeReferenceController: Router = Router();
@@ -27,7 +28,7 @@ async function renderView(res: Response, req: AppRequest | Request, form: Generi
   if (!form.hasErrors()) {
     form = claim.caseProgression?.helpFeeReferenceNumberForm ? new GenericForm(claim.caseProgression.helpFeeReferenceNumberForm) : form;
   }
-  const backLinkUrl = constructResponseUrlWithIdParams(req.params.id as string, APPLY_HELP_WITH_FEES_START);
+  const backLinkUrl = constructResponseUrlWithIdParams(getRouteParam(req, 'id'), APPLY_HELP_WITH_FEES_START);
   const genericHelpFeeUrl : string = GENERIC_HELP_FEES_URL;
   res.render(applyHelpFeeReferenceViewPath,
     {
@@ -42,7 +43,7 @@ async function renderView(res: Response, req: AppRequest | Request, form: Generi
 
 applyHelpFeeReferenceController.get(APPLY_HELP_WITH_FEES_REFERENCE, (async (req, res, next: NextFunction) => {
   try{
-    const claimId = req.params.id as string;
+    const claimId = getRouteParam(req, 'id');
     const redirectUrl = constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL);
     await renderView(res, req, new GenericForm(new ApplyHelpFeesReferenceForm()), claimId, redirectUrl);
   }catch (error) {
@@ -53,7 +54,7 @@ applyHelpFeeReferenceController.get(APPLY_HELP_WITH_FEES_REFERENCE, (async (req,
 
 applyHelpFeeReferenceController.post(APPLY_HELP_WITH_FEES_REFERENCE, (async (req:AppRequest | Request, res, next) => {
   try{
-    const claimId = req.params.id as string;
+    const claimId = getRouteParam(req, 'id');
     const form = new GenericForm(new ApplyHelpFeesReferenceForm(req.body.option, req.body.referenceNumber));
     form.validateSync();
     await form.validate();

@@ -33,7 +33,7 @@ function toCCDUnavailableDates(dateDetails: UnavailableDatePeriod[]) {
   const fastClaimUnavailableDates = dateDetails.map((unavailableDatePeriod: UnavailableDatePeriod) => {
     return {
       value: {
-        who: undefined,
+        who: 'defendant',
         date: unavailableDatePeriod?.from,
         fromDate: unavailableDatePeriod?.from,
         toDate: unavailableDatePeriod?.until,
