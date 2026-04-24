@@ -15,7 +15,6 @@ import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 
 jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 
 describe('Agreed response date', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
