@@ -11,7 +11,6 @@ class AssignCasePinInPost {
   async open(claimNumber, securityCode, manualPIP) {
     await I.amOnPage('/first-contact/claim-reference/');
     await I.waitForContent('Enter your claim number', config.WaitForText);
-    await I.see('Enter the claim number from the email or letter we sent you.');
     await I.fillField(fields.claimNumber, claimNumber);
     await I.click('Save and continue');
     if (manualPIP) {

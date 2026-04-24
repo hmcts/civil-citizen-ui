@@ -8,6 +8,7 @@ import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {caseNumberPrettify} from 'common/utils/stringUtils';
 import {getJudgementContent} from 'services/features/caseProgression/judgement/judgementService';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const viewTheJudgementController = Router();
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
@@ -16,8 +17,8 @@ const judgementViewPath = 'features/caseProgression/view-the-judgement';
 
 viewTheJudgementController.get(VIEW_THE_JUDGMENT_URL, (async (req:Request, res:Response, next: NextFunction) => {
   try {
-    const claimId = req.params.id as string;
-    const lang = (req.query.lang ? req.query.lang : req.cookies.lang) as string;
+    const claimId = getRouteParam(req, 'id');
+    const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
 
     const dashboardUrl = claim.isClaimant()
