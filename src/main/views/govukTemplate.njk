@@ -25,17 +25,17 @@
   <link rel="apple-touch-icon" sizes="152x152" href="{{ asset_paths['images_vendor'] }}/apple-touch-icon-152x152.png?{{ govuk_template_version }}">
   <link rel="apple-touch-icon" href="{{ asset_paths['images_vendor'] }}/apple-touch-icon.png?{{ govuk_template_version }}">
 
-  <meta name="theme-color" content="#0b0c0c" />
+  <meta name="theme-color" content="#0b0c0c" charset="utf-8" />
 
   {% if development %}
     <link href="{{ asset_paths['style_vendor'] }}/HTMLCS.css" rel="stylesheet" />
   {% endif %}
 
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1" charset="utf-8">
 
   {% block head %}{% endblock %}
 
-  <meta property="og:image" content="{{ asset_paths['images_vendor'] }}/opengraph-image.png?{{ govuk_template_version }}">
+  <meta charset="utf-8" property="og:image" content="{{ asset_paths['images_vendor'] }}/opengraph-image.png?{{ govuk_template_version }}">
 </head>
 <body class="{% block body_classes %}{% endblock %}">
   <script>document.body.className = ((document.body.className) ? document.body.className + ' js-enabled' : 'js-enabled');</script>
