@@ -8,6 +8,7 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {Claim} from 'models/claim';
 import {getHearingFeeStartPageContent} from 'services/features/caseProgression/hearingFee/applyHelpWithFeesPageContent';
 import {getClaimById} from 'modules/utilityService';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const applyHelpWithFeeViewPath  = 'features/caseProgression/hearingFee/apply-help-with-fees';
 const applyHelpWithFeeController: Router = Router();
@@ -26,11 +27,11 @@ async function renderView(res: Response, redirectUrl: string,backLinkUrl:string,
 
 applyHelpWithFeeController.get(APPLY_HELP_WITH_FEES_START, (async (req, res) => {
 
-  const claimId = req.params.id;
+  const claimId = getRouteParam(req, 'id');
   const lng = req.query.lang ? req.query.lang : req.cookies.lang;
   const redirectUrl = constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL);
   const claim: Claim = await getClaimById(claimId, req, true);
-  let backLinkUrl = constructResponseUrlWithIdParams(req.params.id, APPLY_HELP_WITH_FEES);
+  let backLinkUrl = constructResponseUrlWithIdParams(claimId, APPLY_HELP_WITH_FEES);
   if (claim?.feeTypeHelpRequested === undefined) {
     backLinkUrl = constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL);
   }
@@ -38,7 +39,7 @@ applyHelpWithFeeController.get(APPLY_HELP_WITH_FEES_START, (async (req, res) => 
 }) as RequestHandler);
 
 applyHelpWithFeeController.post(APPLY_HELP_WITH_FEES_START, (async (req, res) => {
-  const claimId = req.params.id;
+  const claimId = getRouteParam(req, 'id');
   res.redirect(constructResponseUrlWithIdParams(claimId, APPLY_HELP_WITH_FEES_REFERENCE));
 })as RequestHandler);
 

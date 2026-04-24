@@ -12,6 +12,7 @@ import {ResponseType} from 'form/models/responseType';
 import {PartAdmitHowMuchHaveYouPaidGuard} from 'routes/guards/partAdmitHowMuchHaveYouPaidGuard';
 import {AppRequest} from 'common/models/AppRequest';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const whyDoYouDisagreeController = Router();
 const whyDoYouDisagreeViewPath = 'features/response/admission/why-do-you-disagree';
@@ -43,7 +44,8 @@ whyDoYouDisagreeController.post(CITIZEN_WHY_DO_YOU_DISAGREE_URL, (async (req, re
       renderView(form, whyDoYouDisagreeForm.claimAmount, res);
     } else {
       await saveWhyDoYouDisagreeData(generateRedisKey(<AppRequest>req), form.model, ResponseType.PART_ADMISSION);
-      res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_TIMELINE_URL));
+      const claimId = getRouteParam(req, 'id');
+      res.redirect(constructResponseUrlWithIdParams(claimId, CITIZEN_TIMELINE_URL));
     }
   } catch (error) {
     next(error);

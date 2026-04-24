@@ -41,6 +41,7 @@ import {getGaRedirectionUrl} from 'services/commons/generalApplicationHelper';
 import {AppRequest} from 'models/AppRequest';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
@@ -328,16 +329,16 @@ const renderView = async (claimId: string, claim: Claim, isFollowUpScreen: boole
 
 qmInformationController.get([QM_FOLLOW_UP_URL, QM_INFORMATION_URL], (async (req, res , next) => {
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-  const claimId = req.params.id;
-  const qmType = req.params.qmType as WhatToDoTypeOption;
+  const claimId = getRouteParam(req, 'id');
+  const qmType = getRouteParam(req, 'qmType') as WhatToDoTypeOption;
   const claim: Claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
-  const qualifyQuestionType = req.params.qmQualifyOption as QualifyingQuestionTypeOption || null;
+  const qualifyQuestionType = getRouteParam(req, 'qmQualifyOption') as QualifyingQuestionTypeOption || null;
   const isFollowUpScreen = req.path === QM_FOLLOW_UP_URL.replace(':id', claimId);
   await renderView(claimId,claim, isFollowUpScreen, qmType,qualifyQuestionType, lang, res);
 }) as RequestHandler);
 
 qmInformationController.post([QM_FOLLOW_UP_URL, QM_INFORMATION_URL], (async (req, res , next) => {
-  const claimId = req.params.id;
+  const claimId = getRouteParam(req, 'id');
   res.redirect(getCancelUrl(claimId));
 }) as RequestHandler);
 

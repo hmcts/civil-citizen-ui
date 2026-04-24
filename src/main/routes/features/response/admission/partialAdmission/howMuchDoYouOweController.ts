@@ -11,6 +11,7 @@ import {GenericForm} from 'form/models/genericForm';
 import {PartAdmitHowMuchHaveYouPaidGuard} from 'routes/guards/partAdmitHowMuchHaveYouPaidGuard';
 import {AppRequest} from 'common/models/AppRequest';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const howMuchDoYouOweViewPath = 'features/response/admission/partialAdmission/how-much-do-you-owe';
 const howMuchDoYouOweController = Router();
@@ -41,7 +42,8 @@ howMuchDoYouOweController.post(CITIZEN_OWED_AMOUNT_URL, (async (req: Request, re
       renderView(form, res);
     } else {
       await saveHowMuchDoYouOweData(redisKey, form.model);
-      res.redirect(constructResponseUrlWithIdParams(req.params.id, RESPONSE_TASK_LIST_URL));
+      const claimId = getRouteParam(req, 'id');
+      res.redirect(constructResponseUrlWithIdParams(claimId, RESPONSE_TASK_LIST_URL));
     }
   } catch (error) {
     next(error);
