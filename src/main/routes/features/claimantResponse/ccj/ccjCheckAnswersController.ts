@@ -22,8 +22,8 @@ const ccjCheckAnswersController = Router();
 
 async function renderView(req: Request, res: Response, form: GenericForm<StatementOfTruthForm> | GenericForm<QualifiedStatementOfTruth>, claim: Claim) {
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-  const summarySections = await getSummarySections(getRouteParam(req, 'id'), claim, lang);
   const judgmentBufferEnabled = await isJudgmentBufferEnabled();
+  const summarySections = await getSummarySections(getRouteParam(req, 'id'), claim, lang, judgmentBufferEnabled);
   const signatureType = form.model?.type;
   res.render(checkAnswersViewPath, {
     form,
@@ -71,4 +71,3 @@ ccjCheckAnswersController.post(CCJ_CHECK_AND_SEND_URL, async (req: AppRequest | 
 });
 
 export default ccjCheckAnswersController;
-
