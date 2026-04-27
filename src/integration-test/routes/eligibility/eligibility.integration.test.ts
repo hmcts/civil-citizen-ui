@@ -355,6 +355,63 @@ describe('Integration: Eligibility journey decision matrix', () => {
     expect(notEligibleResponse.text).toContain('government departments');
   });
 
+  it('routes defendant under 18 to not eligible', async () => {
+    const agent = request.agent(app);
+    await runJourney(agent, [
+      {
+        url: ELIGIBILITY_CLAIM_VALUE_URL,
+        form: {totalAmount: TotalAmountOptions.LESS_25000},
+        cookieKey: 'totalAmount',
+        expectedCookieValue: TotalAmountOptions.LESS_25000,
+      },
+      {
+        url: ELIGIBILITY_SINGLE_DEFENDANT_URL,
+        form: {option: YesNo.NO},
+        cookieKey: 'singleDefendant',
+        expectedCookieValue: YesNo.NO,
+      },
+      {
+        url: ELIGIBILITY_DEFENDANT_ADDRESS_URL,
+        form: {option: YesNo.YES},
+        cookieKey: 'eligibleDefendantAddress',
+        expectedCookieValue: YesNo.YES,
+      },
+      {
+        url: ELIGIBILITY_CLAIM_TYPE_URL,
+        form: {claimType: ClaimTypeOptions.JUST_MYSELF},
+        cookieKey: 'claimType',
+        expectedCookieValue: ClaimTypeOptions.JUST_MYSELF,
+      },
+      {
+        url: ELIGIBILITY_CLAIMANT_ADDRESS_URL,
+        form: {option: YesNo.YES},
+        cookieKey: 'eligibleClaimantAddress',
+        expectedCookieValue: YesNo.YES,
+      },
+      {
+        url: ELIGIBILITY_TENANCY_DEPOSIT_URL,
+        form: {option: YesNo.NO},
+        cookieKey: 'tenancyDeposit',
+        expectedCookieValue: YesNo.NO,
+      },
+      {
+        url: ELIGIBILITY_GOVERNMENT_DEPARTMENT_URL,
+        form: {option: YesNo.NO},
+        cookieKey: 'governmentDepartment',
+        expectedCookieValue: YesNo.NO,
+      },
+    ]);
+    const response = await postForm(agent, ELIGIBILITY_DEFENDANT_AGE_URL, {option: AgeEligibilityOptions.NO});
+    expect(response.status).toBe(302);
+    expect(response.header.location).toBe('/eligibility/not-eligible?reason=under-18-defendant');
+    const eligibilityCookie = decodeEligibilityCookie(getSetCookieHeaders(response.header['set-cookie']));
+    expect(eligibilityCookie?.eligibilityDefendantAge).toBe(AgeEligibilityOptions.NO);
+
+    const notEligibleResponse = await agent.get(`${response.header.location}&lang=en`).expect(200);
+    expect(notEligibleResponse.text).toContain('You can only use this service to claim against a defendant who');
+    expect(notEligibleResponse.text).toContain('s 18 or over.');
+  });
+
   it('routes claimant under 18 to not eligible', async () => {
     const agent = request.agent(app);
     await runJourney(agent, [
