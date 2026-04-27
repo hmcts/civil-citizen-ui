@@ -5,13 +5,14 @@ import {getRedirectUrl} from 'services/features/claim/payment/claimFeePaymentCon
 import {AppRequest} from 'common/models/AppRequest';
 import {deleteUserId} from 'modules/draft-store/paymentSessionStoreService';
 import {FeeType} from 'form/models/helpWithFees/feeType';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const claimFeePaymentConfirmationController: Router = Router();
 
 claimFeePaymentConfirmationController.get([CLAIM_FEE_PAYMENT_CONFIRMATION_URL, CLAIM_FEE_PAYMENT_CONFIRMATION_URL_WITH_UNIQUE_ID], (async (req: AppRequest, res: Response, next: NextFunction) => {
 
   try {
-    const claimId = req.params.id;
+    const claimId = getRouteParam(req, 'id');
     const redirectUrl = await getRedirectUrl(claimId,req);
     await deleteUserId(claimId, FeeType.CLAIMISSUED);
     res.redirect(constructResponseUrlWithIdParams(claimId, redirectUrl));

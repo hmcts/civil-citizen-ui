@@ -11,6 +11,7 @@ import {Claim} from 'models/claim';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {YesNo} from 'form/models/yesNo';
 import {getClaimById} from 'modules/utilityService';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const cancelYourUploadViewPath = 'features/caseProgression/cancel-your-upload';
 const cancelYourUploadController = Router();
@@ -19,7 +20,7 @@ const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServi
 
 cancelYourUploadController.get(CP_EVIDENCE_UPLOAD_CANCEL, (async (req, res, next: NextFunction) => {
   try {
-    const claimId = req.params.id as string;
+    const claimId = getRouteParam(req, 'id');
     const form = new GenericForm(new CancelDocuments());
     const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
     res.render(cancelYourUploadViewPath, {form, cancelYourUploadContents:getCancelYourUpload(claimId, claim)});
@@ -32,7 +33,7 @@ cancelYourUploadController.post(CP_EVIDENCE_UPLOAD_CANCEL, (async (req:any, res,
   try {
     const option = req.body.option;
     const url = req.session.previousUrl;
-    const claimId = req.params.id as string;
+    const claimId = getRouteParam(req, 'id');
     const form = new GenericForm(new CancelDocuments(option));
     await form.validate();
     const claim: Claim = await getClaimById(claimId, req,true);

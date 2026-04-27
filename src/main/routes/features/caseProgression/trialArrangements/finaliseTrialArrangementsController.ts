@@ -9,6 +9,7 @@ import {CivilServiceClient} from 'client/civilServiceClient';
 import {generateRedisKey, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {CaseRole} from 'form/models/caseRoles';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const finalizeTrialArrangementsViewPath = 'features/caseProgression/trialArrangements/finalise-trial-arrangements';
 const finaliseTrialArrangementsController = Router();
@@ -17,7 +18,7 @@ const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServi
 
 finaliseTrialArrangementsController.get(CP_FINALISE_TRIAL_ARRANGEMENTS_URL, (async (req, res, next: NextFunction) => {
   try {
-    const claimId = req.params.id as string;
+    const claimId = getRouteParam(req, 'id');
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
     await saveDraftClaim(generateRedisKey(<AppRequest>req), claim);
