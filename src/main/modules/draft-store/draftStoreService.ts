@@ -9,6 +9,7 @@ import {calculateExpireTimeForDraftClaimInSeconds} from 'common/utils/dateUtils'
 import {AppRequest} from 'common/models/AppRequest';
 import {getClaimById} from 'modules/utilityService';
 import {Request} from 'express';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('draftStoreService');
@@ -59,33 +60,21 @@ export const getCaseDataFromStore = async (claimId: string, doNotThrowError = fa
  * @param doNotThrowError
  * @param userId
  */
-export const saveDraftClaim =async (claimId: string, claim: Claim, doNotThrowError = false, userId?: string) => {
-  logger.info(`Saving draft claim : userId: ${userId}  claimId: ${claimId}`);
+export const saveDraftClaim = async (claimId: string, claim: Claim, doNotThrowError = false, userId?: string) => {
+  logger.info(`Saving draft claim : userId: ${userId}  claimId: ${claimId} claimantResponse: ${claim.claimantResponse? JSON.stringify(claim.claimantResponse) : 'undefined'}`);
   let storedClaimResponse = await getDraftClaimFromStore(claimId, doNotThrowError);
-  logger.info(`storedClaimResponse : userId: ${userId}  claimId: ${claimId}`);
+  logger.info(`storedClaimResponse : userId: ${userId}  claimId: ${claimId} claimantResponse ccjRequest: ${storedClaimResponse.case_data?.ccjRequest ? JSON.stringify(storedClaimResponse.case_data?.ccjRequest) : 'undefined'}`);
   if (isUndefined(storedClaimResponse.case_data)) {
     storedClaimResponse = createNewCivilClaimResponse(claimId);
   }
   storedClaimResponse.case_data = claim as any;
   const draftStoreClient = app.locals.draftStoreClient;
-  const ttl = await draftStoreClient.ttl(claimId);
-  if (ttl > 0) {
-    // TTL already exists — preserve it
-    await draftStoreClient.set(
-      claimId,
-      JSON.stringify(storedClaimResponse),
-      'KEEPTTL');
-  } else {
-    // No TTL — set a new one
-    const expiryBaseDate = claim.draftClaimCreatedAt ?? new Date();
-    const expirySeconds = calculateExpireTimeForDraftClaimInSeconds(expiryBaseDate);
-    await draftStoreClient.set(
-      claimId,
-      JSON.stringify(storedClaimResponse));
-    await draftStoreClient.expireat(claimId, expirySeconds);
+  logger.info(`Updating claimant response : userId: ${userId}  claimId: ${claimId} ccjRequest: ${storedClaimResponse.case_data?.ccjRequest? JSON.stringify(storedClaimResponse.case_data?.ccjRequest) : 'undefined'}`);
+  await draftStoreClient.set(claimId, JSON.stringify(storedClaimResponse));
+  if (claim.draftClaimCreatedAt) {
+    await draftStoreClient.expireat(claimId, calculateExpireTimeForDraftClaimInSeconds(claim.draftClaimCreatedAt));
   }
 };
-
 const createNewCivilClaimResponse = (claimId: string) => {
   const storedClaimResponse = new CivilClaimResponse();
   storedClaimResponse.id = claimId;
@@ -93,7 +82,7 @@ const createNewCivilClaimResponse = (claimId: string) => {
 };
 
 export const deleteDraftClaim = async (req: Request, useRedisKey = false): Promise<void> => {
-  const claimId = req.params.id as string;
+  const claimId = getRouteParam(req, 'id');
   const userId = (<AppRequest>req)?.session?.user?.id;
   const redisKey = useRedisKey && claimId !== userId ? generateRedisKey(<AppRequest>req) : claimId;
   await deleteDraftClaimFromStore(redisKey);
@@ -133,11 +122,11 @@ export async function createDraftClaimInStoreWithExpiryTime(claimId: string) {
 }
 
 export function generateRedisKey(req: AppRequest) {
-  return req.params?.id + req.session.user?.id;
+  return getRouteParam(req, 'id') + req.session.user?.id;
 }
 
 export function generateRedisKeyForGA(req: AppRequest) {
-  return req.params.appId + req.session.user?.id;
+  return getRouteParam(req, 'appId') + req.session.user?.id;
 }
 
 export const findClaimIdsbyUserId = async (userId: string): Promise<any> => {

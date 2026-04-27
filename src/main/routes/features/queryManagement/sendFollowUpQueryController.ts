@@ -11,6 +11,7 @@ import {
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import { createMulterErrorMiddlewareForSingleField, getFileUploadErrorsForSource, FILE_UPLOAD_SOURCE } from 'common/utils/fileUploadUtils';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 import { handleMulterError } from 'services/features/generalApplication/uploadEvidenceDocumentService';
 
 const viewPath = 'features/queryManagement/sendFollowUpQuery';
@@ -18,8 +19,9 @@ const sendFollowUpQueryController = Router();
 const multerMiddleware = createMulterErrorMiddlewareForSingleField('selectedFile', 'sendFollowUpQueryController');
 
 async function renderView(form: GenericForm<SendFollowUpQuery>, claimId: string, res: Response, formattedSummary: SummarySection, req: AppRequest, index?: number): Promise<void> {
-  const cancelUrl = getCancelUrl(req.params.id);
-  const currentUrl = constructResponseUrlWithIdParams(claimId, QM_FOLLOW_UP_MESSAGE).replace(':queryId', req.params.queryId);
+  const queryId = getRouteParam(req, 'queryId');
+  const cancelUrl = getCancelUrl(claimId);
+  const currentUrl = constructResponseUrlWithIdParams(claimId, QM_FOLLOW_UP_MESSAGE).replace(':queryId', queryId);
   const backLinkUrl = BACK_URL;
   res.render(viewPath, {
     form,
@@ -39,7 +41,7 @@ const pageHeaders = {
 
 sendFollowUpQueryController.get(QM_FOLLOW_UP_MESSAGE, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const claimId = req.params.id;
+    const claimId = getRouteParam(req, 'id');
     const linkFrom = req.query.linkFrom;
     if (linkFrom === 'start') {
       const redisKey = generateRedisKey(req);
@@ -67,8 +69,8 @@ sendFollowUpQueryController.get(QM_FOLLOW_UP_MESSAGE, (async (req: AppRequest, r
 
 sendFollowUpQueryController.post(QM_FOLLOW_UP_MESSAGE, multerMiddleware, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const claimId = req.params.id;
-    const queryId = req.params.queryId;
+    const claimId = getRouteParam(req, 'id');
+    const queryId = getRouteParam(req, 'queryId');
     const action = req.body.action;
     const queryManagement = await getQueryManagement(claimId, req);
     const currentUrl = QM_FOLLOW_UP_MESSAGE.replace(':id', claimId).replace(':queryId', queryId);

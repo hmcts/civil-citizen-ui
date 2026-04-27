@@ -6,6 +6,7 @@ import {GenericForm} from 'form/models/genericForm';
 import {GenericYesNo} from 'form/models/genericYesNo';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'common/models/AppRequest';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const partnerViewPath = 'features/response/statementOfMeans/partner/partner-severe-disability';
 const partnerSevereDisabilityController = Router();
@@ -27,13 +28,14 @@ partnerSevereDisabilityController.get(CITIZEN_PARTNER_SEVERE_DISABILITY_URL, (as
 partnerSevereDisabilityController.post(CITIZEN_PARTNER_SEVERE_DISABILITY_URL,
   (async (req, res, next: NextFunction) => {
     try {
+      const claimId = getRouteParam(req, 'id');
       const form: GenericForm<GenericYesNo> = new GenericForm(new GenericYesNo(req.body.option));
       form.validateSync();
       if (form.hasErrors()) {
         renderView(form, res);
       } else {
         await partnerSevereDisabilityService.savePartnerSevereDisability(generateRedisKey(<AppRequest>req), form);
-        res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_DEPENDANTS_URL));
+        res.redirect(constructResponseUrlWithIdParams(claimId, CITIZEN_DEPENDANTS_URL));
       }
     } catch (error) {
       next(error);

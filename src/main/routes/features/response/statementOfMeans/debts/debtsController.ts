@@ -9,6 +9,7 @@ import {YesNo} from 'form/models/yesNo';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {GenericForm} from 'form/models/genericForm';
 import {AppRequest} from 'common/models/AppRequest';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const debtsViewPath = 'features/response/statementOfMeans/debts/debts';
 const debtsController = Router();
@@ -36,6 +37,7 @@ debtsController.get(CITIZEN_DEBTS_URL, (async (req, res, next: NextFunction) => 
 debtsController.post(CITIZEN_DEBTS_URL,
   (async (req, res, next: NextFunction) => {
     try {
+      const claimId = getRouteParam(req, 'id');
       const redisKey = generateRedisKey(<AppRequest>req);
       const debtsForm: GenericForm<Debts> = new GenericForm(new Debts(req.body.option, transformToDebts(req)));
       debtsForm.validateSync();
@@ -48,7 +50,7 @@ debtsController.post(CITIZEN_DEBTS_URL,
         }
         claim.statementOfMeans.debts = new Debts(req.body.option, removeEmptyValueToDebts(req));
         await saveDraftClaim(redisKey, claim);
-        res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_MONTHLY_EXPENSES_URL));
+        res.redirect(constructResponseUrlWithIdParams(claimId, CITIZEN_MONTHLY_EXPENSES_URL));
       }
     } catch (error) {
       next(error);
