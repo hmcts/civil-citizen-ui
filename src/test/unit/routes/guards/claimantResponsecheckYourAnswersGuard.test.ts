@@ -116,7 +116,7 @@ describe('claimant response check Your Answers Guard', () => {
     expect(MOCK_RESPONSE.redirect).toHaveBeenCalledWith(
       CLAIMANT_RESPONSE_INCOMPLETE_SUBMISSION_URL.replace(
         /(:id)/i,
-        mockRequest.params.id,
+        String(mockRequest.params.id),
       ),
     );
 
