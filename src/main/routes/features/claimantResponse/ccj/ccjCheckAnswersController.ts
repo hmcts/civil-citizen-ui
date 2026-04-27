@@ -15,6 +15,7 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {submitClaimantResponse} from 'services/features/claimantResponse/submission/submitClaimantResponse';
 import {getClaimById} from 'modules/utilityService';
 import {getRouteParam} from 'common/utils/routeParamUtils';
+import {isJudgmentBufferEnabled} from '../../../../app/auth/launchdarkly/launchDarklyClient';
 
 const checkAnswersViewPath = 'features/claimantResponse/ccj/check-answers';
 const ccjCheckAnswersController = Router();
@@ -22,6 +23,7 @@ const ccjCheckAnswersController = Router();
 async function renderView(req: Request, res: Response, form: GenericForm<StatementOfTruthForm> | GenericForm<QualifiedStatementOfTruth>, claim: Claim) {
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
   const summarySections = await getSummarySections(getRouteParam(req, 'id'), claim, lang);
+  const judgmentBufferEnabled = await isJudgmentBufferEnabled();
   const signatureType = form.model?.type;
   res.render(checkAnswersViewPath, {
     form,
@@ -57,7 +59,8 @@ ccjCheckAnswersController.post(CCJ_CHECK_AND_SEND_URL, async (req: AppRequest | 
       return;
     } else {
       await saveStatementOfTruth(redisKey, form.model);
-      await submitClaimantResponse(<AppRequest>req);
+      const judgmentBufferEnabled = await isJudgmentBufferEnabled();
+      await submitClaimantResponse(<AppRequest>req, judgmentBufferEnabled);
       await deleteDraftClaimFromStore(redisKey);
       res.redirect(constructResponseUrlWithIdParams(claimId, CCJ_CONFIRMATION_URL));
     }

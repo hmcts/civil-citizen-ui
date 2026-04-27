@@ -24,13 +24,11 @@ const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('responseDeadlineOptionsController');
 
 async function renderView(res: Response, form: GenericForm<ResponseDeadline>, claim: Claim, language: string, claimId: string): Promise<void> {
-  const isReleaseTwoEnabled = true;
   const isGaNroEnabled = await isCuiGaNroEnabled();
   res.render(responseDeadlineOptionsViewPath, {
     form,
     responseDate: claim.formattedResponseDeadline(language),
     claimantName: claim.getClaimantFullName(),
-    isReleaseTwoEnabled,
     applyGaApplication: constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL),
     isGaNroEnabled,
   });

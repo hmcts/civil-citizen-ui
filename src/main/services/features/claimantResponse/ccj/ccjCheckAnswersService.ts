@@ -13,18 +13,18 @@ import {ClaimantResponse} from 'models/claimantResponse';
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('ccjCheckAnswersService');
 
-const buildSummarySections = async (claim: Claim, claimId: string, lang: string): Promise<SummarySections> => {
+const buildSummarySections = async (claim: Claim, claimId: string, lang: string, judgmentBufferEnabled = false): Promise<SummarySections> => {
 
   return {
     sections: [
       buildTheirDetailsSection(claim, claimId, lang),
-      await buildPaymentDetailsSection(claim, claimId, lang),
+      await buildPaymentDetailsSection(claim, claimId, lang, judgmentBufferEnabled),
     ],
   };
 };
 
-export const getSummarySections = async (claimId: string, claim: Claim, lang: string): Promise<SummarySections> => {
-  return await buildSummarySections(claim, claimId, lang);
+export const getSummarySections = async (claimId: string, claim: Claim, lang: string, judgmentBufferEnabled = false): Promise<SummarySections> => {
+  return await buildSummarySections(claim, claimId, lang, judgmentBufferEnabled);
 };
 
 export const getStatementOfTruth = (claim: Claim): StatementOfTruthForm | QualifiedStatementOfTruth => {
