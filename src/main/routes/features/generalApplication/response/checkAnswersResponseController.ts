@@ -21,6 +21,7 @@ import { submitApplicationResponse } from 'services/features/generalApplication/
 import {ApplicationTypeOption} from 'models/generalApplication/applicationType';
 import {constructResponseUrlWithIdAndAppIdParams} from 'common/utils/urlFormatter';
 import {QualifiedStatementOfTruth} from 'models/generalApplication/QualifiedStatementOfTruth';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const gaCheckAnswersResponseController = Router();
 const viewPath = 'features/generalApplication/response/check-answers';
@@ -30,6 +31,7 @@ async function renderView(claimId: string, claim: Claim, form: GenericForm<State
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
   const isBusiness = (claim.isClaimant() && claim.isClaimantBusiness()) || (claim.isDefendant() && claim.isBusiness());
   const backLinkUrl = BACK_URL;
+  const appId = getRouteParam(req, 'appId');
   res.render(viewPath, {
     form,
     cancelUrl,
@@ -38,7 +40,7 @@ async function renderView(claimId: string, claim: Claim, form: GenericForm<State
     headerTitle: getTitle(gaResponse.generalApplicationType, lang),
     claimIdPrettified: caseNumberPrettify(claimId),
     claim,
-    summaryRows: getSummarySections(claimId, req.params.appId, gaResponse, lang),
+    summaryRows: getSummarySections(claimId, appId, gaResponse, lang),
   });
 }
 
@@ -46,7 +48,7 @@ gaCheckAnswersResponseController.get(
   GA_RESPONSE_CHECK_ANSWERS_URL,
   async (req: AppRequest, res: Response, next: NextFunction) => {
     try {
-      const claimId = req.params.id;
+      const claimId = getRouteParam(req, 'id');
       const claim = await getClaimById(claimId, req, true);
       const gaResponse = await getDraftGARespondentResponse(generateRedisKeyForGA(req));
       const statementOfTruthForm = gaResponse.statementOfTruth || new StatementOfTruthForm();
@@ -59,8 +61,8 @@ gaCheckAnswersResponseController.get(
 
 gaCheckAnswersResponseController.post(GA_RESPONSE_CHECK_ANSWERS_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const claimId = req.params.id;
-    const appId = req.params.appId;
+    const claimId = getRouteParam(req, 'id');
+    const appId = getRouteParam(req, 'appId');
     const claim = await getClaimById(claimId, req, true);
     let statementOfTruth;
     if ((claim.isClaimant() && claim.isClaimantBusiness()) || (claim.isDefendant() && claim.isBusiness())) {

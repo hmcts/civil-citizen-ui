@@ -17,6 +17,7 @@ import {CuiJudgmentPaidInFull} from 'models/judgmentOnline/cuiJudgmentPaidInFull
 import {toCCDjudgmentPaidInFull} from 'services/translation/judgmentOnline/convertToCCDjudgmentPaidInFull';
 import {JudgmentOnline} from 'models/judgmentOnline/judgmentOnline';
 import {deleteDraftClaimFromStore} from 'modules/draft-store/draftStoreService';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const confirmYouHaveBeenPaidViewPath = 'features/judgmentOnline/confirm-you-have-been-paid';
 const confirmYouHaveBeenPaidController = Router();
@@ -50,7 +51,7 @@ function renderView(form: GenericForm<DateYouHaveBeenPaidForm>, res: Response, l
 
 confirmYouHaveBeenPaidController.get(CONFIRM_YOU_HAVE_BEEN_PAID_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const claimId = req.params.id;
+    const claimId = getRouteParam(req, 'id');
     const claim = await getClaimById(claimId, req);
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const isClaimant = claim.isClaimant();
@@ -70,7 +71,7 @@ confirmYouHaveBeenPaidController.get(CONFIRM_YOU_HAVE_BEEN_PAID_URL, (async (req
 
 confirmYouHaveBeenPaidController.post(CONFIRM_YOU_HAVE_BEEN_PAID_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const claimId = req.params.id;
+    const claimId = getRouteParam(req, 'id');
     const claim = await getClaimById(claimId, req);
     const isClaimant = claim.isClaimant();
     const {year, month, day, confirmed} = req.body;

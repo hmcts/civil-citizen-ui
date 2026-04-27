@@ -16,6 +16,7 @@ import {
   cancelMediationDocumentUpload,
   getCancelYourUpload,
 } from 'services/features/mediation/uploadDocuments/mediationCancelUploadService';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const cancelYourUploadViewPath = 'features/mediation/uploadDocuments/cancel-your-upload';
 const mediationCancelUploadController = Router();
@@ -23,7 +24,7 @@ const mediationCancelUploadController = Router();
 mediationCancelUploadController.get(MEDIATION_UPLOAD_DOCUMENTS_CANCEL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   const userid = (<AppRequest>req).session.user?.id;
   try {
-    const claimId = req.params.id;
+    const claimId = getRouteParam(req, 'id');
     const redisKey = generateRedisKey(req);
     const claim = await getCaseDataFromStore(redisKey);
     const form = new GenericForm(new CancelDocuments());
@@ -32,7 +33,7 @@ mediationCancelUploadController.get(MEDIATION_UPLOAD_DOCUMENTS_CANCEL, (async (r
     logger.error('Error in getting mediation document upload', {
       error,
       userid,
-      claimId: req.params.id,
+      claimId: getRouteParam(req, 'id'),
       route: MEDIATION_UPLOAD_DOCUMENTS_CANCEL,
     });
     next(error);
@@ -43,8 +44,8 @@ mediationCancelUploadController.post(MEDIATION_UPLOAD_DOCUMENTS_CANCEL, (async (
   const userid = (<AppRequest>req).session.user?.id;
   try {
     const option = req.body.option;
-    const url = req.session.previousUrl || constructResponseUrlWithIdParams(req.params.id, MEDIATION_UPLOAD_DOCUMENTS_CANCEL.replace('/cancel-document-upload', ''));
-    const claimId = req.params.id;
+    const claimId = getRouteParam(req, 'id');
+    const url = req.session.previousUrl || constructResponseUrlWithIdParams(claimId, MEDIATION_UPLOAD_DOCUMENTS_CANCEL.replace('/cancel-document-upload', ''));
     const redisKey = generateRedisKey(req);
     const claim = await getCaseDataFromStore(redisKey);
     const form = new GenericForm(new CancelDocuments(option));
@@ -62,7 +63,7 @@ mediationCancelUploadController.post(MEDIATION_UPLOAD_DOCUMENTS_CANCEL, (async (
     logger.error('Error cancelling mediation document upload', {
       error,
       userid,
-      claimId: req.params.id,
+      claimId: getRouteParam(req, 'id'),
       route: MEDIATION_UPLOAD_DOCUMENTS_CANCEL,
     });
     next(error);

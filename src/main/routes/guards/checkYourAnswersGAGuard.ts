@@ -7,10 +7,11 @@ import {ApplicationTypeOption, LinKFromValues} from 'models/generalApplication/a
 import {YesNo} from 'form/models/yesNo';
 import {getCancelUrl} from 'services/features/generalApplication/generalApplicationService';
 import {isGaForWelshEnabled} from '../../app/auth/launchdarkly/launchDarklyClient';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 export const checkYourAnswersGAGuard = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const claimId = req.params.id;
+    const claimId = getRouteParam(req, 'id');
     const claim = await getClaimById(claimId, req, true);
     const gaCoscUrl = '/cosc/';
     const applicationTypes = claim.generalApplication?.applicationTypes || [];
