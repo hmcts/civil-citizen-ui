@@ -137,6 +137,86 @@ describe('Integration: Claim issue notifications rendered on dashboard', () => {
         '/dashboard/000MC004/claimantNewDesign',
       ],
     },
+    {
+      scenario: 'help with fees submitted',
+      claim: buildClaimFixture('000MC005', 1600),
+      notification: buildNotificationList(
+        'We\'re reviewing your help with fees application',
+        'You\'ve applied for help with the claim fee. You\'ll receive an update in 5 to 10 working days.',
+      ),
+      expectedText: [
+        'reviewing your help with fees application',
+        'applied for help with the claim fee',
+        'receive an update in 5 to 10 working days',
+      ],
+    },
+    {
+      scenario: 'help with fees updated',
+      claim: buildClaimFixture('000MC006', 1600),
+      notification: buildNotificationList(
+        'Your help with fees application has been updated',
+        'You\'ve applied for help with the claim fee. You\'ll receive an update from us within 5 to 10 working days.',
+      ),
+      expectedText: [
+        'Your help with fees application has been updated',
+        'applied for help with the claim fee',
+        'receive an update from us within 5 to 10 working days',
+      ],
+    },
+    {
+      scenario: 'help with fees more information required',
+      claim: buildClaimFixture('000MC007', 1600),
+      notification: buildNotificationList(
+        'Your help with fees application needs more information',
+        'We need more information on your application for help with the claim fee. You\'ve been sent an email with further details. If you\'ve already read the email and taken action, you can disregard this message. You can pay by phone by calling 0300 123 7050.',
+      ),
+      expectedText: [
+        'Your help with fees application needs more information',
+        'We need more information on your application for help with the claim fee',
+        '0300 123 7050',
+      ],
+    },
+    {
+      scenario: 'help with fees partial remission',
+      claim: buildClaimFixture('000MC008', 1600),
+      notification: buildNotificationList(
+        'Your help with fees application has been reviewed',
+        'You qualify to get help with the claim fee. £23 will be covered by fee remission. You must still pay the remaining fee of £92. You can pay by phone by calling 0300 123 7050.',
+      ),
+      expectedText: [
+        'Your help with fees application has been reviewed',
+        '£23 will be covered by fee remission',
+        'You must still pay the remaining fee of £92',
+        '0300 123 7050',
+      ],
+    },
+    {
+      scenario: 'help with fees rejected',
+      claim: buildClaimFixture('000MC009', 1600),
+      notification: buildNotificationList(
+        'Your help with fees application has been rejected',
+        'We\'ve rejected your application for help with the claim fee. See the email for further details. You must pay the full fee of £115. You can pay by phone by calling 0300 123 7050.',
+      ),
+      expectedText: [
+        'Your help with fees application has been rejected',
+        'rejected your application for help with the claim fee',
+        'You must pay the full fee of',
+        '0300 123 7050',
+      ],
+    },
+    {
+      scenario: 'help with fees invalid reference',
+      claim: buildClaimFixture('000MC010', 1600),
+      notification: buildNotificationList(
+        'You\'ve provided an invalid help with fees reference number',
+        'You\'ve applied for help with the claim fee, but the reference number is invalid. You\'ve been sent an email with instructions on what to do next. If you\'ve already read the email and taken action, disregard this message. You can pay by phone by calling 0300 123 7050.',
+      ),
+      expectedText: [
+        'provided an invalid help with fees reference number',
+        'the reference number is invalid',
+        '0300 123 7050',
+      ],
+    },
   ])('renders dashboard notification and next-step links for $scenario', async ({claim, notification, expectedText}) => {
     civilServiceClientMock.retrieveClaimDetails.mockResolvedValue(claim);
     (getNotifications as jest.Mock).mockResolvedValue(notification);
