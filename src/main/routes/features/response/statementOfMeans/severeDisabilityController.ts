@@ -6,6 +6,7 @@ import {GenericForm} from '../../../../common/form/models/genericForm';
 import {GenericYesNo} from '../../../../common/form/models/genericYesNo';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'common/models/AppRequest';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const citizenSevereDisabilityViewPath = 'features/response/statementOfMeans/are-you-severely-disabled';
 const severeDisabilityController = Router();
@@ -26,13 +27,14 @@ severeDisabilityController.get(CITIZEN_SEVERELY_DISABLED_URL, (async (req, res, 
 
 severeDisabilityController.post(CITIZEN_SEVERELY_DISABLED_URL, (async (req, res, next: NextFunction) => {
   try {
+    const claimId = getRouteParam(req, 'id');
     const form: GenericForm<GenericYesNo> = new GenericForm(new GenericYesNo(req.body.option));
     form.validateSync();
     if (form.hasErrors()) {
       renderView(form, res);
     } else {
       await severeDisabilityService.saveSevereDisability(generateRedisKey(<AppRequest>req), form);
-      res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_RESIDENCE_URL));
+      res.redirect(constructResponseUrlWithIdParams(claimId, CITIZEN_RESIDENCE_URL));
     }
   } catch (error) {
     next(error);

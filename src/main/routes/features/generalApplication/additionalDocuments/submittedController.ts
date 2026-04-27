@@ -5,6 +5,7 @@ import { getClaimById } from 'modules/utilityService';
 import { GA_UPLOAD_ADDITIONAL_DOCUMENTS_SUBMITTED_URL } from 'routes/urls';
 import { getContentForBody, getContentForCloseButton, getContentForPanel } from 'services/features/generalApplication/additionalDocumentService';
 import { getCancelUrl } from 'services/features/generalApplication/generalApplicationService';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const additionalDocSubmittedController = Router();
 const viewPath = 'features/generalApplication/additionalDocuments/submitted';
@@ -12,7 +13,7 @@ const viewPath = 'features/generalApplication/additionalDocuments/submitted';
 additionalDocSubmittedController.get(GA_UPLOAD_ADDITIONAL_DOCUMENTS_SUBMITTED_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
-    const { id: claimId } = req.params;
+    const claimId = getRouteParam(req, 'id');
     const claim = await getClaimById(claimId, req, true);
     const redisKey = generateRedisKey(req);
     await deleteDraftClaimFromStore(redisKey);

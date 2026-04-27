@@ -20,6 +20,7 @@ import {
   ApplicationTypeOptionSelection,
   getApplicationTypeOptionByTypeAndDescription,
 } from 'models/generalApplication/applicationType';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const claimApplicationCostController = Router();
 const viewPath = 'features/generalApplication/claim-application-cost';
@@ -38,7 +39,7 @@ async function renderView(form: GenericForm<GenericYesNo>, claim: Claim, claimId
 
 claimApplicationCostController.get(GA_CLAIM_APPLICATION_COST_URL, claimApplicationCostGuard, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const claimId = req.params.id;
+    const claimId = getRouteParam(req, 'id');
     const claim = await getClaimById(claimId, req, true);
     const form = new GenericForm(new GenericYesNo(claim.generalApplication?.applicationCosts));
     await renderView(form, claim, claimId, res);
@@ -49,7 +50,7 @@ claimApplicationCostController.get(GA_CLAIM_APPLICATION_COST_URL, claimApplicati
 
 claimApplicationCostController.post(GA_CLAIM_APPLICATION_COST_URL, claimApplicationCostGuard, (async (req: AppRequest | Request, res: Response, next: NextFunction) => {
   try {
-    const claimId = req.params.id;
+    const claimId = getRouteParam(req, 'id');
     const claim = await getClaimById(claimId, req, true);
     const redisKey = generateRedisKey(<AppRequest>req);
     const form = new GenericForm(new GenericYesNo(req.body.option, 'ERRORS.GENERAL_APPLICATION.CLAIM_APPLICATION_COSTS_YES_NO_SELECTION'));
