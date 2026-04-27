@@ -54,81 +54,10 @@ Scenario('Create Claim -  Individual vs Individual - small claims - no interest 
   await I.amOnPage('/dashboard');
   await I.click(claimNumber);
   await createGASteps.askForMoreTimeCourtOrderGA(caseRef, 'Mr Claimant person v mr defendant person');
-});
+}).tag('@civil-citizen-master @civil-citizen-pr @smoke');
 
-Scenario('Create Claim -  Individual vs Individual - small claims - with standard interest - no hwf', async ({
-  I,
-  api,
-}) => {
-  selectedHWF = false;
-  claimInterestFlag = true;
-  StandardInterest = true;
-  await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
-  await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
-  await steps.createClaimDraftViaTestingSupport();
-  await steps.updateClaimAmount(claimAmount, claimInterestFlag, StandardInterest, selectedHWF);
-  caseRef = await steps.checkAndSubmit(selectedHWF);
-  caseData = await api.retrieveCaseData(config.adminUser, caseRef);
-  legacyCaseReference = await caseData.legacyCaseReference;
-  await api.setCaseId(caseRef);
-  await api.waitForFinishedBusinessProcess();
-  const payClaimFeeNotif = payClaimFee(claimFee);
-  await verifyNotificationTitleAndContent(legacyCaseReference, payClaimFeeNotif.title, payClaimFeeNotif.content);
-  await I.click(payClaimFeeNotif.nextSteps);
-  await steps.verifyAndPayClaimFee(claimAmount, claimFee);
-  await api.waitForFinishedBusinessProcess();
-});
-
-Scenario('Create Claim -  Individual vs Individual - small claims - with variable interest - no hwf', async ({
-  I,
-  api,
-}) => {
-  selectedHWF = false;
-  claimInterestFlag = true;
-  StandardInterest = false;
-  const interestAmount = 10;
-  await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
-  await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
-  await steps.createClaimDraftViaTestingSupport();
-  await steps.updateClaimAmount(claimAmount, claimInterestFlag, StandardInterest, selectedHWF);
-  caseRef = await steps.checkAndSubmit(selectedHWF);
-  caseData = await api.retrieveCaseData(config.adminUser, caseRef);
-  legacyCaseReference = await caseData.legacyCaseReference;
-  await api.setCaseId(caseRef);
-  await api.waitForFinishedBusinessProcess();
-  const payClaimFeeNotif = payClaimFee(claimFee);
-  await verifyNotificationTitleAndContent(legacyCaseReference, payClaimFeeNotif.title, payClaimFeeNotif.content);
-  await I.click(payClaimFeeNotif.nextSteps);
-  await api.waitForFinishedBusinessProcess();
-  await steps.verifyAndPayClaimFee(claimAmount, claimFee, interestAmount);
-  await api.waitForFinishedBusinessProcess();
-});
-
-Scenario('Create Claim -  Individual vs Individual - small claims - with variable interest - with hwf', async ({ api }) => {
-  selectedHWF = true;
-  claimInterestFlag = true;
-  StandardInterest = false;
-  await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
-  await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
-  await steps.createClaimDraftViaTestingSupport();
-  await steps.updateClaimAmount(claimAmount, claimInterestFlag, StandardInterest, selectedHWF);
-  caseRef = await steps.checkAndSubmit(selectedHWF);
-  caseData = await api.retrieveCaseData(config.adminUser, caseRef);
-  legacyCaseReference = await caseData.legacyCaseReference;
-  await api.setCaseId(caseRef);
-  await api.waitForFinishedBusinessProcess();
-  const hwfSubmissionNotif = hwfSubmission();
-  await verifyNotificationTitleAndContent(legacyCaseReference, hwfSubmissionNotif.title, hwfSubmissionNotif.content);
-  await api.submitHwfEventForUser(config.hwfEvents.updateHWFNumber);
-  const updateHWFNumNotif = updateHWFNum();
-  await verifyNotificationTitleAndContent(legacyCaseReference, updateHWFNumNotif.title, updateHWFNumNotif.content);
-  await api.submitHwfEventForUser(config.hwfEvents.moreInfoHWF);
-  const hwfMoreInfoRequiredNotif = hwfMoreInfoRequired();
-  await verifyNotificationTitleAndContent(legacyCaseReference, hwfMoreInfoRequiredNotif.title, hwfMoreInfoRequiredNotif.content);
-  await api.submitHwfEventForUser(config.hwfEvents.fullRemission);
-  const hwfFullRemissionNotif = hwfFullRemission(claimFee);
-  await verifyNotificationTitleAndContent(legacyCaseReference, hwfFullRemissionNotif.title, hwfFullRemissionNotif.content);
-  await api.submitHwfEventForUser(config.hwfEvents.feePayOutcome);
-  const waitForDefResponseNotif = await waitForDefendantToRespond();
-  await verifyNotificationTitleAndContent(legacyCaseReference, waitForDefResponseNotif.title, waitForDefResponseNotif.content);
-}).tag('@civil-citizen-master @civil-citizen-pr');
+// Removed redundant scenarios - now covered by integration tests:
+// - "with standard interest - no hwf" - covered by claimIssueDashboard.integration.test.ts
+// - "with variable interest - no hwf" - covered by claimIssueDashboard.integration.test.ts  
+// - "with variable interest - with hwf" - covered by claimIssueDashboard.integration.test.ts
+// See: src/integration-test/routes/dashboard/claimIssueDashboard.integration.test.ts
