@@ -6,15 +6,12 @@ const LoginSteps = require('../../../commonFeatures/home/steps/login');
 const { verifyNotificationTitleAndContent } = require('../../../specClaimHelpers/e2e/dashboardHelper');
 const {
   payClaimFee,
-  hwfSubmission,
-  updateHWFNum,
-  hwfMoreInfoRequired,
-  hwfFullRemission,
   waitForDefendantToRespond,
 } = require('../../../specClaimHelpers/dashboardNotificationConstants');
 
-let caseData,legacyCaseReference,caseRef,claimNumber,claimInterestFlag,StandardInterest,selectedHWF,
-  claimAmount = 1600, claimFee = 115;
+let caseData,legacyCaseReference,caseRef,claimNumber;
+const defaultClaimFee = 455;
+const defaultClaimAmount = 9000;
 
 const createGASteps = require('../../../citizenFeatures/GA/steps/createGASteps');
 

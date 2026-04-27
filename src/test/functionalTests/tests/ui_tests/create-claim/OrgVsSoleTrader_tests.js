@@ -4,10 +4,9 @@ const config = require('../../../../config');
 const { createAccount } = require('../../../specClaimHelpers/api/idamHelper');
 const LoginSteps = require('../../../commonFeatures/home/steps/login');
 const { verifyNotificationTitleAndContent } = require('../../../specClaimHelpers/e2e/dashboardHelper');
-const { payClaimFee, hwfSubmission } = require('../../../specClaimHelpers/dashboardNotificationConstants');
+const { payClaimFee } = require('../../../specClaimHelpers/dashboardNotificationConstants');
 
-let caseData, legacyCaseReference, caseRef, claimInterestFlag, StandardInterest, selectedHWF, claimAmount = 1600,
-  claimFee = 115, claimantPartyType = 'Org';
+let caseData, legacyCaseReference, caseRef, selectedHWF, claimantPartyType = 'Org';
 
 const createGASteps = require('../../../citizenFeatures/GA/steps/createGASteps');
 
@@ -18,8 +17,6 @@ Scenario('Create Claim -  Org vs Sole trader - Fast track - no interest - no hwf
   api,
 }) => {
   selectedHWF = false;
-  claimInterestFlag = false;
-  StandardInterest = false;
   const defaultClaimFee = 455;
   const defaultClaimAmount = 9000;
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
@@ -49,68 +46,10 @@ Scenario('Create Claim -  Org vs Sole trader - Fast track - no interest - no hwf
   await I.amOnPage('/dashboard');
   await I.click(legacyCaseReference);
   await createGASteps.askForMoreTimeCourtOrderGA(caseRef, 'Claimant Org name v mr defendant person');
-});
+}).tag('@smoke');
 
-Scenario('Create Claim -  Org vs Sole trader - Fast track - with standard interest - no hwf', async ({ I, api }) => {
-  selectedHWF = false;
-  claimInterestFlag = true;
-  StandardInterest = true;
-  await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
-  await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
-  await steps.createClaimDraftViaTestingSupport();
-  await steps.addOrgClaimant();
-  await steps.addSoleTraderDefendant();
-  await steps.updateClaimAmount(claimAmount, claimInterestFlag, StandardInterest, selectedHWF);
-  caseRef = await steps.checkAndSubmit(selectedHWF, claimantPartyType);
-  caseData = await api.retrieveCaseData(config.adminUser, caseRef);
-  legacyCaseReference = await caseData.legacyCaseReference;
-  await api.setCaseId(caseRef);
-  await api.waitForFinishedBusinessProcess();
-  const payClaimFeeNotif = payClaimFee(claimFee);
-  await verifyNotificationTitleAndContent(legacyCaseReference, payClaimFeeNotif.title, payClaimFeeNotif.content);
-  await I.click(payClaimFeeNotif.nextSteps);
-  await steps.verifyAndPayClaimFee(claimAmount, claimFee);
-  await api.waitForFinishedBusinessProcess();
-});
-
-Scenario('Create Claim -  Org vs Sole trader - Fast track - with variable interest - no hwf', async ({ I, api }) => {
-  selectedHWF = false;
-  claimInterestFlag = true;
-  StandardInterest = false;
-  const standardInterestAmount = 10;
-  await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
-  await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
-  await steps.createClaimDraftViaTestingSupport();
-  await steps.addOrgClaimant();
-  await steps.addSoleTraderDefendant();
-  await steps.updateClaimAmount(claimAmount, claimInterestFlag, StandardInterest, selectedHWF);
-  caseRef = await steps.checkAndSubmit(selectedHWF, claimantPartyType);
-  caseData = await api.retrieveCaseData(config.adminUser, caseRef);
-  legacyCaseReference = await caseData.legacyCaseReference;
-  await api.setCaseId(caseRef);
-  await api.waitForFinishedBusinessProcess();
-  const payClaimFeeNotif = payClaimFee(claimFee);
-  await verifyNotificationTitleAndContent(legacyCaseReference, payClaimFeeNotif.title, payClaimFeeNotif.content);
-  await I.click(payClaimFeeNotif.nextSteps);
-  await steps.verifyAndPayClaimFee(claimAmount, claimFee, standardInterestAmount);
-  await api.waitForFinishedBusinessProcess();
-});
-
-Scenario('Create Claim -  Org vs Sole trader - Fast track - with variable interest - with hwf', async ({ api }) => {
-  selectedHWF = true;
-  claimInterestFlag = true;
-  StandardInterest = false;
-  await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
-  await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
-  await steps.createClaimDraftViaTestingSupport();
-  await steps.addOrgClaimant();
-  await steps.addSoleTraderDefendant();
-  await steps.updateClaimAmount(claimAmount, claimInterestFlag, StandardInterest, selectedHWF);
-  caseRef = await steps.checkAndSubmit(selectedHWF, claimantPartyType);
-  caseData = await api.retrieveCaseData(config.adminUser, caseRef);
-  legacyCaseReference = await caseData.legacyCaseReference;
-  await api.setCaseId(caseRef);
-  await api.waitForFinishedBusinessProcess();
-  const hwfSubmissionNotif = hwfSubmission();
-  await verifyNotificationTitleAndContent(legacyCaseReference, hwfSubmissionNotif.title, hwfSubmissionNotif.content);
-});
+// Removed redundant scenarios - now covered by integration tests:
+// - "with standard interest - no hwf" - covered by claimIssueDashboard.integration.test.ts
+// - "with variable interest - no hwf" - covered by claimIssueDashboard.integration.test.ts
+// - "with variable interest - with hwf" - covered by claimIssueDashboard.integration.test.ts
+// See: src/integration-test/routes/dashboard/claimIssueDashboard.integration.test.ts
