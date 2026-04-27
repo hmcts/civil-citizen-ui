@@ -57,6 +57,7 @@
     "test:pact": "jest -c jest.pact.config.js",
     "pact:publish": "ts-node src/test/contract/publish/publish.ts",
     "test:pact:run-and-publish": "yarn test:pact && yarn pact:publish",
+    "highLevelDataSetup": "echo './bin/run-high-level-data-setup.sh $1' > ./temp.sh && sh ./temp.sh",
     "postinstall": "./bin/pull-latest-civil-shared.sh || true"
   },
   "dependencies": {

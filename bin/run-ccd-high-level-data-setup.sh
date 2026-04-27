@@ -1,0 +1,89 @@
+#!/usr/bin/env bash
+
+set -eu
+
+environment="${1:-${ENVIRONMENT:-}}"
+root_dir=$(realpath "$(dirname "${0}")/..")
+work_dir="${root_dir}/.high-level-data-setup/civil-ccd-definition"
+branch_name="${CCD_DEFINITION_BRANCH:-master}"
+
+cleanup() {
+  rm -rf "${work_dir}"
+}
+
+trap cleanup EXIT
+
+if [ -z "${environment}" ]; then
+  echo "Usage: ./bin/run-ccd-high-level-data-setup.sh <preview|aat>"
+  exit 1
+fi
+
+if [ "${environment}" = "aat" ] && [ "${SKIP_COMMON_AAT_CCD_SETUP:-false}" = "true" ]; then
+  echo "Skipping shared AAT CCD high level data setup"
+  exit 0
+fi
+
+case "${environment}" in
+  preview)
+    definition_store_url="${DEFINITION_STORE_URL_BASE:-${CCD_DEFINITION_STORE_API_BASE_URL:-}}"
+    case_service_url="${CCD_DEF_CASE_SERVICE_BASE_URL:-${CIVIL_SERVICE_URL:-}}"
+    aac_url="${CCD_DEF_AAC_URL:-${AAC_API_URL:-}}"
+
+    if [ -z "${definition_store_url}" ] && [ -n "${CHANGE_ID:-}" ]; then
+      definition_store_url="https://ccd-definition-store-civil-citizen-ui-pr-${CHANGE_ID}.preview.platform.hmcts.net"
+    fi
+    if [ -z "${case_service_url}" ] && [ -n "${CHANGE_ID:-}" ]; then
+      case_service_url="https://civil-citizen-ui-pr-${CHANGE_ID}-civil-service.preview.platform.hmcts.net"
+    fi
+    if [ -z "${aac_url}" ] && [ -n "${CHANGE_ID:-}" ]; then
+      aac_url="https://manage-case-assignment-civil-citizen-ui-pr-${CHANGE_ID}.preview.platform.hmcts.net"
+    fi
+
+    if [ -z "${definition_store_url}" ] || [ -z "${case_service_url}" ] || [ -z "${aac_url}" ]; then
+      echo "Preview CCD setup requires CHANGE_ID or preview URLs to be set"
+      exit 1
+    fi
+    export DEFINITION_STORE_URL_BASE="${definition_store_url}"
+    export CCD_DEF_CASE_SERVICE_BASE_URL="${case_service_url}"
+    export CCD_DEF_AAC_URL="${aac_url}"
+    ;;
+  aat)
+    export DEFINITION_STORE_URL_BASE="${DEFINITION_STORE_URL_BASE:-${CCD_DEFINITION_STORE_API_BASE_URL:-https://civil-cui-definition-store-staging.aat.platform.hmcts.net}}"
+    export CCD_DEF_CASE_SERVICE_BASE_URL="${CCD_DEF_CASE_SERVICE_BASE_URL:-${CIVIL_SERVICE_URL:-https://civil-cui-civil-service-staging.aat.platform.hmcts.net}}"
+    export CCD_DEF_AAC_URL="${CCD_DEF_AAC_URL:-${AAC_API_URL:-https://civil-cui-manage-case-assignment-staging.aat.platform.hmcts.net}}"
+    ;;
+  *)
+    echo "Unsupported environment: ${environment}"
+    exit 1
+    ;;
+esac
+
+export ENVIRONMENT="${environment}"
+export CCD_DEF_GEN_APP_SERVICE_BASE_URL="${CCD_DEF_GEN_APP_SERVICE_BASE_URL:-${CCD_DEF_CASE_SERVICE_BASE_URL}}"
+export IDAM_API_URL_BASE="${IDAM_API_URL_BASE:-${IDAM_API_BASE_URL:-${IDAM_API_URL:-https://idam-api.aat.platform.hmcts.net}}}"
+export S2S_URL_BASE="${S2S_URL_BASE:-${SERVICE_AUTH_PROVIDER_API_BASE_URL:-http://rpe-service-auth-provider-aat.service.core-compute-aat.internal}}"
+export CCD_API_GATEWAY_OAUTH2_CLIENT_ID="${CCD_API_GATEWAY_OAUTH2_CLIENT_ID:-ccd_gateway}"
+export CCD_API_GATEWAY_OAUTH2_REDIRECT_URL="${CCD_API_GATEWAY_OAUTH2_REDIRECT_URL:-${CCD_IDAM_REDIRECT_URL:-https://ccd-case-management-web-aat.service.core-compute-aat.internal/oauth2redirect}}"
+export CCD_API_GATEWAY_S2S_ID="${CCD_API_GATEWAY_S2S_ID:-ccd_gw}"
+export CCD_API_GATEWAY_S2S_KEY="${CCD_API_GATEWAY_S2S_KEY:-${CCD_API_GATEWAY_S2S_SECRET:-}}"
+export DEFINITION_IMPORTER_USERNAME="${DEFINITION_IMPORTER_USERNAME:-${CCD_CONFIGURER_IMPORTER_USERNAME:-}}"
+export DEFINITION_IMPORTER_PASSWORD="${DEFINITION_IMPORTER_PASSWORD:-${CCD_CONFIGURER_IMPORTER_PASSWORD:-}}"
+
+if [ -z "${CCD_API_GATEWAY_S2S_KEY:-}" ]; then
+  echo "CCD_API_GATEWAY_S2S_KEY or CCD_API_GATEWAY_S2S_SECRET must be set"
+  exit 1
+fi
+
+if [ -z "${DEFINITION_IMPORTER_USERNAME:-}" ] || [ -z "${DEFINITION_IMPORTER_PASSWORD:-}" ]; then
+  echo "Definition importer credentials must be set"
+  exit 1
+fi
+
+mkdir -p "$(dirname "${work_dir}")"
+git clone --depth 1 --branch "${branch_name}" https://github.com/hmcts/civil-ccd-definition.git "${work_dir}"
+
+(
+  cd "${work_dir}"
+  ./bin/build-release-ccd-definition.sh "${environment}"
+  ./gradlew --rerun-tasks highLevelDataSetup --args="${environment}"
+)
