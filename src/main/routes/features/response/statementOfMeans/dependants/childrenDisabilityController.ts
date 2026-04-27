@@ -9,6 +9,7 @@ import {GenericForm} from 'form/models/genericForm';
 import {GenericYesNo} from 'form/models/genericYesNo';
 import {AppRequest} from 'common/models/AppRequest';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const childrenDisabilityViewPath = 'features/response/statementOfMeans/dependants/children-disability';
 const childrenDisabilityController = Router();
@@ -27,6 +28,7 @@ childrenDisabilityController
   .post(
     CHILDREN_DISABILITY_URL,
     (async (req: Request, res: Response, next: NextFunction) => {
+      const claimId = getRouteParam(req, 'id');
       const childrenDisability: GenericYesNo = new GenericYesNo(req.body.option);
       const form: GenericForm<GenericYesNo> = new GenericForm(childrenDisability);
       await form.validate();
@@ -36,7 +38,7 @@ childrenDisabilityController
       } else {
         try {
           await saveChildrenDisability(generateRedisKey(<AppRequest>req), childrenDisability);
-          res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_OTHER_DEPENDANTS_URL));
+          res.redirect(constructResponseUrlWithIdParams(claimId, CITIZEN_OTHER_DEPENDANTS_URL));
         }
         catch (error) {
           next(error);

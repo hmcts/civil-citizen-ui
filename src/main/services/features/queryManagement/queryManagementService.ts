@@ -20,13 +20,14 @@ import {t} from 'i18next';
 import {translateErrors} from 'services/features/generalApplication/uploadEvidenceDocumentService';
 import {SendFollowUpQuery} from 'models/queryManagement/sendFollowUpQuery';
 import {FILE_UPLOAD_SOURCE} from 'common/utils/fileUploadUtils';
+import {RouteParam, normalizeRouteParam} from 'common/utils/routeParamUtils';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseService');
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClientForDocRetrieve: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl, true);
 
-export const saveQueryManagement = async (claimId: string, value: any, queryManagementPropertyName: keyof QueryManagement,  req: Request): Promise<void> => {
+export const saveQueryManagement = async (claimId: RouteParam, value: any, queryManagementPropertyName: keyof QueryManagement,  req: Request): Promise<void> => {
   const claim = await getClaimById(req.params.id, req, true);
   if (!claim.queryManagement) {
     claim.queryManagement = new QueryManagement();
@@ -35,7 +36,7 @@ export const saveQueryManagement = async (claimId: string, value: any, queryMana
   await saveDraftClaim(generateRedisKey(<AppRequest>req), claim);
 };
 
-export const getQueryManagement = async (claimId: string, req: Request): Promise<QueryManagement> => {
+export const getQueryManagement = async (claimId: RouteParam, req: Request): Promise<QueryManagement> => {
   const claim = await getClaimById(req.params.id, req, true);
   if (!claim.queryManagement) {
     return new QueryManagement();
@@ -43,14 +44,14 @@ export const getQueryManagement = async (claimId: string, req: Request): Promise
   return claim.queryManagement;
 };
 
-export const deleteQueryManagement = async (claimId: string, req: Request): Promise<void> => {
+export const deleteQueryManagement = async (claimId: RouteParam, req: Request): Promise<void> => {
   const claim = await getClaimById(req.params.id, req, true);
-  await deleteFieldDraftClaimFromStore(claimId, claim, 'queryManagement');
+  await deleteFieldDraftClaimFromStore(normalizeRouteParam(claimId), claim, 'queryManagement');
 };
 
-export const getCancelUrl = (claimId: string) => {
+export const getCancelUrl = (claimId: RouteParam) => {
   return CANCEL_URL
-    .replace(':id', claimId)
+    .replace(':id', normalizeRouteParam(claimId))
     .replace(':propertyName', 'queryManagement');
 };
 

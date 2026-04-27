@@ -12,6 +12,7 @@ import {getClaimById} from 'modules/utilityService';
 import {AppRequest} from 'models/AppRequest';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import config from 'config';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 const paymentSuccessfulController: Router = Router();
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
@@ -33,7 +34,7 @@ async function renderView(res: Response, req:  AppRequest | Request, claimId: st
 
 paymentSuccessfulController.get(PAY_HEARING_FEE_SUCCESSFUL_URL, (async (req, res, next: NextFunction) => {
   try {
-    const claimId = req.params.id;
+    const claimId = getRouteParam(req, 'id');
     const redirectUrl = constructResponseUrlWithIdParams(claimId, DASHBOARD_URL);
     const ccdClaim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
     const calculatedAmountInPence = ccdClaim.caseProgressionHearing?.hearingFeeInformation?.hearingFee?.calculatedAmountInPence;

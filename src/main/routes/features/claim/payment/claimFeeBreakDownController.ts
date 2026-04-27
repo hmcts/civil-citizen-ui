@@ -12,6 +12,7 @@ import {claimFeePaymentGuard} from 'routes/guards/claimFeePaymentGuard';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {saveUserId} from 'modules/draft-store/paymentSessionStoreService';
 import {PaymentInformation} from 'models/feePayment/paymentInformation';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimFeeBreakDownController');
@@ -22,7 +23,7 @@ const failed = 'Failed';
 
 claimFeeBreakDownController.get(CLAIM_FEE_BREAKUP, claimFeePaymentGuard, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const claimId = req.params.id;
+    const claimId = getRouteParam(req, 'id');
     const claim = await getClaimById(claimId, req, true);
     let paymentSyncError = false;
     if (claim.paymentSyncError) {
@@ -35,7 +36,7 @@ claimFeeBreakDownController.get(CLAIM_FEE_BREAKUP, claimFeePaymentGuard, (async 
     const interestAmount = hasInterest ? await calculateInterestToDate(claim) : 0;
     const totalAmount = hasInterest ? (claim.totalClaimAmount + interestAmount + claimFee) : (claim.totalClaimAmount + claimFee);
 
-    const businessProcess = await getClaimBusinessProcess(req.params.id, req);
+    const businessProcess = await getClaimBusinessProcess(claimId, req);
     const hasBusinessProcessFinished = businessProcess.hasBusinessProcessFinished() || false;
 
     return res.render(viewPath, {
@@ -55,7 +56,7 @@ claimFeeBreakDownController.get(CLAIM_FEE_BREAKUP, claimFeePaymentGuard, (async 
 
 claimFeeBreakDownController.post(CLAIM_FEE_BREAKUP, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const claimId = req.params.id;
+    const claimId = getRouteParam(req, 'id');
     const redisKey = generateRedisKey(<AppRequest>req);
     const claim = await getCaseDataFromStore(redisKey);
     let paymentRedirectInformation: PaymentInformation;
@@ -106,12 +107,12 @@ claimFeeBreakDownController.post(CLAIM_FEE_BREAKUP, (async (req: AppRequest, res
 async function getRedirectInformation(req: AppRequest) {
   try {
     return await getFeePaymentRedirectInformation(
-      req.params.id,
+      getRouteParam(req, 'id'),
       FeeType.CLAIMISSUED,
       req,
     );
   } catch (error) {
-    const claim = await getClaimById(req.params.id, req, true);
+    const claim = await getClaimById(getRouteParam(req, 'id'), req, true);
     claim.paymentSyncError = true;
     await saveDraftClaim(generateRedisKey(<AppRequest>req), claim, true);
     return null;

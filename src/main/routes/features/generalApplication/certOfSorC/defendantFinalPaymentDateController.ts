@@ -12,6 +12,7 @@ import {CertificateOfSatisfactionOrCancellation} from 'models/generalApplication
 import {
   getCertificateOfSatisfactionOrCancellation, saveCertificateOfSatisfactionOrCancellation,
 } from 'services/features/generalApplication/certOfSorC/certificateOfSatisfactionOrCancellationService';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const paymentDateViewPath = 'features/generalApplication/certOfSorC/final-payment-date';
 
@@ -22,7 +23,8 @@ defendantPaymentDateController
   .get(
     COSC_FINAL_PAYMENT_DATE_URL, async (req: Request, res: Response, next: NextFunction) => {
       try {
-        const cancelUrl = await getCancelUrl(req.params.id, null);
+        const claimId = getRouteParam(req, 'id');
+        const cancelUrl = await getCancelUrl(claimId, null);
         const backLinkUrl = BACK_URL;
         const certificateOfSatisfactionOrCancellation: CertificateOfSatisfactionOrCancellation = await getCertificateOfSatisfactionOrCancellation(req);
         const defendantFinalPaymentDate = certificateOfSatisfactionOrCancellation? certificateOfSatisfactionOrCancellation.defendantFinalPaymentDate : new DefendantFinalPaymentDate();
@@ -35,7 +37,8 @@ defendantPaymentDateController
     })
   .post(
     COSC_FINAL_PAYMENT_DATE_URL, async (req, res, next: NextFunction) => {
-      const cancelUrl = await getCancelUrl(req.params.id, null);
+      const claimId = getRouteParam(req, 'id');
+      const cancelUrl = await getCancelUrl(claimId, null);
       const backLinkUrl = BACK_URL;
       const defendantPaymentDate = new DefendantFinalPaymentDate(req.body.year, req.body.month, req.body.day);
       const form: GenericForm<DefendantFinalPaymentDate> = new GenericForm<DefendantFinalPaymentDate>(defendantPaymentDate);
@@ -47,7 +50,7 @@ defendantPaymentDateController
         try {
 
           await saveCertificateOfSatisfactionOrCancellation(req, form.model, 'defendantFinalPaymentDate');
-          res.redirect(constructResponseUrlWithIdParams(req.params.id, GA_DEBT_PAYMENT_EVIDENCE_COSC_URL));
+          res.redirect(constructResponseUrlWithIdParams(claimId, GA_DEBT_PAYMENT_EVIDENCE_COSC_URL));
         } catch (error) {
           next(error);
         }
