@@ -33,6 +33,7 @@ import {
   uploadAndValidateFile,
 } from 'common/utils/fileUploadUtils';
 import {ValidationError} from 'class-validator';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const { Logger } = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('uploadDocumentsController');
@@ -119,7 +120,7 @@ const civilServiceClientForDocRetrieve: CivilServiceClient = new CivilServiceCli
 
 uploadDocumentsController.get(CP_UPLOAD_DOCUMENTS_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const claimId = req.params.id;
+    const claimId = getRouteParam(req, 'id');
     req.session.previousUrl = req.originalUrl;
     const claim: Claim = await getClaimById(claimId, req, true);
     await renderView(res, claim, claimId, null);
@@ -131,8 +132,8 @@ uploadDocumentsController.get(CP_UPLOAD_DOCUMENTS_URL, (async (req: AppRequest, 
 const multerMiddleware = createMulterErrorMiddleware('uploadDocumentsController');
 
 uploadDocumentsController.post(CP_UPLOAD_DOCUMENTS_URL, multerMiddleware, (async (req, res, next) => {
-  const claimId = req.params.id;
-  const action = req.body.action;
+  const claimId = getRouteParam(req, 'id');
+  const action = req.body?.action as string | undefined;
   const userId = (req as AppRequest)?.session?.user?.id;
   try {
     if ((req as any).multerError) {

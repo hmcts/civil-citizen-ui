@@ -6,6 +6,7 @@ import {GenericForm} from 'form/models/genericForm';
 import {GenericYesNo} from 'form/models/genericYesNo';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'common/models/AppRequest';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const partnerViewPath = 'features/response/statementOfMeans/partner/partner';
 const partnerController = Router();
@@ -27,6 +28,7 @@ partnerController.get(CITIZEN_PARTNER_URL, (async (req, res, next: NextFunction)
 partnerController.post(CITIZEN_PARTNER_URL,
   (async (req, res, next: NextFunction) => {
     try {
+      const claimId = getRouteParam(req, 'id');
       const form: GenericForm<GenericYesNo> = new GenericForm(new GenericYesNo(req.body.option));
       form.validateSync();
       if (form.hasErrors()) {
@@ -34,8 +36,8 @@ partnerController.post(CITIZEN_PARTNER_URL,
       } else {
         await cohabitingService.saveCohabiting(generateRedisKey(<AppRequest>req), form);
         form.model.option == 'yes'
-          ? res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_PARTNER_AGE_URL))
-          : res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_DEPENDANTS_URL));
+          ? res.redirect(constructResponseUrlWithIdParams(claimId, CITIZEN_PARTNER_AGE_URL))
+          : res.redirect(constructResponseUrlWithIdParams(claimId, CITIZEN_DEPENDANTS_URL));
       }
     } catch (error) {
       next(error);

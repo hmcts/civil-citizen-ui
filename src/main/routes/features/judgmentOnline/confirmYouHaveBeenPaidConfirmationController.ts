@@ -6,6 +6,7 @@ import {AppRequest} from 'common/models/AppRequest';
 import {
   getConfirmYouHaveBeenPaidConfirmationContent,
 } from 'services/features/judgmentOnline/confirmYouHaveBeenPaidConfirmationContents';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const confirmationPageViewPath = 'features/judgmentOnline/judgment-online-confirmation-page.njk';
 
@@ -27,7 +28,7 @@ function renderView(res: Response, claimId: string) {
 }
 
 confirmYouHaveBeenPaidConfirmController.get(CONFIRM_YOU_HAVE_BEEN_PAID_CONFIRMATION_URL, (async (req: AppRequest, res: Response) => {
-  const claimId = req.params.id;
+  const claimId = getRouteParam(req, 'id');
   renderView(res, claimId);
 })as RequestHandler);
 
