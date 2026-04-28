@@ -26,7 +26,8 @@ fi
 
 case "${environment}" in
   preview)
-    definition_store_url="${DEFINITION_STORE_URL_BASE:-${CCD_DEFINITION_STORE_API_BASE_URL:-}}"
+    # Preview runs should prefer the preview definition store URL over any inherited default.
+    definition_store_url="${CCD_DEFINITION_STORE_API_BASE_URL:-${DEFINITION_STORE_URL_BASE:-}}"
     case_service_url="${CCD_DEF_CASE_SERVICE_BASE_URL:-${CIVIL_SERVICE_URL:-}}"
     aac_url="${CCD_DEF_AAC_URL:-${AAC_API_URL:-}}"
 
@@ -45,11 +46,13 @@ case "${environment}" in
       exit 1
     fi
     export DEFINITION_STORE_URL_BASE="${definition_store_url}"
+    export CCD_DEFINITION_STORE_API_BASE_URL="${definition_store_url}"
     export CCD_DEF_CASE_SERVICE_BASE_URL="${case_service_url}"
     export CCD_DEF_AAC_URL="${aac_url}"
     ;;
   aat)
     export DEFINITION_STORE_URL_BASE="${DEFINITION_STORE_URL_BASE:-${CCD_DEFINITION_STORE_API_BASE_URL:-https://civil-cui-definition-store-staging.aat.platform.hmcts.net}}"
+    export CCD_DEFINITION_STORE_API_BASE_URL="${CCD_DEFINITION_STORE_API_BASE_URL:-${DEFINITION_STORE_URL_BASE}}"
     export CCD_DEF_CASE_SERVICE_BASE_URL="${CCD_DEF_CASE_SERVICE_BASE_URL:-${CIVIL_SERVICE_URL:-https://civil-cui-civil-service-staging.aat.platform.hmcts.net}}"
     export CCD_DEF_AAC_URL="${CCD_DEF_AAC_URL:-${AAC_API_URL:-https://civil-cui-manage-case-assignment-staging.aat.platform.hmcts.net}}"
     ;;
@@ -69,6 +72,8 @@ export CCD_API_GATEWAY_S2S_ID="${CCD_API_GATEWAY_S2S_ID:-ccd_gw}"
 export CCD_API_GATEWAY_S2S_KEY="${CCD_API_GATEWAY_S2S_KEY:-${CCD_API_GATEWAY_S2S_SECRET:-}}"
 export DEFINITION_IMPORTER_USERNAME="${DEFINITION_IMPORTER_USERNAME:-${CCD_CONFIGURER_IMPORTER_USERNAME:-}}"
 export DEFINITION_IMPORTER_PASSWORD="${DEFINITION_IMPORTER_PASSWORD:-${CCD_CONFIGURER_IMPORTER_PASSWORD:-}}"
+
+echo "CCD HLD targets: definition_store=${DEFINITION_STORE_URL_BASE} case_service=${CCD_DEF_CASE_SERVICE_BASE_URL} aac=${CCD_DEF_AAC_URL}"
 
 if [ -z "${CCD_API_GATEWAY_S2S_KEY:-}" ]; then
   echo "CCD_API_GATEWAY_S2S_KEY or CCD_API_GATEWAY_S2S_SECRET must be set"
