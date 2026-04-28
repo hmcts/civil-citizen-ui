@@ -43,9 +43,11 @@ export ENVIRONMENT="${environment}"
 export S2S_URL_BASE="${S2S_URL_BASE:-${SERVICE_AUTH_PROVIDER_API_BASE_URL:-http://rpe-service-auth-provider-aat.service.core-compute-aat.internal}}"
 export CAMUNDA_DEFINITION_BRANCH="${CAMUNDA_DEFINITION_BRANCH:-master}"
 export DMN_DEFINITION_BRANCH="${DMN_DEFINITION_BRANCH:-master}"
+export CCD_API_GATEWAY_S2S_ID="${CCD_API_GATEWAY_S2S_ID:-ccd_gw}"
+export CCD_API_GATEWAY_S2S_KEY="${CCD_API_GATEWAY_S2S_KEY:-${CCD_API_GATEWAY_S2S_SECRET:-}}"
 
-if [ -z "${S2S_SECRET:-}" ]; then
-  echo "S2S_SECRET must be set for Camunda imports"
+if [ -z "${CCD_API_GATEWAY_S2S_KEY:-}" ] && [ -z "${S2S_SECRET:-}" ]; then
+  echo "Camunda imports require either CCD_API_GATEWAY_S2S_KEY/CCD_API_GATEWAY_S2S_SECRET or S2S_SECRET"
   exit 1
 fi
 
