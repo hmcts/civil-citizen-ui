@@ -18,5 +18,10 @@ case "${environment}" in
     ;;
 esac
 
+if [ "${environment}" = "preview" ] && [ -n "${CHANGE_ID:-}" ]; then
+  # Force preview-specific service URLs even when Jenkins injects AAT defaults into the HLD stage.
+  eval "$("${PWD}/bin/variables/load-preview-environment-variables.sh" "${CHANGE_ID}")"
+fi
+
 ./bin/run-camunda-high-level-data-setup.sh "${environment}"
 ./bin/run-ccd-high-level-data-setup.sh "${environment}"
