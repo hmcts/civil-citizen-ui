@@ -6,7 +6,6 @@ const LoginSteps = require('../../../commonFeatures/home/steps/login');
 const { verifyNotificationTitleAndContent } = require('../../../specClaimHelpers/e2e/dashboardHelper');
 const {
   payClaimFee,
-  waitForDefendantToRespond,
 } = require('../../../specClaimHelpers/dashboardNotificationConstants');
 
 let caseData,legacyCaseReference,caseRef,claimNumber;
@@ -21,11 +20,7 @@ Scenario('Create Claim -  Individual vs Individual - small claims - no interest 
   I,
   api,
 }) => {
-  selectedHWF = false;
-  claimInterestFlag = false;
-  StandardInterest = false;
-  const defaultClaimFee = 455;
-  const defaultClaimAmount = 9000;
+  const selectedHWF = false;
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
