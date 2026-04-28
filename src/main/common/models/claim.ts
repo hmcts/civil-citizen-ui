@@ -89,7 +89,7 @@ import { RespondentGaAppDetail } from './generalApplication/response/respondentG
 import {ClaimGeneralApplication} from 'models/generalApplication/claimGeneralApplication';
 import {QueryManagement} from 'form/models/queryManagement/queryManagement';
 import {CaseQueries} from 'models/queryManagement/caseQueries';
-import {path} from 'path';
+import path = require("path");
 
 export class Claim {
   resolvingDispute: boolean;
