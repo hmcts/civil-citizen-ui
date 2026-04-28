@@ -822,7 +822,7 @@ export class Claim {
   private getSoeTraderPartyName(party: Party): string {
     const partyName = this.getIndividualPartyName(party);
     if (party.partyDetails?.soleTraderTradingAs) {
-      return `${partyName} ` + 'T/A' + `${party.partyDetails?.soleTraderTradingAs}` ;
+      return `${partyName} ` + 'T\/A' + `${party.partyDetails?.soleTraderTradingAs}` ;
     }
     return partyName;
   }
