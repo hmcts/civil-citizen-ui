@@ -6,6 +6,7 @@ environment="${1:-${ENVIRONMENT:-}}"
 root_dir=$(realpath "$(dirname "${0}")/..")
 work_dir="${root_dir}/.high-level-data-setup/civil-ccd-definition"
 branch_name="${CCD_DEFINITION_BRANCH:-master}"
+shared_branch_name="${CIVIL_SERVICE_SHARED_BRANCH:-master}"
 
 cleanup() {
   rm -rf "${work_dir}"
@@ -84,6 +85,7 @@ git clone --depth 1 --branch "${branch_name}" https://github.com/hmcts/civil-ccd
 
 (
   cd "${work_dir}"
+  ./bin/pull-latest-civil-shared.sh "${shared_branch_name}"
   ./bin/build-release-ccd-definition.sh "${environment}"
   ./gradlew --rerun-tasks highLevelDataSetup --args="${environment}"
 )
