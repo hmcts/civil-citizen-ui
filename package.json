@@ -114,7 +114,6 @@
     "multer": "^2.1.1",
     "nunjucks": "^3.2.4",
     "otplib": "^13.0.0",
-    "postcss": "8.5.10",
     "reflect-metadata": "^0.1.13",
     "require-directory": "^2.1.1",
     "serve-favicon": "^2.5.0",
