@@ -89,6 +89,7 @@ import { RespondentGaAppDetail } from './generalApplication/response/respondentG
 import {ClaimGeneralApplication} from 'models/generalApplication/claimGeneralApplication';
 import {QueryManagement} from 'form/models/queryManagement/queryManagement';
 import {CaseQueries} from 'models/queryManagement/caseQueries';
+import {path} from 'path';
 
 export class Claim {
   resolvingDispute: boolean;
@@ -822,7 +823,7 @@ export class Claim {
   private getSoeTraderPartyName(party: Party): string {
     const partyName = this.getIndividualPartyName(party);
     if (party.partyDetails?.soleTraderTradingAs) {
-      return `${partyName} ` + 'T\/A' + `${party.partyDetails?.soleTraderTradingAs}` ;
+      return `${partyName} ` + path.join('T','A') + &#47; + `${party.partyDetails?.soleTraderTradingAs}` ;
     }
     return partyName;
   }
