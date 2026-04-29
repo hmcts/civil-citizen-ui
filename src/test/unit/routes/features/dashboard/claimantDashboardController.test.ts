@@ -153,6 +153,10 @@ describe('claimant Dashboard Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
 
+  beforeEach(() => {
+    jest.spyOn(draftStoreService, 'getCaseDataFromStore').mockResolvedValue(new Claim());
+  });
+
   beforeAll(() => {
     nock(idamUrl)
       .post('/o/token')

@@ -2,6 +2,7 @@ import {Request} from 'express';
 import {Session} from 'express-session';
 import {Claim} from './claim';
 import {FeeType} from 'common/form/models/helpWithFees/feeType';
+import {CaseRole} from 'form/models/caseRoles';
 
 import {TaskList} from 'common/models/taskList/taskList';
 
@@ -10,6 +11,8 @@ export interface AppRequest<T = Partial<Claim>> extends Request {
   locals: {
     env: string;
     lang: string;
+    claimDetailsRequestCache?: Map<string, Promise<Claim>>;
+    userCaseRolesRequestCache?: Map<string, Promise<CaseRole>>;
   };
   body: T;
 }

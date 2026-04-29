@@ -149,7 +149,25 @@ export class CivilServiceClient {
   }
 
   async retrieveClaimDetails(claimId: RouteParam, req: AppRequest): Promise<Claim> {
+    const requestCache = req.locals.claimDetailsRequestCache ?? (req.locals.claimDetailsRequestCache = new Map<string, Promise<Claim>>());
     const normalizedClaimId = normalizeRouteParam(claimId);
+    const requestUserId = req.session?.user?.id ?? '';
+    const cacheKey = `${normalizedClaimId}|${requestUserId}`;
+    const cachedClaimDetailsPromise = requestCache.get(cacheKey);
+    if (cachedClaimDetailsPromise) {
+      return cachedClaimDetailsPromise;
+    }
+
+    const claimDetailsPromise = this.retrieveClaimDetailsFromCivilService(normalizedClaimId, req)
+      .catch((error) => {
+        requestCache.delete(cacheKey);
+        throw error;
+      });
+    requestCache.set(cacheKey, claimDetailsPromise);
+    return claimDetailsPromise;
+  }
+
+  private async retrieveClaimDetailsFromCivilService(normalizedClaimId: string, req: AppRequest): Promise<Claim> {
     const config = this.getConfig(req);
     try {
       const response = await this.client.get(`/cases/${normalizedClaimId}`, config);// nosonar
@@ -496,8 +514,27 @@ export class CivilServiceClient {
   }
 
   async getUserCaseRoles(claimId: RouteParam, req: AppRequest) {
+    const requestCache = req.locals.userCaseRolesRequestCache ?? (req.locals.userCaseRolesRequestCache = new Map<string, Promise<CaseRole>>());
+    const normalizedClaimId = normalizeRouteParam(claimId);
+    const requestUserId = req.session?.user?.id ?? '';
+    const cacheKey = `${normalizedClaimId}|${requestUserId}`;
+    const cachedCaseRolePromise = requestCache.get(cacheKey);
+    if (cachedCaseRolePromise) {
+      return cachedCaseRolePromise;
+    }
+
+    const userCaseRolePromise = this.getUserCaseRolesFromCivilService(normalizedClaimId, req)
+      .catch((error) => {
+        requestCache.delete(cacheKey);
+        throw error;
+      });
+    requestCache.set(cacheKey, userCaseRolePromise);
+    return userCaseRolePromise;
+  }
+
+  private async getUserCaseRolesFromCivilService(normalizedClaimId: string, req: AppRequest): Promise<CaseRole> {
     try {
-      const userCaseRolesUrl = (new URL(`${this.client.defaults.baseURL}${CIVIL_SERVICE_USER_CASE_ROLE.replace(':claimId', normalizeRouteParam(claimId))}`));
+      const userCaseRolesUrl = (new URL(`${this.client.defaults.baseURL}${CIVIL_SERVICE_USER_CASE_ROLE.replace(':claimId', normalizedClaimId)}`));
       const response = await this.client.get(userCaseRolesUrl.toString()
         , {headers: {'Authorization': `Bearer ${req.session?.user?.accessToken}`}});
       const responseRoles = response.data as string[];
