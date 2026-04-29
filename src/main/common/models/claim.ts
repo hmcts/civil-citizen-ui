@@ -814,9 +814,9 @@ export class Claim {
     if (party?.type == PartyType.INDIVIDUAL) {
       return this.getIndividualPartyName(party);
     } else if (party?.type == PartyType.SOLE_TRADER) {
-      return this.getSoeTraderPartyName(party);
+      return String.raw`${this.getSoeTraderPartyName(party)}`;
     }
-    return party?.partyDetails?.partyName;
+    return String.raw`${party?.partyDetails?.partyName}`;
   }
 
   private getSoeTraderPartyName(party: Party): string {

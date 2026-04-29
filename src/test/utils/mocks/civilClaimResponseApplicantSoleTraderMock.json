@@ -1,0 +1,32 @@
+{
+  "id": 1645882162449409,
+  "jurisdiction": "CIVIL",
+  "case_type_id": "CIVIL",
+  "created_date": "2022-03-01T13:29:22.447",
+  "last_modified": "2022-03-01T13:29:24.971",
+  "case_data": {
+    "applicant1": {
+      "type": "SOLE_TRADER",
+      "partyDetails": {
+        "title": "Mr.",
+        "firstName": "Jan",
+        "lastName": "Clark",
+        "partyName": "Mr. Jan Clark T/A Test1 Trader",
+        "soleTraderTradingAs": "Test1 Trader"
+      }
+    },
+    "respondent1": {
+      "type": "SOLE_TRADER",
+      "emailAddress":{
+        "emailAddress": "test@test.com"
+      },
+      "partyDetails": {
+        "title": "Mr.",
+        "firstName": "Joe",
+        "lastName": "Doe",
+        "partyName": "Mr. Joe Doe T/A Test2 Trader",
+        "soleTraderTradingAs": "Test2 Trader"
+      }
+    }
+  }
+}
