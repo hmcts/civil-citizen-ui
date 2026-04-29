@@ -68,6 +68,11 @@ export IDAM_API_URL_BASE="${IDAM_API_URL_BASE:-${IDAM_API_BASE_URL:-${IDAM_API_U
 export S2S_URL_BASE="${S2S_URL_BASE:-${SERVICE_AUTH_PROVIDER_API_BASE_URL:-http://rpe-service-auth-provider-aat.service.core-compute-aat.internal}}"
 export CCD_API_GATEWAY_OAUTH2_CLIENT_ID="${CCD_API_GATEWAY_OAUTH2_CLIENT_ID:-ccd_gateway}"
 export CCD_API_GATEWAY_OAUTH2_REDIRECT_URL="${CCD_API_GATEWAY_OAUTH2_REDIRECT_URL:-${CCD_IDAM_REDIRECT_URL:-https://ccd-case-management-web-aat.service.core-compute-aat.internal/oauth2redirect}}"
+#
+# Shared HLD loaders do not consistently read the same client-secret variable name.
+# Preserve the Jenkins-provided secret and expose it under the names used by BEFTA.
+export CCD_API_GATEWAY_OAUTH2_CLIENT_SECRET="${CCD_API_GATEWAY_OAUTH2_CLIENT_SECRET:-${CCD_API_GATEWAY_IDAM_CLIENT_SECRET:-${OAUTH2_CLIENT_SECRET:-}}}"
+export OAUTH2_CLIENT_SECRET="${OAUTH2_CLIENT_SECRET:-${CCD_API_GATEWAY_OAUTH2_CLIENT_SECRET}}"
 export CCD_API_GATEWAY_S2S_ID="${CCD_API_GATEWAY_S2S_ID:-ccd_gw}"
 export CCD_API_GATEWAY_S2S_KEY="${CCD_API_GATEWAY_S2S_KEY:-${CCD_API_GATEWAY_S2S_SECRET:-}}"
 export DEFINITION_IMPORTER_USERNAME="${DEFINITION_IMPORTER_USERNAME:-${CCD_CONFIGURER_IMPORTER_USERNAME:-}}"
@@ -77,6 +82,11 @@ echo "CCD HLD targets: definition_store=${DEFINITION_STORE_URL_BASE} case_servic
 
 if [ -z "${CCD_API_GATEWAY_S2S_KEY:-}" ]; then
   echo "CCD_API_GATEWAY_S2S_KEY or CCD_API_GATEWAY_S2S_SECRET must be set"
+  exit 1
+fi
+
+if [ -z "${CCD_API_GATEWAY_OAUTH2_CLIENT_SECRET:-}" ]; then
+  echo "CCD_API_GATEWAY_OAUTH2_CLIENT_SECRET, CCD_API_GATEWAY_IDAM_CLIENT_SECRET or OAUTH2_CLIENT_SECRET must be set"
   exit 1
 fi
 
