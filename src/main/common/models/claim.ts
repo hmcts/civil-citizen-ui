@@ -811,18 +811,20 @@ export class Claim {
   }
 
   private getName(party: Party): string {
+    let partyName: string = undefined;
     if (party?.type == PartyType.INDIVIDUAL) {
-      return this.getIndividualPartyName(party);
+      partyName = this.getIndividualPartyName(party);
     } else if (party?.type == PartyType.SOLE_TRADER) {
-      return String.raw`${this.getSoeTraderPartyName(party)}`;
+      partyName = String.raw`${this.getSoeTraderPartyName(party)}`;
     }
-    return String.raw`${party?.partyDetails?.partyName}`;
+    console.log(partyName);
+    return partyName? partyName : party?.partyDetails?.partyName;
   }
 
   private getSoeTraderPartyName(party: Party): string {
     const partyName = this.getIndividualPartyName(party);
     if (party.partyDetails?.soleTraderTradingAs) {
-      return `${partyName}` + String.raw` T/A ` + `${party.partyDetails?.soleTraderTradingAs}` ;
+      return `${partyName}` + ' T/A ' + `${party.partyDetails?.soleTraderTradingAs}` ;
     }
     return partyName;
   }
