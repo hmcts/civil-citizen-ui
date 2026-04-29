@@ -12,7 +12,7 @@ class Judgment {
   async raiseDefaultJudgment(claimRef) {
     await this.defendantDoB(claimRef);
     await this.paymentOptionsForDJFlow();
-    await this.confirmationPage();
+    await this.judgmentBufferConfirmationPage();
   }
 
   async raiseJudgmentByAdmissions(claimRef) {
@@ -103,6 +103,10 @@ class Judgment {
 
   async confirmationPage(){
     await I.waitForContent('County Court Judgment requested', 60);
+  }
+
+  async judgmentBufferConfirmationPage(){
+    await I.waitForContent('A CCJ has been requested. You will be notified when this is confirmed', 60);
   }
 }
 
