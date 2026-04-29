@@ -6,6 +6,18 @@ environment="${1:-${ENVIRONMENT:-}}"
 root_dir=$(realpath "$(dirname "${0}")/..")
 service_work_dir="${root_dir}/.high-level-data-setup/civil-service"
 service_branch_name="${CIVIL_SERVICE_SETUP_BRANCH:-${CIVIL_SERVICE_SHARED_BRANCH:-master}}"
+default_aat_camunda_url="https://civil-cui-camunda-staging.aat.platform.hmcts.net"
+
+is_preview_value() {
+  case "${1:-}" in
+    *".preview.platform."*|*"civil-citizen-ui-pr-"*|*"ccd-definition-store-civil-citizen-ui-pr-"*|*"manage-case-assignment-civil-citizen-ui-pr-"*|*"camunda-civil-citizen-ui-pr-"*)
+      return 0
+      ;;
+    *)
+      return 1
+      ;;
+  esac
+}
 
 cleanup() {
   rm -rf "${service_work_dir}"
@@ -31,7 +43,12 @@ case "${environment}" in
     export CAMUNDA_BASE_URL="${camunda_base_url}"
     ;;
   aat)
-    export CAMUNDA_BASE_URL="${CAMUNDA_BASE_URL:-https://civil-cui-camunda-staging.aat.platform.hmcts.net}"
+    camunda_base_url="${CAMUNDA_BASE_URL:-${default_aat_camunda_url}}"
+    if is_preview_value "${camunda_base_url}"; then
+      echo "AAT Camunda HLD refuses preview URL: ${camunda_base_url}"
+      exit 1
+    fi
+    export CAMUNDA_BASE_URL="${camunda_base_url}"
     ;;
   *)
     echo "Unsupported environment: ${environment}"

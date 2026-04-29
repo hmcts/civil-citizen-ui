@@ -7,6 +7,20 @@ root_dir=$(realpath "$(dirname "${0}")/..")
 work_dir="${root_dir}/.high-level-data-setup/civil-ccd-definition"
 branch_name="${CCD_DEFINITION_BRANCH:-master}"
 shared_branch_name="${CIVIL_SERVICE_SHARED_BRANCH:-master}"
+default_aat_definition_store_url="https://civil-cui-definition-store-staging.aat.platform.hmcts.net"
+default_aat_case_service_url="https://civil-cui-civil-service-staging.aat.platform.hmcts.net"
+default_aat_aac_url="https://civil-cui-manage-case-assignment-staging.aat.platform.hmcts.net"
+
+is_preview_value() {
+  case "${1:-}" in
+    *".preview.platform."*|*"civil-citizen-ui-pr-"*|*"ccd-definition-store-civil-citizen-ui-pr-"*|*"manage-case-assignment-civil-citizen-ui-pr-"*|*"camunda-civil-citizen-ui-pr-"*)
+      return 0
+      ;;
+    *)
+      return 1
+      ;;
+  esac
+}
 
 cleanup() {
   rm -rf "${work_dir}"
@@ -51,10 +65,19 @@ case "${environment}" in
     export CCD_DEF_AAC_URL="${aac_url}"
     ;;
   aat)
-    export DEFINITION_STORE_URL_BASE="${DEFINITION_STORE_URL_BASE:-${CCD_DEFINITION_STORE_API_BASE_URL:-https://civil-cui-definition-store-staging.aat.platform.hmcts.net}}"
-    export CCD_DEFINITION_STORE_API_BASE_URL="${CCD_DEFINITION_STORE_API_BASE_URL:-${DEFINITION_STORE_URL_BASE}}"
-    export CCD_DEF_CASE_SERVICE_BASE_URL="${CCD_DEF_CASE_SERVICE_BASE_URL:-${CIVIL_SERVICE_URL:-https://civil-cui-civil-service-staging.aat.platform.hmcts.net}}"
-    export CCD_DEF_AAC_URL="${CCD_DEF_AAC_URL:-${AAC_API_URL:-https://civil-cui-manage-case-assignment-staging.aat.platform.hmcts.net}}"
+    definition_store_url="${DEFINITION_STORE_URL_BASE:-${CCD_DEFINITION_STORE_API_BASE_URL:-${default_aat_definition_store_url}}}"
+    case_service_url="${CCD_DEF_CASE_SERVICE_BASE_URL:-${CIVIL_SERVICE_URL:-${default_aat_case_service_url}}}"
+    aac_url="${CCD_DEF_AAC_URL:-${AAC_API_URL:-${default_aat_aac_url}}}"
+
+    if is_preview_value "${definition_store_url}" || is_preview_value "${case_service_url}" || is_preview_value "${aac_url}"; then
+      echo "AAT CCD HLD refuses preview targets: definition_store=${definition_store_url} case_service=${case_service_url} aac=${aac_url}"
+      exit 1
+    fi
+
+    export DEFINITION_STORE_URL_BASE="${definition_store_url}"
+    export CCD_DEFINITION_STORE_API_BASE_URL="${definition_store_url}"
+    export CCD_DEF_CASE_SERVICE_BASE_URL="${case_service_url}"
+    export CCD_DEF_AAC_URL="${aac_url}"
     ;;
   *)
     echo "Unsupported environment: ${environment}"

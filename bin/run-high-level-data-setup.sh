@@ -18,6 +18,11 @@ case "${environment}" in
     ;;
 esac
 
+if [ "${environment}" = "aat" ]; then
+  # AAT HLD must not inherit PR context from earlier pipeline state.
+  unset CHANGE_ID || true
+fi
+
 if [ "${environment}" = "preview" ] && [ -n "${CHANGE_ID:-}" ]; then
   # Force preview-specific service URLs even when Jenkins injects AAT defaults into the HLD stage.
   eval "$("${PWD}/bin/variables/load-preview-environment-variables.sh" "${CHANGE_ID}")"
