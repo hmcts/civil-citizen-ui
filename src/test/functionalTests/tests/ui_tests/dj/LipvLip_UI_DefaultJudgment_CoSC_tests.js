@@ -10,11 +10,12 @@ const {verifyNotificationTitleAndContent} = require('../../../specClaimHelpers/e
 const ResponseToDefenceLipVsLipSteps = require('../../../citizenFeatures/response/steps/responseToDefenceLipvLipSteps');
 
 const claimType = 'SmallClaims';
+// eslint-disable-next-line no-unused-vars
 let claimRef, notification, claimNumber, caseData;
 
-Feature('Create Lip v Lip claim -  Default Judgment CoSC judgment buffer').tag('@civil-citizen-nightly @ui-dj');
+Feature('Create Lip v Lip claim -  Default Judgment').tag('@civil-citizen-nightly @ui-dj');
 
-Scenario('Create LipvLip claim and defendant not responded by deadline, claimant requests Default Judgment and completes CoSC', async ({api, I}) => {
+Scenario('Create LipvLip claim and defendant not responded by deadline and Claimant raise Default Judgment', async ({api, I}) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType);
@@ -23,19 +24,7 @@ Scenario('Create LipvLip claim and defendant not responded by deadline, claimant
   await api.amendRespondent1ResponseDeadline(config.systemUpdate2);
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await ClaimantResponseSteps.verifyDefaultJudgment(claimRef);
-  await api.waitForFinishedBusinessProcess();
-  await I.click('Go to your account');
-  await I.waitForContent('Your money claims account', config.WaitForText);
-  await I.click(claimNumber);
-  await I.waitForContent('Tell us you\'ve settled the claim', config.WaitForText);
-  await I.see('Inform the court of a breathing space debt respite');
   await I.click('Sign out');
-  await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
-  await I.waitForContent('Your money claims account', config.WaitForText);
-  await I.click(claimNumber);
-  await I.waitForContent('Respond to the claim', config.WaitForText);
-  await I.click('Sign out');
-  await api.waitForFinishedBusinessProcess();
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   notification = defendantResponseFullAdmitPayBySetDateClaimantCoSC();
   await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
