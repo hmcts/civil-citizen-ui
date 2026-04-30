@@ -178,7 +178,7 @@ export class CivilServiceClient {
     const requestUserId = req.session?.user?.id ?? '';
     const cacheKey = `${normalizedClaimId}|${requestUserId}`;
     const cachedClaimDetailsPromise = requestCache.get(cacheKey);
-    if (cachedClaimDetailsPromise) {
+    if (cachedClaimDetailsPromise !== undefined) {
       return cachedClaimDetailsPromise;
     }
 
@@ -543,7 +543,7 @@ export class CivilServiceClient {
     const requestUserId = req.session?.user?.id ?? '';
     const cacheKey = `${normalizedClaimId}|${requestUserId}`;
     const cachedCaseRolePromise = requestCache.get(cacheKey);
-    if (cachedCaseRolePromise) {
+    if (cachedCaseRolePromise !== undefined) {
       return cachedCaseRolePromise;
     }
 
