@@ -164,6 +164,10 @@ civil-service:
       CMC_DB_CONNECTION_OPTIONS: "?stringtype=unspecified&reWriteBatchedInserts=true&sslmode=require"
       CMC_DB_USERNAME: hmcts
       CMC_DB_NAME: "pr-${CHANGE_ID}-cmc"
+      SCHEDULER_ENABLED_JUDGEMENT_BUFFER: true
+      CRON_EXPRESSION_JUDGEMENT_BUFFER: 0 */10 * * * *
+      SCHEDULER_ENABLED_DEFENDANT_RESPONSE: true
+      CRON_EXPRESSION_DEFENDANT_RESPONSE: 0 */10 * * * *
     secrets:
       CMC_DB_PASSWORD:
         secretRef: "{{ .Values.global.postgresSecret }}"
