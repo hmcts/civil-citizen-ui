@@ -1,6 +1,7 @@
 {% extends "../../claim-details-tpl.njk" %}
 {% from "govuk/components/back-link/macro.njk" import govukBackLink %}
 {% from "../../macro/contact-us-for-help.njk" import contactUsForHelp with context %}
+{% from "../../macro/about-claim-widget.njk" import aboutClaimWidget %}
 {% from "../../macro/page-title.njk" import setPageTitle %}
 
 {% block pageTitle %}
@@ -9,10 +10,14 @@
 {% block content %}
   <div class="govuk-width-container govuk-!-padding-top-0">
     <main class="govuk-main-wrapper govuk-!-padding-top-0" role="main">
+      {% set otherPartyLabel = 'contact-them' %}
+      {% set header = t('PAGES.CONTACT_THEM.ABOUT') %}
+      {% set totalClaimAmount ='£'+ claim.totalClaimAmount %}
       {% set phone = party.partyPhone %}
       {% set email = party.emailAddress %}
       {% set contactPerson = party.partyDetails.contactPerson %}
       {% set heading = t('PAGES.CONTACT_THEM.CONTACT')+ t(otherParty) %}
+      {% set claimAmount = t('COMMON.CLAIM_AMOUNT') + ':' %}
       <div class="govuk-grid-row govuk-!-margin-top-0">
         <div class="govuk-grid-column-two-thirds govuk-!-margin-top-0">
           <span class="govuk-caption-l  govuk-!-padding-top-0">{{ t(otherParty) }}</span>
@@ -52,6 +57,9 @@
           <br/>
           {{ contactUsForHelp(t) }}
         </div>
+           {% if showInR1 %}
+        {{ aboutClaimWidget(t,{header:header,lines:[{title: 'PAGES.CLAIM_SUMMARY.CLAIMANT_NAME', href: otherPartyLabel, hrefContact: otherPartyName},{title: 'PAGES.CLAIM_SUMMARY.CLAIM_AMOUNT', href: '', content:totalClaimAmount},{title: 'PAGES.CLAIM_SUMMARY.CLAIM_DETAILS', href: claimDetailsUrl, hrefContact: 'PAGES.CLAIM_SUMMARY.VIEW_CLAIM'}]}) }}
+           {% endif %}
       </div>
     </main>
   </div>

@@ -3,12 +3,10 @@ import {getLng} from 'common/utils/languageToggleUtils';
 import {t} from 'i18next';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
 import {Claim} from 'models/claim';
-import {DASHBOARD_CLAIMANT_URL, OLD_DASHBOARD_CLAIMANT_URL} from 'routes/urls';
+import {DASHBOARD_CLAIMANT_URL} from 'routes/urls';
 import {noGroupingCurrencyFormatWithNoTrailingZeros} from 'common/utils/currencyFormat';
 
 const ocmcBaseUrl = config.get<string>('services.cmc.url');
-const claimantDashboardUrl = DASHBOARD_CLAIMANT_URL.replace(':id', ':claimId');
-const oldClaimantDashboardUrl = OLD_DASHBOARD_CLAIMANT_URL.replace(':id', ':claimId');
 
 export interface DashboardStatusTranslationParam {
   key: string;
@@ -55,13 +53,8 @@ export abstract class DashboardItem {
 export class DashboardClaimantItem extends DashboardItem {
   constructor() {
     super();
-    this.url = claimantDashboardUrl;
+    this.url = '/dashboard/:claimId/claimant';
 
-  }
-
-  getHref() {
-    const url = this.ocmc ? oldClaimantDashboardUrl : claimantDashboardUrl;
-    return this.ocmc ? `${ocmcBaseUrl}${url.replace(':claimId', this.claimId)}` : url.replace(':claimId', this.claimId);
   }
 
   getDashboardStatus(lang: string ): DashboardStatus {

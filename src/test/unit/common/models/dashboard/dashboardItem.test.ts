@@ -42,7 +42,7 @@ describe('Dashboard Items', ()=> {
       //When
       const href = ccdClaimantClaim.getHref();
       //Then
-      expect(href).toEqual( '/dashboard/1/claimantNewDesign');
+      expect(href).toEqual( '/dashboard/1/claimant');
     });
 
     it('should translate claim to dashboard item when claim is not empty', () => {
@@ -168,7 +168,7 @@ describe('Dashboard Items', ()=> {
       //When
       const href = ccdDefendantClaim.getHref();
       //Then
-      expect(href).toEqual( '/dashboard/1/claimantNewDesign');
+      expect(href).toEqual( '/dashboard/1/claimant');
     });
 
     it('should return translated status for claim', () => {

@@ -25,10 +25,12 @@ newResponseDeadlineController
       const claimId = getRouteParam(req, 'id');
       const claim = await getClaimWithExtendedResponseDeadline(req);
       const lang = req.query.lang ? req.query.lang : req.cookies.lang;
+      const isReleaseTwoEnabled = true;
       res.render(newResponseDeadlineViewPath, {
         claimantName: claim.getClaimantFullName(),
         responseDeadline: formatDateToFullDate(claim.responseDeadline.calculatedResponseDeadline, lang),
         backUrl: constructResponseUrlWithIdParams(claimId, AGREED_TO_MORE_TIME_URL),
+        isReleaseTwoEnabled,
       });
     } catch (error) {
       logger.error(`Error when GET : new response deadline - ${error.message}`);

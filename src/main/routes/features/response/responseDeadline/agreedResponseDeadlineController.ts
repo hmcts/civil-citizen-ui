@@ -28,11 +28,13 @@ agreedResponseDeadlineController
       try {
         const claim = await getCaseDataFromStore(generateRedisKey(<AppRequest>req));
         const agreedResponseDeadline = responseDeadlineService.getAgreedResponseDeadline(claim);
+        const isReleaseTwoEnabled = true;
         res.render(agreedResponseDeadlineViewPath, {
           form: new GenericForm(agreedResponseDeadline),
           today: new Date(),
           claimantName: claim.getClaimantFullName(),
           backLink,
+          isReleaseTwoEnabled,
         });
       } catch (error) {
         logger.error(`Error when GET : agreed response - ${error.message}`);
@@ -51,6 +53,7 @@ agreedResponseDeadlineController
         const agreedResponseDeadlineDate = new AgreedResponseDeadline(year, month, day, originalResponseDeadline);
         const form: GenericForm<AgreedResponseDeadline> = new GenericForm<AgreedResponseDeadline>(agreedResponseDeadlineDate);
         await form.validate();
+        const isReleaseTwoEnabled = true;
         if (form.hasErrors()) {
           logger.info(`form has error - ${form.hasErrors()}`);
           res.render(agreedResponseDeadlineViewPath, {
@@ -58,6 +61,7 @@ agreedResponseDeadlineController
             today: new Date(),
             claimantName: claim.getClaimantFullName(),
             backLink,
+            isReleaseTwoEnabled,
           });
         } else {
           await responseDeadlineService.saveAgreedResponseDeadline(redisKey, agreedResponseDeadlineDate.date);

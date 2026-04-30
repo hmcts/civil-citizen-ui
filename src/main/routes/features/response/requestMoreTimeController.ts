@@ -19,12 +19,14 @@ const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('requestMoreTimeController');
 
 async function renderView(res: Response, form: GenericForm<AdditionalTime>, claim: Claim, language: string, claimId: string): Promise<void> {
+  const isReleaseTwoEnabled = true;
   const isGaNroEnabled = await isCuiGaNroEnabled();
   res.render(requestMoreTimeViewPath, {
     additionalTimeOptions: AdditionalTimeOptions,
     form,
     responseDate: claim.formattedResponseDeadline(language),
     claimantName: claim.getClaimantFullName(),
+    isReleaseTwoEnabled,
     applyGaApplication: constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL),
     isGaNroEnabled,
   });

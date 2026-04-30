@@ -364,3 +364,4 @@ const assignCaseDocumentIfPresent = <T extends { caseDocument?: CaseDocument }>(
     target.caseDocument = parsed;
   }
 };
+
