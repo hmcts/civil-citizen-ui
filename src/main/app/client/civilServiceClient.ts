@@ -94,6 +94,30 @@ export class CivilServiceClient {
     }
   }
 
+  private getClaimDetailsRequestCache(req: AppRequest): Map<string, Promise<Claim>> {
+    const requestWithLocals = req as AppRequest & { locals?: AppRequest['locals'] };
+    const requestLocals = requestWithLocals.locals ?? (requestWithLocals.locals = {env: '', lang: ''});
+    if (requestLocals.claimDetailsRequestCache) {
+      return requestLocals.claimDetailsRequestCache;
+    }
+
+    const newCache = new Map<string, Promise<Claim>>();
+    requestLocals.claimDetailsRequestCache = newCache;
+    return newCache;
+  }
+
+  private getUserCaseRolesRequestCache(req: AppRequest): Map<string, Promise<CaseRole>> {
+    const requestWithLocals = req as AppRequest & { locals?: AppRequest['locals'] };
+    const requestLocals = requestWithLocals.locals ?? (requestWithLocals.locals = {env: '', lang: ''});
+    if (requestLocals.userCaseRolesRequestCache) {
+      return requestLocals.userCaseRolesRequestCache;
+    }
+
+    const newCache = new Map<string, Promise<CaseRole>>();
+    requestLocals.userCaseRolesRequestCache = newCache;
+    return newCache;
+  }
+
   getConfig(req: AppRequest) {
     return {
       headers: {
@@ -149,7 +173,7 @@ export class CivilServiceClient {
   }
 
   async retrieveClaimDetails(claimId: RouteParam, req: AppRequest): Promise<Claim> {
-    const requestCache = req.locals.claimDetailsRequestCache ?? (req.locals.claimDetailsRequestCache = new Map<string, Promise<Claim>>());
+    const requestCache = this.getClaimDetailsRequestCache(req);
     const normalizedClaimId = normalizeRouteParam(claimId);
     const requestUserId = req.session?.user?.id ?? '';
     const cacheKey = `${normalizedClaimId}|${requestUserId}`;
@@ -514,7 +538,7 @@ export class CivilServiceClient {
   }
 
   async getUserCaseRoles(claimId: RouteParam, req: AppRequest) {
-    const requestCache = req.locals.userCaseRolesRequestCache ?? (req.locals.userCaseRolesRequestCache = new Map<string, Promise<CaseRole>>());
+    const requestCache = this.getUserCaseRolesRequestCache(req);
     const normalizedClaimId = normalizeRouteParam(claimId);
     const requestUserId = req.session?.user?.id ?? '';
     const cacheKey = `${normalizedClaimId}|${requestUserId}`;
