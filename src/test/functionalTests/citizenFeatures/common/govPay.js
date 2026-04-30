@@ -29,13 +29,13 @@ class GovPay {
     await I.click(continueButton);
   }
 
-  confirmPayment(language) {
+  async confirmPayment(language) {
     console.log(`confirmPayment - Running in language: ${language}`);
     const translations = this.getLanguage(language);
 
-    I.waitForElement('//*[@id="confirm"]');
+    await I.waitForElement('//*[@id="confirm"]');
     const confirmPaymentButton = translations.COMMON.BUTTONS.CONFIRM_PAYMENT;
-    I.click(confirmPaymentButton);
+    await I.click(confirmPaymentButton);
 
   }
 }
