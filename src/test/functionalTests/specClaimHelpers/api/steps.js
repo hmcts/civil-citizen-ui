@@ -1034,4 +1034,4 @@ const validateUploadTranslatedDoc = async (translationDocType) => {
 
 const waitForTimeout = async (ms) => {
   return new Promise(resolve => setTimeout(resolve, ms));
-}
+};
