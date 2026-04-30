@@ -475,6 +475,11 @@ describe('Civil Service Client', () => {
   });
 
   describe('getUserCaseRoles', () => {
+    beforeEach(() => {
+      appReq.locals.claimDetailsRequestCache = undefined;
+      appReq.locals.userCaseRolesRequestCache = undefined;
+    });
+
     it('should return User Case Roles successfully', async () => {
       //Given
       const caseRoleExpected = [CaseRole.RESPONDENTSOLICITORTWO];
