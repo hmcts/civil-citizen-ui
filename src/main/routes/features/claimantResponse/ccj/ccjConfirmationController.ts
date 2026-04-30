@@ -21,7 +21,7 @@ ccjConfirmationController.get(CCJ_CONFIRMATION_URL, ccjConfirmationGuard, (async
       processYourRequest1 = t('PAGES.CCJ_CONFIRMATION.PROCESS_YOUR_REQUEST_1', {defendantName});
     }
 
-    res.render('features/claimantResponse/ccj/ccj-confirmation', {defendantName, isJudgmentOnline, pageTitle: 'PAGES.CCJ_CONFIRMATION.PAGE_TITLE', processYourRequest, processYourRequest1});
+    res.render('features/claimantResponse/ccj/ccj-confirmation', { isJudgmentOnline, pageTitle: 'PAGES.CCJ_CONFIRMATION.PAGE_TITLE', processYourRequest, processYourRequest1});
   } catch (error) {
     next(error);
   }

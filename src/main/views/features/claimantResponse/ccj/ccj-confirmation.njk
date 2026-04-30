@@ -19,8 +19,8 @@
         titleText:t('PAGES.CCJ_CONFIRMATION.TITLE')
       }) }}
       <br>
-      <p class="govuk-body">{{ processYourRequest }}</p>
-      <p class="govuk-body">{{ processYourRequest1 }}</p>
+      <p class="govuk-body">{{ processYourRequest | safe}}</p>
+      <p class="govuk-body">{{ processYourRequest1 | safe}}</p>
       {% if not isJudgmentOnline %}
         <p class="govuk-body">{{ t('PAGES.CCJ_CONFIRMATION.UPDATES') }}</p>
       {% endif %}
