@@ -31,6 +31,7 @@ let chai, expect, assert;
 
 const {
   waitForFinishedBusinessProcess, waitForGAFinishedBusinessProcess, hearingFeeUnpaid, bundleGeneration, uploadDocument, triggerTrialArrangements,
+  assertEmailSent, assertNoEmailSent,
 } = require('./testingSupport');
 const {assignCaseRoleToUser, addUserCaseMapping, unAssignAllUsers} = require('./caseRoleAssignmentHelper');
 const apiRequest = require('./apiRequest.js');
@@ -134,6 +135,19 @@ module.exports = {
     console.log('This is inside triggerTrialArrangements() : ' + caseId);
     await triggerTrialArrangements(caseId);
     console.log('End of triggerTrialArrangements()');
+  },
+
+  assertEmailSent: async (caseId, options) => {
+    console.log('This is inside assertEmailSent() : ' + caseId);
+    const entry = await assertEmailSent(caseId, options);
+    console.log('End of assertEmailSent()');
+    return entry;
+  },
+
+  assertNoEmailSent: async (caseId, options) => {
+    console.log('This is inside assertNoEmailSent() : ' + caseId);
+    await assertNoEmailSent(caseId, options);
+    console.log('End of assertNoEmailSent()');
   },
 
   waitForFinishedBusinessProcess: async () => {
