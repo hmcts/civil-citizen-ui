@@ -27,7 +27,6 @@ const viewPath = 'features/generalApplication/agreement-from-other-party';
 agreementFromOtherPartyController.get(GA_AGREEMENT_FROM_OTHER_PARTY_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = getRouteParam(req, 'id');
-    const redisKey = generateRedisKey(<AppRequest>req);
     const claim = await getClaimById(claimId, req, true);
     //const applicationIndex = queryParamNumber(req, 'index') || claim.generalApplication.applicationTypes.length - 1;
     const backLinkUrl = BACK_URL;

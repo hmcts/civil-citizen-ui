@@ -28,7 +28,6 @@ const viewPath = 'features/generalApplication/add-another-application';
 
 const renderView = async (req: AppRequest, res: Response, form?: GenericForm<GenericYesNo>): Promise<void> => {
   const claimId = getRouteParam(req, 'id');
-  const redisKey = generateRedisKey(req);
   const claim = await getClaimById(claimId, req, true);
   const applicationIndex = queryParamNumber(req, 'index') || claim.generalApplication.applicationTypes.length - 1;
   const backLinkUrl = BACK_URL;
