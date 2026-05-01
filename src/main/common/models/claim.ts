@@ -89,6 +89,7 @@ import { RespondentGaAppDetail } from './generalApplication/response/respondentG
 import {ClaimGeneralApplication} from 'models/generalApplication/claimGeneralApplication';
 import {QueryManagement} from 'form/models/queryManagement/queryManagement';
 import {CaseQueries} from 'models/queryManagement/caseQueries';
+import {getPartyName} from 'common/utils/partyNameUtils';
 
 export class Claim {
   resolvingDispute: boolean;
@@ -281,11 +282,11 @@ export class Claim {
   }
 
   getClaimantFullName(): string {
-    return this.getName(this.applicant1);
+    return getPartyName(this.applicant1);
   }
 
   getDefendantFullName(): string {
-    return this.getName(this.respondent1);
+    return getPartyName(this.respondent1);
   }
 
   isDefendantResponsePayBySetDate(): boolean {
@@ -808,32 +809,6 @@ export class Claim {
   hasExpertDetails(): boolean {
     return this.directionQuestionnaire?.experts?.expertDetailsList?.items?.length
       && this.directionQuestionnaire?.experts?.expertEvidence?.option === YesNo.YES;
-  }
-
-  private getName(party: Party): string {
-    let partyName: string = undefined;
-    if (party?.type == PartyType.INDIVIDUAL) {
-      partyName = this.getIndividualPartyName(party);
-    } else if (party?.type == PartyType.SOLE_TRADER) {
-      partyName = String.raw`${this.getSoeTraderPartyName(party)}`;
-    }
-    console.log(partyName);
-    return partyName? partyName : party?.partyDetails?.partyName;
-  }
-
-  private getSoeTraderPartyName(party: Party): string {
-    const partyName = this.getIndividualPartyName(party);
-    if (party.partyDetails?.soleTraderTradingAs) {
-      return `${partyName}` + ' T/A ' + `${party.partyDetails?.soleTraderTradingAs}` ;
-    }
-    return partyName;
-  }
-  private getIndividualPartyName(party: Party): string {
-    if (party.partyDetails?.title) {
-      return `${party.partyDetails?.title} ${party.partyDetails?.firstName} ${party.partyDetails?.lastName}`;
-    } else {
-      return `${party.partyDetails?.firstName} ${party.partyDetails?.lastName}`;
-    }
   }
 
   get isFastTrackClaim(): boolean {
