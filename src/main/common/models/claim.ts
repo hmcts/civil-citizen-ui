@@ -89,7 +89,6 @@ import { RespondentGaAppDetail } from './generalApplication/response/respondentG
 import {ClaimGeneralApplication} from 'models/generalApplication/claimGeneralApplication';
 import {QueryManagement} from 'form/models/queryManagement/queryManagement';
 import {CaseQueries} from 'models/queryManagement/caseQueries';
-import {getPartyName} from 'common/utils/partyNameUtils';
 
 export class Claim {
   resolvingDispute: boolean;
@@ -282,11 +281,11 @@ export class Claim {
   }
 
   getClaimantFullName(): string {
-    return getPartyName(this.applicant1);
+    return this.getName(this.applicant1);
   }
 
   getDefendantFullName(): string {
-    return getPartyName(this.respondent1);
+    return this.getName(this.respondent1);
   }
 
   isDefendantResponsePayBySetDate(): boolean {
@@ -809,6 +808,31 @@ export class Claim {
   hasExpertDetails(): boolean {
     return this.directionQuestionnaire?.experts?.expertDetailsList?.items?.length
       && this.directionQuestionnaire?.experts?.expertEvidence?.option === YesNo.YES;
+  }
+
+  private getName(party: Party): string {
+    if (party?.type == PartyType.INDIVIDUAL) {
+      return this.getIndividualPartyName(party);
+    } else if (party?.type == PartyType.SOLE_TRADER) {
+      return String.raw`${this.getSoeTraderPartyName(party)}`;
+    }
+    return party?.partyDetails?.partyName;
+  }
+
+  private getSoeTraderPartyName(party: Party): string {
+    const SOLE_TRADER_TRADING_AS_PREFIX = ' T/A ';
+    const partyName = this.getIndividualPartyName(party);
+    if (party.partyDetails?.soleTraderTradingAs) {
+      return `${partyName} ${SOLE_TRADER_TRADING_AS_PREFIX} ${party.partyDetails?.soleTraderTradingAs}` ;
+    }
+    return partyName;
+  }
+  private getIndividualPartyName(party: Party): string {
+    if (party.partyDetails?.title) {
+      return `${party.partyDetails?.title} ${party.partyDetails?.firstName} ${party.partyDetails?.lastName}`;
+    } else {
+      return `${party.partyDetails?.firstName} ${party.partyDetails?.lastName}`;
+    }
   }
 
   get isFastTrackClaim(): boolean {
