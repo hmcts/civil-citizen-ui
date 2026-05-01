@@ -522,12 +522,12 @@ While connected to the VPN simply run one of the below commands from your projec
 
 Note: be sure to have Docker running
 ```shell
-./bin/setup-devuser-preview-env.sh
+npx @hmcts/dev-env@latest && ./bin/setup-devuser-preview-env.sh
 ```
-You can optionally specify branches in the order `ccd camunda dmn` like below, or leave them blank to use `master`.
+You can optionally specify a branch for CCD definitions and Camunda definitions like below or leave it blank to use master.
 
 ```shell
-./bin/setup-devuser-preview-env.sh ccdBranchName camundaBranchName dmnBranch
+npx @hmcts/dev-env@latest && ./bin/setup-devuser-preview-env.sh ccdBranchName camundaBranchName generalAppCCDBranch dmnBranch waStandaloneBranch
 ```
 
 Once the pods are up and running you can connect to them using a plugin called Mirrord on Intellij or VSCode.
@@ -539,10 +539,10 @@ If you want to clean up the environment just run:
 npx @hmcts/dev-env@latest --delete
 ```
 
-To run a different local preview chart template, for example `values.fullDeployment.preview.template.yaml`, run:
+To run the specialised charts, where you can get Elasticsearch for instance, run:
 
 ```shell
-DEV_ENV_TEMPLATE=values.fullDeployment.preview.template.yaml ./bin/setup-devuser-preview-env.sh
+npx @hmcts/dev-env@latest --template values.elasticsearch.preview.template.yaml && ./bin/setup-devuser-preview-env.sh
 ```
 
 ## License
