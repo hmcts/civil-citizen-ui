@@ -29,7 +29,7 @@ const viewPath = 'features/generalApplication/add-another-application';
 const renderView = async (req: AppRequest, res: Response, form?: GenericForm<GenericYesNo>): Promise<void> => {
   const claimId = getRouteParam(req, 'id');
   const redisKey = generateRedisKey(req);
-  const claim = await getClaimById(redisKey, req, true);
+  const claim = await getClaimById(claimId, req, true);
   const applicationIndex = queryParamNumber(req, 'index') || claim.generalApplication.applicationTypes.length - 1;
   const backLinkUrl = BACK_URL;
   const cancelUrl = await getCancelUrl(claimId, claim);
@@ -61,9 +61,9 @@ addAnotherApplicationController.post(GA_ADD_ANOTHER_APPLICATION_URL, async (req:
       await renderView(req, res, form);
     } else {
       const redisKey = generateRedisKey(req);
-      const claim = await getClaimById(redisKey, req, true);
-
       const claimId = getRouteParam(req, 'id');
+      const claim = await getClaimById(claimId, req, true);
+
       claim.generalApplication.addType = true;
       if (req.body.option === YesNo.YES) {
         await saveDraftClaim(redisKey, claim);
