@@ -43,7 +43,7 @@
               <th scope="col" class="govuk-table__header">{{ t('PAGES.DASHBOARD.CLAIM_NUMBER') }}</th>
               <th scope="col" class="govuk-table__header">{{ t('PAGES.DASHBOARD.DEFENDANT_NAME') }}</th>
               <th scope="col" class="govuk-table__header">{{ t('COMMON.CLAIM_AMOUNT') }}</th>
-              <th scope="col" class="govuk-table__header">{{ t('PAGES.DASHBOARD.CLAIM_STATUS') | safe}}</th>
+              <th scope="col" class="govuk-table__header">{{ t('PAGES.DASHBOARD.CLAIM_STATUS') }}</th>
             </tr>
           </thead>
           <tbody class="govuk-table__body">
@@ -70,7 +70,7 @@
                 </td>
                 <td class="govuk-table__cell">{{ item.defendantName }}</td>
                 <td class="govuk-table__cell">{{ item.claimAmount | currencyFormat(item.claimAmount) }}</td>
-                <td class="govuk-table__cell">{{ item.getStatus(lang) }} </td>
+                <td class="govuk-table__cell">{{ item.getStatus(lang) | safe}} </td>
               </tr>
             {% endfor %}
           </tbody>
@@ -99,7 +99,7 @@
               <th scope="col" class="govuk-table__header">{{ t('PAGES.DASHBOARD.CLAIM_NUMBER') }}</th>
               <th scope="col" class="govuk-table__header">{{ t('PAGES.DASHBOARD.CLAIMANT_NAME') }}</th>
               <th scope="col" class="govuk-table__header">{{ t('COMMON.CLAIM_AMOUNT') }}</th>
-              <th scope="col" class="govuk-table__header">{{ t('PAGES.DASHBOARD.CLAIM_STATUS') | safe}}</th>
+              <th scope="col" class="govuk-table__header">{{ t('PAGES.DASHBOARD.CLAIM_STATUS') }}</th>
             </tr>
           </thead>
           <tbody class="govuk-table__body">
@@ -113,7 +113,7 @@
                 </td>
                 <td class="govuk-table__cell">{{ item.claimantName }}</td>
                 <td class="govuk-table__cell">{{ item.claimAmount | currencyFormat(item.claimAmount) }}</td>
-                <td class="govuk-table__cell">{{ item.getStatus(lang) }} </td>
+                <td class="govuk-table__cell">{{ item.getStatus(lang) | safe}} </td>
               </tr>
             {% endfor %}
           </tbody>
