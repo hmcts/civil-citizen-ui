@@ -820,7 +820,7 @@ export class Claim {
   }
 
   private getSoeTraderPartyName(party: Party): string {
-    const SOLE_TRADER_TRADING_AS_PREFIX = ' T/A ';
+    const SOLE_TRADER_TRADING_AS_PREFIX = 'T/A';
     const partyName = this.getIndividualPartyName(party);
     if (party.partyDetails?.soleTraderTradingAs) {
       return `${partyName} ${SOLE_TRADER_TRADING_AS_PREFIX} ${party.partyDetails?.soleTraderTradingAs}` ;
