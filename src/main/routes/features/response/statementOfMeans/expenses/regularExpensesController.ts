@@ -10,6 +10,7 @@ import {
 import {toRegularExpenseForm} from 'common/utils/expenseAndIncome/regularIncomeExpenseCoverter';
 import {AppRequest} from 'common/models/AppRequest';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const regularExpensesController = Router();
 const regularExpensesView = 'features/response/statementOfMeans/expenses/regular-expenses';
@@ -30,12 +31,13 @@ regularExpensesController.get(CITIZEN_MONTHLY_EXPENSES_URL, (async (req, res, ne
 regularExpensesController.post(CITIZEN_MONTHLY_EXPENSES_URL, (async (req, res, next: NextFunction) => {
   const form = new GenericForm(toRegularExpenseForm(req));
   try {
+    const claimId = getRouteParam(req, 'id');
     await form.validate();
     if (form.hasErrors()) {
       renderForm(form, res);
     } else {
       await saveRegularExpenses(generateRedisKey(<AppRequest>req), form.model);
-      res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_MONTHLY_INCOME_URL));
+      res.redirect(constructResponseUrlWithIdParams(claimId, CITIZEN_MONTHLY_INCOME_URL));
     }
   } catch (error) {
     next(error);

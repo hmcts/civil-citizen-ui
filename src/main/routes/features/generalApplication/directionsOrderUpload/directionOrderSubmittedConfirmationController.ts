@@ -9,6 +9,7 @@ import {
   getConfirmationContent,
 } from 'services/features/generalApplication/directionsOrderUpload/uploadDocumentsDirectionsOrderService';
 import {t} from 'i18next';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const directionOrderSubmittedConfirmationController = Router();
 const viewPath = 'features/generalApplication/directionsOrderUpload/confirmation-screen';
@@ -16,7 +17,7 @@ const viewPath = 'features/generalApplication/directionsOrderUpload/confirmation
 directionOrderSubmittedConfirmationController.get(GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_CONFIRMATION_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
-    const { id: claimId } = req.params;
+    const claimId = getRouteParam(req, 'id');
     const claim = await getClaimById(claimId, req, true);
     const redisKey = generateRedisKeyForGA(req);
     await deleteDraftClaimFromStore(redisKey);

@@ -90,7 +90,7 @@ describe('translate Fast claim hearing details to CCD model', () => {
           fromDate: singleDateMock.from,
           toDate: singleDateMock.until,
           unavailableDateType: CCDUnavailableDateType.SINGLE_DATE,
-          who: undefined,
+          who: 'defendant',
         },
       }],
     };
@@ -118,7 +118,7 @@ describe('translate Fast claim hearing details to CCD model', () => {
           fromDate: longerPeriod10DaysMock.from,
           toDate: longerPeriod10DaysMock.until,
           unavailableDateType: CCDUnavailableDateType.DATE_RANGE,
-          who: undefined,
+          who: 'defendant',
         },
       }],
     };

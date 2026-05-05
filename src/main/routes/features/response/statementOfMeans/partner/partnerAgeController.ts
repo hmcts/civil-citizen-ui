@@ -12,6 +12,7 @@ import {GenericForm} from 'form/models/genericForm';
 import {GenericYesNo} from 'form/models/genericYesNo';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'common/models/AppRequest';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const citizenPartnerAgeViewPath = 'features/response/statementOfMeans/partner/partner-age';
 const partnerAgeController = Router();
@@ -34,6 +35,7 @@ partnerAgeController.get(CITIZEN_PARTNER_AGE_URL, (async (req, res, next: NextFu
 partnerAgeController.post(CITIZEN_PARTNER_AGE_URL,
   (async (req, res, next: NextFunction) => {
     try {
+      const claimId = getRouteParam(req, 'id');
       const redisKey = generateRedisKey(<AppRequest>req);
       const form: GenericForm<GenericYesNo> = new GenericForm(new GenericYesNo(req.body.option));
       form.validateSync();
@@ -42,12 +44,12 @@ partnerAgeController.post(CITIZEN_PARTNER_AGE_URL,
       } else {
         await partnerAgeService.savePartnerAge(redisKey, form);
         if (form.model.option == 'yes') {
-          res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_PARTNER_PENSION_URL));
+          res.redirect(constructResponseUrlWithIdParams(claimId, CITIZEN_PARTNER_PENSION_URL));
         } else {
           const disability = await disabilityService.getDisability(redisKey);
           disability.model.option == 'yes'
-            ? res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_PARTNER_DISABILITY_URL))
-            : res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_DEPENDANTS_URL));
+            ? res.redirect(constructResponseUrlWithIdParams(claimId, CITIZEN_PARTNER_DISABILITY_URL))
+            : res.redirect(constructResponseUrlWithIdParams(claimId, CITIZEN_DEPENDANTS_URL));
         }
       }
     } catch (error) {

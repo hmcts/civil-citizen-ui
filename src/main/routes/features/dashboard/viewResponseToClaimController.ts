@@ -15,6 +15,7 @@ import {
   mapperDefendantResponseToDocumentView,
 } from 'common/mappers/documentViewMapper';
 import {ResponseType} from 'form/models/responseType';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
@@ -62,7 +63,7 @@ const renderView = (res: Response, claimId: string, claim: Claim, lang: string):
 
 viewResponseToClaimController.get(VIEW_RESPONSE_TO_CLAIM, (async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const claimId = req.params.id;
+    const claimId = getRouteParam(req, 'id');
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
     renderView(res, claimId, claim, lang);
