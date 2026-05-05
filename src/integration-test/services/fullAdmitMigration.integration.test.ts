@@ -75,6 +75,35 @@ describe('Integration: full-admit migration coverage', () => {
   });
 
   describe('Submission payload shape', () => {
+    it('submits defendant full-admit immediate-payment payload to civil service', async () => {
+      const claim = buildFullAdmitClaim(PaymentOptionType.IMMEDIATELY);
+      const req = {params: {id: '12345'}} as never;
+
+      jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('redis-key');
+      jest.spyOn(draftStoreService, 'getCaseDataFromStore').mockResolvedValue(claim);
+      civilServiceClientMock.retrieveClaimDetails.mockResolvedValue({
+        respondent1: {
+          partyDetails: {
+            primaryAddress: {
+              postCode: 'SW1A 1AA',
+              city: 'London',
+              addressLine1: 'Line 1',
+            },
+          },
+        },
+      });
+      civilServiceClientMock.submitDefendantResponseEvent.mockResolvedValue(claim);
+
+      await submitResponse(req);
+
+      const payload = civilServiceClientMock.submitDefendantResponseEvent.mock.calls[0][1];
+      expect(payload).toEqual(expect.objectContaining({
+        respondent1ClaimResponseTypeForSpec: ResponseType.FULL_ADMISSION,
+        defenceAdmitPartPaymentTimeRouteRequired: PaymentOptionType.IMMEDIATELY,
+        respondToClaimAdmitPartLRspec: expect.anything(),
+      }));
+    });
+
     it('submits defendant full-admit by-set-date payload to civil service', async () => {
       const claim = buildFullAdmitClaim(PaymentOptionType.BY_SET_DATE);
       const req = {params: {id: '12345'}} as never;
