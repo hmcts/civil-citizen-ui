@@ -3658,13 +3658,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/uuid@npm:^10.0.0":
-  version: 10.0.0
-  resolution: "@types/uuid@npm:10.0.0"
-  checksum: 10/e3958f8b0fe551c86c14431f5940c3470127293280830684154b91dc7eb3514aeb79fe3216968833cf79d4d1c67f580f054b5be2cd562bebf4f728913e73e944
-  languageName: node
-  linkType: hard
-
 "@types/validator@npm:^13.15.3":
   version: 13.15.10
   resolution: "@types/validator@npm:13.15.10"
@@ -5479,7 +5472,6 @@ __metadata:
     "@types/require-directory": "npm:^2.1.1"
     "@types/serve-favicon": "npm:^2.5.1"
     "@types/supertest": "npm:^2.0.12"
-    "@types/uuid": "npm:^10.0.0"
     "@typescript-eslint/eslint-plugin": "npm:^5.50.0"
     "@typescript-eslint/parser": "npm:^5.50.0"
     allure-codeceptjs: "npm:^3.4.2"
@@ -5562,7 +5554,7 @@ __metadata:
     ts-node: "npm:^10.9.1"
     tsconfig-paths: "npm:^4.1.1"
     typescript: "npm:5.9.3"
-    uuid: "npm:^9.0.0"
+    uuid: "npm:^11.1.0"
     validator: "npm:13.15.26"
     webdriverio: "npm:^8.3.2"
     webpack: "npm:^5.102.1"
@@ -13932,6 +13924,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"uuid@npm:^11.1.0":
+  version: 11.1.1
+  resolution: "uuid@npm:11.1.1"
+  bin:
+    uuid: dist/esm/bin/uuid
+  checksum: 10/16411d3dc12a08d6691616c09a75e66a7f900ba1beef6628a76fe0602f82fae2ee537b564d0b7bc95c24f58d059ca9b58c75a1e806118efb50e17822ff00ddd2
+  languageName: node
+  linkType: hard
+
 "uuid@npm:^8.3.2":
   version: 8.3.2
   resolution: "uuid@npm:8.3.2"
@@ -13941,7 +13942,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"uuid@npm:^9.0, uuid@npm:^9.0.0":
+"uuid@npm:^9.0":
   version: 9.0.1
   resolution: "uuid@npm:9.0.1"
   bin:
