@@ -4638,7 +4638,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"axios@npm:^1.15.1":
+"axios@npm:^1.16.0":
   version: 1.16.0
   resolution: "axios@npm:1.16.0"
   dependencies:
@@ -5477,7 +5477,7 @@ __metadata:
     allure-js-commons: "npm:^3.4.2"
     allure-playwright: "npm:^3.6.0"
     applicationinsights: "npm:^2.9.5"
-    axios: "npm:^1.15.1"
+    axios: "npm:^1.16.0"
     babel-jest: "npm:^29.7.0"
     babel-loader: "npm:^9.1.0"
     chai: "npm:4.3.6"
