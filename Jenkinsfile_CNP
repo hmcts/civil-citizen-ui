@@ -187,6 +187,7 @@ withPipeline(type, product, component) {
   syncBranchesWithMaster(branchesToSync)
   env.CAMUNDA_DEFINITION_BRANCH = camundaBranch
   env.DMN_DEFINITION_BRANCH = dmnBranch
+  env.BEFTA_FORCE_IMPORT_RETRY = 'true'
 
   onPR {
     enableHighLevelDataSetup("", true)
