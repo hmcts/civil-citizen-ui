@@ -27,6 +27,7 @@
     "test:civil-citizen-master": "MOCHAWESOME_REPORTFILENAME=civil-citizen-master FUNCTIONAL=true codeceptjs run-workers --suites 13 --grep '@civil-citizen-master' --reporter mocha-multi --plugins allure --verbose",
     "test:civil-citizen-pr": "MOCHAWESOME_REPORTFILENAME=civil-citizen-pr FUNCTIONAL=true codeceptjs run-workers --suites 13 --grep '@civil-citizen-pr' --reporter mocha-multi --plugins allure --verbose",
     "test:payments": "MOCHAWESOME_REPORTFILENAME=payments FUNCTIONAL=true codeceptjs run --grep '@ui-payments' --reporter mocha-multi --plugins allure --verbose",
+    "test:local-tests": "MOCHAWESOME_REPORTFILENAME=local-tests FUNCTIONAL=true codeceptjs run --grep '@local-testing' --reporter mocha-multi --plugins allure --verbose",
     "test:functional": "src/test/functionalTests/run-functional-tests.sh",
     "test:civil-citizen-nightly": "MOCHAWESOME_REPORTFILENAME=civil-citizen-nightly FUNCTIONAL=true codeceptjs run-workers --suites 10 --grep '@civil-citizen-nightly' --reporter mocha-multi --plugins allure --verbose",
     "test:fullfunctional": "./src/test/functionalTests/run-full-functional-tests.sh",
