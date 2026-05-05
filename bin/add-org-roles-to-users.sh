@@ -25,7 +25,7 @@ echo "Setting up Users with role assignments..."
 ./bin/shared/organisational-role-assignment.sh "hearing_center_admin_reg1@justice.gov.uk" "${CITIZEN_PASSWORD}" "PUBLIC" "hearing-manager" '{"jurisdiction":"CIVIL","primaryLocation":"20262"}' "ADMIN"
 ./bin/shared/organisational-role-assignment.sh "hearing_center_admin_reg1@justice.gov.uk" "${CITIZEN_PASSWORD}" "PUBLIC" "hearing-centre-team-leader" '{"jurisdiction":"CIVIL","primaryLocation":"20262","workTypes":"hearing_work,access_requests,routine_work"}' "ADMIN"
 ./bin/shared/organisational-role-assignment.sh "hearing_center_admin_reg1@justice.gov.uk" "${CITIZEN_PASSWORD}" "PUBLIC" "hearing-centre-admin" '{"jurisdiction":"CIVIL","primaryLocation":"20262","workTypes":"hearing_work,routine_work,multi_Track_hearing_work,intermediate_Track_hearing_work,query_work"}' "ADMIN"
-./bin/shared/organisational-role-assignment.sh "hearing_center_admin_reg1@justice.gov.uk" "${CITIZEN_PASSWORD}" "PUBLIC" "case-allocator" '{"jurisdiction":"CIVIL","primaryLocation":"20262"}' "ADMIN"
+./bin/shared/organisational-role-assignment.sh "hearing_center_admin_reg1@justice.gov.uk" "${DEFAULT_PASSWORD}" "PUBLIC" "case-allocator" '{"jurisdiction":"CIVIL","primaryLocation":"20262"}' "ADMIN"
 
 ./bin/shared/organisational-role-assignment.sh "ctsc_admin@justice.gov.uk" "${CITIZEN_PASSWORD}" "PUBLIC" "hmcts-ctsc" '{"jurisdiction":"CIVIL","primaryLocation":"366774"}' "CTSC"
 ./bin/shared/organisational-role-assignment.sh "ctsc_admin@justice.gov.uk" "${CITIZEN_PASSWORD}" "PUBLIC" "hearing-viewer" '{"jurisdiction":"CIVIL","primaryLocation":"366774"}' "CTSC"
