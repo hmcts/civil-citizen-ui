@@ -1,5 +1,5 @@
 import {Claim} from 'common/models/claim';
-import Axios, {AxiosError, AxiosInstance, AxiosResponse} from 'axios';
+import Axios, {AxiosError, AxiosHeaderValue, AxiosInstance, AxiosResponse} from 'axios';
 import {AssertionError} from 'assert';
 import {AppRequest, AppSession} from 'common/models/AppRequest';
 import {CivilClaimResponse, ClaimFeeData} from 'common/models/civilClaimResponse';
@@ -68,6 +68,10 @@ import {assertHasData, assertNonEmpty} from 'client/common/error/eventSubmission
 import {normalizeRouteParam, RouteParam} from 'common/utils/routeParamUtils';
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('civilServiceClient');
+
+const getHeaderValue = (headerValue: AxiosHeaderValue): string => Array.isArray(headerValue)
+  ? headerValue[0]
+  : headerValue?.toString() ?? '';
 
 const convertCaseToClaim = (caseDetails: CivilClaimResponse): Claim => {
   const claim: Claim = translateCCDCaseDataToCUIModel(caseDetails.case_data);
@@ -320,8 +324,8 @@ export class CivilServiceClient {
       const response: AxiosResponse<object> = await this.client.get(CIVIL_SERVICE_DOWNLOAD_DOCUMENT_URL
         .replace(':documentId', documentId), config);
 
-      return new FileResponse(response.headers['content-type'],
-        response.headers['original-file-name'],
+      return new FileResponse(getHeaderValue(response.headers['content-type']),
+        getHeaderValue(response.headers['original-file-name']),
         response.data as Buffer);
 
     } catch (err) {
