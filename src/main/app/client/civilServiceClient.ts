@@ -320,8 +320,8 @@ export class CivilServiceClient {
       const response: AxiosResponse<object> = await this.client.get(CIVIL_SERVICE_DOWNLOAD_DOCUMENT_URL
         .replace(':documentId', documentId), config);
 
-      return new FileResponse(response.headers['content-type'],
-        response.headers['original-file-name'],
+      return new FileResponse(String(response.headers['content-type'] ?? ''),
+        String(response.headers['original-file-name'] ?? ''),
         response.data as Buffer);
 
     } catch (err) {
