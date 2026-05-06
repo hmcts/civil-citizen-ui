@@ -23,6 +23,27 @@ cleanup() {
   rm -rf "${service_work_dir}"
 }
 
+run_gradle_with_retry() {
+  local attempt=1
+  local max_attempts="${GRADLE_RETRY_ATTEMPTS:-3}"
+  local delay_seconds="${GRADLE_RETRY_DELAY_SECONDS:-20}"
+
+  while true; do
+    if ./gradlew --rerun-tasks camundaHighLevelDataSetup; then
+      return 0
+    fi
+
+    if [ "${attempt}" -ge "${max_attempts}" ]; then
+      echo "camundaHighLevelDataSetup failed after ${attempt} attempt(s)"
+      return 1
+    fi
+
+    echo "camundaHighLevelDataSetup failed on attempt ${attempt}; retrying in ${delay_seconds}s"
+    sleep "${delay_seconds}"
+    attempt=$((attempt + 1))
+  done
+}
+
 trap cleanup EXIT
 
 if [ -z "${environment}" ]; then
@@ -73,5 +94,5 @@ git clone --depth 1 --branch "${service_branch_name}" https://github.com/hmcts/c
 
 (
   cd "${service_work_dir}"
-  ./gradlew --rerun-tasks camundaHighLevelDataSetup
+  run_gradle_with_retry
 )
