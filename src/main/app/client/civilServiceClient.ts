@@ -320,10 +320,15 @@ export class CivilServiceClient {
       const response: AxiosResponse<object> = await this.client.get(CIVIL_SERVICE_DOWNLOAD_DOCUMENT_URL
         .replace(':documentId', documentId), config);
 
-      return new FileResponse(response.headers['content-type'],
-        response.headers['original-file-name'],
-        response.data as Buffer);
+      const contentType = response.headers['content-type'];
+      const fileName = response.headers['original-file-name'];
+      const data = response.data as Buffer;
 
+      if (!contentType || !fileName || !data) {
+        logger.error(`Document retrieval failed due to missing response fields. Document ID: ${documentId}`);
+        throw new Error(`Invalid response when retrieving document with ID: ${documentId}`);
+      }
+      return new FileResponse(contentType as string, fileName, data);
     } catch (err) {
       logger.error(`Error when retrieving document, - documentId- ${documentId}`);
       throw err;
