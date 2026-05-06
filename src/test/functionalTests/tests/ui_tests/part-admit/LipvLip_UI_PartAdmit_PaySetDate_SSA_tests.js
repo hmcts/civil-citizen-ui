@@ -3,14 +3,13 @@ const config = require('../../../../config');
 const LoginSteps = require('../../../commonFeatures/home/steps/login');
 const CitizenDashboardSteps = require('../../../citizenFeatures/citizenDashboard/steps/citizenDashboard');
 const ResponseSteps = require('../../../citizenFeatures/response/steps/lipDefendantResponseSteps');
-const ResponseToDefenceLipVsLipSteps = require('../../../citizenFeatures/response/steps/responseToDefenceLipvLipSteps');
 const partAdmit = 'partial-admission';
 const dontWantMoreTime = 'dontWantMoreTime';
 const bySetDate = 'bySetDate';
 const { createAccount } = require('../../../specClaimHelpers/api/idamHelper');
 let claimNumber, claimRef;
 
-Feature('Create Lip v Lip claim -  Part Admit By Defendant and Accepted Repayment Plan By Claimant').tag('@ui-part-admit @civil-citizen-nightly');
+Feature('Create Lip v Lip claim -  Part Admit By Defendant and Accepted Repayment Plan By Claimant').tag('@civil-citizen-nightly');
 
 Scenario('01 Verify the Eligibility Check journey', async () => {
   //await CreateLipvLipClaimSteps.EligibilityCheckSteps();
@@ -65,9 +64,3 @@ Scenario('04 Defendant responds with part admit', async ({ api }) => {
   await api.waitForFinishedBusinessProcess();
 }).retry(1);
 
-// TODO undo this once the stop from choosing settlement agreement is removed
-Scenario.skip('05 Claimant responds as Accepted Repayment Plan By Claimant', async ({ api }) => {
-  await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
-  await ResponseToDefenceLipVsLipSteps.ResponseToDefenceStepsAsAnAcceptanceOfSettlementAndRepayment(claimRef, claimNumber);
-  await api.waitForFinishedBusinessProcess();
-}).retry(1);
