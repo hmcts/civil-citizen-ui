@@ -172,9 +172,14 @@ module.exports = {
 
   defendantResponseFullAdmitPayBySetDateClaimantCoSC: () => {
     return {
-      title: 'A judgment against the defendant has been made',
-      content: ['The defendant should now pay you according to the terms of the judgment.'],
-      nextSteps: 'confirm that they’ve paid you the full amount that you’re owed',
+      title: 'A judgment against the defendant has been now been entered',
+      content: [
+        'The defendant should now pay you according to the terms of the judgment.',
+        'Once they do, you should confirm that they\'ve paid you the full amount that you\'re owed.',
+        'If they do not pay you by the date on the judgment, you can ask for enforcement action to be taken against them.',
+        'If you need to change the terms of payment within the judgment, such as the instalments you had previously agreed, you can make an application to vary the judgment.',
+      ],
+      nextSteps: 'confirm that they\'ve paid you the full amount that you\'re owed',
     };
   },
   defendantResponseConfirmYouHavePaidAJudgmentCCJDebt: () => {
