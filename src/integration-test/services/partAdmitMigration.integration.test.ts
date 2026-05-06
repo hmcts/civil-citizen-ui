@@ -12,6 +12,7 @@ import * as draftStoreService from '../../main/modules/draft-store/draftStoreSer
 import {YesNo} from '../../main/common/form/models/yesNo';
 import {ChooseHowProceed} from '../../main/common/models/chooseHowProceed';
 import {DashboardClaimantItem, DashboardDefendantItem} from '../../main/common/models/dashboard/dashboardItem';
+import * as claimantCcjTranslationService from '../../main/services/translation/claimantResponse/ccdRequestJudgementTranslation';
 
 jest.mock('i18next', () => ({
   t: (key: string) => key,
@@ -191,6 +192,8 @@ describe('Integration: part-admit migration coverage', () => {
       const req = {params: {id: '12345'}} as never;
       jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('redis-key');
       jest.spyOn(draftStoreService, 'getCaseDataFromStore').mockResolvedValue(claim);
+      jest.spyOn(claimantCcjTranslationService, 'translateClaimantResponseRequestJudgementByAdmissionOrDeterminationToCCD')
+        .mockResolvedValue({ccjMergedField: 'yes'} as never);
       civilServiceClientMock.submitClaimantResponseEvent.mockResolvedValue(claim);
 
       await submitClaimantResponse(req);
@@ -199,6 +202,38 @@ describe('Integration: part-admit migration coverage', () => {
       expect(payload).toEqual(expect.objectContaining({
         applicant1AcceptAdmitAmountPaidSpec: 'Yes',
         applicant1AcceptPartAdmitPaymentPlanSpec: 'Yes',
+        ccjMergedField: 'yes',
+      }));
+    });
+
+    it('submits claimant part-admit alternative repayment proposal payload', async () => {
+      const claim = buildPartAdmitClaim(PaymentOptionType.INSTALMENTS);
+      claim.claimantResponse = {
+        hasPartAdmittedBeenAccepted: {option: YesNo.YES},
+        fullAdmitSetDateAcceptPayment: {option: YesNo.NO},
+        hasPartPaymentBeenAccepted: {option: YesNo.NO},
+        suggestedPaymentIntention: {
+          paymentOption: PaymentOptionType.INSTALMENTS,
+          repaymentPlan: {
+            paymentAmount: 120,
+            repaymentFrequency: 'WEEK',
+            firstRepaymentDate: new Date('2026-07-10'),
+          },
+        },
+      } as never;
+      const req = {params: {id: '12345'}} as never;
+      jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('redis-key');
+      jest.spyOn(draftStoreService, 'getCaseDataFromStore').mockResolvedValue(claim);
+      civilServiceClientMock.submitClaimantResponseEvent.mockResolvedValue(claim);
+
+      await submitClaimantResponse(req);
+
+      const payload = civilServiceClientMock.submitClaimantResponseEvent.mock.calls[0][1];
+      expect(payload).toEqual(expect.objectContaining({
+        applicant1AcceptAdmitAmountPaidSpec: 'Yes',
+        applicant1AcceptPartAdmitPaymentPlanSpec: 'No',
+        applicant1RepaymentOptionForDefendantSpec: expect.anything(),
+        applicant1SuggestInstalmentsPaymentAmountForDefendantSpec: expect.anything(),
       }));
     });
 
@@ -220,6 +255,28 @@ describe('Integration: part-admit migration coverage', () => {
         applicant1AcceptAdmitAmountPaidSpec: 'No',
         applicant1PartAdmitIntentionToSettleClaimSpec: 'No',
       }));
+    });
+
+    it('submits claimant part-admit settlement-agreement path without CCJ merge', async () => {
+      const claim = buildPartAdmitClaim(PaymentOptionType.BY_SET_DATE);
+      claim.claimantResponse = {
+        hasPartAdmittedBeenAccepted: {option: YesNo.YES},
+        fullAdmitSetDateAcceptPayment: {option: YesNo.YES},
+        chooseHowToProceed: {option: ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT},
+      } as never;
+      const req = {params: {id: '12345'}} as never;
+      const ccjSpy = jest.spyOn(claimantCcjTranslationService, 'translateClaimantResponseRequestJudgementByAdmissionOrDeterminationToCCD');
+      jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('redis-key');
+      jest.spyOn(draftStoreService, 'getCaseDataFromStore').mockResolvedValue(claim);
+      civilServiceClientMock.submitClaimantResponseEvent.mockResolvedValue(claim);
+
+      await submitClaimantResponse(req);
+
+      const payload = civilServiceClientMock.submitClaimantResponseEvent.mock.calls[0][1];
+      expect(payload).toEqual(expect.objectContaining({
+        applicant1AcceptPartAdmitPaymentPlanSpec: 'Yes',
+      }));
+      expect(ccjSpy).not.toHaveBeenCalled();
     });
   });
 
