@@ -1,1 +1,0 @@
-{"value":"postcss","children":{"ID":1117015,"Issue":"PostCSS has XSS via Unescaped </style> in its CSS Stringify Output","URL":"https://github.com/advisories/GHSA-qx2v-qp2m-jg93","Severity":"moderate","Vulnerable Versions":"<8.5.10","Tree Versions":["8.5.8"],"Dependents":["stylelint@npm:16.26.1"]}}
