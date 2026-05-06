@@ -71,5 +71,3 @@ wiremock/
 bin/shared/*
 !bin/shared/.gitkeep
 .civil-service-sparse/
-.high-level-data-setup/
-temp.sh
