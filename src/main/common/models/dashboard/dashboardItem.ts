@@ -93,6 +93,10 @@ export class DashboardClaimantItem extends DashboardItem {
       WAITING_FOR_CLAIMANT_TO_RESPOND: {translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.NOT_ADMITTED_CLAIMANT'},
       WAITING_COURT_REVIEW: { translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.WAITING_COURT_REVIEW'},
       DEFAULT_JUDGEMENT: {
+        translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.CLAIMANT_REQUESTED_CCJ',
+        parameter: [paramDefendantName],
+      },
+      DEFAULT_JUDGEMENT_ENTERED: {
         translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.COUNTY_COURT_JUDGMENT_ENTERED',
         parameter: [paramDefendantName],
       },
