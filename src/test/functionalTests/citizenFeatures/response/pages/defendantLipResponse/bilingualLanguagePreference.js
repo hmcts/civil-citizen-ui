@@ -33,7 +33,7 @@ class BilingualLanguagePreference {
     await I.waitForContent(content.heading[language], config.WaitForText);
     await I.see(content.descriptionText[language]);
     await I.click(fields[languageOption]);
-    await I.click(buttons.saveAndContinue);
+    await I.click(cButtons.saveAndContinue[language]);
     sharedData.language = languageOption;
   }
 

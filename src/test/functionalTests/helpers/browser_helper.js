@@ -73,30 +73,28 @@ module.exports = class BrowserHelpers extends Helper {
     const errorsToCheck = [
       'Something went wrong',
       '504 Gateway Time-out',
-      ...customErrors
+      ...customErrors,
     ];
 
     let pageContent = '';
+    const page = await this.helpers.Playwright.page;
+    const driver = this.helpers.WebDriver;
 
     if (this.isPlaywright()) {
-      const page = this.helpers.Playwright.page;
       pageContent = await page.content();
     } else if (this.isWebDriver()) {
-      pageContent = await helper.grabSource();
+      pageContent = await driver.grabSource();
     }
 
-    const matchedError = errorsToCheck.find(text =>
-      pageContent.includes(text)
-    );
+    const matchedError = errorsToCheck.find(text => pageContent.includes(text));
 
     if (matchedError) {
       console.log(`Detected error: ${matchedError}. Going back...`);
 
       if (this.isPlaywright()) {
-        const page = await helper.page;
         await page.goBack();
       } else {
-        await helper.browser.back();
+        await driver.browser.back();
       }
 
       return true;
@@ -119,10 +117,8 @@ module.exports = class BrowserHelpers extends Helper {
         }
 
         console.log(`Retrying click (${attempt + 1}/${retries})...`);
+      }    
     }
-    
-    }
-
     throw new Error(`Failed after ${retries} retries due to repeated error page`);
   }
 };
