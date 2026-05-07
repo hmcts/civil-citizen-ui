@@ -46,13 +46,26 @@ class LoginPage {
     await I.click(buttons.hideMessage);
   }
 
-  async #login(email, password, endpoint) {
+  async #login(email, password, endpoint, attempts = 0) {
+    const MAX_ATTEMPTS = 2;
     await I.waitForContent('Email address', config.WaitForText);
     await I.waitForVisible(fields.username);
     await I.fillField(fields.username, email);
     await I.fillField(fields.password, password);
     await I.click(buttons.submit);
     await I.wait(3);
+
+    const url = await I.grabCurrentUrl();
+
+    if(!url.includes(endpoint)) {
+      if (attempts >= MAX_ATTEMPTS) {
+        throw new Error(`Login failed after ${MAX_ATTEMPTS} attempts`);
+      }
+      if (!await I.handleKnownErrorsAndGoBack()) {
+        return;
+      }
+      await this.#login(email, password, endpoint, attempts + 1);
+    }
     await I.seeInCurrentUrl(endpoint);
   }
 
