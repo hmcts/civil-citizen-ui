@@ -64,6 +64,7 @@ class ResponseTypePage {
       case 'rejectAll':{
         await I.click(fields.responseRejectAll);
         await I.click('Save and continue');
+        await I.see(`Why do you believe you don’t owe Test Inc any money?`);
         await I.click('Save and continue');
         await I.see('There was a problem');
         await I.see('Select why you don\'t believe you owe Test Inc any money');

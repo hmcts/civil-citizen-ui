@@ -9,6 +9,10 @@ const  fields = {
   both: 'input[id="option-3"]',
 };
 
+const buttons = {
+  saveAndContinue:'#main-content button.govuk-button',
+};
+
 const content = {
   heading: {
     en: 'Language',
@@ -28,15 +32,15 @@ class BilingualLanguagePreference {
     const { language } = sharedData;
     await I.waitForContent(content.heading[language], config.WaitForText);
     await I.see(content.descriptionText[language]);
-    I.click(fields[languageOption]);
-    await I.click(cButtons.saveAndContinue[language]);
+    await I.click(fields[languageOption]);
+    await I.click(buttons.saveAndContinue);
     sharedData.language = languageOption;
   }
 
   async verifyContentError() {
     await I.waitForContent('Language', config.WaitForText);
     await I.see('You must choose which language to use to respond to this claim');
-    await I.click('Save and continue');
+    await I.click(buttons.saveAndContinue);
     await I.see('There was a problem');
     await I.see('Select which language you want to respond to this claim in');
   }

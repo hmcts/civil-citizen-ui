@@ -68,4 +68,61 @@ module.exports = class BrowserHelpers extends Helper {
       return undefined;
     }
   }
+
+  async handleKnownErrorsAndGoBack(customErrors = []) {
+    const errorsToCheck = [
+      'Something went wrong',
+      '504 Gateway Time-out',
+      ...customErrors
+    ];
+
+    let pageContent = '';
+
+    if (this.isPlaywright()) {
+      const page = this.helpers.Playwright.page;
+      pageContent = await page.content();
+    } else if (this.isWebDriver()) {
+      pageContent = await helper.grabSource();
+    }
+
+    const matchedError = errorsToCheck.find(text =>
+      pageContent.includes(text)
+    );
+
+    if (matchedError) {
+      console.log(`Detected error: ${matchedError}. Going back...`);
+
+      if (this.isPlaywright()) {
+        const page = await helper.page;
+        await page.goBack();
+      } else {
+        await helper.browser.back();
+      }
+
+      return true;
+    }
+
+    return false;
+  }
+
+  async clickWithRetry(selector, retries = 1) {
+    if (this.isPlaywright()) {
+      const page = this.helpers.Playwright.page;
+      for (let attempt = 0; attempt <= retries; attempt++) {
+        await page.locator(selector).click();
+        await page.waitForTimeout(1);
+
+        const hasError = await this.handleKnownErrorsAndGoBack();
+
+        if (!hasError) {
+          return;
+        }
+
+        console.log(`Retrying click (${attempt + 1}/${retries})...`);
+    }
+    
+    }
+
+    throw new Error(`Failed after ${retries} retries due to repeated error page`);
+  }
 };
