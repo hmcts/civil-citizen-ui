@@ -46,7 +46,7 @@ Scenario('Create Claim -  Individual vs Individual - small claims - no interest 
   await I.amOnPage('/dashboard');
   await I.click(claimNumber);
   await createGASteps.askForMoreTimeCourtOrderGA(caseRef, 'Mr Claimant person v mr defendant person');
-}).tag('@civil-citizen-master @civil-citizen-pr @smoketest');
+}).tag('@civil-citizen-master @civil-citizen-pr');
 
 // Removed redundant scenarios - now covered by integration tests:
 // - "with standard interest - no hwf" - covered by claimIssueDashboard.integration.test.ts
