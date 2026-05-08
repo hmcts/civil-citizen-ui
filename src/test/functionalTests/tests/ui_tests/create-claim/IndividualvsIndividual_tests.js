@@ -14,7 +14,7 @@ const defaultClaimAmount = 9000;
 
 const createGASteps = require('../../../citizenFeatures/GA/steps/createGASteps');
 
-Feature('Create Lip v Lip claim - Individual vs Individual').tag('@ui-create-claim @civil-citizen-nightly');
+Feature('Create Lip v Lip claim - Individual vs Individual').tag('@ui-create-claim');
 
 Scenario('Create Claim -  Individual vs Individual - small claims - no interest - no hwf - GA (Ask for more time)', async ({
   I,
@@ -46,7 +46,7 @@ Scenario('Create Claim -  Individual vs Individual - small claims - no interest 
   await I.amOnPage('/dashboard');
   await I.click(claimNumber);
   await createGASteps.askForMoreTimeCourtOrderGA(caseRef, 'Mr Claimant person v mr defendant person');
-}).tag('@civil-citizen-master @civil-citizen-pr @smoke');
+}).tag('@civil-citizen-master @civil-citizen-pr @smoketest');
 
 // Removed redundant scenarios - now covered by integration tests:
 // - "with standard interest - no hwf" - covered by claimIssueDashboard.integration.test.ts

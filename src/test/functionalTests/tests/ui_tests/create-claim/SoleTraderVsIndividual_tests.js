@@ -31,7 +31,7 @@ Scenario('Create Claim -  SoleTrader vs Individual - Fast Track - no interest - 
   await I.click(payClaimFeeNotif.nextSteps);
   await steps.verifyAndPayClaimFee(defaultClaimAmount, defaultClaimFee);
   await api.waitForFinishedBusinessProcess();
-}).tag('@smoke');
+});
 
 // Removed redundant scenarios - now covered by integration tests:
 // - "with standard interest - no hwf" - covered by claimIssueDashboard.integration.test.ts
