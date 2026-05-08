@@ -46,7 +46,7 @@ Scenario('Create Claim -  Org vs Sole trader - Fast track - no interest - no hwf
   await I.amOnPage('/dashboard');
   await I.click(legacyCaseReference);
   await createGASteps.askForMoreTimeCourtOrderGA(caseRef, 'Claimant Org name v mr defendant person');
-}).tag('@smoke');
+});
 
 // Removed redundant scenarios - now covered by integration tests:
 // - "with standard interest - no hwf" - covered by claimIssueDashboard.integration.test.ts
