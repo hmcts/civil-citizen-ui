@@ -96,7 +96,7 @@ export class DashboardClaimantItem extends DashboardItem {
         translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.CLAIMANT_REQUESTED_CCJ',
         parameter: [paramDefendantName],
       },
-      DEFAULT_JUDGEMENT_ENTERED: {
+      DEFAULT_JUDGEMENT_GRANTED: {
         translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.COUNTY_COURT_JUDGMENT_ENTERED',
         parameter: [paramDefendantName],
       },

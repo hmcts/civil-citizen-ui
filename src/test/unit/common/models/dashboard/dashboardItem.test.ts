@@ -100,7 +100,7 @@ describe('Dashboard Items', ()=> {
 
     it('should return judgment entered status when default judgment has been granted', () => {
       //Given
-      ccdClaimantClaim.status = 'DEFAULT_JUDGEMENT_ENTERED';
+      ccdClaimantClaim.status = 'DEFAULT_JUDGEMENT_GRANTED';
       //When
       const status = ccdClaimantClaim.getStatus('en');
       //Then
