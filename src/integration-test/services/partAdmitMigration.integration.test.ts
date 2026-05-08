@@ -66,6 +66,22 @@ const buildPartAdmitAlreadyPaidClaim = (): Claim => {
   return claim;
 };
 
+const buildClaimantResponseClaimForTrack = (responseClaimTrack: string): Claim => {
+  const claim = buildPartAdmitClaim(PaymentOptionType.BY_SET_DATE);
+  claim.responseClaimTrack = responseClaimTrack as never;
+  claim.claimantResponse = {
+    hasPartAdmittedBeenAccepted: {option: YesNo.YES},
+    fullAdmitSetDateAcceptPayment: {option: YesNo.YES},
+    chooseHowToProceed: {option: ChooseHowProceed.REQUEST_A_CCJ},
+    directionQuestionnaire: {
+      hearing: {
+        preferredCourt: 'London Civil',
+      },
+    },
+  } as never;
+  return claim;
+};
+
 describe('Integration: part-admit migration coverage', () => {
   const summaryValues = (claim: Claim): string[] => {
     const section = buildYourResponsePaymentSection(claim, '12345', 'en');
@@ -177,7 +193,7 @@ describe('Integration: part-admit migration coverage', () => {
 
       const payload = civilServiceClientMock.submitDefendantResponseEvent.mock.calls[0][1];
       expect(payload).toEqual(expect.objectContaining({
-        defenceAdmitPartPaymentTimeRouteRequired: expect.anything(),
+        defenceAdmitPartPaymentTimeRouteRequired: 'SUGGESTION_OF_REPAYMENT_PLAN',
         respondent1RepaymentPlan: expect.anything(),
       }));
     });
@@ -277,6 +293,42 @@ describe('Integration: part-admit migration coverage', () => {
         applicant1AcceptPartAdmitPaymentPlanSpec: 'Yes',
       }));
       expect(ccjSpy).not.toHaveBeenCalled();
+    });
+
+    it('includes small-claim DQ hearing fields in claimant payload when claim is small-claim track', async () => {
+      const claim = buildClaimantResponseClaimForTrack('SMALL_CLAIM');
+      const req = {params: {id: '12345'}} as never;
+      jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('redis-key');
+      jest.spyOn(draftStoreService, 'getCaseDataFromStore').mockResolvedValue(claim);
+      jest.spyOn(claimantCcjTranslationService, 'translateClaimantResponseRequestJudgementByAdmissionOrDeterminationToCCD')
+        .mockResolvedValue({ccjMergedField: 'yes'} as never);
+      civilServiceClientMock.submitClaimantResponseEvent.mockResolvedValue(claim);
+
+      await submitClaimantResponse(req);
+
+      const payload = civilServiceClientMock.submitClaimantResponseEvent.mock.calls[0][1];
+      expect(payload).toEqual(expect.objectContaining({
+        applicant1AcceptAdmitAmountPaidSpec: 'Yes',
+        applicant1DQSmallClaimHearing: expect.anything(),
+      }));
+    });
+
+    it('does not include small-claim DQ hearing fields in claimant payload when claim is fast-track', async () => {
+      const claim = buildClaimantResponseClaimForTrack('FAST_CLAIM');
+      const req = {params: {id: '12345'}} as never;
+      jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('redis-key');
+      jest.spyOn(draftStoreService, 'getCaseDataFromStore').mockResolvedValue(claim);
+      jest.spyOn(claimantCcjTranslationService, 'translateClaimantResponseRequestJudgementByAdmissionOrDeterminationToCCD')
+        .mockResolvedValue({ccjMergedField: 'yes'} as never);
+      civilServiceClientMock.submitClaimantResponseEvent.mockResolvedValue(claim);
+
+      await submitClaimantResponse(req);
+
+      const payload = civilServiceClientMock.submitClaimantResponseEvent.mock.calls[0][1];
+      expect(payload).toEqual(expect.objectContaining({
+        applicant1AcceptAdmitAmountPaidSpec: 'Yes',
+      }));
+      expect(payload.applicant1DQSmallClaimHearing).toBeUndefined();
     });
   });
 
