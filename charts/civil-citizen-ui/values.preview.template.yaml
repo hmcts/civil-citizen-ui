@@ -502,9 +502,10 @@ civil-service:
     ccd-definition-store-api:
       java:
         imagePullPolicy: Always
-        devcpuRequests: 1000m
         devmemoryRequests: 2048Mi
+        devcpuRequests: 2000m
         devmemoryLimits: 4096Mi
+        devcpuLimits: 4000m
         releaseNameOverride: ${SERVICE_NAME}-ccd-definition-store-api
         environment:
           DEFINITION_STORE_DB_OPTIONS: "?stringtype=unspecified"
@@ -515,9 +516,10 @@ civil-service:
           DEFINITION_STORE_TX_TIMEOUT_DEFAULT: 60
           WELSH_TRANSLATION_ENABLED: false
           IDAM_USER_URL: https://idam-web-public.aat.platform.hmcts.net
+          ELASTIC_SEARCH_FAIL_ON_IMPORT: true
+          ELASTIC_SEARCH_SCHEME: http
           ELASTIC_SEARCH_ENABLED: true
           ELASTIC_SEARCH_HOST: ${SERVICE_NAME}-es-master
-          ELASTIC_SEARCH_CASE_INDEX_MAPPING_FIELDS_LIMIT: 12000
         secrets:
           DEFINITION_STORE_DB_PASSWORD:
             secretRef: "{{ .Values.global.postgresSecret }}"
