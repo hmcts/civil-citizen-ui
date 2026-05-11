@@ -315,6 +315,7 @@ civil-service:
             disabled: false
 
     elasticsearch:
+      image: hmctsprod.azurecr.io/imported/elastic/elasticsearch:9.2.3
       initResources:
         limits:
           cpu: "500m"
@@ -324,6 +325,7 @@ civil-service:
           memory: "512Mi"
 
     logstash:
+      image: hmctsprod.azurecr.io/imported/elastic/logstash:9.2.3
       logstashJavaOpts: -Xmx1g -Xms512M
       persistence:
         enabled: false
