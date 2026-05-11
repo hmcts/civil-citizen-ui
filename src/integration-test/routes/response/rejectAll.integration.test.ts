@@ -196,6 +196,23 @@ describe('Integration: reject-all response coverage', () => {
       });
   });
 
+  it('renders the reject-all already-paid task list with the non-CARM mediation path', async () => {
+    setDraftClaim(buildRejectAllAlreadyPaidLessClaim());
+
+    await request(app)
+      .get(route(RESPONSE_TASK_LIST_URL))
+      .expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain('Tell us how much you&#39;ve paid');
+        expect(res.text).toContain('Why do you disagree with the amount claimed?');
+        expect(res.text).toContain('Free telephone mediation');
+        expect(res.text).toContain('Give us details in case there&#39;s a hearing');
+        expect(res.text).not.toContain('Tell us why you disagree with the claim');
+        expect(res.text).not.toContain('Telephone mediation');
+        expect(res.text).not.toContain('Availability for mediation');
+      });
+  });
+
   it('renders the reject-all dispute task list with explicit CARM tasks', async () => {
     (isCarmEnabledForCase as jest.Mock).mockResolvedValue(true);
     app.locals.draftStoreClient = mockDefendantResponseSmallClaimFullReject;
@@ -207,6 +224,23 @@ describe('Integration: reject-all response coverage', () => {
         expect(res.text).toContain('Tell us why you disagree with the claim');
         expect(res.text).toContain('Telephone mediation');
         expect(res.text).toContain('Availability for mediation');
+        expect(res.text).not.toContain('Free telephone mediation');
+      });
+  });
+
+  it('renders the reject-all already-paid task list with explicit CARM tasks', async () => {
+    (isCarmEnabledForCase as jest.Mock).mockResolvedValue(true);
+    setDraftClaim(buildRejectAllAlreadyPaidLessClaim());
+
+    await request(app)
+      .get(route(RESPONSE_TASK_LIST_URL))
+      .expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain('Tell us how much you&#39;ve paid');
+        expect(res.text).toContain('Why do you disagree with the amount claimed?');
+        expect(res.text).toContain('Telephone mediation');
+        expect(res.text).toContain('Availability for mediation');
+        expect(res.text).not.toContain('Tell us why you disagree with the claim');
         expect(res.text).not.toContain('Free telephone mediation');
       });
   });

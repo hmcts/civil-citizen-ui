@@ -79,6 +79,24 @@ const buildAlreadyPaidInFullClaim = (settled: YesNo) => {
   return claim;
 };
 
+const buildAlreadyPaidLessClaim = (settled: YesNo) => {
+  const claim = withCommonClaimMetadata(createClaimWithFullRejection(RejectAllOfClaimType.ALREADY_PAID, 500));
+  claim.totalClaimAmount = 1000;
+  claim.claimantResponse = {
+    hasDefendantPaidYou: new GenericYesNo(YesNo.YES),
+    hasPartPaymentBeenAccepted: new GenericYesNo(settled),
+    rejectionReason: settled === YesNo.NO ? {text: 'The remaining balance is still owed'} : undefined,
+  };
+  claim.mediation = {
+    canWeUse: {
+      option: YesNo.YES,
+      mediationPhoneNumber: '07111111111',
+    },
+    companyTelephoneNumber: {},
+  };
+  return claim;
+};
+
 describe('Integration: claimant reject-all branching', () => {
   beforeAll(() => {
     jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
@@ -163,6 +181,59 @@ describe('Integration: claimant reject-all branching', () => {
         expect(res.text).toContain('Free telephone mediation');
         expect(res.text).not.toContain('Telephone mediation');
         expect(res.text).not.toContain('Availability for mediation');
+      });
+  });
+
+  it('shows the already-paid-less settled outcome after the claimant confirms payment', async () => {
+    setDraftClaim(buildAlreadyPaidLessClaim(YesNo.YES));
+
+    await request(app)
+      .get(route(CLAIMANT_RESPONSE_TASK_LIST_URL))
+      .expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain('Have you been paid the £500?');
+        expect(res.text).toContain('Settle the claim for £500?');
+        expect(res.text).not.toContain('Accept or reject their response');
+        expect(res.text).not.toContain('Free telephone mediation');
+        expect(res.text).not.toContain('Telephone mediation');
+        expect(res.text).not.toContain('Availability for mediation');
+        expect(res.text).not.toContain('Give us details in case there&#39;s a hearing');
+      });
+  });
+
+  it('shows the already-paid-less rejected outcome with non-CARM mediation and hearing tasks', async () => {
+    setDraftClaim(buildAlreadyPaidLessClaim(YesNo.NO));
+
+    await request(app)
+      .get(route(CLAIMANT_RESPONSE_TASK_LIST_URL))
+      .expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain('Have you been paid the £500?');
+        expect(res.text).toContain('Settle the claim for £500?');
+        expect(res.text).toContain('Free telephone mediation');
+        expect(res.text).toContain('Give us details in case there&#39;s a hearing');
+        expect(res.text).not.toContain('Accept or reject their response');
+        expect(res.text).not.toContain('Telephone mediation');
+        expect(res.text).not.toContain('Availability for mediation');
+      });
+  });
+
+  it('shows the already-paid-less rejected outcome with explicit CARM mediation tasks', async () => {
+    (isCarmEnabledForCase as jest.Mock).mockResolvedValue(true);
+    setDraftClaim(buildAlreadyPaidLessClaim(YesNo.NO));
+
+    await request(app)
+      .get(route(CLAIMANT_RESPONSE_TASK_LIST_URL))
+      .expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain('Have you been paid the £500?');
+        expect(res.text).toContain('Settle the claim for £500?');
+        expect(res.text).toContain('Mediation');
+        expect(res.text).toContain('Telephone mediation');
+        expect(res.text).toContain('Availability for mediation');
+        expect(res.text).toContain('Give us details in case there&#39;s a hearing');
+        expect(res.text).not.toContain('Accept or reject their response');
+        expect(res.text).not.toContain('Free telephone mediation');
       });
   });
 });
