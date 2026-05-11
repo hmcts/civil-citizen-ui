@@ -115,6 +115,7 @@ module.exports = {
     await apiRequest.setupTokens(user);
     caseData = payload['caseDataUpdate'];
     await waitForGAFinishedBusinessProcess(gaCaseId, user);
+    await waitForTimeout(1000);
     await assertSubmittedGASpecEvent(gaCaseId, 'APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION', user);
   },
 
@@ -1029,4 +1030,8 @@ const validateUploadTranslatedDoc = async (translationDocType) => {
   for (let pageId of Object.keys(uploadedDocs.userInput)) {
     await assertValidDataSpec(uploadedDocs, pageId);
   }
+};
+
+const waitForTimeout = async (ms) => {
+  return new Promise(resolve => setTimeout(resolve, ms));
 };
