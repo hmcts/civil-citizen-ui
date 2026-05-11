@@ -28,7 +28,7 @@ class hearingFeeSteps {
 
   async payHearingFeeJourney(feeAmount) {
     await govPay.addValidCardDetails(feeAmount);
-    govPay.confirmPayment();
+    await govPay.confirmPayment();
     paymentSuccessful.verifyPageContent(feeAmount);
     paymentSuccessful.nextAction('Go to your account');
   }
