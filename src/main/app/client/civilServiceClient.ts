@@ -69,9 +69,18 @@ import {normalizeRouteParam, RouteParam} from 'common/utils/routeParamUtils';
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('civilServiceClient');
 
-const getHeaderValue = (headerValue: AxiosHeaderValue): string => Array.isArray(headerValue)
-  ? headerValue[0]
-  : headerValue?.toString() ?? '';
+const getResponseHeaderValue = (header: AxiosHeaderValue | undefined): string => {
+  if (typeof header === 'string') {
+    return header;
+  }
+  if (typeof header === 'number' || typeof header === 'boolean') {
+    return header.toString();
+  }
+  if (Array.isArray(header)) {
+    return header.join(', ');
+  }
+  return '';
+};
 
 const convertCaseToClaim = (caseDetails: CivilClaimResponse): Claim => {
   const claim: Claim = translateCCDCaseDataToCUIModel(caseDetails.case_data);
@@ -324,8 +333,8 @@ export class CivilServiceClient {
       const response: AxiosResponse<object> = await this.client.get(CIVIL_SERVICE_DOWNLOAD_DOCUMENT_URL
         .replace(':documentId', documentId), config);
 
-      return new FileResponse(getHeaderValue(response.headers['content-type']),
-        getHeaderValue(response.headers['original-file-name']),
+      return new FileResponse(getResponseHeaderValue(response.headers['content-type']),
+        getResponseHeaderValue(response.headers['original-file-name']),
         response.data as Buffer);
 
     } catch (err) {
