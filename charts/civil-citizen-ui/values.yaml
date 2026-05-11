@@ -7,6 +7,12 @@ wa:
 servicebus:
   enabled: false
 
+elasticsearch:
+  enabled: false
+
+logstash:
+  enabled: false
+
 nodejs:
   applicationPort: 3001
   ingressHost: civil-citizen-ui.{{ .Values.global.environment }}.platform.hmcts.net
@@ -69,4 +75,3 @@ nodejs:
     enabled: true
     maxReplicas: 5
     targetCPUUtilizationPercentage: 80
-

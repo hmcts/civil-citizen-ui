@@ -32,3 +32,13 @@ dependencies:
     repository: 'oci://hmctsprod.azurecr.io/helm'
     condition: servicebus.enabled
     alias: hmcsb
+
+  - name: elasticsearch
+    version: 8.5.1
+    repository: 'https://helm.elastic.co'
+    condition: elasticsearch.enabled
+
+  - name: logstash
+    version: 8.5.1
+    repository: 'https://helm.elastic.co'
+    condition: logstash.enabled
