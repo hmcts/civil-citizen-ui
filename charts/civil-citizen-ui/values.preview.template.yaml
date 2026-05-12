@@ -344,6 +344,15 @@ civil-service:
       imageTag: 9.2.3
       imagePullPolicy: "IfNotPresent"
       logstashJavaOpts: "-Xmx1g -Xms512M"
+      extraEnvs:
+        - name: DATA_STORE_PASS
+          value: hmcts
+        - name: DATA_STORE_URL
+          value: "jdbc:postgresql://civil-preview.postgres.database.azure.com:5432/{{ .Values.global.databaseNamePrefix }}data-store?sslmode=require&stringtype=unspecified"
+        - name: DATA_STORE_USER
+          value: hmcts
+        - name: ES_HOSTS
+          value: "${SERVICE_NAME}-es-master"
       extraInitContainers: |
         - name: download-postgres-jdbc
           image: hmctsprod.azurecr.io/curl:7.70.0
@@ -354,9 +363,15 @@ civil-service:
       extraVolumes: |
         - name: logstash-lib
           emptyDir: {}
+        - name: database-secret-volume
+          secret:
+            secretName: postgres
       extraVolumeMounts: |
         - name: logstash-lib
           mountPath: /usr/share/logstash/ccd
+        - name: database-secret-volume
+          mountPath: /etc/logstash/secrets
+          readOnly: true
       logstashConfig:
         logstash.yml: |
           api.http.host: 0.0.0.0
@@ -373,9 +388,9 @@ civil-service:
         01_input.conf: |
           input  {
             jdbc {
-              jdbc_connection_string => "jdbc:postgresql://{{ .Release.Name }}-postgresql:5432/data-store?stringtype=unspecified"
-              jdbc_user => "javapostgres"
-              jdbc_password => "javapassword"
+              jdbc_connection_string => "jdbc:postgresql://civil-preview.postgres.database.azure.com:5432/pr-${CHANGE_ID}-data-store?sslmode=require&stringtype=unspecified"
+              jdbc_user => "hmcts"
+              jdbc_password_filepath => "/etc/logstash/secrets/PASSWORD"
               jdbc_validate_connection => true
               jdbc_driver_library => "/usr/share/logstash/ccd/postgresql.jar"
               jdbc_driver_class => "org.postgresql.Driver"
@@ -487,7 +502,7 @@ civil-service:
         03_output.conf: |
           output {
               elasticsearch {
-                  hosts => ["http://{{ .Release.Name }}-es-master:9200"]
+                  hosts => ["${SERVICE_NAME}-es-master"]
                   sniffing => false
                   index => "%{[index_id]}"
                   document_type => "_doc"
@@ -499,8 +514,8 @@ civil-service:
     ccd-definition-store-api:
       java:
         devcpuRequests: 2000m
-        devmemoryLimits: 4096Mi
-        devcpuLimits: 4000m
+        devmemoryLimits: 4Gi
+        devcpuLimits: 4Gi
         releaseNameOverride: ${SERVICE_NAME}-ccd-definition-store-api
         environment:
           DEFINITION_STORE_DB_OPTIONS: "?stringtype=unspecified"
