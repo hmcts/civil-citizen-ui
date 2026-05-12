@@ -17,13 +17,15 @@ import {RejectAllOfClaimType} from '../../../main/common/form/models/rejectAllOf
 import {GenericYesNo} from '../../../main/common/form/models/genericYesNo';
 import {YesNo} from '../../../main/common/form/models/yesNo';
 import {CaseState} from '../../../main/common/form/models/claimDetails';
+import {Claim} from '../../../main/common/models/claim';
+import {ClaimantResponse} from '../../../main/common/models/claimantResponse';
 
 const CLAIM_ID = '000MC456';
 const SUBMITTED_DATE = '2026-02-03T09:00:00.000Z';
 
 const route = (url: string, claimId = CLAIM_ID): string => url.replace(':id', claimId);
 
-const createDraftStoreClient = (claim) => ({
+const createDraftStoreClient = (claim: Claim) => ({
   set: jest.fn(() => Promise.resolve({})),
   get: jest.fn(() => Promise.resolve(JSON.stringify({
     id: claim.id,
@@ -34,14 +36,14 @@ const createDraftStoreClient = (claim) => ({
   expireat: jest.fn(() => Promise.resolve({})),
 });
 
-const setDraftClaim = (claim) => {
+const setDraftClaim = (claim: Claim) => {
   app.locals.draftStoreClient = createDraftStoreClient(claim);
 };
 
-const withCommonClaimMetadata = (claim) => {
+const withCommonClaimMetadata = (claim: Claim): Claim => {
   claim.id = CLAIM_ID;
   claim.legacyCaseReference = CLAIM_ID;
-  claim.submittedDate = SUBMITTED_DATE;
+  claim.submittedDate = new Date(SUBMITTED_DATE);
   claim.applicant1 = createClaimWithBasicApplicantDetails().applicant1;
   claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
   return claim;
@@ -50,9 +52,9 @@ const withCommonClaimMetadata = (claim) => {
 const buildDisputeClaim = (intentionToProceed: YesNo) => {
   const claim = withCommonClaimMetadata(createClaimWithFullRejection(RejectAllOfClaimType.DISPUTE));
   claim.totalClaimAmount = 9000;
-  claim.claimantResponse = {
+  claim.claimantResponse = Object.assign(new ClaimantResponse(), {
     intentionToProceed: new GenericYesNo(intentionToProceed),
-  };
+  });
   claim.mediation = {
     canWeUse: {
       option: YesNo.YES,
@@ -66,9 +68,9 @@ const buildDisputeClaim = (intentionToProceed: YesNo) => {
 const buildAlreadyPaidInFullClaim = (settled: YesNo) => {
   const claim = withCommonClaimMetadata(createClaimWithFullRejection(RejectAllOfClaimType.ALREADY_PAID, 1000));
   claim.totalClaimAmount = 1000;
-  claim.claimantResponse = {
+  claim.claimantResponse = Object.assign(new ClaimantResponse(), {
     hasFullDefenceStatesPaidClaimSettled: new GenericYesNo(settled),
-  };
+  });
   claim.mediation = {
     canWeUse: {
       option: YesNo.YES,
@@ -82,11 +84,11 @@ const buildAlreadyPaidInFullClaim = (settled: YesNo) => {
 const buildAlreadyPaidLessClaim = (settled: YesNo) => {
   const claim = withCommonClaimMetadata(createClaimWithFullRejection(RejectAllOfClaimType.ALREADY_PAID, 500));
   claim.totalClaimAmount = 1000;
-  claim.claimantResponse = {
+  claim.claimantResponse = Object.assign(new ClaimantResponse(), {
     hasDefendantPaidYou: new GenericYesNo(YesNo.YES),
     hasPartPaymentBeenAccepted: new GenericYesNo(settled),
     rejectionReason: settled === YesNo.NO ? {text: 'The remaining balance is still owed'} : undefined,
-  };
+  });
   claim.mediation = {
     canWeUse: {
       option: YesNo.YES,

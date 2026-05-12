@@ -1,15 +1,16 @@
 import request from 'supertest';
+import {NextFunction} from 'express';
 process.env.NODE_ENV = 'test';
 import '../../setup/testSetup';
 
 jest.mock('routes/guards/allResponseTasksCompletedGuard', () => ({
   AllResponseTasksCompletedGuard: {
-    apply: () => (_req, _res, next) => next(),
+    apply: () => (_req: unknown, _res: unknown, next: NextFunction) => next(),
   },
 }));
 
 jest.mock('routes/guards/pcqGuard', () => ({
-  isFirstTimeInPCQ: (_req, _res, next) => next(),
+  isFirstTimeInPCQ: (_req: unknown, _res: unknown, next: NextFunction) => next(),
 }));
 
 jest.mock('services/features/common/responseDeadlineAgreedService', () => ({
@@ -53,6 +54,7 @@ import {YesNo} from '../../../main/common/form/models/yesNo';
 import {MediationCarm} from '../../../main/common/models/mediation/mediationCarm';
 import {UnavailableDateType} from '../../../main/common/models/directionsQuestionnaire/hearing/unavailableDates';
 import {PartyType} from '../../../main/common/models/partyType';
+import {Claim} from '../../../main/common/models/claim';
 
 const CLAIM_ID = '000MC123';
 const FUTURE_RESPONSE_DEADLINE = new Date('2050-05-15T00:00:00.000Z');
@@ -60,7 +62,7 @@ const SUBMITTED_DATE = '2026-01-02T09:00:00.000Z';
 
 const route = (url: string, claimId = CLAIM_ID): string => url.replace(':id', claimId);
 
-const createDraftStoreClient = (claim) => ({
+const createDraftStoreClient = (claim: Claim) => ({
   set: jest.fn(() => Promise.resolve({})),
   get: jest.fn(() => Promise.resolve(JSON.stringify({
     id: claim.id,
@@ -71,14 +73,14 @@ const createDraftStoreClient = (claim) => ({
   expireat: jest.fn(() => Promise.resolve({})),
 });
 
-const setDraftClaim = (claim) => {
+const setDraftClaim = (claim: Claim) => {
   app.locals.draftStoreClient = createDraftStoreClient(claim);
 };
 
-const withCommonClaimMetadata = (claim) => {
+const withCommonClaimMetadata = (claim: Claim): Claim => {
   claim.id = CLAIM_ID;
   claim.legacyCaseReference = CLAIM_ID;
-  claim.submittedDate = SUBMITTED_DATE;
+  claim.submittedDate = new Date(SUBMITTED_DATE);
   claim.respondent1ResponseDeadline = FUTURE_RESPONSE_DEADLINE;
   claim.applicant1 = createClaimWithBasicApplicantDetails().applicant1;
   return claim;
