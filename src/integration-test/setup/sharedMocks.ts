@@ -22,6 +22,9 @@ jest.mock('@hmcts/nodejs-logging', () => ({
 
 export const civilServiceClientMock = {
   retrieveClaimDetails: jest.fn(),
+  retrieveDashboard: jest.fn(),
+  retrieveNotification: jest.fn(),
+  retrieveGaNotification: jest.fn(),
   submitEvent: jest.fn(),
 };
 
