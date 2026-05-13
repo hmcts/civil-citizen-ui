@@ -461,7 +461,7 @@ function getLatestUpdateForClaimantRejectRepaymentPlan(claim: Claim, lng: string
     .build();
 }
 
-export const buildResponseToClaimSection = (claim: Claim, claimId: string, lang: string, respondentPaymentDeadline?: Date): ClaimSummarySection[] => {
+export const buildResponseToClaimSection = (claim: Claim, claimId: string, lang: string, respondentPaymentDeadline?: Date, judgmentBufferEnabled = false): ClaimSummarySection[] => {
   const sectionContent = [];
   const lng = getLng(lang);
 
@@ -470,7 +470,7 @@ export const buildResponseToClaimSection = (claim: Claim, claimId: string, lang:
   const responseDeadlinePassedContent = getPastResponseDeadlineContent(claim, lng);
   const respondToClaimLink = getRespondToClaimLink(claimId, lng);
   const responseStatus = claim.responseStatus;
-  if (claim.isDefendantNotResponded()) {
+  if (claim.isDefendantNotResponded(judgmentBufferEnabled)) {
     sectionContent.push(responseNotSubmittedTitle);
     if (claim.isDeadLinePassed()) {
       sectionContent.push(responseDeadlinePassedContent);

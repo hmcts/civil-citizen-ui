@@ -539,8 +539,17 @@ export class Claim {
     return undefined;
   }
 
-  isDefendantNotResponded(): boolean {
-    return this.ccdState === CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
+  isDefendantNotResponded(judgmentBufferEnabled = false): boolean {
+    return this.isAwaitingDefendantResponse(judgmentBufferEnabled);
+  }
+
+  isJudgmentRequested(): boolean {
+    return this.ccdState === CaseState.JUDGMENT_REQUESTED;
+  }
+
+  isAwaitingDefendantResponse(judgmentBufferEnabled = false): boolean {
+    return this.ccdState === CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT ||
+      (judgmentBufferEnabled && this.isJudgmentRequested());
   }
 
   isCaseIssuedPending(): boolean {

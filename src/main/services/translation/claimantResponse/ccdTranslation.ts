@@ -9,8 +9,8 @@ import {convertToPence} from 'services/translation/claim/moneyConversation';
 import {getJudgmentAmountSummary} from 'services/features/claimantResponse/ccj/judgmentAmountSummaryService';
 import {convertToPoundsFilter} from 'common/utils/currencyFormat';
 
-export const translateClaimantResponseDJToCCD = async (claim: Claim): Promise<CCDClaim> => {
-  const summaryDetails = await getJudgmentAmountSummary(claim, convertToPoundsFilter(claim.claimFee?.calculatedAmountInPence), 'en');
+export const translateClaimantResponseDJToCCD = async (claim: Claim, judgmentBufferEnabled = false): Promise<CCDClaim> => {
+  const summaryDetails = await getJudgmentAmountSummary(claim, convertToPoundsFilter(claim.claimFee?.calculatedAmountInPence), 'en', judgmentBufferEnabled);
   let repaymentSummary = `The judgment will order the defendants to pay £${summaryDetails.total}, including the claim fee and interest, if applicable, as shown:\n### Claim amount \n £${claim.totalClaimAmount}\n`;
   repaymentSummary= repaymentSummary + ` ### Claim fee amount \n £${summaryDetails.claimFeeAmount}\n ## Subtotal \n £${summaryDetails.subTotal}\n ## Total still owed \n £${summaryDetails.total}`;
   return {

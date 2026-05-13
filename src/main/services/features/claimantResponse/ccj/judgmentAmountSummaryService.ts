@@ -1,11 +1,11 @@
 import {Claim} from 'models/claim';
 import {getInterestData} from 'common/utils/interestUtils';
 
-export const getJudgmentAmountSummary = async (claim: Claim, claimFee: number, lang: string) => {
+export const getJudgmentAmountSummary = async (claim: Claim, claimFee: number, lang: string, judgmentBufferEnabled = false) => {
   const hasDefendantAlreadyPaid = claim.hasDefendantPaid();
   const alreadyPaidAmount = hasDefendantAlreadyPaid ? claim.getDefendantPaidAmount().toFixed(2) : 0;
   const isFullAdmission = claim.isFullAdmission();
-  const isChargeableInterest = isFullAdmission || ( claim.isDefendantNotResponded() && claim.isDeadLinePassed());
+  const isChargeableInterest = isFullAdmission || (claim.isDefendantNotResponded(judgmentBufferEnabled) && claim.isDeadLinePassed());
   const claimHasInterest = isChargeableInterest && claim.hasInterest();
   const interestDetails = claimHasInterest ? await getInterestData(claim, lang) : undefined;
   const claimFeeAmount = claim.helpWithFees?.helpWithFeesReferenceNumber ? Number(claim.claimIssuedHwfDetails.outstandingFeeInPounds) : claimFee;

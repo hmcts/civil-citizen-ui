@@ -13,10 +13,12 @@ import {Claim} from 'models/claim';
 import {CaseState} from 'form/models/claimDetails';
 import {CaseRole} from 'form/models/caseRoles';
 import {CivilServiceClient} from 'client/civilServiceClient';
+import {isJudgmentBufferEnabled} from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('services/features/queryManagement/queryManagementService');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 
 const CONTROLLER_URL = QM_INFORMATION_URL;
 const FOLLOW_UP_URL = QM_FOLLOW_UP_URL;
@@ -171,6 +173,28 @@ describe('Query management Information controller', () => {
         expect(res.text).toContain('The defendant has up to 28 days to respond once they receive the claim.');
         expect(res.text).toContain('Get an update on my case');
         expect(res.text).toContain(ANY_THING_ELSE_LABEL);
+      });
+  });
+
+  it('should return CCJ link when claim is judgment requested and judgment buffer is enabled', async () => {
+    mockGetCaption.mockImplementation(() => 'PAGES.QM.CAPTIONS.GET_UPDATE');
+    (isJudgmentBufferEnabled as jest.Mock).mockResolvedValueOnce(true);
+
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate()-1);
+
+    const claim = new Claim();
+    claim.caseRole = CaseRole.CLAIMANT;
+    claim.ccdState = CaseState.JUDGMENT_REQUESTED;
+    claim.respondent1ResponseDeadline = yesterday;
+
+    jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockResolvedValueOnce(claim);
+
+    await request(app)
+      .get(getControllerUrl(WhatToDoTypeOption.GET_UPDATE, QualifyingQuestionTypeOption.CLAIM_NOT_PAID))
+      .expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain('<a class="govuk-link" rel="noopener noreferrer" href=/case/:id/ccj/paid-amount>request a county court judgment (CCJ)</a>');
       });
   });
 
