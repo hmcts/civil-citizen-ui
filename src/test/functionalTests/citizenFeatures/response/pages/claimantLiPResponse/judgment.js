@@ -15,7 +15,7 @@ class Judgment {
     await this.confirmationPage();
   }
 
-  async raiseDefaultJudgmentBuffer(claimRef) {
+async raiseDefaultJudgmentBuffer(claimRef) {
     await this.defendantDoB(claimRef);
     await this.paymentOptionsForDJFlow();
     await this.confirmationPageBuffer();
@@ -77,7 +77,7 @@ class Judgment {
     await I.click('Save and continue');
   }
 
-  async paymentOptionsForDJFlow(){
+async paymentOptionsForDJFlow(){
     await I.waitForContent('Payment Options', 60);
     await I.see('I would like the defendant to pay:');
     await I.click(fields.payImmediately);
