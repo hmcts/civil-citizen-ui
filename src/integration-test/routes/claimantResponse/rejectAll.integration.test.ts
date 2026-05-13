@@ -99,6 +99,12 @@ const buildAlreadyPaidLessClaim = (settled: YesNo) => {
   return claim;
 };
 
+const expectTaskList = (res: request.Response, includes: string[], excludes: string[] = []): void => {
+  expect(res.status).toBe(200);
+  includes.forEach(text => expect(res.text).toContain(text));
+  excludes.forEach(text => expect(res.text).not.toContain(text));
+};
+
 describe('Integration: claimant reject-all branching', () => {
   beforeAll(() => {
     jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
@@ -115,14 +121,11 @@ describe('Integration: claimant reject-all branching', () => {
     await request(app)
       .get(route(CLAIMANT_RESPONSE_TASK_LIST_URL))
       .expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain('How they responded');
-        expect(res.text).toContain('Choose what to do next');
-        expect(res.text).toContain('Decide whether to proceed');
-        expect(res.text).toContain('Free telephone mediation');
-        expect(res.text).toContain('Give us details in case there&#39;s a hearing');
-        expect(res.text).not.toContain('Telephone mediation');
-        expect(res.text).not.toContain('Availability for mediation');
+        expectTaskList(
+          res,
+          ['How they responded', 'Choose what to do next', 'Decide whether to proceed', 'Free telephone mediation', 'Give us details in case there&#39;s a hearing'],
+          ['Telephone mediation', 'Availability for mediation'],
+        );
       });
   });
 
@@ -133,13 +136,10 @@ describe('Integration: claimant reject-all branching', () => {
     await request(app)
       .get(route(CLAIMANT_RESPONSE_TASK_LIST_URL))
       .expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain('Decide whether to proceed');
-        expect(res.text).toContain('Free telephone mediation');
-        expect(res.text).toContain('Mediation');
-        expect(res.text).toContain('Telephone mediation');
-        expect(res.text).toContain('Availability for mediation');
-        expect(res.text).toContain('Give us details in case there&#39;s a hearing');
+        expectTaskList(
+          res,
+          ['Decide whether to proceed', 'Free telephone mediation', 'Mediation', 'Telephone mediation', 'Availability for mediation', 'Give us details in case there&#39;s a hearing'],
+        );
       });
   });
 
@@ -149,12 +149,11 @@ describe('Integration: claimant reject-all branching', () => {
     await request(app)
       .get(route(CLAIMANT_RESPONSE_TASK_LIST_URL))
       .expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain('Decide whether to proceed');
-        expect(res.text).not.toContain('Free telephone mediation');
-        expect(res.text).not.toContain('Telephone mediation');
-        expect(res.text).not.toContain('Availability for mediation');
-        expect(res.text).not.toContain('Give us details in case there\'s a hearing');
+        expectTaskList(
+          res,
+          ['Decide whether to proceed'],
+          ['Free telephone mediation', 'Telephone mediation', 'Availability for mediation', 'Give us details in case there\'s a hearing'],
+        );
       });
   });
 
@@ -164,11 +163,11 @@ describe('Integration: claimant reject-all branching', () => {
     await request(app)
       .get(route(CLAIMANT_RESPONSE_TASK_LIST_URL))
       .expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain('Accept or reject their response');
-        expect(res.text).not.toContain('Free telephone mediation');
-        expect(res.text).not.toContain('Telephone mediation');
-        expect(res.text).not.toContain('Availability for mediation');
+        expectTaskList(
+          res,
+          ['Accept or reject their response'],
+          ['Free telephone mediation', 'Telephone mediation', 'Availability for mediation'],
+        );
       });
   });
 
@@ -178,11 +177,11 @@ describe('Integration: claimant reject-all branching', () => {
     await request(app)
       .get(route(CLAIMANT_RESPONSE_TASK_LIST_URL))
       .expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain('Accept or reject their response');
-        expect(res.text).toContain('Free telephone mediation');
-        expect(res.text).not.toContain('Telephone mediation');
-        expect(res.text).not.toContain('Availability for mediation');
+        expectTaskList(
+          res,
+          ['Accept or reject their response', 'Free telephone mediation'],
+          ['Telephone mediation', 'Availability for mediation'],
+        );
       });
   });
 
@@ -192,14 +191,11 @@ describe('Integration: claimant reject-all branching', () => {
     await request(app)
       .get(route(CLAIMANT_RESPONSE_TASK_LIST_URL))
       .expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain('Have you been paid the £500?');
-        expect(res.text).toContain('Settle the claim for £500?');
-        expect(res.text).not.toContain('Accept or reject their response');
-        expect(res.text).not.toContain('Free telephone mediation');
-        expect(res.text).not.toContain('Telephone mediation');
-        expect(res.text).not.toContain('Availability for mediation');
-        expect(res.text).not.toContain('Give us details in case there&#39;s a hearing');
+        expectTaskList(
+          res,
+          ['Have you been paid the £500?', 'Settle the claim for £500?'],
+          ['Accept or reject their response', 'Free telephone mediation', 'Telephone mediation', 'Availability for mediation', 'Give us details in case there&#39;s a hearing'],
+        );
       });
   });
 
@@ -209,14 +205,11 @@ describe('Integration: claimant reject-all branching', () => {
     await request(app)
       .get(route(CLAIMANT_RESPONSE_TASK_LIST_URL))
       .expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain('Have you been paid the £500?');
-        expect(res.text).toContain('Settle the claim for £500?');
-        expect(res.text).toContain('Free telephone mediation');
-        expect(res.text).toContain('Give us details in case there&#39;s a hearing');
-        expect(res.text).not.toContain('Accept or reject their response');
-        expect(res.text).not.toContain('Telephone mediation');
-        expect(res.text).not.toContain('Availability for mediation');
+        expectTaskList(
+          res,
+          ['Have you been paid the £500?', 'Settle the claim for £500?', 'Free telephone mediation', 'Give us details in case there&#39;s a hearing'],
+          ['Accept or reject their response', 'Telephone mediation', 'Availability for mediation'],
+        );
       });
   });
 
@@ -227,15 +220,11 @@ describe('Integration: claimant reject-all branching', () => {
     await request(app)
       .get(route(CLAIMANT_RESPONSE_TASK_LIST_URL))
       .expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain('Have you been paid the £500?');
-        expect(res.text).toContain('Settle the claim for £500?');
-        expect(res.text).toContain('Mediation');
-        expect(res.text).toContain('Telephone mediation');
-        expect(res.text).toContain('Availability for mediation');
-        expect(res.text).toContain('Give us details in case there&#39;s a hearing');
-        expect(res.text).not.toContain('Accept or reject their response');
-        expect(res.text).not.toContain('Free telephone mediation');
+        expectTaskList(
+          res,
+          ['Have you been paid the £500?', 'Settle the claim for £500?', 'Mediation', 'Telephone mediation', 'Availability for mediation', 'Give us details in case there&#39;s a hearing'],
+          ['Accept or reject their response', 'Free telephone mediation'],
+        );
       });
   });
 });

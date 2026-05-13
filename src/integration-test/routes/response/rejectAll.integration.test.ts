@@ -19,6 +19,7 @@ jest.mock('services/features/common/responseDeadlineAgreedService', () => ({
 
 import {app} from '../../../main/app';
 import {
+  CITIZEN_REJECT_ALL_CLAIM_URL,
   CITIZEN_EVIDENCE_URL,
   CITIZEN_TIMELINE_URL,
   DQ_AVAILABILITY_DATES_FOR_HEARING_URL,
@@ -32,6 +33,7 @@ import {
   RESPONSE_CHECK_ANSWERS_URL,
   RESPONSE_TASK_LIST_URL,
   RESPONSE_YOUR_DEFENCE_URL,
+  SEND_RESPONSE_BY_EMAIL_URL,
 } from '../../../main/routes/urls';
 import {
   createClaimWithBasicApplicantDetails,
@@ -173,6 +175,12 @@ const buildLongUnavailablePeriod = () => {
   };
 };
 
+const expectTaskList = (res: request.Response, includes: string[], excludes: string[] = []): void => {
+  expect(res.status).toBe(200);
+  includes.forEach(text => expect(res.text).toContain(text));
+  excludes.forEach(text => expect(res.text).not.toContain(text));
+};
+
 describe('Integration: reject-all response coverage', () => {
   beforeAll(() => {
     jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
@@ -183,18 +191,62 @@ describe('Integration: reject-all response coverage', () => {
     (isMintiEnabledForCase as jest.Mock).mockResolvedValue(false);
   });
 
+  it('renders the reject-all selection page with the claimant name', async () => {
+    setDraftClaim(buildRejectAllDisputeClaim());
+
+    await request(app)
+      .get(route(CITIZEN_REJECT_ALL_CLAIM_URL))
+      .expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain('Why do you believe you don');
+        expect(res.text).toContain('any money?');
+      });
+  });
+
+  it('shows a validation error when the reject-all reason is missing', async () => {
+    setDraftClaim(buildRejectAllDisputeClaim());
+
+    await request(app)
+      .post(route(CITIZEN_REJECT_ALL_CLAIM_URL))
+      .send({})
+      .expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain('govuk-error-message');
+        expect(res.text).toMatch(/Select why you don(?:'|\u2019|&#39;|&apos;)t believe you owe/);
+      });
+  });
+
+  it('redirects dispute selections back to the response task list', async () => {
+    setDraftClaim(buildRejectAllDisputeClaim());
+
+    await request(app)
+      .post(route(CITIZEN_REJECT_ALL_CLAIM_URL))
+      .send({option: RejectAllOfClaimType.DISPUTE})
+      .expect(302)
+      .expect('Location', route(RESPONSE_TASK_LIST_URL));
+  });
+
+  it('redirects counter claims to the email response flow', async () => {
+    setDraftClaim(buildRejectAllDisputeClaim());
+
+    await request(app)
+      .post(route(CITIZEN_REJECT_ALL_CLAIM_URL))
+      .send({option: RejectAllOfClaimType.COUNTER_CLAIM})
+      .expect(302)
+      .expect('Location', route(SEND_RESPONSE_BY_EMAIL_URL));
+  });
+
   it('renders the reject-all dispute task list with the non-CARM mediation path', async () => {
     app.locals.draftStoreClient = mockDefendantResponseSmallClaimFullReject;
 
     await request(app)
       .get(route(RESPONSE_TASK_LIST_URL))
       .expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain('Tell us why you disagree with the claim');
-        expect(res.text).toContain('Free telephone mediation');
-        expect(res.text).toContain('Give us details in case there&#39;s a hearing');
-        expect(res.text).not.toContain('Telephone mediation');
-        expect(res.text).not.toContain('Availability for mediation');
+        expectTaskList(
+          res,
+          ['Tell us why you disagree with the claim', 'Free telephone mediation', 'Give us details in case there&#39;s a hearing'],
+          ['Telephone mediation', 'Availability for mediation'],
+        );
       });
   });
 
@@ -204,14 +256,11 @@ describe('Integration: reject-all response coverage', () => {
     await request(app)
       .get(route(RESPONSE_TASK_LIST_URL))
       .expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain('Tell us how much you&#39;ve paid');
-        expect(res.text).toContain('Why do you disagree with the amount claimed?');
-        expect(res.text).toContain('Free telephone mediation');
-        expect(res.text).toContain('Give us details in case there&#39;s a hearing');
-        expect(res.text).not.toContain('Tell us why you disagree with the claim');
-        expect(res.text).not.toContain('Telephone mediation');
-        expect(res.text).not.toContain('Availability for mediation');
+        expectTaskList(
+          res,
+          ['Tell us how much you&#39;ve paid', 'Why do you disagree with the amount claimed?', 'Free telephone mediation', 'Give us details in case there&#39;s a hearing'],
+          ['Tell us why you disagree with the claim', 'Telephone mediation', 'Availability for mediation'],
+        );
       });
   });
 
@@ -222,11 +271,11 @@ describe('Integration: reject-all response coverage', () => {
     await request(app)
       .get(route(RESPONSE_TASK_LIST_URL))
       .expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain('Tell us why you disagree with the claim');
-        expect(res.text).toContain('Telephone mediation');
-        expect(res.text).toContain('Availability for mediation');
-        expect(res.text).not.toContain('Free telephone mediation');
+        expectTaskList(
+          res,
+          ['Tell us why you disagree with the claim', 'Telephone mediation', 'Availability for mediation'],
+          ['Free telephone mediation'],
+        );
       });
   });
 
@@ -237,13 +286,11 @@ describe('Integration: reject-all response coverage', () => {
     await request(app)
       .get(route(RESPONSE_TASK_LIST_URL))
       .expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain('Tell us how much you&#39;ve paid');
-        expect(res.text).toContain('Why do you disagree with the amount claimed?');
-        expect(res.text).toContain('Telephone mediation');
-        expect(res.text).toContain('Availability for mediation');
-        expect(res.text).not.toContain('Tell us why you disagree with the claim');
-        expect(res.text).not.toContain('Free telephone mediation');
+        expectTaskList(
+          res,
+          ['Tell us how much you&#39;ve paid', 'Why do you disagree with the amount claimed?', 'Telephone mediation', 'Availability for mediation'],
+          ['Tell us why you disagree with the claim', 'Free telephone mediation'],
+        );
       });
   });
 
