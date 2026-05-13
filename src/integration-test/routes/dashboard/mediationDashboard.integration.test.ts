@@ -93,11 +93,11 @@ const buildNotificationList = (title: string, descriptionEn: string): DashboardN
 const buildParties = () => {
   const applicant1 = Object.assign(new Party(), {
     type: PartyType.INDIVIDUAL,
-    partyDetails: Object.assign(new PartyDetails(), {firstName: 'Alice', lastName: 'Claimant'}),
+    partyDetails: new PartyDetails({firstName: 'Alice', lastName: 'Claimant'}),
   });
   const respondent1 = Object.assign(new Party(), {
     type: PartyType.INDIVIDUAL,
-    partyDetails: Object.assign(new PartyDetails(), {firstName: 'Bob', lastName: 'Defendant'}),
+    partyDetails: new PartyDetails({firstName: 'Bob', lastName: 'Defendant'}),
   });
   return {applicant1, respondent1};
 };
