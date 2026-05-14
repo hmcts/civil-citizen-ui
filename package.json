@@ -86,7 +86,7 @@
     "applicationinsights": "^2.9.5",
     "axios": "^1.15.2",
     "class-transformer": "^0.5.1",
-    "class-validator": "^0.14.0",
+    "class-validator": "^0.15.0",
     "config": "^3.3.12",
     "connect-redis": "^7.1.0",
     "cookie-parser": "^1.4.7",
@@ -97,7 +97,7 @@
     "express-session": "^1.17.3",
     "follow-redirects": "^1.16.0",
     "glob": "^12.0.0",
-    "govuk-frontend": "5.3.1",
+    "govuk-frontend": "5.14.0",
     "helmet": "^7.0.0",
     "i18next": "^22.4.6",
     "i18next-fs-backend": "^2.6.4",
@@ -114,7 +114,7 @@
     "multer": "^2.1.1",
     "nunjucks": "^3.2.4",
     "otplib": "^13.0.0",
-    "reflect-metadata": "^0.1.13",
+    "reflect-metadata": "^0.2.0",
     "require-directory": "^2.1.1",
     "serve-favicon": "^2.5.0",
     "stylelint": "^16.9.0",
@@ -123,7 +123,7 @@
     "tsconfig-paths": "^4.1.1",
     "typescript": "5.9.3",
     "uuid": "^11.1.1",
-    "validator": "13.15.26"
+    "validator": "13.15.35"
   },
   "devDependencies": {
     "@babel/core": "^7.26.0",
@@ -145,8 +145,8 @@
     "allure-playwright": "^3.6.0",
     "babel-jest": "^29.7.0",
     "babel-loader": "^9.1.0",
-    "chai": "4.3.6",
-    "codeceptjs": "3.4.1",
+    "chai": "4.5.0",
+    "codeceptjs": "3.7.9",
     "copy-webpack-plugin": "^11.0.0",
     "css-loader": "^6.7.2",
     "debug": "^4.3.4",
@@ -164,7 +164,7 @@
     "mocha": "^10.2.0",
     "mocha-junit-reporter": "^2.2.1",
     "mocha-multi": "1.1.7",
-    "mochawesome": "7.1.3",
+    "mochawesome": "7.1.4",
     "nock": "^13.2.9",
     "node-cache": "^5.1.2",
     "nodemon": "^2.0.22",
@@ -182,13 +182,13 @@
     "webdriverio": "^8.3.2",
     "webpack": "^5.102.1",
     "webpack-cli": "^5.1.4",
-    "webpack-dev-middleware": "7.1.0",
+    "webpack-dev-middleware": "7.4.5",
     "webpack-node-externals": "^3.0.0",
     "wiremock-standalone": "^3.2.1"
   },
   "resolutions": {
     "flatted": "3.4.2",
-    "undici": "7.24.0",
+    "undici": "7.25.0",
     "table/ajv": "^8.18.0",
     "@tootallnate/once": "^3.0.1",
     "test-exclude": "^7.0.1",
@@ -199,7 +199,7 @@
     "brace-expansion": "^5.0.2",
     "cookie": "^0.7.2",
     "node-fetch": "^2.6.7",
-    "shelljs": "^0.8.5",
+    "shelljs": "^0.10.0",
     "glob-parent": "^6.0.1",
     "qs": "^6.14.2",
     "flat": "^5.0.1",
@@ -214,7 +214,7 @@
     "ws": "^8.17.1",
     "diff": "^8.0.3",
     "axios": "^1.15.2",
-    "validator": ">=13.15.22",
+    "validator": "13.15.35",
     "postcss": "^8.5.10",
     "form-data": "^4.0.4",
     "import-in-the-middle": "^1.14.4",
@@ -229,5 +229,5 @@
     "js-yaml": "4.1.1",
     "lodash": "^4.18.1"
   },
-  "packageManager": "yarn@4.10.3"
+  "packageManager": "yarn@4.14.1"
 }
