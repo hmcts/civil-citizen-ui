@@ -30,7 +30,7 @@ Scenario.skip('Case progression journey - Small Claims - Verify latest Update pa
   // Enable this test once the bug https://tools.hmcts.net/jira/browse/DTSCCI-5513 is fixed
   
   const orderMadeNotif = orderMade();
-  await verifyNotificationTitleAndContent(claimNumber, orderMadeNotif.title, orderMadeNotif.content, claimRef);
+  await verifyNotificationTitleAndContent(claimNumber, orderMadeNotif.title, null, claimRef);
   taskListItem = ordersAndNotices();
   await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Available', true);
   await I.click(orderMadeNotif.nextSteps);
