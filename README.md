@@ -36,6 +36,15 @@ This downloads the shared IDAM/CCD helper scripts to `bin/shared/`. You can opti
 ./bin/pull-latest-civil-shared.sh feature-branch
 ```
 
+Preview CCD definition imports also need the CCD importer user, gateway IDAM client secret and gateway S2S secret. For example:
+
+```bash
+export CCD_CONFIGURER_IMPORTER_USERNAME=$(az keyvault secret show --vault-name civil-aat --name ccd-importer-username --query value -o tsv)
+export CCD_CONFIGURER_IMPORTER_PASSWORD=$(az keyvault secret show --vault-name civil-aat --name ccd-importer-password --query value -o tsv)
+export CCD_API_GATEWAY_IDAM_CLIENT_SECRET=$(az keyvault secret show --vault-name ccd-aat --name ccd-api-gateway-oauth2-client-secret --query value -o tsv)
+export CCD_API_GATEWAY_S2S_SECRET=$(az keyvault secret show --vault-name s2s-aat --name microservicekey-ccd-gw --query value -o tsv)
+```
+
 ### Running the application
 
 Install dependencies by executing the following command:

@@ -25,4 +25,7 @@ fi
 definition_input_dir=$(realpath 'ccd-definition/civil')
 definition_output_file="$(realpath ".")/build/ccd-development-config/ccd-civil-dev.xlsx"
 
-./bin/shared/import-ccd-definition.sh "${definition_input_dir}" "${definition_output_file}" "${params}"
+mkdir -p "$(dirname "${definition_output_file}")"
+
+./bin/shared/process-definition.sh "${definition_input_dir}" "${definition_output_file}" "${params}"
+./bin/ccd-import-definition.sh "${definition_output_file}"
