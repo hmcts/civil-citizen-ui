@@ -55,11 +55,13 @@ module.exports = {
           if (missingContent.length === 0) {
             return;
           }
-        } else {
-          const contentFound = normalisedPageSource.includes(normaliseText(content));
-          console.log('content to be verified ..', content, `(found: ${contentFound})`);
-          if (contentFound) {
-            return;
+        } else if(!content) {
+          break;
+        } 
+        else {
+          console.log('content to be verified ..', content);
+          if (pageSource.includes(content)) {
+            break;
           }
         }
       }
