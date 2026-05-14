@@ -126,7 +126,7 @@ describe('addViewApplicationsRows', () => {
           'text': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_PREFER',
         },
         'value': {
-          'html': 'test',
+          'text': 'test',
         },
       });
       expect(result[2]).toEqual(  {
@@ -158,7 +158,7 @@ describe('addViewApplicationsRows', () => {
           'text': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_PREFER',
         },
         'value': {
-          'html': 'test',
+          'text': 'test',
         },
       });
       expect(result[2]).toEqual(  {
@@ -190,7 +190,7 @@ describe('addViewApplicationsRows', () => {
           'text': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_PREFER',
         },
         'value': {
-          'html': 'test',
+          'text': 'test',
         },
       });
       expect(result[2]).toEqual(  {
@@ -222,7 +222,7 @@ describe('addViewApplicationsRows', () => {
           'text': 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_PREFER',
         },
         'value': {
-          'html': 'test',
+          'text': 'test',
         },
       });
       expect(result[2]).toEqual(  {

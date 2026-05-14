@@ -29,7 +29,10 @@ module.exports = {
           if (missingContent.length === 0) {
             break;
           }
-        } else {
+        } else if(!content) {
+          break;
+        } 
+        else {
           console.log('content to be verified ..', content);
           if (pageSource.includes(content)) {
             break;
@@ -41,7 +44,7 @@ module.exports = {
         throw new Error('Notification could not be verified');
       }
 
-      await I.wait(4);
+      await I.wait(2);
       await I.refreshPage();
     }
   },

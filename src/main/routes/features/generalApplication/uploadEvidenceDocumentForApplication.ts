@@ -28,7 +28,8 @@ import {
   getFileUploadErrorsForSource,
   FILE_UPLOAD_SOURCE,
 } from 'common/utils/fileUploadUtils';
-import {redirectIfMulterError} from 'services/features/generalApplication/uploadEvidenceDocumentService';
+import {getRouteParam} from 'common/utils/routeParamUtils';
+import {handleMulterError} from 'services/features/generalApplication/uploadEvidenceDocumentService';
 
 const uploadEvidenceDocumentsForApplicationController = Router();
 const viewPath = 'features/generalApplication/upload_documents';
@@ -53,7 +54,7 @@ async function renderView(form: GenericForm<UploadGAFiles>, claim: Claim, claimI
 
 uploadEvidenceDocumentsForApplicationController.get([GA_UPLOAD_DOCUMENTS_URL, GA_UPLOAD_DOCUMENTS_COSC_URL], (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const claimId = req.params.id;
+    const claimId = getRouteParam(req, 'id');
     const index  = queryParamNumber(req, 'index');
     const claim = await getClaimById(claimId, req, true);
     const redisKey = generateRedisKey(req);
@@ -84,7 +85,7 @@ uploadEvidenceDocumentsForApplicationController.get([GA_UPLOAD_DOCUMENTS_URL, GA
 
 uploadEvidenceDocumentsForApplicationController.post([GA_UPLOAD_DOCUMENTS_URL, GA_UPLOAD_DOCUMENTS_COSC_URL], multerMiddleware, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const claimId = req.params.id;
+    const claimId = getRouteParam(req, 'id');
     const index  = queryParamNumber(req, 'index');
     const redisKey = generateRedisKey(req);
     const claim: Claim = await getCaseDataFromStore(redisKey);
@@ -99,13 +100,17 @@ uploadEvidenceDocumentsForApplicationController.post([GA_UPLOAD_DOCUMENTS_URL, G
         summaryRows: [],
       });
 
-    if (redirectIfMulterError(req, res, currentUrl)) {
-      return;
+    if (handleMulterError(req)) {
+      return req.session.save(() => {
+        res.redirect(`${currentUrl}`);
+      });
     }
 
     if (req.body.action === 'uploadButton') {
       await uploadSelectedFile(req, formattedSummary, claimId);
-      return res.redirect(`${currentUrl}`);
+      return req.session.save(() => {
+        res.redirect(`${currentUrl}`);
+      });
     }
     const uploadDoc = new UploadGAFiles();
     const form = new GenericForm(uploadDoc);
@@ -113,9 +118,11 @@ uploadEvidenceDocumentsForApplicationController.post([GA_UPLOAD_DOCUMENTS_URL, G
     if (form.hasFieldError('fileUpload') && claim.generalApplication.uploadEvidenceForApplication.length === 0) {
       req.session.fileUpload = JSON.stringify(createUploadOneFileError());
       req.session.fileUploadSource = FILE_UPLOAD_SOURCE.GA_UPLOAD_EVIDENCE;
-      return res.redirect(`${currentUrl}`);
+      return req.session.save(() => {
+        res.redirect(`${currentUrl}`);
+      });
     } else {
-      res.redirect(constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, nextPageUrl),index));
+      res.redirect(constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, nextPageUrl), index));
     }
   } catch (error) {
     next(error);

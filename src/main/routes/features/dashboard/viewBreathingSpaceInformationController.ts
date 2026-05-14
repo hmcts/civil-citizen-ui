@@ -7,6 +7,7 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {Claim} from 'models/claim';
 import {getClaimById} from 'modules/utilityService';
 import {isQueryManagementEnabled} from '../../../app/auth/launchdarkly/launchDarklyClient';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const viewBreathingSpaceInfo = 'features/dashboard/breathing-space-info';
 const viewBreathingSpaceInformationController = Router();
@@ -26,7 +27,7 @@ async function renderView(req: Request, res: Response, claim: Claim, claimId: st
 }
 viewBreathingSpaceInformationController.get(BREATHING_SPACE_INFO_URL, (async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const claimId = req.params.id;
+    const claimId = getRouteParam(req, 'id');
     const claim: Claim = await getClaimById(claimId, req, true);
     await renderView(req, res, claim, claimId);
   } catch (error) {

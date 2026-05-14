@@ -12,6 +12,7 @@ import {getClaimById} from 'modules/utilityService';
 import {setResponseDeadline} from 'services/features/common/responseDeadlineAgreedService';
 import {DocumentUri, DocumentType} from 'common/models/document/documentType';
 import {isMintiEnabledForCase, isCarmEnabledForCase} from '../../../app/auth/launchdarkly/launchDarklyClient';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const taskListViewPath = 'features/response/task-list';
 const taskListController = Router();
@@ -21,7 +22,7 @@ const logger = Logger.getLogger('taskListController');
 
 taskListController.get(RESPONSE_TASK_LIST_URL, async (req: AppRequest, res, next) => {
   try {
-    const currentClaimId = req.params.id;
+    const currentClaimId = getRouteParam(req, 'id');
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const caseData: Claim = await getClaimById(currentClaimId, req, true);
     const carmApplicable = await isCarmEnabledForCase(caseData.submittedDate);

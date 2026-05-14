@@ -20,6 +20,7 @@ import {caseNumberPrettify} from 'common/utils/stringUtils';
 import {getTypeOfDocumentsContents} from 'services/features/caseProgression/evidenceUploadDocumentsContent';
 import {getClaimById} from 'modules/utilityService';
 import {isCuiGaNroEnabled} from '../../../app/auth/launchdarkly/launchDarklyClient';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const typeOfDocumentsViewPath = 'features/caseProgression/typeOfDocuments';
 const typeOfDocumentsController = Router();
@@ -51,7 +52,7 @@ async function renderView(res: Response, req: AppRequest, claimId: string, form:
 typeOfDocumentsController.get(TYPES_OF_DOCUMENTS_URL,
   (async (req: AppRequest, res: Response, next: NextFunction) => {
     try {
-      const claimId = req.params.id;
+      const claimId = getRouteParam(req, 'id');
       const redisKey= generateRedisKey(req);
       const documentsList = await getDocuments(redisKey);
       const form = new GenericForm(documentsList);
@@ -64,7 +65,7 @@ typeOfDocumentsController.get(TYPES_OF_DOCUMENTS_URL,
 
 typeOfDocumentsController.post(TYPES_OF_DOCUMENTS_URL, (async (req, res, next) => {
   try {
-    const claimId = req.params.id;
+    const claimId = getRouteParam(req, 'id');
     const claim =  await getClaimById(claimId, req,true);
     const typeDocumentList= getTypeDocumentForm(req);
     const form = new GenericForm(typeDocumentList);
@@ -75,7 +76,7 @@ typeOfDocumentsController.post(TYPES_OF_DOCUMENTS_URL, (async (req, res, next) =
       await renderView(res, <AppRequest>req, claimId,form, constructResponseUrlWithIdParams(claimId, UPLOAD_YOUR_DOCUMENTS_URL));
     } else {
       await saveCaseProgression(req, form.model, isClaimant);
-      await deleteUntickedDocumentsFromStore(req,claim.isClaimant());
+      await deleteUntickedDocumentsFromStore(req, claim.isClaimant());
       res.redirect(constructResponseUrlWithIdParams(claimId, CP_UPLOAD_DOCUMENTS_URL));
     }
   } catch (error) {

@@ -8,6 +8,7 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {HEARING_FEE_APPLY_HELP_FEE_SELECTION, HEARING_FEE_PAYMENT_CONFIRMATION_URL} from 'routes/urls';
 import {saveUserId} from 'modules/draft-store/paymentSessionStoreService';
 import {getClaimById} from 'modules/utilityService';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('PaymentServiceUtils');
@@ -31,7 +32,7 @@ export const getRedirectUrlCommon = async (claimId: string, req: AppRequest): Pr
   } else {
     logger.info('redis key before saving the hearing payment ' + redisClaimId);
     await saveCaseProgression(req, paymentRedirectInformation, paymentInformation, hearing);
-    await saveUserId(claimId, req.session.user.id);
+    await saveUserId(claimId, FeeType.HEARING, req.session.user.id);
 
     const paymentStatus = await getFeePaymentStatus(claimId, paymentRedirectInformation.paymentReference, FeeType.HEARING, req);
     logger.info(`Existing hearing payment status for claim id ${claimId}, payment reference ${paymentRedirectInformation.paymentReference}: ${paymentStatus?.status}`);
@@ -52,13 +53,14 @@ export const getRedirectUrlCommon = async (claimId: string, req: AppRequest): Pr
 };
 
 async function getRedirectInformation(req: AppRequest) {
-  logger.info(`getRedirectInformation called for claimId: ${req.params.id}`);
+  const claimId = getRouteParam(req, 'id');
+  logger.info(`getRedirectInformation called for claimId: ${claimId}`);
   try {
-    const redirectInformation = await getFeePaymentRedirectInformation(req.params.id, FeeType.HEARING, req);
+    const redirectInformation = await getFeePaymentRedirectInformation(claimId, FeeType.HEARING, req);
     return redirectInformation;
   } catch (error) {
-    logger.error(`Error fetching redirect information for claimId: ${req.params.id}`, error);
-    const claim = await getClaimById(req.params.id, req, true);
+    logger.error(`Error fetching redirect information for claimId: ${claimId}`, error);
+    const claim = await getClaimById(claimId, req, true);
     claim.paymentSyncError = true;
     await saveDraftClaim(generateRedisKey(<AppRequest>req), claim, true);
     return null;

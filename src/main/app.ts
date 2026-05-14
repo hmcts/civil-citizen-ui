@@ -1,10 +1,9 @@
-import * as bodyParser from 'body-parser';
 import cookieParser from 'cookie-parser';
 import express from 'express';
+import {app} from './app-instance';
 import * as path from 'path';
 import favicon from 'serve-favicon';
 import session from 'express-session';
-import 'express-async-errors';
 
 import {AppInsights} from 'modules/appinsights';
 import {Helmet} from 'modules/helmet';
@@ -27,6 +26,7 @@ import {
   BASE_GENERAL_APPLICATION_RESPONSE_URL,
   BASE_GENERAL_APPLICATION_URL, BREATHING_SPACE_INFO_URL,
   CLAIMANT_RESPONSE_CHECK_ANSWERS_URL, COSC_FINAL_PAYMENT_DATE_URL,
+  CP_UPLOAD_DOCUMENTS_URL,
   CP_FINALISE_TRIAL_ARRANGEMENTS_CONFIRMATION_URL,
   CP_FINALISE_TRIAL_ARRANGEMENTS_URL,
   DASHBOARD_CLAIMANT_URL,
@@ -79,7 +79,7 @@ import {
   GA_WANT_TO_UPLOAD_DOCUMENTS_URL,
   HAS_ANYTHING_CHANGED_URL,
   INFORM_OTHER_PARTIES_URL,
-  IS_CASE_READY_URL, MEDIATION_PHONE_CONFIRMATION_URL,
+  IS_CASE_READY_URL, MEDIATION_PHONE_CONFIRMATION_URL, MEDIATION_UPLOAD_DOCUMENTS,
   ORDER_JUDGE_URL,
   PAYING_FOR_APPLICATION_URL, QM_CYA, QM_FOLLOW_UP_CYA, QM_FOLLOW_UP_MESSAGE,
   QM_FOLLOW_UP_URL,
@@ -112,6 +112,8 @@ import {contactUsGuard} from 'routes/guards/contactUsGuard';
 import {shareQueryConfirmationGuard} from 'routes/guards/shareQueryConfirmationGuard';
 import {clearShareQuerySessionIfLeftJourney} from 'routes/guards/shareQueryConfirmationGuard';
 import {mediationClaimantPhoneRedirectionGuard} from 'routes/guards/mediationClaimantPhoneRedirectionGuard';
+import {createUploadRateLimitGuard} from 'routes/guards/uploadRateLimitGuard';
+import {restrictFormContentType} from 'modules/security/restrictFormContentType';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const {setupDev} = require('./development');
@@ -121,15 +123,47 @@ const productionMode = env === 'production';
 const developmentMode = env === 'development';
 const e2eTestMode = env === 'e2eTest';
 const cookieMaxAge = config.get<number>('cookieMaxAge');
+const ensureBodyObject: express.RequestHandler = (req, _res, next) => {
+  // Express 5 leaves req.body undefined when no parser matches (e.g. empty POSTs).
+  // Legacy controllers/tests assume an object and read req.body.action safely.
+  if (req.body === undefined) {
+    req.body = {};
+  }
+  next();
+};
+const setDefaultHeaders: express.RequestHandler = (_req, res, next) => {
+  res.setHeader(
+    'Cache-Control',
+    'no-cache, max-age=0, must-revalidate, no-store',
+  );
 
-export const app = express();
+  res.setHeader(
+    'Access-Control-Allow-Origin',
+    '*',
+  );
+
+  res.setHeader(
+    'Access-Control-Allow-Headers',
+    'Origin, X-Requested-With, Content-Type, Accept',
+  );
+
+  res.setHeader(
+    'access-control-allow-methods',
+    'GET,POST,OPTIONS,PUT,DELETE',
+  );
+
+  next();
+};
+
+export {app};
 app.use(cookieParser());
 app.use(setLanguage);
-app.use(favicon(path.join(__dirname, 'public', 'assets', 'images', 'favicon.ico')));
+app.use(favicon(path.join(__dirname, 'public', 'assets', 'images', 'favicon.ico')) as any);
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(express.json({ limit: '500mb' }));
 app.use(express.urlencoded({ limit: '500mb', extended: true }));
+app.use(ensureBodyObject);
 app.locals.ENV = env;
 I18Next.enableFor(app);
 
@@ -161,7 +195,7 @@ app.use(session({
     maxAge: cookieMaxAge,
     sameSite: 'lax',
   },
-}));
+}) as any);
 
 app.use(setCaseReferenceCookie({secure: productionMode, maxAge: cookieMaxAge}));
 
@@ -177,7 +211,7 @@ if(!e2eTestMode){
 }
 
 if(e2eTestMode){
-  app.get(TEST_SUPPORT_TOGGLE_FLAG_ENDPOINT, async (req, res, next) => {
+  app.get(TEST_SUPPORT_TOGGLE_FLAG_ENDPOINT, async (req, res) => {
     try {
       const key = req.params.key;
       const booleanValue: boolean = JSON.parse(req.params.value);
@@ -251,7 +285,6 @@ app.use([
   INFORM_OTHER_PARTIES_URL,
   GA_CLAIM_APPLICATION_COST_URL,
   GA_APPLICATION_COSTS_URL,
-  GA_CLAIM_APPLICATION_COST_URL,
   GA_UPLOAD_N245_FORM_URL,
   GA_WANT_TO_UPLOAD_DOCUMENTS_URL,
   GA_UPLOAD_DOCUMENTS_URL,
@@ -307,36 +340,31 @@ app.use([
   GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_CYA_URL,
 ], GaTrackHistory);
 
+const uploadRateLimitEnabled = config.get<boolean>('uploadRateLimit.enabled');
+if (uploadRateLimitEnabled) {
+  const maxRequests = config.get<number>('uploadRateLimit.maxRequests');
+  const windowMs = config.get<number>('uploadRateLimit.windowSeconds') * 1000;
+  app.use([
+    QUERY_MANAGEMENT_CREATE_QUERY,
+    QM_FOLLOW_UP_MESSAGE,
+    CP_UPLOAD_DOCUMENTS_URL,
+    MEDIATION_UPLOAD_DOCUMENTS,
+    GA_UPLOAD_N245_FORM_URL,
+    GA_UPLOAD_DOCUMENTS_URL,
+    GA_UPLOAD_DOCUMENTS_COSC_URL,
+    GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL,
+    GA_RESPONDENT_UPLOAD_DOCUMENT_URL,
+    GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_URL,
+    GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_URL,
+    GA_UPLOAD_WRITTEN_REPRESENTATION_DOCS_URL,
+  ], createUploadRateLimitGuard(maxRequests, windowMs));
+}
+
 if(env !== 'test') {
   app.use(contactUsGuard);
   app.use(MEDIATION_PHONE_CONFIRMATION_URL, mediationClaimantPhoneRedirectionGuard);
 }
-app.use(bodyParser.json({limit: '500mb'}));
-app.use(bodyParser.urlencoded({ limit: '500mb', extended: true }));
-
-app.use((_req, res, next) => {
-  res.setHeader(
-    'Cache-Control',
-    'no-cache, max-age=0, must-revalidate, no-store',
-  );
-
-  res.setHeader(
-    'Access-Control-Allow-Origin',
-    '*',
-  );
-
-  res.setHeader(
-    'Access-Control-Allow-Headers',
-    'Origin, X-Requested-With, Content-Type, Accept',
-  );
-
-  res.setHeader(
-    'access-control-allow-methods',
-    'GET,POST,OPTIONS,PUT,DELETE',
-  );
-
-  next();
-});
+app.use(setDefaultHeaders);
 
 const checkServiceAvailability = async (_req: express.Request, res: express.Response, next: express.NextFunction) => {
   const serviceShuttered = await isServiceShuttered();
@@ -351,9 +379,9 @@ const checkServiceAvailability = async (_req: express.Request, res: express.Resp
 if (env !== 'test') {
   new CSRFToken().enableFor(app);
   app.use(checkServiceAvailability);
+  app.use(restrictFormContentType);
 }
-
 app.use(routes);
 new ErrorHandler().enableFor(app);
 
-setupDev(app,developmentMode);
+setupDev(app, developmentMode);

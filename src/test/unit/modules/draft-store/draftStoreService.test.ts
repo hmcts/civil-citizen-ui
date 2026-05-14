@@ -227,4 +227,25 @@ describe('Draft store service to save and retrieve claim', () => {
       expect(loggerSpy).toHaveBeenCalledWith('Failed to find claim IDs by userId', mockError);
     });
   });
+
+  it('should save claim without checking ttl when draftClaimCreatedAt is undefined', async () => {
+    const draftStoreWithData = createMockDraftStore(REDIS_DATA[0]);
+    draftStoreWithData.ttl = jest.fn().mockResolvedValue(120);
+    draftStoreWithData.expireat = jest.fn().mockResolvedValue({});
+    app.locals.draftStoreClient = draftStoreWithData;
+
+    const spySet = jest.spyOn(app.locals.draftStoreClient, 'set');
+    const spyTtl = jest.spyOn(app.locals.draftStoreClient, 'ttl');
+    const spyExpireat = jest.spyOn(app.locals.draftStoreClient, 'expireat');
+
+    const claim = new Claim();
+    claim.id = CLAIM_ID;
+    claim.draftClaimCreatedAt = undefined as any;
+
+    await saveDraftClaim(CLAIM_ID, claim);
+
+    expect(spySet).toBeCalled();
+    expect(spyTtl).not.toBeCalled();
+    expect(spyExpireat).not.toBeCalled();
+  });
 });

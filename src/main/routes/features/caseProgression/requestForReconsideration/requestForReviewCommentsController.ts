@@ -22,13 +22,14 @@ import {
   getRequestForReviewCommentsContent,
   getButtonContent,
 } from 'services/features/caseProgression/requestForReconsideration/requestForReviewCommentsContent';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const requestForReviewViewPath = 'features/caseProgression/requestForReconsideration/request-for-review.njk';
 const requestForReviewCommentsController = Router();
 
 requestForReviewCommentsController.get(REQUEST_FOR_RECONSIDERATION_COMMENTS_URL, (async (req, res, next: NextFunction) => {
   try {
-    const claimId = req.params.id;
+    const claimId = getRouteParam(req, 'id');
     const claim = await getClaimById(claimId, req, true);
     const form = new GenericForm(getRequestForReviewCommentsForm(claim));
     renderView(res, claimId, claim, form);
@@ -40,7 +41,7 @@ requestForReviewCommentsController.get(REQUEST_FOR_RECONSIDERATION_COMMENTS_URL,
 requestForReviewCommentsController.post(REQUEST_FOR_RECONSIDERATION_COMMENTS_URL,(async (req, res, next) => {
   try {
     const form = new GenericForm(new RequestForReviewCommentsForm(req.body.textArea));
-    const claimId = req.params.id;
+    const claimId = getRouteParam(req, 'id');
     const claim = await getClaimById(claimId, req,true);
     await form.validate();
     if (form.hasErrors()) {

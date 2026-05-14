@@ -19,6 +19,7 @@ const mockDraftStoreClient = {
   set: jest.fn(),
   expireat: jest.fn(),
   get: jest.fn(),
+  keys: jest.fn(),
   del: jest.fn(),
 };
 app.locals.draftStoreClient = mockDraftStoreClient;
@@ -34,21 +35,24 @@ const userDetails = {accessToken: citizenRoleToken, email:'dfkdh', id: 'jfkdljfd
 jest.mock('../../../../main/app/auth/user/oidc');
 
 describe('OIDC middleware', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+    mockDraftStoreClient.keys.mockResolvedValue([]);
+    app.request['session'] = {
+      save: (callback: (err?: any) => void) => callback(),
+      destroy: (callback: () => void) => callback(),
+    } as unknown as Session;
+  });
   describe('Sign out', () => {
     beforeEach(() => {
       nock(idamServiceUrl)
         .post('/o/token')
         .reply(200, {id_token: citizenRoleToken});
-      app.locals.user = {
-        idToken: 'token',
-        givenName: 'Joe',
-        familyName: 'Bloggs',
-      };
     });
 
     it('should unset user', async () => {
-      await request(app).get(SIGN_OUT_URL).expect(() => {
-        expect(app.locals.user).toBeUndefined();
+      await request(app).get(SIGN_OUT_URL).expect((res) => {
+        expect(res.status).toBe(302);
       });
     });
 
@@ -72,18 +76,21 @@ describe('OIDC middleware', () => {
         expect(res.status).toBe(302);
         expect(res.text).toContain(SIGN_IN_URL);
       });
-      expect(app.locals.assignClaimURL).toBe(ASSIGN_CLAIM_URL);
     });
     it('should redirect to assign claim url when claim id is set', async () => {
       mockGetOidcResponse.mockReturnValue(Promise.resolve({id_token: '1', access_token: ''} as OidcResponse));
       mockGetUserDetails.mockReturnValue(userDetails);
       mockGetSessionIssueTime.mockReturnValue(1234);
+      app.request['session'] = {
+        assignClaimURL: ASSIGN_CLAIM_URL,
+        save: (callback: (err?: any) => void) => callback(),
+      } as unknown as Session;
       await request(app).get(CALLBACK_URL)
         .query({code: 'string'})
         .expect((res) => {
           expect(res.status).toBe(302);
+          expect(res.text).toContain(ASSIGN_CLAIM_URL);
         });
-      expect(app.locals.assignClaimURL).toBeUndefined();
     });
     it('should redirect to dashboard when user is logged in and claim is not set', async () => {
       mockGetOidcResponse.mockReturnValue(Promise.resolve({id_token: '1', access_token: ''} as OidcResponse));
@@ -127,6 +134,16 @@ describe('OIDC middleware', () => {
           expect(res.text).toContain(DASHBOARD_URL);
         });
     });
+
+    it('should redirect to unauthorised when getOidcResponse fails', async () => {
+      mockGetOidcResponse.mockRejectedValueOnce(new Error('IDAM error'));
+      await request(app).get(CALLBACK_URL)
+        .query({code: 'string'})
+        .expect((res) => {
+          expect(res.status).toBe(500);
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
+        });
+    });
   });
 
   describe('claim issue task-list', () => {
@@ -135,18 +152,21 @@ describe('OIDC middleware', () => {
         expect(res.status).toBe(302);
         expect(res.text).toContain(SIGN_IN_URL);
       });
-      expect(app.locals.claimIssueTasklist).toBe(true);
     });
     it('should redirect to claim issue task-list url when claimIssueTasklist is true', async () => {
       mockGetOidcResponse.mockReturnValue(Promise.resolve({id_token: '1', access_token: ''} as OidcResponse));
       mockGetUserDetails.mockReturnValue(userDetails);
       mockGetSessionIssueTime.mockReturnValue(1234);
+      app.request['session'] = {
+        claimIssueTasklist: true,
+        save: (callback: (err?: any) => void) => callback(),
+      } as unknown as Session;
       await request(app).get(CALLBACK_URL)
         .query({code: 'string'})
         .expect((res) => {
           expect(res.status).toBe(302);
+          expect(res.text).toContain(CLAIMANT_TASK_LIST_URL);
         });
-      expect(app.locals.claimIssueTasklist).toBeUndefined();
     });
     it('should redirect to dashboard when user is logged in and claimIssueTasklist is not set', async () => {
       mockGetOidcResponse.mockReturnValue(Promise.resolve({id_token: '1', access_token: ''} as OidcResponse));
@@ -167,22 +187,27 @@ describe('OIDC middleware', () => {
     });
 
     it('should store original url in local if user details expired', async () => {
-      mockDraftStoreClient.get.mockResolvedValueOnce('123456789');
+      mockDraftStoreClient.get.mockResolvedValue('123456789');
 
       await request(app).get(CLAIM_FEE_PAYMENT_CONFIRMATION_URL_WITH_UNIQUE_ID.replace(':id', '1729760747011812')).expect((res) => {
         expect(res.status).toBe(302);
-        expect(mockDraftStoreClient.set).toHaveBeenCalledWith('123456789' + 'userIdForPayment', CLAIM_FEE_PAYMENT_CONFIRMATION_URL_WITH_UNIQUE_ID.replace(':id', '1729760747011812'));
+        expect(mockDraftStoreClient.set).toHaveBeenCalledWith(
+          '1729760747011812CLAIMISSUED123456789confirmationUrl',
+          CLAIM_FEE_PAYMENT_CONFIRMATION_URL_WITH_UNIQUE_ID.replace(':id', '1729760747011812'),
+        );
         expect(res.text).toContain(SIGN_IN_URL);
       });
     });
 
     it('should redirect back to payment confirmation url after login', async () => {
       userDetails.roles = ['citizen'];
-      app.locals.paymentConfirmationUrl = CLAIM_FEE_PAYMENT_CONFIRMATION_URL_WITH_UNIQUE_ID;
       mockGetOidcResponse.mockReturnValue(Promise.resolve({id_token: '1', access_token: ''} as OidcResponse));
       mockGetUserDetails.mockReturnValue(userDetails);
       mockGetSessionIssueTime.mockReturnValue(1234);
-      app.request['session'] = {user: {id: 'jfkdljfd'}} as unknown as Session;
+      app.request['session'] = {
+        user: {id: 'jfkdljfd'},
+        save: (callback: (err?: any) => void) => callback(),
+      } as unknown as Session;
       mockDraftStoreClient.get.mockResolvedValueOnce(CLAIM_FEE_PAYMENT_CONFIRMATION_URL_WITH_UNIQUE_ID);
 
       await request(app).get(CALLBACK_URL)
@@ -194,22 +219,29 @@ describe('OIDC middleware', () => {
     });
 
     it('should throw error while storing  original url in local if user details expired', async () => {
-      mockDraftStoreClient.get.mockRejectedValueOnce(new Error('error in getting the value'));
-      mockDraftStoreClient.set.mockRejectedValueOnce(new Error('error in getting the value'));
+      mockDraftStoreClient.get.mockRejectedValue(new Error('error in getting the value'));
+      mockDraftStoreClient.set.mockRejectedValue(new Error('error in getting the value'));
       await request(app).get(CLAIM_FEE_PAYMENT_CONFIRMATION_URL_WITH_UNIQUE_ID.replace(':id', '1729760747011812')).expect((res) => {
         expect(res.status).toBe(500);
         expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
       });
     });
 
-    it('should throw error if issue in getting confirmation url', async () => {
+    it('should redirect to unauthorised if issue in getting confirmation url', async () => {
       userDetails.roles = ['citizen'];
-      app.locals.paymentConfirmationUrl = CLAIM_FEE_PAYMENT_CONFIRMATION_URL_WITH_UNIQUE_ID;
       mockGetOidcResponse.mockReturnValue(Promise.resolve({id_token: '1', access_token: ''} as OidcResponse));
       mockGetUserDetails.mockReturnValue(userDetails);
       mockGetSessionIssueTime.mockReturnValue(1234);
-      app.request['session'] = {user: {id: 'jfkdljfd'}} as unknown as Session;
-      mockDraftStoreClient.get.mockRejectedValueOnce(new Error('error in getting the value'));
+      app.request['session'] = {
+        user: {id: 'jfkdljfd'},
+        save: (callback: (err?: any) => void) => callback(),
+      } as unknown as Session;
+      mockDraftStoreClient.get.mockImplementation((key: string) => {
+        if (key.includes('confirmationUrl') || key.includes('userIdForPayment')) {
+          return Promise.reject(new Error('error in getting the value'));
+        }
+        return Promise.resolve(null);
+      });
 
       await request(app).get(CALLBACK_URL)
         .query({code: 'string'})
@@ -217,6 +249,24 @@ describe('OIDC middleware', () => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
+    });
+  });
+
+  describe('Other routes', () => {
+    it('should redirect to IDAM login on SIGN_IN_URL', async () => {
+      await request(app).get(SIGN_IN_URL).expect((res) => {
+        expect(res.status).toBe(302);
+        expect(res.text).toContain('client_id=');
+        expect(res.text).toContain('response_type=code');
+        expect(res.text).toContain('callback');
+      });
+    });
+
+    it('should redirect to DASHBOARD_URL on root /', async () => {
+      await request(app).get('/').expect((res) => {
+        expect(res.status).toBe(302);
+        expect(res.text).toContain(DASHBOARD_URL);
+      });
     });
   });
 });

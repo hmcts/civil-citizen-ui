@@ -4,6 +4,7 @@ import {
   deleteDraftClaimFromStore,
   generateRedisKey,
   getCaseDataFromStore,
+  getDraftClaimFromStore,
   saveDraftClaim,
 } from 'modules/draft-store/draftStoreService';
 import {CivilServiceClient} from '../app/client/civilServiceClient';
@@ -13,9 +14,29 @@ import RedisStore from 'connect-redis';
 import Redis from 'ioredis';
 import {BusinessProcess} from 'models/businessProcess';
 import {syncCaseReferenceCookie} from './cookie/caseReferenceCookie';
+import {getRouteParam, normalizeRouteParam, RouteParam} from 'common/utils/routeParamUtils';
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('ccjCheckAnswersService');
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
+
+const syncCaseReference = (req: Request, claim?: Claim): void => {
+  const appRequest = req as AppRequest;
+  const session = appRequest.session as AppSession | undefined;
+
+  if (!session) {
+    return;
+  }
+
+  if (claim?.id) {
+    session.caseReference = claim.id;
+  } else {
+    delete session.caseReference;
+  }
+
+  syncCaseReferenceCookie(appRequest);
+};
 
 /**
  * Gets the claim from draft store and if not existing, then gets it from ccd.
@@ -24,56 +45,41 @@ const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServi
  * @param useRedisKey
  * @returns claim
  */
-export const getClaimById = async (claimId: string, req: Request, useRedisKey = false): Promise<Claim> => {
+export const getClaimById = async (claimId: RouteParam, req: Request, useRedisKey = false): Promise<Claim> => {
+  const normalizedClaimId = normalizeRouteParam(claimId);
   const userId = (<AppRequest>req)?.session?.user?.id;
-  const redisKey = useRedisKey && claimId !== userId ? generateRedisKey(<AppRequest>req) : claimId;
+  const redisKey = useRedisKey && normalizedClaimId !== userId ? generateRedisKey(<AppRequest>req) : normalizedClaimId;
   let claim: Claim = await getCaseDataFromStore(redisKey, true);
 
   if (claim.isEmpty() && redisKey !== userId) {
-    claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
+    claim = await civilServiceClient.retrieveClaimDetails(normalizedClaimId, <AppRequest>req);
     if (claim) {
       await saveDraftClaim(redisKey, claim, true);
     } else {
       throw new Error('Case not found...');
     }
   }
-  const appRequest = <AppRequest>req;
-  const session = (appRequest.session as AppSession | undefined);
-
-  if (session) {
-    if (claim?.id) {
-      session.caseReference = claim.id;
-    } else {
-      delete session.caseReference;
-    }
-    syncCaseReferenceCookie(appRequest);
-  }
+  syncCaseReference(req, claim);
   return claim;
 };
 
 export const refreshDraftStoreClaimFrom = async (req: Request, useRedisKey = false): Promise<Claim> => {
+  const claimId = getRouteParam(req, 'id');
   const userId = (<AppRequest>req)?.session?.user?.id;
-  const claimId = req.params?.id;
   const redisKey = useRedisKey && claimId !== userId ? generateRedisKey(<AppRequest>req) : claimId;
-
+  const oldClaim = await getDraftClaimFromStore(redisKey, true);
   const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
   if (claim) {
+    logger.info(`Refreshing claim from draft store: userId: ${userId} redisKey: ${redisKey} claimId: ${claimId}`);
+    claim.claimantResponse = oldClaim?.case_data?.claimantResponse;
+    logger.info(`Setting claimant response: userId: ${userId} redisKey: ${redisKey} claimantResponse: ${claim.claimantResponse? JSON.stringify(claim.claimantResponse) : 'undefined'}`);
     await deleteDraftClaimFromStore(redisKey);
     await saveDraftClaim(redisKey, claim, true);
   } else {
+    logger.error(`No claim found in draft store for : userId: ${userId} redisKey: ${redisKey} claimId: ${claimId}`);
     throw new Error('Case not found...');
   }
-  const appRequest = <AppRequest>req;
-  const session = (appRequest.session as AppSession | undefined);
-
-  if (session) {
-    if (claim?.id) {
-      session.caseReference = claim.id;
-    } else {
-      delete session.caseReference;
-    }
-    syncCaseReferenceCookie(appRequest);
-  }
+  syncCaseReference(req, claim);
   return claim;
 };
 
@@ -83,7 +89,7 @@ export const refreshDraftStoreClaimFrom = async (req: Request, useRedisKey = fal
  * @returns businessProcess
  */
 export const getClaimBusinessProcess = async (claimId: string, req: Request): Promise<BusinessProcess> => {
-  const claim: Claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
+  const claim: Claim = await civilServiceClient.retrieveClaimDetails(normalizeRouteParam(claimId), <AppRequest>req);
   if (claim) {
     return Object.assign(new BusinessProcess(), claim.businessProcess);
   } else {

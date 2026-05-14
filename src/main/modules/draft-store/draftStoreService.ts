@@ -1,4 +1,4 @@
-import {app} from '../../app';
+import {app} from '../../app-instance';
 import {
   CCDClaim,
   CivilClaimResponse,
@@ -9,6 +9,7 @@ import {calculateExpireTimeForDraftClaimInSeconds} from 'common/utils/dateUtils'
 import {AppRequest} from 'common/models/AppRequest';
 import {getClaimById} from 'modules/utilityService';
 import {Request} from 'express';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('draftStoreService');
@@ -57,15 +58,19 @@ export const getCaseDataFromStore = async (claimId: string, doNotThrowError = fa
  * @param claimId
  * @param claim
  * @param doNotThrowError
+ * @param userId
  */
-export const saveDraftClaim =async (claimId: string, claim: Claim, doNotThrowError = false) => {
+export const saveDraftClaim = async (claimId: string, claim: Claim, doNotThrowError = false, userId?: string) => {
+  logger.info(`Saving draft claim : userId: ${userId}  claimId: ${claimId} claimantResponse: ${claim.claimantResponse? JSON.stringify(claim.claimantResponse) : 'undefined'}`);
   let storedClaimResponse = await getDraftClaimFromStore(claimId, doNotThrowError);
+  logger.info(`storedClaimResponse : userId: ${userId}  claimId: ${claimId} claimantResponse ccjRequest: ${storedClaimResponse.case_data?.ccjRequest ? JSON.stringify(storedClaimResponse.case_data?.ccjRequest) : 'undefined'}`);
   if (isUndefined(storedClaimResponse.case_data)) {
     storedClaimResponse = createNewCivilClaimResponse(claimId);
   }
   storedClaimResponse.case_data = claim as any;
   const draftStoreClient = app.locals.draftStoreClient;
-  draftStoreClient.set(claimId, JSON.stringify(storedClaimResponse));
+  logger.info(`Updating claimant response : userId: ${userId}  claimId: ${claimId} ccjRequest: ${storedClaimResponse.case_data?.ccjRequest? JSON.stringify(storedClaimResponse.case_data?.ccjRequest) : 'undefined'}`);
+  await draftStoreClient.set(claimId, JSON.stringify(storedClaimResponse));
   if (claim.draftClaimCreatedAt) {
     await draftStoreClient.expireat(claimId, calculateExpireTimeForDraftClaimInSeconds(claim.draftClaimCreatedAt));
   }
@@ -77,7 +82,7 @@ const createNewCivilClaimResponse = (claimId: string) => {
 };
 
 export const deleteDraftClaim = async (req: Request, useRedisKey = false): Promise<void> => {
-  const claimId = req.params.id;
+  const claimId = getRouteParam(req, 'id');
   const userId = (<AppRequest>req)?.session?.user?.id;
   const redisKey = useRedisKey && claimId !== userId ? generateRedisKey(<AppRequest>req) : claimId;
   await deleteDraftClaimFromStore(redisKey);
@@ -97,7 +102,9 @@ export const deleteFieldDraftClaimFromStore = async (claimId: string, claim: Cla
 export const updateFieldDraftClaimFromStore = async (claimId: string, req: Request, propertyName: string, newValue: string): Promise<void> => {
   const claim = await getClaimById(claimId, req, true);
   const redisKey = generateRedisKey(<AppRequest>req);
+  const userId = (<AppRequest>req).session.user?.id;
   claim[propertyName] = newValue;
+  logger.info(`updateFieldDraftClaimFromStore : userId: ${userId} redisKey: ${redisKey} propertyName : ${propertyName} newValue : ${newValue? JSON.stringify(newValue) : 'undefined'}`);
   await saveDraftClaim(redisKey, claim);
 
 };
@@ -109,17 +116,17 @@ export async function createDraftClaimInStoreWithExpiryTime(claimId: string) {
     draftClaimCreatedAt: creationTime,
   } as unknown as CCDClaim;
   const draftStoreClient = app.locals.draftStoreClient;
-  draftStoreClient.set(claimId, JSON.stringify(draftClaim));
+  await draftStoreClient.set(claimId, JSON.stringify(draftClaim));
   await draftStoreClient.expireat(claimId, calculateExpireTimeForDraftClaimInSeconds(creationTime));
   logger.info(`Draft claim expiry time is set to ${await draftStoreClient.ttl(claimId)} seconds as of ${creationTime}`);
 }
 
 export function generateRedisKey(req: AppRequest) {
-  return req.params?.id + req.session.user?.id;
+  return getRouteParam(req, 'id') + req.session.user?.id;
 }
 
 export function generateRedisKeyForGA(req: AppRequest) {
-  return req.params.appId + req.session.user?.id;
+  return getRouteParam(req, 'appId') + req.session.user?.id;
 }
 
 export const findClaimIdsbyUserId = async (userId: string): Promise<any> => {

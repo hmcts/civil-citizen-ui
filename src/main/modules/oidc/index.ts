@@ -1,6 +1,6 @@
 import {Application, NextFunction, Request, Response} from 'express';
 import config from 'config';
-import {AppRequest} from 'models/AppRequest';
+import {AppRequest, PaymentConfirmationContext} from 'models/AppRequest';
 import {getOidcResponse, getSessionIssueTime, getUserDetails} from '../../app/auth/user/oidc';
 import {
   ASSIGN_CLAIM_URL,
@@ -20,7 +20,17 @@ import {
   PRIVACY_POLICY_URL,
   CONTACT_CNBC_URL,
   CONTACT_MEDIATION_URL,
+  HEARING_FEE_PAYMENT_CONFIRMATION_URL,
+  CLAIM_FEE_PAYMENT_CONFIRMATION_URL,
+  APPLICATION_FEE_PAYMENT_CONFIRMATION_URL,
 } from 'routes/urls';
+
+import {
+  getPaymentConfirmationUrl,
+  saveOriginalPaymentConfirmationUrl,
+  deletePaymentConfirmationUrl, getUserId,
+} from 'modules/draft-store/paymentSessionStoreService';
+import {FeeType} from 'form/models/helpWithFees/feeType';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('IDAMlogs');
@@ -31,9 +41,9 @@ const requestIsForAssigningClaimForDefendant = (req: Request): boolean => {
 
 const isPaymentConfirmationUrl = (req: Request): boolean => {
   const paymentUrls = [
-    '/hearing-payment-confirmation',
-    '/claim-issued-payment-confirmation',
-    '/general-application/payment-confirmation',
+    HEARING_FEE_PAYMENT_CONFIRMATION_URL.split('/:id')[0],
+    CLAIM_FEE_PAYMENT_CONFIRMATION_URL.split('/:id')[0],
+    APPLICATION_FEE_PAYMENT_CONFIRMATION_URL.split('/:id')[0],
   ];
   return paymentUrls.some(url => req.originalUrl.startsWith(url));
 };
@@ -78,14 +88,38 @@ const isMakeClaimPage = (requestUrl: string): boolean => {
   return requestUrl.startsWith(MAKE_CLAIM);
 };
 
-const buildAssignClaimUrlWithId = (req: AppRequest, app: Application): string => {
-  app.locals.assignClaimURL = undefined;
+const buildAssignClaimUrlWithId = (req: AppRequest): string => {
   req.session.assignClaimURL = undefined;
   return `${ASSIGN_CLAIM_URL}`;
 };
 
 export const isTestingSupportDraftUrl = (requestUrl: string): boolean => {
   return requestUrl.startsWith(TESTING_SUPPORT_URL);
+};
+
+const getPaymentConfirmationContextFromUrl = (url: string): PaymentConfirmationContext | undefined => {
+  const claimId = getClaimId(url);
+  const feeType = getFeeTypeFromUrl(url);
+
+  if (!claimId || !feeType) {
+    return undefined;
+  }
+
+  return {claimId, feeType};
+};
+
+const clearPaymentConfirmationContext = (req: AppRequest): void => {
+  req.session.paymentConfirmationContext = undefined;
+};
+
+const resolvePaymentConfirmationUrl = async (userId: string, originalUrl: string, sessionContext?: PaymentConfirmationContext) => {
+  const context = getPaymentConfirmationContextFromUrl(originalUrl) || sessionContext;
+  const paymentConfirmationUrl = await getPaymentConfirmationUrl(context?.claimId, context?.feeType, userId);
+  const resolvedContext = paymentConfirmationUrl
+    ? getPaymentConfirmationContextFromUrl(paymentConfirmationUrl) || context
+    : context;
+
+  return {context: resolvedContext, paymentConfirmationUrl};
 };
 
 export class OidcMiddleware {
@@ -105,39 +139,57 @@ export class OidcMiddleware {
 
     app.get(CALLBACK_URL, async (req: AppRequest, res: Response) => {
       try {
-        if (typeof req.query.code === 'string') {
+        if (typeof req.query.code !== 'string') {
+          return res.redirect(DASHBOARD_URL);
+        }
 
-          const responseData = await getOidcResponse(redirectUri, req.query.code);
-          req.session.user = app.locals.user = getUserDetails(responseData);
-          req.session.issuedAt = getSessionIssueTime(responseData);
-          logger.info('After login payment confirmation ', app.locals.paymentConfirmationUrl);
-          if (app.locals.assignClaimURL || req.session.assignClaimURL) {
-            const assignClaimUrlWithClaimId = buildAssignClaimUrlWithId(req, app);
+        const responseData = await getOidcResponse(redirectUri, req.query.code);
+        req.session.user = getUserDetails(responseData);
+        req.session.issuedAt = getSessionIssueTime(responseData);
+
+        if (req.session.assignClaimURL || req.session.claimIssueTasklist) {
+          await new Promise<void>((resolve, reject) => {
+            req.session.save((err) => (err ? reject(err) : resolve()));
+          });
+
+          if (req.session.assignClaimURL) {
+            const assignClaimUrlWithClaimId = buildAssignClaimUrlWithId(req);
             return res.redirect(assignClaimUrlWithClaimId);
           }
-          if (app.locals.claimIssueTasklist || req.session.claimIssueTasklist) {
+          if (req.session.claimIssueTasklist) {
             req.session.claimIssueTasklist = undefined;
-            app.locals.claimIssueTasklist = undefined;
             return res.redirect(CLAIMANT_TASK_LIST_URL);
           }
-
-          logger.info('login user id ', req.session.user.id);
-          const paymentConfirmationUrl = await getPaymentConfirmationUrl(req.session.user.id, app);
-          logger.info('Payment conf url ', paymentConfirmationUrl);
-          if (paymentConfirmationUrl) {
-            await app.locals.draftStoreClient.del(req.session.user.id + 'userIdForPayment');
-            return res.redirect(paymentConfirmationUrl);
-          }
-          if (req.session.user?.roles?.includes(citizenRole)) {
-            return res.redirect(DASHBOARD_URL);
-          }
           return res.redirect(UNAUTHORISED_URL);
-        } else {
-          res.redirect(DASHBOARD_URL);
         }
+
+        logger.info('login user id ', req.session.user.id);
+        const {context, paymentConfirmationUrl} = await resolvePaymentConfirmationUrl(
+          req.session.user.id,
+          req.originalUrl,
+          req.session.paymentConfirmationContext,
+        );
+        logger.info('Payment conf url ', paymentConfirmationUrl);
+
+        await new Promise<void>((resolve, reject) => {
+          req.session.save((err) => (err ? reject(err) : resolve()));
+        });
+
+        if (paymentConfirmationUrl) {
+          await deletePaymentConfirmationUrl(context?.claimId, context?.feeType, req.session.user.id);
+          clearPaymentConfirmationContext(req);
+          return res.redirect(paymentConfirmationUrl);
+        }
+        clearPaymentConfirmationContext(req);
+        if (req.session.user?.roles?.includes(citizenRole)) {
+          return res.redirect(DASHBOARD_URL);
+        }
+
+        return res.redirect(UNAUTHORISED_URL);
       } catch (err) {
-        logger.info('Error in the callback of idam ', err);
+        logger.error('Error in the callback of idam', err);
         throw err;
+        //Alt: res.redirect(UNAUTHORISED_URL); instead of throw err -> 'Something went wrong'
       }
     });
 
@@ -148,7 +200,6 @@ export class OidcMiddleware {
       });
 
       req.session.destroy(() => {
-        req.session = app.locals.user = undefined;
         res.redirect(idamSignOutUrl + '?' + params.toString());
       });
     });
@@ -165,6 +216,7 @@ export class OidcMiddleware {
             return next();
           }
         }
+
         if (
           requestIsForPinAndPost(req) ||
           requestIsForDownloadPdf(req) ||
@@ -179,50 +231,53 @@ export class OidcMiddleware {
         ) {
           return next();
         }
+
         if (requestIsForAssigningClaimForDefendant(req)) {
-          app.locals.assignClaimURL = appReq.session.assignClaimURL = ASSIGN_CLAIM_URL;
+          appReq.session.assignClaimURL = ASSIGN_CLAIM_URL;
         }
         if (requestIsForClaimIssueTaskList(req)) {
-          app.locals.claimIssueTasklist = appReq.session.claimIssueTasklist = true;
+          appReq.session.claimIssueTasklist = true;
         }
+
         logger.info('redirecting url ', req.originalUrl);
         if (isPaymentConfirmationUrl(req)) {
-          const claimId = getClaimId(req.originalUrl);
           logger.info('Condition satisfied for payment confirmation ', req.originalUrl);
-          logger.info('Claim id ', claimId);
-          if (!claimId) {
-            logger.info('claim id does not exist from payment confirmation url ', claimId);
+
+          const paymentConfirmationContext = getPaymentConfirmationContextFromUrl(req.originalUrl);
+          if (paymentConfirmationContext) {
+            appReq.session.paymentConfirmationContext = paymentConfirmationContext;
+            const userIdExtracted = await getUserId(paymentConfirmationContext.claimId, paymentConfirmationContext.feeType);
+            if (userIdExtracted) {
+              await saveOriginalPaymentConfirmationUrl(paymentConfirmationContext.claimId, paymentConfirmationContext.feeType, userIdExtracted, req.originalUrl);
+              logger.info(`Saved Payment Confirmation URL for claimId: ${paymentConfirmationContext.claimId} userId: ${userIdExtracted}`);
+            } else {
+              logger.warn(`user id does not exist from claim id: ${paymentConfirmationContext.claimId} `);
+            }
           } else {
-            const userId = await getUserId(claimId, app);
-            logger.info('User id ', userId);
-            await saveOriginalPaymentConfirmationUrl(userId, req.originalUrl, app);
+            logger.error(`claim id does not exist from payment confirmation url: ${req.originalUrl} `);
           }
         }
+
         return res.redirect(SIGN_IN_URL);
       } catch (err) {
-        logger.info('Error in the middleware of while session check ', err);
+        logger.error('Error in the middleware of while session check ', err);
         throw err;
       }
     });
   }
 }
 
-export const saveOriginalPaymentConfirmationUrl = async (userId: string, originalUrl: string, app: Application) => {
-  await app.locals.draftStoreClient.set(userId + 'userIdForPayment', originalUrl);
-};
-
-export const getUserId = async (claimId: string, app: Application): Promise<string> => {
-  return await app.locals.draftStoreClient.get(claimId + 'userIdForPayment');
-};
-
-export const getPaymentConfirmationUrl = async (userId: string, app: Application): Promise<string> => {
-  return await app.locals.draftStoreClient.get(userId + 'userIdForPayment');
-};
-
-const getClaimId = (originalUrl: string) => {
+export const getClaimId = (originalUrl: string) => {
   const regex = /\/(\d{16})\//;
-  const match = originalUrl?.match(regex);
+  const match = regex.exec(originalUrl);
   if (match && match.length >=2 && match[1].length === 16) {
     return match[1];
   }
+};
+
+export const getFeeTypeFromUrl = (url: string): FeeType | undefined => {
+  if (url.includes(HEARING_FEE_PAYMENT_CONFIRMATION_URL.split('/:id')[0])) return FeeType.HEARING;
+  if (url.includes(CLAIM_FEE_PAYMENT_CONFIRMATION_URL.split('/:id')[0])) return FeeType.CLAIMISSUED;
+  if (url.includes(APPLICATION_FEE_PAYMENT_CONFIRMATION_URL.split('/:id')[0])) return FeeType.GENERALAPPLICATION;
+  return undefined;
 };
