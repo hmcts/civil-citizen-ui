@@ -29,7 +29,10 @@ module.exports = {
           if (missingContent.length === 0) {
             break;
           }
-        } else {
+        } else if(!content) {
+          break;
+        } 
+        else {
           console.log('content to be verified ..', content);
           if (pageSource.includes(content)) {
             break;

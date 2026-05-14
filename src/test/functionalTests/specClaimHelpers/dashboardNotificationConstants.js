@@ -261,9 +261,8 @@ module.exports = {
   //Notice.AAA6.CP.OrderMade.Claimant
   orderMade: () => {
     return {
-      title: 'An order has been made',
-      content: 'The judge has made an order on your claim.',
-      nextSteps: 'View the order',
+      title: 'An order has been made on this claim',
+      nextSteps: 'read and review this order',
     };
   },
 
