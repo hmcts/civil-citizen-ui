@@ -106,6 +106,15 @@ describe('Dashboard Items', ()=> {
       //Then
       expect(status).toContain('PAGES.DASHBOARD.STATUS_CLAIMANT.COUNTY_COURT_JUDGMENT_ENTERED');
     });
+
+    it('should return judgment requested status when default judgment has been requested', () => {
+      //Given
+      ccdClaimantClaim.status = 'DEFAULT_JUDGEMENT_REQUESTED';
+      //When
+      const status = ccdClaimantClaim.getStatus('en');
+      //Then
+      expect(status).toContain('PAGES.DASHBOARD.STATUS_CLAIMANT.COUNTY_COURT_JUDGMENT_REQUESTED');
+    });
   });
 
   describe('Dashboard defendant item', ()=>{
@@ -163,6 +172,16 @@ describe('Dashboard Items', ()=> {
       const status = dashboardClaim.getStatus('en');
       //Then
       expect(status).toBe('PAGES.DASHBOARD.STATUS_DEFENDANT.CASE_DISCONTINUED');
+    });
+
+    it('should return translated status for default judgment requested', () => {
+      //Given
+      const dashboardClaim = new DashboardDefendantItem();
+      dashboardClaim.status = 'DEFAULT_JUDGEMENT_REQUESTED';
+      //When
+      const status = dashboardClaim.getStatus('en');
+      //Then
+      expect(status).toBe('PAGES.DASHBOARD.STATUS_DEFENDANT.COUNTY_COURT_JUDGMENT_REQUESTED');
     });
   });
 
