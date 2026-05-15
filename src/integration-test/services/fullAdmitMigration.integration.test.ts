@@ -1,3 +1,16 @@
+/**
+ * DTSCCI-5178: integration coverage for LiP v LiP full-admit response migration.
+ *
+ * Replaces removed functional tests:
+ * - LiPvLiP_FullAdmit_PayImmediately_tests.js → smokeFullAdmitTest.js (@smoketest)
+ * - LipvLip_FullAdmit_PaySetDate_CCJ_tests.js (CCJ payload here; CoSC UI not covered)
+ * - LipvLip_FullAdmit_PaySetDate_SSA_tests.js (was Scenario.skip)
+ * - LipvLip_FullAdmit_PayInstalments_tests.js (was Scenario.skip)
+ *
+ * Intentional gaps (covered elsewhere or out of scope for this ticket):
+ * - Admission CCJ + Certificate of Satisfaction UI and fee payment (see LipvLip_UI_DefaultJudgment_CoSC_tests.js for DJ CoSC only)
+ * - LR v LiP full-admit browser journeys (LRvLip_response_admitAll_*)
+ */
 process.env.NODE_ENV = 'test';
 import '../setup/testSetup';
 import {Claim} from '../../main/common/models/claim';

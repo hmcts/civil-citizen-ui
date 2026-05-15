@@ -1,3 +1,16 @@
+/**
+ * DTSCCI-5179 / 5178 stack: integration coverage for LiP v LiP part-admit response matrix.
+ *
+ * Replaces removed functional test:
+ * - LipvLip_partAdmit_PayImmediately_tests.js (claimant accept/settle + fast-track reject payloads)
+ *
+ * Related browser coverage:
+ * - LRvLip_response_partAdmit_HaventPaid_immediatePay_tests.js (@smoketest, solicitor defendant path)
+ * - Other @ui-part-admit nightly tests (by-set-date, instalments, already-paid, etc.)
+ *
+ * Intentional gap:
+ * - LiP v LiP claimant accept/reject immediate part-admit UI wizard (submission payloads covered here)
+ */
 process.env.NODE_ENV = 'test';
 import '../setup/testSetup';
 import {Claim} from '../../main/common/models/claim';

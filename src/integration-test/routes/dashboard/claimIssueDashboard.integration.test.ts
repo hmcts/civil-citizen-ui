@@ -1,3 +1,9 @@
+/**
+ * Claim-issue dashboard notifications (replaces removed IndividualvsIndividual interest/HWF scenarios).
+ *
+ * Intentional gap:
+ * - End-to-end create claim → pay fee → GA "ask for more time" (GA flows remain under ui_tests/ga/)
+ */
 import request from 'supertest';
 process.env.NODE_ENV = 'test';
 import '../../setup/testSetup';
