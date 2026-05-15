@@ -13,7 +13,8 @@ const partyType = 'LRvLiP';
 const viewBundlePage = new ViewBundle();
 let caseData, claimNumber, claimRef, taskListItem, notification, formattedCaseId, uploadDate;
 
-Feature('Case progression journey - Verify Bundle Page - Small Claims').tag('@civil-citizen-nightly @ui-bundles');
+// @smoketest: sole browser path for case progression bundle-ready dashboard and bundle page (dashboard task states covered by integration tests).
+Feature('Case progression journey - Verify Bundle Page - Small Claims').tag('@civil-citizen-master @civil-citizen-pr @civil-citizen-nightly @ui-bundles @smoketest');
 
 Before(async ({api}) => {
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
