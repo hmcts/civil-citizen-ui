@@ -15,6 +15,12 @@ class Judgment {
     await this.confirmationPage();
   }
 
+async raiseDefaultJudgmentBuffer(claimRef) {
+    await this.defendantDoB(claimRef);
+    await this.paymentOptionsForDJFlow();
+    await this.confirmationPageBuffer();
+  }
+
   async raiseJudgmentByAdmissions(claimRef) {
     await this.hasDefendantPaid('JudgmentByAdmissions', claimRef);
     await this.judgmentAmount();
@@ -71,7 +77,7 @@ class Judgment {
     await I.click('Save and continue');
   }
 
-  async paymentOptionsForDJFlow(){
+async paymentOptionsForDJFlow(){
     await I.waitForContent('Payment Options', 60);
     await I.see('I would like the defendant to pay:');
     await I.click(fields.payImmediately);
@@ -103,6 +109,10 @@ class Judgment {
 
   async confirmationPage(){
     await I.waitForContent('County Court Judgment requested', 60);
+  }
+
+  async confirmationPageBuffer(){
+    await I.waitForContent('A CCJ has been requested. You will be notified when this is confirmed.', 60);
   }
 }
 
