@@ -24,7 +24,9 @@ import {
   HearingLocation,
 } from 'models/caseProgression/caseProgressionHearing';
 import {DocumentType} from 'models/document/documentType';
+import {Bundle} from 'models/caseProgression/bundles/bundle';
 import {SystemGeneratedCaseDocuments} from 'models/document/systemGeneratedCaseDocuments';
+import {CaseProgression} from 'models/caseProgression/caseProgression';
 import * as caseProgressionLatestUpdateService from 'services/features/dashboard/claimSummary/latestUpdate/caseProgression/caseProgressionLatestUpdateService';
 
 const buildSdoOrderDocument = (): SystemGeneratedCaseDocuments => ({
@@ -107,9 +109,9 @@ describe('Integration: case progression legacy updates tab', () => {
   it('renders bundle complete content when bundle is stitched', async () => {
     const claimId = '000MC-CP-LU-BUNDLE';
     const claim = buildLegacyCpClaim(claimId, claimType.SMALL_CLAIM);
-    claim.caseProgression = {
-      caseBundles: [{stitchedDocument: buildStitchedBundleDocument()}],
-    };
+    const caseProgression = new CaseProgression();
+    caseProgression.caseBundles = [new Bundle('Hearing bundle', buildStitchedBundleDocument())];
+    claim.caseProgression = caseProgression;
 
     civilServiceClientMock.retrieveClaimDetails.mockResolvedValue(claim);
 
