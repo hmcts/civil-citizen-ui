@@ -88,6 +88,24 @@ describe('Dashboard Items', ()=> {
       //Then
       expect(status).toContain('PAGES.DASHBOARD.STATUS_CLAIMANT.NO_RESPONSE_ON_TIME');
     });
+
+    it('should return legacy requested CCJ status for default judgment', () => {
+      //Given
+      ccdClaimantClaim.status = 'DEFAULT_JUDGEMENT';
+      //When
+      const status = ccdClaimantClaim.getStatus('en');
+      //Then
+      expect(status).toContain('PAGES.DASHBOARD.STATUS_CLAIMANT.CLAIMANT_REQUESTED_CCJ');
+    });
+
+    it('should return judgment entered status when default judgment has been granted', () => {
+      //Given
+      ccdClaimantClaim.status = 'DEFAULT_JUDGEMENT_GRANTED';
+      //When
+      const status = ccdClaimantClaim.getStatus('en');
+      //Then
+      expect(status).toContain('PAGES.DASHBOARD.STATUS_CLAIMANT.COUNTY_COURT_JUDGMENT_ENTERED');
+    });
   });
 
   describe('Dashboard defendant item', ()=>{
