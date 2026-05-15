@@ -23,8 +23,6 @@ import {
   isGaForLipsEnabled,
   isQueryManagementEnabled, isWelshEnabledForMainCase,
 } from '../../../app/auth/launchdarkly/launchDarklyClient';
-import config from 'config';
-import {CivilServiceClient} from 'client/civilServiceClient';
 import {t} from 'i18next';
 import {isCarmApplicableAndSmallClaim} from 'common/utils/carmToggleUtils';
 import {caseNumberPrettify} from 'common/utils/stringUtils';
@@ -38,8 +36,6 @@ import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const claimantDashboardViewPath = 'features/dashboard/claim-summary-redesign';
 const claimantDashboardController = Router();
-const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
-const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 const HearingUploadDocuments = 'Upload hearing documents';
 const ResponseClaimTrack = 'responseClaimTrack';
 
@@ -59,7 +55,7 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
       claim = await getClaimById(userId, req, true);
       dashboardId = userId;
     } else {
-      claim = await civilServiceClient.retrieveClaimDetails(claimId, req);
+      claim = await getClaimById(claimId, req, true);
       caseRole = claim.isClaimant()?ClaimantOrDefendant.CLAIMANT:ClaimantOrDefendant.DEFENDANT;
       dashboardId = claimId;
       claimIdPrettified = caseNumberPrettify(claimId);

@@ -68,8 +68,9 @@ applicationTypeController.get(APPLICATION_TYPE_URL, (async (req: AppRequest, res
 applicationTypeController.post(APPLICATION_TYPE_URL, (async (req: AppRequest | Request, res: Response, next: NextFunction) => {
 
   try {
+    const claimId = getRouteParam(req, 'id');
     const redisKey = generateRedisKey(<AppRequest>req);
-    const claim = await getClaimById(redisKey, req, true);
+    const claim = await getClaimById(claimId, req, true);
     let applicationType = null;
 
     let applicationIndex = queryParamNumber(req, 'index');
@@ -84,7 +85,6 @@ applicationTypeController.post(APPLICATION_TYPE_URL, (async (req: AppRequest | R
     if(!applicationIndex && applicationIndex != 0) {
       validateAdditionalApplicationtType(claim,form.errors,applicationType,req.body);
     }
-    const claimId = getRouteParam(req, 'id');
     const cancelUrl = await getCancelUrl(claimId, claim);
     const backLinkUrl = BACK_URL;
 

@@ -40,6 +40,10 @@ const mockedAxios = axios as jest.Mocked<typeof axios>;
 const baseUrl: string = config.get('baseUrl');
 const appReq = <AppRequest>req;
 appReq.params = {id: '12345'};
+appReq.locals = {
+  env: 'test',
+  lang: 'en',
+};
 appReq.session = {
   user: {
     accessToken: '54321',
@@ -151,6 +155,28 @@ describe('Civil Service Client', () => {
       expect(actualClaims[0].case_data.legacyCaseReference).toEqual('000MC003');
       expect(actualClaims[0].case_data.applicant1?.individualFirstName).toEqual('Jane');
       expect(actualClaims[0].case_data.applicant1?.individualLastName).toEqual('Clark');
+    });
+  });
+  describe('retrieveClaimDetails request-scoped cache', () => {
+    it('should reuse cached claim details promise for repeated calls in the same request', async () => {
+      const mockGet = jest.fn()
+        .mockResolvedValueOnce({
+          data: {
+            id: '1',
+            case_data: ccdClaim,
+            state: CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT,
+            last_modified: new Date(),
+          },
+        })
+        .mockResolvedValueOnce({data: [CaseRole.CLAIMANT]});
+      mockedAxios.create.mockReturnValueOnce({get: mockGet, defaults: {baseURL: baseUrl}} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
+      appReq.locals.claimDetailsRequestCache = undefined;
+
+      await civilServiceClient.retrieveClaimDetails('1', appReq);
+      await civilServiceClient.retrieveClaimDetails('1', appReq);
+
+      expect(mockGet).toHaveBeenCalledTimes(2);
     });
   });
   describe('getFeeRanges', () => {
@@ -449,6 +475,11 @@ describe('Civil Service Client', () => {
   });
 
   describe('getUserCaseRoles', () => {
+    beforeEach(() => {
+      appReq.locals.claimDetailsRequestCache = undefined;
+      appReq.locals.userCaseRolesRequestCache = undefined;
+    });
+
     it('should return User Case Roles successfully', async () => {
       //Given
       const caseRoleExpected = [CaseRole.RESPONDENTSOLICITORTWO];
@@ -473,6 +504,19 @@ describe('Civil Service Client', () => {
       const civilServiceClient = new CivilServiceClient(baseUrl);
       //Then
       await expect(civilServiceClient.getUserCaseRoles('1', appReq)).rejects.toThrow('error');
+    });
+
+    it('should reuse cached user case roles promise for repeated calls in the same request', async () => {
+      const caseRoleExpected = [CaseRole.CLAIMANT];
+      const mockGet = jest.fn().mockResolvedValue({data: caseRoleExpected});
+      mockedAxios.create.mockReturnValueOnce({get: mockGet, defaults: {baseURL: baseUrl}} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
+      appReq.locals.userCaseRolesRequestCache = undefined;
+
+      await civilServiceClient.getUserCaseRoles('1', appReq);
+      await civilServiceClient.getUserCaseRoles('1', appReq);
+
+      expect(mockGet).toHaveBeenCalledTimes(1);
     });
   });
   describe('submitDefendantResponseEvent', () => {

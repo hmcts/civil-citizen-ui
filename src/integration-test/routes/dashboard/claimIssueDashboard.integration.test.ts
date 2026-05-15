@@ -3,6 +3,9 @@ process.env.NODE_ENV = 'test';
 import '../../setup/testSetup';
 jest.mock('../../../main/modules/draft-store/draftStoreService', () => ({
   updateFieldDraftClaimFromStore: jest.fn(),
+  getCaseDataFromStore: jest.fn(),
+  saveDraftClaim: jest.fn(),
+  generateRedisKey: jest.fn(() => 'test-redis-key'),
 }));
 jest.mock('../../../main/services/dashboard/dashboardService', () => ({
   getNotifications: jest.fn(),
@@ -31,6 +34,7 @@ import {
   getHelpSupportTitle,
   getNotifications,
 } from '../../../main/services/dashboard/dashboardService';
+import {getCaseDataFromStore, saveDraftClaim} from '../../../main/modules/draft-store/draftStoreService';
 
 const buildClaimFixture = (id: string, amount: number): Claim => {
   const claim = new Claim();
@@ -82,6 +86,8 @@ describe('Integration: Claim issue notifications rendered on dashboard', () => {
     (getContactCourtLink as jest.Mock).mockResolvedValue({text: 'Contact the court', url: '/contact-us'});
     (getHelpSupportTitle as jest.Mock).mockReturnValue('Help and support');
     (getHelpSupportLinks as jest.Mock).mockReturnValue([]);
+    (getCaseDataFromStore as jest.Mock).mockResolvedValue(new Claim());
+    (saveDraftClaim as jest.Mock).mockResolvedValue(undefined);
   });
 
   it.each([
