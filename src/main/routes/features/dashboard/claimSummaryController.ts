@@ -8,6 +8,7 @@ import {
   isCarmEnabledForCase,
   isGaForLipsEnabled,
   isQueryManagementEnabled, isWelshEnabledForMainCase,
+  isJudgmentBufferEnabled,
 } from '../../../app/auth/launchdarkly/launchDarklyClient';
 import {
   getCaseProgressionLatestUpdates,
@@ -103,7 +104,8 @@ claimSummaryController.get(DEFENDANT_SUMMARY_URL, (async (req: AppRequest, res: 
       if (claim && !claim.isEmpty()) {
         await saveDocumentsToExistingClaim(generateRedisKey(<AppRequest>req), claim);
         const respondentPaymentDeadline =  await getClaimWithExtendedPaymentDeadline(claim, <AppRequest>req);
-        const tabContent = await getTabs(claimId, claim, lang, respondentPaymentDeadline);
+        const judgmentBufferEnabled = await isJudgmentBufferEnabled();
+        const tabContent = await getTabs(claimId, claim, lang, respondentPaymentDeadline, judgmentBufferEnabled);
         const responseDetailsUrl = claim.getDocumentDetails(DocumentType.DEFENDANT_DEFENCE) ? CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claimId).replace(':documentId', getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.DEFENDANT_DEFENCE)) : undefined;
         res.render(claimSummaryViewPath, {claim, claimId, tabContent, responseDetailsUrl});
       }
@@ -133,14 +135,14 @@ const getSupportLinks = async (req: AppRequest, claim: Claim, lng: string, claim
   return [iWantToTitle, iWantToLinks, helpSupportTitle, helpSupportLinks] as const;
 };
 
-async function getTabs(claimId: string, claim: Claim, lang: string, respondentPaymentDeadline?: Date): Promise<TabItem[]>
+async function getTabs(claimId: string, claim: Claim, lang: string, respondentPaymentDeadline?: Date, judgmentBufferEnabled = false): Promise<TabItem[]>
 {
   const bundleAvailable = claim.isBundleStitched();
   const tabItems = [] as TabItem[];
 
   let latestUpdateTabLabel = TabLabel.LATEST_UPDATE;
   let latestUpdateTabId = TabId.LATEST_UPDATE;
-  let latestUpdateContent = getLatestUpdateContent(claimId, claim, lang, respondentPaymentDeadline);
+  let latestUpdateContent = getLatestUpdateContent(claimId, claim, lang, respondentPaymentDeadline, judgmentBufferEnabled);
 
   let noticesTabLabel= TabLabel.DOCUMENTS;
   let noticesTabId = TabId.DOCUMENTS;

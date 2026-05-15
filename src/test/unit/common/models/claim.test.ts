@@ -1055,6 +1055,90 @@ describe('Documents', () => {
       //Then
       expect(result).toBe(true);
     });
+    it('should return false with case state JUDGMENT_REQUESTED when judgment buffer is disabled', () => {
+      //Given
+      claim.ccdState = CaseState.JUDGMENT_REQUESTED;
+      //When
+      const result = claim.isDefendantNotResponded();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return true with case state JUDGMENT_REQUESTED when judgment buffer is enabled', () => {
+      //Given
+      claim.ccdState = CaseState.JUDGMENT_REQUESTED;
+      //When
+      const result = claim.isDefendantNotResponded(true);
+      //Then
+      expect(result).toBe(true);
+    });
+  });
+
+  describe('isJudgmentRequested', () => {
+    const claim = new Claim();
+    it('should return false with empty claim', () => {
+      //When
+      const result = claim.isJudgmentRequested();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return false with other case states', () => {
+      //Given
+      claim.ccdState = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
+      //When
+      const result = claim.isJudgmentRequested();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return true with case state JUDGMENT_REQUESTED', () => {
+      //Given
+      claim.ccdState = CaseState.JUDGMENT_REQUESTED;
+      //When
+      const result = claim.isJudgmentRequested();
+      //Then
+      expect(result).toBe(true);
+    });
+  });
+
+  describe('isAwaitingDefendantResponse', () => {
+    const claim = new Claim();
+    it('should return false with empty claim', () => {
+      //When
+      const result = claim.isAwaitingDefendantResponse();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return false with other case states', () => {
+      //Given
+      claim.ccdState = CaseState.PENDING_CASE_ISSUED;
+      //When
+      const result = claim.isAwaitingDefendantResponse();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return true with case state AWAITING_RESPONDENT_ACKNOWLEDGEMENT', () => {
+      //Given
+      claim.ccdState = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
+      //When
+      const result = claim.isAwaitingDefendantResponse();
+      //Then
+      expect(result).toBe(true);
+    });
+    it('should return false with case state JUDGMENT_REQUESTED when judgment buffer is disabled', () => {
+      //Given
+      claim.ccdState = CaseState.JUDGMENT_REQUESTED;
+      //When
+      const result = claim.isAwaitingDefendantResponse();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return true with case state JUDGMENT_REQUESTED when judgment buffer is enabled', () => {
+      //Given
+      claim.ccdState = CaseState.JUDGMENT_REQUESTED;
+      //When
+      const result = claim.isAwaitingDefendantResponse(true);
+      //Then
+      expect(result).toBe(true);
+    });
   });
 
   describe('isPartialAdmissionPaid', () => {

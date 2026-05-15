@@ -5,6 +5,8 @@ import {
 } from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
+import {getSummarySections} from 'services/features/claimantResponse/ccj/ccjCheckAnswersService';
+import * as launchDarkly from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 
 const request = require('supertest');
 const {app} = require('../../../../../../main/app');
@@ -25,6 +27,11 @@ describe('Response - Check answers', () => {
     nock(idamServiceUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
+  });
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+    jest.spyOn(launchDarkly, 'isJudgmentBufferEnabled').mockResolvedValue(false);
   });
 
   it('should return check answers page', async () => {
@@ -60,9 +67,23 @@ describe('Response - Check answers', () => {
         expect(res.text).toContain(checkYourAnswerCy);
       });
   });
+
+  it('should pass judgment buffer flag to summary sections', async () => {
+    jest.spyOn(launchDarkly, 'isJudgmentBufferEnabled').mockResolvedValueOnce(true);
+    app.locals.draftStoreClient = mockCivilClaim;
+
+    await request(app).get(CCJ_CHECK_AND_SEND_URL);
+
+    expect((getSummarySections as jest.Mock).mock.calls[0][3]).toBe(true);
+  });
 });
 
 describe('on Post', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+    jest.spyOn(launchDarkly, 'isJudgmentBufferEnabled').mockResolvedValue(false);
+  });
+
   it('should return errors when form is incomplete', async () => {
     app.locals.draftStoreClient = mockCivilClaim;
     const data = {signed: ''};
@@ -86,4 +107,3 @@ describe('on Post', () => {
       });
   });
 });
-

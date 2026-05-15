@@ -6,6 +6,9 @@ import config from 'config';
 import nock from 'nock';
 import RedisStore from 'connect-redis';
 import Redis from 'ioredis';
+import {CaseState} from 'form/models/claimDetails';
+import * as launchDarkly from '../../../../main/app/auth/launchdarkly/launchDarklyClient';
+import {CaseRole} from 'form/models/caseRoles';
 
 jest.mock('../../../../main/modules/oidc');
 jest.mock('../../../../main/modules/draft-store');
@@ -28,6 +31,11 @@ describe('CCJ Guard', () => {
     (getRedisStoreForSession as jest.Mock).mockReturnValueOnce(new RedisStore({
       client: new Redis(),
     }));
+  });
+  beforeEach(() => {
+    jest.clearAllMocks();
+    jest.spyOn(launchDarkly, 'isJudgmentOnlineLive').mockResolvedValue(false);
+    jest.spyOn(launchDarkly, 'isJudgmentBufferEnabled').mockResolvedValue(false);
   });
   it('should access ccj confirmation page', async () => {
     //Given
@@ -53,26 +61,71 @@ describe('CCJ Guard', () => {
     //Then
     expect(MOCK_NEXT_1).toHaveBeenCalled();
   });
-  it('should redirect if ccj is not completed', async () => {
+  it('should access ccj confirmation page when judgment requested and judgment buffer is enabled', async () => {
     //Given
     const MOCK_NEXT_2 = jest.fn() as NextFunction;
     const claim = new Claim();
+    claim.ccdState = CaseState.JUDGMENT_REQUESTED;
+    claim.caseRole = CaseRole.CLAIMANT;
     (getClaimById as jest.Mock).mockResolvedValueOnce(claim);
+    jest.spyOn(launchDarkly, 'isJudgmentBufferEnabled').mockResolvedValueOnce(true);
     jest.spyOn(claim, 'isCCJComplete').mockReturnValueOnce(false);
     jest.spyOn(claim, 'isCCJCompleteForJo').mockReturnValueOnce(false);
     //When
     await ccjConfirmationGuard(MOCK_REQUEST, MOCK_RESPONSE, MOCK_NEXT_2);
     //Then
+    expect(getClaimById).toHaveBeenCalledWith(MOCK_REQUEST.params.id, MOCK_REQUEST, true);
+    expect(MOCK_NEXT_2).toHaveBeenCalled();
+  });
+  it('should redirect when judgment requested and judgment buffer is disabled', async () => {
+    //Given
+    const MOCK_NEXT_3 = jest.fn() as NextFunction;
+    const claim = new Claim();
+    claim.ccdState = CaseState.JUDGMENT_REQUESTED;
+    (getClaimById as jest.Mock).mockResolvedValueOnce(claim);
+    jest.spyOn(claim, 'isCCJComplete').mockReturnValueOnce(false);
+    jest.spyOn(claim, 'isCCJCompleteForJo').mockReturnValueOnce(false);
+    //When
+    await ccjConfirmationGuard(MOCK_REQUEST, MOCK_RESPONSE, MOCK_NEXT_3);
+    //Then
+    expect(MOCK_RESPONSE.redirect).toHaveBeenCalled();
+  });
+  it('should redirect when defendant accesses judgment requested confirmation and judgment buffer is enabled', async () => {
+    //Given
+    const MOCK_NEXT_4 = jest.fn() as NextFunction;
+    const claim = new Claim();
+    claim.ccdState = CaseState.JUDGMENT_REQUESTED;
+    claim.caseRole = CaseRole.DEFENDANT;
+    (getClaimById as jest.Mock).mockResolvedValueOnce(claim);
+    jest.spyOn(launchDarkly, 'isJudgmentBufferEnabled').mockResolvedValueOnce(true);
+    jest.spyOn(claim, 'isCCJComplete').mockReturnValueOnce(false);
+    jest.spyOn(claim, 'isCCJCompleteForJo').mockReturnValueOnce(false);
+    //When
+    await ccjConfirmationGuard(MOCK_REQUEST, MOCK_RESPONSE, MOCK_NEXT_4);
+    //Then
+    expect(MOCK_NEXT_4).not.toHaveBeenCalled();
+    expect(MOCK_RESPONSE.redirect).toHaveBeenCalled();
+  });
+  it('should redirect if ccj is not completed', async () => {
+    //Given
+    const MOCK_NEXT_5 = jest.fn() as NextFunction;
+    const claim = new Claim();
+    (getClaimById as jest.Mock).mockResolvedValueOnce(claim);
+    jest.spyOn(claim, 'isCCJComplete').mockReturnValueOnce(false);
+    jest.spyOn(claim, 'isCCJCompleteForJo').mockReturnValueOnce(false);
+    //When
+    await ccjConfirmationGuard(MOCK_REQUEST, MOCK_RESPONSE, MOCK_NEXT_5);
+    //Then
     expect(MOCK_RESPONSE.redirect).toHaveBeenCalled();
   });
   it('should throw an error', async () => {
     //Given
-    const MOCK_NEXT_3 = jest.fn() as NextFunction;
+    const MOCK_NEXT_6 = jest.fn() as NextFunction;
     const  error = new Error('Test error');
     (getClaimById as jest.Mock).mockResolvedValueOnce(error);
     //When
-    await ccjConfirmationGuard(MOCK_REQUEST, MOCK_RESPONSE, MOCK_NEXT_3);
+    await ccjConfirmationGuard(MOCK_REQUEST, MOCK_RESPONSE, MOCK_NEXT_6);
     //Then
-    expect(MOCK_NEXT_3).toHaveBeenCalled();
+    expect(MOCK_NEXT_6).toHaveBeenCalled();
   });
 });
