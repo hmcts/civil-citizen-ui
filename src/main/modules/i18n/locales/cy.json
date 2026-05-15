@@ -1597,6 +1597,7 @@
     },
     "CCJ_CONFIRMATION": {
       "ACTIONS_LINK_TEXT": "Gwybodaeth am gamau y gallwch eu cymryd ar ôl cyhoeddi CCJ ",
+      "JUDGMENT_REQUESTED": "Mae cais wedi'i wneud am Ddyfarniad Llys Sirol. Byddwch yn cael gwybod pan fydd hyn wedi'i gadarnhau.",
       "PAGE_TITLE": "Cadarnhad Dyfarniad Llys Sirol",
       "PROCESS_YOUR_REQUEST": "Byddwn yn prosesu eich cais ac yn postio copi o'r dyfarniad i chi ac i {{ defendantName }}. Ein nod yw prosesu'r cais hwn cyn gynted â phosibl.",
       "PROCESS_YOUR_REQUEST_1": "Peidiwch â ffonio Canolfan Gwasanaethau’r Llysoedd a’r Tribiwnlysoedd (CTSC) ynghylch y cynnydd gyda’ch cais.",
