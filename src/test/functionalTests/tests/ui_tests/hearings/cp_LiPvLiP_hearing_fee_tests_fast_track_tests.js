@@ -67,4 +67,9 @@ Scenario('Pay the Hearing Fee Journey - Fast Track',  async ({I, api}) => {
   await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
   taskListItem = payTheHearingFee(hearingFeeDueDate);
   await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Done', false, false);
+
+  await api.assertEmailSent(claimNumber, {
+    recipientEmail: config.claimantCitizenUser.email,
+    timeoutMs: 45000,
+  });
 });
