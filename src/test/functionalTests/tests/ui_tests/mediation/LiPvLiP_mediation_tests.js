@@ -30,6 +30,7 @@ Before(async () => {
 });
 
 // LiP Individual vs LiP Company
+// @smoketest: sole browser path for CARM mediation dashboard + document upload (response mediation alone is covered by LR smoke part-admit / reject-all).
 Scenario('LiP vs LiP Unsuccessful Mediation with Upload Documents', async ({ api }) => {
   claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType, carmEnabled, 'DefendantCompany');
   console.log('LIP vs LIP claim has been created Successfully    <===>  ', claimRef);
@@ -91,7 +92,7 @@ Scenario('LiP vs LiP Unsuccessful Mediation with Upload Documents', async ({ api
   await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Inactive');
   taskListItem = viewMediationSettlementAgreement();
   await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Inactive');
-}).tag('@civil-citizen-master @civil-citizen-pr');
+}).tag('@civil-citizen-master @civil-citizen-pr @smoketest');
 
 Scenario('LiP vs LiP Unsuccessful Mediation with other options', async ({ api }) => {
   claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType, carmEnabled, 'DefendantCompany');
