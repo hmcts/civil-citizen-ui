@@ -332,10 +332,9 @@ civil-service:
         ingressHost: civil-cui-definition-store-staging.aat.platform.hmcts.net
         releaseNameOverride: ${SERVICE_NAME}-ccd-definition-store-api
         imagePullPolicy: Always
-        devcpuLimits: 2
-        devcpuRequests: 1000m
-        devmemoryRequests: 2048Mi
-        devmemoryLimits: 4096Mi
+        devcpuRequests: 2000m
+        devmemoryRequests: 4Gi
+        devmemoryLimits: 4Gi
         environment:
           DEFINITION_STORE_IDAM_KEY: ${CCD_DEFINITION_STORE_S2S_SECRET}
           DEFINITION_STORE_DB_PASSWORD: ${POSTGRES_PASSWORD}
