@@ -336,8 +336,12 @@ civil-service:
       persistence:
         enabled: false
       ingress:
-        enabled: false
+        enabled: true
         className: traefik
+        hosts:
+          - host: es-${SERVICE_FQDN}
+            paths:
+              - path: /
 
     logstash:
       image: hmctsprod.azurecr.io/imported/elastic/logstash
@@ -353,6 +357,12 @@ civil-service:
           value: hmcts
         - name: ES_HOSTS
           value: "${SERVICE_NAME}-es-master"
+        - name: ES_DATA_NODES_URL
+          value: http://${SERVICE_NAME}-es-master:9200
+        - name: ELASTIC_SEARCH_DATA_NODES_HOSTS
+          value: http://${SERVICE_NAME}-es-master:9200
+        - name: ES_URL
+          value: http://${SERVICE_NAME}-es-master:9200
       extraInitContainers: |
         - name: download-postgres-jdbc
           image: hmctsprod.azurecr.io/curl:7.70.0
