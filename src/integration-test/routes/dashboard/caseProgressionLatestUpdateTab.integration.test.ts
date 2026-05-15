@@ -24,7 +24,30 @@ import {
   HearingLocation,
 } from 'models/caseProgression/caseProgressionHearing';
 import {DocumentType} from 'models/document/documentType';
+import {SystemGeneratedCaseDocuments} from 'models/document/systemGeneratedCaseDocuments';
 import * as caseProgressionLatestUpdateService from 'services/features/dashboard/claimSummary/latestUpdate/caseProgression/caseProgressionLatestUpdateService';
+
+const buildSdoOrderDocument = (): SystemGeneratedCaseDocuments => ({
+  id: 'sdo-order-1',
+  value: {
+    createdBy: 'Civil',
+    documentLink: {
+      document_url: 'http://dm-store:8080/documents/sdo-order',
+      document_filename: 'sdo_order.pdf',
+      document_binary_url: 'http://dm-store:8080/documents/sdo-order/binary',
+    },
+    documentName: 'sdo_order.pdf',
+    documentSize: 1,
+    documentType: DocumentType.SDO_ORDER,
+    createdDatetime: new Date('2026-01-15'),
+  },
+});
+
+const buildStitchedBundleDocument = () => ({
+  document_url: 'http://dm-store:8080/documents/bundle',
+  document_filename: 'bundle.pdf',
+  document_binary_url: 'http://dm-store:8080/documents/bundle/binary',
+});
 
 const buildCaseProgressionHearing = (): CaseProgressionHearing => {
   const hearingDocument = new CaseProgressionHearingDocuments();
@@ -72,7 +95,7 @@ const buildLegacyCpClaim = (id: string, track: claimType): Claim => {
   claim.submittedDate = new Date('2026-01-15');
   claim.applicant1 = applicant1;
   claim.respondent1 = respondent1;
-  claim.sdoOrderDocument = {documentLink: {document_url: 'http://example/doc'}};
+  claim.sdoOrderDocument = buildSdoOrderDocument();
   return claim;
 };
 
@@ -85,7 +108,7 @@ describe('Integration: case progression legacy updates tab', () => {
     const claimId = '000MC-CP-LU-BUNDLE';
     const claim = buildLegacyCpClaim(claimId, claimType.SMALL_CLAIM);
     claim.caseProgression = {
-      caseBundles: [{stitchedDocument: {documentLink: {document_url: 'http://example/bundle'}}}],
+      caseBundles: [{stitchedDocument: buildStitchedBundleDocument()}],
     };
 
     civilServiceClientMock.retrieveClaimDetails.mockResolvedValue(claim);
