@@ -44,6 +44,11 @@ Scenario('LiP vs LiP Unsuccessful Mediation with Upload Documents', async ({ api
   await api.claimantLipRespondToDefence(config.claimantCitizenUser, claimRef, true, 'IN_MEDIATION');
   await api.mediationUnsuccessful(mediationAdmin, true, ['NOT_CONTACTABLE_DEFENDANT_ONE']);
 
+  await api.assertEmailSent(claimNumber, {
+    recipientEmail: config.claimantCitizenUser.email,
+    timeoutMs: 45000,
+  });
+
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   const mediationUnsuccessfulNOTClaimant1NonContactableNotif = mediationUnsuccessfulNOTClaimant1NonContactable();
   await verifyNotificationTitleAndContent(claimNumber, mediationUnsuccessfulNOTClaimant1NonContactableNotif.title, mediationUnsuccessfulNOTClaimant1NonContactableNotif.content);
