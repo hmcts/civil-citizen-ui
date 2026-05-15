@@ -5543,6 +5543,7 @@ __metadata:
     nunjucks: "npm:^3.2.4"
     otplib: "npm:^13.0.0"
     pa11y: "npm:^8.0.0"
+    postcss: "npm:^8.5.10"
     proper-lockfile: "npm:^4.1.2"
     reflect-metadata: "npm:^0.1.13"
     require-directory: "npm:^2.1.1"
