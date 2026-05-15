@@ -38,7 +38,7 @@ Scenario('Response with PartAdmit-AlreadyPaid Small claims and Claimant settle t
   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   const claimSettledDefendantNotif = claimIsSettledDefendant();
   await verifyNotificationTitleAndContent(claimNumber, claimSettledDefendantNotif.title, claimSettledDefendantNotif.content);
-}).tag('@ui-part-admit');
+});
 
 Scenario('Response with PartAdmit-AlreadyPaid Fast Track and Claimant Not to settle the claim', async ({api}) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
