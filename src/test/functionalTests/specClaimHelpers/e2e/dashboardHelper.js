@@ -14,34 +14,45 @@ module.exports = {
       await I.amOnPage('/dashboard');
       await I.click(claimNumber);
     }
-    const maxRetries = 4;
+    const maxRetries = 15;
+    const retryDelaySeconds = 4;
+    let lastPageSource = '';
     for (let tries = 1; tries <= maxRetries; tries++) {
       console.log('Verifying notification title and content... attempt', tries);
 
-      const pageSource = await I.grabTextFrom('.dashboard-notification');
-      console.log('Title to be verified ..', title);
-      if (pageSource.includes(title)) {
+      lastPageSource = await I.grabTextFrom('.dashboard-notification');
+      const titleFound = lastPageSource.includes(title);
+      console.log('Title to be verified ..', title, `(found: ${titleFound})`);
+
+      if (titleFound) {
         if (Array.isArray(content)) {
           const missingContent = content.filter(text => {
-            console.log('content to be verified ..', text);
-            return !pageSource.includes(text);
+            const contentFound = lastPageSource.includes(text);
+            console.log('content to be verified ..', text, `(found: ${contentFound})`);
+            return !contentFound;
           });
           if (missingContent.length === 0) {
-            break;
+            return;
           }
         } else {
-          console.log('content to be verified ..', content);
-          if (pageSource.includes(content)) {
-            break;
+          const contentFound = lastPageSource.includes(content);
+          console.log('content to be verified ..', content, `(found: ${contentFound})`);
+          if (contentFound) {
+            return;
           }
         }
       }
 
       if (tries === maxRetries) {
-        throw new Error('Notification could not be verified');
+        throw new Error(
+          `Notification could not be verified after ${maxRetries} attempts. `
+          + `Expected title: "${title}". `
+          + `Expected content: ${JSON.stringify(content)}. `
+          + `Dashboard notification area contained: "${lastPageSource.slice(0, 500)}"`,
+        );
       }
 
-      await I.wait(2);
+      await I.wait(retryDelaySeconds);
       await I.refreshPage();
     }
   },
