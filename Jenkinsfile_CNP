@@ -287,7 +287,7 @@ withPipeline(type, product, component) {
       steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'test-results/security/**/*'
       junit allowEmptyResults: true, testResults: 'test-results/security/results.xml'
     } else {
-      echo "Skipping Allure report generation due to label: pr-values: skip-functional-tests"
+      echo "Skipping Allure report generation due to label: pr-values:skip-functional-tests"
     }    
   }
 
