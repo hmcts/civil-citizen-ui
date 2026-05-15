@@ -26,7 +26,7 @@ Before(async ({ api }) => {
   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
 });
 
-Scenario('Case progression journey - Small Claims - Verify latest Update page for an Order being Created', async ({ I }) => {
+Scenario('Case progression journey - Small Claims - Verify latest Update page for an Order being Created', async ({ I, api }) => {
   const orderMadeNotif = orderMade();
   await verifyNotificationTitleAndContent(claimNumber, orderMadeNotif.title, orderMadeNotif.content, claimRef);
   taskListItem = ordersAndNotices();
@@ -36,4 +36,9 @@ Scenario('Case progression journey - Small Claims - Verify latest Update page fo
   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   await I.click(claimNumber);
   await I.dontSee(orderMadeNotif.content);
+
+  await api.assertEmailSent(claimNumber, {
+    recipientEmail: config.defendantCitizenUser.email,
+    timeoutMs: 45000,
+  });
 });
