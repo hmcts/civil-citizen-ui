@@ -1,16 +1,18 @@
 const config = require('../../../../config');
 const LoginSteps = require('../../../commonFeatures/home/steps/login');
-const { createAccount } = require('../../../specClaimHelpers/api/idamHelper');
-const { verifyNotificationTitleAndContent, verifyTasklistLinkAndState } = require('../../../specClaimHelpers/e2e/dashboardHelper');
-const { claimStruckOut } = require('../../../specClaimHelpers/dashboardNotificationConstants');
-const { uploadHearingDocuments } = require('../../../specClaimHelpers/dashboardTasklistConstants');
+const {createAccount} = require('../../../specClaimHelpers/api/idamHelper');
+const {verifyNotificationTitleAndContent, verifyTasklistLinkAndState} = require('../../../specClaimHelpers/e2e/dashboardHelper');
+const {claimStruckOut} = require('../../../specClaimHelpers/dashboardNotificationConstants');
+const {uploadHearingDocuments} = require('../../../specClaimHelpers/dashboardTasklistConstants');
 
 const claimType = 'SmallClaims';
 let caseData, claimNumber, claimRef, taskListItem;
 
+// Sole browser path for struck-out journey: confirms end-to-end API setup still reaches citizen dashboard.
+// Notification and task-list states are covered by caseProgressionDashboard.integration.test.ts.
 Feature('Case progression - Case Struck Out journey - Small Claims').tag('@civil-citizen-nightly @ui-case-struck-out');
 
-Before(async ({ api }) => {
+Before(async ({api}) => {
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser, '', claimType);
   caseData = await api.retrieveCaseData(config.adminUser, claimRef);
