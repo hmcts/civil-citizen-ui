@@ -45,6 +45,7 @@ nodejs:
     CIVIL_SERVICE_URL: http://${SERVICE_NAME}-civil-service
     IDAM_SIGN_OUT_REDIRECT_URL: https://${SERVICE_FQDN}/dashboard
     LAUNCH_DARKLY_ENV: ${SERVICE_FQDN}
+    SETTLEMENT_AGREEMENT_ENABLED: true
 
 civil-service:
   enabled: true
@@ -136,7 +137,6 @@ civil-service:
       RD_PROFESSIONAL_API_URL: http://rd-professional-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
       RD_COMMONDATA_API_URL: http://rd-commondata-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
       LAUNCH_DARKLY_ENV: ${SERVICE_FQDN}
-      SETTLEMENT_AGREEMENT_ENABLED: true
       CORE_CASE_DATA_API_URL: http://${SERVICE_NAME}-ccd-data-store-api
       CASE_DOCUMENT_AM_URL: http://${SERVICE_NAME}-cdam
       REFERENCE_DATABASE_MIGRATION: true
