@@ -8,14 +8,6 @@
 {% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp with context %}
 {% import "external-urls.njk" as externalURLs %}
 
-{% if isJudgmentOnline %}
-  {% set processYourRequest = 'PAGES.CCJ_CONFIRMATION.PROCESS_YOUR_REQUEST_JO' %}
-  {% set processYourRequest1 = 'PAGES.CCJ_CONFIRMATION.NO_LONGER_RESPONSE' %}
-{% else %}
-  {% set processYourRequest = 'PAGES.CCJ_CONFIRMATION.PROCESS_YOUR_REQUEST' %}
-  {% set processYourRequest1 = 'PAGES.CCJ_CONFIRMATION.PROCESS_YOUR_REQUEST_1' %}
-{% endif %}
-
 {% block pageTitle %}
   {{ setPageTitle(t, pageTitle) }}
 {% endblock %}
@@ -27,8 +19,8 @@
         titleText:t('PAGES.CCJ_CONFIRMATION.TITLE')
       }) }}
       <br>
-      <p class="govuk-body">{{ t(processYourRequest, { defendantName: defendantName }) }}</p>
-      <p class="govuk-body">{{ t(processYourRequest1, { defendantName: defendantName }) }}</p>
+      <p class="govuk-body">{{ processYourRequest | safe}}</p>
+      <p class="govuk-body">{{ processYourRequest1 | safe}}</p>
       {% if not isJudgmentOnline %}
         <p class="govuk-body">{{ t('PAGES.CCJ_CONFIRMATION.UPDATES') }}</p>
       {% endif %}

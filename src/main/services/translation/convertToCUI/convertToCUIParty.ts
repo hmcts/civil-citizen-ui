@@ -23,11 +23,8 @@ export const toCUIParty = (ccdParty: CCDParty): Party => {
     cuiParty.partyDetails.title = ccdParty.soleTraderTitle ? ccdParty?.soleTraderTitle : undefined;
     cuiParty.dateOfBirth = toCitizenDate(ccdParty.soleTraderDateOfBirth);
     cuiParty.partyDetails.soleTraderTradingAs = ccdParty.soleTraderTradingAs ? ccdParty?.soleTraderTradingAs : undefined;
-  } else if (ccdParty?.type === PartyType.COMPANY) {
-    cuiParty.partyDetails.partyName = ccdParty?.partyName ? ccdParty.partyName : undefined;
-  } else {
-    cuiParty.partyDetails.partyName = ccdParty?.partyName ? ccdParty.partyName : undefined;
   }
+  cuiParty.partyDetails.partyName = ccdParty?.partyName ? ccdParty.partyName : undefined;
   cuiParty.partyPhone = ccdParty?.partyPhone ? new PartyPhone(ccdParty?.partyPhone, true) : undefined;
   cuiParty.emailAddress = ccdParty?.partyEmail ? new Email(ccdParty?.partyEmail) : undefined;
   cuiParty.type = ccdParty?.type ? ccdParty?.type : undefined;

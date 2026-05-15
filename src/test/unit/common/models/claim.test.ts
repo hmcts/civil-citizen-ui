@@ -10,6 +10,7 @@ import {YesNo} from 'common/form/models/yesNo';
 import {Dependants} from 'common/form/models/statementOfMeans/dependants/dependants';
 import civilClaimResponseApplicantCompany from '../../../utils/mocks/civilClaimResponseApplicantCompanyMock.json';
 import civilClaimResponseApplicantIndividual from '../../../utils/mocks/civilClaimResponseApplicantIndividualMock.json';
+import civilClaimResponseApplicantSoleTrader from '../../../utils/mocks/civilClaimResponseApplicantSoleTraderMock.json';
 import {ResponseType} from 'common/form/models/responseType';
 import {PartyType} from 'common/models/partyType';
 import {PartialAdmission} from 'common/models/partialAdmission';
@@ -426,6 +427,7 @@ describe('Claim isChildrenDisabled', () => {
 describe('Claim get claimant and defendant names by type', () => {
   const claimCompany = Object.assign(new Claim(), JSON.parse(JSON.stringify(civilClaimResponseApplicantCompany)).case_data);
   const claimIndividual = Object.assign(new Claim(), JSON.parse(JSON.stringify(civilClaimResponseApplicantIndividual)).case_data);
+  const claimSoleTrader = Object.assign(new Claim(), JSON.parse(JSON.stringify(civilClaimResponseApplicantSoleTrader)).case_data);
   it('should return claimantName for INDIVIDUAL', () => {
     //When
     const result = claimIndividual.getClaimantFullName();
@@ -449,6 +451,18 @@ describe('Claim get claimant and defendant names by type', () => {
     const result = claimCompany.getDefendantFullName();
     //Then
     expect(result).toBe('Google');
+  });
+  it('should return claimantName for SoleTrader', () => {
+    //When
+    const result = claimSoleTrader.getClaimantFullName();
+    //Then
+    expect(result).toBe('Mr. Jan Clark T/A Test1 Trader');
+  });
+  it('should return defendantName for SoleTrader', () => {
+    //When
+    const result = claimSoleTrader.getDefendantFullName();
+    //Then
+    expect(result).toBe('Mr. Joe Doe T/A Test2 Trader');
   });
 });
 
