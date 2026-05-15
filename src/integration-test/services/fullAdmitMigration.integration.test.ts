@@ -133,6 +133,35 @@ describe('Integration: full-admit migration coverage', () => {
       }));
     });
 
+    it('submits defendant full-admit instalments payload to civil service', async () => {
+      const claim = buildFullAdmitClaim(PaymentOptionType.INSTALMENTS);
+      const req = {params: {id: '12345'}} as never;
+
+      jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('redis-key');
+      jest.spyOn(draftStoreService, 'getCaseDataFromStore').mockResolvedValue(claim);
+      civilServiceClientMock.retrieveClaimDetails.mockResolvedValue({
+        respondent1: {
+          partyDetails: {
+            primaryAddress: {
+              postCode: 'SW1A 1AA',
+              city: 'London',
+              addressLine1: 'Line 1',
+            },
+          },
+        },
+      });
+      civilServiceClientMock.submitDefendantResponseEvent.mockResolvedValue(claim);
+
+      await submitResponse(req);
+
+      const payload = civilServiceClientMock.submitDefendantResponseEvent.mock.calls[0][1];
+      expect(payload).toEqual(expect.objectContaining({
+        respondent1ClaimResponseTypeForSpec: ResponseType.FULL_ADMISSION,
+        defenceAdmitPartPaymentTimeRouteRequired: 'SUGGESTION_OF_REPAYMENT_PLAN',
+        respondent1RepaymentPlan: expect.anything(),
+      }));
+    });
+
     it('submits claimant full-admit CCJ payload with CCJ mapping merged', async () => {
       const claim = buildFullAdmitClaim(PaymentOptionType.BY_SET_DATE);
       claim.claimantResponse = {
@@ -180,6 +209,28 @@ describe('Integration: full-admit migration coverage', () => {
       expect(payload).toHaveProperty('applicant1RepaymentOptionForDefendantSpec');
       expect(payload).toHaveProperty('applicant1SuggestInstalmentsPaymentAmountForDefendantSpec');
       expect(claimantCcjTranslationService.translateClaimantResponseRequestJudgementByAdmissionOrDeterminationToCCD).not.toHaveBeenCalled();
+    });
+
+    it('submits claimant full-admit settlement-agreement after pay-by-set-date defendant offer', async () => {
+      const claim = buildFullAdmitClaim(PaymentOptionType.BY_SET_DATE);
+      claim.claimantResponse = {
+        chooseHowToProceed: {option: ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT},
+        fullAdmitSetDateAcceptPayment: {option: YesNo.YES},
+      } as never;
+      const req = {params: {id: '12345'}} as never;
+      const ccjSpy = jest.spyOn(claimantCcjTranslationService, 'translateClaimantResponseRequestJudgementByAdmissionOrDeterminationToCCD');
+
+      jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('redis-key');
+      jest.spyOn(draftStoreService, 'getCaseDataFromStore').mockResolvedValue(claim);
+      civilServiceClientMock.submitClaimantResponseEvent.mockResolvedValue(claim);
+
+      await submitClaimantResponse(req);
+
+      const payload = civilServiceClientMock.submitClaimantResponseEvent.mock.calls[0][1];
+      expect(payload).toEqual(expect.objectContaining({
+        applicant1AcceptFullAdmitPaymentPlanSpec: 'Yes',
+      }));
+      expect(ccjSpy).not.toHaveBeenCalled();
     });
   });
 });

@@ -11,6 +11,7 @@ import {civilServiceClientMock} from '../setup/sharedMocks';
 import * as draftStoreService from '../../main/modules/draft-store/draftStoreService';
 import {YesNo} from '../../main/common/form/models/yesNo';
 import {ChooseHowProceed} from '../../main/common/models/chooseHowProceed';
+import {ClaimantResponse} from '../../main/common/models/claimantResponse';
 import {DashboardClaimantItem, DashboardDefendantItem} from '../../main/common/models/dashboard/dashboardItem';
 import * as claimantCcjTranslationService from '../../main/services/translation/claimantResponse/ccdRequestJudgementTranslation';
 
@@ -255,6 +256,50 @@ describe('Integration: part-admit migration coverage', () => {
 
     it('submits claimant part-admit reject payload for small-claim/fast-track flows', async () => {
       const claim = buildPartAdmitClaim(PaymentOptionType.INSTALMENTS);
+      claim.claimantResponse = {
+        hasPartAdmittedBeenAccepted: {option: YesNo.NO},
+        hasPartPaymentBeenAccepted: {option: YesNo.NO},
+      } as never;
+      const req = {params: {id: '12345'}} as never;
+      jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('redis-key');
+      jest.spyOn(draftStoreService, 'getCaseDataFromStore').mockResolvedValue(claim);
+      civilServiceClientMock.submitClaimantResponseEvent.mockResolvedValue(claim);
+
+      await submitClaimantResponse(req);
+
+      const payload = civilServiceClientMock.submitClaimantResponseEvent.mock.calls[0][1];
+      expect(payload).toEqual(expect.objectContaining({
+        applicant1AcceptAdmitAmountPaidSpec: 'No',
+        applicant1PartAdmitIntentionToSettleClaimSpec: 'No',
+      }));
+    });
+
+    it('submits claimant part-admit immediate-payment accept and settle payload', async () => {
+      const claim = buildPartAdmitClaim(PaymentOptionType.IMMEDIATELY);
+      claim.claimantResponse = Object.assign(new ClaimantResponse(), {
+        hasPartAdmittedBeenAccepted: {option: YesNo.YES},
+        fullAdmitSetDateAcceptPayment: {option: YesNo.YES},
+        hasPartPaymentBeenAccepted: {option: YesNo.YES},
+      });
+      const req = {params: {id: '12345'}} as never;
+      jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('redis-key');
+      jest.spyOn(draftStoreService, 'getCaseDataFromStore').mockResolvedValue(claim);
+      civilServiceClientMock.submitClaimantResponseEvent.mockResolvedValue(claim);
+
+      await submitClaimantResponse(req);
+
+      const payload = civilServiceClientMock.submitClaimantResponseEvent.mock.calls[0][1];
+      expect(payload).toEqual(expect.objectContaining({
+        applicant1AcceptAdmitAmountPaidSpec: 'Yes',
+        applicant1AcceptPartAdmitPaymentPlanSpec: 'Yes',
+        applicant1PartAdmitIntentionToSettleClaimSpec: 'Yes',
+      }));
+      expect(payload.respondToClaimAdmitPartLRspec).toBeUndefined();
+    });
+
+    it('submits claimant part-admit immediate-payment reject payload when defendant offered immediate payment', async () => {
+      const claim = buildPartAdmitClaim(PaymentOptionType.IMMEDIATELY);
+      claim.responseClaimTrack = 'FAST_CLAIM' as never;
       claim.claimantResponse = {
         hasPartAdmittedBeenAccepted: {option: YesNo.NO},
         hasPartPaymentBeenAccepted: {option: YesNo.NO},
