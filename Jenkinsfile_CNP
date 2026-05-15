@@ -175,6 +175,12 @@ def checkForEnableEmailNotifications(branch_name) {
     return new GithubAPI(this).getLabelsbyPattern(branch_name, "pr-values:enableNotifyEmails").contains("pr-values:enableNotifyEmails")
 }
 
+def checkForSkipFunctionalTests(branch_name) {
+  return new GithubAPI(this)
+    .getLabelsbyPattern(branch_name, "pr-values: skip-functional-tests")
+    .contains("pr-values: skip-functional-tests")
+}
+
 def checkForRunAllFunctionalTests(branch_name) {
   return new GithubAPI(this).getLabelsbyPattern(branch_name, "runAllFunctionalTests").contains("runAllFunctionalTests")
 }
@@ -244,7 +250,9 @@ withPipeline(type, product, component) {
   before('functionalTest:preview') {
     env.IDAM_STUB_ENABLED='false'
     copyPreviousAllureHistory()
-    if(checkForRunAllFunctionalTests(env.BRANCH_NAME)) {
+    if(checkForSkipFunctionalTests(env.BRANCH_NAME)) {
+      env.SKIP_FUNCTIONAL_TESTS = true
+    } else if(checkForRunAllFunctionalTests(env.BRANCH_NAME)) {
       env.RUN_ALL_FUNCTIONAL_TESTS = true
     } else {
       copyPrevFailedAndNotExecutedTestFilesJson()
@@ -252,31 +260,35 @@ withPipeline(type, product, component) {
   }
 
   afterAlways('functionalTest:preview') {
-    steps.sh 'npx allure generate test-results/functional/allure-results --clean -o test-results/functional/allure-report'
-    publishHTML([
-      allowMissing: false,
-      alwaysLinkToLastBuild: true,
-      keepAll: true,
-      reportDir: 'test-results/functional/allure-report',
-      reportFiles: 'index.html',
-      reportName: 'Non-Prod E2E Allure Report'
-    ])
-    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'test-results/functional/**/*'
+    if(!checkForSkipFunctionalTests(env.BRANCH_NAME)) {
+      steps.sh 'npx allure generate test-results/functional/allure-results --clean -o test-results/functional/allure-report'
+      publishHTML([
+        allowMissing: false,
+        alwaysLinkToLastBuild: true,
+        keepAll: true,
+        reportDir: 'test-results/functional/allure-report',
+        reportFiles: 'index.html',
+        reportName: 'Non-Prod E2E Allure Report'
+      ])
+      steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'test-results/functional/**/*'
 
-    // run security tests in playwright
-    sh './bin/run-preview-playwright-tests.sh'
-    steps.sh 'npx allure generate test-results/security/allure-results --clean -o test-results/security/allure-report || true'
-    publishHTML([
-      allowMissing         : true,
-      alwaysLinkToLastBuild: true,
-      keepAll              : true,
-      reportDir            : 'test-results/security/allure-report',
-      reportFiles          : 'index.html',
-      reportName           : 'API Security Test Report'
-    ])
+      // run security tests in playwright
+      sh './bin/run-preview-playwright-tests.sh'
+      steps.sh 'npx allure generate test-results/security/allure-results --clean -o test-results/security/allure-report || true'
+      publishHTML([
+        allowMissing         : true,
+        alwaysLinkToLastBuild: true,
+        keepAll              : true,
+        reportDir            : 'test-results/security/allure-report',
+        reportFiles          : 'index.html',
+        reportName           : 'API Security Test Report'
+      ])
 
-    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'test-results/security/**/*'
-    junit allowEmptyResults: true, testResults: 'test-results/security/results.xml'
+      steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'test-results/security/**/*'
+      junit allowEmptyResults: true, testResults: 'test-results/security/results.xml'
+    } else {
+      echo "Skipping Allure report generation due to label: pr-values: skip-functional-tests"
+    }    
   }
 
   afterSuccess('smoketest:preview') {
