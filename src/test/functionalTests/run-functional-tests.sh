@@ -82,15 +82,14 @@ PREV_TEST_FILES_REPORT="test-results/functional/prevTestFilesReport.json"
 
 # Check if SKIP_FUNCTIONAL_TESTS is set to true
 if [ "$SKIP_FUNCTIONAL_TESTS" = "true" ]; then
-  echo "The label 'pr-values: skip-functional-tests' exists on the PR."
+  echo "The label 'pr-values:skip-functional-tests' exists on the PR."
   echo "Skipping functional tests."
   exit 0
-fi
 
 #Check if RUN_ALL_FUNCTIONAL_TESTS is set to true
 if [ "$RUN_ALL_FUNCTIONAL_TESTS" = "true" ]; then
   echo "The label 'runAllFunctionalTests' exists on the PR."
-  echo "Running all fucntional tests."
+  echo "Running all functional tests."
   run_functional_tests
 
 #Check if testFilesReport.json exists and is non-empty

@@ -177,8 +177,8 @@ def checkForEnableEmailNotifications(branch_name) {
 
 def checkForSkipFunctionalTests(branch_name) {
   return new GithubAPI(this)
-    .getLabelsbyPattern(branch_name, "pr-values: skip-functional-tests")
-    .contains("pr-values: skip-functional-tests")
+    .getLabelsbyPattern(branch_name, "pr-values:skip-functional-tests")
+    .contains("pr-values:skip-functional-tests")
 }
 
 def checkForRunAllFunctionalTests(branch_name) {
