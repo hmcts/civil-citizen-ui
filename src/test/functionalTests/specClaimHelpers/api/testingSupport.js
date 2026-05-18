@@ -241,5 +241,66 @@ module.exports = {
       }, caseData, 'PUT');
   },
 
+  assertEmailSent: async (caseId, options = {}) => {
+    const {templateId, recipientEmail, timeoutMs = 30000} = options;
+    const intervalMs = 3000;
+    const maxRetries = Math.max(1, Math.floor(timeoutMs / intervalMs));
+    const authToken = await idamHelper.accessToken(config.applicantSolicitorUser);
+
+    const params = new URLSearchParams({caseId});
+    if (templateId) params.set('templateId', templateId);
+    if (recipientEmail) params.set('recipientEmail', recipientEmail);
+    const url = `${config.url.civilService}/testing-support/notifications/sent?${params.toString()}`;
+
+    let lastResult = [];
+
+    try {
+      return await retry(async () => {
+        const response = await restHelper.request(url, {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${authToken}`,
+        }, null, 'GET');
+
+        if (response.status !== 200) {
+          throw new Error(`assertEmailSent: testing-support returned status ${response.status}`);
+        }
+
+        lastResult = await response.json();
+        if (lastResult.length === 0) {
+          throw new Error(`assertEmailSent: no matching email yet for case ${caseId} (templateId=${templateId || '*'}, recipient=${recipientEmail || '*'})`);
+        }
+        return lastResult[lastResult.length - 1];
+      }, maxRetries, intervalMs);
+    } catch {
+      throw new Error(`assertEmailSent: timed out after ${timeoutMs}ms waiting for email for case ${caseId} (templateId=${templateId || '*'}, recipient=${recipientEmail || '*'}). Last response: ${JSON.stringify(lastResult)}`);
+    }
+  },
+
+  assertNoEmailSent: async (caseId, options = {}) => {
+    const {templateId, recipientEmail, withinMs = 5000} = options;
+    const authToken = await idamHelper.accessToken(config.applicantSolicitorUser);
+
+    const params = new URLSearchParams({caseId});
+    if (templateId) params.set('templateId', templateId);
+    if (recipientEmail) params.set('recipientEmail', recipientEmail);
+    const url = `${config.url.civilService}/testing-support/notifications/sent?${params.toString()}`;
+
+    await new Promise(resolve => setTimeout(resolve, withinMs));
+
+    const response = await restHelper.request(url, {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${authToken}`,
+    }, null, 'GET');
+
+    if (response.status !== 200) {
+      throw new Error(`assertNoEmailSent: testing-support returned status ${response.status}`);
+    }
+
+    const result = await response.json();
+    if (result.length > 0) {
+      throw new Error(`assertNoEmailSent: expected no email for case ${caseId} (templateId=${templateId || '*'}, recipient=${recipientEmail || '*'}) but found ${result.length}: ${JSON.stringify(result)}`);
+    }
+  },
+
   checkToggleEnabled,
 };
