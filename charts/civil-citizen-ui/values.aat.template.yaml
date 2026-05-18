@@ -361,9 +361,9 @@ civil-service:
             disabled: true
         disableKeyVaults: true
     elasticsearch:
-      nameOverride: ${SERVICE_NAME}-es
       image: hmctsprod.azurecr.io/imported/elastic/elasticsearch
-      imageTag: "7.17.1"
+      imageTag: 9.2.3
+      nameOverride: ${SERVICE_NAME}-es
       initResources:
         limits:
           cpu: "500m"
@@ -371,9 +371,10 @@ civil-service:
         requests:
           cpu: "25m"
           memory: "512Mi"
+
     logstash:
-      image: hmctsprod.azurecr.io/ccd/logstash
-      imageTag: "latest"
+      image: hmctsprod.azurecr.io/imported/elastic/logstash
+      imageTag: 9.2.3
       extraEnvs:
         - name: DATA_STORE_URL
           value: jdbc:postgresql://${SERVICE_NAME}-postgresql:5432/data-store?ssl=disable&stringtype=unspecified
