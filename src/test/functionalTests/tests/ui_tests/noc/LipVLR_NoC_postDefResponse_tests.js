@@ -50,6 +50,11 @@ Scenario('LipVLR - DefendantLip respond as DefenceAll and NoC - Case stays onlin
   await api.checkUserCaseAccess(config.defendantCitizenUser, false);
   await api.checkUserCaseAccess(config.defendantSolicitorUser, true);
 
+  await api.assertEmailSent(legacyCaseReference, {
+    recipientEmail: config.claimantCitizenUser.email,
+    timeoutMs: 45000,
+  });
+
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await I.amOnPage('/dashboard');
   await I.click(legacyCaseReference);
