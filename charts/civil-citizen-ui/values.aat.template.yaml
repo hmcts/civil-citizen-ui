@@ -428,9 +428,9 @@ civil-service:
         01_input.conf: |
           input  {
             jdbc {
-              jdbc_connection_string => "${DATA_STORE_URL}"
-              jdbc_user => "${DATA_STORE_USER}"
-              jdbc_password => "${DATA_STORE_PASS}"
+              jdbc_connection_string => "jdbc:postgresql://${SERVICE_NAME}-postgresql:5432/data-store?ssl=disable&stringtype=unspecified"
+              jdbc_user => "${POSTGRES_USER}"
+              jdbc_password => "${POSTGRES_PASSWORD}"
               jdbc_validate_connection => true
               jdbc_driver_library => "/usr/share/logstash/ccd/postgresql.jar"
               jdbc_driver_class => "org.postgresql.Driver"
@@ -542,7 +542,7 @@ civil-service:
         03_output.conf: |
           output {
               elasticsearch {
-                  hosts => ["${ES_HOSTS}"]
+                  hosts => ["http://${SERVICE_NAME}-es-master:9200"]
                   sniffing => false
                   index => "%{[index_id]}"
                   document_id => "%{id}"
