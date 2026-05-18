@@ -361,9 +361,10 @@ civil-service:
             disabled: true
         disableKeyVaults: true
     elasticsearch:
-      nameOverride: ${SERVICE_NAME}-es
       image: hmctsprod.azurecr.io/imported/elastic/elasticsearch
       imageTag: 9.2.3
+      nameOverride: ${SERVICE_NAME}-es
+      clusterHealthCheckParams: "wait_for_status=yellow&timeout=1s"
       initResources:
         limits:
           cpu: "500m"
@@ -371,6 +372,7 @@ civil-service:
         requests:
           cpu: "25m"
           memory: "512Mi"
+
     logstash:
       image: hmctsprod.azurecr.io/imported/elastic/logstash
       imageTag: 9.2.3
