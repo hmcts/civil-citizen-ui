@@ -364,6 +364,7 @@ civil-service:
       image: hmctsprod.azurecr.io/imported/elastic/elasticsearch
       imageTag: 9.2.3
       nameOverride: ${SERVICE_NAME}-es
+      clusterHealthCheckParams: "wait_for_status=yellow&timeout=1s"
       initResources:
         limits:
           cpu: "500m"
