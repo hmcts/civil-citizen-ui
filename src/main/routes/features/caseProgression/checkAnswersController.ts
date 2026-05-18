@@ -20,12 +20,24 @@ import {CivilServiceClient} from 'client/civilServiceClient';
 import config from 'config';
 import {getClaimById} from 'modules/utilityService';
 import {getRouteParam} from 'common/utils/routeParamUtils';
+import {
+  CallbackErrorViewData,
+  handleCallbackValidationErrorOrNext,
+} from 'client/common/error/handleCallbackValidationError';
 
 const checkAnswersViewPath = 'features/caseProgression/check-answers';
 const documentUploadCheckAnswerController = Router();
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
-function renderView(res: Response, form: GenericForm<DocumentUploadSubmissionForm>, claim: Claim, claimId: string, isClaimant: boolean, lang: string) {
+function renderView(
+  res: Response,
+  form: GenericForm<DocumentUploadSubmissionForm>,
+  claim: Claim,
+  claimId: string,
+  isClaimant: boolean,
+  lang: string,
+  callbackErrorViewData?: CallbackErrorViewData,
+) {
   const topPageContents = getTopElements(claim);
   let summarySections: DocumentUploadSections;
   const isSmallClaims = claim.isSmallClaimsTrackDQ;
@@ -41,6 +53,8 @@ function renderView(res: Response, form: GenericForm<DocumentUploadSubmissionFor
 
   res.render(checkAnswersViewPath, {
     form, topPageContents, summarySections, bottomPageContents, isSmallClaims, cancelUrl, backLinkUrl,
+    callbackErrors: callbackErrorViewData?.callbackErrors,
+    callbackWarnings: callbackErrorViewData?.callbackWarnings,
   });
 }
 
@@ -61,10 +75,12 @@ documentUploadCheckAnswerController.post(CP_CHECK_ANSWERS_URL, (async (req: Requ
   const claimId = getRouteParam(req, 'id');
   const appReq = req as AppRequest;
   const lang = (req.query.lang as string) || req.cookies.lang;
+  let form: GenericForm<DocumentUploadSubmissionForm>;
+  let claim: Claim;
 
   try {
-    const form = new GenericForm<DocumentUploadSubmissionForm>(new DocumentUploadSubmissionForm(req.body.signed));
-    const claim = await getClaimById(claimId, req, true);
+    form = new GenericForm<DocumentUploadSubmissionForm>(new DocumentUploadSubmissionForm(req.body.signed));
+    claim = await getClaimById(claimId, req, true);
     await form.validate();
 
     if (form.hasErrors()) {
@@ -81,7 +97,8 @@ documentUploadCheckAnswerController.post(CP_CHECK_ANSWERS_URL, (async (req: Requ
     await deleteDraftClaimFromStore(redisKey);
     res.redirect(constructResponseUrlWithIdParams(claimId, CP_EVIDENCE_UPLOAD_SUBMISSION_URL));
   } catch (error) {
-    next(error);
+    await handleCallbackValidationErrorOrNext(error, res, next, (viewData) =>
+      renderView(res, form, claim, claimId, claim.isClaimant(), lang, viewData));
     return;
   }
 })as RequestHandler);

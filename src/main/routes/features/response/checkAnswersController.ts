@@ -20,6 +20,10 @@ import {isMintiEnabledForCase, isCarmEnabledForCase} from '../../../app/auth/lau
 import {ValidationError, Validator} from 'class-validator';
 import {SpecificCourtLocation} from 'models/directionsQuestionnaire/hearing/specificCourtLocation';
 import {getRouteParam} from 'common/utils/routeParamUtils';
+import {
+  CallbackErrorViewData,
+  handleCallbackValidationErrorOrNext,
+} from 'client/common/error/handleCallbackValidationError';
 
 const checkAnswersViewPath = 'features/response/check-answers';
 const validator = new Validator();
@@ -28,13 +32,23 @@ const checkAnswersController = Router();
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('checkAnswersController');
 
-function renderView(req: Request, res: Response, form: GenericForm<StatementOfTruthForm> | GenericForm<QualifiedStatementOfTruth>, claim: Claim, carmApplicable = false, mintiApplicable = false) {
+function renderView(
+  req: Request,
+  res: Response,
+  form: GenericForm<StatementOfTruthForm> | GenericForm<QualifiedStatementOfTruth>,
+  claim: Claim,
+  carmApplicable = false,
+  mintiApplicable = false,
+  callbackErrorViewData?: CallbackErrorViewData,
+) {
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
   const claimId = getRouteParam(req, 'id');
   const summarySections = getSummarySections(claimId, claim, lang, carmApplicable, mintiApplicable);
   res.render(checkAnswersViewPath, {
     form,
     summarySections,
+    callbackErrors: callbackErrorViewData?.callbackErrors,
+    callbackWarnings: callbackErrorViewData?.callbackWarnings,
   });
 }
 
@@ -55,11 +69,17 @@ checkAnswersController.get(RESPONSE_CHECK_ANSWERS_URL,
   }) as RequestHandler);
 
 checkAnswersController.post(RESPONSE_CHECK_ANSWERS_URL, (async (req: Request, res: Response, next: NextFunction) => {
+  const isFullAmountRejected = (req.body.isFullAmountRejected === 'true');
+  const redisKey = generateRedisKey(<AppRequest>req);
+  let claim: Claim;
+  let form: GenericForm<StatementOfTruthForm> | GenericForm<QualifiedStatementOfTruth>;
+  let carmApplicable = false;
+  let mintiApplicable = false;
   try {
-    const isFullAmountRejected = (req.body.isFullAmountRejected === 'true');
-    const redisKey = generateRedisKey(<AppRequest>req);
-    const claim = await getCaseDataFromStore(redisKey);
-    const form = new GenericForm((req.body.type === SignatureType.QUALIFIED)
+    claim = await getCaseDataFromStore(redisKey);
+    carmApplicable = await isCarmEnabledForCase(claim.submittedDate);
+    mintiApplicable = await isMintiEnabledForCase(claim.submittedDate);
+    form = new GenericForm((req.body.type === SignatureType.QUALIFIED)
       ? new QualifiedStatementOfTruth(isFullAmountRejected, req.body.signed, req.body.directionsQuestionnaireSigned, req.body.signerName, req.body.signerRole)
       : new StatementOfTruthForm(isFullAmountRejected, req.body.type, req.body.signed, req.body.directionsQuestionnaireSigned));
     await form.validate();
@@ -82,7 +102,8 @@ checkAnswersController.post(RESPONSE_CHECK_ANSWERS_URL, (async (req: Request, re
     }
   } catch (error) {
     logger.error(`Error when posting check your answers -  ${error.message}`);
-    next(error);
+    await handleCallbackValidationErrorOrNext(error, res, next, (viewData) =>
+      renderView(req, res, form, claim, carmApplicable, mintiApplicable, viewData));
   }
 }) as RequestHandler);
 

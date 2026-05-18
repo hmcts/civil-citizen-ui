@@ -15,11 +15,21 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {submitClaimantResponse} from 'services/features/claimantResponse/submission/submitClaimantResponse';
 import {getClaimById} from 'modules/utilityService';
 import {getRouteParam} from 'common/utils/routeParamUtils';
+import {
+  CallbackErrorViewData,
+  handleCallbackValidationErrorOrNext,
+} from 'client/common/error/handleCallbackValidationError';
 
 const checkAnswersViewPath = 'features/claimantResponse/ccj/check-answers';
 const ccjCheckAnswersController = Router();
 
-async function renderView(req: Request, res: Response, form: GenericForm<StatementOfTruthForm> | GenericForm<QualifiedStatementOfTruth>, claim: Claim) {
+async function renderView(
+  req: Request,
+  res: Response,
+  form: GenericForm<StatementOfTruthForm> | GenericForm<QualifiedStatementOfTruth>,
+  claim: Claim,
+  callbackErrorViewData?: CallbackErrorViewData,
+) {
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
   const summarySections = await getSummarySections(getRouteParam(req, 'id'), claim, lang);
   const signatureType = form.model?.type;
@@ -28,6 +38,8 @@ async function renderView(req: Request, res: Response, form: GenericForm<Stateme
     summarySections,
     signatureType,
     pageTitle: 'PAGES.CHECK_YOUR_ANSWER.TITLE',
+    callbackErrors: callbackErrorViewData?.callbackErrors,
+    callbackWarnings: callbackErrorViewData?.callbackWarnings,
   });
 }
 
@@ -43,16 +55,18 @@ ccjCheckAnswersController.get(CCJ_CHECK_AND_SEND_URL,
   });
 
 ccjCheckAnswersController.post(CCJ_CHECK_AND_SEND_URL, async (req: AppRequest | Request, res: Response, next: NextFunction) => {
+  const claimId = getRouteParam(req, 'id');
+  const redisKey = generateRedisKey(req as unknown as AppRequest);
+  let claim: Claim;
+  let form: GenericForm<StatementOfTruthForm> | GenericForm<QualifiedStatementOfTruth>;
   try {
     const isFullAmountRejected = (req.body?.isFullAmountRejected === 'true');
-    const claimId = getRouteParam(req, 'id');
-    const redisKey = generateRedisKey(req as unknown as AppRequest);
-    const form = new GenericForm((req.body.type === 'qualified')
+    form = new GenericForm((req.body.type === 'qualified')
       ? new QualifiedStatementOfTruth(isFullAmountRejected, req.body.signed, req.body.directionsQuestionnaireSigned, req.body.signerName, req.body.signerRole)
       : new StatementOfTruthForm(isFullAmountRejected, req.body.type, req.body.signed, req.body.directionsQuestionnaireSigned));
     await form.validate();
     if (form.hasErrors()) {
-      const claim = await getClaimById(claimId, req, true);
+      claim = await getClaimById(claimId, req, true);
       await renderView(req, res, form, claim);
       return;
     } else {
@@ -62,7 +76,12 @@ ccjCheckAnswersController.post(CCJ_CHECK_AND_SEND_URL, async (req: AppRequest | 
       res.redirect(constructResponseUrlWithIdParams(claimId, CCJ_CONFIRMATION_URL));
     }
   } catch (error) {
-    next(error);
+    await handleCallbackValidationErrorOrNext(error, res, next, async (viewData) => {
+      if (!claim) {
+        claim = await getClaimById(claimId, req, true);
+      }
+      await renderView(req, res, form, claim, viewData);
+    });
     return;
   }
 });

@@ -22,12 +22,24 @@ import {getClaimById} from 'modules/utilityService';
 import {SpecificCourtLocation} from 'models/directionsQuestionnaire/hearing/specificCourtLocation';
 import {ValidationError, Validator} from 'class-validator';
 import {getRouteParam} from 'common/utils/routeParamUtils';
+import {
+  CallbackErrorViewData,
+  handleCallbackValidationErrorOrNext,
+} from 'client/common/error/handleCallbackValidationError';
 
 const checkAnswersViewPath = 'features/claimantResponse/check-answers';
 const validator = new Validator();
 const claimantResponseCheckAnswersController = Router();
 
-async function renderView(req: AppRequest, res: Response, form: GenericForm<StatementOfTruthForm>, claim: Claim, isCarmApplicable: boolean, isMintiApplicable: boolean) {
+async function renderView(
+  req: AppRequest,
+  res: Response,
+  form: GenericForm<StatementOfTruthForm>,
+  claim: Claim,
+  isCarmApplicable: boolean,
+  isMintiApplicable: boolean,
+  callbackErrorViewData?: CallbackErrorViewData,
+) {
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
   const claimFee = convertToPoundsFilter(claim.claimFee?.calculatedAmountInPence);
   const summarySections = await getSummarySections(getRouteParam(req, 'id'), claim, lang, claimFee, isCarmApplicable, isMintiApplicable);
@@ -36,6 +48,8 @@ async function renderView(req: AppRequest, res: Response, form: GenericForm<Stat
     form,
     summarySections,
     pageTitle: 'PAGES.CHECK_YOUR_ANSWER.CLAIMANT_INTENT_PAGE_TITLE',
+    callbackErrors: callbackErrorViewData?.callbackErrors,
+    callbackWarnings: callbackErrorViewData?.callbackWarnings,
   });
 }
 
@@ -55,15 +69,19 @@ claimantResponseCheckAnswersController.get(CLAIMANT_RESPONSE_CHECK_ANSWERS_URL,c
   }) as RequestHandler);
 
 claimantResponseCheckAnswersController.post(CLAIMANT_RESPONSE_CHECK_ANSWERS_URL, (async (req: Request, res: Response, next: NextFunction) => {
+  const claimId = getRouteParam(req, 'id');
+  const redisKey = generateRedisKey(<AppRequest>req);
+  let claim: Claim;
+  let form: GenericForm<StatementOfTruthForm>;
+  let carmEnabled = false;
+  let mintiEnabled = false;
   try {
     const isClaimantRejectedDefendantOffer = req.body.isClaimantRejectedDefendantOffer === 'true';
-    const form = new GenericForm(new StatementOfTruthForm(isClaimantRejectedDefendantOffer, req.body.type, true, req.body.directionsQuestionnaireSigned));
+    form = new GenericForm(new StatementOfTruthForm(isClaimantRejectedDefendantOffer, req.body.type, true, req.body.directionsQuestionnaireSigned));
     await form.validate();
-    const claimId = getRouteParam(req, 'id');
-    const redisKey = generateRedisKey(<AppRequest>req);
-    const claim = await getClaimById(claimId, req, true);
-    const carmEnabled = await isCarmEnabledForCase(claim.submittedDate);
-    const mintiEnabled = await isMintiEnabledForCase(claim.submittedDate);
+    claim = await getClaimById(claimId, req, true);
+    carmEnabled = await isCarmEnabledForCase(claim.submittedDate);
+    mintiEnabled = await isMintiEnabledForCase(claim.submittedDate);
     if (claim.claimantResponse?.directionQuestionnaire?.hearing && !claim.claimantResponse.directionQuestionnaire.hearing?.specificCourtLocation?.courtLocation) {
       form.errors = validateFields(new GenericForm<SpecificCourtLocation>(SpecificCourtLocation.fromObject(claim.claimantResponse.directionQuestionnaire.hearing?.specificCourtLocation as any)), form.errors);
     }
@@ -76,7 +94,8 @@ claimantResponseCheckAnswersController.post(CLAIMANT_RESPONSE_CHECK_ANSWERS_URL,
       res.redirect(constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_CONFIRMATION_URL));
     }
   } catch (error) {
-    next(error);
+    await handleCallbackValidationErrorOrNext(error, res, next, (viewData) =>
+      renderView(<AppRequest>req, res, form, claim, carmEnabled, mintiEnabled, viewData));
   }
 }) as RequestHandler);
 

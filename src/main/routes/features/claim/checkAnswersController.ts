@@ -27,6 +27,10 @@ import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {saveClaimFee} from 'services/features/claim/amount/claimFeesService';
 import {calculateInterestToDate} from 'common/utils/interestUtils';
+import {
+  CallbackErrorViewData,
+  handleCallbackValidationErrorOrNext,
+} from 'client/common/error/handleCallbackValidationError';
 const validator = new Validator();
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
@@ -35,7 +39,15 @@ const checkAnswersViewPath = 'features/claim/check-answers';
 //const paymentUrl = 'https://www.payments.service.gov.uk/card_details/:id';
 const claimCheckAnswersController = Router();
 
-function renderView(res: Response, form: GenericForm<any>, claim: Claim, userId: string, lang: string, isCarmEnabled = true) {
+function renderView(
+  res: Response,
+  form: GenericForm<any>,
+  claim: Claim,
+  userId: string,
+  lang: string,
+  isCarmEnabled = true,
+  callbackErrorViewData?: CallbackErrorViewData,
+) {
 
   const summarySections = getSummarySections(userId, claim, lang, isCarmEnabled);
   const signatureType = form.model?.type;
@@ -47,6 +59,8 @@ function renderView(res: Response, form: GenericForm<any>, claim: Claim, userId:
     form, summarySections, signatureType,
     payment,
     pageTitle: 'PAGES.CHECK_YOUR_ANSWER.TITLE',
+    callbackErrors: callbackErrorViewData?.callbackErrors,
+    callbackWarnings: callbackErrorViewData?.callbackWarnings,
   });
 }
 
@@ -66,16 +80,18 @@ claimCheckAnswersController.get(CLAIM_CHECK_ANSWERS_URL,
   });
 
 claimCheckAnswersController.post(CLAIM_CHECK_ANSWERS_URL, async (req: Request | AppRequest, res: Response, next: NextFunction) => {
+  const userId = (<AppRequest>req).session?.user?.id;
+  const lang = req.query.lang ? req.query.lang : req.cookies.lang;
+  let claim: Claim;
+  let form: GenericForm<any>;
+  let isCarmEnabled = true;
   try {
-
-    const userId = (<AppRequest>req).session?.user?.id;
     const isFullAmountRejected = (req.body?.isFullAmountRejected === 'true');
-    const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-    const claim = await getCaseDataFromStore(userId);
-    const isCarmEnabled = await isCarmEnabledForCase(claim.draftClaimCreatedAt);
+    claim = await getCaseDataFromStore(userId);
+    isCarmEnabled = await isCarmEnabledForCase(claim.draftClaimCreatedAt);
     const acceptNotChangesAllowedValue =  (claim.claimDetails.helpWithFees.option === YesNo.YES) ? false : req.body.acceptNoChangesAllowed;
 
-    const form = new GenericForm((req.body.type === 'qualified')
+    form = new GenericForm((req.body.type === 'qualified')
       ? new QualifiedStatementOfTruthClaimIssue(isFullAmountRejected, req.body.signed, req.body.directionsQuestionnaireSigned, req.body.signerName, req.body.signerRole, acceptNotChangesAllowedValue)
       : new StatementOfTruthFormClaimIssue(isFullAmountRejected, req.body.type, req.body.signed, req.body.directionsQuestionnaireSigned, acceptNotChangesAllowedValue));
 
@@ -116,7 +132,8 @@ claimCheckAnswersController.post(CLAIM_CHECK_ANSWERS_URL, async (req: Request | 
       res.redirect(constructResponseUrlWithIdParams(submittedClaim.id, CLAIM_CONFIRMATION_URL));
     }
   } catch (error) {
-    next(error);
+    await handleCallbackValidationErrorOrNext(error, res, next, (viewData) =>
+      renderView(res, form, claim, userId, lang, isCarmEnabled, viewData));
     return;
   }
 });

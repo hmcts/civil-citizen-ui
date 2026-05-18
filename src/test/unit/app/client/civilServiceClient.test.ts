@@ -16,6 +16,8 @@ import {CaseState} from 'common/form/models/claimDetails';
 import {CourtLocation} from 'common/models/courts/courtLocations';
 import {TestMessages} from '../../../utils/errorMessageTestConstants';
 import {CivilServiceClient} from 'client/civilServiceClient';
+import {CallbackValidationError} from 'client/common/error/callbackValidationError';
+import {AxiosError} from 'axios';
 import {CaseDocument} from 'models/document/caseDocument';
 
 import {FileUpload} from 'models/caseProgression/fileUpload';
@@ -320,6 +322,28 @@ describe('Civil Service Client', () => {
       const civilServiceClient = new CivilServiceClient(baseUrl);
       //Then
       await expect(civilServiceClient.submitDefendantResponseEvent('123', {}, appReq)).rejects.toThrow('error');
+    });
+    it('should throw CallbackValidationError when civil service returns 422 with callback errors', async () => {
+      const axiosError = {
+        response: {
+          status: 422,
+          data: {
+            callbackErrors: ['Business process has not finished'],
+            callbackWarnings: [],
+          },
+        },
+        isAxiosError: true,
+      } as AxiosError;
+      const mockPost = jest.fn().mockRejectedValue(axiosError);
+      mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
+
+      await expect(civilServiceClient.submitDefendantResponseEvent('123', {}, appReq))
+        .rejects
+        .toMatchObject({
+          name: 'CallbackValidationError',
+          callbackErrors: ['Business process has not finished'],
+        });
     });
   });
 

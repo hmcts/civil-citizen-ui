@@ -8,6 +8,7 @@
 {% from "../../../macro/csrf.njk" import csrfProtection %}
 {% from "../../../macro/error-summary.njk" import errorSummary %}
 {% from "../../../macro/button.njk" import addButton %}
+{% from "../../../macro/callback-error-summary.njk" import callbackErrorSummary %}
 
 {% block pageTitle %}
     {{ setPageTitle(t,'PAGES.CHECK_YOUR_ANSWER.TITLE') }}
@@ -16,6 +17,7 @@
 {% block content %}
   <div class="govuk-width-container">
     <main class="govuk-main-wrapper" role="main">
+      {{ callbackErrorSummary(callbackErrors, callbackWarnings, t) }}
       {% if form.hasErrors() %}
         {{ errorSummary(form.getErrors(), t) }}
       {% endif %}

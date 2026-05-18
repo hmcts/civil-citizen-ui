@@ -17,11 +17,22 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {submitCoScApplication} from 'services/features/generalApplication/submitApplication';
 import {convertToPoundsFilter} from 'common/utils/currencyFormat';
 import {getRouteParam} from 'common/utils/routeParamUtils';
+import {
+  CallbackErrorViewData,
+  handleCallbackValidationErrorOrNext,
+} from 'client/common/error/handleCallbackValidationError';
 
 const coscCheckAnswersController = Router();
 const viewPath = 'features/generalApplication/check-answers';
 
-async function renderView(claimId: string, claim: Claim, form: GenericForm<StatementOfTruthForm>, req: AppRequest, res: Response): Promise<void> {
+async function renderView(
+  claimId: string,
+  claim: Claim,
+  form: GenericForm<StatementOfTruthForm>,
+  req: AppRequest,
+  res: Response,
+  callbackErrorViewData?: CallbackErrorViewData,
+): Promise<void> {
   const cancelUrl = await getCancelUrl(claimId, claim);
   const claimIdPrettified = caseNumberPrettify(claimId);
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
@@ -29,7 +40,17 @@ async function renderView(claimId: string, claim: Claim, form: GenericForm<State
   const headerTitle = 'COMMON.ASK_FOR_PROOF_OF_DEBT_PAYMENT';
 
   const backLinkUrl = BACK_URL;
-  res.render(viewPath, { form, cancelUrl, backLinkUrl, headerTitle, claimIdPrettified, claim, summaryRows });
+  res.render(viewPath, {
+    form,
+    cancelUrl,
+    backLinkUrl,
+    headerTitle,
+    claimIdPrettified,
+    claim,
+    summaryRows,
+    callbackErrors: callbackErrorViewData?.callbackErrors,
+    callbackWarnings: callbackErrorViewData?.callbackWarnings,
+  });
 }
 
 coscCheckAnswersController.get(GA_CHECK_YOUR_ANSWERS_COSC_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
@@ -45,13 +66,15 @@ coscCheckAnswersController.get(GA_CHECK_YOUR_ANSWERS_COSC_URL, (async (req: AppR
 }) as RequestHandler);
 
 coscCheckAnswersController.post(GA_CHECK_YOUR_ANSWERS_COSC_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
+  const claimId = getRouteParam(req, 'id');
+  let claim: Claim;
+  let form: GenericForm<StatementOfTruthForm>;
   try {
-    const claimId = getRouteParam(req, 'id');
-    const claim = await getClaimById(claimId, req, true);
+    claim = await getClaimById(claimId, req, true);
     const redisKey = generateRedisKey(<AppRequest>req);
     const statementOfTruth = new StatementOfTruthForm(req.body.signed, req.body.name);
     const applicationFee = convertToPoundsFilter(claim?.generalApplication?.applicationFee?.calculatedAmountInPence);
-    const form = new GenericForm(new StatementOfTruthForm(req.body.signed, req.body.name));
+    form = new GenericForm(new StatementOfTruthForm(req.body.signed, req.body.name));
     await form.validate();
     if (form.hasErrors()) {
       await renderView(claimId, claim, form, req, res);
@@ -64,7 +87,8 @@ coscCheckAnswersController.post(GA_CHECK_YOUR_ANSWERS_COSC_URL, (async (req: App
       res.redirect(getRedirectUrl(claimId, claim, applicationFee,genAppId));
     }
   } catch (error) {
-    next(error);
+    await handleCallbackValidationErrorOrNext(error, res, next, (viewData) =>
+      renderView(claimId, claim, form, req, res, viewData));
   }
 }) as RequestHandler);
 

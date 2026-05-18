@@ -4,10 +4,12 @@
 {% from "../dashboard/item-content.njk" import itemContent %}
 {% from "../../macro/csrf.njk" import csrfProtection %}
 {% from "../../macro/button.njk" import addButton %}
+{% from "../../macro/callback-error-summary.njk" import callbackErrorSummary %}
 
 {% set pageTitle = t('PAGES.CHECK_YOUR_ANSWER.TITLE') %}
 
 {% block nestedContent %}
+          {{ callbackErrorSummary(callbackErrors, callbackWarnings, t) }}
           {% for content in topPageContents %}
             {{ itemContent(content,t) }}
           {% endfor %}

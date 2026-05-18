@@ -19,20 +19,37 @@ import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {getClaimById} from 'modules/utilityService';
 import {getRouteParam} from 'common/utils/routeParamUtils';
+import {
+  CallbackErrorViewData,
+  handleCallbackValidationErrorOrNext,
+} from 'client/common/error/handleCallbackValidationError';
 
 const checkAnswersViewPath = 'features/caseProgression/requestForReconsideration/check-answers';
 const requestForReconsiderationCheckAnswersController = Router();
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
-function renderView(res: Response, claim: Claim, claimId: string, lang: string) {
+function renderView(
+  res: Response,
+  claim: Claim,
+  claimId: string,
+  lang: string,
+  callbackErrorViewData?: CallbackErrorViewData,
+) {
   const caseInfoContents = getCaseInfoContents(claimId, claim);
   const backLinkUrl = constructResponseUrlWithIdParams(claimId, REQUEST_FOR_RECONSIDERATION_URL);
   const summarySections = getSummarySections(claimId, claim, lang);
   const cancelUrl = REQUEST_FOR_RECONSIDERATION_CANCEL_URL
     .replace(':id', claimId)
     .replace(':propertyName', 'caseProgression');
-  res.render(checkAnswersViewPath, {summarySections, caseInfoContents, backLinkUrl, cancelUrl});
+  res.render(checkAnswersViewPath, {
+    summarySections,
+    caseInfoContents,
+    backLinkUrl,
+    cancelUrl,
+    callbackErrors: callbackErrorViewData?.callbackErrors,
+    callbackWarnings: callbackErrorViewData?.callbackWarnings,
+  });
 }
 
 requestForReconsiderationCheckAnswersController.get(REQUEST_FOR_RECONSIDERATION_CYA_URL,
@@ -48,15 +65,18 @@ requestForReconsiderationCheckAnswersController.get(REQUEST_FOR_RECONSIDERATION_
   })as RequestHandler);
 
 requestForReconsiderationCheckAnswersController.post(REQUEST_FOR_RECONSIDERATION_CYA_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
+  const claimId = getRouteParam(req, 'id');
+  const lang = req.query.lang ? req.query.lang : req.cookies.lang;
+  let claim: Claim;
   try {
-    const claimId = getRouteParam(req, 'id');
-    const claim = await getClaimById(claimId, req, true);
+    claim = await getClaimById(claimId, req, true);
     const requestForReconsiderationCCD = translateDraftRequestForReconsiderationToCCD(claim);
     await civilServiceClient.submitRequestForReconsideration(claimId, requestForReconsiderationCCD, req);
     await deleteDraftClaim(req);
     res.redirect(constructResponseUrlWithIdParams(claimId, REQUEST_FOR_RECONSIDERATION_CONFIRMATION_URL));
   } catch (error) {
-    next(error);
+    await handleCallbackValidationErrorOrNext(error, res, next, (viewData) =>
+      renderView(res, claim, claimId, lang, viewData));
   }
 })as RequestHandler);
 

@@ -65,6 +65,10 @@ import {CCDGeneralApplication} from 'models/gaEvents/eventDto';
 import {roundOffTwoDecimals} from 'common/utils/dateUtils';
 import {syncCaseReferenceCookie} from 'modules/cookie/caseReferenceCookie';
 import {assertHasData, assertNonEmpty} from 'client/common/error/eventSubmissionError';
+import {
+  CallbackValidationError,
+  parseCallbackValidationFromAxiosError,
+} from 'client/common/error/callbackValidationError';
 import {normalizeRouteParam, RouteParam} from 'common/utils/routeParamUtils';
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('civilServiceClient');
@@ -430,6 +434,15 @@ export class CivilServiceClient {
       const status = err.response?.status;
       const body = err.response?.data;
       logger.error(`Submit event failed (event=${event}, claimId=${normalizedClaimId}, status=${status})`, { body });
+      if (status === 422) {
+        const callbackValidation = parseCallbackValidationFromAxiosError(err);
+        if (callbackValidation) {
+          throw new CallbackValidationError(
+            callbackValidation.callbackErrors,
+            callbackValidation.callbackWarnings,
+          );
+        }
+      }
       throw err;
     }
   }

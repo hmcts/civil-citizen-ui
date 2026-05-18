@@ -19,6 +19,10 @@ import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
 import {caseNumberPrettify} from 'common/utils/stringUtils';
 import {saveMediationUploadedDocuments} from 'services/features/mediation/uploadDocuments/mediationCheckAnswersService';
 import {getRouteParam} from 'common/utils/routeParamUtils';
+import {
+  CallbackErrorViewData,
+  handleCallbackValidationErrorOrNext,
+} from 'client/common/error/handleCallbackValidationError';
 
 const checkAnswersViewPath = 'features/mediation/uploadDocuments/check-answers';
 const mediationDocumentUploadCheckAnswerController = Router();
@@ -41,7 +45,15 @@ export const getBottomElements = (): ClaimSummarySection[] => {
     .build();
 };
 
-function renderView(uploadDocuments: UploadDocuments, res: Response, form: GenericForm<DocumentUploadSubmissionForm>, claim: Claim, claimId: string, lang: string) {
+function renderView(
+  uploadDocuments: UploadDocuments,
+  res: Response,
+  form: GenericForm<DocumentUploadSubmissionForm>,
+  claim: Claim,
+  claimId: string,
+  lang: string,
+  callbackErrorViewData?: CallbackErrorViewData,
+) {
   const topPageContents = getTopElements(claim, claimId);
 
   const summarySections = getMediationSummarySection(uploadDocuments, claimId, lang);
@@ -54,6 +66,8 @@ function renderView(uploadDocuments: UploadDocuments, res: Response, form: Gener
     bottomPageContents,
     backLinkUrl: constructResponseUrlWithIdParams(claimId, MEDIATION_UPLOAD_DOCUMENTS),
     cancelUrl: constructResponseUrlWithIdParams(claimId, MEDIATION_UPLOAD_DOCUMENTS_CANCEL),
+    callbackErrors: callbackErrorViewData?.callbackErrors,
+    callbackWarnings: callbackErrorViewData?.callbackWarnings,
   });
 }
 
@@ -73,13 +87,16 @@ mediationDocumentUploadCheckAnswerController.get(MEDIATION_UPLOAD_DOCUMENTS_CHEC
 })as RequestHandler);
 
 mediationDocumentUploadCheckAnswerController.post(MEDIATION_UPLOAD_DOCUMENTS_CHECK_AND_SEND, (async (req: Request | AppRequest, res: Response, next: NextFunction) => {
+  const claimId = getRouteParam(req, 'id');
+  const lang = req.query.lang ? req.query.lang : req.cookies.lang;
+  let form: GenericForm<DocumentUploadSubmissionForm>;
+  let claim: Claim;
+  let uploadDocuments: UploadDocuments;
   try {
-    const claimId = getRouteParam(req, 'id');
-    const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-    const form = new GenericForm(new DocumentUploadSubmissionForm(req.body.signed));
+    form = new GenericForm(new DocumentUploadSubmissionForm(req.body.signed));
     const redisKey = generateRedisKey(<AppRequest>req);
-    const claim = await getCaseDataFromStore(redisKey);
-    const uploadDocuments = getUploadDocuments(claim);
+    claim = await getCaseDataFromStore(redisKey);
+    uploadDocuments = getUploadDocuments(claim);
     form.validateSync();
     if (form.hasErrors()) {
       renderView(uploadDocuments, res, form, claim, claimId, lang);
@@ -90,7 +107,8 @@ mediationDocumentUploadCheckAnswerController.post(MEDIATION_UPLOAD_DOCUMENTS_CHE
       res.redirect(constructResponseUrlWithIdParams(claimId, MEDIATION_UPLOAD_DOCUMENTS_CONFIRMATION));
     }
   } catch (error) {
-    next(error);
+    await handleCallbackValidationErrorOrNext(error, res, next, (viewData) =>
+      renderView(uploadDocuments, res, form, claim, claimId, lang, viewData));
     return;
   }
 

@@ -1,0 +1,16 @@
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
+{% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
+
+{% macro callbackErrorSummary(callbackErrors, callbackWarnings, t) %}
+  {% if callbackErrors and callbackErrors.length > 0 %}
+    {{ govukErrorSummary({
+      titleText: t('ERRORS.THERE_WAS_A_PROBLEM'),
+      errorList: callbackErrors
+    }) }}
+  {% endif %}
+  {% if callbackWarnings and callbackWarnings.length > 0 %}
+    {% for warning in callbackWarnings %}
+      {{ govukWarningText({ text: warning }) }}
+    {% endfor %}
+  {% endif %}
+{% endmacro %}

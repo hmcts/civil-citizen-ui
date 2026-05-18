@@ -3,6 +3,7 @@
 {% from "../../../macro/csrf.njk" import csrfProtection %}
 {% from "../../dashboard/item-content.njk" import itemContent %}
 {% from "../../../macro/button.njk" import addButton %}
+{% from "../../../macro/callback-error-summary.njk" import callbackErrorSummary %}
 
 {% block pageTitle %}
   {{ setPageTitle(t, 'PAGES.CHECK_YOUR_ANSWER.TITLE') }}
@@ -10,6 +11,7 @@
 {% set submitText = t('COMMON.BUTTONS.SUBMIT') %}
 
 {% block nestedContent %}
+          {{ callbackErrorSummary(callbackErrors, callbackWarnings, t) }}
           {% for content in caseInfoContents %}
             {{ itemContent(content, t) }}
           {% endfor %}

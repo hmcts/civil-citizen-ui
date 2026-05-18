@@ -23,11 +23,22 @@ import {convertToPoundsFilter} from 'common/utils/currencyFormat';
 import {YesNo} from 'form/models/yesNo';
 import {QualifiedStatementOfTruth} from 'models/generalApplication/QualifiedStatementOfTruth';
 import {getRouteParam} from 'common/utils/routeParamUtils';
+import {
+  CallbackErrorViewData,
+  handleCallbackValidationErrorOrNext,
+} from 'client/common/error/handleCallbackValidationError';
 
 const gaCheckAnswersController = Router();
 const viewPath = 'features/generalApplication/check-answers';
 
-async function renderView(claimId: string, claim: Claim, form: GenericForm<StatementOfTruthForm>, req: AppRequest, res: Response): Promise<void> {
+async function renderView(
+  claimId: string,
+  claim: Claim,
+  form: GenericForm<StatementOfTruthForm>,
+  req: AppRequest,
+  res: Response,
+  callbackErrorViewData?: CallbackErrorViewData,
+): Promise<void> {
   const cancelUrl = await getCancelUrl(claimId, claim);
   const claimIdPrettified = caseNumberPrettify(claimId);
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
@@ -36,7 +47,19 @@ async function renderView(claimId: string, claim: Claim, form: GenericForm<State
   const headerTitle = getDynamicHeaderForMultipleApplications(claim);
   const isBusiness = (claim.isClaimant() && claim.isClaimantBusiness()) || (claim.isDefendant() && claim.isBusiness());
   const backLinkUrl = BACK_URL;
-  res.render(viewPath, { form, cancelUrl, backLinkUrl, headerTitle, claimIdPrettified, claim, applicationTypeCards, summaryRows, isBusiness });
+  res.render(viewPath, {
+    form,
+    cancelUrl,
+    backLinkUrl,
+    headerTitle,
+    claimIdPrettified,
+    claim,
+    applicationTypeCards,
+    summaryRows,
+    isBusiness,
+    callbackErrors: callbackErrorViewData?.callbackErrors,
+    callbackWarnings: callbackErrorViewData?.callbackWarnings,
+  });
 }
 
 gaCheckAnswersController.get(GA_CHECK_ANSWERS_URL, checkYourAnswersGAGuard, (async (req: AppRequest, res: Response, next: NextFunction) => {
@@ -52,9 +75,11 @@ gaCheckAnswersController.get(GA_CHECK_ANSWERS_URL, checkYourAnswersGAGuard, (asy
 }) as RequestHandler);
 
 gaCheckAnswersController.post(GA_CHECK_ANSWERS_URL, checkYourAnswersGAGuard, (async (req: AppRequest, res: Response, next: NextFunction) => {
+  const claimId = getRouteParam(req, 'id');
+  let claim: Claim;
+  let form: GenericForm<StatementOfTruthForm>;
   try {
-    const claimId = getRouteParam(req, 'id');
-    const claim = await getClaimById(claimId, req, true);
+    claim = await getClaimById(claimId, req, true);
     const redisKey = generateRedisKey(<AppRequest>req);
     let statementOfTruth: StatementOfTruthForm | QualifiedStatementOfTruth;
     if ((claim.isClaimant() && claim.isClaimantBusiness()) || (claim.isDefendant() && claim.isBusiness())) {
@@ -64,7 +89,7 @@ gaCheckAnswersController.post(GA_CHECK_ANSWERS_URL, checkYourAnswersGAGuard, (as
 
     }
     const applicationFee = convertToPoundsFilter(claim?.generalApplication?.applicationFee?.calculatedAmountInPence);
-    const form = new GenericForm(statementOfTruth);
+    form = new GenericForm(statementOfTruth);
     await form.validate();
     if (form.hasErrors()) {
       await renderView(claimId, claim, form, req, res);
@@ -78,7 +103,8 @@ gaCheckAnswersController.post(GA_CHECK_ANSWERS_URL, checkYourAnswersGAGuard, (as
       res.redirect(getRedirectUrl(claimId, claim, applicationFee,genAppId));
     }
   } catch (error) {
-    next(error);
+    await handleCallbackValidationErrorOrNext(error, res, next, (viewData) =>
+      renderView(claimId, claim, form, req, res, viewData));
     return;
   }
 }) as RequestHandler);
