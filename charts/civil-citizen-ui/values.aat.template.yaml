@@ -361,19 +361,33 @@ civil-service:
             disabled: true
         disableKeyVaults: true
     elasticsearch:
-      nameOverride: ${SERVICE_NAME}-es
       image: hmctsprod.azurecr.io/imported/elastic/elasticsearch
-      imageTag: "7.17.1"
-      initResources:
-        limits:
-          cpu: "500m"
-          memory: "512Mi"
-        requests:
-          cpu: "25m"
-          memory: "512Mi"
+      imageTag: 9.2.3
+      nameOverride: ${SERVICE_NAME}-es
+      clusterName: "es"
+      createCert: false
+      protocol: http
+      replicas: 1
+      minimumMasterNodes: 1
+      antiAffinity: "soft"
+      esJavaOpts: "-Xmx512m -Xms512m"
+      # Their tests delete the pod after succeeding, we pass --logs to the test command which fail if the pod has already been deleted
+      # The tests do pass, at least as of 2023-01-19
+      tests:
+        enabled: false
+      esConfig:
+        elasticsearch.yml: |
+          action.auto_create_index: .security*,.watches,.triggered_watches,.watcher-history-*,.logstash_dead_letter,.ml*,ccd-logstash-dead-letter
+          xpack.security.enabled: false
+      persistence:
+        enabled: false
+      ingress:
+        enabled: false
+        className: traefik
+
     logstash:
-      image: hmctsprod.azurecr.io/ccd/logstash
-      imageTag: "latest"
+      image: hmctsprod.azurecr.io/imported/elastic/logstash
+      imageTag: 9.2.3
       extraEnvs:
         - name: DATA_STORE_URL
           value: jdbc:postgresql://${SERVICE_NAME}-postgresql:5432/data-store?ssl=disable&stringtype=unspecified
