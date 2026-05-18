@@ -327,37 +327,37 @@ class ResponseToDefence {
   }
 
   async ConfirmThatYouHaveBeenPaid() {
-    I.waitForText('Confirm that you\'ve been paid',60);
-    I.see('Enter the date that you were paid the full amount that was specified on the judgment');
-    I.waitForElement('#day', 10);
-    I.fillField('#day', dd);
-    I.fillField('#month', mm);
-    I.fillField('#year', yyyy);
-    I.click('#confirmed');
-    I.click('Submit');
-    I.waitForText('You\'ve confirmed that you\'ve been paid', 60);
-    I.click('Close and return to case details');
+    await I.waitForText('Confirm that you\'ve been paid',60);
+    await I.see('Enter the date that you were paid the full amount that was specified on the judgment');
+    await I.waitForElement('#day', 10);
+    await I.fillField('#day', dd);
+    await I.fillField('#month', mm);
+    await I.fillField('#year', yyyy);
+    await I.click('#confirmed');
+    await I.click('Submit');
+    await I.waitForText('You\'ve confirmed that you\'ve been paid', 60);
+    await I.click('Close and return to case details');
   }
   async CertificateOfSatisfactionAndCancellation() {
     I.waitForText('Confirm you\'ve paid a judgment (CCJ) debt',60);
     I.click('Confirm you\'ve paid a judgment (CCJ) debt');
-    I.click('Continue');
+    await I.click('Continue');
     I.waitForText('When was the final payment?', 60);
     I.waitForElement('#day', 10);
     I.fillField('#day', dd);
     I.fillField('#month', mm);
     I.fillField('#year', yyyy);
-    I.click('Continue');
+    await I.click('Continue');
     I.waitForText('Do you have evidence of the debt payment?', 60);
     I.click('#debtPaymentOption-4');
     I.waitForElement('#provideDetails', 10);
     I.fillField('#provideDetails', 'Testing');
-    I.click('Continue');
+    await I.click('Continue');
     I.waitForText('Check your answers', 60);
     I.click('#signed');
     I.fillField('#name', 'Testing');
-    I.click('Submit');
-    I.waitForText('Pay the fee', 60);
+    await I.click('Submit');
+    await I.waitForText('Pay the fee', 60);
   }
   async verifyRepaymentPlanForPartAdmitPayBySetDate(acceptOrReject) {
     I.waitForContent('No - I\'ll suggest my own',60);

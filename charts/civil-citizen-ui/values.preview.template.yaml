@@ -315,22 +315,35 @@ civil-service:
             disabled: false
 
     elasticsearch:
+      image: hmctsprod.azurecr.io/imported/elastic/elasticsearch
+      imageTag: 9.2.3
       nameOverride: ${SERVICE_NAME}-es
-      imageTag: "7.17.1"
-      initResources:
-        limits:
-          cpu: "500m"
-          memory: "512Mi"
-        requests:
-          cpu: "25m"
-          memory: "512Mi"
-
-    logstash:
-      image: hmctsprod.azurecr.io/ccd/logstash
-      imageTag: "latest"
-      logstashJavaOpts: -Xmx1g -Xms512M
+      clusterName: "es"
+      createCert: false
+      protocol: http
+      replicas: 1
+      minimumMasterNodes: 1
+      antiAffinity: "soft"
+      esJavaOpts: "-Xmx512m -Xms512m"
+      # Their tests delete the pod after succeeding, we pass --logs to the test command which fail if the pod has already been deleted
+      # The tests do pass, at least as of 2023-01-19
+      tests:
+        enabled: false
+      esConfig:
+        elasticsearch.yml: |
+          action.auto_create_index: .security*,.watches,.triggered_watches,.watcher-history-*,.logstash_dead_letter,.ml*,ccd-logstash-dead-letter
+          xpack.security.enabled: false
       persistence:
         enabled: false
+      ingress:
+        enabled: false
+        className: traefik
+
+    logstash:
+      image: hmctsprod.azurecr.io/imported/elastic/logstash
+      imageTag: 9.2.3
+      imagePullPolicy: "IfNotPresent"
+      logstashJavaOpts: "-Xmx1g -Xms512M"
       extraEnvs:
         - name: DATA_STORE_PASS
           value: hmcts
@@ -343,7 +356,7 @@ civil-service:
       extraInitContainers: |
         - name: download-postgres-jdbc
           image: hmctsprod.azurecr.io/curl:7.70.0
-          command: ['curl', '-L', 'https://jdbc.postgresql.org/download/postgresql-42.3.3.jar', '-o', '/logstash-lib/postgresql.jar']
+          command: ['curl', '-L', 'https://jdbc.postgresql.org/download/postgresql-42.7.9.jar', '-o', '/logstash-lib/postgresql.jar']
           volumeMounts:
           - name: logstash-lib
             mountPath: /logstash-lib
@@ -361,15 +374,15 @@ civil-service:
           readOnly: true
       logstashConfig:
         logstash.yml: |
-          http.host: 0.0.0.0
+          api.http.host: 0.0.0.0
           xpack.monitoring.enabled: false
+          xpack.monitoring.elasticsearch.hosts: ["http://{{ .Release.Name }}-es-master:9200"]
           queue.type: persisted
           dead_letter_queue.enable: true
+          pipeline.ecs_compatibility: disabled
         pipelines.yml: |
           - pipeline.id: main
             path.config: "/usr/share/logstash/pipeline/{01_input,02_filter,03_output}.conf"
-            pipeline.workers: 4
-            pipeline.batch.size: 500
             queue.type: persisted
       logstashPipeline:
         01_input.conf: |
@@ -379,7 +392,6 @@ civil-service:
               jdbc_user => "hmcts"
               jdbc_password_filepath => "/etc/logstash/secrets/PASSWORD"
               jdbc_validate_connection => true
-              jdbc_validation_timeout => "1"
               jdbc_driver_library => "/usr/share/logstash/ccd/postgresql.jar"
               jdbc_driver_class => "org.postgresql.Driver"
               jdbc_default_timezone => "UTC"
@@ -395,25 +407,21 @@ civil-service:
                 target => "data"
                 remove_field => ["json_data"]
                 }
-
                 json{
                     source => "json_supplementary_data"
                     target => "supplementary_data"
                     remove_field => ["json_supplementary_data"]
                 }
-
                 json{
                     source => "json_data_classification"
                     target => "data_classification"
                     remove_field => ["json_data_classification"]
                 }
-
                 if [data][SearchCriteria] {
                     clone {
                         clones => ["SearchCriteria"]
                     }
                 }
-
                 if [type] == "SearchCriteria" {
                     if [data][SearchCriteria] {
                         mutate {
@@ -465,20 +473,17 @@ civil-service:
                           rename => {"[data_classification][caseNameHmctsInternal]" => "[data_classification_new][caseNameHmctsInternal]" }
                         }
                     }
-
                     if [data_classification][caseManagementCategory] {
                         mutate {
                           rename => {"[data_classification][caseManagementCategory]" => "[data_classification_new][caseManagementCategory]" }
                         }
                     }
                     mutate { remove_field =>[ "data" ,"supplementary_data", "data_classification", "last_state_modified_date", "type","last_modified", "created_date" ] }
-
                     mutate {
                             rename => { "[data_new]" => "data" }
                             rename => { "[supplementary_data_new]"  => "supplementary_data" }
                             rename => { "[data_classification_new]"  => "data_classification" }
                     }
-
                     mutate {
                       add_field => { "index_id" => "global_search" }
                     }
@@ -508,10 +513,9 @@ civil-service:
 
     ccd-definition-store-api:
       java:
-        imagePullPolicy: Always
-        devcpuRequests: 1000m
-        devmemoryRequests: 2048Mi
-        devmemoryLimits: 4096Mi
+        devcpuRequests: 2000m
+        devmemoryLimits: 4Gi
+        devcpuLimits: 4Gi
         releaseNameOverride: ${SERVICE_NAME}-ccd-definition-store-api
         environment:
           DEFINITION_STORE_DB_OPTIONS: "?stringtype=unspecified"

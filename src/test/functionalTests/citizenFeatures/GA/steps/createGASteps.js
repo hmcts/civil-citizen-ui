@@ -146,7 +146,7 @@ class createGASteps {
     await applyHelpFeeSelectionPage.confirmActions('No');
 
     await govPay.addValidCardDetails(feeAmount);
-    govPay.confirmPayment();
+    await govPay.confirmPayment();
 
     const generalApplicationID = (await I.grabCurrentUrl()).match(/\/general-application\/(\d+)\//)[1];
 
@@ -232,7 +232,7 @@ class createGASteps {
     await applyHelpFeeSelectionPage.confirmActions('No');
 
     await govPay.addValidCardDetails(feeAmount);
-    govPay.confirmPayment();
+    await govPay.confirmPayment();
 
     const generalApplicationID = (await I.grabCurrentUrl()).match(/\/general-application\/(\d+)\//)[1];
 
@@ -345,7 +345,7 @@ class createGASteps {
     await applyHelpFeeSelectionPage.confirmActions('No');
 
     await govPay.addValidCardDetails(feeAmount);
-    govPay.confirmPayment();
+    await govPay.confirmPayment();
 
     const generalApplicationID = (await I.grabCurrentUrl()).match(/\/general-application\/(\d+)\//)[1];
 
@@ -456,7 +456,7 @@ class createGASteps {
     await applyHelpFeeSelectionPage.confirmActions('No');
 
     await govPay.addValidCardDetails(feeAmount);
-    govPay.confirmPayment();
+    await govPay.confirmPayment();
 
     const generalApplicationID = (await I.grabCurrentUrl()).match(/\/general-application\/(\d+)\//)[1];
 
@@ -566,7 +566,7 @@ class createGASteps {
     await applyHelpFeeSelectionPage.confirmActions('No');
 
     await govPay.addValidCardDetails(feeAmount, language);
-    govPay.confirmPayment(language);
+    await govPay.confirmPayment(language);
 
     const generalApplicationID = (await I.grabCurrentUrl()).match(/\/general-application\/(\d+)\//)[1];
 
@@ -677,7 +677,7 @@ class createGASteps {
     await applyHelpFeeSelectionPage.confirmActions('No');
 
     await govPay.addValidCardDetails(feeAmount);
-    govPay.confirmPayment();
+    await govPay.confirmPayment();
 
     const generalApplicationID = (await I.grabCurrentUrl()).match(/\/general-application\/(\d+)\//)[1];
 
@@ -792,7 +792,7 @@ class createGASteps {
     await applyHelpFeeSelectionPage.confirmActions('No');
 
     await govPay.addValidCardDetails(feeAmount);
-    govPay.confirmPayment();
+    await govPay.confirmPayment();
 
     const generalApplicationID = (await I.grabCurrentUrl()).match(/\/general-application\/(\d+)\//)[1];
 
@@ -904,7 +904,7 @@ class createGASteps {
     await applyHelpFeeSelectionPage.confirmActions('No');
 
     await govPay.addValidCardDetails(feeAmount);
-    govPay.confirmPayment();
+    await govPay.confirmPayment();
 
     const generalApplicationID = (await I.grabCurrentUrl()).match(/\/general-application\/(\d+)\//)[1];
 
@@ -1016,7 +1016,7 @@ class createGASteps {
     await applyHelpFeeSelectionPage.confirmActions('No');
 
     await govPay.addValidCardDetails(feeAmount);
-    govPay.confirmPayment();
+    await govPay.confirmPayment();
 
     const generalApplicationID = (await I.grabCurrentUrl()).match(/\/general-application\/(\d+)\//)[1];
 
@@ -1128,7 +1128,7 @@ class createGASteps {
     await applyHelpFeeSelectionPage.confirmActions('No');
 
     await govPay.addValidCardDetails(feeAmount);
-    govPay.confirmPayment();
+    await govPay.confirmPayment();
 
     const generalApplicationID = (await I.grabCurrentUrl()).match(/\/general-application\/(\d+)\//)[1];
 
@@ -1240,7 +1240,7 @@ class createGASteps {
     await applyHelpFeeSelectionPage.confirmActions('No');
 
     await govPay.addValidCardDetails(feeAmount);
-    govPay.confirmPayment();
+    await govPay.confirmPayment();
 
     const generalApplicationID = (await I.grabCurrentUrl()).match(/\/general-application\/(\d+)\//)[1];
 
@@ -1324,7 +1324,7 @@ class createGASteps {
     await applyHelpFeeSelectionPage.confirmActions('No');
 
     await govPay.addValidCardDetails(feeAmount);
-    govPay.confirmPayment();
+    await govPay.confirmPayment();
 
     const generalApplicationID = (await I.grabCurrentUrl()).match(/\/general-application\/(\d+)\//)[1];
 
@@ -1436,7 +1436,7 @@ class createGASteps {
     await applyHelpFeeSelectionPage.confirmActions('No');
 
     await govPay.addValidCardDetails(feeAmount);
-    govPay.confirmPayment();
+    await govPay.confirmPayment();
 
     const generalApplicationID = (await I.grabCurrentUrl()).match(/\/general-application\/(\d+)\//)[1];
 
@@ -1452,7 +1452,7 @@ class createGASteps {
     await applyHelpFeeSelectionPage.nextAction('Continue');
 
     await govPay.addValidCardDetails(feeAmount);
-    govPay.confirmPayment();
+    await govPay.confirmPayment();
 
     await paymentConfirmationPage.verifyAdditionalPaymentPageContent();
     await paymentConfirmationPage.nextAction('Close and return to dashboard');
@@ -1582,7 +1582,7 @@ class createGASteps {
     await applyHelpFeeSelectionPage.confirmActions('No');
 
     await govPay.addValidCardDetails(feeAmount);
-    govPay.confirmPayment();
+    await govPay.confirmPayment();
 
     const generalApplicationID = (await I.grabCurrentUrl()).match(/\/general-application\/(\d+)\//)[1];
 
