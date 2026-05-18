@@ -260,35 +260,35 @@ withPipeline(type, product, component) {
   }
 
   afterAlways('functionalTest:preview') {
-    if(!checkForSkipFunctionalTests(env.BRANCH_NAME)) {
-      steps.sh 'npx allure generate test-results/functional/allure-results --clean -o test-results/functional/allure-report'
-      publishHTML([
-        allowMissing: false,
-        alwaysLinkToLastBuild: true,
-        keepAll: true,
-        reportDir: 'test-results/functional/allure-report',
-        reportFiles: 'index.html',
-        reportName: 'Non-Prod E2E Allure Report'
-      ])
-      steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'test-results/functional/**/*'
-
-      // run security tests in playwright
-      sh './bin/run-preview-playwright-tests.sh'
-      steps.sh 'npx allure generate test-results/security/allure-results --clean -o test-results/security/allure-report || true'
-      publishHTML([
-        allowMissing         : true,
-        alwaysLinkToLastBuild: true,
-        keepAll              : true,
-        reportDir            : 'test-results/security/allure-report',
-        reportFiles          : 'index.html',
-        reportName           : 'API Security Test Report'
-      ])
-
-      steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'test-results/security/**/*'
-      junit allowEmptyResults: true, testResults: 'test-results/security/results.xml'
-    } else {
+    if(checkForSkipFunctionalTests(env.BRANCH_NAME)) {
       echo "Skipping Allure report generation due to label: pr-values:skip-functional-tests"
-    }    
+      return
+    }
+    steps.sh 'npx allure generate test-results/functional/allure-results --clean -o test-results/functional/allure-report'
+    publishHTML([
+      allowMissing: false,
+      alwaysLinkToLastBuild: true,
+      keepAll: true,
+      reportDir: 'test-results/functional/allure-report',
+      reportFiles: 'index.html',
+      reportName: 'Non-Prod E2E Allure Report'
+    ])
+    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'test-results/functional/**/*'
+
+    // run security tests in playwright
+    sh './bin/run-preview-playwright-tests.sh'
+    steps.sh 'npx allure generate test-results/security/allure-results --clean -o test-results/security/allure-report || true'
+    publishHTML([
+      allowMissing         : true,
+      alwaysLinkToLastBuild: true,
+      keepAll              : true,
+      reportDir            : 'test-results/security/allure-report',
+      reportFiles          : 'index.html',
+      reportName           : 'API Security Test Report'
+    ])
+
+    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'test-results/security/**/*'
+    junit allowEmptyResults: 
   }
 
   afterSuccess('smoketest:preview') {

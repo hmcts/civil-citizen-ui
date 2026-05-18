@@ -87,7 +87,7 @@ if [ "$SKIP_FUNCTIONAL_TESTS" = "true" ]; then
   exit 0
 
 #Check if RUN_ALL_FUNCTIONAL_TESTS is set to true
-if [ "$RUN_ALL_FUNCTIONAL_TESTS" = "true" ]; then
+elif [ "$RUN_ALL_FUNCTIONAL_TESTS" = "true" ]; then
   echo "The label 'runAllFunctionalTests' exists on the PR."
   echo "Running all functional tests."
   run_functional_tests
