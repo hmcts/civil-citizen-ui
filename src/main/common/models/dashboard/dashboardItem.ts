@@ -96,6 +96,10 @@ export class DashboardClaimantItem extends DashboardItem {
         translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.CLAIMANT_REQUESTED_CCJ',
         parameter: [paramDefendantName],
       },
+      DEFAULT_JUDGEMENT_REQUESTED: {
+        translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.COUNTY_COURT_JUDGMENT_REQUESTED',
+        parameter: [paramDefendantName],
+      },
       CLAIMANT_AND_DEFENDANT_SIGNED_SETTLEMENT_AGREEMENT: {translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.BOTH_SIGNED_SETTLEMENT_AGREEMENT'},
       CLAIMANT_SIGNED_SETTLEMENT_AGREEMENT: {translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.CLAIMANT_SIGNED_SETTLEMENT_AGREEMENT'},
       CLAIMANT_SIGNED_SETTLEMENT_AGREEMENT_DEADLINE_EXPIRED: {translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.CLAIMANT_SIGNED_SETTLEMENT_AGREEMENT_DEADLINE_EXPIRED'},
@@ -181,6 +185,10 @@ export class DashboardDefendantItem extends DashboardItem {
       },
       DEFAULT_JUDGEMENT: {
         translationKey: 'PAGES.DASHBOARD.STATUS_DEFENDANT.NO_RESPONSE_ELIGIBLE_CCJ',
+        parameter: [paramClaimantName],
+      },
+      DEFAULT_JUDGEMENT_REQUESTED: {
+        translationKey: 'PAGES.DASHBOARD.STATUS_DEFENDANT.COUNTY_COURT_JUDGMENT_REQUESTED',
         parameter: [paramClaimantName],
       },
       MORE_TIME_REQUESTED: {
