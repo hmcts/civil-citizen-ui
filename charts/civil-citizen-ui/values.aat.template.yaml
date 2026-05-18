@@ -384,6 +384,7 @@ civil-service:
       ingress:
         enabled: false
         className: traefik
+
     logstash:
       image: hmctsprod.azurecr.io/imported/elastic/logstash
       imageTag: 9.2.3
