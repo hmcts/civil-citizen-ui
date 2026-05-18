@@ -364,30 +364,20 @@ civil-service:
       image: hmctsprod.azurecr.io/imported/elastic/elasticsearch
       imageTag: 9.2.3
       nameOverride: ${SERVICE_NAME}-es
-      clusterName: "es"
-      createCert: false
-      protocol: http
-      replicas: 1
-      minimumMasterNodes: 1
-      antiAffinity: "soft"
-      esJavaOpts: "-Xmx512m -Xms512m"
-      # Their tests delete the pod after succeeding, we pass --logs to the test command which fail if the pod has already been deleted
-      # The tests do pass, at least as of 2023-01-19
-      tests:
-        enabled: false
-      esConfig:
-        elasticsearch.yml: |
-          action.auto_create_index: .security*,.watches,.triggered_watches,.watcher-history-*,.logstash_dead_letter,.ml*,ccd-logstash-dead-letter
-          xpack.security.enabled: false
-      persistence:
-        enabled: false
-      ingress:
-        enabled: false
-        className: traefik
+      clusterHealthCheckParams: "wait_for_status=yellow&timeout=1s"
+      initResources:
+        limits:
+          cpu: "500m"
+          memory: "512Mi"
+        requests:
+          cpu: "25m"
+          memory: "512Mi"
 
     logstash:
       image: hmctsprod.azurecr.io/imported/elastic/logstash
       imageTag: 9.2.3
+      imagePullPolicy: "IfNotPresent"
+      logstashJavaOpts: "-Xmx1g -Xms512M"
       extraEnvs:
         - name: DATA_STORE_URL
           value: jdbc:postgresql://${SERVICE_NAME}-postgresql:5432/data-store?ssl=disable&stringtype=unspecified
@@ -409,6 +399,156 @@ civil-service:
           value: http://${SERVICE_NAME}-es-master:9200
         - name: ES_URL
           value: http://${SERVICE_NAME}-es-master:9200
+      extraInitContainers: |
+        - name: download-postgres-jdbc
+          image: hmctsprod.azurecr.io/curl:7.70.0
+          command: ['curl', '-L', 'https://jdbc.postgresql.org/download/postgresql-42.7.9.jar', '-o', '/logstash-lib/postgresql.jar']
+          volumeMounts:
+          - name: logstash-lib
+            mountPath: /logstash-lib
+      extraVolumes: |
+        - name: logstash-lib
+          emptyDir: {}
+      extraVolumeMounts: |
+        - name: logstash-lib
+          mountPath: /usr/share/logstash/ccd
+      logstashConfig:
+        logstash.yml: |
+          api.http.host: 0.0.0.0
+          xpack.monitoring.enabled: false
+          xpack.monitoring.elasticsearch.hosts: ["http://{{ .Release.Name }}-es-master:9200"]
+          queue.type: persisted
+          dead_letter_queue.enable: true
+          pipeline.ecs_compatibility: disabled
+        pipelines.yml: |
+          - pipeline.id: main
+            path.config: "/usr/share/logstash/pipeline/{01_input,02_filter,03_output}.conf"
+            queue.type: persisted
+      logstashPipeline:
+        01_input.conf: |
+          input  {
+            jdbc {
+              jdbc_connection_string => "jdbc:postgresql://${SERVICE_NAME}-postgresql:5432/data-store?ssl=disable&stringtype=unspecified"
+              jdbc_user => "${POSTGRES_USER}"
+              jdbc_password => "${POSTGRES_PASSWORD}"
+              jdbc_validate_connection => true
+              jdbc_driver_library => "/usr/share/logstash/ccd/postgresql.jar"
+              jdbc_driver_class => "org.postgresql.Driver"
+              jdbc_default_timezone => "UTC"
+              statement => "UPDATE case_data SET marked_by_logstash = true WHERE marked_by_logstash = false RETURNING id, created_date, last_modified, jurisdiction, case_type_id, state, last_state_modified_date, data::TEXT as json_data, data_classification::TEXT as json_data_classification, reference, security_classification, supplementary_data::TEXT as json_supplementary_data"
+              clean_run => false
+              schedule => "* * * * * *"
+            }
+          }
+        02_filter.conf: |
+          filter{
+            json{
+                source => "json_data"
+                target => "data"
+                remove_field => ["json_data"]
+                }
+                json{
+                    source => "json_supplementary_data"
+                    target => "supplementary_data"
+                    remove_field => ["json_supplementary_data"]
+                }
+                json{
+                    source => "json_data_classification"
+                    target => "data_classification"
+                    remove_field => ["json_data_classification"]
+                }
+                if [data][SearchCriteria] {
+                    clone {
+                        clones => ["SearchCriteria"]
+                    }
+                }
+                if [type] == "SearchCriteria" {
+                    if [data][SearchCriteria] {
+                        mutate {
+                          rename => {"[data][SearchCriteria]" => "[data_new][SearchCriteria]" }
+                        }
+                    }
+                    if [data][caseManagementLocation] {
+                        mutate {
+                          rename => {"[data][caseManagementLocation]" => "[data_new][caseManagementLocation]" }
+                        }
+                    }
+                    if [data][CaseAccessCategory] {
+                      mutate {
+                          rename => {"[data][CaseAccessCategory]" => "[data_new][CaseAccessCategory]" }
+                      }
+                    }
+                    if [data][caseNameHmctsInternal] {
+                        mutate {
+                          rename => {"[data][caseNameHmctsInternal]" => "[data_new][caseNameHmctsInternal]" }
+                        }
+                    }
+                    if [data][caseManagementCategory] {
+                        mutate {
+                          rename => {"[data][caseManagementCategory]" => "[data_new][caseManagementCategory]" }
+                        }
+                    }
+                    if [supplementary_data][HMCTSServiceId] {
+                        mutate {
+                          rename => {"[supplementary_data][HMCTSServiceId]" => "[supplementary_data_new][HMCTSServiceId]" }
+                        }
+                    }
+                    if [data_classification][SearchCriteria] {
+                        mutate {
+                          rename => {"[data_classification][SearchCriteria]" => "[data_classification_new][SearchCriteria]" }
+                        }
+                    }
+                    if [data_classification][CaseAccessCategory] {
+                      mutate {
+                            rename => {"[data_classification][CaseAccessCategory]" => "[data_classification_new][CaseAccessCategory]" }
+                      }
+                    }
+                    if [data_classification][caseManagementLocation] {
+                      mutate {
+                          rename => {"[data_classification][caseManagementLocation]" => "[data_classification_new][caseManagementLocation]" }
+                      }
+                    }
+                    if [data_classification][caseNameHmctsInternal] {
+                        mutate {
+                          rename => {"[data_classification][caseNameHmctsInternal]" => "[data_classification_new][caseNameHmctsInternal]" }
+                        }
+                    }
+                    if [data_classification][caseManagementCategory] {
+                        mutate {
+                          rename => {"[data_classification][caseManagementCategory]" => "[data_classification_new][caseManagementCategory]" }
+                        }
+                    }
+                    mutate { remove_field =>[ "data" ,"supplementary_data", "data_classification", "last_state_modified_date", "type","last_modified", "created_date" ] }
+                    mutate {
+                            rename => { "[data_new]" => "data" }
+                            rename => { "[supplementary_data_new]"  => "supplementary_data" }
+                            rename => { "[data_classification_new]"  => "data_classification" }
+                    }
+                    mutate {
+                      add_field => { "index_id" => "global_search" }
+                    }
+                    mutate {
+                      lowercase => [ "index_id" ]
+                    }
+                } else {
+                    mutate {
+                        add_field => { "index_id" => "%{case_type_id}_cases" }
+                  }
+                mutate {
+                  lowercase => [ "index_id" ]
+                }
+                }
+          }
+        03_output.conf: |
+          output {
+              elasticsearch {
+                  hosts => ["http://${SERVICE_NAME}-es-master:9200"]
+                  sniffing => false
+                  index => "%{[index_id]}"
+                  document_id => "%{id}"
+                  timeout => 60
+              }
+          }
       resources:
         requests:
           cpu: "500m"
