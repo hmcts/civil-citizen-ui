@@ -4,10 +4,12 @@
 {% from "../../macro/csrf.njk" import csrfProtection %}
 {% from "../../macro/support-links.njk" import supportLinks %}
 {% from "../../macro/button.njk" import addButton %}
+{% from "../../macro/callback-error-summary.njk" import callbackErrorSummary %}
 
 {% set pageTitle = t(pageTitle) %}
 
 {% block nestedContent %}
+  {{ callbackErrorSummary(callbackErrors, callbackWarnings, t) }}
 
   {% set titleH1 = t('PAGES.CONFIRM_YOU_HAVE_BEEN_PAID.TITLE') %}
   {% set titleH2 = t('PAGES.CONFIRM_YOU_HAVE_BEEN_PAID.ENTER_THE_DATE') %}

@@ -1,4 +1,8 @@
-import Axios, {AxiosInstance, AxiosResponse} from 'axios';
+import Axios, {AxiosError, AxiosInstance, AxiosResponse} from 'axios';
+import {
+  CallbackValidationError,
+  parseCallbackValidationFromAxiosError,
+} from 'client/common/error/callbackValidationError';
 import {AppRequest} from 'common/models/AppRequest';
 import {CCDGaHelpWithFees, CCDGeneralApplication, CCDRespondToApplication, EventDto} from 'models/gaEvents/eventDto';
 import {ApplicationEvent} from 'models/gaEvents/applicationEvent';
@@ -74,7 +78,18 @@ export class GaServiceClient {
       const appResponse = response.data as GeneralApplicationResponse;
       return convertResponseToApplication(appResponse);
     } catch (err: unknown) {
-      logger.error(`Error when submitting event ${event}`);
+      const error = err as AxiosError;
+      const status = error.response?.status;
+      logger.error(`Error when submitting event ${event} (status=${status})`);
+      if (status === 422) {
+        const callbackValidation = parseCallbackValidationFromAxiosError(error);
+        if (callbackValidation) {
+          throw new CallbackValidationError(
+            callbackValidation.callbackErrors,
+            callbackValidation.callbackWarnings,
+          );
+        }
+      }
       throw err;
     }
   }

@@ -18,6 +18,10 @@ import {toCCDjudgmentPaidInFull} from 'services/translation/judgmentOnline/conve
 import {JudgmentOnline} from 'models/judgmentOnline/judgmentOnline';
 import {deleteDraftClaimFromStore} from 'modules/draft-store/draftStoreService';
 import {getRouteParam} from 'common/utils/routeParamUtils';
+import {
+  CallbackErrorViewData,
+  handleCallbackValidationErrorOrNext,
+} from 'client/common/error/handleCallbackValidationError';
 
 const confirmYouHaveBeenPaidViewPath = 'features/judgmentOnline/confirm-you-have-been-paid';
 const confirmYouHaveBeenPaidController = Router();
@@ -32,7 +36,14 @@ const getSupportLinks = (lng: string, claimId: string) => {
   return [iWantToTitle, iWantToLinks] as const;
 };
 
-function renderView(form: GenericForm<DateYouHaveBeenPaidForm>, res: Response, lang: string, cancelUrl: string, claimId: string) {
+function renderView(
+  form: GenericForm<DateYouHaveBeenPaidForm>,
+  res: Response,
+  lang: string,
+  cancelUrl: string,
+  claimId: string,
+  callbackErrorViewData?: CallbackErrorViewData,
+) {
   const [iWantToTitle, iWantToLinks] = getSupportLinks(lang, claimId);
   const dashboardUrl = cancelUrl;
 
@@ -45,6 +56,8 @@ function renderView(form: GenericForm<DateYouHaveBeenPaidForm>, res: Response, l
       iWantToLinks,
       cancelUrl,
       claimId,
+      callbackErrors: callbackErrorViewData?.callbackErrors,
+      callbackWarnings: callbackErrorViewData?.callbackWarnings,
     },
   );
 }
@@ -70,37 +83,38 @@ confirmYouHaveBeenPaidController.get(CONFIRM_YOU_HAVE_BEEN_PAID_URL, (async (req
 })as RequestHandler);
 
 confirmYouHaveBeenPaidController.post(CONFIRM_YOU_HAVE_BEEN_PAID_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
+  const claimId = getRouteParam(req, 'id');
+  const lang = req.query.lang ? req.query.lang : req.cookies.lang;
+  const cancelUrl = DASHBOARD_CLAIMANT_URL.replace(':id', claimId);
+  let form: GenericForm<DateYouHaveBeenPaidForm>;
   try {
-    const claimId = getRouteParam(req, 'id');
     const claim = await getClaimById(claimId, req);
     const isClaimant = claim.isClaimant();
     const {year, month, day, confirmed} = req.body;
     const joIssuedDate = claim.joJudgementByAdmissionIssueDate != null ? claim.joJudgementByAdmissionIssueDate : claim.joDJCreatedDate;
-    const form = new GenericForm(new DateYouHaveBeenPaidForm(year, month, day, confirmed, joIssuedDate));
+    form = new GenericForm(new DateYouHaveBeenPaidForm(year, month, day, confirmed, joIssuedDate));
     await form.validate();
 
-    const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-    const cancelUrl = DASHBOARD_CLAIMANT_URL.replace(':id', claimId);
     if (isClaimant) {
       if (form.hasErrors()) {
         renderView(form, res, lang, cancelUrl, claimId);
         return;
-      } else {
-        const judgmentOnline = new JudgmentOnline();
-        const judgmentPaidInFull = new CuiJudgmentPaidInFull;
-        judgmentPaidInFull.dateOfFullPaymentMade = DateConverter.convertToDate(year, month, day);
-        judgmentPaidInFull.confirmFullPaymentMade = confirmed;
-        judgmentOnline.joJudgmentPaidInFull = judgmentPaidInFull;
-        const claimUpdate = toCCDjudgmentPaidInFull(judgmentOnline);
-        await civilServiceClient.submitJudgmentPaidInFull(claimId, claimUpdate, req);
-        await deleteDraftClaimFromStore(claimId);
-        res.redirect(constructResponseUrlWithIdParams(claimId, CONFIRM_YOU_HAVE_BEEN_PAID_CONFIRMATION_URL));
       }
+      const judgmentOnline = new JudgmentOnline();
+      const judgmentPaidInFull = new CuiJudgmentPaidInFull;
+      judgmentPaidInFull.dateOfFullPaymentMade = DateConverter.convertToDate(year, month, day);
+      judgmentPaidInFull.confirmFullPaymentMade = confirmed;
+      judgmentOnline.joJudgmentPaidInFull = judgmentPaidInFull;
+      const claimUpdate = toCCDjudgmentPaidInFull(judgmentOnline);
+      await civilServiceClient.submitJudgmentPaidInFull(claimId, claimUpdate, req);
+      await deleteDraftClaimFromStore(claimId);
+      res.redirect(constructResponseUrlWithIdParams(claimId, CONFIRM_YOU_HAVE_BEEN_PAID_CONFIRMATION_URL));
     } else {
       throw new Error(t('ERRORS.SOMETHING_WENT_WRONG'));
     }
   } catch (error) {
-    next(error);
+    await handleCallbackValidationErrorOrNext(error, res, next, (viewData) =>
+      renderView(form, res, lang, cancelUrl, claimId, viewData));
   }
 
 })as RequestHandler);

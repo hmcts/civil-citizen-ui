@@ -1,4 +1,4 @@
-import axios, {AxiosInstance, AxiosRequestConfig} from 'axios';
+import axios, {AxiosError, AxiosInstance, AxiosRequestConfig} from 'axios';
 import config from 'config';
 import {AppRequest} from 'models/AppRequest';
 import {req} from '../../../utils/UserDetails';
@@ -66,6 +66,28 @@ describe('GA Service Client', () => {
       const gaServiceClient = new GaServiceClient(baseUrl);
       //Then
       await expect(gaServiceClient.submitEvent(null, '123', null, appReq)).rejects.toThrow('error');
+    });
+    it('should throw CallbackValidationError when GA service returns 422 with callback errors', async () => {
+      const axiosError = {
+        response: {
+          status: 422,
+          data: {
+            callbackErrors: ['Business process has not finished'],
+            callbackWarnings: [],
+          },
+        },
+        isAxiosError: true,
+      } as AxiosError;
+      const mockPost = jest.fn().mockRejectedValue(axiosError);
+      mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
+      const gaServiceClient = new GaServiceClient(baseUrl);
+
+      await expect(gaServiceClient.submitEvent(null, '123', null, appReq))
+        .rejects
+        .toMatchObject({
+          name: 'CallbackValidationError',
+          callbackErrors: ['Business process has not finished'],
+        });
     });
   });
 

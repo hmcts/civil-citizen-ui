@@ -20,18 +20,35 @@ import {
 } from 'services/translation/caseProgression/trialArrangements/convertToCCDTrialArrangements';
 import {getClaimById} from 'modules/utilityService';
 import {getRouteParam} from 'common/utils/routeParamUtils';
+import {
+  CallbackErrorViewData,
+  handleCallbackValidationErrorOrNext,
+} from 'client/common/error/handleCallbackValidationError';
 
 const checkAnswersViewPath = 'features/caseProgression/trialArrangements/check-answers';
 const trialCheckAnswersController = Router();
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
-function renderView(res: Response, claim: Claim, claimId: string, lang: string) {
+function renderView(
+  res: Response,
+  claim: Claim,
+  claimId: string,
+  lang: string,
+  callbackErrorViewData?: CallbackErrorViewData,
+) {
   const backLinkUrl = constructResponseUrlWithIdParams(claimId, TRIAL_ARRANGEMENTS_HEARING_DURATION);
   const caseInfoContents = getCaseInfoContents(claimId, claim);
   const summarySections = getSummarySections(claimId, claim, lang);
   const cancelUrl = constructResponseUrlWithIdParams(claimId, CANCEL_TRIAL_ARRANGEMENTS);
-  res.render(checkAnswersViewPath, {caseInfoContents, summarySections, backLinkUrl, cancelUrl});
+  res.render(checkAnswersViewPath, {
+    caseInfoContents,
+    summarySections,
+    backLinkUrl,
+    cancelUrl,
+    callbackErrors: callbackErrorViewData?.callbackErrors,
+    callbackWarnings: callbackErrorViewData?.callbackWarnings,
+  });
 }
 
 trialCheckAnswersController.get(TRIAL_ARRANGEMENTS_CHECK_YOUR_ANSWERS,
@@ -48,16 +65,19 @@ trialCheckAnswersController.get(TRIAL_ARRANGEMENTS_CHECK_YOUR_ANSWERS,
   })as RequestHandler);
 
 trialCheckAnswersController.post(TRIAL_ARRANGEMENTS_CHECK_YOUR_ANSWERS, (async (req: AppRequest, res: Response, next: NextFunction) => {
+  const claimId = getRouteParam(req, 'id');
+  const lang = req.query.lang ? req.query.lang : req.cookies.lang;
+  let claim: Claim;
   try {
-    const claimId = getRouteParam(req, 'id');
-    const claim = await getClaimById(claimId, req, true);
+    claim = await getClaimById(claimId, req, true);
     const trialReadyCCD = translateDraftTrialArrangementsToCCD(claim);
     await civilServiceClient.submitTrialArrangement(claimId, trialReadyCCD, req);
     await deleteDraftClaim(req);
 
     res.redirect(constructResponseUrlWithIdParams(claimId, CP_FINALISE_TRIAL_ARRANGEMENTS_CONFIRMATION_URL));
   } catch (error) {
-    next(error);
+    await handleCallbackValidationErrorOrNext(error, res, next, (viewData) =>
+      renderView(res, claim, claimId, lang, viewData));
   }
 })as RequestHandler);
 

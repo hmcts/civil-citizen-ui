@@ -22,11 +22,23 @@ import {ApplicationTypeOption} from 'models/generalApplication/applicationType';
 import {constructResponseUrlWithIdAndAppIdParams} from 'common/utils/urlFormatter';
 import {QualifiedStatementOfTruth} from 'models/generalApplication/QualifiedStatementOfTruth';
 import {getRouteParam} from 'common/utils/routeParamUtils';
+import {
+  CallbackErrorViewData,
+  handleCallbackValidationErrorOrNext,
+} from 'client/common/error/handleCallbackValidationError';
 
 const gaCheckAnswersResponseController = Router();
 const viewPath = 'features/generalApplication/response/check-answers';
 
-async function renderView(claimId: string, claim: Claim, form: GenericForm<StatementOfTruthForm>, gaResponse: GaResponse, req: AppRequest, res: Response): Promise<void> {
+async function renderView(
+  claimId: string,
+  claim: Claim,
+  form: GenericForm<StatementOfTruthForm>,
+  gaResponse: GaResponse,
+  req: AppRequest,
+  res: Response,
+  callbackErrorViewData?: CallbackErrorViewData,
+): Promise<void> {
   const cancelUrl = await getCancelUrl(claimId, claim);
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
   const isBusiness = (claim.isClaimant() && claim.isClaimantBusiness()) || (claim.isDefendant() && claim.isBusiness());
@@ -41,6 +53,8 @@ async function renderView(claimId: string, claim: Claim, form: GenericForm<State
     claimIdPrettified: caseNumberPrettify(claimId),
     claim,
     summaryRows: getSummarySections(claimId, appId, gaResponse, lang),
+    callbackErrors: callbackErrorViewData?.callbackErrors,
+    callbackWarnings: callbackErrorViewData?.callbackWarnings,
   });
 }
 
@@ -60,22 +74,24 @@ gaCheckAnswersResponseController.get(
   });
 
 gaCheckAnswersResponseController.post(GA_RESPONSE_CHECK_ANSWERS_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
+  const claimId = getRouteParam(req, 'id');
+  const appId = getRouteParam(req, 'appId');
+  let claim: Claim;
+  let form: GenericForm<StatementOfTruthForm>;
+  let gaResponse: GaResponse;
   try {
-    const claimId = getRouteParam(req, 'id');
-    const appId = getRouteParam(req, 'appId');
-    const claim = await getClaimById(claimId, req, true);
+    claim = await getClaimById(claimId, req, true);
     let statementOfTruth;
     if ((claim.isClaimant() && claim.isClaimantBusiness()) || (claim.isDefendant() && claim.isBusiness())) {
       statementOfTruth = new QualifiedStatementOfTruth(req.body.signed, req.body.name, req.body.title);
     } else {
       statementOfTruth = new StatementOfTruthForm(req.body.signed, req.body.name);
     }
-    const form = new GenericForm(statementOfTruth);
+    form = new GenericForm(statementOfTruth);
     await form.validate();
+    gaResponse = await getDraftGARespondentResponse(generateRedisKeyForGA(req));
 
     if (form.hasErrors()) {
-
-      const gaResponse = await getDraftGARespondentResponse(generateRedisKeyForGA(req));
       await renderView(claimId, claim, form, gaResponse, req, res);
     } else {
       const redisKey = generateRedisKeyForGA(req);
@@ -84,7 +100,14 @@ gaCheckAnswersResponseController.post(GA_RESPONSE_CHECK_ANSWERS_URL, (async (req
       res.redirect(constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_RESPONSE_CONFIRMATION_URL));
     }
   } catch (error) {
-    next(error);
+    await handleCallbackValidationErrorOrNext(error, res, next, async (viewData) => {
+      if (!claim || !form || !gaResponse) {
+        claim = await getClaimById(claimId, req, true);
+        gaResponse = await getDraftGARespondentResponse(generateRedisKeyForGA(req));
+        form = new GenericForm(gaResponse.statementOfTruth || new StatementOfTruthForm());
+      }
+      await renderView(claimId, claim, form, gaResponse, req, res, viewData);
+    });
   }
 }) as RequestHandler);
 
