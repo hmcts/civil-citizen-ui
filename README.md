@@ -150,6 +150,8 @@ The standard preview deployment, i.e. without the github label present, intends 
 
 `civilShared:????` where ???? is the civil-service shared scripts branch name you want to point to. e.g `civilShared:my-feature-branch` will use the shared scripts from this branch of civil-service.
 
+`pr-values:skip-functional-tests` can be used for changes that do not impact the functionality of the service and therefore do not require the functional test stage to run in the Jenkins pipeline.
+
 
 ```bash
 $ yarn test:crossbrowser
