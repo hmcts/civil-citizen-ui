@@ -16,7 +16,6 @@ import {CaseState} from 'common/form/models/claimDetails';
 import {CourtLocation} from 'common/models/courts/courtLocations';
 import {TestMessages} from '../../../utils/errorMessageTestConstants';
 import {CivilServiceClient} from 'client/civilServiceClient';
-import {CallbackValidationError} from 'client/common/error/callbackValidationError';
 import {AxiosError} from 'axios';
 import {CaseDocument} from 'models/document/caseDocument';
 
