@@ -78,7 +78,6 @@ gaCheckAnswersResponseController.post(GA_RESPONSE_CHECK_ANSWERS_URL, (async (req
   const appId = getRouteParam(req, 'appId');
   let claim: Claim;
   let form: GenericForm<StatementOfTruthForm>;
-  let gaResponse: GaResponse;
   try {
     claim = await getClaimById(claimId, req, true);
     let statementOfTruth;
@@ -89,9 +88,9 @@ gaCheckAnswersResponseController.post(GA_RESPONSE_CHECK_ANSWERS_URL, (async (req
     }
     form = new GenericForm(statementOfTruth);
     await form.validate();
-    gaResponse = await getDraftGARespondentResponse(generateRedisKeyForGA(req));
 
     if (form.hasErrors()) {
+      const gaResponse = await getDraftGARespondentResponse(generateRedisKeyForGA(req));
       await renderView(claimId, claim, form, gaResponse, req, res);
     } else {
       const redisKey = generateRedisKeyForGA(req);
@@ -101,12 +100,12 @@ gaCheckAnswersResponseController.post(GA_RESPONSE_CHECK_ANSWERS_URL, (async (req
     }
   } catch (error) {
     await handleCallbackValidationErrorOrNext(error, res, next, async (viewData) => {
-      if (!claim || !form || !gaResponse) {
+      if (!claim) {
         claim = await getClaimById(claimId, req, true);
-        gaResponse = await getDraftGARespondentResponse(generateRedisKeyForGA(req));
-        form = new GenericForm(gaResponse.statementOfTruth || new StatementOfTruthForm());
       }
-      await renderView(claimId, claim, form, gaResponse, req, res, viewData);
+      const gaResponse = await getDraftGARespondentResponse(generateRedisKeyForGA(req));
+      const formToRender = form ?? new GenericForm(gaResponse.statementOfTruth || new StatementOfTruthForm());
+      await renderView(claimId, claim, formToRender, gaResponse, req, res, viewData);
     });
   }
 }) as RequestHandler);
