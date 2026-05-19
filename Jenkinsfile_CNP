@@ -23,7 +23,6 @@ static Map<String, Object> secret(String secretName, String envVariable) {
    envVariable: envVariable
   ]
 }
-
 def copyPrevFailedAndNotExecutedTestFilesJson() {
   def buildFound = false
   def buildNumber = currentBuild.previousBuild ? currentBuild.previousBuild.number : 0
