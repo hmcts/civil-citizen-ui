@@ -1,0 +1,1 @@
+{"value":"brace-expansion","children":{"ID":1119088,"Issue":"brace-expansion: Large numeric range defeats documented `max` DoS protection","URL":"https://github.com/advisories/GHSA-jxxr-4gwj-5jf2","Severity":"moderate","Vulnerable Versions":">=5.0.0 <5.0.6","Tree Versions":["5.0.5"],"Dependents":["minimatch@npm:10.2.5"]}}
