@@ -27,6 +27,7 @@ import {
   callbackErrorRenderProps,
   handleCallbackValidationErrorOrNext,
 } from 'client/common/error/handleCallbackValidationError';
+import {throwMockCallbackValidation422IfEnabled} from 'app/mocks/callbackValidation422Mock';
 
 const checkAnswersViewPath = 'features/claimantResponse/check-answers';
 const validator = new Validator();
@@ -89,6 +90,7 @@ claimantResponseCheckAnswersController.post(CLAIMANT_RESPONSE_CHECK_ANSWERS_URL,
       const claim = await getClaimById(claimId, req, true);
       await renderView(<AppRequest>req, res, form, claim, carmEnabled, mintiEnabled);
     } else {
+      throwMockCallbackValidation422IfEnabled(req);
       await saveStatementOfTruth(redisKey, form.model);
       await submitClaimantResponse(<AppRequest>req);
       res.redirect(constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_CONFIRMATION_URL));

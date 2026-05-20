@@ -14,6 +14,7 @@ import {
   callbackErrorRenderProps,
   handleCallbackValidationErrorOrNext,
 } from 'client/common/error/handleCallbackValidationError';
+import {throwMockCallbackValidation422IfEnabled} from 'app/mocks/callbackValidation422Mock';
 
 const viewPath = 'features/queryManagement/createQueryCheckYourAnswer.njk';
 const createQueryCheckYourAnswerController = Router();
@@ -68,6 +69,7 @@ createQueryCheckYourAnswerController.post([QM_CYA, QM_FOLLOW_UP_CYA], async (req
   let claim: Claim;
   try {
     claim = await getClaimById(claimId, req, true);
+    throwMockCallbackValidation422IfEnabled(req);
     const updatedClaim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
     await createQuery(claim, updatedClaim, req, isFollowUpUrl);
     const propertyName = isFollowUpUrl ? 'sendFollowUpQuery' : 'createQuery';

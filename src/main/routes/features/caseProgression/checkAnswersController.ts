@@ -25,6 +25,7 @@ import {
   callbackErrorRenderProps,
   handleCallbackValidationErrorOrNext,
 } from 'client/common/error/handleCallbackValidationError';
+import {throwMockCallbackValidation422IfEnabled} from 'app/mocks/callbackValidation422Mock';
 
 const checkAnswersViewPath = 'features/caseProgression/check-answers';
 const documentUploadCheckAnswerController = Router();
@@ -88,6 +89,7 @@ documentUploadCheckAnswerController.post(CP_CHECK_ANSWERS_URL, (async (req: Requ
       renderView(res, form, claim, claimId, isClaimant, lang);
       return;
     }
+    throwMockCallbackValidation422IfEnabled(req);
     await saveUploadedDocuments(claim, appReq);
     const taskId = appReq.session?.dashboard?.taskIdHearingUploadDocuments;
     if(taskId){

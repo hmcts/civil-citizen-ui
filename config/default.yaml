@@ -96,3 +96,6 @@ uploadRateLimit:
   enabled: true
   maxRequests: 20
   windowSeconds: 60
+mock:
+  callbackValidation422:
+    enabled: false

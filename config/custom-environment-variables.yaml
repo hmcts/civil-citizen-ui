@@ -79,3 +79,8 @@ uploadRateLimit:
   windowSeconds:
     __name: UPLOAD_RATE_LIMIT_WINDOW_SECONDS
     __format: number
+mock:
+  callbackValidation422:
+    enabled:
+      __name: MOCK_CALLBACK_VALIDATION_422
+      __format: boolean

@@ -20,7 +20,8 @@ module.exports = {
     '^client/(.*)$': '<rootDir>/src/main/app/client/$1',
     '^routes/(.*)$': '<rootDir>/src/main/routes/$1',
     '^services/(.*)$': '<rootDir>/src/main/services/$1',
-    '^app/auth/(.*)$': '<rootDir>/src/main/app/auth/$1'
+    '^app/auth/(.*)$': '<rootDir>/src/main/app/auth/$1',
+    '^app/mocks/(.*)$': '<rootDir>/src/main/app/mocks/$1'
   },
   setupFilesAfterEnv: ['./jest.setup.redis-mock.js', './jest.setup.js'],
 };
