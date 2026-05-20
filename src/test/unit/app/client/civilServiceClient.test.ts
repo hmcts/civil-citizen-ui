@@ -585,6 +585,7 @@ describe('Civil Service Client', () => {
       const mockGet = jest.fn().mockResolvedValue({data: undefined});
       mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
       const civilServiceClient = new CivilServiceClient(baseUrl);
+      appReq.locals.claimDetailsRequestCache = undefined;
 
       //Then
       await expect(civilServiceClient.retrieveClaimDetails('123', appReq)).rejects.toThrow('Claim details not available!');
