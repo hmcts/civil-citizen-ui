@@ -24,6 +24,8 @@ import {QualifiedStatementOfTruth} from 'models/generalApplication/QualifiedStat
 import {getRouteParam} from 'common/utils/routeParamUtils';
 import {
   CallbackErrorViewData,
+  callbackErrorRenderProps,
+  ensureValueForCallbackRender,
   handleCallbackValidationErrorOrNext,
 } from 'client/common/error/handleCallbackValidationError';
 
@@ -53,8 +55,7 @@ async function renderView(
     claimIdPrettified: caseNumberPrettify(claimId),
     claim,
     summaryRows: getSummarySections(claimId, appId, gaResponse, lang),
-    callbackErrors: callbackErrorViewData?.callbackErrors,
-    callbackWarnings: callbackErrorViewData?.callbackWarnings,
+    ...callbackErrorRenderProps(callbackErrorViewData),
   });
 }
 
@@ -100,9 +101,7 @@ gaCheckAnswersResponseController.post(GA_RESPONSE_CHECK_ANSWERS_URL, (async (req
     }
   } catch (error) {
     await handleCallbackValidationErrorOrNext(error, res, next, async (viewData) => {
-      if (!claim) {
-        claim = await getClaimById(claimId, req, true);
-      }
+      claim = await ensureValueForCallbackRender(claim, () => getClaimById(claimId, req, true));
       const gaResponse = await getDraftGARespondentResponse(generateRedisKeyForGA(req));
       const formToRender = form ?? new GenericForm(gaResponse.statementOfTruth || new StatementOfTruthForm());
       await renderView(claimId, claim, formToRender, gaResponse, req, res, viewData);

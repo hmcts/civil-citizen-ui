@@ -25,6 +25,7 @@ import {QualifiedStatementOfTruth} from 'models/generalApplication/QualifiedStat
 import {getRouteParam} from 'common/utils/routeParamUtils';
 import {
   CallbackErrorViewData,
+  callbackErrorRenderProps,
   handleCallbackValidationErrorOrNext,
 } from 'client/common/error/handleCallbackValidationError';
 
@@ -57,8 +58,7 @@ async function renderView(
     applicationTypeCards,
     summaryRows,
     isBusiness,
-    callbackErrors: callbackErrorViewData?.callbackErrors,
-    callbackWarnings: callbackErrorViewData?.callbackWarnings,
+    ...callbackErrorRenderProps(callbackErrorViewData),
   });
 }
 

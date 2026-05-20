@@ -17,6 +17,8 @@ import {getClaimById} from 'modules/utilityService';
 import {getRouteParam} from 'common/utils/routeParamUtils';
 import {
   CallbackErrorViewData,
+  callbackErrorRenderProps,
+  ensureValueForCallbackRender,
   handleCallbackValidationErrorOrNext,
 } from 'client/common/error/handleCallbackValidationError';
 
@@ -38,8 +40,7 @@ async function renderView(
     summarySections,
     signatureType,
     pageTitle: 'PAGES.CHECK_YOUR_ANSWER.TITLE',
-    callbackErrors: callbackErrorViewData?.callbackErrors,
-    callbackWarnings: callbackErrorViewData?.callbackWarnings,
+    ...callbackErrorRenderProps(callbackErrorViewData),
   });
 }
 
@@ -77,9 +78,7 @@ ccjCheckAnswersController.post(CCJ_CHECK_AND_SEND_URL, async (req: AppRequest | 
     }
   } catch (error) {
     await handleCallbackValidationErrorOrNext(error, res, next, async (viewData) => {
-      if (!claim) {
-        claim = await getClaimById(claimId, req, true);
-      }
+      claim = await ensureValueForCallbackRender(claim, () => getClaimById(claimId, req, true));
       await renderView(req, res, form, claim, viewData);
     });
     return;

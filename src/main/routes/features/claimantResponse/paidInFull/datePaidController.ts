@@ -14,6 +14,7 @@ import {AppRequest} from 'models/AppRequest';
 import {deleteDraftClaimFromStore, generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {
   CallbackErrorViewData,
+  callbackErrorRenderProps,
   handleCallbackValidationErrorOrNext,
 } from 'client/common/error/handleCallbackValidationError';
 
@@ -32,8 +33,7 @@ function renderView(
     form,
     today: new Date(),
     pageTitle: 'PAGES.CLAIMANT_SETTLE_DATE.PAGE_TITLE',
-    callbackErrors: callbackErrorViewData?.callbackErrors,
-    callbackWarnings: callbackErrorViewData?.callbackWarnings,
+    ...callbackErrorRenderProps(callbackErrorViewData),
   });
 }
 

@@ -20,6 +20,8 @@ import {translateCUItoCCD} from 'services/features/generalApplication/documentUp
 import {getRouteParam} from 'common/utils/routeParamUtils';
 import {
   CallbackErrorViewData,
+  callbackErrorRenderProps,
+  ensureValueForCallbackRender,
   handleCallbackValidationErrorOrNext,
 } from 'client/common/error/handleCallbackValidationError';
 
@@ -48,8 +50,7 @@ async function renderView(
     claimIdPrettified,
     claim,
     summaryRows,
-    callbackErrors: callbackErrorViewData?.callbackErrors,
-    callbackWarnings: callbackErrorViewData?.callbackWarnings,
+    ...callbackErrorRenderProps(callbackErrorViewData),
   });
 }
 
@@ -80,9 +81,7 @@ gaDirectionOrderCheckAnswersController.post(GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_
     res.redirect(constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_CONFIRMATION_URL));
   } catch (error) {
     await handleCallbackValidationErrorOrNext(error, res, next, async (viewData) => {
-      if (!claim) {
-        claim = await getClaimById(claimId, req, true);
-      }
+      claim = await ensureValueForCallbackRender(claim, () => getClaimById(claimId, req, true));
       await renderView(req, res, claimId, appId, claim, lng, viewData);
     });
   }

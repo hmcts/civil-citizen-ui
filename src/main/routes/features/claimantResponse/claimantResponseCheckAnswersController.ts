@@ -24,6 +24,7 @@ import {ValidationError, Validator} from 'class-validator';
 import {getRouteParam} from 'common/utils/routeParamUtils';
 import {
   CallbackErrorViewData,
+  callbackErrorRenderProps,
   handleCallbackValidationErrorOrNext,
 } from 'client/common/error/handleCallbackValidationError';
 
@@ -48,8 +49,7 @@ async function renderView(
     form,
     summarySections,
     pageTitle: 'PAGES.CHECK_YOUR_ANSWER.CLAIMANT_INTENT_PAGE_TITLE',
-    callbackErrors: callbackErrorViewData?.callbackErrors,
-    callbackWarnings: callbackErrorViewData?.callbackWarnings,
+    ...callbackErrorRenderProps(callbackErrorViewData),
   });
 }
 

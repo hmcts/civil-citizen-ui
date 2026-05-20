@@ -22,6 +22,7 @@ import {SpecificCourtLocation} from 'models/directionsQuestionnaire/hearing/spec
 import {getRouteParam} from 'common/utils/routeParamUtils';
 import {
   CallbackErrorViewData,
+  callbackErrorRenderProps,
   handleCallbackValidationErrorOrNext,
 } from 'client/common/error/handleCallbackValidationError';
 
@@ -47,8 +48,7 @@ function renderView(
   res.render(checkAnswersViewPath, {
     form,
     summarySections,
-    callbackErrors: callbackErrorViewData?.callbackErrors,
-    callbackWarnings: callbackErrorViewData?.callbackWarnings,
+    ...callbackErrorRenderProps(callbackErrorViewData),
   });
 }
 

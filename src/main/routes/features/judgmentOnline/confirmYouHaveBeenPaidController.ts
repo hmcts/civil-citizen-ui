@@ -20,6 +20,7 @@ import {deleteDraftClaimFromStore} from 'modules/draft-store/draftStoreService';
 import {getRouteParam} from 'common/utils/routeParamUtils';
 import {
   CallbackErrorViewData,
+  callbackErrorRenderProps,
   handleCallbackValidationErrorOrNext,
 } from 'client/common/error/handleCallbackValidationError';
 
@@ -56,8 +57,7 @@ function renderView(
       iWantToLinks,
       cancelUrl,
       claimId,
-      callbackErrors: callbackErrorViewData?.callbackErrors,
-      callbackWarnings: callbackErrorViewData?.callbackWarnings,
+      ...callbackErrorRenderProps(callbackErrorViewData),
     },
   );
 }

@@ -19,6 +19,7 @@ import {convertToPoundsFilter} from 'common/utils/currencyFormat';
 import {getRouteParam} from 'common/utils/routeParamUtils';
 import {
   CallbackErrorViewData,
+  callbackErrorRenderProps,
   handleCallbackValidationErrorOrNext,
 } from 'client/common/error/handleCallbackValidationError';
 
@@ -48,8 +49,7 @@ async function renderView(
     claimIdPrettified,
     claim,
     summaryRows,
-    callbackErrors: callbackErrorViewData?.callbackErrors,
-    callbackWarnings: callbackErrorViewData?.callbackWarnings,
+    ...callbackErrorRenderProps(callbackErrorViewData),
   });
 }
 

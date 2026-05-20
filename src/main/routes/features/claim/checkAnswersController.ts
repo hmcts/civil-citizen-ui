@@ -29,6 +29,7 @@ import {saveClaimFee} from 'services/features/claim/amount/claimFeesService';
 import {calculateInterestToDate} from 'common/utils/interestUtils';
 import {
   CallbackErrorViewData,
+  callbackErrorRenderProps,
   handleCallbackValidationErrorOrNext,
 } from 'client/common/error/handleCallbackValidationError';
 const validator = new Validator();
@@ -59,8 +60,7 @@ function renderView(
     form, summarySections, signatureType,
     payment,
     pageTitle: 'PAGES.CHECK_YOUR_ANSWER.TITLE',
-    callbackErrors: callbackErrorViewData?.callbackErrors,
-    callbackWarnings: callbackErrorViewData?.callbackWarnings,
+    ...callbackErrorRenderProps(callbackErrorViewData),
   });
 }
 
