@@ -80,7 +80,6 @@ gaWrittenRepresentationCheckAnswersController.post(GA_UPLOAD_WRITTEN_REPRESENTAT
   const lng = req.query.lang ? req.query.lang : req.cookies.lang;
   let claim: Claim;
   try {
-    claim = await getClaimById(claimId, req, true);
     const uploadedDocumentList = await getGADocumentsFromDraftStore(generateRedisKeyForGA(req));
     const uploadedDocument = translateCUItoCCD(uploadedDocumentList);
     const gaResponse = await getDraftGARespondentResponse(generateRedisKeyForGA(req));
@@ -92,8 +91,12 @@ gaWrittenRepresentationCheckAnswersController.post(GA_UPLOAD_WRITTEN_REPRESENTAT
     await gaServiceClient.submitEvent(ApplicationEvent.RESPOND_TO_JUDGE_WRITTEN_REPRESENTATION, appId, generalApplication, req);
     res.redirect(constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_UPLOAD_WRITTEN_REPRESENTATION_DOCS_SUBMITTED_URL));
   } catch (error) {
-    await handleCallbackValidationErrorOrNext(error, res, next, (viewData) =>
-      renderView(req, res, claimId, appId, claim, lng, viewData));
+    await handleCallbackValidationErrorOrNext(error, res, next, async (viewData) => {
+      if (!claim) {
+        claim = await getClaimById(claimId, req, true);
+      }
+      await renderView(req, res, claimId, appId, claim, lng, viewData);
+    });
   }
 }) as RequestHandler);
 

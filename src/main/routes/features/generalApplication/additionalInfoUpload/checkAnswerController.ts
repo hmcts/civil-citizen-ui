@@ -80,7 +80,6 @@ gaRequestMoreInfoCheckAnswersController.post(GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_I
   const lng = req.query.lang ? req.query.lang : req.cookies.lang;
   let claim: Claim;
   try {
-    claim = await getClaimById(claimId, req, true);
     const uploadedDocumentList = await getGADocumentsFromDraftStore(generateRedisKeyForGA(req));
     const uploadedDocument = translateCUItoCCD(uploadedDocumentList);
     const gaResponse = await getDraftGARespondentResponse(generateRedisKeyForGA(req));
@@ -92,8 +91,12 @@ gaRequestMoreInfoCheckAnswersController.post(GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_I
     await gaServiceClient.submitEvent(ApplicationEvent.RESPOND_TO_JUDGE_ADDITIONAL_INFO, appId, generalApplication , req);
     res.redirect(constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_CONFIRMATION_URL));
   } catch (error) {
-    await handleCallbackValidationErrorOrNext(error, res, next, (viewData) =>
-      renderView(req, res, claimId, appId, claim, lng, viewData));
+    await handleCallbackValidationErrorOrNext(error, res, next, async (viewData) => {
+      if (!claim) {
+        claim = await getClaimById(claimId, req, true);
+      }
+      await renderView(req, res, claimId, appId, claim, lng, viewData);
+    });
   }
 }) as RequestHandler);
 
