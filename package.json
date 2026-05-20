@@ -176,7 +176,7 @@
     "style-loader": "^3.3.1",
     "supertest": "^7.1.4",
     "supertest-session": "^4.1.0",
-    "totp-generator": "^0.0.14",
+    "totp-generator": "^2.0.0",
     "ts-jest": "^29.3.2",
     "ts-loader": "^9.4.2",
     "webdriverio": "^8.3.2",
