@@ -9,30 +9,30 @@ class PayingForApplication {
     await I.waitForElement('//a[.=\'Cancel\']');
   }
 
-  nextAction (nextAction) {
-    I.click(nextAction);
+  async nextAction (nextAction) {
+    await I.click(nextAction);
   }
 
   async verifyPageContent(applicationType, feeAmount) {
-    this.checkPageFullyLoaded();
-    this.verifyBreadcrumbs();
-    this.verifyHeadingDetails(applicationType);
+    await this.checkPageFullyLoaded();
+    await this.verifyBreadcrumbs();
+    await this.verifyHeadingDetails(applicationType);
     await this.verifyPageText(feeAmount);
-    contactUs.verifyContactUs();
+    await contactUs.verifyContactUs();
   }
 
-  verifyBreadcrumbs() {
-    I.see('Back', '//a[@class="govuk-back-link"]');
+  async verifyBreadcrumbs() {
+    await I.see('Back', '//a[@class="govuk-back-link"]');
   }
 
-  verifyHeadingDetails(applicationType) {
-    I.see(applicationType, 'h1');
-    I.see('Paying for your application', 'h1');
+  async verifyHeadingDetails(applicationType) {
+    await I.see(applicationType, 'h1');
+    await I.see('Paying for your application', 'h1');
   }
 
   async verifyPageText(feeAmount) {
-    I.see('Application fee to pay:', 'h1');
-    I.see(`£${feeAmount}`);
+    await I.see('Application fee to pay:', 'h1');
+    await I.see(`£${feeAmount}`);
     await I.see('You\'ll be asked to pay for your application once it\'s been submitted.');
   }
 }
