@@ -27,7 +27,7 @@ Scenario('Defendant full-admit pay-immediately journey', async ({I, api}) => {
   await CitizenDashboardSteps.VerifyClaimOnDashboard(claimNumber);
 
   const respondToClaimNotif = respondToClaim();
-  await verifyNotificationTitleAndContent(claimNumber, respondToClaimNotif.title, respondToClaimNotif.content);
+  await verifyNotificationTitleAndContent(claimNumber, respondToClaimNotif.title, respondToClaimNotif.content, claimRef);
   await I.click(respondToClaimNotif.nextSteps);
 
   await api.performCitizenResponse(
@@ -39,7 +39,7 @@ Scenario('Defendant full-admit pay-immediately journey', async ({I, api}) => {
   await api.waitForFinishedBusinessProcess();
 
   const fullAdmitNotif = defendantResponseFullAdmitPayImmediately(claimTotalAmount, deadline);
-  await verifyNotificationTitleAndContent(claimNumber, fullAdmitNotif.title, fullAdmitNotif.content);
+  await verifyNotificationTitleAndContent(claimNumber, fullAdmitNotif.title, fullAdmitNotif.content, claimRef);
   await I.click(fullAdmitNotif.nextSteps);
   await I.click('Sign out');
 }).tag('@smoketest');

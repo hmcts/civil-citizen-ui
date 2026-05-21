@@ -7,7 +7,23 @@ const totp = require('totp-generator');
 let incidentMessage;
 
 const MAX_RETRIES = 60;
+const PREVIEW_MAX_RETRIES = 120;
 const RETRY_TIMEOUT_MS = 4000;
+
+const isSlowTestEnvironment = () => {
+  const environment = (config.env || '').toLowerCase();
+  const civilServiceUrl = (config.url?.civilService || '').toLowerCase();
+  const testUrl = (config.TestUrl || process.env.TEST_URL || '').toLowerCase();
+  return environment === 'aat'
+    || environment === 'preview'
+    || civilServiceUrl.includes('preview')
+    || testUrl.includes('preview');
+};
+
+const getBusinessProcessRetryConfig = (options = {}) => ({
+  maxRetries: options.maxRetries ?? (isSlowTestEnvironment() ? PREVIEW_MAX_RETRIES : MAX_RETRIES),
+  retryTimeoutMs: options.retryTimeoutMs ?? RETRY_TIMEOUT_MS,
+});
 
 const checkToggleEnabled = async (toggle) => {
   const authToken = await idamHelper.accessToken(config.applicantSolicitorUser);
@@ -31,8 +47,10 @@ const checkToggleEnabled = async (toggle) => {
 };
 
 module.exports = {
-  waitForFinishedBusinessProcess: async (caseId, user = '') => {
+  waitForFinishedBusinessProcess: async (caseId, user = '', options = {}) => {
     const authToken = await idamHelper.accessToken(user ? user : config.applicantSolicitorUser);
+    const {maxRetries, retryTimeoutMs} = getBusinessProcessRetryConfig(options);
+    incidentMessage = null;
 
     await retry(() => {
       return restHelper.request(
@@ -50,7 +68,7 @@ module.exports = {
               + ` process instance: ${businessProcess.processInstanceId}, last finished activity: ${businessProcess.activityId}`);
           }
         });
-    }, MAX_RETRIES, RETRY_TIMEOUT_MS);
+    }, maxRetries, retryTimeoutMs);
     if (incidentMessage)
       throw new Error(`Business process failed for case: ${caseId}, incident message: ${incidentMessage}`);
   },

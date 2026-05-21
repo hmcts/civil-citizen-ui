@@ -1,6 +1,5 @@
 const I = actor();
 
-const {waitForFinishedBusinessProcess} = require('../api/testingSupport');
 const steps = require('../api/steps');
 
 const selectors = {
@@ -9,7 +8,7 @@ const selectors = {
   dashboardNotification: '.dashboard-notification',
 };
 
-const NOTIFICATION_VERIFY_MAX_RETRIES = 10;
+const NOTIFICATION_VERIFY_MAX_RETRIES = 15;
 const NOTIFICATION_VERIFY_RETRY_WAIT_SEC = 5;
 
 const notificationMatches = (pageSource, title, content) => {
@@ -53,9 +52,6 @@ module.exports = {
         );
       }
 
-      if (claimRef) {
-        await waitForFinishedBusinessProcess(claimRef);
-      }
       await I.wait(NOTIFICATION_VERIFY_RETRY_WAIT_SEC);
       await I.refreshPage();
     }
