@@ -23,7 +23,7 @@ nodejs:
   devmemoryRequests: 1536Mi
   devcpuRequests: 50m
   devmemoryLimits: 2048Mi
-  devcpuLimits: 500m
+  devcpuLimits: 700m
   ingressHost: ${SERVICE_FQDN}
   keyVaults:
     civil-cui:
