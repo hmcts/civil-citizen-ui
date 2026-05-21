@@ -7,9 +7,12 @@ global:
   dmStoreUrl: http://dm-store-aat.service.core-compute-aat.internal
   idamApiUrl: https://idam-api.aat.platform.hmcts.net
   idamWebUrl: https://idam-web-public.aat.platform.hmcts.net
+  useFlexiblePostgres: true
   postgresUsername: hmcts
-  postgresHostname: civil-preview.postgres.database.azure.com
-  databaseNamePrefix: "pr-${CHANGE_ID}-"
+  postgresHostname: {{ if .Values.global.useFlexiblePostgres }}civil-preview.postgres.database.azure.com{{ else }}${SERVICE_NAME}-postgresql{{ end }}
+  databaseNamePrefix: "{{ if .Values.global.useFlexiblePostgres }}pr-${CHANGE_ID}-{{ end }}"
+  postgresConnectionOptions: "{{ if .Values.global.useFlexiblePostgres }}?stringtype=unspecified&reWriteBatchedInserts=true&sslmode=require{{ else }}?stringtype=unspecified&reWriteBatchedInserts=true&sslmode=disable{{ end }}"
+  postgresJdbcOptions: "{{ if .Values.global.useFlexiblePostgres }}?sslmode=require&stringtype=unspecified{{ else }}?ssl=disable&stringtype=unspecified{{ end }}"
   postgresSecret: postgres
   s2sUrl: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
 
@@ -160,15 +163,46 @@ civil-service:
       RELEASE_REVISION: "{{ .Release.Revision }}"
       GA_S2S_AUTHORISED_SERVICES: payment_app,ccd_data,civil_service
       OTHER_REMEDY_ENABLED: true
-      CMC_DB_HOST: civil-preview.postgres.database.azure.com
-      CMC_DB_CONNECTION_OPTIONS: "?stringtype=unspecified&reWriteBatchedInserts=true&sslmode=require"
+      CMC_DB_HOST: "{{ .Values.global.postgresHostname }}"
+      CMC_DB_CONNECTION_OPTIONS: "{{ .Values.global.postgresConnectionOptions }}"
       CMC_DB_USERNAME: hmcts
-      CMC_DB_NAME: "pr-${CHANGE_ID}-cmc"
+      CMC_DB_NAME: "{{ .Values.global.databaseNamePrefix }}cmc"
     secrets:
       CMC_DB_PASSWORD:
         secretRef: "{{ .Values.global.postgresSecret }}"
         key: PASSWORD
         disabled: false
+
+  postgresql:
+    enabled: {{ not .Values.global.useFlexiblePostgres }}
+    releaseNameOverride: ${SERVICE_NAME}-postgresql
+    image:
+      registry: hmctsprod.azurecr.io
+      repository: imported/bitnami/postgresql
+      tag: '16.5.0'
+    primary:
+      persistence:
+        enabled: false
+      resources:
+        requests:
+          cpu: 500m
+      initdb:
+        scripts:
+          init.sql: |
+            CREATE DATABASE "{{ .Values.global.databaseNamePrefix }}cmc" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
+            CREATE DATABASE "{{ .Values.global.databaseNamePrefix }}data-store" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
+            CREATE DATABASE "{{ .Values.global.databaseNamePrefix }}definition-store" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
+            CREATE DATABASE "{{ .Values.global.databaseNamePrefix }}camunda" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
+            CREATE DATABASE "{{ .Values.global.databaseNamePrefix }}role-assignment" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
+            CREATE DATABASE "{{ .Values.global.databaseNamePrefix }}wa-task-management-api" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
+            CREATE DATABASE "{{ .Values.global.databaseNamePrefix }}wa-case-event-handler" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
+            CREATE DATABASE "{{ .Values.global.databaseNamePrefix }}wa-workflow-api" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
+            CREATE DATABASE "{{ .Values.global.databaseNamePrefix }}cft-task-db" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
+            CREATE DATABASE "{{ .Values.global.databaseNamePrefix }}emstitch" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
+    auth:
+      username: ${POSTGRES_USER}
+      password: ${POSTGRES_PASSWORD}
+      postgresPassword: ${POSTGRES_PASSWORD}
 
   camunda-bpm:
     enabled: true
@@ -182,15 +216,15 @@ civil-service:
       devmemoryLimits: 1Gi
       environment:
         CAMUNDA_API_AUTH_ENABLED: false
-        CAMUNDA_DB_HOST: civil-preview.postgres.database.azure.com
+        CAMUNDA_DB_HOST: "{{ .Values.global.postgresHostname }}"
         CAMUNDA_DB_USER_NAME: hmcts
-        CAMUNDA_DB_CONN_OPTIONS: "?stringtype=unspecified&reWriteBatchedInserts=true&sslmode=require"
+        CAMUNDA_DB_CONN_OPTIONS: "{{ .Values.global.postgresConnectionOptions }}"
         CAMUNDA_DB_NAME: "{{ .Values.global.databaseNamePrefix }}camunda"
         CAMUNDA_BPM_DATABASE_SCHEMA_UPDATE: true
         S2S_URL: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
       secrets:
         CAMUNDA_DB_PASSWORD:
-          secretRef: postgres
+          secretRef: "{{ .Values.global.postgresSecret }}"
           key: PASSWORD
           disabled: false
 
@@ -215,20 +249,20 @@ civil-service:
         enabled: true
 
     postgresql:
-      enabled: true
+      enabled: {{ .Values.global.useFlexiblePostgres }}
       flexibleserver: civil-preview
       setup:
         databases:
-          - name: "pr-${CHANGE_ID}-cmc"
-          - name: "pr-${CHANGE_ID}-data-store"
-          - name: "pr-${CHANGE_ID}-definition-store"
-          - name: "pr-${CHANGE_ID}-camunda"
-          - name: "pr-${CHANGE_ID}-role-assignment"
-          - name: "pr-${CHANGE_ID}-wa-task-management-api"
-          - name: "pr-${CHANGE_ID}-wa-case-event-handler"
-          - name: "pr-${CHANGE_ID}-wa-workflow-api"
-          - name: "pr-${CHANGE_ID}-cft-task-db"
-          - name: "pr-${CHANGE_ID}-emstitch"
+          - name: "{{ .Values.global.databaseNamePrefix }}cmc"
+          - name: "{{ .Values.global.databaseNamePrefix }}data-store"
+          - name: "{{ .Values.global.databaseNamePrefix }}definition-store"
+          - name: "{{ .Values.global.databaseNamePrefix }}camunda"
+          - name: "{{ .Values.global.databaseNamePrefix }}role-assignment"
+          - name: "{{ .Values.global.databaseNamePrefix }}wa-task-management-api"
+          - name: "{{ .Values.global.databaseNamePrefix }}wa-case-event-handler"
+          - name: "{{ .Values.global.databaseNamePrefix }}wa-workflow-api"
+          - name: "{{ .Values.global.databaseNamePrefix }}cft-task-db"
+          - name: "{{ .Values.global.databaseNamePrefix }}emstitch"
 
     ccd-api-gateway-web:
       nodejs:
@@ -348,7 +382,7 @@ civil-service:
         - name: DATA_STORE_PASS
           value: hmcts
         - name: DATA_STORE_URL
-          value: "jdbc:postgresql://civil-preview.postgres.database.azure.com:5432/{{ .Values.global.databaseNamePrefix }}data-store?sslmode=require&stringtype=unspecified"
+          value: "jdbc:postgresql://{{ .Values.global.postgresHostname }}:5432/{{ .Values.global.databaseNamePrefix }}data-store{{ .Values.global.postgresJdbcOptions }}"
         - name: DATA_STORE_USER
           value: hmcts
         - name: ES_HOSTS
@@ -388,7 +422,7 @@ civil-service:
         01_input.conf: |
           input  {
             jdbc {
-              jdbc_connection_string => "jdbc:postgresql://civil-preview.postgres.database.azure.com:5432/pr-${CHANGE_ID}-data-store?sslmode=require&stringtype=unspecified"
+              jdbc_connection_string => "jdbc:postgresql://{{ .Values.global.postgresHostname }}:5432/{{ .Values.global.databaseNamePrefix }}data-store{{ .Values.global.postgresJdbcOptions }}"
               jdbc_user => "hmcts"
               jdbc_password_filepath => "/etc/logstash/secrets/PASSWORD"
               jdbc_validate_connection => true
@@ -618,7 +652,7 @@ civil-service:
         S2S_BASE_URI: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
         DM_STORE_APP_URL: http://dm-store-aat.service.core-compute-aat.internal
         CDAM_URL: http://${SERVICE_NAME}-cdam
-        SPRING_DATASOURCE_OPTIONS: "?ssl=disable"
+        SPRING_DATASOURCE_OPTIONS: "{{ .Values.global.postgresJdbcOptions }}"
         SPRING_DATASOURCE_PORT: 5432
         SPRING_DATASOURCE_HOST: "{{ .Values.global.postgresHostname }}"
         SPRING_DATASOURCE_NAME: "{{ .Values.global.databaseNamePrefix }}emstitch"
