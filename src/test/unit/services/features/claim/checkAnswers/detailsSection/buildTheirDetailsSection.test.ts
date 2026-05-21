@@ -46,13 +46,14 @@ describe('Citizen Details Section', () => {
     const claim = createClaimWithIndividualDetails();
     claim.respondent1.type = PartyType.SOLE_TRADER;
     claim.respondent1.partyDetails.soleTraderTradingAs = 'test';
+    claim.respondent1.partyDetails.partyName = 'Mr John Richards T/A test';
     claim.respondent1.partyDetails.contactPerson = 'contact';
     claim.respondent1.emailAddress = new Email(EMAIL_ADDRESS);
     //When
     const summarySections = await buildTheirDetailsSection(claim, CLAIM_ID, 'en');
     //Then
     expect(summarySections.title).toBe(t('PAGES.CHECK_YOUR_ANSWER.THEIR_DETAILS_TITLE_DEFENDANT'));
-    expect(summarySections.summaryList.rows[0].value.html).toBe(FULL_NAME);
+    expect(summarySections.summaryList.rows[0].value.html).toBe( `${FULL_NAME} T/A ${claim.respondent1.partyDetails.soleTraderTradingAs}`);
     expect(summarySections.summaryList.rows[1].value.html).toBe('test');
     expect(summarySections.summaryList.rows[2].value.html).toBe('contact');
     expect(summarySections.summaryList.rows[4].value.html).toBe(CORRESPONDENCE_ADDRESS);
@@ -154,6 +155,7 @@ describe('Citizen Details Section', () => {
     if (claim.respondent1) {
       claim.respondent1.type = PartyType.COMPANY;
       claim.respondent1.partyDetails.contactPerson = CONTACT_PERSON;
+      claim.respondent1.partyDetails.partyName = 'Nice organisation';
     }
     //When
     const summarySections = await getSummarySections(CLAIM_ID, claim, 'en');
@@ -166,6 +168,8 @@ describe('Citizen Details Section', () => {
     const claim = createClaimWithIndividualDetails();
     if (claim.respondent1) {
       claim.respondent1.type = PartyType.ORGANISATION;
+      claim.respondent1.partyDetails.partyName = 'Nice organisation';
+
     }
     //When
     const summarySections = await getSummarySections(CLAIM_ID, claim, 'en');
@@ -179,6 +183,7 @@ describe('Citizen Details Section', () => {
     claim.delayedFlight = new GenericYesNo(YesNo.YES);
     claim.flightDetails = new FlightDetails('test', '123', '2023', '1', '1');
     claim.respondent1.partyDetails.contactPerson = CONTACT_PERSON;
+    claim.respondent1.partyDetails.partyName = 'Nice organisation';
     //When
     const summarySections = await getSummarySections(CLAIM_ID, claim, 'en');
     //Then
@@ -196,6 +201,7 @@ describe('Citizen Details Section', () => {
     claim.respondent1.type = PartyType.COMPANY;
     claim.delayedFlight = new GenericYesNo(YesNo.NO);
     claim.respondent1.partyDetails.contactPerson = CONTACT_PERSON;
+    claim.respondent1.partyDetails.partyName = 'Nice organisation';
     //When
     const summarySections = await getSummarySections(CLAIM_ID, claim, 'en');
     //Then
