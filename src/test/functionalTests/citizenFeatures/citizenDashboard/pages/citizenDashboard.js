@@ -7,18 +7,29 @@ class CitizenDashboardPage {
   }
 
   async verifyClaimNumberOnDashboard(claimNumber) {
-    if (await I.waitForContent('Claim number', config.WaitForText)) {
-      await I.see('Claimant name');
-      await I.see('Claim amount');
-      await I.see('Status');
-      await I.see(claimNumber);
-    } else {
+    const maxRetries = 10;
+    const retryDelaySeconds = 3;
+
+    for (let tries = 1; tries <= maxRetries; tries++) {
+      console.log(`Verifying claim ${claimNumber} on dashboard... attempt ${tries}`);
+      const pageSource = await I.grabTextFrom('body');
+      if (pageSource.includes(claimNumber) && pageSource.includes('Claim number')) {
+        await I.see('Claimant name');
+        await I.see('Claim amount');
+        await I.see('Status');
+        await I.see(claimNumber);
+        return;
+      }
+
+      if (tries === maxRetries) {
+        throw new Error(
+          `Claim ${claimNumber} not found on dashboard after ${maxRetries} attempts. `
+          + `Page contained: "${pageSource.slice(0, 500)}"`,
+        );
+      }
+
+      await I.wait(retryDelaySeconds);
       await I.refreshPage();
-      await I.waitForContent('Claim number', config.WaitForText);
-      await I.see('Claimant name');
-      await I.see('Claim amount');
-      await I.see('Status');
-      await I.see(claimNumber);
     }
   }
 

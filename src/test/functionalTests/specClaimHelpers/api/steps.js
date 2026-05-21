@@ -409,6 +409,7 @@ module.exports = {
 
     if (!manualPIP) {
       await assignSpecCase(caseId, multipartyScenario);
+      await waitForFinishedBusinessProcess(caseId);
     }
     //await waitForFinishedBusinessProcess(caseId);
 

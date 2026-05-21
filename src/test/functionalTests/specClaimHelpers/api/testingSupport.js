@@ -84,6 +84,8 @@ module.exports = {
 
   assignCaseToDefendant: async (caseId, caseRole, user) => {
     const authToken = await idamHelper.accessToken(user);
+    const ASSIGN_MAX_RETRIES = 15;
+    const ASSIGN_RETRY_MS = 4000;
 
     await retry(() => {
       return restHelper.request(
@@ -97,13 +99,15 @@ module.exports = {
         .then(response => {
           if (response.status === 200) {
             console.log('Role assigned successfully');
-          } else if (response.status === 409) {
-            console.log('Role assigned failed');
-          } else {
-            console.log(`Error occurred while assigning case with status : ${response.status}`);
+            return;
           }
+          if (response.status === 409) {
+            console.log('Role already assigned (409)');
+            return;
+          }
+          throw new Error(`Error assigning case ${caseId} to role ${caseRole}: status ${response.status}`);
         });
-    });
+    }, ASSIGN_MAX_RETRIES, ASSIGN_RETRY_MS);
   },
 
   unAssignUserFromCases: async (caseIds, user) => {
