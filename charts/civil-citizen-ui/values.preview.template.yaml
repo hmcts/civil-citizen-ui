@@ -9,10 +9,10 @@ global:
   idamWebUrl: https://idam-web-public.aat.platform.hmcts.net
   useFlexiblePostgres: true
   postgresUsername: hmcts
-  postgresHostname: {{ if .Values.global.useFlexiblePostgres }}civil-preview.postgres.database.azure.com{{ else }}${SERVICE_NAME}-postgresql{{ end }}
-  databaseNamePrefix: "{{ if .Values.global.useFlexiblePostgres }}pr-${CHANGE_ID}-{{ end }}"
-  postgresConnectionOptions: "{{ if .Values.global.useFlexiblePostgres }}?stringtype=unspecified&reWriteBatchedInserts=true&sslmode=require{{ else }}?stringtype=unspecified&reWriteBatchedInserts=true&sslmode=disable{{ end }}"
-  postgresJdbcOptions: "{{ if .Values.global.useFlexiblePostgres }}?sslmode=require&stringtype=unspecified{{ else }}?ssl=disable&stringtype=unspecified{{ end }}"
+  postgresHostname: civil-preview.postgres.database.azure.com
+  databaseNamePrefix: "pr-${CHANGE_ID}-"
+  postgresConnectionOptions: "?stringtype=unspecified&reWriteBatchedInserts=true&sslmode=require"
+  postgresJdbcOptions: "?sslmode=require&stringtype=unspecified"
   postgresSecret: postgres
   s2sUrl: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
 
@@ -174,7 +174,7 @@ civil-service:
         disabled: false
 
   postgresql:
-    enabled: {{ not .Values.global.useFlexiblePostgres }}
+    enabled: false
     releaseNameOverride: ${SERVICE_NAME}-postgresql
     image:
       registry: hmctsprod.azurecr.io
@@ -249,7 +249,7 @@ civil-service:
         enabled: true
 
     postgresql:
-      enabled: {{ .Values.global.useFlexiblePostgres }}
+      enabled: true
       flexibleserver: civil-preview
       setup:
         databases:
