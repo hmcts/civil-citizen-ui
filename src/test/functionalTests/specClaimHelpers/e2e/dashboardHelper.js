@@ -1,47 +1,62 @@
 const I = actor();
 
-const {waitForFinishedBusinessProcess} = require('../api/steps');
+const {waitForFinishedBusinessProcess} = require('../api/testingSupport');
+const steps = require('../api/steps');
 
 const selectors = {
   titleClass: '.govuk-notification-banner__title',
   contentClass: 'div.govuk-notification-banner__content',
+  dashboardNotification: '.dashboard-notification',
+};
+
+const NOTIFICATION_VERIFY_MAX_RETRIES = 10;
+const NOTIFICATION_VERIFY_RETRY_WAIT_SEC = 5;
+
+const notificationMatches = (pageSource, title, content) => {
+  if (!pageSource.includes(title)) {
+    return false;
+  }
+  if (Array.isArray(content)) {
+    return content.every((text) => pageSource.includes(text));
+  }
+  return pageSource.includes(content);
 };
 
 module.exports = {
   verifyNotificationTitleAndContent: async (claimNumber = '', title, content, claimRef) => {
     const currentUrl = await I.grabCurrentUrl();
-    if (claimNumber && claimNumber !== '' && !currentUrl.includes(claimRef)) {
+    if (claimNumber && claimNumber !== '' && claimRef && !currentUrl.includes(claimRef)) {
       await I.amOnPage('/dashboard');
       await I.click(claimNumber);
     }
-    const maxRetries = 4;
-    for (let tries = 1; tries <= maxRetries; tries++) {
+    for (let tries = 1; tries <= NOTIFICATION_VERIFY_MAX_RETRIES; tries++) {
       console.log('Verifying notification title and content... attempt', tries);
 
-      const pageSource = await I.grabTextFrom('.dashboard-notification');
+      await I.waitForVisible(selectors.dashboardNotification, 30);
+      const pageSource = await I.grabTextFrom(selectors.dashboardNotification);
       console.log('Title to be verified ..', title);
-      if (pageSource.includes(title)) {
+
+      if (notificationMatches(pageSource, title, content)) {
         if (Array.isArray(content)) {
-          const missingContent = content.filter(text => {
-            console.log('content to be verified ..', text);
-            return !pageSource.includes(text);
-          });
-          if (missingContent.length === 0) {
-            break;
-          }
+          content.forEach((text) => console.log('content to be verified ..', text));
         } else {
           console.log('content to be verified ..', content);
-          if (pageSource.includes(content)) {
-            break;
-          }
         }
+        return;
       }
 
-      if (tries === maxRetries) {
-        throw new Error('Notification could not be verified');
+      if (tries === NOTIFICATION_VERIFY_MAX_RETRIES) {
+        const snippet = pageSource.replace(/\s+/g, ' ').trim().slice(0, 500);
+        throw new Error(
+          `Notification could not be verified after ${NOTIFICATION_VERIFY_MAX_RETRIES} attempts. `
+          + `Expected title: "${title}". Page snippet: "${snippet}"`,
+        );
       }
 
-      await I.wait(2);
+      if (claimRef) {
+        await waitForFinishedBusinessProcess(claimRef);
+      }
+      await I.wait(NOTIFICATION_VERIFY_RETRY_WAIT_SEC);
       await I.refreshPage();
     }
   },
@@ -56,7 +71,7 @@ module.exports = {
     const actualStatus = await I.grabTextFrom(locator);
     if (!actualStatus.toLowerCase().includes(status.toLowerCase())) {
       await I.wait(3);
-      await waitForFinishedBusinessProcess();
+      await steps.waitForFinishedBusinessProcess();
       await I.refreshPage();
     }
     await I.see(tasklist, locator);
