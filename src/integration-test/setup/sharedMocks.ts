@@ -25,6 +25,9 @@ export const civilServiceClientMock = {
   retrieveDashboard: jest.fn(),
   retrieveNotification: jest.fn(),
   retrieveGaNotification: jest.fn(),
+  submitDefendantResponseEvent: jest.fn(),
+  submitClaimantResponseEvent: jest.fn(),
+  calculateExtendedResponseDeadline: jest.fn(),
   submitEvent: jest.fn(),
 };
 
