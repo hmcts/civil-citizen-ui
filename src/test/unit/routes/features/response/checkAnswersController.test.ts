@@ -22,6 +22,10 @@ import {PartyType} from 'common/models/partyType';
 import {Email} from 'common/models/Email';
 import {DirectionQuestionnaire} from 'models/directionsQuestionnaire/directionQuestionnaire';
 import {Hearing} from 'models/directionsQuestionnaire/hearing/hearing';
+import {CallbackValidationError} from 'client/common/error/callbackValidationError';
+import {submitResponse} from 'services/features/response/submission/submitResponse';
+import {ResponseType} from 'common/form/models/responseType';
+import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
 
 const request = require('supertest');
 const {app} = require('../../../../../main/app');
@@ -35,6 +39,7 @@ jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../main/modules/claimDetailsService');
 jest.mock('../../../../../main/services/features/response/checkAnswers/checkAnswersService');
 jest.mock('../../../../../main/services/features/common/responseDeadlineAgreedService');
+jest.mock('../../../../../main/services/features/response/submission/submitResponse');
 jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 jest.mock('../../../../../main/services/features/common/taskListService', () => ({
   ...jest.requireActual('../../../../../main/services/features/common/taskListService') as Module,
@@ -48,6 +53,7 @@ const mockRejectingFullAmount = isFullAmountReject as jest.Mock;
 const mockSetResponseDeadline = setResponseDeadline as jest.Mock;
 mockRejectingFullAmount.mockImplementation(() => true);
 const mockGetCaseDataFromDraftStore = draftStoreService.getCaseDataFromStore as jest.Mock;
+const mockSubmitResponse = submitResponse as jest.Mock;
 
 const PARTY_NAME = 'Mrs. Mary Richards';
 const CLAIM_ID = 'aaa';
@@ -190,6 +196,40 @@ describe('Response - Check answers', () => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
+    });
+
+    it('should re-render check your answers when civil service returns callback validation errors', async () => {
+      const claim = new Claim();
+      claim.id = CLAIM_ID;
+      claim.respondent1 = {responseType: ResponseType.FULL_ADMISSION} as never;
+      claim.fullAdmission = {
+        paymentIntention: {paymentOption: PaymentOptionType.IMMEDIATELY},
+      };
+      mockGetSummarySections.mockReturnValue({sections: []});
+      mockGetCaseDataFromDraftStore.mockResolvedValue(claim);
+      mockSaveStatementOfTruth.mockResolvedValue(undefined);
+      mockSubmitResponse.mockRejectedValue(
+        new CallbackValidationError(
+          ['Business process has not finished'],
+          ['Please try again later'],
+        ),
+      );
+
+      await request(app)
+        .post(respondentCheckAnswersUrl)
+        .send({
+          type: 'basic',
+          signed: 'true',
+          directionsQuestionnaireSigned: 'true',
+          isFullAmountRejected: 'false',
+        })
+        .expect((res: Response) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Business process has not finished');
+          expect(res.text).toContain('Please try again later');
+        });
+
+      expect(mockSubmitResponse).toHaveBeenCalledTimes(1);
     });
   });
 });

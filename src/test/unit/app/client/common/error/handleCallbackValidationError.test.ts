@@ -3,7 +3,6 @@ import {
   callbackErrorRenderProps,
   ensureValueForCallbackRender,
   getCallbackErrorViewData,
-  handleCallbackValidationError,
   handleCallbackValidationErrorOrNext,
   toCallbackErrorViewData,
 } from '../../../../../../main/app/client/common/error/handleCallbackValidationError';
@@ -53,25 +52,6 @@ describe('getCallbackErrorViewData', () => {
 
   it('returns undefined for non-callback errors', () => {
     expect(getCallbackErrorViewData(new Error('other'))).toBeUndefined();
-  });
-});
-
-describe('handleCallbackValidationError', () => {
-  it('renders with callback view data and reports handled', () => {
-    const error = new CallbackValidationError(['Unable to submit'], []);
-    const render = jest.fn();
-
-    expect(handleCallbackValidationError(error, render)).toBe(true);
-    expect(render).toHaveBeenCalledWith({
-      callbackErrors: [{text: 'Unable to submit'}],
-      callbackWarnings: [],
-    });
-  });
-
-  it('returns false when the error is not a callback validation error', () => {
-    const render = jest.fn();
-    expect(handleCallbackValidationError(new Error('500'), render)).toBe(false);
-    expect(render).not.toHaveBeenCalled();
   });
 });
 

@@ -46,21 +46,9 @@ export const getCallbackErrorViewData = (error: unknown): CallbackErrorViewData 
 };
 
 /**
- * Renders the CYA page with callback errors when civil-service returns HTTP 422.
- * Returns true when the error was handled; false when the caller should pass to next().
+ * Renders the CYA page with callback errors when civil-service returns HTTP 422,
+ * otherwise passes the error to Express error middleware.
  */
-export const handleCallbackValidationError = (
-  error: unknown,
-  renderWithCallbackErrors: (viewData: CallbackErrorViewData) => void | Promise<void>,
-): boolean => {
-  const viewData = getCallbackErrorViewData(error);
-  if (!viewData) {
-    return false;
-  }
-  void Promise.resolve(renderWithCallbackErrors(viewData));
-  return true;
-};
-
 export const handleCallbackValidationErrorOrNext = async (
   error: unknown,
   res: Response,
