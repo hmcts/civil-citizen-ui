@@ -26,7 +26,7 @@ class ViewApplication {
   }
 
   async verifyHeadingDetails() {
-   await I.see('Application', 'h1');
+    await I.see('Application', 'h1');
   }
 
   async verifyPageText() {
