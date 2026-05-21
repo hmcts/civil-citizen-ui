@@ -28,6 +28,7 @@ import {
   callbackErrorRenderProps,
   handleCallbackValidationErrorOrNext,
 } from 'client/common/error/handleCallbackValidationError';
+import {throwMockCallbackValidation422IfEnabled} from 'app/mocks/callbackValidation422Mock';
 
 const gaCheckAnswersController = Router();
 const viewPath = 'features/generalApplication/check-answers';
@@ -95,6 +96,7 @@ gaCheckAnswersController.post(GA_CHECK_ANSWERS_URL, checkYourAnswersGAGuard, (as
       await renderView(claimId, claim, form, req, res);
       return;
     } else {
+      throwMockCallbackValidation422IfEnabled(req);
       await saveStatementOfTruth(redisKey, statementOfTruth);
       const claimResponse = await submitApplication(req);
       const genApps = claimResponse.generalApplications;

@@ -20,13 +20,14 @@ describe('callbackValidation422Mock', () => {
     it.each([
       '/case/123/qm/create-query-cya',
       '/case/123/case-progression/check-and-send?lang=en',
-      '/case/abc-claimant/claimant-response/check-and-send',
+      '/case/abc/general-application/check-and-send',
     ])('matches demo CYA submit path %s', (path) => {
       expect(isMockCallbackValidationSubmitRoute(path)).toBe(true);
     });
 
     it('does not match unrelated routes', () => {
       expect(isMockCallbackValidationSubmitRoute('/case/123/response/check-and-send')).toBe(false);
+      expect(isMockCallbackValidationSubmitRoute('/case/123/claimant-response/check-and-send')).toBe(false);
     });
   });
 
@@ -36,8 +37,8 @@ describe('callbackValidation422Mock', () => {
 
       expect(() =>
         throwMockCallbackValidation422IfEnabled({
-          originalUrl: '/case/1/claimant-response/check-and-send',
-          path: '/case/1/claimant-response/check-and-send',
+          originalUrl: '/case/1/qm/create-query-cya',
+          path: '/case/1/qm/create-query-cya',
         } as never),
       ).not.toThrow();
     });
@@ -54,8 +55,8 @@ describe('callbackValidation422Mock', () => {
 
       try {
         throwMockCallbackValidation422IfEnabled({
-          originalUrl: '/case/1/case-progression/check-and-send',
-          path: '/case/1/case-progression/check-and-send',
+          originalUrl: '/case/1/general-application/check-and-send',
+          path: '/case/1/general-application/check-and-send',
         } as never);
       } catch (error) {
         expect(error).toBeInstanceOf(CallbackValidationError);

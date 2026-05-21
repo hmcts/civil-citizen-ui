@@ -15,7 +15,7 @@ export const MOCK_CALLBACK_VALIDATION_WARNINGS = [
 const MOCK_SUBMIT_PATH_SUFFIXES = [
   '/qm/create-query-cya',
   '/case-progression/check-and-send',
-  '/claimant-response/check-and-send',
+  '/general-application/check-and-send',
 ] as const;
 
 export const isMockCallbackValidationSubmitRoute = (requestPath: string): boolean => {
