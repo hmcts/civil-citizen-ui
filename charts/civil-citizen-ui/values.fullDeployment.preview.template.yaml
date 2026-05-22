@@ -9,15 +9,16 @@ civil-service:
       HMC_HEARINGS_TOPIC_NAMESPACE: "hmc-servicebus-aat"
       ROLE_ASSIGNMENT_URL: https://am-role-assignment-civil-citizen-ui-pr-${CHANGE_ID}.preview.platform.hmcts.net
       CORE_CASE_DATA_API_URL: https://ccd-data-store-api-civil-citizen-ui-pr-${CHANGE_ID}.preview.platform.hmcts.net
-      CMC_DB_HOST: civil-preview.postgres.database.azure.com
-      CMC_DB_CONNECTION_OPTIONS: "?stringtype=unspecified&reWriteBatchedInserts=true&sslmode=require"
-      CMC_DB_USERNAME: hmcts
-      CMC_DB_NAME: "pr-${CHANGE_ID}-cmc"
+      CMC_DB_HOST: ${SERVICE_NAME}-postgresql
+      CMC_DB_CONNECTION_OPTIONS: "?sslmode=allow"
+      CMC_DB_USERNAME: ${POSTGRES_USER}
+      CMC_DB_PASSWORD: ${POSTGRES_PASSWORD}
+      CMC_DB_NAME: cmc
     secrets:
       CMC_DB_PASSWORD:
         secretRef: "{{ .Values.global.postgresSecret }}"
         key: PASSWORD
-        disabled: false
+        disabled: true
 
   camunda-bpm:
     enabled: false
@@ -36,9 +37,10 @@ civil-service:
               - name: AppInsightsInstrumentationKey
                 alias: azure.application-insights.instrumentation-key
         environment:
-          DATA_STORE_DB_NAME: "{{ .Values.global.databaseNamePrefix }}data-store"
+          DATA_STORE_DB_NAME: data-store
           DATA_STORE_DB_HOST: "{{ .Values.global.postgresHostname }}"
           DATA_STORE_DB_USERNAME: "{{ .Values.global.postgresUsername }}"
+          DATA_STORE_DB_PASSWORD: ${POSTGRES_PASSWORD}
           DATA_STORE_DB_OPTIONS: "?stringtype=unspecified"
           CCD_CASE_EVENTS_DESTINATION: ${SERVICE_NAME}-asb-ccd-case-events
         secrets:
@@ -48,7 +50,7 @@ civil-service:
           DATA_STORE_DB_PASSWORD:
             secretRef: "{{ .Values.global.postgresSecret }}"
             key: PASSWORD
-            disabled: false
+            disabled: true
 
 
 
@@ -139,8 +141,9 @@ wa:
         #AZURE_SERVICE_BUS_TOPIC_NAME: servicebus-topic-{{ .Release.Name }}-asb-ccd-case-events
         AZURE_SERVICE_BUS_CCD_CASE_EVENTS_SUBSCRIPTION_NAME: ${SERVICE_NAME}-asb-ccd-case-events
         POSTGRES_HOST: "{{ .Values.global.postgresHostname }}"
-        POSTGRES_CONNECTION_OPTIONS: "?stringtype=unspecified&reWriteBatchedInserts=true&sslmode=require"
-        POSTGRES_NAME: "{{ .Values.global.databaseNamePrefix }}wa-case-event-handler"
+        POSTGRES_CONNECTION_OPTIONS: ""
+        POSTGRES_NAME: wa-case-event-handler
+        POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       secrets:
         AZURE_SERVICE_BUS_CONNECTION_STRING:
           secretRef: civil-sb-preview
@@ -148,7 +151,7 @@ wa:
         POSTGRES_PASSWORD:
           secretRef: "{{ .Values.global.postgresSecret }}"
           key: PASSWORD
-          disabled: false
+          disabled: true
 
   wa-task-monitor:
     java:
@@ -162,41 +165,44 @@ wa:
       ingressHost: wa-task-management-api-${SERVICE_FQDN}
       environment:
         ROLE_ASSIGNMENT_URL: http://${SERVICE_NAME}-am-role-assignment-service
-        POSTGRES_CONNECTION_OPTIONS: "?currentSchema=cft_task_db&stringtype=unspecified&reWriteBatchedInserts=true&sslmode=require"
+        POSTGRES_CONNECTION_OPTIONS: "?currentSchema=cft_task_db"
         POSTGRES_HOST: "{{ .Values.global.postgresHostname }}"
-        POSTGRES_NAME: "{{ .Values.global.databaseNamePrefix }}cft-task-db"
-        POSTGRES_USERNAME: hmcts
+        POSTGRES_NAME: cft-task-db
+        POSTGRES_USERNAME: ${POSTGRES_USER}
+        POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       secrets:
         POSTGRES_PASSWORD:
           secretRef: "{{ .Values.global.postgresSecret }}"
           key: PASSWORD
-          disabled: false
+          disabled: true
 
   wa-workflow-api:
     java:
       environment:
-        DB_READER_USERNAME: hmcts
+        DB_READER_USERNAME: ${POSTGRES_USER}
         POSTGRES_HOST: "{{ .Values.global.postgresHostname }}"
-        POSTGRES_NAME: "{{ .Values.global.databaseNamePrefix }}wa-workflow-api"
-        POSTGRES_CONNECTION_OPTIONS: "?stringtype=unspecified&reWriteBatchedInserts=true&sslmode=require"
+        POSTGRES_NAME: wa-workflow-api
+        POSTGRES_CONNECTION_OPTIONS: ""
+        POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
         CAMUNDA_URL: https://camunda-${SERVICE_FQDN}/engine-rest/
       secrets:
         POSTGRES_PASSWORD:
           secretRef: "{{ .Values.global.postgresSecret }}"
           key: PASSWORD
-          disabled: false
+          disabled: true
 
   camunda-bpm:
     java:
       environment:
-        CAMUNDA_DB_HOST: civil-preview.postgres.database.azure.com
-        CAMUNDA_DB_USER_NAME: hmcts
-        CAMUNDA_DB_CONN_OPTIONS: "?stringtype=unspecified&reWriteBatchedInserts=true&sslmode=require"
-        CAMUNDA_DB_NAME: "{{ .Values.global.databaseNamePrefix }}camunda"
+        CAMUNDA_DB_HOST: ${SERVICE_NAME}-postgresql
+        CAMUNDA_DB_USER_NAME: ${POSTGRES_USER}
+        CAMUNDA_DB_PASSWORD: ${POSTGRES_PASSWORD}
+        CAMUNDA_DB_CONN_OPTIONS: ""
+        CAMUNDA_DB_NAME: camunda
         TASK_MANAGEMENT_API_URL: http://{{ .Release.Name }}-wa-task-management-api
         CAMUNDA_API_AUTH_ENABLED: false
-        secrets:
-          CAMUNDA_DB_PASSWORD:
-            secretRef: postgres
-            key: PASSWORD
-            disabled: false
+      secrets:
+        CAMUNDA_DB_PASSWORD:
+          secretRef: "{{ .Values.global.postgresSecret }}"
+          key: PASSWORD
+          disabled: true

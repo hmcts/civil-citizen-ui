@@ -7,10 +7,9 @@ global:
   dmStoreUrl: http://dm-store-aat.service.core-compute-aat.internal
   idamApiUrl: https://idam-api.aat.platform.hmcts.net
   idamWebUrl: https://idam-web-public.aat.platform.hmcts.net
-  postgresUsername: hmcts
-  postgresHostname: civil-preview.postgres.database.azure.com
-  databaseNamePrefix: "pr-${CHANGE_ID}-"
-  postgresSecret: postgres
+  postgresUsername: ${POSTGRES_USER}
+  postgresHostname: ${SERVICE_NAME}-postgresql
+  postgresSecret: ${SERVICE_NAME}-postgresql
   s2sUrl: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
 
 nodejs:
@@ -160,15 +159,47 @@ civil-service:
       RELEASE_REVISION: "{{ .Release.Revision }}"
       GA_S2S_AUTHORISED_SERVICES: payment_app,ccd_data,civil_service
       OTHER_REMEDY_ENABLED: true
-      CMC_DB_HOST: civil-preview.postgres.database.azure.com
-      CMC_DB_CONNECTION_OPTIONS: "?stringtype=unspecified&reWriteBatchedInserts=true&sslmode=require"
-      CMC_DB_USERNAME: hmcts
-      CMC_DB_NAME: "pr-${CHANGE_ID}-cmc"
+      CMC_DB_HOST: ${SERVICE_NAME}-postgresql
+      CMC_DB_CONNECTION_OPTIONS: "?sslmode=allow"
+      CMC_DB_USERNAME: ${POSTGRES_USER}
+      CMC_DB_PASSWORD: ${POSTGRES_PASSWORD}
+      CMC_DB_NAME: cmc
     secrets:
       CMC_DB_PASSWORD:
         secretRef: "{{ .Values.global.postgresSecret }}"
         key: PASSWORD
-        disabled: false
+        disabled: true
+    postgresql:
+      enabled: true
+      releaseNameOverride: ${SERVICE_NAME}-postgresql
+      image:
+        registry: hmctsprod.azurecr.io
+        repository: imported/bitnami/postgresql
+        tag: '11.6.0'
+      primary:
+        persistence:
+          enabled: false
+        resources:
+          requests:
+            cpu: 500m
+            memory: 2048Mi
+        initdb:
+          scripts:
+            init.sql: |
+              CREATE DATABASE cmc WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
+              CREATE DATABASE "data-store" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
+              CREATE DATABASE "definition-store" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
+              CREATE DATABASE "camunda" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
+              CREATE DATABASE "role-assignment" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
+              CREATE DATABASE "wa-task-management-api" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
+              CREATE DATABASE "wa-case-event-handler" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
+              CREATE DATABASE "wa_workflow_api" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
+              CREATE DATABASE "cft_task_db" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
+              CREATE DATABASE "emstitch" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
+      auth:
+        username: ${POSTGRES_USER}
+        password: ${POSTGRES_PASSWORD}
+        postgresPassword: ${POSTGRES_PASSWORD}
 
   camunda-bpm:
     enabled: true
@@ -182,17 +213,18 @@ civil-service:
       devmemoryLimits: 1Gi
       environment:
         CAMUNDA_API_AUTH_ENABLED: false
-        CAMUNDA_DB_HOST: civil-preview.postgres.database.azure.com
-        CAMUNDA_DB_USER_NAME: hmcts
-        CAMUNDA_DB_CONN_OPTIONS: "?stringtype=unspecified&reWriteBatchedInserts=true&sslmode=require"
-        CAMUNDA_DB_NAME: "{{ .Values.global.databaseNamePrefix }}camunda"
+        CAMUNDA_DB_HOST: ${SERVICE_NAME}-postgresql
+        CAMUNDA_DB_USER_NAME: ${POSTGRES_USER}
+        CAMUNDA_DB_PASSWORD: ${POSTGRES_PASSWORD}
+        CAMUNDA_DB_CONN_OPTIONS: ""
+        CAMUNDA_DB_NAME: camunda
         CAMUNDA_BPM_DATABASE_SCHEMA_UPDATE: true
         S2S_URL: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
       secrets:
         CAMUNDA_DB_PASSWORD:
-          secretRef: postgres
+          secretRef: "{{ .Values.global.postgresSecret }}"
           key: PASSWORD
-          disabled: false
+          disabled: true
 
   ccd:
     enabled: true
@@ -213,22 +245,6 @@ civil-service:
         enabled: false
       elastic:
         enabled: true
-
-    postgresql:
-      enabled: true
-      flexibleserver: civil-preview
-      setup:
-        databases:
-          - name: "pr-${CHANGE_ID}-cmc"
-          - name: "pr-${CHANGE_ID}-data-store"
-          - name: "pr-${CHANGE_ID}-definition-store"
-          - name: "pr-${CHANGE_ID}-camunda"
-          - name: "pr-${CHANGE_ID}-role-assignment"
-          - name: "pr-${CHANGE_ID}-wa-task-management-api"
-          - name: "pr-${CHANGE_ID}-wa-case-event-handler"
-          - name: "pr-${CHANGE_ID}-wa-workflow-api"
-          - name: "pr-${CHANGE_ID}-cft-task-db"
-          - name: "pr-${CHANGE_ID}-emstitch"
 
     ccd-api-gateway-web:
       nodejs:
@@ -255,6 +271,7 @@ civil-service:
         ingressHost: am-role-assignment-${SERVICE_FQDN}
         environment:
           ROLE_ASSIGNMENT_DB_HOST: "{{ .Values.global.postgresHostname }}"
+          ROLE_ASSIGNMENT_DB_PASSWORD: ${POSTGRES_PASSWORD}
           RELEASE_REVISION: "{{ .Release.Revision }}"
           ROLE_ASSIGNMENT_DB_OPTIONS: "?stringtype=unspecified"
           CCD_DATA_STORE_URL: http://${SERVICE_NAME}-ccd-data-store-api
@@ -277,7 +294,7 @@ civil-service:
           ROLE_ASSIGNMENT_DB_PASSWORD:
             secretRef: "{{ .Values.global.postgresSecret }}"
             key: PASSWORD
-            disabled: false
+            disabled: true
 
     ccd-data-store-api:
       java:
@@ -289,9 +306,10 @@ civil-service:
         environment:
           CASE_DOCUMENT_AM_API_ATTACH_DOCUMENT_ENABLED: true
           CASE_DOCUMENT_AM_URL: http://${SERVICE_NAME}-cdam
-          DATA_STORE_DB_NAME: "{{ .Values.global.databaseNamePrefix }}data-store"
+          DATA_STORE_DB_NAME: data-store
           DATA_STORE_DB_HOST: "{{ .Values.global.postgresHostname }}"
           DATA_STORE_DB_USERNAME: "{{ .Values.global.postgresUsername }}"
+          DATA_STORE_DB_PASSWORD: ${POSTGRES_PASSWORD}
           DATA_STORE_DB_OPTIONS: "?stringtype=unspecified"
           DATA_STORE_IDAM_KEY: ${CCD_DATA_STORE_S2S_SECRET}
           DATA_STORE_S2S_AUTHORISED_SERVICES: ccd_data,ccd_gw,ccd_ps,bulk_scan_orchestrator,ccpay_bubble,ctsc_work_allocation,em_ccd_orchestrator,xui_webapp,civil_service,ccd_case_document_am_api,aac_manage_case_assignment,wa_task_management_api,wa_task_monitor,wa_case_event_handler,wa_workflow_api,civil_general_applications,am_role_assignment_service,hmc_cft_hearing_service
@@ -312,7 +330,7 @@ civil-service:
           DATA_STORE_DB_PASSWORD:
             secretRef: "{{ .Values.global.postgresSecret }}"
             key: PASSWORD
-            disabled: false
+            disabled: true
 
     elasticsearch:
       image: hmctsprod.azurecr.io/imported/elastic/elasticsearch
@@ -345,14 +363,26 @@ civil-service:
       imagePullPolicy: "IfNotPresent"
       logstashJavaOpts: "-Xmx1g -Xms512M"
       extraEnvs:
-        - name: DATA_STORE_PASS
-          value: hmcts
         - name: DATA_STORE_URL
-          value: "jdbc:postgresql://civil-preview.postgres.database.azure.com:5432/{{ .Values.global.databaseNamePrefix }}data-store?sslmode=require&stringtype=unspecified"
+          value: jdbc:postgresql://${SERVICE_NAME}-postgresql:5432/data-store?ssl=disable&stringtype=unspecified
         - name: DATA_STORE_USER
-          value: hmcts
+          value: ${POSTGRES_USER}
+        - name: DATA_STORE_PASS
+          value: ${POSTGRES_PASSWORD}
+        - name: DB_URL
+          value: jdbc:postgresql://${SERVICE_NAME}-postgresql:5432/data-store?ssl=disable&stringtype=unspecified
+        - name: DB_USER
+          value: ${POSTGRES_USER}
+        - name: DB_PWD
+          value: ${POSTGRES_PASSWORD}
         - name: ES_HOSTS
-          value: "${SERVICE_NAME}-es-master"
+          value: http://${SERVICE_NAME}-es-master:9200
+        - name: ES_DATA_NODES_URL
+          value: http://${SERVICE_NAME}-es-master:9200
+        - name: ELASTIC_SEARCH_DATA_NODES_HOSTS
+          value: http://${SERVICE_NAME}-es-master:9200
+        - name: ES_URL
+          value: http://${SERVICE_NAME}-es-master:9200
       extraInitContainers: |
         - name: download-postgres-jdbc
           image: hmctsprod.azurecr.io/curl:7.70.0
@@ -363,15 +393,9 @@ civil-service:
       extraVolumes: |
         - name: logstash-lib
           emptyDir: {}
-        - name: database-secret-volume
-          secret:
-            secretName: postgres
       extraVolumeMounts: |
         - name: logstash-lib
           mountPath: /usr/share/logstash/ccd
-        - name: database-secret-volume
-          mountPath: /etc/logstash/secrets
-          readOnly: true
       logstashConfig:
         logstash.yml: |
           api.http.host: 0.0.0.0
@@ -388,9 +412,9 @@ civil-service:
         01_input.conf: |
           input  {
             jdbc {
-              jdbc_connection_string => "jdbc:postgresql://civil-preview.postgres.database.azure.com:5432/pr-${CHANGE_ID}-data-store?sslmode=require&stringtype=unspecified"
-              jdbc_user => "hmcts"
-              jdbc_password_filepath => "/etc/logstash/secrets/PASSWORD"
+              jdbc_connection_string => "jdbc:postgresql://${SERVICE_NAME}-postgresql:5432/data-store?ssl=disable&stringtype=unspecified"
+              jdbc_user => "${POSTGRES_USER}"
+              jdbc_password => "${POSTGRES_PASSWORD}"
               jdbc_validate_connection => true
               jdbc_driver_library => "/usr/share/logstash/ccd/postgresql.jar"
               jdbc_driver_class => "org.postgresql.Driver"
@@ -519,9 +543,10 @@ civil-service:
         releaseNameOverride: ${SERVICE_NAME}-ccd-definition-store-api
         environment:
           DEFINITION_STORE_DB_OPTIONS: "?stringtype=unspecified"
-          DEFINITION_STORE_DB_NAME: "{{ .Values.global.databaseNamePrefix }}definition-store"
+          DEFINITION_STORE_DB_NAME: definition-store
           DEFINITION_STORE_DB_HOST: "{{ .Values.global.postgresHostname }}"
           DEFINITION_STORE_DB_USERNAME: "{{ .Values.global.postgresUsername }}"
+          DEFINITION_STORE_DB_PASSWORD: ${POSTGRES_PASSWORD}
           DEFINITION_STORE_IDAM_KEY: ${CCD_DEFINITION_STORE_S2S_SECRET}
           DEFINITION_STORE_TX_TIMEOUT_DEFAULT: 60
           WELSH_TRANSLATION_ENABLED: false
@@ -533,7 +558,7 @@ civil-service:
           DEFINITION_STORE_DB_PASSWORD:
             secretRef: "{{ .Values.global.postgresSecret }}"
             key: PASSWORD
-            disabled: false
+            disabled: true
         keyVaults: [ ]
         ingressHost: ccd-definition-store-${SERVICE_NAME}.preview.platform.hmcts.net
 
@@ -621,8 +646,9 @@ civil-service:
         SPRING_DATASOURCE_OPTIONS: "?ssl=disable"
         SPRING_DATASOURCE_PORT: 5432
         SPRING_DATASOURCE_HOST: "{{ .Values.global.postgresHostname }}"
-        SPRING_DATASOURCE_NAME: "{{ .Values.global.databaseNamePrefix }}emstitch"
+        SPRING_DATASOURCE_NAME: emstitch
         SPRING_DATASOURCE_USERNAME: "{{ .Values.global.postgresUsername }}"
+        SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
         ENABLE_DB_MIGRATE: true
         RUN_DB_MIGRATION_ON_STARTUP: true
         FLYWAY_POSTGRESQL_TRANSACTIONAL_LOCK: false
@@ -631,7 +657,7 @@ civil-service:
         SPRING_DATASOURCE_PASSWORD:
           secretRef: "{{ .Values.global.postgresSecret }}"
           key: PASSWORD
-          disabled: false
+          disabled: true
       keyVaults:
         em-stitching:
           resourceGroup: em-stitching
