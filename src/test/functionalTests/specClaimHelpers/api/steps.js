@@ -463,6 +463,7 @@ module.exports = {
       payload = data.CREATE_LIP_CLAIM(user, userId, totalClaimAmount, language);
     }
     caseId = await apiRequest.startEventForLiPCitizen(payload);
+    await waitForTimeout(1000);
     await waitForFinishedBusinessProcess(caseId, user);
 
     console.log('qmEnabled flag .. ', qmEnabled);
