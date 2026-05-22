@@ -44,6 +44,7 @@ Scenario('LiP vs LiP Unsuccessful Mediation with Upload Documents', async ({ api
   await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.rejectAllSmallClaimsCarm, 'DefendantCompany');
   await api.claimantLipRespondToDefence(config.claimantCitizenUser, claimRef, true, 'IN_MEDIATION');
   await api.mediationUnsuccessful(mediationAdmin, true, ['NOT_CONTACTABLE_DEFENDANT_ONE']);
+  await api.waitForFinishedBusinessProcess();
 
   await api.assertEmailSent(claimNumber, {
     recipientEmail: config.claimantCitizenUser.email,
@@ -107,6 +108,7 @@ Scenario('LiP vs LiP Unsuccessful Mediation with other options', async ({ api })
   await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.rejectAllSmallClaimsCarm, 'DefendantCompany');
   await api.claimantLipRespondToDefence(config.claimantCitizenUser, claimRef, true, 'IN_MEDIATION');
   await api.mediationUnsuccessful(mediationAdmin, true, ['PARTY_WITHDRAWS', 'APPOINTMENT_NOT_ASSIGNED', 'APPOINTMENT_NO_AGREEMENT']);
+  await api.waitForFinishedBusinessProcess();
 
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   const mediationUnsuccessfulNOTClaimant1NonContactableNotif = mediationUnsuccessfulNOTClaimant1NonContactable();

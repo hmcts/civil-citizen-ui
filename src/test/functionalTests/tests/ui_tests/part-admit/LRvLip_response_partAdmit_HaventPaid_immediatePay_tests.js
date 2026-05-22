@@ -53,4 +53,5 @@ Scenario('Response with PartAdmit-havent paid and Immediate payment', async ({ap
   // await api.liftBreathingSpace(config.applicantSolicitorUser);
   await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.partAdmitHaventPaidPartiallyWantsToPayImmediately, config.claimState.IN_MEDIATION);
   await api.mediationSuccessful(config.caseWorker);
+  await api.waitForFinishedBusinessProcess();
 }).tag('@smoketest');

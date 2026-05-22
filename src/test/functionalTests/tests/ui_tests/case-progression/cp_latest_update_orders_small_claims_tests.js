@@ -21,6 +21,7 @@ Before(async ({ api }) => {
   await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.rejectAllDisputeAllWithIndividual);
   await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.rejectAll, 'IN_MEDIATION', 'SMALL_CLAIM');
   await api.mediationUnsuccessful(config.caseWorker, true, ['NOT_CONTACTABLE_CLAIMANT_ONE']);
+  await api.waitForFinishedBusinessProcess();
   await api.performCaseProgressedToSDO(config.judgeUserWithRegionId2, claimRef, 'smallClaimsTrack');
   await api.performAnAssistedOrder(config.judgeUserWithRegionId2, claimRef);
   await api.waitForFinishedBusinessProcess();

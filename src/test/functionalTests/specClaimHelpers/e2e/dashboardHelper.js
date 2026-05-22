@@ -1,6 +1,7 @@
 const I = actor();
 
 const steps = require('../api/steps');
+const config = require('../../../config');
 
 const selectors = {
   titleClass: '.govuk-notification-banner__title',
@@ -8,8 +9,19 @@ const selectors = {
   dashboardNotification: '.dashboard-notification',
 };
 
+const isSlowTestEnvironment = () => {
+  const environment = (config.env || '').toLowerCase();
+  const civilServiceUrl = (config.url?.civilService || '').toLowerCase();
+  const testUrl = (config.TestUrl || process.env.TEST_URL || '').toLowerCase();
+  return environment === 'aat'
+    || environment === 'preview'
+    || civilServiceUrl.includes('preview')
+    || testUrl.includes('preview');
+};
+
 const NOTIFICATION_VERIFY_MAX_RETRIES = 15;
 const NOTIFICATION_VERIFY_RETRY_WAIT_SEC = 5;
+const DASHBOARD_NOTIFICATION_WAIT_TIMEOUT = isSlowTestEnvironment() ? 45 : 20;
 
 const notificationMatches = (pageSource, title, content) => {
   if (!pageSource.includes(title)) {
@@ -33,15 +45,19 @@ const openClaimDashboard = async (claimNumber, claimRef) => {
   await I.click(claimNumber);
 };
 
-const isDashboardNotificationVisible = async () => I.waitForVisible(selectors.dashboardNotification, 15)
+const isDashboardNotificationVisible = async () => I.waitForVisible(selectors.dashboardNotification, DASHBOARD_NOTIFICATION_WAIT_TIMEOUT)
   .then(() => true)
   .catch(() => false);
 
 module.exports = {
   verifyNotificationTitleAndContent: async (claimNumber = '', title, content, claimRef) => {
+    // Add initial wait to allow dashboard data to load after login
+    await I.wait(2);
+    
     for (let tries = 1; tries <= NOTIFICATION_VERIFY_MAX_RETRIES; tries++) {
       console.log('Verifying notification title and content... attempt', tries);
       console.log('Title to be verified ..', title);
+      console.log(`Using dashboard notification timeout: ${DASHBOARD_NOTIFICATION_WAIT_TIMEOUT} seconds`);
 
       await openClaimDashboard(claimNumber, claimRef);
 
@@ -49,9 +65,10 @@ module.exports = {
         if (tries === NOTIFICATION_VERIFY_MAX_RETRIES) {
           throw new Error(
             `Notification could not be verified after ${NOTIFICATION_VERIFY_MAX_RETRIES} attempts. `
-            + `Expected title: "${title}". The dashboard notification panel was not visible.`,
+            + `Expected title: "${title}". The dashboard notification panel was not visible after ${DASHBOARD_NOTIFICATION_WAIT_TIMEOUT}s wait.`,
           );
         }
+        console.log(`Dashboard notification not visible on attempt ${tries}, waiting ${NOTIFICATION_VERIFY_RETRY_WAIT_SEC}s before retry...`);
         await I.wait(NOTIFICATION_VERIFY_RETRY_WAIT_SEC);
         await I.refreshPage();
         continue;
@@ -76,6 +93,7 @@ module.exports = {
         );
       }
 
+      console.log(`Notification content mismatch on attempt ${tries}, waiting ${NOTIFICATION_VERIFY_RETRY_WAIT_SEC}s before retry...`);
       await I.wait(NOTIFICATION_VERIFY_RETRY_WAIT_SEC);
       await I.refreshPage();
     }
