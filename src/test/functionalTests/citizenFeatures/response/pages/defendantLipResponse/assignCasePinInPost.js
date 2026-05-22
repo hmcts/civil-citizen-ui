@@ -27,9 +27,10 @@ class AssignCasePinInPost {
   }
 
   async open(claimNumber, securityCode, manualPIP) {
+    // Do not clearCookie() — that wipes the server session holding firstContact.claimId,
+    // so /assignclaim after IDAM login cannot link the defendant to the case.
     const isPlaywrightActive = await I.isPlaywright();
     if (isPlaywrightActive) {
-      await I.clearCookie();
       await I.setCookie([...idamCookies, ...cuiCookies]);
     }
     await I.amOnPage('/first-contact/claim-reference/');

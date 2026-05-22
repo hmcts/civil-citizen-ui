@@ -8,6 +8,11 @@ class LoginSteps {
   async EnterCitizenCredentials(username, password, manualPIP = false) {
     if (!manualPIP) {
       await LoginPage.openCitizenLogin();
+    } else {
+      const url = await I.grabCurrentUrl();
+      if (!url.includes('idam') && !url.includes('oauth')) {
+        await LoginPage.openCitizenLogin();
+      }
     }
     //await this.AcceptCookies(); -- skip as it is flaky
     await LoginPage.citizenLogin(username, password);
