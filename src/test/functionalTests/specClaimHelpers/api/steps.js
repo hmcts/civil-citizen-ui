@@ -83,7 +83,6 @@ module.exports = {
   makeOrderGA: async (gaCaseId, courtResponseType, user = config.judgeUserWithRegionId2) => {
     console.log('Make an Order of GA: ' + gaCaseId);
     const document = await uploadDocument();
-    let payload;
     switch(courtResponseType){
       case 'approveOrEdit':
         payload = makeAnOrderGA.makeAnOrderGA(document);
