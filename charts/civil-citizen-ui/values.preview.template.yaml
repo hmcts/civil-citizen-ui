@@ -9,7 +9,7 @@ global:
   idamWebUrl: https://idam-web-public.aat.platform.hmcts.net
   useFlexiblePostgres: true
   postgresUsername: hmcts
-  postgresHostname: {{ if .Values.global.useFlexiblePostgres }}civil-preview.postgres.database.azure.com{{ else }}${SERVICE_NAME}-postgresql{{ end }}
+  postgresHostname: civil-preview.postgres.database.azure.com
   databaseNamePrefix: "pr-${CHANGE_ID}-"
   postgresConnectionOptions: "{{ if .Values.global.useFlexiblePostgres }}?stringtype=unspecified&reWriteBatchedInserts=true&sslmode=require{{ else }}?stringtype=unspecified&sslmode=allow{{ end }}"
   postgresJdbcOptions: "{{ if .Values.global.useFlexiblePostgres }}?sslmode=require&stringtype=unspecified{{ else }}?sslmode=disable&stringtype=unspecified{{ end }}"
@@ -174,7 +174,7 @@ civil-service:
         disabled: false
 
   postgresql:
-    enabled: {{ not .Values.global.useFlexiblePostgres }}
+    enabled: false
     releaseNameOverride: ${SERVICE_NAME}-postgresql
     image:
       registry: hmctsprod.azurecr.io
@@ -240,7 +240,7 @@ civil-service:
       s2s:
         enabled: false
       postgresql:
-        enabled: {{ .Values.global.useFlexiblePostgres }}
+        enabled: true
       userProfileImporter:
         enabled: false
       userProfile:
@@ -249,7 +249,7 @@ civil-service:
         enabled: true
 
     postgresql:
-      enabled: {{ .Values.global.useFlexiblePostgres }}
+      enabled: true
       flexibleserver: civil-preview
       setup:
         databases:
@@ -399,7 +399,7 @@ civil-service:
           emptyDir: {}
         - name: database-secret-volume
           secret:
-            secretName: {{ .Values.global.postgresSecret }}
+            secretName: postgres
       extraVolumeMounts: |
         - name: logstash-lib
           mountPath: /usr/share/logstash/ccd
