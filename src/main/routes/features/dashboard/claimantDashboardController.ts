@@ -14,7 +14,7 @@ import {
 } from 'services/dashboard/dashboardService';
 import {Claim} from 'models/claim';
 import {CaseState} from 'common/form/models/claimDetails';
-import {getClaimById} from 'modules/utilityService';
+import {getClaimById, refreshDraftStoreClaimFrom} from 'modules/utilityService';
 import {AppRequest} from 'models/AppRequest';
 import {ClaimantOrDefendant} from 'models/partyType';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
@@ -55,7 +55,7 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
       claim = await getClaimById(userId, req, true);
       dashboardId = userId;
     } else {
-      claim = await getClaimById(claimId, req, true);
+      claim = await refreshDraftStoreClaimFrom(req, true);
       caseRole = claim.isClaimant()?ClaimantOrDefendant.CLAIMANT:ClaimantOrDefendant.DEFENDANT;
       dashboardId = claimId;
       claimIdPrettified = caseNumberPrettify(claimId);

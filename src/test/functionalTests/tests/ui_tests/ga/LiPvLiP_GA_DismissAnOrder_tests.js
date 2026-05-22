@@ -36,8 +36,11 @@ Scenario('LipvLip Applicant GA creation e2e tests - Dismiss an Order', async ({
   await I.amOnPage('/dashboard');
   await I.click(claimNumber);
   gaID = await createGASteps.askToChangeHearingDateGA(claimRef, 'Miss Jane Doe v Sir John Doe', 'withoutnotice');
+  await api.waitForFinishedBusinessProcessForCase(claimRef, config.claimantCitizenUser);
+  await api.waitForGaLinkedToParentCase(claimRef);
 
   await api.makeOrderGA(gaID, courtResponseType);
+  await api.waitForFinishedBusinessProcessForCase(gaID, config.judgeUserWithRegionId2);
   await api.waitForFinishedBusinessProcessForCase(claimRef, config.claimantCitizenUser);
 
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);

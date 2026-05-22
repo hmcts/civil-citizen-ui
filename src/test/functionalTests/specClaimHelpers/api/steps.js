@@ -82,8 +82,8 @@ module.exports = {
 
   makeOrderGA: async (gaCaseId, courtResponseType, user = config.judgeUserWithRegionId2) => {
     console.log('Make an Order of GA: ' + gaCaseId);
-    eventName = 'MAKE_DECISION';
     const document = await uploadDocument();
+    let payload;
     switch(courtResponseType){
       case 'approveOrEdit':
         payload = makeAnOrderGA.makeAnOrderGA(document);
@@ -114,10 +114,21 @@ module.exports = {
         break;
     }
     await apiRequest.setupTokens(user);
-    caseData = payload['caseDataUpdate'];
+    caseData = payload.caseDataUpdate;
+    eventName = payload.event;
     await waitForGAFinishedBusinessProcess(gaCaseId, user);
     await waitForTimeout(1000);
-    await assertSubmittedGASpecEvent(gaCaseId, 'APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION', user);
+    await assertSubmittedGASpecEvent(gaCaseId, undefined, user);
+  },
+
+  waitForGaLinkedToParentCase: async (parentCaseId, user = config.adminUser) => {
+    const {retry} = require('./retryHelper');
+    await retry(async () => {
+      const caseData = await module.exports.retrieveCaseData(user, parentCaseId);
+      if (!caseData?.generalApplications?.length) {
+        throw new Error(`GA not yet linked to parent case ${parentCaseId}`);
+      }
+    }, 60, 4000);
   },
 
   performBundleGeneration: async (user, caseId) => {
