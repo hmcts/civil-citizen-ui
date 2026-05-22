@@ -8,6 +8,8 @@ const immediatePayment = 'immediate';
 const dontWantMoreTime = 'dontWantMoreTime';
 // eslint-disable-next-line no-unused-vars
 const yesIWantMoretime = 'yesIWantMoretime';
+// Skip testing-support assign-case (500 on preview after spec claim); use pin-in-post UI instead.
+const manualPIP = true;
 
 let claimRef;
 let caseData;
@@ -18,15 +20,15 @@ Feature('Response with PartAdmit-havent paid and Immediate payment - Small Claim
 
 Before(async ({api}) => {
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
-  claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser);
+  claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser, '', '', true, undefined, manualPIP);
   console.log('claimRef has been created Successfully    <===>  ', claimRef);
   caseData = await api.retrieveCaseData(config.adminUser, claimRef);
   claimNumber = await caseData.legacyCaseReference;
   securityCode = await caseData.respondent1PinToPostLRspec.accessCode;
   console.log('claim number', claimNumber);
   console.log('Security code', securityCode);
-  await ResponseSteps.AssignCaseToLip(claimNumber, securityCode);
-  await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+  await ResponseSteps.AssignCaseToLip(claimNumber, securityCode, manualPIP);
+  await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password, manualPIP);
   await CitizenDashboardSteps.VerifyClaimOnDashboard(claimNumber);
 });
 

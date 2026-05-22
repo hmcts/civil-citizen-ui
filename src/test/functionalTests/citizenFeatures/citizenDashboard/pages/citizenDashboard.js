@@ -13,7 +13,9 @@ class CitizenDashboardPage {
     for (let tries = 1; tries <= maxRetries; tries++) {
       console.log(`Verifying claim ${claimNumber} on dashboard... attempt ${tries}`);
       const pageSource = await I.grabTextFrom('body');
-      if (pageSource.includes(claimNumber) && pageSource.includes('Claim number')) {
+      if (pageSource.includes('Something went wrong')) {
+        console.log(`Dashboard technical error on attempt ${tries}, refreshing...`);
+      } else if (pageSource.includes(claimNumber) && pageSource.includes('Claim number')) {
         await I.see('Claimant name');
         await I.see('Claim amount');
         await I.see('Status');

@@ -46,9 +46,21 @@ class AssignCasePinInPost {
       await this.dismissCookieBannerIfPresent();
       await this.verifyClaimSummaryPageContent(claimNumber);
       await I.click('Respond to claim');
-      // To let defendant role gets assigned to citizen without any issues and then login to see the claim on dashboard if requried
-      await I.wait(10);
+      await this.waitForAssignClaimOrLoginRedirect();
     }
+  }
+
+  async waitForAssignClaimOrLoginRedirect() {
+    const maxAttempts = 30;
+    for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+      const url = await I.grabCurrentUrl();
+      if (url.includes('idam') || url.includes('/login') || url.includes('/assignclaim') || url.includes('/dashboard')) {
+        await I.wait(5);
+        return;
+      }
+      await I.wait(2);
+    }
+    throw new Error('Timed out waiting for login or dashboard redirect after Respond to claim');
   }
 
   async verifyClaimSummaryPageContent(claimNumber) {
