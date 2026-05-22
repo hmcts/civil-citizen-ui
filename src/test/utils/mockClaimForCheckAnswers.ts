@@ -72,7 +72,7 @@ import {HelpWithFees} from 'form/models/claim/details/helpWithFees';
 import {RequestForReviewForm} from 'models/caseProgression/requestForReconsideration/requestForReviewForm';
 
 const CONTACT_PERSON = 'The Post Man';
-const PARTY_NAME = 'Nice organisation';
+const PARTY_NAME = 'Mr John Richards';
 const TITLE = 'Mr';
 const FIRST_NAME = 'John';
 const LAST_NAME = 'Richards';
