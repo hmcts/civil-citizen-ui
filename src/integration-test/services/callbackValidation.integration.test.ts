@@ -9,8 +9,6 @@ import {CallbackValidationError} from '../../main/app/client/common/error/callba
 import {submitResponse} from '../../main/services/features/response/submission/submitResponse';
 import {civilServiceClientMock} from '../setup/sharedMocks';
 import * as draftStoreService from '../../main/modules/draft-store/draftStoreService';
-import {AppRequest} from '../../main/common/models/AppRequest';
-
 jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 
@@ -41,7 +39,7 @@ const appReq = {
   session: {
     user: {id: '1', accessToken: 'token'},
   },
-} as AppRequest;
+} as never;
 
 describe('Integration: HTTP 422 callback validation', () => {
   describe('CivilServiceClient', () => {
