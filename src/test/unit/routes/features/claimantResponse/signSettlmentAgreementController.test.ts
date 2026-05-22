@@ -71,12 +71,12 @@ describe('Sign Settlement Agreement', () => {
       const civilClaimResponseMock = {
         'case_data': {
           'respondent1': {
-            'partyDetails': { 'firstName': 'John', 'lastName': 'White' },
+            'partyDetails': { 'firstName': 'John', 'lastName': 'White', 'partyName':'John White' },
             'responseType': ResponseType.PART_ADMISSION,
             'type': PartyType.INDIVIDUAL,
           },
           'applicant1': {
-            'partyDetails': { 'firstName': 'James', 'lastName': 'White' },
+            'partyDetails': { 'firstName': 'James', 'lastName': 'White', 'partyName':'James White' },
             'type': PartyType.INDIVIDUAL,
           },
           'claimantResponse': {
