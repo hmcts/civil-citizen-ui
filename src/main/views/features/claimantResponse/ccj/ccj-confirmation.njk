@@ -3,7 +3,7 @@
 {% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 
-{% from "../../../macro/page-title.njk" import setPageTitle %}=
+{% from "../../../macro/page-title.njk" import setPageTitle %}
 {% from "../../../macro/external-link.njk" import externalLink %}
 {% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp with context %}
 {% import "external-urls.njk" as externalURLs %}
@@ -24,8 +24,8 @@
           titleText:t('PAGES.CCJ_CONFIRMATION.TITLE')
         }) }}
         <br>
-        <p class="govuk-body">{{ t(processYourRequest, { defendantName: defendantName }) }}</p>
-        <p class="govuk-body">{{ t(processYourRequest1, { defendantName: defendantName }) }}</p>
+        <p class="govuk-body">{{ processYourRequest | safe }}</p>
+        <p class="govuk-body">{{ processYourRequest1 | safe }}</p>
         {% if not isJudgmentOnline %}
           <p class="govuk-body">{{ t('PAGES.CCJ_CONFIRMATION.UPDATES') }}</p>
         {% endif %}
@@ -35,14 +35,6 @@
         <p class="govuk-body">
           {{ externalLink(t, 'PAGES.CCJ_CONFIRMATION.ACTIONS_LINK_TEXT', externalURLs.enforceJudgementUrl, true) }}
         </p>
-      {{ govukPanel({
-        titleText:t('PAGES.CCJ_CONFIRMATION.TITLE')
-      }) }}
-      <br>
-      <p class="govuk-body">{{ processYourRequest | safe}}</p>
-      <p class="govuk-body">{{ processYourRequest1 | safe}}</p>
-      {% if not isJudgmentOnline %}
-        <p class="govuk-body">{{ t('PAGES.CCJ_CONFIRMATION.UPDATES') }}</p>
       {% endif %}
       <p class="govuk-body">
         {{ externalLink(t, 'PAGES.SUBMIT_CONFIRMATION.YOUR_OPINION_OF_SERVICE', externalURLs.smartSurveyUrl, true) }}
@@ -57,4 +49,3 @@
     </div>
   </div>
 {% endblock %}
-

@@ -14,14 +14,15 @@ ccjConfirmationController.get(CCJ_CONFIRMATION_URL, ccjConfirmationGuard, (async
     const isJudgmentOnline = claim.isCCJCompleteForJo(await isJudgmentOnlineLive());
     const judgmentBufferEnabled = await isJudgmentBufferEnabled();
     const isJudgmentRequested = judgmentBufferEnabled && claim.isJudgmentRequested();
+    const { processYourRequest, processYourRequest1 } = getProcessRequestMessages(isJudgmentOnline, defendantName);
     res.render('features/claimantResponse/ccj/ccj-confirmation', {
       defendantName,
       isJudgmentOnline,
       isJudgmentRequested,
+      processYourRequest,
+      processYourRequest1,
       pageTitle: 'PAGES.CCJ_CONFIRMATION.PAGE_TITLE',
     });
-    const { processYourRequest, processYourRequest1 } = getProcessRequestMessages(isJudgmentOnline, defendantName);
-    res.render('features/claimantResponse/ccj/ccj-confirmation', { isJudgmentOnline, pageTitle: 'PAGES.CCJ_CONFIRMATION.PAGE_TITLE', processYourRequest, processYourRequest1});
   } catch (error) {
     next(error);
   }
