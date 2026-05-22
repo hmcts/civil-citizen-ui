@@ -28,7 +28,6 @@ Scenario('Defendant full-admit pay-immediately journey', async ({I, api}) => {
 
   const respondToClaimNotif = respondToClaim();
   await verifyNotificationTitleAndContent(claimNumber, respondToClaimNotif.title, respondToClaimNotif.content, claimRef);
-  await I.click(respondToClaimNotif.nextSteps);
 
   await api.performCitizenResponse(
     config.defendantCitizenUser,
@@ -37,6 +36,9 @@ Scenario('Defendant full-admit pay-immediately journey', async ({I, api}) => {
     config.defenceType.admitAllPayImmediateWithIndividual,
   );
   await api.waitForFinishedBusinessProcess();
+
+  await I.amOnPage('/dashboard');
+  await I.click(claimNumber);
 
   const fullAdmitNotif = defendantResponseFullAdmitPayImmediately(claimTotalAmount, deadline);
   await verifyNotificationTitleAndContent(claimNumber, fullAdmitNotif.title, fullAdmitNotif.content, claimRef);

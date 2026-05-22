@@ -21,19 +21,43 @@ const notificationMatches = (pageSource, title, content) => {
   return pageSource.includes(content);
 };
 
+const openClaimDashboard = async (claimNumber, claimRef) => {
+  if (!claimNumber) {
+    return;
+  }
+  const currentUrl = await I.grabCurrentUrl();
+  if (!claimRef || currentUrl.includes(claimRef)) {
+    return;
+  }
+  await I.amOnPage('/dashboard');
+  await I.click(claimNumber);
+};
+
+const isDashboardNotificationVisible = async () => I.waitForVisible(selectors.dashboardNotification, 15)
+  .then(() => true)
+  .catch(() => false);
+
 module.exports = {
   verifyNotificationTitleAndContent: async (claimNumber = '', title, content, claimRef) => {
-    const currentUrl = await I.grabCurrentUrl();
-    if (claimNumber && claimNumber !== '' && claimRef && !currentUrl.includes(claimRef)) {
-      await I.amOnPage('/dashboard');
-      await I.click(claimNumber);
-    }
     for (let tries = 1; tries <= NOTIFICATION_VERIFY_MAX_RETRIES; tries++) {
       console.log('Verifying notification title and content... attempt', tries);
-
-      await I.waitForVisible(selectors.dashboardNotification, 30);
-      const pageSource = await I.grabTextFrom(selectors.dashboardNotification);
       console.log('Title to be verified ..', title);
+
+      await openClaimDashboard(claimNumber, claimRef);
+
+      if (!(await isDashboardNotificationVisible())) {
+        if (tries === NOTIFICATION_VERIFY_MAX_RETRIES) {
+          throw new Error(
+            `Notification could not be verified after ${NOTIFICATION_VERIFY_MAX_RETRIES} attempts. `
+            + `Expected title: "${title}". The dashboard notification panel was not visible.`,
+          );
+        }
+        await I.wait(NOTIFICATION_VERIFY_RETRY_WAIT_SEC);
+        await I.refreshPage();
+        continue;
+      }
+
+      const pageSource = await I.grabTextFrom(selectors.dashboardNotification);
 
       if (notificationMatches(pageSource, title, content)) {
         if (Array.isArray(content)) {
