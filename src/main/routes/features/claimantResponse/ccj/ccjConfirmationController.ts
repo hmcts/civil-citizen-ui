@@ -3,7 +3,7 @@ import {CCJ_CONFIRMATION_URL} from 'routes/urls';
 import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {ccjConfirmationGuard} from 'routes/guards/ccjConfirmationGuard';
 import {AppRequest} from 'common/models/AppRequest';
-import {isJudgmentOnlineLive} from '../../../../app/auth/launchdarkly/launchDarklyClient';
+import {isJudgmentBufferEnabled, isJudgmentOnlineLive} from '../../../../app/auth/launchdarkly/launchDarklyClient';
 import {t} from 'i18next';
 
 const ccjConfirmationController = Router();
@@ -12,8 +12,16 @@ ccjConfirmationController.get(CCJ_CONFIRMATION_URL, ccjConfirmationGuard, (async
     const claim = await getCaseDataFromStore(generateRedisKey(req as unknown as AppRequest));
     const defendantName = claim.getDefendantFullName();
     const isJudgmentOnline = claim.isCCJCompleteForJo(await isJudgmentOnlineLive());
-    const { processYourRequest, processYourRequest1 } = getProcessRequestMessages(isJudgmentOnline, defendantName);
-    res.render('features/claimantResponse/ccj/ccj-confirmation', { isJudgmentOnline, pageTitle: 'PAGES.CCJ_CONFIRMATION.PAGE_TITLE', processYourRequest, processYourRequest1});
+    const judgmentBufferEnabled = await isJudgmentBufferEnabled();
+    const isJudgmentRequested = judgmentBufferEnabled && claim.isJudgmentRequested();
+    const {processYourRequest, processYourRequest1} = getProcessRequestMessages(isJudgmentOnline, defendantName);
+    res.render('features/claimantResponse/ccj/ccj-confirmation', {
+      isJudgmentOnline,
+      isJudgmentRequested,
+      pageTitle: 'PAGES.CCJ_CONFIRMATION.PAGE_TITLE',
+      processYourRequest,
+      processYourRequest1,
+    });
   } catch (error) {
     next(error);
   }
