@@ -57,4 +57,4 @@ Scenario('Response with RejectAll and DisputeAll - GA (Ask for more time)', asyn
   await api.waitForFinishedBusinessProcess();
   await api.createSDO(config.judgeUserWithRegionId3, config.sdoSelectionType.judgementSumSelectedYesAssignToSmallClaimsNoDisposalHearing);
 
-}).tag('@smoketest');
+});
