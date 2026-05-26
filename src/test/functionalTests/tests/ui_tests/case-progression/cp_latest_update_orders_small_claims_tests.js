@@ -9,8 +9,8 @@ const { ordersAndNotices } = require('../../../specClaimHelpers/dashboardTasklis
 const claimType = 'SmallClaims';
 let caseData, claimNumber, claimRef, taskListItem;
 
-// @smoketest: sole browser path for case progression order-made dashboard (bundle smoke is cp_bundles_small_claims_tests.js).
-Feature('Case progression journey - Verify latest Update page For an Order being Created - Small Claims').tag('@civil-citizen-master @civil-citizen-pr @civil-citizen-nightly @ui-orders @smoketest');
+// Dashboard order-made states are covered by integration tests; this browser path verifies the order page journey.
+Feature('Case progression journey - Verify latest Update page For an Order being Created - Small Claims').tag('@civil-citizen-master @civil-citizen-pr @civil-citizen-nightly @ui-orders');
 
 Before(async ({ api }) => {
   //Once the CUI Release is done, we can remove this IF statement, so that tests will run on AAT as well.
