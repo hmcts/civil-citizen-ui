@@ -5,10 +5,10 @@ module.exports = {
   transform: {
     '^.+\\.ts?$': ['ts-jest', {"isolatedModules": true}],
     // ESM-only deps: transform so Jest can load them
-    '.*/node_modules/(@exodus/bytes|html-encoding-sniffer|@asamuzakjp/css-color|cssstyle|@csstools|parse5|jsdom|@tootallnate/once)/.+\\.(js|mjs|cjs)$': 'babel-jest',
+    '.*/node_modules/(@exodus/bytes|html-encoding-sniffer|@asamuzakjp/css-color|@asamuzakjp/generational-cache|cssstyle|@csstools|parse5|jsdom|@tootallnate/once)/.+\\.(js|mjs|cjs)$': 'babel-jest',
   },
   transformIgnorePatterns: [
-    '/node_modules/(?!(@exodus/bytes|html-encoding-sniffer|@asamuzakjp/css-color|cssstyle|@csstools|parse5|jsdom|@tootallnate/once)/)',
+    '/node_modules/(?!(@exodus/bytes|html-encoding-sniffer|@asamuzakjp/css-color|@asamuzakjp/generational-cache|cssstyle|@csstools|parse5|jsdom|@tootallnate/once)/)',
   ],
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
   moduleNameMapper: {
