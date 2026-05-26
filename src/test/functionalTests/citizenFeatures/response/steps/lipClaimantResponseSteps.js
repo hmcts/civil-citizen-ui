@@ -74,6 +74,9 @@ class ClaimantResponseSteps {
   async verifyJudgmentByAdmission(claimRef) {
     await judgment.raiseJudgmentByAdmissions(claimRef);
   }
+  async verifyResponseToTheClaimforJBASetDate () {
+    await judgment.ResponseToTheClaimforJBASetDate();
+  }
 }
 
 module.exports = new ClaimantResponseSteps();

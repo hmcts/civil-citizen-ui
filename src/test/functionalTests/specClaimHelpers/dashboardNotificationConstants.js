@@ -191,6 +191,41 @@ module.exports = {
       //nextSteps: 'confirm that they’ve paid you the full amount that you’re owed',
     };
   },
+  defendantViewtheCOSCCertificate: () => {
+    return {
+      title: 'Proof of debt payment issued',
+      content: ['You’ve successfully confirmed that you’ve paid a judgment (CCJ) debt in full.'],
+      nextSteps: 'view the certificate',
+    };
+  },
+  defendantCanSeeAjudgmentHasBeenMadeAgainstYouNotification : () => {
+    return {
+      title: 'A judgment has been made against you',
+      content: ['The exact details of what you need to pay, and by when, are stated on the judgment.'],
+      //nextSteps: 'confirm that they’ve paid you the full amount that you’re owed',
+    };
+  },
+  claimantResponseConfirmIfAJudgmentDebtHasBeenPaid: () => {
+    return {
+      title: 'Confirm if a judgment debt has been paid',
+      content: ['The defendant who owed you money has told us that they paid in full on'],
+      nextSteps: 'confirm if you\'ve been paid',
+    };
+  },
+  claimantResponseToTheClaimForJBABySetDate: () => {
+    return {
+      title: 'Response to the claim',
+      content: ['Sir John Doe has offered to pay you £1580 (this amount includes interest if it has been claimed which may continue to accrue to the date of Judgment,'],
+      nextSteps: 'View and respond',
+    };
+  },
+  defendantCanSeeAjudgmentHasBeenMadeAgainstYouNotificationforJBA : () => {
+    return {
+      title: 'A judgment has been made against you',
+      content: ['The judgment formalises the payment plan you’ve agreed with the claimant.'],
+      //nextSteps: 'confirm that they’ve paid you the full amount that you’re owed',
+    };
+  },
   //CIV-13035
   //Notice.AAA6.ClaimantIntent.RequestedCCJ.Claimant
   claimantNotificationCCJRequested: () => {

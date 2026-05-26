@@ -22,7 +22,34 @@ class Judgment {
     await this.checkYourAnswers();
     await this.confirmationPage();
   }
-
+  async ResponseToTheClaimforJBASetDate() {
+    await I.waitForText('You have completed 0 of 3 sections');
+    await I.click('View the defendant\'s response');
+    await I.waitForText('The defendant’s response');
+    await I.click('Continue');
+    await I.waitForText('You have completed 1 of 3 sections');
+    await I.click('Accept or reject their repayment plan');
+    await I.click(fields.yes);
+    await I.click('Save and continue');
+    await I.waitForText('You have completed 2 of 4 sections');
+    await I.click('Choose how to formalise repayment');
+    await I.waitForText('Choose how to formalise repayment');
+    await I.click('Request a CCJ');
+    await I.click('Save and continue');
+    await I.waitForText('You have completed 3 of 5 sections');
+    await I.click('Request a County Court Judgment');
+    await I.waitForText('Has the defendant paid some of the amount owed?');
+    await I.click(fields.no);
+    await I.click('Save and continue');
+    await I.waitForText('Judgment amount');
+    await I.click('Continue');
+    await I.waitForText('You have completed 4 of 5 sections');
+    await I.click('Check and submit your response');
+    await I.waitForText('Check your answers');
+    await I.click('Submit Response');
+    await I.waitForText('You\'ve requested a County Court Judgment against the defendant.');
+    await I.click('Go to your account');
+  }
   async defendantDoB(claimRef){
     await I.click('.table-link');
     await I.waitForText('Wait for defendant to respond');

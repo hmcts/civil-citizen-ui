@@ -5,6 +5,9 @@ const ClaimantResponseSteps = require('../../../citizenFeatures/response/steps/l
 const {
   defendantResponseFullAdmitPayBySetDateClaimantCoSC,
   defendantResponseConfirmYouHavePaidAJudgmentCCJDebtForDJ,
+  defendantViewtheCOSCCertificate,
+  defendantCanSeeAjudgmentHasBeenMadeAgainstYouNotification,
+  claimantResponseConfirmIfAJudgmentDebtHasBeenPaid,
 } = require('../../../specClaimHelpers/dashboardNotificationConstants');
 const {verifyNotificationTitleAndContent} = require('../../../specClaimHelpers/e2e/dashboardHelper');
 const ResponseToDefenceLipVsLipSteps = require('../../../citizenFeatures/response/steps/responseToDefenceLipvLipSteps');
@@ -36,5 +39,38 @@ Scenario('Create LipvLip claim and defendant not responded by deadline and Claim
   notification = defendantResponseConfirmYouHavePaidAJudgmentCCJDebtForDJ();
   await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
   await ResponseToDefenceLipVsLipSteps.ConfirmYouHavePaidAJudgmentCCJDebt(claimRef, claimNumber);
+  notification = defendantViewtheCOSCCertificate();
+  await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
+  await I.click(notification.nextSteps);
+  await api.waitForFinishedBusinessProcess();
+}).tag('@civil-citizen-master @civil-citizen-pr');
+
+Scenario('Create LipvLip claim and defendant not responded by deadline and Claimant raise Default Judgment1', async ({api, I}) => {
+  await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+  await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+  claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType);
+  caseData = await api.retrieveCaseData(config.adminUser, claimRef);
+  claimNumber = await caseData.legacyCaseReference;
+  await api.amendRespondent1ResponseDeadline(config.systemUpdate2);
+  await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+  await ClaimantResponseSteps.verifyDefaultJudgment(claimRef);
+  await I.click('Sign out');
+  await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+  await api.waitForFinishedBusinessProcess();
+  notification = defendantCanSeeAjudgmentHasBeenMadeAgainstYouNotification();
+  await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
+  await ResponseToDefenceLipVsLipSteps.ConfirmYouHavePaidAJudgmentCCJDebt(claimRef, claimNumber);
+  await I.click('Sign out');
+  await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+  notification = claimantResponseConfirmIfAJudgmentDebtHasBeenPaid();
+  await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
+  await I.click(notification.nextSteps);
+  await ResponseToDefenceLipVsLipSteps.ConfirmThatYouHaveBeenpPaidforCoSC(claimRef, claimNumber);
+  await I.click('Sign out');
+  await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+  await api.waitForFinishedBusinessProcess();
+  notification = defendantViewtheCOSCCertificate();
+  await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
+  await I.click(notification.nextSteps);
   await api.waitForFinishedBusinessProcess();
 }).tag('@civil-citizen-master @civil-citizen-pr');

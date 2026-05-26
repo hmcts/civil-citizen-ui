@@ -327,6 +327,7 @@ class ResponseToDefence {
   }
 
   async ConfirmThatYouHaveBeenPaid() {
+    await I.refreshPage();
     await I.waitForText('Confirm that you\'ve been paid',60);
     await I.see('Enter the date that you were paid the full amount that was specified on the judgment');
     await I.waitForElement('#day', 10);
@@ -358,6 +359,34 @@ class ResponseToDefence {
     I.fillField('#name', 'Testing');
     await I.click('Submit');
     await I.waitForText('Pay the fee', 60);
+    await I.click('Pay application fee');
+    await I.waitForText('Pay application fee', 60);
+    await I.waitForText('Do you want to apply for help with fees?', 60);
+    await I.click(paths.options.no);
+    await I.click('Continue');
+    I.waitForContent('£19.00', 60);
+    I.see('Enter card details', 'h1');
+    I.see('Payment summary','h2');
+    I.see('card payment');
+    I.see('Total amount:');
+    I.fillField('#card-no' ,'4444333322221111');
+    I.fillField('#expiry-month' ,new Date().getMonth()+1);
+    I.fillField('#expiry-year' ,new Date().getFullYear()+1);
+    I.fillField('#cardholder-name','Test Name');
+    I.fillField('#cvc', '444');
+    I.fillField('[autocomplete=\'billing address-line1\']', '220 Helena House');
+    I.fillField('#address-city','Swansea');
+    I.fillField('#address-postcode','SA1 1XW');
+    I.fillField('#email','testxxx@hmcts.net');
+    await I.click('Continue');
+    I.waitForContent('£19.00', 60);
+    I.see('Confirm your payment','h1');
+    I.see('Payment summary','h2');
+    I.see('card payment');
+    I.see('Total amount:');
+    await I.click('Confirm payment');
+    await I.waitForText('What happens next', 60);
+    await I.click('Close and return to dashboard');
   }
   async verifyRepaymentPlanForPartAdmitPayBySetDate(acceptOrReject) {
     I.waitForContent('No - I\'ll suggest my own',60);
