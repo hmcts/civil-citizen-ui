@@ -3,8 +3,8 @@
  * Add file paths here when scenarios in the file must run sequentially as one journey.
  */
 module.exports = [
-  'src/test/functionalTests/tests/ui_tests/carm/carm_LiPvLiP_company_small_claims_tests.js',
-  'src/test/functionalTests/tests/ui_tests/carm/carm_LiPvLiP_Individual_small_claims_tests.js',
+  'src/test/functionalTests/tests/ui_tests/mediation/LiPvLiP_mediation_company_small_claims_tests.js',
+  'src/test/functionalTests/tests/ui_tests/mediation/LiPvLiP_Individual_small_claims_tests.js',
   'src/test/functionalTests/tests/ui_tests/case_offline/LiPvLiP_case_offline_tests.js',
   'src/test/functionalTests/tests/ui_tests/case_offline/LRvLiP_case_offline_tests.js',
   'src/test/functionalTests/tests/ui_tests/part_admit/LipvLip_UI_PartAdmit_PaySetDate_SSA_tests.js',
