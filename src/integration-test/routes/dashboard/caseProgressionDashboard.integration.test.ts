@@ -514,4 +514,34 @@ describe('Integration: case progression dashboard notifications and task list', 
     expect(res.text).toContain(trialHref);
     expect(res.text).toContain(hearingHref);
   });
+
+  it.each([
+    {caseRole: CaseRole.CLAIMANT, track: fastClaimTrack},
+    {caseRole: CaseRole.DEFENDANT, track: fastClaimTrack},
+  ])('$caseRole fast track completed trial arrangements task', async ({caseRole, track}) => {
+    if (caseRole === CaseRole.DEFENDANT) {
+      (isDashboardEnabledForCase as jest.Mock).mockResolvedValue(true);
+    }
+
+    const claimId = `000MC-CP-TRL-DONE-${caseRole}`;
+    const claim = buildBaseClaim(claimId, caseRole, track);
+    const trialHref = CP_FINALISE_TRIAL_ARRANGEMENTS_URL.replace(':id', claimId);
+
+    civilServiceClientMock.retrieveClaimDetails.mockResolvedValue(claim);
+    (getNotifications as jest.Mock).mockResolvedValue(new DashboardNotificationList([]));
+    (getDashboardForm as jest.Mock).mockResolvedValue(
+      buildHearingTasks([
+        {
+          id: 'trial-arrangements',
+          status: 'Done',
+          nameHtml: 'Add the trial arrangements',
+        },
+      ]),
+    );
+
+    const res = await request(app).get(getDashboardUrl(caseRole, claimId)).expect(200);
+
+    expectTaskNearStatus(res.text, 'Add the trial arrangements', 'Done');
+    expect(res.text).not.toContain(trialHref);
+  });
 });
