@@ -201,7 +201,7 @@
     "node-fetch": "^2.6.7",
     "shelljs": "^0.8.5",
     "glob-parent": "^6.0.1",
-    "qs": "^6.14.2",
+    "qs": "^6.15.2",
     "flat": "^5.0.1",
     "follow-redirects": "^1.16.0",
     "debug": "^4.3.4",
