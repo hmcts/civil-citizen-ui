@@ -47,6 +47,7 @@ appReq.locals = {
 appReq.session = {
   user: {
     accessToken: '54321',
+    idToken: '12345',
     id: '1',
     email: 'test@user.com',
     givenName: 'Test',
