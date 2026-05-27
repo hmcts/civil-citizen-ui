@@ -38,10 +38,22 @@ const escapeXPathLiteral = (value) => {
   return 'concat(' + parts.map((part) => singleQuote + part + singleQuote).join(', ' + singleQuote + ', ') + ')';
 };
 
+const bannerTitleXPath = (title) =>
+  `//div[contains(@class,'dashboard-notification')]//h2[contains(@class,'govuk-notification-banner__title')][contains(normalize-space(.), ${escapeXPathLiteral(title)})]`;
+
 const bannerXPathForTitle = (title) =>
-  `//div[contains(@class,'dashboard-notification')]//div[contains(@class,'govuk-notification-banner')][contains(normalize-space(.), ${escapeXPathLiteral(title)})]`;
+  `${bannerTitleXPath(title)}/ancestor::div[contains(@class,'govuk-notification-banner')][1]`;
 
 const isOnCaseDashboard = (url) => /\/dashboard\/[^/]+\/(defendant|claimant|claimantNewDesign)/.test(url);
+
+const waitForVisibleWithoutThrowing = async (locator, timeoutSec) => {
+  try {
+    await I.waitForVisible(locator, timeoutSec);
+    return true;
+  } catch (error) {
+    return false;
+  }
+};
 
 const notificationMatches = (pageSource, title, content) => {
   if (!pageSource.includes(title)) {
@@ -59,7 +71,7 @@ const notificationMatches = (pageSource, title, content) => {
 const openClaimDashboard = async (claimNumber, claimRef, party = 'defendant') => {
   const currentUrl = await I.grabCurrentUrl();
 
-  if (claimRef && currentUrl.includes(String(claimRef))) {
+  if (claimRef && isOnCaseDashboard(currentUrl)) {
     return;
   }
 
@@ -83,16 +95,19 @@ const openClaimDashboard = async (claimNumber, claimRef, party = 'defendant') =>
 
 const grabNotificationPageSource = async (title) => {
   const bannerXPath = bannerXPathForTitle(title);
-  const bannerVisible = await I.waitForVisible(bannerXPath, 3).then(() => true).catch(() => false);
-  if (bannerVisible) {
+  if (await waitForVisibleWithoutThrowing(bannerXPath, DASHBOARD_NOTIFICATION_WAIT_TIMEOUT)) {
     return I.grabTextFrom(bannerXPath);
   }
   return I.grabTextFrom(selectors.dashboardNotification);
 };
 
-const isDashboardNotificationVisible = async () => I.waitForVisible(selectors.notificationBanner, DASHBOARD_NOTIFICATION_WAIT_TIMEOUT)
-  .then(() => true)
-  .catch(() => false);
+const isNotificationWithTitleVisible = async (title) => {
+  if (await waitForVisibleWithoutThrowing(bannerTitleXPath(title), DASHBOARD_NOTIFICATION_WAIT_TIMEOUT)) {
+    return true;
+  }
+  const dashboardText = await I.grabTextFrom(selectors.dashboardNotification).catch(() => '');
+  return dashboardText.includes(title);
+};
 
 module.exports = {
   verifyNotificationTitleAndContent: async (
@@ -111,11 +126,11 @@ module.exports = {
 
       await openClaimDashboard(claimNumber, claimRef, party);
 
-      if (!(await isDashboardNotificationVisible())) {
+      if (!(await isNotificationWithTitleVisible(title))) {
         if (tries === NOTIFICATION_VERIFY_MAX_RETRIES) {
           throw new Error(
             `Notification could not be verified after ${NOTIFICATION_VERIFY_MAX_RETRIES} attempts. `
-            + `Expected title: "${title}". The dashboard notification panel was not visible after ${DASHBOARD_NOTIFICATION_WAIT_TIMEOUT}s wait.`,
+            + `Expected title: "${title}". The notification was not visible after ${DASHBOARD_NOTIFICATION_WAIT_TIMEOUT}s wait.`,
           );
         }
         console.log(`Dashboard notification not visible on attempt ${tries}, waiting ${NOTIFICATION_VERIFY_RETRY_WAIT_SEC}s before retry...`);

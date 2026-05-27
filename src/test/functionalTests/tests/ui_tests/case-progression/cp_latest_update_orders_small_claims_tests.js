@@ -36,8 +36,11 @@ Scenario('Case progression journey - Small Claims - Verify latest Update page fo
   await I.click('View orders and notices');
   await ResponseSteps.SignOut();
   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
-  await I.click(claimNumber);
+  await I.amOnPage('/dashboard');
+  await I.waitForText(claimNumber, 30);
   await I.dontSee(orderMadeNotif.content);
+  await I.click(claimNumber);
+  await verifyNotificationTitleAndContent(claimNumber, orderMadeNotif.title, orderMadeNotif.content, claimRef);
 
   await api.assertEmailSent(claimNumber, {
     recipientEmail: config.defendantCitizenUser.email,
