@@ -4,7 +4,9 @@ import '../../setup/testSetup';
 jest.mock('../../../main/modules/draft-store/draftStoreService', () => ({
   updateFieldDraftClaimFromStore: jest.fn(),
   getCaseDataFromStore: jest.fn(),
+  getDraftClaimFromStore: jest.fn(),
   saveDraftClaim: jest.fn(),
+  deleteDraftClaimFromStore: jest.fn(),
   generateRedisKey: jest.fn(() => 'test-redis-key'),
 }));
 jest.mock('../../../main/services/dashboard/dashboardService', () => ({
@@ -34,7 +36,12 @@ import {
   getHelpSupportTitle,
   getNotifications,
 } from '../../../main/services/dashboard/dashboardService';
-import {getCaseDataFromStore, saveDraftClaim} from '../../../main/modules/draft-store/draftStoreService';
+import {
+  deleteDraftClaimFromStore,
+  getCaseDataFromStore,
+  getDraftClaimFromStore,
+  saveDraftClaim,
+} from '../../../main/modules/draft-store/draftStoreService';
 
 const buildClaimFixture = (id: string, amount: number): Claim => {
   const claim = new Claim();
@@ -87,7 +94,9 @@ describe('Integration: Claim issue notifications rendered on dashboard', () => {
     (getHelpSupportTitle as jest.Mock).mockReturnValue('Help and support');
     (getHelpSupportLinks as jest.Mock).mockReturnValue([]);
     (getCaseDataFromStore as jest.Mock).mockResolvedValue(new Claim());
+    (getDraftClaimFromStore as jest.Mock).mockResolvedValue(undefined);
     (saveDraftClaim as jest.Mock).mockResolvedValue(undefined);
+    (deleteDraftClaimFromStore as jest.Mock).mockResolvedValue(undefined);
   });
 
   it.each([
