@@ -11,7 +11,7 @@ class CheckYourAnswers {
   }
 
   async submit() {
-    I.click('Submit');
+    await I.click('Submit');
   }
 }
 

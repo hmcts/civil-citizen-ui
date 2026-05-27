@@ -270,15 +270,15 @@ class UploadYourDocument {
   }
 
   async verifyPageContent(caseNumber, claimAmount, claimType, languageChosen = 'en') {
-    this.checkPageFullyLoaded(languageChosen);
-    this.verifyBreadcrumbs();
-    this.verifyHeadingDetails();
-    this.verifyCaseNumberClaimAmount(caseNumber, claimAmount);
-    this.verifyAcceptableDocumentsFormatsSectionContent();
+    await this.checkPageFullyLoaded(languageChosen);
+    await this.verifyBreadcrumbs();
+    await this.verifyHeadingDetails();
+    await this.verifyCaseNumberClaimAmount(caseNumber, claimAmount);
+    await this.verifyAcceptableDocumentsFormatsSectionContent();
     if (claimType === 'FastTrack') {
-      this.verifyAllFastTrackSectionContent(claimType);
+      await this.verifyAllFastTrackSectionContent(claimType);
     } else if (claimType === 'SmallClaims') {
-      this.verifyAllSmallClaimsSectionContent(claimType);
+      await this.verifyAllSmallClaimsSectionContent(claimType);
     }
     await contactUs.verifyContactUs(language);
   }
@@ -315,27 +315,27 @@ class UploadYourDocument {
   }
 
   async verifyDisclosureSectionContent() {
-    I.see(content.disclosure.title[language], 'h2');
-    I.see(content.disclosure.documents.title[language], 'h2');
-    I.see(content.disclosure.documents.documentType[language]);
-    I.see(content.disclosure.documents.documentTypeHint[language]);
-    I.see(content.disclosure.documents.dateTitle[language]);
-    I.see(content.disclosure.documents.dateHint[language]);
-    I.see(content.day[language]);
-    I.see(content.month[language]);
-    I.see(content.year[language]);
+    await I.see(content.disclosure.title[language], 'h2');
+    await I.see(content.disclosure.documents.title[language], 'h2');
+    await I.see(content.disclosure.documents.documentType[language]);
+    await I.see(content.disclosure.documents.documentTypeHint[language]);
+    await I.see(content.disclosure.documents.dateTitle[language]);
+    await I.see(content.disclosure.documents.dateHint[language]);
+    await I.see(content.day[language]);
+    await I.see(content.month[language]);
+    await I.see(content.year[language]);
     await I.see(content.uploadFile[language]);
     await I.see(content.disclosure.list.title[language]);
   }
 
   async verifyWitnessSectionContent(claimType) {
-    I.see(content.witness.title[language], 'h2');
-    I.see(content.witness.statement.title[language], 'h2');
-    I.see(content.witness.witnessName[language]);
-    I.see(content.witness.statement.dateTitle[language]);
-    I.see(content.witness.summary.title[language]);
-    I.see(content.witness.witnessName[language]);
-    I.see(content.witness.summary.dateTitle[language]);
+    await I.see(content.witness.title[language], 'h2');
+    await I.see(content.witness.statement.title[language], 'h2');
+    await I.see(content.witness.witnessName[language]);
+    await I.see(content.witness.statement.dateTitle[language]);
+    await I.see(content.witness.summary.title[language]);
+    await I.see(content.witness.witnessName[language]);
+    await I.see(content.witness.summary.dateTitle[language]);
     if (claimType === 'FastTrack') {
       await I.see(content.witness.noticeIntention.title[language]);
     }
@@ -344,53 +344,53 @@ class UploadYourDocument {
   }
 
   async verifyExpertSectionContentForFastTrack() {
-    I.see(content.expert.title[language], 'h2');
-    I.see(content.expert.report.title[language], 'h2');
-    I.see(content.expert.report.name[language]);
-    I.see(content.expert.report.expertise[language]);
-    I.see(content.expert.report.dateTitle[language]);
-    I.see(content.expert.jointStatement.title[language]);
-    I.see(content.expert.jointStatement.names[language]);
-    I.see(content.expert.jointStatement.expertise[language]);
-    I.see(content.expert.jointStatement.dateTitle[language]);
-    I.see(content.expert.questions.title[language]);
-    I.see(content.expert.questions.partyName[language]);
-    I.see(content.expert.questions.documentName[language]);
+    await I.see(content.expert.title[language], 'h2');
+    await I.see(content.expert.report.title[language], 'h2');
+    await I.see(content.expert.report.name[language]);
+    await I.see(content.expert.report.expertise[language]);
+    await I.see(content.expert.report.dateTitle[language]);
+    await I.see(content.expert.jointStatement.title[language]);
+    await I.see(content.expert.jointStatement.names[language]);
+    await I.see(content.expert.jointStatement.expertise[language]);
+    await I.see(content.expert.jointStatement.dateTitle[language]);
+    await I.see(content.expert.questions.title[language]);
+    await I.see(content.expert.questions.partyName[language]);
+    await I.see(content.expert.questions.documentName[language]);
     await I.see(content.expert.answers.title[language], 'h2');
     await I.see(content.expert.answers.documentName[language]);
   }
 
   async verifyExpertSectionContentForSmallClaims() {
-    I.see(content.expert.title[language]);
-    I.see(content.expert.report.title[language]);
-    I.see(content.expert.report.name[language]);
-    I.see(content.expert.report.expertise[language]);
-    I.see(content.expert.report.dateTitle[language]);
-    I.see(content.expert.report.dateTitleHint[language]);
-    I.see(content.day[language]);
-    I.see(content.month[language]);
-    I.see(content.year[language]);
-    I.see(content.uploadFile[language]);
-    I.see(content.expert.jointStatement.title[language]);
-    I.see(content.expert.jointStatement.names[language]);
+    await I.see(content.expert.title[language]);
+    await I.see(content.expert.report.title[language]);
+    await I.see(content.expert.report.name[language]);
+    await I.see(content.expert.report.expertise[language]);
+    await I.see(content.expert.report.dateTitle[language]);
+    await I.see(content.expert.report.dateTitleHint[language]);
+    await I.see(content.day[language]);
+    await I.see(content.month[language]);
+    await I.see(content.year[language]);
+    await I.see(content.uploadFile[language]);
+    await I.see(content.expert.jointStatement.title[language]);
+    await I.see(content.expert.jointStatement.names[language]);
     await I.see(content.expert.jointStatement.expertise[language]);
     await I.see(content.expert.jointStatement.dateTitle[language]);
   }
 
   async verifyTrialDocumentsSectionContent() {
-    I.see(content.trial.title[language], 'h2');
-    I.see(content.trial.summary[language], 'h2');
-    I.see(content.trial.skeleton[language], 'h2');
-    I.see(content.trial.authority[language], 'h2');
+    await I.see(content.trial.title[language], 'h2');
+    await I.see(content.trial.summary[language], 'h2');
+    await I.see(content.trial.skeleton[language], 'h2');
+    await I.see(content.trial.authority[language], 'h2');
     await I.see(content.trial.costs[language], 'h2');
     await I.see(content.trial.documentaryEvidence[language], 'h2');
   }
 
   async verifyHearingDocumentsSectionContent() {
-    I.see(content.hearing.title[language]);
-    I.see(content.hearing.documentaryEvidence.title[language]);
-    I.see(content.hearing.documentaryEvidence.documentType[language]);
-    I.see(content.hearing.documentaryEvidence.documentTypeHint[language]);
+    await I.see(content.hearing.title[language]);
+    await I.see(content.hearing.documentaryEvidence.title[language]);
+    await I.see(content.hearing.documentaryEvidence.documentType[language]);
+    await I.see(content.hearing.documentaryEvidence.documentTypeHint[language]);
     await I.see(content.hearing.documentaryEvidence.dateTitle[language]);
     await I.see(content.hearing.authorities[language]);
   }
