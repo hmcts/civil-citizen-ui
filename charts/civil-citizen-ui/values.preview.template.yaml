@@ -518,7 +518,7 @@ civil-service:
         devcpuRequests: 50m
         devmemoryRequests: 1536Mi
         devmemoryLimits: 2048Mi
-        devcpuLimits: 700m
+        devcpuLimits: 1200m
         releaseNameOverride: ${SERVICE_NAME}-ccd-definition-store-api
         environment:
           DEFINITION_STORE_DB_OPTIONS: "?stringtype=unspecified"
