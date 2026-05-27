@@ -20,43 +20,43 @@ const fields = {
 
 class UploadDocuments {
   async verifyUploadDocumentsPage() {
-    I.waitForContent('Mediation non-attendance', config.WaitForText);
-    I.see('Your statement');
-    I.see('Documents referred to in the statement');
-    I.click('Continue');
-    I.waitForContent('You must enter your name');
-    I.waitForContent('Enter the date the statement was written or document was produced');
-    I.see('Choose the file you want to upload');
-    I.see('You must enter type of document');
+    await I.waitForContent('Mediation non-attendance', config.WaitForText);
+    await I.see('Your statement');
+    await I.see('Documents referred to in the statement');
+    await I.click('Continue');
+    await I.waitForContent('You must enter your name');
+    await I.waitForContent('Enter the date the statement was written or document was produced');
+    await I.see('Choose the file you want to upload');
+    await I.see('You must enter type of document');
   }
 
   async uploadDocuments(docType, file) {
-    I.waitForContent('Mediation non-attendance', config.WaitForText);
+    await I.waitForContent('Mediation non-attendance', config.WaitForText);
     if (docType === 'Your statement') {
-      I.fillField(fields.yourName, 'LIP claimant test');
-      I.fillField(fields.statementDay, '08');
-      I.fillField(fields.statementMonth, '09');
-      I.fillField(fields.statementYear, '2010');
-      I.attachFile(fields.statementFile, file);
-      I.click(fields.statementUploadButton);
+      await I.fillField(fields.yourName, 'LIP claimant test');
+      await I.fillField(fields.statementDay, '08');
+      await I.fillField(fields.statementMonth, '09');
+      await I.fillField(fields.statementYear, '2010');
+      await I.attachFile(fields.statementFile, file);
+      await I.click(fields.statementUploadButton);
     } else if (docType === 'Documents referred to in the statement') {
-      I.fillField(fields.yourDoc, 'LIP test doc');
-      I.fillField(fields.docDay, '08');
-      I.fillField(fields.docMonth, '09');
-      I.fillField(fields.docYear, '2011');
-      I.attachFile(fields.docFile, file);
-      I.click(fields.docUploadButton);
+      await I.fillField(fields.yourDoc, 'LIP test doc');
+      await I.fillField(fields.docDay, '08');
+      await I.fillField(fields.docMonth, '09');
+      await I.fillField(fields.docYear, '2011');
+      await I.attachFile(fields.docFile, file);
+      await I.click(fields.docUploadButton);
     }
   }
 
   async clickContinue() {
-    I.click(cButtons.continue[sharedData.language]);
-    I.wait(2);
+    await I.click(cButtons.continue[sharedData.language]);
+    await I.wait(2);
   }
 
   async clickBackButton() {
-    I.click('Back');
-    I.wait(2);
+    await I.click('Back');
+    await I.wait(2);
   }
 }
 

@@ -731,6 +731,7 @@ class ResponseSteps {
     await this.SelectOptionForSupportRequired();
     await this.SelectPreferredCourtLocation();
     await this.SelectLanguageOption(true, languageOption);
+    await taskListPage.verifyResponsePageContent();
   }
 
   async EnterDQForSmallClaimsForClaimant(claimRef, isIndividual = true) {
