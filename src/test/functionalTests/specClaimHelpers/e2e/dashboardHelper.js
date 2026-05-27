@@ -27,17 +27,19 @@ const DASHBOARD_NOTIFICATION_WAIT_TIMEOUT = isSlowTestEnvironment() ? 45 : 20;
 const getDashboardPath = (party) => (party === 'claimant' ? 'claimantNewDesign' : 'defendant');
 
 const escapeXPathLiteral = (value) => {
-  if (!value.includes("'")) {
-    return `'${value}'`;
+  const singleQuote = '\'';
+  if (!value.includes(singleQuote)) {
+    return singleQuote + value + singleQuote;
   }
   if (!value.includes('"')) {
-    return `"${value}"`;
+    return '"' + value + '"';
   }
-  return `concat('${value.split("'").join("', \"'\", '")}')`;
+  const parts = value.split(singleQuote);
+  return 'concat(' + parts.map((part) => singleQuote + part + singleQuote).join(', ' + singleQuote + ', ') + ')';
 };
 
 const bannerXPathForTitle = (title) =>
-  `//div[contains(@class,"dashboard-notification")]//div[contains(@class,"govuk-notification-banner")][contains(normalize-space(.), ${escapeXPathLiteral(title)})]`;
+  `//div[contains(@class,'dashboard-notification')]//div[contains(@class,'govuk-notification-banner')][contains(normalize-space(.), ${escapeXPathLiteral(title)})]`;
 
 const isOnCaseDashboard = (url) => /\/dashboard\/[^/]+\/(defendant|claimant|claimantNewDesign)/.test(url);
 
