@@ -27,14 +27,14 @@ Scenario('Create LipvLip claim and defendant not responded by deadline and Claim
   await I.click('Sign out');
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   notification = defendantResponseFullAdmitPayBySetDateClaimantCoSC();
-  await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
+  await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef, 'claimant');
   await I.click(notification.nextSteps);
   await ResponseToDefenceLipVsLipSteps.ConfirmThatYouHaveBeenpPaidforCoSC(claimRef, claimNumber);
   await I.click('Sign out');
   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   await api.waitForFinishedBusinessProcess();
   notification = defendantResponseConfirmYouHavePaidAJudgmentCCJDebtForDJ();
-  await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
+  await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
   await ResponseToDefenceLipVsLipSteps.ConfirmYouHavePaidAJudgmentCCJDebt(claimRef, claimNumber);
   await api.waitForFinishedBusinessProcess();
 }).tag('@civil-citizen-master @civil-citizen-pr');

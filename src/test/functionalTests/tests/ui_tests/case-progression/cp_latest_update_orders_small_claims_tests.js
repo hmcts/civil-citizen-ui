@@ -3,7 +3,7 @@ const LoginSteps = require('../../../commonFeatures/home/steps/login');
 const ResponseSteps = require('../../../citizenFeatures/response/steps/lipDefendantResponseSteps');
 const { createAccount } = require('../../../specClaimHelpers/api/idamHelper');
 const { verifyNotificationTitleAndContent, verifyTasklistLinkAndState } = require('../../../specClaimHelpers/e2e/dashboardHelper');
-const { orderMade } = require('../../../specClaimHelpers/dashboardNotificationConstants');
+const { orderMadeLA } = require('../../../specClaimHelpers/dashboardNotificationConstants');
 const { ordersAndNotices } = require('../../../specClaimHelpers/dashboardTasklistConstants');
 
 const claimType = 'SmallClaims';
@@ -29,11 +29,11 @@ Before(async ({ api }) => {
 });
 
 Scenario('Case progression journey - Small Claims - Verify latest Update page for an Order being Created', async ({ I, api }) => {
-  const orderMadeNotif = orderMade();
+  const orderMadeNotif = orderMadeLA();
   await verifyNotificationTitleAndContent(claimNumber, orderMadeNotif.title, orderMadeNotif.content, claimRef);
   taskListItem = ordersAndNotices();
   await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Available', true);
-  await I.click(orderMadeNotif.nextSteps);
+  await I.click('View orders and notices');
   await ResponseSteps.SignOut();
   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   await I.click(claimNumber);

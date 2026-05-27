@@ -52,7 +52,13 @@ Scenario('LiP vs LiP Unsuccessful Mediation with Upload Documents', async ({ api
 
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   const mediationUnsuccessfulNOTClaimant1NonContactableNotif = mediationUnsuccessfulNOTClaimant1NonContactable();
-  await verifyNotificationTitleAndContent(claimNumber, mediationUnsuccessfulNOTClaimant1NonContactableNotif.title, mediationUnsuccessfulNOTClaimant1NonContactableNotif.content);
+  await verifyNotificationTitleAndContent(
+    claimNumber,
+    mediationUnsuccessfulNOTClaimant1NonContactableNotif.title,
+    mediationUnsuccessfulNOTClaimant1NonContactableNotif.content,
+    claimRef,
+    'claimant',
+  );
   taskListItem = viewMediationDocuments();
   await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Not available yet');
   taskListItem = uploadMediationDocuments();
@@ -62,7 +68,7 @@ Scenario('LiP vs LiP Unsuccessful Mediation with Upload Documents', async ({ api
 
   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   const defNotification = mediationUnsuccessfulClaimant1NonAttendance();
-  await verifyNotificationTitleAndContent(claimNumber, defNotification.title, defNotification.content);
+  await verifyNotificationTitleAndContent(claimNumber, defNotification.title, defNotification.content, claimRef);
   taskListItem = viewMediationDocuments();
   await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Not available yet');
   taskListItem = uploadMediationDocuments();
@@ -75,7 +81,7 @@ Scenario('LiP vs LiP Unsuccessful Mediation with Upload Documents', async ({ api
 
   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   const defNotificationAfterUpload = mediationUnsuccessfulClaimant1NonAttendance();
-  await verifyNotificationTitleAndContent(claimNumber, defNotificationAfterUpload.title, defNotificationAfterUpload.content);
+  await verifyNotificationTitleAndContent(claimNumber, defNotificationAfterUpload.title, defNotificationAfterUpload.content, claimRef);
   taskListItem = viewMediationDocuments();
   await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Available', true);
   taskListItem = uploadMediationDocuments();
@@ -85,7 +91,13 @@ Scenario('LiP vs LiP Unsuccessful Mediation with Upload Documents', async ({ api
 
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   const notificationAfterDefUpload = mediationUnsuccessfulNOTClaimant1NonContactable();
-  await verifyNotificationTitleAndContent(claimNumber, notificationAfterDefUpload.title, notificationAfterDefUpload.content);
+  await verifyNotificationTitleAndContent(
+    claimNumber,
+    notificationAfterDefUpload.title,
+    notificationAfterDefUpload.content,
+    claimRef,
+    'claimant',
+  );
   taskListItem = viewMediationDocuments();
   await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Available', true);
   taskListItem = uploadMediationDocuments();
@@ -111,7 +123,13 @@ Scenario('LiP vs LiP Unsuccessful Mediation with other options', async ({ api })
 
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   const mediationUnsuccessfulNOTClaimant1NonContactableNotif = mediationUnsuccessfulNOTClaimant1NonContactable();
-  await verifyNotificationTitleAndContent(claimNumber, mediationUnsuccessfulNOTClaimant1NonContactableNotif.title, mediationUnsuccessfulNOTClaimant1NonContactableNotif.content);
+  await verifyNotificationTitleAndContent(
+    claimNumber,
+    mediationUnsuccessfulNOTClaimant1NonContactableNotif.title,
+    mediationUnsuccessfulNOTClaimant1NonContactableNotif.content,
+    claimRef,
+    'claimant',
+  );
   taskListItem = viewMediationDocuments();
   await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Inactive');
   taskListItem = uploadMediationDocuments();
@@ -121,7 +139,7 @@ Scenario('LiP vs LiP Unsuccessful Mediation with other options', async ({ api })
 
   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   const defNotification = mediationUnsuccessfulNOTClaimant1NonContactable();
-  await verifyNotificationTitleAndContent(claimNumber, defNotification.title, defNotification.content);
+  await verifyNotificationTitleAndContent(claimNumber, defNotification.title, defNotification.content, claimRef);
   taskListItem = viewMediationDocuments();
   await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Inactive');
   taskListItem = uploadMediationDocuments();
@@ -148,7 +166,7 @@ Scenario('LiP vs LiP Successful Mediation', async ({ api }) => {
 
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   const mediationSuccessfulNotif = mediationSuccessful();
-  await verifyNotificationTitleAndContent(claimNumber, mediationSuccessfulNotif.title, mediationSuccessfulNotif.content);
+  await verifyNotificationTitleAndContent(claimNumber, mediationSuccessfulNotif.title, mediationSuccessfulNotif.content, claimRef, 'claimant');
   taskListItem = viewMediationDocuments();
   await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Inactive');
   taskListItem = uploadMediationDocuments();
@@ -158,7 +176,7 @@ Scenario('LiP vs LiP Successful Mediation', async ({ api }) => {
 
   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   const defNotification = mediationSuccessful();
-  await verifyNotificationTitleAndContent(claimNumber, defNotification.title, defNotification.content);
+  await verifyNotificationTitleAndContent(claimNumber, defNotification.title, defNotification.content, claimRef);
   taskListItem = viewMediationDocuments();
   await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Inactive');
   taskListItem = uploadMediationDocuments();
