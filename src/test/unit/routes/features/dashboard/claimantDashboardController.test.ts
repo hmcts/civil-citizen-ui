@@ -154,6 +154,9 @@ describe('claimant Dashboard Controller', () => {
 
   beforeEach(() => {
     jest.spyOn(draftStoreService, 'getCaseDataFromStore').mockResolvedValue(new Claim());
+    jest
+      .spyOn(UtilityService, 'refreshDraftStoreClaimFrom')
+      .mockImplementation((req) => UtilityService.getClaimById(req.params.id, req, true));
   });
 
   beforeAll(() => {
