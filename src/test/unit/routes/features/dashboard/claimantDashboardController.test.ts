@@ -409,7 +409,7 @@ describe('claimant Dashboard Controller', () => {
       claim.ccdState = CaseState.JUDGMENT_REQUESTED;
       jest.spyOn(launchDarkly, 'isJudgmentBufferEnabled').mockResolvedValueOnce(true);
       jest
-        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+        .spyOn(UtilityService, 'getDashboardClaimById')
         .mockResolvedValueOnce(claim);
       await request(app).get(DASHBOARD_CLAIMANT_URL).expect((res) => {
         expect(res.status).toBe(200);
@@ -431,7 +431,7 @@ describe('claimant Dashboard Controller', () => {
       claim.caseRole = CaseRole.CLAIMANT;
       claim.ccdState = CaseState.JUDGMENT_REQUESTED;
       jest
-        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+        .spyOn(UtilityService, 'getDashboardClaimById')
         .mockResolvedValueOnce(claim);
       await request(app).get(DASHBOARD_CLAIMANT_URL).expect((res) => {
         expect(res.status).toBe(200);
