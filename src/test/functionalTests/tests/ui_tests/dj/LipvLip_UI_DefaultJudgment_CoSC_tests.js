@@ -24,6 +24,7 @@ Scenario('Create LipvLip claim and defendant not responded by deadline and Claim
   await api.amendRespondent1ResponseDeadline(config.systemUpdate2);
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await ClaimantResponseSteps.verifyDefaultJudgment(claimRef);
+  await api.waitForFinishedBusinessProcess();
   await I.click('Sign out');
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   notification = defendantResponseFullAdmitPayBySetDateClaimantCoSC();
