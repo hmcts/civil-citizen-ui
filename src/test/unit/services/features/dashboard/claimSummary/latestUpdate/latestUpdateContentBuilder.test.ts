@@ -149,6 +149,37 @@ describe('Latest Update Content Builder', () => {
       expect(responseToClaimSection[2].type).toEqual(ClaimSummaryType.LINK);
       expect(responseToClaimSection[2].data?.href).toEqual(bilingualLanguagePreferencetUrl);
     });
+    it('should have responseNotSubmittedTitle and respondToClaimLink when judgment requested and judgment buffer is enabled', () => {
+      // Given
+      const judgmentRequestedClaim = new Claim();
+      judgmentRequestedClaim.ccdState = CaseState.JUDGMENT_REQUESTED;
+      judgmentRequestedClaim.respondent1ResponseDeadline = new Date('2022-07-29T15:59:59');
+      judgmentRequestedClaim.applicant1 = {
+        type: PartyType.INDIVIDUAL,
+        partyDetails: {
+          partyName: partyName,
+        },
+      };
+      const expectedNow = DateTime.local(2022, 7, 1, 23, 0, 0);
+      Settings.now = () => expectedNow.toMillis();
+      // When
+      const responseToClaimSection = buildResponseToClaimSection(judgmentRequestedClaim, claimId, lng, undefined, true);
+      // Then
+      expect(responseToClaimSection.length).toBe(3);
+      expect(responseToClaimSection[0].type).toEqual(ClaimSummaryType.TITLE);
+      expect(responseToClaimSection[0].data?.text).toEqual(t('PAGES.LATEST_UPDATE_CONTENT.YOU_HAVENT_RESPONDED_TO_CLAIM', {lng: 'en'}));
+      expect(responseToClaimSection[2].type).toEqual(ClaimSummaryType.LINK);
+      expect(responseToClaimSection[2].data?.href).toEqual(bilingualLanguagePreferencetUrl);
+    });
+    it('should be with Response information when judgment requested and judgment buffer is disabled', () => {
+      // Given
+      const judgmentRequestedClaim = new Claim();
+      judgmentRequestedClaim.ccdState = CaseState.JUDGMENT_REQUESTED;
+      // When
+      const responseToClaimSection = buildResponseToClaimSection(judgmentRequestedClaim, claimId, lng, undefined, false);
+      // Then
+      expect(responseToClaimSection.length).toBe(1);
+    });
 
     it('should have deadline extended title when defendant extended response deadline', () => {
       //Given
