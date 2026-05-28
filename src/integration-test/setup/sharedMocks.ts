@@ -7,6 +7,7 @@ const launchDarklyClientMock = {
   isGaForLipsEnabled: jest.fn().mockResolvedValue(false),
   isQueryManagementEnabled: jest.fn().mockResolvedValue(false),
   isWelshEnabledForMainCase: jest.fn().mockResolvedValue(false),
+  isJudgmentBufferEnabled: jest.fn().mockResolvedValue(false),
 };
 
 jest.mock('express-async-errors', () => ({}), {virtual: true});
