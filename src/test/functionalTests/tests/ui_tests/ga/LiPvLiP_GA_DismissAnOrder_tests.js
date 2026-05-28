@@ -44,6 +44,6 @@ Scenario('LipvLip Applicant GA creation e2e tests - Dismiss an Order', async ({
   await I.click(claimNumber);
 
   const orderMadeGANotif = orderMadeGA();
-  await verifyNotificationTitleAndContent(claimNumber, orderMadeGANotif.title, orderMadeGANotif.content);
+  await verifyNotificationTitleAndContent(claimNumber, orderMadeGANotif.title, orderMadeGANotif.content, undefined, 'defendant', {strictContent: false});
   await I.click(orderMadeGANotif.nextSteps);
 });

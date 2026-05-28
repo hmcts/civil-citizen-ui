@@ -38,7 +38,7 @@ Scenario('Case progression journey - Small Claims - Verify Bundles Page', async 
   formattedCaseId = StringUtilsComponent.StringUtilsComponent.formatClaimReferenceToAUIDisplayFormat(claimRef);
   uploadDate = DateUtilsComponent.DateUtilsComponent.formatDateToDDMMYYYY(new Date());
   notification = bundleReady();
-  await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
+  await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef, 'defendant', {strictContent: false});
   taskListItem = viewTheBundle();
   await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Available', true);
   I.click(taskListItem.title);

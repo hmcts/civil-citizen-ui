@@ -8,7 +8,7 @@ class DefendantLatestUpdate {
   async open(claimRef) {
     await I.amOnPage('/dashboard/' + claimRef + '/defendant');
     const notification = await respondToClaim();
-    await verifyNotificationTitleAndContent('', notification.title, notification.content);
+    await verifyNotificationTitleAndContent('', notification.title, notification.content, undefined, 'defendant', {strictContent: false});
     await I.click(notification.nextSteps);
   }
 

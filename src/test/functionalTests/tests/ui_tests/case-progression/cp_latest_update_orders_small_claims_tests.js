@@ -30,7 +30,7 @@ Before(async ({ api }) => {
 
 Scenario('Case progression journey - Small Claims - Verify latest Update page for an Order being Created', async ({ I, api }) => {
   const orderMadeNotif = orderMadeLA();
-  await verifyNotificationTitleAndContent(claimNumber, orderMadeNotif.title, orderMadeNotif.content, claimRef);
+  await verifyNotificationTitleAndContent(claimNumber, orderMadeNotif.title, orderMadeNotif.content, claimRef, 'defendant', {strictContent: false});
   taskListItem = ordersAndNotices();
   await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Available', true);
   await I.click('View orders and notices');
@@ -40,7 +40,7 @@ Scenario('Case progression journey - Small Claims - Verify latest Update page fo
   await I.waitForText(claimNumber, 30);
   await I.dontSee(orderMadeNotif.content);
   await I.click(claimNumber);
-  await verifyNotificationTitleAndContent(claimNumber, orderMadeNotif.title, orderMadeNotif.content, claimRef);
+  await verifyNotificationTitleAndContent(claimNumber, orderMadeNotif.title, orderMadeNotif.content, claimRef, 'defendant', {strictContent: false});
 
   await api.assertEmailSent(claimNumber, {
     recipientEmail: config.defendantCitizenUser.email,

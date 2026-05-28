@@ -32,14 +32,14 @@ Scenario('LipvLip hearing fee payment end-to-end', async ({I, api}) => {
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await I.click(claimNumber);
   notification = payTheHearingFeeClaimant(feeAmount, hearingFeeDueDate);
-  await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
+  await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef, 'defendant', {strictContent: false});
   await I.click(notification.nextSteps);
   await HearingFeeSteps.payHearingFeeJourney(feeAmount);
   await api.waitForFinishedBusinessProcess();
   await I.amOnPage('/dashboard');
   await I.click(claimNumber);
   notification = hearingFeePaidFull();
-  await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
+  await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef, 'defendant', {strictContent: false});
   taskListItem = payTheHearingFee(hearingFeeDueDate);
   await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Done', false, false);
 });

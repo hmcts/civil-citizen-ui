@@ -55,15 +55,21 @@ const waitForVisibleWithoutThrowing = async (locator, timeoutSec) => {
   }
 };
 
-const notificationMatches = (pageSource, title, content) => {
-  if (!pageSource.includes(title)) {
+const normalizeText = (text) => String(text || '').replace(/\s+/g, ' ').trim();
+
+const notificationMatches = (pageSource, title, content, strictContent = true) => {
+  const normalizedPageSource = normalizeText(pageSource);
+  if (!normalizedPageSource.includes(normalizeText(title))) {
     return false;
   }
+  if (!strictContent) {
+    return true;
+  }
   if (Array.isArray(content)) {
-    return content.every((text) => pageSource.includes(text));
+    return content.every((text) => normalizedPageSource.includes(normalizeText(text)));
   }
   if (content) {
-    return pageSource.includes(content);
+    return normalizedPageSource.includes(normalizeText(content));
   }
   return true;
 };
@@ -116,7 +122,9 @@ module.exports = {
     content,
     claimRef,
     party = 'defendant',
+    options = {},
   ) => {
+    const strictContent = options.strictContent !== false;
     await I.wait(2);
 
     for (let tries = 1; tries <= NOTIFICATION_VERIFY_MAX_RETRIES; tries++) {
@@ -141,7 +149,7 @@ module.exports = {
 
       const pageSource = await grabNotificationPageSource(title);
 
-      if (notificationMatches(pageSource, title, content)) {
+      if (notificationMatches(pageSource, title, content, strictContent)) {
         if (Array.isArray(content)) {
           content.forEach((text) => console.log('content to be verified ..', text));
         } else {

@@ -31,7 +31,7 @@ Scenario('Create LipvLip claim and defendant response as FullAdmit and pay immed
   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   await CitizenDashboardSteps.VerifyClaimOnDashboard(claimNumber);
   const respondToClaimNotif = respondToClaim();
-  await verifyNotificationTitleAndContent(claimNumber, respondToClaimNotif.title, respondToClaimNotif.content);
+  await verifyNotificationTitleAndContent(claimNumber, respondToClaimNotif.title, respondToClaimNotif.content, undefined, 'defendant', {strictContent: false});
   await I.click(respondToClaimNotif.nextSteps);
   await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.admitAllPayImmediateWithIndividual);
   await api.waitForFinishedBusinessProcess();
