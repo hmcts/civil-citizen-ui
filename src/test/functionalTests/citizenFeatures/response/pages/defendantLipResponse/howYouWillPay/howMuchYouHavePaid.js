@@ -10,7 +10,7 @@ const fields = {
 };
 
 const buttons = {
-  saveAndContinue: '#main-content button.govuk-button',
+  saveAndContinue: 'Save and continue',
 };
 const currentDate = new Date();
 const day = 1;
@@ -39,7 +39,7 @@ class HowMuchYouHavePaid {
     await I.fillField(fields.year, year.toString());
     await I.see('How did you pay this amount?');
     await I.fillField(fields.text, 'Bank transfer');
-    await I.click(buttons.saveAndContinue);
+    await I.clickWithRetry(buttons.saveAndContinue);
   }
 
   async enterPaymentDetailsError(claimRef, amount, responseType) {

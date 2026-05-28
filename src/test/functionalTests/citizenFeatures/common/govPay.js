@@ -35,7 +35,7 @@ class GovPay {
 
     await I.waitForElement('//*[@id="confirm"]');
     const confirmPaymentButton = translations.COMMON.BUTTONS.CONFIRM_PAYMENT;
-    await I.clickWithRetry(`//button[contains(normalize-space(), '${confirmPaymentButton}')]`);
+    await I.clickWithRetry(confirmPaymentButton);
   }
 }
 
