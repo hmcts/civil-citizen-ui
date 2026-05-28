@@ -17,7 +17,7 @@ const logger = Logger.getLogger('partialAdmissionService');
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
-export const submitClaimantResponse = async (req: AppRequest): Promise<Claim> => {
+export const submitClaimantResponse = async (req: AppRequest, judgmentBufferEnabled = false): Promise<Claim> => {
   try {
     const claimId = req.params.id;
     const claim = await getCaseDataFromStore(generateRedisKey(req as unknown as AppRequest));
@@ -27,7 +27,7 @@ export const submitClaimantResponse = async (req: AppRequest): Promise<Claim> =>
       const ccdResponseForRequestDefaultJudgement = await translateClaimantResponseRequestDefaultJudgementByAdmissionToCCD(claim, claimFee);
       return await civilServiceClient.submitClaimantResponseForRequestJudgementAdmission(req.params.id, ccdResponseForRequestDefaultJudgement, req);
     }
-    const ccdResponse = await translateClaimantResponseDJToCCD(claim);
+    const ccdResponse = await translateClaimantResponseDJToCCD(claim, judgmentBufferEnabled);
     logger.info('Translation claimant response sent to civil-service - submit event');
     return await civilServiceClient.submitClaimantResponseDJEvent(claimId, ccdResponse, req);
   } catch (err) {

@@ -8,6 +8,7 @@ const {
 } = require('../../../specClaimHelpers/dashboardNotificationConstants');
 const {verifyNotificationTitleAndContent} = require('../../../specClaimHelpers/e2e/dashboardHelper');
 const ResponseToDefenceLipVsLipSteps = require('../../../citizenFeatures/response/steps/responseToDefenceLipvLipSteps');
+const {checkToggleEnabled} = require('../../../specClaimHelpers/api/testingSupport');
 
 const claimType = 'SmallClaims';
 // eslint-disable-next-line no-unused-vars
@@ -16,6 +17,7 @@ let claimRef, notification, claimNumber, caseData;
 Feature('Create Lip v Lip claim -  Default Judgment').tag('@civil-citizen-nightly @ui-dj');
 
 Scenario('Create LipvLip claim and defendant not responded by deadline and Claimant raise Default Judgment', async ({api, I}) => {
+  const judgmentBufferEnabled = await checkToggleEnabled('judgment-buffer');
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType);
@@ -23,6 +25,13 @@ Scenario('Create LipvLip claim and defendant not responded by deadline and Claim
   claimNumber = await caseData.legacyCaseReference;
   await api.amendRespondent1ResponseDeadline(config.systemUpdate2);
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+
+  if (judgmentBufferEnabled) {
+    await ClaimantResponseSteps.verifyDefaultJudgmentBuffer(claimRef);
+    await api.waitForFinishedBusinessProcess();
+    return;
+  }
+
   await ClaimantResponseSteps.verifyDefaultJudgment(claimRef);
   await api.waitForFinishedBusinessProcess();
   await I.click('Sign out');

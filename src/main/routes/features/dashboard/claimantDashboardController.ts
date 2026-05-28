@@ -22,6 +22,7 @@ import {
   isCarmEnabledForCase,
   isGaForLipsEnabled,
   isQueryManagementEnabled, isWelshEnabledForMainCase,
+  isJudgmentBufferEnabled,
 } from '../../../app/auth/launchdarkly/launchDarklyClient';
 import {t} from 'i18next';
 import {isCarmApplicableAndSmallClaim} from 'common/utils/carmToggleUtils';
@@ -77,8 +78,9 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
     const isGAFlagEnable = await isGaForLipsEnabled();
     const isQMFlagEnabled = await isQueryManagementEnabled(claim.submittedDate);
     const dashboard = await getDashboardForm(caseRole, claim, totalAmountWithInterestAndFees, dashboardId, req, isCarmApplicable, isGAFlagEnable);
+    const judgmentBufferEnabled = await isJudgmentBufferEnabled();
     const [iWantToTitle, iWantToLinks, helpSupportTitle, helpSupportLinks]
-      = await getSupportLinks(req, claim, claimId, lng, isGAFlagEnable);
+      = await getSupportLinks(req, claim, claimId, lng, isGAFlagEnable, false, judgmentBufferEnabled);
     const hearing = dashboard?.items[2]?.tasks ? dashboard?.items[2]?.tasks : [];
     hearing.forEach((task) => {
       if (task.taskNameEn.search(HearingUploadDocuments)>0){
@@ -112,8 +114,9 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
   }
 }) as RequestHandler);
 
-const getSupportLinks = async (req: AppRequest, claim: Claim, claimId: string, lng: string, isGAFlagEnable: boolean, isGAlinkEnabled = false) => {
-  const showTellUsEndedLink = claim.ccdState === CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT ||
+const getSupportLinks = async (req: AppRequest, claim: Claim, claimId: string, lng: string, isGAFlagEnable: boolean, isGAlinkEnabled = false, judgmentBufferEnabled = false) => {
+  const isAwaitingDefendantResponse = claim.isAwaitingDefendantResponse(judgmentBufferEnabled);
+  const showTellUsEndedLink = isAwaitingDefendantResponse ||
     claim.ccdState === CaseState.AWAITING_APPLICANT_INTENTION ||
     claim.ccdState === CaseState.IN_MEDIATION ||
     claim.ccdState === CaseState.JUDICIAL_REFERRAL ||
@@ -122,7 +125,7 @@ const getSupportLinks = async (req: AppRequest, claim: Claim, claimId: string, l
     claim.ccdState === CaseState.PREPARE_FOR_HEARING_CONDUCT_HEARING ||
     claim.ccdState === CaseState.DECISION_OUTCOME;
 
-  const showGetDebtRespiteLink = claim.ccdState === CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT ||
+  const showGetDebtRespiteLink = isAwaitingDefendantResponse ||
     claim.ccdState === CaseState.AWAITING_APPLICANT_INTENTION ||
     claim.ccdState === CaseState.IN_MEDIATION ||
     claim.ccdState === CaseState.JUDICIAL_REFERRAL ||
