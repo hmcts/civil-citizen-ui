@@ -30,7 +30,8 @@ Before(async ({ api }) => {
 
 Scenario('Case progression journey - Small Claims - Verify latest Update page for an Order being Created', async ({ I, api }) => {
   const orderMadeNotif = orderMade();
-  await verifyNotificationTitleAndContent(claimNumber, orderMadeNotif.title, orderMadeNotif.content, claimRef);
+  // Use strictContent: false to match title only, as content varies by order type
+  await verifyNotificationTitleAndContent(claimNumber, orderMadeNotif.title, orderMadeNotif.content, claimRef, 'defendant', { strictContent: false });
   taskListItem = ordersAndNotices();
   await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Available', true);
   await I.click(orderMadeNotif.nextSteps);
