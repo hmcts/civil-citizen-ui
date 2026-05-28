@@ -42,6 +42,7 @@ import {AppRequest} from 'models/AppRequest';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {getRouteParam} from 'common/utils/routeParamUtils';
+import {isJudgmentBufferEnabled} from '../../../app/auth/launchdarkly/launchDarklyClient';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
@@ -63,7 +64,7 @@ const getCommonInformationSolveProblems = (pageSection: PageSectionBuilder, clai
     .addLink(`${submitResponseClaimCommonInfo}.LINK_2.TEXT`, findCourtTribunalUrl, `${submitResponseClaimCommonInfo}.LINK_2.TEXT_BEFORE`, null, null, true);
 };
 
-const getContent = async (claimId: string, claim: Claim, isFollowUpScreen: boolean, qualifyQuestionType: QualifyingQuestionTypeOption, lang: string): Promise<ClaimSummarySection[]> => {
+const getContent = async (claimId: string, claim: Claim, isFollowUpScreen: boolean, qualifyQuestionType: QualifyingQuestionTypeOption, lang: string, judgmentBufferEnabled = false): Promise<ClaimSummarySection[]> => {
 
   const qualifySectionInfo = 'PAGES.QM.QUALIFY_SECTIONS';
   const pageSection = new PageSectionBuilder();
@@ -145,8 +146,8 @@ const getContent = async (claimId: string, claim: Claim, isFollowUpScreen: boole
         showAnythingElseSection = Version.IF_YOU_STILL_NEED_HELP;
         const isCCJLinkEnabled = claim.isClaimant() &&
           claim.isDeadLinePassed() &&
-          claim.isDefendantNotResponded();
-        const isAwaitingDefendantResponse = claim.isDefendant() && claim.isDefendantNotResponded();
+          claim.isDefendantNotResponded(judgmentBufferEnabled);
+        const isAwaitingDefendantResponse = claim.isDefendant() && claim.isDefendantNotResponded(judgmentBufferEnabled);
         if (isAwaitingDefendantResponse) {
           pageSection.addFullStopLink(`${qualifySectionInfo}.CLAIM_NOT_PAID.LINK_1.TEXT`, constructResponseUrlWithIdParams(claimId, BILINGUAL_LANGUAGE_PREFERENCE_URL), `${qualifySectionInfo}.CLAIM_NOT_PAID.LINK_1.TEXT_BEFORE`);
         } else {
@@ -315,7 +316,8 @@ const renderView = async (claimId: string, claim: Claim, isFollowUpScreen: boole
   const title = isFollowUpScreen? 'PAGES.QM.QUALIFY.TITLES.FOLLOW_UP' : getTitle(qualifyingQuestionTypeOption);
   const createQueryUrl = constructResponseUrlWithIdParams(claimId, QM_SHARE_QUERY_CONFIRMATION);
 
-  const contents = await getContent(claimId, claim, isFollowUpScreen, qualifyingQuestionTypeOption, lang);
+  const judgmentBufferEnabled = await isJudgmentBufferEnabled();
+  const contents = await getContent(claimId, claim, isFollowUpScreen, qualifyingQuestionTypeOption, lang, judgmentBufferEnabled);
   res.render(qmStartViewPath, {
     backLinkUrl,
     pageTitle: title,
