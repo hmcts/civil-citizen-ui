@@ -31,6 +31,7 @@ export const getUserDetails = (
 
   return {
     accessToken: responseData.access_token,
+    idToken: responseData.id_token,
     id: jwt.uid,
     email: jwt.sub,
     givenName: jwt.given_name,
