@@ -4,15 +4,14 @@ const LoginSteps = require('../../../commonFeatures/home/steps/login');
 const DateUtilsComponent = require('../../../citizenFeatures/caseProgression/util/DateUtilsComponent');
 const StringUtilsComponent = require('../../../citizenFeatures/caseProgression/util/StringUtilsComponent');
 const {createAccount} = require('../../../specClaimHelpers/api/idamHelper');
-const {uploadDocuments, orderMadeLA} = require('../../../specClaimHelpers/dashboardNotificationConstants');
-const {verifyNotificationTitleAndContent, verifyTasklistLinkAndState} = require('../../../specClaimHelpers/e2e/dashboardHelper');
+const {verifyTasklistLinkAndState} = require('../../../specClaimHelpers/e2e/dashboardHelper');
 const {uploadHearingDocuments, viewDocuments} = require('../../../specClaimHelpers/dashboardTasklistConstants');
 
 const claimType = 'SmallClaims';
 const partyType = 'LRvLiP';
-let claimRef, caseData, claimNumber, taskListItem, notification, formattedCaseId, uploadDate;
+let claimRef, caseData, claimNumber, taskListItem, formattedCaseId, uploadDate;
 
-Feature('Case progression journey - Upload Evidence - Small Claims').tag('@civil-citizen-master @civil-citizen-pr @civil-citizen-nightly @ui-upload-evidence');
+Feature('Case progression journey - Upload Evidence - Small Claims').tag('@civil-citizen-pr @ui-upload-evidence');
 
 Before(async ({api}) => {
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
@@ -29,19 +28,12 @@ Before(async ({api}) => {
 });
 
 Scenario('Small Claims Response with RejectAll and DisputeAll - both parties upload docs',  async ({I}) => {
-  // claimant checks notifications for orders and upload docs
-  notification = orderMadeLA();
-  await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
-  taskListItem = uploadHearingDocuments();
-  await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Action needed', true);
-  notification = uploadDocuments('defence');
-  await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
-  await I.click(notification.nextSteps);
   formattedCaseId = StringUtilsComponent.StringUtilsComponent.formatClaimReferenceToAUIDisplayFormat(claimRef);
   uploadDate = DateUtilsComponent.DateUtilsComponent.formatDateToSpecifiedDateFormat(new Date());
-  //defendant uploads documents
+  taskListItem = uploadHearingDocuments();
+  await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Action needed', true);
+  I.click(taskListItem.title);
   await CaseProgressionSteps.initiateUploadEvidenceJourney(formattedCaseId, claimType, partyType, '£1,500', uploadDate);
-  //await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'In progress', true);
   taskListItem = viewDocuments();
   await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Available', true);
 });

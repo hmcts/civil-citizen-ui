@@ -13,7 +13,7 @@ const claimAmount = '£15,000';
 const partyType = 'LiPvLiP';
 let caseData, claimNumber, claimRef, taskListItem, notification, fiveWeeksFromToday, trialArrangementsDueDate, formattedCaseId;
 
-Feature('Case progression - Lip v Lip - Trial Arrangements journey - Fast Track').tag('@civil-citizen-master @civil-citizen-pr @civil-citizen-nightly @ui-hearings');
+Feature('Case progression - Lip v Lip - Trial Arrangements journey - Fast Track').tag('@civil-citizen-pr @ui-hearings');
 
 Before(async ({api}) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);

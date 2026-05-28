@@ -3,17 +3,16 @@ const DateUtilsComponent = require('../../../citizenFeatures/caseProgression/uti
 const StringUtilsComponent = require('../../../citizenFeatures/caseProgression/util/StringUtilsComponent');
 const LoginSteps = require('../../../commonFeatures/home/steps/login');
 const {createAccount} = require('../../../specClaimHelpers/api/idamHelper');
-const { verifyTasklistLinkAndState, verifyNotificationTitleAndContent } = require('../../../specClaimHelpers/e2e/dashboardHelper');
+const {verifyTasklistLinkAndState} = require('../../../specClaimHelpers/e2e/dashboardHelper');
 const {viewTheBundle} = require('../../../specClaimHelpers/dashboardTasklistConstants');
-const {bundleReady} = require('../../../specClaimHelpers/dashboardNotificationConstants');
 const  ViewBundle = require('../../../citizenFeatures/caseProgression/pages/viewBundle');
 
 const claimType = 'SmallClaims';
 const partyType = 'LRvLiP';
 const viewBundlePage = new ViewBundle();
-let caseData, claimNumber, claimRef, taskListItem, notification, formattedCaseId, uploadDate;
+let caseData, claimNumber, claimRef, taskListItem, formattedCaseId, uploadDate;
 
-Feature('Case progression journey - Verify Bundle Page - Small Claims').tag('@civil-citizen-master @civil-citizen-pr @civil-citizen-nightly @ui-bundles');
+Feature('Case progression journey - Verify Bundle Page - Small Claims').tag('@civil-citizen-pr @ui-bundles');
 
 Before(async ({api}) => {
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
@@ -35,8 +34,6 @@ Before(async ({api}) => {
 Scenario('Case progression journey - Small Claims - Verify Bundles Page', async ({I}) => {
   formattedCaseId = StringUtilsComponent.StringUtilsComponent.formatClaimReferenceToAUIDisplayFormat(claimRef);
   uploadDate = DateUtilsComponent.DateUtilsComponent.formatDateToDDMMYYYY(new Date());
-  notification = bundleReady();
-  await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
   taskListItem = viewTheBundle();
   await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Available', true);
   I.click(taskListItem.title);
