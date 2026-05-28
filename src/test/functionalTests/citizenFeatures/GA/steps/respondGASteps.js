@@ -64,12 +64,12 @@ class respondGASteps {
     await hearingContactDetailsPage.nextAction('Continue');
 
     await unavailableDatesConfirmationPage.verifyPageContent(applicationType);
-    unavailableDatesConfirmationPage.nextAction('Yes');
-    unavailableDatesConfirmationPage.nextAction('Continue');
+    await unavailableDatesConfirmationPage.nextAction('Yes');
+    await unavailableDatesConfirmationPage.nextAction('Continue');
 
     await unavailableDatesPage.verifyPageContent(applicationType);
-    unavailableDatesPage.fillFields();
-    unavailableDatesPage.nextAction('Continue');
+    await unavailableDatesPage.fillFields();
+    await unavailableDatesPage.nextAction('Continue');
 
     await hearingSupportPage.verifyPageContent(applicationType);
     await hearingSupportPage.nextAction('Continue');

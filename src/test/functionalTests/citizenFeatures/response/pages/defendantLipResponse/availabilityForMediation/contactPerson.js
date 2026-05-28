@@ -14,19 +14,19 @@ const fields = {
 class ContactPerson {
 
   async confirmContactPerson() {
-    I.forceClick(fields.availabilityForMediationLink);
-    I.waitForContent('Is Test Company the person who will be attending ' +
+    await I.forceClick(fields.availabilityForMediationLink);
+    await I.waitForContent('Is Test Company the person who will be attending ' +
         'the mediation appointment?', config.WaitForText);
     contactUs.verifyContactUs();
-    I.click('Save and continue');
-    I.see('Choose option: Yes or No');
-    I.click(fields.noButton);
-    I.click('Save and continue');
-    I.waitForContent('Please provide the name of your nominated ' +
+    await I.click('Save and continue');
+    await I.see('Choose option: Yes or No');
+    await I.click(fields.noButton);
+    await I.click('Save and continue');
+    await I.waitForContent('Please provide the name of your nominated ' +
         'person to contact', config.WaitForText);
     contactUs.verifyContactUs();
-    I.fillField(fields.alternativeContactPerson, 'test 123');
-    I.click('Save and continue');
+    await I.fillField(fields.alternativeContactPerson, 'test 123');
+    await I.click('Save and continue');
   }
 }
 
