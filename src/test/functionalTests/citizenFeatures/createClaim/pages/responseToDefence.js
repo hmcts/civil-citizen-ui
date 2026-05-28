@@ -744,7 +744,8 @@ class ResponseToDefence {
     await I.see('TestEvidence');
     await I.seeElement(paths.links.full_response_pdf_link);
     await I.click(paths.links.full_response_pdf_link);
-    await I.click(paths.buttons.continue);
+    await I.wait(2);
+    await I.clickWithRetry(`//button[contains(normalize-space(), '${paths.buttons.continue}')]`);
   }
 
   async verifyDefendantsResponseForRejectAllDisputeAll() {
@@ -755,7 +756,8 @@ class ResponseToDefence {
     await I.see('Why they disagree with the claim?');
     await I.seeElement(paths.links.full_response_pdf_link);
     await I.click(paths.links.full_response_pdf_link);
-    await I.click(paths.buttons.continue);
+    await I.wait(2);
+    await I.clickWithRetry(`//button[contains(normalize-space(), '${paths.buttons.continue}')]`);
   }
 
   async verifyDefendantsResponseForRejectAllAlreadyPaidInFull() {
@@ -766,7 +768,8 @@ class ResponseToDefence {
     await I.see('How they say they paid?');
     await I.seeElement(paths.links.full_response_pdf_link);
     await I.click(paths.links.full_response_pdf_link);
-    await I.click(paths.buttons.continue);
+    await I.wait(2);
+    await I.clickWithRetry(`//button[contains(normalize-space(), '${paths.buttons.continue}')]`);
   }
 
   async verifyDefendantsResponseForRejectAllAlreadyPaidNotInFull() {
@@ -779,7 +782,8 @@ class ResponseToDefence {
     await I.see('Why they say they dont owe the amount you claimed?');
     await I.seeElement(paths.links.full_response_pdf_link);
     await I.click(paths.links.full_response_pdf_link);
-    await I.click(paths.buttons.continue);
+    await I.wait(2);
+    await I.clickWithRetry(`//button[contains(normalize-space(), '${paths.buttons.continue}')]`);
   }
 
   async verifyDefendantsResponseForPartAdmiAlreadyPaid(withTimeLineEvidenceDisagree) {
@@ -798,7 +802,8 @@ class ResponseToDefence {
     await I.see('Their evidence');
     await I.seeElement(paths.links.full_response_pdf_link);
     await I.click(paths.links.full_response_pdf_link);
-    await I.click(paths.buttons.continue);
+    await I.wait(2);
+    await I.clickWithRetry(`//button[contains(normalize-space(), '${paths.buttons.continue}')]`);
   }
 
   async inputProceedWithTheClaim() {

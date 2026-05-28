@@ -713,8 +713,8 @@ class ResponseSteps {
   async ConfirmContactPerson() {
     await contactPerson.confirmContactPerson();
   }
-  EnterNoMediation(claimRef){
-    freeTelephoneMediation.selectNoMediation(claimRef);
+  async EnterNoMediation(claimRef){
+    await freeTelephoneMediation.selectNoMediation(claimRef);
   }
 
   async EnterDQForSmallClaims(claimRef, isIndividual = true, languageOption = 'en') {
