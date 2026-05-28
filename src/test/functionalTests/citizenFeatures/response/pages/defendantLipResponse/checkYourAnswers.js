@@ -56,7 +56,7 @@ class CheckYourAnswersPage {
     //WIP Progerss :Please do not remove this comment
     }
 
-    await I.click(cButtons.submit[language]);
+    await I.clickWithRetry(`//button[contains(normalize-space(), '${cButtons.submit[language]}')]`);
     await I.amOnPage('/case/'+claimRef+'/response/confirmation');
     await I.waitForContent(content.confirmationHeading[language],config.WaitForText);
     await I.see(content.confirmationSubheading[language]);
@@ -78,7 +78,7 @@ class CheckYourAnswersPage {
       await I.waitForElement(fields.directionsQuestionnaireSigned);
       await I.checkOption(fields.directionsQuestionnaireSigned);
     }
-    await I.click(cButtons.submit[language]);
+    await I.clickWithRetry(`//button[contains(normalize-space(), '${cButtons.submit[language]}')]`);
   }
 
   async verifyMediationDetailsInCYA(claimRef) {
