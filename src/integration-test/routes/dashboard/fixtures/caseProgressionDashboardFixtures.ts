@@ -187,20 +187,20 @@ export const buildLegacyCaseProgressionClaim = (
     caseBundles:
       options.withBundle && options.withHearing
         ? [
-            {
-              id: 'bundle-1',
-              value: {
-                title: 'Trial bundle',
-                stitchedDocument: {
-                  document_url: 'http://dm-store:8080/documents/bundle',
-                  document_filename: 'bundle.pdf',
-                  document_binary_url: 'http://dm-store:8080/documents/bundle/binary',
-                },
-                createdOn: '2024-01-01',
-                bundleHearingDate: '2024-04-26',
+          {
+            id: 'bundle-1',
+            value: {
+              title: 'Trial bundle',
+              stitchedDocument: {
+                document_url: 'http://dm-store:8080/documents/bundle',
+                document_filename: 'bundle.pdf',
+                document_binary_url: 'http://dm-store:8080/documents/bundle/binary',
               },
+              createdOn: '2024-01-01',
+              bundleHearingDate: '2024-04-26',
             },
-          ]
+          },
+        ]
         : civilClaimResponseMock.case_data.caseBundles,
   };
 
