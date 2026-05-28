@@ -336,7 +336,7 @@ class ResponseToDefence {
     await I.click('#confirmed');
     await I.click('Submit');
     await I.waitForText('You\'ve confirmed that you\'ve been paid', 60);
-    await I.clickWithRetry('Close and return to case details');
+    await I.click('Close and return to case details');
   }
   async CertificateOfSatisfactionAndCancellation() {
     await I.waitForText('Confirm you\'ve paid a judgment (CCJ) debt',60);
