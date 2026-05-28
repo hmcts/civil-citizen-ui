@@ -57,7 +57,7 @@ Scenario.skip('Defendant LiP performs Request for reconsideration and Claimant a
   await RequestForReconsideraionSteps.initiateRequestForReconsideration(formattedCaseId, claimAmount, 'Test Inc', deadline);
   //defendant checks claimant's comment
   await api.performRequestForReconsideration(config.applicantSolicitorUser, claimRef);
-  I.refreshPage();
+  await I.refreshPage();
   notification = commentMadeOnRequest();
   await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
   taskListItem = ordersAndNotices();

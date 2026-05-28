@@ -86,39 +86,39 @@ class CheckYourAnswersPage {
     let url = await I.grabCurrentUrl();
     //Check if PCQ page appears
     if(url.includes('pcq')){
-      I.amOnPage('/case/'+claimRef+'/response/task-list');
-      I.click('Check and submit your response');
+      await I.amOnPage('/case/'+claimRef+'/response/task-list');
+      await I.click('Check and submit your response');
     }
-    I.waitForContent('Check your answers', config.WaitForText);
-    I.waitForElement(fields.cyaSigned);
+    await I.waitForContent('Check your answers', config.WaitForText);
+    await I.waitForElement(fields.cyaSigned);
 
-    I.see('Availability for mediation');
-    I.see('Is Test Company the person who will be attending the mediation appointment?');
-    I.see('Can the mediator use ');
-    I.see('Can the mediation team use ');
-    I.see('Are there any dates in the next 3 months when you cannot attend mediation?');
-    I.see('Dates unavailable');
+    await I.see('Availability for mediation');
+    await I.see('Is Test Company the person who will be attending the mediation appointment?');
+    await I.see('Can the mediator use ');
+    await I.see('Can the mediation team use ');
+    await I.see('Are there any dates in the next 3 months when you cannot attend mediation?');
+    await I.see('Dates unavailable');
   }
 
   async verifyEditedEmailDetails() {
-    I.click('Check and submit your response');
-    I.waitForContent('Check your answers', config.WaitForText);
-    I.waitForElement(fields.cyaSigned);
-    I.see('test@gmail.com');
+    await I.click('Check and submit your response');
+    await I.waitForContent('Check your answers', config.WaitForText);
+    await I.waitForElement(fields.cyaSigned);
+    await I.see('test@gmail.com');
   }
 
   async fillStatementOfTruthAndSubmit() {
     const { language } = sharedData;
-    I.waitForContent('Check your answers', config.WaitForText);
-    I.waitForElement(fields.cyaSigned);
-    I.fillField(fields.signedName, 'TestTest');
-    I.fillField(fields.signedRole, 'Test');
-    I.waitForElement(fields.cyaSigned);
-    I.checkOption(fields.cyaSigned);
-    I.checkOption(fields.directionsQuestionnaireSigned);
-    I.click(cButtons.submit[language]);
-    I.waitForContent(content.confirmationHeading[language],config.WaitForText);
-    I.see(content.confirmationSubheading[language]);
+    await I.waitForContent('Check your answers', config.WaitForText);
+    await I.waitForElement(fields.cyaSigned);
+    await I.fillField(fields.signedName, 'TestTest');
+    await I.fillField(fields.signedRole, 'Test');
+    await I.waitForElement(fields.cyaSigned);
+    await I.checkOption(fields.cyaSigned);
+    await I.checkOption(fields.directionsQuestionnaireSigned);
+    await I.click(cButtons.submit[language]);
+    await I.waitForContent(content.confirmationHeading[language],config.WaitForText);
+    await I.see(content.confirmationSubheading[language]);
   }
 
   async navigateToCheckYourAnswersPage(claimRef) {

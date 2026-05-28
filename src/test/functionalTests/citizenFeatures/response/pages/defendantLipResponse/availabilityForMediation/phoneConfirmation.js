@@ -47,9 +47,9 @@ class PhoneConfirmation {
   }
 
   async enterPhoneDetails() {
-    I.waitForContent('Can the mediator use ', config.WaitForText);
-    I.click(fields.yesButton);
-    contactUs.verifyContactUs();
+    await I.waitForContent('Can the mediator use ', config.WaitForText);
+    await I.click(fields.yesButton);
+    await contactUs.verifyContactUs();
     await I.click('Save and continue');
   }
 
