@@ -201,8 +201,8 @@ export const buildLegacyCaseProgressionClaim = (
             },
           },
         ]
-        : civilClaimResponseMock.case_data.caseBundles,
+        : undefined,
   };
 
-  return translateCCDCaseDataToCUIModel(caseData as CCDClaim);
+  return translateCCDCaseDataToCUIModel(caseData as unknown as CCDClaim);
 };
