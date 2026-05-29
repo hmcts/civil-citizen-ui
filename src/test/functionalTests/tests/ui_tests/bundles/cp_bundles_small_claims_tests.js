@@ -10,7 +10,7 @@ const  ViewBundle = require('../../../citizenFeatures/caseProgression/pages/view
 const claimType = 'SmallClaims';
 const partyType = 'LRvLiP';
 const viewBundlePage = new ViewBundle();
-let claimRef, taskListItem, formattedCaseId, uploadDate;
+let caseData, claimNumber, claimRef, taskListItem, formattedCaseId, uploadDate;
 
 Feature('Case progression journey - Verify Bundle Page - Small Claims').tag('@civil-citizen-nightly @ui-bundles');
 
@@ -18,6 +18,8 @@ Before(async ({api}) => {
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   const twoWeeksFromToday = DateUtilsComponent.DateUtilsComponent.rollDateToCertainWeeks(2);
   claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser, '', claimType);
+  caseData = await api.retrieveCaseData(config.adminUser, claimRef);
+  claimNumber = await caseData.legacyCaseReference;
   await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.rejectAllDisputeAllWithIndividual);
   await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.rejectAll, 'IN_MEDIATION', 'SMALL_CLAIM');
   await api.mediationUnsuccessful(config.caseWorker, true, ['NOT_CONTACTABLE_CLAIMANT_ONE']);
@@ -33,7 +35,7 @@ Scenario('Case progression journey - Small Claims - Verify Bundles Page', async 
   formattedCaseId = StringUtilsComponent.StringUtilsComponent.formatClaimReferenceToAUIDisplayFormat(claimRef);
   uploadDate = DateUtilsComponent.DateUtilsComponent.formatDateToDDMMYYYY(new Date());
   taskListItem = viewTheBundle();
-  await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Available', true);
+  await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Available', true, false, undefined, claimNumber);
   I.click(taskListItem.title);
   viewBundlePage.verifyPageContent(formattedCaseId, '£1,500', uploadDate, partyType);
 });
