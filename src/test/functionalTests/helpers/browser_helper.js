@@ -104,21 +104,37 @@ module.exports = class BrowserHelpers extends Helper {
   }
 
   async clickWithRetry(selector, retries = 1) {
-    if (this.isPlaywright()) {
-      const page = this.helpers.Playwright.page;
-      for (let attempt = 0; attempt <= retries; attempt++) {
-        await page.locator(selector).click();
-        await page.waitForTimeout(1);
-
-        const hasError = await this.handleKnownErrorsAndGoBack();
-
-        if (!hasError) {
-          return;
-        }
-
-        console.log(`Retrying click (${attempt + 1}/${retries})...`);
-      }    
+    if (!this.isPlaywright()) {
+      await this.getHelper().click(selector);
+      return;
     }
-    throw new Error(`Failed after ${retries} retries due to repeated error page`);
+
+    const page = this.helpers.Playwright.page;
+    let lastError;
+
+    for (let attempt = 0; attempt <= retries; attempt++) {
+      try {
+        // Use Playwright's native locator so grouped CSS selectors
+        // (e.g. "a, b, c") are parsed as CSS rather than fuzzy text/XPath,
+        // and `.first()` keeps it strict-mode safe when several match.
+        await page.locator(selector).first().click();
+      } catch (err) {
+        lastError = err;
+        console.log(`Click attempt ${attempt + 1}/${retries + 1} failed: ${err.message}`);
+        await page.waitForTimeout(500);
+        continue;
+      }
+
+      await page.waitForTimeout(1);
+
+      const hasError = await this.handleKnownErrorsAndGoBack();
+      if (!hasError) {
+        return;
+      }
+
+      console.log(`Retrying click (${attempt + 1}/${retries})...`);
+    }
+
+    throw lastError || new Error(`Failed after ${retries} retries due to repeated error page`);
   }
 };
