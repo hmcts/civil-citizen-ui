@@ -36,7 +36,7 @@ class RepaymentPlan {
   async enterRepaymentPlanError(claimRef) {
     await I.amOnPage('/case/' + claimRef + '/response/full-admission/payment-plan');
     await I.waitForContent('Your repayment plan', config.WaitForText);
-    await I.clickWithRetry(buttons.saveAndContinue);
+    await I.clickWithRetry('Save and continue');
     await I.see('There was a problem');
     //empty inputs error
     await I.see('Enter an amount of £1 or more');
@@ -50,14 +50,14 @@ class RepaymentPlan {
     await I.fillField(fields.day, day.toString());
     await I.fillField(fields.month, month.toString());
     await I.fillField(fields.year, yearError.toString());
-    await I.clickWithRetry(buttons.saveAndContinue);
+    await I.clickWithRetry('Save and continue');
     await I.see('There was a problem');
     await I.see('Enter a first payment date in the future');
     //invalid date, month & year
     await I.fillField(fields.day, dayError.toString());
     await I.fillField(fields.month, monthError.toString());
     await I.fillField(fields.year, '20');
-    await I.clickWithRetry(buttons.saveAndContinue);
+    await I.clickWithRetry('Save and continue');
     await I.see('There was a problem');
     await I.see('Enter a valid day');
     await I.see('Enter a valid month');

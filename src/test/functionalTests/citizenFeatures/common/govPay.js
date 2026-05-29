@@ -34,6 +34,7 @@ class GovPay {
     const translations = this.getLanguage(language);
 
     await I.waitForElement('//*[@id="confirm"]');
+    await I.wait(2);
     const confirmPaymentButton = translations.COMMON.BUTTONS.CONFIRM_PAYMENT;
     await I.clickWithRetry(confirmPaymentButton);
   }
