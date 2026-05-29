@@ -268,6 +268,89 @@ describe('Integration: case progression dashboard', () => {
         expectTaskNearStatus(res.text, 'Add the trial arrangements', 'Action needed');
         expect(res.text).toContain(trialHref);
       });
+
+      it.each([
+        {party: 'claimant', caseRole: CaseRole.CLAIMANT},
+        {party: 'defendant', caseRole: CaseRole.DEFENDANT},
+      ])('$party: pay hearing fee notification and pay hearing fee task action needed', async ({caseRole}) => {
+        const claimId = `CP-HFE-${track}-${caseRole}`.replace(/[^A-Z0-9-]/gi, '');
+        const claim = buildCaseProgressionClaim(claimId, caseRole, track);
+        const payHearingFeeHref = cpTaskPaths.payHearingFee.replace(':id', claimId);
+
+        civilServiceClientMock.retrieveClaimDetails.mockResolvedValue(claim);
+        (getNotifications as jest.Mock).mockResolvedValue(
+          buildNotificationList(
+            CP_NOTIFICATIONS.payHearingFee.title,
+            joinNotificationHtml([CP_NOTIFICATIONS.payHearingFee.content]),
+          ),
+        );
+        (getDashboardForm as jest.Mock).mockResolvedValue(
+          buildCpHearingTaskList(claimId, [
+            {label: 'Pay the hearing fee', status: 'Action needed', path: cpTaskPaths.payHearingFee},
+          ]),
+        );
+
+        const res = await request(app).get(dashboardUrlForRole(claimId, caseRole)).expect(200);
+
+        expect(res.text).toContain(CP_NOTIFICATIONS.payHearingFee.title);
+        expect(res.text).toContain(CP_NOTIFICATIONS.payHearingFee.content);
+        expectTaskNearStatus(res.text, 'Pay the hearing fee', 'Action needed');
+        expect(res.text).toContain(payHearingFeeHref);
+      });
+
+      it.each([
+        {party: 'claimant', caseRole: CaseRole.CLAIMANT},
+        {party: 'defendant', caseRole: CaseRole.DEFENDANT},
+      ])('$party: applying for help with fees sets pay hearing fee task in progress', async ({caseRole}) => {
+        const claimId = `CP-HWF-${track}-${caseRole}`.replace(/[^A-Z0-9-]/gi, '');
+        const claim = buildCaseProgressionClaim(claimId, caseRole, track);
+        const payHearingFeeHref = cpTaskPaths.payHearingFee.replace(':id', claimId);
+
+        civilServiceClientMock.retrieveClaimDetails.mockResolvedValue(claim);
+        (getNotifications as jest.Mock).mockResolvedValue(
+          buildNotificationList(
+            CP_NOTIFICATIONS.payHearingFee.title,
+            joinNotificationHtml([CP_NOTIFICATIONS.payHearingFee.content]),
+          ),
+        );
+        (getDashboardForm as jest.Mock).mockResolvedValue(
+          buildCpHearingTaskList(claimId, [
+            {label: 'Pay the hearing fee', status: 'In progress', path: cpTaskPaths.payHearingFee},
+          ]),
+        );
+
+        const res = await request(app).get(dashboardUrlForRole(claimId, caseRole)).expect(200);
+
+        expectTaskNearStatus(res.text, 'Pay the hearing fee', 'In progress');
+        expect(res.text).toContain(payHearingFeeHref);
+      });
+
+      it.each([
+        {party: 'claimant', caseRole: CaseRole.CLAIMANT},
+        {party: 'defendant', caseRole: CaseRole.DEFENDANT},
+      ])('$party: hearing fee paid notification and pay hearing fee task done', async ({caseRole}) => {
+        const claimId = `CP-HFP-${track}-${caseRole}`.replace(/[^A-Z0-9-]/gi, '');
+        const claim = buildCaseProgressionClaim(claimId, caseRole, track);
+
+        civilServiceClientMock.retrieveClaimDetails.mockResolvedValue(claim);
+        (getNotifications as jest.Mock).mockResolvedValue(
+          buildNotificationList(
+            CP_NOTIFICATIONS.hearingFeePaid.title,
+            joinNotificationHtml([CP_NOTIFICATIONS.hearingFeePaid.content]),
+          ),
+        );
+        (getDashboardForm as jest.Mock).mockResolvedValue(
+          buildCpHearingTaskList(claimId, [
+            {label: 'Pay the hearing fee', status: 'Done', path: cpTaskPaths.payHearingFee},
+          ]),
+        );
+
+        const res = await request(app).get(dashboardUrlForRole(claimId, caseRole)).expect(200);
+
+        expect(res.text).toContain(CP_NOTIFICATIONS.hearingFeePaid.title);
+        expect(res.text).toContain(CP_NOTIFICATIONS.hearingFeePaid.content);
+        expectTaskNearStatus(res.text, 'Pay the hearing fee', 'Done');
+      });
     });
   });
 

@@ -15,9 +15,11 @@ import civilClaimResponseMock from '../../../../test/utils/mocks/civilClaimRespo
 import {CCDClaim} from 'models/civilClaimResponse';
 import {translateCCDCaseDataToCUIModel} from 'services/translation/convertToCUI/cuiTranslation';
 import {
+  APPLY_HELP_WITH_FEES,
   BUNDLES_URL,
   CP_FINALISE_TRIAL_ARRANGEMENTS_URL,
   EVIDENCE_UPLOAD_DOCUMENTS_URL,
+  PAY_HEARING_FEE_URL,
   VIEW_ORDERS_AND_NOTICES_URL,
   VIEW_THE_HEARING_URL,
 } from 'routes/urls';
@@ -57,6 +59,15 @@ export const CP_NOTIFICATIONS = {
   confirmTrialArrangements: {
     title: 'Confirm your trial arrangements',
     content: 'You must confirm your trial arrangements by 12 April 2023.',
+  },
+  payHearingFee: {
+    title: 'You must pay the hearing fee',
+    content:
+      'You must either pay the hearing fee of £123 or apply for help with fees. You must do this by 12 April 2023. If you do not take one of these actions, your claim will be struck out.',
+  },
+  hearingFeePaid: {
+    title: 'The hearing fee has been paid',
+    content: 'The hearing fee has been paid in full.',
   },
 } as const;
 
@@ -160,6 +171,8 @@ export const cpTaskPaths = {
   viewOrders: VIEW_ORDERS_AND_NOTICES_URL,
   viewBundle: BUNDLES_URL,
   addTrialArrangements: CP_FINALISE_TRIAL_ARRANGEMENTS_URL,
+  payHearingFee: PAY_HEARING_FEE_URL,
+  applyHelpWithFees: APPLY_HELP_WITH_FEES,
 };
 
 export const buildLegacyCaseProgressionClaim = (
