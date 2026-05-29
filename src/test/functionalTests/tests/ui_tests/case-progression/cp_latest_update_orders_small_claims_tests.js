@@ -9,7 +9,7 @@ const {ordersAndNotices} = require('../../../specClaimHelpers/dashboardTasklistC
 const claimType = 'SmallClaims';
 let caseData, claimNumber, claimRef, taskListItem;
 
-Feature('Case progression journey - Verify latest Update page For an Order being Created - Small Claims').tag('@civil-citizen-pr @ui-orders');
+Feature('Case progression journey - Verify latest Update page For an Order being Created - Small Claims').tag('@civil-citizen-nightly @ui-orders');
 
 Before(async ({api}) => {
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);

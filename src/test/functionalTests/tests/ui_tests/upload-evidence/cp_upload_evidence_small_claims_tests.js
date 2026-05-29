@@ -11,7 +11,7 @@ const claimType = 'SmallClaims';
 const partyType = 'LRvLiP';
 let claimRef, caseData, claimNumber, taskListItem, formattedCaseId, uploadDate;
 
-Feature('Case progression journey - Upload Evidence - Small Claims').tag('@civil-citizen-pr @ui-upload-evidence');
+Feature('Case progression journey - Upload Evidence - Small Claims').tag('@civil-citizen-nightly @ui-upload-evidence');
 
 Before(async ({api}) => {
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
