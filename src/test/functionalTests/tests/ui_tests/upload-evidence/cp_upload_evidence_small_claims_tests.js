@@ -9,13 +9,15 @@ const {uploadHearingDocuments, viewDocuments} = require('../../../specClaimHelpe
 
 const claimType = 'SmallClaims';
 const partyType = 'LRvLiP';
-let claimRef, taskListItem, formattedCaseId, uploadDate;
+let claimRef, caseData, claimNumber, taskListItem, formattedCaseId, uploadDate;
 
 Feature('Case progression journey - Upload Evidence - Small Claims').tag('@civil-citizen-pr @ui-upload-evidence');
 
 Before(async ({api}) => {
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser, '', claimType);
+  caseData = await api.retrieveCaseData(config.adminUser, claimRef);
+  claimNumber = await caseData.legacyCaseReference;
   await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.rejectAllDisputeAllWithIndividual);
   await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.rejectAll, 'IN_MEDIATION', 'SMALL_CLAIM');
   await api.mediationUnsuccessful(config.caseWorker, true, ['NOT_CONTACTABLE_CLAIMANT_ONE']);
@@ -29,9 +31,9 @@ Scenario('Small Claims Response with RejectAll and DisputeAll - both parties upl
   formattedCaseId = StringUtilsComponent.StringUtilsComponent.formatClaimReferenceToAUIDisplayFormat(claimRef);
   uploadDate = DateUtilsComponent.DateUtilsComponent.formatDateToSpecifiedDateFormat(new Date());
   taskListItem = uploadHearingDocuments();
-  await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Action needed', true);
+  await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Action needed', true, false, undefined, claimNumber);
   I.click(taskListItem.title);
   await CaseProgressionSteps.initiateUploadEvidenceJourney(formattedCaseId, claimType, partyType, '£1,500', uploadDate);
   taskListItem = viewDocuments();
-  await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Available', true);
+  await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Available', true, false, undefined, claimNumber);
 });

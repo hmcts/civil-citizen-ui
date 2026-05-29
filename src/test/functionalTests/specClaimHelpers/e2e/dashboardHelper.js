@@ -14,7 +14,7 @@ module.exports = {
       await I.amOnPage('/dashboard');
       await I.click(claimNumber);
     }
-    const maxRetries = 4;
+    const maxRetries = 8;
     for (let tries = 1; tries <= maxRetries; tries++) {
       console.log('Verifying notification title and content... attempt', tries);
 
@@ -41,7 +41,10 @@ module.exports = {
         throw new Error('Notification could not be verified');
       }
 
-      await I.wait(2);
+      // The notification may still be generating on a slow environment; give the
+      // business process time to finish before refreshing and re-checking.
+      await waitForFinishedBusinessProcess();
+      await I.wait(3);
       await I.refreshPage();
     }
   },
