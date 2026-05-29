@@ -10,7 +10,7 @@ import {
   EvidenceUploadExpert,
   EvidenceUploadTrial,
   EvidenceUploadWitness,
-  OtherManageUpload,
+  OtherManageUpload, WithoutPrejudiceUpload,
 } from 'models/document/documentType';
 import {TypesOfEvidenceUploadDocuments} from 'models/caseProgression/TypesOfEvidenceUploadDocument';
 import {Bundle} from 'models/caseProgression/bundles/bundle';
@@ -30,11 +30,12 @@ export const toCUICaseProgression = (ccdClaim: CCDClaim): CaseProgression => {
     const applicantUploadDocuments = applicantDocuments(ccdClaim);
     const defendantUploadDocuments = defendantDocuments(ccdClaim);
     const managedDocuments = claimDocuments(ccdClaim);
+    const withoutPrejudiceDocuments = withoutPreDocuments(ccdClaim);
 
     caseProgression.claimantUploadDocuments =
-      new UploadDocuments(applicantUploadDocuments.disclosure, applicantUploadDocuments.witness, applicantUploadDocuments.expert, applicantUploadDocuments.trial, managedDocuments);
+      new UploadDocuments(applicantUploadDocuments.disclosure, applicantUploadDocuments.witness, applicantUploadDocuments.expert, applicantUploadDocuments.trial, managedDocuments, withoutPrejudiceDocuments);
     caseProgression.defendantUploadDocuments =
-      new UploadDocuments(defendantUploadDocuments.disclosure, defendantUploadDocuments.witness, defendantUploadDocuments.expert, defendantUploadDocuments.trial, managedDocuments);
+      new UploadDocuments(defendantUploadDocuments.disclosure, defendantUploadDocuments.witness, defendantUploadDocuments.expert, defendantUploadDocuments.trial, managedDocuments, withoutPrejudiceDocuments);
     caseProgression.claimantLastUploadDate = ccdClaim.caseDocumentUploadDate ? new Date(ccdClaim.caseDocumentUploadDate) : undefined;
     caseProgression.defendantLastUploadDate = ccdClaim.caseDocumentUploadDateRes ? new Date(ccdClaim.caseDocumentUploadDateRes): undefined;
 
@@ -63,7 +64,6 @@ export const toCUICaseProgression = (ccdClaim: CCDClaim): CaseProgression => {
     caseProgression.requestForReconsiderationDocument = ccdClaim.requestForReconsiderationDocument;
     caseProgression.requestForReconsiderationDocumentRes = ccdClaim.requestForReconsiderationDocumentRes;
     caseProgression.courtOfficerOrder = ccdClaim.previewCourtOfficerOrder;
-
     return caseProgression;
   }
 };
@@ -157,6 +157,12 @@ const claimDocuments =  (ccdClaim: CCDClaim): UploadDocumentTypes[] => {
   return otherManagedDocuments;
 };
 
+const withoutPreDocuments =  (ccdClaim: CCDClaim): UploadDocumentTypes[] => {
+  const withoutPrejudiceDocuments = [] as UploadDocumentTypes[];
+  convertToUploadDocumentTypes(ccdClaim.documentPart36Rejection, withoutPrejudiceDocuments, WithoutPrejudiceUpload.WITHOUT_PREJUDICE_DOCUMENT);
+  return withoutPrejudiceDocuments;
+};
+
 // Judge Final Orders
 const finalOrderDocuments =  (ccdClaim: CCDClaim): FinalOrderDocumentCollection[] => {
   let finalOrderDocumentCollection = [] as FinalOrderDocumentCollection[];
@@ -187,7 +193,7 @@ const courtOfficerOrders =  (ccdClaim: CCDClaim): FinalOrderDocumentCollection[]
 };
 
 const convertToUploadDocumentTypes = (ccdList: UploadEvidenceElementCCD[], cuiList: UploadDocumentTypes[],
-  documentType: EvidenceUploadDisclosure| EvidenceUploadWitness | EvidenceUploadExpert | EvidenceUploadTrial | OtherManageUpload) => {
+  documentType: EvidenceUploadDisclosure| EvidenceUploadWitness | EvidenceUploadExpert | EvidenceUploadTrial | OtherManageUpload| WithoutPrejudiceUpload) => {
 
   if(ccdList != null)
   {
@@ -220,7 +226,12 @@ const mapCCDElementValue = (documentType: UploadEvidenceDocumentType | UploadEvi
   else if(TypesOfEvidenceUploadDocuments.DOCUMENT_LINK in documentType)
   {
     const document = documentType as UploadOtherDocumentType;
-    return new UploadOtherDocumentType(document.documentType, document.documentName, document.documentLink, document.createdDatetime);
+    return new UploadOtherDocumentType(document.documentType, document.documentName, document.documentUpload, document.createdDatetime);
+  }
+  else if(TypesOfEvidenceUploadDocuments.WITHOUT_PREJUDICE in documentType)
+  {
+    const document = documentType as UploadEvidenceDocumentType;
+    return new UploadEvidenceDocumentType(document?.witnessOptionName, document.typeOfDocument, document.documentIssuedDate, document.documentUpload, document.createdDatetime);
   }
   return documentType;
 };

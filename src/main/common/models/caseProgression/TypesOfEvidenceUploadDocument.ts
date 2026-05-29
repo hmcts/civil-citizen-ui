@@ -3,4 +3,5 @@ export const enum TypesOfEvidenceUploadDocuments {
   WITNESS = ('witnessOptionDocument'),
   EXPERT = ('expertDocument'),
   DOCUMENT_LINK = ('documentLink'),
+  WITHOUT_PREJUDICE = ('WithoutPrejudice')
 }

@@ -2107,7 +2107,8 @@
       "DOCUMENTS_FOR_CLAIM": "Dogfennau ar gyfer yr Hawliad",
       "DOCUMENT_HEADERS": {
         "COMMON": {
-          "CLAIM_DOCUMENTS": "Dogfennau’r hawliad"
+          "CLAIM_DOCUMENTS": "Dogfennau’r hawliad",
+          "WITHOUT_PREJUDICE": "Heb Ragfarnu"
         },
         "CLAIMANT": {
           "ANSWERS_TO_QUESTIONS": "Hawlydd atebion i’r cwestiynau a ofynnwyd gan y parti arall",

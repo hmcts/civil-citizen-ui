@@ -8,7 +8,7 @@ import {
   EvidenceUploadDisclosure,
   EvidenceUploadExpert,
   EvidenceUploadTrial,
-  EvidenceUploadWitness, OtherManageUpload,
+  EvidenceUploadWitness, OtherManageUpload, WithoutPrejudiceUpload,
 } from 'models/document/documentType';
 import {formatEvidenceDocumentWithHintText} from 'common/utils/formatDocumentURL';
 import {DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL} from 'routes/urls';
@@ -34,6 +34,7 @@ function getDocuments(claim: Claim, lang: string): ClaimSummaryContent {
     getTrialListClaimant(claim, lang),
     getTrialListDefendant(claim, lang),
     getAdditionalList(claim, lang),
+    getWithoutPrejudiceList(claim, lang),
     addSeparation(),
     addButton(claim, lang),
   ];
@@ -132,6 +133,17 @@ function getTrialListDefendant(claim: Claim, lang: string): ClaimSummarySection 
   };
 }
 
+function getWithoutPrejudiceList(claim: Claim, lang: string): ClaimSummarySection {
+
+  const additionalDocumentHeading = 'PAGES.CLAIM_SUMMARY.DOCUMENT_HEADERS.COMMON.WITHOUT_PREJUDICE';
+  const additionalList = claim.caseProgression?.defendantUploadDocuments?.withoutPrejudice;
+
+  return {
+    type: ClaimSummaryType.HTML,
+    data: {html: getAdditionalDocumentHTML(additionalList, additionalDocumentHeading, claim, lang)},
+  };
+}
+
 function getAdditionalList(claim: Claim, lang: string): ClaimSummarySection {
 
   const additionalDocumentHeading = 'PAGES.CLAIM_SUMMARY.DOCUMENT_HEADERS.COMMON.CLAIM_DOCUMENTS';
@@ -214,8 +226,8 @@ function getAdditionalDocumentHTML(rows: UploadDocumentTypes[], title: string, c
       documentsHTML = documentsHTML.concat('<div class="govuk-grid-row">');
       documentsHTML = documentsHTML.concat(formatEvidenceDocumentWithHintText(documentTypeName, upload.caseDocument.createdDatetime, lang));
       const document = upload.caseDocument as UploadOtherDocumentType;
-      const documentName = document.documentLink?.document_filename;
-      const documentBinary = document.documentLink?.document_binary_url;
+      const documentName = document.documentUpload?.document_filename;
+      const documentBinary = document.documentUpload?.document_binary_url;
       documentsHTML = documentsHTML.concat(UploadedEvidenceFormatter.getOtherDocumentLinkAlignedToRight(documentName, documentBinary, claim.id));
       documentsHTML = documentsHTML.concat('</div>');
     }
@@ -225,7 +237,7 @@ function getAdditionalDocumentHTML(rows: UploadDocumentTypes[], title: string, c
 }
 
 function getDocumentTypeName(isClaimant: boolean,
-  documentType: EvidenceUploadDisclosure | EvidenceUploadWitness | EvidenceUploadExpert | EvidenceUploadTrial | OtherManageUpload,
+  documentType: EvidenceUploadDisclosure | EvidenceUploadWitness | EvidenceUploadExpert | EvidenceUploadTrial | OtherManageUpload| WithoutPrejudiceUpload,
   lang: string) {
   let key: string;
   switch (documentType) {

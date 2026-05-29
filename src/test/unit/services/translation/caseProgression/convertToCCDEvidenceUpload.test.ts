@@ -39,7 +39,7 @@ const witnessDocument = {
 const managedDocument = {
   documentType: 'type',
   documentName: 'name',
-  documentLink: {
+  documentUpload: {
     document_url: 'http://dm-store:8080/documents/e9fd1e10-baf2-4d95-bc79-bdeb9f3a2ab6',
     document_filename: 'document_type.pdf',
     document_binary_url: 'http://dm-store:8080/documents/e9fd1e10-baf2-4d95-bc79-bdeb9f3a2ab6/binary',
@@ -109,7 +109,7 @@ const documentTypeAsParameter = new UploadEvidenceDocumentType(null,'type', new 
 const documentReferredAsParameter = new UploadEvidenceDocumentType('witness name','type', new Date(0), documentForType, new Date(0));
 const witnessAsParameter = new UploadEvidenceWitness('witness name', new Date(0), documentForWitness, new Date(0));
 const expertAsParameter = new UploadEvidenceExpert('expert name', 'expertise','expertises','other party', 'document question', 'document answer', new Date(0), documentForExpert, new Date(0));
-const otherAsParameter = new UploadOtherDocumentType('type', 'name', managedDocument.documentLink, new Date(0));
+const otherAsParameter = new UploadOtherDocumentType('type', 'name', managedDocument.documentUpload, new Date(0));
 const uuid = '1221';
 
 describe('toCCDEvidenceUpload', () => {

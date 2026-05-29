@@ -333,6 +333,11 @@ export interface CCDClaim extends ClaimUpdate {
   previousCCDState?: string;
   courtOfficersOrders?: FinalOrderDocumentCollection[];
   manageDocuments?: UploadEvidenceElementCCD[];
+  manageDocumentsPart36Rejection?: UploadEvidenceElementCCD[];
+  documentPart36Rejection?:UploadEvidenceElementCCD[];
+  documentPart36RejectionApp2?:UploadEvidenceElementCCD[];
+  documentPart36RejectionRes?:UploadEvidenceElementCCD[];
+  documentPart36RejectionRes2?:UploadEvidenceElementCCD[];
 }
 
 export interface ClaimFeeData {

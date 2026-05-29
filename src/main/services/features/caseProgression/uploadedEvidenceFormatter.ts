@@ -2,7 +2,7 @@ import {
   EvidenceUploadDisclosure,
   EvidenceUploadExpert,
   EvidenceUploadTrial,
-  EvidenceUploadWitness, OtherManageUpload,
+  EvidenceUploadWitness, OtherManageUpload, WithoutPrejudiceUpload,
 } from 'models/document/documentType';
 import {t} from 'i18next';
 import {
@@ -17,7 +17,7 @@ import {Document} from 'models/document/document';
 
 export class UploadedEvidenceFormatter {
 
-  static  getDocumentTypeName(documentType: EvidenceUploadDisclosure | EvidenceUploadWitness | EvidenceUploadExpert | EvidenceUploadTrial | OtherManageUpload, lang: string) {
+  static  getDocumentTypeName(documentType: EvidenceUploadDisclosure | EvidenceUploadWitness | EvidenceUploadExpert | EvidenceUploadTrial | OtherManageUpload | WithoutPrejudiceUpload, lang: string) {
     let documentName: string;
 
     switch(documentType)
@@ -70,6 +70,9 @@ export class UploadedEvidenceFormatter {
       case OtherManageUpload.OTHER_MANAGE_DOCUMENT:
         documentName = t('PAGES.CLAIM_SUMMARY.DOCUMENTARY_EVIDENCE', {lng: lang});
         break;
+      case WithoutPrejudiceUpload.WITHOUT_PREJUDICE_DOCUMENT:
+        documentName = t('PAGES.CLAIM_SUMMARY.DOCUMENTARY_EVIDENCE', {lng: lang});
+        break;
     }
     return documentName;
   }
@@ -107,7 +110,7 @@ export class UploadedEvidenceFormatter {
       return caseDocument.documentUpload;
     }
     if (caseDocument instanceof UploadOtherDocumentType) {
-      return caseDocument.documentLink;
+      return caseDocument.documentUpload;
     }
     return undefined;
   }

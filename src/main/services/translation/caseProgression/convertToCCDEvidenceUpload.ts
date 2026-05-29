@@ -12,7 +12,7 @@ import {
   EvidenceUploadExpert,
   EvidenceUploadTrial,
   EvidenceUploadWitness,
-  OtherManageUpload,
+  OtherManageUpload, WithoutPrejudiceUpload,
 } from 'models/document/documentType';
 import {v4 as uuidv4} from 'uuid';
 import {CCDClaim} from 'models/civilClaimResponse';
@@ -37,6 +37,10 @@ export const toCCDEvidenceUpload = (cuiEvidenceUpload: CaseProgression, ccdClaim
     ccdClaim.documentCosts = createCCDEvidenceUploadList(cuiEvidenceUpload.claimantUploadDocuments.trial, EvidenceUploadTrial.COSTS);
     ccdClaim.documentEvidenceForTrial = createCCDEvidenceUploadList(cuiEvidenceUpload.claimantUploadDocuments.trial, EvidenceUploadTrial.DOCUMENTARY);
     ccdClaim.manageDocuments = createCCDEvidenceUploadList(cuiEvidenceUpload.claimantUploadDocuments.otherManaged, OtherManageUpload.OTHER_MANAGE_DOCUMENT);
+    ccdClaim.documentPart36Rejection = createCCDEvidenceUploadList(cuiEvidenceUpload.claimantUploadDocuments.withoutPrejudice, WithoutPrejudiceUpload.WITHOUT_PREJUDICE_DOCUMENT);
+    ccdClaim.documentPart36RejectionApp2 = createCCDEvidenceUploadList(cuiEvidenceUpload.claimantUploadDocuments.withoutPrejudice, WithoutPrejudiceUpload.WITHOUT_PREJUDICE_DOCUMENT);
+    ccdClaim.documentPart36RejectionRes = createCCDEvidenceUploadList(cuiEvidenceUpload.claimantUploadDocuments.withoutPrejudice, WithoutPrejudiceUpload.WITHOUT_PREJUDICE_DOCUMENT);
+    ccdClaim.documentPart36RejectionRes2 = createCCDEvidenceUploadList(cuiEvidenceUpload.claimantUploadDocuments.withoutPrejudice, WithoutPrejudiceUpload.WITHOUT_PREJUDICE_DOCUMENT);
     ccdClaim.caseDocumentUploadDate = new Date();
   } else {
     ccdClaim.documentDisclosureListRes = createCCDEvidenceUploadList(cuiEvidenceUpload.defendantUploadDocuments.disclosure, EvidenceUploadDisclosure.DISCLOSURE_LIST);
@@ -62,7 +66,7 @@ export const toCCDEvidenceUpload = (cuiEvidenceUpload: CaseProgression, ccdClaim
 };
 
 const createCCDEvidenceUploadList = (evidenceList?: UploadDocumentTypes[],
-  evidenceType?: EvidenceUploadWitness | EvidenceUploadDisclosure | EvidenceUploadExpert | EvidenceUploadTrial | OtherManageUpload) : UploadEvidenceElementCCD[] => {
+  evidenceType?: EvidenceUploadWitness | EvidenceUploadDisclosure | EvidenceUploadExpert | EvidenceUploadTrial | OtherManageUpload | WithoutPrejudiceUpload) : UploadEvidenceElementCCD[] => {
 
   if(!evidenceList) return undefined;
 
