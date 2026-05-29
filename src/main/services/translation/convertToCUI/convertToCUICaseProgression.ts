@@ -226,7 +226,7 @@ const mapCCDElementValue = (documentType: UploadEvidenceDocumentType | UploadEvi
   else if(TypesOfEvidenceUploadDocuments.DOCUMENT_LINK in documentType)
   {
     const document = documentType as UploadOtherDocumentType;
-    return new UploadOtherDocumentType(document.documentType, document.documentName, document.documentUpload, document.createdDatetime);
+    return new UploadOtherDocumentType(document.documentType, document.documentName, document.documentLink, document.createdDatetime);
   }
   else if(TypesOfEvidenceUploadDocuments.WITHOUT_PREJUDICE in documentType)
   {

@@ -110,7 +110,7 @@ export class UploadedEvidenceFormatter {
       return caseDocument.documentUpload;
     }
     if (caseDocument instanceof UploadOtherDocumentType) {
-      return caseDocument.documentUpload;
+      return caseDocument.documentLink;
     }
     return undefined;
   }

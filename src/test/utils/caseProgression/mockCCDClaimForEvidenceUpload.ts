@@ -148,7 +148,7 @@ export const mockReferredDocument = {
 export const mockOtherManageDocument = {
   documentType: 'type',
   documentName: 'name',
-  documentUpload: getMockDocument(),
+  documentLink: getMockDocument(),
   createdDatetime: new Date(0),
 } as UploadOtherDocumentType;
 
