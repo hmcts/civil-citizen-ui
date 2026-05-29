@@ -200,7 +200,6 @@ describe('toCUICaseProgression', () => {
     expectedOutput.requestForReconsiderationDocument= undefined;
     expectedOutput.requestForReconsiderationDocumentRes=undefined;
 
-
     const actualOutput = toCUICaseProgression(ccdClaim);
     expect(actualOutput).toEqual(expectedOutput);
   });
