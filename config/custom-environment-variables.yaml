@@ -4,6 +4,7 @@ services:
   postcodeLookup:
     ordnanceSurveyApiKey: ORDNANCE_SURVEY_API_KEY
     ordnanceSurveyApiUrl: ORDNANCE_SURVEY_API_URL
+    englandAndWalesPostcodeExceptions: ENGLAND_AND_WALES_POSTCODE_EXCEPTIONS
   idam:
     authorizationURL: IDAM_WEB_URL
     tokenURL: IDAM_API_URL

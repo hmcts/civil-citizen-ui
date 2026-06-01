@@ -1,9 +1,57 @@
 import { ValidatorConstraint, ValidatorConstraintInterface } from 'class-validator';
 import { AddressInfoResponse } from 'common/models/ordanceSurveyKey/ordanceSurveyKey';
 import { lookupByPostcodeAndDataSet } from 'modules/ordance-survey-key/ordanceSurveyKeyService';
+import config from 'config';
+import { existsSync, readFileSync } from 'fs';
+import path from 'path';
 
 const { Logger } = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('PostcodeValidator');
+
+const normalisePostcode = (postcode: string): string => postcode.replace(/\s/g, '').toUpperCase();
+const postcodeExceptionsConfigPath = path.resolve(process.cwd(), 'config', 'postcode-lookup-exceptions.json');
+
+type PostcodeExceptionsConfig = {
+  englandAndWalesPostcodeExceptions?: string[];
+};
+
+const getPostcodeExceptionsFromFile = (): string[] => {
+  if (!existsSync(postcodeExceptionsConfigPath)) {
+    return [];
+  }
+
+  try {
+    const postcodeExceptionsConfig = JSON.parse(readFileSync(postcodeExceptionsConfigPath, 'utf-8')) as PostcodeExceptionsConfig;
+    return postcodeExceptionsConfig.englandAndWalesPostcodeExceptions ?? [];
+  } catch (err) {
+    logger.warn('Failed to load postcode exceptions config', err);
+    return [];
+  }
+};
+
+const postcodeExceptionsFromFile = getPostcodeExceptionsFromFile();
+
+const getPostcodeExceptionsFromConfig = (): string[] => {
+  if (!config.has('services.postcodeLookup.englandAndWalesPostcodeExceptions')) {
+    return [];
+  }
+
+  const exceptionPostcodes = config.get<string[] | string>('services.postcodeLookup.englandAndWalesPostcodeExceptions');
+  return Array.isArray(exceptionPostcodes)
+    ? exceptionPostcodes
+    : exceptionPostcodes.split(',');
+};
+
+export const isPostcodeOnExceptionList = (postcode: string): boolean => {
+  const postcodes = [
+    ...postcodeExceptionsFromFile,
+    ...getPostcodeExceptionsFromConfig(),
+  ];
+
+  return postcodes
+    .map((exceptionPostcode: string) => normalisePostcode(exceptionPostcode))
+    .includes(normalisePostcode(postcode));
+};
 
 @ValidatorConstraint({ name: 'PostcodeValidator', async: true })
 export class PostcodeValidator implements ValidatorConstraintInterface {
@@ -28,11 +76,15 @@ export class PostcodeValidator implements ValidatorConstraintInterface {
     }
 
     // Normalize postcode for regex (remove spaces, uppercase)
-    const normalised = trimmed.replace(/\s/g, '').toUpperCase();
+    const normalised = normalisePostcode(trimmed);
 
     // Validate UK postcode format
     if (!this.UK_POSTCODE_REGEX.test(normalised)) {
       return false;
+    }
+
+    if (isPostcodeOnExceptionList(trimmed)) {
+      return true;
     }
 
     try {
