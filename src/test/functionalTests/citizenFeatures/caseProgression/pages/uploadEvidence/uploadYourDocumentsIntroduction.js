@@ -93,50 +93,50 @@ class UploadYourDocumentsIntroduction {
 
   async verifyPageContent(caseNumber, claimAmount, languageChosen = 'en') {
     language = languageChosen;
-    this.checkPageFullyLoaded();
-    this.verifyBreadcrumbs();
-    this.verifyHeadingDetails();
-    this.verifyCaseNumberClaimAmount(caseNumber, claimAmount);
-    this.verifyUploadDocumentSectionContent();
-    this.verifyDeadlinesForUploadingDocumentsContent();
-    this.verifyBeforeYouUploadYourDocumentsContent();
+    await this.checkPageFullyLoaded();
+    await this.verifyBreadcrumbs();
+    await this.verifyHeadingDetails();
+    await this.verifyCaseNumberClaimAmount(caseNumber, claimAmount);
+    await this.verifyUploadDocumentSectionContent();
+    await this.verifyDeadlinesForUploadingDocumentsContent();
+    await this.verifyBeforeYouUploadYourDocumentsContent();
     await contactUs.verifyContactUs();
   }
 
   async verifyBreadcrumbs() {
-    I.see('Home', 'li');
+    await I.see('Home', 'li');
     await I.see('Upload your documents', 'li');
   }
 
-  verifyHeadingDetails() {
-    I.see('Hearing', 'span');
-    I.see(content.heading.title[language], 'h1');
+  async verifyHeadingDetails() {
+    await I.see('Hearing', 'span');
+    await I.see(content.heading.title[language], 'h1');
   }
 
-  verifyCaseNumberClaimAmount(caseNumber, claimAmount) {
-    I.see(content.heading.caseNumber[language]+ ': ' + caseNumber);
-    I.see(content.heading.claimAmount[language]+ ': ' + claimAmount);
+  async verifyCaseNumberClaimAmount(caseNumber, claimAmount) {
+    await I.see(content.heading.caseNumber[language]+ ': ' + caseNumber);
+    await I.see(content.heading.claimAmount[language]+ ': ' + claimAmount);
   }
 
-  verifyUploadDocumentSectionContent() {
-    I.see(content.uploadDocumentSection.checkTheOrder[language]);
-    I.see(content.uploadDocumentSection.cannotWithdraw[language]);
-    I.see(content.uploadDocumentSection.otherParties[language]);
+  async verifyUploadDocumentSectionContent() {
+    await I.see(content.uploadDocumentSection.checkTheOrder[language]);
+    await I.see(content.uploadDocumentSection.cannotWithdraw[language]);
+    await I.see(content.uploadDocumentSection.otherParties[language]);
   }
 
-  verifyDeadlinesForUploadingDocumentsContent() {
-    I.see(content.deadlinesForUploadSection.title[language],'h2');
-    I.see(content.deadlinesForUploadSection.checkTheOrder[language]);
-    I.see(content.deadlinesForUploadSection.afterDeadline[language]);
-    I.seeElement(`//a[contains(.,'${content.deadlinesForUploadSection.applyToCourt[language]}')]`);
-    I.see(content.deadlinesForUploadSection.newDocument[language]);
-    I.see(content.deadlinesForUploadSection.uploadOverTime[language]);
+  async verifyDeadlinesForUploadingDocumentsContent() {
+    await I.see(content.deadlinesForUploadSection.title[language],'h2');
+    await I.see(content.deadlinesForUploadSection.checkTheOrder[language]);
+    await I.see(content.deadlinesForUploadSection.afterDeadline[language]);
+    await I.seeElement(`//a[contains(.,'${content.deadlinesForUploadSection.applyToCourt[language]}')]`);
+    await I.see(content.deadlinesForUploadSection.newDocument[language]);
+    await I.see(content.deadlinesForUploadSection.uploadOverTime[language]);
   }
 
-  verifyBeforeYouUploadYourDocumentsContent() {
-    I.see(content.beforeYouUpload.title[language],'h2');
-    I.see(content.beforeYouUpload.giveName[language]);
-    I.see(content.beforeYouUpload.documentMustBe[language]);
+  async verifyBeforeYouUploadYourDocumentsContent() {
+    await I.see(content.beforeYouUpload.title[language],'h2');
+    await I.see(content.beforeYouUpload.giveName[language]);
+    await I.see(content.beforeYouUpload.documentMustBe[language]);
   }
 }
 
