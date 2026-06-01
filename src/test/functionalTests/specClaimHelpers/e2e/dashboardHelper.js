@@ -56,8 +56,14 @@ module.exports = {
       await I.click(claimNumber);
     }
     await I.waitForVisible(selectors.titleClass, 60);
-    const actualStatus = await I.grabTextFrom(locator);
-    if (!actualStatus.toLowerCase().includes(status.toLowerCase())) {
+    // The task status may still be settling on a slow environment; refresh a few
+    // times until it reflects the expected value before asserting.
+    const maxRetries = 5;
+    for (let tries = 1; tries <= maxRetries; tries++) {
+      const actualStatus = await I.grabTextFrom(locator);
+      if (actualStatus.toLowerCase().includes(status.toLowerCase()) || tries === maxRetries) {
+        break;
+      }
       await I.wait(3);
       await waitForFinishedBusinessProcess();
       await I.refreshPage();

@@ -15,7 +15,6 @@ import civilClaimResponseMock from '../../../../test/utils/mocks/civilClaimRespo
 import {CCDClaim} from 'models/civilClaimResponse';
 import {translateCCDCaseDataToCUIModel} from 'services/translation/convertToCUI/cuiTranslation';
 import {
-  APPLY_HELP_WITH_FEES,
   BUNDLES_URL,
   CP_FINALISE_TRIAL_ARRANGEMENTS_URL,
   EVIDENCE_UPLOAD_DOCUMENTS_URL,
@@ -172,7 +171,6 @@ export const cpTaskPaths = {
   viewBundle: BUNDLES_URL,
   addTrialArrangements: CP_FINALISE_TRIAL_ARRANGEMENTS_URL,
   payHearingFee: PAY_HEARING_FEE_URL,
-  applyHelpWithFees: APPLY_HELP_WITH_FEES,
 };
 
 export const buildLegacyCaseProgressionClaim = (
