@@ -3,13 +3,16 @@ import {
   EvidenceUploadDisclosure,
   EvidenceUploadExpert,
   EvidenceUploadTrial,
-  EvidenceUploadWitness, OtherManageUpload,
+  EvidenceUploadWitness,
+  OtherManageUpload,
+  WithoutPrejudiceUpload,
 } from 'models/document/documentType';
 import {
   UploadEvidenceDocumentType,
   UploadEvidenceElementCCD,
   UploadEvidenceExpert,
-  UploadEvidenceWitness, UploadOtherDocumentType,
+  UploadEvidenceWitness,
+  UploadOtherDocumentType,
 } from 'models/caseProgression/uploadDocumentsType';
 import {getMockDocument} from '../mockDocument';
 import {mockNameValue} from './mockEvidenceUploadSummaryRows';
@@ -152,6 +155,13 @@ export const mockOtherManageDocument = {
   createdDatetime: new Date(0),
 } as UploadOtherDocumentType;
 
+export const mockWithoutPrejudice = {
+  documentType: 'type',
+  documentName: 'name',
+  documentLink: getMockDocument(),
+  createdDatetime: new Date(0),
+} as UploadOtherDocumentType;
+
 export function createCCDClaimForEvidenceUpload(): CCDClaim {
   return {
     documentDisclosureList: getCaseProgressionDocuments(EvidenceUploadDisclosure.DISCLOSURE_LIST),
@@ -189,6 +199,7 @@ export function createCCDClaimForEvidenceUpload(): CCDClaim {
     trialReadyApplicant: YesNoUpperCamelCase.NO,
     trialReadyRespondent1: YesNoUpperCamelCase.YES,
     manageDocuments: getCaseProgressionDocuments(OtherManageUpload.OTHER_MANAGE_DOCUMENT),
+    documentPart36Rejection: getCaseProgressionDocuments(WithoutPrejudiceUpload.WITHOUT_PREJUDICE_DOCUMENT),
   };
 }
 
@@ -240,7 +251,7 @@ export function createCCDClaimForUploadedDocuments(length: number, isClaimant: b
   return ccdClaim;
 }
 
-function getCaseProgressionDocuments(documentType: EvidenceUploadDisclosure | EvidenceUploadWitness | EvidenceUploadExpert | EvidenceUploadTrial | OtherManageUpload)
+function getCaseProgressionDocuments(documentType: EvidenceUploadDisclosure | EvidenceUploadWitness | EvidenceUploadExpert | EvidenceUploadTrial | OtherManageUpload | WithoutPrejudiceUpload)
   : UploadEvidenceElementCCD[] {
 
   const uploadEvidenceElementCCD = new UploadEvidenceElementCCD();
@@ -273,6 +284,9 @@ function getCaseProgressionDocuments(documentType: EvidenceUploadDisclosure | Ev
       break;
     case OtherManageUpload.OTHER_MANAGE_DOCUMENT:
       uploadEvidenceElementCCD.value = mockOtherManageDocument;
+      break;
+    case WithoutPrejudiceUpload.WITHOUT_PREJUDICE_DOCUMENT:
+      uploadEvidenceElementCCD.value = mockWithoutPrejudice;
       break;
   }
 
