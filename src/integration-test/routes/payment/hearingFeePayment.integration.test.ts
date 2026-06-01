@@ -3,6 +3,9 @@ process.env.NODE_ENV = 'test';
 import '../../setup/testSetup';
 import {app} from '../../../main/app';
 import {
+  APPLY_HELP_WITH_FEES,
+  APPLY_HELP_WITH_FEES_REFERENCE,
+  APPLY_HELP_WITH_FEES_START,
   DASHBOARD_CLAIMANT_URL,
   DEFENDANT_SUMMARY_URL,
   HEARING_FEE_APPLY_HELP_FEE_SELECTION,
@@ -17,6 +20,7 @@ import {
 import {civilServiceClientMock, paymentServiceMock} from '../../setup/sharedMocks';
 import {CaseRole} from '../../../main/common/form/models/caseRoles';
 import {FeeType} from '../../../main/common/form/models/helpWithFees/feeType';
+import {YesNo} from '../../../main/common/form/models/yesNo';
 import {Claim} from '../../../main/common/models/claim';
 import {CaseProgressionHearing} from '../../../main/common/models/caseProgression/caseProgressionHearing';
 import {HearingFee, HearingFeeInformation} from '../../../main/common/models/caseProgression/hearingFee/hearingFee';
@@ -120,6 +124,15 @@ const buildClaimWithoutPaymentInfo = (): Claim => {
   claim.caseRole = CaseRole.CLAIMANT;
   claim.totalClaimAmount = 1500;
   claim.caseProgression = {hearing: {}} as never;
+  return claim;
+};
+
+const buildHwfSelectionClaim = (): Claim => {
+  const claim = buildClaimWithoutPaymentInfo();
+  claim.caseProgression = {hearing: {}} as never;
+  claim.caseProgressionHearing = {
+    hearingFeeInformation: {hearingFee: {calculatedAmountInPence: '12300', code: 'FEE0441', version: '1'}},
+  } as never;
   return claim;
 };
 
@@ -289,6 +302,115 @@ describe('Integration: hearing fee payment journey', () => {
 
       expect(res.header.location).toEqual(route(DASHBOARD_CLAIMANT_URL));
       expect(app.locals.draftStoreClient.del).toHaveBeenCalled();
+    });
+  });
+
+  describe('apply help with fees selection (pay fee vs apply for help)', () => {
+    it('renders the selection page with a back link to the start page', async () => {
+      setDraftClaim(buildHwfSelectionClaim());
+      civilServiceClientMock.retrieveClaimDetails.mockResolvedValue(buildHwfSelectionClaim());
+
+      const res = await request(app).get(route(HEARING_FEE_APPLY_HELP_FEE_SELECTION)).expect(200);
+
+      expect(res.text).toContain(route(PAY_HEARING_FEE_URL));
+      expect(res.text).toContain('name="option"');
+    });
+
+    it('shows a validation error when no option is selected', async () => {
+      setDraftClaim(buildHwfSelectionClaim());
+      civilServiceClientMock.retrieveClaimDetails.mockResolvedValue(buildHwfSelectionClaim());
+
+      const res = await request(app).post(route(HEARING_FEE_APPLY_HELP_FEE_SELECTION)).send({}).expect(200);
+
+      expect(res.text).toContain('govuk-error-message');
+    });
+
+    it('starts a payment (redirects to the gateway) when the user chooses to pay the fee', async () => {
+      setDraftClaim(buildClaimWithoutPaymentInfo());
+      paymentServiceMock.getFeePaymentRedirectInformation.mockResolvedValue({
+        paymentReference: PAYMENT_REFERENCE,
+        nextUrl: GATEWAY_NEXT_URL,
+      });
+      paymentServiceMock.getFeePaymentStatus.mockResolvedValue({status: 'Created'});
+
+      const res = await request(app)
+        .post(route(HEARING_FEE_APPLY_HELP_FEE_SELECTION))
+        .send({option: YesNo.NO})
+        .expect(302);
+
+      expect(res.header.location).toEqual(GATEWAY_NEXT_URL);
+    });
+
+    it('routes to the help-with-fees journey when the user chooses to apply for help', async () => {
+      setDraftClaim(buildClaimWithoutPaymentInfo());
+
+      const res = await request(app)
+        .post(route(HEARING_FEE_APPLY_HELP_FEE_SELECTION))
+        .send({option: YesNo.YES})
+        .expect(302);
+
+      expect(res.header.location).toEqual(constructResponseUrlWithIdParams(CLAIM_ID, APPLY_HELP_WITH_FEES));
+    });
+  });
+
+  describe('apply help with fees - start and reference pages', () => {
+    it('renders the apply-help-with-fees start page', async () => {
+      setDraftClaim(buildHwfSelectionClaim());
+      civilServiceClientMock.retrieveClaimDetails.mockResolvedValue(buildHwfSelectionClaim());
+
+      const res = await request(app).get(route(APPLY_HELP_WITH_FEES_START)).expect(200);
+
+      expect(res.text).toContain(route(DASHBOARD_CLAIMANT_URL));
+    });
+
+    it('redirects from the start page to the reference number page', async () => {
+      setDraftClaim(buildHwfSelectionClaim());
+
+      const res = await request(app).post(route(APPLY_HELP_WITH_FEES_START)).send({}).expect(302);
+
+      expect(res.header.location).toEqual(route(APPLY_HELP_WITH_FEES_REFERENCE));
+    });
+
+    it('renders the reference number page', async () => {
+      setDraftClaim(buildHwfSelectionClaim());
+      civilServiceClientMock.retrieveClaimDetails.mockResolvedValue(buildHwfSelectionClaim());
+
+      const res = await request(app).get(route(APPLY_HELP_WITH_FEES_REFERENCE)).expect(200);
+
+      expect(res.text).toContain('help with fees reference number');
+    });
+
+    it('shows a validation error when no reference option is selected', async () => {
+      setDraftClaim(buildHwfSelectionClaim());
+      civilServiceClientMock.retrieveClaimDetails.mockResolvedValue(buildHwfSelectionClaim());
+
+      const res = await request(app).post(route(APPLY_HELP_WITH_FEES_REFERENCE)).send({}).expect(200);
+
+      expect(res.text).toContain('govuk-error-message');
+    });
+
+    it('returns to the selection page when the user has no reference number', async () => {
+      setDraftClaim(buildHwfSelectionClaim());
+
+      const res = await request(app)
+        .post(route(APPLY_HELP_WITH_FEES_REFERENCE))
+        .send({option: YesNo.NO})
+        .expect(302);
+
+      expect(res.header.location).toEqual(route(HEARING_FEE_APPLY_HELP_FEE_SELECTION));
+    });
+
+    it('submits the help-with-fees application and goes to the confirmation page when a reference is supplied', async () => {
+      setDraftClaim(buildHwfSelectionClaim());
+      civilServiceClientMock.submitEvent.mockResolvedValue(undefined);
+
+      const res = await request(app)
+        .post(route(APPLY_HELP_WITH_FEES_REFERENCE))
+        .send({option: YesNo.YES, referenceNumber: 'HWF-A1B-2C3'})
+        .expect(302);
+
+      expect(res.header.location).toEqual(route(HEARING_FEE_CONFIRMATION_URL));
+      expect(civilServiceClientMock.submitEvent).toHaveBeenCalled();
     });
   });
 
