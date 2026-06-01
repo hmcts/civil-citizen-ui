@@ -1,7 +1,6 @@
 import { ValidatorConstraint, ValidatorConstraintInterface } from 'class-validator';
 import { AddressInfoResponse } from 'common/models/ordanceSurveyKey/ordanceSurveyKey';
 import { lookupByPostcodeAndDataSet } from 'modules/ordance-survey-key/ordanceSurveyKeyService';
-import config from 'config';
 import { existsSync, readFileSync } from 'fs';
 import path from 'path';
 
@@ -31,24 +30,8 @@ const getPostcodeExceptionsFromFile = (): string[] => {
 
 const postcodeExceptionsFromFile = getPostcodeExceptionsFromFile();
 
-const getPostcodeExceptionsFromConfig = (): string[] => {
-  if (!config.has('services.postcodeLookup.englandAndWalesPostcodeExceptions')) {
-    return [];
-  }
-
-  const exceptionPostcodes = config.get<string[] | string>('services.postcodeLookup.englandAndWalesPostcodeExceptions');
-  return Array.isArray(exceptionPostcodes)
-    ? exceptionPostcodes
-    : exceptionPostcodes.split(',');
-};
-
 export const isPostcodeOnExceptionList = (postcode: string): boolean => {
-  const postcodes = [
-    ...postcodeExceptionsFromFile,
-    ...getPostcodeExceptionsFromConfig(),
-  ];
-
-  return postcodes
+  return postcodeExceptionsFromFile
     .map((exceptionPostcode: string) => normalisePostcode(exceptionPostcode))
     .includes(normalisePostcode(postcode));
 };

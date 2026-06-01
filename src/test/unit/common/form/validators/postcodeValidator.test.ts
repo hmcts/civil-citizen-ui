@@ -1,9 +1,6 @@
 import { isPostcodeOnExceptionList, PostcodeValidator } from 'common/form/validators/postcodeValidator';
 import * as osService from 'modules/ordance-survey-key/ordanceSurveyKeyService';
 import { AddressInfoResponse } from 'common/models/ordanceSurveyKey/ordanceSurveyKey';
-import config from 'config';
-
-jest.mock('config');
 
 describe('PostcodeValidator', () => {
   let validator: PostcodeValidator;
@@ -11,7 +8,6 @@ describe('PostcodeValidator', () => {
   beforeEach(() => {
     validator = new PostcodeValidator();
     jest.resetAllMocks();
-    (config.has as jest.Mock).mockReturnValue(false);
   });
 
   it('should return false for empty or whitespace postcode', async () => {
@@ -90,19 +86,13 @@ describe('PostcodeValidator', () => {
   });
 
   it('should return true for postcodes in the England and Wales exception list', async () => {
-    (config.has as jest.Mock).mockReturnValue(true);
-    (config.get as jest.Mock).mockReturnValue(['TW14 9RL', 'CV3 1ND']);
-
     const lookupSpy = jest.spyOn(osService, 'lookupByPostcodeAndDataSet');
 
     expect(await validator.validate('tw149rl')).toBe(true);
     expect(lookupSpy).not.toHaveBeenCalled();
   });
 
-  it('should support comma-separated postcode exceptions from config', () => {
-    (config.has as jest.Mock).mockReturnValue(true);
-    (config.get as jest.Mock).mockReturnValue('M1 1AA, M1 1AB');
-
-    expect(isPostcodeOnExceptionList('m11ab')).toBe(true);
+  it('should normalise postcode exceptions from file', () => {
+    expect(isPostcodeOnExceptionList('cv31nd')).toBe(true);
   });
 });
