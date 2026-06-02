@@ -62,9 +62,9 @@ module.exports = {
     await I.see(tasklist, locator);
     await I.see(status, locator);
     if (isLinkFlag === true) {
-      I.seeElement(`//a[contains(@class, "govuk-link")][normalize-space(.)="${tasklist}"]`);
+      await I.seeElement(`//a[contains(@class, "govuk-link")][normalize-space(.)="${tasklist}"]`);
     } else {
-      I.dontSeeElement(`//a[contains(@class, "govuk-link")][normalize-space(.)="${tasklist}"]`);
+      await I.dontSeeElement(`//a[contains(@class, "govuk-link")][normalize-space(.)="${tasklist}"]`);
     }
     if (isDeadlinePresent === true) {
       await I.see(deadline, locator);
@@ -73,14 +73,14 @@ module.exports = {
     if (isLinkFlag === true) {
       const linkExists = await I.waitForVisible(tasklistLocator, 1).then(() => true).catch(() => false);
       if (linkExists) {
-        I.seeElement(tasklistLocator);  // The element is found, so we assert it.
+        await I.seeElement(tasklistLocator);  // The element is found, so we assert it.
       } else {
         console.log(`This failed because the tasklist "${tasklist}" is not a link`);
       }
     } else {
       const linkDoesNotExist = await I.waitForInvisible(tasklistLocator, 1).then(() => true).catch(() => false);
       if (linkDoesNotExist) {
-        I.dontSeeElement(tasklistLocator);  // The element is not found, so we assert its absence.
+        await I.dontSeeElement(tasklistLocator);  // The element is not found, so we assert its absence.
       } else {
         console.log(`This failed because the tasklist "${tasklist}" is a link`);
       }
