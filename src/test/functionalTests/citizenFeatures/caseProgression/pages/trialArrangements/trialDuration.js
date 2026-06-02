@@ -61,55 +61,55 @@ const content = {
 
 class HasAnythingChanged {
 
-  checkPageFullyLoaded () {
-    I.waitForElement(`//a[.='${content.button.cancel[language]}']`);
+  async checkPageFullyLoaded () {
+    await I.waitForElement(`//a[.='${content.button.cancel[language]}']`);
   }
 
-  nextAction (nextAction) {
-    I.click(nextAction);
+  async nextAction (nextAction) {
+    await I.click(nextAction);
   }
 
-  verifyPageContent(caseNumber, claimAmount, languageChosen = 'en') {
+  async verifyPageContent(caseNumber, claimAmount, languageChosen = 'en') {
     language = languageChosen;
-    this.checkPageFullyLoaded();
-    this.verifyBreadcrumbs();
-    this.verifyHeadingDetails();
-    this.verifyCaseNumberClaimAmount(caseNumber, claimAmount);
-    this.verifyTrialDurationSectionContent();
-    this.verifyOtherInformationSectionContent();
-    contactUs.verifyContactUs();
+    await this.checkPageFullyLoaded();
+    await this.verifyBreadcrumbs();
+    await this.verifyHeadingDetails();
+    await this.verifyCaseNumberClaimAmount(caseNumber, claimAmount);
+    await this.verifyTrialDurationSectionContent();
+    await this.verifyOtherInformationSectionContent();
+    await contactUs.verifyContactUs();
   }
 
-  verifyBreadcrumbs() {
-    I.see('Back', '//a[@class="govuk-back-link"]');
+  async verifyBreadcrumbs() {
+    await I.see('Back', '//a[@class="govuk-back-link"]');
   }
 
-  verifyCaseNumberClaimAmount(caseNumber, claimAmount) {
-    I.see('Case number: ' + caseNumber, 'h2');
-    I.see('Claim amount: ' + claimAmount, 'h2');
+  async verifyCaseNumberClaimAmount(caseNumber, claimAmount) {
+    await I.see('Case number: ' + caseNumber, 'h2');
+    await I.see('Claim amount: ' + claimAmount, 'h2');
   }
 
-  verifyHeadingDetails() {
-    I.see(content.heading.title[language], 'h1');
-    I.see(content.heading.number[language]);
-    I.see(content.heading.amount[language]);
+  async verifyHeadingDetails() {
+    await I.see(content.heading.title[language], 'h1');
+    await I.see(content.heading.number[language]);
+    await I.see(content.heading.amount[language]);
   }
 
-  verifyTrialDurationSectionContent() {
-    I.see(content.duration.title[language],'h2');
-    I.see(content.duration.allocated[language]);
-    I.see(content.duration.moreTime[language]);
-    I.see(content.duration.noIncrease[language]);
+  async verifyTrialDurationSectionContent() {
+    await I.see(content.duration.title[language],'h2');
+    await I.see(content.duration.allocated[language]);
+    await I.see(content.duration.moreTime[language]);
+    await I.see(content.duration.noIncrease[language]);
   }
 
-  verifyOtherInformationSectionContent() {
-    I.see(content.otherInfo.title[language],'h2');
-    I.see(content.otherInfo.text[language]);
-    I.see(content.otherInfo.example[language]);
+  async verifyOtherInformationSectionContent() {
+    await I.see(content.otherInfo.title[language],'h2');
+    await I.see(content.otherInfo.text[language]);
+    await I.see(content.otherInfo.example[language]);
   }
 
-  inputDataForTrialDurationOtherInformation() {
-    I.fillField('otherInformation','Automation Testing for Other Information of the Trial Arrangement Section......%$£^');
+  async inputDataForTrialDurationOtherInformation() {
+    await I.fillField('otherInformation','Automation Testing for Other Information of the Trial Arrangement Section......%$£^');
   }
 }
 
