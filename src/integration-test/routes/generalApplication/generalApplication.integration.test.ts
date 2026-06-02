@@ -83,7 +83,7 @@ jest.mock('../../../main/services/features/generalApplication/response/generalAp
   };
 });
 jest.mock('../../../main/services/features/generalApplication/response/checkAnswersResponseService', () => ({
-  getSummarySections: jest.fn(() => []),
+  getSummarySections: jest.fn((): unknown[] => []),
 }));
 jest.mock('../../../main/services/features/generalApplication/response/submitApplicationResponse', () => ({
   submitApplicationResponse: jest.fn().mockResolvedValue(undefined),
