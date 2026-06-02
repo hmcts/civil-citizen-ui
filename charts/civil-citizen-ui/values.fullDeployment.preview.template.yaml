@@ -127,6 +127,10 @@ wa:
 
   wa-case-event-handler:
     java:
+      devcpuRequests: 50m
+      devcpuLimits: 2000m
+      devmemoryRequests: 512Mi
+      devmemoryLimits: 2048Mi
       ingressHost: wa-case-event-handler-${SERVICE_FQDN}
       releaseNameOverride: ${SERVICE_NAME}-wa-case-event-handler
       environment:
@@ -155,6 +159,10 @@ wa:
 
   wa-task-monitor:
     java:
+      devcpuRequests: 50m
+      devcpuLimits: 800m
+      devmemoryRequests: 512Mi
+      devmemoryLimits: 2048Mi
       ingressHost: wa-task-monitor-${SERVICE_FQDN}
       environment:
         WA_TASK_MANAGEMENT_API_URL: http://{{ .Release.Name }}-wa-task-management-api
@@ -162,6 +170,10 @@ wa:
 
   wa-task-management-api:
     java:
+      devcpuRequests: 50m
+      devcpuLimits: 1600m
+      devmemoryRequests: 512Mi
+      devmemoryLimits: 2048Mi
       ingressHost: wa-task-management-api-${SERVICE_FQDN}
       environment:
         ROLE_ASSIGNMENT_URL: http://${SERVICE_NAME}-am-role-assignment-service
@@ -178,6 +190,10 @@ wa:
 
   wa-workflow-api:
     java:
+      devcpuRequests: 50m
+      devcpuLimits: 1400m
+      devmemoryRequests: 512Mi
+      devmemoryLimits: 2048Mi
       environment:
         DB_READER_USERNAME: ${POSTGRES_USER}
         POSTGRES_HOST: "{{ .Values.global.postgresHostname }}"
