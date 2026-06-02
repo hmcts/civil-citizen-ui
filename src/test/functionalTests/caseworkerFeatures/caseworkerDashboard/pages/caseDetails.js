@@ -12,9 +12,9 @@ class CaseDetails {
   }
 
   async verifySuccessBanner(message) {
-    I.waitForText('Summary');
-    I.seeElement(fields.successBanner);
-    I.see(message);
+    await I.waitForText('Summary');
+    await I.seeElement(fields.successBanner);
+    await I.see(message);
   }
 }
 module.exports = new CaseDetails();
