@@ -3,7 +3,7 @@ import {
   EvidenceUploadExpert,
   EvidenceUploadTrial,
   EvidenceUploadWitness,
-  OtherManageUpload,
+  OtherManageUpload, WithoutPrejudiceUpload,
 } from 'models/document/documentType';
 import {CCDClaim} from 'models/civilClaimResponse';
 import {CaseProgression} from 'models/caseProgression/caseProgression';
@@ -13,7 +13,9 @@ import {
   UploadEvidenceDocumentType,
   UploadEvidenceElementCCD,
   UploadEvidenceExpert,
-  UploadEvidenceWitness, UploadOtherDocumentType,
+  UploadEvidenceWitness,
+  UploadOtherDocumentType,
+  UploadPart36RejectionDocumentType,
 } from 'models/caseProgression/uploadDocumentsType';
 import {Document} from 'models/document/document';
 import {toCCDEvidenceUpload} from 'services/translation/caseProgression/convertToCCDEvidenceUpload';
@@ -46,6 +48,17 @@ const managedDocument = {
   } as Document,
   createdDatetime: new Date(0),
 } as UploadOtherDocumentType;
+
+const part36Document = {
+  documentType: 'type',
+  documentName: 'name',
+  document: {
+    document_url: 'http://dm-store:8080/documents/e9fd1e10-baf2-4d95-bc79-bdeb9f3a2ab6',
+    document_filename: 'document_type.pdf',
+    document_binary_url: 'http://dm-store:8080/documents/e9fd1e10-baf2-4d95-bc79-bdeb9f3a2ab6/binary',
+  } as Document,
+  createdDatetime: new Date(0),
+} as UploadPart36RejectionDocumentType;
 
 const expertDocument = {
   expertOptionName: 'expert name',
@@ -281,7 +294,7 @@ it('should handle partial & multiple filled properties of Defendant CaseProgress
   expect(actualOutputDefendant).toEqual(expectedOutputDefendant);
 });
 
-function getCaseProgressionDocuments(documentType: EvidenceUploadDisclosure | EvidenceUploadWitness | EvidenceUploadExpert | EvidenceUploadTrial | OtherManageUpload)
+function getCaseProgressionDocuments(documentType: EvidenceUploadDisclosure | EvidenceUploadWitness | EvidenceUploadExpert | EvidenceUploadTrial | OtherManageUpload | WithoutPrejudiceUpload)
   : UploadEvidenceElementCCD[] {
 
   const uploadEvidenceElementCCD = new UploadEvidenceElementCCD();
@@ -314,6 +327,9 @@ function getCaseProgressionDocuments(documentType: EvidenceUploadDisclosure | Ev
       break;
     case OtherManageUpload.OTHER_MANAGE_DOCUMENT:
       uploadEvidenceElementCCD.value = managedDocument;
+      break;
+    case WithoutPrejudiceUpload.WITHOUT_PREJUDICE_DOCUMENT:
+      uploadEvidenceElementCCD.value = part36Document;
       break;
   }
 

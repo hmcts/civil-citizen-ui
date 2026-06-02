@@ -13,6 +13,7 @@ import {
   UploadEvidenceExpert,
   UploadEvidenceWitness,
   UploadOtherDocumentType,
+  UploadPart36RejectionDocumentType,
 } from 'models/caseProgression/uploadDocumentsType';
 import {getMockDocument} from '../mockDocument';
 import {mockNameValue} from './mockEvidenceUploadSummaryRows';
@@ -158,10 +159,9 @@ export const mockOtherManageDocument = {
 export const mockWithoutPrejudice = {
   documentType: 'type',
   documentName: 'name',
-  documentLink: getMockDocument(),
+  document: getMockDocument(),
   createdDatetime: new Date(0),
-} as UploadOtherDocumentType;
-
+} as UploadPart36RejectionDocumentType;
 export function createCCDClaimForEvidenceUpload(): CCDClaim {
   return {
     documentDisclosureList: getCaseProgressionDocuments(EvidenceUploadDisclosure.DISCLOSURE_LIST),

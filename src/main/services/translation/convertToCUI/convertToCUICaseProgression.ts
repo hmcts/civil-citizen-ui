@@ -4,6 +4,7 @@ import {
   UploadDocuments,
   UploadDocumentTypes, UploadEvidenceDocumentType,
   UploadEvidenceElementCCD, UploadEvidenceExpert, UploadEvidenceWitness, UploadOtherDocumentType,
+  UploadPart36RejectionDocumentType,
 } from 'models/caseProgression/uploadDocumentsType';
 import {
   EvidenceUploadDisclosure,
@@ -211,7 +212,7 @@ const convertToUploadDocumentTypes = (ccdList: UploadEvidenceElementCCD[], cuiLi
   }
 };
 
-const mapCCDElementValue = (documentType: UploadEvidenceDocumentType | UploadEvidenceWitness | UploadEvidenceExpert | UploadOtherDocumentType): UploadEvidenceDocumentType | UploadEvidenceWitness | UploadEvidenceExpert | UploadOtherDocumentType => {
+const mapCCDElementValue = (documentType: UploadEvidenceDocumentType | UploadEvidenceWitness | UploadEvidenceExpert | UploadOtherDocumentType | UploadPart36RejectionDocumentType): UploadEvidenceDocumentType | UploadEvidenceWitness | UploadEvidenceExpert | UploadOtherDocumentType | UploadPart36RejectionDocumentType => {
 
   if(TypesOfEvidenceUploadDocuments.DOCUMENT_TYPE in documentType)
   {
@@ -235,8 +236,8 @@ const mapCCDElementValue = (documentType: UploadEvidenceDocumentType | UploadEvi
   }
   else if((Object.values(documentType) as string[]).includes(TypesOfEvidenceUploadDocuments.WITHOUT_PREJUDICE))
   {
-    const document = documentType as UploadOtherDocumentType;
-    return new UploadOtherDocumentType(document.documentType, document.documentName, document.documentLink, document.createdDatetime);
+    const document = documentType as UploadPart36RejectionDocumentType;
+    return new UploadOtherDocumentType(document?.document?.category_id, document.documentName, document.document, document.createdDatetime);
   }
   return documentType;
 };

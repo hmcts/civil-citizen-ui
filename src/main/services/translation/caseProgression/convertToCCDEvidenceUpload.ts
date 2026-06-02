@@ -5,6 +5,7 @@ import {
   UploadEvidenceExpert,
   UploadEvidenceWitness,
   UploadOtherDocumentType,
+  UploadPart36RejectionDocumentType,
 } from 'models/caseProgression/uploadDocumentsType';
 import {CaseProgression} from 'models/caseProgression/caseProgression';
 import {
@@ -81,7 +82,7 @@ const createCCDEvidenceUploadList = (evidenceList?: UploadDocumentTypes[],
         continue;
       }
 
-      let evidenceItem: UploadEvidenceWitness | UploadEvidenceExpert | UploadEvidenceDocumentType| UploadOtherDocumentType;
+      let evidenceItem: UploadEvidenceWitness | UploadEvidenceExpert | UploadEvidenceDocumentType| UploadOtherDocumentType | UploadPart36RejectionDocumentType;
       id = null;
 
       switch (element.documentType) {
@@ -108,6 +109,9 @@ const createCCDEvidenceUploadList = (evidenceList?: UploadDocumentTypes[],
           break;
         case OtherManageUpload.OTHER_MANAGE_DOCUMENT:
           evidenceItem = element.caseDocument as UploadOtherDocumentType;
+          break;
+        case WithoutPrejudiceUpload.WITHOUT_PREJUDICE_DOCUMENT:
+          evidenceItem = element.caseDocument as UploadPart36RejectionDocumentType;
           break;
       }
       id = element.uuid == null ? uuidv4() : element.uuid ;

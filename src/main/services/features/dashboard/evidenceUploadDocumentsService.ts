@@ -17,7 +17,7 @@ import {
 import {formatEvidenceDocumentWithHintText} from 'common/utils/formatDocumentURL';
 import {DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL} from 'routes/urls';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {TypesOfEvidenceUploadDocuments} from "models/caseProgression/TypesOfEvidenceUploadDocument";
+import {TypesOfEvidenceUploadDocuments} from 'models/caseProgression/TypesOfEvidenceUploadDocument';
 
 export function getEvidenceUploadContent(claim: Claim, lang: string): ClaimSummaryContent[] {
   const claimSummaryContent = [] as ClaimSummaryContent[];
