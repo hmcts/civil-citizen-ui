@@ -2105,6 +2105,7 @@
       "DOCUMENTARY_EVIDENCE": "Tystiolaeth ddogfennol",
       "DOCUMENTS": "Dogfennau",
       "DOCUMENTS_FOR_CLAIM": "Dogfennau ar gyfer yr Hawliad",
+      "DOCUMENT_NAME": "Enw’r ddogfen",
       "DOCUMENT_HEADERS": {
         "COMMON": {
           "CLAIM_DOCUMENTS": "Dogfennau’r hawliad",

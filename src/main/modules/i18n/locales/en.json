@@ -2107,6 +2107,7 @@
       "DOCUMENTARY_EVIDENCE": "Documentary evidence",
       "DOCUMENTS": "Documents",
       "DOCUMENTS_FOR_CLAIM": "Documents for Claim",
+      "DOCUMENT_NAME": "Document name",
       "DOCUMENT_HEADERS": {
         "COMMON": {
           "CLAIM_DOCUMENTS": "Claim documents",
