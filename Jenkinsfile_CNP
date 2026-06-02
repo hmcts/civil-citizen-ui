@@ -12,7 +12,7 @@ def type = "nodejs"
 def product = "civil"
 def component = "citizen-ui"
 def camundaBranch = "master"
-def dmnBranch = "master"
+def dmnBranch = "DTSCCI-3367-wlu"
 def waStandaloneBranch = "master"
 AppPipelineConfig pipelineConf
 
@@ -86,7 +86,7 @@ def getCivilServiceImage() {
   for (label in githubApi.getLabelsbyPattern(env.BRANCH_NAME, "civilServicePr:") ) {
     return "pr-" + label.minus("civilServicePr:").trim()
   }
-  return "latest"
+  return "pr-7939"
 }
 
 def getCivilServiceSharedBranch() {
