@@ -1,5 +1,9 @@
 process.env.NODE_ENV = 'test';
 import '../../setup/testSetup';
+jest.mock('services/features/generalApplication/generalApplicationService', () => ({
+  getCancelUrl: jest.fn(),
+  isConfirmYouPaidCCJAppType: jest.fn(),
+}));
 jest.unmock('services/features/generalApplication/submitGeneralApplicationConfirmationContent');
 import {getGeneralApplicationConfirmationContent} from 'services/features/generalApplication/submitGeneralApplicationConfirmationContent';
 import {getCancelUrl, isConfirmYouPaidCCJAppType} from 'services/features/generalApplication/generalApplicationService';

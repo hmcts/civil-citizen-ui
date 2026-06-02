@@ -1,6 +1,28 @@
 process.env.NODE_ENV = 'test';
 import '../../setup/testSetup';
 jest.unmock('services/features/generalApplication/fee/helpWithFeeService');
+jest.mock('modules/draft-store/draftStoreService', () => ({
+  generateRedisKey: jest.fn(() => 'redis-claim-key'),
+  saveDraftClaim: jest.fn().mockResolvedValue(undefined),
+}));
+jest.mock('modules/draft-store/gaHwFeesDraftStore', () => ({
+  getDraftGAHWFDetails: jest.fn(),
+  saveDraftGAHWFDetails: jest.fn().mockResolvedValue(undefined),
+}));
+jest.mock('services/features/generalApplication/applicationFee/generalApplicationFeePaymentService', () => ({
+  getGaFeePaymentRedirectInformation: jest.fn(),
+  getGaFeePaymentStatus: jest.fn(),
+}));
+jest.mock('modules/utilityService', () => ({
+  ...jest.requireActual('modules/utilityService'),
+  getClaimById: jest.fn(),
+}));
+jest.mock('services/features/generalApplication/generalApplicationService', () => ({
+  getApplicationFromGAService: jest.fn(),
+}));
+jest.mock('modules/draft-store/paymentSessionStoreService', () => ({
+  saveUserId: jest.fn().mockResolvedValue(undefined),
+}));
 import {getRedirectUrl} from 'services/features/generalApplication/fee/helpWithFeeService';
 import {YesNo} from 'common/form/models/yesNo';
 import {FeeType} from 'common/form/models/helpWithFees/feeType';
@@ -8,12 +30,12 @@ import {GeneralApplication} from 'common/models/generalApplication/GeneralApplic
 import {ApplicationTypeOption} from 'common/models/generalApplication/applicationType';
 import {Claim} from 'common/models/claim';
 import {GenericYesNo} from 'common/form/models/genericYesNo';
-import {getClaimById} from 'modules/utilityService';
 import {getGaFeePaymentRedirectInformation, getGaFeePaymentStatus} from 'services/features/generalApplication/applicationFee/generalApplicationFeePaymentService';
 import {saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {getDraftGAHWFDetails, saveDraftGAHWFDetails} from 'modules/draft-store/gaHwFeesDraftStore';
 import {getApplicationFromGAService} from 'services/features/generalApplication/generalApplicationService';
 import {saveUserId} from 'modules/draft-store/paymentSessionStoreService';
+import {getClaimById} from 'modules/utilityService';
 
 const CLAIM_ID = '1640995200000000';
 const APP_ID = 'GA-1001';

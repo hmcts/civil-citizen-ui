@@ -100,10 +100,6 @@ export const gaFeePaymentServiceMock = {
   getGaFeePaymentStatus: jest.fn(),
 };
 
-export const paymentSessionStoreServiceMock = {
-  saveUserId: jest.fn().mockResolvedValue(undefined),
-};
-
 jest.mock('modules/oidc', () => ({
   OidcMiddleware: class {
     public enableFor(): void {
@@ -141,29 +137,7 @@ jest.mock('modules/utilityService', () => {
   const session = require('express-session');
   return {
     ...actual,
-    getClaimById: jest.fn(),
     getRedisStoreForSession: jest.fn(() => new session.MemoryStore()),
-  };
-});
-
-jest.mock('modules/draft-store/draftStoreService', () => draftStoreServiceMock);
-jest.mock('modules/draft-store/gaHwFeesDraftStore', () => gaHwFeesDraftStoreMock);
-jest.mock('modules/draft-store/paymentSessionStoreService', () => paymentSessionStoreServiceMock);
-
-jest.mock('services/features/generalApplication/generalApplicationService', () => generalApplicationServiceMock);
-jest.mock('services/features/generalApplication/feeDetailsService', () => feeDetailsServiceMock);
-jest.mock('services/features/generalApplication/applicationFee/generalApplicationFeePaymentService', () => gaFeePaymentServiceMock);
-jest.mock('services/features/generalApplication/fee/helpWithFeeService', () => gaHelpWithFeeServiceMock);
-jest.mock('services/features/generalApplication/submitGeneralApplicationConfirmationContent', () => gaConfirmationContentServiceMock);
-jest.mock('services/features/generalApplication/response/generalApplicationResponseStoreService', () => gaResponseStoreServiceMock);
-jest.mock('services/features/generalApplication/response/checkAnswersResponseService', () => checkAnswersResponseServiceMock);
-jest.mock('services/features/generalApplication/response/submitApplicationResponse', () => submitApplicationResponseServiceMock);
-jest.mock('services/features/generalApplication/response/generalApplicationResponseService', () => {
-  const actual = jest.requireActual('services/features/generalApplication/response/generalApplicationResponseService');
-  return {
-    ...actual,
-    getRespondToApplicationCaption: jest.fn(() => 'Respond to this application'),
-    saveRespondentStatementOfTruth: jest.fn().mockResolvedValue(undefined),
   };
 });
 
