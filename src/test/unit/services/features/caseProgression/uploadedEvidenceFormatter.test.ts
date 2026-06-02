@@ -5,7 +5,7 @@ import {
   UploadEvidenceDocumentType,
   UploadEvidenceExpert,
   UploadEvidenceWitness,
-  UploadOtherDocumentType,
+  UploadOtherDocumentType, UploadPart36RejectionDocumentType,
 } from 'models/caseProgression/uploadDocumentsType';
 import {
   EvidenceUploadDisclosure,
@@ -107,7 +107,7 @@ describe('UploadedEvidenceFormatter', () => {
 
     it('should find filename & binary from WithoutPrejudiceUpload files', () => {
       //given
-      const caseDocument = new UploadOtherDocumentType('without-prejudice-document', 'date', document, date);
+      const caseDocument = new UploadPart36RejectionDocumentType('without-prejudice-document', document, date);
       const uploadedDocument = new UploadDocumentTypes(false, caseDocument, WithoutPrejudiceUpload.WITHOUT_PREJUDICE_DOCUMENT, null);
 
       //when
