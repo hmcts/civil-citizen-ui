@@ -24,74 +24,9 @@ import gaCheckAnswersResponseController
   from '../../../main/routes/features/generalApplication/response/checkAnswersResponseController';
 import applicationResponseConfirmationController
   from '../../../main/routes/features/generalApplication/response/applicationResponseConfirmationController';
-
-jest.mock('../../../main/modules/utilityService', () => ({
-  getClaimById: jest.fn(),
-}));
-jest.mock('../../../main/modules/draft-store/draftStoreService', () => ({
-  generateRedisKey: jest.fn(() => 'redis-claim'),
-  generateRedisKeyForGA: jest.fn(() => 'redis-ga'),
-  getCaseDataFromStore: jest.fn(),
-}));
-jest.mock('../../../main/modules/draft-store/gaHwFeesDraftStore', () => ({
-  getDraftGAHWFDetails: jest.fn().mockResolvedValue({applyHelpWithFees: {option: undefined}}),
-  saveDraftGAHWFDetails: jest.fn().mockResolvedValue(undefined),
-}));
-jest.mock('modules/draft-store/gaHwFeesDraftStore', () => ({
-  getDraftGAHWFDetails: jest.fn().mockResolvedValue({applyHelpWithFees: {option: undefined}}),
-  saveDraftGAHWFDetails: jest.fn().mockResolvedValue(undefined),
-}));
-jest.mock('../../../main/services/features/generalApplication/generalApplicationService', () => ({
-  deleteGAFromClaimsByUserId: jest.fn().mockResolvedValue(undefined),
-  getByIndex: jest.fn(),
-  getCancelUrl: jest.fn().mockResolvedValue('/dashboard'),
-  saveApplicationType: jest.fn().mockResolvedValue(undefined),
-  validateAdditionalApplicationtType: jest.fn(),
-  getDynamicHeaderForMultipleApplications: jest.fn(() => 'Application 1'),
-  saveRespondentAgreement: jest.fn().mockResolvedValue(undefined),
-}));
-jest.mock('../../../main/app/auth/launchdarkly/launchDarklyClient', () => ({
-  isQueryManagementEnabled: jest.fn().mockResolvedValue(true),
-}));
-jest.mock('../../../main/services/features/generalApplication/feeDetailsService', () => ({
-  gaApplicationFeeDetails: jest.fn(),
-}));
-jest.mock('../../../main/services/features/generalApplication/fee/helpWithFeeService', () => ({
-  getRedirectUrl: jest.fn(),
-}));
-jest.mock('services/features/generalApplication/fee/helpWithFeeService', () => ({
-  getRedirectUrl: jest.fn(),
-}));
-jest.mock('../../../main/services/features/generalApplication/submitGeneralApplicationConfirmationContent', () => ({
-  getGeneralApplicationConfirmationContent: jest.fn().mockResolvedValue([{title: 'Confirmation content'}]),
-}));
-jest.mock('services/features/generalApplication/submitGeneralApplicationConfirmationContent', () => ({
-  getGeneralApplicationConfirmationContent: jest.fn().mockResolvedValue([{title: 'Confirmation content'}]),
-}));
-jest.mock('../../../main/services/features/generalApplication/response/generalApplicationResponseStoreService', () => ({
-  getDraftGARespondentResponse: jest.fn(),
-}));
-jest.mock('services/features/generalApplication/response/generalApplicationResponseStoreService', () => ({
-  getDraftGARespondentResponse: jest.fn(),
-}));
-jest.mock('../../../main/services/features/generalApplication/response/generalApplicationResponseService', () => {
-  const actual = jest.requireActual('../../../main/services/features/generalApplication/response/generalApplicationResponseService');
-  return {
-    ...actual,
-    getRespondToApplicationCaption: jest.fn(() => 'Respond to this application'),
-    saveRespondentStatementOfTruth: jest.fn().mockResolvedValue(undefined),
-  };
-});
-jest.mock('../../../main/services/features/generalApplication/response/checkAnswersResponseService', () => ({
-  getSummarySections: jest.fn((): unknown[] => []),
-}));
-jest.mock('../../../main/services/features/generalApplication/response/submitApplicationResponse', () => ({
-  submitApplicationResponse: jest.fn().mockResolvedValue(undefined),
-}));
-
-import {getClaimById} from '../../../main/modules/utilityService';
-import {gaApplicationFeeDetails} from '../../../main/services/features/generalApplication/feeDetailsService';
-import {getDraftGARespondentResponse} from '../../../main/services/features/generalApplication/response/generalApplicationResponseStoreService';
+import {getClaimById} from 'modules/utilityService';
+import {gaApplicationFeeDetails} from 'services/features/generalApplication/feeDetailsService';
+import {getDraftGARespondentResponse} from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
 import {gaServiceClientMock} from '../../setup/sharedMocks';
 
 const CLAIM_ID = '1640995200000000';
