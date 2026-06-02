@@ -36,6 +36,6 @@ Scenario('Case progression journey - Small Claims - Verify Bundles Page', async 
   uploadDate = DateUtilsComponent.DateUtilsComponent.formatDateToDDMMYYYY(new Date());
   taskListItem = viewTheBundle();
   await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Available', true, false, undefined, claimNumber);
-  I.click(taskListItem.title);
-  viewBundlePage.verifyPageContent(formattedCaseId, '£1,500', uploadDate, partyType);
+  await I.click(taskListItem.title);
+  await viewBundlePage.verifyPageContent(formattedCaseId, '£1,500', uploadDate, partyType);
 });

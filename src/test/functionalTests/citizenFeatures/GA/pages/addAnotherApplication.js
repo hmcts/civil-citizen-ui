@@ -9,30 +9,30 @@ class AddAnotherApplication {
     await I.waitForElement('//a[.=\'Cancel\']');
   }
 
-  nextAction (nextAction) {
-    I.click(nextAction);
+  async nextAction (nextAction) {
+    await I.click(nextAction);
   }
 
   async verifyPageContent(applicationType) {
-    this.checkPageFullyLoaded();
-    this.verifyBreadcrumbs();
-    this.verifyHeadingDetails(applicationType);
+    await this.checkPageFullyLoaded();
+    await this.verifyBreadcrumbs();
+    await this.verifyHeadingDetails(applicationType);
     await this.verifyOptions();
-    contactUs.verifyContactUs();
+    await contactUs.verifyContactUs();
   }
 
-  verifyBreadcrumbs() {
-    I.see('Back', '//a[@class="govuk-back-link"]');
+  async verifyBreadcrumbs() {
+    await I.see('Back', '//a[@class="govuk-back-link"]');
   }
 
-  verifyHeadingDetails(applicationType) {
-    I.see(applicationType, 'span');
-    I.see('Do you want to add another application?', 'h1');
+  async verifyHeadingDetails(applicationType) {
+    await I.see(applicationType, 'span');
+    await I.see('Do you want to add another application?', 'h1');
   }
 
   async verifyOptions() {
-    I.see('There’s no additional fee for making more than one application.');
-    I.see('Yes');
+    await I.see('There’s no additional fee for making more than one application.');
+    await I.see('Yes');
     await I.see('No');
   }
 }
