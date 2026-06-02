@@ -1,23 +1,18 @@
 import request from 'supertest';
 process.env.NODE_ENV = 'test';
 import '../../setup/testSetup';
-jest.mock('../../../main/modules/draft-store/draftStoreService', () => ({
-  updateFieldDraftClaimFromStore: jest.fn(),
-}));
+jest.mock('../../../main/modules/draft-store/draftStoreService', () =>
+  jest.requireActual('../../setup/sharedMocks').draftStoreServiceMock,
+);
 jest.mock('services/caseDocuments/documentService', () => ({
   saveDocumentsToExistingClaim: jest.fn().mockResolvedValue(undefined),
 }));
 jest.mock('services/features/response/submitConfirmation/submitConfirmationService', () => ({
   getClaimWithExtendedPaymentDeadline: jest.fn().mockResolvedValue(undefined),
 }));
-jest.mock('../../../main/services/dashboard/dashboardService', () => ({
-  getNotifications: jest.fn(),
-  getDashboardForm: jest.fn(),
-  extractOrderDocumentIdFromNotification: jest.fn(),
-  getContactCourtLink: jest.fn(),
-  getHelpSupportTitle: jest.fn(),
-  getHelpSupportLinks: jest.fn(),
-}));
+jest.mock('../../../main/services/dashboard/dashboardService', () =>
+  jest.requireActual('../../setup/sharedMocks').dashboardServiceMock,
+);
 import {app} from '../../../main/app';
 import {DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL} from '../../../main/routes/urls';
 import {civilServiceClientMock} from '../../setup/sharedMocks';

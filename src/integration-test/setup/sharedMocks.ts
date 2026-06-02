@@ -52,6 +52,7 @@ export const draftStoreServiceMock = {
   generateRedisKeyForGA: jest.fn(() => 'redis-ga'),
   getCaseDataFromStore: jest.fn(),
   saveDraftClaim: jest.fn().mockResolvedValue(undefined),
+  updateFieldDraftClaimFromStore: jest.fn(),
 };
 
 export const gaHwFeesDraftStoreMock = {
@@ -98,6 +99,15 @@ export const submitApplicationResponseServiceMock = {
 export const gaFeePaymentServiceMock = {
   getGaFeePaymentRedirectInformation: jest.fn(),
   getGaFeePaymentStatus: jest.fn(),
+};
+
+export const dashboardServiceMock = {
+  getNotifications: jest.fn(),
+  getDashboardForm: jest.fn(),
+  extractOrderDocumentIdFromNotification: jest.fn(),
+  getContactCourtLink: jest.fn(),
+  getHelpSupportTitle: jest.fn(),
+  getHelpSupportLinks: jest.fn(),
 };
 
 jest.mock('modules/oidc', () => ({
