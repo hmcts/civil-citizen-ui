@@ -4,7 +4,7 @@ import {t} from 'i18next';
 import {
   UploadDocumentTypes,
   UploadOtherDocumentType,
-  UploadPart36RejectionDocumentType
+  UploadPart36RejectionDocumentType,
 } from 'models/caseProgression/uploadDocumentsType';
 import {orderDocumentNewestToOldest} from 'services/features/caseProgression/documentTableBuilder';
 import {UploadedEvidenceFormatter} from 'services/features/caseProgression/uploadedEvidenceFormatter';
@@ -281,7 +281,6 @@ function getOtherManagedDocumentHTML(
       documentName = document.document?.document_filename;
       documentBinary = document.document?.document_binary_url;
     }
-
 
     documentsHTML = documentsHTML.concat('<div class="govuk-grid-row">');
     documentsHTML = documentsHTML.concat(formatEvidenceDocumentWithHintText(documentTypeName, upload.caseDocument.createdDatetime, lang));
