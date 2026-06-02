@@ -15,22 +15,22 @@ const govPay = new GovPay();
 class hearingFeeSteps {
 
   async initiateApplyForHelpWithFeesJourney(claimRef, feeAmount, dueDate, caseNumber, claimAmount) { 
-    applyHelpWithFeesStart.verifyPageContent(caseNumber, claimAmount);
-    applyHelpWithFeesStart.nextAction('Continue');
-    applyHelpWithFeesReferenceNumber.verifyPageContent(caseNumber, claimAmount);
-    applyHelpWithFeesReferenceNumber.nextAction('Yes');
-    applyHelpWithFeesReferenceNumber.addHelpWithFeesReference();
-    applyHelpWithFeesReferenceNumber.nextAction('Continue');
-    applyHelpWithFeesConfirmation.verifyPageContent();
-    applyHelpWithFeesConfirmation.nextAction('Go to your account');
+    await applyHelpWithFeesStart.verifyPageContent(caseNumber, claimAmount);
+    await applyHelpWithFeesStart.nextAction('Continue');
+    await applyHelpWithFeesReferenceNumber.verifyPageContent(caseNumber, claimAmount);
+    await applyHelpWithFeesReferenceNumber.nextAction('Yes');
+    await applyHelpWithFeesReferenceNumber.addHelpWithFeesReference();
+    await applyHelpWithFeesReferenceNumber.nextAction('Continue');
+    await applyHelpWithFeesConfirmation.verifyPageContent();
+    await applyHelpWithFeesConfirmation.nextAction('Go to your account');
     await waitForFinishedBusinessProcess();
   }
 
   async payHearingFeeJourney(feeAmount) {
     await govPay.addValidCardDetails(feeAmount);
     await govPay.confirmPayment();
-    paymentSuccessful.verifyPageContent(feeAmount);
-    paymentSuccessful.nextAction('Go to your account');
+    await paymentSuccessful.verifyPageContent(feeAmount);
+    await paymentSuccessful.nextAction('Go to your account');
   }
 }
 

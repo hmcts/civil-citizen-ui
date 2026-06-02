@@ -103,21 +103,36 @@ module.exports = class BrowserHelpers extends Helper {
     return false;
   }
 
-  async clickWithRetry(selector, retries = 1) {
+  async clickWithRetry(selectorOrButtonName, retries = 1) {
     if (!this.isPlaywright()) {
-      await this.getHelper().click(selector);
+      await this.getHelper().click(selectorOrButtonName);
       return;
     }
 
     const page = this.helpers.Playwright.page;
+    const selector = String(selectorOrButtonName);
+    const looksLikeLocator = selector.startsWith('//')
+      || selector.startsWith('xpath=')
+      || selector.startsWith('#')
+      || selector.startsWith('.')
+      || selector.startsWith('[')
+      || selector.includes(',')
+      || selector.includes('>')
+      || selector.includes(':')
+      || selector.includes('=');
     let lastError;
 
     for (let attempt = 0; attempt <= retries; attempt++) {
       try {
-        // Use Playwright's native locator so grouped CSS selectors
-        // (e.g. "a, b, c") are parsed as CSS rather than fuzzy text/XPath,
-        // and `.first()` keeps it strict-mode safe when several match.
-        await page.locator(selector).first().click();
+        if (looksLikeLocator) {
+          // Use Playwright's native locator so grouped CSS selectors
+          // (e.g. "a, b, c") are parsed as CSS rather than fuzzy text/XPath,
+          // and `.first()` keeps it strict-mode safe when several match.
+          await page.locator(selector).first().click();
+        } else {
+          // Support existing callers that pass visible button text.
+          await page.locator(`//button[contains(normalize-space(), '${selector}')]`).first().click();
+        }
       } catch (err) {
         lastError = err;
         console.log(`Click attempt ${attempt + 1}/${retries + 1} failed: ${err.message}`);
