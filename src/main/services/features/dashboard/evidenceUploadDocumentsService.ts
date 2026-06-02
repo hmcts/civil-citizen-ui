@@ -268,22 +268,25 @@ function getOtherManagedDocumentHTML(
     let documentTypeName;
     let documentName;
     let documentBinary;
+    let createdDatetime;
 
     if(TypesOfEvidenceUploadDocuments.DOCUMENT_LINK in upload.caseDocument) {
       const document = upload.caseDocument as UploadOtherDocumentType;
       documentTypeName = t(documentTypeNameKey, {lng: lang});
       documentName = document.documentLink?.document_filename;
       documentBinary = document.documentLink?.document_binary_url;
+      createdDatetime = document.createdDatetime;
     }
     else if(TypesOfEvidenceUploadDocuments.DOCUMENT in upload.caseDocument) {
       const document = upload.caseDocument as UploadPart36RejectionDocumentType;
       documentTypeName = t(documentTypeNameKey, {lng: lang});
       documentName = document.document?.document_filename;
       documentBinary = document.document?.document_binary_url;
+      createdDatetime = document.createdDatetime;
     }
 
     documentsHTML = documentsHTML.concat('<div class="govuk-grid-row">');
-    documentsHTML = documentsHTML.concat(formatEvidenceDocumentWithHintText(documentTypeName, upload.caseDocument.createdDatetime, lang));
+    documentsHTML = documentsHTML.concat(formatEvidenceDocumentWithHintText(documentTypeName, createdDatetime, lang));
     documentsHTML = documentsHTML.concat(UploadedEvidenceFormatter.getOtherDocumentLinkAlignedToRight(documentName, documentBinary, claim.id));
     documentsHTML = documentsHTML.concat('</div>');
   }
