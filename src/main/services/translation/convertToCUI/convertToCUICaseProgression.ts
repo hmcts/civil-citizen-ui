@@ -159,7 +159,12 @@ const claimDocuments =  (ccdClaim: CCDClaim): UploadDocumentTypes[] => {
 
 const withoutPreDocuments =  (ccdClaim: CCDClaim): UploadDocumentTypes[] => {
   const withoutPrejudiceDocuments = [] as UploadDocumentTypes[];
-  convertToUploadDocumentTypes(ccdClaim.documentPart36Rejection, withoutPrejudiceDocuments, WithoutPrejudiceUpload.WITHOUT_PREJUDICE_DOCUMENT);
+  const combinedPart36RejectionDocuments: UploadEvidenceElementCCD[] = [
+    ...(ccdClaim.documentPart36Rejection ?? []),
+    ...(ccdClaim.documentPart36RejectionApp2 ?? []),
+    ...(ccdClaim.documentPart36RejectionRes?? []),
+    ...(ccdClaim.documentPart36RejectionRes?? [])];
+  convertToUploadDocumentTypes(combinedPart36RejectionDocuments, withoutPrejudiceDocuments, WithoutPrejudiceUpload.WITHOUT_PREJUDICE_DOCUMENT);
   return withoutPrejudiceDocuments;
 };
 
@@ -224,6 +229,11 @@ const mapCCDElementValue = (documentType: UploadEvidenceDocumentType | UploadEvi
     return new UploadEvidenceExpert(document.expertOptionName, document.expertOptionExpertise, document.expertOptionExpertises, document.expertOptionOtherParty, document.expertDocumentQuestion, document.expertDocumentAnswer, document.expertOptionUploadDate, document.expertDocument, document.createdDatetime);
   }
   else if(TypesOfEvidenceUploadDocuments.DOCUMENT_LINK in documentType)
+  {
+    const document = documentType as UploadOtherDocumentType;
+    return new UploadOtherDocumentType(document.documentType, document.documentName, document.documentLink, document.createdDatetime);
+  }
+  else if((Object.values(documentType) as string[]).includes(TypesOfEvidenceUploadDocuments.WITHOUT_PREJUDICE))
   {
     const document = documentType as UploadOtherDocumentType;
     return new UploadOtherDocumentType(document.documentType, document.documentName, document.documentLink, document.createdDatetime);
