@@ -1,7 +1,11 @@
 import {Claim} from 'models/claim';
 import {ClaimSummaryContent, ClaimSummarySection, ClaimSummaryType} from 'form/models/claimSummarySection';
 import {t} from 'i18next';
-import {UploadDocumentTypes, UploadOtherDocumentType} from 'models/caseProgression/uploadDocumentsType';
+import {
+  UploadDocumentTypes,
+  UploadOtherDocumentType,
+  UploadPart36RejectionDocumentType
+} from 'models/caseProgression/uploadDocumentsType';
 import {orderDocumentNewestToOldest} from 'services/features/caseProgression/documentTableBuilder';
 import {UploadedEvidenceFormatter} from 'services/features/caseProgression/uploadedEvidenceFormatter';
 import {
@@ -13,6 +17,7 @@ import {
 import {formatEvidenceDocumentWithHintText} from 'common/utils/formatDocumentURL';
 import {DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL} from 'routes/urls';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {TypesOfEvidenceUploadDocuments} from "models/caseProgression/TypesOfEvidenceUploadDocument";
 
 export function getEvidenceUploadContent(claim: Claim, lang: string): ClaimSummaryContent[] {
   const claimSummaryContent = [] as ClaimSummaryContent[];
@@ -260,10 +265,23 @@ function getOtherManagedDocumentHTML(
       continue;
     }
 
-    const document = upload.caseDocument as UploadOtherDocumentType;
-    const documentTypeName = t(documentTypeNameKey, {lng: lang});
-    const documentName = document.documentLink?.document_filename;
-    const documentBinary = document.documentLink?.document_binary_url;
+    let documentTypeName;
+    let documentName;
+    let documentBinary;
+
+    if(TypesOfEvidenceUploadDocuments.DOCUMENT_LINK in upload.caseDocument) {
+      const document = upload.caseDocument as UploadOtherDocumentType;
+      documentTypeName = t(documentTypeNameKey, {lng: lang});
+      documentName = document.documentLink?.document_filename;
+      documentBinary = document.documentLink?.document_binary_url;
+    }
+    else if(TypesOfEvidenceUploadDocuments.DOCUMENT in upload.caseDocument) {
+      const document = upload.caseDocument as UploadPart36RejectionDocumentType;
+      documentTypeName = t(documentTypeNameKey, {lng: lang});
+      documentName = document.document?.document_filename;
+      documentBinary = document.document?.document_binary_url;
+    }
+
 
     documentsHTML = documentsHTML.concat('<div class="govuk-grid-row">');
     documentsHTML = documentsHTML.concat(formatEvidenceDocumentWithHintText(documentTypeName, upload.caseDocument.createdDatetime, lang));

@@ -9,7 +9,7 @@ import {
   UploadDocumentTypes,
   UploadEvidenceDocumentType,
   UploadEvidenceExpert,
-  UploadEvidenceWitness, UploadOtherDocumentType,
+  UploadEvidenceWitness, UploadOtherDocumentType, UploadPart36RejectionDocumentType,
 } from 'models/caseProgression/uploadDocumentsType';
 import {formatEvidenceDocumentAlignedViewURL, formatDocumentViewURL} from 'common/utils/formatDocumentURL';
 import {alignText} from 'form/models/alignText';
@@ -94,12 +94,12 @@ export class UploadedEvidenceFormatter {
     return formatEvidenceDocumentAlignedViewURL(documentName, claimId, documentBinary, alignText.ALIGN_TO_THE_RIGHT);
   }
 
-  static getDocumentFilename(caseDocument: UploadEvidenceWitness | UploadEvidenceExpert | UploadEvidenceDocumentType | UploadOtherDocumentType) {
+  static getDocumentFilename(caseDocument: UploadEvidenceWitness | UploadEvidenceExpert | UploadEvidenceDocumentType | UploadOtherDocumentType | UploadPart36RejectionDocumentType) {
     const document = UploadedEvidenceFormatter.getDocument(caseDocument);
     return document?.document_filename;
   }
 
-  static getDocument(caseDocument: UploadEvidenceWitness | UploadEvidenceExpert | UploadEvidenceDocumentType | UploadOtherDocumentType): Document {
+  static getDocument(caseDocument: UploadEvidenceWitness | UploadEvidenceExpert | UploadEvidenceDocumentType | UploadOtherDocumentType | UploadPart36RejectionDocumentType): Document {
     if (caseDocument instanceof UploadEvidenceWitness) {
       return caseDocument.witnessOptionDocument;
     }
@@ -112,10 +112,13 @@ export class UploadedEvidenceFormatter {
     if (caseDocument instanceof UploadOtherDocumentType) {
       return caseDocument.documentLink;
     }
+    if (caseDocument instanceof UploadPart36RejectionDocumentType) {
+      return caseDocument.document;
+    }
     return undefined;
   }
 
-  static getDocumentBinaryUrl(caseDocument: UploadEvidenceWitness | UploadEvidenceExpert | UploadEvidenceDocumentType | UploadOtherDocumentType) {
+  static getDocumentBinaryUrl(caseDocument: UploadEvidenceWitness | UploadEvidenceExpert | UploadEvidenceDocumentType | UploadOtherDocumentType | UploadPart36RejectionDocumentType) {
     const document = UploadedEvidenceFormatter.getDocument(caseDocument);
     return document?.document_binary_url? document?.document_binary_url : '';
   }

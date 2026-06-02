@@ -41,7 +41,7 @@ export class UploadDocuments {
   }
 
 }
-type caseDocumentType = UploadEvidenceWitness | UploadEvidenceExpert | UploadEvidenceDocumentType | UploadOtherDocumentType;
+type caseDocumentType = UploadEvidenceWitness | UploadEvidenceExpert | UploadEvidenceDocumentType | UploadOtherDocumentType | UploadPart36RejectionDocumentType;
 
 export class UploadDocumentTypes {
   selected?: boolean;
@@ -49,7 +49,7 @@ export class UploadDocumentTypes {
   caseDocument?: caseDocumentType;
   documentType?: EvidenceUploadWitness | EvidenceUploadDisclosure | EvidenceUploadExpert | EvidenceUploadTrial | OtherManageUpload | WithoutPrejudiceUpload;
 
-  constructor(selected?: boolean, caseDocument?: UploadEvidenceWitness | UploadEvidenceExpert | UploadEvidenceDocumentType | UploadOtherDocumentType,
+  constructor(selected?: boolean, caseDocument?: UploadEvidenceWitness | UploadEvidenceExpert | UploadEvidenceDocumentType | UploadOtherDocumentType | UploadPart36RejectionDocumentType,
     documentType?: EvidenceUploadWitness | EvidenceUploadDisclosure | EvidenceUploadExpert | EvidenceUploadTrial| OtherManageUpload | WithoutPrejudiceUpload, uuid?: string) {
     this.selected = selected;
     this.caseDocument = caseDocument;
@@ -132,7 +132,20 @@ export class  UploadOtherDocumentType{
   }
 }
 
+export class  UploadPart36RejectionDocumentType{
+  documentDescription?: string;
+  documentName?: string;
+  document: Document;
+  createdDatetime: Date;
+
+  constructor(documentDescription: string,document: Document, createdDatetime: Date) {
+    this.documentDescription = documentDescription;
+    this.document = document;
+    this.createdDatetime = new Date(createdDatetime);
+  }
+}
+
 export class UploadEvidenceElementCCD {
   id: string;
-  value: UploadEvidenceDocumentType | UploadEvidenceExpert | UploadEvidenceWitness | UploadOtherDocumentType;
+  value: UploadEvidenceDocumentType | UploadEvidenceExpert | UploadEvidenceWitness | UploadOtherDocumentType | UploadPart36RejectionDocumentType;
 }
