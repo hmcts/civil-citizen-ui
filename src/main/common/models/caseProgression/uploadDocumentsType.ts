@@ -134,7 +134,6 @@ export class  UploadOtherDocumentType{
 
 export class  UploadPart36RejectionDocumentType{
   documentDescription?: string;
-  documentName?: string;
   document: Document;
   createdDatetime: Date;
 

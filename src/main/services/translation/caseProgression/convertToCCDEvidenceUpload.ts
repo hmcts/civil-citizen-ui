@@ -60,6 +60,10 @@ export const toCCDEvidenceUpload = (cuiEvidenceUpload: CaseProgression, ccdClaim
     ccdClaim.documentCostsRes = createCCDEvidenceUploadList(cuiEvidenceUpload.defendantUploadDocuments.trial, EvidenceUploadTrial.COSTS);
     ccdClaim.documentEvidenceForTrialRes = createCCDEvidenceUploadList(cuiEvidenceUpload.defendantUploadDocuments.trial, EvidenceUploadTrial.DOCUMENTARY);
     ccdClaim.manageDocuments = createCCDEvidenceUploadList(cuiEvidenceUpload.defendantUploadDocuments.otherManaged, OtherManageUpload.OTHER_MANAGE_DOCUMENT);
+    ccdClaim.documentPart36Rejection = createCCDEvidenceUploadList(cuiEvidenceUpload.defendantUploadDocuments.withoutPrejudice, WithoutPrejudiceUpload.WITHOUT_PREJUDICE_DOCUMENT);
+    ccdClaim.documentPart36RejectionApp2 = createCCDEvidenceUploadList(cuiEvidenceUpload.defendantUploadDocuments.withoutPrejudice, WithoutPrejudiceUpload.WITHOUT_PREJUDICE_DOCUMENT);
+    ccdClaim.documentPart36RejectionRes = createCCDEvidenceUploadList(cuiEvidenceUpload.defendantUploadDocuments.withoutPrejudice, WithoutPrejudiceUpload.WITHOUT_PREJUDICE_DOCUMENT);
+    ccdClaim.documentPart36RejectionRes2 = createCCDEvidenceUploadList(cuiEvidenceUpload.defendantUploadDocuments.withoutPrejudice, WithoutPrejudiceUpload.WITHOUT_PREJUDICE_DOCUMENT);
     ccdClaim.caseDocumentUploadDateRes = new Date();
   }
 

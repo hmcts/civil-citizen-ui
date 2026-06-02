@@ -234,10 +234,10 @@ const mapCCDElementValue = (documentType: UploadEvidenceDocumentType | UploadEvi
     const document = documentType as UploadOtherDocumentType;
     return new UploadOtherDocumentType(document.documentType, document.documentName, document.documentLink, document.createdDatetime);
   }
-  else if((Object.values(documentType) as string[]).includes(TypesOfEvidenceUploadDocuments.WITHOUT_PREJUDICE))
+  else if(TypesOfEvidenceUploadDocuments.DOCUMENT in documentType && (Object.values(documentType) as string[]).includes(TypesOfEvidenceUploadDocuments.WITHOUT_PREJUDICE))
   {
     const document = documentType as UploadPart36RejectionDocumentType;
-    return new UploadOtherDocumentType(document?.document?.category_id, document.documentName, document.document, document.createdDatetime);
+    return new UploadOtherDocumentType(document?.document?.category_id, document.documentDescription, document.document, document.createdDatetime);
   }
   return documentType;
 };
