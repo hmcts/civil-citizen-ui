@@ -1,5 +1,6 @@
 import {hostname} from 'os';
 import {Application} from 'express';
+import config from 'config';
 
 const healthCheck = require('@hmcts/nodejs-healthcheck');
 const {Logger} = require('@hmcts/nodejs-logging');
@@ -21,10 +22,22 @@ export class HealthCheck {
         });
     });
 
+    // Probe the HMCTS Access sign-in page reachability. During the IDAM Web Public
+    // -> HMCTS Access migration both UIs sit behind the same base URL, so the existing
+    // draft-store probe alone can report healthy while the new sign-in page is down.
+    // Ref: idam-user-dashboard PR #1087.
+    const hmctsAccess = healthCheck.web(
+      config.get('services.idam.hmctsAccessURL') + '/health',
+      {
+        timeout: config.get('health.timeout'),
+        deadline: config.get('health.deadline'),
+      },
+    );
+
     const healthCheckConfig = {
       checks: {
         'draft-store': redis,
-        // add health checks for other application dependency services
+        'hmcts-access': hmctsAccess,
       },
       buildInfo: {
         name: 'civil-citizen-ui',
