@@ -67,13 +67,13 @@ const dashboardUrlForRole = (role: QmPartyRole): string =>
     : routeWithClaimId(DEFENDANT_SUMMARY_URL);
 
 const queryDetailsUrl = (queryId: string, claimId = CLAIM_ID): string =>
-  routeWithClaimId(QM_QUERY_DETAILS_URL).replace(':queryId', queryId);
+  routeWithClaimId(QM_QUERY_DETAILS_URL, claimId).replace(':queryId', queryId);
 
 const followUpMessageUrl = (queryId: string, claimId = CLAIM_ID): string =>
-  routeWithClaimId(QM_FOLLOW_UP_MESSAGE).replace(':queryId', queryId);
+  routeWithClaimId(QM_FOLLOW_UP_MESSAGE, claimId).replace(':queryId', queryId);
 
 const followUpCyaUrl = (queryId: string, claimId = CLAIM_ID): string =>
-  routeWithClaimId(QM_FOLLOW_UP_CYA).replace(':queryId', queryId);
+  routeWithClaimId(QM_FOLLOW_UP_CYA, claimId).replace(':queryId', queryId);
 
 describe('Integration: query management views', () => {
   beforeAll(() => {

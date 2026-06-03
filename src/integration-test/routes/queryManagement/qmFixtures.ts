@@ -50,7 +50,7 @@ export const buildQmClaim = (
   claim.id = claimId;
   claim.legacyCaseReference = claimId;
   claim.caseRole = partyConfig(role).caseRole;
-  claim.submittedDate = '2024-01-01';
+  claim.submittedDate = new Date('2024-01-01');
   claim.totalClaimAmount = 1000;
   claim.queries = queries;
   return claim;
