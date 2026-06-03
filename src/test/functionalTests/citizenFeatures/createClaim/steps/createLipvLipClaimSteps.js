@@ -82,34 +82,34 @@ class CreateClaimSteps {
   }
 
   async CreateClaimCreationOCMC() {
-    I.click('Resolving this dispute');
+    await I.click('Resolving this dispute');
     await createClaimOCMC.verifyTryToResolveTheDispute();
-    I.click('Completing your claim');
+    await I.click('Completing your claim');
     await createClaimOCMC.verifyCompletingYourClaim();
-    I.click('Your details');
+    await I.click('Your details');
     await createClaimOCMC.verifyAboutYouAndThisClaimForClaimant();
     await createClaimOCMC.verifyEnterYourDetails();
     await createClaimOCMC.inputEnterYourDetails(true);
     await createClaimOCMC.verifyDateOfBirth();
     await createClaimOCMC.inputDateOfBirth();
     await createClaimOCMC.verifyAndInputPhoneNumber();
-    I.click('Their details');
+    await I.click('Their details');
     await createClaimOCMC.verifyAboutYouAndThisClaimForDefendant();
     await createClaimOCMC.verifyEnterDefendantsDetails();
     await createClaimOCMC.inputEnterYourDetails(false);
     await createClaimOCMC.verifyTheirEmailAddress();
     await createClaimOCMC.verifyTheirPhoneNumber();
-    I.click('Claim amount');
+    await I.click('Claim amount');
     await createClaimOCMC.verifyClaimAmount();
     await createClaimOCMC.inputClaimAmount();
     await createClaimOCMC.verifyAndInputDoYouWantToClaimInterest();
     await createClaimOCMC.verifyAndInputHelpWithFees();
     await createClaimOCMC.verifyClaimAmountSummary();
-    I.click('Claim details');
+    await I.click('Claim details');
     await createClaimOCMC.verifyAndInputClaimDetails();
     await createClaimOCMC.inputClaimDetailsTimeline();
     await createClaimOCMC.inputEvidenceList();
-    I.click('Check and submit your claim');
+    await I.click('Check and submit your claim');
     await createClaimOCMC.verifyCheckYourAnswers();
     await createClaimOCMC.payClaimFee();
     const caseReference = await createClaimOCMC.verifyClaimSubmitted();
@@ -120,13 +120,13 @@ class CreateClaimSteps {
   async CreateClaimCreation(claimInterestFlag) {
     await createClaim.verifyLanguage();
     await createClaim.verifyDashboard();
-    I.click(paths.links.resolving_this_dispute);
+    await I.click(paths.links.resolving_this_dispute);
     await createClaim.verifyTryToResolveTheDispute();
     await this.verifyDashboardLoaded();
-    I.click(paths.links.confirming_your_claim);
+    await I.click(paths.links.confirming_your_claim);
     await createClaim.verifyCompletingYourClaim();
     await this.verifyDashboardLoaded();
-    I.click(paths.links.your_details);
+    await I.click(paths.links.your_details);
     await createClaim.verifyAboutYouAndThisClaimForClaimant();
     await createClaim.verifyEnterYourDetails();
     await createClaim.inputEnterYourDetails(true);
@@ -134,14 +134,14 @@ class CreateClaimSteps {
     await createClaim.inputDateOfBirth();
     await createClaim.verifyAndInputPhoneNumber();
     await this.verifyDashboardLoaded();
-    I.click(paths.links.their_details);
+    await I.click(paths.links.their_details);
     await createClaim.verifyAboutYouAndThisClaimForDefendant();
     await createClaim.verifyEnterDefendantsDetails();
     await createClaim.inputEnterYourDetails(false);
     await createClaim.verifyTheirEmailAddress();
     await createClaim.verifyTheirPhoneNumber();
     await this.verifyDashboardLoaded();
-    I.click(paths.links.claim_amount);
+    await I.click(paths.links.claim_amount);
     await createClaim.verifyClaimAmount();
     await createClaim.inputClaimAmount();
     await createClaim.verifyAndInputDoYouWantToClaimInterest(claimInterestFlag);
@@ -153,12 +153,12 @@ class CreateClaimSteps {
     await createClaim.verifyAndInputHelpWithFees();
     await createClaim.verifyClaimAmountSummary(claimInterestFlag);
     await this.verifyDashboardLoaded();
-    I.click(paths.links.claim_details);
+    await I.click(paths.links.claim_details);
     await createClaim.verifyAndInputClaimDetails();
     await createClaim.inputClaimDetailsTimeline();
     await createClaim.inputEvidenceList();
     await this.verifyDashboardLoaded();
-    I.click(paths.links.check_and_submit_your_claim);
+    await I.click(paths.links.check_and_submit_your_claim);
     await createClaim.rerouteFromEqualityAndDiversity(paths.links.check_and_submit_your_claim);
     await createClaim.verifyCheckYourAnswers(claimInterestFlag);
     const caseReference = await createClaim.verifyClaimSubmitted();
@@ -178,8 +178,8 @@ class CreateClaimSteps {
   }
 
   async verifyDashboardLoaded() {
-    I.waitForContent('Submit', 3);
-    I.see('Application complete', 'h2');
+    await I.waitForContent('Submit', 3);
+    await I.see('Application complete', 'h2');
   }
 
   async createClaimDraftViaTestingSupport() {
@@ -234,7 +234,7 @@ class CreateClaimSteps {
   }
 
   async CheckOCMCcasePreview(claimRef) {
-    I.waitForContent(claimRef, 60);
+    await I.waitForContent(claimRef, 60);
   }
 }
 

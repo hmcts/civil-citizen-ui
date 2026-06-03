@@ -23,16 +23,16 @@ const content = {
 
 class CheckYourAnswers {
 
-  nextAction(nextAction) {
-    I.click(nextAction);
+  async nextAction(nextAction) {
+    await I.click(nextAction);
   }
 
-  verifyPageContent(language = 'en') {
-    I.see(content.title[language]);
-    I.see(content.youCan[language]);
+  async verifyPageContent(language = 'en') {
+    await I.see(content.title[language]);
+    await I.see(content.youCan[language]);
     //I.seeElement('[href=\'/case/undefined/case-progression/upload-your-documents\']');
-    I.see(content.comeBack[language]);
-    contactUs.verifyContactUs(language);
+    await I.see(content.comeBack[language]);
+    await contactUs.verifyContactUs(language);
   }
 
 }

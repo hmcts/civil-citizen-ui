@@ -498,6 +498,7 @@ module.exports = {
       },
     };
     await apiRequest.startEventForCitizen('', caseId, newPayload);
+    await waitForTimeout(1000);
     await waitForFinishedBusinessProcess(caseId, user);
     if (!mainClaimWelshEnabled) {
       await assignSpecCase(caseId, null);
