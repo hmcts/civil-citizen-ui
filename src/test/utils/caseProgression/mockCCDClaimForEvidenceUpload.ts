@@ -161,6 +161,7 @@ export const mockWithoutPrejudice = {
   documentName: 'name',
   document: getMockDocument(),
   createdDatetime: new Date(0),
+  createdDateTime: new Date(0),
 } as UploadPart36RejectionDocumentType;
 export function createCCDClaimForEvidenceUpload(): CCDClaim {
   return {
