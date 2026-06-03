@@ -48,11 +48,11 @@ export const dmStoreClientMock = {
 };
 
 export const draftStoreServiceMock = {
-  generateRedisKey: jest.fn(() => 'redis-claim'),
+  generateRedisKey: jest.fn(() => 'test-redis-key'),
   generateRedisKeyForGA: jest.fn(() => 'redis-ga'),
   getCaseDataFromStore: jest.fn(),
   saveDraftClaim: jest.fn().mockResolvedValue(undefined),
-  updateFieldDraftClaimFromStore: jest.fn(),
+  updateFieldDraftClaimFromStore: jest.fn().mockResolvedValue(undefined),
 };
 
 export const gaHwFeesDraftStoreMock = {
