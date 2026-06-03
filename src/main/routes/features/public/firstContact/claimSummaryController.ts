@@ -29,7 +29,7 @@ firstContactClaimSummaryController.get(FIRST_CONTACT_CLAIM_SUMMARY_URL,
       if (!claimId) {
         return res.redirect(FIRST_CONTACT_ACCESS_DENIED_URL);
       }
-      const claim: Claim = await getClaimById(claimId, req);
+      const claim: Claim = await getClaimById(claimId, req, true);
       const lang = req.query.lang ? req.query.lang : req.cookies.lang;
 
       if (!claim.respondent1PinToPostLRspec?.accessCode || !firstContact?.pin) {
