@@ -1,4 +1,6 @@
 import * as draftStoreService from '../../../../../../main/modules/draft-store/draftStoreService';
+import config from 'config';
+import nock from 'nock';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {StatementOfTruthForm} from 'form/models/statementOfTruth/statementOfTruthForm';
 import {SignatureType} from 'models/signatureType';
@@ -10,6 +12,7 @@ import {ResponseType} from 'form/models/responseType';
 import {ClaimantResponse} from 'models/claimantResponse';
 import {
   getSignatureType,
+  getSummarySections,
   getStatementOfTruth,
   saveStatementOfTruth,
 } from 'services/features/claimantResponse/ccj/ccjCheckAnswersService';
@@ -18,6 +21,9 @@ import {
   createClaimWithBasicDetails,
 } from '../../../../../utils/mockClaimForCheckAnswers';
 import {CCJRequest} from 'models/claimantResponse/ccj/ccjRequest';
+import {deepCopy} from '../../../../../utils/deepCopy';
+import {mockClaim} from '../../../../../utils/mockClaim';
+import {CaseState} from 'form/models/claimDetails';
 
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
@@ -27,6 +33,7 @@ jest.mock('i18next', () => ({
   use: jest.fn(),
 }));
 const mockGetCaseDataFromStore = draftStoreService.getCaseDataFromStore as jest.Mock;
+const civilServiceUrl = config.get<string>('services.civilService.url');
 
 const expectedStatementOfTruth = {
   type: 'basic',
@@ -88,6 +95,23 @@ describe('Check Answers service', () => {
       claim.applicant1 = new Party();
       claim.applicant1.type = PartyType.ORGANISATION;
       expect(getStatementOfTruth(claim)).toEqual({isFullAmountRejected: false, type: 'qualified'});
+    });
+  });
+
+  describe('getSummarySections', () => {
+    it('should include interest in payment total when judgment requested and judgment buffer is enabled', async () => {
+      //Given
+      nock(civilServiceUrl)
+        .post('/fees/claim/calculate-interest')
+        .reply(200, '0.15');
+      const claim: Claim = Object.assign(new Claim(), deepCopy(mockClaim));
+      claim.ccdState = CaseState.JUDGMENT_REQUESTED;
+
+      //When
+      const summarySections = await getSummarySections(CLAIM_ID, claim, 'en', true);
+
+      //Then
+      expect(summarySections.sections[1].summaryList.rows[2].value.html).toBe('215.15');
     });
   });
 

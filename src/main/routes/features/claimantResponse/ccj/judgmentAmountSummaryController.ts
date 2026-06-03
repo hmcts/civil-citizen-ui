@@ -9,12 +9,14 @@ import {Claim} from 'models/claim';
 import {getJudgmentAmountSummary} from 'services/features/claimantResponse/ccj/judgmentAmountSummaryService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {convertToPoundsFilter} from 'common/utils/currencyFormat';
+import {isJudgmentBufferEnabled} from '../../../../app/auth/launchdarkly/launchDarklyClient';
 
 const judgmentAmountSummaryController = Router();
 const judgementAmountSummaryViewPath = 'features/claimantResponse/ccj/judgement-amount-summary';
 
 async function renderView(req: AppRequest, res: Response, claim: Claim, lang: string, claimFee: number) {
-  const judgmentSummaryDetails = await getJudgmentAmountSummary(claim, claimFee, lang);
+  const judgmentBufferEnabled = await isJudgmentBufferEnabled();
+  const judgmentSummaryDetails = await getJudgmentAmountSummary(claim, claimFee, lang, judgmentBufferEnabled);
   const claimAmountAccepted: number = claim.hasClaimantAcceptedDefendantAdmittedAmount() ? claim.partialAdmissionPaymentAmount() : claim.totalClaimAmount;
   res.render(judgementAmountSummaryViewPath, {
     claimAmount: claimAmountAccepted.toFixed(2),
