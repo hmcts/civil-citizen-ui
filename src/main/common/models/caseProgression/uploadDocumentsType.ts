@@ -135,14 +135,12 @@ export class  UploadOtherDocumentType{
 export class  UploadPart36RejectionDocumentType{
   documentDescription?: string;
   document: Document;
-  createdDateTime: Date;
   createdDatetime: Date;
 
   constructor(documentDescription: string,document: Document, createdDateTime: Date) {
     this.documentDescription = documentDescription;
     this.document = document;
-    this.createdDateTime = new Date(createdDateTime);
-    this.createdDatetime = this.createdDateTime;
+    this.createdDatetime = new Date(createdDateTime);
   }
 }
 
