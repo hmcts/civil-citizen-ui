@@ -63,6 +63,10 @@ describe('Submit confirmation controller', () => {
         });
     });
     it('should return http 500 when has error in the get method', async () => {
+      nock.cleanAll();
+      nock(idamUrl)
+        .post('/o/token')
+        .reply(200, { id_token: citizenRoleToken });
       nock('http://localhost:4000')
         .get('/cases/:id')
         .reply(500);
