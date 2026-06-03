@@ -1,6 +1,5 @@
 import request from 'supertest';
 import nock from 'nock';
-import {app} from '../../../../main/app';
 
 jest.mock('ioredis', () => {
   return jest.fn().mockImplementation(() => {
@@ -16,23 +15,23 @@ jest.mock('ioredis', () => {
   });
 });
 
-describe('Draft Store Health Check - UP', () => {
-  beforeEach(() => {
-    // HMCTS Access sign-in page probe reachable and returning 200
-    nock('http://localhost:9002').get('/health').reply(200).persist();
-  });
+import {app} from '../../../../main/app';
 
+describe('HMCTS Access Health Check', () => {
   afterEach(() => {
     nock.cleanAll();
   });
 
-  it('When draft store responding, health check should return UP', async () => {
+  it('When the HMCTS Access sign-in page is unreachable, health check should return DOWN', async () => {
+    // draft store is UP (mocked above) but the sign-in page probe fails
+    nock('http://localhost:9002').get('/health').reply(500).persist();
+
     await request(app)
       .get('/health')
       .expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.body.status).toBe('UP');
-        expect(res.body['hmcts-access'].status).toBe('UP');
+        expect(res.status).toBe(503);
+        expect(res.body.status).toBe('DOWN');
+        expect(res.body['hmcts-access'].status).toBe('DOWN');
       });
   });
 });
