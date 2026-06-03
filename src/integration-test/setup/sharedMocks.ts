@@ -49,6 +49,8 @@ export const dmStoreClientMock = {
 
 export const draftStoreServiceMock = {
   updateFieldDraftClaimFromStore: jest.fn(),
+  getCaseDataFromStore: jest.fn(),
+  saveDraftClaim: jest.fn(),
 };
 
 export const dashboardServiceMock = {

@@ -41,6 +41,7 @@ import {
   getHelpSupportTitle,
   getNotifications,
 } from '../../../main/services/dashboard/dashboardService';
+import {getCaseDataFromStore, saveDraftClaim} from '../../../main/modules/draft-store/draftStoreService';
 
 const mediationSuccessful = {
   title: 'Mediation appointment successful',
@@ -140,6 +141,8 @@ describe('Integration: mediation dashboard notifications and task list', () => {
     (isCarmEnabledForCase as jest.Mock).mockResolvedValue(true);
     (isDashboardEnabledForCase as jest.Mock).mockResolvedValue(false);
     (extractOrderDocumentIdFromNotification as jest.Mock).mockReturnValue(undefined);
+    (getCaseDataFromStore as jest.Mock).mockResolvedValue(new Claim());
+    (saveDraftClaim as jest.Mock).mockResolvedValue(undefined);
   });
 
   it('claimant dashboard: unsuccessful mediation (not contactable) shows notification and mediation task states', async () => {
