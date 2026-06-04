@@ -50,7 +50,7 @@ civil-service:
   java:
     applicationPort: 4000
     releaseNameOverride: ${SERVICE_NAME}-civil-service
-    image: hmctsprod.azurecr.io/civil/service:pr-7875-1692c46-20260603104012
+    image: hmctsprod.azurecr.io/civil/service:pr-7947
     imagePullPolicy: Always
     ingressHost: ${SERVICE_NAME}-civil-service.preview.platform.hmcts.net
     devcpuRequests: 50m
