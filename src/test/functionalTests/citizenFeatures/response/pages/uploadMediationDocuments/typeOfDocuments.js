@@ -9,26 +9,26 @@ const fields = {
 class TypeOfDocuments {
 
   async verifyDocuments() {
-    I.waitForContent('Mediation non-attendance', config.WaitForText);
-    I.see('Select the types of documents that apply to your case.');
-    I.click('Continue');
-    I.waitForContent('You must select at least one type of document');
+    await I.waitForContent('Mediation non-attendance', config.WaitForText);
+    await I.see('Select the types of documents that apply to your case.');
+    await I.click('Continue');
+    await I.waitForContent('You must select at least one type of document');
   }
   async selectDocuments(docType) {
-    I.waitForContent('Mediation non-attendance', config.WaitForText);
+    await I.waitForContent('Mediation non-attendance', config.WaitForText);
     if (docType === 'Your statement') {
-      I.checkOption(fields.yourStatement);
+      await I.checkOption(fields.yourStatement);
     } else if (docType === 'Documents referred to in the statement') {
-      I.checkOption(fields.docReferred);
+      await I.checkOption(fields.docReferred);
     }
   }
 
   async unSelectDocuments(docType) {
-    I.waitForContent('Mediation non-attendance', config.WaitForText);
+    await I.waitForContent('Mediation non-attendance', config.WaitForText);
     if (docType === 'Your statement') {
-      I.uncheckOption(fields.yourStatement);
+      await I.uncheckOption(fields.yourStatement);
     } else if (docType === 'Documents referred to in the statement') {
-      I.uncheckOption(fields.docReferred);
+      await I.uncheckOption(fields.docReferred);
     }
   }
 }
