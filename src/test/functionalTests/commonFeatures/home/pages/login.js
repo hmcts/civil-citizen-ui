@@ -5,13 +5,17 @@ const cmcCookies = require('../../../specClaimHelpers/fixtures/cookies/cmcCookie
 const idamCookies = require('../../../specClaimHelpers/fixtures/cookies/idamCookies');
 const generateExuiCookies = require('../../../specClaimHelpers/fixtures/cookies/exuiCookies');
 
+// Dual-UI-safe IDAM selectors. During the IDAM Web Public -> HMCTS Access
+// migration both sign-in UIs may be served, so each chain lists the new
+// HMCTS Access hooks (data-testid / name) first and falls back to the legacy
+// IDAM Web Public ids/types. Mirrors hmcts/playwright-common idam.po.ts.
 const fields = {
-  username: 'input[id="username"]',
-  password: 'input[id="password"]',
+  username: '[data-testid="idam-username-input"], input[id="username"], input[name="username"], input[type="email"]',
+  password: '[data-testid="idam-password-input"], input[id="password"], input[name="password"], input[type="password"]',
 };
 
 const buttons = {
-  submit: '#login-submit-btn, button[type="submit"], input[type="submit"], input.button',
+  submit: '[data-testid="idam-submit-button"], #login-submit-btn, [name="save"], button[type="submit"], input[type="submit"], input.button',
   hmctsSignIn: 'Sign in',
   acceptCookies: 'button[id="cookie-accept-submit"]',
   hideMessage: 'button[name="hide-accepted"]',
@@ -48,8 +52,11 @@ class LoginPage {
 
   async #login(email, password, endpoint, attempts = 0) {
     const MAX_ATTEMPTS = 2;
-    await I.waitForContent('Email address', config.WaitForText);
-    await I.waitForVisible(fields.username);
+    // Wait for the sign-in form itself rather than page copy: legacy IDAM Web
+    // Public shows "Email address" while the new HMCTS Access page shows
+    // "Sign in or create an account". Waiting on the username field is
+    // UI-agnostic and avoids a hang on either UI during migration.
+    await I.waitForVisible(fields.username, config.WaitForText);
     await I.fillField(fields.username, email);
     await I.fillField(fields.password, password);
     await I.waitForVisible(buttons.submit);
