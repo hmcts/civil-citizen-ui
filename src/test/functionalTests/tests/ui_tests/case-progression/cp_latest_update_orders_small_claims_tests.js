@@ -15,6 +15,7 @@ Before(async ({ api }) => {
   //Once the CUI Release is done, we can remove this IF statement, so that tests will run on AAT as well.
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser, '', claimType);
+  await api.waitForFinishedBusinessProcess(claimRef);
   caseData = await api.retrieveCaseData(config.adminUser, claimRef);
   claimNumber = await caseData.legacyCaseReference;
   await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.rejectAllDisputeAllWithIndividual);
