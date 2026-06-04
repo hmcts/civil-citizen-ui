@@ -10,8 +10,8 @@ const content = {
 };
 
 class TaskListPage {
-  verifyResponsePageContent() {
-    I.waitForContent(content.heading[sharedData.language], config.WaitForTimeout);
+  async verifyResponsePageContent() {
+    await I.waitForContent(content.heading[sharedData.language], config.WaitForTimeout);
   }
 }
 
