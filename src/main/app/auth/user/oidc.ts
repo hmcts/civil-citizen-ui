@@ -16,8 +16,6 @@ export const getOidcResponse = async(
   const headers = {
     'Accept' : 'application/json',
     'Content-Type' : 'application/x-www-form-urlencoded',
-    'Access-Control-Allow-Origin' : '*',
-    'Access-Control-Allow-Methods':'GET,PUT,POST,DELETE,PATCH,OPTIONS',
   };
   const response: AxiosResponse<OidcResponse> = await Axios.post(tokenUrl, data, { headers });
   return response.data;

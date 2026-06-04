@@ -71,16 +71,6 @@ const manifestSrc = [
 ];
 
 const frameSrc = [...webChat];
-const setDynatraceCorsHeaders: express.RequestHandler = (_req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Credentials', 'true');
-  res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
-  res.header(
-    'Access-Control-Allow-Headers',
-    'Origin, X-Requested-With, Content-Type, Accept, Authorization',
-  );
-  next();
-};
 
 /**
  * Module that enables helmet in the application
@@ -95,13 +85,6 @@ export class Helmet {
 
     // include default helmet functions
     app.use(helmet(this.config));
-
-    const dynatraceUrl = config.get<string>('services.dynatrace.url');
-    // Express 5 path matching rejects absolute URLs (e.g. https://...).
-    // Only mount route middleware when config provides an app-local path.
-    if (dynatraceUrl.startsWith('/')) {
-      app.use(dynatraceUrl, setDynatraceCorsHeaders);
-    }
     this.setContentSecurityPolicy(app);
   }
 

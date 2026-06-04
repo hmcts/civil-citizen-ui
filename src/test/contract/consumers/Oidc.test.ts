@@ -41,8 +41,6 @@ describe('Odic Pact Test', () => {
           headers: {
             'Accept' : 'application/json',
             'Content-Type' : 'application/x-www-form-urlencoded',
-            'Access-Control-Allow-Origin' : '*',
-            'Access-Control-Allow-Methods':'GET,PUT,POST,DELETE,PATCH,OPTIONS',
           },
           body: 'client_id=someClientId&client_secret=someClientSecret&grant_type=authorization_code&redirect_uri=someURL&code=someCode',
         },
