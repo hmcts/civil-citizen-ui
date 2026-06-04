@@ -3,7 +3,7 @@ import nock from 'nock';
 import request from 'supertest';
 import {app} from '../../../../../main/app';
 import {
-  DQ_FIX_RECOVERABLE_COSTS_URL
+  DQ_FIX_RECOVERABLE_COSTS_URL,
 } from 'routes/urls';
 import {
   mockCivilClaim,

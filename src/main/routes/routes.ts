@@ -445,7 +445,7 @@ import qmViewQueriesController from 'routes/features/queryManagement/qmViewQueri
 import qmViewQueryDetailsController from 'routes/features/queryManagement/qmViewQueryDetailsController';
 import claimantTelephoneMediationController from 'routes/features/mediation/claimantTelephoneMediationController';
 import shareQueryConfirmationController from 'routes/features/queryManagement/shareQueryConfirmationController';
-import fixRecoverableCostsController from "routes/features/directionsQuestionnaire/fixRecoverableCostsController";
+import fixRecoverableCostsController from 'routes/features/directionsQuestionnaire/fixRecoverableCostsController';
 
 export default [
   homeController,
