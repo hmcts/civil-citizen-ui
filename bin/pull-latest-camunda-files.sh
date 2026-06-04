@@ -4,7 +4,7 @@ branchName=$1
 
 #Checkout specific branch pf  civil camunda bpmn definition
 git clone https://github.com/hmcts/civil-service.git
-cd civil-camunda-bpmn-definition
+cd civil-service
 
 echo "Switch to ${branchName} branch on civil-service"
 git checkout ${branchName}
