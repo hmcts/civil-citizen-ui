@@ -12,7 +12,6 @@ import {
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'common/models/AppRequest';
 
-
 const fixRecoverableCostsController = Router();
 const dqPropertyName = 'requestExtra4weeks';
 const dqParentName = 'hearing';
