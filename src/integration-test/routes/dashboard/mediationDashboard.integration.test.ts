@@ -3,9 +3,6 @@ process.env.NODE_ENV = 'test';
 import '../../setup/testSetup';
 jest.mock('../../../main/modules/draft-store/draftStoreService', () => ({
   updateFieldDraftClaimFromStore: jest.fn(),
-  getCaseDataFromStore: jest.fn(),
-  saveDraftClaim: jest.fn(),
-  generateRedisKey: jest.fn(() => 'test-redis-key'),
 }));
 jest.mock('../../../main/services/dashboard/dashboardService', () => ({
   getNotifications: jest.fn(),
@@ -49,7 +46,6 @@ import {
   getHelpSupportTitle,
   getNotifications,
 } from '../../../main/services/dashboard/dashboardService';
-import {getCaseDataFromStore, saveDraftClaim} from '../../../main/modules/draft-store/draftStoreService';
 
 const mediationSuccessful = {
   title: 'Mediation appointment successful',
@@ -149,8 +145,6 @@ describe('Integration: mediation dashboard notifications and task list', () => {
     (isCarmEnabledForCase as jest.Mock).mockResolvedValue(true);
     (isDashboardEnabledForCase as jest.Mock).mockResolvedValue(false);
     (extractOrderDocumentIdFromNotification as jest.Mock).mockReturnValue(undefined);
-    (getCaseDataFromStore as jest.Mock).mockResolvedValue(new Claim());
-    (saveDraftClaim as jest.Mock).mockResolvedValue(undefined);
   });
 
   it('claimant dashboard: unsuccessful mediation (not contactable) shows notification and mediation task states', async () => {

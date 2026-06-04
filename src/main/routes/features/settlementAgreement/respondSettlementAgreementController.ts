@@ -45,7 +45,7 @@ respondSettlementAgreementController.post(DEFENDANT_SIGN_SETTLEMENT_AGREEMENT, (
     const respondSettlementAgreement = new GenericForm(respondSettlementAgreementOption);
     respondSettlementAgreement.validateSync();
 
-    const claim = await getClaimById(claimId, req, true);
+    const claim = await getClaimById(redisKey, req,false);
     if (respondSettlementAgreement.hasErrors()) {
       renderView(respondSettlementAgreement, res, getRespondSettlementAgreementText(claim, req));
     } else {

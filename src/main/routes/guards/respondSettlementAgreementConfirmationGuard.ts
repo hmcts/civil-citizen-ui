@@ -9,7 +9,7 @@ const logger = Logger.getLogger('respondSettlementAgreementConfirmationGuard');
 export const respondSettlementAgreementConfirmationGuard = (async (req: Request, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id;
-    const claim = await getClaimById(claimId, req, true);
+    const claim = await getClaimById(claimId, req, false);
     if (!claim.respondentSignSettlementAgreement) {
       logger.info('Redirecting to settlement agreement response from ', req.url);
       res.redirect(constructResponseUrlWithIdParams(req.params.id, DEFENDANT_SIGN_SETTLEMENT_AGREEMENT));
