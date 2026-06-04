@@ -4660,6 +4660,10 @@
       "TITLE": "Ydych chi eisiau 4 wythnos arall i geisio setlo’r hawliad?",
       "WARNING": "Ni fydd hyn yn newid y terfyn amser ar gyfer ymateb. Hyd yn oed os caniateir 4 wythnos arall i setlo’r hawliad, bydd dal angen i chi ymateb i’r hawliad erbyn y terfyn amser a nodir."
     },
+    "FIX_RECOVERABLE_COSTS": {
+      "PAGE_TITLE": "Fixed recoverable costs - Is the claim subject to the Fixed Recoverable Costs Regime?",
+      "TITLE": "Fixed recoverable costs - Is the claim subject to the Fixed Recoverable Costs Regime?"
+    },
     "REQUEST_MORE_TIME": {
       "APPLY_TO_COURT": "Mae angen i chi wneud cais i’r llys i ofyn am ragor o amser.",
       "CURRENT_DEADLINE": "Terfyn amser cyfredol ar gyfer ymateb: 4pm ar {{ responseDeadline }}",
