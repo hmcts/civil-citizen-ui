@@ -11,7 +11,7 @@ import {
 } from 'routes/urls';
 import {isIntermediateTrack, isMultiTrack} from 'form/models/claimType';
 const {Logger} = require('@hmcts/nodejs-logging');
-const logger = Logger.getLogger('statementOfMeansGuard');
+const logger = Logger.getLogger('giveUsDetailsHearing');
 
 const checkTaskCompleteForTrack = (claim: Claim, defendantDQ: DirectionQuestionnaire, mintiApplicable: boolean): boolean => {
   if (claim.isSmallClaimsTrackDQ) {
