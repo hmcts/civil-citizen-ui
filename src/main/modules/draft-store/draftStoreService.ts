@@ -61,20 +61,31 @@ export const getCaseDataFromStore = async (claimId: string, doNotThrowError = fa
  * @param userId
  */
 export const saveDraftClaim = async (claimId: string, claim: Claim, doNotThrowError = false, userId?: string) => {
-  logger.info(`Saving draft claim : userId: ${userId}  claimId: ${claimId} claimantResponse: ${claim.claimantResponse? JSON.stringify(claim.claimantResponse) : 'undefined'}`);
+  logger.info(`Saving draft claim : userId: ${userId}  claimId: ${claimId}`);
   let storedClaimResponse = await getDraftClaimFromStore(claimId, doNotThrowError);
-  logger.info(`storedClaimResponse : userId: ${userId}  claimId: ${claimId} claimantResponse ccjRequest: ${storedClaimResponse.case_data?.ccjRequest ? JSON.stringify(storedClaimResponse.case_data?.ccjRequest) : 'undefined'}`);
   if (isUndefined(storedClaimResponse.case_data)) {
     storedClaimResponse = createNewCivilClaimResponse(claimId);
   }
   storedClaimResponse.case_data = claim as any;
   const draftStoreClient = app.locals.draftStoreClient;
-  logger.info(`Updating claimant response : userId: ${userId}  claimId: ${claimId} ccjRequest: ${storedClaimResponse.case_data?.ccjRequest? JSON.stringify(storedClaimResponse.case_data?.ccjRequest) : 'undefined'}`);
-  await draftStoreClient.set(claimId, JSON.stringify(storedClaimResponse));
-  if (claim.draftClaimCreatedAt) {
-    await draftStoreClient.expireat(claimId, calculateExpireTimeForDraftClaimInSeconds(claim.draftClaimCreatedAt));
+  const ttl = await draftStoreClient.ttl(claimId);
+  if (ttl > 0) {
+    // TTL already exists — preserve it
+    await draftStoreClient.set(
+      claimId,
+      JSON.stringify(storedClaimResponse),
+      'KEEPTTL');
+  } else {
+    // No TTL — set a new one
+    const expiryBaseDate = claim.draftClaimCreatedAt ?? new Date();
+    const expirySeconds = calculateExpireTimeForDraftClaimInSeconds(expiryBaseDate);
+    await draftStoreClient.set(
+      claimId,
+      JSON.stringify(storedClaimResponse));
+    await draftStoreClient.expireat(claimId, expirySeconds);
   }
 };
+
 const createNewCivilClaimResponse = (claimId: string) => {
   const storedClaimResponse = new CivilClaimResponse();
   storedClaimResponse.id = claimId;

@@ -1,10 +1,13 @@
 const launchDarklyClientMock = {
   isServiceShuttered: jest.fn().mockResolvedValue(false),
   updateE2EKey: jest.fn().mockResolvedValue(undefined),
+  isDashboardEnabledForCase: jest.fn().mockResolvedValue(false),
   isCarmEnabledForCase: jest.fn().mockResolvedValue(false),
+  isMintiEnabledForCase: jest.fn().mockResolvedValue(false),
   isGaForLipsEnabled: jest.fn().mockResolvedValue(false),
   isQueryManagementEnabled: jest.fn().mockResolvedValue(false),
   isWelshEnabledForMainCase: jest.fn().mockResolvedValue(false),
+  isJudgmentBufferEnabled: jest.fn().mockResolvedValue(false),
 };
 
 jest.mock('express-async-errors', () => ({}), {virtual: true});

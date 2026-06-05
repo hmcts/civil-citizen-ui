@@ -1599,6 +1599,7 @@
     },
     "CCJ_CONFIRMATION": {
       "ACTIONS_LINK_TEXT": "Find out about actions you can take after a CCJ is issued ",
+      "JUDGMENT_REQUESTED": "A CCJ has been requested. You will be notified when this is confirmed.",
       "PAGE_TITLE": "County Court Judgment confirmation",
       "PROCESS_YOUR_REQUEST": "We’ll process your request and send a copy of the judgment to you and to {{ defendantName }}. We aim to process this request as soon as possible.",
       "PROCESS_YOUR_REQUEST_1": "Please do not call the Court & Tribunal Service Centre (CTSC) about the progress of your request.",

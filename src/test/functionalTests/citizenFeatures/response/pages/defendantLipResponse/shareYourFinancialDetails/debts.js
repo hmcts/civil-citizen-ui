@@ -62,14 +62,14 @@ class Debts {
     await I.fillField(fields.debtItem3, inputs.debtItem3[language]),
     await I.fillField(fields.debtOwned3, '8000'),
     await I.fillField(fields.monthlyPayments3, '400'),
-    await I.click(cButtons.saveAndContinue[language]);
+    await I.clickWithRetry(cButtons.saveAndContinue[language]);
   }
 
   async clickNoButton() {
     const { language } = sharedData; 
     await I.waitForContent(content.heading[language], config.WaitForText);
     await I.click(fields.noButton);
-    await I.click(cButtons.saveAndContinue[language]);
+    await I.clickWithRetry(cButtons.saveAndContinue[language]);
   }
 }
 

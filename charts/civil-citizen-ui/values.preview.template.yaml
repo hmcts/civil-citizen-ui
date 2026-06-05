@@ -20,10 +20,10 @@ nodejs:
   cpuRequests: 4000m
   memoryLimits: 4Gi
   cpuLimits: 3500m
-  devmemoryRequests: 8Gi
-  devcpuRequests: 4000m
-  devmemoryLimits: 8Gi
-  devcpuLimits: 4500m
+  devmemoryRequests: 1536Mi
+  devcpuRequests: 50m
+  devmemoryLimits: 2048Mi
+  devcpuLimits: 700m
   ingressHost: ${SERVICE_FQDN}
   keyVaults:
     civil-cui:
@@ -54,9 +54,10 @@ civil-service:
     image: hmctsprod.azurecr.io/civil/service:${CIVIL_SERVICE_IMAGE}
     imagePullPolicy: Always
     ingressHost: ${SERVICE_NAME}-civil-service.preview.platform.hmcts.net
-    devcpuRequests: 1000m
-    devmemoryRequests: 2048Mi
-    devmemoryLimits: 4096Mi
+    devcpuRequests: 50m
+    devcpuLimits: 700m
+    devmemoryRequests: 1536Mi
+    devmemoryLimits: 2048Mi
     keyVaults:
       civil:
         resourceGroup: civil
@@ -176,9 +177,9 @@ civil-service:
       disableKeyVaults: true
       releaseNameOverride: ${SERVICE_NAME}-camunda
       ingressHost: camunda-${SERVICE_FQDN}
-      devcpuRequests: 500m
+      devcpuRequests: 50m
       devmemoryRequests: 1024Mi
-      devcpuLimits: 1
+      devcpuLimits: 700m
       devmemoryLimits: 1Gi
       environment:
         CAMUNDA_API_AUTH_ENABLED: false
@@ -246,9 +247,9 @@ civil-service:
     am-role-assignment-service:
       java:
         devmemoryRequests: 2048Mi
-        devcpuRequests: 2000m
+        devcpuRequests: 50m
         devmemoryLimits: 4096Mi
-        devcpuLimits: 4000m
+        devcpuLimits: 1400m
         releaseNameOverride: ${SERVICE_NAME}-am-role-assignment-service
         imagePullPolicy: Always
         image: hmctsprod.azurecr.io/am/role-assignment-service:latest
@@ -283,9 +284,10 @@ civil-service:
       java:
         releaseNameOverride: ${SERVICE_NAME}-ccd-data-store-api
         imagePullPolicy: Always
-        devcpuRequests: 1000m
-        devmemoryRequests: 2048Mi
-        devmemoryLimits: 4096Mi
+        devcpuRequests: 50m
+        devcpuLimits: 700m
+        devmemoryRequests: 768Mi
+        devmemoryLimits: 2048Mi
         environment:
           CASE_DOCUMENT_AM_API_ATTACH_DOCUMENT_ENABLED: true
           CASE_DOCUMENT_AM_URL: http://${SERVICE_NAME}-cdam
@@ -513,9 +515,10 @@ civil-service:
 
     ccd-definition-store-api:
       java:
-        devcpuRequests: 2000m
-        devmemoryLimits: 4Gi
-        devcpuLimits: 4Gi
+        devcpuRequests: 50m
+        devmemoryRequests: 1536Mi
+        devmemoryLimits: 2048Mi
+        devcpuLimits: 1200m
         releaseNameOverride: ${SERVICE_NAME}-ccd-definition-store-api
         environment:
           DEFINITION_STORE_DB_OPTIONS: "?stringtype=unspecified"
@@ -545,10 +548,10 @@ civil-service:
       releaseNameOverride: ${SERVICE_NAME}-xui-webapp
       image: hmctsprod.azurecr.io/xui/webapp:latest
       ingressHost: xui-${SERVICE_FQDN}
-      devcpuRequests: 500m
-      devmemoryRequests: 1Gi
-      devcpuLimits: 1
-      devmemoryLimits: 2Gi
+      devcpuRequests: 50m
+      devmemoryRequests: 512Mi
+      devcpuLimits: 700m
+      devmemoryLimits: 2048Mi
       environment:
         FEATURE_ACCESS_MANAGEMENT_ENABLED: true
         SERVICES_ROLE_ASSIGNMENT_API: https://am-role-assignment-${SERVICE_FQDN}
@@ -579,6 +582,10 @@ civil-service:
   aac-manage-case-assignment:
     enabled: true
     java:
+      devcpuRequests: 50m
+      devcpuLimits: 200m
+      devmemoryRequests: 512Mi
+      devmemoryLimits: 1024Mi
       disableKeyVaults: true
       ingressHost: manage-case-assignment-${SERVICE_NAME}.preview.platform.hmcts.net
       imagePullPolicy: Always
@@ -608,6 +615,10 @@ civil-service:
   em-stitching:
     enabled: true
     java:
+      devcpuRequests: 50m
+      devcpuLimits: 500m
+      devmemoryRequests: 512Mi
+      devmemoryLimits: 1024Mi
       imagePullPolicy: Always
       releaseNameOverride: ${SERVICE_NAME}-em-stitching
       image: hmctsprod.azurecr.io/em/stitching:latest
@@ -644,6 +655,10 @@ civil-service:
   em-ccdorc:
     enabled: true
     java:
+      devcpuRequests: 50m
+      devcpuLimits: 200m
+      devmemoryRequests: 512Mi
+      devmemoryLimits: 1024Mi
       image: hmctsprod.azurecr.io/em/ccdorc:latest
       releaseNameOverride: ${SERVICE_NAME}-em-ccdorc
       ingressHost: em-ccdorc-${SERVICE_FQDN}
@@ -668,6 +683,10 @@ civil-service:
   ccd-case-document-am-api:
     enabled: true
     java:
+      devcpuRequests: 50m
+      devcpuLimits: 200m
+      devmemoryRequests: 512Mi
+      devmemoryLimits: 1024Mi
       releaseNameOverride: ${SERVICE_NAME}-cdam
       imagePullPolicy: Always
       image: hmctsprod.azurecr.io/ccd/case-document-am-api:latest
