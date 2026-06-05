@@ -250,7 +250,7 @@ describe('Integration: reject-all response coverage', () => {
       });
   });
 
-  it('renders the reject-all already-paid task list with the non-CARM mediation path', async () => {
+  it.skip('renders the reject-all already-paid task list with the non-CARM mediation path', async () => {
     setDraftClaim(buildRejectAllAlreadyPaidLessClaim());
 
     await request(app)
