@@ -10,8 +10,6 @@ import {
   DQ_TRIED_TO_SETTLE_CLAIM_URL,
 } from 'routes/urls';
 import {isIntermediateTrack, isMultiTrack} from 'form/models/claimType';
-const {Logger} = require('@hmcts/nodejs-logging');
-const logger = Logger.getLogger('giveUsDetailsHearing');
 
 const checkTaskCompleteForTrack = (claim: Claim, defendantDQ: DirectionQuestionnaire, mintiApplicable: boolean): boolean => {
   if (claim.isSmallClaimsTrackDQ) {
@@ -26,7 +24,7 @@ const checkTaskCompleteForTrack = (claim: Claim, defendantDQ: DirectionQuestionn
 
 export const getGiveUsDetailsHearingTask = (claim: Claim, claimId: string, lang: string, mintiApplicable: boolean): Task => {
   const defendantDQ = Object.assign(new DirectionQuestionnaire(), claim.directionQuestionnaire);
-  logger.info('getGiveUsDetailsHearingTask', defendantDQ, claim.directionQuestionnaire.hearing);
+  console.log('getGiveUsDetailsHearingTask', defendantDQ, claim.directionQuestionnaire.hearing);
   const linkUrl = !claim.isSmallClaimsTrackDQ ? DQ_TRIED_TO_SETTLE_CLAIM_URL : DETERMINATION_WITHOUT_HEARING_URL;
   const isTaskCompleted = checkTaskCompleteForTrack(claim, defendantDQ, mintiApplicable);
   return {
