@@ -204,7 +204,7 @@ if(e2eTestMode){
       // Send a response back to the client
       res.status(200).json({ message: 'Flag updated successfully' });
     } catch (error) {
-      res.status(500).json({ message: 'Error changing the flag' });
+      res.status(500).json({ message: 'Error changing the flag', error });
     }
   });
 
