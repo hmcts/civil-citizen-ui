@@ -31,3 +31,6 @@ export const isMultiTrack = (totalClaimAmount: number, isMintiEnabled = false): 
 
 export const isIntermediateTrack = (totalClaimAmount: number, isMintiEnabled = false): boolean =>
   analyseClaimType(totalClaimAmount, isMintiEnabled) === claimType.INTERMEDIATE_TRACK_CLAIM;
+
+export const isFastTrack = (totalClaimAmount: number, isMintiEnabled = false): boolean =>
+  analyseClaimType(totalClaimAmount, isMintiEnabled) === claimType.FAST_TRACK_CLAIM;
