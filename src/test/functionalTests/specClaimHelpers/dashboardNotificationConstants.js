@@ -642,5 +642,5 @@ module.exports = {
       title: 'Cais am fwy o amser',
       content: 'Y terfyn amser nawr yw 4pm ar',
     };
-  }
+  },
 };

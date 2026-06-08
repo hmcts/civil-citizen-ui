@@ -2,9 +2,8 @@ const config = require('../../../../config');
 const LoginSteps = require('../../../commonFeatures/home/steps/login');
 const { createAccount } = require('../../../specClaimHelpers/api/idamHelper');
 const { dateTime } = require('../../../specClaimHelpers/api/dataHelper');
-const ClaimantResponseSteps = require('../../../citizenFeatures/response/steps/lipClaimantResponseSteps');
 const { checkToggleEnabled } = require('../../../specClaimHelpers/api/testingSupport');
-const { moreTimeRequestedClaimant, moreTimeRequestedClaimantWelsh, moreTimeRequestedDefendant, moreTimeRequestedDefendantWelsh } = require('../../../specClaimHelpers/dashboardNotificationConstants');
+const { moreTimeRequestedDefendant, moreTimeRequestedDefendantWelsh } = require('../../../specClaimHelpers/dashboardNotificationConstants');
 const { extendResponseDeadline } = require('../../../specClaimHelpers/emailNotificationConstants');
 const { verifyNotificationTitleAndContent } = require('../../../specClaimHelpers/e2e/dashboardHelper');
 const CitizenDashboardSteps = require('../../../citizenFeatures/citizenDashboard/steps/citizenDashboard');
@@ -15,7 +14,7 @@ const claimType = 'SmallClaims';
 const statusCell = (text) =>`//tr[.//td[.//a[normalize-space()='${text}']]]/td[4]`;
 const applicantLR = config.applicantSolicitorUser;
 const defendant = config.defendantCitizenUser;
-let claimRef, caseData, claimNumber, defendantName, judgmentBufferEnabled;
+let claimRef, caseData, claimNumber;
 
 Feature('LR v Lip claim - Judgment Requested state - Extend response deadline').tag('@ui-judgment-buffer');
 
@@ -23,9 +22,8 @@ Scenario('Create LRvLip claim, claimant solictor raises CCJ - Judgment Buffer - 
   const judgmentBufferEnabled = await checkToggleEnabled('judgment-buffer'); 
   if (!judgmentBufferEnabled) return;
   await createAccount(defendant.email, defendant.password);
-  claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser);
+  claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser, false, claimType);
   caseData = await api.retrieveCaseData(config.adminUser, claimRef);
-  defendantName = await caseData.respondent1.partyName;
   claimNumber = await caseData.legacyCaseReference;
   await api.amendRespondent1ResponseDeadline(config.systemUpdate2, dateTime(-2).slice(0, 19));
   await api.amendRespondent1PartyEmail(claimRef, config.systemUpdate2, defendant.email);

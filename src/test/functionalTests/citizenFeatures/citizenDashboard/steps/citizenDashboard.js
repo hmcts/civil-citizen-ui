@@ -15,7 +15,7 @@ class CitizenCitizenDashboardSteps {
     await CitizenDashboardPage.verifyStatusOnDashboard(status, xpath);
   }
 
-   async VerifyStatusOnDashboardWelsh(status, xpath) {
+  async VerifyStatusOnDashboardWelsh(status, xpath) {
     await CitizenDashboardPage.verifyStatusOnDashboardWelsh(status, xpath);
   }
 }

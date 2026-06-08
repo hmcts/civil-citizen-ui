@@ -8,14 +8,14 @@ module.exports = {
       defendantDetailsSpec: {
         value: {
           code: '62ff8ded-ab50-47a6-894e-c101fb56a89f',
-          label: 'Sir John Doe'
+          label: 'Sir John Doe',
         },
         list_items: [
           {
             code: '62ff8ded-ab50-47a6-894e-c101fb56a89f',
-            label: 'Sir John Doe'
-          }
-        ]
+            label: 'Sir John Doe',
+          },
+        ],
       },
       bothDefendantsSpec: 'One',
       currentDefendant: 'Has Sir John Doe paid some of the amount owed?',
@@ -23,30 +23,30 @@ module.exports = {
       defaultJudgementOverallTotal: DEFAULT_JUDGEMENT_TOTAL,
       businessProcess: {
         camundaEvent: 'CREATE_CLAIM_SPEC_AFTER_PAYMENT',
-        status: 'FINISHED'
-      }
+        status: 'FINISHED',
+      },
     },
     claimPartialPayment : {
-      partialPayment: 'No'
+      partialPayment: 'No',
     },
     fixedCostsOnEntry: {
       claimFixedCostsOnEntryDJ: 'Yes',
-      repaymentSummaryObject: DEFAULT_JUDGEMENT_SUMMARY
+      repaymentSummaryObject: DEFAULT_JUDGEMENT_SUMMARY,
     },
     paymentConfirmationSpec: {
-      repaymentSummaryObject: DEFAULT_JUDGEMENT_SUMMARY
+      repaymentSummaryObject: DEFAULT_JUDGEMENT_SUMMARY,
     },
     paymentType: {
       currentDatebox: '25 August 2022',
       repaymentDue: DEFAULT_JUDGEMENT_TOTAL_POUNDS,
-      paymentTypeSelection : 'IMMEDIATELY'
+      paymentTypeSelection : 'IMMEDIATELY',
     },
     paymentSetDate: {
     },
     repaymentInformation: {
       repaymentDue: DEFAULT_JUDGEMENT_TOTAL_POUNDS,
       repaymentSuggestion: '3',
-      repaymentDate: '2220-01-01'
-    }
-  }
+      repaymentDate: '2220-01-01',
+    },
+  },
 };

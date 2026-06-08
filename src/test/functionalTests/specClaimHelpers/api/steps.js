@@ -354,12 +354,12 @@ module.exports = {
     const response = await apiRequest.fetchCaseDetails(config.adminUser, caseId);
     const caseData = response.case_data;
     await apiRequest.setupTokens(user);
-    caseDataRespondent1 = {
+    const caseDataRespondent1 = {
       respondent1: {
         ...caseData.respondent1,
-        partyEmail: email
-      }      
-    }
+        partyEmail: email,
+      },      
+    };
     await testingSupport.updateCaseData(caseId, caseDataRespondent1);
     console.log('respondent1PartyEmail updated');
   },
@@ -368,12 +368,12 @@ module.exports = {
     const response = await apiRequest.fetchCaseDetails(config.adminUser, caseId);
     const caseData = response.case_data;
     await apiRequest.setupTokens(user);
-    caseDataApplicantSolicitor1UserDetails = {
+    const caseDataApplicantSolicitor1UserDetails = {
       applicantSolicitor1UserDetails: {
         ...caseData.applicantSolicitor1UserDetails,
-        email: applicantSolicitor1Email
-      }      
-    }
+        email: applicantSolicitor1Email,
+      },    
+    };
     await testingSupport.updateCaseData(caseId, caseDataApplicantSolicitor1UserDetails);
     console.log('applicantSolicitor1Email updated');
   },
@@ -381,7 +381,7 @@ module.exports = {
   assertActiveJudgmentDetailsNotPresent: async (caseId) => {
     const response = await apiRequest.fetchCaseDetails(config.adminUser, caseId);
     const caseData = response.case_data;
-    expect(caseData).to.not.have.property('activeJudgment');;
+    expect(caseData).to.not.have.property('activeJudgment');
   },
 
   submitHwfEventForUser: async (event, user = config.ctscAdmin) => {
@@ -845,26 +845,26 @@ module.exports = {
         applicantsPbaAccounts: {
           value: {
             code: '66b21c60-aed1-11ed-8aa3-494efce63912',
-            label: 'PBAFUNC12345'
+            label: 'PBAFUNC12345',
           },
           list_items: [
             {
               code: '66b21c60-aed1-11ed-8aa3-494efce63912',
-              label: 'PBAFUNC12345'
+              label: 'PBAFUNC12345',
             },
             {
               code: '66b21c61-aed1-11ed-8aa3-494efce63912',
-              label: 'PBA0078095'
-            }
-          ]
+              label: 'PBA0078095',
+            },
+          ],
         },
         fee: {
           calculatedAmountInPence: '8000',
           code: 'FEE0205',
-          version: '6'
+          version: '6',
         },
-        serviceRequestReference: '2023-1676644996295'
-      }
+        serviceRequestReference: '2023-1676644996295',
+      },
     };
     caseData = update(caseData, claimIssuedPBADetails);
 
@@ -872,11 +872,12 @@ module.exports = {
       registrationTypeRespondentOne: [
         {
           value: {
-          registrationType: 'R',
-          judgmentDateTime: dateTime(0)
-        },
-        id: '9f30e576-f5b7-444f-8ba9-27dabb21d966' } ],
-      registrationTypeRespondentTwo: []
+            registrationType: 'R',
+            judgmentDateTime: dateTime(0),
+          },
+          id: '9f30e576-f5b7-444f-8ba9-27dabb21d966',
+        }],
+      registrationTypeRespondentTwo: [],
     };
     state = judgmentBufferEnabled ? 'JUDGMENT_REQUESTED' : 'All_FINAL_ORDERS_ISSUED';
     await validateEventPagesDefaultJudgments(data.DEFAULT_JUDGEMENT_SPEC, 'ONE_V_ONE', false);
@@ -884,7 +885,7 @@ module.exports = {
     caseData = update(caseData, registrationData);
     await assertSubmittedEvent(state, {
       header: '',
-      body: ''
+      body: '',
     }, true);
 
     await waitForFinishedBusinessProcess(caseId);
@@ -1185,7 +1186,7 @@ const assertValidDataDefaultJudgments = async (data, pageId, scenario, isDiverge
     eventName,
     pageId,
     caseData,
-    caseId
+    caseId,
   );
   let responseBody = await response.json();
   responseBody = clearDataForSearchCriteria(responseBody); //Until WA release
