@@ -63,6 +63,28 @@ export const getClaimById = async (claimId: RouteParam, req: Request, useRedisKe
   return claim;
 };
 
+/**
+ * Loads claim for dashboard: cache-aware read via getClaimById, then syncs latest civil-service
+ * state (request-scoped memoisation avoids duplicate calls when cache was cold). Preserves
+ * in-progress claimantResponse from Redis without deleting the draft entry first.
+ */
+export const getDashboardClaimById = async (claimId: RouteParam, req: Request, useRedisKey = false): Promise<Claim> => {
+  const normalizedClaimId = normalizeRouteParam(claimId);
+  const userId = (<AppRequest>req)?.session?.user?.id;
+  const redisKey = useRedisKey && normalizedClaimId !== userId ? generateRedisKey(<AppRequest>req) : normalizedClaimId;
+  const cachedClaim = await getClaimById(claimId, req, useRedisKey);
+  const latestClaim = await civilServiceClient.retrieveClaimDetails(normalizedClaimId, <AppRequest>req);
+
+  if (!latestClaim) {
+    throw new Error('Case not found...');
+  }
+
+  latestClaim.claimantResponse = cachedClaim.claimantResponse ?? latestClaim.claimantResponse;
+  await saveDraftClaim(redisKey, latestClaim, true);
+  syncCaseReference(req, latestClaim);
+  return latestClaim;
+};
+
 export const refreshDraftStoreClaimFrom = async (req: Request, useRedisKey = false): Promise<Claim> => {
   const claimId = getRouteParam(req, 'id');
   const userId = (<AppRequest>req)?.session?.user?.id;

@@ -1,10 +1,10 @@
-import {getClaimBusinessProcess, getClaimById, refreshDraftStoreClaimFrom} from 'modules/utilityService';
+import {getClaimBusinessProcess, getClaimById, getDashboardClaimById, refreshDraftStoreClaimFrom} from 'modules/utilityService';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {Claim} from 'models/claim';
 import {BusinessProcess} from 'models/businessProcess';
 import {AppRequest, AppSession} from 'models/AppRequest';
 import {Party} from 'models/party';
-import {getCaseDataFromStore, getDraftClaimFromStore} from 'modules/draft-store/draftStoreService';
+import {getCaseDataFromStore, getDraftClaimFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {syncCaseReferenceCookie} from 'modules/cookie/caseReferenceCookie';
 import {ClaimantResponse} from 'models/claimantResponse';
 
@@ -121,6 +121,41 @@ describe('Utility service', () => {
       expect(result).toBe(claim);
       expect(request.session.caseReference).toBeUndefined();
       expect(syncCaseReferenceCookieMock).toHaveBeenCalledWith(request);
+    });
+  });
+
+  describe('getDashboardClaimById', () => {
+    const request = {
+      params: { id: '1645882162449409' },
+      session: { user: { id: 'user-123' } },
+    } as unknown as AppRequest;
+
+    beforeEach(() => {
+      jest.clearAllMocks();
+      (getCaseDataFromStore as jest.Mock).mockResolvedValue(new Claim());
+    });
+
+    it('should sync latest claim from civil service and preserve claimant response from cache', async () => {
+      const cachedClaim = new Claim();
+      cachedClaim.applicant1 = {} as Claim['applicant1'];
+      cachedClaim.claimantResponse = new ClaimantResponse();
+      const latestClaim = { id: '1645882162449409' } as Claim;
+
+      (getCaseDataFromStore as jest.Mock).mockResolvedValueOnce(cachedClaim);
+      jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockResolvedValueOnce(latestClaim);
+
+      const result = await getDashboardClaimById(request.params.id, request, true);
+
+      expect(result).toBe(latestClaim);
+      expect(result.claimantResponse).toBe(cachedClaim.claimantResponse);
+      expect(saveDraftClaim as jest.Mock).toHaveBeenCalled();
+    });
+
+    it('should throw an error if the claim does not exist in civil service', async () => {
+      (getCaseDataFromStore as jest.Mock).mockResolvedValueOnce(new Claim());
+      jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockResolvedValueOnce(null as unknown as Claim);
+
+      await expect(getDashboardClaimById(request.params.id, request, true)).rejects.toThrow('Case not found...');
     });
   });
 

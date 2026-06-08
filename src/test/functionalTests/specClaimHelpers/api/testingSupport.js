@@ -8,6 +8,20 @@ let incidentMessage;
 
 const MAX_RETRIES = 60;
 const RETRY_TIMEOUT_MS = 4000;
+const READY_STATUS = 'READY';
+
+const buildBusinessProcessErrorMessage = (businessProcess, caseId, elapsedMs, response = {}) => {
+  const elapsedSeconds = Math.floor(elapsedMs / 1000);
+  const businessProcessSummary = `Ongoing business process: ${businessProcess?.camundaEvent || 'unknown'},`
+    + ` case id: ${caseId}, status: ${businessProcess?.status || 'unknown'},`
+    + ` process instance: ${businessProcess?.processInstanceId || 'undefined'},`
+    + ` last finished activity: ${businessProcess?.activityId || 'undefined'}`;
+  const contextSummary = `elapsed: ${elapsedSeconds}s, hasIncidentMessage: ${Boolean(response?.incidentMessage)}`;
+  if (businessProcess?.status === READY_STATUS) {
+    return `${businessProcessSummary}, ${contextSummary}. Process remains in READY and has not started in Camunda.`;
+  }
+  return `${businessProcessSummary}, ${contextSummary}.`;
+};
 
 const checkToggleEnabled = async (toggle) => {
   const authToken = await idamHelper.accessToken(config.applicantSolicitorUser);
@@ -53,7 +67,9 @@ const runScheduler = async (schedulerName) => {
 
 module.exports = {
   waitForFinishedBusinessProcess: async (caseId, user = '') => {
+    incidentMessage = undefined;
     const authToken = await idamHelper.accessToken(user ? user : config.applicantSolicitorUser);
+    const startedAt = Date.now();
 
     await retry(() => {
       return restHelper.request(
@@ -67,8 +83,7 @@ module.exports = {
           if (response.incidentMessage) {
             incidentMessage = response.incidentMessage;
           } else if (businessProcess && businessProcess.status !== 'FINISHED') {
-            throw new Error(`Ongoing business process: ${businessProcess.camundaEvent}, case id: ${caseId}, status: ${businessProcess.status},`
-              + ` process instance: ${businessProcess.processInstanceId}, last finished activity: ${businessProcess.activityId}`);
+            throw new Error(buildBusinessProcessErrorMessage(businessProcess, caseId, Date.now() - startedAt, response));
           }
         });
     }, MAX_RETRIES, RETRY_TIMEOUT_MS);
@@ -77,7 +92,9 @@ module.exports = {
   },
 
   waitForGAFinishedBusinessProcess: async (caseId, user) => {
+    incidentMessage = undefined;
     const authToken = await idamHelper.accessToken(user);
+    const startedAt = Date.now();
     console.log('** Start waitForGAFinishedBusinessProcess to wait for GA Camunda Tasks to Start and Finish **');
 
     await retry(() => {
@@ -92,8 +109,7 @@ module.exports = {
           if (response.incidentMessage) {
             incidentMessage = response.incidentMessage;
           } else if (businessProcess && businessProcess.status !== 'FINISHED') {
-            throw new Error(`Ongoing business process: ${businessProcess.camundaEvent}, case id: ${caseId}, status: ${businessProcess.status},`
-              + ` process instance: ${businessProcess.processInstanceId}, last finished activity: ${businessProcess.activityId}`);
+            throw new Error(buildBusinessProcessErrorMessage(businessProcess, caseId, Date.now() - startedAt, response));
           }
         });
     }, MAX_RETRIES, RETRY_TIMEOUT_MS);
