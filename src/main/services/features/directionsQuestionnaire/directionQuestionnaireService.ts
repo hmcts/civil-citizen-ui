@@ -5,7 +5,7 @@ import {DirectionQuestionnaireErrorMessages} from 'form/models/directionQuestion
 import {ClaimantResponse} from 'common/models/claimantResponse';
 import {ConfirmYourDetailsEvidence} from 'form/models/confirmYourDetailsEvidence';
 import {getGenericOptionForm} from 'services/genericForm/genericFormService';
-
+import {Claim} from 'models/claim';
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('directionQuestionnaireService');
 
@@ -54,32 +54,40 @@ const getConfirmYourDetailsEvidenceForm = (body: any): ConfirmYourDetailsEvidenc
     body.jobTitle);
 };
 
+const getDQBaseProperty = (claim: Claim): Claim | ClaimantResponse => {
+  if (claim.isClaimantIntentionPending()) {
+    claim.claimantResponse ??= new ClaimantResponse();
+    return claim.claimantResponse;
+  }
+  return claim;
+};
+
+const setDirectionQuestionnaireValue = (
+  directionQuestionnaire: DirectionQuestionnaire,
+  value: any,
+  propertyName: string,
+  parentPropertyName?: string,
+): void => {
+  const editableDirectionQuestionnaire = directionQuestionnaire as Record<string, any>;
+  if (parentPropertyName) {
+    editableDirectionQuestionnaire[parentPropertyName] ??= {};
+    editableDirectionQuestionnaire[parentPropertyName][propertyName] = value;
+    return;
+  }
+  editableDirectionQuestionnaire[propertyName] = value;
+};
+
 const saveDirectionQuestionnaire = async (claimId: string, value: any, directionQuestionnairePropertyName: string, parentPropertyName?: string): Promise<void> => {
   try {
-    const claim: any = await getCaseDataFromStore(claimId);
-
-    if (claim.isClaimantIntentionPending() && !claim.claimantResponse) {
-      claim.claimantResponse = new ClaimantResponse();
-    }
-    const baseProperty = claim.isClaimantIntentionPending() ? claim.claimantResponse : claim;
-
-    if (baseProperty?.directionQuestionnaire) {
-      if (parentPropertyName && baseProperty.directionQuestionnaire[parentPropertyName]) {
-        baseProperty.directionQuestionnaire[parentPropertyName][directionQuestionnairePropertyName] = value;
-      } else if (parentPropertyName && !baseProperty.directionQuestionnaire[parentPropertyName]) {
-        baseProperty.directionQuestionnaire[parentPropertyName] = {[directionQuestionnairePropertyName]: value};
-      } else {
-        baseProperty.directionQuestionnaire[directionQuestionnairePropertyName] = value;
-      }
-    } else {
-      const directionQuestionnaire: any = new DirectionQuestionnaire();
-      if (parentPropertyName) {
-        directionQuestionnaire[parentPropertyName] = {[directionQuestionnairePropertyName]: value};
-      } else {
-        directionQuestionnaire[directionQuestionnairePropertyName] = value;
-      }
-      baseProperty.directionQuestionnaire = directionQuestionnaire;
-    }
+    const claim: Claim = await getCaseDataFromStore(claimId);
+    const baseProperty : Claim | ClaimantResponse = getDQBaseProperty(claim);
+    baseProperty.directionQuestionnaire ??= new DirectionQuestionnaire();
+    setDirectionQuestionnaireValue(
+      baseProperty.directionQuestionnaire,
+      value,
+      directionQuestionnairePropertyName,
+      parentPropertyName,
+    );
     await saveDraftClaim(claimId, claim);
   } catch (error) {
     logger.error(error);
