@@ -30,6 +30,26 @@ const checkToggleEnabled = async (toggle) => {
     );
 };
 
+// Triggers a civil-service scheduler on demand via testing-support (requires the scheduler to be
+// enabled, e.g. SCHEDULER_ENABLED_DEFENDANT_RESPONSE=true). Returns true on 200.
+const runScheduler = async (schedulerName) => {
+  const authToken = await idamHelper.accessToken(config.applicantSolicitorUser);
+
+  return await restHelper.request(
+    `${config.url.civilService}/testing-support/run-scheduler/${schedulerName}`,
+    {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${authToken}`,
+    }, null, 'GET')
+    .then(async response => {
+      console.log('runScheduler..', schedulerName, '...status..', response.status);
+      if (response.status === 200) {
+        return true;
+      }
+      throw new Error(`Error running scheduler ${schedulerName}, status: ${response.status}`);
+    });
+};
+
 module.exports = {
   waitForFinishedBusinessProcess: async (caseId, user = '') => {
     const authToken = await idamHelper.accessToken(user ? user : config.applicantSolicitorUser);
@@ -303,4 +323,5 @@ module.exports = {
   },
 
   checkToggleEnabled,
+  runScheduler,
 };

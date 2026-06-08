@@ -203,6 +203,47 @@ module.exports = {
     };
   },
 
+  //DTSCCI-5096 AC2 - Claimant notification when a CCJ is requested during the judgment buffer (judgment not granted straight away)
+  //Notice.AAA6.DefLip.Judgment.Requested.Claimant
+  //Welsh (titleCy/contentCy) is substring-matched on apostrophe-free fragments because the apostrophe
+  //encoding (straight vs curly) differs between source files; the meaningful Welsh words are still asserted.
+  claimantNotificationJudgmentRequestedBuffer: () => {
+    return {
+      title: 'The CCJ has been requested',
+      content: [
+        'A judgment against the defendant has been requested.',
+        'You will be notified when this judgment is granted.',
+      ],
+      titleCy: 'CCJ wedi cael ei geisio',
+      contentCy: [
+        'Mae cais am ddyfarniad yn erbyn y diffynnydd',
+        'Byddwch yn cael gwybod pan roddir y dyfarniad hwn',
+      ],
+    };
+  },
+
+  //DTSCCI-5096 AC5 - Defendant retains the existing "you have not responded" notification during the judgment buffer
+  //Notice.AAA6.DefResponse.ResponseTimeElapsed.Defendant
+  defendantNotificationJudgmentRequestedBuffer: (claimantName) => {
+    return {
+      title: 'Response to the claim',
+      content: [
+        'You have not responded to the claim.',
+        `${claimantName} can now request a county court judgment.`,
+        'You can still respond to the claim before they ask for a judgment.',
+        'A County Court Judgment can mean you find it difficult to get credit',
+        'Bailiffs could also be sent to your home.',
+      ],
+      titleCy: 'Nid ydych wedi ymateb',
+      contentCy: [
+        `Gall ${claimantName} nawr wneud cais am ddyfarniad llys sirol`,
+        'Gall Dyfarniad Llys Sirol olygu',
+        'anodd cael credyd',
+      ],
+      nextSteps: 'Respond to claim',
+    };
+  },
+
   //Add deadline logic later
   //Notice.AAA6.DefResponse.FullDefence.FullDispute.RefusedMediation.Claimant
   claimantNotificationWithDefendantRejectMedidationWithRejectAll: () => {
