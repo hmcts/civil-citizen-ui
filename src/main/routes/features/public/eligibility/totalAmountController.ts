@@ -28,7 +28,7 @@ totalAmountEligibilityController.post(ELIGIBILITY_CLAIM_VALUE_URL, async (req: R
   } else {
     const cookie = req.cookies['eligibility'] ? req.cookies['eligibility'] : {};
     cookie.totalAmount = req.body.totalAmount;
-    res.cookie('eligibility', cookie);
+    res.cookie('eligibility', cookie, {httpOnly: true, sameSite: 'lax'});
     switch (totalAmount.option) {
       case TotalAmountOptions.OVER_25000:
         res.redirect(constructUrlWithNotEligibleReason(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL, NotEligibleReason.CLAIM_VALUE_OVER_25000));
