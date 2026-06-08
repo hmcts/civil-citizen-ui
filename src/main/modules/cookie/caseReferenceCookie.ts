@@ -42,7 +42,7 @@ const applyCookie = (req: AppRequest, res: Response, overrideReference?: unknown
     if (req.cookies?.[CASE_REFERENCE_COOKIE_NAME] !== normalisedReference) {
       res.cookie(CASE_REFERENCE_COOKIE_NAME, normalisedReference, {
         maxAge: storedCookieOptions.maxAge,
-        httpOnly: false,
+        httpOnly: true,
         secure: storedCookieOptions.secure,
         sameSite: 'lax',
         path: '/',
