@@ -30,9 +30,10 @@ export const toCUICaseProgression = (ccdClaim: CCDClaim): CaseProgression => {
 
     const applicantUploadDocuments = applicantDocuments(ccdClaim);
     const defendantUploadDocuments = defendantDocuments(ccdClaim);
-    const managedDocuments = claimDocuments(ccdClaim);
-    const withoutPrejudiceDocuments = withoutPreDocuments(ccdClaim);
-
+    const managedDocumentsUploadedByCaseWorker : UploadDocumentTypes[] = claimDocuments(ccdClaim);
+    const managedDocuments = managedDocumentsUploadedByCaseWorker.filter(document => document !== undefined && (document.caseDocument as UploadOtherDocumentType)?.documentType !== 'WITHOUT_PREJUDICE_PART_36_OFFER_OR_REJECTIONS');
+    const withoutPrejudiceManageDocuments = managedDocumentsUploadedByCaseWorker.filter(document => document !== undefined && (document.caseDocument as UploadOtherDocumentType)?.documentType === 'WITHOUT_PREJUDICE_PART_36_OFFER_OR_REJECTIONS');
+    const withoutPrejudiceDocuments = [ ...(withoutPreDocuments(ccdClaim) ?? []), ...(withoutPrejudiceManageDocuments ?? [])];
     caseProgression.claimantUploadDocuments =
       new UploadDocuments(applicantUploadDocuments.disclosure, applicantUploadDocuments.witness, applicantUploadDocuments.expert, applicantUploadDocuments.trial, managedDocuments, withoutPrejudiceDocuments);
     caseProgression.defendantUploadDocuments =
