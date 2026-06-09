@@ -4695,7 +4695,7 @@
     },
     "RESPONSE_DEADLINE_OPTIONS": {
       "CURRENT_DEADLINE": "Current response deadline: 4pm on {{ responseDeadline }}",
-      "EMAIL_FORM": "Email the completed form N244 to: contact@justice.gov.uk.",
+      "EMAIL_FORM": "Email the completed form N244 to:",
       "FORM": "Form N244 (opens in new tab)",
       "MORE_TIME": "Do you want to request more time to respond?",
       "OPTION_AGREED": "I have already agreed more time with {{ claimantName }}'s legal representative",
@@ -4814,6 +4814,7 @@
       "DO_NOT_CREATE_NEW_CLAIM_IF_WANT_COUNTERCLAIM": "Do not create a new claim if you want to counterclaim.",
       "USE_FORM_N9B": "Use form N9B.",
       "EMAIL_COMPLETED": "Email completed form N9B to",
+      "EMAIL_COMPLETED_N9B": "Email completed form N9B to:",
       "HEADER": "Reject all of the claim and counterclaim",
       "HELP_AND_SUPPORT": "Help and support",
       "HOW_TO_COUNTERCLAIM": "How to counterclaim?",
