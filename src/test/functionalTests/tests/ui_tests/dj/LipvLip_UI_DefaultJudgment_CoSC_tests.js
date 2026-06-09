@@ -33,6 +33,7 @@ Scenario('Create LipvLip claim and defendant not responded by deadline and Claim
   }
 
   await ClaimantResponseSteps.verifyDefaultJudgment(claimRef);
+  await api.waitForFinishedBusinessProcess();
   await I.click('Sign out');
   await I.wait(5);
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
