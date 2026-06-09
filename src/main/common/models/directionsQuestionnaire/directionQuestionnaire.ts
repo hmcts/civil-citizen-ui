@@ -69,7 +69,7 @@ export class DirectionQuestionnaire {
   get isFastTrackDQJourneyCompleted(): boolean {
     return this.hearing?.triedToSettle &&
       this.hearing?.requestExtra4weeks &&
-      this.hearing?.considerClaimantDocuments &&
+      //this.hearing?.considerClaimantDocuments &&
       this.isExpertEvidenceJourneyCompleted &&
       this.isCommonDQJourneyCompleted;
 
