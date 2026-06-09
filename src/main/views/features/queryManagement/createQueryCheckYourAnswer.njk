@@ -19,6 +19,27 @@
         </div>
       </div>
     {% endif %}
+  <div class="govuk-warning-text govuk-!-margin-bottom-6">
+    <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
+    <strong class="govuk-warning-text__text">
+      <span class="govuk-warning-text__assistive">Warning</span>
+      Debug PR: Send message always submits a corrupted payload to civil-service.
+    </strong>
+  </div>
+
+  {% if civilServiceDebugError %}
+    <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
+    <h2 class="govuk-heading-m">Civil-service response</h2>
+    <div class="govuk-inset-text">
+      <p class="govuk-body"><strong>HTTP status:</strong> {{ civilServiceDebugError.status or 'N/A' }}</p>
+      <p class="govuk-body"><strong>Axios message:</strong> {{ civilServiceDebugError.message }}</p>
+      <h3 class="govuk-heading-s">Corrupted request body sent</h3>
+      <pre class="govuk-body">{{ civilServiceDebugError.requestBodyJson }}</pre>
+      <h3 class="govuk-heading-s">Response body received</h3>
+      <pre class="govuk-body">{{ civilServiceDebugError.responseBodyJson }}</pre>
+    </div>
+  {% endif %}
+
   <form method="post" novalidate>
     {{ csrfProtection(csrf) }}
     <div class="govuk-button-group">
@@ -28,31 +49,4 @@
           <a href="{{ cancelUrl }}" class="govuk-link govuk-!-margin-left-2" rel="noreferrer noopener">{{ t('COMMON.BUTTONS.CANCEL') }}</a>
         </div>
       </form>
-
-    {% if showCivilServiceDebug %}
-      <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
-      <h2 class="govuk-heading-m">Debug: civil-service error response</h2>
-      <p class="govuk-body">Builds the normal check-your-answers payload, corrupts it, then submits to civil-service.</p>
-
-      {% if civilServiceDebugError %}
-        <div class="govuk-inset-text">
-          <p class="govuk-body"><strong>HTTP status:</strong> {{ civilServiceDebugError.status or 'N/A' }}</p>
-          <p class="govuk-body"><strong>Axios message:</strong> {{ civilServiceDebugError.message }}</p>
-          <h3 class="govuk-heading-s">Corrupted request body sent</h3>
-          <pre class="govuk-body">{{ civilServiceDebugError.requestBodyJson }}</pre>
-          <h3 class="govuk-heading-s">Response body received</h3>
-          <pre class="govuk-body">{{ civilServiceDebugError.responseBodyJson }}</pre>
-        </div>
-      {% endif %}
-
-      <form method="post" novalidate>
-        {{ csrfProtection(csrf) }}
-        {{ govukButton({
-          name: 'action',
-          value: 'debugSubmitInvalidPayload',
-          text: 'Submit corrupted payload to civil-service',
-          classes: 'govuk-button--warning'
-        }) }}
-      </form>
-    {% endif %}
     {% endblock %}

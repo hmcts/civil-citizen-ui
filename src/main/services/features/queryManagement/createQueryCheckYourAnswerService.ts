@@ -228,7 +228,8 @@ const withFragment = (url: string, fragment: string): string => {
 
 export const createQuery = async (claim: Claim, updatedClaim: Claim, req: AppRequest, isFollowUpQuery: boolean) => {
   const payload = buildQuerySubmissionPayload(claim, updatedClaim, req, isFollowUpQuery);
-  await civilServiceClient.submitQueryManagementRaiseQuery(req.params.id, payload, req);
+  const corruptedPayload = corruptQuerySubmissionPayload(payload);
+  await civilServiceClient.submitQueryManagementRaiseQuery(req.params.id, corruptedPayload, req);
 };
 
 const getDocAttachments = (uploadedFiles: UploadQMAdditionalFile[]): FormDocument[] => {

@@ -104,7 +104,7 @@ describe('create query check your answer controller', () => {
       saveQueryManagement = jest.spyOn(QueryManagementService, 'saveQueryManagement');
     });
 
-    it('should submit the query for the claimant', async () => {
+    it('should submit corrupted query for the claimant and render civil-service response', async () => {
       mockGetClaimById.mockImplementation(async () => {
         const claim = new Claim();
         claim.caseRole = CaseRole.CLAIMANT;
@@ -113,19 +113,26 @@ describe('create query check your answer controller', () => {
         claim.queryManagement.createQuery = new CreateQuery('Dummy subject', 'Message details', 'Yes', (date.getFullYear() + 1).toString(), date.getMonth().toString(), date.getDay().toString());
         return claim;
       });
-      const createQuery = jest.spyOn(createCheckYourAnswerService, 'createQuery').mockResolvedValueOnce(undefined);
+      const submitCorrupted = jest.spyOn(createCheckYourAnswerService, 'submitCorruptedQueryFromCheckYourAnswers').mockResolvedValueOnce({
+        status: 400,
+        message: 'Request failed with status code 400',
+        requestBody: {queries: {partyName: 12345}},
+        responseBody: {message: 'Validation failed'},
+      });
 
       await request(app)
         .post(QM_CYA)
         .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(createQuery).toHaveBeenCalled();
+          expect(res.status).toBe(200);
+          expect(submitCorrupted).toHaveBeenCalled();
           expect(retrieveClaimDetails).toHaveBeenCalled();
-          expect(saveQueryManagement).toHaveBeenCalled();
+          expect(saveQueryManagement).not.toHaveBeenCalled();
+          expect(res.text).toContain('Civil-service response');
+          expect(res.text).toContain('Validation failed');
         });
     });
 
-    it('should submit the query for the claimant follow up', async () => {
+    it('should submit corrupted query for the claimant follow up and render civil-service response', async () => {
       mockGetClaimById.mockImplementation(async () => {
         const claim = new Claim();
         claim.caseRole = CaseRole.CLAIMANT;
@@ -133,19 +140,24 @@ describe('create query check your answer controller', () => {
         claim.queryManagement.sendFollowUpQuery = new SendFollowUpQuery('Dummy details');
         return claim;
       });
-      const createQuery = jest.spyOn(createCheckYourAnswerService, 'createQuery').mockResolvedValueOnce(undefined);
+      const submitCorrupted = jest.spyOn(createCheckYourAnswerService, 'submitCorruptedQueryFromCheckYourAnswers').mockResolvedValueOnce({
+        status: 400,
+        message: 'Request failed with status code 400',
+        requestBody: {queries: {partyName: 12345}},
+        responseBody: {message: 'Validation failed'},
+      });
 
       await request(app)
         .post(QM_FOLLOW_UP_CYA)
         .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(createQuery).toHaveBeenCalled();
+          expect(res.status).toBe(200);
+          expect(submitCorrupted).toHaveBeenCalled();
           expect(retrieveClaimDetails).toHaveBeenCalled();
-          expect(saveQueryManagement).toHaveBeenCalled();
+          expect(saveQueryManagement).not.toHaveBeenCalled();
         });
     });
 
-    it('should submit the query for the defendant', async () => {
+    it('should submit corrupted query for the defendant and render civil-service response', async () => {
       mockGetClaimById.mockImplementation(async () => {
         const claim = new Claim();
         claim.caseRole = CaseRole.DEFENDANT;
@@ -154,18 +166,23 @@ describe('create query check your answer controller', () => {
         claim.queryManagement.createQuery = new CreateQuery('Dummy subject', 'Message details', 'Yes', (date.getFullYear() + 1).toString(), date.getMonth().toString(), date.getDay().toString());
         return claim;
       });
-      const createQuery = jest.spyOn(createCheckYourAnswerService, 'createQuery').mockResolvedValueOnce(undefined);
+      const submitCorrupted = jest.spyOn(createCheckYourAnswerService, 'submitCorruptedQueryFromCheckYourAnswers').mockResolvedValueOnce({
+        status: 400,
+        message: 'Request failed with status code 400',
+        requestBody: {queries: {partyName: 12345}},
+        responseBody: {message: 'Validation failed'},
+      });
       await request(app)
         .post(QM_CYA)
         .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(createQuery).toHaveBeenCalled();
+          expect(res.status).toBe(200);
+          expect(submitCorrupted).toHaveBeenCalled();
           expect(retrieveClaimDetails).toHaveBeenCalled();
-          expect(saveQueryManagement).toHaveBeenCalled();
+          expect(saveQueryManagement).not.toHaveBeenCalled();
         });
     });
 
-    it('should submit the query for the defendant follow up', async () => {
+    it('should submit corrupted query for the defendant follow up and render civil-service response', async () => {
       mockGetClaimById.mockImplementation(async () => {
         const claim = new Claim();
         claim.caseRole = CaseRole.DEFENDANT;
@@ -173,14 +190,19 @@ describe('create query check your answer controller', () => {
         claim.queryManagement.sendFollowUpQuery = new SendFollowUpQuery('Dummy details');
         return claim;
       });
-      const createQuery = jest.spyOn(createCheckYourAnswerService, 'createQuery').mockResolvedValueOnce(undefined);
+      const submitCorrupted = jest.spyOn(createCheckYourAnswerService, 'submitCorruptedQueryFromCheckYourAnswers').mockResolvedValueOnce({
+        status: 400,
+        message: 'Request failed with status code 400',
+        requestBody: {queries: {partyName: 12345}},
+        responseBody: {message: 'Validation failed'},
+      });
       await request(app)
         .post(QM_FOLLOW_UP_CYA)
         .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(createQuery).toHaveBeenCalled();
+          expect(res.status).toBe(200);
+          expect(submitCorrupted).toHaveBeenCalled();
           expect(retrieveClaimDetails).toHaveBeenCalled();
-          expect(saveQueryManagement).toHaveBeenCalled();
+          expect(saveQueryManagement).not.toHaveBeenCalled();
         });
     });
 
@@ -193,47 +215,11 @@ describe('create query check your answer controller', () => {
         claim.queryManagement.createQuery = new CreateQuery('Dummy subject', 'Message details', 'Yes', (date.getFullYear() + 1).toString(), date.getMonth().toString(), date.getDay().toString());
         return claim;
       });
-      jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockRejectedValueOnce(new Error('Error'));
-      jest.spyOn(createCheckYourAnswerService, 'createQuery').mockRejectedValueOnce(new Error('Error'));
+      jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockReset().mockRejectedValueOnce(new Error('Error'));
       await request(app)
         .post(QM_CYA)
         .expect((res) => {
           expect(res.status).toBe(500);
-        });
-    });
-
-    it('should render civil-service debug response when corrupted payload is submitted', async () => {
-      mockGetClaimById.mockImplementation(async () => {
-        const claim = new Claim();
-        claim.caseRole = CaseRole.CLAIMANT;
-        claim.queryManagement = new QueryManagement();
-        const date = new Date();
-        claim.queryManagement.createQuery = new CreateQuery(
-          'Dummy subject',
-          'Message details',
-          'Yes',
-          (date.getFullYear() + 1).toString(),
-          date.getMonth().toString(),
-          date.getDay().toString(),
-        );
-        return claim;
-      });
-      jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockResolvedValueOnce(new Claim());
-      jest.spyOn(createCheckYourAnswerService, 'submitCorruptedQueryFromCheckYourAnswers').mockResolvedValueOnce({
-        status: 400,
-        message: 'Request failed with status code 400',
-        requestBody: {queries: {partyName: 12345}},
-        responseBody: {message: 'Validation failed'},
-      });
-
-      await request(app)
-        .post(QM_CYA)
-        .send({action: 'debugSubmitInvalidPayload'})
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Debug: civil-service error response');
-          expect(res.text).toContain('Validation failed');
-          expect(res.text).toContain('Corrupted request body sent');
         });
     });
 
@@ -245,8 +231,7 @@ describe('create query check your answer controller', () => {
         claim.queryManagement.sendFollowUpQuery = new SendFollowUpQuery('Dummy details');
         return claim;
       });
-      jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockRejectedValueOnce(new Error('Error'));
-      jest.spyOn(createCheckYourAnswerService, 'createQuery').mockRejectedValueOnce(new Error('Error'));
+      jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockReset().mockRejectedValueOnce(new Error('Error'));
       await request(app)
         .post(QM_FOLLOW_UP_CYA)
         .expect((res) => {

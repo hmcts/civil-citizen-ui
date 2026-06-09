@@ -3,16 +3,13 @@ import {AppRequest} from 'models/AppRequest';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import config from 'config';
 import {getClaimById} from 'modules/utilityService';
-import {BACK_URL, QM_CONFIRMATION_URL, QM_CYA, QM_FOLLOW_UP_CYA} from 'routes/urls';
-import {getCancelUrl, saveQueryManagement} from 'services/features/queryManagement/queryManagementService';
+import {BACK_URL, QM_CYA, QM_FOLLOW_UP_CYA} from 'routes/urls';
+import {getCancelUrl} from 'services/features/queryManagement/queryManagementService';
 import {
   CivilServiceDebugError,
-  createQuery,
   getSummarySections,
-  isCivilServiceDebugEnabled,
   submitCorruptedQueryFromCheckYourAnswers,
 } from 'services/features/queryManagement/createQueryCheckYourAnswerService';
-import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {getRouteParam} from 'common/utils/routeParamUtils';
 import {SummaryRow} from 'models/summaryList/summaryList';
 
@@ -54,7 +51,6 @@ const renderCheckYourAnswersView = (
     backLinkUrl: BACK_URL,
     cancelUrl: options.cancelUrl,
     title: options.title,
-    showCivilServiceDebug: isCivilServiceDebugEnabled(),
     civilServiceDebugError: formatDebugErrorForView(options.civilServiceDebugError),
   });
 };
@@ -93,26 +89,18 @@ createQueryCheckYourAnswerController.post([QM_CYA, QM_FOLLOW_UP_CYA], async (req
     };
     const updatedClaim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
 
-    if (req.body.action === 'debugSubmitInvalidPayload' && isCivilServiceDebugEnabled()) {
-      const civilServiceDebugError = await submitCorruptedQueryFromCheckYourAnswers(
-        claim,
-        updatedClaim,
-        req,
-        isFollowUpUrl,
-      );
-      return renderCheckYourAnswersView(res, {
-        summaryRows: getSummarySections(claimId, claim, lang, isFollowUpUrl, queryId),
-        cancelUrl: getCancelUrl(claimId),
-        title,
-        civilServiceDebugError,
-      });
-    }
-
-    await createQuery(claim, updatedClaim, req, isFollowUpUrl);
-    const propertyName = isFollowUpUrl ? 'sendFollowUpQuery' : 'createQuery';
-    await saveQueryManagement(claimId, null, propertyName, req);
-    delete req.session.qmShareConfirmed;
-    res.redirect(constructResponseUrlWithIdParams(claimId, QM_CONFIRMATION_URL));
+    const civilServiceDebugError = await submitCorruptedQueryFromCheckYourAnswers(
+      claim,
+      updatedClaim,
+      req,
+      isFollowUpUrl,
+    );
+    return renderCheckYourAnswersView(res, {
+      summaryRows: getSummarySections(claimId, claim, lang, isFollowUpUrl, queryId),
+      cancelUrl: getCancelUrl(claimId),
+      title,
+      civilServiceDebugError,
+    });
   } catch (error) {
     next(error);
   }

@@ -66,7 +66,11 @@ describe('Check Answers response service', () => {
       claim.queryManagement.createQuery = new CreateQuery('message subject', 'message details', 'yes', (date.getFullYear() + 1).toString(), date.getMonth().toString(), date.getDay().toString());
       claim.queryManagement.createQuery.uploadedFiles = [];
       await createQuery(claim, updated, req, false);
-      expect(submitQueryManagementRaiseQuery).toHaveBeenCalled();
+      expect(submitQueryManagementRaiseQuery).toHaveBeenCalledWith(
+        '123',
+        expect.objectContaining({queries: expect.objectContaining({partyName: 12345})}),
+        req,
+      );
     });
 
     it('should submit and append the follow up query for claimant query', async () => {
