@@ -116,6 +116,10 @@ const logErrorResponse = (error: AxiosError): void => {
 };
 
 export const attachCivilServiceHttpLogging = (client: AxiosInstance): void => {
+  if (!client?.interceptors?.request?.use || !client?.interceptors?.response?.use) {
+    return;
+  }
+
   client.interceptors.request.use((config) => {
     logRequest(config);
     return config;
