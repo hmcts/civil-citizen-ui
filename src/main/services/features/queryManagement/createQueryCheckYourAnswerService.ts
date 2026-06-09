@@ -12,8 +12,136 @@ import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {v4 as uuidV4} from 'uuid';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
+import {AxiosError} from 'axios';
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
+
+export interface CivilServiceDebugError {
+  status?: number;
+  message: string;
+  requestBody: unknown;
+  responseBody?: unknown;
+}
+
+export const isCivilServiceDebugEnabled = (): boolean =>
+  process.env.NODE_ENV !== 'production'
+  || config.get<boolean>('featureToggles.civilServiceDebugEnabled') === true;
+
+export const buildQuerySubmissionPayload = (
+  claim: Claim,
+  updatedClaim: Claim,
+  req: AppRequest,
+  isFollowUpQuery: boolean,
+): {queries: CaseQueries} => {
+  let queries: CaseQueries;
+  const date = new Date();
+  if (!updatedClaim.queries) {
+    queries = {
+      partyName: 'All queries',
+      caseMessages: [],
+    };
+  } else {
+    queries = updatedClaim.queries;
+  }
+
+  if (isFollowUpQuery) {
+    const parent = queries.caseMessages
+      .find(query => query.value.id === claim.queryManagement.sendFollowUpQuery.parentId);
+
+    if (!parent) {
+      throw new Error(`Parent query with ID ${claim.queryManagement.sendFollowUpQuery.parentId} not found.`);
+    }
+
+    queries.caseMessages.push({
+      id: uuidV4(),
+      value: {
+        parentId: parent.value.id,
+        id: uuidV4(),
+        body: claim.queryManagement.sendFollowUpQuery.messageDetails,
+        name: claim.isClaimant() ? claim.getClaimantFullName() : claim.getDefendantFullName(),
+        subject: parent.value.subject,
+        createdBy: req.session.user.id,
+        createdOn: date.toISOString(),
+        attachments: getDocAttachments(claim.queryManagement.sendFollowUpQuery.uploadedFiles),
+        isHearingRelated: parent.value.isHearingRelated === 'Yes' ? YesNoUpperCamelCase.YES : YesNoUpperCamelCase.NO,
+        hearingDate: parent.value.isHearingRelated === 'Yes' ? parent.value.hearingDate : undefined,
+      },
+    });
+    return {queries};
+  }
+
+  queries.caseMessages.push({
+    id: uuidV4(),
+    value: {
+      id: uuidV4(),
+      body: claim.queryManagement.createQuery.messageDetails,
+      name: claim.isClaimant() ? claim.getClaimantFullName() : claim.getDefendantFullName(),
+      subject: claim.queryManagement.createQuery.messageSubject,
+      createdBy: req.session.user.id,
+      createdOn: date.toISOString(),
+      attachments: getDocAttachments(claim.queryManagement.createQuery.uploadedFiles),
+      isHearingRelated: claim.queryManagement.createQuery.isHearingRelated === YesNo.YES
+        ? YesNoUpperCamelCase.YES
+        : YesNoUpperCamelCase.NO,
+      hearingDate: claim.queryManagement.createQuery.isHearingRelated === YesNo.YES
+        ? getStringDate(claim.queryManagement.createQuery)
+        : undefined,
+    },
+  });
+  return {queries};
+};
+
+export const corruptQuerySubmissionPayload = (payload: {queries: CaseQueries}): {queries: Record<string, unknown>} => {
+  const corrupted = JSON.parse(JSON.stringify(payload)) as {queries: CaseQueries};
+  corrupted.queries.partyName = 12345 as unknown as string;
+
+  const latestMessage = corrupted.queries.caseMessages[corrupted.queries.caseMessages.length - 1];
+  if (latestMessage?.value) {
+    latestMessage.value.body = '';
+    latestMessage.value.subject = null as unknown as string;
+    latestMessage.value.name = '';
+    latestMessage.value.createdBy = 'not-a-uuid';
+    latestMessage.value.createdOn = 'not-an-iso-date';
+    latestMessage.value.isHearingRelated = 'MAYBE' as YesNoUpperCamelCase;
+    latestMessage.value.hearingDate = '31/13/2099';
+
+    if (latestMessage.value.attachments?.length) {
+      latestMessage.value.attachments[0].value = {
+        document_url: 'not-a-valid-url',
+        document_filename: '',
+        document_binary_url: 'also-invalid',
+      };
+    }
+  }
+
+  return corrupted as {queries: Record<string, unknown>};
+};
+
+export const submitCorruptedQueryFromCheckYourAnswers = async (
+  claim: Claim,
+  updatedClaim: Claim,
+  req: AppRequest,
+  isFollowUpQuery: boolean,
+): Promise<CivilServiceDebugError> => {
+  const validPayload = buildQuerySubmissionPayload(claim, updatedClaim, req, isFollowUpQuery);
+  const requestBody = corruptQuerySubmissionPayload(validPayload);
+
+  try {
+    await civilServiceClient.submitQueryManagementRaiseQuery(req.params.id, requestBody, req);
+    return {
+      message: 'Civil service accepted the corrupted payload (unexpected)',
+      requestBody,
+    };
+  } catch (error) {
+    const axiosError = error as AxiosError;
+    return {
+      status: axiosError.response?.status,
+      message: axiosError.message,
+      requestBody,
+      responseBody: axiosError.response?.data,
+    };
+  }
+};
 
 export const getSummarySections = (claimId: string, claim: Claim, lng: string, isFollowUpQuery:boolean, queryId = ''): SummaryRow[] => {
   if (isFollowUpQuery) {
@@ -98,64 +226,8 @@ const withFragment = (url: string, fragment: string): string => {
 };
 
 export const createQuery = async (claim: Claim, updatedClaim: Claim, req: AppRequest, isFollowUpQuery: boolean) => {
-  let queries: CaseQueries;
-  const date = new Date();
-  if (!updatedClaim.queries) {
-    queries = {
-      'partyName': 'All queries',
-      'caseMessages': [],
-    };
-  } else {
-    queries = updatedClaim.queries;
-  }
-
-  if (isFollowUpQuery) {
-    const parent = queries.caseMessages
-      .find(query => query.value.id === claim.queryManagement.sendFollowUpQuery.parentId);
-
-    if (!parent) {
-      throw new Error(`Parent query with ID ${claim.queryManagement.sendFollowUpQuery.parentId} not found.`);
-    }
-
-    queries.caseMessages.push({
-      'id': uuidV4(),
-      'value': {
-        'parentId': parent.value.id,
-        'id': uuidV4(),
-        'body': claim.queryManagement.sendFollowUpQuery.messageDetails,
-        'name': claim.isClaimant() ? claim.getClaimantFullName() : claim.getDefendantFullName(),
-        'subject': parent.value.subject,
-        'createdBy': req.session.user.id,
-        'createdOn': date.toISOString(),
-        'attachments': getDocAttachments(claim.queryManagement.sendFollowUpQuery.uploadedFiles),
-        'isHearingRelated': parent.value.isHearingRelated === 'Yes' ? YesNoUpperCamelCase.YES : YesNoUpperCamelCase.NO,
-        'hearingDate': parent.value.isHearingRelated === 'Yes' ? parent.value.hearingDate  : undefined,
-      },
-    });
-    await civilServiceClient.submitQueryManagementRaiseQuery(req.params.id, {queries}, req).catch(error => {
-      throw error;
-    });
-    return;
-  }
-
-  queries.caseMessages.push({
-    'id': uuidV4(),
-    'value': {
-      'id': uuidV4(),
-      'body': claim.queryManagement.createQuery.messageDetails,
-      'name': claim.isClaimant() ? claim.getClaimantFullName() : claim.getDefendantFullName(),
-      'subject': claim.queryManagement.createQuery.messageSubject,
-      'createdBy': req.session.user.id,
-      createdOn: date.toISOString(),
-      'attachments': getDocAttachments(claim.queryManagement.createQuery.uploadedFiles),
-      'isHearingRelated': claim.queryManagement.createQuery.isHearingRelated === YesNo.YES ? YesNoUpperCamelCase.YES : YesNoUpperCamelCase.NO,
-      'hearingDate': claim.queryManagement.createQuery.isHearingRelated === YesNo.YES ? getStringDate(claim.queryManagement.createQuery)  : undefined,
-    },
-  });
-  await civilServiceClient.submitQueryManagementRaiseQuery(req.params.id, {queries}, req).catch(error => {
-    throw error;
-  });
-
+  const payload = buildQuerySubmissionPayload(claim, updatedClaim, req, isFollowUpQuery);
+  await civilServiceClient.submitQueryManagementRaiseQuery(req.params.id, payload, req);
 };
 
 const getDocAttachments = (uploadedFiles: UploadQMAdditionalFile[]): FormDocument[] => {

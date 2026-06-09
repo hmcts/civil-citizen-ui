@@ -1,4 +1,13 @@
-import {createQuery, getSummarySections} from 'services/features/queryManagement/createQueryCheckYourAnswerService';
+import {
+  buildQuerySubmissionPayload,
+  corruptQuerySubmissionPayload,
+  createQuery,
+  getSummarySections,
+  isCivilServiceDebugEnabled,
+  submitCorruptedQueryFromCheckYourAnswers,
+} from 'services/features/queryManagement/createQueryCheckYourAnswerService';
+import {AxiosError} from 'axios';
+import config from 'config';
 import {Claim} from 'models/claim';
 import {QueryManagement} from 'form/models/queryManagement/queryManagement';
 import {CreateQuery, UploadQMAdditionalFile} from 'models/queryManagement/createQuery';
@@ -199,6 +208,83 @@ describe('Check Answers response service', () => {
       claim.queryManagement.createQuery.uploadedFiles = [];
       await createQuery(claim, updated, req, false);
       expect(submitQueryManagementRaiseQuery).toHaveBeenCalled();
+    });
+  });
+
+  describe('isCivilServiceDebugEnabled', () => {
+    const originalNodeEnv = process.env.NODE_ENV;
+
+    afterEach(() => {
+      process.env.NODE_ENV = originalNodeEnv;
+      jest.restoreAllMocks();
+    });
+
+    it('should be enabled when civil service debug feature toggle is on', () => {
+      process.env.NODE_ENV = 'production';
+      jest.spyOn(config, 'get').mockImplementation((key: string) =>
+        key === 'featureToggles.civilServiceDebugEnabled' ? true : config.get(key),
+      );
+
+      expect(isCivilServiceDebugEnabled()).toBe(true);
+    });
+  });
+
+  describe('submitCorruptedQueryFromCheckYourAnswers', () => {
+    it('should corrupt the built payload before submitting to civil-service', async () => {
+      const claim = new Claim();
+      const updated = new Claim();
+      claim.queryManagement = new QueryManagement();
+      const date = new Date();
+      claim.queryManagement.createQuery = new CreateQuery(
+        'message subject',
+        'message details',
+        'yes',
+        (date.getFullYear() + 1).toString(),
+        date.getMonth().toString(),
+        date.getDay().toString(),
+      );
+      claim.queryManagement.createQuery.uploadedFiles = [];
+
+      const validPayload = buildQuerySubmissionPayload(claim, updated, req, false);
+      const corruptedPayload = corruptQuerySubmissionPayload(validPayload);
+      expect(corruptedPayload.queries.partyName).toBe(12345);
+      expect(corruptedPayload.queries.caseMessages[0].value.body).toBe('');
+
+      const submitSpy = jest.spyOn(CivilServiceClient.prototype, 'submitQueryManagementRaiseQuery');
+      const axiosError = new AxiosError(
+        'Request failed with status code 400',
+        'ERR_BAD_REQUEST',
+        undefined,
+        undefined,
+        {
+          status: 400,
+          data: {message: 'Validation failed'},
+          statusText: 'Bad Request',
+          headers: {},
+          config: {},
+        },
+      );
+      submitSpy.mockRejectedValueOnce(axiosError);
+
+      const result = await submitCorruptedQueryFromCheckYourAnswers(claim, updated, req, false);
+
+      expect(result.status).toBe(400);
+      expect(result.message).toBe('Request failed with status code 400');
+      expect(result.responseBody).toEqual({message: 'Validation failed'});
+      expect(submitSpy).toHaveBeenCalledWith('123', expect.objectContaining({
+        queries: expect.objectContaining({
+          partyName: 12345,
+          caseMessages: expect.arrayContaining([
+            expect.objectContaining({
+              value: expect.objectContaining({
+                body: '',
+                subject: null,
+                isHearingRelated: 'MAYBE',
+              }),
+            }),
+          ]),
+        }),
+      }), req);
     });
   });
 });

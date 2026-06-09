@@ -64,6 +64,7 @@ import { GAFeeRequestBody } from 'services/features/generalApplication/feeDetail
 import {CCDGeneralApplication} from 'models/gaEvents/eventDto';
 import {roundOffTwoDecimals} from 'common/utils/dateUtils';
 import {syncCaseReferenceCookie} from 'modules/cookie/caseReferenceCookie';
+import {attachCivilServiceHttpLogging} from 'client/common/civilServiceHttpLogging';
 import {assertHasData, assertNonEmpty} from 'client/common/error/eventSubmissionError';
 import {normalizeRouteParam, RouteParam} from 'common/utils/routeParamUtils';
 const {Logger} = require('@hmcts/nodejs-logging');
@@ -105,6 +106,7 @@ export class CivilServiceClient {
         baseURL,
       });
     }
+    attachCivilServiceHttpLogging(this.client);
   }
 
   private getClaimDetailsRequestCache(req: AppRequest): Map<string, Promise<Claim>> {

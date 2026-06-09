@@ -36,6 +36,9 @@ import {ClaimUpdate} from 'models/events/eventDto';
 import {CCDGeneralApplication} from 'models/gaEvents/eventDto';
 
 jest.mock('axios');
+jest.mock('client/common/civilServiceHttpLogging', () => ({
+  attachCivilServiceHttpLogging: jest.fn(),
+}));
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 const baseUrl: string = config.get('baseUrl');
 const appReq = <AppRequest>req;

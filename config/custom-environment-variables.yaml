@@ -68,6 +68,7 @@ webChat:
     buttonContainerId: WEB_CHAT_MEDIATION_BUTTON_ID
 featureToggles:
   settlementAgreementEnabled: SETTLEMENT_AGREEMENT_ENABLED
+  civilServiceDebugEnabled: CIVIL_SERVICE_DEBUG_ENABLED
 cookieMaxAge:
   __name: SESSION_COOKIE_MAX_AGE
   __format: number

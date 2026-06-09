@@ -24,7 +24,7 @@ const createQueryController = Router();
 const viewPath = 'features/queryManagement/createQuery';
 const multerMiddleware = createMulterErrorMiddlewareForSingleField('selectedFile', 'createQueryController');
 
-async function renderView(form: GenericForm<CreateQuery>, claim: Claim, claimId: string, res: Response, formattedSummary: SummarySection, req: AppRequest, index?: number): Promise<void> {
+function renderView(res: Response, form: GenericForm<CreateQuery>, claim: Claim, claimId: string, formattedSummary: SummarySection): void {
   const cancelUrl = getCancelUrl(claimId);
   const currentUrl = constructResponseUrlWithIdParams(claimId, QUERY_MANAGEMENT_CREATE_QUERY);
   const backLinkUrl = BACK_URL;
@@ -61,13 +61,14 @@ createQueryController.get(QUERY_MANAGEMENT_CREATE_QUERY, (async (req: AppRequest
   }
 
   await getSummaryList(formattedSummary, req);
-  await renderView(form, claim, claimId, res, formattedSummary, req);
+  renderView(res, form, claim, claimId, formattedSummary);
 }));
 
 createQueryController.post([QUERY_MANAGEMENT_CREATE_QUERY], multerMiddleware, (async (req:AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = getRouteParam(req, 'id');
     const action = req.body.action;
+
     const claim = await getClaimById(claimId, req, true);
     const currentUrl = constructResponseUrlWithIdParams(claimId, QUERY_MANAGEMENT_CREATE_QUERY);
     const existingQuery = claim.queryManagement?.createQuery;
@@ -104,7 +105,7 @@ createQueryController.post([QUERY_MANAGEMENT_CREATE_QUERY], multerMiddleware, (a
       if (fileUploadErrors?.length) {
         const formWithErrors = new GenericForm(createQuery, fileUploadErrors);
         await getSummaryList(formattedSummary, req);
-        return await renderView(formWithErrors, claim, claimId, res, formattedSummary, req);
+        return renderView(res, formWithErrors, claim, claimId, formattedSummary);
       }
 
       return res.redirect(`${currentUrl}`);
@@ -120,7 +121,7 @@ createQueryController.post([QUERY_MANAGEMENT_CREATE_QUERY], multerMiddleware, (a
 
     if (form.hasErrors()) {
       await getSummaryList(formattedSummary, req);
-      return await renderView(form, claim, claimId, res, formattedSummary, req);
+      return renderView(res, form, claim, claimId, formattedSummary);
     }
 
     await saveQueryManagement(claimId, createQuery, 'createQuery', req);

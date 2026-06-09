@@ -202,6 +202,41 @@ describe('create query check your answer controller', () => {
         });
     });
 
+    it('should render civil-service debug response when corrupted payload is submitted', async () => {
+      mockGetClaimById.mockImplementation(async () => {
+        const claim = new Claim();
+        claim.caseRole = CaseRole.CLAIMANT;
+        claim.queryManagement = new QueryManagement();
+        const date = new Date();
+        claim.queryManagement.createQuery = new CreateQuery(
+          'Dummy subject',
+          'Message details',
+          'Yes',
+          (date.getFullYear() + 1).toString(),
+          date.getMonth().toString(),
+          date.getDay().toString(),
+        );
+        return claim;
+      });
+      jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockResolvedValueOnce(new Claim());
+      jest.spyOn(createCheckYourAnswerService, 'submitCorruptedQueryFromCheckYourAnswers').mockResolvedValueOnce({
+        status: 400,
+        message: 'Request failed with status code 400',
+        requestBody: {queries: {partyName: 12345}},
+        responseBody: {message: 'Validation failed'},
+      });
+
+      await request(app)
+        .post(QM_CYA)
+        .send({action: 'debugSubmitInvalidPayload'})
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Debug: civil-service error response');
+          expect(res.text).toContain('Validation failed');
+          expect(res.text).toContain('Corrupted request body sent');
+        });
+    });
+
     it('should throw error for civil service failure follow up', async () => {
       mockGetClaimById.mockImplementation(async () => {
         const claim = new Claim();
