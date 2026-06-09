@@ -271,7 +271,7 @@ export const buildHearingRequirementsForTrack = (claim: Claim, hearingRequiremen
     hearingRequirementsSection.summaryList.rows.push(requestExtra4WeeksQuestion(claim, claimId, lng,directionQuestionnaire));
   }
 
-  if (intTrack) {
+  if (intTrack || fastTrack) {
     // frc section
     hearingRequirementsSection.summaryList.rows.push(subjectToFrcQuestion(claim, claimId, lng,directionQuestionnaire));
     if (directionQuestionnaire?.fixedRecoverableCosts?.subjectToFrc?.option === YesNo.NO

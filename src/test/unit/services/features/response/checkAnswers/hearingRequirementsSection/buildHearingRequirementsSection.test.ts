@@ -172,43 +172,49 @@ describe('Hearing Requirements Section', () => {
 
       //Then
       expect(summaryRows.title).toEqual('PAGES.CHECK_YOUR_ANSWER.HEARING_REQUIREMENTS_TITLE');
-      expect(summaryRows.summaryList.rows.length).toEqual(18);
+      expect(summaryRows.summaryList.rows.length).toEqual(21);
       expect(summaryRows.summaryList.rows[0].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.TRIED_TO_SETTLE');
       expect(summaryRows.summaryList.rows[0].value.html).toEqual('COMMON.VARIATION_2.YES');
       expect(summaryRows.summaryList.rows[1].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.REQUEST_EXTRA_4WEEKS');
       expect(summaryRows.summaryList.rows[1].value.html).toEqual('COMMON.YES');
-      expect(summaryRows.summaryList.rows[2].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.CONSIDER_CLAIMANT_DOCUMENT');
-      expect(summaryRows.summaryList.rows[2].value.html).toEqual('COMMON.YES');
-      expect(summaryRows.summaryList.rows[3].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.GIVE_DOC_DETAILS');
-      expect(summaryRows.summaryList.rows[3].value.text).toEqual('Test Doc');
-      expect(summaryRows.summaryList.rows[4].key.text).toEqual('PAGES.DEFENDANT_YOURSELF_EVIDENCE.TITLE');
-      expect(summaryRows.summaryList.rows[4].value.html).toEqual('COMMON.VARIATION_2.YES');
-      expect(summaryRows.summaryList.rows[5].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.DO_YOU_HAVE_OTHER_WITNESSES');
-      expect(summaryRows.summaryList.rows[5].value.html).toEqual('COMMON.NO');
-      expect(summaryRows.summaryList.rows[6].key.text).toEqual('PAGES.CANT_ATTEND_HEARING_IN_NEXT_12MONTHS.PAGE_TITLE');
-      expect(summaryRows.summaryList.rows[6].value.html).toEqual('COMMON.YES');
-      expect(summaryRows.summaryList.rows[7].key.text).toEqual('PAGES.CANT_ATTEND_HEARING_IN_NEXT_12MONTHS.UNAVAILABLE_DATES');
-      expect(summaryRows.summaryList.rows[7].value.html).toContain('10 October 2023');
-      expect(summaryRows.summaryList.rows[7].value.html).toContain('11 December 2023');
-      expect(summaryRows.summaryList.rows[8].key.text).toEqual('PAGES.CANT_ATTEND_HEARING_IN_NEXT_12MONTHS.WHY_UNAVAILABLE_FOR_MORE_THAN_30_DAYS');
-      expect(summaryRows.summaryList.rows[8].value.html).toEqual('test reason');
-      expect(summaryRows.summaryList.rows[9].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.DO_YOU_WANT_PHONE_OR_VIDEO_HEARING');
-      expect(summaryRows.summaryList.rows[9].value.html).toEqual('COMMON.VARIATION_2.YES');
-      expect(summaryRows.summaryList.rows[10].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.TELL_US_WHY_DO_YOU_WANT_PHONE_VIDEO_HEARING');
-      expect(summaryRows.summaryList.rows[10].value.html).toEqual('Test Phone or video hearing');
-      expect(summaryRows.summaryList.rows[11].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.VULNERABILITY_QUESTION');
-      expect(summaryRows.summaryList.rows[11].value.html).toEqual('COMMON.VARIATION_3.YES');
-      expect(summaryRows.summaryList.rows[12].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.VULNERABILITY_INFO');
-      expect(summaryRows.summaryList.rows[12].value.html).toEqual('Test vulnerability details');
-      expect(summaryRows.summaryList.rows[13].key.text).toEqual('PAGES.SPECIFIC_COURT.SELECTED_COURT');
-      expect(summaryRows.summaryList.rows[13].value.text).toEqual('High Wycombe Law Courts - THE LAW COURTS, EASTON STREET - HP11 1LR');
-      expect(summaryRows.summaryList.rows[14].key.text).toEqual('PAGES.SPECIFIC_COURT.REASON');
-      expect(summaryRows.summaryList.rows[14].value.text).toEqual('test');
-      expect(summaryRows.summaryList.rows[15].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.WELSH_LANGUAGE');
-      expect(summaryRows.summaryList.rows[16].key.text).toEqual('PAGES.WELSH_LANGUAGE.WHAT_LANGUAGE_SPEAK');
-      expect(summaryRows.summaryList.rows[16].value.html).toEqual('PAGES.WELSH_LANGUAGE.ENGLISH');
-      expect(summaryRows.summaryList.rows[17].key.text).toEqual('PAGES.WELSH_LANGUAGE.WHAT_LANGUAGE_DOCUMENTS');
-      expect(summaryRows.summaryList.rows[17].value.html).toEqual('PAGES.WELSH_LANGUAGE.WELSH_AND_ENGLISH');
+      expect(summaryRows.summaryList.rows[2].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.SUBECT_TO_FRC');
+      expect(summaryRows.summaryList.rows[2].value.html).toEqual('COMMON.VARIATION.NO');
+      expect(summaryRows.summaryList.rows[3].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.FRC_BAND_AGREED');
+      expect(summaryRows.summaryList.rows[3].value.html).toEqual('COMMON.VARIATION.NO');
+      expect(summaryRows.summaryList.rows[4].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.FRC_BAND_CHOSEN');
+      expect(summaryRows.summaryList.rows[4].value.html).toEqual('PAGES.CHECK_YOUR_ANSWER.FRC_BANDS.undefined');
+      expect(summaryRows.summaryList.rows[5].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.CONSIDER_CLAIMANT_DOCUMENT');
+      expect(summaryRows.summaryList.rows[5].value.html).toEqual('COMMON.YES');
+      expect(summaryRows.summaryList.rows[6].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.GIVE_DOC_DETAILS');
+      expect(summaryRows.summaryList.rows[6].value.text).toEqual('Test Doc');
+      expect(summaryRows.summaryList.rows[7].key.text).toEqual('PAGES.DEFENDANT_YOURSELF_EVIDENCE.TITLE');
+      expect(summaryRows.summaryList.rows[7].value.html).toEqual('COMMON.VARIATION_2.YES');
+      expect(summaryRows.summaryList.rows[8].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.DO_YOU_HAVE_OTHER_WITNESSES');
+      expect(summaryRows.summaryList.rows[8].value.html).toEqual('COMMON.NO');
+      expect(summaryRows.summaryList.rows[9].key.text).toEqual('PAGES.CANT_ATTEND_HEARING_IN_NEXT_12MONTHS.PAGE_TITLE');
+      expect(summaryRows.summaryList.rows[9].value.html).toEqual('COMMON.YES');
+      expect(summaryRows.summaryList.rows[10].key.text).toEqual('PAGES.CANT_ATTEND_HEARING_IN_NEXT_12MONTHS.UNAVAILABLE_DATES');
+      expect(summaryRows.summaryList.rows[10].value.html).toContain('10 October 2023');
+      expect(summaryRows.summaryList.rows[10].value.html).toContain('11 December 2023');
+      expect(summaryRows.summaryList.rows[11].key.text).toEqual('PAGES.CANT_ATTEND_HEARING_IN_NEXT_12MONTHS.WHY_UNAVAILABLE_FOR_MORE_THAN_30_DAYS');
+      expect(summaryRows.summaryList.rows[11].value.html).toEqual('test reason');
+      expect(summaryRows.summaryList.rows[12].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.DO_YOU_WANT_PHONE_OR_VIDEO_HEARING');
+      expect(summaryRows.summaryList.rows[12].value.html).toEqual('COMMON.VARIATION_2.YES');
+      expect(summaryRows.summaryList.rows[13].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.TELL_US_WHY_DO_YOU_WANT_PHONE_VIDEO_HEARING');
+      expect(summaryRows.summaryList.rows[13].value.html).toEqual('Test Phone or video hearing');
+      expect(summaryRows.summaryList.rows[14].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.VULNERABILITY_QUESTION');
+      expect(summaryRows.summaryList.rows[14].value.html).toEqual('COMMON.VARIATION_3.YES');
+      expect(summaryRows.summaryList.rows[15].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.VULNERABILITY_INFO');
+      expect(summaryRows.summaryList.rows[15].value.html).toEqual('Test vulnerability details');
+      expect(summaryRows.summaryList.rows[16].key.text).toEqual('PAGES.SPECIFIC_COURT.SELECTED_COURT');
+      expect(summaryRows.summaryList.rows[16].value.text).toEqual('High Wycombe Law Courts - THE LAW COURTS, EASTON STREET - HP11 1LR');
+      expect(summaryRows.summaryList.rows[17].key.text).toEqual('PAGES.SPECIFIC_COURT.REASON');
+      expect(summaryRows.summaryList.rows[17].value.text).toEqual('test');
+      expect(summaryRows.summaryList.rows[18].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.WELSH_LANGUAGE');
+      expect(summaryRows.summaryList.rows[19].key.text).toEqual('PAGES.WELSH_LANGUAGE.WHAT_LANGUAGE_SPEAK');
+      expect(summaryRows.summaryList.rows[19].value.html).toEqual('PAGES.WELSH_LANGUAGE.ENGLISH');
+      expect(summaryRows.summaryList.rows[20].key.text).toEqual('PAGES.WELSH_LANGUAGE.WHAT_LANGUAGE_DOCUMENTS');
+      expect(summaryRows.summaryList.rows[20].value.html).toEqual('PAGES.WELSH_LANGUAGE.WELSH_AND_ENGLISH');
     });
     it('should build hearing requirement for Fast Track Claim When all questions answer set to no.', () => {
       //Given
@@ -228,34 +234,40 @@ describe('Hearing Requirements Section', () => {
       const summaryRows = buildHearingRequirementsSectionCommon(claim, '1', 'eng',claim.directionQuestionnaire, false);
 
       //Then
-      expect(summaryRows.summaryList.rows.length).toEqual(13);
+      expect(summaryRows.summaryList.rows.length).toEqual(16);
       expect(summaryRows.title).toEqual('PAGES.CHECK_YOUR_ANSWER.HEARING_REQUIREMENTS_TITLE');
       expect(summaryRows.summaryList.rows[0].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.TRIED_TO_SETTLE');
       expect(summaryRows.summaryList.rows[0].value.html).toEqual('COMMON.VARIATION_2.NO');
       expect(summaryRows.summaryList.rows[1].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.REQUEST_EXTRA_4WEEKS');
       expect(summaryRows.summaryList.rows[1].value.html).toEqual('COMMON.NO');
-      expect(summaryRows.summaryList.rows[2].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.CONSIDER_CLAIMANT_DOCUMENT');
-      expect(summaryRows.summaryList.rows[2].value.html).toEqual('COMMON.NO');
-      expect(summaryRows.summaryList.rows[3].key.text).toEqual('PAGES.DEFENDANT_YOURSELF_EVIDENCE.TITLE');
-      expect(summaryRows.summaryList.rows[3].value.html).toEqual('COMMON.VARIATION_2.NO');
-      expect(summaryRows.summaryList.rows[4].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.DO_YOU_HAVE_OTHER_WITNESSES');
-      expect(summaryRows.summaryList.rows[4].value.html).toEqual('COMMON.NO');
-      expect(summaryRows.summaryList.rows[5].key.text).toEqual('PAGES.CANT_ATTEND_HEARING_IN_NEXT_12MONTHS.PAGE_TITLE');
+      expect(summaryRows.summaryList.rows[2].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.SUBECT_TO_FRC');
+      expect(summaryRows.summaryList.rows[2].value.html).toEqual('COMMON.VARIATION.NO');
+      expect(summaryRows.summaryList.rows[3].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.FRC_BAND_AGREED');
+      expect(summaryRows.summaryList.rows[3].value.html).toEqual('COMMON.VARIATION.NO');
+      expect(summaryRows.summaryList.rows[4].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.FRC_BAND_CHOSEN');
+      expect(summaryRows.summaryList.rows[4].value.html).toEqual('PAGES.CHECK_YOUR_ANSWER.FRC_BANDS.undefined');
+      expect(summaryRows.summaryList.rows[5].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.CONSIDER_CLAIMANT_DOCUMENT');
       expect(summaryRows.summaryList.rows[5].value.html).toEqual('COMMON.NO');
-      expect(summaryRows.summaryList.rows[6].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.DO_YOU_WANT_PHONE_OR_VIDEO_HEARING');
+      expect(summaryRows.summaryList.rows[6].key.text).toEqual('PAGES.DEFENDANT_YOURSELF_EVIDENCE.TITLE');
       expect(summaryRows.summaryList.rows[6].value.html).toEqual('COMMON.VARIATION_2.NO');
-      expect(summaryRows.summaryList.rows[7].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.VULNERABILITY_QUESTION');
-      expect(summaryRows.summaryList.rows[7].value.html).toEqual('COMMON.VARIATION_3.NO');
-      expect(summaryRows.summaryList.rows[8].key.text).toEqual('PAGES.SPECIFIC_COURT.SELECTED_COURT');
-      expect(summaryRows.summaryList.rows[8].value.text).toEqual('High Wycombe Law Courts - THE LAW COURTS, EASTON STREET - HP11 1LR');
-      expect(summaryRows.summaryList.rows[9].key.text).toEqual('PAGES.SPECIFIC_COURT.REASON');
-      expect(summaryRows.summaryList.rows[9].value.text).toEqual('test');
-      expect(summaryRows.summaryList.rows[10].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.WELSH_LANGUAGE');
-      expect(summaryRows.summaryList.rows[10].value.html).toEqual(null);
-      expect(summaryRows.summaryList.rows[11].key.text).toEqual('PAGES.WELSH_LANGUAGE.WHAT_LANGUAGE_SPEAK');
-      expect(summaryRows.summaryList.rows[11].value.html).toEqual('PAGES.WELSH_LANGUAGE.ENGLISH');
-      expect(summaryRows.summaryList.rows[12].key.text).toEqual('PAGES.WELSH_LANGUAGE.WHAT_LANGUAGE_DOCUMENTS');
-      expect(summaryRows.summaryList.rows[12].value.html).toEqual('PAGES.WELSH_LANGUAGE.WELSH_AND_ENGLISH');
+      expect(summaryRows.summaryList.rows[7].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.DO_YOU_HAVE_OTHER_WITNESSES');
+      expect(summaryRows.summaryList.rows[7].value.html).toEqual('COMMON.NO');
+      expect(summaryRows.summaryList.rows[8].key.text).toEqual('PAGES.CANT_ATTEND_HEARING_IN_NEXT_12MONTHS.PAGE_TITLE');
+      expect(summaryRows.summaryList.rows[8].value.html).toEqual('COMMON.NO');
+      expect(summaryRows.summaryList.rows[9].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.DO_YOU_WANT_PHONE_OR_VIDEO_HEARING');
+      expect(summaryRows.summaryList.rows[9].value.html).toEqual('COMMON.VARIATION_2.NO');
+      expect(summaryRows.summaryList.rows[10].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.VULNERABILITY_QUESTION');
+      expect(summaryRows.summaryList.rows[10].value.html).toEqual('COMMON.VARIATION_3.NO');
+      expect(summaryRows.summaryList.rows[11].key.text).toEqual('PAGES.SPECIFIC_COURT.SELECTED_COURT');
+      expect(summaryRows.summaryList.rows[11].value.text).toEqual('High Wycombe Law Courts - THE LAW COURTS, EASTON STREET - HP11 1LR');
+      expect(summaryRows.summaryList.rows[12].key.text).toEqual('PAGES.SPECIFIC_COURT.REASON');
+      expect(summaryRows.summaryList.rows[12].value.text).toEqual('test');
+      expect(summaryRows.summaryList.rows[13].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.WELSH_LANGUAGE');
+      expect(summaryRows.summaryList.rows[13].value.html).toEqual(null);
+      expect(summaryRows.summaryList.rows[14].key.text).toEqual('PAGES.WELSH_LANGUAGE.WHAT_LANGUAGE_SPEAK');
+      expect(summaryRows.summaryList.rows[14].value.html).toEqual('PAGES.WELSH_LANGUAGE.ENGLISH');
+      expect(summaryRows.summaryList.rows[15].key.text).toEqual('PAGES.WELSH_LANGUAGE.WHAT_LANGUAGE_DOCUMENTS');
+      expect(summaryRows.summaryList.rows[15].value.html).toEqual('PAGES.WELSH_LANGUAGE.WELSH_AND_ENGLISH');
     });
     it('should not display triedToSettleRow when tried to settle is not set', () => {
       //Given
@@ -264,7 +276,7 @@ describe('Hearing Requirements Section', () => {
       //When
       const summaryRows = buildHearingRequirementsSectionCommon(claim, '1', 'eng',claim.directionQuestionnaire, false);
       //Then
-      expect(summaryRows.summaryList.rows.length).toEqual(13);
+      expect(summaryRows.summaryList.rows.length).toEqual(16);
       expect(summaryRows.summaryList.rows[0].key.text).not.toEqual('PAGES.CHECK_YOUR_ANSWER.TRIED_TO_SETTLE');
     });
     it('should not display request extra 4 weeks section when no answer for that is set', () => {
@@ -274,7 +286,7 @@ describe('Hearing Requirements Section', () => {
       //When
       const summaryRows = buildHearingRequirementsSectionCommon(claim, '1', 'eng',claim.directionQuestionnaire, false);
       //Then
-      expect(summaryRows.summaryList.rows.length).toEqual(13);
+      expect(summaryRows.summaryList.rows.length).toEqual(16);
       expect(summaryRows.summaryList.rows[1].key.text).not.toEqual('PAGES.CHECK_YOUR_ANSWER.REQUEST_EXTRA_4WEEKS');
     });
     it('should not display consider claimant documents section when the answer is not provided', () => {
@@ -284,7 +296,7 @@ describe('Hearing Requirements Section', () => {
       //When
       const summaryRows = buildHearingRequirementsSectionCommon(claim, '1', 'eng',claim.directionQuestionnaire, false);
       //Then
-      expect(summaryRows.summaryList.rows.length).toEqual(13);
+      expect(summaryRows.summaryList.rows.length).toEqual(16);
       expect(summaryRows.summaryList.rows[2].key.text).not.toEqual('PAGES.CHECK_YOUR_ANSWER.CONSIDER_CLAIMANT_DOCUMENT');
     });
     it('should  display expert evidence section when there is data for that section', () => {
@@ -295,8 +307,8 @@ describe('Hearing Requirements Section', () => {
       //When
       const summaryRows = buildHearingRequirementsSectionCommon(claim, '1', 'eng',claim.directionQuestionnaire, false);
       //Then
-      expect(summaryRows.summaryList.rows.length).toEqual(19);
-      expect(summaryRows.summaryList.rows[4].key.text).toEqual('PAGES.DEFENDANT_EXPERT_EVIDENCE.TITLE');
+      expect(summaryRows.summaryList.rows.length).toEqual(22);
+      expect(summaryRows.summaryList.rows[7].key.text).toEqual('PAGES.DEFENDANT_EXPERT_EVIDENCE.TITLE');
     });
     it('should not display expert evidence section when there is no data for that section', () => {
       //Given
@@ -306,8 +318,8 @@ describe('Hearing Requirements Section', () => {
       //When
       const summaryRows = buildHearingRequirementsSectionCommon(claim, '1', 'eng',claim.directionQuestionnaire, false);
       //Then
-      expect(summaryRows.summaryList.rows.length).toEqual(18);
-      expect(summaryRows.summaryList.rows[4].key.text).not.toEqual('PAGES.DEFENDANT_EXPERT_EVIDENCE.TITLE');
+      expect(summaryRows.summaryList.rows.length).toEqual(21);
+      expect(summaryRows.summaryList.rows[7].key.text).not.toEqual('PAGES.DEFENDANT_EXPERT_EVIDENCE.TITLE');
     });
     it('should display expert reports when there is data for that section', () => {
       //Given
@@ -317,8 +329,8 @@ describe('Hearing Requirements Section', () => {
       //When
       const summaryRows = buildHearingRequirementsSectionCommon(claim, '1', 'eng',claim.directionQuestionnaire, false);
       //Then
-      expect(summaryRows.summaryList.rows.length).toEqual(19);
-      expect(summaryRows.summaryList.rows[4].key.text).toEqual('PAGES.SENT_EXPERT_REPORTS.TITLE');
+      expect(summaryRows.summaryList.rows.length).toEqual(22);
+      expect(summaryRows.summaryList.rows[7].key.text).toEqual('PAGES.SENT_EXPERT_REPORTS.TITLE');
     });
     it('should display shared expert section when there is data for that section', () => {
       //Given
@@ -328,8 +340,8 @@ describe('Hearing Requirements Section', () => {
       //When
       const summaryRows = buildHearingRequirementsSectionCommon(claim, '1', 'eng',claim.directionQuestionnaire, false);
       //Then
-      expect(summaryRows.summaryList.rows.length).toEqual(19);
-      expect(summaryRows.summaryList.rows[4].key.text).toEqual('PAGES.SHARED_EXPERT.WITH_CLAIMANT');
+      expect(summaryRows.summaryList.rows.length).toEqual(22);
+      expect(summaryRows.summaryList.rows[7].key.text).toEqual('PAGES.SHARED_EXPERT.WITH_CLAIMANT');
     });
     it('should display experts when claim has experts', () => {
       //Given
@@ -341,7 +353,7 @@ describe('Hearing Requirements Section', () => {
       //When
       const summaryRows = buildHearingRequirementsSectionCommon(claim, '1', 'eng',claim.directionQuestionnaire, false);
       //Then
-      expect(summaryRows.summaryList.rows.length).toEqual(19);
+      expect(summaryRows.summaryList.rows.length).toEqual(22);
     });
     it('should not display experts when claim does not have experts', () => {
       //Given
@@ -351,7 +363,7 @@ describe('Hearing Requirements Section', () => {
       //When
       const summaryRows = buildHearingRequirementsSectionCommon(claim, '1', 'eng',claim.directionQuestionnaire, false);
       //Then
-      expect(summaryRows.summaryList.rows.length).toEqual(11);
+      expect(summaryRows.summaryList.rows.length).toEqual(14);
       expect(summaryRows.summaryList.rows[5].key.text).not.toContain('PAGES.EXPERT_DETAILS.SECTION_TITLE');
     });
   });
