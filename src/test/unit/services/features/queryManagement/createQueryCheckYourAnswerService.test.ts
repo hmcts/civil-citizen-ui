@@ -68,7 +68,15 @@ describe('Check Answers response service', () => {
       await createQuery(claim, updated, req, false);
       expect(submitQueryManagementRaiseQuery).toHaveBeenCalledWith(
         '123',
-        expect.objectContaining({queries: expect.objectContaining({partyName: 12345})}),
+        expect.objectContaining({
+          queries: expect.objectContaining({
+            caseMessages: expect.arrayContaining([
+              expect.objectContaining({
+                value: expect.objectContaining({hearingDate: 'not-a-valid-date'}),
+              }),
+            ]),
+          }),
+        }),
         req,
       );
     });
@@ -251,8 +259,9 @@ describe('Check Answers response service', () => {
 
       const validPayload = buildQuerySubmissionPayload(claim, updated, req, false);
       const corruptedPayload = corruptQuerySubmissionPayload(validPayload);
-      expect(corruptedPayload.queries?.partyName).toBe(12345);
-      expect(corruptedPayload.queries?.caseMessages?.[0]?.value?.body).toBe('');
+      expect(corruptedPayload.queries?.partyName).toBe('All queries');
+      expect(corruptedPayload.queries?.caseMessages?.[0]?.value?.body).toBe('message details');
+      expect(corruptedPayload.queries?.caseMessages?.[0]?.value?.hearingDate).toBe('not-a-valid-date');
 
       const submitSpy = jest.spyOn(CivilServiceClient.prototype, 'submitQueryManagementRaiseQuery');
       const axiosError = new AxiosError(
@@ -277,13 +286,13 @@ describe('Check Answers response service', () => {
       expect(result.responseBody).toEqual({message: 'Validation failed'});
       expect(submitSpy).toHaveBeenCalledWith('123', expect.objectContaining({
         queries: expect.objectContaining({
-          partyName: 12345,
+          partyName: 'All queries',
           caseMessages: expect.arrayContaining([
             expect.objectContaining({
               value: expect.objectContaining({
-                body: '',
-                subject: null,
-                isHearingRelated: 'MAYBE',
+                body: 'message details',
+                subject: 'message subject',
+                hearingDate: 'not-a-valid-date',
               }),
             }),
           ]),

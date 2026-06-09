@@ -94,25 +94,10 @@ export const buildQuerySubmissionPayload = (
 
 export const corruptQuerySubmissionPayload = (payload: {queries: CaseQueries}): ClaimUpdate => {
   const corrupted = JSON.parse(JSON.stringify(payload)) as {queries: CaseQueries};
-  corrupted.queries.partyName = 12345 as unknown as string;
-
   const latestMessage = corrupted.queries.caseMessages[corrupted.queries.caseMessages.length - 1];
-  if (latestMessage?.value) {
-    latestMessage.value.body = '';
-    latestMessage.value.subject = null as unknown as string;
-    latestMessage.value.name = '';
-    latestMessage.value.createdBy = 'not-a-uuid';
-    latestMessage.value.createdOn = 'not-an-iso-date';
-    latestMessage.value.isHearingRelated = 'MAYBE' as YesNoUpperCamelCase;
-    latestMessage.value.hearingDate = '31/13/2099';
 
-    if (latestMessage.value.attachments?.length) {
-      latestMessage.value.attachments[0].value = {
-        document_url: 'not-a-valid-url',
-        document_filename: '',
-        document_binary_url: 'also-invalid',
-      };
-    }
+  if (latestMessage?.value) {
+    latestMessage.value.hearingDate = 'not-a-valid-date';
   }
 
   return corrupted as unknown as ClaimUpdate;
