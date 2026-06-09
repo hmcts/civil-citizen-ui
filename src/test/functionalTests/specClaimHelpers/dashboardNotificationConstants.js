@@ -643,4 +643,34 @@ module.exports = {
       content: 'Y terfyn amser nawr yw 4pm ar',
     };
   },
+
+  //DTSCCI-5096 AC2
+  ccjRequestedBufferClaimant: () => {
+    return {
+      title: 'The CCJ has been requested',
+      content: ['A judgment against the defendant has been requested.', 'You will be notified when this judgment is granted.'],
+    };
+  },
+
+  ccjRequestedBufferClaimantWelsh: () => {
+    return {
+      title: 'CCJ wedi cael ei geisio',
+      content: ['Mae cais am ddyfarniad yn erbyn y diffynnydd', 'Byddwch yn cael gwybod pan roddir y dyfarniad hwn'],
+    };
+  },
+
+  //DTSCCI-5096 AC5
+  ccjRequestedBufferDefendant: () => {
+    return {
+      title: 'responded to the claim',
+      content: ['You need to respond', 'Respond to the claim'],
+    };
+  },
+
+  ccjRequestedBufferDefendantWelsh: () => {
+    return {
+      title: 'Nid ydych wedi ymateb',
+      content: ['Mae angen i chi ymateb', 'Ymateb i'],
+    };
+  },
 };

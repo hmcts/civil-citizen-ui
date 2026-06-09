@@ -439,6 +439,9 @@ module.exports = {
 
     await assertSubmittedSpecEvent('PENDING_CASE_ISSUED');
 
+    // wait for the service request to be created before simulating payment
+    await waitForFinishedBusinessProcess(caseId);
+
     await apiRequest.paymentUpdate(caseId, '/service-request-update-claim-issued',
       claimSpecData.serviceUpdateDto(caseId, 'paid'));
     console.log('Service request update sent to callback URL');
