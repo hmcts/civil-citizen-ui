@@ -37,13 +37,17 @@ const sanitizeFormData = (formData: FormData): Record<string, unknown> => {
   formData.forEach((value, key) => {
     if (value instanceof Blob) {
       fields[key] = {_type: 'Blob', size: value.size, mimeType: value.type};
-    } else if (typeof value === 'object' && value !== null && 'size' in value && 'path' in value) {
-      const file = value as {size?: number; path?: string; originalFilename?: string};
-      fields[key] = {
-        _type: 'File',
-        size: file.size,
-        filename: file.originalFilename ?? file.path,
-      };
+    } else if (value !== null && typeof value === 'object') {
+      const fileLike = value as {size?: number; path?: string; originalFilename?: string};
+      if ('size' in fileLike && 'path' in fileLike) {
+        fields[key] = {
+          _type: 'File',
+          size: fileLike.size,
+          filename: fileLike.originalFilename ?? fileLike.path,
+        };
+      } else {
+        fields[key] = value;
+      }
     } else {
       fields[key] = value;
     }

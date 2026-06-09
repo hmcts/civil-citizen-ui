@@ -134,14 +134,15 @@ describe('civilServiceHttpLogging', () => {
           baseURL: 'http://civil-service',
           url: '/cases/123/citizen/1/event',
           data: {event: 'CREATE_LIP_CLAIM'},
-        },
+          headers: {},
+        } as InternalAxiosRequestConfig,
         {},
         {
           status: 400,
           data: {message: 'Validation failed'},
           statusText: 'Bad Request',
           headers: {},
-          config: {},
+          config: {headers: {}} as InternalAxiosRequestConfig,
         },
       );
 

@@ -6,6 +6,7 @@ import {CASE_DOCUMENT_VIEW_URL, QM_FOLLOW_UP_MESSAGE, QUERY_MANAGEMENT_CREATE_QU
 import {CreateQuery, UploadQMAdditionalFile} from 'models/queryManagement/createQuery';
 import {AppRequest} from 'models/AppRequest';
 import {CaseQueries, FormDocument} from 'models/queryManagement/caseQueries';
+import {ClaimUpdate} from 'models/events/eventDto';
 import {YesNo, YesNoUpperCamelCase} from 'form/models/yesNo';
 import {documentIdExtractor} from 'common/utils/stringUtils';
 import config from 'config';
@@ -91,7 +92,7 @@ export const buildQuerySubmissionPayload = (
   return {queries};
 };
 
-export const corruptQuerySubmissionPayload = (payload: {queries: CaseQueries}): {queries: Record<string, unknown>} => {
+export const corruptQuerySubmissionPayload = (payload: {queries: CaseQueries}): ClaimUpdate => {
   const corrupted = JSON.parse(JSON.stringify(payload)) as {queries: CaseQueries};
   corrupted.queries.partyName = 12345 as unknown as string;
 
@@ -114,7 +115,7 @@ export const corruptQuerySubmissionPayload = (payload: {queries: CaseQueries}): 
     }
   }
 
-  return corrupted as {queries: Record<string, unknown>};
+  return corrupted as unknown as ClaimUpdate;
 };
 
 export const submitCorruptedQueryFromCheckYourAnswers = async (

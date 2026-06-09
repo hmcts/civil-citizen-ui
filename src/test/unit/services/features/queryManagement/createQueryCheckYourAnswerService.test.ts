@@ -247,8 +247,8 @@ describe('Check Answers response service', () => {
 
       const validPayload = buildQuerySubmissionPayload(claim, updated, req, false);
       const corruptedPayload = corruptQuerySubmissionPayload(validPayload);
-      expect(corruptedPayload.queries.partyName).toBe(12345);
-      expect(corruptedPayload.queries.caseMessages[0].value.body).toBe('');
+      expect(corruptedPayload.queries?.partyName).toBe(12345);
+      expect(corruptedPayload.queries?.caseMessages?.[0]?.value?.body).toBe('');
 
       const submitSpy = jest.spyOn(CivilServiceClient.prototype, 'submitQueryManagementRaiseQuery');
       const axiosError = new AxiosError(
@@ -261,7 +261,7 @@ describe('Check Answers response service', () => {
           data: {message: 'Validation failed'},
           statusText: 'Bad Request',
           headers: {},
-          config: {},
+          config: {headers: {}} as import('axios').InternalAxiosRequestConfig,
         },
       );
       submitSpy.mockRejectedValueOnce(axiosError);
