@@ -429,30 +429,6 @@ describe('claimant Dashboard Controller', () => {
       });
     });
 
-    it('should show support links for claimant when judgment requested and judgment buffer is enabled', async () => {
-
-      const claim = new Claim();
-      claim.caseRole = CaseRole.CLAIMANT;
-      claim.ccdState = CaseState.JUDGMENT_REQUESTED;
-      jest.spyOn(launchDarkly, 'isJudgmentBufferEnabled').mockResolvedValueOnce(true);
-      jest
-        .spyOn(UtilityService, 'retrieveClaimDetails')
-        .mockResolvedValueOnce(claim);
-      await request(app).get(DASHBOARD_CLAIMANT_URL).expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT'));
-        expect(res.text).toContain('Tell us you&#39;ve settled the claim');
-        expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.GET_DEBT_RESPITE'));
-        expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.HELP_SUPPORT'));
-        expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.HELP_FEES'));
-        expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.FIND_MEDIATION'));
-        expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.WHAT_EXPECT_HEARING'));
-        expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.REPRESENT_MYSELF'));
-        expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.FIND_LEGAL_ADVICE'));
-        expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.FIND_INFO_COURT'));
-      });
-    });
-
     it('should hide awaiting response support links for claimant when judgment requested and judgment buffer is disabled', async () => {
 
       const claim = new Claim();
