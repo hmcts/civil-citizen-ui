@@ -8,13 +8,13 @@ const {viewTheBundle} = require('../../../specClaimHelpers/dashboardTasklistCons
 const {bundleReady} = require('../../../specClaimHelpers/dashboardNotificationConstants');
 const  ViewBundle = require('../../../citizenFeatures/caseProgression/pages/viewBundle');
 
-const claimType = 'FastTrack';
+const claimType = 'SmallClaims';
 const partyType = 'LiPvLiP';
-const claimAmount = '£15,000.00';
+const claimAmount = '£1,500';
 const viewBundlePage = new ViewBundle();
 let caseData, claimNumber, claimRef, taskListItem, notification, formattedCaseId, uploadDate;
 
-Feature('Case progression journey - Verify Bundle - Fast Track').tag('@civil-citizen-nightly @ui-bundles');
+Feature('Case progression journey - Verify Bundle - Small Claims').tag('@civil-citizen-nightly @ui-bundles');
 
 Before(async ({api}) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
@@ -24,16 +24,16 @@ Before(async ({api}) => {
   caseData = await api.retrieveCaseData(config.adminUser, claimRef);
   claimNumber = await caseData.legacyCaseReference;
   await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.rejectAllDisputeAllWithIndividual);
-  await api.claimantLipRespondToDefence(config.claimantCitizenUser, claimRef, false, 'JUDICIAL_REFERRAL');
-  await api.performCaseProgressedToSDO(config.judgeUserWithRegionId2, claimRef,'fastTrack');
+  await api.claimantLipRespondToDefence(config.claimantCitizenUser, claimRef, false, 'IN_MEDIATION');
+  await api.mediationUnsuccessful(config.caseWorker, true, ['NOT_CONTACTABLE_CLAIMANT_ONE']);
+  await api.performCaseProgressedToSDO(config.judgeUserWithRegionId2, claimRef,'smallClaimsTrack');
   await api.performCaseProgressedToHearingInitiated(config.hearingCenterAdminWithRegionId2, claimRef, DateUtilsComponent.DateUtilsComponent.formatDateToYYYYMMDD(twoWeeksFromToday));
   await api.performEvidenceUploadCitizen(config.defendantCitizenUser, claimRef, claimType);
   await api.performBundleGeneration(config.hearingCenterAdminWithRegionId2, claimRef);
   await api.waitForFinishedBusinessProcess();
-  await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
 });
 
-Scenario('Case progression journey - Fast Track - Verify Bundles tab', async ({I, api}) => {
+Scenario('Case progression journey - Small Claims - Verify Bundles tab', async ({I, api}) => {
   formattedCaseId = StringUtilsComponent.StringUtilsComponent.formatClaimReferenceToAUIDisplayFormat(claimRef);
   uploadDate = DateUtilsComponent.DateUtilsComponent.formatDateToDDMMYYYY(new Date());
   //verify as claimant
