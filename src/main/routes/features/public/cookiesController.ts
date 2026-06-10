@@ -24,7 +24,7 @@ cookiesController.post(COOKIES_URL, (async (req: AppRequest<CookiesModel>, res: 
   const cookie = req.cookies['money-claims-cookie-preferences'] ? JSON.parse(req.cookies['money-claims-cookie-preferences']) : {};
   cookie.analytics = req.body.analytics;
   cookie.apm = req.body.apm;
-  res.cookie('money-claims-cookie-preferences', cookie);
+  res.cookie('money-claims-cookie-preferences', cookie, {sameSite: 'lax'});
   res.render(cookiesViewPath, {
     cookiePreferences: cookie,
     redirectUrl: DASHBOARD_URL,

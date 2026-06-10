@@ -9,28 +9,28 @@ class ViewApplication {
     await I.waitForText('Respond to application');
   }
 
-  nextAction (nextAction) {
-    I.click(nextAction);
+  async nextAction (nextAction) {
+    await I.click(nextAction);
   }
 
   async verifyPageContent() {
-    this.checkPageFullyLoaded();
-    this.verifyBreadcrumbs();
-    this.verifyHeadingDetails();
+    await this.checkPageFullyLoaded();
+    await this.verifyBreadcrumbs();
+    await this.verifyHeadingDetails();
     await this.verifyPageText();
-    contactUs.verifyContactUs();
+    await contactUs.verifyContactUs();
   }
 
-  verifyBreadcrumbs() {
-    I.see('Back', '//a[@class="govuk-back-link"]');
+  async verifyBreadcrumbs() {
+    await I.see('Back', '//a[@class="govuk-back-link"]');
   }
 
-  verifyHeadingDetails() {
-    I.see('Application', 'h1');
+  async verifyHeadingDetails() {
+    await I.see('Application', 'h1');
   }
 
   async verifyPageText() {
-    I.see('This is the application that the other parties have made.');
+    await I.see('This is the application that the other parties have made.');
     await I.see('Once you\'ve reviewed their application, click \'respond to application\' below. You\'ll be asked whether or not you agree with their request.');
     // Remove the "Respond to an application to" from the start of the application type
     //await I.see(applicationType);

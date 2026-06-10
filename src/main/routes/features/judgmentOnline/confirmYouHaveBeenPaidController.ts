@@ -52,7 +52,7 @@ function renderView(form: GenericForm<DateYouHaveBeenPaidForm>, res: Response, l
 confirmYouHaveBeenPaidController.get(CONFIRM_YOU_HAVE_BEEN_PAID_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = getRouteParam(req, 'id');
-    const claim = await getClaimById(claimId, req);
+    const claim = await getClaimById(claimId, req, true);
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const isClaimant = claim.isClaimant();
     await deleteDraftClaimFromStore(claimId);
@@ -72,7 +72,7 @@ confirmYouHaveBeenPaidController.get(CONFIRM_YOU_HAVE_BEEN_PAID_URL, (async (req
 confirmYouHaveBeenPaidController.post(CONFIRM_YOU_HAVE_BEEN_PAID_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = getRouteParam(req, 'id');
-    const claim = await getClaimById(claimId, req);
+    const claim = await getClaimById(claimId, req, true);
     const isClaimant = claim.isClaimant();
     const {year, month, day, confirmed} = req.body;
     const joIssuedDate = claim.joJudgementByAdmissionIssueDate != null ? claim.joJudgementByAdmissionIssueDate : claim.joDJCreatedDate;

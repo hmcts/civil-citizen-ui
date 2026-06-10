@@ -26,11 +26,11 @@ const viewPath = 'features/generalApplication/agreement-from-other-party';
 
 agreementFromOtherPartyController.get(GA_AGREEMENT_FROM_OTHER_PARTY_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const redisKey = generateRedisKey(<AppRequest>req);
-    const claim = await getClaimById(redisKey, req, true);
+    const claimId = getRouteParam(req, 'id');
+    const claim = await getClaimById(claimId, req, true);
     //const applicationIndex = queryParamNumber(req, 'index') || claim.generalApplication.applicationTypes.length - 1;
     const backLinkUrl = BACK_URL;
-    const cancelUrl = await getCancelUrl(getRouteParam(req, 'id'), claim);
+    const cancelUrl = await getCancelUrl(claimId, claim);
     const applicationType = getApplicationTypeOptionByTypeAndDescription(getLast(claim.generalApplication?.applicationTypes)?.option,ApplicationTypeOptionSelection.BY_APPLICATION_TYPE );
     const form = new GenericForm(new GenericYesNo(claim.generalApplication?.agreementFromOtherParty));
 
@@ -47,10 +47,11 @@ agreementFromOtherPartyController.get(GA_AGREEMENT_FROM_OTHER_PARTY_URL, (async 
 
 agreementFromOtherPartyController.post(GA_AGREEMENT_FROM_OTHER_PARTY_URL, (async (req: AppRequest | Request, res: Response, next: NextFunction) => {
   try {
+    const claimId = getRouteParam(req, 'id');
     const redisKey = generateRedisKey(<AppRequest>req);
-    const claim = await getClaimById(redisKey, req, true);
+    const claim = await getClaimById(claimId, req, true);
     const backLinkUrl = BACK_URL;
-    const cancelUrl = await getCancelUrl(getRouteParam(req, 'id'), claim);
+    const cancelUrl = await getCancelUrl(claimId, claim);
     const applicationTypeOption = getLast(claim.generalApplication?.applicationTypes)?.option;
     const applicationType = getApplicationTypeOptionByTypeAndDescription(applicationTypeOption, ApplicationTypeOptionSelection.BY_APPLICATION_TYPE);
     const form = new GenericForm(new GenericYesNo(req.body.option, 'ERRORS.GENERAL_APPLICATION.APPLICATION_FROM_OTHER_PARTY_EMPTY_OPTION'));

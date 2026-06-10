@@ -713,8 +713,8 @@ class ResponseSteps {
   async ConfirmContactPerson() {
     await contactPerson.confirmContactPerson();
   }
-  EnterNoMediation(claimRef){
-    freeTelephoneMediation.selectNoMediation(claimRef);
+  async EnterNoMediation(claimRef){
+    await freeTelephoneMediation.selectNoMediation(claimRef);
   }
 
   async EnterDQForSmallClaims(claimRef, isIndividual = true, languageOption = 'en') {
@@ -731,6 +731,7 @@ class ResponseSteps {
     await this.SelectOptionForSupportRequired();
     await this.SelectPreferredCourtLocation();
     await this.SelectLanguageOption(true, languageOption);
+    await taskListPage.verifyResponsePageContent();
   }
 
   async EnterDQForSmallClaimsForClaimant(claimRef, isIndividual = true) {
