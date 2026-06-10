@@ -183,6 +183,10 @@ export class DashboardDefendantItem extends DashboardItem {
         translationKey: 'PAGES.DASHBOARD.STATUS_DEFENDANT.NO_RESPONSE_ELIGIBLE_CCJ',
         parameter: [paramClaimantName],
       },
+      JUDGMENT_BUFFER_ELIGIBLE: {
+        translationKey: 'PAGES.DASHBOARD.STATUS_DEFENDANT.NO_RESPONSE_ELIGIBLE_CCJ_JUDGMENT_BUFFER',
+        parameter: [paramClaimantName],
+      },
       DEFAULT_JUDGEMENT: {
         translationKey: 'PAGES.DASHBOARD.STATUS_DEFENDANT.NO_RESPONSE_ELIGIBLE_CCJ',
         parameter: [paramClaimantName],
