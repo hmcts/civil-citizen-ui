@@ -411,6 +411,9 @@ describe('claimant Dashboard Controller', () => {
       jest
         .spyOn(UtilityService, 'getDashboardClaimById')
         .mockResolvedValueOnce(claim);
+      jest
+        .spyOn(UtilityService, 'getDashboardClaimById')
+        .mockResolvedValueOnce(claim);
       await request(app).get(DASHBOARD_CLAIMANT_URL).expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT'));
@@ -488,7 +491,7 @@ describe('claimant Dashboard Controller', () => {
         });
       });
     });
-    
+
     it('should show support links for claimant with links hidden', async () => {
 
       const claim = new Claim();
