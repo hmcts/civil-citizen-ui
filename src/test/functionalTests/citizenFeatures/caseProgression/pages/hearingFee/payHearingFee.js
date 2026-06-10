@@ -5,46 +5,46 @@ const contactUs = new ContactUs();
 
 class PayHearingFee {
 
-  open(claimRef) {
-    I.amOnPage('/case/' + claimRef + '/case-progression/pay-hearing-fee');
+  async open(claimRef) {
+    await I.amOnPage('/case/' + claimRef + '/case-progression/pay-hearing-fee');
   }
 
-  checkPageFullyLoaded () {
-    I.waitForElement('//a[contains(.,\'Start now\')]');
+  async checkPageFullyLoaded () {
+    await I.waitForElement('//a[contains(.,\'Start now\')]');
   }
 
-  nextAction (nextAction) {
-    I.click(nextAction);
+  async nextAction (nextAction) {
+    await I.click(nextAction);
   }
 
-  verifyPageContent(feeAmount, dueDate, caseNumber, claimAmount) {
-    this.checkPageFullyLoaded();
-    this.verifyBreadcrumbs();
-    this.verifyHeadingDetails();
-    this.verifyCaseNumberClaimAmount(caseNumber, claimAmount);
-    this.verifyPageText(feeAmount, dueDate);
-    contactUs.verifyContactUs();
+  async verifyPageContent(feeAmount, dueDate, caseNumber, claimAmount) {
+    await this.checkPageFullyLoaded();
+    await this.verifyBreadcrumbs();
+    await this.verifyHeadingDetails();
+    await this.verifyCaseNumberClaimAmount(caseNumber, claimAmount);
+    await this.verifyPageText(feeAmount, dueDate);
+    await contactUs.verifyContactUs();
   }
 
-  verifyBreadcrumbs() {
-    I.see('Home', 'li');
-    I.see('Pay the hearing Fee', 'li');
+  async verifyBreadcrumbs() {
+    await I.see('Home', 'li');
+    await I.see('Pay the hearing Fee', 'li');
   }
 
-  verifyHeadingDetails() {
-    I.see('Hearing', 'span');
-    I.see('Pay hearing fee', 'h1');
+  async verifyHeadingDetails() {
+    await I.see('Hearing', 'span');
+    await I.see('Pay hearing fee', 'h1');
   }
 
-  verifyCaseNumberClaimAmount(caseNumber, claimAmount) {
-    I.see('Case number: ' + caseNumber, 'p');
-    I.see('Claim amount: ' + claimAmount, 'p');
+  async verifyCaseNumberClaimAmount(caseNumber, claimAmount) {
+    await I.see('Case number: ' + caseNumber, 'p');
+    await I.see('Claim amount: ' + claimAmount, 'p');
   }
 
-  verifyPageText(feeAmount, dueDate) {
-    I.see('You must pay a fee of £' + feeAmount + ' by ' + dueDate + '.');
-    I.see('If you do not pay by this date, your case may be struck out.');
-    I.see('Cancel','//a[.=\'Cancel\']');
+  async verifyPageText(feeAmount, dueDate) {
+    await I.see('You must pay a fee of £' + feeAmount + ' by ' + dueDate + '.');
+    await I.see('If you do not pay by this date, your case may be struck out.');
+    await I.see('Cancel','//a[.=\'Cancel\']');
   }
 
 }
