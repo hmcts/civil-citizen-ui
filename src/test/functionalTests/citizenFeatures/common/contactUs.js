@@ -32,14 +32,14 @@ class ContactUs {
 
   async verifyContactUs(language = 'en') {
     if (!verified) {
-      I.click(`//span[contains(text(),'${content.title[language]}')]`);
-      I.waitForContent(content.introduction[language], 60);
-      I.see(content.sendMessageTitle[language], 'h2');
-      I.seeElement('//a[contains(@href, \'qm/start?linkFrom=start\')]');
-      I.see(content.sendMessage[language]);
-      I.see(content.telephone[language], 'h2');
-      I.see('0300 123 7050');
-      I.see(content.openingHours[language]);
+      await I.click(`//span[contains(text(),'${content.title[language]}')]`);
+      await I.waitForContent(content.introduction[language], 60);
+      await I.see(content.sendMessageTitle[language], 'h2');
+      await I.seeElement('//a[contains(@href, \'qm/start?linkFrom=start\')]');
+      await I.see(content.sendMessage[language]);
+      await I.see(content.telephone[language], 'h2');
+      await I.see('0300 123 7050');
+      await I.see(content.openingHours[language]);
       await I.seeElement('[href=\'https://www.gov.uk/call-charges\']');
       verified = true;
     }

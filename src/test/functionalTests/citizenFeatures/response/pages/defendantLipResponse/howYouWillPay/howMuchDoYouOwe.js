@@ -27,6 +27,7 @@ class HowMuchDoYouOwe {
     await I.see(content.hintText(totalAmount)[language]);
     await I.fillField(fields.amount, amount);
     await I.click(cButtons.saveAndContinue[language]);
+    await I.see('Respond to a money claim');
   }
 
   async enterHowMuchMoneyDoYouOweError(claimRef, amount) {
@@ -34,12 +35,12 @@ class HowMuchDoYouOwe {
     await I.waitForContent('How much money do you admit you owe?', config.WaitForText);
     await I.see(`The total amount, including any interest claimed to date, is £${amount}.`);
     //empty amount
-    await I.click('Save and continue');
+    await I.clickWithRetry('Save and continue');
     await I.see('There was a problem');
     await I.see('Enter a valid amount');
     //amount>claim amount
     await I.fillField(fields.amount, '1000000000');
-    await I.click('Save and continue');
+    await I.clickWithRetry('Save and continue');
     await I.see('There was a problem');
     await I.see('Enter a value less than the amount claimed');
   }

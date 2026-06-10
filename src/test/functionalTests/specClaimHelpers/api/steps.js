@@ -31,6 +31,7 @@ let chai, expect, assert;
 
 const {
   waitForFinishedBusinessProcess, waitForGAFinishedBusinessProcess, hearingFeeUnpaid, bundleGeneration, uploadDocument, triggerTrialArrangements,
+  assertEmailSent, assertNoEmailSent,
 } = require('./testingSupport');
 const {assignCaseRoleToUser, addUserCaseMapping, unAssignAllUsers} = require('./caseRoleAssignmentHelper');
 const apiRequest = require('./apiRequest.js');
@@ -115,6 +116,7 @@ module.exports = {
     await apiRequest.setupTokens(user);
     caseData = payload['caseDataUpdate'];
     await waitForGAFinishedBusinessProcess(gaCaseId, user);
+    await waitForTimeout(1000);
     await assertSubmittedGASpecEvent(gaCaseId, 'APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION', user);
   },
 
@@ -136,8 +138,25 @@ module.exports = {
     console.log('End of triggerTrialArrangements()');
   },
 
+  assertEmailSent: async (caseId, options) => {
+    console.log('This is inside assertEmailSent() : ' + caseId);
+    const entry = await assertEmailSent(caseId, options);
+    console.log('End of assertEmailSent()');
+    return entry;
+  },
+
+  assertNoEmailSent: async (caseId, options) => {
+    console.log('This is inside assertNoEmailSent() : ' + caseId);
+    await assertNoEmailSent(caseId, options);
+    console.log('End of assertNoEmailSent()');
+  },
+
   waitForFinishedBusinessProcess: async () => {
     await waitForFinishedBusinessProcess(caseId);
+  },
+
+  waitForFinishedBusinessProcessForCase: async (targetCaseId, user) => {
+    await waitForFinishedBusinessProcess(targetCaseId, user);
   },
 
   setCaseId: async (id) => {
@@ -479,6 +498,7 @@ module.exports = {
       },
     };
     await apiRequest.startEventForCitizen('', caseId, newPayload);
+    await waitForTimeout(1000);
     await waitForFinishedBusinessProcess(caseId, user);
     if (!mainClaimWelshEnabled) {
       await assignSpecCase(caseId, null);
@@ -486,12 +506,12 @@ module.exports = {
     return caseId;
   },
 
-  submitUploadTranslatedDoc: async (translationDocType) => {
+  submitUploadTranslatedDoc: async (translationDocType, targetCaseId = caseId) => {
     eventName = 'UPLOAD_TRANSLATED_DOCUMENT';
-    await validateUploadTranslatedDoc(translationDocType);
-    await assertSubmittedSpecEvent();
+    await validateUploadTranslatedDoc(translationDocType, targetCaseId);
+    await assertSubmittedSpecEvent(undefined, undefined, true, targetCaseId);
     if (translationDocType === 'CLAIM_ISSUE') {
-      await assignSpecCase(caseId, null);
+      await assignSpecCase(targetCaseId, null);
     }
   },
 
@@ -951,10 +971,10 @@ function checkGenerated(responseBodyData, generated, prefix = '') {
   }
 }
 
-const assertSubmittedSpecEvent = async (expectedState, submittedCallbackResponseContains, hasSubmittedCallback = true) => {
-  await apiRequest.startEvent(eventName, caseId);
+const assertSubmittedSpecEvent = async (expectedState, submittedCallbackResponseContains, hasSubmittedCallback = true, targetCaseId = caseId) => {
+  await apiRequest.startEvent(eventName, targetCaseId);
 
-  const response = await apiRequest.submitEvent(eventName, caseData, caseId);
+  const response = await apiRequest.submitEvent(eventName, caseData, targetCaseId);
   const responseBody = await response.json();
   assert.equal(response.status, 201);
   if (hasSubmittedCallback && submittedCallbackResponseContains) {
@@ -967,7 +987,7 @@ const assertSubmittedSpecEvent = async (expectedState, submittedCallbackResponse
     await addUserCaseMapping(caseId, config.applicantSolicitorUser);
     console.log('Case created: ' + caseId);
   }
-  await waitForFinishedBusinessProcess(caseId);
+  await waitForFinishedBusinessProcess(targetCaseId);
   if (expectedState) {
     assert.equal(responseBody.state, expectedState);
   }
@@ -1020,13 +1040,17 @@ const assignSpecCase = async (caseId, type) => {
   }
 };
 
-const validateUploadTranslatedDoc = async (translationDocType) => {
+const validateUploadTranslatedDoc = async (translationDocType, targetCaseId = caseId) => {
   //transform the data
   const document = await uploadDocument();
   const uploadedDocs = uploadTranslatedDoc(document, translationDocType);
   await apiRequest.setupTokens(config.welshAdmin);
-  caseData = await apiRequest.startEvent(eventName, caseId);
+  caseData = await apiRequest.startEvent(eventName, targetCaseId);
   for (let pageId of Object.keys(uploadedDocs.userInput)) {
     await assertValidDataSpec(uploadedDocs, pageId);
   }
+};
+
+const waitForTimeout = async (ms) => {
+  return new Promise(resolve => setTimeout(resolve, ms));
 };

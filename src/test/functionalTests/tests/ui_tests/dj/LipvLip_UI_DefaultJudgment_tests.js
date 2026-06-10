@@ -3,19 +3,34 @@ const config = require('../../../../config');
 const LoginSteps = require('../../../commonFeatures/home/steps/login');
 const {createAccount} = require('../../../specClaimHelpers/api/idamHelper');
 const ClaimantResponseSteps = require('../../../citizenFeatures/response/steps/lipClaimantResponseSteps');
+const {checkToggleEnabled} = require('../../../specClaimHelpers/api/testingSupport');
 
 const claimType = 'SmallClaims';
-// eslint-disable-next-line no-unused-vars
-let claimRef;
+let claimRef, caseData, claimNumber;
 
 Feature('Create Lip v Lip claim -  Default Judgment').tag('@ui-dj');
 
 Scenario('Create LipvLip claim and defendant not responded by deadline and Claimant raise Default Judgment', async ({api}) => {
+  const judgmentBufferEnabled = await checkToggleEnabled('judgment-buffer');
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType);
+  caseData = await api.retrieveCaseData(config.adminUser, claimRef);
+  claimNumber = caseData.legacyCaseReference;
   await api.amendRespondent1ResponseDeadline(config.systemUpdate2);
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+
+  if (judgmentBufferEnabled) {
+    await ClaimantResponseSteps.verifyDefaultJudgmentBuffer(claimRef);
+    await api.waitForFinishedBusinessProcess();
+    return;
+  }
+
   await ClaimantResponseSteps.verifyDefaultJudgment(claimRef);
   await api.waitForFinishedBusinessProcess();
+
+  await api.assertEmailSent(claimNumber, {
+    recipientEmail: config.claimantCitizenUser.email,
+    timeoutMs: 45000,
+  });
 });

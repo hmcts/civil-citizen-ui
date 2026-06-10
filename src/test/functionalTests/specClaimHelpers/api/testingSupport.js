@@ -7,7 +7,21 @@ const totp = require('totp-generator');
 let incidentMessage;
 
 const MAX_RETRIES = 60;
-const RETRY_TIMEOUT_MS = 3000;
+const RETRY_TIMEOUT_MS = 4000;
+const READY_STATUS = 'READY';
+
+const buildBusinessProcessErrorMessage = (businessProcess, caseId, elapsedMs, response = {}) => {
+  const elapsedSeconds = Math.floor(elapsedMs / 1000);
+  const businessProcessSummary = `Ongoing business process: ${businessProcess?.camundaEvent || 'unknown'},`
+    + ` case id: ${caseId}, status: ${businessProcess?.status || 'unknown'},`
+    + ` process instance: ${businessProcess?.processInstanceId || 'undefined'},`
+    + ` last finished activity: ${businessProcess?.activityId || 'undefined'}`;
+  const contextSummary = `elapsed: ${elapsedSeconds}s, hasIncidentMessage: ${Boolean(response?.incidentMessage)}`;
+  if (businessProcess?.status === READY_STATUS) {
+    return `${businessProcessSummary}, ${contextSummary}. Process remains in READY and has not started in Camunda.`;
+  }
+  return `${businessProcessSummary}, ${contextSummary}.`;
+};
 
 const checkToggleEnabled = async (toggle) => {
   const authToken = await idamHelper.accessToken(config.applicantSolicitorUser);
@@ -32,7 +46,9 @@ const checkToggleEnabled = async (toggle) => {
 
 module.exports = {
   waitForFinishedBusinessProcess: async (caseId, user = '') => {
+    incidentMessage = undefined;
     const authToken = await idamHelper.accessToken(user ? user : config.applicantSolicitorUser);
+    const startedAt = Date.now();
 
     await retry(() => {
       return restHelper.request(
@@ -46,8 +62,7 @@ module.exports = {
           if (response.incidentMessage) {
             incidentMessage = response.incidentMessage;
           } else if (businessProcess && businessProcess.status !== 'FINISHED') {
-            throw new Error(`Ongoing business process: ${businessProcess.camundaEvent}, case id: ${caseId}, status: ${businessProcess.status},`
-              + ` process instance: ${businessProcess.processInstanceId}, last finished activity: ${businessProcess.activityId}`);
+            throw new Error(buildBusinessProcessErrorMessage(businessProcess, caseId, Date.now() - startedAt, response));
           }
         });
     }, MAX_RETRIES, RETRY_TIMEOUT_MS);
@@ -56,7 +71,9 @@ module.exports = {
   },
 
   waitForGAFinishedBusinessProcess: async (caseId, user) => {
+    incidentMessage = undefined;
     const authToken = await idamHelper.accessToken(user);
+    const startedAt = Date.now();
     console.log('** Start waitForGAFinishedBusinessProcess to wait for GA Camunda Tasks to Start and Finish **');
 
     await retry(() => {
@@ -71,8 +88,7 @@ module.exports = {
           if (response.incidentMessage) {
             incidentMessage = response.incidentMessage;
           } else if (businessProcess && businessProcess.status !== 'FINISHED') {
-            throw new Error(`Ongoing business process: ${businessProcess.camundaEvent}, case id: ${caseId}, status: ${businessProcess.status},`
-              + ` process instance: ${businessProcess.processInstanceId}, last finished activity: ${businessProcess.activityId}`);
+            throw new Error(buildBusinessProcessErrorMessage(businessProcess, caseId, Date.now() - startedAt, response));
           }
         });
     }, MAX_RETRIES, RETRY_TIMEOUT_MS);
@@ -239,6 +255,67 @@ module.exports = {
         'Authorization': `Bearer ${authToken}`,
         'ServiceAuthorization': s2sAuth,
       }, caseData, 'PUT');
+  },
+
+  assertEmailSent: async (caseId, options = {}) => {
+    const {templateId, recipientEmail, timeoutMs = 30000} = options;
+    const intervalMs = 3000;
+    const maxRetries = Math.max(1, Math.floor(timeoutMs / intervalMs));
+    const authToken = await idamHelper.accessToken(config.applicantSolicitorUser);
+
+    const params = new URLSearchParams({caseId});
+    if (templateId) params.set('templateId', templateId);
+    if (recipientEmail) params.set('recipientEmail', recipientEmail);
+    const url = `${config.url.civilService}/testing-support/notifications/sent?${params.toString()}`;
+
+    let lastResult = [];
+
+    try {
+      return await retry(async () => {
+        const response = await restHelper.request(url, {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${authToken}`,
+        }, null, 'GET');
+
+        if (response.status !== 200) {
+          throw new Error(`assertEmailSent: testing-support returned status ${response.status}`);
+        }
+
+        lastResult = await response.json();
+        if (lastResult.length === 0) {
+          throw new Error(`assertEmailSent: no matching email yet for case ${caseId} (templateId=${templateId || '*'}, recipient=${recipientEmail || '*'})`);
+        }
+        return lastResult[lastResult.length - 1];
+      }, maxRetries, intervalMs);
+    } catch {
+      throw new Error(`assertEmailSent: timed out after ${timeoutMs}ms waiting for email for case ${caseId} (templateId=${templateId || '*'}, recipient=${recipientEmail || '*'}). Last response: ${JSON.stringify(lastResult)}`);
+    }
+  },
+
+  assertNoEmailSent: async (caseId, options = {}) => {
+    const {templateId, recipientEmail, withinMs = 5000} = options;
+    const authToken = await idamHelper.accessToken(config.applicantSolicitorUser);
+
+    const params = new URLSearchParams({caseId});
+    if (templateId) params.set('templateId', templateId);
+    if (recipientEmail) params.set('recipientEmail', recipientEmail);
+    const url = `${config.url.civilService}/testing-support/notifications/sent?${params.toString()}`;
+
+    await new Promise(resolve => setTimeout(resolve, withinMs));
+
+    const response = await restHelper.request(url, {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${authToken}`,
+    }, null, 'GET');
+
+    if (response.status !== 200) {
+      throw new Error(`assertNoEmailSent: testing-support returned status ${response.status}`);
+    }
+
+    const result = await response.json();
+    if (result.length > 0) {
+      throw new Error(`assertNoEmailSent: expected no email for case ${caseId} (templateId=${templateId || '*'}, recipient=${recipientEmail || '*'}) but found ${result.length}: ${JSON.stringify(result)}`);
+    }
   },
 
   checkToggleEnabled,

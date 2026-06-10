@@ -5,6 +5,7 @@ import {getJudgmentAmountSummary} from 'services/features/claimantResponse/ccj/j
 import {YesNo, YesNoUpperCamelCase} from 'form/models/yesNo';
 import nock from 'nock';
 import config from 'config';
+import {CaseState} from 'form/models/claimDetails';
 
 const civilServiceUrl = config.get<string>('services.civilService.url');
 
@@ -29,6 +30,18 @@ describe('Get Judgment amount summary', () => {
     expect(result.alreadyPaidAmount).toEqual((claim.claimantResponse.ccjRequest.paidAmount.amount).toFixed(2));
     const total = claim.totalClaimAmount + interest + claimFee - claim.getDefendantPaidAmount();
     expect(result.total).toEqual(Number(total).toFixed(2));
+  });
+
+  it('get summary details with interest when claim is judgment requested and judgment buffer is enabled.', async () => {
+    //Given
+    const judgmentRequestedClaim: Claim = Object.assign(new Claim(), deepCopy(mockClaim));
+    judgmentRequestedClaim.ccdState = CaseState.JUDGMENT_REQUESTED;
+
+    //When
+    const result = await getJudgmentAmountSummary(judgmentRequestedClaim, claimFee, 'en', true);
+
+    //Then
+    expect(result.claimHasInterest).toEqual(true);
   });
 
   it('get summary details when claimInterest=No.', async () => {

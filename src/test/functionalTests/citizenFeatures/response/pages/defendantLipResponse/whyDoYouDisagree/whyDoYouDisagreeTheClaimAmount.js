@@ -54,7 +54,8 @@ class WhyDoYouDisagreeTheClaimAmount {
     }
     await I.waitForContent('Why do you disagree with the claim amount?', config.WaitForText);
     await I.see('The total amount, including any interest claimed to date, is £');
-    await I.click(buttons.saveAndContinue);
+    await I.wait(2);
+    await I.clickWithRetry('Save and continue');
     await I.see('There was a problem');
     await I.see('Enter text explaining why do you disagree');
   }

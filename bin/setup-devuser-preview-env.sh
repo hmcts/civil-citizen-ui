@@ -1,27 +1,29 @@
-#!/usr/bin/env bash
-
-set -eu
-
 ccdBranch=${1:-master}
 camundaBranch=${2:-master}
 dmnBranch=${3:-master}
-
-previewTemplate=${DEV_ENV_TEMPLATE:-values.preview.template.yaml}
-
-npx @hmcts/dev-env@latest --template "${previewTemplate}"
+waStandaloneBranch=${4:-master}
+generalAppCCDBranch=${5:-master}
 
 echo "Loading Environment Variables"
 source ./bin/variables/load-dev-user-preview-environment-variables.sh
-./bin/pull-latest-civil-shared.sh
+. ./bin/shared/idam-get-tokens.sh
 
-echo "Running high level data setup"
-export CAMUNDA_DEFINITION_BRANCH=${camundaBranch}
-export DMN_DEFINITION_BRANCH=${dmnBranch}
-export CCD_DEFINITION_BRANCH=${ccdBranch}
-./bin/run-high-level-data-setup.sh preview
+echo "Importing Roles to the CCD pod"
+./bin/add-roles.sh
 
-echo "Importing organisation roles"
-./bin/add-org-roles-to-users.sh
+echo "Importing Camunda definitions"
+./bin/pull-latest-camunda-files.sh ${camundaBranch}
+./bin/pull-latest-dmn-files.sh ${dmnBranch}
+./bin/pull-latest-camunda-wa-files.sh ${waStandaloneBranch}
+rm -rf $(pwd)/civil-bpmn
+
+echo "Importing CCD definitions"
+./bin/import-ccd-definition.sh "-e *-prod.json,*-shuttered.json" ${ccdBranch}
+rm -rf $(pwd)/ccd-definition
+./bin/import-ga-ccd-definition.sh "-e *-prod.json" ${generalAppCCDBranch}
+rm -rf $(pwd)/ga-ccd-definition
+
+rm -rf $(pwd)/build/ccd-development-config
 
 echo "ENV variables set for devuser-preview environment."
 echo "XUI_URL: $XUI_WEBAPP_URL"

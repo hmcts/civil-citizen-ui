@@ -1,5 +1,5 @@
 import {Claim} from 'common/models/claim';
-import Axios, {AxiosError, AxiosInstance, AxiosResponse} from 'axios';
+import Axios, {AxiosError, AxiosHeaderValue, AxiosInstance, AxiosResponse} from 'axios';
 import {AssertionError} from 'assert';
 import {AppRequest, AppSession} from 'common/models/AppRequest';
 import {CivilClaimResponse, ClaimFeeData} from 'common/models/civilClaimResponse';
@@ -69,6 +69,19 @@ import {normalizeRouteParam, RouteParam} from 'common/utils/routeParamUtils';
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('civilServiceClient');
 
+const getResponseHeaderValue = (header: AxiosHeaderValue | undefined): string => {
+  if (typeof header === 'string') {
+    return header;
+  }
+  if (typeof header === 'number' || typeof header === 'boolean') {
+    return header.toString();
+  }
+  if (Array.isArray(header)) {
+    return header.join(', ');
+  }
+  return '';
+};
+
 const convertCaseToClaim = (caseDetails: CivilClaimResponse): Claim => {
   const claim: Claim = translateCCDCaseDataToCUIModel(caseDetails.case_data);
   claim.ccdState = caseDetails.state;
@@ -92,6 +105,30 @@ export class CivilServiceClient {
         baseURL,
       });
     }
+  }
+
+  private getClaimDetailsRequestCache(req: AppRequest): Map<string, Promise<Claim>> {
+    const requestWithLocals = req as AppRequest & { locals?: AppRequest['locals'] };
+    const requestLocals = requestWithLocals.locals ?? (requestWithLocals.locals = {env: '', lang: ''});
+    if (requestLocals.claimDetailsRequestCache) {
+      return requestLocals.claimDetailsRequestCache;
+    }
+
+    const newCache = new Map<string, Promise<Claim>>();
+    requestLocals.claimDetailsRequestCache = newCache;
+    return newCache;
+  }
+
+  private getUserCaseRolesRequestCache(req: AppRequest): Map<string, Promise<CaseRole>> {
+    const requestWithLocals = req as AppRequest & { locals?: AppRequest['locals'] };
+    const requestLocals = requestWithLocals.locals ?? (requestWithLocals.locals = {env: '', lang: ''});
+    if (requestLocals.userCaseRolesRequestCache) {
+      return requestLocals.userCaseRolesRequestCache;
+    }
+
+    const newCache = new Map<string, Promise<CaseRole>>();
+    requestLocals.userCaseRolesRequestCache = newCache;
+    return newCache;
   }
 
   getConfig(req: AppRequest) {
@@ -149,7 +186,25 @@ export class CivilServiceClient {
   }
 
   async retrieveClaimDetails(claimId: RouteParam, req: AppRequest): Promise<Claim> {
+    const requestCache = this.getClaimDetailsRequestCache(req);
     const normalizedClaimId = normalizeRouteParam(claimId);
+    const requestUserId = req.session?.user?.id ?? '';
+    const cacheKey = `${normalizedClaimId}|${requestUserId}`;
+    const cachedClaimDetailsPromise = requestCache.get(cacheKey);
+    if (cachedClaimDetailsPromise !== undefined) {
+      return cachedClaimDetailsPromise;
+    }
+
+    const claimDetailsPromise = this.retrieveClaimDetailsFromCivilService(normalizedClaimId, req)
+      .catch((error) => {
+        requestCache.delete(cacheKey);
+        throw error;
+      });
+    requestCache.set(cacheKey, claimDetailsPromise);
+    return claimDetailsPromise;
+  }
+
+  private async retrieveClaimDetailsFromCivilService(normalizedClaimId: string, req: AppRequest): Promise<Claim> {
     const config = this.getConfig(req);
     try {
       const response = await this.client.get(`/cases/${normalizedClaimId}`, config);// nosonar
@@ -320,8 +375,8 @@ export class CivilServiceClient {
       const response: AxiosResponse<object> = await this.client.get(CIVIL_SERVICE_DOWNLOAD_DOCUMENT_URL
         .replace(':documentId', documentId), config);
 
-      return new FileResponse(response.headers['content-type'],
-        response.headers['original-file-name'],
+      return new FileResponse(getResponseHeaderValue(response.headers['content-type']),
+        getResponseHeaderValue(response.headers['original-file-name']),
         response.data as Buffer);
 
     } catch (err) {
@@ -496,8 +551,27 @@ export class CivilServiceClient {
   }
 
   async getUserCaseRoles(claimId: RouteParam, req: AppRequest) {
+    const requestCache = this.getUserCaseRolesRequestCache(req);
+    const normalizedClaimId = normalizeRouteParam(claimId);
+    const requestUserId = req.session?.user?.id ?? '';
+    const cacheKey = `${normalizedClaimId}|${requestUserId}`;
+    const cachedCaseRolePromise = requestCache.get(cacheKey);
+    if (cachedCaseRolePromise !== undefined) {
+      return cachedCaseRolePromise;
+    }
+
+    const userCaseRolePromise = this.getUserCaseRolesFromCivilService(normalizedClaimId, req)
+      .catch((error) => {
+        requestCache.delete(cacheKey);
+        throw error;
+      });
+    requestCache.set(cacheKey, userCaseRolePromise);
+    return userCaseRolePromise;
+  }
+
+  private async getUserCaseRolesFromCivilService(normalizedClaimId: string, req: AppRequest): Promise<CaseRole> {
     try {
-      const userCaseRolesUrl = (new URL(`${this.client.defaults.baseURL}${CIVIL_SERVICE_USER_CASE_ROLE.replace(':claimId', normalizeRouteParam(claimId))}`));
+      const userCaseRolesUrl = (new URL(`${this.client.defaults.baseURL}${CIVIL_SERVICE_USER_CASE_ROLE.replace(':claimId', normalizedClaimId)}`));
       const response = await this.client.get(userCaseRolesUrl.toString()
         , {headers: {'Authorization': `Bearer ${req.session?.user?.accessToken}`}});
       const responseRoles = response.data as string[];
