@@ -15,7 +15,7 @@ export const isGAForLiPEnabled = async (
 ): Promise<void> => {
   const isGAFlagEnable = await isGaForLipsEnabled();
   const claimId = getRouteParam(req, 'id');
-  const claim = await getClaimById(claimId, <AppRequest>req);
+  const claim = await getClaimById(claimId, <AppRequest>req, true);
   //If the application was originally created in English and the respondent replied in Welsh,
   // a new application will not be generated; however, the existing application will still be accessible online.
   const allowAppAccess = claim.generalApplications?.length > 0 ;

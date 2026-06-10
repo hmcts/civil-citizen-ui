@@ -11,7 +11,7 @@ let caseData;
 let claimNumber;
 let securityCode;
 
-Feature('Response with RejectAll and AlreadyPaid').tag('@civil-citizen-nightly');
+Feature('Response with RejectAll and AlreadyPaid').tag('@civil-citizen-nightly @ui-reject-all');
 
 Before(async ({api}) => {
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);

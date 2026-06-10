@@ -14,26 +14,26 @@ class RequestForReconsideration {
   }
 
   async verifyPageContent(caseNumber, claimAmount, partyName) {
-    this.checkPageFullyLoaded();
-    this.verifyBreadcrumbs();
-    this.verifyHeadingDetails();
-    this.verifyCaseNumberClaimAmount(caseNumber, claimAmount);
+    await this.checkPageFullyLoaded();
+    await this.verifyBreadcrumbs();
+    await this.verifyHeadingDetails();
+    await this.verifyCaseNumberClaimAmount(caseNumber, claimAmount);
     await this.verifyPageText(partyName);
     await contactUs.verifyContactUs();
   }
 
   async verifyBreadcrumbs() {
-    I.see('Home', 'li');
+    await I.see('Home', 'li');
     await I.see('Request to review order', 'li');
   }
 
   async verifyHeadingDetails() {
-    I.see('Request to review order', 'span');
+    await I.see('Request to review order', 'span');
     await I.see('How and why do you want the order changed?', 'h1');
   }
 
   async verifyCaseNumberClaimAmount(caseNumber, claimAmount) {
-    I.see('Case number: ' + caseNumber);
+    await I.see('Case number: ' + caseNumber);
     await I.see('Claim amount: ' + claimAmount);
   }
 

@@ -191,147 +191,147 @@ const content = {
 
 class WhatTypeOfDocumentsDoYouWantToUpload {
 
-  checkPageFullyLoaded (languageChosen = 'en') {
+  async checkPageFullyLoaded (languageChosen = 'en') {
     language = languageChosen;
-    I.seeElement(`//a[.='${content.buttons.cancel[language]}']`);
+    await I.seeElement(`//a[.='${content.buttons.cancel[language]}']`);
   }
 
-  nextAction(nextAction) {
-    I.click(nextAction);
+  async nextAction(nextAction) {
+    await I.click(nextAction);
   }
 
-  verifyPageContent(caseNumber, claimAmount, caseType) {
-    this.checkPageFullyLoaded();
-    this.verifyBreadcrumbs();
-    this.verifyHeadingDetails();
-    this.verifyCaseNumberClaimAmount(caseNumber, claimAmount);
+  async verifyPageContent(caseNumber, claimAmount, caseType) {
+    await this.checkPageFullyLoaded();
+    await this.verifyBreadcrumbs();
+    await this.verifyHeadingDetails();
+    await this.verifyCaseNumberClaimAmount(caseNumber, claimAmount);
     if (caseType === 'FastTrack') {
-      this.verifyDisclosureSectionContent();
-      this.verifyWitnessEvidenceSectionContent();
-      this.verifyExpertEvidenceSectionContent(caseType);
-      this.verifyTrialDocumentsSectionContent();
+      await this.verifyDisclosureSectionContent();
+      await this.verifyWitnessEvidenceSectionContent();
+      await this.verifyExpertEvidenceSectionContent(caseType);
+      await this.verifyTrialDocumentsSectionContent();
     } else if (caseType === 'SmallClaims') {
-      this.verifyWitnessEvidenceSectionContent();
-      this.verifyExpertEvidenceSectionContent(caseType);
-      this.verifyHearingDocumentsSectionContent();
+      await this.verifyWitnessEvidenceSectionContent();
+      await this.verifyExpertEvidenceSectionContent(caseType);
+      await this.verifyHearingDocumentsSectionContent();
     }
-    contactUs.verifyContactUs(language);
+    await contactUs.verifyContactUs(language);
   }
 
-  verifyBreadcrumbs() {
-    I.see('Back', '//a[@class="govuk-back-link"]');
+  async verifyBreadcrumbs() {
+    await I.see('Back', '//a[@class="govuk-back-link"]');
   }
 
-  checkAllDocumentUploadOptions(claimType) {
+  async checkAllDocumentUploadOptions(claimType) {
 
     if (claimType === 'FastTrack') {
 
       //Disclosure Section
-      I.checkOption('#documents');
-      I.checkOption('#list');
+      await I.checkOption('#documents');
+      await I.checkOption('#list');
 
       //Witness evidence Section
-      I.checkOption('#witnessStatement');
-      I.checkOption('#summary');
-      I.checkOption('#witnessNotice');
-      I.checkOption('#witnessDocuments');
+      await I.checkOption('#witnessStatement');
+      await I.checkOption('#summary');
+      await I.checkOption('#witnessNotice');
+      await I.checkOption('#witnessDocuments');
 
       //Expert Evidence
-      I.checkOption('#report');
-      I.checkOption('#statement');
-      I.checkOption('#questions');
-      I.checkOption('#answer');
+      await I.checkOption('#report');
+      await I.checkOption('#statement');
+      await I.checkOption('#questions');
+      await I.checkOption('#answer');
 
       //Trial documents
-      I.checkOption('#case');
-      I.checkOption('#skeleton');
-      I.checkOption('#legal');
-      I.checkOption('#cost');
-      I.checkOption('#documentary');
+      await I.checkOption('#case');
+      await I.checkOption('#skeleton');
+      await I.checkOption('#legal');
+      await I.checkOption('#cost');
+      await I.checkOption('#documentary');
 
     } else if (claimType === 'SmallClaims') {
 
       //Witness evidence Section
-      I.checkOption('#witnessStatement');
-      I.checkOption('#summary');
-      I.checkOption('#witnessDocuments');
+      await I.checkOption('#witnessStatement');
+      await I.checkOption('#summary');
+      await I.checkOption('#witnessDocuments');
 
       //Expert Evidence
-      I.checkOption('#report');
-      I.checkOption('#statement');
+      await I.checkOption('#report');
+      await I.checkOption('#statement');
 
       //Hearing Docuents
-      I.checkOption('#documentary');
-      I.checkOption('#legal');
+      await I.checkOption('#documentary');
+      await I.checkOption('#legal');
     }
 
   }
 
-  verifyHeadingDetails() {
-    I.see('Hearing', 'span');
-    I.see(content.heading.title[language], 'h1');
-    I.see(content.heading.selectDocumentType[language]);
+  async verifyHeadingDetails() {
+    await I.see('Hearing', 'span');
+    await I.see(content.heading.title[language], 'h1');
+    await I.see(content.heading.selectDocumentType[language]);
   }
 
-  verifyCaseNumberClaimAmount(caseNumber, claimAmount) {
-    I.see(content.heading.caseNumber[language]+ ': ' + caseNumber);
-    I.see(content.heading.claimAmount[language]+ ': ' + claimAmount);
+  async verifyCaseNumberClaimAmount(caseNumber, claimAmount) {
+    await I.see(content.heading.caseNumber[language]+ ': ' + caseNumber);
+    await I.see(content.heading.claimAmount[language]+ ': ' + claimAmount);
   }
 
-  verifyDisclosureSectionContent() {
-    I.see(content.disclosure.title[language]);
-    I.see(content.disclosure.documentsForDisclosure[language]);
-    I.see(content.disclosure.documentsForDisclosureHint[language]);
-    I.see(content.disclosure.disclosureList[language]);
-    I.see(content.disclosure.disclosureListHint[language]);
+  async verifyDisclosureSectionContent() {
+    await I.see(content.disclosure.title[language]);
+    await I.see(content.disclosure.documentsForDisclosure[language]);
+    await I.see(content.disclosure.documentsForDisclosureHint[language]);
+    await I.see(content.disclosure.disclosureList[language]);
+    await I.see(content.disclosure.disclosureListHint[language]);
   }
 
-  verifyWitnessEvidenceSectionContent(claimType) {
-    I.see(content.witness.title[language]);
-    I.see(content.witness.witnessStatement[language]);
-    I.see(content.witness.witnessStatementHint[language]);
-    I.see(content.witness.witnessSummary[language]);
-    I.see(content.witness.witnessSummaryHint[language]);
+  async verifyWitnessEvidenceSectionContent(claimType) {
+    await I.see(content.witness.title[language]);
+    await I.see(content.witness.witnessStatement[language]);
+    await I.see(content.witness.witnessStatementHint[language]);
+    await I.see(content.witness.witnessSummary[language]);
+    await I.see(content.witness.witnessSummaryHint[language]);
     if (claimType === 'FastTrack') {
-      I.see(content.witness.noticeOfIntention[language]);
-      I.see(content.witness.noticeOfIntentionHint[language]);
+      await I.see(content.witness.noticeOfIntention[language]);
+      await I.see(content.witness.noticeOfIntentionHint[language]);
     }
-    I.see(content.witness.documentsReferred[language]);
-    I.see(content.witness.documentsReferredHint[language]);
+    await I.see(content.witness.documentsReferred[language]);
+    await I.see(content.witness.documentsReferredHint[language]);
   }
 
-  verifyExpertEvidenceSectionContent(claimType) {
-    I.see(content.expert.title[language]);
-    I.see(content.expert.report[language]);
-    I.see(content.expert.reportHint[language]);
-    I.see(content.expert.jointStatement[language]);
-    I.see(content.expert.jointStatementHint[language]);
+  async verifyExpertEvidenceSectionContent(claimType) {
+    await I.see(content.expert.title[language]);
+    await I.see(content.expert.report[language]);
+    await I.see(content.expert.reportHint[language]);
+    await I.see(content.expert.jointStatement[language]);
+    await I.see(content.expert.jointStatementHint[language]);
     if (claimType === 'FastTrack') {
-      I.see(content.expert.questions[language]);
-      I.see(content.expert.questionsHint[language]);
-      I.see(content.expert.answers[language]);
-      I.see(content.expert.answersHint[language]);
+      await I.see(content.expert.questions[language]);
+      await I.see(content.expert.questionsHint[language]);
+      await I.see(content.expert.answers[language]);
+      await I.see(content.expert.answersHint[language]);
     }
   }
 
-  verifyTrialDocumentsSectionContent() {
-    I.see(content.trial.summary[language]);
-    I.see(content.trial.summaryHint[language]);
-    I.see(content.trial.skeleton[language]);
-    I.see(content.trial.skeletonHint[language]);
-    I.see(content.trial.authorities[language]);
-    I.see(content.trial.authoritiesHint[language]);
-    I.see(content.trial.costs[language]);
-    I.see(content.trial.costsHint[language]);
-    I.see(content.trial.documentaryEvidence[language]);
-    I.see(content.trial.documentaryEvidenceHint[language]);
+  async verifyTrialDocumentsSectionContent() {
+    await I.see(content.trial.summary[language]);
+    await I.see(content.trial.summaryHint[language]);
+    await I.see(content.trial.skeleton[language]);
+    await I.see(content.trial.skeletonHint[language]);
+    await I.see(content.trial.authorities[language]);
+    await I.see(content.trial.authoritiesHint[language]);
+    await I.see(content.trial.costs[language]);
+    await I.see(content.trial.costsHint[language]);
+    await I.see(content.trial.documentaryEvidence[language]);
+    await I.see(content.trial.documentaryEvidenceHint[language]);
   }
 
-  verifyHearingDocumentsSectionContent() {
-    I.see(content.hearing.documentaryEvidence[language]);
-    I.see(content.hearing.documentaryEvidenceHint[language]);
-    I.see(content.hearing.authorities[language]);
-    I.see(content.hearing.authoritiesHint[language]);
+  async verifyHearingDocumentsSectionContent() {
+    await I.see(content.hearing.documentaryEvidence[language]);
+    await I.see(content.hearing.documentaryEvidenceHint[language]);
+    await I.see(content.hearing.authorities[language]);
+    await I.see(content.hearing.authoritiesHint[language]);
   }
 
 }
