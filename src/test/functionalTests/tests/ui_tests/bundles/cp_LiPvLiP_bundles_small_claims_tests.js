@@ -9,37 +9,47 @@ const {bundleReady} = require('../../../specClaimHelpers/dashboardNotificationCo
 const  ViewBundle = require('../../../citizenFeatures/caseProgression/pages/viewBundle');
 
 const claimType = 'SmallClaims';
-const partyType = 'LRvLiP';
+const partyType = 'LiPvLiP';
+const claimAmount = '£1,500';
 const viewBundlePage = new ViewBundle();
 let caseData, claimNumber, claimRef, taskListItem, notification, formattedCaseId, uploadDate;
 
-Feature('Case progression journey - Verify Bundle Page - Small Claims').tag('@civil-citizen-nightly @ui-bundles');
+Feature('Case progression journey - Verify Bundle - Small Claims').tag('@civil-citizen-nightly @ui-bundles');
 
 Before(async ({api}) => {
+  await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   const twoWeeksFromToday = DateUtilsComponent.DateUtilsComponent.rollDateToCertainWeeks(2);
-  claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser, '', claimType);
-  await api.waitForFinishedBusinessProcess(claimRef);
+  claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType);
   caseData = await api.retrieveCaseData(config.adminUser, claimRef);
   claimNumber = await caseData.legacyCaseReference;
   await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.rejectAllDisputeAllWithIndividual);
-  await api.viewAndRespondToDefence(config.applicantSolicitorUser, config.defenceType.rejectAll, 'IN_MEDIATION', 'SMALL_CLAIM');
+  await api.claimantLipRespondToDefence(config.claimantCitizenUser, claimRef, false, 'IN_MEDIATION');
   await api.mediationUnsuccessful(config.caseWorker, true, ['NOT_CONTACTABLE_CLAIMANT_ONE']);
   await api.performCaseProgressedToSDO(config.judgeUserWithRegionId2, claimRef,'smallClaimsTrack');
-  await api.performEvidenceUpload(config.applicantSolicitorUser, claimRef, claimType);
   await api.performCaseProgressedToHearingInitiated(config.hearingCenterAdminWithRegionId2, claimRef, DateUtilsComponent.DateUtilsComponent.formatDateToYYYYMMDD(twoWeeksFromToday));
+  await api.performEvidenceUploadCitizen(config.defendantCitizenUser, claimRef, claimType);
   await api.performBundleGeneration(config.hearingCenterAdminWithRegionId2, claimRef);
   await api.waitForFinishedBusinessProcess();
-  await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
 });
 
-Scenario('Case progression journey - Small Claims - Verify Bundles Page', async ({I}) => {
+Scenario('Case progression journey - Small Claims - Verify Bundles tab', async ({I, api}) => {
   formattedCaseId = StringUtilsComponent.StringUtilsComponent.formatClaimReferenceToAUIDisplayFormat(claimRef);
   uploadDate = DateUtilsComponent.DateUtilsComponent.formatDateToDDMMYYYY(new Date());
+  //verify as claimant
   notification = bundleReady();
+  await api.waitForFinishedBusinessProcess();
+  await I.wait(10);
+  await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
   taskListItem = viewTheBundle();
   await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Available', true);
   await I.click(taskListItem.title);
-  await viewBundlePage.verifyPageContent(formattedCaseId, '£1,500', uploadDate, partyType);
+  await viewBundlePage.verifyPageContent(formattedCaseId, claimAmount, uploadDate, partyType);
+  //verify as defendant
+  await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+  await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
+  await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Available', true);
+  await I.click(taskListItem.title);
+  await viewBundlePage.verifyPageContent(formattedCaseId, claimAmount, uploadDate, partyType);
 });
