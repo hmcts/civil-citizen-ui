@@ -97,7 +97,7 @@ export const corruptQuerySubmissionPayload = (payload: {queries: CaseQueries}): 
   const latestMessage = corrupted.queries.caseMessages[corrupted.queries.caseMessages.length - 1];
 
   if (latestMessage?.value) {
-    latestMessage.value.hearingDate = 'not-a-valid-date';
+    latestMessage.value.hearingDate = '31/13/2099';
   }
 
   return corrupted as unknown as ClaimUpdate;

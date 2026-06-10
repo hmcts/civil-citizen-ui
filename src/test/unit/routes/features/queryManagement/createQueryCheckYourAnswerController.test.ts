@@ -116,7 +116,7 @@ describe('create query check your answer controller', () => {
       const submitCorrupted = jest.spyOn(createCheckYourAnswerService, 'submitCorruptedQueryFromCheckYourAnswers').mockResolvedValueOnce({
         status: 400,
         message: 'Request failed with status code 400',
-        requestBody: {queries: {caseMessages: [{value: {hearingDate: 'not-a-valid-date'}}]}},
+        requestBody: {queries: {caseMessages: [{value: {hearingDate: '31/13/2099'}}]}},
         responseBody: {message: 'Validation failed'},
       });
 
@@ -143,7 +143,7 @@ describe('create query check your answer controller', () => {
       const submitCorrupted = jest.spyOn(createCheckYourAnswerService, 'submitCorruptedQueryFromCheckYourAnswers').mockResolvedValueOnce({
         status: 400,
         message: 'Request failed with status code 400',
-        requestBody: {queries: {caseMessages: [{value: {hearingDate: 'not-a-valid-date'}}]}},
+        requestBody: {queries: {caseMessages: [{value: {hearingDate: '31/13/2099'}}]}},
         responseBody: {message: 'Validation failed'},
       });
 
@@ -169,7 +169,7 @@ describe('create query check your answer controller', () => {
       const submitCorrupted = jest.spyOn(createCheckYourAnswerService, 'submitCorruptedQueryFromCheckYourAnswers').mockResolvedValueOnce({
         status: 400,
         message: 'Request failed with status code 400',
-        requestBody: {queries: {caseMessages: [{value: {hearingDate: 'not-a-valid-date'}}]}},
+        requestBody: {queries: {caseMessages: [{value: {hearingDate: '31/13/2099'}}]}},
         responseBody: {message: 'Validation failed'},
       });
       await request(app)
@@ -193,7 +193,7 @@ describe('create query check your answer controller', () => {
       const submitCorrupted = jest.spyOn(createCheckYourAnswerService, 'submitCorruptedQueryFromCheckYourAnswers').mockResolvedValueOnce({
         status: 400,
         message: 'Request failed with status code 400',
-        requestBody: {queries: {caseMessages: [{value: {hearingDate: 'not-a-valid-date'}}]}},
+        requestBody: {queries: {caseMessages: [{value: {hearingDate: '31/13/2099'}}]}},
         responseBody: {message: 'Validation failed'},
       });
       await request(app)

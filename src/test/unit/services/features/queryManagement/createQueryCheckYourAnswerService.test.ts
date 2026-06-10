@@ -72,7 +72,7 @@ describe('Check Answers response service', () => {
           queries: expect.objectContaining({
             caseMessages: expect.arrayContaining([
               expect.objectContaining({
-                value: expect.objectContaining({hearingDate: 'not-a-valid-date'}),
+                value: expect.objectContaining({hearingDate: '31/13/2099'}),
               }),
             ]),
           }),
@@ -261,7 +261,7 @@ describe('Check Answers response service', () => {
       const corruptedPayload = corruptQuerySubmissionPayload(validPayload);
       expect(corruptedPayload.queries?.partyName).toBe('All queries');
       expect(corruptedPayload.queries?.caseMessages?.[0]?.value?.body).toBe('message details');
-      expect(corruptedPayload.queries?.caseMessages?.[0]?.value?.hearingDate).toBe('not-a-valid-date');
+      expect(corruptedPayload.queries?.caseMessages?.[0]?.value?.hearingDate).toBe('31/13/2099');
 
       const submitSpy = jest.spyOn(CivilServiceClient.prototype, 'submitQueryManagementRaiseQuery');
       const axiosError = new AxiosError(
@@ -292,7 +292,7 @@ describe('Check Answers response service', () => {
               value: expect.objectContaining({
                 body: 'message details',
                 subject: 'message subject',
-                hearingDate: 'not-a-valid-date',
+                hearingDate: '31/13/2099',
               }),
             }),
           ]),
