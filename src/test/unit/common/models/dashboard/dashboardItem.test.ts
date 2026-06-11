@@ -89,22 +89,13 @@ describe('Dashboard Items', ()=> {
       expect(status).toContain('PAGES.DASHBOARD.STATUS_CLAIMANT.NO_RESPONSE_ON_TIME');
     });
 
-    it('should return legacy requested CCJ status for default judgment', () => {
+    it('should return judgment requested status when default judgment has been requested', () => {
       //Given
-      ccdClaimantClaim.status = 'DEFAULT_JUDGEMENT';
+      ccdClaimantClaim.status = 'DEFAULT_JUDGEMENT_REQUESTED';
       //When
       const status = ccdClaimantClaim.getStatus('en');
       //Then
-      expect(status).toContain('PAGES.DASHBOARD.STATUS_CLAIMANT.CLAIMANT_REQUESTED_CCJ');
-    });
-
-    it('should return judgment entered status when default judgment has been granted', () => {
-      //Given
-      ccdClaimantClaim.status = 'DEFAULT_JUDGEMENT_GRANTED';
-      //When
-      const status = ccdClaimantClaim.getStatus('en');
-      //Then
-      expect(status).toContain('PAGES.DASHBOARD.STATUS_CLAIMANT.COUNTY_COURT_JUDGMENT_ENTERED');
+      expect(status).toContain('PAGES.DASHBOARD.STATUS_CLAIMANT.COUNTY_COURT_JUDGMENT_REQUESTED');
     });
   });
 
@@ -141,6 +132,16 @@ describe('Dashboard Items', ()=> {
       expect(status).toBe('PAGES.DASHBOARD.STATUS_DEFENDANT.NO_RESPONSE_ON_TIME');
     });
 
+    it('should return translated status for default judgment requested', () => {
+      //Given
+      const dashboardClaim = new DashboardDefendantItem();
+      dashboardClaim.status = 'DEFAULT_JUDGEMENT_REQUESTED';
+      //When
+      const status = dashboardClaim.getStatus('en');
+      //Then
+      expect(status).toBe('PAGES.DASHBOARD.STATUS_DEFENDANT.COUNTY_COURT_JUDGMENT_REQUESTED');
+    });
+
     it('should return legacy eligible for CCJ status', () => {
       //Given
       const dashboardClaim = new DashboardDefendantItem();
@@ -159,17 +160,6 @@ describe('Dashboard Items', ()=> {
       const status = dashboardClaim.getStatus('en');
       //Then
       expect(status).toContain('PAGES.DASHBOARD.STATUS_DEFENDANT.NO_RESPONSE_ELIGIBLE_CCJ_JUDGMENT_BUFFER');
-    });
-
-    it('should return claimant requested CCJ status when default judgment has been issued', () => {
-      //Given
-      const dashboardClaim = new DashboardDefendantItem();
-      dashboardClaim.status = 'DEFAULT_JUDGEMENT_ISSUED';
-      dashboardClaim.defaultJudgementIssuedDate = '2023-02-24';
-      //When
-      const status = dashboardClaim.getStatus('en');
-      //Then
-      expect(status).toContain('PAGES.DASHBOARD.STATUS_DEFENDANT.CLAIMANT_REQUESTED_CCJ');
     });
 
     it('should return the translated string without parameters when params is provided but empty', () => {
@@ -374,7 +364,6 @@ describe('Dashboard Items', ()=> {
       const status = dashboardClaim.getStatus('en');
       //Then
       expect(status).toBe('PAGES.DASHBOARD.STATUS_CLAIMANT.RESPONSE_BY_POST');
-
     });
   });
 });

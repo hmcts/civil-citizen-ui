@@ -96,8 +96,8 @@ export class DashboardClaimantItem extends DashboardItem {
         translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.CLAIMANT_REQUESTED_CCJ',
         parameter: [paramDefendantName],
       },
-      DEFAULT_JUDGEMENT_GRANTED: {
-        translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.COUNTY_COURT_JUDGMENT_ENTERED',
+      DEFAULT_JUDGEMENT_REQUESTED: {
+        translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.COUNTY_COURT_JUDGMENT_REQUESTED',
         parameter: [paramDefendantName],
       },
       CLAIMANT_AND_DEFENDANT_SIGNED_SETTLEMENT_AGREEMENT: {translationKey: 'PAGES.DASHBOARD.STATUS_CLAIMANT.BOTH_SIGNED_SETTLEMENT_AGREEMENT'},
@@ -161,7 +161,7 @@ export class DashboardDefendantItem extends DashboardItem {
     const paramClaimantName = {key: 'claimantName', value: this.claimantName};
     const paramCCJRequestedDate = {key: 'ccjRequestedDate', value: formatDateToFullDate(this.ccjRequestedDate, lang)};
     const paramResponseDeadline = {key: 'responseDeadline', value: formatDateToFullDate(this.responseDeadline, lang)};
-    const paramDefaultJudgementIssuedDate = { key: 'ccjRequestedDate', value: formatDateToFullDate(this.defaultJudgementIssuedDate as unknown as Date, lang) };
+    const paramDefaultJudgementIssuedDate = { key: 'defaultJudgementIssuedDate', value: formatDateToFullDate(this.defaultJudgementIssuedDate as unknown as Date, lang) };
     const displayedAmount = noGroupingCurrencyFormatWithNoTrailingZeros(this.respondToAdmittedClaimOwingAmountPounds ?? this.admittedAmount);
     const paramAdmittedAmount = {key: 'amount', value: displayedAmount};
 
@@ -189,6 +189,10 @@ export class DashboardDefendantItem extends DashboardItem {
       },
       DEFAULT_JUDGEMENT: {
         translationKey: 'PAGES.DASHBOARD.STATUS_DEFENDANT.NO_RESPONSE_ELIGIBLE_CCJ',
+        parameter: [paramClaimantName],
+      },
+      DEFAULT_JUDGEMENT_REQUESTED: {
+        translationKey: 'PAGES.DASHBOARD.STATUS_DEFENDANT.COUNTY_COURT_JUDGMENT_REQUESTED',
         parameter: [paramClaimantName],
       },
       MORE_TIME_REQUESTED: {
@@ -267,8 +271,8 @@ export class DashboardDefendantItem extends DashboardItem {
       DECISION_FOR_RECONSIDERATION_MADE: { translationKey: 'PAGES.DASHBOARD.STATUS_DEFENDANT.DECISION_ON_RECONSIDERATION' },
       HEARING_FEE_UNPAID: { translationKey: 'PAGES.DASHBOARD.STATUS_DEFENDANT.HEARING_FEE_UNPAID'},
       DEFAULT_JUDGEMENT_ISSUED: {
-        translationKey: 'PAGES.DASHBOARD.STATUS_DEFENDANT.CLAIMANT_REQUESTED_CCJ',
-        parameter: [paramClaimantName, paramDefaultJudgementIssuedDate],
+        translationKey: 'PAGES.DASHBOARD.STATUS_DEFENDANT.DEFAULT_JUDGEMENT_ISSUED_STATUS',
+        parameter: [paramDefaultJudgementIssuedDate],
       },
       WAITING_FOR_CLAIMANT_INTENT_DOC_UPLOAD_PRE_DEF_NOC_ONLINE: {translationKey: 'PAGES.DASHBOARD.STATUS_DEFENDANT.WAITING_CLAIMANT_INTENT_DOC_UPLOAD_PRE_DEF_NOC_ONLINE'},
       WAITING_FOR_CLAIMANT_INTENT_DOC_UPLOAD_POST_DEF_NOC_ONLINE: {translationKey: 'PAGES.DASHBOARD.STATUS_DEFENDANT.WAITING_CLAIMANT_INTENT_DOC_UPLOAD_POST_DEF_NOC_ONLINE'},
