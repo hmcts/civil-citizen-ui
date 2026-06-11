@@ -15,14 +15,14 @@ export interface TTLMetadata {
 
 const getTTLDaysForCategory = (category: TTLCategory): number => {
   switch (category) {
-  case TTLCategory.DRAFT_CLAIM:
-    return config.get<number>('services.draftStore.redis.expireInDays');
-  case TTLCategory.JOURNEY_CACHE:
-    return config.get<number>('services.draftStore.redis.journeyCacheExpireInDays');
-  case TTLCategory.PAYMENT_SESSION:
-    return config.get<number>('services.draftStore.redis.ttl.paymentSession');
-  case TTLCategory.GA_JOURNEY:
-    return config.get<number>('services.draftStore.redis.ttl.gaJourney');
+    case TTLCategory.DRAFT_CLAIM:
+      return config.get<number>('services.draftStore.redis.expireInDays');
+    case TTLCategory.JOURNEY_CACHE:
+      return config.get<number>('services.draftStore.redis.journeyCacheExpireInDays');
+    case TTLCategory.PAYMENT_SESSION:
+      return config.get<number>('services.draftStore.redis.ttl.paymentSession');
+    case TTLCategory.GA_JOURNEY:
+      return config.get<number>('services.draftStore.redis.ttl.gaJourney');
   }
 };
 
