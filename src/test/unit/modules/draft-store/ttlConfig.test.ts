@@ -1,0 +1,27 @@
+import {TTLCategory, calculateExpiryTimestamp} from 'modules/draft-store/ttlConfig';
+
+describe('ttlConfig', () => {
+  it('should calculate draft claim expiry from creation date', () => {
+    const creationDate = new Date('2024-06-01T00:00:00.000Z');
+    const expiry = calculateExpiryTimestamp(TTLCategory.DRAFT_CLAIM, {creationDate});
+    expect(expiry).toBe(Math.round(creationDate.getTime() / 1000) + (180 * 86400));
+  });
+
+  it('should calculate payment session expiry from current time when no creation date', () => {
+    const now = Math.floor(Date.now() / 1000);
+    const expiry = calculateExpiryTimestamp(TTLCategory.PAYMENT_SESSION);
+    expect(Math.abs(expiry - now - (7 * 86400))).toBeLessThanOrEqual(1);
+  });
+
+  it('should calculate journey cache expiry', () => {
+    const now = Math.floor(Date.now() / 1000);
+    const expiry = calculateExpiryTimestamp(TTLCategory.JOURNEY_CACHE);
+    expect(Math.abs(expiry - now - (30 * 86400))).toBeLessThanOrEqual(1);
+  });
+
+  it('should calculate GA journey expiry from creation date', () => {
+    const creationDate = new Date('2024-03-15T12:00:00.000Z');
+    const expiry = calculateExpiryTimestamp(TTLCategory.GA_JOURNEY, {creationDate});
+    expect(expiry).toBe(Math.round(creationDate.getTime() / 1000) + (30 * 86400));
+  });
+});

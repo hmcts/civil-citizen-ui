@@ -149,6 +149,7 @@ describe('Draft store service to save and retrieve claim', () => {
   it('should create draft claim with expiry time', async () => {
     //Given
     const draftStoreWithData = createMockDraftStore(undefined);
+    draftStoreWithData.ttl = jest.fn().mockResolvedValue(-1);
     app.locals.draftStoreClient = draftStoreWithData;
     const spySet = jest.spyOn(app.locals.draftStoreClient, 'set');
     const spyExpireat = jest.spyOn(app.locals.draftStoreClient, 'expireat');
@@ -157,7 +158,6 @@ describe('Draft store service to save and retrieve claim', () => {
     //Then
     expect(spySet).toBeCalled();
     expect(spyExpireat).toBeCalled();
-    expect(await app.locals.draftStoreClient.ttl(CLAIM_ID)).toBe(60);
   });
   it('should generate redis key', async () => {
     //Given
@@ -191,7 +191,12 @@ describe('Draft store service to save and retrieve claim', () => {
     //When
     await deleteFieldDraftClaimFromStore(CLAIM_ID,  mockClaim, 'totalClaimAmount');
     //Then
-    expect(spySet).toBeCalledWith(CLAIM_ID, JSON.stringify(expectedClaim), 'KEEPTTL');
+    expect(spySet).toHaveBeenCalledWith(
+      CLAIM_ID,
+      expect.stringContaining('"refreshDataForDJ":true'),
+      'KEEPTTL',
+    );
+    expect(mockClaim.draftClaimCreatedAt).toBeDefined();
   });
 
   describe('findClaimIdsbyUserId', () => {
@@ -235,6 +240,7 @@ describe('Draft store service to save and retrieve claim', () => {
     app.locals.draftStoreClient = draftStoreWithData;
 
     const spyTtl = jest.spyOn(app.locals.draftStoreClient, 'ttl');
+    const spyExpireat = jest.spyOn(app.locals.draftStoreClient, 'expireat');
 
     const claim = new Claim();
     claim.id = CLAIM_ID;
@@ -243,5 +249,21 @@ describe('Draft store service to save and retrieve claim', () => {
     await saveDraftClaim(CLAIM_ID, claim);
 
     expect(spyTtl).toBeCalledWith(CLAIM_ID);
+    expect(spyExpireat).not.toBeCalled();
+  });
+
+  it('should set draftClaimCreatedAt and expiry when saving a new draft claim', async () => {
+    const draftStoreWithData = createMockDraftStore(REDIS_DATA[0]);
+    draftStoreWithData.ttl = jest.fn().mockResolvedValue(-1);
+    draftStoreWithData.expireat = jest.fn().mockResolvedValue({});
+    app.locals.draftStoreClient = draftStoreWithData;
+
+    const claim = new Claim();
+    claim.id = CLAIM_ID;
+
+    await saveDraftClaim(CLAIM_ID, claim);
+
+    expect(claim.draftClaimCreatedAt).toBeDefined();
+    expect(draftStoreWithData.expireat).toHaveBeenCalledWith(CLAIM_ID, expect.any(Number));
   });
 });

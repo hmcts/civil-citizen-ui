@@ -5,11 +5,12 @@ import {
 } from 'models/civilClaimResponse';
 import {Claim} from 'models/claim';
 import {isUndefined} from 'lodash';
-import {calculateExpireTimeForDraftClaimInSeconds} from 'common/utils/dateUtils';
 import {AppRequest} from 'common/models/AppRequest';
 import {getClaimById} from 'modules/utilityService';
 import {Request} from 'express';
 import {getRouteParam} from 'common/utils/routeParamUtils';
+import {TTLCategory} from './ttlConfig';
+import {writeWithTTL} from './redisWriteHelper';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('draftStoreService');
@@ -59,31 +60,30 @@ export const getCaseDataFromStore = async (claimId: string, doNotThrowError = fa
  * @param claim
  * @param doNotThrowError
  * @param userId
+ * @param ttlCategory
  */
-export const saveDraftClaim = async (claimId: string, claim: Claim, doNotThrowError = false, userId?: string) => {
+export const saveDraftClaim = async (
+  claimId: string,
+  claim: Claim,
+  doNotThrowError = false,
+  userId?: string,
+  ttlCategory: TTLCategory = TTLCategory.DRAFT_CLAIM,
+) => {
   logger.info(`Saving draft claim : userId: ${userId}  claimId: ${claimId}`);
   let storedClaimResponse = await getDraftClaimFromStore(claimId, doNotThrowError);
   if (isUndefined(storedClaimResponse.case_data)) {
     storedClaimResponse = createNewCivilClaimResponse(claimId);
   }
-  storedClaimResponse.case_data = claim as any;
-  const draftStoreClient = app.locals.draftStoreClient;
-  const ttl = await draftStoreClient.ttl(claimId);
-  if (ttl > 0) {
-    // TTL already exists — preserve it
-    await draftStoreClient.set(
-      claimId,
-      JSON.stringify(storedClaimResponse),
-      'KEEPTTL');
-  } else {
-    // No TTL — set a new one
-    const expiryBaseDate = claim.draftClaimCreatedAt ?? new Date();
-    const expirySeconds = calculateExpireTimeForDraftClaimInSeconds(expiryBaseDate);
-    await draftStoreClient.set(
-      claimId,
-      JSON.stringify(storedClaimResponse));
-    await draftStoreClient.expireat(claimId, expirySeconds);
+  if (ttlCategory === TTLCategory.DRAFT_CLAIM && !claim.draftClaimCreatedAt) {
+    claim.draftClaimCreatedAt = new Date();
   }
+  storedClaimResponse.case_data = claim as any;
+
+  const metadata = ttlCategory === TTLCategory.DRAFT_CLAIM && claim.draftClaimCreatedAt
+    ? {creationDate: new Date(claim.draftClaimCreatedAt)}
+    : undefined;
+
+  await writeWithTTL(claimId, storedClaimResponse, ttlCategory, metadata);
 };
 
 const createNewCivilClaimResponse = (claimId: string) => {
@@ -126,9 +126,8 @@ export async function createDraftClaimInStoreWithExpiryTime(claimId: string) {
   draftClaim.case_data = {
     draftClaimCreatedAt: creationTime,
   } as unknown as CCDClaim;
+  await writeWithTTL(claimId, draftClaim, TTLCategory.DRAFT_CLAIM, {creationDate: creationTime});
   const draftStoreClient = app.locals.draftStoreClient;
-  await draftStoreClient.set(claimId, JSON.stringify(draftClaim));
-  await draftStoreClient.expireat(claimId, calculateExpireTimeForDraftClaimInSeconds(creationTime));
   logger.info(`Draft claim expiry time is set to ${await draftStoreClient.ttl(claimId)} seconds as of ${creationTime}`);
 }
 

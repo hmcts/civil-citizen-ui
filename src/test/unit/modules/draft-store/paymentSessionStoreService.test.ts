@@ -12,6 +12,7 @@ import {TestMessages} from '../../../utils/errorMessageTestConstants';
 
 const mockDraftStoreClient = {
   set: jest.fn(),
+  ttl: jest.fn(),
   expireat: jest.fn(),
   get: jest.fn(),
   keys: jest.fn(),
@@ -23,6 +24,7 @@ describe('Payment session store service', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     mockDraftStoreClient.keys.mockResolvedValue([]);
+    mockDraftStoreClient.ttl.mockResolvedValue(-1);
   });
 
   it('should save the userId to the draft store and log the action', async () => {
@@ -33,6 +35,16 @@ describe('Payment session store service', () => {
     await saveUserId(claimId, feeType, userId);
 
     expect(mockDraftStoreClient.set).toHaveBeenCalledWith('12345HEARINGuserIdForPayment', userId);
+    expect(mockDraftStoreClient.expireat).toHaveBeenCalledWith('12345HEARINGuserIdForPayment', expect.any(Number));
+  });
+
+  it('should preserve TTL when updating an existing payment session key', async () => {
+    mockDraftStoreClient.ttl.mockResolvedValueOnce(3600);
+
+    await saveUserId('12345', FeeType.HEARING, 'user123');
+
+    expect(mockDraftStoreClient.set).toHaveBeenCalledWith('12345HEARINGuserIdForPayment', 'user123', 'KEEPTTL');
+    expect(mockDraftStoreClient.expireat).not.toHaveBeenCalled();
   });
 
   it('should log a warning when overwriting an existing userId for a claimId', async () => {
@@ -115,6 +127,10 @@ describe('Payment session store service', () => {
     await saveOriginalPaymentConfirmationUrl(claimId, feeType, userId, originalUrl);
 
     expect(mockDraftStoreClient.set).toHaveBeenCalledWith('1234567890123456HEARINGuser123confirmationUrl', originalUrl);
+    expect(mockDraftStoreClient.expireat).toHaveBeenCalledWith(
+      '1234567890123456HEARINGuser123confirmationUrl',
+      expect.any(Number),
+    );
   });
 
   it('should log a warning when overwriting an existing payment confirmation url', async () => {

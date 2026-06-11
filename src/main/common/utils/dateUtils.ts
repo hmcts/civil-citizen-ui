@@ -1,9 +1,7 @@
-import config from 'config';
 import {DateTime} from 'luxon';
+import {TTLCategory, calculateExpiryTimestamp} from 'modules/draft-store/ttlConfig';
 
 const FOUR_PM = 16;
-const DRAFT_EXPIRE_TIME_IN_DAYS: number = config.get('services.draftStore.redis.expireInDays');
-const DAY_TO_SECONDS_UNIT = 86400;
 
 export const currentDateTime = () => {
   return DateTime.now();
@@ -148,7 +146,7 @@ export const formatStringTimeHMS = (date: Date) => {
 };
 
 export function calculateExpireTimeForDraftClaimInSeconds(date: Date) {
-  return Math.round(new Date(date).getTime() / 1000) + (DRAFT_EXPIRE_TIME_IN_DAYS * DAY_TO_SECONDS_UNIT);
+  return calculateExpiryTimestamp(TTLCategory.DRAFT_CLAIM, {creationDate: new Date(date)});
 }
 
 export function isDateOnOrAfterSpecificDate(date: Date, specificDate: Date) {

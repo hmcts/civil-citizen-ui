@@ -33,6 +33,10 @@ services:
       key:
       tls: false
       expireInDays: 180
+      journeyCacheExpireInDays: 30
+      ttl:
+        paymentSession: 7
+        gaJourney: 30
     legacy:
       url: 'http://localhost:8765'
       s2s:
