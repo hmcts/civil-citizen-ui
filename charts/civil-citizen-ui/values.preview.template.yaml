@@ -582,6 +582,10 @@ civil-service:
   aac-manage-case-assignment:
     enabled: true
     java:
+      devcpuRequests: 50m
+      devcpuLimits: 200m
+      devmemoryRequests: 512Mi
+      devmemoryLimits: 1024Mi
       disableKeyVaults: true
       ingressHost: manage-case-assignment-${SERVICE_NAME}.preview.platform.hmcts.net
       imagePullPolicy: Always
@@ -611,6 +615,10 @@ civil-service:
   em-stitching:
     enabled: true
     java:
+      devcpuRequests: 50m
+      devcpuLimits: 500m
+      devmemoryRequests: 512Mi
+      devmemoryLimits: 1024Mi
       imagePullPolicy: Always
       releaseNameOverride: ${SERVICE_NAME}-em-stitching
       image: hmctsprod.azurecr.io/em/stitching:latest
@@ -647,6 +655,10 @@ civil-service:
   em-ccdorc:
     enabled: true
     java:
+      devcpuRequests: 50m
+      devcpuLimits: 200m
+      devmemoryRequests: 512Mi
+      devmemoryLimits: 1024Mi
       image: hmctsprod.azurecr.io/em/ccdorc:latest
       releaseNameOverride: ${SERVICE_NAME}-em-ccdorc
       ingressHost: em-ccdorc-${SERVICE_FQDN}
@@ -671,6 +683,10 @@ civil-service:
   ccd-case-document-am-api:
     enabled: true
     java:
+      devcpuRequests: 50m
+      devcpuLimits: 200m
+      devmemoryRequests: 512Mi
+      devmemoryLimits: 1024Mi
       releaseNameOverride: ${SERVICE_NAME}-cdam
       imagePullPolicy: Always
       image: hmctsprod.azurecr.io/ccd/case-document-am-api:latest
