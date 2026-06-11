@@ -1,4 +1,3 @@
-import {app} from '../../app';
 import {TTLCategory} from './ttlConfig';
 import {writeWithTTL} from './redisWriteHelper';
 
