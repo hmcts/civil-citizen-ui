@@ -56,7 +56,7 @@ documentsTobeConsideredController.post(DQ_MULTITRACK_CLAIMANT_DOCUMENTS_TO_BE_CO
     } else {
       await saveDirectionQuestionnaire(
         redisKey,
-        hasClaimantDocumentsToBeConsideredForm.model,
+        hasClaimantDocumentsToBeConsideredForm.model.option,
         'hasDocumentsToBeConsidered',
         'hearing');
       if (hasClaimantDocumentsToBeConsideredForm.model.option === YesNo.YES){
