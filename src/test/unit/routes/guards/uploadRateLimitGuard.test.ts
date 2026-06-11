@@ -91,13 +91,13 @@ describe('uploadRateLimitGuard', () => {
     const res = createResponse();
     const next = jest.fn();
 
-    nowSpy.mockReturnValueOnce(1000).mockReturnValueOnce(1000);
+    nowSpy.mockReturnValue(1000);
     await guard(req, res, next);
 
-    nowSpy.mockReturnValueOnce(1500).mockReturnValueOnce(1500);
+    nowSpy.mockReturnValue(1500);
     await guard(req, res, next);
 
-    nowSpy.mockReturnValueOnce(2501).mockReturnValueOnce(2501);
+    nowSpy.mockReturnValue(2501);
     await guard(req, res, next);
 
     expect(next).toHaveBeenCalledTimes(3);
