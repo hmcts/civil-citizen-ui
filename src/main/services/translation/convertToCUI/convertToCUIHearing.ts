@@ -103,11 +103,9 @@ export const toCUIHearing = (ccdClaim: CCDClaim) : Hearing => {
         hearing.requestExtra4weeks = toCUIGenericYesNo(ccdClaim.respondent1LiPResponse?.respondent1DQExtraDetails?.requestExtra4weeks);
       }
       if (ccdClaim.respondent1LiPResponse?.respondent1DQExtraDetails?.considerClaimantDocuments) {
-        hearing.considerClaimantDocuments =
-          {
-            option: toCUIYesNo(ccdClaim.respondent1LiPResponse?.respondent1DQExtraDetails?.considerClaimantDocuments),
-            details: ccdClaim.respondent1LiPResponse?.respondent1DQExtraDetails?.considerClaimantDocumentsDetails,
-          } as ConsiderClaimantDocuments;
+        const option = toCUIYesNo(ccdClaim.respondent1LiPResponse?.respondent1DQExtraDetails?.considerClaimantDocuments);
+        const details = ccdClaim.respondent1LiPResponse?.respondent1DQExtraDetails?.considerClaimantDocumentsDetails;
+        hearing.considerClaimantDocuments = new ConsiderClaimantDocuments(option, details);
       }
     }
     return hearing;
