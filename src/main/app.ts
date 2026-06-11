@@ -342,7 +342,7 @@ if (uploadRateLimitEnabled) {
     GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_URL,
     GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_URL,
     GA_UPLOAD_WRITTEN_REPRESENTATION_DOCS_URL,
-  ], createUploadRateLimitGuard(maxRequests, windowMs, app.locals.draftStoreClient));
+  ], createUploadRateLimitGuard(maxRequests, windowMs));
 }
 
 if(env !== 'test') {
