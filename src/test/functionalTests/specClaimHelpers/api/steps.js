@@ -2,6 +2,7 @@ const config = require('../../../config');
 const deepEqualInAnyOrder = require('deep-equal-in-any-order');
 const breathingSpace = require('../fixtures/events/breathingSpace.js');
 const extendResponseDeadline = require('../fixtures/events/extendResponseDeadline.js');
+const dismissCase = require('../fixtures/events/dismissCase.js');
 const mediation = require('../fixtures/events/mediation.js');
 const admitAllClaimantResponse = require('../fixtures/events/admitAllClaimantResponse.js');
 const partAdmitClaimantResponse = require('../fixtures/events/partAdmitClaimantResponse.js');
@@ -33,7 +34,7 @@ let chai, expect, assert;
 
 const {
   waitForFinishedBusinessProcess, waitForGAFinishedBusinessProcess, hearingFeeUnpaid, bundleGeneration, uploadDocument, triggerTrialArrangements,
-  assertEmailSent, assertNoEmailSent,
+  assertEmailSent, assertNoEmailSent, assertEmailSentByReference,
 } = require('./testingSupport');
 const {assignCaseRoleToUser, addUserCaseMapping, unAssignAllUsers} = require('./caseRoleAssignmentHelper');
 const apiRequest = require('./apiRequest.js');
@@ -145,6 +146,13 @@ module.exports = {
     console.log('This is inside assertEmailSent() : ' + caseId);
     const entry = await assertEmailSent(caseId, options);
     console.log('End of assertEmailSent()');
+    return entry;
+  },
+
+  assertEmailSentByReference: async (caseId, options) => {
+    console.log('This is inside assertEmailSentByReference() : ' + caseId);
+    const entry = await assertEmailSentByReference(caseId, options);
+    console.log('End of assertEmailSentByReference()');
     return entry;
   },
 
@@ -967,6 +975,27 @@ module.exports = {
     const responseData = await apiRequest.fetchCaseDetails(config.adminUser, caseId);
     assert.equal(responseData.state, 'AWAITING_RESPONDENT_ACKNOWLEDGEMENT');
     console.log('End of extendResponseDeadline()');
+  },
+
+  dismissCase: async (user, caseId) => {
+    console.log('This is inside dismissCase: ' + caseId);
+    const dismissCasePayload = dismissCase.dismissCasePayload();
+    eventName = dismissCasePayload['event'];
+    caseData = {...dismissCasePayload['caseData']};
+    await apiRequest.setupTokens(user);
+    await assertSubmittedSpecEvent('CASE_DISMISSED',
+      {header: '# The case has been dismissed', body: '&nbsp;'}, true, caseId);
+    console.log('End of dismissCase()');
+  },
+
+  setClaimDismissedDeadline: async (user, caseId, date) => {
+    await apiRequest.setupTokens(user);
+    await testingSupport.updateCaseData(caseId, {claimDismissedDeadline: date});
+    console.log('claimDismissedDeadline updated to ' + date);
+  },
+
+  triggerCaseDismissalScheduler: async () => {
+    return await testingSupport.triggerCaseDismissalScheduler();
   },
 };
 
