@@ -3,6 +3,12 @@ import {AppRequest} from 'models/AppRequest';
 import {createUploadRateLimitGuard} from '../../../../main/routes/guards/uploadRateLimitGuard';
 
 describe('uploadRateLimitGuard', () => {
+  type RedisClientMock = {
+    incr: jest.Mock;
+    expire: jest.Mock;
+    pttl: jest.Mock;
+  };
+
   const createRedisClient = () => {
     let count = 0;
     let expireAt = 0;
@@ -24,21 +30,31 @@ describe('uploadRateLimitGuard', () => {
     };
   };
 
-  const createRequest = (redisClient: ReturnType<typeof createRedisClient>, method = 'POST') => ({
-    method,
-    session: {
-      user: {
-        id: 'user-123',
+  const createRequest = (
+    redisClient: RedisClientMock,
+    method = 'POST',
+    options: { userId?: string; sessionID?: string; ip?: string } = {},
+  ) => {
+    const userId = Object.prototype.hasOwnProperty.call(options, 'userId') ? options.userId : 'user-123';
+    const sessionID = Object.prototype.hasOwnProperty.call(options, 'sessionID') ? options.sessionID : 'session-123';
+    const ip = Object.prototype.hasOwnProperty.call(options, 'ip') ? options.ip : '127.0.0.1';
+
+    return {
+      method,
+      session: {
+        user: userId ? {
+          id: userId,
+        } : undefined,
       },
-    },
-    sessionID: 'session-123',
-    ip: '127.0.0.1',
-    app: {
-      locals: {
-        draftStoreClient: redisClient,
+      sessionID,
+      ip,
+      app: {
+        locals: {
+          draftStoreClient: redisClient,
+        },
       },
-    },
-  } as unknown as AppRequest);
+    } as unknown as AppRequest;
+  };
 
   const createResponse = () => ({setHeader: jest.fn()} as unknown as Response);
 
@@ -138,5 +154,82 @@ describe('uploadRateLimitGuard', () => {
     expect(allowed).toHaveLength(20);
     expect(errors).toHaveLength(30);
     expect(responses.filter(response => (response.setHeader as jest.Mock).mock.calls.length > 0)).toHaveLength(30);
+  });
+
+  it('should rate limit by session id when user id is unavailable', async () => {
+    const redisClient = createRedisClient();
+    const guard = createUploadRateLimitGuard(1, 60000);
+    const req = createRequest(redisClient, 'POST', {userId: undefined});
+    const res = createResponse();
+    const next = jest.fn();
+
+    await guard(req, res, next);
+    await guard(req, res, next);
+
+    expect(redisClient.incr).toHaveBeenCalledWith('upload-rate-limit:session-123');
+    expect((next.mock.calls[1][0] as {status: number}).status).toBe(429);
+  });
+
+  it('should rate limit by sanitised ip address when user and session ids are unavailable', async () => {
+    const redisClient = createRedisClient();
+    const guard = createUploadRateLimitGuard(1, 60000);
+    const req = createRequest(redisClient, 'POST', {userId: undefined, sessionID: undefined, ip: '127.0.0.1:1234'});
+    const res = createResponse();
+    const next = jest.fn();
+
+    await guard(req, res, next);
+    await guard(req, res, next);
+
+    expect(redisClient.incr).toHaveBeenCalledWith('upload-rate-limit:127_0_0_1:1234');
+    expect((next.mock.calls[1][0] as {status: number}).status).toBe(429);
+  });
+
+  it('should use unknown identity when no user, session, or ip is available', async () => {
+    const redisClient = createRedisClient();
+    const guard = createUploadRateLimitGuard(1, 60000);
+    const req = createRequest(redisClient, 'POST', {userId: undefined, sessionID: undefined, ip: undefined});
+    const res = createResponse();
+    const next = jest.fn();
+
+    await guard(req, res, next);
+    await guard(req, res, next);
+
+    expect(redisClient.incr).toHaveBeenCalledWith('upload-rate-limit:unknown');
+    expect((next.mock.calls[1][0] as {status: number}).status).toBe(429);
+  });
+
+  it('should reset key expiry when Redis has no ttl for a blocked request', async () => {
+    const redisClient = createRedisClient();
+    redisClient.pttl.mockResolvedValueOnce(-1);
+    const guard = createUploadRateLimitGuard(1, 60000);
+    const req = createRequest(redisClient);
+    const res = createResponse();
+    const next = jest.fn();
+
+    await guard(req, res, next);
+    await guard(req, res, next);
+
+    expect(redisClient.expire).toHaveBeenCalledTimes(2);
+    expect(redisClient.expire).toHaveBeenLastCalledWith('upload-rate-limit:user-123', 60);
+    expect(res.setHeader).toHaveBeenCalledWith('Retry-After', '60');
+    expect((next.mock.calls[1][0] as {status: number}).status).toBe(429);
+  });
+
+  it('should pass Redis errors to error handling middleware', async () => {
+    const redisError = new Error('Redis unavailable');
+    const redisClient = {
+      incr: jest.fn().mockRejectedValue(redisError),
+      expire: jest.fn(),
+      pttl: jest.fn(),
+    };
+    const guard = createUploadRateLimitGuard(1, 60000);
+    const req = createRequest(redisClient, 'POST');
+    const res = createResponse();
+    const next = jest.fn();
+
+    await guard(req, res, next);
+
+    expect(next).toHaveBeenCalledWith(redisError);
+    expect(res.setHeader).not.toHaveBeenCalled();
   });
 });
