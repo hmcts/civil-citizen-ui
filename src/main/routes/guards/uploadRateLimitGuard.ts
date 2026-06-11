@@ -1,4 +1,7 @@
-import {NextFunction, Response} from 'express';
+import {NextFunction, RequestHandler, Response} from 'express';
+import {ipKeyGenerator, rateLimit} from 'express-rate-limit';
+import {RedisStore} from 'rate-limit-redis';
+import type {RedisReply} from 'rate-limit-redis';
 import {AppRequest} from 'models/AppRequest';
 import {HTTPError} from '../../HttpError';
 
@@ -6,30 +9,22 @@ const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('uploadRateLimitGuard');
 
 interface RedisRateLimitClient {
-  incr: (key: string) => Promise<number>;
-  expire: (key: string, seconds: number) => Promise<number>;
-  pttl: (key: string) => Promise<number>;
+  call: (command: string, ...args: string[]) => Promise<RedisReply>;
 }
 
 const buildRateLimitKey = (req: AppRequest): string => {
-  const userId = req.session?.user?.id;
-  const sessionId = req.sessionID;
-  const ipAddress = req.ip;
-  const identity = userId || sessionId || ipAddress || 'unknown';
-
-  return `upload-rate-limit:${identity.replace(/[^a-zA-Z0-9:_-]/g, '_')}`;
-};
-
-const getIdentityType = (req: AppRequest): string => {
   if (req.session?.user?.id) {
-    return 'user';
+    return `user:${req.session.user.id}`;
   }
+
   if (req.sessionID) {
-    return 'session';
+    return `session:${req.sessionID}`;
   }
+
   if (req.ip) {
-    return 'ip';
+    return `ip:${ipKeyGenerator(req.ip)}`;
   }
+
   return 'unknown';
 };
 
@@ -40,38 +35,34 @@ const buildRateLimitError = (): HTTPError => {
   return error;
 };
 
-export const createUploadRateLimitGuard = (maxRequests: number, windowMs: number) => {
-  return async (req: AppRequest, res: Response, next: NextFunction) => {
-    if (req.method !== 'POST') {
-      return next();
-    }
+export const createUploadRateLimitGuard = (
+  maxRequests: number,
+  windowMs: number,
+  redisClient: RedisRateLimitClient,
+): RequestHandler => rateLimit({
+  windowMs,
+  limit: maxRequests,
+  skip: req => req.method !== 'POST',
+  keyGenerator: req => buildRateLimitKey(req as AppRequest),
+  store: new RedisStore({
+    prefix: 'upload-rate-limit:',
+    sendCommand: (command: string, ...args: string[]) => redisClient.call(command, ...args),
+  }),
+  standardHeaders: true,
+  legacyHeaders: false,
+  handler: (req, res: Response, next: NextFunction) => {
+    const rateLimit = (req as typeof req & { rateLimit?: { used: number; resetTime?: Date } }).rateLimit;
+    const retryAfterSeconds = rateLimit?.resetTime
+      ? Math.max(1, Math.ceil((rateLimit.resetTime.getTime() - Date.now()) / 1000))
+      : Math.max(1, Math.ceil(windowMs / 1000));
 
-    try {
-      const redisClient = req.app.locals.draftStoreClient as RedisRateLimitClient;
-      const key = buildRateLimitKey(req);
-      const requestCount = await redisClient.incr(key);
-
-      if (requestCount === 1) {
-        await redisClient.expire(key, Math.ceil(windowMs / 1000));
-      }
-
-      if (requestCount > maxRequests) {
-        let ttlMs = await redisClient.pttl(key);
-        if (ttlMs < 0) {
-          ttlMs = windowMs;
-          await redisClient.expire(key, Math.ceil(windowMs / 1000));
-        }
-
-        const retryAfterSeconds = Math.max(1, Math.ceil(ttlMs / 1000));
-        res.setHeader('Retry-After', retryAfterSeconds.toString());
-        logger.warn(`Upload rate limit exceeded for ${getIdentityType(req)}, count ${requestCount}, retry after ${retryAfterSeconds}s`);
-        return next(buildRateLimitError());
-      }
-
-      return next();
-    } catch (error) {
-      logger.error('Upload rate limit check failed', error);
-      return next(error);
-    }
-  };
-};
+    res.setHeader('Retry-After', retryAfterSeconds.toString());
+    logger.warn(`Upload rate limit exceeded for ${buildRateLimitKey(req as AppRequest)}, count ${rateLimit?.used || maxRequests + 1}, retry after ${retryAfterSeconds}s`);
+    next(buildRateLimitError());
+  },
+  passOnStoreError: false,
+  logger: {
+    warn: (error: unknown, message?: string) => logger.warn(message || error),
+    error: (error: unknown, message?: string) => logger.error(message || 'Upload rate limit check failed', error),
+  },
+});
