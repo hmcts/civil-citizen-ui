@@ -103,6 +103,16 @@ module.exports = class BrowserHelpers extends Helper {
     return false;
   }
 
+  async clickClaimNumber(claimNumber) {
+    if (this.isPlaywright()) {
+      const page = this.helpers.Playwright.page;
+      await page.locator(`//a[normalize-space()="${claimNumber}"]`).first().click();
+      return;
+    }
+
+    await this.getHelper().click(claimNumber);
+  }
+
   async clickWithRetry(selectorOrButtonName, retries = 1) {
     if (!this.isPlaywright()) {
       await this.getHelper().click(selectorOrButtonName);

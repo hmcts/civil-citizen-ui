@@ -12,7 +12,7 @@ module.exports = {
     const currentUrl = await I.grabCurrentUrl();
     if (claimNumber && claimNumber !== '' && !currentUrl.includes(claimRef)) {
       await I.amOnPage('/dashboard');
-      await I.click(claimNumber);
+      await I.clickClaimNumber(claimNumber);
     }
     const maxRetries = 15;
     const retryDelaySeconds = 4;
@@ -64,7 +64,7 @@ module.exports = {
     //Step to check if status is already updated, if not it will refresh the page
     if (claimNumber && claimNumber != '') {
       await I.amOnPage('/dashboard');
-      await I.click(claimNumber);
+      await I.clickClaimNumber(claimNumber);
     }
     await I.waitForVisible(selectors.titleClass, 60);
     // The task status may still be settling on a slow environment; refresh a few
