@@ -31,11 +31,11 @@ Before(async ({api}) => {
 
 Scenario('Small Claims Response with RejectAll and DisputeAll - both parties upload docs',  async ({I}) => {
   notification = orderMadeLA();
-  await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
+  await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef, 'defendant');
   taskListItem = uploadHearingDocuments();
   await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Action needed', true);
   notification = uploadDocuments('defence');
-  await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
+  await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef, 'defendant');
   await I.click(notification.nextSteps);
   formattedCaseId = StringUtilsComponent.StringUtilsComponent.formatClaimReferenceToAUIDisplayFormat(claimRef);
   uploadDate = DateUtilsComponent.DateUtilsComponent.formatDateToSpecifiedDateFormat(new Date());

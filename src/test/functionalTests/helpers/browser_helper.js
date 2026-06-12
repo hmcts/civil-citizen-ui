@@ -103,14 +103,35 @@ module.exports = class BrowserHelpers extends Helper {
     return false;
   }
 
-  async clickClaimNumber(claimNumber) {
-    if (this.isPlaywright()) {
-      const page = this.helpers.Playwright.page;
-      await page.locator(`//a[normalize-space()="${claimNumber}"]`).first().click();
+  async clickClaimNumber(claimNumber, retries = 2) {
+    if (!this.isPlaywright()) {
+      await this.getHelper().click(claimNumber);
       return;
     }
 
-    await this.getHelper().click(claimNumber);
+    const page = this.helpers.Playwright.page;
+    const claimLink = page.locator(`//a[normalize-space()="${claimNumber}"]`).first();
+    let lastError;
+
+    for (let attempt = 0; attempt <= retries; attempt++) {
+      try {
+        await claimLink.click();
+      } catch (err) {
+        lastError = err;
+        console.log(`Claim click attempt ${attempt + 1}/${retries + 1} failed: ${err.message}`);
+        await page.waitForTimeout(500);
+        continue;
+      }
+
+      await page.waitForTimeout(1);
+      if (!await this.handleKnownErrorsAndGoBack()) {
+        return;
+      }
+
+      console.log(`Retrying claim click (${attempt + 1}/${retries})...`);
+    }
+
+    throw lastError || new Error(`Failed to click claim number ${claimNumber}`);
   }
 
   async clickWithRetry(selectorOrButtonName, retries = 1) {
