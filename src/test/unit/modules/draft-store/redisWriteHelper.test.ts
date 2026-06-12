@@ -43,10 +43,6 @@ describe('redisWriteHelper', () => {
     expect(mockDraftStoreClient.expireat).toHaveBeenCalledWith('claim-key', expectedExpiry);
   });
 
-  it('should throw when key is empty', async () => {
-    await expect(writeWithTTL('', 'value', TTLCategory.PAYMENT_SESSION)).rejects.toThrow('Redis key cannot be empty');
-  });
-
   it('should throw when value is null', async () => {
     await expect(writeWithTTL('key', null as unknown as string, TTLCategory.PAYMENT_SESSION))
       .rejects.toThrow('Redis value cannot be null or undefined');

@@ -13,9 +13,6 @@ export const writeWithTTL = async (
   category: TTLCategory,
   metadata?: TTLMetadata,
 ): Promise<void> => {
-  if (!key?.trim()) {
-    throw new Error('Redis key cannot be empty');
-  }
   if (value === null || value === undefined) {
     throw new Error('Redis value cannot be null or undefined');
   }
