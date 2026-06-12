@@ -3178,6 +3178,10 @@
       "THERE_WAS_AN_ERROR": "Roedd gwall yn ystod eich gweithred olaf. Rhowch gynnig arni eto nes ymlaen.",
       "TITLE": "Nid oes gennych awdurdod i weld yr hawliad!"
     },
+    "FIRST_CONTACT_CLAIM_FINALISED": {
+      "MESSAGE": "Ni allwch ymateb i'r hawliad hwn oherwydd ei fod eisoes wedi'i gwblhau.",
+      "TITLE": "Mae'r hawliad hwn eisoes wedi'i gwblhau"
+    },
     "FIRST_CONTACT_CLAIM_REFERENCE": {
       "CLAIM_NUMBER": "Rhif hawliad",
       "ENTER_CLAIM": "Mae hwn yn rif 8 nod ac mae ar yr e-bost neu'r llythyr wnaethom ei anfon atoch. Mae'n cynnwys 3 rhif yna 2 lythyren yna 3 rhif, er enghraifft 305JE126.",
