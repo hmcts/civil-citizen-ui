@@ -152,7 +152,6 @@ The standard preview deployment, i.e. without the github label present, intends 
 
 `pr-values:skip-functional-tests` can be used for changes that do not impact the functionality of the service and therefore do not require the functional test stage to run in the Jenkins pipeline.
 
-
 ```bash
 $ yarn test:crossbrowser
 ```
