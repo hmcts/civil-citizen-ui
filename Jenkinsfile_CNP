@@ -24,7 +24,6 @@ static Map<String, Object> secret(String secretName, String envVariable) {
   ]
 }
 
-
 def copyPrevFailedAndNotExecutedTestFilesJson() {
   def buildFound = false
   def buildNumber = currentBuild.previousBuild ? currentBuild.previousBuild.number : 0
@@ -77,9 +76,9 @@ def getFunctionalTestsGroups() {
 def getCivilCcdDefinitionBranch() {
   def githubApi = new GithubAPI(this)
   for (label in githubApi.getLabelsbyPattern(env.BRANCH_NAME, "civilDefinitionBranch:")) {
-    return label.minus("civilDefinitionBranch:").trim()
+    return "DTSCCI-7739-def"
   }
-  return "master"
+  return "DTSCCI-7739-def"
 }
 
 def getCivilServiceImage() {
