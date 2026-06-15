@@ -146,6 +146,51 @@
   float: right;
 }
 
+.govuk-header__content {
+  display: block;
+  padding-bottom: govuk-spacing(2);
+}
+
+.govuk-header__service-name {
+  display: inline-block;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.25;
+  margin-bottom: govuk-spacing(2);
+}
+
+.govuk-header__navigation {
+  margin: 0;
+}
+
+.govuk-header__navigation-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.govuk-header__navigation-item {
+  display: inline-block;
+  margin-right: govuk-spacing(4);
+}
+
+.govuk-header__navigation-item:last-child {
+  margin-right: 0;
+}
+
+@include govuk-media-query($from: tablet) {
+  .govuk-header__content {
+    float: right;
+    padding-bottom: 0;
+    text-align: right;
+    width: 66.66%;
+  }
+
+  .govuk-header__service-name {
+    margin-bottom: govuk-spacing(1);
+  }
+}
+
 @mixin bottom-bordered($govuk-color, $width, $margin, $padding) {
   border-bottom: $width solid $govuk-color;
 

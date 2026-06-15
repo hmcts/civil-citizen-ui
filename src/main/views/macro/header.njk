@@ -1,6 +1,7 @@
-{% from 'govuk/components/header/macro.njk' import govukHeader %}
+{% from 'govuk/macros/logo.njk' import govukLogo %}
 
 {% macro headerComponent(t, user) %}
+  {% set serviceUrl = ocmcBaseUrl | default('/dashboard', true) %}
   {% set navigationList = [
     {
       href: '/dashboard',
@@ -16,14 +17,33 @@
 
   ] %}
   {% block header %}
-    {{ govukHeader({
-      homepageUrl: 'https://www.gov.uk',
-      containerClasses: 'govuk-width-container',
-      serviceName:  t('COMMON.HEADER.MONEY_CLAIMS'),
-      serviceUrl: '/dashboard',
-      navigationClasses: 'govuk-!-display-inline float-right',
-      navigation: navigationList,
-      useTudorCrown: true
-    }) }}
+    <header class="govuk-header" data-module="govuk-header" role="banner">
+      <div class="govuk-header__container govuk-width-container">
+        <div class="govuk-header__logo">
+          <a href="https://www.gov.uk" class="govuk-header__homepage-link">
+            {{ govukLogo({
+              classes: "govuk-header__logotype",
+              ariaLabelText: "GOV.UK"
+            }) | trim | indent(12) }}
+          </a>
+        </div>
+        <div class="govuk-header__content">
+          <a href="{{ serviceUrl }}" class="govuk-header__link govuk-header__service-name">
+            {{ t('COMMON.HEADER.MONEY_CLAIMS') }}
+          </a>
+          {% if navigationList.length %}
+            <nav aria-label="Menu" class="govuk-header__navigation">
+              <ul class="govuk-header__navigation-list">
+                {% for item in navigationList %}
+                  <li class="govuk-header__navigation-item">
+                    <a class="govuk-header__link" href="{{ item.href }}">{{ item.text }}</a>
+                  </li>
+                {% endfor %}
+              </ul>
+            </nav>
+          {% endif %}
+        </div>
+      </div>
+    </header>
   {% endblock %}
 {% endmacro %}
