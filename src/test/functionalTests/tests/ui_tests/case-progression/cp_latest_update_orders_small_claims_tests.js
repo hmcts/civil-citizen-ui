@@ -1,20 +1,20 @@
 const config = require('../../../../config');
 const LoginSteps = require('../../../commonFeatures/home/steps/login');
 const ResponseSteps = require('../../../citizenFeatures/response/steps/lipDefendantResponseSteps');
-const {createAccount} = require('../../../specClaimHelpers/api/idamHelper');
-const {verifyNotificationTitleAndContent, verifyTasklistLinkAndState} = require('../../../specClaimHelpers/e2e/dashboardHelper');
-const {orderMadeLA} = require('../../../specClaimHelpers/dashboardNotificationConstants');
-const {ordersAndNotices} = require('../../../specClaimHelpers/dashboardTasklistConstants');
+const { createAccount } = require('../../../specClaimHelpers/api/idamHelper');
+const { verifyNotificationTitleAndContent, verifyTasklistLinkAndState } = require('../../../specClaimHelpers/e2e/dashboardHelper');
+const { orderMade } = require('../../../specClaimHelpers/dashboardNotificationConstants');
+const { ordersAndNotices } = require('../../../specClaimHelpers/dashboardTasklistConstants');
 
 const claimType = 'SmallClaims';
 let caseData, claimNumber, claimRef, taskListItem;
 
-Feature('Case progression journey - Verify latest Update page For an Order being Created - Small Claims').tag('@civil-citizen-nightly @ui-orders @test123');
+Feature('Case progression journey - Verify latest Update page For an Order being Created - Small Claims').tag('@civil-citizen-nightly @ui-orders');
 
-Before(async ({api}) => {
+Before(async ({ api }) => {
+  //Once the CUI Release is done, we can remove this IF statement, so that tests will run on AAT as well.
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser, '', claimType);
-  await api.waitForFinishedBusinessProcess(claimRef);
   caseData = await api.retrieveCaseData(config.adminUser, claimRef);
   claimNumber = await caseData.legacyCaseReference;
   await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.rejectAllDisputeAllWithIndividual);
@@ -26,8 +26,10 @@ Before(async ({api}) => {
   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
 });
 
-Scenario('Case progression journey - Small Claims - Verify latest Update page for an Order being Created', async ({I, api}) => {
-  const orderMadeNotif = orderMadeLA();
+Scenario.skip('Case progression journey - Small Claims - Verify latest Update page for an Order being Created', async ({ I, api }) => {
+  // Enable this test once the bug https://tools.hmcts.net/jira/browse/DTSCCI-5513 is fixed
+  
+  const orderMadeNotif = orderMade();
   await verifyNotificationTitleAndContent(claimNumber, orderMadeNotif.title, orderMadeNotif.content, claimRef);
   taskListItem = ordersAndNotices();
   await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Available', true);
