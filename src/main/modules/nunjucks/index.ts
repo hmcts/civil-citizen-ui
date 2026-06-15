@@ -47,7 +47,6 @@ import { ProposedPaymentPlanOption } from 'common/models/generalApplication/resp
 const packageDotJson = require('../../../../package.json');
 
 const dynatraceUrl = config.get<string>('services.dynatrace.url');
-const ocmcBaseUrl = config.get<string>('services.cmc.url');
 
 const appAssetPaths = {
   js: '/js',
@@ -159,7 +158,6 @@ export class Nunjucks {
     nunjucksEnv.addGlobal('PaymentOptionType', PaymentOptionType);
     nunjucksEnv.addGlobal('TestingSupportUrl', '/testing-support/create-draft-claim');
     nunjucksEnv.addGlobal('developmentMode', this.developmentMode);
-    nunjucksEnv.addGlobal('ocmcBaseUrl', ocmcBaseUrl);
     nunjucksEnv.addGlobal('nonceValue', nonceValue);
     nunjucksEnv.addGlobal('nonceDataLayer', nonceDataLayer);
     nunjucksEnv.addGlobal('TaskStatus', TaskStatus);

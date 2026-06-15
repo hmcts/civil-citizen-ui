@@ -212,7 +212,6 @@ if(e2eTestMode){
   app.use((req, res, next) => {
     const session = ((req.session) as AppSession);
     session.user = {accessToken: 'someAccessToken', idToken:'someIdToken', email: '', familyName: '', givenName: '', roles: [], id: 'someID'};
-    res.locals.user = session.user;
     next();
   });
 }

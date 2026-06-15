@@ -6,6 +6,7 @@
 {% from "./macro/cookie-banner.njk" import cookieBanner %}
 {% from "./macro/back.njk" import back %}
 
+{% set languageToggle = "<a class='govuk-!-font-size-19 govuk-link language' href='?lang=en'>English</a>"%}
 {% extends "govuk/template.njk" %}
 {% block head %}
 
@@ -44,7 +45,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         tag: {
           text: t('COMMON.HEADER.BETA')
         },
-        html: bannerText
+        html: bannerText + languageToggle
       }) }}
 
   {{ back(backLinkUrl, t,  false, true) }}
