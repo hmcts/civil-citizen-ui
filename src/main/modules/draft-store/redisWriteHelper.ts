@@ -19,18 +19,24 @@ export const writeWithTTL = async (
 
   const draftStoreClient = app.locals.draftStoreClient;
   const serializedValue = serializeValue(value);
-  const existingTTL = await draftStoreClient.ttl(key);
 
-  if (existingTTL > 0) {
-    await draftStoreClient.set(key, serializedValue, 'KEEPTTL');
-    logger.info(`Preserved existing TTL for key: ${key}, TTL: ${existingTTL}s`);
-    return;
+  try {
+    const existingTTL = await draftStoreClient.ttl(key);
+
+    if (existingTTL > 0) {
+      await draftStoreClient.set(key, serializedValue, 'KEEPTTL');
+      logger.info(`Preserved existing TTL for key: ${key}, TTL: ${existingTTL}s`);
+      return;
+    }
+
+    const expiryTimestamp = calculateExpiryTimestamp(category, metadata);
+    await draftStoreClient.set(key, serializedValue);
+    await draftStoreClient.expireat(key, expiryTimestamp);
+    logger.info(
+      `Applied TTL for key: ${key}, category: ${category}, expires: ${new Date(expiryTimestamp * 1000).toISOString()}`,
+    );
+  } catch (error) {
+    logger.error(`Failed to write Redis key: ${key}, category: ${category}`, error);
+    throw error;
   }
-
-  const expiryTimestamp = calculateExpiryTimestamp(category, metadata);
-  await draftStoreClient.set(key, serializedValue);
-  await draftStoreClient.expireat(key, expiryTimestamp);
-  logger.info(
-    `Applied TTL for key: ${key}, category: ${category}, expires: ${new Date(expiryTimestamp * 1000).toISOString()}`,
-  );
 };

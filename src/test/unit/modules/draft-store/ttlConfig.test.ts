@@ -1,4 +1,4 @@
-import {TTLCategory, calculateExpiryTimestamp} from 'modules/draft-store/ttlConfig';
+import {TTLCategory, calculateExpiryTimestamp, reconstructCreationDateFromRemainingTtl} from 'modules/draft-store/ttlConfig';
 
 describe('ttlConfig', () => {
   it('should calculate draft claim expiry from creation date', () => {
@@ -23,5 +23,16 @@ describe('ttlConfig', () => {
     const creationDate = new Date('2024-03-15T12:00:00.000Z');
     const expiry = calculateExpiryTimestamp(TTLCategory.GA_JOURNEY, {creationDate});
     expect(expiry).toBe(Math.round(creationDate.getTime() / 1000) + (30 * 86400));
+  });
+
+  it('should reconstruct creation date from remaining TTL', () => {
+    const remainingTtlSeconds = 90 * 86400;
+    const before = Date.now();
+    const creationDate = reconstructCreationDateFromRemainingTtl(remainingTtlSeconds, TTLCategory.DRAFT_CLAIM);
+    const after = Date.now();
+    const expectedElapsedMs = (180 * 86400 - remainingTtlSeconds) * 1000;
+
+    expect(creationDate.getTime()).toBeGreaterThanOrEqual(before - expectedElapsedMs);
+    expect(creationDate.getTime()).toBeLessThanOrEqual(after - expectedElapsedMs);
   });
 });

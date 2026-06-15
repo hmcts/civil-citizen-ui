@@ -266,4 +266,27 @@ describe('Draft store service to save and retrieve claim', () => {
     expect(claim.draftClaimCreatedAt).toBeDefined();
     expect(draftStoreWithData.expireat).toHaveBeenCalledWith(CLAIM_ID, expect.any(Number));
   });
+
+  it('should reconstruct draftClaimCreatedAt from existing TTL for legacy drafts', async () => {
+    const storedClaim = {...REDIS_DATA[0]};
+    delete storedClaim.case_data.draftClaimCreatedAt;
+    const draftStoreWithData = createMockDraftStore(storedClaim);
+    const remainingTtlSeconds = 90 * 86400;
+    draftStoreWithData.ttl = jest.fn().mockResolvedValue(remainingTtlSeconds);
+    draftStoreWithData.expireat = jest.fn().mockResolvedValue({});
+    app.locals.draftStoreClient = draftStoreWithData;
+
+    const claim = new Claim();
+    claim.id = CLAIM_ID;
+
+    const beforeSave = Date.now();
+    await saveDraftClaim(CLAIM_ID, claim);
+    const afterSave = Date.now();
+
+    const expectedElapsedMs = (180 * 86400 - remainingTtlSeconds) * 1000;
+    const createdAtMs = claim.draftClaimCreatedAt?.getTime() ?? 0;
+    expect(createdAtMs).toBeGreaterThanOrEqual(beforeSave - expectedElapsedMs - 1000);
+    expect(createdAtMs).toBeLessThanOrEqual(afterSave - expectedElapsedMs + 1000);
+    expect(draftStoreWithData.expireat).not.toHaveBeenCalled();
+  });
 });

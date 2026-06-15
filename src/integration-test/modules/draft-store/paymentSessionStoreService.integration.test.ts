@@ -25,16 +25,36 @@ const legacyConfirmationUrlKey = (userId: string) => userId + userIdForPayment;
  */
 const createBackingStore = () => {
   const map = new Map<string, string>();
+  const expirations = new Map<string, number>();
   return {
     map,
-    set: jest.fn((key: string, value: string) => {
+    set: jest.fn((key: string, value: string, ...args: string[]) => {
       map.set(key, value);
+      if (args[0] !== 'KEEPTTL') {
+        expirations.delete(key);
+      }
       return Promise.resolve('OK');
     }),
     get: jest.fn((key: string) => Promise.resolve(map.has(key) ? map.get(key) : null)),
     del: jest.fn((key: string) => {
+      expirations.delete(key);
       const existed = map.delete(key);
       return Promise.resolve(existed ? 1 : 0);
+    }),
+    ttl: jest.fn((key: string) => {
+      if (!map.has(key)) {
+        return Promise.resolve(-2);
+      }
+      const expiry = expirations.get(key);
+      if (!expiry) {
+        return Promise.resolve(-1);
+      }
+      const remaining = expiry - Math.floor(Date.now() / 1000);
+      return Promise.resolve(remaining > 0 ? remaining : -2);
+    }),
+    expireat: jest.fn((key: string, timestamp: number) => {
+      expirations.set(key, timestamp);
+      return Promise.resolve(1);
     }),
   };
 };

@@ -9,7 +9,7 @@ import {AppRequest} from 'common/models/AppRequest';
 import {getClaimById} from 'modules/utilityService';
 import {Request} from 'express';
 import {getRouteParam} from 'common/utils/routeParamUtils';
-import {TTLCategory} from './ttlConfig';
+import {TTLCategory, reconstructCreationDateFromRemainingTtl} from './ttlConfig';
 import {writeWithTTL} from './redisWriteHelper';
 
 const {Logger} = require('@hmcts/nodejs-logging');
@@ -75,7 +75,20 @@ export const saveDraftClaim = async (
     storedClaimResponse = createNewCivilClaimResponse(claimId);
   }
   if (ttlCategory === TTLCategory.DRAFT_CLAIM && !claim.draftClaimCreatedAt) {
-    claim.draftClaimCreatedAt = new Date();
+    const storedCreatedAt = storedClaimResponse.case_data?.draftClaimCreatedAt;
+    if (storedCreatedAt) {
+      claim.draftClaimCreatedAt = new Date(storedCreatedAt);
+    } else {
+      const existingTTL = await app.locals.draftStoreClient.ttl(claimId);
+      if (existingTTL > 0) {
+        claim.draftClaimCreatedAt = reconstructCreationDateFromRemainingTtl(
+          existingTTL,
+          TTLCategory.DRAFT_CLAIM,
+        );
+      } else {
+        claim.draftClaimCreatedAt = new Date();
+      }
+    }
   }
   storedClaimResponse.case_data = claim as any;
 
@@ -127,8 +140,9 @@ export async function createDraftClaimInStoreWithExpiryTime(claimId: string) {
     draftClaimCreatedAt: creationTime,
   } as unknown as CCDClaim;
   await writeWithTTL(claimId, draftClaim, TTLCategory.DRAFT_CLAIM, {creationDate: creationTime});
-  const draftStoreClient = app.locals.draftStoreClient;
-  logger.info(`Draft claim expiry time is set to ${await draftStoreClient.ttl(claimId)} seconds as of ${creationTime}`);
+  logger.info(
+    `Draft claim expiry time is set to ${await app.locals.draftStoreClient.ttl(claimId)} seconds as of ${creationTime}`,
+  );
 }
 
 export function generateRedisKey(req: AppRequest) {

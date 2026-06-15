@@ -45,3 +45,12 @@ export const calculateExpiryTimestamp = (
   const baseDate = metadata?.creationDate ?? new Date();
   return Math.round(baseDate.getTime() / 1000) + ttlInSeconds;
 };
+
+export const reconstructCreationDateFromRemainingTtl = (
+  remainingTtlSeconds: number,
+  category: TTLCategory,
+): Date => {
+  const totalTtlSeconds = getTTLDaysForCategory(category) * DAY_TO_SECONDS;
+  const elapsedSeconds = totalTtlSeconds - remainingTtlSeconds;
+  return new Date(Date.now() - elapsedSeconds * 1000);
+};
