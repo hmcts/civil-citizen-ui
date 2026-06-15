@@ -47,7 +47,6 @@ import { ProposedPaymentPlanOption } from 'common/models/generalApplication/resp
 const packageDotJson = require('../../../../package.json');
 
 const dynatraceUrl = config.get<string>('services.dynatrace.url');
-const moneyClaimsUrl = config.get<string>('services.cmc.url');
 
 const appAssetPaths = {
   js: '/js',
@@ -168,7 +167,6 @@ export class Nunjucks {
     // TODO : 'GTM-PBT2TQ2D' is test GTM id for integration to the Google Tag Manager for Google Analytics, it should be replaced with production GTM id when it's provided by HMCTS User experience team
     nunjucksEnv.addGlobal('gtmScriptId', 'GTM-PBT2TQ2D');
     nunjucksEnv.addGlobal('dynatraceUrl', dynatraceUrl);
-    nunjucksEnv.addGlobal('moneyClaimsUrl', moneyClaimsUrl);
 
     app.use((req:AppRequest, res, next) => {
       res.locals.pagePath = req.path;

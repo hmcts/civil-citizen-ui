@@ -15,16 +15,15 @@
   ] if user else [
 
   ] %}
-  {% block header %}
+  {% block govukHeader %}
     {{ govukHeader({
       homepageUrl: 'https://www.gov.uk',
       containerClasses: 'govuk-width-container',
-      navigationClasses: 'govuk-!-display-inline float-right civil-header-navigation',
+      serviceName:  t('COMMON.HEADER.MONEY_CLAIMS'),
+      serviceUrl: '/dashboard',
+      navigationClasses: 'govuk-!-display-inline float-right',
       navigation: navigationList,
       useTudorCrown: true
     }) }}
-    <div class="govuk-width-container civil-header-money-claims-link">
-      <a class="govuk-header__link govuk-header__link--homepage" href="{{ moneyClaimsUrl }}">{{ t('COMMON.HEADER.MONEY_CLAIMS') }}</a>
-    </div>
   {% endblock %}
 {% endmacro %}
