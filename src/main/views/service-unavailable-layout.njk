@@ -2,6 +2,7 @@
 {% from "govuk/components/phase-banner/macro.njk" import govukPhaseBanner %}
 {% from "govuk/components/footer/macro.njk" import govukFooter %}
 {% from 'govuk/components/header/macro.njk' import govukHeader %}
+{% from "govuk/components/service-navigation/macro.njk" import govukServiceNavigation %}
 {% from "./macro/page-title.njk" import setPageTitle %}
 {% from "./macro/header.njk" import headerComponent %}
 {% from "./macro/cookie-banner.njk" import cookieBanner %}
@@ -24,11 +25,12 @@
 {% block header %}
   {{ govukHeader({
       homepageUrl: 'https://www.gov.uk',
-      containerClasses: 'govuk-width-container',
+      containerClasses: 'govuk-width-container'
+    }) }}
+  {{ govukServiceNavigation({
       serviceName:  t('PAGES.SERVICE_UNAVAILABLE.SERVICE_NAME'),
       navigationClasses: 'govuk-!-display-inline float-right',
-      navigation: navigationList,
-      useTudorCrown: true
+      navigation: navigationList
     }) }}
 {% endblock %}
 

@@ -1,6 +1,6 @@
-@use 'node_modules/govuk-frontend/dist/govuk' as *;
-@import './task-list';
-@import './citizen-ui-colours';
+@use 'govuk-frontend/dist/govuk' as *;
+@use './citizen-ui-colours' as *;
+@use './task-list';
 
 .moj-add-another {
   &__remove-button {
@@ -44,7 +44,7 @@
 }
 
 .mid-grey {
-  color: govuk-colour('dark-grey');
+  color: govuk-colour('black', $variant: 'tint-25');
 }
 
 .white-link {
@@ -146,39 +146,6 @@
   float: right;
 }
 
-.civil-header-navigation {
-  .govuk-header__navigation-item + .govuk-header__navigation-item {
-    margin-left: 30px;
-  }
-}
-
-.civil-header-money-claims-link {
-  box-sizing: border-box;
-  margin-top: -48px;
-  padding-bottom: 12px;
-  text-align: center;
-
-  .govuk-header__link {
-    font-size: 30px;
-    font-weight: 700;
-    line-height: 1;
-  }
-}
-
-@media (max-width: 40.0525em) { /* stylelint-disable-line media-feature-range-notation */
-  .civil-header-navigation {
-    .govuk-header__navigation-item + .govuk-header__navigation-item {
-      margin-left: 0;
-    }
-  }
-
-  .civil-header-money-claims-link {
-    margin-top: 0;
-    padding-bottom: 10px;
-    text-align: left;
-  }
-}
-
 @mixin bottom-bordered($govuk-color, $width, $margin, $padding) {
   border-bottom: $width solid $govuk-color;
 
@@ -224,7 +191,7 @@
 }
 
 .example-wrapper {
-  border: 1px solid govuk-colour('mid-grey');
+  border: 1px solid govuk-colour('black', $variant: 'tint-80');
   display: flex;
   flex-flow: column nowrap;
 
@@ -233,7 +200,7 @@
   }
 
   .tag {
-    background-color: govuk-colour('dark-grey');
+    background-color: govuk-colour('black', $variant: 'tint-25');
     color: govuk-colour('white');
     font-family: 'GDS Transport', arial, sans-serif;
     left: 0;
