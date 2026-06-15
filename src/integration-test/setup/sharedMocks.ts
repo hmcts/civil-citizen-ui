@@ -47,6 +47,22 @@ export const dmStoreClientMock = {
   retrieveDocumentByDocumentId: jest.fn(),
 };
 
+export const draftStoreServiceMock = {
+  updateFieldDraftClaimFromStore: jest.fn().mockResolvedValue(undefined),
+  getCaseDataFromStore: jest.fn(),
+  saveDraftClaim: jest.fn().mockResolvedValue(undefined),
+  generateRedisKey: jest.fn(() => 'test-redis-key'),
+};
+
+export const dashboardServiceMock = {
+  getNotifications: jest.fn(),
+  getDashboardForm: jest.fn(),
+  extractOrderDocumentIdFromNotification: jest.fn(),
+  getContactCourtLink: jest.fn(),
+  getHelpSupportTitle: jest.fn(),
+  getHelpSupportLinks: jest.fn(),
+};
+
 jest.mock('modules/oidc', () => ({
   OidcMiddleware: class {
     public enableFor(): void {

@@ -7,13 +7,31 @@ const selectors = {
   contentClass: 'div.govuk-notification-banner__content',
 };
 
+const getCaseDashboardPath = (claimRef, partyRole = 'claimant') =>
+  partyRole === 'defendant'
+    ? `/dashboard/${claimRef}/defendant`
+    : `/dashboard/${claimRef}/claimantNewDesign`;
+
+const navigateToClaimIfNeeded = async (claimNumber, claimRef, partyRole = 'claimant') => {
+  const currentUrl = await I.grabCurrentUrl();
+  if (claimRef && currentUrl.includes(claimRef)) {
+    return;
+  }
+
+  if (claimRef) {
+    await I.amOnPage(getCaseDashboardPath(claimRef, partyRole));
+    return;
+  }
+
+  if (claimNumber && claimNumber !== '') {
+    await I.amOnPage('/dashboard');
+    await I.clickClaimNumber(claimNumber);
+  }
+};
+
 module.exports = {
-  verifyNotificationTitleAndContent: async (claimNumber = '', title, content, claimRef) => {
-    const currentUrl = await I.grabCurrentUrl();
-    if (claimNumber && claimNumber !== '' && !currentUrl.includes(claimRef)) {
-      await I.amOnPage('/dashboard');
-      await I.click(claimNumber);
-    }
+  verifyNotificationTitleAndContent: async (claimNumber = '', title, content, claimRef, partyRole = 'claimant') => {
+    await navigateToClaimIfNeeded(claimNumber, claimRef, partyRole);
     const maxRetries = 15;
     const retryDelaySeconds = 4;
     let lastPageSource = '';
@@ -52,20 +70,28 @@ module.exports = {
         );
       }
 
+      // The notification may still be generating on a slow environment; give the
+      // business process time to finish before refreshing and re-checking.
+      await waitForFinishedBusinessProcess();
       await I.wait(retryDelaySeconds);
       await I.refreshPage();
     }
   },
 
-  verifyTasklistLinkAndState: async (tasklist, locator, status, isLinkFlag= false, isDeadlinePresent= false, deadline, claimNumber = '') => {
+  verifyTasklistLinkAndState: async (tasklist, locator, status, isLinkFlag= false, isDeadlinePresent= false, deadline, claimNumber = '', claimRef, partyRole = 'claimant') => {
     //Step to check if status is already updated, if not it will refresh the page
-    if (claimNumber && claimNumber != '') {
-      await I.amOnPage('/dashboard');
-      await I.click(claimNumber);
+    if (claimNumber || claimRef) {
+      await navigateToClaimIfNeeded(claimNumber, claimRef, partyRole);
     }
     await I.waitForVisible(selectors.titleClass, 60);
-    const actualStatus = await I.grabTextFrom(locator);
-    if (!actualStatus.toLowerCase().includes(status.toLowerCase())) {
+    // The task status may still be settling on a slow environment; refresh a few
+    // times until it reflects the expected value before asserting.
+    const maxRetries = 5;
+    for (let tries = 1; tries <= maxRetries; tries++) {
+      const actualStatus = await I.grabTextFrom(locator);
+      if (actualStatus.toLowerCase().includes(status.toLowerCase()) || tries === maxRetries) {
+        break;
+      }
       await I.wait(3);
       await waitForFinishedBusinessProcess();
       await I.refreshPage();
