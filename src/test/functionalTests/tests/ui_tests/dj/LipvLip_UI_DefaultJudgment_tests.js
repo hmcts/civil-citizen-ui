@@ -38,16 +38,16 @@ Scenario('Create LipvLip claim and defendant not responded by deadline and Claim
 
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await api.waitForFinishedBusinessProcess();
-  notification = claimantNotificationDJRequested();
-  await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
-  await I.click(notification.nextSteps);
+  const claimantNotification = claimantNotificationDJRequested();
+  await verifyNotificationTitleAndContent(claimNumber, claimantNotification.title, claimantNotification.content);
+  await I.click(claimantNotification.nextSteps);
   await I.see('Confirm that you\'ve been paid', 'h1');
   await I.click('Sign out');
 
   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   await api.waitForFinishedBusinessProcess();
-  notification = defendantNotificationDJRequested();
-  await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
-  await I.click(notification.nextSteps);
+  const defendantNotification = defendantNotificationDJRequested();
+  await verifyNotificationTitleAndContent(claimNumber, defendantNotification.title, defendantNotification.content);
+  await I.click(defendantNotification.nextSteps);
   await I.see('Select application', 'h1');
 });
