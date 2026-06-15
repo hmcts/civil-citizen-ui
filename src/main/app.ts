@@ -137,21 +137,6 @@ const setDefaultHeaders: express.RequestHandler = (_req, res, next) => {
     'no-cache, max-age=0, must-revalidate, no-store',
   );
 
-  res.setHeader(
-    'Access-Control-Allow-Origin',
-    '*',
-  );
-
-  res.setHeader(
-    'Access-Control-Allow-Headers',
-    'Origin, X-Requested-With, Content-Type, Accept',
-  );
-
-  res.setHeader(
-    'access-control-allow-methods',
-    'GET,POST,OPTIONS,PUT,DELETE',
-  );
-
   next();
 };
 
@@ -159,7 +144,6 @@ export {app};
 app.use(cookieParser());
 app.use(setLanguage);
 app.use(favicon(path.join(__dirname, 'public', 'assets', 'images', 'favicon.ico')) as any);
-app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(express.json({ limit: '500mb' }));
 app.use(express.urlencoded({ limit: '500mb', extended: true }));
@@ -202,6 +186,7 @@ app.use(setCaseReferenceCookie({secure: productionMode, maxAge: cookieMaxAge}));
 app.enable('trust proxy');
 new Nunjucks(developmentMode).enableFor(app);
 new Helmet(config.get('security')).enableFor(app);
+app.use(express.static(path.join(__dirname, 'public')));
 new HealthCheck().enableFor(app);
 
 app.use(SIGN_OUT_URL, deleteGAGuard);
@@ -226,7 +211,7 @@ if(e2eTestMode){
   // Use your custom middleware to add the session information
   app.use((req, res, next) => {
     const session = ((req.session) as AppSession);
-    session.user = {accessToken: 'someAccessToken', email: '', familyName: '', givenName: '', roles: [], id: 'someID'};
+    session.user = {accessToken: 'someAccessToken', idToken:'someIdToken', email: '', familyName: '', givenName: '', roles: [], id: 'someID'};
     next();
   });
 }

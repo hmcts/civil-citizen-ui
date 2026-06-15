@@ -9,7 +9,6 @@ import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {PartyType} from 'common/models/partyType';
 import {PartyDetails} from 'common/form/models/partyDetails';
 import {Party} from 'common/models/party';
-import {CivilServiceClient} from 'client/civilServiceClient';
 import {Claim} from 'common/models/claim';
 import {CaseRole} from 'form/models/caseRoles';
 import {YesNoUpperCamelCase} from 'form/models/yesNo';
@@ -153,6 +152,13 @@ describe('claimant Dashboard Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
 
+  beforeEach(() => {
+    jest.spyOn(draftStoreService, 'getCaseDataFromStore').mockResolvedValue(new Claim());
+    jest
+      .spyOn(UtilityService, 'getDashboardClaimById')
+      .mockImplementation((id, req) => UtilityService.getClaimById(id, req, true));
+  });
+
   beforeAll(() => {
     nock(idamUrl)
       .post('/o/token')
@@ -200,9 +206,7 @@ describe('claimant Dashboard Controller', () => {
       claim.caseProgression = new CaseProgression();
 
       const data = Object.assign(claim, civilClaimResponseMock.case_data);
-      jest
-        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
-        .mockResolvedValueOnce(data);
+      jest.spyOn(UtilityService, 'getClaimById').mockResolvedValueOnce(data);
 
       await request(app).get(DASHBOARD_CLAIMANT_URL).expect((res) => {
         expect(res.status).toBe(200);
@@ -223,9 +227,7 @@ describe('claimant Dashboard Controller', () => {
       claim.caseRole = CaseRole.CLAIMANT;
       claim.caseProgression = new CaseProgression();
       const data = Object.assign(claim, civilClaimResponseMock.case_data);
-      jest
-        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
-        .mockResolvedValueOnce(data);
+      jest.spyOn(UtilityService, 'getClaimById').mockResolvedValueOnce(data);
       await request(app).get(DASHBOARD_CLAIMANT_URL).expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain('Mr. Jan Clark v Version 1');
@@ -248,9 +250,7 @@ describe('claimant Dashboard Controller', () => {
       claim.caseProgression = new CaseProgression();
       const data = Object.assign(claim, civilClaimResponseMock.case_data);
 
-      jest
-        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
-        .mockResolvedValueOnce(data);
+      jest.spyOn(UtilityService, 'getClaimById').mockResolvedValueOnce(data);
       await request(app).get(DASHBOARD_CLAIMANT_URL).expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain('Mr. Jan Clark v Version 1');
@@ -273,9 +273,7 @@ describe('claimant Dashboard Controller', () => {
       claim.caseRole = CaseRole.CLAIMANT;
       claim.caseProgression = new CaseProgression();
       const data = Object.assign(claim, civilClaimResponseMock.case_data);
-      jest
-        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
-        .mockResolvedValueOnce(data);
+      jest.spyOn(UtilityService, 'getClaimById').mockResolvedValueOnce(data);
       await request(app).get(DASHBOARD_CLAIMANT_URL).expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain('Mr. Jan Clark v Version 1');
@@ -297,9 +295,7 @@ describe('claimant Dashboard Controller', () => {
       claim.caseProgression = new CaseProgression();
 
       const data = Object.assign(claim, civilClaimResponseMock.case_data);
-      jest
-        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
-        .mockResolvedValueOnce(data);
+      jest.spyOn(UtilityService, 'getClaimById').mockResolvedValueOnce(data);
 
       await request(app).get(DASHBOARD_CLAIMANT_URL).expect((res) => {
         expect(res.status).toBe(200);
@@ -321,9 +317,7 @@ describe('claimant Dashboard Controller', () => {
       claim.caseProgression = new CaseProgression();
 
       const data = Object.assign(claim, civilClaimResponseMock.case_data);
-      jest
-        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
-        .mockResolvedValueOnce(data);
+      jest.spyOn(UtilityService, 'getClaimById').mockResolvedValueOnce(data);
 
       await request(app).get(DASHBOARD_CLAIMANT_URL).expect((res) => {
         expect(res.status).toBe(200);
@@ -351,9 +345,7 @@ describe('claimant Dashboard Controller', () => {
       claim.caseProgression = new CaseProgression();
 
       const data = Object.assign(claim, civilClaimResponseMock.case_data);
-      jest
-        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
-        .mockResolvedValueOnce(data);
+      jest.spyOn(UtilityService, 'getClaimById').mockResolvedValueOnce(data);
 
       await request(app).get(DASHBOARD_CLAIMANT_URL).expect((res) => {
         expect(res.status).toBe(200);
@@ -383,9 +375,7 @@ describe('claimant Dashboard Controller', () => {
       claim.caseProgression = new CaseProgression();
 
       const data = Object.assign(claim, civilClaimResponseMock.case_data);
-      jest
-        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
-        .mockResolvedValueOnce(data);
+      jest.spyOn(UtilityService, 'getClaimById').mockResolvedValueOnce(data);
 
       await request(app).get(DASHBOARD_CLAIMANT_URL).expect((res) => {
         expect(res.status).toBe(200);
@@ -397,8 +387,32 @@ describe('claimant Dashboard Controller', () => {
       const claim = new Claim();
       claim.caseRole = CaseRole.CLAIMANT;
       claim.ccdState = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
+      jest.spyOn(UtilityService, 'getClaimById').mockResolvedValueOnce(claim);
+      await request(app).get(DASHBOARD_CLAIMANT_URL).expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT'));
+        expect(res.text).toContain('Tell us you&#39;ve settled the claim');
+        expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.GET_DEBT_RESPITE'));
+        expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.HELP_SUPPORT'));
+        expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.HELP_FEES'));
+        expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.FIND_MEDIATION'));
+        expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.WHAT_EXPECT_HEARING'));
+        expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.REPRESENT_MYSELF'));
+        expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.FIND_LEGAL_ADVICE'));
+        expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.FIND_INFO_COURT'));
+      });
+    });
+    it('should show support links for claimant when judgment requested and judgment buffer is enabled', async () => {
+
+      const claim = new Claim();
+      claim.caseRole = CaseRole.CLAIMANT;
+      claim.ccdState = CaseState.JUDGMENT_REQUESTED;
+      jest.spyOn(launchDarkly, 'isJudgmentBufferEnabled').mockResolvedValueOnce(true);
       jest
-        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+        .spyOn(UtilityService, 'getDashboardClaimById')
+        .mockResolvedValueOnce(claim);
+      jest
+        .spyOn(UtilityService, 'getDashboardClaimById')
         .mockResolvedValueOnce(claim);
       await request(app).get(DASHBOARD_CLAIMANT_URL).expect((res) => {
         expect(res.status).toBe(200);
@@ -453,15 +467,29 @@ describe('claimant Dashboard Controller', () => {
       });
     });
 
+    it('should hide awaiting response support links for claimant when judgment requested and judgment buffer is disabled', async () => {
+
+      const claim = new Claim();
+      claim.caseRole = CaseRole.CLAIMANT;
+      claim.ccdState = CaseState.JUDGMENT_REQUESTED;
+      jest
+        .spyOn(UtilityService, 'getDashboardClaimById')
+        .mockResolvedValueOnce(claim);
+      await request(app).get(DASHBOARD_CLAIMANT_URL).expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT'));
+        expect(res.text).not.toContain('Tell us you&#39;ve settled the claim');
+        expect(res.text).not.toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.GET_DEBT_RESPITE'));
+      });
+    });
+
     describe.each(testCases)('Dashboard Support Links Test', (testCase) => {
       it(`should show support links for claimant with caseRole: ${testCase.caseRole} and ccdState: ${testCase.ccdState}`, async () => {
 
         const claim = new Claim();
         claim.caseRole = testCase.caseRole;
         claim.ccdState = testCase.ccdState;
-        jest
-          .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
-          .mockResolvedValueOnce(claim);
+        jest.spyOn(UtilityService, 'getClaimById').mockResolvedValueOnce(claim);
 
         await request(app).get(DASHBOARD_CLAIMANT_URL).expect((res) => {
           expect(res.status).toBe(200);
@@ -477,14 +505,13 @@ describe('claimant Dashboard Controller', () => {
         });
       });
     });
+
     it('should show support links for claimant with links hidden', async () => {
 
       const claim = new Claim();
       claim.caseRole = CaseRole.CLAIMANT;
       claim.ccdState = CaseState.CASE_ISSUED;
-      jest
-        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
-        .mockResolvedValueOnce(claim);
+      jest.spyOn(UtilityService, 'getClaimById').mockResolvedValueOnce(claim);
       jest.spyOn(launchDarkly, 'isGaForLipsEnabled').mockResolvedValueOnce(false);
       const getContactCourtLinkMock = getContactCourtLink as jest.Mock;
       getContactCourtLinkMock.mockImplementation(() => {
@@ -518,9 +545,7 @@ describe('claimant Dashboard Controller', () => {
         applicationIsCloaked: YesNoUpperCamelCase.YES,
         applicationIsUncloakedOnce: YesNoUpperCamelCase.YES,
       } as CCDApplication, ApplicationState.APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION)];
-      jest
-        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
-        .mockResolvedValueOnce(claim);
+      jest.spyOn(UtilityService, 'getClaimById').mockResolvedValueOnce(claim);
       jest
         .spyOn(GaServiceClient.prototype, 'getApplicationsByCaseId')
         .mockResolvedValueOnce(applicationResponses);
@@ -548,9 +573,7 @@ describe('claimant Dashboard Controller', () => {
       claim.caseRole = CaseRole.CLAIMANT;
       claim.ccdState = CaseState.CASE_ISSUED;
       const applicationResponses : ApplicationResponse[] = [];
-      jest
-        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
-        .mockResolvedValueOnce(claim);
+      jest.spyOn(UtilityService, 'getClaimById').mockResolvedValueOnce(claim);
       jest
         .spyOn(GaServiceClient.prototype, 'getApplicationsByCaseId')
         .mockResolvedValueOnce(applicationResponses);
@@ -565,7 +588,7 @@ describe('claimant Dashboard Controller', () => {
     });
 
     it('should return status 500 when error thrown', async () => {
-      jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+      jest.spyOn(UtilityService, 'getClaimById')
         .mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
       await request(app)
         .get(DASHBOARD_CLAIMANT_URL)
@@ -581,9 +604,7 @@ describe('claimant Dashboard Controller', () => {
         const claim = new Claim();
         claim.caseRole = testCase.caseRole;
         claim.ccdState = testCase.ccdState;
-        jest
-          .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
-          .mockResolvedValueOnce(claim);
+        jest.spyOn(UtilityService, 'getClaimById').mockResolvedValueOnce(claim);
         jest
           .spyOn(GaServiceClient.prototype, 'getApplicationsByCaseId')
           .mockResolvedValueOnce([]);
@@ -610,9 +631,7 @@ describe('claimant Dashboard Controller', () => {
     claim.caseRole = CaseRole.CLAIMANT;
     claim.ccdState = CaseState.CASE_ISSUED;
     claim.claimantBilingualLanguagePreference = ClaimBilingualLanguagePreference.WELSH;
-    jest
-      .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
-      .mockResolvedValueOnce(claim);
+    jest.spyOn(UtilityService, 'getClaimById').mockResolvedValueOnce(claim);
     jest.spyOn(launchDarkly, 'isGaForLipsEnabled').mockResolvedValueOnce(false);
     jest.spyOn(launchDarkly, 'isWelshEnabledForMainCase').mockResolvedValueOnce(true);
 
@@ -627,9 +646,7 @@ describe('claimant Dashboard Controller', () => {
     claim.caseRole = CaseRole.CLAIMANT;
     claim.ccdState = CaseState.CASE_ISSUED;
     claim.claimantBilingualLanguagePreference = ClaimBilingualLanguagePreference.WELSH;
-    jest
-      .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
-      .mockResolvedValueOnce(claim);
+    jest.spyOn(UtilityService, 'getClaimById').mockResolvedValueOnce(claim);
     jest.spyOn(launchDarkly, 'isGaForLipsEnabled').mockResolvedValueOnce(false);
     jest.spyOn(launchDarkly, 'isWelshEnabledForMainCase').mockResolvedValueOnce(false);
 
@@ -660,7 +677,7 @@ describe('claimant Dashboard Controller', () => {
       claim.totalClaimAmount = 500;
       claim.submittedDate = new Date('2024-01-01');
 
-      jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockResolvedValueOnce(claim);
+      jest.spyOn(UtilityService, 'getClaimById').mockResolvedValueOnce(claim);
 
       const req: any = {
         params: {id: '12345'},
@@ -695,7 +712,7 @@ describe('claimant Dashboard Controller', () => {
       claim.claimNumber = '000MC001';
       claim.claimantBilingualLanguagePreference = ClaimBilingualLanguagePreference.WELSH;
 
-      jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockResolvedValueOnce(claim);
+      jest.spyOn(UtilityService, 'getClaimById').mockResolvedValueOnce(claim);
       jest.spyOn(launchDarkly, 'isWelshEnabledForMainCase').mockResolvedValue(true);
 
       const req: any = {
@@ -735,7 +752,7 @@ describe('claimant Dashboard Controller', () => {
       claim.respondentSolicitor1EmailAddress = 'solicitor@example.com';
       claim.specRespondent1Represented = YesNoUpperCamelCase.YES;
 
-      jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockResolvedValueOnce(claim);
+      jest.spyOn(UtilityService, 'getClaimById').mockResolvedValueOnce(claim);
 
       const req: any = {
         params: {id: '12345'},
@@ -775,7 +792,7 @@ describe('claimant Dashboard Controller', () => {
       claim.respondentSolicitor1EmailAddress = 'solicitor@example.com';
       claim.specRespondent1Represented = YesNoUpperCamelCase.NO;
 
-      jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockResolvedValueOnce(claim);
+      jest.spyOn(UtilityService, 'getClaimById').mockResolvedValueOnce(claim);
 
       const req: any = {
         params: {id: '12345'},
