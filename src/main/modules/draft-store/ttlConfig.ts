@@ -13,12 +13,22 @@ export interface TTLMetadata {
   creationDate?: Date;
 }
 
+const DRAFT_CLAIM_TTL_PATH = 'services.draftStore.redis.ttl.draftClaim';
+const LEGACY_DRAFT_CLAIM_TTL_PATH = 'services.draftStore.redis.expireInDays';
+
+const getDraftClaimTtlDays = (): number => {
+  if (config.has(DRAFT_CLAIM_TTL_PATH)) {
+    return config.get<number>(DRAFT_CLAIM_TTL_PATH);
+  }
+  return config.get<number>(LEGACY_DRAFT_CLAIM_TTL_PATH);
+};
+
 const getTTLDaysForCategory = (category: TTLCategory): number => {
   switch (category) {
     case TTLCategory.DRAFT_CLAIM:
-      return config.get<number>('services.draftStore.redis.expireInDays');
+      return getDraftClaimTtlDays();
     case TTLCategory.JOURNEY_CACHE:
-      return config.get<number>('services.draftStore.redis.journeyCacheExpireInDays');
+      return config.get<number>('services.draftStore.redis.ttl.journeyCache');
     case TTLCategory.PAYMENT_SESSION:
       return config.get<number>('services.draftStore.redis.ttl.paymentSession');
     case TTLCategory.GA_JOURNEY:
