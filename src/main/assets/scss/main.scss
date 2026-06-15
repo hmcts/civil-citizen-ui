@@ -1,5 +1,5 @@
-@forward 'node_modules/@ministryofjustice/frontend/moj/all';
-@import './task-list';
+@use 'govuk-frontend/dist/govuk' as *;
+@use '@ministryofjustice/frontend/moj/all' as *;@import './task-list';
 @import './citizen-ui-colours';
 
 .moj-add-another {
