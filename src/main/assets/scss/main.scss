@@ -146,20 +146,32 @@
   float: right;
 }
 
+.civil-header-navigation {
+  .govuk-header__navigation-item + .govuk-header__navigation-item {
+    margin-left: 30px;
+  }
+}
+
 .civil-header-money-claims-link {
   box-sizing: border-box;
-  margin-top: -45px;
-  padding-bottom: 15px;
+  margin-top: -48px;
+  padding-bottom: 12px;
   text-align: center;
 
   .govuk-header__link {
-    font-size: 19px;
+    font-size: 30px;
     font-weight: 700;
-    line-height: 1.3158;
+    line-height: 1;
   }
 }
 
 @media (max-width: 40.0525em) { /* stylelint-disable-line media-feature-range-notation */
+  .civil-header-navigation {
+    .govuk-header__navigation-item + .govuk-header__navigation-item {
+      margin-left: 0;
+    }
+  }
+
   .civil-header-money-claims-link {
     margin-top: 0;
     padding-bottom: 10px;
