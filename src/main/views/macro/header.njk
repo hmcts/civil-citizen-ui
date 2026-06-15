@@ -1,6 +1,7 @@
 {% from 'govuk/components/header/macro.njk' import govukHeader %}
 
 {% macro headerComponent(t, user) %}
+  {% set moneyClaimsUrl = 'https://www1.moneyclaims.service.gov.uk/' %}
   {% set navigationList = [
     {
       href: '/dashboard',
@@ -25,5 +26,8 @@
       navigation: navigationList,
       useTudorCrown: true
     }) }}
+    <div class="govuk-width-container civil-header-money-claims-link">
+      <a class="govuk-header__link" href="{{ moneyClaimsUrl }}">{{ t('COMMON.HEADER.MONEY_CLAIMS') }}</a>
+    </div>
   {% endblock %}
 {% endmacro %}
