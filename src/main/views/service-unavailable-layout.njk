@@ -1,13 +1,11 @@
 {% from "govuk/components/skip-link/macro.njk" import govukSkipLink %}
 {% from "govuk/components/phase-banner/macro.njk" import govukPhaseBanner %}
 {% from "govuk/components/footer/macro.njk" import govukFooter %}
-{% from 'govuk/components/header/macro.njk' import govukHeader %}
 {% from "./macro/page-title.njk" import setPageTitle %}
 {% from "./macro/header.njk" import headerComponent %}
 {% from "./macro/cookie-banner.njk" import cookieBanner %}
 
 {% set bannerText = t('COMMON.HEADER.NEW_SERVICE') %}
-{% set languageToggle = "<a class='govuk-!-font-size-19 govuk-link language' href='?lang=en'>English</a>"%}
 {% extends "govuk/template.njk" %}
 {% block head %}
   {% include "webpack/css.njk" %}
@@ -22,14 +20,7 @@
   }) }}
 {% endblock %}
 {% block header %}
-  {{ govukHeader({
-      homepageUrl: 'https://www.gov.uk',
-      containerClasses: 'govuk-width-container',
-      serviceName:  t('PAGES.SERVICE_UNAVAILABLE.SERVICE_NAME'),
-      navigationClasses: 'govuk-!-display-inline float-right',
-      navigation: navigationList,
-      useTudorCrown: true
-    }) }}
+  {{ headerComponent(t, user) }}
 {% endblock %}
 
 {% block beforeContent %}
@@ -37,7 +28,7 @@
   tag: {
     text: t('COMMON.HEADER.BETA')
   },
-  html: bannerText + languageToggle
+  html: bannerText
 }) }}
 {% endblock %}
 

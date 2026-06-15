@@ -8,7 +8,6 @@
 {% from "./macro/contact-us-for-help.njk" import contactUsForHelp with context %}
 {% from "./macro/error-summary.njk" import errorSummary %}
 
-{% set languageToggle = "<a class='govuk-!-font-size-19 govuk-link language' href='?lang=en'>English</a>"%}
 {% extends "govuk/template.njk" %}
 {% block head %}
 
@@ -52,7 +51,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         tag: {
           text: t('COMMON.HEADER.BETA')
         },
-        html: bannerText + languageToggle
+        html: bannerText
       }) }}
 
 {% if backLinkUrl %}
