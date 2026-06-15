@@ -1,5 +1,4 @@
 {% from 'govuk/components/header/macro.njk' import govukHeader %}
-{% from "govuk/components/service-navigation/macro.njk" import govukServiceNavigation %}
 
 {% macro headerComponent(t, user) %}
   {% set navigationList = [
@@ -19,13 +18,12 @@
   {% block header %}
     {{ govukHeader({
       homepageUrl: 'https://www.gov.uk',
-      containerClasses: 'govuk-width-container'
-    }) }}
-    {{ govukServiceNavigation({
+      containerClasses: 'govuk-width-container',
       serviceName:  t('COMMON.HEADER.MONEY_CLAIMS'),
       serviceUrl: '/dashboard',
       navigationClasses: 'govuk-!-display-inline float-right',
-      navigation: navigationList
+      navigation: navigationList,
+      useTudorCrown: true
     }) }}
   {% endblock %}
 {% endmacro %}

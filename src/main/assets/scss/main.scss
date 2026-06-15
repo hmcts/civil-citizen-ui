@@ -1,6 +1,6 @@
-@use 'govuk-frontend/dist/govuk' as *;
-@use './citizen-ui-colours' as *;
-@use './task-list';
+@import 'node_modules/govuk-frontend/dist/govuk/all';
+@import './task-list';
+@import './citizen-ui-colours';
 
 .moj-add-another {
   &__remove-button {
@@ -44,7 +44,7 @@
 }
 
 .mid-grey {
-  color: govuk-colour('black', $variant: 'tint-25');
+  color: govuk-colour('dark-grey');
 }
 
 .white-link {
@@ -191,7 +191,7 @@
 }
 
 .example-wrapper {
-  border: 1px solid govuk-colour('black', $variant: 'tint-80');
+  border: 1px solid govuk-colour('mid-grey');
   display: flex;
   flex-flow: column nowrap;
 
@@ -200,7 +200,7 @@
   }
 
   .tag {
-    background-color: govuk-colour('black', $variant: 'tint-25');
+    background-color: govuk-colour('dark-grey');
     color: govuk-colour('white');
     font-family: 'GDS Transport', arial, sans-serif;
     left: 0;

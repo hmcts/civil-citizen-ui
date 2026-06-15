@@ -97,7 +97,7 @@
     "express-session": "^1.17.3",
     "follow-redirects": "^1.16.0",
     "glob": "^12.0.0",
-    "govuk-frontend": "6.2.0",
+    "govuk-frontend": "5.3.1",
     "helmet": "^7.0.0",
     "i18next": "^22.4.6",
     "i18next-fs-backend": "^2.6.4",
@@ -123,7 +123,7 @@
     "tsconfig-paths": "^4.1.1",
     "typescript": "5.9.3",
     "uuid": "^11.1.1",
-    "validator": "13.15.35"
+    "validator": "13.15.26"
   },
   "devDependencies": {
     "@babel/core": "^7.26.0",
