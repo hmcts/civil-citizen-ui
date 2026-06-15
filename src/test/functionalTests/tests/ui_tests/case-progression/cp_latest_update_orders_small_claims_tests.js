@@ -3,13 +3,13 @@ const LoginSteps = require('../../../commonFeatures/home/steps/login');
 const ResponseSteps = require('../../../citizenFeatures/response/steps/lipDefendantResponseSteps');
 const {createAccount} = require('../../../specClaimHelpers/api/idamHelper');
 const {verifyNotificationTitleAndContent, verifyTasklistLinkAndState} = require('../../../specClaimHelpers/e2e/dashboardHelper');
-const {orderMade} = require('../../../specClaimHelpers/dashboardNotificationConstants');
+const {orderMadeLA} = require('../../../specClaimHelpers/dashboardNotificationConstants');
 const {ordersAndNotices} = require('../../../specClaimHelpers/dashboardTasklistConstants');
 
 const claimType = 'SmallClaims';
 let caseData, claimNumber, claimRef, taskListItem;
 
-Feature('Case progression journey - Verify latest Update page For an Order being Created - Small Claims').tag('@civil-citizen-nightly @ui-orders');
+Feature('Case progression journey - Verify latest Update page For an Order being Created - Small Claims').tag('@civil-citizen-nightly @ui-orders @test123');
 
 Before(async ({api}) => {
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
@@ -27,7 +27,7 @@ Before(async ({api}) => {
 });
 
 Scenario('Case progression journey - Small Claims - Verify latest Update page for an Order being Created', async ({I, api}) => {
-  const orderMadeNotif = orderMade();
+  const orderMadeNotif = orderMadeLA();
   await verifyNotificationTitleAndContent(claimNumber, orderMadeNotif.title, orderMadeNotif.content, claimRef);
   taskListItem = ordersAndNotices();
   await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Available', true);
