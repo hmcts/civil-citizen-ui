@@ -21,7 +21,7 @@ export class PostcodeValidator implements ValidatorConstraintInterface {
     const trimmed = value.trim();
 
     this.lengthError = false;
-    // Check length after JudgmentOnlineLive release
+    // Check length before postcode format validation.
     if (trimmed.length > 8) {
       this.lengthError = true;
       return false;
