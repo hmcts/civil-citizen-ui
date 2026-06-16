@@ -1,0 +1,54 @@
+{
+  "advisories": {
+    "1120729": {
+      "id": 1120729,
+      "module_name": "tmp",
+      "title": "tmp: Type-confusion bypass of _assertPath allows path traversal via non-string prefix/postfix/template",
+      "url": "https://github.com/advisories/GHSA-7c78-jf6q-g5cm",
+      "severity": "high",
+      "vulnerable_versions": ">= 0.2.6, < 0.2.7",
+      "patched_versions": "0.2.7",
+      "recommendation": "Upgrade to 0.2.7"
+    },
+    "1120792": {
+      "id": 1120792,
+      "module_name": "js-yaml",
+      "title": "JS-YAML: Quadratic-complexity DoS in merge key handling via repeated aliases",
+      "url": "https://github.com/advisories/GHSA-h67p-54hq-rp68",
+      "severity": "moderate",
+      "vulnerable_versions": "<= 4.1.1",
+      "patched_versions": "4.2.0",
+      "recommendation": "Upgrade to 4.2.0"
+    },
+    "1120743": {
+      "id": 1120743,
+      "module_name": "form-data",
+      "title": "form-data: CRLF injection in form-data via unescaped multipart field names and filenames",
+      "url": "https://github.com/advisories/GHSA-hmw2-7cc7-3qxx",
+      "severity": "high",
+      "vulnerable_versions": "< 2.5.6",
+      "patched_versions": "2.5.6",
+      "recommendation": "Upgrade to 2.5.6"
+    },
+    "1120821": {
+      "id": 1120821,
+      "module_name": "@opentelemetry/core",
+      "title": "OpenTelemetry Core: Unbounded memory allocation in W3C Baggage propagation",
+      "url": "https://github.com/advisories/GHSA-8988-4f7v-96qf",
+      "severity": "moderate",
+      "vulnerable_versions": "< 2.8.0",
+      "patched_versions": "2.8.0",
+      "recommendation": "Upgrade to 2.8.0"
+    }
+  },
+  "metadata": {
+    "vulnerabilities": {
+      "critical": 0,
+      "high": 2,
+      "moderate": 2,
+      "low": 0,
+      "info": 0
+    }
+  },
+  "muted": []
+}
