@@ -17,6 +17,7 @@ Feature('Case progression journey - Upload Evidence - Small Claims').tag('@civil
 Before(async ({api}) => {
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser, '', claimType);
+  await api.waitForFinishedBusinessProcess(claimRef);
   caseData = await api.retrieveCaseData(config.adminUser, claimRef);
   claimNumber = await caseData.legacyCaseReference;
   await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.rejectAllDisputeAllWithIndividual);
@@ -29,19 +30,16 @@ Before(async ({api}) => {
 });
 
 Scenario('Small Claims Response with RejectAll and DisputeAll - both parties upload docs',  async ({I}) => {
-  // claimant checks notifications for orders and upload docs
   notification = orderMadeLA();
-  await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
+  await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef, 'defendant');
   taskListItem = uploadHearingDocuments();
   await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Action needed', true);
   notification = uploadDocuments('defence');
-  await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
+  await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef, 'defendant');
   await I.click(notification.nextSteps);
   formattedCaseId = StringUtilsComponent.StringUtilsComponent.formatClaimReferenceToAUIDisplayFormat(claimRef);
   uploadDate = DateUtilsComponent.DateUtilsComponent.formatDateToSpecifiedDateFormat(new Date());
-  //defendant uploads documents
   await CaseProgressionSteps.initiateUploadEvidenceJourney(formattedCaseId, claimType, partyType, '£1,500', uploadDate);
-  //await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'In progress', true);
   taskListItem = viewDocuments();
   await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Available', true);
 });
