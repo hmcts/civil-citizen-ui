@@ -1,6 +1,89 @@
-@import 'node_modules/govuk-frontend/dist/govuk/all';
+@import 'node_modules/govuk-frontend/dist/govuk/index.import';
 @import './task-list';
 @import './citizen-ui-colours';
+
+.civil-header {
+  &__content {
+    box-sizing: border-box;
+    padding-bottom: govuk-spacing(3);
+  }
+
+  &__service-name {
+    @include govuk-font($size: 24, $weight: bold);
+
+    display: inline-block;
+    margin-bottom: govuk-spacing(2);
+    color: govuk-colour('white');
+    text-decoration: none;
+  }
+
+  &__navigation {
+    @include govuk-font($size: 16);
+
+    margin: 0;
+  }
+
+  &__navigation-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  &__navigation-item {
+    margin-bottom: govuk-spacing(2);
+  }
+
+  &__link {
+    color: govuk-colour('white');
+
+    &:link,
+    &:visited {
+      color: govuk-colour('white');
+    }
+
+    &:hover {
+      text-decoration-thickness: 3px;
+    }
+
+    &:focus {
+      color: $govuk-focus-text-colour;
+    }
+  }
+}
+
+@media (min-width: 40.0625em) { /* stylelint-disable-line media-feature-range-notation */
+  .civil-header {
+    .govuk-header__container {
+      display: flex;
+      align-items: flex-start;
+    }
+
+    .govuk-header__logo {
+      width: 33.33%;
+    }
+
+    &__content {
+      display: flex;
+      flex: 1;
+      justify-content: space-between;
+      padding-top: 16px;
+      padding-bottom: 14px;
+    }
+
+    &__service-name {
+      margin-bottom: 0;
+    }
+
+    &__navigation-list {
+      display: flex;
+      gap: govuk-spacing(4);
+    }
+
+    &__navigation-item {
+      margin-bottom: 0;
+    }
+  }
+}
 
 .moj-add-another {
   &__remove-button {
@@ -44,7 +127,7 @@
 }
 
 .mid-grey {
-  color: govuk-colour('dark-grey');
+  color: govuk-colour('black', $variant: 'tint-25');
 }
 
 .white-link {
@@ -191,7 +274,7 @@
 }
 
 .example-wrapper {
-  border: 1px solid govuk-colour('mid-grey');
+  border: 1px solid govuk-colour('black', $variant: 'tint-80');
   display: flex;
   flex-flow: column nowrap;
 
@@ -200,7 +283,7 @@
   }
 
   .tag {
-    background-color: govuk-colour('dark-grey');
+    background-color: govuk-colour('black', $variant: 'tint-25');
     color: govuk-colour('white');
     font-family: 'GDS Transport', arial, sans-serif;
     left: 0;

@@ -1,6 +1,6 @@
-{% from 'govuk/components/header/macro.njk' import govukHeader %}
+{% from 'govuk/macros/logo.njk' import govukLogo %}
 
-{% macro headerComponent(t, user) %}
+{% macro headerComponent(t, user, serviceName = null) %}
   {% set navigationList = [
     {
       href: '/dashboard',
@@ -16,14 +16,35 @@
 
   ] %}
   {% block header %}
-    {{ govukHeader({
-      homepageUrl: 'https://www.gov.uk',
-      containerClasses: 'govuk-width-container',
-      serviceName:  t('COMMON.HEADER.MONEY_CLAIMS'),
-      serviceUrl: '/dashboard',
-      navigationClasses: 'govuk-!-display-inline float-right',
-      navigation: navigationList,
-      useTudorCrown: true
-    }) }}
+    <div class="govuk-header civil-header">
+      <div class="govuk-header__container govuk-width-container">
+        <div class="govuk-header__logo">
+          <a href="https://www.gov.uk" class="govuk-header__homepage-link">
+            {{ govukLogo({
+              classes: 'govuk-header__logotype',
+              ariaLabelText: 'GOV.UK'
+            }) }}
+          </a>
+        </div>
+        <div class="civil-header__content">
+          <a href="/dashboard" class="civil-header__service-name">
+            {{ serviceName if serviceName else t('COMMON.HEADER.MONEY_CLAIMS') }}
+          </a>
+          {% if user %}
+            <nav aria-label="Menu" class="civil-header__navigation">
+              <ul class="civil-header__navigation-list">
+                {% for item in navigationList %}
+                  <li class="civil-header__navigation-item">
+                    <a class="civil-header__link" href="{{ item.href }}">
+                      {{ item.text }}
+                    </a>
+                  </li>
+                {% endfor %}
+              </ul>
+            </nav>
+          {% endif %}
+        </div>
+      </div>
+    </div>
   {% endblock %}
 {% endmacro %}
