@@ -703,4 +703,27 @@ module.exports = {
       content: 'Dyfarniad Llys Sirol (CCJ) y gwnaethoch gais amdano',
     };
   },
+
+  //DTSCCI-5102 AC4 Welsh (case proceeds offline - unchanged notification)
+  caseOfflineWelsh: () => {
+    return {
+      title: 'Ni fydd eich cyfrif ar-lein yn cael ei ddiweddaru mwyach',
+      content: 'Ni fydd eich cyfrif ar-lein yn cael ei ddiweddaru mwyach',
+    };
+  },
+
+  //DTSCCI-5102 AC5 (case taken offline during buffer - CCJ cancelled)
+  ccjCancelledOnCaseOfflineClaimant: () => {
+    return {
+      title: 'The case now proceeds offline',
+      content: 'The CCJ you requested has been cancelled.',
+    };
+  },
+
+  ccjCancelledOnCaseOfflineClaimantWelsh: () => {
+    return {
+      title: 'Bydd yr achos nawr yn parhau all-lein',
+      content: 'Dyfarniad Llys Sirol (CCJ) y gwnaethoch gais amdano',
+    };
+  },
 };
