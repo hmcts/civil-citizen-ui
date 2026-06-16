@@ -167,6 +167,13 @@
   width: 100%;
 }
 
+@media (min-width: 40.0625em) { /* stylelint-disable-line media-feature-range-notation */
+  .govuk-footer__licence-description,
+  .open-government-licence p {
+    white-space: nowrap;
+  }
+}
+
 .language {
   float: right;
   margin-bottom: 0;
