@@ -1,18 +1,19 @@
 const config = require('../../../../config');
 const LoginSteps = require('../../../commonFeatures/home/steps/login');
-const { createAccount } = require('../../../specClaimHelpers/api/idamHelper');
-const { verifyNotificationTitleAndContent, verifyTasklistLinkAndState } = require('../../../specClaimHelpers/e2e/dashboardHelper');
-const { claimStruckOut } = require('../../../specClaimHelpers/dashboardNotificationConstants');
-const { uploadHearingDocuments } = require('../../../specClaimHelpers/dashboardTasklistConstants');
+const {createAccount} = require('../../../specClaimHelpers/api/idamHelper');
+const {verifyNotificationTitleAndContent, verifyTasklistLinkAndState} = require('../../../specClaimHelpers/e2e/dashboardHelper');
+const {claimStruckOut} = require('../../../specClaimHelpers/dashboardNotificationConstants');
+const {uploadHearingDocuments} = require('../../../specClaimHelpers/dashboardTasklistConstants');
 
 const claimType = 'SmallClaims';
 let caseData, claimNumber, claimRef, taskListItem;
 
 Feature('Case progression - Case Struck Out journey - Small Claims').tag('@civil-citizen-nightly @ui-case-struck-out');
 
-Before(async ({ api }) => {
+Before(async ({api}) => {
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser, '', claimType);
+  await api.waitForFinishedBusinessProcess(claimRef);
   caseData = await api.retrieveCaseData(config.adminUser, claimRef);
   claimNumber = await caseData.legacyCaseReference;
   await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.rejectAllDisputeAllWithIndividual);
