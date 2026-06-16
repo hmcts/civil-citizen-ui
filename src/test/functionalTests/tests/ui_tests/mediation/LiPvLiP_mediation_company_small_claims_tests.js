@@ -5,7 +5,7 @@ const ClaimantResponseSteps = require('../../../citizenFeatures/response/steps/l
 const UploadDocSteps = require('../../../citizenFeatures/response/steps/uploadDocSteps');
 const DateUtilsComponent = require('../../../citizenFeatures/caseProgression/util/DateUtilsComponent');
 const { createAccount } = require('../../../specClaimHelpers/api/idamHelper');
-const { claimantNotificationWithDefendantFullDefenceOrPartAdmitAlreadyPaid, mediationUnsuccessfulNOTClaimant1NonContactable, mediationUnsuccessfulClaimant1NonAttendance } = require('../../../specClaimHelpers/dashboardNotificationConstants');
+const { claimantNotificationWithDefendantFullDefenceOrPartAdmitAlreadyPaid, mediationUnsuccessfulClaimant1NonAttendance } = require('../../../specClaimHelpers/dashboardNotificationConstants');
 const { verifyNotificationTitleAndContent, verifyTasklistLinkAndState } = require('../../../specClaimHelpers/e2e/dashboardHelper');
 const { viewMediationDocuments, uploadMediationDocuments } = require('../../../specClaimHelpers/dashboardTasklistConstants');
 
@@ -89,16 +89,29 @@ Scenario('03 Caseworker perform mediation unsuccessful', async ({ api }) => {
   // Take Mediation Unsuccessful
   await api.mediationUnsuccessful(config.caseWorker, true, ['NOT_CONTACTABLE_CLAIMANT_ONE', 'NOT_CONTACTABLE_DEFENDANT_ONE']);
   await api.waitForFinishedBusinessProcess();
-});
 
-Scenario.skip('04 LiP claimant uploads mediation documents', async ({ api }) => {
-  await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
-  const mediationUnsuccessfulNOTClaimant1NonContactableNotif = mediationUnsuccessfulNOTClaimant1NonContactable();
-  await verifyNotificationTitleAndContent(claimNumber, mediationUnsuccessfulNOTClaimant1NonContactableNotif.title, mediationUnsuccessfulNOTClaimant1NonContactableNotif.content);
+  //Enable below steps when the issue https://tools.hmcts.net/jira/browse/DTSCCI-5625 is fixed
+
+  /* await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+  const mediationUnsuccessfulClaimant1NonAttendanceNotif = mediationUnsuccessfulClaimant1NonAttendance();
+  await verifyNotificationTitleAndContent(claimNumber, mediationUnsuccessfulClaimant1NonAttendanceNotif.title, mediationUnsuccessfulClaimant1NonAttendanceNotif.content);
   taskListItem = viewMediationDocuments();
   await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Not available yet');
   taskListItem = uploadMediationDocuments();
-  await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Inactive', true);
+  await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Action needed', true);
+  await I.click('Sign out');
+  await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+  await verifyNotificationTitleAndContent(claimNumber, mediationUnsuccessfulClaimant1NonAttendanceNotif.title, mediationUnsuccessfulClaimant1NonAttendanceNotif.content);
+  taskListItem = viewMediationDocuments();
+  await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Not available yet');
+  taskListItem = uploadMediationDocuments();
+  await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Action needed', true); */
+});
+
+Scenario.skip('04 LiP claimant uploads mediation documents', async ({ api, I }) => {
+  await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+  await I.see(claimNumber);
+  await I.click(claimNumber);
   await ClaimantResponseSteps.StartUploadDocs();
   await UploadDocSteps.VerifyDocuments();
   await UploadDocSteps.SelectDocuments('Your statement');
@@ -119,6 +132,7 @@ Scenario.skip('04 LiP claimant uploads mediation documents', async ({ api }) => 
   await UploadDocSteps.CheckAndSendMediationDocs('Claimant');
   await UploadDocSteps.VerifyConfirmationPage();
   await api.waitForFinishedBusinessProcess();
+  const mediationUnsuccessfulNOTClaimant1NonContactableNotif = mediationUnsuccessfulClaimant1NonAttendance();
   await verifyNotificationTitleAndContent(claimNumber, mediationUnsuccessfulNOTClaimant1NonContactableNotif.title, mediationUnsuccessfulNOTClaimant1NonContactableNotif.content);
   taskListItem = viewMediationDocuments();
   await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Available', true);
