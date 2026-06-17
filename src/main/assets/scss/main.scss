@@ -178,6 +178,15 @@
   }
 }
 
+.govuk-footer__licence-description a[rel='license'] {
+  &:link,
+  &:visited,
+  &:hover,
+  &:active {
+    color: #0b0c0c;
+  }
+}
+
 .govuk-link-button {
   background: none;
   border: 0;
