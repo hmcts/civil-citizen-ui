@@ -158,6 +158,17 @@
   }
 }
 
+.govuk-footer__inline-list {
+  .govuk-footer__link {
+    &:link,
+    &:visited,
+    &:hover,
+    &:active {
+      color: govuk-colour('black');
+    }
+  }
+}
+
 .govuk-link-button {
   background: none;
   border: 0;
