@@ -76,9 +76,9 @@ def getFunctionalTestsGroups() {
 def getCivilCcdDefinitionBranch() {
   def githubApi = new GithubAPI(this)
   for (label in githubApi.getLabelsbyPattern(env.BRANCH_NAME, "civilDefinitionBranch:")) {
-    return "DTSCCI-7739-def"
+    return label.minus("civilDefinitionBranch:").trim()
   }
-  return "DTSCCI-7739-def"
+  return "master"
 }
 
 def getCivilServiceImage() {
