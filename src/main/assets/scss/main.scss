@@ -134,6 +134,30 @@
   color: govuk-colour('white');
 }
 
+#footer {
+  a {
+    &:link {
+      color: $govuk-link-colour;
+    }
+
+    &:visited {
+      color: $govuk-link-visited-colour;
+    }
+
+    &:hover {
+      color: $govuk-link-hover-colour;
+    }
+
+    &:active {
+      color: $govuk-link-active-colour;
+    }
+
+    &:focus {
+      color: $govuk-focus-text-colour;
+    }
+  }
+}
+
 .govuk-link-button {
   background: none;
   border: 0;
