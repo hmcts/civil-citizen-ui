@@ -24,7 +24,7 @@ Running the application requires the following tools to be installed in your env
 
 ### Local Setup
 
-Before running CCD definition imports or integration scripts locally, pull the shared scripts from civil-service::
+Before running CCD definition imports or integration scripts locally, pull the shared scripts from civil-service:
 
 ```bash
 ./bin/pull-latest-civil-shared.sh
