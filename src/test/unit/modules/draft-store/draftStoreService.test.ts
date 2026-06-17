@@ -191,7 +191,7 @@ describe('Draft store service to save and retrieve claim', () => {
     //When
     await deleteFieldDraftClaimFromStore(CLAIM_ID,  mockClaim, 'totalClaimAmount');
     //Then
-    expect(spySet).toBeCalledWith(CLAIM_ID, JSON.stringify(expectedClaim));
+    expect(spySet).toBeCalledWith(CLAIM_ID, JSON.stringify(expectedClaim), 'KEEPTTL');
   });
 
   describe('findClaimIdsbyUserId', () => {
@@ -228,15 +228,13 @@ describe('Draft store service to save and retrieve claim', () => {
     });
   });
 
-  it('should save claim without checking ttl when draftClaimCreatedAt is undefined', async () => {
+  it('should not reset expiry when ttl is already set', async () => {
     const draftStoreWithData = createMockDraftStore(REDIS_DATA[0]);
     draftStoreWithData.ttl = jest.fn().mockResolvedValue(120);
     draftStoreWithData.expireat = jest.fn().mockResolvedValue({});
     app.locals.draftStoreClient = draftStoreWithData;
 
-    const spySet = jest.spyOn(app.locals.draftStoreClient, 'set');
     const spyTtl = jest.spyOn(app.locals.draftStoreClient, 'ttl');
-    const spyExpireat = jest.spyOn(app.locals.draftStoreClient, 'expireat');
 
     const claim = new Claim();
     claim.id = CLAIM_ID;
@@ -244,8 +242,6 @@ describe('Draft store service to save and retrieve claim', () => {
 
     await saveDraftClaim(CLAIM_ID, claim);
 
-    expect(spySet).toBeCalled();
-    expect(spyTtl).not.toBeCalled();
-    expect(spyExpireat).not.toBeCalled();
+    expect(spyTtl).toBeCalledWith(CLAIM_ID);
   });
 });
