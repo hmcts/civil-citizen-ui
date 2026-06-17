@@ -88,6 +88,15 @@ describe('Dashboard Items', ()=> {
       //Then
       expect(status).toContain('PAGES.DASHBOARD.STATUS_CLAIMANT.NO_RESPONSE_ON_TIME');
     });
+
+    it('should return judgment requested status when default judgment has been requested', () => {
+      //Given
+      ccdClaimantClaim.status = 'DEFAULT_JUDGEMENT_REQUESTED';
+      //When
+      const status = ccdClaimantClaim.getStatus('en');
+      //Then
+      expect(status).toContain('PAGES.DASHBOARD.STATUS_CLAIMANT.COUNTY_COURT_JUDGMENT_REQUESTED');
+    });
   });
 
   describe('Dashboard defendant item', ()=>{
@@ -121,6 +130,36 @@ describe('Dashboard Items', ()=> {
       const status = dashboardClaim.getStatus('en');
       //Then
       expect(status).toBe('PAGES.DASHBOARD.STATUS_DEFENDANT.NO_RESPONSE_ON_TIME');
+    });
+
+    it('should return translated status for default judgment requested', () => {
+      //Given
+      const dashboardClaim = new DashboardDefendantItem();
+      dashboardClaim.status = 'DEFAULT_JUDGEMENT_REQUESTED';
+      //When
+      const status = dashboardClaim.getStatus('en');
+      //Then
+      expect(status).toBe('PAGES.DASHBOARD.STATUS_DEFENDANT.COUNTY_COURT_JUDGMENT_REQUESTED');
+    });
+
+    it('should return legacy eligible for CCJ status', () => {
+      //Given
+      const dashboardClaim = new DashboardDefendantItem();
+      dashboardClaim.status = 'ELIGIBLE_FOR_CCJ';
+      //When
+      const status = dashboardClaim.getStatus('en');
+      //Then
+      expect(status).toContain('PAGES.DASHBOARD.STATUS_DEFENDANT.NO_RESPONSE_ELIGIBLE_CCJ');
+    });
+
+    it('should return judgment buffer eligible for CCJ status', () => {
+      //Given
+      const dashboardClaim = new DashboardDefendantItem();
+      dashboardClaim.status = 'JUDGMENT_BUFFER_ELIGIBLE';
+      //When
+      const status = dashboardClaim.getStatus('en');
+      //Then
+      expect(status).toContain('PAGES.DASHBOARD.STATUS_DEFENDANT.NO_RESPONSE_ELIGIBLE_CCJ_JUDGMENT_BUFFER');
     });
 
     it('should return the translated string without parameters when params is provided but empty', () => {
@@ -325,7 +364,6 @@ describe('Dashboard Items', ()=> {
       const status = dashboardClaim.getStatus('en');
       //Then
       expect(status).toBe('PAGES.DASHBOARD.STATUS_CLAIMANT.RESPONSE_BY_POST');
-
     });
   });
 });
