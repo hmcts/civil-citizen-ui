@@ -203,6 +203,22 @@ module.exports = {
     };
   },
 
+  claimantNotificationDJRequested: () => {
+    return {
+      title: 'A judgment against the defendant has been made',
+      content: ['The defendant should now pay you according to the terms of the judgment.'],
+      nextSteps: 'confirm that they’ve paid you the full amount that you’re owed',
+    };
+  },
+
+  defendantNotificationDJRequested: () => {
+    return {
+      title: 'A judgment has been made against you',
+      content: ['The exact details of what you need to pay, and by when, are stated on the judgment.   If you want to dispute the judgment, or ask to change how and when you pay back the claim amount, you can'],
+      nextSteps: 'make an application to set aside (remove) or vary the judgment',
+    };
+  },
+
   //Add deadline logic later
   //Notice.AAA6.DefResponse.FullDefence.FullDispute.RefusedMediation.Claimant
   claimantNotificationWithDefendantRejectMedidationWithRejectAll: () => {
@@ -499,6 +515,7 @@ module.exports = {
 
   // CIV-13149 and 13152
   // Notice.AAA6.MediationSuccessful.CARM.Claimant
+  // Notice.AAA6.MediationSuccessful.CARM.Defendant
   mediationSuccessful: () => {
     return {
       title: 'Mediation appointment successful',
@@ -608,7 +625,8 @@ module.exports = {
     };
   },
 
-  responseToTheClaim: (clientName) => {
+  // Notice.AAA6.DefResponse.FullDefence.FullDispute.CARM.Claimant
+  responseToTheClaimClaimant: (clientName) => {
     return {
       title: 'Response to the claim',
       content: clientName + ' has rejected the claim. You need to respond by',
@@ -616,114 +634,12 @@ module.exports = {
     };
   },
 
-  moreTimeRequestedClaimant: () => {
+  // Notice.AAA6.DefResponse.FullDefence.FullDispute.CARM.Defendant
+  responseToTheClaimDefendant: (clientName) => {
     return {
-      title: 'More time requested',
-      content: 'The response deadline for the defendant is now 4pm on',
-    };
-  },
-
-  moreTimeRequestedClaimantWelsh: () => {
-    return {
-      title: 'Cais am fwy o amser',
-      content: 'Y terfyn amser ar gyfer ymateb y diffynnydd nawr yw 4pm ar',
-    };
-  },
-
-  moreTimeRequestedDefendant: () => {
-    return {
-      title: 'More time requested',
-      content: 'The response deadline is now 4pm on',
-    };
-  },
-
-  moreTimeRequestedDefendantWelsh: () => {
-    return {
-      title: 'Cais am fwy o amser',
-      content: 'Y terfyn amser nawr yw 4pm ar',
-    };
-  },
-
-  //DTSCCI-5096 AC2
-  ccjRequestedBufferClaimant: () => {
-    return {
-      title: 'The CCJ has been requested',
-      content: ['A judgment against the defendant has been requested.', 'You will be notified when this judgment is granted.'],
-    };
-  },
-
-  ccjRequestedBufferClaimantWelsh: () => {
-    return {
-      title: 'CCJ wedi cael ei geisio',
-      content: ['Mae cais am ddyfarniad yn erbyn y diffynnydd', 'Byddwch yn cael gwybod pan roddir y dyfarniad hwn'],
-    };
-  },
-
-  //DTSCCI-5096 AC5
-  ccjRequestedBufferDefendant: () => {
-    return {
-      title: 'responded to the claim',
-      content: ['You need to respond', 'Respond to the claim'],
-    };
-  },
-
-  ccjRequestedBufferDefendantWelsh: () => {
-    return {
-      title: 'Nid ydych wedi ymateb',
-      content: ['Mae angen i chi ymateb', 'Ymateb i'],
-    };
-  },
-
-  //DTSCCI-5106 AC4
-  caseDismissedNotification: () => {
-    return {
-      title: 'The case has been closed',
-      content: ['closed as a result of a judge', 'make any changes to a closed case'],
-    };
-  },
-
-  caseDismissedNotificationWelsh: () => {
-    return {
-      title: 'Mae’r achos wedi’i gau',
-      content: ['o ganlyniad i orchymyn', 'newidiadau i achos sydd wedi cau'],
-    };
-  },
-
-  //DTSCCI-5106 AC5
-  ccjCancelledOnCaseDismissalClaimant: () => {
-    return {
-      title: 'The case has been dismissed',
-      content: 'The CCJ you requested has been cancelled.',
-    };
-  },
-
-  ccjCancelledOnCaseDismissalClaimantWelsh: () => {
-    return {
-      title: 'Mae’r achos wedi’i gau',
-      content: 'Dyfarniad Llys Sirol (CCJ) y gwnaethoch gais amdano',
-    };
-  },
-
-  //DTSCCI-5102 AC4 Welsh (case proceeds offline - unchanged notification)
-  caseOfflineWelsh: () => {
-    return {
-      title: 'Ni fydd eich cyfrif ar-lein yn cael ei ddiweddaru mwyach',
-      content: 'Ni fydd eich cyfrif ar-lein yn cael ei ddiweddaru mwyach',
-    };
-  },
-
-  //DTSCCI-5102 AC5 (case taken offline during buffer - CCJ cancelled)
-  ccjCancelledOnCaseOfflineClaimant: () => {
-    return {
-      title: 'The case now proceeds offline',
-      content: 'The CCJ you requested has been cancelled.',
-    };
-  },
-
-  ccjCancelledOnCaseOfflineClaimantWelsh: () => {
-    return {
-      title: 'Bydd yr achos nawr yn parhau all-lein',
-      content: 'Dyfarniad Llys Sirol (CCJ) y gwnaethoch gais amdano',
+      title: 'Response to the claim',
+      content: 'You have rejected the claim. The court will contact you when ' + clientName + ' responds.',
+      nextSteps: 'View your response',
     };
   },
 };

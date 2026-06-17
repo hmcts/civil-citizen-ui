@@ -447,9 +447,9 @@ module.exports = {
 
     await assertSubmittedSpecEvent('PENDING_CASE_ISSUED');
 
-    // wait for the service request to be created before simulating payment
+    // Wait for CREATE_SERVICE_REQUEST_CLAIM before payment callback to avoid race where
+    // CREATE_CLAIM_SPEC_AFTER_PAYMENT is blocked by an ongoing business process.
     await waitForFinishedBusinessProcess(caseId);
-
     await apiRequest.paymentUpdate(caseId, '/service-request-update-claim-issued',
       claimSpecData.serviceUpdateDto(caseId, 'paid'));
     console.log('Service request update sent to callback URL');
@@ -458,7 +458,6 @@ module.exports = {
     if (!manualPIP) {
       await assignSpecCase(caseId, multipartyScenario);
     }
-    //await waitForFinishedBusinessProcess(caseId);
 
     //field is deleted in about to submit callback
     deleteCaseFields('applicantSolicitor1CheckEmail');
@@ -585,14 +584,15 @@ module.exports = {
 
     await assertSubmittedSpecEvent('PENDING_CASE_ISSUED');
 
+    await waitForFinishedBusinessProcess(caseId);
     await apiRequest.paymentUpdate(caseId, '/service-request-update-claim-issued',
       claimSpecData.serviceUpdateDto(caseId, 'paid'));
     console.log('Service request update sent to callback URL');
+    await waitForFinishedBusinessProcess(caseId);
 
     if (claimType !== 'pinInPost') {
       await assignSpecCase(caseId, 'lrvlr');
     }
-    await waitForFinishedBusinessProcess(caseId);
 
     console.log('carmEnabled flag .. ', carmEnabled);
     /* Not needed this anymore as CARM is live, all FTs should be on live cases
@@ -962,40 +962,19 @@ module.exports = {
     await addUserCaseMapping(caseId, config.defendantCitizenUser);
   },
 
-  extendResponseDeadline: async (user, caseId, date) => {
-    console.log('This is inside extendResponseDeadline: ' + caseId);
-    const extendResponseDeadlinePayload = extendResponseDeadline.extendResponseDeadlinePayload();
-    eventName = extendResponseDeadlinePayload['event'];
-    caseData = {
-      ...extendResponseDeadlinePayload['caseData'],
-      respondentSolicitor1AgreedDeadlineExtension: date,
-    };
-    await apiRequest.setupTokens(user);
-    await assertSubmittedSpecEvent();
-    const responseData = await apiRequest.fetchCaseDetails(config.adminUser, caseId);
-    assert.equal(responseData.state, 'AWAITING_RESPONDENT_ACKNOWLEDGEMENT');
-    console.log('End of extendResponseDeadline()');
-  },
-
-  dismissCase: async (user, caseId) => {
-    console.log('This is inside dismissCase: ' + caseId);
-    const dismissCasePayload = dismissCase.dismissCasePayload();
-    eventName = dismissCasePayload['event'];
-    caseData = {...dismissCasePayload['caseData']};
-    await apiRequest.setupTokens(user);
-    await assertSubmittedSpecEvent('CASE_DISMISSED',
-      {header: '# The case has been dismissed', body: '&nbsp;'}, true, caseId);
-    console.log('End of dismissCase()');
-  },
-
-  setClaimDismissedDeadline: async (user, caseId, date) => {
-    await apiRequest.setupTokens(user);
-    await testingSupport.updateCaseData(caseId, {claimDismissedDeadline: date});
-    console.log('claimDismissedDeadline updated to ' + date);
-  },
-
-  triggerCaseDismissalScheduler: async () => {
-    return await testingSupport.triggerCaseDismissalScheduler();
+  waitUntilClaimIssued: async (targetCaseId, user = config.adminUser, maxAttempts = 30) => {
+    for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+      await waitForFinishedBusinessProcess(targetCaseId);
+      await apiRequest.setupTokens(user);
+      const {case_data} = await apiRequest.fetchCaseDetails(user, targetCaseId);
+      if (case_data.issueDate) {
+        console.log(`Claim ${targetCaseId} issued on attempt ${attempt}`);
+        return;
+      }
+      console.log(`Claim ${targetCaseId} not yet issued (attempt ${attempt}/${maxAttempts}), waiting...`);
+      await waitForTimeout(4000);
+    }
+    throw new Error(`Claim ${targetCaseId} was not issued after ${maxAttempts} attempts`);
   },
 };
 
