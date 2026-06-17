@@ -156,6 +156,15 @@
       color: $govuk-focus-text-colour;
     }
   }
+
+  .open-government-licence p:not(.logo) a[rel='license'] {
+    &:link,
+    &:visited,
+    &:hover,
+    &:active {
+      color: #0b0c0c;
+    }
+  }
 }
 
 .govuk-footer__inline-list {
