@@ -1,7 +1,6 @@
 import {getViewMessagesLink} from 'services/features/queryManagement/viewMessagesService';
 import {Claim} from 'models/claim';
 import {AppRequest} from 'models/AppRequest';
-import * as launchDarklyService from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {CaseRole} from 'form/models/caseRoles';
 import {YesNoUpperCamelCase} from 'form/models/yesNo';
 
@@ -28,7 +27,6 @@ describe('View Messages Service', () => {
         }},
       ],
     };
-    jest.spyOn(launchDarklyService, 'isQueryManagementEnabled').mockResolvedValueOnce(true);
     const generatedLink = await getViewMessagesLink(req, claim, 'en');
     expect(generatedLink).toBeDefined();
   });
@@ -50,19 +48,18 @@ describe('View Messages Service', () => {
         }},
       ],
     };
-    jest.spyOn(launchDarklyService, 'isQueryManagementEnabled').mockResolvedValueOnce(true);
     const generatedLink = await getViewMessagesLink(req, claim, 'en');
     expect(generatedLink).toBeDefined();
   });
 
-  it('should not the generate the view message if the flag is off', async () => {
+  it('should not generate the view message link when there are no messages', async () => {
     const claim = new Claim();
     claim.caseRole = CaseRole.DEFENDANT;
-    claim.qmRespondentCitizenQueries = {
-      caseRole: CaseRole.DEFENDANT,
-      caseMessages: [{id: '12345', subject: 'Test Message'}],
+    claim.queries = {
+      roleOnCase: CaseRole.DEFENDANT,
+      partyName: 'partyName',
+      caseMessages: [],
     };
-    jest.spyOn(launchDarklyService, 'isQueryManagementEnabled').mockResolvedValueOnce(false);
     const generatedLink = await getViewMessagesLink(req, claim, 'en');
     expect(generatedLink).toBeUndefined();
   });

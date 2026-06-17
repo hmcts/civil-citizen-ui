@@ -1,4 +1,3 @@
-import {isQueryManagementEnabled} from '../../app/auth/launchdarkly/launchDarklyClient';
 import {Claim} from 'common/models/claim';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {NextFunction, Request, Response} from 'express';
@@ -31,12 +30,9 @@ export const contactUsGuard = async (
     req.params.id = requestId; // ensure req.params.id is set for further processing
     const caseData: Claim = await civilServiceClient.retrieveClaimDetails(requestId, <AppRequest>req);
     if (caseData || !caseData.isEmpty()) {
-      const isQMFlagEnabled = await isQueryManagementEnabled(caseData?.submittedDate);
       delete req.params.id ; // remove params.id to avoid confusion in the next middleware
-      if(isQMFlagEnabled && !isClaimOffLine.includes(caseData.ccdState)) {
+      if(!isClaimOffLine.includes(caseData.ccdState)) {
         res.locals.showCreateQuery = true;
-        res.locals.isQMFlagEnabled = true;
-        res.locals.disableSendMessage = true;
         res.locals.qmStartUrl = constructResponseUrlWithIdParams(requestId, QM_START_URL)+'?linkFrom=start';
         res.locals.qmContactLink = caseData.isClaimant() ?
           constructResponseUrlWithIdParams(requestId, DASHBOARD_CLAIMANT_URL) :

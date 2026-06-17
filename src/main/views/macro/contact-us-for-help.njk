@@ -63,18 +63,14 @@
   {% set sendMessageTitle = t('COMMON.CONTACT_US_FOR_HELP.SEND_MESSAGE') %}
   {% set sendMessageLink = t('COMMON.CONTACT_US_FOR_HELP.SEND_MESSAGE_LINK') %}
   {% set sendMessageHint = t('COMMON.CONTACT_US_FOR_HELP.SEND_MESSAGE_RESPONSE') %}
-  {% if disableSendMessage %}
   {% set qmContent = _widgetRedesign(disclosure, sendMessageTitle, sendMessageLink, sendMessageHint, callChargesWidget) %}
-  {% else %}
-  {% set qmContent = _widgetRedesign(emailWidget, callChargesWidget) %}
-  {% endif %}
   {% if widget ==='Web_chat' %}
     {% set content = webChatUnavailableWidget + webChatClosedWidget %}
   {% endif %}
   {% set content = content + emailWidget + callChargesWidget %}
   {% if open %}
     <div class="govuk-details">
-      {% if isQMFlagEnabled === true %}
+      {% if showCreateQuery %}
           <p class="govuk-body">{{ t('COMMON.QM_INFORMATION_MESSAGES_DOCUMENTS') }}
             <a class="govuk-link" href={{ qmContactLink }} rel="noopener noreferrer">
               {{ t('COMMON.QM_INFORMATION_LINK') }}
@@ -86,7 +82,7 @@
       {{ callChargesWidget }}
     </div>
   {% else %}
-    {% if isQMFlagEnabled %}
+    {% if showCreateQuery %}
       {{ govukDetails({
         summaryText: ContactUs,
         html: qmContent,

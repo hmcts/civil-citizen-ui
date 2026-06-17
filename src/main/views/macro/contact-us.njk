@@ -5,7 +5,7 @@
 {% set contactEmail = t('contactocmc@justice.gov.uk') %}
 
 {% macro contactUs(t) %}
-  {% if isQMFlagEnabled === true %}
+  {% if showCreateQuery %}
   <p class="govuk-body">{{ t('COMMON.QM_INFORMATION_MESSAGES_DOCUMENTS') }}
     <a class="govuk-link" href={{ qmContactLink }} rel="noopener noreferrer">
       {{ t('COMMON.QM_INFORMATION_LINK') }}

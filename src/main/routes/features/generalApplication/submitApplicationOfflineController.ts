@@ -1,24 +1,20 @@
-import {BACK_URL, DASHBOARD_URL, GA_SUBMIT_OFFLINE} from 'routes/urls';
+import {BACK_URL, GA_SUBMIT_OFFLINE} from 'routes/urls';
 import {AppRequest} from 'models/AppRequest';
 import {RequestHandler, Response, Router} from 'express';
 import {t} from 'i18next';
 import {applicationNoticeUrl} from 'common/utils/externalURLs';
 import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
 import {getClaimById} from 'modules/utilityService';
-import {isQueryManagementEnabled} from '../../../app/auth/launchdarkly/launchDarklyClient';
 import {getRouteParam} from 'common/utils/routeParamUtils';
 const submitApplicationOfflineController = Router();
 const submitApplicationOffline = 'features/generalApplication/submit-application-offline';
 
 submitApplicationOfflineController.get(GA_SUBMIT_OFFLINE, (  async (req: AppRequest, res: Response) => {
   const lng = req.query.lang ? req.query.lang : req.cookies.lang;
-  const claimId = getRouteParam(req, 'id');
-  const claim = await getClaimById(claimId, req, true);
-  const isQmLipEnabled = await isQueryManagementEnabled(claim.submittedDate);
-  const backUrl:string = isQmLipEnabled ? BACK_URL: DASHBOARD_URL;
+  await getClaimById(getRouteParam(req, 'id'), req, true);
   res.render(submitApplicationOffline,{
     pageContent: getSummaryPageContent(lng),
-    backLinkUrl: backUrl,
+    backLinkUrl: BACK_URL,
   });
 })as RequestHandler);
 

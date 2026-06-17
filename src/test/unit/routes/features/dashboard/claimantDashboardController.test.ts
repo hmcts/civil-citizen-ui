@@ -562,7 +562,6 @@ describe('claimant Dashboard Controller', () => {
 
     describe.each(testCases)('Query management dashboard links', (testCase) => {
       it(`should display updated contact us information for case role: ${testCase.caseRole} with state: ${testCase.ccdState}`, async () => {
-        jest.spyOn(launchDarkly, 'isQueryManagementEnabled').mockResolvedValue(true);
         const claim = new Claim();
         claim.caseRole = testCase.caseRole;
         claim.ccdState = testCase.ccdState;
@@ -572,8 +571,8 @@ describe('claimant Dashboard Controller', () => {
           .mockResolvedValueOnce([]);
         app.locals = {
           showCreateQuery : true,
-          isQMFlagEnabled : true,
-          disableSendMessage: true,
+          qmStartUrl: '/case/1234567890/qm/start?linkFrom=start',
+          qmContactLink: DASHBOARD_CLAIMANT_URL,
         };
 
         await request(app).get(DASHBOARD_CLAIMANT_URL).expect((res: Response) => {
@@ -623,7 +622,6 @@ describe('claimant Dashboard Controller', () => {
       jest.clearAllMocks();
       jest.spyOn(launchDarkly, 'isCarmEnabledForCase').mockResolvedValue(false);
       jest.spyOn(launchDarkly, 'isGaForLipsEnabled').mockResolvedValue(false);
-      jest.spyOn(launchDarkly, 'isQueryManagementEnabled').mockResolvedValue(false);
       jest.spyOn(launchDarkly, 'isWelshEnabledForMainCase').mockResolvedValue(false);
       jest.spyOn(ClaimDetailsService, 'getTotalAmountWithInterestAndFees').mockResolvedValue(10);
       jest.spyOn(dashboardService, 'getNotifications').mockResolvedValue(undefined);

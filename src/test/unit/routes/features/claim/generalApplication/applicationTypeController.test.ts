@@ -7,7 +7,7 @@ import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
 import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
 import {ApplicationType, ApplicationTypeOption, LinKFromValues} from 'common/models/generalApplication/applicationType';
-import {isGaForLipsEnabled, isQueryManagementEnabled} from 'app/auth/launchdarkly/launchDarklyClient';
+import {isGaForLipsEnabled} from 'app/auth/launchdarkly/launchDarklyClient';
 import { Claim } from 'common/models/claim';
 import { GeneralApplication } from 'common/models/generalApplication/GeneralApplication';
 import { getClaimById } from 'modules/utilityService';
@@ -26,7 +26,6 @@ jest.mock('../../../../../../main/routes/guards/generalAplicationGuard',() => ({
     next();
   }),
 }));
-const isQueryManagementEnabledMock = isQueryManagementEnabled as jest.Mock;
 
 describe('General Application - Application type', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -37,13 +36,11 @@ describe('General Application - Application type', () => {
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
     (isGaForLipsEnabled as jest.Mock).mockResolvedValue(true);
-    isQueryManagementEnabledMock.mockImplementation(() => false) ;
   });
 
   describe('on GET', () => {
     it('should QM caption', async () => {
       (getClaimById as jest.Mock).mockResolvedValueOnce(new Claim());
-      isQueryManagementEnabledMock.mockImplementation(() => true) ;
       await request(app)
         .get(APPLICATION_TYPE_URL)
         .expect((res) => {

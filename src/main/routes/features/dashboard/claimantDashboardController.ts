@@ -21,7 +21,7 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {
   isCarmEnabledForCase,
   isGaForLipsEnabled,
-  isQueryManagementEnabled, isWelshEnabledForMainCase,
+  isWelshEnabledForMainCase,
   isJudgmentBufferEnabled,
 } from '../../../app/auth/launchdarkly/launchDarklyClient';
 import {t} from 'i18next';
@@ -76,11 +76,10 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
     const dashboardNotifications = await getNotifications(dashboardId, claim, totalAmountWithInterestAndFees, caseRole, req, lng);
     claim.orderDocumentId = extractOrderDocumentIdFromNotification(dashboardNotifications);
     const isGAFlagEnable = await isGaForLipsEnabled();
-    const isQMFlagEnabled = await isQueryManagementEnabled(claim.submittedDate);
-    const dashboard = await getDashboardForm(caseRole, claim, totalAmountWithInterestAndFees, dashboardId, req, isCarmApplicable, isGAFlagEnable);
+    const dashboard = await getDashboardForm(caseRole, claim, totalAmountWithInterestAndFees, dashboardId, req, isCarmApplicable);
     const judgmentBufferEnabled = await isJudgmentBufferEnabled();
     const [iWantToTitle, iWantToLinks, helpSupportTitle, helpSupportLinks]
-      = await getSupportLinks(req, claim, claimId, lng, isGAFlagEnable, false, judgmentBufferEnabled);
+      = await getSupportLinks(req, claim, claimId, lng, isGAFlagEnable, judgmentBufferEnabled);
     const hearing = dashboard?.items[2]?.tasks ? dashboard?.items[2]?.tasks : [];
     hearing.forEach((task) => {
       if (task.taskNameEn.search(HearingUploadDocuments)>0){
@@ -105,7 +104,6 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
       helpSupportLinks,
       lang: lng,
       pageTitle: 'PAGES.DASHBOARD.PAGE_TITLE',
-      isQMFlagEnabled,
       showWelshPartyBanner,
       showErrorAwaitingTranslation,
     });
@@ -114,7 +112,7 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
   }
 }) as RequestHandler);
 
-const getSupportLinks = async (req: AppRequest, claim: Claim, claimId: string, lng: string, isGAFlagEnable: boolean, isGAlinkEnabled = false, judgmentBufferEnabled = false) => {
+const getSupportLinks = async (req: AppRequest, claim: Claim, claimId: string, lng: string, isGAFlagEnable: boolean, judgmentBufferEnabled = false) => {
   const isAwaitingDefendantResponse = claim.isAwaitingDefendantResponse(judgmentBufferEnabled);
   const showTellUsEndedLink = isAwaitingDefendantResponse ||
     claim.ccdState === CaseState.AWAITING_APPLICANT_INTENTION ||
@@ -141,7 +139,7 @@ const getSupportLinks = async (req: AppRequest, claim: Claim, claimId: string, l
   const iWantToTitle = t('PAGES.DASHBOARD.SUPPORT_LINKS.I_WANT_TO', { lng });
   const iWantToLinks = [];
 
-  iWantToLinks.push(await getContactCourtLink(claimId, claim, isGAFlagEnable, lng));
+  iWantToLinks.push(await getContactCourtLink(claimId, claim, lng));
 
   const viewAllApplicationLink = await getViewAllApplicationLink(req, claim, isGAFlagEnable, lng);
   const viewMessages = await getViewMessagesLink(req, claim, lng);

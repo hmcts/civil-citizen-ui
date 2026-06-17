@@ -7,7 +7,7 @@ import {
   isDashboardEnabledForCase,
   isCarmEnabledForCase,
   isGaForLipsEnabled,
-  isQueryManagementEnabled, isWelshEnabledForMainCase,
+  isWelshEnabledForMainCase,
   isJudgmentBufferEnabled,
 } from '../../../app/auth/launchdarkly/launchDarklyClient';
 import {
@@ -64,11 +64,10 @@ claimSummaryController.get(DEFENDANT_SUMMARY_URL, (async (req: AppRequest, res: 
       const totalAmountWithInterestAndFees = (await getTotalAmountWithInterestAndFees(claim)).toString();
       const dashboardNotifications = await getNotifications(claimId, claim, totalAmountWithInterestAndFees, caseRole, req as AppRequest, lang);
       claim.orderDocumentId = extractOrderDocumentIdFromNotification(dashboardNotifications);
-      const dashboardTaskList = await getDashboardForm(caseRole, claim, totalAmountWithInterestAndFees, claimId, req as AppRequest, isCarmApplicable, isGAFlagEnable);
+      const dashboardTaskList = await getDashboardForm(caseRole, claim, totalAmountWithInterestAndFees, claimId, req as AppRequest, isCarmApplicable);
       const [iWantToTitle, iWantToLinks, helpSupportTitle, helpSupportLinks] = await getSupportLinks(req, claim, lang, claimId, isGAFlagEnable);
       const claimIdPrettified = caseNumberPrettify(claimId);
       const claimAmountFormatted = currencyFormatWithNoTrailingZeros(claim.totalClaimAmount);
-      const isQMFlagEnabled = await isQueryManagementEnabled(claim.submittedDate);
       await updateFieldDraftClaimFromStore(claimId, <AppRequest>req, ResponseClaimTrack, claim.responseClaimTrack?.toString());
 
       const hearing = dashboardTaskList?.items[2]?.tasks ? dashboardTaskList?.items[2]?.tasks : [];
@@ -94,7 +93,6 @@ claimSummaryController.get(DEFENDANT_SUMMARY_URL, (async (req: AppRequest, res: 
           helpSupportTitle,
           helpSupportLinks,
           lang,
-          isQMFlagEnabled,
           showWelshPartyBanner,
           showErrorAwaitingTranslation,
         },
@@ -115,11 +113,11 @@ claimSummaryController.get(DEFENDANT_SUMMARY_URL, (async (req: AppRequest, res: 
   }
 }) as RequestHandler);
 
-const getSupportLinks = async (req: AppRequest, claim: Claim, lng: string, claimId: string, isGAFlagEnable: boolean, isGAlinkEnabled = false) => {
+const getSupportLinks = async (req: AppRequest, claim: Claim, lng: string, claimId: string, isGAFlagEnable: boolean) => {
   const iWantToTitle = t('PAGES.DASHBOARD.SUPPORT_LINKS.I_WANT_TO', { lng });
   const iWantToLinks : iWantToLinks[] = [];
 
-  iWantToLinks.push(await getContactCourtLink(claimId, claim, isGAFlagEnable, lng));
+  iWantToLinks.push(await getContactCourtLink(claimId, claim, lng));
 
   const viewAllApplicationLink = await getViewAllApplicationLink(req, claim, isGAFlagEnable, lng);
   const viewMessages = await getViewMessagesLink(req, claim, lng);

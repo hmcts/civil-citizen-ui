@@ -20,7 +20,6 @@ import { generateRedisKey } from 'modules/draft-store/draftStoreService';
 import { getClaimById } from 'modules/utilityService';
 import { queryParamNumber } from 'common/utils/requestUtils';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {isQueryManagementEnabled} from '../../../app/auth/launchdarkly/launchDarklyClient';
 import {YesNo} from 'form/models/yesNo';
 import {getRouteParam} from 'common/utils/routeParamUtils';
 
@@ -48,14 +47,12 @@ applicationTypeController.get(APPLICATION_TYPE_URL, (async (req: AppRequest, res
     const cancelUrl = await getCancelUrl(claimId, claim);
     const backLinkUrl = BACK_URL;
     const showCCJ  = claim.isDefendant();
-    const isQMEnabled = await isQueryManagementEnabled(claim.submittedDate);
     res.render(viewPath, {
       form,
       cancelUrl,
       backLinkUrl,
       isOtherSelected: applicationType.isOtherSelected() || isAmendClaim,
       showCCJ: showCCJ,
-      isQMEnabled,
       isAskMoreTime,
       isAdjournHearing,
       isAmendClaim,

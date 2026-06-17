@@ -84,11 +84,7 @@
 {% endset %}
 
 {% block nestedContent %}
-          {% if isQMEnabled %}
-            <h1 class="govuk-caption-l" id="page-caption">{{ t('PAGES.QM.OPTIONS.CHANGE_CASE.TEXT') }}</h1>
-          {% else %}
-            <h1 class="govuk-caption-l" id="page-caption">{{ t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.CAPTION') }}</h1>
-          {% endif %}
+          <h1 class="govuk-caption-l" id="page-caption">{{ t('PAGES.QM.OPTIONS.CHANGE_CASE.TEXT') }}</h1>
           <h1 class="govuk-heading-l" id="page-title">{{ t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.TITLE') }}</h1>
 
           <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.WHEN_YOU_REQUEST') }}</p>

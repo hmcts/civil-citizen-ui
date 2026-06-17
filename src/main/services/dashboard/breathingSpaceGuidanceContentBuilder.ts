@@ -7,12 +7,11 @@ import {
 } from 'common/utils/externalURLs';
 import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
 
-export const getBSGuidanceContent = (lng: string, qmContactLink: string, isQMLipEnabled = false) => {
+export const getBSGuidanceContent = (lng: string, qmContactLink: string) => {
   const howToContactSection = t('PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.HOW_TO_CONTACT_PARA3', { lng });
   const bsGuidanceScheme = t('PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.MORE_INFO_PARA2', {lng});
   const linkForContactYourLocalCourt = `<a href="${findCourtTribunalUrl}" target="_blank">${t('PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.CONTACT_LOCAL_COURT_LINK', { lng })}</a>`;
   const linkBSGuidanceForCreditors = `<a href="${bsGuidanceForCreditors}" target="_blank">${t('PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.DEBT_RESPITE_GUIDANCE_SCHEME_LINK', { lng })}</a>`;
-  const mailTo = 'mailto:contactocmc@justice.gov.uk';
   const content =  new PageSectionBuilder()
     .addTitle('PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.PAGE_TITLE')
     .addParagraph('PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.SUMMARY')
@@ -29,12 +28,8 @@ export const getBSGuidanceContent = (lng: string, qmContactLink: string, isQMLip
     .addParagraph('PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.WHAT_NEXT_PARAGRAPH_4')
     .addTitle('PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.HOW_TO_CONTACT')
     .addParagraph('PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.HOW_TO_CONTACT_PARA1');
-  if (isQMLipEnabled) {
-    content.addFullStopLink('COMMON.QM_INFORMATION_LINK', qmContactLink, 'COMMON.QM_INFORMATION_MESSAGES_DOCUMENTS');
-  } else {
-    content.addLink('PAGES.LATEST_UPDATE_CONTENT.EMAIL_ID', mailTo, 'PAGES.LATEST_UPDATE_CONTENT.EMAIL');
-  }
-  content.addParagraph('PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.POST')
+  content.addFullStopLink('COMMON.QM_INFORMATION_LINK', qmContactLink, 'COMMON.QM_INFORMATION_MESSAGES_DOCUMENTS')
+    .addParagraph('PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.POST')
     .addRawHtml(`<p class="govuk-body">${howToContactSection.replace('LINK_TO_CONTACT_YOUR_LOCAL_COURT', linkForContactYourLocalCourt)}</p>`)
     .addTitle('PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.WHAT_HAPPENS_DURING_BS')
     .addParagraph('PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.WHAT_HAPPENS_DURING_BS_PARA1')

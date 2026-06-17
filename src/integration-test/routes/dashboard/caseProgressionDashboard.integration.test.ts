@@ -20,7 +20,6 @@ import {CaseRole} from '../../../main/common/form/models/caseRoles';
 import {
   isCarmEnabledForCase,
   isDashboardEnabledForCase,
-  isQueryManagementEnabled,
 } from '../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {
   extractOrderDocumentIdFromNotification,
@@ -55,7 +54,6 @@ describe('Integration: case progression dashboard', () => {
     (getContactCourtLink as jest.Mock).mockResolvedValue({text: 'Contact the court', url: '/contact-us'});
     (getHelpSupportTitle as jest.Mock).mockReturnValue('Help and support');
     (getHelpSupportLinks as jest.Mock).mockReturnValue([]);
-    (isQueryManagementEnabled as jest.Mock).mockResolvedValue(true);
     (isCarmEnabledForCase as jest.Mock).mockResolvedValue(false);
     (isDashboardEnabledForCase as jest.Mock).mockResolvedValue(true);
     (extractOrderDocumentIdFromNotification as jest.Mock).mockReturnValue(undefined);

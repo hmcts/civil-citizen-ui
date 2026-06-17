@@ -586,7 +586,6 @@ describe('Claim Summary Controller Defendant', () => {
 
     describe.each(testCases)('Query management dashboard links', (testCase) => {
       it(`should display updated contact us information for case role: ${testCase.caseRole} with state: ${testCase.ccdState}`, async () => {
-        jest.spyOn(launchDarklyClient, 'isQueryManagementEnabled').mockResolvedValue(true);
         isGAForLiPEnabledMock.mockResolvedValue(true);
         isDashboardEnabledForCase.mockResolvedValue(true);
         const claim = new Claim();
@@ -600,8 +599,8 @@ describe('Claim Summary Controller Defendant', () => {
           .mockResolvedValueOnce([]);
         app.locals = {
           showCreateQuery : true,
-          isQMFlagEnabled : true,
-          disableSendMessage : true,
+          qmStartUrl: `/case/${claimId}/qm/start?linkFrom=start`,
+          qmContactLink: `/dashboard/${claimId}/defendant`,
         };
 
         await testSession
