@@ -30,10 +30,15 @@ export const writeWithTTL = async (
     }
 
     const expiryTimestamp = calculateExpiryTimestamp(category, metadata);
-    await draftStoreClient.set(key, serializedValue);
-    await draftStoreClient.expireat(key, expiryTimestamp);
+    // Atomic write + relative expiry (EX) so a key can never be left without a
+    // TTL if the process dies between the write and the expiry call. EX is
+    // supported on every Redis version (unlike EXAT, which needs >= 6.2).
+    // Clamp to >= 1s to guard against an already-elapsed expiry (e.g. a draft
+    // anchored to an old creation date), which would be an invalid EX value.
+    const ttlSeconds = Math.max(1, expiryTimestamp - Math.floor(Date.now() / 1000));
+    await draftStoreClient.set(key, serializedValue, 'EX', ttlSeconds);
     logger.info(
-      `Applied TTL for key: ${key}, category: ${category}, expires: ${new Date(expiryTimestamp * 1000).toISOString()}`,
+      `Applied TTL for key: ${key}, category: ${category}, expires in: ${ttlSeconds}s`,
     );
   } catch (error) {
     logger.error(`Failed to write Redis key: ${key}, category: ${category}`, error);

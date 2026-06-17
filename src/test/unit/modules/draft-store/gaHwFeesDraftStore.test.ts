@@ -23,12 +23,11 @@ describe('GA Hwf Store Service', () => {
   describe('saveDraftGAHWFDetails', () => {
     it('should save the draft Hwf details with TTL', async () => {
       mockDraftStoreClient.set.mockResolvedValueOnce(null);
-      mockDraftStoreClient.expireat.mockResolvedValueOnce(null);
 
       await saveDraftGAHWFDetails(redisKey, gaHelpWithFees);
       const stringfyData = JSON.stringify(gaHelpWithFees);
-      expect(mockDraftStoreClient.set).toHaveBeenCalledWith(redisKey, stringfyData);
-      expect(mockDraftStoreClient.expireat).toHaveBeenCalledWith(redisKey, expect.any(Number));
+      expect(mockDraftStoreClient.set).toHaveBeenCalledWith(redisKey, stringfyData, 'EX', expect.any(Number));
+      expect(mockDraftStoreClient.expireat).not.toHaveBeenCalled();
     });
   });
 

@@ -156,8 +156,8 @@ describe('Draft store service to save and retrieve claim', () => {
     //When
     await createDraftClaimInStoreWithExpiryTime(CLAIM_ID);
     //Then
-    expect(spySet).toBeCalled();
-    expect(spyExpireat).toBeCalled();
+    expect(spySet).toHaveBeenCalledWith(CLAIM_ID, expect.any(String), 'EX', expect.any(Number));
+    expect(spyExpireat).not.toBeCalled();
   });
   it('should generate redis key', async () => {
     //Given
@@ -264,7 +264,8 @@ describe('Draft store service to save and retrieve claim', () => {
     await saveDraftClaim(CLAIM_ID, claim);
 
     expect(claim.draftClaimCreatedAt).toBeDefined();
-    expect(draftStoreWithData.expireat).toHaveBeenCalledWith(CLAIM_ID, expect.any(Number));
+    expect(draftStoreWithData.set).toHaveBeenCalledWith(CLAIM_ID, expect.any(String), 'EX', expect.any(Number));
+    expect(draftStoreWithData.expireat).not.toHaveBeenCalled();
   });
 
   it('should reconstruct draftClaimCreatedAt from existing TTL for legacy drafts', async () => {

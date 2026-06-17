@@ -34,8 +34,8 @@ describe('Payment session store service', () => {
 
     await saveUserId(claimId, feeType, userId);
 
-    expect(mockDraftStoreClient.set).toHaveBeenCalledWith('12345HEARINGuserIdForPayment', userId);
-    expect(mockDraftStoreClient.expireat).toHaveBeenCalledWith('12345HEARINGuserIdForPayment', expect.any(Number));
+    expect(mockDraftStoreClient.set).toHaveBeenCalledWith('12345HEARINGuserIdForPayment', userId, 'EX', expect.any(Number));
+    expect(mockDraftStoreClient.expireat).not.toHaveBeenCalled();
   });
 
   it('should preserve TTL when updating an existing payment session key', async () => {
@@ -57,7 +57,7 @@ describe('Payment session store service', () => {
     await saveUserId(claimId, feeType, newUserId);
 
     expect(mockDraftStoreClient.get).toHaveBeenCalledWith('12345HEARINGuserIdForPayment');
-    expect(mockDraftStoreClient.set).toHaveBeenCalledWith('12345HEARINGuserIdForPayment', newUserId);
+    expect(mockDraftStoreClient.set).toHaveBeenCalledWith('12345HEARINGuserIdForPayment', newUserId, 'EX', expect.any(Number));
     expect(mockDraftStoreClient.get).toHaveBeenCalledTimes(1);
   });
 
@@ -70,7 +70,7 @@ describe('Payment session store service', () => {
     await saveUserId(claimId, feeType, userId);
 
     expect(mockDraftStoreClient.get).toHaveBeenCalledWith('12345HEARINGuserIdForPayment');
-    expect(mockDraftStoreClient.set).toHaveBeenCalledWith('12345HEARINGuserIdForPayment', userId);
+    expect(mockDraftStoreClient.set).toHaveBeenCalledWith('12345HEARINGuserIdForPayment', userId, 'EX', expect.any(Number));
     expect(mockDraftStoreClient.get).toHaveBeenCalledTimes(1);
   });
 
@@ -126,11 +126,13 @@ describe('Payment session store service', () => {
 
     await saveOriginalPaymentConfirmationUrl(claimId, feeType, userId, originalUrl);
 
-    expect(mockDraftStoreClient.set).toHaveBeenCalledWith('1234567890123456HEARINGuser123confirmationUrl', originalUrl);
-    expect(mockDraftStoreClient.expireat).toHaveBeenCalledWith(
+    expect(mockDraftStoreClient.set).toHaveBeenCalledWith(
       '1234567890123456HEARINGuser123confirmationUrl',
+      originalUrl,
+      'EX',
       expect.any(Number),
     );
+    expect(mockDraftStoreClient.expireat).not.toHaveBeenCalled();
   });
 
   it('should log a warning when overwriting an existing payment confirmation url', async () => {
@@ -144,7 +146,7 @@ describe('Payment session store service', () => {
     await saveOriginalPaymentConfirmationUrl(claimId, feeType, userId, newUrl);
 
     expect(mockDraftStoreClient.get).toHaveBeenCalledWith('1234567890123456HEARINGuser123confirmationUrl');
-    expect(mockDraftStoreClient.set).toHaveBeenCalledWith('1234567890123456HEARINGuser123confirmationUrl', newUrl);
+    expect(mockDraftStoreClient.set).toHaveBeenCalledWith('1234567890123456HEARINGuser123confirmationUrl', newUrl, 'EX', expect.any(Number));
   });
 
   it('should NOT log a warning when the same payment confirmation url is saved', async () => {
@@ -157,7 +159,7 @@ describe('Payment session store service', () => {
     await saveOriginalPaymentConfirmationUrl(claimId, feeType, userId, url);
 
     expect(mockDraftStoreClient.get).toHaveBeenCalledWith('1234567890123456HEARINGuser123confirmationUrl');
-    expect(mockDraftStoreClient.set).toHaveBeenCalledWith('1234567890123456HEARINGuser123confirmationUrl', url);
+    expect(mockDraftStoreClient.set).toHaveBeenCalledWith('1234567890123456HEARINGuser123confirmationUrl', url, 'EX', expect.any(Number));
   });
 
   it('should get payment confirmation url', async () => {
@@ -197,8 +199,8 @@ describe('Payment session store service', () => {
     await saveOriginalPaymentConfirmationUrl(claimId, feeType, userIdOne, urlOne);
     await saveOriginalPaymentConfirmationUrl(claimId, feeType, userIdTwo, urlTwo);
 
-    expect(mockDraftStoreClient.set).toHaveBeenCalledWith('1234567890123456HEARINGuser123confirmationUrl', urlOne);
-    expect(mockDraftStoreClient.set).toHaveBeenCalledWith('1234567890123456HEARINGuser456confirmationUrl', urlTwo);
+    expect(mockDraftStoreClient.set).toHaveBeenCalledWith('1234567890123456HEARINGuser123confirmationUrl', urlOne, 'EX', expect.any(Number));
+    expect(mockDraftStoreClient.set).toHaveBeenCalledWith('1234567890123456HEARINGuser456confirmationUrl', urlTwo, 'EX', expect.any(Number));
   });
 
   it('should isolate payment confirmation urls for different fee types on the same claim and user', async () => {
@@ -210,8 +212,8 @@ describe('Payment session store service', () => {
     await saveOriginalPaymentConfirmationUrl(claimId, FeeType.CLAIMISSUED, userId, claimFeeUrl);
     await saveOriginalPaymentConfirmationUrl(claimId, FeeType.HEARING, userId, hearingFeeUrl);
 
-    expect(mockDraftStoreClient.set).toHaveBeenCalledWith('1234567890123456CLAIMISSUEDuser123confirmationUrl', claimFeeUrl);
-    expect(mockDraftStoreClient.set).toHaveBeenCalledWith('1234567890123456HEARINGuser123confirmationUrl', hearingFeeUrl);
+    expect(mockDraftStoreClient.set).toHaveBeenCalledWith('1234567890123456CLAIMISSUEDuser123confirmationUrl', claimFeeUrl, 'EX', expect.any(Number));
+    expect(mockDraftStoreClient.set).toHaveBeenCalledWith('1234567890123456HEARINGuser123confirmationUrl', hearingFeeUrl, 'EX', expect.any(Number));
   });
 
   it('should delete user id', async () => {

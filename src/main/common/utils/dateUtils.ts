@@ -1,5 +1,4 @@
 import {DateTime} from 'luxon';
-import {TTLCategory, calculateExpiryTimestamp} from 'modules/draft-store/ttlConfig';
 
 const FOUR_PM = 16;
 
@@ -144,10 +143,6 @@ export const formatStringDateDMY = (date: Date) => {
 export const formatStringTimeHMS = (date: Date) => {
   return `${date.toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', second: 'numeric', hour12: true })}`;
 };
-
-export function calculateExpireTimeForDraftClaimInSeconds(date: Date) {
-  return calculateExpiryTimestamp(TTLCategory.DRAFT_CLAIM, {creationDate: new Date(date)});
-}
 
 export function isDateOnOrAfterSpecificDate(date: Date, specificDate: Date) {
   return convertDateToLuxonDate(date) >= convertDateToLuxonDate(specificDate);

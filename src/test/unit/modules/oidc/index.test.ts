@@ -196,11 +196,10 @@ describe('OIDC middleware', () => {
         expect(mockDraftStoreClient.set).toHaveBeenCalledWith(
           '1729760747011812CLAIMISSUED123456789confirmationUrl',
           CLAIM_FEE_PAYMENT_CONFIRMATION_URL_WITH_UNIQUE_ID.replace(':id', '1729760747011812'),
-        );
-        expect(mockDraftStoreClient.expireat).toHaveBeenCalledWith(
-          '1729760747011812CLAIMISSUED123456789confirmationUrl',
+          'EX',
           expect.any(Number),
         );
+        expect(mockDraftStoreClient.expireat).not.toHaveBeenCalled();
         expect(res.text).toContain(SIGN_IN_URL);
       });
     });

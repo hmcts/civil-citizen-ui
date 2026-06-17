@@ -23,12 +23,11 @@ describe('draftStoreService', () => {
   describe('saveDraftGARespondentResponse', () => {
     it('should save the draft response and set expiration', async () => {
       mockDraftStoreClient.set.mockResolvedValueOnce(null);
-      mockDraftStoreClient.expireat.mockResolvedValueOnce(null);
 
       await saveDraftGARespondentResponse(redisKey, response);
       const stringfyData = JSON.stringify(response);
-      expect(mockDraftStoreClient.set).toHaveBeenCalledWith(redisKey, stringfyData);
-      expect(mockDraftStoreClient.expireat).toHaveBeenCalledWith(redisKey, expect.any(Number));
+      expect(mockDraftStoreClient.set).toHaveBeenCalledWith(redisKey, stringfyData, 'EX', expect.any(Number));
+      expect(mockDraftStoreClient.expireat).not.toHaveBeenCalled();
     });
 
     it('should set draftResponseCreatedAt and expiry when creation date is missing', async () => {
@@ -37,7 +36,8 @@ describe('draftStoreService', () => {
       await saveDraftGARespondentResponse(redisKey, responseWithoutCreatedAt);
 
       expect(responseWithoutCreatedAt.draftResponseCreatedAt).toBeDefined();
-      expect(mockDraftStoreClient.expireat).toHaveBeenCalledWith(redisKey, expect.any(Number));
+      expect(mockDraftStoreClient.set).toHaveBeenCalledWith(redisKey, expect.any(String), 'EX', expect.any(Number));
+      expect(mockDraftStoreClient.expireat).not.toHaveBeenCalled();
     });
 
     it('should preserve existing TTL on update', async () => {

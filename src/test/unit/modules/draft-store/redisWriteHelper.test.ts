@@ -24,23 +24,30 @@ describe('redisWriteHelper', () => {
     expect(mockDraftStoreClient.expireat).not.toHaveBeenCalled();
   });
 
-  it('should apply new TTL when key has no expiry', async () => {
+  it('should apply new TTL atomically (EX) when key has no expiry', async () => {
     mockDraftStoreClient.ttl.mockResolvedValueOnce(-1);
 
     await writeWithTTL('test-key', 'value', TTLCategory.PAYMENT_SESSION);
 
-    expect(mockDraftStoreClient.set).toHaveBeenCalledWith('test-key', 'value');
-    expect(mockDraftStoreClient.expireat).toHaveBeenCalledWith('test-key', expect.any(Number));
+    expect(mockDraftStoreClient.set).toHaveBeenCalledWith('test-key', 'value', 'EX', expect.any(Number));
+    expect(mockDraftStoreClient.expireat).not.toHaveBeenCalled();
   });
 
   it('should anchor draft claim TTL to creation date', async () => {
     mockDraftStoreClient.ttl.mockResolvedValueOnce(-2);
-    const creationDate = new Date('2024-01-01T00:00:00.000Z');
+    const tenDaysAgo = new Date(Date.now() - 10 * 86400 * 1000);
 
-    await writeWithTTL('claim-key', {id: '1'}, TTLCategory.DRAFT_CLAIM, {creationDate});
+    await writeWithTTL('claim-key', {id: '1'}, TTLCategory.DRAFT_CLAIM, {creationDate: tenDaysAgo});
 
-    const expectedExpiry = Math.round(creationDate.getTime() / 1000) + (180 * 86400);
-    expect(mockDraftStoreClient.expireat).toHaveBeenCalledWith('claim-key', expectedExpiry);
+    // 180-day TTL anchored to a creation date 10 days ago => ~170 days remaining.
+    const [key, value, mode, seconds] = mockDraftStoreClient.set.mock.calls[0];
+    const expectedSeconds = (180 - 10) * 86400;
+    expect(key).toBe('claim-key');
+    expect(value).toBe(JSON.stringify({id: '1'}));
+    expect(mode).toBe('EX');
+    expect(seconds).toBeGreaterThan(expectedSeconds - 5);
+    expect(seconds).toBeLessThanOrEqual(expectedSeconds + 1);
+    expect(mockDraftStoreClient.expireat).not.toHaveBeenCalled();
   });
 
   it('should throw when value is null', async () => {
