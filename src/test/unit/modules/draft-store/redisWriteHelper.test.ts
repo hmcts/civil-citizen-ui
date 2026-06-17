@@ -50,6 +50,28 @@ describe('redisWriteHelper', () => {
     expect(mockDraftStoreClient.expireat).not.toHaveBeenCalled();
   });
 
+  it('should warn when metadata is provided but key already has a TTL', async () => {
+    const warnSpy = jest.spyOn(console, 'warn').mockImplementation(() => undefined);
+    mockDraftStoreClient.ttl.mockResolvedValueOnce(120);
+    const metadata = {creationDate: new Date()};
+
+    await writeWithTTL('test-key', {foo: 'bar'}, TTLCategory.DRAFT_CLAIM, metadata);
+
+    expect(mockDraftStoreClient.set).toHaveBeenCalledWith('test-key', JSON.stringify({foo: 'bar'}), 'KEEPTTL');
+    warnSpy.mockRestore();
+  });
+
+  it('should clamp TTL to 1 second when expiry has already elapsed', async () => {
+    mockDraftStoreClient.ttl.mockResolvedValueOnce(-1);
+    const farPast = new Date(Date.now() - 200 * 86400 * 1000);
+
+    await writeWithTTL('claim-key', {id: '1'}, TTLCategory.DRAFT_CLAIM, {creationDate: farPast});
+
+    const [, , mode, seconds] = mockDraftStoreClient.set.mock.calls[0];
+    expect(mode).toBe('EX');
+    expect(seconds).toBe(1);
+  });
+
   it('should throw when value is null', async () => {
     await expect(writeWithTTL('key', null as unknown as string, TTLCategory.PAYMENT_SESSION))
       .rejects.toThrow('Redis value cannot be null or undefined');

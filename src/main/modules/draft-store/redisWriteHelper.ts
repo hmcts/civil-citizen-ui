@@ -12,6 +12,7 @@ export const writeWithTTL = async (
   value: string | object,
   category: TTLCategory,
   metadata?: TTLMetadata,
+  prefetchedTTL?: number,
 ): Promise<void> => {
   if (value === null || value === undefined) {
     throw new Error('Redis value cannot be null or undefined');
@@ -21,9 +22,12 @@ export const writeWithTTL = async (
   const serializedValue = serializeValue(value);
 
   try {
-    const existingTTL = await draftStoreClient.ttl(key);
+    const existingTTL = prefetchedTTL !== undefined ? prefetchedTTL : await draftStoreClient.ttl(key);
 
     if (existingTTL > 0) {
+      if (metadata) {
+        logger.warn(`writeWithTTL: metadata ignored for key: ${key} — KEEPTTL preserves original expiry`);
+      }
       await draftStoreClient.set(key, serializedValue, 'KEEPTTL');
       logger.info(`Preserved existing TTL for key: ${key}, TTL: ${existingTTL}s`);
       return;

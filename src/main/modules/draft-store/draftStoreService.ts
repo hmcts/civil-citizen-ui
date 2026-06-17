@@ -20,9 +20,9 @@ const logger = Logger.getLogger('draftStoreService');
  * @param claimId
  * @returns claim from redis or undefined when no there is no data for claim id
  */
-export const getDraftClaimFromStore = async (claimId: string, doNotThrowErrror = false) => {
+export const getDraftClaimFromStore = async (claimId: string, doNotThrowError = false) => {
   const dataFromRedis = await app.locals.draftStoreClient.get(claimId);
-  if (dataFromRedis === null && !doNotThrowErrror) {
+  if (dataFromRedis === null && !doNotThrowError) {
     throw new Error('Case not found...');
   }
   return convertRedisDataToCivilClaimResponse(dataFromRedis);
@@ -74,15 +74,16 @@ export const saveDraftClaim = async (
   if (isUndefined(storedClaimResponse.case_data)) {
     storedClaimResponse = createNewCivilClaimResponse(claimId);
   }
+  let prefetchedTTL: number | undefined;
   if (ttlCategory === TTLCategory.DRAFT_CLAIM && !claim.draftClaimCreatedAt) {
     const storedCreatedAt = storedClaimResponse.case_data?.draftClaimCreatedAt;
     if (storedCreatedAt) {
       claim.draftClaimCreatedAt = new Date(storedCreatedAt);
     } else {
-      const existingTTL = await app.locals.draftStoreClient.ttl(claimId);
-      if (existingTTL > 0) {
+      prefetchedTTL = await app.locals.draftStoreClient.ttl(claimId);
+      if (prefetchedTTL > 0) {
         claim.draftClaimCreatedAt = reconstructCreationDateFromRemainingTtl(
-          existingTTL,
+          prefetchedTTL,
           TTLCategory.DRAFT_CLAIM,
         );
       } else {
@@ -96,7 +97,7 @@ export const saveDraftClaim = async (
     ? {creationDate: new Date(claim.draftClaimCreatedAt)}
     : undefined;
 
-  await writeWithTTL(claimId, storedClaimResponse, ttlCategory, metadata);
+  await writeWithTTL(claimId, storedClaimResponse, ttlCategory, metadata, prefetchedTTL);
 };
 
 const createNewCivilClaimResponse = (claimId: string) => {
