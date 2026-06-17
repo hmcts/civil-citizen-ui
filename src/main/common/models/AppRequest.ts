@@ -45,10 +45,6 @@ export interface AppSession extends Session {
   qmShareConfirmed: boolean;
   caseReference?: string;
   paymentConfirmationContext?: PaymentConfirmationContext;
-  uploadRateLimit?: {
-    windowStartMs: number;
-    requestCount: number;
-  };
 }
 
 export interface UserDetails {
