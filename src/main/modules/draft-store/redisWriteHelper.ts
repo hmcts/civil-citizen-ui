@@ -26,7 +26,7 @@ export const writeWithTTL = async (
 
     if (existingTTL > 0) {
       await draftStoreClient.set(key, serializedValue, 'KEEPTTL');
-      logger.info(`Preserved existing TTL for key: ${key}, TTL: ${existingTTL}s`);
+      logger.debug(`Preserved existing TTL for key: ${key}, TTL: ${existingTTL}s`);
       return;
     }
 
@@ -38,7 +38,7 @@ export const writeWithTTL = async (
     // anchored to an old creation date), which would be an invalid EX value.
     const ttlSeconds = Math.max(1, expiryTimestamp - Math.floor(Date.now() / 1000));
     await draftStoreClient.set(key, serializedValue, 'EX', ttlSeconds);
-    logger.info(
+    logger.debug(
       `Applied TTL for key: ${key}, category: ${category}, expires in: ${ttlSeconds}s`,
     );
   } catch (error) {
