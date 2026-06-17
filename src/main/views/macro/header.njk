@@ -32,7 +32,7 @@
           </a>
           {% if user %}
             <nav aria-label="Menu" class="civil-header__navigation">
-              <ul class="civil-header__navigation-list">
+              <ul id="navigation" class="civil-header__navigation-list">
                 {% for item in navigationList %}
                   <li class="civil-header__navigation-item">
                     <a class="civil-header__link" href="{{ item.href }}">
