@@ -1,7 +1,14 @@
 {% extends "claim-details-tpl.njk" %}
 
 {% block content %}
-  <h1 class="govuk-heading-xl">{{ t('ERRORS.SOMETHING_WENT_WRONG') }}</h1>
-  <p class="govuk-body">{{ t('COMMON.TECHNICAL_PROBLEMS') }}</p>
-  <p class="govuk-body">{{ error.message }}</p>
+  {% if callbackErrors and callbackErrors.length %}
+    <h1 class="govuk-heading-xl">{{ t('ERRORS.THERE_IS_A_PROBLEM') }}</h1>
+    {% for callbackError in callbackErrors %}
+      <p class="govuk-body">{{ callbackError }}</p>
+    {% endfor %}
+  {% else %}
+    <h1 class="govuk-heading-xl">{{ t('ERRORS.SOMETHING_WENT_WRONG') }}</h1>
+    <p class="govuk-body">{{ t('COMMON.TECHNICAL_PROBLEMS') }}</p>
+    <p class="govuk-body">{{ error.message }}</p>
+  {% endif %}
 {% endblock %}

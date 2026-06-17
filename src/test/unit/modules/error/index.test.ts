@@ -1,5 +1,6 @@
 import {ErrorHandler} from '../../../../main/modules/error';
 import {HTTPError} from '../../../../main/HttpError';
+import {CallbackError} from '../../../../main/app/client/common/error/callbackError';
 
 jest.mock('@hmcts/nodejs-logging', () => ({
   Logger: (() => {
@@ -97,5 +98,23 @@ describe('ErrorHandler', () => {
     expect(getFlushMock()).not.toHaveBeenCalled();
     expect(res.status).toHaveBeenCalledWith(400);
     expect(res.render).toHaveBeenCalledWith('error', {error: res.locals.error});
+  });
+
+  it('renders the callback errors (422) and does not track App Insights (DTSCCI-5282)', () => {
+    const errorMiddleware = appUse.mock.calls[1][0];
+    const callbackErrors = ['There is a technical issue causing a delay. You do not need to do anything. Please come back later.'];
+    const err = new CallbackError(callbackErrors, []);
+    const req = {originalUrl: '/case/123/qm/create-query-cya', method: 'POST'} as any;
+    const res = {
+      locals: {},
+      status: jest.fn().mockReturnThis(),
+      render: jest.fn(),
+    } as any;
+
+    errorMiddleware(err, req, res, jest.fn());
+
+    expect(getTrackExceptionMock()).not.toHaveBeenCalled();
+    expect(res.status).toHaveBeenCalledWith(422);
+    expect(res.render).toHaveBeenCalledWith('error', expect.objectContaining({callbackErrors}));
   });
 });
