@@ -515,6 +515,7 @@ module.exports = {
 
   // CIV-13149 and 13152
   // Notice.AAA6.MediationSuccessful.CARM.Claimant
+  // Notice.AAA6.MediationSuccessful.CARM.Defendant
   mediationSuccessful: () => {
     return {
       title: 'Mediation appointment successful',
@@ -624,11 +625,21 @@ module.exports = {
     };
   },
 
-  responseToTheClaim: (clientName) => {
+  // Notice.AAA6.DefResponse.FullDefence.FullDispute.CARM.Claimant
+  responseToTheClaimClaimant: (clientName) => {
     return {
       title: 'Response to the claim',
       content: clientName + ' has rejected the claim. You need to respond by',
       nextSteps: 'View and respond',
+    };
+  },
+
+  // Notice.AAA6.DefResponse.FullDefence.FullDispute.CARM.Defendant
+  responseToTheClaimDefendant: (clientName) => {
+    return {
+      title: 'Response to the claim',
+      content: 'You have rejected the claim. The court will contact you when ' + clientName + ' responds.',
+      nextSteps: 'View your response',
     };
   },
 };
