@@ -72,4 +72,4 @@ Scenario('Pay the Hearing Fee Journey - Fast Track',  async ({I, api}) => {
     recipientEmail: config.claimantCitizenUser.email,
     timeoutMs: 45000,
   });
-});
+}).tag('@civil-citizen-pr');
