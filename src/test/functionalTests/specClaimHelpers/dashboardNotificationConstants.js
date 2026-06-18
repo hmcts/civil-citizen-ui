@@ -203,6 +203,22 @@ module.exports = {
     };
   },
 
+  claimantNotificationDJRequested: () => {
+    return {
+      title: 'A judgment against the defendant has been made',
+      content: ['The defendant should now pay you according to the terms of the judgment.'],
+      nextSteps: 'confirm that they’ve paid you the full amount that you’re owed',
+    };
+  },
+
+  defendantNotificationDJRequested: () => {
+    return {
+      title: 'A judgment has been made against you',
+      content: ['The exact details of what you need to pay, and by when, are stated on the judgment.   If you want to dispute the judgment, or ask to change how and when you pay back the claim amount, you can'],
+      nextSteps: 'make an application to set aside (remove) or vary the judgment',
+    };
+  },
+
   //Add deadline logic later
   //Notice.AAA6.DefResponse.FullDefence.FullDispute.RefusedMediation.Claimant
   claimantNotificationWithDefendantRejectMedidationWithRejectAll: () => {
@@ -499,6 +515,7 @@ module.exports = {
 
   // CIV-13149 and 13152
   // Notice.AAA6.MediationSuccessful.CARM.Claimant
+  // Notice.AAA6.MediationSuccessful.CARM.Defendant
   mediationSuccessful: () => {
     return {
       title: 'Mediation appointment successful',
@@ -608,11 +625,21 @@ module.exports = {
     };
   },
 
-  responseToTheClaim: (clientName) => {
+  // Notice.AAA6.DefResponse.FullDefence.FullDispute.CARM.Claimant
+  responseToTheClaimClaimant: (clientName) => {
     return {
       title: 'Response to the claim',
       content: clientName + ' has rejected the claim. You need to respond by',
       nextSteps: 'View and respond',
+    };
+  },
+
+  // Notice.AAA6.DefResponse.FullDefence.FullDispute.CARM.Defendant
+  responseToTheClaimDefendant: (clientName) => {
+    return {
+      title: 'Response to the claim',
+      content: 'You have rejected the claim. The court will contact you when ' + clientName + ' responds.',
+      nextSteps: 'View your response',
     };
   },
 };
