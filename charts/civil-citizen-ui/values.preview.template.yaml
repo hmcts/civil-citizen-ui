@@ -166,7 +166,7 @@ civil-service:
       CMC_DB_USERNAME: hmcts
       CMC_DB_NAME: "pr-${CHANGE_ID}-cmc"
       SCHEDULER_ENABLED_JUDGEMENT_BUFFER: true
-      SCHEDULER_ENABLED_DEFENDANT_RESPONSE: true
+      SEARCH_PAGE_SIZE_JUDGEMENT_BUFFER: 2
     secrets:
       CMC_DB_PASSWORD:
         secretRef: "{{ .Values.global.postgresSecret }}"
