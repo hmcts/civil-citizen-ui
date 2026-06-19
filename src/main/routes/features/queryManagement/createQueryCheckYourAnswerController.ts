@@ -47,8 +47,8 @@ createQueryCheckYourAnswerController.post([QM_CYA, QM_FOLLOW_UP_CYA], async (req
   try {
     const isFollowUpUrl = isFollowUp(req.originalUrl);
     const claimId = getRouteParam(req, 'id');
-    const claim = await getClaimById(claimId, req, true);
     const updatedClaim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
+    const claim = await getClaimById(claimId, req, true);
     await createQuery(claim, updatedClaim, req, isFollowUpUrl);
     const propertyName = isFollowUpUrl ? 'sendFollowUpQuery' : 'createQuery';
     //save the information
