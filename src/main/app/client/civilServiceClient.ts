@@ -478,9 +478,10 @@ export class CivilServiceClient {
 
   async calculateClaimInterest(claim: ClaimUpdate): Promise<number> {
     try {
-      logger.info('calculateClaimInterest');
+      const caller = new Error().stack?.split('\n')[2]?.trim() ?? 'unknown';
+      logger.info(`[DUPLICATE-CHECK] calculateClaimInterest called - caller: ${caller}`);
       const response = await this.client.post(CIVIL_SERVICE_CLAIM_CALCULATE_INTEREST, claim, {headers: {'Content-Type': 'application/json'}});
-      logger.info(`calculateClaimInterest response: ${response.data}` );
+      logger.info(`[DUPLICATE-CHECK] calculateClaimInterest response: ${response.data}`);
       return response.data as number;
     } catch (err: unknown) {
       logger.error('Error when calculating interest');
