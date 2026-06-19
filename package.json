@@ -112,7 +112,7 @@
     "lodash": "^4.18.1",
     "luxon": "^3.2.1",
     "minimatch": "^10.2.3",
-    "multer": "^2.1.1",
+    "multer": "^2.2.0",
     "nunjucks": "^3.2.4",
     "otplib": "^13.0.0",
     "rate-limit-redis": "^5.0.0",
@@ -190,7 +190,7 @@
   },
   "resolutions": {
     "flatted": "3.4.2",
-    "undici": "7.24.0",
+    "undici": "7.28.0",
     "table/ajv": "^8.18.0",
     "@tootallnate/once": "^3.0.1",
     "test-exclude": "^7.0.1",
