@@ -190,7 +190,7 @@
   },
   "resolutions": {
     "flatted": "3.4.2",
-    "undici": "7.24.0",
+    "undici": "7.28.0",
     "table/ajv": "^8.18.0",
     "@tootallnate/once": "^3.0.1",
     "test-exclude": "^7.0.1",
