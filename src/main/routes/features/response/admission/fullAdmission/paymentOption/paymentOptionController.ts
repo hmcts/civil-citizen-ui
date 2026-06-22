@@ -12,6 +12,7 @@ import {AppRequest} from 'common/models/AppRequest';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {getClaimById} from 'modules/utilityService';
 import {Claim} from 'models/claim';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const paymentOptionController = Router();
 const citizenPaymentOptionViewPath = 'features/response/admission/payment-option';
@@ -30,7 +31,8 @@ function redirectToNextPage(claimId: string, form: PaymentOption, res: Response)
 
 paymentOptionController.get(CITIZEN_PAYMENT_OPTION_URL, (async (req, res, next: NextFunction) => {
   try {
-    const claim = await getClaimById(req.params.id, req, true);
+    const claimId = getRouteParam(req, 'id');
+    const claim = await getClaimById(claimId, req, true);
     const paymentOption = await getPaymentOptionForm(claim, ResponseType.FULL_ADMISSION);
     renderView(new GenericForm(paymentOption), res, claim);
   } catch (error) {
@@ -47,7 +49,8 @@ paymentOptionController.post(CITIZEN_PAYMENT_OPTION_URL, (async (req, res, next:
       renderView(form, res);
     } else {
       await savePaymentOptionData(generateRedisKey(<AppRequest>req), paymentOption, ResponseType.FULL_ADMISSION);
-      redirectToNextPage(req.params.id, paymentOption, res);
+      const claimId = getRouteParam(req, 'id');
+      redirectToNextPage(claimId, paymentOption, res);
     }
   } catch (error) {
     next(error);

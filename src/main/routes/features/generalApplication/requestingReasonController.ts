@@ -21,6 +21,7 @@ import {
   ApplicationTypeOptionSelection,
   getApplicationTypeOptionByTypeAndDescription,
 } from 'models/generalApplication/applicationType';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const requestingReasonController = Router();
 const viewPath = 'features/generalApplication/requesting-reason';
@@ -28,7 +29,7 @@ const viewPath = 'features/generalApplication/requesting-reason';
 requestingReasonController.get(GA_REQUESTING_REASON_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
-    const claimId = req.params.id;
+    const claimId = getRouteParam(req, 'id');
     const claim = await getClaimById(claimId, req, true);
     const applicationIndex = queryParamNumber(req, 'index') || 0;
     const generalApplication = claim.generalApplication;
@@ -38,7 +39,7 @@ requestingReasonController.get(GA_REQUESTING_REASON_URL, (async (req: AppRequest
     const applicationType = getApplicationTypeOptionByTypeAndDescription(applicationTypeOption, ApplicationTypeOptionSelection.BY_APPLICATION_TYPE);
     const contentList = buildRequestingReasonPageContent(applicationTypeOption, lng);
     const backLinkUrl = BACK_URL;
-    const cancelUrl = await getCancelUrl(req.params.id, claim);
+    const cancelUrl = await getCancelUrl(claimId, claim);
     const form = new GenericForm(requestingReason);
     res.render(viewPath, {
       form,
@@ -55,7 +56,7 @@ requestingReasonController.get(GA_REQUESTING_REASON_URL, (async (req: AppRequest
 requestingReasonController.post(GA_REQUESTING_REASON_URL, (async (req: AppRequest | Request, res: Response, next: NextFunction) => {
   try {
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
-    const claimId = req.params.id;
+    const claimId = getRouteParam(req, 'id');
     const claim = await getClaimById(claimId, req, true);
     const redisKey = generateRedisKey(<AppRequest>req);
     const requestingReason = new RequestingReason(req.body.text);
@@ -63,7 +64,7 @@ requestingReasonController.post(GA_REQUESTING_REASON_URL, (async (req: AppReques
     const applicationTypeOption = getByIndexOrLast(claim.generalApplication?.applicationTypes, applicationIndex)?.option;
     const contentList = buildRequestingReasonPageContent(applicationTypeOption, lng);
     const backLinkUrl = BACK_URL;
-    const cancelUrl = await getCancelUrl(req.params.id, claim);
+    const cancelUrl = await getCancelUrl(claimId, claim);
     const form = new GenericForm(requestingReason);
     await form.validate();
     if (form.hasErrors()) {

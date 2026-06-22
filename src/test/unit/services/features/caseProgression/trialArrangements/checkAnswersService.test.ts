@@ -14,6 +14,7 @@ describe('check your answers trial ready', () => {
   it('should return all the summary sections', () => {
     //Given
     const claim = getClaimWithDefendantTrialArrangements();
+    claim.id = '12345';
 
     //when
     const summarySections = getSummarySections(claim.id, claim, 'en');

@@ -1,5 +1,5 @@
 import {Claim} from 'common/models/claim';
-import Axios, {AxiosError, AxiosInstance, AxiosResponse} from 'axios';
+import Axios, {AxiosError, AxiosHeaderValue, AxiosInstance, AxiosResponse} from 'axios';
 import {AssertionError} from 'assert';
 import {AppRequest, AppSession} from 'common/models/AppRequest';
 import {CivilClaimResponse, ClaimFeeData} from 'common/models/civilClaimResponse';
@@ -65,8 +65,22 @@ import {CCDGeneralApplication} from 'models/gaEvents/eventDto';
 import {roundOffTwoDecimals} from 'common/utils/dateUtils';
 import {syncCaseReferenceCookie} from 'modules/cookie/caseReferenceCookie';
 import {assertHasData, assertNonEmpty} from 'client/common/error/eventSubmissionError';
+import {normalizeRouteParam, RouteParam} from 'common/utils/routeParamUtils';
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('civilServiceClient');
+
+const getResponseHeaderValue = (header: AxiosHeaderValue | undefined): string => {
+  if (typeof header === 'string') {
+    return header;
+  }
+  if (typeof header === 'number' || typeof header === 'boolean') {
+    return header.toString();
+  }
+  if (Array.isArray(header)) {
+    return header.join(', ');
+  }
+  return '';
+};
 
 const convertCaseToClaim = (caseDetails: CivilClaimResponse): Claim => {
   const claim: Claim = translateCCDCaseDataToCUIModel(caseDetails.case_data);
@@ -91,6 +105,30 @@ export class CivilServiceClient {
         baseURL,
       });
     }
+  }
+
+  private getClaimDetailsRequestCache(req: AppRequest): Map<string, Promise<Claim>> {
+    const requestWithLocals = req as AppRequest & { locals?: AppRequest['locals'] };
+    const requestLocals = requestWithLocals.locals ?? (requestWithLocals.locals = {env: '', lang: ''});
+    if (requestLocals.claimDetailsRequestCache) {
+      return requestLocals.claimDetailsRequestCache;
+    }
+
+    const newCache = new Map<string, Promise<Claim>>();
+    requestLocals.claimDetailsRequestCache = newCache;
+    return newCache;
+  }
+
+  private getUserCaseRolesRequestCache(req: AppRequest): Map<string, Promise<CaseRole>> {
+    const requestWithLocals = req as AppRequest & { locals?: AppRequest['locals'] };
+    const requestLocals = requestWithLocals.locals ?? (requestWithLocals.locals = {env: '', lang: ''});
+    if (requestLocals.userCaseRolesRequestCache) {
+      return requestLocals.userCaseRolesRequestCache;
+    }
+
+    const newCache = new Map<string, Promise<CaseRole>>();
+    requestLocals.userCaseRolesRequestCache = newCache;
+    return newCache;
   }
 
   getConfig(req: AppRequest) {
@@ -147,16 +185,35 @@ export class CivilServiceClient {
     }
   }
 
-  async retrieveClaimDetails(claimId: string, req: AppRequest): Promise<Claim> {
+  async retrieveClaimDetails(claimId: RouteParam, req: AppRequest): Promise<Claim> {
+    const requestCache = this.getClaimDetailsRequestCache(req);
+    const normalizedClaimId = normalizeRouteParam(claimId);
+    const requestUserId = req.session?.user?.id ?? '';
+    const cacheKey = `${normalizedClaimId}|${requestUserId}`;
+    const cachedClaimDetailsPromise = requestCache.get(cacheKey);
+    if (cachedClaimDetailsPromise !== undefined) {
+      return cachedClaimDetailsPromise;
+    }
+
+    const claimDetailsPromise = this.retrieveClaimDetailsFromCivilService(normalizedClaimId, req)
+      .catch((error) => {
+        requestCache.delete(cacheKey);
+        throw error;
+      });
+    requestCache.set(cacheKey, claimDetailsPromise);
+    return claimDetailsPromise;
+  }
+
+  private async retrieveClaimDetailsFromCivilService(normalizedClaimId: string, req: AppRequest): Promise<Claim> {
     const config = this.getConfig(req);
     try {
-      const response = await this.client.get(`/cases/${claimId}`, config);// nosonar
+      const response = await this.client.get(`/cases/${normalizedClaimId}`, config);// nosonar
       if (!response.data) {
         throw new AssertionError({message: 'Claim details not available!'});
       }
       const caseDetails: CivilClaimResponse = response.data;
 
-      caseDetails.case_data.caseRole = await this.getUserCaseRoles(claimId, req);
+      caseDetails.case_data.caseRole = await this.getUserCaseRoles(normalizedClaimId, req);
       const caseId = caseDetails.id?.toString();
       if (caseId) {
         const session = req.session as AppSession | undefined;
@@ -167,7 +224,7 @@ export class CivilServiceClient {
       }
       return convertCaseToClaim(caseDetails);
     } catch (err: unknown) {
-      logger.error(`Error when retrieving claim details for claim id - ${claimId} `);
+      logger.error(`Error when retrieving claim details for claim id - ${normalizedClaimId} `);
       throw err;
     }
   }
@@ -277,6 +334,11 @@ export class CivilServiceClient {
       }
       return response.data as boolean;
     } catch (err: unknown) {
+      const axiosError = err as AxiosError;
+      if (axiosError.response?.status === 404) {
+        logger.info(`Claim ${caseReference} not found or not linked, returning false`);
+        return false;
+      }
       logger.error(`Error when checking a claim ${caseReference} is linked to a defendant,caseReference - ${caseReference}`);
       throw err;
     }
@@ -285,7 +347,10 @@ export class CivilServiceClient {
   async uploadDocument(req: AppRequest, file: FileUpload): Promise<CaseDocument> {
     try {
       const formData = new FormData();
-      formData.append('file', new Blob([file.buffer]) , file.originalname);
+      const binaryContent: ArrayBuffer = file.buffer instanceof Buffer
+        ? Uint8Array.from(file.buffer).buffer
+        : file.buffer as ArrayBuffer;
+      formData.append('file', new Blob([binaryContent]), file.originalname);
       const response= await this.client.post(CIVIL_SERVICE_UPLOAD_DOCUMENT_URL, formData,
         {headers: {'Content-Type': 'multipart/form-data', 'Authorization': `Bearer ${req.session?.user?.accessToken}`}});
       if (!response.data) {
@@ -310,8 +375,8 @@ export class CivilServiceClient {
       const response: AxiosResponse<object> = await this.client.get(CIVIL_SERVICE_DOWNLOAD_DOCUMENT_URL
         .replace(':documentId', documentId), config);
 
-      return new FileResponse(response.headers['content-type'],
-        response.headers['original-file-name'],
+      return new FileResponse(getResponseHeaderValue(response.headers['content-type']),
+        getResponseHeaderValue(response.headers['original-file-name']),
         response.data as Buffer);
 
     } catch (err) {
@@ -320,15 +385,15 @@ export class CivilServiceClient {
     }
   }
 
-  async submitDefendantResponseEvent(claimId: string, updatedClaim: ClaimUpdate, req: AppRequest): Promise<Claim> {
+  async submitDefendantResponseEvent(claimId: RouteParam, updatedClaim: ClaimUpdate, req: AppRequest): Promise<Claim> {
     return this.submitEvent(CaseEvent.DEFENDANT_RESPONSE_CUI, claimId, updatedClaim, req);
   }
 
-  async submitClaimantResponseEvent(claimId: string, updatedClaim: ClaimUpdate, req: AppRequest): Promise<Claim> {
+  async submitClaimantResponseEvent(claimId: RouteParam, updatedClaim: ClaimUpdate, req: AppRequest): Promise<Claim> {
     return this.submitEvent(CaseEvent.CLAIMANT_RESPONSE_CUI, claimId, updatedClaim, req);
   }
 
-  async submitAgreedResponseExtensionDateEvent(claimId: string, updatedClaim: ClaimUpdate, req: AppRequest): Promise<Claim> {
+  async submitAgreedResponseExtensionDateEvent(claimId: RouteParam, updatedClaim: ClaimUpdate, req: AppRequest): Promise<Claim> {
     return this.submitEvent(CaseEvent.INFORM_AGREED_EXTENSION_DATE_SPEC, claimId, updatedClaim, req);
   }
 
@@ -336,7 +401,7 @@ export class CivilServiceClient {
     return this.submitEvent(CaseEvent.CREATE_LIP_CLAIM, 'draft', updatedClaim, req);
   }
 
-  async submitClaimAfterPayment(claimId: string, claim: Claim, req: AppRequest):  Promise<Claim> {
+  async submitClaimAfterPayment(claimId: RouteParam, claim: Claim, req: AppRequest):  Promise<Claim> {
     return this.submitEvent(CaseEvent.CREATE_CLAIM_SPEC_AFTER_PAYMENT, claimId,
       {
         issueDate : claim.issueDate,
@@ -345,47 +410,48 @@ export class CivilServiceClient {
       , req);
   }
 
-  async submitClaimantResponseDJEvent(claimId: string, updatedClaim: ClaimUpdate, req: AppRequest): Promise<Claim> {
+  async submitClaimantResponseDJEvent(claimId: RouteParam, updatedClaim: ClaimUpdate, req: AppRequest): Promise<Claim> {
     return this.submitEvent(CaseEvent.DEFAULT_JUDGEMENT_SPEC, claimId, updatedClaim, req);
   }
 
-  async submitTrialArrangement(claimId: string, updatedClaim: ClaimUpdate, req?: AppRequest):  Promise<Claim> {
+  async submitTrialArrangement(claimId: RouteParam, updatedClaim: ClaimUpdate, req?: AppRequest):  Promise<Claim> {
     return this.submitEvent(CaseEvent.TRIAL_ARRANGEMENTS, claimId, updatedClaim, req);
   }
 
-  async submitClaimantResponseForRequestJudgementAdmission(claimId: string, updatedClaim: ClaimantResponseRequestJudgementByAdmissionOrDeterminationToCCD, req: AppRequest): Promise<Claim> {
+  async submitClaimantResponseForRequestJudgementAdmission(claimId: RouteParam, updatedClaim: ClaimantResponseRequestJudgementByAdmissionOrDeterminationToCCD, req: AppRequest): Promise<Claim> {
     return this.submitEvent(CaseEvent.REQUEST_JUDGEMENT_ADMISSION_SPEC, claimId, updatedClaim, req);
   }
 
-  async submitClaimSettled(claimId: string, updatedClaim: ClaimUpdate, req: AppRequest):  Promise<Claim> {
+  async submitClaimSettled(claimId: RouteParam, updatedClaim: ClaimUpdate, req: AppRequest):  Promise<Claim> {
     return this.submitEvent(CaseEvent.LIP_CLAIM_SETTLED,  claimId, updatedClaim, req);
   }
 
-  async submitDefendantSignSettlementAgreementEvent(claimId: string, updatedClaim: ClaimUpdate, req: AppRequest): Promise<Claim> {
+  async submitDefendantSignSettlementAgreementEvent(claimId: RouteParam, updatedClaim: ClaimUpdate, req: AppRequest): Promise<Claim> {
     return this.submitEvent(CaseEvent.DEFENDANT_SIGN_SETTLEMENT_AGREEMENT, claimId, updatedClaim, req);
   }
 
-  async submitCreateServiceRequestEvent(claimId: string, req: AppRequest): Promise<Claim> {
+  async submitCreateServiceRequestEvent(claimId: RouteParam, req: AppRequest): Promise<Claim> {
     return this.submitEvent(CaseEvent.CREATE_SERVICE_REQUEST_CUI, claimId, {}, req);
   }
 
-  async submitJudgmentPaidInFull(claimId: string, updatedClaim: ClaimUpdate, req?: AppRequest):  Promise<Claim> {
+  async submitJudgmentPaidInFull(claimId: RouteParam, updatedClaim: ClaimUpdate, req?: AppRequest):  Promise<Claim> {
     return this.submitEvent(CaseEvent.JUDGMENT_PAID_IN_FULL, claimId, updatedClaim, req);
   }
 
-  async submitInitiateGeneralApplicationEvent(claimId: string, updatedApplication: CCDGeneralApplication, req?: AppRequest):  Promise<Claim> {
+  async submitInitiateGeneralApplicationEvent(claimId: RouteParam, updatedApplication: CCDGeneralApplication, req?: AppRequest):  Promise<Claim> {
     return this.submitEvent(CaseEvent.INITIATE_GENERAL_APPLICATION, claimId, updatedApplication, req);
   }
 
-  async submitInitiateGeneralApplicationEventForCosc(claimId: string, updatedApplication: CCDGeneralApplication, req?: AppRequest):  Promise<Claim> {
+  async submitInitiateGeneralApplicationEventForCosc(claimId: RouteParam, updatedApplication: CCDGeneralApplication, req?: AppRequest):  Promise<Claim> {
     return this.submitEvent(CaseEvent.INITIATE_GENERAL_APPLICATION_COSC, claimId, updatedApplication, req);
   }
 
-  async submitRequestForReconsideration(claimId: string, updatedClaim: ClaimUpdate, req?: AppRequest):  Promise<Claim> {
+  async submitRequestForReconsideration(claimId: RouteParam, updatedClaim: ClaimUpdate, req?: AppRequest):  Promise<Claim> {
     return this.submitEvent(CaseEvent.REQUEST_FOR_RECONSIDERATION, claimId, updatedClaim, req);
   }
 
-  async submitEvent(event: CaseEvent, claimId: string, updatedClaim?: ClaimUpdate, req?: AppRequest): Promise<Claim> {
+  async submitEvent(event: CaseEvent, claimId: RouteParam, updatedClaim?: ClaimUpdate, req?: AppRequest): Promise<Claim> {
+    const normalizedClaimId = normalizeRouteParam(claimId);
     const config = this.getConfig(req);
     const userId = req.session?.user?.id;
     const data: EventDto = {
@@ -393,11 +459,11 @@ export class CivilServiceClient {
       caseDataUpdate: updatedClaim,
     };
     assertNonEmpty(userId, 'User id is undefined');
-    assertNonEmpty(claimId, 'Claim id is undefined');
+    assertNonEmpty(normalizedClaimId, 'Claim id is undefined');
     try {
       const response = await this.client.post(CIVIL_SERVICE_SUBMIT_EVENT // nosonar
         .replace(':submitterId', userId)
-        .replace(':caseId', claimId), data, config);// nosonar
+        .replace(':caseId', normalizedClaimId), data, config);// nosonar
       assertHasData(response, { action: 'submit event', event });
       const claimResponse = response.data as CivilClaimResponse;
       return convertCaseToClaim(claimResponse);
@@ -405,7 +471,7 @@ export class CivilServiceClient {
       const err = e as AxiosError;
       const status = err.response?.status;
       const body = err.response?.data;
-      logger.error(`Submit event failed (event=${event}, claimId=${claimId}, status=${status})`, { body });
+      logger.error(`Submit event failed (event=${event}, claimId=${normalizedClaimId}, status=${status})`, { body });
       throw err;
     }
   }
@@ -432,7 +498,7 @@ export class CivilServiceClient {
     }
   }
 
-  async submitQueryManagementRaiseQuery(claimId: string, updatedClaim: ClaimUpdate, req: AppRequest): Promise<Claim> {
+  async submitQueryManagementRaiseQuery(claimId: RouteParam, updatedClaim: ClaimUpdate, req: AppRequest): Promise<Claim> {
     return this.submitEvent(CaseEvent.QUERY_MANAGEMENT_RAISE_QUERY, claimId, updatedClaim, req);
   }
 
@@ -461,30 +527,51 @@ export class CivilServiceClient {
     }
   }
 
-  async assignDefendantToClaim(claimId: string, req: AppRequest, pin:string): Promise<void> {
-    await this.client.post(ASSIGN_CLAIM_TO_DEFENDANT.replace(':claimId', claimId), { pin: pin }, // nosonar
+  async assignDefendantToClaim(claimId: RouteParam, req: AppRequest, pin:string): Promise<void> {
+    const normalizedClaimId = normalizeRouteParam(claimId);
+    await this.client.post(ASSIGN_CLAIM_TO_DEFENDANT.replace(':claimId', normalizedClaimId), { pin: pin }, // nosonar
       { headers: { 'Authorization': `Bearer ${req.session?.user?.accessToken}` } })
       .catch((err) => {
-        logger.error(`Error when assigning defendant to claim ${claimId}`);
+        logger.error(`Error when assigning defendant to claim ${normalizedClaimId}`);
         throw err;
       }); // nosonar
   }
 
-  async getAgreedDeadlineResponseDate(claimId: string, req: AppRequest): Promise<Date> {
+  async getAgreedDeadlineResponseDate(claimId: RouteParam, req: AppRequest): Promise<Date> {
+    const normalizedClaimId = normalizeRouteParam(claimId);
     const config = this.getConfig(req);
     try {
-      const response = await this.client.get(CIVIL_SERVICE_AGREED_RESPONSE_DEADLINE_DATE.replace(':claimId', claimId), config);
+      const response = await this.client.get(CIVIL_SERVICE_AGREED_RESPONSE_DEADLINE_DATE.replace(':claimId', normalizedClaimId), config);
       if(response.data)
         return new Date(response.data.toString());
     } catch (err: unknown) {
-      logger.error(`Error when getting agreed deadline response date for claimId: ${claimId}`);
+      logger.error(`Error when getting agreed deadline response date for claimId: ${normalizedClaimId}`);
       throw err;
     }
   }
 
-  async getUserCaseRoles(claimId: string, req: AppRequest) {
+  async getUserCaseRoles(claimId: RouteParam, req: AppRequest) {
+    const requestCache = this.getUserCaseRolesRequestCache(req);
+    const normalizedClaimId = normalizeRouteParam(claimId);
+    const requestUserId = req.session?.user?.id ?? '';
+    const cacheKey = `${normalizedClaimId}|${requestUserId}`;
+    const cachedCaseRolePromise = requestCache.get(cacheKey);
+    if (cachedCaseRolePromise !== undefined) {
+      return cachedCaseRolePromise;
+    }
+
+    const userCaseRolePromise = this.getUserCaseRolesFromCivilService(normalizedClaimId, req)
+      .catch((error) => {
+        requestCache.delete(cacheKey);
+        throw error;
+      });
+    requestCache.set(cacheKey, userCaseRolePromise);
+    return userCaseRolePromise;
+  }
+
+  private async getUserCaseRolesFromCivilService(normalizedClaimId: string, req: AppRequest): Promise<CaseRole> {
     try {
-      const userCaseRolesUrl = (new URL(`${this.client.defaults.baseURL}${CIVIL_SERVICE_USER_CASE_ROLE.replace(':claimId', claimId)}`));
+      const userCaseRolesUrl = (new URL(`${this.client.defaults.baseURL}${CIVIL_SERVICE_USER_CASE_ROLE.replace(':claimId', normalizedClaimId)}`));
       const response = await this.client.get(userCaseRolesUrl.toString()
         , {headers: {'Authorization': `Bearer ${req.session?.user?.accessToken}`}});
       const responseRoles = response.data as string[];
@@ -497,20 +584,20 @@ export class CivilServiceClient {
     }
   }
 
-  async getCalculatedDecisionOnClaimantProposedRepaymentPlan(claimId: string, req: AppRequest, claimantProposedPlan: CCDClaimantProposedPlan) :Promise<RepaymentDecisionType> {
+  async getCalculatedDecisionOnClaimantProposedRepaymentPlan(claimId: RouteParam, req: AppRequest, claimantProposedPlan: CCDClaimantProposedPlan) :Promise<RepaymentDecisionType> {
     const config = this.getConfig(req);
     try{
-      const response = await this.client.post(CIVIL_SERVICE_COURT_DECISION.replace(':claimId', claimId), claimantProposedPlan, config);
+      const response = await this.client.post(CIVIL_SERVICE_COURT_DECISION.replace(':claimId', normalizeRouteParam(claimId)), claimantProposedPlan, config);
       return response.data as unknown as RepaymentDecisionType;
     } catch(err) {
       logger.error('Error when getting calculated decision on claimant proposed repayment plan');
       throw err;
     }
   }
-  async getFeePaymentRedirectInformation(claimId: string, feeType: string,  req: AppRequest): Promise<PaymentInformation> {
+  async getFeePaymentRedirectInformation(claimId: RouteParam, feeType: string,  req: AppRequest): Promise<PaymentInformation> {
     const config = this.getConfig(req);
     try {
-      const response = await this.client.post(CIVIL_SERVICE_FEES_PAYMENT_URL.replace(':feeType', feeType).replace(':claimId', claimId),'', config);
+      const response = await this.client.post(CIVIL_SERVICE_FEES_PAYMENT_URL.replace(':feeType', feeType).replace(':claimId', normalizeRouteParam(claimId)),'', config);
       return plainToInstance(PaymentInformation, response.data);
     } catch (err: unknown) {
       logger.error('Error when getting fee payment redirect information');
@@ -518,10 +605,10 @@ export class CivilServiceClient {
     }
   }
 
-  async getFeePaymentStatus(claimId: string, paymentReference: string, feeType: string,  req: AppRequest): Promise<PaymentInformation> {
+  async getFeePaymentStatus(claimId: RouteParam, paymentReference: string, feeType: string,  req: AppRequest): Promise<PaymentInformation> {
     const config = this.getConfig(req);
     try {
-      const response: AxiosResponse<object> = await this.client.get(CIVIL_SERVICE_FEES_PAYMENT_STATUS_URL.replace(':claimId', claimId).replace(':feeType', feeType).replace(':paymentReference', paymentReference), config);
+      const response: AxiosResponse<object> = await this.client.get(CIVIL_SERVICE_FEES_PAYMENT_STATUS_URL.replace(':claimId', normalizeRouteParam(claimId)).replace(':feeType', feeType).replace(':paymentReference', paymentReference), config);
 
       return plainToInstance(PaymentInformation, response.data);
     } catch (err: unknown) {
@@ -552,9 +639,9 @@ export class CivilServiceClient {
     });
   }
 
-  async retrieveNotification(claimId: string,role: string,  req: AppRequest): Promise<DashboardNotificationList>  {
+  async retrieveNotification(claimId: RouteParam,role: string,  req: AppRequest): Promise<DashboardNotificationList>  {
     const config = this.getConfig(req);
-    const response = await this.client.get(CIVIL_SERVICE_NOTIFICATION_LIST_URL.replace(':ccd-case-identifier', claimId).replace(':role-type', role), config);
+    const response = await this.client.get(CIVIL_SERVICE_NOTIFICATION_LIST_URL.replace(':ccd-case-identifier', normalizeRouteParam(claimId)).replace(':role-type', role), config);
     let dashboardNotificationItems = plainToInstance(DashboardNotification, response.data as DashboardNotification[]);
     dashboardNotificationItems = this.filterDashboardNotificationItems(dashboardNotificationItems, req);
     return new DashboardNotificationList(dashboardNotificationItems);
@@ -574,9 +661,9 @@ export class CivilServiceClient {
     return gaNotifications;
   }
 
-  async retrieveDashboard(claimId: string,role: string,  req: AppRequest): Promise<Dashboard>  {
+  async retrieveDashboard(claimId: RouteParam,role: string,  req: AppRequest): Promise<Dashboard>  {
     const config = this.getConfig(req);
-    const response = await this.client.get(CIVIL_SERVICE_DASHBOARD_TASKLIST_URL.replace(':ccd-case-identifier', claimId).replace(':role-type', role), config);
+    const response = await this.client.get(CIVIL_SERVICE_DASHBOARD_TASKLIST_URL.replace(':ccd-case-identifier', normalizeRouteParam(claimId)).replace(':role-type', role), config);
     const taskList = plainToInstance(CivilServiceDashboardTask, response.data as CivilServiceDashboardTask[]);
 
     const groupedTasks = taskList.reduce((group, task) => {

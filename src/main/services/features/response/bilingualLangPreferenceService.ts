@@ -4,13 +4,14 @@ import {GenericYesNo} from 'common/form/models/genericYesNo';
 import {ClaimBilingualLanguagePreference} from 'common/models/claimBilingualLanguagePreference';
 import {Request} from 'express';
 import {getClaimById} from 'modules/utilityService';
+import {getRouteParam, normalizeRouteParam, RouteParam} from 'common/utils/routeParamUtils';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('selfEmployedAsService');
 
 const getBilingualLangPreference = async (req: Request): Promise<GenericYesNo> => {
   try {
-    const claim = await getClaimById(req.params.id, req, true);
+    const claim = await getClaimById(getRouteParam(req, 'id'), req, true);
     if (claim.claimBilingualLanguagePreference) {
       return new GenericYesNo(claim.claimBilingualLanguagePreference);
     }
@@ -21,11 +22,12 @@ const getBilingualLangPreference = async (req: Request): Promise<GenericYesNo> =
   }
 };
 
-const saveBilingualLangPreference = async (claimId: string, form: GenericYesNo) => {
+const saveBilingualLangPreference = async (claimId: RouteParam, form: GenericYesNo) => {
   try {
-    const claim = await getClaim(claimId);
+    const normalizedClaimId = normalizeRouteParam(claimId);
+    const claim = await getClaim(normalizedClaimId);
     claim.claimBilingualLanguagePreference = await getSelectedLanguage(form.option);
-    await saveDraftClaim(claimId, claim);
+    await saveDraftClaim(normalizedClaimId, claim);
   } catch (error) {
     logger.error(error);
     throw error;
@@ -55,8 +57,8 @@ const getSelectedLanguage = async (language: string) => {
       return undefined;
   }
 };
-const getClaim = async (claimId: string): Promise<Claim> => {
-  const claim = await getCaseDataFromStore(claimId);
+const getClaim = async (claimId: RouteParam): Promise<Claim> => {
+  const claim = await getCaseDataFromStore(normalizeRouteParam(claimId));
   if (!claim.claimBilingualLanguagePreference) {
     claim.claimBilingualLanguagePreference = undefined;
   }

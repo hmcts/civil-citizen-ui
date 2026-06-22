@@ -32,6 +32,8 @@ import {
   extractCategoryAndIndex,
   uploadAndValidateFile,
 } from 'common/utils/fileUploadUtils';
+import {ValidationError} from 'class-validator';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const { Logger } = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('uploadDocumentsController');
@@ -40,6 +42,39 @@ const uploadDocumentsViewPath = 'features/caseProgression/upload-documents';
 const uploadDocumentsController = Router();
 const dqPropertyName = 'defendantDocuments';
 const dqPropertyNameClaimant = 'claimantDocuments';
+
+function sanitizeValidationErrors(errors: ValidationError[] = []): ValidationError[] {
+  const sanitize = (error: ValidationError): ValidationError | null => {
+    const children = (error.children || [])
+      .map(sanitize)
+      .filter((child): child is ValidationError => child !== null);
+
+    const onlyUnknownValue = !!error.constraints
+      && Object.keys(error.constraints).length === 1
+      && !!error.constraints.unknownValue;
+    if (onlyUnknownValue && children.length === 0) {
+      return null;
+    }
+
+    if (!error.constraints && children.length === 0) {
+      return null;
+    }
+
+    return {...error, children};
+  };
+
+  return errors
+    .map(sanitize)
+    .filter((error): error is ValidationError => error !== null);
+}
+
+function flattenErrorProperties(errors: ValidationError[] = [], parent = ''): string[] {
+  return errors.flatMap(error => {
+    const propertyPath = parent ? `${parent}[${error.property}]` : `${error.property}`;
+    const current = error.constraints ? [`${propertyPath}:${Object.keys(error.constraints).join(',')}`] : [];
+    return current.concat(flattenErrorProperties(error.children || [], propertyPath));
+  });
+}
 
 async function uploadSingleFile(req: Request, submitAction: string, form: GenericForm<UploadDocumentsUserForm>) {
   await uploadAndValidateFile(req, submitAction, form, civilServiceClientForDocRetrieve, 'uploadDocumentsController');
@@ -85,7 +120,7 @@ const civilServiceClientForDocRetrieve: CivilServiceClient = new CivilServiceCli
 
 uploadDocumentsController.get(CP_UPLOAD_DOCUMENTS_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const claimId = req.params.id;
+    const claimId = getRouteParam(req, 'id');
     req.session.previousUrl = req.originalUrl;
     const claim: Claim = await getClaimById(claimId, req, true);
     await renderView(res, claim, claimId, null);
@@ -97,14 +132,14 @@ uploadDocumentsController.get(CP_UPLOAD_DOCUMENTS_URL, (async (req: AppRequest, 
 const multerMiddleware = createMulterErrorMiddleware('uploadDocumentsController');
 
 uploadDocumentsController.post(CP_UPLOAD_DOCUMENTS_URL, multerMiddleware, (async (req, res, next) => {
-  const claimId = req.params.id;
-  const action = req.body.action;
+  const claimId = getRouteParam(req, 'id');
+  const action = req.body?.action as string | undefined;
   const userId = (req as AppRequest)?.session?.user?.id;
   try {
     if ((req as any).multerError) {
       const multerError = (req as any).multerError;
       const claim: Claim = await getClaimById(claimId, req, true);
-      const uploadDocumentsForm = getUploadDocumentsForm(req);
+      const uploadDocumentsForm = await Promise.resolve(getUploadDocumentsForm(req));
       const form = new GenericForm(uploadDocumentsForm);
 
       if (action?.includes('[uploadButton]')) {
@@ -132,7 +167,7 @@ uploadDocumentsController.post(CP_UPLOAD_DOCUMENTS_URL, multerMiddleware, (async
       timestamp: new Date().toISOString(),
     });
 
-    const uploadDocumentsForm = getUploadDocumentsForm(req);
+    const uploadDocumentsForm = await Promise.resolve(getUploadDocumentsForm(req));
     const form = new GenericForm(uploadDocumentsForm);
     const isClaimant = claim.isClaimant() ? dqPropertyNameClaimant : dqPropertyName;
 
@@ -158,6 +193,7 @@ uploadDocumentsController.post(CP_UPLOAD_DOCUMENTS_URL, multerMiddleware, (async
     }
 
     form.validateSync();
+    form.errors = sanitizeValidationErrors(form.errors);
 
     if (form.hasErrors()) {
       logger.warn('Upload documents form validation failed', {
@@ -165,7 +201,8 @@ uploadDocumentsController.post(CP_UPLOAD_DOCUMENTS_URL, multerMiddleware, (async
         userid,
         action,
         timestamp: new Date().toISOString(),
-        errors: form.getErrors?.() ?? 'validation errors present',
+        errors: form.errors?.length ?? 'validation errors present',
+        errorProperties: flattenErrorProperties(form.errors),
       });
       await renderView(res, claim, claimId, form);
     } else {

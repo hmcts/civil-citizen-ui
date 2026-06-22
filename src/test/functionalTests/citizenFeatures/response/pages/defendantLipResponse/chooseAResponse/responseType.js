@@ -48,15 +48,15 @@ class ResponseTypePage {
   async enterResponseToClaimError(claimRef, responseType){
     await I.amOnPage('/case/'+claimRef+'/response/response-type');
     await I.waitForContent('How do you respond to the claim?', config.WaitForText);
-    await I.click('Save and continue');
+    await I.clickWithRetry('Save and continue');
     await I.see('There was a problem');
     await I.see('Select how you respond to the claim');
     switch (responseType){
       case 'partial-admission':{
         await I.click(fields.responsePartAdmit);
-        await I.click('Save and continue');
+        await I.clickWithRetry('Save and continue');
         await I.see('Have you paid the claimant the amount you admit you owe?');
-        await I.click('Save and continue');
+        await I.clickWithRetry('Save and continue');
         await I.see('There was a problem');
         await I.see('Select if you have paid the claimant what you admit you owe or not');
         break;
@@ -64,7 +64,8 @@ class ResponseTypePage {
       case 'rejectAll':{
         await I.click(fields.responseRejectAll);
         await I.click('Save and continue');
-        await I.click('Save and continue');
+        await I.see('Why do you believe you don’t owe Test Inc any money?');
+        await I.clickWithRetry('Save and continue');
         await I.see('There was a problem');
         await I.see('Select why you don\'t believe you owe Test Inc any money');
         break;

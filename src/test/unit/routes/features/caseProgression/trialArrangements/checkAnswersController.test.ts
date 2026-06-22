@@ -26,6 +26,10 @@ describe('Trial Arrangements check answers - On GET', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
 
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
   beforeAll(() => {
     nock(idamUrl)
       .post('/o/token')

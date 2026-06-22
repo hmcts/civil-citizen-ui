@@ -16,6 +16,7 @@ import {getDecisionOnClaimantProposedPlan} from 'services/features/claimantRespo
 import {AppRequest} from 'models/AppRequest';
 import {Claim} from 'models/claim';
 import {getClaimById} from 'modules/utilityService';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const claimantSuggestedInstalmentsViewPath = 'features/claimantResponse/instalments-plan';
 const claimantSuggestedInstalmentsController = Router();
@@ -31,7 +32,7 @@ function renderView(form: GenericForm<RepaymentPlanForm>, res: Response, req: Re
 claimantSuggestedInstalmentsController.get(CLAIMANT_RESPONSE_PAYMENT_PLAN_URL,  (async (req, res, next: NextFunction) => {
   try {
     const claimantSuggestedInstalmentsPlan = await getClaimantSuggestedInstalmentsPlan(generateRedisKey(req as unknown as AppRequest));
-    const claimId = req.params.id;
+    const claimId = getRouteParam(req, 'id');
     const claim: Claim = await getClaimById(claimId, req, true);
     renderView(new GenericForm(claimantSuggestedInstalmentsPlan), res, req, claim);
   } catch (error) {
@@ -43,12 +44,12 @@ claimantSuggestedInstalmentsController.post(CLAIMANT_RESPONSE_PAYMENT_PLAN_URL,
   (async (req: Request, res: Response, next: NextFunction) => {
     try {
       const claimantSuggestedInstalments = await getClaimantSuggestedInstalmentsForm(req);
-      const claimId = req.params.id;
+      const claimId = getRouteParam(req, 'id');
       const form = new GenericForm(claimantSuggestedInstalments);
       form.validateSync();
       if (form.hasErrors()) {
         updateDayErrorMsg(form.errors);
-        const claimId = req.params.id;
+        const claimId = getRouteParam(req, 'id');
         const claim: Claim = await getClaimById(claimId, req, true);
         renderView(form, res, req, claim);
       } else {

@@ -59,7 +59,7 @@ describe('Additional Documents Service', () => {
     it('should upload file and save draft claim if no errors', async () => {
       const req = {
         body: { typeOfDocument: 'Type1' },
-        session: {} as AppSession,
+        session: { save: (cb: any) => cb() } as AppSession,
       } as unknown as AppRequest;
       const fileUpload = { name: 'file' };
       const uploadedDocument = {
@@ -83,7 +83,7 @@ describe('Additional Documents Service', () => {
     it('should set errors in session if validation fails', async () => {
       const req = {
         body: { typeOfDocument: 'Type1' },
-        session: { fileUpload: undefined } as AppSession,
+        session: { fileUpload: undefined, save: (cb: any) => cb() } as AppSession,
       } as unknown as AppRequest;
 
       (TypeOfDocumentSectionMapper.mapToSingleFile as jest.Mock).mockReturnValue(undefined);

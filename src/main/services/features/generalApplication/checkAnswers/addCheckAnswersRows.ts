@@ -1,7 +1,7 @@
 import { Claim } from 'models/claim';
 import { getLng } from 'common/utils/languageToggleUtils';
 import { t } from 'i18next';
-import { SummaryRow, summaryRow } from 'models/summaryList/summaryList';
+import { SummaryRow, summaryRow, summaryRowWithTextValue } from 'models/summaryList/summaryList';
 import {
   APPLICATION_TYPE_URL,
   GA_AGREEMENT_FROM_OTHER_PARTY_URL,
@@ -29,6 +29,7 @@ import {
 } from 'models/generalApplication/applicationType';
 import {debtPaymentOptions} from 'models/generalApplication/debtPaymentOptions';
 import {getListOfNotAllowedAdditionalAppType} from 'services/features/generalApplication/generalApplicationService';
+import {escapeHtml, escapedListItem} from 'common/utils/escapeHtml';
 
 export const addApplicationTypeRow = (
   claimId: string,
@@ -83,7 +84,7 @@ export const addInformOtherPartiesRow = (claimId: string, claim: Claim, lang: st
     );
     if (informOtherParties === YesNoUpperCase.NO) {
       rows.push(
-        summaryRow(
+        summaryRowWithTextValue(
           t('PAGES.GENERAL_APPLICATION.INFORM_OTHER_PARTIES.WHY_DO_NOT_WANT_COURT', {lng}),
           claim.generalApplication?.informOtherParties.reasonForCourtNotInformingOtherParties,
           constructResponseUrlWithIdParams(claimId, INFORM_OTHER_PARTIES_URL),
@@ -117,7 +118,7 @@ export const addOrderJudgeRow = (claimId: string, claim: Claim, orderJudgeIndex:
     const orderJudge = claim.generalApplication.orderJudges[orderJudgeIndex];
     const href = `${constructResponseUrlWithIdParams(claimId, ORDER_JUDGE_URL)}?index=${orderJudgeIndex}`;
     rows.push(
-      summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHAT_ORDER', {lng}), orderJudge.text,
+      summaryRowWithTextValue(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHAT_ORDER', {lng}), orderJudge.text,
         href, changeLabel(), undefined),
     );
   }
@@ -132,7 +133,7 @@ export const addRequestingReasonRow = (claimId: string, claim: Claim, requesting
     const requestingReason = claim.generalApplication.requestingReasons[requestingReasonIndex];
     const href = `${constructResponseUrlWithIdParams(claimId, GA_REQUESTING_REASON_URL)}?index=${requestingReasonIndex}`;
     rows.push(
-      summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_REQUESTING', {lng}), requestingReason.text,
+      summaryRowWithTextValue(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_REQUESTING', {lng}), requestingReason.text,
         href, changeLabel(), undefined),
     );
   }
@@ -190,7 +191,7 @@ export const addHearingArrangementsRows = (claimId: string, claim: Claim, lang: 
         constructResponseUrlWithIdParams(claimId, GA_HEARING_ARRANGEMENT_URL), changeLabel()),
     );
     rows.push(
-      summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_PREFER', {lng}),
+      summaryRowWithTextValue(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_PREFER', {lng}),
         claim.generalApplication.hearingArrangement.reasonForPreferredHearingType,
         constructResponseUrlWithIdParams(claimId, GA_HEARING_ARRANGEMENT_URL), changeLabel()),
     );
@@ -212,12 +213,12 @@ export const addHearingContactDetailsRows = (claimId: string, claim: Claim, lang
   const rows: SummaryRow[] = [];
   if (claim.generalApplication?.hearingContactDetails) {
     rows.push(
-      summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PREFERRED_TELEPHONE', {lng}),
+      summaryRowWithTextValue(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PREFERRED_TELEPHONE', {lng}),
         claim.generalApplication.hearingContactDetails.telephoneNumber,
         constructResponseUrlWithIdParams(claimId, GA_HEARING_CONTACT_DETAILS_URL), changeLabel()),
     );
     rows.push(
-      summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PREFERRED_EMAIL', {lng}),
+      summaryRowWithTextValue(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PREFERRED_EMAIL', {lng}),
         claim.generalApplication.hearingContactDetails.emailAddress,
         constructResponseUrlWithIdParams(claimId, GA_HEARING_CONTACT_DETAILS_URL), changeLabel()),
     );
@@ -266,13 +267,19 @@ export const addHearingSupportRows = (claimId: string, claim: Claim, lang: strin
       supportHtml += `<li>${t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.HEARING_LOOP', {lng})}</li>`;
     }
     if (claim.generalApplication.hearingSupport.signLanguageInterpreter?.selected) {
-      supportHtml += `<li>${t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.SIGN_LANGUAGE_INTERPRETER', {lng})} - '${claim.generalApplication.hearingSupport.signLanguageInterpreter.content}'</li>`;
+      supportHtml += escapedListItem(
+        `${t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.SIGN_LANGUAGE_INTERPRETER', {lng})} - '${claim.generalApplication.hearingSupport.signLanguageInterpreter.content}'`,
+      );
     }
     if (claim.generalApplication.hearingSupport.languageInterpreter?.selected) {
-      supportHtml += `<li>${t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.LANGUAGE_INTERPRETER', {lng})} - '${claim.generalApplication.hearingSupport.languageInterpreter.content}'</li>`;
+      supportHtml += escapedListItem(
+        `${t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.LANGUAGE_INTERPRETER', {lng})} - '${claim.generalApplication.hearingSupport.languageInterpreter.content}'`,
+      );
     }
     if (claim.generalApplication.hearingSupport.otherSupport?.selected) {
-      supportHtml += `<li>${t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.OTHER', {lng})} - '${claim.generalApplication.hearingSupport.otherSupport.content}'</li>`;
+      supportHtml += escapedListItem(
+        `${t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.OTHER', {lng})} - '${claim.generalApplication.hearingSupport.otherSupport.content}'`,
+      );
     }
     supportHtml += '</ul>';
     rows.push(
@@ -330,7 +337,7 @@ export const addHasEvidenceOfDebtPaymentRow = (claimId: string, claim: Claim, la
                         ${t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.COSC.UPLOAD_EVIDENCE_PAID_IN_FULL_NO', {lng})}</p>`;
 
       rowValue += `<p class="govuk-!-padding-bottom-2 govuk-!-margin-top-0">
-        ${claim.generalApplication.certificateOfSatisfactionOrCancellation.debtPaymentEvidence.provideDetails}</p>`;
+        ${escapeHtml(claim.generalApplication.certificateOfSatisfactionOrCancellation.debtPaymentEvidence.provideDetails)}</p>`;
       rows.push(
         summaryRow(t('PAGES.GENERAL_APPLICATION.DEBT_PAYMENT.DO_YOU_WANT_PROVIDE_EVIDENCE', {lng}), rowValue, href, changeLabel()));
     }

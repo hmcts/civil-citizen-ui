@@ -10,6 +10,7 @@ import { CivilServiceClient } from 'client/civilServiceClient';
 import {ViewQueriesService} from 'services/features/queryManagement/viewQueriesService';
 import {CaseState} from 'form/models/claimDetails';
 import {QueryDetail} from 'form/models/queryManagement/viewQuery';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
@@ -34,8 +35,8 @@ const renderView = async (res: Response, claimId: string, claim: Claim, selected
 
 qmViewQueryDetailsController.get(QM_QUERY_DETAILS_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const claimId = req.params.id;
-    const queryId = req.params.queryId;
+    const claimId = getRouteParam(req, 'id');
+    const queryId = getRouteParam(req, 'queryId');
     const userId = req.session?.user?.id;
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);

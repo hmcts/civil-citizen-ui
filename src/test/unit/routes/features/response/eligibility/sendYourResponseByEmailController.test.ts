@@ -19,7 +19,7 @@ describe('Send your response by email', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
-    nock(citizenBaseUrl).get('/fees/ranges/').reply(200, data);
+    nock(citizenBaseUrl).get('/fees/ranges').reply(200, data);
     jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
   });
 

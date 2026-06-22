@@ -14,6 +14,7 @@ import {AppRequest} from 'models/AppRequest';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {GenericYesNo} from 'form/models/genericYesNo';
 import {getWhatAreFixedRecoverableCostsContent} from 'services/commons/detailContents';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const frcBandAgreedController = Router();
 const frcBandAgreedViewPath = 'features/directionsQuestionnaire/fixedRecoverableCosts/frc-band-agreed';
@@ -35,7 +36,7 @@ function renderView(subjectToFRC: GenericForm<GenericYesNo>, claimId: string, re
 frcBandAgreedController.get(FRC_BAND_AGREED_URL, (async (req, res, next: NextFunction) => {
   try {
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-    const claimId = req.params.id;
+    const claimId = getRouteParam(req, 'id');
     const directionQuestionnaire = await getDirectionQuestionnaire(generateRedisKey(<AppRequest>req));
     const frcBandAgreed = directionQuestionnaire.fixedRecoverableCosts?.frcBandAgreed ?
       new GenericYesNo(directionQuestionnaire.fixedRecoverableCosts?.frcBandAgreed?.option) : new GenericYesNo();
@@ -48,7 +49,7 @@ frcBandAgreedController.get(FRC_BAND_AGREED_URL, (async (req, res, next: NextFun
 frcBandAgreedController.post(FRC_BAND_AGREED_URL, (async (req: Request, res: Response, next: NextFunction) => {
   try {
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-    const claimId = req.params.id;
+    const claimId = getRouteParam(req, 'id');
     const frcBandAgreedForm = new GenericForm(new GenericYesNo(req.body.option, 'ERRORS.FRC_BAND_AGREED'));
     frcBandAgreedForm.validateSync();
     if (frcBandAgreedForm.hasErrors()) {

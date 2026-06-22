@@ -148,6 +148,8 @@ describe('create query conroller', () => {
 
     it('should redirect when multer error on file upload (file too large)', async () => {
       mockGetClaimById.mockImplementation(async () => new Claim());
+      const save = jest.fn((cb: any) => cb());
+      app.request.session = { save } as any;
       const largeBuffer = Buffer.alloc(101 * 1024 * 1024);
       largeBuffer.fill('x');
 
@@ -160,6 +162,7 @@ describe('create query conroller', () => {
         .attach('selectedFile', largeBuffer, { filename: 'large.pdf', contentType: 'application/pdf' });
 
       expect(res.status).toBe(302);
+      expect(save).toHaveBeenCalledTimes(1);
     });
 
   });

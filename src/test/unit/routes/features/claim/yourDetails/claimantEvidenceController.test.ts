@@ -66,18 +66,24 @@ const civilClaimResponseMockWithNoEvidenceItem: string = JSON.stringify(civilCla
 const mockWithNoEvidence = {
   set: jest.fn(() => Promise.resolve({})),
   get: jest.fn(() => Promise.resolve(civilClaimResponseMockWithNoEvidenceItem)),
+  expireat: jest.fn(() => Promise.resolve({})),
+  ttl: jest.fn(() => Promise.resolve({})),
 };
 
 const civilClaimResponseMockWithOneEvidenceItem: string = JSON.stringify(civilClaimResponseMock);
 const mockWithLessThaFourEvidence = {
   set: jest.fn(() => Promise.resolve({})),
   get: jest.fn(() => Promise.resolve(civilClaimResponseMockWithOneEvidenceItem)),
+  expireat: jest.fn(() => Promise.resolve({})),
+  ttl: jest.fn(() => Promise.resolve({})),
 };
 
 const civilClaimResponseMockWithMoreThanOneEvidenceItem: string = JSON.stringify(civilClaimResponseMockWithMultipleEvidences);
 const mockWithMoreThaFourEvidence = {
   set: jest.fn(() => Promise.resolve({})),
   get: jest.fn(() => Promise.resolve(civilClaimResponseMockWithMoreThanOneEvidenceItem)),
+  expireat: jest.fn(() => Promise.resolve({})),
+  ttl: jest.fn(() => Promise.resolve({})),
 };
 
 describe('Claimant Evidence', () => {

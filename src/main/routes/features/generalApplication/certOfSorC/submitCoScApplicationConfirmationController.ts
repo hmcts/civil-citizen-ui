@@ -8,6 +8,7 @@ import {
   getCoScGeneralApplicationConfirmationContent,
 } from 'services/features/generalApplication/submitGeneralApplicationConfirmationContent';
 import {AppRequest} from 'models/AppRequest';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const submitCoScApplicationConfirmationViewPath = 'features/generalApplication/submit-general-application-confirmation';
 const submitCoScApplicationConfirmationController = Router();
@@ -16,7 +17,7 @@ submitCoScApplicationConfirmationController.get(GA_COSC_CONFIRM_URL, (async (req
   try {
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
     const applicationFee = Number(req.query.appFee);
-    const claimId = req.params.id;
+    const claimId = getRouteParam(req, 'id');
     const genAppId = req.query.id as string;
     const claim = await getClaimById(claimId, req, true);
     res.render(submitCoScApplicationConfirmationViewPath, {

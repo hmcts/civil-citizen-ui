@@ -16,7 +16,8 @@ import { getUploadFormContent, uploadSelectedFile } from 'services/features/gene
 import {uploadN245FormControllerGuard} from 'routes/guards/generalApplication/uploadN245FormControllerGuard';
 import {UploadN245GAFiles} from 'models/generalApplication/uploadN245GAFiles';
 import { createMulterErrorMiddlewareForSingleField, getFileUploadErrorsForSource, FILE_UPLOAD_SOURCE } from 'common/utils/fileUploadUtils';
-import { redirectIfMulterError } from 'services/features/generalApplication/uploadEvidenceDocumentService';
+import {getRouteParam} from 'common/utils/routeParamUtils';
+import { handleMulterError } from 'services/features/generalApplication/uploadEvidenceDocumentService';
 
 const uploadN245FormController = Router();
 const viewPath = 'features/generalApplication/upload-n245-form';
@@ -29,7 +30,7 @@ const multerMiddleware = createMulterErrorMiddlewareForSingleField(selectedFile,
 uploadN245FormController.get(GA_UPLOAD_N245_FORM_URL, uploadN245FormControllerGuard, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
-    const claimId = req.params.id;
+    const claimId = getRouteParam(req, 'id');
     const claim = await getClaimById(claimId, req, true);
     const contentList = getUploadFormContent(lng);
     const redisKey = generateRedisKey(<AppRequest>req);
@@ -44,7 +45,7 @@ uploadN245FormController.get(GA_UPLOAD_N245_FORM_URL, uploadN245FormControllerGu
     const currentUrl = constructResponseUrlWithIdParams(claimId, GA_UPLOAD_N245_FORM_URL);
     const backLinkUrl = BACK_URL;
     if (req.query?.action === removeDoc) {
-      saveN245Form(redisKey, claim, undefined);
+      await saveN245Form(redisKey, claim, undefined);
       documentName = undefined;
     }
     res.render(viewPath, {
@@ -64,7 +65,7 @@ uploadN245FormController.get(GA_UPLOAD_N245_FORM_URL, uploadN245FormControllerGu
 uploadN245FormController.post(GA_UPLOAD_N245_FORM_URL, multerMiddleware, uploadN245FormControllerGuard, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
-    const claimId = req.params.id;
+    const claimId = getRouteParam(req, 'id');
     const currentUrl = constructResponseUrlWithIdParams(claimId, GA_UPLOAD_N245_FORM_URL);
     const redisKey = generateRedisKey(req);
     const claim: Claim = await getCaseDataFromStore(redisKey);
@@ -72,8 +73,10 @@ uploadN245FormController.post(GA_UPLOAD_N245_FORM_URL, multerMiddleware, uploadN
     const cancelUrl = await getCancelUrl(claimId, claim);
     const backLinkUrl = BACK_URL;
 
-    if (redirectIfMulterError(req, res, currentUrl, FILE_UPLOAD_SOURCE.GA_UPLOAD_N245)) {
-      return;
+    if (handleMulterError(req, FILE_UPLOAD_SOURCE.GA_UPLOAD_N245)) {
+      return req.session.save(() => {
+        res.redirect(`${currentUrl}`);
+      });
     }
 
     if (req.body.action === uploadButton) {

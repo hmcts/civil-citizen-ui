@@ -14,6 +14,7 @@ import {
 import {AppRequest} from 'models/AppRequest';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 const viewDefendantInformation = 'features/dashboard/contact-them-new';
 const viewDefendantInformationController = Router();
 
@@ -46,7 +47,7 @@ async function renderView(res: Response, claim: Claim, claimId: string) {
 viewDefendantInformationController.get(
   VIEW_DEFENDANT_INFO, async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const claimId = req.params.id;
+      const claimId = getRouteParam(req, 'id');
       const claim: Claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
       await renderView(res, claim, claimId);
     } catch (error) {

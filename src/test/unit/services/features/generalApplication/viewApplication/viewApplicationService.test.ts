@@ -440,7 +440,7 @@ describe('View Application service', () => {
       const result = (await getApplicationSections(mockedAppRequest, application, 'en')).summaryRows;
 
       expect(result).toHaveLength(13);
-      expect(result.map(({key, value}) => [key.text, value.html])).toStrictEqual([
+      expect(result.map(({key, value}) => [key.text, value.html ?? value.text])).toStrictEqual([
         ['PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.TITLE',
           'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.AWAITING_APP_PAYMENT'],
         ['PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.APPLICATION_TYPE',
@@ -519,7 +519,7 @@ describe('View Application service', () => {
       });
       expect(result).toContainEqual({
         key: { text: 'PAGES.GENERAL_APPLICATION.INFORM_OTHER_PARTIES.WHY_DO_NOT_WANT_COURT'},
-        value: { html: 'test'},
+        value: { text: 'test'},
       });
     });
 
@@ -534,7 +534,7 @@ describe('View Application service', () => {
       const result = (await getApplicationSections(mockedAppRequest, application, 'en')).summaryRows;
 
       expect(result).toHaveLength(12);
-      expect(result.map(({key, value}) => [key.text, value.html])).toStrictEqual([
+      expect(result.map(({key, value}) => [key.text, value.html ?? value.text])).toStrictEqual([
         ['PAGES.GENERAL_APPLICATION.RESPONDENT_VIEW_APPLICATION.APPLICATION_TYPE_AND_DESC',
           'PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.CHANGE_HEARING.</br>PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_CHANGE_HEARING_DESCRIPTION'],
         ['PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.ADD_ANOTHER_APPLICATION',

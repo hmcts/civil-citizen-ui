@@ -12,6 +12,7 @@ import {EmploymentForm} from 'form/models/statementOfMeans/employment/employment
 import {GenericForm} from 'form/models/genericForm';
 import {AppRequest} from 'common/models/AppRequest';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const whoEmploysYouViewPath = 'features/response/statementOfMeans/employment/who-employs-you';
 const whoEmploysYouController = Router();
@@ -27,7 +28,7 @@ whoEmploysYouController.get(CITIZEN_WHO_EMPLOYS_YOU_URL, (async (req: Request, r
 
 whoEmploysYouController.post(CITIZEN_WHO_EMPLOYS_YOU_URL, (async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const claimId = req.params.id;
+    const claimId = getRouteParam(req, 'id');
     const redisKey = generateRedisKey(<AppRequest>req);
     const employers: Employers = new Employers(req.body.rows.map((employer: Employer) => new Employer(employer.employerName, employer.jobTitle)));
     const form = new GenericForm(employers);

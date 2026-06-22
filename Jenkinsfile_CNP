@@ -89,6 +89,14 @@ def getCivilServiceImage() {
   return "latest"
 }
 
+def getCivilServiceSharedBranch() {
+  def githubApi = new GithubAPI(this)
+  for (label in githubApi.getLabelsbyPattern(env.BRANCH_NAME, "civilShared:")) {
+    return label.minus("civilShared:").trim()
+  }
+  return "master"
+}
+
 def secrets = [
   'rpx-${env}': [
     secret('mc-idam-client-secret', 'IDAM_CLIENT_SECRET'),
@@ -167,6 +175,12 @@ def checkForEnableEmailNotifications(branch_name) {
     return new GithubAPI(this).getLabelsbyPattern(branch_name, "pr-values:enableNotifyEmails").contains("pr-values:enableNotifyEmails")
 }
 
+def checkForSkipFunctionalTests(branch_name) {
+  return new GithubAPI(this)
+    .getLabelsbyPattern(branch_name, "pr-values:skip-functional-tests")
+    .contains("pr-values:skip-functional-tests")
+}
+
 def checkForRunAllFunctionalTests(branch_name) {
   return new GithubAPI(this).getLabelsbyPattern(branch_name, "runAllFunctionalTests").contains("runAllFunctionalTests")
 }
@@ -205,19 +219,22 @@ withPipeline(type, product, component) {
 
   afterSuccess('build') {
     yarnBuilder.yarn('build')
+    yarnBuilder.yarn('test:integration')
   }
 
   before('smoketest:preview') {
     setUrls("civil-citizen-ui-pr-${CHANGE_ID}")
     sh """
           eval \$(./bin/variables/load-preview-environment-variables.sh ${CHANGE_ID})
-          ./bin/add-roles.sh
+          ./bin/pull-latest-civil-shared.sh ${getCivilServiceSharedBranch()}
+          . ./bin/shared/idam-get-tokens.sh
+          ./bin/shared/add-roles.sh
           ./bin/pull-latest-camunda-files.sh ${camundaBranch}
           ./bin/pull-latest-dmn-files.sh ${dmnBranch}
           ./bin/pull-latest-camunda-wa-files.sh ${waStandaloneBranch}
           ./bin/import-ccd-definition.sh "-e *-prod.json,*HNL-nonprod.json,*-shuttered.json" ${getCivilCcdDefinitionBranch()}
           ./bin/import-ga-ccd-definition.sh "-e *-prod.json" ${getCivilCcdDefinitionBranch()}
-          ./bin/add-org-roles-to-users.sh
+          ./bin/shared/add-org-roles-to-users.sh
         """
   }
 
@@ -233,7 +250,9 @@ withPipeline(type, product, component) {
   before('functionalTest:preview') {
     env.IDAM_STUB_ENABLED='false'
     copyPreviousAllureHistory()
-    if(checkForRunAllFunctionalTests(env.BRANCH_NAME)) {
+    if(checkForSkipFunctionalTests(env.BRANCH_NAME)) {
+      env.SKIP_FUNCTIONAL_TESTS = true
+    } else if(checkForRunAllFunctionalTests(env.BRANCH_NAME)) {
       env.RUN_ALL_FUNCTIONAL_TESTS = true
     } else {
       copyPrevFailedAndNotExecutedTestFilesJson()
@@ -241,6 +260,10 @@ withPipeline(type, product, component) {
   }
 
   afterAlways('functionalTest:preview') {
+    if(checkForSkipFunctionalTests(env.BRANCH_NAME)) {
+      echo "Skipping Allure report generation due to label: pr-values:skip-functional-tests"
+      return
+    }
     steps.sh 'npx allure generate test-results/functional/allure-results --clean -o test-results/functional/allure-report'
     publishHTML([
       allowMissing: false,
@@ -251,6 +274,21 @@ withPipeline(type, product, component) {
       reportName: 'Non-Prod E2E Allure Report'
     ])
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'test-results/functional/**/*'
+
+    // run security tests in playwright
+    sh './bin/run-preview-playwright-tests.sh'
+    steps.sh 'npx allure generate test-results/security/allure-results --clean -o test-results/security/allure-report || true'
+    publishHTML([
+      allowMissing         : true,
+      alwaysLinkToLastBuild: true,
+      keepAll              : true,
+      reportDir            : 'test-results/security/allure-report',
+      reportFiles          : 'index.html',
+      reportName           : 'API Security Test Report'
+    ])
+
+    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'test-results/security/**/*'
+    junit allowEmptyResults: true, testResults: 'test-results/security/results.xml'
   }
 
   afterSuccess('smoketest:preview') {
@@ -269,7 +307,9 @@ withPipeline(type, product, component) {
   before('smoketest:aat') {
     sh """
       eval \$(./bin/variables/load-staging-environment-variables.sh)
-      ./bin/add-roles.sh
+      ./bin/pull-latest-civil-shared.sh ${getCivilServiceSharedBranch()}
+      . ./bin/shared/idam-get-tokens.sh
+      ./bin/shared/add-roles.sh
       ./bin/pull-latest-camunda-files.sh ${camundaBranch}
       ./bin/pull-latest-dmn-files.sh ${dmnBranch}
       ./bin/pull-latest-camunda-wa-files.sh ${waStandaloneBranch}

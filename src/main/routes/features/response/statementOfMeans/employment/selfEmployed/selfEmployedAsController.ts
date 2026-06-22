@@ -12,6 +12,7 @@ import {
 import {GenericForm} from 'form/models/genericForm';
 import {AppRequest} from 'common/models/AppRequest';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const selfEmployedAsViewPath = 'features/response/statementOfMeans/employment/selfEmployed/self-employed-as';
 const selfEmployedAsController = Router();
@@ -32,6 +33,7 @@ selfEmployedAsController.get(CITIZEN_SELF_EMPLOYED_URL, (async (req, res, next: 
 selfEmployedAsController.post(CITIZEN_SELF_EMPLOYED_URL,
   (async (req, res, next: NextFunction) => {
     try{
+      const claimId = getRouteParam(req, 'id');
       const annualTurnover = req.body.annualTurnover ? Number(req.body.annualTurnover) : undefined;
       const form: GenericForm<SelfEmployedAsForm> = new GenericForm(new SelfEmployedAsForm(req.body.jobTitle, annualTurnover));
       form.validateSync();
@@ -39,7 +41,7 @@ selfEmployedAsController.post(CITIZEN_SELF_EMPLOYED_URL,
         renderView(form, res);
       } else {
         await saveSelfEmployedAsData(generateRedisKey(<AppRequest>req), form);
-        res.redirect(constructResponseUrlWithIdParams(req.params.id, ON_TAX_PAYMENTS_URL));
+        res.redirect(constructResponseUrlWithIdParams(claimId, ON_TAX_PAYMENTS_URL));
       }
     } catch (error) {
       next(error);

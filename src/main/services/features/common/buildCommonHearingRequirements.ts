@@ -1,4 +1,4 @@
-import {summaryRow, SummaryRow} from 'models/summaryList/summaryList';
+import {summaryRow, summaryRowWithTextValue, SummaryRow} from 'models/summaryList/summaryList';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {
   DQ_DEFENDANT_WITNESSES_URL, DQ_GIVE_EVIDENCE_YOURSELF_URL,
@@ -40,11 +40,11 @@ export const getWitnesses = ( directionQuestionnaire : DirectionQuestionnaire, c
     const witnesses: OtherWitnessItems[] = directionQuestionnaire?.witnesses?.otherWitnesses?.witnessItems;
     witnesses.forEach((witness, index) => {
       summaryRows.push(summaryRow(`${t('PAGES.CHECK_YOUR_ANSWER.WITNESS', {lng})} ${index + 1}`, '', witnessesHref, changeLabel(lng)));
-      summaryRows.push(summaryRow(t('COMMON.INPUT_LABELS.FIRST_NAME', {lng}), getEmptyStringIfUndefined(witness.firstName)));
-      summaryRows.push(summaryRow(t('COMMON.INPUT_LABELS.LAST_NAME', {lng}), getEmptyStringIfUndefined(witness.lastName)));
-      summaryRows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.EMAIL_ADDRESS', {lng}), getEmptyStringIfUndefined(witness.email)));
-      summaryRows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.PHONE_NUMBER', {lng}), getEmptyStringIfUndefined(witness.telephone)));
-      summaryRows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.TELL_US_WHY', {lng}), getEmptyStringIfUndefined(witness.details)));
+      summaryRows.push(summaryRowWithTextValue(t('COMMON.INPUT_LABELS.FIRST_NAME', {lng}), getEmptyStringIfUndefined(witness.firstName)));
+      summaryRows.push(summaryRowWithTextValue(t('COMMON.INPUT_LABELS.LAST_NAME', {lng}), getEmptyStringIfUndefined(witness.lastName)));
+      summaryRows.push(summaryRowWithTextValue(t('PAGES.CHECK_YOUR_ANSWER.EMAIL_ADDRESS', {lng}), getEmptyStringIfUndefined(witness.email)));
+      summaryRows.push(summaryRowWithTextValue(t('PAGES.CHECK_YOUR_ANSWER.PHONE_NUMBER', {lng}), getEmptyStringIfUndefined(witness.telephone)));
+      summaryRows.push(summaryRowWithTextValue(t('PAGES.CHECK_YOUR_ANSWER.TELL_US_WHY', {lng}), getEmptyStringIfUndefined(witness.details)));
     });
   }
   return summaryRows;
@@ -186,7 +186,7 @@ export const displayUnavailabilityForHearing = ( claimId: string, lng: string, d
 
 export const displaySpecificCourtLocation = ( claimId: string, lng: string, directionQuestionnaire : DirectionQuestionnaire): SummaryRow => {
   const hasSpecificCourtLocation = directionQuestionnaire?.hearing?.specificCourtLocation?.courtLocation;
-  return summaryRow(
+  return summaryRowWithTextValue(
     t('PAGES.SPECIFIC_COURT.SELECTED_COURT', {lng}),
     hasSpecificCourtLocation,
     constructResponseUrlWithIdParams(claimId, DQ_COURT_LOCATION_URL),
@@ -196,7 +196,7 @@ export const displaySpecificCourtLocation = ( claimId: string, lng: string, dire
 
 export const getSpecificCourtLocationReason = (claimId: string, lng: string, directionQuestionnaire : DirectionQuestionnaire): SummaryRow => {
   const whySpecificCourtLocation = directionQuestionnaire?.hearing?.specificCourtLocation?.reason;
-  return summaryRow(
+  return summaryRowWithTextValue(
     t('PAGES.SPECIFIC_COURT.REASON', {lng}),
     whySpecificCourtLocation,
     constructResponseUrlWithIdParams(claimId, DQ_COURT_LOCATION_URL),

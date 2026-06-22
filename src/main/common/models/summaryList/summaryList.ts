@@ -47,7 +47,7 @@ interface Item {
   html?: string;
 }
 
-export function summaryRow(key?: string, value?: string, href?: string, hrefText?: string, hiddentText?: string): SummaryRow {
+export function summaryRow(key?: string, value?: string, href?: string, hrefText?: string, hiddenText?: string): SummaryRow {
   const row: SummaryRow = {
     key: {
       text: key,
@@ -57,7 +57,7 @@ export function summaryRow(key?: string, value?: string, href?: string, hrefText
     },
   };
   if (href) {
-    const accessibilityText = hiddentText ? `${key} (${hiddentText})` : `${key}`;
+    const accessibilityText = hiddenText ? `${key} (${hiddenText})` : `${key}`;
     row.actions = {
       items: [
         {
@@ -69,6 +69,42 @@ export function summaryRow(key?: string, value?: string, href?: string, hrefText
     };
   }
   return row;
+}
+
+/**
+ * Same as summaryRow but sets value as text (not html) so the govuk template
+ * does not render it with | safe. Use for user-supplied content to prevent HTML injection.
+ */
+export function summaryRowWithTextValue(key?: string, value?: string, href?: string, hrefText?: string, hiddenText?: string): SummaryRow {
+  const row: SummaryRow = {
+    key: { text: key },
+    value: { text: value },
+  };
+  if (href) {
+    const accessibilityText = hiddenText ? `${key} (${hiddenText})` : `${key}`;
+    row.actions = {
+      items: [
+        { href, text: hrefText, visuallyHiddenText: accessibilityText },
+      ],
+    };
+  }
+  return row;
+}
+
+/**
+ * Convenience helper for rows whose value comes from user-supplied text.
+ * Internally uses summaryRowWithTextValue so the value is rendered as plain text.
+ */
+export function userTextRow(key?: string, value?: string, href?: string, hrefText?: string, hiddenText?: string): SummaryRow {
+  return summaryRowWithTextValue(key, value, href, hrefText, hiddenText);
+}
+
+/**
+ * Convenience helper for rows whose value is trusted/system HTML (e.g. built from translations).
+ * Internally uses summaryRow so the value is rendered as HTML.
+ */
+export function systemHtmlRow(key?: string, html?: string, href?: string, hrefText?: string, hiddenText?: string): SummaryRow {
+  return summaryRow(key, html, href, hrefText, hiddenText);
 }
 
 export interface TitledSummaryRowElement {

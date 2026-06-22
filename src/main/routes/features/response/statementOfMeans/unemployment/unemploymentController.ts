@@ -12,6 +12,7 @@ import {GenericForm} from 'form/models/genericForm';
 import {Validator} from 'class-validator';
 import {AppRequest} from 'common/models/AppRequest';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const citizenEmploymentStatusViewPath = 'features/response/statementOfMeans/unemployment';
 const unemploymentController = Router();
@@ -34,6 +35,7 @@ unemploymentController.get(CITIZEN_UNEMPLOYED_URL, (async (req, res, next: NextF
 
 unemploymentController.post(CITIZEN_UNEMPLOYED_URL, (async (req, res, next: NextFunction) => {
   try {
+    const claimId = getRouteParam(req, 'id');
     const unemploymentToSave = new Unemployment(req.body.option, new UnemploymentDetails(req.body.years, req.body.months), new OtherDetails(req.body.details));
     const unemploymentForm: GenericForm<Unemployment> = new GenericForm(unemploymentToSave);
     unemploymentForm.errors = validator.validateSync(unemploymentForm.model);
@@ -42,7 +44,7 @@ unemploymentController.post(CITIZEN_UNEMPLOYED_URL, (async (req, res, next: Next
       renderView(unemploymentForm, res);
     } else {
       await unemploymentService.saveUnemployment(generateRedisKey(<AppRequest>req), unemploymentToSave);
-      res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_COURT_ORDERS_URL));
+      res.redirect(constructResponseUrlWithIdParams(claimId, CITIZEN_COURT_ORDERS_URL));
     }
   } catch (error) {
     next(error);

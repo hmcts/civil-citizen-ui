@@ -121,12 +121,12 @@ class createGASteps {
     await hearingContactDetailsPage.nextAction('Continue');
 
     await unavailableDatesConfirmationPage.verifyPageContent(applicationType);
-    unavailableDatesConfirmationPage.nextAction('Yes');
-    unavailableDatesConfirmationPage.nextAction('Continue');
+    await unavailableDatesConfirmationPage.nextAction('Yes');
+    await unavailableDatesConfirmationPage.nextAction('Continue');
 
     await unavailableDatesPage.verifyPageContent(applicationType);
     await unavailableDatesPage.fillFields();
-    unavailableDatesPage.nextAction('Continue');
+    await unavailableDatesPage.nextAction('Continue');
 
     await hearingSupportPage.verifyPageContent(applicationType);
     await hearingSupportPage.nextAction('Continue');
@@ -141,12 +141,12 @@ class createGASteps {
     await submitGAConfirmationPage.verifyPageContent(feeAmount);
     await submitGAConfirmationPage.nextAction('Pay application fee');
 
-    I.wait(5);
+    await I.wait(5);
 
     await applyHelpFeeSelectionPage.confirmActions('No');
 
     await govPay.addValidCardDetails(feeAmount);
-    govPay.confirmPayment();
+    await govPay.confirmPayment();
 
     const generalApplicationID = (await I.grabCurrentUrl()).match(/\/general-application\/(\d+)\//)[1];
 
@@ -207,12 +207,12 @@ class createGASteps {
     await hearingContactDetailsPage.nextAction('Continue');
 
     await unavailableDatesConfirmationPage.verifyPageContent(applicationType);
-    unavailableDatesConfirmationPage.nextAction('Yes');
-    unavailableDatesConfirmationPage.nextAction('Continue');
+    await unavailableDatesConfirmationPage.nextAction('Yes');
+    await unavailableDatesConfirmationPage.nextAction('Continue');
 
     await unavailableDatesPage.verifyPageContent(applicationType);
-    unavailableDatesPage.fillFields();
-    unavailableDatesPage.nextAction('Continue');
+    await unavailableDatesPage.fillFields();
+    await unavailableDatesPage.nextAction('Continue');
 
     await hearingSupportPage.verifyPageContent(applicationType);
     await hearingSupportPage.nextAction('Continue');
@@ -227,12 +227,12 @@ class createGASteps {
     await submitGAConfirmationPage.verifyPageContent(feeAmount);
     await submitGAConfirmationPage.nextAction('Pay application fee');
 
-    I.wait(2);
+    await I.wait(2);
 
     await applyHelpFeeSelectionPage.confirmActions('No');
 
     await govPay.addValidCardDetails(feeAmount);
-    govPay.confirmPayment();
+    await govPay.confirmPayment();
 
     const generalApplicationID = (await I.grabCurrentUrl()).match(/\/general-application\/(\d+)\//)[1];
 
@@ -320,12 +320,12 @@ class createGASteps {
     await hearingContactDetailsPage.nextAction('Continue');
 
     await unavailableDatesConfirmationPage.verifyPageContent(applicationType);
-    unavailableDatesConfirmationPage.nextAction('Yes');
-    unavailableDatesConfirmationPage.nextAction('Continue');
+    await unavailableDatesConfirmationPage.nextAction('Yes');
+    await unavailableDatesConfirmationPage.nextAction('Continue');
 
     await unavailableDatesPage.verifyPageContent(applicationType);
-    unavailableDatesPage.fillFields();
-    unavailableDatesPage.nextAction('Continue');
+    await unavailableDatesPage.fillFields();
+    await unavailableDatesPage.nextAction('Continue');
 
     await hearingSupportPage.verifyPageContent(applicationType);
     await hearingSupportPage.nextAction('Continue');
@@ -340,12 +340,12 @@ class createGASteps {
     await submitGAConfirmationPage.verifyPageContent(feeAmount);
     await submitGAConfirmationPage.nextAction('Pay application fee');
 
-    I.wait(2);
+    await I.wait(2);
 
     await applyHelpFeeSelectionPage.confirmActions('No');
 
     await govPay.addValidCardDetails(feeAmount);
-    govPay.confirmPayment();
+    await govPay.confirmPayment();
 
     const generalApplicationID = (await I.grabCurrentUrl()).match(/\/general-application\/(\d+)\//)[1];
 
@@ -431,12 +431,12 @@ class createGASteps {
     await hearingContactDetailsPage.nextAction('Continue');
 
     await unavailableDatesConfirmationPage.verifyPageContent(applicationType);
-    unavailableDatesConfirmationPage.nextAction('Yes');
-    unavailableDatesConfirmationPage.nextAction('Continue');
+    await unavailableDatesConfirmationPage.nextAction('Yes');
+    await unavailableDatesConfirmationPage.nextAction('Continue');
 
     await unavailableDatesPage.verifyPageContent(applicationType);
-    unavailableDatesPage.fillFields();
-    unavailableDatesPage.nextAction('Continue');
+    await unavailableDatesPage.fillFields();
+    await unavailableDatesPage.nextAction('Continue');
 
     await hearingSupportPage.verifyPageContent(applicationType);
     await hearingSupportPage.nextAction('Continue');
@@ -451,12 +451,12 @@ class createGASteps {
     await submitGAConfirmationPage.verifyPageContent(feeAmount);
     await submitGAConfirmationPage.nextAction('Pay application fee');
 
-    I.wait(2);
+    await I.wait(2);
 
     await applyHelpFeeSelectionPage.confirmActions('No');
 
     await govPay.addValidCardDetails(feeAmount);
-    govPay.confirmPayment();
+    await govPay.confirmPayment();
 
     const generalApplicationID = (await I.grabCurrentUrl()).match(/\/general-application\/(\d+)\//)[1];
 
@@ -541,12 +541,12 @@ class createGASteps {
     await hearingContactDetailsPage.nextAction('Continue');
 
     await unavailableDatesConfirmationPage.verifyPageContent(applicationType);
-    unavailableDatesConfirmationPage.nextAction('Yes');
-    unavailableDatesConfirmationPage.nextAction('Continue');
+    await unavailableDatesConfirmationPage.nextAction('Yes');
+    await unavailableDatesConfirmationPage.nextAction('Continue');
 
     await unavailableDatesPage.verifyPageContent(applicationType);
-    unavailableDatesPage.fillFields();
-    unavailableDatesPage.nextAction('Continue');
+    await unavailableDatesPage.fillFields();
+    await unavailableDatesPage.nextAction('Continue');
 
     await hearingSupportPage.verifyPageContent(applicationType);
     await hearingSupportPage.nextAction('Continue');
@@ -561,12 +561,12 @@ class createGASteps {
     await submitGAConfirmationPage.verifyPageContent(feeAmount);
     await submitGAConfirmationPage.nextAction('Pay application fee');
 
-    I.wait(2);
+    await I.wait(2);
 
     await applyHelpFeeSelectionPage.confirmActions('No');
 
     await govPay.addValidCardDetails(feeAmount, language);
-    govPay.confirmPayment(language);
+    await govPay.confirmPayment(language);
 
     const generalApplicationID = (await I.grabCurrentUrl()).match(/\/general-application\/(\d+)\//)[1];
 
@@ -652,12 +652,12 @@ class createGASteps {
     await hearingContactDetailsPage.nextAction('Continue');
 
     await unavailableDatesConfirmationPage.verifyPageContent(applicationType);
-    unavailableDatesConfirmationPage.nextAction('Yes');
-    unavailableDatesConfirmationPage.nextAction('Continue');
+    await unavailableDatesConfirmationPage.nextAction('Yes');
+    await unavailableDatesConfirmationPage.nextAction('Continue');
 
     await unavailableDatesPage.verifyPageContent(applicationType);
-    unavailableDatesPage.fillFields();
-    unavailableDatesPage.nextAction('Continue');
+    await unavailableDatesPage.fillFields();
+    await unavailableDatesPage.nextAction('Continue');
 
     await hearingSupportPage.verifyPageContent(applicationType);
     await hearingSupportPage.nextAction('Continue');
@@ -672,12 +672,12 @@ class createGASteps {
     await submitGAConfirmationPage.verifyPageContent(feeAmount);
     await submitGAConfirmationPage.nextAction('Pay application fee');
 
-    I.wait(2);
+    await I.wait(2);
 
     await applyHelpFeeSelectionPage.confirmActions('No');
 
     await govPay.addValidCardDetails(feeAmount);
-    govPay.confirmPayment();
+    await govPay.confirmPayment();
 
     const generalApplicationID = (await I.grabCurrentUrl()).match(/\/general-application\/(\d+)\//)[1];
 
@@ -767,12 +767,12 @@ class createGASteps {
     await hearingContactDetailsPage.nextAction('Continue');
 
     await unavailableDatesConfirmationPage.verifyPageContent(applicationType);
-    unavailableDatesConfirmationPage.nextAction('Yes');
-    unavailableDatesConfirmationPage.nextAction('Continue');
+    await unavailableDatesConfirmationPage.nextAction('Yes');
+    await unavailableDatesConfirmationPage.nextAction('Continue');
 
     await unavailableDatesPage.verifyPageContent(applicationType);
-    unavailableDatesPage.fillFields();
-    unavailableDatesPage.nextAction('Continue');
+    await unavailableDatesPage.fillFields();
+    await unavailableDatesPage.nextAction('Continue');
 
     await hearingSupportPage.verifyPageContent(applicationType);
     await hearingSupportPage.nextAction('Continue');
@@ -787,12 +787,12 @@ class createGASteps {
     await submitGAConfirmationPage.verifyPageContent(feeAmount);
     await submitGAConfirmationPage.nextAction('Pay application fee');
 
-    I.wait(2);
+    await I.wait(2);
 
     await applyHelpFeeSelectionPage.confirmActions('No');
 
     await govPay.addValidCardDetails(feeAmount);
-    govPay.confirmPayment();
+    await govPay.confirmPayment();
 
     const generalApplicationID = (await I.grabCurrentUrl()).match(/\/general-application\/(\d+)\//)[1];
 
@@ -879,12 +879,12 @@ class createGASteps {
     await hearingContactDetailsPage.nextAction('Continue');
 
     await unavailableDatesConfirmationPage.verifyPageContent(applicationType);
-    unavailableDatesConfirmationPage.nextAction('Yes');
-    unavailableDatesConfirmationPage.nextAction('Continue');
+    await unavailableDatesConfirmationPage.nextAction('Yes');
+    await unavailableDatesConfirmationPage.nextAction('Continue');
 
     await unavailableDatesPage.verifyPageContent(applicationType);
-    unavailableDatesPage.fillFields();
-    unavailableDatesPage.nextAction('Continue');
+    await unavailableDatesPage.fillFields();
+    await unavailableDatesPage.nextAction('Continue');
 
     await hearingSupportPage.verifyPageContent(applicationType);
     await hearingSupportPage.nextAction('Continue');
@@ -899,12 +899,12 @@ class createGASteps {
     await submitGAConfirmationPage.verifyPageContent(feeAmount);
     await submitGAConfirmationPage.nextAction('Pay application fee');
 
-    I.wait(2);
+    await I.wait(2);
 
     await applyHelpFeeSelectionPage.confirmActions('No');
 
     await govPay.addValidCardDetails(feeAmount);
-    govPay.confirmPayment();
+    await govPay.confirmPayment();
 
     const generalApplicationID = (await I.grabCurrentUrl()).match(/\/general-application\/(\d+)\//)[1];
 
@@ -991,12 +991,12 @@ class createGASteps {
     await hearingContactDetailsPage.nextAction('Continue');
 
     await unavailableDatesConfirmationPage.verifyPageContent(applicationType);
-    unavailableDatesConfirmationPage.nextAction('Yes');
-    unavailableDatesConfirmationPage.nextAction('Continue');
+    await unavailableDatesConfirmationPage.nextAction('Yes');
+    await unavailableDatesConfirmationPage.nextAction('Continue');
 
     await unavailableDatesPage.verifyPageContent(applicationType);
-    unavailableDatesPage.fillFields();
-    unavailableDatesPage.nextAction('Continue');
+    await unavailableDatesPage.fillFields();
+    await unavailableDatesPage.nextAction('Continue');
 
     await hearingSupportPage.verifyPageContent(applicationType);
     await hearingSupportPage.nextAction('Continue');
@@ -1011,12 +1011,12 @@ class createGASteps {
     await submitGAConfirmationPage.verifyPageContent(feeAmount);
     await submitGAConfirmationPage.nextAction('Pay application fee');
 
-    I.wait(2);
+    await I.wait(2);
 
     await applyHelpFeeSelectionPage.confirmActions('No');
 
     await govPay.addValidCardDetails(feeAmount);
-    govPay.confirmPayment();
+    await govPay.confirmPayment();
 
     const generalApplicationID = (await I.grabCurrentUrl()).match(/\/general-application\/(\d+)\//)[1];
 
@@ -1103,12 +1103,12 @@ class createGASteps {
     await hearingContactDetailsPage.nextAction('Continue');
 
     await unavailableDatesConfirmationPage.verifyPageContent(applicationType);
-    unavailableDatesConfirmationPage.nextAction('Yes');
-    unavailableDatesConfirmationPage.nextAction('Continue');
+    await unavailableDatesConfirmationPage.nextAction('Yes');
+    await unavailableDatesConfirmationPage.nextAction('Continue');
 
     await unavailableDatesPage.verifyPageContent(applicationType);
-    unavailableDatesPage.fillFields();
-    unavailableDatesPage.nextAction('Continue');
+    await unavailableDatesPage.fillFields();
+    await unavailableDatesPage.nextAction('Continue');
 
     await hearingSupportPage.verifyPageContent(applicationType);
     await hearingSupportPage.nextAction('Continue');
@@ -1123,12 +1123,12 @@ class createGASteps {
     await submitGAConfirmationPage.verifyPageContent(feeAmount);
     await submitGAConfirmationPage.nextAction('Pay application fee');
 
-    I.wait(5);
+    await I.wait(5);
 
     await applyHelpFeeSelectionPage.confirmActions('No');
 
     await govPay.addValidCardDetails(feeAmount);
-    govPay.confirmPayment();
+    await govPay.confirmPayment();
 
     const generalApplicationID = (await I.grabCurrentUrl()).match(/\/general-application\/(\d+)\//)[1];
 
@@ -1215,12 +1215,12 @@ class createGASteps {
     await hearingContactDetailsPage.nextAction('Continue');
 
     await unavailableDatesConfirmationPage.verifyPageContent(applicationType);
-    unavailableDatesConfirmationPage.nextAction('Yes');
-    unavailableDatesConfirmationPage.nextAction('Continue');
+    await unavailableDatesConfirmationPage.nextAction('Yes');
+    await unavailableDatesConfirmationPage.nextAction('Continue');
 
     await unavailableDatesPage.verifyPageContent(applicationType);
-    unavailableDatesPage.fillFields();
-    unavailableDatesPage.nextAction('Continue');
+    await unavailableDatesPage.fillFields();
+    await unavailableDatesPage.nextAction('Continue');
 
     await hearingSupportPage.verifyPageContent(applicationType);
     await hearingSupportPage.nextAction('Continue');
@@ -1235,12 +1235,12 @@ class createGASteps {
     await submitGAConfirmationPage.verifyPageContent(feeAmount);
     await submitGAConfirmationPage.nextAction('Pay application fee');
 
-    I.wait(2);
+    await I.wait(2);
 
     await applyHelpFeeSelectionPage.confirmActions('No');
 
     await govPay.addValidCardDetails(feeAmount);
-    govPay.confirmPayment();
+    await govPay.confirmPayment();
 
     const generalApplicationID = (await I.grabCurrentUrl()).match(/\/general-application\/(\d+)\//)[1];
 
@@ -1299,12 +1299,12 @@ class createGASteps {
     await hearingContactDetailsPage.nextAction('Continue');
 
     await unavailableDatesConfirmationPage.verifyPageContent(applicationType);
-    unavailableDatesConfirmationPage.nextAction('Yes');
-    unavailableDatesConfirmationPage.nextAction('Continue');
+    await unavailableDatesConfirmationPage.nextAction('Yes');
+    await unavailableDatesConfirmationPage.nextAction('Continue');
 
     await unavailableDatesPage.verifyPageContent(applicationType);
-    unavailableDatesPage.fillFields();
-    unavailableDatesPage.nextAction('Continue');
+    await unavailableDatesPage.fillFields();
+    await unavailableDatesPage.nextAction('Continue');
 
     await hearingSupportPage.verifyPageContent(applicationType);
     await hearingSupportPage.nextAction('Continue');
@@ -1319,12 +1319,12 @@ class createGASteps {
     await submitGAConfirmationPage.verifyPageContent(feeAmount);
     await submitGAConfirmationPage.nextAction('Pay application fee');
 
-    I.wait(2);
+    await I.wait(2);
 
     await applyHelpFeeSelectionPage.confirmActions('No');
 
     await govPay.addValidCardDetails(feeAmount);
-    govPay.confirmPayment();
+    await govPay.confirmPayment();
 
     const generalApplicationID = (await I.grabCurrentUrl()).match(/\/general-application\/(\d+)\//)[1];
 
@@ -1411,12 +1411,12 @@ class createGASteps {
     await hearingContactDetailsPage.nextAction('Continue');
 
     await unavailableDatesConfirmationPage.verifyPageContent(applicationType);
-    unavailableDatesConfirmationPage.nextAction('Yes');
-    unavailableDatesConfirmationPage.nextAction('Continue');
+    await unavailableDatesConfirmationPage.nextAction('Yes');
+    await unavailableDatesConfirmationPage.nextAction('Continue');
 
     await unavailableDatesPage.verifyPageContent(applicationType);
-    unavailableDatesPage.fillFields();
-    unavailableDatesPage.nextAction('Continue');
+    await unavailableDatesPage.fillFields();
+    await unavailableDatesPage.nextAction('Continue');
 
     await hearingSupportPage.verifyPageContent(applicationType);
     await hearingSupportPage.nextAction('Continue');
@@ -1431,12 +1431,12 @@ class createGASteps {
     await submitGAConfirmationPage.verifyPageContent(feeAmount);
     await submitGAConfirmationPage.nextAction('Pay application fee');
 
-    I.wait(2);
+    await I.wait(2);
 
     await applyHelpFeeSelectionPage.confirmActions('No');
 
     await govPay.addValidCardDetails(feeAmount);
-    govPay.confirmPayment();
+    await govPay.confirmPayment();
 
     const generalApplicationID = (await I.grabCurrentUrl()).match(/\/general-application\/(\d+)\//)[1];
 
@@ -1452,7 +1452,7 @@ class createGASteps {
     await applyHelpFeeSelectionPage.nextAction('Continue');
 
     await govPay.addValidCardDetails(feeAmount);
-    govPay.confirmPayment();
+    await govPay.confirmPayment();
 
     await paymentConfirmationPage.verifyAdditionalPaymentPageContent();
     await paymentConfirmationPage.nextAction('Close and return to dashboard');
@@ -1557,12 +1557,12 @@ class createGASteps {
     await hearingContactDetailsPage.nextAction('Continue');
 
     await unavailableDatesConfirmationPage.verifyPageContent(applicationType);
-    unavailableDatesConfirmationPage.nextAction('Yes');
-    unavailableDatesConfirmationPage.nextAction('Continue');
+    await unavailableDatesConfirmationPage.nextAction('Yes');
+    await unavailableDatesConfirmationPage.nextAction('Continue');
 
     await unavailableDatesPage.verifyPageContent(applicationType);
-    unavailableDatesPage.fillFields();
-    unavailableDatesPage.nextAction('Continue');
+    await unavailableDatesPage.fillFields();
+    await unavailableDatesPage.nextAction('Continue');
 
     await hearingSupportPage.verifyPageContent(applicationType);
     await hearingSupportPage.nextAction('Continue');
@@ -1577,19 +1577,19 @@ class createGASteps {
     await submitGAConfirmationPage.verifyPageContent(feeAmount);
     await submitGAConfirmationPage.nextAction('Pay application fee');
 
-    I.wait(2);
+    await I.wait(2);
 
     await applyHelpFeeSelectionPage.confirmActions('No');
 
     await govPay.addValidCardDetails(feeAmount);
-    govPay.confirmPayment();
+    await govPay.confirmPayment();
 
     const generalApplicationID = (await I.grabCurrentUrl()).match(/\/general-application\/(\d+)\//)[1];
 
     await paymentConfirmationPage.verifyPageContent();
     await paymentConfirmationPage.nextAction('Close and return to dashboard');
 
-    I.wait(5);
+    await I.wait(5);
     await I.refreshPage();
     await I.waitForClickable('View all applications to the court', 5);
     await I.click('.govuk-link >> text=View all applications to the court');

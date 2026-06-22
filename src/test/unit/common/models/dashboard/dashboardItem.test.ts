@@ -50,7 +50,7 @@ describe('Dashboard Items', ()=> {
       const claim = new Claim();
       claim.draftClaimCreatedAt= new Date();
       //When
-      const item = toDraftClaimDashboardItem(claim, true);
+      const item = toDraftClaimDashboardItem(claim);
       //Then
       expect(item).not.toBeUndefined();
     });
@@ -59,14 +59,14 @@ describe('Dashboard Items', ()=> {
       //Given
       const claim = new Claim();
       //When
-      const item = await toDraftClaimDashboardItem(claim, true);
+      const item = await toDraftClaimDashboardItem(claim);
       //Then
       expect(item).toBeUndefined();
     });
 
     it('should return undefined when claim is undefined', async () => {
       //When
-      const item = await toDraftClaimDashboardItem(undefined, true);
+      const item = await toDraftClaimDashboardItem(undefined);
       //Then
       expect(item).toBeUndefined();
     });
@@ -87,6 +87,24 @@ describe('Dashboard Items', ()=> {
       const status = ccdClaimantClaim.getStatus('en');
       //Then
       expect(status).toContain('PAGES.DASHBOARD.STATUS_CLAIMANT.NO_RESPONSE_ON_TIME');
+    });
+
+    it('should return judgment requested status when default judgment has been requested', () => {
+      //Given
+      ccdClaimantClaim.status = 'DEFAULT_JUDGEMENT_REQUESTED';
+      //When
+      const status = ccdClaimantClaim.getStatus('en');
+      //Then
+      expect(status).toContain('PAGES.DASHBOARD.STATUS_CLAIMANT.COUNTY_COURT_JUDGMENT_REQUESTED');
+    });
+
+    it('should return judgment entered status when default judgment has been granted', () => {
+      //Given
+      ccdClaimantClaim.status = 'DEFAULT_JUDGEMENT_GRANTED';
+      //When
+      const status = ccdClaimantClaim.getStatus('en');
+      //Then
+      expect(status).toContain('PAGES.DASHBOARD.STATUS_CLAIMANT.COUNTY_COURT_JUDGMENT_ENTERED');
     });
   });
 
@@ -121,6 +139,47 @@ describe('Dashboard Items', ()=> {
       const status = dashboardClaim.getStatus('en');
       //Then
       expect(status).toBe('PAGES.DASHBOARD.STATUS_DEFENDANT.NO_RESPONSE_ON_TIME');
+    });
+
+    it('should return translated status for default judgment requested', () => {
+      //Given
+      const dashboardClaim = new DashboardDefendantItem();
+      dashboardClaim.status = 'DEFAULT_JUDGEMENT_REQUESTED';
+      //When
+      const status = dashboardClaim.getStatus('en');
+      //Then
+      expect(status).toBe('PAGES.DASHBOARD.STATUS_DEFENDANT.COUNTY_COURT_JUDGMENT_REQUESTED');
+    });
+
+    it('should return legacy eligible for CCJ status', () => {
+      //Given
+      const dashboardClaim = new DashboardDefendantItem();
+      dashboardClaim.status = 'ELIGIBLE_FOR_CCJ';
+      //When
+      const status = dashboardClaim.getStatus('en');
+      //Then
+      expect(status).toContain('PAGES.DASHBOARD.STATUS_DEFENDANT.NO_RESPONSE_ELIGIBLE_CCJ');
+    });
+
+    it('should return judgment buffer eligible for CCJ status', () => {
+      //Given
+      const dashboardClaim = new DashboardDefendantItem();
+      dashboardClaim.status = 'JUDGMENT_BUFFER_ELIGIBLE';
+      //When
+      const status = dashboardClaim.getStatus('en');
+      //Then
+      expect(status).toContain('PAGES.DASHBOARD.STATUS_DEFENDANT.NO_RESPONSE_ELIGIBLE_CCJ_JUDGMENT_BUFFER');
+    });
+
+    it('should return claimant requested CCJ status when default judgment has been issued', () => {
+      //Given
+      const dashboardClaim = new DashboardDefendantItem();
+      dashboardClaim.status = 'DEFAULT_JUDGEMENT_ISSUED';
+      dashboardClaim.defaultJudgementIssuedDate = '2023-02-24';
+      //When
+      const status = dashboardClaim.getStatus('en');
+      //Then
+      expect(status).toContain('PAGES.DASHBOARD.STATUS_DEFENDANT.CLAIMANT_REQUESTED_CCJ');
     });
 
     it('should return the translated string without parameters when params is provided but empty', () => {
@@ -325,7 +384,6 @@ describe('Dashboard Items', ()=> {
       const status = dashboardClaim.getStatus('en');
       //Then
       expect(status).toBe('PAGES.DASHBOARD.STATUS_CLAIMANT.RESPONSE_BY_POST');
-
     });
   });
 });

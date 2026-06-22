@@ -1,15 +1,16 @@
 import {NotEligibleReason} from '../../common/form/models/eligibility/NotEligibleReason';
+import {normalizeRouteParam, RouteParam} from 'common/utils/routeParamUtils';
 
-export function constructResponseUrlWithIdParams(id: string, path: string): string{
-  return path.replace(/(:id)/i, id);
+export function constructResponseUrlWithIdParams(id: RouteParam, path: string): string{
+  return path.replace(/(:id)/i, normalizeRouteParam(id));
 }
 
-export function constructResponseUrlWithIdAndAppIdParams(id: string, appId: string, path: string): string {
-  return path.replace(/(:id)/i, id).replace(/(:appId)/i, appId);
+export function constructResponseUrlWithIdAndAppIdParams(id: RouteParam, appId: RouteParam, path: string): string {
+  return path.replace(/(:id)/i, normalizeRouteParam(id)).replace(/(:appId)/i, normalizeRouteParam(appId));
 }
 
-export function constructDocumentUrlWithIdParamsAndDocumentId(id: string, documentId: string, path: string): string{
-  return path.replace(/(:id)/i, id).replace(/(:documentId)/i, documentId);
+export function constructDocumentUrlWithIdParamsAndDocumentId(id: RouteParam, documentId: RouteParam, path: string): string{
+  return path.replace(/(:id)/i, normalizeRouteParam(id)).replace(/(:documentId)/i, normalizeRouteParam(documentId));
 }
 
 export function constructUrlWithNotEligibleReason(path: string, reason: NotEligibleReason): string {

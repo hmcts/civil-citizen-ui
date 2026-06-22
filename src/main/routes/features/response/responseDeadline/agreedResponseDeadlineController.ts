@@ -11,7 +11,7 @@ import {ResponseDeadlineService} from 'services/features/response/responseDeadli
 import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {deadLineGuard} from 'routes/guards/deadLineGuard';
 import {AppRequest} from 'common/models/AppRequest';
-import { isCUIReleaseTwoEnabled } from 'app/auth/launchdarkly/launchDarklyClient';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const responseDeadlineService = new ResponseDeadlineService();
 const agreedResponseDeadlineViewPath = 'features/response/responseDeadline/agreed-response-deadline';
@@ -23,11 +23,12 @@ const logger = Logger.getLogger('agreedResponseDeadlineController');
 agreedResponseDeadlineController
   .get(
     AGREED_TO_MORE_TIME_URL, deadLineGuard,( async (req: Request, res: Response, next: NextFunction) => {
-      const backLink = constructResponseUrlWithIdParams(req.params.id, RESPONSE_DEADLINE_OPTIONS_URL);
+      const claimId = getRouteParam(req, 'id');
+      const backLink = constructResponseUrlWithIdParams(claimId, RESPONSE_DEADLINE_OPTIONS_URL);
       try {
         const claim = await getCaseDataFromStore(generateRedisKey(<AppRequest>req));
         const agreedResponseDeadline = responseDeadlineService.getAgreedResponseDeadline(claim);
-        const isReleaseTwoEnabled = await isCUIReleaseTwoEnabled();
+        const isReleaseTwoEnabled = true;
         res.render(agreedResponseDeadlineViewPath, {
           form: new GenericForm(agreedResponseDeadline),
           today: new Date(),
@@ -44,14 +45,15 @@ agreedResponseDeadlineController
     AGREED_TO_MORE_TIME_URL, deadLineGuard,( async (req, res, next: NextFunction) => {
       const {year, month, day} = req.body;
       const redisKey = generateRedisKey(<AppRequest>req);
-      const backLink = constructResponseUrlWithIdParams(req.params.id, RESPONSE_DEADLINE_OPTIONS_URL);
+      const claimId = getRouteParam(req, 'id');
+      const backLink = constructResponseUrlWithIdParams(claimId, RESPONSE_DEADLINE_OPTIONS_URL);
       try {
         const claim = await getCaseDataFromStore(redisKey);
         const originalResponseDeadline = claim?.respondent1ResponseDeadline;
         const agreedResponseDeadlineDate = new AgreedResponseDeadline(year, month, day, originalResponseDeadline);
         const form: GenericForm<AgreedResponseDeadline> = new GenericForm<AgreedResponseDeadline>(agreedResponseDeadlineDate);
         await form.validate();
-        const isReleaseTwoEnabled = await isCUIReleaseTwoEnabled();
+        const isReleaseTwoEnabled = true;
         if (form.hasErrors()) {
           logger.info(`form has error - ${form.hasErrors()}`);
           res.render(agreedResponseDeadlineViewPath, {
@@ -63,7 +65,7 @@ agreedResponseDeadlineController
           });
         } else {
           await responseDeadlineService.saveAgreedResponseDeadline(redisKey, agreedResponseDeadlineDate.date);
-          res.redirect(constructResponseUrlWithIdParams(req.params.id, NEW_RESPONSE_DEADLINE_URL));
+          res.redirect(constructResponseUrlWithIdParams(claimId, NEW_RESPONSE_DEADLINE_URL));
         }
       } catch (error) {
         logger.error(`Error when POST : agreed response - ${error.message}`);

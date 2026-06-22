@@ -31,6 +31,7 @@ let chai, expect, assert;
 
 const {
   waitForFinishedBusinessProcess, waitForGAFinishedBusinessProcess, hearingFeeUnpaid, bundleGeneration, uploadDocument, triggerTrialArrangements,
+  assertEmailSent, assertNoEmailSent,
 } = require('./testingSupport');
 const {assignCaseRoleToUser, addUserCaseMapping, unAssignAllUsers} = require('./caseRoleAssignmentHelper');
 const apiRequest = require('./apiRequest.js');
@@ -115,6 +116,7 @@ module.exports = {
     await apiRequest.setupTokens(user);
     caseData = payload['caseDataUpdate'];
     await waitForGAFinishedBusinessProcess(gaCaseId, user);
+    await waitForTimeout(1000);
     await assertSubmittedGASpecEvent(gaCaseId, 'APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION', user);
   },
 
@@ -136,8 +138,25 @@ module.exports = {
     console.log('End of triggerTrialArrangements()');
   },
 
+  assertEmailSent: async (caseId, options) => {
+    console.log('This is inside assertEmailSent() : ' + caseId);
+    const entry = await assertEmailSent(caseId, options);
+    console.log('End of assertEmailSent()');
+    return entry;
+  },
+
+  assertNoEmailSent: async (caseId, options) => {
+    console.log('This is inside assertNoEmailSent() : ' + caseId);
+    await assertNoEmailSent(caseId, options);
+    console.log('End of assertNoEmailSent()');
+  },
+
   waitForFinishedBusinessProcess: async () => {
     await waitForFinishedBusinessProcess(caseId);
+  },
+
+  waitForFinishedBusinessProcessForCase: async (targetCaseId, user) => {
+    await waitForFinishedBusinessProcess(targetCaseId, user);
   },
 
   setCaseId: async (id) => {
@@ -383,6 +402,9 @@ module.exports = {
 
     await assertSubmittedSpecEvent('PENDING_CASE_ISSUED');
 
+    // Wait for CREATE_SERVICE_REQUEST_CLAIM before payment callback to avoid race where
+    // CREATE_CLAIM_SPEC_AFTER_PAYMENT is blocked by an ongoing business process.
+    await waitForFinishedBusinessProcess(caseId);
     await apiRequest.paymentUpdate(caseId, '/service-request-update-claim-issued',
       claimSpecData.serviceUpdateDto(caseId, 'paid'));
     console.log('Service request update sent to callback URL');
@@ -391,7 +413,6 @@ module.exports = {
     if (!manualPIP) {
       await assignSpecCase(caseId, multipartyScenario);
     }
-    //await waitForFinishedBusinessProcess(caseId);
 
     //field is deleted in about to submit callback
     deleteCaseFields('applicantSolicitor1CheckEmail');
@@ -479,6 +500,7 @@ module.exports = {
       },
     };
     await apiRequest.startEventForCitizen('', caseId, newPayload);
+    await waitForTimeout(1000);
     await waitForFinishedBusinessProcess(caseId, user);
     if (!mainClaimWelshEnabled) {
       await assignSpecCase(caseId, null);
@@ -486,12 +508,12 @@ module.exports = {
     return caseId;
   },
 
-  submitUploadTranslatedDoc: async (translationDocType) => {
+  submitUploadTranslatedDoc: async (translationDocType, targetCaseId = caseId) => {
     eventName = 'UPLOAD_TRANSLATED_DOCUMENT';
-    await validateUploadTranslatedDoc(translationDocType);
-    await assertSubmittedSpecEvent();
+    await validateUploadTranslatedDoc(translationDocType, targetCaseId);
+    await assertSubmittedSpecEvent(undefined, undefined, true, targetCaseId);
     if (translationDocType === 'CLAIM_ISSUE') {
-      await assignSpecCase(caseId, null);
+      await assignSpecCase(targetCaseId, null);
     }
   },
 
@@ -517,14 +539,15 @@ module.exports = {
 
     await assertSubmittedSpecEvent('PENDING_CASE_ISSUED');
 
+    await waitForFinishedBusinessProcess(caseId);
     await apiRequest.paymentUpdate(caseId, '/service-request-update-claim-issued',
       claimSpecData.serviceUpdateDto(caseId, 'paid'));
     console.log('Service request update sent to callback URL');
+    await waitForFinishedBusinessProcess(caseId);
 
     if (claimType !== 'pinInPost') {
       await assignSpecCase(caseId, 'lrvlr');
     }
-    await waitForFinishedBusinessProcess(caseId);
 
     console.log('carmEnabled flag .. ', carmEnabled);
     /* Not needed this anymore as CARM is live, all FTs should be on live cases
@@ -832,6 +855,21 @@ module.exports = {
     await assignCaseRoleToUser(caseId, 'DEFENDANT', config.defendantCitizenUser);
     await addUserCaseMapping(caseId, config.defendantCitizenUser);
   },
+
+  waitUntilClaimIssued: async (targetCaseId, user = config.adminUser, maxAttempts = 30) => {
+    for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+      await waitForFinishedBusinessProcess(targetCaseId);
+      await apiRequest.setupTokens(user);
+      const {case_data} = await apiRequest.fetchCaseDetails(user, targetCaseId);
+      if (case_data.issueDate) {
+        console.log(`Claim ${targetCaseId} issued on attempt ${attempt}`);
+        return;
+      }
+      console.log(`Claim ${targetCaseId} not yet issued (attempt ${attempt}/${maxAttempts}), waiting...`);
+      await waitForTimeout(4000);
+    }
+    throw new Error(`Claim ${targetCaseId} was not issued after ${maxAttempts} attempts`);
+  },
 };
 
 // Functions
@@ -951,10 +989,10 @@ function checkGenerated(responseBodyData, generated, prefix = '') {
   }
 }
 
-const assertSubmittedSpecEvent = async (expectedState, submittedCallbackResponseContains, hasSubmittedCallback = true) => {
-  await apiRequest.startEvent(eventName, caseId);
+const assertSubmittedSpecEvent = async (expectedState, submittedCallbackResponseContains, hasSubmittedCallback = true, targetCaseId = caseId) => {
+  await apiRequest.startEvent(eventName, targetCaseId);
 
-  const response = await apiRequest.submitEvent(eventName, caseData, caseId);
+  const response = await apiRequest.submitEvent(eventName, caseData, targetCaseId);
   const responseBody = await response.json();
   assert.equal(response.status, 201);
   if (hasSubmittedCallback && submittedCallbackResponseContains) {
@@ -967,7 +1005,7 @@ const assertSubmittedSpecEvent = async (expectedState, submittedCallbackResponse
     await addUserCaseMapping(caseId, config.applicantSolicitorUser);
     console.log('Case created: ' + caseId);
   }
-  await waitForFinishedBusinessProcess(caseId);
+  await waitForFinishedBusinessProcess(targetCaseId);
   if (expectedState) {
     assert.equal(responseBody.state, expectedState);
   }
@@ -1020,13 +1058,17 @@ const assignSpecCase = async (caseId, type) => {
   }
 };
 
-const validateUploadTranslatedDoc = async (translationDocType) => {
+const validateUploadTranslatedDoc = async (translationDocType, targetCaseId = caseId) => {
   //transform the data
   const document = await uploadDocument();
   const uploadedDocs = uploadTranslatedDoc(document, translationDocType);
   await apiRequest.setupTokens(config.welshAdmin);
-  caseData = await apiRequest.startEvent(eventName, caseId);
+  caseData = await apiRequest.startEvent(eventName, targetCaseId);
   for (let pageId of Object.keys(uploadedDocs.userInput)) {
     await assertValidDataSpec(uploadedDocs, pageId);
   }
+};
+
+const waitForTimeout = async (ms) => {
+  return new Promise(resolve => setTimeout(resolve, ms));
 };

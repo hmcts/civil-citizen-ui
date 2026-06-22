@@ -10,6 +10,7 @@ import {
 } from 'services/features/response/statementOfMeans/priorityDebtsService';
 import {AppRequest} from 'common/models/AppRequest';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const priorityDebtsController = Router();
 const priorityDebtsView = 'features/response/statementOfMeans/priority-debts';
@@ -35,7 +36,8 @@ priorityDebtsController.post(CITIZEN_PRIORITY_DEBTS_URL, (async (req, res, next:
       renderForm(form, res);
     } else {
       await savePriorityDebts(generateRedisKey(<AppRequest>req), form.model);
-      res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_DEBTS_URL));
+      const claimId = getRouteParam(req, 'id');
+      res.redirect(constructResponseUrlWithIdParams(claimId, CITIZEN_DEBTS_URL));
     }
   } catch (error) {
     next(error);

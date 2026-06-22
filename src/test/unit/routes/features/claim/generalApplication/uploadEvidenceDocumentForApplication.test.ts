@@ -56,7 +56,6 @@ describe('General Application - upload evidence docs to support application', ()
     nock(idamUrl)
       .post('/o/token')
       .reply(200, { id_token: citizenRoleToken });
-    jest.spyOn(launchDarkly, 'isCUIReleaseTwoEnabled').mockResolvedValueOnce(true);
     jest.spyOn(launchDarkly, 'isGaForLipsEnabled').mockResolvedValue(true);
   });
 
@@ -124,7 +123,7 @@ describe('General Application - upload evidence docs to support application', ()
         },
       ];
 
-      app.request.session = { fileUpload: JSON.stringify(errors), fileUploadSource: FILE_UPLOAD_SOURCE.GA_UPLOAD_EVIDENCE } as unknown as Session;
+      app.request.session = { fileUpload: JSON.stringify(errors), fileUploadSource: FILE_UPLOAD_SOURCE.GA_UPLOAD_EVIDENCE, save: (cb: any) => cb() } as unknown as Session;
       await request(app)
         .get(GA_UPLOAD_DOCUMENTS_URL)
         .expect((res) => {
@@ -146,7 +145,7 @@ describe('General Application - upload evidence docs to support application', ()
         },
       ];
 
-      app.request.session = { fileUpload: JSON.stringify(errors), fileUploadSource: FILE_UPLOAD_SOURCE.GA_UPLOAD_EVIDENCE } as unknown as Session;
+      app.request.session = { fileUpload: JSON.stringify(errors), fileUploadSource: FILE_UPLOAD_SOURCE.GA_UPLOAD_EVIDENCE, save: (cb: any) => cb() } as unknown as Session;
       await request(app)
         .get(GA_UPLOAD_DOCUMENTS_URL)
         .expect((res) => {
@@ -167,7 +166,7 @@ describe('General Application - upload evidence docs to support application', ()
         },
       ];
 
-      app.request.session = { fileUpload: JSON.stringify(errors), fileUploadSource: FILE_UPLOAD_SOURCE.GA_UPLOAD_EVIDENCE } as unknown as Session;
+      app.request.session = { fileUpload: JSON.stringify(errors), fileUploadSource: FILE_UPLOAD_SOURCE.GA_UPLOAD_EVIDENCE, save: (cb: any) => cb() } as unknown as Session;
       await request(app)
         .get(GA_UPLOAD_DOCUMENTS_URL)
         .expect((res) => {
@@ -199,6 +198,8 @@ describe('General Application - upload evidence docs to support application', ()
     });
 
     it('should redirect back when file over 100MB (multer LIMIT_FILE_SIZE)', async () => {
+      const save = jest.fn((cb: any) => cb());
+      app.request.session = { save } as unknown as Session;
       const largeBuffer = Buffer.alloc(101 * 1024 * 1024);
       largeBuffer.fill('x');
       const res = await request(app)
@@ -207,6 +208,7 @@ describe('General Application - upload evidence docs to support application', ()
         .attach('selectedFile', largeBuffer, { filename: 'large.pdf', contentType: 'application/pdf' });
       expect(res.status).toBe(302);
       expect(res.header.location).toContain('upload-documents');
+      expect(save).toHaveBeenCalledTimes(1);
     });
 
     it.each([

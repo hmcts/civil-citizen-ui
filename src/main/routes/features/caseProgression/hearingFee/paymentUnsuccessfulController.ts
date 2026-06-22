@@ -13,7 +13,7 @@ const paymentUnsuccessfulController: Router = Router();
 paymentUnsuccessfulController.get(PAY_HEARING_FEE_UNSUCCESSFUL_URL, (req, res, next: NextFunction) => {
   (async () => {
     try {
-      const claimId = req.params.id;
+      const claimId = req.params.id as string;
       const claim = await getClaimById(claimId, req, true);
       const claimNumber = claim.getFormattedCaseReferenceNumber(claimId);
       const makePaymentAgainUrl = constructResponseUrlWithIdParams(claimId, HEARING_FEE_MAKE_PAYMENT_AGAIN_URL);

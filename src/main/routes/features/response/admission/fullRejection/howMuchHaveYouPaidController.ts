@@ -12,6 +12,7 @@ import {toNumberOrUndefined} from 'common/utils/numberConverter';
 import {ResponseType} from 'form/models/responseType';
 import {AppRequest} from 'common/models/AppRequest';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const howMuchHaveYouPaidPath = 'features/response/admission/how-much-have-you-paid';
 const howMuchHaveYouPaidController = Router();
@@ -53,10 +54,11 @@ howMuchHaveYouPaidController
       } else {
         try {
           await howMuchHaveYouPaidService.saveHowMuchHaveYouPaid(generateRedisKey(<AppRequest>req), howMuchHaveYouPaid, ResponseType.FULL_DEFENCE);
+          const claimId = getRouteParam(req, 'id');
           if (paid < howMuchHaveYouPaid.totalClaimAmount) {
-            res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_FULL_REJECTION_YOU_PAID_LESS_URL));
+            res.redirect(constructResponseUrlWithIdParams(claimId, CITIZEN_FULL_REJECTION_YOU_PAID_LESS_URL));
           } else {
-            res.redirect(constructResponseUrlWithIdParams(req.params.id, RESPONSE_TASK_LIST_URL));
+            res.redirect(constructResponseUrlWithIdParams(claimId, RESPONSE_TASK_LIST_URL));
           }
         } catch (error) {
           next(error);

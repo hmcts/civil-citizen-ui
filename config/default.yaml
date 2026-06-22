@@ -1,6 +1,6 @@
 useCSRFProtection: true
 security:
-  referrerPolicy: 'origin'
+  referrerPolicy: 'strict-origin-when-cross-origin'
 port: 3001
 timeout: 30000
 services:
@@ -92,3 +92,7 @@ webChat:
 featureToggles:
   settlementAgreementEnabled: false
 cookieMaxAge: 5400000
+uploadRateLimit:
+  enabled: true
+  maxRequests: 20
+  windowSeconds: 60

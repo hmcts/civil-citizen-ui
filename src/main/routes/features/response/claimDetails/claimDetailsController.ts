@@ -21,6 +21,7 @@ import {CaseState} from 'form/models/claimDetails';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {AppRequest} from 'models/AppRequest';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const claimDetailsController = Router();
 const claimDetailsViewPathNew = 'features/response/claimDetails/claim-details-new';
@@ -33,15 +34,15 @@ const logger = Logger.getLogger('claimDetailsController');
 claimDetailsController.get(CLAIM_DETAILS_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const welshEnabled = await isWelshEnabledForMainCase();
-    const claimId = req.params.id;
+    const claimId = getRouteParam(req, 'id');
     const claim = await civilServiceClient.retrieveClaimDetails(claimId, req);
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const interestData = await getInterestDetails(claim);
     const totalAmount = await getTotalAmountWithInterestAndFeesAndFixedCost(claim);
     const timelineRows = getClaimTimeline(claim, getLng(lang));
-    const timelinePdfUrl = claim.extractDocumentId() && CASE_TIMELINE_DOCUMENTS_URL.replace(':id', req.params.id).replace(':documentId', claim.extractDocumentId());
+    const timelinePdfUrl = claim.extractDocumentId() && CASE_TIMELINE_DOCUMENTS_URL.replace(':id', claimId).replace(':documentId', claim.extractDocumentId());
     const showErrorAwaitingTranslation = welshEnabled && claim.ccdState === CaseState.PENDING_CASE_ISSUED && claim.preTranslationDocuments?.length > 0;
-    const sealedClaimPdfUrl = showErrorAwaitingTranslation ? constructResponseUrlWithIdParams(claimId, CLAIM_DETAILS_URL) : getTheClaimFormUrl(req.params.id, claim, CASE_DOCUMENT_VIEW_URL);
+    const sealedClaimPdfUrl = showErrorAwaitingTranslation ? constructResponseUrlWithIdParams(claimId, CLAIM_DETAILS_URL) : getTheClaimFormUrl(claimId, claim, CASE_DOCUMENT_VIEW_URL);
     const pageTitle = 'PAGES.CLAIM_DETAILS.PAGE_TITLE_NEW';
     if (claim.hasInterest()) {
       claim.totalInterest = interestData.interest;

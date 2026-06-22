@@ -9,7 +9,7 @@ const cancelTrialArrangementsController = Router();
 
 cancelTrialArrangementsController.get([CANCEL_TRIAL_ARRANGEMENTS], (async (req, res, next) => {
   try {
-    const claimId = req.params.id;
+    const claimId = req.params.id as string;
     const claim = await getClaimById(claimId, req,true);
     await deleteDraftClaim(req);
 

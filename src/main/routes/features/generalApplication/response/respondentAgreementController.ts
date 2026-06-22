@@ -16,6 +16,7 @@ import {
 import { getDraftGARespondentResponse } from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
 import {GaResponse} from 'models/generalApplication/response/gaResponse';
 import {constructResponseUrlWithIdAndAppIdParams} from 'common/utils/urlFormatter';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const respondentAgreementController = Router();
 const viewPath = 'features/generalApplication/respondent-agreement';
@@ -32,7 +33,8 @@ const renderView = async (claimId: string, claim: Claim, form: GenericForm<Respo
 };
 
 respondentAgreementController.get(GA_RESPONDENT_AGREEMENT_URL, async (req: AppRequest, res: Response, next: NextFunction) => {
-  const claimId = req.params.id;
+  const claimId = getRouteParam(req, 'id');
+  const appId = getRouteParam(req, 'appId');
   const lang = req.query.lang || req.cookies.lang;
   const redisKey = generateRedisKey(req);
   const claim = await getCaseDataFromStore(redisKey);
@@ -40,7 +42,7 @@ respondentAgreementController.get(GA_RESPONDENT_AGREEMENT_URL, async (req: AppRe
   const respondentAgreement = gaResponse?.respondentAgreement || new RespondentAgreement();
   const form = new GenericForm(respondentAgreement);
 
-  renderView(claimId, claim, form, lang, req.params.appId, gaResponse, res).catch((error) => {
+  renderView(claimId, claim, form, lang, appId, gaResponse, res).catch((error) => {
     next(error);
   });
 });
@@ -50,17 +52,18 @@ respondentAgreementController.post(GA_RESPONDENT_AGREEMENT_URL, (async (req: App
     const { option, reasonForDisagreement } = req.body;
     const respondentAgreement = new RespondentAgreement(option, reasonForDisagreement);
     const form = new GenericForm(respondentAgreement);
-    const claimId = req.params.id;
+    const claimId = getRouteParam(req, 'id');
+    const appId = getRouteParam(req, 'appId');
     await form.validate();
     if (form.hasErrors()) {
       const redisKey = generateRedisKey(req);
       const claim = await getCaseDataFromStore(redisKey);
       const gaResponse = await getDraftGARespondentResponse(generateRedisKeyForGA(req));
       const lang = req.query.lang || req.cookies.lang;
-      return await renderView(claimId, claim, form, lang, req.params.appId, gaResponse, res);
+      return await renderView(claimId, claim, form, lang, appId, gaResponse, res);
     }
     await saveRespondentAgreement(generateRedisKeyForGA(req), respondentAgreement);
-    res.redirect(constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_RESPONDENT_WANT_TO_UPLOAD_DOCUMENT_URL));
+    res.redirect(constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_RESPONDENT_WANT_TO_UPLOAD_DOCUMENT_URL));
   } catch (error) {
     next(error);
   }

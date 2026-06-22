@@ -6,6 +6,7 @@ import {GenericForm} from 'form/models/genericForm';
 import {GenericYesNo} from 'form/models/genericYesNo';
 import {AppRequest} from 'common/models/AppRequest';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const carerViewPath = 'features/response/statementOfMeans/carer';
 const carerController = Router();
@@ -24,6 +25,7 @@ carerController.get(CITIZEN_CARER_URL, (async (req, res, next: NextFunction) => 
 
 carerController.post(CITIZEN_CARER_URL,
   (async (req, res, next: NextFunction) => {
+    const claimId = getRouteParam(req, 'id');
     const carerForm: GenericForm<GenericYesNo> = new GenericForm(new GenericYesNo(req.body.option));
     carerForm.validateSync();
     if (carerForm.hasErrors()) {
@@ -31,7 +33,7 @@ carerController.post(CITIZEN_CARER_URL,
     } else {
       try {
         await saveCarer(generateRedisKey(<AppRequest>req), carerForm.model);
-        res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_EMPLOYMENT_URL));
+        res.redirect(constructResponseUrlWithIdParams(claimId, CITIZEN_EMPLOYMENT_URL));
       } catch (error) {
         next(error);
       }

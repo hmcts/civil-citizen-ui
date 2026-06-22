@@ -22,6 +22,7 @@ import {ApplicationTypeOption} from 'models/generalApplication/applicationType';
 import {convertToPoundsFilter} from 'common/utils/currencyFormat';
 import {YesNo} from 'form/models/yesNo';
 import {QualifiedStatementOfTruth} from 'models/generalApplication/QualifiedStatementOfTruth';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const gaCheckAnswersController = Router();
 const viewPath = 'features/generalApplication/check-answers';
@@ -40,7 +41,7 @@ async function renderView(claimId: string, claim: Claim, form: GenericForm<State
 
 gaCheckAnswersController.get(GA_CHECK_ANSWERS_URL, checkYourAnswersGAGuard, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const claimId = req.params.id;
+    const claimId = getRouteParam(req, 'id');
     const claim = await getClaimById(claimId, req, true);
     const statementOfTruthForm = claim.generalApplication?.statementOfTruth || new StatementOfTruthForm();
     const form = new GenericForm(statementOfTruthForm);
@@ -52,7 +53,7 @@ gaCheckAnswersController.get(GA_CHECK_ANSWERS_URL, checkYourAnswersGAGuard, (asy
 
 gaCheckAnswersController.post(GA_CHECK_ANSWERS_URL, checkYourAnswersGAGuard, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const claimId = req.params.id;
+    const claimId = getRouteParam(req, 'id');
     const claim = await getClaimById(claimId, req, true);
     const redisKey = generateRedisKey(<AppRequest>req);
     let statementOfTruth: StatementOfTruthForm | QualifiedStatementOfTruth;

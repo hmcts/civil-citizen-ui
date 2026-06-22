@@ -1,6 +1,8 @@
 import {Request} from 'express';
 import {Session} from 'express-session';
 import {Claim} from './claim';
+import {FeeType} from 'common/form/models/helpWithFees/feeType';
+import {CaseRole} from 'form/models/caseRoles';
 
 import {TaskList} from 'common/models/taskList/taskList';
 
@@ -9,6 +11,8 @@ export interface AppRequest<T = Partial<Claim>> extends Request {
   locals: {
     env: string;
     lang: string;
+    claimDetailsRequestCache?: Map<string, Promise<Claim>>;
+    userCaseRolesRequestCache?: Map<string, Promise<CaseRole>>;
   };
   body: T;
 }
@@ -17,6 +21,11 @@ export interface FirstContact {
   claimId?: string;
   claimReference?: string;
   pin?: string;
+}
+
+export interface PaymentConfirmationContext {
+  claimId: string;
+  feeType: FeeType;
 }
 
 export interface AppSession extends Session {
@@ -35,10 +44,12 @@ export interface AppSession extends Session {
   history?: string[];
   qmShareConfirmed: boolean;
   caseReference?: string;
+  paymentConfirmationContext?: PaymentConfirmationContext;
 }
 
 export interface UserDetails {
   accessToken: string;
+  idToken: string;
   id: string;
   email: string;
   givenName: string;

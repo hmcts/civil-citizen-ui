@@ -2,7 +2,7 @@ import {Claim} from 'models/claim';
 import {DirectionQuestionnaire} from 'models/directionsQuestionnaire/directionQuestionnaire';
 import {Hearing} from 'models/directionsQuestionnaire/hearing/hearing';
 import {YesNo, YesNoNotReceived} from 'form/models/yesNo';
-import {summaryRow} from 'models/summaryList/summaryList';
+import {summaryRow, summaryRowWithTextValue} from 'models/summaryList/summaryList';
 import {Experts} from 'common/models/directionsQuestionnaire/experts/experts';
 import {
   considerClaimantDocQuestion,
@@ -158,7 +158,7 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
           option: YesNo.YES,
           details: 'Test doc',
         };
-        const mockSummarySection = summaryRow(
+        const mockSummarySection = summaryRowWithTextValue(
           'PAGES.CHECK_YOUR_ANSWER.GIVE_DOC_DETAILS',
           'Test doc',
         );
@@ -170,7 +170,7 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
         claim.directionQuestionnaire.hearing.considerClaimantDocuments = {
           option: YesNo.YES,
         };
-        const mockSummarySection = summaryRow(
+        const mockSummarySection = summaryRowWithTextValue(
           'PAGES.CHECK_YOUR_ANSWER.GIVE_DOC_DETAILS',
           '',
         );
@@ -180,7 +180,7 @@ describe('Fast Track Claim Hearing Requirements Section', () => {
       it('should return empty string when no hearing', () => {
         //Given
         const claimWithNoHearing = new Claim();
-        const mockSummarySection = summaryRow(
+        const mockSummarySection = summaryRowWithTextValue(
           'PAGES.CHECK_YOUR_ANSWER.GIVE_DOC_DETAILS',
           '',
         );

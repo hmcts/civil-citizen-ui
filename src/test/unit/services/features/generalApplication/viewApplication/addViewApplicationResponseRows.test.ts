@@ -192,7 +192,7 @@ describe('addViewApplicationResponseRows', () => {
           value: { html: 'PAGES.GENERAL_APPLICATION.APPLICATION_HEARING_ARRANGEMENTS.HEARING_TYPE_VIEW_APPLICATION.PERSON_AT_COURT' },
         }, {
           key: { text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_PREFER' },
-          value: { html: 'I prefer in person' },
+          value: { text: 'I prefer in person' },
         }, {
           key: { text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.PREFERRED_LOCATION' },
           value: { html: "Barnet Civil and Family Centre - St Mary's Court, Regents Park Road - N3 1BQ" },

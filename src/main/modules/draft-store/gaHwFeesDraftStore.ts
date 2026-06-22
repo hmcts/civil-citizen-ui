@@ -1,4 +1,4 @@
-import {app} from '../../app';
+import {app} from '../../app-instance';
 import {GaHelpWithFees} from 'models/generalApplication/gaHelpWithFees';
 
 const {Logger} = require('@hmcts/nodejs-logging');

@@ -31,7 +31,8 @@ import {
   getFileUploadErrorsForSource,
   FILE_UPLOAD_SOURCE,
 } from 'common/utils/fileUploadUtils';
-import {redirectIfMulterError} from 'services/features/generalApplication/uploadEvidenceDocumentService';
+import {getRouteParam} from 'common/utils/routeParamUtils';
+import {handleMulterError} from 'services/features/generalApplication/uploadEvidenceDocumentService';
 
 const uploadDocumentsDirectionsOrderController = Router();
 const viewPath = 'features/generalApplication/directionsOrderUpload/upload-documents';
@@ -56,7 +57,8 @@ async function renderView(form: GenericForm<UploadGAFiles>, claim: Claim, claimI
 
 uploadDocumentsDirectionsOrderController.get(GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const { appId, id:claimId } = req.params;
+    const appId = getRouteParam(req, 'appId');
+    const claimId = getRouteParam(req, 'id');
     const claim = await getClaimById(claimId, req, true);
     const redisKey = generateRedisKeyForGA(req);
     const uploadDocuments = new UploadGAFiles();
@@ -81,17 +83,22 @@ uploadDocumentsDirectionsOrderController.get(GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER
 
 uploadDocumentsDirectionsOrderController.post(GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_URL, multerMiddleware, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const { appId, id:claimId } = req.params;
+    const appId = getRouteParam(req, 'appId');
+    const claimId = getRouteParam(req, 'id');
     const uploadedDocuments = await getGADocumentsFromDraftStore(generateRedisKeyForGA(req));
     const currentUrl = constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_URL);
 
-    if (redirectIfMulterError(req, res, currentUrl, FILE_UPLOAD_SOURCE.GA_DIRECTIONS_ORDER)) {
-      return;
+    if (handleMulterError(req, FILE_UPLOAD_SOURCE.GA_DIRECTIONS_ORDER)) {
+      return req.session.save(() => {
+        res.redirect(`${currentUrl}`);
+      });
     }
 
     if (req.body.action === 'uploadButton') {
       await uploadSelectedFile(req, FILE_UPLOAD_SOURCE.GA_DIRECTIONS_ORDER);
-      return res.redirect(`${currentUrl}`);
+      return req.session.save(() => {
+        res.redirect(`${currentUrl}`);
+      });
     }
     const uploadDoc = new UploadGAFiles();
     const form = new GenericForm(uploadDoc);
@@ -99,9 +106,11 @@ uploadDocumentsDirectionsOrderController.post(GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDE
     if (form.hasFieldError('fileUpload') && uploadedDocuments?.length === 0) {
       req.session.fileUpload = JSON.stringify(createUploadOneFileError());
       req.session.fileUploadSource = FILE_UPLOAD_SOURCE.GA_DIRECTIONS_ORDER;
-      return res.redirect(`${currentUrl}`);
+      return req.session.save(() => {
+        res.redirect(`${currentUrl}`);
+      });
     } else {
-      res.redirect(constructResponseUrlWithIdAndAppIdParams(claimId, appId,  GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_CYA_URL));
+      res.redirect(constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_CYA_URL));
     }
   } catch (error) {
     next(error);

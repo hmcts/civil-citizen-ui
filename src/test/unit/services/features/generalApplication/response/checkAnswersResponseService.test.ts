@@ -349,7 +349,7 @@ describe('Check Answers response service', () => {
         },
         {
           key: { text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_PREFER' },
-          value: { html: 'I prefer phone' },
+          value: { text: 'I prefer phone' },
           actions: {
             items: [{
               href,
@@ -444,7 +444,7 @@ describe('Check Answers response service', () => {
         },
         {
           key: { text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_PREFER' },
-          value: { html: 'I prefer phone' },
+          value: { text: 'I prefer phone' },
           actions: {
             items: [{
               href,

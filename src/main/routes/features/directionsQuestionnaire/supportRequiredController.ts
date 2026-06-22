@@ -32,7 +32,7 @@ async function renderView(form: GenericForm<SupportRequiredList>, claimId: strin
 supportRequiredController.get(SUPPORT_REQUIRED_URL, async (req, res, next) => {
   try {
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-    const redisKey = generateRedisKey(<AppRequest>req);
+    const redisKey = generateRedisKey(req as unknown as AppRequest);
     const claim = await getCaseDataFromStore(redisKey);
     const carmApplicable = await isCarmEnabledForCase(claim.submittedDate) && claim.isSmallClaimsTrackDQ;
     const supportRequiredList = await getSupportRequired(redisKey);
@@ -46,7 +46,7 @@ supportRequiredController.get(SUPPORT_REQUIRED_URL, async (req, res, next) => {
 supportRequiredController.post(SUPPORT_REQUIRED_URL, async (req, res, next) => {
   try {
     const claimId = req.params.id;
-    const redisKey = generateRedisKey(<AppRequest>req);
+    const redisKey = generateRedisKey(req as unknown as AppRequest);
     const claim = await getCaseDataFromStore(redisKey);
     const carmApplicable = await isCarmEnabledForCase(claim.submittedDate) && claim.isSmallClaimsTrackDQ;
     const supportRequiredList = getSupportRequiredForm(req);

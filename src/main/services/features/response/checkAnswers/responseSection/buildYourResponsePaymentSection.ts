@@ -1,6 +1,6 @@
 import {SummarySection, summarySection} from 'common/models/summaryList/summarySections';
 import {Claim} from 'common/models/claim';
-import {SummaryRow, summaryRow} from 'common/models/summaryList/summaryList';
+import {SummaryRow, summaryRow, summaryRowWithTextValue} from 'common/models/summaryList/summaryList';
 import {t} from 'i18next';
 import {getLng} from 'common/utils/languageToggleUtils';
 import {
@@ -30,7 +30,7 @@ const getResponseTitle = (claim: Claim, lang: string ): string => {
 const buildExplanationRow = (claim: Claim, claimId: string, lang: string ): SummaryRow => {
   const explanationHref = constructResponseUrlWithIdParams(claimId, CITIZEN_EXPLANATION_URL);
   const explanationText = claim.statementOfMeans?.explanation?.text ? claim.statementOfMeans.explanation.text : '';
-  return summaryRow(t('PAGES.EXPLANATION.TITLE', {lng: getLng(lang)}), explanationText, explanationHref, changeLabel(lang));
+  return summaryRowWithTextValue(t('PAGES.EXPLANATION.TITLE', {lng: getLng(lang)}), explanationText, explanationHref, changeLabel(lang));
 };
 
 export const buildYourResponsePaymentSection = (claim: Claim, claimId: string, lang: string): SummarySection => {

@@ -1,6 +1,6 @@
 import {SummarySection} from '../../../../../../common/models/summaryList/summarySections';
 import {Claim} from '../../../../../../common/models/claim';
-import {summaryRow} from '../../../../../../common/models/summaryList/summaryList';
+import {summaryRow, summaryRowWithTextValue} from '../../../../../../common/models/summaryList/summaryList';
 import {t} from 'i18next';
 import {getLng} from '../../../../../../common/utils/languageToggleUtils';
 import {
@@ -14,7 +14,12 @@ export const addResidence = (claim: Claim, financialSection: SummarySection, cla
   const yourResidenceTypeHref = CITIZEN_RESIDENCE_URL.replace(':id', claimId);
   const residence = claim.statementOfMeans?.residence;
   const residenceType = claim.statementOfMeans?.residence?.type === ResidenceType.OTHER ? residence?.housingDetails : residence?.type;
-  financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.WHERE_DO_YOU_LIVE', { lng: getLng(lang) }), translateResidenceType(residenceType, lang), yourResidenceTypeHref, changeLabel(lang)));
+  const translatedResidence = translateResidenceType(residenceType, lang);
+  if (claim.statementOfMeans?.residence?.type === ResidenceType.OTHER) {
+    financialSection.summaryList.rows.push(summaryRowWithTextValue(t('PAGES.CHECK_YOUR_ANSWER.WHERE_DO_YOU_LIVE', { lng: getLng(lang) }), translatedResidence, yourResidenceTypeHref, changeLabel(lang)));
+  } else {
+    financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.WHERE_DO_YOU_LIVE', { lng: getLng(lang) }), translatedResidence, yourResidenceTypeHref, changeLabel(lang)));
+  }
 };
 
 const translateResidenceType = (residence: string, lng: string ): string => {

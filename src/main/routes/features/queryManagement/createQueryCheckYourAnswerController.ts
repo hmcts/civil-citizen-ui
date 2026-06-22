@@ -7,6 +7,7 @@ import {BACK_URL, QM_CONFIRMATION_URL, QM_CYA, QM_FOLLOW_UP_CYA} from 'routes/ur
 import {getCancelUrl, saveQueryManagement} from 'services/features/queryManagement/queryManagementService';
 import {createQuery, getSummarySections} from 'services/features/queryManagement/createQueryCheckYourAnswerService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const viewPath = 'features/queryManagement/createQueryCheckYourAnswer.njk';
 const createQueryCheckYourAnswerController = Router();
@@ -25,13 +26,14 @@ createQueryCheckYourAnswerController.get([QM_CYA, QM_FOLLOW_UP_CYA], (async (req
       caption: isFollowUpUrl? 'PAGES.QM.HEADINGS.FOLLOW_UP_CAPTION':'PAGES.QM.HEADINGS.CAPTION',
       heading: isFollowUpUrl? 'PAGES.QM.HEADINGS.FOLLOW_UP_HEADING':'PAGES.QM.SEND_MESSAGE_CYA.HEADING',
     };
-    const queryId = req.params.queryId;
-    const claim = await getClaimById(req.params.id, req, true);
+    const queryId = getRouteParam(req, 'queryId');
+    const claimId = getRouteParam(req, 'id');
+    const claim = await getClaimById(claimId, req, true);
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const backLinkUrl = BACK_URL;
-    const cancelUrl = getCancelUrl(req.params.id);
+    const cancelUrl = getCancelUrl(claimId);
     res.render(viewPath, {
-      summaryRows: getSummarySections(req.params.id, claim, lang, isFollowUpUrl, queryId),
+      summaryRows: getSummarySections(claimId, claim, lang, isFollowUpUrl, queryId),
       backLinkUrl,
       cancelUrl,
       title,
@@ -44,7 +46,7 @@ createQueryCheckYourAnswerController.get([QM_CYA, QM_FOLLOW_UP_CYA], (async (req
 createQueryCheckYourAnswerController.post([QM_CYA, QM_FOLLOW_UP_CYA], async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const isFollowUpUrl = isFollowUp(req.originalUrl);
-    const claimId = req.params.id;
+    const claimId = getRouteParam(req, 'id');
     const claim = await getClaimById(claimId, req, true);
     const updatedClaim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
     await createQuery(claim, updatedClaim, req, isFollowUpUrl);

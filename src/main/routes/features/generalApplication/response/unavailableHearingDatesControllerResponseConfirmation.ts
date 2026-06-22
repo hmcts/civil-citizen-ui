@@ -25,13 +25,14 @@ import {
   getDraftGARespondentResponse,
 } from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
 import {GaResponse} from 'models/generalApplication/response/gaResponse';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const viewPath = 'features/generalApplication/unavailable-dates-confirmation.njk';
 const gaUnavailabilityDatesResponseConfirmationController = Router();
 
 const renderView = async (claimId: string, gaResponse: GaResponse, claim: Claim, form: GenericForm<GenericYesNo>, res: Response, req: Request, lng: string) => {
 
-  const cancelUrl = await getCancelUrl(req.params.id, claim);
+  const cancelUrl = await getCancelUrl(claimId, claim);
   const backLinkUrl = BACK_URL;
   res.render(viewPath, {
     form,
@@ -44,7 +45,7 @@ const renderView = async (claimId: string, gaResponse: GaResponse, claim: Claim,
 gaUnavailabilityDatesResponseConfirmationController.get(GA_UNAVAILABILITY_RESPONSE_CONFIRMATION_URL, (async (req, res, next: NextFunction) => {
   try {
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
-    const claimId = req.params.id;
+    const claimId = getRouteParam(req, 'id');
     const gaRedisKey = generateRedisKeyForGA(<AppRequest>req);
     const claim = await getClaimById(claimId, req, true);
     const gaResponse = await getDraftGARespondentResponse(gaRedisKey);
@@ -59,7 +60,8 @@ gaUnavailabilityDatesResponseConfirmationController.get(GA_UNAVAILABILITY_RESPON
 gaUnavailabilityDatesResponseConfirmationController.post(GA_UNAVAILABILITY_RESPONSE_CONFIRMATION_URL, (async (req, res, next: NextFunction) => {
   try {
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
-    const claimId = req.params.id;
+    const claimId = getRouteParam(req, 'id');
+    const appId = getRouteParam(req, 'appId');
     const optionSelected = req.body.option;
     const gaRedisKey = generateRedisKeyForGA(<AppRequest>req);
     const claim = await getClaimById(claimId, req, true);
@@ -71,9 +73,9 @@ gaUnavailabilityDatesResponseConfirmationController.post(GA_UNAVAILABILITY_RESPO
     } else {
       let redirectUrl;
       if (optionSelected === YesNo.NO){
-        redirectUrl = constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_RESPONSE_HEARING_SUPPORT_URL);
+        redirectUrl = constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_RESPONSE_HEARING_SUPPORT_URL);
       } else {
-        redirectUrl = constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_RESPONSE_UNAVAILABLE_HEARING_DATES_URL);
+        redirectUrl = constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_RESPONSE_UNAVAILABLE_HEARING_DATES_URL);
       }
       await saveResponseUnavailabilityDatesConfirmation(gaRedisKey, optionSelected);
       res.redirect(redirectUrl);

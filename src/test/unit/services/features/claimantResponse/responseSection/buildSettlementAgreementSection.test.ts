@@ -10,6 +10,11 @@ import {Party} from 'models/party';
 import {RepaymentDecisionType} from 'models/claimantResponse/RepaymentDecisionType';
 import { ChooseHowToProceed } from 'common/form/models/claimantResponse/chooseHowToProceed';
 
+jest.mock('i18next', () => ({
+  t: (i: string | unknown) => i,
+  use: jest.fn(),
+}));
+
 describe('Check Answers Page :Settlement Agreement Section', () => {
 
   describe('Build check answers for pay by set date either for part admit or full admit ', () => {

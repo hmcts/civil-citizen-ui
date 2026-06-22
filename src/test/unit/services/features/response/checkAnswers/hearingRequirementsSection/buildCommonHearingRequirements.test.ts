@@ -4,7 +4,7 @@ import {
   WelshLanguageRequirements,
 } from 'models/directionsQuestionnaire/welshLanguageRequirements/welshLanguageRequirements';
 import {LanguageOptions} from 'models/directionsQuestionnaire/languageOptions';
-import {SummaryRow, summaryRow} from 'models/summaryList/summaryList';
+import {SummaryRow, summaryRow, summaryRowWithTextValue} from 'models/summaryList/summaryList';
 import {YesNo} from 'common/form/models/yesNo';
 import {
   VulnerabilityQuestions,
@@ -407,19 +407,19 @@ describe('Common Hearing Requirements Section', () => {
       expect(summaryRows[1].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.WITNESS 1');
 
       expect(summaryRows[2].key.text).toEqual('COMMON.INPUT_LABELS.FIRST_NAME');
-      expect(summaryRows[2].value.html).toEqual(witness1.firstName);
+      expect(summaryRows[2].value.text).toEqual(witness1.firstName);
 
       expect(summaryRows[3].key.text).toEqual('COMMON.INPUT_LABELS.LAST_NAME');
-      expect(summaryRows[3].value.html).toEqual(witness1.lastName);
+      expect(summaryRows[3].value.text).toEqual(witness1.lastName);
 
       expect(summaryRows[4].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.EMAIL_ADDRESS');
-      expect(summaryRows[4].value.html).toEqual(witness1.email);
+      expect(summaryRows[4].value.text).toEqual(witness1.email);
 
       expect(summaryRows[5].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.PHONE_NUMBER');
-      expect(summaryRows[5].value.html).toEqual(witness1.telephone);
+      expect(summaryRows[5].value.text).toEqual(witness1.telephone);
 
       expect(summaryRows[6].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.TELL_US_WHY');
-      expect(summaryRows[6].value.html).toEqual(witness1.details);
+      expect(summaryRows[6].value.text).toEqual(witness1.details);
 
     });
 
@@ -441,27 +441,27 @@ describe('Common Hearing Requirements Section', () => {
       // Witness 1
       expect(summaryRows[1].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.WITNESS 1');
       expect(summaryRows[2].key.text).toEqual('COMMON.INPUT_LABELS.FIRST_NAME');
-      expect(summaryRows[2].value.html).toEqual(witness1.firstName);
+      expect(summaryRows[2].value.text).toEqual(witness1.firstName);
       expect(summaryRows[3].key.text).toEqual('COMMON.INPUT_LABELS.LAST_NAME');
-      expect(summaryRows[3].value.html).toEqual(witness1.lastName);
+      expect(summaryRows[3].value.text).toEqual(witness1.lastName);
       expect(summaryRows[4].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.EMAIL_ADDRESS');
-      expect(summaryRows[4].value.html).toEqual(witness1.email);
+      expect(summaryRows[4].value.text).toEqual(witness1.email);
       expect(summaryRows[5].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.PHONE_NUMBER');
-      expect(summaryRows[5].value.html).toEqual(witness1.telephone);
+      expect(summaryRows[5].value.text).toEqual(witness1.telephone);
       expect(summaryRows[6].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.TELL_US_WHY');
-      expect(summaryRows[6].value.html).toEqual(witness1.details);
+      expect(summaryRows[6].value.text).toEqual(witness1.details);
       // Witness 2
       expect(summaryRows[7].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.WITNESS 2');
       expect(summaryRows[8].key.text).toEqual('COMMON.INPUT_LABELS.FIRST_NAME');
-      expect(summaryRows[8].value.html).toEqual(witness2.firstName);
+      expect(summaryRows[8].value.text).toEqual(witness2.firstName);
       expect(summaryRows[9].key.text).toEqual('COMMON.INPUT_LABELS.LAST_NAME');
-      expect(summaryRows[9].value.html).toEqual(witness2.lastName);
+      expect(summaryRows[9].value.text).toEqual(witness2.lastName);
       expect(summaryRows[10].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.EMAIL_ADDRESS');
-      expect(summaryRows[10].value.html).toEqual(witness2.email);
+      expect(summaryRows[10].value.text).toEqual(witness2.email);
       expect(summaryRows[11].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.PHONE_NUMBER');
-      expect(summaryRows[11].value.html).toEqual(witness2.telephone);
+      expect(summaryRows[11].value.text).toEqual(witness2.telephone);
       expect(summaryRows[12].key.text).toEqual('PAGES.CHECK_YOUR_ANSWER.TELL_US_WHY');
-      expect(summaryRows[12].value.html).toEqual(witness2.details);
+      expect(summaryRows[12].value.text).toEqual(witness2.details);
     });
   });
 
@@ -698,7 +698,7 @@ describe('Common Hearing Requirements Section', () => {
       //WHEN
       const specificCourtLocation: SummaryRow =
         displaySpecificCourtLocation( claimId, lng, claim.directionQuestionnaire);
-      const mockSummarySection: SummaryRow = summaryRow(
+      const mockSummarySection: SummaryRow = summaryRowWithTextValue(
         'PAGES.SPECIFIC_COURT.SELECTED_COURT',
         courtLocations[0].label,
         '/case/validClaimId/directions-questionnaire/court-location',

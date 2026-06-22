@@ -9,13 +9,14 @@ import {Explanation} from '../../../../common/form/models/statementOfMeans/expla
 import {GenericForm} from '../../../../common/form/models/genericForm';
 import {AppRequest} from 'common/models/AppRequest';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const explanationViewPath = 'features/response/statementOfMeans/explanation';
 const explanationController = Router();
 
 explanationController.get(CITIZEN_EXPLANATION_URL, async (req, res, next: NextFunction) => {
   try {
-    res.render(explanationViewPath, {form: new GenericForm(await getExplanation(generateRedisKey(<AppRequest>req)))});
+    res.render(explanationViewPath, {form: new GenericForm(await getExplanation(generateRedisKey(req as unknown as AppRequest)))});
   } catch (error) {
     next(error);
   }
@@ -30,8 +31,9 @@ explanationController.post(CITIZEN_EXPLANATION_URL,
       res.render(explanationViewPath, {form});
     } else {
       try {
-        await saveExplanation(generateRedisKey(<AppRequest>req), explanation);
-        res.redirect(constructResponseUrlWithIdParams(req.params.id, RESPONSE_TASK_LIST_URL));
+        await saveExplanation(generateRedisKey(req as unknown as AppRequest), explanation);
+        const claimId = getRouteParam(req, 'id');
+        res.redirect(constructResponseUrlWithIdParams(claimId, RESPONSE_TASK_LIST_URL));
       } catch (error) {
         next(error);
       }

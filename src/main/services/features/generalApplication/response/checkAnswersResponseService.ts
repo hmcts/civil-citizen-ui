@@ -2,7 +2,7 @@ import {YesNo} from 'common/form/models/yesNo';
 import { ProposedPaymentPlanOption } from 'common/models/generalApplication/response/acceptDefendantOffer';
 import { GaResponse } from 'common/models/generalApplication/response/gaResponse';
 import { UnavailableDateType } from 'common/models/generalApplication/unavailableDatesGaHearing';
-import { CSS_CLASS_SUMMARY_LIST_KEY, SummaryRow, summaryRow } from 'common/models/summaryList/summaryList';
+import { CSS_CLASS_SUMMARY_LIST_KEY, SummaryRow, summaryRow, summaryRowWithTextValue } from 'common/models/summaryList/summaryList';
 import { formatDateSlash, formatDateToFullDate } from 'common/utils/dateUtils';
 import {constructResponseUrlWithIdAndAppIdParams} from 'common/utils/urlFormatter';
 import { t } from 'i18next';
@@ -74,7 +74,7 @@ export const getSummarySections = (claimId: string, appId: string, gaResponse: G
         hearingArrangement?.option,
         value => t(`PAGES.GENERAL_APPLICATION.APPLICATION_HEARING_ARRANGEMENTS.HEARING_TYPE.${value}`, {lng}),
         hearingArrangementUrl),
-      row('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_PREFER',
+      rowWithTextValue('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_PREFER',
         hearingArrangement?.reasonForPreferredHearingType,
         hearingArrangementUrl),
       formattedRow('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.PREFERRED_LOCATION',
@@ -164,6 +164,15 @@ export const getSummarySections = (claimId: string, appId: string, gaResponse: G
   };
 
   const row = (title: string, value: string, url: string): SummaryRow | undefined => formattedRow(title, value, f => f, url);
+
+  const rowWithTextValue = (title: string, value: string | undefined, url: string): SummaryRow | undefined =>
+    value
+      ? summaryRowWithTextValue(
+        t(title, {lng}),
+        value,
+        constructResponseUrlWithIdAndAppIdParams(claimId, appId, url),
+        t('COMMON.BUTTONS.CHANGE', {lng}))
+      : undefined;
 
   const formattedRow = <T>(title: string, value: T, formatter: ((v: T) => string), url: string): SummaryRow | undefined =>
     value

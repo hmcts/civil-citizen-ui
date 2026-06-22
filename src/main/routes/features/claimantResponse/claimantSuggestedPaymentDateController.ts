@@ -10,6 +10,7 @@ import {AppRequest} from 'models/AppRequest';
 import {getDecisionOnClaimantProposedPlan} from 'services/features/claimantResponse/getDecisionOnClaimantProposedPlan';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import { updateDayErrorMsg } from 'services/features/claimantResponse/claimantSuggestedInstalmentsService';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const paymentDatePath = 'features/response/admission/payment-date';
 const claimantSuggestedPaymentDateController = Router();
@@ -33,7 +34,7 @@ claimantSuggestedPaymentDateController.get(CLAIMANT_RESPONSE_PAYMENT_DATE_URL, (
 }) as RequestHandler);
 
 claimantSuggestedPaymentDateController.post(CLAIMANT_RESPONSE_PAYMENT_DATE_URL, (async (req, res, next: NextFunction) => {
-  const claimId = req.params.id;
+  const claimId = getRouteParam(req, 'id');
   const claimantSuggestedPaymentDate = new PaymentDate(req.body.year, req.body.month, req.body.day);
   const form: GenericForm<PaymentDate> = new GenericForm<PaymentDate>(claimantSuggestedPaymentDate);
   form.validateSync();

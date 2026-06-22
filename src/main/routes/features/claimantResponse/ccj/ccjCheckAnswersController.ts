@@ -14,13 +14,16 @@ import {
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {submitClaimantResponse} from 'services/features/claimantResponse/submission/submitClaimantResponse';
 import {getClaimById} from 'modules/utilityService';
+import {getRouteParam} from 'common/utils/routeParamUtils';
+import {isJudgmentBufferEnabled} from '../../../../app/auth/launchdarkly/launchDarklyClient';
 
 const checkAnswersViewPath = 'features/claimantResponse/ccj/check-answers';
 const ccjCheckAnswersController = Router();
 
 async function renderView(req: Request, res: Response, form: GenericForm<StatementOfTruthForm> | GenericForm<QualifiedStatementOfTruth>, claim: Claim) {
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-  const summarySections = await getSummarySections(req.params.id, claim, lang);
+  const judgmentBufferEnabled = await isJudgmentBufferEnabled();
+  const summarySections = await getSummarySections(getRouteParam(req, 'id'), claim, lang, judgmentBufferEnabled);
   const signatureType = form.model?.type;
   res.render(checkAnswersViewPath, {
     form,
@@ -44,7 +47,7 @@ ccjCheckAnswersController.get(CCJ_CHECK_AND_SEND_URL,
 ccjCheckAnswersController.post(CCJ_CHECK_AND_SEND_URL, async (req: AppRequest | Request, res: Response, next: NextFunction) => {
   try {
     const isFullAmountRejected = (req.body?.isFullAmountRejected === 'true');
-    const claimId = req.params.id;
+    const claimId = getRouteParam(req, 'id');
     const redisKey = generateRedisKey(req as unknown as AppRequest);
     const form = new GenericForm((req.body.type === 'qualified')
       ? new QualifiedStatementOfTruth(isFullAmountRejected, req.body.signed, req.body.directionsQuestionnaireSigned, req.body.signerName, req.body.signerRole)
@@ -56,7 +59,8 @@ ccjCheckAnswersController.post(CCJ_CHECK_AND_SEND_URL, async (req: AppRequest | 
       return;
     } else {
       await saveStatementOfTruth(redisKey, form.model);
-      await submitClaimantResponse(<AppRequest>req);
+      const judgmentBufferEnabled = await isJudgmentBufferEnabled();
+      await submitClaimantResponse(<AppRequest>req, judgmentBufferEnabled);
       await deleteDraftClaimFromStore(redisKey);
       res.redirect(constructResponseUrlWithIdParams(claimId, CCJ_CONFIRMATION_URL));
     }
@@ -67,4 +71,3 @@ ccjCheckAnswersController.post(CCJ_CHECK_AND_SEND_URL, async (req: AppRequest | 
 });
 
 export default ccjCheckAnswersController;
-

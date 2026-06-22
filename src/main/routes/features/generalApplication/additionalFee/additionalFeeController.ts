@@ -14,14 +14,15 @@ import {
 } from 'services/features/generalApplication/generalApplicationService';
 import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
 import {convertToPoundsFilter, currencyFormatWithNoTrailingZeros} from 'common/utils/currencyFormat';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const additionalFeeController = Router();
 const viewPath = 'features/generalApplication/additionalFee/additional-fee';
 
 additionalFeeController.get(GA_PAY_ADDITIONAL_FEE_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const claimId = req.params.id;
-    const appId = req.params.appId;
+    const claimId = getRouteParam(req, 'id');
+    const appId = getRouteParam(req, 'appId');
     const claim = await getClaimById(claimId, req, true);
     const applicationResponse: ApplicationResponse = await getApplicationFromGAService(req, appId);
     const alreadyPaidPounds = convertToPoundsFilter(applicationResponse?.case_data?.applicationFeeAmountInPence);

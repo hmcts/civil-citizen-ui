@@ -20,6 +20,7 @@ import {
   getDraftGARespondentResponse,
 } from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
 import {GaResponse} from 'models/generalApplication/response/gaResponse';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const hearingContactDetailsResponseController = Router();
 const viewPath = 'features/generalApplication/hearing-contact-details';
@@ -27,14 +28,15 @@ const viewPath = 'features/generalApplication/hearing-contact-details';
 async function renderView(claim: Claim, form: GenericForm<HearingContactDetails>, gaResponse: GaResponse, req: AppRequest | Request, res: Response): Promise<void> {
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
   const headerTitle = getRespondToApplicationCaption(gaResponse.generalApplicationType, lang);
-  const cancelUrl = await getCancelUrl(req.params.id, claim);
+  const claimId = getRouteParam(req, 'id');
+  const cancelUrl = await getCancelUrl(claimId, claim);
   const backLinkUrl = BACK_URL;
   res.render(viewPath, { form, cancelUrl, backLinkUrl, headerTitle });
 }
 
 hearingContactDetailsResponseController.get(GA_RESPONSE_HEARING_CONTACT_DETAILS_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const claimId = req.params.id;
+    const claimId = getRouteParam(req, 'id');
     const claim = await getClaimById(claimId, req, true);
     const gaResponse = await getDraftGARespondentResponse(generateRedisKeyForGA(req));
     const hearingContactDetails = gaResponse?.hearingContactDetails || new HearingContactDetails();
@@ -47,7 +49,7 @@ hearingContactDetailsResponseController.get(GA_RESPONSE_HEARING_CONTACT_DETAILS_
 
 hearingContactDetailsResponseController.post(GA_RESPONSE_HEARING_CONTACT_DETAILS_URL, (async (req: AppRequest | Request, res: Response, next: NextFunction) => {
   try {
-    const claimId = req.params.id;
+    const claimId = getRouteParam(req, 'id');
     const claim = await getClaimById(claimId, req, true);
     const hearingContactDetails: HearingContactDetails = new HearingContactDetails(req.body.telephoneNumber, req.body.emailAddress);
     const form = new GenericForm(hearingContactDetails);
@@ -57,7 +59,8 @@ hearingContactDetailsResponseController.post(GA_RESPONSE_HEARING_CONTACT_DETAILS
       await renderView(claim, form, gaResponse, req, res);
     } else {
       await saveRespondentHearingContactDetails(generateRedisKeyForGA(<AppRequest>req), hearingContactDetails);
-      res.redirect(constructResponseUrlWithIdAndAppIdParams(claimId, req.params.appId, GA_UNAVAILABILITY_RESPONSE_CONFIRMATION_URL));
+      const appId = getRouteParam(req, 'appId');
+      res.redirect(constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_UNAVAILABILITY_RESPONSE_CONFIRMATION_URL));
     }
   } catch (error) {
     next(error);

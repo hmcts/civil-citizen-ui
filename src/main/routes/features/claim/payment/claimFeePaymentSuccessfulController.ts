@@ -9,6 +9,7 @@ import {
 import {AppRequest} from 'models/AppRequest';
 import { CivilServiceClient } from 'client/civilServiceClient';
 import config from 'config';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 const paymentSuccessfulController: Router = Router();
 
 const paymentSuccessfulViewPath  = 'features/claim/payment/claim-fee-payment-successful';
@@ -29,7 +30,7 @@ async function renderView(res: Response, req: AppRequest, claimId: string, redir
 
 paymentSuccessfulController.get(PAY_CLAIM_FEE_SUCCESSFUL_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const claimId = req.params.id;
+    const claimId = getRouteParam(req, 'id');
     await renderView(res, req, claimId, DASHBOARD_URL);
   }catch (error) {
     next(error);

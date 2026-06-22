@@ -10,7 +10,6 @@ import {
 import {UNDERSTANDING_RESPONSE_OPTIONS_URL} from '../../../../../main/routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
-import { isCUIReleaseTwoEnabled } from 'app/auth/launchdarkly/launchDarklyClient';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
@@ -24,10 +23,6 @@ describe('Understanding Your Options Controller', () => {
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
     jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
-  });
-
-  beforeEach(() => {
-    (isCUIReleaseTwoEnabled as jest.Mock).mockReturnValueOnce(false);
   });
 
   describe('on GET', () => {

@@ -202,20 +202,20 @@ const content = {
 
 class CheckYourAnswers {
 
-  checkPageFullyLoaded (languageChosen = 'en') {
+  async checkPageFullyLoaded (languageChosen = 'en') {
     language = languageChosen;
-    I.waitForElement(`//a[.='${content.buttons.cancel[language]}']`);
+    await I.waitForElement(`//a[.='${content.buttons.cancel[language]}']`);
   }
 
-  nextAction(nextAction) {
-    I.click(nextAction);
+  async nextAction(nextAction) {
+    await I.click(nextAction);
   }
 
-  verifyPageContent(caseNumber, claimAmount, claimType, partyType, languageChosen = 'en') {
-    this.checkPageFullyLoaded(languageChosen);
-    this.verifyBreadcrumbs();
-    this.verifyHeadingDetails();
-    this.verifyCaseNumberClaimAmount(caseNumber, claimAmount);
+  async verifyPageContent(caseNumber, claimAmount, claimType, partyType, languageChosen = 'en') {
+    await this.checkPageFullyLoaded(languageChosen);
+    await this.verifyBreadcrumbs();
+    await this.verifyHeadingDetails();
+    await this.verifyCaseNumberClaimAmount(caseNumber, claimAmount);
     /* if(claimType === 'FastTrack') {
       this.verifyDisclosureSectionContent();
       this.verifyWitnessSectionContent(claimType);
@@ -228,179 +228,179 @@ class CheckYourAnswers {
       this.verifyHearingDocumentsSection();
       this.verifyConfirmationStatements();
     }*/
-    contactUs.verifyContactUs(language);
+    await contactUs.verifyContactUs(language);
   }
 
-  verifyBreadcrumbs() {
-    I.see('Back', '//a[@class="govuk-back-link"]');
+  async verifyBreadcrumbs() {
+    await I.see('Back', '//a[@class="govuk-back-link"]');
   }
 
-  verifyHeadingDetails() {
-    I.see(content.heading.title[language], 'h1');
-    I.see(content.warning.title[language]);
-    I.see(content.warning.text[language]);
+  async verifyHeadingDetails() {
+    await I.see(content.heading.title[language], 'h1');
+    await I.see(content.warning.title[language]);
+    await I.see(content.warning.text[language]);
   }
 
-  verifyCaseNumberClaimAmount(caseNumber, claimAmount) {
-    I.see(content.heading.caseNumber[language]+ ': ' + caseNumber);
-    I.see(content.heading.claimAmount[language]+ ': ' + claimAmount);
+  async verifyCaseNumberClaimAmount(caseNumber, claimAmount) {
+    await I.see(content.heading.caseNumber[language]+ ': ' + caseNumber);
+    await I.see(content.heading.claimAmount[language]+ ': ' + claimAmount);
   }
 
-  verifyDisclosureSectionContent() {
-    I.see(content.disclosure.title[language], 'h2');
-    I.see(`${content.disclosure.documents[language]} 1`);
-    I.see(content.disclosure.documentType[language]);
-    I.see('Test Data Entry for Document Disclosure 1');
-    I.see(content.disclosure.dateTitle[language]);
-    I.see('1/2/2023');
-    I.see(content.disclosure.documentUploaded[language]);
-    I.see('TestTXT.txt');
-    I.see(`${content.disclosure.documents[language]} 2`);
-    I.see('Test Data Entry for Document Disclosure 2');
-    I.see('2/2/2023');
-    I.see('TestDOC.doc');
+  async verifyDisclosureSectionContent() {
+    await I.see(content.disclosure.title[language], 'h2');
+    await I.see(`${content.disclosure.documents[language]} 1`);
+    await I.see(content.disclosure.documentType[language]);
+    await I.see('Test Data Entry for Document Disclosure 1');
+    await I.see(content.disclosure.dateTitle[language]);
+    await I.see('1/2/2023');
+    await I.see(content.disclosure.documentUploaded[language]);
+    await I.see('TestTXT.txt');
+    await I.see(`${content.disclosure.documents[language]} 2`);
+    await I.see('Test Data Entry for Document Disclosure 2');
+    await I.see('2/2/2023');
+    await I.see('TestDOC.doc');
   }
 
-  verifyWitnessSectionContent(claimType) {
-    I.see(content.witness.title[language], 'h2');
-    I.see(`${content.witness.statement[language]}`);
-    I.see(content.witness.name[language]);
-    I.see('Witness Statement - Witness Name 1');
-    I.see(content.witness.dateStatement[language]);
-    I.see('1/2/2023');
-    I.see('TestBMP.bmp');
-    I.see(`${content.witness.statement[language]} 2`);
-    I.see('Witness Statement - Witness Name 2');
-    I.see('2/2/2023');
-    I.see('TestCSV.csv');
-    I.see(`${content.witness.summary[language]} 1`);
-    I.see(content.witness.dateSummary[language]);
-    I.see('Witness Summary - Witness Name 1');
-    I.see('3/2/2023');
-    I.see('TestDOC.doc');
-    I.see(`${content.witness.summary[language]} 2`);
-    I.see('Witness Summary - Witness Name 2');
-    I.see('4/2/2023');
-    I.see('TestDOCX.docx');
+  async verifyWitnessSectionContent(claimType) {
+    await I.see(content.witness.title[language], 'h2');
+    await I.see(`${content.witness.statement[language]}`);
+    await I.see(content.witness.name[language]);
+    await I.see('Witness Statement - Witness Name 1');
+    await I.see(content.witness.dateStatement[language]);
+    await I.see('1/2/2023');
+    await I.see('TestBMP.bmp');
+    await I.see(`${content.witness.statement[language]} 2`);
+    await I.see('Witness Statement - Witness Name 2');
+    await I.see('2/2/2023');
+    await I.see('TestCSV.csv');
+    await I.see(`${content.witness.summary[language]} 1`);
+    await I.see(content.witness.dateSummary[language]);
+    await I.see('Witness Summary - Witness Name 1');
+    await I.see('3/2/2023');
+    await I.see('TestDOC.doc');
+    await I.see(`${content.witness.summary[language]} 2`);
+    await I.see('Witness Summary - Witness Name 2');
+    await I.see('4/2/2023');
+    await I.see('TestDOCX.docx');
 
     if (claimType === 'FastTrack') {
 
-      I.see(`${content.witness.noticeIntention[language]} 1`);
-      I.see('Notice of intention witness name 1');
-      I.see('7/2/2023');
-      I.see('TestRTF.rtf');
-      I.see(`${content.witness.noticeIntention[language]} 2`);
-      I.see('Notice of intention witness name 2');
-      I.see('8/2/2023');
-      I.see('TestTIF.tif');
+      await I.see(`${content.witness.noticeIntention[language]} 1`);
+      await I.see('Notice of intention witness name 1');
+      await I.see('7/2/2023');
+      await I.see('TestRTF.rtf');
+      await I.see(`${content.witness.noticeIntention[language]} 2`);
+      await I.see('Notice of intention witness name 2');
+      await I.see('8/2/2023');
+      await I.see('TestTIF.tif');
     }
 
-    I.see(`${content.witness.documentsReferred[language]} 1`);
-    I.see('Documents referred Type of Document 1');
-    I.see('5/2/2023');
-    I.see('TestJPEG.jpeg');
-    I.see(`${content.witness.documentsReferred[language]} 2`);
-    I.see('Documents referred Type of Document 2');
-    I.see('6/2/2023');
-    I.see('TestJPG.jpg');
+    await I.see(`${content.witness.documentsReferred[language]} 1`);
+    await I.see('Documents referred Type of Document 1');
+    await I.see('5/2/2023');
+    await I.see('TestJPEG.jpeg');
+    await I.see(`${content.witness.documentsReferred[language]} 2`);
+    await I.see('Documents referred Type of Document 2');
+    await I.see('6/2/2023');
+    await I.see('TestJPG.jpg');
   }
 
-  verifyEvidenceSectionContent(claimType, partyType) {
-    I.see(content.expert.title[language], 'h2');
-    I.see(`${content.expert.report[language]} 1`);
-    I.see(content.expert.name[language]);
-    I.see(content.expert.expertise[language]);
-    I.see('Expert Report - Field of Expertise 1');
-    I.see(content.expert.dateTitle[language]);
-    I.see('7/2/2023');
-    I.see('TestPDF.pdf');
-    I.see(`${content.expert.report[language]} 2`);
-    I.see('Expert Report - Field of Expertise 2');
-    I.see('8/2/2023');
-    I.see('TestPNG.png');
+  async verifyEvidenceSectionContent(claimType, partyType) {
+    await I.see(content.expert.title[language], 'h2');
+    await I.see(`${content.expert.report[language]} 1`);
+    await I.see(content.expert.name[language]);
+    await I.see(content.expert.expertise[language]);
+    await I.see('Expert Report - Field of Expertise 1');
+    await I.see(content.expert.dateTitle[language]);
+    await I.see('7/2/2023');
+    await I.see('TestPDF.pdf');
+    await I.see(`${content.expert.report[language]} 2`);
+    await I.see('Expert Report - Field of Expertise 2');
+    await I.see('8/2/2023');
+    await I.see('TestPNG.png');
 
-    I.see(`${content.expert.jointStatement[language]} 1`);
-    I.see(content.expert.name[language]);
-    I.see('Expert Statement - Expert Name 1');
-    I.see('Expert Statement - Field Of Expertise 1');
-    I.see('9/2/2023');
-    I.see('TestPPT.ppt');
-    I.see(`${content.expert.jointStatement[language]} 2`);
-    I.see('Expert Statement - Expert Name 2');
-    I.see('Expert Statement - Field Of Expertise 2');
-    I.see('10/2/2023');
-    I.see('TestRTF.rtf');
+    await I.see(`${content.expert.jointStatement[language]} 1`);
+    await I.see(content.expert.name[language]);
+    await I.see('Expert Statement - Expert Name 1');
+    await I.see('Expert Statement - Field Of Expertise 1');
+    await I.see('9/2/2023');
+    await I.see('TestPPT.ppt');
+    await I.see(`${content.expert.jointStatement[language]} 2`);
+    await I.see('Expert Statement - Expert Name 2');
+    await I.see('Expert Statement - Field Of Expertise 2');
+    await I.see('10/2/2023');
+    await I.see('TestRTF.rtf');
 
     if (claimType === 'FastTrack') {
-      I.see(`${content.expert.questions.title[language]} 1`);
-      I.see('Questions for Expert 1');
-      I.see(content.expert.questions.partyName[language]);
+      await I.see(`${content.expert.questions.title[language]} 1`);
+      await I.see('Questions for Expert 1');
+      await I.see(content.expert.questions.partyName[language]);
       if (partyType === 'LiPvLiP') {
-        I.see ('Sir John Doe');
+        await I.see ('Sir John Doe');
       } else {
-        I.see('Test Inc');
+        await I.see('Test Inc');
       }
-      I.see(content.expert.questions.documentName[language]);
-      I.see('Questions for Expert Document Name 1');
-      I.see('TestJPEG.jpeg');
+      await I.see(content.expert.questions.documentName[language]);
+      await I.see('Questions for Expert Document Name 1');
+      await I.see('TestJPEG.jpeg');
 
-      I.see(`${content.expert.questions.title[language]} 2`);
-      I.see('Questions for Expert 2');
-      I.see('Questions for Expert Document Name 2');
+      await I.see(`${content.expert.questions.title[language]} 2`);
+      await I.see('Questions for Expert 2');
+      await I.see('Questions for Expert Document Name 2');
 
-      I.see(`${content.expert.answers.title[language]} 1`);
-      I.see('Answers for Expert 1');
-      I.see(content.expert.answers.documentName[language]);
-      I.see('Answers to questions asked by other party 2');
-      I.see('Answers for Expert 2');
-      I.see('Answers for Expert Document Name 2');
+      await I.see(`${content.expert.answers.title[language]} 1`);
+      await I.see('Answers for Expert 1');
+      await I.see(content.expert.answers.documentName[language]);
+      await I.see('Answers to questions asked by other party 2');
+      await I.see('Answers for Expert 2');
+      await I.see('Answers for Expert Document Name 2');
     }
   }
 
-  verifyTrialDocumentsSection() {
-    I.see(content.trial.title[language], 'h2');
-    I.see(`${content.trial.caseSummary[language]} 1`);
-    I.see(`${content.trial.caseSummary[language]} 2`);
-    I.see(`${content.trial.skeleton[language]} 1`);
-    I.see(`${content.trial.skeleton[language]} 2`);
-    I.see(`${content.trial.authorities[language]} 1`);
-    I.see(`${content.trial.authorities[language]} 2`);
-    I.see(`${content.trial.costs[language]} 1`);
-    I.see(`${content.trial.costs[language]} 2`);
-    I.see(`${content.trial.documentaryEvidence[language]} 1`);
-    I.see('Documentary evidence for the hearing - Type of Document 1');
-    I.see('11/2/2023');
-    I.see('TestTIF.tif');
-    I.see(`${content.trial.documentaryEvidence[language]} 2`);
-    I.see('Documentary evidence for the hearing - Type of Document 2');
-    I.see('12/2/2023');
-    I.see('TestTIFF.tiff');
+  async verifyTrialDocumentsSection() {
+    await I.see(content.trial.title[language], 'h2');
+    await I.see(`${content.trial.caseSummary[language]} 1`);
+    await I.see(`${content.trial.caseSummary[language]} 2`);
+    await I.see(`${content.trial.skeleton[language]} 1`);
+    await I.see(`${content.trial.skeleton[language]} 2`);
+    await I.see(`${content.trial.authorities[language]} 1`);
+    await I.see(`${content.trial.authorities[language]} 2`);
+    await I.see(`${content.trial.costs[language]} 1`);
+    await I.see(`${content.trial.costs[language]} 2`);
+    await I.see(`${content.trial.documentaryEvidence[language]} 1`);
+    await I.see('Documentary evidence for the hearing - Type of Document 1');
+    await I.see('11/2/2023');
+    await I.see('TestTIF.tif');
+    await I.see(`${content.trial.documentaryEvidence[language]} 2`);
+    await I.see('Documentary evidence for the hearing - Type of Document 2');
+    await I.see('12/2/2023');
+    await I.see('TestTIFF.tiff');
   }
 
-  verifyHearingDocumentsSection() {
-    I.see(content.hearing.title[language], 'h2');
-    I.see(`${content.hearing.documentaryEvidence[language]} 1`);
-    I.see('Documentary evidence for the hearing - Type of Document 1');
-    I.see('11/2/2023');
-    I.see('TestTIF.tif');
-    I.see(`${content.hearing.documentaryEvidence[language]} 2`);
-    I.see('Documentary evidence for the hearing - Type of Document 2');
-    I.see('12/2/2023');
-    I.see('TestTIFF.tiff');
-    I.see('TestXLS.xls');
-    I.see('TestXLSX.xlsx');
-
-  }
-
-  verifyConfirmationStatements() {
-    I.see(content.confirmation.title[language], 'h1');
-    I.see(content.confirmation.cannotWithdraw[language]);
-    I.see(content.confirmation.confirmDocuments[language]);
+  async verifyHearingDocumentsSection() {
+    await I.see(content.hearing.title[language], 'h2');
+    await I.see(`${content.hearing.documentaryEvidence[language]} 1`);
+    await I.see('Documentary evidence for the hearing - Type of Document 1');
+    await I.see('11/2/2023');
+    await I.see('TestTIF.tif');
+    await I.see(`${content.hearing.documentaryEvidence[language]} 2`);
+    await I.see('Documentary evidence for the hearing - Type of Document 2');
+    await I.see('12/2/2023');
+    await I.see('TestTIFF.tiff');
+    await I.see('TestXLS.xls');
+    await I.see('TestXLSX.xlsx');
 
   }
 
-  clickConfirm() {
-    I.checkOption('#signed');
+  async verifyConfirmationStatements() {
+    await I.see(content.confirmation.title[language], 'h1');
+    await I.see(content.confirmation.cannotWithdraw[language]);
+    await I.see(content.confirmation.confirmDocuments[language]);
+
+  }
+
+  async clickConfirm() {
+    await I.checkOption('#signed');
   }
 
 }

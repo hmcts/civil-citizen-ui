@@ -1,6 +1,6 @@
 import {SummarySection} from '../../../../../../common/models/summaryList/summarySections';
 import {Claim} from '../../../../../../common/models/claim';
-import {summaryRow} from '../../../../../../common/models/summaryList/summaryList';
+import {summaryRow, summaryRowWithTextValue} from '../../../../../../common/models/summaryList/summaryList';
 import {t} from 'i18next';
 import {getLng} from '../../../../../../common/utils/languageToggleUtils';
 import {
@@ -21,9 +21,9 @@ export const addCourtOrders = (claim: Claim, financialSection: SummarySection, c
     );
 
     for (const item of courtOrders.rows) {
-      financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.COURT_ORDERS_CLAIM_NUMBER', { lng: getLng(lang) }), item.claimNumber, '', changeLabel(lang)));
-      financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.COURT_ORDERS_AMOUNT_OWNED', { lng: getLng(lang) }), currencyFormatWithNoTrailingZeros(item.amount), '', changeLabel(lang)));
-      financialSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.COURT_ORDERS_MONTHLY_INSTALMENT', { lng: getLng(lang) }), currencyFormatWithNoTrailingZeros(item.instalmentAmount), '', changeLabel(lang)));
+      financialSection.summaryList.rows.push(summaryRowWithTextValue(t('PAGES.CHECK_YOUR_ANSWER.COURT_ORDERS_CLAIM_NUMBER', { lng: getLng(lang) }), item.claimNumber, '', changeLabel(lang)));
+      financialSection.summaryList.rows.push(summaryRowWithTextValue(t('PAGES.CHECK_YOUR_ANSWER.COURT_ORDERS_AMOUNT_OWNED', { lng: getLng(lang) }), currencyFormatWithNoTrailingZeros(item.amount), '', changeLabel(lang)));
+      financialSection.summaryList.rows.push(summaryRowWithTextValue(t('PAGES.CHECK_YOUR_ANSWER.COURT_ORDERS_MONTHLY_INSTALMENT', { lng: getLng(lang) }), currencyFormatWithNoTrailingZeros(item.instalmentAmount), '', changeLabel(lang)));
     }
   } else {
     financialSection.summaryList.rows.push(

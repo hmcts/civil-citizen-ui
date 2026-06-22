@@ -20,4 +20,10 @@ module "key-vault" {
   common_tags                 = var.common_tags
   create_managed_identity     = false
   managed_identity_object_ids = [data.azurerm_user_assigned_identity.civil.principal_id]
+  jenkins_object_id           = data.azurerm_user_assigned_identity.jenkins.principal_id
+}
+
+data "azurerm_user_assigned_identity" "jenkins" {
+  name                = "jenkins-${var.env}-mi"
+  resource_group_name = "managed-identities-${var.env}-rg"
 }

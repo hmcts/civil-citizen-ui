@@ -2,6 +2,6 @@ export class FileUpload {
   fieldname: string;
   originalname: string;
   mimetype: string;
-  buffer: ArrayBuffer;
+  buffer: Buffer | ArrayBuffer;
   size: number;
 }

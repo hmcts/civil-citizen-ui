@@ -8,7 +8,7 @@ const {
   payClaimFee,
   nocForLip,
   nocForLipCaseGoesOffline,
-  responseToTheClaim,
+  responseToTheClaimClaimant,
 } = require('../../../specClaimHelpers/dashboardNotificationConstants');
 
 let claimRef, caseData, selectedHWF, legacyCaseReference, defendantName;
@@ -50,6 +50,11 @@ Scenario('LipVLR - DefendantLip respond as DefenceAll and NoC - Case stays onlin
   await api.checkUserCaseAccess(config.defendantCitizenUser, false);
   await api.checkUserCaseAccess(config.defendantSolicitorUser, true);
 
+  await api.assertEmailSent(legacyCaseReference, {
+    recipientEmail: config.claimantCitizenUser.email,
+    timeoutMs: 45000,
+  });
+
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await I.amOnPage('/dashboard');
   await I.click(legacyCaseReference);
@@ -58,7 +63,7 @@ Scenario('LipVLR - DefendantLip respond as DefenceAll and NoC - Case stays onlin
   await verifyNotificationTitleAndContent(legacyCaseReference, nocForLipNotif.title, nocForLipNotif.content);
   await I.click(nocForLipNotif.nextSteps);
 
-  const responseToTheClaimNotif = responseToTheClaim(defendantName);
+  const responseToTheClaimNotif = responseToTheClaimClaimant(defendantName);
   await verifyNotificationTitleAndContent(legacyCaseReference, responseToTheClaimNotif.title, responseToTheClaimNotif.content);
   await I.click(responseToTheClaimNotif.nextSteps);
 });

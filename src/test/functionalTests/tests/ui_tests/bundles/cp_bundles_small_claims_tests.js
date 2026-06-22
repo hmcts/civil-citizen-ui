@@ -3,7 +3,7 @@ const DateUtilsComponent = require('../../../citizenFeatures/caseProgression/uti
 const StringUtilsComponent = require('../../../citizenFeatures/caseProgression/util/StringUtilsComponent');
 const LoginSteps = require('../../../commonFeatures/home/steps/login');
 const {createAccount} = require('../../../specClaimHelpers/api/idamHelper');
-const { verifyTasklistLinkAndState, verifyNotificationTitleAndContent } = require('../../../specClaimHelpers/e2e/dashboardHelper');
+const {verifyTasklistLinkAndState, verifyNotificationTitleAndContent} = require('../../../specClaimHelpers/e2e/dashboardHelper');
 const {viewTheBundle} = require('../../../specClaimHelpers/dashboardTasklistConstants');
 const {bundleReady} = require('../../../specClaimHelpers/dashboardNotificationConstants');
 const  ViewBundle = require('../../../citizenFeatures/caseProgression/pages/viewBundle');
@@ -19,6 +19,7 @@ Before(async ({api}) => {
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   const twoWeeksFromToday = DateUtilsComponent.DateUtilsComponent.rollDateToCertainWeeks(2);
   claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser, '', claimType);
+  await api.waitForFinishedBusinessProcess(claimRef);
   caseData = await api.retrieveCaseData(config.adminUser, claimRef);
   claimNumber = await caseData.legacyCaseReference;
   await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.rejectAllDisputeAllWithIndividual);
@@ -39,6 +40,6 @@ Scenario('Case progression journey - Small Claims - Verify Bundles Page', async 
   await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
   taskListItem = viewTheBundle();
   await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Available', true);
-  I.click(taskListItem.title);
-  viewBundlePage.verifyPageContent(formattedCaseId, '£1,500', uploadDate, partyType);
+  await I.click(taskListItem.title);
+  await viewBundlePage.verifyPageContent(formattedCaseId, '£1,500', uploadDate, partyType);
 });

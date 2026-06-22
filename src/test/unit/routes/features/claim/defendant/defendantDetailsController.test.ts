@@ -27,12 +27,12 @@ describe('defendantDetailsController', () => {
   let res: Partial<Response>;
   let next: NextFunction;
 
-  const getHandler = defendantDetailsController.stack.find(
-    layer => layer.route?.methods?.get,
+  const getHandler = (defendantDetailsController as any).stack.find(
+    (layer: any) => layer.route?.methods?.get,
   ).route.stack[0].handle;
 
-  const postHandler = defendantDetailsController.stack.find(
-    layer => layer.route?.methods?.post,
+  const postHandler = (defendantDetailsController as any).stack.find(
+    (layer: any) => layer.route?.methods?.post,
   ).route.stack[0].handle;
 
   beforeEach(() => {
@@ -66,7 +66,7 @@ describe('defendantDetailsController', () => {
 
       MockedGenericForm.mockImplementation(() => ({}));
 
-      await getHandler(req, res, next);
+      await getHandler(req as Request, res as Response, next);
 
       expect(res.render).toHaveBeenCalledWith(
         'features/claim/defendant/defendant-details-company-or-organisation',
@@ -84,7 +84,7 @@ describe('defendantDetailsController', () => {
 
       MockedGenericForm.mockImplementation(() => ({}));
 
-      await getHandler(req, res, next);
+      await getHandler(req as Request, res as Response, next);
 
       expect(res.render).toHaveBeenCalledWith(
         'features/claim/defendant/defendant-details-individual-or-sole-trader',
@@ -97,7 +97,7 @@ describe('defendantDetailsController', () => {
     it('should call next on error', async () => {
       mockGetDefendantInformation.mockRejectedValue(new Error('failure'));
 
-      await getHandler(req, res, next);
+      await getHandler(req as Request, res as Response, next);
 
       expect(next).toHaveBeenCalled();
     });
@@ -121,7 +121,7 @@ describe('defendantDetailsController', () => {
 
       MockedGenericForm.mockImplementation(() => mockFormInstance);
 
-      await postHandler(req, res, next);
+      await postHandler(req as Request, res as Response, next);
 
       expect(res.render).toHaveBeenCalledWith(
         'features/claim/defendant/defendant-details-company-or-organisation',
@@ -146,7 +146,7 @@ describe('defendantDetailsController', () => {
 
       MockedGenericForm.mockImplementation(() => mockFormInstance);
 
-      await postHandler(req, res, next);
+      await postHandler(req as Request, res as Response, next);
 
       expect(mockSaveDefendantProperty).toHaveBeenCalledWith(
         'userId',
@@ -162,7 +162,7 @@ describe('defendantDetailsController', () => {
     it('should call next on error', async () => {
       mockGetDefendantInformation.mockRejectedValue(new Error('failure'));
 
-      await postHandler(req, res, next);
+      await postHandler(req as Request, res as Response, next);
 
       expect(next).toHaveBeenCalled();
     });

@@ -13,6 +13,7 @@ import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftS
 import {RESPONSE_CHECK_ANSWERS_URL} from 'routes/urls';
 import {savePcqId} from 'client/pcq/savePcqIdClaim';
 import {AppRequest} from 'common/models/AppRequest';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const ACTOR = 'respondent';
 
@@ -28,7 +29,7 @@ export const isFirstTimeInPCQ = async (req: Request, res: Response, next: NextFu
 
     const type: PartyType = caseData.respondent1.type;
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-    const claimId = req.params.id;
+    const claimId = getRouteParam(req, 'id');
     const defendantEmail = caseData.respondent1.emailAddress?.emailAddress;
 
     const isHealthy = await isPcqHealthy();
