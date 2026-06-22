@@ -36,11 +36,11 @@ services:
         # Draft claims (claim journey data keyed by claim id)
         draftClaim: 180
         # Journey cache keys (e.g. claimId+userId progress during response/claimant response)
-        journeyCache: 30
+        journeyCache: 180
         # Payment session and confirmation-url keys
         paymentSession: 7
         # General application journey keys
-        gaJourney: 30
+        gaJourney: 180
     legacy:
       url: 'http://localhost:8765'
       s2s:

@@ -59,7 +59,7 @@ let store: ReturnType<typeof createBackingStore>;
 const REDIS_KEY = '1640995200000000user-aaaa';
 const DOC_KEY = REDIS_KEY + 'DOCKEY';
 
-const GA_JOURNEY_TTL_SECONDS = 30 * 86400;
+const GA_JOURNEY_TTL_SECONDS = 180 * 86400;
 const nowInSeconds = () => Math.floor(Date.now() / 1000);
 
 beforeEach(() => {

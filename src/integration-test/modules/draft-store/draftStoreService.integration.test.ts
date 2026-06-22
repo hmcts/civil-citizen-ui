@@ -60,7 +60,7 @@ const USER_ID = 'user-aaaa';
 
 const DAY_IN_SECONDS = 86400;
 const DRAFT_CLAIM_TTL_SECONDS = 180 * DAY_IN_SECONDS;
-const JOURNEY_CACHE_TTL_SECONDS = 30 * DAY_IN_SECONDS;
+const JOURNEY_CACHE_TTL_SECONDS = 180 * DAY_IN_SECONDS;
 
 const nowInSeconds = () => Math.floor(Date.now() / 1000);
 
