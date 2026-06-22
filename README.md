@@ -30,7 +30,7 @@ Before running CCD definition imports or integration scripts locally, pull the s
 ./bin/pull-latest-civil-shared.sh
 ```
 
-This downloads the shared IDAM/CCD helper scripts to `bin/shared/`. You can optionally specify a branch:
+This downloads the shared IDAM/CCD helper scripts to `bin/shared/`. You can optionally specify a branch::
 
 ```bash
 ./bin/pull-latest-civil-shared.sh feature-branch
