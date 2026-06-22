@@ -19,7 +19,6 @@ services:
       host: REDIS_HOST
       port: REDIS_PORT
       tls: REDIS_TLS
-      expireInDays: REDIS_DRAFT_CLAIM_EXPIRE_IN_DAYS
       ttl:
         draftClaim: REDIS_DRAFT_CLAIM_EXPIRE_IN_DAYS
         journeyCache: REDIS_JOURNEY_CACHE_EXPIRE_IN_DAYS
