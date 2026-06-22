@@ -3179,8 +3179,9 @@
       "TITLE": "Nid oes gennych awdurdod i weld yr hawliad!"
     },
     "FIRST_CONTACT_CLAIM_FINALISED": {
-      "MESSAGE": "Ni allwch ymateb i'r hawliad hwn oherwydd ei fod eisoes wedi'i gwblhau.",
-      "TITLE": "Mae'r hawliad hwn eisoes wedi'i gwblhau"
+      "DASHBOARD_BUTTON": "Mynd i’ch dangosfwrdd",
+      "MESSAGE": "Ni allwch ymateb i'r hawliad hwn oherwydd ei fod wedi'i setlo, ei atal neu ei wrthod.",
+      "TITLE": "Ni allwch ymateb i'r hawliad hwn ar-lein"
     },
     "FIRST_CONTACT_CLAIM_REFERENCE": {
       "CLAIM_NUMBER": "Rhif hawliad",

@@ -86,6 +86,9 @@ describe('claim assignment controller', ()=>{
         .expect((res) => {
           expect(res.status).toBe(409);
           expect(res.text).toContain(t('PAGES.FIRST_CONTACT_CLAIM_FINALISED.TITLE'));
+          expect(res.text).toContain(t('PAGES.FIRST_CONTACT_CLAIM_FINALISED.MESSAGE'));
+          expect(res.text).toContain(t('PAGES.FIRST_CONTACT_CLAIM_FINALISED.DASHBOARD_BUTTON'));
+          expect(res.text).toContain('href="/dashboard"');
         });
     });
   });

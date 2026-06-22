@@ -3181,8 +3181,9 @@
       "TITLE": "You are not authorised to view the claim!"
     },
     "FIRST_CONTACT_CLAIM_FINALISED": {
-      "MESSAGE": "You cannot respond to this claim because it has already been finalised.",
-      "TITLE": "This claim has already been finalised"
+      "DASHBOARD_BUTTON": "Go to your dashboard",
+      "MESSAGE": "You cannot respond to this claim because it has been settled, stayed or dismissed.",
+      "TITLE": "You cannot respond to this claim online"
     },
     "FIRST_CONTACT_CLAIM_REFERENCE": {
       "CLAIM_NUMBER": "Claim number",
