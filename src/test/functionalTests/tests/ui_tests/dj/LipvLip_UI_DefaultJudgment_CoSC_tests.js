@@ -3,7 +3,7 @@ const LoginSteps = require('../../../commonFeatures/home/steps/login');
 const {createAccount} = require('../../../specClaimHelpers/api/idamHelper');
 const ClaimantResponseSteps = require('../../../citizenFeatures/response/steps/lipClaimantResponseSteps');
 const {
-  defendantResponseFullAdmitPayBySetDateClaimantCoSC,
+  defaultJudgmentGrantedClaimantCoSC,
   defendantResponseConfirmYouHavePaidAJudgmentCCJDebtForDJ,
 } = require('../../../specClaimHelpers/dashboardNotificationConstants');
 const {verifyNotificationTitleAndContent} = require('../../../specClaimHelpers/e2e/dashboardHelper');
@@ -37,7 +37,7 @@ Scenario('Create LipvLip claim and defendant not responded by deadline and Claim
   await I.click('Sign out');
   await I.wait(5);
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
-  notification = defendantResponseFullAdmitPayBySetDateClaimantCoSC();
+  notification = defaultJudgmentGrantedClaimantCoSC();
   await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
   await I.click(notification.nextSteps);
   await ResponseToDefenceLipVsLipSteps.ConfirmThatYouHaveBeenpPaidforCoSC(claimRef, claimNumber);
