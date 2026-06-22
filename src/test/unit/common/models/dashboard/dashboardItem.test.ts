@@ -97,6 +97,15 @@ describe('Dashboard Items', ()=> {
       //Then
       expect(status).toContain('PAGES.DASHBOARD.STATUS_CLAIMANT.COUNTY_COURT_JUDGMENT_REQUESTED');
     });
+
+    it('should return judgment entered status when default judgment has been granted', () => {
+      //Given
+      ccdClaimantClaim.status = 'DEFAULT_JUDGEMENT_GRANTED';
+      //When
+      const status = ccdClaimantClaim.getStatus('en');
+      //Then
+      expect(status).toContain('PAGES.DASHBOARD.STATUS_CLAIMANT.COUNTY_COURT_JUDGMENT_ENTERED');
+    });
   });
 
   describe('Dashboard defendant item', ()=>{
@@ -160,6 +169,17 @@ describe('Dashboard Items', ()=> {
       const status = dashboardClaim.getStatus('en');
       //Then
       expect(status).toContain('PAGES.DASHBOARD.STATUS_DEFENDANT.NO_RESPONSE_ELIGIBLE_CCJ_JUDGMENT_BUFFER');
+    });
+
+    it('should return claimant requested CCJ status when default judgment has been issued', () => {
+      //Given
+      const dashboardClaim = new DashboardDefendantItem();
+      dashboardClaim.status = 'DEFAULT_JUDGEMENT_ISSUED';
+      dashboardClaim.defaultJudgementIssuedDate = '2023-02-24';
+      //When
+      const status = dashboardClaim.getStatus('en');
+      //Then
+      expect(status).toContain('PAGES.DASHBOARD.STATUS_DEFENDANT.CLAIMANT_REQUESTED_CCJ');
     });
 
     it('should return the translated string without parameters when params is provided but empty', () => {
