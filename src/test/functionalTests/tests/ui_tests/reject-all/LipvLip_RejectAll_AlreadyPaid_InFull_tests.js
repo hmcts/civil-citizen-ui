@@ -1,30 +1,33 @@
-const config = require("../../../../config");
-const { createAccount } = require("../../../specClaimHelpers/api/idamHelper");
-const LoginSteps = require("../../../commonFeatures/home/steps/login");
-const ResponseToDefenceLipVsLipSteps = require("../../../citizenFeatures/response/steps/responseToDefenceLipvLipSteps");
-const nocSteps = require("../../../lrFeatures/noc/steps/nocSteps");
+const config = require('../../../../config');
+const { createAccount } = require('../../../specClaimHelpers/api/idamHelper');
+const LoginSteps = require('../../../commonFeatures/home/steps/login');
+const ResponseToDefenceLipVsLipSteps = require('../../../citizenFeatures/response/steps/responseToDefenceLipvLipSteps');
+const nocSteps = require('../../../lrFeatures/noc/steps/nocSteps');
 const {
   nocForLip,
-} = require("../../../specClaimHelpers/dashboardNotificationConstants");
+} = require('../../../specClaimHelpers/dashboardNotificationConstants');
 const {
   verifyNotificationTitleAndContent,
-} = require("../../../specClaimHelpers/e2e/dashboardHelper");
+} = require('../../../specClaimHelpers/e2e/dashboardHelper');
 // eslint-disable-next-line no-unused-vars
-const yesIWantMoretime = "yesIWantMoretime";
+const yesIWantMoretime = 'yesIWantMoretime';
 const {
   defendantResponseFullDefenceAlreadyPaid,
-} = require("../../../specClaimHelpers/dashboardNotificationConstants");
+} = require('../../../specClaimHelpers/dashboardNotificationConstants');
+const { formattedDate } = require('../../../specClaimHelpers/api/dataHelper');
 let claimRef, claimType;
 let caseData;
 let claimNumber, defendantName;
+const defaultRespondTime = '4pm';
+const applicant1ResponseDeadlineEn = formattedDate(29);
 
 Feature(
-  "Response with RejectAll-AlreadyPaid-InFull - Small Claims & Fast Track",
-).tag("@civil-citizen-nightly @ui-reject-all");
+  'Response with RejectAll-AlreadyPaid-InFull - Small Claims & Fast Track',
+).tag('@civil-citizen-nightly @ui-reject-all');
 
 Scenario(
-  "Response with RejectAll-AlreadyPaid-InFull Small claims and Claimant settle",
-  async ({ I, api }) => {
+  'Response with RejectAll-AlreadyPaid-InFull Small claims and Claimant settle',
+  async ({ api }) => {
     await createAccount(
       config.claimantCitizenUser.email,
       config.claimantCitizenUser.password,
@@ -33,7 +36,7 @@ Scenario(
       config.defendantCitizenUser.email,
       config.defendantCitizenUser.password,
     );
-    claimType = "SmallClaims";
+    claimType = 'SmallClaims';
     claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType);
     caseData = await api.retrieveCaseData(config.adminUser, claimRef);
     claimNumber = await caseData.legacyCaseReference;
@@ -48,46 +51,16 @@ Scenario(
       config.claimantCitizenUser.email,
       config.claimantCitizenUser.password,
     );
-    // check notification
-    await I.amOnPage("/dashboard");
-    await I.click(claimNumber);
-    await I.amOnPage("/dashboard/" + claimRef + "/claimantNewDesign");
-    await I.refreshPage();
-    await I.waitForElement(".dashboard-notification", 10);
-    const notificationBanner = locate(".govuk-notification-banner").withText(
-      "Response to the claim",
-    );
-    await I.waitForElement(notificationBanner, 10);
-    const notificationText = await I.grabTextFrom(notificationBanner);
-    const normalisedNotificationText = notificationText
-      .replace(/\s+/g, " ")
-      .trim();
-    const match = normalisedNotificationText.match(
-      /The defendant has said they already paid (.+?) on (.+?)\. You can confirm payment and settle, or proceed with the claim\. You need to respond by (.+?) on (.+?) or the claim will not continue\./,
-    );
-    if (!match) {
-      throw new Error(
-        `Could not extract payment and deadline details from notification text: ${normalisedNotificationText}`,
-      );
-    }
-    const claimSettledAmount = match[1];
-    const claimSettledDateEn = match[2];
-    const defaultRespondTime = match[3];
-    const applicant1ResponseDeadlineEn = match[4];
-    console.log("Extracted notification values:", {
-      claimSettledAmount,
-      claimSettledDateEn,
-      defaultRespondTime,
-      applicant1ResponseDeadlineEn,
-    });
+    const claimSettledAmount = '£1500';
+    const claimSettledDateEn = '2 March 2023';
     const defendantNotification = defendantResponseFullDefenceAlreadyPaid(
       claimSettledAmount,
       claimSettledDateEn,
       defaultRespondTime,
       applicant1ResponseDeadlineEn,
     );
-    console.log("title:", defendantNotification.title);
-    console.log("content:", defendantNotification.content);
+    console.log('title:', defendantNotification.title);
+    console.log('content:', defendantNotification.content);
     await verifyNotificationTitleAndContent(
       claimNumber,
       defendantNotification.title,
@@ -103,7 +76,7 @@ Scenario(
 );
 
 Scenario(
-  "Response with RejectAll-AlreadyPaid-InFull Fast Track and Claimant proceeds",
+  'Response with RejectAll-AlreadyPaid-InFull Fast Track and Claimant proceeds',
   async ({ I, api }) => {
     await createAccount(
       config.claimantCitizenUser.email,
@@ -113,7 +86,7 @@ Scenario(
       config.defendantCitizenUser.email,
       config.defendantCitizenUser.password,
     );
-    claimType = "FastTrack";
+    claimType = 'FastTrack';
     claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType);
     caseData = await api.retrieveCaseData(config.adminUser, claimRef);
     claimNumber = await caseData.legacyCaseReference;
@@ -129,47 +102,16 @@ Scenario(
       config.claimantCitizenUser.email,
       config.claimantCitizenUser.password,
     );
-
-    // check notification
-    await I.amOnPage("/dashboard");
-    await I.click(claimNumber);
-    await I.amOnPage("/dashboard/" + claimRef + "/claimantNewDesign");
-    await I.refreshPage();
-    await I.waitForElement(".dashboard-notification", 10);
-    const notificationBanner = locate(".govuk-notification-banner").withText(
-      "Response to the claim",
-    );
-    await I.waitForElement(notificationBanner, 10);
-    const notificationText = await I.grabTextFrom(notificationBanner);
-    const normalisedNotificationText = notificationText
-      .replace(/\s+/g, " ")
-      .trim();
-    const match = normalisedNotificationText.match(
-      /The defendant has said they already paid (.+?) on (.+?)\. You can confirm payment and settle, or proceed with the claim\. You need to respond by (.+?) on (.+?) or the claim will not continue\./,
-    );
-    if (!match) {
-      throw new Error(
-        `Could not extract payment and deadline details from notification text: ${normalisedNotificationText}`,
-      );
-    }
-    const claimSettledAmount = match[1];
-    const claimSettledDateEn = match[2];
-    const defaultRespondTime = match[3];
-    const applicant1ResponseDeadlineEn = match[4];
-    console.log("Extracted notification values:", {
-      claimSettledAmount,
-      claimSettledDateEn,
-      defaultRespondTime,
-      applicant1ResponseDeadlineEn,
-    });
+    const claimSettledAmount = '£15000';
+    const claimSettledDateEn = '1 February 2020';
     const defendantNotification = defendantResponseFullDefenceAlreadyPaid(
       claimSettledAmount,
       claimSettledDateEn,
       defaultRespondTime,
       applicant1ResponseDeadlineEn,
     );
-    console.log("title:", defendantNotification.title);
-    console.log("content:", defendantNotification.content);
+    console.log('title:', defendantNotification.title);
+    console.log('content:', defendantNotification.content);
     await verifyNotificationTitleAndContent(
       claimNumber,
       defendantNotification.title,
@@ -193,7 +135,7 @@ Scenario(
       config.claimantCitizenUser.email,
       config.claimantCitizenUser.password,
     );
-    await I.amOnPage("/dashboard");
+    await I.amOnPage('/dashboard');
     await I.click(claimNumber);
 
     const nocForLipNotif = nocForLip(defendantName);
