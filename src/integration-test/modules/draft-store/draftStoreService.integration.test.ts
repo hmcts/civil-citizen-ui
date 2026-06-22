@@ -10,7 +10,7 @@ import {Claim} from '../../../main/common/models/claim';
 
 /**
  * Faithful in-memory Redis-like store so the test exercises the real TTL logic
- * in draftStoreService / redisWriteHelper (the DTSCCI-5550 fix), including
+ * in draftStoreService / redisWriteHelper, including
  * KEEPTTL preservation and creation-date reconstruction, rather than a stubbed
  * client.
  */
@@ -69,7 +69,7 @@ beforeEach(() => {
   app.locals.draftStoreClient = store;
 });
 
-describe('Integration: draftStoreService TTL handling (DTSCCI-5550)', () => {
+describe('Integration: draftStoreService TTL handling', () => {
   describe('createDraftClaimInStoreWithExpiryTime', () => {
     it('applies the draft-claim TTL anchored to the creation date', async () => {
       await createDraftClaimInStoreWithExpiryTime(CLAIM_ID);

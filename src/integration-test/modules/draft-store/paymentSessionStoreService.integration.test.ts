@@ -168,7 +168,7 @@ describe('Integration: paymentSessionStoreService (DTSCCI-4177 payment session k
     });
   });
 
-  describe('TTL handling (DTSCCI-5550)', () => {
+  describe('TTL handling', () => {
     const PAYMENT_SESSION_TTL_SECONDS = 7 * 86400;
     const hearingUrl = 'https://card.payments.service.gov.uk/return/hearing';
 

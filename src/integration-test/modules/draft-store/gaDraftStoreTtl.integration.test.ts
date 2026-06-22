@@ -13,8 +13,7 @@ import {GaHelpWithFees} from '../../../main/common/models/generalApplication/gaH
 
 /**
  * Faithful in-memory Redis-like store so the test exercises the real GA_JOURNEY
- * TTL behaviour added in DTSCCI-5550 (these GA keys previously had no expiry),
- * rather than a stubbed client.
+ * TTL behaviour, rather than a stubbed client.
  */
 const createBackingStore = () => {
   const map = new Map<string, string>();
@@ -68,7 +67,7 @@ beforeEach(() => {
   app.locals.draftStoreClient = store;
 });
 
-describe('Integration: GA draft-store TTL handling (DTSCCI-5550)', () => {
+describe('Integration: GA draft-store TTL handling', () => {
   describe('GA documents', () => {
     it('applies the GA-journey TTL when saving documents and reads them back', async () => {
       const files = [{caseDocument: {documentName: 'evidence.pdf'}} as unknown as UploadGAFiles];
