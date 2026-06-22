@@ -31,6 +31,7 @@ export const civilServiceClientMock = {
   submitClaimantResponseEvent: jest.fn(),
   calculateExtendedResponseDeadline: jest.fn(),
   submitEvent: jest.fn(),
+  recordClick: jest.fn().mockResolvedValue(undefined),
 };
 
 export const gaServiceClientMock = {
@@ -48,10 +49,58 @@ export const dmStoreClientMock = {
 };
 
 export const draftStoreServiceMock = {
-  updateFieldDraftClaimFromStore: jest.fn().mockResolvedValue(undefined),
+  generateRedisKey: jest.fn(() => 'test-redis-key'),
+  generateRedisKeyForGA: jest.fn(() => 'redis-ga'),
   getCaseDataFromStore: jest.fn(),
   saveDraftClaim: jest.fn().mockResolvedValue(undefined),
-  generateRedisKey: jest.fn(() => 'test-redis-key'),
+  updateFieldDraftClaimFromStore: jest.fn().mockResolvedValue(undefined),
+  deleteFieldDraftClaimFromStore: jest.fn().mockResolvedValue(undefined),
+};
+
+export const gaHwFeesDraftStoreMock = {
+  getDraftGAHWFDetails: jest.fn().mockResolvedValue({applyHelpWithFees: {option: undefined}}),
+  saveDraftGAHWFDetails: jest.fn().mockResolvedValue(undefined),
+};
+
+export const generalApplicationServiceMock = {
+  deleteGAFromClaimsByUserId: jest.fn().mockResolvedValue(undefined),
+  getByIndex: jest.fn(),
+  getApplicationFromGAService: jest.fn(),
+  getCancelUrl: jest.fn().mockResolvedValue('/dashboard'),
+  isConfirmYouPaidCCJAppType: jest.fn(),
+  saveApplicationType: jest.fn().mockResolvedValue(undefined),
+  validateAdditionalApplicationtType: jest.fn(),
+  getDynamicHeaderForMultipleApplications: jest.fn(() => 'Application 1'),
+  saveRespondentAgreement: jest.fn().mockResolvedValue(undefined),
+};
+
+export const feeDetailsServiceMock = {
+  gaApplicationFeeDetails: jest.fn(),
+};
+
+export const gaHelpWithFeeServiceMock = {
+  getRedirectUrl: jest.fn(),
+};
+
+export const gaConfirmationContentServiceMock = {
+  getGeneralApplicationConfirmationContent: jest.fn().mockResolvedValue([{title: 'Confirmation content'}]),
+};
+
+export const gaResponseStoreServiceMock = {
+  getDraftGARespondentResponse: jest.fn(),
+};
+
+export const checkAnswersResponseServiceMock = {
+  getSummarySections: jest.fn((): unknown[] => []),
+};
+
+export const submitApplicationResponseServiceMock = {
+  submitApplicationResponse: jest.fn().mockResolvedValue(undefined),
+};
+
+export const gaFeePaymentServiceMock = {
+  getGaFeePaymentRedirectInformation: jest.fn(),
+  getGaFeePaymentStatus: jest.fn(),
 };
 
 export const dashboardServiceMock = {
