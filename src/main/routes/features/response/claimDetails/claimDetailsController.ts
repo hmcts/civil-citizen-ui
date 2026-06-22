@@ -38,7 +38,7 @@ claimDetailsController.get(CLAIM_DETAILS_URL, (async (req: AppRequest, res: Resp
     const claim = await civilServiceClient.retrieveClaimDetails(claimId, req);
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const interestData = await getInterestDetails(claim, req);
-    const totalAmount = await getTotalAmountWithInterestAndFeesAndFixedCost(claim);
+    const totalAmount = await getTotalAmountWithInterestAndFeesAndFixedCost(claim, req);
     const timelineRows = getClaimTimeline(claim, getLng(lang));
     const timelinePdfUrl = claim.extractDocumentId() && CASE_TIMELINE_DOCUMENTS_URL.replace(':id', claimId).replace(':documentId', claim.extractDocumentId());
     const showErrorAwaitingTranslation = welshEnabled && claim.ccdState === CaseState.PENDING_CASE_ISSUED && claim.preTranslationDocuments?.length > 0;

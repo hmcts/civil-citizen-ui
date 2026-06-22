@@ -70,7 +70,7 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
       await updateFieldDraftClaimFromStore(claimId, <AppRequest>req, 'respondentSolicitor1EmailAddress', claim?.respondentSolicitor1EmailAddress);
       await updateFieldDraftClaimFromStore(claimId, <AppRequest>req, 'specRespondent1Represented', claim.specRespondent1Represented);
     }
-    const totalAmountWithInterestAndFees = (await getTotalAmountWithInterestAndFees(claim)).toString();
+    const totalAmountWithInterestAndFees = (await getTotalAmountWithInterestAndFees(claim, req)).toString();
     const carmEnabled = await isCarmEnabledForCase(claim.submittedDate);
     const isCarmApplicable = isCarmApplicableAndSmallClaim(carmEnabled, claim);
     const dashboardNotifications = await getNotifications(dashboardId, claim, totalAmountWithInterestAndFees, caseRole, req, lng);

@@ -61,7 +61,7 @@ claimSummaryController.get(DEFENDANT_SUMMARY_URL, (async (req: AppRequest, res: 
       const caseRole = claim.isClaimant()?ClaimantOrDefendant.CLAIMANT:ClaimantOrDefendant.DEFENDANT;
       const carmEnabled = await isCarmEnabledForCase(claim.submittedDate);
       const isCarmApplicable = isCarmApplicableAndSmallClaim(carmEnabled, claim);
-      const totalAmountWithInterestAndFees = (await getTotalAmountWithInterestAndFees(claim)).toString();
+      const totalAmountWithInterestAndFees = (await getTotalAmountWithInterestAndFees(claim, req as AppRequest)).toString();
       const dashboardNotifications = await getNotifications(claimId, claim, totalAmountWithInterestAndFees, caseRole, req as AppRequest, lang);
       claim.orderDocumentId = extractOrderDocumentIdFromNotification(dashboardNotifications);
       const dashboardTaskList = await getDashboardForm(caseRole, claim, totalAmountWithInterestAndFees, claimId, req as AppRequest, isCarmApplicable, isGAFlagEnable);

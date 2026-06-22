@@ -32,7 +32,7 @@ const renderView = async (res: Response, userId: string, claimId: string, claim:
 
 async function recordNotificationClickForQueryResponse(claim: Claim, claimId: string, req: Request, lang: any) {
   const caseRole = claim.isClaimant() ? ClaimantOrDefendant.CLAIMANT : ClaimantOrDefendant.DEFENDANT;
-  const totalAmountWithInterestAndFees = (await getTotalAmountWithInterestAndFees(claim)).toString();
+  const totalAmountWithInterestAndFees = (await getTotalAmountWithInterestAndFees(claim, req as AppRequest)).toString();
   const dashboardNotifications = await getNotifications(claimId, claim, totalAmountWithInterestAndFees, caseRole, req as AppRequest, lang);
   if (dashboardNotifications) {
     const qmNotif = dashboardNotifications.items.filter(item => item.descriptionEn.includes('The court has responded to a message on your case.')
