@@ -1,7 +1,7 @@
 import {IsDefined, IsNotEmpty, MaxLength, Validate, ValidateIf} from 'class-validator';
 import {FREE_TEXT_MAX_LENGTH} from '../../validators/validationConstraints';
 import {DateConverter} from 'common/utils/dateConverter';
-import {TimelineDateValidator} from 'form/validators/timelineDateValidator';
+import {TimelineDateValidator} from '../../validators/timelineDateValidator';
 
 export class TimelineRow {
   @ValidateIf(o => o.isAtLeastOneFieldPopulated())
