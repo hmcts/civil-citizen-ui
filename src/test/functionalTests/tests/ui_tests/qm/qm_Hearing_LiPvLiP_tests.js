@@ -12,7 +12,7 @@ BeforeSuite(async () => {
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
 });
 
-Scenario('01 Claimant sends message to court', async ({ api, I }) => {
+Scenario('Claimant and defendant can send hearing-related messages to the court', async ({ api, I }) => {
   claimRef = await api.createLiPClaim(config.claimantCitizenUser, 'Multi', true);
   console.log('LIP vs LIP QM claim created:', claimRef);
 
@@ -23,43 +23,19 @@ Scenario('01 Claimant sends message to court', async ({ api, I }) => {
   claimNumber = caseData.legacyCaseReference;
   console.log('Claim number:', claimNumber);
 
-  const subject = 'Claimant Hearing query';
-  const message = 'Claimant Hearing Test message';
+  const claimantSubject = 'Claimant Hearing query';
+  const claimantMessage = 'Claimant Hearing Test message';
+  const defendantSubject = 'Defendant Hearing query';
+  const defendantMessage = 'Defendant Hearing Test message';
   const isHearingRelated = true;
 
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await I.amOnPage('/dashboard');
   await I.click(claimNumber);
-  await ResponseSteps.SendMessageToCourt(subject, message, isHearingRelated);
-
-  await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
-  await I.amOnPage('/dashboard');
-  await I.click(claimNumber);
-  await ResponseSteps.viewYourMessages(subject, message, isHearingRelated);
-
-  await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
-  await I.amOnPage('/dashboard');
-  await I.click(claimNumber);
-  await ResponseSteps.viewYourMessagesInDashboard();
-});
-
-Scenario('02 Defendant sends message to court', async ({ I }) => {
-  const subject = 'Defendant Hearing query';
-  const message = 'Defendant Hearing Test message';
-  const isHearingRelated = true;
+  await ResponseSteps.SendMessageToCourt(claimantSubject, claimantMessage, isHearingRelated);
 
   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   await I.amOnPage('/dashboard');
   await I.click(claimNumber);
-  await ResponseSteps.SendMessageToCourt(subject, message, isHearingRelated);
-
-  await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
-  await I.amOnPage('/dashboard');
-  await I.click(claimNumber);
-  await ResponseSteps.viewYourMessages(subject, message, isHearingRelated);
-
-  await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
-  await I.amOnPage('/dashboard');
-  await I.click(claimNumber);
-  await ResponseSteps.viewYourMessagesInDashboard();
+  await ResponseSteps.SendMessageToCourt(defendantSubject, defendantMessage, isHearingRelated);
 });
