@@ -31,4 +31,12 @@ describe('TimelineRow', () => {
     expect(form.hasErrors()).toBeTruthy();
     expect(form.getErrors()[0].property).toBe('date');
   });
+
+  it('should be invalid with missing date', () => {
+    const row = new TimelineRow(undefined, undefined, undefined, 'description');
+    const form = new GenericForm(row);
+    form.validateSync();
+    expect(form.hasErrors()).toBeTruthy();
+    expect(form.getErrors()[0].property).toBe('date');
+  });
 });
