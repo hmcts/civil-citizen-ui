@@ -1,20 +1,30 @@
 #!/usr/bin/env bash
 
-branchName=$1
+set -eu
 
-#Checkout specific branch pf  civil camunda bpmn definition
+refName=${1:-master}
+
+# Checkout specific branch or PR ref of civil camunda bpmn definition.
 git clone https://github.com/hmcts/civil-service.git
 cd civil-service
 
-echo "Switch to ${branchName} branch on civil-service"
-git checkout ${branchName}
-cd ..
-mkdir civil-bpmn
+if [[ "${refName}" =~ ^pr-?([0-9]+)$ ]]; then
+  prNumber="${BASH_REMATCH[1]}"
+  echo "Switch to PR ${prNumber} on civil-service"
+  git fetch --depth=1 origin "refs/pull/${prNumber}/head"
+  git checkout FETCH_HEAD
+else
+  echo "Switch to ${refName} branch on civil-service"
+  git checkout "${refName}"
+fi
 
-#Copy camunda folder to civil-ccd-def which contians bpmn files
+cd ..
+mkdir -p civil-bpmn
+
+# Copy camunda folder to civil-ccd-def which contains bpmn files.
 cp -r ./civil-service/src/main/resources/camunda ./civil-bpmn/.
 rm -rf ./civil-service
 
-#upload bpmn files to environment
+# Upload bpmn files to environment.
 ./bin/import-bpmn-diagram.sh ./civil-bpmn/.
-rm -rf ./civil-bpmn.
+rm -rf ./civil-bpmn
