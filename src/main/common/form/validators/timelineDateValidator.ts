@@ -33,6 +33,9 @@ export class TimelineDateValidator implements ValidatorConstraintInterface {
       if (month < 1 || month > 12) {
         return false;
       }
+      if (year < 0) {
+        return false;
+      }
       const date = new Date(year, month - 1, 1);
       if (date > new Date()) {
         return false;

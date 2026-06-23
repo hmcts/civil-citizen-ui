@@ -32,8 +32,41 @@ describe('TimelineRow', () => {
     expect(form.getErrors()[0].property).toBe('date');
   });
 
-  it('should be invalid with missing date', () => {
+  it('should be invalid with all missing date values', () => {
     const row = new TimelineRow(undefined, undefined, undefined, 'description');
+    const form = new GenericForm(row);
+    form.validateSync();
+    expect(form.hasErrors()).toBeTruthy();
+    expect(form.getErrors()[0].property).toBe('date');
+  });
+
+  it('should be invalid with missing month value', () => {
+    const row = new TimelineRow(undefined, undefined, 2000, 'description');
+    const form = new GenericForm(row);
+    form.validateSync();
+    expect(form.hasErrors()).toBeTruthy();
+    expect(form.getErrors()[0].property).toBe('date');
+  });
+
+  it('should be invalid with incorrect month value', () => {
+    const row = new TimelineRow(undefined, 0, 2000, 'description');
+    const form = new GenericForm(row);
+    form.validateSync();
+    expect(form.hasErrors()).toBeTruthy();
+    expect(form.getErrors()[0].property).toBe('date');
+  });
+
+  it('should be invalid with incorrect year value', () => {
+    const row = new TimelineRow(undefined, 6, -1, 'description');
+    const form = new GenericForm(row);
+    form.validateSync();
+    expect(form.hasErrors()).toBeTruthy();
+    expect(form.getErrors()[0].property).toBe('date');
+  });
+
+  it('should be invalid with future date value', () => {
+    const date = new Date();
+    const row = new TimelineRow(date.getDay(), date.getMonth(), date.getFullYear() + 1, 'description');
     const form = new GenericForm(row);
     form.validateSync();
     expect(form.hasErrors()).toBeTruthy();
