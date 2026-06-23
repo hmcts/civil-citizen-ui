@@ -10,6 +10,8 @@ const createSDOReqPayload = require('../fixtures/events/createSDO.js');
 const createAnAssistedOrder = require('../fixtures/events/createAnAssistedOrder');
 const createRequestForReconsideration = require('../fixtures/events/createRequestForReconsideration');
 const createATrialArrangement = require('../fixtures/events/createATrialArrangement');
+const discontinueClaimSpec = require('../fixtures/events/discontinueClaimSpec');
+const settleClaim1v1Spec = require('../fixtures/events/settleClaim1v1Spec');
 const evidenceUpload = require('../fixtures/events/evidenceUpload');
 const testingSupport = require('./testingSupport');
 const lodash = require('lodash');
@@ -75,6 +77,8 @@ const data = {
   CREATE_LIP_CLAIM_IND_V_ORGANISATION: (user, userId, totalClaimAmount) => createLipClaimIndVOrg(user, userId, totalClaimAmount),
   DEFENDANT_RESPONSE: (response, camundaEvent) => require('../fixtures/events/defendantLRResponse').respondToClaim(response, camundaEvent),
   DEFAULT_JUDGEMENT_SPEC: require('../fixtures/defaultJudgmentSpec'),
+  DISCONTINUE_CLAIM: (mpScenario) => discontinueClaimSpec.discontinueClaim(mpScenario),
+  SETTLE_CLAIM_MARK_PAID_FULL: () => settleClaim1v1Spec.settleClaim(),
 };
 
 let caseId, eventName, payload;
@@ -973,6 +977,61 @@ module.exports = {
       await waitForTimeout(4000);
     }
     throw new Error(`Claim ${targetCaseId} was not issued after ${maxAttempts} attempts`);
+  },
+
+  discontinueClaim: async (user, mpScenario) => {
+    console.log('discontinueClaim for case id ' + caseId);
+    await apiRequest.setupTokens(user);
+    eventName = 'DISCONTINUE_CLAIM_CLAIMANT';
+
+    let returnedCaseData = await apiRequest.startEvent(eventName, caseId);
+    delete returnedCaseData['SearchCriteria'];
+    caseData = returnedCaseData;
+
+    assertContainsPopulatedFields(returnedCaseData);
+
+    let disposalData = data.DISCONTINUE_CLAIM(mpScenario);
+    for (let pageId of Object.keys(disposalData.userInput)) {
+      await assertValidDataSpec(disposalData, pageId);
+    }
+
+    if (mpScenario === 'TWO_V_ONE') {
+      await assertSubmittedSpecEvent('AWAITING_RESPONDENT_ACKNOWLEDGEMENT', {
+        header: '# Your claim will be fully discontinued against the specified defendants',
+        body: '',
+      }, true);
+    } else if (mpScenario === 'ONE_V_TWO' || mpScenario === 'ONE_V_ONE_NO_P_NEEDED') {
+      await assertSubmittedSpecEvent('CASE_DISCONTINUED', {
+        header: '# Your claim has been discontinued',
+        body: '',
+      }, true);
+    } else {
+      await assertSubmittedSpecEvent('AWAITING_RESPONDENT_ACKNOWLEDGEMENT', {
+        header: '# Your request is being reviewed',
+        body: '',
+      }, true);
+    }
+    await waitForFinishedBusinessProcess(caseId);
+  },
+
+  settleClaim: async (user) => {
+    console.log('settleClaim for case id ' + caseId);
+    await apiRequest.setupTokens(user);
+    eventName = 'SETTLE_CLAIM_MARK_PAID_FULL';
+
+    let returnedCaseData = await apiRequest.startEvent(eventName, caseId);
+    delete returnedCaseData['SearchCriteria'];
+    caseData = returnedCaseData;
+    let disposalData = data.SETTLE_CLAIM_MARK_PAID_FULL();
+    for (let pageId of Object.keys(disposalData.userInput)) {
+      await assertValidDataSpec(disposalData, pageId);
+    }
+    await assertSubmittedSpecEvent('CASE_STAYED', {
+      header: '# This claim has been marked as settled',
+      body: '',
+    }, true);
+
+    await waitForFinishedBusinessProcess(caseId);
   },
 };
 
