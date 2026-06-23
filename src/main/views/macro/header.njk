@@ -1,47 +1,38 @@
 {% from 'govuk/macros/logo.njk' import govukLogo %}
 
 {% macro headerComponent(t, user, serviceName = null) %}
-  {% set navigationList = [
-    {
-      href: '/dashboard',
-      text: t('COMMON.HEADER.MY_ACCOUNT'),
-      active: false
-    },
-    {
-      href: '/logout',
-      text: t('COMMON.HEADER.SIGN_OUT'),
-      active: false
-    }
-  ] if user else [
-
-  ] %}
   {% block header %}
-    <div class="govuk-header civil-header">
-      <div class="govuk-header__container govuk-width-container">
-        <div class="govuk-header__logo">
-          <a href="https://www.gov.uk" class="govuk-header__homepage-link">
-            {{ govukLogo({
-              classes: 'govuk-header__logotype',
-              ariaLabelText: 'GOV.UK'
-            }) }}
-          </a>
+    <div class="civil-header">
+      <div class="govuk-header">
+        <div class="govuk-header__container govuk-width-container">
+          <div class="govuk-header__logo">
+            <a href="https://www.gov.uk" class="govuk-header__homepage-link">
+              {{ govukLogo({
+                classes: 'govuk-header__logotype',
+                ariaLabelText: 'GOV.UK'
+              }) }}
+            </a>
+          </div>
         </div>
-        <div class="civil-header__content">
-          <a href="/dashboard" class="civil-header__service-name">
-            {{ serviceName if serviceName else t('COMMON.HEADER.MONEY_CLAIMS') }}
-          </a>
+      </div>
+      <div class="civil-header__service">
+        <div class="govuk-width-container civil-header__service-inner">
+          <div class="civil-header__service-links">
+            <a href="/dashboard" class="civil-header__service-name">
+              {{ serviceName if serviceName else t('COMMON.HEADER.MONEY_CLAIMS') }}
+            </a>
+            {% if user %}
+              <a class="civil-header__account-link" href="/dashboard">
+                {{ t('COMMON.HEADER.MY_ACCOUNT') }}
+              </a>
+            {% endif %}
+          </div>
           {% if user %}
-            <nav aria-label="Menu" class="civil-header__navigation">
-              <ul id="navigation" class="civil-header__navigation-list">
-                {% for item in navigationList %}
-                  <li class="civil-header__navigation-item">
-                    <a class="civil-header__link" href="{{ item.href }}">
-                      {{ item.text }}
-                    </a>
-                  </li>
-                {% endfor %}
-              </ul>
-            </nav>
+            <div class="civil-header__actions">
+              <a class="civil-header__logout-link" href="/logout">
+                {{ t('COMMON.HEADER.SIGN_OUT') }}
+              </a>
+            </div>
           {% endif %}
         </div>
       </div>
