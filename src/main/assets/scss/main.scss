@@ -57,17 +57,16 @@
   &__logout-link {
     @include govuk-font($size: 19, $weight: bold);
 
-    color: govuk-colour('black');
-    text-decoration-thickness: 2px;
-    text-underline-offset: .16em;
+    color: #1d70b8;
+    text-decoration: none;
 
     &:link,
     &:visited {
-      color: govuk-colour('black');
+      color: #1d70b8;
     }
 
     &:hover {
-      text-decoration-thickness: 3px;
+      text-decoration: none;
     }
 
     &:focus {
