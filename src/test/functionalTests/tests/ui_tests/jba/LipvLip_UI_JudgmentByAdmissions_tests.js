@@ -4,7 +4,6 @@ const LoginSteps = require('../../../commonFeatures/home/steps/login');
 const {createAccount} = require('../../../specClaimHelpers/api/idamHelper');
 const ClaimantResponseSteps = require('../../../citizenFeatures/response/steps/lipClaimantResponseSteps');
 const ResponseToDefenceLipVsLipSteps = require('../../../citizenFeatures/response/steps/responseToDefenceLipvLipSteps');
-const { waitForFinishedBusinessProcess } = require('../../../specClaimHelpers/api/testingSupport');
 const { judgmentOnlineCcjIssuedClaimant, judgmentOnlineCcjIssuedDefendant } = require('../../../specClaimHelpers/dashboardNotificationConstants');
 const { verifyNotificationTitleAndContent } = require('../../../specClaimHelpers/e2e/dashboardHelper');
 
@@ -48,4 +47,4 @@ Scenario('LipvLip - PartAdmit-PayBySetDate - Claimant accepts - suggests repayme
   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   notification = judgmentOnlineCcjIssuedDefendant();
   await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
-});
+}).tag('@pav1i');
