@@ -177,6 +177,19 @@ module.exports = {
       nextSteps: 'confirm that they’ve paid you the full amount that you’re owed',
     };
   },
+
+  defaultJudgmentGrantedClaimantCoSC: () => {
+    return {
+      title: 'A judgment against the defendant has been now been entered',
+      content: [
+        'The defendant should now pay you according to the terms of the judgment.',
+        'Once they do, you should confirm that they\'ve paid you the full amount that you\'re owed.',
+        'If they do not pay you by the date on the judgment, you can ask for enforcement action to be taken against them.',
+        'If you need to change the terms of payment within the judgment, such as the instalments you had previously agreed, you can make an application to vary the judgment.',
+      ],
+      nextSteps: 'confirm that they\'ve paid you the full amount that you\'re owed',
+    };
+  },
   defendantResponseConfirmYouHavePaidAJudgmentCCJDebt: () => {
     return {
       title: 'The claimant has been paid the full amount that they were owed',
@@ -515,6 +528,7 @@ module.exports = {
 
   // CIV-13149 and 13152
   // Notice.AAA6.MediationSuccessful.CARM.Claimant
+  // Notice.AAA6.MediationSuccessful.CARM.Defendant
   mediationSuccessful: () => {
     return {
       title: 'Mediation appointment successful',
@@ -624,11 +638,21 @@ module.exports = {
     };
   },
 
-  responseToTheClaim: (clientName) => {
+  // Notice.AAA6.DefResponse.FullDefence.FullDispute.CARM.Claimant
+  responseToTheClaimClaimant: (clientName) => {
     return {
       title: 'Response to the claim',
       content: clientName + ' has rejected the claim. You need to respond by',
       nextSteps: 'View and respond',
+    };
+  },
+
+  // Notice.AAA6.DefResponse.FullDefence.FullDispute.CARM.Defendant
+  responseToTheClaimDefendant: (clientName) => {
+    return {
+      title: 'Response to the claim',
+      content: 'You have rejected the claim. The court will contact you when ' + clientName + ' responds.',
+      nextSteps: 'View your response',
     };
   },
 };
