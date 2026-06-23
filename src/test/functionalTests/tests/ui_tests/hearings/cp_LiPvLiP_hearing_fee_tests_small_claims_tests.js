@@ -34,7 +34,7 @@ Before(async ({api}) => {
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
 });
 
-Scenario.only('Apply for Help with Fees Journey - Small Claims', async ({I, api}) => {
+Scenario('Apply for Help with Fees Journey - Small Claims', async ({I, api}) => {
   notification = hearingScheduled(hearingDate);
   await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
   await I.click(notification.nextSteps);
