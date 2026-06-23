@@ -111,9 +111,9 @@ class ResponseToDefence {
 
   async verifyDefResponseForPartAdmitPayBySetDate(claimAmount) {
     await I.waitForContent('Why they don’t owe the amount claimed?', 60);
-    await I.see(`Sir John Doe admits they owe you £${claimAmount}. They don’t believe they owe the full amount claimed.`);
-    await I.see(`They’ve offered to pay you £${claimAmount} by`);
-    await I.see('This is the total amount you’ll be paid, including the claim fee and interest if applicable.');
+    await I.see(`Sir John Doe admits they owe you £${claimAmount} plus the claim fee. They don’t believe they owe the full amount claimed.`);
+    await I.see(`They’ve offered to pay you £${claimAmount} plus the claim fee by`);
+    await I.see('This is the total amount you’ll be paid.');
     await I.clickWithRetry(paths.buttons.continue);
   }
 
@@ -287,11 +287,11 @@ class ResponseToDefence {
     await I.see('How they want to pay?', 'h1');
     await I.see('They’ve offered to pay you');
     await I.see('by');
-    await I.see('This is the total amount you’ll be paid, including the claim fee and interest if applicable.');
+    await I.see('This is the total amount you’ll be paid.');
     await I.click(paths.links.see_their_financial_details);
     await I.see('Where are they living?');
     await I.see('Balance');
-    await I.clickWithRetry(paths.buttons.continue);
+    await I.click(paths.buttons.continue);
   }
 
   async verifyDoYouWantToSettleTheClaim() {
@@ -411,7 +411,7 @@ class ResponseToDefence {
   async verifyCourtAcceptedProposedPlan() {
     await I.waitForContent('The court has accepted your repayment plan', 60);
     await I.see('Repayment plan accepted', 'h1');
-    await I.clickWithRetry(paths.buttons.continue);
+    await I.click(paths.buttons.continue);
   }
 
   async verifySignTheSettlementAgreementForFullAdmit(option) {
