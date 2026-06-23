@@ -538,6 +538,34 @@ module.exports = {
     };
   },
 
+  // Notice.AAA6.DefResponse.MoreTimeRequested.Claimant.json
+  claimantNotificationMoreTimeRequested: (time, date, daysToRespond) => {
+    return {
+      title: 'More time requested',
+      content: [
+        `The response deadline for the defendant is now ${time} on ${date}. There are ${daysToRespond} days remaining.`],
+    };
+  },
+
+  // Notice.AAA6.DefResponse.MoreTimeRequested.Claimant.json
+  defendantNotificationMoreTimeRequested: (time, date, daysToRespond) => {
+    return {
+      title: 'More time requested',
+      content: [
+        `The response deadline is now ${time} on ${date}. There are ${daysToRespond} days remaining for you`],
+      nextSteps: 'respond to the claim',
+    };
+  },
+
+  // Notice.AAA6.DefResponse.FullDefence.AlreadyPaid.Claimant.json
+  defendantResponseFullDefenceAlreadyPaid: (claimSettledAmount, claimSettledDateEn, defaultRespondTime, applicant1ResponseDeadlineEn) => {
+    return {
+      title: 'Response to the claim',
+      content: [`The defendant has said they already paid ${claimSettledAmount} on ${claimSettledDateEn}. You can confirm payment and settle, or proceed with the claim. You need to respond by ${defaultRespondTime} on ${applicant1ResponseDeadlineEn} or the claim will not continue.`],
+      nextSteps: 'View and respond',
+    };
+  },
+
   caseOffline: () => {
     return {
       title: 'Your online account will no longer be updated',
