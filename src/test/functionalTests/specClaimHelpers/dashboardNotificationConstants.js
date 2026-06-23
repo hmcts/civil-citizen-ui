@@ -685,4 +685,21 @@ module.exports = {
       nextSteps: 'View your response',
     };
   },
+
+  // Notice.AAA6.Discontinue.NoticeOfDiscontinuanceIssued.Defendant
+  discontinuanceNoticeDefendant: () => {
+    return {
+      title: 'A notice of discontinuance has been created and sent to all parties',
+      content: 'This means that all or part of this claim has been discontinued.Please review the notice of discontinuance carefully.',
+      nextSteps: 'notice of discontinuance',
+    };
+  },
+
+  // Notice.AAA6.Settle.ClaimPaidInFull.Defendant
+  settleClaimMarkPaidInFullDefendant: (date) => {
+    return {
+      title: 'Claim marked as paid in full',
+      content: 'This claim has been marked as paid in full as of ' + date +'.You do not need to attend court and any hearings scheduled will not go ahead.',
+    };
+  },
 };
