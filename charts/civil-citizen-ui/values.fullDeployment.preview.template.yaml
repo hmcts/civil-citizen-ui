@@ -3,7 +3,6 @@ civil-service:
     environment:
       TASK_MANAGEMENT_ENABLED: true
       TASK_MANAGEMENT_API_URL: http://{{ .Release.Name }}-wa-task-management-api
-      HMC_API_URL: http://${SERVICE_NAME}-wiremock
       HMC_HEARINGS_SUBSCRIPTION_ENABLED: true
       HMC_HEARINGS_TOPIC_NAME: "hmc-to-cft-aat"
       HMC_HEARINGS_TOPIC_SUBSCRIPTION_NAME: "${SERVICE_NAME}-hmcsb-civil"
@@ -19,54 +18,6 @@ civil-service:
         secretRef: "{{ .Values.global.postgresSecret }}"
         key: PASSWORD
         disabled: false
-
-  wiremock:
-    enabled: true
-    image: "wiremock/wiremock"
-    applicationPort: 8080
-    imagePullPolicy: Always
-    releaseNameOverride: ${SERVICE_NAME}-wiremock
-    verbose: false
-    ingressHost: wiremock-${SERVICE_NAME}.preview.platform.hmcts.net
-    volumes:
-      - name: wiremock-mappings
-        configMap:
-          name: ${SERVICE_NAME}-wiremock-mappings
-    volumeMounts:
-      - name: wiremock-mappings
-        mountPath: /home/wiremock/mappings
-
-  wiremockMappings:
-    health-mock.json: |
-      {
-        "name": "HMC - Health Check",
-        "request": { "method": "GET", "urlPath": "/health" },
-        "response": {
-          "status": 200,
-          "headers": { "Content-Type": "application/vnd.spring-boot.actuator.v3+json" },
-          "body": "{\"status\":\"UP\"}"
-        }
-      }
-    health-liveness.json: |
-      {
-        "name": "HMC - Health Liveness",
-        "request": { "method": "GET", "urlPath": "/health/liveness" },
-        "response": {
-          "status": 200,
-          "headers": { "Content-Type": "application/vnd.spring-boot.actuator.v3+json" },
-          "body": "{\"status\":\"UP\"}"
-        }
-      }
-    health-readiness.json: |
-      {
-        "name": "HMC - Health Readiness",
-        "request": { "method": "GET", "urlPath": "/health/readiness" },
-        "response": {
-          "status": 200,
-          "headers": { "Content-Type": "application/vnd.spring-boot.actuator.v3+json" },
-          "body": "{\"status\":\"UP\"}"
-        }
-      }
 
   camunda-bpm:
     enabled: false
