@@ -1,5 +1,5 @@
 import {NextFunction, Request, Response, Router} from 'express';
-import {CLAIM_CHECK_ANSWERS_URL, CLAIM_CONFIRMATION_URL} from '../../urls';
+import {CLAIM_CHECK_ANSWERS_URL, CLAIM_CONFIRMATION_URL, DASHBOARD_URL} from '../../urls';
 import {
   getStatementOfTruth,
   getSummarySections,
@@ -27,6 +27,8 @@ import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {saveClaimFee} from 'services/features/claim/amount/claimFeesService';
 import {calculateInterestToDate} from 'common/utils/interestUtils';
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('checkAnswersController');
 const validator = new Validator();
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
@@ -71,7 +73,15 @@ claimCheckAnswersController.post(CLAIM_CHECK_ANSWERS_URL, async (req: Request | 
     const userId = (<AppRequest>req).session?.user?.id;
     const isFullAmountRejected = (req.body?.isFullAmountRejected === 'true');
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-    const claim = await getCaseDataFromStore(userId);
+    // doNotThrowError: if the draft has already been submitted (and deleted from the draft
+    // store) a duplicate/replayed POST returns an empty claim instead of throwing 'Case not
+    // found'. Treat that as a no-op submission and send the user to their dashboard rather than
+    // re-submitting or returning a 500 (idempotent under double-submit / concurrent load).
+    const claim = await getCaseDataFromStore(userId, true);
+    if (!claim.isDraftClaim()) {
+      logger.info(`check-and-send POST with no draft claim for user ${userId} - already submitted, redirecting to dashboard`);
+      return res.redirect(DASHBOARD_URL);
+    }
     const isCarmEnabled = await isCarmEnabledForCase(claim.draftClaimCreatedAt);
     const acceptNotChangesAllowedValue =  (claim.claimDetails.helpWithFees.option === YesNo.YES) ? false : req.body.acceptNoChangesAllowed;
 
