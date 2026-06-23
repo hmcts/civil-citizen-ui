@@ -177,6 +177,19 @@ module.exports = {
       nextSteps: 'confirm that they’ve paid you the full amount that you’re owed',
     };
   },
+
+  defaultJudgmentGrantedClaimantCoSC: () => {
+    return {
+      title: 'A judgment against the defendant has been now been entered',
+      content: [
+        'The defendant should now pay you according to the terms of the judgment.',
+        'Once they do, you should confirm that they\'ve paid you the full amount that you\'re owed.',
+        'If they do not pay you by the date on the judgment, you can ask for enforcement action to be taken against them.',
+        'If you need to change the terms of payment within the judgment, such as the instalments you had previously agreed, you can make an application to vary the judgment.',
+      ],
+      nextSteps: 'confirm that they\'ve paid you the full amount that you\'re owed',
+    };
+  },
   defendantResponseConfirmYouHavePaidAJudgmentCCJDebt: () => {
     return {
       title: 'The claimant has been paid the full amount that they were owed',
@@ -522,6 +535,34 @@ module.exports = {
       content: ['Both parties attended mediation and an agreement was reached.',
         'This case is now settled and no further action is needed.',
         'You can view your mediation agreement here.'],
+    };
+  },
+
+  // Notice.AAA6.DefResponse.MoreTimeRequested.Claimant.json
+  claimantNotificationMoreTimeRequested: (time, date, daysToRespond) => {
+    return {
+      title: 'More time requested',
+      content: [
+        `The response deadline for the defendant is now ${time} on ${date}. There are ${daysToRespond} days remaining.`],
+    };
+  },
+
+  // Notice.AAA6.DefResponse.MoreTimeRequested.Claimant.json
+  defendantNotificationMoreTimeRequested: (time, date, daysToRespond) => {
+    return {
+      title: 'More time requested',
+      content: [
+        `The response deadline is now ${time} on ${date}. There are ${daysToRespond} days remaining for you`],
+      nextSteps: 'respond to the claim',
+    };
+  },
+
+  // Notice.AAA6.DefResponse.FullDefence.AlreadyPaid.Claimant.json
+  defendantResponseFullDefenceAlreadyPaid: (claimSettledAmount, claimSettledDateEn, defaultRespondTime, applicant1ResponseDeadlineEn) => {
+    return {
+      title: 'Response to the claim',
+      content: [`The defendant has said they already paid ${claimSettledAmount} on ${claimSettledDateEn}. You can confirm payment and settle, or proceed with the claim. You need to respond by ${defaultRespondTime} on ${applicant1ResponseDeadlineEn} or the claim will not continue.`],
+      nextSteps: 'View and respond',
     };
   },
 
