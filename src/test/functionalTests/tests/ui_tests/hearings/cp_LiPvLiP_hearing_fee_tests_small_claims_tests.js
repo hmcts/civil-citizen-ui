@@ -40,7 +40,6 @@ Scenario('Apply for Help with Fees Journey - Small Claims', async ({I, api}) => 
   await I.click(notification.nextSteps);
   await ResponseSteps.SignOut();
   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
-  notification = hearingScheduled(hearingDate);
   await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
   await ResponseSteps.SignOut();
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
