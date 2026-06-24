@@ -69,7 +69,7 @@ export const saveDraftClaim = async (
   userId?: string,
   ttlCategory: TTLCategory = TTLCategory.DRAFT_CLAIM,
 ) => {
-  logger.debug(`Saving draft claim : userId: ${userId}  claimId: ${claimId}`);
+  logger.info(`Saving draft claim : userId: ${userId}  claimId: ${claimId}`);
   let storedClaimResponse = await getDraftClaimFromStore(claimId, doNotThrowError);
   if (isUndefined(storedClaimResponse.case_data)) {
     storedClaimResponse = createNewCivilClaimResponse(claimId);
