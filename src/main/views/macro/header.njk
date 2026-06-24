@@ -17,11 +17,9 @@
         </div>
       </div>
       {{ govukServiceNavigation({
+        serviceName: serviceName or "Money Claims",
+        serviceUrl: "/dashboard",
         navigation: [
-          {
-            href: "/dashboard",
-            text: "Money Claims"
-          },
           {
             href: "/dashboard",
             text: t('COMMON.HEADER.MY_ACCOUNT')
