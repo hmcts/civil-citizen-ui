@@ -40,7 +40,7 @@ Before(async ({ api }) => {
 });
 
 //Skipped dependant on the release DTSCCI-2558
-Scenario('No response submitted, date agreed upon request time', async () => {
+Scenario.skip('No response submitted, date agreed upon request time', async () => {
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterYourOptionsForDeadline(
     claimRef,
