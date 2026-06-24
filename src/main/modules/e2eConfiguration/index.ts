@@ -6,6 +6,7 @@ const Redis = require('ioredis-mock');
 
 const REDIS_DATA = require('./redisData.json');
 const GA_REDIS_DATA = require('./gaRedisData.json');
+const ONE_DAY_IN_SECONDS = 86400;
 
 export class DraftStoreCliente2e {
   public static REDIS_CONNECTION_SUCCESS = 'Connected to Redis instance successfully e2e tests';
@@ -25,11 +26,13 @@ export class DraftStoreCliente2e {
         client.set(element.id, JSON.stringify(element, null, 4)).then(() =>
           this.logger.info(`Mock data ${element.id} saved to Redis`),
         );
+        client.expire(ONE_DAY_IN_SECONDS);
       });
       GA_REDIS_DATA.forEach((element: any) => {
         client.set(element.id, JSON.stringify(element.value, null, 4)).then(() =>
           this.logger.info(`Mock data ${element.id} saved to Redis`),
         );
+        client.expire(ONE_DAY_IN_SECONDS);
       });
     });
   }
