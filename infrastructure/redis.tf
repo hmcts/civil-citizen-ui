@@ -43,4 +43,5 @@ module "managed-redis-draft-store" {
   ]
 
   access_keys_authentication_enabled = true
+  persistence_rdb_backup_frequency   = "6h"
 }
