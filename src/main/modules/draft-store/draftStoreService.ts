@@ -15,6 +15,16 @@ import {writeWithTTL} from './redisWriteHelper';
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('draftStoreService');
 
+const USER_ID_SUFFIX_PATTERN = /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+const resolveUserId = (redisKey: string, explicitUserId?: string): string => {
+  if (explicitUserId) {
+    return explicitUserId;
+  }
+  const userIdSuffix = redisKey.match(USER_ID_SUFFIX_PATTERN);
+  return userIdSuffix ? userIdSuffix[0] : redisKey;
+};
+
 /**
  * Gets civil claim response object with claim from draft store
  * @param claimId
@@ -69,7 +79,8 @@ export const saveDraftClaim = async (
   userId?: string,
   ttlCategory: TTLCategory = TTLCategory.DRAFT_CLAIM,
 ) => {
-  logger.info(`Saving draft claim : userId: ${userId}  claimId: ${claimId}`);
+  const resolvedUserId = resolveUserId(claimId, userId);
+  logger.info(`Saving draft claim : userId: ${resolvedUserId}  claimId: ${claimId}`);
   let storedClaimResponse = await getDraftClaimFromStore(claimId, doNotThrowError);
   if (isUndefined(storedClaimResponse.case_data)) {
     storedClaimResponse = createNewCivilClaimResponse(claimId);
@@ -130,7 +141,7 @@ export const updateFieldDraftClaimFromStore = async (claimId: string, req: Reque
   const userId = (<AppRequest>req).session.user?.id;
   claim[propertyName] = newValue;
   logger.info(`updateFieldDraftClaimFromStore : userId: ${userId} redisKey: ${redisKey} propertyName : ${propertyName} newValue : ${newValue? JSON.stringify(newValue) : 'undefined'}`);
-  await saveDraftClaim(redisKey, claim);
+  await saveDraftClaim(redisKey, claim, false, userId);
 
 };
 
