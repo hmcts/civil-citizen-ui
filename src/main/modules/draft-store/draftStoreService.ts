@@ -17,9 +17,12 @@ const logger = Logger.getLogger('draftStoreService');
 
 const USER_ID_SUFFIX_PATTERN = /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
-const resolveUserId = (redisKey: string, explicitUserId?: string): string => {
+const resolveUserId = (redisKey: string | undefined, explicitUserId?: string): string | undefined => {
   if (explicitUserId) {
     return explicitUserId;
+  }
+  if (!redisKey) {
+    return undefined;
   }
   const userIdSuffix = redisKey.match(USER_ID_SUFFIX_PATTERN);
   return userIdSuffix ? userIdSuffix[0] : redisKey;
