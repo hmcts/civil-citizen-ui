@@ -86,7 +86,7 @@ def getCivilServiceImage() {
   for (label in githubApi.getLabelsbyPattern(env.BRANCH_NAME, "civilServicePr:") ) {
     return "pr-" + label.minus("civilServicePr:").trim()
   }
-  return "pr-7939"
+  return "pr-8036"
 }
 
 def getCivilServiceSharedBranch() {
