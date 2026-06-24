@@ -35,6 +35,14 @@ module.exports = {
     };
   },
 
+  //Notice.AAA6.JR.Cancelled.Case.Settled.Claimant
+  ccjCancelledOnCaseSettledClaimant: () => {
+    return {
+      title: 'The claim is settled',
+      content: ['The case has been settled. The CCJ you requested has been cancelled.'],
+    };
+  },
+
   //Date calculation should be based on CIV-13128 fix
   //Notice.AAA6.ClaimIssue.Response.Await
   waitForDefendantToRespond: async () => {

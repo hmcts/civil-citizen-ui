@@ -48,6 +48,7 @@ const claimantResponse = require('../fixtures/events/createClaimantResponseToDef
 const caseProgressionToSDOState = require('../fixtures/events/createCaseProgressionToSDOState');
 const translatedDocUpload = require('../fixtures/events/translatedDocUpload');
 const caseProceedsInCaseman = require('../fixtures/events/caseProceedsInCaseman');
+const settleClaim = require('../fixtures/events/settleClaim');
 const caseProgressionToHearingInitiated = require('../fixtures/events/createCaseProgressionToHearingInitiated');
 const hwfPayloads = require('../fixtures/events/hwfPayloads.js');
 const {fetchCaseDetails} = require('./apiRequest');
@@ -837,6 +838,16 @@ module.exports = {
     await waitForFinishedBusinessProcess(caseId);
     await assertSubmittedSpecEvent(config.claimState.PROCEEDS_IN_HERITAGE_SYSTEM);
     console.log('End of caseProceedsInCaseman()');
+  },
+
+  settleClaimLip: async (user = config.claimantCitizenUser) => {
+    console.log('This is inside settleClaimLip: ' + caseId);
+    eventName = 'LIP_CLAIM_SETTLED';
+    const payload = settleClaim.lipClaimSettled();
+    await apiRequest.setupTokens(user);
+    await apiRequest.startEventForCitizen(eventName, caseId, payload);
+    await waitForFinishedBusinessProcess(caseId);
+    console.log('End of settleClaimLip()');
   },
 
   adjustSubmittedDateForCarm: async (caseId) => {
