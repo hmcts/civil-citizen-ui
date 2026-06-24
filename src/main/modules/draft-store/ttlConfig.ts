@@ -23,6 +23,8 @@ const getTTLDaysForCategory = (category: TTLCategory): number => {
       return config.get<number>('services.draftStore.redis.ttl.paymentSession');
     case TTLCategory.GA_JOURNEY:
       return config.get<number>('services.draftStore.redis.ttl.gaJourney');
+    default:
+      throw new Error(`Unsupported TTL category: ${category}`);
   }
 };
 

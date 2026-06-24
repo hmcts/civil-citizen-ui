@@ -17,14 +17,14 @@ const documents: UploadGAFiles[] = [];
 describe('draftGADocumentService', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    mockDraftStoreClient.ttl.mockResolvedValue(-1);
+    // Simulates a fresh key: NX create succeeds on the first call.
+    mockDraftStoreClient.set.mockResolvedValue('OK');
   });
 
   it('should save GA documents with TTL', async () => {
     await saveGADocumentsInDraftStore(redisKey, documents);
 
-    expect(mockDraftStoreClient.ttl).toHaveBeenCalledWith(redisKey + 'DOCKEY');
-    expect(mockDraftStoreClient.set).toHaveBeenCalledWith(redisKey + 'DOCKEY', JSON.stringify(documents), 'EX', expect.any(Number));
+    expect(mockDraftStoreClient.set).toHaveBeenCalledWith(redisKey + 'DOCKEY', JSON.stringify(documents), 'EX', expect.any(Number), 'NX');
     expect(mockDraftStoreClient.expireat).not.toHaveBeenCalled();
   });
 

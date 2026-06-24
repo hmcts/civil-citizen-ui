@@ -12,7 +12,6 @@ export const writeWithTTL = async (
   value: string | object,
   category: TTLCategory,
   metadata?: TTLMetadata,
-  prefetchedTTL?: number,
 ): Promise<void> => {
   if (value === null || value === undefined) {
     throw new Error('Redis value cannot be null or undefined');
@@ -22,24 +21,38 @@ export const writeWithTTL = async (
   const serializedValue = serializeValue(value);
 
   try {
-    const existingTTL = prefetchedTTL !== undefined ? prefetchedTTL : await draftStoreClient.ttl(key);
-
-    if (existingTTL > 0) {
-      await draftStoreClient.set(key, serializedValue, 'KEEPTTL');
-      logger.info(`Preserved existing TTL for key: ${key}, TTL: ${existingTTL}s`);
-      return;
-    }
-
     const expiryTimestamp = calculateExpiryTimestamp(category, metadata);
-    // Atomic write + relative expiry (EX) so a key can never be left without a
-    // TTL if the process dies between the write and the expiry call. EX is
-    // supported on every Redis version (unlike EXAT, which needs >= 6.2).
     // Clamp to >= 1s to guard against an already-elapsed expiry (e.g. a draft
     // anchored to an old creation date), which would be an invalid EX value.
     const ttlSeconds = Math.max(1, expiryTimestamp - Math.floor(Date.now() / 1000));
+
+    // NX+EX and XX+KEEPTTL are each atomic at the Redis level, so there's no
+    // window between reading the TTL and writing where a concurrent write can
+    // race us — unlike a separate ttl() read followed by a conditional set().
+    // Try to create the key fresh (NX) with a brand-new TTL; if it already
+    // exists, NX fails and we fall back to overwriting it while preserving
+    // whatever TTL it currently has (XX+KEEPTTL never resets the value of a
+    // key that doesn't exist, so this can't accidentally create an
+    // unexpiring key).
+    const created = await draftStoreClient.set(key, serializedValue, 'EX', ttlSeconds, 'NX');
+    if (created) {
+      logger.info(
+        `Applied TTL for key: ${key}, category: ${category}, expires in: ${ttlSeconds}s`,
+      );
+      return;
+    }
+
+    const updated = await draftStoreClient.set(key, serializedValue, 'KEEPTTL', 'XX');
+    if (updated) {
+      logger.info(`Preserved existing TTL for key: ${key}`);
+      return;
+    }
+
+    // The key was deleted between the NX and XX attempts (rare concurrent
+    // delete) — retry once as a fresh create now that it's definitely gone.
     await draftStoreClient.set(key, serializedValue, 'EX', ttlSeconds);
     logger.info(
-      `Applied TTL for key: ${key}, category: ${category}, expires in: ${ttlSeconds}s`,
+      `Applied TTL for key: ${key}, category: ${category}, expires in: ${ttlSeconds}s (after concurrent delete)`,
     );
   } catch (error) {
     logger.error(`Failed to write Redis key: ${key}, category: ${category}`, error);

@@ -20,9 +20,7 @@ jest.mock('ioredis', () => {
   return jest.fn().mockImplementation(() => {
     return {
       get: jest.fn(async () => JSON.stringify(REDIS_DATA[0])),
-      set: jest.fn(async () => {
-        return;
-      }),
+      set: jest.fn(async () => 'OK'),
       on: jest.fn(async () => {
         return;
       }),
@@ -35,9 +33,9 @@ jest.mock('ioredis', () => {
 function createMockDraftStore(returnData: unknown) {
   return {
     get: jest.fn(async () => JSON.stringify(returnData)),
-    set: jest.fn(async () => {
-      return;
-    }),
+    // Defaults to simulating a fresh key (NX succeeds on the first call).
+    // Tests exercising the KEEPTTL/XX path override this explicitly.
+    set: jest.fn(async () => 'OK'),
     del: jest.fn(async () => {
       return;
     }),
@@ -156,7 +154,7 @@ describe('Draft store service to save and retrieve claim', () => {
     //When
     await createDraftClaimInStoreWithExpiryTime(CLAIM_ID);
     //Then
-    expect(spySet).toHaveBeenCalledWith(CLAIM_ID, expect.any(String), 'EX', expect.any(Number));
+    expect(spySet).toHaveBeenCalledWith(CLAIM_ID, expect.any(String), 'EX', expect.any(Number), 'NX');
     expect(spyExpireat).not.toBeCalled();
   });
   it('should generate redis key', async () => {
@@ -186,15 +184,21 @@ describe('Draft store service to save and retrieve claim', () => {
     mockClaim.id = CLAIM_ID;
     mockClaim.totalClaimAmount = 123;
 
-    const spySet = jest.spyOn(app.locals.draftStoreClient, 'set');
+    // Simulate an existing key: NX create fails, XX update (KEEPTTL) succeeds.
+    draftStoreWithData.set = jest.fn()
+      .mockResolvedValueOnce(null)
+      .mockResolvedValueOnce('OK');
+    const spySet = draftStoreWithData.set;
 
     //When
     await deleteFieldDraftClaimFromStore(CLAIM_ID,  mockClaim, 'totalClaimAmount');
     //Then
-    expect(spySet).toHaveBeenCalledWith(
+    expect(spySet).toHaveBeenNthCalledWith(
+      2,
       CLAIM_ID,
       expect.stringContaining('"refreshDataForDJ":true'),
       'KEEPTTL',
+      'XX',
     );
     expect(mockClaim.draftClaimCreatedAt).toBeDefined();
   });
@@ -264,7 +268,7 @@ describe('Draft store service to save and retrieve claim', () => {
     await saveDraftClaim(CLAIM_ID, claim);
 
     expect(claim.draftClaimCreatedAt).toBeDefined();
-    expect(draftStoreWithData.set).toHaveBeenCalledWith(CLAIM_ID, expect.any(String), 'EX', expect.any(Number));
+    expect(draftStoreWithData.set).toHaveBeenCalledWith(CLAIM_ID, expect.any(String), 'EX', expect.any(Number), 'NX');
     expect(draftStoreWithData.expireat).not.toHaveBeenCalled();
   });
 

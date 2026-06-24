@@ -17,16 +17,15 @@ const gaHelpWithFees = new GaHelpWithFees();
 describe('GA Hwf Store Service', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    mockDraftStoreClient.ttl.mockResolvedValue(-1);
+    // Simulates a fresh key: NX create succeeds on the first call.
+    mockDraftStoreClient.set.mockResolvedValue('OK');
   });
 
   describe('saveDraftGAHWFDetails', () => {
     it('should save the draft Hwf details with TTL', async () => {
-      mockDraftStoreClient.set.mockResolvedValueOnce(null);
-
       await saveDraftGAHWFDetails(redisKey, gaHelpWithFees);
       const stringfyData = JSON.stringify(gaHelpWithFees);
-      expect(mockDraftStoreClient.set).toHaveBeenCalledWith(redisKey, stringfyData, 'EX', expect.any(Number));
+      expect(mockDraftStoreClient.set).toHaveBeenCalledWith(redisKey, stringfyData, 'EX', expect.any(Number), 'NX');
       expect(mockDraftStoreClient.expireat).not.toHaveBeenCalled();
     });
   });

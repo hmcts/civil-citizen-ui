@@ -15,19 +15,6 @@ import {writeWithTTL} from './redisWriteHelper';
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('draftStoreService');
 
-const USER_ID_SUFFIX_PATTERN = /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-
-const resolveUserId = (redisKey: string | undefined, explicitUserId?: string): string | undefined => {
-  if (explicitUserId) {
-    return explicitUserId;
-  }
-  if (!redisKey) {
-    return undefined;
-  }
-  const userIdSuffix = redisKey.match(USER_ID_SUFFIX_PATTERN);
-  return userIdSuffix ? userIdSuffix[0] : redisKey;
-};
-
 /**
  * Gets civil claim response object with claim from draft store
  * @param claimId
@@ -82,27 +69,20 @@ export const saveDraftClaim = async (
   userId?: string,
   ttlCategory: TTLCategory = TTLCategory.DRAFT_CLAIM,
 ) => {
-  const resolvedUserId = resolveUserId(claimId, userId);
-  logger.info(`Saving draft claim : userId: ${resolvedUserId}  claimId: ${claimId}`);
+  logger.info(`Saving draft claim : userId: ${userId}  claimId: ${claimId}`);
   let storedClaimResponse = await getDraftClaimFromStore(claimId, doNotThrowError);
   if (isUndefined(storedClaimResponse.case_data)) {
     storedClaimResponse = createNewCivilClaimResponse(claimId);
   }
-  let prefetchedTTL: number | undefined;
   if (ttlCategory === TTLCategory.DRAFT_CLAIM && !claim.draftClaimCreatedAt) {
     const storedCreatedAt = storedClaimResponse.case_data?.draftClaimCreatedAt;
     if (storedCreatedAt) {
       claim.draftClaimCreatedAt = new Date(storedCreatedAt);
     } else {
-      prefetchedTTL = await app.locals.draftStoreClient.ttl(claimId);
-      if (prefetchedTTL > 0) {
-        claim.draftClaimCreatedAt = reconstructCreationDateFromRemainingTtl(
-          prefetchedTTL,
-          TTLCategory.DRAFT_CLAIM,
-        );
-      } else {
-        claim.draftClaimCreatedAt = new Date();
-      }
+      const remainingTtl = await app.locals.draftStoreClient.ttl(claimId);
+      claim.draftClaimCreatedAt = remainingTtl > 0
+        ? reconstructCreationDateFromRemainingTtl(remainingTtl, TTLCategory.DRAFT_CLAIM)
+        : new Date();
     }
   }
   storedClaimResponse.case_data = claim as any;
@@ -111,7 +91,7 @@ export const saveDraftClaim = async (
     ? {creationDate: new Date(claim.draftClaimCreatedAt)}
     : undefined;
 
-  await writeWithTTL(claimId, storedClaimResponse, ttlCategory, metadata, prefetchedTTL);
+  await writeWithTTL(claimId, storedClaimResponse, ttlCategory, metadata);
 };
 
 const createNewCivilClaimResponse = (claimId: string) => {

@@ -24,7 +24,8 @@ describe('Payment session store service', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     mockDraftStoreClient.keys.mockResolvedValue([]);
-    mockDraftStoreClient.ttl.mockResolvedValue(-1);
+    // Simulates a fresh key by default: NX create succeeds on the first call.
+    mockDraftStoreClient.set.mockResolvedValue('OK');
   });
 
   it('should save the userId to the draft store and log the action', async () => {
@@ -34,16 +35,16 @@ describe('Payment session store service', () => {
 
     await saveUserId(claimId, feeType, userId);
 
-    expect(mockDraftStoreClient.set).toHaveBeenCalledWith('12345HEARINGuserIdForPayment', userId, 'EX', expect.any(Number));
+    expect(mockDraftStoreClient.set).toHaveBeenCalledWith('12345HEARINGuserIdForPayment', userId, 'EX', expect.any(Number), 'NX');
     expect(mockDraftStoreClient.expireat).not.toHaveBeenCalled();
   });
 
   it('should preserve TTL when updating an existing payment session key', async () => {
-    mockDraftStoreClient.ttl.mockResolvedValueOnce(3600);
+    mockDraftStoreClient.set.mockResolvedValueOnce(null).mockResolvedValueOnce('OK');
 
     await saveUserId('12345', FeeType.HEARING, 'user123');
 
-    expect(mockDraftStoreClient.set).toHaveBeenCalledWith('12345HEARINGuserIdForPayment', 'user123', 'KEEPTTL');
+    expect(mockDraftStoreClient.set).toHaveBeenNthCalledWith(2, '12345HEARINGuserIdForPayment', 'user123', 'KEEPTTL', 'XX');
     expect(mockDraftStoreClient.expireat).not.toHaveBeenCalled();
   });
 
@@ -57,7 +58,7 @@ describe('Payment session store service', () => {
     await saveUserId(claimId, feeType, newUserId);
 
     expect(mockDraftStoreClient.get).toHaveBeenCalledWith('12345HEARINGuserIdForPayment');
-    expect(mockDraftStoreClient.set).toHaveBeenCalledWith('12345HEARINGuserIdForPayment', newUserId, 'EX', expect.any(Number));
+    expect(mockDraftStoreClient.set).toHaveBeenCalledWith('12345HEARINGuserIdForPayment', newUserId, 'EX', expect.any(Number), 'NX');
     expect(mockDraftStoreClient.get).toHaveBeenCalledTimes(1);
   });
 
@@ -70,7 +71,7 @@ describe('Payment session store service', () => {
     await saveUserId(claimId, feeType, userId);
 
     expect(mockDraftStoreClient.get).toHaveBeenCalledWith('12345HEARINGuserIdForPayment');
-    expect(mockDraftStoreClient.set).toHaveBeenCalledWith('12345HEARINGuserIdForPayment', userId, 'EX', expect.any(Number));
+    expect(mockDraftStoreClient.set).toHaveBeenCalledWith('12345HEARINGuserIdForPayment', userId, 'EX', expect.any(Number), 'NX');
     expect(mockDraftStoreClient.get).toHaveBeenCalledTimes(1);
   });
 
