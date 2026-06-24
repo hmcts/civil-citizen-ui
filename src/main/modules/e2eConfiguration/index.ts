@@ -29,10 +29,10 @@ export class DraftStoreCliente2e {
         client.expire(ONE_DAY_IN_SECONDS);
       });
       GA_REDIS_DATA.forEach((element: any) => {
-        client.set(element.id, JSON.stringify(element.value, null, 4)).then(() =>
-          this.logger.info(`Mock data ${element.id} saved to Redis`),
-        );
-        client.expire(ONE_DAY_IN_SECONDS);
+        client.set(element.id, JSON.stringify(element.value, null, 4)).then(() => {
+          this.logger.info(`Mock data ${element.id} saved to Redis`);
+          return client.expire(element.id, ONE_DAY_IN_SECONDS);
+        });
       });
     });
   }

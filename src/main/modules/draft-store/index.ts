@@ -24,9 +24,10 @@ export class DraftStoreClient {
     if(process.env.NODE_ENV !== 'production') {
       app.locals.draftStoreClient.on('connect', () => {
         REDIS_DATA.forEach((element: any) => {
-          client.set(element.id, JSON.stringify(element, null, 4)).then(() =>
-            this.logger.info(`Mock data ${element.id} saved to Redis`),
-          );
+          client.set(element.id, JSON.stringify(element, null, 4)).then(() => {
+            this.logger.info(`Mock data ${element.id} saved to Redis`);
+            return client.expire(element.id, ONE_DAY_IN_SECONDS);
+          });
           client.expire(ONE_DAY_IN_SECONDS);
         });
       });
