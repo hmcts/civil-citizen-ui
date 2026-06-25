@@ -177,6 +177,19 @@ module.exports = {
       nextSteps: 'confirm that they’ve paid you the full amount that you’re owed',
     };
   },
+
+  defaultJudgmentGrantedClaimantCoSC: () => {
+    return {
+      title: 'A judgment against the defendant has been now been entered',
+      content: [
+        'The defendant should now pay you according to the terms of the judgment.',
+        'Once they do, you should confirm that they\'ve paid you the full amount that you\'re owed.',
+        'If they do not pay you by the date on the judgment, you can ask for enforcement action to be taken against them.',
+        'If you need to change the terms of payment within the judgment, such as the instalments you had previously agreed, you can make an application to vary the judgment.',
+      ],
+      nextSteps: 'confirm that they\'ve paid you the full amount that you\'re owed',
+    };
+  },
   defendantResponseConfirmYouHavePaidAJudgmentCCJDebt: () => {
     return {
       title: 'The claimant has been paid the full amount that they were owed',
@@ -274,6 +287,7 @@ module.exports = {
     };
   },
 
+  //Notice.AAA6.CP.OrderMade.Defendant
   //Notice.AAA6.CP.OrderMade.Claimant
   orderMade: () => {
     return {
@@ -320,6 +334,7 @@ module.exports = {
     };
   },
 
+  //Notice.AAA6.CP.Hearing.Scheduled.Defendant
   //Notice.AAA6.CP.Hearing.Scheduled.Claimant
   hearingScheduled: (hearingDate) => {
     return {
@@ -525,6 +540,34 @@ module.exports = {
     };
   },
 
+  // Notice.AAA6.DefResponse.MoreTimeRequested.Claimant.json
+  claimantNotificationMoreTimeRequested: (time, date, daysToRespond) => {
+    return {
+      title: 'More time requested',
+      content: [
+        `The response deadline for the defendant is now ${time} on ${date}. There are ${daysToRespond} days remaining.`],
+    };
+  },
+
+  // Notice.AAA6.DefResponse.MoreTimeRequested.Claimant.json
+  defendantNotificationMoreTimeRequested: (time, date, daysToRespond) => {
+    return {
+      title: 'More time requested',
+      content: [
+        `The response deadline is now ${time} on ${date}. There are ${daysToRespond} days remaining for you`],
+      nextSteps: 'respond to the claim',
+    };
+  },
+
+  // Notice.AAA6.DefResponse.FullDefence.AlreadyPaid.Claimant.json
+  defendantResponseFullDefenceAlreadyPaid: (claimSettledAmount, claimSettledDateEn, defaultRespondTime, applicant1ResponseDeadlineEn) => {
+    return {
+      title: 'Response to the claim',
+      content: [`The defendant has said they already paid ${claimSettledAmount} on ${claimSettledDateEn}. You can confirm payment and settle, or proceed with the claim. You need to respond by ${defaultRespondTime} on ${applicant1ResponseDeadlineEn} or the claim will not continue.`],
+      nextSteps: 'View and respond',
+    };
+  },
+
   caseOffline: () => {
     return {
       title: 'Your online account will no longer be updated',
@@ -640,6 +683,48 @@ module.exports = {
       title: 'Response to the claim',
       content: 'You have rejected the claim. The court will contact you when ' + clientName + ' responds.',
       nextSteps: 'View your response',
+    };
+  },
+
+  // Notice.AAA6.Discontinue.NoticeOfDiscontinuanceIssued.Defendant
+  discontinuanceNoticeDefendant: () => {
+    return {
+      title: 'A notice of discontinuance has been created and sent to all parties',
+      content: 'This means that all or part of this claim has been discontinued.Please review the notice of discontinuance carefully.',
+      nextSteps: 'notice of discontinuance',
+    };
+  },
+
+  // Notice.AAA6.Settle.ClaimPaidInFull.Defendant
+  settleClaimMarkPaidInFullDefendant: (date) => {
+    return {
+      title: 'Claim marked as paid in full',
+      content: 'This claim has been marked as paid in full as of ' + date +'.You do not need to attend court and any hearings scheduled will not go ahead.',
+    };
+  },
+
+  // Notice.AAA6.JudgmentsOnline.IssuedCCJ.Claimant
+  judgmentOnlineCcjIssuedClaimant: () => {
+    return {
+      title: 'A judgment against the defendant has been made',
+      content: ['The defendant should now pay you according to the terms of the judgment.',
+        'Once they do, you should confirm that they’ve paid you the full amount that you’re owed.',
+        'If they do not pay you by the date on the judgment, you can ask for enforcement action to be taken against them.',
+        'If you need to change the terms of payment within the judgment, such as the instalments you had previously agreed, you can make an application to vary the judgment.',
+      ],
+      nextSteps: 'confirm that they’ve paid you the full amount that you’re owed',
+    };
+  },
+
+  // Notice.AAA6.JudgmentsOnline.IssuedCCJ.Defendant
+  judgmentOnlineCcjIssuedDefendant: () => {
+    return {
+      title: 'A judgment has been made against you',
+      content: ['The judgment formalises the payment plan you’ve agreed with the claimant.',
+        'You’ve agreed to pay the claim amount of £536.00 immediately.',
+        'The claimant’s details for payment and the full payment plan can be found on the judgment.',
+        'If you can no longer afford the repayments you’ve agreed with the claimant, you can make an application to vary the judgment.',
+      ],
     };
   },
 };
