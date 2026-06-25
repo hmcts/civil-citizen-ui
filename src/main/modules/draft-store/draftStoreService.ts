@@ -131,10 +131,10 @@ export const deleteDraftClaimFromStore = async (claimId: string, field?: string)
   await app.locals.draftStoreClient.del(claimId, field);
 };
 
-export const deleteFieldDraftClaimFromStore = async (claimId: string, claim: Claim, propertyName: string): Promise<void> => {
+export const deleteFieldDraftClaimFromStore = async (claimId: string, claim: Claim, propertyName: string, userId?: string): Promise<void> => {
   if (Object.prototype.hasOwnProperty.call(claim, propertyName)) {
     delete claim[propertyName];
-    await saveDraftClaim(claimId, claim);
+    await saveDraftClaim(claimId, claim, false, userId);
   }
 };
 

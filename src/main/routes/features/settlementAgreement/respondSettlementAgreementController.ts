@@ -30,7 +30,7 @@ respondSettlementAgreementController.get(DEFENDANT_SIGN_SETTLEMENT_AGREEMENT, (a
   try {
     const claimId = req.params.id;
     const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
-    await saveDraftClaim(generateRedisKey(<AppRequest>req), claim, true);
+    await saveDraftClaim(generateRedisKey(<AppRequest>req), claim, true, req.session.user?.id);
     renderView(new GenericForm(new GenericYesNo(claim.defendantSignedSettlementAgreement, 'PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT.DETAILS.VALID_YES_NO_OPTION')), res, getRespondSettlementAgreementText(claim, req));
   } catch (error) {
     next(error);

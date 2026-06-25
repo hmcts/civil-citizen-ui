@@ -21,7 +21,7 @@ finaliseTrialArrangementsController.get(CP_FINALISE_TRIAL_ARRANGEMENTS_URL, (asy
     const claimId = getRouteParam(req, 'id');
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
-    await saveDraftClaim(generateRedisKey(<AppRequest>req), claim);
+    await saveDraftClaim(generateRedisKey(<AppRequest>req), claim, false, req.session.user?.id);
 
     const dashboardUrl = claim.caseRole === CaseRole.CLAIMANT ? constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL) : constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL);
 
