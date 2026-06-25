@@ -95,7 +95,7 @@ def getCivilServiceImage() {
   if (civilServicePr) {
     return "pr-${civilServicePr}"
   }
-  return "pr-8036"
+  return "pr-7939"
 }
 
 def getCivilServiceCamundaRef() {
