@@ -14,14 +14,7 @@ let claimRef, caseData, claimNumber;
 
 Feature('Lip v Lip claim - Judgment Requested state - Case settled').tag('@ui-judgment-buffer');
 
-// Both scenarios are Scenario.skip pending the civil-service fix for the
-// CCJ-cancel-on-settle path. The settle side passes (AC3/AC4a/AC4b/AC6) but the
-// requested CCJ is NOT cancelled on settlement, so AC1/AC2 (activeJudgment not
-// cleared) and AC5 (new "CCJ cancelled" claimant notification) fail. Confirmed a
-// backend gap - reproduced manually with the judgment-buffer toggle ON. Un-skip
-// once LIP_CLAIM_SETTLED cancels the requested judgment. [DTSCCI-5108]
-
-Scenario.skip('Case settled during JUDGMENT_REQUESTED buffer - CCJ cancelled, claimant + defendant notifications and defendant email (AC1-AC6) [DTSCCI-5108]', async ({I, api}) => {
+Scenario('Case settled during JUDGMENT_REQUESTED buffer - CCJ cancelled, claimant + defendant notifications and defendant email (AC1-AC6) [DTSCCI-5108]', async ({I, api}) => {
   if (!(await checkToggleEnabled('judgment-buffer'))) return;
   config.claimantCitizenUser.email = `claimantcitizen-${Date.now()}-${Math.random().toString(36).slice(2, 7)}@gmail.com`;
   config.defendantCitizenUser.email = `defendantcitizen-${Date.now()}-${Math.random().toString(36).slice(2, 7)}@gmail.com`;
@@ -33,12 +26,10 @@ Scenario.skip('Case settled during JUDGMENT_REQUESTED buffer - CCJ cancelled, cl
   await api.amendRespondent1ResponseDeadline(config.systemUpdate2);
   await api.amendRespondent1PartyEmail(claimRef, config.systemUpdate2, config.defendantCitizenUser.email);
 
-  // Drive the case into the JUDGMENT_REQUESTED buffer (claimant requests default judgment)
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await ClaimantResponseSteps.verifyDefaultJudgmentBuffer(claimRef);
   await api.waitForFinishedBusinessProcess();
 
-  // Claimant settles the claim while in the buffer
   await api.settleClaimLip(config.claimantCitizenUser);
 
   // AC6 - defendant receives the settlement email
@@ -68,7 +59,7 @@ Scenario.skip('Case settled during JUDGMENT_REQUESTED buffer - CCJ cancelled, cl
   await api.assertActiveJudgmentDetailsNotPresent(claimRef);
 });
 
-Scenario.skip('Case settled during buffer - judgment cancelled and active judgment cleared (AC1, AC2) [DTSCCI-5108]', async ({api}) => {
+Scenario('Case settled during buffer - judgment cancelled and active judgment cleared (AC1, AC2) [DTSCCI-5108]', async ({api}) => {
   if (!(await checkToggleEnabled('judgment-buffer'))) return;
   config.claimantCitizenUser.email = `claimantcitizen-${Date.now()}-${Math.random().toString(36).slice(2, 7)}@gmail.com`;
   config.defendantCitizenUser.email = `defendantcitizen-${Date.now()}-${Math.random().toString(36).slice(2, 7)}@gmail.com`;

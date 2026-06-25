@@ -841,13 +841,12 @@ module.exports = {
   },
 
   settleClaimLip: async (user = config.claimantCitizenUser) => {
-    console.log('This is inside settleClaimLip: ' + caseId);
+    console.log('settleClaimLip for case id ' + caseId);
     eventName = 'LIP_CLAIM_SETTLED';
     const payload = settleClaim.lipClaimSettled();
     await apiRequest.setupTokens(user);
     await apiRequest.startEventForCitizen(eventName, caseId, payload);
     await waitForFinishedBusinessProcess(caseId);
-    console.log('End of settleClaimLip()');
   },
 
   adjustSubmittedDateForCarm: async (caseId) => {
