@@ -287,6 +287,7 @@ module.exports = {
     };
   },
 
+  //Notice.AAA6.CP.OrderMade.Defendant
   //Notice.AAA6.CP.OrderMade.Claimant
   orderMade: () => {
     return {
@@ -333,6 +334,7 @@ module.exports = {
     };
   },
 
+  //Notice.AAA6.CP.Hearing.Scheduled.Defendant
   //Notice.AAA6.CP.Hearing.Scheduled.Claimant
   hearingScheduled: (hearingDate) => {
     return {
@@ -698,6 +700,31 @@ module.exports = {
     return {
       title: 'Claim marked as paid in full',
       content: 'This claim has been marked as paid in full as of ' + date +'.You do not need to attend court and any hearings scheduled will not go ahead.',
+    };
+  },
+
+  // Notice.AAA6.JudgmentsOnline.IssuedCCJ.Claimant
+  judgmentOnlineCcjIssuedClaimant: () => {
+    return {
+      title: 'A judgment against the defendant has been made',
+      content: ['The defendant should now pay you according to the terms of the judgment.',
+        'Once they do, you should confirm that they’ve paid you the full amount that you’re owed.',
+        'If they do not pay you by the date on the judgment, you can ask for enforcement action to be taken against them.',
+        'If you need to change the terms of payment within the judgment, such as the instalments you had previously agreed, you can make an application to vary the judgment.',
+      ],
+      nextSteps: 'confirm that they’ve paid you the full amount that you’re owed',
+    };
+  },
+
+  // Notice.AAA6.JudgmentsOnline.IssuedCCJ.Defendant
+  judgmentOnlineCcjIssuedDefendant: () => {
+    return {
+      title: 'A judgment has been made against you',
+      content: ['The judgment formalises the payment plan you’ve agreed with the claimant.',
+        'You’ve agreed to pay the claim amount of £536.00 immediately.',
+        'The claimant’s details for payment and the full payment plan can be found on the judgment.',
+        'If you can no longer afford the repayments you’ve agreed with the claimant, you can make an application to vary the judgment.',
+      ],
     };
   },
 };
