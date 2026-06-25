@@ -34,7 +34,6 @@ describe('CCJ Guard', () => {
   });
   beforeEach(() => {
     jest.clearAllMocks();
-    jest.spyOn(launchDarkly, 'isJudgmentOnlineLive').mockResolvedValue(false);
     jest.spyOn(launchDarkly, 'isJudgmentBufferEnabled').mockResolvedValue(false);
   });
   it('should access ccj confirmation page', async () => {
