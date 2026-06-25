@@ -37,8 +37,8 @@ applicationSummaryController.get(GA_APPLICATION_SUMMARY_URL, async (req: AppRequ
   try {
     const lng = req.query.lang || req.cookies.lang;
     const claimId = getRouteParam(req, 'id');
-    const ccdClaim: Claim = await civilServiceClient.retrieveClaimDetails(claimId, req);
     const claim = await getClaimById(claimId, req, true);
+    const ccdClaim: Claim = await civilServiceClient.retrieveClaimDetails(claimId, req);
     const applications = await generalApplicationServiceClient.getApplicationsByCaseId(claimId, req) || [];
     const visibleApplications = applications.filter(isApplicationVisibleToRespondentForClaimant);
     const applicationsRows: ApplicationSummary[] = [];
