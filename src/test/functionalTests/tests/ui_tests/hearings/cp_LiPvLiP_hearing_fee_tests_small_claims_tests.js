@@ -39,6 +39,9 @@ Scenario('Apply for Help with Fees Journey - Small Claims', async ({I, api}) => 
   await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
   await I.click(notification.nextSteps);
   await ResponseSteps.SignOut();
+  await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+  await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
+  await ResponseSteps.SignOut();
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await I.click(claimNumber);
   await I.dontSee(notification.title);
