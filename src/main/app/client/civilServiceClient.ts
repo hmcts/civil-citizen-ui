@@ -489,6 +489,8 @@ export class CivilServiceClient {
   }
 
   async calculateClaimInterest(claim: ClaimUpdate, req?: AppRequest): Promise<number> {
+    // Request-scoped dedup only: collapses duplicate calls within one HTTP request.
+    // Does not persist across page loads or form submissions.
     if (req) {
       const requestCache = this.getCalculateInterestRequestCache(req);
       const cacheKey = JSON.stringify(claim);
