@@ -160,6 +160,7 @@
       "TITLE": "Cysylltu â ni i gael cymorth",
       "TELEPHONE": "Rhif ffôn",
       "TELEPHONE_CARM": "Rhif ffôn",
+      "TELEPHONE_VALUE": "0300 123 7050",
       "WEB_CHAT": "Sgwrsio ar y We",
       "WEB_CHAT_CLOSED": "Mae’r gwasanaeth sgwrsio dros y we nawr ar gau. Dewch yn ôl dydd Llun i ddydd Gwener rhwng 8.30am - 5pm neu cysylltwch â ni dros y ffôn neu drwy e-bost.",
       "WEB_CHAT_NO_ADVISORS": "Nid oes cynghorwyr ar gael ar hyn o bryd. Rhowch gynnig arni eto yn nes ymlaen.",
@@ -4698,6 +4699,7 @@
     "RESPONSE_DEADLINE_OPTIONS": {
       "CURRENT_DEADLINE": "Terfyn amser cyfredol ar gyfer ymateb: 4pm ar {{ responseDeadline }}",
       "EMAIL_FORM": "Anfonwch y ffurflen N244 wedi’i llenwi trwy e-bost i :",
+      "EMAIL_ADDRESS": "contact@justice.gov.uk",
       "FORM": "Ffurflen N244 (yn agor mewn tab newydd)",
       "MORE_TIME": "Ydych chi eisiau gwneud cais am ragor o amser i ymateb?",
       "OPTION_AGREED": "Rwyf eisoes wedi cytuno ar ragor o amser gyda chynrychiolydd cyfreithiol {{ claimantName }}",

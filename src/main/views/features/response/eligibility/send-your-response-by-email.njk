@@ -118,9 +118,9 @@
           <a class="govuk-link govuk-!-margin-bottom-0" href='mailto:{{supportEmailAddress}}'>{{supportEmailAddress}}</a>
           <p class="govuk-body govuk-!-margin-bottom-0">{{ t('COMMON.CONTACT_US_FOR_HELP.RESPONSE_DELAY') }}</p>
           <h3 class="govuk-heading-m govuk-!-margin-bottom-0">{{ t('COMMON.CONTACT_US_FOR_HELP.TELEPHONE') }}</h3>
-          <p class="govuk-body govuk-!-margin-bottom-0">0300 123 7050</p>
+          <p class="govuk-body govuk-!-margin-bottom-0">{{ t('COMMON.CONTACT_US_FOR_HELP.TELEPHONE_VALUE') }}</p>
           <p class="govuk-body govuk-!-margin-bottom-0">{{ t('COMMON.CONTACT_US_FOR_HELP.OPENING_HOURS') }}
-            <a target="_blank" class="govuk-link" href='https://www.gov.uk/call-charges'>{{ t('COMMON.CONTACT_US_FOR_HELP.CALL_CHARGES') }}</a>
+            <a target="_blank" class="govuk-link" href={{externalURLs.callChargesUrl}}>{{ t('COMMON.CONTACT_US_FOR_HELP.CALL_CHARGES') }}</a>
           </p>
           </div>
         </div>

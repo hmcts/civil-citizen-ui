@@ -22,10 +22,10 @@
             class="govuk-body">{{ t('PAGES.UNDER_18.CONTENT') }}</p>
           <h3 class='govuk-heading-m govuk-!-margin-bottom-0'>{{ t('PAGES.UNDER_18.EMAIL_UNDER_18') }}</h3>
           <p class="govuk-body">
-            <a class="govuk-link" href='mailto:contactocmc@justice.gov.uk'>contactocmc@justice.gov.uk</a>
+            <a class="govuk-link" href='mailto:{{ t('PAGES.SEND_YOUR_RESPONSE_BY_EMAIL.SUPPORT_EMAIL_ADDRESS') }}'>{{ t('PAGES.SEND_YOUR_RESPONSE_BY_EMAIL.SUPPORT_EMAIL_ADDRESS') }}</a>
           </p>
           <h3 class='govuk-heading-m govuk-!-margin-bottom-0'>{{ t('COMMON.CONTACT_US_FOR_HELP.TELEPHONE') }}</h3>
-          <p class="govuk-body">0300 123 7050</p>
+          <p class="govuk-body">{{ t('COMMON.CONTACT_US_FOR_HELP.TELEPHONE_VALUE') }}</p>
           <p class="govuk-body">{{ t('COMMON.CONTACT_US_FOR_HELP.OPENING_HOURS') }}<br/>
             <a class="govuk-link" href= {{externalURLs.callChargesUrl}}
                target='_blank'>{{ t('COMMON.CONTACT_US_FOR_HELP.CALL_CHARGES') }}</a>
