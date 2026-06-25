@@ -33,7 +33,7 @@ export const saveQueryManagement = async (claimId: RouteParam, value: any, query
     claim.queryManagement = new QueryManagement();
   }
   claim.queryManagement[queryManagementPropertyName] = value;
-  await saveDraftClaim(generateRedisKey(<AppRequest>req), claim, false, req.session.user?.id);
+  await saveDraftClaim(generateRedisKey(<AppRequest>req), claim, false, (<AppRequest>req).session.user?.id);
 };
 
 export const getQueryManagement = async (claimId: RouteParam, req: Request): Promise<QueryManagement> => {
