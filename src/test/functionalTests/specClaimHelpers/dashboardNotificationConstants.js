@@ -295,6 +295,7 @@ module.exports = {
     };
   },
 
+  //Notice.AAA6.CP.OrderMade.Defendant
   //Notice.AAA6.CP.OrderMade.Claimant
   orderMade: () => {
     return {
@@ -341,6 +342,7 @@ module.exports = {
     };
   },
 
+  //Notice.AAA6.CP.Hearing.Scheduled.Defendant
   //Notice.AAA6.CP.Hearing.Scheduled.Claimant
   hearingScheduled: (hearingDate) => {
     return {
