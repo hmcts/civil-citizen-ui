@@ -120,19 +120,25 @@ $ yarn test:functional
 ```
 Running E2E tests:
 
-For that we need to follow three steps:
-1) Start wiremock server (automatically pulls latest mappings from civil-wiremock-mappings)
+The legacy fixed-ID E2E suite under `src/test/e2eTests` has been removed. Those tests only performed work in
+`preview` or `demo`, so routine commands discovered no-op scenarios in other environments. Use the functional
+suite instead:
+
 ```bash
-$ yarn wiremock:start
+$ yarn test:fullfunctional
 ```
-2) Start the application as E2E
-```bash
-$ yarn start:e2e
-```
-3) Execute E2E test
-```bash
-$ yarn test:e2e
-```
+
+The deprecated `yarn test:e2e` script is kept as an alias for `yarn test:fullfunctional`. The deprecated
+`yarn testgalip:e2e` script now runs the replacement GA functional group tagged `@ui-ga`.
+
+Legacy scenario mapping:
+
+| Removed legacy bucket | Replacement coverage or reason |
+| --- | --- |
+| GA creation and response scenarios tagged `@lipga` | Replaced by functional GA tests tagged `@ui-ga`, including Lip v Lip and LR v Lip GA creation, orders, responses, NoC and payment coverage. |
+| Claimant response part-admit fixed-ID scenarios tagged `@e2e` | Replaced by functional part-admit tests tagged `@ui-part-admit`, including already paid and pay immediately flows. |
+| Case progression upload documents and trial-arrangement fixed-ID scenarios tagged `@e2e` | Replaced by functional `@ui-upload-evidence` and `@ui-hearings` coverage. |
+| Case progression help-with-fees fixed-ID scenario tagged `@e2e` | Replaced by functional hearing-fee/help-with-fees coverage in the `@ui-hearings` group. |
 
 Running Preview pipeline :
 
@@ -146,7 +152,7 @@ The standard preview deployment, i.e. without the github label present, intends 
 
 `civilDefinitionBranch:????` where ???? is the civil-ccd-definition branch name you want to point to. e.g civilDefinitionBranch:DTSCCI-1699
 
-`civilServicePr:????` where ???? is the civil-service PR number you want to deploy against. e.g `civilServicePr:12345` will deploy `hmctspublic.azurecr.io/civil/service:pr-12345` in preview.
+`civilServicePr:????` where ???? is the civil-service PR number you want to deploy against. e.g `civilServicePr:12345` will deploy `hmctspublic.azurecr.io/civil/service:pr-12345` in preview and import Camunda BPMN files from that civil-service PR.
 
 `civilShared:????` where ???? is the civil-service shared scripts branch name you want to point to. e.g `civilShared:my-feature-branch` will use the shared scripts from this branch of civil-service.
 

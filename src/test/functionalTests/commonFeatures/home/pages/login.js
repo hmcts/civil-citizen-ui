@@ -53,7 +53,7 @@ class LoginPage {
     await I.fillField(fields.username, email);
     await I.fillField(fields.password, password);
     await I.waitForVisible(buttons.submit);
-    await I.click(buttons.submit);
+    await I.clickWithRetry(buttons.submit, 2);
     await I.wait(3);
 
     const url = await I.grabCurrentUrl();
