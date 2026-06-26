@@ -3,7 +3,7 @@ import nock from 'nock';
 import request from 'supertest';
 import {app} from '../../../../../main/app';
 import {CLAIMANT_DOB_URL, CLAIMANT_PHONE_NUMBER_URL} from 'routes/urls';
-import {mockCivilClaim, mockNoStatementOfMeans, mockRedisFailure} from '../../../../utils/mockDraftStore';
+import {mockCivilClaim, mockDraftClaim, mockNoStatementOfMeans, mockRedisFailure} from '../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
 import {
@@ -11,6 +11,10 @@ import {
   formatDateToFullDate, 
   getDOBforAgeFromCurrentTime,
 } from 'common/utils/dateUtils';
+import {Claim} from 'models/claim';
+
+const jsdom = require('jsdom');
+const {JSDOM} = jsdom;
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
@@ -36,6 +40,7 @@ describe('Claimant Date of Birth Controller', () => {
       const res = await request(app).get(CLAIMANT_DOB_URL);
       expect(res.status).toBe(200);
       expect(res.text).toContain('What is your date of birth?');
+      expect(res.text).not.toContain('NaN');
     });
 
     it('should render date of birth page with values', async () => {
@@ -43,6 +48,26 @@ describe('Claimant Date of Birth Controller', () => {
       const res = await request(app).get(CLAIMANT_DOB_URL);
       expect(res.status).toBe(200);
       expect(res.text).toContain('What is your date of birth?');
+      expect(res.text).not.toContain('NaN');
+    });
+
+    it('should render saved date of birth values', async () => {
+      app.locals.draftStoreClient = mockDraftClaim({
+        case_data: {
+          applicant1: {
+            dateOfBirth: {
+              date: new Date('1980-03-02T00:00:00.000Z'),
+            },
+          },
+        },
+      } as unknown as Claim);
+      const res = await request(app).get(CLAIMANT_DOB_URL);
+      const dom = new JSDOM(res.text);
+
+      expect(res.status).toBe(200);
+      expect(dom.window.document.getElementById('day').getAttribute('value')).toBe('2');
+      expect(dom.window.document.getElementById('month').getAttribute('value')).toBe('3');
+      expect(dom.window.document.getElementById('year').getAttribute('value')).toBe('1980');
     });
 
     it('should return http 500 when has error in the get method', async () => {
