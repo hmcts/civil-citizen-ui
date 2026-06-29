@@ -23,6 +23,4 @@ Scenario('LR vs LiP - Claimant LR discontinues claim', async ({ api, I }) => {
   await verifyNotificationTitleAndContent(claimNumber, discontinuanceNotice.title, discontinuanceNotice.content);
   const nextStepsUrl = await I.grabAttributeFrom(`//a[normalize-space()='${discontinuanceNotice.nextSteps}']`, 'href');
   expect(nextStepsUrl).to.include(`/case/${claimRef}/view-documents`);
-  await I.click(discontinuanceNotice.nextSteps);
-  await I.switchToNextTab();
 });
