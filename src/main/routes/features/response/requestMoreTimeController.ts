@@ -36,7 +36,9 @@ requestMoreTimeController.get(REQUEST_MORE_TIME_URL, deadLineGuard,
   (async (req: Request, res: Response, next: NextFunction) => {
     try {
       const language = req.query.lang ? req.query.lang : req.cookies.lang;
-      const claim = await getCaseDataFromStore(generateRedisKey(<AppRequest>req));
+      const redisKey = generateRedisKey(<AppRequest>req);
+      logger.info(`[duplicate-redis-check] requestMoreTimeController GET: getCaseDataFromStore, redisKey=${redisKey}, ${req.method} ${req.originalUrl}`);
+      const claim = await getCaseDataFromStore(redisKey);
       const claimId = getRouteParam(req, 'id');
       renderView(res, new GenericForm(new AdditionalTime(claim.responseDeadline?.additionalTime)), claim, language, claimId);
     } catch (error) {
@@ -52,6 +54,7 @@ requestMoreTimeController.post(REQUEST_MORE_TIME_URL, deadLineGuard,
       const language = req.query.lang ? req.query.lang : req.cookies.lang;
       const selectedOption = responseDeadlineService.getAdditionalTime(req.body.option);
       const claimId = getRouteParam(req, 'id');
+      logger.info(`[duplicate-redis-check] requestMoreTimeController POST: getCaseDataFromStore, redisKey=${redisKey}, ${req.method} ${req.originalUrl}`);
       const claim = await getCaseDataFromStore(redisKey);
       const form = new GenericForm(new AdditionalTime(selectedOption));
       await form.validate();

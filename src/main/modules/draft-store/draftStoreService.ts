@@ -20,7 +20,11 @@ const logger = Logger.getLogger('draftStoreService');
  * @returns claim from redis or undefined when no there is no data for claim id
  */
 export const getDraftClaimFromStore = async (claimId: string, doNotThrowErrror = false) => {
-  const dataFromRedis = await app.locals.draftStoreClient.get(claimId);
+  const draftStoreClient = app.locals.draftStoreClient;
+  const ttl = await draftStoreClient.ttl(claimId);
+  logger.info(`[redis-call] getDraftClaimFromStore: key=${claimId}, ttl=${ttl}s`);
+  const dataFromRedis = await draftStoreClient.get(claimId);
+  logger.info(`[redis-call] getDraftClaimFromStore: key=${claimId}, cacheHit=${dataFromRedis !== null}`);
   if (dataFromRedis === null && !doNotThrowErrror) {
     throw new Error('Case not found...');
   }
