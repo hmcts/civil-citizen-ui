@@ -21,8 +21,9 @@ const logger = Logger.getLogger('draftStoreService');
  */
 export const getDraftClaimFromStore = async (claimId: string, doNotThrowErrror = false) => {
   const draftStoreClient = app.locals.draftStoreClient;
-  const ttl = await draftStoreClient.ttl(claimId);
-  logger.info(`[redis-call] getDraftClaimFromStore: key=${claimId}, ttl=${ttl}s`);
+  const ttl = draftStoreClient?.ttl ? await draftStoreClient.ttl(claimId) : 'unavailable';
+  const ttlLabel = typeof ttl === 'number' ? `${ttl}s` : ttl;
+  logger.info(`[redis-call] getDraftClaimFromStore: key=${claimId}, ttl=${ttlLabel}`);
   const dataFromRedis = await draftStoreClient.get(claimId);
   logger.info(`[redis-call] getDraftClaimFromStore: key=${claimId}, cacheHit=${dataFromRedis !== null}`);
   if (dataFromRedis === null && !doNotThrowErrror) {
