@@ -133,7 +133,7 @@
     "@babel/preset-env": "^7.26.0",
     "@pact-foundation/pact": "^15.0.1",
     "@pact-foundation/pact-node": "^10.18.0",
-    "@playwright/test": "1.58.0",
+    "@playwright/test": "1.47.2",
     "@types/chai": "^4",
     "@types/git-rev-sync": "^2.0.2",
     "@types/jest": "^29.5.14",
