@@ -8,7 +8,8 @@ import {
 import {GenericForm} from 'form/models/genericForm';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {ResponseDeadlineService} from 'services/features/response/responseDeadlineService';
-import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {generateRedisKey} from 'modules/draft-store/draftStoreService';
+import {getStashedClaimOrFromStore} from 'common/utils/claimRequestLocals';
 import {deadLineGuard} from 'routes/guards/deadLineGuard';
 import {AppRequest} from 'common/models/AppRequest';
 import {getRouteParam} from 'common/utils/routeParamUtils';
@@ -26,7 +27,7 @@ agreedResponseDeadlineController
       const claimId = getRouteParam(req, 'id');
       const backLink = constructResponseUrlWithIdParams(claimId, RESPONSE_DEADLINE_OPTIONS_URL);
       try {
-        const claim = await getCaseDataFromStore(generateRedisKey(<AppRequest>req));
+        const claim = await getStashedClaimOrFromStore(req, 'agreedResponseDeadlineController GET');
         const agreedResponseDeadline = responseDeadlineService.getAgreedResponseDeadline(claim);
         const isReleaseTwoEnabled = true;
         res.render(agreedResponseDeadlineViewPath, {
@@ -48,7 +49,7 @@ agreedResponseDeadlineController
       const claimId = getRouteParam(req, 'id');
       const backLink = constructResponseUrlWithIdParams(claimId, RESPONSE_DEADLINE_OPTIONS_URL);
       try {
-        const claim = await getCaseDataFromStore(redisKey);
+        const claim = await getStashedClaimOrFromStore(req, 'agreedResponseDeadlineController POST');
         const originalResponseDeadline = claim?.respondent1ResponseDeadline;
         const agreedResponseDeadlineDate = new AgreedResponseDeadline(year, month, day, originalResponseDeadline);
         const form: GenericForm<AgreedResponseDeadline> = new GenericForm<AgreedResponseDeadline>(agreedResponseDeadlineDate);
