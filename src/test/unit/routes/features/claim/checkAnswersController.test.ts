@@ -417,5 +417,24 @@ describe('Claim - Check answers', () => {
         });
       expect(mockSubmitClaim).not.toHaveBeenCalled();
     });
+    it('should redirect to dashboard (no 500) when a concurrent request recreated an empty draft', async () => {
+      // isDraftClaim() is true (draftClaimCreatedAt set) but claimDetails is undefined - happens
+      // when createDraftClaimInStoreWithExpiryTime recreates a bare draft under concurrent load.
+      // Must redirect, not NPE on claim.claimDetails.helpWithFees.
+      mockGetClaim.mockImplementation(() => {
+        const claim = new Claim();
+        claim.draftClaimCreatedAt = new Date();
+        return claim;
+      });
+      mockSubmitClaim.mockClear();
+      await request(app)
+        .post(CLAIM_CHECK_ANSWERS_URL)
+        .send()
+        .expect((res: Response) => {
+          expect(res.status).toBe(302);
+          expect(res.header.location).toBe(DASHBOARD_URL);
+        });
+      expect(mockSubmitClaim).not.toHaveBeenCalled();
+    });
   });
 });

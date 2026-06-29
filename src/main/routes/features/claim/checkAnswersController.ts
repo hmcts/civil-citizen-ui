@@ -73,13 +73,14 @@ claimCheckAnswersController.post(CLAIM_CHECK_ANSWERS_URL, async (req: Request | 
     const userId = (<AppRequest>req).session?.user?.id;
     const isFullAmountRejected = (req.body?.isFullAmountRejected === 'true');
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-    // doNotThrowError: if the draft has already been submitted (and deleted from the draft
-    // store) a duplicate/replayed POST returns an empty claim instead of throwing 'Case not
-    // found'. Treat that as a no-op submission and send the user to their dashboard rather than
-    // re-submitting or returning a 500 (idempotent under double-submit / concurrent load).
+    // doNotThrowError: a duplicate/replayed/concurrent POST can find the draft either already
+    // deleted (submitted) or recreated empty by a concurrent createDraftClaimInStoreWithExpiryTime
+    // (only draftClaimCreatedAt set, no claimDetails). Either way it is not submittable, so treat
+    // it as a no-op and send the user to their dashboard rather than re-submitting, throwing
+    // 'Case not found', or NPE-ing on claim.claimDetails (idempotent under concurrent load).
     const claim = await getCaseDataFromStore(userId, true);
-    if (!claim.isDraftClaim()) {
-      logger.info(`check-and-send POST with no draft claim for user ${userId} - already submitted, redirecting to dashboard`);
+    if (!claim.isDraftClaim() || !claim.claimDetails?.helpWithFees) {
+      logger.info(`check-and-send POST with no submittable draft for user ${userId} - redirecting to dashboard`);
       return res.redirect(DASHBOARD_URL);
     }
     const isCarmEnabled = await isCarmEnabledForCase(claim.draftClaimCreatedAt);
