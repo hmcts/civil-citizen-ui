@@ -84,7 +84,10 @@ describe('claim assignment controller', ()=>{
 
       await request(app).get('/assignclaim')
         .expect((res) => {
-          expect(res.status).toBe(409);
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(t('COMMON.HEADER.BETA'));
+          expect(res.text).toContain('govuk-phase-banner');
+          expect(res.text).toContain('govuk-link language');
           expect(res.text).toContain(t('PAGES.FIRST_CONTACT_CLAIM_FINALISED.TITLE'));
           expect(res.text).toContain(t('PAGES.FIRST_CONTACT_CLAIM_FINALISED.MESSAGE'));
           expect(res.text).toContain(t('PAGES.FIRST_CONTACT_CLAIM_FINALISED.DASHBOARD_BUTTON'));

@@ -3180,7 +3180,7 @@
     },
     "FIRST_CONTACT_CLAIM_FINALISED": {
       "DASHBOARD_BUTTON": "Mynd i’ch dangosfwrdd",
-      "MESSAGE": "Ni allwch ymateb i'r hawliad hwn oherwydd ei fod wedi'i setlo, ei atal neu ei wrthod.",
+      "MESSAGE": "Ni allwch ymateb i'r hawliad hwn ar-lein oherwydd ei fod wedi'i setlo, ei atal neu ei wrthod.",
       "TITLE": "Ni allwch ymateb i'r hawliad hwn ar-lein"
     },
     "FIRST_CONTACT_CLAIM_REFERENCE": {

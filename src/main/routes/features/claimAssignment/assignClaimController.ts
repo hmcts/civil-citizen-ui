@@ -32,7 +32,7 @@ assignClaimController.get(ASSIGN_CLAIM_URL, async ( req:AppRequest, res) => {
     req.session.firstContact = {};
     const axiosError = error as AxiosError;
     if (axiosError.response?.status === 409 && axiosError.response?.data === 'CLAIM_ALREADY_FINALISED') {
-      return res.status(409).render(claimFinalisedViewPath);
+      return res.render(claimFinalisedViewPath);
     }
     const message = error instanceof Error ? error.message : String(error);
     const code = axiosError.code;
