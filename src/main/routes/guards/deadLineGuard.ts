@@ -8,6 +8,7 @@ import {constructResponseUrlWithIdParams} from '../../common/utils/urlFormatter'
 import {RESPONSE_TASK_LIST_URL} from '../../routes/urls';
 import {AppRequest} from 'common/models/AppRequest';
 import {getRouteParam} from 'common/utils/routeParamUtils';
+import {stashClaimOnRequest} from 'common/utils/claimRequestLocals';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('deadLineGuard');
@@ -30,6 +31,7 @@ export const isUnauthorized = async (req: Request) => {
   const redisKey = generateRedisKey(<AppRequest>req);
   logger.info(`[duplicate-redis-check] deadLineGuard: getCaseDataFromStore, redisKey=${redisKey}, ${req.method} ${req.originalUrl}`);
   const caseData: Claim = await getCaseDataFromStore(redisKey);
+  stashClaimOnRequest(req, caseData, 'deadLineGuard');
   const isDeadlinePassed = isPastDeadline(caseData.respondent1ResponseDeadline);
   const claimId = getRouteParam(req, 'id');
   const viewOptionsBeforeDeadlineTask = getViewOptionsBeforeDeadlineTask(caseData, claimId, 'en');

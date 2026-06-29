@@ -1,6 +1,7 @@
 import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {RESPONSE_TASK_LIST_URL, REQUEST_MORE_TIME_URL, APPLICATION_TYPE_URL} from '../../urls';
-import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {generateRedisKey} from 'modules/draft-store/draftStoreService';
+import {getStashedClaimOrFromStore} from 'common/utils/claimRequestLocals';
 import {GenericForm} from 'form/models/genericForm';
 import {Claim} from 'models/claim';
 import {AdditionalTime, AdditionalTimeOptions} from 'form/models/additionalTime';
@@ -36,9 +37,7 @@ requestMoreTimeController.get(REQUEST_MORE_TIME_URL, deadLineGuard,
   (async (req: Request, res: Response, next: NextFunction) => {
     try {
       const language = req.query.lang ? req.query.lang : req.cookies.lang;
-      const redisKey = generateRedisKey(<AppRequest>req);
-      logger.info(`[duplicate-redis-check] requestMoreTimeController GET: getCaseDataFromStore, redisKey=${redisKey}, ${req.method} ${req.originalUrl}`);
-      const claim = await getCaseDataFromStore(redisKey);
+      const claim = await getStashedClaimOrFromStore(req, 'requestMoreTimeController GET');
       const claimId = getRouteParam(req, 'id');
       renderView(res, new GenericForm(new AdditionalTime(claim.responseDeadline?.additionalTime)), claim, language, claimId);
     } catch (error) {
@@ -54,8 +53,7 @@ requestMoreTimeController.post(REQUEST_MORE_TIME_URL, deadLineGuard,
       const language = req.query.lang ? req.query.lang : req.cookies.lang;
       const selectedOption = responseDeadlineService.getAdditionalTime(req.body.option);
       const claimId = getRouteParam(req, 'id');
-      logger.info(`[duplicate-redis-check] requestMoreTimeController POST: getCaseDataFromStore, redisKey=${redisKey}, ${req.method} ${req.originalUrl}`);
-      const claim = await getCaseDataFromStore(redisKey);
+      const claim = await getStashedClaimOrFromStore(req, 'requestMoreTimeController POST');
       const form = new GenericForm(new AdditionalTime(selectedOption));
       await form.validate();
       if (form.hasErrors()) {

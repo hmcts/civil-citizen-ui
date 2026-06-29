@@ -117,6 +117,7 @@ describe('Response - Check answers', () => {
           expect(res.text).toContain(checkYourAnswerEng);
         });
     });
+
     it('should pass cy translation via query', async () => {
       mockGetCaseDataFromDraftStore.mockImplementation(async () => {
         return mockClaimWithPcqId;
@@ -156,6 +157,16 @@ describe('Response - Check answers', () => {
         });
     });
   });
+
+  describe('claim stashing', () => {
+    it('should not call getCaseDataFromStore on GET when guards stashed the claim', async () => {
+      jest.spyOn(utilityService, 'getClaimById').mockResolvedValue(mockClaimWithPcqId);
+      mockGetCaseDataFromDraftStore.mockClear();
+      await session(app).get(respondentCheckAnswersUrl).query({lang: 'en'});
+      expect(mockGetCaseDataFromDraftStore).not.toHaveBeenCalled();
+    });
+  });
+
   describe('on Post', () => {
     it('should return errors when form is incomplete', async () => {
       mockGetSummarySections.mockImplementation(() => {

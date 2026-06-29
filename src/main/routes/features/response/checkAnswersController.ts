@@ -7,6 +7,7 @@ import {
 } from 'services/features/response/checkAnswers/checkAnswersService';
 import {GenericForm} from 'form/models/genericForm';
 import {deleteDraftClaimFromStore, generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {getStashedClaimOrFromStore} from 'common/utils/claimRequestLocals';
 import {StatementOfTruthForm} from 'form/models/statementOfTruth/statementOfTruthForm';
 import {Claim} from 'models/claim';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
@@ -43,9 +44,7 @@ checkAnswersController.get(RESPONSE_CHECK_ANSWERS_URL,
     isFirstTimeInPCQ],
   (async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const redisKey = generateRedisKey(<AppRequest>req);
-      logger.info(`[duplicate-redis-check] checkAnswersController GET: getCaseDataFromStore, redisKey=${redisKey}, ${req.method} ${req.originalUrl}`);
-      const claim = await getCaseDataFromStore(redisKey);
+      const claim = await getStashedClaimOrFromStore(req, 'checkAnswersController GET');
       const carmApplicable = await isCarmEnabledForCase(claim.submittedDate);
       const mintiApplicable = await isMintiEnabledForCase(claim.submittedDate);
       const form = new GenericForm(getStatementOfTruth(claim));
