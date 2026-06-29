@@ -17,6 +17,19 @@ function renderView(form: GenericForm<CitizenDob>, res: Response): void {
   res.render('features/response/citizenDob/citizen-dob', {form: form, today: new Date()});
 }
 
+function getDateOfBirth(dateOfBirth: unknown): Date | undefined {
+  if (!dateOfBirth) {
+    return undefined;
+  }
+
+  const storedDate = typeof dateOfBirth === 'object' && 'date' in dateOfBirth
+    ? (dateOfBirth as CitizenDate).date
+    : dateOfBirth;
+  const parsedDate = new Date(storedDate as string | Date);
+
+  return Number.isNaN(parsedDate.getTime()) ? undefined : parsedDate;
+}
+
 function redirectToNextPage(req: Request, res: Response, dob: Date, respondent: Party) {
   if (!AgeEligibilityVerification.isOverEighteen(dob)) {
     return res.redirect(constructResponseUrlWithIdParams(req.params.id, AGE_ELIGIBILITY_URL));
@@ -33,8 +46,8 @@ citizenDobController.get(DOB_URL, (async (req: Request, res: Response, next: Nex
   try {
     const citizenDob = new GenericForm(new CitizenDob(year, month, day));
     const responseDataRedis: Claim = await getCaseDataFromStore(generateRedisKey(<AppRequest>req));
-    if (responseDataRedis?.respondent1?.dateOfBirth) {
-      const dateOfBirth = new Date(responseDataRedis.respondent1.dateOfBirth.date);
+    const dateOfBirth = getDateOfBirth(responseDataRedis?.respondent1?.dateOfBirth);
+    if (dateOfBirth) {
       citizenDob.model.day = dateOfBirth.getDate();
       citizenDob.model.month = (dateOfBirth.getMonth() + 1);
       citizenDob.model.year = dateOfBirth.getFullYear();
