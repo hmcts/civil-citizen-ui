@@ -9,7 +9,6 @@ const CASEWORKER_EVENTS = 'cui-case-events-enabled';
 const SHUTTER_CUI_SERVICE = 'shutter-cui-service';
 const SHUTTER_PCQ = 'shutter-pcq';
 const GA_FOR_LIPS = 'GaForLips';
-const IS_JUDGMENT_ONLINE_LIVE = 'isJudgmentOnlineLive';
 const IS_DASHBOARD_ENABLED_FOR_CASE = 'is-dashboard-enabled-for-case';
 const CARM_ENABLED_FOR_CASE = 'cam-enabled-for-case';
 const MULTI_OR_INTERMEDIATE_TRACK = 'multi-or-intermediate-track';
@@ -30,7 +29,6 @@ async function getClient(): Promise<void> {
       await testData.update(testData.flag(SHUTTER_CUI_SERVICE).booleanFlag().variationForAll(false));
       await testData.update(testData.flag(SHUTTER_PCQ).booleanFlag().variationForAll(false));
       await testData.update(testData.flag(GA_FOR_LIPS).booleanFlag().variationForAll(false));
-      await testData.update(testData.flag(IS_JUDGMENT_ONLINE_LIVE).booleanFlag().variationForAll(false));
       await testData.update(testData.flag(IS_DASHBOARD_ENABLED_FOR_CASE).booleanFlag().variationForAll(false));
       await testData.update(testData.flag(CARM_ENABLED_FOR_CASE).booleanFlag().variationForAll(false));
       await testData.update(testData.flag(MULTI_OR_INTERMEDIATE_TRACK).booleanFlag().variationForAll(false));
@@ -120,10 +118,6 @@ export async function isPcqShutterOn(): Promise<boolean> {
 
 export async function isGaForLipsEnabled(): Promise<boolean> {
   return await getFlagValue(GA_FOR_LIPS) as boolean;
-}
-
-export async function isJudgmentOnlineLive(): Promise<boolean> {
-  return await getFlagValue(IS_JUDGMENT_ONLINE_LIVE) as boolean;
 }
 
 export async function isDashboardEnabledForCase(date: Date): Promise<boolean> {

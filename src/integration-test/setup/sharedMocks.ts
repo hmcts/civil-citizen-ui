@@ -30,6 +30,7 @@ export const civilServiceClientMock = {
   submitClaimantResponseEvent: jest.fn(),
   calculateExtendedResponseDeadline: jest.fn(),
   submitEvent: jest.fn(),
+  recordClick: jest.fn().mockResolvedValue(undefined),
 };
 
 export const gaServiceClientMock = {
@@ -52,6 +53,7 @@ export const draftStoreServiceMock = {
   getCaseDataFromStore: jest.fn(),
   saveDraftClaim: jest.fn().mockResolvedValue(undefined),
   updateFieldDraftClaimFromStore: jest.fn().mockResolvedValue(undefined),
+  deleteFieldDraftClaimFromStore: jest.fn().mockResolvedValue(undefined),
 };
 
 export const gaHwFeesDraftStoreMock = {
