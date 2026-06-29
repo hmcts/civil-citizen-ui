@@ -3,6 +3,7 @@ import {Claim} from 'common/models/claim';
 import {Request, Response} from 'express';
 import * as utilityService from 'modules/utilityService';
 import {isGAForLiPEnabled} from 'routes/guards/generalAplicationGuard';
+import {CANCEL_URL} from 'routes/urls';
 
 jest.mock('../../../../main/app/auth/launchdarkly/launchDarklyClient');
 jest.mock('../../../../main/modules/draft-store/draftStoreService');
@@ -51,7 +52,7 @@ describe('GAFlagGuard', () => {
     await isGAForLiPEnabled(req as Request, res as Response, next);
 
     expect(next).not.toHaveBeenCalled();
-    expect(res.redirect).toHaveBeenCalledWith('/case/123/cancel/generalApplication');
+    expect(res.redirect).toHaveBeenCalledWith(CANCEL_URL.replace(':id', '123').replace(':propertyName', 'generalApplication'));
   });
 
   it('should call next when GaForLips is disabled but an existing general application is accessible', async () => {
