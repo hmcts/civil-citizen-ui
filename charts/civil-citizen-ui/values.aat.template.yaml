@@ -24,12 +24,6 @@ nodejs:
         - civil-citizen-ui-token-key
         - name: launch-darkly-sdk-key
           alias: LAUNCH_DARKLY_SDK_KEY
-        - name: managed-redis-draft-store-access-key
-          alias: MANAGED_REDIS_DRAFT_STORE_ACCESS_KEY
-        - name: managed-redis-draft-store-hostname
-          alias: MANAGED_REDIS_DRAFT_STORE_HOSTNAME
-        - name: managed-redis-draft-store-port
-          alias: MANAGED_REDIS_DRAFT_STORE_PORT
   environment:
     OAUTH_CLIENT_REDIRECT: https://civil-citizen-ui-staging.aat.platform.hmcts.net/oauth2/callback
     IDAM_SIGN_OUT_REDIRECT_URL: https://civil-citizen-ui-staging.aat.platform.hmcts.net/dashboard
