@@ -47,4 +47,4 @@ Scenario('LipvLip - PartAdmit-PayBySetDate - Claimant accepts - suggests repayme
   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   notification = judgmentOnlineCcjIssuedDefendant();
   await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content);
-}).tag('@pav1i');
+});

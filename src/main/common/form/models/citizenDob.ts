@@ -27,5 +27,11 @@ export class CitizenDob {
     this.year = Number(year);
     this.month = Number(month);
     this.day = Number(day);
+
+    if (year === undefined && month === undefined && day === undefined) {
+      this.year = undefined;
+      this.month = undefined;
+      this.day = undefined;
+    }
   }
 }
