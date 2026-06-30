@@ -1,5 +1,4 @@
 import { GenericForm } from 'common/form/models/genericForm';
-import * as launchDarkly from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {PartyDetails} from 'form/models/partyDetails';
 import * as ordnanceSurveyService from '../../../../../main/modules/ordance-survey-key/ordanceSurveyKeyService';
 
@@ -75,10 +74,9 @@ describe(('For PartyDetails Form'), () => {
     });
   });
 
-  describe('isJudgmentOnlineLive flag ON', () => {
-    it('should not throw error if title+firstName+lastName length OK and flag ON', async () => {
+  describe('judgment online validation', () => {
+    it('should not throw error if title+firstName+lastName length OK', async () => {
       //Given
-      jest.spyOn(launchDarkly, 'isJudgmentOnlineLive').mockResolvedValue(true);
       const partyDetails = new PartyDetails({title: valid70charNamePart1of3
         , firstName: valid70charNamePart2of3, lastName: valid70charNamePart3of3, addressLine1: string35charLong
         , addressLine2: string35charLong, addressLine3: string35charLong,city: string35charLong
@@ -89,9 +87,8 @@ describe(('For PartyDetails Form'), () => {
       //Then
       expect(form.hasErrors()).toBeFalsy();
     });
-    it('should not throw error if no title and firstName+lastName length OK and flag ON', async () => {
+    it('should not throw error if no title and firstName+lastName length OK', async () => {
       //Given
-      jest.spyOn(launchDarkly, 'isJudgmentOnlineLive').mockResolvedValue(true);
       const partyDetails = new PartyDetails({title: '', firstName: valid70charNamePart1of2
         , lastName: valid70charNamePart2of2, addressLine1: string35charLong, addressLine2: string35charLong
         , addressLine3: string35charLong,city: string35charLong, postCode: postCode},false);
@@ -101,9 +98,8 @@ describe(('For PartyDetails Form'), () => {
       //Then
       expect(form.hasErrors()).toBeFalsy();
     });
-    it('should not throw error if partyName length OK and flag ON', async () => {
+    it('should not throw error if partyName length OK', async () => {
       //Given
-      jest.spyOn(launchDarkly, 'isJudgmentOnlineLive').mockResolvedValue(true);
       const partyDetails = new PartyDetails({partyName: valid70charPartyName
         , addressLine1: string35charLong, addressLine2: string35charLong, addressLine3: string35charLong
         ,city: string35charLong, postCode: postCode},false);
@@ -113,9 +109,8 @@ describe(('For PartyDetails Form'), () => {
       //Then
       expect(form.hasErrors()).toBeFalsy();
     });
-    it('should not throw error if title length OK and flag ON', async () => {
+    it('should not throw error if title length OK', async () => {
       //Given
-      jest.spyOn(launchDarkly, 'isJudgmentOnlineLive').mockResolvedValue(true);
       const partyDetails = new PartyDetails({title: string35charLong
         , firstName: 'test', lastName: 'test', addressLine1: string35charLong
         , addressLine2: string35charLong, addressLine3: string35charLong,city: string35charLong
@@ -127,9 +122,8 @@ describe(('For PartyDetails Form'), () => {
       expect(form.hasErrors()).toBeFalsy();
     });
 
-    it('should throw error if input lengths not OK and flag ON', async () => {
+    it('should throw error if input lengths not OK', async () => {
       //Given
-      jest.spyOn(launchDarkly, 'isJudgmentOnlineLive').mockResolvedValue(true);
       const partyDetails = new PartyDetails({title: string35charLong, firstName: string51charLong
         , lastName: string51charLong, addressLine1: string36charLong, addressLine2: string36charLong
         , addressLine3: string36charLong,city: string36charLong, postCode: string35charLong},false);
@@ -148,9 +142,8 @@ describe(('For PartyDetails Form'), () => {
       expect(form.errorFor('primaryAddress[city]')).toEqual('ERRORS.TOWN_CITY_TOO_MANY_JO');
       expect(form.errorFor('primaryAddress[postCode]')).toEqual('ERRORS.TEXT_TOO_MANY');
     });
-    it('should throw error if no title, lengths not OK and flag ON', async () => {
+    it('should throw error if no title, lengths not OK', async () => {
       //Given
-      jest.spyOn(launchDarkly, 'isJudgmentOnlineLive').mockResolvedValue(true);
       const partyDetails = new PartyDetails({title: '', firstName: string51charLong
         , lastName: string51charLong, addressLine1: string36charLong, addressLine2: string36charLong
         , addressLine3: string36charLong,city: string36charLong, postCode: string35charLong},false);
@@ -168,9 +161,8 @@ describe(('For PartyDetails Form'), () => {
       expect(form.errorFor('primaryAddress[city]')).toEqual('ERRORS.TOWN_CITY_TOO_MANY_JO');
       expect(form.errorFor('primaryAddress[postCode]')).toEqual('ERRORS.TEXT_TOO_MANY');
     });
-    it('should throw error if special characters present and flag ON', async () => {
+    it('should throw error if special characters present', async () => {
       //Given
-      jest.spyOn(launchDarkly, 'isJudgmentOnlineLive').mockResolvedValue(true);
       const partyDetails = new PartyDetails({title: stringWithSpecialChar1
         , firstName: stringWithSpecialChar2, lastName: stringWithSpecialChar3, addressLine1: stringWithSpecialChar4
         , addressLine2: stringWithSpecialChar1, addressLine3: stringWithSpecialChar2,city: stringWithSpecialChar3
@@ -189,9 +181,8 @@ describe(('For PartyDetails Form'), () => {
       expect(form.errorFor('primaryAddress[addressLine3]')).toEqual('ERRORS.SPECIAL_CHARACTERS');
       expect(form.errorFor('primaryAddress[city]')).toEqual('ERRORS.SPECIAL_CHARACTERS');
     });
-    it('should throw error if partyName length not OK and flag ON', async () => {
+    it('should throw error if partyName length not OK', async () => {
       //Given
-      jest.spyOn(launchDarkly, 'isJudgmentOnlineLive').mockResolvedValue(true);
       const partyDetails = new PartyDetails({partyName: string71charLong
         , addressLine1: string35charLong, addressLine2: string35charLong, addressLine3: string35charLong
         ,city: string35charLong, postCode: postCode},false);
@@ -204,4 +195,3 @@ describe(('For PartyDetails Form'), () => {
     });
   });
 });
-
