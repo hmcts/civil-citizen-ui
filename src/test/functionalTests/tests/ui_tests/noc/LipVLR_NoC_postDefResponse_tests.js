@@ -8,7 +8,7 @@ const {
   payClaimFee,
   nocForLip,
   nocForLipCaseGoesOffline,
-  responseToTheClaim,
+  responseToTheClaimClaimant,
 } = require('../../../specClaimHelpers/dashboardNotificationConstants');
 
 let claimRef, caseData, selectedHWF, legacyCaseReference, defendantName;
@@ -63,7 +63,7 @@ Scenario('LipVLR - DefendantLip respond as DefenceAll and NoC - Case stays onlin
   await verifyNotificationTitleAndContent(legacyCaseReference, nocForLipNotif.title, nocForLipNotif.content);
   await I.click(nocForLipNotif.nextSteps);
 
-  const responseToTheClaimNotif = responseToTheClaim(defendantName);
+  const responseToTheClaimNotif = responseToTheClaimClaimant(defendantName);
   await verifyNotificationTitleAndContent(legacyCaseReference, responseToTheClaimNotif.title, responseToTheClaimNotif.content);
   await I.click(responseToTheClaimNotif.nextSteps);
 });
