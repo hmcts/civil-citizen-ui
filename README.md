@@ -71,7 +71,8 @@ Run the application by executing the following command:
   docker-compose up
 ```
 
-This will start the frontend container exposing the application's port
+This will start the frontend container exposing the application's port.
+This will start the frontend container exposing the application's port.
 
 In order to test if the application is up, you can visit https://localhost:3001 in your browser.
 
