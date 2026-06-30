@@ -16,10 +16,17 @@ jest.mock('ioredis', () => {
 });
 
 import {app} from '../../../../main/app';
+import * as launchDarkly from '../../../../main/app/auth/launchdarkly/launchDarklyClient';
 
 describe('HMCTS Access Health Check', () => {
+  beforeEach(() => {
+    // hmcts-access-migration flag ON so the gated sign-in probe is evaluated
+    jest.spyOn(launchDarkly, 'isHmctsAccessMigrationEnabled').mockResolvedValue(true);
+  });
+
   afterEach(() => {
     nock.cleanAll();
+    jest.restoreAllMocks();
   });
 
   it('When the HMCTS Access sign-in page is unreachable, health check should return DOWN', async () => {
