@@ -44,7 +44,6 @@ describe('CCJ confirmation controller', () => {
 
   describe('on GET', () => {
     beforeEach(() => {
-      jest.spyOn(launchDarkly, 'isJudgmentOnlineLive').mockResolvedValue(false);
       jest.spyOn(launchDarkly, 'isJudgmentBufferEnabled').mockResolvedValue(false);
     });
 
