@@ -119,6 +119,18 @@ export class CivilServiceClient {
     return newCache;
   }
 
+  private getCalculateInterestRequestCache(req: AppRequest): Map<string, Promise<number>> {
+    const requestWithLocals = req as AppRequest & { locals?: AppRequest['locals'] };
+    const requestLocals = requestWithLocals.locals ?? (requestWithLocals.locals = {env: '', lang: ''});
+    if (requestLocals.calculateInterestRequestCache) {
+      return requestLocals.calculateInterestRequestCache;
+    }
+
+    const newCache = new Map<string, Promise<number>>();
+    requestLocals.calculateInterestRequestCache = newCache;
+    return newCache;
+  }
+
   private getUserCaseRolesRequestCache(req: AppRequest): Map<string, Promise<CaseRole>> {
     const requestWithLocals = req as AppRequest & { locals?: AppRequest['locals'] };
     const requestLocals = requestWithLocals.locals ?? (requestWithLocals.locals = {env: '', lang: ''});
@@ -476,11 +488,32 @@ export class CivilServiceClient {
     }
   }
 
-  async calculateClaimInterest(claim: ClaimUpdate): Promise<number> {
+  async calculateClaimInterest(claim: ClaimUpdate, req?: AppRequest): Promise<number> {
+    // Request-scoped dedup only: collapses duplicate calls within one HTTP request.
+    // Does not persist across page loads or form submissions.
+    if (req) {
+      const requestCache = this.getCalculateInterestRequestCache(req);
+      const cacheKey = JSON.stringify(claim);
+      const cached = requestCache.get(cacheKey);
+      if (cached !== undefined) {
+        return cached;
+      }
+      const promise = this.calculateClaimInterestFromCivilService(claim)
+        .catch((err) => {
+          requestCache.delete(cacheKey);
+          throw err;
+        });
+      requestCache.set(cacheKey, promise);
+      return promise;
+    }
+    return this.calculateClaimInterestFromCivilService(claim);
+  }
+
+  private async calculateClaimInterestFromCivilService(claim: ClaimUpdate): Promise<number> {
     try {
       logger.info('calculateClaimInterest');
       const response = await this.client.post(CIVIL_SERVICE_CLAIM_CALCULATE_INTEREST, claim, {headers: {'Content-Type': 'application/json'}});
-      logger.info(`calculateClaimInterest response: ${response.data}` );
+      logger.info(`calculateClaimInterest response: ${response.data}`);
       return response.data as number;
     } catch (err: unknown) {
       logger.error('Error when calculating interest');

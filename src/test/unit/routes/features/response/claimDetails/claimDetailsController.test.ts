@@ -115,6 +115,29 @@ describe('Claim details page', () => {
           expect(res.text).toContain(dateFilter(claim?.timelineOfEvents[0].value.timelineDate));
         });
     });
+    it('should call calculate-interest exactly once per render (request-scoped memoisation)', async () => {
+      // The page invokes calculateInterestToDate from multiple paths within the same
+      // request (getInterestDetails and getTotalAmountWithInterestAndFeesAndFixedCost).
+      // The request-scoped cache must collapse these into a single downstream POST.
+      const downstreamInterestSpy = jest
+        .spyOn(CivilServiceClient.prototype as unknown as { calculateClaimInterestFromCivilService: () => Promise<number> },
+          'calculateClaimInterestFromCivilService')
+        .mockResolvedValue(15);
+      try {
+        const claim = Object.assign(new Claim(), civilClaimResponseMock.case_data);
+        jest
+          .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+          .mockResolvedValueOnce(claim);
+        await request(app)
+          .get('/case/1111/response/claim-details')
+          .expect((res) => {
+            expect(res.status).toBe(200);
+          });
+        expect(downstreamInterestSpy).toHaveBeenCalledTimes(1);
+      } finally {
+        downstreamInterestSpy.mockRestore();
+      }
+    });
     it('should display Download and view their Timeline', async () => {
       nock(civilServiceUrl)
         .post('/fees/claim/calculate-interest')

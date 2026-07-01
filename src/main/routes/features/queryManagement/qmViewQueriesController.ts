@@ -1,4 +1,4 @@
-import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
+import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {
   DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL,
   QM_VIEW_QUERY_URL,
@@ -30,16 +30,16 @@ const renderView = async (res: Response, userId: string, claimId: string, claim:
   });
 };
 
-async function recordNotificationClickForQueryResponse(claim: Claim, claimId: string, req: Request, lang: any) {
+async function recordNotificationClickForQueryResponse(claim: Claim, claimId: string, req: AppRequest, lang: any) {
   const caseRole = claim.isClaimant() ? ClaimantOrDefendant.CLAIMANT : ClaimantOrDefendant.DEFENDANT;
-  const totalAmountWithInterestAndFees = (await getTotalAmountWithInterestAndFees(claim)).toString();
-  const dashboardNotifications = await getNotifications(claimId, claim, totalAmountWithInterestAndFees, caseRole, req as AppRequest, lang);
+  const totalAmountWithInterestAndFees = (await getTotalAmountWithInterestAndFees(claim, req)).toString();
+  const dashboardNotifications = await getNotifications(claimId, claim, totalAmountWithInterestAndFees, caseRole, req, lang);
   if (dashboardNotifications) {
     const qmNotif = dashboardNotifications.items.filter(item => item.descriptionEn.includes('The court has responded to a message on your case.')
       || item.descriptionEn.includes('There has been a message sent on your case.'));
     if (qmNotif.length == 1) {
       const qmNotifId = qmNotif[0].id;
-      await civilServiceClient.recordClick(qmNotifId, <AppRequest>req);
+      await civilServiceClient.recordClick(qmNotifId, req);
     }
   }
 }

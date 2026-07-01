@@ -1132,6 +1132,49 @@ describe('Civil Service Client', () => {
       //Then
       await expect(civilServiceClient.calculateClaimInterest({})).rejects.toThrow('error');
     });
+
+    it('should reuse cached interest promise for repeated calls with the same payload in the same request', async () => {
+      //Given
+      const mockData = 0.02;
+      const mockPost = jest.fn().mockResolvedValue({ data: mockData });
+      mockedAxios.create.mockReturnValueOnce({ post: mockPost } as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
+      appReq.locals.calculateInterestRequestCache = undefined;
+
+      //When
+      await civilServiceClient.calculateClaimInterest({}, appReq);
+      await civilServiceClient.calculateClaimInterest({}, appReq);
+
+      //Then - only one HTTP call despite two invocations
+      expect(mockPost).toHaveBeenCalledTimes(1);
+    });
+
+    it('should make separate HTTP calls for different payloads in the same request', async () => {
+      //Given
+      const mockPost = jest.fn().mockResolvedValue({ data: 0.02 });
+      mockedAxios.create.mockReturnValueOnce({ post: mockPost } as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
+      appReq.locals.calculateInterestRequestCache = undefined;
+
+      //When
+      await civilServiceClient.calculateClaimInterest({ totalClaimAmount: 100 } as unknown as ClaimUpdate, appReq);
+      await civilServiceClient.calculateClaimInterest({ totalClaimAmount: 200 } as unknown as ClaimUpdate, appReq);
+
+      //Then - two different payloads = two HTTP calls
+      expect(mockPost).toHaveBeenCalledTimes(2);
+    });
+
+    it('should evict cache entry and rethrow on error', async () => {
+      //Given
+      const mockPost = jest.fn().mockRejectedValue(new Error('network error'));
+      mockedAxios.create.mockReturnValueOnce({ post: mockPost } as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
+      appReq.locals.calculateInterestRequestCache = undefined;
+
+      //Then
+      await expect(civilServiceClient.calculateClaimInterest({}, appReq)).rejects.toThrow('network error');
+      expect(appReq.locals.calculateInterestRequestCache?.has(JSON.stringify({}))).toBe(false);
+    });
   });
 
   describe('calculateClaimTotalAmount', () => {
