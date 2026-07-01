@@ -34,7 +34,7 @@ module "managed-redis-draft-store" {
   location    = var.location
   common_tags = var.common_tags
 
-  sku_name                = "Balanced_B1"
+  sku_name                = "Balanced_B3"
   public_network_access   = "Disabled"
   create_private_endpoint = true
   subnet_id               = data.azurerm_subnet.core_infra_redis_subnet.id
