@@ -101,7 +101,7 @@ Scenario('LipvLip Defendant GA creation tests', async ({I}) => {
 
   console.log('Creating not on list GA app as defendant');
   await createGASteps.askSomethingNotOnListGA(claimRef, 'Miss Jane Doe v Sir John Doe', 'withoutnotice');
-    const notification = applicationSubmittedApplicant();
+  const notification = applicationSubmittedApplicant();
   await verifyNotificationTitleAndContent(
     claimNumber,
     notification.title,
