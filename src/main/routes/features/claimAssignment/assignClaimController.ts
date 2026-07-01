@@ -1,4 +1,5 @@
 import {Router} from 'express';
+import {AxiosError} from 'axios';
 import {ASSIGN_CLAIM_URL, DASHBOARD_URL} from 'routes/urls';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
@@ -13,6 +14,7 @@ const logger = Logger.getLogger('defendantRoleAssignmentService');
 const assignClaimController = Router();
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
+const claimFinalisedViewPath = 'features/public/firstContact/claim-finalised';
 
 assignClaimController.get(ASSIGN_CLAIM_URL, async ( req:AppRequest, res) => {
   const firstContact = getFirstContactData(req.session);
@@ -24,10 +26,17 @@ assignClaimController.get(ASSIGN_CLAIM_URL, async ( req:AppRequest, res) => {
       await deleteDraftClaimFromStore(claimId);
       req.session.firstContact = {};
     }
-  } catch (error) {
-    logger.error(`Error Message: ${error.message}, http Code: ${error.code}`);
-  } finally {
     req.session.firstContact = {};
+    res.redirect(DASHBOARD_URL);
+  } catch (error: unknown) {
+    req.session.firstContact = {};
+    const axiosError = error as AxiosError;
+    if (axiosError.response?.status === 409 && axiosError.response?.data === 'CLAIM_ALREADY_FINALISED') {
+      return res.render(claimFinalisedViewPath);
+    }
+    const message = error instanceof Error ? error.message : String(error);
+    const code = axiosError.code;
+    logger.error(`Error Message: ${message}, http Code: ${code}`);
     res.redirect(DASHBOARD_URL);
   }
 });

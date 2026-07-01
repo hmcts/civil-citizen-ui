@@ -3180,6 +3180,11 @@
       "THERE_WAS_AN_ERROR": "There was an error during your last operation. Please try again later.",
       "TITLE": "You are not authorised to view the claim!"
     },
+    "FIRST_CONTACT_CLAIM_FINALISED": {
+      "DASHBOARD_BUTTON": "Go to your dashboard",
+      "MESSAGE": "You cannot respond to this claim online because it has been settled, stayed or dismissed.",
+      "TITLE": "You cannot respond to this claim online"
+    },
     "FIRST_CONTACT_CLAIM_REFERENCE": {
       "CLAIM_NUMBER": "Claim number",
       "ENTER_CLAIM": "This is an 8-character number and is on the email or letter we sent you. It has 3 numbers then 2 letters then 3 numbers, for example 305JE126.",

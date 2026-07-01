@@ -4,9 +4,11 @@ import config from 'config';
 import {ASSIGN_CLAIM_URL, DASHBOARD_URL} from 'routes/urls';
 import {app} from '../../../../../main/app';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import * as utilityService from 'modules/utilityService';
 import { CivilServiceClient } from 'client/civilServiceClient';
 import { Claim } from 'common/models/claim';
 import { Session } from 'express-session';
+import {t} from 'i18next';
 
 jest.mock('../../../../../main/modules/oidc');
 
@@ -61,6 +63,35 @@ describe('claim assignment controller', ()=>{
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.get('location')).toBe(DASHBOARD_URL);
+        });
+    });
+
+    it('on finalised claim should render finalised page', async () => {
+      const claim = Object.assign(new Claim(), {
+        respondent1PinToPostLRspec: {
+          accessCode: '12345',
+        },
+      });
+      const error = {
+        response: {
+          status: 409,
+          data: 'CLAIM_ALREADY_FINALISED',
+        },
+      };
+      jest.spyOn(utilityService, 'getClaimById').mockResolvedValueOnce(claim);
+      jest.spyOn(CivilServiceClient.prototype, 'assignDefendantToClaim').mockRejectedValueOnce(error);
+      app.request.session = { firstContact: { 'claimId': 123 } } as unknown as Session;
+
+      await request(app).get('/assignclaim')
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(t('COMMON.HEADER.BETA'));
+          expect(res.text).toContain('govuk-phase-banner');
+          expect(res.text).toContain('govuk-link language');
+          expect(res.text).toContain(t('PAGES.FIRST_CONTACT_CLAIM_FINALISED.TITLE'));
+          expect(res.text).toContain(t('PAGES.FIRST_CONTACT_CLAIM_FINALISED.MESSAGE'));
+          expect(res.text).toContain(t('PAGES.FIRST_CONTACT_CLAIM_FINALISED.DASHBOARD_BUTTON'));
+          expect(res.text).toContain('href="/dashboard"');
         });
     });
   });
