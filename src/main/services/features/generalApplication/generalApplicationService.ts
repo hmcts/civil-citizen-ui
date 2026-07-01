@@ -567,7 +567,7 @@ export const deleteGAFromClaimsByUserId = async (userId: string) : Promise<void>
   const claimsIds = await findClaimIdsbyUserId(userId);
   claimsIds?.forEach(async (claimId: string) => {
     const claim = await getCaseDataFromStore(claimId);
-    await deleteFieldDraftClaimFromStore(claimId, claim, 'generalApplication');
+    await deleteFieldDraftClaimFromStore(claimId, claim, 'generalApplication', userId);
   });
 };
 
