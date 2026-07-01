@@ -4,13 +4,14 @@ import {
   UploadDocuments,
   UploadDocumentTypes, UploadEvidenceDocumentType,
   UploadEvidenceElementCCD, UploadEvidenceExpert, UploadEvidenceWitness, UploadOtherDocumentType,
+  UploadPart36RejectionDocumentType,
 } from 'models/caseProgression/uploadDocumentsType';
 import {
   EvidenceUploadDisclosure,
   EvidenceUploadExpert,
   EvidenceUploadTrial,
   EvidenceUploadWitness,
-  OtherManageUpload,
+  OtherManageUpload, WithoutPrejudiceUpload,
 } from 'models/document/documentType';
 import {TypesOfEvidenceUploadDocuments} from 'models/caseProgression/TypesOfEvidenceUploadDocument';
 import {Bundle} from 'models/caseProgression/bundles/bundle';
@@ -29,12 +30,16 @@ export const toCUICaseProgression = (ccdClaim: CCDClaim): CaseProgression => {
 
     const applicantUploadDocuments = applicantDocuments(ccdClaim);
     const defendantUploadDocuments = defendantDocuments(ccdClaim);
-    const managedDocuments = claimDocuments(ccdClaim);
-
+    const managedDocumentsUploadedByCaseWorker : UploadDocumentTypes[] = claimDocuments(ccdClaim);
+    const managedDocuments = managedDocumentsUploadedByCaseWorker.filter(document => document !== undefined && (document.caseDocument as UploadOtherDocumentType)?.documentType !== 'WITHOUT_PREJUDICE_PART_36_OFFER_OR_REJECTIONS');
+    const withoutPrejudiceManageDocuments = managedDocumentsUploadedByCaseWorker.filter(document => document !== undefined && (document.caseDocument as UploadOtherDocumentType)?.documentType === 'WITHOUT_PREJUDICE_PART_36_OFFER_OR_REJECTIONS');
+    const part36UploadDocuments = mapToPart36UploadDocumentTypes(withoutPrejudiceManageDocuments);
+    const withoutPrejudiceDocumentsUploadedByUsers = withoutPreDocuments(ccdClaim);
+    const withoutPrejudiceDocuments = [ ...(withoutPrejudiceDocumentsUploadedByUsers ?? []), ...(part36UploadDocuments ?? [])];
     caseProgression.claimantUploadDocuments =
-      new UploadDocuments(applicantUploadDocuments.disclosure, applicantUploadDocuments.witness, applicantUploadDocuments.expert, applicantUploadDocuments.trial, managedDocuments);
+      new UploadDocuments(applicantUploadDocuments.disclosure, applicantUploadDocuments.witness, applicantUploadDocuments.expert, applicantUploadDocuments.trial, managedDocuments, withoutPrejudiceDocuments);
     caseProgression.defendantUploadDocuments =
-      new UploadDocuments(defendantUploadDocuments.disclosure, defendantUploadDocuments.witness, defendantUploadDocuments.expert, defendantUploadDocuments.trial, managedDocuments);
+      new UploadDocuments(defendantUploadDocuments.disclosure, defendantUploadDocuments.witness, defendantUploadDocuments.expert, defendantUploadDocuments.trial, managedDocuments, withoutPrejudiceDocuments);
     caseProgression.claimantLastUploadDate = ccdClaim.caseDocumentUploadDate ? new Date(ccdClaim.caseDocumentUploadDate) : undefined;
     caseProgression.defendantLastUploadDate = ccdClaim.caseDocumentUploadDateRes ? new Date(ccdClaim.caseDocumentUploadDateRes): undefined;
 
@@ -43,7 +48,7 @@ export const toCUICaseProgression = (ccdClaim: CCDClaim): CaseProgression => {
       ccdClaim?.caseBundles.forEach(element => {caseProgression.caseBundles.push(new Bundle(element.value?.title, element.value?.stitchedDocument, element.value?.createdOn, element.value?.bundleHearingDate));});
     }
 
-    const claimantTrialArrangements =  toCUITrialArrangements(ccdClaim, true);
+    const claimantTrialArrangements =  toCUITrialArrangements(ccdClaim, true) ;
     if (claimantTrialArrangements) {
       caseProgression.claimantTrialArrangements = claimantTrialArrangements;
     }
@@ -63,9 +68,18 @@ export const toCUICaseProgression = (ccdClaim: CCDClaim): CaseProgression => {
     caseProgression.requestForReconsiderationDocument = ccdClaim.requestForReconsiderationDocument;
     caseProgression.requestForReconsiderationDocumentRes = ccdClaim.requestForReconsiderationDocumentRes;
     caseProgression.courtOfficerOrder = ccdClaim.previewCourtOfficerOrder;
-
     return caseProgression;
   }
+};
+
+const mapToPart36UploadDocumentTypes = (withoutPrejudiceManageDocuments: UploadDocumentTypes[]) => {
+  const uploadDocuments = [] as UploadDocumentTypes[];
+  withoutPrejudiceManageDocuments.forEach((document) => {
+    const otherManageDocument = document.caseDocument as UploadOtherDocumentType;
+    const part36Document = new UploadPart36RejectionDocumentType(otherManageDocument.documentName, otherManageDocument.documentLink, otherManageDocument.createdDatetime);
+    uploadDocuments.push(new UploadDocumentTypes(false, part36Document, WithoutPrejudiceUpload.WITHOUT_PREJUDICE_DOCUMENT));
+  });
+  return uploadDocuments;
 };
 
 //Claimant
@@ -157,6 +171,17 @@ const claimDocuments =  (ccdClaim: CCDClaim): UploadDocumentTypes[] => {
   return otherManagedDocuments;
 };
 
+const withoutPreDocuments =  (ccdClaim: CCDClaim): UploadDocumentTypes[] => {
+  const withoutPrejudiceDocuments = [] as UploadDocumentTypes[];
+  const combinedPart36RejectionDocuments: UploadEvidenceElementCCD[] = [
+    ...(ccdClaim.documentPart36Rejection ?? []),
+    ...(ccdClaim.documentPart36RejectionApp2 ?? []),
+    ...(ccdClaim.documentPart36RejectionRes?? []),
+    ...(ccdClaim.documentPart36RejectionRes?? [])];
+  convertToUploadDocumentTypes(combinedPart36RejectionDocuments, withoutPrejudiceDocuments, WithoutPrejudiceUpload.WITHOUT_PREJUDICE_DOCUMENT);
+  return withoutPrejudiceDocuments;
+};
+
 // Judge Final Orders
 const finalOrderDocuments =  (ccdClaim: CCDClaim): FinalOrderDocumentCollection[] => {
   let finalOrderDocumentCollection = [] as FinalOrderDocumentCollection[];
@@ -187,7 +212,7 @@ const courtOfficerOrders =  (ccdClaim: CCDClaim): FinalOrderDocumentCollection[]
 };
 
 const convertToUploadDocumentTypes = (ccdList: UploadEvidenceElementCCD[], cuiList: UploadDocumentTypes[],
-  documentType: EvidenceUploadDisclosure| EvidenceUploadWitness | EvidenceUploadExpert | EvidenceUploadTrial | OtherManageUpload) => {
+  documentType: EvidenceUploadDisclosure| EvidenceUploadWitness | EvidenceUploadExpert | EvidenceUploadTrial | OtherManageUpload| WithoutPrejudiceUpload) => {
 
   if(ccdList != null)
   {
@@ -200,7 +225,7 @@ const convertToUploadDocumentTypes = (ccdList: UploadEvidenceElementCCD[], cuiLi
   }
 };
 
-const mapCCDElementValue = (documentType: UploadEvidenceDocumentType | UploadEvidenceWitness | UploadEvidenceExpert | UploadOtherDocumentType): UploadEvidenceDocumentType | UploadEvidenceWitness | UploadEvidenceExpert | UploadOtherDocumentType => {
+const mapCCDElementValue = (documentType: UploadEvidenceDocumentType | UploadEvidenceWitness | UploadEvidenceExpert | UploadOtherDocumentType | UploadPart36RejectionDocumentType): UploadEvidenceDocumentType | UploadEvidenceWitness | UploadEvidenceExpert | UploadOtherDocumentType | UploadPart36RejectionDocumentType => {
 
   if(TypesOfEvidenceUploadDocuments.DOCUMENT_TYPE in documentType)
   {
@@ -221,6 +246,11 @@ const mapCCDElementValue = (documentType: UploadEvidenceDocumentType | UploadEvi
   {
     const document = documentType as UploadOtherDocumentType;
     return new UploadOtherDocumentType(document.documentType, document.documentName, document.documentLink, document.createdDatetime);
+  }
+  else if(TypesOfEvidenceUploadDocuments.DOCUMENT in documentType)
+  {
+    const document = documentType as UploadPart36RejectionDocumentType;
+    return new UploadPart36RejectionDocumentType(document.documentDescription, document.document, document.createdDatetime);
   }
   return documentType;
 };

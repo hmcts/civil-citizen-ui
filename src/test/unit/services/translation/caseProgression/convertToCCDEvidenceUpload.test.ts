@@ -3,7 +3,7 @@ import {
   EvidenceUploadExpert,
   EvidenceUploadTrial,
   EvidenceUploadWitness,
-  OtherManageUpload,
+  OtherManageUpload, WithoutPrejudiceUpload,
 } from 'models/document/documentType';
 import {CCDClaim} from 'models/civilClaimResponse';
 import {CaseProgression} from 'models/caseProgression/caseProgression';
@@ -13,7 +13,9 @@ import {
   UploadEvidenceDocumentType,
   UploadEvidenceElementCCD,
   UploadEvidenceExpert,
-  UploadEvidenceWitness, UploadOtherDocumentType,
+  UploadEvidenceWitness,
+  UploadOtherDocumentType,
+  UploadPart36RejectionDocumentType,
 } from 'models/caseProgression/uploadDocumentsType';
 import {Document} from 'models/document/document';
 import {toCCDEvidenceUpload} from 'services/translation/caseProgression/convertToCCDEvidenceUpload';
@@ -46,6 +48,16 @@ const managedDocument = {
   } as Document,
   createdDatetime: new Date(0),
 } as UploadOtherDocumentType;
+
+const part36Document = {
+  documentDescription: 'description',
+  createdDatetime: new Date(0),
+  document: {
+    document_url: 'http://dm-store:8080/documents/e9fd1e10-baf2-4d95-bc79-bdeb9f3a2ab6',
+    document_filename: 'document_type.pdf',
+    document_binary_url: 'http://dm-store:8080/documents/e9fd1e10-baf2-4d95-bc79-bdeb9f3a2ab6/binary',
+  } as Document,
+} as UploadPart36RejectionDocumentType;
 
 const expertDocument = {
   expertOptionName: 'expert name',
@@ -110,6 +122,8 @@ const documentReferredAsParameter = new UploadEvidenceDocumentType('witness name
 const witnessAsParameter = new UploadEvidenceWitness('witness name', new Date(0), documentForWitness, new Date(0));
 const expertAsParameter = new UploadEvidenceExpert('expert name', 'expertise','expertises','other party', 'document question', 'document answer', new Date(0), documentForExpert, new Date(0));
 const otherAsParameter = new UploadOtherDocumentType('type', 'name', managedDocument.documentLink, new Date(0));
+const part36AsParameter = new UploadPart36RejectionDocumentType('description', part36Document.document, new Date(0));
+
 const uuid = '1221';
 
 describe('toCCDEvidenceUpload', () => {
@@ -281,7 +295,7 @@ it('should handle partial & multiple filled properties of Defendant CaseProgress
   expect(actualOutputDefendant).toEqual(expectedOutputDefendant);
 });
 
-function getCaseProgressionDocuments(documentType: EvidenceUploadDisclosure | EvidenceUploadWitness | EvidenceUploadExpert | EvidenceUploadTrial | OtherManageUpload)
+function getCaseProgressionDocuments(documentType: EvidenceUploadDisclosure | EvidenceUploadWitness | EvidenceUploadExpert | EvidenceUploadTrial | OtherManageUpload | WithoutPrejudiceUpload)
   : UploadEvidenceElementCCD[] {
 
   const uploadEvidenceElementCCD = new UploadEvidenceElementCCD();
@@ -315,6 +329,9 @@ function getCaseProgressionDocuments(documentType: EvidenceUploadDisclosure | Ev
     case OtherManageUpload.OTHER_MANAGE_DOCUMENT:
       uploadEvidenceElementCCD.value = managedDocument;
       break;
+    case WithoutPrejudiceUpload.WITHOUT_PREJUDICE_DOCUMENT:
+      uploadEvidenceElementCCD.value = part36Document;
+      break;
   }
 
   return [uploadEvidenceElementCCD];
@@ -342,6 +359,10 @@ function createCCDClaim(isClaimant: boolean): CCDClaim {
       documentCosts: getCaseProgressionDocuments(EvidenceUploadTrial.COSTS),
       documentEvidenceForTrial: getCaseProgressionDocuments(EvidenceUploadTrial.DOCUMENTARY),
       manageDocuments: getCaseProgressionDocuments(OtherManageUpload.OTHER_MANAGE_DOCUMENT),
+      documentPart36Rejection: getCaseProgressionDocuments(WithoutPrejudiceUpload.WITHOUT_PREJUDICE_DOCUMENT),
+      documentPart36RejectionApp2: getCaseProgressionDocuments(WithoutPrejudiceUpload.WITHOUT_PREJUDICE_DOCUMENT),
+      documentPart36RejectionRes: getCaseProgressionDocuments(WithoutPrejudiceUpload.WITHOUT_PREJUDICE_DOCUMENT),
+      documentPart36RejectionRes2: getCaseProgressionDocuments(WithoutPrejudiceUpload.WITHOUT_PREJUDICE_DOCUMENT),
       caseDocumentUploadDate: new Date(),
     };
   } else {
@@ -362,6 +383,10 @@ function createCCDClaim(isClaimant: boolean): CCDClaim {
       documentCostsRes: getCaseProgressionDocuments(EvidenceUploadTrial.COSTS),
       documentEvidenceForTrialRes: getCaseProgressionDocuments(EvidenceUploadTrial.DOCUMENTARY),
       manageDocuments: getCaseProgressionDocuments(OtherManageUpload.OTHER_MANAGE_DOCUMENT),
+      documentPart36Rejection: getCaseProgressionDocuments(WithoutPrejudiceUpload.WITHOUT_PREJUDICE_DOCUMENT),
+      documentPart36RejectionApp2: getCaseProgressionDocuments(WithoutPrejudiceUpload.WITHOUT_PREJUDICE_DOCUMENT),
+      documentPart36RejectionRes: getCaseProgressionDocuments(WithoutPrejudiceUpload.WITHOUT_PREJUDICE_DOCUMENT),
+      documentPart36RejectionRes2: getCaseProgressionDocuments(WithoutPrejudiceUpload.WITHOUT_PREJUDICE_DOCUMENT),
       caseDocumentUploadDateRes: new Date(),
     };
   }
@@ -372,9 +397,9 @@ function createCCDClaim(isClaimant: boolean): CCDClaim {
 function createCUIClaim(): CaseProgression {
   return {
     claimantUploadDocuments:
-      new UploadDocuments(getUploadDocumentList('disclosure'), getUploadDocumentList('witness'), getUploadDocumentList('expert'), getUploadDocumentList('trial'), getUploadDocumentList('other')),
+      new UploadDocuments(getUploadDocumentList('disclosure'), getUploadDocumentList('witness'), getUploadDocumentList('expert'), getUploadDocumentList('trial'), getUploadDocumentList('other'), getUploadDocumentList('without-prejudice')),
     defendantUploadDocuments:
-      new UploadDocuments(getUploadDocumentList('disclosure'), getUploadDocumentList('witness'), getUploadDocumentList('expert'), getUploadDocumentList('trial'), getUploadDocumentList('other')),
+      new UploadDocuments(getUploadDocumentList('disclosure'), getUploadDocumentList('witness'), getUploadDocumentList('expert'), getUploadDocumentList('trial'), getUploadDocumentList('other'), getUploadDocumentList('without-prejudice')),
     claimantLastUpload: new Date (),
     defendantLastUpload: new Date(),
   } as CaseProgression;
@@ -441,6 +466,11 @@ function getUploadDocumentList(documentCategory: string): UploadDocumentTypes[] 
     case 'other':
       uploadDocumentTypes.push(
         new UploadDocumentTypes(false, otherAsParameter, OtherManageUpload.OTHER_MANAGE_DOCUMENT, uuid),
+      );
+      break;
+    case 'without-prejudice':
+      uploadDocumentTypes.push(
+        new UploadDocumentTypes(false, part36AsParameter, WithoutPrejudiceUpload.WITHOUT_PREJUDICE_DOCUMENT, uuid),
       );
       break;
   }

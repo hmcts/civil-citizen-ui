@@ -2107,9 +2107,11 @@
       "DOCUMENTARY_EVIDENCE": "Documentary evidence",
       "DOCUMENTS": "Documents",
       "DOCUMENTS_FOR_CLAIM": "Documents for Claim",
+      "DOCUMENT_NAME": "Document name",
       "DOCUMENT_HEADERS": {
         "COMMON": {
-          "CLAIM_DOCUMENTS": "Claim documents"
+          "CLAIM_DOCUMENTS": "Claim documents",
+          "WITHOUT_PREJUDICE": "Without Prejudice"
         },
         "CLAIMANT": {
           "ANSWERS_TO_QUESTIONS": "Claimant answers to questions asked by other party",

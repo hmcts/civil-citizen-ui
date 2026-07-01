@@ -110,7 +110,6 @@ Running accessibility tests:
 ```bash
 $ yarn test:a11y
 ```
-
 Running functional tests:
 
 Update required secrets on your machine then run below command

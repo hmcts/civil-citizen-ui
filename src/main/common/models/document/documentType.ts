@@ -105,3 +105,6 @@ export enum EvidenceUploadTrial {
 export enum OtherManageUpload {
   OTHER_MANAGE_DOCUMENT = 'other-manage-document',
 }
+export enum WithoutPrejudiceUpload {
+  WITHOUT_PREJUDICE_DOCUMENT = 'without-prejudice-document',
+}
