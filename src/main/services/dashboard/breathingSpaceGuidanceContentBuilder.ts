@@ -36,9 +36,13 @@ export const getBSGuidanceContent = (lng: string, qmContactLink: string, isQMLip
   }
   content.addParagraph('PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.POST')
     .addRawHtml(`<p class="govuk-body">${howToContactSection.replace('LINK_TO_CONTACT_YOUR_LOCAL_COURT', linkForContactYourLocalCourt)}</p>`)
+    .addStartButton('PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.ENTER_BREATHING_SPACE_DETAILS', '#')
     .addTitle('PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.WHAT_HAPPENS_DURING_BS')
     .addParagraph('PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.WHAT_HAPPENS_DURING_BS_PARA1')
     .addParagraph('PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.WHAT_HAPPENS_DURING_BS_PARA2')
+    .addTitle('PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.WHEN_BS_ENDS')
+    .addParagraph('PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.WHEN_BS_ENDS_PARA1')
+    .addParagraph('PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.WHEN_BS_ENDS_PARA2')
     .addTitle('PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.MORE_INFO')
     .addParagraph('PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.MORE_INFO_PARA1')
     .addRawHtml(`<p class="govuk-body">${bsGuidanceScheme.replace('DEBT_RESPITE_GUIDANCE_SCHEME_LINK', linkBSGuidanceForCreditors)}</p>`);
