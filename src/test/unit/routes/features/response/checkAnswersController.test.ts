@@ -132,13 +132,12 @@ describe('Response - Check answers', () => {
     it('should redirect to PCQ jouney', async () => {
       isPcqShutterOnMock.mockResolvedValue(false);
       axios.get = jest.fn().mockResolvedValue({ data: { status: 'UP' } });
-      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
-        const mockClaimToRedirectToPcq = new Claim();
-        mockClaimToRedirectToPcq.respondent1 = new Party();
-        mockClaimToRedirectToPcq.respondent1.type = PartyType.INDIVIDUAL;
-        mockClaimToRedirectToPcq.respondent1.emailAddress = new Email('test@test.com');
-        return mockClaimToRedirectToPcq;
-      });
+      const mockClaimToRedirectToPcq = new Claim();
+      mockClaimToRedirectToPcq.respondent1 = new Party();
+      mockClaimToRedirectToPcq.respondent1.type = PartyType.INDIVIDUAL;
+      mockClaimToRedirectToPcq.respondent1.emailAddress = new Email('test@test.com');
+      jest.spyOn(utilityService, 'getClaimById').mockResolvedValue(mockClaimToRedirectToPcq);
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => mockClaimToRedirectToPcq);
 
       await session(app).get(respondentCheckAnswersUrl)
         .expect((res: Response) => {
