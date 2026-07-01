@@ -2,8 +2,13 @@ const config = require('../../../../config');
 const {createAccount} = require('../../../specClaimHelpers/api/idamHelper');
 const LoginSteps = require('../../../commonFeatures/home/steps/login');
 const createGASteps = require('../../../citizenFeatures/GA/steps/createGASteps');
+const {
+  verifyNotificationTitleAndContent,
+} = require('../../../specClaimHelpers/e2e/dashboardHelper');
+const { applicationSubmittedApplicant, respondentResponseSubmitted } = require('../../../specClaimHelpers/dashboardNotificationConstants');
+const respondGASteps = require('../../../citizenFeatures/GA/steps/respondGASteps');
 
-let claimRef, claimType, caseData, claimNumber;
+let claimRef, claimType, caseData, claimNumber, gaID;
 
 Feature('Lip v Lip GA Creation Tests').tag('@ui-ga');
 
@@ -35,7 +40,7 @@ Scenario('LipvLip Applicant GA creation tests', async ({I}) => {
   await createGASteps.askCourtToReconsiderAnOrderGA(claimRef, 'Miss Jane Doe v Sir John Doe', 'consent');
 
   console.log('Creating change hearing date GA app as claimant');
-  await createGASteps.askToChangeHearingDateGA(claimRef, 'Miss Jane Doe v Sir John Doe', 'notice');
+  gaID = await createGASteps.askToChangeHearingDateGA(claimRef, 'Miss Jane Doe v Sir John Doe', 'notice');
 
   console.log('Creating more time to do order GA app as claimant');
   await createGASteps.askForMoreTimeCourtOrderGA(claimRef, 'Miss Jane Doe v Sir John Doe', 'notice');
@@ -48,6 +53,30 @@ Scenario('LipvLip Applicant GA creation tests', async ({I}) => {
 
   console.log('Creating multiple applications as claimant');
   await createGASteps.createMultipleApplications(claimRef, 'Miss Jane Doe v Sir John Doe', 'consent');
+  const applicantNotification = applicationSubmittedApplicant();
+  await verifyNotificationTitleAndContent(
+    claimNumber,
+    applicantNotification.title,
+    applicantNotification.content,
+  );
+  await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+  await I.amOnPage('/dashboard');
+  await I.click(claimNumber);
+  await respondGASteps.respondToGA(claimRef, gaID, 'Respond to an application to change a hearing date', 'Miss Jane Doe v Sir John Doe');
+  const RespondentResponseSubmittedNotification = respondentResponseSubmitted();
+  await verifyNotificationTitleAndContent(
+    claimNumber,
+    RespondentResponseSubmittedNotification.title,
+    RespondentResponseSubmittedNotification.content,
+  );
+  await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+  await I.amOnPage('/dashboard');
+  await I.click(claimNumber);
+  await verifyNotificationTitleAndContent(
+    claimNumber,
+    RespondentResponseSubmittedNotification.title,
+    RespondentResponseSubmittedNotification.content,
+  );
 });
 
 Scenario('LipvLip Defendant GA creation tests', async ({I}) => {
@@ -72,4 +101,10 @@ Scenario('LipvLip Defendant GA creation tests', async ({I}) => {
 
   console.log('Creating not on list GA app as defendant');
   await createGASteps.askSomethingNotOnListGA(claimRef, 'Miss Jane Doe v Sir John Doe', 'withoutnotice');
+    const notification = applicationSubmittedApplicant();
+  await verifyNotificationTitleAndContent(
+    claimNumber,
+    notification.title,
+    notification.content,
+  );
 });

@@ -700,4 +700,50 @@ module.exports = {
       content: 'This claim has been marked as paid in full as of ' + date +'.You do not need to attend court and any hearings scheduled will not go ahead.',
     };
   },
+
+  // Notice.AAA6.GeneralApps.ApplicationSubmitted.Applicant
+  applicationSubmittedApplicant: () => {
+    return {
+      title: 'Application is being processed',
+      content: ['A judge will consider the application.',
+         'The other parties can respond within 5 working days after the application is submitted, unless you\'ve chosen not to inform them. If you have a hearing in the next 10 days, your application will be treated urgently.'],
+      nextSteps: 'View application documents',
+    };
+  },
+
+  // Notice.AAA6.GeneralApps.RespondentResponseSubmitted.Applicant
+  // Notice.AAA6.GeneralApps.RespondentResponseSubmitted.Respondent
+  respondentResponseSubmitted: () => {
+    return {
+      title: 'Application is being processed',
+      content: 'A judge will consider the application. You\u2019ll receive an update with information about next steps.'
+    };
+  },
+
+  // Notice.AAA6.GeneralApps.OrderMade.Applicant
+  orderMadeApplicant: () => {
+    return {
+      title: 'An order has been made',
+      content: 'The judge has made an order related to the application.',
+      nextSteps: 'View the order',
+    };
+  },
+
+  // Notice.AAA6.GeneralApps.OrderMade.Respondent
+  orderMadeRespondent: () => {
+    return {
+      title: 'An order has been made',
+      content: 'The judge has made an order related to the application.',
+      nextSteps: 'View the order',
+    };
+  },
+
+  // Notice.AAA6.GeneralApps.HwFRejected.Applicant
+  hwFRejectedApplicant: ( applicationFeeTypeEn, applicationFee, civilMoneyClaimsTelephone, ) => {
+    return {
+      title: 'Your help with fees application has been rejected',
+      content: `We've rejected your application for help with the ${applicationFeeTypeEn} fee. ` + `See email for further details. To progress your application, you must pay the full fee of ${applicationFee}. ` + `You can pay by phone by calling ${civilMoneyClaimsTelephone}.`,
+    };  
+  }
+  
 };
