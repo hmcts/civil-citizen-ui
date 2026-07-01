@@ -2783,6 +2783,7 @@
     "INFORM_THE_COURT_OF_A_BREATHING_SPACE": {
       "CONTACT_LOCAL_COURT_LINK": "gysylltu â’ch llys lleol",
       "DEBT_RESPITE_GUIDANCE_SCHEME_LINK": "ddarllen canllawiau llawn y Cynllun Seibiant Dyledion i gredydwyr",
+      "ENTER_BREATHING_SPACE_DETAILS": "Enter breathing space details",
       "HOW_TO_CONTACT": "Sut i gysylltu â’r llys",
       "HOW_TO_CONTACT_PARA1": "Os nad ydych wedi derbyn gorchymyn cyfarwyddiadau eto, dylech gysylltu â Chanolfan Gwasanaethau’r Llysoedd a’r Tribiwnlysoedd (CTSC):",
       "HOW_TO_CONTACT_PARA3": "Os ydych eisoes wedi derbyn gorchymyn cyfarwyddiadau, dylech LINK_TO_CONTACT_YOUR_LOCAL_COURT.",
@@ -2804,7 +2805,10 @@
       "WHAT_NEXT_PARAGRAPH_4": "Gallwch ddod o hyd i’r wybodaeth hon yn yr hysbysiad a gawsoch gan y Gwasanaeth Ansolfedd. Bydd angen i chi hefyd ddarparu rhif yr hawliad llys.",
       "WHAT_HAPPENS_DURING_BS": "Beth sy’n digwydd yn ystod lle i anadlu",
       "WHAT_HAPPENS_DURING_BS_PARA1": "Ni ellir gorfodi gorchmynion llys a dyfarniadau yn ymwneud â dyled a wnaed cyn i le i anadlu ddechrau nes bod y lle i anadlu yn dod i ben oni bai bod y llys yn rhoi caniatâd i barhau.",
-      "WHAT_HAPPENS_DURING_BS_PARA2": "Os oes gwrandawiad wedi’i drefnu, yna mae’n bosibl y caiff hwn ei ganslo tra bod y lle i anadlu ar waith."
+      "WHAT_HAPPENS_DURING_BS_PARA2": "Os oes gwrandawiad wedi’i drefnu, yna mae’n bosibl y caiff hwn ei ganslo tra bod y lle i anadlu ar waith.",
+      "WHEN_BS_ENDS": "When breathing space ends",
+      "WHEN_BS_ENDS_PARA1": "When breathing space ends, the protections it provided will stop and creditors can begin taking action on the debts again.",
+      "WHEN_BS_ENDS_PARA2": "This may include contacting the debtor, restarting court proceedings, adding interest and charges, or continuing enforcement activity."
     },
     "DEFENDANT_DETAILS": {
       "BUSINESS_NAME": "Masnachu fel (os yn hysbys)",
