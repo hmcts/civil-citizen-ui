@@ -2,6 +2,9 @@ civil-service:
   java:
     environment:
       TASK_MANAGEMENT_ENABLED: true
+      # Enable the JudgementBuffer expiry scheduler on this preview so the buffer
+      # expiry can be triggered on demand via /testing-support/run-scheduler (DTSCCI-3663/5436 demo)
+      SCHEDULER_ENABLED_JUDGEMENT_BUFFER: true
       TASK_MANAGEMENT_API_URL: http://{{ .Release.Name }}-wa-task-management-api
       HMC_HEARINGS_SUBSCRIPTION_ENABLED: true
       HMC_HEARINGS_TOPIC_NAME: "hmc-to-cft-aat"
