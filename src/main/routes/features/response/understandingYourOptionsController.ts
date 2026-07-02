@@ -1,9 +1,7 @@
 import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {UNDERSTANDING_RESPONSE_OPTIONS_URL} from '../../urls';
-import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {getStashedClaimOrFromStore} from 'common/utils/claimRequestLocals';
 import {deadLineGuard} from 'routes/guards/deadLineGuard';
-import {AppRequest} from 'common/models/AppRequest';
-
 const understandingYourOptionsController = Router();
 
 const {Logger} = require('@hmcts/nodejs-logging');
@@ -13,7 +11,7 @@ understandingYourOptionsController.get(UNDERSTANDING_RESPONSE_OPTIONS_URL, deadL
   (async (req: Request, res: Response, next: NextFunction) => {
     try {
       const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-      const claim = await getCaseDataFromStore(generateRedisKey(<AppRequest>req));
+      const claim = await getStashedClaimOrFromStore(req, 'understandingYourOptionsController GET');
       res.render('features/response/understanding-your-options', {
         responseDate: claim.formattedResponseDeadline(lang),
       });

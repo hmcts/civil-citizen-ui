@@ -5,7 +5,8 @@ import {
   REQUEST_MORE_TIME_URL,
   RESPONSE_DEADLINE_OPTIONS_URL, APPLICATION_TYPE_URL,
 } from 'routes/urls';
-import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {generateRedisKey} from 'modules/draft-store/draftStoreService';
+import {getStashedClaimOrFromStore} from 'common/utils/claimRequestLocals';
 import {GenericForm} from 'form/models/genericForm';
 import {ResponseDeadline, ResponseOptions} from 'form/models/responseDeadline';
 import {Claim} from 'models/claim';
@@ -39,7 +40,7 @@ async function renderView(res: Response, form: GenericForm<ResponseDeadline>, cl
 responseDeadlineOptionsController.get(RESPONSE_DEADLINE_OPTIONS_URL, deadLineGuard,
   (async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const claim = await getCaseDataFromStore(generateRedisKey(<AppRequest>req));
+      const claim = await getStashedClaimOrFromStore(req, 'responseDeadlineOptionsController GET');
       const lang = req.query.lang ? req.query.lang : req.cookies.lang;
       const claimId = getRouteParam(req, 'id');
       renderView(res, new GenericForm(new ResponseDeadline(claim.responseDeadline?.option)), claim, lang, claimId);
@@ -57,7 +58,7 @@ responseDeadlineOptionsController.post(RESPONSE_DEADLINE_OPTIONS_URL, deadLineGu
       const claimId = getRouteParam(req, 'id');
       const redisKey = generateRedisKey(<AppRequest>req);
       const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-      const claim = await getCaseDataFromStore(redisKey);
+      const claim = await getStashedClaimOrFromStore(req, 'responseDeadlineOptionsController POST');
       switch (req.body['option']) {
         case 'already-agreed':
           responseOption = ResponseOptions.ALREADY_AGREED;
