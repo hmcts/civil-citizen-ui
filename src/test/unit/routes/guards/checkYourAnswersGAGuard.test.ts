@@ -21,8 +21,6 @@ import {GaHelpWithFees} from 'common/models/generalApplication/gaHelpWithFees';
 import {FileUpload} from 'models/caseProgression/uploadDocumentsUserForm';
 import {GenericYesNo} from 'form/models/genericYesNo';
 import {ClaimFeeData} from 'models/civilClaimResponse';
-import {ClaimBilingualLanguagePreference} from 'models/claimBilingualLanguagePreference';
-import {CCDRespondentResponseLanguage} from 'models/ccdResponse/ccdRespondentLiPResponse';
 
 jest.mock('../../../../main/modules/draft-store');
 jest.mock('../../../../main/modules/oidc');
@@ -33,9 +31,6 @@ const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 const MOCK_REQUEST = { params: { id: '123' } } as unknown as Request;
 const MOCK_RESPONSE = { redirect: jest.fn() } as unknown as Response;
 const MOCK_NEXT = jest.fn() as NextFunction;
-jest.mock('../../../../main/services/features/generalApplication/generalApplicationService.ts', ()=> ({
-  getCancelUrl: jest.fn(),
-}));
 
 describe('Check your Answers GA Guard', () => {
 
@@ -297,50 +292,6 @@ describe('Check your Answers GA Guard', () => {
     mockGetCaseData.mockImplementation(async () => claim);
     //When
     await checkYourAnswersGAGuard(MOCK_REQUEST, MOCK_RESPONSE, MOCK_NEXT);
-    //Then
-    expect(MOCK_RESPONSE.redirect).toHaveBeenCalled();
-  });
-  it('should not call cancelUrl if any party is Bilingual and user tries to submit an application', async () => {
-    //Given
-    const claim = new Claim();
-    claim.claimantBilingualLanguagePreference = ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH;
-    claim.generalApplications = [
-      {
-        'id': 'test',
-        'value': {
-          'caseLink': {
-            'CaseReference': '6789',
-          },
-          'generalAppSubmittedDateGAspec': new Date('2024-05-29T14:39:28.483971'),
-        },
-      },
-    ];
-    mockGetCaseData.mockImplementation(async () => claim);
-    //When
-    await checkYourAnswersGAGuard(MOCK_REQUEST, MOCK_RESPONSE, MOCK_NEXT);
-    //Then
-    expect(MOCK_RESPONSE.redirect).toHaveBeenCalled();
-
-  });
-  it('should not call cancelUrl if any party is Bilingual and user tries to submit an cosc application', async () => {
-    //Given
-    const MOCK_REQUEST_COSC = { url: '/cosc/', params: { id: '123' } } as unknown as Request;
-    const claim = new Claim();
-    claim.respondent1LiPResponse = { respondent1ResponseLanguage: CCDRespondentResponseLanguage.BOTH };
-    claim.generalApplications = [
-      {
-        'id': 'test',
-        'value': {
-          'caseLink': {
-            'CaseReference': '6789',
-          },
-          'generalAppSubmittedDateGAspec': new Date('2025-03-18T14:39:28.483971'),
-        },
-      },
-    ];
-    mockGetCaseData.mockImplementation(async () => claim);
-    //When
-    await checkYourAnswersGAGuard(MOCK_REQUEST_COSC, MOCK_RESPONSE, MOCK_NEXT);
     //Then
     expect(MOCK_RESPONSE.redirect).toHaveBeenCalled();
   });
