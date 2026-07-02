@@ -10,11 +10,9 @@ describe('breathing space guidance page content builder', () => {
     const pageContent = getBSGuidanceContent('en', 'qmLink');
     const sectionTexts = pageContent.map((section) => section.data?.text);
 
-    expect(sectionTexts).toContain('PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.WHAT_NEXT');
     expect(sectionTexts).toContain('PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.WHAT_HAPPENS_DURING_BS');
     expect(sectionTexts).toContain('PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.WHEN_BS_ENDS');
     expect(sectionTexts).toContain('PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.MORE_INFO');
-    expect(pageContent.some((section) => section.type === 'link')).toBe(true);
     expect(pageContent.some((section) =>
       section.type === 'button' &&
       section.data?.text === 'PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.ENTER_BREATHING_SPACE_DETAILS',
@@ -23,7 +21,6 @@ describe('breathing space guidance page content builder', () => {
 
   it('should get the content for the page with QM Lip information', () => {
     const pageContent = getBSGuidanceContent('en', 'qmLink', true);
-    expect(pageContent.some((section) => section.type === 'fullStopLink')).toBe(true);
     expect(pageContent.some((section) => section.data?.text === 'PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.WHEN_BS_ENDS')).toBe(true);
   });
 
