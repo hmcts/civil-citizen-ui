@@ -15,11 +15,15 @@ import {savePcqId} from 'client/pcq/savePcqIdClaim';
 import {AppRequest} from 'common/models/AppRequest';
 import {getRouteParam} from 'common/utils/routeParamUtils';
 
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('pcqGuard');
+
 const ACTOR = 'respondent';
 
 export const isFirstTimeInPCQ = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const redisKey = generateRedisKey(<AppRequest>req);
+    logger.info(`[duplicate-redis-check] pcqGuard: getCaseDataFromStore, redisKey=${redisKey}, ${req.method} ${req.originalUrl}`);
     const caseData: Claim = await getCaseDataFromStore(redisKey);
     const pcqShutterOn = await isPcqShutterOn();
 

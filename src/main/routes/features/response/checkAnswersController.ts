@@ -43,7 +43,9 @@ checkAnswersController.get(RESPONSE_CHECK_ANSWERS_URL,
     isFirstTimeInPCQ],
   (async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const claim = await getCaseDataFromStore(generateRedisKey(<AppRequest>req));
+      const redisKey = generateRedisKey(<AppRequest>req);
+      logger.info(`[duplicate-redis-check] checkAnswersController GET: getCaseDataFromStore, redisKey=${redisKey}, ${req.method} ${req.originalUrl}`);
+      const claim = await getCaseDataFromStore(redisKey);
       const carmApplicable = await isCarmEnabledForCase(claim.submittedDate);
       const mintiApplicable = await isMintiEnabledForCase(claim.submittedDate);
       const form = new GenericForm(getStatementOfTruth(claim));

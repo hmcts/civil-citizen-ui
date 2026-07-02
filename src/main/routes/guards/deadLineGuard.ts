@@ -9,6 +9,9 @@ import {RESPONSE_TASK_LIST_URL} from '../../routes/urls';
 import {AppRequest} from 'common/models/AppRequest';
 import {getRouteParam} from 'common/utils/routeParamUtils';
 
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('deadLineGuard');
+
 export const deadLineGuard = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const unauthorized = await isUnauthorized(req);
@@ -24,7 +27,9 @@ export const deadLineGuard = async (req: Request, res: Response, next: NextFunct
 };
 
 export const isUnauthorized = async (req: Request) => {
-  const caseData: Claim = await getCaseDataFromStore(generateRedisKey(<AppRequest>req));
+  const redisKey = generateRedisKey(<AppRequest>req);
+  logger.info(`[duplicate-redis-check] deadLineGuard: getCaseDataFromStore, redisKey=${redisKey}, ${req.method} ${req.originalUrl}`);
+  const caseData: Claim = await getCaseDataFromStore(redisKey);
   const isDeadlinePassed = isPastDeadline(caseData.respondent1ResponseDeadline);
   const claimId = getRouteParam(req, 'id');
   const viewOptionsBeforeDeadlineTask = getViewOptionsBeforeDeadlineTask(caseData, claimId, 'en');
