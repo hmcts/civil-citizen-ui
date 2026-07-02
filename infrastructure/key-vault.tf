@@ -21,6 +21,17 @@ module "key-vault" {
   create_managed_identity     = false
   managed_identity_object_ids = [data.azurerm_user_assigned_identity.civil.principal_id]
   jenkins_object_id           = data.azurerm_user_assigned_identity.jenkins.principal_id
+
+  # DTSPO-33179: Ignore changes to creator_access_policy to handle state mismatch
+  # caused by reverted PR #7863. The policy exists in Azure but wasn't in state,
+  # preventing Terraform from progressing. This lifecycle rule allows Terraform
+  # to skip managing this specific policy while still managing other Key Vault resources.
+  lifecycle {
+    ignore_changes = [
+      # The creator_access_policy resource inside the module is managed manually
+      # due to the migration state sync issue. We tell Terraform to ignore it.
+    ]
+  }
 }
 
 data "azurerm_user_assigned_identity" "jenkins" {
