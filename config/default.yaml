@@ -17,7 +17,7 @@ services:
     env: 'default'
   idam:
     url: 'http://localhost:5000'
-    authorizationURL: 'http://localhost:9002/login'
+    authorizationURL: 'http://localhost:9002/o/authorize'
     tokenURL: 'http://localhost:5000/o/token'
     clientID: 'civil_citizen_ui'
     clientSecret: 'citizen-ui-secret'
@@ -26,6 +26,7 @@ services:
     scope: '&scope=profile%20openid%20roles%20manage-user%20create-user%20search-user'
     terminateSessionURL: 'http://localhost:9002/o/endSession'
     signOutCallBackURL: 'http://localhost:3001/dashboard'
+    hmctsAccessURL: 'http://localhost:9002'
   draftStore:
     redis:
       host: 'localhost'
