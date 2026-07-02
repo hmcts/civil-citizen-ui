@@ -28,7 +28,6 @@ export class DraftStoreClient {
             this.logger.info(`Mock data ${element.id} saved to Redis`);
             return client.expire(element.id, ONE_DAY_IN_SECONDS);
           });
-          client.expire(ONE_DAY_IN_SECONDS);
         });
       });
     }
