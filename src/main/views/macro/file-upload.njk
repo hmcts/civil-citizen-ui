@@ -1,0 +1,23 @@
+{% from "govuk/components/file-upload/macro.njk" import govukFileUpload as _govukFileUpload %}
+
+{% macro govukFileUpload(params) %}
+  {{ _govukFileUpload({
+    javascript: params.javascript if params.javascript is defined else true,
+    chooseFilesButtonText: params.chooseFilesButtonText if params.chooseFilesButtonText is defined else t('COMMON.CHOOSE_FILE'),
+    noFileChosenText: params.noFileChosenText if params.noFileChosenText is defined else t('COMMON.NO_FILE_CHOSEN'),
+    name: params.name,
+    id: params.id,
+    disabled: params.disabled,
+    multiple: params.multiple,
+    describedBy: params.describedBy,
+    label: params.label,
+    hint: params.hint,
+    errorMessage: params.errorMessage,
+    formGroup: params.formGroup,
+    classes: params.classes,
+    attributes: params.attributes,
+    wrapperClasses: params.wrapperClasses,
+    wrapperAttributes: params.wrapperAttributes,
+    value: params.value
+  }) }}
+{% endmacro %}
