@@ -180,7 +180,8 @@ civil-service:
       SCHEDULER_ENABLED_DECISION_OUTCOME: false
       SCHEDULER_ENABLED_CASE_DISMISSED: false
       SCHEDULER_ENABLED_GA_DOCUMENT_UPLOAD_NOTIFY: false
-      SCHEDULER_ENABLED_GA_PROOF_OF_DEBT: false
+      SCHEDULER_ENABLED_GA_PROOF_OF_DEBT: false    
+    secrets:
       CMC_DB_PASSWORD:
         secretRef: "{{ .Values.global.postgresSecret }}"
         key: PASSWORD
