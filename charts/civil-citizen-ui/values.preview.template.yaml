@@ -165,31 +165,22 @@ civil-service:
       CMC_DB_CONNECTION_OPTIONS: "?stringtype=unspecified&reWriteBatchedInserts=true&sslmode=require"
       CMC_DB_USERNAME: hmcts
       CMC_DB_NAME: "pr-${CHANGE_ID}-cmc"
-  # Spring scheduler framework controls
-        # Leave empty to keep all Spring schedulers off for this PR.
-        # To enable specific schedulers, add their scheduler names as a comma-separated list.
-        # Example: BundleCreation,HearingCvpLink,GADocUploadNotifyScheduler
-        SCHEDULER_ACTIVE_SCHEDULERS: "HearingCvpLink"
-
-        # Individual scheduler bean toggles.
-        # A scheduler only runs when BOTH:
-        # 1. its SCHEDULER_ENABLED_* value is true
-        # 2. its scheduler name is present in SCHEDULER_ACTIVE_SCHEDULERS
-        SCHEDULER_ENABLED_JUDGEMENT_BUFFER: false
-        SCHEDULER_ENABLED_DEFENDANT_RESPONSE: false
-        SCHEDULER_ENABLED_BUNDLE_CREATION: false
-        SCHEDULER_ENABLED_HEARING_CVP_LINK: true
-        SCHEDULER_ENABLED_POLLING_EVENT_EMITTER: false
-        SCHEDULER_ENABLED_AUTOMATED_HEARING_NOTICE: false
-        SCHEDULER_ENABLED_MEDIATION_FILE_TRANSFER: false
-        SCHEDULER_ENABLED_TAKE_CASE_OFFLINE: false
-        SCHEDULER_ENABLED_TRIAL_READY_NOTIFICATION: false
-        SCHEDULER_ENABLED_TRIAL_READY_CHECK: false
-        SCHEDULER_ENABLED_ORDER_REVIEW_OBLIGATION_CHECK: false
-        SCHEDULER_ENABLED_DECISION_OUTCOME: false
-        SCHEDULER_ENABLED_CASE_DISMISSED: false
-        SCHEDULER_ENABLED_GA_DOCUMENT_UPLOAD_NOTIFY: false
-        SCHEDULER_ENABLED_GA_PROOF_OF_DEBT: false
+      SCHEDULER_ACTIVE_SCHEDULERS: "HearingCvpLink"
+      SCHEDULER_ENABLED_JUDGEMENT_BUFFER: false
+      SCHEDULER_ENABLED_DEFENDANT_RESPONSE: false
+      SCHEDULER_ENABLED_BUNDLE_CREATION: false
+      SCHEDULER_ENABLED_HEARING_CVP_LINK: true
+      SCHEDULER_ENABLED_POLLING_EVENT_EMITTER: false
+      SCHEDULER_ENABLED_AUTOMATED_HEARING_NOTICE: false
+      SCHEDULER_ENABLED_MEDIATION_FILE_TRANSFER: false
+      SCHEDULER_ENABLED_TAKE_CASE_OFFLINE: false
+      SCHEDULER_ENABLED_TRIAL_READY_NOTIFICATION: false
+      SCHEDULER_ENABLED_TRIAL_READY_CHECK: false
+      SCHEDULER_ENABLED_ORDER_REVIEW_OBLIGATION_CHECK: false
+      SCHEDULER_ENABLED_DECISION_OUTCOME: false
+      SCHEDULER_ENABLED_CASE_DISMISSED: false
+      SCHEDULER_ENABLED_GA_DOCUMENT_UPLOAD_NOTIFY: false
+      SCHEDULER_ENABLED_GA_PROOF_OF_DEBT: false
       CMC_DB_PASSWORD:
         secretRef: "{{ .Values.global.postgresSecret }}"
         key: PASSWORD
