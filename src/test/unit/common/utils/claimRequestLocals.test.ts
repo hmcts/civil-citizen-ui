@@ -52,5 +52,19 @@ describe('claimRequestLocals', () => {
       expect(claim).toBe(mockClaim);
       expect(mockGetCaseDataFromStore).toHaveBeenCalledTimes(1);
     });
+
+    it('should fetch using the provided redisKey when claim is not stashed', async () => {
+      const req = {
+        method: 'GET',
+        originalUrl: '/test',
+        session: {user: {id: 'user-1'}},
+        locals: {env: '', lang: ''},
+      } as unknown as AppRequest;
+
+      const claim = await getStashedClaimOrFromStore(req, 'user-1');
+
+      expect(claim).toBe(mockClaim);
+      expect(mockGetCaseDataFromStore).toHaveBeenCalledWith('user-1');
+    });
   });
 });
