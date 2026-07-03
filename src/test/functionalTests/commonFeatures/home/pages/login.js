@@ -18,11 +18,21 @@ const buttons = {
 };
 
 class LoginPage {
+  async #signOutIfNeeded() {
+    const isSignedIn = await I.grabNumberOfVisibleElements('a[href="/logout"]');
+
+    if (isSignedIn) {
+      await I.amOnPage('/logout');
+      await I.wait(2);
+    }
+  }
+
   async openCitizenLogin() {
     const isPlaywrightActive = await I.isPlaywright();
     console.log('Is Playwright active?', isPlaywrightActive);
 
     if (isPlaywrightActive) {
+      await this.#signOutIfNeeded();
       await I.clearCookie();
       await I.setCookie([...idamCookies, ...cuiCookies]);
     }
