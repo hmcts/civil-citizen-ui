@@ -166,7 +166,7 @@ civil-service:
       CMC_DB_USERNAME: hmcts
       CMC_DB_NAME: "pr-${CHANGE_ID}-cmc"
       SCHEDULER_ACTIVE_SCHEDULERS: "DefendantResponseDeadline"
-      SCHEDULER_ENABLED_DEFENDANT_RESPONSE: false
+      SCHEDULER_ENABLED_DEFENDANT_RESPONSE: true
     secrets:
       CMC_DB_PASSWORD:
         secretRef: "{{ .Values.global.postgresSecret }}"
