@@ -27,7 +27,7 @@ agreedResponseDeadlineController
       const claimId = getRouteParam(req, 'id');
       const backLink = constructResponseUrlWithIdParams(claimId, RESPONSE_DEADLINE_OPTIONS_URL);
       try {
-        const claim = await getStashedClaimOrFromStore(req, 'agreedResponseDeadlineController GET');
+        const claim = await getStashedClaimOrFromStore(req);
         const agreedResponseDeadline = responseDeadlineService.getAgreedResponseDeadline(claim);
         const isReleaseTwoEnabled = true;
         res.render(agreedResponseDeadlineViewPath, {
@@ -49,7 +49,7 @@ agreedResponseDeadlineController
       const claimId = getRouteParam(req, 'id');
       const backLink = constructResponseUrlWithIdParams(claimId, RESPONSE_DEADLINE_OPTIONS_URL);
       try {
-        const claim = await getStashedClaimOrFromStore(req, 'agreedResponseDeadlineController POST');
+        const claim = await getStashedClaimOrFromStore(req);
         const originalResponseDeadline = claim?.respondent1ResponseDeadline;
         const agreedResponseDeadlineDate = new AgreedResponseDeadline(year, month, day, originalResponseDeadline);
         const form: GenericForm<AgreedResponseDeadline> = new GenericForm<AgreedResponseDeadline>(agreedResponseDeadlineDate);

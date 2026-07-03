@@ -11,7 +11,7 @@ understandingYourOptionsController.get(UNDERSTANDING_RESPONSE_OPTIONS_URL, deadL
   (async (req: Request, res: Response, next: NextFunction) => {
     try {
       const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-      const claim = await getStashedClaimOrFromStore(req, 'understandingYourOptionsController GET');
+      const claim = await getStashedClaimOrFromStore(req);
       res.render('features/response/understanding-your-options', {
         responseDate: claim.formattedResponseDeadline(lang),
       });

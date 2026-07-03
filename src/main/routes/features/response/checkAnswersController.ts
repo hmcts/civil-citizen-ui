@@ -44,7 +44,7 @@ checkAnswersController.get(RESPONSE_CHECK_ANSWERS_URL,
     isFirstTimeInPCQ],
   (async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const claim = await getStashedClaimOrFromStore(req, 'checkAnswersController GET');
+      const claim = await getStashedClaimOrFromStore(req);
       const carmApplicable = await isCarmEnabledForCase(claim.submittedDate);
       const mintiApplicable = await isMintiEnabledForCase(claim.submittedDate);
       const form = new GenericForm(getStatementOfTruth(claim));

@@ -19,7 +19,7 @@ describe('claimRequestLocals', () => {
   describe('stashClaimOnRequest', () => {
     it('should set claim on req.locals', () => {
       const req = {method: 'GET', originalUrl: '/test'} as unknown as Request;
-      stashClaimOnRequest(req, mockClaim, 'testGuard');
+      stashClaimOnRequest(req, mockClaim);
       expect((<AppRequest>req).locals.claim).toBe(mockClaim);
     });
   });
@@ -32,7 +32,7 @@ describe('claimRequestLocals', () => {
         locals: {env: '', lang: '', claim: mockClaim},
       } as unknown as AppRequest;
 
-      const claim = await getStashedClaimOrFromStore(req, 'testController');
+      const claim = await getStashedClaimOrFromStore(req);
 
       expect(claim).toBe(mockClaim);
       expect(mockGetCaseDataFromStore).not.toHaveBeenCalled();
@@ -47,7 +47,7 @@ describe('claimRequestLocals', () => {
         locals: {env: '', lang: ''},
       } as unknown as AppRequest;
 
-      const claim = await getStashedClaimOrFromStore(req, 'testController');
+      const claim = await getStashedClaimOrFromStore(req);
 
       expect(claim).toBe(mockClaim);
       expect(mockGetCaseDataFromStore).toHaveBeenCalledTimes(1);

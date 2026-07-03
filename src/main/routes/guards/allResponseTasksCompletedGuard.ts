@@ -10,18 +10,14 @@ import {getClaimById} from 'modules/utilityService';
 import {isMintiEnabledForCase, isCarmEnabledForCase} from '../../app/auth/launchdarkly/launchDarklyClient';
 import {stashClaimOnRequest} from 'common/utils/claimRequestLocals';
 
-const {Logger} = require('@hmcts/nodejs-logging');
-const logger = Logger.getLogger('allResponseTasksCompletedGuard');
-
 export class AllResponseTasksCompletedGuard {
   static apply(redirectUrl: string) {
     return async (req: Request, res: Response, next: NextFunction): Promise<void> => {
       try {
         const appReq: AppRequest = <AppRequest>req;
         const lang = req?.query?.lang ? req.query.lang : req?.cookies?.lang;
-        logger.info(`[duplicate-redis-check] allResponseTasksCompletedGuard: getClaimById, claimId=${appReq.session.claimId}, ${req.method} ${req.originalUrl}`);
         const caseData: Claim = await getClaimById(appReq.session.claimId, req, true);
-        stashClaimOnRequest(req, caseData, 'allResponseTasksCompletedGuard');
+        stashClaimOnRequest(req, caseData);
         const carmApplicable = await isCarmEnabledForCase(caseData.submittedDate);
         const mintiApplicable = await isMintiEnabledForCase(caseData.submittedDate);
         await setResponseDeadline(caseData, appReq);

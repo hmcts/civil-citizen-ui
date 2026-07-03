@@ -37,7 +37,7 @@ requestMoreTimeController.get(REQUEST_MORE_TIME_URL, deadLineGuard,
   (async (req: Request, res: Response, next: NextFunction) => {
     try {
       const language = req.query.lang ? req.query.lang : req.cookies.lang;
-      const claim = await getStashedClaimOrFromStore(req, 'requestMoreTimeController GET');
+      const claim = await getStashedClaimOrFromStore(req);
       const claimId = getRouteParam(req, 'id');
       renderView(res, new GenericForm(new AdditionalTime(claim.responseDeadline?.additionalTime)), claim, language, claimId);
     } catch (error) {
@@ -53,7 +53,7 @@ requestMoreTimeController.post(REQUEST_MORE_TIME_URL, deadLineGuard,
       const language = req.query.lang ? req.query.lang : req.cookies.lang;
       const selectedOption = responseDeadlineService.getAdditionalTime(req.body.option);
       const claimId = getRouteParam(req, 'id');
-      const claim = await getStashedClaimOrFromStore(req, 'requestMoreTimeController POST');
+      const claim = await getStashedClaimOrFromStore(req);
       const form = new GenericForm(new AdditionalTime(selectedOption));
       await form.validate();
       if (form.hasErrors()) {

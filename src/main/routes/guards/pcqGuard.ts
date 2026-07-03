@@ -18,8 +18,8 @@ const ACTOR = 'respondent';
 
 export const isFirstTimeInPCQ = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const caseData: Claim = await getStashedClaimOrFromStore(req, 'pcqGuard');
-    stashClaimOnRequest(req, caseData, 'pcqGuard');
+    const caseData: Claim = await getStashedClaimOrFromStore(req);
+    stashClaimOnRequest(req, caseData);
     const pcqShutterOn = await isPcqShutterOn();
 
     if (pcqShutterOn || caseData.respondentResponsePcqId) {
