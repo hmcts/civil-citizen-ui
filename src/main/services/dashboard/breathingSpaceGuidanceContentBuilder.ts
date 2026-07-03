@@ -6,7 +6,7 @@ import {
 } from 'common/utils/externalURLs';
 import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
 
-export const getBSGuidanceContent = (lng: string, _qmContactLink: string, _isQMLipEnabled = false) => {
+export const getBSGuidanceContent = (lng: string, entryUrl: string, _qmContactLink: string, _isQMLipEnabled = false) => {
   const bsGuidanceScheme = t('PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.MORE_INFO_PARA2', {lng});
   const linkBSGuidanceForCreditors = `<a href="${bsGuidanceForCreditors}" target="_blank">${t('PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.DEBT_RESPITE_GUIDANCE_SCHEME_LINK', { lng })}</a>`;
   const content =  new PageSectionBuilder()
@@ -14,7 +14,7 @@ export const getBSGuidanceContent = (lng: string, _qmContactLink: string, _isQML
     .addParagraph('PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.SUMMARY')
     .addParagraph('PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.WHAT_NEXT_PARAGRAPH_1')
     .addParagraph('PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.WHAT_NEXT_PARAGRAPH_2')
-    .addStartButton('PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.ENTER_BREATHING_SPACE_DETAILS', '#')
+    .addStartButton('PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.ENTER_BREATHING_SPACE_DETAILS', entryUrl)
     .addTitle('PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.WHAT_HAPPENS_DURING_BS')
     .addParagraph('PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.WHAT_HAPPENS_DURING_BS_PARA1')
     .addParagraph('PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.WHAT_HAPPENS_DURING_BS_PARA2')

@@ -2774,6 +2774,10 @@
       "VIEW": "View",
       "VIEW_CLAIM_NUMBER": "claim number {{ claimNumber }}"
     },
+    "BREATHING_SPACE_ENTRY": {
+      "PAGE_TITLE": "Enter breathing space",
+      "STUB_MESSAGE": "Breathing space entry — coming soon."
+    },
     "DEBTS": {
       "ADD": "Add a debt",
       "LIST": "List each loan or credit card debt",

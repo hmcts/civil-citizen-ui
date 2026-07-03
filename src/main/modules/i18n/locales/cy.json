@@ -2772,6 +2772,10 @@
       "VIEW": "Weiv",
       "VIEW_CLAIM_NUMBER": "Rhif yr Hawliad {{ claimNumber }}"
     },
+    "BREATHING_SPACE_ENTRY": {
+      "PAGE_TITLE": "Enter breathing space",
+      "STUB_MESSAGE": "Breathing space entry — coming soon."
+    },
     "DEBTS": {
       "ADD": "Ychwanegu dyled",
       "LIST": "Rhestrwch bob benthyciad neu ddyled cerdyn credyd",
