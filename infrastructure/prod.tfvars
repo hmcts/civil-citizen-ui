@@ -5,6 +5,9 @@ maxmemory_reserved              = 1330
 maxfragmentationmemory_reserved = 1330
 maxmemory_delta                 = 1330
 
+managed_redis_sku                       = "Balanced_B3"
+managed_redis_persistence_rdb_frequency = "6h"
+
 #================================================================================================
 # Azure Monitor
 #================================================================================================

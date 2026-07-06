@@ -78,6 +78,27 @@ variable "maxmemory_delta" {
 variable "aks_subscription_id" {}
 
 #================================================================================================
+# Azure Managed Redis Variables (DTSCCI-5712)
+#================================================================================================
+variable "managed_redis_sku" {
+  description = "Managed Redis SKU. Override per environment in <env>.tfvars."
+  type        = string
+  default     = "Balanced_B0"
+}
+
+variable "managed_redis_persistence_rdb_frequency" {
+  description = "RDB backup frequency for Managed Redis (1h, 6h, 12h). null = no persistence."
+  type        = string
+  default     = null
+}
+
+variable "private_dns_subscription_id" {
+  description = "Subscription ID hosting the privatelink.redis.azure.net DNS zone in core-infra-intsvc-rg."
+  type        = string
+  default     = "1baf5470-1c3e-40d3-a6f7-74bfbce4b348"
+}
+
+#================================================================================================
 # Monitor Variables
 #================================================================================================
 variable "monitor_action_group" {
