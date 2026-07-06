@@ -23,9 +23,8 @@ export const getDraftClaimFromStore = async (claimId: string, doNotThrowErrror =
   const draftStoreClient = app.locals.draftStoreClient;
   const ttl = draftStoreClient?.ttl ? await draftStoreClient.ttl(claimId) : 'unavailable';
   const ttlLabel = typeof ttl === 'number' ? `${ttl}s` : ttl;
-  logger.info(`[redis-call] getDraftClaimFromStore: key=${claimId}, ttl=${ttlLabel}`);
   const dataFromRedis = await draftStoreClient.get(claimId);
-  logger.info(`[redis-call] getDraftClaimFromStore: key=${claimId}, cacheHit=${dataFromRedis !== null}`);
+  logger.info(`[redis-call] getDraftClaimFromStore: key=${claimId}, ttl=${ttlLabel}, cacheHit=${dataFromRedis !== null}`);
   if (dataFromRedis === null && !doNotThrowErrror) {
     throw new Error('Case not found...');
   }
