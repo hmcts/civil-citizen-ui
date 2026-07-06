@@ -37,6 +37,7 @@ requestMoreTimeController.get(REQUEST_MORE_TIME_URL, deadLineGuard,
   (async (req: Request, res: Response, next: NextFunction) => {
     try {
       const language = req.query.lang ? req.query.lang : req.cookies.lang;
+      logger.info(`[duplicate-redis-check] requestMoreTimeController GET: getStashedClaimOrFromStore, ${req.method} ${req.originalUrl}`);
       const claim = await getStashedClaimOrFromStore(req);
       const claimId = getRouteParam(req, 'id');
       renderView(res, new GenericForm(new AdditionalTime(claim.responseDeadline?.additionalTime)), claim, language, claimId);
@@ -53,6 +54,7 @@ requestMoreTimeController.post(REQUEST_MORE_TIME_URL, deadLineGuard,
       const language = req.query.lang ? req.query.lang : req.cookies.lang;
       const selectedOption = responseDeadlineService.getAdditionalTime(req.body.option);
       const claimId = getRouteParam(req, 'id');
+      logger.info(`[duplicate-redis-check] requestMoreTimeController POST: getStashedClaimOrFromStore, redisKey=${redisKey}, ${req.method} ${req.originalUrl}`);
       const claim = await getStashedClaimOrFromStore(req);
       const form = new GenericForm(new AdditionalTime(selectedOption));
       await form.validate();

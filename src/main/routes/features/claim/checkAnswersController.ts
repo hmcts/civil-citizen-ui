@@ -36,6 +36,9 @@ const checkAnswersViewPath = 'features/claim/check-answers';
 //const paymentUrl = 'https://www.payments.service.gov.uk/card_details/:id';
 const claimCheckAnswersController = Router();
 
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('claimCheckAnswersController');
+
 function renderView(res: Response, form: GenericForm<any>, claim: Claim, userId: string, lang: string, isCarmEnabled = true) {
 
   const summarySections = getSummarySections(userId, claim, lang, isCarmEnabled);
@@ -57,6 +60,7 @@ claimCheckAnswersController.get(CLAIM_CHECK_ANSWERS_URL,
     try {
       const userId = req.session?.user?.id;
       const lang = req.query.lang ? req.query.lang : req.cookies.lang;
+      logger.info(`[duplicate-redis-check] claimCheckAnswersController GET: getStashedClaimOrFromStore, redisKey=${userId}, ${req.method} ${req.originalUrl}`);
       const claim = await getStashedClaimOrFromStore(req, userId);
       const form = new GenericForm(getStatementOfTruth(claim));
       const isCarmEnabled = await isCarmEnabledForCase(claim.draftClaimCreatedAt);

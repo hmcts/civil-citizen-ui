@@ -44,6 +44,7 @@ checkAnswersController.get(RESPONSE_CHECK_ANSWERS_URL,
     isFirstTimeInPCQ],
   (async (req: Request, res: Response, next: NextFunction) => {
     try {
+      logger.info(`[duplicate-redis-check] checkAnswersController GET: getStashedClaimOrFromStore, ${req.method} ${req.originalUrl}`);
       const claim = await getStashedClaimOrFromStore(req);
       const carmApplicable = await isCarmEnabledForCase(claim.submittedDate);
       const mintiApplicable = await isMintiEnabledForCase(claim.submittedDate);

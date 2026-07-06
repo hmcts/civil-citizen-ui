@@ -8,10 +8,14 @@ import {getTaskLists} from 'services/features/claim/taskListService';
 import {TaskStatus} from 'common/models/taskList/TaskStatus';
 import {getStashedClaimOrFromStore, stashClaimOnRequest} from 'common/utils/claimRequestLocals';
 
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('checkYourAnswersGuard');
+
 export const checkYourAnswersClaimGuard = async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const userId = req.session?.user?.id;
     const lang = req?.query?.lang ? req.query.lang : req?.cookies?.lang;
+    logger.info(`[duplicate-redis-check] checkYourAnswersClaimGuard: getStashedClaimOrFromStore, redisKey=${userId}, ${req.method} ${req.originalUrl}`);
     const caseData: Claim = await getStashedClaimOrFromStore(req, userId);
     stashClaimOnRequest(req, caseData);
 

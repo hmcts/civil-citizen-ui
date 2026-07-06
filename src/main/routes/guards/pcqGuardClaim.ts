@@ -14,11 +14,15 @@ import {savePcqIdClaim} from 'client/pcq/savePcqIdClaim';
 import {getClaimantIdamDetails} from 'services/translation/response/claimantIdamDetails';
 import {getStashedClaimOrFromStore, stashClaimOnRequest} from 'common/utils/claimRequestLocals';
 
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('pcqGuardClaim');
+
 const ACTOR = 'applicant';
 
 export const isFirstTimeInPCQ = async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const userId = (<AppRequest>req).session?.user?.id;
+    logger.info(`[duplicate-redis-check] pcqGuardClaim: getStashedClaimOrFromStore, redisKey=${userId}, ${req.method} ${req.originalUrl}`);
     const caseData: Claim = await getStashedClaimOrFromStore(req, userId);
     stashClaimOnRequest(req, caseData);
     const pcqShutterOn = await isPcqShutterOn();

@@ -14,10 +14,14 @@ import {RESPONSE_CHECK_ANSWERS_URL} from 'routes/urls';
 import {savePcqId} from 'client/pcq/savePcqIdClaim';
 import {getRouteParam} from 'common/utils/routeParamUtils';
 
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('pcqGuard');
+
 const ACTOR = 'respondent';
 
 export const isFirstTimeInPCQ = async (req: Request, res: Response, next: NextFunction) => {
   try {
+    logger.info(`[duplicate-redis-check] pcqGuard: getStashedClaimOrFromStore, ${req.method} ${req.originalUrl}`);
     const caseData: Claim = await getStashedClaimOrFromStore(req);
     stashClaimOnRequest(req, caseData);
     const pcqShutterOn = await isPcqShutterOn();

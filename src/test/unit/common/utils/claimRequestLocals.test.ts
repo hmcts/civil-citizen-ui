@@ -5,6 +5,15 @@ import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftS
 import {getStashedClaimOrFromStore, stashClaimOnRequest} from 'common/utils/claimRequestLocals';
 
 jest.mock('../../../../main/modules/draft-store/draftStoreService');
+const mockLoggerInfo = jest.fn();
+jest.mock('@hmcts/nodejs-logging', () => ({
+  Logger: {
+    getLogger: jest.fn(() => ({
+      info: (...args: unknown[]) => mockLoggerInfo(...args),
+      error: jest.fn(),
+    })),
+  },
+}));
 
 const mockGetCaseDataFromStore = getCaseDataFromStore as jest.Mock;
 const mockGenerateRedisKey = generateRedisKey as jest.Mock;
@@ -15,6 +24,7 @@ describe('claimRequestLocals', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
+    mockLoggerInfo.mockClear();
     mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
     mockGenerateRedisKey.mockReturnValue('generated-redis-key');
   });
@@ -57,6 +67,14 @@ describe('claimRequestLocals', () => {
 
       expect(req.locals.claim).toBe(anotherClaim);
     });
+
+    it('should log when stashing claim on request', () => {
+      const req = {method: 'GET', originalUrl: '/test'} as unknown as Request;
+      stashClaimOnRequest(req, mockClaim);
+      expect(mockLoggerInfo).toHaveBeenCalledWith(
+        expect.stringContaining('[duplicate-redis-check] claimRequestLocals: stashed claim on request locals'),
+      );
+    });
   });
 
   describe('getStashedClaimOrFromStore', () => {
@@ -72,6 +90,9 @@ describe('claimRequestLocals', () => {
       expect(claim).toBe(mockClaim);
       expect(mockGetCaseDataFromStore).not.toHaveBeenCalled();
       expect(mockGenerateRedisKey).not.toHaveBeenCalled();
+      expect(mockLoggerInfo).toHaveBeenCalledWith(
+        expect.stringContaining('[duplicate-redis-check] claimRequestLocals: getStashedClaimOrFromStore (stashed claim reused)'),
+      );
     });
 
     it('should fetch from Redis when locals is undefined', async () => {
@@ -102,6 +123,9 @@ describe('claimRequestLocals', () => {
 
       expect(claim).toBe(mockClaim);
       expect(mockGetCaseDataFromStore).toHaveBeenCalledTimes(1);
+      expect(mockLoggerInfo).toHaveBeenCalledWith(
+        expect.stringContaining('[duplicate-redis-check] claimRequestLocals: getStashedClaimOrFromStore, getCaseDataFromStore'),
+      );
     });
 
     it('should fetch using the provided redisKey when claim is not stashed', async () => {

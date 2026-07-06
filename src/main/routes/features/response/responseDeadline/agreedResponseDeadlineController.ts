@@ -27,6 +27,7 @@ agreedResponseDeadlineController
       const claimId = getRouteParam(req, 'id');
       const backLink = constructResponseUrlWithIdParams(claimId, RESPONSE_DEADLINE_OPTIONS_URL);
       try {
+        logger.info(`[duplicate-redis-check] agreedResponseDeadlineController GET: getStashedClaimOrFromStore, ${req.method} ${req.originalUrl}`);
         const claim = await getStashedClaimOrFromStore(req);
         const agreedResponseDeadline = responseDeadlineService.getAgreedResponseDeadline(claim);
         const isReleaseTwoEnabled = true;
@@ -49,6 +50,7 @@ agreedResponseDeadlineController
       const claimId = getRouteParam(req, 'id');
       const backLink = constructResponseUrlWithIdParams(claimId, RESPONSE_DEADLINE_OPTIONS_URL);
       try {
+        logger.info(`[duplicate-redis-check] agreedResponseDeadlineController POST: getStashedClaimOrFromStore, redisKey=${redisKey}, ${req.method} ${req.originalUrl}`);
         const claim = await getStashedClaimOrFromStore(req);
         const originalResponseDeadline = claim?.respondent1ResponseDeadline;
         const agreedResponseDeadlineDate = new AgreedResponseDeadline(year, month, day, originalResponseDeadline);

@@ -40,6 +40,7 @@ async function renderView(res: Response, form: GenericForm<ResponseDeadline>, cl
 responseDeadlineOptionsController.get(RESPONSE_DEADLINE_OPTIONS_URL, deadLineGuard,
   (async (req: Request, res: Response, next: NextFunction) => {
     try {
+      logger.info(`[duplicate-redis-check] responseDeadlineOptionsController GET: getStashedClaimOrFromStore, ${req.method} ${req.originalUrl}`);
       const claim = await getStashedClaimOrFromStore(req);
       const lang = req.query.lang ? req.query.lang : req.cookies.lang;
       const claimId = getRouteParam(req, 'id');
@@ -58,6 +59,7 @@ responseDeadlineOptionsController.post(RESPONSE_DEADLINE_OPTIONS_URL, deadLineGu
       const claimId = getRouteParam(req, 'id');
       const redisKey = generateRedisKey(<AppRequest>req);
       const lang = req.query.lang ? req.query.lang : req.cookies.lang;
+      logger.info(`[duplicate-redis-check] responseDeadlineOptionsController POST: getStashedClaimOrFromStore, redisKey=${redisKey}, ${req.method} ${req.originalUrl}`);
       const claim = await getStashedClaimOrFromStore(req);
       switch (req.body['option']) {
         case 'already-agreed':
