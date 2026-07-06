@@ -363,13 +363,13 @@ class createGASteps {
 
     switch (communicationType) {
       case 'consent':
-        feeAmount = '123';
+        feeAmount = '126';
         break;
       case 'notice':
         feeAmount = '313';
         break;
       case 'withoutnotice':
-        feeAmount = '123';
+        feeAmount = '126';
         break;
     }
 
@@ -473,13 +473,13 @@ class createGASteps {
 
     switch (communicationType) {
       case 'consent':
-        feeAmount = '123';
+        feeAmount = '126';
         break;
       case 'notice':
         feeAmount = '313';
         break;
       case 'withoutnotice':
-        feeAmount = '123';
+        feeAmount = '126';
         break;
     }
 
