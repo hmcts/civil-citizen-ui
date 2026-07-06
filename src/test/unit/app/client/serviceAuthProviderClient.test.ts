@@ -119,4 +119,53 @@ describe('Service Authorisation Provider Client', () => {
 
     await expect(generateServiceToken('microservice', 's2sSecret')).rejects.toThrow('OTP Generation Error');
   });
+
+  it('should use default TTL when token has no exp claim', async () => {
+    const header = Buffer.from(JSON.stringify({alg: 'HS512'})).toString('base64url');
+    const payload = Buffer.from(JSON.stringify({sub: 'test'})).toString('base64url');
+    const tokenWithoutExp = `${header}.${payload}.signature`;
+    mockPost.mockResolvedValue({data: tokenWithoutExp});
+
+    await generateServiceToken('cmc', 's2sSecret');
+    const cachedToken = await generateServiceToken('cmc', 's2sSecret');
+
+    expect(mockPost).toHaveBeenCalledTimes(1);
+    expect(cachedToken).toEqual(tokenWithoutExp);
+  });
+
+  it('should use default TTL when token cannot be decoded', async () => {
+    mockPost.mockResolvedValue({data: 'not-a-jwt-token'});
+
+    await generateServiceToken('cmc', 's2sSecret');
+    const cachedToken = await generateServiceToken('cmc', 's2sSecret');
+
+    expect(mockPost).toHaveBeenCalledTimes(1);
+    expect(cachedToken).toEqual('not-a-jwt-token');
+  });
+
+  it('should deduplicate concurrent token requests', async () => {
+    const mockResponse = createMockJwt(Math.floor(Date.now() / 1000) + 3600);
+    let resolvePost: (value: {data: string}) => void;
+    const postPromise = new Promise<{data: string}>((resolve) => {
+      resolvePost = resolve;
+    });
+    mockPost.mockReturnValue(postPromise);
+
+    const firstRequest = generateServiceToken('cmc', 's2sSecret');
+    const secondRequest = generateServiceToken('cmc', 's2sSecret');
+
+    resolvePost!({data: mockResponse});
+
+    const [firstToken, secondToken] = await Promise.all([firstRequest, secondRequest]);
+
+    expect(mockPost).toHaveBeenCalledTimes(1);
+    expect(firstToken).toEqual(mockResponse);
+    expect(secondToken).toEqual(mockResponse);
+  });
+
+  it('should throw when lease request fails', async () => {
+    mockPost.mockRejectedValue(new Error('Lease request failed'));
+
+    await expect(generateServiceToken('cmc', 's2sSecret')).rejects.toThrow('Lease request failed');
+  });
 });
