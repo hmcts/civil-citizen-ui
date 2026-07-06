@@ -49,6 +49,8 @@ const caseProgressionToSDOState = require('../fixtures/events/createCaseProgress
 const translatedDocUpload = require('../fixtures/events/translatedDocUpload');
 const caseProceedsInCaseman = require('../fixtures/events/caseProceedsInCaseman');
 const settleClaim = require('../fixtures/events/settleClaim');
+const stayCase = require('../fixtures/events/stayCase');
+const manageStay = require('../fixtures/events/manageStay');
 const caseProgressionToHearingInitiated = require('../fixtures/events/createCaseProgressionToHearingInitiated');
 const hwfPayloads = require('../fixtures/events/hwfPayloads.js');
 const {fetchCaseDetails} = require('./apiRequest');
@@ -847,6 +849,26 @@ module.exports = {
     await apiRequest.setupTokens(user);
     await apiRequest.startEventForCitizen(eventName, caseId, payload);
     await waitForFinishedBusinessProcess(caseId);
+  },
+
+  stayCase: async (user = config.ctscAdmin) => {
+    console.log('stayCase for case id ' + caseId);
+    await apiRequest.setupTokens(user);
+    eventName = 'STAY_CASE';
+    let returnedCaseData = await apiRequest.startEvent(eventName, caseId);
+    delete returnedCaseData['SearchCriteria'];
+    caseData = {...returnedCaseData, ...stayCase.stayCase()};
+    await assertSubmittedSpecEvent('CASE_STAYED');
+    console.log('End of stayCase()');
+  },
+
+  liftStay: async (user = config.ctscAdmin, expectedState = 'AWAITING_RESPONDENT_ACKNOWLEDGEMENT') => {
+    console.log('liftStay for case id ' + caseId);
+    eventName = 'MANAGE_STAY';
+    caseData = manageStay.liftStay();
+    await apiRequest.setupTokens(user);
+    await assertSubmittedSpecEvent(expectedState);
+    console.log('End of liftStay()');
   },
 
   adjustSubmittedDateForCarm: async (caseId) => {

@@ -780,4 +780,61 @@ module.exports = {
       ],
     };
   },
+
+  // Notice.AAA6.JudgmentsOnline.DefaultJudgmentGranted.Claimant
+  // asserts the live template text verbatim (title has a "been ... been" typo; straight apostrophes)
+  defaultJudgmentGrantedClaimant: () => {
+    return {
+      title: 'A judgment against the defendant has been now been entered',
+      content: [
+        'The defendant should now pay you according to the terms of the judgment.',
+        'confirm that they\'ve paid you the full amount that you\'re owed',
+        'If they do not pay you by the date on the judgment, you can ask for enforcement action to be taken against them.',
+        'If you need to change the terms of payment within the judgment, such as the instalments you had previously agreed, you can',
+      ],
+    };
+  },
+
+  // Notice.AAA6.JudgmentsOnline.DefaultJudgmentIssued.Defendant (CCJ re-requested after stay lifted)
+  defaultJudgmentIssuedDefendant: () => {
+    return {
+      title: 'A judgment has been made against you',
+      content: [
+        'The exact details of what you need to pay, and by when, are stated on the judgment.',
+        'If you want to dispute the judgment, or ask to change how and when you pay back the claim amount, you can',
+      ],
+    };
+  },
+
+  // Notice.AAA6.CP.Stay.Lifted.Claimant / Notice.AAA6.CP.Stay.Lifted.Defendant
+  stayLifted: () => {
+    return {
+      title: 'The stay has been lifted',
+      content: ['The stay of these proceedings has been lifted.'],
+    };
+  },
+
+  // Notice.AAA6.DefResponse.ResponseTimeElapsed.Claimant
+  responseToClaimAfterDeadlineClaimant: () => {
+    return {
+      title: 'Response to the claim',
+      content: [
+        'has not responded to the claim. You can now request a county court judgment. The defendant can still respond to the claim before you ask for a judgment.',
+        'Request a CCJ',
+      ],
+    };
+  },
+
+  // Notice.AAA6.DefResponse.ResponseTimeElapsed.Defendant
+  responseToClaimAfterDeadlineDefendant: () => {
+    return {
+      title: 'Response to the claim',
+      content: [
+        'You have not responded to the claim.',
+        'can now request a county court judgment. You can still respond to the claim before they ask for a judgment.',
+        'A County Court Judgment can mean you find it difficult to get credit, like a mortgage or mobile phone contact. Bailiffs could also be sent to your home.',
+        'Respond to claim',
+      ],
+    };
+  },
 };

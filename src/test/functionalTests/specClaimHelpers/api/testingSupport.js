@@ -196,6 +196,19 @@ module.exports = {
     return text;
   },
 
+  triggerJudgmentBufferScheduler: async () => {
+    const authToken = await idamHelper.accessToken(config.applicantSolicitorUser);
+    const response = await restHelper.request(
+      `${config.url.civilService}/testing-support/run-scheduler/JudgementBuffer`,
+      {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${authToken}`,
+      }, null, 'GET');
+    const text = await response.text();
+    console.log(`run-scheduler/JudgementBuffer status: ${response.status}, body: ${text}`);
+    return text;
+  },
+
   hearingFeeUnpaid: async (caseId) => {
     const authToken = await idamHelper.accessToken(config.applicantSolicitorUser);
     await restHelper.request(
