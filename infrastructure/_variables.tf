@@ -86,12 +86,6 @@ variable "managed_redis_sku" {
   default     = "Balanced_B0"
 }
 
-variable "managed_redis_persistence_rdb_frequency" {
-  description = "RDB backup frequency for Managed Redis (1h, 6h, 12h). null = no persistence."
-  type        = string
-  default     = null
-}
-
 variable "private_dns_subscription_id" {
   description = "Subscription ID hosting the privatelink.redis.azure.net DNS zone in core-infra-intsvc-rg."
   type        = string
