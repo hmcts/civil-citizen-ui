@@ -94,7 +94,7 @@ const getServiceAuthorisationToken = async (microservice: string, s2sSecret?: st
   }
 
   const inflight = inflightRequests.get(cacheKey);
-  if (inflight) {
+  if (inflight !== undefined) {
     return inflight;
   }
 
