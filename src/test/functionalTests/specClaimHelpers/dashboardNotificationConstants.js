@@ -781,11 +781,10 @@ module.exports = {
     };
   },
 
-  // Notice.AAA6.JudgmentsOnline.DefaultJudgmentGranted.Claimant
-  // asserts the live template text verbatim (title has a "been ... been" typo; straight apostrophes)
+  // Notice.AAA6.JudgmentsOnline.DefaultJudgmentGranted.Claimant (description uses straight apostrophes)
   defaultJudgmentGrantedClaimant: () => {
     return {
-      title: 'A judgment against the defendant has been now been entered',
+      title: 'A judgment against the defendant has been made',
       content: [
         'The defendant should now pay you according to the terms of the judgment.',
         'confirm that they\'ve paid you the full amount that you\'re owed',
