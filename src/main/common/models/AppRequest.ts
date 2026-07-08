@@ -11,6 +11,7 @@ export interface AppRequest<T = Partial<Claim>> extends Request {
   locals: {
     env: string;
     lang: string;
+    claim?: Claim;
     claimDetailsRequestCache?: Map<string, Promise<Claim>>;
     userCaseRolesRequestCache?: Map<string, Promise<CaseRole>>;
     calculateInterestRequestCache?: Map<string, Promise<number>>;
