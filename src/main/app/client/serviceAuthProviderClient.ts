@@ -7,6 +7,7 @@ const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('serviceAuthProviderClient');
 
 const EXPIRY_BUFFER_MS = 60_000;
+// Fallback when token payload cannot be decoded; keeps short-lived cache behaviour.
 const DEFAULT_TOKEN_TTL_MS = 3 * 60 * 60 * 1000;
 
 interface CachedToken {
@@ -43,7 +44,7 @@ const getTokenExpiresAt = (token: string): number => {
       return decoded.exp * 1000;
     }
   } catch (err: unknown) {
-    logger.warn('Could not decode service auth token expiry', err);
+    logger.warn('Could not decode service auth token expiry, using fallback TTL', err);
   }
   return Date.now() + DEFAULT_TOKEN_TTL_MS;
 };
