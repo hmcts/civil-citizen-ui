@@ -5525,6 +5525,8 @@
     "AMOUNT_REQUIRED": "Nodwch swm o £1 neu fwy",
     "ANNUAL_TURNOVER_REQUIRED": "A ydych yn siŵr bod hwn yn swm dilys?",
     "APPLICATION_TYPE_REQUIRED": "Dewiswch gais",
+    "BREATHING_SPACE_TYPE_REQUIRED": "Dewiswch y math o le i anadlu",
+    "BREATHING_SPACE_REFERENCE_INVALID": "Nodwch gyfeirnod 16 digid",
     "CHOOSE_TYPE_OF_INTEREST": "Dewis math o log",
     "CLAIM_DETAILS": "Manylion yr hawliad",
     "CLAIM_NUMBER_REQUIRED": "Rhowch eich rhif hawliad dilys o'r llythyr neu'r e-bost wnaethom ei anfon atoch - dylai gynnwys 3 rhif yna'r llythrennau MC, JE, JF, JG neu JH, yna 3 rhif, er enghraifft 305JE126",

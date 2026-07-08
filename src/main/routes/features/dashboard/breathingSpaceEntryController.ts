@@ -43,6 +43,7 @@ breathingSpaceEntryController.post(BREATHING_SPACE_ENTER_URL, (async (req: Reque
     const claimId = getRouteParam(req, 'id');
     await getClaimById(claimId, req, true);
     const form = new GenericForm(new BreathingSpaceTypeAndReference(req.body.type, req.body.reference));
+    await form.validate();
     await renderView(res, claimId, form);
   } catch (error) {
     next(error);

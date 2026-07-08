@@ -59,7 +59,7 @@ describe('Breathing Space Entry Controller', () => {
       });
   });
 
-  it('should re-render page with submitted values on post', async () => {
+  it('should re-render page with submitted values when valid', async () => {
     const caseData = Object.assign(new Claim(), claim.case_data);
     (getClaimById as jest.Mock).mockResolvedValueOnce(caseData);
     await request(app)
@@ -72,6 +72,53 @@ describe('Breathing Space Entry Controller', () => {
         expect(res.status).toBe(200);
         expect(res.text).toContain('value="REF123"');
         expect(res.text).toContain(`value="${BreathingSpaceType.STANDARD}"`);
+        expect(res.text).not.toContain('Select the breathing space type');
+        expect(res.text).not.toContain('Enter a 16-digit reference number');
+      });
+  });
+
+  it('should show error when breathing space type is not selected', async () => {
+    const caseData = Object.assign(new Claim(), claim.case_data);
+    (getClaimById as jest.Mock).mockResolvedValueOnce(caseData);
+    await request(app)
+      .post(BREATHING_SPACE_ENTER_URL)
+      .send({
+        reference: 'REF123',
+      })
+      .expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain('Select the breathing space type');
+      });
+  });
+
+  it('should show error when reference exceeds 16 characters', async () => {
+    const caseData = Object.assign(new Claim(), claim.case_data);
+    (getClaimById as jest.Mock).mockResolvedValueOnce(caseData);
+    await request(app)
+      .post(BREATHING_SPACE_ENTER_URL)
+      .send({
+        type: BreathingSpaceType.STANDARD,
+        reference: '12345678901234567',
+      })
+      .expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain('Enter a 16-digit reference number');
+      });
+  });
+
+  it('should accept blank optional reference when type is selected', async () => {
+    const caseData = Object.assign(new Claim(), claim.case_data);
+    (getClaimById as jest.Mock).mockResolvedValueOnce(caseData);
+    await request(app)
+      .post(BREATHING_SPACE_ENTER_URL)
+      .send({
+        type: BreathingSpaceType.MENTAL_HEALTH,
+        reference: '',
+      })
+      .expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).not.toContain('Select the breathing space type');
+        expect(res.text).not.toContain('Enter a 16-digit reference number');
       });
   });
 });
