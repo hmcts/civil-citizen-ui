@@ -8,6 +8,7 @@ import {setResponseDeadline} from 'services/features/common/responseDeadlineAgre
 import {AppRequest} from 'models/AppRequest';
 import {getClaimById} from 'modules/utilityService';
 import {isMintiEnabledForCase, isCarmEnabledForCase} from '../../app/auth/launchdarkly/launchDarklyClient';
+import {stashClaimOnRequest} from 'common/utils/claimRequestLocals';
 
 export class AllResponseTasksCompletedGuard {
   static apply(redirectUrl: string) {
@@ -16,6 +17,7 @@ export class AllResponseTasksCompletedGuard {
         const appReq: AppRequest = <AppRequest>req;
         const lang = req?.query?.lang ? req.query.lang : req?.cookies?.lang;
         const caseData: Claim = await getClaimById(appReq.session.claimId, req, true);
+        stashClaimOnRequest(req, caseData);
         const carmApplicable = await isCarmEnabledForCase(caseData.submittedDate);
         const mintiApplicable = await isMintiEnabledForCase(caseData.submittedDate);
         await setResponseDeadline(caseData, appReq);
