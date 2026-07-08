@@ -12,6 +12,8 @@ const getCaseDashboardPath = (claimRef, partyRole = 'claimant') =>
     ? `/dashboard/${claimRef}/defendant`
     : `/dashboard/${claimRef}/claimantNewDesign`;
 
+const normaliseText = text => text.replace(/\s+/g, ' ').trim();
+
 const navigateToClaimIfNeeded = async (claimNumber, claimRef, partyRole = 'claimant') => {
   const currentUrl = await I.grabCurrentUrl();
   if (claimRef && currentUrl.includes(claimRef)) {
@@ -39,13 +41,14 @@ module.exports = {
       console.log('Verifying notification title and content... attempt', tries);
 
       lastPageSource = await I.grabTextFrom('.dashboard-notification');
-      const titleFound = lastPageSource.includes(title);
+      const normalisedPageSource = normaliseText(lastPageSource);
+      const titleFound = normalisedPageSource.includes(normaliseText(title));
       console.log('Title to be verified ..', title, `(found: ${titleFound})`);
 
       if (titleFound) {
         if (Array.isArray(content)) {
           const missingContent = content.filter(text => {
-            const contentFound = lastPageSource.includes(text);
+            const contentFound = normalisedPageSource.includes(normaliseText(text));
             console.log('content to be verified ..', text, `(found: ${contentFound})`);
             return !contentFound;
           });
@@ -53,7 +56,7 @@ module.exports = {
             return;
           }
         } else {
-          const contentFound = lastPageSource.includes(content);
+          const contentFound = normalisedPageSource.includes(normaliseText(content));
           console.log('content to be verified ..', content, `(found: ${contentFound})`);
           if (contentFound) {
             return;
