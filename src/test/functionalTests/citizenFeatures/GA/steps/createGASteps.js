@@ -57,13 +57,13 @@ class createGASteps {
 
     switch (communicationType) {
       case 'consent':
-        feeAmount = '123';
+        feeAmount = '126';
         break;
       case 'notice':
-        feeAmount = '313';
+        feeAmount = '321';
         break;
       case 'withoutnotice':
-        feeAmount = '123';
+        feeAmount = '126';
         break;
     }
 
@@ -252,13 +252,13 @@ class createGASteps {
 
     switch (communicationType) {
       case 'consent':
-        feeAmount = '123';
+        feeAmount = '126';
         break;
       case 'notice':
-        feeAmount = '313';
+        feeAmount = '321';
         break;
       case 'withoutnotice':
-        feeAmount = '123';
+        feeAmount = '126';
         break;
     }
 
@@ -363,13 +363,13 @@ class createGASteps {
 
     switch (communicationType) {
       case 'consent':
-        feeAmount = '123';
+        feeAmount = '126';
         break;
       case 'notice':
-        feeAmount = '313';
+        feeAmount = '321';
         break;
       case 'withoutnotice':
-        feeAmount = '123';
+        feeAmount = '126';
         break;
     }
 
@@ -473,13 +473,13 @@ class createGASteps {
 
     switch (communicationType) {
       case 'consent':
-        feeAmount = '123';
+        feeAmount = '126';
         break;
       case 'notice':
-        feeAmount = '313';
+        feeAmount = '321';
         break;
       case 'withoutnotice':
-        feeAmount = '123';
+        feeAmount = '126';
         break;
     }
 
@@ -584,13 +584,13 @@ class createGASteps {
 
     switch (communicationType) {
       case 'consent':
-        feeAmount = '123';
+        feeAmount = '126';
         break;
       case 'notice':
-        feeAmount = '313';
+        feeAmount = '321';
         break;
       case 'withoutnotice':
-        feeAmount = '123';
+        feeAmount = '126';
         break;
     }
 
@@ -697,13 +697,13 @@ class createGASteps {
 
     switch (communicationType) {
       case 'consent':
-        feeAmount = '123';
+        feeAmount = '126';
         break;
       case 'notice':
-        feeAmount = '313';
+        feeAmount = '321';
         break;
       case 'withoutnotice':
-        feeAmount = '123';
+        feeAmount = '126';
         break;
     }
 
@@ -809,13 +809,13 @@ class createGASteps {
 
     switch (communicationType) {
       case 'consent':
-        feeAmount = '123';
+        feeAmount = '126';
         break;
       case 'notice':
-        feeAmount = '313';
+        feeAmount = '321';
         break;
       case 'withoutnotice':
-        feeAmount = '123';
+        feeAmount = '126';
         break;
     }
 
@@ -921,13 +921,13 @@ class createGASteps {
 
     switch (communicationType) {
       case 'consent':
-        feeAmount = '123';
+        feeAmount = '126';
         break;
       case 'notice':
-        feeAmount = '313';
+        feeAmount = '321';
         break;
       case 'withoutnotice':
-        feeAmount = '123';
+        feeAmount = '126';
         break;
     }
 
@@ -1033,13 +1033,13 @@ class createGASteps {
 
     switch (communicationType) {
       case 'consent':
-        feeAmount = '123';
+        feeAmount = '126';
         break;
       case 'notice':
-        feeAmount = '313';
+        feeAmount = '321';
         break;
       case 'withoutnotice':
-        feeAmount = '123';
+        feeAmount = '126';
         break;
     }
 
@@ -1145,13 +1145,13 @@ class createGASteps {
 
     switch (communicationType) {
       case 'consent':
-        feeAmount = '123';
+        feeAmount = '126';
         break;
       case 'notice':
-        feeAmount = '313';
+        feeAmount = '321';
         break;
       case 'withoutnotice':
-        feeAmount = '123';
+        feeAmount = '126';
         break;
     }
 
@@ -1254,7 +1254,7 @@ class createGASteps {
     //Can only be with consent
     const caseNumber = StringUtilsComponent.StringUtilsComponent.formatClaimReferenceToAUIDisplayFormat(caseRef);
     const applicationType = 'Court to make an order settling the claim by consent';
-    const feeAmount = '123';
+    const feeAmount = '126';
 
     await I.amOnPage(`case/${caseRef}/general-application/application-type`);
     await applicationTypePage.verifyPageContent();
@@ -1341,13 +1341,13 @@ class createGASteps {
 
     switch (communicationType) {
       case 'consent':
-        feeAmount = '123';
+        feeAmount = '126';
         break;
       case 'notice':
-        feeAmount = '313';
+        feeAmount = '321';
         break;
       case 'withoutnotice':
-        feeAmount = '123';
+        feeAmount = '126';
         break;
     }
 
@@ -1468,13 +1468,13 @@ class createGASteps {
 
     switch(communicationType) {
       case 'consent':
-        feeAmount = '123';
+        feeAmount = '126';
         break;
       case 'notice':
-        feeAmount = '313';
+        feeAmount = '321';
         break;
       case 'withoutnotice':
-        feeAmount = '123';
+        feeAmount = '126';
         break;
     }
 
