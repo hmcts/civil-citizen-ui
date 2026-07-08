@@ -18,11 +18,21 @@ const buttons = {
 };
 
 class LoginPage {
+  async #signOutIfNeeded() {
+    const isSignedIn = await I.grabNumberOfVisibleElements('a[href="/logout"]');
+
+    if (isSignedIn) {
+      await I.amOnPage('/logout');
+      await I.wait(2);
+    }
+  }
+
   async openCitizenLogin() {
     const isPlaywrightActive = await I.isPlaywright();
     console.log('Is Playwright active?', isPlaywrightActive);
 
     if (isPlaywrightActive) {
+      await this.#signOutIfNeeded();
       await I.clearCookie();
       await I.setCookie([...idamCookies, ...cuiCookies]);
     }
@@ -53,7 +63,7 @@ class LoginPage {
     await I.fillField(fields.username, email);
     await I.fillField(fields.password, password);
     await I.waitForVisible(buttons.submit);
-    await I.click(buttons.submit);
+    await I.clickWithRetry(buttons.submit, 2);
     await I.wait(3);
 
     const url = await I.grabCurrentUrl();
