@@ -47,6 +47,12 @@ import {RequestingReason} from 'models/generalApplication/requestingReason';
 import {QualifiedStatementOfTruth} from 'models/generalApplication/QualifiedStatementOfTruth';
 
 describe('translate draft application to ccd', () => {
+  const buildApplication = (applicationType = ApplicationTypeOption.STRIKE_OUT): GeneralApplication => {
+    const application = new GeneralApplication();
+    application.applicationTypes = [new ApplicationType(applicationType)];
+    return application;
+  };
+
   it('should translate Hearing Type Options', () => {
     expect(fromCcdHearingType(CcdHearingType.TELEPHONE)).toEqual(HearingTypeOptions.TELEPHONE);
     expect(fromCcdHearingType(CcdHearingType.WITHOUT_HEARING)).toEqual(HearingTypeOptions.WITHOUT_HEARING);
@@ -68,9 +74,22 @@ describe('translate draft application to ccd', () => {
     });
   });
 
-  it('should translate inform other party to ccd', () => {
+  it.each([
+    ApplicationTypeOption.OTHER_OPTION,
+    'Summary judgment',
+  ])('should not translate invalid application type %s to ccd', (applicationTypeOption) => {
     //Given
     const application = new GeneralApplication();
+    application.applicationTypes = [
+      new ApplicationType(applicationTypeOption as ApplicationTypeOption),
+    ];
+    //When / Then
+    expect(() => translateDraftApplicationToCCD(application)).toThrow('Invalid general application type selected');
+  });
+
+  it('should translate inform other party to ccd', () => {
+    //Given
+    const application = buildApplication();
     application.informOtherParties = new InformOtherParties(YesNo.NO, 'test');
     //When
     const ccdGeneralApplication = translateDraftApplicationToCCD(application);
@@ -83,7 +102,7 @@ describe('translate draft application to ccd', () => {
 
   it('should translate hearing details to ccd', () => {
     //Given
-    const application = new GeneralApplication();
+    const application = buildApplication();
     application.hearingArrangement = new HearingArrangement(
       HearingTypeOptions.VIDEO_CONFERENCE,
       'test',
@@ -156,7 +175,7 @@ describe('translate draft application to ccd', () => {
 
   it('should translate evidence documents to ccd', () => {
     //Given
-    const application = new GeneralApplication();
+    const application = buildApplication();
     application.wantToUploadDocuments = YesNo.YES;
     application.uploadEvidenceForApplication = [
       {
@@ -357,7 +376,7 @@ describe('translate draft application to ccd', () => {
 
   it('should translate judge orders to ccd', () => {
     //Given
-    const application = new GeneralApplication();
+    const application = buildApplication();
     application.orderJudges = [new OrderJudge('test order')];
     //When
     const ccdGeneralApplication = translateDraftApplicationToCCD(application);
@@ -368,7 +387,7 @@ describe('translate draft application to ccd', () => {
 
   it('should translate requesting reasons to ccd', () => {
     //Given
-    const application = new GeneralApplication();
+    const application = buildApplication();
     application.requestingReasons = [new RequestingReason('test reason')];
     //When
     const ccdGeneralApplication = translateDraftApplicationToCCD(application);
