@@ -57,6 +57,15 @@ describe('Draft store service to save and retrieve claim', () => {
     expect(spyGet).toBeCalled();
     expect(id).toBe(Number(CLAIM_ID));
   });
+  it('should get claim data when draft store client has no ttl method', async () => {
+    app.locals.draftStoreClient = {
+      get: jest.fn(async () => JSON.stringify(REDIS_DATA[0])),
+    };
+    const spyGet = jest.spyOn(app.locals.draftStoreClient, 'get');
+    const {id} = await getDraftClaimFromStore(CLAIM_ID);
+    expect(spyGet).toBeCalled();
+    expect(id).toBe(Number(CLAIM_ID));
+  });
   it('should return empty result if selected do not throw error', async () => {
     //Given
     const spyGet = jest.spyOn(app.locals.draftStoreClient, 'get').mockResolvedValue(null);
