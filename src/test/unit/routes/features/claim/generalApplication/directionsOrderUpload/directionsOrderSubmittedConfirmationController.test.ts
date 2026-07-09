@@ -14,6 +14,8 @@ jest.mock('../../../..../../../../../../main/modules/utilityService');
 jest.mock('../../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 jest.mock('../../../../../../../main/modules/draft-store/draftStoreService', () => ({
   generateRedisKeyForGA: jest.fn((key) => key),
+}));
+jest.mock('../../../../../../../main/modules/draft-store/draftGADocumentService', () => ({
   deleteGADocumentsFromDraftStore: jest.fn((key) => key),
 }));
 
