@@ -68,9 +68,20 @@ class LoginPage {
     // UI-agnostic and avoids a hang on either UI during migration.
     await I.waitForVisible(fields.username, config.WaitForText);
     await I.fillField(fields.username, email);
-    await I.fillField(fields.password, password);
-    await I.waitForVisible(buttons.submit);
-    await I.clickWithRetry(buttons.submit, 2);
+
+    // Detect which sign-in UI is being served and drive it accordingly, so the
+    // tests stay green whether the HMCTS Access toggle is on or off (and thus
+    // prove online users on either UI are unaffected). Legacy IDAM Web Public
+    // ("classic") shows email + password on a single page, so the password
+    // field is already present. HMCTS Access ("modern") is a two-step flow:
+    // email first, then password on the next page. Mirrors the IDAM team's
+    // classic/modern login split.
+    const passwordOnSamePage = await I.grabNumberOfVisibleElements(fields.password);
+    if (passwordOnSamePage) {
+      await this.#classicLogin(password);
+    } else {
+      await this.#modernLogin(password);
+    }
     await I.wait(3);
 
     const url = await I.grabCurrentUrl();
@@ -85,6 +96,25 @@ class LoginPage {
       await this.#login(email, password, endpoint, attempts + 1);
     }
     await I.seeInCurrentUrl(endpoint);
+  }
+
+  // Legacy IDAM Web Public ("classic"): email and password live on the same
+  // page, so just fill the password and submit.
+  async #classicLogin(password) {
+    await I.fillField(fields.password, password);
+    await I.waitForVisible(buttons.submit);
+    await I.clickWithRetry(buttons.submit, 2);
+  }
+
+  // HMCTS Access ("modern"): two-step flow. Continue past the email step, wait
+  // for the password page, then fill the password and submit.
+  async #modernLogin(password) {
+    await I.waitForVisible(buttons.submit);
+    await I.clickWithRetry(buttons.submit, 2);
+    await I.waitForVisible(fields.password, config.WaitForText);
+    await I.fillField(fields.password, password);
+    await I.waitForVisible(buttons.submit);
+    await I.clickWithRetry(buttons.submit, 2);
   }
 
   async citizenLogin(email, password) {
