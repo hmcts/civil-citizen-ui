@@ -7,7 +7,7 @@ import { getClaimById } from 'modules/utilityService';
 import { generateRedisKeyForGA } from 'modules/draft-store/draftStoreService';
 import { Claim } from 'common/models/claim';
 import {GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_CONFIRMATION_URL} from 'routes/urls';
-import {deleteGADocumentsFromDraftStore} from "modules/draft-store/draftGADocumentService";
+import {deleteGADocumentsFromDraftStore} from 'modules/draft-store/draftGADocumentService';
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../..../../../../../../main/modules/utilityService');
