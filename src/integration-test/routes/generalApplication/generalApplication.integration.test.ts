@@ -158,7 +158,7 @@ describe('Integration: general application route migration', () => {
     expect(res.header.location).toContain(withId(GA_ASK_PROOF_OF_DEBT_PAYMENT_GUIDANCE_URL));
   });
 
-  it('application type: OTHER_OPTION is normalized before save', async () => {
+  it('application type: OTHER_OPTION is normalised before save', async () => {
     (getClaimById as jest.Mock).mockResolvedValue(buildClaim(CaseRole.CLAIMANT, ApplicationTypeOption.OTHER));
     const saveApplicationTypeMock = saveApplicationType as jest.Mock;
     const app = createControllerApp(applicationTypeController);

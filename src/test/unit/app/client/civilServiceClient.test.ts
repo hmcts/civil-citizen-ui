@@ -713,7 +713,7 @@ describe('Civil Service Client', () => {
       expect(claim.respondent1ResponseDeadline).toEqual(date);
     });
 
-    it('should log sanitized civil-service 422 submit errors without raw request data', async () => {
+    it('should log sanitised civil-service 422 submit errors without raw request data', async () => {
       //Given
       const responseBody = {
         exception: 'CaseValidationException',

@@ -10,7 +10,7 @@ import { Claim } from 'common/models/claim';
 import {YesNo} from 'form/models/yesNo';
 import {InformOtherParties} from 'models/generalApplication/informOtherParties';
 import {assertValidApplicationTypes} from 'models/generalApplication/applicationType';
-import {normalizeRouteParam, RouteParam} from 'common/utils/routeParamUtils';
+import {normalizeRouteParam as normaliseRouteParam, RouteParam} from 'common/utils/routeParamUtils';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('partialAdmissionService');
@@ -20,7 +20,7 @@ const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServi
 
 const logSubmitApplicationError = (err: unknown, claimId: RouteParam, eventName: string): void => {
   const error = err as Error & { response?: { status?: number } };
-  logger.error(`General application submit failed (event=${eventName}, claimId=${normalizeRouteParam(claimId)}, status=${error.response?.status}, message=${error.message})`);
+  logger.error(`General application submit failed (event=${eventName}, claimId=${normaliseRouteParam(claimId)}, status=${error.response?.status}, message=${error.message})`);
 };
 
 export const submitApplication = async (req: AppRequest): Promise<Claim> => {
