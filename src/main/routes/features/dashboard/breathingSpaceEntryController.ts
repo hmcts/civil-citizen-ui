@@ -11,6 +11,10 @@ import {getRouteParam} from 'common/utils/routeParamUtils';
 import {GenericForm} from 'form/models/genericForm';
 import {BreathingSpaceTypeAndReference} from 'models/breathingSpace/breathingSpaceTypeAndReference';
 import {BreathingSpaceType} from 'models/breathingSpace/breathingSpaceType';
+import {
+  getBreathingSpaceTypeAndReferenceForm,
+  saveBreathingSpaceTypeAndReference,
+} from 'services/features/dashboard/breathingSpaceEntryService';
 
 const breathingSpaceEnterViewPath = 'features/dashboard/breathing-space-enter';
 const breathingSpaceEntryController = Router();
@@ -30,8 +34,8 @@ async function renderView(res: Response, claimId: string, form: GenericForm<Brea
 breathingSpaceEntryController.get(BREATHING_SPACE_ENTER_URL, (async (req: Request, res: Response, next: NextFunction) => {
   try {
     const claimId = getRouteParam(req, 'id');
-    await getClaimById(claimId, req, true);
-    const form = new GenericForm(new BreathingSpaceTypeAndReference());
+    const claim = await getClaimById(claimId, req, true);
+    const form = new GenericForm(getBreathingSpaceTypeAndReferenceForm(claim));
     await renderView(res, claimId, form);
   } catch (error) {
     next(error);
@@ -44,6 +48,11 @@ breathingSpaceEntryController.post(BREATHING_SPACE_ENTER_URL, (async (req: Reque
     await getClaimById(claimId, req, true);
     const form = new GenericForm(new BreathingSpaceTypeAndReference(req.body.type, req.body.reference));
     await form.validate();
+    if (form.hasErrors()) {
+      await renderView(res, claimId, form);
+      return;
+    }
+    await saveBreathingSpaceTypeAndReference(req, form.model);
     await renderView(res, claimId, form);
   } catch (error) {
     next(error);

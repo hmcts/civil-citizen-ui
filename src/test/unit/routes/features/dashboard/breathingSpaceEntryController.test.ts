@@ -16,6 +16,8 @@ import {
   BREATHING_SPACE_INFO_URL,
 } from 'routes/urls';
 import {BreathingSpaceType} from 'models/breathingSpace/breathingSpaceType';
+import {BreathingSpaceTypeAndReference} from 'models/breathingSpace/breathingSpaceTypeAndReference';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
@@ -32,9 +34,19 @@ describe('Breathing Space Entry Controller', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
-    (getRedisStoreForSession as jest.Mock).mockReturnValueOnce(new RedisStore({
+    (getRedisStoreForSession as jest.Mock).mockReturnValue(new RedisStore({
       client: new Redis(),
     }));
+  });
+
+  beforeEach(() => {
+    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('redis-key');
+    jest.spyOn(draftStoreService, 'getCaseDataFromStore').mockResolvedValue(Object.assign(new Claim(), claim.case_data));
+    jest.spyOn(draftStoreService, 'saveDraftClaim').mockResolvedValue();
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
   });
 
   it('should return breathing space type and reference page', async () => {
@@ -59,7 +71,21 @@ describe('Breathing Space Entry Controller', () => {
       });
   });
 
-  it('should re-render page with submitted values when valid', async () => {
+  it('should pre-fill form from claim on get', async () => {
+    const caseData = Object.assign(new Claim(), claim.case_data, {
+      breathingSpaceTypeAndReference: new BreathingSpaceTypeAndReference(BreathingSpaceType.STANDARD, 'REF123'),
+    });
+    (getClaimById as jest.Mock).mockResolvedValueOnce(caseData);
+    await request(app)
+      .get(BREATHING_SPACE_ENTER_URL)
+      .expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain('value="REF123"');
+        expect(res.text).toContain(`value="${BreathingSpaceType.STANDARD}"`);
+      });
+  });
+
+  it('should save and re-render when valid', async () => {
     const caseData = Object.assign(new Claim(), claim.case_data);
     (getClaimById as jest.Mock).mockResolvedValueOnce(caseData);
     await request(app)
@@ -72,8 +98,7 @@ describe('Breathing Space Entry Controller', () => {
         expect(res.status).toBe(200);
         expect(res.text).toContain('value="REF123"');
         expect(res.text).toContain(`value="${BreathingSpaceType.STANDARD}"`);
-        expect(res.text).not.toContain('Select the breathing space type');
-        expect(res.text).not.toContain('Enter a 16-digit reference number');
+        expect(draftStoreService.saveDraftClaim).toHaveBeenCalled();
       });
   });
 
@@ -88,6 +113,7 @@ describe('Breathing Space Entry Controller', () => {
       .expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain('Select the breathing space type');
+        expect(draftStoreService.saveDraftClaim).not.toHaveBeenCalled();
       });
   });
 
@@ -103,10 +129,11 @@ describe('Breathing Space Entry Controller', () => {
       .expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain('Enter a 16-digit reference number');
+        expect(draftStoreService.saveDraftClaim).not.toHaveBeenCalled();
       });
   });
 
-  it('should accept blank optional reference when type is selected', async () => {
+  it('should save when optional reference is blank', async () => {
     const caseData = Object.assign(new Claim(), claim.case_data);
     (getClaimById as jest.Mock).mockResolvedValueOnce(caseData);
     await request(app)
@@ -117,8 +144,7 @@ describe('Breathing Space Entry Controller', () => {
       })
       .expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).not.toContain('Select the breathing space type');
-        expect(res.text).not.toContain('Enter a 16-digit reference number');
+        expect(draftStoreService.saveDraftClaim).toHaveBeenCalled();
       });
   });
 });
