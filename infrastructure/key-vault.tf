@@ -27,3 +27,8 @@ data "azurerm_user_assigned_identity" "jenkins" {
   name                = "jenkins-${var.env}-mi"
   resource_group_name = "managed-identities-${var.env}-rg"
 }
+
+import {
+  to = module.key-vault.azurerm_key_vault_access_policy.jenkins[0]
+  id = "/subscriptions/1c4f0704-a29e-403d-b719-b90c34ef14c9/resourceGroups/civil-citizen-ui-aat/providers/Microsoft.KeyVault/vaults/civil-cui-aat/objectId/14b22215-46e6-48a9-8681-e8cefe66236a"
+}
