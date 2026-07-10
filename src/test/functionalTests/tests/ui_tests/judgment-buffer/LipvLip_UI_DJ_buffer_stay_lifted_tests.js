@@ -81,7 +81,6 @@ Scenario('Stay lifted on a JUDGMENT_REQUESTED case returns it to Awaiting Defend
   await verifyNotificationTitleAndContent(claimNumber, stayLifted.title, stayLifted.content, claimRef);
   await verifyNotificationTitleAndContent(claimNumber, responseClaimant.title, responseClaimant.content, claimRef);
 
-  // Regression: the earlier "requested" notification must not linger once the stay is lifted
   await verifyNotificationAbsent(claimNumber, ccjRequestedTitle, claimRef);
 
   // AC3 - defendant dashboard: the stay has been lifted + the defendant has not yet responded

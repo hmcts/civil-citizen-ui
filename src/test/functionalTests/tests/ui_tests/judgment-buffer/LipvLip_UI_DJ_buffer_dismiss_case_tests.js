@@ -60,7 +60,6 @@ Scenario('Case dismissed during JUDGMENT_REQUESTED buffer - CCJ cancelled, AC1-A
   await verifyNotificationTitleAndContent(claimNumber, ac5.title, ac5.content, claimRef);
   await verifyNotificationTitleAndContent(claimNumber, ac4.title, ac4.content, claimRef);
 
-  // Regression: the earlier "requested" notification must not linger once the CCJ is cancelled
   await verifyNotificationAbsent(claimNumber, ccjRequestedTitle, claimRef);
 
   await I.click('Cymraeg');

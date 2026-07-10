@@ -54,7 +54,6 @@ Scenario('The requested-CCJ notification is removed from the claimant dashboard 
   await ClaimantResponseSteps.verifyDefaultJudgmentBuffer(claimRef);
   await api.waitForFinishedBusinessProcess();
 
-  // The "requested" notification is shown while the case sits in the buffer
   await I.amOnPage('/dashboard/' + claimRef + '/claimant');
   await verifyNotificationTitleAndContent(claimNumber, ccjRequestedTitle, ccjRequestedContent, claimRef);
 
@@ -66,11 +65,9 @@ Scenario('The requested-CCJ notification is removed from the claimant dashboard 
 
   const granted = dashboardNotifications.defaultJudgmentGrantedClaimant();
 
-  // The "granted" notification replaces the "requested" one on the claimant dashboard
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await I.amOnPage('/dashboard/' + claimRef + '/claimant');
   await verifyNotificationTitleAndContent(claimNumber, granted.title, granted.content, claimRef);
 
-  // Regression: the earlier "requested" notification must be gone once judgment is granted
   await verifyNotificationAbsent(claimNumber, ccjRequestedTitle, claimRef);
 });

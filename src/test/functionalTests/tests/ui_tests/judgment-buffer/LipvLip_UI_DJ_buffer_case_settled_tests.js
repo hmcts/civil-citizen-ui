@@ -50,7 +50,6 @@ Scenario('Case settled during JUDGMENT_REQUESTED buffer - CCJ cancelled, claiman
   await verifyNotificationTitleAndContent(claimNumber, ac5.title, ac5.content, claimRef);
   await verifyNotificationTitleAndContent(claimNumber, ac4Claimant.title, ac4Claimant.content, claimRef);
 
-  // Regression: the earlier "requested" notification must not linger once the CCJ is cancelled
   await verifyNotificationAbsent(claimNumber, ccjRequestedTitle, claimRef);
 
   // AC4b - settled notification on the defendant dashboard
