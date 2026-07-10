@@ -3,13 +3,14 @@ const LoginSteps = require('../../../commonFeatures/home/steps/login');
 const {createAccount} = require('../../../specClaimHelpers/api/idamHelper');
 const ClaimantResponseSteps = require('../../../citizenFeatures/response/steps/lipClaimantResponseSteps');
 const {checkToggleEnabled} = require('../../../specClaimHelpers/api/testingSupport');
-const {verifyNotificationTitleAndContent} = require('../../../specClaimHelpers/e2e/dashboardHelper');
+const {verifyNotificationTitleAndContent, verifyNotificationAbsent} = require('../../../specClaimHelpers/e2e/dashboardHelper');
 const CitizenDashboardSteps = require('../../../citizenFeatures/citizenDashboard/steps/citizenDashboard');
 const dashboardNotifications = require('../../../specClaimHelpers/dashboardNotificationConstants');
 const chai = require('chai');
 
 const {assert} = chai;
 const claimType = 'SmallClaims';
+const ccjRequestedTitle = 'The CCJ has been requested';
 const statusCell = (text) => `//tr[.//td[.//a[normalize-space()='${text}']]]/td[4]`;
 // eslint-disable-next-line no-unused-vars
 let claimRef, caseData, claimNumber;
@@ -58,6 +59,10 @@ Scenario('Case dismissed during JUDGMENT_REQUESTED buffer - CCJ cancelled, AC1-A
   await I.amOnPage('/dashboard/' + claimRef + '/claimant');
   await verifyNotificationTitleAndContent(claimNumber, ac5.title, ac5.content, claimRef);
   await verifyNotificationTitleAndContent(claimNumber, ac4.title, ac4.content, claimRef);
+
+  // Regression: the earlier "requested" notification must not linger once the CCJ is cancelled
+  await verifyNotificationAbsent(claimNumber, ccjRequestedTitle, claimRef);
+
   await I.click('Cymraeg');
   await verifyNotificationTitleAndContent(claimNumber, ac5Welsh.title, ac5Welsh.content, claimRef);
   await verifyNotificationTitleAndContent(claimNumber, ac4Welsh.title, ac4Welsh.content, claimRef);

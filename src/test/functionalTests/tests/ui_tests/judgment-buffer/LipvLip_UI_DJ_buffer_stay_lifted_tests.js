@@ -3,12 +3,13 @@ const LoginSteps = require('../../../commonFeatures/home/steps/login');
 const {createAccount} = require('../../../specClaimHelpers/api/idamHelper');
 const ClaimantResponseSteps = require('../../../citizenFeatures/response/steps/lipClaimantResponseSteps');
 const {checkToggleEnabled, updateCaseData, triggerJudgmentBufferScheduler} = require('../../../specClaimHelpers/api/testingSupport');
-const {verifyNotificationTitleAndContent} = require('../../../specClaimHelpers/e2e/dashboardHelper');
+const {verifyNotificationTitleAndContent, verifyNotificationAbsent} = require('../../../specClaimHelpers/e2e/dashboardHelper');
 const dashboardNotifications = require('../../../specClaimHelpers/dashboardNotificationConstants');
 const chai = require('chai');
 
 const {assert} = chai;
 const claimType = 'SmallClaims';
+const ccjRequestedTitle = 'The CCJ has been requested';
 // eslint-disable-next-line no-unused-vars
 let claimRef, caseData, claimNumber;
 
@@ -21,7 +22,7 @@ function londonBackdate(hoursAgo) {
   return `${p.year}-${p.month}-${p.day}T${hour}:${p.minute}:${p.second}`;
 }
 
-const runBufferSchedulerUntilIssued = async (api, attempts = 12, intervalMs = 5000) => {
+const runBufferSchedulerUntilIssued = async (api, attempts = 30, intervalMs = 10000) => {
   for (let i = 0; i < attempts; i++) {
     await triggerJudgmentBufferScheduler();
     const data = await api.retrieveCaseData(config.adminUser, claimRef);
@@ -79,6 +80,9 @@ Scenario('Stay lifted on a JUDGMENT_REQUESTED case returns it to Awaiting Defend
   await I.amOnPage('/dashboard/' + claimRef + '/claimant');
   await verifyNotificationTitleAndContent(claimNumber, stayLifted.title, stayLifted.content, claimRef);
   await verifyNotificationTitleAndContent(claimNumber, responseClaimant.title, responseClaimant.content, claimRef);
+
+  // Regression: the earlier "requested" notification must not linger once the stay is lifted
+  await verifyNotificationAbsent(claimNumber, ccjRequestedTitle, claimRef);
 
   // AC3 - defendant dashboard: the stay has been lifted + the defendant has not yet responded
   await I.click('Sign out');

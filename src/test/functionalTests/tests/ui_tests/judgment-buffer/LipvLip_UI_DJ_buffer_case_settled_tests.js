@@ -3,12 +3,13 @@ const LoginSteps = require('../../../commonFeatures/home/steps/login');
 const {createAccount} = require('../../../specClaimHelpers/api/idamHelper');
 const ClaimantResponseSteps = require('../../../citizenFeatures/response/steps/lipClaimantResponseSteps');
 const {checkToggleEnabled} = require('../../../specClaimHelpers/api/testingSupport');
-const {verifyNotificationTitleAndContent} = require('../../../specClaimHelpers/e2e/dashboardHelper');
+const {verifyNotificationTitleAndContent, verifyNotificationAbsent} = require('../../../specClaimHelpers/e2e/dashboardHelper');
 const dashboardNotifications = require('../../../specClaimHelpers/dashboardNotificationConstants');
 const chai = require('chai');
 
 const {assert} = chai;
 const claimType = 'SmallClaims';
+const ccjRequestedTitle = 'The CCJ has been requested';
 // eslint-disable-next-line no-unused-vars
 let claimRef, caseData, claimNumber;
 
@@ -48,6 +49,9 @@ Scenario('Case settled during JUDGMENT_REQUESTED buffer - CCJ cancelled, claiman
   await I.amOnPage('/dashboard/' + claimRef + '/claimant');
   await verifyNotificationTitleAndContent(claimNumber, ac5.title, ac5.content, claimRef);
   await verifyNotificationTitleAndContent(claimNumber, ac4Claimant.title, ac4Claimant.content, claimRef);
+
+  // Regression: the earlier "requested" notification must not linger once the CCJ is cancelled
+  await verifyNotificationAbsent(claimNumber, ccjRequestedTitle, claimRef);
 
   // AC4b - settled notification on the defendant dashboard
   await I.click('Sign out');

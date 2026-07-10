@@ -836,4 +836,87 @@ module.exports = {
       ],
     };
   },
+
+  //DTSCCI-5096 AC2
+  ccjRequestedBufferClaimant: () => {
+    return {
+      title: 'The CCJ has been requested',
+      content: ['A judgment against the defendant has been requested.', 'You will be notified when this judgment is granted.'],
+    };
+  },
+
+  ccjRequestedBufferClaimantWelsh: () => {
+    return {
+      title: 'CCJ wedi cael ei geisio',
+      content: ['Mae cais am ddyfarniad yn erbyn y diffynnydd', 'Byddwch yn cael gwybod pan roddir y dyfarniad hwn'],
+    };
+  },
+
+  //DTSCCI-5096 AC5
+  ccjRequestedBufferDefendant: () => {
+    return {
+      title: 'responded to the claim',
+      content: ['You need to respond', 'Respond to the claim'],
+    };
+  },
+
+  ccjRequestedBufferDefendantWelsh: () => {
+    return {
+      title: 'Nid ydych wedi ymateb',
+      content: ['Mae angen i chi ymateb', 'Ymateb i'],
+    };
+  },
+
+  //DTSCCI-5106 AC4
+  caseDismissedNotification: () => {
+    return {
+      title: 'The case has been closed',
+      content: ['closed as a result of a judge', 'make any changes to a closed case'],
+    };
+  },
+
+  caseDismissedNotificationWelsh: () => {
+    return {
+      title: 'Mae’r achos wedi’i gau',
+      content: ['o ganlyniad i orchymyn', 'newidiadau i achos sydd wedi cau'],
+    };
+  },
+
+  //DTSCCI-5106 AC5
+  ccjCancelledOnCaseDismissalClaimant: () => {
+    return {
+      title: 'The case has been dismissed',
+      content: 'The CCJ you requested has been cancelled.',
+    };
+  },
+
+  ccjCancelledOnCaseDismissalClaimantWelsh: () => {
+    return {
+      title: 'Mae’r achos wedi’i gau',
+      content: 'Dyfarniad Llys Sirol (CCJ) y gwnaethoch gais amdano',
+    };
+  },
+
+  //DTSCCI-5102 AC4 Welsh (case proceeds offline - unchanged notification)
+  caseOfflineWelsh: () => {
+    return {
+      title: 'Ni fydd eich cyfrif ar-lein yn cael ei ddiweddaru mwyach',
+      content: 'Ni fydd eich cyfrif ar-lein yn cael ei ddiweddaru mwyach',
+    };
+  },
+
+  //DTSCCI-5102 AC5 (case taken offline during buffer - CCJ cancelled)
+  ccjCancelledOnCaseOfflineClaimant: () => {
+    return {
+      title: 'The case now proceeds offline',
+      content: 'The CCJ you requested has been cancelled.',
+    };
+  },
+
+  ccjCancelledOnCaseOfflineClaimantWelsh: () => {
+    return {
+      title: 'Bydd yr achos nawr yn parhau all-lein',
+      content: 'Dyfarniad Llys Sirol (CCJ) y gwnaethoch gais amdano',
+    };
+  },
 };
