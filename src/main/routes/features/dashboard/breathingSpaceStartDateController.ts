@@ -51,6 +51,7 @@ breathingSpaceStartDateController.post(BREATHING_SPACE_START_DATE_URL, (async (r
     const claim = await getClaimById(claimId, req, true);
     const type = claim.breathingSpaceTypeAndReference?.type;
     const form = new GenericForm(new BreathingSpaceStartDate(req.body.day, req.body.month, req.body.year));
+    await form.validate();
     await renderView(res, claimId, form, type === BreathingSpaceType.MENTAL_HEALTH);
   } catch (error) {
     next(error);

@@ -43,11 +43,16 @@ describe('Breathing Space Start Date Controller', () => {
     jest.clearAllMocks();
   });
 
+  const claimWithStandardType = () => Object.assign(new Claim(), claim.case_data, {
+    breathingSpaceTypeAndReference: new BreathingSpaceTypeAndReference(BreathingSpaceType.STANDARD, 'REF123'),
+  });
+
+  const claimWithMentalHealthType = () => Object.assign(new Claim(), claim.case_data, {
+    breathingSpaceTypeAndReference: new BreathingSpaceTypeAndReference(BreathingSpaceType.MENTAL_HEALTH, 'REF123'),
+  });
+
   it('should show standard intro when standard type is selected', async () => {
-    const caseData = Object.assign(new Claim(), claim.case_data, {
-      breathingSpaceTypeAndReference: new BreathingSpaceTypeAndReference(BreathingSpaceType.STANDARD, 'REF123'),
-    });
-    (getClaimById as jest.Mock).mockResolvedValueOnce(caseData);
+    (getClaimById as jest.Mock).mockResolvedValueOnce(claimWithStandardType());
     await request(app)
       .get(BREATHING_SPACE_START_DATE_URL)
       .expect((res) => {
@@ -67,10 +72,7 @@ describe('Breathing Space Start Date Controller', () => {
   });
 
   it('should show mental health intro when mental health type is selected', async () => {
-    const caseData = Object.assign(new Claim(), claim.case_data, {
-      breathingSpaceTypeAndReference: new BreathingSpaceTypeAndReference(BreathingSpaceType.MENTAL_HEALTH, 'REF123'),
-    });
-    (getClaimById as jest.Mock).mockResolvedValueOnce(caseData);
+    (getClaimById as jest.Mock).mockResolvedValueOnce(claimWithMentalHealthType());
     await request(app)
       .get(BREATHING_SPACE_START_DATE_URL)
       .expect((res) => {
@@ -81,24 +83,88 @@ describe('Breathing Space Start Date Controller', () => {
       });
   });
 
-  it('should re-render start date page on post for happy path', async () => {
-    const caseData = Object.assign(new Claim(), claim.case_data, {
-      breathingSpaceTypeAndReference: new BreathingSpaceTypeAndReference(BreathingSpaceType.STANDARD, 'REF123'),
-    });
-    (getClaimById as jest.Mock).mockResolvedValueOnce(caseData);
+  it('should accept blank optional start date', async () => {
+    (getClaimById as jest.Mock).mockResolvedValueOnce(claimWithStandardType());
+    await request(app)
+      .post(BREATHING_SPACE_START_DATE_URL)
+      .send({
+        day: '',
+        month: '',
+        year: '',
+      })
+      .expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain('Breathing space start date');
+        expect(res.text).not.toContain('Start date must be a real date');
+        expect(res.text).not.toContain('Start date must include a');
+        expect(res.text).not.toContain('Start date cannot be in the future');
+      });
+  });
+
+  it('should accept a valid past start date', async () => {
+    (getClaimById as jest.Mock).mockResolvedValueOnce(claimWithStandardType());
     await request(app)
       .post(BREATHING_SPACE_START_DATE_URL)
       .send({
         day: '15',
-        month: '11',
-        year: '2026',
+        month: '1',
+        year: '2024',
       })
       .expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain('Breathing space start date');
         expect(res.text).toContain('value="15"');
-        expect(res.text).toContain('value="11"');
-        expect(res.text).toContain('value="2026"');
+        expect(res.text).toContain('value="1"');
+        expect(res.text).toContain('value="2024"');
+        expect(res.text).not.toContain('Start date must be a real date');
+        expect(res.text).not.toContain('Start date cannot be in the future');
+      });
+  });
+
+  it('should show error when start date is not a real date', async () => {
+    (getClaimById as jest.Mock).mockResolvedValueOnce(claimWithStandardType());
+    await request(app)
+      .post(BREATHING_SPACE_START_DATE_URL)
+      .send({
+        day: '35',
+        month: '1',
+        year: '2024',
+      })
+      .expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain('Start date must be a real date');
+      });
+  });
+
+  it('should show error when start date is incomplete', async () => {
+    (getClaimById as jest.Mock).mockResolvedValueOnce(claimWithStandardType());
+    await request(app)
+      .post(BREATHING_SPACE_START_DATE_URL)
+      .send({
+        day: '3',
+        month: '10',
+        year: '',
+      })
+      .expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain('Start date must include a year');
+      });
+  });
+
+  it('should show error when start date is in the future', async () => {
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    (getClaimById as jest.Mock).mockResolvedValueOnce(claimWithStandardType());
+    await request(app)
+      .post(BREATHING_SPACE_START_DATE_URL)
+      .send({
+        day: String(tomorrow.getDate()),
+        month: String(tomorrow.getMonth() + 1),
+        year: String(tomorrow.getFullYear()),
+      })
+      .expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain('Start date cannot be in the future');
       });
   });
 });
