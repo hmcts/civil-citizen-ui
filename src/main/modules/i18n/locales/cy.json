@@ -96,7 +96,7 @@
       "CHANGE": "Newid",
       "CONTINUE": "Parhau",
       "CANCEL": "Canslo",
-      "PREVIOUS": "Yn ôl",
+      "PREVIOUS": "Blaenorol",
       "GO_BACK_AND_TRY_PAYMENT_AGAIN": "Ewch yn ôl a rhowch gynnig arall ar dalu",
       "GO_TO_ACCOUNT": "Mynd i'ch cyfrif",
       "I_CONFIRM_IVE_READ_THIS": "Cadarnhaf fy mod wedi darllen hwn",
@@ -2777,11 +2777,19 @@
       "PAGE_TITLE": "Nodwch y Lle i Anadlu",
       "TYPE_AND_REFERENCE": {
         "HEADING": "Math o Le i Anadlu a'r Cyfeirnod",
-        "TYPE_LEGEND": "What type of breathing space is it?",
+        "TYPE_LEGEND": "Pa fath o le i anadlu ydyw?",
         "TYPE_MENTAL_HEALTH": "Moratoriwm Argyfwng Iechyd Meddwl",
         "TYPE_STANDARD": "Lle i Anadlu Safonol",
         "REFERENCE_LABEL": "Cyfeirnod (dewisol)",
         "REFERENCE_HINT": "Gallwch ddod o hyd i’r wybodaeth hon yn yr hysbysiad a gawsoch gan y Gwasanaeth Ansolfedd."
+      },
+      "START_DATE": {
+        "HEADING": "Dyddiad cychwyn y Lle i Anadlu",
+        "INTRO_STANDARD": "Bydd y lle i anadlu yn cychwyn heddiw, oni bai eich bod yn nodi dyddiad cychwyn gwahanol.",
+        "INTRO_MENTAL_HEALTH": "Bydd y Lle i Anadlu oherwydd Argyfwng Iechyd Meddwl yn cychwyn heddiw, oni bai eich bod yn nodi dyddiad cychwyn gwahanol.",
+        "INTRO_MENTAL_HEALTH_REMAIN": "Bydd yn parhau nes eich bod yn ei godi.",
+        "DATE_LABEL": "Pryd gychwynnodd y lle i anadlu? (dewisol)",
+        "DATE_HINT": "Nodwch y dyddiad bu iddo gychwyn, nid y dyddiad y cawsoch hysbysiad amdano. Er enghraifft, {{ date }}"
       }
     },
     "DEBTS": {

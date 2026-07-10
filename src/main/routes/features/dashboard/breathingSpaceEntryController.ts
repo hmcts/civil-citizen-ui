@@ -3,6 +3,7 @@ import {
   BREATHING_SPACE_CANCEL_URL,
   BREATHING_SPACE_ENTER_URL,
   BREATHING_SPACE_INFO_URL,
+  BREATHING_SPACE_START_DATE_URL,
   DASHBOARD_CLAIMANT_URL,
 } from '../../urls';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
@@ -53,7 +54,7 @@ breathingSpaceEntryController.post(BREATHING_SPACE_ENTER_URL, (async (req: Reque
       return;
     }
     await saveBreathingSpaceTypeAndReference(req, form.model);
-    await renderView(res, claimId, form);
+    res.redirect(constructResponseUrlWithIdParams(claimId, BREATHING_SPACE_START_DATE_URL));
   } catch (error) {
     next(error);
   }

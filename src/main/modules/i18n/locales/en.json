@@ -2784,6 +2784,14 @@
         "TYPE_STANDARD": "Standard Breathing Space",
         "REFERENCE_LABEL": "Reference number (optional)",
         "REFERENCE_HINT": "You can find this on the notification you received from the Insolvency Service"
+      },
+      "START_DATE": {
+        "HEADING": "Breathing space start date",
+        "INTRO_STANDARD": "Breathing space will start from today, unless you enter a different start date.",
+        "INTRO_MENTAL_HEALTH": "Mental health crisis breathing space will start from today, unless you enter a different start date.",
+        "INTRO_MENTAL_HEALTH_REMAIN": "It will remain until you lift it.",
+        "DATE_LABEL": "When did breathing space start? (optional)",
+        "DATE_HINT": "Enter the date it started, not the date you received the notification. For example, {{ date }}"
       }
     },
     "DEBTS": {

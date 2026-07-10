@@ -14,6 +14,7 @@ import {
   BREATHING_SPACE_CANCEL_URL,
   BREATHING_SPACE_ENTER_URL,
   BREATHING_SPACE_INFO_URL,
+  BREATHING_SPACE_START_DATE_URL,
 } from 'routes/urls';
 import {BreathingSpaceType} from 'models/breathingSpace/breathingSpaceType';
 import {BreathingSpaceTypeAndReference} from 'models/breathingSpace/breathingSpaceTypeAndReference';
@@ -85,7 +86,7 @@ describe('Breathing Space Entry Controller', () => {
       });
   });
 
-  it('should save and re-render when valid', async () => {
+  it('should save and redirect to start date when valid', async () => {
     const caseData = Object.assign(new Claim(), claim.case_data);
     (getClaimById as jest.Mock).mockResolvedValueOnce(caseData);
     await request(app)
@@ -95,9 +96,8 @@ describe('Breathing Space Entry Controller', () => {
         reference: 'REF123',
       })
       .expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain('value="REF123"');
-        expect(res.text).toContain(`value="${BreathingSpaceType.STANDARD}"`);
+        expect(res.status).toBe(302);
+        expect(res.header.location).toContain(BREATHING_SPACE_START_DATE_URL);
         expect(draftStoreService.saveDraftClaim).toHaveBeenCalled();
       });
   });
@@ -133,7 +133,7 @@ describe('Breathing Space Entry Controller', () => {
       });
   });
 
-  it('should save when optional reference is blank', async () => {
+  it('should save and redirect when optional reference is blank', async () => {
     const caseData = Object.assign(new Claim(), claim.case_data);
     (getClaimById as jest.Mock).mockResolvedValueOnce(caseData);
     await request(app)
@@ -143,7 +143,8 @@ describe('Breathing Space Entry Controller', () => {
         reference: '',
       })
       .expect((res) => {
-        expect(res.status).toBe(200);
+        expect(res.status).toBe(302);
+        expect(res.header.location).toContain(BREATHING_SPACE_START_DATE_URL);
         expect(draftStoreService.saveDraftClaim).toHaveBeenCalled();
       });
   });
