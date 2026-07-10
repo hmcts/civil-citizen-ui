@@ -9,6 +9,7 @@ import {Task} from 'models/taskList/task';
 import {setResponseDeadline} from 'services/features/common/responseDeadlineAgreedService';
 import {getClaimById} from 'modules/utilityService';
 import {Claim} from 'models/claim';
+import {AppRequest} from 'common/models/AppRequest';
 import {configureSpy} from '../../../utils/spyConfiguration';
 import * as launchDarklyClient from '../../../../main/app/auth/launchdarkly/launchDarklyClient';
 
@@ -93,6 +94,7 @@ describe('Response - Incomplete Submission', () => {
       //Then
       expect(MOCK_RESPONSE.redirect).not.toHaveBeenCalled();
       expect(MOCK_NEXT).toHaveBeenCalledWith();
+      expect((<AppRequest>mockRequest).locals.claim).toBeDefined();
     });
 
     it('should throw error if task list is empty', async () => {
