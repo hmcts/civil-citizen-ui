@@ -1,5 +1,7 @@
 import {app} from '../../app-instance';
 import {FeeType} from 'form/models/helpWithFees/feeType';
+import {TTLCategory} from './ttlConfig';
+import {writeWithTTL} from './redisWriteHelper';
 
 const userIdForPayment = 'userIdForPayment';
 const confirmationUrl = 'confirmationUrl';
@@ -20,7 +22,7 @@ export const saveUserId = async (claimId: string, feeType: string, userId: strin
       logger.warn(`Overwriting existing userId ${existingUserId} with ${userId} for claimId ${claimId}`);
     }
 
-    await app.locals.draftStoreClient.set(buildUserIdKey(claimId, feeType), userId);
+    await writeWithTTL(buildUserIdKey(claimId, feeType), userId, TTLCategory.PAYMENT_SESSION);
     logger.info('Draft store claim id ' + claimId + ' user id ' + userId);
   } catch (err) {
     logger.error('Error while saving the userid for payment confirmation ' + err);
@@ -62,7 +64,11 @@ export const saveOriginalPaymentConfirmationUrl = async (claimId: string, feeTyp
       logger.warn(`Overwriting existing payment confirmation url ${existingUrl} with ${url} for userId ${userId} and claimId ${claimId}`);
     }
 
-    await app.locals.draftStoreClient.set(buildPaymentConfirmationUrlKey(claimId, feeType, userId), url);
+    await writeWithTTL(
+      buildPaymentConfirmationUrlKey(claimId, feeType, userId),
+      url,
+      TTLCategory.PAYMENT_SESSION,
+    );
   } catch (err) {
     logger.error('Error while saving the original payment confirmation url ' + err);
     throw err;
