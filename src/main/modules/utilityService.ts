@@ -7,6 +7,7 @@ import {
   getDraftClaimFromStore,
   saveDraftClaim,
 } from 'modules/draft-store/draftStoreService';
+import {TTLCategory} from 'modules/draft-store/ttlConfig';
 import {CivilServiceClient} from '../app/client/civilServiceClient';
 import {Claim} from 'common/models/claim';
 import {Request} from 'express';
@@ -54,7 +55,7 @@ export const getClaimById = async (claimId: RouteParam, req: Request, useRedisKe
   if (claim.isEmpty() && redisKey !== userId) {
     claim = await civilServiceClient.retrieveClaimDetails(normalizedClaimId, <AppRequest>req);
     if (claim) {
-      await saveDraftClaim(redisKey, claim, true);
+      await saveDraftClaim(redisKey, claim, true, userId, TTLCategory.JOURNEY_CACHE);
     } else {
       throw new Error('Case not found...');
     }
@@ -80,7 +81,7 @@ export const getDashboardClaimById = async (claimId: RouteParam, req: Request, u
   }
 
   latestClaim.claimantResponse = cachedClaim.claimantResponse ?? latestClaim.claimantResponse;
-  await saveDraftClaim(redisKey, latestClaim, true);
+  await saveDraftClaim(redisKey, latestClaim, true, userId, TTLCategory.JOURNEY_CACHE);
   syncCaseReference(req, latestClaim);
   return latestClaim;
 };
@@ -96,7 +97,7 @@ export const refreshDraftStoreClaimFrom = async (req: Request, useRedisKey = fal
     claim.claimantResponse = oldClaim?.case_data?.claimantResponse;
     logger.info(`Setting claimant response: userId: ${userId} redisKey: ${redisKey} claimantResponse: ${claim.claimantResponse? JSON.stringify(claim.claimantResponse) : 'undefined'}`);
     await deleteDraftClaimFromStore(redisKey);
-    await saveDraftClaim(redisKey, claim, true);
+    await saveDraftClaim(redisKey, claim, true, userId, TTLCategory.JOURNEY_CACHE);
   } else {
     logger.error(`No claim found in draft store for : userId: ${userId} redisKey: ${redisKey} claimId: ${claimId}`);
     throw new Error('Case not found...');
