@@ -95,5 +95,8 @@ describe('PostcodeValidator', () => {
   it('should normalise postcode exceptions from file', () => {
     expect(isPostcodeOnExceptionList('cv31nd')).toBe(true);
     expect(isPostcodeOnExceptionList('sw1v2qq')).toBe(true);
+    expect(isPostcodeOnExceptionList('WR38YB')).toBe(true);
+    expect(isPostcodeOnExceptionList('LA94DQ')).toBe(true);
+    expect(isPostcodeOnExceptionList('la9 4uf')).toBe(true);
   });
 });
