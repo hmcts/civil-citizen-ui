@@ -2994,14 +2994,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@playwright/test@npm:1.58.0":
-  version: 1.58.0
-  resolution: "@playwright/test@npm:1.58.0"
+"@playwright/test@npm:^1.47.2":
+  version: 1.61.1
+  resolution: "@playwright/test@npm:1.61.1"
   dependencies:
-    playwright: "npm:1.58.0"
+    playwright: "npm:1.61.1"
   bin:
     playwright: cli.js
-  checksum: 10/1ab8c4d408c919e1357bb43e5682d1ce66bb792516fd6269dd5cff9c9b7cc82e026b3fc864ba723714337dc610ac46110ed8307d610feb92f5002abbb03a6392
+  checksum: 10/08915357031e1bc273a19bb428fb7e51031ca44f25750832e389bcd69c399f6a243f5f832e7832d46153b57b1305f1f5f5dd63f3a3261f928f61e464c6b3c64e
   languageName: node
   linkType: hard
 
@@ -5395,7 +5395,7 @@ __metadata:
     "@ministryofjustice/frontend": "npm:^1.6.3"
     "@pact-foundation/pact": "npm:^15.0.1"
     "@pact-foundation/pact-node": "npm:^10.18.0"
-    "@playwright/test": "npm:1.58.0"
+    "@playwright/test": "npm:^1.47.2"
     "@types/chai": "npm:^4"
     "@types/config": "npm:^3.3.5"
     "@types/cookie-parser": "npm:^1.4.3"
@@ -5448,7 +5448,7 @@ __metadata:
     follow-redirects: "npm:^1.16.0"
     git-rev-sync: "npm:^3.0.2"
     glob: "npm:^12.0.0"
-    govuk-frontend: "npm:5.3.1"
+    govuk-frontend: "npm:6.2.0"
     helmet: "npm:^7.0.0"
     html-webpack-plugin: "npm:^5.5.0"
     html_codesniffer: "npm:^2.5.1"
@@ -7882,10 +7882,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"govuk-frontend@npm:5.3.1":
-  version: 5.3.1
-  resolution: "govuk-frontend@npm:5.3.1"
-  checksum: 10/d909334d28c1985a50bde203f94e024fc3d99faca3c5f50cf0d6a0bdfe185f1c98ab766bba3d5033c7a9059884a1489b2157cc055f444b8708fc91e042f83aa4
+"govuk-frontend@npm:6.2.0":
+  version: 6.2.0
+  resolution: "govuk-frontend@npm:6.2.0"
+  checksum: 10/3d92ae94d1030d839cb8db0ae114df98f151bc851728514f80c99d9e61633cface7019fb4203f284289582717ca6de29d5bf1f4ff65b4bf14ecc65d214e7f8e0
   languageName: node
   linkType: hard
 
@@ -11157,27 +11157,27 @@ __metadata:
   languageName: node
   linkType: hard
 
-"playwright-core@npm:1.58.0":
-  version: 1.58.0
-  resolution: "playwright-core@npm:1.58.0"
+"playwright-core@npm:1.61.1":
+  version: 1.61.1
+  resolution: "playwright-core@npm:1.61.1"
   bin:
     playwright-core: cli.js
-  checksum: 10/718549cdcd22e55f42887e7b832276c9a50e112b278d22a2242bb00c401021623fedf9554c7090f132e389b5bbe11a987ce71e3c877e767eed4dd9bfe573019c
+  checksum: 10/b0e7b1d4de7ca6c1a57eb88f1709609a8b7637092f149e703d84d6c8e01835992ec5ca26b86f1a32fb5f5bc1aad042c3ae27311e131b3dda8a27824a543eb3c7
   languageName: node
   linkType: hard
 
-"playwright@npm:1.58.0":
-  version: 1.58.0
-  resolution: "playwright@npm:1.58.0"
+"playwright@npm:1.61.1":
+  version: 1.61.1
+  resolution: "playwright@npm:1.61.1"
   dependencies:
     fsevents: "npm:2.3.2"
-    playwright-core: "npm:1.58.0"
+    playwright-core: "npm:1.61.1"
   dependenciesMeta:
     fsevents:
       optional: true
   bin:
     playwright: cli.js
-  checksum: 10/5ef5d0977906046400cee9a359f18c87eafb3e3193a33a22351cc84740c0dffb3cff7b9f2320d1e200817dbf24e63b747a0546b6c671a9fd95937e2402682ad9
+  checksum: 10/0cd1a8a7e106202e785450763973bf326d4aa112ed195bbd78b17af43dcfd12e29bc8204ae61c88f748dd0f2bdf69a7827bc3bbf8c1ec4c71b8e35586e05f13c
   languageName: node
   linkType: hard
 

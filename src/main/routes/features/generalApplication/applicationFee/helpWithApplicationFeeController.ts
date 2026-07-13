@@ -35,7 +35,8 @@ async function renderView(res: Response, req: AppRequest | Request, form: Generi
     if (claim.paymentSyncError) {
       paymentSyncError = true;
       claim.paymentSyncError = undefined;
-      await saveDraftClaim(generateRedisKey(<AppRequest>req), claim, true);
+      const appRequest = req as AppRequest;
+      await saveDraftClaim(generateRedisKey(appRequest), claim, true, appRequest.session.user?.id);
     }
   }
   let backLinkUrl;

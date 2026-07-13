@@ -146,6 +146,20 @@ describe('Claim - Check answers', () => {
         });
     });
 
+    it('should call getCaseDataFromStore only once when isFirstTimeInPCQ has already stashed the claim', async () => {
+      mockGetClaim.mockClear();
+      mockGetClaim.mockImplementation(async () => {
+        const claim = new Claim();
+        claim.claimDetails = new ClaimDetails();
+        claim.pcqId = 'existing-pcq-id';
+        return claim;
+      });
+
+      await session(app).get(CLAIM_CHECK_ANSWERS_URL);
+
+      expect(mockGetClaim).toHaveBeenCalledTimes(1);
+    });
+
     it('should return status 500 when error thrown', async () => {
       mockGetSummarySections.mockImplementation(() => {
         throw new Error(TestMessages.REDIS_FAILURE);
