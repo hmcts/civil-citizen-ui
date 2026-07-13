@@ -36,6 +36,7 @@ import {HowMuchHaveYouPaid} from 'common/form/models/admission/howMuchHaveYouPai
 import {GenericYesNo} from 'common/form/models/genericYesNo';
 import { FullAdmission } from 'common/models/fullAdmission';
 import {PartyType} from 'models/partyType';
+import {TaskStatus} from 'models/taskList/TaskStatus';
 
 describe('Task List Builder', () => {
   const claimId = '5129';
@@ -213,6 +214,22 @@ describe('Task List Builder', () => {
         expect(respondToClaimSection.tasks.length).toBe(2);
         expect(respondToClaimSection.tasks[0].url).toEqual(chooseAResponseUrl);
         expect(respondToClaimSection.tasks[1].url).toEqual(tellUsWhyDisagreeWithClaimUrl);
+      });
+    });
+
+    describe('test COUNTER_CLAIM', () => {
+      it('should return only chooseAResponse task as incomplete for counter claim', () => {
+        const claim = new Claim();
+        claim.respondent1 = new Party();
+        claim.respondent1.responseType = ResponseType.FULL_DEFENCE;
+        claim.rejectAllOfClaim = new RejectAllOfClaim();
+        claim.rejectAllOfClaim.option = RejectAllOfClaimType.COUNTER_CLAIM;
+
+        const respondToClaimSection = buildRespondToClaimSection(claim, claimId, lang);
+
+        expect(respondToClaimSection.tasks.length).toBe(1);
+        expect(respondToClaimSection.tasks[0].url).toEqual(chooseAResponseUrl);
+        expect(respondToClaimSection.tasks[0].status).toBe(TaskStatus.INCOMPLETE);
       });
     });
   });
