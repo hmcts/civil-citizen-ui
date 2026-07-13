@@ -5,6 +5,7 @@ import {YesNo} from 'form/models/yesNo';
 
 const mockDraftStoreClient = {
   set: jest.fn(),
+  ttl: jest.fn(),
   expireat: jest.fn(),
   get: jest.fn(),
 };
@@ -16,16 +17,17 @@ const gaHelpWithFees = new GaHelpWithFees();
 describe('GA Hwf Store Service', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    mockDraftStoreClient.ttl.mockResolvedValue(-1);
   });
 
   describe('saveDraftGAHWFDetails', () => {
-    it('should save the draft Hwf details', async () => {
+    it('should save the draft Hwf details with TTL', async () => {
       mockDraftStoreClient.set.mockResolvedValueOnce(null);
-      mockDraftStoreClient.expireat.mockResolvedValueOnce(null);
 
       await saveDraftGAHWFDetails(redisKey, gaHelpWithFees);
       const stringfyData = JSON.stringify(gaHelpWithFees);
-      expect(mockDraftStoreClient.set).toHaveBeenCalledWith(redisKey, stringfyData);
+      expect(mockDraftStoreClient.set).toHaveBeenCalledWith(redisKey, stringfyData, 'EX', expect.any(Number));
+      expect(mockDraftStoreClient.expireat).not.toHaveBeenCalled();
     });
   });
 
