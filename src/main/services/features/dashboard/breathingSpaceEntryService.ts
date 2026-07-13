@@ -1,6 +1,11 @@
 import {AppRequest} from 'models/AppRequest';
 import {Request} from 'express';
-import {generateRedisKey, getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {
+  deleteFieldDraftClaimFromStore,
+  generateRedisKey,
+  getCaseDataFromStore,
+  saveDraftClaim,
+} from 'modules/draft-store/draftStoreService';
 import {BreathingSpaceTypeAndReference} from 'models/breathingSpace/breathingSpaceTypeAndReference';
 import {Claim} from 'models/claim';
 
@@ -22,4 +27,10 @@ export const saveBreathingSpaceTypeAndReference = async (
   const claim = await getCaseDataFromStore(redisKey);
   claim.breathingSpaceTypeAndReference = form;
   await saveDraftClaim(redisKey, claim);
+};
+
+export const cancelBreathingSpaceEntry = async (req: Request): Promise<void> => {
+  const redisKey = generateRedisKey(<AppRequest>req);
+  const claim = await getCaseDataFromStore(redisKey);
+  await deleteFieldDraftClaimFromStore(redisKey, claim, 'breathingSpaceTypeAndReference');
 };

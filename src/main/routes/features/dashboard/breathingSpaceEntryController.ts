@@ -1,4 +1,4 @@
-import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
+import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {
   BREATHING_SPACE_CANCEL_URL,
   BREATHING_SPACE_ENTER_URL,
@@ -16,6 +16,7 @@ import {
   getBreathingSpaceTypeAndReferenceForm,
   saveBreathingSpaceTypeAndReference,
 } from 'services/features/dashboard/breathingSpaceEntryService';
+import {AppRequest} from 'models/AppRequest';
 
 const breathingSpaceEnterViewPath = 'features/dashboard/breathing-space-enter';
 const breathingSpaceEntryController = Router();
@@ -32,10 +33,11 @@ async function renderView(res: Response, claimId: string, form: GenericForm<Brea
   });
 }
 
-breathingSpaceEntryController.get(BREATHING_SPACE_ENTER_URL, (async (req: Request, res: Response, next: NextFunction) => {
+breathingSpaceEntryController.get(BREATHING_SPACE_ENTER_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = getRouteParam(req, 'id');
     const claim = await getClaimById(claimId, req, true);
+    req.session.previousUrl = req.originalUrl;
     const form = new GenericForm(getBreathingSpaceTypeAndReferenceForm(claim));
     await renderView(res, claimId, form);
   } catch (error) {
@@ -43,7 +45,7 @@ breathingSpaceEntryController.get(BREATHING_SPACE_ENTER_URL, (async (req: Reques
   }
 }) as RequestHandler);
 
-breathingSpaceEntryController.post(BREATHING_SPACE_ENTER_URL, (async (req: Request, res: Response, next: NextFunction) => {
+breathingSpaceEntryController.post(BREATHING_SPACE_ENTER_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = getRouteParam(req, 'id');
     await getClaimById(claimId, req, true);

@@ -2,6 +2,7 @@ import {Claim} from 'models/claim';
 import {BreathingSpaceType} from 'models/breathingSpace/breathingSpaceType';
 import {BreathingSpaceTypeAndReference} from 'models/breathingSpace/breathingSpaceTypeAndReference';
 import {
+  cancelBreathingSpaceEntry,
   getBreathingSpaceTypeAndReferenceForm,
   saveBreathingSpaceTypeAndReference,
 } from 'services/features/dashboard/breathingSpaceEntryService';
@@ -40,5 +41,24 @@ describe('breathingSpaceEntryService', () => {
 
     expect(claim.breathingSpaceTypeAndReference).toBe(form);
     expect(draftStoreService.saveDraftClaim).toHaveBeenCalledWith('key', claim);
+  });
+
+  it('should clear breathing space type and reference from claim', async () => {
+    const claim = new Claim();
+    claim.breathingSpaceTypeAndReference = new BreathingSpaceTypeAndReference(
+      BreathingSpaceType.STANDARD,
+      'REF',
+    );
+    (draftStoreService.generateRedisKey as jest.Mock).mockReturnValue('key');
+    (draftStoreService.getCaseDataFromStore as jest.Mock).mockResolvedValue(claim);
+    (draftStoreService.deleteFieldDraftClaimFromStore as jest.Mock).mockResolvedValue(undefined);
+
+    await cancelBreathingSpaceEntry({session: {user: {id: 'user'}}} as AppRequest);
+
+    expect(draftStoreService.deleteFieldDraftClaimFromStore).toHaveBeenCalledWith(
+      'key',
+      claim,
+      'breathingSpaceTypeAndReference',
+    );
   });
 });

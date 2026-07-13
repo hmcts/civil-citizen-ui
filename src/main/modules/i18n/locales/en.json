@@ -2792,6 +2792,11 @@
         "INTRO_MENTAL_HEALTH_REMAIN": "It will remain until you lift it.",
         "DATE_LABEL": "When did breathing space start? (optional)",
         "DATE_HINT": "Enter the date it started, not the date you received the notification. For example, {{ date }}"
+      },
+      "CANCEL": {
+        "HEADING": "Are you sure you want to exit this journey?",
+        "WARNING": "All answers will be lost, and breathing space will not be applied",
+        "ARE_YOU_SURE": "Are you sure you want to exit this journey?"
       }
     },
     "DEBTS": {

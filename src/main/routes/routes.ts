@@ -364,6 +364,7 @@ import cancelRequestForReconsiderationController
 import viewBreathingSpaceInformationController from 'routes/features/dashboard/viewBreathingSpaceInformationController';
 import breathingSpaceEntryController from 'routes/features/dashboard/breathingSpaceEntryController';
 import breathingSpaceStartDateController from 'routes/features/dashboard/breathingSpaceStartDateController';
+import breathingSpaceCancelController from 'routes/features/dashboard/breathingSpaceCancelController';
 import multiTrackDisclosureNonElectronicDocuments
   from 'routes/features/directionsQuestionnaire/mintiMultitrack/disclosureNonElectronicDocumentsController';
 import disclosureOfDocumentsController
@@ -751,6 +752,7 @@ export default [
   viewBreathingSpaceInformationController,
   breathingSpaceEntryController,
   breathingSpaceStartDateController,
+  breathingSpaceCancelController,
   multiTrackDisclosureNonElectronicDocuments,
   disclosureOfDocumentsController,
   disclosureOfElectronicDocumentsIssues,

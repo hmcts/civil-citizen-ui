@@ -2790,6 +2790,11 @@
         "INTRO_MENTAL_HEALTH_REMAIN": "Bydd yn parhau nes eich bod yn ei godi.",
         "DATE_LABEL": "Pryd gychwynnodd y lle i anadlu? (dewisol)",
         "DATE_HINT": "Nodwch y dyddiad bu iddo gychwyn, nid y dyddiad y cawsoch hysbysiad amdano. Er enghraifft, {{ date }}"
+      },
+      "CANCEL": {
+        "HEADING": "Ydych chi’n siŵr eich bod eisiau gadael y llwybr hwn?",
+        "WARNING": "Bydd yr atebion yn cael eu colli, ac ni fydd y lle i anadlu yn cael ei weithredu",
+        "ARE_YOU_SURE": "Ydych chi’n siŵr eich bod eisiau gadael y llwybr hwn?"
       }
     },
     "DEBTS": {

@@ -1,4 +1,4 @@
-import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
+import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {
   BREATHING_SPACE_CANCEL_URL,
   BREATHING_SPACE_ENTER_URL,
@@ -11,6 +11,7 @@ import {getRouteParam} from 'common/utils/routeParamUtils';
 import {GenericForm} from 'form/models/genericForm';
 import {BreathingSpaceStartDate} from 'models/breathingSpace/breathingSpaceStartDate';
 import {BreathingSpaceType} from 'models/breathingSpace/breathingSpaceType';
+import {AppRequest} from 'models/AppRequest';
 
 const breathingSpaceStartDateViewPath = 'features/dashboard/breathing-space-start-date';
 const breathingSpaceStartDateController = Router();
@@ -33,10 +34,11 @@ async function renderView(
   });
 }
 
-breathingSpaceStartDateController.get(BREATHING_SPACE_START_DATE_URL, (async (req: Request, res: Response, next: NextFunction) => {
+breathingSpaceStartDateController.get(BREATHING_SPACE_START_DATE_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = getRouteParam(req, 'id');
     const claim = await getClaimById(claimId, req, true);
+    req.session.previousUrl = req.originalUrl;
     const type = claim.breathingSpaceTypeAndReference?.type;
     const form = new GenericForm(new BreathingSpaceStartDate());
     await renderView(res, claimId, form, type === BreathingSpaceType.MENTAL_HEALTH);
@@ -45,7 +47,7 @@ breathingSpaceStartDateController.get(BREATHING_SPACE_START_DATE_URL, (async (re
   }
 }) as RequestHandler);
 
-breathingSpaceStartDateController.post(BREATHING_SPACE_START_DATE_URL, (async (req: Request, res: Response, next: NextFunction) => {
+breathingSpaceStartDateController.post(BREATHING_SPACE_START_DATE_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = getRouteParam(req, 'id');
     const claim = await getClaimById(claimId, req, true);
