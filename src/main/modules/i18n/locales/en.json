@@ -5540,7 +5540,7 @@
     "ANNUAL_TURNOVER_REQUIRED": "Are you sure this is a valid value?",
     "APPLICATION_TYPE_REQUIRED": "Select an application",
     "BREATHING_SPACE_TYPE_REQUIRED": "Select the breathing space type",
-    "BREATHING_SPACE_REFERENCE_INVALID": "Enter a 16-digit reference number",
+    "BREATHING_SPACE_REFERENCE_INVALID": "Reference number cannot exceed 16-digits",
     "BREATHING_SPACE_START_DATE_REAL": "Start date must be a real date",
     "BREATHING_SPACE_START_DATE_DAY": "Start date must include a day",
     "BREATHING_SPACE_START_DATE_MONTH": "Start date must include a month",

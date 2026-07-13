@@ -26,7 +26,6 @@ async function renderView(
     form,
     pageTitle: 'PAGES.BREATHING_SPACE_ENTRY.PAGE_TITLE',
     backLinkUrl: constructResponseUrlWithIdParams(claimId, BREATHING_SPACE_ENTER_URL),
-    previousUrl: constructResponseUrlWithIdParams(claimId, BREATHING_SPACE_ENTER_URL),
     cancelUrl: constructResponseUrlWithIdParams(claimId, BREATHING_SPACE_CANCEL_URL),
     dashboardUrl: constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL),
     isMentalHealth,

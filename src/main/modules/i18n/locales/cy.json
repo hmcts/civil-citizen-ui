@@ -5539,7 +5539,7 @@
     "ANNUAL_TURNOVER_REQUIRED": "A ydych yn siŵr bod hwn yn swm dilys?",
     "APPLICATION_TYPE_REQUIRED": "Dewiswch gais",
     "BREATHING_SPACE_TYPE_REQUIRED": "Dewiswch y math o le i anadlu",
-    "BREATHING_SPACE_REFERENCE_INVALID": "Nodwch gyfeirnod 16 digid",
+    "BREATHING_SPACE_REFERENCE_INVALID": "Reference number cannot exceed 16-digits",
     "BREATHING_SPACE_START_DATE_REAL": "Rhaid i'r dyddiad cychwyn fod yn ddyddiad go iawn",
     "BREATHING_SPACE_START_DATE_DAY": "Rhaid i’r dyddiad cychwyn gynnwys diwrnod",
     "BREATHING_SPACE_START_DATE_MONTH": "Rhaid i’r dyddiad cychwyn gynnwys mis",
