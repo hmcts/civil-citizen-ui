@@ -120,11 +120,16 @@ export const getClaimBusinessProcess = async (claimId: string, req: Request): Pr
 };
 
 export const getRedisStoreForSession = () => {
-  const protocol = config.get('services.draftStore.redis.tls') ? 'rediss://' : 'redis://';
-  const connectionString = `${protocol}:${config.get('services.draftStore.redis.key')}@${config.get('services.session.redis.host')}:${config.get('services.session.redis.port')}`;
+  const host = config.get('services.session.redis.host') as string;
+  const useTls = !!config.get('services.draftStore.redis.tls');
   return new RedisStore({
-    client: new Redis(connectionString),
+    client: new Redis({
+      host,
+      port: Number(config.get('services.session.redis.port')),
+      password: config.get('services.draftStore.redis.key') as string,
+      ...(useTls ? { tls: { servername: host } } : {}),
+    }),
     prefix: 'citizen-ui-session:',
-    ttl: 86400, //prune expired entries every 24h
+    ttl: 86400,
   });
 };

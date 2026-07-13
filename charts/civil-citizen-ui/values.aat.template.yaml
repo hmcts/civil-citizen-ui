@@ -15,7 +15,8 @@ nodejs:
       resourceGroup: civil-citizen-ui
       secrets:
         - appinsights-instrumentation-key
-        - draft-store-access-key
+        - name: managed-redis-access-key
+          alias: draft-store-access-key
         - citizen-ui-idam-secret
         - ordnance-survey-api-key
         - cmc-s2s-secret
