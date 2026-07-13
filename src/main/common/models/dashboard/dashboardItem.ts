@@ -6,6 +6,8 @@ import {Claim} from 'models/claim';
 import {DASHBOARD_CLAIMANT_URL} from 'routes/urls';
 import {noGroupingCurrencyFormatWithNoTrailingZeros} from 'common/utils/currencyFormat';
 
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('dashboardItem');
 const ocmcBaseUrl = config.get<string>('services.cmc.url');
 
 export interface DashboardStatusTranslationParam {
