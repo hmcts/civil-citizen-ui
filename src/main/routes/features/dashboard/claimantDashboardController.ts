@@ -76,15 +76,13 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
     const totalAmountWithInterestAndFees = (await getTotalAmountWithInterestAndFees(claim))?.toString() || '0';
     const breathingSpaceEnabled = await isBreathingSpaceEnabled();
     // Hardcoded BS data for testing Exit flow (as per requirements)
-    if (breathingSpaceEnabled && (claimId === 'BS_EXIT_TEST' || req.query.bsTest === 'true')) {
-      if (!claim.breathingSpace) {
-        claim.breathingSpace = {
-          enter: {
-            start: new Date('2026-07-01'),
-            type: BreathingSpaceType.STANDARD,
-          },
-        };
-      }
+    if (breathingSpaceEnabled && (claimId === 'BS_EXIT_TEST' || req.query.bsTest === 'true') && !claim.breathingSpace) {
+      claim.breathingSpace = {
+        enter: {
+          start: new Date('2026-07-01'),
+          type: BreathingSpaceType.STANDARD,
+        },
+      };
     }
     const carmEnabled = await isCarmEnabledForCase(claim.submittedDate);
     const isCarmApplicable = isCarmApplicableAndSmallClaim(carmEnabled, claim);

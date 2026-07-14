@@ -20,24 +20,18 @@ exitBreathingSpaceController.get(EXIT_BREATHING_SPACE_URL, (async (req: AppReque
     const liftInfo = breathingSpace?.lift;
 
     // Pre-populate end date for Standard BS: start date + 60 days
-    let defaultDay, defaultMonth, defaultYear;
+    let defaultEndDate: Date;
     if (breathingSpace?.enter?.type === 'STANDARD' && breathingSpace?.enter?.start && !liftInfo?.expectedEnd) {
-      const defaultEndDate = new Date(breathingSpace.enter.start);
+      defaultEndDate = new Date(breathingSpace.enter.start);
       defaultEndDate.setDate(defaultEndDate.getDate() + 60);
-      defaultDay = defaultEndDate.getDate().toString();
-      defaultMonth = (defaultEndDate.getMonth() + 1).toString();
-      defaultYear = defaultEndDate.getFullYear().toString();
     } else if (liftInfo?.expectedEnd) {
-      const date = new Date(liftInfo.expectedEnd);
-      defaultDay = date.getDate().toString();
-      defaultMonth = (date.getMonth() + 1).toString();
-      defaultYear = date.getFullYear().toString();
+      defaultEndDate = new Date(liftInfo.expectedEnd);
     }
 
     const form = new GenericForm(new ExitBreathingSpaceForm(
-      defaultDay,
-      defaultMonth,
-      defaultYear,
+      defaultEndDate?.getDate()?.toString(),
+      (defaultEndDate?.getMonth() + 1)?.toString(),
+      defaultEndDate?.getFullYear()?.toString(),
       liftInfo?.liftReason,
     ));
 
@@ -82,11 +76,10 @@ exitBreathingSpaceController.post(EXIT_BREATHING_SPACE_URL, (async (req: AppRequ
       if (!draftClaim.breathingSpace) {
         draftClaim.breathingSpace = {};
       }
-      if (!draftClaim.breathingSpace.lift) {
-        draftClaim.breathingSpace.lift = new BreathingSpaceLiftInfo();
-      }
-      draftClaim.breathingSpace.lift.expectedEnd = exitBreathingSpaceForm.date;
-      draftClaim.breathingSpace.lift.liftReason = exitBreathingSpaceForm.reason;
+      const lift = draftClaim.breathingSpace.lift || new BreathingSpaceLiftInfo();
+      lift.expectedEnd = exitBreathingSpaceForm.date;
+      lift.liftReason = exitBreathingSpaceForm.reason;
+      draftClaim.breathingSpace.lift = lift;
 
       await saveDraftClaim(claimId, draftClaim);
       res.redirect(constructResponseUrlWithIdParams(claimId, EXIT_BREATHING_SPACE_CHECK_ANSWERS_URL));

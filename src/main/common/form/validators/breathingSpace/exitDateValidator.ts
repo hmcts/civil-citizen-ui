@@ -4,6 +4,20 @@ import {BreathingSpaceType} from '../../../models/breathingSpace/breathingSpace'
 @ValidatorConstraint({name: 'exitDateValidator', async: false})
 export class ExitDateValidator implements ValidatorConstraintInterface {
 
+  private getValidationError(exitDate: Date, startDate: Date, bsType: BreathingSpaceType): string | undefined {
+    if (exitDate <= startDate) {
+      return 'ERRORS.BREATHING_SPACE_EXIT_DATE_AFTER_START';
+    }
+    if (bsType === BreathingSpaceType.STANDARD) {
+      const maxDate = new Date(startDate);
+      maxDate.setDate(maxDate.getDate() + 60);
+      if (exitDate > maxDate) {
+        return 'ERRORS.BREATHING_SPACE_EXIT_DATE_NOT_MORE_THAN_60_DAYS';
+      }
+    }
+    return undefined;
+  }
+
   validate(value: any, args: ValidationArguments) {
     const form = args.object as any;
     const startDate = form.breathingSpaceStartDate;
@@ -14,19 +28,7 @@ export class ExitDateValidator implements ValidatorConstraintInterface {
       return true;
     }
 
-    if (exitDate <= startDate) {
-      return false;
-    }
-
-    if (bsType === BreathingSpaceType.STANDARD) {
-      const maxDate = new Date(startDate);
-      maxDate.setDate(maxDate.getDate() + 60);
-      if (exitDate > maxDate) {
-        return false;
-      }
-    }
-
-    return true;
+    return this.getValidationError(exitDate, startDate, bsType) === undefined;
   }
 
   defaultMessage(args: ValidationArguments) {
@@ -39,18 +41,6 @@ export class ExitDateValidator implements ValidatorConstraintInterface {
       return 'ERRORS.VALID_DATE';
     }
 
-    if (exitDate <= startDate) {
-      return 'ERRORS.BREATHING_SPACE_EXIT_DATE_AFTER_START';
-    }
-
-    if (bsType === BreathingSpaceType.STANDARD) {
-      const maxDate = new Date(startDate);
-      maxDate.setDate(maxDate.getDate() + 60);
-      if (exitDate > maxDate) {
-        return 'ERRORS.BREATHING_SPACE_EXIT_DATE_NOT_MORE_THAN_60_DAYS';
-      }
-    }
-
-    return 'ERRORS.VALID_DATE';
+    return this.getValidationError(exitDate, startDate, bsType) || 'ERRORS.VALID_DATE';
   }
 }

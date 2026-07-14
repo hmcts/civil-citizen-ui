@@ -10,6 +10,7 @@ import {PartyType} from 'common/models/partyType';
 import {PartyDetails} from 'common/form/models/partyDetails';
 import {Party} from 'common/models/party';
 import {Claim} from 'common/models/claim';
+import {BreathingSpaceType} from 'common/models/breathingSpace/breathingSpace';
 import {CaseRole} from 'form/models/caseRoles';
 import {YesNoUpperCamelCase} from 'form/models/yesNo';
 import {PaymentDetails, PaymentStatus} from 'models/PaymentDetails';
@@ -35,6 +36,7 @@ import * as ClaimDetailsService from 'modules/claimDetailsService';
 
 jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 
+const isBreathingSpaceEnabledMock = launchDarkly.isBreathingSpaceEnabled as jest.Mock;
 const isCarmEnabledForCaseMock = launchDarkly.isCarmEnabledForCase as jest.Mock;
 
 const mockExpectedDashboardInfo=
@@ -774,6 +776,44 @@ describe('claimant Dashboard Controller', () => {
       );
       expect(draftStoreService.updateFieldDraftClaimFromStore).toHaveBeenCalledWith('12345', req, 'respondentSolicitor1EmailAddress', 'solicitor@example.com');
       expect(draftStoreService.updateFieldDraftClaimFromStore).toHaveBeenCalledWith('12345', req, 'specRespondent1Represented', YesNoUpperCamelCase.NO);
+    });
+
+    it('should include lift breathing space link when BS is enabled and claim has BS', async () => {
+      isBreathingSpaceEnabledMock.mockResolvedValue(true);
+      const claim = new Claim();
+      claim.caseRole = CaseRole.CLAIMANT;
+      claim.ccdState = CaseState.CASE_ISSUED;
+      claim.totalClaimAmount = 500;
+      claim.submittedDate = new Date('2024-01-01');
+      claim.breathingSpace = {
+        enter: {
+          type: BreathingSpaceType.STANDARD,
+          start: new Date(),
+        },
+      };
+
+      jest.spyOn(UtilityService, 'getDashboardClaimById').mockResolvedValueOnce(claim);
+
+      const req: any = {
+        params: {id: '12345'},
+        query: {},
+        cookies: {lang: 'en'},
+        session: {user: {id: 'user-id'}},
+      };
+      const res: any = {render: jest.fn()};
+
+      await claimantDashboardHandler(req, res, jest.fn());
+
+      expect(res.render).toHaveBeenCalledWith(
+        'features/dashboard/claim-summary-redesign',
+        expect.objectContaining({
+          iWantToLinks: expect.arrayContaining([
+            expect.objectContaining({
+              text: 'Lift breathing space debt respite',
+            }),
+          ]),
+        }),
+      );
     });
   });
 

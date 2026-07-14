@@ -19,6 +19,7 @@ checkAnswersController.get(EXIT_BREATHING_SPACE_CHECK_ANSWERS_URL, (async (req: 
     const draftClaim = await getCaseDataFromStore(claimId);
 
     const liftInfo = draftClaim.breathingSpace?.lift;
+    const changeUrl = constructResponseUrlWithIdParams(claimId, EXIT_BREATHING_SPACE_URL);
 
     const sections: SummarySection[] = [
       summarySection({
@@ -27,13 +28,13 @@ checkAnswersController.get(EXIT_BREATHING_SPACE_CHECK_ANSWERS_URL, (async (req: 
           summaryRow(
             t('PAGES.EXIT_BREATHING_SPACE.END_DATE_LEGEND', {lng: lang}),
             formatDateToFullDate(new Date(liftInfo?.expectedEnd), lang),
-            constructResponseUrlWithIdParams(claimId, EXIT_BREATHING_SPACE_URL),
+            changeUrl,
             t('COMMON.BUTTONS.CHANGE', {lng: lang}),
           ),
           summaryRow(
             t('PAGES.EXIT_BREATHING_SPACE.WHY_LIFTED', {lng: lang}),
             liftInfo?.liftReason || '',
-            constructResponseUrlWithIdParams(claimId, EXIT_BREATHING_SPACE_URL),
+            changeUrl,
             t('COMMON.BUTTONS.CHANGE', {lng: lang}),
           ),
         ],
