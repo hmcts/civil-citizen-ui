@@ -2,6 +2,7 @@ import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {EXIT_BREATHING_SPACE_CHECK_ANSWERS_URL, EXIT_BREATHING_SPACE_CONFIRMATION_URL, EXIT_BREATHING_SPACE_URL} from '../../urls';
 import {getClaimById} from 'modules/utilityService';
 import {AppRequest} from 'models/AppRequest';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {t} from 'i18next';
@@ -14,7 +15,7 @@ const viewPath = 'features/breathingSpace/check-your-answers';
 
 checkAnswersController.get(EXIT_BREATHING_SPACE_CHECK_ANSWERS_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const claimId = req.params.id;
+    const claimId = getRouteParam(req, 'id');
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const claim = await getClaimById(claimId, req);
     const draftClaim = await getCaseDataFromStore(claimId);
@@ -53,7 +54,7 @@ checkAnswersController.get(EXIT_BREATHING_SPACE_CHECK_ANSWERS_URL, (async (req: 
 
 checkAnswersController.post(EXIT_BREATHING_SPACE_CHECK_ANSWERS_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const claimId = req.params.id;
+    const claimId = getRouteParam(req, 'id');
     // Here we would normally trigger the actual submission to the backend (civil-service)
     // For now, we redirect to confirmation
     res.redirect(constructResponseUrlWithIdParams(claimId, EXIT_BREATHING_SPACE_CONFIRMATION_URL));

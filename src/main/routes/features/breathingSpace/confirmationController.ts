@@ -2,13 +2,14 @@ import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {EXIT_BREATHING_SPACE_CONFIRMATION_URL} from '../../urls';
 import {getClaimById} from 'modules/utilityService';
 import {AppRequest} from 'models/AppRequest';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const confirmationController = Router();
 const viewPath = 'features/breathingSpace/confirmation';
 
 confirmationController.get(EXIT_BREATHING_SPACE_CONFIRMATION_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const claimId = req.params.id;
+    const claimId = getRouteParam(req, 'id');
     const claim = await getClaimById(claimId, req);
 
     res.render(viewPath, {

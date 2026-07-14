@@ -4,6 +4,7 @@ import {GenericForm} from 'common/form/models/genericForm';
 import {ExitBreathingSpaceForm} from 'common/form/models/breathingSpace/exitBreathingSpaceForm';
 import {getClaimById} from 'modules/utilityService';
 import {AppRequest} from 'models/AppRequest';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {BreathingSpaceLiftInfo} from 'models/breathingSpace/breathingSpace';
@@ -13,7 +14,7 @@ const viewPath = 'features/breathingSpace/exit-breathing-space';
 
 exitBreathingSpaceController.get(EXIT_BREATHING_SPACE_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const claimId = req.params.id;
+    const claimId = getRouteParam(req, 'id');
     const claim = await getClaimById(claimId, req);
     const breathingSpace = claim.breathingSpace;
     const liftInfo = breathingSpace?.lift;
@@ -53,7 +54,7 @@ exitBreathingSpaceController.get(EXIT_BREATHING_SPACE_URL, (async (req: AppReque
 
 exitBreathingSpaceController.post(EXIT_BREATHING_SPACE_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const claimId = req.params.id;
+    const claimId = getRouteParam(req, 'id');
     const {day, month, year, reason} = req.body;
     const claim = await getClaimById(claimId, req);
     const breathingSpace = claim.breathingSpace;
