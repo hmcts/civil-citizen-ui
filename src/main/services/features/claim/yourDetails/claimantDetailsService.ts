@@ -35,5 +35,5 @@ export const saveClaimantProperty = async (userId: string, propertyName: string,
     claimant[propertyName as keyof Party] = value;
     claim.applicant1 = claimant;
   }
-  await saveDraftClaim(userId, claim);
+  await saveDraftClaim(userId, claim, false, userId);
 };

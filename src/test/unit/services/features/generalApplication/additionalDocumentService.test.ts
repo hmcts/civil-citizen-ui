@@ -77,7 +77,7 @@ describe('Additional Documents Service', () => {
       expect(TypeOfDocumentSectionMapper.mapToSingleFile).toHaveBeenCalledWith(req);
       expect(mockValue).toHaveBeenCalledWith(req, fileUpload);
       expect(claim.generalApplication.uploadAdditionalDocuments).toHaveLength(1);
-      expect(saveDraftClaim).toHaveBeenCalledWith(generateRedisKey(req), claim);
+      expect(saveDraftClaim).toHaveBeenCalledWith(generateRedisKey(req), claim, false, undefined);
     });
 
     it('should set errors in session if validation fails', async () => {
@@ -251,7 +251,7 @@ describe('Additional Documents Service', () => {
 
       await removeSelectedDocument(redisKey, claim, index);
 
-      expect(saveDraftClaim).toHaveBeenCalledWith(redisKey, claim);
+      expect(saveDraftClaim).toHaveBeenCalledWith(redisKey, claim, false, undefined);
       expect(claim.generalApplication.uploadAdditionalDocuments).toHaveLength(0);
     });
 
