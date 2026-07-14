@@ -1,6 +1,5 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {EXIT_BREATHING_SPACE_CHECK_ANSWERS_URL, EXIT_BREATHING_SPACE_CONFIRMATION_URL, EXIT_BREATHING_SPACE_URL} from '../../urls';
-import {getClaimById} from 'modules/utilityService';
 import {AppRequest} from 'models/AppRequest';
 import {getRouteParam} from 'common/utils/routeParamUtils';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
@@ -17,7 +16,6 @@ checkAnswersController.get(EXIT_BREATHING_SPACE_CHECK_ANSWERS_URL, (async (req: 
   try {
     const claimId = getRouteParam(req, 'id');
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-    const claim = await getClaimById(claimId, req);
     const draftClaim = await getCaseDataFromStore(claimId);
 
     const liftInfo = draftClaim.breathingSpace?.lift;
