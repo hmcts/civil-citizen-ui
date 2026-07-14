@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "engines": {
-    "node": ">=20.0.0"
+    "node": ">=24.18.0"
   },
   "scripts": {
     "start": "NODE_ENV=production ./node_modules/.bin/ts-node -r tsconfig-paths/register src/main/server.ts",
@@ -98,7 +98,7 @@
     "express-session": "^1.17.3",
     "follow-redirects": "^1.16.0",
     "glob": "^12.0.0",
-    "govuk-frontend": "5.3.1",
+    "govuk-frontend": "6.2.0",
     "helmet": "^7.0.0",
     "i18next": "^22.4.6",
     "i18next-fs-backend": "^2.6.4",

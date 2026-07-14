@@ -33,7 +33,7 @@ Scenario('Response with RejectAll-DisputeAll Small claims', async ({ api, I }) =
   const responseToTheClaimClaimantNotif = responseToTheClaimClaimant(defendantName);
   await verifyNotificationTitleAndContent(claimNumber, responseToTheClaimClaimantNotif.title, responseToTheClaimClaimantNotif.content);
   await I.click(responseToTheClaimClaimantNotif.nextSteps);
-  await I.see('The defendant’s response', 'h1');  
+  await I.see('The defendant’s response', 'h1');
   await ResponseToDefenceLipVsLipSteps.ResponseToDefenceStepsAsAnAcceptanceOfFullDefenceDisputeAll(claimRef, claimNumber);
   await api.waitForFinishedBusinessProcess();
 });
