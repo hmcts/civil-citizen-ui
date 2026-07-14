@@ -537,7 +537,6 @@ You can optionally specify a branch for CCD definitions and Camunda definitions 
 ```shell
 npx @hmcts/dev-env@latest && ./bin/setup-devuser-preview-env.sh ccdBranchName camundaBranchName generalAppCCDBranch dmnBranch waStandaloneBranch
 ```
-
 Once the pods are up and running you can connect to them using a plugin called Mirrord on Intellij or VSCode.
 https://mirrord.dev
 
