@@ -15,8 +15,7 @@
   {% else %}
     {% set title = t('PAGES.CLAIMANT_RESPONSE_REJECTION_REASON.TITLE') %}
   {% endif %}
-  <div class="govuk-width-container">
-    <main class="govuk-main-wrapper" role="main">
+
       {% set errors = form.getErrors() %}
       {% if form.hasErrors() %}
         {{ errorSummary(errors, t) }}
@@ -54,6 +53,5 @@
           </form>
         </div>
       </div>
-    </main>
-  </div>
+
 {% endblock %}

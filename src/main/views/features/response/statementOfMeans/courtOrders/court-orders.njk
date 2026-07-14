@@ -13,8 +13,7 @@
 {% endblock %}
 
 {% block content %}
-  <div class="govuk-width-container">
-    <main class="govuk-main-wrapper" role="main">
+
       {% set errors = form.getAllErrors() %}
       {% set declaredError = form.errorFor('declared') %}
       {% set atLeastOneCourtOrderError = form.errorFor('rows') %}
@@ -100,6 +99,5 @@
           {{ contactUsForHelp(t) }}
         </div>
       </div>
-    </main>
-  </div>
+
 {% endblock %}

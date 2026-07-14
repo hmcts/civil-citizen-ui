@@ -15,8 +15,7 @@
 {% endblock %}
 
 {% block content %}
-  <div class="govuk-width-container">
-    <main class="govuk-main-wrapper" role="main">
+
       {% set errors = form.getAllErrors() %}
       {% if errors.length > 0 %}
         {{ errorSummary(errors, t) }}
@@ -105,6 +104,5 @@
           </form>
         </div>
       </div>
-    </main>
-  </div>
+
 {% endblock %}

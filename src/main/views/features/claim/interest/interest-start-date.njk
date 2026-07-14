@@ -12,8 +12,7 @@
 {% endblock %}
 
 {% block content %}
-  <div class="govuk-width-container">
-    <main class="govuk-main-wrapper" role="main">
+
       {% set errors = form.getErrors() %}
       {% set hasDateError = form.hasFieldError('date') or form.hasFieldError('day') or form.hasFieldError('month') or form.hasFieldError('year') %}
       {% set dateError = form.errorFor('date') or form.errorFor('day') or form.errorFor('month') or form.errorFor('year') %}
@@ -103,6 +102,5 @@
           {{ contactUsForHelp(t) }}
         </div>
       </div>
-    </main>
-  </div>
+
 {% endblock %}

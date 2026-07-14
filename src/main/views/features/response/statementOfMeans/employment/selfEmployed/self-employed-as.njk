@@ -12,8 +12,7 @@
 {% endblock %}
 
 {% block content %}
-  <div class="govuk-width-container">
-    <main class="govuk-main-wrapper" role="main">
+
       {% set title = t('PAGES.SELF_EMPLOYED.TITLE') %}
       {% if form.hasErrors() %}
         {{ errorSummary(form.getErrors(), t) }}
@@ -75,6 +74,5 @@
           </form>
         </div>
       </div>
-    </main>
-  </div>
+
 {% endblock %}

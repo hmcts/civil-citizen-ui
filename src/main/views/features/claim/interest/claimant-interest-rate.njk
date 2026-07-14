@@ -40,8 +40,7 @@
 }) }}
 {% endset %}
 {% block content %}
-  <div class="govuk-width-container">
-    <main class="govuk-main-wrapper" role="main">
+
       {% set optionError = form.errorFor("sameRateInterestType") %}
       {% if form.hasErrors() %}
         <div class="govuk-grid-row">
@@ -86,6 +85,5 @@
           </div>
         </div>
       </div>
-    </main>
-  </div>
+
 {% endblock %}

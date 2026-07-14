@@ -13,8 +13,7 @@
 {% endblock %}
 
 {% block content %}
-  <div class="govuk-width-container">
-    <main class="govuk-main-wrapper" role="main">
+
       {% set dateToday = "now" | addDaysTranslated(0, t) %}
       {% set title = t('PAGES.PARTIAL_ADMISSION_HOW_MUCH_HAVE_YOU_PAID.TITLE') %}
       {% if responseType==="FULL_DEFENCE" %}
@@ -148,6 +147,5 @@
           </form>
         </div>
       </div>
-    </main>
-  </div>
+
 {% endblock %}

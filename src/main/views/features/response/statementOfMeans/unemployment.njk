@@ -15,8 +15,7 @@
 {% set subtitle = t('PAGES.UNEMPLOYMENT.DESCRIPTION') %}
 
 {% block content %}
-  <div class="govuk-width-container">
-    <main class="govuk-main-wrapper" role="main">
+
       {% set optionError = t(form.errorFor("option")) %}
       {% set otherDetailsNestedError = t(form.errorFor('otherDetails[details]')) %}
       {% set yearNestedError = t(form.errorFor('unemploymentDetails[years]')) %}
@@ -108,6 +107,5 @@
           </form>
         </div>
       </div>
-    </main>
-  </div>
+
 {% endblock %}

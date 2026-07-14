@@ -12,8 +12,7 @@
 {% endblock %}
 
 {% block content %}
-  <div class="govuk-width-container">
-    <main class="govuk-main-wrapper" role="main">
+
       {% set title = t('PAGES.MEDIATION_CAN_WE_USE.CONFIRM_YOUR_NUMBER') %}
       {% set titleEnterPhone = t('PAGES.MEDIATION_CAN_WE_USE.ENTER_PHONE_NUMBER') %}
       {% set pText = t('PAGES.MEDIATION_CAN_WE_USE.CAN_MEDIATION_USE', {respondentTelNumber: respondentTelNumber}) %}
@@ -66,6 +65,5 @@
           </div>
         </form>
       </div>
-    </main>
-  </div>
+
 {% endblock %}
