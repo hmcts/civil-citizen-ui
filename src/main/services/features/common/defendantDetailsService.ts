@@ -22,7 +22,7 @@ export const saveDefendantProperty = async (userId: string, propertyName: string
       claimant[propertyName as keyof Party] = value;
       claim.respondent1 = claimant;
     }
-    await saveDraftClaim(userId, claim);
+    await saveDraftClaim(userId, claim, false, userId);
   } catch (error) {
     logger.error(error);
     throw error;
