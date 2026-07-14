@@ -73,8 +73,10 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
       await updateFieldDraftClaimFromStore(claimId, <AppRequest>req, 'respondentSolicitor1EmailAddress', claim?.respondentSolicitor1EmailAddress);
       await updateFieldDraftClaimFromStore(claimId, <AppRequest>req, 'specRespondent1Represented', claim.specRespondent1Represented);
     }
+    const totalAmountWithInterestAndFees = (await getTotalAmountWithInterestAndFees(claim)).toString();
+    const breathingSpaceEnabled = await isBreathingSpaceEnabled();
     // Hardcoded BS data for testing Exit flow (as per requirements)
-    if (!claim.breathingSpace) {
+    if (breathingSpaceEnabled && !claim.breathingSpace && (claimId === 'BS_EXIT_TEST' || req.query.bsTest === 'true')) {
       claim.breathingSpace = {
         enter: {
           start: new Date('2026-07-01'),
@@ -82,7 +84,6 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
         },
       };
     }
-    const totalAmountWithInterestAndFees = (await getTotalAmountWithInterestAndFees(claim)).toString();
     const carmEnabled = await isCarmEnabledForCase(claim.submittedDate);
     const isCarmApplicable = isCarmApplicableAndSmallClaim(carmEnabled, claim);
     const dashboardNotifications = await getNotifications(dashboardId, claim, totalAmountWithInterestAndFees, caseRole, req, lng);
@@ -91,7 +92,6 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
     const isQMFlagEnabled = await isQueryManagementEnabled(claim.submittedDate);
     const dashboard = await getDashboardForm(caseRole, claim, totalAmountWithInterestAndFees, dashboardId, req, isCarmApplicable, isGAFlagEnable);
     const judgmentBufferEnabled = await isJudgmentBufferEnabled();
-    const breathingSpaceEnabled = await isBreathingSpaceEnabled();
     const [iWantToTitle, iWantToLinks, helpSupportTitle, helpSupportLinks]
       = await getSupportLinks(req, claim, claimId, lng, isGAFlagEnable, false, judgmentBufferEnabled, breathingSpaceEnabled);
     const hearing = dashboard?.items[2]?.tasks ? dashboard?.items[2]?.tasks : [];
