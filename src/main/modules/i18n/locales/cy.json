@@ -5882,6 +5882,7 @@
     "VALID_CLAIM_INTEREST_FROM": "Dewiswch o ba bryd rydych chi’n hawlio llog?",
     "VALID_CLAIM_INTEREST_END_DATE": "Dewiswch pryd rydych chi am roi'r gorau i hawlio llog",
     "VALID_CLAIM_NUMBER": "Nodwch rif yr hawliad",
+    "VALID_CLAIM_NUMBER_ALPHANUMERIC": "Nodwch rif hawliad gan ddefnyddio llythrennau a rhifau yn unig",
     "VALID_CLAIM_REFERENCE_NUMBER": "Rhowch eich rhif hawliad dilys o'r llythyr neu'r e-bost wnaethom ei anfon atoch - dylai gynnwys 3 rhif yna'r llythrennau MC, JE, JF, JG neu JH, yna 3 rhif, er enghraifft 305JE126",
     "VALID_DATE": "Rhowch ddyddiad dilys",
     "VALID_DATE_IN_PAST": "Nodwch ddyddiad cyn {{dateToday}}",

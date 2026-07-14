@@ -1,5 +1,5 @@
-import {app} from '../../app';
-import {calculateExpireTimeForDraftClaimInSeconds} from 'common/utils/dateUtils';
+import {TTLCategory} from './ttlConfig';
+import {writeWithTTL} from './redisWriteHelper';
 
 const draftClaim: { id: string, case_data?: CaseData } = {
   id: '',
@@ -126,17 +126,14 @@ const saveDraftClaimToCache = async (userId: string, apiData = case_data, isCarm
       phone: '07800000000',
     };
   }
+  const creationTime = new Date();
   const claimToSave = draftClaim;
   claimToSave.case_data = apiData;
   claimToSave.id = userId;
   claimToSave.case_data.id = userId;
-  claimToSave.case_data.draftClaimCreatedAt = new Date().toISOString();
+  claimToSave.case_data.draftClaimCreatedAt = creationTime.toISOString();
 
-  await app.locals.draftStoreClient.set(userId, JSON.stringify(claimToSave));
-  await app.locals.draftStoreClient.expireat(
-    userId,
-    calculateExpireTimeForDraftClaimInSeconds(new Date()),
-  );
+  await writeWithTTL(userId, claimToSave, TTLCategory.DRAFT_CLAIM, {creationDate: creationTime});
 };
 
 export { saveDraftClaimToCache, draftClaim };
