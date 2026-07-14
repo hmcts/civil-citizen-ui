@@ -21,7 +21,6 @@ checkAnswersController.get(EXIT_BREATHING_SPACE_CHECK_ANSWERS_URL, (async (req: 
     const draftClaim = await getCaseDataFromStore(claimId);
 
     const liftInfo = draftClaim.breathingSpace?.lift;
-    const bsType = claim.breathingSpace?.enter?.type;
 
     const sections: SummarySection[] = [
       summarySection({

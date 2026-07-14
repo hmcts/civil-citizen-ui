@@ -36,6 +36,7 @@ import {YesNoUpperCamelCase} from 'form/models/yesNo';
 import {getViewMessagesLink} from 'services/features/queryManagement/viewMessagesService';
 import {getTotalAmountWithInterestAndFees} from 'modules/claimDetailsService';
 import {getRouteParam} from 'common/utils/routeParamUtils';
+import {BreathingSpaceType} from 'models/breathingSpace/breathingSpace';
 
 const claimantDashboardViewPath = 'features/dashboard/claim-summary-redesign';
 const claimantDashboardController = Router();
@@ -71,6 +72,15 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
       }
       await updateFieldDraftClaimFromStore(claimId, <AppRequest>req, 'respondentSolicitor1EmailAddress', claim?.respondentSolicitor1EmailAddress);
       await updateFieldDraftClaimFromStore(claimId, <AppRequest>req, 'specRespondent1Represented', claim.specRespondent1Represented);
+    }
+    // Hardcoded BS data for testing Exit flow (as per requirements)
+    if (!claim.breathingSpace) {
+      claim.breathingSpace = {
+        enter: {
+          start: new Date('2026-07-01'),
+          type: BreathingSpaceType.STANDARD,
+        },
+      };
     }
     const totalAmountWithInterestAndFees = (await getTotalAmountWithInterestAndFees(claim)).toString();
     const carmEnabled = await isCarmEnabledForCase(claim.submittedDate);

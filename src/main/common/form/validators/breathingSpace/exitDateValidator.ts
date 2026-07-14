@@ -1,5 +1,5 @@
 import {ValidatorConstraint, ValidatorConstraintInterface, ValidationArguments} from 'class-validator';
-import {BreathingSpaceType} from '../../models/breathingSpace/breathingSpace';
+import {BreathingSpaceType} from '../../../models/breathingSpace/breathingSpace';
 
 @ValidatorConstraint({name: 'exitDateValidator', async: false})
 export class ExitDateValidator implements ValidatorConstraintInterface {
