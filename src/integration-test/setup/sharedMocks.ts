@@ -8,6 +8,7 @@ const launchDarklyClientMock = {
   isQueryManagementEnabled: jest.fn().mockResolvedValue(false),
   isWelshEnabledForMainCase: jest.fn().mockResolvedValue(false),
   isJudgmentBufferEnabled: jest.fn().mockResolvedValue(false),
+  isBreathingSpaceEnabled: jest.fn().mockResolvedValue(false),
 };
 
 jest.mock('express-async-errors', () => ({}), {virtual: true});
@@ -30,6 +31,7 @@ export const civilServiceClientMock = {
   submitDefendantResponseEvent: jest.fn(),
   submitClaimantResponseEvent: jest.fn(),
   calculateExtendedResponseDeadline: jest.fn(),
+  calculateClaimInterest: jest.fn().mockResolvedValue(0),
   submitEvent: jest.fn(),
   recordClick: jest.fn().mockResolvedValue(undefined),
 };
@@ -72,6 +74,7 @@ export const generalApplicationServiceMock = {
   validateAdditionalApplicationtType: jest.fn(),
   getDynamicHeaderForMultipleApplications: jest.fn(() => 'Application 1'),
   saveRespondentAgreement: jest.fn().mockResolvedValue(undefined),
+  getViewAllApplicationLink: jest.fn().mockResolvedValue(undefined),
 };
 
 export const feeDetailsServiceMock = {
@@ -96,6 +99,22 @@ export const checkAnswersResponseServiceMock = {
 
 export const submitApplicationResponseServiceMock = {
   submitApplicationResponse: jest.fn().mockResolvedValue(undefined),
+};
+
+export const viewMessagesServiceMock = {
+  getViewMessagesLink: jest.fn().mockImplementation(async (req, claim, lng) => {
+    const {t} = require('i18next');
+    const {constructResponseUrlWithIdParams} = require('common/utils/urlFormatter');
+    const {getRouteParam} = require('common/utils/routeParamUtils');
+    const {QM_VIEW_QUERY_URL} = require('routes/urls');
+    if (claim?.queries?.caseMessages?.length > 0) {
+      return {
+        text: t('PAGES.DASHBOARD.SUPPORT_LINKS.VIEW_ALL_MESSAGES', {lng}),
+        url: constructResponseUrlWithIdParams(getRouteParam(req, 'id'), QM_VIEW_QUERY_URL),
+      };
+    }
+    return undefined;
+  }),
 };
 
 export const gaFeePaymentServiceMock = {
@@ -163,7 +182,11 @@ jest.mock('client/gaServiceClient', () => ({
   GaServiceClient: jest.fn().mockImplementation(() => gaServiceClientMock),
 }));
 
+jest.mock('services/features/generalApplication/generalApplicationService', () => generalApplicationServiceMock);
+
 jest.mock('services/features/feePayment/feePaymentService', () => paymentServiceMock);
+
+jest.mock('services/features/queryManagement/viewMessagesService', () => viewMessagesServiceMock);
 
 jest.mock('client/dmStoreClient', () => ({
   DmStoreClient: jest.fn().mockImplementation(() => dmStoreClientMock),

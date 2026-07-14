@@ -73,7 +73,7 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
       await updateFieldDraftClaimFromStore(claimId, <AppRequest>req, 'respondentSolicitor1EmailAddress', claim?.respondentSolicitor1EmailAddress);
       await updateFieldDraftClaimFromStore(claimId, <AppRequest>req, 'specRespondent1Represented', claim.specRespondent1Represented);
     }
-    const totalAmountWithInterestAndFees = (await getTotalAmountWithInterestAndFees(claim)).toString();
+    const totalAmountWithInterestAndFees = (await getTotalAmountWithInterestAndFees(claim))?.toString() || '0';
     const breathingSpaceEnabled = await isBreathingSpaceEnabled();
     // Hardcoded BS data for testing Exit flow (as per requirements)
     if (breathingSpaceEnabled && (claimId === 'BS_EXIT_TEST' || req.query.bsTest === 'true')) {
