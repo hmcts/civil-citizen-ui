@@ -89,6 +89,7 @@ import { RespondentGaAppDetail } from './generalApplication/response/respondentG
 import {ClaimGeneralApplication} from 'models/generalApplication/claimGeneralApplication';
 import {QueryManagement} from 'form/models/queryManagement/queryManagement';
 import {CaseQueries} from 'models/queryManagement/caseQueries';
+import {BreathingSpace} from 'models/breathingSpace/breathingSpace';
 
 export class Claim {
   resolvingDispute: boolean;
@@ -199,6 +200,7 @@ export class Claim {
   refreshDataForDJ?: boolean = true;
   queryManagement?: QueryManagement;
   queries?: CaseQueries;
+  breathingSpace?: BreathingSpace;
   previousCCDState?: string;
   preTranslationDocumentType?: PreTranslationDocumentType;
 

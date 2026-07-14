@@ -72,6 +72,7 @@ webChat:
     buttonContainerId: WEB_CHAT_MEDIATION_BUTTON_ID
 featureToggles:
   settlementAgreementEnabled: SETTLEMENT_AGREEMENT_ENABLED
+  breathingSpaceEnabled: BREATHING_SPACE_ENABLED
 cookieMaxAge:
   __name: SESSION_COOKIE_MAX_AGE
   __format: number

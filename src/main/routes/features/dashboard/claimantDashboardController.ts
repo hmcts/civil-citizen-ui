@@ -3,6 +3,7 @@ import {
   BREATHING_SPACE_INFO_URL,
   DASHBOARD_CLAIMANT_URL,
   DATE_PAID_URL,
+  EXIT_BREATHING_SPACE_URL,
 } from '../../urls';
 import {
   extractOrderDocumentIdFromNotification,
@@ -23,6 +24,7 @@ import {
   isGaForLipsEnabled,
   isQueryManagementEnabled, isWelshEnabledForMainCase,
   isJudgmentBufferEnabled,
+  isBreathingSpaceEnabled,
 } from '../../../app/auth/launchdarkly/launchDarklyClient';
 import {t} from 'i18next';
 import {isCarmApplicableAndSmallClaim} from 'common/utils/carmToggleUtils';
@@ -79,8 +81,9 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
     const isQMFlagEnabled = await isQueryManagementEnabled(claim.submittedDate);
     const dashboard = await getDashboardForm(caseRole, claim, totalAmountWithInterestAndFees, dashboardId, req, isCarmApplicable, isGAFlagEnable);
     const judgmentBufferEnabled = await isJudgmentBufferEnabled();
+    const breathingSpaceEnabled = await isBreathingSpaceEnabled();
     const [iWantToTitle, iWantToLinks, helpSupportTitle, helpSupportLinks]
-      = await getSupportLinks(req, claim, claimId, lng, isGAFlagEnable, false, judgmentBufferEnabled);
+      = await getSupportLinks(req, claim, claimId, lng, isGAFlagEnable, false, judgmentBufferEnabled, breathingSpaceEnabled);
     const hearing = dashboard?.items[2]?.tasks ? dashboard?.items[2]?.tasks : [];
     hearing.forEach((task) => {
       if (task.taskNameEn.search(HearingUploadDocuments)>0){
@@ -114,7 +117,7 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
   }
 }) as RequestHandler);
 
-const getSupportLinks = async (req: AppRequest, claim: Claim, claimId: string, lng: string, isGAFlagEnable: boolean, isGAlinkEnabled = false, judgmentBufferEnabled = false) => {
+const getSupportLinks = async (req: AppRequest, claim: Claim, claimId: string, lng: string, isGAFlagEnable: boolean, isGAlinkEnabled = false, judgmentBufferEnabled = false, breathingSpaceEnabled = false) => {
   const isAwaitingDefendantResponse = claim.isAwaitingDefendantResponse(judgmentBufferEnabled);
   const showTellUsEndedLink = isAwaitingDefendantResponse ||
     claim.ccdState === CaseState.AWAITING_APPLICANT_INTENTION ||
@@ -148,10 +151,14 @@ const getSupportLinks = async (req: AppRequest, claim: Claim, claimId: string, l
   if(viewAllApplicationLink) {
     iWantToLinks.push(viewAllApplicationLink);
   }
+  const isClaimInBreathingSpace = claim.breathingSpace?.enter?.start && !claim.breathingSpace?.lift?.actualEnd;
+
   if (showTellUsEndedLink) {
     iWantToLinks.push({ text: t('PAGES.DASHBOARD.SUPPORT_LINKS.TELL_US_SETTLED', { lng }), url: constructResponseUrlWithIdParams(claimId, DATE_PAID_URL) });
   }
-  if ((showGetDebtRespiteLink || showGetDebtRespiteLinkCaseProgression) && claim.isClaimant()) {
+  if (breathingSpaceEnabled && isClaimInBreathingSpace && claim.isClaimant()) {
+    iWantToLinks.push({ text: t('PAGES.DASHBOARD.SUPPORT_LINKS.LIFT_DEBT_RESPITE', { lng }), url: constructResponseUrlWithIdParams(claimId, EXIT_BREATHING_SPACE_URL) });
+  } else if ((showGetDebtRespiteLink || showGetDebtRespiteLinkCaseProgression) && claim.isClaimant()) {
     iWantToLinks.push({ text: t('PAGES.DASHBOARD.SUPPORT_LINKS.GET_DEBT_RESPITE', { lng }), url: constructResponseUrlWithIdParams(claimId, BREATHING_SPACE_INFO_URL) });
   }
   if (viewMessages) {

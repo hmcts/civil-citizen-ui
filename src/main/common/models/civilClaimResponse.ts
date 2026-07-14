@@ -92,6 +92,7 @@ import {CCDEvidenceConfirmDetails} from 'models/ccdResponse/ccdEvidenceConfirmDe
 import {CcdStatementOfTruth} from 'models/ccdResponse/ccdStatementOfTruth';
 import {CaseQueries} from 'models/queryManagement/caseQueries';
 import {CcdFixedCosts} from 'models/ccdResponse/ccdFixedCosts';
+import {BreathingSpace} from 'models/breathingSpace/breathingSpace';
 
 export class CivilClaimResponse {
   id: string;
@@ -330,6 +331,7 @@ export interface CCDClaim extends ClaimUpdate {
   uiStatementOfTruth?: CcdStatementOfTruth;
   //Query management
   queries?: CaseQueries;
+  breathingSpace?: BreathingSpace;
   previousCCDState?: string;
   courtOfficersOrders?: FinalOrderDocumentCollection[];
   manageDocuments?: UploadEvidenceElementCCD[];

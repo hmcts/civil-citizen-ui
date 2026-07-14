@@ -559,6 +559,21 @@
     "TITLE_WITH_DEFENDANT": "Defendant documents to be considered"
   },
   "PAGES": {
+    "EXIT_BREATHING_SPACE": {
+      "PAGE_TITLE": "Lift breathing space debt respite",
+      "TITLE": "Lift breathing space debt respite",
+      "END_DATE_LEGEND": "End date",
+      "END_DATE_HINT": "For example, 31 3 2026",
+      "WHY_LIFTED": "Why is breathing space being lifted?",
+      "WHY_LIFTED_HINT": "This is an optional field"
+    },
+    "BREATHING_SPACE_CONFIRMATION": {
+      "PAGE_TITLE": "Breathing space lifted confirmation",
+      "TITLE": "You've lifted breathing space",
+      "PANEL_HTML": "Your case reference number<br><strong>{{ claimId }}</strong>",
+      "WHAT_HAPPENS_NEXT": "What happens next",
+      "NEXT_STEP_1": "The case will now proceed."
+    },
     "QM": {
       "CONFIRMATION_PAGE": {
         "TITLE" : "Message sent",
@@ -2760,6 +2775,7 @@
         "FIND_MEDIATION": "Find out about mediation",
         "FIND_LEGAL_ADVICE": "Find legal advice",
         "GET_DEBT_RESPITE": "Inform the court of a breathing space debt respite",
+        "LIFT_DEBT_RESPITE": "Lift breathing space debt respite",
         "HELP_SUPPORT": "Help and support",
         "HELP_FEES": "Help with fees",
         "I_WANT_TO": "I want to...",
@@ -5486,6 +5502,8 @@
     "SUPPORT_LINKS": "Footer support links"
   },
   "ERRORS": {
+    "BREATHING_SPACE_EXIT_DATE_AFTER_START": "End date must be after start date",
+    "BREATHING_SPACE_EXIT_DATE_NOT_MORE_THAN_60_DAYS": "Standard breathing space cannot last for longer than 60 days",
     "QUERY_MANAGEMENT_YOU_MUST_SELECT": "You must select what you want to do before you can continue.",
     "QUERY_MANAGEMENT_YOU_SELECT_UPDATE_YOU_WANT": "You must select what update you want to get from the court.",
     "QUERY_MANAGEMENT_YOU_MUST_SELECT_SEND_DOCUMENTS": "You must select which documents you want to send.",

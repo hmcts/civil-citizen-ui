@@ -99,6 +99,7 @@ webChat:
     buttonContainerId: '__8x8-chat-button-container-script_202736819566d85c96c386f8.18964185'
 featureToggles:
   settlementAgreementEnabled: false
+  breathingSpaceEnabled: true
 cookieMaxAge: 5400000
 uploadRateLimit:
   enabled: true

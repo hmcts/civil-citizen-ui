@@ -446,6 +446,10 @@ import qmViewQueryDetailsController from 'routes/features/queryManagement/qmView
 import claimantTelephoneMediationController from 'routes/features/mediation/claimantTelephoneMediationController';
 import shareQueryConfirmationController from 'routes/features/queryManagement/shareQueryConfirmationController';
 
+import exitBreathingSpaceController from './features/breathingSpace/exitBreathingSpaceController';
+import breathingSpaceCheckAnswersController from './features/breathingSpace/checkAnswersController';
+import breathingSpaceConfirmationController from './features/breathingSpace/confirmationController';
+
 export default [
   homeController,
   dashboardController,
@@ -805,4 +809,7 @@ export default [
   qmViewQueryDetailsController,
   claimantTelephoneMediationController,
   shareQueryConfirmationController,
+  exitBreathingSpaceController,
+  breathingSpaceCheckAnswersController,
+  breathingSpaceConfirmationController,
 ];

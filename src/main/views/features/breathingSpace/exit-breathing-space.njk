@@ -1,0 +1,98 @@
+{% extends "claim-details-tpl.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/date-input/macro.njk" import govukDateInput %}
+{% from "govuk/components/textarea/macro.njk" import govukTextarea %}
+{% from "../../macro/page-title.njk" import setPageTitle %}
+{% from "../../macro/csrf.njk" import csrfProtection %}
+{% from "../../macro/error-summary.njk" import errorSummary %}
+{% from "../../macro/contact-us-for-help.njk" import contactUsForHelp with context %}
+
+{% set pageTitle = t('PAGES.EXIT_BREATHING_SPACE.PAGE_TITLE') %}
+
+{% block pageTitle %}
+  {{ setPageTitle(t, pageTitle) }}
+{% endblock %}
+
+{% block content %}
+  <div class="govuk-width-container">
+    <main class="govuk-main-wrapper" role="main">
+      <div class="govuk-grid-row">
+        {% if form.hasErrors() %}
+          {{ errorSummary(form.getErrors(), t) }}
+        {% endif %}
+      </div>
+      <div class="govuk-grid-row">
+        <div class="govuk-grid-column-two-thirds">
+          <h1 class="govuk-heading-l">{{ t('PAGES.EXIT_BREATHING_SPACE.TITLE') }}</h1>
+
+          <form method="post" novalidate>
+            {{ csrfProtection(csrf) }}
+
+            {{ govukDateInput({
+              id: "date",
+              namePrefix: "date",
+              fieldset: {
+                legend: {
+                  text: t('PAGES.EXIT_BREATHING_SPACE.END_DATE_LEGEND'),
+                  isPageHeading: false,
+                  classes: "govuk-fieldset__legend--m"
+                }
+              },
+              hint: {
+                text: t('PAGES.EXIT_BREATHING_SPACE.END_DATE_HINT')
+              },
+              errorMessage: form.errorFor('date', t),
+              items: [
+                {
+                  name: "day",
+                  classes: "govuk-input--width-2",
+                  value: form.model.day,
+                  attributes: {
+                    maxLength: 2
+                  }
+                },
+                {
+                  name: "month",
+                  classes: "govuk-input--width-2",
+                  value: form.model.month,
+                  attributes: {
+                    maxLength: 2
+                  }
+                },
+                {
+                  name: "year",
+                  classes: "govuk-input--width-4",
+                  value: form.model.year,
+                  attributes: {
+                    maxLength: 4
+                  }
+                }
+              ]
+            }) }}
+
+            {{ govukTextarea({
+              name: "reason",
+              id: "reason",
+              label: {
+                text: t('PAGES.EXIT_BREATHING_SPACE.WHY_LIFTED'),
+                classes: "govuk-label--m"
+              },
+              hint: {
+                text: t('PAGES.EXIT_BREATHING_SPACE.WHY_LIFTED_HINT')
+              },
+              value: form.model.reason,
+              errorMessage: form.errorFor('reason', t)
+            }) }}
+
+            <div class="govuk-button-group">
+              {{ govukButton({
+                text: t('COMMON.BUTTONS.CONTINUE')
+              }) }}
+            </div>
+          </form>
+          {{ contactUsForHelp(t) }}
+        </div>
+      </div>
+    </main>
+  </div>
+{% endblock %}
