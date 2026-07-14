@@ -15,6 +15,7 @@ const settleClaim1v1Spec = require('../fixtures/events/settleClaim1v1Spec');
 const evidenceUpload = require('../fixtures/events/evidenceUpload');
 const testingSupport = require('./testingSupport');
 const lodash = require('lodash');
+const { dateTime } = require('../../specClaimHelpers/api/dataHelper');
 
 let chai, expect, assert;
 
@@ -33,7 +34,7 @@ let chai, expect, assert;
 
 const {
   waitForFinishedBusinessProcess, waitForGAFinishedBusinessProcess, hearingFeeUnpaid, bundleGeneration, uploadDocument, triggerTrialArrangements,
-  assertEmailSent, assertNoEmailSent,
+  assertEmailSent, assertNoEmailSent, assertEmailSentByReference,
 } = require('./testingSupport');
 const {assignCaseRoleToUser, addUserCaseMapping, unAssignAllUsers} = require('./caseRoleAssignmentHelper');
 const apiRequest = require('./apiRequest.js');
@@ -47,6 +48,9 @@ const claimantResponse = require('../fixtures/events/createClaimantResponseToDef
 const caseProgressionToSDOState = require('../fixtures/events/createCaseProgressionToSDOState');
 const translatedDocUpload = require('../fixtures/events/translatedDocUpload');
 const caseProceedsInCaseman = require('../fixtures/events/caseProceedsInCaseman');
+const settleClaim = require('../fixtures/events/settleClaim');
+const stayCase = require('../fixtures/events/stayCase');
+const manageStay = require('../fixtures/events/manageStay');
 const caseProgressionToHearingInitiated = require('../fixtures/events/createCaseProgressionToHearingInitiated');
 const hwfPayloads = require('../fixtures/events/hwfPayloads.js');
 const {fetchCaseDetails} = require('./apiRequest');
@@ -75,6 +79,7 @@ const data = {
   CREATE_LIP_CLAIM_SOLE_TRADER_V_COMPANY: (user, userId, totalClaimAmount) => createLipClaimSoleTraderVCompany(user, userId, totalClaimAmount),
   CREATE_LIP_CLAIM_IND_V_ORGANISATION: (user, userId, totalClaimAmount) => createLipClaimIndVOrg(user, userId, totalClaimAmount),
   DEFENDANT_RESPONSE: (response, camundaEvent) => require('../fixtures/events/defendantLRResponse').respondToClaim(response, camundaEvent),
+  DEFAULT_JUDGEMENT_SPEC: require('../fixtures/defaultJudgmentSpec'),
   DISCONTINUE_CLAIM: (mpScenario) => discontinueClaimSpec.discontinueClaim(mpScenario),
   SETTLE_CLAIM_MARK_PAID_FULL: () => settleClaim1v1Spec.settleClaim(),
 };
@@ -146,6 +151,13 @@ module.exports = {
     console.log('This is inside assertEmailSent() : ' + caseId);
     const entry = await assertEmailSent(caseId, options);
     console.log('End of assertEmailSent()');
+    return entry;
+  },
+
+  assertEmailSentByReference: async (caseId, options) => {
+    console.log('This is inside assertEmailSentByReference() : ' + caseId);
+    const entry = await assertEmailSentByReference(caseId, options);
+    console.log('End of assertEmailSentByReference()');
     return entry;
   },
 
@@ -347,12 +359,46 @@ module.exports = {
     console.log('End of performLrResponse()');
   },
 
-  amendRespondent1ResponseDeadline: async (user) => {
+  amendRespondent1ResponseDeadline: async (user, date = '2025-11-19T15:59:50') => {
     await apiRequest.setupTokens(user);
     let respondent1deadline ={};
-    respondent1deadline = {'respondent1ResponseDeadline':'2025-11-19T15:59:50'};
+    respondent1deadline = {'respondent1ResponseDeadline': date};
     await testingSupport.updateCaseData(caseId, respondent1deadline);
     console.log('ResponseDeadline updated');
+  },
+
+  amendRespondent1PartyEmail: async (caseId, user, email) => {
+    const response = await apiRequest.fetchCaseDetails(config.adminUser, caseId);
+    const caseData = response.case_data;
+    await apiRequest.setupTokens(user);
+    const caseDataRespondent1 = {
+      respondent1: {
+        ...caseData.respondent1,
+        partyEmail: email,
+      },      
+    };
+    await testingSupport.updateCaseData(caseId, caseDataRespondent1);
+    console.log('respondent1PartyEmail updated');
+  },
+
+  amendApplicantSolicitor1Email: async (caseId, user, applicantSolicitor1Email) => {
+    const response = await apiRequest.fetchCaseDetails(config.adminUser, caseId);
+    const caseData = response.case_data;
+    await apiRequest.setupTokens(user);
+    const caseDataApplicantSolicitor1UserDetails = {
+      applicantSolicitor1UserDetails: {
+        ...caseData.applicantSolicitor1UserDetails,
+        email: applicantSolicitor1Email,
+      },    
+    };
+    await testingSupport.updateCaseData(caseId, caseDataApplicantSolicitor1UserDetails);
+    console.log('applicantSolicitor1Email updated');
+  },
+
+  assertActiveJudgmentDetailsNotPresent: async (caseId) => {
+    const response = await apiRequest.fetchCaseDetails(config.adminUser, caseId);
+    const caseData = response.case_data;
+    expect(caseData).to.not.have.property('activeJudgment');
   },
 
   submitHwfEventForUser: async (event, user = config.ctscAdmin) => {
@@ -796,12 +842,102 @@ module.exports = {
     console.log('End of caseProceedsInCaseman()');
   },
 
+  settleClaimLip: async (user = config.claimantCitizenUser) => {
+    console.log('settleClaimLip for case id ' + caseId);
+    eventName = 'LIP_CLAIM_SETTLED';
+    const payload = settleClaim.lipClaimSettled();
+    await apiRequest.setupTokens(user);
+    await apiRequest.startEventForCitizen(eventName, caseId, payload);
+    await waitForFinishedBusinessProcess(caseId);
+  },
+
+  stayCase: async (user = config.ctscAdmin) => {
+    console.log('stayCase for case id ' + caseId);
+    await apiRequest.setupTokens(user);
+    eventName = 'STAY_CASE';
+    let returnedCaseData = await apiRequest.startEvent(eventName, caseId);
+    delete returnedCaseData['SearchCriteria'];
+    caseData = {...returnedCaseData, ...stayCase.stayCase()};
+    await assertSubmittedSpecEvent('CASE_STAYED');
+    console.log('End of stayCase()');
+  },
+
+  liftStay: async (user = config.ctscAdmin, expectedState = 'AWAITING_RESPONDENT_ACKNOWLEDGEMENT') => {
+    console.log('liftStay for case id ' + caseId);
+    eventName = 'MANAGE_STAY';
+    caseData = manageStay.liftStay();
+    await apiRequest.setupTokens(user);
+    await assertSubmittedSpecEvent(expectedState);
+    console.log('End of liftStay()');
+  },
+
   adjustSubmittedDateForCarm: async (caseId) => {
     console.log('carm not enabled, updating submitted date to past for legacy cases');
     await apiRequest.setupTokens(config.systemUpdate);
     const submittedDate = {'submittedDate':'2024-10-28T15:59:50'};
     await testingSupport.updateCaseData(caseId, submittedDate);
     console.log('submitted date update to before carm date for legacy cases');
+  },
+
+  defaultJudgmentSpec: async (user, judgmentBufferEnabled = true) => {
+    await apiRequest.setupTokens(user);
+
+    let state;
+    let registrationData;
+    eventName = 'DEFAULT_JUDGEMENT_SPEC';
+    let returnedCaseData = await apiRequest.startEvent(eventName, caseId);
+    caseData = returnedCaseData;
+    assertContainsPopulatedFields(returnedCaseData);
+
+    let claimIssuedPBADetails = {
+      claimIssuedPBADetails: {
+        applicantsPbaAccounts: {
+          value: {
+            code: '66b21c60-aed1-11ed-8aa3-494efce63912',
+            label: 'PBAFUNC12345',
+          },
+          list_items: [
+            {
+              code: '66b21c60-aed1-11ed-8aa3-494efce63912',
+              label: 'PBAFUNC12345',
+            },
+            {
+              code: '66b21c61-aed1-11ed-8aa3-494efce63912',
+              label: 'PBA0078095',
+            },
+          ],
+        },
+        fee: {
+          calculatedAmountInPence: '8000',
+          code: 'FEE0205',
+          version: '6',
+        },
+        serviceRequestReference: '2023-1676644996295',
+      },
+    };
+    caseData = update(caseData, claimIssuedPBADetails);
+
+    registrationData = {
+      registrationTypeRespondentOne: [
+        {
+          value: {
+            registrationType: 'R',
+            judgmentDateTime: dateTime(0),
+          },
+          id: '9f30e576-f5b7-444f-8ba9-27dabb21d966',
+        }],
+      registrationTypeRespondentTwo: [],
+    };
+    state = judgmentBufferEnabled ? 'JUDGMENT_REQUESTED' : 'All_FINAL_ORDERS_ISSUED';
+    await validateEventPagesDefaultJudgments(data.DEFAULT_JUDGEMENT_SPEC, 'ONE_V_ONE', false);
+
+    caseData = update(caseData, registrationData);
+    await assertSubmittedEvent(state, {
+      header: '',
+      body: '',
+    }, true);
+
+    await waitForFinishedBusinessProcess(caseId);
   },
 
   uploadMediationDocumentsExui: async (user) => {
@@ -957,6 +1093,14 @@ const assertValidDataSpec = async (data, pageId) => {
   }
 
   caseData = update(caseData, responseBody.data);
+};
+
+const assertContainsPopulatedFields = (returnedCaseData) => {
+  for (let populatedCaseField of Object.keys(caseData)) {
+    if (populatedCaseField !== 'uiStatementOfTruth') {
+      assert.property(returnedCaseData, populatedCaseField);
+    }
+  }
 };
 
 async function updateCaseDataWithPlaceholders(data, document) {
@@ -1128,10 +1272,106 @@ const validateUploadTranslatedDoc = async (translationDocType, targetCaseId = ca
   }
 };
 
-const assertContainsPopulatedFields = returnedCaseData => {
-  for (let populatedCaseField of Object.keys(caseData)) {
-    assert.property(returnedCaseData,  populatedCaseField);
+const validateEventPagesDefaultJudgments = async (data, scenario, isDivergent) => {
+  //transform the data
+  console.log('validateEventPages');
+  for (let pageId of Object.keys(data.userInput)) {
+    await assertValidDataDefaultJudgments(data, pageId, scenario, isDivergent);
   }
+};
+
+const assertValidDataDefaultJudgments = async (data, pageId, scenario, isDivergent) => {
+  console.log(`asserting page: ${pageId} has valid data`);
+  const userData = data.userInput[pageId];
+
+  caseData = update(caseData, userData);
+
+  const response = await apiRequest.validatePage(
+    eventName,
+    pageId,
+    caseData,
+    caseId,
+  );
+  let responseBody = await response.json();
+  responseBody = clearDataForSearchCriteria(responseBody); //Until WA release
+
+  assert.equal(response.status, 200);
+
+  if (pageId === 'defendantDetailsSpec') {
+    delete responseBody.data['registrationTypeRespondentOne'];
+    delete responseBody.data['registrationTypeRespondentTwo'];
+  }
+  const defaultJudgementTotal = responseBody.data.defaultJudgementOverallTotal;
+  if (defaultJudgementTotal !== undefined) {
+    caseData.defaultJudgementOverallTotal = defaultJudgementTotal;
+  } else if (caseData.defaultJudgementOverallTotal !== undefined) {
+    delete caseData.defaultJudgementOverallTotal;
+  }
+
+  if (responseBody.data.repaymentDue !== undefined) {
+    const repaymentAsNumber = Number(responseBody.data.repaymentDue);
+    if (!Number.isNaN(repaymentAsNumber)) {
+      responseBody.data.repaymentDue = repaymentAsNumber.toFixed(2);
+    }
+  }
+  if (pageId === 'paymentConfirmationSpec') {
+    if (scenario === 'ONE_V_ONE' || scenario === 'TWO_V_ONE' || (scenario === 'ONE_V_TWO' && isDivergent)) {
+      responseBody.data.currentDefendantName = 'Sir John Doe';
+    } else {
+      responseBody.data.currentDefendantName = 'both defendants';
+    }
+
+  } else if (pageId === 'paymentSetDate') {
+    responseBody.data.repaymentDue= '1580.00';
+  }
+  if (pageId === 'paymentSetDate' || pageId === 'paymentType') {
+    responseBody.data.currentDatebox = '25 August 2022';
+  }
+  if (pageId === 'claimPartialPayment') {
+    delete responseBody.data['showOldDJFixedCostsScreen'];
+    if (scenario === 'ONE_V_ONE' || scenario === 'TWO_V_ONE' || (scenario === 'ONE_V_TWO' && isDivergent)) {
+      responseBody.data.currentDefendantName = 'Sir John Doe';
+    } else {
+      responseBody.data.currentDefendantName = 'both defendants';
+    }
+  }
+
+  if (pageId === 'fixedCostsOnEntry') {
+    if (scenario === 'ONE_V_ONE' || scenario === 'TWO_V_ONE' || (scenario === 'ONE_V_TWO' && isDivergent)) {
+      responseBody.data.currentDefendantName = 'Sir John Doe';
+    } else {
+      responseBody.data.currentDefendantName = 'both defendants';
+    }
+  }
+
+  try {
+    assert.deepEqual(responseBody.data, caseData);
+  }
+  catch(err) {
+    console.error('Validate data is failed due to a mismatch ..', err);
+    throw err;
+  }
+};
+
+const assertSubmittedEvent = async (expectedState, submittedCallbackResponseContains, hasSubmittedCallback = true) => {
+  await apiRequest.startEvent(eventName, caseId);
+
+  const response = await apiRequest.submitEvent(eventName, caseData, caseId);
+  const responseBody = await response.json();
+  assert.equal(response.status, 201);
+  assert.equal(responseBody.state, expectedState);
+  if (hasSubmittedCallback) {
+    assert.equal(responseBody.callback_response_status_code, 200);
+    assert.include(responseBody.after_submit_callback_response.confirmation_header, submittedCallbackResponseContains.header);
+    if(submittedCallbackResponseContains.body) {
+      assert.include(responseBody.after_submit_callback_response.confirmation_body, submittedCallbackResponseContains.body);
+    }
+  }
+};
+
+const clearDataForSearchCriteria = (responseBody) => {
+  delete responseBody.data['SearchCriteria'];
+  return responseBody;
 };
 
 const waitForTimeout = async (ms) => {
