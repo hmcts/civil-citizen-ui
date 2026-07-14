@@ -559,6 +559,21 @@
     "TITLE_WITH_DEFENDANT": "Dogfennau’r diffynnydd i'w hystyried"
   },
   "PAGES": {
+    "EXIT_BREATHING_SPACE": {
+      "PAGE_TITLE": "Lift breathing space debt respite",
+      "TITLE": "Lift breathing space debt respite",
+      "END_DATE_LEGEND": "End date",
+      "END_DATE_HINT": "For example, 31 3 2026",
+      "WHY_LIFTED": "Why is breathing space being lifted?",
+      "WHY_LIFTED_HINT": "This is an optional field"
+    },
+    "BREATHING_SPACE_CONFIRMATION": {
+      "PAGE_TITLE": "Breathing space lifted confirmation",
+      "TITLE": "You've lifted breathing space",
+      "PANEL_HTML": "Your case reference number<br><strong>{{ claimId }}</strong>",
+      "WHAT_HAPPENS_NEXT": "What happens next",
+      "NEXT_STEP_1": "The case will now proceed."
+    },
     "QM": {
       "CONFIRMATION_PAGE": {
         "TITLE": "Neges wedi’i hanfon",
@@ -2758,6 +2773,7 @@
         "FIND_MEDIATION": "Canfod mwy am gyfryngu",
         "FIND_LEGAL_ADVICE": "Dod o hyd i gyngor cyfreithiol",
         "GET_DEBT_RESPITE": "Hysbysu’r llys am seibiant dyledion lle i anadlu",
+        "LIFT_DEBT_RESPITE": "Lift breathing space debt respite",
         "HELP_SUPPORT": "Cymorth a chefnogaeth",
         "HELP_FEES": "Help i dalu ffioedd",
         "I_WANT_TO": "Rwyf eisiau...",
@@ -5485,6 +5501,8 @@
     "SUPPORT_LINKS": "Footer support links"
   },
   "ERRORS": {
+    "BREATHING_SPACE_EXIT_DATE_AFTER_START": "End date must be after start date",
+    "BREATHING_SPACE_EXIT_DATE_NOT_MORE_THAN_60_DAYS": "Standard breathing space cannot last for longer than 60 days",
     "QUERY_MANAGEMENT_YOU_MUST_SELECT": "Mae'n rhaid i chi ddewis beth rydych chi am ei wneud cyn y gallwch chi barhau.",
     "QUERY_MANAGEMENT_YOU_SELECT_UPDATE_YOU_WANT": "Rhaid ichi ddewis pa ddiweddariad rydych eisiau ei dderbyn gan y llys.",
     "QUERY_MANAGEMENT_YOU_MUST_SELECT_SEND_DOCUMENTS": "Mae’n rhaid i chi ddewis pa ddogfennau rydych eisiau eu hanfon.",
