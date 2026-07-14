@@ -47,7 +47,10 @@ nodejs:
     REDIS_HOST: 'civil-citizen-ui-draft-store-{{ .Values.global.environment }}.redis.cache.windows.net'
     REDIS_PORT: 6380
     REDIS_TLS: true
-    REDIS_EXPIRE_IN_DAYS: 180
+    REDIS_DRAFT_CLAIM_EXPIRE_IN_DAYS: 180
+    REDIS_JOURNEY_CACHE_EXPIRE_IN_DAYS: 180
+    REDIS_PAYMENT_SESSION_EXPIRE_IN_DAYS: 7
+    REDIS_GA_JOURNEY_EXPIRE_IN_DAYS: 180
     SECURE_COOKIE: 'true'
     CIVIL_SERVICE_URL: http://civil-service-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
     ALLOW_CONFIG_MUTATIONS: true
