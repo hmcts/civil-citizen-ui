@@ -13,7 +13,7 @@ def product = "civil"
 def component = "citizen-ui"
 @groovy.transform.Field
 def camundaBranch = "master"
-def dmnBranch = "master"
+def dmnBranch = "DTSCCI-5827-rename-wa-task"
 def waStandaloneBranch = "master"
 AppPipelineConfig pipelineConf
 
@@ -79,7 +79,7 @@ def getCivilCcdDefinitionBranch() {
   for (label in githubApi.getLabelsbyPattern(env.BRANCH_NAME, "civilDefinitionBranch:")) {
     return label.minus("civilDefinitionBranch:").trim()
   }
-  return "master"
+  return "DTSCCI-5827-rename-translating-final-order-option"
 }
 
 def getCivilServicePr() {
