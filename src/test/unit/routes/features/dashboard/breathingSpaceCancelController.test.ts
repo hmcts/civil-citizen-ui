@@ -16,7 +16,7 @@ import {
   DASHBOARD_CLAIMANT_URL,
 } from 'routes/urls';
 import {BreathingSpaceType} from 'models/breathingSpace/breathingSpaceType';
-import {BreathingSpaceTypeAndReference} from 'models/breathingSpace/breathingSpaceTypeAndReference';
+import {BreathingSpaceEnterDraft} from 'models/breathingSpace/breathingSpaceEnterDraft';
 import {YesNo} from 'form/models/yesNo';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 
@@ -44,7 +44,7 @@ describe('Breathing Space Cancel Controller', () => {
   beforeEach(() => {
     jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('redis-key');
     jest.spyOn(draftStoreService, 'getCaseDataFromStore').mockResolvedValue(Object.assign(new Claim(), claim.case_data, {
-      breathingSpaceTypeAndReference: new BreathingSpaceTypeAndReference(BreathingSpaceType.STANDARD, 'REF123'),
+      breathingSpaceEnterDraft: new BreathingSpaceEnterDraft(BreathingSpaceType.STANDARD, 'REF123'),
     }));
     jest.spyOn(draftStoreService, 'saveDraftClaim').mockResolvedValue();
     jest.spyOn(draftStoreService, 'deleteFieldDraftClaimFromStore').mockResolvedValue();
@@ -61,9 +61,9 @@ describe('Breathing Space Cancel Controller', () => {
       .get(BREATHING_SPACE_CANCEL_URL)
       .expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain('Cancel breathing space entry');
-        expect(res.text).toContain('If you cancel, you will lose all unsubmitted information.');
-        expect(res.text).toContain('Are you sure you want to cancel?');
+        expect(res.text).toContain('Are you sure you want to exit this journey?');
+        expect(res.text).toContain('All answers will be lost, and breathing space will not be applied');
+        expect(res.text).toContain('Continue');
       });
   });
 
@@ -105,7 +105,7 @@ describe('Breathing Space Cancel Controller', () => {
         expect(draftStoreService.deleteFieldDraftClaimFromStore).toHaveBeenCalledWith(
           'redis-key',
           expect.any(Object),
-          'breathingSpaceTypeAndReference',
+          'breathingSpaceEnterDraft',
         );
       });
   });

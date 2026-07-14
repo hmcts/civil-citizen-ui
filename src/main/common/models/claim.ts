@@ -89,7 +89,7 @@ import { RespondentGaAppDetail } from './generalApplication/response/respondentG
 import {ClaimGeneralApplication} from 'models/generalApplication/claimGeneralApplication';
 import {QueryManagement} from 'form/models/queryManagement/queryManagement';
 import {CaseQueries} from 'models/queryManagement/caseQueries';
-import {BreathingSpaceTypeAndReference} from 'models/breathingSpace/breathingSpaceTypeAndReference';
+import {BreathingSpaceEnterDraft} from 'models/breathingSpace/breathingSpaceEnterDraft';
 
 export class Claim {
   resolvingDispute: boolean;
@@ -202,7 +202,7 @@ export class Claim {
   queries?: CaseQueries;
   previousCCDState?: string;
   preTranslationDocumentType?: PreTranslationDocumentType;
-  breathingSpaceTypeAndReference?: BreathingSpaceTypeAndReference;
+  breathingSpaceEnterDraft?: BreathingSpaceEnterDraft;
 
   // Index signature to allow dynamic property access
   [key: string]: any;

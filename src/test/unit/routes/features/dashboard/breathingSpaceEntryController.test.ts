@@ -17,7 +17,7 @@ import {
   BREATHING_SPACE_START_DATE_URL,
 } from 'routes/urls';
 import {BreathingSpaceType} from 'models/breathingSpace/breathingSpaceType';
-import {BreathingSpaceTypeAndReference} from 'models/breathingSpace/breathingSpaceTypeAndReference';
+import {BreathingSpaceEnterDraft} from 'models/breathingSpace/breathingSpaceEnterDraft';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 
 jest.mock('../../../../../main/modules/oidc');
@@ -65,7 +65,7 @@ describe('Breathing Space Entry Controller', () => {
         expect(res.text).toContain('Reference number (optional)');
         expect(res.text).toContain('You can find this on the notification you received from the Insolvency Service');
         expect(res.text).toContain('Continue');
-        expect(res.text).toContain('Previous');
+        expect(res.text).not.toContain('Previous');
         expect(res.text).toContain('Cancel');
         expect(res.text).toContain(BREATHING_SPACE_INFO_URL);
         expect(res.text).toContain(BREATHING_SPACE_CANCEL_URL);
@@ -74,7 +74,7 @@ describe('Breathing Space Entry Controller', () => {
 
   it('should pre-fill form from claim on get', async () => {
     const caseData = Object.assign(new Claim(), claim.case_data, {
-      breathingSpaceTypeAndReference: new BreathingSpaceTypeAndReference(BreathingSpaceType.STANDARD, 'REF123'),
+      breathingSpaceEnterDraft: new BreathingSpaceEnterDraft(BreathingSpaceType.STANDARD, 'REF123'),
     });
     (getClaimById as jest.Mock).mockResolvedValueOnce(caseData);
     await request(app)
@@ -128,7 +128,7 @@ describe('Breathing Space Entry Controller', () => {
       })
       .expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain('Enter a 16-digit reference number');
+        expect(res.text).toContain('Reference number cannot exceed 16-digits');
         expect(draftStoreService.saveDraftClaim).not.toHaveBeenCalled();
       });
   });

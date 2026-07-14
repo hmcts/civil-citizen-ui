@@ -16,10 +16,18 @@ import {
   BREATHING_SPACE_START_DATE_URL,
 } from 'routes/urls';
 import {BreathingSpaceType} from 'models/breathingSpace/breathingSpaceType';
-import {BreathingSpaceTypeAndReference} from 'models/breathingSpace/breathingSpaceTypeAndReference';
+import {BreathingSpaceEnterDraft} from 'models/breathingSpace/breathingSpaceEnterDraft';
+import * as breathingSpaceEntryService from 'services/features/dashboard/breathingSpaceEntryService';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
+jest.mock('services/features/dashboard/breathingSpaceEntryService', () => {
+  const actual = jest.requireActual('services/features/dashboard/breathingSpaceEntryService');
+  return {
+    ...actual,
+    saveBreathingSpaceStartDate: jest.fn(),
+  };
+});
 
 jest.mock('modules/utilityService', () => ({
   getClaimById: jest.fn(),
@@ -44,11 +52,11 @@ describe('Breathing Space Start Date Controller', () => {
   });
 
   const claimWithStandardType = () => Object.assign(new Claim(), claim.case_data, {
-    breathingSpaceTypeAndReference: new BreathingSpaceTypeAndReference(BreathingSpaceType.STANDARD, 'REF123'),
+    breathingSpaceEnterDraft: new BreathingSpaceEnterDraft(BreathingSpaceType.STANDARD, 'REF123'),
   });
 
   const claimWithMentalHealthType = () => Object.assign(new Claim(), claim.case_data, {
-    breathingSpaceTypeAndReference: new BreathingSpaceTypeAndReference(BreathingSpaceType.MENTAL_HEALTH, 'REF123'),
+    breathingSpaceEnterDraft: new BreathingSpaceEnterDraft(BreathingSpaceType.MENTAL_HEALTH, 'REF123'),
   });
 
   it('should show standard intro when standard type is selected', async () => {
@@ -64,7 +72,7 @@ describe('Breathing Space Start Date Controller', () => {
         expect(res.text).toContain('When did breathing space start? (optional)');
         expect(res.text).toContain('Enter the date it started, not the date you received the notification.');
         expect(res.text).toContain('Continue');
-        expect(res.text).toContain('Previous');
+        expect(res.text).not.toContain('Previous');
         expect(res.text).toContain('Cancel');
         expect(res.text).toContain(BREATHING_SPACE_ENTER_URL);
         expect(res.text).toContain(BREATHING_SPACE_CANCEL_URL);
@@ -83,8 +91,10 @@ describe('Breathing Space Start Date Controller', () => {
       });
   });
 
-  it('should accept blank optional start date', async () => {
+  it('should save blank optional start date as today with expected end for standard type', async () => {
     (getClaimById as jest.Mock).mockResolvedValueOnce(claimWithStandardType());
+    (breathingSpaceEntryService.saveBreathingSpaceStartDate as jest.Mock).mockResolvedValueOnce(undefined);
+    const today = new Date();
     await request(app)
       .post(BREATHING_SPACE_START_DATE_URL)
       .send({
@@ -95,14 +105,38 @@ describe('Breathing Space Start Date Controller', () => {
       .expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain('Breathing space start date');
+        expect(res.text).toContain(`value="${today.getDate()}"`);
+        expect(res.text).toContain(`value="${today.getMonth() + 1}"`);
+        expect(res.text).toContain(`value="${today.getFullYear()}"`);
         expect(res.text).not.toContain('Start date must be a real date');
-        expect(res.text).not.toContain('Start date must include a');
-        expect(res.text).not.toContain('Start date cannot be in the future');
+        expect(breathingSpaceEntryService.saveBreathingSpaceStartDate).toHaveBeenCalled();
+        const [, start, expectedEnd] = (breathingSpaceEntryService.saveBreathingSpaceStartDate as jest.Mock).mock.calls[0];
+        expect(start.getDate()).toBe(today.getDate());
+        expect(expectedEnd).toEqual(new Date(start.getFullYear(), start.getMonth(), start.getDate() + 60));
       });
   });
 
-  it('should accept a valid past start date', async () => {
+  it('should save blank start date with null expected end for mental health type', async () => {
+    (getClaimById as jest.Mock).mockResolvedValueOnce(claimWithMentalHealthType());
+    (breathingSpaceEntryService.saveBreathingSpaceStartDate as jest.Mock).mockResolvedValueOnce(undefined);
+    await request(app)
+      .post(BREATHING_SPACE_START_DATE_URL)
+      .send({
+        day: '',
+        month: '',
+        year: '',
+      })
+      .expect((res) => {
+        expect(res.status).toBe(200);
+        expect(breathingSpaceEntryService.saveBreathingSpaceStartDate).toHaveBeenCalled();
+        const [, , expectedEnd] = (breathingSpaceEntryService.saveBreathingSpaceStartDate as jest.Mock).mock.calls[0];
+        expect(expectedEnd).toBeNull();
+      });
+  });
+
+  it('should accept a valid past start date and save it', async () => {
     (getClaimById as jest.Mock).mockResolvedValueOnce(claimWithStandardType());
+    (breathingSpaceEntryService.saveBreathingSpaceStartDate as jest.Mock).mockResolvedValueOnce(undefined);
     await request(app)
       .post(BREATHING_SPACE_START_DATE_URL)
       .send({
@@ -118,6 +152,7 @@ describe('Breathing Space Start Date Controller', () => {
         expect(res.text).toContain('value="2024"');
         expect(res.text).not.toContain('Start date must be a real date');
         expect(res.text).not.toContain('Start date cannot be in the future');
+        expect(breathingSpaceEntryService.saveBreathingSpaceStartDate).toHaveBeenCalled();
       });
   });
 
@@ -133,6 +168,7 @@ describe('Breathing Space Start Date Controller', () => {
       .expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain('Start date must be a real date');
+        expect(breathingSpaceEntryService.saveBreathingSpaceStartDate).not.toHaveBeenCalled();
       });
   });
 
@@ -148,6 +184,7 @@ describe('Breathing Space Start Date Controller', () => {
       .expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain('Start date must include a year');
+        expect(breathingSpaceEntryService.saveBreathingSpaceStartDate).not.toHaveBeenCalled();
       });
   });
 
@@ -165,6 +202,7 @@ describe('Breathing Space Start Date Controller', () => {
       .expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain('Start date cannot be in the future');
+        expect(breathingSpaceEntryService.saveBreathingSpaceStartDate).not.toHaveBeenCalled();
       });
   });
 });

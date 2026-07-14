@@ -10,18 +10,18 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {getClaimById} from 'modules/utilityService';
 import {getRouteParam} from 'common/utils/routeParamUtils';
 import {GenericForm} from 'form/models/genericForm';
-import {BreathingSpaceTypeAndReference} from 'models/breathingSpace/breathingSpaceTypeAndReference';
+import {BreathingSpaceEnterDraft} from 'models/breathingSpace/breathingSpaceEnterDraft';
 import {BreathingSpaceType} from 'models/breathingSpace/breathingSpaceType';
 import {
-  getBreathingSpaceTypeAndReferenceForm,
-  saveBreathingSpaceTypeAndReference,
+  getBreathingSpaceEnterDraftForm,
+  saveBreathingSpaceEnterDraft,
 } from 'services/features/dashboard/breathingSpaceEntryService';
 import {AppRequest} from 'models/AppRequest';
 
 const breathingSpaceEnterViewPath = 'features/dashboard/breathing-space-enter';
 const breathingSpaceEntryController = Router();
 
-async function renderView(res: Response, claimId: string, form: GenericForm<BreathingSpaceTypeAndReference>) {
+async function renderView(res: Response, claimId: string, form: GenericForm<BreathingSpaceEnterDraft>) {
   res.render(breathingSpaceEnterViewPath, {
     form,
     pageTitle: 'PAGES.BREATHING_SPACE_ENTRY.PAGE_TITLE',
@@ -37,7 +37,7 @@ breathingSpaceEntryController.get(BREATHING_SPACE_ENTER_URL, (async (req: AppReq
     const claimId = getRouteParam(req, 'id');
     const claim = await getClaimById(claimId, req, true);
     req.session.previousUrl = req.originalUrl;
-    const form = new GenericForm(getBreathingSpaceTypeAndReferenceForm(claim));
+    const form = new GenericForm(getBreathingSpaceEnterDraftForm(claim));
     await renderView(res, claimId, form);
   } catch (error) {
     next(error);
@@ -48,13 +48,13 @@ breathingSpaceEntryController.post(BREATHING_SPACE_ENTER_URL, (async (req: AppRe
   try {
     const claimId = getRouteParam(req, 'id');
     await getClaimById(claimId, req, true);
-    const form = new GenericForm(new BreathingSpaceTypeAndReference(req.body.type, req.body.reference));
+    const form = new GenericForm(new BreathingSpaceEnterDraft(req.body.type, req.body.reference));
     await form.validate();
     if (form.hasErrors()) {
       await renderView(res, claimId, form);
       return;
     }
-    await saveBreathingSpaceTypeAndReference(req, form.model);
+    await saveBreathingSpaceEnterDraft(req, form.model);
     res.redirect(constructResponseUrlWithIdParams(claimId, BREATHING_SPACE_START_DATE_URL));
   } catch (error) {
     next(error);

@@ -12,6 +12,12 @@ import {GenericForm} from 'form/models/genericForm';
 import {BreathingSpaceStartDate} from 'models/breathingSpace/breathingSpaceStartDate';
 import {BreathingSpaceType} from 'models/breathingSpace/breathingSpaceType';
 import {AppRequest} from 'models/AppRequest';
+import {
+  getBreathingSpaceStartDateForm,
+  resolveBreathingSpaceExpectedEnd,
+  resolveBreathingSpaceStartDate,
+  saveBreathingSpaceStartDate,
+} from 'services/features/dashboard/breathingSpaceEntryService';
 
 const breathingSpaceStartDateViewPath = 'features/dashboard/breathing-space-start-date';
 const breathingSpaceStartDateController = Router();
@@ -38,8 +44,8 @@ breathingSpaceStartDateController.get(BREATHING_SPACE_START_DATE_URL, (async (re
     const claimId = getRouteParam(req, 'id');
     const claim = await getClaimById(claimId, req, true);
     req.session.previousUrl = req.originalUrl;
-    const type = claim.breathingSpaceTypeAndReference?.type;
-    const form = new GenericForm(new BreathingSpaceStartDate());
+    const type = claim.breathingSpaceEnterDraft?.type;
+    const form = new GenericForm(getBreathingSpaceStartDateForm(claim));
     await renderView(res, claimId, form, type === BreathingSpaceType.MENTAL_HEALTH);
   } catch (error) {
     next(error);
@@ -50,10 +56,22 @@ breathingSpaceStartDateController.post(BREATHING_SPACE_START_DATE_URL, (async (r
   try {
     const claimId = getRouteParam(req, 'id');
     const claim = await getClaimById(claimId, req, true);
-    const type = claim.breathingSpaceTypeAndReference?.type;
+    const type = claim.breathingSpaceEnterDraft?.type;
     const form = new GenericForm(new BreathingSpaceStartDate(req.body.day, req.body.month, req.body.year));
     await form.validate();
-    await renderView(res, claimId, form, type === BreathingSpaceType.MENTAL_HEALTH);
+    if (form.hasErrors()) {
+      await renderView(res, claimId, form, type === BreathingSpaceType.MENTAL_HEALTH);
+      return;
+    }
+    const start = resolveBreathingSpaceStartDate(form.model);
+    const expectedEnd = resolveBreathingSpaceExpectedEnd(start, type);
+    await saveBreathingSpaceStartDate(req, start, expectedEnd);
+    const savedForm = new GenericForm(new BreathingSpaceStartDate(
+      String(start.getDate()),
+      String(start.getMonth() + 1),
+      String(start.getFullYear()),
+    ));
+    await renderView(res, claimId, savedForm, type === BreathingSpaceType.MENTAL_HEALTH);
   } catch (error) {
     next(error);
   }
