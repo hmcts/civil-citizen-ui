@@ -29,7 +29,7 @@ claimFeeBreakDownController.get(CLAIM_FEE_BREAKUP, claimFeePaymentGuard, (async 
     if (claim.paymentSyncError) {
       paymentSyncError = true;
       claim.paymentSyncError = undefined;
-      await saveDraftClaim(generateRedisKey(<AppRequest>req), claim);
+      await saveDraftClaim(generateRedisKey(req), claim, false, req.session.user?.id);
     }
     const claimFee = convertToPoundsFilter(claim.claimFee?.calculatedAmountInPence);
     const hasInterest = claim.claimInterest === YesNo.YES;
@@ -57,7 +57,7 @@ claimFeeBreakDownController.get(CLAIM_FEE_BREAKUP, claimFeePaymentGuard, (async 
 claimFeeBreakDownController.post(CLAIM_FEE_BREAKUP, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = getRouteParam(req, 'id');
-    const redisKey = generateRedisKey(<AppRequest>req);
+    const redisKey = generateRedisKey(req);
     const claim = await getCaseDataFromStore(redisKey);
     let paymentRedirectInformation: PaymentInformation;
     if (claim.claimDetails?.claimFeePayment?.paymentReference) {
@@ -72,7 +72,7 @@ claimFeeBreakDownController.post(CLAIM_FEE_BREAKUP, (async (req: AppRequest, res
     } else {
       logger.info('redis key before saving the payment ' + redisKey);
       logger.info('saved redis payment reference ' + claim.claimDetails?.claimFeePayment?.paymentReference);
-      await saveDraftClaim(redisKey, claim, true);
+      await saveDraftClaim(redisKey, claim, true, req.session.user?.id);
       await saveUserId(claimId, FeeType.CLAIMISSUED, req.session.user.id);
       try {
         const paymentStatus = await getFeePaymentStatus(claimId, paymentRedirectInformation?.paymentReference, FeeType.CLAIMISSUED, req);
@@ -87,7 +87,7 @@ claimFeeBreakDownController.post(CLAIM_FEE_BREAKUP, (async (req: AppRequest, res
             res.redirect(constructResponseUrlWithIdParams(claimId, CLAIM_FEE_BREAKUP));
           } else {
             claim.claimDetails.claimFeePayment = paymentRedirectInformation;
-            await saveDraftClaim(redisKey, claim, true);
+            await saveDraftClaim(redisKey, claim, true, req.session.user?.id);
             res.redirect(paymentRedirectInformation?.nextUrl);
           }
         } else {
@@ -114,7 +114,7 @@ async function getRedirectInformation(req: AppRequest) {
   } catch (error) {
     const claim = await getClaimById(getRouteParam(req, 'id'), req, true);
     claim.paymentSyncError = true;
-    await saveDraftClaim(generateRedisKey(<AppRequest>req), claim, true);
+    await saveDraftClaim(generateRedisKey(req), claim, true, req.session.user?.id);
     return null;
   }
 }
