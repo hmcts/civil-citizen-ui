@@ -18,7 +18,7 @@ import {DashboardTaskList} from '../../../main/common/models/dashboard/taskList/
 import {DashboardTask} from '../../../main/common/models/dashboard/taskList/dashboardTask';
 import {DashboardNotificationList} from '../../../main/common/models/dashboard/dashboardNotificationList';
 import {DashboardNotification} from '../../../main/common/models/dashboard/dashboardNotification';
-import {isQueryManagementEnabled} from '../../../main/app/auth/launchdarkly/launchDarklyClient';
+import {isQueryManagementEnabled, isBreathingSpaceEnabled} from '../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {
   getContactCourtLink,
   getDashboardForm,
@@ -75,6 +75,7 @@ describe('Integration: Claim issue notifications rendered on dashboard', () => {
   beforeEach(() => {
     (getDashboardForm as jest.Mock).mockResolvedValue(buildTaskList());
     (isQueryManagementEnabled as jest.Mock).mockResolvedValue(true);
+    (isBreathingSpaceEnabled as jest.Mock).mockResolvedValue(false);
     (getContactCourtLink as jest.Mock).mockResolvedValue({text: 'Contact the court', url: '/contact-us'});
     (getHelpSupportTitle as jest.Mock).mockReturnValue('Help and support');
     (getHelpSupportLinks as jest.Mock).mockReturnValue([]);
