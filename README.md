@@ -10,7 +10,7 @@
 - [UI Test Documentation](#ui-test-documentation)
 - [API Test Documentation](#api-test-documentation)
 - [Functional Test Group Documentation (UI)](#functional-test-group-documentation-ui)
-- [Functional Test Group Documentation (API)](#functional-test-group-documentation-api)
+- [Functional Test Group Documentation (API)].(#functional-test-group-documentation-api)
 
 ## Getting Started
 
