@@ -1,7 +1,13 @@
 import {NextFunction, Request, Response} from 'express';
+import * as path from 'path';
+import {configure} from 'nunjucks';
 import {setLanguage} from 'modules/i18n/languageService';
 
 describe('setLanguage', () => {
+  const nunjucks = configure([
+    path.resolve(__dirname, '../../../../../node_modules/govuk-frontend/dist'),
+  ]);
+
   const createRequest = (queryLang?: unknown, cookieLang?: unknown): Request => ({
     query: queryLang ? {lang: queryLang} : {},
     cookies: cookieLang ? {lang: cookieLang} : {},
@@ -11,51 +17,45 @@ describe('setLanguage', () => {
     locals: {},
   } as Response);
 
-  it('sets lang and htmlLang from the Welsh query parameter', () => {
-    const req = createRequest('cy');
+  const renderDocument = (res: Response): string => {
+    return nunjucks.render('govuk/template.njk', res.locals);
+  };
+
+  it.each([
+    {
+      name: 'renders the page as Welsh when the query parameter overrides an English cookie',
+      queryLang: 'cy',
+      cookieLang: 'en',
+      expectedLang: 'cy',
+    },
+    {
+      name: 'renders the page as English when the query parameter overrides a Welsh cookie',
+      queryLang: 'en',
+      cookieLang: 'cy',
+      expectedLang: 'en',
+    },
+    {
+      name: 'renders the page as Welsh from the cookie when there is no query parameter',
+      queryLang: undefined,
+      cookieLang: 'cy',
+      expectedLang: 'cy',
+    },
+    {
+      name: 'renders the page as English by default',
+      queryLang: undefined,
+      cookieLang: undefined,
+      expectedLang: 'en',
+    },
+  ])('$name', ({queryLang, cookieLang, expectedLang}) => {
+    const req = createRequest(queryLang, cookieLang);
     const res = createResponse();
     const next = jest.fn() as NextFunction;
 
     setLanguage(req, res, next);
 
-    expect(res.locals.lang).toBe('cy');
-    expect(res.locals.htmlLang).toBe('cy');
-    expect(next).toHaveBeenCalledTimes(1);
-  });
-
-  it('sets lang and htmlLang from the Welsh cookie when there is no query parameter', () => {
-    const req = createRequest(undefined, 'cy');
-    const res = createResponse();
-    const next = jest.fn() as NextFunction;
-
-    setLanguage(req, res, next);
-
-    expect(res.locals.lang).toBe('cy');
-    expect(res.locals.htmlLang).toBe('cy');
-    expect(next).toHaveBeenCalledTimes(1);
-  });
-
-  it('defaults lang and htmlLang to English', () => {
-    const req = createRequest();
-    const res = createResponse();
-    const next = jest.fn() as NextFunction;
-
-    setLanguage(req, res, next);
-
-    expect(res.locals.lang).toBe('en');
-    expect(res.locals.htmlLang).toBe('en');
-    expect(next).toHaveBeenCalledTimes(1);
-  });
-
-  it('defaults lang and htmlLang to English for unsupported language values', () => {
-    const req = createRequest('fr');
-    const res = createResponse();
-    const next = jest.fn() as NextFunction;
-
-    setLanguage(req, res, next);
-
-    expect(res.locals.lang).toBe('en');
-    expect(res.locals.htmlLang).toBe('en');
+    expect(res.locals.lang).toBe(expectedLang);
+    expect(res.locals.htmlLang).toBe(expectedLang);
+    expect(renderDocument(res)).toContain(`<html lang="${expectedLang}"`);
     expect(next).toHaveBeenCalledTimes(1);
   });
 });

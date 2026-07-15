@@ -1,16 +1,5 @@
 const languageElement = document.getElementsByClassName('language');
 
-const getCookie = (name) => {
-  const cookies = document.cookie.split(';');
-  for (let i = 0; i < cookies.length; i++) {
-    let c = cookies[i].trim().split('=');
-    if (c[0] === name) {
-      return c[1];
-    }
-  }
-  return '';
-};
-
 function getUpdatedQuery(query, language) {
   const toggleLang = language === 'en' ? 'cy' : 'en';
   if (query.includes('lang')) {
@@ -23,9 +12,8 @@ function getUpdatedQuery(query, language) {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-  const lang = getCookie('lang');
+  const lang = document.documentElement.lang || 'en';
 
-  document.documentElement.lang = lang;
   const query = window.location.search;
   const toggleLangText = lang === 'en' ? 'Cymraeg' :'English';
   let updatedQuery = getUpdatedQuery(query, lang);
