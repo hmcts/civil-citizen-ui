@@ -75,10 +75,8 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
     const carmEnabled = await isCarmEnabledForCase(claim.submittedDate);
     const isCarmApplicable = isCarmApplicableAndSmallClaim(carmEnabled, claim);
     const dashboardNotifications = await getNotifications(dashboardId, claim, totalAmountWithInterestAndFees, caseRole, req, lng);
-    // Add breathing space notifications if active (hardcoded to true for testing)
-    if (claimId !== 'draft') {
-      claim.breathingSpaceActive = true;
-      claim.breathingSpaceMentalHealthActive = true;
+    // Add breathing space notifications if flags are set on the claim
+    if (claimId !== 'draft' && (claim.breathingSpaceActive || claim.breathingSpaceMentalHealthActive)) {
       addBreathingSpaceNotifications(dashboardNotifications, claim, claimId, lng);
     }
     claim.orderDocumentId = extractOrderDocumentIdFromNotification(dashboardNotifications);
