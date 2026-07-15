@@ -2751,6 +2751,10 @@
         "CASE_STAYED": "The case has been stayed.",
         "CASE_DISCONTINUED": "This claim is discontinued."
       },
+      "BREATHING_SPACE": {
+        "STANDARD_BS_DESCRIPTION": "Case is in standard breathing space<br>Breathing space usually lasts for 60 days. <a href=\"{{breathingSpaceUrl}}\" class=\"govuk-link\">Lift breathing space</a> when you know it will end.",
+        "MENTAL_HEALTH_BS_DESCRIPTION": "Case is in mental health crisis breathing space<br>This will remain in place until you <a href=\"{{breathingSpaceUrl}}\" class=\"govuk-link\">lift breathing space</a>."
+      },
       "SUPPORT_LINKS": {
         "APPLYING_TO_COURT_AS_A_CREDITOR":"Applying to the court as a creditor of a debt in breathing space",
         "CONTACT_COURT": "Contact the court to request a change to my case (make an application)",

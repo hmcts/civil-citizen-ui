@@ -1,6 +1,7 @@
 import {Dashboard} from 'models/dashboard/dashboard';
 import {ApplicantOrRespondent, ClaimantOrDefendant} from 'models/partyType';
 import {DashboardNotificationList} from 'models/dashboard/dashboardNotificationList';
+import {DashboardNotification} from 'models/dashboard/dashboardNotification';
 import {AppRequest} from 'models/AppRequest';
 import {Claim} from 'models/claim';
 import {
@@ -22,7 +23,7 @@ import {
 import {YesNo} from 'form/models/yesNo';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {iWantToLinks} from 'common/models/dashboard/iWantToLinks';
-import {APPLICATION_TYPE_URL, GA_SUBMIT_OFFLINE, QM_START_URL} from 'routes/urls';
+import {APPLICATION_TYPE_URL, BREATHING_SPACE_INFO_URL, GA_SUBMIT_OFFLINE, QM_START_URL} from 'routes/urls';
 import {
   isCuiGaNroEnabled,
   isGaForLipsEnabled,
@@ -225,6 +226,57 @@ export const getContactCourtLink = async (claimId: string, claim: Claim, isGAFla
       }
     }
   }
+};
+
+export const addBreathingSpaceNotifications = (dashboardNotifications: DashboardNotificationList, claim: Claim, claimId: string, lng: string): void => {
+  const notifications: DashboardNotification[] = [];
+
+  if (claim.breathingSpaceActive) {
+    const descriptionEn = t('PAGES.DASHBOARD.BREATHING_SPACE.STANDARD_BS_DESCRIPTION', { lng: 'en' });
+    const descriptionCy = t('PAGES.DASHBOARD.BREATHING_SPACE.STANDARD_BS_DESCRIPTION', { lng: 'cy' });
+
+    const standardBsNotification = new DashboardNotification(
+      'bs-standard-notification',
+      'Important',
+      'Pwysig',
+      descriptionEn,
+      descriptionCy,
+      null,
+      null,
+      new Map(),
+      new Date().toISOString(),
+      null
+    );
+    notifications.push(standardBsNotification);
+  }
+
+  if (claim.breathingSpaceMentalHealthActive) {
+    const breathingSpaceUrl = constructResponseUrlWithIdParams(claimId, BREATHING_SPACE_INFO_URL);
+    const descriptionEn = t('PAGES.DASHBOARD.BREATHING_SPACE.MENTAL_HEALTH_BS_DESCRIPTION', { lng: 'en', breathingSpaceUrl });
+    const descriptionCy = t('PAGES.DASHBOARD.BREATHING_SPACE.MENTAL_HEALTH_BS_DESCRIPTION', { lng: 'cy', breathingSpaceUrl });
+
+    const mentalHealthBsNotification = new DashboardNotification(
+      'bs-mental-health-notification',
+      'Important',
+      'Pwysig',
+      descriptionEn,
+      descriptionCy,
+      null,
+      null,
+      new Map(),
+      new Date().toISOString(),
+      null
+    );
+    notifications.push(mentalHealthBsNotification);
+  }
+
+  // Ensure items array exists
+  if (!dashboardNotifications.items) {
+    dashboardNotifications.items = [];
+  }
+
+  // Add breathing space notifications at the beginning
+  dashboardNotifications.items = [...notifications, ...dashboardNotifications.items];
 };
 
 export const sortDashboardNotifications = (dashboardNotifications: DashboardNotificationList, mainClaimNotificationIds: string[]) => {

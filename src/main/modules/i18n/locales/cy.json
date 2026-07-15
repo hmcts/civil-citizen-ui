@@ -2745,9 +2745,13 @@
         "CLAIMANT_SIGNED_SETTLEMENT_AGREEMENT": "{{ claimantName }} asked you to sign a settlement agreement.",
         "DEFENDANT_REJECTED_SETTLEMENT_AGREEMENT": "You rejected the settlement agreement.",
         "HEARING_FEE_UNPAID": "Mae'r hawliad hwn wedi cael ei ddileu.",
-        "CASE_DISMISSED": "Mae’r achos wedi’i gau.",
-        "CASE_STAYED": "Mae’r achos wedi cael ei atal.",
-        "CASE_DISCONTINUED": "Mae’r hawliad hwn wedi dirwyn i ben."
+        "CASE_DISMISSED": "Mae'r achos wedi'i gau.",
+        "CASE_STAYED": "Mae'r achos wedi cael ei atal.",
+        "CASE_DISCONTINUED": "Mae'r hawliad hwn wedi dirwyn i ben."
+      },
+      "BREATHING_SPACE": {
+        "STANDARD_BS_DESCRIPTION": "Mae'r achos mewn lle i anadlu safonol<br>Mae lle i anadlu fel arfer yn para am 60 diwrnod. <a href=\"{{breathingSpaceUrl}}\" class=\"govuk-link\">Codwch y lle i anadlu</a> pan fyddwch yn gwybod y bydd yn dod i ben.",
+        "MENTAL_HEALTH_BS_DESCRIPTION": "Mae'r achos mewn lle i anadlu argyfwng iechyd meddwl<br>Bydd hyn yn parhau nes i chi <a href=\"{{breathingSpaceUrl}}\" class=\"govuk-link\">godi'r lle i anadlu</a>."
       },
       "SUPPORT_LINKS": {
         "APPLYING_TO_COURT_AS_A_CREDITOR": "Gwneud cais i’r llys fel credydwr dyled mewn lle i anadlu",

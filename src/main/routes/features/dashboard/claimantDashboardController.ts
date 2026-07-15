@@ -11,6 +11,7 @@ import {
   getHelpSupportLinks,
   getHelpSupportTitle,
   getNotifications,
+  addBreathingSpaceNotifications,
 } from 'services/dashboard/dashboardService';
 import {Claim} from 'models/claim';
 import {CaseState} from 'common/form/models/claimDetails';
@@ -74,6 +75,12 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
     const carmEnabled = await isCarmEnabledForCase(claim.submittedDate);
     const isCarmApplicable = isCarmApplicableAndSmallClaim(carmEnabled, claim);
     const dashboardNotifications = await getNotifications(dashboardId, claim, totalAmountWithInterestAndFees, caseRole, req, lng);
+    // Add breathing space notifications if active (hardcoded to true for testing)
+    if (claimId !== 'draft') {
+      claim.breathingSpaceActive = true;
+      claim.breathingSpaceMentalHealthActive = true;
+      addBreathingSpaceNotifications(dashboardNotifications, claim, claimId, lng);
+    }
     claim.orderDocumentId = extractOrderDocumentIdFromNotification(dashboardNotifications);
     const isGAFlagEnable = await isGaForLipsEnabled();
     const isQMFlagEnabled = await isQueryManagementEnabled(claim.submittedDate);
