@@ -245,7 +245,7 @@ export const addBreathingSpaceNotifications = (dashboardNotifications: Dashboard
       null,
       new Map(),
       new Date().toISOString(),
-      null
+      null,
     );
     notifications.push(standardBsNotification);
   }
@@ -265,7 +265,7 @@ export const addBreathingSpaceNotifications = (dashboardNotifications: Dashboard
       null,
       new Map(),
       new Date().toISOString(),
-      null
+      null,
     );
     notifications.push(mentalHealthBsNotification);
   }
