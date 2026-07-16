@@ -560,6 +560,15 @@
     "TITLE_WITH_DEFENDANT": "Defendant documents to be considered"
   },
   "PAGES": {
+    "BREATHING_SPACE": {
+      "LIFT": {
+        "TITLE": "Lift breathing space",
+        "CAPTION": "Breathing space",
+        "WHEN_END": "When did the breathing space end?",
+        "DATE_HINT": "For example, 31 3 1980",
+        "WHY_LIFTED": "Why was the breathing space lifted?"
+      }
+    },
     "QM": {
       "CONFIRMATION_PAGE": {
         "TITLE" : "Message sent",

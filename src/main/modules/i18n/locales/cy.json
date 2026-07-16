@@ -560,6 +560,15 @@
     "TITLE_WITH_DEFENDANT": "Dogfennau’r diffynnydd i'w hystyried"
   },
   "PAGES": {
+    "BREATHING_SPACE": {
+      "LIFT": {
+        "TITLE": "Codi gofod anadlu",
+        "CAPTION": "Gofod anadlu",
+        "WHEN_END": "Pryd y daeth y gofod anadlu i ben?",
+        "DATE_HINT": "Er enghraifft, 31 3 1980",
+        "WHY_LIFTED": "Pam y codwyd y gofod anadlu?"
+      }
+    },
     "QM": {
       "CONFIRMATION_PAGE": {
         "TITLE": "Neges wedi’i hanfon",
