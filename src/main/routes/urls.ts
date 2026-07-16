@@ -362,6 +362,7 @@ export const BREATHING_SPACE_INFO_URL = `${DASHBOARD_URL}/:id/breathing-space-in
 export const BREATHING_SPACE_ENTER_URL = `${DASHBOARD_URL}/:id/breathing-space/enter`;
 export const BREATHING_SPACE_START_DATE_URL = `${DASHBOARD_URL}/:id/breathing-space/start-date`;
 export const BREATHING_SPACE_CANCEL_URL = `${DASHBOARD_URL}/:id/breathing-space/cancel`;
+export const BREATHING_SPACE_CYA_URL = `${DASHBOARD_URL}/:id/breathing-space/check-your-answers`;
 export const APPLICATION_FEE_PAYMENT_CONFIRMATION_URL='/general-application/payment-confirmation/:id/gaid/:appId';
 export const APPLICATION_FEE_PAYMENT_CONFIRMATION_URL_WITH_UNIQUE_ID='/general-application/payment-confirmation/:id/gaid/:appId/:uniqueId/confirmation';
 export const DQ_DISCLOSURE_OF_DOCUMENTS_URL = `${DIRECTIONS_QUESTIONNAIRE_URL}/disclosure-of-documents`;
