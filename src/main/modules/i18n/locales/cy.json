@@ -2794,6 +2794,12 @@
         "HEADING": "Ydych chi’n siŵr eich bod eisiau gadael y llwybr hwn?",
         "WARNING": "Bydd yr atebion yn cael eu colli, ac ni fydd y lle i anadlu yn cael ei weithredu",
         "ARE_YOU_SURE": "Ydych chi’n siŵr eich bod eisiau gadael y llwybr hwn?"
+      },
+      "CYA": {
+        "HEADING": "Gwirio eich atebion",
+        "TYPE": "Pa fath ydy o?",
+        "REFERENCE": "Reference number (optional)",
+        "START_DATE": "Start date (optional)"
       }
     },
     "DEBTS": {
