@@ -540,6 +540,7 @@ npx @hmcts/dev-env@latest && ./bin/setup-devuser-preview-env.sh ccdBranchName ca
 
 Once the pods are up and running you can connect to them using a plugin called Mirrord on Intellij or VSCode.
 https://mirrord.dev
+
 If you want to clean up the environment just run:
 
 ```shell
