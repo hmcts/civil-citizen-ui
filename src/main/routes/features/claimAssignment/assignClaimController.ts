@@ -1,6 +1,6 @@
 import {Router} from 'express';
 import {AxiosError} from 'axios';
-import {ASSIGN_CLAIM_URL, DASHBOARD_URL} from 'routes/urls';
+import {ASSIGN_CLAIM_URL, CLAIM_ALREADY_FINALISED_URL, DASHBOARD_URL} from 'routes/urls';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {AppRequest} from 'models/AppRequest';
@@ -32,13 +32,17 @@ assignClaimController.get(ASSIGN_CLAIM_URL, async ( req:AppRequest, res) => {
     req.session.firstContact = {};
     const axiosError = error as AxiosError;
     if (axiosError.response?.status === 409 && axiosError.response?.data === 'CLAIM_ALREADY_FINALISED') {
-      return res.render(claimFinalisedViewPath);
+      return res.redirect(CLAIM_ALREADY_FINALISED_URL);
     }
     const message = error instanceof Error ? error.message : String(error);
     const code = axiosError.code;
     logger.error(`Error Message: ${message}, http Code: ${code}`);
     res.redirect(DASHBOARD_URL);
   }
+});
+
+assignClaimController.get(CLAIM_ALREADY_FINALISED_URL, (req, res) => {
+  res.render(claimFinalisedViewPath);
 });
 
 export default assignClaimController;

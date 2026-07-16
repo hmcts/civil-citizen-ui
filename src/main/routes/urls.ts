@@ -26,6 +26,7 @@ export const DATE_PAID_URL = `${BASE_CASE_PAID_IN_FULL_URL}/date-paid`;
 export const DATE_PAID_CONFIRMATION_URL = `${BASE_CASE_PAID_IN_FULL_URL}/confirmation`;
 export const CALLBACK_URL = '/oauth2/callback';
 export const ASSIGN_CLAIM_URL='/assignclaim';
+export const CLAIM_ALREADY_FINALISED_URL=`${ASSIGN_CLAIM_URL}/finalised`;
 export const COOKIES_URL = '/cookies';
 export const SIGN_IN_URL = '/login';
 export const SIGN_OUT_URL = '/logout';

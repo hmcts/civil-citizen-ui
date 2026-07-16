@@ -1,7 +1,7 @@
 import request from 'supertest';
 import nock from 'nock';
 import config from 'config';
-import {ASSIGN_CLAIM_URL, DASHBOARD_URL} from 'routes/urls';
+import {ASSIGN_CLAIM_URL, CLAIM_ALREADY_FINALISED_URL, DASHBOARD_URL} from 'routes/urls';
 import {app} from '../../../../../main/app';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import * as utilityService from 'modules/utilityService';
@@ -66,7 +66,7 @@ describe('claim assignment controller', ()=>{
         });
     });
 
-    it('on finalised claim should render finalised page', async () => {
+    it('on finalised claim should redirect to the finalised page', async () => {
       const claim = Object.assign(new Claim(), {
         respondent1PinToPostLRspec: {
           accessCode: '12345',
@@ -84,13 +84,22 @@ describe('claim assignment controller', ()=>{
 
       await request(app).get('/assignclaim')
         .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.get('location')).toBe(CLAIM_ALREADY_FINALISED_URL);
+        });
+    });
+
+    it('should render the finalised page in Welsh when the language is changed', async () => {
+      await request(app).get(`${CLAIM_ALREADY_FINALISED_URL}?lang=cy`)
+        .expect((res) => {
           expect(res.status).toBe(200);
+          expect(res.get('location')).toBeUndefined();
           expect(res.text).toContain(t('COMMON.HEADER.BETA'));
           expect(res.text).toContain('govuk-phase-banner');
           expect(res.text).toContain('govuk-link language');
-          expect(res.text).toContain(t('PAGES.FIRST_CONTACT_CLAIM_FINALISED.TITLE'));
-          expect(res.text).toContain(t('PAGES.FIRST_CONTACT_CLAIM_FINALISED.MESSAGE'));
-          expect(res.text).toContain(t('PAGES.FIRST_CONTACT_CLAIM_FINALISED.DASHBOARD_BUTTON'));
+          expect(res.text).toContain('Ni allwch ymateb i&#39;r hawliad hwn ar-lein');
+          expect(res.text).toContain('Ni allwch ymateb i&#39;r hawliad hwn ar-lein oherwydd ei fod wedi&#39;i setlo, ei atal neu ei wrthod.');
+          expect(res.text).toContain('Mynd i’ch dangosfwrdd');
           expect(res.text).toContain('href="/dashboard"');
         });
     });
