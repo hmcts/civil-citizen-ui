@@ -34,7 +34,6 @@ import {QueryManagement} from '../../../main/common/form/models/queryManagement/
 import {
   isDashboardEnabledForCase,
   isQueryManagementEnabled,
-  isBreathingSpaceEnabled,
 } from '../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {
   getContactCourtLink,
@@ -84,7 +83,6 @@ describe('Integration: query management views', () => {
   beforeEach(() => {
     (isQueryManagementEnabled as jest.Mock).mockResolvedValue(true);
     (isDashboardEnabledForCase as jest.Mock).mockResolvedValue(true);
-    (isBreathingSpaceEnabled as jest.Mock).mockResolvedValue(false);
     (getContactCourtLink as jest.Mock).mockResolvedValue({text: 'Contact the court', url: '/contact-us'});
     (getHelpSupportTitle as jest.Mock).mockReturnValue('Help and support');
     (getHelpSupportLinks as jest.Mock).mockReturnValue([]);

@@ -160,6 +160,7 @@
       "TITLE": "Contact us for help",
       "TELEPHONE": "Telephone",
       "TELEPHONE_CARM": "Telephone",
+      "TELEPHONE_VALUE": "0300 123 7050",
       "WEB_CHAT": "Web chat",
       "WEB_CHAT_CLOSED": "Web chat is now closed. Come back Monday to Friday 8.30am to 5pm or contact us by phone or email.",
       "WEB_CHAT_NO_ADVISORS": "No Advisors are currently available, Come back later.",
@@ -2751,10 +2752,6 @@
         "CASE_STAYED": "The case has been stayed.",
         "CASE_DISCONTINUED": "This claim is discontinued."
       },
-      "BREATHING_SPACE": {
-        "STANDARD_BS_DESCRIPTION": "Case is in standard breathing space<br>Breathing space usually lasts for 60 days. <a href=\"{{breathingSpaceUrl}}\" class=\"govuk-link\">Lift breathing space</a> when you know it will end.",
-        "MENTAL_HEALTH_BS_DESCRIPTION": "Case is in mental health crisis breathing space<br>This will remain in place until you <a href=\"{{breathingSpaceUrl}}\" class=\"govuk-link\">lift breathing space</a>."
-      },
       "SUPPORT_LINKS": {
         "APPLYING_TO_COURT_AS_A_CREDITOR":"Applying to the court as a creditor of a debt in breathing space",
         "CONTACT_COURT": "Contact the court to request a change to my case (make an application)",
@@ -4703,7 +4700,8 @@
     },
     "RESPONSE_DEADLINE_OPTIONS": {
       "CURRENT_DEADLINE": "Current response deadline: 4pm on {{ responseDeadline }}",
-      "EMAIL_FORM": "Email the completed form N244 to: contact@justice.gov.uk.",
+      "EMAIL_FORM": "Email the completed form N244 to:",
+      "EMAIL_ADDRESS": "contact@justice.gov.uk",
       "FORM": "Form N244 (opens in new tab)",
       "MORE_TIME": "Do you want to request more time to respond?",
       "OPTION_AGREED": "I have already agreed more time with {{ claimantName }}'s legal representative",
@@ -4822,6 +4820,7 @@
       "DO_NOT_CREATE_NEW_CLAIM_IF_WANT_COUNTERCLAIM": "Do not create a new claim if you want to counterclaim.",
       "USE_FORM_N9B": "Use form N9B.",
       "EMAIL_COMPLETED": "Email completed form N9B to",
+      "EMAIL_COMPLETED_N9B": "Email completed form N9B to:",
       "HEADER": "Reject all of the claim and counterclaim",
       "HELP_AND_SUPPORT": "Help and support",
       "HOW_TO_COUNTERCLAIM": "How to counterclaim?",

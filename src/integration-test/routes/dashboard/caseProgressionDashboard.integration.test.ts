@@ -21,7 +21,6 @@ import {
   isCarmEnabledForCase,
   isDashboardEnabledForCase,
   isQueryManagementEnabled,
-  isBreathingSpaceEnabled,
 } from '../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {
   extractOrderDocumentIdFromNotification,
@@ -59,7 +58,6 @@ describe('Integration: case progression dashboard', () => {
     (isQueryManagementEnabled as jest.Mock).mockResolvedValue(true);
     (isCarmEnabledForCase as jest.Mock).mockResolvedValue(false);
     (isDashboardEnabledForCase as jest.Mock).mockResolvedValue(true);
-    (isBreathingSpaceEnabled as jest.Mock).mockResolvedValue(false);
     (extractOrderDocumentIdFromNotification as jest.Mock).mockReturnValue(undefined);
   });
 

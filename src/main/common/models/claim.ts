@@ -201,8 +201,6 @@ export class Claim {
   queries?: CaseQueries;
   previousCCDState?: string;
   preTranslationDocumentType?: PreTranslationDocumentType;
-  breathingSpaceActive?: boolean;
-  breathingSpaceMentalHealthActive?: boolean;
 
   // Index signature to allow dynamic property access
   [key: string]: any;

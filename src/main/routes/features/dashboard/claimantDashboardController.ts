@@ -11,7 +11,6 @@ import {
   getHelpSupportLinks,
   getHelpSupportTitle,
   getNotifications,
-  addBreathingSpaceNotifications,
 } from 'services/dashboard/dashboardService';
 import {Claim} from 'models/claim';
 import {CaseState} from 'common/form/models/claimDetails';
@@ -24,7 +23,6 @@ import {
   isGaForLipsEnabled,
   isQueryManagementEnabled, isWelshEnabledForMainCase,
   isJudgmentBufferEnabled,
-  isBreathingSpaceEnabled,
 } from '../../../app/auth/launchdarkly/launchDarklyClient';
 import {t} from 'i18next';
 import {isCarmApplicableAndSmallClaim} from 'common/utils/carmToggleUtils';
@@ -76,11 +74,6 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
     const carmEnabled = await isCarmEnabledForCase(claim.submittedDate);
     const isCarmApplicable = isCarmApplicableAndSmallClaim(carmEnabled, claim);
     const dashboardNotifications = await getNotifications(dashboardId, claim, totalAmountWithInterestAndFees, caseRole, req, lng);
-    // Add breathing space notifications if feature flag is enabled AND claim has breathing space active
-    const isBreathingSpaceFlagEnabled = await isBreathingSpaceEnabled();
-    if (claimId !== 'draft' && isBreathingSpaceFlagEnabled && (claim.breathingSpaceActive || claim.breathingSpaceMentalHealthActive)) {
-      addBreathingSpaceNotifications(dashboardNotifications, claim, claimId, lng);
-    }
     claim.orderDocumentId = extractOrderDocumentIdFromNotification(dashboardNotifications);
     const isGAFlagEnable = await isGaForLipsEnabled();
     const isQMFlagEnabled = await isQueryManagementEnabled(claim.submittedDate);
