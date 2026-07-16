@@ -117,4 +117,23 @@ describe('ErrorHandler', () => {
     expect(res.status).toHaveBeenCalledWith(422);
     expect(res.render).toHaveBeenCalledWith('error', expect.objectContaining({callbackErrors}));
   });
+
+  it('does not treat a non-CallbackError that happens to carry callbackErrors as a 422 (DTSCCI-5282)', () => {
+    const errorMiddleware = appUse.mock.calls[1][0];
+    // An unrelated 5xx that coincidentally has a callbackErrors property must still be
+    // tracked as a 500, not masked as a 422 (guarded by instanceof CallbackError).
+    const err = Object.assign(new Error('Unexpected failure'), {status: 500, callbackErrors: ['not a real callback error']});
+    const req = {originalUrl: '/case/123/response', method: 'POST'} as any;
+    const res = {
+      locals: {},
+      status: jest.fn().mockReturnThis(),
+      render: jest.fn(),
+    } as any;
+
+    errorMiddleware(err, req, res, jest.fn());
+
+    expect(res.status).toHaveBeenCalledWith(500);
+    expect(res.status).not.toHaveBeenCalledWith(422);
+    expect(getTrackExceptionMock()).toHaveBeenCalled();
+  });
 });

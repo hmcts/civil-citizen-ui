@@ -22,12 +22,14 @@ export class ErrorHandler {
 
       // DTSCCI-5282: a rejected citizen-event callback (422) carries user-actionable
       // messages from CCD. Render those instead of the generic "Something went wrong" page.
-      const callbackError = err as CallbackError;
-      if (callbackError?.callbackErrors?.length) {
-        res.status(callbackError.status || 422);
+      // Narrow with instanceof (not just a duck-typed callbackErrors check) so an unrelated
+      // 5xx that happens to carry a callbackErrors property isn't misreported as a 422 and
+      // skipped for App Insights tracking below.
+      if (err instanceof CallbackError && err.callbackErrors?.length) {
+        res.status(err.status || 422);
         return res.render('error', {
-          callbackErrors: callbackError.callbackErrors,
-          callbackWarnings: callbackError.callbackWarnings,
+          callbackErrors: err.callbackErrors,
+          callbackWarnings: err.callbackWarnings,
           error: env === 'development' ? err : {},
         });
       }
