@@ -148,7 +148,7 @@
       "REPAYMENT_AMOUNT_HINT": "Only include the amount you're paying to clear previously missed regular"
     },
     "CONTACT_US_FOR_HELP": {
-      "CALL_CHARGES": "Find out about call charges (opens in a new window)",
+      "CALL_CHARGES": "Find out about call charges (opens in a new tab)",
       "COURT_STAFF_DISCLOSURE": "Court staff can help with your application. They cannot give you legal advice.",
       "EMAIL": "Email",
       "OPENING_HOURS": "Monday to Friday, 8.30am to 5pm.",
@@ -4118,7 +4118,7 @@
         },
         "PAY_HEARING_FEE": {
           "APPLY_HELP_WITH_FEES": {
-            "LINK":"Apply for Help with Fees (open in a new window)",
+            "LINK":"Apply for Help with Fees (opens in a new tab)",
             "PAGE_TITLE":"Help with fees",
             "PARAGRAPH_IF": "If you already have a help with fees reference number in relation to the claim issue fee or any application fees, you should not use this reference number for this application.",
             "PARAGRAPH_INSTEAD": "Instead, you should make a new help with fees application which will provide you with a new reference number. Note down this number and keep it safe as you will need it later in the process.",
