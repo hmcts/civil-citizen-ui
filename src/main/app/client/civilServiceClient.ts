@@ -470,8 +470,7 @@ export class CivilServiceClient {
     } catch (e: unknown) {
       const err = e as AxiosError;
       const status = err.response?.status;
-      const body = err.response?.data;
-      logger.error(`Submit event failed (event=${event}, claimId=${normalizedClaimId}, status=${status})`, { body });
+      logger.error(`Submit event failed (event=${event}, claimId=${normalizedClaimId}, status=${status})`);
       throw err;
     }
   }

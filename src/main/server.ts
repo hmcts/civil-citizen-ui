@@ -2,7 +2,10 @@
 import {readFileSync} from 'fs';
 import {createServer} from 'https';
 import * as path from 'path';
-import { app } from './app';
+import {installPiiLoggingRedaction} from './common/logging/piiRedaction';
+
+installPiiLoggingRedaction();
+const {app} = require('./app');
 
 const { Logger } = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('server');

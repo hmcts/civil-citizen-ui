@@ -37,14 +37,14 @@ const saveClaimantResponse = async (claimId: string, value: any, claimantRespons
 
     ensureClaimantResponseExists(claim);
     setClaimantResponseValue(claim, parentPropertyName, claimantResponsePropertyName, value);
-    logger.info(`claimant response after property set : userId: ${userId} claimId: ${claimId} claimantResponse: ${claim.claimantResponse? JSON.stringify(claim.claimantResponse) : 'undefined'}`);
+    logger.info(`Claimant response property set: userId: ${userId} claimId: ${claimId}`);
 
     const claimantResponse = Object.assign(new ClaimantResponse(), claim.claimantResponse);
     applySuggestedPaymentIntentionCleanup(claim, claimantResponse);
     applyRejectionCleanup(claim);
-    logger.info(`claimant response after cleanups : userId: ${userId} claimId: ${claimId} claimantResponse: ${claim.claimantResponse? JSON.stringify(claim.claimantResponse) : 'undefined'}`);
+    logger.info(`Claimant response cleanup completed: userId: ${userId} claimId: ${claimId}`);
     const resetClaim = resetTaskListData(claim, claimantResponsePropertyName, parentPropertyName);
-    logger.info(`claimant response after re setting claim : userId: ${userId} claimId: ${claimId} claimantResponse: ${resetClaim.claimantResponse? JSON.stringify(resetClaim.claimantResponse) : 'undefined'}`);
+    logger.info(`Claimant response task list reset completed: userId: ${userId} claimId: ${claimId}`);
     await saveDraftClaim(claimId, resetClaim, true);
   } catch (error) {
     logger.error(error);
@@ -65,7 +65,7 @@ function setClaimantResponseValue(
   value: unknown,
 ): void {
   const cr: any = claim.claimantResponse as any;
-  logger.info(`Setting claimant response property parentPropertyName: ${parentPropertyName} propertyName: ${propertyName} to value: ${value? JSON.stringify(value) : 'undefined'}`);
+  logger.info(`Setting claimant response property parentPropertyName: ${parentPropertyName} propertyName: ${propertyName}`);
   if (!parentPropertyName) {
     cr[propertyName] = value;
     return;
