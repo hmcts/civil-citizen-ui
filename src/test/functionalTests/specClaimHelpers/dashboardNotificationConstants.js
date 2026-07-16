@@ -35,6 +35,14 @@ module.exports = {
     };
   },
 
+  //Notice.AAA6.JR.Cancelled.Case.Settled.Claimant
+  ccjCancelledOnCaseSettledClaimant: () => {
+    return {
+      title: 'The claim is settled',
+      content: ['The case has been settled. The CCJ you requested has been cancelled.'],
+    };
+  },
+
   //Date calculation should be based on CIV-13128 fix
   //Notice.AAA6.ClaimIssue.Response.Await
   waitForDefendantToRespond: async () => {
@@ -703,6 +711,51 @@ module.exports = {
     };
   },
 
+  // Notice.AAA6.GeneralApps.ApplicationSubmitted.Applicant
+  applicationSubmittedApplicant: () => {
+    return {
+      title: 'Application is being processed',
+      content: ['A judge will consider the application.',
+        'The other parties can respond within 5 working days after the application is submitted, unless you\'ve chosen not to inform them. If you have a hearing in the next 10 days, your application will be treated urgently.'],
+      nextSteps: 'View application documents',
+    };
+  },
+
+  // Notice.AAA6.GeneralApps.RespondentResponseSubmitted.Applicant
+  // Notice.AAA6.GeneralApps.RespondentResponseSubmitted.Respondent
+  respondentResponseSubmitted: () => {
+    return {
+      title: 'Application is being processed',
+      content: 'A judge will consider the application. You\u2019ll receive an update with information about next steps.',
+    };
+  },
+
+  // Notice.AAA6.GeneralApps.OrderMade.Applicant
+  orderMadeApplicant: () => {
+    return {
+      title: 'An order has been made',
+      content: 'The judge has made an order related to the application.',
+      nextSteps: 'View the order',
+    };
+  },
+
+  // Notice.AAA6.GeneralApps.OrderMade.Respondent
+  orderMadeRespondent: () => {
+    return {
+      title: 'An order has been made',
+      content: 'The judge has made an order related to the application.',
+      nextSteps: 'View the order',
+    };
+  },
+
+  // Notice.AAA6.GeneralApps.HwFRejected.Applicant
+  hwFRejectedApplicant: ( applicationFeeTypeEn, applicationFee, civilMoneyClaimsTelephone ) => {
+    return {
+      title: 'Your help with fees application has been rejected',
+      content: `We've rejected your application for help with the ${applicationFeeTypeEn} fee. ` + `See email for further details. To progress your application, you must pay the full fee of ${applicationFee}. ` + `You can pay by phone by calling ${civilMoneyClaimsTelephone}.`,
+    };  
+  },
+
   // Notice.AAA6.JudgmentsOnline.IssuedCCJ.Claimant
   judgmentOnlineCcjIssuedClaimant: () => {
     return {
@@ -725,6 +778,145 @@ module.exports = {
         'The claimant’s details for payment and the full payment plan can be found on the judgment.',
         'If you can no longer afford the repayments you’ve agreed with the claimant, you can make an application to vary the judgment.',
       ],
+    };
+  },
+
+  // Notice.AAA6.JudgmentsOnline.DefaultJudgmentGranted.Claimant (description uses straight apostrophes)
+  defaultJudgmentGrantedClaimant: () => {
+    return {
+      title: 'A judgment against the defendant has been made',
+      content: [
+        'The defendant should now pay you according to the terms of the judgment.',
+        'confirm that they\'ve paid you the full amount that you\'re owed',
+        'If they do not pay you by the date on the judgment, you can ask for enforcement action to be taken against them.',
+        'If you need to change the terms of payment within the judgment, such as the instalments you had previously agreed, you can',
+      ],
+    };
+  },
+
+  // Notice.AAA6.JudgmentsOnline.DefaultJudgmentIssued.Defendant (CCJ re-requested after stay lifted)
+  defaultJudgmentIssuedDefendant: () => {
+    return {
+      title: 'A judgment has been made against you',
+      content: [
+        'The exact details of what you need to pay, and by when, are stated on the judgment.',
+        'If you want to dispute the judgment, or ask to change how and when you pay back the claim amount, you can',
+      ],
+    };
+  },
+
+  // Notice.AAA6.CP.Stay.Lifted.Claimant / Notice.AAA6.CP.Stay.Lifted.Defendant
+  stayLifted: () => {
+    return {
+      title: 'The stay has been lifted',
+      content: ['The stay of these proceedings has been lifted.'],
+    };
+  },
+
+  // Notice.AAA6.DefResponse.ResponseTimeElapsed.Claimant
+  responseToClaimAfterDeadlineClaimant: () => {
+    return {
+      title: 'Response to the claim',
+      content: [
+        'has not responded to the claim. You can now request a county court judgment. The defendant can still respond to the claim before you ask for a judgment.',
+        'Request a CCJ',
+      ],
+    };
+  },
+
+  // Notice.AAA6.DefResponse.ResponseTimeElapsed.Defendant
+  responseToClaimAfterDeadlineDefendant: () => {
+    return {
+      title: 'Response to the claim',
+      content: [
+        'You have not responded to the claim.',
+        'can now request a county court judgment. You can still respond to the claim before they ask for a judgment.',
+        'A County Court Judgment can mean you find it difficult to get credit, like a mortgage or mobile phone contact. Bailiffs could also be sent to your home.',
+        'Respond to claim',
+      ],
+    };
+  },
+
+  //DTSCCI-5096 AC2
+  ccjRequestedBufferClaimant: () => {
+    return {
+      title: 'The CCJ has been requested',
+      content: ['A judgment against the defendant has been requested.', 'You will be notified when this judgment is granted.'],
+    };
+  },
+
+  ccjRequestedBufferClaimantWelsh: () => {
+    return {
+      title: 'CCJ wedi cael ei geisio',
+      content: ['Mae cais am ddyfarniad yn erbyn y diffynnydd', 'Byddwch yn cael gwybod pan roddir y dyfarniad hwn'],
+    };
+  },
+
+  //DTSCCI-5096 AC5
+  ccjRequestedBufferDefendant: () => {
+    return {
+      title: 'responded to the claim',
+      content: ['You need to respond', 'Respond to the claim'],
+    };
+  },
+
+  ccjRequestedBufferDefendantWelsh: () => {
+    return {
+      title: 'Nid ydych wedi ymateb',
+      content: ['Mae angen i chi ymateb', 'Ymateb i'],
+    };
+  },
+
+  //DTSCCI-5106 AC4
+  caseDismissedNotification: () => {
+    return {
+      title: 'The case has been closed',
+      content: ['closed as a result of a judge', 'make any changes to a closed case'],
+    };
+  },
+
+  caseDismissedNotificationWelsh: () => {
+    return {
+      title: 'Mae’r achos wedi’i gau',
+      content: ['o ganlyniad i orchymyn', 'newidiadau i achos sydd wedi cau'],
+    };
+  },
+
+  //DTSCCI-5106 AC5
+  ccjCancelledOnCaseDismissalClaimant: () => {
+    return {
+      title: 'The case has been dismissed',
+      content: 'The CCJ you requested has been cancelled.',
+    };
+  },
+
+  ccjCancelledOnCaseDismissalClaimantWelsh: () => {
+    return {
+      title: 'Mae’r achos wedi’i gau',
+      content: 'Dyfarniad Llys Sirol (CCJ) y gwnaethoch gais amdano',
+    };
+  },
+
+  //DTSCCI-5102 AC4 Welsh (case proceeds offline - unchanged notification)
+  caseOfflineWelsh: () => {
+    return {
+      title: 'Ni fydd eich cyfrif ar-lein yn cael ei ddiweddaru mwyach',
+      content: 'Ni fydd eich cyfrif ar-lein yn cael ei ddiweddaru mwyach',
+    };
+  },
+
+  //DTSCCI-5102 AC5 (case taken offline during buffer - CCJ cancelled)
+  ccjCancelledOnCaseOfflineClaimant: () => {
+    return {
+      title: 'The case now proceeds offline',
+      content: 'The CCJ you requested has been cancelled.',
+    };
+  },
+
+  ccjCancelledOnCaseOfflineClaimantWelsh: () => {
+    return {
+      title: 'Bydd yr achos nawr yn parhau all-lein',
+      content: 'Dyfarniad Llys Sirol (CCJ) y gwnaethoch gais amdano',
     };
   },
 };
