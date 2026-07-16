@@ -10,9 +10,26 @@ import {BreathingSpaceEnterDraft} from 'models/breathingSpace/breathingSpaceEnte
 import {BreathingSpaceType} from 'models/breathingSpace/breathingSpaceType';
 import {BreathingSpaceStartDate} from 'models/breathingSpace/breathingSpaceStartDate';
 import {Claim} from 'models/claim';
-import {addDaysToDate} from 'common/utils/dateUtils';
+import {addDaysToDate, formatDateToFullDate} from 'common/utils/dateUtils';
+import {summaryRow, summaryRowWithTextValue, SummaryRow} from 'models/summaryList/summaryList';
+import {t} from 'i18next';
+import {getLng} from 'common/utils/languageToggleUtils';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {BREATHING_SPACE_ENTER_URL, BREATHING_SPACE_START_DATE_URL} from 'routes/urls';
 
 const STANDARD_BREATHING_SPACE_DAYS = 60;
+
+const changeLabel = (lang: string): string => t('COMMON.BUTTONS.CHANGE', {lng: getLng(lang)});
+
+const typeLabel = (type: BreathingSpaceType | undefined, lang: string): string => {
+  if (type === BreathingSpaceType.MENTAL_HEALTH) {
+    return t('PAGES.BREATHING_SPACE_ENTRY.TYPE_AND_REFERENCE.TYPE_MENTAL_HEALTH', {lng: getLng(lang)});
+  }
+  if (type === BreathingSpaceType.STANDARD) {
+    return t('PAGES.BREATHING_SPACE_ENTRY.TYPE_AND_REFERENCE.TYPE_STANDARD', {lng: getLng(lang)});
+  }
+  return '';
+};
 
 export const getBreathingSpaceEnterDraftForm = (claim: Claim): BreathingSpaceEnterDraft => {
   if (claim.breathingSpaceEnterDraft) {
@@ -55,6 +72,36 @@ export const resolveBreathingSpaceExpectedEnd = (
     return addDaysToDate(start, STANDARD_BREATHING_SPACE_DAYS);
   }
   return null;
+};
+
+export const getBreathingSpaceCheckAnswersRows = (claimId: string, claim: Claim, lang?: string): SummaryRow[] => {
+  const draft = claim.breathingSpaceEnterDraft;
+  const lng = getLng(lang);
+  const enterUrl = constructResponseUrlWithIdParams(claimId, BREATHING_SPACE_ENTER_URL);
+  const startDateUrl = constructResponseUrlWithIdParams(claimId, BREATHING_SPACE_START_DATE_URL);
+  const reference = draft?.reference?.trim() ? draft.reference : '';
+  const startDateValue = draft?.start ? formatDateToFullDate(new Date(draft.start), lng) : '';
+
+  return [
+    summaryRow(
+      t('PAGES.BREATHING_SPACE_ENTRY.CYA.TYPE', {lng}),
+      typeLabel(draft?.type, lng),
+      enterUrl,
+      changeLabel(lng),
+    ),
+    summaryRowWithTextValue(
+      t('PAGES.BREATHING_SPACE_ENTRY.CYA.REFERENCE', {lng}),
+      reference,
+      enterUrl,
+      changeLabel(lng),
+    ),
+    summaryRow(
+      t('PAGES.BREATHING_SPACE_ENTRY.CYA.START_DATE', {lng}),
+      startDateValue,
+      startDateUrl,
+      changeLabel(lng),
+    ),
+  ];
 };
 
 export const saveBreathingSpaceEnterDraft = async (
