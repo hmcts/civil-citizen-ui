@@ -5,9 +5,12 @@ const cmcCookies = require('../../../specClaimHelpers/fixtures/cookies/cmcCookie
 const idamCookies = require('../../../specClaimHelpers/fixtures/cookies/idamCookies');
 const generateExuiCookies = require('../../../specClaimHelpers/fixtures/cookies/exuiCookies');
 
+// Selectors are kept dual-UI safe for the HMCTS Access migration: the legacy IDAM Web
+// Public UI and the new HMCTS Access UI use the same username/password field ids, but the
+// email field id can differ, so a fallback is included.
 const fields = {
-  username: 'input[id="username"]',
-  password: 'input[id="password"]',
+  username: 'input[id="username"], input[id="email"]',
+  password: 'input[id="password"], input[id="password-input"]',
 };
 
 const buttons = {
@@ -56,14 +59,46 @@ class LoginPage {
     await I.click(buttons.hideMessage);
   }
 
-  async #login(email, password, endpoint, attempts = 0) {
-    const MAX_ATTEMPTS = 2;
+  // Decides which IDAM sign-in flow to drive during the HMCTS Access migration:
+  //  - config.hmctsAccessMigration === true  -> force HMCTS Access modern two-step
+  //  - config.hmctsAccessMigration === false -> force legacy IDAM Web Public single-page
+  //  - unset -> auto-detect from the page (two-step when no password field is on the email
+  //    page). This makes the flow driveable by the hmcts-access-migration toggle
+  //    (via the HMCTS_ACCESS_MIGRATION env) while staying safe by default.
+  async #useTwoStepFlow() {
+    if (config.hmctsAccessMigration === true) {
+      return true;
+    }
+    if (config.hmctsAccessMigration === false) {
+      return false;
+    }
+    const passwordOnSamePage = await I.grabNumberOfVisibleElements(fields.password);
+    return !passwordOnSamePage;
+  }
+
+  // Enters credentials against whichever IDAM sign-in UI is being served during the HMCTS
+  // Access migration:
+  //  - HMCTS Access (modern): two-step - email first, then password on a separate page.
+  //  - IDAM Web Public (legacy/classic): both fields on a single page.
+  async #enterCredentials(email, password) {
     await I.waitForContent('Email address', config.WaitForText);
     await I.waitForVisible(fields.username);
     await I.fillField(fields.username, email);
+
+    if (await this.#useTwoStepFlow()) {
+      // Modern two-step flow: submit the email step and wait for the password page.
+      await I.clickWithRetry(buttons.submit, 2);
+      await I.waitForVisible(fields.password);
+    }
+
     await I.fillField(fields.password, password);
     await I.waitForVisible(buttons.submit);
     await I.clickWithRetry(buttons.submit, 2);
+  }
+
+  async #login(email, password, endpoint, attempts = 0) {
+    const MAX_ATTEMPTS = 2;
+    await this.#enterCredentials(email, password);
     await I.wait(3);
 
     const url = await I.grabCurrentUrl();
@@ -82,6 +117,18 @@ class LoginPage {
 
   async citizenLogin(email, password) {
     await this.#login(email, password, '/dashboard');
+  }
+
+  // Negative path: enters credentials (via the same dual-UI flow) that are expected to
+  // fail. Asserts the user is NOT redirected back to the service and remains on the IDAM
+  // sign-in screen. The password field stays visible on the error page for both the HMCTS
+  // Access (password step) and legacy (single page) UIs.
+  async citizenLoginExpectingFailure(email, password) {
+    await this.openCitizenLogin();
+    await this.#enterCredentials(email, password);
+    await I.wait(2);
+    await I.dontSeeInCurrentUrl('/dashboard');
+    await I.waitForVisible(fields.password);
   }
 
   async ocmcLogin(email, password) {

@@ -8,6 +8,13 @@ const judgeDefaultPassword = process.env.JUDGE_PASSWORD;
 const wluDefaultPassword = process.env.WLU_DEFAULT_PASSWORD;
 const testUrl = process.env.TEST_URL;
 const testHeadlessBrowser = process.env.TEST_HEADLESS ? process.env.TEST_HEADLESS === 'true' : true;
+// HMCTS Access migration override for the IDAM sign-in flow (hmcts-access-migration toggle):
+//  - 'true'  -> force the new HMCTS Access modern two-step flow
+//  - 'false' -> force the legacy IDAM Web Public single-page flow
+//  - unset   -> auto-detect from the sign-in page (safe default)
+const hmctsAccessMigration = process.env.HMCTS_ACCESS_MIGRATION === undefined
+  ? undefined
+  : process.env.HMCTS_ACCESS_MIGRATION.toLowerCase() === 'true';
 
 if (!process.env.TEST_PASSWORD) {
   PropertiesVolume.enableFor({ locals: { developmentMode: true } });
@@ -19,6 +26,7 @@ module.exports = {
   TestSlowMo: 250,
   WaitForTimeout: 20000,
   WaitForText: 60,
+  hmctsAccessMigration: hmctsAccessMigration,
   idamStub: {
     enabled: process.env.IDAM_STUB_ENABLED === 'true',
     url: 'http://localhost:5555',

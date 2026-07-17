@@ -13,6 +13,12 @@ class LoginSteps {
     await LoginPage.citizenLogin(username, password);
   }
 
+  // Attempts a citizen sign-in with credentials expected to be rejected (e.g. wrong
+  // password). Verifies HMCTS Access / legacy shows the error and does not redirect.
+  async EnterInvalidCitizenCredentials(username, password) {
+    await LoginPage.citizenLoginExpectingFailure(username, password);
+  }
+
   async EnterCitizenCredentialsOCMC(username, password) {
     await LoginPage.openOCMC();
     //await this.AcceptCookies(); -- skip as it is flaky
