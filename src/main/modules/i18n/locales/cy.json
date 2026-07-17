@@ -563,11 +563,11 @@
   "PAGES": {
     "BREATHING_SPACE": {
       "LIFT": {
-        "TITLE": "Codi gofod anadlu",
+        "TITLE": "Codi’r Lle i Anadlu",
         "CAPTION": "Gofod anadlu",
-        "WHEN_END": "Pryd y daeth y gofod anadlu i ben?",
-        "DATE_HINT": "Er enghraifft, 31 3 1980",
-        "WHY_LIFTED": "Pam y codwyd y gofod anadlu?"
+        "WHEN_END": "Pryd ddaw'r lle i anadlu i ben?",
+        "DATE_HINT": "Dyma'r dyddiad y dywedwyd wrthych y bydd yn gorffen, er enghraifft, 15 11 2026",
+        "WHY_LIFTED": "Pam bod y lle i anadlu'n cael ei godi? (dewisol)"
       }
     },
     "QM": {
