@@ -35,15 +35,18 @@ describe('PII logging redaction', () => {
     });
   });
 
-  it('retains case IDs and redacts other identifiers and financial values', () => {
+  it('retains operational identifiers and redacts financial values', () => {
     const message = redactString(
-      'caseId=1234567890123456, caseReference=ABC-123, claimId=1234567890123456, amount=250, paymentReference=RC-123',
+      'caseId=1234567890123456, caseReference=ABC-123, claimId=1234567890123456, userId=user-123, taskId=task-123, documentId=document-123, notificationId=notification-123, amount=250, paymentReference=RC-123',
     );
     const value = {
       caseId: '1234567890123456',
       caseReference: 'ABC-123',
       claimId: '1234567890123456',
-      userId: 'abc-123',
+      userId: 'user-123',
+      taskId: 'task-123',
+      documentId: 'document-123',
+      notificationId: 'notification-123',
       amount: 250,
       paymentReference: 'RC-123',
       status: 'success',
@@ -52,13 +55,20 @@ describe('PII logging redaction', () => {
     expect(message).toContain('caseId=1234567890123456');
     expect(message).toContain('caseReference=ABC-123');
     expect(message).toContain('claimId=1234567890123456');
+    expect(message).toContain('userId=user-123');
+    expect(message).toContain('taskId=task-123');
+    expect(message).toContain('documentId=document-123');
+    expect(message).toContain('notificationId=notification-123');
     expect(message).not.toContain('250');
     expect(message).not.toContain('RC-123');
     expect(redactLogValue(value)).toEqual({
       caseId: '1234567890123456',
       caseReference: 'ABC-123',
       claimId: '1234567890123456',
-      userId: '[REDACTED]',
+      userId: 'user-123',
+      taskId: 'task-123',
+      documentId: 'document-123',
+      notificationId: 'notification-123',
       amount: '[REDACTED]',
       paymentReference: '[REDACTED]',
       status: 'success',

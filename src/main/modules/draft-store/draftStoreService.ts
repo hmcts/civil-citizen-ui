@@ -15,6 +15,19 @@ import {writeWithTTL} from './redisWriteHelper';
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('draftStoreService');
 
+const USER_ID_SUFFIX_PATTERN = /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+const resolveUserId = (redisKey: string | undefined, explicitUserId?: string): string | undefined => {
+  if (explicitUserId) {
+    return explicitUserId;
+  }
+  if (!redisKey) {
+    return undefined;
+  }
+  const userIdSuffix = redisKey.match(USER_ID_SUFFIX_PATTERN);
+  return userIdSuffix ? userIdSuffix[0] : redisKey;
+};
+
 /**
  * Gets civil claim response object with claim from draft store
  * @param claimId
@@ -59,17 +72,18 @@ export const getCaseDataFromStore = async (claimId: string, doNotThrowError = fa
  * @param claimId
  * @param claim
  * @param doNotThrowError
- * @param _userId retained for compatibility with existing callers
+ * @param userId
  * @param ttlCategory
  */
 export const saveDraftClaim = async (
   claimId: string,
   claim: Claim,
   doNotThrowError = false,
-  _userId?: string,
+  userId?: string,
   ttlCategory: TTLCategory = TTLCategory.DRAFT_CLAIM,
 ) => {
-  logger.info('Saving draft claim');
+  const resolvedUserId = resolveUserId(claimId, userId);
+  logger.info(`Saving draft claim : userId: ${resolvedUserId}  claimId: ${claimId}`);
   let storedClaimResponse = await getDraftClaimFromStore(claimId, doNotThrowError);
   if (isUndefined(storedClaimResponse.case_data)) {
     storedClaimResponse = createNewCivilClaimResponse(claimId);
@@ -129,7 +143,7 @@ export const updateFieldDraftClaimFromStore = async (claimId: string, req: Reque
   const redisKey = generateRedisKey(<AppRequest>req);
   const userId = (<AppRequest>req).session.user?.id;
   claim[propertyName] = newValue;
-  logger.info(`Updating draft claim property: ${propertyName}`);
+  logger.info(`updateFieldDraftClaimFromStore: userId: ${userId} redisKey: ${redisKey} propertyName: ${propertyName}`);
   await saveDraftClaim(redisKey, claim, false, userId);
 
 };
