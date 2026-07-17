@@ -4,11 +4,11 @@ const PII_FIELD_NAMES = [
   'firstName', 'lastName', 'fullName', 'partyName', 'individualFirstName', 'individualLastName',
   'soleTraderFirstName', 'soleTraderLastName', 'companyName', 'organisationName',
   'email', 'emailAddress', 'partyEmail', 'dateOfBirth', 'individualDateOfBirth', 'dob',
-  'caseId', 'caseReference', 'claimId', 'submitterId', 'userId', 'redisKey', 'taskId',
+  'submitterId', 'userId', 'redisKey', 'taskId',
   'documentId', 'notificationId', 'reference', 'amount', 'claimFee', 'paymentReference', 'paymentDate',
   'address', 'primaryAddress', 'addressLine[1-3]?', 'postCode', 'postTown', 'county', 'country',
 ].join('|');
-const PII_FIELD_PATTERN = new RegExp(`("?(?:${PII_FIELD_NAMES})"?\\s*[:=]\\s*)("[^"]*"|[^,})]+)`, 'gi');
+const PII_FIELD_PATTERN = new RegExp(`(?<![\\w])("?(?:${PII_FIELD_NAMES})"?\\s*[:=]\\s*)("[^"]*"|[^,})]+)`, 'gi');
 const PII_KEYS = new RegExp(`^(?:${PII_FIELD_NAMES})$`, 'i');
 const LOG_METHODS = ['error', 'warn', 'info', 'verbose', 'debug', 'silly'] as const;
 const WRAPPED_LOGGER = Symbol('piiRedactionWrapped');

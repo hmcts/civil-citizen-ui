@@ -224,7 +224,7 @@ export class CivilServiceClient {
       }
       return convertCaseToClaim(caseDetails);
     } catch (err: unknown) {
-      logger.error('Error when retrieving claim details');
+      logger.error(`Error when retrieving claim details for claim id - ${normalizedClaimId}`);
       throw err;
     }
   }
@@ -316,7 +316,7 @@ export class CivilServiceClient {
       }
       return response.data as string;
     } catch (err: unknown) {
-      logger.error('Error when verifying OCMC pin');
+      logger.error(`Error when verifying OCMC pin for caseReference - ${caseReference}`);
       throw err;
     }
   }
@@ -332,10 +332,10 @@ export class CivilServiceClient {
     } catch (err: unknown) {
       const axiosError = err as AxiosError;
       if (axiosError.response?.status === 404) {
-        logger.info('Claim not found or not linked, returning false');
+        logger.info(`Claim ${caseReference} not found or not linked, returning false`);
         return false;
       }
-      logger.error('Error when checking whether a claim is linked to a defendant');
+      logger.error(`Error when checking whether claim ${caseReference} is linked to a defendant`);
       throw err;
     }
   }
@@ -466,7 +466,7 @@ export class CivilServiceClient {
     } catch (e: unknown) {
       const err = e as AxiosError;
       const status = err.response?.status;
-      logger.error(`Submit event failed (event=${event}, status=${status})`);
+      logger.error(`Submit event failed (event=${event}, claimId=${normalizedClaimId}, status=${status})`);
       throw err;
     }
   }
@@ -527,7 +527,7 @@ export class CivilServiceClient {
     await this.client.post(ASSIGN_CLAIM_TO_DEFENDANT.replace(':claimId', normalizedClaimId), { pin: pin }, // nosonar
       { headers: { 'Authorization': `Bearer ${req.session?.user?.accessToken}` } })
       .catch((err) => {
-        logger.error('Error when assigning defendant to claim');
+        logger.error(`Error when assigning defendant to claim ${normalizedClaimId}`);
         throw err;
       }); // nosonar
   }
@@ -540,7 +540,7 @@ export class CivilServiceClient {
       if(response.data)
         return new Date(response.data.toString());
     } catch (err: unknown) {
-      logger.error('Error when getting agreed deadline response date');
+      logger.error(`Error when getting agreed deadline response date for claimId: ${normalizedClaimId}`);
       throw err;
     }
   }

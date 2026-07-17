@@ -38,7 +38,7 @@ judgmentAmountSummaryExtendedController.get(
         const claim = await getCaseDataFromStore(generateRedisKey(req));
 
         if (!claim.claimFee?.calculatedAmountInPence) {
-          logger.error('Claim fee is not set');
+          logger.error(`Claim fee is not set for claim id: ${claim.id}`);
           throw new Error();
         }
         const claimFee = convertToPoundsFilter(
@@ -58,7 +58,7 @@ judgmentAmountSummaryExtendedController.post(CCJ_EXTENDED_PAID_AMOUNT_SUMMARY_UR
     claim.claimantResponse.chooseHowToProceed = new ChooseHowToProceed(ChooseHowProceed.REQUEST_A_CCJ);
     const userId = (<AppRequest>req).session.user?.id;
     const claimId = claim.id;
-    logger.info('Saving claimant response');
+    logger.info(`Saving claimant response for claimId: ${claimId}`);
     await saveDraftClaim(claimId, claim, true, userId);
     res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIMANT_RESPONSE_TASK_LIST_URL));
   })();

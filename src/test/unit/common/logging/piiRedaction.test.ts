@@ -31,25 +31,33 @@ describe('PII logging redaction', () => {
         address: '[REDACTED]',
         contact: '[REDACTED]',
       },
-      caseId: '[REDACTED]',
+      caseId: '1234',
     });
   });
 
-  it('redacts identifiers and financial values', () => {
-    const message = redactString('caseId=1234567890123456, amount=250, paymentReference=RC-123');
+  it('retains case IDs and redacts other identifiers and financial values', () => {
+    const message = redactString(
+      'caseId=1234567890123456, caseReference=ABC-123, claimId=1234567890123456, amount=250, paymentReference=RC-123',
+    );
     const value = {
       caseId: '1234567890123456',
+      caseReference: 'ABC-123',
+      claimId: '1234567890123456',
       userId: 'abc-123',
       amount: 250,
       paymentReference: 'RC-123',
       status: 'success',
     };
 
-    expect(message).not.toContain('1234567890123456');
+    expect(message).toContain('caseId=1234567890123456');
+    expect(message).toContain('caseReference=ABC-123');
+    expect(message).toContain('claimId=1234567890123456');
     expect(message).not.toContain('250');
     expect(message).not.toContain('RC-123');
     expect(redactLogValue(value)).toEqual({
-      caseId: '[REDACTED]',
+      caseId: '1234567890123456',
+      caseReference: 'ABC-123',
+      claimId: '1234567890123456',
       userId: '[REDACTED]',
       amount: '[REDACTED]',
       paymentReference: '[REDACTED]',
