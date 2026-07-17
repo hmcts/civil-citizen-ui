@@ -1,7 +1,7 @@
 import {NextFunction, Request, Response} from 'express';
 import * as path from 'path';
 import {configure} from 'nunjucks';
-import {setLanguage} from 'modules/i18n/languageService';
+import {normaliseDetectedLanguage, setLanguage} from 'modules/i18n/languageService';
 
 describe('setLanguage', () => {
   const nunjucks = configure([
@@ -46,6 +46,54 @@ describe('setLanguage', () => {
       cookieLang: undefined,
       expectedLang: 'en',
     },
+    {
+      name: 'uses a Welsh cookie when the query parameter is unsupported',
+      queryLang: 'fr',
+      cookieLang: 'cy',
+      expectedLang: 'cy',
+    },
+    {
+      name: 'renders the page as English when the cookie is unsupported',
+      queryLang: undefined,
+      cookieLang: 'fr',
+      expectedLang: 'en',
+    },
+    {
+      name: 'uses the first supported repeated query parameter',
+      queryLang: ['fr', 'cy', 'en'],
+      cookieLang: 'en',
+      expectedLang: 'cy',
+    },
+    {
+      name: 'normalises a regional Welsh query parameter',
+      queryLang: 'cy-GB',
+      cookieLang: 'en',
+      expectedLang: 'cy',
+    },
+    {
+      name: 'normalises a regional English query parameter',
+      queryLang: 'en-GB',
+      cookieLang: 'cy',
+      expectedLang: 'en',
+    },
+    {
+      name: 'normalises a mixed-case regional Welsh query parameter',
+      queryLang: 'Cy-gb',
+      cookieLang: 'en',
+      expectedLang: 'cy',
+    },
+    {
+      name: 'normalises an uppercase Welsh query parameter',
+      queryLang: 'CY',
+      cookieLang: 'en',
+      expectedLang: 'cy',
+    },
+    {
+      name: 'uses an English cookie when a Welsh regional value is malformed',
+      queryLang: 'cy-!',
+      cookieLang: 'en',
+      expectedLang: 'en',
+    },
   ])('$name', ({queryLang, cookieLang, expectedLang}) => {
     const req = createRequest(queryLang, cookieLang);
     const res = createResponse();
@@ -57,5 +105,14 @@ describe('setLanguage', () => {
     expect(res.locals.htmlLang).toBe(expectedLang);
     expect(renderDocument(res)).toContain(`<html lang="${expectedLang}"`);
     expect(next).toHaveBeenCalledTimes(1);
+  });
+
+  it.each([
+    ['CY', 'cy'],
+    ['cy-GB', 'cy'],
+    ['cy-!', 'unsupported'],
+    ['fr', 'fr'],
+  ])('normalises detected language %s to %s', (language, expectedLanguage) => {
+    expect(normaliseDetectedLanguage(language)).toBe(expectedLanguage);
   });
 });

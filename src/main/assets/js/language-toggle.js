@@ -2,8 +2,9 @@ const languageElement = document.getElementsByClassName('language');
 
 function getUpdatedQuery(query, language) {
   const toggleLang = language === 'en' ? 'cy' : 'en';
-  if (query.includes('lang')) {
-    return query.replace(`lang=${language}`, `lang=${toggleLang}`);
+  const languageParameter = /([?&])lang=[^&]*/i;
+  if (languageParameter.test(query)) {
+    return query.replace(languageParameter, `$1lang=${toggleLang}`);
   } else if (query) {
     return `${query}&&lang=${toggleLang}`;
   } else if (!query) {

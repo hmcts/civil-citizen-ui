@@ -39,4 +39,12 @@ describe('language-toggle', () => {
     expect(toggle?.textContent).toBe('Cymraeg');
     expect(toggle?.getAttribute('href')).toBe('?lang=cy');
   });
+
+  it('switches a mixed-case regional query using the canonical server language', () => {
+    const toggle = loadLanguageToggle('cy', 'en', '?lang=Cy-gb');
+
+    expect(document.documentElement.lang).toBe('cy');
+    expect(toggle?.textContent).toBe('English');
+    expect(toggle?.getAttribute('href')).toBe('?lang=en');
+  });
 });
