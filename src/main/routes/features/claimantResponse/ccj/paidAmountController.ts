@@ -49,8 +49,7 @@ paidAmountController.post([CCJ_PAID_AMOUNT_URL, CCJ_EXTENDED_PAID_AMOUNT_URL], a
     if (paidAmount.hasErrors()) {
       renderView(paidAmount, res);
     } else {
-      const userId = (<AppRequest>req).session.user?.id;
-      await saveClaimantResponse(redisKey, paidAmount.model, crPropertyName, crParentName, userId);
+      await saveClaimantResponse(redisKey, paidAmount.model, crPropertyName, crParentName);
       res.redirect(constructResponseUrlWithIdParams(claimId, redirectURL));
     }
   } catch (error) {

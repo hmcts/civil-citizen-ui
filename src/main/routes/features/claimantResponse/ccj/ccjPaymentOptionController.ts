@@ -41,8 +41,7 @@ ccjPaymentOptionController.post(CCJ_PAYMENT_OPTIONS_URL, async (req: Request, re
       renderView(ccjPaymentOption, res);
     } else {
       const redisId = generateRedisKey(req as unknown as AppRequest);
-      const userId = (<AppRequest>req).session.user?.id;
-      await saveClaimantResponse(redisId, ccjPaymentOption.model, crPropertyName, crParentName, userId);
+      await saveClaimantResponse(redisId, ccjPaymentOption.model, crPropertyName, crParentName);
       if (ccjPaymentOption.model.isCcjPaymentOptionBySetDate()) {
         res.redirect(constructResponseUrlWithIdParams(claimId, CCJ_DEFENDANT_PAYMENT_DATE_URL));
       } else if (ccjPaymentOption.model.isCcjPaymentOptionInstalments()) {

@@ -46,8 +46,7 @@ defendantDOBController.post(CCJ_DEFENDANT_DOB_URL, async (req: Request, res: Res
     if (defendantDOB.hasErrors()) {
       renderView(defendantDOB, res);
     } else {
-      const userId = (<AppRequest>req).session.user?.id;
-      await saveClaimantResponse(generateRedisKey(req as unknown as AppRequest), defendantDOB.model, crPropertyName, crParentName, userId);
+      await saveClaimantResponse(generateRedisKey(req as unknown as AppRequest), defendantDOB.model, crPropertyName, crParentName);
       res.redirect(constructResponseUrlWithIdParams(claimId, CCJ_PAID_AMOUNT_URL));
     }
   } catch (error) {

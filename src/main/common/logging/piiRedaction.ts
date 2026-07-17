@@ -1,7 +1,15 @@
 const REDACTED = '[REDACTED]';
 const EMAIL_PATTERN = /(?<![\w.+-])[\w.+-]+@[\w.-]+\.[a-z]{2,}(?![\w.-])/gi;
-const PII_FIELD_PATTERN = /("?(?:firstName|lastName|fullName|partyName|individualFirstName|individualLastName|email|emailAddress|dateOfBirth|dob|addressLine[1-3]?|postCode|postcode|postTown|county|country)"?\s*[:=]\s*)("[^"]*"|[^,})]+)/gi;
-const PII_KEYS = /^(?:firstName|lastName|fullName|partyName|individualFirstName|individualLastName|email|emailAddress|dateOfBirth|dob|address|addressLine[1-3]?|postCode|postcode|postTown|county|country)$/i;
+const PII_FIELD_NAMES = [
+  'firstName', 'lastName', 'fullName', 'partyName', 'individualFirstName', 'individualLastName',
+  'soleTraderFirstName', 'soleTraderLastName', 'companyName', 'organisationName',
+  'email', 'emailAddress', 'partyEmail', 'dateOfBirth', 'individualDateOfBirth', 'dob',
+  'caseId', 'caseReference', 'claimId', 'submitterId', 'userId', 'redisKey', 'taskId',
+  'documentId', 'notificationId', 'reference', 'amount', 'claimFee', 'paymentReference', 'paymentDate',
+  'address', 'primaryAddress', 'addressLine[1-3]?', 'postCode', 'postTown', 'county', 'country',
+].join('|');
+const PII_FIELD_PATTERN = new RegExp(`("?(?:${PII_FIELD_NAMES})"?\\s*[:=]\\s*)("[^"]*"|[^,})]+)`, 'gi');
+const PII_KEYS = new RegExp(`^(?:${PII_FIELD_NAMES})$`, 'i');
 const LOG_METHODS = ['error', 'warn', 'info', 'verbose', 'debug', 'silly'] as const;
 const WRAPPED_LOGGER = Symbol('piiRedactionWrapped');
 

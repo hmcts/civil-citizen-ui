@@ -31,7 +31,29 @@ describe('PII logging redaction', () => {
         address: '[REDACTED]',
         contact: '[REDACTED]',
       },
-      caseId: '1234',
+      caseId: '[REDACTED]',
+    });
+  });
+
+  it('redacts identifiers and financial values', () => {
+    const message = redactString('caseId=1234567890123456, amount=250, paymentReference=RC-123');
+    const value = {
+      caseId: '1234567890123456',
+      userId: 'abc-123',
+      amount: 250,
+      paymentReference: 'RC-123',
+      status: 'success',
+    };
+
+    expect(message).not.toContain('1234567890123456');
+    expect(message).not.toContain('250');
+    expect(message).not.toContain('RC-123');
+    expect(redactLogValue(value)).toEqual({
+      caseId: '[REDACTED]',
+      userId: '[REDACTED]',
+      amount: '[REDACTED]',
+      paymentReference: '[REDACTED]',
+      status: 'success',
     });
   });
 

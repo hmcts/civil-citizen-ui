@@ -93,13 +93,13 @@ export const refreshDraftStoreClaimFrom = async (req: Request, useRedisKey = fal
   const oldClaim = await getDraftClaimFromStore(redisKey, true);
   const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
   if (claim) {
-    logger.info(`Refreshing claim from draft store: userId: ${userId} redisKey: ${redisKey} claimId: ${claimId}`);
+    logger.info('Refreshing claim from draft store');
     claim.claimantResponse = oldClaim?.case_data?.claimantResponse;
-    logger.info(`Setting claimant response: userId: ${userId} redisKey: ${redisKey}`);
+    logger.info('Setting claimant response');
     await deleteDraftClaimFromStore(redisKey);
     await saveDraftClaim(redisKey, claim, true, userId, TTLCategory.JOURNEY_CACHE);
   } else {
-    logger.error(`No claim found in draft store for : userId: ${userId} redisKey: ${redisKey} claimId: ${claimId}`);
+    logger.error('No claim found in draft store');
     throw new Error('Case not found...');
   }
   syncCaseReference(req, claim);

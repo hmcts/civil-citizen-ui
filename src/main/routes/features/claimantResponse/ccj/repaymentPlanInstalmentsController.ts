@@ -57,8 +57,7 @@ repaymentPlanInstalmentsController.post(CCJ_REPAYMENT_PLAN_INSTALMENTS_URL, asyn
     } else {
       const claimantResponsePropertyName = 'repaymentPlanInstalments';
       const parentPropertyName = 'ccjRequest';
-      const userId = (<AppRequest>req).session.user?.id;
-      await saveClaimantResponse(redisKey, form.model, claimantResponsePropertyName, parentPropertyName, userId);
+      await saveClaimantResponse(redisKey, form.model, claimantResponsePropertyName, parentPropertyName);
       res.redirect(constructResponseUrlWithIdParams(claimId, CCJ_CHECK_AND_SEND_URL));
     }
   } catch (error) {

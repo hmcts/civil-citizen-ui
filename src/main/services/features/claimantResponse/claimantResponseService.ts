@@ -31,20 +31,20 @@ const getClaimantResponse = async (claimId: string): Promise<ClaimantResponse> =
   }
 };
 
-const saveClaimantResponse = async (claimId: string, value: any, claimantResponsePropertyName: string, parentPropertyName?: string, userId?: string): Promise<void> => {
+const saveClaimantResponse = async (claimId: string, value: any, claimantResponsePropertyName: string, parentPropertyName?: string): Promise<void> => {
   try {
     const claim = await getCaseDataFromStore(claimId, true);
 
     ensureClaimantResponseExists(claim);
     setClaimantResponseValue(claim, parentPropertyName, claimantResponsePropertyName, value);
-    logger.info(`Claimant response property set: userId: ${userId} claimId: ${claimId}`);
+    logger.info('Claimant response property set');
 
     const claimantResponse = Object.assign(new ClaimantResponse(), claim.claimantResponse);
     applySuggestedPaymentIntentionCleanup(claim, claimantResponse);
     applyRejectionCleanup(claim);
-    logger.info(`Claimant response cleanup completed: userId: ${userId} claimId: ${claimId}`);
+    logger.info('Claimant response cleanup completed');
     const resetClaim = resetTaskListData(claim, claimantResponsePropertyName, parentPropertyName);
-    logger.info(`Claimant response task list reset completed: userId: ${userId} claimId: ${claimId}`);
+    logger.info('Claimant response task list reset completed');
     await saveDraftClaim(claimId, resetClaim, true);
   } catch (error) {
     logger.error(error);
