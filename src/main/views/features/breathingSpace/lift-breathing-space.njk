@@ -1,19 +1,23 @@
-{% extends "claim-details-tpl.njk" %}
+{% extends "claim-details-tpl-dashboard.njk" %}
 {% from "govuk/components/date-input/macro.njk" import govukDateInput %}
 {% from "govuk/components/textarea/macro.njk" import govukTextarea %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
-{% from "../../macro/error-summary.njk" import errorSummary %}
 {% from "../../macro/csrf.njk" import csrfProtection %}
-{% from "../../macro/contact-us-for-help.njk" import contactUsForHelp %}
 {% from "../../macro/page-title.njk" import setPageTitle %}
+{% from "../../macro/support-links.njk" import supportLinks %}
+{% from "../../macro/contact-us-for-help.njk" import contactUsForHelp with context %}
+{% from "../../macro/error-summary.njk" import errorSummary %}
 
 {% set pageTitle = 'PAGES.BREATHING_SPACE.LIFT.TITLE' %}
 {{ setPageTitle(t, pageTitle) }}
 
 {% block content %}
-  <div class="govuk-grid-row">
-    <div class="govuk-grid-column-two-thirds">
-      {{ errorSummary(form.getErrors(), t) }}
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    {% if showErrorSummary and form != null and form.hasErrors() %}
+      {{ errorSummary(form.getAllErrors(), t) }}
+    {% endif %}
+    {% block nestedContent %}
       <h1 class="govuk-heading-l">
         <span class="govuk-caption-l">{{ t('PAGES.BREATHING_SPACE.LIFT.CAPTION') }}</span>
         {{ t('PAGES.BREATHING_SPACE.LIFT.TITLE') }}
@@ -23,7 +27,7 @@
         {{ csrfProtection(csrf) }}
 
         {{ govukDateInput({
-          id: "date",
+          id: "date-day",
           namePrefix: "date",
           fieldset: {
             legend: {
@@ -79,16 +83,23 @@
           {{ govukButton({
             text: t('COMMON.BUTTONS.CONTINUE')
           }) }}
-          <a class="govuk-link" href="#">{{ t('COMMON.BUTTONS.PREVIOUS') }}</a>
+          <a class="govuk-link" href="{{ backUrl }}">{{ t('COMMON.BUTTONS.PREVIOUS') }}</a>
         </div>
 
         <p class="govuk-body">
-          <a href="#" class="govuk-link">{{ t('COMMON.BUTTONS.CANCEL') }}</a>
+          <a href="{{ backUrl }}" class="govuk-link">{{ t('COMMON.BUTTONS.CANCEL') }}</a>
         </p>
       </form>
-    </div>
-    <div class="govuk-grid-column-one-third">
-      {{ contactUsForHelp(t) }}
-    </div>
+    {% endblock %}
   </div>
+  <div class="govuk-grid-column-one-third">
+    {% block sidebar %}
+      <div class="border-small-top"></div>
+      {% if helpSupportLinks != null and helpSupportLinks.length %}
+        {{ supportLinks(t, helpSupportTitle, helpSupportLinks) }}
+      {% endif %}
+      {{ contactUsForHelp(t) }}
+    {% endblock %}
+  </div>
+</div>
 {% endblock %}
