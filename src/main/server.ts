@@ -5,6 +5,7 @@ import * as path from 'path';
 import {installPiiLoggingRedaction} from './common/logging/piiRedaction';
 
 installPiiLoggingRedaction();
+// Load the application after installing redaction so its module-level loggers are wrapped.
 const {app} = require('./app');
 
 const { Logger } = require('@hmcts/nodejs-logging');
@@ -19,16 +20,14 @@ process.on('uncaughtException', (error: Error) => {
     stack: error.stack,
     timestamp: new Date().toISOString(),
   });
-  
 });
 
-process.on('unhandledRejection', (reason: any, promise: Promise<any>) => {
+process.on('unhandledRejection', (reason: unknown) => {
   logger.error('Unhandled Rejection:', {
-    reason: reason?.message || reason,
-    stack: reason?.stack,
+    reason: reason instanceof Error ? reason.message : reason,
+    stack: reason instanceof Error ? reason.stack : undefined,
     timestamp: new Date().toISOString(),
   });
-  
 });
 
 if (app.locals.ENV === 'development') {

@@ -15,6 +15,12 @@ describe('PII logging redaction', () => {
     expect(redacted).not.toContain('SW1A 1AA');
   });
 
+  it('redacts each line without consuming later stack frames', () => {
+    const value = 'Request failed\nclaimAmount=250\nat Example.method';
+
+    expect(redactString(value)).toBe('Request failed\nclaimAmount=[REDACTED]\nat Example.method');
+  });
+
   it('recursively redacts sensitive properties in structured log metadata', () => {
     const value = {
       claimant: {
@@ -36,9 +42,12 @@ describe('PII logging redaction', () => {
   });
 
   it('retains operational identifiers and redacts financial values', () => {
-    const message = redactString(
-      'caseId=1234567890123456, caseReference=ABC-123, claimId=1234567890123456, userId=user-123, taskId=task-123, documentId=document-123, notificationId=notification-123, amount=250, paymentReference=RC-123',
-    );
+    const message = redactString([
+      'caseId=1234567890123456, caseReference=ABC-123, claimId=1234567890123456',
+      'userId=user-123, taskId=task-123, documentId=document-123, notificationId=notification-123',
+      'amount=250, totalClaimAmount=500, claimFeeInPence=7000, interestAmount=15',
+      'paymentReference=RC-123',
+    ].join(', '));
     const value = {
       caseId: '1234567890123456',
       caseReference: 'ABC-123',
@@ -48,6 +57,9 @@ describe('PII logging redaction', () => {
       documentId: 'document-123',
       notificationId: 'notification-123',
       amount: 250,
+      totalClaimAmount: 500,
+      claimFeeInPence: 7000,
+      interestAmount: 15,
       paymentReference: 'RC-123',
       status: 'success',
     };
@@ -60,6 +72,9 @@ describe('PII logging redaction', () => {
     expect(message).toContain('documentId=document-123');
     expect(message).toContain('notificationId=notification-123');
     expect(message).not.toContain('250');
+    expect(message).not.toContain('500');
+    expect(message).not.toContain('7000');
+    expect(message).not.toContain('15');
     expect(message).not.toContain('RC-123');
     expect(redactLogValue(value)).toEqual({
       caseId: '1234567890123456',
@@ -70,6 +85,9 @@ describe('PII logging redaction', () => {
       documentId: 'document-123',
       notificationId: 'notification-123',
       amount: '[REDACTED]',
+      totalClaimAmount: '[REDACTED]',
+      claimFeeInPence: '[REDACTED]',
+      interestAmount: '[REDACTED]',
       paymentReference: '[REDACTED]',
       status: 'success',
     });
@@ -80,5 +98,17 @@ describe('PII logging redaction', () => {
     value.self = value;
 
     expect(redactLogValue(value)).toEqual({self: '[CIRCULAR]'});
+  });
+
+  it('handles repeated references and special object types', () => {
+    const shared = {firstName: 'Jane'};
+    const createdAt = new Date('2026-07-17T00:00:00.000Z');
+
+    expect(redactLogValue({primary: shared, secondary: shared, createdAt, payload: Buffer.from('data')})).toEqual({
+      primary: {firstName: '[REDACTED]'},
+      secondary: {firstName: '[REDACTED]'},
+      createdAt,
+      payload: '[BINARY DATA]',
+    });
   });
 });
