@@ -919,4 +919,32 @@ module.exports = {
       content: 'Dyfarniad Llys Sirol (CCJ) y gwnaethoch gais amdano',
     };
   },
+
+  moreTimeRequestedClaimant: () => {
+    return {
+      title: 'More time requested',
+      content: 'The response deadline for the defendant is now 4pm on',
+    };
+  },
+
+  moreTimeRequestedClaimantWelsh: () => {
+    return {
+      title: 'Cais am fwy o amser',
+      content: 'Y terfyn amser ar gyfer ymateb y diffynnydd nawr yw 4pm ar',
+    };
+  },
+
+  moreTimeRequestedDefendant: () => {
+    return {
+      title: 'More time requested',
+      content: 'The response deadline is now 4pm on',
+    };
+  },
+
+  moreTimeRequestedDefendantWelsh: () => {
+    return {
+      title: 'Cais am fwy o amser',
+      content: 'Y terfyn amser nawr yw 4pm ar',
+    };
+  },
 };

@@ -3,7 +3,7 @@ const LoginSteps = require('../../../commonFeatures/home/steps/login');
 const {createAccount} = require('../../../specClaimHelpers/api/idamHelper');
 const {dateTime} = require('../../../specClaimHelpers/api/dataHelper');
 const ClaimantResponseSteps = require('../../../citizenFeatures/response/steps/lipClaimantResponseSteps');
-const {checkToggleEnabled} = require('../../../specClaimHelpers/api/testingSupport');
+const {checkToggleEnabled, triggerCaseDismissalScheduler} = require('../../../specClaimHelpers/api/testingSupport');
 const {verifyNotificationTitleAndContent} = require('../../../specClaimHelpers/e2e/dashboardHelper');
 const CitizenDashboardSteps = require('../../../citizenFeatures/citizenDashboard/steps/citizenDashboard');
 const dashboardNotifications = require('../../../specClaimHelpers/dashboardNotificationConstants');
@@ -17,7 +17,7 @@ let claimRef, caseData, claimNumber;
 
 const runSchedulerUntilDismissed = async (api, attempts = 12, intervalMs = 5000) => {
   for (let i = 0; i < attempts; i++) {
-    await api.triggerCaseDismissalScheduler();
+    await triggerCaseDismissalScheduler();
     const data = await api.retrieveCaseData(config.adminUser, claimRef);
     if (!data.activeJudgment) {
       return true;
@@ -77,8 +77,8 @@ Scenario('AC7 negative - scheduler does not dismiss a buffer case whose claimDis
   await api.waitForFinishedBusinessProcess();
 
   await api.setClaimDismissedDeadline(config.systemUpdate, claimRef, dateTime(2).slice(0, 19));
-  await api.triggerCaseDismissalScheduler();
-  await api.triggerCaseDismissalScheduler();
+  await triggerCaseDismissalScheduler();
+  await triggerCaseDismissalScheduler();
 
   const data = await api.retrieveCaseData(config.adminUser, claimRef);
   assert.exists(data.activeJudgment, 'judgment must remain - the case is not past its dismissal deadline');
