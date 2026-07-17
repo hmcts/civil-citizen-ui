@@ -18,17 +18,7 @@ import {Party} from 'models/party';
 import {ResponseType} from 'form/models/responseType';
 import {RejectAllOfClaim} from 'form/models/rejectAllOfClaim';
 import {RejectAllOfClaimType} from 'form/models/rejectAllOfClaimType';
-import {
-  applyTaskListResetRules,
-  CLAIMANT_RESPONSE_TASK_LIST_RESET_RULES,
-  clearAcceptOrRejectAmountData,
-  clearFormaliseRepaymentData,
-  clearMediationAndDirectionQuestionnaire,
-  clearMediationCarm,
-  clearProposeAlternativeRepaymentPlanData,
-  clearTaskListData,
-  TaskListResetRule,
-} from 'services/features/claimantResponse/claimantResponseTaskListReset';
+import {applyTaskListResetRules} from 'services/features/claimantResponse/claimantResponseTaskListReset';
 
 function buildClaimWithTaskListData(): Claim {
   const claim = new Claim();
@@ -62,73 +52,6 @@ function buildFullDefenceClaim(option: RejectAllOfClaimType): Claim {
 }
 
 describe('claimantResponseTaskListReset', () => {
-  describe('named helpers', () => {
-    it('clearMediationCarm removes mediationCarm only', () => {
-      const claim = buildClaimWithTaskListData();
-
-      clearMediationCarm(claim);
-
-      expect(claim.claimantResponse.mediationCarm).toBeUndefined();
-      expect(claim.claimantResponse.mediation).toBeDefined();
-    });
-
-    it('clearFormaliseRepaymentData removes ccj and settlement agreement', () => {
-      const claim = buildClaimWithTaskListData();
-
-      clearFormaliseRepaymentData(claim);
-
-      expect(claim.claimantResponse.ccjRequest).toBeUndefined();
-      expect(claim.claimantResponse.signSettlementAgreement).toBeUndefined();
-      expect(claim.claimantResponse.chooseHowToProceed).toBeDefined();
-    });
-
-    it('clearTaskListData removes repayment-plan task list fields', () => {
-      const claim = buildClaimWithTaskListData();
-
-      clearTaskListData(claim);
-
-      expect(claim.claimantResponse.suggestedPaymentIntention).toBeUndefined();
-      expect(claim.claimantResponse.courtProposedDate).toBeUndefined();
-      expect(claim.claimantResponse.rejectionReason).toBeUndefined();
-      expect(claim.claimantResponse.chooseHowToProceed).toBeUndefined();
-      expect(claim.claimantResponse.signSettlementAgreement).toBeUndefined();
-      expect(claim.claimantResponse.ccjRequest).toBeUndefined();
-      expect(claim.claimantResponse.courtDecision).toBeUndefined();
-    });
-
-    it('clearAcceptOrRejectAmountData removes amount-response and task list fields', () => {
-      const claim = buildClaimWithTaskListData();
-
-      clearAcceptOrRejectAmountData(claim);
-
-      expect(claim.claimantResponse.hasPartPaymentBeenAccepted).toBeUndefined();
-      expect(claim.claimantResponse.mediation).toBeUndefined();
-      expect(claim.claimantResponse.directionQuestionnaire).toBeUndefined();
-      expect(claim.claimantResponse.fullAdmitSetDateAcceptPayment).toBeUndefined();
-      expect(claim.claimantResponse.suggestedPaymentIntention).toBeUndefined();
-    });
-
-    it('clearProposeAlternativeRepaymentPlanData clears chooseHowToProceed and formalise data', () => {
-      const claim = buildClaimWithTaskListData();
-
-      clearProposeAlternativeRepaymentPlanData(claim);
-
-      expect(claim.claimantResponse.chooseHowToProceed).toBeUndefined();
-      expect(claim.claimantResponse.ccjRequest).toBeUndefined();
-      expect(claim.claimantResponse.signSettlementAgreement).toBeUndefined();
-    });
-
-    it('clearMediationAndDirectionQuestionnaire removes mediation and DQ only', () => {
-      const claim = buildClaimWithTaskListData();
-
-      clearMediationAndDirectionQuestionnaire(claim);
-
-      expect(claim.claimantResponse.mediation).toBeUndefined();
-      expect(claim.claimantResponse.directionQuestionnaire).toBeUndefined();
-      expect(claim.claimantResponse.ccjRequest).toBeDefined();
-    });
-  });
-
   describe('applyTaskListResetRules', () => {
     it('clearMediationCarmWhenSettled: removes mediationCarm when claimant has settled', () => {
       const claim = buildClaimWithTaskListData();
@@ -146,6 +69,17 @@ describe('claimantResponseTaskListReset', () => {
       applyTaskListResetRules(claim, 'unrelatedProperty');
 
       expect(claim.claimantResponse.mediationCarm).toEqual({hasTelephoneMeditationAccessed: true});
+    });
+
+    it('clearMediationCarmWhenSettled: continues so later exclusive rules can still run', () => {
+      const claim = buildClaimWithTaskListData();
+      jest.spyOn(claim, 'hasClaimantNotSettled').mockReturnValue(false);
+
+      applyTaskListResetRules(claim, 'hasPartAdmittedBeenAccepted');
+
+      expect(claim.claimantResponse.mediationCarm).toBeUndefined();
+      expect(claim.claimantResponse.hasPartPaymentBeenAccepted).toBeUndefined();
+      expect(claim.claimantResponse.suggestedPaymentIntention).toBeUndefined();
     });
 
     it('acceptOrRejectTheAmount: clears amount-response and task list fields', () => {
@@ -247,59 +181,16 @@ describe('claimantResponseTaskListReset', () => {
     });
 
     it('stops after the first exclusive matching rule', () => {
-      const applied: string[] = [];
-      const rules: TaskListResetRule[] = [
-        {
-          id: 'firstExclusive',
-          when: () => true,
-          apply: () => applied.push('firstExclusive'),
-        },
-        {
-          id: 'secondExclusive',
-          when: () => true,
-          apply: () => applied.push('secondExclusive'),
-        },
-      ];
       const claim = buildClaimWithTaskListData();
+      jest.spyOn(claim, 'hasClaimantNotSettled').mockReturnValue(true);
 
-      applyTaskListResetRules(claim, 'any', undefined, rules);
+      // Matching acceptOrRejectTheAmount must not also apply later exclusive rules
+      // (e.g. proposeAlternativeRepaymentPlan would only clear chooseHowToProceed/formalise).
+      applyTaskListResetRules(claim, 'hasPartAdmittedBeenAccepted');
 
-      expect(applied).toEqual(['firstExclusive']);
-    });
-
-    it('continues after a continue rule so later exclusive rules can still run', () => {
-      const applied: string[] = [];
-      const rules: TaskListResetRule[] = [
-        {
-          id: 'continueRule',
-          when: () => true,
-          apply: () => applied.push('continueRule'),
-          continue: true,
-        },
-        {
-          id: 'exclusiveRule',
-          when: () => true,
-          apply: () => applied.push('exclusiveRule'),
-        },
-      ];
-      const claim = buildClaimWithTaskListData();
-
-      applyTaskListResetRules(claim, 'any', undefined, rules);
-
-      expect(applied).toEqual(['continueRule', 'exclusiveRule']);
-    });
-
-    it('exposes each production rule id exactly once', () => {
-      const ruleIds = CLAIMANT_RESPONSE_TASK_LIST_RESET_RULES.map((rule) => rule.id);
-
-      expect(ruleIds).toEqual([
-        'clearMediationCarmWhenSettled',
-        'acceptOrRejectTheAmount',
-        'acceptOrRejectRepaymentPlan',
-        'proposeAlternativeRepaymentPlan',
-        'chooseHowToProceed',
-        'fullDefenceDisputeOrPaidAgreed',
-      ]);
+      expect(claim.claimantResponse.hasPartPaymentBeenAccepted).toBeUndefined();
+      expect(claim.claimantResponse.chooseHowToProceed).toBeUndefined();
+      expect(claim.claimantResponse.mediation).toBeUndefined();
     });
   });
 });

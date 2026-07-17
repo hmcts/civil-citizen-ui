@@ -1,17 +1,17 @@
 import {Claim} from 'models/claim';
 import {ClaimantResponse} from 'models/claimantResponse';
 
-export type ClaimantResponseField = keyof ClaimantResponse;
+type ClaimantResponseField = keyof ClaimantResponse;
 
-export type TaskListResetContext = {
+type TaskListResetContext = {
   claim: Claim;
   propertyName: string;
   parentPropertyName?: string;
 };
 
-export type TaskListResetEffect = (claim: Claim) => void;
+type TaskListResetEffect = (claim: Claim) => void;
 
-export type TaskListResetRule = {
+type TaskListResetRule = {
   id: string;
   when: (context: TaskListResetContext) => boolean;
   apply: TaskListResetEffect;
@@ -21,7 +21,7 @@ export type TaskListResetRule = {
 
 const SUGGESTED_PAYMENT_INTENTION_CHILD_PROPERTIES = ['paymentOption', 'paymentDate', 'repaymentPlan'] as const;
 
-export function deleteClaimantResponseFields(claim: Claim, fields: readonly ClaimantResponseField[]): void {
+function deleteClaimantResponseFields(claim: Claim, fields: readonly ClaimantResponseField[]): void {
   const claimantResponse = claim.claimantResponse;
   if (!claimantResponse) {
     return;
@@ -32,15 +32,15 @@ export function deleteClaimantResponseFields(claim: Claim, fields: readonly Clai
   }
 }
 
-export function clearMediationCarm(claim: Claim): void {
+function clearMediationCarm(claim: Claim): void {
   deleteClaimantResponseFields(claim, ['mediationCarm']);
 }
 
-export function clearFormaliseRepaymentData(claim: Claim): void {
+function clearFormaliseRepaymentData(claim: Claim): void {
   deleteClaimantResponseFields(claim, ['ccjRequest', 'signSettlementAgreement']);
 }
 
-export function clearTaskListData(claim: Claim): void {
+function clearTaskListData(claim: Claim): void {
   deleteClaimantResponseFields(claim, [
     'suggestedPaymentIntention',
     'courtProposedDate',
@@ -52,7 +52,7 @@ export function clearTaskListData(claim: Claim): void {
   ]);
 }
 
-export function clearAcceptOrRejectAmountData(claim: Claim): void {
+function clearAcceptOrRejectAmountData(claim: Claim): void {
   deleteClaimantResponseFields(claim, [
     'hasPartPaymentBeenAccepted',
     'mediation',
@@ -62,12 +62,12 @@ export function clearAcceptOrRejectAmountData(claim: Claim): void {
   clearTaskListData(claim);
 }
 
-export function clearProposeAlternativeRepaymentPlanData(claim: Claim): void {
+function clearProposeAlternativeRepaymentPlanData(claim: Claim): void {
   deleteClaimantResponseFields(claim, ['chooseHowToProceed']);
   clearFormaliseRepaymentData(claim);
 }
 
-export function clearMediationAndDirectionQuestionnaire(claim: Claim): void {
+function clearMediationAndDirectionQuestionnaire(claim: Claim): void {
   deleteClaimantResponseFields(claim, ['mediation', 'directionQuestionnaire']);
 }
 
@@ -106,7 +106,7 @@ function isFullDefencePaidAgreed(claim: Claim, propertyName: string): boolean {
  * Rules without `continue` are mutually exclusive (first match wins).
  * The mediationCarm rule always runs independently.
  */
-export const CLAIMANT_RESPONSE_TASK_LIST_RESET_RULES: readonly TaskListResetRule[] = [
+const CLAIMANT_RESPONSE_TASK_LIST_RESET_RULES: readonly TaskListResetRule[] = [
   {
     id: 'clearMediationCarmWhenSettled',
     when: ({claim}) => !claim.hasClaimantNotSettled(),
@@ -148,11 +148,10 @@ export function applyTaskListResetRules(
   claim: Claim,
   propertyName: string,
   parentPropertyName?: string,
-  rules: readonly TaskListResetRule[] = CLAIMANT_RESPONSE_TASK_LIST_RESET_RULES,
 ): Claim {
   const context: TaskListResetContext = {claim, propertyName, parentPropertyName};
 
-  for (const rule of rules) {
+  for (const rule of CLAIMANT_RESPONSE_TASK_LIST_RESET_RULES) {
     if (!rule.when(context)) {
       continue;
     }
