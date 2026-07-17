@@ -546,7 +546,6 @@ If you want to clean up the environment just run:
 ```shell
 npx @hmcts/dev-env@latest --delete
 ```
-
 To run the specialised charts, where you can get Elasticsearch for instance, run:
 
 ```shell
