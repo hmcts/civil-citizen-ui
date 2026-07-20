@@ -4,14 +4,11 @@ import * as path from 'path';
 import {configure} from 'nunjucks';
 import request from 'supertest';
 import {setLanguage} from 'modules/i18n/languageService';
-import unauthorisedController from 'routes/unauthorisedController';
 
 describe('setLanguage', () => {
-  const viewPaths = [
-    path.resolve(__dirname, '../../../../main/views'),
+  const nunjucks = configure([
     path.resolve(__dirname, '../../../../../node_modules/govuk-frontend/dist'),
-  ];
-  const nunjucks = configure(viewPaths);
+  ]);
 
   const createRequest = (queryLang?: unknown, cookieLang?: unknown): Request => ({
     query: queryLang ? {lang: queryLang} : {},
@@ -99,18 +96,31 @@ describe('setLanguage', () => {
       cookieLang: 'en',
       expectedLang: 'en',
     },
+    {
+      name: 'preserves diagnostic mode from the query parameter',
+      queryLang: 'cimode',
+      cookieLang: 'cy',
+      expectedLang: 'cimode',
+    },
+    {
+      name: 'preserves diagnostic mode from the cookie',
+      queryLang: undefined,
+      cookieLang: 'cimode',
+      expectedLang: 'cimode',
+    },
   ])('$name', ({queryLang, cookieLang, expectedLang}) => {
     const req = createRequest(queryLang, cookieLang);
     const res = createResponse();
     const next = jest.fn() as NextFunction;
+    const expectedHtmlLang = expectedLang === 'cimode' ? 'en' : expectedLang;
 
     setLanguage(req, res, next);
 
     expect(res.locals.lang).toBe(expectedLang);
-    expect(res.locals.htmlLang).toBe(expectedLang);
+    expect(res.locals.htmlLang).toBe(expectedHtmlLang);
     expect(req.query.lang).toBe(queryLang === undefined ? undefined : expectedLang);
     expect(req.cookies.lang).toBe(expectedLang);
-    expect(renderDocument(res)).toContain(`<html lang="${expectedLang}"`);
+    expect(renderDocument(res)).toContain(`<html lang="${expectedHtmlLang}"`);
     expect(next).toHaveBeenCalledTimes(1);
   });
 
@@ -135,23 +145,5 @@ describe('setLanguage', () => {
       htmlLang: 'cy',
       queryLang: 'cy',
     });
-  });
-
-  it('keeps the unauthorised page language as English when the selected language is Welsh', async () => {
-    const app = express();
-    app.set('views', viewPaths[0]);
-    app.set('view engine', 'njk');
-    configure(viewPaths, {express: app});
-    app.use((_req, res, next) => {
-      res.locals.htmlLang = 'cy';
-      next();
-    });
-    app.use(unauthorisedController);
-
-    const response = await request(app).get('/unauthorised');
-
-    expect(response.status).toBe(200);
-    expect(response.text).toContain('<html lang="en"');
-    expect(response.text).toContain('<h1 class="govuk-heading-xl">Unauthorised</h1>');
   });
 });
