@@ -568,7 +568,14 @@
         "WHEN_END": "Pryd ddaw'r lle i anadlu i ben?",
         "DATE_HINT": "Dyma'r dyddiad y dywedwyd wrthych y bydd yn gorffen, er enghraifft, 15 11 2026",
         "WHY_LIFTED": "Pam bod y lle i anadlu'n cael ei godi? (dewisol)",
-        "CHECK_ANSWERS": "Check your answers"
+        "CHECK_ANSWERS": "Check your answers",
+        "CONFIRMATION": {
+          "TITLE": "Breathing space lifted",
+          "PAGE_TITLE": "Breathing space lifted confirmation",
+          "PANEL_TEXT": "You have successfully informed the court that breathing space has been lifted",
+          "WHAT_HAPPENS_NEXT": "What happens next",
+          "NEXT_PARA_1": "The court and other parties have been notified. You can now continue with your claim."
+        }
       }
     },
     "QM": {
