@@ -1,13 +1,13 @@
 import {IsDate, Validate, ValidateIf} from 'class-validator';
 import {DateConverter} from 'common/utils/dateConverter';
 import {BaseDate} from '../admission/fullAdmission/baseDate';
-import {OptionalDateNotInFutureValidator} from 'form/validators/optionalDateNotInFutureValidator';
+import {OptionalDateNotInPastValidator} from 'common/form/validators/optionalDateNotInPastValidator';
 
 export class LiftBreathingSpaceForm extends BaseDate {
 
   @ValidateIf(o => (o.day > 0 && o.day < 32 && o.month > 0 && o.month < 13 && o.year > 999))
   @IsDate({message: 'ERRORS.VALID_DATE'})
-  @Validate(OptionalDateNotInFutureValidator, {message: 'ERRORS.VALID_DATE_NOT_IN_FUTURE'})
+  @Validate(OptionalDateNotInPastValidator, {message: 'ERRORS.VALID_DATE_TODAY_OR_FUTURE'})
     date?: Date;
 
   text?: string;

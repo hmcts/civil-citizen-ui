@@ -27,8 +27,10 @@
         {{ csrfProtection(csrf) }}
 
         {{ govukDateInput({
-          id: "date-day",
-          namePrefix: "date",
+          id: "date",
+          type: "number",
+          inputmode: "numeric",
+          name: "date",
           fieldset: {
             legend: {
               text: t('PAGES.BREATHING_SPACE.LIFT.WHEN_END'),
@@ -41,24 +43,30 @@
           },
           items: [
             {
+              classes: "govuk-input--width-2 govuk-input--error" if form.hasFieldError('day') else "govuk-input--width-2",
+              id: "day",
+              label: t('COMMON.DAY'),
               name: "day",
-              classes: "govuk-input--width-2",
               value: form.model.day,
               attributes: {
                 maxlength: "2"
               }
             },
             {
+              classes: "govuk-input--width-2 govuk-input--error" if form.hasFieldError('month') else "govuk-input--width-2",
+              id: "month",
+              label: t('COMMON.MONTH'),
               name: "month",
-              classes: "govuk-input--width-2",
               value: form.model.month,
               attributes: {
                 maxlength: "2"
               }
             },
             {
+              classes: "govuk-input--width-4 govuk-input--error" if form.hasFieldError('year') else "govuk-input--width-4",
+              id: "year",
+              label: t('COMMON.YEAR'),
               name: "year",
-              classes: "govuk-input--width-4",
               value: form.model.year,
               attributes: {
                 maxlength: "4"

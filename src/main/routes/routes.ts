@@ -363,6 +363,8 @@ import cancelRequestForReconsiderationController
   from 'routes/features/caseProgression/requestForReconsideration/cancelRequestForReconsiderationController';
 import viewBreathingSpaceInformationController from 'routes/features/dashboard/viewBreathingSpaceInformationController';
 import liftBreathingSpaceController from 'routes/features/breathingSpace/liftBreathingSpaceController';
+import liftBreathingSpaceCheckAnswersController from 'routes/features/breathingSpace/checkAnswersController';
+import liftBreathingSpaceConfirmationController from 'routes/features/breathingSpace/liftBreathingSpaceConfirmationController';
 import multiTrackDisclosureNonElectronicDocuments
   from 'routes/features/directionsQuestionnaire/mintiMultitrack/disclosureNonElectronicDocumentsController';
 import disclosureOfDocumentsController
@@ -749,6 +751,8 @@ export default [
   viewApplicationController,
   viewBreathingSpaceInformationController,
   liftBreathingSpaceController,
+  liftBreathingSpaceCheckAnswersController,
+  liftBreathingSpaceConfirmationController,
   multiTrackDisclosureNonElectronicDocuments,
   disclosureOfDocumentsController,
   disclosureOfElectronicDocumentsIssues,

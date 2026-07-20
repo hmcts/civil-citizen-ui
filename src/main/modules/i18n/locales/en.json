@@ -567,7 +567,15 @@
         "CAPTION": "Breathing space",
         "WHEN_END": "When will breathing space end?",
         "DATE_HINT": "This is the date you have been instructed it will be finished, for example 15 11 2026",
-        "WHY_LIFTED": "Why is breathing space being lifted? (optional)"
+        "WHY_LIFTED": "Why is breathing space being lifted? (optional)",
+        "CHECK_ANSWERS": "Check your answers",
+        "CONFIRMATION": {
+          "TITLE": "Breathing space lifted",
+          "PAGE_TITLE": "Breathing space lifted confirmation",
+          "PANEL_TEXT": "You have successfully informed the court that breathing space has been lifted",
+          "WHAT_HAPPENS_NEXT": "What happens next",
+          "NEXT_PARA_1": "The court and other parties have been notified. You can now continue with your claim."
+        }
       }
     },
     "QM": {
@@ -5897,6 +5905,7 @@
     "VALID_CLAIM_REFERENCE_NUMBER": "Enter your valid claim number from the letter or email we sent you - it should have 3 numbers then the letters MC, JE, JF, JG or JH, then 3 numbers, for example 305JE126",
     "VALID_DATE": "Please enter a valid date",
     "VALID_DATE_IN_PAST": "Enter date before {{dateToday}}",
+    "VALID_DATE_TODAY_OR_FUTURE": "Date should be todays or future date",
     "VALID_DATE_NOT_IN_PAST": "Enter a date that is today or in the future",
     "VALID_DATE_ONE_MONTH_FROM_TODAY": "Date must be at least a month from today's date",
     "VALID_DATE_LIFT_NOT_AFTER_TODAY": "Date entered must not be after today’s date",

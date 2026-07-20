@@ -2,7 +2,7 @@ import request from 'supertest';
 import {app} from '../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
-import {LIFT_BREATHING_SPACE_URL, DASHBOARD_CLAIMANT_URL} from '../../../../../main/routes/urls';
+import {LIFT_BREATHING_SPACE_URL, CYA_LIFT_BREATHING_SPACE_URL} from '../../../../../main/routes/urls';
 import {getClaimById} from '../../../../../main/modules/utilityService';
 import {getLiftBreathingSpaceForm, saveLiftBreathingSpace} from '../../../../../main/services/features/breathingSpace/liftBreathingSpaceService';
 import {Claim} from '../../../../../main/common/models/claim';
@@ -59,17 +59,52 @@ describe('Lift Breathing Space Controller', () => {
   });
 
   describe('on POST', () => {
-    it('should redirect to dashboard when form is valid', async () => {
+    it('should redirect to CYA when form is valid (future date)', async () => {
       const claim = new Claim();
       mockGetClaimById.mockResolvedValue(claim);
       mockSaveLiftBreathingSpace.mockResolvedValue({});
 
       await request(app)
         .post(LIFT_BREATHING_SPACE_URL.replace(':id', '123'))
-        .send({year: '2023', month: '01', day: '01', text: 'Reason'})
+        .send({year: '2099', month: '01', day: '01', text: 'Reason'})
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toContain(DASHBOARD_CLAIMANT_URL.replace(':id', '123'));
+          expect(res.header.location).toContain(CYA_LIFT_BREATHING_SPACE_URL.replace(':id', '123'));
+        });
+    });
+
+    it('should redirect to CYA when form is valid (today date)', async () => {
+      const claim = new Claim();
+      mockGetClaimById.mockResolvedValue(claim);
+      mockSaveLiftBreathingSpace.mockResolvedValue({});
+      const today = new Date();
+
+      await request(app)
+        .post(LIFT_BREATHING_SPACE_URL.replace(':id', '123'))
+        .send({
+          year: today.getFullYear().toString(),
+          month: (today.getMonth() + 1).toString().padStart(2, '0'),
+          day: today.getDate().toString().padStart(2, '0'),
+          text: 'Reason',
+        })
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.header.location).toContain(CYA_LIFT_BREATHING_SPACE_URL.replace(':id', '123'));
+        });
+    });
+
+    it('should return error messages when date is in the past', async () => {
+      const claim = new Claim();
+      claim.totalClaimAmount = 1000;
+      mockGetClaimById.mockResolvedValue(claim);
+
+      await request(app)
+        .post(LIFT_BREATHING_SPACE_URL.replace(':id', '123'))
+        .send({year: '2020', month: '01', day: '01', text: 'Reason'})
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('govuk-error-summary');
+          expect(res.text).toContain('Date should be todays or future date');
         });
     });
 

@@ -90,6 +90,13 @@ import {ClaimGeneralApplication} from 'models/generalApplication/claimGeneralApp
 import {QueryManagement} from 'form/models/queryManagement/queryManagement';
 import {CaseQueries} from 'models/queryManagement/caseQueries';
 
+export interface BreathingSpace {
+  liftBreathing?: {
+    expectedEnd?: string;
+    eventDescription?: string;
+  };
+}
+
 export class Claim {
   resolvingDispute: boolean;
   completingClaimConfirmed: boolean;
@@ -201,6 +208,7 @@ export class Claim {
   queries?: CaseQueries;
   previousCCDState?: string;
   preTranslationDocumentType?: PreTranslationDocumentType;
+  breathingSpace?: BreathingSpace;
 
   // Index signature to allow dynamic property access
   [key: string]: any;

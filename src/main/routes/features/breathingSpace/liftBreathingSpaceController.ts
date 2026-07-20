@@ -1,5 +1,5 @@
 import {NextFunction, Request, Response, Router} from 'express';
-import {LIFT_BREATHING_SPACE_URL, DASHBOARD_CLAIMANT_URL, DASHBOARD_URL} from '../../urls';
+import {LIFT_BREATHING_SPACE_URL, DASHBOARD_URL, CYA_LIFT_BREATHING_SPACE_URL} from '../../urls';
 import {GenericForm} from 'common/form/models/genericForm';
 import {LiftBreathingSpaceForm} from 'common/form/models/breathingSpace/liftBreathingSpaceForm';
 import {getLiftBreathingSpaceForm, saveLiftBreathingSpace} from 'services/features/breathingSpace/liftBreathingSpaceService';
@@ -67,7 +67,8 @@ liftBreathingSpaceController.post(LIFT_BREATHING_SPACE_URL, async (req: Request,
       });
     } else {
       await saveLiftBreathingSpace(claimId, claim, form);
-      res.redirect(constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL));
+      const redirectUrl = constructResponseUrlWithIdParams(claimId, CYA_LIFT_BREATHING_SPACE_URL);
+      res.redirect(redirectUrl);
     }
   } catch (error) {
     next(error);
