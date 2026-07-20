@@ -24,9 +24,9 @@ describe('Lift Breathing Space Confirmation Controller', () => {
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain('Breathing space lifted');
-          expect(res.text).toContain('You have successfully informed the court that breathing space has been lifted');
-          expect(res.text).toContain('What happens next');
-          expect(res.text).toContain('The court and other parties have been notified.');
+          expect(res.text).toContain('Case number:');
+          expect(res.text).toContain('We have sent you a confirmation email.');
+          expect(res.text).toContain('Return to your case summary');
         });
     });
   });

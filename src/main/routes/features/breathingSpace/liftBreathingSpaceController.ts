@@ -15,7 +15,7 @@ liftBreathingSpaceController.get(LIFT_BREATHING_SPACE_URL, async (req: Request, 
   try {
     const claimId = req.params.id as string;
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-    const claim = await getClaimById(claimId, req, true);
+    const claim = await getClaimById(claimId, req);
     const form = await getLiftBreathingSpaceForm(claimId, claim);
     const helpSupportTitle = getHelpSupportTitle(lang);
     const helpSupportLinks = getHelpSupportLinks(lang);
@@ -42,7 +42,7 @@ liftBreathingSpaceController.post(LIFT_BREATHING_SPACE_URL, async (req: Request,
   try {
     const claimId = req.params.id as string;
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-    const claim = await getClaimById(claimId, req, true);
+    const claim = await getClaimById(claimId, req);
     const {year, month, day, text} = req.body;
     const form = new LiftBreathingSpaceForm(year, month, day, text);
     const genericForm = new GenericForm(form);

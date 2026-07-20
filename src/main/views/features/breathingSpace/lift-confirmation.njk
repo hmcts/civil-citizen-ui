@@ -1,34 +1,32 @@
-{% extends "claim-details-tpl.njk" %}
+{% extends "claim-details-tpl-dashboard.njk" %}
 {% from "govuk/components/panel/macro.njk" import govukPanel %}
-{% from "../../macro/contact-us-for-help.njk" import contactUsForHelp with context %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "../../macro/support-links.njk" import supportLinks %}
+{% from "../../macro/contact-us-for-help.njk" import contactUsForHelp with context %}
 
-{% block pageTitle %}
-  {{ setPageTitle(t, 'PAGES.BREATHING_SPACE.LIFT.CONFIRMATION.PAGE_TITLE') }}
-{% endblock %}
+{% set pageTitle = 'PAGES.BREATHING_SPACE.LIFT.CONFIRMATION.PAGE_TITLE' %}
 
 {% block content %}
-  <div class="govuk-width-container govuk-!-padding-top-0">
-    <main class="govuk-main-wrapper govuk-!-padding-top-0" role="main">
-      <div class="govuk-grid-row govuk-!-margin-top-0">
-        <div class="govuk-grid-column-two-thirds govuk-!-margin-top-0">
-          {{ govukPanel({
-            titleText: confirmationTitle,
-            html: t('PAGES.BREATHING_SPACE.LIFT.CONFIRMATION.PANEL_TEXT')
-          }) }}
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    {{ govukPanel({
+      titleText: confirmationTitle,
+      html: t('PAGES.BREATHING_SPACE.LIFT.CONFIRMATION.CASE_NUMBER') + ' <strong>' + claimId + '</strong>'
+    }) }}
 
-          <h2 class="govuk-heading-m">{{ t('PAGES.BREATHING_SPACE.LIFT.CONFIRMATION.WHAT_HAPPENS_NEXT') }}</h2>
-          <p class="govuk-body">{{ t('PAGES.BREATHING_SPACE.LIFT.CONFIRMATION.NEXT_PARA_1') }}</p>
+    <p class="govuk-body">{{ t('PAGES.BREATHING_SPACE.LIFT.CONFIRMATION.EMAIL_SENT') }}</p>
 
-          <div class="govuk-form-group">
-            {{ govukButton({
-              text: t('COMMON.BUTTONS.GO_TO_ACCOUNT'),
-              href: dashboardUrl
-            }) }}
-          </div>
-          {{ contactUsForHelp(t, lng) }}
-        </div>
-      </div>
-    </main>
+    {{ govukButton({
+      text: t('PAGES.BREATHING_SPACE.LIFT.CONFIRMATION.RETURN_TO_CASE_SUMMARY'),
+      href: caseSummaryUrl
+    }) }}
   </div>
+  <div class="govuk-grid-column-one-third">
+    <div class="border-small-top"></div>
+    {% if helpSupportLinks != null and helpSupportLinks.length %}
+      {{ supportLinks(t, helpSupportTitle, helpSupportLinks) }}
+    {% endif %}
+    {{ contactUsForHelp(t) }}
+  </div>
+</div>
 {% endblock %}

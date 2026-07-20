@@ -569,12 +569,16 @@
         "DATE_HINT": "Dyma'r dyddiad y dywedwyd wrthych y bydd yn gorffen, er enghraifft, 15 11 2026",
         "WHY_LIFTED": "Pam bod y lle i anadlu'n cael ei godi? (dewisol)",
         "CHECK_ANSWERS": "Check your answers",
+        "EXIT": {
+          "TITLE": "A ydych chi'n sicr eich bod am adael y daith hon?",
+          "BODY": "Bydd pob ateb yn cael ei golli, ac ni fydd y lle anadlu yn cael ei godi"
+        },
         "CONFIRMATION": {
           "TITLE": "Breathing space lifted",
           "PAGE_TITLE": "Breathing space lifted confirmation",
-          "PANEL_TEXT": "You have successfully informed the court that breathing space has been lifted",
-          "WHAT_HAPPENS_NEXT": "What happens next",
-          "NEXT_PARA_1": "The court and other parties have been notified. You can now continue with your claim."
+          "CASE_NUMBER": "Rhif yr achos:",
+          "EMAIL_SENT": "Rydym wedi anfon e-bost cadarnhad atoch.",
+          "RETURN_TO_CASE_SUMMARY": "Dychwelyd i grynodeb eich achos"
         }
       }
     },

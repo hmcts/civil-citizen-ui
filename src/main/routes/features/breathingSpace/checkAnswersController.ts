@@ -1,5 +1,5 @@
 import {NextFunction, Request, Response, Router} from 'express';
-import {CYA_LIFT_BREATHING_SPACE_URL, DASHBOARD_URL, LIFT_BREATHING_SPACE_URL, LIFT_BREATHING_SPACE_CONFIRMATION_URL} from '../../urls';
+import {CYA_LIFT_BREATHING_SPACE_URL, DASHBOARD_URL, LIFT_BREATHING_SPACE_URL, LIFT_BREATHING_SPACE_EXIT_URL} from '../../urls';
 import {getSummaryRows} from 'services/features/breathingSpace/checkAnswersService';
 import {getHelpSupportLinks, getHelpSupportTitle} from 'services/dashboard/dashboardService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
@@ -12,7 +12,7 @@ checkAnswersController.get(CYA_LIFT_BREATHING_SPACE_URL, async (req: Request, re
   try {
     const claimId = req.params.id as string;
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-    const claim = await getClaimById(claimId, req, true);
+    const claim = await getClaimById(claimId, req);
     const summaryRows = getSummaryRows(claimId, claim, lang);
     const helpSupportTitle = getHelpSupportTitle(lang);
     const helpSupportLinks = getHelpSupportLinks(lang);
@@ -36,7 +36,7 @@ checkAnswersController.get(CYA_LIFT_BREATHING_SPACE_URL, async (req: Request, re
 checkAnswersController.post(CYA_LIFT_BREATHING_SPACE_URL, async (req: Request, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id as string;
-    res.redirect(constructResponseUrlWithIdParams(claimId, LIFT_BREATHING_SPACE_CONFIRMATION_URL));
+    res.redirect(constructResponseUrlWithIdParams(claimId, LIFT_BREATHING_SPACE_EXIT_URL));
   } catch (error) {
     next(error);
   }

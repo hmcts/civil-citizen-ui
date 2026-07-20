@@ -569,12 +569,16 @@
         "DATE_HINT": "This is the date you have been instructed it will be finished, for example 15 11 2026",
         "WHY_LIFTED": "Why is breathing space being lifted? (optional)",
         "CHECK_ANSWERS": "Check your answers",
+        "EXIT": {
+          "TITLE": "Are you sure you want to exit this journey?",
+          "BODY": "All answers will be lost, and breathing space will not be lifted"
+        },
         "CONFIRMATION": {
           "TITLE": "Breathing space lifted",
           "PAGE_TITLE": "Breathing space lifted confirmation",
-          "PANEL_TEXT": "You have successfully informed the court that breathing space has been lifted",
-          "WHAT_HAPPENS_NEXT": "What happens next",
-          "NEXT_PARA_1": "The court and other parties have been notified. You can now continue with your claim."
+          "CASE_NUMBER": "Case number:",
+          "EMAIL_SENT": "We have sent you a confirmation email.",
+          "RETURN_TO_CASE_SUMMARY": "Return to your case summary"
         }
       }
     },

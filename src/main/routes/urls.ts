@@ -361,6 +361,7 @@ export const GA_VIEW_APPLICATION_URL = `${BASE_GENERAL_APPLICATION_URL}/:appId/v
 export const BREATHING_SPACE_INFO_URL = `${DASHBOARD_URL}/:id/breathing-space-info`;
 export const LIFT_BREATHING_SPACE_URL = `${DASHBOARD_URL}/:id/breathing-space/lift`;
 export const CYA_LIFT_BREATHING_SPACE_URL = `${LIFT_BREATHING_SPACE_URL}/check-your-answers`;
+export const LIFT_BREATHING_SPACE_EXIT_URL = `${DASHBOARD_URL}/:id/breathing-space/lift-exit`;
 export const LIFT_BREATHING_SPACE_CONFIRMATION_URL = `${DASHBOARD_URL}/:id/breathing-space/lift-confirmation`;
 export const APPLICATION_FEE_PAYMENT_CONFIRMATION_URL='/general-application/payment-confirmation/:id/gaid/:appId';
 export const APPLICATION_FEE_PAYMENT_CONFIRMATION_URL_WITH_UNIQUE_ID='/general-application/payment-confirmation/:id/gaid/:appId/:uniqueId/confirmation';

@@ -91,7 +91,11 @@
           {{ govukButton({
             text: t('COMMON.BUTTONS.CONTINUE')
           }) }}
-          <a class="govuk-link" href="{{ backUrl }}">{{ t('COMMON.BUTTONS.PREVIOUS') }}</a>
+          {{ govukButton({
+            text: t('COMMON.BUTTONS.PREVIOUS'),
+            classes: 'govuk-button--secondary',
+            href: backUrl
+          }) }}
         </div>
 
         <p class="govuk-body">
