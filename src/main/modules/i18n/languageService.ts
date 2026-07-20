@@ -28,7 +28,9 @@ export const setLanguage = (req: Request, res: Response, next: NextFunction) => 
       value: {...query, lang},
     });
   }
-  req.cookies.lang = lang;
+  if (Object.prototype.hasOwnProperty.call(req.cookies, 'lang')) {
+    req.cookies.lang = lang;
+  }
   res.locals.lang = lang;
   res.locals.htmlLang = lang === 'cimode' ? 'en' : lang;
   next();

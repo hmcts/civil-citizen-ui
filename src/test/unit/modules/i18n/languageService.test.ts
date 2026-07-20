@@ -119,7 +119,7 @@ describe('setLanguage', () => {
     expect(res.locals.lang).toBe(expectedLang);
     expect(res.locals.htmlLang).toBe(expectedHtmlLang);
     expect(req.query.lang).toBe(queryLang === undefined ? undefined : expectedLang);
-    expect(req.cookies.lang).toBe(expectedLang);
+    expect(req.cookies.lang).toBe(cookieLang === undefined ? undefined : expectedLang);
     expect(renderDocument(res)).toContain(`<html lang="${expectedHtmlLang}"`);
     expect(next).toHaveBeenCalledTimes(1);
   });
