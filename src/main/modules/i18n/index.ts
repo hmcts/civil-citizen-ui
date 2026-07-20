@@ -1,6 +1,5 @@
 import {Express} from 'express';
 import {i18n} from 'i18next';
-import {normaliseDetectedLanguage} from './languageService';
 
 const i18next = require('i18next');
 const i18nextMiddleware = require('i18next-http-middleware');
@@ -15,7 +14,6 @@ const options = {
     lookupQuerystring: 'lang',
     lookupCookie: 'lang',
     caches: ['cookie'],
-    convertDetectedLanguage: normaliseDetectedLanguage,
   },
   fallbackLng: 'en',
   supportedLngs: ['en', 'cy'],

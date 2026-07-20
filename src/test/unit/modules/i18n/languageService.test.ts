@@ -1,12 +1,17 @@
-import {NextFunction, Request, Response} from 'express';
+import cookieParser from 'cookie-parser';
+import express, {NextFunction, Request, Response} from 'express';
 import * as path from 'path';
 import {configure} from 'nunjucks';
-import {normaliseDetectedLanguage, setLanguage} from 'modules/i18n/languageService';
+import request from 'supertest';
+import {setLanguage} from 'modules/i18n/languageService';
+import unauthorisedController from 'routes/unauthorisedController';
 
 describe('setLanguage', () => {
-  const nunjucks = configure([
+  const viewPaths = [
+    path.resolve(__dirname, '../../../../main/views'),
     path.resolve(__dirname, '../../../../../node_modules/govuk-frontend/dist'),
-  ]);
+  ];
+  const nunjucks = configure(viewPaths);
 
   const createRequest = (queryLang?: unknown, cookieLang?: unknown): Request => ({
     query: queryLang ? {lang: queryLang} : {},
@@ -103,16 +108,50 @@ describe('setLanguage', () => {
 
     expect(res.locals.lang).toBe(expectedLang);
     expect(res.locals.htmlLang).toBe(expectedLang);
+    expect(req.query.lang).toBe(queryLang === undefined ? undefined : expectedLang);
+    expect(req.cookies.lang).toBe(expectedLang);
     expect(renderDocument(res)).toContain(`<html lang="${expectedLang}"`);
     expect(next).toHaveBeenCalledTimes(1);
   });
 
-  it.each([
-    ['CY', 'cy'],
-    ['cy-GB', 'cy'],
-    ['cy-!', 'unsupported'],
-    ['fr', 'fr'],
-  ])('normalises detected language %s to %s', (language, expectedLanguage) => {
-    expect(normaliseDetectedLanguage(language)).toBe(expectedLanguage);
+  it('provides a canonical language to downstream Express handlers', async () => {
+    const app = express();
+    app.use(cookieParser());
+    app.use(setLanguage);
+    app.get('/', (req, res) => {
+      res.json({
+        cookieLang: req.cookies.lang,
+        htmlLang: res.locals.htmlLang,
+        queryLang: req.query.lang,
+      });
+    });
+
+    const response = await request(app)
+      .get('/?lang=fr&lang=CY')
+      .set('Cookie', 'lang=en');
+
+    expect(response.body).toEqual({
+      cookieLang: 'cy',
+      htmlLang: 'cy',
+      queryLang: 'cy',
+    });
+  });
+
+  it('keeps the unauthorised page language as English when the selected language is Welsh', async () => {
+    const app = express();
+    app.set('views', viewPaths[0]);
+    app.set('view engine', 'njk');
+    configure(viewPaths, {express: app});
+    app.use((_req, res, next) => {
+      res.locals.htmlLang = 'cy';
+      next();
+    });
+    app.use(unauthorisedController);
+
+    const response = await request(app).get('/unauthorised');
+
+    expect(response.status).toBe(200);
+    expect(response.text).toContain('<html lang="en"');
+    expect(response.text).toContain('<h1 class="govuk-heading-xl">Unauthorised</h1>');
   });
 });
