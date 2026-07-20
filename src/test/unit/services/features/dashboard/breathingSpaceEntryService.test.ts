@@ -4,6 +4,7 @@ import {BreathingSpaceEnterDraft} from 'models/breathingSpace/breathingSpaceEnte
 import {BreathingSpaceStartDate} from 'models/breathingSpace/breathingSpaceStartDate';
 import {
   cancelBreathingSpaceEntry,
+  getBreathingSpaceCheckAnswersRows,
   getBreathingSpaceStartDateForm,
   getBreathingSpaceEnterDraftForm,
   resolveBreathingSpaceExpectedEnd,
@@ -13,8 +14,15 @@ import {
 } from 'services/features/dashboard/breathingSpaceEntryService';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'models/AppRequest';
+import {
+  BREATHING_SPACE_ENTER_URL,
+  BREATHING_SPACE_START_DATE_URL,
+} from 'routes/urls';
 
 jest.mock('modules/draft-store/draftStoreService');
+jest.mock('i18next', () => ({
+  t: (key: string) => key,
+}));
 
 describe('breathingSpaceEntryService', () => {
   afterEach(() => {
@@ -65,6 +73,20 @@ describe('breathingSpaceEntryService', () => {
     expect(resolveBreathingSpaceExpectedEnd(start, BreathingSpaceType.MENTAL_HEALTH)).toBeNull();
   });
 
+  it('should build check answers rows from draft', () => {
+    const claim = new Claim();
+    claim.breathingSpaceEnterDraft = new BreathingSpaceEnterDraft(
+      BreathingSpaceType.STANDARD,
+      'REF123',
+      new Date(2024, 0, 15),
+      new Date(2024, 2, 15),
+    );
+    const rows = getBreathingSpaceCheckAnswersRows('1111', claim, 'en');
+    expect(rows).toHaveLength(3);
+    expect(rows[0].actions?.items[0].href).toContain(BREATHING_SPACE_ENTER_URL.replace(':id', '1111'));
+    expect(rows[2].actions?.items[0].href).toContain(BREATHING_SPACE_START_DATE_URL.replace(':id', '1111'));
+  });
+
   it('should save type and reference onto claim and keep existing start dates', async () => {
     const claim = new Claim();
     const existingStart = new Date(2024, 0, 15);
@@ -113,7 +135,7 @@ describe('breathingSpaceEntryService', () => {
     expect(draftStoreService.saveDraftClaim).toHaveBeenCalledWith('key', claim);
   });
 
-  it('should clear breathing space type and reference from claim', async () => {
+  it('should clear breathing space enter draft from claim', async () => {
     const claim = new Claim();
     claim.breathingSpaceEnterDraft = new BreathingSpaceEnterDraft(
       BreathingSpaceType.STANDARD,

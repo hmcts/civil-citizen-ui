@@ -12,6 +12,7 @@ import {Claim} from 'common/models/claim';
 import claim from '../../../../utils/mocks/civilClaimResponseMock.json';
 import {
   BREATHING_SPACE_CANCEL_URL,
+  BREATHING_SPACE_CYA_URL,
   BREATHING_SPACE_ENTER_URL,
   BREATHING_SPACE_START_DATE_URL,
 } from 'routes/urls';
@@ -79,6 +80,27 @@ describe('Breathing Space Start Date Controller', () => {
       });
   });
 
+  it('should pre-fill start date when returning from CYA to edit', async () => {
+    const claimWithStart = Object.assign(new Claim(), claim.case_data, {
+      breathingSpaceEnterDraft: new BreathingSpaceEnterDraft(
+        BreathingSpaceType.STANDARD,
+        'REF123',
+        new Date(2024, 0, 15),
+        new Date(2024, 2, 15),
+      ),
+    });
+    (getClaimById as jest.Mock).mockResolvedValueOnce(claimWithStart);
+    await request(app)
+      .get(BREATHING_SPACE_START_DATE_URL)
+      .expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain('value="15"');
+        expect(res.text).toContain('value="1"');
+        expect(res.text).toContain('value="2024"');
+        expect(res.text).toContain(BREATHING_SPACE_ENTER_URL);
+      });
+  });
+
   it('should show mental health intro when mental health type is selected', async () => {
     (getClaimById as jest.Mock).mockResolvedValueOnce(claimWithMentalHealthType());
     await request(app)
@@ -103,12 +125,8 @@ describe('Breathing Space Start Date Controller', () => {
         year: '',
       })
       .expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain('Breathing space start date');
-        expect(res.text).toContain(`value="${today.getDate()}"`);
-        expect(res.text).toContain(`value="${today.getMonth() + 1}"`);
-        expect(res.text).toContain(`value="${today.getFullYear()}"`);
-        expect(res.text).not.toContain('Start date must be a real date');
+        expect(res.status).toBe(302);
+        expect(res.header.location).toContain(BREATHING_SPACE_CYA_URL);
         expect(breathingSpaceEntryService.saveBreathingSpaceStartDate).toHaveBeenCalled();
         const [, start, expectedEnd] = (breathingSpaceEntryService.saveBreathingSpaceStartDate as jest.Mock).mock.calls[0];
         expect(start.getDate()).toBe(today.getDate());
@@ -127,7 +145,8 @@ describe('Breathing Space Start Date Controller', () => {
         year: '',
       })
       .expect((res) => {
-        expect(res.status).toBe(200);
+        expect(res.status).toBe(302);
+        expect(res.header.location).toContain(BREATHING_SPACE_CYA_URL);
         expect(breathingSpaceEntryService.saveBreathingSpaceStartDate).toHaveBeenCalled();
         const [, , expectedEnd] = (breathingSpaceEntryService.saveBreathingSpaceStartDate as jest.Mock).mock.calls[0];
         expect(expectedEnd).toBeNull();
@@ -145,13 +164,8 @@ describe('Breathing Space Start Date Controller', () => {
         year: '2024',
       })
       .expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain('Breathing space start date');
-        expect(res.text).toContain('value="15"');
-        expect(res.text).toContain('value="1"');
-        expect(res.text).toContain('value="2024"');
-        expect(res.text).not.toContain('Start date must be a real date');
-        expect(res.text).not.toContain('Start date cannot be in the future');
+        expect(res.status).toBe(302);
+        expect(res.header.location).toContain(BREATHING_SPACE_CYA_URL);
         expect(breathingSpaceEntryService.saveBreathingSpaceStartDate).toHaveBeenCalled();
       });
   });
