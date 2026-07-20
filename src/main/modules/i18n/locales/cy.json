@@ -2799,8 +2799,8 @@
       "CYA": {
         "HEADING": "Gwirio eich atebion",
         "TYPE": "Pa fath ydy o?",
-        "REFERENCE": "Reference number (optional)",
-        "START_DATE": "Start date (optional)"
+        "REFERENCE": "Cyfeirnod (dewisol)",
+        "START_DATE": "Dyddiad cychwyn (dewisol)"
       }
     },
     "DEBTS": {
