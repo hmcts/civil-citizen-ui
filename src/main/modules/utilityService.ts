@@ -59,7 +59,7 @@ export const getClaimById = async (claimId: RouteParam, req: Request, useRedisKe
   if (claim.isEmpty() && redisKey !== userId) {
     logger.info(`Claim not found in draft store, fetching from civil service: claimId: ${normalizedClaimId}`);
     claim = await civilServiceClient.retrieveClaimDetails(normalizedClaimId, <AppRequest>req);
-    if (claim && !claim.isEmpty()) {
+    if (claim) {
       logger.info(`Claim found in civil service, saving to draft store: claimId: ${normalizedClaimId}`);
       await saveDraftClaim(redisKey, claim, true, userId, TTLCategory.JOURNEY_CACHE);
     } else {
