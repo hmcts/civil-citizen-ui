@@ -16,8 +16,7 @@ let claimRef, caseData, claimNumber;
 
 Feature('LR v Lip claim - Judgment Requested state - Claim marked as paid in full').tag('@ui-judgment-buffer');
 
-// Skipped: SETTLE_CLAIM_MARK_PAID_FULL during the buffer does not cancel the pending CCJ (activeJudgment left at PENDING_ISSUE). Un-skip once the backend clears it. Related: DTSCCI-5108.
-Scenario.skip('LRvLip claim marked as paid in full during buffer - CCJ cancelled, defendant paid-in-full notification (AC1, AC2) [DTSCCI-5187 #8]', async ({I, api}) => {
+Scenario('LRvLip claim marked as paid in full during buffer - CCJ cancelled, defendant paid-in-full notification (AC1, AC2) [DTSCCI-5187 #8]', async ({I, api}) => {
   const judgmentBufferEnabled = await checkToggleEnabled('judgment-buffer');
   if (!judgmentBufferEnabled) return;
   defendant.email = `defendantcitizen-${Date.now()}-${Math.random().toString(36).slice(2, 7)}@gmail.com`;

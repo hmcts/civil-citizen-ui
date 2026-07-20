@@ -16,8 +16,7 @@ let claimRef, caseData, claimNumber;
 
 Feature('LR v Lip claim - Judgment Requested state - Caseworker settles the claim').tag('@ui-judgment-buffer');
 
-// Skipped: caseworker SETTLE_CLAIM during the buffer does not cancel the pending CCJ (activeJudgment left at PENDING_ISSUE). Un-skip once the backend clears it. Related: DTSCCI-5108.
-Scenario.skip('Caseworker settles the claim (SETTLE_CLAIM) during buffer - CCJ cancelled, requested-CCJ notice removed [DTSCCI-5187 #7]', async ({I, api}) => {
+Scenario('Caseworker settles the claim (SETTLE_CLAIM) during buffer - CCJ cancelled, requested-CCJ notice removed [DTSCCI-5187 #7]', async ({I, api}) => {
   const judgmentBufferEnabled = await checkToggleEnabled('judgment-buffer');
   if (!judgmentBufferEnabled) return;
   defendant.email = `defendantcitizen-${Date.now()}-${Math.random().toString(36).slice(2, 7)}@gmail.com`;
