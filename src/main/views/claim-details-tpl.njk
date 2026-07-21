@@ -62,6 +62,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 {% endblock %}
 
 {% block footer %}
+<div class="govuk-width-container" role="contentinfo">
 {% if developmentMode %}
 {{ govukFooter({
     contentLicence: {
@@ -134,6 +135,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       ]
     }
   }) }} {% endif %}
+</div>
 {% endblock %}
 {% block bodyEnd %}
 {# Run JavaScript at end of the <body>, to avoid blocking the initial render. #}
