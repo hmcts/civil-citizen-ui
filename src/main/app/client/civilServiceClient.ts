@@ -450,6 +450,10 @@ export class CivilServiceClient {
     return this.submitEvent(CaseEvent.REQUEST_FOR_RECONSIDERATION, claimId, updatedClaim, req);
   }
 
+  async submitEnterBreathingSpace(claimId: RouteParam, updatedClaim: ClaimUpdate, req?: AppRequest): Promise<Claim> {
+    return this.submitEvent(CaseEvent.ENTER_BREATHING_SPACE_SPEC, claimId, updatedClaim, req);
+  }
+
   async submitEvent(event: CaseEvent, claimId: RouteParam, updatedClaim?: ClaimUpdate, req?: AppRequest): Promise<Claim> {
     const normalizedClaimId = normalizeRouteParam(claimId);
     const config = this.getConfig(req);
