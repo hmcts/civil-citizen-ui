@@ -7,12 +7,8 @@ import {
   saveDraftClaim,
 } from 'modules/draft-store/draftStoreService';
 import {BreathingSpaceEnterDraft} from 'models/breathingSpace/breathingSpaceEnterDraft';
-import {BreathingSpaceType} from 'models/breathingSpace/breathingSpaceType';
 import {BreathingSpaceStartDate} from 'models/breathingSpace/breathingSpaceStartDate';
 import {Claim} from 'models/claim';
-import {addDaysToDate} from 'common/utils/dateUtils';
-
-const STANDARD_BREATHING_SPACE_DAYS = 60;
 
 export const getBreathingSpaceEnterDraftForm = (claim: Claim): BreathingSpaceEnterDraft => {
   if (claim.breathingSpaceEnterDraft) {
@@ -20,7 +16,6 @@ export const getBreathingSpaceEnterDraftForm = (claim: Claim): BreathingSpaceEnt
       claim.breathingSpaceEnterDraft.type,
       claim.breathingSpaceEnterDraft.reference,
       claim.breathingSpaceEnterDraft.start,
-      claim.breathingSpaceEnterDraft.expectedEnd,
     );
   }
   return new BreathingSpaceEnterDraft();
@@ -47,16 +42,6 @@ export const resolveBreathingSpaceStartDate = (form: BreathingSpaceStartDate): D
   return new Date(today.getFullYear(), today.getMonth(), today.getDate());
 };
 
-export const resolveBreathingSpaceExpectedEnd = (
-  start: Date,
-  type?: BreathingSpaceType,
-): Date | null => {
-  if (type === BreathingSpaceType.STANDARD) {
-    return addDaysToDate(start, STANDARD_BREATHING_SPACE_DAYS);
-  }
-  return null;
-};
-
 export const saveBreathingSpaceEnterDraft = async (
   req: Request,
   form: BreathingSpaceEnterDraft,
@@ -68,7 +53,6 @@ export const saveBreathingSpaceEnterDraft = async (
     form.type,
     form.reference,
     existing?.start,
-    existing?.expectedEnd,
   );
   await saveDraftClaim(redisKey, claim);
 };
@@ -76,7 +60,6 @@ export const saveBreathingSpaceEnterDraft = async (
 export const saveBreathingSpaceStartDate = async (
   req: Request,
   start: Date,
-  expectedEnd: Date | null,
 ): Promise<void> => {
   const redisKey = generateRedisKey(<AppRequest>req);
   const claim = await getCaseDataFromStore(redisKey);
@@ -84,7 +67,6 @@ export const saveBreathingSpaceStartDate = async (
     claim.breathingSpaceEnterDraft = new BreathingSpaceEnterDraft();
   }
   claim.breathingSpaceEnterDraft.start = start;
-  claim.breathingSpaceEnterDraft.expectedEnd = expectedEnd;
   await saveDraftClaim(redisKey, claim);
 };
 

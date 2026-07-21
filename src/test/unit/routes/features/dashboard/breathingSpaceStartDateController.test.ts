@@ -91,7 +91,7 @@ describe('Breathing Space Start Date Controller', () => {
       });
   });
 
-  it('should save blank optional start date as today with expected end for standard type', async () => {
+  it('should save blank optional start date as today', async () => {
     (getClaimById as jest.Mock).mockResolvedValueOnce(claimWithStandardType());
     (breathingSpaceEntryService.saveBreathingSpaceStartDate as jest.Mock).mockResolvedValueOnce(undefined);
     const today = new Date();
@@ -110,13 +110,14 @@ describe('Breathing Space Start Date Controller', () => {
         expect(res.text).toContain(`value="${today.getFullYear()}"`);
         expect(res.text).not.toContain('Start date must be a real date');
         expect(breathingSpaceEntryService.saveBreathingSpaceStartDate).toHaveBeenCalled();
-        const [, start, expectedEnd] = (breathingSpaceEntryService.saveBreathingSpaceStartDate as jest.Mock).mock.calls[0];
+        const [, start] = (breathingSpaceEntryService.saveBreathingSpaceStartDate as jest.Mock).mock.calls[0];
         expect(start.getDate()).toBe(today.getDate());
-        expect(expectedEnd).toEqual(new Date(start.getFullYear(), start.getMonth(), start.getDate() + 60));
+        expect(start.getMonth()).toBe(today.getMonth());
+        expect(start.getFullYear()).toBe(today.getFullYear());
       });
   });
 
-  it('should save blank start date with null expected end for mental health type', async () => {
+  it('should save blank start date for mental health type', async () => {
     (getClaimById as jest.Mock).mockResolvedValueOnce(claimWithMentalHealthType());
     (breathingSpaceEntryService.saveBreathingSpaceStartDate as jest.Mock).mockResolvedValueOnce(undefined);
     await request(app)
@@ -128,9 +129,11 @@ describe('Breathing Space Start Date Controller', () => {
       })
       .expect((res) => {
         expect(res.status).toBe(200);
-        expect(breathingSpaceEntryService.saveBreathingSpaceStartDate).toHaveBeenCalled();
-        const [, , expectedEnd] = (breathingSpaceEntryService.saveBreathingSpaceStartDate as jest.Mock).mock.calls[0];
-        expect(expectedEnd).toBeNull();
+        expect(breathingSpaceEntryService.saveBreathingSpaceStartDate).toHaveBeenCalledTimes(1);
+        expect(breathingSpaceEntryService.saveBreathingSpaceStartDate).toHaveBeenCalledWith(
+          expect.anything(),
+          expect.any(Date),
+        );
       });
   });
 
