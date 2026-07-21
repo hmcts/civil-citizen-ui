@@ -32,6 +32,17 @@ describe('Lift Breathing Space Exit Controller', () => {
   });
 
   describe('on POST', () => {
+    it('should return exit page with error when no option selected', async () => {
+      await request(app)
+        .post(LIFT_BREATHING_SPACE_EXIT_URL.replace(':id', '123'))
+        .send({})
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Select yes if you want to exit this journey');
+          expect(res.text).toContain('There is a problem');
+        });
+    });
+
     it('should redirect to confirmation page when option is no', async () => {
       await request(app)
         .post(LIFT_BREATHING_SPACE_EXIT_URL.replace(':id', '123'))

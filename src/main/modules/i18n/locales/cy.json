@@ -570,8 +570,9 @@
         "WHY_LIFTED": "Pam bod y lle i anadlu'n cael ei godi? (dewisol)",
         "CHECK_ANSWERS": "Check your answers",
         "EXIT": {
-          "TITLE": "A ydych chi'n sicr eich bod am adael y daith hon?",
-          "BODY": "Bydd pob ateb yn cael ei golli, ac ni fydd y lle anadlu yn cael ei godi"
+          "TITLE": "Ydych chi’n siŵr eich bod eisiau gadael y llwybr hwn?",
+          "BODY": "Bydd yr atebion yn cael eu colli, ac ni fydd y lle i anadlu yn cael ei godi",
+          "OPTION_REQUIRED": "Dewiswch ie os ydych chi am adael y llwybr hwn"
         },
         "CONFIRMATION": {
           "TITLE": "Breathing space lifted",

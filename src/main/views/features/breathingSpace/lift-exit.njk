@@ -1,6 +1,7 @@
 {% extends "claim-details-tpl-dashboard.njk" %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
+{% from "govuk/components/error-summary/macro.njk" import govukErrorSummary %}
 {% from "../../macro/csrf.njk" import csrfProtection %}
 {% from "../../macro/page-title.njk" import setPageTitle %}
 {% from "../../macro/support-links.njk" import supportLinks %}
@@ -12,6 +13,13 @@
 {% block content %}
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
+    {% if errors %}
+      {{ govukErrorSummary({
+        titleText: t('ERRORS.THERE_IS_A_PROBLEM'),
+        errorList: errors.errorSummaryList
+      }) }}
+    {% endif %}
+
     <form method="post" novalidate>
       {{ csrfProtection(csrf) }}
 
@@ -29,14 +37,15 @@
         hint: {
           text: t('PAGES.BREATHING_SPACE.LIFT.EXIT.BODY')
         },
+        errorMessage: errors.optionError if errors else undefined,
         items: [
           {
             value: 'yes',
-            text: t('COMMON.YES')
+            text: t('COMMON.VARIATION_2.YES')
           },
           {
             value: 'no',
-            text: t('COMMON.NO')
+            text: t('COMMON.VARIATION_2.NO')
           }
         ]
       }) }}

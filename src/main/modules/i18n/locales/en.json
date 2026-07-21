@@ -571,7 +571,8 @@
         "CHECK_ANSWERS": "Check your answers",
         "EXIT": {
           "TITLE": "Are you sure you want to exit this journey?",
-          "BODY": "All answers will be lost, and breathing space will not be lifted"
+          "BODY": "All answers will be lost, and breathing space will not be lifted",
+          "OPTION_REQUIRED": "Select yes if you want to exit this journey"
         },
         "CONFIRMATION": {
           "TITLE": "Breathing space lifted",
