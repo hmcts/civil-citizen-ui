@@ -39,6 +39,13 @@ class CitizenDashboardPage {
       await I.see(status, xpath);
     }
   }
+
+  async verifyStatusOnDashboardWelsh(status, xpath) {
+    if (status) {
+      await I.waitForContent('Hawliadau am Arian', config.WaitForText);
+      await I.see(status, xpath);
+    }
+  }
 }
 
 module.exports = new CitizenDashboardPage();

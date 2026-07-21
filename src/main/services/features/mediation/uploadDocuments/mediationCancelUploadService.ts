@@ -15,6 +15,6 @@ export const getCancelYourUpload = (claimId: string, claim: Claim) => {
     .build();
 };
 
-export async function cancelMediationDocumentUpload(redisKey: string, claim: Claim) {
-  await deleteFieldDraftClaimFromStore(redisKey, claim, 'mediationUploadDocuments');
+export async function cancelMediationDocumentUpload(redisKey: string, claim: Claim, userId?: string) {
+  await deleteFieldDraftClaimFromStore(redisKey, claim, 'mediationUploadDocuments', userId);
 }

@@ -4,6 +4,7 @@ import { saveDraftGARespondentResponse, getDraftGARespondentResponse } from 'ser
 
 const mockDraftStoreClient = {
   set: jest.fn(),
+  ttl: jest.fn(),
   expireat: jest.fn(),
   get: jest.fn(),
 };
@@ -16,17 +17,36 @@ response.draftResponseCreatedAt = new Date();
 describe('draftStoreService', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    mockDraftStoreClient.ttl.mockResolvedValue(-1);
   });
 
   describe('saveDraftGARespondentResponse', () => {
     it('should save the draft response and set expiration', async () => {
       mockDraftStoreClient.set.mockResolvedValueOnce(null);
-      mockDraftStoreClient.expireat.mockResolvedValueOnce(null);
 
       await saveDraftGARespondentResponse(redisKey, response);
       const stringfyData = JSON.stringify(response);
-      expect(mockDraftStoreClient.set).toHaveBeenCalledWith(redisKey, stringfyData);
-      expect(mockDraftStoreClient.expireat).toHaveBeenCalledWith(redisKey, expect.any(Number));
+      expect(mockDraftStoreClient.set).toHaveBeenCalledWith(redisKey, stringfyData, 'EX', expect.any(Number));
+      expect(mockDraftStoreClient.expireat).not.toHaveBeenCalled();
+    });
+
+    it('should set draftResponseCreatedAt and expiry when creation date is missing', async () => {
+      const responseWithoutCreatedAt = new GaResponse();
+
+      await saveDraftGARespondentResponse(redisKey, responseWithoutCreatedAt);
+
+      expect(responseWithoutCreatedAt.draftResponseCreatedAt).toBeDefined();
+      expect(mockDraftStoreClient.set).toHaveBeenCalledWith(redisKey, expect.any(String), 'EX', expect.any(Number));
+      expect(mockDraftStoreClient.expireat).not.toHaveBeenCalled();
+    });
+
+    it('should preserve existing TTL on update', async () => {
+      mockDraftStoreClient.ttl.mockResolvedValueOnce(600);
+
+      await saveDraftGARespondentResponse(redisKey, response);
+
+      expect(mockDraftStoreClient.set).toHaveBeenCalledWith(redisKey, JSON.stringify(response), 'KEEPTTL');
+      expect(mockDraftStoreClient.expireat).not.toHaveBeenCalled();
     });
   });
 

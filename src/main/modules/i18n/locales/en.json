@@ -160,6 +160,7 @@
       "TITLE": "Contact us for help",
       "TELEPHONE": "Telephone",
       "TELEPHONE_CARM": "Telephone",
+      "TELEPHONE_VALUE": "0300 123 7050",
       "WEB_CHAT": "Web chat",
       "WEB_CHAT_CLOSED": "Web chat is now closed. Come back Monday to Friday 8.30am to 5pm or contact us by phone or email.",
       "WEB_CHAT_NO_ADVISORS": "No Advisors are currently available, Come back later.",
@@ -4699,7 +4700,8 @@
     },
     "RESPONSE_DEADLINE_OPTIONS": {
       "CURRENT_DEADLINE": "Current response deadline: 4pm on {{ responseDeadline }}",
-      "EMAIL_FORM": "Email the completed form N244 to: contact@justice.gov.uk.",
+      "EMAIL_FORM": "Email the completed form N244 to:",
+      "EMAIL_ADDRESS": "contact@justice.gov.uk",
       "FORM": "Form N244 (opens in new tab)",
       "MORE_TIME": "Do you want to request more time to respond?",
       "OPTION_AGREED": "I have already agreed more time with {{ claimantName }}'s legal representative",
@@ -4818,6 +4820,7 @@
       "DO_NOT_CREATE_NEW_CLAIM_IF_WANT_COUNTERCLAIM": "Do not create a new claim if you want to counterclaim.",
       "USE_FORM_N9B": "Use form N9B.",
       "EMAIL_COMPLETED": "Email completed form N9B to",
+      "EMAIL_COMPLETED_N9B": "Email completed form N9B to:",
       "HEADER": "Reject all of the claim and counterclaim",
       "HELP_AND_SUPPORT": "Help and support",
       "HOW_TO_COUNTERCLAIM": "How to counterclaim?",
@@ -5880,6 +5883,7 @@
     "VALID_CLAIM_INTEREST_FROM": "Select when you're claiming interest from",
     "VALID_CLAIM_INTEREST_END_DATE": "Select when you want to stop claiming interest",
     "VALID_CLAIM_NUMBER": "Enter a claim number",
+    "VALID_CLAIM_NUMBER_ALPHANUMERIC": "Enter a claim number using only letters and numbers",
     "VALID_CLAIM_REFERENCE_NUMBER": "Enter your valid claim number from the letter or email we sent you - it should have 3 numbers then the letters MC, JE, JF, JG or JH, then 3 numbers, for example 305JE126",
     "VALID_DATE": "Please enter a valid date",
     "VALID_DATE_IN_PAST": "Enter date before {{dateToday}}",
@@ -6066,7 +6070,7 @@
       "MESSAGE" : "The Citizen User Service will be unavailable between 19:00 on 26th August 2025 and 04:00 on 27th August 2025"
     },
     "CUI_MAIN_WELSH_LIP": {
-      "MESSAGE": "The service will be unavailable from 6:00PM on November 6th until 4:00AM on November 7th due to maintenance."
+      "MESSAGE": "<p><strong>Important notice</strong><br><br>This service will be unavailable from 7.00pm on Thursday 23rd July 2026 to 1.15am on 24th July 2026 whilst we undertake essential maintenance. Please return after 1.15am on Friday 24th July 2026 to continue using the service.<br><br>We apologise for any inconvenience.</p>"
     }
   }
 }

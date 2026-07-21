@@ -120,6 +120,7 @@ export const enum TestMessages {
   VALID_BETWEEN_NUMBERS_0_11 = 'Enter a number between 0 and 11',
   VALID_BETWEEN_NUMBERS_0_80 = 'Enter a number between 0 and 80',
   VALID_CLAIM_NUMBER = 'Enter a claim number',
+  VALID_CLAIM_NUMBER_ALPHANUMERIC = 'Enter a claim number using only letters and numbers',
   VALID_CHOOSE = 'Choose your response',
   VALID_CORRESPONDENCE_ADDRESS_LINE_1 = 'Enter first correspondence address line',
   VALID_CORRESPONDENCE_CITY = 'Enter correspondence town/city',

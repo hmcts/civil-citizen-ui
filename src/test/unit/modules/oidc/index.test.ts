@@ -17,6 +17,7 @@ import {TestMessages} from '../../../utils/errorMessageTestConstants';
 jest.mock('../../../../main/modules/draft-store');
 const mockDraftStoreClient = {
   set: jest.fn(),
+  ttl: jest.fn(),
   expireat: jest.fn(),
   get: jest.fn(),
   keys: jest.fn(),
@@ -37,6 +38,7 @@ jest.mock('../../../../main/app/auth/user/oidc');
 describe('OIDC middleware', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    mockDraftStoreClient.ttl.mockResolvedValue(-1);
     mockDraftStoreClient.keys.mockResolvedValue([]);
     app.request['session'] = {
       save: (callback: (err?: any) => void) => callback(),
@@ -194,7 +196,10 @@ describe('OIDC middleware', () => {
         expect(mockDraftStoreClient.set).toHaveBeenCalledWith(
           '1729760747011812CLAIMISSUED123456789confirmationUrl',
           CLAIM_FEE_PAYMENT_CONFIRMATION_URL_WITH_UNIQUE_ID.replace(':id', '1729760747011812'),
+          'EX',
+          expect.any(Number),
         );
+        expect(mockDraftStoreClient.expireat).not.toHaveBeenCalled();
         expect(res.text).toContain(SIGN_IN_URL);
       });
     });
