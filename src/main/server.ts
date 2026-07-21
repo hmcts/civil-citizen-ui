@@ -28,6 +28,14 @@ process.on('unhandledRejection', (reason: any, promise: Promise<any>) => {
   
 });
 
+// The ingress pools upstream connections. Node's default 5s keep-alive closes them before the
+// ingress does, so the proxy can reuse a socket node has already closed and the request returns a
+// 502. Hold connections open past the ingress idle timeout so the proxy is the one that closes them.
+const applyKeepAliveTimeouts = (server: { keepAliveTimeout: number; headersTimeout: number }): void => {
+  server.keepAliveTimeout = 120000;
+  server.headersTimeout = 121000;
+};
+
 if (app.locals.ENV === 'development') {
   const sslDirectory = path.join(__dirname, 'resources', 'localhost-ssl');
   const sslOptions = {
@@ -35,11 +43,13 @@ if (app.locals.ENV === 'development') {
     key: readFileSync(path.join(sslDirectory, 'localhost.key')),
   };
   const server = createServer(sslOptions, app);
+  applyKeepAliveTimeouts(server);
   server.listen(port, () => {
     logger.info(`Application started: https://localhost:${port}`);
   });
 } else {
-  app.listen(port, () => {
+  const server = app.listen(port, () => {
     logger.info(`Application started: http://localhost:${port}`);
   });
+  applyKeepAliveTimeouts(server);
 }
