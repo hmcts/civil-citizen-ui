@@ -5,18 +5,18 @@ const cmcCookies = require('../../../specClaimHelpers/fixtures/cookies/cmcCookie
 const idamCookies = require('../../../specClaimHelpers/fixtures/cookies/idamCookies');
 const generateExuiCookies = require('../../../specClaimHelpers/fixtures/cookies/exuiCookies');
 
-// Dual-UI-safe IDAM selectors. During the IDAM Web Public -> HMCTS Access
-// migration both sign-in UIs may be served, so each chain lists the new
-// HMCTS Access hooks (data-testid / name) first and falls back to the legacy
-// IDAM Web Public ids/types. Mirrors hmcts/playwright-common idam.po.ts.
 const fields = {
-  username: '[data-testid="idam-username-input"], input[id="username"], input[name="username"], input[type="email"]',
-  password: '[data-testid="idam-password-input"], input[id="password"], input[name="password"], input[type="password"]',
+  username: 'input[id="username"]',
+  email: 'input[id="email"], input[name="email"]', // new HMCTS Access
+  password: 'input[id="password"], input[name="password"]',
 };
 
 const buttons = {
-  submit: '[data-testid="idam-submit-button"], #login-submit-btn, [name="save"], button[type="submit"], input[type="submit"], input.button',
-  hmctsSignIn: 'Sign in',
+  submit: '#login-submit-btn, button[type="submit"], input[type="submit"], input.button',
+
+  hmctsSignIn: 'a[href="/enter-email"]',
+  continue: 'button.govuk-button[type="submit"]',
+
   acceptCookies: 'button[id="cookie-accept-submit"]',
   hideMessage: 'button[name="hide-accepted"]',
 };
@@ -60,33 +60,112 @@ class LoginPage {
     await I.click(buttons.hideMessage);
   }
 
+  async #loginUsingHmctsAccess(email, password) {
+    // LaunchDarkly flag: hmcts-access-migration-enabled
+    // When enabled, HMCTS Access displays the new sign-in journey.
+
+    const signInLinkVisible =
+      await I.grabNumberOfVisibleElements(buttons.hmctsSignIn);
+
+    // First screen: "Sign in or create an account"
+    if (signInLinkVisible > 0) {
+      await I.click(buttons.hmctsSignIn);
+    }
+
+    // Second screen: enter email address
+    await I.waitForContent(
+      'Enter your email address',
+      config.WaitForText,
+    );
+
+    await I.waitForVisible(
+      fields.email,
+      config.WaitForText,
+    );
+
+    await I.fillField(fields.email, email);
+
+    await I.waitForClickable(
+      buttons.continue,
+      config.WaitForText,
+    );
+
+    await I.click(buttons.continue);
+
+    // Third screen: enter password
+    await I.waitForContent(
+      'Enter your password',
+      config.WaitForText,
+    );
+
+    await I.waitForVisible(
+      fields.password,
+      config.WaitForText,
+    );
+
+    await I.fillField(fields.password, password);
+
+    await I.waitForClickable(
+      buttons.continue,
+      config.WaitForText,
+    );
+
+    await I.click(buttons.continue);
+  }
+
   async #login(email, password, endpoint, attempts = 0) {
     const MAX_ATTEMPTS = 2;
-    // Wait for the sign-in form itself rather than page copy: legacy IDAM Web
-    // Public shows "Email address" while the new HMCTS Access page shows
-    // "Sign in or create an account". Waiting on the username field is
-    // UI-agnostic and avoids a hang on either UI during migration.
-    await I.waitForVisible(fields.username, config.WaitForText);
-    await I.fillField(fields.username, email);
 
-    // Detect which sign-in UI is being served and drive it accordingly, so the
-    // tests stay green whether the HMCTS Access toggle is on or off (and thus
-    // prove online users on either UI are unaffected). Legacy IDAM Web Public
-    // ("classic") shows email + password on a single page, so the password
-    // field is already present. HMCTS Access ("modern") is a two-step flow:
-    // email first, then password on the next page. Mirrors the IDAM team's
-    // classic/modern login split.
-    const passwordOnSamePage = await I.grabNumberOfVisibleElements(fields.password);
-    if (passwordOnSamePage) {
-      await this.#classicLogin(password);
+    const currentUrl = await I.grabCurrentUrl();
+
+    /*
+     * LaunchDarkly flag:
+     * hmcts-access-migration-enabled
+     *
+     * Toggle ON:
+     * HMCTS Access displays the new sign-in journey.
+     *
+     * Toggle OFF:
+     * Legacy IDAM displays the existing email and password form.
+     *
+     * LaunchDarkly controls which UI is displayed.
+     * The automation detects the UI and selects the correct login flow.
+     */
+    const isHmctsAccessMigrationEnabled =
+      currentUrl.includes('/sign-in-or-create') ||
+      currentUrl.includes('/enter-email') ||
+      await I.grabNumberOfVisibleElements(buttons.hmctsSignIn) > 0 ||
+      await I.grabNumberOfVisibleElements(fields.email) > 0;
+
+    if (isHmctsAccessMigrationEnabled) {
+      console.log(
+        'hmcts-access-migration-enabled: ON - using HMCTS Access login',
+      );
+
+      await this.#loginUsingHmctsAccess(email, password);
     } else {
-      await this.#modernLogin(password);
+      console.log(
+        'hmcts-access-migration-enabled: OFF - using legacy IDAM login',
+      );
+
+      // Existing legacy IDAM flow remains unchanged
+      await I.waitForContent(
+        'Email address',
+        config.WaitForText,
+      );
+
+      await I.waitForVisible(fields.username);
+      await I.fillField(fields.username, email);
+      await I.fillField(fields.password, password);
+      await I.waitForVisible(buttons.submit);
+      await I.clickWithRetry(buttons.submit, 2);
     }
+
     await I.wait(3);
 
     const url = await I.grabCurrentUrl();
 
-    if(!url.includes(endpoint)) {
+    if (!url.includes(endpoint)) {
       if (attempts >= MAX_ATTEMPTS) {
         throw new Error(`Login failed after ${MAX_ATTEMPTS} attempts`);
       }
@@ -96,25 +175,6 @@ class LoginPage {
       await this.#login(email, password, endpoint, attempts + 1);
     }
     await I.seeInCurrentUrl(endpoint);
-  }
-
-  // Legacy IDAM Web Public ("classic"): email and password live on the same
-  // page, so just fill the password and submit.
-  async #classicLogin(password) {
-    await I.fillField(fields.password, password);
-    await I.waitForVisible(buttons.submit);
-    await I.clickWithRetry(buttons.submit, 2);
-  }
-
-  // HMCTS Access ("modern"): two-step flow. Continue past the email step, wait
-  // for the password page, then fill the password and submit.
-  async #modernLogin(password) {
-    await I.waitForVisible(buttons.submit);
-    await I.clickWithRetry(buttons.submit, 2);
-    await I.waitForVisible(fields.password, config.WaitForText);
-    await I.fillField(fields.password, password);
-    await I.waitForVisible(buttons.submit);
-    await I.clickWithRetry(buttons.submit, 2);
   }
 
   async citizenLogin(email, password) {
