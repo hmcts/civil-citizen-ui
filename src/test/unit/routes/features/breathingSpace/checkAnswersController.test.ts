@@ -2,7 +2,7 @@ import request from 'supertest';
 import {app} from '../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
-import {CYA_LIFT_BREATHING_SPACE_URL, LIFT_BREATHING_SPACE_EXIT_URL} from '../../../../../main/routes/urls';
+import {CYA_LIFT_BREATHING_SPACE_URL, LIFT_BREATHING_SPACE_CONFIRMATION_URL} from '../../../../../main/routes/urls';
 import {getClaimById} from '../../../../../main/modules/utilityService';
 import {getSummaryRows} from '../../../../../main/services/features/breathingSpace/checkAnswersService';
 import {Claim} from '../../../../../main/common/models/claim';
@@ -51,12 +51,12 @@ describe('Lift Breathing Space Check Answers Controller', () => {
   });
 
   describe('on POST', () => {
-    it('should redirect to exit page', async () => {
+    it('should redirect to confirmation page', async () => {
       await request(app)
         .post(CYA_LIFT_BREATHING_SPACE_URL.replace(':id', '123'))
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toContain(LIFT_BREATHING_SPACE_EXIT_URL.replace(':id', '123'));
+          expect(res.header.location).toContain(LIFT_BREATHING_SPACE_CONFIRMATION_URL.replace(':id', '123'));
         });
     });
   });
