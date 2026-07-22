@@ -16,6 +16,7 @@ export const getBreathingSpaceEnterDraftForm = (claim: Claim): BreathingSpaceEnt
       claim.breathingSpaceEnterDraft.type,
       claim.breathingSpaceEnterDraft.reference,
       claim.breathingSpaceEnterDraft.start,
+      claim.breathingSpaceEnterDraft.expectedEnd,
     );
   }
   return new BreathingSpaceEnterDraft();
@@ -53,6 +54,7 @@ export const saveBreathingSpaceEnterDraft = async (
     form.type,
     form.reference,
     existing?.start,
+    existing?.expectedEnd,
   );
   await saveDraftClaim(redisKey, claim);
 };
