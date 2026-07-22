@@ -148,7 +148,7 @@
       "REPAYMENT_AMOUNT_HINT": "Only include the amount you're paying to clear previously missed regular"
     },
     "CONTACT_US_FOR_HELP": {
-      "CALL_CHARGES": "Find out about call charges (opens in a new window)",
+      "CALL_CHARGES": "Find out about call charges (opens in a new tab)",
       "COURT_STAFF_DISCLOSURE": "Court staff can help with your application. They cannot give you legal advice.",
       "EMAIL": "Email",
       "OPENING_HOURS": "Monday to Friday, 8.30am to 5pm.",
@@ -190,7 +190,7 @@
       "BETA": "BETA",
       "MONEY_CLAIMS": "Money Claims",
       "MY_ACCOUNT": "My account",
-      "NEW_SERVICE": "This is a new service – your <a class='govuk-link' href='https://www.smartsurvey.co.uk/s/CMC_Feedback/?pageurl={{ pageTitle }}' target='_blank'>feedback (opens in a new window)</a> will help us to improve it.",
+      "NEW_SERVICE": "This is a new service – your <a class='govuk-link' href='https://www.smartsurvey.co.uk/s/CMC_Feedback/?pageurl={{ pageTitle }}' target='_blank'>feedback (opens in a new tab)</a> will help us to improve it.",
       "SIGN_IN": "Sign in",
       "SIGN_OUT": "Sign out"
     },
@@ -711,7 +711,7 @@
             "TEXT_AFTER": " We try to answer messages within 10 working days, but it could take longer."
           },
           "LINK_2": {
-            "TEXT": "contact details for the court (opens in a new window)",
+            "TEXT": "contact details for the court (opens in a new tab)",
             "TEXT_BEFORE": "If the issue is urgent, you should call the court handling your case. Find the "
           }
         },
@@ -750,7 +750,7 @@
             "TEXT_BEFORE": "If the defendant does not pay or respond by the deadline the court sets, the claimant will be given the option to "
           },
           "LINK_3": {
-            "TEXT": "Find out more about what happens when a CCJ is issued against you (opens in a new window)",
+            "TEXT": "Find out more about what happens when a CCJ is issued against you (opens in a new tab)",
             "TEXT_BEFORE": "Find out more about "
           },
           "PARAGRAPH_WHEN_CCJ_IS_NOT_ENABLED": "If the defendant does not pay or respond by the deadline the court sets, the claimant will be given the option to request a county court judgment (CCJ)."
@@ -763,18 +763,18 @@
           "LI_3": "a third-party debt order - for the defendant’s savings",
           "LI_4": "a charging order - for the defendant’s assets",
           "LINK_1": {
-            "TEXT": "what to do if a defendant does not pay money after a judgment (opens in a new window)",
+            "TEXT": "what to do if a defendant does not pay money after a judgment (opens in a new tab)",
             "TEXT_BEFORE": "Find more detail about "
           },
           "SUBTITLE_1": "Fees",
           "PARAGRAPH_3": "You will have to pay a fee when you ask the court to enforce the judgment, the amount depends on the method you select.",
           "LINK_2": {
-            "TEXT": "help with fees (opens in a new window)",
+            "TEXT": "help with fees (opens in a new tab)",
             "TEXT_BEFORE": "You may be able to get ",
             "TEXT_AFTER": " depending on if you are on some benefits, have low income or below a certain amount of savings."
           },
           "LINK_3": {
-            "TEXT": "civil court fees (opens in a new window)",
+            "TEXT": "civil court fees (opens in a new tab)",
             "TEXT_BEFORE": "Find out about "
           }
         },
@@ -782,7 +782,7 @@
           "SUBTITLE_1": "If part of the judgment or claim amount has been paid",
           "PARAGRAPH_1": "If the defendant has paid part of the claim amount, you do not have to update the court.",
           "LINK_1": {
-            "TEXT": "about enforcing a partially paid judgment (opens in a new window)",
+            "TEXT": "about enforcing a partially paid judgment (opens in a new tab)",
             "TEXT_BEFORE": "Find out "
           }
         },
@@ -809,12 +809,12 @@
             "TEXT_AFTER": ", you will have to pay a fee."
           },
           "LINK_2": {
-            "TEXT": "Check the fees list (opens in a new window)",
+            "TEXT": "Check the fees list (opens in a new tab)",
             "TEXT_BEFORE": "If you are changing the amount of the claim, the case will be moved offline and the court fee you have to pay may change. ",
             "TEXT_AFTER": " to make sure you pay the correct fee."
           },
           "LINK_3": {
-            "TEXT": "help with fees (opens in a new window)",
+            "TEXT": "help with fees (opens in a new tab)",
             "TEXT_BEFORE": "You may be able to get ",
             "TEXT_AFTER": " depending on if you are on some benefits, have low income or below a certain amount of savings."
           },
@@ -831,14 +831,14 @@
         },
         "CLAIM_ENDED" : {
           "LINK_1": {
-            "TEXT": "notice of discontinuance (opens in a new window)",
+            "TEXT": "notice of discontinuance (opens in a new tab)",
             "TEXT_BEFORE": "To tell the court you no longer want to continue with your claim, you need to fill in and send a form called a ",
             "TEXT_AFTER": "  to the court and the other party in the case."
           },
           "TEXT_1": "If you choose to discontinue the case, you may have to pay some of the other party’s costs.",
           "TEXT_2": "You cannot upload a notice of discontinuance to the Money claims system.",
           "LINK_2": {
-            "TEXT": "contact the court (opens in a new window)",
+            "TEXT": "contact the court (opens in a new tab)",
             "TEXT_BEFORE": "To send a notice of discontinuance to the court, you should ",
             "TEXT_AFTER": " handling your case."
           }
@@ -856,27 +856,27 @@
         "ENFORCEMENT_REQUESTS": {
           "PARAGRAPH_1": "Enforcement requests cannot be uploaded using the Money claims system.",
           "LINK_1": {
-            "TEXT": "what to do if a defendant does not pay after a judgment (opens in a new window)",
+            "TEXT": "what to do if a defendant does not pay after a judgment (opens in a new tab)",
             "TEXT_BEFORE": "There is guidance on "
           },
           "PARAGRAPH_2": "There are various options for you to enforce a judgment, you will have to fill in forms and submit them to the court.",
           "PARAGRAPH_3": "The options for enforcing a judgment are&#58;",
           "LINK_2": {
-            "TEXT": "warrant of control (opens in a new window)"
+            "TEXT": "warrant of control (opens in a new tab)"
           },
           "LINK_3": {
-            "TEXT": "attachment of earnings order (opens in a new window)"
+            "TEXT": "attachment of earnings order (opens in a new tab)"
           },
           "LINK_4": {
-            "TEXT": "third-party debt order or charging order (opens in a new window)"
+            "TEXT": "third-party debt order or charging order (opens in a new tab)"
           },
           "LINK_5": {
-            "TEXT": "check the civil fees list (opens in a new window)",
+            "TEXT": "check the civil fees list (opens in a new tab)",
             "TEXT_BEFORE": "Each option has its own fee, ",
             "TEXT_AFTER": "to find the costs for the option you select. "
           },
           "LINK_6": {
-            "TEXT": "help with fees (opens in a new window)",
+            "TEXT": "help with fees (opens in a new tab)",
             "TEXT_BEFORE": "You may be able to get ",
             "TEXT_AFTER": " depending on if you are on some benefits, have low income or below a certain amount of savings."
           }
@@ -906,13 +906,13 @@
           "PARAGRAPH_2": "You should give the court dates when you would be able to attend a hearing. The other parties will also need to agree to the change.",
           "PARAGRAPH_3": "You may need to attend a hearing to discuss your application to change the date.",
           "LINK_2": {
-            "TEXT": "Check the fees guidance (opens in a new window)",
+            "TEXT": "Check the fees guidance (opens in a new tab)",
             "TEXT_BEFORE": "If you are applying to change the hearing date less than 14 days before the hearing you will be charged a fee. ",
             "TEXT_AFTER": " to make sure you pay the correct fee."
           },
           "PARAGRAPH_4": "You do not have to pay for an application to change the hearing date if you apply more than 14 days before the date of the hearing and the other party agrees.",
           "LINK_3": {
-            "TEXT": "help with fees (opens in a new window)",
+            "TEXT": "help with fees (opens in a new tab)",
             "TEXT_BEFORE": "You may be able to get ",
             "TEXT_AFTER": " depending on if you are on some benefits, have low income or below a certain amount of savings."
           }
@@ -927,12 +927,12 @@
             "TEXT_AFTER": "to ask for the court to consider changing the hearing details."
           },
           "LINK_2": {
-            "TEXT": "fees in civil cases (opens in a new window)",
+            "TEXT": "fees in civil cases (opens in a new tab)",
             "TEXT_BEFORE": "Find out more about"
           },
           "PARAGRAPH_2": "If you are applying to change the hearing date, you will have to pay a fee, the amount may be reduced if you are making more than one application.",
           "LINK_3": {
-            "TEXT": "help with fees (opens in a new window)",
+            "TEXT": "help with fees (opens in a new tab)",
             "TEXT_BEFORE": "You may be able to get ",
             "TEXT_AFTER": " depending on if you are on some benefits, have low income or below a certain amount of savings."
           }
@@ -945,17 +945,17 @@
           "LIST_3": "guidance in audio or easy read formats",
           "PARAGRAPH_3": "To ask for support at your hearing you have to contact the court where the hearing is being held. You can see which court is hearing your case in your directions order or hearing notice.",
           "LINK_1": {
-            "TEXT": "Find the contact details for the court (opens in a new window)."
+            "TEXT": "Find the contact details for the court (opens in a new tab)."
           }
         },
         "GA_OFFLINE": {
           "LINK_1": {
-            "TEXT": "fill in form N244 (opens in a new window)",
+            "TEXT": "fill in form N244 (opens in a new tab)",
             "TEXT_BEFORE": "To make an application to the court you must ",
             "TEXT_AFTER": " and return the completed form to the court handling your claim."
           },
           "LINK_2": {
-            "TEXT": "Find the contact details for the court (opens in a new window)"
+            "TEXT": "Find the contact details for the court (opens in a new tab)"
           }
         }
       },
@@ -2987,7 +2987,7 @@
       "UK_MADE_UP": "The UK is made up of England and Wales."
     },
     "ELIGIBILITY_CLAIM_AGAINST_GOVERNMENT": {
-      "LIST_OF_GOVERNMENT": "See list of government departments (opens in a new window).",
+      "LIST_OF_GOVERNMENT": "See list of government departments (opens in a new tab).",
       "PAGE_TITLE": "Government department",
       "TITLE": "Are you claiming against a government department?"
     },
@@ -4122,7 +4122,7 @@
         },
         "PAY_HEARING_FEE": {
           "APPLY_HELP_WITH_FEES": {
-            "LINK":"Apply for Help with Fees (open in a new window)",
+            "LINK":"Apply for Help with Fees (opens in a new tab)",
             "PAGE_TITLE":"Help with fees",
             "PARAGRAPH_IF": "If you already have a help with fees reference number in relation to the claim issue fee or any application fees, you should not use this reference number for this application.",
             "PARAGRAPH_INSTEAD": "Instead, you should make a new help with fees application which will provide you with a new reference number. Note down this number and keep it safe as you will need it later in the process.",
@@ -4433,8 +4433,8 @@
         "USE": "Use "
       },
       "N1_PAPER_FORM": "N1 paper form",
-      "OPENS_IN_A_NEW_WINDOW": "(opens in a new window)",
-      "OPENS_IN_A_NEW_WINDOW_CARM": "(opens in a new window)",
+      "OPENS_IN_A_NEW_WINDOW": "(opens in a new tab)",
+      "OPENS_IN_A_NEW_WINDOW_CARM": "(opens in a new tab)",
       "PAGE_TITLE": "You can’t use this service",
       "TENANCY_DEPOSIT": {
         "GET": "Get",
@@ -4828,12 +4828,12 @@
       "HEADER": "Reject all of the claim and counterclaim",
       "HELP_AND_SUPPORT": "Help and support",
       "HOW_TO_COUNTERCLAIM": "How to counterclaim?",
-      "OPEN_IN_NEW_WINDOW": "(opens in a new window)",
+      "OPEN_IN_NEW_WINDOW": "(opens in a new tab)",
       "PAGE_TITLE": "Send your response by email",
       "PAY_COURT_FEE": "You`ll need to pay a court fee to make a counterclaim. The court will contact you to take payment.",
       "PDF_ADMISSION": "Download admission form (PDF, 102 KB)",
       "PDF_DEFENCE": "Download form (PDF, 102 KB)",
-      "PDF_DEFENCE_AND_CLAIM": "Download form N9B Make a defence or counterclaim (opens in a new window)",
+      "PDF_DEFENCE_AND_CLAIM": "Download form N9B Make a defence or counterclaim (opens in a new tab)",
       "SEND_BY_POST": "Or, you can send the form by post to",
       "SIGN_POST_ADDRESS": {
         "CITY": "Harlow",
@@ -5119,7 +5119,7 @@
     },
     "UNDER_18": {
       "ABLE_TO_GET_ADVICE": "You might be able to get advice about the claim from",
-      "CITIZEN_ADVICE": "Citizens Advice (opens in a new window)",
+      "CITIZEN_ADVICE": "Citizens Advice (opens in a new tab)",
       "CONTENT": "If you are under 18 you need to email or phone the court. Claimants cannot submit a claim against someone under 18 so you may be able to have the claim stopped.",
       "PAGE_TITLE": "Under 18",
       "TITLE": "Contact the court"
@@ -5352,7 +5352,7 @@
       "BASED_ON": "Based on your answers you can make a money claim using this service.",
       "HWF_ELIGIBLE": {
         "PAY_COURT": "You will have to pay court fees unless you are eligible for Help with Fees. ",
-        "HELP_WITH_FEES": "Find out more about Help with Fees (opens in a new window)"
+        "HELP_WITH_FEES": "Find out more about Help with Fees (opens in a new tab)"
       },
       "HWF_ELIGIBLE_REFERENCE": {
         "REMEMBER": "Remember that you will not know about the fee until we have processed your Help with Fees application. Your claim will only be issued after Help with Fees is confirmed, or the fee is paid."
@@ -5474,7 +5474,7 @@
       "OPENING_TIMES": "Opening Times",
       "TELEPHONE_OPENING_HOURS": "Monday to Friday, 9am to 5pm",
       "CLOSED_HOURS": "Telephone and webchat closed on Saturdays, Sundays and bank holidays",
-      "CALL_CHARGES": "Find out about call charges (opens in a new window)",
+      "CALL_CHARGES": "Find out about call charges (opens in a new tab)",
       "CNBC_TELEPHONE": "Civil National Business Centre 0300 123 1056",
       "TRAFFIC_ENFORCEMENT_CENTRE_TELEPHONE": "Traffic Enforcement Centre 0300 123 1059",
       "CNBC_WEB_CHAT_OPENING_HOURS": "Monday to Friday, 9am to 4pm",
