@@ -7,7 +7,6 @@ import {
   getBreathingSpaceCheckAnswersRows,
   getBreathingSpaceStartDateForm,
   getBreathingSpaceEnterDraftForm,
-  resolveBreathingSpaceExpectedEnd,
   resolveBreathingSpaceStartDate,
   saveBreathingSpaceStartDate,
   saveBreathingSpaceEnterDraft,
@@ -38,6 +37,7 @@ describe('breathingSpaceEntryService', () => {
     const form = getBreathingSpaceEnterDraftForm(claim);
     expect(form.type).toBe(BreathingSpaceType.STANDARD);
     expect(form.reference).toBe('ABC');
+    expect(form.expectedEnd).toBeNull();
   });
 
   it('should map saved start date to form fields', () => {
@@ -46,7 +46,6 @@ describe('breathingSpaceEntryService', () => {
       BreathingSpaceType.STANDARD,
       'ABC',
       new Date(2024, 0, 15),
-      new Date(2024, 2, 15),
     );
     const form = getBreathingSpaceStartDateForm(claim);
     expect(form.day).toBe(15);
@@ -62,24 +61,12 @@ describe('breathingSpaceEntryService', () => {
     expect(start.getDate()).toBe(today.getDate());
   });
 
-  it('should set expected end to start plus 60 days for standard type', () => {
-    const start = new Date(2024, 0, 15);
-    const expectedEnd = resolveBreathingSpaceExpectedEnd(start, BreathingSpaceType.STANDARD);
-    expect(expectedEnd).toEqual(new Date(2024, 2, 15));
-  });
-
-  it('should set expected end to null for mental health type', () => {
-    const start = new Date(2024, 0, 15);
-    expect(resolveBreathingSpaceExpectedEnd(start, BreathingSpaceType.MENTAL_HEALTH)).toBeNull();
-  });
-
   it('should build check answers rows from draft', () => {
     const claim = new Claim();
     claim.breathingSpaceEnterDraft = new BreathingSpaceEnterDraft(
       BreathingSpaceType.STANDARD,
       'REF123',
       new Date(2024, 0, 15),
-      new Date(2024, 2, 15),
     );
     const rows = getBreathingSpaceCheckAnswersRows('1111', claim, 'en');
     expect(rows).toHaveLength(3);
@@ -94,7 +81,6 @@ describe('breathingSpaceEntryService', () => {
       BreathingSpaceType.STANDARD,
       'OLD',
       existingStart,
-      null,
     );
     (draftStoreService.generateRedisKey as jest.Mock).mockReturnValue('key');
     (draftStoreService.getCaseDataFromStore as jest.Mock).mockResolvedValue(claim);
@@ -112,7 +98,7 @@ describe('breathingSpaceEntryService', () => {
     expect(draftStoreService.saveDraftClaim).toHaveBeenCalledWith('key', claim);
   });
 
-  it('should save start date and expected end onto claim', async () => {
+  it('should save start date without changing expected end', async () => {
     const claim = new Claim();
     claim.breathingSpaceEnterDraft = new BreathingSpaceEnterDraft(
       BreathingSpaceType.STANDARD,
@@ -123,15 +109,13 @@ describe('breathingSpaceEntryService', () => {
     (draftStoreService.saveDraftClaim as jest.Mock).mockResolvedValue(undefined);
 
     const start = new Date(2024, 0, 15);
-    const expectedEnd = new Date(2024, 2, 15);
     await saveBreathingSpaceStartDate(
       {session: {user: {id: 'user'}}} as AppRequest,
       start,
-      expectedEnd,
     );
 
     expect(claim.breathingSpaceEnterDraft.start).toBe(start);
-    expect(claim.breathingSpaceEnterDraft.expectedEnd).toBe(expectedEnd);
+    expect(claim.breathingSpaceEnterDraft.expectedEnd).toBeNull();
     expect(draftStoreService.saveDraftClaim).toHaveBeenCalledWith('key', claim);
   });
 

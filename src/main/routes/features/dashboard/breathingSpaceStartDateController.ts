@@ -15,7 +15,6 @@ import {BreathingSpaceType} from 'models/breathingSpace/breathingSpaceType';
 import {AppRequest} from 'models/AppRequest';
 import {
   getBreathingSpaceStartDateForm,
-  resolveBreathingSpaceExpectedEnd,
   resolveBreathingSpaceStartDate,
   saveBreathingSpaceStartDate,
 } from 'services/features/dashboard/breathingSpaceEntryService';
@@ -65,8 +64,7 @@ breathingSpaceStartDateController.post(BREATHING_SPACE_START_DATE_URL, (async (r
       return;
     }
     const start = resolveBreathingSpaceStartDate(form.model);
-    const expectedEnd = resolveBreathingSpaceExpectedEnd(start, type);
-    await saveBreathingSpaceStartDate(req, start, expectedEnd);
+    await saveBreathingSpaceStartDate(req, start);
     res.redirect(constructResponseUrlWithIdParams(claimId, BREATHING_SPACE_CYA_URL));
   } catch (error) {
     next(error);

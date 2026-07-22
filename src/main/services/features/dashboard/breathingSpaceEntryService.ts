@@ -10,14 +10,12 @@ import {BreathingSpaceEnterDraft} from 'models/breathingSpace/breathingSpaceEnte
 import {BreathingSpaceType} from 'models/breathingSpace/breathingSpaceType';
 import {BreathingSpaceStartDate} from 'models/breathingSpace/breathingSpaceStartDate';
 import {Claim} from 'models/claim';
-import {addDaysToDate, formatDateToFullDate} from 'common/utils/dateUtils';
+import {formatDateToFullDate} from 'common/utils/dateUtils';
 import {summaryRow, summaryRowWithTextValue, SummaryRow} from 'models/summaryList/summaryList';
 import {t} from 'i18next';
 import {getLng} from 'common/utils/languageToggleUtils';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {BREATHING_SPACE_ENTER_URL, BREATHING_SPACE_START_DATE_URL} from 'routes/urls';
-
-const STANDARD_BREATHING_SPACE_DAYS = 60;
 
 const changeLabel = (lang: string): string => t('COMMON.BUTTONS.CHANGE', {lng: getLng(lang)});
 
@@ -62,16 +60,6 @@ export const resolveBreathingSpaceStartDate = (form: BreathingSpaceStartDate): D
   }
   const today = new Date();
   return new Date(today.getFullYear(), today.getMonth(), today.getDate());
-};
-
-export const resolveBreathingSpaceExpectedEnd = (
-  start: Date,
-  type?: BreathingSpaceType,
-): Date | null => {
-  if (type === BreathingSpaceType.STANDARD) {
-    return addDaysToDate(start, STANDARD_BREATHING_SPACE_DAYS);
-  }
-  return null;
 };
 
 export const getBreathingSpaceCheckAnswersRows = (claimId: string, claim: Claim, lang?: string): SummaryRow[] => {
@@ -123,7 +111,6 @@ export const saveBreathingSpaceEnterDraft = async (
 export const saveBreathingSpaceStartDate = async (
   req: Request,
   start: Date,
-  expectedEnd: Date | null,
 ): Promise<void> => {
   const redisKey = generateRedisKey(<AppRequest>req);
   const claim = await getCaseDataFromStore(redisKey);
@@ -131,7 +118,6 @@ export const saveBreathingSpaceStartDate = async (
     claim.breathingSpaceEnterDraft = new BreathingSpaceEnterDraft();
   }
   claim.breathingSpaceEnterDraft.start = start;
-  claim.breathingSpaceEnterDraft.expectedEnd = expectedEnd;
   await saveDraftClaim(redisKey, claim);
 };
 
