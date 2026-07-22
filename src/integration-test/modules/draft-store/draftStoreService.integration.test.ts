@@ -59,7 +59,8 @@ const CLAIM_ID = '1640995200000000';
 const USER_ID = 'user-aaaa';
 
 const DAY_IN_SECONDS = 86400;
-const DRAFT_CLAIM_TTL_SECONDS = 180 * DAY_IN_SECONDS;
+const DRAFT_CLAIM_TTL_SECONDS = 30 * DAY_IN_SECONDS;
+const MAX_MIDNIGHT_ALIGNED_DRAFT_CLAIM_TTL_SECONDS = 31 * DAY_IN_SECONDS;
 const JOURNEY_CACHE_TTL_SECONDS = 180 * DAY_IN_SECONDS;
 
 const nowInSeconds = () => Math.floor(Date.now() / 1000);
@@ -77,10 +78,11 @@ describe('Integration: draftStoreService TTL handling', () => {
       const ttl = await store.ttl(CLAIM_ID);
       expect(store.set).toHaveBeenCalledWith(CLAIM_ID, expect.any(String), 'EX', expect.any(Number));
       expect(ttl).toBeGreaterThan(DRAFT_CLAIM_TTL_SECONDS - 5);
-      expect(ttl).toBeLessThanOrEqual(DRAFT_CLAIM_TTL_SECONDS + 2);
+      expect(ttl).toBeLessThanOrEqual(MAX_MIDNIGHT_ALIGNED_DRAFT_CLAIM_TTL_SECONDS + 2);
 
       const stored = await getDraftClaimFromStore(CLAIM_ID);
       expect(stored.case_data.draftClaimCreatedAt).toBeDefined();
+      expect(stored.case_data.draftClaimCacheTtlDays).toBe(30);
     });
   });
 
@@ -93,9 +95,10 @@ describe('Integration: draftStoreService TTL handling', () => {
 
       const ttl = await store.ttl(CLAIM_ID);
       expect(claim.draftClaimCreatedAt).toBeDefined();
+      expect(claim.draftClaimCacheTtlDays).toBe(30);
       expect(store.set).toHaveBeenCalledWith(CLAIM_ID, expect.any(String), 'EX', expect.any(Number));
       expect(ttl).toBeGreaterThan(DRAFT_CLAIM_TTL_SECONDS - 5);
-      expect(ttl).toBeLessThanOrEqual(DRAFT_CLAIM_TTL_SECONDS + 2);
+      expect(ttl).toBeLessThanOrEqual(MAX_MIDNIGHT_ALIGNED_DRAFT_CLAIM_TTL_SECONDS + 2);
     });
 
     it('preserves the existing TTL (KEEPTTL) when re-saving an existing draft', async () => {
@@ -148,8 +151,8 @@ describe('Integration: draftStoreService TTL handling', () => {
       await saveDraftClaim(CLAIM_ID, claim, true);
       const after = Date.now();
 
-      // ~90 days of TTL remaining out of 180 => created ~90 days ago.
-      const expectedElapsedMs = (DRAFT_CLAIM_TTL_SECONDS - remainingTtlSeconds) * 1000;
+      // ~90 days of TTL remaining out of the legacy 180-day TTL => created ~90 days ago.
+      const expectedElapsedMs = ((180 * DAY_IN_SECONDS) - remainingTtlSeconds) * 1000;
       const createdAtMs = claim.draftClaimCreatedAt?.getTime() ?? 0;
       expect(createdAtMs).toBeGreaterThanOrEqual(before - expectedElapsedMs - 1000);
       expect(createdAtMs).toBeLessThanOrEqual(after - expectedElapsedMs + 1000);

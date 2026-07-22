@@ -32,11 +32,11 @@ describe('ttlConfig', () => {
   });
 
   it('should reconstruct creation date from remaining TTL', () => {
-    const remainingTtlSeconds = 15 * 86400;
+    const remainingTtlSeconds = 90 * 86400;
     const before = Date.now();
     const creationDate = reconstructCreationDateFromRemainingTtl(remainingTtlSeconds, TTLCategory.DRAFT_CLAIM);
     const after = Date.now();
-    const expectedElapsedMs = (30 * 86400 - remainingTtlSeconds) * 1000;
+    const expectedElapsedMs = (180 * 86400 - remainingTtlSeconds) * 1000;
 
     expect(creationDate.getTime()).toBeGreaterThanOrEqual(before - expectedElapsedMs);
     expect(creationDate.getTime()).toBeLessThanOrEqual(after - expectedElapsedMs);

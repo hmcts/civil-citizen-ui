@@ -284,7 +284,7 @@ describe('Draft store service to save and retrieve claim', () => {
     const storedClaim = {...REDIS_DATA[0]};
     delete storedClaim.case_data.draftClaimCreatedAt;
     const draftStoreWithData = createMockDraftStore(storedClaim);
-    const remainingTtlSeconds = 15 * 86400;
+    const remainingTtlSeconds = 90 * 86400;
     draftStoreWithData.ttl = jest.fn().mockResolvedValue(remainingTtlSeconds);
     draftStoreWithData.expireat = jest.fn().mockResolvedValue({});
     app.locals.draftStoreClient = draftStoreWithData;
@@ -296,7 +296,7 @@ describe('Draft store service to save and retrieve claim', () => {
     await saveDraftClaim(CLAIM_ID, claim);
     const afterSave = Date.now();
 
-    const expectedElapsedMs = (30 * 86400 - remainingTtlSeconds) * 1000;
+    const expectedElapsedMs = (180 * 86400 - remainingTtlSeconds) * 1000;
     const createdAtMs = claim.draftClaimCreatedAt?.getTime() ?? 0;
     expect(createdAtMs).toBeGreaterThanOrEqual(beforeSave - expectedElapsedMs - 1000);
     expect(createdAtMs).toBeLessThanOrEqual(afterSave - expectedElapsedMs + 1000);

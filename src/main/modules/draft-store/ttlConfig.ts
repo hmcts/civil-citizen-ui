@@ -3,6 +3,7 @@ import {DateTime} from 'luxon';
 
 const DAY_TO_SECONDS = 86400;
 const DRAFT_CLAIM_EXPIRY_ZONE = 'Europe/London';
+const LEGACY_DRAFT_CLAIM_TTL_DAYS = 180;
 
 export enum TTLCategory {
   DRAFT_CLAIM = 'DRAFT_CLAIM',
@@ -52,7 +53,10 @@ export const reconstructCreationDateFromRemainingTtl = (
   remainingTtlSeconds: number,
   category: TTLCategory,
 ): Date => {
-  const totalTtlSeconds = getTTLDaysForCategory(category) * DAY_TO_SECONDS;
+  const ttlDays = category === TTLCategory.DRAFT_CLAIM
+    ? LEGACY_DRAFT_CLAIM_TTL_DAYS
+    : getTTLDaysForCategory(category);
+  const totalTtlSeconds = ttlDays * DAY_TO_SECONDS;
   const elapsedSeconds = totalTtlSeconds - remainingTtlSeconds;
   return new Date(Date.now() - elapsedSeconds * 1000);
 };
