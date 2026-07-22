@@ -27,7 +27,7 @@ describe('Apply for help with fees', () => {
         .get(APPLY_HELP_WITH_FEES_START)
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain('Apply for Help with Fees (open in a new window)');
+          expect(res.text).toContain('Apply for Help with Fees (opens in a new tab)');
           expect(res.text).toContain('Hearing');
           expect(res.text).toContain('Apply for help with fees');
           expect(res.text).toContain('If you already have a help with fees reference number in relation to the claim issue fee or any application fees, you should not use this reference number for this application.');
