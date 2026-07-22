@@ -1,6 +1,8 @@
 import config from 'config';
+import {DateTime} from 'luxon';
 
 const DAY_TO_SECONDS = 86400;
+const DRAFT_CLAIM_EXPIRY_ZONE = 'Europe/London';
 
 export enum TTLCategory {
   DRAFT_CLAIM = 'DRAFT_CLAIM',
@@ -13,7 +15,7 @@ export interface TTLMetadata {
   creationDate?: Date;
 }
 
-const getTTLDaysForCategory = (category: TTLCategory): number => {
+export const getTTLDaysForCategory = (category: TTLCategory): number => {
   switch (category) {
     case TTLCategory.DRAFT_CLAIM:
       return config.get<number>('services.draftStore.redis.ttl.draftClaim');
@@ -31,8 +33,18 @@ export const calculateExpiryTimestamp = (
   metadata?: TTLMetadata,
 ): number => {
   const ttlInDays = getTTLDaysForCategory(category);
-  const ttlInSeconds = ttlInDays * DAY_TO_SECONDS;
   const baseDate = metadata?.creationDate ?? new Date();
+  if (category === TTLCategory.DRAFT_CLAIM) {
+    return Math.floor(
+      DateTime.fromJSDate(baseDate)
+        .setZone(DRAFT_CLAIM_EXPIRY_ZONE)
+        .plus({days: ttlInDays + 1})
+        .startOf('day')
+        .toSeconds(),
+    );
+  }
+
+  const ttlInSeconds = ttlInDays * DAY_TO_SECONDS;
   return Math.round(baseDate.getTime() / 1000) + ttlInSeconds;
 };
 

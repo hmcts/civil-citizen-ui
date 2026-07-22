@@ -34,7 +34,7 @@ services:
       tls: false
       ttl:
         # Draft claims (claim journey data keyed by claim id)
-        draftClaim: 180
+        draftClaim: 30
         # Journey cache keys (e.g. claimId+userId progress during response/claimant response)
         journeyCache: 180
         # Payment session and confirmation-url keys

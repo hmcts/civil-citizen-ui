@@ -9,7 +9,7 @@ import {AppRequest} from 'common/models/AppRequest';
 import {getClaimById} from 'modules/utilityService';
 import {Request} from 'express';
 import {getRouteParam} from 'common/utils/routeParamUtils';
-import {TTLCategory, reconstructCreationDateFromRemainingTtl} from './ttlConfig';
+import {TTLCategory, getTTLDaysForCategory, reconstructCreationDateFromRemainingTtl} from './ttlConfig';
 import {writeWithTTL} from './redisWriteHelper';
 
 const {Logger} = require('@hmcts/nodejs-logging');
@@ -85,15 +85,23 @@ export const saveDraftClaim = async (
   const resolvedUserId = resolveUserId(claimId, userId);
   logger.info(`Saving draft claim : userId: ${resolvedUserId}  claimId: ${claimId}`);
   let storedClaimResponse = await getDraftClaimFromStore(claimId, doNotThrowError);
-  if (isUndefined(storedClaimResponse.case_data)) {
+  const isNewDraftClaim = isUndefined(storedClaimResponse.case_data);
+  if (isNewDraftClaim) {
     storedClaimResponse = createNewCivilClaimResponse(claimId);
   }
   let prefetchedTTL: number | undefined;
-  if (ttlCategory === TTLCategory.DRAFT_CLAIM && !claim.draftClaimCreatedAt) {
+  if (ttlCategory === TTLCategory.DRAFT_CLAIM) {
     const storedCreatedAt = storedClaimResponse.case_data?.draftClaimCreatedAt;
-    if (storedCreatedAt) {
+    const storedTtlDays = storedClaimResponse.case_data?.draftClaimCacheTtlDays;
+    if (storedTtlDays && !claim.draftClaimCacheTtlDays) {
+      claim.draftClaimCacheTtlDays = storedTtlDays;
+    }
+    if (isNewDraftClaim && !claim.draftClaimCacheTtlDays) {
+      claim.draftClaimCacheTtlDays = getTTLDaysForCategory(TTLCategory.DRAFT_CLAIM);
+    }
+    if (!claim.draftClaimCreatedAt && storedCreatedAt) {
       claim.draftClaimCreatedAt = new Date(storedCreatedAt);
-    } else {
+    } else if (!claim.draftClaimCreatedAt) {
       prefetchedTTL = await app.locals.draftStoreClient.ttl(claimId);
       if (prefetchedTTL > 0) {
         claim.draftClaimCreatedAt = reconstructCreationDateFromRemainingTtl(
@@ -153,6 +161,7 @@ export async function createDraftClaimInStoreWithExpiryTime(claimId: string) {
   const creationTime = new Date();
   draftClaim.case_data = {
     draftClaimCreatedAt: creationTime,
+    draftClaimCacheTtlDays: getTTLDaysForCategory(TTLCategory.DRAFT_CLAIM),
   } as unknown as CCDClaim;
   await writeWithTTL(claimId, draftClaim, TTLCategory.DRAFT_CLAIM, {creationDate: creationTime});
   logger.info(

@@ -166,6 +166,8 @@ describe('Draft store service to save and retrieve claim', () => {
     await createDraftClaimInStoreWithExpiryTime(CLAIM_ID);
     //Then
     expect(spySet).toHaveBeenCalledWith(CLAIM_ID, expect.any(String), 'EX', expect.any(Number));
+    const savedDraft = JSON.parse(spySet.mock.calls[0][1] as string);
+    expect(savedDraft.case_data.draftClaimCacheTtlDays).toBe(30);
     expect(spyExpireat).not.toBeCalled();
   });
   it('should generate redis key', async () => {
@@ -273,15 +275,16 @@ describe('Draft store service to save and retrieve claim', () => {
     await saveDraftClaim(CLAIM_ID, claim);
 
     expect(claim.draftClaimCreatedAt).toBeDefined();
+    expect(claim.draftClaimCacheTtlDays).toBeUndefined();
     expect(draftStoreWithData.set).toHaveBeenCalledWith(CLAIM_ID, expect.any(String), 'EX', expect.any(Number));
     expect(draftStoreWithData.expireat).not.toHaveBeenCalled();
   });
 
-  it('should reconstruct draftClaimCreatedAt from existing TTL for legacy drafts', async () => {
+  it('should reconstruct draftClaimCreatedAt from existing TTL for legacy drafts without adding a new expiry notice marker', async () => {
     const storedClaim = {...REDIS_DATA[0]};
     delete storedClaim.case_data.draftClaimCreatedAt;
     const draftStoreWithData = createMockDraftStore(storedClaim);
-    const remainingTtlSeconds = 90 * 86400;
+    const remainingTtlSeconds = 15 * 86400;
     draftStoreWithData.ttl = jest.fn().mockResolvedValue(remainingTtlSeconds);
     draftStoreWithData.expireat = jest.fn().mockResolvedValue({});
     app.locals.draftStoreClient = draftStoreWithData;
@@ -293,10 +296,11 @@ describe('Draft store service to save and retrieve claim', () => {
     await saveDraftClaim(CLAIM_ID, claim);
     const afterSave = Date.now();
 
-    const expectedElapsedMs = (180 * 86400 - remainingTtlSeconds) * 1000;
+    const expectedElapsedMs = (30 * 86400 - remainingTtlSeconds) * 1000;
     const createdAtMs = claim.draftClaimCreatedAt?.getTime() ?? 0;
     expect(createdAtMs).toBeGreaterThanOrEqual(beforeSave - expectedElapsedMs - 1000);
     expect(createdAtMs).toBeLessThanOrEqual(afterSave - expectedElapsedMs + 1000);
+    expect(claim.draftClaimCacheTtlDays).toBeUndefined();
     expect(draftStoreWithData.expireat).not.toHaveBeenCalled();
   });
 });
