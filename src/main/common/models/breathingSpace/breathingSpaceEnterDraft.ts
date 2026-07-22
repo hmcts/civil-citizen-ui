@@ -13,12 +13,14 @@ export class BreathingSpaceEnterDraft {
     reference?: string;
 
   start?: Date;
-  expectedEnd?: Date | null;
+  expectedEnd?: Date | null = null;
 
   constructor(type?: string, reference?: string, start?: Date, expectedEnd?: Date | null) {
     this.type = type as BreathingSpaceType;
     this.reference = reference;
     this.start = start;
-    this.expectedEnd = expectedEnd;
+    if (expectedEnd !== undefined) {
+      this.expectedEnd = expectedEnd;
+    }
   }
 }

@@ -7,7 +7,6 @@ import {
   saveDraftClaim,
 } from 'modules/draft-store/draftStoreService';
 import {BreathingSpaceEnterDraft} from 'models/breathingSpace/breathingSpaceEnterDraft';
-import {BreathingSpaceType} from 'models/breathingSpace/breathingSpaceType';
 import {BreathingSpaceStartDate} from 'models/breathingSpace/breathingSpaceStartDate';
 import {Claim} from 'models/claim';
 import {addDaysToDate, formatDateToFullDate} from 'common/utils/dateUtils';
@@ -64,46 +63,6 @@ export const resolveBreathingSpaceStartDate = (form: BreathingSpaceStartDate): D
   return new Date(today.getFullYear(), today.getMonth(), today.getDate());
 };
 
-export const resolveBreathingSpaceExpectedEnd = (
-  start: Date,
-  type?: BreathingSpaceType,
-): Date | null => {
-  if (type === BreathingSpaceType.STANDARD) {
-    return addDaysToDate(start, STANDARD_BREATHING_SPACE_DAYS);
-  }
-  return null;
-};
-
-export const getBreathingSpaceCheckAnswersRows = (claimId: string, claim: Claim, lang?: string): SummaryRow[] => {
-  const draft = claim.breathingSpaceEnterDraft;
-  const lng = getLng(lang);
-  const enterUrl = constructResponseUrlWithIdParams(claimId, BREATHING_SPACE_ENTER_URL);
-  const startDateUrl = constructResponseUrlWithIdParams(claimId, BREATHING_SPACE_START_DATE_URL);
-  const reference = draft?.reference?.trim() ? draft.reference : '';
-  const startDateValue = draft?.start ? formatDateToFullDate(new Date(draft.start), lng) : '';
-
-  return [
-    summaryRow(
-      t('PAGES.BREATHING_SPACE_ENTRY.CYA.TYPE', {lng}),
-      typeLabel(draft?.type, lng),
-      enterUrl,
-      changeLabel(lng),
-    ),
-    summaryRowWithTextValue(
-      t('PAGES.BREATHING_SPACE_ENTRY.CYA.REFERENCE', {lng}),
-      reference,
-      enterUrl,
-      changeLabel(lng),
-    ),
-    summaryRow(
-      t('PAGES.BREATHING_SPACE_ENTRY.CYA.START_DATE', {lng}),
-      startDateValue,
-      startDateUrl,
-      changeLabel(lng),
-    ),
-  ];
-};
-
 export const saveBreathingSpaceEnterDraft = async (
   req: Request,
   form: BreathingSpaceEnterDraft,
@@ -123,7 +82,6 @@ export const saveBreathingSpaceEnterDraft = async (
 export const saveBreathingSpaceStartDate = async (
   req: Request,
   start: Date,
-  expectedEnd: Date | null,
 ): Promise<void> => {
   const redisKey = generateRedisKey(<AppRequest>req);
   const claim = await getCaseDataFromStore(redisKey);
@@ -131,7 +89,6 @@ export const saveBreathingSpaceStartDate = async (
     claim.breathingSpaceEnterDraft = new BreathingSpaceEnterDraft();
   }
   claim.breathingSpaceEnterDraft.start = start;
-  claim.breathingSpaceEnterDraft.expectedEnd = expectedEnd;
   await saveDraftClaim(redisKey, claim);
 };
 
