@@ -22,6 +22,7 @@
 
     <form method="post" novalidate>
       {{ csrfProtection(csrf) }}
+      <input type="hidden" name="returnUrl" value="{{ returnUrl }}" />
 
       {{ govukRadios({
         idPrefix: 'option',

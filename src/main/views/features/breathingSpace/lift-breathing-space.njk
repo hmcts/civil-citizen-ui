@@ -91,15 +91,10 @@
           {{ govukButton({
             text: t('COMMON.BUTTONS.CONTINUE')
           }) }}
-          {{ govukButton({
-            text: t('COMMON.BUTTONS.PREVIOUS'),
-            classes: 'govuk-button--secondary',
-            href: backUrl
-          }) }}
         </div>
 
         <p class="govuk-body">
-          <a href="{{ backUrl }}" class="govuk-link">{{ t('COMMON.BUTTONS.CANCEL') }}</a>
+          <a href="{{ exitUrl }}" class="govuk-link">{{ t('COMMON.BUTTONS.CANCEL') }}</a>
         </p>
       </form>
     {% endblock %}

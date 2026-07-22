@@ -1,5 +1,5 @@
 import {NextFunction, Request, Response, Router} from 'express';
-import {LIFT_BREATHING_SPACE_URL, DASHBOARD_URL, CYA_LIFT_BREATHING_SPACE_URL} from '../../urls';
+import {LIFT_BREATHING_SPACE_URL, DASHBOARD_URL, CYA_LIFT_BREATHING_SPACE_URL, LIFT_BREATHING_SPACE_EXIT_URL} from '../../urls';
 import {GenericForm} from 'common/form/models/genericForm';
 import {LiftBreathingSpaceForm} from 'common/form/models/breathingSpace/liftBreathingSpaceForm';
 import {getLiftBreathingSpaceForm, saveLiftBreathingSpace} from 'services/features/breathingSpace/liftBreathingSpaceService';
@@ -20,6 +20,8 @@ liftBreathingSpaceController.get(LIFT_BREATHING_SPACE_URL, async (req: Request, 
     const helpSupportTitle = getHelpSupportTitle(lang);
     const helpSupportLinks = getHelpSupportLinks(lang);
     const backUrl = constructResponseUrlWithIdParams(claimId, DASHBOARD_URL);
+    const liftUrl = constructResponseUrlWithIdParams(claimId, LIFT_BREATHING_SPACE_URL);
+    const exitUrl = constructResponseUrlWithIdParams(claimId, LIFT_BREATHING_SPACE_EXIT_URL) + '?returnUrl=' + encodeURIComponent(liftUrl);
     const isQMFlagEnabled = await isQueryManagementEnabled(claim.submittedDate);
 
     res.render(liftBreathingSpaceViewPath, {
@@ -30,6 +32,7 @@ liftBreathingSpaceController.get(LIFT_BREATHING_SPACE_URL, async (req: Request, 
       helpSupportLinks,
       backUrl,
       backLinkUrl: backUrl,
+      exitUrl,
       isQMFlagEnabled,
       showErrorSummary: false,
     });
@@ -52,6 +55,8 @@ liftBreathingSpaceController.post(LIFT_BREATHING_SPACE_URL, async (req: Request,
       const helpSupportTitle = getHelpSupportTitle(lang);
       const helpSupportLinks = getHelpSupportLinks(lang);
       const backUrl = constructResponseUrlWithIdParams(claimId, DASHBOARD_URL);
+      const liftUrl = constructResponseUrlWithIdParams(claimId, LIFT_BREATHING_SPACE_URL);
+      const exitUrl = constructResponseUrlWithIdParams(claimId, LIFT_BREATHING_SPACE_EXIT_URL) + '?returnUrl=' + encodeURIComponent(liftUrl);
       const isQMFlagEnabled = await isQueryManagementEnabled(claim.submittedDate);
 
       res.render(liftBreathingSpaceViewPath, {
@@ -62,6 +67,7 @@ liftBreathingSpaceController.post(LIFT_BREATHING_SPACE_URL, async (req: Request,
         helpSupportLinks,
         backUrl,
         backLinkUrl: backUrl,
+        exitUrl,
         isQMFlagEnabled,
         showErrorSummary: true,
       });

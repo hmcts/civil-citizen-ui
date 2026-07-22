@@ -18,6 +18,8 @@ checkAnswersController.get(CYA_LIFT_BREATHING_SPACE_URL, async (req: Request, re
     const helpSupportLinks = getHelpSupportLinks(lang);
     const backUrl = constructResponseUrlWithIdParams(claimId, DASHBOARD_URL);
     const liftBreathingSpaceUrl = constructResponseUrlWithIdParams(claimId, LIFT_BREATHING_SPACE_URL);
+    const cyaUrl = constructResponseUrlWithIdParams(claimId, CYA_LIFT_BREATHING_SPACE_URL);
+    const exitUrl = constructResponseUrlWithIdParams(claimId, LIFT_BREATHING_SPACE_EXIT_URL) + '?returnUrl=' + encodeURIComponent(cyaUrl);
 
     res.render(checkAnswersViewPath, {
       summaryRows,
@@ -27,6 +29,7 @@ checkAnswersController.get(CYA_LIFT_BREATHING_SPACE_URL, async (req: Request, re
       backUrl,
       backLinkUrl: liftBreathingSpaceUrl,
       liftBreathingSpaceUrl,
+      exitUrl,
     });
   } catch (error) {
     next(error);
@@ -36,7 +39,9 @@ checkAnswersController.get(CYA_LIFT_BREATHING_SPACE_URL, async (req: Request, re
 checkAnswersController.post(CYA_LIFT_BREATHING_SPACE_URL, async (req: Request, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id as string;
-    res.redirect(constructResponseUrlWithIdParams(claimId, LIFT_BREATHING_SPACE_EXIT_URL));
+    const cyaUrl = constructResponseUrlWithIdParams(claimId, CYA_LIFT_BREATHING_SPACE_URL);
+    const exitUrl = constructResponseUrlWithIdParams(claimId, LIFT_BREATHING_SPACE_EXIT_URL) + '?returnUrl=' + encodeURIComponent(cyaUrl);
+    res.redirect(exitUrl);
   } catch (error) {
     next(error);
   }
