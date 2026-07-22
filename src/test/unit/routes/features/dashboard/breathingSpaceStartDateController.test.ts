@@ -146,7 +146,8 @@ describe('Breathing Space Start Date Controller', () => {
         year: '',
       })
       .expect((res) => {
-        expect(res.status).toBe(200);
+        expect(res.status).toBe(302);
+        expect(res.header.location).toContain(BREATHING_SPACE_CYA_URL);
         expect(breathingSpaceEntryService.saveBreathingSpaceStartDate).toHaveBeenCalledTimes(1);
         expect(breathingSpaceEntryService.saveBreathingSpaceStartDate).toHaveBeenCalledWith(
           expect.anything(),
@@ -166,13 +167,8 @@ describe('Breathing Space Start Date Controller', () => {
         year: '2024',
       })
       .expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain('Breathing space start date');
-        expect(res.text).toContain('value="15"');
-        expect(res.text).toContain('value="1"');
-        expect(res.text).toContain('value="2024"');
-        expect(res.text).not.toContain('Start date must be a real date');
-        expect(res.text).not.toContain('Start date cannot be in the future');
+        expect(res.status).toBe(302);
+        expect(res.header.location).toContain(BREATHING_SPACE_CYA_URL);
         expect(breathingSpaceEntryService.saveBreathingSpaceStartDate).toHaveBeenCalled();
       });
   });

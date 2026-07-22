@@ -65,12 +65,7 @@ breathingSpaceStartDateController.post(BREATHING_SPACE_START_DATE_URL, (async (r
     }
     const start = resolveBreathingSpaceStartDate(form.model);
     await saveBreathingSpaceStartDate(req, start);
-    const savedForm = new GenericForm(new BreathingSpaceStartDate(
-      String(start.getDate()),
-      String(start.getMonth() + 1),
-      String(start.getFullYear()),
-    ));
-    await renderView(res, claimId, savedForm, type === BreathingSpaceType.MENTAL_HEALTH);
+    res.redirect(constructResponseUrlWithIdParams(claimId, BREATHING_SPACE_CYA_URL));
   } catch (error) {
     next(error);
   }

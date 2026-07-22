@@ -61,6 +61,19 @@ describe('breathingSpaceEntryService', () => {
     expect(start.getDate()).toBe(today.getDate());
   });
 
+  it('should build check answers rows from draft', () => {
+    const claim = new Claim();
+    claim.breathingSpaceEnterDraft = new BreathingSpaceEnterDraft(
+      BreathingSpaceType.STANDARD,
+      'REF123',
+      new Date(2024, 0, 15),
+    );
+    const rows = getBreathingSpaceCheckAnswersRows('1111', claim, 'en');
+    expect(rows).toHaveLength(3);
+    expect(rows[0].actions?.items[0].href).toContain(BREATHING_SPACE_ENTER_URL.replace(':id', '1111'));
+    expect(rows[2].actions?.items[0].href).toContain(BREATHING_SPACE_START_DATE_URL.replace(':id', '1111'));
+  });
+
   it('should save type and reference onto claim and keep existing start dates', async () => {
     const claim = new Claim();
     const existingStart = new Date(2024, 0, 15);
