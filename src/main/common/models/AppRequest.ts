@@ -46,6 +46,8 @@ export interface AppSession extends Session {
   qmShareConfirmed: boolean;
   caseReference?: string;
   paymentConfirmationContext?: PaymentConfirmationContext;
+  breathingSpaceAppliedType?: string;
+  breathingSpaceAppliedStart?: string;
 }
 
 export interface UserDetails {

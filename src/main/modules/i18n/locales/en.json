@@ -2803,6 +2803,16 @@
         "TYPE": "What type is it?",
         "REFERENCE": "Reference number (optional)",
         "START_DATE": "Start date (optional)"
+      },
+      "CONFIRMATION": {
+        "STANDARD_APPLIED": "Standard breathing space applied",
+        "MENTAL_HEALTH_APPLIED": "Mental health breathing space applied",
+        "CONFIRMATION_EMAIL": "We have sent you a confirmation email.",
+        "STANDARD_NEXT_NOW": "Breathing space will now be active. You can lift it when you know when it will end.",
+        "STANDARD_NEXT_FROM": "Breathing space will be active from {{ startDate }}. You can lift it when you know when it will end.",
+        "MENTAL_HEALTH_NEXT_NOW": "Breathing space will now be active, and remain until you lift breathing space.",
+        "MENTAL_HEALTH_NEXT_FROM": "Breathing space will be active from {{ startDate }}, and remain until you lift breathing space.",
+        "RETURN_TO_CASE_SUMMARY": "Return to your case summary"
       }
     },
     "DEBTS": {

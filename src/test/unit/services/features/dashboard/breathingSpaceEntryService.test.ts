@@ -5,6 +5,8 @@ import {BreathingSpaceStartDate} from 'models/breathingSpace/breathingSpaceStart
 import {
   cancelBreathingSpaceEntry,
   getBreathingSpaceCheckAnswersRows,
+  getBreathingSpaceConfirmationNextContent,
+  getBreathingSpaceConfirmationPanelTitle,
   getBreathingSpaceStartDateForm,
   getBreathingSpaceEnterDraftForm,
   resolveBreathingSpaceStartDate,
@@ -136,5 +138,14 @@ describe('breathingSpaceEntryService', () => {
       claim,
       'breathingSpaceEnterDraft',
     );
+  });
+
+  it('should return confirmation panel and next-step content by type and start date', () => {
+    expect(getBreathingSpaceConfirmationPanelTitle(BreathingSpaceType.MENTAL_HEALTH))
+      .toBe('PAGES.BREATHING_SPACE_ENTRY.CONFIRMATION.MENTAL_HEALTH_APPLIED');
+    expect(getBreathingSpaceConfirmationNextContent(BreathingSpaceType.STANDARD, new Date()))
+      .toEqual({key: 'PAGES.BREATHING_SPACE_ENTRY.CONFIRMATION.STANDARD_NEXT_NOW'});
+    expect(getBreathingSpaceConfirmationNextContent(BreathingSpaceType.MENTAL_HEALTH, new Date(2024, 5, 1)).key)
+      .toBe('PAGES.BREATHING_SPACE_ENTRY.CONFIRMATION.MENTAL_HEALTH_NEXT_FROM');
   });
 });

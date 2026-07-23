@@ -126,3 +126,40 @@ export const cancelBreathingSpaceEntry = async (req: Request): Promise<void> => 
   const claim = await getCaseDataFromStore(redisKey);
   await deleteFieldDraftClaimFromStore(redisKey, claim, 'breathingSpaceEnterDraft');
 };
+
+const isSameCalendarDay = (date: Date, compareTo: Date): boolean => {
+  return date.getFullYear() === compareTo.getFullYear()
+    && date.getMonth() === compareTo.getMonth()
+    && date.getDate() === compareTo.getDate();
+};
+
+export const getBreathingSpaceConfirmationPanelTitle = (type?: string): string => {
+  if (type === BreathingSpaceType.MENTAL_HEALTH) {
+    return 'PAGES.BREATHING_SPACE_ENTRY.CONFIRMATION.MENTAL_HEALTH_APPLIED';
+  }
+  return 'PAGES.BREATHING_SPACE_ENTRY.CONFIRMATION.STANDARD_APPLIED';
+};
+
+export const getBreathingSpaceConfirmationNextContent = (
+  type?: string,
+  start?: Date | string,
+  lang?: string,
+): {key: string; variables?: {startDate: string}} => {
+  const startDate = start ? new Date(start) : undefined;
+  const isMentalHealth = type === BreathingSpaceType.MENTAL_HEALTH;
+
+  if (!startDate || Number.isNaN(startDate.getTime()) || isSameCalendarDay(startDate, new Date())) {
+    return {
+      key: isMentalHealth
+        ? 'PAGES.BREATHING_SPACE_ENTRY.CONFIRMATION.MENTAL_HEALTH_NEXT_NOW'
+        : 'PAGES.BREATHING_SPACE_ENTRY.CONFIRMATION.STANDARD_NEXT_NOW',
+    };
+  }
+
+  return {
+    key: isMentalHealth
+      ? 'PAGES.BREATHING_SPACE_ENTRY.CONFIRMATION.MENTAL_HEALTH_NEXT_FROM'
+      : 'PAGES.BREATHING_SPACE_ENTRY.CONFIRMATION.STANDARD_NEXT_FROM',
+    variables: {startDate: formatDateToFullDate(startDate, lang)},
+  };
+};

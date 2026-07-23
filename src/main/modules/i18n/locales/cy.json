@@ -2801,6 +2801,16 @@
         "TYPE": "Pa fath ydy o?",
         "REFERENCE": "Cyfeirnod (dewisol)",
         "START_DATE": "Dyddiad cychwyn (dewisol)"
+      },
+      "CONFIRMATION": {
+        "STANDARD_APPLIED": "Lle i anadlu safonol wedi'i gymhwyso",
+        "MENTAL_HEALTH_APPLIED": "Lle i anadu iechyd meddwl - wedi'i gymhwyso",
+        "CONFIRMATION_EMAIL": "Rydym wedi anfon e-bost cadarnhau atoch.",
+        "STANDARD_NEXT_NOW": "Bydd y Lle i Anadlu nawr yn weithredol. Gallwch ei godi pan fyddwch yn gwybod pryd fydd yn dod i ben.",
+        "STANDARD_NEXT_FROM": "Bydd y Lle i Anadlu yn weithredol o {{ startDate }}. Gallwch ei godi pan fyddwch yn gwybod pryd fydd yn dod i ben.",
+        "MENTAL_HEALTH_NEXT_NOW": "Bydd y Lle i Anadlu nawr yn weithredol nes eich bod yn codi'r Lle i Anadlu.",
+        "MENTAL_HEALTH_NEXT_FROM": "Bydd y Lle i Anadlu yn weithredol o {{ startDate }}, ac yn parhau nes eich bod yn codi'r Lle i Anadlu.",
+        "RETURN_TO_CASE_SUMMARY": "Dychwelyd i drosolwg eich achos"
       }
     },
     "DEBTS": {

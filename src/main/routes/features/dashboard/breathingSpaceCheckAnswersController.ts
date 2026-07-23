@@ -53,6 +53,10 @@ breathingSpaceCheckAnswersController.post(BREATHING_SPACE_CYA_URL, (async (req: 
     const claim = await getClaimById(claimId, req, true);
     const enterBreathingCCD = translateDraftBreathingSpaceEnterToCCD(claim);
     await civilServiceClient.submitEnterBreathingSpace(claimId, enterBreathingCCD, req);
+    req.session.breathingSpaceAppliedType = claim.breathingSpaceEnterDraft?.type;
+    req.session.breathingSpaceAppliedStart = claim.breathingSpaceEnterDraft?.start
+      ? new Date(claim.breathingSpaceEnterDraft.start).toISOString()
+      : undefined;
     await cancelBreathingSpaceEntry(req);
     res.redirect(constructResponseUrlWithIdParams(claimId, BREATHING_SPACE_CONFIRMATION_URL));
   } catch (error) {
