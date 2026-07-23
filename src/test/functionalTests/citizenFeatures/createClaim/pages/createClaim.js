@@ -551,7 +551,7 @@ class CreateClaim {
     await I.see('Email', 'h2');
     await I.see('Telephone');
     await I.see('0300 123 7050');
-    await I.seeElement('//a[.=\'Find out about call charges (opens in a new window)\']');
+    await I.seeElement('//a[.=\'Find out about call charges (opens in a new tab)\']');
     return claimReference;
   }
 
