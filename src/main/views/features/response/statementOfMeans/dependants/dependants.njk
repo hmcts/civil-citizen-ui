@@ -87,13 +87,13 @@
             {% endset -%}
 
             {{ govukRadios({
-              idPrefix: "option",
-              name: "option",
+              idPrefix: "declared",
+              name: "declared",
               items: [
                 {
                   value: YesNo.YES,
                   text: t('COMMON.VARIATION.YES'),
-                  checked: form.model.option === true,
+                  checked: form.model.declared === true,
                   conditional: {
                     html: numberOfChildrenHtml
                   }
@@ -101,7 +101,7 @@
                 {
                   value: YesNo.NO,
                   text: t('COMMON.VARIATION.NO'),
-                  checked: form.model.option === false
+                  checked: form.model.declared === false
                 }
               ],
               errorMessage: {
