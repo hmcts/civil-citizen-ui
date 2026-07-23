@@ -11,3 +11,5 @@ coverage/*
 jest.*config.js
 # MoJ boilerplate code
 /src/main/assets/js/mojAll.js
+# Semgrep rule fixtures are parsed by Semgrep, not the application toolchain
+/.semgrep/
