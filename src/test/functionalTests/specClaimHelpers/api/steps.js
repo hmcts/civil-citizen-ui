@@ -1068,7 +1068,6 @@ module.exports = {
     await waitForFinishedBusinessProcess(caseId);
   },
 
-  // SETTLE_CLAIM (caseworker), distinct from LIP_CLAIM_SETTLED and SETTLE_CLAIM_MARK_PAID_FULL above
   settleClaimCaseworker: async (user, caseId) => {
     console.log('settleClaimCaseworker for case id ' + caseId);
     eventName = 'SETTLE_CLAIM';

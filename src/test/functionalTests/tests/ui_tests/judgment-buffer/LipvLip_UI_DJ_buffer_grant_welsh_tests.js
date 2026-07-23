@@ -56,20 +56,16 @@ Scenario('Bilingual claimant - the Welsh requested-CCJ notice is superseded once
   await ClaimantResponseSteps.verifyDefaultJudgmentBuffer(claimRef);
   await api.waitForFinishedBusinessProcess();
 
-  // the requested-CCJ notice in Welsh, before the buffer scheduler grants judgment
   await I.amOnPage('/dashboard/' + claimRef + '/claimant');
   await I.click('Cymraeg');
   const requestedWelsh = dashboardNotifications.ccjRequestedBufferClaimantWelsh();
   await verifyNotificationTitleAndContent(claimNumber, requestedWelsh.title, requestedWelsh.content, claimRef);
 
-  // push the judgment past its buffer and let the scheduler grant it
   await updateCaseData(claimRef, {joDJCreatedDate: londonBackdate(144)});
   const issued = await runBufferSchedulerUntilIssued(api);
   assert.isTrue(issued, 'the judgment buffer scheduler should issue the CCJ');
   await api.waitForFinishedBusinessProcess();
 
-  // the Welsh requested notice must be superseded - neither the Welsh nor the English
-  // requested-CCJ title should still be showing once judgment has been granted
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await I.amOnPage('/dashboard/' + claimRef + '/claimant');
   await I.click('Cymraeg');
