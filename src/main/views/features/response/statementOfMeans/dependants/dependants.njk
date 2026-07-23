@@ -93,7 +93,7 @@
                 {
                   value: YesNo.YES,
                   text: t('COMMON.VARIATION.YES'),
-                  checked: form.model.declared === true,
+                  checked: form.model.option === true,
                   conditional: {
                     html: numberOfChildrenHtml
                   }
@@ -101,7 +101,7 @@
                 {
                   value: YesNo.NO,
                   text: t('COMMON.VARIATION.NO'),
-                  checked: form.model.declared === false
+                  checked: form.model.option === false
                 }
               ],
               errorMessage: {
