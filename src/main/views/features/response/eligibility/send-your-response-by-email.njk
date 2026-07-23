@@ -79,17 +79,9 @@
           <p class="govuk-body">{{ t('PAGES.SEND_YOUR_RESPONSE_BY_EMAIL.CLAIM_DETAILS.DEFENDANT')}}: {{defendantName}}</p>
 
           <span class="govuk-body govuk-!-margin-bottom-4 govuk-!-font-weight-bold">{{ t('PAGES.SEND_YOUR_RESPONSE_BY_EMAIL.STEP_2') }}</span>
-          {% if isQMFlagEnabled === true %}
-          <p class="govuk-body govuk-!-margin-top-4">{{ t('COMMON.QM_INFORMATION_DOCUMENTS') }}
-            <a class="govuk-link" href={{ qmContactLink }} rel="noopener noreferrer" aria-label="{{ t('COMMON.QM_INFORMATION_LINK') }}">
-              {{ t('COMMON.QM_INFORMATION_LINK') }}
-            </a>.
+          <p class="govuk-body govuk-!-margin-top-4">{{ t('PAGES.SEND_YOUR_RESPONSE_BY_EMAIL.EMAIL_COMPLETED_N9B') }}
+            <a class="govuk-link" href='mailto:{{supportEmailAddress}}'>{{supportEmailAddress}}</a>
           </p>
-          {% else %}
-            <p class="govuk-body govuk-!-margin-top-4">{{ t('PAGES.SEND_YOUR_RESPONSE_BY_EMAIL.EMAIL_COMPLETED') }}:
-              <a class="govuk-link govuk-!-margin-bottom-0" href='mailto:{{supportEmailAddress}}'>{{supportEmailAddress}}</a>
-            </p>
-          {% endif %}
           <p class="govuk-body govuk-!-margin-bottom-4">{{ t('PAGES.SEND_YOUR_RESPONSE_BY_EMAIL.SEND_BY_POST') }}:</p>
           {% if signPosting %}
             <div class="govuk-inset-text govuk-grid-column-two-third">{{ t('PAGES.SEND_YOUR_RESPONSE_BY_EMAIL.SIGN_POST_ADDRESS.NAME') }}
@@ -122,7 +114,14 @@
           </div>
           <div>
           <h2 class="govuk-heading-m govuk-!-margin-bottom-2 govuk-!-font-weight-bold">{{ t('PAGES.SEND_YOUR_RESPONSE_BY_EMAIL.HELP_AND_SUPPORT') }}</h2>
-          {{ contactUs(t) }}
+          <h3 class="govuk-heading-m govuk-!-margin-bottom-0">{{ t('COMMON.CONTACT_US_FOR_HELP.EMAIL') }}</h3>
+          <a class="govuk-link govuk-!-margin-bottom-0" href='mailto:{{supportEmailAddress}}'>{{supportEmailAddress}}</a>
+          <p class="govuk-body govuk-!-margin-bottom-0">{{ t('COMMON.CONTACT_US_FOR_HELP.RESPONSE_DELAY') }}</p>
+          <h3 class="govuk-heading-m govuk-!-margin-bottom-0">{{ t('COMMON.CONTACT_US_FOR_HELP.TELEPHONE') }}</h3>
+          <p class="govuk-body govuk-!-margin-bottom-0">{{ t('COMMON.CONTACT_US_FOR_HELP.TELEPHONE_VALUE') }}</p>
+          <p class="govuk-body govuk-!-margin-bottom-0">{{ t('COMMON.CONTACT_US_FOR_HELP.OPENING_HOURS') }}
+            <a target="_blank" class="govuk-link" href={{externalURLs.callChargesUrl}}>{{ t('COMMON.CONTACT_US_FOR_HELP.CALL_CHARGES') }}</a>
+          </p>
           </div>
         </div>
       </div>
