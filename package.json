@@ -49,6 +49,8 @@
     "cichecks:win": "yarn && yarn build && yarn lint:win && yarn test:coverage && yarn test:routes && yarn test:a11y",
     "wiremock:pull": "./bin/pull-latest-wiremock-mappings.sh",
     "wiremock:start": "yarn wiremock:pull && wiremock --root-dir ./wiremock --port 1111",
+    "test:mocked-functional": "./bin/run-mocked-functional-tests.sh",
+    "test:mocked-functional:browser": "MOCHAWESOME_REPORTFILENAME=mocked-functional TEST_URL=http://localhost:3001 codeceptjs run --grep '@mocked-functional' --reporter mocha-multi --verbose",
     "start:e2e": "NODE_ENV=e2eTest ./node_modules/.bin/ts-node -r tsconfig-paths/register src/main/server.ts",
     "_comment:test:e2e": "DEPRECATED (April 2026) - legacy fixed-ID e2e tests were removed; use 'yarn test:fullfunctional' instead.",
     "test:e2e": "yarn test:fullfunctional",

@@ -118,6 +118,20 @@ Update required secrets on your machine then run below command
 ```bash
 $ yarn test:functional
 ```
+
+Running the reduced-stack create-claim functional test:
+
+```bash
+$ yarn test:mocked-functional
+```
+
+This starts CUI in `e2eTest` mode, WireMock and the in-memory Redis test implementation, then runs the
+`@mocked-functional` browser journey. It does not require a preview environment, civil-service, CCD, Camunda,
+Elasticsearch, Postgres or IDAM. The runner pulls the shared CUI mappings and overlays the consumer-owned
+mappings in `src/test/functionalTests/mock-server/mappings`. Chromium must be installed locally; run
+`yarn playwright install chromium` once if needed. Logs are written to
+`${TMPDIR:-/tmp}/civil-citizen-ui-mocked-functional`.
+
 Running E2E tests:
 
 The legacy fixed-ID E2E suite under `src/test/e2eTests` has been removed. Those tests only performed work in

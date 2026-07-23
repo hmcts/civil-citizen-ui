@@ -1,0 +1,167 @@
+{
+  "mappings": [
+    {
+      "priority": 1,
+      "request": {
+        "method": "POST",
+        "urlPattern": "/dashboard/scenarios/Scenario\\.AAA6\\.ClaimIssue\\.ClaimSubmit\\.Required/.*"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "jsonBody": {}
+      }
+    },
+    {
+      "priority": 1,
+      "request": {
+        "method": "POST",
+        "urlPath": "/fees/claim/total-amount"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "jsonBody": 0
+      }
+    },
+    {
+      "priority": 1,
+      "request": {
+        "method": "GET",
+        "urlPattern": "/fees/claim/.*"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "jsonBody": {
+          "calculatedAmountInPence": 11500,
+          "code": "FEE0209",
+          "version": 1
+        }
+      }
+    },
+    {
+      "priority": 1,
+      "request": {
+        "method": "GET",
+        "urlPattern": "/fees/hearing/.*"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "jsonBody": {
+          "calculatedAmountInPence": "18100",
+          "code": "FEE0444",
+          "version": "1"
+        }
+      }
+    },
+    {
+      "priority": 1,
+      "request": {
+        "method": "POST",
+        "urlPattern": "/cases/draft/citizen/.*/event"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "jsonBody": {
+          "id": "1111222233334444",
+          "state": "PENDING_CASE_ISSUED",
+          "last_modified": "2026-07-23T12:00:00.000Z",
+          "case_data": {
+            "legacyCaseReference": "000MC001"
+          }
+        }
+      }
+    },
+    {
+      "priority": 1,
+      "request": {
+        "method": "GET",
+        "urlPath": "/cases/1111222233334444"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "jsonBody": {
+          "id": "1111222233334444",
+          "state": "PENDING_CASE_ISSUED",
+          "last_modified": "2026-07-23T12:00:00.000Z",
+          "case_data": {
+            "legacyCaseReference": "000MC001",
+            "respondent1ResponseDeadline": "2026-08-20T16:00:00.000Z",
+            "respondent1": {
+              "type": "INDIVIDUAL",
+              "individualTitle": "Mr",
+              "individualFirstName": "John",
+              "individualLastName": "Smith"
+            }
+          }
+        }
+      }
+    },
+    {
+      "priority": 1,
+      "request": {
+        "method": "GET",
+        "urlPath": "/search/places/v1/postcode"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "jsonBody": {
+          "results": [
+            {
+              "DPA": {
+                "UPRN": "100000000001",
+                "UDPRN": "10000001",
+                "ADDRESS": "THE COMMUNITY CENTRE, EGERTON GATE, SHENLEY BROOK END, MILTON KEYNES, MK5 7HH",
+                "ORGANISATION_NAME": "THE COMMUNITY CENTRE",
+                "THOROUGHFARE_NAME": "EGERTON GATE",
+                "DEPENDENT_LOCALITY": "SHENLEY BROOK END",
+                "POST_TOWN": "MILTON KEYNES",
+                "POSTCODE": "MK5 7HH",
+                "POSTAL_ADDRESS_CODE": "D",
+                "X_COORDINATE": 485000,
+                "Y_COORDINATE": 235000,
+                "COUNTRY_CODE": "E"
+              }
+            },
+            {
+              "DPA": {
+                "UPRN": "100000000002",
+                "UDPRN": "10000002",
+                "ADDRESS": "ARCANA, 54, EGERTON GATE, SHENLEY BROOK END, MILTON KEYNES, MK5 7HH",
+                "ORGANISATION_NAME": "ARCANA",
+                "BUILDING_NUMBER": "54",
+                "THOROUGHFARE_NAME": "EGERTON GATE",
+                "DEPENDENT_LOCALITY": "SHENLEY BROOK END",
+                "POST_TOWN": "MILTON KEYNES",
+                "POSTCODE": "MK5 7HH",
+                "POSTAL_ADDRESS_CODE": "D",
+                "X_COORDINATE": 485001,
+                "Y_COORDINATE": 235001,
+                "COUNTRY_CODE": "E"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

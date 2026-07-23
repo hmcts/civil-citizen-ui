@@ -16,6 +16,25 @@ env:
   NODE_OPTIONS: --max-old-space-size=4096
 
 jobs:
+  mocked-functional-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: yarn
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+      - name: Install Chromium
+        run: yarn playwright install --with-deps chromium
+      - name: Run reduced-stack create-claim journey
+        run: yarn test:mocked-functional
+
   pii-log-check:
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
