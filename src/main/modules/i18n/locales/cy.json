@@ -1984,7 +1984,7 @@
       "COMPLETED_SECTIONS": "Rydych wedi cwblhau {{ completed }} allan o {{ total }} rhan",
       "COMPLETING_CLAIM": "Cwblhau eich hawliad",
       "CONSIDER_OPTIONS": "Ystyried opsiynau eraill",
-      "DRAFT_CLAIM_WARNING": "Mae'r hawliad wedi'i gadw fel drafft - cyflwynwch ef erbyn {{ date }} neu bydd yn cael ei ddileu",
+      "DRAFT_CLAIM_WARNING": "Mae'r hawliad wedi'i gadw fel drafft - cyflwynwch ef erbyn {{ date }} neu caiff ei ddileu",
       "PAGE_TITLE": "Gwneud hawliad am arian",
       "PAY_FEE": "Talu eich ffi hawlio",
       "PREPARE_CLAIM": "Paratoi eich hawliad",
@@ -2596,12 +2596,12 @@
       "DEADLINE": "Dyddiad cau",
       "DEFENDANT_NAME": "Enw'r diffynnydd",
       "DEFENDANT_TITLE": "Hawliadau a wnaed yn eich erbyn",
-      "DRAFT_CLAIM_NEXT_STEPS": "Parhau gyda'r hawliad",
+      "DRAFT_CLAIM_NEXT_STEPS": "Parhau â'r hawliad",
       "DRAFT_CLAIM_NUMBER": "Hawliad drafft",
-      "DRAFT_CLAIM_STATUS": "Cyflwynwch erbyn {{ date }} neu bydd yr hawliad yn cael ei ddileu",
+      "DRAFT_CLAIM_STATUS": "Cyflwynwch yr hawliad erbyn {{ date }} neu caiff yr hawliad ei ddileu",
       "DRAFT_CLAIM_NOTIFICATION": {
-        "LINK": "Parhau gyda'r hawliad",
-        "MESSAGE": "Mae eich hawliad wedi'i gadw fel drafft - bydd yn cael ei ddileu ar {{ date }}.",
+        "LINK": "Parhau â'r hawliad",
+        "MESSAGE": "Mae eich hawliad wedi'i gadw fel drafft - caiff ei ddileu ar {{ date }}.",
         "TITLE": "Pwysig"
       },
       "HEARINGS": {
