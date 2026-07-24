@@ -567,6 +567,7 @@ civil-service:
   camunda-bpm:
     enabled: true
     java:
+      imagePullPolicy: Always
       ingressHost: civil-cui-camunda-staging.aat.platform.hmcts.net
       disableKeyVaults: true
       releaseNameOverride: ${SERVICE_NAME}-camunda
