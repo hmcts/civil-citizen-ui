@@ -4,7 +4,7 @@ import { AppRequest } from 'common/models/AppRequest';
 import { ClaimFeeData } from 'common/models/civilClaimResponse';
 import { Claim } from 'common/models/claim';
 import { GeneralApplication } from 'common/models/generalApplication/GeneralApplication';
-import { ApplicationTypeOption } from 'common/models/generalApplication/applicationType';
+import {ApplicationTypeOption, assertValidApplicationTypes} from 'common/models/generalApplication/applicationType';
 import { convertDateToStringFormat } from 'common/utils/dateUtils';
 import config from 'config';
 import { generateRedisKey, saveDraftClaim } from 'modules/draft-store/draftStoreService';
@@ -23,6 +23,7 @@ const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
 const feeRequestBody = (gaDetails: GeneralApplication, hearingDate: Date): GAFeeRequestBody => {
+  assertValidApplicationTypes(gaDetails?.applicationTypes);
   const selectedApplicationTypes = gaDetails.applicationTypes.map(applicationType => applicationType.option);
   return {
     applicationTypes: selectedApplicationTypes,
@@ -45,6 +46,7 @@ export const gaApplicationFeeDetails = async (claim: Claim, req: AppRequest): Pr
 };
 
 export const updateHearingDateForGAApplicationFee = async (claim: Claim, req: AppRequest) => {
+  assertValidApplicationTypes(claim.generalApplication?.applicationTypes);
   const selectedApplications = claim.generalApplication.applicationTypes.map(applicationType => applicationType.option);
   const isAllowedToUpdateClaim = !claim?.caseProgressionHearing?.hearingDate && !claim.generalApplication?.applicationFee && selectedApplications.includes(ApplicationTypeOption.ADJOURN_HEARING);
   if (isAllowedToUpdateClaim) {
@@ -69,4 +71,3 @@ export const getGaAppId = async (claimId: string, req: AppRequest): Promise<stri
   return ccdGeneralApplications[ccdGeneralApplications.length-1].value.caseLink.CaseReference;
 
 };
-

@@ -73,7 +73,7 @@ describe('GA fee details', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     claim = new Claim();
-    claim.generalApplication = new GeneralApplication();
+    claim.generalApplication = new GeneralApplication(new ApplicationType(ApplicationTypeOption.SET_ASIDE_JUDGEMENT));
 
   });
 
@@ -102,6 +102,28 @@ describe('GA fee details', () => {
     const gaFeeData = await gaApplicationFeeDetails(claim, {} as AppRequest);
     expect(gaFeeDetails).toEqual(gaFeeData);
     expect(gaFeeDetails).toEqual(claim.generalApplication.applicationFee);
+  });
+
+  it('should reject invalid application types before getting fee details from civil-service', async () => {
+    const getGeneralApplicationFeeMock = jest.spyOn(CivilServiceClient.prototype, 'getGeneralApplicationFee');
+    const retrieveClaimDetailsMock = jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails');
+    claim.generalApplication.applicationTypes = [new ApplicationType(ApplicationTypeOption.OTHER_OPTION)];
+
+    await expect(gaApplicationFeeDetails(claim, {} as AppRequest)).rejects.toThrow('Invalid general application type selected');
+
+    expect(getGeneralApplicationFeeMock).not.toBeCalled();
+    expect(retrieveClaimDetailsMock).not.toBeCalled();
+    expect(saveDraftClaim).not.toBeCalled();
+  });
+
+  it('should reject empty application types before getting fee details from civil-service', async () => {
+    const getGeneralApplicationFeeMock = jest.spyOn(CivilServiceClient.prototype, 'getGeneralApplicationFee');
+    claim.generalApplication.applicationTypes = [];
+
+    await expect(gaApplicationFeeDetails(claim, {} as AppRequest)).rejects.toThrow('Invalid general application type selected');
+
+    expect(getGeneralApplicationFeeMock).not.toBeCalled();
+    expect(saveDraftClaim).not.toBeCalled();
   });
 
   it('should update the hearing date for adjourn hearing with consent', async () => {
@@ -152,9 +174,7 @@ describe('GA fee details', () => {
   it('should throw an error when api throws error', async () => {
     const errMessage = new Error('unauthorized');
     jest.spyOn(CivilServiceClient.prototype, 'getGeneralApplicationFee').mockRejectedValueOnce(errMessage);
-    gaApplicationFeeDetails(claim, {} as AppRequest).catch((err) => {
-      expect(err).toEqual(errMessage);
-    });
+    await expect(gaApplicationFeeDetails(claim, {} as AppRequest)).rejects.toEqual(errMessage);
   });
 });
 
@@ -197,6 +217,15 @@ describe('updateHearingDateForGAApplicationFee', () => {
 
     expect(CivilServiceClient.prototype.retrieveClaimDetails).not.toHaveBeenCalled();
     expect(result).toEqual(claim);
+  });
+
+  it('should reject invalid application types before retrieving claim details', async () => {
+    claim.generalApplication.applicationTypes = [new ApplicationType(ApplicationTypeOption.OTHER_OPTION)];
+    const retrieveClaimDetailsMock = jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails');
+
+    await expect(updateHearingDateForGAApplicationFee(claim, req)).rejects.toThrow('Invalid general application type selected');
+
+    expect(retrieveClaimDetailsMock).not.toBeCalled();
   });
 
   it('should return the original claim if state is not HEARING_READINESS', async () => {

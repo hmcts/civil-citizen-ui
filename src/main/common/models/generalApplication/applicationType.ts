@@ -1,24 +1,4 @@
-import {IsDefined} from 'class-validator';
-
-export class ApplicationType {
-  @IsDefined({ message: 'ERRORS.APPLICATION_TYPE_REQUIRED' })
-    option?: ApplicationTypeOption;
-
-  constructor(option?: ApplicationTypeOption) {
-    this.option = option;
-  }
-
-  isOtherSelected(): boolean {
-    return this.option === ApplicationTypeOption.AMEND_A_STMT_OF_CASE ||
-      this.option === ApplicationTypeOption.SUMMARY_JUDGEMENT ||
-      this.option === ApplicationTypeOption.STRIKE_OUT ||
-      this.option === ApplicationTypeOption.STAY_THE_CLAIM ||
-      this.option === ApplicationTypeOption.UNLESS_ORDER ||
-      this.option === ApplicationTypeOption.SETTLE_BY_CONSENT ||
-      this.option === ApplicationTypeOption.OTHER;
-  }
-
-}
+import {IsDefined, IsIn} from 'class-validator';
 
 export enum ApplicationTypeOption {
   STRIKE_OUT = 'STRIKE_OUT',
@@ -36,6 +16,52 @@ export enum ApplicationTypeOption {
   OTHER = 'OTHER',
   VARY_PAYMENT_TERMS_OF_JUDGMENT = 'VARY_PAYMENT_TERMS_OF_JUDGMENT',
   CONFIRM_CCJ_DEBT_PAID = 'CONFIRM_CCJ_DEBT_PAID',
+}
+
+export const getPersistableApplicationTypeOptions = (): ApplicationTypeOption[] => Object.values(ApplicationTypeOption)
+  .filter(applicationTypeOption => applicationTypeOption !== ApplicationTypeOption.OTHER_OPTION);
+
+export const getOtherApplicationTypeOptions = (): ApplicationTypeOption[] => [
+  ApplicationTypeOption.AMEND_A_STMT_OF_CASE,
+  ApplicationTypeOption.SUMMARY_JUDGEMENT,
+  ApplicationTypeOption.STRIKE_OUT,
+  ApplicationTypeOption.STAY_THE_CLAIM,
+  ApplicationTypeOption.UNLESS_ORDER,
+  ApplicationTypeOption.SETTLE_BY_CONSENT,
+  ApplicationTypeOption.OTHER,
+];
+
+export const isPersistableApplicationTypeOption = (applicationTypeOption: unknown): applicationTypeOption is ApplicationTypeOption =>
+  getPersistableApplicationTypeOptions().includes(applicationTypeOption as ApplicationTypeOption);
+
+export const isOtherApplicationTypeOption = (applicationTypeOption: unknown): applicationTypeOption is ApplicationTypeOption =>
+  getOtherApplicationTypeOptions().includes(applicationTypeOption as ApplicationTypeOption);
+
+export const getInvalidApplicationTypeIndex = (applicationTypes?: ApplicationType[]): number =>
+  applicationTypes?.findIndex(applicationType => !isPersistableApplicationTypeOption(applicationType?.option)) ?? -1;
+
+export const hasInvalidApplicationType = (applicationTypes?: ApplicationType[]): boolean =>
+  getInvalidApplicationTypeIndex(applicationTypes) >= 0;
+
+export const assertValidApplicationTypes = (applicationTypes?: ApplicationType[]): void => {
+  if (!applicationTypes?.length || hasInvalidApplicationType(applicationTypes)) {
+    throw new Error('Invalid general application type selected');
+  }
+};
+
+export class ApplicationType {
+  @IsDefined({ message: 'ERRORS.APPLICATION_TYPE_REQUIRED' })
+  @IsIn(getPersistableApplicationTypeOptions(), { message: 'ERRORS.APPLICATION_TYPE_REQUIRED' })
+    option?: ApplicationTypeOption;
+
+  constructor(option?: ApplicationTypeOption) {
+    this.option = option;
+  }
+
+  isOtherSelected(): boolean {
+    return isOtherApplicationTypeOption(this.option);
+  }
+
 }
 
 export const LinKFromValues = {

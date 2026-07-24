@@ -90,6 +90,29 @@ const convertCaseToClaim = (caseDetails: CivilClaimResponse): Claim => {
   return claim;
 };
 
+const safeSubmitEventErrorBody = (body: unknown): Record<string, unknown> => {
+  if (!body || typeof body !== 'object') {
+    return {
+      responseType: typeof body,
+    };
+  }
+
+  const bodyRecord = body as Record<string, unknown>;
+  const validationErrors = Array.isArray(bodyRecord.errors)
+    ? bodyRecord.errors
+      .filter((error): error is string => typeof error === 'string')
+      .slice(0, 5)
+    : undefined;
+
+  return {
+    exception: bodyRecord.exception,
+    error: bodyRecord.error,
+    message: bodyRecord.message,
+    validationErrors,
+    validationErrorCount: Array.isArray(bodyRecord.errors) ? bodyRecord.errors.length : undefined,
+  };
+};
+
 export class CivilServiceClient {
   client: AxiosInstance;
 
@@ -471,7 +494,7 @@ export class CivilServiceClient {
       const err = e as AxiosError;
       const status = err.response?.status;
       const body = err.response?.data;
-      logger.error(`Submit event failed (event=${event}, claimId=${normalizedClaimId}, status=${status})`, { body });
+      logger.error(`Submit event failed (event=${event}, claimId=${normalizedClaimId}, status=${status})`, { body: safeSubmitEventErrorBody(body) });
       throw err;
     }
   }
