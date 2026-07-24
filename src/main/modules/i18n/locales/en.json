@@ -2807,7 +2807,11 @@
       "WHAT_NEXT_PARAGRAPH_4": "You can find this information in the notification you received from the Insolvency Service. You will also need to provide the court claim number.",
       "WHAT_HAPPENS_DURING_BS": "What happens during breathing space",
       "WHAT_HAPPENS_DURING_BS_PARA1": "Court orders and judgments related to a debt which were made before breathing space started cannot be enforced until the breathing space ends unless the court gives permission to continue.",
-      "WHAT_HAPPENS_DURING_BS_PARA2": "If a hearing has been scheduled then this may be cancelled while the breathing space is in place."
+      "WHAT_HAPPENS_DURING_BS_PARA2": "If a hearing has been scheduled then this may be cancelled while the breathing space is in place.",
+      "ENTER_BREATHING_SPACE_DETAILS": "Enter breathing space details",
+      "WHEN_BS_ENDS": "When breathing space ends",
+      "WHEN_BS_ENDS_PARA1": "When breathing space ends, the protections it provided will stop and creditors can begin taking action on the debts again.",
+      "WHEN_BS_ENDS_PARA2": "This may include contacting the debtor, restarting court proceedings, adding interest and charges, or continuing enforcement activity."
     },
     "DEFENDANT_DETAILS": {
       "BUSINESS_NAME": "Trading as (If you know it)",
