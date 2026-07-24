@@ -96,6 +96,7 @@ civil-service:
             alias: HMC_HEARINGS_TOPIC_ACCESS_KEY
     environment:
       IDAM_CLIENT_ID: civil-service
+      SCHEDULER_ENABLED_JUDGEMENT_BUFFER: true
       IDAM_CLIENT_REDIRECT_URI: https://civil-orchestrator-service-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal/oauth2/callback
       IDAM_API_URL: https://idam-api.{{ .Values.global.environment }}.platform.hmcts.net
       IDAM_WEB_URL: https://idam-web-public.{{ .Values.global.environment }}.platform.hmcts.net
