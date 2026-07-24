@@ -27,11 +27,10 @@ mkdir -p ./wiremock/__files
 cp -r "${checkout_dir}"/mappings/cui/* ./wiremock/mappings/
 cp -r "${checkout_dir}"/__files/cui/* ./wiremock/__files/
 
-# Overlay CUI-owned mappings used by reduced-stack browser tests. These are
-# intentionally kept with the consumer so a CUI change and its test double
-# cannot drift while a corresponding shared-mappings change is reviewed.
-if [ -d ./src/test/functionalTests/mock-server/mappings ]; then
-  cp -r ./src/test/functionalTests/mock-server/mappings/* ./wiremock/mappings/
+# Overlay CUI-owned mappings used by both the local runner and the preview
+# WireMock chart. Keeping one copy prevents the two execution paths drifting.
+if [ -d ./charts/civil-citizen-ui/wiremock/mappings ]; then
+  cp -r ./charts/civil-citizen-ui/wiremock/mappings/* ./wiremock/mappings/
 fi
 
 echo "Wiremock mappings pulled successfully (cui only)"

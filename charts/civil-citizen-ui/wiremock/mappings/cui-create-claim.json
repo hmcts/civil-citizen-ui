@@ -8,9 +8,7 @@
       },
       "response": {
         "status": 200,
-        "headers": {
-          "Content-Type": "application/json"
-        },
+        "headers": {"Content-Type": "application/json"},
         "jsonBody": {}
       }
     },
@@ -22,9 +20,7 @@
       },
       "response": {
         "status": 200,
-        "headers": {
-          "Content-Type": "application/json"
-        },
+        "headers": {"Content-Type": "application/json"},
         "jsonBody": 0
       }
     },
@@ -36,9 +32,7 @@
       },
       "response": {
         "status": 200,
-        "headers": {
-          "Content-Type": "application/json"
-        },
+        "headers": {"Content-Type": "application/json"},
         "jsonBody": {
           "calculatedAmountInPence": 11500,
           "code": "FEE0209",
@@ -54,9 +48,7 @@
       },
       "response": {
         "status": 200,
-        "headers": {
-          "Content-Type": "application/json"
-        },
+        "headers": {"Content-Type": "application/json"},
         "jsonBody": {
           "calculatedAmountInPence": "18100",
           "code": "FEE0444",
@@ -72,16 +64,12 @@
       },
       "response": {
         "status": 200,
-        "headers": {
-          "Content-Type": "application/json"
-        },
+        "headers": {"Content-Type": "application/json"},
         "jsonBody": {
           "id": "1111222233334444",
           "state": "PENDING_CASE_ISSUED",
           "last_modified": "2026-07-23T12:00:00.000Z",
-          "case_data": {
-            "legacyCaseReference": "000MC001"
-          }
+          "case_data": {"legacyCaseReference": "000MC001"}
         }
       }
     },
@@ -93,9 +81,7 @@
       },
       "response": {
         "status": 200,
-        "headers": {
-          "Content-Type": "application/json"
-        },
+        "headers": {"Content-Type": "application/json"},
         "jsonBody": {
           "id": "1111222233334444",
           "state": "PENDING_CASE_ISSUED",
@@ -121,9 +107,7 @@
       },
       "response": {
         "status": 200,
-        "headers": {
-          "Content-Type": "application/json"
-        },
+        "headers": {"Content-Type": "application/json"},
         "jsonBody": {
           "results": [
             {

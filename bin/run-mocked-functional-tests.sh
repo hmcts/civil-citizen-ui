@@ -2,7 +2,8 @@
 
 set -euo pipefail
 
-readonly WIREMOCK_URL="http://127.0.0.1:1111"
+export WIREMOCK_URL="http://127.0.0.1:1111"
+readonly WIREMOCK_URL
 readonly CUI_URL="http://127.0.0.1:3001"
 readonly RUN_LOG_DIR="${TMPDIR:-/tmp}/civil-citizen-ui-mocked-functional"
 
@@ -59,24 +60,6 @@ wait_for_url() {
   done
 }
 
-assert_wiremock_request() {
-  local description="$1"
-  local request_pattern="$2"
-  local response
-  local count
-
-  response="$(curl --fail --silent --show-error \
-    --header 'Content-Type: application/json' \
-    --data "${request_pattern}" \
-    "${WIREMOCK_URL}/__admin/requests/count")"
-  count="$(printf '%s' "${response}" | sed -E 's/[^0-9]//g')"
-
-  if [ -z "${count}" ] || [ "${count}" -lt 1 ]; then
-    echo "Expected WireMock to receive ${description}, response was: ${response}" >&2
-    return 1
-  fi
-}
-
 trap cleanup EXIT INT TERM
 mkdir -p "${RUN_LOG_DIR}"
 
@@ -108,8 +91,4 @@ WA_TASK_MGMT_URL="${WIREMOCK_URL}" \
 URL="${WIREMOCK_URL}" \
 CIVIL_SERVICE_URL="${WIREMOCK_URL}" \
 yarn test:mocked-functional:browser
-
-assert_wiremock_request 'a claim submission request' \
-  '{"method":"POST","urlPattern":"/cases/draft/citizen/.*/event"}'
-assert_wiremock_request 'a submitted claim lookup' \
-  '{"method":"GET","urlPath":"/cases/1111222233334444"}'
+./bin/assert-preview-wiremock.sh
