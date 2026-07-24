@@ -562,7 +562,7 @@ describe('dashboardInterpolationService', () => {
     expect(textReplacedDynamic).toEqual(textExpected);
   });
 
-  it('should replace placeholders for GENERAL_APPLICATIONS_INITIATION_PAGE_URL when GA is welsh', async () => {
+  it('should replace placeholders for GENERAL_APPLICATIONS_INITIATION_PAGE_URL when party is bilingual', async () => {
     const claim: Claim = new Claim();
     claim.id = '123';
     claim.caseRole = CaseRole.DEFENDANT;
@@ -573,7 +573,7 @@ describe('dashboardInterpolationService', () => {
 
     const dashboardValues = await populateDashboardValues(claim, claim.id, '2000', dashboardNotification);
     const textReplacedDynamic = await replaceDashboardPlaceholders(textToReplaceUrl, dashboardValues);
-    const textExpected = '/case/123/submit-application-offline';
+    const textExpected = '/case/123/general-application/application-type?linkFrom=start';
 
     expect(textReplacedDynamic).toEqual(textExpected);
   });

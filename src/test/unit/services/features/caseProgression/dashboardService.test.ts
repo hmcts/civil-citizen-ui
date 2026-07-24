@@ -639,31 +639,12 @@ describe('dashboardService', () => {
       });
     });
 
-    it('getContactCourtLink when Ga is offline with welsh', async () => {
-
-      //Given
-      const gaInfo = new GaInformation();
-      gaInfo.isGaOnline = false;
-      gaInfo.isGAWelsh = true;
-      (isQueryManagementEnabled as jest.Mock).mockResolvedValue(false);
-      (isGaOnline as jest.Mock).mockReturnValue(gaInfo);
-      //When
-      const result = await getContactCourtLink(claim.id, claim, true, 'en');
-
-      //Then
-      expect(result).toEqual({
-        'text': 'PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT',
-        'url': '/case/1234567890/submit-application-offline',
-      });
-    });
-
     it('getContactCourtLink when Ga Lip is on', async () => {
 
       //Given
 
       const gaInfo = new GaInformation();
       gaInfo.isGaOnline = false;
-      gaInfo.isGAWelsh = true;
       (isQueryManagementEnabled as jest.Mock).mockResolvedValue(true);
       //When
       const result = await getContactCourtLink(claim.id, claim, true, 'en');
@@ -719,4 +700,3 @@ describe('dashboardService', () => {
 
   });
 });
-

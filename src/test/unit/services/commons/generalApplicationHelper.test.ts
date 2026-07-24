@@ -4,7 +4,7 @@ import {CaseState} from 'form/models/claimDetails';
 import {YesNoUpperCamelCase} from 'form/models/yesNo';
 import {ClaimBilingualLanguagePreference} from 'models/claimBilingualLanguagePreference';
 import {
-  isGaForLipsEnabledAndLocationWhiteListed, isGaForWelshEnabled,
+  isGaForLipsEnabledAndLocationWhiteListed,
 } from '../../../../main/app/auth/launchdarkly/launchDarklyClient';
 
 jest.mock('../../../../main/app/auth/launchdarkly/launchDarklyClient');
@@ -19,7 +19,7 @@ describe('General Application helper when LR is on', () => {
     const expected = new GaInformation();
     expected.isGaOnline = true;
     //When
-    const result = isGaOnline(claim, true, false, false);
+    const result = isGaOnline(claim, true, false);
 
     //Then
     expect(expected).toEqual(result);
@@ -33,7 +33,7 @@ describe('General Application helper when LR is on', () => {
     const expected = new GaInformation();
     expected.isGaOnline = false;
     //When
-    const result = isGaOnline(claim, true, false, false);
+    const result = isGaOnline(claim, true, false);
 
     //Then
     expect(expected).toEqual(result);
@@ -47,7 +47,7 @@ describe('General Application helper when LR is on', () => {
     const expected = new GaInformation();
     expected.isGaOnline = false;
     //When
-    const result = isGaOnline(claim, true, false, false);
+    const result = isGaOnline(claim, true, false);
 
     //Then
     expect(expected).toEqual(result);
@@ -62,7 +62,7 @@ describe('General Application helper when LR is on', () => {
     const expected = new GaInformation();
     expected.isGaOnline = false;
     //When
-    const result = isGaOnline(claim, true, false, false);
+    const result = isGaOnline(claim, true, false);
 
     //Then
     expect(expected).toEqual(result);
@@ -78,7 +78,7 @@ describe('General Application helper when LR is on', () => {
     const expected = new GaInformation();
     expected.isGaOnline = false;
     //When
-    const result = isGaOnline(claim, true, false, false);
+    const result = isGaOnline(claim, true, false);
 
     //Then
     expect(expected).toEqual(result);
@@ -94,7 +94,7 @@ describe('General Application helper when LR is on', () => {
     const expected = new GaInformation();
     expected.isGaOnline = false;
     //When
-    const result = isGaOnline(claim, true, false, false);
+    const result = isGaOnline(claim, true, false);
 
     //Then
     expect(expected).toEqual(result);
@@ -109,7 +109,7 @@ describe('General Application helper when LR is on', () => {
     const expected = new GaInformation();
     expected.isGaOnline = false;
     //When
-    const result = isGaOnline(claim, false, false, false);
+    const result = isGaOnline(claim, false, false);
 
     //Then
     expect(expected).toEqual(result);
@@ -124,13 +124,13 @@ describe('General Application helper when LR is on', () => {
     const expected = new GaInformation();
     expected.isGaOnline = true;
     //When
-    const result = isGaOnline(claim, false, false, true);
+    const result = isGaOnline(claim, false, true);
 
     //Then
     expect(expected).toEqual(result);
   });
 
-  it('should GA is offline when is welsh ga enabled is false', async () => {
+  it('should GA is online when party is bilingual', async () => {
     //Given
     const claim = new Claim();
     claim.defendantUserDetails = 'test';
@@ -138,10 +138,9 @@ describe('General Application helper when LR is on', () => {
     claim.claimantBilingualLanguagePreference = ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH;
 
     const expected = new GaInformation();
-    expected.isGaOnline = false;
-    expected.isGAWelsh = true;
+    expected.isGaOnline = true;
     //When
-    const result = isGaOnline(claim, true, false, false);
+    const result = isGaOnline(claim, true, false);
 
     //Then
     expect(expected).toEqual(result);
@@ -154,9 +153,8 @@ describe('General Application helper when LR is on', () => {
 
     const expected = new GaInformation();
     expected.isGaOnline = false;
-    expected.isGAWelsh = false;
     //When
-    const result = isGaOnline(claim, true, false, false);
+    const result = isGaOnline(claim, true, false);
 
     //Then
     expect(expected).toEqual(result);
@@ -171,7 +169,7 @@ describe('General Application helper when LR is on', () => {
     expected.isGaOnline = true;
     expected.isSettledOrDiscontinuedWithPreviousCCDState = true;
     //When
-    const result = isGaOnline(claim, true, false, false);
+    const result = isGaOnline(claim, true, false);
 
     //Then
     expect(expected).toEqual(result);
@@ -189,7 +187,7 @@ describe('General Application helper when Lip is on', () => {
     const expected = new GaInformation();
     expected.isGaOnline = true;
     //When
-    const result = isGaOnlineQM(claim, true, false, false);
+    const result = isGaOnlineQM(claim, true, false);
 
     //Then
     expect(expected).toEqual(result);
@@ -204,7 +202,7 @@ describe('General Application helper when Lip is on', () => {
     const expected = new GaInformation();
     expected.isGaOnline = true;
     //When
-    const result = isGaOnlineQM(claim, false, false, true);
+    const result = isGaOnlineQM(claim, false, true);
 
     //Then
     expect(expected).toEqual(result);
@@ -218,7 +216,7 @@ describe('General Application helper when Lip is on', () => {
     const expected = new GaInformation();
     expected.isGaOnline = false;
     //When
-    const result = isGaOnlineQM(claim, true, false, false);
+    const result = isGaOnlineQM(claim, true, false);
 
     //Then
     expect(expected).toEqual(result);
@@ -232,7 +230,7 @@ describe('General Application helper when Lip is on', () => {
     const expected = new GaInformation();
     expected.isGaOnline = false;
     //When
-    const result = isGaOnlineQM(claim, true, false, false);
+    const result = isGaOnlineQM(claim, true, false);
 
     //Then
     expect(expected).toEqual(result);
@@ -248,7 +246,7 @@ describe('General Application helper when Lip is on', () => {
     const expected = new GaInformation();
     expected.isGaOnline = true;
     //When
-    const result = isGaOnlineQM(claim, true, false, false);
+    const result = isGaOnlineQM(claim, true, false);
 
     //Then
     expect(expected).toEqual(result);
@@ -263,7 +261,7 @@ describe('General Application helper when Lip is on', () => {
     const expected = new GaInformation();
     expected.isGaOnline = false;
     //When
-    const result = isGaOnlineQM(claim, true, false, false);
+    const result = isGaOnlineQM(claim, true, false);
 
     //Then
     expect(expected).toEqual(result);
@@ -279,7 +277,7 @@ describe('General Application helper when Lip is on', () => {
     const expected = new GaInformation();
     expected.isGaOnline = false;
     //When
-    const result = isGaOnlineQM(claim, true, false, false);
+    const result = isGaOnlineQM(claim, true, false);
 
     //Then
     expect(expected).toEqual(result);
@@ -295,7 +293,7 @@ describe('General Application helper when Lip is on', () => {
     const expected = new GaInformation();
     expected.isGaOnline = false;
     //When
-    const result = isGaOnlineQM(claim, true, false, false);
+    const result = isGaOnlineQM(claim, true, false);
 
     //Then
     expect(expected).toEqual(result);
@@ -310,13 +308,13 @@ describe('General Application helper when Lip is on', () => {
     const expected = new GaInformation();
     expected.isGaOnline = false;
     //When
-    const result = isGaOnlineQM(claim, false, false, false);
+    const result = isGaOnlineQM(claim, false, false);
 
     //Then
     expect(expected).toEqual(result);
   });
 
-  it('should GA is offline when is welsh ga enabled is false', async () => {
+  it('should GA is online when party is bilingual', async () => {
     //Given
     const claim = new Claim();
     claim.defendantUserDetails = 'test';
@@ -324,10 +322,9 @@ describe('General Application helper when Lip is on', () => {
     claim.claimantBilingualLanguagePreference = ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH;
 
     const expected = new GaInformation();
-    expected.isGaOnline = false;
-    expected.isGAWelsh = true;
+    expected.isGaOnline = true;
     //When
-    const result = isGaOnlineQM(claim, true, false, false);
+    const result = isGaOnlineQM(claim, true, false);
 
     //Then
     expect(expected).toEqual(result);
@@ -338,7 +335,6 @@ describe('General Application helper when Lip is on', () => {
 describe('redirection url', () => {
   it('should GA is online', async () => {
     //Given
-    (isGaForWelshEnabled as jest.Mock).mockReturnValueOnce(true);
     (isGaForLipsEnabledAndLocationWhiteListed as jest.Mock).mockReturnValueOnce(true);
 
     const claim = new Claim();
@@ -353,7 +349,6 @@ describe('redirection url', () => {
   });
   it('should GA is online without variables', async () => {
     //Given
-    (isGaForWelshEnabled as jest.Mock).mockReturnValueOnce(true);
     (isGaForLipsEnabledAndLocationWhiteListed as jest.Mock).mockReturnValueOnce(true);
 
     const claim = new Claim();
@@ -368,7 +363,6 @@ describe('redirection url', () => {
   });
   it('should GA is Offline', async () => {
     //Given
-    (isGaForWelshEnabled as jest.Mock).mockReturnValueOnce(false);
     (isGaForLipsEnabledAndLocationWhiteListed as jest.Mock).mockReturnValueOnce(false);
 
     const claim = new Claim();
@@ -381,9 +375,8 @@ describe('redirection url', () => {
     //Then
     expect('/case/:id/qm/information/CHANGE_CASE/GA_OFFLINE').toEqual(result);
   });
-  it('should GA is welsh', async () => {
+  it('should GA is online when party is bilingual', async () => {
     //Given
-    (isGaForWelshEnabled as jest.Mock).mockReturnValueOnce(false);
     (isGaForLipsEnabledAndLocationWhiteListed as jest.Mock).mockReturnValueOnce(true);
 
     const claim = new Claim();
@@ -395,7 +388,7 @@ describe('redirection url', () => {
     const result = await getGaRedirectionUrl(claim, true, true);
 
     //Then
-    expect('/case/:id/submit-application-offline').toEqual(result);
+    expect('/case/:id/general-application/application-type?linkFrom=start&isAskMoreTime=true&isAdjournHearing=true').toEqual(result);
   });
 
 });
