@@ -27,8 +27,7 @@
     {% set unableToPayFullAmunt = t('PAGES.REVIEW_DEFENDANTS_RESPONSE.UNABLE_TO_PAY_FULL_AMOUNT') %}
     {% set reasonsWhyYouCantPayImmediately = t(claim.statementOfMeans.explanation.text) %}
   {% endif %}
-  <div class="govuk-width-container">
-    <main class="govuk-main-wrapper" role="main">
+
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
           <h1 class="govuk-heading-l">{{ t('PAGES.REVIEW_DEFENDANTS_RESPONSE.TITLE') }}</h1>
@@ -94,6 +93,5 @@
           </form>
         </div>
       </div>
-    </main>
-  </div>
+
 {% endblock %}

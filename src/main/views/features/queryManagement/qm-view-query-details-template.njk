@@ -10,8 +10,7 @@ import {dateFilter} from "modules/nunjucks/filters/dateFilter";
 {% endblock %}
 
 {% block content %}
-  <div class="govuk-width-container">
-    <main class="govuk-main-wrapper" role="main">
+
       {% set title = t(selectedQueryItem.title) %}
 
       <div class="govuk-grid-row">
@@ -133,6 +132,5 @@ import {dateFilter} from "modules/nunjucks/filters/dateFilter";
         </div>
       </div>
 
-    </main>
-  </div>
+
 {% endblock %}

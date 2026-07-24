@@ -30,8 +30,7 @@
 {% endset %}
 
 {% block content %}
-  <div class="govuk-width-container">
-    <main class="govuk-main-wrapper" role="main">
+
       {% set errors = form.getAllErrors() %}
       {% if form.hasErrors() or form.isLRDefendant %}
         {{ errorSummary(errors, t, null, customErrorMessage, customErrorMessageTitle) }}
@@ -66,6 +65,5 @@
           </form>
         </div>
       </div>
-    </main>
-  </div>
+
 {% endblock %}

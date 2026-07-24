@@ -17,8 +17,7 @@
 {% set isRemoveButtonHidden = form.model.reportDetails.length < rowNumberToShowRemoveButton %}
 
 {% block content %}
-  <div class="govuk-width-container">
-    <main class="govuk-main-wrapper" role="main">
+
       {% if form.hasErrors() %}
         <div class="govuk-grid-row">
           {{ errorSummary(form.getAllErrors(), t) }}
@@ -47,6 +46,5 @@
           </div>
         </div>
       </div>
-    </main>
-  </div>
+
 {% endblock %}

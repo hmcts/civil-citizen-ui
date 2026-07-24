@@ -15,8 +15,7 @@
 {% set signedError = form.errorFor(signed) %}
 
 {% block content %}
-  <div class="govuk-width-container">
-    <main class="govuk-main-wrapper" role="main">
+
       {% if form.hasErrors() %}
         <div class="govuk-grid-row">
           {{ errorSummary(form.getErrors(), t) }}
@@ -77,6 +76,5 @@
           </form>
         </div>
       </div>
-    </main>
-  </div>
+
 {% endblock %}

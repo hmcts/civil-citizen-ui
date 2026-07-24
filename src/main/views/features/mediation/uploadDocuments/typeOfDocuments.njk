@@ -25,8 +25,7 @@
     }), checkboxItems) %}
 {% endfor %}
 
-<div class="govuk-width-container">
-  <main class="govuk-main-wrapper" role="main">
+
     {% if form.hasErrors() %}
     {{ errorSummary(form.getErrors(), t) }}
     {% endif %}
@@ -70,6 +69,5 @@
         </div>
       </div>
     </div>
-  </main>
-</div>
+
 {% endblock %}

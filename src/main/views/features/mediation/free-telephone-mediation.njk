@@ -10,8 +10,7 @@
 
 {% block content %}
   {% set redirectPath = './can-we-use-company' if isBusiness else './can-we-use' %}
-  <div class="govuk-width-container">
-    <main class="govuk-main-wrapper" role="main">
+
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
           <h1 class="govuk-heading-l govuk-!-margin-bottom-1">{{ t('COMMON.FREE_TELEPHONE_MEDIATION') }}</h1>
@@ -69,6 +68,5 @@
           {{ contactUsForHelp(t) }}
         </div>
       </div>
-    </main>
-  </div>
+
 {% endblock %}

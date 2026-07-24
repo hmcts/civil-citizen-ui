@@ -14,8 +14,7 @@
 {% endblock %}
 
 {% block content %}
-  <div class="govuk-width-container">
-    <main class="govuk-main-wrapper" role="main">
+
       {% set firstPaymentDate = "now" | addDaysTranslated(30, t,'GB') %}
       {% set title = t('PAGES.REPAYMENT_PLAN.TITLE') %}
       {% set errors = form.getAllErrors() %}
@@ -34,8 +33,7 @@
       {% if form.hasErrors() %}
         {{ errorSummary(errors,t,[{keyError:'ERRORS.FIRST_PAYMENT_MESSAGE',keyToReplace:'{{firstPaymentDate}}',valueToReplace:firstPaymentDate}]) }}
       {% endif %}
-    </main>
-  </div>
+
   <form method="post" novalidate name="repaymentPlan">
     {{ csrfProtection(csrf) }} <input type="hidden" class="repayment-amount" value="{{ totalAmount }}"/>
     <div class="govuk-grid-row">

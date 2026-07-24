@@ -16,8 +16,7 @@
                     + t('PAGES.CHECK_YOUR_ANSWER.RESPONSE_CHECKBOX_PROCEEDINGS')
                     +'</p>' %}
 {% block content %}
-  <div class="govuk-width-container">
-    <main class="govuk-main-wrapper" role="main">
+
       {% if form.hasErrors() %}
         {{ errorSummary(form.getErrors(), t) }}
       {% endif %}
@@ -55,7 +54,6 @@
           </form>
         </div>
       </div>
-    </main>
-  </div>
+
 
 {% endblock %}
