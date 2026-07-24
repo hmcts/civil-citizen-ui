@@ -59,14 +59,22 @@ describe('Lift Breathing Space Controller', () => {
   });
 
   describe('on POST', () => {
-    it('should redirect to CYA when form is valid (future date)', async () => {
+    it('should redirect to CYA when form is valid (future date within 60 days)', async () => {
       const claim = new Claim();
       mockGetClaimById.mockResolvedValue(claim);
       mockSaveLiftBreathingSpace.mockResolvedValue({});
 
+      const futureDate = new Date();
+      futureDate.setDate(futureDate.getDate() + 30);
+
       await request(app)
         .post(LIFT_BREATHING_SPACE_URL.replace(':id', '123'))
-        .send({year: '2099', month: '01', day: '01', text: 'Reason'})
+        .send({
+          year: futureDate.getFullYear().toString(),
+          month: (futureDate.getMonth() + 1).toString().padStart(2, '0'),
+          day: futureDate.getDate().toString().padStart(2, '0'),
+          text: 'Reason',
+        })
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.header.location).toContain(CYA_LIFT_BREATHING_SPACE_URL.replace(':id', '123'));

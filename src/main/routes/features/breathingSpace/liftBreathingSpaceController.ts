@@ -76,7 +76,8 @@ liftBreathingSpaceController.post(LIFT_BREATHING_SPACE_URL, async (req: Request,
     const startDate = claim.breathingSpace?.enterBreathing?.start
       ? (() => { const d = new Date(claim.breathingSpace.enterBreathing.start); d.setHours(0,0,0,0); return d; })()
       : (() => { const d = new Date(); d.setHours(0,0,0,0); return d; })();
-    const breathingSpaceType = claim.breathingSpace?.enterBreathing?.type;
+    // TODO: replace with actual breathingSpaceType from claim.breathingSpace.enterBreathing.type when dashboard notification ticket is complete
+    const breathingSpaceType = STANDARD_BREATHING_SPACE;
 
     const form = new LiftBreathingSpaceForm(year, month, day, text, startDate, breathingSpaceType);
     const genericForm = new GenericForm(form);
@@ -85,6 +86,12 @@ liftBreathingSpaceController.post(LIFT_BREATHING_SPACE_URL, async (req: Request,
     // Apply date business rules (missing fields, after start date, 60-day limit)
     if (!genericForm.hasFieldError('date')) {
       applyDateBusinessRules(form, genericForm.errors);
+    }
+
+    // Remove individual day/month/year field errors when we have a consolidated date error,
+    // so the error summary only shows the single date-level message
+    if (genericForm.errors.some(e => e.property === 'date')) {
+      genericForm.errors = genericForm.errors.filter(e => !['day', 'month', 'year'].includes(e.property));
     }
 
     if (genericForm.hasErrors()) {

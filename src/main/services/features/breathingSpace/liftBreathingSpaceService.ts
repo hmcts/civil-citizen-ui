@@ -1,5 +1,5 @@
 import {saveDraftClaim} from 'modules/draft-store/draftStoreService';
-import {LiftBreathingSpaceForm} from 'common/form/models/breathingSpace/liftBreathingSpaceForm';
+import {LiftBreathingSpaceForm, STANDARD_BREATHING_SPACE} from 'common/form/models/breathingSpace/liftBreathingSpaceForm';
 import {Claim} from 'common/models/claim';
 
 const getStartDate = (claim: Claim): Date => {
@@ -17,7 +17,8 @@ const getStartDate = (claim: Claim): Date => {
 export const getLiftBreathingSpaceForm = async (claimId: string, claim: Claim): Promise<LiftBreathingSpaceForm> => {
   const liftBreathing = claim.breathingSpace?.liftBreathing;
   const startDate = getStartDate(claim);
-  const breathingSpaceType = claim.breathingSpace?.enterBreathing?.type;
+  // TODO: replace with actual breathingSpaceType from claim.breathingSpace.enterBreathing.type when dashboard notification ticket is complete
+  const breathingSpaceType = STANDARD_BREATHING_SPACE;
 
   if (liftBreathing?.expectedEnd) {
     const date = new Date(liftBreathing.expectedEnd);

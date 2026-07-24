@@ -14,8 +14,16 @@
 {% block content %}
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
+    {% set summaryErrors = [] %}
+    {% for error in form.getAllErrors() %}
+      {% if error.property == 'date' %}
+        {% set summaryErrors = summaryErrors.concat([{text: error.text, href: '#date-day'}]) %}
+      {% else %}
+        {% set summaryErrors = summaryErrors.concat([error]) %}
+      {% endif %}
+    {% endfor %}
     {% if showErrorSummary and form != null and form.hasErrors() %}
-      {{ errorSummary(form.getAllErrors(), t) }}
+      {{ errorSummary(summaryErrors, t) }}
     {% endif %}
     {% block nestedContent %}
       <h1 class="govuk-heading-l">
@@ -25,6 +33,14 @@
 
       <form method="post" novalidate>
         {{ csrfProtection(csrf) }}
+
+        {% set dateErrorMessages %}
+          {% for error in summaryErrors %}
+            {% if error.href == '#date-day' %}
+              <span class="govuk-error-message">{{ t(error.text) }}</span>
+            {% endif %}
+          {% endfor %}
+        {% endset %}
 
         {{ govukDateInput({
           id: "date",
@@ -41,9 +57,12 @@
           hint: {
             text: t('PAGES.BREATHING_SPACE.LIFT.DATE_HINT')
           },
+          errorMessage: {
+            html: dateErrorMessages
+          } if form.hasFieldError('date'),
           items: [
             {
-              classes: "govuk-input--width-2 govuk-input--error" if form.hasFieldError('day') else "govuk-input--width-2",
+              classes: "govuk-input--width-2 govuk-input--error" if (form.hasFieldError('day') or form.hasFieldError('date')) else "govuk-input--width-2",
               id: "day",
               label: t('COMMON.DAY'),
               name: "day",
@@ -53,7 +72,7 @@
               }
             },
             {
-              classes: "govuk-input--width-2 govuk-input--error" if form.hasFieldError('month') else "govuk-input--width-2",
+              classes: "govuk-input--width-2 govuk-input--error" if (form.hasFieldError('month') or form.hasFieldError('date')) else "govuk-input--width-2",
               id: "month",
               label: t('COMMON.MONTH'),
               name: "month",
@@ -63,7 +82,7 @@
               }
             },
             {
-              classes: "govuk-input--width-4 govuk-input--error" if form.hasFieldError('year') else "govuk-input--width-4",
+              classes: "govuk-input--width-4 govuk-input--error" if (form.hasFieldError('year') or form.hasFieldError('date')) else "govuk-input--width-4",
               id: "year",
               label: t('COMMON.YEAR'),
               name: "year",
@@ -72,8 +91,7 @@
                 maxlength: "4"
               }
             }
-          ],
-          errorMessage: form.errorFor('date', t)
+          ]
         }) }}
 
         {{ govukTextarea({
