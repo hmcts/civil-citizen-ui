@@ -38,7 +38,7 @@ const saveClaimantBilingualLangPreference = async (userId: string, form: Generic
   try {
     const claim = await getCaseDataFromStore(userId);
     claim.claimantBilingualLanguagePreference = await getSelectedLanguage(form.option);
-    await saveDraftClaim(userId, claim);
+    await saveDraftClaim(userId, claim, false, userId);
   } catch (error) {
     logger.error(error);
     throw error;

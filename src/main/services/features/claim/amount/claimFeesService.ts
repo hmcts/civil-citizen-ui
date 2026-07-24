@@ -11,7 +11,7 @@ export const saveClaimFee = async (claimantId: string, claimFeeData: ClaimFeeDat
       code: claimFeeData.code,
       version: claimFeeData.version,
     };
-    await saveDraftClaim(claimantId, claim);
+    await saveDraftClaim(claimantId, claim, false, claimantId);
   }catch(error){
     logger.error(error);
     throw error;

@@ -39,7 +39,7 @@ export const gaApplicationFeeDetails = async (claim: Claim, req: AppRequest): Pr
   if (gaFeeData) {
     claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
     claim.generalApplication.applicationFee = gaFeeData;
-    saveDraftClaim(generateRedisKey(req), claim);
+    saveDraftClaim(generateRedisKey(req), claim, false, req.session?.user?.id);
     return gaFeeData;
   }
 };

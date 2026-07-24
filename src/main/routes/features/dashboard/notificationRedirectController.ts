@@ -79,7 +79,7 @@ async function getDashboardNotificationRedirectUrl(locationName: string, claimId
         ':documentId', documentIdExtractor(claim?.caseProgressionHearing?.hearingDocuments[0]?.value?.documentLink?.document_binary_url));
       break;
     case 'PAY_HEARING_FEE_URL':
-      await saveDraftClaim(generateRedisKey(req), claim, true);
+      await saveDraftClaim(generateRedisKey(req), claim, true, req.session.user?.id);
       redirectUrl = getRedirectUrl(claimId, new GenericYesNo(YesNo.NO), req);
       break;
     case 'VIEW_FINAL_ORDER':

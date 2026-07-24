@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsNumber, Min, ValidateIf } from 'class-validator';
+import { IsNotEmpty, IsNumber, Matches, Min, ValidateIf } from 'class-validator';
 import { toNumberOrUndefined } from 'common/utils/numberConverter';
 
 export class CourtOrder {
@@ -14,6 +14,7 @@ export class CourtOrder {
 
   @ValidateIf(o => o.isAtLeastOneFieldPopulated())
   @IsNotEmpty({ message: 'ERRORS.VALID_CLAIM_NUMBER' })
+  @Matches(/^[0-9A-Za-z]*$/, { message: 'ERRORS.VALID_CLAIM_NUMBER_ALPHANUMERIC' })
     claimNumber?: string;
 
   constructor(amount?: number, instalmentAmount?: number, claimNumber?: string) {

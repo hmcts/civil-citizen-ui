@@ -32,7 +32,15 @@ services:
       port: 6379
       key:
       tls: false
-      expireInDays: 180
+      ttl:
+        # Draft claims (claim journey data keyed by claim id)
+        draftClaim: 180
+        # Journey cache keys (e.g. claimId+userId progress during response/claimant response)
+        journeyCache: 180
+        # Payment session and confirmation-url keys
+        paymentSession: 7
+        # General application journey keys
+        gaJourney: 180
     legacy:
       url: 'http://localhost:8765'
       s2s:

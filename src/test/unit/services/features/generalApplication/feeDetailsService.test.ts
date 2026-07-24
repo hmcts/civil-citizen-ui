@@ -89,7 +89,7 @@ describe('GA fee details', () => {
     const gaFeeData = await gaApplicationFeeDetails(claim, {} as AppRequest);
     expect(gaFeeDetails).toEqual(gaFeeData);
     expect(gaFeeDetails).toEqual(claim.generalApplication.applicationFee);
-    expect(saveDraftClaim).toHaveBeenCalledWith('123', claim);
+    expect(saveDraftClaim).toHaveBeenCalledWith('123', claim, false, undefined);
   });
   it('should fetch the fee details with consent and  agreement and hearing save data', async () => {
     const gaFeeDetails = {

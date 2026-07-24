@@ -250,7 +250,7 @@ describe('Citizen details service', () => {
       await saveClaimantProperty(CLAIM_ID, 'type', PartyType.INDIVIDUAL);
       //Then
       expect(spyGetCaseDataFromStore).toBeCalled();
-      expect(spySaveDraftClaim).toBeCalledWith(CLAIM_ID, claimData);
+      expect(spySaveDraftClaim).toBeCalledWith(CLAIM_ID, claimData, false, CLAIM_ID);
     });
 
     it('should save a claimant Party when type is already in redis', async () => {
@@ -270,7 +270,7 @@ describe('Citizen details service', () => {
       await saveClaimantProperty(CLAIM_ID, 'type', PartyType.INDIVIDUAL);
       //Then
       expect(spyGetCaseDataFromStore).toBeCalled();
-      expect(spySaveDraftClaim).toBeCalledWith(CLAIM_ID, claimData);
+      expect(spySaveDraftClaim).toBeCalledWith(CLAIM_ID, claimData, false, CLAIM_ID);
     });
   });
 });

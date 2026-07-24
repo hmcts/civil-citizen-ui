@@ -54,7 +54,7 @@ describe('Defendant details service', () => {
 
       await saveDefendantProperty(CLAIM_ID, 'type', PartyType.INDIVIDUAL);
       expect(spyGetCaseDataFromStore).toBeCalled();
-      expect(spySaveDraftClaim).toBeCalledWith(CLAIM_ID, expectedData);
+      expect(spySaveDraftClaim).toBeCalledWith(CLAIM_ID, expectedData, false, CLAIM_ID);
     });
 
     it('should update defendant when in redis', async () => {

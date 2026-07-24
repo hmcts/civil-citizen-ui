@@ -20,8 +20,9 @@ finaliseTrialArrangementsController.get(CP_FINALISE_TRIAL_ARRANGEMENTS_URL, (asy
   try {
     const claimId = getRouteParam(req, 'id');
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-    const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
-    await saveDraftClaim(generateRedisKey(<AppRequest>req), claim);
+    const appRequest = <AppRequest>req;
+    const claim = await civilServiceClient.retrieveClaimDetails(claimId, appRequest);
+    await saveDraftClaim(generateRedisKey(appRequest), claim, false, appRequest.session.user?.id);
 
     const dashboardUrl = claim.caseRole === CaseRole.CLAIMANT ? constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL) : constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL);
 
