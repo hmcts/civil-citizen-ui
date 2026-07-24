@@ -1,6 +1,9 @@
 civil-service:
   enabled: false
 
+wiremock:
+  enabled: false
+
 wa:
   enabled: false
 
@@ -72,4 +75,3 @@ nodejs:
     enabled: true
     maxReplicas: 5
     targetCPUUtilizationPercentage: 80
-

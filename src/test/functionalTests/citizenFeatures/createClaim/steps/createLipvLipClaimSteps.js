@@ -117,8 +117,10 @@ class CreateClaimSteps {
     return caseReference;
   }
 
-  async CreateClaimCreation(claimInterestFlag) {
-    await createClaim.verifyLanguage();
+  async CreateClaimCreation(claimInterestFlag, completeLanguageStep = true) {
+    if (completeLanguageStep) {
+      await createClaim.verifyLanguage();
+    }
     await createClaim.verifyDashboard();
     await I.click(paths.links.resolving_this_dispute);
     await createClaim.verifyTryToResolveTheDispute();

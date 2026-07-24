@@ -118,6 +118,30 @@ Update required secrets on your machine then run below command
 ```bash
 $ yarn test:functional
 ```
+
+Running the reduced-stack create-claim functional test:
+
+```bash
+$ yarn test:mocked-functional
+```
+
+This local command starts CUI in `e2eTest` mode, WireMock and the in-memory Redis test implementation, then runs
+the same `@mocked-functional` browser journey used by the reduced-stack Jenkins preview. It is a developer
+diagnostic and is not the authoritative CI execution. The runner pulls the shared CUI mappings and overlays the
+consumer-owned mappings packaged in `charts/civil-citizen-ui/wiremock/mappings`. Chromium must be installed locally; run
+`yarn playwright install chromium` once if needed. Logs are written to
+`${TMPDIR:-/tmp}/civil-citizen-ui-mocked-functional`.
+
+To exercise the PoC in the authoritative Jenkins pipeline, apply the `pr-values:reducedStack` label to the PR.
+The Jenkins library then applies `values.reducedStack.preview.template.yaml`, deploying real CUI and WireMock in
+the PR namespace. The selected journey runs against the CUI preview ingress; Civil Service (including its CCD and
+Camunda dependencies), WA and preview service buses are disabled. CUI uses its existing `e2eTest` in-memory
+draft/session stores and test session user; this PoC does not build or extend an IDAM stub. Jenkins publishes the
+normal functional Allure artifacts plus WireMock unmatched-request and expected-request diagnostics.
+
+Remove `pr-values:reducedStack` to restore the standard preview path. Do not combine it with
+`pr-values:fullDeployment`.
+
 Running E2E tests:
 
 The legacy fixed-ID E2E suite under `src/test/e2eTests` has been removed. Those tests only performed work in
