@@ -49,10 +49,22 @@ describe('Dashboard Items', ()=> {
       //Given
       const claim = new Claim();
       claim.draftClaimCreatedAt= new Date();
+      claim.draftClaimCacheTtlDays = 30;
       //When
       const item = toDraftClaimDashboardItem(claim);
       //Then
       expect(item).not.toBeUndefined();
+      expect(item.getDraftClaimDeletionDate()).toBeDefined();
+    });
+
+    it('should not set a draft deletion date for legacy drafts without ttl marker', () => {
+      //Given
+      const claim = new Claim();
+      claim.draftClaimCreatedAt= new Date();
+      //When
+      const item = toDraftClaimDashboardItem(claim);
+      //Then
+      expect(item.getDraftClaimDeletionDate()).toBeUndefined();
     });
 
     it('should return undefined when claim is empty', async () => {

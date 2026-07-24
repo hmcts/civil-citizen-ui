@@ -1986,6 +1986,7 @@
       "COMPLETED_SECTIONS": "You have completed {{ completed }} of {{ total }} sections",
       "COMPLETING_CLAIM": "Completing your claim",
       "CONSIDER_OPTIONS": "Consider other options",
+      "DRAFT_CLAIM_WARNING": "Claim is saved as a draft - submit it by {{ date }} or it will be deleted",
       "PAGE_TITLE": "Make a money claim",
       "PAY_FEE": "Pay your claim fee",
       "PREPARE_CLAIM": "Prepare your claim",
@@ -2599,6 +2600,12 @@
       "DEFENDANT_TITLE": "Claims made against you",
       "DRAFT_CLAIM_NEXT_STEPS": "Continue with claim",
       "DRAFT_CLAIM_NUMBER": "Draft claim",
+      "DRAFT_CLAIM_STATUS": "Submit by {{ date }} or claim will be deleted",
+      "DRAFT_CLAIM_NOTIFICATION": {
+        "LINK": "Continue with claim",
+        "MESSAGE": "Your claim is saved as a draft - it will be deleted on {{ date }}.",
+        "TITLE": "Important"
+      },
       "HEARINGS": {
         "ADD_TRIAL": "Add the trial arrangements",
         "CREATED": "Created ",

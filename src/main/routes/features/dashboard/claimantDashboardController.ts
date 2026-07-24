@@ -34,6 +34,7 @@ import {YesNoUpperCamelCase} from 'form/models/yesNo';
 import {getViewMessagesLink} from 'services/features/queryManagement/viewMessagesService';
 import {getTotalAmountWithInterestAndFees} from 'modules/claimDetailsService';
 import {getRouteParam} from 'common/utils/routeParamUtils';
+import {getDraftClaimDeletionDate} from 'common/utils/draftClaimUtils';
 
 const claimantDashboardViewPath = 'features/dashboard/claim-summary-redesign';
 const claimantDashboardController = Router();
@@ -78,6 +79,9 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
     const isGAFlagEnable = await isGaForLipsEnabled();
     const isQMFlagEnabled = await isQueryManagementEnabled(claim.submittedDate);
     const dashboard = await getDashboardForm(caseRole, claim, totalAmountWithInterestAndFees, dashboardId, req, isCarmApplicable, isGAFlagEnable);
+    const draftClaimDeletionDate = claimId === 'draft'
+      ? getDraftClaimDeletionDate(claim.draftClaimCreatedAt, claim.draftClaimCacheTtlDays, lng as string)
+      : undefined;
     const judgmentBufferEnabled = await isJudgmentBufferEnabled();
     const [iWantToTitle, iWantToLinks, helpSupportTitle, helpSupportLinks]
       = await getSupportLinks(req, claim, claimId, lng, isGAFlagEnable, false, judgmentBufferEnabled);
@@ -99,6 +103,7 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
       claimAmountFormatted,
       dashboardTaskList: dashboard,
       dashboardNotifications,
+      draftClaimDeletionDate,
       iWantToTitle,
       iWantToLinks,
       helpSupportTitle,
