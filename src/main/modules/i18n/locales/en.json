@@ -2775,6 +2775,46 @@
       "VIEW": "View",
       "VIEW_CLAIM_NUMBER": "claim number {{ claimNumber }}"
     },
+    "BREATHING_SPACE_ENTRY": {
+      "PAGE_TITLE": "Enter breathing space",
+      "TYPE_AND_REFERENCE": {
+        "HEADING": "Breathing space type and reference",
+        "TYPE_LEGEND": "What type of breathing space is it?",
+        "TYPE_MENTAL_HEALTH": "Mental Health Crisis Moratorium",
+        "TYPE_STANDARD": "Standard Breathing Space",
+        "REFERENCE_LABEL": "Reference number (optional)",
+        "REFERENCE_HINT": "You can find this on the notification you received from the Insolvency Service"
+      },
+      "START_DATE": {
+        "HEADING": "Breathing space start date",
+        "INTRO_STANDARD": "Breathing space will start from today, unless you enter a different start date.",
+        "INTRO_MENTAL_HEALTH": "Mental health crisis breathing space will start from today, unless you enter a different start date.",
+        "INTRO_MENTAL_HEALTH_REMAIN": "It will remain until you lift it.",
+        "DATE_LABEL": "When did breathing space start? (optional)",
+        "DATE_HINT": "Enter the date it started, not the date you received the notification."
+      },
+      "CANCEL": {
+        "HEADING": "Are you sure you want to exit this journey?",
+        "WARNING": "All answers will be lost, and breathing space will not be applied",
+        "ARE_YOU_SURE": "Are you sure you want to exit this journey?"
+      },
+      "CYA": {
+        "HEADING": "Check your answers",
+        "TYPE": "What type is it?",
+        "REFERENCE": "Reference number (optional)",
+        "START_DATE": "Start date (optional)"
+      },
+      "CONFIRMATION": {
+        "STANDARD_APPLIED": "Standard breathing space applied",
+        "MENTAL_HEALTH_APPLIED": "Mental health breathing space applied",
+        "CONFIRMATION_EMAIL": "We have sent you a confirmation email.",
+        "STANDARD_NEXT_NOW": "Breathing space will now be active. You can lift it when you know when it will end.",
+        "STANDARD_NEXT_FROM": "Breathing space will be active from {{ startDate }}. You can lift it when you know when it will end.",
+        "MENTAL_HEALTH_NEXT_NOW": "Breathing space will now be active, and remain until you lift breathing space.",
+        "MENTAL_HEALTH_NEXT_FROM": "Breathing space will be active from {{ startDate }}, and remain until you lift breathing space.",
+        "RETURN_TO_CASE_SUMMARY": "Return to your case summary"
+      }
+    },
     "DEBTS": {
       "ADD": "Add a debt",
       "LIST": "List each loan or credit card debt",
@@ -2807,7 +2847,11 @@
       "WHAT_NEXT_PARAGRAPH_4": "You can find this information in the notification you received from the Insolvency Service. You will also need to provide the court claim number.",
       "WHAT_HAPPENS_DURING_BS": "What happens during breathing space",
       "WHAT_HAPPENS_DURING_BS_PARA1": "Court orders and judgments related to a debt which were made before breathing space started cannot be enforced until the breathing space ends unless the court gives permission to continue.",
-      "WHAT_HAPPENS_DURING_BS_PARA2": "If a hearing has been scheduled then this may be cancelled while the breathing space is in place."
+      "WHAT_HAPPENS_DURING_BS_PARA2": "If a hearing has been scheduled then this may be cancelled while the breathing space is in place.",
+      "ENTER_BREATHING_SPACE_DETAILS": "Enter breathing space details",
+      "WHEN_BS_ENDS": "When breathing space ends",
+      "WHEN_BS_ENDS_PARA1": "When breathing space ends, the protections it provided will stop and creditors can begin taking action on the debts again.",
+      "WHEN_BS_ENDS_PARA2": "This may include contacting the debtor, restarting court proceedings, adding interest and charges, or continuing enforcement activity."
     },
     "DEFENDANT_DETAILS": {
       "BUSINESS_NAME": "Trading as (If you know it)",
@@ -5513,6 +5557,13 @@
     "AMOUNT_REQUIRED": "Enter an amount of £1 or more",
     "ANNUAL_TURNOVER_REQUIRED": "Are you sure this is a valid value?",
     "APPLICATION_TYPE_REQUIRED": "Select an application",
+    "BREATHING_SPACE_TYPE_REQUIRED": "Select the breathing space type",
+    "BREATHING_SPACE_REFERENCE_INVALID": "Reference number cannot exceed 16-digits",
+    "BREATHING_SPACE_START_DATE_REAL": "Start date must be a real date",
+    "BREATHING_SPACE_START_DATE_DAY": "Start date must include a day",
+    "BREATHING_SPACE_START_DATE_MONTH": "Start date must include a month",
+    "BREATHING_SPACE_START_DATE_YEAR": "Start date must include a year",
+    "BREATHING_SPACE_START_DATE_NOT_FUTURE": "Start date cannot be in the future",
     "CHOOSE_TYPE_OF_INTEREST": "Choose a type of interest",
     "CLAIM_DETAILS": "Claim details",
     "CLAIM_NUMBER_REQUIRED": "Enter your valid claim number from the letter or email we sent you - it should have 3 numbers then the letters MC, JE, JF, JG or JH, then 3 numbers, for example 305JE126",

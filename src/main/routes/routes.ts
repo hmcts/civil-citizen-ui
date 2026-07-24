@@ -362,6 +362,11 @@ import requestForReconsiderationConfirmationController
 import cancelRequestForReconsiderationController
   from 'routes/features/caseProgression/requestForReconsideration/cancelRequestForReconsiderationController';
 import viewBreathingSpaceInformationController from 'routes/features/dashboard/viewBreathingSpaceInformationController';
+import breathingSpaceEntryController from 'routes/features/dashboard/breathingSpaceEntryController';
+import breathingSpaceStartDateController from 'routes/features/dashboard/breathingSpaceStartDateController';
+import breathingSpaceCancelController from 'routes/features/dashboard/breathingSpaceCancelController';
+import breathingSpaceCheckAnswersController from 'routes/features/dashboard/breathingSpaceCheckAnswersController';
+import breathingSpaceConfirmationController from 'routes/features/dashboard/breathingSpaceConfirmationController';
 import multiTrackDisclosureNonElectronicDocuments
   from 'routes/features/directionsQuestionnaire/mintiMultitrack/disclosureNonElectronicDocumentsController';
 import disclosureOfDocumentsController
@@ -747,6 +752,11 @@ export default [
   payApplicationFeeConfirmationController,
   viewApplicationController,
   viewBreathingSpaceInformationController,
+  breathingSpaceEntryController,
+  breathingSpaceStartDateController,
+  breathingSpaceCancelController,
+  breathingSpaceCheckAnswersController,
+  breathingSpaceConfirmationController,
   multiTrackDisclosureNonElectronicDocuments,
   disclosureOfDocumentsController,
   disclosureOfElectronicDocumentsIssues,
