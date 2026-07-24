@@ -96,6 +96,7 @@
       "CHANGE": "Change",
       "CONTINUE": "Continue",
       "CANCEL": "Cancel",
+      "PREVIOUS": "Previous",
       "GO_BACK_AND_TRY_PAYMENT_AGAIN": "Go back and try payment again",
       "GO_TO_ACCOUNT": "Go to your account",
       "I_CONFIRM_IVE_READ_THIS": "I confirm I've read this",
@@ -560,6 +561,28 @@
     "TITLE_WITH_DEFENDANT": "Defendant documents to be considered"
   },
   "PAGES": {
+    "BREATHING_SPACE": {
+      "LIFT": {
+        "TITLE": "Lift breathing space",
+        "CAPTION": "Breathing space",
+        "WHEN_END": "When will breathing space end?",
+        "DATE_HINT": "This is the date you have been instructed it will be finished, for example 15 11 2026",
+        "WHY_LIFTED": "Why is breathing space being lifted? (optional)",
+        "CHECK_ANSWERS": "Check your answers",
+        "EXIT": {
+          "TITLE": "Are you sure you want to exit this journey?",
+          "BODY": "All answers will be lost, and breathing space will not be lifted",
+          "OPTION_REQUIRED": "Select yes if you want to exit this journey"
+        },
+        "CONFIRMATION": {
+          "TITLE": "Breathing space lifted",
+          "PAGE_TITLE": "Breathing space lifted confirmation",
+          "CASE_NUMBER": "Case number:",
+          "EMAIL_SENT": "We have sent you a confirmation email.",
+          "RETURN_TO_CASE_SUMMARY": "Return to your case summary"
+        }
+      }
+    },
     "QM": {
       "CONFIRMATION_PAGE": {
         "TITLE" : "Message sent",
@@ -5890,6 +5913,10 @@
     "VALID_DATE_NOT_IN_PAST": "Enter a date that is today or in the future",
     "VALID_DATE_ONE_MONTH_FROM_TODAY": "Date must be at least a month from today's date",
     "VALID_DATE_LIFT_NOT_AFTER_TODAY": "Date entered must not be after today’s date",
+    "VALID_LIFT_END_DATE_INCLUDE": "End date must include a [day/month/year]",
+    "VALID_LIFT_END_DATE_REAL": "End date must be a real date",
+    "VALID_LIFT_END_DATE_AFTER_START": "End date must be after start date",
+    "VALID_LIFT_END_DATE_MAX_60_DAYS": "Standard breathing space cannot last for longer than 60 days",
     "VALID_DATE_START_NOT_AFTER_TODAY": "Start date must not be after today's date",
     "VALID_DAY": "Enter a valid day",
     "VALID_DAY_VARIATION1": "Enter a valid day",
