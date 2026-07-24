@@ -19,8 +19,6 @@ export class BreathingSpaceEnterDraft {
     this.type = type as BreathingSpaceType;
     this.reference = reference;
     this.start = start;
-    if (expectedEnd !== undefined) {
-      this.expectedEnd = expectedEnd;
-    }
+    this.expectedEnd = expectedEnd ?? null;
   }
 }
