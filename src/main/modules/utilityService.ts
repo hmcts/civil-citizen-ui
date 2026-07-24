@@ -95,7 +95,7 @@ export const refreshDraftStoreClaimFrom = async (req: Request, useRedisKey = fal
   if (claim) {
     logger.info(`Refreshing claim from draft store: userId: ${userId} redisKey: ${redisKey} claimId: ${claimId}`);
     claim.claimantResponse = oldClaim?.case_data?.claimantResponse;
-    logger.info(`Setting claimant response: userId: ${userId} redisKey: ${redisKey} claimantResponse: ${claim.claimantResponse? JSON.stringify(claim.claimantResponse) : 'undefined'}`);
+    logger.info(`Setting claimant response: userId: ${userId} redisKey: ${redisKey}`);
     await deleteDraftClaimFromStore(redisKey);
     await saveDraftClaim(redisKey, claim, true, userId, TTLCategory.JOURNEY_CACHE);
   } else {

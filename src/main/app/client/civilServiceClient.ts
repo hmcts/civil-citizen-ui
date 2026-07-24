@@ -259,13 +259,9 @@ export class CivilServiceClient {
   async getClaimFeeData(amount: number, req: AppRequest): Promise<ClaimFeeData> {
     const config = this.getConfig(req);
     try {
-      const userid = (<AppRequest>req).session.user?.id;
-      logger.info(`Total Claim Amount before Round off for user ${userid}, amount: ${amount}`);
       amount = roundOffTwoDecimals(amount);
-      logger.info(`Total Claim Amount before Round off for user ${userid}, amount: ${amount}`);
       const response: AxiosResponse<object> = await this.client.get(`${CIVIL_SERVICE_CLAIM_AMOUNT_URL}/${amount}`, config);
-      const claimFeeInPence = (response.data as ClaimFeeData).calculatedAmountInPence;
-      logger.info(`Claim fee of ${claimFeeInPence} calculated for user ${userid} based on claim amount ${amount}`);
+      logger.info('Claim fee calculated');
       return response.data;
     } catch (err: unknown) {
       logger.error(`Error when getting claim fee data, req.params.id - ${req.params.id}`);
@@ -470,8 +466,7 @@ export class CivilServiceClient {
     } catch (e: unknown) {
       const err = e as AxiosError;
       const status = err.response?.status;
-      const body = err.response?.data;
-      logger.error(`Submit event failed (event=${event}, claimId=${normalizedClaimId}, status=${status})`, { body });
+      logger.error(`Submit event failed (event=${event}, claimId=${normalizedClaimId}, status=${status})`);
       throw err;
     }
   }
@@ -480,7 +475,7 @@ export class CivilServiceClient {
     try {
       logger.info('calculateClaimInterest');
       const response = await this.client.post(CIVIL_SERVICE_CLAIM_CALCULATE_INTEREST, claim, {headers: {'Content-Type': 'application/json'}});
-      logger.info(`calculateClaimInterest response: ${response.data}` );
+      logger.info('Claim interest calculated');
       return response.data as number;
     } catch (err: unknown) {
       logger.error('Error when calculating interest');
