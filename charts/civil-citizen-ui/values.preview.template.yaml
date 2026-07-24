@@ -80,7 +80,7 @@ civil-service:
             alias: CIVIL_PRD_ADMIN_PASSWORD
           - name: docmosis-api-key
             alias: docmosis.tornado.key
-          - name: gov-notify-pretends-api-key
+          - name: gov-notify-live-api-key
             alias: GOV_NOTIFY_API_KEY
           - name: sendgrid-api-key
             alias: SENDGRID_API_KEY
@@ -153,6 +153,11 @@ civil-service:
       ASSIGN_ROLES_ON_STARTUP: true
       COURT_LOCATION_WA_DMN_ENABLED: true
       TASK_MANAGEMENT_ENABLED: false
+      # Enable the JudgementBuffer expiry scheduler so the buffer expiry can be triggered
+      # on demand via /testing-support/run-scheduler for the JB demo (DTSCCI-3663/5436).
+      # Set here in the base preview values because this file wins the merge over the
+      # fullDeployment overlay (e.g. TASK_MANAGEMENT_ENABLED resolves to this file's value).
+      SCHEDULER_ENABLED_JUDGEMENT_BUFFER: true
       FEIGN_CLIENT_CONFIG_REMOTERUNTIMESERVICE_URL: http://${SERVICE_NAME}-camunda/engine-rest/
       FEIGN_CLIENT_CONFIG_REMOTEEXTERNALTASKSERVICE_URL: http://${SERVICE_NAME}-camunda/engine-rest/
       FEIGN_CLIENT_CONFIG_REMOTEREPOSITORYSERVICE_URL: http://${SERVICE_NAME}-camunda/engine-rest/
