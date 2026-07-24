@@ -1,0 +1,40 @@
+{% extends "claim-details-tpl-dashboard.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
+{% from "../../macro/csrf.njk" import csrfProtection %}
+{% from "../../macro/yesNoGenericForm.njk" import yesNoRadioButton %}
+{% from "../../macro/error-summary.njk" import errorSummary %}
+
+{% block pageTitle %}
+  {{ setPageTitle(t, pageTitle) }}
+{% endblock %}
+
+{% block nestedContent %}
+  {% if form.hasErrors() %}
+    {{ errorSummary(form.getAllErrors(), t) }}
+  {% endif %}
+
+  <h1 class="govuk-heading-l">{{ t('PAGES.BREATHING_SPACE_ENTRY.CANCEL.HEADING') }}</h1>
+
+  {{ govukWarningText({
+    text: t('PAGES.BREATHING_SPACE_ENTRY.CANCEL.WARNING'),
+    iconFallbackText: 'Warning'
+  }) }}
+
+  <form method="post" novalidate>
+    {{ csrfProtection(csrf) }}
+    <fieldset class="govuk-fieldset">
+      <legend class="govuk-visually-hidden">
+        {{ t('PAGES.BREATHING_SPACE_ENTRY.CANCEL.ARE_YOU_SURE') }}
+      </legend>
+      {{ yesNoRadioButton(t, 'option', 'option', '', form, '', {
+        yes: 'COMMON.VARIATION_2.YES',
+        no: 'COMMON.VARIATION_2.NO',
+        classes: 'govuk-radios--inline'
+      }) }}
+    </fieldset>
+    {{ govukButton({
+      text: t('COMMON.BUTTONS.CONTINUE')
+    }) }}
+  </form>
+{% endblock %}
