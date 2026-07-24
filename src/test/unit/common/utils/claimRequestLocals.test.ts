@@ -86,7 +86,7 @@ describe('claimRequestLocals', () => {
 
       expect(claim).toBe(mockClaim);
       expect(mockGenerateRedisKey).toHaveBeenCalledWith(req);
-      expect(mockGetCaseDataFromStore).toHaveBeenCalledWith('generated-redis-key');
+      expect(mockGetCaseDataFromStore).toHaveBeenCalledWith('generated-redis-key', false);
     });
 
     it('should fetch from Redis when claim is not stashed', async () => {
@@ -115,8 +115,21 @@ describe('claimRequestLocals', () => {
       const claim = await getStashedClaimOrFromStore(req, 'user-1');
 
       expect(claim).toBe(mockClaim);
-      expect(mockGetCaseDataFromStore).toHaveBeenCalledWith('user-1');
+      expect(mockGetCaseDataFromStore).toHaveBeenCalledWith('user-1', false);
       expect(mockGenerateRedisKey).not.toHaveBeenCalled();
+    });
+
+    it('should pass doNotThrowError through to getCaseDataFromStore', async () => {
+      const req = {
+        method: 'GET',
+        originalUrl: '/test',
+        session: {user: {id: 'user-1'}},
+        locals: {env: '', lang: ''},
+      } as unknown as AppRequest;
+
+      await getStashedClaimOrFromStore(req, 'user-1', true);
+
+      expect(mockGetCaseDataFromStore).toHaveBeenCalledWith('user-1', true);
     });
 
     it('should propagate errors from Redis', async () => {

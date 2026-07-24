@@ -12,7 +12,11 @@ export const checkYourAnswersClaimGuard = async (req: AppRequest, res: Response,
   try {
     const userId = req.session?.user?.id;
     const lang = req?.query?.lang ? req.query.lang : req?.cookies?.lang;
-    const caseData: Claim = await getStashedClaimOrFromStore(req, userId);
+    // doNotThrowError (3rd arg): a draft that has already been submitted (and therefore deleted
+    // from the draft store) returns an empty claim rather than throwing 'Case not found'. This
+    // keeps the check-and-send GET idempotent when a claim is submitted and the page is re-entered
+    // (e.g. browser back/refresh, or concurrent requests under load) instead of returning a 500.
+    const caseData: Claim = await getStashedClaimOrFromStore(req, userId, true);
     stashClaimOnRequest(req, caseData);
 
     if (!caseData.isDraftClaim()) {

@@ -1,7 +1,7 @@
 import nock from 'nock';
 import config from 'config';
 import {getSummarySections} from 'services/features/claim/checkAnswers/checkAnswersService';
-import {CLAIM_CHECK_ANSWERS_URL, CLAIM_CONFIRMATION_URL} from 'routes/urls';
+import {CLAIM_CHECK_ANSWERS_URL, CLAIM_CONFIRMATION_URL, DASHBOARD_URL} from 'routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {getElementsByXPath} from '../../../../utils/xpathExtractor';
 import {createClaimWithBasicDetails} from '../../../../utils/mocks/claimDetailsMock';
@@ -75,6 +75,7 @@ describe('Claim - Check answers', () => {
     it('should return check answers page', async () => {
       mockGetClaim.mockImplementation(() => {
         const claim = new Claim();
+        claim.draftClaimCreatedAt = new Date();
         claim.claimDetails = new ClaimDetails();
         return claim;
       });
@@ -187,6 +188,7 @@ describe('Claim - Check answers', () => {
         .mockResolvedValueOnce(Promise.resolve({'calculatedAmountInPence': '50'}) as any);
       mockGetClaim.mockImplementation(() => {
         const claim = new Claim();
+        claim.draftClaimCreatedAt = new Date();
         claim.applicant1 = new Party();
         claim.applicant1.emailAddress = new Email('aaaa@gmail.com');
         claim.applicant1.partyPhone = new PartyPhone('07557350546');
@@ -223,6 +225,7 @@ describe('Claim - Check answers', () => {
         .mockResolvedValueOnce(Promise.resolve({'calculatedAmountInPence': '50'}) as any);
       mockGetClaim.mockImplementation(() => {
         const claim = new Claim();
+        claim.draftClaimCreatedAt = new Date();
         claim.applicant1 = new Party();
         claim.applicant1.emailAddress = new Email('aaaa@gmail.com');
         claim.respondent1 = new Party();
@@ -256,6 +259,7 @@ describe('Claim - Check answers', () => {
         .mockResolvedValueOnce(Promise.resolve({'calculatedAmountInPence': '50'}) as any);
       mockGetClaim.mockImplementation(() => {
         const claim = new Claim();
+        claim.draftClaimCreatedAt = new Date();
         claim.applicant1 = new Party();
         claim.applicant1.emailAddress = new Email('abbba@gmail.com');
         claim.applicant1.partyPhone = new PartyPhone('07537350546');
@@ -287,6 +291,7 @@ describe('Claim - Check answers', () => {
         .mockResolvedValueOnce(Promise.resolve({'calculatedAmountInPence': '50'}) as any);
       mockGetClaim.mockImplementation(() => {
         const claim = new Claim();
+        claim.draftClaimCreatedAt = new Date();
         claim.applicant1 = new Party();
         claim.applicant1.emailAddress = new Email('aaaa@gmail.com');
         claim.applicant1.partyPhone = new PartyPhone('07557350546');
@@ -323,6 +328,7 @@ describe('Claim - Check answers', () => {
       });
       mockGetClaim.mockImplementation(() => {
         const claim = new Claim();
+        claim.draftClaimCreatedAt = new Date();
         claim.applicant1 = new Party();
         claim.applicant1.emailAddress = new Email('aaaa@gmail.com');
         claim.applicant1.partyPhone = new PartyPhone('07557350546');
@@ -363,6 +369,7 @@ describe('Claim - Check answers', () => {
         .mockResolvedValueOnce(Promise.resolve({'calculatedAmountInPence': '50'}) as any);
       mockGetClaim.mockImplementation(() => {
         const claim = new Claim();
+        claim.draftClaimCreatedAt = new Date();
         claim.applicant1 = new Party();
         claim.applicant1.emailAddress = new Email('aaaa@gmail.com');
         claim.applicant1.partyPhone = new PartyPhone('07557350546');
@@ -409,6 +416,39 @@ describe('Claim - Check answers', () => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
+    });
+    it('should redirect to dashboard (no 500) when the draft has already been submitted', async () => {
+      // doNotThrowError returns an empty claim (no draftClaimCreatedAt) once the draft has been
+      // deleted post-submission; a duplicate/replayed POST must be idempotent, not throw.
+      mockGetClaim.mockImplementation(() => new Claim());
+      mockSubmitClaim.mockClear();
+      await request(app)
+        .post(CLAIM_CHECK_ANSWERS_URL)
+        .send()
+        .expect((res: Response) => {
+          expect(res.status).toBe(302);
+          expect(res.header.location).toBe(DASHBOARD_URL);
+        });
+      expect(mockSubmitClaim).not.toHaveBeenCalled();
+    });
+    it('should redirect to dashboard (no 500) when a concurrent request recreated an empty draft', async () => {
+      // isDraftClaim() is true (draftClaimCreatedAt set) but claimDetails is undefined - happens
+      // when createDraftClaimInStoreWithExpiryTime recreates a bare draft under concurrent load.
+      // Must redirect, not NPE on claim.claimDetails.helpWithFees.
+      mockGetClaim.mockImplementation(() => {
+        const claim = new Claim();
+        claim.draftClaimCreatedAt = new Date();
+        return claim;
+      });
+      mockSubmitClaim.mockClear();
+      await request(app)
+        .post(CLAIM_CHECK_ANSWERS_URL)
+        .send()
+        .expect((res: Response) => {
+          expect(res.status).toBe(302);
+          expect(res.header.location).toBe(DASHBOARD_URL);
+        });
+      expect(mockSubmitClaim).not.toHaveBeenCalled();
     });
   });
 });

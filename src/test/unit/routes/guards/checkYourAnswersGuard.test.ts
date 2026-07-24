@@ -194,6 +194,9 @@ describe('checkYourAnswersClaimGuard', () => {
     //When
     await checkYourAnswersClaimGuard(mockRequest, MOCK_RESPONSE, MOCK_NEXT);
     //Then
+    // The draft is fetched with doNotThrowError=true so an already-submitted (deleted) draft
+    // resolves to an empty claim and redirects, rather than throwing 'Case not found' (500).
+    expect(mockGetCaseData).toHaveBeenCalledWith('123', true);
     expect(MOCK_RESPONSE.redirect).toHaveBeenCalledWith(
       BASE_ELIGIBILITY_URL,
     );

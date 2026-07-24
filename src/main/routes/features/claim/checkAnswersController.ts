@@ -1,5 +1,5 @@
 import {NextFunction, Request, Response, Router} from 'express';
-import {CLAIM_CHECK_ANSWERS_URL, CLAIM_CONFIRMATION_URL} from '../../urls';
+import {CLAIM_CHECK_ANSWERS_URL, CLAIM_CONFIRMATION_URL, DASHBOARD_URL} from '../../urls';
 import {
   getStatementOfTruth,
   getSummarySections,
@@ -28,6 +28,8 @@ import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {saveClaimFee} from 'services/features/claim/amount/claimFeesService';
 import {calculateInterestToDate} from 'common/utils/interestUtils';
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('checkAnswersController');
 const validator = new Validator();
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
@@ -72,7 +74,16 @@ claimCheckAnswersController.post(CLAIM_CHECK_ANSWERS_URL, async (req: Request | 
     const userId = (<AppRequest>req).session?.user?.id;
     const isFullAmountRejected = (req.body?.isFullAmountRejected === 'true');
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-    const claim = await getCaseDataFromStore(userId);
+    // doNotThrowError: a duplicate/replayed/concurrent POST can find the draft either already
+    // deleted (submitted) or recreated empty by a concurrent createDraftClaimInStoreWithExpiryTime
+    // (only draftClaimCreatedAt set, no claimDetails). Either way it is not submittable, so treat
+    // it as a no-op and send the user to their dashboard rather than re-submitting, throwing
+    // 'Case not found', or NPE-ing on claim.claimDetails (idempotent under concurrent load).
+    const claim = await getCaseDataFromStore(userId, true);
+    if (!claim.isDraftClaim() || !claim.claimDetails?.helpWithFees) {
+      logger.info(`check-and-send POST with no submittable draft for user ${userId} - redirecting to dashboard`);
+      return res.redirect(DASHBOARD_URL);
+    }
     const isCarmEnabled = await isCarmEnabledForCase(claim.draftClaimCreatedAt);
     const acceptNotChangesAllowedValue =  (claim.claimDetails.helpWithFees.option === YesNo.YES) ? false : req.body.acceptNoChangesAllowed;
 

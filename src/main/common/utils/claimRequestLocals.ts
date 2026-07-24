@@ -9,10 +9,10 @@ export const stashClaimOnRequest = (req: Request, claim: Claim): void => {
   appReq.locals.claim = claim;
 };
 
-export const getStashedClaimOrFromStore = async (req: Request, redisKey?: string): Promise<Claim> => {
+export const getStashedClaimOrFromStore = async (req: Request, redisKey?: string, doNotThrowError = false): Promise<Claim> => {
   const appReq = <AppRequest>req;
   if (appReq.locals?.claim) {
     return appReq.locals.claim;
   }
-  return getCaseDataFromStore(redisKey ?? generateRedisKey(appReq));
+  return getCaseDataFromStore(redisKey ?? generateRedisKey(appReq), doNotThrowError);
 };
