@@ -563,14 +563,14 @@
   "PAGES": {
     "BREATHING_SPACE": {
       "LIFT": {
-        "TITLE": "Codi’r Lle i Anadlu",
+        "TITLE": "Codi'r Lle i Anadlu",
         "CAPTION": "Gofod anadlu",
         "WHEN_END": "Pryd ddaw'r lle i anadlu i ben?",
         "DATE_HINT": "Dyma'r dyddiad y dywedwyd wrthych y bydd yn gorffen, er enghraifft, 15 11 2026",
         "WHY_LIFTED": "Pam bod y lle i anadlu'n cael ei godi? (dewisol)",
         "CHECK_ANSWERS": "Check your answers",
         "EXIT": {
-          "TITLE": "Ydych chi’n siŵr eich bod eisiau gadael y llwybr hwn?",
+          "TITLE": "Ydych chi'n siŵr eich bod eisiau gadael y llwybr hwn?",
           "BODY": "Bydd yr atebion yn cael eu colli, ac ni fydd y lle i anadlu yn cael ei godi",
           "OPTION_REQUIRED": "Dewiswch ie os ydych chi am adael y llwybr hwn"
         },
@@ -5909,10 +5909,13 @@
     "VALID_CLAIM_REFERENCE_NUMBER": "Rhowch eich rhif hawliad dilys o'r llythyr neu'r e-bost wnaethom ei anfon atoch - dylai gynnwys 3 rhif yna'r llythrennau MC, JE, JF, JG neu JH, yna 3 rhif, er enghraifft 305JE126",
     "VALID_DATE": "Rhowch ddyddiad dilys",
     "VALID_DATE_IN_PAST": "Nodwch ddyddiad cyn {{dateToday}}",
-    "VALID_DATE_TODAY_OR_FUTURE": "Dylai'r dyddiad fod yn ddyddiad heddiw neu ddyddiad yn y dyfodol",
     "VALID_DATE_NOT_IN_PAST": "Nodwch ddyddiad heddiw neu ddyddiad yn y dyfodol",
     "VALID_DATE_ONE_MONTH_FROM_TODAY": "Rhaid i’r dyddiad fod o leiaf mis o ddyddiad heddiw",
     "VALID_DATE_LIFT_NOT_AFTER_TODAY": "Rhaid peidio â nodi dyddiad sydd ar ôl dyddiad heddiw",
+    "VALID_LIFT_END_DATE_INCLUDE": "Rhaid i'r dyddiad gorffen gynnwys diwrnod, mis a blwyddyn",
+    "VALID_LIFT_END_DATE_REAL": "Rhaid i'r dyddiad gorffen fod yn ddyddiad go iawn",
+    "VALID_LIFT_END_DATE_AFTER_START": "Rhaid i'r dyddiad gorffen fod ar ôl y dyddiad cychwyn",
+    "VALID_LIFT_END_DATE_MAX_60_DAYS": "Ni all lle anadlu safonol bara am fwy na 60 diwrnod",
     "VALID_DATE_START_NOT_AFTER_TODAY": "Rhaid i’r dyddiad cychwyn beidio â bod ar ôl dyddiad heddiw",
     "VALID_DAY": "Rhowch ddiwrnod dilys",
     "VALID_DAY_VARIATION1": "Rhowch ddiwrnod dilys",

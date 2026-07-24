@@ -91,6 +91,10 @@ import {QueryManagement} from 'form/models/queryManagement/queryManagement';
 import {CaseQueries} from 'models/queryManagement/caseQueries';
 
 export interface BreathingSpace {
+  enterBreathing?: {
+    type?: string;
+    start?: string;
+  };
   liftBreathing?: {
     expectedEnd?: string;
     eventDescription?: string;

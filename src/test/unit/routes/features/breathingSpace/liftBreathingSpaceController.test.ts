@@ -73,10 +73,10 @@ describe('Lift Breathing Space Controller', () => {
         });
     });
 
-    it('should redirect to CYA when form is valid (today date)', async () => {
+    it('should return error when date is today (must be after start date)', async () => {
       const claim = new Claim();
+      claim.totalClaimAmount = 1000;
       mockGetClaimById.mockResolvedValue(claim);
-      mockSaveLiftBreathingSpace.mockResolvedValue({});
       const today = new Date();
 
       await request(app)
@@ -88,12 +88,13 @@ describe('Lift Breathing Space Controller', () => {
           text: 'Reason',
         })
         .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toContain(CYA_LIFT_BREATHING_SPACE_URL.replace(':id', '123'));
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('govuk-error-summary');
+          expect(res.text).toContain('End date must be after start date');
         });
     });
 
-    it('should return error messages when date is in the past', async () => {
+    it('should return error when date is in the past', async () => {
       const claim = new Claim();
       claim.totalClaimAmount = 1000;
       mockGetClaimById.mockResolvedValue(claim);
@@ -104,7 +105,7 @@ describe('Lift Breathing Space Controller', () => {
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain('govuk-error-summary');
-          expect(res.text).toContain('Date should be todays or future date');
+          expect(res.text).toContain('End date must be after start date');
         });
     });
 
