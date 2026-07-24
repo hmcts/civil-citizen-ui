@@ -2789,7 +2789,7 @@
         "INTRO_MENTAL_HEALTH": "Bydd y Lle i Anadlu oherwydd Argyfwng Iechyd Meddwl yn cychwyn heddiw, oni bai eich bod yn nodi dyddiad cychwyn gwahanol.",
         "INTRO_MENTAL_HEALTH_REMAIN": "Bydd yn parhau nes eich bod yn ei godi.",
         "DATE_LABEL": "Pryd gychwynnodd y lle i anadlu? (dewisol)",
-        "DATE_HINT": "Nodwch y dyddiad bu iddo gychwyn, nid y dyddiad y cawsoch hysbysiad amdano. Er enghraifft, {{ date }}"
+        "DATE_HINT": "Nodwch y dyddiad bu iddo gychwyn, nid y dyddiad y cawsoch hysbysiad amdano."
       },
       "CANCEL": {
         "HEADING": "Ydych chi’n siŵr eich bod eisiau gadael y llwybr hwn?",
