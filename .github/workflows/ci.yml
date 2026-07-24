@@ -30,6 +30,8 @@ jobs:
           java-version: '21'
       - name: Install dependencies
         run: yarn install --frozen-lockfile
+      - name: Build application assets
+        run: yarn build
       - name: Install Chromium
         run: yarn playwright install --with-deps chromium
       - name: Run reduced-stack create-claim journey
