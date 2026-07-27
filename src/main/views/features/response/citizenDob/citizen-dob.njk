@@ -16,8 +16,7 @@
 {% endblock %}
 
 {% block content %}
-  <div class="govuk-width-container">
-    <main class="govuk-main-wrapper" role="main">
+
       {% if claimantView %}
         {% set title = t('PAGES.CLAIMANT_DOB.TITLE') %}
       {% else %}
@@ -104,6 +103,5 @@
           {{ contactUsForHelp(t) }}
         </div>
       </div>
-    </main>
-  </div>
+
 {% endblock %}
