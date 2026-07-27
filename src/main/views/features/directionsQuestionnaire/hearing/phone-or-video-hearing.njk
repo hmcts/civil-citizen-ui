@@ -15,8 +15,7 @@
    {% if form.hasErrors() %}
      {{ errorSummary(form.getErrors(), t) }}
    {% endif %}
-  <div class="govuk-width-container">
-    <main class="govuk-main-wrapper" role="main">
+
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
           <h1 class="govuk-heading-l">{{ t('PAGES.PHONE_OR_VIDEO_HEARING.TITLE') }}</h1>
@@ -53,6 +52,5 @@
           </form>
         </div>
       </div>
-    </main>
-  </div>
+
 {% endblock %}
