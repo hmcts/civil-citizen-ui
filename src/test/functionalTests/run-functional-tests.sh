@@ -26,7 +26,65 @@ compare_ft_groups() {
   fi
 }
 
+assert_no_functional_report_failures() {
+  local report_dir report_prefix report_files
+
+  report_dir="${REPORT_DIR:-test-results/functional}"
+  report_prefix="${MOCHAWESOME_REPORTFILENAME:-civil-citizen-pr}"
+
+  if [ ! -d "$report_dir" ]; then
+    return 0
+  fi
+
+  report_files=$(find "$report_dir" -maxdepth 1 -type f -name "${report_prefix}-*.json" 2>/dev/null || true)
+
+  if [ -z "$report_files" ]; then
+    return 0
+  fi
+
+  node -e '
+    const fs = require("fs");
+    const reports = process.argv.slice(1);
+    const failedReports = reports
+      .map((report) => {
+        const data = JSON.parse(fs.readFileSync(report, "utf8"));
+        return {
+          report,
+          failures: Number(data?.stats?.failures || 0),
+          passes: Number(data?.stats?.passes || 0),
+          pending: Number(data?.stats?.pending || 0),
+        };
+      })
+      .filter(({ failures }) => failures > 0);
+
+    if (failedReports.length > 0) {
+      console.error("Functional test report failures detected:");
+      failedReports.forEach(({ report, failures, passes, pending }) => {
+        console.error(`- ${report}: ${failures} failed, ${passes} passed, ${pending} skipped`);
+      });
+      process.exit(1);
+    }
+  ' $report_files
+}
+
+run_functional_command() {
+  local exit_code
+
+  set +e
+  "$@"
+  exit_code=$?
+  set -e
+
+  assert_no_functional_report_failures
+
+  if [ "$exit_code" -ne 0 ]; then
+    exit "$exit_code"
+  fi
+}
+
 run_functional_test_groups() {
+  local command
+
   command="yarn test:civil-citizen-pr --grep "
   pr_ft_groups=$(echo "$PR_FT_GROUPS" | awk '{print tolower($0)}')
   
@@ -43,15 +101,25 @@ run_functional_test_groups() {
 
   command+="'$regex_pattern'"
   echo "Executing: $command"
+
+  set +e
   eval "$command"
+  exit_code=$?
+  set -e
+
+  assert_no_functional_report_failures
+
+  if [ "$exit_code" -ne 0 ]; then
+    exit "$exit_code"
+  fi
 }
 
 run_functional_tests() {
   echo "Running all functional tests on ${ENVIRONMENT} env"
   if [ "$ENVIRONMENT" = "aat" ]; then
-    yarn test:civil-citizen-master
+    run_functional_command yarn test:civil-citizen-master
   elif [ -z "$PR_FT_GROUPS" ]; then
-    yarn test:civil-citizen-pr
+    run_functional_command yarn test:civil-citizen-pr
   else
     run_functional_test_groups
   fi
