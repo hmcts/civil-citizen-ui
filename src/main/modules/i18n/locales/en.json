@@ -2797,6 +2797,12 @@
         "HEADING": "Are you sure you want to exit this journey?",
         "WARNING": "All answers will be lost, and breathing space will not be applied",
         "ARE_YOU_SURE": "Are you sure you want to exit this journey?"
+      },
+      "CYA": {
+        "HEADING": "Check your answers",
+        "TYPE": "What type is it?",
+        "REFERENCE": "Reference number (optional)",
+        "START_DATE": "Start date (optional)"
       }
     },
     "DEBTS": {
