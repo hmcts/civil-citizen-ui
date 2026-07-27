@@ -8,6 +8,10 @@ export interface CCDBreathingSpaceEnterInfo {
   expectedEnd?: string | null;
 }
 
+export interface CCDBreathingSpaceLiftInfo {
+  expectedEnd?: string;
+}
+
 export interface CCDEnterBreathingSpace extends ClaimUpdate {
   enterBreathing: CCDBreathingSpaceEnterInfo;
 }

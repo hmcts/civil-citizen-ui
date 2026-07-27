@@ -17,6 +17,8 @@ import {
 import {
   translateDraftBreathingSpaceEnterToCCD,
 } from 'services/translation/breathingSpace/convertToCCDEnterBreathingSpace';
+import {generateRedisKey, saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {TTLCategory} from 'modules/draft-store/ttlConfig';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
 
@@ -52,12 +54,20 @@ breathingSpaceCheckAnswersController.post(BREATHING_SPACE_CYA_URL, (async (req: 
     const claimId = getRouteParam(req, 'id');
     const claim = await getClaimById(claimId, req, true);
     const enterBreathingCCD = translateDraftBreathingSpaceEnterToCCD(claim);
-    await civilServiceClient.submitEnterBreathingSpace(claimId, enterBreathingCCD, req);
     req.session.breathingSpaceAppliedType = claim.breathingSpaceEnterDraft?.type;
     req.session.breathingSpaceAppliedStart = claim.breathingSpaceEnterDraft?.start
       ? new Date(claim.breathingSpaceEnterDraft.start).toISOString()
       : undefined;
+    const submittedClaim = await civilServiceClient.submitEnterBreathingSpace(claimId, enterBreathingCCD, req);
     await cancelBreathingSpaceEntry(req);
+    submittedClaim.breathingSpaceEnterDraft = undefined;
+    await saveDraftClaim(
+      generateRedisKey(req),
+      submittedClaim,
+      true,
+      req.session?.user?.id,
+      TTLCategory.JOURNEY_CACHE,
+    );
     res.redirect(constructResponseUrlWithIdParams(claimId, BREATHING_SPACE_CONFIRMATION_URL));
   } catch (error) {
     next(error);

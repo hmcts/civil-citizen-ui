@@ -22,6 +22,9 @@ import {BreathingSpaceEnterDraft} from 'models/breathingSpace/breathingSpaceEnte
 import {CivilServiceClient} from 'client/civilServiceClient';
 import * as breathingSpaceEntryService from 'services/features/dashboard/breathingSpaceEntryService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {BreathingSpaceEnterInfo} from 'models/breathingSpace/breathingSpaceEnterInfo';
+import {TTLCategory} from 'modules/draft-store/ttlConfig';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
@@ -30,6 +33,15 @@ jest.mock('modules/utilityService', () => ({
   getClaimById: jest.fn(),
   getRedisStoreForSession: jest.fn(),
 }));
+
+jest.mock('modules/draft-store/draftStoreService', () => {
+  const actual = jest.requireActual('modules/draft-store/draftStoreService');
+  return {
+    ...actual,
+    saveDraftClaim: jest.fn(),
+    generateRedisKey: jest.fn(() => 'redis-key'),
+  };
+});
 
 describe('Breathing Space Check Answers Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -130,10 +142,18 @@ describe('Breathing Space Check Answers Controller', () => {
         new Date(2024, 2, 15),
       ),
     });
+    const submittedClaim = Object.assign(new Claim(), claim.case_data, {
+      enterBreathing: new BreathingSpaceEnterInfo(
+        BreathingSpaceType.STANDARD,
+        'REF123',
+        new Date('2024-01-15'),
+        new Date('2024-03-15'),
+      ),
+    });
     (getClaimById as jest.Mock).mockResolvedValueOnce(caseData);
     const submitSpy = jest
       .spyOn(CivilServiceClient.prototype, 'submitEnterBreathingSpace')
-      .mockResolvedValue(caseData);
+      .mockResolvedValue(submittedClaim);
     const cancelSpy = jest
       .spyOn(breathingSpaceEntryService, 'cancelBreathingSpaceEntry')
       .mockResolvedValue();
@@ -158,6 +178,18 @@ describe('Breathing Space Check Answers Controller', () => {
           expect.anything(),
         );
         expect(cancelSpy).toHaveBeenCalled();
+        expect(saveDraftClaim).toHaveBeenCalledWith(
+          'redis-key',
+          expect.objectContaining({
+            enterBreathing: expect.objectContaining({
+              type: BreathingSpaceType.STANDARD,
+            }),
+            breathingSpaceEnterDraft: undefined,
+          }),
+          true,
+          undefined,
+          TTLCategory.JOURNEY_CACHE,
+        );
       });
   });
 });

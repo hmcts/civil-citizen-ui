@@ -1,5 +1,5 @@
 import {Claim} from 'models/claim';
-import {CCDEnterBreathingSpace} from 'models/ccdResponse/ccdEnterBreathingSpace';
+import {CCDEnterBreathingSpace} from 'models/ccdResponse/ccdBreathingSpace';
 import {convertDateToStringFormat} from 'common/utils/dateUtils';
 
 export const translateDraftBreathingSpaceEnterToCCD = (claim: Claim): CCDEnterBreathingSpace => {
