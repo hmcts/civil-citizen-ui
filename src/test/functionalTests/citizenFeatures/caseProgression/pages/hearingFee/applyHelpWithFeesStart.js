@@ -41,7 +41,7 @@ class ApplyHelpWithFeesStart {
     await I.see('Instead, you should make a new help with fees application which will provide you with a new reference number. Note down this number and keep it safe as you will need it later in the process.');
     await I.see('During your application, you will be asked for the number of your court or tribunal form. Enter \'hearing fee\' followed by short explanation, for example \'hearing fee small claims\' or \'hearing fee for fast track\'.');
     await I.see('Once you have made your application, return to this page and click continue to proceed.');
-    await I.see('Apply for Help with Fees (open in a new window)', '//a[@class="govuk-link"]');
+    await I.see('Apply for Help with Fees (open in a new tab)', '//a[@class="govuk-link"]');
   }
 }
 

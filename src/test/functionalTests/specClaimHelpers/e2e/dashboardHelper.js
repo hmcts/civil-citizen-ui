@@ -81,6 +81,35 @@ module.exports = {
     }
   },
 
+  verifyNotificationAbsent: async (claimNumber = '', title, claimRef, partyRole = 'claimant') => {
+    await navigateToClaimIfNeeded(claimNumber, claimRef, partyRole);
+    await waitForFinishedBusinessProcess();
+
+    const maxRetries = 3;
+    let lastPageSource = '';
+    for (let tries = 1; tries <= maxRetries; tries++) {
+      lastPageSource = await I.grabTextFrom('.dashboard-notification');
+      const normalisedPageSource = normaliseText(lastPageSource);
+      const titleFound = normalisedPageSource.includes(normaliseText(title));
+      console.log('Verifying notification is absent ..', title, `(found: ${titleFound})`);
+
+      if (!titleFound) {
+        return;
+      }
+
+      if (tries === maxRetries) {
+        throw new Error(
+          `Notification "${title}" should not be present but was found after ${maxRetries} attempts. `
+          + `Dashboard notification area contained: "${lastPageSource.slice(0, 500)}"`,
+        );
+      }
+
+      await waitForFinishedBusinessProcess();
+      await I.wait(4);
+      await I.refreshPage();
+    }
+  },
+
   verifyTasklistLinkAndState: async (tasklist, locator, status, isLinkFlag= false, isDeadlinePresent= false, deadline, claimNumber = '', claimRef, partyRole = 'claimant') => {
     //Step to check if status is already updated, if not it will refresh the page
     if (claimNumber || claimRef) {
