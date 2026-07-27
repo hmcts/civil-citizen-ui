@@ -2805,7 +2805,11 @@
       "WHAT_NEXT_PARAGRAPH_4": "Gallwch ddod o hyd i’r wybodaeth hon yn yr hysbysiad a gawsoch gan y Gwasanaeth Ansolfedd. Bydd angen i chi hefyd ddarparu rhif yr hawliad llys.",
       "WHAT_HAPPENS_DURING_BS": "Beth sy’n digwydd yn ystod lle i anadlu",
       "WHAT_HAPPENS_DURING_BS_PARA1": "Ni ellir gorfodi gorchmynion llys a dyfarniadau yn ymwneud â dyled a wnaed cyn i le i anadlu ddechrau nes bod y lle i anadlu yn dod i ben oni bai bod y llys yn rhoi caniatâd i barhau.",
-      "WHAT_HAPPENS_DURING_BS_PARA2": "Os oes gwrandawiad wedi’i drefnu, yna mae’n bosibl y caiff hwn ei ganslo tra bod y lle i anadlu ar waith."
+      "WHAT_HAPPENS_DURING_BS_PARA2": "Os oes gwrandawiad wedi’i drefnu, yna mae’n bosibl y caiff hwn ei ganslo tra bod y lle i anadlu ar waith.",
+      "ENTER_BREATHING_SPACE_DETAILS": "Nodwch fanylion y lle i anadlu",
+      "WHEN_BS_ENDS": "Pan ddaw lle i anadlu i ben",
+      "WHEN_BS_ENDS_PARA1": "Pan ddaw lle i anadlu i ben, mae'r amddiffyniadau a ddarperir yn dod i ben a gall credydwyr ddechrau cymryd camau gweithredu ar y dyledion unwaith eto.",
+      "WHEN_BS_ENDS_PARA2": "Gall hyn gynnwys cysylltu â'r dyledwr, ailgychwyn achos llys, ychwanegu llog a chostau, neu barhau gyda gweithgarwch gorfodi."
     },
     "DEFENDANT_DETAILS": {
       "BUSINESS_NAME": "Masnachu fel (os yn hysbys)",
