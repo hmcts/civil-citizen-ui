@@ -15,8 +15,7 @@
 {% set maxDate = maxDateForAge18.toJSON() | addDaysTranslated(1, t) %}
 
 {% block content %}
-  <div class="govuk-width-container">
-    <main class="govuk-main-wrapper" role="main">
+
       {% if form.hasErrors() %}
         <div class="govuk-grid-row">
           {{ errorSummary(errors,t,[{keyError:'ERRORS.VALID_ENTER_A_DATE_BEFORE',keyToReplace:'{{ maxDate }}',valueToReplace:maxDate}]) }}
@@ -103,6 +102,5 @@
           </form>
         </div>
       </div>
-    </main>
-  </div>
+
 {% endblock %}
