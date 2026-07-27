@@ -366,6 +366,10 @@ import liftBreathingSpaceController from 'routes/features/breathingSpace/liftBre
 import liftBreathingSpaceCheckAnswersController from 'routes/features/breathingSpace/checkAnswersController';
 import liftBreathingSpaceExitController from 'routes/features/breathingSpace/liftBreathingSpaceExitController';
 import liftBreathingSpaceConfirmationController from 'routes/features/breathingSpace/liftBreathingSpaceConfirmationController';
+import breathingSpaceEntryController from 'routes/features/dashboard/breathingSpaceEntryController';
+import breathingSpaceStartDateController from 'routes/features/dashboard/breathingSpaceStartDateController';
+import breathingSpaceCancelController from 'routes/features/dashboard/breathingSpaceCancelController';
+import breathingSpaceCheckAnswersController from 'routes/features/dashboard/breathingSpaceCheckAnswersController';
 import multiTrackDisclosureNonElectronicDocuments
   from 'routes/features/directionsQuestionnaire/mintiMultitrack/disclosureNonElectronicDocumentsController';
 import disclosureOfDocumentsController
@@ -755,6 +759,10 @@ export default [
   liftBreathingSpaceCheckAnswersController,
   liftBreathingSpaceExitController,
   liftBreathingSpaceConfirmationController,
+  breathingSpaceEntryController,
+  breathingSpaceStartDateController,
+  breathingSpaceCancelController,
+  breathingSpaceCheckAnswersController,
   multiTrackDisclosureNonElectronicDocuments,
   disclosureOfDocumentsController,
   disclosureOfElectronicDocumentsIssues,
