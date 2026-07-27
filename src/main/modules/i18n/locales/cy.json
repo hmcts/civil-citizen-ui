@@ -160,6 +160,7 @@
       "TITLE": "Cysylltu â ni i gael cymorth",
       "TELEPHONE": "Rhif ffôn",
       "TELEPHONE_CARM": "Rhif ffôn",
+      "TELEPHONE_VALUE": "0300 123 7050",
       "WEB_CHAT": "Sgwrsio ar y We",
       "WEB_CHAT_CLOSED": "Mae’r gwasanaeth sgwrsio dros y we nawr ar gau. Dewch yn ôl dydd Llun i ddydd Gwener rhwng 8.30am - 5pm neu cysylltwch â ni dros y ffôn neu drwy e-bost.",
       "WEB_CHAT_NO_ADVISORS": "Nid oes cynghorwyr ar gael ar hyn o bryd. Rhowch gynnig arni eto yn nes ymlaen.",
@@ -189,7 +190,7 @@
       "BETA": "BETA",
       "MONEY_CLAIMS": "Hawliadau am Arian",
       "MY_ACCOUNT": "Fy nghyfrif",
-      "NEW_SERVICE": "Mae hwn yn wasanaeth newydd – bydd eich <a class='govuk-link' href='https://www.smartsurvey.co.uk/s/CMC_Feedback/?pageurl={{ pageTitle }}' target='_blank'>adborth (agor mewn ffenestr newydd)</a> yn ein helpu i’w wella.",
+      "NEW_SERVICE": "Mae hwn yn wasanaeth newydd – bydd eich <a class='govuk-link' href='https://www.smartsurvey.co.uk/s/CMC_Feedback/?pageurl={{ pageTitle }}' target='_blank'>adborth (yn agor mewn ffenestr newydd)</a> yn ein helpu i’w wella.",
       "SIGN_IN": "Mewngofnodi",
       "SIGN_OUT": "Allgofnodi"
     },
@@ -4697,7 +4698,8 @@
     },
     "RESPONSE_DEADLINE_OPTIONS": {
       "CURRENT_DEADLINE": "Terfyn amser cyfredol ar gyfer ymateb: 4pm ar {{ responseDeadline }}",
-      "EMAIL_FORM": "Anfonwch y ffurflen N244 wedi’i llenwi trwy e-bost i : contact@justice.gov.uk.",
+      "EMAIL_FORM": "Anfonwch y ffurflen N244 wedi’i llenwi trwy e-bost i :",
+      "EMAIL_ADDRESS": "contact@justice.gov.uk",
       "FORM": "Ffurflen N244 (yn agor mewn tab newydd)",
       "MORE_TIME": "Ydych chi eisiau gwneud cais am ragor o amser i ymateb?",
       "OPTION_AGREED": "Rwyf eisoes wedi cytuno ar ragor o amser gyda chynrychiolydd cyfreithiol {{ claimantName }}",
@@ -4815,7 +4817,8 @@
       },
       "DO_NOT_CREATE_NEW_CLAIM_IF_WANT_COUNTERCLAIM": "Peidiwch â chreu hawliad newydd os ydych eisiau gwneud gwrth-hawliad.",
       "USE_FORM_N9B": "Defnyddiwch ffurflen N9B.",
-      "EMAIL_COMPLETED": "E-bostio'r ffurflen N9B wedi'i llenwi i: contactocmc@justice.gov.uk neu ymholiadaucymraeg@justice.gov.uk",
+      "EMAIL_COMPLETED": "E-bostio'r ffurflen N9B wedi'i llenwi i:",
+      "EMAIL_COMPLETED_N9B": "E-bostio'r ffurflen N9B wedi'i llenwi i:",
       "HEADER": "Gwrthod yr hawliad cyfan a gwneud gwrth-hawliad",
       "HELP_AND_SUPPORT": "Cymorth a Chefnogaeth",
       "HOW_TO_COUNTERCLAIM": "Sut i wneud gwrth-hawliad?",
@@ -5879,6 +5882,7 @@
     "VALID_CLAIM_INTEREST_FROM": "Dewiswch o ba bryd rydych chi’n hawlio llog?",
     "VALID_CLAIM_INTEREST_END_DATE": "Dewiswch pryd rydych chi am roi'r gorau i hawlio llog",
     "VALID_CLAIM_NUMBER": "Nodwch rif yr hawliad",
+    "VALID_CLAIM_NUMBER_ALPHANUMERIC": "Nodwch rif hawliad gan ddefnyddio llythrennau a rhifau yn unig",
     "VALID_CLAIM_REFERENCE_NUMBER": "Rhowch eich rhif hawliad dilys o'r llythyr neu'r e-bost wnaethom ei anfon atoch - dylai gynnwys 3 rhif yna'r llythrennau MC, JE, JF, JG neu JH, yna 3 rhif, er enghraifft 305JE126",
     "VALID_DATE": "Rhowch ddyddiad dilys",
     "VALID_DATE_IN_PAST": "Nodwch ddyddiad cyn {{dateToday}}",
@@ -6065,7 +6069,7 @@
       "MESSAGE": "Ni fydd y Gwasanaeth Defnyddwyr Dinasyddion ar gael rhwng 19:00 26 Awst 2025 a 04:00 27 Awst 2025"
     },
     "CUI_MAIN_WELSH_LIP": {
-      "MESSAGE": "Ni fydd y gwasanaeth ar gael o 6:00PM ar y 6ed o Dachwedd tan 04:00AM ar y 7fed o Dachwedd, oherwydd gwaith cynnal a chadw."
+      "MESSAGE": "<p><strong>Hysbysiad pwysig</strong><br><br>Ni fydd y gwasanaeth hwn ar gael rhwng 7pm nos Iau 23 Gorffennaf 2026 a 1.15am ar 24 Gorffennaf 2026 tra byddwn yn gwneud gwaith cynnal a chadw hanfodol. Dychwelwch ar ôl 1.15am nos Wener 24 Gorffennaf 2026 i barhau i ddefnyddio'r gwasanaeth.<br><br>Ymddiheurwn am unrhyw anghyfleustra.</p>"
     }
   }
 }

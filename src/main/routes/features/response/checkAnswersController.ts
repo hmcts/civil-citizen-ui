@@ -21,6 +21,7 @@ import {isMintiEnabledForCase, isCarmEnabledForCase} from '../../../app/auth/lau
 import {ValidationError, Validator} from 'class-validator';
 import {SpecificCourtLocation} from 'models/directionsQuestionnaire/hearing/specificCourtLocation';
 import {getRouteParam} from 'common/utils/routeParamUtils';
+import {validateOtherWitnesses} from 'services/features/directionsQuestionnaire/otherWitnessesService';
 
 const checkAnswersViewPath = 'features/response/check-answers';
 const validator = new Validator();
@@ -68,6 +69,10 @@ checkAnswersController.post(RESPONSE_CHECK_ANSWERS_URL, (async (req: Request, re
     if (claim?.directionQuestionnaire?.hearing && !claim.directionQuestionnaire.hearing?.specificCourtLocation?.courtLocation) {
       form.errors = validateFields(new GenericForm<SpecificCourtLocation>(SpecificCourtLocation.fromObject(claim.directionQuestionnaire.hearing?.specificCourtLocation as any)), form.errors);
     }
+    form.errors = [
+      ...form.errors,
+      ...validateOtherWitnesses(claim.directionQuestionnaire?.witnesses?.otherWitnesses),
+    ];
     if (form.hasErrors()) {
       const claimId = getRouteParam(req, 'id');
       logger.info(`form has error -  ${claimId}`);
