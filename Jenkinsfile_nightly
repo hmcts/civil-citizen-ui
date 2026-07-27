@@ -159,6 +159,24 @@ def archiveDiagnosticArtifacts(String artifactPattern, String artifactLabel) {
   }
 }
 
+def generateFunctionalFailureSummary() {
+  try {
+    sh 'node src/test/functionalTests/diagnostics/generateFunctionalFailureSummary.js'
+  } catch (Exception error) {
+    echo "Failed to generate functional failure summary. Continuing with diagnostic publication. Error: ${error.toString()}"
+    currentBuild.result = 'FAILURE'
+  }
+}
+
+def collectWiremockDiagnostics() {
+  try {
+    sh 'node src/test/functionalTests/diagnostics/collectWiremockDiagnostics.js'
+  } catch (Exception error) {
+    echo "Failed to collect WireMock diagnostics. Continuing with artifact archiving. Error: ${error.toString()}"
+    currentBuild.result = 'FAILURE'
+  }
+}
+
 def secrets = [
   's2s-${env}': [
     secret('microservicekey-xui-webapp', 'XUI_S2S_SECRET'),
@@ -241,6 +259,8 @@ withNightlyPipeline(type, product, component) {
     afterAlways('fullFunctionalTest') {
       generateAllureReport('test-results/functional/allure-results', 'test-results/functional/allure-report', 'functional')
       publishAllureHtml('test-results/functional/allure-report', 'Nightly E2E Allure Report')
+      generateFunctionalFailureSummary()
+      collectWiremockDiagnostics()
       archiveDiagnosticArtifacts('test-results/functional/**/*', 'functional test artifacts')
     }
   }
