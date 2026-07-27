@@ -7,7 +7,8 @@ jest.mock('i18next', () => ({
 describe('breathing space guidance page content builder', () => {
 
   it('should get the content for the page without QM Lip information', () => {
-    const pageContent = getBSGuidanceContent('en', 'qmLink');
+    const entryUrl = '/dashboard/123/breathing-space/enter';
+    const pageContent = getBSGuidanceContent('en', entryUrl, 'qmLink');
     const sectionTexts = pageContent.map((section) => section.data?.text);
 
     expect(sectionTexts).toContain('PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.WHAT_HAPPENS_DURING_BS');
@@ -15,12 +16,13 @@ describe('breathing space guidance page content builder', () => {
     expect(sectionTexts).toContain('PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.MORE_INFO');
     expect(pageContent.some((section) =>
       section.type === 'button' &&
-      section.data?.text === 'PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.ENTER_BREATHING_SPACE_DETAILS',
+      section.data?.text === 'PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.ENTER_BREATHING_SPACE_DETAILS' &&
+      section.data?.href === entryUrl,
     )).toBe(true);
   });
 
   it('should get the content for the page with QM Lip information', () => {
-    const pageContent = getBSGuidanceContent('en', 'qmLink', true);
+    const pageContent = getBSGuidanceContent('en', '/dashboard/123/breathing-space/enter', 'qmLink', true);
     expect(pageContent.some((section) => section.data?.text === 'PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.WHEN_BS_ENDS')).toBe(true);
   });
 
