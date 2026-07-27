@@ -2773,6 +2773,36 @@
       "VIEW": "Weiv",
       "VIEW_CLAIM_NUMBER": "Rhif yr Hawliad {{ claimNumber }}"
     },
+    "BREATHING_SPACE_ENTRY": {
+      "PAGE_TITLE": "Nodwch y Lle i Anadlu",
+      "TYPE_AND_REFERENCE": {
+        "HEADING": "Math o Le i Anadlu a'r Cyfeirnod",
+        "TYPE_LEGEND": "Pa fath o le i anadlu ydyw?",
+        "TYPE_MENTAL_HEALTH": "Moratoriwm Argyfwng Iechyd Meddwl",
+        "TYPE_STANDARD": "Lle i Anadlu Safonol",
+        "REFERENCE_LABEL": "Cyfeirnod (dewisol)",
+        "REFERENCE_HINT": "Gallwch ddod o hyd i’r wybodaeth hon yn yr hysbysiad a gawsoch gan y Gwasanaeth Ansolfedd."
+      },
+      "START_DATE": {
+        "HEADING": "Dyddiad cychwyn y Lle i Anadlu",
+        "INTRO_STANDARD": "Bydd y lle i anadlu yn cychwyn heddiw, oni bai eich bod yn nodi dyddiad cychwyn gwahanol.",
+        "INTRO_MENTAL_HEALTH": "Bydd y Lle i Anadlu oherwydd Argyfwng Iechyd Meddwl yn cychwyn heddiw, oni bai eich bod yn nodi dyddiad cychwyn gwahanol.",
+        "INTRO_MENTAL_HEALTH_REMAIN": "Bydd yn parhau nes eich bod yn ei godi.",
+        "DATE_LABEL": "Pryd gychwynnodd y lle i anadlu? (dewisol)",
+        "DATE_HINT": "Nodwch y dyddiad bu iddo gychwyn, nid y dyddiad y cawsoch hysbysiad amdano."
+      },
+      "CANCEL": {
+        "HEADING": "Ydych chi’n siŵr eich bod eisiau gadael y llwybr hwn?",
+        "WARNING": "Bydd yr atebion yn cael eu colli, ac ni fydd y lle i anadlu yn cael ei weithredu",
+        "ARE_YOU_SURE": "Ydych chi’n siŵr eich bod eisiau gadael y llwybr hwn?"
+      },
+      "CYA": {
+        "HEADING": "Gwirio eich atebion",
+        "TYPE": "Pa fath ydy o?",
+        "REFERENCE": "Cyfeirnod (dewisol)",
+        "START_DATE": "Dyddiad cychwyn (dewisol)"
+      }
+    },
     "DEBTS": {
       "ADD": "Ychwanegu dyled",
       "LIST": "Rhestrwch bob benthyciad neu ddyled cerdyn credyd",
@@ -2805,7 +2835,11 @@
       "WHAT_NEXT_PARAGRAPH_4": "Gallwch ddod o hyd i’r wybodaeth hon yn yr hysbysiad a gawsoch gan y Gwasanaeth Ansolfedd. Bydd angen i chi hefyd ddarparu rhif yr hawliad llys.",
       "WHAT_HAPPENS_DURING_BS": "Beth sy’n digwydd yn ystod lle i anadlu",
       "WHAT_HAPPENS_DURING_BS_PARA1": "Ni ellir gorfodi gorchmynion llys a dyfarniadau yn ymwneud â dyled a wnaed cyn i le i anadlu ddechrau nes bod y lle i anadlu yn dod i ben oni bai bod y llys yn rhoi caniatâd i barhau.",
-      "WHAT_HAPPENS_DURING_BS_PARA2": "Os oes gwrandawiad wedi’i drefnu, yna mae’n bosibl y caiff hwn ei ganslo tra bod y lle i anadlu ar waith."
+      "WHAT_HAPPENS_DURING_BS_PARA2": "Os oes gwrandawiad wedi’i drefnu, yna mae’n bosibl y caiff hwn ei ganslo tra bod y lle i anadlu ar waith.",
+      "ENTER_BREATHING_SPACE_DETAILS": "Nodwch fanylion y lle i anadlu",
+      "WHEN_BS_ENDS": "Pan ddaw lle i anadlu i ben",
+      "WHEN_BS_ENDS_PARA1": "Pan ddaw lle i anadlu i ben, mae'r amddiffyniadau a ddarperir yn dod i ben a gall credydwyr ddechrau cymryd camau gweithredu ar y dyledion unwaith eto.",
+      "WHEN_BS_ENDS_PARA2": "Gall hyn gynnwys cysylltu â'r dyledwr, ailgychwyn achos llys, ychwanegu llog a chostau, neu barhau gyda gweithgarwch gorfodi."
     },
     "DEFENDANT_DETAILS": {
       "BUSINESS_NAME": "Masnachu fel (os yn hysbys)",
@@ -5512,6 +5546,13 @@
     "AMOUNT_REQUIRED": "Nodwch swm o £1 neu fwy",
     "ANNUAL_TURNOVER_REQUIRED": "A ydych yn siŵr bod hwn yn swm dilys?",
     "APPLICATION_TYPE_REQUIRED": "Dewiswch gais",
+    "BREATHING_SPACE_TYPE_REQUIRED": "Dewiswch y math o le i anadlu",
+    "BREATHING_SPACE_REFERENCE_INVALID": "Ni all y cyfeirnod gynnwys mwy na 16 digid",
+    "BREATHING_SPACE_START_DATE_REAL": "Rhaid i'r dyddiad cychwyn fod yn ddyddiad go iawn",
+    "BREATHING_SPACE_START_DATE_DAY": "Rhaid i’r dyddiad cychwyn gynnwys diwrnod",
+    "BREATHING_SPACE_START_DATE_MONTH": "Rhaid i’r dyddiad cychwyn gynnwys mis",
+    "BREATHING_SPACE_START_DATE_YEAR": "Rhaid i’r dyddiad cychwyn gynnwys blwyddyn",
+    "BREATHING_SPACE_START_DATE_NOT_FUTURE": "Ni all y dyddiad cychwyn fod yn y dyfodol",
     "CHOOSE_TYPE_OF_INTEREST": "Dewis math o log",
     "CLAIM_DETAILS": "Manylion yr hawliad",
     "CLAIM_NUMBER_REQUIRED": "Rhowch eich rhif hawliad dilys o'r llythyr neu'r e-bost wnaethom ei anfon atoch - dylai gynnwys 3 rhif yna'r llythrennau MC, JE, JF, JG neu JH, yna 3 rhif, er enghraifft 305JE126",

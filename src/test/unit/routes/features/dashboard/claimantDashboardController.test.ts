@@ -171,6 +171,7 @@ describe('claimant Dashboard Controller', () => {
         .spyOn(ClaimDetailsService, 'getTotalAmountWithInterestAndFees')
         .mockResolvedValueOnce(10);
       jest.spyOn(launchDarkly, 'isJudgmentBufferEnabled').mockResolvedValue(false);
+      jest.spyOn(launchDarkly, 'isBreathingSpaceEnabled').mockResolvedValue(true);
     });
     it('should return claimant dashboard page when only draft', async () => {
 
@@ -465,6 +466,19 @@ describe('claimant Dashboard Controller', () => {
           expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.FIND_LEGAL_ADVICE'));
           expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.FIND_INFO_COURT'));
         });
+      });
+    });
+
+    it('should hide breathing space link when toggle is disabled', async () => {
+
+      const claim = new Claim();
+      claim.caseRole = CaseRole.CLAIMANT;
+      claim.ccdState = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
+      jest.spyOn(UtilityService, 'getClaimById').mockResolvedValueOnce(claim);
+      jest.spyOn(launchDarkly, 'isBreathingSpaceEnabled').mockResolvedValueOnce(false);
+      await request(app).get(DASHBOARD_CLAIMANT_URL).expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).not.toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.GET_DEBT_RESPITE'));
       });
     });
 
