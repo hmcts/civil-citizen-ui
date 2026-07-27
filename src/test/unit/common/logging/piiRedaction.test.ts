@@ -111,4 +111,65 @@ describe('PII logging redaction', () => {
       payload: '[BINARY DATA]',
     });
   });
+
+  it('redacts errors while retaining safe diagnostic information', () => {
+    const error = new Error('Unable to notify jane.doe@example.com');
+    error.name = 'NotificationError';
+    error.stack = 'NotificationError: emailAddress=jane.doe@example.com\n    at notify';
+
+    expect(redactLogValue(error)).toEqual({
+      name: 'NotificationError',
+      message: 'Unable to notify [REDACTED]',
+      stack: 'NotificationError: emailAddress=[REDACTED]\n    at notify',
+    });
+  });
+
+  it('redacts arrays and preserves non-sensitive values and regular expressions', () => {
+    const pattern = /case-reference/i;
+
+    expect(redactLogValue([
+      'Contact jane.doe@example.com',
+      {fullName: 'Jane Doe', caseId: '1234'},
+      null,
+      42,
+      pattern,
+    ])).toEqual([
+      'Contact [REDACTED]',
+      {fullName: '[REDACTED]', caseId: '1234'},
+      null,
+      42,
+      pattern,
+    ]);
+  });
+
+  it('installs redaction on loggers once and redacts their arguments', () => {
+    jest.isolateModules(() => {
+      const info = jest.fn();
+      const logger = {
+        error: jest.fn(),
+        warn: jest.fn(),
+        info,
+        verbose: jest.fn(),
+        debug: jest.fn(),
+        silly: jest.fn(),
+      };
+      const getLogger = jest.fn().mockReturnValue(logger);
+      jest.doMock('@hmcts/nodejs-logging', () => ({Logger: {getLogger}}));
+      const {installPiiLoggingRedaction} = require('common/logging/piiRedaction');
+      const {Logger} = require('@hmcts/nodejs-logging');
+
+      installPiiLoggingRedaction();
+      installPiiLoggingRedaction();
+      const wrappedLogger = Logger.getLogger('test');
+      expect(Logger.getLogger('test')).toBe(wrappedLogger);
+
+      wrappedLogger.info('Contact jane.doe@example.com', {amount: 250, caseId: '1234'});
+
+      expect(info).toHaveBeenCalledWith(
+        'Contact [REDACTED]',
+        {amount: '[REDACTED]', caseId: '1234'},
+      );
+      expect(getLogger).toHaveBeenCalledTimes(2);
+    });
+  });
 });
