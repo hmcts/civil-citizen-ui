@@ -23,6 +23,7 @@ import {GenericYesNo} from 'form/models/genericYesNo';
 import {ClaimFeeData} from 'models/civilClaimResponse';
 import {ClaimBilingualLanguagePreference} from 'models/claimBilingualLanguagePreference';
 import {CCDRespondentResponseLanguage} from 'models/ccdResponse/ccdRespondentLiPResponse';
+import {applicationTypeErrorUrl} from 'routes/guards/generalApplication/applicationTypeGuard';
 
 jest.mock('../../../../main/modules/draft-store');
 jest.mock('../../../../main/modules/oidc');
@@ -298,7 +299,7 @@ describe('Check your Answers GA Guard', () => {
     //When
     await checkYourAnswersGAGuard(MOCK_REQUEST, MOCK_RESPONSE, MOCK_NEXT);
     //Then
-    expect(MOCK_RESPONSE.redirect).toHaveBeenCalled();
+    expect(MOCK_RESPONSE.redirect).toHaveBeenCalledWith(applicationTypeErrorUrl('123'));
   });
   it('should not call cancelUrl if any party is Bilingual and user tries to submit an application', async () => {
     //Given

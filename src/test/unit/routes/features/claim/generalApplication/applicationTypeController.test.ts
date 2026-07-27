@@ -12,6 +12,7 @@ import { Claim } from 'common/models/claim';
 import { GeneralApplication } from 'common/models/generalApplication/GeneralApplication';
 import { getClaimById } from 'modules/utilityService';
 import * as generalApplicationService from 'services/features/generalApplication/generalApplicationService';
+import {SHOW_APPLICATION_TYPE_ERROR_QUERY_PARAM} from 'routes/guards/generalApplication/applicationTypeGuard';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -25,6 +26,9 @@ jest.mock('../../../../../../main/routes/guards/generalAplicationGuard',() => ({
   isGAForLiPEnabled: jest.fn((req, res, next) => {
     next();
   }),
+}));
+jest.mock('routes/guards/uploadRateLimitGuard', () => ({
+  createUploadRateLimitGuard: jest.fn(),
 }));
 const isQueryManagementEnabledMock = isQueryManagementEnabled as jest.Mock;
 
@@ -60,6 +64,18 @@ describe('General Application - Application type', () => {
           expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.TITLE'));
         });
     });
+
+    it('should show validation error when application type is missing from a later GA screen', async () => {
+      (getClaimById as jest.Mock).mockResolvedValueOnce(new Claim());
+      await request(app)
+        .get(APPLICATION_TYPE_URL)
+        .query({[SHOW_APPLICATION_TYPE_ERROR_QUERY_PARAM]: 'true'})
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(t('ERRORS.APPLICATION_TYPE_REQUIRED'));
+        });
+    });
+
     it('should delete GA when url contains start', async () => {
       const spyDelete = jest.spyOn(generalApplicationService, 'deleteGAFromClaimsByUserId');
       (getClaimById as jest.Mock).mockResolvedValueOnce(new Claim());

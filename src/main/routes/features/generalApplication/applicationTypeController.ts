@@ -23,6 +23,7 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {isQueryManagementEnabled} from '../../../app/auth/launchdarkly/launchDarklyClient';
 import {YesNo} from 'form/models/yesNo';
 import {getRouteParam} from 'common/utils/routeParamUtils';
+import {SHOW_APPLICATION_TYPE_ERROR_QUERY_PARAM} from 'routes/guards/generalApplication/applicationTypeGuard';
 
 const applicationTypeController = Router();
 const viewPath = 'features/generalApplication/application-type';
@@ -45,6 +46,9 @@ applicationTypeController.get(APPLICATION_TYPE_URL, (async (req: AppRequest, res
     const applicationTypeOption = getByIndex(claim.generalApplication?.applicationTypes, applicationIndex)?.option;
     const applicationType = new ApplicationType(applicationTypeOption);
     const form = new GenericForm(applicationType);
+    if (req.query[SHOW_APPLICATION_TYPE_ERROR_QUERY_PARAM] === 'true') {
+      form.validateSync();
+    }
     const cancelUrl = await getCancelUrl(claimId, claim);
     const backLinkUrl = BACK_URL;
     const showCCJ  = claim.isDefendant();

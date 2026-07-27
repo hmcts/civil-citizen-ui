@@ -8,6 +8,7 @@ import {YesNo} from 'form/models/yesNo';
 import {getCancelUrl} from 'services/features/generalApplication/generalApplicationService';
 import {isGaForWelshEnabled} from '../../app/auth/launchdarkly/launchDarklyClient';
 import {getRouteParam} from 'common/utils/routeParamUtils';
+import {applicationTypeErrorUrl} from 'routes/guards/generalApplication/applicationTypeGuard';
 
 export const checkYourAnswersGAGuard = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -20,7 +21,7 @@ export const checkYourAnswersGAGuard = async (req: Request, res: Response, next:
     //If mainCase has bilingual party submission is not allowed.
     if (claim.isAnyPartyBilingual() && !welshGaEnabled && !req.url.includes(gaCoscUrl)) return res.redirect(await getCancelUrl(claimId, null));
 
-    if (!applicationTypes.length) return res.redirect(constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL + `?linkFrom=${LinKFromValues.start}`));
+    if (!applicationTypes.length) return res.redirect(applicationTypeErrorUrl(claimId));
 
     if (applicationTypes.length === 1) {
       const applicationType = applicationTypes[0].option;
