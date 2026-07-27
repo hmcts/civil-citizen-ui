@@ -24,8 +24,7 @@
 {% endfor %}
 
 {% block content %}
-  <div class="govuk-width-container">
-    <main class="govuk-main-wrapper" role="main">
+
       {% if form.hasErrors() %}
         {{ errorSummary(form.getErrors(), t) }}
       {% endif %}
@@ -95,6 +94,5 @@
           {{ contactUsForHelp(t) }}
         </div>
       </div>
-    </main>
-  </div>
+
 {% endblock %}
