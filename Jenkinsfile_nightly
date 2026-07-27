@@ -125,6 +125,40 @@ def copyPreviousAllureHistory() {
   }
 }
 
+def generateAllureReport(String resultsDir, String reportDir, String reportLabel) {
+  try {
+    sh "npx allure generate ${resultsDir} --clean -o ${reportDir}"
+  } catch (Exception error) {
+    echo "Failed to generate ${reportLabel} Allure report. Continuing with diagnostic publication. Error: ${error.toString()}"
+    currentBuild.result = 'FAILURE'
+  }
+}
+
+def publishAllureHtml(String reportDir, String reportName) {
+  try {
+    publishHTML([
+      allowMissing: true,
+      alwaysLinkToLastBuild: true,
+      keepAll: true,
+      reportDir: reportDir,
+      reportFiles: 'index.html',
+      reportName: reportName
+    ])
+  } catch (Exception error) {
+    echo "Failed to publish ${reportName}. Continuing with artifact archiving. Error: ${error.toString()}"
+    currentBuild.result = 'FAILURE'
+  }
+}
+
+def archiveDiagnosticArtifacts(String artifactPattern, String artifactLabel) {
+  try {
+    archiveArtifacts allowEmptyArchive: true, artifacts: artifactPattern
+  } catch (Exception error) {
+    echo "Failed to archive ${artifactLabel}. Continuing so the primary test result is preserved. Error: ${error.toString()}"
+    currentBuild.result = 'FAILURE'
+  }
+}
+
 def secrets = [
   's2s-${env}': [
     secret('microservicekey-xui-webapp', 'XUI_S2S_SECRET'),
@@ -205,16 +239,9 @@ withNightlyPipeline(type, product, component) {
     }
 
     afterAlways('fullFunctionalTest') {
-      steps.sh 'npx allure generate test-results/functional/allure-results --clean -o test-results/functional/allure-report'
-      publishHTML([
-        allowMissing: false,
-        alwaysLinkToLastBuild: true,
-        keepAll: true,
-        reportDir: 'test-results/functional/allure-report',
-        reportFiles: 'index.html',
-        reportName: 'Nightly E2E Allure Report'
-      ])
-      archiveArtifacts allowEmptyArchive: true, artifacts: 'test-results/functional/**/*'
+      generateAllureReport('test-results/functional/allure-results', 'test-results/functional/allure-report', 'functional')
+      publishAllureHtml('test-results/functional/allure-report', 'Nightly E2E Allure Report')
+      archiveDiagnosticArtifacts('test-results/functional/**/*', 'functional test artifacts')
     }
   }
 }
