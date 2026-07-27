@@ -15,8 +15,7 @@
 {% set heading = t('PAGES.REJECT_ALL_CLAIM.TITLE', { claimantName: claimantName }) %}
 
 {% block content %}
-  <div class="govuk-width-container">
-    <main class="govuk-main-wrapper" role="main">
+
       {% set optionError = form.errorFor("option") %}
       {% if optionError %}
         {% set optionErrorText = t(optionError) | replace('[CLAIMANT]', claimantName) %}
@@ -77,6 +76,5 @@
           </form>
         </div>
       </div>
-    </main>
-  </div>
+
 {% endblock %}

@@ -13,8 +13,7 @@
 {% endblock %}
 
 {% block content %}
-  <div class="govuk-width-container">
-    <main class="govuk-main-wrapper" role="main">
+
       {% if contactPerson %}
         {% set title = t("PAGES.MEDIATION_COMPANY_PHONE.TITLE_WITH_PERSON", { contactPerson : contactPerson }) %}
       {% else %}
@@ -72,6 +71,5 @@
           </form>
         </div>
       </div>
-    </main>
-  </div>
+
 {% endblock %}
