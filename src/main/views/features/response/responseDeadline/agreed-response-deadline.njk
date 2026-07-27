@@ -22,7 +22,7 @@
 
 {% block content %}
   <div class="govuk-width-container govuk-!-padding-top-0">
-    <main class="govuk-main-wrapper govuk-!-padding-top-0" role="main">
+
       {% set errors = form.getErrors() %}
       {% if form.hasErrors() %}
         {{ errorSummary(errors, t) }}
@@ -102,6 +102,5 @@
           {{ contactUsForHelp(t) }}
         </div>
       </div>
-    </main>
   </div>
 {% endblock %}

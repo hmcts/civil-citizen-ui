@@ -17,8 +17,7 @@
   <p class="govuk-body">{{ t('PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT.DETAILS.REQUEST_CCJ') }}</p>
 {% endset %}
 {% block content %}
-  <div class="govuk-width-container">
-    <main class="govuk-main-wrapper" role="main">
+
       {% if form.hasErrors() %}
         <div class="govuk-grid-row">
           {{ errorSummary(form.getErrors(), t) }}
@@ -79,6 +78,5 @@
           </form>
         </div>
       </div>
-    </main>
-  </div>
+
 {% endblock %}
