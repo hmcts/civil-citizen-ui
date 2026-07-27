@@ -77,6 +77,22 @@
       "priority": 1,
       "request": {
         "method": "GET",
+        "urlPattern": "/cases/.*/userCaseRoles"
+      },
+      "response": {
+        "status": 200,
+        "headers": {"Content-Type": "application/json"},
+        "jsonBody": [
+          "APPLICANTSOLICITORONE",
+          "DEFENDANT",
+          "CLAIMANT"
+        ]
+      }
+    },
+    {
+      "priority": 1,
+      "request": {
+        "method": "GET",
         "urlPath": "/cases/1111222233334444"
       },
       "response": {

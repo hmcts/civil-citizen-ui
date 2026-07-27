@@ -2,10 +2,13 @@
 
 set -euo pipefail
 
-export WIREMOCK_URL="http://127.0.0.1:1111"
+readonly WIREMOCK_PORT="${WIREMOCK_PORT:-1111}"
+readonly CUI_PORT="${CUI_PORT:-3001}"
+export WIREMOCK_URL="http://127.0.0.1:${WIREMOCK_PORT}"
 readonly WIREMOCK_URL
-readonly CUI_URL="http://127.0.0.1:3001"
+readonly CUI_URL="http://127.0.0.1:${CUI_PORT}"
 readonly RUN_LOG_DIR="${TMPDIR:-/tmp}/civil-citizen-ui-mocked-functional"
+readonly WIREMOCK_ROOT_DIR="$(mktemp -d "${TMPDIR:-/tmp}/civil-citizen-ui-wiremock.XXXXXX")"
 
 wiremock_pid=''
 cui_pid=''
@@ -19,6 +22,7 @@ cleanup() {
     terminate_tree "${wiremock_pid}"
     wait "${wiremock_pid}" 2>/dev/null || true
   fi
+  rm -rf "${WIREMOCK_ROOT_DIR}"
 }
 
 terminate_tree() {
@@ -62,14 +66,15 @@ wait_for_url() {
 
 trap cleanup EXIT INT TERM
 mkdir -p "${RUN_LOG_DIR}"
+mkdir -p "${WIREMOCK_ROOT_DIR}/mappings"
+cp -r ./charts/civil-citizen-ui/wiremock/mappings/* "${WIREMOCK_ROOT_DIR}/mappings/"
 
-yarn wiremock:pull
-./node_modules/.bin/wiremock --root-dir ./wiremock --port 1111 >"${RUN_LOG_DIR}/wiremock.log" 2>&1 &
+./node_modules/.bin/wiremock --root-dir "${WIREMOCK_ROOT_DIR}" --port "${WIREMOCK_PORT}" >"${RUN_LOG_DIR}/wiremock.log" 2>&1 &
 wiremock_pid=$!
 wait_for_url 'WireMock' "${WIREMOCK_URL}/__admin/mappings" "${wiremock_pid}" "${RUN_LOG_DIR}/wiremock.log"
 
 NODE_ENV=e2eTest \
-PORT=3001 \
+PORT="${CUI_PORT}" \
 CIVIL_SERVICE_URL="${WIREMOCK_URL}" \
 ORDNANCE_SURVEY_API_URL="${WIREMOCK_URL}" \
 ORDNANCE_SURVEY_API_KEY='mock-key' \
@@ -90,5 +95,6 @@ AAC_API_URL="${WIREMOCK_URL}" \
 WA_TASK_MGMT_URL="${WIREMOCK_URL}" \
 URL="${WIREMOCK_URL}" \
 CIVIL_SERVICE_URL="${WIREMOCK_URL}" \
-yarn test:mocked-functional:browser
-./bin/assert-preview-wiremock.sh
+  yarn test:mocked-functional:browser || browser_status=$?
+./bin/assert-preview-wiremock.sh || wiremock_status=$?
+exit "${browser_status:-${wiremock_status:-0}}"

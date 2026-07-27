@@ -4,9 +4,9 @@ set -e
 if [ "${REDUCED_STACK_TESTS:-false}" = "true" ]; then
   echo "Running the WireMock-backed functional journey against Jenkins preview"
   export FUNCTIONAL=true
-  yarn test:mocked-functional:browser
-  ./bin/assert-preview-wiremock.sh
-  exit 0
+  yarn test:mocked-functional:browser || browser_status=$?
+  ./bin/assert-preview-wiremock.sh || wiremock_status=$?
+  exit "${browser_status:-${wiremock_status:-0}}"
 fi
 
 compare_ft_groups() {

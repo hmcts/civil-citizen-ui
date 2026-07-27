@@ -8,6 +8,10 @@ readonly output_dir='test-results/functional/wiremock'
 mkdir -p "${output_dir}"
 
 curl --fail --silent --show-error \
+  "${WIREMOCK_URL}/__admin/requests" \
+  > "${output_dir}/all-requests.json"
+
+curl --fail --silent --show-error \
   "${WIREMOCK_URL}/__admin/requests/unmatched" \
   > "${output_dir}/unmatched-requests.json"
 
