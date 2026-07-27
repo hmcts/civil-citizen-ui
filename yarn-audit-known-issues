@@ -1,1 +1,2 @@
-
+{"value":"brace-expansion","children":{"ID":1124334,"Issue":"brace-expansion: DoS via unbounded expansion length causing an out-of-memory process crash","URL":"https://github.com/advisories/GHSA-mh99-v99m-4gvg","Severity":"high","Vulnerable Versions":"<=5.0.7","Tree Versions":["5.0.7"],"Dependents":["minimatch@npm:10.2.5"]}}
+{"value":"postcss","children":{"ID":1124288,"Issue":"PostCSS: Path Traversal in Previous Source Map Auto-Loading (sourceMappingURL) leads to Arbitrary .map File Disclosure","URL":"https://github.com/advisories/GHSA-r28c-9q8g-f849","Severity":"high","Vulnerable Versions":"<=8.5.17","Tree Versions":["8.5.15"],"Dependents":["stylelint@npm:16.26.1"]}}
