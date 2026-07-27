@@ -110,8 +110,7 @@
 </div>
 {% endset %}
 {% block content %}
-  <div class="govuk-width-container">
-    <main class="govuk-main-wrapper" role="main">
+
       {% set title = t('PAGES.DEBTS.TITLE') %}
       {% set errors = form.getAllErrors() %}
       {% if form.hasErrors() %}
@@ -131,6 +130,5 @@
           </form>
         </div>
      </div>
-    </main>
-  </div>
+
 {% endblock %}
