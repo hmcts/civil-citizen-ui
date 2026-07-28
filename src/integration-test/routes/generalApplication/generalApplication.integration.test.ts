@@ -68,6 +68,7 @@ jest.mock('services/features/generalApplication/response/submitApplicationRespon
 }));
 import {gaApplicationFeeDetails} from 'services/features/generalApplication/feeDetailsService';
 import {getDraftGARespondentResponse} from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
+import {saveApplicationType} from 'services/features/generalApplication/generalApplicationService';
 import {gaServiceClientMock} from '../../setup/sharedMocks';
 import {getClaimById} from 'modules/utilityService';
 
@@ -155,6 +156,52 @@ describe('Integration: general application route migration', () => {
       .expect(302);
 
     expect(res.header.location).toContain(withId(GA_ASK_PROOF_OF_DEBT_PAYMENT_GUIDANCE_URL));
+  });
+
+  it('application type: OTHER_OPTION is normalised before save', async () => {
+    (getClaimById as jest.Mock).mockResolvedValue(buildClaim(CaseRole.CLAIMANT, ApplicationTypeOption.OTHER));
+    const saveApplicationTypeMock = saveApplicationType as jest.Mock;
+    const app = createControllerApp(applicationTypeController);
+
+    await request(app)
+      .post(withId(APPLICATION_TYPE_URL))
+      .send({option: ApplicationTypeOption.OTHER_OPTION, optionOther: ApplicationTypeOption.OTHER})
+      .expect(302);
+
+    expect(saveApplicationTypeMock).toHaveBeenCalled();
+    expect(saveApplicationTypeMock.mock.calls[0][2].option).toBe(ApplicationTypeOption.OTHER);
+  });
+
+  it('application type: display labels are rejected before save', async () => {
+    (getClaimById as jest.Mock).mockResolvedValue(buildClaim(CaseRole.CLAIMANT, ApplicationTypeOption.EXTEND_TIME));
+    const saveApplicationTypeMock = saveApplicationType as jest.Mock;
+    const app = createControllerApp(applicationTypeController);
+
+    const res = await request(app)
+      .post(withId(APPLICATION_TYPE_URL))
+      .send({option: 'Summary judgment'})
+      .expect(200);
+
+    expect(res.body.data.form.errors[0].constraints).toEqual(expect.objectContaining({
+      isIn: 'ERRORS.APPLICATION_TYPE_REQUIRED',
+    }));
+    expect(saveApplicationTypeMock).not.toHaveBeenCalled();
+  });
+
+  it('application type: top-level-only values are rejected in the Other branch before save', async () => {
+    (getClaimById as jest.Mock).mockResolvedValue(buildClaim(CaseRole.CLAIMANT, ApplicationTypeOption.EXTEND_TIME));
+    const saveApplicationTypeMock = saveApplicationType as jest.Mock;
+    const app = createControllerApp(applicationTypeController);
+
+    const res = await request(app)
+      .post(withId(APPLICATION_TYPE_URL))
+      .send({option: ApplicationTypeOption.OTHER_OPTION, optionOther: ApplicationTypeOption.SET_ASIDE_JUDGEMENT})
+      .expect(200);
+
+    expect(res.body.data.form.errors[0].constraints).toEqual(expect.objectContaining({
+      applicationTypeInvalid: 'ERRORS.APPLICATION_TYPE_REQUIRED',
+    }));
+    expect(saveApplicationTypeMock).not.toHaveBeenCalled();
   });
 
   it('paying-for-application renders calculated fee amount', async () => {
