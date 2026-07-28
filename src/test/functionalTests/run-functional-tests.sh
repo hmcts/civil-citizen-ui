@@ -1,6 +1,17 @@
 #!/bin/bash
 set -e
 
+if [ "${REDUCED_STACK_TESTS:-false}" = "true" ]; then
+  echo "Running the WireMock-backed functional journey against Jenkins preview"
+  # Jenkins may allocate a different VM for this stage than for the smoke
+  # stage, so install the browser on the agent that will actually launch it.
+  yarn playwright install chromium
+  export FUNCTIONAL=true
+  yarn test:mocked-functional:browser || browser_status=$?
+  ./bin/assert-preview-wiremock.sh || wiremock_status=$?
+  exit "${browser_status:-${wiremock_status:-0}}"
+fi
+
 compare_ft_groups() {
   local ft_groups_csv pr_ft_groups_csv
 
