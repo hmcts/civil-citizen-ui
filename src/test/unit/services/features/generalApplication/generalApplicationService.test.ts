@@ -172,6 +172,28 @@ describe('General Application service', () => {
       //Then
       expect(spy).toBeCalled();
     });
+    it('should not save UI-only OTHER_OPTION as an application type', async () => {
+      //Given
+      const mockSaveClaim = draftStoreService.saveDraftClaim as jest.Mock;
+      mockSaveClaim.mockResolvedValue(undefined);
+      //Then
+      await expect(saveApplicationType('123', new Claim(), new ApplicationType(ApplicationTypeOption.OTHER_OPTION))).rejects.toThrow('Invalid general application type selected');
+      expect(mockSaveClaim).not.toBeCalled();
+    });
+    it('should not save when another persisted application type is invalid', async () => {
+      //Given
+      const claim = new Claim();
+      claim.generalApplication = new GeneralApplication();
+      claim.generalApplication.applicationTypes = [
+        new ApplicationType(ApplicationTypeOption.OTHER_OPTION),
+        new ApplicationType(ApplicationTypeOption.EXTEND_TIME),
+      ];
+      const mockSaveClaim = draftStoreService.saveDraftClaim as jest.Mock;
+      mockSaveClaim.mockResolvedValue(undefined);
+      //Then
+      await expect(saveApplicationType('123', claim, new ApplicationType(ApplicationTypeOption.STRIKE_OUT), 1)).rejects.toThrow('Invalid general application type selected');
+      expect(mockSaveClaim).not.toBeCalled();
+    });
     it('should throw error when draft store throws error', async () => {
       //Given
       mockGetCaseData.mockImplementation(async () => {
