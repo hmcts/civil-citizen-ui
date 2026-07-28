@@ -27,7 +27,7 @@ const SECRET_PATTERNS = [
     replacement: '[REDACTED_JWT]',
   },
   {
-    pattern: /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b/g,
+    pattern: /\b[A-Za-z0-9](?:[A-Za-z0-9._%+-]{0,62}[A-Za-z0-9])?@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b/g,
     replacement: '[REDACTED_EMAIL]',
   },
   {
