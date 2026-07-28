@@ -169,7 +169,7 @@ export class OidcMiddleware {
           req.originalUrl,
           req.session.paymentConfirmationContext,
         );
-        logger.info('Payment conf url ', paymentConfirmationUrl);
+        logger.info('Payment confirmation URL lookup completed');
 
         await new Promise<void>((resolve, reject) => {
           req.session.save((err) => (err ? reject(err) : resolve()));
@@ -239,9 +239,9 @@ export class OidcMiddleware {
           appReq.session.claimIssueTasklist = true;
         }
 
-        logger.info('redirecting url ', req.originalUrl);
+        logger.info('Processing authenticated redirect');
         if (isPaymentConfirmationUrl(req)) {
-          logger.info('Condition satisfied for payment confirmation ', req.originalUrl);
+          logger.info('Payment confirmation redirect detected');
 
           const paymentConfirmationContext = getPaymentConfirmationContextFromUrl(req.originalUrl);
           if (paymentConfirmationContext) {
@@ -254,7 +254,7 @@ export class OidcMiddleware {
               logger.warn(`user id does not exist from claim id: ${paymentConfirmationContext.claimId} `);
             }
           } else {
-            logger.error(`claim id does not exist from payment confirmation url: ${req.originalUrl} `);
+            logger.error('Claim id does not exist for payment confirmation URL');
           }
         }
 

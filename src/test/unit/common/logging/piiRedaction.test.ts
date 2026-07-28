@@ -21,6 +21,15 @@ describe('PII logging redaction', () => {
     expect(redactString(value)).toBe('Request failed\nclaimAmount=[REDACTED]\nat Example.method');
   });
 
+  it('redacts free-form error details containing unlabelled names', () => {
+    expect(redactString('Submit failed, error - Synthetic Jane Doe')).toBe(
+      'Submit failed, error - [REDACTED]',
+    );
+    expect(redactString('Request failed (message=Synthetic Jane Doe)')).toBe(
+      'Request failed (message=[REDACTED])',
+    );
+  });
+
   it('recursively redacts sensitive properties in structured log metadata', () => {
     const value = {
       claimant: {
@@ -37,6 +46,24 @@ describe('PII logging redaction', () => {
         address: '[REDACTED]',
         contact: '[REDACTED]',
       },
+      caseId: '1234',
+    });
+  });
+
+  it('redacts generic and role-specific name fields and payment URLs', () => {
+    expect(redactLogValue({
+      name: 'Jane Doe',
+      claimantName: 'Jane Doe',
+      defendantName: 'John Doe',
+      nextUrl: 'https://payments.example/secure/token',
+      externalReference: 'payment-token',
+      caseId: '1234',
+    })).toEqual({
+      name: '[REDACTED]',
+      claimantName: '[REDACTED]',
+      defendantName: '[REDACTED]',
+      nextUrl: '[REDACTED]',
+      externalReference: '[REDACTED]',
       caseId: '1234',
     });
   });
@@ -112,15 +139,15 @@ describe('PII logging redaction', () => {
     });
   });
 
-  it('redacts errors while retaining safe diagnostic information', () => {
+  it('fully redacts free-form error details that can contain unlabelled PII', () => {
     const error = new Error('Unable to notify jane.doe@example.com');
     error.name = 'NotificationError';
     error.stack = 'NotificationError: emailAddress=jane.doe@example.com\n    at notify';
 
     expect(redactLogValue(error)).toEqual({
       name: 'NotificationError',
-      message: 'Unable to notify [REDACTED]',
-      stack: 'NotificationError: emailAddress=[REDACTED]\n    at notify',
+      message: '[REDACTED]',
+      stack: '[REDACTED]',
     });
   });
 

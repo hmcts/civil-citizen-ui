@@ -2,16 +2,21 @@ const REDACTED = '[REDACTED]';
 const BINARY_DATA = '[BINARY DATA]';
 const EMAIL_PATTERN = /(?<![\w.+-])[\w.+-]+@[\w.-]+\.[a-z]{2,}(?![\w.-])/gi;
 const SENSITIVE_FIELD_NAMES = [
-  'firstName', 'lastName', 'fullName', 'partyName', 'individualFirstName', 'individualLastName',
+  'name', 'firstName', 'lastName', 'fullName', 'partyName', 'claimantName', 'defendantName',
+  'applicantName', 'respondentName', 'individualFirstName', 'individualLastName',
   'soleTraderFirstName', 'soleTraderLastName', 'companyName', 'organisationName',
   'email', 'emailAddress', 'partyEmail', 'dateOfBirth', 'individualDateOfBirth', 'dob',
+  'phone', 'phoneNumber', 'telephone', 'telephoneNumber', 'mobile', 'mobileNumber',
   'amount', 'admittedAmount', 'calculatedAmountInPence', 'claimAmount', 'claimFee', 'claimFeeInPence',
   'defendantAdmittedAmount', 'feeAmount', 'instalmentAmount', 'interest', 'interestAmount',
-  'outstandingAmount', 'paidAmount', 'partialAmount', 'paymentAmount', 'paymentReference', 'paymentDate',
+  'outstandingAmount', 'paidAmount', 'partialAmount', 'paymentAmount', 'paymentReference', 'paymentRef', 'paymentDate',
   'repaymentAmount', 'totalClaimAmount',
+  'nextUrl', 'redirectUrl', 'redirectingUrl', 'externalReference',
+  'body', 'requestBody', 'responseBody', 'errorDescription',
   'address', 'primaryAddress', 'addressLine[1-3]?', 'postCode', 'postTown', 'county', 'country',
 ].join('|');
 const SENSITIVE_FIELD_PATTERN = new RegExp(`(?<![\\w])("?(?:${SENSITIVE_FIELD_NAMES})"?\\s*[:=]\\s*)("[^"]*"|[^,})\\r\\n]+)`, 'gi');
+const ERROR_DETAIL_PATTERN = /((?:error|message|reason)\s*(?:-|:|=)\s*)([^})\r\n]*)/gi;
 const SENSITIVE_KEYS = new RegExp(`^(?:${SENSITIVE_FIELD_NAMES})$`, 'i');
 const LOG_METHODS = ['error', 'warn', 'info', 'verbose', 'debug', 'silly'] as const;
 const WRAPPED_LOGGER = Symbol('piiRedactionWrapped');
@@ -23,7 +28,8 @@ type LoggerInstance = Record<LogMethod, (...args: unknown[]) => unknown> & {
 
 export const redactString = (value: string): string => {
   const fieldsRedacted = value.replace(SENSITIVE_FIELD_PATTERN, `$1${REDACTED}`);
-  return fieldsRedacted.replace(EMAIL_PATTERN, REDACTED);
+  const errorDetailsRedacted = fieldsRedacted.replace(ERROR_DETAIL_PATTERN, `$1${REDACTED}`);
+  return errorDetailsRedacted.replace(EMAIL_PATTERN, REDACTED);
 };
 
 export const redactLogValue = (value: unknown, seen = new WeakSet<object>()): unknown => {
@@ -41,8 +47,8 @@ export const redactLogValue = (value: unknown, seen = new WeakSet<object>()): un
     if (value instanceof Error) {
       return {
         name: value.name,
-        message: redactString(value.message),
-        stack: value.stack ? redactString(value.stack) : value.stack,
+        message: REDACTED,
+        stack: value.stack ? REDACTED : value.stack,
       };
     }
     if (Buffer.isBuffer(value)) {
