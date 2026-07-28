@@ -16,10 +16,6 @@ fi
 readonly output_dir='test-results/smokeTest'
 mkdir -p "${output_dir}"
 
-# The functional journey runs later on the same Jenkins agent. Do not rely on
-# a browser left in the agent cache by an earlier build.
-yarn playwright install chromium
-
 check_health() {
   local name="$1"
   local url="$2"
