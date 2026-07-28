@@ -2621,6 +2621,10 @@
       "NEXT": "Nesaf",
       "NEXT_STEPS": "Y camau nesaf",
       "NOTIFICATIONS": {
+        "BREATHING_SPACE": {
+          "DEFENDANT_CONTENT": "Mae'r achos yn destun lle i anadlu",
+          "TITLE": "Pwysig"
+        },
         "HEARINGS": {
           "PAY_FEE": "of £{{ feeAmount }} by {{ hearingDueDate }}. If you do not do this, your claim may be struck out.",
           "TEXT_BEFORE": "You must ",

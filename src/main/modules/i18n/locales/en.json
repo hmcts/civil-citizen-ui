@@ -2623,6 +2623,10 @@
       "NEXT": "Next",
       "NEXT_STEPS": "Next steps",
       "NOTIFICATIONS": {
+        "BREATHING_SPACE": {
+          "DEFENDANT_CONTENT": "Case is in breathing space",
+          "TITLE": "Important"
+        },
         "HEARINGS": {
           "PAY_FEE": "of £{{ feeAmount }} by {{ hearingDueDate }}. If you do not do this, your claim may be struck out.",
           "TEXT_BEFORE": "You must ",
