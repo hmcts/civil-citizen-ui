@@ -55,6 +55,7 @@ import {SignSettlmentAgreement} from 'form/models/claimantResponse/signSettlemen
 import {PaidAmount} from 'models/claimantResponse/ccj/paidAmount';
 import {RejectAllOfClaimType} from 'form/models/rejectAllOfClaimType';
 import {RejectAllOfClaim} from 'form/models/rejectAllOfClaim';
+import {Employer} from 'form/models/statementOfMeans/employment/employer';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -1149,11 +1150,11 @@ describe('Summary section', () => {
           {
             employerName: 'Bobs Burger',
             jobTitle: 'Master flipper',
-          },
+          } as Employer,
           {
             employerName: 'Avengers',
             jobTitle: 'Part Time Superhero',
-          },
+          } as Employer,
         ],
       };
       const response = constructEmploymentDetailsSection(claim, 'cimode');
