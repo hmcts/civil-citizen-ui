@@ -48,6 +48,60 @@ describe('Submit application to ccd', () => {
     expect(CivilServiceClientServiceMock).toBeCalled();
   });
 
+  it('should reject invalid application types before submitting to civil-service', async () => {
+    const invalidClaim = new Claim();
+    invalidClaim.generalApplication = new GeneralApplication(new ApplicationType(ApplicationTypeOption.OTHER_OPTION));
+    mockGetClaim.mockImplementation(() => invalidClaim);
+    const CivilServiceClientServiceMock = jest
+      .spyOn(CivilServiceClient.prototype, 'submitInitiateGeneralApplicationEvent')
+      .mockResolvedValue(claim);
+    CivilServiceClientServiceMock.mockClear();
+    (req as AppRequest).params = {id: '123'};
+
+    await expect(submitApplication(req as AppRequest)).rejects.toThrow('Invalid general application type selected');
+
+    expect(CivilServiceClientServiceMock).not.toBeCalled();
+  });
+
+  it('should reject missing application types before translation or civil-service submit', async () => {
+    const invalidClaim = new Claim();
+    invalidClaim.generalApplication = new GeneralApplication();
+    mockGetClaim.mockImplementation(() => invalidClaim);
+    const ccdTranslationServiceMock = jest
+      .spyOn(ccdTranslationService, 'translateDraftApplicationToCCD');
+    const CivilServiceClientServiceMock = jest
+      .spyOn(CivilServiceClient.prototype, 'submitInitiateGeneralApplicationEvent')
+      .mockResolvedValue(claim);
+    ccdTranslationServiceMock.mockClear();
+    CivilServiceClientServiceMock.mockClear();
+    (req as AppRequest).params = {id: '123'};
+
+    await expect(submitApplication(req as AppRequest)).rejects.toThrow('Invalid general application type selected');
+
+    expect(ccdTranslationServiceMock).not.toBeCalled();
+    expect(CivilServiceClientServiceMock).not.toBeCalled();
+  });
+
+  it('should reject empty application types before translation or civil-service submit', async () => {
+    const invalidClaim = new Claim();
+    invalidClaim.generalApplication = new GeneralApplication();
+    invalidClaim.generalApplication.applicationTypes = [];
+    mockGetClaim.mockImplementation(() => invalidClaim);
+    const ccdTranslationServiceMock = jest
+      .spyOn(ccdTranslationService, 'translateDraftApplicationToCCD');
+    const CivilServiceClientServiceMock = jest
+      .spyOn(CivilServiceClient.prototype, 'submitInitiateGeneralApplicationEvent')
+      .mockResolvedValue(claim);
+    ccdTranslationServiceMock.mockClear();
+    CivilServiceClientServiceMock.mockClear();
+    (req as AppRequest).params = {id: '123'};
+
+    await expect(submitApplication(req as AppRequest)).rejects.toThrow('Invalid general application type selected');
+
+    expect(ccdTranslationServiceMock).not.toBeCalled();
+    expect(CivilServiceClientServiceMock).not.toBeCalled();
+  });
+
   it('should return http 500 when has error in the get method', async () => {
     mockGetClaim.mockImplementation(() => {
       throw new Error(TestMessages.REDIS_FAILURE);
@@ -93,4 +147,3 @@ describe('Submit CoSc general application to ccd', () => {
     await expect(submitCoScApplication(req as AppRequest)).rejects.toThrow(TestMessages.REDIS_FAILURE);
   });
 });
-
