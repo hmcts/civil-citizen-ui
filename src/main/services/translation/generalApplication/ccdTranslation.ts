@@ -5,6 +5,7 @@ import {
 } from 'models/gaEvents/eventDto';
 import { OrderJudge } from 'models/generalApplication/orderJudge';
 import {
+  assertValidApplicationTypes,
   ApplicationType,
 } from 'models/generalApplication/applicationType';
 import { CcdGeneralApplicationTypes } from 'models/ccdGeneralApplication/ccdGeneralApplicationTypes';
@@ -96,6 +97,7 @@ const toCCDDocument = (uploadDocument: UploadGAFiles): Document => {
 };
 
 const toCCDGeneralApplicationTypes = (applicationTypes: ApplicationType[]): CcdGeneralApplicationTypes => {
+  assertValidApplicationTypes(applicationTypes);
   return {
     types: applicationTypes?.map(applicationType => applicationType.option),
   };
