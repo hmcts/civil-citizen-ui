@@ -57,7 +57,7 @@ viewApplicationToRespondentController.get(GA_RESPONSE_VIEW_APPLICATION_URL, (asy
     const claimId = getRouteParam(req, 'id');
     const claim: Claim = await getClaimById(claimId, req, true);
     const applicationId = getRouteParam(req, 'appId');
-    const applicationIndex = queryParamNumber(req, 'index') || await getApplicationIndex(claimId, applicationId, req, true);
+    const applicationIndex = queryParamNumber(req, 'index') ?? await getApplicationIndex(claimId, applicationId, req, true);
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const applicationResponse: ApplicationResponse = await getApplicationFromGAService(req, applicationId);
     const applicationTypeCards = getResponseSummaryCardSections(applicationResponse, lang);

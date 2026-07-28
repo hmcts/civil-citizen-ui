@@ -6,8 +6,10 @@ import {
   getApplicationStatus,
   getByIndex,
   getByIndexOrLast,
+  getClaimApplicationCostNextUrl,
   getCancelUrl,
   getDynamicHeaderForMultipleApplications,
+  getRequestingReasonNextUrl,
   getViewApplicationUrl,
   isConfirmYouPaidCCJAppType,
   removeAllOtherApplications,
@@ -47,7 +49,7 @@ import {RequestingReason} from 'models/generalApplication/requestingReason';
 import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
 import {GaResponse} from 'common/models/generalApplication/response/gaResponse';
 import {YesNo, YesNoUpperCamelCase} from 'common/form/models/yesNo';
-import {CANCEL_URL} from 'routes/urls';
+import {CANCEL_URL, GA_ADD_ANOTHER_APPLICATION_URL, ORDER_JUDGE_URL} from 'routes/urls';
 import {HearingSupport, SupportType} from 'models/generalApplication/hearingSupport';
 import {HearingArrangement, HearingTypeOptions} from 'models/generalApplication/hearingArrangement';
 import {HearingContactDetails} from 'models/generalApplication/hearingContactDetails';
@@ -552,6 +554,27 @@ describe('General Application service', () => {
         //Then
         expect(getDynamicHeaderForMultipleApplications(claim)).toEqual(expectedHeader);
       });
+  });
+
+  describe('next URL index handling', () => {
+    const claim = new Claim();
+    claim.generalApplication = new GeneralApplication();
+    claim.generalApplication.applicationTypes = [
+      new ApplicationType(ApplicationTypeOption.EXTEND_TIME),
+      new ApplicationType(ApplicationTypeOption.STRIKE_OUT),
+    ];
+    const req = {
+      params: {id: '123'},
+      query: {index: '0'},
+    } as unknown as AppRequest;
+
+    it('should keep index 0 in requesting reason next URL', () => {
+      expect(getRequestingReasonNextUrl(req, claim)).toEqual(`${GA_ADD_ANOTHER_APPLICATION_URL.replace(':id', '123')}?index=0`);
+    });
+
+    it('should keep index 0 in claim application cost next URL', () => {
+      expect(getClaimApplicationCostNextUrl(req, claim)).toEqual(`${ORDER_JUDGE_URL.replace(':id', '123')}?index=0`);
+    });
   });
 
   describe('Get by index or last', () => {

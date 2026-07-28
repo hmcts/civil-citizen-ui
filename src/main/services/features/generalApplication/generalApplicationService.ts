@@ -705,7 +705,7 @@ export const getRequestingReasonNextUrl = (req: AppRequest | Request, claim: Cla
     const claimId = getRouteParam(req, 'id');
     return constructResponseUrlWithIdParams(claimId, GA_WANT_TO_UPLOAD_DOCUMENTS_URL);
   } else {
-    const applicationIndex = queryParamNumber(req, 'index') || 0;
+    const applicationIndex = queryParamNumber(req, 'index') ?? 0;
     const claimId = getRouteParam(req, 'id');
     return constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, GA_ADD_ANOTHER_APPLICATION_URL), applicationIndex);
   }
@@ -717,7 +717,7 @@ export const getClaimApplicationCostNextUrl = (req: AppRequest | Request, claim:
   if (isOrderJudgeNotAllowed) {
     return getRequestingReasonNextUrl(req, claim);
   } else {
-    const index  = queryParamNumber(req, 'index') || claim.generalApplication.applicationTypes.length - 1;
+    const index  = queryParamNumber(req, 'index') ?? claim.generalApplication.applicationTypes.length - 1;
     const claimId = getRouteParam(req, 'id');
     return constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, ORDER_JUDGE_URL), index);
   }

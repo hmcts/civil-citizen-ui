@@ -1,7 +1,7 @@
 import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
-import { GA_ADD_ANOTHER_APPLICATION_URL } from 'routes/urls';
+import { GA_ADD_ANOTHER_APPLICATION_URL, GA_WANT_TO_UPLOAD_DOCUMENTS_URL } from 'routes/urls';
 import { app } from '../../../../../../main/app';
 import * as draftService from 'modules/draft-store/draftStoreService';
 import { Claim } from 'common/models/claim';
@@ -70,6 +70,21 @@ describe('General Application - add another application', () => {
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.headers.location).toContain(`linkFrom=${LinKFromValues.addAnotherApp}&index=1`);
+        });
+    });
+
+    it('should keep index 0 when first application is selected in a multi-application journey', async () => {
+      claim.generalApplication.applicationTypes = [
+        new ApplicationType(ApplicationTypeOption.EXTEND_TIME),
+        new ApplicationType(ApplicationTypeOption.STAY_THE_CLAIM),
+      ];
+
+      await request(app)
+        .post(`${GA_ADD_ANOTHER_APPLICATION_URL}?index=0`)
+        .send({ option: 'no' })
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.headers.location).toContain(`${GA_WANT_TO_UPLOAD_DOCUMENTS_URL}?index=0`);
         });
     });
 
