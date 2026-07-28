@@ -16,7 +16,7 @@ export const applicationTypeGuard = async (req: AppRequest, res: Response, next:
     const claimId = getRouteParam(req, 'id');
     const claim = await getClaimById(claimId, req, true);
 
-    if (claim.generalApplication && !claim.generalApplication.applicationTypes?.length) {
+    if (!claim.generalApplication?.applicationTypes?.length) {
       res.redirect(applicationTypeErrorUrl(claimId));
       return;
     }

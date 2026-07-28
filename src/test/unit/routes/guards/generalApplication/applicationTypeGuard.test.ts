@@ -45,12 +45,12 @@ describe('Application type guard', () => {
     expect(next).toHaveBeenCalledWith();
   });
 
-  it('should call next when claim does not have a GA draft', async () => {
+  it('should redirect to application type validation when claim does not have a GA draft', async () => {
     mockGetClaimById.mockResolvedValueOnce(new Claim());
 
     await applicationTypeGuard(req, res, next);
 
-    expect(res.redirect).not.toHaveBeenCalled();
-    expect(next).toHaveBeenCalledWith();
+    expect(res.redirect).toHaveBeenCalledWith(applicationTypeErrorUrl('123'));
+    expect(next).not.toHaveBeenCalled();
   });
 });
