@@ -50,12 +50,14 @@ const mockCivilClaim = {
   expireat: jest.fn(() => Promise.resolve({})),
 };
 
+const civilClaimResponseCaseData = civilClaimResponseMock.case_data as typeof civilClaimResponseMock.case_data & Partial<Claim>;
+
 const civilClaimResponseWithApplicationTypeMock = {
   ...civilClaimResponseMock,
   case_data: {
     ...civilClaimResponseMock.case_data,
     generalApplication: {
-      ...civilClaimResponseMock.case_data?.generalApplication,
+      ...civilClaimResponseCaseData.generalApplication,
       applicationTypes: [{option: ApplicationTypeOption.ADJOURN_HEARING}],
     },
   },
