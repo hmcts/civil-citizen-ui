@@ -2,6 +2,8 @@ import {NextFunction, Request, Response, Router} from 'express';
 import {LIFT_BREATHING_SPACE_EXIT_URL, DASHBOARD_URL, LIFT_BREATHING_SPACE_URL} from '../../urls';
 import {getHelpSupportLinks, getHelpSupportTitle} from 'services/dashboard/dashboardService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {getClaimById} from 'modules/utilityService';
+import {saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {t} from 'i18next';
 
 const liftBreathingSpaceExitController = Router();
@@ -55,6 +57,14 @@ liftBreathingSpaceExitController.post(LIFT_BREATHING_SPACE_EXIT_URL, async (req:
       return;
     }
     if (option === 'yes') {
+      const claim = await getClaimById(claimId, req);
+      if (claim.breathingSpace) {
+        claim.breathingSpace.liftBreathing = undefined;
+        if (claim.breathingSpace.enterBreathing) {
+          claim.breathingSpace.enterBreathing.type = undefined;
+        }
+        await saveDraftClaim(claimId, claim);
+      }
       res.redirect(constructResponseUrlWithIdParams(claimId, DASHBOARD_URL));
     } else {
       res.redirect(safeReturnUrl);

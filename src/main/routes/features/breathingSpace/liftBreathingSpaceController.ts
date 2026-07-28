@@ -7,6 +7,7 @@ import {getHelpSupportLinks, getHelpSupportTitle} from 'services/dashboard/dashb
 import {isQueryManagementEnabled} from '../../../app/auth/launchdarkly/launchDarklyClient';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {getClaimById} from 'modules/utilityService';
+import {saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {ValidationError} from 'class-validator';
 import {getNumberOfDaysBetweenTwoDays} from 'common/utils/dateUtils';
 
@@ -40,6 +41,14 @@ liftBreathingSpaceController.get(LIFT_BREATHING_SPACE_URL, async (req: Request, 
     const claimId = req.params.id as string;
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const claim = await getClaimById(claimId, req);
+    // TODO: remove bsType query param once dashboard notification ticket is complete
+    const bsType = req.query.bsType as string;
+    if (bsType) {
+      if (!claim.breathingSpace) claim.breathingSpace = {};
+      if (!claim.breathingSpace.enterBreathing) claim.breathingSpace.enterBreathing = {};
+      claim.breathingSpace.enterBreathing.type = bsType;
+      await saveDraftClaim(claimId, claim);
+    }
     const form = await getLiftBreathingSpaceForm(claimId, claim);
     const helpSupportTitle = getHelpSupportTitle(lang);
     const helpSupportLinks = getHelpSupportLinks(lang);
@@ -76,8 +85,7 @@ liftBreathingSpaceController.post(LIFT_BREATHING_SPACE_URL, async (req: Request,
     const startDate = claim.breathingSpace?.enterBreathing?.start
       ? (() => { const d = new Date(claim.breathingSpace.enterBreathing.start); d.setHours(0,0,0,0); return d; })()
       : (() => { const d = new Date(); d.setHours(0,0,0,0); return d; })();
-    // TODO: replace with actual breathingSpaceType from claim.breathingSpace.enterBreathing.type when dashboard notification ticket is complete
-    const breathingSpaceType = STANDARD_BREATHING_SPACE;
+    const breathingSpaceType = claim.breathingSpace?.enterBreathing?.type;
 
     const form = new LiftBreathingSpaceForm(year, month, day, text, startDate, breathingSpaceType);
     const genericForm = new GenericForm(form);
