@@ -5,6 +5,7 @@ import {
 } from 'routes/urls';
 import { GenericForm } from 'common/form/models/genericForm';
 import { AppRequest } from 'common/models/AppRequest';
+import { Claim } from 'common/models/claim';
 import {
   ApplicationType,
   ApplicationTypeOption,
@@ -37,7 +38,6 @@ applicationTypeController.get(APPLICATION_TYPE_URL, (async (req: AppRequest, res
     const isAskMoreTime:boolean = req.query.isAskMoreTime === 'true';
     const isAmendClaim:boolean = req.query.isAmendClaim === 'true';
     const isAdjournHearing: boolean = req.query.isAdjournHearing === 'true';
-    const applicationIndex = queryParamNumber(req, 'index');
 
     if (linkFrom === LinKFromValues.start) {
       await deleteGAFromClaimsByUserId(req.session?.user?.id);
@@ -45,6 +45,7 @@ applicationTypeController.get(APPLICATION_TYPE_URL, (async (req: AppRequest, res
 
     const claimId = getRouteParam(req, 'id');
     const claim = await getClaimById(claimId, req, true);
+    const applicationIndex = getApplicationIndexForGet(req, claim);
 
     const applicationTypeOption = getByIndex(claim.generalApplication?.applicationTypes, applicationIndex)?.option;
     const applicationType = new ApplicationType(applicationTypeOption);
@@ -80,7 +81,7 @@ applicationTypeController.post(APPLICATION_TYPE_URL, (async (req: AppRequest | R
     const claim = await getClaimById(claimId, req, true);
     let applicationType: ApplicationType;
 
-    let applicationIndex = queryParamNumber(req, 'index');
+    let applicationIndex = getApplicationIndexForPost(req, claim);
 
     if (req.body.option === ApplicationTypeOption.OTHER_OPTION) {
       applicationType = new ApplicationType(req.body.optionOther);
@@ -90,7 +91,7 @@ applicationTypeController.post(APPLICATION_TYPE_URL, (async (req: AppRequest | R
     const form = new GenericForm(applicationType);
     form.validateSync();
     validateOtherApplicationTypeBranch(form, applicationType, req.body.option, req.body.optionOther);
-    if(!applicationIndex && applicationIndex != 0) {
+    if (isAddingApplicationType(claim, applicationIndex)) {
       validateAdditionalApplicationtType(claim,form.errors,applicationType,req.body);
     }
     const cancelUrl = await getCancelUrl(claimId, claim);
@@ -102,9 +103,7 @@ applicationTypeController.post(APPLICATION_TYPE_URL, (async (req: AppRequest | R
     } else {
       await saveApplicationType(redisKey, claim, applicationType, applicationIndex);
 
-      if(!applicationIndex) {
-        applicationIndex = claim.generalApplication.applicationTypes.length - 1;
-      }
+      applicationIndex = getSavedApplicationIndex(claim, applicationIndex);
       if (showCCJ && claim.joIsLiveJudgmentExists?.option === YesNo.YES && req.body.option === ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID) {
         res.redirect(constructResponseUrlWithIdParams(claimId, GA_ASK_PROOF_OF_DEBT_PAYMENT_GUIDANCE_URL));
       } else {
@@ -140,6 +139,45 @@ const validateOtherApplicationTypeBranch = (form: GenericForm<ApplicationType>, 
     },
     property: 'option',
   }));
+};
+
+const getApplicationIndexForGet = (req: AppRequest, claim: Claim): number | undefined => {
+  const applicationIndex = queryParamNumber(req, 'index');
+  if (applicationIndex !== undefined) {
+    return applicationIndex;
+  }
+
+  if (req.query.linkFrom !== LinKFromValues.addAnotherApp && claim.generalApplication?.applicationTypes?.length === 1) {
+    return 0;
+  }
+
+  return undefined;
+};
+
+const getApplicationIndexForPost = (req: AppRequest | Request, claim: Claim): number | undefined => {
+  const applicationIndex = queryParamNumber(req, 'index');
+  if (applicationIndex !== undefined) {
+    return applicationIndex;
+  }
+
+  const applicationTypes = claim.generalApplication?.applicationTypes || [];
+  if (req.query.linkFrom === LinKFromValues.addAnotherApp) {
+    return applicationTypes.length > 1 ? applicationTypes.length - 1 : undefined;
+  }
+
+  return applicationTypes.length === 1 ? 0 : undefined;
+};
+
+const isAddingApplicationType = (claim: Claim, applicationIndex: number | undefined): boolean => {
+  const applicationTypes = claim.generalApplication?.applicationTypes || [];
+  return applicationIndex === undefined || applicationIndex < 0 || applicationIndex >= applicationTypes.length;
+};
+
+const getSavedApplicationIndex = (claim: Claim, applicationIndex: number | undefined): number => {
+  const lastApplicationIndex = claim.generalApplication.applicationTypes.length - 1;
+  return applicationIndex !== undefined && applicationIndex >= 0 && applicationIndex <= lastApplicationIndex
+    ? applicationIndex
+    : lastApplicationIndex;
 };
 
 export default applicationTypeController;

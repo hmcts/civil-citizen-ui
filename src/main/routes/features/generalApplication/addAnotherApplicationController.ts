@@ -66,7 +66,8 @@ addAnotherApplicationController.post(GA_ADD_ANOTHER_APPLICATION_URL, async (req:
       claim.generalApplication.addType = true;
       if (req.body.option === YesNo.YES) {
         await saveDraftClaim(redisKey, claim);
-        res.redirect(constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL) + '?linkFrom=' + LinKFromValues.addAnotherApp);
+        const newApplicationIndex = claim.generalApplication.applicationTypes.length;
+        res.redirect(constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL) + '?linkFrom=' + LinKFromValues.addAnotherApp + `&index=${newApplicationIndex}`);
       } else {
         let index = queryParamNumber(req, 'index') || claim.generalApplication.applicationTypes.length - 1;
         if (req.query['changeScreen'] === 'true'){

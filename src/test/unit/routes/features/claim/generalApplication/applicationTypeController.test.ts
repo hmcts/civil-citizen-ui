@@ -5,7 +5,7 @@ import request from 'supertest';
 import {APPLICATION_TYPE_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
-import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
+import {mockCivilClaim, mockDraftClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
 import {ApplicationType, ApplicationTypeOption, LinKFromValues} from 'common/models/generalApplication/applicationType';
 import {isGaForLipsEnabled, isQueryManagementEnabled} from 'app/auth/launchdarkly/launchDarklyClient';
 import { Claim } from 'common/models/claim';
@@ -145,6 +145,66 @@ describe('General Application - Application type', () => {
         });
     });
 
+    it('should update existing application type instead of appending when revisiting without index', async () => {
+      const claim = new Claim();
+      claim.generalApplication = new GeneralApplication();
+      claim.generalApplication.applicationTypes = [new ApplicationType(ApplicationTypeOption.EXTEND_TIME)];
+      app.locals.draftStoreClient = mockDraftClaim(claim);
+      (getClaimById as jest.Mock).mockResolvedValueOnce(claim);
+
+      await request(app)
+        .post(APPLICATION_TYPE_URL)
+        .send({option: ApplicationTypeOption.ADJOURN_HEARING})
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.headers.location).toContain('/general-application/agreement-from-other-party?index=0');
+        });
+
+      expect(claim.generalApplication.applicationTypes).toHaveLength(1);
+      expect(claim.generalApplication.applicationTypes[0].option).toEqual(ApplicationTypeOption.ADJOURN_HEARING);
+    });
+
+    it('should append application type when add another application flow provides next index', async () => {
+      const claim = new Claim();
+      claim.generalApplication = new GeneralApplication();
+      claim.generalApplication.applicationTypes = [new ApplicationType(ApplicationTypeOption.EXTEND_TIME)];
+      app.locals.draftStoreClient = mockDraftClaim(claim);
+      (getClaimById as jest.Mock).mockResolvedValueOnce(claim);
+
+      await request(app)
+        .post(APPLICATION_TYPE_URL + `?linkFrom=${LinKFromValues.addAnotherApp}&index=1`)
+        .send({option: ApplicationTypeOption.ADJOURN_HEARING})
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.headers.location).toContain('/general-application/order-judge?index=1');
+        });
+
+      expect(claim.generalApplication.applicationTypes).toHaveLength(2);
+      expect(claim.generalApplication.applicationTypes[1].option).toEqual(ApplicationTypeOption.ADJOURN_HEARING);
+    });
+
+    it('should update latest added application type when add another page is resubmitted without index', async () => {
+      const claim = new Claim();
+      claim.generalApplication = new GeneralApplication();
+      claim.generalApplication.applicationTypes = [
+        new ApplicationType(ApplicationTypeOption.EXTEND_TIME),
+        new ApplicationType(ApplicationTypeOption.STAY_THE_CLAIM),
+      ];
+      app.locals.draftStoreClient = mockDraftClaim(claim);
+      (getClaimById as jest.Mock).mockResolvedValueOnce(claim);
+
+      await request(app)
+        .post(APPLICATION_TYPE_URL + `?linkFrom=${LinKFromValues.addAnotherApp}`)
+        .send({option: ApplicationTypeOption.ADJOURN_HEARING})
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.headers.location).toContain('/general-application/order-judge?index=1');
+        });
+
+      expect(claim.generalApplication.applicationTypes).toHaveLength(2);
+      expect(claim.generalApplication.applicationTypes[1].option).toEqual(ApplicationTypeOption.ADJOURN_HEARING);
+    });
+
     it('should return errors on no input', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       (getClaimById as jest.Mock).mockResolvedValueOnce(new Claim());
@@ -169,7 +229,7 @@ describe('General Application - Application type', () => {
 
       claim = new Claim();
       await request(app)
-        .post(APPLICATION_TYPE_URL)
+        .post(APPLICATION_TYPE_URL + `?linkFrom=${LinKFromValues.addAnotherApp}`)
         .send({option: applicationType})
         .expect((res) => {
           expect(res.status).toBe(200);
