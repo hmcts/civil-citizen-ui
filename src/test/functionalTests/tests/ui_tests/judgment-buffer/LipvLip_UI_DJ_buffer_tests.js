@@ -16,7 +16,7 @@ let claimRef, caseData, claimNumber;
 
 Feature('Create Lip v Lip claim - Default Judgment (Judgment Requested state)').tag('@ui-judgment-buffer');
 
-Scenario('Judgment Requested buffer notifications after a CCJ is requested - DTSCCI-5096 AC1-AC5 (English + Welsh)', async ({I, api}) => {
+Scenario('Judgment Requested buffer notifications after a CCJ is requested - DTSCCI-5096 AC1-AC5 (English + Welsh) @debug ', async ({I, api}) => {
   if (!(await checkToggleEnabled('judgment-buffer'))) return;
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
