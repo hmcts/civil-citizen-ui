@@ -5,7 +5,7 @@ import request from 'supertest';
 import {ORDER_JUDGE_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
-import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
+import {mockCivilClaimWithApplicationType, mockRedisFailure} from '../../../../../utils/mockDraftStore';
 import {isGaForLipsEnabled} from 'app/auth/launchdarkly/launchDarklyClient';
 
 jest.mock('../../../../../../main/modules/oidc');
@@ -31,7 +31,7 @@ describe('General Application - Application type', () => {
 
   describe('on GET', () => {
     it('should return page', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      app.locals.draftStoreClient = mockCivilClaimWithApplicationType;
 
       await request(app)
         .get(ORDER_JUDGE_URL)
@@ -54,7 +54,7 @@ describe('General Application - Application type', () => {
 
   describe('on POST', () => {
     it('should send the value and redirect', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      app.locals.draftStoreClient = mockCivilClaimWithApplicationType;
       await request(app)
         .post(ORDER_JUDGE_URL)
         .type('form').send({text: 'test'})
@@ -64,7 +64,7 @@ describe('General Application - Application type', () => {
     });
 
     it('should return errors on empty textarea', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      app.locals.draftStoreClient = mockCivilClaimWithApplicationType;
       await request(app)
         .post(ORDER_JUDGE_URL)
         .type('form').send({text: ''})

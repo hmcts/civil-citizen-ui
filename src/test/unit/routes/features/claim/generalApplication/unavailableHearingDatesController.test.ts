@@ -5,7 +5,7 @@ import request from 'supertest';
 import {GA_UNAVAILABLE_HEARING_DATES_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
-import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
+import {mockCivilClaimWithApplicationType, mockRedisFailure} from '../../../../../utils/mockDraftStore';
 import { isGaForLipsEnabled } from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {UnavailableDateType} from 'models/directionsQuestionnaire/hearing/unavailableDates';
 import {CURRENT_DAY, CURRENT_MONTH, CURRENT_YEAR} from '../../../../../utils/dateUtils';
@@ -40,7 +40,7 @@ describe('General Application - Unavailable hearing dates', () => {
 
   describe('on GET', () => {
     it('should return page', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      app.locals.draftStoreClient = mockCivilClaimWithApplicationType;
 
       await request(app)
         .get(GA_UNAVAILABLE_HEARING_DATES_URL)
@@ -69,7 +69,7 @@ describe('General Application - Unavailable hearing dates', () => {
             {'day': CURRENT_DAY.toString(), 'month': CURRENT_MONTH.toString(), 'year': CURRENT_YEAR.toString()})],
         );
       });
-      app.locals.draftStoreClient = mockCivilClaim;
+      app.locals.draftStoreClient = mockCivilClaimWithApplicationType;
       await request(app)
         .post(GA_UNAVAILABLE_HEARING_DATES_URL)
         .send()
@@ -85,7 +85,7 @@ describe('General Application - Unavailable hearing dates', () => {
             {'month': CURRENT_MONTH.toString(), 'year': CURRENT_YEAR.toString()})],
         );
       });
-      app.locals.draftStoreClient = mockCivilClaim;
+      app.locals.draftStoreClient = mockCivilClaimWithApplicationType;
       await request(app)
         .post(GA_UNAVAILABLE_HEARING_DATES_URL)
         .send()
@@ -103,7 +103,7 @@ describe('General Application - Unavailable hearing dates', () => {
       getUnavailableDatesHearingFormMock.mockImplementation(() => {
         return unavailableDates;
       });
-      app.locals.draftStoreClient = mockCivilClaim;
+      app.locals.draftStoreClient = mockCivilClaimWithApplicationType;
       await request(app)
         .post(GA_UNAVAILABLE_HEARING_DATES_URL)
         .send()
@@ -121,7 +121,7 @@ describe('General Application - Unavailable hearing dates', () => {
       getUnavailableDatesHearingFormMock.mockImplementation(() => {
         return unavailableDates;
       });
-      app.locals.draftStoreClient = mockCivilClaim;
+      app.locals.draftStoreClient = mockCivilClaimWithApplicationType;
       await request(app)
         .post(GA_UNAVAILABLE_HEARING_DATES_URL)
         .send({action: 'add_another-unavailableDates'})
@@ -140,7 +140,7 @@ describe('General Application - Unavailable hearing dates', () => {
       getUnavailableDatesHearingFormMock.mockImplementation(() => {
         return unavailableDates;
       });
-      app.locals.draftStoreClient = mockCivilClaim;
+      app.locals.draftStoreClient = mockCivilClaimWithApplicationType;
       await request(app)
         .post(GA_UNAVAILABLE_HEARING_DATES_URL)
         .send({action: 'remove-unavailableDates0'})
