@@ -202,8 +202,20 @@ def checkForRunAllFunctionalTests(branch_name) {
   return new GithubAPI(this).getLabelsbyPattern(branch_name, "runAllFunctionalTests").contains("runAllFunctionalTests")
 }
 
+def checkForForceFunctionalAllureFailure(branch_name) {
+  return new GithubAPI(this)
+    .getLabelsbyPattern(branch_name, "pr-values:force-functional-allure-failure")
+    .contains("pr-values:force-functional-allure-failure")
+}
+
 def generateAllureReport(String resultsDir, String reportDir, String reportLabel) {
   try {
+    if (reportLabel == 'functional' && (
+      env.FUNCTIONAL_DIAGNOSTICS_FORCE_ALLURE_FAILURE == 'true'
+        || (env.BRANCH_NAME && checkForForceFunctionalAllureFailure(env.BRANCH_NAME))
+    )) {
+      error 'DTSCCI-5976 controlled functional Allure generation failure'
+    }
     sh "npx allure generate ${resultsDir} --clean -o ${reportDir}"
   } catch (Exception error) {
     echo "Failed to generate ${reportLabel} Allure report. Continuing with diagnostic publication. Error: ${error.toString()}"
