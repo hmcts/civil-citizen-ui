@@ -7,16 +7,18 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import { GA_UPLOAD_N245_FORM_URL} from 'routes/urls';
 import {AppRequest} from 'models/AppRequest';
 import {applicationTypeErrorUrl} from 'routes/guards/generalApplication/applicationTypeGuard';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 export const claimApplicationCostGuard = async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const claim = await getClaimById(req.params.id, req, true);
+    const claimId = getRouteParam(req, 'id');
+    const claim = await getClaimById(claimId, req, true);
     const applicationIndex = queryParamNumber(req, 'index');
     const applicationType = getByIndexOrLast(claim.generalApplication?.applicationTypes, applicationIndex)?.option;
     if (!applicationType) {
-      res.redirect(applicationTypeErrorUrl(req.params.id));
+      res.redirect(applicationTypeErrorUrl(claimId));
     } else if (!claim.isClaimant() && applicationType === ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT) {
-      res.redirect(constructResponseUrlWithIdParams(req.params.id, GA_UPLOAD_N245_FORM_URL));
+      res.redirect(constructResponseUrlWithIdParams(claimId, GA_UPLOAD_N245_FORM_URL));
     } else {
       next();
     }
