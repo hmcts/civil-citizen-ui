@@ -3,9 +3,15 @@ import {app} from '../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
 import {LIFT_BREATHING_SPACE_EXIT_URL, LIFT_BREATHING_SPACE_URL, DASHBOARD_URL} from '../../../../../main/routes/urls';
+import {getClaimById} from '../../../../../main/modules/utilityService';
+import {Claim} from '../../../../../main/common/models/claim';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
+jest.mock('../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('../../../../../main/modules/utilityService');
+
+const mockGetClaimById = getClaimById as jest.Mock;
 
 describe('Lift Breathing Space Exit Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -55,6 +61,10 @@ describe('Lift Breathing Space Exit Controller', () => {
     });
 
     it('should redirect to dashboard when option is yes', async () => {
+      const claim = new Claim();
+      claim.breathingSpace = {liftBreathing: {expectedEnd: '2026-01-01'}, enterBreathing: {type: 'STANDARD'}};
+      mockGetClaimById.mockResolvedValue(claim);
+
       await request(app)
         .post(LIFT_BREATHING_SPACE_EXIT_URL.replace(':id', '123'))
         .send({option: 'yes'})
