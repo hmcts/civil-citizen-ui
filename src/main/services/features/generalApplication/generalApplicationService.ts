@@ -82,9 +82,14 @@ export const saveApplicationType = async (claimId: string, claim: Claim, applica
   try {
     assertValidApplicationTypes([applicationType]);
     claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
+    const previousApplicationType = getByIndex(claim.generalApplication?.applicationTypes, index)?.option;
+    const hasChangedExistingApplicationType = !!previousApplicationType && previousApplicationType !== applicationType.option;
     updateByIndexOrAppend(claim.generalApplication?.applicationTypes, applicationType, index);
     assertValidApplicationTypes(claim.generalApplication?.applicationTypes);
     resetClaimDataByApplicationType(claim, applicationType);
+    if (hasChangedExistingApplicationType) {
+      resetClaimDataForChangedApplicationType(claim, index);
+    }
     await saveDraftClaim(claimId, claim);
   } catch (error) {
     logger.error(error);
@@ -638,6 +643,30 @@ export const resetClaimDataByApplicationType = (claim: Claim, applicationType: A
 
   if (option !== ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT) {
     delete generalApplication['uploadN245Form'];
+  }
+};
+
+const resetClaimDataForChangedApplicationType = (claim: Claim, index?: number): void => {
+  const generalApplication = claim.generalApplication;
+
+  delete generalApplication['agreementFromOtherParty'];
+  delete generalApplication['informOtherParties'];
+  delete generalApplication['applicationCosts'];
+  delete generalApplication['applicationFee'];
+  delete generalApplication['applicationFeePaymentDetails'];
+  delete generalApplication['statementOfTruth'];
+  delete generalApplication['uploadN245Form'];
+
+  if (index !== undefined && index >= 0) {
+    if (generalApplication.orderJudges?.length > index) {
+      generalApplication.orderJudges[index] = new OrderJudge();
+    }
+    if (generalApplication.requestingReasons?.length > index) {
+      generalApplication.requestingReasons[index] = new RequestingReason();
+    }
+  } else {
+    delete generalApplication['orderJudges'];
+    delete generalApplication['requestingReasons'];
   }
 };
 

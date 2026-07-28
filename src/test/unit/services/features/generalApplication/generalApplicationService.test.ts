@@ -172,6 +172,36 @@ describe('General Application service', () => {
       //Then
       expect(spy).toBeCalled();
     });
+    it('should reset dependent answers when an existing application type is changed', async () => {
+      //Given
+      const mockSaveClaim = draftStoreService.saveDraftClaim as jest.Mock;
+      mockSaveClaim.mockResolvedValue(undefined);
+      const claim = new Claim();
+      claim.generalApplication = new GeneralApplication();
+      claim.generalApplication.applicationTypes = [new ApplicationType(ApplicationTypeOption.EXTEND_TIME)];
+      claim.generalApplication.agreementFromOtherParty = YesNo.YES;
+      claim.generalApplication.informOtherParties = new InformOtherParties(YesNo.YES);
+      claim.generalApplication.applicationCosts = YesNo.YES;
+      claim.generalApplication.applicationFee = {
+        calculatedAmountInPence: 5000,
+        code: '123',
+        version: 1,
+      };
+      claim.generalApplication.statementOfTruth = {signed: true, name: 'Applicant'};
+      claim.generalApplication.orderJudges = [new OrderJudge('old order')];
+      claim.generalApplication.requestingReasons = [new RequestingReason('old reason')];
+      //When
+      await saveApplicationType('123', claim, new ApplicationType(ApplicationTypeOption.ADJOURN_HEARING), 0);
+      //Then
+      expect(claim.generalApplication.applicationTypes[0].option).toEqual(ApplicationTypeOption.ADJOURN_HEARING);
+      expect(claim.generalApplication.agreementFromOtherParty).toBeUndefined();
+      expect(claim.generalApplication.informOtherParties).toBeUndefined();
+      expect(claim.generalApplication.applicationCosts).toBeUndefined();
+      expect(claim.generalApplication.applicationFee).toBeUndefined();
+      expect(claim.generalApplication.statementOfTruth).toBeUndefined();
+      expect(claim.generalApplication.orderJudges[0].text).toBeUndefined();
+      expect(claim.generalApplication.requestingReasons[0].text).toBeUndefined();
+    });
     it('should not save UI-only OTHER_OPTION as an application type', async () => {
       //Given
       const mockSaveClaim = draftStoreService.saveDraftClaim as jest.Mock;

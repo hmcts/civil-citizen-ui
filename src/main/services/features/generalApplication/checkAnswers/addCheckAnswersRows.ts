@@ -45,7 +45,7 @@ export const addApplicationTypeRow = (
     const applicationType = claim.generalApplication.applicationTypes[appTypeIndex];
     const applicationTypeDisplay =
       getApplicationTypeOptionByTypeAndDescription(applicationType.option, ApplicationTypeOptionSelection.BY_APPLICATION_TYPE);
-    const href = `${constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL)}?index=${appTypeIndex}`;
+    const href = `${constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL)}?changeScreen=true&index=${appTypeIndex}`;
     rows.push(summaryRow(
       t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.APPLICATION_TYPE', {lng}),
       t(applicationTypeDisplay, {lng}),

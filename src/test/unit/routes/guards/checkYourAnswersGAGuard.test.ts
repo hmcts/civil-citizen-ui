@@ -8,7 +8,7 @@ import {OrderJudge} from 'common/models/generalApplication/orderJudge';
 import {RequestingReason} from 'common/models/generalApplication/requestingReason';
 import {NextFunction, Request, Response} from 'express';
 import {checkYourAnswersGAGuard} from 'routes/guards/checkYourAnswersGAGuard';
-import {APPLICATION_TYPE_URL} from 'routes/urls';
+import {APPLICATION_TYPE_URL, GA_AGREEMENT_FROM_OTHER_PARTY_URL, ORDER_JUDGE_URL} from 'routes/urls';
 import {
   UnavailableDatePeriodGaHearing,
   UnavailableDatesGaHearing,
@@ -25,14 +25,16 @@ import {ClaimFeeData} from 'models/civilClaimResponse';
 import {ClaimBilingualLanguagePreference} from 'models/claimBilingualLanguagePreference';
 import {CCDRespondentResponseLanguage} from 'models/ccdResponse/ccdRespondentLiPResponse';
 import {applicationTypeErrorUrl} from 'routes/guards/generalApplication/applicationTypeGuard';
+import {isGaForWelshEnabled} from 'app/auth/launchdarkly/launchDarklyClient';
 
 jest.mock('../../../../main/modules/draft-store');
 jest.mock('../../../../main/modules/oidc');
 jest.mock('../../../../main/modules/draft-store/draftStoreService');
+jest.mock('../../../../main/app/auth/launchdarkly/launchDarklyClient');
 
 const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
-const MOCK_REQUEST = { params: { id: '123' } } as unknown as Request;
+const MOCK_REQUEST = { params: { id: '123' }, url: '/case/123/general-application/check-and-send' } as unknown as Request;
 const MOCK_RESPONSE = { redirect: jest.fn() } as unknown as Response;
 const MOCK_NEXT = jest.fn() as NextFunction;
 jest.mock('../../../../main/services/features/generalApplication/generalApplicationService.ts', ()=> ({
@@ -40,6 +42,10 @@ jest.mock('../../../../main/services/features/generalApplication/generalApplicat
 }));
 
 describe('Check your Answers GA Guard', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+    (isGaForWelshEnabled as jest.Mock).mockResolvedValue(false);
+  });
 
   it('should call next if GA journey is complete', async () => {
     //Given
@@ -113,6 +119,8 @@ describe('Check your Answers GA Guard', () => {
       new UploadGAFiles(n245Form),
       new GenericYesNo(YesNo.NO, 'no'),
       mockClaimFee,
+      undefined,
+      YesNo.YES,
     );
     mockGetCaseData.mockImplementation(async () => claim);
     //When
@@ -150,6 +158,8 @@ describe('Check your Answers GA Guard', () => {
       new UploadGAFiles(),
       new GenericYesNo(YesNo.YES),
       mockClaimFee,
+      undefined,
+      YesNo.YES,
     );
     mockGetCaseData.mockImplementation(async () => claim);
     //When
@@ -185,6 +195,8 @@ describe('Check your Answers GA Guard', () => {
       new UploadGAFiles(),
       new GenericYesNo(YesNo.YES),
       mockClaimFee,
+      undefined,
+      YesNo.YES,
     );
     mockGetCaseData.mockImplementation(async () => claim);
     //When
@@ -221,8 +233,12 @@ describe('Check your Answers GA Guard', () => {
       new UploadGAFiles(),
       new GenericYesNo(YesNo.YES),
       mockClaimFee,
+      undefined,
+      YesNo.YES,
     );
     claim.generalApplication.applicationTypes = [new ApplicationType(ApplicationTypeOption.STAY_THE_CLAIM), new ApplicationType(ApplicationTypeOption.STRIKE_OUT)];
+    claim.generalApplication.orderJudges = [new OrderJudge('test'), new OrderJudge('test 2')];
+    claim.generalApplication.requestingReasons = [new RequestingReason('test'), new RequestingReason('test 2')];
     mockGetCaseData.mockImplementation(async () => claim);
     //When
     await checkYourAnswersGAGuard(MOCK_REQUEST, MOCK_RESPONSE, MOCK_NEXT);
@@ -258,6 +274,8 @@ describe('Check your Answers GA Guard', () => {
       new UploadGAFiles(),
       new GenericYesNo(YesNo.YES),
       mockClaimFee,
+      undefined,
+      YesNo.YES,
     );
     claim.generalApplication.applicationTypes = [new ApplicationType(ApplicationTypeOption.SUMMARY_JUDGEMENT)];
     mockGetCaseData.mockImplementation(async () => claim);
@@ -283,6 +301,60 @@ describe('Check your Answers GA Guard', () => {
     await checkYourAnswersGAGuard(MOCK_REQUEST, MOCK_RESPONSE, MOCK_NEXT);
     //Then
     expect(MOCK_RESPONSE.redirect).toHaveBeenCalledWith(APPLICATION_TYPE_URL.replace(':id', '123') + '?index=2');
+    expect(MOCK_NEXT).not.toHaveBeenCalled();
+  });
+
+  it('should redirect to agreement from other party if CYA is revisited after application type changed', async () => {
+    //Given
+    const claim = new Claim();
+    claim.generalApplication = new GeneralApplication();
+    claim.generalApplication.applicationTypes = [new ApplicationType(ApplicationTypeOption.ADJOURN_HEARING)];
+    mockGetCaseData.mockImplementation(async () => claim);
+    //When
+    await checkYourAnswersGAGuard(MOCK_REQUEST, MOCK_RESPONSE, MOCK_NEXT);
+    //Then
+    expect(MOCK_RESPONSE.redirect).toHaveBeenCalledWith(GA_AGREEMENT_FROM_OTHER_PARTY_URL.replace(':id', '123'));
+    expect(MOCK_NEXT).not.toHaveBeenCalled();
+  });
+
+  it('should redirect to the changed application order screen when a multi-application CYA is missing indexed details', async () => {
+    //Given
+    const unavailableDates =
+      new UnavailableDatePeriodGaHearing(UnavailableDateType.SINGLE_DATE,
+        {'day': CURRENT_DAY.toString(), 'month': CURRENT_MONTH.toString(), 'year': CURRENT_YEAR.toString()});
+    const mockClaimFee: ClaimFeeData = {
+      calculatedAmountInPence: 5000,
+      code: '123',
+      version: 1,
+    };
+    const claim = new Claim();
+    claim.generalApplication = new GeneralApplication(
+      null,
+      YesNo.YES,
+      YesNo.YES,
+      undefined,
+      undefined,
+      new UnavailableDatesGaHearing([unavailableDates]),
+      new HearingArrangement(HearingTypeOptions.PERSON_AT_COURT, 'test'),
+      new HearingContactDetails('test', 'test'),
+      new UploadGAFiles(),
+      new StatementOfTruthForm(false, ''),
+      new GaHelpWithFees(),
+      YesNo.NO,
+      new UploadGAFiles(),
+      new GenericYesNo(YesNo.YES),
+      mockClaimFee,
+      undefined,
+      YesNo.YES,
+    );
+    claim.generalApplication.applicationTypes = [new ApplicationType(ApplicationTypeOption.STAY_THE_CLAIM), new ApplicationType(ApplicationTypeOption.STRIKE_OUT)];
+    claim.generalApplication.orderJudges = [new OrderJudge('test'), new OrderJudge()];
+    claim.generalApplication.requestingReasons = [new RequestingReason('test'), new RequestingReason('test 2')];
+    mockGetCaseData.mockImplementation(async () => claim);
+    //When
+    await checkYourAnswersGAGuard(MOCK_REQUEST, MOCK_RESPONSE, MOCK_NEXT);
+    //Then
+    expect(MOCK_RESPONSE.redirect).toHaveBeenCalledWith(ORDER_JUDGE_URL.replace(':id', '123') + '?index=1');
     expect(MOCK_NEXT).not.toHaveBeenCalled();
   });
 
@@ -325,6 +397,7 @@ describe('Check your Answers GA Guard', () => {
     //Given
     const claim = new Claim();
     claim.claimantBilingualLanguagePreference = ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH;
+    jest.spyOn(claim, 'isAnyPartyBilingual').mockReturnValue(true);
     claim.generalApplications = [
       {
         'id': 'test',
