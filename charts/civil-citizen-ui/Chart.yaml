@@ -3,7 +3,7 @@ appVersion: "1.1"
 description: Helm chart for the HMCTS Civil Citizen Frontend service
 name: civil-citizen-ui
 home: https://github.com/hmcts/civil-citizen-ui
-version: 0.2.4
+version: 0.2.5
 maintainers:
   - name: HMCTS Civil Citizen Ui team
 
@@ -11,6 +11,11 @@ dependencies:
   - name: nodejs
     version: 3.2.0
     repository: 'oci://hmctsprod.azurecr.io/helm'
+
+  - name: wiremock
+    version: 0.0.7
+    repository: 'oci://hmctsprod.azurecr.io/helm'
+    condition: wiremock.enabled
 
   - name: civil-service
     version: '*'
