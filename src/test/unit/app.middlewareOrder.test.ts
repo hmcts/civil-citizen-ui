@@ -16,8 +16,8 @@ jest.mock('ioredis', () => {
     del: jest.fn(async (key: string) => {
       delete redisData[key];
     }),
-    expire: jest.fn(async () => undefined),
-    on: jest.fn(async () => undefined),
+    expire: jest.fn(async (): Promise<void> => undefined),
+    on: jest.fn(async (): Promise<void> => undefined),
     ttl: jest.fn(() => Promise.resolve({})),
     expireat: jest.fn(() => Promise.resolve({})),
   }));
