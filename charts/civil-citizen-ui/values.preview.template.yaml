@@ -161,6 +161,7 @@ civil-service:
       RELEASE_REVISION: "{{ .Release.Revision }}"
       GA_S2S_AUTHORISED_SERVICES: payment_app,ccd_data,civil_service
       OTHER_REMEDY_ENABLED: true
+      SCHEDULER_ENABLED_JUDGEMENT_BUFFER: true
       CMC_DB_HOST: civil-preview.postgres.database.azure.com
       CMC_DB_CONNECTION_OPTIONS: "?stringtype=unspecified&reWriteBatchedInserts=true&sslmode=require"
       CMC_DB_USERNAME: hmcts
