@@ -52,6 +52,7 @@ jest.mock('services/features/generalApplication/generalApplicationService', () =
   saveApplicationType: jest.fn().mockResolvedValue(undefined),
   validateAdditionalApplicationType: jest.fn(),
   validateAdditionalApplicationtType: jest.fn(),
+  addChangeScreenToUrlIfPresent: jest.fn((url: string) => url),
   getDynamicHeaderForMultipleApplications: jest.fn(() => 'Application 1'),
   saveRespondentAgreement: jest.fn().mockResolvedValue(undefined),
 }));
