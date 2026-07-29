@@ -10,15 +10,23 @@ const claimantBodyHtml = (claim: Claim, liftUrl: string, lng: string): string =>
   const contentKey = isMentalHealth
     ? 'PAGES.DASHBOARD.NOTIFICATIONS.BREATHING_SPACE.CLAIMANT_CONTENT_MENTAL_HEALTH'
     : 'PAGES.DASHBOARD.NOTIFICATIONS.BREATHING_SPACE.CLAIMANT_CONTENT_STANDARD';
-  const liftKey = isMentalHealth
+  const liftSentenceKey = isMentalHealth
     ? 'PAGES.DASHBOARD.NOTIFICATIONS.BREATHING_SPACE.LIFT_MENTAL_HEALTH'
     : 'PAGES.DASHBOARD.NOTIFICATIONS.BREATHING_SPACE.LIFT_STANDARD';
+  const liftLinkTextKey = isMentalHealth
+    ? 'PAGES.DASHBOARD.NOTIFICATIONS.BREATHING_SPACE.LIFT_LINK_TEXT'
+    : 'PAGES.DASHBOARD.NOTIFICATIONS.BREATHING_SPACE.LIFT_LINK_TEXT_STANDARD';
+  const liftLink = `<a class="govuk-link" href="${liftUrl}">${t(liftLinkTextKey, {lng})}</a>`;
 
   let html = `<p class="govuk-body">${t(contentKey, {lng})}</p>`;
   if (!isMentalHealth) {
     html += `<p class="govuk-body">${t('PAGES.DASHBOARD.NOTIFICATIONS.BREATHING_SPACE.USUALLY_LASTS', {lng})}</p>`;
   }
-  html += `<p class="govuk-body"><a class="govuk-link" href="${liftUrl}">${t(liftKey, {lng})}</a></p>`;
+  html += `<p class="govuk-body">${t(liftSentenceKey, {
+    lng,
+    liftLink,
+    interpolation: {escapeValue: false},
+  })}</p>`;
   return html;
 };
 

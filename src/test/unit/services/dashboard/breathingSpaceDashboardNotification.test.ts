@@ -7,7 +7,12 @@ import {
 } from 'services/dashboard/breathingSpaceDashboardNotification';
 
 jest.mock('i18next', () => ({
-  t: (key: string) => key,
+  t: (key: string, options?: {liftLink?: string}) => {
+    if (options?.liftLink) {
+      return `${key} ${options.liftLink}`;
+    }
+    return key;
+  },
 }));
 
 describe('breathingSpaceDashboardNotification', () => {
@@ -40,7 +45,11 @@ describe('breathingSpaceDashboardNotification', () => {
     expect(notification.descriptionEn).toContain(
       'PAGES.DASHBOARD.NOTIFICATIONS.BREATHING_SPACE.LIFT_STANDARD',
     );
+    expect(notification.descriptionEn).toContain(
+      'PAGES.DASHBOARD.NOTIFICATIONS.BREATHING_SPACE.LIFT_LINK_TEXT_STANDARD',
+    );
     expect(notification.descriptionEn).toContain(`href="${liftUrl}"`);
+    expect(notification.descriptionEn).toContain('<a class="govuk-link"');
     expect(notification.descriptionEn).not.toContain(
       'PAGES.DASHBOARD.NOTIFICATIONS.BREATHING_SPACE.CLAIMANT_CONTENT_MENTAL_HEALTH',
     );
@@ -59,9 +68,13 @@ describe('breathingSpaceDashboardNotification', () => {
     expect(notification.descriptionEn).toContain(
       'PAGES.DASHBOARD.NOTIFICATIONS.BREATHING_SPACE.LIFT_MENTAL_HEALTH',
     );
+    expect(notification.descriptionEn).toContain(
+      'PAGES.DASHBOARD.NOTIFICATIONS.BREATHING_SPACE.LIFT_LINK_TEXT',
+    );
     expect(notification.descriptionEn).not.toContain(
       'PAGES.DASHBOARD.NOTIFICATIONS.BREATHING_SPACE.USUALLY_LASTS',
     );
     expect(notification.descriptionEn).toContain(`href="${liftUrl}"`);
+    expect(notification.descriptionEn).toContain('<a class="govuk-link"');
   });
 });

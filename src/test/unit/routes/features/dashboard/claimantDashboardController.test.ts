@@ -814,7 +814,8 @@ describe('claimant Dashboard Controller', () => {
         expect(res.text).toContain(t('PAGES.DASHBOARD.NOTIFICATIONS.BREATHING_SPACE.TITLE'));
         expect(res.text).toContain(t('PAGES.DASHBOARD.NOTIFICATIONS.BREATHING_SPACE.CLAIMANT_CONTENT_STANDARD'));
         expect(res.text).toContain(t('PAGES.DASHBOARD.NOTIFICATIONS.BREATHING_SPACE.USUALLY_LASTS'));
-        expect(res.text).toContain(t('PAGES.DASHBOARD.NOTIFICATIONS.BREATHING_SPACE.LIFT_STANDARD'));
+        expect(res.text).toContain(t('PAGES.DASHBOARD.NOTIFICATIONS.BREATHING_SPACE.LIFT_LINK_TEXT_STANDARD'));
+        expect(res.text).toContain('when you know when it will end.');
         expect(res.text).toContain(constructResponseUrlWithIdParams(':id', BREATHING_SPACE_LIFT_URL));
         expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.LIFT_DEBT_RESPITE'));
         expect(res.text).not.toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.GET_DEBT_RESPITE'));
@@ -831,7 +832,8 @@ describe('claimant Dashboard Controller', () => {
       await request(app).get(DASHBOARD_CLAIMANT_URL).expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain(t('PAGES.DASHBOARD.NOTIFICATIONS.BREATHING_SPACE.CLAIMANT_CONTENT_MENTAL_HEALTH'));
-        expect(res.text).toContain(t('PAGES.DASHBOARD.NOTIFICATIONS.BREATHING_SPACE.LIFT_MENTAL_HEALTH'));
+        expect(res.text).toContain(t('PAGES.DASHBOARD.NOTIFICATIONS.BREATHING_SPACE.LIFT_LINK_TEXT'));
+        expect(res.text).toContain('This will remain in place until you');
         expect(res.text).not.toContain(t('PAGES.DASHBOARD.NOTIFICATIONS.BREATHING_SPACE.USUALLY_LASTS'));
         expect(res.text).toContain(constructResponseUrlWithIdParams(':id', BREATHING_SPACE_LIFT_URL));
         expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.LIFT_DEBT_RESPITE'));
