@@ -1,17 +1,6 @@
 #!/bin/bash
 set -e
 
-if [ "${REDUCED_STACK_TESTS:-false}" = "true" ]; then
-  echo "Running the WireMock-backed functional journey against Jenkins preview"
-  # Jenkins may allocate a different VM for this stage than for the smoke
-  # stage, so install the browser on the agent that will actually launch it.
-  yarn playwright install chromium
-  export FUNCTIONAL=true
-  yarn test:mocked-functional:browser || browser_status=$?
-  ./bin/assert-preview-wiremock.sh || wiremock_status=$?
-  exit "${browser_status:-${wiremock_status:-0}}"
-fi
-
 compare_ft_groups() {
   local ft_groups_csv pr_ft_groups_csv
 
@@ -155,9 +144,30 @@ run_failed_not_executed_functional_tests() {
   run_functional_tests
 }
 
+run_reduced_stack_functional_tests() {
+  echo "Running the WireMock-backed functional journey against Jenkins preview"
+  # Jenkins may allocate a different VM for this stage than for the smoke
+  # stage, so install the browser on the agent that will actually launch it.
+  yarn playwright install chromium
+  export FUNCTIONAL=true
+
+  if [ -n "$PR_FT_GROUPS" ]; then
+    run_functional_test_groups || browser_status=$?
+  else
+    yarn test:mocked-functional:browser || browser_status=$?
+  fi
+
+  ./bin/assert-preview-wiremock.sh || wiremock_status=$?
+  exit "${browser_status:-${wiremock_status:-0}}"
+}
+
 #MAIN SCRIPT
 TEST_FILES_REPORT="test-results/functional/testFilesReport.json"
 PREV_TEST_FILES_REPORT="test-results/functional/prevTestFilesReport.json"
+
+if [ "${REDUCED_STACK_TESTS:-false}" = "true" ]; then
+  run_reduced_stack_functional_tests
+fi
 
 # Check if SKIP_FUNCTIONAL_TESTS is set to true
 if [ "$SKIP_FUNCTIONAL_TESTS" = "true" ]; then

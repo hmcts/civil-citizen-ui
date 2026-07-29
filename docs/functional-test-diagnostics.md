@@ -82,7 +82,7 @@ collecting Stage 3 evidence:
 | Browser assertion failure | `pr_ft_ui-diagnostics-assertion` |
 | Element/selector timeout | `pr_ft_ui-diagnostics-selector-timeout` |
 | CUI HTTP 500 signal | `pr_ft_ui-diagnostics-http-500` |
-| Unmatched WireMock request | `pr_ft_ui-diagnostics-wiremock-unmatched` |
+| Unmatched WireMock request | `pr-values:reducedStack` plus `pr_ft_ui-diagnostics-wiremock-unmatched` |
 | Browser crash/infrastructure signal | `pr_ft_ui-diagnostics-browser-crash` |
 | Allure failure after primary test failure | `pr-values:force-functional-allure-failure` plus one failing diagnostics label |
 
