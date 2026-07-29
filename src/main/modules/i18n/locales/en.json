@@ -2624,8 +2624,13 @@
       "NEXT_STEPS": "Next steps",
       "NOTIFICATIONS": {
         "BREATHING_SPACE": {
+          "CLAIMANT_CONTENT_MENTAL_HEALTH": "Case is in mental health crisis breathing space",
+          "CLAIMANT_CONTENT_STANDARD": "Case is in standard breathing space.",
           "DEFENDANT_CONTENT": "Case is in breathing space",
-          "TITLE": "Important"
+          "LIFT_MENTAL_HEALTH": "This will remain in place until you lift breathing space",
+          "LIFT_STANDARD": "Lift breathing space when you know when it will end.",
+          "TITLE": "Important",
+          "USUALLY_LASTS": "Breathing space usually lasts for 60 days."
         },
         "HEARINGS": {
           "PAY_FEE": "of £{{ feeAmount }} by {{ hearingDueDate }}. If you do not do this, your claim may be struck out.",
@@ -2765,6 +2770,7 @@
         "FIND_MEDIATION": "Find out about mediation",
         "FIND_LEGAL_ADVICE": "Find legal advice",
         "GET_DEBT_RESPITE": "Inform the court of a breathing space debt respite",
+        "LIFT_DEBT_RESPITE": "Lift breathing space debt respite",
         "HELP_SUPPORT": "Help and support",
         "HELP_FEES": "Help with fees",
         "I_WANT_TO": "I want to...",
