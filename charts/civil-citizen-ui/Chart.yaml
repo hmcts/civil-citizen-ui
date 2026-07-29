@@ -12,6 +12,11 @@ dependencies:
     version: 3.2.0
     repository: 'oci://hmctsprod.azurecr.io/helm'
 
+  - name: wiremock
+    version: 0.0.7
+    repository: 'oci://hmctsprod.azurecr.io/helm'
+    condition: wiremock.enabled
+
   - name: civil-service
     version: '*'
     repository: 'oci://hmctsprod.azurecr.io/helm'
