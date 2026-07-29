@@ -2,9 +2,15 @@ import {validateSync} from 'class-validator';
 import {
   ApplicationType,
   ApplicationTypeOption,
+  ApplicationTypeOptionSelection,
   assertValidApplicationTypes,
+  getApplicationTypeOptionByDisplayValue,
+  getApplicationTypeOptionByTypeAndDescription,
+  getDuplicateApplicationTypeIndex,
   getOtherApplicationTypeOptions,
   getPersistableApplicationTypeOptions,
+  LinkFromValues,
+  LinKFromValues,
 } from 'models/generalApplication/applicationType';
 
 describe('ApplicationType', () => {
@@ -49,5 +55,28 @@ describe('ApplicationType', () => {
     [[]],
   ])('rejects missing GA application type collection %s', (applicationTypes) => {
     expect(() => assertValidApplicationTypes(applicationTypes)).toThrow('Invalid general application type selected');
+  });
+
+  it('detects and rejects duplicate GA application types', () => {
+    const applicationTypes = [
+      new ApplicationType(ApplicationTypeOption.VARY_ORDER),
+      new ApplicationType(ApplicationTypeOption.EXTEND_TIME),
+      new ApplicationType(ApplicationTypeOption.VARY_ORDER),
+    ];
+
+    expect(getDuplicateApplicationTypeIndex(applicationTypes)).toEqual(2);
+    expect(() => assertValidApplicationTypes(applicationTypes)).toThrow('Invalid general application type selected');
+  });
+
+  it('maps application type display metadata by named fields', () => {
+    expect(getApplicationTypeOptionByTypeAndDescription(
+      ApplicationTypeOption.VARY_ORDER,
+      ApplicationTypeOptionSelection.BY_APPLICATION_DISPLAY_FROM_CCD,
+    )).toEqual('Vary order');
+    expect(getApplicationTypeOptionByDisplayValue('Vary order')).toEqual(ApplicationTypeOption.VARY_ORDER);
+  });
+
+  it('keeps the old linkFrom export as an alias of the corrected name', () => {
+    expect(LinKFromValues).toBe(LinkFromValues);
   });
 });

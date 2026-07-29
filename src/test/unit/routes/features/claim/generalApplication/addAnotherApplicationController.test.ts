@@ -7,7 +7,7 @@ import * as draftService from 'modules/draft-store/draftStoreService';
 import { Claim } from 'common/models/claim';
 import { t } from 'i18next';
 import { GeneralApplication } from 'common/models/generalApplication/GeneralApplication';
-import { ApplicationType, ApplicationTypeOption, LinKFromValues } from 'common/models/generalApplication/applicationType';
+import { ApplicationType, ApplicationTypeOption, LinkFromValues } from 'common/models/generalApplication/applicationType';
 import { TestMessages } from '../../../../../utils/errorMessageTestConstants';
 import { isGaForLipsEnabled } from 'app/auth/launchdarkly/launchDarklyClient';
 
@@ -69,7 +69,7 @@ describe('General Application - add another application', () => {
         .send({ option: 'yes' })
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.headers.location).toContain(`linkFrom=${LinKFromValues.addAnotherApp}&index=1`);
+          expect(res.headers.location).toContain(`linkFrom=${LinkFromValues.addAnotherApp}&index=1`);
         });
     });
 

@@ -30,7 +30,7 @@ import {
   isGaForWelshEnabled,
   isQueryManagementEnabled,
 } from '../../app/auth/launchdarkly/launchDarklyClient';
-import {LinKFromValues} from 'models/generalApplication/applicationType';
+import {LinkFromValues} from 'models/generalApplication/applicationType';
 import {isGaOnline} from 'services/commons/generalApplicationHelper';
 import {CaseState} from 'form/models/claimDetails';
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
@@ -202,7 +202,7 @@ export const getContactCourtLink = async (claimId: string, claim: Claim, isGAFla
     if(!isClaimOffLine.includes(claim.ccdState)){
       return {
         text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_APPLY_COURT', {lng}),
-        url: constructResponseUrlWithIdParams(claimId, QM_START_URL + `?linkFrom=${LinKFromValues.start}`),
+        url: constructResponseUrlWithIdParams(claimId, QM_START_URL + `?linkFrom=${LinkFromValues.start}`),
         removeTargetBlank: true,
       };
     }
@@ -213,7 +213,7 @@ export const getContactCourtLink = async (claimId: string, claim: Claim, isGAFla
     if (isGaOnlineFlag.isGaOnline) {
       return {
         text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT', {lng}),
-        url: constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL + `?linkFrom=${LinKFromValues.start}`),
+        url: constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL + `?linkFrom=${LinkFromValues.start}`),
         removeTargetBlank: true,
       };
     } else { // ga is offline

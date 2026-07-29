@@ -10,22 +10,27 @@ import {
   ApplicationType,
   ApplicationTypeOption,
   isOtherApplicationTypeOption,
-  LinKFromValues,
+  LinkFromValues,
 } from 'common/models/generalApplication/applicationType';
 import {
   deleteGAFromClaimsByUserId,
   getByIndex,
   getCancelUrl,
-  saveApplicationType, validateAdditionalApplicationtType,
+  resolveApplicationTypeIndexForGet,
+  resolveApplicationTypeIndexForPost,
+  saveApplicationType,
+  validateAdditionalApplicationType,
 } from 'services/features/generalApplication/generalApplicationService';
 import { generateRedisKey } from 'modules/draft-store/draftStoreService';
 import { getClaimById } from 'modules/utilityService';
-import { queryParamNumber } from 'common/utils/requestUtils';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {isQueryManagementEnabled} from '../../../app/auth/launchdarkly/launchDarklyClient';
 import {YesNo} from 'form/models/yesNo';
 import {getRouteParam} from 'common/utils/routeParamUtils';
-import {SHOW_APPLICATION_TYPE_ERROR_QUERY_PARAM} from 'routes/guards/generalApplication/applicationTypeGuard';
+import {
+  SHOW_APPLICATION_TYPE_ERROR_QUERY_PARAM,
+  SHOW_DUPLICATE_APPLICATION_TYPE_ERROR_QUERY_PARAM,
+} from 'routes/guards/generalApplication/applicationTypeGuard';
 import {FormValidationError} from 'common/form/validationErrors/formValidationError';
 
 const applicationTypeController = Router();
@@ -39,19 +44,30 @@ applicationTypeController.get(APPLICATION_TYPE_URL, (async (req: AppRequest, res
     const isAmendClaim:boolean = req.query.isAmendClaim === 'true';
     const isAdjournHearing: boolean = req.query.isAdjournHearing === 'true';
 
-    if (linkFrom === LinKFromValues.start) {
+    if (linkFrom === LinkFromValues.start) {
       await deleteGAFromClaimsByUserId(req.session?.user?.id);
     }
 
     const claimId = getRouteParam(req, 'id');
     const claim = await getClaimById(claimId, req, true);
-    const applicationIndex = getApplicationIndexForGet(req, claim);
+    const applicationIndex = resolveApplicationTypeIndexForGet(req, claim);
 
     const applicationTypeOption = getByIndex(claim.generalApplication?.applicationTypes, applicationIndex)?.option;
     const applicationType = new ApplicationType(applicationTypeOption);
     const form = new GenericForm(applicationType);
     if (req.query[SHOW_APPLICATION_TYPE_ERROR_QUERY_PARAM] === 'true') {
       form.validateSync();
+    }
+    if (req.query[SHOW_DUPLICATE_APPLICATION_TYPE_ERROR_QUERY_PARAM] === 'true') {
+      form.errors = form.errors || [];
+      form.errors.push(new FormValidationError({
+        target: applicationType,
+        value: applicationType.option,
+        constraints: {
+          duplicateApplicationError: 'ERRORS.GENERAL_APPLICATION.ADDITIONAL_APPLICATION_DUPLICATE',
+        },
+        property: 'option',
+      }));
     }
     const cancelUrl = await getCancelUrl(claimId, claim);
     const backLinkUrl = BACK_URL;
@@ -81,7 +97,7 @@ applicationTypeController.post(APPLICATION_TYPE_URL, (async (req: AppRequest | R
     const claim = await getClaimById(claimId, req, true);
     let applicationType: ApplicationType;
 
-    let applicationIndex = getApplicationIndexForPost(req, claim);
+    let applicationIndex = resolveApplicationTypeIndexForPost(req, claim);
 
     if (req.body.option === ApplicationTypeOption.OTHER_OPTION) {
       applicationType = new ApplicationType(req.body.optionOther);
@@ -91,9 +107,7 @@ applicationTypeController.post(APPLICATION_TYPE_URL, (async (req: AppRequest | R
     const form = new GenericForm(applicationType);
     form.validateSync();
     validateOtherApplicationTypeBranch(form, applicationType, req.body.option, req.body.optionOther);
-    if (isAddingApplicationType(claim, applicationIndex)) {
-      validateAdditionalApplicationtType(claim,form.errors,applicationType,req.body);
-    }
+    validateAdditionalApplicationType(claim, form.errors, applicationType, req.body, applicationIndex);
     const cancelUrl = await getCancelUrl(claimId, claim);
     const backLinkUrl = BACK_URL;
 
@@ -139,38 +153,6 @@ const validateOtherApplicationTypeBranch = (form: GenericForm<ApplicationType>, 
     },
     property: 'option',
   }));
-};
-
-const getApplicationIndexForGet = (req: AppRequest, claim: Claim): number | undefined => {
-  const applicationIndex = queryParamNumber(req, 'index');
-  if (applicationIndex !== undefined) {
-    return applicationIndex;
-  }
-
-  if (req.query.linkFrom !== LinKFromValues.addAnotherApp && claim.generalApplication?.applicationTypes?.length === 1) {
-    return 0;
-  }
-
-  return undefined;
-};
-
-const getApplicationIndexForPost = (req: AppRequest | Request, claim: Claim): number | undefined => {
-  const applicationIndex = queryParamNumber(req, 'index');
-  if (applicationIndex !== undefined) {
-    return applicationIndex;
-  }
-
-  const applicationTypes = claim.generalApplication?.applicationTypes || [];
-  if (req.query.linkFrom === LinKFromValues.addAnotherApp) {
-    return applicationTypes.length > 1 ? applicationTypes.length - 1 : undefined;
-  }
-
-  return applicationTypes.length === 1 ? 0 : undefined;
-};
-
-const isAddingApplicationType = (claim: Claim, applicationIndex: number | undefined): boolean => {
-  const applicationTypes = claim.generalApplication?.applicationTypes || [];
-  return applicationIndex === undefined || applicationIndex < 0 || applicationIndex >= applicationTypes.length;
 };
 
 const getSavedApplicationIndex = (claim: Claim, applicationIndex: number | undefined): number => {

@@ -6,9 +6,14 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {getRouteParam} from 'common/utils/routeParamUtils';
 
 export const SHOW_APPLICATION_TYPE_ERROR_QUERY_PARAM = 'showApplicationTypeError';
+export const SHOW_DUPLICATE_APPLICATION_TYPE_ERROR_QUERY_PARAM = 'showDuplicateApplicationTypeError';
 
 export const applicationTypeErrorUrl = (claimId: string): string => {
   return `${constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL)}?${SHOW_APPLICATION_TYPE_ERROR_QUERY_PARAM}=true`;
+};
+
+export const duplicateApplicationTypeErrorUrl = (claimId: string, applicationTypeIndex: number): string => {
+  return `${constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL)}?index=${applicationTypeIndex}&${SHOW_DUPLICATE_APPLICATION_TYPE_ERROR_QUERY_PARAM}=true`;
 };
 
 export const applicationTypeGuard = async (req: AppRequest, res: Response, next: NextFunction): Promise<void> => {

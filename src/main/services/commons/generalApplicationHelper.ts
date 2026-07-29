@@ -7,7 +7,7 @@ import {
 } from '../../app/auth/launchdarkly/launchDarklyClient';
 import {APPLICATION_TYPE_URL, GA_SUBMIT_OFFLINE, QM_INFORMATION_URL} from 'routes/urls';
 import {QualifyingQuestionTypeOption, WhatToDoTypeOption} from 'form/models/queryManagement/queryManagement';
-import {LinKFromValues} from 'models/generalApplication/applicationType';
+import {LinkFromValues} from 'models/generalApplication/applicationType';
 
 export class GaInformation {
   isGAWelsh = false;
@@ -61,7 +61,7 @@ export const getGaRedirectionUrl = async (claim: Claim, isAskMoreTime = false, i
   } else if (!isGAInfo.isGaOnline) {
     return QM_INFORMATION_URL.replace(':qmType', WhatToDoTypeOption.CHANGE_CASE).replace(':qmQualifyOption', QualifyingQuestionTypeOption.GA_OFFLINE);
   }
-  const url = APPLICATION_TYPE_URL + `?linkFrom=${LinKFromValues.start}` +
+  const url = APPLICATION_TYPE_URL + `?linkFrom=${LinkFromValues.start}` +
     (isAskMoreTime ? '&isAskMoreTime=true' : '') +
     (isAdjournHearing ? '&isAdjournHearing=true' : '') +
     (isAmendClaim ? '&isAmendClaim=true' : '');

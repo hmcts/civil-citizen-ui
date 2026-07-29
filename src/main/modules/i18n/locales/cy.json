@@ -5997,6 +5997,7 @@
       "ADDITIONAL_APPLICATION_ASK_CANCEL_JUDGMENT": "Ni allwch ddewis \"Gofyn i roi dyfarniad o’r neilltu (ei ddileu)\" fel cais ychwanegol",
       "ADDITIONAL_APPLICATION_ASK_SETTLING": "Ni allwch ddewis \"Gofyn i’r llys wneud gorchymyn i setlo’n hawliad drwy gydsyniad\" fel cais ychwanegol",
       "ADDITIONAL_APPLICATION_ASK_VARY_JUDGMENT": "Ni allwch ddewis \"Gofyn i amrywio dyfarniad\" fel cais ychwanegol",
+      "ADDITIONAL_APPLICATION_DUPLICATE": "Ni allwch ddewis yr un cais fwy nag unwaith",
       "ADDITIONAL_APPLICATION_CCJ_DEBT": "You cannot apply to confirm you've paid a county court (CCJ) debt as there is no active judgment",
       "AGREE_TO_ORDER_NOT_SELECTED": "Mae arnoch angen dweud wrthym os ydych wedi cytuno i'r gorchymyn y gofynnwyd amdano. Dewiswch opsiwn: Ydy neu Nac ydy",
       "APPLICATION_FROM_OTHER_PARTY_EMPTY_OPTION": "Mae arnoch angen dweud wrthym os yw’r partïon eraill wedi cytuno i’r cais hwn. Dewiswch opsiwn: Do neu Naddo",

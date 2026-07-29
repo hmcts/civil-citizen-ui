@@ -24,7 +24,10 @@ import {GenericYesNo} from 'form/models/genericYesNo';
 import {ClaimFeeData} from 'models/civilClaimResponse';
 import {ClaimBilingualLanguagePreference} from 'models/claimBilingualLanguagePreference';
 import {CCDRespondentResponseLanguage} from 'models/ccdResponse/ccdRespondentLiPResponse';
-import {applicationTypeErrorUrl} from 'routes/guards/generalApplication/applicationTypeGuard';
+import {
+  applicationTypeErrorUrl,
+  duplicateApplicationTypeErrorUrl,
+} from 'routes/guards/generalApplication/applicationTypeGuard';
 import {isGaForWelshEnabled} from 'app/auth/launchdarkly/launchDarklyClient';
 
 jest.mock('../../../../main/modules/draft-store');
@@ -301,6 +304,25 @@ describe('Check your Answers GA Guard', () => {
     await checkYourAnswersGAGuard(MOCK_REQUEST, MOCK_RESPONSE, MOCK_NEXT);
     //Then
     expect(MOCK_RESPONSE.redirect).toHaveBeenCalledWith(APPLICATION_TYPE_URL.replace(':id', '123') + '?index=2');
+    expect(MOCK_NEXT).not.toHaveBeenCalled();
+  });
+
+  it('should redirect to duplicate application type error before submitting a multi-application GA', async () => {
+    //Given
+    const claim = new Claim();
+    claim.generalApplication = new GeneralApplication();
+    claim.generalApplication.applicationTypes = [
+      new ApplicationType(ApplicationTypeOption.VARY_ORDER),
+      new ApplicationType(ApplicationTypeOption.EXTEND_TIME),
+      new ApplicationType(ApplicationTypeOption.VARY_ORDER),
+    ];
+    (MOCK_RESPONSE.redirect as jest.Mock).mockClear();
+    (MOCK_NEXT as jest.Mock).mockClear();
+    mockGetCaseData.mockImplementation(async () => claim);
+    //When
+    await checkYourAnswersGAGuard(MOCK_REQUEST, MOCK_RESPONSE, MOCK_NEXT);
+    //Then
+    expect(MOCK_RESPONSE.redirect).toHaveBeenCalledWith(duplicateApplicationTypeErrorUrl('123', 2));
     expect(MOCK_NEXT).not.toHaveBeenCalled();
   });
 

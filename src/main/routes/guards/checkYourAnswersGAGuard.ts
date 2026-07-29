@@ -19,12 +19,19 @@ import {
   INFORM_OTHER_PARTIES_URL,
   ORDER_JUDGE_URL,
 } from 'routes/urls';
-import {ApplicationTypeOption, getInvalidApplicationTypeIndex} from 'models/generalApplication/applicationType';
+import {
+  ApplicationTypeOption,
+  getDuplicateApplicationTypeIndex,
+  getInvalidApplicationTypeIndex,
+} from 'models/generalApplication/applicationType';
 import {YesNo} from 'form/models/yesNo';
 import {getCancelUrl} from 'services/features/generalApplication/generalApplicationService';
 import {isGaForWelshEnabled} from '../../app/auth/launchdarkly/launchDarklyClient';
 import {getRouteParam} from 'common/utils/routeParamUtils';
-import {applicationTypeErrorUrl} from 'routes/guards/generalApplication/applicationTypeGuard';
+import {
+  applicationTypeErrorUrl,
+  duplicateApplicationTypeErrorUrl,
+} from 'routes/guards/generalApplication/applicationTypeGuard';
 
 export const checkYourAnswersGAGuard = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -40,6 +47,10 @@ export const checkYourAnswersGAGuard = async (req: Request, res: Response, next:
     const invalidApplicationTypeIndex = getInvalidApplicationTypeIndex(applicationTypes);
     if (invalidApplicationTypeIndex >= 0) {
       return res.redirect(`${constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL)}?index=${invalidApplicationTypeIndex}`);
+    }
+    const duplicateApplicationTypeIndex = getDuplicateApplicationTypeIndex(applicationTypes);
+    if (duplicateApplicationTypeIndex >= 0) {
+      return res.redirect(duplicateApplicationTypeErrorUrl(claimId, duplicateApplicationTypeIndex));
     }
 
     const nextIncompleteUrl = getNextIncompleteGeneralApplicationUrl(claimId, claim);

@@ -13,6 +13,8 @@ import {
   getViewApplicationUrl,
   isConfirmYouPaidCCJAppType,
   removeAllOtherApplications,
+  resolveApplicationTypeIndexForGet,
+  resolveApplicationTypeIndexForPost,
   resetClaimDataByApplicationType,
   saveAcceptDefendantOffer,
   saveAdditionalText,
@@ -33,7 +35,7 @@ import {
   saveWrittenRepText,
   shouldDisplaySyncWarning,
   updateByIndexOrAppend,
-  validateAdditionalApplicationtType,
+  validateAdditionalApplicationType,
 } from 'services/features/generalApplication/generalApplicationService';
 import * as gaResponseDraftService
   from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
@@ -41,7 +43,7 @@ import {
   getDraftGARespondentResponse,
   saveDraftGARespondentResponse,
 } from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
-import {ApplicationType, ApplicationTypeOption} from 'common/models/generalApplication/applicationType';
+import {ApplicationType, ApplicationTypeOption, LinkFromValues} from 'common/models/generalApplication/applicationType';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {GeneralApplication} from 'common/models/generalApplication/GeneralApplication';
 import {CaseRole} from 'common/form/models/caseRoles';
@@ -224,6 +226,19 @@ describe('General Application service', () => {
       mockSaveClaim.mockResolvedValue(undefined);
       //Then
       await expect(saveApplicationType('123', claim, new ApplicationType(ApplicationTypeOption.STRIKE_OUT), 1)).rejects.toThrow('Invalid general application type selected');
+      expect(mockSaveClaim).not.toBeCalled();
+    });
+    it('should not save duplicate application types', async () => {
+      //Given
+      const claim = new Claim();
+      claim.generalApplication = new GeneralApplication();
+      claim.generalApplication.applicationTypes = [
+        new ApplicationType(ApplicationTypeOption.VARY_ORDER),
+      ];
+      const mockSaveClaim = draftStoreService.saveDraftClaim as jest.Mock;
+      mockSaveClaim.mockResolvedValue(undefined);
+      //Then
+      await expect(saveApplicationType('123', claim, new ApplicationType(ApplicationTypeOption.VARY_ORDER), 1)).rejects.toThrow('Invalid general application type selected');
       expect(mockSaveClaim).not.toBeCalled();
     });
     it('should throw error when draft store throws error', async () => {
@@ -609,6 +624,40 @@ describe('General Application service', () => {
       });
   });
 
+  describe('Resolve application type index', () => {
+    const buildClaim = (applicationTypes: ApplicationTypeOption[]): Claim => {
+      const claim = new Claim();
+      claim.generalApplication = new GeneralApplication();
+      claim.generalApplication.applicationTypes = applicationTypes.map((applicationType) => new ApplicationType(applicationType));
+      return claim;
+    };
+
+    it.each`
+      query                                            | applicationTypes                                                        | expected
+      ${{index: '2'}}                                  | ${[ApplicationTypeOption.EXTEND_TIME]}                                  | ${2}
+      ${{}}                                            | ${[ApplicationTypeOption.EXTEND_TIME]}                                  | ${0}
+      ${{linkFrom: LinkFromValues.addAnotherApp}}      | ${[ApplicationTypeOption.EXTEND_TIME]}                                  | ${undefined}
+      ${{}}                                            | ${[ApplicationTypeOption.EXTEND_TIME, ApplicationTypeOption.STRIKE_OUT]} | ${undefined}
+    `('should resolve GET application index as $expected', ({ query, applicationTypes, expected }) => {
+      const req = {query} as unknown as AppRequest;
+
+      expect(resolveApplicationTypeIndexForGet(req, buildClaim(applicationTypes))).toEqual(expected);
+    });
+
+    it.each`
+      query                                            | applicationTypes                                                        | expected
+      ${{index: '2'}}                                  | ${[ApplicationTypeOption.EXTEND_TIME]}                                  | ${2}
+      ${{}}                                            | ${[ApplicationTypeOption.EXTEND_TIME]}                                  | ${0}
+      ${{linkFrom: LinkFromValues.addAnotherApp}}      | ${[ApplicationTypeOption.EXTEND_TIME]}                                  | ${undefined}
+      ${{linkFrom: LinkFromValues.addAnotherApp}}      | ${[ApplicationTypeOption.EXTEND_TIME, ApplicationTypeOption.STRIKE_OUT]} | ${1}
+      ${{}}                                            | ${[ApplicationTypeOption.EXTEND_TIME, ApplicationTypeOption.STRIKE_OUT]} | ${undefined}
+    `('should resolve POST application index as $expected', ({ query, applicationTypes, expected }) => {
+      const req = {query} as unknown as AppRequest;
+
+      expect(resolveApplicationTypeIndexForPost(req, buildClaim(applicationTypes))).toEqual(expected);
+    });
+  });
+
   describe('Update by index or append', () => {
     it.each`
     list           | index              | expected
@@ -664,6 +713,27 @@ describe('General Application service', () => {
   });
 
   describe('Validate additional application type', () => {
+    it('should return error message if additional application type is already selected', () => {
+
+      //Given
+      const claim = new Claim();
+      claim.generalApplication = new GeneralApplication();
+      claim.generalApplication.applicationTypes = [new ApplicationType(ApplicationTypeOption.VARY_ORDER)];
+      const errors : ValidationError[] = [];
+      const applicationType = new ApplicationType(ApplicationTypeOption.VARY_ORDER);
+      const body = {
+        optionOther: 'test',
+        option: ApplicationTypeOption.VARY_ORDER,
+      };
+      //When
+      validateAdditionalApplicationType(claim, errors, applicationType, body, 1);
+
+      //Then
+      const error : ValidationError = errors[0];
+      expect(errors.length).toBe(1);
+      expect(error.constraints['duplicateApplicationError']).toBe('ERRORS.GENERAL_APPLICATION.ADDITIONAL_APPLICATION_DUPLICATE');
+    });
+
     it('should return error message if additional application type is in excluded list', () => {
 
       //Given
@@ -677,7 +747,7 @@ describe('General Application service', () => {
         option: 'testOption',
       };
       //When
-      validateAdditionalApplicationtType(claim, errors, applicationType,body);
+      validateAdditionalApplicationType(claim, errors, applicationType, body, 1);
 
       //Then
       const error : ValidationError = errors[0];
@@ -700,7 +770,7 @@ describe('General Application service', () => {
         option: 'testOption',
       };
       //When
-      validateAdditionalApplicationtType(claim, errors, applicationType,body);
+      validateAdditionalApplicationType(claim, errors, applicationType, body, 0);
 
       //Then
       const error : ValidationError = errors[0];

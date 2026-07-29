@@ -6,13 +6,16 @@ import {APPLICATION_TYPE_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
 import {mockCivilClaim, mockDraftClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
-import {ApplicationType, ApplicationTypeOption, LinKFromValues} from 'common/models/generalApplication/applicationType';
+import {ApplicationType, ApplicationTypeOption, LinkFromValues} from 'common/models/generalApplication/applicationType';
 import {isGaForLipsEnabled, isQueryManagementEnabled} from 'app/auth/launchdarkly/launchDarklyClient';
 import { Claim } from 'common/models/claim';
 import { GeneralApplication } from 'common/models/generalApplication/GeneralApplication';
 import { getClaimById } from 'modules/utilityService';
 import * as generalApplicationService from 'services/features/generalApplication/generalApplicationService';
-import {SHOW_APPLICATION_TYPE_ERROR_QUERY_PARAM} from 'routes/guards/generalApplication/applicationTypeGuard';
+import {
+  SHOW_APPLICATION_TYPE_ERROR_QUERY_PARAM,
+  SHOW_DUPLICATE_APPLICATION_TYPE_ERROR_QUERY_PARAM,
+} from 'routes/guards/generalApplication/applicationTypeGuard';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -76,11 +79,28 @@ describe('General Application - Application type', () => {
         });
     });
 
+    it('should show duplicate validation error when duplicate application type is selected', async () => {
+      const claim = new Claim();
+      claim.generalApplication = new GeneralApplication();
+      claim.generalApplication.applicationTypes = [
+        new ApplicationType(ApplicationTypeOption.VARY_ORDER),
+        new ApplicationType(ApplicationTypeOption.VARY_ORDER),
+      ];
+      (getClaimById as jest.Mock).mockResolvedValueOnce(claim);
+      await request(app)
+        .get(APPLICATION_TYPE_URL)
+        .query({index: 1, [SHOW_DUPLICATE_APPLICATION_TYPE_ERROR_QUERY_PARAM]: 'true'})
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(t('ERRORS.GENERAL_APPLICATION.ADDITIONAL_APPLICATION_DUPLICATE'));
+        });
+    });
+
     it('should delete GA when url contains start', async () => {
       const spyDelete = jest.spyOn(generalApplicationService, 'deleteGAFromClaimsByUserId');
       (getClaimById as jest.Mock).mockResolvedValueOnce(new Claim());
       await request(app)
-        .get(APPLICATION_TYPE_URL + `?linkFrom=${LinKFromValues.start}`)
+        .get(APPLICATION_TYPE_URL + `?linkFrom=${LinkFromValues.start}`)
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(spyDelete).toBeCalled();
@@ -91,7 +111,7 @@ describe('General Application - Application type', () => {
       const spyDelete = jest.spyOn(generalApplicationService, 'deleteGAFromClaimsByUserId');
       (getClaimById as jest.Mock).mockResolvedValueOnce(new Claim());
       await request(app)
-        .get(APPLICATION_TYPE_URL + `?linkFrom=${LinKFromValues.start}&isAskMoreTime=true`)
+        .get(APPLICATION_TYPE_URL + `?linkFrom=${LinkFromValues.start}&isAskMoreTime=true`)
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(spyDelete).toBeCalled();
@@ -172,7 +192,7 @@ describe('General Application - Application type', () => {
       (getClaimById as jest.Mock).mockResolvedValueOnce(claim);
 
       await request(app)
-        .post(APPLICATION_TYPE_URL + `?linkFrom=${LinKFromValues.addAnotherApp}&index=1`)
+        .post(APPLICATION_TYPE_URL + `?linkFrom=${LinkFromValues.addAnotherApp}&index=1`)
         .send({option: ApplicationTypeOption.ADJOURN_HEARING})
         .expect((res) => {
           expect(res.status).toBe(302);
@@ -194,7 +214,7 @@ describe('General Application - Application type', () => {
       (getClaimById as jest.Mock).mockResolvedValueOnce(claim);
 
       await request(app)
-        .post(APPLICATION_TYPE_URL + `?linkFrom=${LinKFromValues.addAnotherApp}`)
+        .post(APPLICATION_TYPE_URL + `?linkFrom=${LinkFromValues.addAnotherApp}`)
         .send({option: ApplicationTypeOption.ADJOURN_HEARING})
         .expect((res) => {
           expect(res.status).toBe(302);
@@ -203,6 +223,24 @@ describe('General Application - Application type', () => {
 
       expect(claim.generalApplication.applicationTypes).toHaveLength(2);
       expect(claim.generalApplication.applicationTypes[1].option).toEqual(ApplicationTypeOption.ADJOURN_HEARING);
+    });
+
+    it('should return error when adding a duplicate application type', async () => {
+      const claim = new Claim();
+      claim.generalApplication = new GeneralApplication();
+      claim.generalApplication.applicationTypes = [new ApplicationType(ApplicationTypeOption.VARY_ORDER)];
+      app.locals.draftStoreClient = mockDraftClaim(claim);
+      (getClaimById as jest.Mock).mockResolvedValueOnce(claim);
+
+      await request(app)
+        .post(APPLICATION_TYPE_URL + `?linkFrom=${LinkFromValues.addAnotherApp}&index=1`)
+        .send({option: ApplicationTypeOption.VARY_ORDER})
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(t('ERRORS.GENERAL_APPLICATION.ADDITIONAL_APPLICATION_DUPLICATE'));
+        });
+
+      expect(claim.generalApplication.applicationTypes).toHaveLength(1);
     });
 
     it('should return errors on no input', async () => {
@@ -229,7 +267,7 @@ describe('General Application - Application type', () => {
 
       claim = new Claim();
       await request(app)
-        .post(APPLICATION_TYPE_URL + `?linkFrom=${LinKFromValues.addAnotherApp}`)
+        .post(APPLICATION_TYPE_URL + `?linkFrom=${LinkFromValues.addAnotherApp}`)
         .send({option: applicationType})
         .expect((res) => {
           expect(res.status).toBe(200);
