@@ -2,6 +2,7 @@ import {Application, NextFunction, Request, Response} from 'express';
 import config from 'config';
 import {AppRequest, PaymentConfirmationContext} from 'models/AppRequest';
 import {getOidcResponse, getSessionIssueTime, getUserDetails} from '../../app/auth/user/oidc';
+import {isHmctsAccessMigrationEnabled} from '../../app/auth/launchdarkly/launchDarklyClient';
 import {
   ASSIGN_CLAIM_URL,
   BASE_ELIGIBILITY_URL,
@@ -133,7 +134,17 @@ export class OidcMiddleware {
     const idamSignOutUrl: string = config.get('services.idam.terminateSessionURL');
     const applicationUrl: string = config.get('services.idam.signOutCallBackURL');
 
-    app.get(SIGN_IN_URL, (_req: AppRequest, res: Response) => {
+    app.get(SIGN_IN_URL, async (_req: AppRequest, res: Response) => {
+      // Log the resolved LaunchDarkly flag value on every sign-in so we can confirm in the
+      // environment logs whether hmcts-access-migration-enabled is actually toggling.
+      // NOTE: the flag does NOT change idamUrlLogin - the /login vs /o/authorize entry point
+      // is set by the IDAM_WEB_URL env var (config services.idam.authorizationURL), not by the flag.
+      try {
+        const hmctsAccessMigrationEnabled = await isHmctsAccessMigrationEnabled();
+        logger.info(`hmcts-access-migration-enabled flag = ${hmctsAccessMigrationEnabled}; redirecting to IDAM login URL: ${idamUrlLogin}`);
+      } catch (err) {
+        logger.error('Failed to read hmcts-access-migration-enabled flag', err);
+      }
       res.redirect(idamUrlLogin);
     });
 
