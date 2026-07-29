@@ -127,9 +127,6 @@ def copyPreviousAllureHistory() {
 
 def generateAllureReport(String resultsDir, String reportDir, String reportLabel) {
   try {
-    if (reportLabel == 'functional' && env.FUNCTIONAL_DIAGNOSTICS_FORCE_ALLURE_FAILURE == 'true') {
-      error 'DTSCCI-5976 controlled functional Allure generation failure'
-    }
     sh "npx allure generate ${resultsDir} --clean -o ${reportDir}"
   } catch (Exception error) {
     echo "Failed to generate ${reportLabel} Allure report. Continuing with diagnostic publication. Error: ${error.toString()}"

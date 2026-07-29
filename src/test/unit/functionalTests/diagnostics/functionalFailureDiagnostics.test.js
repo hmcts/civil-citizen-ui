@@ -37,7 +37,7 @@ describe('functional failure diagnostics', () => {
     });
 
     it('does not redact Codecept artifact filenames containing tags', () => {
-      const fileName = 'DTSCCI-5976_controlled_browser_assertion_failure_for_diagnostic_evidence_@ui-diagnostics-assertion.failed.png';
+      const fileName = 'Functional_diagnostics_browser_assertion_failure_@browser-diagnostics.failed.png';
 
       expect(sanitizeString(fileName)).toBe(fileName);
     });
@@ -84,16 +84,16 @@ describe('functional failure diagnostics', () => {
           end: '2026-07-27T16:11:20.000Z',
         },
         results: [{
-          title: 'DTSCCI-5976 controlled functional diagnostics failure @civil-citizen-pr @ui-diagnostics',
+          title: 'Functional diagnostics failure @civil-citizen-pr @browser-diagnostics',
           suites: [{
-            title: 'DTSCCI-5976 controlled functional diagnostics failure @civil-citizen-pr @ui-diagnostics',
+            title: 'Functional diagnostics failure @civil-citizen-pr @browser-diagnostics',
             tests: [{
-              title: 'DTSCCI-5976 controlled browser assertion failure for diagnostic evidence',
-              fullTitle: 'DTSCCI-5976 controlled functional diagnostics failure DTSCCI-5976 controlled browser assertion failure for diagnostic evidence @ui-diagnostics-assertion',
+              title: 'Browser assertion failure for diagnostic evidence',
+              fullTitle: 'Functional diagnostics failure Browser assertion failure for diagnostic evidence @browser-diagnostics',
               state: 'failed',
               duration: 1563,
               err: {
-                message: 'Error: DTSCCI-5976 controlled functional diagnostics failure for claimant@example.com with Bearer abc.def.ghi',
+                message: 'Error: Functional diagnostics failure for claimant@example.com with Bearer abc.def.ghi',
                 estack: 'password=Password123\ncard 4444333322221111',
               },
             }],
@@ -101,11 +101,11 @@ describe('functional failure diagnostics', () => {
         }],
       });
       fs.writeFileSync(
-        path.join(reportDir, 'DTSCCI-5976_controlled_browser_assertion_failure_for_diagnostic_evidence.failed.png'),
+        path.join(reportDir, 'Functional_diagnostics_browser_assertion_failure.failed.png'),
         'png',
       );
       fs.writeFileSync(
-        path.join(reportDir, 'DTSCCI-5976_controlled_browser_assertion_failure_for_diagnostic_evidence_@ui-diagnostics-assertion.failed.png'),
+        path.join(reportDir, 'Functional_diagnostics_browser_assertion_failure_@browser-diagnostics.failed.png'),
         'png',
       );
 
@@ -124,15 +124,15 @@ describe('functional failure diagnostics', () => {
       expect(summary.failures).toHaveLength(1);
 
       const failure = summary.failures[0];
-      expect(failure.scenarioTest).toContain('DTSCCI-5976 controlled browser assertion failure');
+      expect(failure.scenarioTest).toContain('Browser assertion failure');
       expect(failure.attemptNumber).toBeNull();
       expect(failure.firstAttemptResult).toBe('failed');
       expect(failure.durationMs).toBe(1563);
       expect(failure.primaryStage).toBe('functional-test');
       expect(failure.classification).toBe(CLASSIFICATIONS.UNKNOWN);
       expect(failure.retryOutcome).toBeNull();
-      expect(failure.artifactLinks.map(({ label }) => label)).toContain('DTSCCI-5976_controlled_browser_assertion_failure_for_diagnostic_evidence_@ui-diagnostics-assertion.failed.png');
-      expect(failure.artifactLinks.map(({ url }) => url)).toContain('https://build.hmcts.net/job/example/1/artifact/test-results/functional/DTSCCI-5976_controlled_browser_assertion_failure_for_diagnostic_evidence_@ui-diagnostics-assertion.failed.png');
+      expect(failure.artifactLinks.map(({ label }) => label)).toContain('Functional_diagnostics_browser_assertion_failure_@browser-diagnostics.failed.png');
+      expect(failure.artifactLinks.map(({ url }) => url)).toContain('https://build.hmcts.net/job/example/1/artifact/test-results/functional/Functional_diagnostics_browser_assertion_failure_@browser-diagnostics.failed.png');
 
       const serialized = JSON.stringify(summary);
       expect(serialized).not.toContain('claimant@example.com');

@@ -69,24 +69,5 @@ unless they have been separately checked for sensitive data.
 ## Retention
 
 Functional diagnostics are archived with the Jenkins build. Jenkins build and
-artifact retention is the reporting window for DTSCCI-5976 reliability review;
-use the build URL from the summary when recording evidence on Jira.
-
-## Controlled Evidence Runs
-
-The temporary DTSCCI-5976 browser diagnostics are selected with PR labels while
-collecting Stage 3 evidence:
-
-| Failure case | PR label |
-| --- | --- |
-| Browser assertion failure | `pr_ft_ui-diagnostics-assertion` |
-| Element/selector timeout | `pr_ft_ui-diagnostics-selector-timeout` |
-| CUI HTTP 500 signal | `pr_ft_ui-diagnostics-http-500` |
-| Unmatched WireMock request | `pr-values:reducedStack` plus `pr_ft_ui-diagnostics-wiremock-unmatched` |
-| Browser crash/infrastructure signal | `pr_ft_ui-diagnostics-browser-crash` |
-| Allure failure after primary test failure | `pr-values:force-functional-allure-failure` plus one failing diagnostics label |
-
-Prefer one failure case per Jenkins run. The runner has Mocha `bail` enabled, so
-separate runs give cleaner primary-failure evidence and make the archived summary
-unambiguous. The broader `pr_ft_ui-diagnostics` label can still be used for a
-quick smoke of the diagnostics group, but it is less useful as closure evidence.
+artifact retention defines the available reporting window. Use the build URL
+from the summary when recording failure evidence.
