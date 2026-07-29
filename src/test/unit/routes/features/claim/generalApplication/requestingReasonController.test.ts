@@ -2,7 +2,7 @@ import {app} from '../../../../../../main/app';
 import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
-import {GA_REQUESTING_REASON_URL} from 'routes/urls';
+import {GA_CHECK_ANSWERS_URL, GA_REQUESTING_REASON_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
 import {mockCivilClaimWithApplicationType, mockRedisFailure} from '../../../../../utils/mockDraftStore';
@@ -60,6 +60,17 @@ describe('General Application - Requesting reason', () => {
         .send({text: 'test'})
         .expect((res) => {
           expect(res.status).toBe(302);
+        });
+    });
+
+    it('should return to CYA after saving from CYA change screen', async () => {
+      app.locals.draftStoreClient = mockCivilClaimWithApplicationType;
+      await request(app)
+        .post(`${GA_REQUESTING_REASON_URL}?index=0&changeScreen=true`)
+        .send({text: 'test'})
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.headers.location).toEqual(GA_CHECK_ANSWERS_URL);
         });
     });
 

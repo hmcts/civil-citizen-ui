@@ -2,7 +2,7 @@ import {app} from '../../../../../../main/app';
 import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
-import {ORDER_JUDGE_URL} from 'routes/urls';
+import {GA_REQUESTING_REASON_URL, ORDER_JUDGE_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
 import {mockCivilClaimWithApplicationType, mockRedisFailure} from '../../../../../utils/mockDraftStore';
@@ -60,6 +60,17 @@ describe('General Application - Application type', () => {
         .type('form').send({text: 'test'})
         .expect((res) => {
           expect(res.status).toBe(302);
+        });
+    });
+
+    it('should keep CYA change screen query params when redirecting to requesting reason', async () => {
+      app.locals.draftStoreClient = mockCivilClaimWithApplicationType;
+      await request(app)
+        .post(`${ORDER_JUDGE_URL}?index=0&changeScreen=true`)
+        .type('form').send({text: 'test'})
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.headers.location).toEqual(`${GA_REQUESTING_REASON_URL}?index=0&changeScreen=true`);
         });
     });
 

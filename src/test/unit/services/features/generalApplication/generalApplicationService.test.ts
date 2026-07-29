@@ -51,7 +51,7 @@ import {RequestingReason} from 'models/generalApplication/requestingReason';
 import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
 import {GaResponse} from 'common/models/generalApplication/response/gaResponse';
 import {YesNo, YesNoUpperCamelCase} from 'common/form/models/yesNo';
-import {CANCEL_URL, GA_ADD_ANOTHER_APPLICATION_URL, ORDER_JUDGE_URL} from 'routes/urls';
+import {CANCEL_URL, GA_ADD_ANOTHER_APPLICATION_URL, GA_CHECK_ANSWERS_URL, ORDER_JUDGE_URL} from 'routes/urls';
 import {HearingSupport, SupportType} from 'models/generalApplication/hearingSupport';
 import {HearingArrangement, HearingTypeOptions} from 'models/generalApplication/hearingArrangement';
 import {HearingContactDetails} from 'models/generalApplication/hearingContactDetails';
@@ -585,6 +585,15 @@ describe('General Application service', () => {
 
     it('should keep index 0 in requesting reason next URL', () => {
       expect(getRequestingReasonNextUrl(req, claim)).toEqual(`${GA_ADD_ANOTHER_APPLICATION_URL.replace(':id', '123')}?index=0`);
+    });
+
+    it('should return check your answers URL from CYA change screen', () => {
+      const changeScreenReq = {
+        params: {id: '123'},
+        query: {index: '0', changeScreen: 'true'},
+      } as unknown as AppRequest;
+
+      expect(getRequestingReasonNextUrl(changeScreenReq, claim)).toEqual(GA_CHECK_ANSWERS_URL.replace(':id', '123'));
     });
 
     it('should keep index 0 in claim application cost next URL', () => {

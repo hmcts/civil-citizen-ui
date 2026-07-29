@@ -203,6 +203,28 @@ describe('General Application - Application type', () => {
       expect(claim.generalApplication.applicationTypes[1].option).toEqual(ApplicationTypeOption.ADJOURN_HEARING);
     });
 
+    it('should keep CYA change screen query params when changing one application in a multi-application CYA', async () => {
+      const claim = new Claim();
+      claim.generalApplication = new GeneralApplication();
+      claim.generalApplication.applicationTypes = [
+        new ApplicationType(ApplicationTypeOption.EXTEND_TIME),
+        new ApplicationType(ApplicationTypeOption.STAY_THE_CLAIM),
+      ];
+      app.locals.draftStoreClient = mockDraftClaim(claim);
+      (getClaimById as jest.Mock).mockResolvedValueOnce(claim);
+
+      await request(app)
+        .post(`${APPLICATION_TYPE_URL}?index=0&changeScreen=true`)
+        .send({option: ApplicationTypeOption.ADJOURN_HEARING})
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.headers.location).toContain('/general-application/order-judge?index=0&changeScreen=true');
+        });
+
+      expect(claim.generalApplication.applicationTypes).toHaveLength(2);
+      expect(claim.generalApplication.applicationTypes[0].option).toEqual(ApplicationTypeOption.ADJOURN_HEARING);
+    });
+
     it('should update latest added application type when add another page is resubmitted without index', async () => {
       const claim = new Claim();
       claim.generalApplication = new GeneralApplication();

@@ -13,6 +13,7 @@ import {
   LinkFromValues,
 } from 'common/models/generalApplication/applicationType';
 import {
+  addChangeScreenToUrlIfPresent,
   deleteGAFromClaimsByUserId,
   getByIndex,
   getCancelUrl,
@@ -122,8 +123,9 @@ applicationTypeController.post(APPLICATION_TYPE_URL, (async (req: AppRequest | R
         res.redirect(constructResponseUrlWithIdParams(claimId, GA_ASK_PROOF_OF_DEBT_PAYMENT_GUIDANCE_URL));
       } else {
         if (claim?.generalApplication?.applicationTypes?.length > 1){
-          res.redirect(constructResponseUrlWithIdParams(claimId,ORDER_JUDGE_URL )
-            + (applicationIndex >= 0 ? `?index=${applicationIndex}` : ''));
+          const redirectUrl = constructResponseUrlWithIdParams(claimId,ORDER_JUDGE_URL )
+            + (applicationIndex >= 0 ? `?index=${applicationIndex}` : '');
+          res.redirect(addChangeScreenToUrlIfPresent(redirectUrl, req));
         } else {
           res.redirect(constructResponseUrlWithIdParams(claimId,GA_AGREEMENT_FROM_OTHER_PARTY_URL )
           + (applicationIndex >= 0 ? `?index=${applicationIndex}` : ''));

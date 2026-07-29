@@ -18,6 +18,7 @@ import {Claim} from 'models/claim';
 import {
   CANCEL_URL, GA_ADD_ANOTHER_APPLICATION_URL, GA_APPLICATION_COSTS_URL,
   GA_APPLICATION_RESPONSE_SUMMARY_URL,
+  GA_CHECK_ANSWERS_URL,
   GA_APPLICATION_SUMMARY_URL,
   GA_RESPONSE_VIEW_APPLICATION_URL,
   GA_VIEW_APPLICATION_URL, GA_WANT_TO_UPLOAD_DOCUMENTS_URL, INFORM_OTHER_PARTIES_URL, ORDER_JUDGE_URL,
@@ -88,6 +89,16 @@ type ApplicationTypeValidationConstraint =
   'duplicateApplicationError'
   | 'additionalApplicationError'
   | 'ccjApplicationError';
+
+export const CHANGE_SCREEN_QUERY_PARAM = 'changeScreen';
+
+export const isChangeScreenFromCya = (req: AppRequest | Request): boolean =>
+  req.query[CHANGE_SCREEN_QUERY_PARAM] === 'true';
+
+export const addChangeScreenToUrlIfPresent = (url: string, req: AppRequest | Request): string =>
+  isChangeScreenFromCya(req)
+    ? `${url}${url.includes('?') ? '&' : '?'}${CHANGE_SCREEN_QUERY_PARAM}=true`
+    : url;
 
 export const saveApplicationType = async (claimId: string, claim: Claim, applicationType: ApplicationType, index?: number): Promise<void> => {
   try {
@@ -753,6 +764,11 @@ export const getAgreementFromOtherPartiesNextUrl = (req: AppRequest | Request, c
 };
 
 export const getRequestingReasonNextUrl = (req: AppRequest | Request, claim: Claim): string => {
+  if (isChangeScreenFromCya(req)) {
+    const claimId = getRouteParam(req, 'id');
+    return constructResponseUrlWithIdParams(claimId, GA_CHECK_ANSWERS_URL);
+  }
+
   const options = [ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT, ApplicationTypeOption.SET_ASIDE_JUDGEMENT, ApplicationTypeOption.SETTLE_BY_CONSENT];
   const isAddAnotherApplicationNotAllowed = options.some(value => claim.generalApplication?.applicationTypes.some(obj => obj.option === value));
   if (isAddAnotherApplicationNotAllowed) {
