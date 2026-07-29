@@ -16,6 +16,7 @@ import {PriorityDebts} from 'form/models/statementOfMeans/priorityDebts';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
 import {convertFrequencyToText, getFinalPaymentDate, getRepaymentFrequency, getRepaymentLength} from 'common/utils/repaymentUtils';
 import {RepaymentPlan} from 'common/models/repaymentPlan';
+import {applyTaskListResetRules} from './claimantResponseTaskListReset';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseService');
@@ -43,7 +44,7 @@ const saveClaimantResponse = async (claimId: string, value: any, claimantRespons
     applySuggestedPaymentIntentionCleanup(claim, claimantResponse);
     applyRejectionCleanup(claim);
     logger.info(`claimant response after cleanups : userId: ${userId} claimId: ${claimId} claimantResponse: ${claim.claimantResponse? JSON.stringify(claim.claimantResponse) : 'undefined'}`);
-    const resetClaim = resetTaskListData(claim, claimantResponsePropertyName, parentPropertyName);
+    const resetClaim = applyTaskListResetRules(claim, claimantResponsePropertyName, parentPropertyName);
     logger.info(`claimant response after re setting claim : userId: ${userId} claimId: ${claimId} claimantResponse: ${resetClaim.claimantResponse? JSON.stringify(resetClaim.claimantResponse) : 'undefined'}`);
     await saveDraftClaim(claimId, resetClaim, true);
   } catch (error) {
@@ -109,75 +110,6 @@ function applyRejectionCleanup(claim: Claim): void {
     );
     delete (claim.claimantResponse as any)?.rejectionReason;
   }
-}
-
-function resetTaskListData(claim: Claim, claimantResponsePropertyName: string, parentPropertyName?: string) {
-  if (!claim.hasClaimantNotSettled()) {
-    delete claim.claimantResponse.mediationCarm;
-  }
-  if (isAcceptOrRejectTheAmountSubmitted(claimantResponsePropertyName)) {
-    delete claim.claimantResponse.hasPartPaymentBeenAccepted;
-    delete claim.claimantResponse.mediation;
-    delete claim.claimantResponse.directionQuestionnaire;
-    delete claim.claimantResponse.fullAdmitSetDateAcceptPayment;
-    deleteTaskListData(claim);
-  } else if (isAcceptOrRejectRepaymentPlanSubmitted(claimantResponsePropertyName)) {
-    deleteTaskListData(claim);
-  } else if (isProposeAnAlternativeRepaymentPlanSubmitted(claimantResponsePropertyName, parentPropertyName )) {
-    delete claim.claimantResponse.chooseHowToProceed;
-    deleteTaskListFormaliseRepaymentData(claim);
-  } else if (isChooseHowToProceedSubmitted(claimantResponsePropertyName, parentPropertyName)) {
-    deleteTaskListFormaliseRepaymentData(claim);
-  } else if (isFullDefenceDisputeNoProceed(claim, parentPropertyName) || isFullDefencePaidAgreed(claim, claimantResponsePropertyName)) {
-    delete claim.claimantResponse.mediation;
-    delete claim.claimantResponse.directionQuestionnaire;
-  }
-  return claim;
-}
-
-function deleteTaskListFormaliseRepaymentData(claim: Claim) {
-  delete claim.claimantResponse.ccjRequest;
-  delete claim.claimantResponse.signSettlementAgreement;
-}
-
-function deleteTaskListData(claim: Claim) {
-  delete claim.claimantResponse.suggestedPaymentIntention;
-  delete claim.claimantResponse.courtProposedDate;
-  delete claim.claimantResponse.rejectionReason;
-  delete claim.claimantResponse.chooseHowToProceed;
-  delete claim.claimantResponse.signSettlementAgreement;
-  delete claim.claimantResponse.ccjRequest;
-  delete claim.claimantResponse.courtDecision;
-}
-
-function isFullDefenceDisputeNoProceed(claim: Claim, claimantResponsePropertyName: string): boolean {
-  return claim.isFullDefence()
-    && claim.isRejectAllOfClaimDispute()
-    && claimantResponsePropertyName === 'intentionToProceed';
-}
-
-function isFullDefencePaidAgreed(claim: Claim, claimantResponsePropertyName: string): boolean {
-  return claim.isFullDefence()
-    && claim.hasConfirmedAlreadyPaid()
-    && claimantResponsePropertyName === 'hasFullDefenceStatesPaidClaimSettled';
-}
-
-function isAcceptOrRejectTheAmountSubmitted(claimantResponsePropertyName: string): boolean {
-  return claimantResponsePropertyName === 'hasPartAdmittedBeenAccepted';
-}
-
-function isAcceptOrRejectRepaymentPlanSubmitted(claimantResponsePropertyName: string): boolean {
-  return claimantResponsePropertyName === 'fullAdmitSetDateAcceptPayment';
-}
-
-function isProposeAnAlternativeRepaymentPlanSubmitted(claimantResponsePropertyName: string, parentPropertyName?: string): boolean {
-  const suggestedPaymentIntentionChildProperties = ['paymentOption', 'paymentDate', 'repaymentPlan'];
-  return (parentPropertyName === 'suggestedPaymentIntention' && suggestedPaymentIntentionChildProperties.includes(claimantResponsePropertyName)) ||
-    (parentPropertyName === 'courtProposedDate' && claimantResponsePropertyName === 'decision') || claimantResponsePropertyName === 'courtDecision';
-}
-
-function isChooseHowToProceedSubmitted(claimantResponsePropertyName: string, parentPropertyName?: string): boolean {
-  return claimantResponsePropertyName === 'option' && parentPropertyName === 'chooseHowToProceed';
 }
 
 const constructRepaymentPlanSection = (claim: Claim, lng: string): Array<object> => {
