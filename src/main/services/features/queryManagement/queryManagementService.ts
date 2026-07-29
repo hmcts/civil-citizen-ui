@@ -33,7 +33,7 @@ export const saveQueryManagement = async (claimId: RouteParam, value: any, query
     claim.queryManagement = new QueryManagement();
   }
   claim.queryManagement[queryManagementPropertyName] = value;
-  await saveDraftClaim(generateRedisKey(<AppRequest>req), claim);
+  await saveDraftClaim(generateRedisKey(<AppRequest>req), claim, false, (<AppRequest>req).session?.user?.id);
 };
 
 export const getQueryManagement = async (claimId: RouteParam, req: Request): Promise<QueryManagement> => {
@@ -46,7 +46,7 @@ export const getQueryManagement = async (claimId: RouteParam, req: Request): Pro
 
 export const deleteQueryManagement = async (claimId: RouteParam, req: Request): Promise<void> => {
   const claim = await getClaimById(req.params.id, req, true);
-  await deleteFieldDraftClaimFromStore(normalizeRouteParam(claimId), claim, 'queryManagement');
+  await deleteFieldDraftClaimFromStore(normalizeRouteParam(claimId), claim, 'queryManagement', (<AppRequest>req).session?.user?.id);
 };
 
 export const getCancelUrl = (claimId: RouteParam) => {

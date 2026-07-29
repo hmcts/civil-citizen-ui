@@ -49,8 +49,8 @@ class EligibilityCheck {
     await I.seeInCurrentUrl('/eligibility/not-eligible?reason=claim-value-over-25000');
     await I.see('You can’t use this service');
     await I.see('This service is for claims of £25,000 or less.');
-    await I.see('For claims between £25,001 and £100,000 you might be able to use Money Claim Online (MCOL) (opens in a new window)');
-    await I.see('You can also claim by paper. Download a paper form (opens in a new window) complete it and return it to make your claim.');
+    await I.see('For claims between £25,001 and £100,000 you might be able to use Money Claim Online (MCOL) (opens in a new tab)');
+    await I.see('You can also claim by paper. Download a paper form (opens in a new tab) complete it and return it to make your claim.');
     await this.eligibilityCantUseThisServiceAddress();
     await I.amOnPage('/eligibility/claim-value');
 
@@ -60,7 +60,7 @@ class EligibilityCheck {
     await I.seeInCurrentUrl('/eligibility/not-eligible?reason=claim-value-not-known');
     await I.see('You can’t use this service');
     await I.see('You need to know the claim amount to use this service.');
-    await I.see('If you can’t calculate the claim amount, for example because you’re claiming for an injury or accident, use the N1 paper form (opens in a new window) .');
+    await I.see('If you can’t calculate the claim amount, for example because you’re claiming for an injury or accident, use the N1 paper form (opens in a new tab) .');
     await this.eligibilityCantUseThisServiceAddress();
     await I.amOnPage('/eligibility/claim-value');
   }
@@ -85,8 +85,8 @@ class EligibilityCheck {
     await I.seeInCurrentUrl('/eligibility/not-eligible?reason=multiple-defendants');
     await I.see('You can’t use this service');
     await I.see('You can’t use this service if this claim is against more than one person or organisation.');
-    await I.see('Use Money Claim Online (MCOL) (opens in a new window) . for claims against 2 people or organisations.');
-    await I.see('Download a paper form (opens in a new window) . for claims against 3 or more people or organisations. Complete and return the form to make your claim.');
+    await I.see('Use Money Claim Online (MCOL) (opens in a new tab) . for claims against 2 people or organisations.');
+    await I.see('Download a paper form (opens in a new tab) . for claims against 3 or more people or organisations. Complete and return the form to make your claim.');
     await this.eligibilityCantUseThisServiceAddress();
     await I.amOnPage('/eligibility/single-defendant');
   }
@@ -105,7 +105,7 @@ class EligibilityCheck {
     await I.seeInCurrentUrl('/eligibility/not-eligible?reason=defendant-address');
     await I.see('You can’t use this service');
     await I.see('You can only use this service to claim against a person or organisation with an address in England or Wales.');
-    await I.see('Depending on where you’ll be sending the claim, you might be able to claim using a paper form. Download the paper form N1 (opens in a new window) and form N510 (opens in a new window) . Complete the forms and return them to make your claim.');
+    await I.see('Depending on where you’ll be sending the claim, you might be able to claim using a paper form. Download the paper form N1 (opens in a new tab) and form N510 (opens in a new tab) . Complete the forms and return them to make your claim.');
     await this.eligibilityCantUseThisServiceAddress();
     await I.amOnPage('/eligibility/defendant-address');
   }
@@ -127,7 +127,7 @@ class EligibilityCheck {
     await I.seeInCurrentUrl('/eligibility/not-eligible?reason=multiple-claimants');
     await I.see('You can’t use this service');
     await I.see('You can’t use this service if more than one person or organisation is making the claim.');
-    await I.see('Download a paper form (opens in a new window) , complete it and return it to make your claim.');
+    await I.see('Download a paper form (opens in a new tab) , complete it and return it to make your claim.');
     await this.eligibilityCantUseThisServiceAddress();
     await I.amOnPage('/eligibility/claim-type');
 
@@ -137,7 +137,7 @@ class EligibilityCheck {
     await I.seeInCurrentUrl('/eligibility/not-eligible?reason=claim-on-behalf');
     await I.see('You can’t use this service');
     await I.see('This service is currently for claimants representing themselves.');
-    await I.see('If you’re a legal representative use the Money Claim Online (MCOL) service (opens in a new window) or download a paper form (opens in a new window) , complete and return it to make your claim.');
+    await I.see('If you’re a legal representative use the Money Claim Online (MCOL) service (opens in a new tab) or download a paper form (opens in a new tab) , complete and return it to make your claim.');
     await this.eligibilityCantUseThisServiceAddress();
     await I.amOnPage('/eligibility/claim-type');
   }
@@ -173,7 +173,7 @@ class EligibilityCheck {
     await I.seeInCurrentUrl('/eligibility/not-eligible?reason=claim-is-for-tenancy-deposit');
     await I.see('You can’t use this service');
     await I.see('You can’t make a claim for a tenancy deposit using this service.');
-    await I.see('Get help to resolve your dispute (opens in a new window) with a landlord or tenant.');
+    await I.see('Get help to resolve your dispute (opens in a new tab) with a landlord or tenant.');
     await I.amOnPage('/eligibility/claim-is-for-tenancy-deposit');
   }
 
@@ -186,13 +186,13 @@ class EligibilityCheck {
   async eligibilityGovtDeptValidations(){
     await I.seeInCurrentUrl('/eligibility/government-department');
     await I.waitForContent('Are you claiming against a government department?');
-    await I.see('See list of government departments (opens in a new window).');
+    await I.see('See list of government departments (opens in a new tab).');
     await I.click(fields.govtDeptYes);
     await I.click('Save and continue');
     await I.seeInCurrentUrl('/eligibility/not-eligible?reason=government-department');
     await I.see('You can’t use this service');
-    await I.see('You can\'t use this service to claim against government departments (opens in a new window)');
-    await I.see('Download a paper form (opens in a new window) , complete it and return it to make your claim');
+    await I.see('You can\'t use this service to claim against government departments (opens in a new tab)');
+    await I.see('Download a paper form (opens in a new tab) , complete it and return it to make your claim');
     await this.eligibilityCantUseThisServiceAddress();
     await I.amOnPage('/eligibility/government-department');
   }
@@ -211,7 +211,7 @@ class EligibilityCheck {
     await I.seeInCurrentUrl('/eligibility/not-eligible?reason=under-18-defendant');
     await I.see('You can’t use this service');
     await I.see('You can only use this service to claim against a defendant who’s 18 or over.');
-    await I.see('You might be able to get advice from organisations like Citizens Advice (opens in a new window) about making a claim.');
+    await I.see('You might be able to get advice from organisations like Citizens Advice (opens in a new tab) about making a claim.');
     await this.eligibilityCantUseThisServiceAddress();
     await I.amOnPage('/eligibility/defendant-age');
 
@@ -236,7 +236,7 @@ class EligibilityCheck {
     await I.seeInCurrentUrl('/eligibility/not-eligible?reason=under-18');
     await I.see('You can’t use this service');
     await I.see('You need to be 18 or over to use this service.');
-    await I.see('You might be able to get advice from organisations like , Citizens Advice (opens in a new window) , about making a claim.');
+    await I.see('You might be able to get advice from organisations like , Citizens Advice (opens in a new tab) , about making a claim.');
     await I.amOnPage('/eligibility/over-18');
   }
 
@@ -311,7 +311,7 @@ class EligibilityCheck {
     await I.waitForContent('Do you have a Help With Fees reference number?');
     await I.click(fields.hwfReferenceNo);
     await I.waitForContent('Decide whether to apply for Help with Fees');
-    await I.seeElement('//a[contains(normalize-space(), \'Apply for Help with Fees (opens in a new window)\')]');
+    await I.seeElement('//a[contains(normalize-space(), \'Apply for Help with Fees (opens in a new tab)\')]');
     await I.see('and make a claim using a Help with Fees number. If you need to use the paper Help with Fees application rather than the online version then you will not be able to use Online Civil Money Claims to issue your claim.');
     await I.see('When you apply for Help with Fees you will be asked for the number on your court or tribunal form. Please note that this is N1.');
     await I.see('Make a note of the Help with Fees number when you make an application.');
@@ -321,7 +321,7 @@ class EligibilityCheck {
     await I.see('You can use this service');
     await I.see('Based on your answers you can make a money claim using this service.');
     await I.see('You will have to pay court fees unless you are eligible for Help with Fees.');
-    await I.seeElement('//a[contains(normalize-space(), \'Find out more about Help with Fees (opens in a new window)\')]');
+    await I.seeElement('//a[contains(normalize-space(), \'Find out more about Help with Fees (opens in a new tab)\')]');
     await I.click('Continue');
   }
 

@@ -183,6 +183,32 @@ module.exports = {
     return await response.json();
   },
 
+  triggerCaseDismissalScheduler: async () => {
+    const authToken = await idamHelper.accessToken(config.applicantSolicitorUser);
+    const response = await restHelper.request(
+      `${config.url.civilService}/testing-support/trigger-case-dismissal-scheduler`,
+      {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${authToken}`,
+      }, null, 'GET');
+    const text = await response.text();
+    console.log(`trigger-case-dismissal-scheduler status: ${response.status}, body: ${text}`);
+    return text;
+  },
+
+  triggerJudgmentBufferScheduler: async () => {
+    const authToken = await idamHelper.accessToken(config.applicantSolicitorUser);
+    const response = await restHelper.request(
+      `${config.url.civilService}/testing-support/run-scheduler/JudgementBuffer`,
+      {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${authToken}`,
+      }, null, 'GET');
+    const text = await response.text();
+    console.log(`run-scheduler/JudgementBuffer status: ${response.status}, body: ${text}`);
+    return text;
+  },
+
   hearingFeeUnpaid: async (caseId) => {
     const authToken = await idamHelper.accessToken(config.applicantSolicitorUser);
     await restHelper.request(
@@ -289,6 +315,41 @@ module.exports = {
       }, maxRetries, intervalMs);
     } catch {
       throw new Error(`assertEmailSent: timed out after ${timeoutMs}ms waiting for email for case ${caseId} (templateId=${templateId || '*'}, recipient=${recipientEmail || '*'}). Last response: ${JSON.stringify(lastResult)}`);
+    }
+  },
+
+  assertEmailSentByReference: async (caseId, options = {}) => {
+    const {reference, recipientEmail, timeoutMs = 30000} = options;
+    const intervalMs = 3000;
+    const maxRetries = Math.max(1, Math.floor(timeoutMs / intervalMs));
+    const authToken = await idamHelper.accessToken(config.applicantSolicitorUser);
+
+    const params = new URLSearchParams({caseId});
+    if (recipientEmail) params.set('recipientEmail', recipientEmail);
+    const url = `${config.url.civilService}/testing-support/notifications/sent?${params.toString()}`;
+
+    let lastResult = [];
+
+    try {
+      return await retry(async () => {
+        const response = await restHelper.request(url, {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${authToken}`,
+        }, null, 'GET');
+
+        if (response.status !== 200) {
+          throw new Error(`assertEmailSentByReference: testing-support returned status ${response.status}`);
+        }
+
+        lastResult = await response.json();
+        const match = lastResult.find(n => n.reference && n.reference.includes(reference));
+        if (!match) {
+          throw new Error(`assertEmailSentByReference: no matching email yet for case ${caseId} (reference=${reference}, recipient=${recipientEmail || '*'})`);
+        }
+        return match;
+      }, maxRetries, intervalMs);
+    } catch {
+      throw new Error(`assertEmailSentByReference: timed out after ${timeoutMs}ms waiting for email for case ${caseId} (reference=${reference}, recipient=${recipientEmail || '*'}). Last response: ${JSON.stringify(lastResult)}`);
     }
   },
 

@@ -27,7 +27,7 @@ export const getRedirectUrl = async (claimId: string, IsApplyHelpFeeModel: Gener
     await saveCaseProgression(req, IsApplyHelpFeeModel, hearingFeeHelpSelection);
     const claim = await getClaimById(claimId, req, true);
     claim.feeTypeHelpRequested = FeeType.HEARING;
-    await saveDraftClaim(generateRedisKey(req), claim);
+    await saveDraftClaim(generateRedisKey(req), claim, false, req.session.user?.id);
     return redirectUrl;
   } catch (error) {
     logger.error(error);

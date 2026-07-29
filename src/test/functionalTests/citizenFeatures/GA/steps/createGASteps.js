@@ -160,7 +160,7 @@ class createGASteps {
     //Cannot be withoutnotice
     const caseNumber = StringUtilsComponent.StringUtilsComponent.formatClaimReferenceToAUIDisplayFormat(caseRef);
     const applicationType = 'Vary a judgment';
-    const feeAmount = '15';
+    const feeAmount = '16';
 
     await I.amOnPage(`case/${caseRef}/general-application/application-type`);
     await applicationTypePage.verifyPageContent();

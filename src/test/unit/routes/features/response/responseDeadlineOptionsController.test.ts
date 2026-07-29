@@ -41,6 +41,13 @@ describe('Response Deadline Options Controller', () => {
   });
 
   describe('on GET', () => {
+    it('should call getCaseDataFromStore only once per GET request', async () => {
+      mockGetCaseData.mockClear();
+      mockGetCaseData.mockImplementation(async () => mockClaim);
+      await request(app).get(RESPONSE_DEADLINE_OPTIONS_URL);
+      expect(mockGetCaseData).toHaveBeenCalledTimes(1);
+    });
+
     it('should render the page if response deadline option is not set', async () => {
       mockGetCaseData.mockImplementation(async () => mockClaim);
       await request(app).get(RESPONSE_DEADLINE_OPTIONS_URL).expect((res) => {
@@ -117,6 +124,13 @@ describe('Response Deadline Options Controller', () => {
     });
 
     describe('on POST', () => {
+      it('should call getCaseDataFromStore only once per POST request', async () => {
+        mockGetCaseData.mockClear();
+        mockGetCaseData.mockImplementation(async () => mockClaim);
+        await request(app).post(RESPONSE_DEADLINE_OPTIONS_URL);
+        expect(mockGetCaseData).toHaveBeenCalledTimes(1);
+      });
+
       it('should render error message when response deadline option is not selected', async () => {
         mockGetCaseData.mockImplementation(async () => mockClaim);
         await request(app).post(RESPONSE_DEADLINE_OPTIONS_URL).expect((res) => {

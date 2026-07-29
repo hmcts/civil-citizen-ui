@@ -51,7 +51,7 @@ describe('save queryManagement data', () => {
     //when
     await saveQueryManagement('1', new WhatDoYouWantToDo(WhatToDoTypeOption.CHANGE_CASE), 'whatDoYouWantToDo', req);
     //then
-    expect(spySave).toBeCalledWith('123', claimExpected);
+    expect(spySave).toBeCalledWith('123', claimExpected, false, undefined);
 
   });
 
@@ -68,7 +68,7 @@ describe('save queryManagement data', () => {
     //when
     await saveQueryManagement('1', new WhatDoYouWantToDo(WhatToDoTypeOption.CHANGE_CASE), 'whatDoYouWantToDo', req);
     //then
-    expect(spySave).toBeCalledWith('1234', claimExpected);
+    expect(spySave).toBeCalledWith('1234', claimExpected, false, undefined);
 
   });
 
@@ -283,7 +283,7 @@ describe('Uploading files', () => {
     } as unknown as AppRequest;
     await removeSelectedDocument(appRequest, 0, claim.queryManagement.createQuery);
     expect(claim.queryManagement.createQuery.uploadedFiles.length).toBe(0);
-    expect(saveSpy).toBeCalledWith('1234', claim);
+    expect(saveSpy).toBeCalledWith('1234', claim, false, undefined);
   });
 
 });

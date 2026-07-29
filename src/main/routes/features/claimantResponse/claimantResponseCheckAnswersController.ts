@@ -22,6 +22,7 @@ import {getClaimById} from 'modules/utilityService';
 import {SpecificCourtLocation} from 'models/directionsQuestionnaire/hearing/specificCourtLocation';
 import {ValidationError, Validator} from 'class-validator';
 import {getRouteParam} from 'common/utils/routeParamUtils';
+import {validateOtherWitnesses} from 'services/features/directionsQuestionnaire/otherWitnessesService';
 
 const checkAnswersViewPath = 'features/claimantResponse/check-answers';
 const validator = new Validator();
@@ -67,6 +68,10 @@ claimantResponseCheckAnswersController.post(CLAIMANT_RESPONSE_CHECK_ANSWERS_URL,
     if (claim.claimantResponse?.directionQuestionnaire?.hearing && !claim.claimantResponse.directionQuestionnaire.hearing?.specificCourtLocation?.courtLocation) {
       form.errors = validateFields(new GenericForm<SpecificCourtLocation>(SpecificCourtLocation.fromObject(claim.claimantResponse.directionQuestionnaire.hearing?.specificCourtLocation as any)), form.errors);
     }
+    form.errors = [
+      ...form.errors,
+      ...validateOtherWitnesses(claim.claimantResponse?.directionQuestionnaire?.witnesses?.otherWitnesses),
+    ];
     if (form.hasErrors()) {
       const claim = await getClaimById(claimId, req, true);
       await renderView(<AppRequest>req, res, form, claim, carmEnabled, mintiEnabled);

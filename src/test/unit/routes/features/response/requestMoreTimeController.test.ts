@@ -39,12 +39,22 @@ describe('Request More Time Controller', () => {
   });
 
   describe('on GET', () => {
+    beforeEach(() => {
+      mockGetCaseData.mockClear();
+    });
+
     it('should render the page if there is no additional time set', async () => {
       mockGetCaseData.mockImplementation(async () => mockClaim);
       await request(app).get(REQUEST_MORE_TIME_URL).expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain('Request more time to respond');
       });
+    });
+
+    it('should call getCaseDataFromStore only once per GET request', async () => {
+      mockGetCaseData.mockImplementation(async () => mockClaim);
+      await request(app).get(REQUEST_MORE_TIME_URL);
+      expect(mockGetCaseData).toHaveBeenCalledTimes(1);
     });
 
     it('should render the page if additional time is set', async () => {

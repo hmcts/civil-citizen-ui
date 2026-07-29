@@ -30,7 +30,7 @@ export const saveClaimAmountBreakdownForm = async (claimantId: string, amountBre
       return convertFormToJson(row);
     });
     claim.totalClaimAmount = roundOffTwoDecimals(totalClaimAmount);
-    await saveDraftClaim(claimantId, claim);
+    await saveDraftClaim(claimantId, claim, false, claimantId);
   }catch(error){
     logger.error(error);
     throw error;

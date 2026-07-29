@@ -5,14 +5,15 @@ import {Claim} from 'models/claim';
 import {AppRequest} from 'models/AppRequest';
 import {BASE_ELIGIBILITY_URL, CLAIM_INCOMPLETE_SUBMISSION_URL} from 'routes/urls';
 import {getTaskLists} from 'services/features/claim/taskListService';
-import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {TaskStatus} from 'common/models/taskList/TaskStatus';
+import {getStashedClaimOrFromStore, stashClaimOnRequest} from 'common/utils/claimRequestLocals';
 
 export const checkYourAnswersClaimGuard = async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const userId = req.session?.user?.id;
     const lang = req?.query?.lang ? req.query.lang : req?.cookies?.lang;
-    const caseData: Claim = await getCaseDataFromStore(userId);
+    const caseData: Claim = await getStashedClaimOrFromStore(req, userId);
+    stashClaimOnRequest(req, caseData);
 
     if (!caseData.isDraftClaim()) {
       return res.redirect(BASE_ELIGIBILITY_URL);
