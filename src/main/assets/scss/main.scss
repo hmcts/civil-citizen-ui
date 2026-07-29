@@ -2,6 +2,82 @@
 @import './task-list';
 @import './citizen-ui-colours';
 
+/* Spike: MOJ multi-file-upload styles (from @ministryofjustice/frontend) */
+.moj-hidden {
+  display: none !important;
+}
+
+.moj-multi-file-upload {
+  margin-bottom: 40px;
+}
+
+.moj-multi-file-upload--enhanced .moj-multi-file-upload__button {
+  display: none;
+}
+
+.moj-multi-file-upload__dropzone {
+  display: flex;
+  padding: govuk-spacing(9) govuk-spacing(3);
+  transition:
+    outline-offset 0.1s ease-in-out,
+    background-color 0.1s linear;
+  outline: 3px dashed govuk-colour("black");
+  text-align: center;
+}
+
+.moj-multi-file-upload__dropzone label {
+  display: inline-block;
+  width: auto;
+  margin-bottom: 0;
+}
+
+.moj-multi-file-upload__dropzone p {
+  margin-right: 10px;
+  margin-bottom: 0;
+  padding-top: 7px;
+}
+
+.moj-multi-file-upload__dropzone [type="file"] {
+  position: absolute;
+  left: -9999em;
+}
+
+.moj-multi-file-upload--dragover {
+  outline-color: #6f777b;
+  background: #b1b4b6;
+}
+
+.moj-multi-file-upload--focused {
+  outline: none;
+  color: $govuk-focus-text-colour;
+  background-color: $govuk-focus-colour;
+  box-shadow:
+    0 -2px $govuk-focus-colour,
+    0 4px $govuk-focus-text-colour;
+}
+
+.moj-multi-file-upload__error {
+  color: govuk-colour("red");
+  font-weight: bold;
+
+  svg {
+    margin-right: govuk-spacing(2);
+    float: left;
+    fill: currentcolor;
+  }
+}
+
+.moj-multi-file-upload__success {
+  color: govuk-colour("green");
+  font-weight: bold;
+
+  svg {
+    margin-right: govuk-spacing(2);
+    float: left;
+    fill: currentcolor;
+  }
+}
+
 .civil-header {
   &__service {
     background-color: #f4f8fb;

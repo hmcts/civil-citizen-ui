@@ -40,7 +40,7 @@ const mockCaseDocument: CaseDocument = <CaseDocument>{
   createdDatetime: new Date(),
 };
 const file = {
-  fieldname: 'selectedFile',
+  fieldname: 'documents',
   originalname: 'test.text',
   mimetype: 'text/plain',
   size: 123,
@@ -205,7 +205,7 @@ describe('General Application - upload evidence docs to support application', ()
       const res = await request(app)
         .post(GA_UPLOAD_DOCUMENTS_URL)
         .field('action', 'uploadButton')
-        .attach('selectedFile', largeBuffer, { filename: 'large.pdf', contentType: 'application/pdf' });
+        .attach('documents', largeBuffer, { filename: 'large.pdf', contentType: 'application/pdf' });
       expect(res.status).toBe(302);
       expect(res.header.location).toContain('upload-documents');
       expect(save).toHaveBeenCalledTimes(1);
@@ -219,7 +219,7 @@ describe('General Application - upload evidence docs to support application', ()
       await request(app)
         .post(url)
         .field('action', 'uploadButton')
-        .attach('selectedFile', file.buffer, { filename: file.originalname, contentType: file.mimetype })
+        .attach('documents', file.buffer, { filename: file.originalname, contentType: file.mimetype })
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.text).toContain(GA_UPLOAD_DOCUMENTS_URL);
@@ -236,7 +236,7 @@ describe('General Application - upload evidence docs to support application', ()
     });
     it('should return http 500 when has error in the get method', async () => {
       const file = {
-        fieldname: 'selectedFile',
+        fieldname: 'documents',
         originalname: 'test.text',
         mimetype: 'text/plain',
         size: 123,
@@ -246,7 +246,7 @@ describe('General Application - upload evidence docs to support application', ()
       await request(app)
         .post(GA_UPLOAD_DOCUMENTS_URL)
         .field('action', 'uploadButton')
-        .attach('selectedFile', file.buffer, { filename: file.originalname, contentType: file.mimetype })
+        .attach('documents', file.buffer, { filename: file.originalname, contentType: file.mimetype })
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
@@ -270,7 +270,7 @@ describe('General Application - upload evidence docs to support application', ()
         await request(app)
           .post(GA_UPLOAD_DOCUMENTS_COSC_URL.replace(':id', '1111'))
           .field('action', 'uploadButton')
-          .attach('selectedFile', file.buffer, { filename: file.originalname, contentType: file.mimetype })
+          .attach('documents', file.buffer, { filename: file.originalname, contentType: file.mimetype })
           //Then
           .expect((res: { status: unknown, header: { location: unknown }, text: unknown; }) => {
             expect(res.status).toBe(302);
@@ -294,7 +294,7 @@ describe('General Application - upload evidence docs to support application', ()
       await request(app)
         .post(GA_UPLOAD_DOCUMENTS_COSC_URL.replace(':id', '1111'))
         .field('action', 'uploadButton')
-        .attach('selectedFile', file.buffer, { filename: file.originalname, contentType: file.mimetype });
+        .attach('documents', file.buffer, { filename: file.originalname, contentType: file.mimetype });
       await request(app)
         .post(GA_UPLOAD_DOCUMENTS_COSC_URL.replace(':id', '1111'))
         .field('action', 'submit')

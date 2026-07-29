@@ -1,7 +1,7 @@
 {% extends "claim-details-tpl-dashboard.njk" %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
-{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
 {% from "govuk/components/file-upload/macro.njk" import govukFileUpload %}
+{% from "moj/components/multi-file-upload/macro.njk" import mojMultiFileUpload %}
 {% from "../../macro/page-title.njk" import setPageTitle %}
 {% from "../../macro/csrf.njk" import csrfProtection %}
 {% from "../../macro/heading-with-caption.njk" import headingWithCaption %}
@@ -13,55 +13,56 @@
 
 {% block nestedContent %}
   {% set errors = "" %}
-  {% set  idValue = "selectedFile" %}
+  {% set idValue = "documents" %}
   {% if form.hasErrors() %}
     {% set errors = translateErrors(form.getAllErrors(),t)[0] %}
     {% set idValue = errors.fieldName %}
   {% endif %}
-      {{ headingWithCaption(t, headerTitle, 'PAGES.GENERAL_APPLICATION.UPLOAD_DOCUMENTS.TITLE') }}
-      <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.UPLOAD_DOCUMENTS.MSG1') }}</p>
-      <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.UPLOAD_DOCUMENTS.NAME_DOCUMENT') }}</p>
-      <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.UPLOAD_DOCUMENTS.DOCUMENT_TYPE_SIZE_WITH_SAVE_FILE') }}</p>
-      <form method="post" action="{{ currentUrl }}&_csrf={{ csrf }}" enctype='multipart/form-data' novalidate>
-        {{ csrfProtection(csrf) }}
-        <div class="govuk-inset-text" >
-        {{govukFileUpload({
-          id: idValue,
-          name: "selectedFile",
-          label: {
-            html: '<strong>' + t('COMMON.UPLOAD_FILE_LABEL') +'</strong>'
-          },
-          errorMessage: { text: t(errors.text) } if t(errors.text) else ''
-        }) }}
-        {{ govukButton({
-          id: 'uploadFileButton',
-          name: 'action',
-          value: 'uploadButton',
-          text: t('COMMON.SAVE_FILE'),
-          classes: "govuk-button--secondary govuk-!-margin-bottom-0"
-        }) }}
-        </div>
-        {% if formattedSummary.summaryList.rows.length > 0 %}
-          <h2 class="govuk-heading-m">{{ t('PAGES.GENERAL_APPLICATION.UPLOAD_DOCUMENTS.LIST_TITLE') }}</h2>
-          <div class="govuk-section-break--s govuk-section-break--visible"></div>
-          {% for row in formattedSummary.summaryList.rows  %}
-             <dl class="govuk-summary-list govuk-!-margin-bottom-0">
-              <div class="govuk-summary-list__row ">
-                <dt class="govuk-summary-list__key">
-                  {{ row.key.text }}
-                </dt>
-                <dd class="govuk-summary-list__actions">
-                  <a class="govuk-link" href="{{ row.actions.items[0].href }}">
-                    {{ t('PAGES.GENERAL_APPLICATION.UPLOAD_DOCUMENTS.REMOVE_DOC') }}<span class="govuk-visually-hidden">
-              {{ row.key.text }}</span>
-                  </a>
-                </dd>
-              </div>
-            </dl>
-            {% endfor %}
-        {% endif %}
-        <div class="govuk-button-group govuk-!-margin-top-8">
-          {{ addButton(t, 'CONTINUE', cancelUrl) }}
-        </div>
-      </form>
+
+  {{ headingWithCaption(t, headerTitle, 'PAGES.GENERAL_APPLICATION.UPLOAD_DOCUMENTS.TITLE') }}
+  <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.UPLOAD_DOCUMENTS.MSG1') }}</p>
+  <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.UPLOAD_DOCUMENTS.NAME_DOCUMENT') }}</p>
+  <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.UPLOAD_DOCUMENTS.DOCUMENT_TYPE_SIZE') }}</p>
+
+  <form method="post" action="{{ currentUrl }}&_csrf={{ csrf }}" enctype="multipart/form-data" novalidate>
+    {{ csrfProtection(csrf) }}
+
+    {% set uploadHtml %}
+      {{ govukFileUpload({
+        id: idValue,
+        name: "documents",
+        classes: "moj-multi-file-upload__input",
+        label: {
+          text: t('COMMON.UPLOAD_FILE_LABEL'),
+          classes: "govuk-label--m"
+        },
+        attributes: { multiple: "" },
+        errorMessage: { text: t(errors.text) } if t(errors.text) else undefined
+      }) }}
+
+      {{ govukButton({
+        id: "uploadFileButton",
+        name: "action",
+        value: "uploadButton",
+        text: t('COMMON.SAVE_FILE'),
+        classes: "govuk-button--secondary moj-multi-file-upload__button"
+      }) }}
+    {% endset %}
+
+    {{ mojMultiFileUpload({
+      uploadedFiles: {
+        heading: { text: t('PAGES.GENERAL_APPLICATION.UPLOAD_DOCUMENTS.LIST_TITLE') },
+        items: uploadedFiles if uploadedFiles else []
+      },
+      uploadHtml: uploadHtml,
+      attributes: {
+        "data-upload-url": ajaxUploadUrl,
+        "data-delete-url": ajaxDeleteUrl
+      }
+    }) }}
+
+    <div class="govuk-button-group govuk-!-margin-top-8">
+      {{ addButton(t, 'CONTINUE', cancelUrl) }}
+    </div>
+  </form>
 {% endblock %}

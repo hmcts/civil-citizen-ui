@@ -14,6 +14,7 @@ import { initAll as initMojFrontend } from '@ministryofjustice/frontend';
 import './modules/cookie/cookieConfig';
 import './assets/js/cookies-controller.js';
 import './assets/js/disable-submit.js';
+import './assets/js/multi-file-upload.js';
 
 initGovukFrontend();
 initMojFrontend();
