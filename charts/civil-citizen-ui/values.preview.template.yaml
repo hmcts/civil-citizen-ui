@@ -167,7 +167,7 @@ civil-service:
       CMC_DB_USERNAME: hmcts
       CMC_DB_NAME: "pr-${CHANGE_ID}-cmc"
 
-      SCHEDULER_ACTIVE_SCHEDULERS: "GAProofOfDebtScheduler"
+      SCHEDULER_ACTIVE_SCHEDULERS: "CoscApplicationProcessor"
       SCHEDULER_ENABLED_DEFENDANT_RESPONSE: false
       SCHEDULER_ENABLED_BUNDLE_CREATION: false
       SCHEDULER_ENABLED_HEARING_CVP_LINK: false
