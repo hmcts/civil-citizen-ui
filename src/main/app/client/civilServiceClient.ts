@@ -483,6 +483,11 @@ export class CivilServiceClient {
     };
     assertNonEmpty(userId, 'User id is undefined');
     assertNonEmpty(normalizedClaimId, 'Claim id is undefined');
+    logger.info('Submitting event to civil-service', {
+      event,
+      claimId: normalizedClaimId,
+      caseDataUpdateFields: Object.keys(updatedClaim ?? {}),
+    });
     try {
       const response = await this.client.post(CIVIL_SERVICE_SUBMIT_EVENT // nosonar
         .replace(':submitterId', userId)
