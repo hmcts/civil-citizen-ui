@@ -15,6 +15,8 @@ import './modules/cookie/cookieConfig';
 import './assets/js/cookies-controller.js';
 import './assets/js/disable-submit.js';
 import './assets/js/multi-file-upload.js';
+import { initAutoUploadFile } from './assets/js/auto-upload-file.js';
 
 initGovukFrontend();
 initMojFrontend();
+initAutoUploadFile();

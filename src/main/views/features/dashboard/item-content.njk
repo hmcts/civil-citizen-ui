@@ -289,7 +289,7 @@
            value: content.data.value,
            javascript: true,
            label: {
-             html: '<strong>' + t(content.data.text) + '</strong><div id="' + content.data.category + '[' + content.data.index + '][documentName]"><p class="documentName">' + content.data.documentName + '</p><hr class="govuk-section-break--s govuk-section-break--visible"></div>'
+             html: '<strong>' + t(content.data.text) + '</strong>'
            },
            errorMessage: { text: t(content.data.errorMessage) } if content.data.errorMessage,
            attributes: {
@@ -297,6 +297,10 @@
               'data-id': content.data.category+'[%index%]['+content.data.field+']'
            }
         }) }}
+         {% if content.data.documentName %}
+           <h3 class="govuk-heading-s govuk-!-margin-top-4 govuk-!-margin-bottom-1">{{ t('PAGES.UPLOAD_DOCUMENTS.UPLOADED_FILE') }}</h3>
+           <p class="govuk-body documentName" id="{{ content.data.category + '[' + content.data.index + '][documentName]' }}">{{ content.data.documentName }}</p>
+         {% endif %}
          {{ govukButton({
                           id: 'uploadFileButton',
                           name: 'action',
@@ -305,7 +309,7 @@
                             'data-value': content.data.category+'[%index%][uploadButton]'
                           },
            text: t('COMMON.SAVE_FILE'),
-           classes: "govuk-button--secondary govuk-!-margin-bottom-0"
+           classes: "govuk-button--secondary govuk-!-margin-bottom-0 js-auto-upload-button"
          }) }}
     </div>
     {{ govukInput({

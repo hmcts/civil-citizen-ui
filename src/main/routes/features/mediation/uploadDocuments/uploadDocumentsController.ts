@@ -78,7 +78,7 @@ function renderView(form: GenericForm<UploadDocumentsForm>,uploadDocuments:Uploa
     claimId: caseNumberPrettify(claimId),
     pageTitle: 'PAGES.UPLOAD_YOUR_DOCUMENTS.TITLE',
     subtitle: 'PAGES.UPLOAD_DOCUMENTS.SUBTITLE',
-    paragraph: 'PAGES.MEDIATION.START_PAGE.EACH_DOCUMENT_MUST_WITH_SAVE_FILE',
+    paragraph: 'PAGES.MEDIATION.START_PAGE.EACH_DOCUMENT_MUST',
     sectionTitle: 'PAGES.MEDIATION.UPLOAD_DOCUMENTS.SECTION_TITLE',
     partyInformation: partyInformation(claim),
     backLinkUrl: constructResponseUrlWithIdParams(claimId, MEDIATION_TYPE_OF_DOCUMENTS),

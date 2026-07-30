@@ -8,7 +8,19 @@
 }
 
 .moj-multi-file-upload {
+  display: flex;
+  flex-direction: column;
   margin-bottom: 40px;
+}
+
+/* Spike: show upload control first, uploaded files list below */
+.moj-multi-file-upload__upload {
+  order: 1;
+}
+
+.moj-multi-file__uploaded-files {
+  order: 2;
+  margin-top: govuk-spacing(6);
 }
 
 .moj-multi-file-upload--enhanced .moj-multi-file-upload__button {
