@@ -35,3 +35,7 @@ const convertRedisDataToGaDocumentsResponse = (data: string) => {
   }
   return [];
 };
+export const deleteGADocumentsFromDraftStore = async (redisKey: string): Promise<void> => {
+  redisKey += docKey;
+  await app.locals.draftStoreClient.del(redisKey);
+};
