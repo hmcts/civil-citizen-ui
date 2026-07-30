@@ -486,7 +486,7 @@ export class CivilServiceClient {
     logger.info('Submitting event to civil-service', {
       event,
       claimId: normalizedClaimId,
-      caseDataUpdateFields: Object.keys(updatedClaim ?? {}),
+      caseDataUpdate: updatedClaim,
     });
     try {
       const response = await this.client.post(CIVIL_SERVICE_SUBMIT_EVENT // nosonar
