@@ -26,6 +26,14 @@ describe('Understanding Your Options Controller', () => {
   });
 
   describe('on GET', () => {
+    it('should call getCaseDataFromStore only once per GET request', async () => {
+      app.locals.draftStoreClient = mockCivilClaim;
+      const getCaseDataSpy = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
+      await request(app).get(UNDERSTANDING_RESPONSE_OPTIONS_URL);
+      expect(getCaseDataSpy).toHaveBeenCalledTimes(1);
+      getCaseDataSpy.mockRestore();
+    });
+
     it('should return understanding you options page successfully', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)

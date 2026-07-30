@@ -9,18 +9,17 @@ import {Claim} from 'common/models/claim';
 import {PartyType} from 'common/models/partyType';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {NextFunction, Request, Response} from 'express';
-import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {getStashedClaimOrFromStore, stashClaimOnRequest} from 'common/utils/claimRequestLocals';
 import {RESPONSE_CHECK_ANSWERS_URL} from 'routes/urls';
 import {savePcqId} from 'client/pcq/savePcqIdClaim';
-import {AppRequest} from 'common/models/AppRequest';
 import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const ACTOR = 'respondent';
 
 export const isFirstTimeInPCQ = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const redisKey = generateRedisKey(<AppRequest>req);
-    const caseData: Claim = await getCaseDataFromStore(redisKey);
+    const caseData: Claim = await getStashedClaimOrFromStore(req);
+    stashClaimOnRequest(req, caseData);
     const pcqShutterOn = await isPcqShutterOn();
 
     if (pcqShutterOn || caseData.respondentResponsePcqId) {

@@ -41,7 +41,7 @@ uploadAdditionalDocumentsController.get(GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL, (asy
       form = new GenericForm(uploadedDocument, fileUploadErrors);
     }
     if (req.query?.indexId) {
-      await removeSelectedDocument(redisKey, claim, Number(req.query.indexId) - 1);
+      await removeSelectedDocument(redisKey, claim, Number(req.query.indexId) - 1, req.session.user?.id);
       const currentUrl = constructResponseUrlWithIdAndAppIdParams(id, gaId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL);
       const redirectUrl = req.query?.lang ? `${currentUrl}?lang=${req.query.lang}` : currentUrl;
       return res.redirect(redirectUrl);

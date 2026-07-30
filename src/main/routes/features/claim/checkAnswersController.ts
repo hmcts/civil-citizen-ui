@@ -9,6 +9,7 @@ import {
   deleteDraftClaimFromStore,
   getCaseDataFromStore,
 } from 'modules/draft-store/draftStoreService';
+import {getStashedClaimOrFromStore} from 'common/utils/claimRequestLocals';
 import {Claim} from 'common/models/claim';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {AppRequest} from 'common/models/AppRequest';
@@ -56,7 +57,7 @@ claimCheckAnswersController.get(CLAIM_CHECK_ANSWERS_URL,
     try {
       const userId = req.session?.user?.id;
       const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-      const claim = await getCaseDataFromStore(userId);
+      const claim = await getStashedClaimOrFromStore(req, userId);
       const form = new GenericForm(getStatementOfTruth(claim));
       const isCarmEnabled = await isCarmEnabledForCase(claim.draftClaimCreatedAt);
       renderView(res, form, claim, userId, lang, isCarmEnabled);

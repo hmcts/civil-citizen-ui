@@ -42,10 +42,10 @@ export const getSummaryList = (additionalDocumentsList: UploadAdditionalDocument
   return formattedSummary;
 };
 
-export const removeSelectedDocument = async (redisKey: string, claim: Claim, index: number): Promise<void> => {
+export const removeSelectedDocument = async (redisKey: string, claim: Claim, index: number, userId?: string): Promise<void> => {
   try {
     claim?.generalApplication?.uploadAdditionalDocuments?.splice(index, 1);
-    await saveDraftClaim(redisKey, claim);
+    await saveDraftClaim(redisKey, claim, false, userId);
   } catch (error) {
     logger.error(error);
     throw error;
@@ -64,7 +64,7 @@ export const uploadSelectedFile = async (req: AppRequest, claim: Claim) => {
   if (!form.hasErrors()) {
     uploadedDocument.caseDocument = await civilServiceClientForDocRetrieve.uploadDocument(req, fileUpload);
     uploadAdditionalDocuments.push(uploadedDocument);
-    await saveDraftClaim(generateRedisKey(req), claim);
+    await saveDraftClaim(generateRedisKey(req), claim, false, req.session.user?.id);
   } else {
     const errors = translateErrors(form.getAllErrors(), t);
     req.session.fileUpload = JSON.stringify(errors);

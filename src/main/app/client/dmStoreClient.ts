@@ -1,13 +1,12 @@
 import config from 'config';
 import Axios, {AxiosInstance, AxiosResponse} from 'axios';
 import {AssertionError} from 'assert';
-import {ServiceAuthProviderClient} from './serviceAuthProviderClient';
+import {getServiceAuthorisationToken} from './serviceAuthProviderClient';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('dmStoreClient');
 
-const serviceAuthProviderClientBaseUrl = config.get<string>('services.serviceAuthProvider.baseUrl');
-const serviceAuthProviderClient: ServiceAuthProviderClient = new ServiceAuthProviderClient(serviceAuthProviderClientBaseUrl);
+const xuiMicroserviceName = config.get<string>('services.dmStore.microserviceName');
 export class DmStoreClient {
   client: AxiosInstance;
 
@@ -20,7 +19,7 @@ export class DmStoreClient {
   }
 
   async getConfig() {
-    const serviceauthToken = await serviceAuthProviderClient.getServiceAuthorisationToken();
+    const serviceauthToken = await getServiceAuthorisationToken(xuiMicroserviceName);
     return {
       headers: {
         'Content-Type': 'application/pdf',
