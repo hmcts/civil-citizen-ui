@@ -12,7 +12,7 @@ const claimFee = 80;
 const deadline = '6 March 2024';
 const claimTotalAmount = claimAmount + claimFee;
 
-Feature('Defendant linking through CUI').tag('@civil-citizen-master ', '@civil-citizen-pr ','@civil-citizen-nightly ', '@ui-defendant-linking ', '@ui-full-admit');
+Feature('Defendant linking through CUI').tag('@civil-citizen-master @civil-citizen-pr @civil-citizen-nightly @ui-full-admit');
 
 Scenario('CTSC admin links a defendant to a LiP claim through CUI', async ({I, api}) => {
   // Create temporary claimant and defendant users.
