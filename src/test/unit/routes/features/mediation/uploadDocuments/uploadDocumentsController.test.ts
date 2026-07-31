@@ -325,6 +325,37 @@ describe('Mediation upload your documents Controller', () => {
         });
     });
 
+    it('should clear caseDocument when deleteFile is triggered', async () => {
+      const uploadDocumentsService = require('services/features/mediation/uploadDocuments/uploadDocumentsService');
+      const saveUploadDocumentSpy = jest.spyOn(uploadDocumentsService, 'saveUploadDocument');
+
+      await request(app)
+        .post(CONTROLLER_URL)
+        .send({
+          action: 'documentsForYourStatement[0][deleteFile]',
+          documentsForYourStatement: [{
+            yourName: 'Word',
+            dateInputFields: {
+              dateDay: '14',
+              dateMonth: '10',
+              dateYear: '2020',
+            },
+            caseDocument: caseDoc,
+          }],
+        })
+        .expect((res: express.Response) => {
+          expect(res.status).toBe(200);
+        });
+
+      expect(saveUploadDocumentSpy).toHaveBeenCalled();
+      const savedTypeOfDocuments = saveUploadDocumentSpy.mock.calls[0][1];
+      const yourStatement = savedTypeOfDocuments.find(
+        (item: TypeOfDocuments) => item.type === TypeOfMediationDocuments.YOUR_STATEMENT,
+      );
+      expect(yourStatement.uploadDocuments[0].caseDocument).toBeUndefined();
+      saveUploadDocumentSpy.mockRestore();
+    });
+
     it('should return http 500 when has error', async () => {
       mockGetCaseData.mockImplementation(async () => {
         throw new Error(TestMessages.REDIS_FAILURE);
