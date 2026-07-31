@@ -207,16 +207,19 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function showRemoveButton() {
-    const hiddenRemoveButton = document.getElementsByClassName('remove-row govuk-visually-hidden');
+    const hiddenRemoveButton = document.querySelectorAll('.remove-row.govuk-!-display-none, .remove-row.govuk-visually-hidden');
     if (elementExists(hiddenRemoveButton)) {
-      Array.from(hiddenRemoveButton).forEach(element => element.classList.remove('govuk-visually-hidden'));
+      Array.from(hiddenRemoveButton).forEach(element => {
+        element.classList.remove('govuk-!-display-none');
+        element.classList.remove('govuk-visually-hidden');
+      });
     }
   }
 
   function hideRemoveButton() {
     const removeButton = document.getElementsByClassName('remove-row');
     if (elementExists(removeButton)) {
-      Array.from(removeButton).forEach(element => element.classList.add('govuk-visually-hidden'));
+      Array.from(removeButton).forEach(element => element.classList.add('govuk-!-display-none'));
     }
   }
 
