@@ -10,8 +10,7 @@
   {{ setPageTitle(t, 'PAGES.CLAIMANT_PHONE.PAGE_TITLE') }}
 {% endblock %}
 {% block content %}
-  <div class="govuk-width-container">
-    <main class="govuk-main-wrapper" role="main">
+
       {% set errors = form.getErrors() %}
       {% if errors.length %}
         {{ errorSummary(errors, t) }}
@@ -57,6 +56,5 @@
           {{ contactUsForHelp(t) }}
         </div>
       </div>
-    </main>
-  </div>
+
 {% endblock %}
