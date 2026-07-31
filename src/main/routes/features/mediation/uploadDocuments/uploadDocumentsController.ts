@@ -133,6 +133,12 @@ mediationUploadDocumentsController.post(MEDIATION_UPLOAD_DOCUMENTS, multerMiddle
       addAnother(uploadDocumentsForm,TypeOfMediationDocuments.DOCUMENTS_REFERRED_TO_IN_STATEMENT);
     } else if (action?.includes('[uploadButton]')) {
       await uploadSingleFile(req, res, claimId, action, form);
+    } else if (action?.includes('[deleteFile]')) {
+      const [category, index] = extractCategoryAndIndex(action);
+      const section = (form.model as any)[category]?.[Number(index)];
+      if (section) {
+        section.caseDocument = undefined;
+      }
     } else if (action?.includes('[removeButton]')) {
       removeItem(uploadDocumentsForm, action);
     }

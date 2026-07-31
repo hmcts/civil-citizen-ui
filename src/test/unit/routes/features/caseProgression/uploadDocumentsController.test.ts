@@ -928,6 +928,28 @@ describe('on POST', () => {
 
   });
 
+  it('should clear caseDocument when deleteFile is triggered', async () => {
+    const formWithUploadedFile = new UploadDocumentsUserForm();
+    formWithUploadedFile.documentsForDisclosure = [new TypeOfDocumentSection()];
+    formWithUploadedFile.documentsForDisclosure[0].caseDocument = caseDoc;
+    formWithUploadedFile.documentsForDisclosure[0].typeOfDocument = 'Contract';
+
+    (getUploadDocumentsForm as jest.Mock).mockReturnValue(formWithUploadedFile);
+    (saveCaseProgression as jest.Mock).mockResolvedValue(true);
+
+    const response = await request(app)
+      .post(CP_UPLOAD_DOCUMENTS_URL)
+      .send({
+        action: 'documentsForDisclosure[0][deleteFile]',
+      });
+
+    expect(response.status).toBe(200);
+    expect(formWithUploadedFile.documentsForDisclosure).toHaveLength(1);
+    expect(formWithUploadedFile.documentsForDisclosure[0].caseDocument).toBeUndefined();
+    expect(formWithUploadedFile.documentsForDisclosure[0].typeOfDocument).toBe('Contract');
+    expect(saveCaseProgression).toHaveBeenCalled();
+  });
+
   it('should remove the second trial document when 3 docs are present and removeButton for index 1 is triggered', async () => {
 
     const formWithMultipleDocs = new UploadDocumentsUserForm();
