@@ -149,6 +149,7 @@ export {app};
 app.use(cookieParser());
 app.use(setLanguage);
 app.use(favicon(path.join(__dirname, 'public', 'assets', 'images', 'favicon.ico')) as any);
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(express.json({ limit: '500mb' }));
 app.use(express.urlencoded({ limit: '500mb', extended: true }));
@@ -191,7 +192,6 @@ app.use(setCaseReferenceCookie({secure: productionMode, maxAge: cookieMaxAge}));
 app.enable('trust proxy');
 new Nunjucks(developmentMode).enableFor(app);
 new Helmet(config.get('security')).enableFor(app);
-app.use(express.static(path.join(__dirname, 'public')));
 new HealthCheck().enableFor(app);
 
 app.use(SIGN_OUT_URL, deleteGAGuard);
