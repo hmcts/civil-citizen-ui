@@ -4,7 +4,7 @@ const DefendantLinkingPage = require('../pages/defendantLinking');
 const {I} = inject();
 
 class DefendantLinkingSteps {
-  async LinkDefendantToClaimThroughCUI(
+  async LinkDefendantToClaimAsCTSCAdmin(
     claimReference,
     defendantEmail,
   ) {
