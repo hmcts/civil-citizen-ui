@@ -1120,7 +1120,7 @@ export class Claim {
   }
 
   hasBreathingSpace(): boolean {
-    return !!this.enterBreathing && !this.liftBreathing;
+    return this.enterBreathing && !this.liftBreathing;
   }
 
   isStandardBreathingSpace(): boolean {
