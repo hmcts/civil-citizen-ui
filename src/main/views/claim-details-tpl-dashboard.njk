@@ -114,6 +114,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </div>
 {% endblock %}
 {% block footer %}
+<div role="contentinfo">
 {% if developmentMode%}
 {{ govukFooter({
     contentLicence: {
@@ -186,6 +187,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       ]
     }
   }) }} {% endif %}
+</div>
 {% endblock %}
 {% block bodyEnd %}
 

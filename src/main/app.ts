@@ -30,6 +30,7 @@ import {
   BREATHING_SPACE_START_DATE_URL,
   BREATHING_SPACE_CANCEL_URL,
   BREATHING_SPACE_CYA_URL,
+  BREATHING_SPACE_CONFIRMATION_URL,
   CLAIMANT_RESPONSE_CHECK_ANSWERS_URL, COSC_FINAL_PAYMENT_DATE_URL,
   CP_UPLOAD_DOCUMENTS_URL,
   CP_FINALISE_TRIAL_ARRANGEMENTS_CONFIRMATION_URL,
@@ -154,6 +155,7 @@ export {app};
 app.use(cookieParser());
 app.use(setLanguage);
 app.use(favicon(path.join(__dirname, 'public', 'assets', 'images', 'favicon.ico')) as any);
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(express.json({ limit: '500mb' }));
 app.use(express.urlencoded({ limit: '500mb', extended: true }));
@@ -196,7 +198,6 @@ app.use(setCaseReferenceCookie({secure: productionMode, maxAge: cookieMaxAge}));
 app.enable('trust proxy');
 new Nunjucks(developmentMode).enableFor(app);
 new Helmet(config.get('security')).enableFor(app);
-app.use(express.static(path.join(__dirname, 'public')));
 new HealthCheck().enableFor(app);
 
 app.use(SIGN_OUT_URL, deleteGAGuard);
@@ -268,6 +269,7 @@ app.use([DQ_REQUEST_EXTRA_4WEEKS_URL,
   BREATHING_SPACE_START_DATE_URL,
   BREATHING_SPACE_CANCEL_URL,
   BREATHING_SPACE_CYA_URL,
+  BREATHING_SPACE_CONFIRMATION_URL,
 ], trackHistory);
 
 app.use([

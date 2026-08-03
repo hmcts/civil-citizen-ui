@@ -2644,6 +2644,17 @@
       "NEXT": "Nesaf",
       "NEXT_STEPS": "Y camau nesaf",
       "NOTIFICATIONS": {
+        "BREATHING_SPACE": {
+          "CLAIMANT_CONTENT_MENTAL_HEALTH": "Mae'r achos yn destun lle i anadlu oherwydd argyfwng iechyd meddwl",
+          "CLAIMANT_CONTENT_STANDARD": "Mae'r achos yn destun lle i anadlu safonol.",
+          "DEFENDANT_CONTENT": "Mae'r achos yn destun lle i anadlu",
+          "LIFT_LINK_TEXT": "codi'r lle i anadlu",
+          "LIFT_LINK_TEXT_STANDARD": "godi'r lle i anadlu",
+          "LIFT_MENTAL_HEALTH": "Bydd hwn yn parhau i fod mewn lle nes eich bod yn {{liftLink}}",
+          "LIFT_STANDARD": "Dylech {{liftLink}} pan fyddwch yn gwybod pryd fydd yn dod i ben.",
+          "TITLE": "Pwysig",
+          "USUALLY_LASTS": "Mae lle i anadlu yn para am 60 diwrnod fel arfer."
+        },
         "HEARINGS": {
           "PAY_FEE": "of £{{ feeAmount }} by {{ hearingDueDate }}. If you do not do this, your claim may be struck out.",
           "TEXT_BEFORE": "You must ",
@@ -2782,6 +2793,7 @@
         "FIND_MEDIATION": "Canfod mwy am gyfryngu",
         "FIND_LEGAL_ADVICE": "Dod o hyd i gyngor cyfreithiol",
         "GET_DEBT_RESPITE": "Hysbysu’r llys am seibiant dyledion lle i anadlu",
+        "LIFT_DEBT_RESPITE": "Codi'r Lle i Anadlu ar gyfer seibiant o dalu dyledion",
         "HELP_SUPPORT": "Cymorth a chefnogaeth",
         "HELP_FEES": "Help i dalu ffioedd",
         "I_WANT_TO": "Rwyf eisiau...",
@@ -2824,6 +2836,16 @@
         "TYPE": "Pa fath ydy o?",
         "REFERENCE": "Cyfeirnod (dewisol)",
         "START_DATE": "Dyddiad cychwyn (dewisol)"
+      },
+      "CONFIRMATION": {
+        "STANDARD_APPLIED": "Lle i anadlu safonol wedi'i gymhwyso",
+        "MENTAL_HEALTH_APPLIED": "Lle i anadu iechyd meddwl - wedi'i gymhwyso",
+        "CONFIRMATION_EMAIL": "Rydym wedi anfon e-bost cadarnhau atoch.",
+        "STANDARD_NEXT_NOW": "Bydd y Lle i Anadlu nawr yn weithredol. Gallwch ei godi pan fyddwch yn gwybod pryd fydd yn dod i ben.",
+        "STANDARD_NEXT_FROM": "Bydd y Lle i Anadlu yn weithredol o {{ startDate }}. Gallwch ei godi pan fyddwch yn gwybod pryd fydd yn dod i ben.",
+        "MENTAL_HEALTH_NEXT_NOW": "Bydd y Lle i Anadlu nawr yn weithredol nes eich bod yn codi'r Lle i Anadlu.",
+        "MENTAL_HEALTH_NEXT_FROM": "Bydd y Lle i Anadlu yn weithredol o {{ startDate }}, ac yn parhau nes eich bod yn codi'r Lle i Anadlu.",
+        "RETURN_TO_CASE_SUMMARY": "Dychwelyd i drosolwg eich achos"
       }
     },
     "DEBTS": {
