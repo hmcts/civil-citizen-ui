@@ -348,11 +348,11 @@ describe('Mediation upload your documents Controller', () => {
         });
 
       expect(saveUploadDocumentSpy).toHaveBeenCalled();
-      const savedTypeOfDocuments = saveUploadDocumentSpy.mock.calls[0][1];
+      const savedTypeOfDocuments = saveUploadDocumentSpy.mock.calls[0][1] as TypeOfDocuments[];
       const yourStatement = savedTypeOfDocuments.find(
         (item: TypeOfDocuments) => item.type === TypeOfMediationDocuments.YOUR_STATEMENT,
       );
-      expect(yourStatement.uploadDocuments[0].caseDocument).toBeUndefined();
+      expect(yourStatement?.uploadDocuments?.[0]?.caseDocument).toBeUndefined();
       saveUploadDocumentSpy.mockRestore();
     });
 
