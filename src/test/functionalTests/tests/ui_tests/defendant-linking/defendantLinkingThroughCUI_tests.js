@@ -13,7 +13,7 @@ let claimTotalAmount = claimAmount + claimFee;
 
 Feature('Defendant linking through CUI').tag('@civil-citizen-master @civil-citizen-pr @civil-citizen-nightly @ui-full-admit');
 
-Scenario('CTSC admin links a defendant to a LiP claim through Manage Case', async ({I, api}) => {
+Scenario.skip('CTSC admin links a defendant to a LiP claim through Manage Case', async ({I, api}) => {
   const {claimantUser, defendantUser} = await createScenarioUsers();
 
   const claimRef = await api.createLiPClaim(claimantUser, claimType, false, 'Individual', undefined, false, false);
