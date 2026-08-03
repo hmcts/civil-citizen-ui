@@ -713,6 +713,72 @@ describe('Civil Service Client', () => {
       expect(claim.respondent1ResponseDeadline).toEqual(date);
     });
 
+    it('should log sanitised civil-service 422 submit errors without raw request data', async () => {
+      //Given
+      const responseBody = {
+        exception: 'CaseValidationException',
+        error: 'Unprocessable Entity',
+        message: 'Case data validation failed',
+        errors: [
+          'generalApplications.0.generalAppType.types',
+          'another validation error',
+          'third validation error',
+          'fourth validation error',
+          'fifth validation error',
+          'sixth validation error',
+          {caseDataUpdate: {generalAppType: {types: ['OTHER_OPTION']}}},
+        ],
+        caseDataUpdate: {generalAppType: {types: ['OTHER_OPTION']}},
+        config: {data: '{"caseDataUpdate":{"generalAppType":{"types":["OTHER_OPTION"]}}}'},
+        request: {body: 'raw request body'},
+      };
+      const apiError = Object.assign(new Error('Request failed with status code 422'), {
+        response: {
+          status: 422,
+          data: responseBody,
+        },
+        config: {data: 'raw axios config data'},
+      });
+      const mockPost = jest.fn().mockRejectedValue(apiError);
+      mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
+      const {Logger} = require('@hmcts/nodejs-logging');
+      const logger = Logger.getLogger('civilServiceClient');
+      const loggerSpy = jest.spyOn(logger, 'error').mockImplementation();
+
+      try {
+        //When
+        await expect(civilServiceClient.submitInitiateGeneralApplicationEvent('123', ccdGApp, appReq))
+          .rejects.toBe(apiError);
+
+        //Then
+        expect(loggerSpy).toHaveBeenCalledWith(
+          'Submit event failed (event=INITIATE_GENERAL_APPLICATION, claimId=123, status=422)',
+          {
+            body: {
+              exception: 'CaseValidationException',
+              error: 'Unprocessable Entity',
+              message: 'Case data validation failed',
+              validationErrors: [
+                'generalApplications.0.generalAppType.types',
+                'another validation error',
+                'third validation error',
+                'fourth validation error',
+                'fifth validation error',
+              ],
+              validationErrorCount: 7,
+            },
+          },
+        );
+        const loggedMetadata = loggerSpy.mock.calls[0][1] as { body: Record<string, unknown> };
+        expect(loggedMetadata.body).not.toHaveProperty('caseDataUpdate');
+        expect(loggedMetadata.body).not.toHaveProperty('config');
+        expect(loggedMetadata.body).not.toHaveProperty('request');
+      } finally {
+        loggerSpy.mockRestore();
+      }
+    });
+
     it('should submit submitInitiateGeneralApplicationForCOSCEvent successfully', async () => {
       //Given
       const mockPost = jest.fn().mockResolvedValue({data: mockResponse});
