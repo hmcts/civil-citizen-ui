@@ -2623,6 +2623,17 @@
       "NEXT": "Next",
       "NEXT_STEPS": "Next steps",
       "NOTIFICATIONS": {
+        "BREATHING_SPACE": {
+          "CLAIMANT_CONTENT_MENTAL_HEALTH": "Case is in mental health crisis breathing space",
+          "CLAIMANT_CONTENT_STANDARD": "Case is in standard breathing space.",
+          "DEFENDANT_CONTENT": "Case is in breathing space",
+          "LIFT_LINK_TEXT": "lift breathing space",
+          "LIFT_LINK_TEXT_STANDARD": "Lift breathing space",
+          "LIFT_MENTAL_HEALTH": "This will remain in place until you {{liftLink}}",
+          "LIFT_STANDARD": "{{liftLink}} when you know when it will end.",
+          "TITLE": "Important",
+          "USUALLY_LASTS": "Breathing space usually lasts for 60 days."
+        },
         "HEARINGS": {
           "PAY_FEE": "of £{{ feeAmount }} by {{ hearingDueDate }}. If you do not do this, your claim may be struck out.",
           "TEXT_BEFORE": "You must ",
@@ -2761,6 +2772,7 @@
         "FIND_MEDIATION": "Find out about mediation",
         "FIND_LEGAL_ADVICE": "Find legal advice",
         "GET_DEBT_RESPITE": "Inform the court of a breathing space debt respite",
+        "LIFT_DEBT_RESPITE": "Lift breathing space debt respite",
         "HELP_SUPPORT": "Help and support",
         "HELP_FEES": "Help with fees",
         "I_WANT_TO": "I want to...",
@@ -2803,6 +2815,16 @@
         "TYPE": "What type is it?",
         "REFERENCE": "Reference number (optional)",
         "START_DATE": "Start date (optional)"
+      },
+      "CONFIRMATION": {
+        "STANDARD_APPLIED": "Standard breathing space applied",
+        "MENTAL_HEALTH_APPLIED": "Mental health breathing space applied",
+        "CONFIRMATION_EMAIL": "We have sent you a confirmation email.",
+        "STANDARD_NEXT_NOW": "Breathing space will now be active. You can lift it when you know when it will end.",
+        "STANDARD_NEXT_FROM": "Breathing space will be active from {{ startDate }}. You can lift it when you know when it will end.",
+        "MENTAL_HEALTH_NEXT_NOW": "Breathing space will now be active, and remain until you lift breathing space.",
+        "MENTAL_HEALTH_NEXT_FROM": "Breathing space will be active from {{ startDate }}, and remain until you lift breathing space.",
+        "RETURN_TO_CASE_SUMMARY": "Return to your case summary"
       }
     },
     "DEBTS": {

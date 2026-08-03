@@ -12,12 +12,19 @@ import {Claim} from 'common/models/claim';
 import claim from '../../../../utils/mocks/civilClaimResponseMock.json';
 import {
   BREATHING_SPACE_CANCEL_URL,
+  BREATHING_SPACE_CONFIRMATION_URL,
   BREATHING_SPACE_CYA_URL,
   BREATHING_SPACE_ENTER_URL,
   BREATHING_SPACE_START_DATE_URL,
 } from 'routes/urls';
 import {BreathingSpaceType} from 'models/breathingSpace/breathingSpaceType';
 import {BreathingSpaceEnterDraft} from 'models/breathingSpace/breathingSpaceEnterDraft';
+import {CivilServiceClient} from 'client/civilServiceClient';
+import * as breathingSpaceEntryService from 'services/features/dashboard/breathingSpaceEntryService';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {BreathingSpaceEnterInfo} from 'models/breathingSpace/breathingSpaceEnterInfo';
+import {TTLCategory} from 'modules/draft-store/ttlConfig';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
@@ -27,9 +34,19 @@ jest.mock('modules/utilityService', () => ({
   getRedisStoreForSession: jest.fn(),
 }));
 
+jest.mock('modules/draft-store/draftStoreService', () => {
+  const actual = jest.requireActual('modules/draft-store/draftStoreService');
+  return {
+    ...actual,
+    saveDraftClaim: jest.fn(),
+    generateRedisKey: jest.fn(() => 'redis-key'),
+  };
+});
+
 describe('Breathing Space Check Answers Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
+  const claimId = '1645882162449409';
 
   beforeAll(() => {
     nock(idamUrl)
@@ -113,6 +130,66 @@ describe('Breathing Space Check Answers Controller', () => {
         expect(res.status).toBe(200);
         expect(res.text).toContain('Mental Health Crisis Moratorium');
         expect(res.text).toContain('1 June 2024');
+      });
+  });
+
+  it('should submit enter breathing space and redirect to confirmation', async () => {
+    const caseData = Object.assign(new Claim(), claim.case_data, {
+      breathingSpaceEnterDraft: new BreathingSpaceEnterDraft(
+        BreathingSpaceType.STANDARD,
+        'REF123',
+        new Date(2024, 0, 15),
+        new Date(2024, 2, 15),
+      ),
+    });
+    const submittedClaim = Object.assign(new Claim(), claim.case_data, {
+      enterBreathing: new BreathingSpaceEnterInfo(
+        BreathingSpaceType.STANDARD,
+        'REF123',
+        new Date('2024-01-15'),
+        new Date('2024-03-15'),
+      ),
+    });
+    (getClaimById as jest.Mock).mockResolvedValueOnce(caseData);
+    const submitSpy = jest
+      .spyOn(CivilServiceClient.prototype, 'submitEnterBreathingSpace')
+      .mockResolvedValue(submittedClaim);
+    const cancelSpy = jest
+      .spyOn(breathingSpaceEntryService, 'cancelBreathingSpaceEntry')
+      .mockResolvedValue();
+
+    await request(app)
+      .post(BREATHING_SPACE_CYA_URL.replace(':id', claimId))
+      .expect((res) => {
+        expect(res.status).toBe(302);
+        expect(res.header.location).toEqual(
+          constructResponseUrlWithIdParams(claimId, BREATHING_SPACE_CONFIRMATION_URL),
+        );
+        expect(submitSpy).toHaveBeenCalledWith(
+          claimId,
+          {
+            enterBreathing: {
+              type: BreathingSpaceType.STANDARD,
+              reference: 'REF123',
+              start: '2024-01-15',
+              expectedEnd: '2024-03-15',
+            },
+          },
+          expect.anything(),
+        );
+        expect(cancelSpy).toHaveBeenCalled();
+        expect(saveDraftClaim).toHaveBeenCalledWith(
+          'redis-key',
+          expect.objectContaining({
+            enterBreathing: expect.objectContaining({
+              type: BreathingSpaceType.STANDARD,
+            }),
+            breathingSpaceEnterDraft: undefined,
+          }),
+          true,
+          undefined,
+          TTLCategory.JOURNEY_CACHE,
+        );
       });
   });
 });

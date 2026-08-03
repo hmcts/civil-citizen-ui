@@ -41,6 +41,10 @@ import {
 } from 'common/models/generalApplication/applicationType';
 import {ClaimGeneralApplication, ClaimGeneralApplicationValue} from 'models/generalApplication/claimGeneralApplication';
 import {CCDGeneralApplication} from 'models/gaEvents/eventDto';
+import {
+  toCUIBreathingSpaceEnterInfo,
+  toCUIBreathingSpaceLiftInfo,
+} from 'services/translation/convertToCUI/convertToCUIBreathingSpace';
 
 export const translateCCDCaseDataToCUIModel = (ccdClaimObj: CCDClaim): Claim => {
   const claim: Claim = Object.assign(new Claim(), ccdClaimObj);
@@ -117,6 +121,8 @@ export const translateCCDCaseDataToCUIModel = (ccdClaimObj: CCDClaim): Claim => 
   claim.joIsLiveJudgmentExists = toCUIGenericYesNo(ccdClaim.joIsLiveJudgmentExists);
   claim.joJudgementByAdmissionIssueDate = ccdClaim.joJudgementByAdmissionIssueDate;
   claim.joDJCreatedDate = ccdClaim.joDJCreatedDate;
+  claim.enterBreathing = toCUIBreathingSpaceEnterInfo(ccdClaim.enterBreathing);
+  claim.liftBreathing = toCUIBreathingSpaceLiftInfo(ccdClaim.liftBreathing);
   return claim;
 };
 
