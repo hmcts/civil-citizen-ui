@@ -14,7 +14,8 @@
 {% set correspondenceAddressClass = 'govuk-!-display-none' %}
 
 
-{% set partyErrors = party.getAllErrors() %}
+{% set partyErrors = party.getAllErrors() if party and party.getAllErrors else [] %}
+{% set errorFor = party.errorFor if party and party.errorFor else null %}
 
 {% set partyTypeName = t('PAGES.CITIZEN_DETAILS.PARTY_NAME_COMPANY') %}
 {% set detailsTitle =  t('PAGES.CITIZEN_DETAILS.COMPANY_DETAILS') %}
@@ -30,7 +31,7 @@
   {% set addressExplanation = t('PAGES.ORGANISATION_DETAILS.MAIN_OFFICE') %}
 {% endif %}
 {% if party.model.provideCorrespondenceAddress == YesNo.YES or
-      party.errorFor('correspondenceAddress')%}
+      (errorFor and errorFor('correspondenceAddress'))%}
   {% set radioChecked = true %}
 {% else %}
   {% set radioChecked = false %}
@@ -80,7 +81,7 @@
               id: "partyName",
               name: "partyName",
               value: party.model.partyName,
-                errorMessage: { text: t(party.errorFor('partyName')) } if party.errorFor('partyName')
+                errorMessage: { text: t(errorFor('partyName')) } if errorFor and errorFor('partyName')
             }) }}
             {% if carmEnabled == true %}
             {{ govukInput({
@@ -95,8 +96,8 @@
                 text: t('PAGES.CITIZEN_DETAILS.CONTACT_PERSON_HINT')
               },
               errorMessage: {
-                              html: t(party.errorFor("contactPerson"))
-                            } if party.errorFor("contactPerson")
+                              html: t(errorFor("contactPerson"))
+                            } if errorFor and errorFor("contactPerson")
             }) }}
             {% else %}
             {{ govukInput({
