@@ -9,31 +9,31 @@ class HearingContactDetails {
     await I.waitForElement('//a[.=\'Cancel\']');
   }
 
-  nextAction (nextAction) {
-    I.click(nextAction);
+  async nextAction (nextAction) {
+    await I.click(nextAction);
   }
 
   async verifyPageContent(applicationType) {
-    this.checkPageFullyLoaded();
-    this.verifyBreadcrumbs();
-    this.verifyHeadingDetails(applicationType);
+    await this.checkPageFullyLoaded();
+    await this.verifyBreadcrumbs();
+    await this.verifyHeadingDetails(applicationType);
     await this.verifyPageText();
-    contactUs.verifyContactUs();
+    await contactUs.verifyContactUs();
   }
 
-  verifyBreadcrumbs() {
-    I.see('Back', '//a[@class="govuk-back-link"]');
+  async verifyBreadcrumbs() {
+    await I.see('Back', '//a[@class="govuk-back-link"]');
   }
 
-  verifyHeadingDetails(applicationType) {
-    I.see(applicationType, 'h1');
-    I.see('Contact Details', 'h1');
+  async verifyHeadingDetails(applicationType) {
+    await I.see(applicationType, 'h1');
+    await I.see('Contact Details', 'h1');
   }
 
   async verifyPageText() {
-    I.see('Preferred telephone number');
-    I.seeElement('//*[@id="telephoneNumber"]');
-    I.see('Preferred email address');
+    await I.see('Preferred telephone number');
+    await I.seeElement('//*[@id="telephoneNumber"]');
+    await I.see('Preferred email address');
     await I.seeElement('//*[@id="emailAddress"]');
   }
 

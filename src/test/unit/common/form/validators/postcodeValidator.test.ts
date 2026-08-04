@@ -1,4 +1,4 @@
-import { PostcodeValidator } from 'common/form/validators/postcodeValidator';
+import { isPostcodeOnExceptionList, PostcodeValidator } from 'common/form/validators/postcodeValidator';
 import * as osService from 'modules/ordance-survey-key/ordanceSurveyKeyService';
 import { AddressInfoResponse } from 'common/models/ordanceSurveyKey/ordanceSurveyKey';
 
@@ -83,5 +83,20 @@ describe('PostcodeValidator', () => {
     );
 
     expect(await validator.validate('EH1 1AA')).toBe(false);
+  });
+
+  it('should return true for postcodes in the England and Wales exception list', async () => {
+    const lookupSpy = jest.spyOn(osService, 'lookupByPostcodeAndDataSet');
+
+    expect(await validator.validate('tw149rl')).toBe(true);
+    expect(lookupSpy).not.toHaveBeenCalled();
+  });
+
+  it('should normalise postcode exceptions from file', () => {
+    expect(isPostcodeOnExceptionList('cv31nd')).toBe(true);
+    expect(isPostcodeOnExceptionList('sw1v2qq')).toBe(true);
+    expect(isPostcodeOnExceptionList('WR38YB')).toBe(true);
+    expect(isPostcodeOnExceptionList('LA94DQ')).toBe(true);
+    expect(isPostcodeOnExceptionList('la9 4uf')).toBe(true);
   });
 });

@@ -43,9 +43,9 @@ class CaseProgressionSteps {
   async initiateUploadEvidenceJourney(claimRef, claimType, partyType, claimAmount, dateUploaded, language = 'en') {
     await uploadYourDocumentsIntroduction.verifyPageContent(claimRef, claimAmount, language);
     await uploadYourDocumentsIntroduction.nextAction(buttons.startNow[language]);
-    whatTypeOfDocumentsDoYouWantToUpload.verifyPageContent(claimRef, claimAmount, claimType);
-    whatTypeOfDocumentsDoYouWantToUpload.checkAllDocumentUploadOptions(claimType);
-    whatTypeOfDocumentsDoYouWantToUpload.nextAction(buttons.continue[language]);
+    await whatTypeOfDocumentsDoYouWantToUpload.verifyPageContent(claimRef, claimAmount, claimType);
+    await whatTypeOfDocumentsDoYouWantToUpload.checkAllDocumentUploadOptions(claimType);
+    await whatTypeOfDocumentsDoYouWantToUpload.nextAction(buttons.continue[language]);
     await uploadYourDocument.verifyPageContent(claimRef, claimAmount, claimType);
     if (claimType === 'FastTrack') {
       await uploadYourDocument.inputDataForFastTrackSections(claimType);
@@ -53,11 +53,11 @@ class CaseProgressionSteps {
       await uploadYourDocument.inputDataForSmallClaimsSections(claimType);
     }
     await uploadYourDocument.nextAction(buttons.continue[language]);
-    checkYourAnswers.verifyPageContent(claimRef, claimAmount, claimType, partyType);
-    checkYourAnswers.clickConfirm();
-    checkYourAnswers.nextAction(buttons.submit[language]);
-    uploadYourDocumentsConfirmation.verifyPageContent();
-    uploadYourDocumentsConfirmation.nextAction(buttons.viewDocuments[language]);
+    await checkYourAnswers.verifyPageContent(claimRef, claimAmount, claimType, partyType);
+    await checkYourAnswers.clickConfirm();
+    await checkYourAnswers.nextAction(buttons.submit[language]);
+    await uploadYourDocumentsConfirmation.verifyPageContent();
+    await uploadYourDocumentsConfirmation.nextAction(buttons.viewDocuments[language]);
     if (claimType === 'FastTrack') {
       claimAmount = '£15,000.00';
     } else {
@@ -67,31 +67,31 @@ class CaseProgressionSteps {
     await viewDocumentsPage.nextAction('Close and return to case overview');
   }
 
-  initiateHearingNoticeJourney(claimRef) {
-    latestUpdateTab.open(claimRef);
-    latestUpdateTab.nextAction('View hearing notice');
+  async initiateHearingNoticeJourney(claimRef) {
+    await latestUpdateTab.open(claimRef);
+    await latestUpdateTab.nextAction('View hearing notice');
   }
 
-  verifyLatestUpdatePageForCaseProgressionState(claimRef, claimType, hearingInitiated = false)  {
-    latestUpdateTab.open(claimRef, claimType, hearingInitiated);
+  async verifyLatestUpdatePageForCaseProgressionState(claimRef, claimType, hearingInitiated = false)  {
+    await latestUpdateTab.open(claimRef, claimType, hearingInitiated);
   }
 
-  verifyLatestUpdatePageForCaseStruckOut(claimRef, claimType)  {
-    latestUpdateTab.open(claimRef, claimType, false, false, false, false, true);
+  async verifyLatestUpdatePageForCaseStruckOut(claimRef, claimType)  {
+    await latestUpdateTab.open(claimRef, claimType, false, false, false, false, true);
   }
 
-  verifyAnOrderHasBeenMadeOnTheClaim(claimRef, claimType)  {
-    latestUpdateTab.open(claimRef, claimType,false, true);
-    latestUpdateTab.nextAction('View the order');
+  async verifyAnOrderHasBeenMadeOnTheClaim(claimRef, claimType)  {
+    await latestUpdateTab.open(claimRef, claimType,false, true);
+    await latestUpdateTab.nextAction('View the order');
   }
 
-  verifyDocumentsUploadedBySolicitor(claimRef, claimType) {
-    documentsTab.open(claimRef, claimType, true);
+  async verifyDocumentsUploadedBySolicitor(claimRef, claimType) {
+    await documentsTab.open(claimRef, claimType, true);
   }
 
-  verifyBundle(claimRef, claimType) {
-    latestUpdateTab.open(claimRef, claimType,true, false, false, false, false, true);
-    bundlesTab.open(claimRef);
+  async verifyBundle(claimRef, claimType) {
+    await latestUpdateTab.open(claimRef, claimType,true, false, false, false, false, true);
+    await bundlesTab.open(claimRef);
   }
 }
 

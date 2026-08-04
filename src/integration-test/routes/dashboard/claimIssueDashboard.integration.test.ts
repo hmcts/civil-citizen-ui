@@ -1,17 +1,12 @@
 import request from 'supertest';
 process.env.NODE_ENV = 'test';
 import '../../setup/testSetup';
-jest.mock('../../../main/modules/draft-store/draftStoreService', () => ({
-  updateFieldDraftClaimFromStore: jest.fn(),
-}));
-jest.mock('../../../main/services/dashboard/dashboardService', () => ({
-  getNotifications: jest.fn(),
-  getDashboardForm: jest.fn(),
-  extractOrderDocumentIdFromNotification: jest.fn(),
-  getContactCourtLink: jest.fn(),
-  getHelpSupportTitle: jest.fn(),
-  getHelpSupportLinks: jest.fn(),
-}));
+jest.mock('../../../main/modules/draft-store/draftStoreService', () =>
+  jest.requireActual('../../setup/sharedMocks').draftStoreServiceMock,
+);
+jest.mock('../../../main/services/dashboard/dashboardService', () =>
+  jest.requireActual('../../setup/sharedMocks').dashboardServiceMock,
+);
 import {app} from '../../../main/app';
 import {DASHBOARD_CLAIMANT_URL} from '../../../main/routes/urls';
 import {civilServiceClientMock} from '../../setup/sharedMocks';
@@ -31,6 +26,7 @@ import {
   getHelpSupportTitle,
   getNotifications,
 } from '../../../main/services/dashboard/dashboardService';
+import {getCaseDataFromStore, saveDraftClaim} from '../../../main/modules/draft-store/draftStoreService';
 
 const buildClaimFixture = (id: string, amount: number): Claim => {
   const claim = new Claim();
@@ -82,6 +78,8 @@ describe('Integration: Claim issue notifications rendered on dashboard', () => {
     (getContactCourtLink as jest.Mock).mockResolvedValue({text: 'Contact the court', url: '/contact-us'});
     (getHelpSupportTitle as jest.Mock).mockReturnValue('Help and support');
     (getHelpSupportLinks as jest.Mock).mockReturnValue([]);
+    (getCaseDataFromStore as jest.Mock).mockResolvedValue(new Claim());
+    (saveDraftClaim as jest.Mock).mockResolvedValue(undefined);
   });
 
   it.each([

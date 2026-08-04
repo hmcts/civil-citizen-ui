@@ -17,6 +17,7 @@ import {
   mockCivilClaimRespondentIndividualTypeWithoutPhoneNumber,
   mockCivilClaimRespondentIndividualTypeWithCcdPhoneNumberFalse,
   mockCivilClaimApplicantIndividualType,
+  mockDraftClaim,
 } from '../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
@@ -42,6 +43,7 @@ describe('Citizen date of birth', () => {
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(TestMessages.ENTER_DATE_OF_BIRTH);
+          expect(res.text).not.toContain('NaN');
         });
     });
     it('should return citizen date of birth page with all information from redis', async () => {
@@ -51,6 +53,41 @@ describe('Citizen date of birth', () => {
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(TestMessages.ENTER_DATE_OF_BIRTH);
+        });
+    });
+    it('should return citizen date of birth page with all information from redis when date of birth is stored as a string', async () => {
+      app.locals.draftStoreClient = mockDraftClaim({
+        case_data: {
+          respondent1: {
+            dateOfBirth: '2000-01-02',
+          },
+        },
+      } as never);
+      await request(app)
+        .get(DOB_URL)
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('value="2"');
+          expect(res.text).toContain('value="1"');
+          expect(res.text).toContain('value="2000"');
+        });
+    });
+    it('should not render NaN when date of birth from redis is invalid', async () => {
+      app.locals.draftStoreClient = mockDraftClaim({
+        case_data: {
+          respondent1: {
+            dateOfBirth: {
+              date: undefined,
+            },
+          },
+        },
+      } as never);
+      await request(app)
+        .get(DOB_URL)
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(TestMessages.ENTER_DATE_OF_BIRTH);
+          expect(res.text).not.toContain('NaN');
         });
     });
     it('should return http 500 when has error in the get method', async () => {

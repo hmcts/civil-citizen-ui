@@ -20,10 +20,10 @@ nodejs:
   cpuRequests: 4000m
   memoryLimits: 4Gi
   cpuLimits: 3500m
-  devmemoryRequests: 8Gi
-  devcpuRequests: 4000m
-  devmemoryLimits: 8Gi
-  devcpuLimits: 4500m
+  devmemoryRequests: 1536Mi
+  devcpuRequests: 50m
+  devmemoryLimits: 2048Mi
+  devcpuLimits: 700m
   ingressHost: ${SERVICE_FQDN}
   keyVaults:
     civil-cui:
@@ -54,9 +54,10 @@ civil-service:
     image: hmctsprod.azurecr.io/civil/service:${CIVIL_SERVICE_IMAGE}
     imagePullPolicy: Always
     ingressHost: ${SERVICE_NAME}-civil-service.preview.platform.hmcts.net
-    devcpuRequests: 1000m
-    devmemoryRequests: 2048Mi
-    devmemoryLimits: 4096Mi
+    devcpuRequests: 50m
+    devcpuLimits: 700m
+    devmemoryRequests: 1536Mi
+    devmemoryLimits: 2048Mi
     keyVaults:
       civil:
         resourceGroup: civil
@@ -160,6 +161,7 @@ civil-service:
       RELEASE_REVISION: "{{ .Release.Revision }}"
       GA_S2S_AUTHORISED_SERVICES: payment_app,ccd_data,civil_service
       OTHER_REMEDY_ENABLED: true
+      SCHEDULER_ENABLED_JUDGEMENT_BUFFER: true
       CMC_DB_HOST: civil-preview.postgres.database.azure.com
       CMC_DB_CONNECTION_OPTIONS: "?stringtype=unspecified&reWriteBatchedInserts=true&sslmode=require"
       CMC_DB_USERNAME: hmcts
@@ -176,9 +178,9 @@ civil-service:
       disableKeyVaults: true
       releaseNameOverride: ${SERVICE_NAME}-camunda
       ingressHost: camunda-${SERVICE_FQDN}
-      devcpuRequests: 500m
+      devcpuRequests: 50m
       devmemoryRequests: 1024Mi
-      devcpuLimits: 1
+      devcpuLimits: 700m
       devmemoryLimits: 1Gi
       environment:
         CAMUNDA_API_AUTH_ENABLED: false
@@ -246,9 +248,9 @@ civil-service:
     am-role-assignment-service:
       java:
         devmemoryRequests: 2048Mi
-        devcpuRequests: 2000m
+        devcpuRequests: 50m
         devmemoryLimits: 4096Mi
-        devcpuLimits: 4000m
+        devcpuLimits: 1400m
         releaseNameOverride: ${SERVICE_NAME}-am-role-assignment-service
         imagePullPolicy: Always
         image: hmctsprod.azurecr.io/am/role-assignment-service:latest
@@ -283,9 +285,10 @@ civil-service:
       java:
         releaseNameOverride: ${SERVICE_NAME}-ccd-data-store-api
         imagePullPolicy: Always
-        devcpuRequests: 1000m
-        devmemoryRequests: 2048Mi
-        devmemoryLimits: 4096Mi
+        devcpuRequests: 50m
+        devcpuLimits: 700m
+        devmemoryRequests: 768Mi
+        devmemoryLimits: 2048Mi
         environment:
           CASE_DOCUMENT_AM_API_ATTACH_DOCUMENT_ENABLED: true
           CASE_DOCUMENT_AM_URL: http://${SERVICE_NAME}-cdam
@@ -293,6 +296,7 @@ civil-service:
           DATA_STORE_DB_HOST: "{{ .Values.global.postgresHostname }}"
           DATA_STORE_DB_USERNAME: "{{ .Values.global.postgresUsername }}"
           DATA_STORE_DB_OPTIONS: "?stringtype=unspecified"
+          DATA_STORE_DB_MAX_POOL_SIZE: 30
           DATA_STORE_IDAM_KEY: ${CCD_DATA_STORE_S2S_SECRET}
           DATA_STORE_S2S_AUTHORISED_SERVICES: ccd_data,ccd_gw,ccd_ps,bulk_scan_orchestrator,ccpay_bubble,ctsc_work_allocation,em_ccd_orchestrator,xui_webapp,civil_service,ccd_case_document_am_api,aac_manage_case_assignment,wa_task_management_api,wa_task_monitor,wa_case_event_handler,wa_workflow_api,civil_general_applications,am_role_assignment_service,hmc_cft_hearing_service
           IDAM_API_BASE_URL: https://idam-api.aat.platform.hmcts.net
@@ -513,9 +517,10 @@ civil-service:
 
     ccd-definition-store-api:
       java:
-        devcpuRequests: 2000m
-        devmemoryLimits: 4Gi
-        devcpuLimits: 4Gi
+        devcpuRequests: 50m
+        devmemoryRequests: 1536Mi
+        devmemoryLimits: 2048Mi
+        devcpuLimits: 1200m
         releaseNameOverride: ${SERVICE_NAME}-ccd-definition-store-api
         environment:
           DEFINITION_STORE_DB_OPTIONS: "?stringtype=unspecified"
@@ -545,10 +550,10 @@ civil-service:
       releaseNameOverride: ${SERVICE_NAME}-xui-webapp
       image: hmctsprod.azurecr.io/xui/webapp:latest
       ingressHost: xui-${SERVICE_FQDN}
-      devcpuRequests: 500m
-      devmemoryRequests: 1Gi
-      devcpuLimits: 1
-      devmemoryLimits: 2Gi
+      devcpuRequests: 50m
+      devmemoryRequests: 512Mi
+      devcpuLimits: 700m
+      devmemoryLimits: 2048Mi
       environment:
         FEATURE_ACCESS_MANAGEMENT_ENABLED: true
         SERVICES_ROLE_ASSIGNMENT_API: https://am-role-assignment-${SERVICE_FQDN}
@@ -579,6 +584,10 @@ civil-service:
   aac-manage-case-assignment:
     enabled: true
     java:
+      devcpuRequests: 50m
+      devcpuLimits: 200m
+      devmemoryRequests: 512Mi
+      devmemoryLimits: 1024Mi
       disableKeyVaults: true
       ingressHost: manage-case-assignment-${SERVICE_NAME}.preview.platform.hmcts.net
       imagePullPolicy: Always
@@ -608,6 +617,10 @@ civil-service:
   em-stitching:
     enabled: true
     java:
+      devcpuRequests: 50m
+      devcpuLimits: 500m
+      devmemoryRequests: 512Mi
+      devmemoryLimits: 1024Mi
       imagePullPolicy: Always
       releaseNameOverride: ${SERVICE_NAME}-em-stitching
       image: hmctsprod.azurecr.io/em/stitching:latest
@@ -644,6 +657,10 @@ civil-service:
   em-ccdorc:
     enabled: true
     java:
+      devcpuRequests: 50m
+      devcpuLimits: 200m
+      devmemoryRequests: 512Mi
+      devmemoryLimits: 1024Mi
       image: hmctsprod.azurecr.io/em/ccdorc:latest
       releaseNameOverride: ${SERVICE_NAME}-em-ccdorc
       ingressHost: em-ccdorc-${SERVICE_FQDN}
@@ -668,6 +685,10 @@ civil-service:
   ccd-case-document-am-api:
     enabled: true
     java:
+      devcpuRequests: 50m
+      devcpuLimits: 200m
+      devmemoryRequests: 512Mi
+      devmemoryLimits: 1024Mi
       releaseNameOverride: ${SERVICE_NAME}-cdam
       imagePullPolicy: Always
       image: hmctsprod.azurecr.io/ccd/case-document-am-api:latest

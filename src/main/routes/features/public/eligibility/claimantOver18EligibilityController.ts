@@ -33,7 +33,7 @@ claimantOver18EligibilityController.post(ELIGIBILITY_CLAIMANT_AGE_URL, (req, res
   } else {
     const cookie = req.cookies['eligibility'] ? req.cookies['eligibility'] : {};
     cookie.claimantOver18 = genericYesNoForm.model.option;
-    res.cookie('eligibility', cookie);
+    res.cookie('eligibility', cookie, {httpOnly: true, sameSite: 'lax'});
     genericYesNoForm.model.option === YesNo.YES
       ? res.redirect(ELIGIBILITY_HELP_WITH_FEES_URL)
       : res.redirect(constructUrlWithNotEligibleReason(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL, NotEligibleReason.UNDER_18_CLAIMANT));

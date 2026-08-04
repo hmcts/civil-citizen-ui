@@ -5,43 +5,43 @@ const contactUs = new ContactUs();
 
 class ApplyHelpFeeSelection {
 
-  checkPageFullyLoaded () {
-    I.waitForElement('//a[.=\'Cancel\']');
+  async checkPageFullyLoaded () {
+    await I.waitForElement('//a[.=\'Cancel\']');
   }
 
-  nextAction (nextAction) {
-    I.click(nextAction);
+  async nextAction (nextAction) {
+    await I.click(nextAction);
   }
 
-  verifyPageContent(caseNumber, claimAmount) {
-    this.checkPageFullyLoaded();
-    this.verifyBreadcrumbs();
-    this.verifyHeadingDetails();
-    this.verifyCaseNumberClaimAmount(caseNumber, claimAmount);
-    this.verifyPageText();
-    contactUs.verifyContactUs();
+  async verifyPageContent(caseNumber, claimAmount) {
+    await this.checkPageFullyLoaded();
+    await this.verifyBreadcrumbs();
+    await this.verifyHeadingDetails();
+    await this.verifyCaseNumberClaimAmount(caseNumber, claimAmount);
+    await this.verifyPageText();
+    await contactUs.verifyContactUs();
   }
 
-  verifyBreadcrumbs() {
-    I.see('Back', '//a[@class="govuk-back-link"]');
+  async verifyBreadcrumbs() {
+    await I.see('Back', '//a[@class="govuk-back-link"]');
   }
 
-  verifyCaseNumberClaimAmount(caseNumber, claimAmount) {
-    I.see('Case number: ' + caseNumber, 'p');
-    I.see('Claim amount: ' + claimAmount, 'p');
+  async verifyCaseNumberClaimAmount(caseNumber, claimAmount) {
+    await I.see('Case number: ' + caseNumber, 'p');
+    await I.see('Claim amount: ' + claimAmount, 'p');
   }
 
-  verifyHeadingDetails() {
-    I.see('Hearing', 'span');
-    I.see('Pay hearing fee', 'h1');
+  async verifyHeadingDetails() {
+    await I.see('Hearing', 'span');
+    await I.see('Pay hearing fee', 'h1');
   }
 
-  verifyPageText() {
-    I.see('If you\'re on a low income, have limited savings or are claiming benefits, you may able to get');
-    I.see('If you meet the criteria, you may get support to pay some or all of the fee.');
-    I.see('Do you want to apply for help with fees?', 'h3');
-    I.see('Yes');
-    I.see('No');
+  async verifyPageText() {
+    await I.see('If you\'re on a low income, have limited savings or are claiming benefits, you may able to get');
+    await I.see('If you meet the criteria, you may get support to pay some or all of the fee.');
+    await I.see('Do you want to apply for help with fees?', 'h3');
+    await I.see('Yes');
+    await I.see('No');
   }
 }
 

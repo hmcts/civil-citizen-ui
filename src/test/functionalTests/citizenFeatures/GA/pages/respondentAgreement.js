@@ -9,25 +9,25 @@ class RespondentAgreement {
     await I.waitForElement('//a[.=\'Cancel\']');
   }
 
-  nextAction (nextAction) {
-    I.click(nextAction);
+  async nextAction (nextAction) {
+    await I.click(nextAction);
   }
 
   async verifyPageContent(applicationType) {
-    this.checkPageFullyLoaded();
-    this.verifyBreadcrumbs();
-    this.verifyHeadingDetails(applicationType);
+    await this.checkPageFullyLoaded();
+    await this.verifyBreadcrumbs();
+    await this.verifyHeadingDetails(applicationType);
     await this.verifyPageText();
-    contactUs.verifyContactUs();
+    await contactUs.verifyContactUs();
   }
 
-  verifyBreadcrumbs() {
-    I.see('Back', '//a[@class="govuk-back-link"]');
+  async verifyBreadcrumbs() {
+    await I.see('Back', '//a[@class="govuk-back-link"]');
   }
 
-  verifyHeadingDetails(applicationType) {
-    I.see(applicationType, 'h1');
-    I.see('Do you agree that the court should make the order that the other parties have requested?', 'h1');
+  async verifyHeadingDetails(applicationType) {
+    await I.see(applicationType, 'h1');
+    await I.see('Do you agree that the court should make the order that the other parties have requested?', 'h1');
   }
 
   async verifyPageText() {

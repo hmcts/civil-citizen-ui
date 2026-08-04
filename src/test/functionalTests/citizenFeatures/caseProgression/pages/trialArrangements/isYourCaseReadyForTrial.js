@@ -63,55 +63,55 @@ const content = {
 
 class IsYourCaseReadyForTrial {
 
-  checkPageFullyLoaded () {
-    I.waitForElement(`//a[.='${content.buttons.cancel[language]}']`);
+  async checkPageFullyLoaded () {
+    await I.waitForElement(`//a[.='${content.buttons.cancel[language]}']`);
   }
 
-  nextAction (nextAction) {
-    I.click(nextAction);
+  async nextAction (nextAction) {
+    await I.click(nextAction);
   }
 
-  verifyPageContent(caseNumber, claimAmount, languageChosen = 'en') {
+  async verifyPageContent(caseNumber, claimAmount, languageChosen = 'en') {
     language = languageChosen;
-    this.checkPageFullyLoaded();
-    this.verifyBreadcrumbs();
-    this.verifyHeadingDetails();
-    this.verifyCaseNumberClaimAmount(caseNumber, claimAmount);
-    this.verifyIsThisCaseReadyForTrialSectionContent();
-    contactUs.verifyContactUs();
+    await this.checkPageFullyLoaded();
+    await this.verifyBreadcrumbs();
+    await this.verifyHeadingDetails();
+    await this.verifyCaseNumberClaimAmount(caseNumber, claimAmount);
+    await this.verifyIsThisCaseReadyForTrialSectionContent();
+    await contactUs.verifyContactUs();
   }
 
-  verifyBreadcrumbs() {
-    I.see('Back', '//a[@class="govuk-back-link"]');
+  async verifyBreadcrumbs() {
+    await I.see('Back', '//a[@class="govuk-back-link"]');
   }
 
-  verifyCaseNumberClaimAmount(caseNumber, claimAmount) {
-    I.see('Case number: ' + caseNumber, 'h2');
-    I.see('Claim amount: ' + claimAmount, 'h2');
+  async verifyCaseNumberClaimAmount(caseNumber, claimAmount) {
+    await I.see('Case number: ' + caseNumber, 'h2');
+    await I.see('Claim amount: ' + claimAmount, 'h2');
   }
 
-  verifyHeadingDetails() {
-    I.see(content.heading.title[language], 'h1');
-    I.see(content.heading.number[language]);
-    I.see(content.heading.amount[language]);
+  async verifyHeadingDetails() {
+    await I.see(content.heading.title[language], 'h1');
+    await I.see(content.heading.number[language]);
+    await I.see(content.heading.amount[language]);
   }
 
-  verifyIsThisCaseReadyForTrialSectionContent() {
-    I.see(content.isCaseReady.title[language],'h2');
-    I.see('');
-    I.see(content.buttons.yes[language]);
-    I.see(content.buttons.no[language]);
+  async verifyIsThisCaseReadyForTrialSectionContent() {
+    await I.see(content.isCaseReady.title[language],'h2');
+    await I.see('');
+    await I.see(content.buttons.yes[language]);
+    await I.see(content.buttons.no[language]);
   }
 
-  inputDataForIsThisCaseReadyForTrialPage(readyForTrial) {
-    I.see(content.isCaseReady.title[language],'h2');
-    I.see(content.isCaseReady.reminder[language]);
-    I.click(readyForTrial);
+  async inputDataForIsThisCaseReadyForTrialPage(readyForTrial) {
+    await I.see(content.isCaseReady.title[language],'h2');
+    await I.see(content.isCaseReady.reminder[language]);
+    await I.click(readyForTrial);
     if (readyForTrial==='No'){
-      I.see(content.isCaseReady.needArrangements[language]);
-      I.see(content.isCaseReady.needApplication[language]);
-      I.see(content.isCaseReady.goAhead[language]);
-      I.see(content.isCaseReady.changeDate[language]);
+      await I.see(content.isCaseReady.needArrangements[language]);
+      await I.see(content.isCaseReady.needApplication[language]);
+      await I.see(content.isCaseReady.goAhead[language]);
+      await I.see(content.isCaseReady.changeDate[language]);
     }
   }
 }

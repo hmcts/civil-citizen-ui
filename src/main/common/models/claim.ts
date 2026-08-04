@@ -539,8 +539,17 @@ export class Claim {
     return undefined;
   }
 
-  isDefendantNotResponded(): boolean {
-    return this.ccdState === CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
+  isDefendantNotResponded(judgmentBufferEnabled = false): boolean {
+    return this.isAwaitingDefendantResponse(judgmentBufferEnabled);
+  }
+
+  isJudgmentRequested(): boolean {
+    return this.ccdState === CaseState.JUDGMENT_REQUESTED;
+  }
+
+  isAwaitingDefendantResponse(judgmentBufferEnabled = false): boolean {
+    return this.ccdState === CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT ||
+      (judgmentBufferEnabled && this.isJudgmentRequested());
   }
 
   isCaseIssuedPending(): boolean {
@@ -785,8 +794,8 @@ export class Claim {
     return this.ccdState === CaseState.PROCEEDS_IN_HERITAGE_SYSTEM && this.claimantResponse?.ccjRequest?.paidAmount?.option != undefined;
   }
 
-  isCCJCompleteForJo(isJudgmentOnlineLiveOn: boolean) {
-    return this.ccdState === CaseState.All_FINAL_ORDERS_ISSUED && this.claimantResponse?.ccjRequest?.paidAmount?.option != undefined && isJudgmentOnlineLiveOn;
+  isCCJCompleteForJo() {
+    return this.ccdState === CaseState.All_FINAL_ORDERS_ISSUED && this.claimantResponse?.ccjRequest?.paidAmount?.option != undefined;
   }
 
   getHowTheInterestCalculatedReason(): string {

@@ -63,51 +63,51 @@ const content = {
 
 class CheckYourAnswers {
 
-  checkPageFullyLoaded () {
-    I.waitForElement(`//a[.='${content.button.cancel[language]}']`);
+  async checkPageFullyLoaded () {
+    await I.waitForElement(`//a[.='${content.button.cancel[language]}']`);
   }
 
-  nextAction (nextAction) {
-    I.click(nextAction);
+  async nextAction (nextAction) {
+    await I.click(nextAction);
   }
 
-  verifyPageContent(caseNumber, claimAmount, languageChosen = 'en') {
+  async verifyPageContent(caseNumber, claimAmount, languageChosen = 'en') {
     language = languageChosen;
-    this.checkPageFullyLoaded();
-    this.verifyBreadcrumbs();
-    this.verifyHeadingDetails();
-    this.verifyCaseNumberClaimAmount(caseNumber, claimAmount);
-    this.verifyCheckYourAnswersContent();
-    contactUs.verifyContactUs();
+    await this.checkPageFullyLoaded();
+    await this.verifyBreadcrumbs();
+    await this.verifyHeadingDetails();
+    await this.verifyCaseNumberClaimAmount(caseNumber, claimAmount);
+    await this.verifyCheckYourAnswersContent();
+    await contactUs.verifyContactUs();
   }
 
-  verifyBreadcrumbs() {
-    I.see('Back', '//a[@class="govuk-back-link"]');
+  async verifyBreadcrumbs() {
+    await I.see('Back', '//a[@class="govuk-back-link"]');
   }
 
-  verifyCaseNumberClaimAmount(caseNumber, claimAmount) {
-    I.see('Case number: ' + caseNumber, 'h2');
-    I.see('Claim amount: ' + claimAmount, 'h2');
+  async verifyCaseNumberClaimAmount(caseNumber, claimAmount) {
+    await I.see('Case number: ' + caseNumber, 'h2');
+    await I.see('Claim amount: ' + claimAmount, 'h2');
   }
 
-  verifyHeadingDetails() {
-    I.see('Check your answers', 'h1');
-    I.see(content.heading.number[language]);
-    I.see(content.heading.amount[language]);
+  async verifyHeadingDetails() {
+    await I.see('Check your answers', 'h1');
+    await I.see(content.heading.number[language]);
+    await I.see(content.heading.amount[language]);
   }
 
-  verifyCheckYourAnswersContent(readyForTrial) {
-    I.see(content.caseReady.title[language]);
+  async verifyCheckYourAnswersContent(readyForTrial) {
+    await I.see(content.caseReady.title[language]);
     if (readyForTrial==='no'){
-      I.see(content.caseReady.no[language]);
+      await I.see(content.caseReady.no[language]);
     } else {
-      I.see(content.caseReady.yes[language]);
+      await I.see(content.caseReady.yes[language]);
     }
-    I.see(content.anyChange.title[language]);
-    I.see(content.anyChange.yes[language]);
-    I.see('Automation Test execution of Trial Arrangements...%$£');
-    I.see(content.otherInfo.title[language]);
-    I.see('Automation Testing for Other Information of the Trial Arrangement Section......%$£^');
+    await I.see(content.anyChange.title[language]);
+    await I.see(content.anyChange.yes[language]);
+    await I.see('Automation Test execution of Trial Arrangements...%$£');
+    await I.see(content.otherInfo.title[language]);
+    await I.see('Automation Testing for Other Information of the Trial Arrangement Section......%$£^');
   }
 }
 

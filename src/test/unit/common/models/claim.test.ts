@@ -48,7 +48,6 @@ import {PartyDetails} from 'common/form/models/partyDetails';
 import {FlightDetails} from 'common/models/flightDetails';
 import {CCJRequest} from 'models/claimantResponse/ccj/ccjRequest';
 import {PaidAmount} from 'models/claimantResponse/ccj/paidAmount';
-import * as launchDarkly from '../../../../main/app/auth/launchdarkly/launchDarklyClient';
 
 jest.mock('../../../../main/modules/i18n/languageService', ()=> ({
   getLanguage: jest.fn(),
@@ -1066,6 +1065,90 @@ describe('Documents', () => {
       claim.ccdState = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
       //When
       const result = claim.isDefendantNotResponded();
+      //Then
+      expect(result).toBe(true);
+    });
+    it('should return false with case state JUDGMENT_REQUESTED when judgment buffer is disabled', () => {
+      //Given
+      claim.ccdState = CaseState.JUDGMENT_REQUESTED;
+      //When
+      const result = claim.isDefendantNotResponded();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return true with case state JUDGMENT_REQUESTED when judgment buffer is enabled', () => {
+      //Given
+      claim.ccdState = CaseState.JUDGMENT_REQUESTED;
+      //When
+      const result = claim.isDefendantNotResponded(true);
+      //Then
+      expect(result).toBe(true);
+    });
+  });
+
+  describe('isJudgmentRequested', () => {
+    const claim = new Claim();
+    it('should return false with empty claim', () => {
+      //When
+      const result = claim.isJudgmentRequested();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return false with other case states', () => {
+      //Given
+      claim.ccdState = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
+      //When
+      const result = claim.isJudgmentRequested();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return true with case state JUDGMENT_REQUESTED', () => {
+      //Given
+      claim.ccdState = CaseState.JUDGMENT_REQUESTED;
+      //When
+      const result = claim.isJudgmentRequested();
+      //Then
+      expect(result).toBe(true);
+    });
+  });
+
+  describe('isAwaitingDefendantResponse', () => {
+    const claim = new Claim();
+    it('should return false with empty claim', () => {
+      //When
+      const result = claim.isAwaitingDefendantResponse();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return false with other case states', () => {
+      //Given
+      claim.ccdState = CaseState.PENDING_CASE_ISSUED;
+      //When
+      const result = claim.isAwaitingDefendantResponse();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return true with case state AWAITING_RESPONDENT_ACKNOWLEDGEMENT', () => {
+      //Given
+      claim.ccdState = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
+      //When
+      const result = claim.isAwaitingDefendantResponse();
+      //Then
+      expect(result).toBe(true);
+    });
+    it('should return false with case state JUDGMENT_REQUESTED when judgment buffer is disabled', () => {
+      //Given
+      claim.ccdState = CaseState.JUDGMENT_REQUESTED;
+      //When
+      const result = claim.isAwaitingDefendantResponse();
+      //Then
+      expect(result).toBe(false);
+    });
+    it('should return true with case state JUDGMENT_REQUESTED when judgment buffer is enabled', () => {
+      //Given
+      claim.ccdState = CaseState.JUDGMENT_REQUESTED;
+      //When
+      const result = claim.isAwaitingDefendantResponse(true);
       //Then
       expect(result).toBe(true);
     });
@@ -2399,7 +2482,6 @@ describe('isCcjComplete', () => {
   it('should return no when ccj not completed and state is correct', () => {
     //Given
     claim.ccdState = CaseState.PROCEEDS_IN_HERITAGE_SYSTEM;
-    jest.spyOn(launchDarkly, 'isJudgmentOnlineLive').mockResolvedValue(false);
     //When
     const result = claim.isCCJComplete();
     //Then
@@ -2411,7 +2493,6 @@ describe('isCcjComplete', () => {
     claim.claimantResponse = new ClaimantResponse();
     claim.claimantResponse.ccjRequest = new CCJRequest();
     claim.claimantResponse.ccjRequest.paidAmount = new PaidAmount(YesNo.YES, 1000, 9000);
-    jest.spyOn(launchDarkly, 'isJudgmentOnlineLive').mockResolvedValue(false);
     //When
     const result = claim.isCCJComplete();
     //Then
@@ -2420,34 +2501,38 @@ describe('isCcjComplete', () => {
 });
 
 describe('isCcjCompleteForJo', () => {
-  const claim = new Claim();
-  claim.claimantResponse = new ClaimantResponse();
-  claim.claimantResponse.ccjRequest = new CCJRequest();
-  claim.claimantResponse.ccjRequest.paidAmount = new PaidAmount(YesNo.YES, 1000, 9000);
-  it('should return true when ccj completed, state is correct and flag is on', async() => {
+  it('should return true when ccj completed and state is correct', () => {
     //Given
+    const claim = new Claim();
     claim.ccdState = CaseState.All_FINAL_ORDERS_ISSUED;
-    jest.spyOn(launchDarkly, 'isJudgmentOnlineLive').mockResolvedValue(true);
+    claim.claimantResponse = new ClaimantResponse();
+    claim.claimantResponse.ccjRequest = new CCJRequest();
+    claim.claimantResponse.ccjRequest.paidAmount = new PaidAmount(YesNo.YES, 1000, 9000);
     //When
-    const result = claim.isCCJCompleteForJo(true);
+    const result = claim.isCCJCompleteForJo();
     //Then
     expect(result).toBe(true);
   });
-  it('should return false when ccj completed, state is correct and flag is off', async() => {
+  it('should return false when state is correct and ccj has not been completed', () => {
     //Given
+    const claim = new Claim();
     claim.ccdState = CaseState.All_FINAL_ORDERS_ISSUED;
-    jest.spyOn(launchDarkly, 'isJudgmentOnlineLive').mockResolvedValue(false);
+    claim.claimantResponse = new ClaimantResponse();
+    claim.claimantResponse.ccjRequest = new CCJRequest();
     //When
-    const result = claim.isCCJCompleteForJo(false);
+    const result = claim.isCCJCompleteForJo();
     //Then
     expect(result).toBe(false);
   });
-  it('should return false when ccj completed, state is incorrect and flag is on', async() => {
+  it('should return false when ccj completed and state is incorrect', () => {
     //Given
+    const claim = new Claim();
     claim.ccdState = CaseState.PROCEEDS_IN_HERITAGE_SYSTEM;
-    jest.spyOn(launchDarkly, 'isJudgmentOnlineLive').mockResolvedValue(true);
+    claim.claimantResponse = new ClaimantResponse();
+    claim.claimantResponse.ccjRequest = new CCJRequest();
+    claim.claimantResponse.ccjRequest.paidAmount = new PaidAmount(YesNo.YES, 1000, 9000);
     //When
-    const result = claim.isCCJCompleteForJo(true);
+    const result = claim.isCCJCompleteForJo();
     //Then
     expect(result).toBe(false);
   });

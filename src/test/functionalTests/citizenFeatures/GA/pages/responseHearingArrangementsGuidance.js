@@ -9,29 +9,29 @@ class ResponseHearingArrangementsGuidance {
     await I.waitForElement('//a[.=\'Cancel\']');
   }
 
-  nextAction (nextAction) {
-    I.click(nextAction);
+  async nextAction (nextAction) {
+    await I.click(nextAction);
   }
 
   async verifyPageContent(applicationType) {
-    this.checkPageFullyLoaded();
-    this.verifyBreadcrumbs();
-    this.verifyHeadingDetails(applicationType);
+    await this.checkPageFullyLoaded();
+    await this.verifyBreadcrumbs();
+    await this.verifyHeadingDetails(applicationType);
     await this.verifyPageText();
-    contactUs.verifyContactUs();
+    await contactUs.verifyContactUs();
   }
 
-  verifyBreadcrumbs() {
-    I.see('Back', '//a[@class="govuk-back-link"]');
+  async verifyBreadcrumbs() {
+    await I.see('Back', '//a[@class="govuk-back-link"]');
   }
 
-  verifyHeadingDetails(applicationType) {
-    I.see(applicationType, 'h1');
-    I.see('Application hearing preferences', 'h1');
+  async verifyHeadingDetails(applicationType) {
+    await I.see(applicationType, 'h1');
+    await I.see('Application hearing preferences', 'h1');
   }
 
   async verifyPageText() {
-    I.see('We need to ask for your hearing preferences as a judge usually requires a hearing before making a decision on an application.');
+    await I.see('We need to ask for your hearing preferences as a judge usually requires a hearing before making a decision on an application.');
     await I.see('This hearing is only to discuss the application.');
   }
 }

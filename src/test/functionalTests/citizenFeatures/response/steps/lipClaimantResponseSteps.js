@@ -71,6 +71,14 @@ class ClaimantResponseSteps {
     await judgment.raiseDefaultJudgment(claimRef);
   }
 
+  async verifyDefaultJudgmentBuffer(claimRef) {
+    await judgment.raiseDefaultJudgmentBuffer(claimRef);
+  }
+
+  async verifyDefaultJudgmentBufferReRequest(claimRef) {
+    await judgment.raiseDefaultJudgmentBufferReRequest(claimRef);
+  }
+
   async verifyJudgmentByAdmission(claimRef) {
     await judgment.raiseJudgmentByAdmissions(claimRef);
   }

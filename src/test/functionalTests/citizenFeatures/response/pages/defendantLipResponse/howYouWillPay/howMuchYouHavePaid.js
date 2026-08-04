@@ -10,7 +10,7 @@ const fields = {
 };
 
 const buttons = {
-  saveAndContinue: '#main-content button.govuk-button',
+  saveAndContinue: 'Save and continue',
 };
 const currentDate = new Date();
 const day = 1;
@@ -39,14 +39,14 @@ class HowMuchYouHavePaid {
     await I.fillField(fields.year, year.toString());
     await I.see('How did you pay this amount?');
     await I.fillField(fields.text, 'Bank transfer');
-    await I.click(buttons.saveAndContinue);
+    await I.clickWithRetry(buttons.saveAndContinue);
   }
 
   async enterPaymentDetailsError(claimRef, amount, responseType) {
     if(responseType == 'partial-admission'){
       await I.amOnPage('/case/'+claimRef+'/response/partial-admission/how-much-have-you-paid');
       await I.waitForContent('How much have you paid the claimant?', config.WaitForText);
-      await I.click(buttons.saveAndContinue);
+      await I.clickWithRetry(buttons.saveAndContinue);
       //empty fields
       await I.see('There was a problem');
       await I.see('Enter a valid amount');
@@ -58,7 +58,7 @@ class HowMuchYouHavePaid {
       await I.fillField(fields.day, dayError.toString());
       await I.fillField(fields.month, monthError.toString());
       await I.fillField(fields.year, '20');
-      await I.click(buttons.saveAndContinue);
+      await I.clickWithRetry(buttons.saveAndContinue);
       await I.see('There was a problem');
       await I.see('Enter a valid day');
       await I.see('Enter a valid month');
@@ -66,7 +66,7 @@ class HowMuchYouHavePaid {
     }else{
       await I.amOnPage('/case/'+claimRef+'/response/full-rejection/how-much-have-you-paid');
       await I.waitForContent('How much have you paid?', config.WaitForText);
-      await I.click(buttons.saveAndContinue);
+      await I.clickWithRetry(buttons.saveAndContinue);
       //empty fields
       await I.see('There was a problem');
       await I.see('Enter a valid amount');
@@ -78,7 +78,7 @@ class HowMuchYouHavePaid {
       await I.fillField(fields.day, dayError.toString());
       await I.fillField(fields.month, monthError.toString());
       await I.fillField(fields.year, '20');
-      await I.click(buttons.saveAndContinue);
+      await I.clickWithRetry(buttons.saveAndContinue);
       await I.see('There was a problem');
       await I.see('Enter a valid day');
       await I.see('Enter a valid month');

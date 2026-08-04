@@ -6,7 +6,7 @@
 {% from "./macro/cookie-banner.njk" import cookieBanner %}
 {% from "./macro/back.njk" import back %}
 
-{% set languageToggle = "<a class='govuk-!-font-size-19 govuk-link language' href='?lang=en'>English</a>"%}
+{% set languageToggle = "<a class='govuk-!-font-size-19 govuk-link language' href='?lang=cy'>Cymraeg</a>"%}
 {% extends "govuk/template.njk" %}
 {% block head %}
 
@@ -62,6 +62,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 {% endblock %}
 
 {% block footer %}
+<div role="contentinfo">
 {% if developmentMode %}
 {{ govukFooter({
     contentLicence: {
@@ -134,6 +135,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       ]
     }
   }) }} {% endif %}
+</div>
 {% endblock %}
 {% block bodyEnd %}
 {# Run JavaScript at end of the <body>, to avoid blocking the initial render. #}

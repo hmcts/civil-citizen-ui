@@ -62,7 +62,7 @@ async function getRedirectInformation(req: AppRequest) {
     logger.error(`Error fetching redirect information for claimId: ${claimId}`, error);
     const claim = await getClaimById(claimId, req, true);
     claim.paymentSyncError = true;
-    await saveDraftClaim(generateRedisKey(<AppRequest>req), claim, true);
+    await saveDraftClaim(generateRedisKey(req), claim, true, req.session.user?.id);
     return null;
   }
 }

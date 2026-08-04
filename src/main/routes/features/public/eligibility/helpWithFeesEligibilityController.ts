@@ -31,7 +31,7 @@ helpWithFeesEligibilityController.post(ELIGIBILITY_HELP_WITH_FEES_URL, async (re
   } else {
     const cookie = req.cookies['eligibility'] ? req.cookies['eligibility'] : {};
     cookie.eligibleHelpWithFees = genericYesNoForm.model.option;
-    res.cookie('eligibility', cookie);
+    res.cookie('eligibility', cookie, {httpOnly: true, sameSite: 'lax'});
     genericYesNoForm.model.option === YesNo.YES
       ? res.redirect(ELIGIBILITY_INFORMATION_ABOUT_HELP_WITH_FEES_URL)
       : res.redirect(ELIGIBLE_FOR_THIS_SERVICE_URL);

@@ -52,6 +52,20 @@ describe('Submit claimant to ccd', ()=>{
     //Then
     expect(spyOnTranslation).toHaveBeenCalled();
   });
+  it('should pass judgment buffer flag to default judgment translation', async ()=> {
+    //Given
+    nock(citizenBaseUrl)
+      .post('/cases/1/citizen/1234/event')
+      .reply(200, {});
+    mockGetCaseData.mockImplementation(async () => {
+      return claim;
+    });
+    const spyOnTranslation = jest.spyOn(ccdTranslationService, 'translateClaimantResponseDJToCCD');
+    //When
+    await submitClaimantResponse(mockedAppRequest, true);
+    //Then
+    expect(spyOnTranslation).toHaveBeenCalledWith(claim, true);
+  });
   it('should rethrow error when there is an error with redis', async () =>{
     //Given
     mockGetCaseData.mockImplementation( async () => {

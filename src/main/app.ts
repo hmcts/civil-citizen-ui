@@ -137,21 +137,6 @@ const setDefaultHeaders: express.RequestHandler = (_req, res, next) => {
     'no-cache, max-age=0, must-revalidate, no-store',
   );
 
-  res.setHeader(
-    'Access-Control-Allow-Origin',
-    '*',
-  );
-
-  res.setHeader(
-    'Access-Control-Allow-Headers',
-    'Origin, X-Requested-With, Content-Type, Accept',
-  );
-
-  res.setHeader(
-    'access-control-allow-methods',
-    'GET,POST,OPTIONS,PUT,DELETE',
-  );
-
   next();
 };
 
@@ -226,7 +211,7 @@ if(e2eTestMode){
   // Use your custom middleware to add the session information
   app.use((req, res, next) => {
     const session = ((req.session) as AppSession);
-    session.user = {accessToken: 'someAccessToken', email: '', familyName: '', givenName: '', roles: [], id: 'someID'};
+    session.user = {accessToken: 'someAccessToken', idToken:'someIdToken', email: '', familyName: '', givenName: '', roles: [], id: 'someID'};
     next();
   });
 }
@@ -357,7 +342,7 @@ if (uploadRateLimitEnabled) {
     GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_URL,
     GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_URL,
     GA_UPLOAD_WRITTEN_REPRESENTATION_DOCS_URL,
-  ], createUploadRateLimitGuard(maxRequests, windowMs));
+  ], createUploadRateLimitGuard(maxRequests, windowMs, app.locals.draftStoreClient));
 }
 
 if(env !== 'test') {

@@ -16,8 +16,7 @@ const getTests = () => {
     return [...prevFailedTestFiles, ...prevNotExecutedTestFiles];
   }
 
-  return ['./src/test/functionalTests/tests/{*,**/*}.js',
-    './src/test/e2eTests/tests/{*,**/*}.js'];
+  return ['./src/test/functionalTests/tests/{*,**/*}.js'];
 };
 
 exports.config = {

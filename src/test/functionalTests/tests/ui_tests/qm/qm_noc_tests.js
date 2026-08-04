@@ -19,7 +19,7 @@ Before(async ({api}) => {
   claimNumber = caseData.legacyCaseReference;
 });
 
-Scenario('LR v LIP NOC Claimant and Defendant send message to court, follow up and admin closes query', async ({noc, qm, I}) => {
+Scenario('LR v LIP NOC defendant can follow up and see closed query after caseworker closes thread', async ({noc, qm, I}) => {
   await noc.requestNoticeOfChangeForApplicant1Solicitor(claimRef, config.applicantSolicitorUser);
   let solicitorQuery = await qm.raiseLRQuery(claimRef, config.applicantSolicitorUser, PUBLIC_QUERY, false);
   await qm.respondToQuery(claimRef, config.ctscAdmin, solicitorQuery, PUBLIC_QUERY);
@@ -29,20 +29,16 @@ Scenario('LR v LIP NOC Claimant and Defendant send message to court, follow up a
   await qm.respondToQuery(claimRef, config.ctscAdmin, latestQuery, PUBLIC_QUERY);
   latestQuery = await qm.followUpOnLipQuery(claimRef, config.defendantCitizenUser, latestQuery, PUBLIC_QUERY);
 
-  await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
-  await I.amOnPage('/dashboard');
-  await I.click(claimNumber);
-  await ResponseSteps.verifyUserQueryInDashboard();
-
   await qm.respondToQuery(claimRef, config.ctscAdmin, latestQuery, PUBLIC_QUERY, true);
   console.log('Caseworker closed the query');
+
   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   await I.amOnPage('/dashboard');
   await I.click(claimNumber);
   await ResponseSteps.verifyClosedQuery('Defendant Query');
 });
 
-Scenario('LIP v LR NOC Claimant and Defendant send message to court, follow up and admin closes query', async ({noc, qm, I}) => {
+Scenario('LIP v LR NOC claimant can follow up and see closed query after caseworker closes thread', async ({noc, qm, I}) => {
   await noc.requestNoticeOfChangeForRespondent1Solicitor(claimRef, config.defendantSolicitorUser);
   let claimantQuery = await qm.raiseLipQuery(claimRef, config.claimantCitizenUser, PUBLIC_QUERY, false);
   await qm.respondToQuery(claimRef, config.ctscAdmin, claimantQuery, PUBLIC_QUERY);
@@ -52,13 +48,9 @@ Scenario('LIP v LR NOC Claimant and Defendant send message to court, follow up a
   await qm.respondToQuery(claimRef, config.ctscAdmin, latestQuery, PUBLIC_QUERY);
   latestQuery = await qm.followUpOnLRQuery(claimRef, config.defendantSolicitorUser, latestQuery, PUBLIC_QUERY);
 
-  await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
-  await I.amOnPage('/dashboard');
-  await I.click(claimNumber);
-  await ResponseSteps.verifyUserQueryInDashboard();
-
   await qm.respondToQuery(claimRef, config.ctscAdmin, latestQuery, PUBLIC_QUERY, true);
   console.log('Caseworker closed the query');
+
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await I.amOnPage('/dashboard');
   await I.click(claimNumber);

@@ -1,6 +1,6 @@
 useCSRFProtection: true
 security:
-  referrerPolicy: 'origin'
+  referrerPolicy: 'strict-origin-when-cross-origin'
 port: 3001
 timeout: 30000
 services:
@@ -17,7 +17,7 @@ services:
     env: 'default'
   idam:
     url: 'http://localhost:5000'
-    authorizationURL: 'http://localhost:9002/login'
+    authorizationURL: 'http://localhost:9002/o/authorize'
     tokenURL: 'http://localhost:5000/o/token'
     clientID: 'civil_citizen_ui'
     clientSecret: 'citizen-ui-secret'
@@ -26,13 +26,22 @@ services:
     scope: '&scope=profile%20openid%20roles%20manage-user%20create-user%20search-user'
     terminateSessionURL: 'http://localhost:9002/o/endSession'
     signOutCallBackURL: 'http://localhost:3001/dashboard'
+    hmctsAccessURL: 'http://localhost:9002'
   draftStore:
     redis:
       host: 'localhost'
       port: 6379
       key:
       tls: false
-      expireInDays: 180
+      ttl:
+        # Draft claims (claim journey data keyed by claim id)
+        draftClaim: 180
+        # Journey cache keys (e.g. claimId+userId progress during response/claimant response)
+        journeyCache: 180
+        # Payment session and confirmation-url keys
+        paymentSession: 7
+        # General application journey keys
+        gaJourney: 180
     legacy:
       url: 'http://localhost:8765'
       s2s:

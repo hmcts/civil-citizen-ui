@@ -9,7 +9,6 @@ const CASEWORKER_EVENTS = 'cui-case-events-enabled';
 const SHUTTER_CUI_SERVICE = 'shutter-cui-service';
 const SHUTTER_PCQ = 'shutter-pcq';
 const GA_FOR_LIPS = 'GaForLips';
-const IS_JUDGMENT_ONLINE_LIVE = 'isJudgmentOnlineLive';
 const IS_DASHBOARD_ENABLED_FOR_CASE = 'is-dashboard-enabled-for-case';
 const CARM_ENABLED_FOR_CASE = 'cam-enabled-for-case';
 const MULTI_OR_INTERMEDIATE_TRACK = 'multi-or-intermediate-track';
@@ -19,6 +18,8 @@ const GA_FOR_WELSH = 'generalApplicationsForWelshParty';
 const WELSH_FOR_MAIN_CLAIM = 'enableWelshForMainCase';
 const IS_DEFENDANT_NOC_ONLINE_FOR_CASE = 'is-defendant-noc-online-for-case';
 const CUI_GA_NRO = 'cui-ga-nro';
+const JUDGMENT_BUFFER = 'judgment-buffer';
+const HMCTS_ACCESS_MIGRATION = 'hmcts-access-migration';
 
 async function getClient(): Promise<void> {
   const launchDarklyTestSdk =  process.env.LAUNCH_DARKLY_SDK || config.get<string>('services.launchDarkly.sdk');
@@ -30,7 +31,6 @@ async function getClient(): Promise<void> {
       await testData.update(testData.flag(SHUTTER_CUI_SERVICE).booleanFlag().variationForAll(false));
       await testData.update(testData.flag(SHUTTER_PCQ).booleanFlag().variationForAll(false));
       await testData.update(testData.flag(GA_FOR_LIPS).booleanFlag().variationForAll(false));
-      await testData.update(testData.flag(IS_JUDGMENT_ONLINE_LIVE).booleanFlag().variationForAll(false));
       await testData.update(testData.flag(IS_DASHBOARD_ENABLED_FOR_CASE).booleanFlag().variationForAll(false));
       await testData.update(testData.flag(CARM_ENABLED_FOR_CASE).booleanFlag().variationForAll(false));
       await testData.update(testData.flag(MULTI_OR_INTERMEDIATE_TRACK).booleanFlag().variationForAll(false));
@@ -39,6 +39,8 @@ async function getClient(): Promise<void> {
       await testData.update(testData.flag(QUERY_MANAGEMENT).booleanFlag().variationForAll(false));
       await testData.update(testData.flag(GA_FOR_WELSH).booleanFlag().variationForAll(false));
       await testData.update(testData.flag(CUI_GA_NRO).booleanFlag().variationForAll(false));
+      await testData.update(testData.flag(JUDGMENT_BUFFER).booleanFlag().variationForAll(false));
+      await testData.update(testData.flag(HMCTS_ACCESS_MIGRATION).booleanFlag().variationForAll(false));
 
       client = init(launchDarklyTestSdk, { updateProcessor: testData.getFactory() });
     } else {
@@ -121,8 +123,8 @@ export async function isGaForLipsEnabled(): Promise<boolean> {
   return await getFlagValue(GA_FOR_LIPS) as boolean;
 }
 
-export async function isJudgmentOnlineLive(): Promise<boolean> {
-  return await getFlagValue(IS_JUDGMENT_ONLINE_LIVE) as boolean;
+export async function isHmctsAccessMigrationEnabled(): Promise<boolean> {
+  return await getFlagValue(HMCTS_ACCESS_MIGRATION) as boolean;
 }
 
 export async function isDashboardEnabledForCase(date: Date): Promise<boolean> {
@@ -176,4 +178,8 @@ export async function isDefendantNoCOnlineForCase(date: Date): Promise<boolean> 
 
 export async function isCuiGaNroEnabled(): Promise<boolean> {
   return await getFlagValue(CUI_GA_NRO);
+}
+
+export async function isJudgmentBufferEnabled(): Promise<boolean> {
+  return await getFlagValue(JUDGMENT_BUFFER) as boolean;
 }

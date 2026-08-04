@@ -29,7 +29,7 @@ helpWithFeesReferenceEligibilityController.post(ELIGIBILITY_HELP_WITH_FEES_REFER
   } else {
     const cookie = req.cookies['eligibility'] ? req.cookies['eligibility'] : {};
     cookie.hwfReference = genericYesNoForm.model.option;
-    res.cookie('eligibility', cookie);
+    res.cookie('eligibility', cookie, {httpOnly: true, sameSite: 'lax'});
     genericYesNoForm.model.option === YesNo.YES
       ? res.redirect(ELIGIBILITY_HWF_ELIGIBLE_REFERENCE_URL)
       : res.redirect(ELIGIBILITY_HWF_ELIGIBLE_URL);

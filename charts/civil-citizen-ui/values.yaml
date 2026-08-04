@@ -1,6 +1,9 @@
 civil-service:
   enabled: false
 
+wiremock:
+  enabled: false
+
 wa:
   enabled: false
 
@@ -38,16 +41,20 @@ nodejs:
           alias: LAUNCH_DARKLY_SDK_KEY
 
   environment:
-    IDAM_WEB_URL: https://idam-web-public.{{ .Values.global.environment }}.platform.hmcts.net/login
+    IDAM_WEB_URL: https://idam-web-public.{{ .Values.global.environment }}.platform.hmcts.net/o/authorize
     IDAM_API_URL: https://idam-api.{{ .Values.global.environment }}.platform.hmcts.net/o/token
     IDAM_CLIENT_ID: civil_citizen_ui
     IDAM_END_SESSION_URL: https://idam-web-public.{{ .Values.global.environment }}.platform.hmcts.net/o/endSession
+    HMCTS_ACCESS_URL: https://hmcts-access.{{ .Values.global.environment }}.platform.hmcts.net
     IDAM_SIGN_OUT_REDIRECT_URL: https://civil-citizen-ui.{{ .Values.global.environment }}.platform.hmcts.net/dashboard
     OAUTH_CLIENT_REDIRECT: https://civil-citizen-ui.{{ .Values.global.environment }}.platform.hmcts.net/oauth2/callback
     REDIS_HOST: 'civil-citizen-ui-draft-store-{{ .Values.global.environment }}.redis.cache.windows.net'
     REDIS_PORT: 6380
     REDIS_TLS: true
-    REDIS_EXPIRE_IN_DAYS: 180
+    REDIS_DRAFT_CLAIM_EXPIRE_IN_DAYS: 180
+    REDIS_JOURNEY_CACHE_EXPIRE_IN_DAYS: 180
+    REDIS_PAYMENT_SESSION_EXPIRE_IN_DAYS: 7
+    REDIS_GA_JOURNEY_EXPIRE_IN_DAYS: 180
     SECURE_COOKIE: 'true'
     CIVIL_SERVICE_URL: http://civil-service-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
     ALLOW_CONFIG_MUTATIONS: true
@@ -69,4 +76,3 @@ nodejs:
     enabled: true
     maxReplicas: 5
     targetCPUUtilizationPercentage: 80
-

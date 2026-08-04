@@ -15,6 +15,18 @@ class Judgment {
     await this.confirmationPage();
   }
 
+  async raiseDefaultJudgmentBuffer(claimRef) {
+    await this.defendantDoB(claimRef);
+    await this.paymentOptionsForDJFlow();
+    await this.confirmationPageBuffer();
+  }
+
+  async raiseDefaultJudgmentBufferReRequest(claimRef) {
+    await this.defendantDoBDirect(claimRef);
+    await this.paymentOptionsForDJFlow();
+    await this.confirmationPageBuffer();
+  }
+
   async raiseJudgmentByAdmissions(claimRef) {
     await this.hasDefendantPaid('JudgmentByAdmissions', claimRef);
     await this.judgmentAmount();
@@ -55,6 +67,18 @@ class Judgment {
     await I.waitForText('Wait for defendant to respond');
     await I.amOnPage('/case/' + claimRef + '/ccj/date-of-birth');
     await I.wait(10);
+    await I.waitForContent('Do you know the defendant\'s date of birth?', 60);
+    await I.click(fields.no);
+    await I.click('Save and continue');
+    await I.waitForContent('Has the defendant paid some of the amount owed?', 60);
+    await I.click(fields.no);
+    await I.click('Save and continue');
+    await I.waitForContent('Judgment amount', 60);
+    await I.click('Continue');
+  }
+
+  async defendantDoBDirect(claimRef){
+    await I.amOnPage('/case/' + claimRef + '/ccj/date-of-birth');
     await I.waitForContent('Do you know the defendant\'s date of birth?', 60);
     await I.click(fields.no);
     await I.click('Save and continue');
@@ -130,6 +154,10 @@ class Judgment {
 
   async confirmationPage(){
     await I.waitForContent('County Court Judgment requested', 60);
+  }
+
+  async confirmationPageBuffer(){
+    await I.waitForContent('A CCJ has been requested. You will be notified when this is confirmed.', 60);
   }
 }
 

@@ -18,7 +18,7 @@ import {buildMediationSection} from 'services/features/response/checkAnswers/res
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseCheckAnswersService');
 
-const buildSummarySections = async (claim: Claim, claimId: string, lang: string, carmApplicable: boolean, mintiApplicable: boolean, claimFee?: number): Promise<SummarySections> => {
+const buildSummarySections = async (claim: Claim, claimId: string, lang: string, carmApplicable: boolean, mintiApplicable: boolean, claimFee?: number, judgmentBufferEnabled = false): Promise<SummarySections> => {
   const getYourResponseSection = () => {
     return claim.isFullDefence() || claim.isPartialAdmission() || claim.isFullAdmission()
       ? buildYourResponseSection(claim, claimId, lang)
@@ -27,7 +27,7 @@ const buildSummarySections = async (claim: Claim, claimId: string, lang: string,
   const getJudgmentRequestSection = async () => {
     const claimantResponse = Object.assign(new ClaimantResponse(), claim.claimantResponse);
     return claimantResponse.isCCJRequested
-      ? await buildJudgmentRequestSection(claim, claimId, lang, claimFee)
+      ? await buildJudgmentRequestSection(claim, claimId, lang, claimFee, judgmentBufferEnabled)
       : null;
   };
   const getHowYouWishToProceed = () => {
@@ -72,10 +72,10 @@ const buildSummarySections = async (claim: Claim, claimId: string, lang: string,
   };
 };
 
-export const getSummarySections = async (claimId: string, claim: Claim, lang?: string, claimFee?: number, carmApplicable = false, mintiApplicable = false): Promise<SummarySections> => {
+export const getSummarySections = async (claimId: string, claim: Claim, lang?: string, claimFee?: number, carmApplicable = false, mintiApplicable = false, judgmentBufferEnabled = false): Promise<SummarySections> => {
   const lng = getLng(lang);
   claim.claimantResponse = Object.assign(new ClaimantResponse(), claim.claimantResponse);
-  return await buildSummarySections(claim, claimId, lng, carmApplicable, mintiApplicable, claimFee);
+  return await buildSummarySections(claim, claimId, lng, carmApplicable, mintiApplicable, claimFee, judgmentBufferEnabled);
 };
 
 export const saveStatementOfTruth = async (claimId: string, claimantStatementOfTruth: StatementOfTruthForm) => {

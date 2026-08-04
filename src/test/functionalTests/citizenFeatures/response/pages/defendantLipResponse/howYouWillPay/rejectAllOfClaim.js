@@ -31,6 +31,7 @@ class RejectAllOfClaim {
       }
     }
     await I.click(buttons.continue);
+    await I.see('Respond to a money claim');
   }
 }
 

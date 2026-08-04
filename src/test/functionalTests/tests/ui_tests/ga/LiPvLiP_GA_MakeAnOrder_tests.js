@@ -37,6 +37,7 @@ Scenario('LipvLip Applicant GA creation e2e tests - Make an Order', async ({
   await I.amOnPage('/dashboard');
   await I.click(claimNumber);
   gaID = await createGASteps.askForMoreTimeCourtOrderGA(claimRef, 'Miss Jane Doe v Sir John Doe', 'notice');
+  await I.wait(5);
 
   //defendant response
   console.log('Responding to the GA as defendant');

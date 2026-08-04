@@ -33,6 +33,13 @@ module.exports = {
     };
   },
 
+  formattedDate: (offsetDays = 0) => {
+    const date = new Date();
+    date.setDate(date.getDate() + offsetDays);
+
+    return `${date.getDate()} ${date.toLocaleString('en-GB', { month: 'long' })} ${date.getFullYear()}`;
+  },
+
   listElement: string => {
     return {
       code: uuid.v1(),

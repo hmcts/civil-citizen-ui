@@ -58,7 +58,7 @@ describe('CCJ - Paid amount', () => {
   });
 
   describe('on POST', () => {
-    beforeAll(() => {
+    beforeEach(() => {
       app.locals.draftStoreClient = mockCivilClaim;
     });
 
@@ -145,8 +145,8 @@ describe('CCJ - Paid amount', () => {
   });
 
   describe('on POST', () => {
-    beforeAll(() => {
-      app.locals.draftStoreClient = mockCivilClaimantIntention                                                    ;
+    beforeEach(() => {
+      app.locals.draftStoreClient = mockCivilClaimantIntention;
     });
     // TODO undo when part payment journey is restored
     // it('should redirect to paid amount summary page if option yes is selected with valid amount', async () => {

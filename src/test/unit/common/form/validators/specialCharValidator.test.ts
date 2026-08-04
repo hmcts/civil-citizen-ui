@@ -1,33 +1,21 @@
-import * as launchDarkly from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {SpecialCharValidator} from 'form/validators/specialCharValidator';
 
 describe('SpecialCharValidator', () => {
   const validator = new SpecialCharValidator();
-  describe('isJudgmentOnlineLive flag OFF', () => {
-    it('should return true for a string with invalid characters and flag OFF', async () => {
+  describe('judgment online validation', () => {
+    it('should return true for a string with valid characters', async () => {
       //Given
-      jest.spyOn(launchDarkly, 'isJudgmentOnlineLive').mockResolvedValue(false);
+      const text = 'Valid string';
       //When
-      const result = await validator.validate('Invalid ˆ ` ´ ¨ chars');
+      const result = await validator.validate(text);
       //Then
       expect(result).toEqual(true);
     });
-  });
-
-  describe('isJudgmentOnlineLive flag ON', () => {
-    it('should return true for a string with valid characters and flag ON', async () => {
+    it('should return false for a string with invalid characters', async () => {
       //Given
-      jest.spyOn(launchDarkly, 'isJudgmentOnlineLive').mockResolvedValue(true);
+      const text = 'Invalid ˆ ` ´ ¨ chars';
       //When
-      const result = await validator.validate('Valid string');
-      //Then
-      expect(result).toEqual(true);
-    });
-    it('should return false for a string with invalid characters and flag ON', async () => {
-      //Given
-      jest.spyOn(launchDarkly, 'isJudgmentOnlineLive').mockResolvedValue(true);
-      //When
-      const result = await validator.validate('Invalid ˆ ` ´ ¨ chars');
+      const result = await validator.validate(text);
       const defaultMessage = await validator.defaultMessage();
       //Then
       expect(result).toEqual(false);

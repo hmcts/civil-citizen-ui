@@ -135,76 +135,76 @@ const content = {
 
 class TrialArrangementsIntroduction {
 
-  checkPageFullyLoaded () {
-    I.waitForElement(`//a[contains(.,'${content.buttons.startNow[language]}')]`);
+  async checkPageFullyLoaded () {
+    await I.waitForElement(`//a[contains(.,'${content.buttons.startNow[language]}')]`);
   }
 
-  nextAction (nextAction) {
-    I.click(nextAction);
+  async nextAction (nextAction) {
+    await I.click(nextAction);
   }
 
-  verifyPageContent(caseNumber, claimAmount, deadline, languageChosen = 'en') {
+  async verifyPageContent(caseNumber, claimAmount, deadline, languageChosen = 'en') {
     language = languageChosen;
-    this.checkPageFullyLoaded();
-    this.verifyBreadcrumbs();
-    this.verifyHeadingDetails(deadline);
-    this.verifyCaseNumberClaimAmount(caseNumber, claimAmount);
-    this.verifyIsTheCaseReadyForTrialSectionContent();
-    this.verifyTrialAdjustmentsAndDurationSectionContent();
-    this.verifyOtherSectionContent();
-    contactUs.verifyContactUs();
+    await this.checkPageFullyLoaded();
+    await this.verifyBreadcrumbs();
+    await this.verifyHeadingDetails(deadline);
+    await this.verifyCaseNumberClaimAmount(caseNumber, claimAmount);
+    await this.verifyIsTheCaseReadyForTrialSectionContent();
+    await this.verifyTrialAdjustmentsAndDurationSectionContent();
+    await this.verifyOtherSectionContent();
+    await contactUs.verifyContactUs();
   }
 
-  verifyBreadcrumbs() {
-    I.see('Home', '//li[@class=\'govuk-breadcrumbs__list-item\']');
-    I.see('Finalise your trial arrangements', '//li[@class=\'govuk-breadcrumbs__list-item\']');
+  async verifyBreadcrumbs() {
+    await I.see('Home', '//li[@class=\'govuk-breadcrumbs__list-item\']');
+    await I.see('Finalise your trial arrangements', '//li[@class=\'govuk-breadcrumbs__list-item\']');
   }
 
-  verifyCaseNumberClaimAmount(caseNumber, claimAmount) {
-    I.see('Case number: ' + caseNumber, 'h2');
-    I.see('Claim amount: ' + claimAmount, 'h2');
+  async verifyCaseNumberClaimAmount(caseNumber, claimAmount) {
+    await I.see('Case number: ' + caseNumber, 'h2');
+    await I.see('Claim amount: ' + claimAmount, 'h2');
   }
 
-  verifyHeadingDetails(deadline) {
-    I.see(content.heading.title[language], 'h1');
-    I.see(content.heading.number[language]);
-    I.see(content.heading.amount[language]);
-    I.see(content.heading.until[language]);
-    I.see(deadline);
-    I.see(content.heading.provideInfo[language]);
-    I.see(content.heading.youShould[language]);
-    I.see(content.heading.proceed[language]);
+  async verifyHeadingDetails(deadline) {
+    await I.see(content.heading.title[language], 'h1');
+    await I.see(content.heading.number[language]);
+    await I.see(content.heading.amount[language]);
+    await I.see(content.heading.until[language]);
+    await I.see(deadline);
+    await I.see(content.heading.provideInfo[language]);
+    await I.see(content.heading.youShould[language]);
+    await I.see(content.heading.proceed[language]);
   }
 
-  verifyIsTheCaseReadyForTrialSectionContent() {
-    I.see(content.isCaseReady.title[language],'h2');
-    I.see(content.isCaseReady.askConfirmation[language]);
-    I.see(content.isCaseReady.actionTaken[language]);
-    I.seeElement(`//a[.='${content.isCaseReady.directionsOrder[language]}']`);
-    I.see(content.isCaseReady.received[language]);
+  async verifyIsTheCaseReadyForTrialSectionContent() {
+    await I.see(content.isCaseReady.title[language],'h2');
+    await I.see(content.isCaseReady.askConfirmation[language]);
+    await I.see(content.isCaseReady.actionTaken[language]);
+    await I.seeElement(`//a[.='${content.isCaseReady.directionsOrder[language]}']`);
+    await I.see(content.isCaseReady.received[language]);
 
-    I.see(content.isCaseReady.ifNotReady[language]);
-    I.see(content.isCaseReady.toPostpone[language]);
-    I.see(content.isCaseReady.makeApplication[language]);
-    I.see(content.isCaseReady.onceCompleted[language]);
-    I.see(content.isCaseReady.applicationLink[language]);
-    I.see(content.isCaseReady.applicationReviewed[language]);
+    await I.see(content.isCaseReady.ifNotReady[language]);
+    await I.see(content.isCaseReady.toPostpone[language]);
+    await I.see(content.isCaseReady.makeApplication[language]);
+    await I.see(content.isCaseReady.onceCompleted[language]);
+    await I.see(content.isCaseReady.applicationLink[language]);
+    await I.see(content.isCaseReady.applicationReviewed[language]);
   }
 
-  verifyTrialAdjustmentsAndDurationSectionContent() {
-    I.see(content.duration.title[language],'h2');
-    I.see(content.duration.specifyChange[language]);
-    I.seeElement(`//a[.='${content.duration.directionsQuestionnaire[language]}']`);
-    I.see(content.duration.ShouldReview[language]);
-    I.see(content.duration.timeAllocated[language]);
-    I.see(content.duration.moreRequired[language]);
-    I.see(content.duration.makeApplication[language]);
-    I.see(content.duration.uponCompletion[language]);
+  async verifyTrialAdjustmentsAndDurationSectionContent() {
+    await I.see(content.duration.title[language],'h2');
+    await I.see(content.duration.specifyChange[language]);
+    await I.seeElement(`//a[.='${content.duration.directionsQuestionnaire[language]}']`);
+    await I.see(content.duration.ShouldReview[language]);
+    await I.see(content.duration.timeAllocated[language]);
+    await I.see(content.duration.moreRequired[language]);
+    await I.see(content.duration.makeApplication[language]);
+    await I.see(content.duration.uponCompletion[language]);
   }
 
-  verifyOtherSectionContent() {
-    I.see(content.other.title[language],'h2');
-    I.see(content.other.text[language]);
+  async verifyOtherSectionContent() {
+    await I.see(content.other.title[language],'h2');
+    await I.see(content.other.text[language]);
   }
 }
 

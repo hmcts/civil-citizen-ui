@@ -5,6 +5,13 @@ import { Party } from 'common/models/party';
 import { PartyType } from 'common/models/partyType';
 import { PaymentOptionType } from 'common/form/models/admission/paymentOption/paymentOptionType';
 import {ClaimantResponse} from 'models/claimantResponse';
+import nock from 'nock';
+import config from 'config';
+import {deepCopy} from '../../../../utils/deepCopy';
+import {mockClaim} from '../../../../utils/mockClaim';
+import {CaseState} from 'form/models/claimDetails';
+
+const civilServiceUrl = config.get<string>('services.civilService.url');
 
 describe('translate draft claim to ccd version', () => {
   it('should translate applicant 1 to ccd', async () => {
@@ -246,6 +253,25 @@ describe('translate draft claim to ccd version', () => {
     const normalizedReceivedString = normalizeWhitespace(ccdClaim.repaymentSummaryObject);
 
     // then
+    expect(normalizedReceivedString).toContain(normalizedExpectedString);
+  });
+
+  it('should get repaymentSummaryObject with interest when judgment requested and judgment buffer is enabled', async () => {
+    //Given
+    nock(civilServiceUrl)
+      .post('/fees/claim/calculate-interest')
+      .reply(200, '0.15');
+    const claim: Claim = Object.assign(new Claim(), deepCopy(mockClaim));
+    claim.ccdState = CaseState.JUDGMENT_REQUESTED;
+
+    //When
+    const ccdClaim = await translateClaimantResponseDJToCCD(claim, true);
+
+    //Then
+    const expectedString = 'The judgment will order the defendants to pay £215.15, including the claim fee and interest, if applicable, as shown: ### Claim amount £110 ### Claim fee amount £115 ## Subtotal £225.15 ## Total still owed £215.15';
+    const normalizedExpectedString = normalizeWhitespace(expectedString);
+    const normalizedReceivedString = normalizeWhitespace(ccdClaim.repaymentSummaryObject);
+
     expect(normalizedReceivedString).toContain(normalizedExpectedString);
   });
 });

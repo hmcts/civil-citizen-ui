@@ -9,7 +9,7 @@ source ./bin/variables/load-dev-user-preview-environment-variables.sh
 . ./bin/shared/idam-get-tokens.sh
 
 echo "Importing Roles to the CCD pod"
-./bin/add-roles.sh
+./bin/shared/add-roles.sh
 
 echo "Importing Camunda definitions"
 ./bin/pull-latest-camunda-files.sh ${camundaBranch}

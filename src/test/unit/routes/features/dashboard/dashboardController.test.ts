@@ -67,6 +67,22 @@ describe('Dashboard page', () => {
   });
 
   describe('on GET', () => {
+    const judgmentBufferEligibleClaim = {
+      'admittedAmount': '200',
+      'ccjRequestedDate': '2023-02-24',
+      'claimAmount': '1000',
+      'claimId': 'string',
+      'claimNumber': '256MC007',
+      'claimantName': 'Mr Baddy Bad',
+      'defendantName': 'Mr Bad Guy',
+      'numberOfDays': 0,
+      'numberOfDaysOverdue': 45,
+      'ocmc': true,
+      'paymentDate': '2022-06-21',
+      'responseDeadline': '2023-02-05',
+      'status': 'JUDGMENT_BUFFER_ELIGIBLE',
+    };
+
     it('should return dashboard page', async () => {
       const data = {
         claims: [
@@ -98,12 +114,43 @@ describe('Dashboard page', () => {
           expect(res.text).toContain('Claims made against you');
         });
     });
+
+    it('should return English judgment buffer eligible defendant dashboard status', async () => {
+      nock(civilServiceUrl)
+        .get(CIVIL_SERVICE_CASES_URL + 'defendant/undefined?page=1')
+        .reply(200, {claims: [judgmentBufferEligibleClaim], totalPages: 1});
+
+      await testSession
+        .get(`${DASHBOARD_URL}?lang=en`)
+        .expect((res: Response) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(
+            "You haven't responded to the claim. Mr Baddy Bad can now ask for a County Court Judgment (CCJ) against you. You can still respond to this claim before a CCJ is entered.",
+          );
+        });
+    });
+
+    it('should return Welsh judgment buffer eligible defendant dashboard status', async () => {
+      nock(civilServiceUrl)
+        .get(CIVIL_SERVICE_CASES_URL + 'defendant/undefined?page=1')
+        .reply(200, {claims: [judgmentBufferEligibleClaim], totalPages: 1});
+
+      await testSession
+        .get(`${DASHBOARD_URL}?lang=cy`)
+        .expect((res: Response) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(
+            "Dydych chi ddim wedi ymateb i'r hawliad. Gall Mr Baddy Bad nawr ofyn am Ddyfarniad Llys Sirol yn eich erbyn. Gallwch chi dal ymateb i'r hawliad hwn cyn i Ddyfarniad Llys Sirol gael ei gyhoeddi.",
+          );
+        });
+    });
+
     it('should return error page when there is an error with civil service response', async () => {
       nock(civilServiceUrl)
         .get(CIVIL_SERVICE_CASES_URL + 'defendant/undefined?page=1')
         .reply(500, {});
       await testSession
-        .get(DASHBOARD_URL)
+        .get(`${DASHBOARD_URL}?lang=en`)
         .expect((res: Response) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);

@@ -28,16 +28,16 @@ class CheckYourAnswersPage {
     let url = await I.grabCurrentUrl();
     //Check if PCQ page appears
     if(url.includes('pcq')){
-      I.amOnPage('/case/'+claimRef+'/response/task-list');
-      I.click('Check and submit your response');
+      await I.amOnPage('/case/'+claimRef+'/response/task-list');
+      await I.click('Check and submit your response');
     }
-    I.waitForContent('Check your answers', config.WaitForText);
-    I.see('Availability for mediation');
-    I.see('Is Test Company the person who will be attending the mediation appointment?');
-    I.see('Can the mediator use ');
-    I.see('Can the mediation team use ');
-    I.see('Are there any dates in the next 3 months when you cannot attend mediation?');
-    I.see('Dates unavailable');
+    await I.waitForContent('Check your answers', config.WaitForText);
+    await I.see('Availability for mediation');
+    await I.see('Is Test Company the person who will be attending the mediation appointment?');
+    await I.see('Can the mediator use ');
+    await I.see('Can the mediation team use ');
+    await I.see('Are there any dates in the next 3 months when you cannot attend mediation?');
+    await I.see('Dates unavailable');
   }
 
   async verifyClaimantMediationDetailsInCYA(claimRef) {
@@ -45,24 +45,24 @@ class CheckYourAnswersPage {
     let url = await I.grabCurrentUrl();
     //Check if PCQ page appears
     if(url.includes('pcq')){
-      I.amOnPage('/case/'+claimRef+'/response/task-list');
-      I.click('Check and submit your response');
+      await I.amOnPage('/case/'+claimRef+'/response/task-list');
+      await I.click('Check and submit your response');
     }
-    I.waitForContent('Check your answers', config.WaitForText);
-    I.see('Availability for mediation');
-    I.see('Can the mediator use ');
-    I.see('Can the mediation team use ');
-    I.see('Are there any dates in the next 3 months when you cannot attend mediation?');
-    I.see('Dates unavailable');
+    await I.waitForContent('Check your answers', config.WaitForText);
+    await I.see('Availability for mediation');
+    await I.see('Can the mediator use ');
+    await I.see('Can the mediation team use ');
+    await I.see('Are there any dates in the next 3 months when you cannot attend mediation?');
+    await I.see('Dates unavailable');
   }
 
   async verifyEditedEmailDetails() {
     const { language } = sharedData;
-    I.click('Check and submit your response');
-    I.waitForContent('Check your answers', config.WaitForText);
-    I.see('test@gmail.com');
-    I.click(cButtons.submit[language]);
-    I.waitForContent('You\'ve rejected their response',config.WaitForText);
+    await I.click('Check and submit your response');
+    await I.waitForContent('Check your answers', config.WaitForText);
+    await I.see('test@gmail.com');
+    await I.click(cButtons.submit[language]);
+    await I.waitForContent('You\'ve rejected their response',config.WaitForText);
     await I.waitForContent(content.confirmationSubheading[language]);
   }
 
@@ -72,19 +72,19 @@ class CheckYourAnswersPage {
   }
 
   async submitClaimantResponse() {
-    I.checkOption(fields.directionsQuestionnaireSigned);
+    await I.checkOption(fields.directionsQuestionnaireSigned);
     const { language } = sharedData;
-    I.click(cButtons.submit[language]);
-    I.waitForContent('You\'ve rejected their response',config.WaitForText);
-    I.see(content.confirmationSubheading[language]);
+    await I.click(cButtons.submit[language]);
+    await I.waitForContent('You\'ve rejected their response',config.WaitForText);
+    await I.see(content.confirmationSubheading[language]);
   }
 
   async submitYourResponse() {
-    I.click('Check and submit your response');
+    await I.click('Check and submit your response');
     const { language } = sharedData;
-    I.click(cButtons.submit[language]);
-    I.waitForContent('You\'ve rejected their response',config.WaitForText);
-    I.see(content.confirmationSubheading[language]);
+    await I.click(cButtons.submit[language]);
+    await I.waitForContent('You\'ve rejected their response',config.WaitForText);
+    await I.see(content.confirmationSubheading[language]);
   }
 }
 

@@ -30,7 +30,7 @@ someUsefulInfoFeesController.post(ELIGIBILITY_INFORMATION_FEES_URL, (req, res) =
   } else {
     const cookie = req.cookies['eligibility'] ? req.cookies['eligibility'] : {};
     cookie.someUsefulInfoFees = genericYesNoForm.model.option;
-    res.cookie('eligibility', cookie);
+    res.cookie('eligibility', cookie, {httpOnly: true, sameSite: 'lax'});
     genericYesNoForm.model.option === YesNo.YES
       ? res.redirect(ELIGIBILITY_APPLY_HELP_FEES_URL)
       : res.redirect(ELIGIBILITY_HELP_WITH_FEES_URL);

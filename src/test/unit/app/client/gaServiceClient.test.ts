@@ -17,6 +17,7 @@ appReq.params = {id: '12345'};
 appReq.session = {
   user: {
     accessToken: '54321',
+    idToken: '09876',
     id: '1',
     email: 'test@user.com',
     givenName: 'Test',

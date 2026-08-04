@@ -11,5 +11,11 @@ export class DOBDate extends CitizenDate {
   constructor(day?: string, month?: string, year?: string) {
     super(day, month, year);
     this.date = new Date(new Date(year + '-' + month + '-' + day).setHours(0, 0, 0, 0));
+
+    if (day === undefined && month === undefined && year === undefined) {
+      this.day = undefined;
+      this.month = undefined;
+      this.year = undefined;
+    }
   }
 }

@@ -59,13 +59,13 @@ class ViewQuery {
 
   async verifyQueryStatus(subject, sentBy, status) {
     await I.waitForContent('Messages to the court', config.WaitForText);
-    I.see(subject);
+    await I.see(subject);
     await I.waitForElement('tr.govuk-table__row', config.WaitForText);
     const rowLocator = locate('tr.govuk-table__row').withDescendant(locate('a').withText(subject));
-    within(rowLocator, () => {
-      I.see(sentBy);
-      I.see(status);
-      I.see('Court staff');
+    within(rowLocator, async () => {
+      await I.see(sentBy);
+      await I.see(status);
+      await I.see('Court staff');
     });
 
     await I.click(subject);

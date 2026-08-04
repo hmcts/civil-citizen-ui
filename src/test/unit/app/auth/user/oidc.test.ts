@@ -38,6 +38,7 @@ describe('getUserDetails', () => {
     const result = getUserDetails(mockResponse);
     expect(result).toStrictEqual({
       accessToken: token,
+      idToken: token,
       email: 'test@test.com',
       givenName: 'John',
       familyName: 'Dorian',

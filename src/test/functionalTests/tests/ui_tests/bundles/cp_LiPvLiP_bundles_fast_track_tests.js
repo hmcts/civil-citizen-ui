@@ -44,12 +44,12 @@ Scenario('Case progression journey - Fast Track - Verify Bundles tab', async ({I
   await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
   taskListItem = viewTheBundle();
   await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Available', true);
-  I.click(taskListItem.title);
-  viewBundlePage.verifyPageContent(formattedCaseId, claimAmount, uploadDate, partyType);
+  await I.click(taskListItem.title);
+  await viewBundlePage.verifyPageContent(formattedCaseId, claimAmount, uploadDate, partyType);
   //verify as defendant
   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
   await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Available', true);
-  I.click(taskListItem.title);
-  viewBundlePage.verifyPageContent(formattedCaseId, claimAmount, uploadDate, partyType);
+  await I.click(taskListItem.title);
+  await viewBundlePage.verifyPageContent(formattedCaseId, claimAmount, uploadDate, partyType);
 });

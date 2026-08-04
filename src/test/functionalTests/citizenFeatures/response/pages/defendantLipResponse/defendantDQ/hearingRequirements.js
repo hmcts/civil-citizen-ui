@@ -22,7 +22,7 @@ class HearingRequirements {
     await I.amOnPage('/case/'+claimRef+'/directions-questionnaire/determination-without-hearing');
     await I.waitForContent(content.heading[language], config.WaitForText);
     await I.click(fields.yesButton);
-    await I.click(cButtons.saveAndContinue[language]);
+    await I.clickWithRetry(cButtons.saveAndContinue[language]);
   }
 }
 

@@ -14,13 +14,26 @@ const claimantDoBController = Router();
 const claimantDoBViewPath = 'features/response/citizenDob/citizen-dob';
 const pageTitle= 'PAGES.CLAIMANT_DOB.PAGE_TITLE';
 
+function getDateOfBirth(dateOfBirth: unknown): Date | undefined {
+  if (!dateOfBirth) {
+    return undefined;
+  }
+
+  const storedDate = typeof dateOfBirth === 'object' && 'date' in dateOfBirth
+    ? (dateOfBirth as DOBDate).date
+    : dateOfBirth;
+  const date = new Date(storedDate as string);
+
+  return Number.isNaN(date.getTime()) ? undefined : date;
+}
+
 claimantDoBController.get(CLAIMANT_DOB_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const caseId = req.session?.user?.id;
     const claim: Claim = await getCaseDataFromStore(caseId);
     let form = new GenericForm(new DOBDate());
-    if (claim.applicant1?.dateOfBirth) {
-      const dateOfBirth = new Date(claim.applicant1.dateOfBirth as unknown as string);
+    const dateOfBirth = getDateOfBirth(claim.applicant1?.dateOfBirth);
+    if (dateOfBirth) {
       form = new GenericForm(new DOBDate(dateOfBirth.getDate().toString(), (dateOfBirth.getMonth() + 1).toString(), dateOfBirth.getFullYear().toString()));
     }
     res.render(claimantDoBViewPath, {form, today: new Date(), claimantView: true, maxDateForAge18: getDOBforAgeFromCurrentTime(18), pageTitle });

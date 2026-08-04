@@ -56,7 +56,7 @@ describe('caseReferenceCookie middleware', () => {
     expect(res.cookie).toHaveBeenCalledWith(
       CASE_REFERENCE_COOKIE_NAME,
       '1645882162449409',
-      expect.objectContaining({httpOnly: false, maxAge}),
+      expect.objectContaining({httpOnly: true, maxAge}),
     );
     expect(res.clearCookie).not.toHaveBeenCalled();
     expect(next).toHaveBeenCalled();
@@ -72,7 +72,7 @@ describe('caseReferenceCookie middleware', () => {
     expect(res.cookie).toHaveBeenCalledWith(
       CASE_REFERENCE_COOKIE_NAME,
       '1234567890123456',
-      expect.objectContaining({httpOnly: false, maxAge}),
+      expect.objectContaining({httpOnly: true, maxAge}),
     );
     expect(res.clearCookie).not.toHaveBeenCalled();
     expect(next).toHaveBeenCalled();
@@ -102,7 +102,7 @@ describe('caseReferenceCookie middleware', () => {
     expect(res.cookie).toHaveBeenCalledWith(
       CASE_REFERENCE_COOKIE_NAME,
       'ABC123456789',
-      expect.objectContaining({httpOnly: false, maxAge}),
+      expect.objectContaining({httpOnly: true, maxAge}),
     );
   });
 

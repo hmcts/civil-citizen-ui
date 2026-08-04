@@ -52,6 +52,7 @@ Scenario('01 LiP Defendant response with Part admit', async ({ api }) => {
   await ResponseSteps.EnterDQForSmallClaims(claimRef, true);
   await ResponseSteps.submitResponse(claimRef, partAdmit);
   await ResponseSteps.VerifyConfirmationPage('PartAdmitAndPayImmediately');
+  await api.waitForFinishedBusinessProcess();
 });
 
 Scenario('02 LiP Claimant response with Part admit', async ({ api }) => {
@@ -69,9 +70,19 @@ Scenario('02 LiP Claimant response with Part admit', async ({ api }) => {
   await api.waitForFinishedBusinessProcess();
 });
 
-Scenario('03 Verify Mediation status before Unsuccessful mediation', async () => {
+Scenario('03 Verify Mediation status before Unsuccessful mediation', async ({ I }) => {
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   const mediationCARMClaimantDefendantNotif = mediationCARMClaimantDefendant();
+  await verifyNotificationTitleAndContent(claimNumber, mediationCARMClaimantDefendantNotif.title, mediationCARMClaimantDefendantNotif.content);
+  taskListItem = viewMediationDocuments();
+  await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Not available yet');
+  taskListItem = uploadMediationDocuments();
+  await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Not available yet');
+  taskListItem = viewMediationSettlementAgreement();
+  await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Not available yet');
+  await I.click('Sign out');
+  await I.wait(1);
+  await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   await verifyNotificationTitleAndContent(claimNumber, mediationCARMClaimantDefendantNotif.title, mediationCARMClaimantDefendantNotif.content);
   taskListItem = viewMediationDocuments();
   await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Not available yet');

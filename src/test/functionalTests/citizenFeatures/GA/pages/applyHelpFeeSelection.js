@@ -9,31 +9,31 @@ class ApplyHelpFeeSelection {
     await I.waitForElement('//a[.=\'Cancel\']');
   }
 
-  nextAction (nextAction) {
-    I.click(nextAction);
+  async nextAction (nextAction) {
+    await I.click(nextAction);
   }
 
   async verifyPageContent() {
-    this.checkPageFullyLoaded();
-    this.verifyBreadcrumbs();
-    this.verifyHeadingDetails();
+    await this.checkPageFullyLoaded();
+    await this.verifyBreadcrumbs();
+    await this.verifyHeadingDetails();
     await this.verifyPageText();
-    contactUs.verifyContactUs();
+    await contactUs.verifyContactUs();
   }
 
   async verifyPageContentForAdditionalFee(){
-    this.checkPageFullyLoaded();
-    this.verifyBreadcrumbs();
-    this.verifyHeadingDetailsForAdditionalFee();
+    await this.checkPageFullyLoaded();
+    await this.verifyBreadcrumbs();
+    await this.verifyHeadingDetailsForAdditionalFee();
     await this.verifyPageText();
-    contactUs.verifyContactUs();
+    await contactUs.verifyContactUs();
   }
 
   async confirmActions(option, tries = 0){
     const currentUrl = await I.grabCurrentUrl();
     await this.verifyPageContent();
-    this.nextAction(option);
-    this.nextAction('Continue');
+    await this.nextAction(option);
+    await this.nextAction('Continue');
     const redirectedUrl = await I.grabCurrentUrl();
     if (currentUrl === redirectedUrl && tries < 3) {
       tries = ++tries;
@@ -42,26 +42,26 @@ class ApplyHelpFeeSelection {
     }
   }
 
-  verifyBreadcrumbs() {
-    I.see('Back', '//a[@class="govuk-back-link"]');
+  async verifyBreadcrumbs() {
+    await I.see('Back', '//a[@class="govuk-back-link"]');
   }
 
-  verifyHeadingDetails() {
-    I.see('Application fee', 'span');
-    I.see('Pay application fee', 'h1');
+  async verifyHeadingDetails() {
+    await I.see('Application fee', 'span');
+    await I.see('Pay application fee', 'h1');
   }
 
-  verifyHeadingDetailsForAdditionalFee() {
-    I.see('Additional application fee', 'span');
-    I.see('Pay additional application fee', 'h1');
+  async verifyHeadingDetailsForAdditionalFee() {
+    await I.see('Additional application fee', 'span');
+    await I.see('Pay additional application fee', 'h1');
   }
 
   async verifyPageText() {
-    I.see('If you\'re on a low income, have limited savings or are claiming benefits, you may be able to get help with fees (opens in a new tab).');
-    I.see('If you meet the criteria, you may get support to pay some or all of the fee.');
+    await I.see('If you\'re on a low income, have limited savings or are claiming benefits, you may be able to get help with fees (opens in a new tab).');
+    await I.see('If you meet the criteria, you may get support to pay some or all of the fee.');
     await I.seeElement('//a[@class=\'govuk-link\' and contains(text(), \'help with fees (opens in a new tab)\')]\n');
-    I.see('Do you want to apply for help with fees?', 'h2');
-    I.see('Yes');
+    await I.see('Do you want to apply for help with fees?', 'h2');
+    await I.see('Yes');
     await I.see('No');
   }
 }

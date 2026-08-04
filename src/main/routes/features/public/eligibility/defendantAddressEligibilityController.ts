@@ -31,7 +31,7 @@ defendantAddressEligibilityController.post(ELIGIBILITY_DEFENDANT_ADDRESS_URL, (r
   } else {
     const cookie = req.cookies['eligibility'] ? req.cookies['eligibility'] : {};
     cookie.eligibleDefendantAddress = genericYesNoForm.model.option;
-    res.cookie('eligibility', cookie);
+    res.cookie('eligibility', cookie, {httpOnly: true, sameSite: 'lax'});
     genericYesNoForm.model.option === YesNo.YES
       ? res.redirect(ELIGIBILITY_CLAIM_TYPE_URL)
       : res.redirect(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL + '?reason=defendant-address');

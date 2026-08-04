@@ -50,6 +50,6 @@ Scenario('Create Claim -  Individual vs Individual - small claims - no interest 
 
 // Removed redundant scenarios - now covered by integration tests:
 // - "with standard interest - no hwf" - covered by claimIssueDashboard.integration.test.ts
-// - "with variable interest - no hwf" - covered by claimIssueDashboard.integration.test.ts  
+// - "with variable interest - no hwf" - covered by claimIssueDashboard.integration.test.ts
 // - "with variable interest - with hwf" - covered by claimIssueDashboard.integration.test.ts
 // See: src/integration-test/routes/dashboard/claimIssueDashboard.integration.test.ts

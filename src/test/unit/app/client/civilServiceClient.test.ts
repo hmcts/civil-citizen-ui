@@ -40,9 +40,14 @@ const mockedAxios = axios as jest.Mocked<typeof axios>;
 const baseUrl: string = config.get('baseUrl');
 const appReq = <AppRequest>req;
 appReq.params = {id: '12345'};
+appReq.locals = {
+  env: 'test',
+  lang: 'en',
+};
 appReq.session = {
   user: {
     accessToken: '54321',
+    idToken: '12345',
     id: '1',
     email: 'test@user.com',
     givenName: 'Test',
@@ -151,6 +156,28 @@ describe('Civil Service Client', () => {
       expect(actualClaims[0].case_data.legacyCaseReference).toEqual('000MC003');
       expect(actualClaims[0].case_data.applicant1?.individualFirstName).toEqual('Jane');
       expect(actualClaims[0].case_data.applicant1?.individualLastName).toEqual('Clark');
+    });
+  });
+  describe('retrieveClaimDetails request-scoped cache', () => {
+    it('should reuse cached claim details promise for repeated calls in the same request', async () => {
+      const mockGet = jest.fn()
+        .mockResolvedValueOnce({
+          data: {
+            id: '1',
+            case_data: ccdClaim,
+            state: CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT,
+            last_modified: new Date(),
+          },
+        })
+        .mockResolvedValueOnce({data: [CaseRole.CLAIMANT]});
+      mockedAxios.create.mockReturnValueOnce({get: mockGet, defaults: {baseURL: baseUrl}} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
+      appReq.locals.claimDetailsRequestCache = undefined;
+
+      await civilServiceClient.retrieveClaimDetails('1', appReq);
+      await civilServiceClient.retrieveClaimDetails('1', appReq);
+
+      expect(mockGet).toHaveBeenCalledTimes(2);
     });
   });
   describe('getFeeRanges', () => {
@@ -485,6 +512,11 @@ describe('Civil Service Client', () => {
   });
 
   describe('getUserCaseRoles', () => {
+    beforeEach(() => {
+      appReq.locals.claimDetailsRequestCache = undefined;
+      appReq.locals.userCaseRolesRequestCache = undefined;
+    });
+
     it('should return User Case Roles successfully', async () => {
       //Given
       const caseRoleExpected = [CaseRole.RESPONDENTSOLICITORTWO];
@@ -509,6 +541,19 @@ describe('Civil Service Client', () => {
       const civilServiceClient = new CivilServiceClient(baseUrl);
       //Then
       await expect(civilServiceClient.getUserCaseRoles('1', appReq)).rejects.toThrow('error');
+    });
+
+    it('should reuse cached user case roles promise for repeated calls in the same request', async () => {
+      const caseRoleExpected = [CaseRole.CLAIMANT];
+      const mockGet = jest.fn().mockResolvedValue({data: caseRoleExpected});
+      mockedAxios.create.mockReturnValueOnce({get: mockGet, defaults: {baseURL: baseUrl}} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
+      appReq.locals.userCaseRolesRequestCache = undefined;
+
+      await civilServiceClient.getUserCaseRoles('1', appReq);
+      await civilServiceClient.getUserCaseRoles('1', appReq);
+
+      expect(mockGet).toHaveBeenCalledTimes(1);
     });
   });
   describe('retrieveClaimDetails', () => {
@@ -541,6 +586,7 @@ describe('Civil Service Client', () => {
       const mockGet = jest.fn().mockResolvedValue({data: undefined});
       mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
       const civilServiceClient = new CivilServiceClient(baseUrl);
+      appReq.locals.claimDetailsRequestCache = undefined;
 
       //Then
       await expect(civilServiceClient.retrieveClaimDetails('123', appReq)).rejects.toThrow('Claim details not available!');
@@ -665,6 +711,72 @@ describe('Civil Service Client', () => {
         .replace(':caseId', '123'));
       expect(claim.issueDate).toEqual(date);
       expect(claim.respondent1ResponseDeadline).toEqual(date);
+    });
+
+    it('should log sanitised civil-service 422 submit errors without raw request data', async () => {
+      //Given
+      const responseBody = {
+        exception: 'CaseValidationException',
+        error: 'Unprocessable Entity',
+        message: 'Case data validation failed',
+        errors: [
+          'generalApplications.0.generalAppType.types',
+          'another validation error',
+          'third validation error',
+          'fourth validation error',
+          'fifth validation error',
+          'sixth validation error',
+          {caseDataUpdate: {generalAppType: {types: ['OTHER_OPTION']}}},
+        ],
+        caseDataUpdate: {generalAppType: {types: ['OTHER_OPTION']}},
+        config: {data: '{"caseDataUpdate":{"generalAppType":{"types":["OTHER_OPTION"]}}}'},
+        request: {body: 'raw request body'},
+      };
+      const apiError = Object.assign(new Error('Request failed with status code 422'), {
+        response: {
+          status: 422,
+          data: responseBody,
+        },
+        config: {data: 'raw axios config data'},
+      });
+      const mockPost = jest.fn().mockRejectedValue(apiError);
+      mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
+      const {Logger} = require('@hmcts/nodejs-logging');
+      const logger = Logger.getLogger('civilServiceClient');
+      const loggerSpy = jest.spyOn(logger, 'error').mockImplementation();
+
+      try {
+        //When
+        await expect(civilServiceClient.submitInitiateGeneralApplicationEvent('123', ccdGApp, appReq))
+          .rejects.toBe(apiError);
+
+        //Then
+        expect(loggerSpy).toHaveBeenCalledWith(
+          'Submit event failed (event=INITIATE_GENERAL_APPLICATION, claimId=123, status=422)',
+          {
+            body: {
+              exception: 'CaseValidationException',
+              error: 'Unprocessable Entity',
+              message: 'Case data validation failed',
+              validationErrors: [
+                'generalApplications.0.generalAppType.types',
+                'another validation error',
+                'third validation error',
+                'fourth validation error',
+                'fifth validation error',
+              ],
+              validationErrorCount: 7,
+            },
+          },
+        );
+        const loggedMetadata = loggerSpy.mock.calls[0][1] as { body: Record<string, unknown> };
+        expect(loggedMetadata.body).not.toHaveProperty('caseDataUpdate');
+        expect(loggedMetadata.body).not.toHaveProperty('config');
+        expect(loggedMetadata.body).not.toHaveProperty('request');
+      } finally {
+        loggerSpy.mockRestore();
+      }
     });
 
     it('should submit submitInitiateGeneralApplicationForCOSCEvent successfully', async () => {

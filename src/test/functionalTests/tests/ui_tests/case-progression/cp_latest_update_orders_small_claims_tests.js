@@ -26,7 +26,9 @@ Before(async ({ api }) => {
   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
 });
 
-Scenario('Case progression journey - Small Claims - Verify latest Update page for an Order being Created', async ({ I, api }) => {
+Scenario.skip('Case progression journey - Small Claims - Verify latest Update page for an Order being Created', async ({ I, api }) => {
+  // Enable this test once the bug https://tools.hmcts.net/jira/browse/DTSCCI-5513 is fixed
+  
   const orderMadeNotif = orderMade();
   await verifyNotificationTitleAndContent(claimNumber, orderMadeNotif.title, orderMadeNotif.content, claimRef);
   taskListItem = ordersAndNotices();

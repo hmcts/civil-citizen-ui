@@ -1,17 +1,12 @@
 import request from 'supertest';
 process.env.NODE_ENV = 'test';
 import '../../setup/testSetup';
-jest.mock('../../../main/modules/draft-store/draftStoreService', () => ({
-  updateFieldDraftClaimFromStore: jest.fn(),
-}));
-jest.mock('../../../main/services/dashboard/dashboardService', () => ({
-  getNotifications: jest.fn(),
-  getDashboardForm: jest.fn(),
-  extractOrderDocumentIdFromNotification: jest.fn(),
-  getContactCourtLink: jest.fn(),
-  getHelpSupportTitle: jest.fn(),
-  getHelpSupportLinks: jest.fn(),
-}));
+jest.mock('../../../main/modules/draft-store/draftStoreService', () =>
+  jest.requireActual('../../setup/sharedMocks').draftStoreServiceMock,
+);
+jest.mock('../../../main/services/dashboard/dashboardService', () =>
+  jest.requireActual('../../setup/sharedMocks').dashboardServiceMock,
+);
 import {app} from '../../../main/app';
 import {
   CITIZEN_FREE_TELEPHONE_MEDIATION_URL,
@@ -46,6 +41,7 @@ import {
   getHelpSupportTitle,
   getNotifications,
 } from '../../../main/services/dashboard/dashboardService';
+import {getCaseDataFromStore, saveDraftClaim} from '../../../main/modules/draft-store/draftStoreService';
 
 const mediationSuccessful = {
   title: 'Mediation appointment successful',
@@ -145,6 +141,8 @@ describe('Integration: mediation dashboard notifications and task list', () => {
     (isCarmEnabledForCase as jest.Mock).mockResolvedValue(true);
     (isDashboardEnabledForCase as jest.Mock).mockResolvedValue(false);
     (extractOrderDocumentIdFromNotification as jest.Mock).mockReturnValue(undefined);
+    (getCaseDataFromStore as jest.Mock).mockResolvedValue(new Claim());
+    (saveDraftClaim as jest.Mock).mockResolvedValue(undefined);
   });
 
   it('claimant dashboard: unsuccessful mediation (not contactable) shows notification and mediation task states', async () => {

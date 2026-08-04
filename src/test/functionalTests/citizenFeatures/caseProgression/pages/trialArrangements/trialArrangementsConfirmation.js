@@ -67,44 +67,44 @@ const content = {
 
 class CheckYourAnswers {
 
-  checkPageFullyLoaded () {
-    I.waitForElement(`//a[contains(.,'${content.button.caseDetails[language]}')]`);
+  async checkPageFullyLoaded () {
+    await I.waitForElement(`//a[contains(.,'${content.button.caseDetails[language]}')]`);
   }
 
-  nextAction (nextAction) {
-    I.click(nextAction);
+  async nextAction (nextAction) {
+    await I.click(nextAction);
   }
 
-  verifyPageContent(readyForTrial) {
-    this.checkPageFullyLoaded();
-    this.verifyHeadingDetails(readyForTrial);
-    this.verifyConfirmationSectionContent(readyForTrial);
-    contactUs.verifyContactUs();
+  async verifyPageContent(readyForTrial) {
+    await this.checkPageFullyLoaded();
+    await this.verifyHeadingDetails(readyForTrial);
+    await this.verifyConfirmationSectionContent(readyForTrial);
+    await contactUs.verifyContactUs();
   }
 
-  verifyHeadingDetails(readyForTrial) {
+  async verifyHeadingDetails(readyForTrial) {
     if (readyForTrial==='No'){
-      I.see(content.saidNo.title[language], 'h1');
+      await I.see(content.saidNo.title[language], 'h1');
     }
     if (readyForTrial==='Yes'){
-      I.see(content.saidYes.title[language], 'h1');
+      await I.see(content.saidYes.title[language], 'h1');
     }
   }
 
-  verifyConfirmationSectionContent(readyForTrial) {
-    I.see(content.whatNext[language]);
+  async verifyConfirmationSectionContent(readyForTrial) {
+    await I.see(content.whatNext[language]);
     if (readyForTrial==='No') {
-      I.see(content.saidNo.asPlanned[language]);
-      I.see(content.saidNo.wantChange[language]);
-      I.see('For any changes to accessibility requirements between now and the trial date you will need to call 0300 123 7050.');
+      await I.see(content.saidNo.asPlanned[language]);
+      await I.see(content.saidNo.wantChange[language]);
+      await I.see('For any changes to accessibility requirements between now and the trial date you will need to call 0300 123 7050.');
     }
     if (readyForTrial==='Yes'){
-      I.see(content.saidYes.anyChanges[language]);
-      I.see(content.accessibility[language]);
+      await I.see(content.saidYes.anyChanges[language]);
+      await I.see(content.accessibility[language]);
     }
-    I.seeElement(`//a[.='${content.makeApplication[language]}']`);
-    I.see(content.canView[language]);
-    I.seeElement(`//a[.='${content.orderNotices[language]}']`);
+    await I.seeElement(`//a[.='${content.makeApplication[language]}']`);
+    await I.see(content.canView[language]);
+    await I.seeElement(`//a[.='${content.orderNotices[language]}']`);
   }
 }
 

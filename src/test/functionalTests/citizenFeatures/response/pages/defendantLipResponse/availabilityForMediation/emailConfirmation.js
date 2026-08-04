@@ -13,7 +13,7 @@ class EmailConfirmation {
   async confirmEmail() {
     await I.waitForContent('Can the mediation team use', config.WaitForText);
     await I.click(fields.yesButton);
-    contactUs.verifyContactUs();
+    await contactUs.verifyContactUs();
     await I.click('Save and continue');
   }
 }

@@ -59,52 +59,52 @@ const content ={
 
 class HasAnythingChanged {
 
-  checkPageFullyLoaded () {
-    I.waitForElement(`//a[.='${content.button.cancel[language]}']`);
+  async checkPageFullyLoaded () {
+    await I.waitForElement(`//a[.='${content.button.cancel[language]}']`);
   }
 
-  nextAction (nextAction) {
-    I.click(nextAction);
+  async nextAction (nextAction) {
+    await I.click(nextAction);
   }
 
-  verifyPageContent(caseNumber, claimAmount, languageChosen = 'en') {
+  async verifyPageContent(caseNumber, claimAmount, languageChosen = 'en') {
     language = languageChosen;
-    this.checkPageFullyLoaded();
-    this.verifyBreadcrumbs();
-    this.verifyHeadingDetails();
-    this.verifyCaseNumberClaimAmount(caseNumber, claimAmount);
-    this.verifyHasAnythingChangedSectionContent();
-    contactUs.verifyContactUs();
+    await this.checkPageFullyLoaded();
+    await this.verifyBreadcrumbs();
+    await this.verifyHeadingDetails();
+    await this.verifyCaseNumberClaimAmount(caseNumber, claimAmount);
+    await this.verifyHasAnythingChangedSectionContent();
+    await contactUs.verifyContactUs();
   }
 
-  verifyBreadcrumbs() {
-    I.see('Back', '//a[@class="govuk-back-link"]');
+  async verifyBreadcrumbs() {
+    await I.see('Back', '//a[@class="govuk-back-link"]');
   }
 
-  verifyCaseNumberClaimAmount(caseNumber, claimAmount) {
-    I.see('Case number: ' + caseNumber, 'h2');
-    I.see('Claim amount: ' + claimAmount, 'h2');
+  async verifyCaseNumberClaimAmount(caseNumber, claimAmount) {
+    await I.see('Case number: ' + caseNumber, 'h2');
+    await I.see('Claim amount: ' + claimAmount, 'h2');
   }
 
-  verifyHeadingDetails() {
-    I.see(content.heading.title[language], 'h1');
-    I.see(content.heading.number[language]);
-    I.see(content.heading.amount[language]);
+  async verifyHeadingDetails() {
+    await I.see(content.heading.title[language], 'h1');
+    await I.see(content.heading.number[language]);
+    await I.see(content.heading.amount[language]);
   }
 
-  verifyHasAnythingChangedSectionContent() {
-    I.see(content.anythingChanged.title[language],'h2');
-    I.see(content.anythingChanged.previousAnswers[language]);
-    I.seeElement(`//a[.='${content.anythingChanged.directionsQuestionnaire[language]}']`);
-    I.see(content.button.yes[language]);
-    I.see(content.button.no[language]);
+  async verifyHasAnythingChangedSectionContent() {
+    await I.see(content.anythingChanged.title[language],'h2');
+    await I.see(content.anythingChanged.previousAnswers[language]);
+    await I.seeElement(`//a[.='${content.anythingChanged.directionsQuestionnaire[language]}']`);
+    await I.see(content.button.yes[language]);
+    await I.see(content.button.no[language]);
   }
 
-  inputDataForHasAnythingChangedSection() {
-    I.click('//input[@id=\'option\']');
-    I.see(content.anythingChanged.whatSupport[language]);
-    I.see(content.anythingChanged.example[language]);
-    I.fillField('textArea','Automation Test execution of Trial Arrangements...%$£');
+  async inputDataForHasAnythingChangedSection() {
+    await I.click('//input[@id=\'option\']');
+    await I.see(content.anythingChanged.whatSupport[language]);
+    await I.see(content.anythingChanged.example[language]);
+    await I.fillField('textArea','Automation Test execution of Trial Arrangements...%$£');
   }
 }
 

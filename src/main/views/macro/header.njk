@@ -1,29 +1,35 @@
-{% from 'govuk/components/header/macro.njk' import govukHeader %}
+{% from 'govuk/macros/logo.njk' import govukLogo %}
+{% from "govuk/components/service-navigation/macro.njk" import govukServiceNavigation %}
 
-{% macro headerComponent(t, user) %}
-  {% set navigationList = [
-    {
-      href: '/dashboard',
-      text: t('COMMON.HEADER.MY_ACCOUNT'),
-      active: false
-    },
-    {
-      href: '/logout',
-      text: t('COMMON.HEADER.SIGN_OUT'),
-      active: false
-    }
-  ] if user else [
-
-  ] %}
+{% macro headerComponent(t, user, serviceName = null) %}
   {% block header %}
-    {{ govukHeader({
-      homepageUrl: 'https://www.gov.uk',
-      containerClasses: 'govuk-width-container',
-      serviceName:  t('COMMON.HEADER.MONEY_CLAIMS'),
-      serviceUrl: '/dashboard',
-      navigationClasses: 'govuk-!-display-inline float-right',
-      navigation: navigationList,
-      useTudorCrown: true
-    }) }}
+    <div class="civil-header">
+      <div class="govuk-header">
+        <div class="govuk-header__container govuk-width-container">
+          <div class="govuk-header__logo">
+            <a href="https://www.gov.uk" class="govuk-header__homepage-link">
+              {{ govukLogo({
+                classes: 'govuk-header__logotype',
+                ariaLabelText: 'GOV.UK'
+              }) }}
+            </a>
+          </div>
+        </div>
+      </div>
+      {{ govukServiceNavigation({
+        serviceName: serviceName or "Money Claims",
+        serviceUrl: "/dashboard",
+        navigation: [
+          {
+            href: "/dashboard",
+            text: t('COMMON.HEADER.MY_ACCOUNT')
+          },
+          {
+            href: "/logout",
+            text: t('COMMON.HEADER.SIGN_OUT')
+          }
+        ]
+      }) }}
+    </div>
   {% endblock %}
 {% endmacro %}

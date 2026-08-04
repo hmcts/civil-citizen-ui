@@ -3,8 +3,8 @@ const config = require('../../../../../config');
 
 class ConfirmationPage {
   async verifyConfirmationPage() {
-    I.waitForContent('Documents uploaded', config.WaitForText);
-    I.see('You can upload more documents now or come back later.');
+    await I.waitForContent('Documents uploaded', config.WaitForText);
+    await I.see('You can upload more documents now or come back later.');
   }
 }
 

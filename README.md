@@ -118,21 +118,51 @@ Update required secrets on your machine then run below command
 ```bash
 $ yarn test:functional
 ```
+
+Running the reduced-stack create-claim functional test:
+
+```bash
+$ yarn test:mocked-functional
+```
+
+This local command starts CUI in `e2eTest` mode, WireMock and the in-memory Redis test implementation, then runs
+the same `@mocked-functional` browser journey used by the reduced-stack Jenkins preview. It is a developer
+diagnostic and is not the authoritative CI execution. The runner uses the same consumer-owned mappings packaged
+in `charts/civil-citizen-ui/wiremock/mappings` as the preview chart. Chromium must be installed locally; run
+`yarn playwright install chromium` once if needed. Logs are written to
+`${TMPDIR:-/tmp}/civil-citizen-ui-mocked-functional`.
+
+To exercise the PoC in the authoritative Jenkins pipeline, apply the `pr-values:reducedStack` label to the PR.
+The Jenkins library then applies `values.reducedStack.preview.template.yaml`, deploying real CUI and WireMock in
+the PR namespace. The selected journey runs against the CUI preview ingress; Civil Service (including its CCD and
+Camunda dependencies), WA and preview service buses are disabled. CUI uses its existing `e2eTest` in-memory
+draft/session stores and test session user; this PoC does not build or extend an IDAM stub. Jenkins publishes the
+normal functional Allure artifacts plus WireMock unmatched-request and expected-request diagnostics.
+
+Remove `pr-values:reducedStack` to restore the standard preview path. Do not combine it with
+`pr-values:fullDeployment`.
+
 Running E2E tests:
 
-For that we need to follow three steps:
-1) Start wiremock server (automatically pulls latest mappings from civil-wiremock-mappings)
+The legacy fixed-ID E2E suite under `src/test/e2eTests` has been removed. Those tests only performed work in
+`preview` or `demo`, so routine commands discovered no-op scenarios in other environments. Use the functional
+suite instead:
+
 ```bash
-$ yarn wiremock:start
+$ yarn test:fullfunctional
 ```
-2) Start the application as E2E
-```bash
-$ yarn start:e2e
-```
-3) Execute E2E test
-```bash
-$ yarn test:e2e
-```
+
+The deprecated `yarn test:e2e` script is kept as an alias for `yarn test:fullfunctional`. The deprecated
+`yarn testgalip:e2e` script now runs the replacement GA functional group tagged `@ui-ga`.
+
+Legacy scenario mapping:
+
+| Removed legacy bucket | Replacement coverage or reason |
+| --- | --- |
+| GA creation and response scenarios tagged `@lipga` | Replaced by functional GA tests tagged `@ui-ga`, including Lip v Lip and LR v Lip GA creation, orders, responses, NoC and payment coverage. |
+| Claimant response part-admit fixed-ID scenarios tagged `@e2e` | Replaced by functional part-admit tests tagged `@ui-part-admit`, including already paid and pay immediately flows. |
+| Case progression upload documents and trial-arrangement fixed-ID scenarios tagged `@e2e` | Replaced by functional `@ui-upload-evidence` and `@ui-hearings` coverage. |
+| Case progression help-with-fees fixed-ID scenario tagged `@e2e` | Replaced by functional hearing-fee/help-with-fees coverage in the `@ui-hearings` group. |
 
 Running Preview pipeline :
 
@@ -146,7 +176,7 @@ The standard preview deployment, i.e. without the github label present, intends 
 
 `civilDefinitionBranch:????` where ???? is the civil-ccd-definition branch name you want to point to. e.g civilDefinitionBranch:DTSCCI-1699
 
-`civilServicePr:????` where ???? is the civil-service PR number you want to deploy against. e.g `civilServicePr:12345` will deploy `hmctspublic.azurecr.io/civil/service:pr-12345` in preview.
+`civilServicePr:????` where ???? is the civil-service PR number you want to deploy against. e.g `civilServicePr:12345` will deploy `hmctspublic.azurecr.io/civil/service:pr-12345` in preview and import Camunda BPMN files from that civil-service PR.
 
 `civilShared:????` where ???? is the civil-service shared scripts branch name you want to point to. e.g `civilShared:my-feature-branch` will use the shared scripts from this branch of civil-service.
 
@@ -549,4 +579,4 @@ npx @hmcts/dev-env@latest --template values.elasticsearch.preview.template.yaml 
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details..

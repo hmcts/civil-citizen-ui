@@ -8,6 +8,7 @@ import { AppRequest } from 'common/models/AppRequest';
 import {
   ApplicationType,
   ApplicationTypeOption,
+  isOtherApplicationTypeOption,
   LinKFromValues,
 } from 'common/models/generalApplication/applicationType';
 import {
@@ -23,9 +24,11 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {isQueryManagementEnabled} from '../../../app/auth/launchdarkly/launchDarklyClient';
 import {YesNo} from 'form/models/yesNo';
 import {getRouteParam} from 'common/utils/routeParamUtils';
+import {FormValidationError} from 'common/form/validationErrors/formValidationError';
 
 const applicationTypeController = Router();
 const viewPath = 'features/generalApplication/application-type';
+const applicationTypeValidationError = 'ERRORS.APPLICATION_TYPE_REQUIRED';
 
 applicationTypeController.get(APPLICATION_TYPE_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
@@ -68,9 +71,10 @@ applicationTypeController.get(APPLICATION_TYPE_URL, (async (req: AppRequest, res
 applicationTypeController.post(APPLICATION_TYPE_URL, (async (req: AppRequest | Request, res: Response, next: NextFunction) => {
 
   try {
+    const claimId = getRouteParam(req, 'id');
     const redisKey = generateRedisKey(<AppRequest>req);
-    const claim = await getClaimById(redisKey, req, true);
-    let applicationType = null;
+    const claim = await getClaimById(claimId, req, true);
+    let applicationType: ApplicationType;
 
     let applicationIndex = queryParamNumber(req, 'index');
 
@@ -81,16 +85,16 @@ applicationTypeController.post(APPLICATION_TYPE_URL, (async (req: AppRequest | R
     }
     const form = new GenericForm(applicationType);
     form.validateSync();
+    validateOtherApplicationTypeBranch(form, applicationType, req.body.option, req.body.optionOther);
     if(!applicationIndex && applicationIndex != 0) {
       validateAdditionalApplicationtType(claim,form.errors,applicationType,req.body);
     }
-    const claimId = getRouteParam(req, 'id');
     const cancelUrl = await getCancelUrl(claimId, claim);
     const backLinkUrl = BACK_URL;
 
     const showCCJ  = claim.isDefendant();
     if (form.hasErrors()) {
-      res.render(viewPath, { form, cancelUrl, backLinkUrl, isOtherSelected: applicationType.isOtherSelected() ,  showCCJ: showCCJ});
+      res.render(viewPath, { form, cancelUrl, backLinkUrl, isOtherSelected: applicationType.isOtherSelected() || req.body.option === ApplicationTypeOption.OTHER_OPTION,  showCCJ: showCCJ});
     } else {
       await saveApplicationType(redisKey, claim, applicationType, applicationIndex);
 
@@ -113,5 +117,25 @@ applicationTypeController.post(APPLICATION_TYPE_URL, (async (req: AppRequest | R
     next(error);
   }
 }) as RequestHandler);
+
+const validateOtherApplicationTypeBranch = (form: GenericForm<ApplicationType>, applicationType: ApplicationType, option: unknown, optionOther: unknown): void => {
+  if (option !== ApplicationTypeOption.OTHER_OPTION || isOtherApplicationTypeOption(optionOther)) {
+    return;
+  }
+  if (form.hasFieldError('option')) {
+    return;
+  }
+  if (!form.errors) {
+    form.errors = [];
+  }
+  form.errors.push(new FormValidationError({
+    target: applicationType,
+    value: optionOther,
+    constraints: {
+      applicationTypeInvalid: applicationTypeValidationError,
+    },
+    property: 'option',
+  }));
+};
 
 export default applicationTypeController;

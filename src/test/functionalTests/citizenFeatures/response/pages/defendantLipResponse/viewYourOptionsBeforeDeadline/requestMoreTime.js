@@ -20,7 +20,7 @@ class RequestMoreTime {
   }
 
   async requestMoreTimeToRespond(claimRef) {
-    this.open(claimRef);
+    await this.open(claimRef);
     await I.click(fields.moreThan28Days);
     await I.click(buttons.continue);
   }
