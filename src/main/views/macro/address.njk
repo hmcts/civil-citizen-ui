@@ -17,7 +17,7 @@
     <h2 class="govuk-heading-m">{{ addressTitle }}</h2>
     {% endif %}
   </div>
-  {% if addressType == 'primaryAddress' and addressTitle.length and isClaimant %}
+  {% if addressType == 'primaryAddress' and addressTitle.length and isClaimant === false %}
     <p class="govuk-body govuk-!-padding-top-4">{{ fieldSetText }}</p>
   {% endif %}
   <div class="{{ govukFormGroupError }}">
