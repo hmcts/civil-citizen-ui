@@ -1,0 +1,1 @@
+{"value":"brace-expansion","children":{"ID":1130705,"Issue":"brace-expansion: DoS via unbounded intermediate arrays, bypassing the CVE-2026-14257 mitigation","URL":"https://github.com/advisories/GHSA-rgw5-rvv9-x895","Severity":"high","Vulnerable Versions":">=4.0.0 <5.0.9","Tree Versions":["5.0.8"],"Dependents":["minimatch@npm:10.2.5"]}}
