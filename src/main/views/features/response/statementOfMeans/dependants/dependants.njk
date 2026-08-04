@@ -35,7 +35,7 @@
              }
             }) %}
             {% set numberOfChildrenHtml %}
-              <div class="govuk-form-group {% if atLeastOneNumberShouldBeEnteredError %} govuk-form-group--error {% endif %}">
+              <div id="numberOfChildren" class="govuk-form-group {% if atLeastOneNumberShouldBeEnteredError %} govuk-form-group--error {% endif %}">
                 {% if atLeastOneNumberShouldBeEnteredError %}
                   <p class="govuk-error-message">
                     <span class="govuk-visually-hidden">Error:</span> {{ t(atLeastOneNumberShouldBeEnteredError) }}
