@@ -173,8 +173,8 @@ export class CivilServiceClient {
 
   // TEMPORARY investigation logging only — do not merge to master.
   private attachLoggingInterceptors(): void {
-    // Unit tests mock Axios.create without interceptors; skip when absent.
-    if (!this.client.interceptors?.request || !this.client.interceptors?.response) {
+    // Unit tests often mock Axios.create without a full client; skip when absent.
+    if (!this.client?.interceptors?.request || !this.client?.interceptors?.response) {
       return;
     }
 
