@@ -209,7 +209,7 @@ document.addEventListener('DOMContentLoaded', function () {
   function showRemoveButton() {
     const hiddenRemoveButton = document.querySelectorAll('.govuk-button.govuk-button--secondary.remove-row');
     if (elementExists(hiddenRemoveButton)) {
-      Array.from(hiddenRemoveButton).forEach(element => {
+      Array.from(hiddenRemoveButton).slice(1).forEach(element => {
         element.classList.remove('govuk-!-display-none');
       });
     }
