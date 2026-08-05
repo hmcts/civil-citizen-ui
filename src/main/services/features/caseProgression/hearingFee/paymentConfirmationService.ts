@@ -28,12 +28,12 @@ export const getRedirectUrl = async (claimId: string, req: AppRequest): Promise<
     const paymentInfo = claim.caseProgression.hearing.paymentInformation;
 
     const paymentStatus = await getFeePaymentStatus(claimId, paymentInfo.paymentReference, FeeType.HEARING, req);
-    logger.info(`Payment status fetched for claimId: ${claimId}, paymentReference: ${paymentInfo.paymentReference}, status: ${JSON.stringify(paymentStatus)}`);
+    logger.info(`Payment status fetched for claimId: ${claimId}, status: ${paymentStatus.status}`);
 
     paymentInfo.status = paymentStatus.status;
     paymentInfo.errorCode = paymentStatus.errorCode;
     paymentInfo.errorDescription = paymentStatus.errorDescription;
-    logger.info(`Updated payment information: ${JSON.stringify(paymentInfo)}`);
+    logger.info(`Updated payment information for claimId: ${claimId}`);
 
     await saveCaseProgression(req, paymentInfo, paymentInformation, hearing);
 
