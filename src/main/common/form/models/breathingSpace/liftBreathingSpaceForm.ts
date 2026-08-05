@@ -13,6 +13,12 @@ export const getDefaultStandardLiftEndDate = (startDate: Date): Date => {
   return endDate;
 };
 
+export const getDefaultNonStandardLiftEndDate = (): Date => {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  return today;
+};
+
 export class LiftBreathingSpaceForm extends BaseDate {
 
   /** Set from claim.enterBreathing.start when building the lift breathing space form. */
@@ -34,5 +40,13 @@ export class LiftBreathingSpaceForm extends BaseDate {
     normalizedStart.setHours(0, 0, 0, 0);
     this.startDate = normalizedStart;
     this.breathingSpaceType = breathingSpaceType;
+
+    if (!year && !month && !day && breathingSpaceType && breathingSpaceType !== STANDARD_BREATHING_SPACE) {
+      const endDate = getDefaultNonStandardLiftEndDate();
+      this.date = endDate;
+      this.day = endDate.getDate();
+      this.month = endDate.getMonth() + 1;
+      this.year = endDate.getFullYear();
+    }
   }
 }

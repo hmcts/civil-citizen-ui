@@ -1,5 +1,6 @@
 import {GenericForm} from '../../../../../../main/common/form/models/genericForm';
 import {
+  getDefaultNonStandardLiftEndDate,
   LiftBreathingSpaceForm,
   STANDARD_BREATHING_SPACE,
 } from '../../../../../../main/common/form/models/breathingSpace/liftBreathingSpaceForm';
@@ -27,5 +28,17 @@ describe('LiftBreathingSpaceForm', () => {
     const genericForm = new GenericForm(form);
     genericForm.validateSync();
     expect(genericForm.getErrors().some(e => e.property === 'date')).toBe(false);
+  });
+
+  it('should default an empty non-standard breathing space end date to today', () => {
+    const form = new LiftBreathingSpaceForm(
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      'MENTAL_HEALTH',
+    );
+    expect(form.date).toEqual(getDefaultNonStandardLiftEndDate());
   });
 });
