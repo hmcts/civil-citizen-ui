@@ -1,6 +1,7 @@
 import {toCUIEmploymentDetails} from 'services/translation/convertToCUI/convertToCUIEmployerDetails';
 import {CCDEmployerDetails} from 'models/ccdResponse/ccdEmployerDetails';
 import {Employers} from 'form/models/statementOfMeans/employment/employers';
+import {Employer} from 'form/models/statementOfMeans/employment/employer';
 
 describe('translate Employer Details to CUI model', () => {
   it('should return undefined if Employment Details doesnt exist', () => {
@@ -28,7 +29,7 @@ describe('translate Employer Details to CUI model', () => {
       rows: [{
         employerName: 'test',
         jobTitle: 'job',
-      }],
+      } as Employer],
     };
     expect(output).toEqual(expected);
   });
@@ -50,7 +51,7 @@ describe('translate Employer Details to CUI model', () => {
       rows: [{
         employerName: undefined,
         jobTitle: undefined,
-      }],
+      } as Employer],
     };
     expect(output).toEqual(expected);
   });
@@ -69,7 +70,7 @@ describe('translate Employer Details to CUI model', () => {
       rows: [{
         employerName: undefined,
         jobTitle: undefined,
-      }],
+      } as Employer],
     };
     expect(output).toEqual(expected);
   });
