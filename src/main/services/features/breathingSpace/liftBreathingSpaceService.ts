@@ -1,11 +1,14 @@
 import {saveDraftClaim} from 'modules/draft-store/draftStoreService';
-import {LiftBreathingSpaceForm} from 'common/form/models/breathingSpace/liftBreathingSpaceForm';
+import {
+  getDefaultStandardLiftEndDate,
+  LiftBreathingSpaceForm,
+  STANDARD_BREATHING_SPACE,
+} from 'common/form/models/breathingSpace/liftBreathingSpaceForm';
 import {Claim} from 'common/models/claim';
 
-const getStartDate = (claim: Claim): Date => {
-  // TODO: replace with actual startDate from claim.breathingSpace.enterBreathing.start when JIRA for start date is complete
-  if (claim.breathingSpace?.enterBreathing?.start) {
-    const d = new Date(claim.breathingSpace.enterBreathing.start);
+export const getBreathingSpaceEnterStartDate = (claim: Claim): Date => {
+  if (claim.enterBreathing?.start) {
+    const d = new Date(claim.enterBreathing.start);
     d.setHours(0, 0, 0, 0);
     return d;
   }
@@ -16,8 +19,8 @@ const getStartDate = (claim: Claim): Date => {
 
 export const getLiftBreathingSpaceForm = async (claimId: string, claim: Claim): Promise<LiftBreathingSpaceForm> => {
   const liftBreathing = claim.breathingSpace?.liftBreathing;
-  const startDate = getStartDate(claim);
-  const breathingSpaceType = claim.breathingSpace?.enterBreathing?.type;
+  const startDate = getBreathingSpaceEnterStartDate(claim);
+  const breathingSpaceType = claim.enterBreathing?.type ?? claim.breathingSpace?.enterBreathing?.type;
 
   if (liftBreathing?.expectedEnd) {
     const date = new Date(liftBreathing.expectedEnd);
@@ -26,6 +29,17 @@ export const getLiftBreathingSpaceForm = async (claimId: string, claim: Claim): 
       (date.getMonth() + 1).toString(),
       date.getDate().toString(),
       liftBreathing.eventDescription,
+      startDate,
+      breathingSpaceType,
+    );
+  }
+  if (breathingSpaceType === STANDARD_BREATHING_SPACE) {
+    const endDate = getDefaultStandardLiftEndDate(startDate);
+    return new LiftBreathingSpaceForm(
+      endDate.getFullYear().toString(),
+      (endDate.getMonth() + 1).toString(),
+      endDate.getDate().toString(),
+      undefined,
       startDate,
       breathingSpaceType,
     );

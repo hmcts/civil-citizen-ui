@@ -1,14 +1,57 @@
-import {getLiftBreathingSpaceForm, saveLiftBreathingSpace} from '../../../../../main/services/features/breathingSpace/liftBreathingSpaceService';
+import {getBreathingSpaceEnterStartDate, getLiftBreathingSpaceForm, saveLiftBreathingSpace} from '../../../../../main/services/features/breathingSpace/liftBreathingSpaceService';
 import {saveDraftClaim} from '../../../../../main/modules/draft-store/draftStoreService';
 import {Claim} from '../../../../../main/common/models/claim';
-import {LiftBreathingSpaceForm} from '../../../../../main/common/form/models/breathingSpace/liftBreathingSpaceForm';
+import {getDefaultStandardLiftEndDate, LiftBreathingSpaceForm} from '../../../../../main/common/form/models/breathingSpace/liftBreathingSpaceForm';
+import {BreathingSpaceEnterInfo} from '../../../../../main/common/models/breathingSpace/breathingSpaceEnterInfo';
+import {BreathingSpaceType} from '../../../../../main/common/models/breathingSpace/breathingSpaceType';
 
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 const mockSaveDraftClaim = saveDraftClaim as jest.Mock;
 
 describe('Lift Breathing Space Service', () => {
+  describe('getBreathingSpaceEnterStartDate', () => {
+    it('should return enterBreathing start date at start of day', () => {
+      const claim = new Claim();
+      claim.enterBreathing = new BreathingSpaceEnterInfo(
+        BreathingSpaceType.STANDARD,
+        undefined,
+        new Date('2024-06-15T15:30:00'),
+      );
+      const startDate = getBreathingSpaceEnterStartDate(claim);
+      expect(startDate.getFullYear()).toBe(2024);
+      expect(startDate.getMonth()).toBe(5);
+      expect(startDate.getDate()).toBe(15);
+      expect(startDate.getHours()).toBe(0);
+    });
+
+    it('should return today when enterBreathing start is missing', () => {
+      const claim = new Claim();
+      const startDate = getBreathingSpaceEnterStartDate(claim);
+      const today = new Date();
+      expect(startDate.getFullYear()).toBe(today.getFullYear());
+      expect(startDate.getMonth()).toBe(today.getMonth());
+      expect(startDate.getDate()).toBe(today.getDate());
+    });
+  });
+
   describe('getLiftBreathingSpaceForm', () => {
-    it('should return empty form when no liftBreathing data exists', async () => {
+    it('should set startDate from enterBreathing when building form', async () => {
+      const claim = new Claim();
+      claim.enterBreathing = new BreathingSpaceEnterInfo(
+        BreathingSpaceType.STANDARD,
+        undefined,
+        new Date('2024-06-01'),
+      );
+      const form = await getLiftBreathingSpaceForm('123', claim);
+      expect(form.startDate).toEqual(new Date('2024-06-01T00:00:00'));
+      expect(form.breathingSpaceType).toBe(BreathingSpaceType.STANDARD);
+      const expectedEnd = getDefaultStandardLiftEndDate(new Date('2024-06-01T00:00:00'));
+      expect(form.day).toBe(expectedEnd.getDate());
+      expect(form.month).toBe(expectedEnd.getMonth() + 1);
+      expect(form.year).toBe(expectedEnd.getFullYear());
+    });
+
+    it('should return empty end date when no liftBreathing data and type is not standard', async () => {
       const claim = new Claim();
       const form = await getLiftBreathingSpaceForm('123', claim);
       expect(form.day).toBeUndefined();

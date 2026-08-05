@@ -7,11 +7,17 @@ import {getClaimById} from '../../../../../main/modules/utilityService';
 import {getLiftBreathingSpaceForm, saveLiftBreathingSpace} from '../../../../../main/services/features/breathingSpace/liftBreathingSpaceService';
 import {Claim} from '../../../../../main/common/models/claim';
 import {LiftBreathingSpaceForm} from '../../../../../main/common/form/models/breathingSpace/liftBreathingSpaceForm';
+import {BreathingSpaceEnterInfo} from '../../../../../main/common/models/breathingSpace/breathingSpaceEnterInfo';
+import {BreathingSpaceType} from '../../../../../main/common/models/breathingSpace/breathingSpaceType';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/utilityService');
-jest.mock('../../../../../main/services/features/breathingSpace/liftBreathingSpaceService');
+jest.mock('../../../../../main/services/features/breathingSpace/liftBreathingSpaceService', () => ({
+  ...jest.requireActual('../../../../../main/services/features/breathingSpace/liftBreathingSpaceService'),
+  getLiftBreathingSpaceForm: jest.fn(),
+  saveLiftBreathingSpace: jest.fn(),
+}));
 
 const mockGetClaimById = getClaimById as jest.Mock;
 const mockGetLiftBreathingSpaceForm = getLiftBreathingSpaceForm as jest.Mock;
@@ -114,6 +120,26 @@ describe('Lift Breathing Space Controller', () => {
           expect(res.status).toBe(200);
           expect(res.text).toContain('govuk-error-summary');
           expect(res.text).toContain('End date must be after start date');
+        });
+    });
+
+    it('should return error when standard breathing space end date is more than 60 days after start', async () => {
+      const claim = new Claim();
+      claim.totalClaimAmount = 1000;
+      claim.enterBreathing = new BreathingSpaceEnterInfo(
+        BreathingSpaceType.STANDARD,
+        undefined,
+        new Date('2024-06-01'),
+      );
+      mockGetClaimById.mockResolvedValue(claim);
+
+      await request(app)
+        .post(LIFT_BREATHING_SPACE_URL.replace(':id', '123'))
+        .send({year: '2024', month: '08', day: '02', text: 'Reason'})
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('govuk-error-summary');
+          expect(res.text).toContain('Standard breathing space cannot last for longer than 60 days');
         });
     });
 
