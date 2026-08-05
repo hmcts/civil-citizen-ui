@@ -143,6 +143,30 @@ describe('Lift Breathing Space Controller', () => {
         });
     });
 
+    it('should use today when a non-standard breathing space end date is not submitted', async () => {
+      const claim = new Claim();
+      const yesterday = new Date();
+      yesterday.setDate(yesterday.getDate() - 1);
+      claim.enterBreathing = new BreathingSpaceEnterInfo(
+        BreathingSpaceType.MENTAL_HEALTH,
+        undefined,
+        yesterday,
+      );
+      mockGetClaimById.mockResolvedValue(claim);
+      mockSaveLiftBreathingSpace.mockResolvedValue({});
+
+      await request(app)
+        .post(LIFT_BREATHING_SPACE_URL.replace(':id', '123'))
+        .send({year: '', month: '', day: '', text: 'Reason'})
+        .expect(302);
+
+      const [, , form] = mockSaveLiftBreathingSpace.mock.calls[mockSaveLiftBreathingSpace.mock.calls.length - 1];
+      const today = new Date();
+      expect(form.date.getFullYear()).toBe(today.getFullYear());
+      expect(form.date.getMonth()).toBe(today.getMonth());
+      expect(form.date.getDate()).toBe(today.getDate());
+    });
+
     it('should return error messages when form is invalid', async () => {
       const claim = new Claim();
       claim.totalClaimAmount = 1000;

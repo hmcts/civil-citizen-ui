@@ -1,7 +1,12 @@
 import {NextFunction, Request, Response, Router} from 'express';
-import {LIFT_BREATHING_SPACE_URL, CYA_LIFT_BREATHING_SPACE_URL, LIFT_BREATHING_SPACE_EXIT_URL} from '../../urls';
+import {
+  LIFT_BREATHING_SPACE_URL,
+  CYA_LIFT_BREATHING_SPACE_URL,
+  LIFT_BREATHING_SPACE_EXIT_URL,
+  DASHBOARD_CLAIMANT_URL,
+} from '../../urls';
 import {GenericForm} from 'common/form/models/genericForm';
-import {LiftBreathingSpaceForm} from 'common/form/models/breathingSpace/liftBreathingSpaceForm';
+import {LiftBreathingSpaceForm, STANDARD_BREATHING_SPACE} from 'common/form/models/breathingSpace/liftBreathingSpaceForm';
 import {
   getBreathingSpaceEnterStartDate,
   getLiftBreathingSpaceForm,
@@ -24,10 +29,21 @@ const addDateError = (errors: ValidationError[], messageKey: string): void => {
   errors.push(error);
 };
 
-const applyMissingEndDateRule = (form: LiftBreathingSpaceForm, errors: ValidationError[]): void => {
-  if (!form.date) {
-    addDateError(errors, 'ERRORS.VALID_LIFT_END_DATE_INCLUDE');
+const applyMissingEndDateRule = (form: LiftBreathingSpaceForm, errors: ValidationError[]): boolean => {
+  if (form.date) {
+    return false;
   }
+  if (form.breathingSpaceType && form.breathingSpaceType !== STANDARD_BREATHING_SPACE) {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    form.date = today;
+    form.day = today.getDate();
+    form.month = today.getMonth() + 1;
+    form.year = today.getFullYear();
+    return true;
+  }
+  addDateError(errors, 'ERRORS.VALID_LIFT_END_DATE_INCLUDE');
+  return false;
 };
 
 liftBreathingSpaceController.get(LIFT_BREATHING_SPACE_URL, async (req: Request, res: Response, next: NextFunction) => {
@@ -46,7 +62,7 @@ liftBreathingSpaceController.get(LIFT_BREATHING_SPACE_URL, async (req: Request, 
     const form = await getLiftBreathingSpaceForm(claimId, claim);
     const helpSupportTitle = getHelpSupportTitle(lang);
     const helpSupportLinks = getHelpSupportLinks(lang);
-    const backUrl = constructResponseUrlWithIdParams(claimId, LIFT_BREATHING_SPACE_URL);
+    const backUrl = constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL);
     const liftUrl = constructResponseUrlWithIdParams(claimId, LIFT_BREATHING_SPACE_URL);
     const exitUrl = constructResponseUrlWithIdParams(claimId, LIFT_BREATHING_SPACE_EXIT_URL) + '?returnUrl=' + encodeURIComponent(liftUrl);
     const isQMFlagEnabled = await isQueryManagementEnabled(claim.submittedDate);
@@ -82,8 +98,9 @@ liftBreathingSpaceController.post(LIFT_BREATHING_SPACE_URL, async (req: Request,
     const genericForm = new GenericForm(form);
     genericForm.validateSync();
 
-    if (!genericForm.errors.some(e => e.property === 'date')) {
-      applyMissingEndDateRule(form, genericForm.errors);
+    if (!genericForm.errors.some(e => e.property === 'date')
+      && applyMissingEndDateRule(form, genericForm.errors)) {
+      genericForm.validateSync();
     }
 
     // Remove individual day/month/year field errors when we have a consolidated date error,
@@ -95,7 +112,7 @@ liftBreathingSpaceController.post(LIFT_BREATHING_SPACE_URL, async (req: Request,
     if (genericForm.hasErrors()) {
       const helpSupportTitle = getHelpSupportTitle(lang);
       const helpSupportLinks = getHelpSupportLinks(lang);
-      const backUrl = constructResponseUrlWithIdParams(claimId, LIFT_BREATHING_SPACE_URL);
+      const backUrl = constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL);
       const liftUrl = constructResponseUrlWithIdParams(claimId, LIFT_BREATHING_SPACE_URL);
       const exitUrl = constructResponseUrlWithIdParams(claimId, LIFT_BREATHING_SPACE_EXIT_URL) + '?returnUrl=' + encodeURIComponent(liftUrl);
       const isQMFlagEnabled = await isQueryManagementEnabled(claim.submittedDate);
