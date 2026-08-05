@@ -5,9 +5,9 @@ export interface DraftClaimRequest {
 
 export interface DraftClaimResponse {
   draftId: string;
-  userId: string;
   caseId?: string;
   payload: Record<string, unknown>;
   createdAt: string;
+  updatedAt: string;
   expiresAt: string;
 }
