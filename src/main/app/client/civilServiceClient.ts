@@ -65,6 +65,7 @@ import {CCDGeneralApplication} from 'models/gaEvents/eventDto';
 import {roundOffTwoDecimals} from 'common/utils/dateUtils';
 import {syncCaseReferenceCookie} from 'modules/cookie/caseReferenceCookie';
 import {assertHasData, assertNonEmpty} from 'client/common/error/eventSubmissionError';
+import {CallbackError, CallbackErrorResponseBody, extractCallbackErrorMessages} from 'client/common/error/callbackError';
 import {
   buildAuthenticatedConfig,
   buildAuthorizationOnlyConfig,
@@ -74,6 +75,9 @@ import {
 } from 'client/common/civilServiceRequest';
 import {normalizeRouteParam, RouteParam} from 'common/utils/routeParamUtils';
 import {ClassConstructor} from 'class-transformer/types/interfaces';
+
+const HTTP_STATUS_UNPROCESSABLE_ENTITY = 422;
+
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('civilServiceClient');
 
@@ -296,17 +300,13 @@ export class CivilServiceClient {
   }
 
   async getClaimFeeData(amount: number, req: AppRequest): Promise<ClaimFeeData> {
-    const userid = (<AppRequest>req).session.user?.id;
-    logger.info(`Total Claim Amount before Round off for user ${userid}, amount: ${amount}`);
     amount = roundOffTwoDecimals(amount);
-    logger.info(`Total Claim Amount before Round off for user ${userid}, amount: ${amount}`);
     const response = await this.authenticatedGet<ClaimFeeData>(
       `${CIVIL_SERVICE_CLAIM_AMOUNT_URL}/${amount}`,
       req,
       `Error when getting claim fee data, req.params.id - ${req.params.id}`,
     );
-    const claimFeeInPence = response.data.calculatedAmountInPence;
-    logger.info(`Claim fee of ${claimFeeInPence} calculated for user ${userid} based on claim amount ${amount}`);
+    logger.info('Claim fee calculated');
     return response.data;
   }
 
@@ -504,8 +504,19 @@ export class CivilServiceClient {
       (e: unknown) => {
         const err = e as AxiosError;
         const status = err.response?.status;
-        const body = err.response?.data;
+        const body = err.response?.data as CallbackErrorResponseBody;
         logger.error(`Submit event failed (event=${event}, claimId=${normalizedClaimId}, status=${status})`, { body: safeSubmitEventErrorBody(body) });
+        // DTSCCI-5282: civil-service returns 422 with the actionable messages preserved.
+        // They arrive either as `callbackErrors` (callback/business-rule rejections) or as
+        // `details.field_errors` (CCD field-type validation). Surface either so the user sees
+        // the message instead of a generic 500 page. Throwing here replaces the axios error
+        // that executeRequest would otherwise re-throw.
+        if (status === HTTP_STATUS_UNPROCESSABLE_ENTITY) {
+          const messages = extractCallbackErrorMessages(body);
+          if (messages.length) {
+            throw new CallbackError(messages, body?.callbackWarnings);
+          }
+        }
       },
     );
     assertHasData(response, { action: 'submit event', event });
@@ -519,7 +530,7 @@ export class CivilServiceClient {
       () => this.client.post(CIVIL_SERVICE_CLAIM_CALCULATE_INTEREST, claim, buildJsonOnlyConfig()),
       'Error when calculating interest',
     );
-    logger.info(`calculateClaimInterest response: ${response.data}` );
+    logger.info('Claim interest calculated');
     return response.data as number;
   }
 
