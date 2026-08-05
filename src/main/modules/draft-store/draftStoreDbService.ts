@@ -5,10 +5,13 @@ import {Claim} from 'models/claim';
 import {CCDClaim, CivilClaimResponse} from 'models/civilClaimResponse';
 import {AppRequest} from 'common/models/AppRequest';
 
-const {Logger} = require('@hmcts/nodejs-logging');
+import {Logger} from '@hmcts/nodejs-logging';
 const logger = Logger.getLogger('draftStoreDbService');
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
+
+const getErrorMessage = (error: unknown): string =>
+  error instanceof Error ? error.message : String(error);
 
 const getHeaders = (req: AppRequest) => {
   const token = req?.session?.user?.accessToken;
@@ -38,25 +41,29 @@ export const createDraftClaimInDraftStoreDb = async (
 
   logger.info(`[draftStoreDbService] creating draft in db for user: ${req.session?.user?.id}`);
 
+  let response: AxiosResponse<DraftClaimResponse>;
   try {
-    const response: AxiosResponse<DraftClaimResponse> = await axios.post<DraftClaimResponse>(
+    response = await axios.post<DraftClaimResponse>(
       `${civilServiceApiBaseUrl}/dashboard/draft-claims`,
       payload,
       {headers: getHeaders(req)},
     );
-
-    if (response.status === 200 || response.status === 201) {
-      logger.info(`[draftStoreDbService] draft created successfully with status: ${response.status}`);
-      return {
-        claimResponse: mapToCivilClaimResponse(response.data),
-        rawResponse: response.data,
-      };
-    }
-    throw new Error(`unexpected status code received on draft creation: ${response.status}`);
-  } catch (err: any) {
-    logger.error(`[draftStoreDbService] failed to create draft in db: ${err.message}`);
+  } catch (err: unknown) {
+    logger.error(`[draftStoreDbService] failed to create draft in db: ${getErrorMessage(err)}`);
     throw err;
   }
+
+  if (response.status !== 200 && response.status !== 201) {
+    const errorMessage = `unexpected status code received on draft creation: ${response.status}`;
+    logger.error(`[draftStoreDbService] ${errorMessage}`);
+    throw new Error(errorMessage);
+  }
+
+  logger.info(`[draftStoreDbService] draft created successfully with status: ${response.status}`);
+  return {
+    claimResponse: mapToCivilClaimResponse(response.data),
+    rawResponse: response.data,
+  };
 };
 
 export const getActiveDraftFromDraftStoreDb = async (req: AppRequest): Promise<{ claimResponse: CivilClaimResponse; rawResponse: DraftClaimResponse} | null> => {
@@ -66,19 +73,19 @@ export const getActiveDraftFromDraftStoreDb = async (req: AppRequest): Promise<{
   try {
     const response = await axios.get<DraftClaimResponse>(
       `${civilServiceApiBaseUrl}/dashboard/draft-claims/active`,
-      {headers: getHeaders(req)}
+      {headers: getHeaders(req)},
     );
 
     return {
       claimResponse: mapToCivilClaimResponse(response.data),
       rawResponse: response.data,
     };
-  } catch (err: any) {
-    if (err.response?.status === 404) {
+  } catch (err: unknown) {
+    if (axios.isAxiosError(err) && err.response?.status === 404) {
       logger.info(`[draftStoreDbService] no active draft from db found for user: ${userId}`);
       return null;
     }
-    logger.info(`[draftStoreDbService] error fetching active draft from db: ${err.message}`);
+    logger.info(`[draftStoreDbService] error fetching active draft from db: ${getErrorMessage(err)}`);
     throw err;
   }
 };
@@ -107,8 +114,8 @@ export const updateDraftClaimInStore = async (
       claimResponse: mapToCivilClaimResponse(response.data),
       rawResponse: response.data,
     };
-  } catch (err: any) {
-    logger.error(`[draftStoreDbService] failed to update draft ${draftId} in db: ${err.message}`);
+  } catch (err: unknown) {
+    logger.error(`[draftStoreDbService] failed to update draft ${draftId} in db: ${getErrorMessage(err)}`);
     throw err;
   }
 };
@@ -124,11 +131,10 @@ export const deleteDraftClaimFromStore = async (req: AppRequest, draftId: string
       `${civilServiceApiBaseUrl}/dashboard/draft-claims/${draftId}`,
       {headers: getHeaders(req)},
     );
-  } catch (err: any) {
-    if (err.response?.status !== 404) {
-      logger.error(`[draftStoreDbService] failed to delete ${draftId} from db: ${err.message}`);
+  } catch (err: unknown) {
+    if (!axios.isAxiosError(err) || err.response?.status !== 404) {
+      logger.error(`[draftStoreDbService] failed to delete ${draftId} from db: ${getErrorMessage(err)}`);
       throw err;
     }
   }
 };
-
