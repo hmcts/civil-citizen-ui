@@ -1,8 +1,7 @@
-import axios from 'axios';
+import axios, {AxiosResponse} from 'axios';
 import config from 'config';
 import {DraftClaimRequest, DraftClaimResponse} from 'common/models/draft/draftClaim';
 import {Claim} from 'models/claim';
-import {app} from '../../app-instance';
 import {CCDClaim, CivilClaimResponse} from 'models/civilClaimResponse';
 import {AppRequest} from 'common/models/AppRequest';
 
@@ -11,85 +10,75 @@ const logger = Logger.getLogger('draftStoreDbService');
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 
-const getHeaders = (req?: AppRequest) => ({
-  'Content-Type': 'application/json',
-  'Authorization': req?.session?.user?.accessToken ? `Bearer ${req.session.user.accessToken}` : '',
-})
-
-const getCacheKey = (req?: AppRequest, draftId?: string): string => {
-  const userId = req?.session?.user?.id;
-  return draftId ? `${draftId}_${userId}` : `draft_${userId}`;
+const getHeaders = (req: AppRequest) => {
+  const token = req?.session?.user?.accessToken;
+  if (!token) {
+    throw new Error('[draftStoreDbService access token is required to communicate with API');
+  }
+  return {
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${token}`,
+  };
 };
 
-export const createDraftClaimInStore = async (
+const mapToCivilClaimResponse = (dbDraft: DraftClaimResponse): CivilClaimResponse => {
+  const response = new CivilClaimResponse();
+  response.id = dbDraft.draftId;
+  response.case_data = dbDraft.payload as unknown as CCDClaim;
+  return response;
+};
+
+export const createDraftClaimInDraftStoreDb = async (
   req: AppRequest,
   claim: Claim,
-): Promise<CivilClaimResponse> => {
+): Promise<{ claimResponse: CivilClaimResponse; rawResponse: DraftClaimResponse}> => {
   const payload: DraftClaimRequest = {
     payload: claim as unknown as Record<string, unknown>,
   };
 
-  logger.info('[draftStoreDbService] creating draft only in db for user: ${req.session?.user?.id}');
-
-  let dbDraft: DraftClaimResponse;
+  logger.info(`[draftStoreDbService] creating draft in db for user: ${req.session?.user?.id}`);
 
   try {
-    const response = await axios.post<DraftClaimResponse>(
+    const response: AxiosResponse<DraftClaimResponse> = await axios.post<DraftClaimResponse>(
       `${civilServiceApiBaseUrl}/dashboard/draft-claims`,
       payload,
       {headers: getHeaders(req)},
     );
-    dbDraft = response.data;
+
+    if (response.status === 200 || response.status === 201) {
+      logger.info(`[draftStoreDbService] draft created successfully with status: ${response.status}`);
+      return {
+        claimResponse: mapToCivilClaimResponse(response.data),
+        rawResponse: response.data,
+      };
+    }
+    throw new Error(`unexpected status code received on draft creation: ${response.status}`);
   } catch (err: any) {
-    logger.error('[draftStoreDbService] failed to create draft in db: ${err.message}');
+    logger.error(`[draftStoreDbService] failed to create draft in db: ${err.message}`);
     throw err;
   }
-
-  const savedClaimResponse = new CivilClaimResponse();
-  savedClaimResponse.id = dbDraft.draftId;
-  savedClaimResponse.case_data = dbDraft.payload as unknown as CCDClaim;
-  return savedClaimResponse;
 };
 
-export const getActiveDraftFromStore = async (req: AppRequest): Promise<CivilClaimResponse | null> => {
-  const cacheKey = getCacheKey(req);
+export const getActiveDraftFromDraftStoreDb = async (req: AppRequest): Promise<{ claimResponse: CivilClaimResponse; rawResponse: DraftClaimResponse} | null> => {
+  const userId = req.session?.user?.id;
+  logger.info(`[DraftStoreDbService] fetching active draft from Draft Store Db for user ${userId}`);
 
-  try {
-    const cachedData = await app.locals.draftStoreClient.get(cacheKey);
-    if (cachedData) {
-      logger.info(`[draftStoreDbService] Redis cache hit for key: ${cacheKey}`);
-      const parsed = JSON.parse(cachedData);
-      return Object.assign(new CivilClaimResponse(), parsed);
-    }
-  } catch (redisError) {
-    logger.warn(`[draftStoreDbService] Redis read error, falling back to DB: ${(redisError as Error).message}`);
-  }
-
-  logger.info('[DraftStoreDbService] fetching active draft from Draft Store Db');
   try {
     const response = await axios.get<DraftClaimResponse>(
       `${civilServiceApiBaseUrl}/dashboard/draft-claims/active`,
       {headers: getHeaders(req)}
     );
 
-    const dbDraft = response.data;
-    const civilClaimResponse = new CivilClaimResponse();
-    civilClaimResponse.id = dbDraft.draftId;
-    civilClaimResponse.case_data = dbDraft.payload as unknown as CCDClaim;
-
-    const dbCacheKey = getCacheKey(req, dbDraft.draftId);
-    try {
-      await app.locals.draftStoreClient.set(dbCacheKey, JSON.stringify(civilClaimResponse));
-    } catch (redisError) {
-      logger.warn(`[draftStoreDbService] failure to populate Redis cache: ${(redisError as Error).message}`);
-    }
-    return civilClaimResponse;
+    return {
+      claimResponse: mapToCivilClaimResponse(response.data),
+      rawResponse: response.data,
+    };
   } catch (err: any) {
     if (err.response?.status === 404) {
-      logger.info('[draftStoreDbService] active draft claim not found or expired in Db (404)');
+      logger.info(`[draftStoreDbService] no active draft from db found for user: ${userId}`);
       return null;
     }
-    logger.error(`[draftStoreDbService] error fetching active draft: ${err.message}`);
+    logger.info(`[draftStoreDbService] error fetching active draft from db: ${err.message}`);
     throw err;
   }
 };
@@ -98,63 +87,48 @@ export const updateDraftClaimInStore = async (
   req: AppRequest,
   draftId: string,
   claim: Claim,
-): Promise<CivilClaimResponse> => {
-  if(!draftId) {
-    throw new Error('[draftStoreDbService] cannot save draft without a valid draftId');
+): Promise<{ claimResponse: CivilClaimResponse; rawResponse: DraftClaimResponse}> => {
+  if (!draftId) {
+    throw new Error('[draftStoreDbService] draftId is required for update');
   }
 
   const payload: DraftClaimRequest = {
     payload: claim as unknown as Record<string, unknown>,
   };
-  logger.info(`[draftStoreDbService] saving draft ${draftId} in db`);
+  logger.info(`[draftStoreDbService] updating draft ${draftId} in db`);
 
-  let dbDraft: DraftClaimResponse;
   try {
     const response = await axios.put<DraftClaimResponse>(
       `${civilServiceApiBaseUrl}/dashboard/draft-claims/${draftId}`,
       payload,
-      {headers: getHeaders(req) },
+      {headers: getHeaders(req)},
     );
-    dbDraft = response.data;
+    return {
+      claimResponse: mapToCivilClaimResponse(response.data),
+      rawResponse: response.data,
+    };
   } catch (err: any) {
-    logger.error(`[draftStoreDbService] failed to save draft ${draftId} in db: ${err.message}`);
+    logger.error(`[draftStoreDbService] failed to update draft ${draftId} in db: ${err.message}`);
     throw err;
   }
-
-  const savedClaimResponse = new CivilClaimResponse();
-  savedClaimResponse.id = dbDraft.draftId;
-  savedClaimResponse.case_data = dbDraft.payload as unknown as CCDClaim;
-
-  const cacheKey = getCacheKey(req, dbDraft.draftId);
-  try {
-    await app.locals.draftStoreClient.set(cacheKey, JSON.stringify(savedClaimResponse));
-  } catch (redisError) {
-    logger.warn('[draftStoreDbService saved in db, but failed to update redis cache: ${(redisError as Error).message}');
-  }
-  return savedClaimResponse;
 };
 
 export const deleteDraftClaimFromStore = async (req: AppRequest, draftId: string): Promise<void> => {
+  if (!draftId) {
+    throw new Error('[draftStoreDbService] draftId is required for deletion');
+  }
+  logger.info(`[draftStoreDbService] deleting draft ${draftId} from db`);
 
   try {
     await axios.delete(
       `${civilServiceApiBaseUrl}/dashboard/draft-claims/${draftId}`,
       {headers: getHeaders(req)},
     );
-    logger.info('[draftStoreDbService] deleted draft ${draftId} from db');
   } catch (err: any) {
     if (err.response?.status !== 404) {
-      logger.error('[draftStoreDbService] failed to delete ${draftId} from db: ${err.message}');
+      logger.error(`[draftStoreDbService] failed to delete ${draftId} from db: ${err.message}`);
       throw err;
     }
-  }
-
-  const cacheKey = getCacheKey(req, draftId);
-  try {
-    await app.locals.draftStoreClient.del(cacheKey);
-    logger.info('[draftStoreDbService] cleared redis cache key: ${cacheKey}');
-  } catch (redisError) {
-    logger.warn('[draftStoreDbService] deleted from db but failed to clear redis cache: ${(redisError as Error).message}');
   }
 };
 
