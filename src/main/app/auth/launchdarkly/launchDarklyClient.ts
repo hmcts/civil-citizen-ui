@@ -14,7 +14,6 @@ const CARM_ENABLED_FOR_CASE = 'cam-enabled-for-case';
 const MULTI_OR_INTERMEDIATE_TRACK = 'multi-or-intermediate-track';
 const EA_COURT_FOR_GA_LIPS = 'ea-courts-whitelisted-for-ga-lips';
 const QUERY_MANAGEMENT = 'cui-query-management';
-const WELSH_FOR_MAIN_CLAIM = 'enableWelshForMainCase';
 const IS_DEFENDANT_NOC_ONLINE_FOR_CASE = 'is-defendant-noc-online-for-case';
 const CUI_GA_NRO = 'cui-ga-nro';
 const JUDGMENT_BUFFER = 'judgment-buffer';
@@ -157,10 +156,6 @@ export async function isQueryManagementEnabled(date: Date): Promise<boolean> {
   const systemTimeZone = DateTime.local().zoneName;
   const epoch = DateTime.fromISO(date, { zone: systemTimeZone }).toSeconds();
   return await getFlagValue(QUERY_MANAGEMENT, epoch) as boolean;
-}
-
-export async function isWelshEnabledForMainCase(): Promise<boolean> {
-  return await getFlagValue(WELSH_FOR_MAIN_CLAIM) as boolean;
 }
 
 export async function isDefendantNoCOnlineForCase(date: Date): Promise<boolean> {
