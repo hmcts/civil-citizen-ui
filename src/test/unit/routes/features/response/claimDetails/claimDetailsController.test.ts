@@ -20,7 +20,6 @@ import {DocumentType} from 'models/document/documentType';
 import {t} from 'i18next';
 
 jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 const nock = require('nock');
 
 const civilServiceUrl = config.get<string>('services.civilService.url');

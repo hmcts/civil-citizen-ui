@@ -60,41 +60,30 @@ describe('View Orders And Notices Service', () => {
       expect(result).toEqual(expectedResult);
     });
 
-    it('should get data array for claimant bilingual dq', async () => {
+    it('should get data array for original and translated claimant dq', async () => {
       //given
-      const documentName = 'test_000MC001.pdf';
+      const originalDocumentName = 'claimant_test_000MC001.pdf';
+      const translatedDocumentName = 'translated_claimant_test_000MC001.pdf';
       const claim = new Claim();
       claim.claimantBilingualLanguagePreference = ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH;
-      const document = setUpMockSystemGeneratedCaseDocument(documentName, DocumentType.CLAIMANT_INTENTION_TRANSLATED_DOCUMENT);
-      claim.systemGeneratedCaseDocuments = new Array(document);
+      const originalDocument = setUpMockSystemGeneratedCaseDocument(originalDocumentName, DocumentType.DIRECTIONS_QUESTIONNAIRE);
+      const translatedDocument = setUpMockSystemGeneratedCaseDocument(translatedDocumentName, DocumentType.CLAIMANT_INTENTION_TRANSLATED_DOCUMENT);
+      claim.systemGeneratedCaseDocuments = [originalDocument, translatedDocument];
       //When
       const result = await getClaimantDocuments(claim, claimId, 'en');
       //Then
-      const expectedDocument = new DocumentInformation(
-        'PAGES.ORDERS_AND_NOTICES.TRANSLATED_CLAIMANT_DQ',
-        '21 June 2022',
-        new DocumentLinkInformation(documentUrl, documentName),
-      );
-      const expectedResult = new DocumentsViewComponent('Claimant', [expectedDocument]);
-      expect(result).toEqual(expectedResult);
-    });
-
-    it('should get data array for claimant translated dq', async () => {
-      //given
-      const documentName = 'test_000MC001.pdf';
-      const claim = new Claim();
-      claim.claimantBilingualLanguagePreference = ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH;
-      const document = setUpMockSystemGeneratedCaseDocument(documentName, DocumentType.CLAIMANT_INTENTION_TRANSLATED_DOCUMENT);
-      claim.systemGeneratedCaseDocuments = new Array(document);
-      //When
-      const result = await getClaimantDocuments(claim, claimId, 'en');
-      //Then
-      const expectedDocument = new DocumentInformation(
-        'PAGES.ORDERS_AND_NOTICES.TRANSLATED_CLAIMANT_DQ',
-        '21 June 2022',
-        new DocumentLinkInformation(documentUrl, documentName),
-      );
-      const expectedResult = new DocumentsViewComponent('Claimant', [expectedDocument]);
+      const expectedResult = new DocumentsViewComponent('Claimant', [
+        new DocumentInformation(
+          'PAGES.ORDERS_AND_NOTICES.CLAIMANT_DQ',
+          '21 June 2022',
+          new DocumentLinkInformation(documentUrl, originalDocumentName),
+        ),
+        new DocumentInformation(
+          'PAGES.ORDERS_AND_NOTICES.TRANSLATED_CLAIMANT_DQ',
+          '21 June 2022',
+          new DocumentLinkInformation(documentUrl, translatedDocumentName),
+        ),
+      ]);
       expect(result).toEqual(expectedResult);
     });
 
@@ -427,22 +416,30 @@ describe('View Orders And Notices Service', () => {
       expect(result).toEqual(expectedResult);
     });
 
-    it('should get data array for defendant stitched response for welsh main case', async () => {
+    it('should get data array for original and translated defendant response', async () => {
       //given
-      const documentName = 'test_response_000MC001.pdf';
+      const originalDocumentName = 'test_response_000MC001.pdf';
+      const translatedDocumentName = 'translated_test_response_000MC001.pdf';
       const claim = new Claim();
       claim.specRespondent1Represented = YesNoUpperCamelCase.YES;
-      const document = setUpMockSystemGeneratedCaseDocument(documentName, DocumentType.DEFENDANT_DEFENCE);
-      claim.systemGeneratedCaseDocuments = new Array(document);
+      const originalDocument = setUpMockSystemGeneratedCaseDocument(originalDocumentName, DocumentType.DEFENDANT_DEFENCE);
+      const translatedDocument = setUpMockSystemGeneratedCaseDocument(translatedDocumentName, DocumentType.DEFENCE_TRANSLATED_DOCUMENT);
+      claim.systemGeneratedCaseDocuments = [originalDocument, translatedDocument];
       //When
       const result = await getDefendantDocuments(claim, claimId, 'en');
       //Then
-      const expectedDocument = new DocumentInformation(
-        'PAGES.ORDERS_AND_NOTICES.DEFENDANT_RESPONSE',
-        '21 June 2022',
-        new DocumentLinkInformation(documentUrl, documentName),
-      );
-      const expectedResult = new DocumentsViewComponent('Defendant', [expectedDocument]);
+      const expectedResult = new DocumentsViewComponent('Defendant', [
+        new DocumentInformation(
+          'PAGES.ORDERS_AND_NOTICES.DEFENDANT_RESPONSE',
+          '21 June 2022',
+          new DocumentLinkInformation(documentUrl, originalDocumentName),
+        ),
+        new DocumentInformation(
+          'PAGES.ORDERS_AND_NOTICES.TRANSLATED_DEFENDANT_RESPONSE',
+          '21 June 2022',
+          new DocumentLinkInformation(documentUrl, translatedDocumentName),
+        ),
+      ]);
       expect(result).toEqual(expectedResult);
     });
 
