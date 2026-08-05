@@ -16,4 +16,46 @@ describe('ClaimantInterestRate', () => {
     //Then
     expect(errors.length).toBe(0);
   });
+
+  it('should allow a zero interest rate', async () => {
+    const claimantInterestRate = new ClaimantInterestRate(
+      SameRateInterestType.SAME_RATE_INTEREST_DIFFERENT_RATE,
+      0,
+      'This is a test reason',
+    );
+
+    const errors = await validate(claimantInterestRate);
+
+    expect(errors.length).toBe(0);
+  });
+
+  it('should reject a negative interest rate', async () => {
+    const claimantInterestRate = new ClaimantInterestRate(
+      SameRateInterestType.SAME_RATE_INTEREST_DIFFERENT_RATE,
+      -5,
+      'This is a test reason',
+    );
+
+    const errors = await validate(claimantInterestRate);
+
+    expect(errors.length).toBe(1);
+    expect(errors[0].property).toBe('differentRate');
+    expect(errors[0].constraints).toEqual({min: 'ERRORS.VALID_POSITIVE_NUMBER'});
+  });
+
+  it('should reject when different rate is missing', async () => {
+    const claimantInterestRate = new ClaimantInterestRate(
+      SameRateInterestType.SAME_RATE_INTEREST_DIFFERENT_RATE,
+      undefined,
+      'This is a test reason',
+    );
+
+    const errors = await validate(claimantInterestRate);
+
+    expect(errors.length).toBe(1);
+    expect(errors[0].property).toBe('differentRate');
+    expect(errors[0].constraints).toEqual(expect.objectContaining({
+      isDefined: 'ERRORS.RATE_CORRECT_THE_ONE_ENTERED',
+    }));
+  });
 });

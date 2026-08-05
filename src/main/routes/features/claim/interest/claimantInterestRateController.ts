@@ -7,6 +7,7 @@ import {
 import {ClaimantInterestRate} from 'form/models/claim/interest/claimantInterestRate';
 import {AppRequest} from 'common/models/AppRequest';
 import {getInterest, saveInterest} from 'services/features/claim/interest/interestService';
+import {toNumberOrUndefined} from 'common/utils/numberConverter';
 
 const interestRateController = Router();
 const interestRateViewPath = 'features/claim/interest/claimant-interest-rate';
@@ -31,7 +32,8 @@ interestRateController.get(CLAIM_INTEREST_RATE_URL, (async (req:AppRequest, res:
 interestRateController.post(CLAIM_INTEREST_RATE_URL, (async (req: AppRequest | Request, res: Response, next: NextFunction) => {
   const claimId = (<AppRequest>req).session.user?.id;
   try {
-    const sameRateInterestSelection = await getInterestRateForm(req.body.sameRateInterestType,req.body.differentRate,req.body.reason);
+    const differentRate = toNumberOrUndefined(req.body.differentRate);
+    const sameRateInterestSelection = await getInterestRateForm(req.body.sameRateInterestType, differentRate, req.body.reason);
     const form: GenericForm<ClaimantInterestRate> = new GenericForm(new ClaimantInterestRate(sameRateInterestSelection.sameRateInterestType,sameRateInterestSelection.differentRate,sameRateInterestSelection.reason));
     form.validateSync();
     if (form.hasErrors()) {
