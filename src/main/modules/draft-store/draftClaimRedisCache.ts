@@ -1,8 +1,11 @@
 import {app} from '../../app-instance';
 import {DraftClaimResponse} from 'common/models/draft/draftClaim';
 
-const {Logger} = require('@hmcts/nodejs-logging');
+import {Logger} from '@hmcts/nodejs-logging';
 const logger = Logger.getLogger('draftClaimCache');
+
+const getErrorMessage = (error: unknown): string =>
+  error instanceof Error ? error.message : String(error);
 
 export const getRedisKey = (userId: string): string => `draft-claim:${userId}`;
 
@@ -23,8 +26,8 @@ export const getCachedDraft = async (userId: string): Promise<DraftClaimResponse
     }
     logger.info(`[draftClaimRedisCache] redis cache miss for key: ${key}`);
     return null;
-  } catch (err: any) {
-    logger.warn(`[draftClaimRedisCache] redis read error for key ${key}: ${err.message}`);
+  } catch (err: unknown) {
+    logger.warn(`[draftClaimRedisCache] redis read error for key ${key}: ${getErrorMessage(err)}`);
     return null;
   }
 };
@@ -42,8 +45,8 @@ export const setCachedDraft = async (userId: string, data: DraftClaimResponse): 
     const jsonString = JSON.stringify(data);
     await app.locals.draftStoreClient.setex(key, ttlSeconds, jsonString);
     logger.info(`[draftClaimRedisCache] successfully cached ${key} in redis with ttl: ${ttlSeconds}`);
-  } catch (err: any) {
-    logger.warn(`[draftClaimRedisCache] failed to write cache for key ${key}: ${err.message}`);
+  } catch (err: unknown) {
+    logger.warn(`[draftClaimRedisCache] failed to write cache for key ${key}: ${getErrorMessage(err)}`);
   }
 };
 
@@ -52,7 +55,7 @@ export const deleteCachedDraft = async (userId: string): Promise<void> => {
   try {
     await app.locals.draftStoreClient.del(key);
     logger.info(`[draftClaimRedisCache] successfully deleted from redis: ${key}`);
-  } catch (err: any) {
-    logger.warn(`[draftClaimRedisCache] failed to delete redis cache for key ${key}: ${err.message}`);
+  } catch (err: unknown) {
+    logger.warn(`[draftClaimRedisCache] failed to delete redis cache for key ${key}: ${getErrorMessage(err)}`);
   }
-}
+};
