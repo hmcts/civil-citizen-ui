@@ -1,6 +1,6 @@
 import { AppRequest } from 'common/models/AppRequest';
 import { NextFunction, RequestHandler, Response, Router } from 'express';
-import { deleteDraftClaimFromStore, generateRedisKeyForGA } from 'modules/draft-store/draftStoreService';
+import { generateRedisKeyForGA } from 'modules/draft-store/draftStoreService';
 import { getClaimById } from 'modules/utilityService';
 import {
   GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_CONFIRMATION_URL,
@@ -10,6 +10,7 @@ import {
 } from 'services/features/generalApplication/directionsOrderUpload/uploadDocumentsDirectionsOrderService';
 import {t} from 'i18next';
 import {getRouteParam} from 'common/utils/routeParamUtils';
+import {deleteGADocumentsFromDraftStore} from 'modules/draft-store/draftGADocumentService';
 
 const directionOrderSubmittedConfirmationController = Router();
 const viewPath = 'features/generalApplication/directionsOrderUpload/confirmation-screen';
@@ -20,7 +21,7 @@ directionOrderSubmittedConfirmationController.get(GA_UPLOAD_DOCUMENT_DIRECTIONS_
     const claimId = getRouteParam(req, 'id');
     const claim = await getClaimById(claimId, req, true);
     const redisKey = generateRedisKeyForGA(req);
-    await deleteDraftClaimFromStore(redisKey);
+    await deleteGADocumentsFromDraftStore(redisKey);
     res.render(viewPath, {
       confirmationTitle : t('PAGES.GENERAL_APPLICATION.UPLOAD_DIRECTIONS_ORDER_DOCUMENTS.CONFIRMATION_PAGE_TITLE', {lng}),
       confirmationContent: await getConfirmationContent(claimId, claim, lng),
