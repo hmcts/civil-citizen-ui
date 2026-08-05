@@ -87,7 +87,7 @@ describe('Bilingual language preference', () => {
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.header.location).toEqual(RESPONSE_TASK_LIST_URL);
-          expect(res.headers['set-cookie'].join(';')).toContain('lang=cy');
+          expect(String(res.headers['set-cookie'])).toContain('lang=cy');
         });
     });
 
