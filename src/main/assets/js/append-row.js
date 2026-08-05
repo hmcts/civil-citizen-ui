@@ -207,11 +207,10 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function showRemoveButton() {
-    const hiddenRemoveButton = document.querySelectorAll('.remove-row.govuk-!-display-none, .remove-row.govuk-visually-hidden');
+    const hiddenRemoveButton = document.querySelectorAll('.govuk-button.govuk-button--secondary.remove-row');
     if (elementExists(hiddenRemoveButton)) {
       Array.from(hiddenRemoveButton).forEach(element => {
         element.classList.remove('govuk-!-display-none');
-        element.classList.remove('govuk-visually-hidden');
       });
     }
   }
