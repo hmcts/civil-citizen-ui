@@ -55,7 +55,7 @@ export const createOrLoadDraftClaimInDraftStoreDb = async (
       rawResponse: response.data,
       isNew,
     };
-  } catch (err: any) {
+  } catch (err: unknown) {
     logger.error(`[draftStoreDbService] failed to create/load draft in db: ${getErrorMessage(err)}`);
     throw err;
   }
