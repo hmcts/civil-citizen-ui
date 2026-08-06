@@ -34,7 +34,7 @@ export const getCachedDraft = async (userId: string): Promise<DraftClaimResponse
     }
     logger.info(`[draftClaimRedisCache] redis cache miss for key: ${key}`);
     return null;
-  } catch (err: unknown) {
+  } catch (err: any) {
     logger.warn(`[draftClaimRedisCache] redis read error for key ${key}: ${getErrorMessage(err)}`);
     return null;
   }
