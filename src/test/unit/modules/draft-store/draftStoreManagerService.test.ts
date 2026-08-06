@@ -1,11 +1,10 @@
-import axios from 'axios';
-import {getDraftClaim, updateDraftClaim, createOrLoadDraft, deleteDraftClaim} from '../../../../main/modules/draft-store/draftStoreManagerService';
-import {app} from '../../../../main/common/models/AppRequest';
-import {createOrLoadDraftClaimInDraftStoreDb, getActiveDraftFromDraftStoreDb, updateDraftClaimInStore, deleteDraftClaimFromStore} from 'modules/draft-store/draftStoreDbService'
+import {getDraftClaim, updateDraftClaim, createOrLoadDraft, deleteDraftClaim} from 'modules/draft-store/draftStoreManagerService';
+import {createOrLoadDraftClaimInDraftStoreDb, getActiveDraftFromDraftStoreDb, updateDraftClaimInStore, deleteDraftClaimFromStore} from 'modules/draft-store/draftStoreDbService';
 import {getCachedDraft, setCachedDraft, deleteCachedDraft} from 'modules/draft-store/draftClaimRedisCache';
-import {AppRequest} from '../../../../main/common/models/AppRequest';
-import {Claim} from '../../../../main/common/models/claim';
-import {DraftClaimResponse} from 'co'
+import {AppRequest} from 'models/AppRequest';
+import {Claim} from 'models/claim';
+import {CivilClaimResponse} from 'models/civilClaimResponse';
+import {DraftClaimResponse} from 'models/draft/draftClaim';
 
 jest.mock('modules/draft-store/draftStoreDbService');
 jest.mock('modules/draft-store/draftClaimRedisCache');
@@ -15,9 +14,9 @@ const mockSetCachedDraft = setCachedDraft as jest.MockedFunction<typeof setCache
 const mockDeleteCachedDraft = deleteCachedDraft as jest.MockedFunction<typeof deleteCachedDraft>;
 
 const mockGetActiveDraftFromDb = getActiveDraftFromDraftStoreDb as jest.MockedFunction<typeof getActiveDraftFromDraftStoreDb>;
-const mockCreateOrLoadDraftInDb = createOrLoadDraftClaimInDraftStoreDb as jest.MockFunction<typeof createOrLoadDraftClaimInDraftStoreDb>;
-const mockUpdateDraftInDb = updateDraftClaimInStore as jest.MockFunction<typeof updateDraftClaimInStore>;
-const mockDeleteDraftFromDb = deleteDraftClaimFromStore as jest.MockFunction<typeof deleteDraftClaimFromStore>;
+const mockCreateOrLoadDraftInDb = createOrLoadDraftClaimInDraftStoreDb as jest.MockedFunction<typeof createOrLoadDraftClaimInDraftStoreDb>;
+const mockUpdateDraftInDb = updateDraftClaimInStore as jest.MockedFunction<typeof updateDraftClaimInStore>;
+const mockDeleteDraftFromDb = deleteDraftClaimFromStore as jest.MockedFunction<typeof deleteDraftClaimFromStore>;
 
 describe('draftStoreManagerService Unit Tests', () => {
   let mockReq: AppRequest;
@@ -28,9 +27,9 @@ describe('draftStoreManagerService Unit Tests', () => {
   const mockRawResponse: DraftClaimResponse = {
     draftId: mockDraftId,
     payload: {claimAmount: 1500},
-    createdAt: '2026-08-01T10:00:00:000Z',
-    updatedAt: '2026-08-01T11:00:00:000Z',
-    expiresAt: '2026-09-01T10:00:00:000Z',
+    createdAt: '2026-08-01T10:00:00.000Z',
+    updatedAt: '2026-08-01T11:00:00.000Z',
+    expiresAt: '2026-09-01T10:00:00.000Z',
   };
 
   beforeEach(() => {
@@ -70,7 +69,7 @@ describe('draftStoreManagerService Unit Tests', () => {
     it('cache miss should query db api and use redis cache when active draft is found', async() => {
       mockGetCachedDraft.mockResolvedValueOnce(null);
       mockGetActiveDraftFromDb.mockResolvedValueOnce({
-        claimResponse: {} as any,
+        claimResponse: new CivilClaimResponse(),
         rawResponse: mockRawResponse,
       });
       const result = await getDraftClaim(mockReq);
@@ -104,7 +103,7 @@ describe('draftStoreManagerService Unit Tests', () => {
     it('should execute POST db call first, use redis and set isNew to true for 201 created', async () => {
       const mockClaim = new Claim();
       mockCreateOrLoadDraftInDb.mockResolvedValueOnce({
-        claimResponse: {} as any,
+        claimResponse: new CivilClaimResponse(),
         rawResponse: mockRawResponse,
         isNew: true,
       });
@@ -119,7 +118,7 @@ describe('draftStoreManagerService Unit Tests', () => {
 
     it('should set isNew=false when POST loads an existing draft (200)', async () => {
       mockCreateOrLoadDraftInDb.mockResolvedValueOnce({
-        claimResponse: {} as any,
+        claimResponse: new CivilClaimResponse(),
         rawResponse: mockRawResponse,
         isNew: false,
       });
@@ -141,7 +140,7 @@ describe('draftStoreManagerService Unit Tests', () => {
     it('should execute PUT db update first, then use cache', async () => {
       const mockClaim = new Claim();
       mockUpdateDraftInDb.mockResolvedValueOnce({
-        claimResponse: {} as any,
+        claimResponse: new CivilClaimResponse(),
         rawResponse: mockRawResponse,
       });
       const result = await updateDraftClaim(mockReq, mockClaim, mockDraftId);

@@ -1,5 +1,6 @@
-import {AppRequest} from 'common/mdoels/AppRequest';
+import {AppRequest} from 'common/models/AppRequest';
 import {DashboardClaimantItem, toDraftClaimDashboardItem} from 'models/dashboard/dashboardItem';
+import {Claim} from 'models/claim';
 import {getDraftClaim} from 'modules/draft-store/draftStoreManagerService';
 
 export interface DraftClaimData {
@@ -26,5 +27,8 @@ const getDashboardDraftClaimItem = async (req: AppRequest): Promise<DashboardCla
   if (!draftResult || !draftResult.claimResponse?.case_data) {
     return null;
   }
-  return toDraftClaimDashboardItem(draftResult.claimResponse.case_data);
+  const claim = new Claim();
+  Object.assign(claim, draftResult.claimResponse.case_data);
+  claim.draftClaimCreatedAt = new Date(draftResult.createdAt);
+  return toDraftClaimDashboardItem(claim) ?? null;
 };
