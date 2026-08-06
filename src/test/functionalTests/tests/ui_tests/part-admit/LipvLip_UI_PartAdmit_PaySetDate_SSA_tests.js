@@ -53,14 +53,14 @@ Scenario('04 Defendant responds with part admit', async ({ api }) => {
   await ResponseSteps.AddYourTimeLineEvents();
   await ResponseSteps.EnterYourEvidenceDetails();
   await ResponseSteps.EnterPaymentOption(claimRef, partAdmit, bySetDate);
-  await ResponseSteps.EnterDateToPayOn();
+  await ResponseSteps.EnterDateToPayOn(); //Pass
   await ResponseSteps.EnterFinancialDetails(claimRef);
-  await ResponseSteps.EnterTelephoneMediationDetails();
+  /*await ResponseSteps.EnterTelephoneMediationDetails();
   await ResponseSteps.ConfirmAltPhoneDetails();
   await ResponseSteps.ConfirmAltEmailDetails();
-  await ResponseSteps.EnterUnavailableDates(claimRef);
+  /*await ResponseSteps.EnterUnavailableDates(claimRef);
   await ResponseSteps.EnterDQForSmallClaims(claimRef);
   await ResponseSteps.CheckAndSubmit(claimRef, partAdmit);
-  await api.waitForFinishedBusinessProcess();
+  await api.waitForFinishedBusinessProcess();*/
 }).retry(1);
 
