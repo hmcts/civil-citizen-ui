@@ -5,10 +5,13 @@ import {Claim} from 'models/claim';
 import {CCDClaim, CivilClaimResponse} from 'models/civilClaimResponse';
 import {AppRequest} from 'common/models/AppRequest';
 
-const {Logger} = require('@hmcts/nodejs-logging');
+import {Logger} from '@hmcts/nodejs-logging';
 const logger = Logger.getLogger('draftStoreDbService');
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
+
+const getErrorMessage = (error: unknown): string =>
+  error instanceof Error ? error.message : String(error);
 
 const getHeaders = (req: AppRequest) => {
   const token = req?.session?.user?.accessToken;
@@ -28,12 +31,12 @@ const mapToCivilClaimResponse = (dbDraft: DraftClaimResponse): CivilClaimRespons
   return response;
 };
 
-export const createDraftClaimInDraftStoreDb = async (
+export const createOrLoadDraftClaimInDraftStoreDb = async (
   req: AppRequest,
-  claim: Claim,
-): Promise<{ claimResponse: CivilClaimResponse; rawResponse: DraftClaimResponse}> => {
+  claim?: Claim,
+): Promise<{ claimResponse: CivilClaimResponse; rawResponse: DraftClaimResponse; isNew: boolean}> => {
   const payload: DraftClaimRequest = {
-    payload: claim as unknown as Record<string, unknown>,
+    payload: (claim || new Claim()) as unknown as Record<string, unknown>,
   };
 
   logger.info(`[draftStoreDbService] creating draft in db for user: ${req.session?.user?.id}`);
@@ -44,17 +47,16 @@ export const createDraftClaimInDraftStoreDb = async (
       payload,
       {headers: getHeaders(req)},
     );
+    const isNew = response.status === 201;
+    logger.info(`[draftStoreDbService] draft POST responded with status ${response.status} (isNew: ${isNew}`);
 
-    if (response.status === 200 || response.status === 201) {
-      logger.info(`[draftStoreDbService] draft created successfully with status: ${response.status}`);
-      return {
-        claimResponse: mapToCivilClaimResponse(response.data),
-        rawResponse: response.data,
-      };
-    }
-    throw new Error(`unexpected status code received on draft creation: ${response.status}`);
+    return {
+      claimResponse: mapToCivilClaimResponse(response.data),
+      rawResponse: response.data,
+      isNew,
+    };
   } catch (err: any) {
-    logger.error(`[draftStoreDbService] failed to create draft in db: ${err.message}`);
+    logger.error(`[draftStoreDbService] failed to create/load draft in db: ${getErrorMessage(err)}`);
     throw err;
   }
 };
@@ -66,19 +68,19 @@ export const getActiveDraftFromDraftStoreDb = async (req: AppRequest): Promise<{
   try {
     const response = await axios.get<DraftClaimResponse>(
       `${civilServiceApiBaseUrl}/dashboard/draft-claims/active`,
-      {headers: getHeaders(req)}
+      {headers: getHeaders(req)},
     );
 
     return {
       claimResponse: mapToCivilClaimResponse(response.data),
       rawResponse: response.data,
     };
-  } catch (err: any) {
-    if (err.response?.status === 404) {
+  } catch (err: unknown) {
+    if (axios.isAxiosError(err) && err.response?.status === 404) {
       logger.info(`[draftStoreDbService] no active draft from db found for user: ${userId}`);
       return null;
     }
-    logger.info(`[draftStoreDbService] error fetching active draft from db: ${err.message}`);
+    logger.info(`[draftStoreDbService] error fetching active draft from db: ${getErrorMessage(err)}`);
     throw err;
   }
 };
@@ -89,7 +91,7 @@ export const updateDraftClaimInStore = async (
   claim: Claim,
 ): Promise<{ claimResponse: CivilClaimResponse; rawResponse: DraftClaimResponse}> => {
   if (!draftId) {
-    throw new Error('[draftStoreDbService] draftId is required for update');
+    throw new Error('[draftStoreDbService] draftId is required for PUT update');
   }
 
   const payload: DraftClaimRequest = {
@@ -107,8 +109,8 @@ export const updateDraftClaimInStore = async (
       claimResponse: mapToCivilClaimResponse(response.data),
       rawResponse: response.data,
     };
-  } catch (err: any) {
-    logger.error(`[draftStoreDbService] failed to update draft ${draftId} in db: ${err.message}`);
+  } catch (err: unknown) {
+    logger.error(`[draftStoreDbService] failed to update draft ${draftId} in db: ${getErrorMessage(err)}`);
     throw err;
   }
 };
@@ -124,11 +126,10 @@ export const deleteDraftClaimFromStore = async (req: AppRequest, draftId: string
       `${civilServiceApiBaseUrl}/dashboard/draft-claims/${draftId}`,
       {headers: getHeaders(req)},
     );
-  } catch (err: any) {
-    if (err.response?.status !== 404) {
-      logger.error(`[draftStoreDbService] failed to delete ${draftId} from db: ${err.message}`);
+  } catch (err: unknown) {
+    if (!axios.isAxiosError(err) || err.response?.status !== 404) {
+      logger.error(`[draftStoreDbService] failed to delete ${draftId} from db: ${getErrorMessage(err)}`);
       throw err;
     }
   }
 };
-
