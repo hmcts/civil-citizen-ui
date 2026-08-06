@@ -31,39 +31,34 @@ const mapToCivilClaimResponse = (dbDraft: DraftClaimResponse): CivilClaimRespons
   return response;
 };
 
-export const createDraftClaimInDraftStoreDb = async (
+export const createOrLoadDraftClaimInDraftStoreDb = async (
   req: AppRequest,
-  claim: Claim,
-): Promise<{ claimResponse: CivilClaimResponse; rawResponse: DraftClaimResponse}> => {
+  claim?: Claim,
+): Promise<{ claimResponse: CivilClaimResponse; rawResponse: DraftClaimResponse; isNew: boolean}> => {
   const payload: DraftClaimRequest = {
-    payload: claim as unknown as Record<string, unknown>,
+    payload: (claim || new Claim()) as unknown as Record<string, unknown>,
   };
 
   logger.info(`[draftStoreDbService] creating draft in db for user: ${req.session?.user?.id}`);
 
-  let response: AxiosResponse<DraftClaimResponse>;
   try {
-    response = await axios.post<DraftClaimResponse>(
+    const response: AxiosResponse<DraftClaimResponse> = await axios.post<DraftClaimResponse>(
       `${civilServiceApiBaseUrl}/dashboard/draft-claims`,
       payload,
       {headers: getHeaders(req)},
     );
-  } catch (err: unknown) {
-    logger.error(`[draftStoreDbService] failed to create draft in db: ${getErrorMessage(err)}`);
+    const isNew = response.status === 201;
+    logger.info(`[draftStoreDbService] draft POST responded with status ${response.status} (isNew: ${isNew}`);
+
+    return {
+      claimResponse: mapToCivilClaimResponse(response.data),
+      rawResponse: response.data,
+      isNew,
+    };
+  } catch (err: any) {
+    logger.error(`[draftStoreDbService] failed to create/load draft in db: ${getErrorMessage(err)}`);
     throw err;
   }
-
-  if (response.status !== 200 && response.status !== 201) {
-    const errorMessage = `unexpected status code received on draft creation: ${response.status}`;
-    logger.error(`[draftStoreDbService] ${errorMessage}`);
-    throw new Error(errorMessage);
-  }
-
-  logger.info(`[draftStoreDbService] draft created successfully with status: ${response.status}`);
-  return {
-    claimResponse: mapToCivilClaimResponse(response.data),
-    rawResponse: response.data,
-  };
 };
 
 export const getActiveDraftFromDraftStoreDb = async (req: AppRequest): Promise<{ claimResponse: CivilClaimResponse; rawResponse: DraftClaimResponse} | null> => {
@@ -96,7 +91,7 @@ export const updateDraftClaimInStore = async (
   claim: Claim,
 ): Promise<{ claimResponse: CivilClaimResponse; rawResponse: DraftClaimResponse}> => {
   if (!draftId) {
-    throw new Error('[draftStoreDbService] draftId is required for update');
+    throw new Error('[draftStoreDbService] draftId is required for PUT update');
   }
 
   const payload: DraftClaimRequest = {
