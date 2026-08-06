@@ -9,13 +9,26 @@ import {YesNo} from 'form/models/yesNo';
 import {saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {Claim} from 'models/claim';
 import {getFirstContactData, saveFirstContactData} from 'services/firstcontact/firstcontactService';
-
-const CryptoJS = require('crypto-js');
+import crypto from 'crypto';
 
 const pinController = Router();
 const pinViewPath = 'features/public/firstContact/pin';
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
+
+// Helper function to match the native decryption routine exactly
+function encryptAES(text: string, secretKey: string): string {
+  // Derive a deterministic 32-byte key from the secret key (pin)
+  const key = crypto.createHash('sha256').update(secretKey).digest();
+
+  // Set a consistent 16-byte initialization vector
+  const iv = Buffer.alloc(16, 0);
+
+  const cipher = crypto.createCipheriv('aes-256-cbc', key, iv);
+  let encrypted = cipher.update(text, 'utf8', 'base64');
+  encrypted += cipher.final('base64');
+  return encrypted;
+}
 
 function renderView(pinForm: GenericForm<PinType>, isPinEmpty: boolean, res: Response, isLRDefendant?: boolean): void {
   const form = Object.assign(pinForm);
@@ -52,7 +65,10 @@ pinController.post(FIRST_CONTACT_PIN_URL, (async (req: Request, res: Response, n
           renderView(pinForm, false, res, true);
         } else {
           await saveDraftClaim(claim.id, claim, true);
-          const ciphertext = CryptoJS.AES.encrypt(YesNo.YES, pin).toString();
+
+          // Encrypt natively using the same derivation strategy as the decrypt utility
+          const ciphertext = encryptAES(YesNo.YES, pin);
+
           req.session = saveFirstContactData(req.session as AppSession, {claimId: claim.id, pin: ciphertext});
           res.redirect(FIRST_CONTACT_CLAIM_SUMMARY_URL);
         }
@@ -73,3 +89,4 @@ pinController.post(FIRST_CONTACT_PIN_URL, (async (req: Request, res: Response, n
 }) as RequestHandler);
 
 export default pinController;
+
