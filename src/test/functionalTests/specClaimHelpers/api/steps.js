@@ -377,7 +377,7 @@ module.exports = {
       respondent1: {
         ...caseData.respondent1,
         partyEmail: email,
-      },      
+      },
     };
     await testingSupport.updateCaseData(caseId, caseDataRespondent1);
     console.log('respondent1PartyEmail updated');
@@ -391,7 +391,7 @@ module.exports = {
       applicantSolicitor1UserDetails: {
         ...caseData.applicantSolicitor1UserDetails,
         email: applicantSolicitor1Email,
-      },    
+      },
     };
     await testingSupport.updateCaseData(caseId, caseDataApplicantSolicitor1UserDetails);
     console.log('applicantSolicitor1Email updated');
@@ -481,7 +481,7 @@ module.exports = {
     return caseId;
   },
 
-  createLiPClaim: async (user, claimType, qmEnabled = false, partyType = 'Individual', language, mainClaimWelshEnabled = false) => {
+  createLiPClaim: async (user, claimType, qmEnabled = false, partyType = 'Individual', language, mainClaimWelshEnabled = false, assignDefendant = true) => {
     console.log(' Creating LIP claim');
 
     const currentDate = new Date();
@@ -554,7 +554,7 @@ module.exports = {
     await apiRequest.startEventForCitizen('', caseId, newPayload);
     await waitForTimeout(1000);
     await waitForFinishedBusinessProcess(caseId, user);
-    if (!mainClaimWelshEnabled) {
+    if (!mainClaimWelshEnabled && assignDefendant) {
       await assignSpecCase(caseId, null);
     }
     return caseId;
