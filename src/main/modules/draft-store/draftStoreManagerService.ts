@@ -47,7 +47,7 @@ export const getDraftClaim = async (req: AppRequest): Promise<DraftClaimManagerR
   return buildManagerResult(dbResult.rawResponse);
 };
 
-export const createOrLoadDraft = async (req: AppRequest, claim?: Claim,): Promise<DraftClaimManagerResult> => {
+export const createOrLoadDraft = async (req: AppRequest, claim?: Claim): Promise<DraftClaimManagerResult> => {
   const userId = req.session?.user?.id;
   if (!userId) {
     throw new Error('[draftStoreManagerService] user id required to create/load draft');
