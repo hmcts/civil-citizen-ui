@@ -43,7 +43,6 @@ import {
   GA_RESPONDENT_INFORMATION_URL,
   MAKE_APPLICATION_TO_COURT,
   GA_ASK_PROOF_OF_DEBT_PAYMENT_GUIDANCE_URL,
-  GA_SUBMIT_OFFLINE,
   VIEW_THE_JUDGMENT_URL,
   QM_VIEW_QUERY_URL,
   DASHBOARD_CLAIMANT_URL,
@@ -60,7 +59,6 @@ import { t } from 'i18next';
 import {DashboardNotification} from 'models/dashboard/dashboardNotification';
 import {getLng} from 'common/utils/languageToggleUtils';
 import {LinKFromValues} from 'models/generalApplication/applicationType';
-import {isGaForWelshEnabled} from '../../app/auth/launchdarkly/launchDarklyClient';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 
 const replaceId = (url: string, claimId: string) => url.replace(':id', claimId);
@@ -95,7 +93,6 @@ export const populateDashboardValues = async (claim: Claim, claimId: string, ful
   const cmcCourtEmailId = config.get<string>('services.civilMoneyClaims.courtEmailId');
   const claimantRequirements = claim.getDocumentDetails(DocumentType.DIRECTIONS_QUESTIONNAIRE, DirectionQuestionnaireType.CLAIMANT);
   const notificationId = notification?.id;
-  const welshGaEnabled = await isGaForWelshEnabled();
   const viewHearingUrl = getRedirectUrlForViewHearing(claim, claimId);
   const viewHearingFormDocumentId = getHearingDocumentsCaseDocumentIdByType(
     claim?.caseProgressionHearing?.hearingDocuments,
@@ -154,7 +151,7 @@ export const populateDashboardValues = async (claim: Claim, claimId: string, ful
   valuesMap.set('{REQUEST_FOR_RECONSIDERATION}', replaceId(REQUEST_FOR_RECONSIDERATION_URL,claimId));
   valuesMap.set('{REQUEST_FOR_RECONSIDERATION_COMMENTS}', replaceId(REQUEST_FOR_RECONSIDERATION_COMMENTS_URL,claimId));
   valuesMap.set('{VIEW_SDO_DOCUMENT}', systemGeneratedDocOrAwaitingTranslation(DocumentType.SDO_ORDER));
-  valuesMap.set('{GENERAL_APPLICATIONS_INITIATION_PAGE_URL}', (claim.isAnyPartyBilingual() && !welshGaEnabled) ? replaceId(GA_SUBMIT_OFFLINE, claimId) : replaceId(APPLICATION_TYPE_URL, claimId) + `?linkFrom=${LinKFromValues.start}`);
+  valuesMap.set('{GENERAL_APPLICATIONS_INITIATION_PAGE_URL}', replaceId(APPLICATION_TYPE_URL, claimId) + `?linkFrom=${LinKFromValues.start}`);
   valuesMap.set('{VIEW_MEDIATION_DOCUMENTS}', replaceId(VIEW_MEDIATION_DOCUMENTS,claimId));
   valuesMap.set('{CONFIRM_YOU_HAVE_BEEN_PAID_URL}', replaceId(CONFIRM_YOU_HAVE_BEEN_PAID_URL,claimId));
   valuesMap.set('{VIEW_REQUEST_FOR_RECONSIDERATION_DOCUMENT}', caseDocViewUrl(claimId, documentIdExtractor(getRequestForReconsiderationDocument(claim))));
