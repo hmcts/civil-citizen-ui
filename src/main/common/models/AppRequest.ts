@@ -39,6 +39,7 @@ export interface PaymentConfirmationContext {
 export interface AppSession extends Session {
   user: UserDetails;
   lang: string | undefined;
+  draftId?: string;
   previousUrl: string;
   claimId: string;
   taskLists: TaskList[];
