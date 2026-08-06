@@ -9,8 +9,11 @@ import { Session } from 'express-session';
 import {t} from 'i18next';
 import nock from 'nock';
 import config from 'config';
+import {encryptWithPassphrase} from 'common/utils/encryptionUtils';
 
 const civilServiceUrl = config.get<string>('services.civilService.url');
+const ACCESS_CODE = 'H4WYG26R6PA9';
+const encryptedPin = encryptWithPassphrase(YesNo.YES, ACCESS_CODE);
 
 describe('First contact - claim summary controller', () => {
   beforeAll(() => {
@@ -25,7 +28,7 @@ describe('First contact - claim summary controller', () => {
       .post('/fees/claim/interest')
       .times(2)
       .reply(200, '0');
-    app.request['session'] = { 'firstContact': { claimId: '1645882162449404', pin: 'U2FsdGVkX1/zOWTQROZZZeiZIfqxcAIoSBnhZM6So0s=' } } as unknown as Session;
+    app.request['session'] = { 'firstContact': { claimId: '1645882162449404', pin: encryptedPin } } as unknown as Session;
     app.locals.draftStoreClient = mockCivilClaimWithTimelineAndEvidence;
     await request(app).get(FIRST_CONTACT_CLAIM_SUMMARY_URL).expect((res) => {
       expect(res.status).toBe(200);
@@ -34,7 +37,7 @@ describe('First contact - claim summary controller', () => {
   });
 
   it('should return 500 error page for redis failure', async () => {
-    app.request['session'] = { 'firstContact': { claimId: '1645882162449404', pin: 'U2FsdGVkX1/zOWTQROZZZeiZIfqxcAIoSBnhZM6So0s=' } } as unknown as Session;
+    app.request['session'] = { 'firstContact': { claimId: '1645882162449404', pin: encryptedPin } } as unknown as Session;
     app.locals.draftStoreClient = mockRedisFailure;
     await request(app)
       .get(FIRST_CONTACT_CLAIM_SUMMARY_URL)
@@ -54,7 +57,7 @@ describe('First contact - claim summary controller', () => {
   });
 
   it('should redirect to access denied page if cookie is missing claimId property', async () => {
-    app.request['session'] = { 'firstContact': { pin: 'U2FsdGVkX1/zOWTQROZZZeiZIfqxcAIoSBnhZM6So0s=' } } as unknown as Session;
+    app.request['session'] = { 'firstContact': { pin: encryptedPin } } as unknown as Session;
     app.locals.draftStoreClient = mockCivilClaimWithTimelineAndEvidence;
     await request(app).get(FIRST_CONTACT_CLAIM_SUMMARY_URL).expect((res) => {
       expect(res.status).toBe(302);
