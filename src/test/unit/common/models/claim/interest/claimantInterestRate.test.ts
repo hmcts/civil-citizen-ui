@@ -40,7 +40,7 @@ describe('ClaimantInterestRate', () => {
 
     expect(errors.length).toBe(1);
     expect(errors[0].property).toBe('differentRate');
-    expect(errors[0].constraints).toEqual({min: 'ERRORS.VALID_POSITIVE_NUMBER'});
+    expect(errors[0].constraints).toEqual({min: 'ERRORS.VALID_INTEREST_RATE'});
   });
 
   it('should reject when different rate is missing', async () => {

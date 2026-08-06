@@ -8,7 +8,7 @@ export class ClaimantInterestRate {
   @ValidateIf(o => o.sameRateInterestType === SameRateInterestType.SAME_RATE_INTEREST_DIFFERENT_RATE)
   @IsDefined({message: 'ERRORS.RATE_CORRECT_THE_ONE_ENTERED'})
   @IsNumber({}, {message: 'ERRORS.RATE_CORRECT_THE_ONE_ENTERED'})
-  @Min(0, {message: 'ERRORS.VALID_POSITIVE_NUMBER'})
+  @Min(0, {message: 'ERRORS.VALID_INTEREST_RATE'})
     differentRate?: number;
 
   @ValidateIf(o => o.sameRateInterestType === SameRateInterestType.SAME_RATE_INTEREST_DIFFERENT_RATE)

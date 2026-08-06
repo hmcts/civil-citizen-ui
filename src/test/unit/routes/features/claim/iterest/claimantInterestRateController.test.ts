@@ -118,7 +118,7 @@ describe('Claimant Interest Rate', () => {
         })
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.VALID_POSITIVE_NUMBER);
+          expect(res.text).toContain(TestMessages.VALID_INTEREST_RATE);
           expect(res.header.location).toBeUndefined();
         });
     });
