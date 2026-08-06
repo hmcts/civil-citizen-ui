@@ -45,7 +45,6 @@ function authenticate() {
 describe('i18n test - Dashboard', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const serviceAuthProviderUrl = config.get<string>('services.serviceAuthProvider.baseUrl');
-  const draftStoreUrl = config.get<string>('services.draftStore.legacy.url');
   const civilServiceUrl = config.get<string>('services.civilService.url');
   const data = require('../../../utils/mocks/defendantClaimsMock.json');
   beforeEach(() => {
@@ -63,9 +62,9 @@ describe('i18n test - Dashboard', () => {
     nock(serviceAuthProviderUrl)
       .post('/lease')
       .reply(200, {});
-    nock(draftStoreUrl)
-      .get('/drafts')
-      .reply(200, {});
+    nock(civilServiceUrl)
+      .get('/dashboard/draft-claims/active')
+      .reply(404);
   });
 
   describe('on GET', () => {
