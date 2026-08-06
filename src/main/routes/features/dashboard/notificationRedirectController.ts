@@ -117,13 +117,18 @@ async function getDashboardNotificationRedirectUrl(locationName: string, claimId
       }
       redirectUrl = CASE_DOCUMENT_VIEW_URL.replace(':id', claim.id).replace(':documentId', getRouteParam(req, 'documentId'));
       break;
-    case 'VIEW_DECISION_RECONSIDERATION':
+    case 'VIEW_DECISION_RECONSIDERATION': {
+      const decisionDocumentId = getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.DECISION_MADE_ON_APPLICATIONS)
+        || getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.SDO_ORDER);
       redirectUrl = buildSystemGeneratedCaseDocumentUrl(
         claimId,
-        getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.DECISION_MADE_ON_APPLICATIONS),
+        decisionDocumentId,
         CASE_DOCUMENT_VIEW_URL,
       ) ?? missingDocumentDashboardUrl(claimId, claim.isClaimant());
       break;
+    }
+      break;
+    }
   }
   return redirectUrl;
 }
