@@ -89,9 +89,16 @@ async function getDashboardNotificationRedirectUrl(locationName: string, claimId
       }
       redirectUrl = CASE_DOCUMENT_VIEW_URL.replace(':id', claim.id).replace(':documentId', getRouteParam(req, 'documentId'));
       break;
-    case 'VIEW_DECISION_RECONSIDERATION':
-      redirectUrl =  CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.DECISION_MADE_ON_APPLICATIONS));
+    case 'VIEW_DECISION_RECONSIDERATION': {
+      if (getRouteParam(req, 'documentId')) {
+        redirectUrl = CASE_DOCUMENT_VIEW_URL.replace(':id', claim.id).replace(':documentId', getRouteParam(req, 'documentId'));
+      } else {
+        const decisionDocumentId = getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.DECISION_MADE_ON_APPLICATIONS)
+          || getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.SDO_ORDER);
+        redirectUrl =  CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', decisionDocumentId);
+      }
       break;
+    }
   }
   return redirectUrl;
 }
