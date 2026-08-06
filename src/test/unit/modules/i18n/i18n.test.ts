@@ -58,7 +58,7 @@ describe('i18n test - Dashboard', () => {
       .reply(200, {claims: data, totalPages: 1});
     nock('http://localhost:5000')
       .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
+      .reply(200, {id_token: citizenRoleToken, access_token: 'accessToken'});
     nock(serviceAuthProviderUrl)
       .post('/lease')
       .reply(200, {});
