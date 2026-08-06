@@ -23,9 +23,9 @@ export const getRedirectUrl = async (claimId: string, req: AppRequest): Promise<
     logger.info(`claim id ${redisClaimId}`);
     const claim: Claim = await getCaseDataFromStore(redisClaimId);
     const paymentInfo = claim.claimDetails?.claimFeePayment;
-    logger.info(`payment info from redis for claim id ${req.params.id}: ${JSON.stringify(paymentInfo)}`);
+    logger.info(`Payment information retrieved from Redis for claim id ${req.params.id}`);
     const paymentStatus = await getFeePaymentStatus(claimId, paymentInfo?.paymentReference, FeeType.CLAIMISSUED, req);
-    logger.info(`payment status from service for claim id ${req.params.id}: ${JSON.stringify(paymentStatus)}`);
+    logger.info(`Payment status retrieved for claim id ${req.params.id}: ${paymentStatus.status}`);
     if(paymentStatus.status === success) {
       const isCUIWelshEnabled = await isWelshEnabledForMainCase();
       const lang = claim.claimantBilingualLanguagePreference === ClaimBilingualLanguagePreference.WELSH
