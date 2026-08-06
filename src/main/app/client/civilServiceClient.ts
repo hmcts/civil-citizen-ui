@@ -369,17 +369,13 @@ export class CivilServiceClient {
   }
 
   async getClaimFeeData(amount: number, req: AppRequest): Promise<ClaimFeeData> {
-    const userid = (<AppRequest>req).session.user?.id;
-    logger.info(`Total Claim Amount before Round off for user ${userid}, amount: ${amount}`);
     amount = roundOffTwoDecimals(amount);
-    logger.info(`Total Claim Amount before Round off for user ${userid}, amount: ${amount}`);
     const response = await this.authenticatedGet<ClaimFeeData>(
       `${CIVIL_SERVICE_CLAIM_AMOUNT_URL}/${amount}`,
       req,
       `Error when getting claim fee data, req.params.id - ${req.params.id}`,
     );
-    const claimFeeInPence = response.data.calculatedAmountInPence;
-    logger.info(`Claim fee of ${claimFeeInPence} calculated for user ${userid} based on claim amount ${amount}`);
+    logger.info('Claim fee calculated');
     return response.data;
   }
 
@@ -603,7 +599,7 @@ export class CivilServiceClient {
       () => this.client.post(CIVIL_SERVICE_CLAIM_CALCULATE_INTEREST, claim, buildJsonOnlyConfig()),
       'Error when calculating interest',
     );
-    logger.info(`calculateClaimInterest response: ${response.data}` );
+    logger.info('Claim interest calculated');
     return response.data as number;
   }
 
