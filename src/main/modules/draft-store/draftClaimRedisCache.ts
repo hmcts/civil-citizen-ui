@@ -21,12 +21,20 @@ export const getCachedDraft = async (userId: string): Promise<DraftClaimResponse
   try {
     const cachedData = await app.locals.draftStoreClient.get(key);
     if (cachedData) {
+      const parsed: DraftClaimResponse = JSON.parse(cachedData);
+
+      const ttlSeconds = calculateTtlInSeconds(parsed.expiresAt);
+      if (ttlSeconds <= 0) {
+        logger.info(`[draftClaimRedisCache] cache entry for ${key} has expired. Evicting...`);
+        await deleteCachedDraft(userId);
+        return null;
+      }
       logger.info(`[draftClaimRedisCache] redis cache hit for key: ${key}`);
-      return JSON.parse(cachedData) as DraftClaimResponse;
+      return parsed;
     }
     logger.info(`[draftClaimRedisCache] redis cache miss for key: ${key}`);
     return null;
-  } catch (err: unknown) {
+  } catch (err: any) {
     logger.warn(`[draftClaimRedisCache] redis read error for key ${key}: ${getErrorMessage(err)}`);
     return null;
   }
