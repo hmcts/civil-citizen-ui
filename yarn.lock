@@ -4665,7 +4665,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"babel-loader@npm:^9.1.0":
+"babel-loader@npm:^9.2.1":
   version: 9.2.1
   resolution: "babel-loader@npm:9.2.1"
   dependencies:
@@ -5459,7 +5459,7 @@ __metadata:
     applicationinsights: "npm:^2.9.5"
     axios: "npm:^1.18.0"
     babel-jest: "npm:^29.7.0"
-    babel-loader: "npm:^9.1.0"
+    babel-loader: "npm:^9.2.1"
     chai: "npm:4.3.6"
     class-transformer: "npm:^0.5.1"
     class-validator: "npm:^0.14.0"
