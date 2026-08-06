@@ -5,7 +5,7 @@ import {CCDClaim, CivilClaimResponse} from 'models/civilClaimResponse';
 import {createOrLoadDraftClaimInDraftStoreDb, getActiveDraftFromDraftStoreDb, updateDraftClaimInStore, deleteDraftClaimFromStore} from './draftStoreDbService';
 import {getCachedDraft, setCachedDraft, deleteCachedDraft} from './draftClaimRedisCache';
 
-import {Logger} from '@hmcts/nodejs-logging';
+const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('draftStoreManagerService');
 
 const buildManagerResult = (
