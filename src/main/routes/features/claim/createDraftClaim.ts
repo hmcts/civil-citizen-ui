@@ -1,12 +1,13 @@
 import { AppRequest, AppSession } from 'common/models/AppRequest';
 import { NextFunction, Request, RequestHandler, Response, Router } from 'express';
+<<<<<<< HEAD
 import { BILINGUAL_LANGUAGE_PREFERENCE_URL, CLAIM_CHECK_ANSWERS_URL, TESTING_SUPPORT_URL } from 'routes/urls';
-import { saveDraftClaimToCache } from 'modules/draft-store/draftClaimCache';
+import {createOrLoadDraft} from 'modules/draft-store/draftStoreManagerService';
 const createDraftViewPath = 'features/claim/create-draft';
 import jwt_decode from 'jwt-decode';
 import {isCarmEnabledForCase} from '../../../app/auth/launchdarkly/launchDarklyClient';
 import {Claim} from 'models/claim';
-import {createDraftClaimInStoreWithExpiryTime, saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
@@ -47,6 +48,7 @@ interface IdTokenJwtPayload {
 }
 
 const createDraftClaimController = Router();
+
 createDraftClaimController.get(TESTING_SUPPORT_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     return res.render(createDraftViewPath, res);
@@ -60,6 +62,7 @@ createDraftClaimController.post(TESTING_SUPPORT_URL, (async (req: Request, res: 
     submittedDate : new Date().toISOString(),
   };
   try {
+    const appReq = req as AppRequest;
     let userId = ((req.session) as AppSession)?.user?.id;
     const caseData = req.body?.caseData ? JSON.parse(req.body?.caseData) : undefined;
 
@@ -72,6 +75,9 @@ createDraftClaimController.post(TESTING_SUPPORT_URL, (async (req: Request, res: 
     if (req.body?.idToken) {
       const jwt: IdTokenJwtPayload = jwt_decode(req.body?.idToken);
       userId = jwt?.uid;
+      if (appReq.session?.user) {
+        appReq.session.user.id = userId;
+      }
     }
 
     if(!req.cookies['eligibilityCompleted']){
@@ -79,15 +85,19 @@ createDraftClaimController.post(TESTING_SUPPORT_URL, (async (req: Request, res: 
       res.cookie('eligibilityCompleted', true, {maxAge: MILLISECONDS_IN_1_HOUR, httpOnly: true });
     }
 
-    if (!caseData?.isDraftClaim()) {
-      await createDraftClaimInStoreWithExpiryTime(userId);
-      await civilServiceClient.createDashboard(<AppRequest> req);
+    const claimData = Object.assign(new Claim(), caseData || {}, claimWithSubmittedDate);
+    const draftResult = await createOrLoadDraft(appReq, claimData);
+
+    if(appReq.session) {
+      appReq.session.draftId = draftResult.rawResponse.draftId;
     }
 
-    const claimData = Object.assign(new Claim(), claimWithSubmittedDate);
-    const isCarmEnabled = await isCarmEnabledForCase(claimData.submittedDate);
+    if (!caseData?.isDraftClaim()) {
+      await civilServiceClient.createDashboard(appReq);
+    }
 
-    await saveDraftClaimToCache(userId, caseData, isCarmEnabled);
+    await isCarmEnabledForCase(claimData.submittedDate);
+
     if (req.body?.idToken && userId) {
       return res.sendStatus(200);
     }
