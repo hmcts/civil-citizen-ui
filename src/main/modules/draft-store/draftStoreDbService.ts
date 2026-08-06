@@ -5,7 +5,7 @@ import {Claim} from 'models/claim';
 import {CCDClaim, CivilClaimResponse} from 'models/civilClaimResponse';
 import {AppRequest} from 'common/models/AppRequest';
 
-import {Logger} from '@hmcts/nodejs-logging';
+const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('draftStoreDbService');
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
