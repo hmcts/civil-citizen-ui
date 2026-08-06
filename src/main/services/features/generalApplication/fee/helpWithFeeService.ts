@@ -72,7 +72,7 @@ export const getRedirectUrl = async (claimId: string, applyHelpWithFees: Generic
           redirectUrl = constructResponseUrlWithIdAndAppIdParams(claimId, generalApplicationId, APPLICATION_FEE_PAYMENT_CONFIRMATION_URL);
         } else if (paymentStatus?.status === failed) {
           paymentRedirectInformation = await getGaFeePaymentRedirectInformation(generalApplicationId, req);
-          logger.info(`New payment ref after failed payment for application id ${generalApplicationId}: ${paymentRedirectInformation?.paymentReference}`);
+          logger.info(`New payment information requested after failed payment for application id ${generalApplicationId}`);
           if (!paymentRedirectInformation) {
             redirectUrl = req.originalUrl;
           } else {
@@ -84,7 +84,7 @@ export const getRedirectUrl = async (claimId: string, applyHelpWithFees: Generic
           redirectUrl = paymentRedirectInformation?.nextUrl;
         }
       } catch (err: unknown) {
-        logger.info(`Error retrieving payment status for application id ${generalApplicationId}, payment ref ${paymentRedirectInformation?.paymentReference}`);
+        logger.info(`Error retrieving payment status for application id ${generalApplicationId}`);
         redirectUrl = paymentRedirectInformation?.nextUrl;
       }
     } else {
