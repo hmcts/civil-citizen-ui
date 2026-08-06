@@ -2625,11 +2625,11 @@
       "NOTIFICATIONS": {
         "BREATHING_SPACE": {
           "CLAIMANT_CONTENT_MENTAL_HEALTH": "Case is in mental health crisis breathing space",
-          "CLAIMANT_CONTENT_STANDARD": "Case is in standard breathing space.",
+          "CLAIMANT_CONTENT_STANDARD": "Case is in standard breathing space",
           "DEFENDANT_CONTENT": "Case is in breathing space",
           "LIFT_LINK_TEXT": "lift breathing space",
           "LIFT_LINK_TEXT_STANDARD": "Lift breathing space",
-          "LIFT_MENTAL_HEALTH": "This will remain in place until you {{liftLink}}",
+          "LIFT_MENTAL_HEALTH": "This will remain in place until you {{liftLink}}.",
           "LIFT_STANDARD": "{{liftLink}} when you know when it will end.",
           "TITLE": "Important",
           "USUALLY_LASTS": "Breathing space usually lasts for 60 days."
