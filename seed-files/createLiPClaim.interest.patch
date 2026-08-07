@@ -1,0 +1,42 @@
+diff --git a/src/test/functionalTests/specClaimHelpers/fixtures/events/createLiPClaim.js b/src/test/functionalTests/specClaimHelpers/fixtures/events/createLiPClaim.js
+index d8b2438eb1..0cb9367791 100644
+--- a/src/test/functionalTests/specClaimHelpers/fixtures/events/createLiPClaim.js
++++ b/src/test/functionalTests/specClaimHelpers/fixtures/events/createLiPClaim.js
+@@ -66,15 +66,28 @@ const createLipClaim = (user, userId, totalClaimAmount, language = undefined) =>
+       ],
+       detailsOfClaim: 'Injury',
+       speclistYourEvidenceList: undefined,
+-      claimInterest: 'No',
+-      interestClaimOptions: undefined,
+-      breakDownInterestTotal: undefined,
+-      breakDownInterestDescription: undefined,
+-      sameRateInterestSelection: undefined,
+-      interestClaimFrom: undefined,
+-      interestFromSpecificDate: undefined,
+-      interestFromSpecificDateDescription: undefined,
+-      interestClaimUntil: undefined,
++      // JB demo: JB_CLAIM_INTEREST=8pc seeds 8% statutory interest at claim create; no interest when unset (harmless)
++      ...(process.env.JB_CLAIM_INTEREST === '8pc' ? {
++        claimInterest: 'Yes',
++        interestClaimOptions: 'SAME_RATE_INTEREST',
++        breakDownInterestTotal: undefined,
++        breakDownInterestDescription: undefined,
++        sameRateInterestSelection: {sameRateInterestType: 'SAME_RATE_INTEREST_8_PC'},
++        interestClaimFrom: 'FROM_A_SPECIFIC_DATE',
++        interestFromSpecificDate: new Date(Date.now() - 284 * 864e5).toISOString().slice(0, 10),
++        interestFromSpecificDateDescription: 'Interest from the date the debt fell due',
++        interestClaimUntil: 'UNTIL_CLAIM_SUBMIT_DATE',
++      } : {
++        claimInterest: 'No',
++        interestClaimOptions: undefined,
++        breakDownInterestTotal: undefined,
++        breakDownInterestDescription: undefined,
++        sameRateInterestSelection: undefined,
++        interestClaimFrom: undefined,
++        interestFromSpecificDate: undefined,
++        interestFromSpecificDateDescription: undefined,
++        interestClaimUntil: undefined,
++      }),
+       claimantUserDetails: {
+         email: user.email,
+         id: userId,
