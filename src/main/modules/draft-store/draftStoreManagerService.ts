@@ -38,7 +38,7 @@ export const getDraftClaim = async (req: AppRequest): Promise<DraftClaimManagerR
     logger.info(`[draftStoreManagerService] returning cached draft for user: ${userId}`);
     return buildManagerResult(cached);
   }
-  logger.info(`[draftStoreManagerService] cached miss for user: ${userId} fetching from db instead`);
+  logger.info(`[draftStoreManagerService] cache miss for user: ${userId} fetching from db instead`);
   const dbResult = await getActiveDraftFromDraftStoreDb(req);
   if (!dbResult) {
     return null;

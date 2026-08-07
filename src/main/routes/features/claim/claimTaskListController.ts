@@ -18,7 +18,7 @@ const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServi
 
 claimTaskListController.get(CLAIMANT_TASK_LIST_URL, claimIssueTaskListGuard, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const userId = req.session?.user?.id;
+    const userId = req.session.user?.id;
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
     let draftResult = await getDraftClaim(req);
 
