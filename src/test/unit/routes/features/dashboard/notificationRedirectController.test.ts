@@ -163,6 +163,35 @@ describe('Notification redirect controller', () => {
     );
   });
 
+  it('should redirect an awaiting-translation final order to the latest system document if available', async () => {
+    const claim = buildClaim(CaseRole.CLAIMANT);
+    claim.systemGeneratedCaseDocuments = [{
+      id: '1',
+      value: {
+        createdBy: 'Civil',
+        documentLink: {
+          document_url: 'http://dm-store:8080/documents/sdo-doc',
+          document_filename: 'sdo.pdf',
+          document_binary_url: 'http://dm-store:8080/documents/sdo-doc/binary',
+        },
+        documentName: 'sdo.pdf',
+        documentSize: 100,
+        documentType: DocumentType.SDO_ORDER,
+        createdDatetime: new Date('2022-06-21'),
+      },
+    }];
+    civilServiceMethods.retrieveClaimDetails.mockResolvedValue(claim);
+
+    const {res} = await invoke(DASHBOARD_NOTIFICATION_REDIRECT_DOCUMENT, {
+      ...redirectParams('VIEW_FINAL_ORDER'),
+      documentId: 'awaiting-translation',
+    });
+
+    expect(res.redirect).toHaveBeenCalledWith(
+      CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', 'sdo-doc'),
+    );
+  });
+
   it('should redirect a hearing notice to the English document', async () => {
     const claim = buildClaim();
     claim.caseProgressionHearing = hearingWithDocuments(englishDocumentUrl, welshDocumentUrl);
@@ -307,6 +336,64 @@ describe('Notification redirect controller', () => {
 
     expect(res.redirect).toHaveBeenCalledWith(
       `${constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL)}?errorDocumentNotAvailable`,
+    );
+  });
+
+  it('should redirect a decision reconsideration notification with documentId to the document view url', async () => {
+    const claim = buildClaim();
+    claim.id = '999';
+    civilServiceMethods.retrieveClaimDetails.mockResolvedValue(claim);
+
+    const {res} = await invoke(DASHBOARD_NOTIFICATION_REDIRECT_DOCUMENT, {
+      ...redirectParams('VIEW_DECISION_RECONSIDERATION'),
+      documentId: 'custom-decision-doc',
+    });
+
+    expect(res.redirect).toHaveBeenCalledWith(
+      CASE_DOCUMENT_VIEW_URL.replace(':id', '999').replace(':documentId', 'custom-decision-doc'),
+    );
+  });
+
+  it('should redirect a decision reconsideration notification to the latest document when multiple exist', async () => {
+    const claim = buildClaim();
+    claim.systemGeneratedCaseDocuments = [
+      {
+        id: '1',
+        value: {
+          createdBy: 'Civil',
+          documentLink: {
+            document_url: 'http://dm-store:8080/documents/old-sdo',
+            document_filename: 'sdo1.pdf',
+            document_binary_url: 'http://dm-store:8080/documents/old-sdo/binary',
+          },
+          documentName: 'sdo1.pdf',
+          documentSize: 100,
+          documentType: DocumentType.SDO_ORDER,
+          createdDatetime: new Date('2022-06-20'),
+        },
+      },
+      {
+        id: '2',
+        value: {
+          createdBy: 'Civil',
+          documentLink: {
+            document_url: 'http://dm-store:8080/documents/latest-sdo',
+            document_filename: 'sdo2.pdf',
+            document_binary_url: 'http://dm-store:8080/documents/latest-sdo/binary',
+          },
+          documentName: 'sdo2.pdf',
+          documentSize: 100,
+          documentType: DocumentType.SDO_ORDER,
+          createdDatetime: new Date('2022-06-22'),
+        },
+      },
+    ];
+    civilServiceMethods.retrieveClaimDetails.mockResolvedValue(claim);
+
+    const {res} = await invoke(DASHBOARD_NOTIFICATION_REDIRECT, redirectParams('VIEW_DECISION_RECONSIDERATION'));
+
+    expect(res.redirect).toHaveBeenCalledWith(
+      CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', 'latest-sdo'),
     );
   });
 });

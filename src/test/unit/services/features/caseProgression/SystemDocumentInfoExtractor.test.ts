@@ -1,4 +1,5 @@
 import {
+  getLatestSystemGeneratedCaseDocumentIdByType,
   getSystemGeneratedCaseDocumentIdByType,
   SystemGeneratedCaseDocuments,
 } from 'models/document/systemGeneratedCaseDocuments';
@@ -77,5 +78,47 @@ describe('System Document Info Extractor Service', () => {
       systemGeneratedCaseDocuments,
       DocumentType.DEFENDANT_DEFENCE,
     )).toBe('valid-defence-id');
+  });
+
+  it('should extract the latest document correctly when multiple exist', async () => {
+    const systemGeneratedCaseDocuments = [
+      {
+        id: '1',
+        value: {
+          createdBy: 'Civil',
+          documentName: 'sdo_1.pdf',
+          documentLink: {
+            document_url: 'http://dm-store:8080/documents/first-sdo-id',
+            document_filename: 'sdo_1.pdf',
+            document_binary_url: 'http://dm-store:8080/documents/first-sdo-id/binary',
+          },
+          documentSize: 100,
+          documentType: DocumentType.SDO_ORDER,
+          createdDatetime: new Date('2022-06-21'),
+        },
+      },
+      {
+        id: '2',
+        value: {
+          createdBy: 'Civil',
+          documentName: 'sdo_2.pdf',
+          documentLink: {
+            document_url: 'http://dm-store:8080/documents/latest-sdo-id',
+            document_filename: 'sdo_2.pdf',
+            document_binary_url: 'http://dm-store:8080/documents/latest-sdo-id/binary',
+          },
+          documentSize: 100,
+          documentType: DocumentType.SDO_ORDER,
+          createdDatetime: new Date('2022-06-22'),
+        },
+      },
+    ] as SystemGeneratedCaseDocuments[];
+
+    const result = getLatestSystemGeneratedCaseDocumentIdByType(
+      systemGeneratedCaseDocuments,
+      DocumentType.SDO_ORDER,
+    );
+
+    expect(result).toBe('latest-sdo-id');
   });
 });

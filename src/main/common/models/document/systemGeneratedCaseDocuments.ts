@@ -21,6 +21,17 @@ export const getSystemGeneratedCaseDocumentIdByType = ((systemGeneratedCaseDocum
   ) ?? undefined;
 });
 
+export const getLatestSystemGeneratedCaseDocumentIdByType = ((systemGeneratedCaseDocuments: SystemGeneratedCaseDocuments[], documentType: DocumentType, defendantOrClaimant?: string) => {
+  if (!systemGeneratedCaseDocuments?.length) {
+    return undefined;
+  }
+  return CaseDocumentInfoExtractor.getLatestSystemGeneratedCaseDocumentIdByType(
+    systemGeneratedCaseDocuments,
+    documentType,
+    defendantOrClaimant,
+  ) ?? undefined;
+});
+
 export const buildSystemGeneratedCaseDocumentUrl = (
   claimId: string,
   documentId: string | undefined,
