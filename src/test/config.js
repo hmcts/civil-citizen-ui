@@ -6,7 +6,7 @@ const defaultPassword = process.env.CITIZEN_PASSWORD;
 const defaultPasswordSystemUser = process.env.SYSTEM_USER_PASSWORD;
 const judgeDefaultPassword = process.env.JUDGE_PASSWORD;
 const wluDefaultPassword = process.env.WLU_DEFAULT_PASSWORD;
-const testUrl = process.env.TEST_URL;
+const testUrl = process.env.TEST_URL || 'https://civil-citizen-ui-pr-7844.preview.platform.hmcts.net';
 const testHeadlessBrowser = process.env.TEST_HEADLESS ? process.env.TEST_HEADLESS === 'true' : true;
 
 if (!process.env.TEST_PASSWORD) {
@@ -35,6 +35,16 @@ module.exports = {
     waTaskMgmtApi: process.env.WA_TASK_MGMT_URL,
     caseAssignmentService: process.env.AAC_API_URL,
     wiremockServiceE2e: process.env.WIREMOCK_URL || 'http://localhost:1111',
+    // manageCase: 'https://xui-civil-citizen-ui-pr-7844.preview.platform.hmcts.net',
+    // authProviderApi: 'http://rpe-service-auth-provider-aat.service.core-compute-aat.internal/testing-support',
+    // ccdDataStore: 'https://ccd-data-store-api-civil-citizen-ui-pr-7844.preview.platform.hmcts.net',
+    // dmStore: 'http://dm-store-aat.service.core-compute-aat.internal',
+    // idamWeb: 'https://idam-web-public.aat.platform.hmcts.net',
+    // idamApi: 'https://idam-api.aat.platform.hmcts.net',
+    // civilService: 'https://civil-citizen-ui-pr-7844-civil-service.preview.platform.hmcts.net',
+    // caseAssignmentService: 'https://manage-case-assignment-civil-citizen-ui-pr-7844.preview.platform.hmcts.net',
+    // wiremockServiceE2e: 'http://localhost:1111',
+    // idamTestSupportApi: 'https://idam-testing-support-api.aat.platform.hmcts.net'
   },
   getDomain: (url) => new URL(url).host,
   s2s: {
@@ -64,13 +74,15 @@ module.exports = {
   },
   claimantCitizenUser: {
     password: defaultPassword,
+    // email: `claimantcitizen-elviani@gmail.com`,
     //email:'civilmoneyclaimsdemo@gmail.com',
-    email: process.env.CLAIMANT_CITIZEN_EMAIL || `claimantcitizen-${Math.random().toString(36).slice(2, 9).toLowerCase()}@gmail.com`,
+   email: process.env.CLAIMANT_CITIZEN_EMAIL || `claimantcitizen-${Math.random().toString(36).slice(2, 9).toLowerCase()}@gmail.com`,
     type: 'claimant',
   },
   defendantCitizenUser: {
     password: defaultPassword,
-    email: process.env.DEFENDANT_CITIZEN_EMAIL || `defendantcitizen-${Math.random().toString(36).slice(2, 9).toLowerCase()}@gmail.com`,
+    // email: `defendantcitizen-elviani@gmail.com`,
+   email: process.env.DEFENDANT_CITIZEN_EMAIL || `defendantcitizen-${Math.random().toString(36).slice(2, 9).toLowerCase()}@gmail.com`,
     type: 'defendant',
   },
   defendantLRCitizenUser: {
