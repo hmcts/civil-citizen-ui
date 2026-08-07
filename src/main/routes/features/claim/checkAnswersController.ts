@@ -5,10 +5,7 @@ import {
   getSummarySections,
   saveStatementOfTruth,
 } from 'services/features/claim/checkAnswers/checkAnswersService';
-import {
-  deleteDraftClaimFromStore,
-  getCaseDataFromStore,
-} from 'modules/draft-store/draftStoreService';
+import {deleteDraftClaim} from 'modules/draft-store/draftStoreManagerService';
 import {getStashedClaimOrFromStore} from 'common/utils/claimRequestLocals';
 import {Claim} from 'common/models/claim';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
@@ -26,6 +23,7 @@ import {EmailValidationWithMessage} from 'form/models/EmailValidationWithMessage
 import {PhoneValidationWithMessage} from 'form/models/PhoneValidationWithMessage';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {saveClaimFee} from 'services/features/claim/amount/claimFeesService';
 import {calculateInterestToDate} from 'common/utils/interestUtils';
 const validator = new Validator();
@@ -113,7 +111,12 @@ claimCheckAnswersController.post(CLAIM_CHECK_ANSWERS_URL, async (req: Request | 
         //res.redirect(paymentUrlWithId);
         res.clearCookie('eligibilityCompleted');
       }
-      await deleteDraftClaimFromStore(userId);
+      const appReq = req as AppRequest;
+      const draftId = appReq.session?.draftId;
+      if (draftId) {
+        await deleteDraftClaim(appReq, draftId);
+        delete appReq.session.draftId;
+      }
       res.redirect(constructResponseUrlWithIdParams(submittedClaim.id, CLAIM_CONFIRMATION_URL));
     }
   } catch (error) {
