@@ -5462,7 +5462,6 @@ __metadata:
     jest-junit: "npm:^15.0.0"
     jest-launchdarkly-mock: "npm:^2.0.3"
     jquery: "npm:^3.7.1"
-    js-yaml: "npm:^4.3.1"
     jsdom: "npm:^28.0.0"
     jwt-decode: "npm:^3.1.2"
     lodash: "npm:^4.18.1"
