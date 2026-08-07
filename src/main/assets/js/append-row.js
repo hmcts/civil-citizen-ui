@@ -52,8 +52,6 @@ document.addEventListener('DOMContentLoaded', function () {
   function removeRowButtonEventListener(element) {
     element.addEventListener('click', (event) => {
       event.preventDefault();
-      const topParent = element.parentNode.parentNode;
-      topParent?.removeChild(element.parentNode);
       const row = element.closest('.row-container');
       row?.remove();
       const multipleRows = document.getElementsByClassName('row-container')?.length;
@@ -67,15 +65,6 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     });
   }
-  const CLONED_ROW_INPUT_SELECTOR = [
-    'div',
-    'input',
-    'textarea',
-    'select',
-    'label',
-    checkboxConditionalClassName,
-    radioButtonConditionalClassName,
-  ].join(', ');
 
   function cloneRow() {
     const rowContainerElements = document.getElementsByClassName('row-container');
@@ -99,7 +88,7 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function resetClonedRowChild(child) {
-    const elements = child.querySelectorAll(CLONED_ROW_INPUT_SELECTOR);
+    const elements = child.querySelectorAll(`div, input, textarea, select, label, ${checkboxConditionalClassName}, ${radioButtonConditionalClassName}`);
 
     updateInputs(elements);
     removeErrors(child);
@@ -249,8 +238,8 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 
-  function addEventListenerToRemoveButtons(newRow) {
-    const removeButton = newRow.getElementsByClassName('remove-row');
+  function addEventListenerToRemoveButtons(container = document) {
+    const removeButton = container.getElementsByClassName('remove-row');
     if (elementExists(removeButton)) {
       Array.from(removeButton).forEach(element => removeRowButtonEventListener(element));
     }
