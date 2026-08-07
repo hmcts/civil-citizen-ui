@@ -10,7 +10,6 @@ import {AppRequest} from 'models/AppRequest';
 import { CivilServiceClient } from 'client/civilServiceClient';
 import config from 'config';
 import {getRouteParam} from 'common/utils/routeParamUtils';
-import {deleteDraftClaim} from 'modules/draft-store/draftStoreManagerService';
 const paymentSuccessfulController: Router = Router();
 
 const paymentSuccessfulViewPath  = 'features/claim/payment/claim-fee-payment-successful';
@@ -32,11 +31,6 @@ async function renderView(res: Response, req: AppRequest, claimId: string, redir
 paymentSuccessfulController.get(PAY_CLAIM_FEE_SUCCESSFUL_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = getRouteParam(req, 'id');
-    const draftId = req.session?.draftId;
-    if (draftId) {
-      await deleteDraftClaim(req, draftId);
-      delete req.session.draftId;
-    }
     await renderView(res, req, claimId, DASHBOARD_URL);
   }catch (error) {
     next(error);
