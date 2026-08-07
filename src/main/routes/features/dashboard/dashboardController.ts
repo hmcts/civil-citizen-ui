@@ -1,6 +1,6 @@
 import {RequestHandler, Response, Router} from 'express';
 import config from 'config';
-import {DASHBOARD_URL} from '../../urls';
+import {DASHBOARD_URL, CLAIMANT_TASK_LIST_URL} from '../../urls';
 import {AppRequest} from 'models/AppRequest';
 import {DashboardClaimantItem, DashboardDefendantItem} from 'common/models/dashboard/dashboardItem';
 import {CivilServiceClient} from 'client/civilServiceClient';
@@ -54,7 +54,7 @@ dashboardController.get(DASHBOARD_URL, (async function (req, res, next) {
     const claimsAsDefendantPaginationList = buildPagination(claimsAsDefendant.totalPages, req.query?.defendantPage as string, lang, 'defendantPage', claimantPage);
     const responseDraftSaved = false;
     const paginationArgumentClaimant = buildPagination(claimsAsClaimant.totalPages, req.query?.claimantPage as string, lang, 'claimantPage', defendantPage);
-    const draftClaimUrl = draftClaimData?.claimCreationUrl;
+    const draftClaimUrl = claimDraftSaved ? CLAIMANT_TASK_LIST_URL : draftClaimData?.claimCreationUrl;
     renderPage(res, claimsAsClaimant.claims, claimDraftSaved, claimsAsDefendant.claims, responseDraftSaved, draftClaimUrl, paginationArgumentClaimant, claimsAsDefendantPaginationList, showUpdateStatus, lang);
   }catch(error){
     next(error);
