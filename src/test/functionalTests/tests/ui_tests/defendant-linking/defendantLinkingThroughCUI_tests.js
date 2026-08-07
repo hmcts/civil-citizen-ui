@@ -27,7 +27,7 @@ Scenario.skip('CTSC admin links a defendant to a LiP claim through Manage Case',
   await completeFullAdmitPayImmediatelyJourney(I, api, claimRef, claimNumber, defendantUser);
 });
 
-Scenario.skip('Defendant links a LiP claim using claim number and security code through CUI', async ({I, api}) => {
+Scenario('Defendant links a LiP claim using claim number and security code through CUI', async ({I, api}) => {
   const {claimantUser, defendantUser} = await createScenarioUsers();
 
   const claimRef = await api.createLiPClaim(claimantUser, claimType, false, 'Individual', undefined, false, false);
@@ -39,8 +39,30 @@ Scenario.skip('Defendant links a LiP claim using claim number and security code 
     throw new Error(`Security code was not generated for case ${claimRef}`);
   }
 
-  await ResponseSteps.AssignCaseToLip(claimNumber, securityCode, true);
-  await LoginSteps.EnterCitizenCredentials(defendantUser.email, defendantUser.password, true);
+  const loggedInBeforeSecurityCode =
+    await ResponseSteps.AssignCaseToLipSupportingBothJourneys(
+      claimNumber,
+      securityCode,
+      defendantUser,
+    );
+
+  if (loggedInBeforeSecurityCode) {
+    /*
+     * HMCTS Access journey:
+     * Login already happened before entering the security code.
+     */
+    await I.amOnPage('/dashboard');
+  } else {
+    /*
+     * Legacy journey:
+     * Security code was entered before authentication.
+     */
+    await LoginSteps.EnterCitizenCredentials(
+      defendantUser.email,
+      defendantUser.password,
+      true,
+    );
+  }
   await CitizenDashboardSteps.VerifyClaimOnDashboard(claimNumber);
   await completeFullAdmitPayImmediatelyJourney(I, api, claimRef, claimNumber, defendantUser);
 });
