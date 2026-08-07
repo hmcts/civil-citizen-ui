@@ -180,6 +180,46 @@ class LoginPage {
   async citizenLogin(email, password) {
     await this.#login(email, password, '/dashboard');
   }
+  async citizenLoginForClaimLinking(email, password) {
+    const acceptAdditionalCookies =
+      '//button[contains(normalize-space(.), "Accept additional cookies")]';
+
+    const maxWaitSeconds = Number(config.WaitForText) || 60;
+
+    for (let second = 0; second < maxWaitSeconds; second++) {
+      const cookieButtonVisible =
+        await I.grabNumberOfVisibleElements(
+          acceptAdditionalCookies,
+        );
+
+      if (cookieButtonVisible > 0) {
+        await I.click(acceptAdditionalCookies);
+        await I.wait(1);
+        continue;
+      }
+
+      const signInLinkVisible =
+        await I.grabNumberOfVisibleElements(buttons.hmctsSignIn);
+
+      const emailFieldVisible =
+        await I.grabNumberOfVisibleElements(fields.email);
+
+      if (signInLinkVisible > 0 || emailFieldVisible > 0) {
+        await this.#login(
+          email,
+          password,
+          '/first-contact',
+        );
+        return;
+      }
+
+      await I.wait(1);
+    }
+
+    throw new Error(
+      'HMCTS Access sign-in page did not become available',
+    );
+  }
 
   async ocmcLogin(email, password) {
     await this.#login(email, password, '/eligibility');
