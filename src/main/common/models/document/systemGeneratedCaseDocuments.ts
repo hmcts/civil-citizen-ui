@@ -16,3 +16,11 @@ export const getSystemGeneratedCaseDocumentIdByType = ((systemGeneratedCaseDocum
   }
   return documentId;
 });
+
+export const getLatestSystemGeneratedCaseDocumentIdByType = ((systemGeneratedCaseDocuments: SystemGeneratedCaseDocuments[], documentType: DocumentType, defendantOrClaimant?: string) => {
+  let documentId: string;
+  if (systemGeneratedCaseDocuments?.length) {
+    documentId = CaseDocumentInfoExtractor.getLatestSystemGeneratedCaseDocumentIdByType(systemGeneratedCaseDocuments, documentType, defendantOrClaimant);
+  }
+  return documentId;
+});
