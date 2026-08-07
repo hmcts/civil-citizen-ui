@@ -498,14 +498,14 @@ export class Claim {
 
   getDocumentDetails(documentType: DocumentType, claimantOrDefendant?: DirectionQuestionnaireType): CaseDocument {
     if (documentType === DocumentType.HEARING_FORM && this.hasCaseProgressionHearingDocuments()) {
-      const hearingNotice = this.caseProgressionHearing.hearingDocuments.find(document => {
+      const hearingNotice = [...this.caseProgressionHearing.hearingDocuments].reverse().find(document => {
         return document.value.documentType === documentType;
       });
       return hearingNotice.value;
     } else if (documentType === DocumentType.HEARING_FORM) {
       return undefined;
     } else if (this.hasDefaultJudgmentDocuments() && (documentType === DocumentType.DEFAULT_JUDGMENT_CLAIMANT1 || documentType === DocumentType.DEFAULT_JUDGMENT_DEFENDANT1)) {
-      const djDoc = this.defaultJudgmentDocuments.find(document => {
+      const djDoc = [...this.defaultJudgmentDocuments].reverse().find(document => {
         return document.value.documentType === documentType;
       });
       return djDoc.value;
@@ -517,7 +517,7 @@ export class Claim {
       return this.respondent1NoticeOfDiscontinueAllPartyViewDoc;
     }
     if (this.isSystemGeneratedCaseDocumentsAvailable()) {
-      const filteredDocumentDetailsByType = this.systemGeneratedCaseDocuments?.find(document => {
+      const filteredDocumentDetailsByType = [...this.systemGeneratedCaseDocuments].reverse().find(document => {
         if (documentType == DocumentType.DIRECTIONS_QUESTIONNAIRE) {
           return document.value.documentType === documentType && document.value.documentName.startsWith(claimantOrDefendant);
         } else if (documentType == DocumentType.SEALED_CLAIM && claimantOrDefendant == DirectionQuestionnaireType.DEFENDANT) {
