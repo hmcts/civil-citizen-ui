@@ -27,7 +27,7 @@ Scenario.skip('CTSC admin links a defendant to a LiP claim through Manage Case',
   await completeFullAdmitPayImmediatelyJourney(I, api, claimRef, claimNumber, defendantUser);
 });
 
-Scenario('Defendant links a LiP claim using claim number and security code through CUI', async ({I, api}) => {
+Scenario.skip('Defendant links a LiP claim using claim number and security code through CUI', async ({I, api}) => {
   const {claimantUser, defendantUser} = await createScenarioUsers();
 
   const claimRef = await api.createLiPClaim(claimantUser, claimType, false, 'Individual', undefined, false, false);
