@@ -6,6 +6,7 @@ import {CYA_LIFT_BREATHING_SPACE_URL, LIFT_BREATHING_SPACE_CONFIRMATION_URL} fro
 import {getClaimById} from '../../../../../main/modules/utilityService';
 import {getSummaryRows} from '../../../../../main/services/features/breathingSpace/checkAnswersService';
 import {Claim} from '../../../../../main/common/models/claim';
+import {CivilServiceClient} from '../../../../../main/app/client/civilServiceClient';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
@@ -51,12 +52,34 @@ describe('Lift Breathing Space Check Answers Controller', () => {
   });
 
   describe('on POST', () => {
-    it('should redirect to confirmation page', async () => {
+    it('should submit the lift breathing space event then redirect to confirmation page', async () => {
+      const claim = new Claim();
+      claim.breathingSpace = {
+        liftBreathing: {
+          expectedEnd: '2026-08-06',
+          eventDescription: 'Reason for lifting',
+        },
+      };
+      mockGetClaimById.mockResolvedValue(claim);
+      const submitSpy = jest
+        .spyOn(CivilServiceClient.prototype, 'submitLiftBreathingSpace')
+        .mockResolvedValue(claim);
+
       await request(app)
         .post(CYA_LIFT_BREATHING_SPACE_URL.replace(':id', '123'))
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.header.location).toContain(LIFT_BREATHING_SPACE_CONFIRMATION_URL.replace(':id', '123'));
+          expect(submitSpy).toHaveBeenCalledWith(
+            '123',
+            {
+              liftBreathing: {
+                expectedEnd: '2026-08-06',
+                eventDescription: 'Reason for lifting',
+              },
+            },
+            expect.anything(),
+          );
         });
     });
   });

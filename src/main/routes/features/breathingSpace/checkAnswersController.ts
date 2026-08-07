@@ -4,9 +4,15 @@ import {getSummaryRows} from 'services/features/breathingSpace/checkAnswersServi
 import {getHelpSupportLinks, getHelpSupportTitle} from 'services/dashboard/dashboardService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {getClaimById} from 'modules/utilityService';
+import {translateDraftLiftBreathingSpaceToCCD} from 'services/translation/breathingSpace/convertToCCDLiftBreathingSpace';
+import config from 'config';
+import {CivilServiceClient} from 'client/civilServiceClient';
+import {AppRequest} from 'models/AppRequest';
 
 const checkAnswersController = Router();
 const checkAnswersViewPath = 'features/breathingSpace/check-answers';
+const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
+const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
 checkAnswersController.get(CYA_LIFT_BREATHING_SPACE_URL, async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -36,9 +42,12 @@ checkAnswersController.get(CYA_LIFT_BREATHING_SPACE_URL, async (req: Request, re
   }
 });
 
-checkAnswersController.post(CYA_LIFT_BREATHING_SPACE_URL, async (req: Request, res: Response, next: NextFunction) => {
+checkAnswersController.post(CYA_LIFT_BREATHING_SPACE_URL, async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id as string;
+    const claim = await getClaimById(claimId, req);
+    const liftBreathingCCD = translateDraftLiftBreathingSpaceToCCD(claim);
+    await civilServiceClient.submitLiftBreathingSpace(claimId, liftBreathingCCD, req);
     res.redirect(constructResponseUrlWithIdParams(claimId, LIFT_BREATHING_SPACE_CONFIRMATION_URL));
   } catch (error) {
     next(error);
