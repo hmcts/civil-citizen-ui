@@ -287,8 +287,9 @@
            name: content.data.category+'['+content.data.index+']['+content.data.field+']',
            classes: 'uploadFile govuk-!-width-three-half '+content.data.classes,
            value: content.data.value,
+           javascript: true,
            label: {
-             html: '<strong>' + t(content.data.text) + '</strong><div id="' + content.data.category + '[' + content.data.index + '][documentName]"><p class="documentName">' + content.data.documentName + '</p><hr class="govuk-section-break--s govuk-section-break--visible"></div>'
+             html: '<strong>' + t(content.data.text) + '</strong>'
            },
            errorMessage: { text: t(content.data.errorMessage) } if content.data.errorMessage,
            attributes: {
@@ -304,9 +305,35 @@
                             'data-value': content.data.category+'[%index%][uploadButton]'
                           },
            text: t('COMMON.SAVE_FILE'),
-           classes: "govuk-button--secondary govuk-!-margin-bottom-0"
+           classes: "govuk-button--secondary govuk-!-margin-bottom-0 js-auto-upload-button"
          }) }}
     </div>
+    {% if content.data.documentName %}
+      <div class="moj-multi-file__uploaded-files" id="{{ content.data.category + '[' + content.data.index + '][documentName]' }}">
+        <h2 class="govuk-heading-m">{{ t('COMMON.UPLOADED_FILES') }}</h2>
+        <div class="govuk-summary-list moj-multi-file-upload__list">
+          <div class="govuk-summary-list__row moj-multi-file-upload__row">
+            <div class="govuk-summary-list__value moj-multi-file-upload__message">
+              <span class="moj-multi-file-upload__success documentName">
+                <svg class="moj-banner__icon" fill="currentColor" role="presentation" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 25 25" height="25" width="25"><path d="M25,6.2L8.7,23.2L0,14.1l4-4.2l4.7,4.9L21,2L25,6.2z"/></svg>{{ content.data.documentName }}
+              </span>
+            </div>
+            <div class="govuk-summary-list__actions moj-multi-file-upload__actions">
+              {{ govukButton({
+                name: 'action',
+                value: content.data.category+'['+content.data.index+'][deleteFile]',
+                text: t('COMMON.BUTTONS.DELETE'),
+                classes: 'moj-multi-file-upload__delete govuk-button--secondary govuk-!-margin-bottom-0',
+                attributes: {
+                  'data-value': content.data.category+'[%index%][deleteFile]',
+                  'aria-label': t('COMMON.BUTTONS.DELETE') + ' ' + content.data.documentName
+                }
+              }) }}
+            </div>
+          </div>
+        </div>
+      </div>
+    {% endif %}
     {{ govukInput({
        id: content.data.category+'['+content.data.index+'][caseDocument]',
        name: content.data.category+'['+content.data.index+'][caseDocument]',

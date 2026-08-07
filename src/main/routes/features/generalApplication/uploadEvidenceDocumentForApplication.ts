@@ -2,6 +2,8 @@ import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {
   GA_HEARING_ARRANGEMENTS_GUIDANCE_URL,
   GA_UPLOAD_DOCUMENTS_URL, GA_UPLOAD_DOCUMENTS_COSC_URL, GA_CHECK_YOUR_ANSWERS_COSC_URL,
+  GA_UPLOAD_DOCUMENTS_AJAX_UPLOAD_URL,
+  GA_UPLOAD_DOCUMENTS_AJAX_DELETE_URL,
   BACK_URL,
 } from 'routes/urls';
 import {AppRequest} from 'models/AppRequest';
@@ -18,7 +20,10 @@ import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftS
 import {UploadGAFiles} from 'models/generalApplication/uploadGAFiles';
 import {
   getSummaryList,
-  removeSelectedDocument, uploadSelectedFile,
+  removeSelectedDocument,
+  removeSelectedDocumentByName,
+  uploadSelectedFile,
+  uploadSelectedFileForAjax,
 } from 'services/features/generalApplication/uploadEvidenceDocumentService';
 import {summarySection, SummarySection} from 'models/summaryList/summarySections';
 import {queryParamNumber} from 'common/utils/requestUtils';
@@ -30,10 +35,12 @@ import {
 } from 'common/utils/fileUploadUtils';
 import {getRouteParam} from 'common/utils/routeParamUtils';
 import {handleMulterError} from 'services/features/generalApplication/uploadEvidenceDocumentService';
+import {t} from 'i18next';
 
 const uploadEvidenceDocumentsForApplicationController = Router();
 const viewPath = 'features/generalApplication/upload_documents';
-const multerMiddleware = createMulterErrorMiddlewareForSingleField('selectedFile', 'uploadEvidenceDocumentsForApplicationController');
+const multerMiddleware = createMulterErrorMiddlewareForSingleField('documents', 'uploadEvidenceDocumentsForApplicationController');
+const multerAjaxMiddleware = createMulterErrorMiddlewareForSingleField('documents', 'uploadEvidenceDocumentsForApplicationAjax');
 
 async function renderView(form: GenericForm<UploadGAFiles>, claim: Claim, claimId: string, res: Response, formattedSummary: SummarySection, index: number): Promise<void> {
   const cancelUrl = await getCancelUrl(claimId, claim);
@@ -42,13 +49,27 @@ async function renderView(form: GenericForm<UploadGAFiles>, claim: Claim, claimI
   const currentUrl = constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, currentPage), index);
   const backLinkUrl = BACK_URL;
   const headerTitle = isConfirmPaidCCJAppType ? 'COMMON.ASK_FOR_PROOF_OF_DEBT_PAYMENT' : getDynamicHeaderForMultipleApplications(claim);
+  const csrf = res.locals.csrf;
+  const ajaxUploadUrl = `${constructResponseUrlWithIdParams(claimId, GA_UPLOAD_DOCUMENTS_AJAX_UPLOAD_URL)}?_csrf=${csrf}`;
+  const ajaxDeleteUrl = `${constructResponseUrlWithIdParams(claimId, GA_UPLOAD_DOCUMENTS_AJAX_DELETE_URL)}?_csrf=${csrf}`;
+  const uploadedFiles = formattedSummary.summaryList.rows.map((row) => ({
+    fileName: row.key.text,
+    originalFileName: row.key.text,
+    message: {
+      html: `<span class="moj-multi-file-upload__success"><svg class="moj-banner__icon" fill="currentColor" role="presentation" focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 25 25" height="25" width="25"><path d="M25,6.2L8.7,23.2L0,14.1l4-4.2l4.7,4.9L21,2L25,6.2z"/></svg>${row.key.text}</span>`,
+    },
+    deleteButton: { text: t('COMMON.BUTTONS.DELETE') },
+  }));
   res.render(viewPath, {
     form,
     formattedSummary,
+    uploadedFiles,
     cancelUrl,
     backLinkUrl,
     headerTitle,
     currentUrl,
+    ajaxUploadUrl,
+    ajaxDeleteUrl,
   });
 }
 
@@ -83,6 +104,41 @@ uploadEvidenceDocumentsForApplicationController.get([GA_UPLOAD_DOCUMENTS_URL, GA
   }
 }) as RequestHandler);
 
+uploadEvidenceDocumentsForApplicationController.post(GA_UPLOAD_DOCUMENTS_AJAX_UPLOAD_URL, multerAjaxMiddleware, (async (req: AppRequest, res: Response, next: NextFunction) => {
+  try {
+    if ((req as any).multerError) {
+      const constraint = (req as any).multerError?.code === 'LIMIT_FILE_SIZE'
+        ? t('ERRORS.VALID_SIZE_FILE')
+        : t('ERRORS.FILE_UPLOAD_FAILED');
+      return res.status(400).json({ error: { message: constraint } });
+    }
+    const result = await uploadSelectedFileForAjax(req);
+    if (result.error) {
+      return res.status(400).json(result);
+    }
+    return res.status(200).json(result);
+  } catch (error) {
+    next(error);
+  }
+}) as RequestHandler);
+
+uploadEvidenceDocumentsForApplicationController.post(GA_UPLOAD_DOCUMENTS_AJAX_DELETE_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
+  try {
+    const redisKey = generateRedisKey(req);
+    const documentName = req.body?.delete;
+    if (!documentName) {
+      return res.status(400).json({ error: { message: 'Missing file name' } });
+    }
+    const removed = await removeSelectedDocumentByName(redisKey, documentName);
+    if (!removed) {
+      return res.status(404).json({ error: { message: 'File not found' } });
+    }
+    return res.status(200).json({ success: true });
+  } catch (error) {
+    next(error);
+  }
+}) as RequestHandler);
+
 uploadEvidenceDocumentsForApplicationController.post([GA_UPLOAD_DOCUMENTS_URL, GA_UPLOAD_DOCUMENTS_COSC_URL], multerMiddleware, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = getRouteParam(req, 'id');
@@ -99,6 +155,11 @@ uploadEvidenceDocumentsForApplicationController.post([GA_UPLOAD_DOCUMENTS_URL, G
         title: '',
         summaryRows: [],
       });
+
+    if (req.body?.delete) {
+      await removeSelectedDocumentByName(redisKey, req.body.delete);
+      return res.redirect(`${currentUrl}`);
+    }
 
     if (handleMulterError(req)) {
       return req.session.save(() => {
