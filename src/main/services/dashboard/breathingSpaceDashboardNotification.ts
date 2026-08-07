@@ -3,7 +3,7 @@ import {Claim} from 'models/claim';
 import {DashboardNotification} from 'models/dashboard/dashboardNotification';
 
 const BODY_HTML = (lng: string) =>
-  `<p class="govuk-body">${t('PAGES.DASHBOARD.NOTIFICATIONS.BREATHING_SPACE.DEFENDANT_CONTENT', {lng})}</p>`;
+  `<p class="govuk-body"><strong>${t('PAGES.DASHBOARD.NOTIFICATIONS.BREATHING_SPACE.DEFENDANT_CONTENT', {lng})}</strong></p>`;
 
 const claimantBodyHtml = (claim: Claim, liftUrl: string, lng: string): string => {
   const isMentalHealth = claim.isMentalHealthBreathingSpace();
@@ -18,7 +18,7 @@ const claimantBodyHtml = (claim: Claim, liftUrl: string, lng: string): string =>
     : 'PAGES.DASHBOARD.NOTIFICATIONS.BREATHING_SPACE.LIFT_LINK_TEXT_STANDARD';
   const liftLink = `<a class="govuk-link" href="${liftUrl}">${t(liftLinkTextKey, {lng})}</a>`;
 
-  let html = `<p class="govuk-body">${t(contentKey, {lng})}</p>`;
+  let html = `<p class="govuk-body"><strong>${t(contentKey, {lng})}</strong></p>`;
   if (!isMentalHealth) {
     html += `<p class="govuk-body">${t('PAGES.DASHBOARD.NOTIFICATIONS.BREATHING_SPACE.USUALLY_LASTS', {lng})}</p>`;
   }

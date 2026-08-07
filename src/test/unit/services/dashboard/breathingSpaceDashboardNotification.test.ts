@@ -39,6 +39,7 @@ describe('breathingSpaceDashboardNotification', () => {
     expect(notification.descriptionEn).toContain(
       'PAGES.DASHBOARD.NOTIFICATIONS.BREATHING_SPACE.CLAIMANT_CONTENT_STANDARD',
     );
+    expect(notification.descriptionEn).toContain('<strong>');
     expect(notification.descriptionEn).toContain(
       'PAGES.DASHBOARD.NOTIFICATIONS.BREATHING_SPACE.USUALLY_LASTS',
     );
@@ -65,6 +66,7 @@ describe('breathingSpaceDashboardNotification', () => {
     expect(notification.descriptionEn).toContain(
       'PAGES.DASHBOARD.NOTIFICATIONS.BREATHING_SPACE.CLAIMANT_CONTENT_MENTAL_HEALTH',
     );
+    expect(notification.descriptionEn).toContain('<strong>');
     expect(notification.descriptionEn).toContain(
       'PAGES.DASHBOARD.NOTIFICATIONS.BREATHING_SPACE.LIFT_MENTAL_HEALTH',
     );
