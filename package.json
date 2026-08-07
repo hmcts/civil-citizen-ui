@@ -33,6 +33,7 @@
     "test:crossbrowser-functional": "MOCHAWESOME_REPORTFILENAME=crossbrowser codeceptjs run-multiple --grep @crossbrowser ${BROWSER_GROUP:-'--all'} -c src/test/functionalTests/saucelabs.conf.js --reporter mocha-multi",
     "test:crossbrowser": "src/test/functionalTests/run-crossbrowser-tests.sh",
     "test:debug": "codeceptjs run --grep @debug --plugins allure",
+    "test:5912": "codeceptjs run --grep @krishna --plugins allure",
     "test:generate:e2e-ui-data": "node src/test/e2e-documentation/generator/e2e-data/generate-e2e-ui-data.js",
     "test:generate:e2e-api-data": "node src/test/e2e-documentation/generator/e2e-data/generate-e2e-api-data.js",
     "test:confluence:e2e-ui-table": "node src/test/e2e-documentation/confluence/e2e-table/upload-e2e-ui-table.js",
