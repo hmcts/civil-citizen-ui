@@ -15,17 +15,14 @@ import {CaseRole} from 'form/models/caseRoles';
 import {getTotalAmountWithInterestAndFees} from 'modules/claimDetailsService';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import civilClaimResponsePDFTimeline from '../../../../../utils/mocks/civilClaimResponsePDFTimelineMock.json';
-import * as launchDarklyClient from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {CaseState} from 'form/models/claimDetails';
 import {DocumentType} from 'models/document/documentType';
 import {t} from 'i18next';
 
 jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 const nock = require('nock');
 
 const civilServiceUrl = config.get<string>('services.civilService.url');
-const isWelshEnabledForMainCase = launchDarklyClient.isWelshEnabledForMainCase as jest.Mock;
 
 describe('Claim details page', () => {
   const idamUrl: string = config.get('idamUrl');
@@ -50,7 +47,6 @@ describe('Claim details page', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    isWelshEnabledForMainCase.mockResolvedValue(false);
   });
 
   describe('on Get', () => {
@@ -67,7 +63,6 @@ describe('Claim details page', () => {
         });
     });
     it('should return your claim details page with values from civil-service', async () => {
-      isWelshEnabledForMainCase.mockResolvedValue(false);
       nock(civilServiceUrl)
         .post('/fees/claim/calculate-interest')
         .times(3)
@@ -155,7 +150,6 @@ describe('Claim details page', () => {
         .post('/fees/claim/calculate-interest')
         .times(3)
         .reply(200, '0');
-      isWelshEnabledForMainCase.mockResolvedValue(true);
       app.locals.draftStoreClient = mockCivilClaimUndefined;
       const totalClaimAmount = currencyFormat(await getTotalAmountWithInterestAndFees(Object.assign(new Claim(),
         CivilClaimResponseMock.case_data)));
@@ -206,7 +200,6 @@ describe('Claim details page', () => {
       jest
         .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
         .mockResolvedValueOnce(claim);
-      isWelshEnabledForMainCase.mockResolvedValue(true);
       await request(app)
         .get('/case/1111/response/claim-details')
         .expect((res) => {

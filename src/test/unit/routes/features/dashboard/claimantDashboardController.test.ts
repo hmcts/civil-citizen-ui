@@ -595,7 +595,6 @@ describe('claimant Dashboard Controller', () => {
     claim.claimantBilingualLanguagePreference = ClaimBilingualLanguagePreference.WELSH;
     jest.spyOn(UtilityService, 'getClaimById').mockResolvedValueOnce(claim);
     jest.spyOn(launchDarkly, 'isGaForLipsEnabled').mockResolvedValueOnce(false);
-    jest.spyOn(launchDarkly, 'isWelshEnabledForMainCase').mockResolvedValueOnce(true);
 
     await request(app).get(DASHBOARD_CLAIMANT_URL).expect((res) => {
       expect(res.status).toBe(200);
@@ -603,14 +602,13 @@ describe('claimant Dashboard Controller', () => {
     });
   });
 
-  it('should not show welsh party banner if Welsh feature disabled', async () => {
+  it('should not show welsh party banner if no party is bilingual', async () => {
     const claim = new Claim();
     claim.caseRole = CaseRole.CLAIMANT;
     claim.ccdState = CaseState.CASE_ISSUED;
-    claim.claimantBilingualLanguagePreference = ClaimBilingualLanguagePreference.WELSH;
+    claim.claimantBilingualLanguagePreference = ClaimBilingualLanguagePreference.ENGLISH;
     jest.spyOn(UtilityService, 'getClaimById').mockResolvedValueOnce(claim);
     jest.spyOn(launchDarkly, 'isGaForLipsEnabled').mockResolvedValueOnce(false);
-    jest.spyOn(launchDarkly, 'isWelshEnabledForMainCase').mockResolvedValueOnce(false);
 
     await request(app).get(DASHBOARD_CLAIMANT_URL).expect((res) => {
       expect(res.status).toBe(200);
@@ -624,7 +622,6 @@ describe('claimant Dashboard Controller', () => {
       jest.spyOn(launchDarkly, 'isCarmEnabledForCase').mockResolvedValue(false);
       jest.spyOn(launchDarkly, 'isGaForLipsEnabled').mockResolvedValue(false);
       jest.spyOn(launchDarkly, 'isQueryManagementEnabled').mockResolvedValue(false);
-      jest.spyOn(launchDarkly, 'isWelshEnabledForMainCase').mockResolvedValue(false);
       jest.spyOn(ClaimDetailsService, 'getTotalAmountWithInterestAndFees').mockResolvedValue(10);
       jest.spyOn(dashboardService, 'getNotifications').mockResolvedValue(undefined);
       jest.spyOn(dashboardService, 'extractOrderDocumentIdFromNotification').mockReturnValue('doc-id');
@@ -675,7 +672,6 @@ describe('claimant Dashboard Controller', () => {
       claim.claimantBilingualLanguagePreference = ClaimBilingualLanguagePreference.WELSH;
 
       jest.spyOn(UtilityService, 'getClaimById').mockResolvedValueOnce(claim);
-      jest.spyOn(launchDarkly, 'isWelshEnabledForMainCase').mockResolvedValue(true);
 
       const req: any = {
         params: {id: '12345'},

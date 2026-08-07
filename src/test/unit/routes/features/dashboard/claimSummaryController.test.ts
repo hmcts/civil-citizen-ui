@@ -40,7 +40,6 @@ const isCarmApplicableAndSmallClaimMock = isCarmApplicableAndSmallClaim as jest.
 const isCarmEnabledForCaseMock = launchDarklyClient.isCarmEnabledForCase as jest.Mock;
 const isDashboardEnabledForCase = launchDarklyClient.isDashboardEnabledForCase as jest.Mock;
 const isGAForLiPEnabledMock = launchDarklyClient.isGaForLipsEnabled as jest.Mock;
-const isWelshEnabledForMainCaseMock = launchDarklyClient.isWelshEnabledForMainCase as jest.Mock;
 
 const mockExpectedDashboardInfo=
   [{
@@ -625,7 +624,7 @@ describe('Claim Summary Controller Defendant', () => {
         .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
         .mockResolvedValueOnce(claim);
       isGAForLiPEnabledMock.mockResolvedValue(false);
-      isWelshEnabledForMainCaseMock.mockResolvedValue(true);
+      isDashboardEnabledForCase.mockResolvedValue(true);
 
       await testSession
         .get(`/dashboard/${claimId}/defendant`).expect((res: Response) => {
@@ -634,16 +633,16 @@ describe('Claim Summary Controller Defendant', () => {
         });
     });
 
-    it('should not show welsh party banner if Welsh feature disabled', async () => {
+    it('should not show welsh party banner if no party is bilingual', async () => {
       const claim = new Claim();
       claim.caseRole = CaseRole.CLAIMANT;
       claim.ccdState = CaseState.CASE_ISSUED;
-      claim.claimantBilingualLanguagePreference = ClaimBilingualLanguagePreference.WELSH;
+      claim.claimantBilingualLanguagePreference = ClaimBilingualLanguagePreference.ENGLISH;
       jest
         .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
         .mockResolvedValueOnce(claim);
       isGAForLiPEnabledMock.mockResolvedValue(false);
-      isWelshEnabledForMainCaseMock.mockResolvedValue(false);
+      isDashboardEnabledForCase.mockResolvedValue(true);
 
       await testSession
         .get(`/dashboard/${claimId}/defendant`).expect((res: Response) => {

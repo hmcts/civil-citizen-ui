@@ -21,7 +21,7 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {
   isCarmEnabledForCase,
   isGaForLipsEnabled,
-  isQueryManagementEnabled, isWelshEnabledForMainCase,
+  isQueryManagementEnabled,
   isJudgmentBufferEnabled,
 } from '../../../app/auth/launchdarkly/launchDarklyClient';
 import {t} from 'i18next';
@@ -88,9 +88,8 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
         req.session.dashboard.taskIdHearingUploadDocuments = task.id;
       }
     });
-    const welshEnabled = await isWelshEnabledForMainCase();
-    const showWelshPartyBanner = welshEnabled && claim.isAnyPartyBilingual();
-    const showErrorAwaitingTranslation = welshEnabled && 'errorAwaitingTranslation' in req.query;
+    const showWelshPartyBanner = claim.isAnyPartyBilingual();
+    const showErrorAwaitingTranslation = 'errorAwaitingTranslation' in req.query;
 
     res.render(claimantDashboardViewPath, {
       claim: claim,

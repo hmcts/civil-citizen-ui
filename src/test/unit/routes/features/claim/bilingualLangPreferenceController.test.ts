@@ -32,6 +32,8 @@ describe('Bilingual language preference', () => {
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('PAGES.CLAIM_BILINGUAL_LANGUAGE_PREFERENCE.DESCRIPTION_1'));
+          expect(res.text).toContain('value="WELSH"');
+          expect(res.text).toContain(t('PAGES.CLAIM_BILINGUAL_LANGUAGE_PREFERENCE.WELSH'));
         });
     });
 
@@ -86,6 +88,18 @@ describe('Bilingual language preference', () => {
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.header.location).toEqual(CLAIMANT_TASK_LIST_URL);
+        });
+    });
+
+    it('should redirect with bilingual language preference set to WELSH and redirect to task list', async () => {
+      app.locals.draftStoreClient = mockCivilClaim;
+      await request(app)
+        .post(CLAIM_BILINGUAL_LANGUAGE_PREFERENCE_URL)
+        .send({option: ClaimBilingualLanguagePreference.WELSH})
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.header.location).toEqual(CLAIMANT_TASK_LIST_URL);
+          expect(String(res.headers['set-cookie'])).toContain('lang=cy');
         });
     });
 
