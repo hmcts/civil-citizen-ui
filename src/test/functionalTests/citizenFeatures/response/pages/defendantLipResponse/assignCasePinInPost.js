@@ -48,17 +48,23 @@ class AssignCasePinInPost {
     await I.fillField(fields.claimNumber, claimNumber);
     await I.click('Save and continue');
 
+    const hmctsAccessCookieHeading =
+      '//*[contains(normalize-space(.), "Cookies on hmcts-access.service.gov.uk")]';
+
+    const combinedSignInHeading =
+      '//*[contains(normalize-space(.), "Sign in or create an account")]';
+
+    const loginEmailField =
+      'input[id="username"], input[name="username"], input[id="email"], input[name="email"]';
+
+    const loginPasswordField =
+      'input[id="password"], input[name="password"]';
+
     const maxWaitSeconds = Number(config.WaitForText) || 60;
+    let currentUrl = '';
 
     for (let second = 0; second < maxWaitSeconds; second++) {
-      const currentUrl = await I.grabCurrentUrl();
-
-      if (currentUrl.includes('hmcts-access')) {
-        console.log(
-          'Claim-linking journey: HMCTS Access login before security code',
-        );
-        return true;
-      }
+      currentUrl = await I.grabCurrentUrl();
 
       const securityCodeVisible =
         await I.grabNumberOfVisibleElements(fields.securityCode);
@@ -70,11 +76,47 @@ class AssignCasePinInPost {
         return false;
       }
 
+      const cookieHeadingVisible =
+        await I.grabNumberOfVisibleElements(
+          hmctsAccessCookieHeading,
+        );
+
+      const signInHeadingVisible =
+        await I.grabNumberOfVisibleElements(
+          combinedSignInHeading,
+        );
+
+      const emailFieldVisible =
+        await I.grabNumberOfVisibleElements(
+          loginEmailField,
+        );
+
+      const passwordFieldVisible =
+        await I.grabNumberOfVisibleElements(
+          loginPasswordField,
+        );
+
+      const hmctsAccessLoginRequired =
+        currentUrl.toLowerCase().includes('hmcts-access') ||
+        cookieHeadingVisible > 0 ||
+        signInHeadingVisible > 0 ||
+        (
+          emailFieldVisible > 0 &&
+          passwordFieldVisible > 0
+        );
+
+      if (hmctsAccessLoginRequired) {
+        console.log(
+          `Claim-linking journey: Login before security code. URL: ${currentUrl}`,
+        );
+        return true;
+      }
+
       await I.wait(1);
     }
 
     throw new Error(
-      'Claim-linking journey did not reach HMCTS Access or the security-code page',
+      `Claim-linking journey did not reach login or the security-code page. Final URL: ${currentUrl}`,
     );
   }
 
