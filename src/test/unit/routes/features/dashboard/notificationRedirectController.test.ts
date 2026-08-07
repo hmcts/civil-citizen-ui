@@ -230,6 +230,7 @@ describe('Notification Redirect Controller - Get', () => {
       .reply(200, {});
 
     const data = Object.assign(claim, civilClaimResponseMock.case_data);
+    data.systemGeneratedCaseDocuments = [];
     jest
       .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
       .mockResolvedValueOnce(data);
