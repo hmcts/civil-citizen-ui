@@ -4,7 +4,8 @@ import {
   PAY_CLAIM_FEE_UNSUCCESSFUL_URL,
   DASHBOARD_URL,
 } from 'routes/urls';
-import { deleteDraftClaimFromStore, generateRedisKey, getCaseDataFromStore } from 'modules/draft-store/draftStoreService';
+import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {deleteDraftClaim} from 'modules/draft-store/draftStoreManagerService';
 import {getFeePaymentStatus} from 'services/features/feePayment/feePaymentService';
 import {FeeType} from 'form/models/helpWithFees/feeType';
 import {Claim} from 'models/claim';
@@ -30,7 +31,11 @@ export const getRedirectUrl = async (claimId: string, req: AppRequest): Promise<
       const isCUIWelshEnabled = await isWelshEnabledForMainCase();
       const lang = claim.claimantBilingualLanguagePreference === ClaimBilingualLanguagePreference.WELSH
       || (!isCUIWelshEnabled && claim.claimantBilingualLanguagePreference === ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH) ? 'cy' : 'en';
-      await deleteDraftClaimFromStore(redisClaimId);
+      const draftId = req.session?.draftId;
+      if (draftId) {
+        await deleteDraftClaim(req, draftId);
+        delete req.session.draftId;
+      }
       return `${PAY_CLAIM_FEE_SUCCESSFUL_URL}?lang=${lang}`;
     }
     const redirectingUrl = paymentStatus.errorDescription !== paymentCancelledByUser ?
