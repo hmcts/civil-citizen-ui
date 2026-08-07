@@ -1,17 +1,6 @@
 #!/bin/bash
 set -e
 
-if [ "${REDUCED_STACK_TESTS:-false}" = "true" ]; then
-  echo "Running the WireMock-backed functional journey against Jenkins preview"
-  # Jenkins may allocate a different VM for this stage than for the smoke
-  # stage, so install the browser on the agent that will actually launch it.
-  yarn playwright install chromium
-  export FUNCTIONAL=true
-  yarn test:mocked-functional:browser || browser_status=$?
-  ./bin/assert-preview-wiremock.sh || wiremock_status=$?
-  exit "${browser_status:-${wiremock_status:-0}}"
-fi
-
 compare_ft_groups() {
   local ft_groups_csv pr_ft_groups_csv
 
@@ -37,7 +26,65 @@ compare_ft_groups() {
   fi
 }
 
+assert_no_functional_report_failures() {
+  local report_dir report_prefix report_files
+
+  report_dir="${REPORT_DIR:-test-results/functional}"
+  report_prefix="${MOCHAWESOME_REPORTFILENAME:-civil-citizen-pr}"
+
+  if [ ! -d "$report_dir" ]; then
+    return 0
+  fi
+
+  report_files=$(find "$report_dir" -maxdepth 1 -type f -name "${report_prefix}-*.json" 2>/dev/null || true)
+
+  if [ -z "$report_files" ]; then
+    return 0
+  fi
+
+  node -e '
+    const fs = require("fs");
+    const reports = process.argv.slice(1);
+    const failedReports = reports
+      .map((report) => {
+        const data = JSON.parse(fs.readFileSync(report, "utf8"));
+        return {
+          report,
+          failures: Number(data?.stats?.failures || 0),
+          passes: Number(data?.stats?.passes || 0),
+          pending: Number(data?.stats?.pending || 0),
+        };
+      })
+      .filter(({ failures }) => failures > 0);
+
+    if (failedReports.length > 0) {
+      console.error("Functional test report failures detected:");
+      failedReports.forEach(({ report, failures, passes, pending }) => {
+        console.error(`- ${report}: ${failures} failed, ${passes} passed, ${pending} skipped`);
+      });
+      process.exit(1);
+    }
+  ' $report_files
+}
+
+run_functional_command() {
+  local exit_code
+
+  set +e
+  "$@"
+  exit_code=$?
+  set -e
+
+  assert_no_functional_report_failures
+
+  if [ "$exit_code" -ne 0 ]; then
+    exit "$exit_code"
+  fi
+}
+
 run_functional_test_groups() {
+  local command
+
   command="yarn test:civil-citizen-pr --grep "
   pr_ft_groups=$(echo "$PR_FT_GROUPS" | awk '{print tolower($0)}')
   
@@ -54,15 +101,25 @@ run_functional_test_groups() {
 
   command+="'$regex_pattern'"
   echo "Executing: $command"
+
+  set +e
   eval "$command"
+  exit_code=$?
+  set -e
+
+  assert_no_functional_report_failures
+
+  if [ "$exit_code" -ne 0 ]; then
+    exit "$exit_code"
+  fi
 }
 
 run_functional_tests() {
   echo "Running all functional tests on ${ENVIRONMENT} env"
   if [ "$ENVIRONMENT" = "aat" ]; then
-    yarn test:civil-citizen-master
+    run_functional_command yarn test:civil-citizen-master
   elif [ -z "$PR_FT_GROUPS" ]; then
-    yarn test:civil-citizen-pr
+    run_functional_command yarn test:civil-citizen-pr
   else
     run_functional_test_groups
   fi
@@ -87,9 +144,30 @@ run_failed_not_executed_functional_tests() {
   run_functional_tests
 }
 
+run_reduced_stack_functional_tests() {
+  echo "Running the WireMock-backed functional journey against Jenkins preview"
+  # Jenkins may allocate a different VM for this stage than for the smoke
+  # stage, so install the browser on the agent that will actually launch it.
+  yarn playwright install chromium
+  export FUNCTIONAL=true
+
+  if [ -n "$PR_FT_GROUPS" ]; then
+    run_functional_test_groups || browser_status=$?
+  else
+    yarn test:mocked-functional:browser || browser_status=$?
+  fi
+
+  ./bin/assert-preview-wiremock.sh || wiremock_status=$?
+  exit "${browser_status:-${wiremock_status:-0}}"
+}
+
 #MAIN SCRIPT
 TEST_FILES_REPORT="test-results/functional/testFilesReport.json"
 PREV_TEST_FILES_REPORT="test-results/functional/prevTestFilesReport.json"
+
+if [ "${REDUCED_STACK_TESTS:-false}" = "true" ]; then
+  run_reduced_stack_functional_tests
+fi
 
 # Check if SKIP_FUNCTIONAL_TESTS is set to true
 if [ "$SKIP_FUNCTIONAL_TESTS" = "true" ]; then
