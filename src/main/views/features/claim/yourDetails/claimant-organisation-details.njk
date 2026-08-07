@@ -14,8 +14,7 @@
 {% set correspondenceAddressClass = 'govuk-!-display-none' %}
 
 
-{% set partyErrors = party.getAllErrors() if party and party.getAllErrors else [] %}
-{% set errorFor = party.errorFor if party and party.errorFor else null %}
+{% set partyErrors = party.getAllErrors() %}
 
 {% set partyTypeName = t('PAGES.CITIZEN_DETAILS.PARTY_NAME_COMPANY') %}
 {% set detailsTitle =  t('PAGES.CITIZEN_DETAILS.COMPANY_DETAILS') %}
@@ -31,7 +30,7 @@
   {% set addressExplanation = t('PAGES.ORGANISATION_DETAILS.MAIN_OFFICE') %}
 {% endif %}
 {% if party.model.provideCorrespondenceAddress == YesNo.YES or
-      (errorFor and errorFor('correspondenceAddress'))%}
+      party.errorFor('correspondenceAddress')%}
   {% set radioChecked = true %}
 {% else %}
   {% set radioChecked = false %}
@@ -81,7 +80,7 @@
               id: "partyName",
               name: "partyName",
               value: party.model.partyName,
-                errorMessage: { text: t(errorFor('partyName')) } if errorFor and errorFor('partyName')
+                errorMessage: { text: t(party.errorFor('partyName')) } if party.errorFor('partyName')
             }) }}
             {% if carmEnabled == true %}
             {{ govukInput({
@@ -96,8 +95,8 @@
                 text: t('PAGES.CITIZEN_DETAILS.CONTACT_PERSON_HINT')
               },
               errorMessage: {
-                              html: t(errorFor("contactPerson"))
-                            } if errorFor and errorFor("contactPerson")
+                              html: t(party.errorFor("contactPerson"))
+                            } if party.errorFor("contactPerson")
             }) }}
             {% else %}
             {{ govukInput({
@@ -115,6 +114,8 @@
             {% endif %}
               <div class="govuk-form-group">
                 <h2 class="govuk-heading-m">{{ addressTitle }}</h2>
+                <p class="govuk-body">{{ t('COMMON.ADDRESS_FORM.CHANGE_ADDRESS') }}
+                  {{ t('COMMON.ADDRESS_FORM.ADDRESS_CHANGES_SHARED') }}</p>
                 <p class="govuk-body">{{ addressExplanation }}</p>
                 {{ postcodeLookupAndAddressForm(t, {
                     party: party,
