@@ -204,7 +204,7 @@
     "node-fetch": "^2.6.7",
     "shelljs": "^0.8.5",
     "glob-parent": "^6.0.1",
-    "js-yaml": "4.3.0",
+    "js-yaml": "4.3.1",
     "qs": "^6.15.2",
     "flat": "^5.0.1",
     "follow-redirects": "^1.16.0",
