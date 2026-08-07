@@ -180,6 +180,104 @@ class LoginPage {
   async citizenLogin(email, password) {
     await this.#login(email, password, '/dashboard');
   }
+  async citizenLoginForClaimLinking(email, password) {
+    const acceptAdditionalCookies =
+      '//button[contains(normalize-space(.), "Accept additional cookies")]';
+
+    const combinedSignInHeading =
+      '//*[contains(normalize-space(.), "Sign in or create an account")]';
+
+    const combinedEmailField =
+      'input[id="username"], input[name="username"], input[id="email"], input[name="email"]';
+
+    const combinedPasswordField =
+      'input[id="password"], input[name="password"]';
+
+    const maxWaitSeconds = Number(config.WaitForText) || 60;
+    let currentUrl = '';
+
+    for (let second = 0; second < maxWaitSeconds; second++) {
+      currentUrl = await I.grabCurrentUrl();
+
+      const cookieButtonVisible =
+        await I.grabNumberOfVisibleElements(
+          acceptAdditionalCookies,
+        );
+
+      if (cookieButtonVisible > 0) {
+        await I.click(acceptAdditionalCookies);
+        await I.wait(1);
+        continue;
+      }
+
+      const combinedHeadingVisible =
+        await I.grabNumberOfVisibleElements(
+          combinedSignInHeading,
+        );
+
+      const combinedEmailVisible =
+        await I.grabNumberOfVisibleElements(
+          combinedEmailField,
+        );
+
+      const combinedPasswordVisible =
+        await I.grabNumberOfVisibleElements(
+          combinedPasswordField,
+        );
+
+      /*
+       * Master currently displays a combined email/password
+       * sign-in form hosted by HMCTS Access.
+       */
+      if (
+        combinedHeadingVisible > 0 &&
+        combinedEmailVisible > 0 &&
+        combinedPasswordVisible > 0
+      ) {
+        console.log(
+          'Claim-linking journey: using combined HMCTS Access sign-in form',
+        );
+
+        await I.fillField(combinedEmailField, email);
+        await I.fillField(combinedPasswordField, password);
+        await I.waitForVisible(buttons.submit);
+        await I.clickWithRetry(buttons.submit, 2);
+
+        await I.waitForContent(
+          'Enter security code',
+          config.WaitForText,
+        );
+
+        return;
+      }
+
+      /*
+       * Supports the newer split HMCTS Access journey as well.
+       */
+      const signInLinkVisible =
+        await I.grabNumberOfVisibleElements(
+          buttons.hmctsSignIn,
+        );
+
+      const emailFieldVisible =
+        await I.grabNumberOfVisibleElements(fields.email);
+
+      if (signInLinkVisible > 0 || emailFieldVisible > 0) {
+        await this.#login(
+          email,
+          password,
+          '/first-contact',
+        );
+        return;
+      }
+
+      await I.wait(1);
+    }
+
+    throw new Error(
+      `HMCTS Access sign-in page did not become available. Final URL: ${currentUrl}`,
+    );
+  }
 
   async ocmcLogin(email, password) {
     await this.#login(email, password, '/eligibility');
