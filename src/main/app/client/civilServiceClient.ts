@@ -1,5 +1,5 @@
 import {Claim} from 'common/models/claim';
-import Axios, {AxiosError, AxiosHeaderValue, AxiosInstance, AxiosResponse} from 'axios';
+import Axios, {AxiosError, AxiosHeaderValue, AxiosInstance, AxiosRequestConfig, AxiosResponse} from 'axios';
 import {AssertionError} from 'assert';
 import {AppRequest, AppSession} from 'common/models/AppRequest';
 import {CivilClaimResponse, ClaimFeeData} from 'common/models/civilClaimResponse';
@@ -94,6 +94,38 @@ const getResponseHeaderValue = (header: AxiosHeaderValue | undefined): string =>
   return '';
 };
 
+const resolveRequestUrl = (config: AxiosRequestConfig): string => {
+  try {
+    return Axios.getUri(config);
+  } catch {
+    return `${config.baseURL ?? ''}${config.url ?? ''}`;
+  }
+};
+
+/**
+ * TEMPORARY investigation logging only — do not merge to master.
+ * Formats full response bodies for debugging civil-service calls.
+ */
+const formatResponseData = (data: unknown): string => {
+  if (data == null) {
+    return String(data);
+  }
+  if (typeof ArrayBuffer !== 'undefined' && data instanceof ArrayBuffer) {
+    return `ArrayBuffer(${data.byteLength} bytes)`;
+  }
+  if (typeof Buffer !== 'undefined' && Buffer.isBuffer(data)) {
+    return `Buffer(${data.length} bytes)`;
+  }
+  if (typeof data === 'string' || typeof data === 'number' || typeof data === 'boolean') {
+    return String(data);
+  }
+  try {
+    return JSON.stringify(data);
+  } catch {
+    return String(data);
+  }
+};
+
 const convertCaseToClaim = (caseDetails: CivilClaimResponse): Claim => {
   const claim: Claim = translateCCDCaseDataToCUIModel(caseDetails.case_data);
   claim.ccdState = caseDetails.state;
@@ -140,6 +172,43 @@ export class CivilServiceClient {
         baseURL,
       });
     }
+    this.attachLoggingInterceptors();
+  }
+
+  // TEMPORARY investigation logging only — do not merge to master.
+  private attachLoggingInterceptors(): void {
+    // Unit tests often mock Axios.create without a full client; skip when absent.
+    if (!this.client?.interceptors?.request || !this.client?.interceptors?.response) {
+      return;
+    }
+
+    this.client.interceptors.request.use((config) => {
+      const method = config.method?.toUpperCase() ?? 'UNKNOWN';
+      const url = resolveRequestUrl(config);
+      logger.info(`Civil service request: ${method} ${url}`);
+      return config;
+    });
+
+    this.client.interceptors.response.use(
+      (response) => {
+        const method = response.config.method?.toUpperCase() ?? 'UNKNOWN';
+        const url = resolveRequestUrl(response.config);
+        logger.info(
+          `Civil service response: ${method} ${url} status=${response.status} data=${formatResponseData(response.data)}`,
+        );
+        return response;
+      },
+      (error: unknown) => {
+        const axiosError = error as AxiosError;
+        const method = axiosError.config?.method?.toUpperCase() ?? 'UNKNOWN';
+        const url = axiosError.config ? resolveRequestUrl(axiosError.config) : 'unknown';
+        const status = axiosError.response?.status;
+        logger.error(
+          `Civil service response error: ${method} ${url} status=${status} data=${formatResponseData(axiosError.response?.data)}`,
+        );
+        return Promise.reject(error);
+      },
+    );
   }
 
   private getClaimDetailsRequestCache(req: AppRequest): Map<string, Promise<Claim>> {
