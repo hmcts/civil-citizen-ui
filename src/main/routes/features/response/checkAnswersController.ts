@@ -6,7 +6,7 @@ import {
   saveStatementOfTruth,
 } from 'services/features/response/checkAnswers/checkAnswersService';
 import {GenericForm} from 'form/models/genericForm';
-import {deleteDraftClaimFromStore, generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {getStashedClaimOrFromStore} from 'common/utils/claimRequestLocals';
 import {StatementOfTruthForm} from 'form/models/statementOfTruth/statementOfTruthForm';
 import {Claim} from 'models/claim';
@@ -22,7 +22,7 @@ import {ValidationError, Validator} from 'class-validator';
 import {SpecificCourtLocation} from 'models/directionsQuestionnaire/hearing/specificCourtLocation';
 import {getRouteParam} from 'common/utils/routeParamUtils';
 import {validateOtherWitnesses} from 'services/features/directionsQuestionnaire/otherWitnessesService';
-
+import {deleteDraftClaim} from 'modules/draft-store/draftStoreManagerService';
 const checkAnswersViewPath = 'features/response/check-answers';
 const validator = new Validator();
 const checkAnswersController = Router();
@@ -82,7 +82,12 @@ checkAnswersController.post(RESPONSE_CHECK_ANSWERS_URL, (async (req: Request, re
       logger.info('form has no error');
       await saveStatementOfTruth(redisKey, form.model);
       await submitResponse(<AppRequest>req);
-      await deleteDraftClaimFromStore(redisKey);
+      const appReq = req as AppRequest;
+      const draftId = appReq.session?.draftId;
+      if (draftId) {
+        await deleteDraftClaim(appReq, draftId);
+        delete appReq.session.draftId;
+      }
       const claimId = getRouteParam(req, 'id');
       res.redirect(constructResponseUrlWithIdParams(claimId, CONFIRMATION_URL));
     }
