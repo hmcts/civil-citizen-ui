@@ -15,7 +15,7 @@ export const claimIssueTaskListGuard = (async (req: Request, res: Response, next
     const draftResult = await getDraftClaim(appReq);
     if (draftResult) {
       appReq.session.draftId = draftResult.rawResponse.draftId;
-      caseData = Object.assign(new Claim(), draftResult.claimResponse.case_data)
+      caseData = Object.assign(new Claim(), draftResult.claimResponse.case_data);
     } else {
       caseData = await getCaseDataFromStore(userId, true);
     }
