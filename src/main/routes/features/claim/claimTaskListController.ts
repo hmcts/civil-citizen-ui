@@ -23,7 +23,7 @@ claimTaskListController.get(CLAIMANT_TASK_LIST_URL, claimIssueTaskListGuard, (as
     let draftResult = await getDraftClaim(req);
 
     let caseData: Claim = draftResult?.claimResponse?.case_data
-    ? Object.assign(new Claim(), draftResult.claimResponse.case_data)
+      ? Object.assign(new Claim(), draftResult.claimResponse.case_data)
       : new Claim();
 
     if (!draftResult || !caseData?.isDraftClaim()) {
