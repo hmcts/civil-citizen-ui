@@ -7,7 +7,7 @@ export const saveClaimFee = async (claimantId: string, claimFeeData: ClaimFeeDat
   try{
     const claim = await getCaseDataFromStore(claimantId);
     claim.claimFee = {
-      calculatedAmountInPence: claimFeeData.calculatedAmountInPence,
+      calculatedAmountInPence: Number(claimFeeData.calculatedAmountInPence),
       code: claimFeeData.code,
       version: claimFeeData.version,
     };

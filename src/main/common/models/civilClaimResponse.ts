@@ -336,7 +336,7 @@ export interface CCDClaim extends ClaimUpdate {
 }
 
 export interface ClaimFeeData {
-  calculatedAmountInPence?: number;
+  calculatedAmountInPence?: number | string;
   code?: string;
   version?: number;
 }
