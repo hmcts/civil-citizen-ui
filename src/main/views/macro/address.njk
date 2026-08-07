@@ -3,7 +3,6 @@
 {% macro addressForm(t,party, addressType, addressTitle, isClaimant) %}
   {% set fieldSetText = t('COMMON.ADDRESS_FORM.CHANGE_ADDRESS') + t('COMMON.ADDRESS_FORM.ADDRESS_CHANGES_SHARED') %}
   {% set textInputLabel = t('COMMON.ADDRESS_FORM.BUILDING_AND_STREET') %}
-  {% set errorFor = party.errorFor if party and party.errorFor else null %}
   {% set citizenAddress = party.model.primaryAddress %}
   {% set citizenCorrespondenceAddress = party.model.correspondenceAddress %}
   {% if params.addressType === 'primaryAddress' %}

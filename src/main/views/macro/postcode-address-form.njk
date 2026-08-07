@@ -2,7 +2,7 @@
 {% from "./address.njk" import addressForm %}
 {% set govukVisuallyHidden = 'govuk-!-display-none' %}
 {% set govukVisuallyHiddenForAnchor = '' %}
-{% macro postcodeLookupAndAddressForm(t,params, isClaimant) %}
+{% macro postcodeLookupAndAddressForm(t,params) %}
   {% if params.addressType === 'primaryAddress' and params.party.model.primaryAddress %}
     {% if params.party.hasFieldError('primaryAddress') %}
       {% set govukVisuallyHidden = '' %}
@@ -55,7 +55,7 @@
           party = params.party,
           addressType = params.addressType,
           addressTitle = params.addressTitle,
-          isClaimant
+          isClaimant = params?.isClaimant
         ) }}
       </div>
     </div>

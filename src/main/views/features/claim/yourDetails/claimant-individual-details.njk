@@ -97,7 +97,8 @@
               <p class="govuk-body">{{ t('PAGES.CITIZEN_DETAILS.ALL_CORRESPONDENCE') ~ " " ~ t('PAGES.CLAIM_JOURNEY.CLAIMANT_INDIVIDUAL_DETAILS.THESE_DETAILS_ARE') }}</p>
               {{ postcodeLookupAndAddressForm(t, {
                 party: party,
-                addressType:'primaryAddress'
+                addressType:'primaryAddress',
+                isClaimant: true
               }) }}
             </div>
 
