@@ -3,7 +3,7 @@ properties([
   copyArtifactPermission('/HMCTS_a_to_c/civil-citizen-ui/*'),
 ])
 
-@Library("Infrastructure@2.4.4")
+@Library("Infrastructure@2.4.9")
 import uk.gov.hmcts.contino.AppPipelineConfig
 import uk.gov.hmcts.contino.GithubAPI
 import uk.gov.hmcts.contino.AppPipelineDsl
@@ -13,7 +13,7 @@ def product = "civil"
 def component = "citizen-ui"
 @groovy.transform.Field
 def camundaBranch = "master"
-def dmnBranch = "master"
+def dmnBranch = "DTSCCI-5484_reviewApplication_for_CTSC"
 def waStandaloneBranch = "master"
 AppPipelineConfig pipelineConf
 
