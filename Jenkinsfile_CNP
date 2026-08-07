@@ -13,8 +13,8 @@ def product = "civil"
 def component = "citizen-ui"
 @groovy.transform.Field
 def camundaBranch = "master"
-def dmnBranch = "master"
-def waStandaloneBranch = "DTSCCI-5484_reviewApplication_for_CTSC"
+def dmnBranch = "DTSCCI-5484_reviewApplication_for_CTSC"
+def waStandaloneBranch = "master"
 AppPipelineConfig pipelineConf
 
 static Map<String, Object> secret(String secretName, String envVariable) {
