@@ -42,9 +42,9 @@ document.addEventListener('DOMContentLoaded', function () {
   if (elementExists(appendRowButton)) {
     appendRowButton[0].addEventListener('click', (event) => {
       event.preventDefault();
-      cloneRow();
+      const newRow = cloneRow();
       showRemoveButton();
-      addEventListenerToRemoveButtons();
+      addEventListenerToRemoveButtons(newRow);
     });
     addEventListenerToRemoveButtons();
   }
@@ -87,6 +87,7 @@ document.addEventListener('DOMContentLoaded', function () {
     lastRow.parentNode.appendChild(newRow);
     updateNewRow(rowContainerElements);
     addCalculationListenersIfNeeded();
+    return newRow;
   }
 
   function cloneAndResetRow(row) {
@@ -248,8 +249,8 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 
-  function addEventListenerToRemoveButtons() {
-    const removeButton = document.getElementsByClassName('remove-row');
+  function addEventListenerToRemoveButtons(newRow) {
+    const removeButton = newRow.getElementsByClassName('remove-row');
     if (elementExists(removeButton)) {
       Array.from(removeButton).forEach(element => removeRowButtonEventListener(element));
     }
