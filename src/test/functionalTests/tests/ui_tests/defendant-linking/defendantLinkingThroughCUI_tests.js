@@ -39,11 +39,31 @@ Scenario('Defendant links a LiP claim using claim number and security code throu
     throw new Error(`Security code was not generated for case ${claimRef}`);
   }
 
-  await LoginSteps.EnterCitizenCredentials(defendantUser.email, defendantUser.password);
-  await ResponseSteps.AssignCaseToLip(claimNumber, securityCode, true);
-  await I.amOnPage('/dashboard');
-  await CitizenDashboardSteps.VerifyClaimOnDashboard(claimNumber);
+  const loggedInBeforeSecurityCode =
+    await ResponseSteps.AssignCaseToLipSupportingBothJourneys(
+      claimNumber,
+      securityCode,
+      defendantUser,
+    );
 
+  if (loggedInBeforeSecurityCode) {
+    /*
+     * HMCTS Access journey:
+     * Login already happened before entering the security code.
+     */
+    await I.amOnPage('/dashboard');
+  } else {
+    /*
+     * Legacy journey:
+     * Security code was entered before authentication.
+     */
+    await LoginSteps.EnterCitizenCredentials(
+      defendantUser.email,
+      defendantUser.password,
+      true,
+    );
+  }
+  await CitizenDashboardSteps.VerifyClaimOnDashboard(claimNumber);
   await completeFullAdmitPayImmediatelyJourney(I, api, claimRef, claimNumber, defendantUser);
 });
 
