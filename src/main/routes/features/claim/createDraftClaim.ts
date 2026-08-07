@@ -1,7 +1,7 @@
 import { AppRequest, AppSession } from 'common/models/AppRequest';
 import { NextFunction, Request, RequestHandler, Response, Router } from 'express';
 import { CLAIM_CHECK_ANSWERS_URL, TESTING_SUPPORT_URL } from 'routes/urls';
-import {createOrLoadDraft} from 'modules/draft-store/draftStoreManagerService';
+import {createOrLoadDraft, updateDraftClaim} from 'modules/draft-store/draftStoreManagerService';
 const createDraftViewPath = 'features/claim/create-draft';
 import jwt_decode from 'jwt-decode';
 import {isCarmEnabledForCase} from '../../../app/auth/launchdarkly/launchDarklyClient';
@@ -37,7 +37,7 @@ createDraftClaimController.post(TESTING_SUPPORT_URL, (async (req: Request, res: 
   try {
     const appReq = req as AppRequest;
     let userId = ((req.session) as AppSession)?.user?.id;
-    const caseData = req.body?.caseData ? JSON.parse(req.body?.caseData) : undefined;
+    const rawCaseData = req.body?.caseData ? JSON.parse(req.body?.caseData) : undefined;
 
     if (req.body?.idToken) {
       const jwt: IdTokenJwtPayload = jwt_decode(req.body?.idToken);
@@ -52,14 +52,18 @@ createDraftClaimController.post(TESTING_SUPPORT_URL, (async (req: Request, res: 
       res.cookie('eligibilityCompleted', true, {maxAge: MILLISECONDS_IN_1_HOUR, httpOnly: true });
     }
 
-    const claimData = Object.assign(new Claim(), caseData || {}, claimWithSubmittedDate);
-    const draftResult = await createOrLoadDraft(appReq, claimData);
+    const claimData = Object.assign(new Claim(), rawCaseData || {}, claimWithSubmittedDate);
+    let draftResult = await createOrLoadDraft(appReq, claimData);
+
+    if (!draftResult.isNew && draftResult.rawResponse?.draftId) {
+      draftResult = await updateDraftClaim(appReq, claimData, draftResult.rawResponse.draftId);
+    }
 
     if(appReq.session) {
       appReq.session.draftId = draftResult.rawResponse.draftId;
     }
 
-    if (!caseData?.isDraftClaim()) {
+    if (draftResult.isNew) {
       await civilServiceClient.createDashboard(appReq);
     }
 

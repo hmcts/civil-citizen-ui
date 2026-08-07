@@ -29,7 +29,9 @@ claimTaskListController.get(CLAIMANT_TASK_LIST_URL, claimIssueTaskListGuard, (as
     if (!draftResult || !caseData?.isDraftClaim()) {
       draftResult = await createOrLoadDraft(req);
       caseData = Object.assign(new Claim(), draftResult.claimResponse.case_data);
-      await civilServiceClient.createDashboard(req);
+      if(draftResult.isNew) {
+        await civilServiceClient.createDashboard(req);
+      }
     }
 
     if(req.session && draftResult?.rawResponse?.draftId) {
