@@ -55,8 +55,7 @@ module.exports = {
   //Notice.AAA6.ClaimIssue.Response.Required
   respondToClaim: () => {
     return {
-      // title: 'You haven\'t responded to the claim',
-      title: 'Krishna kishore Nuthalapati',
+      title: 'You haven\'t responded to the claim',
       content: 'days remaining.',
       nextSteps: 'Respond to the claim',
     };
