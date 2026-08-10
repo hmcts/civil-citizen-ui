@@ -13,6 +13,10 @@ class LoginSteps {
     await LoginPage.citizenLogin(username, password);
   }
 
+  async EnterCitizenCredentialsForClaimLinking(username, password) {
+    await LoginPage.citizenLoginForClaimLinking(username, password);
+  }
+
   async EnterCitizenCredentialsOCMC(username, password) {
     await LoginPage.openOCMC();
     //await this.AcceptCookies(); -- skip as it is flaky
