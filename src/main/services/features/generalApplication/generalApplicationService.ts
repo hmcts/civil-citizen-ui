@@ -6,6 +6,7 @@ import {
 } from 'modules/draft-store/draftStoreService';
 import {GeneralApplication} from 'common/models/generalApplication/GeneralApplication';
 import {
+  assertValidApplicationTypes,
   ApplicationType,
   ApplicationTypeOption,
   ApplicationTypeOptionSelection,
@@ -79,8 +80,10 @@ const generalApplicationClient = new GaServiceClient(baseUrl);
 
 export const saveApplicationType = async (claimId: string, claim: Claim, applicationType: ApplicationType, index?: number): Promise<void> => {
   try {
+    assertValidApplicationTypes([applicationType]);
     claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
     updateByIndexOrAppend(claim.generalApplication?.applicationTypes, applicationType, index);
+    assertValidApplicationTypes(claim.generalApplication?.applicationTypes);
     resetClaimDataByApplicationType(claim, applicationType);
     await saveDraftClaim(claimId, claim);
   } catch (error) {

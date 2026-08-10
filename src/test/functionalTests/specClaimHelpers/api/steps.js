@@ -1,6 +1,8 @@
 const config = require('../../../config');
 const deepEqualInAnyOrder = require('deep-equal-in-any-order');
 const breathingSpace = require('../fixtures/events/breathingSpace.js');
+const extendResponseDeadline = require('../fixtures/events/extendResponseDeadline.js');
+const dismissCase = require('../fixtures/events/dismissCase.js');
 const mediation = require('../fixtures/events/mediation.js');
 const admitAllClaimantResponse = require('../fixtures/events/admitAllClaimantResponse.js');
 const partAdmitClaimantResponse = require('../fixtures/events/partAdmitClaimantResponse.js');
@@ -375,7 +377,7 @@ module.exports = {
       respondent1: {
         ...caseData.respondent1,
         partyEmail: email,
-      },      
+      },
     };
     await testingSupport.updateCaseData(caseId, caseDataRespondent1);
     console.log('respondent1PartyEmail updated');
@@ -389,7 +391,7 @@ module.exports = {
       applicantSolicitor1UserDetails: {
         ...caseData.applicantSolicitor1UserDetails,
         email: applicantSolicitor1Email,
-      },    
+      },
     };
     await testingSupport.updateCaseData(caseId, caseDataApplicantSolicitor1UserDetails);
     console.log('applicantSolicitor1Email updated');
@@ -479,7 +481,7 @@ module.exports = {
     return caseId;
   },
 
-  createLiPClaim: async (user, claimType, qmEnabled = false, partyType = 'Individual', language, mainClaimWelshEnabled = false) => {
+  createLiPClaim: async (user, claimType, qmEnabled = false, partyType = 'Individual', language, mainClaimWelshEnabled = false, assignDefendant = true) => {
     console.log(' Creating LIP claim');
 
     const currentDate = new Date();
@@ -552,7 +554,7 @@ module.exports = {
     await apiRequest.startEventForCitizen('', caseId, newPayload);
     await waitForTimeout(1000);
     await waitForFinishedBusinessProcess(caseId, user);
-    if (!mainClaimWelshEnabled) {
+    if (!mainClaimWelshEnabled && assignDefendant) {
       await assignSpecCase(caseId, null);
     }
     return caseId;
@@ -1064,6 +1066,47 @@ module.exports = {
     }, true);
 
     await waitForFinishedBusinessProcess(caseId);
+  },
+
+  settleClaimCaseworker: async (user, caseId) => {
+    console.log('settleClaimCaseworker for case id ' + caseId);
+    eventName = 'SETTLE_CLAIM';
+    caseData = {settleReason: 'JUDGE_ORDER'};
+    await apiRequest.setupTokens(user);
+    await assertSubmittedSpecEvent(null, null, false, caseId);
+    console.log('End of settleClaimCaseworker()');
+  },
+
+  extendResponseDeadline: async (user, caseId, date) => {
+    console.log('This is inside extendResponseDeadline: ' + caseId);
+    const extendResponseDeadlinePayload = extendResponseDeadline.extendResponseDeadlinePayload();
+    eventName = extendResponseDeadlinePayload['event'];
+    caseData = {
+      ...extendResponseDeadlinePayload['caseData'],
+      respondentSolicitor1AgreedDeadlineExtension: date,
+    };
+    await apiRequest.setupTokens(user);
+    await assertSubmittedSpecEvent();
+    const responseData = await apiRequest.fetchCaseDetails(config.adminUser, caseId);
+    assert.equal(responseData.state, 'AWAITING_RESPONDENT_ACKNOWLEDGEMENT');
+    console.log('End of extendResponseDeadline()');
+  },
+
+  dismissCase: async (user, caseId) => {
+    console.log('This is inside dismissCase: ' + caseId);
+    const dismissCasePayload = dismissCase.dismissCasePayload();
+    eventName = dismissCasePayload['event'];
+    caseData = {...dismissCasePayload['caseData']};
+    await apiRequest.setupTokens(user);
+    await assertSubmittedSpecEvent('CASE_DISMISSED',
+      {header: '# The case has been dismissed', body: '&nbsp;'}, true, caseId);
+    console.log('End of dismissCase()');
+  },
+
+  setClaimDismissedDeadline: async (user, caseId, date) => {
+    await apiRequest.setupTokens(user);
+    await testingSupport.updateCaseData(caseId, {claimDismissedDeadline: date});
+    console.log('claimDismissedDeadline updated to ' + date);
   },
 };
 

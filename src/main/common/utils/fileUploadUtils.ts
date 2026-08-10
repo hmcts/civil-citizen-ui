@@ -199,7 +199,7 @@ export const uploadAndValidateFile = async (
           categoryModel[+index].caseDocument = await civilServiceClient.uploadDocument(req, fileUpload);
          
           if (!categoryModel[+index].caseDocument?.documentLink) {
-            logger.error(`[SAVE FILE] File upload response missing documentLink: ${JSON.stringify(categoryModel[+index].caseDocument)}`);
+            logger.error('[SAVE FILE] File upload response missing documentLink');
             const apiError = createFileUploadError(category, index, 'uploadError', 'ERRORS.FILE_UPLOAD_FAILED');
             form.errors.push(apiError);
             categoryModel[+index].caseDocument = undefined;

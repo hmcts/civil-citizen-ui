@@ -16,6 +16,7 @@ import {CaseState} from 'common/form/models/claimDetails';
 import {CourtLocation} from 'common/models/courts/courtLocations';
 import {TestMessages} from '../../../utils/errorMessageTestConstants';
 import {CivilServiceClient} from 'client/civilServiceClient';
+import {CallbackError} from 'client/common/error/callbackError';
 import {CaseDocument} from 'models/document/caseDocument';
 
 import {FileUpload} from 'models/caseProgression/fileUpload';
@@ -386,6 +387,60 @@ describe('Civil Service Client', () => {
     });
   });
 
+  describe('submitEvent 422 callback errors (DTSCCI-5282)', () => {
+    const unprocessableEntity = (data: unknown) => ({response: {status: 422, data}});
+
+    it('should throw a CallbackError carrying the callbackErrors when civil-service returns 422 with a body', async () => {
+      //Given
+      const callbackErrors = ['There is a technical issue causing a delay. You do not need to do anything. Please come back later.'];
+      const mockPost = jest.fn().mockRejectedValue(unprocessableEntity({callbackErrors, callbackWarnings: []}));
+      mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
+      //Then
+      await expect(civilServiceClient.submitDefendantResponseEvent('123', {}, appReq)).rejects.toBeInstanceOf(CallbackError);
+      await expect(civilServiceClient.submitDefendantResponseEvent('123', {}, appReq)).rejects.toMatchObject({
+        status: 422,
+        callbackErrors,
+      });
+    });
+
+    it('should throw a CallbackError carrying CCD field validation errors (details.field_errors)', async () => {
+      //Given - CCD field-type validation (Category A) uses a CaseValidationException envelope
+      const data = {
+        exception: 'uk.gov.hmcts.ccd.endpoint.exceptions.CaseValidationException',
+        message: 'Case data validation failed',
+        details: {field_errors: [{id: 'respondent1.partyEmail', message: 'notanemail is not a valid Email address'}]},
+      };
+      const mockPost = jest.fn().mockRejectedValue(unprocessableEntity(data));
+      mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
+      //Then
+      await expect(civilServiceClient.submitDefendantResponseEvent('123', {}, appReq)).rejects.toBeInstanceOf(CallbackError);
+      await expect(civilServiceClient.submitDefendantResponseEvent('123', {}, appReq)).rejects.toMatchObject({
+        status: 422,
+        callbackErrors: ['notanemail is not a valid Email address'],
+      });
+    });
+
+    it('should re-throw the original error when 422 has no callbackErrors or field_errors', async () => {
+      //Given
+      const mockPost = jest.fn().mockRejectedValue(unprocessableEntity({message: 'nothing actionable here'}));
+      mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
+      //Then
+      await expect(civilServiceClient.submitDefendantResponseEvent('123', {}, appReq)).rejects.not.toBeInstanceOf(CallbackError);
+    });
+
+    it('should re-throw the original error for a non-422 status', async () => {
+      //Given
+      const mockPost = jest.fn().mockRejectedValue({response: {status: 500, data: {callbackErrors: ['ignored']}}});
+      mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
+      //Then
+      await expect(civilServiceClient.submitDefendantResponseEvent('123', {}, appReq)).rejects.not.toBeInstanceOf(CallbackError);
+    });
+  });
+
   describe('getClaimsForDefendant', () => {
     it('should return claims for defendant successfully', async () => {
       //Given
@@ -711,6 +766,72 @@ describe('Civil Service Client', () => {
         .replace(':caseId', '123'));
       expect(claim.issueDate).toEqual(date);
       expect(claim.respondent1ResponseDeadline).toEqual(date);
+    });
+
+    it('should log sanitised civil-service 422 submit errors without raw request data', async () => {
+      //Given
+      const responseBody = {
+        exception: 'CaseValidationException',
+        error: 'Unprocessable Entity',
+        message: 'Case data validation failed',
+        errors: [
+          'generalApplications.0.generalAppType.types',
+          'another validation error',
+          'third validation error',
+          'fourth validation error',
+          'fifth validation error',
+          'sixth validation error',
+          {caseDataUpdate: {generalAppType: {types: ['OTHER_OPTION']}}},
+        ],
+        caseDataUpdate: {generalAppType: {types: ['OTHER_OPTION']}},
+        config: {data: '{"caseDataUpdate":{"generalAppType":{"types":["OTHER_OPTION"]}}}'},
+        request: {body: 'raw request body'},
+      };
+      const apiError = Object.assign(new Error('Request failed with status code 422'), {
+        response: {
+          status: 422,
+          data: responseBody,
+        },
+        config: {data: 'raw axios config data'},
+      });
+      const mockPost = jest.fn().mockRejectedValue(apiError);
+      mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
+      const {Logger} = require('@hmcts/nodejs-logging');
+      const logger = Logger.getLogger('civilServiceClient');
+      const loggerSpy = jest.spyOn(logger, 'error').mockImplementation();
+
+      try {
+        //When
+        await expect(civilServiceClient.submitInitiateGeneralApplicationEvent('123', ccdGApp, appReq))
+          .rejects.toBe(apiError);
+
+        //Then
+        expect(loggerSpy).toHaveBeenCalledWith(
+          'Submit event failed (event=INITIATE_GENERAL_APPLICATION, claimId=123, status=422)',
+          {
+            body: {
+              exception: 'CaseValidationException',
+              error: 'Unprocessable Entity',
+              message: 'Case data validation failed',
+              validationErrors: [
+                'generalApplications.0.generalAppType.types',
+                'another validation error',
+                'third validation error',
+                'fourth validation error',
+                'fifth validation error',
+              ],
+              validationErrorCount: 7,
+            },
+          },
+        );
+        const loggedMetadata = loggerSpy.mock.calls[0][1] as { body: Record<string, unknown> };
+        expect(loggedMetadata.body).not.toHaveProperty('caseDataUpdate');
+        expect(loggedMetadata.body).not.toHaveProperty('config');
+        expect(loggedMetadata.body).not.toHaveProperty('request');
+      } finally {
+        loggerSpy.mockRestore();
+      }
     });
 
     it('should submit submitInitiateGeneralApplicationForCOSCEvent successfully', async () => {
