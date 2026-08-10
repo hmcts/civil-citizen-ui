@@ -26,6 +26,7 @@ Scenario('Create LipvLip claim and defendant response as FullAdmit and pay immed
   const respondToClaimNotif = respondToClaim();
   await verifyNotificationTitleAndContent(claimNumber, respondToClaimNotif.title, respondToClaimNotif.content);
   await I.click(respondToClaimNotif.nextSteps);
+  await I.waitForElement('//div[@id="qa-selector-that-does-not-exist"]', 5);
   await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.admitAllPayImmediateWithIndividual);
   await api.waitForFinishedBusinessProcess();
   const defendantFullAdmitPayImmediatelyNotif = defendantResponseFullAdmitPayImmediately(claimTotalAmount, deadline);
