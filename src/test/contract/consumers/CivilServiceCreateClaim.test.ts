@@ -60,7 +60,7 @@ describe('Civil Service create-claim contract', () => {
     });
 
     await expect(client.getClaimFeeData(1000, request)).resolves.toEqual({
-      calculatedAmountInPence: '11500', code: 'FEE0209',
+      calculatedAmountInPence: 11500, code: 'FEE0209',
     });
   });
 
