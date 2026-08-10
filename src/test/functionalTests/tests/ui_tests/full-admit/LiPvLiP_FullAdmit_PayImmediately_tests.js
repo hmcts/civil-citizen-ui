@@ -15,7 +15,7 @@ let claimTotalAmount = claimAmount + claimFee;
 
 Feature('Create Lip v Lip claim -  Full Admit and pay Immediately').tag('@civil-citizen-master @civil-citizen-pr @civil-citizen-nightly @ui-full-admit');
 
-Scenario.only('Create LipvLip claim and defendant response as FullAdmit and pay immediately', async ({I, api}) => {
+Scenario('Create LipvLip claim and defendant response as FullAdmit and pay immediately', async ({I, api}) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType);
