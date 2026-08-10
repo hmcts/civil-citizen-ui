@@ -63,4 +63,3 @@ Scenario('04 Defendant responds with part admit', async ({ api }) => {
   await ResponseSteps.CheckAndSubmit(claimRef, partAdmit);
   await api.waitForFinishedBusinessProcess();
 }).retry(1);
-

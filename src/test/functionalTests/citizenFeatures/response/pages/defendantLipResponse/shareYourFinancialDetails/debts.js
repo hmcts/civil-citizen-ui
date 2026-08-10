@@ -4,8 +4,8 @@ const sharedData = require('../../../../../sharedData');
 const cButtons = require('../../../../../commonComponents/cButtons');
 
 const fields ={
-  yesButton: 'input[id="debtsRadio"]',
-  noButton: 'input[id="debtsRadio-2"]',
+  yesButton: 'input[id="option"]',
+  noButton: 'input[id="option-2"]',
   debtItem1: 'input[id="debtsItems[0][debt]"]',
   debtOwned1: 'input[id="debtsItems[0][totalOwned]"]',
   monthlyPayments1: 'input[id="debtsItems[0][monthlyPayments]"]',
@@ -18,8 +18,8 @@ const fields ={
 };
 
 const buttons = {
-  addDebt: { 
-    en: 'Add a debt', 
+  addDebt: {
+    en: 'Add a debt',
     cy: 'Ychwanegu dyled',
   },
 };
@@ -49,7 +49,7 @@ const inputs = {
 class Debts {
 
   async clickYesButton() {
-    const { language } = sharedData; 
+    const { language } = sharedData;
     await I.waitForContent(content.heading[language], config.WaitForText);
     await I.click(fields.yesButton);
     await I.fillField(fields.debtItem1, inputs.debtItem1[language]),
@@ -66,7 +66,7 @@ class Debts {
   }
 
   async clickNoButton() {
-    const { language } = sharedData; 
+    const { language } = sharedData;
     await I.waitForContent(content.heading[language], config.WaitForText);
     await I.click(fields.noButton);
     await I.clickWithRetry(cButtons.saveAndContinue[language]);
