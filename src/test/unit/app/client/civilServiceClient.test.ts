@@ -1073,7 +1073,7 @@ describe('Civil Service Client', () => {
       const feeAmount: number = await civilServiceClient.getClaimAmountFee(100, appReq);
 
       //Then
-      expect(feeAmount).toEqual(mockData.calculatedAmountInPence / 100);
+      expect(feeAmount).toEqual(Number(mockData.calculatedAmountInPence) / 100);
     });
     describe('getAirlines', () => {
       const mockData = [
