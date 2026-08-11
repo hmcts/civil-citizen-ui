@@ -60,7 +60,7 @@ module.exports = {
         } 
         else {
           console.log('content to be verified ..', content);
-          if (pageSource.includes(content)) {
+          if (normalisedPageSource.includes(content)) {
             break;
           }
         }
