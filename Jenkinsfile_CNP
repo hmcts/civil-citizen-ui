@@ -362,8 +362,8 @@ withPipeline(type, product, component) {
     }
     generateAllureReport('test-results/functional/allure-results', 'test-results/functional/allure-report', 'functional')
     publishAllureHtml('test-results/functional/allure-report', 'Non-Prod E2E Allure Report')
-    generateFunctionalFailureSummary()
     collectWiremockDiagnostics()
+    generateFunctionalFailureSummary()
     archiveDiagnosticArtifacts('test-results/functional/**/*', 'functional test artifacts')
 
     // Security tests exercise integrations outside the reduced-stack PoC.
@@ -430,8 +430,8 @@ withPipeline(type, product, component) {
   afterAlways('functionalTest:aat') {
     generateAllureReport('test-results/functional/allure-results', 'test-results/functional/allure-report', 'functional')
     publishAllureHtml('test-results/functional/allure-report', 'Prod E2E Allure Report')
-    generateFunctionalFailureSummary()
     collectWiremockDiagnostics()
+    generateFunctionalFailureSummary()
     archiveDiagnosticArtifacts('test-results/functional/**/*', 'functional test artifacts')
   }
 

@@ -3,6 +3,7 @@ const path = require('path');
 
 const SUMMARY_SCHEMA_VERSION = '1.0.0';
 const FAILURE_SUMMARY_FILE = 'functional-failure-summary.json';
+const WIREMOCK_UNMATCHED_FILE = 'wiremock/unmatched-requests.json';
 
 const CLASSIFICATIONS = {
   PREVIEW_DEPENDENCY_SETUP: 'preview/dependency setup',
@@ -58,11 +59,66 @@ function sanitize(value) {
 
   if (typeof value === 'object') {
     return Object.fromEntries(
-      Object.entries(value).map(([key, nestedValue]) => [key, sanitize(nestedValue)]),
+      Object.entries(value).map(([key, nestedValue]) => [
+        key,
+        /^(?:authorization|proxy-authorization|cookies?|set-cookie|password|passwd|secret|token|access_token|id_token|refresh_token|client_secret)$/i.test(key)
+          ? '[REDACTED]'
+          : sanitize(nestedValue),
+      ]),
     );
   }
 
   return value;
+}
+
+function wiremockRequestsFromDiagnostic(diagnostic) {
+  const responseBody = diagnostic?.body ?? diagnostic;
+  return Array.isArray(responseBody?.requests) ? responseBody.requests : [];
+}
+
+function collectWiremockFailures(reportDir, artifactCandidates, workspace, buildUrl) {
+  const diagnosticPath = path.join(reportDir, WIREMOCK_UNMATCHED_FILE);
+  if (!fs.existsSync(diagnosticPath)) {
+    return [];
+  }
+
+  const requests = wiremockRequestsFromDiagnostic(readJson(diagnosticPath));
+  if (requests.length === 0) {
+    return [];
+  }
+
+  const requestSignals = requests.map((request) => ({
+    method: request?.method ?? request?.request?.method ?? null,
+    url: request?.url ?? request?.request?.url ?? null,
+  }));
+  const diagnosticArtifacts = artifactCandidates
+    .filter((artifactPath) => artifactPath.includes(`${path.sep}wiremock${path.sep}`))
+    .map((artifactPath) => {
+      const relativePath = path.relative(workspace, artifactPath);
+      return {
+        label: path.basename(artifactPath),
+        path: relativePath,
+        url: buildUrl ? `${buildUrl.replace(/\/$/, '')}/artifact/${relativePath}` : null,
+      };
+    });
+
+  return [sanitize({
+    suite: 'reduced-stack-wiremock',
+    scenarioTest: 'Unexpected WireMock request verification',
+    attemptNumber: null,
+    firstAttemptResult: 'failed',
+    startTime: null,
+    endTime: null,
+    durationMs: null,
+    primaryStage: 'wiremock-verification',
+    primaryErrorSummary: `WireMock received ${requests.length} unmatched request(s): ${requestSignals
+      .map(({method, url}) => `${method || 'UNKNOWN'} ${url || 'UNKNOWN'}`)
+      .join(', ')}`,
+    classification: CLASSIFICATIONS.UNKNOWN,
+    retryOutcome: null,
+    artifactLinks: diagnosticArtifacts,
+    rawSignal: {unmatchedRequests: requestSignals},
+  })];
 }
 
 function readJson(filePath) {
@@ -217,7 +273,7 @@ function buildSummary(options = {}) {
   const attemptNumber = options.attemptNumber || process.env.ATTEMPT_NUMBER || process.env.RETRY_ATTEMPT || null;
   const artifactCandidates = findArtifactCandidates(reportDir);
 
-  const failures = listMochawesomeReports(reportDir, reportPrefix)
+  const browserFailures = listMochawesomeReports(reportDir, reportPrefix)
     .flatMap((reportFile) => collectFailedTests(reportFile, readJson(reportFile)))
     .map((failure) => {
       const summaryFailure = {
@@ -238,6 +294,10 @@ function buildSummary(options = {}) {
 
       return sanitize(summaryFailure);
     });
+  const failures = [
+    ...browserFailures,
+    ...collectWiremockFailures(reportDir, artifactCandidates, workspace, buildUrl),
+  ];
 
   return sanitize({
     schemaVersion: SUMMARY_SCHEMA_VERSION,
@@ -266,9 +326,11 @@ module.exports = {
   CLASSIFICATIONS,
   FAILURE_SUMMARY_FILE,
   SUMMARY_SCHEMA_VERSION,
+  WIREMOCK_UNMATCHED_FILE,
   buildSummary,
   classifyFailure,
   sanitize,
   sanitizeString,
+  wiremockRequestsFromDiagnostic,
   writeSummary,
 };

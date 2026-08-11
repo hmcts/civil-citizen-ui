@@ -259,8 +259,8 @@ withNightlyPipeline(type, product, component) {
     afterAlways('fullFunctionalTest') {
       generateAllureReport('test-results/functional/allure-results', 'test-results/functional/allure-report', 'functional')
       publishAllureHtml('test-results/functional/allure-report', 'Nightly E2E Allure Report')
-      generateFunctionalFailureSummary()
       collectWiremockDiagnostics()
+      generateFunctionalFailureSummary()
       archiveDiagnosticArtifacts('test-results/functional/**/*', 'functional test artifacts')
     }
   }
