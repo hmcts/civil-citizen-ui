@@ -26,25 +26,6 @@ Scenario('Create LipvLip claim and defendant response as FullAdmit and pay immed
   const respondToClaimNotif = respondToClaim();
   await verifyNotificationTitleAndContent(claimNumber, respondToClaimNotif.title, respondToClaimNotif.content);
   await I.click(respondToClaimNotif.nextSteps);
-  await I.usePlaywrightTo('QA controlled CUI HTTP 500', async ({ page }) => {
-    const currentUrl = page.url();
-
-    await page.route(currentUrl, async route => {
-      await route.fulfill({
-        status: 500,
-        contentType: 'text/plain',
-        body: 'QA controlled CUI HTTP 500 - Internal Server Error',
-      });
-    });
-
-    const response = await page.reload({ waitUntil: 'domcontentloaded' });
-
-    if (!response || response.status() !== 500) {
-      throw new Error('QA setup failed - expected controlled CUI HTTP 500');
-    }
-
-    throw new Error('CUI HTTP 500 - Internal Server Error');
-  });
   await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.admitAllPayImmediateWithIndividual);
   await api.waitForFinishedBusinessProcess();
   const defendantFullAdmitPayImmediatelyNotif = defendantResponseFullAdmitPayImmediately(claimTotalAmount, deadline);

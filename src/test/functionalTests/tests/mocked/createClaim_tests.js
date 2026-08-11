@@ -7,7 +7,7 @@ Scenario('Individual creates and submits a claim without the full Civil stack', 
   await I.click('Create Draft Claim');
   await I.amOnPage('/claim/task-list');
   await I.waitForContent('Prepare your claim', 10);
-
+  await fetch(`${process.env.CIVIL_SERVICE_URL}/qa-unmatched-wiremock-request`);
   const caseReference = await steps.CreateClaimCreation(false, false);
 
   await I.see('Claim submitted', 'h1');
