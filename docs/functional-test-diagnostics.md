@@ -66,7 +66,9 @@ WireMock diagnostics.
 
 The generated summary and every archived WireMock diagnostic redact bearer
 tokens, JWTs, authorization headers, cookies, common secret fields, email
-addresses and long payment-like numbers before writing JSON. Raw WireMock
+addresses and long payment-like numbers before writing JSON. Request and
+response payloads are removed from WireMock diagnostics, including clear-text,
+Base64-encoded, form, multipart and matcher payload variants. Raw WireMock
 request journals are held only in a temporary directory for verification and
 are not archived. The console prints method and URL from the sanitised artifact.
 Do not attach raw Jenkins console logs, raw pod logs or raw Allure files to Jira
