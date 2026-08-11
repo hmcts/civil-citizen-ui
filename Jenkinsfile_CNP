@@ -215,6 +215,7 @@ def checkForReducedStackTests(branch_name) {
 
 def generateAllureReport(String resultsDir, String reportDir, String reportLabel) {
   try {
+    error "QA Scenario 6 controlled Allure generation failure"
     sh "npx allure generate ${resultsDir} --clean -o ${reportDir}"
   } catch (Exception error) {
     echo "Failed to generate ${reportLabel} Allure report. Continuing with diagnostic publication. Error: ${error.toString()}"

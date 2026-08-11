@@ -23,11 +23,10 @@ Scenario('Create LipvLip claim and defendant response as FullAdmit and pay immed
   claimNumber = await caseData.legacyCaseReference;
   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   await CitizenDashboardSteps.VerifyClaimOnDashboard(claimNumber);
-  // QA Scenario 5 - controlled browser crash
-  await I.usePlaywrightTo('QA controlled browser crash', async ({ browserContext }) => {
-    await browserContext.browser().close();
+  // QA Scenario 6 - primary functional test failure
+  await I.usePlaywrightTo('QA Scenario 6 primary functional test failure', async () => {
+    throw new Error('QA Scenario 6 primary functional test failure');
   });
-  await I.see('QA browser should still be available');
   const respondToClaimNotif = respondToClaim();
   await verifyNotificationTitleAndContent(claimNumber, respondToClaimNotif.title, respondToClaimNotif.content);
   await I.click(respondToClaimNotif.nextSteps);
