@@ -10,6 +10,9 @@ const {
   sanitizeString,
   wiremockRequestsFromDiagnostic,
 } = require('../../../functionalTests/diagnostics/functionalFailureDiagnostics');
+const {
+  sanitizeWiremockPayload,
+} = require('../../../functionalTests/diagnostics/collectWiremockDiagnostics');
 
 function writeJson(filePath, data) {
   fs.mkdirSync(path.dirname(filePath), { recursive: true });
@@ -73,6 +76,58 @@ describe('functional failure diagnostics', () => {
       [{status: 200, body: {requests: [{method: 'GET', url: '/unmatched'}]}}],
     ])('reads raw and collected WireMock diagnostics', (diagnostic) => {
       expect(wiremockRequestsFromDiagnostic(diagnostic)).toEqual([{method: 'GET', url: '/unmatched'}]);
+    });
+  });
+
+  describe('sanitizeWiremockPayload', () => {
+    it('removes clear-text, encoded and matcher payloads while retaining diagnostic fields', () => {
+      const diagnostic = sanitizeWiremockPayload({
+        requests: [{
+          method: 'POST',
+          url: '/cases/draft?name=Jane%20Citizen&postcode=AA1%201AA',
+          body: '{"name":"Jane Citizen","dateOfBirth":"1990-01-01"}',
+          bodyAsBase64: Buffer.from('{"phone":"07123456789"}').toString('base64'),
+          headers: {Authorization: 'Bearer private-token'},
+          responseDefinition: {
+            status: 200,
+            jsonBody: {address: '1 Private Street'},
+          },
+          stubMapping: {
+            request: {
+              method: 'POST',
+              bodyPatterns: [{equalToJson: {name: 'Jane Citizen'}}],
+              queryParameters: {name: {equalTo: 'Jane Citizen'}},
+              formParameters: {postcode: {equalTo: 'AA1 1AA'}},
+              multipartPatterns: [{bodyPatterns: [{contains: 'private document'}]}],
+            },
+          },
+        }],
+      });
+
+      expect(diagnostic.requests[0]).toMatchObject({
+        method: 'POST',
+        url: '/cases/draft?name=[REDACTED]&postcode=[REDACTED]',
+        body: '[REDACTED]',
+        bodyAsBase64: '[REDACTED]',
+        headers: {Authorization: '[REDACTED]'},
+        responseDefinition: {status: 200, jsonBody: '[REDACTED]'},
+        stubMapping: {request: {
+          method: 'POST',
+          bodyPatterns: '[REDACTED]',
+          queryParameters: '[REDACTED]',
+          formParameters: '[REDACTED]',
+          multipartPatterns: '[REDACTED]',
+        }},
+      });
+
+      const serialized = JSON.stringify(diagnostic);
+      expect(serialized).not.toContain('Jane Citizen');
+      expect(serialized).not.toContain('1990-01-01');
+      expect(serialized).not.toContain('07123456789');
+      expect(serialized).not.toContain('1 Private Street');
+      expect(serialized).not.toContain('AA1 1AA');
+      expect(serialized).not.toContain('private document');
+      expect(serialized).not.toContain('private-token');
     });
   });
 

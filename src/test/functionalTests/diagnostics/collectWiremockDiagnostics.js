@@ -7,12 +7,38 @@ const { sanitize } = require('./functionalFailureDiagnostics');
 const wiremockUrl = process.env.WIREMOCK_URL;
 const diagnosticsEnabled = process.env.FUNCTIONAL_WIREMOCK_DIAGNOSTICS === 'true' || Boolean(wiremockUrl);
 const outputDir = process.env.WIREMOCK_DIAGNOSTICS_OUTPUT_DIR || 'test-results/functional/wiremock';
+const wiremockPayloadKey = /^(?:body|bodyAsBase64|bodyPatterns|jsonBody|base64Body|formParams|formParameters|multipartPatterns|queryParams|queryParameters)$/i;
+
+function sanitizeWiremockUrl(value) {
+  return sanitize(value.replace(/([?&][^=&#]+)=([^&#]*)/g, '$1=[REDACTED]'));
+}
+
+function sanitizeWiremockPayload(value) {
+  if (Array.isArray(value)) {
+    return value.map(sanitizeWiremockPayload);
+  }
+
+  if (value && typeof value === 'object') {
+    return sanitize(Object.fromEntries(
+      Object.entries(value).map(([key, nestedValue]) => [
+        key,
+        wiremockPayloadKey.test(key)
+          ? '[REDACTED]'
+          : /^(?:absoluteUrl|url)$/i.test(key) && typeof nestedValue === 'string'
+            ? sanitizeWiremockUrl(nestedValue)
+            : sanitizeWiremockPayload(nestedValue),
+      ]),
+    ));
+  }
+
+  return sanitize(value);
+}
 
 async function fetchJson(endpoint, options = {}) {
   const response = await fetch(`${wiremockUrl.replace(/\/$/, '')}${endpoint}`, options);
   return {
     status: response.status,
-    body: sanitize(await response.json().catch(() => null)),
+    body: sanitizeWiremockPayload(await response.json().catch(() => null)),
   };
 }
 
@@ -50,4 +76,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = {fetchJson, main, writeDiagnostic};
+module.exports = {fetchJson, main, sanitizeWiremockPayload, sanitizeWiremockUrl, writeDiagnostic};
