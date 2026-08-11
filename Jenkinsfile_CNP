@@ -79,7 +79,7 @@ def getCivilCcdDefinitionBranch() {
   for (label in githubApi.getLabelsbyPattern(env.BRANCH_NAME, "civilDefinitionBranch:")) {
     return label.minus("civilDefinitionBranch:").trim()
   }
-  return "OCCC-204-breathing-space"
+  return "OCCC-210"
 }
 
 def getCivilServicePr() {
