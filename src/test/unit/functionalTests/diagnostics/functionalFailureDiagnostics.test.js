@@ -6,7 +6,9 @@ const {
   CLASSIFICATIONS,
   buildSummary,
   classifyFailure,
+  sanitize,
   sanitizeString,
+  wiremockRequestsFromDiagnostic,
 } = require('../../../functionalTests/diagnostics/functionalFailureDiagnostics');
 
 function writeJson(filePath, data) {
@@ -40,6 +42,37 @@ describe('functional failure diagnostics', () => {
       const fileName = 'Functional_diagnostics_browser_assertion_failure_@browser-diagnostics.failed.png';
 
       expect(sanitizeString(fileName)).toBe(fileName);
+    });
+
+    it('redacts sensitive object fields and nested personal data', () => {
+      const sanitized = sanitize({
+        headers: {
+          Authorization: 'Basic service-credential',
+          Cookie: 'session=private-session',
+          Accept: 'application/json',
+        },
+        cookies: {session: 'private-cookie'},
+        body: {email: 'citizen@example.com'},
+      });
+
+      expect(sanitized.headers.Authorization).toBe('[REDACTED]');
+      expect(sanitized.headers.Cookie).toBe('[REDACTED]');
+      expect(sanitized.headers.Accept).toBe('application/json');
+      expect(sanitized.cookies).toBe('[REDACTED]');
+      expect(sanitized.body.email).toBe('[REDACTED_EMAIL]');
+      expect(JSON.stringify(sanitized)).not.toContain('service-credential');
+      expect(JSON.stringify(sanitized)).not.toContain('private-session');
+      expect(JSON.stringify(sanitized)).not.toContain('private-cookie');
+      expect(JSON.stringify(sanitized)).not.toContain('citizen@example.com');
+    });
+  });
+
+  describe('wiremockRequestsFromDiagnostic', () => {
+    it.each([
+      [{requests: [{method: 'GET', url: '/unmatched'}]}],
+      [{status: 200, body: {requests: [{method: 'GET', url: '/unmatched'}]}}],
+    ])('reads raw and collected WireMock diagnostics', (diagnostic) => {
+      expect(wiremockRequestsFromDiagnostic(diagnostic)).toEqual([{method: 'GET', url: '/unmatched'}]);
     });
   });
 
@@ -139,6 +172,60 @@ describe('functional failure diagnostics', () => {
       expect(serialized).not.toContain('abc.def.ghi');
       expect(serialized).not.toContain('Password123');
       expect(serialized).not.toContain('4444333322221111');
+    });
+
+    it('records a sanitised unmatched WireMock request when browser tests pass', () => {
+      const reportDir = path.join(tempDir, 'test-results/functional');
+      writeJson(path.join(reportDir, 'civil-citizen-pr-123.json'), {
+        stats: {failures: 0},
+        results: [],
+      });
+      writeJson(path.join(reportDir, 'wiremock/unmatched-requests.json'), {
+        status: 200,
+        body: {
+          requests: [{
+            method: 'GET',
+            url: '/qa-unmatched-wiremock-request',
+            headers: {Authorization: 'Bearer private-token'},
+          }],
+        },
+      });
+      writeJson(path.join(reportDir, 'wiremock/request-journal.json'), {
+        status: 200,
+        body: {requests: []},
+      });
+
+      const summary = buildSummary({
+        reportDir,
+        reportPrefix: 'civil-citizen-pr',
+        workspace: tempDir,
+      });
+
+      expect(summary.failures).toHaveLength(1);
+      expect(summary.failures[0]).toMatchObject({
+        suite: 'reduced-stack-wiremock',
+        scenarioTest: 'Unexpected WireMock request verification',
+        primaryStage: 'wiremock-verification',
+        primaryErrorSummary: 'WireMock received 1 unmatched request(s): GET /qa-unmatched-wiremock-request',
+        rawSignal: {unmatchedRequests: [{method: 'GET', url: '/qa-unmatched-wiremock-request'}]},
+      });
+      expect(summary.failures[0].artifactLinks.map(({label}) => label)).toEqual(expect.arrayContaining([
+        'request-journal.json',
+        'unmatched-requests.json',
+      ]));
+      expect(JSON.stringify(summary)).not.toContain('private-token');
+    });
+
+    it('supports the nested request shape returned by older WireMock journals', () => {
+      const reportDir = path.join(tempDir, 'test-results/functional');
+      writeJson(path.join(reportDir, 'wiremock/unmatched-requests.json'), {
+        requests: [{request: {method: 'POST', url: '/legacy-unmatched'}}],
+      });
+
+      const summary = buildSummary({reportDir, workspace: tempDir});
+
+      expect(summary.failures[0].primaryErrorSummary)
+        .toBe('WireMock received 1 unmatched request(s): POST /legacy-unmatched');
     });
   });
 });

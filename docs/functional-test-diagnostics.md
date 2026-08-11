@@ -57,12 +57,18 @@ traces, Mochawesome JSON/HTML and Allure results.
 
 Reduced-stack runs that set `WIREMOCK_URL` also archive WireMock mismatch
 diagnostics under `test-results/functional/wiremock/`, including unmatched
-requests, near misses and the request journal.
+requests, near misses and the request journal. An unmatched request is recorded
+as a `wiremock-verification` failure even when the browser scenario itself
+passed. Its summary includes the request method and URL plus links to the
+WireMock diagnostics.
 
 ## Masking
 
-The generated summary redacts bearer tokens, JWTs, cookies, common secret fields,
-email addresses and long payment-like numbers before writing the archived JSON.
+The generated summary and every archived WireMock diagnostic redact bearer
+tokens, JWTs, authorization headers, cookies, common secret fields, email
+addresses and long payment-like numbers before writing JSON. Raw WireMock
+request journals are held only in a temporary directory for verification and
+are not archived. The console prints method and URL from the sanitised artifact.
 Do not attach raw Jenkins console logs, raw pod logs or raw Allure files to Jira
 unless they have been separately checked for sensitive data.
 

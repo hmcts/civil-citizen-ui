@@ -39,10 +39,15 @@ async function main() {
 
   await writeDiagnostic('unmatched-requests.json', () => fetchJson('/__admin/requests/unmatched'));
   await writeDiagnostic('request-journal.json', () => fetchJson('/__admin/requests'));
-  await writeDiagnostic('near-misses.json', () => fetchJson('/__admin/near-misses'));
+  await writeDiagnostic('all-requests.json', () => fetchJson('/__admin/requests'));
+  await writeDiagnostic('near-misses.json', () => fetchJson('/__admin/requests/unmatched/near-misses'));
 }
 
-main().catch((error) => {
-  console.error(`Failed to collect WireMock diagnostics: ${error.message}`);
-  process.exit(1);
-});
+if (require.main === module) {
+  main().catch((error) => {
+    console.error(`Failed to collect WireMock diagnostics: ${error.message}`);
+    process.exit(1);
+  });
+}
+
+module.exports = {fetchJson, main, writeDiagnostic};
