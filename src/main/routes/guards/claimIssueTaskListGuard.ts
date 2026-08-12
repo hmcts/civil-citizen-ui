@@ -6,7 +6,7 @@ import {AppRequest} from 'models/AppRequest';
 import {BASE_ELIGIBILITY_URL} from 'routes/urls';
 import {stashClaimOnRequest} from 'common/utils/claimRequestLocals';
 
-export const claimIssueTaskListGuard = (async (req: Request, res: Response, next: NextFunction) => {
+export const claimIssueTaskListGuard = (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const appReq: AppRequest = <AppRequest>req;
     const userId = appReq.session?.user?.id;
@@ -16,6 +16,10 @@ export const claimIssueTaskListGuard = (async (req: Request, res: Response, next
     if (draftResult) {
       appReq.session.draftId = draftResult.rawResponse.draftId;
       caseData = Object.assign(new Claim(), draftResult.claimResponse.case_data);
+
+      if (!caseData.draftClaimCreatedAt && draftResult.createdAt) {
+        caseData.draftClaimCreatedAt = new Date(draftResult.createdAt);
+      }
     } else {
       caseData = await getCaseDataFromStore(userId, true);
     }
