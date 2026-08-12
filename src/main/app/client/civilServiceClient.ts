@@ -636,9 +636,11 @@ export class CivilServiceClient {
     const cacheKey = `${normalizedClaimId}|${requestUserId}`;
     const cachedCaseRolePromise = requestCache.get(cacheKey);
     if (cachedCaseRolePromise !== undefined) {
+      logger.info(`[userCaseRoles] request-cache hit claimId=${normalizedClaimId} userId=${requestUserId}`);
       return cachedCaseRolePromise;
     }
 
+    logger.info(`[userCaseRoles] request-cache miss claimId=${normalizedClaimId} userId=${requestUserId}`);
     const userCaseRolePromise = this.getUserCaseRolesFromCivilService(normalizedClaimId, req)
       .catch((error) => {
         requestCache.delete(cacheKey);
@@ -649,15 +651,25 @@ export class CivilServiceClient {
   }
 
   private async getUserCaseRolesFromCivilService(normalizedClaimId: string, req: AppRequest): Promise<CaseRole> {
+    const requestUserId = req.session?.user?.id ?? '';
     const userCaseRolesUrl = (new URL(`${this.client.defaults.baseURL}${CIVIL_SERVICE_USER_CASE_ROLE.replace(':claimId', normalizedClaimId)}`));
-    const response = await executeRequest(
-      () => this.client.get(userCaseRolesUrl.toString(), buildAuthorizationOnlyConfig(req)),
-      'Error when getting user case roles',
-    );
-    const responseRoles = response.data as string[];
-    return responseRoles
-      .map(role => Object.values(CaseRole).find(enumValue => enumValue === role))
-      .at(0);
+    const startedAt = Date.now();
+    logger.info(`[userCaseRoles] outbound GET /cases/${normalizedClaimId}/userCaseRoles userId=${requestUserId}`);
+    try {
+      const response = await executeRequest(
+        () => this.client.get(userCaseRolesUrl.toString(), buildAuthorizationOnlyConfig(req)),
+        'Error when getting user case roles',
+      );
+      const responseRoles = response.data as string[];
+      const roleCount = Array.isArray(responseRoles) ? responseRoles.length : 0;
+      logger.info(`[userCaseRoles] outbound success claimId=${normalizedClaimId} userId=${requestUserId} roleCount=${roleCount} durationMs=${Date.now() - startedAt}`);
+      return responseRoles
+        .map(role => Object.values(CaseRole).find(enumValue => enumValue === role))
+        .at(0);
+    } catch (error) {
+      logger.error(`[userCaseRoles] outbound failure claimId=${normalizedClaimId} userId=${requestUserId} durationMs=${Date.now() - startedAt} message=${(error as Error)?.message}`);
+      throw error;
+    }
   }
 
   async getCalculatedDecisionOnClaimantProposedRepaymentPlan(claimId: RouteParam, req: AppRequest, claimantProposedPlan: CCDClaimantProposedPlan) :Promise<RepaymentDecisionType> {
