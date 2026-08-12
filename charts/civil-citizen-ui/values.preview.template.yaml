@@ -45,6 +45,7 @@ nodejs:
     CIVIL_SERVICE_URL: http://${SERVICE_NAME}-civil-service
     IDAM_SIGN_OUT_REDIRECT_URL: https://${SERVICE_FQDN}/dashboard
     LAUNCH_DARKLY_ENV: ${SERVICE_FQDN}
+    SETTLEMENT_AGREEMENT_ENABLED : true
 
 civil-service:
   enabled: true
@@ -166,6 +167,7 @@ civil-service:
       CMC_DB_CONNECTION_OPTIONS: "?stringtype=unspecified&reWriteBatchedInserts=true&sslmode=require"
       CMC_DB_USERNAME: hmcts
       CMC_DB_NAME: "pr-${CHANGE_ID}-cmc"
+      SCHEDULER_ENABLED_SETTLEMENT_NO_RESPONSE_FROM_DEFENDANT_CHECK : true
     secrets:
       CMC_DB_PASSWORD:
         secretRef: "{{ .Values.global.postgresSecret }}"
