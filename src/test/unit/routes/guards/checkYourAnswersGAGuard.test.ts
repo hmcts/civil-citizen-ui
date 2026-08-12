@@ -40,9 +40,6 @@ const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 const MOCK_REQUEST = { params: { id: '123' }, url: '/case/123/general-application/check-and-send' } as unknown as Request;
 const MOCK_RESPONSE = { redirect: jest.fn() } as unknown as Response;
 const MOCK_NEXT = jest.fn() as NextFunction;
-jest.mock('../../../../main/services/features/generalApplication/generalApplicationService.ts', ()=> ({
-  getCancelUrl: jest.fn(),
-}));
 
 describe('Check your Answers GA Guard', () => {
   beforeEach(() => {
@@ -415,6 +412,7 @@ describe('Check your Answers GA Guard', () => {
     //Then
     expect(MOCK_RESPONSE.redirect).toHaveBeenCalledWith(applicationTypeErrorUrl('123'));
   });
+  
   it('should not call cancelUrl if any party is Bilingual and user tries to submit an application', async () => {
     //Given
     const claim = new Claim();
@@ -438,6 +436,7 @@ describe('Check your Answers GA Guard', () => {
     expect(MOCK_RESPONSE.redirect).toHaveBeenCalled();
 
   });
+  
   it('should not call cancelUrl if any party is Bilingual and user tries to submit an cosc application', async () => {
     //Given
     const MOCK_REQUEST_COSC = { url: '/cosc/', params: { id: '123' } } as unknown as Request;

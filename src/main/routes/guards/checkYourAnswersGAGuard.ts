@@ -25,8 +25,6 @@ import {
   getInvalidApplicationTypeIndex,
 } from 'models/generalApplication/applicationType';
 import {YesNo} from 'form/models/yesNo';
-import {getCancelUrl} from 'services/features/generalApplication/generalApplicationService';
-import {isGaForWelshEnabled} from '../../app/auth/launchdarkly/launchDarklyClient';
 import {getRouteParam} from 'common/utils/routeParamUtils';
 import {
   applicationTypeErrorUrl,
@@ -37,7 +35,6 @@ export const checkYourAnswersGAGuard = async (req: Request, res: Response, next:
   try {
     const claimId = getRouteParam(req, 'id');
     const claim = await getClaimById(claimId, req, true);
-    const gaCoscUrl = '/cosc/';
     const applicationTypes = claim.generalApplication?.applicationTypes || [];
     const welshGaEnabled = await isGaForWelshEnabled();
     //If mainCase has bilingual party submission is not allowed.

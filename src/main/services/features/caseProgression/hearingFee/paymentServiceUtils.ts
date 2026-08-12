@@ -25,7 +25,7 @@ export const getRedirectUrlCommon = async (claimId: string, req: AppRequest): Pr
   let paymentRedirectInformation: PaymentInformation;
   const claim = await getCaseDataFromStore(redisClaimId);
   paymentRedirectInformation = claim.caseProgression?.hearing?.paymentInformation || await getRedirectInformation(req);
-  logger.info(`Payment redirect information for claimId: ${claimId}: ${JSON.stringify(paymentRedirectInformation)}`);
+  logger.info(`Payment redirect information retrieved for claimId: ${claimId}`);
 
   if (!paymentRedirectInformation) {
     redirectUrl = constructResponseUrlWithIdParams(claimId, HEARING_FEE_APPLY_HELP_FEE_SELECTION);
@@ -35,14 +35,14 @@ export const getRedirectUrlCommon = async (claimId: string, req: AppRequest): Pr
     await saveUserId(claimId, FeeType.HEARING, req.session.user.id);
 
     const paymentStatus = await getFeePaymentStatus(claimId, paymentRedirectInformation.paymentReference, FeeType.HEARING, req);
-    logger.info(`Existing hearing payment status for claim id ${claimId}, payment reference ${paymentRedirectInformation.paymentReference}: ${paymentStatus?.status}`);
+    logger.info(`Existing hearing payment status for claim id ${claimId}: ${paymentStatus?.status}`);
 
     if (paymentStatus?.status === success) {
       redirectUrl = constructResponseUrlWithIdParams(claimId, HEARING_FEE_PAYMENT_CONFIRMATION_URL);
     } else if (paymentStatus?.status === failed) {
       paymentRedirectInformation = await getRedirectInformation(req);
       await saveCaseProgression(req, paymentRedirectInformation, paymentInformation, hearing);
-      logger.info(`New payment ref after failed payment for claim id ${claimId}: ${JSON.stringify(paymentRedirectInformation)}`);
+      logger.info(`New payment information requested after failed payment for claim id ${claimId}`);
       redirectUrl = paymentRedirectInformation ? paymentRedirectInformation.nextUrl : constructResponseUrlWithIdParams(claimId, HEARING_FEE_APPLY_HELP_FEE_SELECTION);
     } else {
       redirectUrl = paymentRedirectInformation.nextUrl;

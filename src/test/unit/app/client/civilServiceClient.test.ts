@@ -16,6 +16,7 @@ import {CaseState} from 'common/form/models/claimDetails';
 import {CourtLocation} from 'common/models/courts/courtLocations';
 import {TestMessages} from '../../../utils/errorMessageTestConstants';
 import {CivilServiceClient} from 'client/civilServiceClient';
+import {CallbackError} from 'client/common/error/callbackError';
 import {CaseDocument} from 'models/document/caseDocument';
 
 import {FileUpload} from 'models/caseProgression/fileUpload';
@@ -383,6 +384,60 @@ describe('Civil Service Client', () => {
       const civilServiceClient = new CivilServiceClient(baseUrl);
       //Then
       await expect(civilServiceClient.submitDefendantResponseEvent('123', {}, appReq)).rejects.toThrow('error');
+    });
+  });
+
+  describe('submitEvent 422 callback errors (DTSCCI-5282)', () => {
+    const unprocessableEntity = (data: unknown) => ({response: {status: 422, data}});
+
+    it('should throw a CallbackError carrying the callbackErrors when civil-service returns 422 with a body', async () => {
+      //Given
+      const callbackErrors = ['There is a technical issue causing a delay. You do not need to do anything. Please come back later.'];
+      const mockPost = jest.fn().mockRejectedValue(unprocessableEntity({callbackErrors, callbackWarnings: []}));
+      mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
+      //Then
+      await expect(civilServiceClient.submitDefendantResponseEvent('123', {}, appReq)).rejects.toBeInstanceOf(CallbackError);
+      await expect(civilServiceClient.submitDefendantResponseEvent('123', {}, appReq)).rejects.toMatchObject({
+        status: 422,
+        callbackErrors,
+      });
+    });
+
+    it('should throw a CallbackError carrying CCD field validation errors (details.field_errors)', async () => {
+      //Given - CCD field-type validation (Category A) uses a CaseValidationException envelope
+      const data = {
+        exception: 'uk.gov.hmcts.ccd.endpoint.exceptions.CaseValidationException',
+        message: 'Case data validation failed',
+        details: {field_errors: [{id: 'respondent1.partyEmail', message: 'notanemail is not a valid Email address'}]},
+      };
+      const mockPost = jest.fn().mockRejectedValue(unprocessableEntity(data));
+      mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
+      //Then
+      await expect(civilServiceClient.submitDefendantResponseEvent('123', {}, appReq)).rejects.toBeInstanceOf(CallbackError);
+      await expect(civilServiceClient.submitDefendantResponseEvent('123', {}, appReq)).rejects.toMatchObject({
+        status: 422,
+        callbackErrors: ['notanemail is not a valid Email address'],
+      });
+    });
+
+    it('should re-throw the original error when 422 has no callbackErrors or field_errors', async () => {
+      //Given
+      const mockPost = jest.fn().mockRejectedValue(unprocessableEntity({message: 'nothing actionable here'}));
+      mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
+      //Then
+      await expect(civilServiceClient.submitDefendantResponseEvent('123', {}, appReq)).rejects.not.toBeInstanceOf(CallbackError);
+    });
+
+    it('should re-throw the original error for a non-422 status', async () => {
+      //Given
+      const mockPost = jest.fn().mockRejectedValue({response: {status: 500, data: {callbackErrors: ['ignored']}}});
+      mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
+      //Then
+      await expect(civilServiceClient.submitDefendantResponseEvent('123', {}, appReq)).rejects.not.toBeInstanceOf(CallbackError);
     });
   });
 
@@ -990,7 +1045,7 @@ describe('Civil Service Client', () => {
   });
   describe('getClaimFeeData', () => {
     const mockData = {
-      calculatedAmountInPence: 123,
+      calculatedAmountInPence: '123',
       code: 'code',
       version: 1,
     };
@@ -1005,7 +1060,7 @@ describe('Civil Service Client', () => {
       const feeResponse: ClaimFeeData = await civilServiceClient.getClaimFeeData(100, appReq);
 
       //Then
-      expect(feeResponse).toEqual(mockData);
+      expect(feeResponse).toEqual({...mockData, calculatedAmountInPence: 123});
     });
 
     it('should get claim fee amount', async () => {
@@ -1018,7 +1073,7 @@ describe('Civil Service Client', () => {
       const feeAmount: number = await civilServiceClient.getClaimAmountFee(100, appReq);
 
       //Then
-      expect(feeAmount).toEqual(mockData.calculatedAmountInPence / 100);
+      expect(feeAmount).toEqual(Number(mockData.calculatedAmountInPence) / 100);
     });
     describe('getAirlines', () => {
       const mockData = [
