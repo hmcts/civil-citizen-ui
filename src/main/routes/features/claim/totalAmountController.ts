@@ -21,7 +21,7 @@ totalAmountController.get(CLAIM_TOTAL_URL, (async (req: AppRequest, res: Respons
   try {
     const userId = req.session?.user?.id;
     const claim = await getCaseDataFromStore(userId);
-    const interestToDate = await calculateInterestToDate(claim);
+    const interestToDate = await calculateInterestToDate(claim, req);
     const claimFeeData = await civilServiceClient.getClaimFeeData(claim.totalClaimAmount + interestToDate, req);
     const claimFee = convertToPoundsFilter(claimFeeData?.calculatedAmountInPence.toString());
     const hearingResponse = await civilServiceClient.getHearingAmount(claim.totalClaimAmount, req);
