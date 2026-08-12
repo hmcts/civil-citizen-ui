@@ -29,9 +29,6 @@ export const submitApplication = async (req: AppRequest): Promise<Claim> => {
     const claim = await getClaimById(claimId, req, true);
     assertValidApplicationTypes(claim.generalApplication?.applicationTypes);
     const ccdApplication = translateDraftApplicationToCCD(claim.generalApplication);
-    logger.info(
-      `General application CYA submission payload for claim ${normaliseRouteParam(claimId)}: ${JSON.stringify(ccdApplication)}`,
-    );
     return await civilServiceClient.submitInitiateGeneralApplicationEvent(claimId, ccdApplication, req);
   } catch (err) {
     logSubmitApplicationError(err, claimId, 'INITIATE_GENERAL_APPLICATION');
