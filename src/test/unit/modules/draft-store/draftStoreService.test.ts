@@ -205,7 +205,8 @@ describe('Draft store service to save and retrieve claim', () => {
     expect(spySet).toHaveBeenCalledWith(
       CLAIM_ID,
       expect.stringContaining('"refreshDataForDJ":true'),
-      'KEEPTTL',
+      'EX',
+      expect.any(Number),
     );
     expect(mockClaim.draftClaimCreatedAt).toBeDefined();
   });

@@ -84,6 +84,18 @@ describe('Integration: draftStoreService TTL handling', () => {
       expect(stored.case_data.draftClaimCreatedAt).toBeDefined();
       expect(stored.case_data.draftClaimCacheTtlDays).toBe(30);
     });
+
+    it('resets an over-long existing TTL when creating a new draft claim', async () => {
+      store.map.set(CLAIM_ID, JSON.stringify({id: CLAIM_ID}));
+      await store.expireat(CLAIM_ID, nowInSeconds() + (100 * 365 * DAY_IN_SECONDS));
+
+      await createDraftClaimInStoreWithExpiryTime(CLAIM_ID);
+
+      const ttl = await store.ttl(CLAIM_ID);
+      expect(store.set).toHaveBeenCalledWith(CLAIM_ID, expect.any(String), 'EX', expect.any(Number));
+      expect(ttl).toBeGreaterThan(DRAFT_CLAIM_TTL_SECONDS - 5);
+      expect(ttl).toBeLessThanOrEqual(MAX_MIDNIGHT_ALIGNED_DRAFT_CLAIM_TTL_SECONDS + 2);
+    });
   });
 
   describe('saveDraftClaim with DRAFT_CLAIM category', () => {

@@ -33,6 +33,22 @@ describe('redisWriteHelper', () => {
     expect(mockDraftStoreClient.expireat).not.toHaveBeenCalled();
   });
 
+  it('should override an existing TTL when requested', async () => {
+    mockDraftStoreClient.ttl.mockResolvedValueOnce(100 * 365 * 86400);
+
+    await writeWithTTL(
+      'claim-key',
+      {id: '1'},
+      TTLCategory.DRAFT_CLAIM,
+      {creationDate: new Date(), overrideExistingTTL: true},
+    );
+
+    const [, , mode, seconds] = mockDraftStoreClient.set.mock.calls[0];
+    expect(mode).toBe('EX');
+    expect(seconds).toBeGreaterThan(30 * 86400 - 5);
+    expect(seconds).toBeLessThanOrEqual(31 * 86400 + 2);
+  });
+
   it('should anchor draft claim TTL to creation date and expire after the submit-by date', async () => {
     mockDraftStoreClient.ttl.mockResolvedValueOnce(-2);
     const tenDaysAgo = new Date(Date.now() - 10 * 86400 * 1000);

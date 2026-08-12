@@ -14,6 +14,7 @@ export enum TTLCategory {
 
 export interface TTLMetadata {
   creationDate?: Date;
+  overrideExistingTTL?: boolean;
 }
 
 export const getTTLDaysForCategory = (category: TTLCategory): number => {
@@ -57,6 +58,6 @@ export const reconstructCreationDateFromRemainingTtl = (
     ? LEGACY_DRAFT_CLAIM_TTL_DAYS
     : getTTLDaysForCategory(category);
   const totalTtlSeconds = ttlDays * DAY_TO_SECONDS;
-  const elapsedSeconds = totalTtlSeconds - remainingTtlSeconds;
+  const elapsedSeconds = Math.max(0, totalTtlSeconds - remainingTtlSeconds);
   return new Date(Date.now() - elapsedSeconds * 1000);
 };

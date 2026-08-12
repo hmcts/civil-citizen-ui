@@ -41,4 +41,13 @@ describe('ttlConfig', () => {
     expect(creationDate.getTime()).toBeGreaterThanOrEqual(before - expectedElapsedMs);
     expect(creationDate.getTime()).toBeLessThanOrEqual(after - expectedElapsedMs);
   });
+
+  it('should not reconstruct a future creation date when remaining TTL is longer than the legacy draft TTL', () => {
+    const before = Date.now();
+    const creationDate = reconstructCreationDateFromRemainingTtl(100 * 365 * 86400, TTLCategory.DRAFT_CLAIM);
+    const after = Date.now();
+
+    expect(creationDate.getTime()).toBeGreaterThanOrEqual(before);
+    expect(creationDate.getTime()).toBeLessThanOrEqual(after);
+  });
 });
