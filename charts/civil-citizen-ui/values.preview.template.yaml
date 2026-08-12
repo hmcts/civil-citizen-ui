@@ -168,6 +168,7 @@ civil-service:
       CMC_DB_USERNAME: hmcts
       CMC_DB_NAME: "pr-${CHANGE_ID}-cmc"
       SCHEDULER_ENABLED_SETTLEMENT_NO_RESPONSE_FROM_DEFENDANT_CHECK : true
+      SCHEDULER_ACTIVE_SCHEDULERS : SettlementNoResponseFromDefendantCheck
     secrets:
       CMC_DB_PASSWORD:
         secretRef: "{{ .Values.global.postgresSecret }}"
