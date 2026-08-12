@@ -75,6 +75,10 @@ import {
 } from 'client/common/civilServiceRequest';
 import {normalizeRouteParam, RouteParam} from 'common/utils/routeParamUtils';
 import {ClassConstructor} from 'class-transformer/types/interfaces';
+import {
+  getUserCaseRolesFromSession,
+  storeUserCaseRolesInSession,
+} from 'client/cache/userCaseRolesSessionCache';
 
 const HTTP_STATUS_UNPROCESSABLE_ENTITY = 422;
 
@@ -166,14 +170,14 @@ export class CivilServiceClient {
     return newCache;
   }
 
-  private getUserCaseRolesRequestCache(req: AppRequest): Map<string, Promise<CaseRole>> {
+  private getUserCaseRolesRequestCache(req: AppRequest): Map<string, Promise<CaseRole | undefined>> {
     const requestWithLocals = req as AppRequest & { locals?: AppRequest['locals'] };
     const requestLocals = requestWithLocals.locals ?? (requestWithLocals.locals = {env: '', lang: ''});
     if (requestLocals.userCaseRolesRequestCache) {
       return requestLocals.userCaseRolesRequestCache;
     }
 
-    const newCache = new Map<string, Promise<CaseRole>>();
+    const newCache = new Map<string, Promise<CaseRole | undefined>>();
     requestLocals.userCaseRolesRequestCache = newCache;
     return newCache;
   }
@@ -641,7 +645,7 @@ export class CivilServiceClient {
     }
 
     logger.info(`[userCaseRoles] request-cache miss claimId=${normalizedClaimId} userId=${requestUserId}`);
-    const userCaseRolePromise = this.getUserCaseRolesFromCivilService(normalizedClaimId, req)
+    const userCaseRolePromise = this.resolveUserCaseRoles(normalizedClaimId, req)
       .catch((error) => {
         requestCache.delete(cacheKey);
         throw error;
@@ -650,7 +654,18 @@ export class CivilServiceClient {
     return userCaseRolePromise;
   }
 
-  private async getUserCaseRolesFromCivilService(normalizedClaimId: string, req: AppRequest): Promise<CaseRole> {
+  private async resolveUserCaseRoles(normalizedClaimId: string, req: AppRequest): Promise<CaseRole | undefined> {
+    const sessionCacheResult = await getUserCaseRolesFromSession(req, normalizedClaimId);
+    if (sessionCacheResult.hit) {
+      return sessionCacheResult.role;
+    }
+
+    const role = await this.getUserCaseRolesFromCivilService(normalizedClaimId, req);
+    await storeUserCaseRolesInSession(req, normalizedClaimId, role);
+    return role;
+  }
+
+  private async getUserCaseRolesFromCivilService(normalizedClaimId: string, req: AppRequest): Promise<CaseRole | undefined> {
     const requestUserId = req.session?.user?.id ?? '';
     const userCaseRolesUrl = (new URL(`${this.client.defaults.baseURL}${CIVIL_SERVICE_USER_CASE_ROLE.replace(':claimId', normalizedClaimId)}`));
     const startedAt = Date.now();

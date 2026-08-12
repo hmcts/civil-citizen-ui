@@ -100,6 +100,13 @@ webChat:
     buttonContainerId: '__8x8-chat-button-container-script_202736819566d85c96c386f8.18964185'
 featureToggles:
   settlementAgreementEnabled: false
+caches:
+  userCaseRoles:
+    # Config gate for session-scoped /userCaseRoles cache (DTSCCI-5946).
+    # Runtime kill-switch: LaunchDarkly `cui-user-case-roles-session-cache-enabled`.
+    enabled: true
+    ttlSeconds: 60
+    negativeTtlSeconds: 15
 cookieMaxAge: 5400000
 uploadRateLimit:
   enabled: true

@@ -7,6 +7,7 @@ import {deleteDraftClaimFromStore} from 'modules/draft-store/draftStoreService';
 import { getFirstContactData } from 'services/firstcontact/firstcontactService';
 import { getClaimById } from 'modules/utilityService';
 import { Claim } from 'common/models/claim';
+import {evictUserCaseRolesFromSession} from 'client/cache/userCaseRolesSessionCache';
 
 const { Logger } = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('defendantRoleAssignmentService');
@@ -21,6 +22,8 @@ assignClaimController.get(ASSIGN_CLAIM_URL, async ( req:AppRequest, res) => {
     if (claimId) {
       const claim: Claim = await getClaimById(claimId, req, false);
       await civilServiceClient.assignDefendantToClaim(claimId, req, claim.respondent1PinToPostLRspec?.accessCode);
+      // Role mutation: defendant assignment — evict session-scoped /userCaseRoles cache (DTSCCI-5946)
+      evictUserCaseRolesFromSession(req, claimId, 'assign_defendant');
       await deleteDraftClaimFromStore(claimId);
       req.session.firstContact = {};
     }

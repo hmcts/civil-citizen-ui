@@ -570,6 +570,7 @@ describe('Civil Service Client', () => {
     beforeEach(() => {
       appReq.locals.claimDetailsRequestCache = undefined;
       appReq.locals.userCaseRolesRequestCache = undefined;
+      appReq.session.userCaseRolesCache = undefined;
     });
 
     it('should return User Case Roles successfully', async () => {
@@ -596,6 +597,7 @@ describe('Civil Service Client', () => {
       const civilServiceClient = new CivilServiceClient(baseUrl);
       //Then
       await expect(civilServiceClient.getUserCaseRoles('1', appReq)).rejects.toThrow('error');
+      expect(appReq.session.userCaseRolesCache).toBeUndefined();
     });
 
     it('should reuse cached user case roles promise for repeated calls in the same request', async () => {
@@ -609,6 +611,34 @@ describe('Civil Service Client', () => {
       await civilServiceClient.getUserCaseRoles('1', appReq);
 
       expect(mockGet).toHaveBeenCalledTimes(1);
+    });
+
+    it('should reuse session-scoped user case roles across requests', async () => {
+      const caseRoleExpected = [CaseRole.CLAIMANT];
+      const mockGet = jest.fn().mockResolvedValue({data: caseRoleExpected});
+      mockedAxios.create.mockReturnValue({get: mockGet, defaults: {baseURL: baseUrl}} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
+
+      await civilServiceClient.getUserCaseRoles('1', appReq);
+      appReq.locals.userCaseRolesRequestCache = undefined;
+      await civilServiceClient.getUserCaseRoles('1', appReq);
+
+      expect(mockGet).toHaveBeenCalledTimes(1);
+    });
+
+    it('should not cache civil-service errors in the session cache', async () => {
+      const mockGet = jest.fn()
+        .mockRejectedValueOnce(new Error('error'))
+        .mockResolvedValueOnce({data: [CaseRole.CLAIMANT]});
+      mockedAxios.create.mockReturnValue({get: mockGet, defaults: {baseURL: baseUrl}} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
+
+      await expect(civilServiceClient.getUserCaseRoles('1', appReq)).rejects.toThrow('error');
+      appReq.locals.userCaseRolesRequestCache = undefined;
+      const role = await civilServiceClient.getUserCaseRoles('1', appReq);
+
+      expect(role).toBe(CaseRole.CLAIMANT);
+      expect(mockGet).toHaveBeenCalledTimes(2);
     });
   });
   describe('retrieveClaimDetails', () => {
