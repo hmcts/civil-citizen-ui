@@ -2,7 +2,7 @@ import {Claim} from 'common/models/claim';
 import Axios, {AxiosError, AxiosHeaderValue, AxiosInstance, AxiosResponse} from 'axios';
 import {AssertionError} from 'assert';
 import {AppRequest, AppSession} from 'common/models/AppRequest';
-import {CivilClaimResponse, ClaimFeeData} from 'common/models/civilClaimResponse';
+import {CivilClaimResponse, CivilServiceClaimFeeData, ClaimFeeData} from 'common/models/civilClaimResponse';
 import {
   ASSIGN_CLAIM_TO_DEFENDANT,
   CIVIL_SERVICE_AGREED_RESPONSE_DEADLINE_DATE,
@@ -301,13 +301,18 @@ export class CivilServiceClient {
 
   async getClaimFeeData(amount: number, req: AppRequest): Promise<ClaimFeeData> {
     amount = roundOffTwoDecimals(amount);
-    const response = await this.authenticatedGet<ClaimFeeData>(
+    const response = await this.authenticatedGet<CivilServiceClaimFeeData>(
       `${CIVIL_SERVICE_CLAIM_AMOUNT_URL}/${amount}`,
       req,
       `Error when getting claim fee data, req.params.id - ${req.params.id}`,
     );
     logger.info('Claim fee calculated');
-    return response.data;
+    return {
+      ...response.data,
+      calculatedAmountInPence: response.data.calculatedAmountInPence === undefined
+        ? undefined
+        : Number(response.data.calculatedAmountInPence),
+    };
   }
 
   async getGeneralApplicationFee(feeRequestBody: GAFeeRequestBody, req: AppRequest): Promise<ClaimFeeData> {

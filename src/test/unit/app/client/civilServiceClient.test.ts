@@ -1045,7 +1045,7 @@ describe('Civil Service Client', () => {
   });
   describe('getClaimFeeData', () => {
     const mockData = {
-      calculatedAmountInPence: 123,
+      calculatedAmountInPence: '123',
       code: 'code',
       version: 1,
     };
@@ -1060,7 +1060,7 @@ describe('Civil Service Client', () => {
       const feeResponse: ClaimFeeData = await civilServiceClient.getClaimFeeData(100, appReq);
 
       //Then
-      expect(feeResponse).toEqual(mockData);
+      expect(feeResponse).toEqual({...mockData, calculatedAmountInPence: 123});
     });
 
     it('should get claim fee amount', async () => {
@@ -1073,7 +1073,7 @@ describe('Civil Service Client', () => {
       const feeAmount: number = await civilServiceClient.getClaimAmountFee(100, appReq);
 
       //Then
-      expect(feeAmount).toEqual(mockData.calculatedAmountInPence / 100);
+      expect(feeAmount).toEqual(Number(mockData.calculatedAmountInPence) / 100);
     });
     describe('getAirlines', () => {
       const mockData = [
