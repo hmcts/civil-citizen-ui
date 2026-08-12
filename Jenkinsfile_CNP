@@ -79,7 +79,7 @@ def getCivilCcdDefinitionBranch() {
 }
 
 def getCivilServicePr() {
-  return "8188"
+  return "8216"
 }
 
 def getCivilServiceImage() {
