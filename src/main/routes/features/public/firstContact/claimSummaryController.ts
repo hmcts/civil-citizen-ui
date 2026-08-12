@@ -39,8 +39,8 @@ firstContactClaimSummaryController.get(FIRST_CONTACT_CLAIM_SUMMARY_URL,
       const bytes = CryptoJS.AES.decrypt(firstContact?.pin, claim.respondent1PinToPostLRspec?.accessCode);
       const originalText = bytes.toString(CryptoJS.enc.Utf8);
       if (claimId && originalText === YesNo.YES) {
-        const interestData = await getInterestDetails(claim);
-        const totalAmount = await getTotalAmountWithInterestAndFeesAndFixedCost(claim);
+        const interestData = await getInterestDetails(claim, req);
+        const totalAmount = await getTotalAmountWithInterestAndFeesAndFixedCost(claim, req);
         const timelineRows = getClaimTimeline(claim, getLng(lang));
         const fixedCost = await getFixedCost(claim);
         const timelinePdfUrl = claim.extractDocumentId() && CASE_TIMELINE_DOCUMENTS_URL.replace(':id', claimId).replace(':documentId', claim.extractDocumentId());
