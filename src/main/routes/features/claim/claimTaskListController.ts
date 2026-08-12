@@ -26,12 +26,16 @@ claimTaskListController.get(CLAIMANT_TASK_LIST_URL, claimIssueTaskListGuard, (as
       ? Object.assign(new Claim(), draftResult.claimResponse.case_data)
       : new Claim();
 
-    if (!draftResult || !caseData?.isDraftClaim()) {
+    if (!draftResult) {
       draftResult = await createOrLoadDraft(req);
       caseData = Object.assign(new Claim(), draftResult.claimResponse.case_data);
       if(draftResult.isNew) {
         await civilServiceClient.createDashboard(req);
       }
+    }
+
+    if (!caseData.draftClaimCreatedAt && draftResult?.createdAt) {
+      caseData.draftClaimCreatedAt = new Date(draftResult.createdAt);
     }
 
     if(req.session && draftResult?.rawResponse?.draftId) {
