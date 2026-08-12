@@ -44,4 +44,36 @@ describe('Check claim fee is changed service', () => {
     //Then
     expect(isClaimFeeChanged).toEqual(false);
   });
+
+  it('Should return status false if the stored claim fee is the same value as a string', async () => {
+    //Given
+    const mockClaimFee = {
+      calculatedAmountInPence: 11500,
+      code: '123',
+      version: 1,
+    };
+    jest.spyOn(CivilServiceClient.prototype, 'getClaimFeeData').mockResolvedValueOnce(mockClaimFee);
+    const claimWithStoredStringFee = Object.assign(Object.create(Object.getPrototypeOf(mockClaim)), mockClaim, {
+      claimFee: {
+        ...mockClaim.claimFee,
+        calculatedAmountInPence: '11500',
+      },
+    }) as Claim;
+    //When
+    const isClaimFeeChanged = await checkIfClaimFeeHasChanged('11111', claimWithStoredStringFee, undefined);
+    //Then
+    expect(isClaimFeeChanged).toEqual(false);
+  });
+
+  it('Should return status false if neither claim fee is available', async () => {
+    //Given
+    jest.spyOn(CivilServiceClient.prototype, 'getClaimFeeData').mockResolvedValueOnce({});
+    const claimWithoutFee = Object.assign(Object.create(Object.getPrototypeOf(mockClaim)), mockClaim, {
+      claimFee: undefined,
+    }) as Claim;
+    //When
+    const isClaimFeeChanged = await checkIfClaimFeeHasChanged('11111', claimWithoutFee, undefined);
+    //Then
+    expect(isClaimFeeChanged).toEqual(false);
+  });
 });
