@@ -8,6 +8,17 @@ import {Claim} from 'models/claim';
 jest.mock('../../../../../../main/services/features/claim/amount/claimFeesService');
 const civilServiceUrl = config.get<string>('services.civilService.url');
 describe('Check claim fee is changed service', () => {
+  const createDraftClaim = (overrides: Partial<Claim> = {}) => Object.assign(
+    Object.create(Object.getPrototypeOf(mockClaim)),
+    mockClaim,
+    {isDraftClaim: () => true},
+    overrides,
+  ) as Claim;
+
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
   beforeEach(() => {
     nock(civilServiceUrl)
       .post('/fees/claim/calculate-interest')
@@ -40,7 +51,7 @@ describe('Check claim fee is changed service', () => {
     };
     jest.spyOn(CivilServiceClient.prototype, 'getClaimFeeData').mockResolvedValueOnce(mockClaimFee);
     //When
-    const isClaimFeeChanged = await checkIfClaimFeeHasChanged('11111', mockClaim, undefined);
+    const isClaimFeeChanged = await checkIfClaimFeeHasChanged('11111', createDraftClaim(), undefined);
     //Then
     expect(isClaimFeeChanged).toEqual(false);
   });
@@ -53,12 +64,12 @@ describe('Check claim fee is changed service', () => {
       version: 1,
     };
     jest.spyOn(CivilServiceClient.prototype, 'getClaimFeeData').mockResolvedValueOnce(mockClaimFee);
-    const claimWithStoredStringFee = Object.assign(Object.create(Object.getPrototypeOf(mockClaim)), mockClaim, {
+    const claimWithStoredStringFee = createDraftClaim({
       claimFee: {
         ...mockClaim.claimFee,
         calculatedAmountInPence: '11500',
       },
-    }) as Claim;
+    } as unknown as Partial<Claim>);
     //When
     const isClaimFeeChanged = await checkIfClaimFeeHasChanged('11111', claimWithStoredStringFee, undefined);
     //Then
@@ -68,12 +79,35 @@ describe('Check claim fee is changed service', () => {
   it('Should return status false if neither claim fee is available', async () => {
     //Given
     jest.spyOn(CivilServiceClient.prototype, 'getClaimFeeData').mockResolvedValueOnce({});
-    const claimWithoutFee = Object.assign(Object.create(Object.getPrototypeOf(mockClaim)), mockClaim, {
+    const claimWithoutFee = createDraftClaim({
       claimFee: undefined,
-    }) as Claim;
+    });
     //When
     const isClaimFeeChanged = await checkIfClaimFeeHasChanged('11111', claimWithoutFee, undefined);
     //Then
     expect(isClaimFeeChanged).toEqual(false);
+  });
+
+  it('Should return status true if only the newly calculated claim fee is available', async () => {
+    //Given
+    jest.spyOn(CivilServiceClient.prototype, 'getClaimFeeData').mockResolvedValueOnce({
+      calculatedAmountInPence: 11500,
+    });
+    const claimWithoutFee = createDraftClaim({
+      claimFee: undefined,
+    });
+    //When
+    const isClaimFeeChanged = await checkIfClaimFeeHasChanged('11111', claimWithoutFee, undefined);
+    //Then
+    expect(isClaimFeeChanged).toEqual(true);
+  });
+
+  it('Should return status true if only the stored claim fee is available', async () => {
+    //Given
+    jest.spyOn(CivilServiceClient.prototype, 'getClaimFeeData').mockResolvedValueOnce({});
+    //When
+    const isClaimFeeChanged = await checkIfClaimFeeHasChanged('11111', createDraftClaim(), undefined);
+    //Then
+    expect(isClaimFeeChanged).toEqual(true);
   });
 });
