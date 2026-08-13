@@ -64,7 +64,7 @@ Do not remove duplicate PR execution until every required entry below is complet
 | Same-revision old/new comparison | Jenkins URLs, commit SHA, outcomes, durations and Allure links for both suites | Pending |
 | Ten consecutive first-attempt reduced-stack runs | Ten rows in the run table below, all using one Jenkins revision | Complete |
 | WireMock request journal | Archived `test-results/functional/wiremock` link for each reduced-stack run; expected submission and lookup counts and zero unmatched requests | Complete; journals linked below |
-| QA/product-owner approval | Approval reference for splitting browser claim creation from payment/workflow/assignment/GA | Pending |
+| QA approval | One-off preview comparison of the migrated browser journey | Pending |
 | Duplicate PR execution removal | Follow-up change and coverage-owner review after all gates pass | Not started |
 
 ### Ten-run table
@@ -84,4 +84,4 @@ Do not remove duplicate PR execution until every required entry below is complet
 
 ## QA-person involvement
 
-This first migration batch requires a QA person. On the deployed preview, QA must complete the individual/no-interest/no-HWF create-claim journey once and compare it with the current full-stack behaviour. QA must check the page sequence, content, browser navigation, validation errors and final confirmation/reference, record screenshots or equivalent evidence, and add the approval reference to this matrix. QA must also confirm that payment, workflow completion, defendant assignment and both GA journeys remain owned by full-stack coverage and are not being claimed by WireMock.
+This first migration batch requires a QA person. On the deployed preview, QA must complete the individual/no-interest/no-HWF create-claim journey once and compare it with the current full-stack behaviour. QA must check the page sequence, content, browser navigation, validation errors and final confirmation/reference, record screenshots or equivalent evidence, and add the approval reference to this matrix. QA must also confirm that payment, workflow completion, defendant assignment and both GA journeys remain owned by full-stack coverage and are not being claimed by WireMock. Product-owner approval is not required because no user-flow assertion is removed or materially changed; this batch changes only the technical execution layer.
