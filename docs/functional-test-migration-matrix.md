@@ -60,10 +60,10 @@ Do not remove duplicate PR execution until every required entry below is complet
 | Evidence | Required record | Status |
 | --- | --- | --- |
 | Baseline purpose, setup and assertions | Matrix above | Complete |
-| Dependencies and known failure modes | Real IDAM login/draft setup for both paths; full-stack additionally waits on workflow, payment, assignment and GA. Record measured timings and observed failures from Jenkins. | Pending Jenkins evidence |
+| Dependencies and known failure modes | Reduced-stack uses preview CUI, IDAM and WireMock; full-stack additionally waits on workflow, payment, assignment and GA. Reduced-stack builds 2–11 averaged 604 seconds (range 477–1099 seconds) with no first-attempt failures. | Complete for reduced-stack; full-stack baseline pending |
 | Same-revision old/new comparison | Jenkins URLs, commit SHA, outcomes, durations and Allure links for both suites | Pending |
-| Ten consecutive first-attempt reduced-stack runs | Ten rows in the run table below, all using one commit | Pending |
-| WireMock request journal | Archived `test-results/functional/wiremock` link for each reduced-stack run; expected submission and lookup counts and zero unmatched requests | Pending |
+| Ten consecutive first-attempt reduced-stack runs | Ten rows in the run table below, all using one Jenkins revision | Complete |
+| WireMock request journal | Archived `test-results/functional/wiremock` link for each reduced-stack run; expected submission and lookup counts and zero unmatched requests | Complete; journals linked below |
 | QA/product-owner approval | Approval reference for splitting browser claim creation from payment/workflow/assignment/GA | Pending |
 | Duplicate PR execution removal | Follow-up change and coverage-owner review after all gates pass | Not started |
 
@@ -71,16 +71,16 @@ Do not remove duplicate PR execution until every required entry below is complet
 
 | Run | Commit | Jenkins build | First-attempt result | Duration | Allure | WireMock journal |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| 1 | | | | | | |
-| 2 | | | | | | |
-| 3 | | | | | | |
-| 4 | | | | | | |
-| 5 | | | | | | |
-| 6 | | | | | | |
-| 7 | | | | | | |
-| 8 | | | | | | |
-| 9 | | | | | | |
-| 10 | | | | | | |
+| 1 | `609ea2d48f4c82a6651ae0ff6911147bc93a4e88` | [2](https://build.hmcts.net/job/HMCTS_a_to_c/job/civil-citizen-ui/job/PR-8059/2/) | SUCCESS | 1099s | [Allure](https://build.hmcts.net/job/HMCTS_a_to_c/job/civil-citizen-ui/job/PR-8059/2/allure/) | [Journal](https://build.hmcts.net/job/HMCTS_a_to_c/job/civil-citizen-ui/job/PR-8059/2/artifact/test-results/functional/wiremock/request-journal.json) |
+| 2 | `609ea2d48f4c82a6651ae0ff6911147bc93a4e88` | [3](https://build.hmcts.net/job/HMCTS_a_to_c/job/civil-citizen-ui/job/PR-8059/3/) | SUCCESS | 496s | [Allure](https://build.hmcts.net/job/HMCTS_a_to_c/job/civil-citizen-ui/job/PR-8059/3/allure/) | [Journal](https://build.hmcts.net/job/HMCTS_a_to_c/job/civil-citizen-ui/job/PR-8059/3/artifact/test-results/functional/wiremock/request-journal.json) |
+| 3 | `609ea2d48f4c82a6651ae0ff6911147bc93a4e88` | [4](https://build.hmcts.net/job/HMCTS_a_to_c/job/civil-citizen-ui/job/PR-8059/4/) | SUCCESS | 558s | [Allure](https://build.hmcts.net/job/HMCTS_a_to_c/job/civil-citizen-ui/job/PR-8059/4/allure/) | [Journal](https://build.hmcts.net/job/HMCTS_a_to_c/job/civil-citizen-ui/job/PR-8059/4/artifact/test-results/functional/wiremock/request-journal.json) |
+| 4 | `609ea2d48f4c82a6651ae0ff6911147bc93a4e88` | [5](https://build.hmcts.net/job/HMCTS_a_to_c/job/civil-citizen-ui/job/PR-8059/5/) | SUCCESS | 477s | [Allure](https://build.hmcts.net/job/HMCTS_a_to_c/job/civil-citizen-ui/job/PR-8059/5/allure/) | [Journal](https://build.hmcts.net/job/HMCTS_a_to_c/job/civil-citizen-ui/job/PR-8059/5/artifact/test-results/functional/wiremock/request-journal.json) |
+| 5 | `609ea2d48f4c82a6651ae0ff6911147bc93a4e88` | [6](https://build.hmcts.net/job/HMCTS_a_to_c/job/civil-citizen-ui/job/PR-8059/6/) | SUCCESS | 557s | [Allure](https://build.hmcts.net/job/HMCTS_a_to_c/job/civil-citizen-ui/job/PR-8059/6/allure/) | [Journal](https://build.hmcts.net/job/HMCTS_a_to_c/job/civil-citizen-ui/job/PR-8059/6/artifact/test-results/functional/wiremock/request-journal.json) |
+| 6 | `609ea2d48f4c82a6651ae0ff6911147bc93a4e88` | [7](https://build.hmcts.net/job/HMCTS_a_to_c/job/civil-citizen-ui/job/PR-8059/7/) | SUCCESS | 554s | [Allure](https://build.hmcts.net/job/HMCTS_a_to_c/job/civil-citizen-ui/job/PR-8059/7/allure/) | [Journal](https://build.hmcts.net/job/HMCTS_a_to_c/job/civil-citizen-ui/job/PR-8059/7/artifact/test-results/functional/wiremock/request-journal.json) |
+| 7 | `609ea2d48f4c82a6651ae0ff6911147bc93a4e88` | [8](https://build.hmcts.net/job/HMCTS_a_to_c/job/civil-citizen-ui/job/PR-8059/8/) | SUCCESS | 506s | [Allure](https://build.hmcts.net/job/HMCTS_a_to_c/job/civil-citizen-ui/job/PR-8059/8/allure/) | [Journal](https://build.hmcts.net/job/HMCTS_a_to_c/job/civil-citizen-ui/job/PR-8059/8/artifact/test-results/functional/wiremock/request-journal.json) |
+| 8 | `609ea2d48f4c82a6651ae0ff6911147bc93a4e88` | [9](https://build.hmcts.net/job/HMCTS_a_to_c/job/civil-citizen-ui/job/PR-8059/9/) | SUCCESS | 565s | [Allure](https://build.hmcts.net/job/HMCTS_a_to_c/job/civil-citizen-ui/job/PR-8059/9/allure/) | [Journal](https://build.hmcts.net/job/HMCTS_a_to_c/job/civil-citizen-ui/job/PR-8059/9/artifact/test-results/functional/wiremock/request-journal.json) |
+| 9 | `609ea2d48f4c82a6651ae0ff6911147bc93a4e88` | [10](https://build.hmcts.net/job/HMCTS_a_to_c/job/civil-citizen-ui/job/PR-8059/10/) | SUCCESS | 748s | [Allure](https://build.hmcts.net/job/HMCTS_a_to_c/job/civil-citizen-ui/job/PR-8059/10/allure/) | [Journal](https://build.hmcts.net/job/HMCTS_a_to_c/job/civil-citizen-ui/job/PR-8059/10/artifact/test-results/functional/wiremock/request-journal.json) |
+| 10 | `609ea2d48f4c82a6651ae0ff6911147bc93a4e88` | [11](https://build.hmcts.net/job/HMCTS_a_to_c/job/civil-citizen-ui/job/PR-8059/11/) | SUCCESS | 484s | [Allure](https://build.hmcts.net/job/HMCTS_a_to_c/job/civil-citizen-ui/job/PR-8059/11/allure/) | [Journal](https://build.hmcts.net/job/HMCTS_a_to_c/job/civil-citizen-ui/job/PR-8059/11/artifact/test-results/functional/wiremock/request-journal.json) |
 
 ## QA-person involvement
 
