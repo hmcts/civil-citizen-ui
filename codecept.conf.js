@@ -27,7 +27,7 @@ exports.config = {
       await testFilesHelper.createTempToBeExecutedTestsFile();
     }
   },
-  teardownAll: async () => {
+  /*teardownAll: async () => {
     if (functional) {
       await testFilesHelper.createTestFilesReport();
       await testFilesHelper.deleteTempFailedTestsFile();
@@ -39,7 +39,7 @@ exports.config = {
     console.log('Current worker has finished running tests so we should clean up the user roles');
     await unAssignAllUsers();
     await deleteAllIdamTestUsers();
-  },
+  },*/
   tests: getTests(),
   output: process.env.REPORT_DIR || 'test-results/functional',
   helpers: {

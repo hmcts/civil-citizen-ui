@@ -64,13 +64,14 @@ module.exports = {
   },
   claimantCitizenUser: {
     password: defaultPassword,
-    //email:'civilmoneyclaimsdemo@gmail.com',
-    email: process.env.CLAIMANT_CITIZEN_EMAIL || `claimantcitizen-${Math.random().toString(36).slice(2, 9).toLowerCase()}@gmail.com`,
+    email:'civilmoneyclaimsdemo@gmail.com',
+    //email: process.env.CLAIMANT_CITIZEN_EMAIL || `claimantcitizen-${Math.random().toString(36).slice(2, 9).toLowerCase()}@gmail.com`,
     type: 'claimant',
   },
   defendantCitizenUser: {
     password: defaultPassword,
-    email: process.env.DEFENDANT_CITIZEN_EMAIL || `defendantcitizen-${Math.random().toString(36).slice(2, 9).toLowerCase()}@gmail.com`,
+    email: 'citizen1.user@gmail.com',
+    //email: process.env.DEFENDANT_CITIZEN_EMAIL || `defendantcitizen-${Math.random().toString(36).slice(2, 9).toLowerCase()}@gmail.com`,
     type: 'defendant',
   },
   defendantLRCitizenUser: {
