@@ -15,7 +15,6 @@ export const getDefaultStandardLiftEndDate = (startDate: Date): Date => {
 
 export class LiftBreathingSpaceForm extends BaseDate {
 
-  /** Set from claim.enterBreathing.start when building the lift breathing space form. */
   startDate: Date;
   breathingSpaceType?: string;
 

@@ -16,7 +16,6 @@ import {getHelpSupportLinks, getHelpSupportTitle} from 'services/dashboard/dashb
 import {isQueryManagementEnabled} from '../../../app/auth/launchdarkly/launchDarklyClient';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {getClaimById} from 'modules/utilityService';
-import {saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {ValidationError} from 'class-validator';
 
 const liftBreathingSpaceController = Router();
@@ -51,14 +50,6 @@ liftBreathingSpaceController.get(LIFT_BREATHING_SPACE_URL, async (req: Request, 
     const claimId = req.params.id as string;
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const claim = await getClaimById(claimId, req);
-    // TODO: remove bsType query param once dashboard notification ticket is complete
-    const bsType = req.query.bsType as string;
-    if (bsType) {
-      if (!claim.breathingSpace) claim.breathingSpace = {};
-      if (!claim.breathingSpace.enterBreathing) claim.breathingSpace.enterBreathing = {};
-      claim.breathingSpace.enterBreathing.type = bsType;
-      await saveDraftClaim(claimId, claim);
-    }
     const form = await getLiftBreathingSpaceForm(claimId, claim);
     const helpSupportTitle = getHelpSupportTitle(lang);
     const helpSupportLinks = getHelpSupportLinks(lang);
@@ -103,8 +94,6 @@ liftBreathingSpaceController.post(LIFT_BREATHING_SPACE_URL, async (req: Request,
       genericForm.validateSync();
     }
 
-    // Remove individual day/month/year field errors when we have a consolidated date error,
-    // so the error summary only shows the single date-level message
     if (genericForm.errors.some(e => e.property === 'date')) {
       genericForm.errors = genericForm.errors.filter(e => !['day', 'month', 'year'].includes(e.property));
     }
