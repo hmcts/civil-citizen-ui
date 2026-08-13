@@ -498,6 +498,7 @@ export class CivilServiceClient {
       claimId: normalizedClaimId,
       caseDataUpdate: updatedClaim,
     });
+    console.log(updatedClaim);
     const response = await executeRequest(
       () => this.client.post(
         CIVIL_SERVICE_SUBMIT_EVENT
