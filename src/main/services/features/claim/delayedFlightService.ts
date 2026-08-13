@@ -1,4 +1,6 @@
-import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {AppRequest} from 'common/models/AppRequest';
+import {Claim} from 'common/models/claim';
+import {getDraftClaim, updateDraftClaim} from 'modules/draft-store/draftStoreManagerService';
 import {FlightDetails} from 'common/models/flightDetails';
 import {GenericYesNo} from 'common/form/models/genericYesNo';
 import {AirlineList} from 'common/models/airlines/flights';
@@ -7,9 +9,17 @@ import {t} from 'i18next';
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('Claim - Claim Interest');
 
-export const getDelayedFlight = async (claimId: string): Promise<GenericYesNo> => {
+export const getClaimFromDraft = async (req: AppRequest): Promise<Claim> => {
+  const draftResult = await getDraftClaim(req);
+  return draftResult?.claimResponse?.case_data
+  ? Object.assign(new Claim(), draftResult.claimResponse.case_data)
+    : new Claim();
+};
+
+export const getDelayedFlight = async (req: AppRequest): Promise<GenericYesNo> => {
   try {
-    const caseData = await getCaseDataFromStore(claimId);
+    const caseData = await getClaimFromDraft(req)
+
     return caseData.delayedFlight
       ? new GenericYesNo(caseData.delayedFlight?.option)
       : new GenericYesNo();
@@ -19,21 +29,24 @@ export const getDelayedFlight = async (claimId: string): Promise<GenericYesNo> =
   }
 };
 
-export const deleteDelayedFlight = async (claimId: string): Promise<void> => {
+export const deleteDelayedFlight = async (req: AppRequest): Promise<void> => {
   try {
-    const claim = await getCaseDataFromStore(claimId);
+    const claim = await getClaimFromDraft(req);
+
     delete claim.delayedFlight;
     delete claim.flightDetails;
-    await saveDraftClaim(claimId, claim);
+
+    await updateDraftClaim(req, claim, draftId);
   } catch (error) {
     logger.error(error);
     throw error;
   }
 };
 
-export const getFlightDetails = async (claimId: string): Promise<FlightDetails> => {
+export const getFlightDetails = async (req: AppRequest): Promise<FlightDetails> => {
   try {
-    const caseData = await getCaseDataFromStore(claimId);
+    const caseData = await getClaimFromDraft(req);
+
     return caseData.flightDetails
       ? new FlightDetails(
         caseData.flightDetails?.airline,
@@ -49,22 +62,25 @@ export const getFlightDetails = async (claimId: string): Promise<FlightDetails> 
   }
 };
 
-export const saveDelayedFlight = async (claimId: string, delayedFlight: GenericYesNo) => {
+export const saveDelayedFlight = async (req: AppRequest, delayedFlight: GenericYesNo) => {
   try {
-    const caseData = await getCaseDataFromStore(claimId);
+    const caseData = await getClaimFromDraft(req);
     caseData.delayedFlight = delayedFlight;
-    await saveDraftClaim(claimId, caseData);
+
+    await updateDraftClaim(req, caseData, draftId);
   } catch (error) {
     logger.error(error);
     throw error;
   }
 };
 
-export const saveFlightDetails = async (claimId: string, flightDetails: FlightDetails) => {
+export const saveFlightDetails = async (req: AppRequest, flightDetails: FlightDetails) => {
   try {
-    const caseData = await getCaseDataFromStore(claimId);
+    const caseData = await getClaimFromDraft(req);
+
     caseData.flightDetails = flightDetails;
-    await saveDraftClaim(claimId, caseData);
+
+    await updateDraftClaim(req, caseData, draftId);
   } catch (error) {
     logger.error(error);
     throw error;

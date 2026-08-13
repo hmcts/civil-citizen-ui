@@ -16,8 +16,7 @@ const pageTitle= 'PAGES.TIMELINE.TITLE';
 
 timelineController.get(CLAIM_TIMELINE_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const userId = req.session?.user?.id;
-    const form = new GenericForm(getTimeline(await getClaimDetails(userId)));
+    const form = new GenericForm(getTimeline(await getClaimDetails(req)));
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const dates = [
       getDateInThePast(lang, 90),
@@ -45,7 +44,7 @@ timelineController.post(CLAIM_TIMELINE_URL, (async (req: AppRequest, res: Respon
       ];
       res.render(timelineViewPath, {form, dates, pageTitle});
     } else {
-      await saveTimeline(req.session?.user?.id, form.model);
+      await saveTimeline(req, form.model);
       res.redirect(CLAIM_EVIDENCE_URL);
     }
   } catch (error) {
