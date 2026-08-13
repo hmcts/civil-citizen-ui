@@ -137,10 +137,11 @@ const preserveDraftClaimCacheTtl = (
 const applyDraftClaimCreationDate = async (
   claimId: string,
   claim: Claim,
-  storedCreatedAt?: Date,
+  storedCreatedAt?: Date | string,
   isNewDraftClaim = false,
 ): Promise<number | undefined> => {
   if (claim.draftClaimCreatedAt) {
+    claim.draftClaimCreatedAt = getDraftClaimCreatedAt(claim.draftClaimCreatedAt);
     return undefined;
   }
   if (isNewDraftClaim) {
@@ -148,7 +149,7 @@ const applyDraftClaimCreationDate = async (
     return undefined;
   }
   if (storedCreatedAt) {
-    claim.draftClaimCreatedAt = new Date(storedCreatedAt);
+    claim.draftClaimCreatedAt = getDraftClaimCreatedAt(storedCreatedAt);
     return undefined;
   }
 
@@ -157,6 +158,11 @@ const applyDraftClaimCreationDate = async (
     ? reconstructCreationDateFromRemainingTtl(prefetchedTTL, TTLCategory.DRAFT_CLAIM)
     : new Date();
   return prefetchedTTL;
+};
+
+const getDraftClaimCreatedAt = (draftClaimCreatedAt: Date | string): Date => {
+  const createdAt = new Date(draftClaimCreatedAt);
+  return createdAt.getTime() > Date.now() ? new Date() : createdAt;
 };
 
 const buildTTLMetadata = (ttlCategory: TTLCategory, claim: Claim, isNewDraftClaim = false) => {
