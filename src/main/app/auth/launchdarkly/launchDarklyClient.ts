@@ -2,9 +2,6 @@ import config from 'config';
 import {init, LDFlagValue, LDUser} from '@launchdarkly/node-server-sdk';
 import {TestData} from '@launchdarkly/node-server-sdk/integrations';
 
-const {Logger} = require('@hmcts/nodejs-logging');
-const logger = Logger.getLogger('launchDarklyClient');
-
 let ldClient: Awaited<ReturnType<ReturnType<typeof init>['waitForInitialization']>>;
 let testData: InstanceType<typeof TestData>;
 
@@ -189,23 +186,17 @@ export async function isJudgmentBufferEnabled(): Promise<boolean> {
  * `cui-user-case-roles-session-cache-enabled` (defaults to true when LD is unavailable).
  */
 export async function isUserCaseRolesSessionCacheEnabled(): Promise<boolean> {
-  const flagKey = USER_CASE_ROLES_SESSION_CACHE;
   try {
     const enabled = config.get<boolean | string>('caches.userCaseRoles.enabled');
     if (enabled !== true && enabled !== 'true') {
-      logger.info(`[userCaseRolesCache] flag ${flagKey}=OFF (config caches.userCaseRoles.enabled is false)`);
       return false;
     }
   } catch {
-    logger.info(`[userCaseRolesCache] flag ${flagKey}=OFF (config caches.userCaseRoles.enabled missing)`);
     return false;
   }
   if (!ldClient) await getClient();
   if (!ldClient) {
-    logger.info(`[userCaseRolesCache] flag ${flagKey}=ENABLED (LaunchDarkly unavailable; defaulting to on)`);
     return true;
   }
-  const ldEnabled = await ldClient.variation(flagKey, await getUser(undefined), true) as boolean;
-  logger.info(`[userCaseRolesCache] flag ${flagKey}=${ldEnabled ? 'ENABLED' : 'OFF'} (LaunchDarkly)`);
-  return ldEnabled;
+  return await ldClient.variation(USER_CASE_ROLES_SESSION_CACHE, await getUser(undefined), true) as boolean;
 }

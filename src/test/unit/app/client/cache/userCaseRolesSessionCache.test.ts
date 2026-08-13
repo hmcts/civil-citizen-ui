@@ -118,7 +118,7 @@ describe('userCaseRolesSessionCache', () => {
       await storeUserCaseRolesInSession(req, 'case-1', CaseRole.DEFENDANT);
       await storeUserCaseRolesInSession(req, 'case-2', CaseRole.CLAIMANT);
 
-      evictUserCaseRolesFromSession(req, 'case-1', 'assign_defendant');
+      evictUserCaseRolesFromSession(req, 'case-1');
 
       expect(await getUserCaseRolesFromSession(req, 'case-1')).toEqual({hit: false});
       expect(await getUserCaseRolesFromSession(req, 'case-2')).toEqual({
