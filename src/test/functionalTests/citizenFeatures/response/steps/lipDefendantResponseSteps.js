@@ -211,6 +211,32 @@ class ResponseSteps {
         defendantUser.email,
         defendantUser.password,
       );
+
+      // Allow the HMCTS Access callback to complete before checking
+      // where the claim-linking journey has returned.
+      await I.wait(3);
+
+      const pinVisible =
+        await I.grabNumberOfVisibleElements('input[id="pin"]');
+
+      if (!pinVisible) {
+        const currentUrl = await I.grabCurrentUrl();
+
+        console.log(
+          `Claim-linking journey: URL after HMCTS Access login: ${currentUrl}`,
+        );
+
+        if (currentUrl.includes('/dashboard')) {
+          console.log(
+            'Claim-linking journey: Dashboard reached after login - resuming claim linking',
+          );
+          await assignCaseToLip.enterClaimNumber(claimNumber);
+        } else {
+          throw new Error(
+            `Claim-linking journey: Unexpected page after HMCTS Access login: ${currentUrl}`,
+          );
+        }
+      }
     }
 
     await assignCaseToLip.enterSecurityCodeAndContinue(
