@@ -665,6 +665,7 @@ export class CivilServiceClient {
 
   private async getUserCaseRolesFromCivilService(normalizedClaimId: string, req: AppRequest): Promise<CaseRole | undefined> {
     const userCaseRolesUrl = (new URL(`${this.client.defaults.baseURL}${CIVIL_SERVICE_USER_CASE_ROLE.replace(':claimId', normalizedClaimId)}`));
+    logger.info('[userCaseRoles] outbound GET');
     const response = await executeRequest(
       () => this.client.get(userCaseRolesUrl.toString(), buildAuthorizationOnlyConfig(req)),
       'Error when getting user case roles',
