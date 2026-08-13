@@ -2,8 +2,8 @@ require('dotenv').config({path: '.env.tests.local'});
 
 const { testFilesHelper } = require('./src/test/functionalTests/plugins/failedAndNotExecutedTestFilesPlugin.js');
 const testConfig = require('./src/test/config.js');
-const { unAssignAllUsers } = require('./src/test/functionalTests/specClaimHelpers/api/caseRoleAssignmentHelper');
-const { deleteAllIdamTestUsers } = require('./src/test/functionalTests/specClaimHelpers/api/idamHelper');
+//const { unAssignAllUsers } = require('./src/test/functionalTests/specClaimHelpers/api/caseRoleAssignmentHelper');
+//const { deleteAllIdamTestUsers } = require('./src/test/functionalTests/specClaimHelpers/api/idamHelper');
 const functional = process.env.FUNCTIONAL;
 
 const getTests = () => {

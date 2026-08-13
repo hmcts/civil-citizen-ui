@@ -37,7 +37,7 @@ Scenario('Create Claim -  Individual vs Individual - small claims - no interest 
   await steps.verifyAndPayClaimFee(defaultClaimAmount, defaultClaimFee);
   await api.waitForFinishedBusinessProcess();
   await api.assignToLipDefendant(caseRef);
-  /*console.log('Creating GA app as claimant');
+  console.log('Creating GA app as claimant');
   await I.amOnPage('/dashboard');
   await I.click(claimNumber);
   await createGASteps.askForMoreTimeCourtOrderGA(caseRef, 'Mr Claimant person v mr defendant person');
@@ -45,7 +45,7 @@ Scenario('Create Claim -  Individual vs Individual - small claims - no interest 
   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   await I.amOnPage('/dashboard');
   await I.click(claimNumber);
-  await createGASteps.askForMoreTimeCourtOrderGA(caseRef, 'Mr Claimant person v mr defendant person');*/
+  await createGASteps.askForMoreTimeCourtOrderGA(caseRef, 'Mr Claimant person v mr defendant person');
 }).tag('@civil-citizen-master @civil-citizen-pr').tag('@local-testing');
 
 // Removed redundant scenarios - now covered by integration tests:
