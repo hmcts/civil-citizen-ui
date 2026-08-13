@@ -59,7 +59,6 @@ import { t } from 'i18next';
 import {DashboardNotification} from 'models/dashboard/dashboardNotification';
 import {getLng} from 'common/utils/languageToggleUtils';
 import {LinkFromValues} from 'models/generalApplication/applicationType';
-import {isGaForWelshEnabled} from '../../app/auth/launchdarkly/launchDarklyClient';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 
 const replaceId = (url: string, claimId: string) => url.replace(':id', claimId);
