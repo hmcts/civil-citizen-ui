@@ -5,7 +5,7 @@ import {
   getSummarySections,
   saveStatementOfTruth,
 } from 'services/features/claim/checkAnswers/checkAnswersService';
-import {deleteDraftClaim} from 'modules/draft-store/draftStoreManagerService';
+import {deleteDraftClaim, getDraftClaim} from 'modules/draft-store/draftStoreManagerService';
 import {getStashedClaimOrFromStore} from 'common/utils/claimRequestLocals';
 import {Claim} from 'common/models/claim';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
@@ -23,7 +23,6 @@ import {EmailValidationWithMessage} from 'form/models/EmailValidationWithMessage
 import {PhoneValidationWithMessage} from 'form/models/PhoneValidationWithMessage';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
-import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {saveClaimFee} from 'services/features/claim/amount/claimFeesService';
 import {calculateInterestToDate} from 'common/utils/interestUtils';
 const validator = new Validator();
@@ -66,11 +65,11 @@ claimCheckAnswersController.get(CLAIM_CHECK_ANSWERS_URL,
 
 claimCheckAnswersController.post(CLAIM_CHECK_ANSWERS_URL, async (req: Request | AppRequest, res: Response, next: NextFunction) => {
   try {
-
-    const userId = (<AppRequest>req).session?.user?.id;
+    const appReq = req as AppRequest;
+    const userId = appReq.session?.user?.id;
     const isFullAmountRejected = (req.body?.isFullAmountRejected === 'true');
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-    const claim = await getCaseDataFromStore(userId);
+    const claim = await getDraftClaim(appReq);
     const isCarmEnabled = await isCarmEnabledForCase(claim.draftClaimCreatedAt);
     const acceptNotChangesAllowedValue =  (claim.claimDetails.helpWithFees.option === YesNo.YES) ? false : req.body.acceptNoChangesAllowed;
 
@@ -96,13 +95,13 @@ claimCheckAnswersController.post(CLAIM_CHECK_ANSWERS_URL, async (req: Request | 
     }
     const interestToDate = await calculateInterestToDate(claim);
     const claimFeeData = await civilServiceClient.getClaimFeeData(claim.totalClaimAmount + interestToDate, req as AppRequest);
-    await saveClaimFee(userId, claimFeeData);
+    await saveClaimFee(appReq, claimFeeData);
     if (form.hasErrors() ) {
       renderView(res, form, claim, userId, lang, isCarmEnabled);
       return;
     } else {
-      await saveStatementOfTruth(userId, form.model);
-      const submittedClaim = await submitClaim(<AppRequest>req);
+      await saveStatementOfTruth(appReq, form.model);
+      const submittedClaim = await submitClaim(appReq);
       res.clearCookie('eligibilityCompleted');
       res.clearCookie('eligibility');
       if (claim.claimDetails.helpWithFees.option === YesNo.NO) {
