@@ -35,8 +35,11 @@ import {req} from '../../../utils/UserDetails';
 import { ApplicationTypeOption } from 'models/generalApplication/applicationType';
 import {ClaimUpdate} from 'models/events/eventDto';
 import {CCDGeneralApplication} from 'models/gaEvents/eventDto';
+import {isUserCaseRolesSessionCacheEnabled} from '../../../../main/app/auth/launchdarkly/launchDarklyClient';
 
 jest.mock('axios');
+jest.mock('../../../../main/app/auth/launchdarkly/launchDarklyClient');
+const isUserCaseRolesSessionCacheEnabledMock = isUserCaseRolesSessionCacheEnabled as jest.Mock;
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 const baseUrl: string = config.get('baseUrl');
 const appReq = <AppRequest>req;
@@ -571,6 +574,7 @@ describe('Civil Service Client', () => {
       appReq.locals.claimDetailsRequestCache = undefined;
       appReq.locals.userCaseRolesRequestCache = undefined;
       appReq.session.userCaseRolesCache = undefined;
+      isUserCaseRolesSessionCacheEnabledMock.mockResolvedValue(true);
     });
 
     it('should return User Case Roles successfully', async () => {
@@ -639,6 +643,20 @@ describe('Civil Service Client', () => {
 
       expect(role).toBe(CaseRole.CLAIMANT);
       expect(mockGet).toHaveBeenCalledTimes(2);
+    });
+
+    it('should call civil service on every request when the session cache kill-switch is off', async () => {
+      isUserCaseRolesSessionCacheEnabledMock.mockResolvedValue(false);
+      const mockGet = jest.fn().mockResolvedValue({data: [CaseRole.CLAIMANT]});
+      mockedAxios.create.mockReturnValue({get: mockGet, defaults: {baseURL: baseUrl}} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
+
+      await civilServiceClient.getUserCaseRoles('1', appReq);
+      appReq.locals.userCaseRolesRequestCache = undefined;
+      await civilServiceClient.getUserCaseRoles('1', appReq);
+
+      expect(mockGet).toHaveBeenCalledTimes(2);
+      expect(appReq.session.userCaseRolesCache).toBeUndefined();
     });
   });
   describe('retrieveClaimDetails', () => {
