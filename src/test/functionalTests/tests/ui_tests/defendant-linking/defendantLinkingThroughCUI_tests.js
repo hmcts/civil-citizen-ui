@@ -11,7 +11,7 @@ const claimType = 'SmallClaims';
 let claimAmount = 1500, claimFee = 80, deadline = '6 March 2024';
 let claimTotalAmount = claimAmount + claimFee;
 
-Feature('Defendant linking through CUI').tag('@civil-citizen-master @civil-citizen-pr @civil-citizen-nightly @ui-full-admit');
+Feature('Defendant linking through CUI').tag('@civil-citizen-pr');
 
 Scenario.skip('CTSC admin links a defendant to a LiP claim through Manage Case', async ({I, api}) => {
   const {claimantUser, defendantUser} = await createScenarioUsers();
@@ -27,7 +27,7 @@ Scenario.skip('CTSC admin links a defendant to a LiP claim through Manage Case',
   await completeFullAdmitPayImmediatelyJourney(I, api, claimRef, claimNumber, defendantUser);
 });
 
-Scenario.skip('Defendant links a LiP claim using claim number and security code through CUI', async ({I, api}) => {
+Scenario('Defendant links a LiP claim using claim number and security code through CUI', async ({I, api}) => {
   const {claimantUser, defendantUser} = await createScenarioUsers();
 
   const claimRef = await api.createLiPClaim(claimantUser, claimType, false, 'Individual', undefined, false, false);
