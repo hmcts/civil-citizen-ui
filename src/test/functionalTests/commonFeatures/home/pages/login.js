@@ -180,6 +180,7 @@ class LoginPage {
   async citizenLogin(email, password) {
     await this.#login(email, password, '/dashboard');
   }
+
   async citizenLoginForClaimLinking(email, password) {
     const acceptAdditionalCookies =
       '//button[contains(normalize-space(.), "Accept additional cookies")]';
@@ -225,10 +226,6 @@ class LoginPage {
           combinedPasswordField,
         );
 
-      /*
-       * Master currently displays a combined email/password
-       * sign-in form hosted by HMCTS Access.
-       */
       if (
         combinedHeadingVisible > 0 &&
         combinedEmailVisible > 0 &&
@@ -243,17 +240,13 @@ class LoginPage {
         await I.waitForVisible(buttons.submit);
         await I.clickWithRetry(buttons.submit, 2);
 
-        await I.waitForContent(
-          'Enter security code',
-          config.WaitForText,
-        );
-
+        /*
+         * Do not wait for the security-code page here.
+         * The claim-linking page object handles the PIN page.
+         */
         return;
       }
 
-      /*
-       * Supports the newer split HMCTS Access journey as well.
-       */
       const signInLinkVisible =
         await I.grabNumberOfVisibleElements(
           buttons.hmctsSignIn,
