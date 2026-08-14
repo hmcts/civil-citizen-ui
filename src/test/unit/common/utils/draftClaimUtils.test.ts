@@ -13,9 +13,19 @@ describe('draftClaimUtils', () => {
     expect(getDraftClaimDeletionDate(new Date('2026-07-01T10:00:00.000Z'), undefined, 'en')).toBeUndefined();
   });
 
+  it('should not return draft deletion date with invalid ttl marker', () => {
+    expect(getDraftClaimDeletionDate(new Date('2026-07-01T10:00:00.000Z'), 0, 'en')).toBeUndefined();
+    expect(getDraftClaimDeletionDate(new Date('2026-07-01T10:00:00.000Z'), -1, 'en')).toBeUndefined();
+    expect(getDraftClaimDeletionDate(new Date('2026-07-01T10:00:00.000Z'), Number.NaN, 'en')).toBeUndefined();
+  });
+
   it('should not return draft deletion date when stored ttl marker does not match the configured draft TTL', () => {
     expect(getDraftClaimDeletionDate(new Date('2026-07-01T10:00:00.000Z'), 180, 'en')).toBeUndefined();
     expect(getDraftClaimDeletionDate(new Date('2026-07-01T10:00:00.000Z'), 13179, 'en')).toBeUndefined();
+  });
+
+  it('should not return draft deletion date with invalid creation date', () => {
+    expect(getDraftClaimDeletionDate('not-a-date', 30, 'en')).toBeUndefined();
   });
 
   it('should use today when stored creation date is in the future', () => {

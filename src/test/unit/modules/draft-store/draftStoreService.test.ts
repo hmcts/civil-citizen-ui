@@ -1,9 +1,11 @@
 import {
   createDraftClaimInStoreWithExpiryTime,
   deleteDraftClaimFromStore,
+  deleteDraftClaim,
   deleteFieldDraftClaimFromStore,
   findClaimIdsbyUserId,
   generateRedisKey,
+  generateRedisKeyForGA,
   getCaseDataFromStore,
   getDraftClaimFromStore,
   saveDraftClaim,
@@ -12,6 +14,7 @@ import {app} from '../../../../main/app';
 import {Claim} from 'models/claim';
 import {AppRequest} from 'common/models/AppRequest';
 import {req} from '../../../utils/UserDetails';
+import {TTLCategory} from 'modules/draft-store/ttlConfig';
 
 const REDIS_DATA = require('../../../../main/modules/draft-store/redisData.json');
 const CLAIM_ID = '1645882162449409';
@@ -83,10 +86,19 @@ describe('Draft store service to save and retrieve claim', () => {
     expect(getDraftClaimFromStore(CLAIM_ID)).rejects.toThrowError('Case not found...');
     expect(spyGet).toBeCalled();
   });
+  it('should return empty civil claim response when redis data is malformed', async () => {
+    //Given
+    const draftStoreWithData = createMockDraftStore(undefined);
+    draftStoreWithData.get = jest.fn(async () => '{');
+    app.locals.draftStoreClient = draftStoreWithData;
+    //When
+    const result = await getDraftClaimFromStore(CLAIM_ID);
+    //Then
+    expect(result.id).toBeUndefined();
+  });
   it('should update existing claim when data exists', async () => {
     //Given
-    const draftStoreWithData = createMockDraftStore(REDIS_DATA[0]);
-    app.locals.draftStoreClient = draftStoreWithData;
+    app.locals.draftStoreClient = createMockDraftStore(REDIS_DATA[0]);
     const spyGet = jest.spyOn(app.locals.draftStoreClient, 'get');
     const spySet = jest.spyOn(app.locals.draftStoreClient, 'set');
     //When
@@ -117,8 +129,7 @@ describe('Draft store service to save and retrieve claim', () => {
   });
   it('should return case data when getting case data and data in redis exists', async () => {
     //Given
-    const draftStoreWithData = createMockDraftStore(REDIS_DATA);
-    app.locals.draftStoreClient = draftStoreWithData;
+    app.locals.draftStoreClient = createMockDraftStore(REDIS_DATA);
     const spyGet = jest.spyOn(app.locals.draftStoreClient, 'get');
     //When
     const result = await getCaseDataFromStore(CLAIM_ID);
@@ -128,8 +139,7 @@ describe('Draft store service to save and retrieve claim', () => {
   });
   it('should return undefined when getting case data and data in redis exists', async () => {
     //Given
-    const draftStoreWithData = createMockDraftStore(undefined);
-    app.locals.draftStoreClient = draftStoreWithData;
+    app.locals.draftStoreClient = createMockDraftStore(undefined);
     const spyGet = jest.spyOn(app.locals.draftStoreClient, 'get');
     //When
     const result = await getCaseDataFromStore(CLAIM_ID);
@@ -147,8 +157,7 @@ describe('Draft store service to save and retrieve claim', () => {
   });
   it('should delete the claim successfully', async () => {
     //Given
-    const draftStoreWithData = createMockDraftStore(REDIS_DATA[0]);
-    app.locals.draftStoreClient = draftStoreWithData;
+    app.locals.draftStoreClient = createMockDraftStore(REDIS_DATA[0]);
     const spyDel = jest.spyOn(app.locals.draftStoreClient, 'del');
     //When
     await deleteDraftClaimFromStore(CLAIM_ID);
@@ -180,19 +189,19 @@ describe('Draft store service to save and retrieve claim', () => {
     expect(result).toBe('123451');
   });
 
+  it('should generate redis key for general application', async () => {
+    //Given
+    const appReq = <AppRequest>req;
+    appReq.params = {appId: '67890'};
+    //When
+    const result = generateRedisKeyForGA(<AppRequest>req);
+    //Then
+    expect(result).toBe('678901');
+  });
+
   it('should remove field from claim data and save on redis', async () => {
     //Given
-    const draftStoreWithData = createMockDraftStore(undefined);
-    app.locals.draftStoreClient = draftStoreWithData;
-    const expectedClaim = {
-      id: CLAIM_ID,
-      case_data: {
-        refreshDataForDJ: true,
-        id: CLAIM_ID,
-      },
-    };
-    expectedClaim.id = CLAIM_ID;
-
+    app.locals.draftStoreClient = createMockDraftStore(undefined);
     const mockClaim = new Claim();
     mockClaim.id = CLAIM_ID;
     mockClaim.totalClaimAmount = 123;
@@ -281,8 +290,57 @@ describe('Draft store service to save and retrieve claim', () => {
     expect(draftStoreWithData.expireat).not.toHaveBeenCalled();
   });
 
+  it('should preserve stored draft ttl marker when saving an existing draft', async () => {
+    const storedClaim = JSON.parse(JSON.stringify(REDIS_DATA[0]));
+    storedClaim.case_data.draftClaimCreatedAt = new Date('2026-07-01T10:00:00.000Z').toISOString();
+    storedClaim.case_data.draftClaimCacheTtlDays = 30;
+    const draftStoreWithData = createMockDraftStore(storedClaim);
+    draftStoreWithData.ttl = jest.fn().mockResolvedValue(120);
+    app.locals.draftStoreClient = draftStoreWithData;
+
+    const claim = new Claim();
+    claim.id = CLAIM_ID;
+
+    await saveDraftClaim(CLAIM_ID, claim);
+
+    expect(claim.draftClaimCacheTtlDays).toBe(30);
+  });
+
+  it('should normalise an existing future draftClaimCreatedAt before saving', async () => {
+    jest.useFakeTimers().setSystemTime(new Date('2026-08-13T10:00:00.000Z'));
+    const draftStoreWithData = createMockDraftStore(REDIS_DATA[0]);
+    draftStoreWithData.ttl = jest.fn().mockResolvedValue(-1);
+    app.locals.draftStoreClient = draftStoreWithData;
+
+    const claim = new Claim();
+    claim.id = CLAIM_ID;
+    claim.draftClaimCreatedAt = new Date('2062-08-01T10:00:00.000Z');
+
+    await saveDraftClaim(CLAIM_ID, claim);
+
+    expect(claim.draftClaimCreatedAt).toEqual(new Date('2026-08-13T10:00:00.000Z'));
+    jest.useRealTimers();
+  });
+
+  it('should normalise a stored future draftClaimCreatedAt before saving', async () => {
+    jest.useFakeTimers().setSystemTime(new Date('2026-08-13T10:00:00.000Z'));
+    const storedClaim = JSON.parse(JSON.stringify(REDIS_DATA[0]));
+    storedClaim.case_data.draftClaimCreatedAt = '2062-08-01T10:00:00.000Z';
+    const draftStoreWithData = createMockDraftStore(storedClaim);
+    draftStoreWithData.ttl = jest.fn().mockResolvedValue(-1);
+    app.locals.draftStoreClient = draftStoreWithData;
+
+    const claim = new Claim();
+    claim.id = CLAIM_ID;
+
+    await saveDraftClaim(CLAIM_ID, claim);
+
+    expect(claim.draftClaimCreatedAt).toEqual(new Date('2026-08-13T10:00:00.000Z'));
+    jest.useRealTimers();
+  });
+
   it('should reconstruct draftClaimCreatedAt from existing TTL for legacy drafts without adding a new expiry notice marker', async () => {
-    const storedClaim = {...REDIS_DATA[0]};
+    const storedClaim = JSON.parse(JSON.stringify(REDIS_DATA[0]));
     delete storedClaim.case_data.draftClaimCreatedAt;
     const draftStoreWithData = createMockDraftStore(storedClaim);
     const remainingTtlSeconds = 90 * 86400;
@@ -303,5 +361,31 @@ describe('Draft store service to save and retrieve claim', () => {
     expect(createdAtMs).toBeLessThanOrEqual(afterSave - expectedElapsedMs + 1000);
     expect(claim.draftClaimCacheTtlDays).toBeUndefined();
     expect(draftStoreWithData.expireat).not.toHaveBeenCalled();
+  });
+
+  it('should save journey cache without draft expiry metadata', async () => {
+    const draftStoreWithData = createMockDraftStore(undefined);
+    draftStoreWithData.ttl = jest.fn().mockResolvedValue(-1);
+    app.locals.draftStoreClient = draftStoreWithData;
+
+    const claim = new Claim();
+    claim.id = CLAIM_ID;
+
+    await saveDraftClaim(CLAIM_ID, claim, true, undefined, TTLCategory.JOURNEY_CACHE);
+
+    expect(claim.draftClaimCreatedAt).toBeUndefined();
+    expect(draftStoreWithData.set).toHaveBeenCalledWith(CLAIM_ID, expect.any(String), 'EX', expect.any(Number));
+  });
+
+  it('should delete draft claim using generated redis key when requested', async () => {
+    const draftStoreWithData = createMockDraftStore(REDIS_DATA[0]);
+    app.locals.draftStoreClient = draftStoreWithData;
+    const appReq = <AppRequest>req;
+    appReq.params = {id: 'draft-id'};
+    appReq.session.user.id = '1';
+
+    await deleteDraftClaim(appReq, true);
+
+    expect(draftStoreWithData.del).toHaveBeenCalledWith('draft-id1', undefined);
   });
 });
