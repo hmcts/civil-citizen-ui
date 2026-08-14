@@ -2,7 +2,7 @@ import {Claim} from 'common/models/claim';
 import Axios, {AxiosError, AxiosHeaderValue, AxiosInstance, AxiosResponse} from 'axios';
 import {AssertionError} from 'assert';
 import {AppRequest, AppSession} from 'common/models/AppRequest';
-import {CivilClaimResponse, ClaimFeeData} from 'common/models/civilClaimResponse';
+import {CivilClaimResponse, CivilServiceClaimFeeData, ClaimFeeData} from 'common/models/civilClaimResponse';
 import {
   ASSIGN_CLAIM_TO_DEFENDANT,
   CIVIL_SERVICE_AGREED_RESPONSE_DEADLINE_DATE,
@@ -154,6 +154,18 @@ export class CivilServiceClient {
     return newCache;
   }
 
+  private getCalculateInterestRequestCache(req: AppRequest): Map<string, Promise<number>> {
+    const requestWithLocals = req as AppRequest & { locals?: AppRequest['locals'] };
+    const requestLocals = requestWithLocals.locals ?? (requestWithLocals.locals = {env: '', lang: ''});
+    if (requestLocals.calculateInterestRequestCache) {
+      return requestLocals.calculateInterestRequestCache;
+    }
+
+    const newCache = new Map<string, Promise<number>>();
+    requestLocals.calculateInterestRequestCache = newCache;
+    return newCache;
+  }
+
   private getUserCaseRolesRequestCache(req: AppRequest): Map<string, Promise<CaseRole>> {
     const requestWithLocals = req as AppRequest & { locals?: AppRequest['locals'] };
     const requestLocals = requestWithLocals.locals ?? (requestWithLocals.locals = {env: '', lang: ''});
@@ -301,13 +313,18 @@ export class CivilServiceClient {
 
   async getClaimFeeData(amount: number, req: AppRequest): Promise<ClaimFeeData> {
     amount = roundOffTwoDecimals(amount);
-    const response = await this.authenticatedGet<ClaimFeeData>(
+    const response = await this.authenticatedGet<CivilServiceClaimFeeData>(
       `${CIVIL_SERVICE_CLAIM_AMOUNT_URL}/${amount}`,
       req,
       `Error when getting claim fee data, req.params.id - ${req.params.id}`,
     );
     logger.info('Claim fee calculated');
-    return response.data;
+    return {
+      ...response.data,
+      calculatedAmountInPence: response.data.calculatedAmountInPence === undefined
+        ? undefined
+        : Number(response.data.calculatedAmountInPence),
+    };
   }
 
   async getGeneralApplicationFee(feeRequestBody: GAFeeRequestBody, req: AppRequest): Promise<ClaimFeeData> {
@@ -530,7 +547,28 @@ export class CivilServiceClient {
     return convertCaseToClaim(claimResponse);
   }
 
-  async calculateClaimInterest(claim: ClaimUpdate): Promise<number> {
+  async calculateClaimInterest(claim: ClaimUpdate, req?: AppRequest): Promise<number> {
+    // Request-scoped dedup only: collapses duplicate calls within one HTTP request.
+    // Does not persist across page loads or form submissions.
+    if (req) {
+      const requestCache = this.getCalculateInterestRequestCache(req);
+      const cacheKey = JSON.stringify(claim);
+      const cached = requestCache.get(cacheKey);
+      if (cached !== undefined) {
+        return cached;
+      }
+      const promise = this.calculateClaimInterestFromCivilService(claim)
+        .catch((err) => {
+          requestCache.delete(cacheKey);
+          throw err;
+        });
+      requestCache.set(cacheKey, promise);
+      return promise;
+    }
+    return this.calculateClaimInterestFromCivilService(claim);
+  }
+
+  private async calculateClaimInterestFromCivilService(claim: ClaimUpdate): Promise<number> {
     logger.info('calculateClaimInterest');
     const response = await executeRequest(
       () => this.client.post(CIVIL_SERVICE_CLAIM_CALCULATE_INTEREST, claim, buildJsonOnlyConfig()),
