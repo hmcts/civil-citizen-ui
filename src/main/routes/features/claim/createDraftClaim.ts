@@ -4,7 +4,6 @@ import { BILINGUAL_LANGUAGE_PREFERENCE_URL, CLAIM_CHECK_ANSWERS_URL, TESTING_SUP
 import {createOrLoadDraft, updateDraftClaim} from 'modules/draft-store/draftStoreManagerService';
 const createDraftViewPath = 'features/claim/create-draft';
 import jwt_decode from 'jwt-decode';
-import {isCarmEnabledForCase} from '../../../app/auth/launchdarkly/launchDarklyClient';
 import {Claim} from 'models/claim';
 import {saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import config from 'config';
@@ -83,23 +82,23 @@ createDraftClaimController.post(TESTING_SUPPORT_URL, (async (req: Request, res: 
       const MILLISECONDS_IN_1_HOUR = 3600000;
       res.cookie('eligibilityCompleted', true, {maxAge: MILLISECONDS_IN_1_HOUR, httpOnly: true });
     }
+    const initialClaimData = rawCaseData
+      ? Object.assign(new Claim(), rawCaseData, claimWithSubmittedDate)
+      : undefined;
 
-    const claimData = Object.assign(new Claim(), rawCaseData || {}, claimWithSubmittedDate);
-    let draftResult = await createOrLoadDraft(appReq, claimData);
+    let draftResult = await createOrLoadDraft(appReq, initialClaimData);
 
-    if (!draftResult.isNew && draftResult.rawResponse?.draftId) {
-      draftResult = await updateDraftClaim(appReq, claimData, draftResult.rawResponse.draftId);
-    }
-
-    if(appReq.session) {
+    if (appReq.session && draftResult.rawResponse?.draftId) {
       appReq.session.draftId = draftResult.rawResponse.draftId;
     }
 
     if (draftResult.isNew) {
       await civilServiceClient.createDashboard(appReq);
+    } else if (rawCaseData && draftResult.rawResponse?.draftId) {
+      const existingData = draftResult.claimResponse?.case_data || {};
+      const updatedClaim = Object.assign(new Claim(), existingData, rawCaseData, claimWithSubmittedDate);
+      draftResult = await updateDraftClaim(appReq, updatedClaim, draftResult.rawResponse.draftId);
     }
-
-    await isCarmEnabledForCase(claimData.submittedDate);
 
     if (req.body?.idToken && userId) {
       return res.sendStatus(200);
