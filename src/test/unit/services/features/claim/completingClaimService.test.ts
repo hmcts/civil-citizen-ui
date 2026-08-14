@@ -1,15 +1,12 @@
-import * as draftStoreService from '../../../../../main/modules/draft-store/draftStoreService';
 import * as draftStoreManagerService from '../../../../../main/modules/draft-store/draftStoreManagerService';
-import {Claim} from 'models/claim';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {saveCompletingClaim} from 'services/features/claim/completingClaimService';
 import {AppRequest} from 'models/AppRequest';
 
 jest.mock('../../../../../main/modules/draft-store');
-jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../main/modules/draft-store/draftStoreManagerService');
 
-describe('Resolving Dispute Service', () => {
+describe('Completing Claim Service', () => {
   const mockReq = {
     session: {
       user: {
@@ -23,26 +20,36 @@ describe('Resolving Dispute Service', () => {
     jest.clearAllMocks();
   });
 
-  it('should save claim with completingClaimConfirmed true', async () => {
+  it('should save claim with completingClaimConfirmed true and map draftClaimCreatedAt', async () => {
     //Given
-    const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
+    const mockCreatedAt = '2026-08-14T10:00:00.000Z';
+    const spyGetDraftClaim = jest.spyOn(draftStoreManagerService, 'getDraftClaim');
     const spyUpdateDraftClaim = jest.spyOn(draftStoreManagerService, 'updateDraftClaim');
-    (draftStoreService.getCaseDataFromStore as jest.Mock).mockResolvedValue(new Claim());
+
+    (draftStoreManagerService.getDraftClaim as jest.Mock).mockResolvedValue({
+      claimResponse: {case_data: {}},
+      createdAt: mockCreatedAt,
+      rawResponse: {draftId: 'draft-123'},
+      isNew: false,
+    });
     (draftStoreManagerService.updateDraftClaim as jest.Mock).mockResolvedValue({});
     //When
     await saveCompletingClaim(mockReq);
     // Then
-    expect(spyGetCaseDataFromStore).toHaveBeenCalledWith('123');
+    expect(spyGetDraftClaim).toHaveBeenCalledWith(mockReq);
     expect(spyUpdateDraftClaim).toHaveBeenCalledWith(
       mockReq,
-      expect.objectContaining({completingClaimConfirmed: true}),
+      expect.objectContaining({
+        completingClaimConfirmed: true,
+        draftClaimCreatedAt: new Date(mockCreatedAt),
+      }),
       'draft-123',
     );
   });
 
-  it('should throw an error when draftStore fails', async () => {
+  it('should throw an error when draftStoreManager fails', async () => {
     //Given
-    (draftStoreService.getCaseDataFromStore as jest.Mock).mockRejectedValue(
+    (draftStoreManagerService.getDraftClaim as jest.Mock).mockRejectedValue(
       new Error(TestMessages.REDIS_FAILURE),
     );
     //Then
