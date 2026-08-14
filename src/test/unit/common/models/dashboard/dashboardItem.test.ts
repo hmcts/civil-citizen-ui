@@ -67,6 +67,17 @@ describe('Dashboard Items', ()=> {
       expect(item.getDraftClaimDeletionDate()).toBeUndefined();
     });
 
+    it('should not set a draft deletion date for drafts without the current ttl marker', () => {
+      //Given
+      const claim = new Claim();
+      claim.draftClaimCreatedAt= new Date();
+      claim.draftClaimCacheTtlDays = 180;
+      //When
+      const item = toDraftClaimDashboardItem(claim);
+      //Then
+      expect(item.getDraftClaimDeletionDate()).toBeUndefined();
+    });
+
     it('should return undefined when claim is empty', async () => {
       //Given
       const claim = new Claim();

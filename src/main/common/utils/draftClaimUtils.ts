@@ -8,7 +8,7 @@ const getDraftClaimTtlDays = (draftClaimCacheTtlDays: number): number | undefine
   }
 
   const configuredTtlDays = getTTLDaysForCategory(TTLCategory.DRAFT_CLAIM);
-  return Math.min(ttlDays, configuredTtlDays);
+  return ttlDays === configuredTtlDays ? ttlDays : undefined;
 };
 
 const getDraftClaimCreatedAt = (draftClaimCreatedAt: Date | string): Date | undefined => {
