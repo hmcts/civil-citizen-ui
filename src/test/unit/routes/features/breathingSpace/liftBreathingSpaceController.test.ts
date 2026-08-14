@@ -2,7 +2,7 @@ import request from 'supertest';
 import {app} from '../../../../../main/app';
 import nock from 'nock';
 import config from 'config';
-import {LIFT_BREATHING_SPACE_URL, CYA_LIFT_BREATHING_SPACE_URL} from '../../../../../main/routes/urls';
+import {BREATHING_SPACE_LIFT_URL, CYA_LIFT_BREATHING_SPACE_URL} from '../../../../../main/routes/urls';
 import {getClaimById} from '../../../../../main/modules/utilityService';
 import {getLiftBreathingSpaceForm, saveLiftBreathingSpace} from '../../../../../main/services/features/breathingSpace/liftBreathingSpaceService';
 import {Claim} from '../../../../../main/common/models/claim';
@@ -41,7 +41,7 @@ describe('Lift Breathing Space Controller', () => {
       mockGetLiftBreathingSpaceForm.mockResolvedValue(new LiftBreathingSpaceForm());
 
       await request(app)
-        .get(LIFT_BREATHING_SPACE_URL.replace(':id', '123'))
+        .get(BREATHING_SPACE_LIFT_URL.replace(':id', '123'))
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain('Lift breathing space');
@@ -57,7 +57,7 @@ describe('Lift Breathing Space Controller', () => {
       mockGetClaimById.mockRejectedValue(new Error('Test error'));
 
       await request(app)
-        .get(LIFT_BREATHING_SPACE_URL.replace(':id', '123'))
+        .get(BREATHING_SPACE_LIFT_URL.replace(':id', '123'))
         .expect((res) => {
           expect(res.status).toBe(500);
         });
@@ -74,7 +74,7 @@ describe('Lift Breathing Space Controller', () => {
       futureDate.setDate(futureDate.getDate() + 30);
 
       await request(app)
-        .post(LIFT_BREATHING_SPACE_URL.replace(':id', '123'))
+        .post(BREATHING_SPACE_LIFT_URL.replace(':id', '123'))
         .send({
           year: futureDate.getFullYear().toString(),
           month: (futureDate.getMonth() + 1).toString().padStart(2, '0'),
@@ -94,7 +94,7 @@ describe('Lift Breathing Space Controller', () => {
       const today = new Date();
 
       await request(app)
-        .post(LIFT_BREATHING_SPACE_URL.replace(':id', '123'))
+        .post(BREATHING_SPACE_LIFT_URL.replace(':id', '123'))
         .send({
           year: today.getFullYear().toString(),
           month: (today.getMonth() + 1).toString().padStart(2, '0'),
@@ -114,7 +114,7 @@ describe('Lift Breathing Space Controller', () => {
       mockGetClaimById.mockResolvedValue(claim);
 
       await request(app)
-        .post(LIFT_BREATHING_SPACE_URL.replace(':id', '123'))
+        .post(BREATHING_SPACE_LIFT_URL.replace(':id', '123'))
         .send({year: '2020', month: '01', day: '01', text: 'Reason'})
         .expect((res) => {
           expect(res.status).toBe(200);
@@ -134,7 +134,7 @@ describe('Lift Breathing Space Controller', () => {
       mockGetClaimById.mockResolvedValue(claim);
 
       await request(app)
-        .post(LIFT_BREATHING_SPACE_URL.replace(':id', '123'))
+        .post(BREATHING_SPACE_LIFT_URL.replace(':id', '123'))
         .send({year: '2024', month: '08', day: '02', text: 'Reason'})
         .expect((res) => {
           expect(res.status).toBe(200);
@@ -156,7 +156,7 @@ describe('Lift Breathing Space Controller', () => {
       mockSaveLiftBreathingSpace.mockResolvedValue({});
 
       await request(app)
-        .post(LIFT_BREATHING_SPACE_URL.replace(':id', '123'))
+        .post(BREATHING_SPACE_LIFT_URL.replace(':id', '123'))
         .send({year: '', month: '', day: '', text: 'Reason'})
         .expect(302);
 
@@ -173,7 +173,7 @@ describe('Lift Breathing Space Controller', () => {
       mockGetClaimById.mockResolvedValue(claim);
 
       await request(app)
-        .post(LIFT_BREATHING_SPACE_URL.replace(':id', '123'))
+        .post(BREATHING_SPACE_LIFT_URL.replace(':id', '123'))
         .send({year: '', month: '', day: '', text: ''})
         .expect((res) => {
           expect(res.status).toBe(200);
@@ -185,7 +185,7 @@ describe('Lift Breathing Space Controller', () => {
       mockGetClaimById.mockRejectedValue(new Error('Test error'));
 
       await request(app)
-        .post(LIFT_BREATHING_SPACE_URL.replace(':id', '123'))
+        .post(BREATHING_SPACE_LIFT_URL.replace(':id', '123'))
         .send({year: '2023', month: '01', day: '01', text: 'Reason'})
         .expect((res) => {
           expect(res.status).toBe(500);

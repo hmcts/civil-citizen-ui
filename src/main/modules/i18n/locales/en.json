@@ -577,6 +577,8 @@
         "CONFIRMATION": {
           "TITLE": "Breathing space lifted",
           "PAGE_TITLE": "Breathing space lifted confirmation",
+          "STANDARD_PAGE_TITLE": "Standard breathing space lifted",
+          "MENTAL_HEALTH_PAGE_TITLE": "Mental health breathing space lifted",
           "CASE_NUMBER": "Case number:",
           "EMAIL_SENT": "We have sent you a confirmation email.",
           "RETURN_TO_CASE_SUMMARY": "Return to your case summary"

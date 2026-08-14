@@ -568,15 +568,17 @@
         "WHEN_END": "Pryd ddaw'r lle i anadlu i ben?",
         "DATE_HINT": "Dyma'r dyddiad y dywedwyd wrthych y bydd yn gorffen, er enghraifft, 15 11 2026",
         "WHY_LIFTED": "Pam bod y lle i anadlu'n cael ei godi? (dewisol)",
-        "CHECK_ANSWERS": "Check your answers",
+        "CHECK_ANSWERS": "Gwiriwch eich atebion",
         "EXIT": {
           "TITLE": "Ydych chi'n siŵr eich bod eisiau gadael y llwybr hwn?",
           "BODY": "Bydd yr atebion yn cael eu colli, ac ni fydd y lle i anadlu yn cael ei godi",
           "OPTION_REQUIRED": "Dewiswch ie os ydych chi am adael y llwybr hwn"
         },
         "CONFIRMATION": {
-          "TITLE": "Breathing space lifted",
-          "PAGE_TITLE": "Breathing space lifted confirmation",
+          "TITLE": "Codwyd y cyfnod o seibiant",
+          "PAGE_TITLE": "Cadarnhad bod y lle i anadlu wedi'i godi",
+          "STANDARD_PAGE_TITLE": "Lle i anadlu safonol - Wedi'i godi",
+          "MENTAL_HEALTH_PAGE_TITLE": "Lle i anadu iechyd meddwl - Wedi'i godi",
           "CASE_NUMBER": "Rhif yr achos:",
           "EMAIL_SENT": "Rydym wedi anfon e-bost cadarnhad atoch.",
           "RETURN_TO_CASE_SUMMARY": "Dychwelyd i grynodeb eich achos"

@@ -1,6 +1,6 @@
 import {NextFunction, Request, Response, Router} from 'express';
 import {
-  LIFT_BREATHING_SPACE_URL,
+  BREATHING_SPACE_LIFT_URL,
   CYA_LIFT_BREATHING_SPACE_URL,
   LIFT_BREATHING_SPACE_EXIT_URL,
   DASHBOARD_CLAIMANT_URL,
@@ -16,7 +16,9 @@ import {getHelpSupportLinks, getHelpSupportTitle} from 'services/dashboard/dashb
 import {isQueryManagementEnabled} from '../../../app/auth/launchdarkly/launchDarklyClient';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {getClaimById} from 'modules/utilityService';
+import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {ValidationError} from 'class-validator';
+import {AppRequest} from 'models/AppRequest';
 
 const liftBreathingSpaceController = Router();
 const liftBreathingSpaceViewPath = 'features/breathingSpace/lift-breathing-space';
@@ -45,16 +47,16 @@ const applyMissingEndDateRule = (form: LiftBreathingSpaceForm, errors: Validatio
   return false;
 };
 
-liftBreathingSpaceController.get(LIFT_BREATHING_SPACE_URL, async (req: Request, res: Response, next: NextFunction) => {
+liftBreathingSpaceController.get(BREATHING_SPACE_LIFT_URL, async (req: Request, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id as string;
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-    const claim = await getClaimById(claimId, req);
+    const claim = await getClaimById(claimId, req, true);
     const form = await getLiftBreathingSpaceForm(claimId, claim);
     const helpSupportTitle = getHelpSupportTitle(lang);
     const helpSupportLinks = getHelpSupportLinks(lang);
     const backUrl = constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL);
-    const liftUrl = constructResponseUrlWithIdParams(claimId, LIFT_BREATHING_SPACE_URL);
+    const liftUrl = constructResponseUrlWithIdParams(claimId, BREATHING_SPACE_LIFT_URL);
     const exitUrl = constructResponseUrlWithIdParams(claimId, LIFT_BREATHING_SPACE_EXIT_URL) + '?returnUrl=' + encodeURIComponent(liftUrl);
     const isQMFlagEnabled = await isQueryManagementEnabled(claim.submittedDate);
 
@@ -75,11 +77,11 @@ liftBreathingSpaceController.get(LIFT_BREATHING_SPACE_URL, async (req: Request, 
   }
 });
 
-liftBreathingSpaceController.post(LIFT_BREATHING_SPACE_URL, async (req: Request, res: Response, next: NextFunction) => {
+liftBreathingSpaceController.post(BREATHING_SPACE_LIFT_URL, async (req: Request, res: Response, next: NextFunction) => {
   try {
     const claimId = req.params.id as string;
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-    const claim = await getClaimById(claimId, req);
+    const claim = await getClaimById(claimId, req, true);
     const {year, month, day, text} = req.body;
 
     const startDate = getBreathingSpaceEnterStartDate(claim);
@@ -102,7 +104,7 @@ liftBreathingSpaceController.post(LIFT_BREATHING_SPACE_URL, async (req: Request,
       const helpSupportTitle = getHelpSupportTitle(lang);
       const helpSupportLinks = getHelpSupportLinks(lang);
       const backUrl = constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL);
-      const liftUrl = constructResponseUrlWithIdParams(claimId, LIFT_BREATHING_SPACE_URL);
+      const liftUrl = constructResponseUrlWithIdParams(claimId, BREATHING_SPACE_LIFT_URL);
       const exitUrl = constructResponseUrlWithIdParams(claimId, LIFT_BREATHING_SPACE_EXIT_URL) + '?returnUrl=' + encodeURIComponent(liftUrl);
       const isQMFlagEnabled = await isQueryManagementEnabled(claim.submittedDate);
 
@@ -119,7 +121,7 @@ liftBreathingSpaceController.post(LIFT_BREATHING_SPACE_URL, async (req: Request,
         showErrorSummary: true,
       });
     } else {
-      await saveLiftBreathingSpace(claimId, claim, form);
+      await saveLiftBreathingSpace(generateRedisKey(req as AppRequest), claim, form);
       const redirectUrl = constructResponseUrlWithIdParams(claimId, CYA_LIFT_BREATHING_SPACE_URL);
       res.redirect(redirectUrl);
     }
