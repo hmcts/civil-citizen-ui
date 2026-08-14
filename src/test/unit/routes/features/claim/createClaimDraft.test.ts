@@ -12,7 +12,10 @@ import { draftClaim } from '../../../../../main/modules/draft-store/draftClaimCa
 import {mockRedisFailure} from '../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import * as draftStoreManagerService from 'modules/draft-store/draftStoreManagerService';
 import {CivilServiceClient} from 'client/civilServiceClient';
+
+jest.mock('../../../../../main/modules/draft-store/draftStoreManagerService');
 
 describe('createDraftClaim Router', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -23,6 +26,16 @@ describe('createDraftClaim Router', () => {
     nock(idamUrl).post('/o/token').reply(200, { id_token: citizenRoleToken });
     jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
     jest.spyOn(CivilServiceClient.prototype, 'createDashboard').mockReturnValue(null);
+  });
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+    (draftStoreManagerService.createOrLoadDraft as jest.Mock).mockResolvedValue({
+      claimResponse: {case_data: draftClaim},
+      createdAt: '2026-08-14T10:00:00.000Z',
+      rawResponse: {draftId: 'draft-123'},
+      isNew: true,
+    });
   });
 
   describe('on GET', () => {
@@ -70,6 +83,9 @@ describe('createDraftClaim Router', () => {
         });
     });
     it('should return http 500 when has error in the get method', async () => {
+      (draftStoreManagerService.createOrLoadDraft as jest.Mock).mockRejectedValue(
+        new Error(TestMessages.REDIS_FAILURE),
+      );
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .post(TESTING_SUPPORT_URL)
