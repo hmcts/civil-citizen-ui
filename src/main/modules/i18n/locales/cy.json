@@ -5533,6 +5533,7 @@
     "SETTLE_CLAIM_REQUIRED": "Dewiswch a ydych eisiau setlo’r hawliad am y [£] mae’r diffynnydd wedi talu neu beidio.",
     "REJECT_ALL_REASON_REQUIRED": "Dewis Pam nad ydych yn credu bod unrhyw arian yn ddyledus i’r [CLAIMANT] gennych chi",
     "TOTAL_INTEREST_AMOUNT_REQUIRED": "Nodwch gyfanswm swm y llog",
+    "VALID_POSITIVE_INTEREST_AMOUNT": "Rhowch swm llog positif",
     "CLAIM_HWF_REFERENCE_SELECTION_REQUIRED": "Dewiswch a oes gennych gyfeirnod Help i Dalu Ffioedd neu beidio",
     "DETERMINATION_WITHOUT_HEARING_REQUIRED": "Dewiswch a ydych chi'n ystyried bod y gwrandawiad hwn yn addas i'w benderfynu heb wrandawiad ai peidio",
     "EXPERT_REPORT_DETAILS_REQUIRED": "Dewiswch a oes gennych adroddiad wedi’i ysgrifennu gan arbenigwr yn barod neu beidio",

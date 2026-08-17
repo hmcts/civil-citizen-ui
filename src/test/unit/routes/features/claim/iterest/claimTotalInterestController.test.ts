@@ -75,6 +75,28 @@ describe('Claim Total Interest Controller', () => {
       });
     });
 
+    it('should render page with error when negative whole number is entered', async () => {
+      getInterestMock.mockImplementationOnce(async () => {
+        return new Claim();
+      });
+
+      await request(app).post(CLAIM_INTEREST_TOTAL_URL).send({amount: '-10000', reason: 'Testing'}).expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(TestMessages.VALID_POSITIVE_INTEREST_AMOUNT);
+      });
+    });
+
+    it('should render page with error when negative decimal is entered', async () => {
+      getInterestMock.mockImplementationOnce(async () => {
+        return new Claim();
+      });
+
+      await request(app).post(CLAIM_INTEREST_TOTAL_URL).send({amount: '-10.50', reason: 'Testing'}).expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(TestMessages.VALID_POSITIVE_INTEREST_AMOUNT);
+      });
+    });
+
     it('should redirect to the continue claiming interest page', async () => {
       getInterestMock.mockImplementationOnce(async () => {
         return new Claim();
