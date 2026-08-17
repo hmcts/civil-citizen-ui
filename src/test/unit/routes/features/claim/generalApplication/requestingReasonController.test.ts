@@ -5,7 +5,11 @@ import request from 'supertest';
 import {GA_CHECK_ANSWERS_URL, GA_REQUESTING_REASON_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
-import {mockCivilClaimWithApplicationType, mockRedisFailure} from '../../../../../utils/mockDraftStore';
+import {
+  mockCivilClaimWithApplicationType,
+  mockCivilClaimWithApplicationTypeAndFee,
+  mockRedisFailure,
+} from '../../../../../utils/mockDraftStore';
 import { isGaForLipsEnabled } from 'app/auth/launchdarkly/launchDarklyClient';
 
 jest.mock('../../../../../../main/modules/oidc');
@@ -64,7 +68,7 @@ describe('General Application - Requesting reason', () => {
     });
 
     it('should return to CYA after saving from CYA change screen', async () => {
-      app.locals.draftStoreClient = mockCivilClaimWithApplicationType;
+      app.locals.draftStoreClient = mockCivilClaimWithApplicationTypeAndFee;
       await request(app)
         .post(`${GA_REQUESTING_REASON_URL}?index=0&changeScreen=true`)
         .send({text: 'test'})

@@ -63,9 +63,30 @@ const civilClaimResponseWithApplicationTypeMock = {
   },
 };
 
+const civilClaimResponseWithApplicationTypeAndFeeMock = {
+  ...civilClaimResponseWithApplicationTypeMock,
+  case_data: {
+    ...civilClaimResponseWithApplicationTypeMock.case_data,
+    generalApplication: {
+      ...civilClaimResponseWithApplicationTypeMock.case_data.generalApplication,
+      applicationFee: {
+        calculatedAmountInPence: 5000,
+      },
+    },
+  },
+};
+
 const mockCivilClaimWithApplicationType = {
   set: jest.fn(() => Promise.resolve({})),
   get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseWithApplicationTypeMock))),
+  del: jest.fn(() => Promise.resolve({})),
+  ttl: jest.fn(() => Promise.resolve(-1)),
+  expireat: jest.fn(() => Promise.resolve({})),
+};
+
+const mockCivilClaimWithApplicationTypeAndFee = {
+  set: jest.fn(() => Promise.resolve({})),
+  get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseWithApplicationTypeAndFeeMock))),
   del: jest.fn(() => Promise.resolve({})),
   ttl: jest.fn(() => Promise.resolve(-1)),
   expireat: jest.fn(() => Promise.resolve({})),
@@ -294,6 +315,7 @@ const mockCivilClaimDocumentClaimantUploaded = {
 export {
   mockCivilClaim,
   mockCivilClaimWithApplicationType,
+  mockCivilClaimWithApplicationTypeAndFee,
   mockCivilClaimClaimantIntention,
   mockCivilClaimUndefined,
   mockNoStatementOfMeans,
