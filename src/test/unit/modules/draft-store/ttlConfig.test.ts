@@ -1,4 +1,5 @@
 import {TTLCategory, calculateExpiryTimestamp, reconstructCreationDateFromRemainingTtl} from 'modules/draft-store/ttlConfig';
+import config from 'config';
 
 describe('ttlConfig', () => {
   it('should calculate draft claim expiry at UK midnight after the submit-by date', () => {
@@ -11,6 +12,17 @@ describe('ttlConfig', () => {
     const creationDate = new Date('2026-11-01T10:00:00.000Z');
     const expiry = calculateExpiryTimestamp(TTLCategory.DRAFT_CLAIM, {creationDate});
     expect(new Date(expiry * 1000).toISOString()).toBe('2026-12-02T00:00:00.000Z');
+  });
+
+  it('should treat environment TTL values as numbers when calculating draft claim expiry', () => {
+    const configSpy = jest.spyOn(config, 'get').mockReturnValueOnce('30');
+    const creationDate = new Date('2026-08-17T08:51:21.000Z');
+
+    const expiry = calculateExpiryTimestamp(TTLCategory.DRAFT_CLAIM, {creationDate});
+
+    expect(new Date(expiry * 1000).toISOString()).toBe('2026-09-16T23:00:00.000Z');
+    expect(configSpy).toHaveBeenCalledWith('services.draftStore.redis.ttl.draftClaim');
+    configSpy.mockRestore();
   });
 
   it('should calculate payment session expiry from current time when no creation date', () => {

@@ -17,16 +17,20 @@ export interface TTLMetadata {
   overrideExistingTTL?: boolean;
 }
 
+const getNumericConfigValue = (path: string): number => {
+  return Number(config.get<number | string>(path));
+};
+
 export const getTTLDaysForCategory = (category: TTLCategory): number => {
   switch (category) {
     case TTLCategory.DRAFT_CLAIM:
-      return config.get<number>('services.draftStore.redis.ttl.draftClaim');
+      return getNumericConfigValue('services.draftStore.redis.ttl.draftClaim');
     case TTLCategory.JOURNEY_CACHE:
-      return config.get<number>('services.draftStore.redis.ttl.journeyCache');
+      return getNumericConfigValue('services.draftStore.redis.ttl.journeyCache');
     case TTLCategory.PAYMENT_SESSION:
-      return config.get<number>('services.draftStore.redis.ttl.paymentSession');
+      return getNumericConfigValue('services.draftStore.redis.ttl.paymentSession');
     case TTLCategory.GA_JOURNEY:
-      return config.get<number>('services.draftStore.redis.ttl.gaJourney');
+      return getNumericConfigValue('services.draftStore.redis.ttl.gaJourney');
   }
 };
 
