@@ -5,7 +5,7 @@ import {CCDClaim, CivilClaimResponse} from 'models/civilClaimResponse';
 import {createOrLoadDraftClaimInDraftStoreDb, getActiveDraftFromDraftStoreDb, updateDraftClaimInStore, deleteDraftClaimFromStore} from './draftStoreDbService';
 import {getCachedDraft, setCachedDraft, deleteCachedDraft} from './draftClaimRedisCache';
 
-const {Logger} = require('@hmcts/nodejs-logging');
+import {Logger} from '@hmcts/nodejs-logging';
 const logger = Logger.getLogger('draftStoreManagerService');
 
 const buildManagerResult = (
@@ -38,7 +38,7 @@ export const getDraftClaim = async (req: AppRequest): Promise<DraftClaimManagerR
     logger.info(`[draftStoreManagerService] returning cached draft for user: ${userId}`);
     return buildManagerResult(cached);
   }
-  logger.info(`[draftStoreManagerService] cache miss for user: ${userId} fetching from db instead`);
+  logger.info(`[draftStoreManagerService] cached miss for user: ${userId} fetching from db instead`);
   const dbResult = await getActiveDraftFromDraftStoreDb(req);
   if (!dbResult) {
     return null;
@@ -47,7 +47,7 @@ export const getDraftClaim = async (req: AppRequest): Promise<DraftClaimManagerR
   return buildManagerResult(dbResult.rawResponse);
 };
 
-export const createOrLoadDraft = async (req: AppRequest, claim?: Claim): Promise<DraftClaimManagerResult> => {
+export const createOrLoadDraft = async (req: AppRequest, claim?: Claim,): Promise<DraftClaimManagerResult> => {
   const userId = req.session?.user?.id;
   if (!userId) {
     throw new Error('[draftStoreManagerService] user id required to create/load draft');

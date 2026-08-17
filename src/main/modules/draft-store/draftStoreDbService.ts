@@ -5,7 +5,7 @@ import {Claim} from 'models/claim';
 import {CCDClaim, CivilClaimResponse} from 'models/civilClaimResponse';
 import {AppRequest} from 'common/models/AppRequest';
 
-const {Logger} = require('@hmcts/nodejs-logging');
+import {Logger} from '@hmcts/nodejs-logging';
 const logger = Logger.getLogger('draftStoreDbService');
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
@@ -16,7 +16,7 @@ const getErrorMessage = (error: unknown): string =>
 const getHeaders = (req: AppRequest) => {
   const token = req?.session?.user?.accessToken;
   if (!token) {
-    throw new Error('[draftStoreDbService] access token is required to communicate with API');
+    throw new Error('[draftStoreDbService access token is required to communicate with API');
   }
   return {
     'Content-Type': 'application/json',
@@ -55,7 +55,7 @@ export const createOrLoadDraftClaimInDraftStoreDb = async (
       rawResponse: response.data,
       isNew,
     };
-  } catch (err: unknown) {
+  } catch (err: any) {
     logger.error(`[draftStoreDbService] failed to create/load draft in db: ${getErrorMessage(err)}`);
     throw err;
   }
@@ -80,7 +80,7 @@ export const getActiveDraftFromDraftStoreDb = async (req: AppRequest): Promise<{
       logger.info(`[draftStoreDbService] no active draft from db found for user: ${userId}`);
       return null;
     }
-    logger.error(`[draftStoreDbService] error fetching active draft from db: ${getErrorMessage(err)}`);
+    logger.info(`[draftStoreDbService] error fetching active draft from db: ${getErrorMessage(err)}`);
     throw err;
   }
 };

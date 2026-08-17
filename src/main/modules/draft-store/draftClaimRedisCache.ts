@@ -1,7 +1,7 @@
 import {app} from '../../app-instance';
 import {DraftClaimResponse} from 'common/models/draft/draftClaim';
 
-const {Logger} = require('@hmcts/nodejs-logging');
+import {Logger} from '@hmcts/nodejs-logging';
 const logger = Logger.getLogger('draftClaimCache');
 
 const getErrorMessage = (error: unknown): string =>
@@ -34,7 +34,7 @@ export const getCachedDraft = async (userId: string): Promise<DraftClaimResponse
     }
     logger.info(`[draftClaimRedisCache] redis cache miss for key: ${key}`);
     return null;
-  } catch (err: unknown) {
+  } catch (err: any) {
     logger.warn(`[draftClaimRedisCache] redis read error for key ${key}: ${getErrorMessage(err)}`);
     return null;
   }
