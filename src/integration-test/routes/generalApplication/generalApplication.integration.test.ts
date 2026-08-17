@@ -50,6 +50,8 @@ jest.mock('services/features/generalApplication/generalApplicationService', () =
       : claim.generalApplication?.applicationTypes?.length === 1 ? 0 : undefined,
   ),
   saveApplicationType: jest.fn().mockResolvedValue(undefined),
+  isChangeScreenFromCya: jest.fn((req) => req.query.changeScreen === 'true'),
+  startApplicationTypeChangeFromCya: jest.fn().mockResolvedValue(undefined),
   validateAdditionalApplicationType: jest.fn(),
   validateAdditionalApplicationtType: jest.fn(),
   addChangeScreenToUrlIfPresent: jest.fn((url: string) => url),
