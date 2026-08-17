@@ -16,6 +16,7 @@ import {CaseState} from 'common/form/models/claimDetails';
 import {CourtLocation} from 'common/models/courts/courtLocations';
 import {TestMessages} from '../../../utils/errorMessageTestConstants';
 import {CivilServiceClient} from 'client/civilServiceClient';
+import {CallbackError} from 'client/common/error/callbackError';
 import {CaseDocument} from 'models/document/caseDocument';
 
 import {FileUpload} from 'models/caseProgression/fileUpload';
@@ -386,6 +387,60 @@ describe('Civil Service Client', () => {
     });
   });
 
+  describe('submitEvent 422 callback errors (DTSCCI-5282)', () => {
+    const unprocessableEntity = (data: unknown) => ({response: {status: 422, data}});
+
+    it('should throw a CallbackError carrying the callbackErrors when civil-service returns 422 with a body', async () => {
+      //Given
+      const callbackErrors = ['There is a technical issue causing a delay. You do not need to do anything. Please come back later.'];
+      const mockPost = jest.fn().mockRejectedValue(unprocessableEntity({callbackErrors, callbackWarnings: []}));
+      mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
+      //Then
+      await expect(civilServiceClient.submitDefendantResponseEvent('123', {}, appReq)).rejects.toBeInstanceOf(CallbackError);
+      await expect(civilServiceClient.submitDefendantResponseEvent('123', {}, appReq)).rejects.toMatchObject({
+        status: 422,
+        callbackErrors,
+      });
+    });
+
+    it('should throw a CallbackError carrying CCD field validation errors (details.field_errors)', async () => {
+      //Given - CCD field-type validation (Category A) uses a CaseValidationException envelope
+      const data = {
+        exception: 'uk.gov.hmcts.ccd.endpoint.exceptions.CaseValidationException',
+        message: 'Case data validation failed',
+        details: {field_errors: [{id: 'respondent1.partyEmail', message: 'notanemail is not a valid Email address'}]},
+      };
+      const mockPost = jest.fn().mockRejectedValue(unprocessableEntity(data));
+      mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
+      //Then
+      await expect(civilServiceClient.submitDefendantResponseEvent('123', {}, appReq)).rejects.toBeInstanceOf(CallbackError);
+      await expect(civilServiceClient.submitDefendantResponseEvent('123', {}, appReq)).rejects.toMatchObject({
+        status: 422,
+        callbackErrors: ['notanemail is not a valid Email address'],
+      });
+    });
+
+    it('should re-throw the original error when 422 has no callbackErrors or field_errors', async () => {
+      //Given
+      const mockPost = jest.fn().mockRejectedValue(unprocessableEntity({message: 'nothing actionable here'}));
+      mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
+      //Then
+      await expect(civilServiceClient.submitDefendantResponseEvent('123', {}, appReq)).rejects.not.toBeInstanceOf(CallbackError);
+    });
+
+    it('should re-throw the original error for a non-422 status', async () => {
+      //Given
+      const mockPost = jest.fn().mockRejectedValue({response: {status: 500, data: {callbackErrors: ['ignored']}}});
+      mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
+      //Then
+      await expect(civilServiceClient.submitDefendantResponseEvent('123', {}, appReq)).rejects.not.toBeInstanceOf(CallbackError);
+    });
+  });
+
   describe('getClaimsForDefendant', () => {
     it('should return claims for defendant successfully', async () => {
       //Given
@@ -713,6 +768,72 @@ describe('Civil Service Client', () => {
       expect(claim.respondent1ResponseDeadline).toEqual(date);
     });
 
+    it('should log sanitised civil-service 422 submit errors without raw request data', async () => {
+      //Given
+      const responseBody = {
+        exception: 'CaseValidationException',
+        error: 'Unprocessable Entity',
+        message: 'Case data validation failed',
+        errors: [
+          'generalApplications.0.generalAppType.types',
+          'another validation error',
+          'third validation error',
+          'fourth validation error',
+          'fifth validation error',
+          'sixth validation error',
+          {caseDataUpdate: {generalAppType: {types: ['OTHER_OPTION']}}},
+        ],
+        caseDataUpdate: {generalAppType: {types: ['OTHER_OPTION']}},
+        config: {data: '{"caseDataUpdate":{"generalAppType":{"types":["OTHER_OPTION"]}}}'},
+        request: {body: 'raw request body'},
+      };
+      const apiError = Object.assign(new Error('Request failed with status code 422'), {
+        response: {
+          status: 422,
+          data: responseBody,
+        },
+        config: {data: 'raw axios config data'},
+      });
+      const mockPost = jest.fn().mockRejectedValue(apiError);
+      mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
+      const {Logger} = require('@hmcts/nodejs-logging');
+      const logger = Logger.getLogger('civilServiceClient');
+      const loggerSpy = jest.spyOn(logger, 'error').mockImplementation();
+
+      try {
+        //When
+        await expect(civilServiceClient.submitInitiateGeneralApplicationEvent('123', ccdGApp, appReq))
+          .rejects.toBe(apiError);
+
+        //Then
+        expect(loggerSpy).toHaveBeenCalledWith(
+          'Submit event failed (event=INITIATE_GENERAL_APPLICATION, claimId=123, status=422)',
+          {
+            body: {
+              exception: 'CaseValidationException',
+              error: 'Unprocessable Entity',
+              message: 'Case data validation failed',
+              validationErrors: [
+                'generalApplications.0.generalAppType.types',
+                'another validation error',
+                'third validation error',
+                'fourth validation error',
+                'fifth validation error',
+              ],
+              validationErrorCount: 7,
+            },
+          },
+        );
+        const loggedMetadata = loggerSpy.mock.calls[0][1] as { body: Record<string, unknown> };
+        expect(loggedMetadata.body).not.toHaveProperty('caseDataUpdate');
+        expect(loggedMetadata.body).not.toHaveProperty('config');
+        expect(loggedMetadata.body).not.toHaveProperty('request');
+      } finally {
+        loggerSpy.mockRestore();
+      }
+    });
+
     it('should submit submitInitiateGeneralApplicationForCOSCEvent successfully', async () => {
       //Given
       const mockPost = jest.fn().mockResolvedValue({data: mockResponse});
@@ -924,7 +1045,7 @@ describe('Civil Service Client', () => {
   });
   describe('getClaimFeeData', () => {
     const mockData = {
-      calculatedAmountInPence: 123,
+      calculatedAmountInPence: '123',
       code: 'code',
       version: 1,
     };
@@ -939,7 +1060,7 @@ describe('Civil Service Client', () => {
       const feeResponse: ClaimFeeData = await civilServiceClient.getClaimFeeData(100, appReq);
 
       //Then
-      expect(feeResponse).toEqual(mockData);
+      expect(feeResponse).toEqual({...mockData, calculatedAmountInPence: 123});
     });
 
     it('should get claim fee amount', async () => {
@@ -952,7 +1073,7 @@ describe('Civil Service Client', () => {
       const feeAmount: number = await civilServiceClient.getClaimAmountFee(100, appReq);
 
       //Then
-      expect(feeAmount).toEqual(mockData.calculatedAmountInPence / 100);
+      expect(feeAmount).toEqual(Number(mockData.calculatedAmountInPence) / 100);
     });
     describe('getAirlines', () => {
       const mockData = [
@@ -1131,6 +1252,49 @@ describe('Civil Service Client', () => {
       const civilServiceClient = new CivilServiceClient(baseUrl, true);
       //Then
       await expect(civilServiceClient.calculateClaimInterest({})).rejects.toThrow('error');
+    });
+
+    it('should reuse cached interest promise for repeated calls with the same payload in the same request', async () => {
+      //Given
+      const mockData = 0.02;
+      const mockPost = jest.fn().mockResolvedValue({ data: mockData });
+      mockedAxios.create.mockReturnValueOnce({ post: mockPost } as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
+      appReq.locals.calculateInterestRequestCache = undefined;
+
+      //When
+      await civilServiceClient.calculateClaimInterest({}, appReq);
+      await civilServiceClient.calculateClaimInterest({}, appReq);
+
+      //Then - only one HTTP call despite two invocations
+      expect(mockPost).toHaveBeenCalledTimes(1);
+    });
+
+    it('should make separate HTTP calls for different payloads in the same request', async () => {
+      //Given
+      const mockPost = jest.fn().mockResolvedValue({ data: 0.02 });
+      mockedAxios.create.mockReturnValueOnce({ post: mockPost } as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
+      appReq.locals.calculateInterestRequestCache = undefined;
+
+      //When
+      await civilServiceClient.calculateClaimInterest({ totalClaimAmount: 100 } as unknown as ClaimUpdate, appReq);
+      await civilServiceClient.calculateClaimInterest({ totalClaimAmount: 200 } as unknown as ClaimUpdate, appReq);
+
+      //Then - two different payloads = two HTTP calls
+      expect(mockPost).toHaveBeenCalledTimes(2);
+    });
+
+    it('should evict cache entry and rethrow on error', async () => {
+      //Given
+      const mockPost = jest.fn().mockRejectedValue(new Error('network error'));
+      mockedAxios.create.mockReturnValueOnce({ post: mockPost } as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
+      appReq.locals.calculateInterestRequestCache = undefined;
+
+      //Then
+      await expect(civilServiceClient.calculateClaimInterest({}, appReq)).rejects.toThrow('network error');
+      expect(appReq.locals.calculateInterestRequestCache?.has(JSON.stringify({}))).toBe(false);
     });
   });
 

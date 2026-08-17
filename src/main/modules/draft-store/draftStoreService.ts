@@ -143,7 +143,7 @@ export const updateFieldDraftClaimFromStore = async (claimId: string, req: Reque
   const redisKey = generateRedisKey(<AppRequest>req);
   const userId = (<AppRequest>req).session.user?.id;
   claim[propertyName] = newValue;
-  logger.info(`updateFieldDraftClaimFromStore : userId: ${userId} redisKey: ${redisKey} propertyName : ${propertyName} newValue : ${newValue? JSON.stringify(newValue) : 'undefined'}`);
+  logger.info(`updateFieldDraftClaimFromStore: userId: ${userId} redisKey: ${redisKey} propertyName: ${propertyName}`);
   await saveDraftClaim(redisKey, claim, false, userId);
 
 };
