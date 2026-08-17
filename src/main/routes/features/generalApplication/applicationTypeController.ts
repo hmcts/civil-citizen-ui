@@ -13,13 +13,14 @@ import {
   LinkFromValues,
 } from 'common/models/generalApplication/applicationType';
 import {
-  addChangeScreenToUrlIfPresent,
   deleteGAFromClaimsByUserId,
   getByIndex,
   getCancelUrl,
+  isChangeScreenFromCya,
   resolveApplicationTypeIndexForGet,
   resolveApplicationTypeIndexForPost,
   saveApplicationType,
+  startApplicationTypeChangeFromCya,
   validateAdditionalApplicationType,
 } from 'services/features/generalApplication/generalApplicationService';
 import { generateRedisKey } from 'modules/draft-store/draftStoreService';
@@ -52,11 +53,17 @@ applicationTypeController.get(APPLICATION_TYPE_URL, (async (req: AppRequest, res
     const claimId = getRouteParam(req, 'id');
     const claim = await getClaimById(claimId, req, true);
     const applicationIndex = resolveApplicationTypeIndexForGet(req, claim);
+    if (isChangeScreenFromCya(req)) {
+      await startApplicationTypeChangeFromCya(generateRedisKey(req), claim, applicationIndex);
+    }
 
-    const applicationTypeOption = getByIndex(claim.generalApplication?.applicationTypes, applicationIndex)?.option;
+    const showApplicationTypeError = req.query[SHOW_APPLICATION_TYPE_ERROR_QUERY_PARAM] === 'true';
+    const applicationTypeOption = showApplicationTypeError
+      ? undefined
+      : getByIndex(claim.generalApplication?.applicationTypes, applicationIndex)?.option;
     const applicationType = new ApplicationType(applicationTypeOption);
     const form = new GenericForm(applicationType);
-    if (req.query[SHOW_APPLICATION_TYPE_ERROR_QUERY_PARAM] === 'true') {
+    if (showApplicationTypeError) {
       form.validateSync();
     }
     if (req.query[SHOW_DUPLICATE_APPLICATION_TYPE_ERROR_QUERY_PARAM] === 'true') {
@@ -116,7 +123,7 @@ applicationTypeController.post(APPLICATION_TYPE_URL, (async (req: AppRequest | R
     if (form.hasErrors()) {
       res.render(viewPath, { form, cancelUrl, backLinkUrl, isOtherSelected: applicationType.isOtherSelected() || req.body.option === ApplicationTypeOption.OTHER_OPTION,  showCCJ: showCCJ});
     } else {
-      await saveApplicationType(redisKey, claim, applicationType, applicationIndex);
+      await saveApplicationType(redisKey, claim, applicationType, applicationIndex, isChangeScreenFromCya(req));
 
       applicationIndex = getSavedApplicationIndex(claim, applicationIndex);
       if (showCCJ && claim.joIsLiveJudgmentExists?.option === YesNo.YES && req.body.option === ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID) {
@@ -125,7 +132,7 @@ applicationTypeController.post(APPLICATION_TYPE_URL, (async (req: AppRequest | R
         if (claim?.generalApplication?.applicationTypes?.length > 1){
           const redirectUrl = constructResponseUrlWithIdParams(claimId,ORDER_JUDGE_URL )
             + (applicationIndex >= 0 ? `?index=${applicationIndex}` : '');
-          res.redirect(addChangeScreenToUrlIfPresent(redirectUrl, req));
+          res.redirect(redirectUrl);
         } else {
           res.redirect(constructResponseUrlWithIdParams(claimId,GA_AGREEMENT_FROM_OTHER_PARTY_URL )
           + (applicationIndex >= 0 ? `?index=${applicationIndex}` : ''));

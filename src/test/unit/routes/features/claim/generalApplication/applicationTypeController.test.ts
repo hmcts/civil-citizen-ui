@@ -12,6 +12,7 @@ import { Claim } from 'common/models/claim';
 import { GeneralApplication } from 'common/models/generalApplication/GeneralApplication';
 import { getClaimById } from 'modules/utilityService';
 import * as generalApplicationService from 'services/features/generalApplication/generalApplicationService';
+import {YesNo} from 'form/models/yesNo';
 import {
   SHOW_APPLICATION_TYPE_ERROR_QUERY_PARAM,
   SHOW_DUPLICATE_APPLICATION_TYPE_ERROR_QUERY_PARAM,
@@ -131,6 +132,24 @@ describe('General Application - Application type', () => {
         });
     });
 
+    it('should mark the application type change as in progress when entered from CYA', async () => {
+      const claim = new Claim();
+      claim.generalApplication = new GeneralApplication();
+      claim.generalApplication.applicationTypes = [new ApplicationType(ApplicationTypeOption.EXTEND_TIME)];
+      app.locals.draftStoreClient = mockDraftClaim(claim);
+      (getClaimById as jest.Mock).mockResolvedValueOnce(claim);
+
+      await request(app)
+        .get(APPLICATION_TYPE_URL)
+        .query({index: 0, changeScreen: 'true'})
+        .expect((res) => {
+          expect(res.status).toBe(200);
+        });
+
+      expect(claim.generalApplication.applicationTypeChangeInProgress).toBe(true);
+      expect(claim.generalApplication.applicationTypeChangeIndex).toBe(0);
+    });
+
     it('should return http 500 when has error in the get method', async () => {
       (getClaimById as jest.Mock).mockRejectedValueOnce(new Error(TestMessages.SOMETHING_WENT_WRONG));
       await request(app)
@@ -203,7 +222,7 @@ describe('General Application - Application type', () => {
       expect(claim.generalApplication.applicationTypes[1].option).toEqual(ApplicationTypeOption.ADJOURN_HEARING);
     });
 
-    it('should keep CYA change screen query params when changing one application in a multi-application CYA', async () => {
+    it('should not keep CYA change screen query params when changing one application in a multi-application CYA', async () => {
       const claim = new Claim();
       claim.generalApplication = new GeneralApplication();
       claim.generalApplication.applicationTypes = [
@@ -218,11 +237,41 @@ describe('General Application - Application type', () => {
         .send({option: ApplicationTypeOption.ADJOURN_HEARING})
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.headers.location).toContain('/general-application/order-judge?index=0&changeScreen=true');
+          expect(res.headers.location).toContain('/general-application/order-judge?index=0');
+          expect(res.headers.location).not.toContain('changeScreen=true');
         });
 
       expect(claim.generalApplication.applicationTypes).toHaveLength(2);
       expect(claim.generalApplication.applicationTypes[0].option).toEqual(ApplicationTypeOption.ADJOURN_HEARING);
+    });
+
+    it('should reset stale journey data when the same application type is selected from CYA', async () => {
+      const claim = new Claim();
+      claim.generalApplication = new GeneralApplication();
+      claim.generalApplication.applicationTypes = [new ApplicationType(ApplicationTypeOption.EXTEND_TIME)];
+      claim.generalApplication.agreementFromOtherParty = YesNo.YES;
+      claim.generalApplication.applicationFee = {
+        calculatedAmountInPence: 5000,
+      };
+      claim.generalApplication.applicationTypeChangeInProgress = true;
+      claim.generalApplication.applicationTypeChangeIndex = 0;
+      app.locals.draftStoreClient = mockDraftClaim(claim);
+      (getClaimById as jest.Mock).mockResolvedValueOnce(claim);
+
+      await request(app)
+        .post(`${APPLICATION_TYPE_URL}?index=0&changeScreen=true`)
+        .send({option: ApplicationTypeOption.EXTEND_TIME})
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.headers.location).toContain('/general-application/agreement-from-other-party?index=0');
+        });
+
+      expect(claim.generalApplication.applicationTypes).toHaveLength(1);
+      expect(claim.generalApplication.applicationTypes[0].option).toEqual(ApplicationTypeOption.EXTEND_TIME);
+      expect(claim.generalApplication.agreementFromOtherParty).toBeUndefined();
+      expect(claim.generalApplication.applicationFee).toBeUndefined();
+      expect(claim.generalApplication.applicationTypeChangeInProgress).toBeUndefined();
+      expect(claim.generalApplication.applicationTypeChangeIndex).toBeUndefined();
     });
 
     it('should update latest added application type when add another page is resubmitted without index', async () => {

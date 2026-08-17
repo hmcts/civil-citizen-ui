@@ -42,6 +42,8 @@ export class GeneralApplication {
   generalAppAddlnInfoUpload?: UploadGAFiles[];
   certificateOfSatisfactionOrCancellation?: CertificateOfSatisfactionOrCancellation;
   addType?: boolean;
+  applicationTypeChangeInProgress?: boolean;
+  applicationTypeChangeIndex?: number;
 
   constructor(
     applicationType?: ApplicationType,

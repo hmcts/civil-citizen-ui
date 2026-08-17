@@ -8,7 +8,11 @@ import {OrderJudge} from 'common/models/generalApplication/orderJudge';
 import {RequestingReason} from 'common/models/generalApplication/requestingReason';
 import {NextFunction, Request, Response} from 'express';
 import {checkYourAnswersGAGuard} from 'routes/guards/checkYourAnswersGAGuard';
-import {APPLICATION_TYPE_URL} from 'routes/urls';
+import {
+  APPLICATION_TYPE_URL,
+  GA_AGREEMENT_FROM_OTHER_PARTY_URL,
+  GA_APPLICATION_COSTS_URL,
+} from 'routes/urls';
 import {
   UnavailableDatePeriodGaHearing,
   UnavailableDatesGaHearing,
@@ -232,6 +236,8 @@ describe('Check your Answers GA Guard', () => {
       YesNo.YES,
     );
     claim.generalApplication.applicationTypes = [new ApplicationType(ApplicationTypeOption.STAY_THE_CLAIM), new ApplicationType(ApplicationTypeOption.STRIKE_OUT)];
+    claim.generalApplication.orderJudges = [new OrderJudge('test'), new OrderJudge('test 2')];
+    claim.generalApplication.requestingReasons = [new RequestingReason('test'), new RequestingReason('test 2')];
     mockGetCaseData.mockImplementation(async () => claim);
     //When
     await checkYourAnswersGAGuard(MOCK_REQUEST, MOCK_RESPONSE, MOCK_NEXT);
@@ -309,6 +315,48 @@ describe('Check your Answers GA Guard', () => {
     await checkYourAnswersGAGuard(MOCK_REQUEST, MOCK_RESPONSE, MOCK_NEXT);
     //Then
     expect(MOCK_RESPONSE.redirect).toHaveBeenCalledWith(duplicateApplicationTypeErrorUrl('123', 2));
+    expect(MOCK_NEXT).not.toHaveBeenCalled();
+  });
+
+  it('should redirect to application type validation when application type change from CYA is in progress', async () => {
+    //Given
+    const claim = new Claim();
+    claim.generalApplication = new GeneralApplication();
+    claim.generalApplication.applicationTypes = [new ApplicationType(ApplicationTypeOption.EXTEND_TIME)];
+    claim.generalApplication.applicationTypeChangeInProgress = true;
+    claim.generalApplication.applicationTypeChangeIndex = 0;
+    mockGetCaseData.mockImplementation(async () => claim);
+    //When
+    await checkYourAnswersGAGuard(MOCK_REQUEST, MOCK_RESPONSE, MOCK_NEXT);
+    //Then
+    expect(MOCK_RESPONSE.redirect).toHaveBeenCalledWith(applicationTypeErrorUrl('123', 0));
+    expect(MOCK_NEXT).not.toHaveBeenCalled();
+  });
+
+  it('should resume at agreement from other party when journey is incomplete but application type exists', async () => {
+    //Given
+    const claim = new Claim();
+    claim.generalApplication = new GeneralApplication();
+    claim.generalApplication.applicationTypes = [new ApplicationType(ApplicationTypeOption.EXTEND_TIME)];
+    mockGetCaseData.mockImplementation(async () => claim);
+    //When
+    await checkYourAnswersGAGuard(MOCK_REQUEST, MOCK_RESPONSE, MOCK_NEXT);
+    //Then
+    expect(MOCK_RESPONSE.redirect).toHaveBeenCalledWith(GA_AGREEMENT_FROM_OTHER_PARTY_URL.replace(':id', '123') + '?index=0');
+    expect(MOCK_NEXT).not.toHaveBeenCalled();
+  });
+
+  it('should resume at application costs when the selected type exists but fee has been reset', async () => {
+    //Given
+    const claim = new Claim();
+    claim.generalApplication = new GeneralApplication();
+    claim.generalApplication.applicationTypes = [new ApplicationType(ApplicationTypeOption.EXTEND_TIME)];
+    claim.generalApplication.agreementFromOtherParty = YesNo.YES;
+    mockGetCaseData.mockImplementation(async () => claim);
+    //When
+    await checkYourAnswersGAGuard(MOCK_REQUEST, MOCK_RESPONSE, MOCK_NEXT);
+    //Then
+    expect(MOCK_RESPONSE.redirect).toHaveBeenCalledWith(GA_APPLICATION_COSTS_URL.replace(':id', '123') + '?index=0');
     expect(MOCK_NEXT).not.toHaveBeenCalled();
   });
 

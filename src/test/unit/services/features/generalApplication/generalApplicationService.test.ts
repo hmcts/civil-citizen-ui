@@ -587,13 +587,26 @@ describe('General Application service', () => {
       expect(getRequestingReasonNextUrl(req, claim)).toEqual(`${GA_ADD_ANOTHER_APPLICATION_URL.replace(':id', '123')}?index=0`);
     });
 
-    it('should return check your answers URL from CYA change screen', () => {
+    it('should return check your answers URL from CYA change screen when the fee is still valid', () => {
+      const changeScreenReq = {
+        params: {id: '123'},
+        query: {index: '0', changeScreen: 'true'},
+      } as unknown as AppRequest;
+      claim.generalApplication.applicationFee = {
+        calculatedAmountInPence: 5000,
+      };
+
+      expect(getRequestingReasonNextUrl(changeScreenReq, claim)).toEqual(GA_CHECK_ANSWERS_URL.replace(':id', '123'));
+      delete claim.generalApplication.applicationFee;
+    });
+
+    it('should continue the journey from CYA change screen when the application fee has been reset', () => {
       const changeScreenReq = {
         params: {id: '123'},
         query: {index: '0', changeScreen: 'true'},
       } as unknown as AppRequest;
 
-      expect(getRequestingReasonNextUrl(changeScreenReq, claim)).toEqual(GA_CHECK_ANSWERS_URL.replace(':id', '123'));
+      expect(getRequestingReasonNextUrl(changeScreenReq, claim)).toEqual(`${GA_ADD_ANOTHER_APPLICATION_URL.replace(':id', '123')}?index=0`);
     });
 
     it('should keep index 0 in claim application cost next URL', () => {

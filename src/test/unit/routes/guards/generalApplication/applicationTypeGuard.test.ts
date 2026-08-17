@@ -45,6 +45,19 @@ describe('Application type guard', () => {
     expect(next).toHaveBeenCalledWith();
   });
 
+  it('should redirect to application type validation when CYA application type change is in progress', async () => {
+    const claim = new Claim();
+    claim.generalApplication = new GeneralApplication(new ApplicationType(ApplicationTypeOption.ADJOURN_HEARING));
+    claim.generalApplication.applicationTypeChangeInProgress = true;
+    claim.generalApplication.applicationTypeChangeIndex = 0;
+    mockGetClaimById.mockResolvedValueOnce(claim);
+
+    await applicationTypeGuard(req, res, next);
+
+    expect(res.redirect).toHaveBeenCalledWith(applicationTypeErrorUrl('123', 0));
+    expect(next).not.toHaveBeenCalled();
+  });
+
   it('should redirect to application type validation when claim does not have a GA draft', async () => {
     mockGetClaimById.mockResolvedValueOnce(new Claim());
 

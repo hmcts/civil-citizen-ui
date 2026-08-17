@@ -100,18 +100,39 @@ export const addChangeScreenToUrlIfPresent = (url: string, req: AppRequest | Req
     ? `${url}${url.includes('?') ? '&' : '?'}${CHANGE_SCREEN_QUERY_PARAM}=true`
     : url;
 
-export const saveApplicationType = async (claimId: string, claim: Claim, applicationType: ApplicationType, index?: number): Promise<void> => {
+export const startApplicationTypeChangeFromCya = async (claimId: string, claim: Claim, index?: number): Promise<void> => {
+  try {
+    claim.generalApplication = toGeneralApplication(claim.generalApplication);
+    claim.generalApplication.applicationTypeChangeInProgress = true;
+    claim.generalApplication.applicationTypeChangeIndex = index;
+    await saveDraftClaim(claimId, claim);
+  } catch (error) {
+    logger.error(error);
+    throw error;
+  }
+};
+
+export const saveApplicationType = async (
+  claimId: string,
+  claim: Claim,
+  applicationType: ApplicationType,
+  index?: number,
+  forceResetJourney = false,
+): Promise<void> => {
   try {
     assertValidApplicationTypes([applicationType]);
     claim.generalApplication = toGeneralApplication(claim.generalApplication);
     const previousApplicationType = getByIndex(claim.generalApplication?.applicationTypes, index)?.option;
     const hasChangedExistingApplicationType = !!previousApplicationType && previousApplicationType !== applicationType.option;
+    const isChangingApplicationTypeFromCya = forceResetJourney || claim.generalApplication.applicationTypeChangeInProgress === true;
     updateByIndexOrAppend(claim.generalApplication?.applicationTypes, applicationType, index);
     assertValidApplicationTypes(claim.generalApplication?.applicationTypes);
     resetClaimDataByApplicationType(claim, applicationType);
-    if (hasChangedExistingApplicationType) {
+    if (hasChangedExistingApplicationType || isChangingApplicationTypeFromCya) {
       resetClaimDataForChangedApplicationType(claim, index);
     }
+    delete claim.generalApplication.applicationTypeChangeInProgress;
+    delete claim.generalApplication.applicationTypeChangeIndex;
     await saveDraftClaim(claimId, claim);
   } catch (error) {
     logger.error(error);
@@ -764,7 +785,7 @@ export const getAgreementFromOtherPartiesNextUrl = (req: AppRequest | Request, c
 };
 
 export const getRequestingReasonNextUrl = (req: AppRequest | Request, claim: Claim): string => {
-  if (isChangeScreenFromCya(req)) {
+  if (isChangeScreenFromCya(req) && claim.generalApplication?.applicationFee) {
     const claimId = getRouteParam(req, 'id');
     return constructResponseUrlWithIdParams(claimId, GA_CHECK_ANSWERS_URL);
   }
