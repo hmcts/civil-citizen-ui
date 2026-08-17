@@ -40,9 +40,9 @@ const OTHER_APPLICATION_TYPE_OPTIONS: ApplicationTypeOption[] = [
 const PERSISTABLE_APPLICATION_TYPE_OPTION_SET = new Set<unknown>(PERSISTABLE_APPLICATION_TYPE_OPTIONS);
 const OTHER_APPLICATION_TYPE_OPTION_SET = new Set<unknown>(OTHER_APPLICATION_TYPE_OPTIONS);
 
-export const getPersistableApplicationTypeOptions = (): ApplicationTypeOption[] => PERSISTABLE_APPLICATION_TYPE_OPTIONS;
+export const getPersistableApplicationTypeOptions = (): ApplicationTypeOption[] => [...PERSISTABLE_APPLICATION_TYPE_OPTIONS];
 
-export const getOtherApplicationTypeOptions = (): ApplicationTypeOption[] => OTHER_APPLICATION_TYPE_OPTIONS;
+export const getOtherApplicationTypeOptions = (): ApplicationTypeOption[] => [...OTHER_APPLICATION_TYPE_OPTIONS];
 
 export const isPersistableApplicationTypeOption = (applicationTypeOption: unknown): applicationTypeOption is ApplicationTypeOption =>
   PERSISTABLE_APPLICATION_TYPE_OPTION_SET.has(applicationTypeOption);

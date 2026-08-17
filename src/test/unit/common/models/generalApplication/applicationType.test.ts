@@ -50,6 +50,25 @@ describe('ApplicationType', () => {
     ]);
   });
 
+  it('returns defensive copies of application type option lists', () => {
+    const persistableOptions = getPersistableApplicationTypeOptions();
+    const otherOptions = getOtherApplicationTypeOptions();
+
+    persistableOptions.push(ApplicationTypeOption.OTHER_OPTION);
+    otherOptions.push(ApplicationTypeOption.OTHER_OPTION);
+
+    expect(getPersistableApplicationTypeOptions()).not.toContain(ApplicationTypeOption.OTHER_OPTION);
+    expect(getOtherApplicationTypeOptions()).toEqual([
+      ApplicationTypeOption.AMEND_A_STMT_OF_CASE,
+      ApplicationTypeOption.SUMMARY_JUDGEMENT,
+      ApplicationTypeOption.STRIKE_OUT,
+      ApplicationTypeOption.STAY_THE_CLAIM,
+      ApplicationTypeOption.UNLESS_ORDER,
+      ApplicationTypeOption.SETTLE_BY_CONSENT,
+      ApplicationTypeOption.OTHER,
+    ]);
+  });
+
   it.each<[ApplicationType[] | undefined]>([
     [undefined],
     [[]],

@@ -5,6 +5,10 @@ import {APPLICATION_TYPE_URL} from 'routes/urls';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {getRouteParam} from 'common/utils/routeParamUtils';
 import {queryParamNumber} from 'common/utils/requestUtils';
+import {
+  getDuplicateApplicationTypeIndex,
+  getInvalidApplicationTypeIndex,
+} from 'models/generalApplication/applicationType';
 
 export const SHOW_APPLICATION_TYPE_ERROR_QUERY_PARAM = 'showApplicationTypeError';
 export const SHOW_DUPLICATE_APPLICATION_TYPE_ERROR_QUERY_PARAM = 'showDuplicateApplicationTypeError';
@@ -29,8 +33,21 @@ export const applicationTypeGuard = async (req: AppRequest, res: Response, next:
       return;
     }
 
-    if (!claim.generalApplication?.applicationTypes?.length) {
+    const applicationTypes = claim.generalApplication?.applicationTypes || [];
+    if (!applicationTypes.length) {
       res.redirect(applicationTypeErrorUrl(claimId));
+      return;
+    }
+
+    const invalidApplicationTypeIndex = getInvalidApplicationTypeIndex(applicationTypes);
+    if (invalidApplicationTypeIndex >= 0) {
+      res.redirect(applicationTypeErrorUrl(claimId, invalidApplicationTypeIndex));
+      return;
+    }
+
+    const duplicateApplicationTypeIndex = getDuplicateApplicationTypeIndex(applicationTypes);
+    if (duplicateApplicationTypeIndex >= 0) {
+      res.redirect(duplicateApplicationTypeErrorUrl(claimId, duplicateApplicationTypeIndex));
       return;
     }
 
