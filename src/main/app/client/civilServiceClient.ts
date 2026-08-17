@@ -65,7 +65,10 @@ import {CCDGeneralApplication} from 'models/gaEvents/eventDto';
 import {roundOffTwoDecimals} from 'common/utils/dateUtils';
 import {syncCaseReferenceCookie} from 'modules/cookie/caseReferenceCookie';
 import {assertHasData, assertNonEmpty} from 'client/common/error/eventSubmissionError';
+import {CallbackError, CallbackErrorResponseBody, extractCallbackErrorMessages} from 'client/common/error/callbackError';
 import {normalizeRouteParam, RouteParam} from 'common/utils/routeParamUtils';
+
+const HTTP_STATUS_UNPROCESSABLE_ENTITY = 422;
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('civilServiceClient');
 
@@ -470,8 +473,18 @@ export class CivilServiceClient {
     } catch (e: unknown) {
       const err = e as AxiosError;
       const status = err.response?.status;
-      const body = err.response?.data;
+      const body = err.response?.data as CallbackErrorResponseBody;
       logger.error(`Submit event failed (event=${event}, claimId=${normalizedClaimId}, status=${status})`, { body });
+      // DTSCCI-5282: civil-service returns 422 with the actionable messages preserved.
+      // They arrive either as `callbackErrors` (callback/business-rule rejections) or as
+      // `details.field_errors` (CCD field-type validation). Surface either so the user sees
+      // the message instead of a generic 500 page.
+      if (status === HTTP_STATUS_UNPROCESSABLE_ENTITY) {
+        const messages = extractCallbackErrorMessages(body);
+        if (messages.length) {
+          throw new CallbackError(messages, body?.callbackWarnings);
+        }
+      }
       throw err;
     }
   }
