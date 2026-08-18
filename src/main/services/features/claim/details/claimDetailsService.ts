@@ -19,10 +19,10 @@ const saveClaimDetails = async (claimId: string, value: unknown, claimDetailsPro
   try {
     const claim: Claim = await getCaseDataFromStore(claimId);
     if (claim.claimDetails) {
-      claim.claimDetails[claimDetailsPropertyName as keyof ClaimDetails] = value;
+      (claim.claimDetails as unknown as Record<string, unknown>)[claimDetailsPropertyName] = value;
     } else {
       const claimDetails: ClaimDetails = new ClaimDetails();
-      claimDetails[claimDetailsPropertyName as keyof ClaimDetails] = value;
+      (claimDetails as unknown as Record<string, unknown>)[claimDetailsPropertyName] = value;
       claim.claimDetails = claimDetails;
     }
     await saveDraftClaim(claimId, claim);
