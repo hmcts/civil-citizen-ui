@@ -46,7 +46,7 @@ describe('Check your Answers GA Guard', () => {
     jest.clearAllMocks();
   });
 
-  it('should call next if GA journey is complete', async () => {
+  it('should call next if GA journey is complete even when a CYA application type change flag is present', async () => {
     //Given
     const claim = new Claim();
     const unavailableDates =
@@ -78,6 +78,8 @@ describe('Check your Answers GA Guard', () => {
       undefined,
       YesNo.YES,
     );
+    claim.generalApplication.applicationTypeChangeInProgress = true;
+    claim.generalApplication.applicationTypeChangeIndex = 0;
 
     mockGetCaseData.mockImplementation(async () => claim);
     //When
@@ -318,7 +320,7 @@ describe('Check your Answers GA Guard', () => {
     expect(MOCK_NEXT).not.toHaveBeenCalled();
   });
 
-  it('should redirect to application type validation when application type change from CYA is in progress', async () => {
+  it('should resume the incomplete journey when a stale CYA application type change flag is present', async () => {
     //Given
     const claim = new Claim();
     claim.generalApplication = new GeneralApplication();
@@ -329,7 +331,7 @@ describe('Check your Answers GA Guard', () => {
     //When
     await checkYourAnswersGAGuard(MOCK_REQUEST, MOCK_RESPONSE, MOCK_NEXT);
     //Then
-    expect(MOCK_RESPONSE.redirect).toHaveBeenCalledWith(applicationTypeErrorUrl('123', 0));
+    expect(MOCK_RESPONSE.redirect).toHaveBeenCalledWith(GA_AGREEMENT_FROM_OTHER_PARTY_URL.replace(':id', '123') + '?index=0');
     expect(MOCK_NEXT).not.toHaveBeenCalled();
   });
 

@@ -132,7 +132,7 @@ describe('General Application - Application type', () => {
         });
     });
 
-    it('should mark the application type change as in progress when entered from CYA', async () => {
+    it('should not mark the application type change as in progress when entered from CYA', async () => {
       const claim = new Claim();
       claim.generalApplication = new GeneralApplication();
       claim.generalApplication.applicationTypes = [new ApplicationType(ApplicationTypeOption.EXTEND_TIME)];
@@ -146,8 +146,8 @@ describe('General Application - Application type', () => {
           expect(res.status).toBe(200);
         });
 
-      expect(claim.generalApplication.applicationTypeChangeInProgress).toBe(true);
-      expect(claim.generalApplication.applicationTypeChangeIndex).toBe(0);
+      expect(claim.generalApplication.applicationTypeChangeInProgress).toBeUndefined();
+      expect(claim.generalApplication.applicationTypeChangeIndex).toBeUndefined();
     });
 
     it('should return http 500 when has error in the get method', async () => {
@@ -245,7 +245,7 @@ describe('General Application - Application type', () => {
       expect(claim.generalApplication.applicationTypes[0].option).toEqual(ApplicationTypeOption.ADJOURN_HEARING);
     });
 
-    it('should preserve journey data when the same application type is selected from CYA', async () => {
+    it('should return to CYA and preserve journey data when the same application type is selected from CYA', async () => {
       const claim = new Claim();
       claim.generalApplication = new GeneralApplication();
       claim.generalApplication.applicationTypes = [new ApplicationType(ApplicationTypeOption.EXTEND_TIME)];
@@ -263,7 +263,7 @@ describe('General Application - Application type', () => {
         .send({option: ApplicationTypeOption.EXTEND_TIME})
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.headers.location).toContain('/general-application/agreement-from-other-party?index=0');
+          expect(res.headers.location).toContain('/general-application/check-and-send');
         });
 
       expect(claim.generalApplication.applicationTypes).toHaveLength(1);

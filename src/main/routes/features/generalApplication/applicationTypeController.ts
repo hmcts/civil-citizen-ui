@@ -1,7 +1,7 @@
 import { NextFunction, Request, RequestHandler, Response, Router } from 'express';
 import {
   APPLICATION_TYPE_URL, BACK_URL,
-  GA_AGREEMENT_FROM_OTHER_PARTY_URL, GA_ASK_PROOF_OF_DEBT_PAYMENT_GUIDANCE_URL, ORDER_JUDGE_URL,
+  GA_AGREEMENT_FROM_OTHER_PARTY_URL, GA_ASK_PROOF_OF_DEBT_PAYMENT_GUIDANCE_URL, GA_CHECK_ANSWERS_URL, ORDER_JUDGE_URL,
 } from 'routes/urls';
 import { GenericForm } from 'common/form/models/genericForm';
 import { AppRequest } from 'common/models/AppRequest';
@@ -20,7 +20,6 @@ import {
   resolveApplicationTypeIndexForGet,
   resolveApplicationTypeIndexForPost,
   saveApplicationType,
-  startApplicationTypeChangeFromCya,
   validateAdditionalApplicationType,
 } from 'services/features/generalApplication/generalApplicationService';
 import { generateRedisKey } from 'modules/draft-store/draftStoreService';
@@ -53,9 +52,6 @@ applicationTypeController.get(APPLICATION_TYPE_URL, (async (req: AppRequest, res
     const claimId = getRouteParam(req, 'id');
     const claim = await getClaimById(claimId, req, true);
     const applicationIndex = resolveApplicationTypeIndexForGet(req, claim);
-    if (isChangeScreenFromCya(req)) {
-      await startApplicationTypeChangeFromCya(generateRedisKey(req), claim, applicationIndex);
-    }
 
     const showApplicationTypeError = req.query[SHOW_APPLICATION_TYPE_ERROR_QUERY_PARAM] === 'true';
     const applicationTypeOption = showApplicationTypeError
@@ -123,10 +119,15 @@ applicationTypeController.post(APPLICATION_TYPE_URL, (async (req: AppRequest | R
     if (form.hasErrors()) {
       res.render(viewPath, { form, cancelUrl, backLinkUrl, isOtherSelected: applicationType.isOtherSelected() || req.body.option === ApplicationTypeOption.OTHER_OPTION,  showCCJ: showCCJ});
     } else {
+      const selectedSameApplicationTypeFromCya = isChangeScreenFromCya(req)
+        && getByIndex(claim.generalApplication?.applicationTypes, applicationIndex)?.option === applicationType.option;
+
       await saveApplicationType(redisKey, claim, applicationType, applicationIndex);
 
       applicationIndex = getSavedApplicationIndex(claim, applicationIndex);
-      if (showCCJ && claim.joIsLiveJudgmentExists?.option === YesNo.YES && req.body.option === ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID) {
+      if (selectedSameApplicationTypeFromCya) {
+        res.redirect(constructResponseUrlWithIdParams(claimId, GA_CHECK_ANSWERS_URL));
+      } else if (showCCJ && claim.joIsLiveJudgmentExists?.option === YesNo.YES && req.body.option === ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID) {
         res.redirect(constructResponseUrlWithIdParams(claimId, GA_ASK_PROOF_OF_DEBT_PAYMENT_GUIDANCE_URL));
       } else {
         if (claim?.generalApplication?.applicationTypes?.length > 1){

@@ -4,7 +4,6 @@ import {getClaimById} from 'modules/utilityService';
 import {APPLICATION_TYPE_URL} from 'routes/urls';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {getRouteParam} from 'common/utils/routeParamUtils';
-import {queryParamNumber} from 'common/utils/requestUtils';
 import {
   getDuplicateApplicationTypeIndex,
   getInvalidApplicationTypeIndex,
@@ -26,12 +25,6 @@ export const applicationTypeGuard = async (req: AppRequest, res: Response, next:
   try {
     const claimId = getRouteParam(req, 'id');
     const claim = await getClaimById(claimId, req, true);
-
-    if (claim.generalApplication?.applicationTypeChangeInProgress) {
-      const applicationTypeIndex = claim.generalApplication.applicationTypeChangeIndex ?? queryParamNumber(req, 'index');
-      res.redirect(applicationTypeErrorUrl(claimId, applicationTypeIndex));
-      return;
-    }
 
     const applicationTypes = claim.generalApplication?.applicationTypes || [];
     if (!applicationTypes.length) {

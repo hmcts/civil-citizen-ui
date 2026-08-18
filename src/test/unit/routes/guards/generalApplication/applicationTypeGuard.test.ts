@@ -88,7 +88,7 @@ describe('Application type guard', () => {
     expect(next).not.toHaveBeenCalled();
   });
 
-  it('should redirect to application type validation when CYA application type change is in progress', async () => {
+  it('should ignore a stale CYA application type change flag when GA draft has a valid application type', async () => {
     const claim = new Claim();
     claim.generalApplication = new GeneralApplication(new ApplicationType(ApplicationTypeOption.ADJOURN_HEARING));
     claim.generalApplication.applicationTypeChangeInProgress = true;
@@ -97,8 +97,8 @@ describe('Application type guard', () => {
 
     await applicationTypeGuard(req, res, next);
 
-    expect(res.redirect).toHaveBeenCalledWith(applicationTypeErrorUrl('123', 0));
-    expect(next).not.toHaveBeenCalled();
+    expect(res.redirect).not.toHaveBeenCalled();
+    expect(next).toHaveBeenCalledWith();
   });
 
   it('should redirect to application type validation when claim does not have a GA draft', async () => {

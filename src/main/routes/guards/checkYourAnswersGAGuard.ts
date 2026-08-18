@@ -37,9 +37,6 @@ export const checkYourAnswersGAGuard = async (req: Request, res: Response, next:
     const applicationTypes = claim.generalApplication?.applicationTypes || [];
 
     if (!applicationTypes.length) return res.redirect(applicationTypeErrorUrl(claimId));
-    if (claim.generalApplication?.applicationTypeChangeInProgress) {
-      return res.redirect(applicationTypeErrorUrl(claimId, claim.generalApplication.applicationTypeChangeIndex));
-    }
     const invalidApplicationTypeIndex = getInvalidApplicationTypeIndex(applicationTypes);
     if (invalidApplicationTypeIndex >= 0) {
       return res.redirect(`${constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL)}?index=${invalidApplicationTypeIndex}`);
