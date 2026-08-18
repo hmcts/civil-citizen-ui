@@ -34,7 +34,6 @@ describe('Lift Breathing Space Confirmation Controller', () => {
         .get(LIFT_BREATHING_SPACE_CONFIRMATION_URL.replace(':id', '123'))
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain('Breathing space lifted');
           expect(res.text).toContain('Standard breathing space lifted');
           expect(res.text).toContain('Case number:');
           expect(res.text).toContain('We have sent you a confirmation email.');

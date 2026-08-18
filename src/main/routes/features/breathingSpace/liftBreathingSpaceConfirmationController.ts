@@ -25,7 +25,7 @@ liftBreathingSpaceConfirmationController.get(LIFT_BREATHING_SPACE_CONFIRMATION_U
     const helpSupportTitle = getHelpSupportTitle(lng);
     const helpSupportLinks = getHelpSupportLinks(lng);
     res.render(liftBreathingSpaceConfirmationViewPath, {
-      confirmationTitle: t('PAGES.BREATHING_SPACE.LIFT.CONFIRMATION.TITLE', {lng}),
+      confirmationTitle: t(confirmationPageTitle, {lng}),
       confirmationPageTitle,
       caseSummaryUrl: constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL),
       claimId,
