@@ -46,9 +46,11 @@ const applyMissingEndDateRule = (form: LiftBreathingSpaceForm, errors: Validatio
   }
   if (form.day === undefined) {
     addDateError(errors, 'ERRORS.VALID_LIFT_END_DATE_DAY');
-  } else if (form.month === undefined) {
+  }
+  if (form.month === undefined) {
     addDateError(errors, 'ERRORS.VALID_LIFT_END_DATE_MONTH');
-  } else if (form.year === undefined) {
+  }
+  if (form.year === undefined) {
     addDateError(errors, 'ERRORS.VALID_LIFT_END_DATE_YEAR');
   }
   return false;

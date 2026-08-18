@@ -167,7 +167,7 @@ describe('Lift Breathing Space Controller', () => {
       expect(form.date.getDate()).toBe(today.getDate());
     });
 
-    it('should return a day error when the end date is not entered', async () => {
+    it('should return errors for every missing end date part', async () => {
       const claim = new Claim();
       claim.totalClaimAmount = 1000;
       mockGetClaimById.mockResolvedValue(claim);
@@ -179,6 +179,8 @@ describe('Lift Breathing Space Controller', () => {
           expect(res.status).toBe(200);
           expect(res.text).toContain('govuk-error-summary');
           expect(res.text).toContain('End date must include a day');
+          expect(res.text).toContain('End date must include a month');
+          expect(res.text).toContain('End date must include a year');
         });
     });
 
@@ -186,6 +188,8 @@ describe('Lift Breathing Space Controller', () => {
       [{year: '2026', month: '08', day: ''}, 'End date must include a day'],
       [{year: '2026', month: '', day: '14'}, 'End date must include a month'],
       [{year: '', month: '08', day: '14'}, 'End date must include a year'],
+      [{year: '2026', month: '', day: ''}, 'End date must include a day'],
+      [{year: '2026', month: '', day: ''}, 'End date must include a month'],
     ])('should show the missing end date part error', async (date, expectedError) => {
       const claim = new Claim();
       claim.totalClaimAmount = 1000;
