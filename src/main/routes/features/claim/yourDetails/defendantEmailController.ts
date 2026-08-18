@@ -14,7 +14,8 @@ function renderView(form: GenericForm<DefendantEmail>, res: Response): void {
 
 defendantEmailController.get(CLAIM_DEFENDANT_EMAIL_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const form: DefendantEmail = await getDefendantEmail(req);
+    const claimId = req.session?.user?.id;
+    const form: DefendantEmail = await getDefendantEmail(claimId);
     renderView(new GenericForm<DefendantEmail>(form), res);
   } catch (error) {
     next(error);
@@ -23,13 +24,14 @@ defendantEmailController.get(CLAIM_DEFENDANT_EMAIL_URL, (async (req: AppRequest,
 
 defendantEmailController.post(CLAIM_DEFENDANT_EMAIL_URL, (async (req: AppRequest & Request, res: Response, next: NextFunction) => {
   try {
+    const claimId = req.session?.user?.id;
     const form: GenericForm<DefendantEmail> = new GenericForm(new DefendantEmail(req.body.emailAddress));
     form.validateSync();
 
     if (form.hasErrors()) {
       renderView(form, res);
     } else {
-      await saveDefendantEmail(req, form.model);
+      await saveDefendantEmail(claimId, form.model);
       res.redirect(CLAIM_DEFENDANT_PHONE_NUMBER_URL);
     }
   } catch (error) {
