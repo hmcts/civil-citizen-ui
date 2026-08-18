@@ -16,7 +16,7 @@ import {getLng} from 'common/utils/languageToggleUtils';
 import {getClaimTimeline} from 'services/features/common/claimTimelineService';
 import { AppRequest } from 'common/models/AppRequest';
 import { getFirstContactData } from 'services/firstcontact/firstcontactService';
-import {decryptFirstContactValue} from 'services/firstcontact/firstContactCrypto';
+import {decryptSessionValue} from 'services/firstcontact/sessionValueCrypto';
 
 const firstContactClaimSummaryController = Router();
 
@@ -35,7 +35,7 @@ firstContactClaimSummaryController.get(FIRST_CONTACT_CLAIM_SUMMARY_URL,
         return res.redirect(FIRST_CONTACT_ACCESS_DENIED_URL);
       }
 
-      const originalText = decryptFirstContactValue(firstContact.pin, claim.respondent1PinToPostLRspec.accessCode);
+      const originalText = decryptSessionValue(firstContact.pin, claim.respondent1PinToPostLRspec.accessCode);
       if (claimId && originalText === YesNo.YES) {
         const interestData = await getInterestDetails(claim, req);
         const totalAmount = await getTotalAmountWithInterestAndFeesAndFixedCost(claim, req);

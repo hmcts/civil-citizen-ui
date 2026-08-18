@@ -9,7 +9,7 @@ import { Session } from 'express-session';
 import {t} from 'i18next';
 import nock from 'nock';
 import config from 'config';
-import {encryptFirstContactValue} from '../../../../../../main/services/firstcontact/firstContactCrypto';
+import {encryptSessionValue} from '../../../../../../main/services/firstcontact/sessionValueCrypto';
 
 const civilServiceUrl = config.get<string>('services.civilService.url');
 const firstContactAccessCode = 'H4WYG26R6PA9';
@@ -30,7 +30,7 @@ describe('First contact - claim summary controller', () => {
     app.request['session'] = {
       'firstContact': {
         claimId: '1645882162449404',
-        pin: encryptFirstContactValue(YesNo.YES, firstContactAccessCode),
+        pin: encryptSessionValue(YesNo.YES, firstContactAccessCode),
       },
     } as unknown as Session;
     app.locals.draftStoreClient = mockCivilClaimWithTimelineAndEvidence;
@@ -44,7 +44,7 @@ describe('First contact - claim summary controller', () => {
     app.request['session'] = {
       'firstContact': {
         claimId: '1645882162449404',
-        pin: encryptFirstContactValue(YesNo.YES, firstContactAccessCode),
+        pin: encryptSessionValue(YesNo.YES, firstContactAccessCode),
       },
     } as unknown as Session;
     app.locals.draftStoreClient = mockRedisFailure;
@@ -66,7 +66,7 @@ describe('First contact - claim summary controller', () => {
   });
 
   it('should redirect to access denied page if cookie is missing claimId property', async () => {
-    app.request['session'] = { 'firstContact': { pin: encryptFirstContactValue(YesNo.YES, firstContactAccessCode) } } as unknown as Session;
+    app.request['session'] = { 'firstContact': { pin: encryptSessionValue(YesNo.YES, firstContactAccessCode) } } as unknown as Session;
     app.locals.draftStoreClient = mockCivilClaimWithTimelineAndEvidence;
     await request(app).get(FIRST_CONTACT_CLAIM_SUMMARY_URL).expect((res) => {
       expect(res.status).toBe(302);
