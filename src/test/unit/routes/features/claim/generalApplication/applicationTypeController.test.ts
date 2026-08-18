@@ -245,7 +245,7 @@ describe('General Application - Application type', () => {
       expect(claim.generalApplication.applicationTypes[0].option).toEqual(ApplicationTypeOption.ADJOURN_HEARING);
     });
 
-    it('should reset stale journey data when the same application type is selected from CYA', async () => {
+    it('should preserve journey data when the same application type is selected from CYA', async () => {
       const claim = new Claim();
       claim.generalApplication = new GeneralApplication();
       claim.generalApplication.applicationTypes = [new ApplicationType(ApplicationTypeOption.EXTEND_TIME)];
@@ -268,8 +268,10 @@ describe('General Application - Application type', () => {
 
       expect(claim.generalApplication.applicationTypes).toHaveLength(1);
       expect(claim.generalApplication.applicationTypes[0].option).toEqual(ApplicationTypeOption.EXTEND_TIME);
-      expect(claim.generalApplication.agreementFromOtherParty).toBeUndefined();
-      expect(claim.generalApplication.applicationFee).toBeUndefined();
+      expect(claim.generalApplication.agreementFromOtherParty).toBe(YesNo.YES);
+      expect(claim.generalApplication.applicationFee).toEqual({
+        calculatedAmountInPence: 5000,
+      });
       expect(claim.generalApplication.applicationTypeChangeInProgress).toBeUndefined();
       expect(claim.generalApplication.applicationTypeChangeIndex).toBeUndefined();
     });

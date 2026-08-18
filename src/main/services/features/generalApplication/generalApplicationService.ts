@@ -117,18 +117,16 @@ export const saveApplicationType = async (
   claim: Claim,
   applicationType: ApplicationType,
   index?: number,
-  forceResetJourney = false,
 ): Promise<void> => {
   try {
     assertValidApplicationTypes([applicationType]);
     claim.generalApplication = toGeneralApplication(claim.generalApplication);
     const previousApplicationType = getByIndex(claim.generalApplication?.applicationTypes, index)?.option;
     const hasChangedExistingApplicationType = !!previousApplicationType && previousApplicationType !== applicationType.option;
-    const isChangingApplicationTypeFromCya = forceResetJourney || claim.generalApplication.applicationTypeChangeInProgress === true;
     updateByIndexOrAppend(claim.generalApplication?.applicationTypes, applicationType, index);
     assertValidApplicationTypes(claim.generalApplication?.applicationTypes);
     resetClaimDataByApplicationType(claim, applicationType);
-    if (hasChangedExistingApplicationType || isChangingApplicationTypeFromCya) {
+    if (hasChangedExistingApplicationType) {
       resetClaimDataForChangedApplicationType(claim, index);
     }
     delete claim.generalApplication.applicationTypeChangeInProgress;

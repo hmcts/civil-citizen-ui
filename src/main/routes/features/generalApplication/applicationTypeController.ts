@@ -123,7 +123,7 @@ applicationTypeController.post(APPLICATION_TYPE_URL, (async (req: AppRequest | R
     if (form.hasErrors()) {
       res.render(viewPath, { form, cancelUrl, backLinkUrl, isOtherSelected: applicationType.isOtherSelected() || req.body.option === ApplicationTypeOption.OTHER_OPTION,  showCCJ: showCCJ});
     } else {
-      await saveApplicationType(redisKey, claim, applicationType, applicationIndex, isChangeScreenFromCya(req));
+      await saveApplicationType(redisKey, claim, applicationType, applicationIndex);
 
       applicationIndex = getSavedApplicationIndex(claim, applicationIndex);
       if (showCCJ && claim.joIsLiveJudgmentExists?.option === YesNo.YES && req.body.option === ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID) {
