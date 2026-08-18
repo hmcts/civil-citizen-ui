@@ -32,19 +32,32 @@ export const getDraftClaim = async (req: AppRequest): Promise<DraftClaimManagerR
     throw new Error('[draftStoreManagerService] user Id required to fetch draft');
   }
 
-  const cached = await getCachedDraft(userId);
+  let cached: DraftClaimResponse | null = null;
+  try {
+    cached = await getCachedDraft(userId);
+  } catch (redisError) {
+    logger.warn(`[draftStoreManagerService] redis cache lookup failed for user: ${userId} falling back to db.`, redisError);
+  }
 
   if (cached) {
     logger.info(`[draftStoreManagerService] returning cached draft for user: ${userId}`);
     return buildManagerResult(cached);
   }
-  logger.info(`[draftStoreManagerService] cached miss for user: ${userId} fetching from db instead`);
-  const dbResult = await getActiveDraftFromDraftStoreDb(req);
-  if (!dbResult) {
-    return null;
+
+  logger.info(`[draftStoreManagerService] cache miss for user: ${userId} fetching from db instead`);
+  try {
+    const dbResult = await getActiveDraftFromDraftStoreDb(req);
+    if (!dbResult) {
+      return null;
+    }
+    setCachedDraft(userId, dbResult.rawResponse).catch((err) =>
+      logger.warn(`[draftStoreManagerService] failed to populate redis cache for user: ${userId}`, err),
+    );
+    return buildManagerResult(dbResult.rawResponse);
+  } catch (error) {
+    logger.error(`[draftStoreManagerService] db error fetching draft for user: ${userId}`, error);
+    throw error;
   }
-  await setCachedDraft(userId, dbResult.rawResponse);
-  return buildManagerResult(dbResult.rawResponse);
 };
 
 export const createOrLoadDraft = async (req: AppRequest, claim?: Claim): Promise<DraftClaimManagerResult> => {
