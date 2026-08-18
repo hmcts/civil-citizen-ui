@@ -5,7 +5,7 @@ const cButtons = require('../../../../../commonComponents/cButtons');
 
 const fields ={
   yesButton: 'input[value="yes"]',
-  noButton: 'input[value="no"]'
+  noButton: 'input[value="no"]',
 };
 
 const content = {
