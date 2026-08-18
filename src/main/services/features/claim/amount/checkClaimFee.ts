@@ -10,8 +10,9 @@ export const checkIfClaimFeeHasChanged = async (claimId: string, claim: Claim, r
   if(!claim?.isDraftClaim()) {
     return false;
   }
-  const interestToDate = await calculateInterestToDate(claim);
+  const interestToDate = await calculateInterestToDate(claim, req);
   const newClaimFeeData = await civilServiceClient.getClaimFeeData(claim.totalClaimAmount + interestToDate, req);
   const oldClaimFee = claim.claimFee?.calculatedAmountInPence;
-  return oldClaimFee !== newClaimFeeData?.calculatedAmountInPence;
+  const normalisedOldClaimFee = oldClaimFee === undefined ? undefined : Number(oldClaimFee);
+  return normalisedOldClaimFee !== newClaimFeeData?.calculatedAmountInPence;
 };
