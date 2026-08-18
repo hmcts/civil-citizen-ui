@@ -29,10 +29,10 @@ export const saveClaimant = async (claimId: string, partyDetails: PartyDetails):
 export const saveClaimantProperty = async (userId: string, propertyName: string, value: unknown): Promise<void> => {
   const claim = await getCaseDataFromStore(userId);
   if (claim.applicant1) {
-    claim.applicant1[propertyName as keyof Party] = value;
+    (claim.applicant1 as unknown as Record<string, unknown>)[propertyName as keyof Party] = value;
   } else {
     const claimant = new Party();
-    claimant[propertyName as keyof Party] = value;
+    (claimant as unknown as Record<string, unknown>)[propertyName as keyof Party] = value;
     claim.applicant1 = claimant;
   }
   await saveDraftClaim(userId, claim, false, userId);
