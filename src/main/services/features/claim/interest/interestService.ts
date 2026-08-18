@@ -1,5 +1,4 @@
-import {AppRequest} from 'common/models/AppRequest';
-import {getDraftClaim, updateDraftClaim} from 'modules/draft-store/draftStoreManagerService';
+import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {Interest} from 'form/models/interest/interest';
 import {InterestClaimOptionsType} from 'form/models/claim/interest/interestClaimOptionsType';
 import {Claim} from 'models/claim';
@@ -18,9 +17,9 @@ const deleteBreakDownInterest = (claim: Claim) => {
   delete claim.interest.totalInterest;
 };
 
-const getInterest = async (req: AppRequest): Promise<Interest> => {
+const getInterest = async (claimId: string): Promise<Interest> => {
   try {
-    const caseData = await getDraftClaim(req);
+    const caseData = await getCaseDataFromStore(claimId);
     return Object.assign(new Interest(), caseData.interest);
   } catch (error) {
     logger.error(error);
@@ -28,9 +27,9 @@ const getInterest = async (req: AppRequest): Promise<Interest> => {
   }
 };
 
-const saveInterest = async (req: AppRequest, value: any, interestPropertyName: string): Promise<void> => {
+const saveInterest = async (claimId: string, value: unknown, interestPropertyName: string): Promise<void> => {
   try {
-    const claim: any = await getDraftClaim(req);
+    const claim: Claim = await getCaseDataFromStore(claimId);
     if (claim.interest) {
 
       if (claim.interest.interestClaimOptions) {
@@ -45,11 +44,11 @@ const saveInterest = async (req: AppRequest, value: any, interestPropertyName: s
 
       claim.interest[interestPropertyName] = value;
     } else {
-      const interest: any = new Interest();
+      const interest = new Interest();
       interest[interestPropertyName] = value;
       claim.interest = interest;
     }
-    await updateDraftClaim(req, claim, req.session?.draftId);
+    await saveDraftClaim(claimId, claim);
   } catch (error) {
     logger.error(error);
     throw error;
