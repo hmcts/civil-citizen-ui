@@ -3,7 +3,6 @@ import {constructResponseUrlWithIdParams, constructUrlWithIndex} from 'common/ut
 import {NextFunction, Request, Response} from 'express';
 import {getClaimById} from 'modules/utilityService';
 import {
-  APPLICATION_TYPE_URL,
   GA_AGREEMENT_FROM_OTHER_PARTY_URL,
   GA_APPLICATION_COSTS_URL,
   GA_HEARING_ARRANGEMENTS_GUIDANCE_URL,
@@ -39,7 +38,7 @@ export const checkYourAnswersGAGuard = async (req: Request, res: Response, next:
     if (!applicationTypes.length) return res.redirect(applicationTypeErrorUrl(claimId));
     const invalidApplicationTypeIndex = getInvalidApplicationTypeIndex(applicationTypes);
     if (invalidApplicationTypeIndex >= 0) {
-      return res.redirect(`${constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL)}?index=${invalidApplicationTypeIndex}`);
+      return res.redirect(applicationTypeErrorUrl(claimId, invalidApplicationTypeIndex));
     }
     const duplicateApplicationTypeIndex = getDuplicateApplicationTypeIndex(applicationTypes);
     if (duplicateApplicationTypeIndex >= 0) {

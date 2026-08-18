@@ -9,7 +9,6 @@ import {RequestingReason} from 'common/models/generalApplication/requestingReaso
 import {NextFunction, Request, Response} from 'express';
 import {checkYourAnswersGAGuard} from 'routes/guards/checkYourAnswersGAGuard';
 import {
-  APPLICATION_TYPE_URL,
   GA_AGREEMENT_FROM_OTHER_PARTY_URL,
   GA_APPLICATION_COSTS_URL,
 } from 'routes/urls';
@@ -299,7 +298,7 @@ describe('Check your Answers GA Guard', () => {
     //When
     await checkYourAnswersGAGuard(MOCK_REQUEST, MOCK_RESPONSE, MOCK_NEXT);
     //Then
-    expect(MOCK_RESPONSE.redirect).toHaveBeenCalledWith(APPLICATION_TYPE_URL.replace(':id', '123') + '?index=2');
+    expect(MOCK_RESPONSE.redirect).toHaveBeenCalledWith(applicationTypeErrorUrl('123', 2));
     expect(MOCK_NEXT).not.toHaveBeenCalled();
   });
 
