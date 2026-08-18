@@ -228,6 +228,16 @@ describe('Dashboard Items', ()=> {
       //Then
       expect(status).toBe('PAGES.DASHBOARD.STATUS_DEFENDANT.CASE_DISCONTINUED');
     });
+
+    it('should return translated status for claim DECISION_FOR_RECONSIDERATION_MADE', () => {
+      //Given
+      const dashboardClaim = new DashboardDefendantItem();
+      dashboardClaim.status = 'DECISION_FOR_RECONSIDERATION_MADE';
+      //When
+      const status = dashboardClaim.getStatus('en');
+      //Then
+      expect(status).toBe('PAGES.DASHBOARD.STATUS_DEFENDANT.DECISION_ON_RECONSIDERATION');
+    });
   });
 
   describe('Dashboard claimant item', ()=>{
@@ -399,7 +409,27 @@ describe('Dashboard Items', ()=> {
 
     });
 
-    it('should return translated status for claim SDO_ORDER_LEGAL_ADVISER_CREATED', () => {
+    it('should return translated status for claim DECISION_FOR_RECONSIDERATION_MADE', () => {
+      //Given
+      const dashboardClaim = new DashboardClaimantItem();
+      dashboardClaim.status = 'DECISION_FOR_RECONSIDERATION_MADE';
+      //When
+      const status = dashboardClaim.getStatus('en');
+      //Then
+      expect(status).toBe('PAGES.DASHBOARD.STATUS_CLAIMANT.DECISION_ON_RECONSIDERATION');
+    });
+
+    it('should return translated status for claim DECISION_FOR_RECONSIDERATION_MADE in Welsh', () => {
+      //Given
+      const dashboardClaim = new DashboardClaimantItem();
+      dashboardClaim.status = 'DECISION_FOR_RECONSIDERATION_MADE';
+      //When
+      const status = dashboardClaim.getStatus('cy');
+      //Then
+      expect(status).toBe('PAGES.DASHBOARD.STATUS_CLAIMANT.DECISION_ON_RECONSIDERATION');
+    });
+
+    it('should return translated status for claim DEFENDANT_APPLY_NOC', () => {
       //Given
       const dashboardClaim = new DashboardClaimantItem();
       dashboardClaim.status = 'DEFENDANT_APPLY_NOC';
