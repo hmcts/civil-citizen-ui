@@ -34,7 +34,8 @@ const applyMissingEndDateRule = (form: LiftBreathingSpaceForm, errors: Validatio
   if (form.date) {
     return false;
   }
-  if (form.breathingSpaceType && form.breathingSpaceType !== STANDARD_BREATHING_SPACE) {
+  const hasAnyDatePart = form.day !== undefined || form.month !== undefined || form.year !== undefined;
+  if (!hasAnyDatePart && form.breathingSpaceType && form.breathingSpaceType !== STANDARD_BREATHING_SPACE) {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     form.date = today;
@@ -43,7 +44,15 @@ const applyMissingEndDateRule = (form: LiftBreathingSpaceForm, errors: Validatio
     form.year = today.getFullYear();
     return true;
   }
-  addDateError(errors, 'ERRORS.VALID_LIFT_END_DATE_INCLUDE');
+  if (form.day === undefined) {
+    addDateError(errors, 'ERRORS.VALID_LIFT_END_DATE_DAY');
+  }
+  if (form.month === undefined) {
+    addDateError(errors, 'ERRORS.VALID_LIFT_END_DATE_MONTH');
+  }
+  if (form.year === undefined) {
+    addDateError(errors, 'ERRORS.VALID_LIFT_END_DATE_YEAR');
+  }
   return false;
 };
 
