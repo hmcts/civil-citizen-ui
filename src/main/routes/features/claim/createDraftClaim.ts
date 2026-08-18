@@ -78,7 +78,7 @@ createDraftClaimController.post(TESTING_SUPPORT_URL, (async (req: Request, res: 
       }
     }
 
-    if(!req.cookies['eligibilityCompleted']){
+    if(!req.cookies['eligibilityCompleted']) {
       const MILLISECONDS_IN_1_HOUR = 3600000;
       res.cookie('eligibilityCompleted', true, {maxAge: MILLISECONDS_IN_1_HOUR, httpOnly: true });
     }
