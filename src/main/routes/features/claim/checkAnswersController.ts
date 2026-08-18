@@ -36,10 +36,10 @@ const checkAnswersViewPath = 'features/claim/check-answers';
 //const paymentUrl = 'https://www.payments.service.gov.uk/card_details/:id';
 const claimCheckAnswersController = Router();
 
-function renderView(res: Response, form: GenericForm<unknown>, claim: Claim, userId: string, lang: string, isCarmEnabled = true) {
+function renderView(res: Response, form: GenericForm<object>, claim: Claim, userId: string, lang: string, isCarmEnabled = true) {
 
   const summarySections = getSummarySections(userId, claim, lang, isCarmEnabled);
-  const signatureType = form.model?.type;
+  const signatureType = form.model as {type?: string};
   let payment;
   if (claim.claimDetails?.helpWithFees?.option === YesNo.NO) {
     payment = 100;
@@ -124,6 +124,6 @@ claimCheckAnswersController.post(CLAIM_CHECK_ANSWERS_URL, async (req: Request | 
 
 export default claimCheckAnswersController;
 
-const validateFields = (genericForm: GenericForm<unknown>, formErrors: ValidationError[]): ValidationError[] => {
+const validateFields = (genericForm: GenericForm<object>, formErrors: ValidationError[]): ValidationError[] => {
   return [...formErrors, ...validator.validateSync(genericForm.model)];
 };
