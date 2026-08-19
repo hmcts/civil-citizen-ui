@@ -27,6 +27,7 @@ describe('Lift Breathing Space Confirmation Controller', () => {
   describe('on GET', () => {
     it('should return standard breathing space lift confirmation page', async () => {
       const claim = new Claim();
+      claim.legacyCaseReference = '000012345678';
       claim.enterBreathing = new BreathingSpaceEnterInfo(BreathingSpaceType.STANDARD);
       mockGetClaimById.mockResolvedValue(claim);
 
@@ -36,6 +37,7 @@ describe('Lift Breathing Space Confirmation Controller', () => {
           expect(res.status).toBe(200);
           expect(res.text).toContain('Standard breathing space lifted');
           expect(res.text).toContain('Case number:');
+          expect(res.text).toContain('0000 1234 5678');
           expect(res.text).toContain('We have sent you a confirmation email.');
           expect(res.text).toContain('Return to your case summary');
         });
