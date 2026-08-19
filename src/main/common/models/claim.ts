@@ -501,7 +501,7 @@ export class Claim {
       const hearingDocuments = lang === 'cy' ? this.caseProgressionHearing.hearingDocumentsWelsh : this.caseProgressionHearing.hearingDocuments;
       if (hearingDocuments) {
         const hearingNotice = [...hearingDocuments].reverse().find(document => {
-          return document.value.documentType === documentType;
+          return document?.value?.documentType === documentType;
         });
         return hearingNotice?.value;
       }
@@ -509,9 +509,9 @@ export class Claim {
       return undefined;
     } else if (this.hasDefaultJudgmentDocuments() && (documentType === DocumentType.DEFAULT_JUDGMENT_CLAIMANT1 || documentType === DocumentType.DEFAULT_JUDGMENT_DEFENDANT1)) {
       const djDoc = [...this.defaultJudgmentDocuments].reverse().find(document => {
-        return document.value.documentType === documentType;
+        return document?.value?.documentType === documentType;
       });
-      return djDoc.value;
+      return djDoc?.value;
     }
     if (documentType === DocumentType.NOTICE_OF_DISCONTINUANCE_DEFENDANT_TRANSLATED_DOCUMENT) {
       return this.respondent1NoticeOfDiscontinueAllPartyTranslatedDoc;
@@ -522,11 +522,11 @@ export class Claim {
     if (this.isSystemGeneratedCaseDocumentsAvailable()) {
       const filteredDocumentDetailsByType = [...this.systemGeneratedCaseDocuments].reverse().find(document => {
         if (documentType == DocumentType.DIRECTIONS_QUESTIONNAIRE) {
-          return document.value.documentType === documentType && document.value.documentName.startsWith(claimantOrDefendant);
+          return document?.value?.documentType === documentType && document?.value?.documentName?.startsWith(claimantOrDefendant);
         } else if (documentType == DocumentType.SEALED_CLAIM && claimantOrDefendant == DirectionQuestionnaireType.DEFENDANT) {
-          return document.value.documentType === documentType && document.value.documentName.includes('_response_');
+          return document?.value?.documentType === documentType && document?.value?.documentName?.includes('_response_');
         }
-        return document?.value.documentType === documentType;
+        return document?.value?.documentType === documentType;
       });
       return filteredDocumentDetailsByType?.value;
     }

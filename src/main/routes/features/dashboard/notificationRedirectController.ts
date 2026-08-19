@@ -67,16 +67,16 @@ async function getDashboardNotificationRedirectUrl(locationName: string, claimId
       const hearingNoticeWelsh = claim.getDocumentDetails(DocumentType.HEARING_FORM, undefined, 'cy');
       if (hearingNoticeWelsh && lang === 'cy' && checkWelshHearingNotice(claim)) {
         redirectUrl = CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(
-          ':documentId', documentIdExtractor(hearingNoticeWelsh.documentLink.document_binary_url));
+          ':documentId', documentIdExtractor(hearingNoticeWelsh.documentLink?.document_binary_url));
         break;
       }
-      const hearingNotice = claim.getDocumentDetails(DocumentType.HEARING_FORM);
-      if (!hearingNotice) {
+      if (!claim?.caseProgressionHearing?.hearingDocuments) {
         redirectUrl = constructResponseUrlWithIdParams(claimId, claim.isClaimant() ? DASHBOARD_CLAIMANT_URL : DEFENDANT_SUMMARY_URL) + '?errorAwaitingTranslation';
         break;
       }
+      const hearingNotice = claim.getDocumentDetails(DocumentType.HEARING_FORM);
       redirectUrl = CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(
-        ':documentId', documentIdExtractor(hearingNotice.documentLink.document_binary_url));
+        ':documentId', documentIdExtractor(hearingNotice?.documentLink?.document_binary_url));
       break;
     }
     case 'PAY_HEARING_FEE_URL':
