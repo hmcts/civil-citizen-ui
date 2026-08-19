@@ -103,7 +103,15 @@ claimCheckAnswersController.post(CLAIM_CHECK_ANSWERS_URL, async (req: Request | 
       return;
     } else {
       await saveStatementOfTruth(userId, form.model);
-      const submittedClaim = await submitClaim(<AppRequest>req);
+      const appReq = req as AppRequest;
+      const submittedClaim = await submitClaim(appReq);
+
+      const draftId = appReq.session?.draftId;
+      if (draftId) {
+        await deleteDraftClaim(appReq, draftId);
+        delete appReq.session.draftId;
+      }
+
       res.clearCookie('eligibilityCompleted');
       res.clearCookie('eligibility');
       if (claim.claimDetails.helpWithFees.option === YesNo.NO) {
@@ -111,12 +119,6 @@ claimCheckAnswersController.post(CLAIM_CHECK_ANSWERS_URL, async (req: Request | 
         //const paymentUrlWithId = constructResponseUrlWithIdParams(userId, paymentUrl);
         //res.redirect(paymentUrlWithId);
         res.clearCookie('eligibilityCompleted');
-      }
-      const appReq = req as AppRequest;
-      const draftId = appReq.session?.draftId;
-      if (draftId) {
-        await deleteDraftClaim(appReq, draftId);
-        delete appReq.session.draftId;
       }
       res.redirect(constructResponseUrlWithIdParams(submittedClaim.id, CLAIM_CONFIRMATION_URL));
     }

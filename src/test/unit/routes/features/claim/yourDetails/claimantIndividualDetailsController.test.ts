@@ -7,21 +7,45 @@ import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {PartyType} from 'models/partyType';
 import {Claim} from 'models/claim';
 import {Party} from 'models/party';
-import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {PartyDetails} from 'form/models/partyDetails';
+import {getDraftClaim, updateDraftClaim} from 'modules/draft-store/draftStoreManagerService';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {CivilClaimResponse} from 'models/civilClaimResponse';
+import {DraftClaimManagerResult} from 'models/draft/draftClaim';
 import * as launchDarklyClient from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import * as ordnanceSurveyService from '../../../../../../main/modules/ordance-survey-key/ordanceSurveyKeyService';
 
+const nock = require('nock');
+
 jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
-jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('modules/draft-store/draftStoreManagerService');
+jest.mock('modules/draft-store/draftStoreService');
 jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 jest.mock('../../../../../../main/modules/ordance-survey-key/ordanceSurveyKeyService');
+jest.mock('routes/guards/claimIssueTaskListGuard', () => ({
+  claimIssueTaskListGuard: jest.fn((req, res, next) => next()),
+}));
+
+const mockGetDraftClaim = getDraftClaim as jest.Mock;
+const mockUpdateDraftClaim = updateDraftClaim as jest.Mock;
+const mockGetCaseDataFromStore = draftStoreService.getCaseDataFromStore as jest.Mock;
+const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
 
 const mockLookupByPostcode = ordnanceSurveyService.lookupByPostcodeAndDataSet as jest.Mock;
-const mockGetCaseData = getCaseDataFromStore as jest.Mock;
-const mockSaveDraftClaim = saveDraftClaim as jest.Mock;
+
+const createMockManagerResult = (claim: Claim): DraftClaimManagerResult => ({
+  claimResponse: {
+    id: '123',
+    case_data: claim as unknown as Claim,
+  } as CivilClaimResponse,
+  rawResponse: {
+    draftId: '123',
+    payload: claim,
+  } as unknown as DraftClaimManagerResult['rawResponse'],
+  createdAt: '2026-08-01T10:00:00.000Z',
+  updatedAt: '2026-08-01T11:00:00.000Z',
+  expiresAt: '2026-09-01T10:00:00.000Z',
+});
 
 const buildClaimOfApplicant = (): Claim => {
   const claim = new Claim();
@@ -47,8 +71,6 @@ const buildClaimOfApplicantType = (type: PartyType): Claim => {
   return claim;
 };
 
-const nock = require('nock');
-
 const validDataForPost = {
   addressLine1: ['Flat 3A Middle Road','Flat 3A Middle Road'],
   addressLine2: ['',''],
@@ -60,11 +82,8 @@ const validDataForPost = {
   contactPerson: 'contactPerson',
 };
 
-const configureSpy = (service: any, method: string) => jest.spyOn(service, method).mockReset();
-const getCaseDataFromStoreSpy = (claim: Claim) => jest.spyOn(draftStoreService, 'getCaseDataFromStore')
-  .mockReturnValue(Promise.resolve(claim));
-const carmToggleSpy = (calmEnabled: boolean) => configureSpy(launchDarklyClient, 'isCarmEnabledForCase')
-  .mockReturnValue(Promise.resolve(calmEnabled));
+const carmToggleSpy = (carmEnabled: boolean) =>
+  jest.spyOn(launchDarklyClient, 'isCarmEnabledForCase').mockResolvedValue(carmEnabled);
 
 describe('Claimant Individual Details page', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -78,37 +97,37 @@ describe('Claimant Individual Details page', () => {
   });
 
   beforeEach(() => {
-    jest.resetAllMocks();
+    jest.clearAllMocks();
     mockLookupByPostcode.mockResolvedValue({
       valid: true,
       addresses: [{ country: 'England' }],
     });
-    const mockClaim = { submittedDate: new Date(2024, 5, 23) } as Claim;
-    getCaseDataFromStoreSpy(mockClaim);
     carmToggleSpy(true);
   });
 
   describe('on Exception', () => {
     it('should return http 500 when has error in the get method', async () => {
-      mockGetCaseData.mockImplementation(async () => {
-        throw new Error(TestMessages.REDIS_FAILURE);
-      });
+      mockGetDraftClaim.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
+      mockGetCaseDataFromStore.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
+
       await request(app)
         .get(CLAIMANT_INDIVIDUAL_DETAILS_URL)
-        .expect((res) => {
+        .expect((res: request.Response) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
     });
 
     it('should return http 500 when has error in the post method', async () => {
-      mockSaveDraftClaim.mockImplementation(async () => {
-        throw new Error(TestMessages.REDIS_FAILURE);
-      });
+      mockGetDraftClaim.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
+      mockGetCaseDataFromStore.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
+      mockUpdateDraftClaim.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
+      mockSaveDraftClaim.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
+
       await request(app)
         .post(CLAIMANT_INDIVIDUAL_DETAILS_URL)
         .send(validDataForPost)
-        .expect((res) => {
+        .expect((res: request.Response) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
@@ -116,24 +135,26 @@ describe('Claimant Individual Details page', () => {
   });
 
   it('should return your details page with empty information', async () => {
-    mockGetCaseData.mockImplementation(async () => {
-      return new Claim();
-    });
+    const mockClaim = new Claim();
+    mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
+    mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
+
     await request(app)
       .get(CLAIMANT_INDIVIDUAL_DETAILS_URL)
-      .expect((res) => {
+      .expect((res: request.Response) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain('Enter your details');
       });
   });
 
   it('should return your details page with information', async () => {
-    mockGetCaseData.mockImplementation(async () => {
-      return buildClaimOfApplicant();
-    });
+    const mockClaim = buildClaimOfApplicant();
+    mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
+    mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
+
     await request(app)
       .get(CLAIMANT_INDIVIDUAL_DETAILS_URL)
-      .expect((res) => {
+      .expect((res: request.Response) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain('Enter your details');
       });
@@ -151,12 +172,14 @@ describe('Claimant Individual Details page', () => {
       claim.applicant1.partyDetails.primaryAddress = buildAddress();
       return claim;
     };
-    mockGetCaseData.mockImplementation(async () => {
-      return buildClaimOfApplicantWithoutCorrespondent();
-    });
+
+    const mockClaim = buildClaimOfApplicantWithoutCorrespondent();
+    mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
+    mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
+
     await request(app)
       .get(CLAIMANT_INDIVIDUAL_DETAILS_URL)
-      .expect((res) => {
+      .expect((res: request.Response) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain('Enter your details');
       });
@@ -170,33 +193,39 @@ describe('Claimant Individual Details page', () => {
       claim.applicant1.partyDetails.primaryAddress = undefined;
       return claim;
     };
-    mockGetCaseData.mockImplementation(async () => {
-      return buildClaimOfApplicantWithoutInformation();
-    });
+
+    const mockClaim = buildClaimOfApplicantWithoutInformation();
+    mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
+    mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
+
     await request(app)
       .get(CLAIMANT_INDIVIDUAL_DETAILS_URL)
-      .expect((res) => {
+      .expect((res: request.Response) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain('Enter your details');
       });
   });
 
   it('get/Claimant individual details - should return test variable when there is no data on redis and civil-service', async () => {
-    mockGetCaseData.mockImplementation(async () => {
-      return new Claim();
-    });
+    const mockClaim = new Claim();
+    mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
+    mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
+
     await request(app)
       .get('/claim/claimant-individual-details')
-      .expect((res) => {
+      .expect((res: request.Response) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain('Enter your details');
       });
   });
 
   it('POST/Claimant Individual details - should redirect on correct primary address', async () => {
-    mockGetCaseData.mockImplementation(async () => {
-      return new Claim();
-    });
+    const mockClaim = new Claim();
+    mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
+    mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
+    mockUpdateDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
+    mockSaveDraftClaim.mockResolvedValue(undefined);
+
     await request(app)
       .post(CLAIMANT_INDIVIDUAL_DETAILS_URL)
       .send({
@@ -209,15 +238,18 @@ describe('Claimant Individual Details page', () => {
         partyName: 'partyName',
         contactPerson: 'contactPerson',
       })
-      .expect((res) => {
+      .expect((res: request.Response) => {
         expect(res.status).toBe(302);
       });
   });
 
   it('POST/Claimant Individual details - should redirect on correct correspondence address', async () => {
-    mockGetCaseData.mockImplementation(async () => {
-      return buildClaimOfApplicantType(PartyType.INDIVIDUAL);
-    });
+    const mockClaim = buildClaimOfApplicantType(PartyType.INDIVIDUAL);
+    mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
+    mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
+    mockUpdateDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
+    mockSaveDraftClaim.mockResolvedValue(undefined);
+
     await request(app)
       .post(CLAIMANT_INDIVIDUAL_DETAILS_URL)
       .send({
@@ -230,15 +262,16 @@ describe('Claimant Individual Details page', () => {
         partyName: 'partyName',
         contactPerson: 'contactPerson',
       })
-      .expect((res) => {
+      .expect((res: request.Response) => {
         expect(res.status).toBe(302);
       });
   });
 
   it('POST/Claimant Individual details - should return error on empty primary address line', async () => {
-    mockGetCaseData.mockImplementation(async () => {
-      return buildClaimOfApplicantType(PartyType.INDIVIDUAL);
-    });
+    const mockClaim = buildClaimOfApplicantType(PartyType.INDIVIDUAL);
+    mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
+    mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
+
     await request(app)
       .post(CLAIMANT_INDIVIDUAL_DETAILS_URL)
       .send({
@@ -251,16 +284,17 @@ describe('Claimant Individual Details page', () => {
         partyName: 'partyName',
         contactPerson: 'contactPerson',
       })
-      .expect((res) => {
+      .expect((res: request.Response) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain(TestMessages.ENTER_FIRST_ADDRESS);
       });
   });
 
   it('POST/Claimant individual details - should return error on empty primary city', async () => {
-    mockGetCaseData.mockImplementation(async () => {
-      return buildClaimOfApplicantType(PartyType.INDIVIDUAL);
-    });
+    const mockClaim = buildClaimOfApplicantType(PartyType.INDIVIDUAL);
+    mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
+    mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
+
     await request(app)
       .post(CLAIMANT_INDIVIDUAL_DETAILS_URL)
       .send({
@@ -273,16 +307,17 @@ describe('Claimant Individual Details page', () => {
         partyName: 'partyName',
         contactPerson: 'contactPerson',
       })
-      .expect((res) => {
+      .expect((res: request.Response) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain(TestMessages.ENTER_TOWN);
       });
   });
 
   it('POST/Claimant Individual details - should return error on empty primary postcode', async () => {
-    mockGetCaseData.mockImplementation(async () => {
-      return buildClaimOfApplicantType(PartyType.INDIVIDUAL);
-    });
+    const mockClaim = buildClaimOfApplicantType(PartyType.INDIVIDUAL);
+    mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
+    mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
+
     await request(app)
       .post(CLAIMANT_INDIVIDUAL_DETAILS_URL)
       .send({
@@ -295,16 +330,17 @@ describe('Claimant Individual Details page', () => {
         partyName: 'partyName',
         contactPerson: 'contactPerson',
       })
-      .expect((res) => {
+      .expect((res: request.Response) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain(TestMessages.ENTER_POSTCODE);
       });
   });
 
   it('POST/Claimant Individual details - should return error on empty correspondence address line', async () => {
-    mockGetCaseData.mockImplementation(async () => {
-      return buildClaimOfApplicantType(PartyType.INDIVIDUAL);
-    });
+    const mockClaim = buildClaimOfApplicantType(PartyType.INDIVIDUAL);
+    mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
+    mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
+
     await request(app)
       .post(CLAIMANT_INDIVIDUAL_DETAILS_URL)
       .send({
@@ -317,16 +353,17 @@ describe('Claimant Individual Details page', () => {
         partyName: 'partyName',
         contactPerson: 'contactPerson',
       })
-      .expect((res) => {
+      .expect((res: request.Response) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain(TestMessages.VALID_CORRESPONDENCE_ADDRESS_LINE_1);
       });
   });
 
   it('POST/Claimant Individual details - should return error on empty correspondence city', async () => {
-    mockGetCaseData.mockImplementation(async () => {
-      return buildClaimOfApplicantType(PartyType.INDIVIDUAL);
-    });
+    const mockClaim = buildClaimOfApplicantType(PartyType.INDIVIDUAL);
+    mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
+    mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
+
     await request(app)
       .post(CLAIMANT_INDIVIDUAL_DETAILS_URL)
       .send({
@@ -339,16 +376,17 @@ describe('Claimant Individual Details page', () => {
         partyName: 'partyName',
         contactPerson: 'contactPerson',
       })
-      .expect((res) => {
+      .expect((res: request.Response) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain(TestMessages.VALID_CORRESPONDENCE_CITY);
       });
   });
 
   it('POST/Claimant Individual details - should return error on empty correspondence postcode', async () => {
-    mockGetCaseData.mockImplementation(async () => {
-      return buildClaimOfApplicantType(PartyType.INDIVIDUAL);
-    });
+    const mockClaim = buildClaimOfApplicantType(PartyType.INDIVIDUAL);
+    mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
+    mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
+
     await request(app)
       .post(CLAIMANT_INDIVIDUAL_DETAILS_URL)
       .send({
@@ -361,16 +399,17 @@ describe('Claimant Individual Details page', () => {
         partyName: 'partyName',
         contactPerson: 'contactPerson',
       })
-      .expect((res) => {
+      .expect((res: request.Response) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain(TestMessages.VALID_CORRESPONDENCE_POSTCODE);
       });
   });
 
   it('POST/Claimant Individual details - should return error on no input', async () => {
-    mockGetCaseData.mockImplementation(async () => {
-      return buildClaimOfApplicantType(PartyType.INDIVIDUAL);
-    });
+    const mockClaim = buildClaimOfApplicantType(PartyType.INDIVIDUAL);
+    mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
+    mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
+
     await request(app)
       .post(CLAIMANT_INDIVIDUAL_DETAILS_URL)
       .send({
@@ -382,13 +421,9 @@ describe('Claimant Individual Details page', () => {
         provideCorrespondenceAddress: 'yes',
         partyName: 'partyName',
         contactPerson: 'contactPerson',
-
       })
-      .expect((res) => {
+      .expect((res: request.Response) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain(TestMessages.ENTER_FIRST_ADDRESS);
-        expect(res.text).toContain(TestMessages.ENTER_TOWN);
-        expect(res.text).toContain(TestMessages.ENTER_POSTCODE);
         expect(res.text).toContain(TestMessages.ENTER_FIRST_ADDRESS);
         expect(res.text).toContain(TestMessages.ENTER_TOWN);
         expect(res.text).toContain(TestMessages.ENTER_POSTCODE);
@@ -396,9 +431,10 @@ describe('Claimant Individual Details page', () => {
   });
 
   it('POST/Claimant individual details - should return error on input for primary address when provideCorrespondenceAddress is set to NO', async () => {
-    mockGetCaseData.mockImplementation(async () => {
-      return buildClaimOfApplicantType(PartyType.INDIVIDUAL);
-    });
+    const mockClaim = buildClaimOfApplicantType(PartyType.INDIVIDUAL);
+    mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
+    mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
+
     await request(app)
       .post(CLAIMANT_INDIVIDUAL_DETAILS_URL)
       .send({
@@ -411,7 +447,7 @@ describe('Claimant Individual Details page', () => {
         partyName: 'partyName',
         contactPerson: 'contactPerson',
       })
-      .expect((res) => {
+      .expect((res: request.Response) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain(TestMessages.ENTER_FIRST_ADDRESS);
         expect(res.text).toContain(TestMessages.ENTER_TOWN);
@@ -420,9 +456,10 @@ describe('Claimant Individual Details page', () => {
   });
 
   it('POST/Claimant Individual details - should return error on input for correspondence address when provideCorrespondenceAddress is set to YES', async () => {
-    mockGetCaseData.mockImplementation(async () => {
-      return buildClaimOfApplicantType(PartyType.INDIVIDUAL);
-    });
+    const mockClaim = buildClaimOfApplicantType(PartyType.INDIVIDUAL);
+    mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
+    mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
+
     await request(app)
       .post(CLAIMANT_INDIVIDUAL_DETAILS_URL)
       .send({
@@ -435,7 +472,7 @@ describe('Claimant Individual Details page', () => {
         partyName: 'partyName',
         contactPerson: 'contactPerson',
       })
-      .expect((res) => {
+      .expect((res: request.Response) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain(TestMessages.VALID_CORRESPONDENCE_ADDRESS_LINE_1);
         expect(res.text).toContain(TestMessages.VALID_CORRESPONDENCE_CITY);
@@ -444,13 +481,16 @@ describe('Claimant Individual Details page', () => {
   });
 
   it('should redirect to claimant DOB screen', async () => {
-    mockGetCaseData.mockImplementation(async () => {
-      return buildClaimOfApplicantType(PartyType.INDIVIDUAL);
-    });
+    const mockClaim = buildClaimOfApplicantType(PartyType.INDIVIDUAL);
+    mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
+    mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
+    mockUpdateDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
+    mockSaveDraftClaim.mockResolvedValue(undefined);
+
     await request(app)
       .post(CLAIMANT_INDIVIDUAL_DETAILS_URL)
       .send(validDataForPost)
-      .expect((res) => {
+      .expect((res: request.Response) => {
         expect(res.status).toBe(302);
         expect(res.header.location).toEqual(CLAIMANT_DOB_URL);
       });
