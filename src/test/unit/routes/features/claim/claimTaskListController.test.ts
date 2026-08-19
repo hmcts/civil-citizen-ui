@@ -3,18 +3,37 @@ import config from 'config';
 import request from 'supertest';
 import {CLAIMANT_TASK_LIST_URL} from 'routes/urls';
 import nock from 'nock';
-import * as draftStoreService from 'modules/draft-store/draftStoreService';
-import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {getDraftClaim, createOrLoadDraft} from 'modules/draft-store/draftStoreManagerService';
 import {Claim} from 'models/claim';
 import {CivilServiceClient} from 'client/civilServiceClient';
+import {CivilClaimResponse} from 'models/civilClaimResponse';
+import {DraftClaimManagerResult} from 'models/draft/draftClaim';
 
 jest.mock('../../../../../main/modules/oidc');
-jest.mock('modules/draft-store/draftStoreService');
+jest.mock('modules/draft-store/draftStoreManagerService');
 jest.mock('routes/guards/claimIssueTaskListGuard', () => ({
   claimIssueTaskListGuard: jest.fn((req, res, next) => {
     next();
   }),
 }));
+
+const mockGetDraftClaim = getDraftClaim as jest.Mock;
+const mockCreateOrLoadDraft = createOrLoadDraft as jest.Mock;
+
+const createMockManagerResult = (claim: Claim, isNew = false): DraftClaimManagerResult => ({
+  claimResponse: {
+    id: '123',
+    case_data: claim as unknown as Claim,
+  } as unknown as CivilClaimResponse,
+  rawResponse: {
+    draftId: 'draft-123',
+    payload: claim,
+  } as unknown as DraftClaimManagerResult['rawResponse'],
+  isNew,
+  createdAt: '2026-08-01T10:00:00.000Z',
+  updatedAt: '2026-08-01T11:00:00.000Z',
+  expiresAt: '2026-09-01T10:00:00.000Z',
+});
 
 describe('Claim TaskList page', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -25,27 +44,28 @@ describe('Claim TaskList page', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
-    jest.spyOn(CivilServiceClient.prototype, 'createDashboard').mockReturnValue(null);
+  });
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+    renderSpy = jest.spyOn(app.response, 'render').mockImplementation(function (view: string, options?: object) {
+      return this.send({view, options});
+    });
+  });
+
+  afterEach(() => {
+    renderSpy.mockRestore();
   });
 
   describe('on GET', () => {
-    const createDraftClaimSpy = jest.spyOn(draftStoreService, 'createDraftClaimInStoreWithExpiryTime');
-    beforeEach(() => {
-      jest.clearAllMocks();
-      renderSpy = jest.spyOn(app.response, 'render').mockImplementation(function (view: string, options?: object) {
-        return this.send({view, options});
-      });
-    });
-
-    afterEach(() => {
-      renderSpy.mockRestore();
-    });
-
     it('should return claim tasklist page with existing draft claim', async () => {
+      const createDashboardSpy = jest.spyOn(CivilServiceClient.prototype, 'createDashboard').mockResolvedValue(null);
       const claim = new Claim();
-      claim.draftClaimCreatedAt = new Date();
+      claim.draftClaimCreatedAt = new Date('2026-08-01T10:00:00.000Z');
       claim.draftClaimCacheTtlDays = 30;
-      (getCaseDataFromStore as jest.Mock).mockResolvedValue(claim);
+
+      mockGetDraftClaim.mockResolvedValue(createMockManagerResult(claim));
+
       await request(app)
         .get(CLAIMANT_TASK_LIST_URL)
         .expect((res) => {
@@ -54,18 +74,20 @@ describe('Claim TaskList page', () => {
           expect(res.body.options.pageTitle).toBe('PAGES.CLAIM_TASK_LIST.PAGE_TITLE');
           expect(res.body.options.draftClaimDeletionDate).toBeDefined();
         });
-      expect(createDraftClaimSpy).not.toBeCalled();
+
+      expect(mockCreateOrLoadDraft).not.toHaveBeenCalled();
+      expect(createDashboardSpy).not.toHaveBeenCalled();
     });
 
-    it('should create a new draft claim after completing eligibility', async () => {
-      app.request.cookies = {eligibilityCompleted: true};
-      const emptyClaim = new Claim();
-      const draftClaim = new Claim();
-      draftClaim.draftClaimCreatedAt = new Date();
-      draftClaim.draftClaimCacheTtlDays = 30;
-      (getCaseDataFromStore as jest.Mock)
-        .mockResolvedValueOnce(emptyClaim)
-        .mockResolvedValueOnce(draftClaim);
+    it('should call createOrLoadDraft and createDashboard when draft claim does not exist and draft is new', async () => {
+      const createDashboardSpy = jest.spyOn(CivilServiceClient.prototype, 'createDashboard').mockResolvedValue(null);
+
+      mockGetDraftClaim.mockResolvedValue(null);
+      const newClaim = new Claim();
+      newClaim.draftClaimCreatedAt = new Date();
+      newClaim.draftClaimCacheTtlDays = 30;
+      mockCreateOrLoadDraft.mockResolvedValue(createMockManagerResult(newClaim, true));
+
       await request(app)
         .get(CLAIMANT_TASK_LIST_URL)
         .expect((res) => {
@@ -74,11 +96,14 @@ describe('Claim TaskList page', () => {
           expect(res.body.options.pageTitle).toBe('PAGES.CLAIM_TASK_LIST.PAGE_TITLE');
           expect(res.body.options.draftClaimDeletionDate).toBeDefined();
         });
-      expect(createDraftClaimSpy).toBeCalled();
+
+      expect(mockCreateOrLoadDraft).toHaveBeenCalled();
+      expect(createDashboardSpy).toHaveBeenCalled();
     });
 
-    it('should return http 500 when has error in the get method', async () => {
-      (getCaseDataFromStore as jest.Mock).mockRejectedValue(new Error('error'));
+    it('should return http 500 when error is thrown in getDraftClaim', async () => {
+      mockGetDraftClaim.mockRejectedValue(new Error('Draft store failure'));
+
       await request(app)
         .get(CLAIMANT_TASK_LIST_URL)
         .expect((res) => {
