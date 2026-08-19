@@ -14,7 +14,7 @@ import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {CivilClaimResponse} from 'models/civilClaimResponse';
 import {DraftClaimManagerResult} from 'models/draft/draftClaim';
-import { Airline } from 'models/airline';
+import { AirlineList } from 'models/airlines/flights';
 
 jest.mock('client/civilServiceClient');
 jest.mock('../../../../../../main/modules/oidc');
@@ -33,7 +33,7 @@ const createMockManagerResult = (claim: Claim): DraftClaimManagerResult => ({
   claimResponse: {
     id: '123',
     case_data: claim as unknown as Claim,
-  } as CivilClaimResponse,
+  } as unknown as CivilClaimResponse,
   rawResponse: {
     draftId: '123',
     payload: claim,
@@ -56,7 +56,7 @@ describe('Flight details Controller', () => {
     jest.spyOn(CivilServiceClient.prototype, 'getAirlines').mockResolvedValue([
       {airline: 'airline 1', epimsID: '1'},
       {airline: 'airline 2', epimsID: '2'},
-    ] as unknown as Airline[]);
+    ] as AirlineList[]);
   });
 
   beforeEach(() => {
