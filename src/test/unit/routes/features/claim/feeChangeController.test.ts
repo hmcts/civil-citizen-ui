@@ -9,7 +9,6 @@ import {CivilServiceClient} from 'client/civilServiceClient';
 import {getDraftClaim} from 'modules/draft-store/draftStoreManagerService';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {Claim} from 'models/claim';
-import {ClaimFee} from 'models/civilClaimResponse';
 import {CivilClaimResponse} from 'models/civilClaimResponse';
 import {DraftClaimManagerResult} from 'models/draft/draftClaim';
 
@@ -21,6 +20,8 @@ jest.mock('routes/guards/claimIssueTaskListGuard', () => ({
   claimIssueTaskListGuard: jest.fn((req, res, next) => next()),
 }));
 
+type ClaimFee = ReturnType<CivilServiceClient['getClaimFeeData']>;
+
 const mockGetDraftClaim = getDraftClaim as jest.Mock;
 const mockGetCaseDataFromStore = draftStoreService.getCaseDataFromStore as jest.Mock;
 const getData = getDraftClaimData as jest.Mock;
@@ -30,7 +31,7 @@ const createMockManagerResult = (claim: Claim): DraftClaimManagerResult => ({
   claimResponse: {
     id: '123',
     case_data: claim as unknown as Claim,
-  } as CivilClaimResponse,
+  } as unknown as CivilClaimResponse,
   rawResponse: {
     draftId: '123',
     payload: claim,
