@@ -85,23 +85,25 @@ async function getDashboardNotificationRedirectUrl(locationName: string, claimId
       break;
     case 'VIEW_HEARING_NOTICE': {
       const hearingNoticeFallback = hearingNoticeFallbackDashboardUrl(claimId, claim);
-      if (claim?.caseProgressionHearing?.hearingDocumentsWelsh && claim.caseProgressionHearing.hearingDocumentsWelsh[0] && lang === 'cy') {
-        if (checkWelshHearingNotice(claim)) {
-          redirectUrl = buildSystemGeneratedCaseDocumentUrl(
-            claimId,
-            documentIdExtractor(claim.caseProgressionHearing.hearingDocumentsWelsh[0].value.documentLink.document_binary_url),
-            CASE_DOCUMENT_VIEW_URL,
-          ) ?? hearingNoticeFallback;
-          break;
-        }
+      const hearingNoticeWelsh = claim.getDocumentDetails?.(DocumentType.HEARING_FORM, undefined, 'cy')
+        ?? claim?.caseProgressionHearing?.hearingDocumentsWelsh?.[0]?.value;
+      if (hearingNoticeWelsh && lang === 'cy' && checkWelshHearingNotice(claim)) {
+        redirectUrl = buildSystemGeneratedCaseDocumentUrl(
+          claimId,
+          documentIdExtractor(hearingNoticeWelsh.documentLink?.document_binary_url),
+          CASE_DOCUMENT_VIEW_URL,
+        ) ?? hearingNoticeFallback;
+        break;
       }
       if (!claim?.caseProgressionHearing?.hearingDocuments) {
         redirectUrl = hearingNoticeFallback;
         break;
       }
+      const hearingNotice = claim.getDocumentDetails?.(DocumentType.HEARING_FORM)
+        ?? claim.caseProgressionHearing.hearingDocuments[0]?.value;
       redirectUrl = buildSystemGeneratedCaseDocumentUrl(
         claimId,
-        documentIdExtractor(claim.caseProgressionHearing.hearingDocuments[0]?.value?.documentLink?.document_binary_url),
+        documentIdExtractor(hearingNotice?.documentLink?.document_binary_url),
         CASE_DOCUMENT_VIEW_URL,
       ) ?? hearingNoticeFallback;
       break;
