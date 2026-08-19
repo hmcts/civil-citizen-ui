@@ -12,7 +12,7 @@
   {{ setPageTitle(t, 'PAGES.REJECT_ALL_CLAIM.PAGE_TITLE') }}
 {% endblock %}
 
-{% set heading = t('PAGES.REJECT_ALL_CLAIM.TITLE', { claimantName: claimantName }) %}
+{% set heading = t('PAGES.REJECT_ALL_CLAIM.TITLE', { claimantName: claimantName }) | safe %}
 
 {% block content %}
 
