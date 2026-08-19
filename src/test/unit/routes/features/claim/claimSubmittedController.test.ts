@@ -32,7 +32,7 @@ const createMockManagerResult = (c: Claim): DraftClaimManagerResult => ({
   claimResponse: {
     id: '123',
     case_data: c as unknown as Claim,
-  } as CivilClaimResponse,
+  } as unknown as CivilClaimResponse,
   rawResponse: {
     draftId: '123',
     payload: c,

@@ -19,7 +19,6 @@ import {Party} from 'models/party';
 import {Email} from 'models/Email';
 import {PartyPhone} from 'models/PartyPhone';
 import {CivilServiceClient} from 'client/civilServiceClient';
-import {AppRequest} from 'models/AppRequest';
 import {CivilClaimResponse} from 'models/civilClaimResponse';
 import {DraftClaimManagerResult} from 'models/draft/draftClaim';
 
@@ -62,7 +61,7 @@ const createMockManagerResult = (claim: Claim): DraftClaimManagerResult => ({
   claimResponse: {
     id: '12345',
     case_data: claim as unknown as Claim,
-  } as CivilClaimResponse,
+  } as unknown as CivilClaimResponse,
   rawResponse: {
     draftId: '12345',
     payload: claim,
@@ -173,12 +172,12 @@ describe('Claim - Check answers', () => {
       const mockClaim = new Claim();
       mockClaim.claimDetails = new ClaimDetails();
       mockClaim.pcqId = 'existing-pcq-id';
-      (app.request as unknown as AppRequest).claim = mockClaim;
+      (app.request as unknown as { claim?: Claim }).claim = mockClaim;
 
       await session(app).get(CLAIM_CHECK_ANSWERS_URL);
 
       expect(mockGetClaim).toHaveBeenCalledTimes(0);
-      delete (app.request as unknown as AppRequest).claim;
+      delete (app.request as unknown as { claim?: Claim }).claim;
     });
 
     it('should return status 500 when error thrown', async () => {

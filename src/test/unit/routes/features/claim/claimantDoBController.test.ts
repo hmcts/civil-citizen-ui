@@ -1,10 +1,10 @@
 import config from 'config';
+import {t} from 'i18next';
 import nock from 'nock';
 import request from 'supertest';
 import {app} from '../../../../../main/app';
 import {CLAIMANT_DOB_URL, CLAIMANT_PHONE_NUMBER_URL} from 'routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
-import {t} from 'i18next';
 import {
   addDaysToDate,
   formatDateToFullDate,
@@ -34,7 +34,7 @@ const createMockManagerResult = (claim: Claim): DraftClaimManagerResult => ({
   claimResponse: {
     id: '123',
     case_data: claim as unknown as Claim,
-  } as CivilClaimResponse,
+  } as unknown as CivilClaimResponse,
   rawResponse: {
     draftId: '123',
     payload: claim,
