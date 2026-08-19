@@ -111,6 +111,10 @@ def getCivilServiceSharedBranch() {
   for (label in githubApi.getLabelsbyPattern(env.BRANCH_NAME, "civilShared:")) {
     return label.minus("civilShared:").trim()
   }
+  def civilServicePr = getCivilServicePr()
+  if (civilServicePr) {
+    return "pr-${civilServicePr}"
+  }
   return "master"
 }
 
