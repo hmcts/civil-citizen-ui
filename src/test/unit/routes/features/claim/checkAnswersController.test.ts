@@ -12,7 +12,8 @@ import {PartyPhone} from 'models/PartyPhone';
 import {GenericForm} from 'form/models/genericForm';
 import {StatementOfTruthFormClaimIssue} from 'form/models/statementOfTruth/statementOfTruthFormClaimIssue';
 import {getStashedClaimOrFromStore} from 'common/utils/claimRequestLocals';
-import {deleteDraftClaimFromStore, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {deleteDraftClaim} from 'modules/draft-store/draftStoreManagerService';
 import {getStatementOfTruth, getSummarySections, saveStatementOfTruth} from 'services/features/claim/checkAnswers/checkAnswersService';
 import {submitClaim} from 'services/features/claim/submission/submitClaim';
 import {saveClaimFee} from 'services/features/claim/amount/claimFeesService';
@@ -26,6 +27,7 @@ jest.mock('common/utils/claimRequestLocals', () => ({
   getStashedClaimOrFromStore: jest.fn(),
 }));
 jest.mock('modules/draft-store/draftStoreService');
+jest.mock('modules/draft-store/draftStoreManagerService');
 jest.mock('services/features/claim/checkAnswers/checkAnswersService', () => ({
   getSummarySections: jest.fn(),
   getStatementOfTruth: jest.fn(),
@@ -59,7 +61,7 @@ describe('Claim - Check answers', () => {
   const mockSaveClaimFee = saveClaimFee as jest.Mock;
   const mockCalculateInterestToDate = calculateInterestToDate as jest.Mock;
   const mockIsCarmEnabledForCase = isCarmEnabledForCase as jest.Mock;
-  const mockDeleteDraftClaim = deleteDraftClaimFromStore as jest.Mock;
+  const mockDeleteDraftClaim = deleteDraftClaim as jest.Mock;
 
   const signedBody = {
     signed: 'Test',
@@ -89,7 +91,7 @@ describe('Claim - Check answers', () => {
 
   beforeEach(() => {
     req = {
-      session: createMockSession({user: {id: 'user-id'}}),
+      session: createMockSession({user: {id: 'user-id'}, draftId: 'draft-123'}),
       body: {},
       query: {},
       cookies: {},
@@ -176,6 +178,8 @@ describe('Claim - Check answers', () => {
 
       await postHandler(req as AppRequest, res as unknown as Response, next);
 
+      expect(mockDeleteDraftClaim).toHaveBeenCalledWith(req, 'draft-123');
+      expect(req.session.draftId).toBeUndefined();
       expect(res.clearCookie).toHaveBeenCalledWith('eligibilityCompleted');
       expect(res.clearCookie).toHaveBeenCalledWith('eligibility');
       expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(submittedClaim.id, CLAIM_CONFIRMATION_URL));
@@ -190,6 +194,8 @@ describe('Claim - Check answers', () => {
 
       await postHandler(req as AppRequest, res as unknown as Response, next);
 
+      expect(mockDeleteDraftClaim).toHaveBeenCalledWith(req, 'draft-123');
+      expect(req.session.draftId).toBeUndefined();
       expect(res.clearCookie).toHaveBeenCalledWith('eligibilityCompleted');
       expect(res.clearCookie).toHaveBeenCalledWith('eligibility');
       expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(submittedClaim.id, CLAIM_CONFIRMATION_URL));
