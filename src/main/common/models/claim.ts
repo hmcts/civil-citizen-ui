@@ -496,12 +496,15 @@ export class Claim {
     return this.systemGeneratedCaseDocuments?.length > 0;
   }
 
-  getDocumentDetails(documentType: DocumentType, claimantOrDefendant?: DirectionQuestionnaireType): CaseDocument {
+  getDocumentDetails(documentType: DocumentType, claimantOrDefendant?: DirectionQuestionnaireType, lang?: string): CaseDocument {
     if (documentType === DocumentType.HEARING_FORM && this.hasCaseProgressionHearingDocuments()) {
-      const hearingNotice = [...this.caseProgressionHearing.hearingDocuments].reverse().find(document => {
-        return document.value.documentType === documentType;
-      });
-      return hearingNotice.value;
+      const hearingDocuments = lang === 'cy' ? this.caseProgressionHearing.hearingDocumentsWelsh : this.caseProgressionHearing.hearingDocuments;
+      if (hearingDocuments) {
+        const hearingNotice = [...hearingDocuments].reverse().find(document => {
+          return document.value.documentType === documentType;
+        });
+        return hearingNotice?.value;
+      }
     } else if (documentType === DocumentType.HEARING_FORM) {
       return undefined;
     } else if (this.hasDefaultJudgmentDocuments() && (documentType === DocumentType.DEFAULT_JUDGMENT_CLAIMANT1 || documentType === DocumentType.DEFAULT_JUDGMENT_DEFENDANT1)) {

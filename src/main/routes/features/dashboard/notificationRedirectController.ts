@@ -63,21 +63,22 @@ async function getDashboardNotificationRedirectUrl(locationName: string, claimId
     case 'QM_VIEW_MESSAGES_URL_CLICK':
       redirectUrl = QM_VIEW_QUERY_URL.replace(':id', claimId);
       break;
-    case 'VIEW_HEARING_NOTICE':
-      if (claim?.caseProgressionHearing?.hearingDocumentsWelsh && claim.caseProgressionHearing.hearingDocumentsWelsh[0] && lang === 'cy') {
-        if (checkWelshHearingNotice(claim)) {
-          redirectUrl = CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(
-            ':documentId', documentIdExtractor(claim.caseProgressionHearing.hearingDocumentsWelsh[0].value.documentLink.document_binary_url));
-          break;
-        }
+    case 'VIEW_HEARING_NOTICE': {
+      const hearingNoticeWelsh = claim.getDocumentDetails(DocumentType.HEARING_FORM, undefined, 'cy');
+      if (hearingNoticeWelsh && lang === 'cy' && checkWelshHearingNotice(claim)) {
+        redirectUrl = CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(
+          ':documentId', documentIdExtractor(hearingNoticeWelsh.documentLink.document_binary_url));
+        break;
       }
-      if (!claim?.caseProgressionHearing?.hearingDocuments) {
+      const hearingNotice = claim.getDocumentDetails(DocumentType.HEARING_FORM);
+      if (!hearingNotice) {
         redirectUrl = constructResponseUrlWithIdParams(claimId, claim.isClaimant() ? DASHBOARD_CLAIMANT_URL : DEFENDANT_SUMMARY_URL) + '?errorAwaitingTranslation';
         break;
       }
       redirectUrl = CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(
-        ':documentId', documentIdExtractor(claim?.caseProgressionHearing?.hearingDocuments[0]?.value?.documentLink?.document_binary_url));
+        ':documentId', documentIdExtractor(hearingNotice.documentLink.document_binary_url));
       break;
+    }
     case 'PAY_HEARING_FEE_URL':
       await saveDraftClaim(generateRedisKey(req), claim, true, req.session.user?.id);
       redirectUrl = getRedirectUrl(claimId, new GenericYesNo(YesNo.NO), req);
