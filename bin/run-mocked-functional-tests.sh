@@ -67,7 +67,9 @@ wait_for_url() {
 trap cleanup EXIT INT TERM
 mkdir -p "${RUN_LOG_DIR}"
 mkdir -p "${WIREMOCK_ROOT_DIR}/mappings"
+mkdir -p "${WIREMOCK_ROOT_DIR}/__files"
 cp -r ./charts/civil-citizen-ui/wiremock/mappings/* "${WIREMOCK_ROOT_DIR}/mappings/"
+cp -r ./charts/civil-citizen-ui/wiremock/__files/* "${WIREMOCK_ROOT_DIR}/__files/"
 
 ./node_modules/.bin/wiremock --root-dir "${WIREMOCK_ROOT_DIR}" --port "${WIREMOCK_PORT}" >"${RUN_LOG_DIR}/wiremock.log" 2>&1 &
 wiremock_pid=$!
