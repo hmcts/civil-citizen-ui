@@ -611,7 +611,7 @@ describe('notificationRedirectController - VIEW_HEARING_NOTICE (Welsh block)', (
 
   it('should not redirect to Welsh doc if lang != cy', async () => {
     claim.caseProgressionHearing.hearingDocumentsWelsh = [
-      { id: 'wDoc', value: { documentLink: { document_binary_url: 'http://doc/binary' } } } as CaseProgressionHearingDocuments,
+      { id: 'wDoc', value: { documentType: DocumentType.HEARING_FORM, documentLink: { document_binary_url: 'http://doc/binary' } } } as CaseProgressionHearingDocuments,
     ];
     jest
       .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
@@ -624,7 +624,7 @@ describe('notificationRedirectController - VIEW_HEARING_NOTICE (Welsh block)', (
 
   it('should not redirect to Welsh doc if checkWelshHearingNotice is false', async () => {
     claim.caseProgressionHearing.hearingDocumentsWelsh = [
-      { id: 'wDoc', value: { documentLink: { document_binary_url: 'http://dm-store/binary' } } } as CaseProgressionHearingDocuments,
+      { id: 'wDoc', value: { documentType: DocumentType.HEARING_FORM, documentLink: { document_binary_url: 'http://dm-store/binary' } } } as CaseProgressionHearingDocuments,
     ];
     jest
       .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
@@ -637,7 +637,7 @@ describe('notificationRedirectController - VIEW_HEARING_NOTICE (Welsh block)', (
 
   it('should redirect to Welsh doc if doc exists, lang=cy and checkWelshHearingNotice is true', async () => {
     claim.caseProgressionHearing.hearingDocumentsWelsh = [
-      { id: 'wDoc', value: { documentLink: { document_binary_url: 'http://dm-store:8080/documents/ab5417ae-0004-4765-9b92-4c4680d7680e/binary' } } } as CaseProgressionHearingDocuments,
+      { id: 'wDoc', value: { documentType: DocumentType.HEARING_FORM, documentLink: { document_binary_url: 'http://dm-store:8080/documents/ab5417ae-0004-4765-9b92-4c4680d7680e/binary' } } } as CaseProgressionHearingDocuments,
     ];
     jest
       .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
