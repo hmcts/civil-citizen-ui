@@ -53,6 +53,20 @@ describe('draftStoreManagerService Unit Tests', () => {
       );
     });
 
+    it('should log a warning if setCachedDraft fails after fetching from DB', async() => {
+      mockGetCachedDraft.mockResolvedValueOnce(null);
+      mockGetActiveDraftFromDb.mockResolvedValueOnce({
+        claimResponse: new CivilClaimResponse(),
+        rawResponse: mockRawResponse,
+      });
+
+      mockSetCachedDraft.mockRejectedValueOnce(new Error('redis write failed'));
+
+      const result = await getDraftClaim(mockReq);
+
+      expect(result?.claimResponse.id).toBe(mockDraftId);
+    });
+
     it('cache hit: should return manager result directly from redis cache without querying db', async () => {
       mockGetCachedDraft.mockResolvedValueOnce(mockRawResponse);
 
@@ -72,6 +86,7 @@ describe('draftStoreManagerService Unit Tests', () => {
         claimResponse: new CivilClaimResponse(),
         rawResponse: mockRawResponse,
       });
+      mockSetCachedDraft.mockResolvedValueOnce();
       const result = await getDraftClaim(mockReq);
 
       expect(mockGetCachedDraft).toHaveBeenCalledWith(mockUserId);
@@ -79,6 +94,20 @@ describe('draftStoreManagerService Unit Tests', () => {
       expect(mockSetCachedDraft).toHaveBeenCalledWith(mockUserId, mockRawResponse);
       expect(result?.claimResponse.id).toBe(mockDraftId);
       expect(result?.rawResponse).toEqual(mockRawResponse);
+    });
+
+    it('should fall back to Db if redis cache throws an exception', async () => {
+      mockGetCachedDraft.mockRejectedValueOnce(new Error('Redis error'));
+      mockGetActiveDraftFromDb.mockResolvedValueOnce({
+        claimResponse: new CivilClaimResponse(),
+        rawResponse: mockRawResponse,
+      });
+      mockSetCachedDraft.mockResolvedValueOnce();
+
+      const result = await getDraftClaim(mockReq);
+
+      expect(mockGetActiveDraftFromDb).toHaveBeenCalledWith(mockReq);
+      expect(result?.claimResponse.id).toBe(mockDraftId);
     });
 
     it('cache miss and db 404 should return null if not active draft exists in db', async () => {
@@ -89,6 +118,14 @@ describe('draftStoreManagerService Unit Tests', () => {
 
       expect(result).toBeNull();
       expect(mockSetCachedDraft).not.toHaveBeenCalled();
+    });
+
+    it('should rethrow database errors', async () => {
+      mockGetCachedDraft.mockResolvedValueOnce(null);
+      const dbError = new Error('database connection failed');
+      mockGetActiveDraftFromDb.mockRejectedValueOnce(dbError);
+
+      await expect(getDraftClaim(mockReq)).rejects.toThrow('database connection failed');
     });
   });
 
@@ -107,6 +144,7 @@ describe('draftStoreManagerService Unit Tests', () => {
         rawResponse: mockRawResponse,
         isNew: true,
       });
+      mockSetCachedDraft.mockResolvedValueOnce();
 
       const result = await createOrLoadDraft(mockReq, mockClaim);
 
@@ -122,6 +160,8 @@ describe('draftStoreManagerService Unit Tests', () => {
         rawResponse: mockRawResponse,
         isNew: false,
       });
+      mockSetCachedDraft.mockResolvedValueOnce();
+
       const result = await createOrLoadDraft(mockReq);
 
       expect(result.isNew).toBe(false);
@@ -132,8 +172,14 @@ describe('draftStoreManagerService Unit Tests', () => {
   describe('updateDraftClaim', () => {
     it('should throw an error if user session id is missing', async () => {
       const invalidReq = {session: {}} as AppRequest;
-      await expect(updateDraftClaim(invalidReq, new Claim(), '')).rejects.toThrow(
+      await expect(updateDraftClaim(invalidReq, new Claim(), mockDraftId)).rejects.toThrow(
         '[draftStoreManagerService] user id required to update draft',
+      );
+    });
+
+    it('should throw an error if draftId is missing', async () => {
+      await expect(updateDraftClaim(mockReq, new Claim(), '')).rejects.toThrow(
+        '[draftStoreManagerService] draft id required to update draft',
       );
     });
 
@@ -143,6 +189,7 @@ describe('draftStoreManagerService Unit Tests', () => {
         claimResponse: new CivilClaimResponse(),
         rawResponse: mockRawResponse,
       });
+      mockSetCachedDraft.mockResolvedValueOnce();
       const result = await updateDraftClaim(mockReq, mockClaim, mockDraftId);
       expect(mockUpdateDraftInDb).toHaveBeenCalledWith(mockReq, mockDraftId, mockClaim);
       expect(mockSetCachedDraft).toHaveBeenCalledWith(mockUserId, mockRawResponse);
@@ -151,6 +198,13 @@ describe('draftStoreManagerService Unit Tests', () => {
   });
 
   describe('deleteDraftClaim', () => {
+    it('should throw an error if user session id is missing', async () => {
+      const invalidReq = {session: {}} as AppRequest;
+      await expect(deleteDraftClaim(invalidReq, mockDraftId)).rejects.toThrow(
+        '[draftStoreManagerService] user id required to delete draft',
+      );
+    });
+
     it('should execute DELETE from db first and then evict from redis second', async () => {
       mockDeleteDraftFromDb.mockResolvedValueOnce();
       mockDeleteCachedDraft.mockResolvedValueOnce();
