@@ -2457,15 +2457,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ministryofjustice/frontend@npm:^1.6.3":
-  version: 1.8.1
-  resolution: "@ministryofjustice/frontend@npm:1.8.1"
-  dependencies:
-    govuk-frontend: "npm:^3.0.0 || ^4.0.0"
-    moment: "npm:^2.27.0"
+"@ministryofjustice/frontend@npm:^10.0.0":
+  version: 10.0.1
+  resolution: "@ministryofjustice/frontend@npm:10.0.1"
   peerDependencies:
-    jquery: ^3.6.0
-  checksum: 10/c25fe932be8148fa5773b16c53e1802937109c01b54c32b835a3af725c644c3052632f622c94ab14b5d9ea95efd1fae3059e83f0a8009fb748218ac8b240c388
+    govuk-frontend: ^6.0.0
+    moment: 2.30.1
+  checksum: 10/98a796d642a6657644bef0c87926e5f6bdff0aac22b7a7a891c1059e8dcf2222e04b5bfe9bec1063b7a6adb90905f19c7f3eb833af947dc3195086c0a1a5d8e9
   languageName: node
   linkType: hard
 
@@ -5392,7 +5390,7 @@ __metadata:
     "@hmcts/nodejs-logging": "npm:^4.0.4"
     "@hmcts/properties-volume": "npm:^0.0.14"
     "@launchdarkly/node-server-sdk": "npm:^8.0.0"
-    "@ministryofjustice/frontend": "npm:^1.6.3"
+    "@ministryofjustice/frontend": "npm:^10.0.0"
     "@pact-foundation/pact": "npm:^15.0.1"
     "@pact-foundation/pact-node": "npm:^10.18.0"
     "@playwright/test": "npm:^1.47.2"
@@ -7889,13 +7887,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"govuk-frontend@npm:^3.0.0 || ^4.0.0":
-  version: 4.10.1
-  resolution: "govuk-frontend@npm:4.10.1"
-  checksum: 10/7fc16896b73134d227e3c8f6ed4017015293dd12e81262b6dea30b97156727523fb6c133f95f34461846a32cafe516cccf1d94100d936ae1c48a9059177e79cc
-  languageName: node
-  linkType: hard
-
 "graceful-fs@npm:4.1.15":
   version: 4.1.15
   resolution: "graceful-fs@npm:4.1.15"
@@ -10353,7 +10344,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"moment@npm:^2.27.0, moment@npm:^2.29.4":
+"moment@npm:^2.29.4":
   version: 2.30.1
   resolution: "moment@npm:2.30.1"
   checksum: 10/ae42d876d4ec831ef66110bdc302c0657c664991e45cf2afffc4b0f6cd6d251dde11375c982a5c0564ccc0fa593fc564576ddceb8c8845e87c15f58aa6baca69
