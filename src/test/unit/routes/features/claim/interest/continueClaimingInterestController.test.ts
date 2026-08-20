@@ -9,37 +9,18 @@ import {
 } from 'routes/urls';
 import {t} from 'i18next';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import {getDraftClaim, updateDraftClaim} from 'modules/draft-store/draftStoreManagerService';
-import * as draftStoreService from 'modules/draft-store/draftStoreService';
-import {Claim} from 'models/claim';
-import {CivilClaimResponse} from 'models/civilClaimResponse';
-import {DraftClaimManagerResult} from 'models/draft/draftClaim';
+import {getInterest, saveInterest} from 'services/features/claim/interest/interestService';
+import {Interest} from 'form/models/interest/interest';
+import {YesNo} from 'form/models/yesNo';
 
 jest.mock('../../../../../../main/modules/oidc');
-jest.mock('modules/draft-store/draftStoreManagerService');
-jest.mock('modules/draft-store/draftStoreService');
+jest.mock('services/features/claim/interest/interestService');
 jest.mock('routes/guards/claimIssueTaskListGuard', () => ({
   claimIssueTaskListGuard: jest.fn((req, res, next) => next()),
 }));
 
-const mockGetDraftClaim = getDraftClaim as jest.Mock;
-const mockUpdateDraftClaim = updateDraftClaim as jest.Mock;
-const mockGetCaseDataFromStore = draftStoreService.getCaseDataFromStore as jest.Mock;
-const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
-
-const createMockManagerResult = (claim: Claim): DraftClaimManagerResult => ({
-  claimResponse: {
-    id: '123',
-    case_data: claim as unknown as Claim,
-  } as unknown as CivilClaimResponse,
-  rawResponse: {
-    draftId: '123',
-    payload: claim,
-  } as unknown as DraftClaimManagerResult['rawResponse'],
-  createdAt: '2026-08-01T10:00:00.000Z',
-  updatedAt: '2026-08-01T11:00:00.000Z',
-  expiresAt: '2026-09-01T10:00:00.000Z',
-});
+const mockGetInterest = getInterest as jest.Mock;
+const mockSaveInterest = saveInterest as jest.Mock;
 
 describe('Continue Claiming Interest page', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -54,25 +35,24 @@ describe('Continue Claiming Interest page', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
+    mockGetInterest.mockResolvedValue(new Interest());
+    mockSaveInterest.mockResolvedValue(undefined);
   });
 
   describe('on GET', () => {
     it('should return on continue claiming interest page successfully', async () => {
-      const mockClaim = new Claim();
-      mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
-
       await request(app)
         .get(CLAIM_INTEREST_CONTINUE_CLAIMING_URL)
         .expect((res: request.Response) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('PAGES.CLAIM_JOURNEY.CONTINUE_CLAIMING_INTEREST.TITLE'));
         });
+
+      expect(mockGetInterest).toHaveBeenCalledWith(expect.any(Object));
     });
 
     it('should return status 500 when error thrown', async () => {
-      mockGetDraftClaim.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
-      mockGetCaseDataFromStore.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
+      mockGetInterest.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
 
       await request(app)
         .get(CLAIM_INTEREST_CONTINUE_CLAIMING_URL)
@@ -85,41 +65,32 @@ describe('Continue Claiming Interest page', () => {
 
   describe('on POST', () => {
     it('should return error message when no option selected', async () => {
-      const mockClaim = new Claim();
-      mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
-
       await request(app)
         .post(CLAIM_INTEREST_CONTINUE_CLAIMING_URL)
         .expect((res: request.Response) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('ERRORS.CLAIM_INTEREST_REQUIRED'));
         });
+
+      expect(mockSaveInterest).not.toHaveBeenCalled();
     });
 
     it('should redirect to the How much do you want to continue claiming screen when option is Yes', async () => {
-      const mockClaim = new Claim();
-      mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
-      mockUpdateDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockSaveDraftClaim.mockResolvedValue(undefined);
-
       await request(app)
         .post(CLAIM_INTEREST_CONTINUE_CLAIMING_URL)
         .send({option: 'yes'})
         .expect((res: request.Response) => {
           expect(res.status).toBe(302);
           expect(res.get('location')).toBe(CLAIM_INTEREST_HOW_MUCH_URL);
+          expect(mockSaveInterest).toHaveBeenCalledWith(
+            expect.any(Object),
+            YesNo.YES,
+            'continueClaimingInterest',
+          );
         });
     });
 
     it('should redirect to the Help with fees screen when option is No', async () => {
-      const mockClaim = new Claim();
-      mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
-      mockUpdateDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockSaveDraftClaim.mockResolvedValue(undefined);
-
       await request(app)
         .post(CLAIM_INTEREST_CONTINUE_CLAIMING_URL)
         .send({option: 'no'})
@@ -130,10 +101,7 @@ describe('Continue Claiming Interest page', () => {
     });
 
     it('should return status 500 when error thrown', async () => {
-      mockGetDraftClaim.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
-      mockGetCaseDataFromStore.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
-      mockUpdateDraftClaim.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
-      mockSaveDraftClaim.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
+      mockSaveInterest.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
 
       await request(app)
         .post(CLAIM_INTEREST_CONTINUE_CLAIMING_URL)
