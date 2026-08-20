@@ -203,7 +203,7 @@
     "glob": "^12.0.0",
     "@babel/runtime": "^7.26.10",
     "brace-expansion": "^5.0.9",
-    "cookie": "^0.7.2",
+    "cookie": "^2.0.0",
     "node-fetch": "^2.6.7",
     "shelljs": "^0.8.5",
     "glob-parent": "^6.0.1",
