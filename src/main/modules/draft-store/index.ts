@@ -14,9 +14,14 @@ export class DraftStoreClient {
   }
 
   public enableFor(app: Application): void {
-    const protocol = config.get('services.draftStore.redis.tls') ? 'rediss://' : 'redis://';
-    const connectionString = `${protocol}:${config.get('services.draftStore.redis.key')}@${config.get('services.draftStore.redis.host')}:${config.get('services.draftStore.redis.port')}`;
-    const client = new Redis(connectionString);
+    const host = config.get('services.draftStore.redis.host') as string;
+    const useTls = !!config.get('services.draftStore.redis.tls');
+    const client = new Redis({
+      host,
+      port: Number(config.get('services.draftStore.redis.port')),
+      password: config.get('services.draftStore.redis.key') as string,
+      ...(useTls ? { tls: { servername: host } } : {}),
+    });
 
     app.locals.draftStoreClient = client;
     this.logger.info(DraftStoreClient.REDIS_CONNECTION_SUCCESS);
