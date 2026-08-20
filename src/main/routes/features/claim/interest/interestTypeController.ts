@@ -22,9 +22,8 @@ function renderView(form: GenericForm<InterestClaimOption>, res: Response) {
 }
 
 interestTypeController.get(CLAIM_INTEREST_TYPE_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
-  const claimId = req.session?.user?.id;
   try {
-    const interest = await getInterest(claimId);
+    const interest = await getInterest(req);
     renderView(new GenericForm(new InterestClaimOption(interest.interestClaimOptions)), res);
   } catch (error) {
     next(error);
@@ -41,7 +40,7 @@ interestTypeController.post(CLAIM_INTEREST_TYPE_URL, (async (req: AppRequest | R
       renderView(interestTypeForm, res);
     } else {
       logger.info(`interestType updated for user ${claimId}, interestType: ${interestTypeForm.model.interestType}`);
-      await saveInterest(claimId, interestTypeForm.model.interestType, propertyName);
+      await saveInterest(req as AppRequest, interestTypeForm.model.interestType, propertyName);
       if (interestTypeForm.model.interestType == InterestClaimOptionsType.SAME_RATE_INTEREST) {
         res.redirect(constructResponseUrlWithIdParams(claimId, CLAIM_INTEREST_RATE_URL));
       } else {
