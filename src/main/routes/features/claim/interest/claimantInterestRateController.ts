@@ -20,9 +20,8 @@ function renderView(form: GenericForm<ClaimantInterestRate>, res: Response): voi
 }
 
 interestRateController.get(CLAIM_INTEREST_RATE_URL, (async (req:AppRequest, res: Response, next: NextFunction) => {
-  const claimId = req.session.user?.id;
   try {
-    const interest = await getInterest(claimId);
+    const interest = await getInterest(req);
     renderView(new GenericForm<ClaimantInterestRate>(interest.sameRateInterestSelection),res);
   } catch (error) {
     next(error);
@@ -41,7 +40,7 @@ interestRateController.post(CLAIM_INTEREST_RATE_URL, (async (req: AppRequest | R
     } else {
       logger.info(`Claim interest rate selection updated for user ${claimId}, sameRateInterestType: ${req.body.sameRateInterestType},
            differentRate: ${req.body.differentRate},reason: ${req.body.reason}`);
-      await saveInterest(claimId,form.model, propertyName);
+      await saveInterest(req as AppRequest,form.model, propertyName);
       res.redirect(CLAIM_INTEREST_DATE_URL);
     }
   } catch (error) {
