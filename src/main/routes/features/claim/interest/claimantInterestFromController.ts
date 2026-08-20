@@ -21,9 +21,8 @@ function renderView(form: GenericForm<InterestClaimFromSelection>, res: Response
 }
 
 claimantInterestFromController.get(CLAIM_INTEREST_DATE_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
-  const claimId = req.session?.user?.id;
   try {
-    const interest = await getInterest(claimId);
+    const interest = await getInterest(req);
     renderView(new GenericForm(new InterestClaimFromSelection(interest.interestClaimFrom)), res);
   } catch (error) {
     next(error);
@@ -40,7 +39,7 @@ claimantInterestFromController.post(CLAIM_INTEREST_DATE_URL, (async (req: AppReq
       renderView(form, res);
     } else {
       logger.info(`Claim interest option updated for user ${claimId}, interest option: ${req.body.option}`);
-      await saveInterest(claimId, form.model.option, propertyName);
+      await saveInterest(req, form.model.option, propertyName);
       if (form.model.option === InterestClaimFromType.FROM_CLAIM_SUBMIT_DATE) {
         res.redirect(CLAIM_HELP_WITH_FEES_URL);
       } else {
