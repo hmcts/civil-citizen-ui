@@ -9,7 +9,7 @@ const logger = Logger.getLogger('claimDetailsService');
 export const getClaimDetails = async (req: AppRequest): Promise<ClaimDetails> => {
   try {
     const draftResult = await getDraftClaim(req);
-    const claim: Claim = Object.assign(new Claim(), draftResult?.claimResponse?.case_data);
+    const claim: Claim = Object.assign(new Claim(), draftResult?.claimResponse?.case_data as unknown as Claim);
     return Object.assign(new ClaimDetails(), claim.claimDetails);
   } catch (error) {
     logger.error(error);
@@ -24,7 +24,7 @@ export const saveClaimDetails = async (req: AppRequest, value: unknown, claimDet
       throw new Error('[claimDetailsService] no draft claim found to update');
     }
 
-    const claim: Claim = Object.assign(new Claim(), draftResult.claimResponse?.case_data);
+    const claim: Claim = Object.assign(new Claim(), draftResult.claimResponse?.case_data as unknown as Claim);
     const draftId = req.session?.draftId || draftResult.rawResponse?.draftId;
 
     if (!claim.claimDetails) {
