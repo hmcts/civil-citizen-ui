@@ -14,7 +14,6 @@ import {Party} from 'models/party';
 import {PartyDetails} from 'form/models/partyDetails';
 import * as enVars from '../../../../../../main/modules/i18n/locales/en.json';
 import {getDraftClaim, updateDraftClaim} from 'modules/draft-store/draftStoreManagerService';
-import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {CivilClaimResponse} from 'models/civilClaimResponse';
 import {DraftClaimManagerResult} from 'models/draft/draftClaim';
 import * as launchDarklyClient from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
@@ -24,7 +23,6 @@ const nock = require('nock');
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('modules/draft-store/draftStoreManagerService');
-jest.mock('modules/draft-store/draftStoreService');
 jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 jest.mock('../../../../../../main/modules/ordance-survey-key/ordanceSurveyKeyService');
 jest.mock('routes/guards/claimIssueTaskListGuard', () => ({
@@ -33,8 +31,6 @@ jest.mock('routes/guards/claimIssueTaskListGuard', () => ({
 
 const mockGetDraftClaim = getDraftClaim as jest.Mock;
 const mockUpdateDraftClaim = updateDraftClaim as jest.Mock;
-const mockGetCaseDataFromStore = draftStoreService.getCaseDataFromStore as jest.Mock;
-const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
 
 const mockLookupByPostcode = ordnanceSurveyService.lookupByPostcodeAndDataSet as jest.Mock;
 
@@ -114,8 +110,7 @@ describe('Claimant Organisation Details page', () => {
     describe('on Exception', () => {
       it('should return http 500 when has error in the get method', async () => {
         mockGetDraftClaim.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
-        mockGetCaseDataFromStore.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
-
+  
         await request(app)
           .get(CLAIMANT_ORGANISATION_DETAILS_URL)
           .expect((res: request.Response) => {
@@ -126,10 +121,8 @@ describe('Claimant Organisation Details page', () => {
 
       it('should return http 500 when has error in the post method', async () => {
         mockGetDraftClaim.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
-        mockGetCaseDataFromStore.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
-        mockUpdateDraftClaim.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
-        mockSaveDraftClaim.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
-
+          mockUpdateDraftClaim.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
+  
         await request(app)
           .post(CLAIMANT_ORGANISATION_DETAILS_URL)
           .send(validDataForPost)
@@ -144,7 +137,6 @@ describe('Claimant Organisation Details page', () => {
       const mockClaim = new Claim();
       mockClaim.applicant1 = {type: PartyType.ORGANISATION} as Party;
       mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
 
       await request(app)
         .get(CLAIMANT_ORGANISATION_DETAILS_URL)
@@ -157,7 +149,6 @@ describe('Claimant Organisation Details page', () => {
     it('should return your company or organisation details page with information', async () => {
       const mockClaim = buildClaimOfApplicantWithType(PartyType.ORGANISATION);
       mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
 
       await request(app)
         .get(CLAIMANT_ORGANISATION_DETAILS_URL)
@@ -170,7 +161,6 @@ describe('Claimant Organisation Details page', () => {
     it('should return mandatory contact person label and error on empty contact person', async () => {
       const mockClaim = buildClaimOfApplicantWithType(PartyType.ORGANISATION);
       mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
 
       await request(app)
         .post(CLAIMANT_ORGANISATION_DETAILS_URL)
@@ -188,7 +178,6 @@ describe('Claimant Organisation Details page', () => {
     it('should return optional contact person label when carm toggle disabled', async () => {
       const mockClaim = buildClaimOfApplicantWithType(PartyType.ORGANISATION);
       mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
       carmToggleSpy(false);
 
       await request(app)
@@ -216,7 +205,6 @@ describe('Claimant Organisation Details page', () => {
 
       const mockClaim = buildClaimOfApplicantWithoutCorrespondent();
       mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
 
       await request(app)
         .get(CLAIMANT_ORGANISATION_DETAILS_URL)
@@ -237,7 +225,6 @@ describe('Claimant Organisation Details page', () => {
 
       const mockClaim = buildClaimOfApplicantWithoutInformation();
       mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
 
       await request(app)
         .get(CLAIMANT_ORGANISATION_DETAILS_URL)
@@ -251,7 +238,6 @@ describe('Claimant Organisation Details page', () => {
       const mockClaim = new Claim();
       mockClaim.applicant1 = {type: PartyType.ORGANISATION} as Party;
       mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
 
       await request(app)
         .get('/claim/claimant-organisation-details')
@@ -264,9 +250,7 @@ describe('Claimant Organisation Details page', () => {
     it('POST/Claimant organisation details - should redirect on correct primary address', async () => {
       const mockClaim = new Claim();
       mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
       mockUpdateDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockSaveDraftClaim.mockResolvedValue(undefined);
 
       await request(app)
         .post(CLAIMANT_ORGANISATION_DETAILS_URL)
@@ -279,9 +263,7 @@ describe('Claimant Organisation Details page', () => {
     it('POST/Claimant organisation details - should redirect on correct correspondence address', async () => {
       const mockClaim = buildClaimOfApplicantType(PartyType.ORGANISATION);
       mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
       mockUpdateDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockSaveDraftClaim.mockResolvedValue(undefined);
 
       await request(app)
         .post(CLAIMANT_ORGANISATION_DETAILS_URL)
@@ -294,7 +276,6 @@ describe('Claimant Organisation Details page', () => {
     it('POST/Claimant Organisation details - should return error on empty primary address line', async () => {
       const mockClaim = buildClaimOfApplicantType(PartyType.ORGANISATION);
       mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
 
       await request(app)
         .post(CLAIMANT_ORGANISATION_DETAILS_URL)
@@ -315,7 +296,6 @@ describe('Claimant Organisation Details page', () => {
     it('POST/Claimant organisation details - should return error on empty primary city', async () => {
       const mockClaim = buildClaimOfApplicantType(PartyType.ORGANISATION);
       mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
 
       await request(app)
         .post(CLAIMANT_ORGANISATION_DETAILS_URL)
@@ -336,7 +316,6 @@ describe('Claimant Organisation Details page', () => {
     it('POST/Claimant Organisation details - should return error on empty primary postcode', async () => {
       const mockClaim = buildClaimOfApplicantWithType(PartyType.ORGANISATION);
       mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
 
       await request(app)
         .post(CLAIMANT_ORGANISATION_DETAILS_URL)
@@ -357,7 +336,6 @@ describe('Claimant Organisation Details page', () => {
     it('POST/Claimant Organisation details - should return error on empty correspondence address line', async () => {
       const mockClaim = buildClaimOfApplicantType(PartyType.ORGANISATION);
       mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
 
       await request(app)
         .post(CLAIMANT_ORGANISATION_DETAILS_URL)
@@ -378,7 +356,6 @@ describe('Claimant Organisation Details page', () => {
     it('POST/Claimant Organisation details - should return error on empty correspondence city', async () => {
       const mockClaim = buildClaimOfApplicantType(PartyType.ORGANISATION);
       mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
 
       await request(app)
         .post(CLAIMANT_ORGANISATION_DETAILS_URL)
@@ -399,7 +376,6 @@ describe('Claimant Organisation Details page', () => {
     it('POST/Claimant Organisation details - should return error on empty correspondence postcode', async () => {
       const mockClaim = buildClaimOfApplicantType(PartyType.ORGANISATION);
       mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
 
       await request(app)
         .post(CLAIMANT_ORGANISATION_DETAILS_URL)
@@ -420,7 +396,6 @@ describe('Claimant Organisation Details page', () => {
     it('POST/Claimant Organisation details - should return error on no input', async () => {
       const mockClaim = buildClaimOfApplicantType(PartyType.ORGANISATION);
       mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
 
       await request(app)
         .post(CLAIMANT_ORGANISATION_DETAILS_URL)
@@ -443,7 +418,6 @@ describe('Claimant Organisation Details page', () => {
     it('POST/Claimant Organisation details - should return error on input for primary address when provideCorrespondenceAddress is set to NO', async () => {
       const mockClaim = buildClaimOfApplicantWithType(PartyType.ORGANISATION);
       mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
 
       await request(app)
         .post(CLAIMANT_ORGANISATION_DETAILS_URL)
@@ -466,7 +440,6 @@ describe('Claimant Organisation Details page', () => {
     it('POST/Claimant Organisation details - should return error on input for correspondence address when provideCorrespondenceAddress is set to YES', async () => {
       const mockClaim = buildClaimOfApplicantType(PartyType.ORGANISATION);
       mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
 
       await request(app)
         .post(CLAIMANT_ORGANISATION_DETAILS_URL)
@@ -489,9 +462,7 @@ describe('Claimant Organisation Details page', () => {
     it('should redirect to claimant phone number screen', async () => {
       const mockClaim = buildClaimOfApplicantType(PartyType.ORGANISATION);
       mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
       mockUpdateDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockSaveDraftClaim.mockResolvedValue(undefined);
 
       await request(app)
         .post(CLAIMANT_ORGANISATION_DETAILS_URL)
@@ -507,8 +478,7 @@ describe('Claimant Organisation Details page', () => {
     describe('on Exception', () => {
       it('should return http 500 when has error in the get method', async () => {
         mockGetDraftClaim.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
-        mockGetCaseDataFromStore.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
-
+  
         await request(app)
           .get(CLAIMANT_COMPANY_DETAILS_URL)
           .expect((res: request.Response) => {
@@ -519,10 +489,8 @@ describe('Claimant Organisation Details page', () => {
 
       it('should return http 500 when has error in the post method', async () => {
         mockGetDraftClaim.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
-        mockGetCaseDataFromStore.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
-        mockUpdateDraftClaim.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
-        mockSaveDraftClaim.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
-
+          mockUpdateDraftClaim.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
+  
         await request(app)
           .post(CLAIMANT_COMPANY_DETAILS_URL)
           .send(validDataForPost)
@@ -537,7 +505,6 @@ describe('Claimant Organisation Details page', () => {
       const mockClaim = new Claim();
       mockClaim.applicant1 = {type: PartyType.COMPANY} as Party;
       mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
 
       await request(app)
         .get(CLAIMANT_COMPANY_DETAILS_URL)
@@ -550,7 +517,6 @@ describe('Claimant Organisation Details page', () => {
     it('should return your company details page with information', async () => {
       const mockClaim = buildClaimOfApplicantWithType(PartyType.COMPANY);
       mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
 
       await request(app)
         .get(CLAIMANT_COMPANY_DETAILS_URL)
@@ -563,7 +529,6 @@ describe('Claimant Organisation Details page', () => {
     it('should return mandatory contact person label and error on empty contact person', async () => {
       const mockClaim = buildClaimOfApplicantWithType(PartyType.COMPANY);
       mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
 
       await request(app)
         .post(CLAIMANT_ORGANISATION_DETAILS_URL)
@@ -581,7 +546,6 @@ describe('Claimant Organisation Details page', () => {
     it('should return optional contact person label when carm toggle disabled', async () => {
       const mockClaim = buildClaimOfApplicantWithType(PartyType.COMPANY);
       mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
       carmToggleSpy(false);
 
       await request(app)
@@ -609,7 +573,6 @@ describe('Claimant Organisation Details page', () => {
 
       const mockClaim = buildClaimOfApplicantWithoutCorrespondent();
       mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
 
       await request(app)
         .get(CLAIMANT_COMPANY_DETAILS_URL)
@@ -630,7 +593,6 @@ describe('Claimant Organisation Details page', () => {
 
       const mockClaim = buildClaimOfApplicantWithoutInformation();
       mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
 
       await request(app)
         .get(CLAIMANT_COMPANY_DETAILS_URL)
@@ -643,9 +605,7 @@ describe('Claimant Organisation Details page', () => {
     it('POST/Claimant company details - should redirect on correct primary address', async () => {
       const mockClaim = new Claim();
       mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
       mockUpdateDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockSaveDraftClaim.mockResolvedValue(undefined);
 
       await request(app)
         .post(CLAIMANT_COMPANY_DETAILS_URL)
@@ -658,9 +618,7 @@ describe('Claimant Organisation Details page', () => {
     it('POST/Claimant company details - should redirect on correct correspondence address', async () => {
       const mockClaim = buildClaimOfApplicantType(PartyType.COMPANY);
       mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
       mockUpdateDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockSaveDraftClaim.mockResolvedValue(undefined);
 
       await request(app)
         .post(CLAIMANT_COMPANY_DETAILS_URL)
@@ -673,7 +631,6 @@ describe('Claimant Organisation Details page', () => {
     it('POST/Claimant company details - should return error on empty primary address line', async () => {
       const mockClaim = buildClaimOfApplicantType(PartyType.COMPANY);
       mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
 
       await request(app)
         .post(CLAIMANT_COMPANY_DETAILS_URL)
@@ -694,7 +651,6 @@ describe('Claimant Organisation Details page', () => {
     it('POST/Claimant company details - should return error on empty primary city', async () => {
       const mockClaim = buildClaimOfApplicantType(PartyType.COMPANY);
       mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
 
       await request(app)
         .post(CLAIMANT_COMPANY_DETAILS_URL)
@@ -715,7 +671,6 @@ describe('Claimant Organisation Details page', () => {
     it('POST/Claimant company details - should return error on empty primary postcode', async () => {
       const mockClaim = buildClaimOfApplicantType(PartyType.COMPANY);
       mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
 
       await request(app)
         .post(CLAIMANT_COMPANY_DETAILS_URL)
@@ -736,7 +691,6 @@ describe('Claimant Organisation Details page', () => {
     it('POST/Claimant company details - should return error on empty correspondence address line', async () => {
       const mockClaim = buildClaimOfApplicantType(PartyType.COMPANY);
       mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
 
       await request(app)
         .post(CLAIMANT_COMPANY_DETAILS_URL)
@@ -757,7 +711,6 @@ describe('Claimant Organisation Details page', () => {
     it('POST/Claimant Company details - should return error on empty correspondence city', async () => {
       const mockClaim = buildClaimOfApplicantType(PartyType.COMPANY);
       mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
 
       await request(app)
         .post(CLAIMANT_COMPANY_DETAILS_URL)
@@ -778,7 +731,6 @@ describe('Claimant Organisation Details page', () => {
     it('POST/Claimant Company details - should return error on empty correspondence postcode', async () => {
       const mockClaim = buildClaimOfApplicantType(PartyType.COMPANY);
       mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
 
       await request(app)
         .post(CLAIMANT_COMPANY_DETAILS_URL)
@@ -799,7 +751,6 @@ describe('Claimant Organisation Details page', () => {
     it('POST/Claimant Company details - should return error on no input', async () => {
       const mockClaim = buildClaimOfApplicantType(PartyType.COMPANY);
       mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
 
       await request(app)
         .post(CLAIMANT_COMPANY_DETAILS_URL)
@@ -822,7 +773,6 @@ describe('Claimant Organisation Details page', () => {
     it('POST/Claimant Company details - should return error on input for primary address when provideCorrespondenceAddress is set to NO', async () => {
       const mockClaim = buildClaimOfApplicantType(PartyType.COMPANY);
       mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
 
       await request(app)
         .post(CLAIMANT_COMPANY_DETAILS_URL)
@@ -845,7 +795,6 @@ describe('Claimant Organisation Details page', () => {
     it('POST/Claimant Company details - should return error on input for correspondence address when provideCorrespondenceAddress is set to YES', async () => {
       const mockClaim = buildClaimOfApplicantType(PartyType.COMPANY);
       mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
 
       await request(app)
         .post(CLAIMANT_COMPANY_DETAILS_URL)
@@ -868,9 +817,7 @@ describe('Claimant Organisation Details page', () => {
     it('should redirect to claimant phone number screen', async () => {
       const mockClaim = buildClaimOfApplicantType(PartyType.COMPANY);
       mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
       mockUpdateDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockSaveDraftClaim.mockResolvedValue(undefined);
 
       await request(app)
         .post(CLAIMANT_COMPANY_DETAILS_URL)

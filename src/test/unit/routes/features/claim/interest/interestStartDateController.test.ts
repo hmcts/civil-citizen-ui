@@ -5,37 +5,18 @@ import request from 'supertest';
 import {CLAIM_INTEREST_END_DATE_URL, CLAIM_INTEREST_START_DATE_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
-import {getDraftClaim, updateDraftClaim} from 'modules/draft-store/draftStoreManagerService';
-import * as draftStoreService from 'modules/draft-store/draftStoreService';
-import {Claim} from 'models/claim';
-import {CivilClaimResponse} from 'models/civilClaimResponse';
-import {DraftClaimManagerResult} from 'models/draft/draftClaim';
+import {getInterest, saveInterest} from 'services/features/claim/interest/interestService';
+import {Interest} from 'form/models/interest/interest';
+import {InterestStartDate} from 'form/models/interest/interestStartDate';
 
 jest.mock('../../../../../../main/modules/oidc');
-jest.mock('modules/draft-store/draftStoreManagerService');
-jest.mock('modules/draft-store/draftStoreService');
+jest.mock('services/features/claim/interest/interestService');
 jest.mock('routes/guards/claimIssueTaskListGuard', () => ({
   claimIssueTaskListGuard: jest.fn((req, res, next) => next()),
 }));
 
-const mockGetDraftClaim = getDraftClaim as jest.Mock;
-const mockUpdateDraftClaim = updateDraftClaim as jest.Mock;
-const mockGetCaseDataFromStore = draftStoreService.getCaseDataFromStore as jest.Mock;
-const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
-
-const createMockManagerResult = (claim: Claim): DraftClaimManagerResult => ({
-  claimResponse: {
-    id: '123',
-    case_data: claim as unknown as Claim,
-  } as unknown as CivilClaimResponse,
-  rawResponse: {
-    draftId: '123',
-    payload: claim,
-  } as unknown as DraftClaimManagerResult['rawResponse'],
-  createdAt: '2026-08-01T10:00:00.000Z',
-  updatedAt: '2026-08-01T11:00:00.000Z',
-  expiresAt: '2026-09-01T10:00:00.000Z',
-});
+const mockGetInterest = getInterest as jest.Mock;
+const mockSaveInterest = saveInterest as jest.Mock;
 
 describe('interest start date', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -50,25 +31,24 @@ describe('interest start date', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
+    mockGetInterest.mockResolvedValue(new Interest());
+    mockSaveInterest.mockResolvedValue(undefined);
   });
 
   describe('on GET', () => {
-    it('should return interest start date page empty when dont have information on redis ', async () => {
-      const mockClaim = new Claim();
-      mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
-
+    it('should return interest start date page empty when there is no saved interest start date', async () => {
       await request(app)
         .get(CLAIM_INTEREST_START_DATE_URL)
         .expect((res: request.Response) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(TestMessages.INTEREST_START_DATE);
         });
+
+      expect(mockGetInterest).toHaveBeenCalledWith(expect.any(Object));
     });
 
     it('should return http 500 when has error in the get method', async () => {
-      mockGetDraftClaim.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
-      mockGetCaseDataFromStore.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
+      mockGetInterest.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
 
       await request(app)
         .get(CLAIM_INTEREST_START_DATE_URL)
@@ -80,13 +60,7 @@ describe('interest start date', () => {
   });
 
   describe('on POST', () => {
-    it('should create a new claim if redis gives undefined', async () => {
-      const mockClaim = new Claim();
-      mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
-      mockUpdateDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockSaveDraftClaim.mockResolvedValue(undefined);
-
+    it('should save interest start date when the form is valid', async () => {
       await request(app)
         .post(CLAIM_INTEREST_START_DATE_URL)
         .send('year=2000')
@@ -96,13 +70,15 @@ describe('interest start date', () => {
         .expect((res: request.Response) => {
           expect(res.status).toBe(302);
         });
+
+      expect(mockSaveInterest).toHaveBeenCalledWith(
+        expect.any(Object),
+        expect.any(InterestStartDate),
+        'interestStartDate',
+      );
     });
 
     it('should return errors on no input', async () => {
-      const mockClaim = new Claim();
-      mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
-
       await request(app)
         .post(CLAIM_INTEREST_START_DATE_URL)
         .send('year=')
@@ -116,13 +92,11 @@ describe('interest start date', () => {
           expect(res.text).toContain(t('ERRORS.VALID_FOUR_DIGIT_YEAR'));
           expect(res.text).toMatch(/Enter why you(?:'|\u2019|&#39;|&apos;)re claiming from this date/);
         });
+
+      expect(mockSaveInterest).not.toHaveBeenCalled();
     });
 
     it('should return error on year less than 1872', async () => {
-      const mockClaim = new Claim();
-      mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
-
       await request(app)
         .post(CLAIM_INTEREST_START_DATE_URL)
         .send('year=1871')
@@ -135,10 +109,6 @@ describe('interest start date', () => {
     });
 
     it('should return error on empty year', async () => {
-      const mockClaim = new Claim();
-      mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
-
       await request(app)
         .post(CLAIM_INTEREST_START_DATE_URL)
         .send('year=')
@@ -151,10 +121,6 @@ describe('interest start date', () => {
     });
 
     it('should return error on future date', async () => {
-      const mockClaim = new Claim();
-      mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
-
       await request(app)
         .post(CLAIM_INTEREST_START_DATE_URL)
         .send('year=2400')
@@ -167,10 +133,6 @@ describe('interest start date', () => {
     });
 
     it('should return error 4 digit year', async () => {
-      const mockClaim = new Claim();
-      mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
-
       await request(app)
         .post(CLAIM_INTEREST_START_DATE_URL)
         .send('year=22')
@@ -183,12 +145,6 @@ describe('interest start date', () => {
     });
 
     it('should accept a valid input', async () => {
-      const mockClaim = new Claim();
-      mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
-      mockUpdateDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockSaveDraftClaim.mockResolvedValue(undefined);
-
       await request(app)
         .post(CLAIM_INTEREST_START_DATE_URL)
         .send('year=2000')
@@ -201,12 +157,6 @@ describe('interest start date', () => {
     });
 
     it('should redirect to interest end date page', async () => {
-      const mockClaim = new Claim();
-      mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
-      mockUpdateDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockSaveDraftClaim.mockResolvedValue(undefined);
-
       await request(app)
         .post(CLAIM_INTEREST_START_DATE_URL)
         .send('year=2021')
@@ -220,10 +170,7 @@ describe('interest start date', () => {
     });
 
     it('should return http 500 when has error in the post method', async () => {
-      mockGetDraftClaim.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
-      mockGetCaseDataFromStore.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
-      mockUpdateDraftClaim.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
-      mockSaveDraftClaim.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
+      mockSaveInterest.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
 
       await request(app)
         .post(CLAIM_INTEREST_START_DATE_URL)
