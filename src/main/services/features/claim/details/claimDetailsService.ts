@@ -1,38 +1,44 @@
-import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
-import {ClaimDetails} from '../../../../common/form/models/claim/details/claimDetails';
-import {Claim} from '../../../../common/models/claim';
+import {AppRequest} from 'models/AppRequest';
+import {getDraftClaim, updateDraftClaim} from 'modules/draft-store/draftStoreManagerService';
+import {ClaimDetails} from 'form/models/claim/details/claimDetails';
+import {Claim} from 'models/claim';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimDetailsService');
 
-const getClaimDetails = async (claimId: string): Promise<ClaimDetails> => {
+export const getClaimDetails = async (req: AppRequest): Promise<ClaimDetails> => {
   try {
-    const caseData = await getCaseDataFromStore(claimId);
-    return Object.assign(new ClaimDetails(), caseData.claimDetails);
+    const draftResult = await getDraftClaim(req);
+    const claim: Claim = Object.assign(new Claim(), draftResult?.claimResponse?.case_data);
+    return Object.assign(new ClaimDetails(), claim.claimDetails);
   } catch (error) {
     logger.error(error);
     throw error;
   }
 };
 
-const saveClaimDetails = async (claimId: string, value: unknown, claimDetailsPropertyName: string): Promise<void> => {
+export const saveClaimDetails = async (req: AppRequest, value: unknown, claimDetailsPropertyName: string): Promise<void> => {
   try {
-    const claim: Claim = await getCaseDataFromStore(claimId);
-    if (claim.claimDetails) {
-      (claim.claimDetails as unknown as Record<string, unknown>)[claimDetailsPropertyName] = value;
-    } else {
-      const claimDetails: ClaimDetails = new ClaimDetails();
-      (claimDetails as unknown as Record<string, unknown>)[claimDetailsPropertyName] = value;
-      claim.claimDetails = claimDetails;
+    const draftResult = await getDraftClaim(req);
+    if (!draftResult) {
+      throw new Error('[claimDetailsService] no draft claim found to update');
     }
-    await saveDraftClaim(claimId, claim);
+
+    const claim: Claim = Object.assign(new Claim(), draftResult.claimResponse?.case_data);
+    const draftId = req.session?.draftId || draftResult.rawResponse?.draftId;
+
+    if (!claim.claimDetails) {
+      claim.claimDetails = new ClaimDetails();
+    }
+    (claim.claimDetails as Record<string, unknown>)[claimDetailsPropertyName] = value;
+
+    if (draftResult.createdAt && !claim.draftClaimCreatedAt) {
+      claim.draftClaimCreatedAt = new Date(draftResult.createdAt);
+    }
+
+    await updateDraftClaim(req, claim, draftId);
   } catch (error) {
     logger.error(error);
     throw error;
   }
-};
-
-export {
-  getClaimDetails,
-  saveClaimDetails,
 };
