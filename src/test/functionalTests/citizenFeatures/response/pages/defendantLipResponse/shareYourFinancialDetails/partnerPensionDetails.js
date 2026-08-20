@@ -4,7 +4,6 @@ const sharedData = require('../../../../../sharedData');
 const cButtons = require('../../../../../commonComponents/cButtons');
 
 const fields ={
-  yesButton: 'input[id="partnerPension"]',
   yesButton: 'input[value="yes"]',
   noButton: 'input[value="no"]',
 };
