@@ -13,7 +13,7 @@ const propertyName = 'totalInterest';
 
 claimTotalInterestController.get(CLAIM_INTEREST_TOTAL_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const interest = await getInterest(req.session?.user?.id);
+    const interest = await getInterest(req);
     res.render(claimTotalInterestViewPath, {
       form: new GenericForm(new TotalInterest(interest?.totalInterest?.amount.toString(), interest?.totalInterest?.reason)),
       pageTitle: 'PAGES.TOTAL_INTEREST.PAGE_TITLE',
@@ -33,7 +33,7 @@ claimTotalInterestController.post(CLAIM_INTEREST_TOTAL_URL, (async (req: AppRequ
     } else {
       const appRequest = <AppRequest>req;
       logger.info(`Claim total interest for user ${appRequest.session.user?.id}, totalInterest: ${req.body.amount}`);
-      await saveInterest(appRequest.session?.user?.id, form.model, propertyName);
+      await saveInterest(appRequest, form.model, propertyName);
       res.redirect(CLAIM_HELP_WITH_FEES_URL);
     }
   } catch (error) {
