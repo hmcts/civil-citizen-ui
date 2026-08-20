@@ -3,16 +3,21 @@ import nock from 'nock';
 import request from 'supertest';
 import {app} from '../../../../../../main/app';
 import {CLAIM_EVIDENCE_URL, CLAIM_TIMELINE_URL} from 'routes/urls';
-import {mockCivilClaim, mockNoStatementOfMeans, mockRedisFailure} from '../../../../../utils/mockDraftStore';
+import {mockCivilClaim, mockNoStatementOfMeans} from '../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
+import {getClaimDetails} from 'services/features/claim/details/claimDetailsService';
+import {ClaimDetails} from 'form/models/claim/details/claimDetails';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('services/features/claim/details/claimDetailsService');
 jest.mock('routes/guards/claimIssueTaskListGuard', () => ({
   claimIssueTaskListGuard: jest.fn((req, res, next) => {
     next();
   }),
 }));
+
+const mockGetClaimDetails = getClaimDetails as jest.Mock;
 
 describe('Claimant Timeline Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -26,15 +31,16 @@ describe('Claimant Timeline Controller', () => {
 
   describe('on GET', () => {
     it('should render timeline page', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      mockGetClaimDetails.mockResolvedValue(new ClaimDetails());
       await request(app).get(CLAIM_TIMELINE_URL).expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain('Timeline of events');
       });
+      expect(mockGetClaimDetails).toHaveBeenCalledWith(expect.any(Object));
     });
 
     it('should return 500 page on redis failure', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetClaimDetails.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
       await request(app).get(CLAIM_TIMELINE_URL).expect((res) => {
         expect(res.status).toBe(500);
         expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
