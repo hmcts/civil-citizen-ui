@@ -55,6 +55,8 @@ describe('Claimant Evidence Controller', () => {
           expect(res.status).toBe(200);
           expect(res.text).toContain('List your evidence');
         });
+
+      expect(mockGetClaimDetails).toHaveBeenCalledWith(expect.any(Object));
     });
 
     it('should return on evidence page with pre-populated evidence items', async () => {
@@ -100,7 +102,11 @@ describe('Claimant Evidence Controller', () => {
         .expect((res: request.Response) => {
           expect(res.status).toBe(302);
           expect(res.header.location).toEqual(CLAIMANT_TASK_LIST_URL);
-          expect(mockSaveClaimDetails).toHaveBeenCalled();
+          expect(mockSaveClaimDetails).toHaveBeenCalledWith(
+            expect.any(Object),
+            expect.any(Evidence),
+            'evidence',
+          );
         });
     });
 
@@ -115,7 +121,11 @@ describe('Claimant Evidence Controller', () => {
         .expect((res: request.Response) => {
           expect(res.status).toBe(302);
           expect(res.header.location).toEqual(CLAIMANT_TASK_LIST_URL);
-          expect(mockSaveClaimDetails).toHaveBeenCalled();
+          expect(mockSaveClaimDetails).toHaveBeenCalledWith(
+            expect.any(Object),
+            expect.any(Evidence),
+            'evidence',
+          );
         });
     });
 
