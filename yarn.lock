@@ -5471,7 +5471,7 @@ __metadata:
     mocha: "npm:^10.2.0"
     mocha-junit-reporter: "npm:^2.2.1"
     mocha-multi: "npm:1.1.7"
-    mochawesome: "npm:7.1.3"
+    mochawesome: "npm:8.0.1"
     multer: "npm:^2.2.0"
     nock: "npm:^13.2.9"
     node-cache: "npm:^5.1.2"
@@ -9701,31 +9701,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lodash.isempty@npm:^4.4.0":
-  version: 4.4.0
-  resolution: "lodash.isempty@npm:4.4.0"
-  checksum: 10/b69de4e08038f3d802fa2f510fd97f6b1785a359a648382ba30fb59e17ce0bcdad9bef2cdb9f9501abb9064c74c6edbb8db86a6d827e0d380a50a6738e051ec3
-  languageName: node
-  linkType: hard
-
 "lodash.isfunction@npm:^3.0.9":
   version: 3.0.9
   resolution: "lodash.isfunction@npm:3.0.9"
   checksum: 10/99e54c34b1e8a9ba75c034deb39cedbd2aca7af685815e67a2a8ec4f73ec9748cda6ebee5a07d7de4b938e90d421fd280e9c385cc190f903ac217ac8aff30314
-  languageName: node
-  linkType: hard
-
-"lodash.isobject@npm:^3.0.2":
-  version: 3.0.2
-  resolution: "lodash.isobject@npm:3.0.2"
-  checksum: 10/6c1667cbc4494d0a13a3617a4b23278d6d02dac520311f2bbb43f16f2cf71d2e6eb9dec8057315b77459df4890c756a256a087d3f4baa44a79ab5d6c968b060e
-  languageName: node
-  linkType: hard
-
-"lodash.isstring@npm:^4.0.1":
-  version: 4.0.1
-  resolution: "lodash.isstring@npm:4.0.1"
-  checksum: 10/eaac87ae9636848af08021083d796e2eea3d02e80082ab8a9955309569cb3a463ce97fd281d7dc119e402b2e7d8c54a23914b15d2fc7fff56461511dc8937ba0
   languageName: node
   linkType: hard
 
@@ -10305,7 +10284,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mochawesome-report-generator@npm:^6.2.0":
+"mochawesome-report-generator@npm:^6.3.2":
   version: 6.3.2
   resolution: "mochawesome-report-generator@npm:6.3.2"
   dependencies:
@@ -10326,23 +10305,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mochawesome@npm:7.1.3":
-  version: 7.1.3
-  resolution: "mochawesome@npm:7.1.3"
+"mochawesome@npm:8.0.1":
+  version: 8.0.1
+  resolution: "mochawesome@npm:8.0.1"
   dependencies:
-    chalk: "npm:^4.1.2"
-    diff: "npm:^5.0.0"
+    diff: "npm:^5.2.0"
     json-stringify-safe: "npm:^5.0.1"
-    lodash.isempty: "npm:^4.4.0"
-    lodash.isfunction: "npm:^3.0.9"
-    lodash.isobject: "npm:^3.0.2"
-    lodash.isstring: "npm:^4.0.1"
-    mochawesome-report-generator: "npm:^6.2.0"
-    strip-ansi: "npm:^6.0.1"
-    uuid: "npm:^8.3.2"
+    mochawesome-report-generator: "npm:^6.3.2"
   peerDependencies:
-    mocha: ">=7"
-  checksum: 10/ff5298705e22ecc88ae5c70a86ecec9cda694c4b7f74c8676ae1cc53a81ceec849bce8182a10789f04ae8c17dbc3748b5d7554cfe3476d2fc9c9084e5a7e2aa1
+    mocha: ">=8"
+  checksum: 10/a6e0cfe8d367d5fb60668352af4ed1a6254620ae0f63a484655dffec9d64b12d687fe3637fa3dc87469d96e89fa270484e1165908543b0ace476437fe81aee2f
   languageName: node
   linkType: hard
 
