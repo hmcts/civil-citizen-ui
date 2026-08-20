@@ -4,35 +4,15 @@ import nock from 'nock';
 import config from 'config';
 import {CLAIMANT_TASK_LIST_URL, CLAIM_COMPLETING_CLAIM_URL} from 'routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
-import {getDraftClaim} from 'modules/draft-store/draftStoreManagerService';
-import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
-import {Claim} from 'models/claim';
-import {CivilClaimResponse} from 'models/civilClaimResponse';
-import {DraftClaimManagerResult} from 'models/draft/draftClaim';
+import {saveCompletingClaim} from 'services/features/claim/completingClaimService';
 
 jest.mock('../../../../../main/modules/oidc');
-jest.mock('modules/draft-store/draftStoreManagerService');
-jest.mock('modules/draft-store/draftStoreService');
+jest.mock('services/features/claim/completingClaimService');
 jest.mock('routes/guards/claimIssueTaskListGuard', () => ({
   claimIssueTaskListGuard: jest.fn((req, res, next) => next()),
 }));
 
-const mockGetDraftClaim = getDraftClaim as jest.Mock;
-const mockGetCaseDataFromStore = getCaseDataFromStore as jest.Mock;
-
-const createMockManagerResult = (claim: Claim): DraftClaimManagerResult => ({
-  claimResponse: {
-    id: '123',
-    case_data: claim as unknown as Claim,
-  } as unknown as CivilClaimResponse,
-  rawResponse: {
-    draftId: '123',
-    payload: claim,
-  } as unknown as DraftClaimManagerResult['rawResponse'],
-  createdAt: '2026-08-01T10:00:00.000Z',
-  updatedAt: '2026-08-01T11:00:00.000Z',
-  expiresAt: '2026-09-01T10:00:00.000Z',
-});
+const mockSaveCompletingClaim = saveCompletingClaim as jest.Mock;
 
 describe('Completing Claim', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -47,14 +27,11 @@ describe('Completing Claim', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
+    mockSaveCompletingClaim.mockResolvedValue(undefined);
   });
 
   describe('on GET', () => {
     it('should return completing claim page', async () => {
-      const mockClaim = new Claim();
-      mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
-
       await request(app)
         .get(CLAIM_COMPLETING_CLAIM_URL)
         .expect((res: request.Response) => {
@@ -66,21 +43,18 @@ describe('Completing Claim', () => {
 
   describe('on POST', () => {
     it('should redirect to TaskList page', async () => {
-      const mockClaim = new Claim();
-      mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
-
       await request(app)
         .post(CLAIM_COMPLETING_CLAIM_URL)
         .expect((res: request.Response) => {
           expect(res.status).toBe(302);
           expect(res.header.location).toBe(CLAIMANT_TASK_LIST_URL);
         });
+
+      expect(mockSaveCompletingClaim).toHaveBeenCalledWith(expect.any(Object));
     });
 
-    it('should return http 500 when has error in the get method', async () => {
-      mockGetDraftClaim.mockRejectedValue(new Error('Redis/DB failure'));
-      mockGetCaseDataFromStore.mockRejectedValue(new Error('Redis/DB failure'));
+    it('should return http 500 when has error in the post method', async () => {
+      mockSaveCompletingClaim.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
 
       await request(app)
         .post(CLAIM_COMPLETING_CLAIM_URL)
