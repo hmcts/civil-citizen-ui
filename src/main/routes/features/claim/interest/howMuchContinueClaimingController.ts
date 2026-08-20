@@ -17,9 +17,8 @@ function renderView(form: GenericForm<HowMuchContinueClaiming>, res: Response): 
 }
 
 howMuchContinueClaimingController.get(CLAIM_INTEREST_HOW_MUCH_URL, (async (req:AppRequest, res:Response, next: NextFunction) => {
-  const caseId = req.session?.user?.id;
   try {
-    const interest = await getInterest(caseId);
+    const interest = await getInterest(req);
     renderView(new GenericForm<HowMuchContinueClaiming>(interest.howMuchContinueClaiming), res);
   } catch (error) {
     next(error);
@@ -38,7 +37,7 @@ howMuchContinueClaimingController.post(CLAIM_INTEREST_HOW_MUCH_URL, (async (req:
       renderView(form, res);
     } else {
       logger.info(`continueClaimingInterest updated for user ${caseId}, dailyInterestAmount: ${dailyInterestAmount}`);
-      await saveInterest(caseId, form.model, howMuchContinueClaiming);
+      await saveInterest(req as AppRequest, form.model, howMuchContinueClaiming);
       res.redirect(CLAIM_HELP_WITH_FEES_URL);
     }
   } catch (error) {
