@@ -21,9 +21,8 @@ function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
 }
 
 continueClaimingInterestController.get(CLAIM_INTEREST_CONTINUE_CLAIMING_URL, (async (req:AppRequest, res:Response, next: NextFunction) => {
-  const caseId = req.session?.user?.id;
   try {
-    const interest = await getInterest(caseId);
+    const interest = await getInterest(req);
     renderView(new GenericForm(new GenericYesNo(interest.continueClaimingInterest)), res);
   } catch (error) {
     next(error);
@@ -42,7 +41,7 @@ continueClaimingInterestController.post(CLAIM_INTEREST_CONTINUE_CLAIMING_URL, (a
       renderView(form, res);
     } else {
       logger.info(`continueClaimingInterest option for user ${caseId}, option: ${form.model.option}`);
-      await saveInterest(caseId, form.model.option as YesNo, 'continueClaimingInterest');
+      await saveInterest(req, form.model.option as YesNo, 'continueClaimingInterest');
       (form.model.option === YesNo.YES) ?
         res.redirect(CLAIM_INTEREST_HOW_MUCH_URL) :
         res.redirect(CLAIM_HELP_WITH_FEES_URL);
