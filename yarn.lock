@@ -5480,7 +5480,7 @@ __metadata:
     otplib: "npm:^13.0.0"
     pa11y: "npm:^8.0.0"
     proper-lockfile: "npm:^4.1.2"
-    rate-limit-redis: "npm:^5.0.0"
+    rate-limit-redis: "npm:^6.0.0"
     reflect-metadata: "npm:^0.1.13"
     require-directory: "npm:^2.1.1"
     sass: "npm:^1.57.1"
@@ -11650,12 +11650,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rate-limit-redis@npm:^5.0.0":
-  version: 5.0.0
-  resolution: "rate-limit-redis@npm:5.0.0"
+"rate-limit-redis@npm:^6.0.0":
+  version: 6.0.1
+  resolution: "rate-limit-redis@npm:6.0.1"
   peerDependencies:
-    express-rate-limit: ">= 8.5.0"
-  checksum: 10/7bece632d05f74cd0b9ef876008ed0f8c5a0ddc304a722338fb3335c696f5ef1677daa3d4482a1e1afdcf981408933bd407dc9ad7a47d1c7a4d5c53974e9cc0a
+    express-rate-limit: ">= 8.6.0"
+  checksum: 10/20275f341dc58d4989bb3ef1a3acc07bdffc0f7cffdc0fd9061c10cad077bf017a52ad5695cb50f8739387812db52dc7e2037c99109355525cc850e5a43ad433
   languageName: node
   linkType: hard
 
