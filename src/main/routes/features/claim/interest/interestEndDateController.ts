@@ -21,8 +21,7 @@ function renderView(form: GenericForm<InterestEndDate>, res: Response): void {
 
 interestEndDateController.get(CLAIM_INTEREST_END_DATE_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const claimId = req.session?.user?.id;
-    const interest = await getInterest(claimId);
+    const interest = await getInterest(req);
     const interestEndDate =  new InterestEndDate(interest.interestEndDate);
     const form = new GenericForm(interestEndDate);
 
@@ -43,7 +42,7 @@ interestEndDateController.post(CLAIM_INTEREST_END_DATE_URL, (async (req: AppRequ
       const appRequest = <AppRequest>req;
       const userId = appRequest.session?.user?.id;
       logger.info(`interestEndDate updated for user ${userId}, InterestEndDateType: ${form.model.option}`);
-      await saveInterest(userId, form.model.option, dqPropertyName);
+      await saveInterest(appRequest, form.model.option, dqPropertyName);
       res.redirect(CLAIM_HELP_WITH_FEES_URL);
     }
   } catch (error) {
