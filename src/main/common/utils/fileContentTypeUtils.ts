@@ -38,7 +38,7 @@ const startsWithBytes = (buffer: Buffer, signature: number[]): boolean => {
 
 const isRtf = (buffer: Buffer): boolean => {
   const start = buffer.subarray(0, Math.min(buffer.length, 16)).toString('latin1').trimStart();
-  return start.startsWith('{\\rtf');
+  return start.startsWith(String.raw`{\rtf`);
 };
 
 const isPdf = (buffer: Buffer): boolean => {

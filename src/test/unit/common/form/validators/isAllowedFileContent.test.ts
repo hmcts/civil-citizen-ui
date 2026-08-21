@@ -10,7 +10,7 @@ describe('isAllowedFileContent validator', () => {
 
     const validationErrors = await validate(testObject);
 
-    expect(validationErrors.length).toBe(0);
+    expect(validationErrors).toHaveLength(0);
   });
 
   it('should invalidate when Content-Type is spoofed as application/pdf but content is not a PDF', async () => {
@@ -20,7 +20,7 @@ describe('isAllowedFileContent validator', () => {
 
     const validationErrors = await validate(testObject);
 
-    expect(validationErrors.length).toBe(1);
+    expect(validationErrors).toHaveLength(1);
     expect(validationErrors[0].property).toBe('buffer');
     expect(validationErrors[0].constraints).toHaveProperty('isAllowedFileContent');
   });
