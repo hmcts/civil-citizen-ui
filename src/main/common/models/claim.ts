@@ -89,6 +89,21 @@ import { RespondentGaAppDetail } from './generalApplication/response/respondentG
 import {ClaimGeneralApplication} from 'models/generalApplication/claimGeneralApplication';
 import {QueryManagement} from 'form/models/queryManagement/queryManagement';
 import {CaseQueries} from 'models/queryManagement/caseQueries';
+import {BreathingSpaceEnterDraft} from 'models/breathingSpace/breathingSpaceEnterDraft';
+import {BreathingSpaceEnterInfo} from 'models/breathingSpace/breathingSpaceEnterInfo';
+import {BreathingSpaceLiftInfo} from 'models/breathingSpace/breathingSpaceLiftInfo';
+import {BreathingSpaceType} from 'models/breathingSpace/breathingSpaceType';
+
+export interface BreathingSpace {
+  enterBreathing?: {
+    type?: string;
+    start?: string;
+  };
+  liftBreathing?: {
+    expectedEnd?: string;
+    eventDescription?: string;
+  };
+}
 
 export class Claim {
   resolvingDispute: boolean;
@@ -201,6 +216,10 @@ export class Claim {
   queries?: CaseQueries;
   previousCCDState?: string;
   preTranslationDocumentType?: PreTranslationDocumentType;
+  breathingSpace?: BreathingSpace;
+  breathingSpaceEnterDraft?: BreathingSpaceEnterDraft;
+  enterBreathing?: BreathingSpaceEnterInfo;
+  liftBreathing?: BreathingSpaceLiftInfo;
 
   // Index signature to allow dynamic property access
   [key: string]: any;
@@ -1110,6 +1129,18 @@ export class Claim {
   isLRDefendant() {
     return this.specRespondent1Represented === YesNoUpperCamelCase.YES ||
     this.respondent1Represented === YesNoUpperCamelCase.YES;
+  }
+
+  hasBreathingSpace(): boolean {
+    return this.enterBreathing && !this.liftBreathing;
+  }
+
+  isStandardBreathingSpace(): boolean {
+    return this.hasBreathingSpace() && this.enterBreathing?.type === BreathingSpaceType.STANDARD;
+  }
+
+  isMentalHealthBreathingSpace(): boolean {
+    return this.hasBreathingSpace() && this.enterBreathing?.type === BreathingSpaceType.MENTAL_HEALTH;
   }
 
   hasClaimantNotSettled(): boolean {
