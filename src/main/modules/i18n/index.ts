@@ -18,6 +18,9 @@ const options = {
   fallbackLng: 'en',
   supportedLngs: ['en', 'cy'],
   load: 'languageOnly',
+  interpolation: {
+    escapeValue: false,
+  },
   skipOnVariables: true,
 };
 
