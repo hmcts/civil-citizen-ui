@@ -536,7 +536,7 @@ export class Claim {
   getDocumentDetailsList(documentType: DocumentType): SystemGeneratedCaseDocuments[] {
     if (this.isSystemGeneratedCaseDocumentsAvailable()) {
       return this.systemGeneratedCaseDocuments?.filter(document => {
-        return document?.value.documentType === documentType;
+        return document?.value?.documentType === documentType;
       });
     }
     return undefined;
