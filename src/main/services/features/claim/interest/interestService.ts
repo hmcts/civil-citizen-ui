@@ -2,8 +2,8 @@ import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftSto
 import {Interest} from 'form/models/interest/interest';
 import {InterestClaimOptionsType} from 'form/models/claim/interest/interestClaimOptionsType';
 import {Claim} from 'models/claim';
+import {Logger} from'@hmcts/nodejs-logging';
 
-const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('interestService');
 
 const deleteSameRateInterest = (claim: Claim) => {
@@ -27,9 +27,9 @@ const getInterest = async (claimId: string): Promise<Interest> => {
   }
 };
 
-const saveInterest = async (claimId: string, value: any, interestPropertyName: string): Promise<void> => {
+const saveInterest = async (claimId: string, value: unknown, interestPropertyName: string): Promise<void> => {
   try {
-    const claim: any = await getCaseDataFromStore(claimId);
+    const claim: Claim = await getCaseDataFromStore(claimId);
     if (claim.interest) {
 
       if (claim.interest.interestClaimOptions) {
@@ -42,10 +42,10 @@ const saveInterest = async (claimId: string, value: any, interestPropertyName: s
         }
       }
 
-      claim.interest[interestPropertyName] = value;
+      (claim.interest as unknown as Record<string, unknown>)[interestPropertyName] = value;
     } else {
-      const interest: any = new Interest();
-      interest[interestPropertyName] = value;
+      const interest: Interest = new Interest();
+      (interest as unknown as Record<string, unknown>)[interestPropertyName] = value;
       claim.interest = interest;
     }
     await saveDraftClaim(claimId, claim);

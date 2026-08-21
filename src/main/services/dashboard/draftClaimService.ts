@@ -1,17 +1,20 @@
+import {AppRequest} from 'common/models/AppRequest';
 import {DashboardClaimantItem, toDraftClaimDashboardItem} from 'models/dashboard/dashboardItem';
-import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {Claim} from 'models/claim';
+import {getDraftClaim} from 'modules/draft-store/draftStoreManagerService';
 
 export interface DraftClaimData {
    claimCreationUrl: string;
-   draftClaim: DashboardClaimantItem
+   draftClaim: DashboardClaimantItem | null;
 }
 
-export const getDraftClaimData = async (userToken: string, userId:string):Promise<DraftClaimData> => {
+export const getDraftClaimData = async (req: AppRequest):Promise<DraftClaimData> => {
   const draftUrl = createDraftClaimUrl();
-  const draftClaim = await getDraftClaim(userToken, userId);
+  const draftClaimItem = await getDashboardDraftClaimItem(req);
+
   return {
     claimCreationUrl: draftUrl,
-    draftClaim: draftClaim,
+    draftClaim: draftClaimItem,
   };
 };
 
@@ -19,7 +22,13 @@ const createDraftClaimUrl = (): string => {
   return '/eligibility';
 };
 
-const getDraftClaim = async (_userToken: string, userId: string): Promise<DashboardClaimantItem> => {
-  const claim = await getCaseDataFromStore(userId, true);
-  return toDraftClaimDashboardItem(claim);
+const getDashboardDraftClaimItem = async (req: AppRequest): Promise<DashboardClaimantItem | null> => {
+  const draftResult = await getDraftClaim(req);
+  if (!draftResult || !draftResult.claimResponse?.case_data) {
+    return null;
+  }
+  const claim = new Claim();
+  Object.assign(claim, draftResult.claimResponse.case_data);
+  claim.draftClaimCreatedAt = new Date(draftResult.createdAt);
+  return toDraftClaimDashboardItem(claim) ?? null;
 };
