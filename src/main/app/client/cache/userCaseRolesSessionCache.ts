@@ -12,11 +12,15 @@
  *   1. assignDefendantToClaim success (assignClaimController) — user gains case roles
  *   2. logout (session.destroy) — whole session cleared
  * - Kill-switch: LaunchDarkly `cui-user-case-roles-session-cache-enabled` (+ config gate).
+ * - Logs (`[userCaseRolesCache] ...`) are ingested as App Insights traces for KQL. No role values or PII.
  */
 import config from 'config';
 import {AppRequest, AppSession, UserCaseRolesCacheEntry} from 'common/models/AppRequest';
 import {CaseRole} from 'form/models/caseRoles';
 import {isUserCaseRolesSessionCacheEnabled} from '../../auth/launchdarkly/launchDarklyClient';
+
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('userCaseRolesSessionCache');
 
 const KEY_PREFIX = 'ucr';
 const DEFAULT_TTL_SECONDS = 60;
@@ -70,11 +74,13 @@ export async function getUserCaseRolesFromSession(
 ): Promise<{hit: true; role: CaseRole | undefined} | {hit: false}> {
   const enabled = await isUserCaseRolesSessionCacheEnabled();
   if (!enabled) {
+    logger.info('[userCaseRolesCache] bypass reason=kill_switch');
     return {hit: false};
   }
 
   const userId = req.session?.user?.id ?? '';
   if (!userId || !caseId) {
+    logger.info('[userCaseRolesCache] miss');
     return {hit: false};
   }
 
@@ -82,14 +88,18 @@ export async function getUserCaseRolesFromSession(
   const cacheMap = getSessionCacheMap(req);
   const entry = cacheMap?.[cacheKey];
   if (!entry) {
+    logger.info('[userCaseRolesCache] miss');
     return {hit: false};
   }
 
   if (Date.now() >= entry.expiresAt) {
     delete cacheMap[cacheKey];
+    logger.info('[userCaseRolesCache] eviction reason=ttl');
+    logger.info('[userCaseRolesCache] miss');
     return {hit: false};
   }
 
+  logger.info(`[userCaseRolesCache] hit cacheType=${entry.role === null ? 'negative' : 'positive'}`);
   return {hit: true, role: entry.role ?? undefined};
 }
 
@@ -124,12 +134,17 @@ export async function storeUserCaseRolesInSession(
     role: isNegative ? null : role,
     expiresAt: Date.now() + ttlSeconds * 1000,
   };
+  logger.info(`[userCaseRolesCache] store cacheType=${isNegative ? 'negative' : 'positive'}`);
 }
 
 /**
  * Evicts the session cache entry for a user+case after role-mutating actions.
  */
-export function evictUserCaseRolesFromSession(req: AppRequest, caseId: string): void {
+export function evictUserCaseRolesFromSession(
+  req: AppRequest,
+  caseId: string,
+  reason = 'role_mutation',
+): void {
   const userId = req.session?.user?.id ?? '';
   if (!userId || !caseId) {
     return;
@@ -141,5 +156,6 @@ export function evictUserCaseRolesFromSession(req: AppRequest, caseId: string): 
   const cacheKey = buildUserCaseRolesCacheKey(userId, caseId);
   if (cacheMap[cacheKey] !== undefined) {
     delete cacheMap[cacheKey];
+    logger.info(`[userCaseRolesCache] invalidate reason=${reason}`);
   }
 }
