@@ -75,11 +75,11 @@ def getFunctionalTestsGroups() {
 }
 
 def getCivilCcdDefinitionBranch() {
-  return "OCCC-359"
+  return "OCCC-204-breathing-space"
 }
 
 def getCivilServicePr() {
-  return "8256"
+  return "8273"
 }
 
 def getCivilServiceImage() {
