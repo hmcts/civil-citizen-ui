@@ -121,7 +121,7 @@
     "multer": "^2.2.0",
     "nunjucks": "^3.2.4",
     "otplib": "^13.0.0",
-    "rate-limit-redis": "^5.0.0",
+    "rate-limit-redis": "^6.0.0",
     "reflect-metadata": "^0.1.13",
     "require-directory": "^2.1.1",
     "serve-favicon": "^2.5.0",
