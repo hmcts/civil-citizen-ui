@@ -1,6 +1,6 @@
 import {validate} from 'class-validator';
 import {IsAllowedFileContent} from 'form/validators/isAllowedFileContent';
-import {MINIMAL_PDF_BUFFER, SPOOFED_PDF_BUFFER} from '../../../utils/fileContentFixtures';
+import {MINIMAL_PDF_BUFFER, SPOOFED_PDF_BUFFER} from '../../../../utils/fileContentFixtures';
 
 describe('isAllowedFileContent validator', () => {
   it('should validate when buffer magic bytes match the declared mime type', async () => {

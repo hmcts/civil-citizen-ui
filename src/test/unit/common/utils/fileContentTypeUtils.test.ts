@@ -10,7 +10,7 @@ import {
   MINIMAL_TIFF_BUFFER,
   PLAIN_TEXT_BUFFER,
   SPOOFED_PDF_BUFFER,
-} from '../../utils/fileContentFixtures';
+} from '../../../utils/fileContentFixtures';
 
 describe('fileContentTypeUtils', () => {
   describe('detectMimeTypeFromBuffer', () => {
