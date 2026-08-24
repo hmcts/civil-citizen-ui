@@ -17,5 +17,7 @@ CODEOWNERS @hmcts/civil-admins
 
 # Infra:
 charts/ @hmcts/civil-admins
+charts/civil-citizen-ui/templates/ @hmcts/civil
+charts/civil-citizen-ui/wiremock/ @hmcts/civil
+charts/civil-citizen-ui/*.template.yaml @hmcts/civil
 infrastructure/ @hmcts/civil-admins
-
