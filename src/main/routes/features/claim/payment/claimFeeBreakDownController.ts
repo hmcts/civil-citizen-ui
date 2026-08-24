@@ -1,6 +1,7 @@
 import {AppRequest} from 'common/models/AppRequest';
 import {NextFunction, RequestHandler, Response, Router} from 'express';
-import {generateRedisKey, getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {getDraftClaim, updateDraftClaim} from 'modules/draft-store/draftStoreManagerService';
+import {Claim} from 'models/claim';
 import {CLAIM_FEE_BREAKUP, CLAIM_FEE_PAYMENT_CONFIRMATION_URL} from 'routes/urls';
 import {YesNo} from 'common/form/models/yesNo';
 import {calculateInterestToDate} from 'common/utils/interestUtils';
@@ -29,7 +30,7 @@ claimFeeBreakDownController.get(CLAIM_FEE_BREAKUP, claimFeePaymentGuard, (async 
     if (claim.paymentSyncError) {
       paymentSyncError = true;
       claim.paymentSyncError = undefined;
-      await saveDraftClaim(generateRedisKey(req), claim, false, req.session.user?.id);
+      await saveClaimPaymentDraft(req, claim);
     }
     const claimFee = convertToPoundsFilter(claim.claimFee?.calculatedAmountInPence);
     const hasInterest = claim.claimInterest === YesNo.YES;
@@ -57,8 +58,11 @@ claimFeeBreakDownController.get(CLAIM_FEE_BREAKUP, claimFeePaymentGuard, (async 
 claimFeeBreakDownController.post(CLAIM_FEE_BREAKUP, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = getRouteParam(req, 'id');
-    const redisKey = generateRedisKey(req);
-    const claim = await getCaseDataFromStore(redisKey);
+    const draftResult = await getDraftClaim(req);
+    if (!draftResult) {
+      throw new Error('[claimFeeBreakDownController] no draft claim found to update');
+    }
+    const claim = Object.assign(new Claim(), draftResult.claimResponse?.case_data) as unknown as Claim;
     let paymentRedirectInformation: PaymentInformation;
     if (claim.claimDetails?.claimFeePayment?.paymentReference) {
       paymentRedirectInformation = claim.claimDetails.claimFeePayment;
@@ -70,9 +74,8 @@ claimFeeBreakDownController.post(CLAIM_FEE_BREAKUP, (async (req: AppRequest, res
     if (!paymentRedirectInformation) {
       res.redirect(constructResponseUrlWithIdParams(claimId, CLAIM_FEE_BREAKUP));
     } else {
-      logger.info('redis key before saving the payment ' + redisKey);
       logger.info(`Saving payment information for claim id ${claimId}`);
-      await saveDraftClaim(redisKey, claim, true, req.session.user?.id);
+      await saveClaimPaymentDraft(req, claim);
       await saveUserId(claimId, FeeType.CLAIMISSUED, req.session.user.id);
       try {
         const paymentStatus = await getFeePaymentStatus(claimId, paymentRedirectInformation?.paymentReference, FeeType.CLAIMISSUED, req);
@@ -87,7 +90,7 @@ claimFeeBreakDownController.post(CLAIM_FEE_BREAKUP, (async (req: AppRequest, res
             res.redirect(constructResponseUrlWithIdParams(claimId, CLAIM_FEE_BREAKUP));
           } else {
             claim.claimDetails.claimFeePayment = paymentRedirectInformation;
-            await saveDraftClaim(redisKey, claim, true, req.session.user?.id);
+            await saveClaimPaymentDraft(req, claim);
             res.redirect(paymentRedirectInformation?.nextUrl);
           }
         } else {
@@ -114,9 +117,20 @@ async function getRedirectInformation(req: AppRequest) {
   } catch (error) {
     const claim = await getClaimById(getRouteParam(req, 'id'), req, true);
     claim.paymentSyncError = true;
-    await saveDraftClaim(generateRedisKey(req), claim, true, req.session.user?.id);
+    await saveClaimPaymentDraft(req, claim);
     return null;
   }
 }
 
+const saveClaimPaymentDraft = async (req: AppRequest, claim: Claim): Promise<void> => {
+  const draftResult = await getDraftClaim(req);
+  if (!draftResult) {
+    throw new Error('[claimFeeBreakDownController] no draft claim found to update');
+  }
+  const draftId = req.session?.draftId || draftResult.rawResponse?.draftId;
+  if (draftResult.createdAt && !claim.draftClaimCreatedAt) {
+    claim.draftClaimCreatedAt = new Date(draftResult.createdAt);
+  }
+  await updateDraftClaim(req, claim, draftId);
+};
 export default claimFeeBreakDownController;
