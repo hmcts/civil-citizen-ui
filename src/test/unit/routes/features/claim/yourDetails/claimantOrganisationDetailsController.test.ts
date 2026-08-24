@@ -110,7 +110,7 @@ describe('Claimant Organisation Details page', () => {
     describe('on Exception', () => {
       it('should return http 500 when has error in the get method', async () => {
         mockGetDraftClaim.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
-  
+
         await request(app)
           .get(CLAIMANT_ORGANISATION_DETAILS_URL)
           .expect((res: request.Response) => {
@@ -121,8 +121,8 @@ describe('Claimant Organisation Details page', () => {
 
       it('should return http 500 when has error in the post method', async () => {
         mockGetDraftClaim.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
-          mockUpdateDraftClaim.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
-  
+        mockUpdateDraftClaim.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
+
         await request(app)
           .post(CLAIMANT_ORGANISATION_DETAILS_URL)
           .send(validDataForPost)
@@ -478,7 +478,7 @@ describe('Claimant Organisation Details page', () => {
     describe('on Exception', () => {
       it('should return http 500 when has error in the get method', async () => {
         mockGetDraftClaim.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
-  
+
         await request(app)
           .get(CLAIMANT_COMPANY_DETAILS_URL)
           .expect((res: request.Response) => {
@@ -489,8 +489,8 @@ describe('Claimant Organisation Details page', () => {
 
       it('should return http 500 when has error in the post method', async () => {
         mockGetDraftClaim.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
-          mockUpdateDraftClaim.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
-  
+        mockUpdateDraftClaim.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
+
         await request(app)
           .post(CLAIMANT_COMPANY_DETAILS_URL)
           .send(validDataForPost)
