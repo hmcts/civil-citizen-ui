@@ -24,7 +24,7 @@ export const writeWithTTL = async (
   try {
     const existingTTL = prefetchedTTL !== undefined ? prefetchedTTL : await draftStoreClient.ttl(key);
 
-    if (existingTTL > 0) {
+    if (existingTTL > 0 && !metadata?.overrideExistingTTL) {
       await draftStoreClient.set(key, serializedValue, 'KEEPTTL');
       logger.info(`Preserved existing TTL for key: ${key}, TTL: ${existingTTL}s`);
       return;
