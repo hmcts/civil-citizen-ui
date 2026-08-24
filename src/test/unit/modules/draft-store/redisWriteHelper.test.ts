@@ -33,20 +33,37 @@ describe('redisWriteHelper', () => {
     expect(mockDraftStoreClient.expireat).not.toHaveBeenCalled();
   });
 
-  it('should anchor draft claim TTL to creation date', async () => {
+  it('should override an existing TTL when requested', async () => {
+    mockDraftStoreClient.ttl.mockResolvedValueOnce(100 * 365 * 86400);
+
+    await writeWithTTL(
+      'claim-key',
+      {id: '1'},
+      TTLCategory.DRAFT_CLAIM,
+      {creationDate: new Date(), overrideExistingTTL: true},
+    );
+
+    const [, , mode, seconds] = mockDraftStoreClient.set.mock.calls[0];
+    expect(mode).toBe('EX');
+    expect(seconds).toBeGreaterThan(30 * 86400 - 5);
+    expect(seconds).toBeLessThanOrEqual(31 * 86400 + 2);
+  });
+
+  it('should anchor draft claim TTL to creation date and expire after the submit-by date', async () => {
     mockDraftStoreClient.ttl.mockResolvedValueOnce(-2);
     const tenDaysAgo = new Date(Date.now() - 10 * 86400 * 1000);
 
     await writeWithTTL('claim-key', {id: '1'}, TTLCategory.DRAFT_CLAIM, {creationDate: tenDaysAgo});
 
-    // 180-day TTL anchored to a creation date 10 days ago => ~170 days remaining.
+    // 30-day submit-by date anchored to a creation date 10 days ago, expiring at midnight after that date.
     const [key, value, mode, seconds] = mockDraftStoreClient.set.mock.calls[0];
-    const expectedSeconds = (180 - 10) * 86400;
+    const minExpectedSeconds = (30 - 10) * 86400;
+    const maxExpectedSeconds = (31 - 10) * 86400;
     expect(key).toBe('claim-key');
     expect(value).toBe(JSON.stringify({id: '1'}));
     expect(mode).toBe('EX');
-    expect(seconds).toBeGreaterThan(expectedSeconds - 5);
-    expect(seconds).toBeLessThanOrEqual(expectedSeconds + 1);
+    expect(seconds).toBeGreaterThan(minExpectedSeconds - 5);
+    expect(seconds).toBeLessThanOrEqual(maxExpectedSeconds + 2);
     expect(mockDraftStoreClient.expireat).not.toHaveBeenCalled();
   });
 
