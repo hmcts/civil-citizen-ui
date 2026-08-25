@@ -2,6 +2,7 @@ import {Application, NextFunction, Request, Response} from 'express';
 import config from 'config';
 import {AppRequest, PaymentConfirmationContext} from 'models/AppRequest';
 import {getOidcResponse, getSessionIssueTime, getUserDetails} from '../../app/auth/user/oidc';
+import {isHmctsAccessMigrationEnabled} from '../../app/auth/launchdarkly/launchDarklyClient';
 import {
   ASSIGN_CLAIM_URL,
   BASE_ELIGIBILITY_URL,
@@ -133,7 +134,17 @@ export class OidcMiddleware {
     const idamSignOutUrl: string = config.get('services.idam.terminateSessionURL');
     const applicationUrl: string = config.get('services.idam.signOutCallBackURL');
 
-    app.get(SIGN_IN_URL, (_req: AppRequest, res: Response) => {
+    app.get(SIGN_IN_URL, async (_req: AppRequest, res: Response) => {
+      // Log the resolved LaunchDarkly flag value on every sign-in so we can confirm in the
+      // environment logs whether hmcts-access-migration-enabled is actually toggling.
+      // NOTE: the flag does NOT change idamUrlLogin - the /login vs /o/authorize entry point
+      // is set by the IDAM_WEB_URL env var (config services.idam.authorizationURL), not by the flag.
+      try {
+        const hmctsAccessMigrationEnabled = await isHmctsAccessMigrationEnabled();
+        logger.info(`hmcts-access-migration-enabled flag = ${hmctsAccessMigrationEnabled}; redirecting to IDAM login URL: ${idamUrlLogin}`);
+      } catch (err) {
+        logger.error('Failed to read hmcts-access-migration-enabled flag', err);
+      }
       res.redirect(idamUrlLogin);
     });
 
@@ -169,7 +180,7 @@ export class OidcMiddleware {
           req.originalUrl,
           req.session.paymentConfirmationContext,
         );
-        logger.info('Payment conf url ', paymentConfirmationUrl);
+        logger.info('Payment confirmation URL lookup completed');
 
         await new Promise<void>((resolve, reject) => {
           req.session.save((err) => (err ? reject(err) : resolve()));
@@ -239,9 +250,9 @@ export class OidcMiddleware {
           appReq.session.claimIssueTasklist = true;
         }
 
-        logger.info('redirecting url ', req.originalUrl);
+        logger.info('Processing authenticated redirect');
         if (isPaymentConfirmationUrl(req)) {
-          logger.info('Condition satisfied for payment confirmation ', req.originalUrl);
+          logger.info('Payment confirmation redirect detected');
 
           const paymentConfirmationContext = getPaymentConfirmationContextFromUrl(req.originalUrl);
           if (paymentConfirmationContext) {
@@ -254,7 +265,7 @@ export class OidcMiddleware {
               logger.warn(`user id does not exist from claim id: ${paymentConfirmationContext.claimId} `);
             }
           } else {
-            logger.error(`claim id does not exist from payment confirmation url: ${req.originalUrl} `);
+            logger.error('Claim id does not exist for payment confirmation URL');
           }
         }
 

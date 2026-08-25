@@ -124,7 +124,7 @@ exports.config = {
           reportFilename: `${process.env.MOCHAWESOME_REPORTFILENAME + '-' + new Date().getTime()}`,
           inlineAssets: true,
           overwrite: false,
-          json: false,
+          json: true,
         },
       },
     },

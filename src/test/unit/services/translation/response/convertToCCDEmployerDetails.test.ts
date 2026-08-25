@@ -1,6 +1,7 @@
 import {toCCDEmploymentDetails} from 'services/translation/response/convertToCCDEmployerDetails';
 import {Employers} from 'form/models/statementOfMeans/employment/employers';
 import {CCDEmployerDetails} from 'models/ccdResponse/ccdEmployerDetails';
+import {Employer} from 'form/models/statementOfMeans/employment/employer';
 
 describe('translate employer details to CCD model', () => {
   it('should return undefined if it is undefined', () => {
@@ -34,7 +35,7 @@ describe('translate employer details to CCD model', () => {
         {
           employerName: 'test',
           jobTitle: 'job',
-        },
+        } as Employer,
       ],
     };
 
