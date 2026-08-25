@@ -35,6 +35,7 @@ import * as ClaimDetailsService from 'modules/claimDetailsService';
 import {BreathingSpaceEnterInfo} from 'models/breathingSpace/breathingSpaceEnterInfo';
 import {BreathingSpaceType} from 'models/breathingSpace/breathingSpaceType';
 import {DashboardNotificationList} from 'models/dashboard/dashboardNotificationList';
+import {DashboardNotification} from 'models/dashboard/dashboardNotification';
 
 jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 
@@ -713,6 +714,58 @@ describe('claimant Dashboard Controller', () => {
           showErrorAwaitingTranslation: true,
         }),
       );
+    });
+
+    it('should suppress the generic draft notification when the draft expiry notification is shown', async () => {
+      const claim = new Claim();
+      claim.draftClaimCreatedAt = new Date('2026-08-17T08:51:21.000Z');
+      claim.draftClaimCacheTtlDays = 30;
+
+      const dashboardNotifications = new DashboardNotificationList([
+        new DashboardNotification(
+          'generic-draft',
+          'This claim has not been submitted',
+          "Nid yw'r hawliad hwn wedi cael ei gyflwyno",
+          'Your claim is saved as a draft. Continue with claim',
+          "Mae eich cais wedi ei gadw fel drafft. Parhau gyda'r hawliad",
+          '',
+          undefined,
+          undefined,
+          '',
+          '',
+        ),
+        new DashboardNotification(
+          'keep-this',
+          'Keep this notification',
+          'Cadwch yr hysbysiad hwn',
+          'This notification should still be rendered',
+          "Dylai'r hysbysiad hwn gael ei ddangos o hyd",
+          '',
+          undefined,
+          undefined,
+          '',
+          '',
+        ),
+      ]);
+
+      jest.spyOn(UtilityService, 'getClaimById').mockResolvedValueOnce(claim);
+      jest.spyOn(dashboardService, 'getNotifications').mockResolvedValueOnce(dashboardNotifications);
+
+      const req: any = {
+        params: {id: 'draft'},
+        query: {},
+        cookies: {lang: 'en'},
+        session: {user: {id: 'user-id'}},
+      };
+      const res: any = {render: jest.fn()};
+
+      await claimantDashboardHandler(req, res, jest.fn());
+
+      const renderedOptions = res.render.mock.calls[0][1];
+      expect(renderedOptions.draftClaimDeletionDate).toBe('16 September 2026');
+      expect(renderedOptions.dashboardNotifications.items).toEqual([
+        expect.objectContaining({titleEn: 'Keep this notification'}),
+      ]);
     });
 
     it('should persist correspondence address fields for represented respondents', async () => {
