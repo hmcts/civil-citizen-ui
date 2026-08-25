@@ -166,7 +166,7 @@ civil-service:
       CMC_DB_USERNAME: hmcts
       CMC_DB_NAME: "pr-${CHANGE_ID}-cmc"
 
-      SCHEDULER_ACTIVE_SCHEDULERS: "JudgementBuffer,DefendantResponseDeadline,EvidenceUpload,HearingFee,FullAdmitPayImmediatelyNoPaymentFromDefendant"
+      SCHEDULER_ACTIVE_SCHEDULERS: JudgementBuffer,DefendantResponseDeadline,EvidenceUpload,HearingFee,FullAdmitPayImmediatelyNoPaymentFromDefendant
       
       SEARCH_PAGE_SIZE_DEFENDANT_RESPONSE: 3
       SEARCH_PAGE_SIZE_EVIDENCE_UPLOAD: 3
