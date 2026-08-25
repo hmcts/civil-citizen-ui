@@ -42,9 +42,9 @@ document.addEventListener('DOMContentLoaded', function () {
   if (elementExists(appendRowButton)) {
     appendRowButton[0].addEventListener('click', (event) => {
       event.preventDefault();
-      cloneRow();
+      const newRow = cloneRow();
       showRemoveButton();
-      addEventListenerToRemoveButtons();
+      addEventListenerToRemoveButtons(newRow);
     });
     addEventListenerToRemoveButtons();
   }
@@ -52,13 +52,13 @@ document.addEventListener('DOMContentLoaded', function () {
   function removeRowButtonEventListener(element) {
     element.addEventListener('click', (event) => {
       event.preventDefault();
-      const topParent = element.parentNode.parentNode;
-      topParent?.removeChild(element.parentNode);
+      const row = element.closest('.row-container');
+      row?.remove();
       const multipleRows = document.getElementsByClassName('row-container')?.length;
       if (multipleRows < 2) {
         hideRemoveButton();
       }
-      if (document.getElementsByClassName('civil-amountRow')) {
+      if (document.getElementsByClassName('civil-amountRow').length) {
         getCalculation().catch(err => {
           console.log(err);
         });
@@ -67,24 +67,40 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function cloneRow() {
-    const rowContainerElement = document.getElementsByClassName('row-container');
-    if (elementExists(rowContainerElement)) {
-      const lastRow = getLastRow(rowContainerElement);
-      const newRow = lastRow.cloneNode(true);
-      const children = newRow.children;
-      Array.from(children).forEach((child) => {
-        const elements = child.querySelectorAll(`div, input, textarea, select, label, ${checkboxConditionalClassName}, ${radioButtonConditionalClassName}`);
-        updateInputs(elements);
-        removeErrors(child);
-      });
-      lastRow.parentNode.appendChild(newRow);
-      updateNewRow(rowContainerElement);
-      if (elementExists(document.getElementsByClassName('civil-amountRow'))) {
-        addCalculationEventListener();
-      }
-      if(elementExists(document.getElementsByClassName('civil-amount-breakdown-row'))) {
-        addTotalClaimAmountCalculationEventListener();
-      }
+    const rowContainerElements = document.getElementsByClassName('row-container');
+    if (!elementExists(rowContainerElements)) {
+      return;
+    }
+    const lastRow = getLastRow(rowContainerElements);
+    const newRow = cloneAndResetRow(lastRow);
+    lastRow.parentNode.appendChild(newRow);
+    updateNewRow(rowContainerElements);
+    addCalculationListenersIfNeeded();
+    return newRow;
+  }
+
+  function cloneAndResetRow(row) {
+    const newRow = row.cloneNode(true);
+
+    Array.from(newRow.children).forEach(resetClonedRowChild);
+
+    return newRow;
+  }
+
+  function resetClonedRowChild(child) {
+    const elements = child.querySelectorAll(`div, input, textarea, select, label, ${checkboxConditionalClassName}, ${radioButtonConditionalClassName}`);
+
+    updateInputs(elements);
+    removeErrors(child);
+  }
+
+  function addCalculationListenersIfNeeded() {
+    if (elementExists(document.getElementsByClassName('civil-amountRow'))) {
+      addCalculationEventListener();
+    }
+
+    if (elementExists(document.getElementsByClassName('civil-amount-breakdown-row'))) {
+      addTotalClaimAmountCalculationEventListener();
     }
   }
 
@@ -207,21 +223,23 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function showRemoveButton() {
-    const hiddenRemoveButton = document.getElementsByClassName('remove-row govuk-visually-hidden');
+    const hiddenRemoveButton = document.querySelectorAll('.govuk-button.govuk-button--secondary.remove-row');
     if (elementExists(hiddenRemoveButton)) {
-      Array.from(hiddenRemoveButton).forEach(element => element.classList.remove('govuk-visually-hidden'));
+      Array.from(hiddenRemoveButton).slice(1).forEach(element => {
+        element.classList.remove('govuk-!-display-none');
+      });
     }
   }
 
   function hideRemoveButton() {
     const removeButton = document.getElementsByClassName('remove-row');
     if (elementExists(removeButton)) {
-      Array.from(removeButton).forEach(element => element.classList.add('govuk-visually-hidden'));
+      Array.from(removeButton).forEach(element => element.classList.add('govuk-!-display-none'));
     }
   }
 
-  function addEventListenerToRemoveButtons() {
-    const removeButton = document.getElementsByClassName('remove-row');
+  function addEventListenerToRemoveButtons(container = document) {
+    const removeButton = container.getElementsByClassName('remove-row');
     if (elementExists(removeButton)) {
       Array.from(removeButton).forEach(element => removeRowButtonEventListener(element));
     }

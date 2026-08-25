@@ -2,7 +2,7 @@ import {Claim} from 'common/models/claim';
 import Axios, {AxiosError, AxiosHeaderValue, AxiosInstance, AxiosResponse} from 'axios';
 import {AssertionError} from 'assert';
 import {AppRequest, AppSession} from 'common/models/AppRequest';
-import {CivilClaimResponse, ClaimFeeData} from 'common/models/civilClaimResponse';
+import {CivilClaimResponse, CivilServiceClaimFeeData, ClaimFeeData} from 'common/models/civilClaimResponse';
 import {
   ASSIGN_CLAIM_TO_DEFENDANT,
   CIVIL_SERVICE_AGREED_RESPONSE_DEADLINE_DATE,
@@ -65,6 +65,7 @@ import {CCDGeneralApplication} from 'models/gaEvents/eventDto';
 import {roundOffTwoDecimals} from 'common/utils/dateUtils';
 import {syncCaseReferenceCookie} from 'modules/cookie/caseReferenceCookie';
 import {assertHasData, assertNonEmpty} from 'client/common/error/eventSubmissionError';
+import {CallbackError, CallbackErrorResponseBody, extractCallbackErrorMessages} from 'client/common/error/callbackError';
 import {
   buildAuthenticatedConfig,
   buildAuthorizationOnlyConfig,
@@ -74,6 +75,9 @@ import {
 } from 'client/common/civilServiceRequest';
 import {normalizeRouteParam, RouteParam} from 'common/utils/routeParamUtils';
 import {ClassConstructor} from 'class-transformer/types/interfaces';
+
+const HTTP_STATUS_UNPROCESSABLE_ENTITY = 422;
+
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('civilServiceClient');
 
@@ -147,6 +151,18 @@ export class CivilServiceClient {
 
     const newCache = new Map<string, Promise<Claim>>();
     requestLocals.claimDetailsRequestCache = newCache;
+    return newCache;
+  }
+
+  private getCalculateInterestRequestCache(req: AppRequest): Map<string, Promise<number>> {
+    const requestWithLocals = req as AppRequest & { locals?: AppRequest['locals'] };
+    const requestLocals = requestWithLocals.locals ?? (requestWithLocals.locals = {env: '', lang: ''});
+    if (requestLocals.calculateInterestRequestCache) {
+      return requestLocals.calculateInterestRequestCache;
+    }
+
+    const newCache = new Map<string, Promise<number>>();
+    requestLocals.calculateInterestRequestCache = newCache;
     return newCache;
   }
 
@@ -296,18 +312,19 @@ export class CivilServiceClient {
   }
 
   async getClaimFeeData(amount: number, req: AppRequest): Promise<ClaimFeeData> {
-    const userid = (<AppRequest>req).session.user?.id;
-    logger.info(`Total Claim Amount before Round off for user ${userid}, amount: ${amount}`);
     amount = roundOffTwoDecimals(amount);
-    logger.info(`Total Claim Amount before Round off for user ${userid}, amount: ${amount}`);
-    const response = await this.authenticatedGet<ClaimFeeData>(
+    const response = await this.authenticatedGet<CivilServiceClaimFeeData>(
       `${CIVIL_SERVICE_CLAIM_AMOUNT_URL}/${amount}`,
       req,
       `Error when getting claim fee data, req.params.id - ${req.params.id}`,
     );
-    const claimFeeInPence = response.data.calculatedAmountInPence;
-    logger.info(`Claim fee of ${claimFeeInPence} calculated for user ${userid} based on claim amount ${amount}`);
-    return response.data;
+    logger.info('Claim fee calculated');
+    return {
+      ...response.data,
+      calculatedAmountInPence: response.data.calculatedAmountInPence === undefined
+        ? undefined
+        : Number(response.data.calculatedAmountInPence),
+    };
   }
 
   async getGeneralApplicationFee(feeRequestBody: GAFeeRequestBody, req: AppRequest): Promise<ClaimFeeData> {
@@ -504,8 +521,19 @@ export class CivilServiceClient {
       (e: unknown) => {
         const err = e as AxiosError;
         const status = err.response?.status;
-        const body = err.response?.data;
+        const body = err.response?.data as CallbackErrorResponseBody;
         logger.error(`Submit event failed (event=${event}, claimId=${normalizedClaimId}, status=${status})`, { body: safeSubmitEventErrorBody(body) });
+        // DTSCCI-5282: civil-service returns 422 with the actionable messages preserved.
+        // They arrive either as `callbackErrors` (callback/business-rule rejections) or as
+        // `details.field_errors` (CCD field-type validation). Surface either so the user sees
+        // the message instead of a generic 500 page. Throwing here replaces the axios error
+        // that executeRequest would otherwise re-throw.
+        if (status === HTTP_STATUS_UNPROCESSABLE_ENTITY) {
+          const messages = extractCallbackErrorMessages(body);
+          if (messages.length) {
+            throw new CallbackError(messages, body?.callbackWarnings);
+          }
+        }
       },
     );
     assertHasData(response, { action: 'submit event', event });
@@ -513,13 +541,34 @@ export class CivilServiceClient {
     return convertCaseToClaim(claimResponse);
   }
 
-  async calculateClaimInterest(claim: ClaimUpdate): Promise<number> {
+  async calculateClaimInterest(claim: ClaimUpdate, req?: AppRequest): Promise<number> {
+    // Request-scoped dedup only: collapses duplicate calls within one HTTP request.
+    // Does not persist across page loads or form submissions.
+    if (req) {
+      const requestCache = this.getCalculateInterestRequestCache(req);
+      const cacheKey = JSON.stringify(claim);
+      const cached = requestCache.get(cacheKey);
+      if (cached !== undefined) {
+        return cached;
+      }
+      const promise = this.calculateClaimInterestFromCivilService(claim)
+        .catch((err) => {
+          requestCache.delete(cacheKey);
+          throw err;
+        });
+      requestCache.set(cacheKey, promise);
+      return promise;
+    }
+    return this.calculateClaimInterestFromCivilService(claim);
+  }
+
+  private async calculateClaimInterestFromCivilService(claim: ClaimUpdate): Promise<number> {
     logger.info('calculateClaimInterest');
     const response = await executeRequest(
       () => this.client.post(CIVIL_SERVICE_CLAIM_CALCULATE_INTEREST, claim, buildJsonOnlyConfig()),
       'Error when calculating interest',
     );
-    logger.info(`calculateClaimInterest response: ${response.data}` );
+    logger.info('Claim interest calculated');
     return response.data as number;
   }
 
