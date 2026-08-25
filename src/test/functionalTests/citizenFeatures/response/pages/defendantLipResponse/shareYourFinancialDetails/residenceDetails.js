@@ -4,11 +4,11 @@ const sharedData = require('../../../../../sharedData');
 const cButtons = require('../../../../../commonComponents/cButtons');
 
 const fields = {
-  ownHome: 'input[id="residenceType"]',
-  jointHome: 'input[id="residenceType-2"]',
-  privateRental: 'input[id="residenceType-3"]',
-  councilHouse: 'input[id="residenceType-4"]',
-  other: 'input[id="residenceType-5"]',
+  ownHome: 'input[value="OWN_HOME"]',
+  jointHome: 'input[value="JOINT_OWN_HOME"]',
+  privateRental: 'input[value="PRIVATE_RENTAL"]',
+  councilHouse: 'input[value="COUNCIL_OR_HOUSING_ASSN_HOME"]',
+  other: 'input[value="OTHER"]',
 };
 
 const content = {
@@ -21,7 +21,7 @@ const content = {
 class ResidenceDetails {
 
   async selectResidenceType(residenceType) {
-    const { language } = sharedData; 
+    const { language } = sharedData;
     await I.waitForContent(content.heading[language], config.WaitForText);
     switch (residenceType){
       case 'ownHome':{
