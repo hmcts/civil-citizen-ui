@@ -6,19 +6,17 @@ import {saveResolvingDispute} from 'services/features/claim/resolvingDisputeServ
 const resolvingThisDisputeController = Router();
 const resolvingThisDisputePath = 'features/claim/resolving-this-dispute';
 
-resolvingThisDisputeController.get(CLAIM_RESOLVING_DISPUTE_URL, (async (req: Request, res: Response) => {
+resolvingThisDisputeController.get(CLAIM_RESOLVING_DISPUTE_URL, (async (req: Request, res: Response): Promise<void> => {
   res.render(resolvingThisDisputePath, {pageTitle: 'PAGES.CLAIM_JOURNEY.RESOLVE_THE_DISPUTE.PAGE_TITLE'});
 }) as RequestHandler);
 
-resolvingThisDisputeController.post(CLAIM_RESOLVING_DISPUTE_URL, (req: AppRequest, res: Response, next: NextFunction): void => {
-  const userId = req.session?.user?.id;
-  saveResolvingDispute(userId)
-    .then(() => {
-      res.redirect(CLAIMANT_TASK_LIST_URL);
-    })
-    .catch((error) => {
-      next(error);
-    });
-});
+resolvingThisDisputeController.post(CLAIM_RESOLVING_DISPUTE_URL, (async (req: AppRequest, res: Response, next: NextFunction): Promise<void> => {
+  try {
+    await saveResolvingDispute(req);
+    res.redirect(CLAIMANT_TASK_LIST_URL);
+  } catch (error) {
+    next(error);
+  }
+}) as RequestHandler);
 
 export default resolvingThisDisputeController;

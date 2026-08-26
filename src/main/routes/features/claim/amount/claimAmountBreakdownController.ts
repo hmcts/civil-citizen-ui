@@ -1,4 +1,4 @@
-import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
+import {NextFunction, RequestHandler, Response, Router} from 'express';
 
 import {CLAIM_AMOUNT_URL, CLAIM_INTEREST_URL} from 'routes/urls';
 import {GenericForm} from 'form/models/genericForm';
@@ -22,22 +22,21 @@ function renderView(form: GenericForm<AmountBreakdown>, res: Response) {
 
 claimAmountBreakdownController.get(CLAIM_AMOUNT_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const userid = req.session?.user?.id;
-    const form = new GenericForm<AmountBreakdown>(await getClaimAmountBreakdownForm(userid));
+    const form = new GenericForm<AmountBreakdown>(await getClaimAmountBreakdownForm(req));
     renderView(form, res);
   } catch (error) {
     next(error);
   }
-}) as RequestHandler).post(CLAIM_AMOUNT_URL, (async (req: AppRequest | Request, res: Response, next: NextFunction) => {
+}) as RequestHandler).post(CLAIM_AMOUNT_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const form = new GenericForm(AmountBreakdown.fromObject(req.body));
     form.validateSync();
     if (form.hasErrors()) {
       renderView(form, res);
     } else {
-      const userid = (<AppRequest>req).session.user?.id;
+      const userid = req.session.user?.id;
       logger.info(`Claim amount updated for user ${userid}, amount: ${req.body.totalAmount}`);
-      await saveAndRedirectToNextPage(<AppRequest>req, res, form.model);
+      await saveAndRedirectToNextPage(req, res, form.model);
     }
   } catch (error) {
     next(error);
@@ -45,7 +44,7 @@ claimAmountBreakdownController.get(CLAIM_AMOUNT_URL, (async (req: AppRequest, re
 }) as RequestHandler);
 
 const saveAndRedirectToNextPage = async (req: AppRequest, res: Response, amountBreakdown: AmountBreakdown) => {
-  await saveClaimAmountBreakdownForm(req.session?.user?.id, amountBreakdown);
+  await saveClaimAmountBreakdownForm(req, amountBreakdown);
   res.redirect(CLAIM_INTEREST_URL);
 };
 
