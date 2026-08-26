@@ -94,7 +94,7 @@
     "axios": "^1.18.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",
-    "config": "^3.3.12",
+    "config": "^5.0.0",
     "connect-redis": "^7.1.0",
     "cookie-parser": "^1.4.7",
     "crypto-js": "^4.2.0",
