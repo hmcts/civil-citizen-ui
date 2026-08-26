@@ -1,11 +1,11 @@
-import {NextFunction, Request, Response, Router} from 'express';
+import {NextFunction, Response, Router} from 'express';
 import {CLAIM_CHECK_ANSWERS_URL, CLAIM_CONFIRMATION_URL} from '../../urls';
 import {
   getStatementOfTruth,
   getSummarySections,
   saveStatementOfTruth,
 } from 'services/features/claim/checkAnswers/checkAnswersService';
-import {deleteDraftClaim} from 'modules/draft-store/draftStoreManagerService';
+import {deleteDraftClaim, getDraftClaim} from 'modules/draft-store/draftStoreManagerService';
 import {getStashedClaimOrFromStore} from 'common/utils/claimRequestLocals';
 import {Claim} from 'common/models/claim';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
@@ -23,7 +23,6 @@ import {EmailValidationWithMessage} from 'form/models/EmailValidationWithMessage
 import {PhoneValidationWithMessage} from 'form/models/PhoneValidationWithMessage';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
-import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {saveClaimFee} from 'services/features/claim/amount/claimFeesService';
 import {calculateInterestToDate} from 'common/utils/interestUtils';
 const validator = new Validator();
@@ -65,13 +64,17 @@ claimCheckAnswersController.get(CLAIM_CHECK_ANSWERS_URL,
     }
   });
 
-claimCheckAnswersController.post(CLAIM_CHECK_ANSWERS_URL, async (req: Request | AppRequest, res: Response, next: NextFunction) => {
+claimCheckAnswersController.post(CLAIM_CHECK_ANSWERS_URL, async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
 
     const userId = (<AppRequest>req).session?.user?.id;
     const isFullAmountRejected = (req.body?.isFullAmountRejected === 'true');
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-    const claim = await getCaseDataFromStore(userId);
+    const draftResult = await getDraftClaim(req);
+    if (!draftResult) {
+      throw new Error('[checkAnswersController] no draft claim found');
+    }
+    const claim = Object.assign(new Claim(), draftResult.claimResponse?.case_data as unknown as Claim);
     const isCarmEnabled = await isCarmEnabledForCase(claim.draftClaimCreatedAt);
     const acceptNotChangesAllowedValue =  (claim.claimDetails.helpWithFees.option === YesNo.YES) ? false : req.body.acceptNoChangesAllowed;
 
@@ -102,7 +105,7 @@ claimCheckAnswersController.post(CLAIM_CHECK_ANSWERS_URL, async (req: Request | 
       renderView(res, form, claim, userId, lang, isCarmEnabled);
       return;
     } else {
-      await saveStatementOfTruth(userId, form.model);
+      await saveStatementOfTruth(req, form.model);
       const appReq = req as AppRequest;
       const submittedClaim = await submitClaim(appReq);
 
