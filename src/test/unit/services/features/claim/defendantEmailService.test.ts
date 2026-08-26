@@ -1,21 +1,30 @@
-import * as draftStoreService from '../../../../../main/modules/draft-store/draftStoreService';
-import {
-  getDefendantEmail,
-  saveDefendantEmail,
-} from '../../../../../main/services/features/claim/yourDetails/defendantEmailService';
-import {Claim} from '../../../../../main/common/models/claim';
-import {PartyType} from '../../../../../main/common/models/partyType';
+import {AppRequest} from 'models/AppRequest';
+import {Claim} from 'models/claim';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
-import {Party} from '../../../../../main/common/models/party';
-import {DefendantEmail} from '../../../../../main/common/form/models/claim/yourDetails/defendantEmail';
-import {Email} from '../../../../../main/common/models/Email';
+import {getDefendantEmail, saveDefendantEmail} from 'services/features/claim/yourDetails/defendantEmailService';
+import {getDraftClaim, updateDraftClaim} from 'modules/draft-store/draftStoreManagerService';
+import {CivilClaimResponse} from 'models/civilClaimResponse';
+import {DraftClaimManagerResult} from 'models/draft/draftClaim';
+import {PartyType} from 'models/partyType';
+import {Party} from 'models/party';
+import {DefendantEmail} from 'form/models/claim/yourDetails/defendantEmail';
+import {Email} from 'models/Email';
 
-jest.mock('../../../../../main/modules/draft-store');
-jest.mock('../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('modules/draft-store/draftStoreManagerService');
+
+const mockGetDraftClaim = getDraftClaim as jest.Mock;
+const mockUpdateDraftClaim = updateDraftClaim as jest.Mock;
 
 const EMAIL_ADDRESS = 'test@gmail.com';
 
-const respondent: Party = {
+const mockReq = {
+  session: {
+    user: {id: '123'},
+    draftId: 'draft-123',
+  },
+} as unknown as AppRequest;
+
+const createRespondent = (): Party => ({
   partyDetails: {
     postToThisAddress: '',
     title: '',
@@ -26,94 +35,159 @@ const respondent: Party = {
   },
   responseType: '',
   type: PartyType.INDIVIDUAL,
-};
+});
+
+const createMockManagerResult = (claim: Claim, createdAt = '2026-08-01T10:00:00.000Z'): DraftClaimManagerResult => ({
+  claimResponse: {
+    id: '123',
+    case_data: claim,
+  } as unknown as CivilClaimResponse,
+  rawResponse: {
+    draftId: 'draft-123',
+    payload: claim,
+  } as unknown as DraftClaimManagerResult['rawResponse'],
+  createdAt,
+  updatedAt: '2026-08-01T11:00:00.000Z',
+  expiresAt: '2026-09-01T10:00:00.000Z',
+});
 
 describe('Claimant Defendant Email Service', () => {
-  const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
   describe('getClaimantDefendantEmail', () => {
     it('should get empty form when no data exist', async () => {
-      //Given
-      mockGetCaseData.mockImplementation(async () => {
-        return new Claim();
-      });
-      //When
-      const form = await getDefendantEmail('123');
-      //Then
+      mockGetDraftClaim.mockResolvedValue(createMockManagerResult(new Claim()));
+
+      const form = await getDefendantEmail(mockReq);
+
       expect(form.emailAddress).toBeUndefined();
-      expect(form.emailAddress).toEqual(undefined);
     });
 
     it('should get empty form when claimant defendant email does not exist', async () => {
-      //Given
-      mockGetCaseData.mockImplementation(async () => {
-        const claim = new Claim();
-        claim.respondent1 = respondent;
-        return claim;
-      });
-      //When
-      const form = await getDefendantEmail('123');
-      //Then
+      const claim = new Claim();
+      claim.respondent1 = createRespondent();
+      mockGetDraftClaim.mockResolvedValue(createMockManagerResult(claim));
+
+      const form = await getDefendantEmail(mockReq);
+
       expect(form.emailAddress).toBeUndefined();
     });
 
     it('should return populated form when claimant defendant email exists', async () => {
-      //Given
-      mockGetCaseData.mockImplementation(async () => {
-        const claim = new Claim();
-        respondent.emailAddress = new Email(EMAIL_ADDRESS);
-        claim.respondent1 = respondent;
-        return claim;
-      });
-      //When
-      const form = await getDefendantEmail('123');
+      const claim = new Claim();
+      const respondent = createRespondent();
+      respondent.emailAddress = new Email(EMAIL_ADDRESS);
+      claim.respondent1 = respondent;
+      mockGetDraftClaim.mockResolvedValue(createMockManagerResult(claim));
 
-      //Then
+      const form = await getDefendantEmail(mockReq);
+
       expect(form.emailAddress).toEqual(EMAIL_ADDRESS);
     });
 
+    it('should throw when no draft exists', async () => {
+      mockGetDraftClaim.mockResolvedValue(null);
+
+      await expect(getDefendantEmail(mockReq)).rejects.toThrow(
+        '[defendantEmailService] no draft claim found',
+      );
+    });
+
     it('should rethrow error when error occurs', async () => {
-      //When
-      mockGetCaseData.mockImplementation(async () => {
-        throw new Error(TestMessages.REDIS_FAILURE);
-      });
-      //Then
-      await expect(getDefendantEmail('123')).rejects.toThrow(TestMessages.REDIS_FAILURE);
+      mockGetDraftClaim.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
+
+      await expect(getDefendantEmail(mockReq)).rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
   });
 
   describe('saveClaimantDefendantEmail', () => {
     it('should save claimant defendant email successfully when claim exists', async () => {
-      //Given
-      mockGetCaseData.mockImplementation(async () => {
-        const claim = new Claim();
-        claim.respondent1 = respondent;
-        return claim;
+      const claim = new Claim();
+      claim.respondent1 = createRespondent();
+      mockGetDraftClaim.mockResolvedValue(createMockManagerResult(claim));
+      mockUpdateDraftClaim.mockResolvedValue({});
 
-      });
-      const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
-      //When
-      await saveDefendantEmail('123', new DefendantEmail(EMAIL_ADDRESS));
-      //Then
-      expect(spySave).toBeCalled();
+      await saveDefendantEmail(mockReq, new DefendantEmail(EMAIL_ADDRESS));
+
+      expect(mockUpdateDraftClaim).toHaveBeenCalledWith(
+        mockReq,
+        expect.objectContaining({
+          respondent1: expect.objectContaining({
+            emailAddress: expect.objectContaining({emailAddress: EMAIL_ADDRESS}),
+          }),
+        }),
+        'draft-123',
+      );
+    });
+
+    it('should create respondent1 when missing', async () => {
+      mockGetDraftClaim.mockResolvedValue(createMockManagerResult(new Claim()));
+      mockUpdateDraftClaim.mockResolvedValue({});
+
+      await saveDefendantEmail(mockReq, new DefendantEmail(EMAIL_ADDRESS));
+
+      expect(mockUpdateDraftClaim).toHaveBeenCalledWith(
+        mockReq,
+        expect.objectContaining({
+          respondent1: expect.objectContaining({
+            emailAddress: expect.objectContaining({emailAddress: EMAIL_ADDRESS}),
+          }),
+        }),
+        'draft-123',
+      );
+    });
+
+    it('should map createdAt when missing on save', async () => {
+      const createdAtTimestamp = '2026-08-01T10:00:00.000Z';
+      mockGetDraftClaim.mockResolvedValue(createMockManagerResult(new Claim(), createdAtTimestamp));
+      mockUpdateDraftClaim.mockResolvedValue({});
+
+      await saveDefendantEmail(mockReq, new DefendantEmail(EMAIL_ADDRESS));
+
+      expect(mockUpdateDraftClaim).toHaveBeenCalledWith(
+        mockReq,
+        expect.objectContaining({
+          draftClaimCreatedAt: new Date(createdAtTimestamp),
+        }),
+        'draft-123',
+      );
+    });
+
+    it('should use rawResponse draftId when session has none', async () => {
+      const reqWithoutDraftId = {session: {user: {id: '123'}}} as unknown as AppRequest;
+      mockGetDraftClaim.mockResolvedValue(createMockManagerResult(new Claim()));
+      mockUpdateDraftClaim.mockResolvedValue({});
+
+      await saveDefendantEmail(reqWithoutDraftId, new DefendantEmail(EMAIL_ADDRESS));
+
+      expect(mockUpdateDraftClaim).toHaveBeenCalledWith(reqWithoutDraftId, expect.any(Claim), 'draft-123');
+    });
+
+    it('should throw when no draft exists on save', async () => {
+      mockGetDraftClaim.mockResolvedValue(null);
+
+      await expect(saveDefendantEmail(mockReq, new DefendantEmail(EMAIL_ADDRESS))).rejects.toThrow(
+        '[defendantEmailService] no draft claim found',
+      );
     });
 
     it('should rethrow error when error occurs on get claim', async () => {
-      //When
-      mockGetCaseData.mockImplementation(async () => {
-        throw new Error(TestMessages.REDIS_FAILURE);
-      });
-      //Then
-      await expect(saveDefendantEmail('123', new DefendantEmail(EMAIL_ADDRESS))).rejects.toThrow(TestMessages.REDIS_FAILURE);
+      mockGetDraftClaim.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
+
+      await expect(saveDefendantEmail(mockReq, new DefendantEmail(EMAIL_ADDRESS))).rejects.toThrow(
+        TestMessages.REDIS_FAILURE,
+      );
     });
 
     it('should rethrow error when error occurs on save claim', async () => {
-      //Given
-      const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
-      mockSaveDraftClaim.mockImplementation(async () => {
-        throw new Error(TestMessages.REDIS_FAILURE);
-      });
-      //Then
-      await expect(saveDefendantEmail('123', new DefendantEmail(EMAIL_ADDRESS))).rejects.toThrow(TestMessages.REDIS_FAILURE);
+      mockGetDraftClaim.mockResolvedValue(createMockManagerResult(new Claim()));
+      mockUpdateDraftClaim.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
+
+      await expect(saveDefendantEmail(mockReq, new DefendantEmail(EMAIL_ADDRESS))).rejects.toThrow(
+        TestMessages.REDIS_FAILURE,
+      );
     });
   });
 });
