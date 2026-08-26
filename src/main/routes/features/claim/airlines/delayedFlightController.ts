@@ -12,8 +12,7 @@ const pageTitle = 'PAGES.DELAYED_FLIGHT.CLAIMING_FOR_DELAYED';
 
 delayedFlightController.get(DELAYED_FLIGHT_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const userId = req.session?.user?.id;
-    const delayedFlight = await getDelayedFlight(userId);
+    const delayedFlight = await getDelayedFlight(req);
     const form = new GenericForm(delayedFlight);
     res.render(delayedFlightPath, {form, pageTitle});
   } catch (error) {
@@ -23,7 +22,6 @@ delayedFlightController.get(DELAYED_FLIGHT_URL, (async (req: AppRequest, res: Re
 
 delayedFlightController.post(DELAYED_FLIGHT_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const userId = req.session?.user?.id;
     const delayedFlight = new GenericYesNo(req.body.option, 'ERRORS.DELAYED_FLIGHT.CLAIMING_FOR_DELAY_REQUIRED');
     const form = new GenericForm(delayedFlight);
     form.validateSync();
@@ -31,7 +29,7 @@ delayedFlightController.post(DELAYED_FLIGHT_URL, (async (req: AppRequest, res: R
     if (form.hasErrors()) {
       res.render(delayedFlightPath, {form, pageTitle});
     } else {
-      await saveDelayedFlight(userId, delayedFlight);
+      await saveDelayedFlight(req, delayedFlight);
 
       delayedFlight.option === YesNo.YES
         ? res.redirect(FLIGHT_DETAILS_URL)
