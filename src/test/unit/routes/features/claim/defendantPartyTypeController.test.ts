@@ -12,6 +12,7 @@ import {
 } from 'routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {Claim} from 'models/claim';
+import {Party} from 'models/party';
 import {getDraftClaim, updateDraftClaim} from 'modules/draft-store/draftStoreManagerService';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {CivilClaimResponse} from 'models/civilClaimResponse';
@@ -61,6 +62,7 @@ describe('Defendant party type controller', () => {
   describe('on GET', () => {
     it('should display defendant party type page', async () => {
       const mockClaim = new Claim();
+      mockClaim.respondent1 = {type: PartyType.INDIVIDUAL} as Party;
       mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
       mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
 

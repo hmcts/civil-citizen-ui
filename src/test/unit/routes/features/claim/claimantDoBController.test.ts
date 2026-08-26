@@ -13,22 +13,18 @@ import {
 import {Claim} from 'models/claim';
 import {Party} from 'models/party';
 import {getDraftClaim, updateDraftClaim} from 'modules/draft-store/draftStoreManagerService';
-import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {CivilClaimResponse} from 'models/civilClaimResponse';
 import {DraftClaimManagerResult} from 'models/draft/draftClaim';
 import {JSDOM} from 'jsdom';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('modules/draft-store/draftStoreManagerService');
-jest.mock('modules/draft-store/draftStoreService');
 jest.mock('routes/guards/claimIssueTaskListGuard', () => ({
   claimIssueTaskListGuard: jest.fn((req, res, next) => next()),
 }));
 
 const mockGetDraftClaim = getDraftClaim as jest.Mock;
 const mockUpdateDraftClaim = updateDraftClaim as jest.Mock;
-const mockGetCaseDataFromStore = draftStoreService.getCaseDataFromStore as jest.Mock;
-const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
 
 const createMockManagerResult = (claim: Claim): DraftClaimManagerResult => ({
   claimResponse: {
@@ -63,7 +59,6 @@ describe('Claimant Date of Birth Controller', () => {
     it('should render date of birth page', async () => {
       const mockClaim = new Claim();
       mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
 
       const res = await request(app).get(CLAIMANT_DOB_URL);
       expect(res.status).toBe(200);
@@ -74,7 +69,6 @@ describe('Claimant Date of Birth Controller', () => {
     it('should render date of birth page with values', async () => {
       const mockClaim = new Claim();
       mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
 
       const res = await request(app).get(CLAIMANT_DOB_URL);
       expect(res.status).toBe(200);
@@ -91,7 +85,6 @@ describe('Claimant Date of Birth Controller', () => {
       } as Party;
 
       mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
 
       const res = await request(app).get(CLAIMANT_DOB_URL);
       const dom = new JSDOM(res.text);
@@ -102,9 +95,32 @@ describe('Claimant Date of Birth Controller', () => {
       expect(dom.window.document.getElementById('year')?.getAttribute('value')).toBe('1980');
     });
 
+    it('should render saved date of birth when stored as a Date', async () => {
+      const mockClaim = new Claim();
+      mockClaim.applicant1 = {
+        dateOfBirth: new Date('1980-03-02T00:00:00.000Z'),
+      } as unknown as Party;
+      mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
+
+      const res = await request(app).get(CLAIMANT_DOB_URL);
+      expect(res.status).toBe(200);
+      expect(res.text).not.toContain('NaN');
+    });
+
+    it('should ignore invalid stored dates', async () => {
+      const mockClaim = new Claim();
+      mockClaim.applicant1 = {
+        dateOfBirth: {date: 'not-a-date'},
+      } as unknown as Party;
+      mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
+
+      const res = await request(app).get(CLAIMANT_DOB_URL);
+      expect(res.status).toBe(200);
+      expect(res.text).not.toContain('NaN');
+    });
+
     it('should return http 500 when has error in the get method', async () => {
       mockGetDraftClaim.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
-      mockGetCaseDataFromStore.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
 
       await request(app)
         .get(CLAIMANT_DOB_URL)
@@ -119,7 +135,6 @@ describe('Claimant Date of Birth Controller', () => {
     it('should render date of birth page if there are form errors', async () => {
       const mockClaim = new Claim();
       mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
 
       const res = await request(app).post(CLAIMANT_DOB_URL);
       expect(res.status).toBe(200);
@@ -129,7 +144,6 @@ describe('Claimant Date of Birth Controller', () => {
     it('should show validation error for claimant under 18', async () => {
       const mockClaim = new Claim();
       mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
 
       const today = new Date();
       const maxDate = formatDateToFullDate(addDaysToDate(getDOBforAgeFromCurrentTime(18), 1), 'en');
@@ -148,9 +162,7 @@ describe('Claimant Date of Birth Controller', () => {
       mockClaim.applicant1 = {} as Party;
 
       mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
       mockUpdateDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockSaveDraftClaim.mockResolvedValue(undefined);
 
       await request(app)
         .post(CLAIMANT_DOB_URL)
@@ -163,9 +175,7 @@ describe('Claimant Date of Birth Controller', () => {
 
     it('should return http 500 when has error in the post method', async () => {
       mockGetDraftClaim.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
-      mockGetCaseDataFromStore.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
       mockUpdateDraftClaim.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
-      mockSaveDraftClaim.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
 
       await request(app)
         .post(CLAIMANT_DOB_URL)
