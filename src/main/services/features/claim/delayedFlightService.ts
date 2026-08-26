@@ -1,4 +1,3 @@
-import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {getDraftClaim, updateDraftClaim} from 'modules/draft-store/draftStoreManagerService';
 import {AppRequest} from 'models/AppRequest';
 import {Claim} from 'models/claim';
@@ -8,13 +7,13 @@ import {AirlineList} from 'common/models/airlines/flights';
 import {t} from 'i18next';
 
 const {Logger} = require('@hmcts/nodejs-logging');
-const logger = Logger.getLogger('Claim - Claim Interest');
+const logger = Logger.getLogger('delayedFlightService');
 
-export const getDelayedFlight = async (claimId: string): Promise<GenericYesNo> => {
+export const getDelayedFlight = async (req: AppRequest): Promise<GenericYesNo> => {
   try {
-    const caseData = await getCaseDataFromStore(claimId);
-    return caseData.delayedFlight
-      ? new GenericYesNo(caseData.delayedFlight?.option)
+    const {claim} = await loadClaim(req);
+    return claim.delayedFlight
+      ? new GenericYesNo(claim.delayedFlight?.option)
       : new GenericYesNo();
   } catch (error) {
     logger.error(error);
@@ -24,34 +23,26 @@ export const getDelayedFlight = async (claimId: string): Promise<GenericYesNo> =
 
 export const deleteDelayedFlight = async (req: AppRequest): Promise<void> => {
   try {
-    const draftResult = await getDraftClaim(req);
-    if (!draftResult) {
-      throw new Error('[delayedFlightService] no draft claim found');
-    }
-    const claim = Object.assign(new Claim(), draftResult.claimResponse?.case_data as unknown as Claim);
-    const draftId = req.session?.draftId || draftResult.rawResponse?.draftId;
-    if (draftResult.createdAt && !claim.draftClaimCreatedAt) {
-      claim.draftClaimCreatedAt = new Date(draftResult.createdAt);
-    }
+    const {claim, draftId, createdAt} = await loadClaim(req);
     delete claim.delayedFlight;
     delete claim.flightDetails;
-    await updateDraftClaim(req, claim, draftId);
+    await updateClaim(req, claim, draftId, createdAt);
   } catch (error) {
     logger.error(error);
     throw error;
   }
 };
 
-export const getFlightDetails = async (claimId: string): Promise<FlightDetails> => {
+export const getFlightDetails = async (req: AppRequest): Promise<FlightDetails> => {
   try {
-    const caseData = await getCaseDataFromStore(claimId);
-    return caseData.flightDetails
+    const {claim} = await loadClaim(req);
+    return claim.flightDetails
       ? new FlightDetails(
-        caseData.flightDetails?.airline,
-        caseData.flightDetails?.flightNumber,
-        caseData.flightDetails?.year.toString(),
-        caseData.flightDetails?.month.toString(),
-        caseData.flightDetails?.day.toString(),
+        claim.flightDetails?.airline,
+        claim.flightDetails?.flightNumber,
+        claim.flightDetails?.year.toString(),
+        claim.flightDetails?.month.toString(),
+        claim.flightDetails?.day.toString(),
       )
       : new FlightDetails();
   } catch (error) {
@@ -60,22 +51,22 @@ export const getFlightDetails = async (claimId: string): Promise<FlightDetails> 
   }
 };
 
-export const saveDelayedFlight = async (claimId: string, delayedFlight: GenericYesNo) => {
+export const saveDelayedFlight = async (req: AppRequest, delayedFlight: GenericYesNo) => {
   try {
-    const caseData = await getCaseDataFromStore(claimId);
-    caseData.delayedFlight = delayedFlight;
-    await saveDraftClaim(claimId, caseData);
+    const {claim, draftId, createdAt} = await loadClaim(req);
+    claim.delayedFlight = delayedFlight;
+    await updateClaim(req, claim, draftId, createdAt);
   } catch (error) {
     logger.error(error);
     throw error;
   }
 };
 
-export const saveFlightDetails = async (claimId: string, flightDetails: FlightDetails) => {
+export const saveFlightDetails = async (req: AppRequest, flightDetails: FlightDetails) => {
   try {
-    const caseData = await getCaseDataFromStore(claimId);
-    caseData.flightDetails = flightDetails;
-    await saveDraftClaim(claimId, caseData);
+    const {claim, draftId, createdAt} = await loadClaim(req);
+    claim.flightDetails = flightDetails;
+    await updateClaim(req, claim, draftId, createdAt);
   } catch (error) {
     logger.error(error);
     throw error;
@@ -99,4 +90,21 @@ export const buildDataList = (airlines: AirlineList[] = [], hasAirlineError: boo
         ${options}
       </datalist>
     </div>`;
+};
+
+const loadClaim = async (req: AppRequest) => {
+  const draftResult = await getDraftClaim(req);
+  if (!draftResult) {
+    throw new Error('[delayedFlightService] no draft claim found');
+  }
+  const claim = Object.assign(new Claim(), draftResult.claimResponse?.case_data as unknown as Claim);
+  const draftId = req.session?.draftId || draftResult.rawResponse?.draftId;
+  return {claim, draftId, createdAt: draftResult.createdAt};
+};
+
+const updateClaim = async (req: AppRequest, claim: Claim, draftId: string, createdAt?: string) => {
+  if (createdAt && !claim.draftClaimCreatedAt) {
+    claim.draftClaimCreatedAt = new Date(createdAt);
+  }
+  await updateDraftClaim(req, claim, draftId);
 };
