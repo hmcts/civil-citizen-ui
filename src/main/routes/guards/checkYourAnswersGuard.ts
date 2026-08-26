@@ -6,13 +6,21 @@ import {AppRequest} from 'models/AppRequest';
 import {BASE_ELIGIBILITY_URL, CLAIM_INCOMPLETE_SUBMISSION_URL} from 'routes/urls';
 import {getTaskLists} from 'services/features/claim/taskListService';
 import {TaskStatus} from 'common/models/taskList/TaskStatus';
-import {getStashedClaimOrFromStore, stashClaimOnRequest} from 'common/utils/claimRequestLocals';
+import {stashClaimOnRequest} from 'common/utils/claimRequestLocals';
+import {getDraftClaim} from 'modules/draft-store/draftStoreManagerService';
 
 export const checkYourAnswersClaimGuard = async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const userId = req.session?.user?.id;
     const lang = req?.query?.lang ? req.query.lang : req?.cookies?.lang;
-    const caseData: Claim = await getStashedClaimOrFromStore(req, userId);
+    const draftResult = await getDraftClaim(req);
+    if (!draftResult) {
+      throw new Error('[checkYourAnswersGuard] no draft claim found');
+    }
+    const caseData = Object.assign(new Claim(), draftResult.claimResponse?.case_data as unknown as Claim);
+    if (draftResult.createdAt && !caseData.draftClaimCreatedAt) {
+      caseData.draftClaimCreatedAt = new Date(draftResult.createdAt);
+    }
     stashClaimOnRequest(req, caseData);
 
     if (!caseData.isDraftClaim()) {

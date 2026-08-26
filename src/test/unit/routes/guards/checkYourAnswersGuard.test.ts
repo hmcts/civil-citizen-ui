@@ -7,11 +7,13 @@ import {getTaskLists} from 'services/features/claim/taskListService';
 import {outstandingTasksFromTaskLists} from 'services/features/common/taskListService';
 import {checkYourAnswersClaimGuard} from 'routes/guards/checkYourAnswersGuard';
 import {AppRequest} from 'common/models/AppRequest';
-import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {getDraftClaim} from 'modules/draft-store/draftStoreManagerService';
 import {Claim} from 'models/claim';
+import {CivilClaimResponse} from 'models/civilClaimResponse';
+import {DraftClaimManagerResult} from 'models/draft/draftClaim';
 
 jest.mock('../../../../main/modules/oidc');
-jest.mock('../../../../main/modules/draft-store/draftStoreService');
+jest.mock('../../../../main/modules/draft-store/draftStoreManagerService');
 jest.mock('../../../../main/routes/features/claim/checkAnswersController');
 jest.mock('../../../../main/services/features/claim/taskListService');
 jest.mock('../../../../main/services/features/common/taskListService');
@@ -25,10 +27,24 @@ jest.mock('i18next', () => ({
 const mockGetTaskList = getTaskLists as jest.Mock;
 const mockOutstandingTasksFromTaskLists =
   outstandingTasksFromTaskLists as jest.Mock;
-const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
+const mockGetDraftClaim = getDraftClaim as jest.Mock;
 const CLAIM_ID = '123';
 
-const MOCK_REQUEST = (eligibilityCompleted: boolean) => {
+const createMockManagerResult = (claim: Claim, createdAt?: string): DraftClaimManagerResult => ({
+  claimResponse: {
+    id: CLAIM_ID,
+    case_data: claim as unknown as Claim,
+  } as unknown as CivilClaimResponse,
+  rawResponse: {
+    draftId: CLAIM_ID,
+    payload: claim,
+  } as unknown as DraftClaimManagerResult['rawResponse'],
+  createdAt: createdAt ?? '',
+  updatedAt: '2026-08-01T11:00:00.000Z',
+  expiresAt: '2026-09-01T10:00:00.000Z',
+});
+
+const MOCK_REQUEST = () => {
   return {
     session: {
       claimId: CLAIM_ID,
@@ -36,9 +52,7 @@ const MOCK_REQUEST = (eligibilityCompleted: boolean) => {
         id: '123',
       },
     },
-    cookies: {
-      eligibilityCompleted: eligibilityCompleted ? '123' : null,
-    },
+    cookies: {},
   } as unknown as AppRequest;
 };
 
@@ -87,15 +101,11 @@ describe('checkYourAnswersClaimGuard', () => {
   });
 
   it('should call next if all task are complete', async () => {
-    //Given
-    const mockRequest = MOCK_REQUEST(true);
-
-    mockGetCaseData.mockImplementation(async () => {
-      const claim = new Claim();
-      claim.id = CLAIM_ID;
-      claim.draftClaimCreatedAt = new Date(Date.now());
-      return claim;
-    });
+    const mockRequest = MOCK_REQUEST();
+    const claim = new Claim();
+    claim.id = CLAIM_ID;
+    claim.draftClaimCreatedAt = new Date(Date.now());
+    mockGetDraftClaim.mockResolvedValue(createMockManagerResult(claim));
 
     mockGetTaskList.mockImplementation(() => {
       return mockTaskList;
@@ -105,23 +115,25 @@ describe('checkYourAnswersClaimGuard', () => {
       const outstandingTaskList: Task[] = [];
       return outstandingTaskList;
     });
-    //When
+
     await checkYourAnswersClaimGuard(mockRequest, MOCK_RESPONSE, MOCK_NEXT);
-    //Then
+
     expect(MOCK_RESPONSE.redirect).not.toHaveBeenCalled();
     expect(MOCK_NEXT).toHaveBeenCalledWith();
   });
 
   it('should throw error', async () => {
-    //Given
-    const mockRequest = MOCK_REQUEST(true);
+    const mockRequest = MOCK_REQUEST();
+    const claim = new Claim();
+    claim.draftClaimCreatedAt = new Date(Date.now());
+    mockGetDraftClaim.mockResolvedValue(createMockManagerResult(claim));
     mockGetTaskList.mockImplementation(async () => {
       const taskList: TaskList[] = [];
       return taskList;
     });
-    //When
+
     await checkYourAnswersClaimGuard(mockRequest, MOCK_RESPONSE, MOCK_NEXT);
-    //Then
+
     expect(MOCK_RESPONSE.redirect).not.toHaveBeenCalled();
     expect(MOCK_NEXT).toHaveBeenLastCalledWith(
       expect.objectContaining({
@@ -131,8 +143,10 @@ describe('checkYourAnswersClaimGuard', () => {
   });
 
   it('should redirect to incomplete submission', async () => {
-    //Given
-    const mockRequest = MOCK_REQUEST(true);
+    const mockRequest = MOCK_REQUEST();
+    const claim = new Claim();
+    claim.draftClaimCreatedAt = new Date(Date.now());
+    mockGetDraftClaim.mockResolvedValue(createMockManagerResult(claim));
     mockGetTaskList.mockImplementation(() => {
       return mockTaskList;
     });
@@ -140,9 +154,9 @@ describe('checkYourAnswersClaimGuard', () => {
       mockTaskList[0].tasks[0].status = TaskStatus.INCOMPLETE;
       return mockTaskList;
     });
-    //When
+
     await checkYourAnswersClaimGuard(mockRequest, MOCK_RESPONSE, MOCK_NEXT);
-    //Then
+
     expect(MOCK_RESPONSE.redirect).toHaveBeenCalledWith(
       CLAIM_INCOMPLETE_SUBMISSION_URL,
     );
@@ -150,12 +164,11 @@ describe('checkYourAnswersClaimGuard', () => {
   });
 
   it('should stash claim on req.locals when next is called', async () => {
-    //Given
-    const mockRequest = MOCK_REQUEST(true);
+    const mockRequest = MOCK_REQUEST();
     const mockClaim = new Claim();
     mockClaim.id = CLAIM_ID;
     mockClaim.draftClaimCreatedAt = new Date(Date.now());
-    mockGetCaseData.mockImplementation(async () => mockClaim);
+    mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
     mockGetTaskList.mockImplementation(() => [
       {
         title: 'Task List',
@@ -174,26 +187,48 @@ describe('checkYourAnswersClaimGuard', () => {
       const outstandingTaskList: Task[] = [];
       return outstandingTaskList;
     });
-    //When
+
     await checkYourAnswersClaimGuard(mockRequest, MOCK_RESPONSE, MOCK_NEXT);
-    //Then
+
     expect(MOCK_NEXT).toHaveBeenCalledWith();
-    expect(mockRequest.locals.claim).toBe(mockClaim);
+    expect(mockRequest.locals.claim).toEqual(expect.objectContaining({id: CLAIM_ID}));
+  });
+
+  it('should throw when no draft exists', async () => {
+    const mockRequest = MOCK_REQUEST();
+    mockGetDraftClaim.mockResolvedValue(null);
+
+    await checkYourAnswersClaimGuard(mockRequest, MOCK_RESPONSE, MOCK_NEXT);
+
+    expect(MOCK_NEXT).toHaveBeenCalledWith(expect.objectContaining({
+      message: '[checkYourAnswersGuard] no draft claim found',
+    }));
+  });
+
+  it('should copy createdAt onto the claim when missing', async () => {
+    const mockRequest = MOCK_REQUEST();
+    const claim = new Claim();
+    claim.id = CLAIM_ID;
+    mockGetDraftClaim.mockResolvedValue(createMockManagerResult(claim, '2026-08-01T10:00:00.000Z'));
+    mockGetTaskList.mockImplementation(() => mockTaskList);
+    mockOutstandingTasksFromTaskLists.mockImplementation(() => []);
+
+    await checkYourAnswersClaimGuard(mockRequest, MOCK_RESPONSE, MOCK_NEXT);
+
+    expect(mockRequest.locals.claim.draftClaimCreatedAt).toEqual(new Date('2026-08-01T10:00:00.000Z'));
+    expect(MOCK_NEXT).toHaveBeenCalledWith();
   });
 
   it('should redirect to dashboard', async () => {
-    //Given
-    const mockRequest = MOCK_REQUEST(false);
-    mockGetCaseData.mockImplementation(async () => {
-      return new Claim();
-    });
+    const mockRequest = MOCK_REQUEST();
+    mockGetDraftClaim.mockResolvedValue(createMockManagerResult(new Claim()));
 
     mockGetTaskList.mockImplementation(() => {
       return mockTaskList;
     });
-    //When
+
     await checkYourAnswersClaimGuard(mockRequest, MOCK_RESPONSE, MOCK_NEXT);
-    //Then
+
     expect(MOCK_RESPONSE.redirect).toHaveBeenCalledWith(
       BASE_ELIGIBILITY_URL,
     );
