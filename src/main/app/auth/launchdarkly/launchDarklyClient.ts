@@ -20,6 +20,7 @@ const CUI_GA_NRO = 'cui-ga-nro';
 const JUDGMENT_BUFFER = 'judgment-buffer';
 const BREATHING_SPACE = 'cui-breathing-space';
 const HMCTS_ACCESS_MIGRATION = 'hmcts-access-migration';
+const USER_CASE_ROLES_SESSION_CACHE = 'cui-user-case-roles-session-cache-enabled';
 
 async function getClient(): Promise<void> {
   const launchDarklyTestSdk =  process.env.LAUNCH_DARKLY_SDK || config.get<string>('services.launchDarkly.sdk');
@@ -41,6 +42,7 @@ async function getClient(): Promise<void> {
       await testData.update(testData.flag(JUDGMENT_BUFFER).booleanFlag().variationForAll(false));
       await testData.update(testData.flag(BREATHING_SPACE).booleanFlag().variationForAll(false));
       await testData.update(testData.flag(HMCTS_ACCESS_MIGRATION).booleanFlag().variationForAll(false));
+      await testData.update(testData.flag(USER_CASE_ROLES_SESSION_CACHE).booleanFlag().variationForAll(true));
 
       client = init(launchDarklyTestSdk, { updateProcessor: testData.getFactory() });
     } else {
@@ -182,4 +184,23 @@ export async function isJudgmentBufferEnabled(): Promise<boolean> {
 
 export async function isBreathingSpaceEnabled(): Promise<boolean> {
   return await getFlagValue(BREATHING_SPACE) as boolean;
+/**
+ * Kill-switch for DTSCCI-5946 session-scoped /userCaseRoles cache.
+ * Requires config `caches.userCaseRoles.enabled` and LD flag
+ * `cui-user-case-roles-session-cache-enabled` (defaults to true when LD is unavailable).
+ */
+export async function isUserCaseRolesSessionCacheEnabled(): Promise<boolean> {
+  try {
+    const enabled = config.get<boolean | string>('caches.userCaseRoles.enabled');
+    if (enabled !== true && enabled !== 'true') {
+      return false;
+    }
+  } catch {
+    return false;
+  }
+  if (!ldClient) await getClient();
+  if (!ldClient) {
+    return true;
+  }
+  return await ldClient.variation(USER_CASE_ROLES_SESSION_CACHE, await getUser(undefined), true) as boolean;
 }
