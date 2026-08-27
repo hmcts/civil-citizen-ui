@@ -53,18 +53,15 @@ describe('draftStoreManagerService Unit Tests', () => {
       );
     });
 
-    it('should log a warning if setCachedDraft fails after fetching from DB', async() => {
+    it('should throw if setCachedDraft fails after fetching from DB', async() => {
       mockGetCachedDraft.mockResolvedValueOnce(null);
       mockGetActiveDraftFromDb.mockResolvedValueOnce({
         claimResponse: new CivilClaimResponse(),
         rawResponse: mockRawResponse,
       });
-
       mockSetCachedDraft.mockRejectedValueOnce(new Error('redis write failed'));
 
-      const result = await getDraftClaim(mockReq);
-
-      expect(result?.claimResponse.id).toBe(mockDraftId);
+      await expect(getDraftClaim(mockReq)).rejects.toThrow('redis write failed');
     });
 
     it('cache hit: should return manager result directly from redis cache without querying db', async () => {
@@ -96,18 +93,11 @@ describe('draftStoreManagerService Unit Tests', () => {
       expect(result?.rawResponse).toEqual(mockRawResponse);
     });
 
-    it('should fall back to Db if redis cache throws an exception', async () => {
+    it('should throw if redis cache throws an exception', async () => {
       mockGetCachedDraft.mockRejectedValueOnce(new Error('Redis error'));
-      mockGetActiveDraftFromDb.mockResolvedValueOnce({
-        claimResponse: new CivilClaimResponse(),
-        rawResponse: mockRawResponse,
-      });
-      mockSetCachedDraft.mockResolvedValueOnce();
 
-      const result = await getDraftClaim(mockReq);
-
-      expect(mockGetActiveDraftFromDb).toHaveBeenCalledWith(mockReq);
-      expect(result?.claimResponse.id).toBe(mockDraftId);
+      await expect(getDraftClaim(mockReq)).rejects.toThrow('Redis error');
+      expect(mockGetActiveDraftFromDb).not.toHaveBeenCalled();
     });
 
     it('cache miss and db 404 should return null if not active draft exists in db', async () => {
