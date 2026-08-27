@@ -1,4 +1,4 @@
-require('dotenv').config({path: '.env.tests.local'});
+require('dotenv').config({path: '.env.tests.local', override: true});
 
 const { testFilesHelper } = require('./src/test/functionalTests/plugins/failedAndNotExecutedTestFilesPlugin.js');
 const testConfig = require('./src/test/config.js');
@@ -36,9 +36,9 @@ exports.config = {
     }
   },
   async teardown() {
-    console.log('Current worker has finished running tests so we should clean up the user roles');
-    await unAssignAllUsers();
-    await deleteAllIdamTestUsers();
+    // console.log('Current worker has finished running tests so we should clean up the user roles');
+    // await unAssignAllUsers();
+    // await deleteAllIdamTestUsers();
   },
   tests: getTests(),
   output: process.env.REPORT_DIR || 'test-results/functional',
@@ -58,7 +58,8 @@ exports.config = {
           dir: 'failed-videos',
         },
       },
-      waitForNavigation: 'networkidle',
+      getPageTimeout: 60000,
+      waitForNavigation: 'load',
       bypassCSP: true,
       ignoreHTTPSErrors: true,
     },

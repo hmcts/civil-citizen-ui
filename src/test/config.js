@@ -1,4 +1,4 @@
-require('dotenv').config({path: '.env.tests.local'});
+require('dotenv').config({path: '.env.tests.local', override: true});
 
 const PropertiesVolume = require('./secretsConfig');
 
@@ -64,7 +64,6 @@ module.exports = {
   },
   claimantCitizenUser: {
     password: defaultPassword,
-    //email:'civilmoneyclaimsdemo@gmail.com',
     email: process.env.CLAIMANT_CITIZEN_EMAIL || `claimantcitizen-${Math.random().toString(36).slice(2, 9).toLowerCase()}@gmail.com`,
     type: 'claimant',
   },
