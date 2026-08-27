@@ -131,8 +131,6 @@ window.$ = $;
   };
 
   let AddressForm = () => {
-    const spaced = ' ';
-
     const hasAddressProperty = (property) => (property ? property : '');
 
     const fillForm = () => {
@@ -142,8 +140,8 @@ window.$ = $;
       thoroughfareName = hasAddressProperty(addressSelected[0]?.thoroughfareName);
       dependentLocality = hasAddressProperty(addressSelected[0]?.dependentLocality);
       buildingName = hasAddressProperty(addressSelected[0]?.buildingName);
-      postTown = addressSelected[0]?.postTown;
-      postcode = addressSelected[0]?.postcode;
+      postTown = hasAddressProperty(addressSelected[0]?.postTown);
+      postcode = hasAddressProperty(addressSelected[0]?.postcode);
 
       formContainer.toggleForm(true);
       formContainer.getFormContainer().find('input').val('');
@@ -151,22 +149,40 @@ window.$ = $;
     };
 
     const breakAddressIntoDifferentFormFields = (formContainer) => {
-      if (organisationName !== '') {
-        formContainer.getFormInput(0).val(organisationName);
-        formContainer.getFormInput(1).val(buildingNumber + spaced + subBuildingName + spaced + buildingName + spaced + thoroughfareName);
-        formContainer.getFormInput(2).val(dependentLocality);
-      } else if (organisationName === '' && subBuildingName === '' && buildingName === '') {
-        formContainer.getFormInput(0).val(buildingNumber + spaced + thoroughfareName);
-        formContainer.getFormInput(1).val(dependentLocality);
-      } else if (organisationName === '' && subBuildingName === '') {
-        formContainer.getFormInput(0).val(buildingName);
-        formContainer.getFormInput(1).val(thoroughfareName);
+      const parts = [
+        organisationName,
+        buildingNumber,
+        subBuildingName,
+        buildingName,
+        thoroughfareName,
+        dependentLocality,
+      ].map(part => part ? String(part).trim() : '');
+
+      let line1 = '';
+      let line2 = '';
+      let line3 = '';
+
+      if (parts[0]) { // organisationName
+        line1 = parts[0];
+        line2 = [parts[1], parts[2], parts[3], parts[4]].filter(Boolean).join(' ');
+        line3 = parts[5];
+      } else if (parts[1] && !parts[2] && !parts[3]) { // buildingNumber only, no subBuildingName or buildingName
+        line1 = [parts[1], parts[4]].filter(Boolean).join(' ');
+        line2 = parts[5];
       } else {
-        formContainer.getFormInput(0).val(organisationName + spaced + buildingNumber + spaced + subBuildingName + spaced + buildingName);
-        formContainer.getFormInput(1).val(thoroughfareName);
-        formContainer.getFormInput(2).val(dependentLocality);
+        line1 = [parts[2], parts[3]].filter(Boolean).join(' '); // subBuildingName, buildingName
+        if (line1) {
+          line2 = [parts[1], parts[4]].filter(Boolean).join(' ');
+          line3 = parts[5];
+        } else {
+          line1 = parts[4]; // thoroughfareName
+          line2 = parts[5];
+        }
       }
 
+      formContainer.getFormInput(0).val(line1);
+      formContainer.getFormInput(1).val(line2);
+      formContainer.getFormInput(2).val(line3);
       formContainer.getFormInput(3).val(postTown);
       formContainer.getFormInput(4).val(postcode);
     };
