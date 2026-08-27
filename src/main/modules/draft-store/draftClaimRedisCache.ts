@@ -1,7 +1,7 @@
 import {app} from '../../app-instance';
 import {DraftClaimResponse} from 'common/models/draft/draftClaim';
 
-import {Logger} from '@hmcts/nodejs-logging';
+const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('draftClaimCache');
 
 const getErrorMessage = (error: unknown): string =>
