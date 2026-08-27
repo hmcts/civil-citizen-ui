@@ -2,8 +2,8 @@ import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftSto
 import {Interest} from 'form/models/interest/interest';
 import {InterestClaimOptionsType} from 'form/models/claim/interest/interestClaimOptionsType';
 import {Claim} from 'models/claim';
-import {Logger} from'@hmcts/nodejs-logging';
 
+const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('interestService');
 
 const deleteSameRateInterest = (claim: Claim) => {
