@@ -184,6 +184,7 @@ export async function isJudgmentBufferEnabled(): Promise<boolean> {
 
 export async function isBreathingSpaceEnabled(): Promise<boolean> {
   return await getFlagValue(BREATHING_SPACE) as boolean;
+}
 /**
  * Kill-switch for DTSCCI-5946 session-scoped /userCaseRoles cache.
  * Requires config `caches.userCaseRoles.enabled` and LD flag
