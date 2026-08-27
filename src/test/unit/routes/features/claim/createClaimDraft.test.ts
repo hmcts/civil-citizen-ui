@@ -13,9 +13,12 @@ import {mockRedisFailure} from '../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import * as draftStoreManagerService from 'modules/draft-store/draftStoreManagerService';
+import * as draftClaimCache from '../../../../../main/modules/draft-store/draftClaimCache';
+import * as launchDarkly from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {CivilServiceClient} from 'client/civilServiceClient';
 
 jest.mock('../../../../../main/modules/draft-store/draftStoreManagerService');
+jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 
 describe('createDraftClaim Router', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -30,6 +33,8 @@ describe('createDraftClaim Router', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
+    (launchDarkly.isCarmEnabledForCase as jest.Mock).mockResolvedValue(false);
+    jest.spyOn(draftClaimCache, 'saveDraftClaimToCache').mockResolvedValue();
     (draftStoreManagerService.createOrLoadDraft as jest.Mock).mockResolvedValue({
       claimResponse: {case_data: draftClaim},
       createdAt: '2026-08-14T10:00:00.000Z',
@@ -81,6 +86,15 @@ describe('createDraftClaim Router', () => {
           expect(res.status).toBe(302);
           expect(res.header.location).toBe(CLAIM_CHECK_ANSWERS_URL);
         });
+
+      expect(draftStoreManagerService.createOrLoadDraft).toHaveBeenCalledWith(
+        expect.anything(),
+        expect.objectContaining({
+          resolvingDispute: true,
+          completingClaimConfirmed: true,
+          claimInterest: 'no',
+        }),
+      );
     });
     it('should return http 500 when has error in the get method', async () => {
       (draftStoreManagerService.createOrLoadDraft as jest.Mock).mockRejectedValue(
