@@ -20,7 +20,7 @@ describe('draftStoreDbService Unit Tests', () => {
 
   const mockRawResponse: DraftClaimResponse = {
     draftId: mockDraftId,
-    payload: { applicant1: { type: 'INDIVIDUAL' } } as any,
+    payload: { applicant1: { type: 'INDIVIDUAL' } },
     createdAt: '2026-08-01T10:00:00.000Z',
     updatedAt: '2026-08-01T12:00:00.000Z',
     expiresAt: '2026-09-01T10:00:00.000Z',
@@ -43,7 +43,7 @@ describe('draftStoreDbService Unit Tests', () => {
     it('should throw an error when access token is missing in session', async () => {
       const invalidReq = { session: {} } as AppRequest;
       await expect(getActiveDraftFromDraftStoreDb(invalidReq)).rejects.toThrow(
-        '[draftStoreDbService access token is required to communicate with API',
+        '[draftStoreDbService] access token is required to communicate with API',
       );
     });
   });
