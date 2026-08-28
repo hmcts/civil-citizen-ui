@@ -5,7 +5,7 @@ import config from 'config';
 import nock from 'nock';
 import {
   BILINGUAL_LANGUAGE_PREFERENCE_URL,
-  CLAIM_CHECK_ANSWERS_URL,
+  CLAIMANT_TASK_LIST_URL,
   TESTING_SUPPORT_URL,
 } from 'routes/urls';
 import { draftClaim } from '../../../../../main/modules/draft-store/draftClaimCache';
@@ -40,6 +40,12 @@ describe('createDraftClaim Router', () => {
       createdAt: '2026-08-14T10:00:00.000Z',
       rawResponse: {draftId: 'draft-123'},
       isNew: true,
+    });
+    (draftStoreManagerService.updateDraftClaim as jest.Mock).mockResolvedValue({
+      claimResponse: {case_data: draftClaim},
+      createdAt: '2026-08-14T10:00:00.000Z',
+      rawResponse: {draftId: 'draft-123'},
+      isNew: false,
     });
   });
 
@@ -79,12 +85,12 @@ describe('createDraftClaim Router', () => {
       );
     });
 
-    it('should redirect to check answers page', async () => {
+    it('should persist the fixture and redirect to the claim task list', async () => {
       await request(app)
         .post(TESTING_SUPPORT_URL)
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toBe(CLAIM_CHECK_ANSWERS_URL);
+          expect(res.header.location).toBe(CLAIMANT_TASK_LIST_URL);
         });
 
       expect(draftStoreManagerService.createOrLoadDraft).toHaveBeenCalledWith(
@@ -94,6 +100,15 @@ describe('createDraftClaim Router', () => {
           completingClaimConfirmed: true,
           claimInterest: 'no',
         }),
+      );
+      expect(draftStoreManagerService.updateDraftClaim).toHaveBeenCalledWith(
+        expect.anything(),
+        expect.objectContaining({
+          resolvingDispute: true,
+          completingClaimConfirmed: true,
+          claimInterest: 'no',
+        }),
+        'draft-123',
       );
     });
     it('should return http 500 when has error in the get method', async () => {
