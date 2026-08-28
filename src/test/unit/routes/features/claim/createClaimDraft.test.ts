@@ -4,7 +4,7 @@ import createDraftClaimController from 'routes/features/claim/createDraftClaim';
 import config from 'config';
 import nock from 'nock';
 import {
-  CLAIMANT_TASK_LIST_URL,
+  CLAIM_CHECK_ANSWERS_URL,
   TESTING_SUPPORT_URL,
 } from 'routes/urls';
 import { draftClaim } from '../../../../../main/modules/draft-store/draftClaimCache';
@@ -65,12 +65,12 @@ describe('createDraftClaim Router', () => {
   });
 
   describe('on POST', () => {
-    it('should persist the fixture and redirect to the claim task list', async () => {
+    it('should persist the fixture and redirect to check answers', async () => {
       await request(app)
         .post(TESTING_SUPPORT_URL)
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toBe(CLAIMANT_TASK_LIST_URL);
+          expect(res.header.location).toBe(CLAIM_CHECK_ANSWERS_URL);
         });
 
       expect(draftStoreManagerService.createOrLoadDraft).toHaveBeenCalledWith(
