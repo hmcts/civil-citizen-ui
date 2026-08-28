@@ -6,6 +6,12 @@ import {CaseRole} from 'form/models/caseRoles';
 
 import {TaskList} from 'common/models/taskList/taskList';
 
+/** Short-TTL session entry for /userCaseRoles (DTSCCI-5946). role null = negative cache. */
+export interface UserCaseRolesCacheEntry {
+  role: CaseRole | null;
+  expiresAt: number;
+}
+
 export interface AppRequest<T = Partial<Claim>> extends Request {
   session: AppSession;
   locals: {
@@ -13,7 +19,7 @@ export interface AppRequest<T = Partial<Claim>> extends Request {
     lang: string;
     claim?: Claim;
     claimDetailsRequestCache?: Map<string, Promise<Claim>>;
-    userCaseRolesRequestCache?: Map<string, Promise<CaseRole>>;
+    userCaseRolesRequestCache?: Map<string, Promise<CaseRole | undefined>>;
     calculateInterestRequestCache?: Map<string, Promise<number>>;
   };
   body: T;
@@ -49,6 +55,8 @@ export interface AppSession extends Session {
   paymentConfirmationContext?: PaymentConfirmationContext;
   breathingSpaceAppliedType?: string;
   breathingSpaceAppliedStart?: string;
+  /** Short-TTL session cache for /userCaseRoles (DTSCCI-5946). Key: ucr:userId:caseId */
+  userCaseRolesCache?: Record<string, UserCaseRolesCacheEntry>;
 }
 
 export interface UserDetails {
