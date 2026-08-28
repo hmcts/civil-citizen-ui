@@ -112,6 +112,18 @@ describe('Claim Total Interest Controller', () => {
       });
     });
 
+    it('should render page with error when negative interest amount is provided', async () => {
+      getInterestMock.mockImplementationOnce(async () => {
+        return new Claim();
+      });
+
+      await request(app).post(CLAIM_INTEREST_TOTAL_URL).send({amount: '-5', reason: '99 reasons'}).expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(TestMessages.VALID_INTEREST_AMOUNT);
+        expect(res.header.location).toBeUndefined();
+      });
+    });
+
     it('should redirect to the continue claiming interest page', async () => {
       const mockClaim = new Claim();
       mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));

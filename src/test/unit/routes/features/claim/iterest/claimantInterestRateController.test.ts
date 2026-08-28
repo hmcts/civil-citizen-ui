@@ -138,6 +138,7 @@ describe('Claimant Interest Rate', () => {
         })
         .expect((res: request.Response) => {
           expect(res.status).toBe(200);
+          expect(res.text).toContain(t('ERRORS.RATE_CORRECT_THE_ONE_ENTERED'));
         });
     });
 
@@ -155,6 +156,22 @@ describe('Claimant Interest Rate', () => {
         })
         .expect((res: request.Response) => {
           expect(res.status).toBe(200);
+        });
+    });
+
+    it('should return error when negative interest rate is provided', async () => {
+      app.locals.draftStoreClient = mockCivilClaim;
+      await request(app)
+        .post(CLAIM_INTEREST_RATE_URL)
+        .send({
+          sameRateInterestType: SameRateInterestType.SAME_RATE_INTEREST_DIFFERENT_RATE,
+          differentRate: -5,
+          reason: 'Reasons....',
+        })
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(TestMessages.VALID_INTEREST_RATE);
+          expect(res.header.location).toBeUndefined();
         });
     });
 
