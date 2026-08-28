@@ -1,6 +1,6 @@
 import { AppRequest, AppSession } from 'common/models/AppRequest';
 import { NextFunction, Request, RequestHandler, Response, Router } from 'express';
-import { BILINGUAL_LANGUAGE_PREFERENCE_URL, CLAIMANT_TASK_LIST_URL, TESTING_SUPPORT_URL } from 'routes/urls';
+import { BILINGUAL_LANGUAGE_PREFERENCE_URL, CLAIM_CHECK_ANSWERS_URL, TESTING_SUPPORT_URL } from 'routes/urls';
 import {createOrLoadDraft, updateDraftClaim} from 'modules/draft-store/draftStoreManagerService';
 import {cloneDefaultDraftClaimCaseData, saveDraftClaimToCache} from 'modules/draft-store/draftClaimCache';
 const createDraftViewPath = 'features/claim/create-draft';
@@ -116,7 +116,7 @@ createDraftClaimController.post(TESTING_SUPPORT_URL, (async (req: Request, res: 
     if (req.body?.idToken && userId) {
       return res.sendStatus(200);
     }
-    return res.redirect(CLAIMANT_TASK_LIST_URL);
+    return res.redirect(CLAIM_CHECK_ANSWERS_URL);
 
   } catch (error) {
     next(error);
