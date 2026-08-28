@@ -1,6 +1,6 @@
 import { AppRequest, AppSession } from 'common/models/AppRequest';
 import { NextFunction, Request, RequestHandler, Response, Router } from 'express';
-import { CLAIM_CHECK_ANSWERS_URL, TESTING_SUPPORT_URL } from 'routes/urls';
+import { CLAIMANT_TASK_LIST_URL, TESTING_SUPPORT_URL } from 'routes/urls';
 import {createOrLoadDraft, updateDraftClaim} from 'modules/draft-store/draftStoreManagerService';
 import {cloneDefaultDraftClaimCaseData, saveDraftClaimToCache} from 'modules/draft-store/draftClaimCache';
 const createDraftViewPath = 'features/claim/create-draft';
@@ -61,26 +61,30 @@ createDraftClaimController.post(TESTING_SUPPORT_URL, (async (req: Request, res: 
       initialClaimData.draftClaimCreatedAt = submittedDate;
     }
 
-    let draftResult = await createOrLoadDraft(appReq, initialClaimData);
+    const draftResult = await createOrLoadDraft(appReq, initialClaimData);
+    const draftId = draftResult.rawResponse?.draftId;
+    const isNewDraft = draftResult.isNew;
 
-    if (appReq.session && draftResult.rawResponse?.draftId) {
-      appReq.session.draftId = draftResult.rawResponse.draftId;
+    if (appReq.session && draftId) {
+      appReq.session.draftId = draftId;
     }
 
     if (userId) {
       await saveDraftClaimToCache(userId, caseDataToStore, isCarmEnabled);
     }
 
-    if (draftResult.isNew) {
+    if (draftId) {
+      await updateDraftClaim(appReq, initialClaimData, draftId);
+    }
+
+    if (isNewDraft) {
       await civilServiceClient.createDashboard(appReq);
-    } else if (draftResult.rawResponse?.draftId) {
-      draftResult = await updateDraftClaim(appReq, initialClaimData, draftResult.rawResponse.draftId);
     }
 
     if (req.body?.idToken && userId) {
       return res.sendStatus(200);
     }
-    return res.redirect(CLAIM_CHECK_ANSWERS_URL);
+    return res.redirect(CLAIMANT_TASK_LIST_URL);
 
   } catch (error) {
     next(error);
