@@ -8,6 +8,9 @@ import {formatDateToFullDate} from '../../../../../common/utils/dateUtils';
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
 import {Address} from '../../../../../common/form/models/address';
 
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('buildYourDetailsSection');
+
 const changeLabel = (lang: string ): string => t('COMMON.BUTTONS.CHANGE', {lng: getLng(lang)});
 
 const addressToString = (address: Address) => {
@@ -15,6 +18,7 @@ const addressToString = (address: Address) => {
 };
 
 export const buildYourDetailsSection = (claim: Claim, claimId: string, lang: string ): SummarySection => {
+  logger.info('buildYourDetailsSection claim: ' + JSON.stringify(claim) + ' claimId: ' + claimId + ' lang: ' + lang + '');
   const yourDetailsHref = constructResponseUrlWithIdParams(claimId, CITIZEN_DETAILS_URL);
   const phoneNumberUrl = claim.respondent1?.partyPhone?.ccdPhoneExist ? CITIZEN_DETAILS_URL : CITIZEN_PHONE_NUMBER_URL;
   const phoneNumberLabel = claim.respondent1?.partyPhone?.ccdPhoneExist ? 'PAGES.CHECK_YOUR_ANSWER.CONTACT_NUMBER_NOT_OPTIONAL' : 'PAGES.CHECK_YOUR_ANSWER.CONTACT_NUMBER' ;
@@ -22,7 +26,6 @@ export const buildYourDetailsSection = (claim: Claim, claimId: string, lang: str
   const yourDetailsSection = summarySection({
     title: t('PAGES.CHECK_YOUR_ANSWER.DETAILS_TITLE', {lng: getLng(lang)}),
     summaryRows: [
-      summaryRow(t('PAGES.CHECK_YOUR_ANSWER.FULL_NAME', {lng: getLng(lang)}), claim.getDefendantFullName(), yourDetailsHref, changeLabel(lang)),
     ],
   });
   if (claim.respondent1.partyDetails.contactPerson) {
