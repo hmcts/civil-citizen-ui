@@ -1,7 +1,7 @@
 import config from 'config';
 import axios from 'axios';
-import { lookupByPostcodeAndDataSet } from 'modules/ordance-survey-key/ordanceSurveyKeyService';
-import { MOCK_API_ADDRESS, MOCK_API_RESPONSE } from '../../../utils/mocks/ordanceSurvey/osMocks';
+import { lookupByPostcodeAndDataSet } from 'modules/ordnance-survey-key/ordnanceSurveyKeyService';
+import { MOCK_API_ADDRESS, MOCK_API_RESPONSE } from '../../../utils/mocks/ordnanceSurvey/osMocks';
 import { AssertionError } from 'assert';
 
 jest.mock('axios');

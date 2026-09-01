@@ -158,25 +158,32 @@ window.$ = $;
         dependentLocality,
       ].map(part => part ? String(part).trim() : '');
 
+      const ORGANISATION = 0;
+      const BUILDING_NUMBER = 1;
+      const SUB_BUILDING_NAME = 2;
+      const BUILDING_NAME = 3;
+      const THOROUGHFARE_NAME = 4;
+      const DEPENDENT_LOCALITY = 5;
+
       let line1 = '';
       let line2 = '';
       let line3 = '';
 
-      if (parts[0]) { // organisationName
-        line1 = parts[0];
-        line2 = [parts[1], parts[2], parts[3], parts[4]].filter(Boolean).join(' ');
-        line3 = parts[5];
-      } else if (parts[1] && !parts[2] && !parts[3]) { // buildingNumber only, no subBuildingName or buildingName
-        line1 = [parts[1], parts[4]].filter(Boolean).join(' ');
-        line2 = parts[5];
+      if (parts[ORGANISATION]) {
+        line1 = parts[ORGANISATION];
+        line2 = [parts[BUILDING_NUMBER], parts[SUB_BUILDING_NAME], parts[BUILDING_NAME], parts[THOROUGHFARE_NAME]].filter(Boolean).join(' ');
+        line3 = parts[DEPENDENT_LOCALITY];
+      } else if (parts[BUILDING_NUMBER] && !parts[SUB_BUILDING_NAME] && !parts[BUILDING_NAME]) {
+        line1 = [parts[BUILDING_NUMBER], parts[THOROUGHFARE_NAME]].filter(Boolean).join(' ');
+        line2 = parts[DEPENDENT_LOCALITY];
       } else {
-        line1 = [parts[2], parts[3]].filter(Boolean).join(' '); // subBuildingName, buildingName
+        line1 = [parts[SUB_BUILDING_NAME], parts[BUILDING_NAME]].filter(Boolean).join(' ');
         if (line1) {
-          line2 = [parts[1], parts[4]].filter(Boolean).join(' ');
-          line3 = parts[5];
+          line2 = [parts[BUILDING_NUMBER], parts[THOROUGHFARE_NAME]].filter(Boolean).join(' ');
+          line3 = parts[DEPENDENT_LOCALITY];
         } else {
-          line1 = parts[4]; // thoroughfareName
-          line2 = parts[5];
+          line1 = parts[THOROUGHFARE_NAME];
+          line2 = parts[DEPENDENT_LOCALITY];
         }
       }
 

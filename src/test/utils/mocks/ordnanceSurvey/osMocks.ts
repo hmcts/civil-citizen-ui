@@ -1,4 +1,4 @@
-import { Address, AddressInfoResponse, Point } from 'models/ordanceSurveyKey/ordanceSurveyKey';
+import { Address, AddressInfoResponse, Point } from 'models/ordnanceSurveyKey/ordnanceSurveyKey';
 
 export const MOCK_API_RESPONSE = [
   {

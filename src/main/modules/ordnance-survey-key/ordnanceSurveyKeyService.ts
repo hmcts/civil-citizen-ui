@@ -1,6 +1,6 @@
 import config from 'config';
 import axios from 'axios';
-import { Address, AddressInfoResponse, Point } from 'models/ordanceSurveyKey/ordanceSurveyKey';
+import { Address, AddressInfoResponse, Point } from 'models/ordnanceSurveyKey/ordnanceSurveyKey';
 import {AssertionError} from 'assert';
 
 interface OSAddress {
@@ -49,9 +49,9 @@ interface OSResult {
 
 const isNonPostalHistoricalOrNoLongerExisting = (source: OSAddress): boolean => {
   return !source ||
-         source.POSTAL_ADDRESS_CODE === 'N' ||
-         source.LOGICAL_STATUS_CODE === '8' ||
-         source.BLPU_STATE_CODE === '4';
+    source.POSTAL_ADDRESS_CODE === 'N' ||
+    source.LOGICAL_STATUS_CODE === '8' ||
+    source.BLPU_STATE_CODE === '4';
 };
 
 const getCountry = (countryCode?: string): string | null => {
@@ -116,9 +116,14 @@ const prioritizeDpa = (a: OSResult, b: OSResult): number => {
 };
 
 const deduplicateByFormattedAddress = (addresses: Address[]): Address[] => {
-  return addresses.filter((addr, index, self) =>
-    index === self.findIndex((t) => t.formattedAddress === addr.formattedAddress),
-  );
+  const seen = new Set<string>();
+  return addresses.filter((addr) => {
+    if (seen.has(addr.formattedAddress)) {
+      return false;
+    }
+    seen.add(addr.formattedAddress);
+    return true;
+  });
 };
 
 export async function lookupByPostcodeAndDataSet(postCode: string): Promise<AddressInfoResponse> {
@@ -136,7 +141,7 @@ export async function lookupByPostcodeAndDataSet(postCode: string): Promise<Addr
 
   // Map results to Address objects, prioritizing DPA over LPI and deduplicating by UPRN
   const processedUprns = new Set<string>();
-  const addresses = results
+  const addresses = [...results]
     .sort(prioritizeDpa)
     .map((jsonAddress: OSResult) => {
       const source = jsonAddress.DPA ?? jsonAddress.LPI;
