@@ -2,7 +2,7 @@
 
 This document records the migration boundary for CUI functional coverage. The objective is a stable standard PR pipeline that runs as much coverage as safely possible without depending on AAT/shared Civil Service, CCD, Camunda or related downstream availability. Real full-stack execution is the reviewed exception, not the default classification.
 
-Existing API setup is not coverage and does not justify retention. Compound journeys must be split so deterministic assertions move to reduced-stack, in-process or contract coverage even when one observable cross-service assertion is retained.
+Existing API setup is not coverage and does not justify retention. Functional browser journeys remain functional browser journeys: CUI-facing business dependencies are replaced with deterministic test doubles. Contract checks protect mocked boundaries but are not a destination for the functional suite. Compound journeys must be split only where an irreducible observable real-service assertion belongs in the thin full-stack suite.
 
 ## Suite selection
 
@@ -46,7 +46,7 @@ yarn test:generate:functional-classification
 yarn test:functional-classification
 ```
 
-The check runs in `cichecks` and fails when either inventory is stale. Scenario classifications are migration obligations, not claims that every scenario should remain a browser test: each DTSCCI-6133 batch must use the assertion inventory to select the lowest reliable layer and link the implemented replacement.
+The check runs in `cichecks` and fails when either inventory is stale. Each DTSCCI-6133 batch must use the assertion inventory to replace real downstream setup/calls with approved mocks while preserving the functional browser journey and its meaningful CUI-visible assertions.
 
 At classification time the executable suite contained:
 
@@ -56,12 +56,11 @@ At classification time the executable suite contained:
 | Skipped declarations | 23 | — |
 | Active scenarios classified | 174 | 100% |
 | Must migrate off full-stack | 166 | 95.4% |
-| Reduced-stack migration obligation | 160 | 92.0% |
-| In-process integration obligation | 6 | 3.4% |
+| Mocked functional migration obligation | 166 | 95.4% |
 | Candidate retained thin full-stack exception | 8 | 4.6% |
 | Material setup/assertion decisions | 1227 | — |
 
-No active scenario may remain in the wider full-stack suite by default. The 160 reduced-stack rows are the browser-oriented starting backlog; assertion decisions may move individual checks further down to in-process/contract coverage or removal. `Pact` remains the authority for important CUI/Civil Service request/response contracts rather than a canned browser fixture.
+No active scenario may remain in the wider full-stack suite by default. All 166 migration rows retain their functional browser scope while replacing business downstream dependencies. `Pact` or equivalent provider verification protects important CUI/downstream compatibility but does not replace the functional browser journey.
 
 ### Proposed execution split
 
@@ -70,7 +69,7 @@ Primary target and execution frequency are separate decisions. A scenario may ge
 | Proposed execution decision | Scenarios | Purpose |
 | --- | ---: | --- |
 | Proposed thin full-stack exception | 8 | Representative cross-service assertions subject to DTSCCI-5974 review and thinning |
-| Migrate off full-stack | 166 | All other active scenarios; delivery must choose reduced-stack, in-process, contract or removal at assertion level |
+| Migrate to mocked functional | 166 | All other active scenarios retain browser coverage with deterministic CUI-facing downstream test doubles |
 | Unreviewed wider full-stack allowance | 0 | No scenario is retained merely because its domain or setup uses real services |
 
 The proposed thin set covers the minimum distinct real-service risks without retaining every variant:
@@ -92,13 +91,13 @@ The proposal selects one active scenario from each representative source, produc
 
 | Order | Delivery | Scope | Dependency |
 | ---: | --- | --- | --- |
-| 1 | DTSCCI-6133: CUI-only guards and rendering | Move redirects, validation, controller and Nunjucks assertions to focused/in-process tests | Assertion inventory and existing coverage links |
-| 2 | DTSCCI-6156, DTSCCI-6157 and DTSCCI-6258: claim creation and responses | Move all deterministic party variants, admissions, mediation choices and dashboard results to reduced-stack/in-process/Pact coverage | DTSCCI-5972 and DTSCCI-5975 foundations |
+| 1 | DTSCCI-6155: payment guards | Keep functional guard journeys and replace downstream business dependencies with deterministic mocks | Assertion inventory and existing WireMock controls |
+| 2 | DTSCCI-6156, DTSCCI-6157 and DTSCCI-6258: claim creation and responses | Keep browser variants, admissions, mediation choices and dashboard results while mocking CUI-facing business dependencies | DTSCCI-5972 and DTSCCI-5975 foundations |
 | 3 | DTSCCI-6259: progression, hearing and documents | Mock browser-visible task lists, notifications, uploads and rendered results; retain only separately reviewed persistence/payment transitions | Scenario-driven mappings and contract protection |
 | 4 | DTSCCI-6260: GA, NoC, assignment and QM | Mock deterministic UI journeys and split the small observable wiring assertions into the DTSCCI-5974 exceptions | Service-owner review of exception assertions |
-| 5 | DTSCCI-6261 and DTSCCI-6262: remaining variants and duplicate/setup removal | Resolve Welsh/track variants, API-only setup and duplicate assertions at the correct lower layer | No unresolved or generic full-stack classifications |
+| 5 | DTSCCI-6261 and DTSCCI-6262: remaining variants and setup replacement | Mock Welsh/track variants and replace API-only real-service setup without changing production application logic | No unresolved or generic full-stack classifications |
 | 6 | DTSCCI-5974: thin full-stack | Finalise and thin the eight exception candidates; implement independent standard-pipeline trigger/reporting and evidence | CUI engineering, QA and delivery-lead approval |
-| 7 | DTSCCI-6134: default PR cutover | Make the approved mocked/in-process suite the ordinary PR route without AAT/shared downstream dependency | All migration and stability gates complete |
+| 7 | DTSCCI-6134: default PR cutover | Make the approved mocked functional suite the ordinary PR route without AAT/shared downstream dependency | All migration and stability gates complete |
 
 Every one of the 166 migration obligations must be implemented or have a specifically approved, dated exception. A whole domain cannot be exempted. Each batch updates both generated inventories and links replacement coverage before duplicate full-stack PR execution is removed.
 
@@ -151,10 +150,10 @@ This first migration batch requires a QA person. On the deployed preview, QA mus
 DTSCCI-6132 additionally requires QA-person approval of the complete classification. The QA person must:
 
 1. Reconcile the generated total with the executable suite and confirm all 174 active scenarios and 1227 material setup/assertion decisions are represented.
-2. Sample every target category: setup-only, in-process integration, reduced-stack browser, contract/focused integration and retained thin full-stack.
+2. Sample every target category: setup-only, mocked functional browser and retained thin full-stack.
 3. Review each of the eight proposed thin full-stack exceptions and challenge every retained service-state assertion; confirm mocks/contracts cannot provide equivalent confidence.
 4. Sample every domain migration batch and confirm deterministic assertions are assigned away from full-stack even when the source journey uses real-service setup.
-5. Review the 166 `migrate-off-full-stack` rows and confirm each has an implementable batch/owner; require an explicit correction for any assertion whose generated target is not the actual lowest reliable layer.
+5. Review the 166 `migrate-to-mocked-functional` rows and confirm each has an implementable batch/owner and preserves its meaningful CUI browser behaviour without real business-service dependencies.
 6. Confirm the migration batches and ordering are usable by QA and engineering.
 7. Record samples reviewed, findings, required corrections and approval on DTSCCI-6132 and the pull request.
 

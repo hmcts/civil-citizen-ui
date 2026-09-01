@@ -31,9 +31,7 @@ const {
 
 const TARGETS = {
   RETAINED_FULL_STACK: 'retained-thin-full-stack',
-  REDUCED_STACK: 'reduced-stack-browser',
-  IN_PROCESS: 'in-process-integration',
-  CONTRACT: 'contract-or-focused-integration',
+  MOCKED_FUNCTIONAL: 'mocked-functional-browser',
   SETUP: 'setup-only-not-coverage',
 };
 
@@ -88,10 +86,6 @@ const domainRules = {
   welsh: ['Welsh-language case data, documents and translation workflow must be observed across real services.', 'Civil Service, CCD, Camunda, document management', 'welsh'],
 };
 
-const inProcessFiles = new Set([
-  'payments/payment_auth_guard_tests.js',
-]);
-
 const migrationTicketByDomain = {
   bundles: 'DTSCCI-6259',
   'case-offline': 'DTSCCI-6259',
@@ -130,16 +124,6 @@ function classify(scenario, scenarioId) {
   const file = relativeTestPath(scenario.filePath);
   const domain = file.split('/')[0];
 
-  if (inProcessFiles.has(file)) {
-    return {
-      target: TARGETS.IN_PROCESS,
-      reason: 'Authentication and redirect guards are CUI controller/session behaviour; real payment or CCD services add no confidence.',
-      services: 'CUI process only; downstream clients mocked',
-      owner: 'civil-citizen-ui route/integration tests',
-      batch: 'DTSCCI-6155 payment guards',
-    };
-  }
-
   if (retainedThinFullStackScenarios.has(scenarioId)) {
     return {
       target: TARGETS.RETAINED_FULL_STACK,
@@ -147,7 +131,7 @@ function classify(scenario, scenarioId) {
       services: domainRules[domain][1],
       owner: 'DTSCCI-5974 reviewed exception; deterministic assertions owned by DTSCCI-6133',
       batch: 'DTSCCI-5974 retained exception plus DTSCCI-6133 assertion split',
-      secondaryTargets: 'reduced-stack-browser; in-process integration; Pact where the CUI/service boundary is material',
+      secondaryTargets: 'mocked-functional-browser for deterministic CUI behaviour; contract-sufficiency evidence for material mocked boundaries',
     };
   }
 
@@ -157,12 +141,12 @@ function classify(scenario, scenarioId) {
   }
 
   return {
-    target: TARGETS.REDUCED_STACK,
-    reason: 'Migration required: browser, navigation, form, session and rendered-result assertions are deterministic. Existing real-service setup is not retention evidence; split any material client contract or focused controller assertion to its lower layer.',
+    target: TARGETS.MOCKED_FUNCTIONAL,
+    reason: 'Migration required: keep the functional browser journey and replace CUI-facing business dependencies with deterministic test doubles. Existing real-service setup is not retention evidence.',
     services: 'CUI, browser, Redis and scenario-driven test doubles; no real CCD or Camunda',
     owner: `${migrationTicketByDomain[domain] || 'DTSCCI-6262'} ${rule[2]} migration batch`,
     batch: `${migrationTicketByDomain[domain] || 'DTSCCI-6262'} ${rule[2]}`,
-    secondaryTargets: 'in-process integration for routing/rendering; Pact for important CUI/service contracts; remove duplicate assertions',
+    secondaryTargets: 'contract-sufficiency evidence protects important mocked boundaries; no production application-logic changes',
   };
 }
 
@@ -177,15 +161,15 @@ function classifyMaterialStep(step, source, scenarioTarget, scenarioId) {
   if (scenarioTarget === TARGETS.RETAINED_FULL_STACK && retainedObservableAssertions.get(scenarioId)?.test(step)) {
     return {
       target: TARGETS.RETAINED_FULL_STACK,
-      rationale: 'Candidate observable cross-service assertion. Retain only after DTSCCI-5974 review confirms mocks, contracts and focused integration tests cannot provide equivalent confidence.',
+      rationale: 'Candidate observable cross-service assertion. Retain only after DTSCCI-5974 review confirms mocked functional coverage cannot provide equivalent confidence.',
     };
   }
 
   if (/^(api|noc|qm|wa)\./i.test(step)) {
     if (/\b(assert|check|verify|retrieve)/i.test(step)) {
       return scenarioTarget === TARGETS.RETAINED_FULL_STACK
-        ? {target: TARGETS.RETAINED_FULL_STACK, rationale: 'Candidate observable service-state assertion; retain only after DTSCCI-5974 review confirms no lower layer provides equivalent confidence.'}
-        : {target: TARGETS.CONTRACT, rationale: 'Direct service assertion does not justify a browser full stack; replace with a focused integration/contract assertion or link existing coverage.'};
+        ? {target: TARGETS.RETAINED_FULL_STACK, rationale: 'Candidate observable service-state assertion; retain only after DTSCCI-5974 review confirms mocked functional coverage cannot provide equivalent confidence.'}
+        : {target: TARGETS.MOCKED_FUNCTIONAL, rationale: 'Keep the functional journey but replace this direct real-service check with the CUI-visible result or deterministic mocked-boundary assertion. Contract sufficiency is supporting evidence, not the functional-test destination.'};
     }
     return {
       target: TARGETS.SETUP,
@@ -194,7 +178,7 @@ function classifyMaterialStep(step, source, scenarioTarget, scenarioId) {
   }
 
   return {
-    target: TARGETS.REDUCED_STACK,
+    target: TARGETS.MOCKED_FUNCTIONAL,
     rationale: 'Browser-visible navigation, form, session or rendered content belongs in the real-CUI reduced stack with deterministic downstream responses.',
   };
 }
@@ -259,7 +243,7 @@ function collectInventory() {
       rationale: classification.reason,
       deliveryBatch: classification.batch,
       secondaryTargets: classification.secondaryTargets || 'none',
-      executionDecision: classification.target === TARGETS.RETAINED_FULL_STACK ? 'proposed-thin-full-stack' : 'migrate-off-full-stack',
+      executionDecision: classification.target === TARGETS.RETAINED_FULL_STACK ? 'proposed-thin-full-stack' : 'migrate-to-mocked-functional',
     };
   });
 
