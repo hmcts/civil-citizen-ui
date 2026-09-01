@@ -161,6 +161,64 @@ run_reduced_stack_functional_tests() {
   exit "${browser_status:-${wiremock_status:-0}}"
 }
 
+assert_thin_full_stack_results() {
+  local report_file="${THIN_JUNIT_REPORT:-test-results/thin-full-stack/result.xml}"
+  local allure_dir="${THIN_ALLURE_RESULTS_DIR:-test-results/thin-full-stack/allure-results}"
+
+  node - "$report_file" "$allure_dir" <<'NODE'
+    const fs = require('fs');
+    const path = require('path');
+    const { XMLParser } = require('fast-xml-parser');
+
+    const [reportFile, allureDir] = process.argv.slice(2);
+    const expectedTests = 8;
+
+    if (!fs.existsSync(reportFile) || fs.statSync(reportFile).size === 0) {
+      throw new Error(`Thin full-stack JUnit report is missing or empty: ${reportFile}`);
+    }
+
+    const report = new XMLParser({ignoreAttributes: false, attributeNamePrefix: ''})
+      .parse(fs.readFileSync(reportFile, 'utf8'));
+    const summary = report.testsuites;
+    const tests = Number(summary?.tests ?? 0);
+    const failures = Number(summary?.failures ?? 0);
+    const errors = Number(summary?.errors ?? 0);
+    const skipped = Number(summary?.skipped ?? summary?.disabled ?? 0);
+
+    if (tests !== expectedTests || failures !== 0 || errors !== 0 || skipped !== 0) {
+      throw new Error(
+        `Thin full-stack JUnit attestation failed: expected ${expectedTests} tests, ` +
+        `found ${tests} with ${failures} failures, ${errors} errors and ${skipped} skipped`,
+      );
+    }
+
+    if (!fs.existsSync(allureDir)) {
+      throw new Error(`Thin full-stack Allure results directory is missing: ${allureDir}`);
+    }
+
+    const resultFiles = fs.readdirSync(allureDir).filter((file) => file.endsWith('-result.json'));
+    if (resultFiles.length !== expectedTests) {
+      throw new Error(
+        `Thin full-stack Allure attestation failed: expected ${expectedTests} result files, ` +
+        `found ${resultFiles.length}`,
+      );
+    }
+
+    const nonPassingResults = resultFiles
+      .map((file) => ({file, result: JSON.parse(fs.readFileSync(path.join(allureDir, file), 'utf8'))}))
+      .filter(({result}) => result.status !== 'passed');
+    if (nonPassingResults.length > 0) {
+      throw new Error(
+        `Thin full-stack Allure attestation found non-passing results: ${nonPassingResults
+          .map(({file, result}) => `${file} (${result.status || 'missing status'})`)
+          .join(', ')}`,
+      );
+    }
+
+    console.log(`Thin full-stack attestation passed: ${expectedTests} tests executed and passed`);
+NODE
+}
+
 #MAIN SCRIPT
 TEST_FILES_REPORT="test-results/functional/testFilesReport.json"
 PREV_TEST_FILES_REPORT="test-results/functional/prevTestFilesReport.json"
@@ -168,8 +226,9 @@ PREV_TEST_FILES_REPORT="test-results/functional/prevTestFilesReport.json"
 if [[ "${THIN_FULL_STACK_TESTS:-false}" = "true" ]]; then
   echo "Running the thin full-stack suite against the standard full preview deployment"
   yarn playwright install chromium
-  yarn test:thin-full-stack
-  exit $?
+  yarn test:thin-full-stack || thin_test_status=$?
+  assert_thin_full_stack_results || thin_attestation_status=$?
+  exit "${thin_test_status:-${thin_attestation_status:-0}}"
 fi
 
 if [[ "${REDUCED_STACK_TESTS:-false}" = "true" ]]; then

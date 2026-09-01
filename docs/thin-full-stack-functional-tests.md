@@ -15,6 +15,8 @@ In the standard CNP PR pipeline, add the `pr-values:thinFullStack` label to run 
 
 Thin-suite results live below `test-results/thin-full-stack`, have their own JUnit, Mochawesome and Allure output, and are published as **Thin Full-Stack Allure Report**. They are not combined with reduced-stack results.
 
+The Jenkins run is successful only when the thin JUnit report is present and records exactly eight executed tests with no failures, errors or skips, and the Allure results contain exactly eight passing test results. Missing, empty or partial output fails the build, so a green aggregate Jenkins status attests that the selected thin suite actually ran rather than merely that the functional-test command exited successfully.
+
 ## Trigger, gating and ownership policy
 
 - Trigger: explicit `pr-values:thinFullStack` label on the standard CNP PR pipeline, providing an on-demand route for release investigation.
