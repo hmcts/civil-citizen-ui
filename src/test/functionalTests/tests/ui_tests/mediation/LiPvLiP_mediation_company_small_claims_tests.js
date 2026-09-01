@@ -85,14 +85,14 @@ Scenario('02 LiP Claimant Response with Reject all claim', async ({ api }) => {
   await api.waitForFinishedBusinessProcess();
 });
 
-Scenario('03 Caseworker perform mediation unsuccessful', async ({ api }) => {
+Scenario('03 Caseworker perform mediation unsuccessful', async ({ api, I }) => {
   // Take Mediation Unsuccessful
   await api.mediationUnsuccessful(config.caseWorker, true, ['NOT_CONTACTABLE_CLAIMANT_ONE', 'NOT_CONTACTABLE_DEFENDANT_ONE']);
   await api.waitForFinishedBusinessProcess();
 
-  //Enable below steps when the issue https://tools.hmcts.net/jira/browse/DTSCCI-5625 is fixed
-
-  /* await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+  // DTSCCI-5625 AC1-AC4: both parties not contactable - each party sees their own
+  // non-attendance notification and Upload mediation documents is Action needed.
+  await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   const mediationUnsuccessfulClaimant1NonAttendanceNotif = mediationUnsuccessfulClaimant1NonAttendance();
   await verifyNotificationTitleAndContent(claimNumber, mediationUnsuccessfulClaimant1NonAttendanceNotif.title, mediationUnsuccessfulClaimant1NonAttendanceNotif.content);
   taskListItem = viewMediationDocuments();
@@ -105,10 +105,10 @@ Scenario('03 Caseworker perform mediation unsuccessful', async ({ api }) => {
   taskListItem = viewMediationDocuments();
   await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Not available yet');
   taskListItem = uploadMediationDocuments();
-  await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Action needed', true); */
+  await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Action needed', true);
 });
 
-Scenario.skip('04 LiP claimant uploads mediation documents', async ({ api, I }) => {
+Scenario('04 LiP claimant uploads mediation documents', async ({ api, I }) => {
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await I.see(claimNumber);
   await I.click(claimNumber);
@@ -141,7 +141,7 @@ Scenario.skip('04 LiP claimant uploads mediation documents', async ({ api, I }) 
   await ClaimantResponseSteps.ViewMediationDocs();
 });
 
-Scenario.skip('05 LiP defendant uploads mediation documents', async ({ api }) => {
+Scenario('05 LiP defendant uploads mediation documents', async ({ api }) => {
   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   const mediationUnsuccessfulClaimant1NonAttendanceNotif = mediationUnsuccessfulClaimant1NonAttendance();
   await verifyNotificationTitleAndContent(claimNumber, mediationUnsuccessfulClaimant1NonAttendanceNotif.title, mediationUnsuccessfulClaimant1NonAttendanceNotif.content);

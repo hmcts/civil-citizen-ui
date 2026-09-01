@@ -5,13 +5,14 @@ const sharedData = require('../../../../sharedData');
 
 const fields = {
   yourName: 'input[id*="yourName"]',
-  statementDay: 'div[id*="documentsForYourStatement"] input[id*="dateDay"]',
+  // The day input is rendered as ...[dateInputFields][date] - there is no "dateDay".
+  statementDay: 'input[id^="documentsForYourStatement"][id$="[dateInputFields][date]"]',
   statementMonth: 'div[id*="documentsForYourStatement"] input[id*="dateMonth"]',
   statementYear: 'div[id*="documentsForYourStatement"] input[id*="dateYear"]',
   statementFile: 'input[id="documentsForYourStatement[0][fileUpload]"]',
   statementUploadButton: 'button[value="documentsForYourStatement[0][uploadButton]"]',
   yourDoc: 'input[id*="typeOfDocument"]',
-  docDay: 'div[id*="documentsForDocumentsReferred"] input[id*="dateDay"]',
+  docDay: 'input[id^="documentsForDocumentsReferred"][id$="[dateInputFields][date]"]',
   docMonth: 'div[id*="documentsForDocumentsReferred"] input[id*="dateMonth"]',
   docYear: 'div[id*="documentsForDocumentsReferred"] input[id*="dateYear"]',
   docFile: 'input[id="documentsForDocumentsReferred[0][fileUpload]"]',
