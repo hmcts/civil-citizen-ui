@@ -11,13 +11,13 @@ Run locally or against an already configured environment with:
 yarn test:thin-full-stack
 ```
 
-`Jenkinsfile_nightly` selects this suite by default for its weekday scheduled build. Set `THIN_FULL_STACK_ONLY=true` for an on-demand AAT, demo or existing full-preview run. Set it to `false` to investigate with the wider nightly regression. Preview URLs must identify the already deployed preview through `PR_NUMBER`; this job does not create a second deployment.
+In the standard CNP PR pipeline, add the `pr-values:thinFullStack` label to run this suite against that PR's existing full preview deployment. The label is mutually exclusive with `pr-values:reducedStack`. Removing it restores the current standard selection; DTSCCI-6134 will make reduced-stack the ordinary PR default while retaining this explicit full-stack route.
 
 Thin-suite results live below `test-results/thin-full-stack`, have their own JUnit, Mochawesome and Allure output, and are published as **Thin Full-Stack Allure Report**. They are not combined with reduced-stack results.
 
 ## Trigger, gating and ownership policy
 
-- Trigger: weekday nightly plus manually invoked AAT, demo or preview runs.
+- Trigger: explicit `pr-values:thinFullStack` label on the standard CNP PR pipeline, providing an on-demand route for release investigation.
 - Merge gating: the suite does not run on every PR and does not block merge.
 - Release gating: a first-attempt application failure blocks promotion until triaged; a confirmed environment-only failure does not block promotion when the incident and a successful rerun are linked.
 - Primary triage owner: Mike Lemos (DTSCCI-5974 assignee).

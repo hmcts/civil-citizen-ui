@@ -165,6 +165,13 @@ run_reduced_stack_functional_tests() {
 TEST_FILES_REPORT="test-results/functional/testFilesReport.json"
 PREV_TEST_FILES_REPORT="test-results/functional/prevTestFilesReport.json"
 
+if [[ "${THIN_FULL_STACK_TESTS:-false}" = "true" ]]; then
+  echo "Running the thin full-stack suite against the standard full preview deployment"
+  yarn playwright install chromium
+  yarn test:thin-full-stack
+  exit $?
+fi
+
 if [[ "${REDUCED_STACK_TESTS:-false}" = "true" ]]; then
   run_reduced_stack_functional_tests
 fi

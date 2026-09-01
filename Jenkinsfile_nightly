@@ -9,8 +9,6 @@ properties([
         description: 'Should force pipeline to go green by not running any functional tests'),
       choice(name: 'RUN_PREV_FAILED_AND_NOT_EXECUTED_TEST_FILES', choices: ['false', 'true'],
         description: 'Runs the failed test files and test files that were not executed, contained within the \'testFilesReport.json\', from the latest previous pipeline run'),
-      choice(name: 'THIN_FULL_STACK_ONLY', choices: ['true', 'false'],
-        description: 'Runs only the independently selected @thin-full-stack suite. Scheduled builds use this default; choose false for the wider nightly regression.'),
       choice(name: 'ENVIRONMENT', choices: ['aat', 'demo', 'preview'],
         description: 'Environment to test'),
       string(name: 'PR_NUMBER',
@@ -201,7 +199,6 @@ def yarnBuilder = new uk.gov.hmcts.contino.YarnBuilder(this)
 withNightlyPipeline(type, product, component) {
   env.FORCE_GREEN_BUILD=params.FORCE_GREEN_BUILD
   env.RUN_PREV_FAILED_AND_NOT_EXECUTED_TEST_FILES=params.RUN_PREV_FAILED_AND_NOT_EXECUTED_TEST_FILES
-  env.THIN_FULL_STACK_ONLY=params.THIN_FULL_STACK_ONLY
   env.ENVIRONMENT=params.ENVIRONMENT
 
   def prNumber = params.PR_NUMBER?.trim()
@@ -260,17 +257,11 @@ withNightlyPipeline(type, product, component) {
     }
 
     afterAlways('fullFunctionalTest') {
-      if (env.THIN_FULL_STACK_ONLY == 'true') {
-        generateAllureReport('test-results/thin-full-stack/allure-results', 'test-results/thin-full-stack/allure-report', 'thin full-stack')
-        publishAllureHtml('test-results/thin-full-stack/allure-report', 'Thin Full-Stack Allure Report')
-        archiveDiagnosticArtifacts('test-results/thin-full-stack/**/*', 'thin full-stack test artifacts')
-      } else {
-        generateAllureReport('test-results/functional/allure-results', 'test-results/functional/allure-report', 'functional')
-        publishAllureHtml('test-results/functional/allure-report', 'Nightly E2E Allure Report')
-        collectWiremockDiagnostics()
-        generateFunctionalFailureSummary()
-        archiveDiagnosticArtifacts('test-results/functional/**/*', 'functional test artifacts')
-      }
+      generateAllureReport('test-results/functional/allure-results', 'test-results/functional/allure-report', 'functional')
+      publishAllureHtml('test-results/functional/allure-report', 'Nightly E2E Allure Report')
+      collectWiremockDiagnostics()
+      generateFunctionalFailureSummary()
+      archiveDiagnosticArtifacts('test-results/functional/**/*', 'functional test artifacts')
     }
   }
 }

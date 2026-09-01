@@ -8,13 +8,6 @@ if [ "$FORCE_GREEN_BUILD" == "true" ]; then
   exit 0
 fi
 
-if [ "${THIN_FULL_STACK_ONLY:-false}" = "true" ]; then
-  yarn playwright install chromium
-  yarn test:thin-full-stack
-  exit $?
-fi
-
-
 # Check if RUN_FAILED_AND_PREV_NOT_EXECUTED_TEST_FILES is set to "true"
 if [ "$RUN_PREV_FAILED_AND_NOT_EXECUTED_TEST_FILES" != "true" ]; then
   yarn playwright install
