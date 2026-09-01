@@ -110,8 +110,7 @@
 </div>
 {% endset %}
 {% block content %}
-  <div class="govuk-width-container">
-    <main class="govuk-main-wrapper" role="main">
+
       {% set title = t('PAGES.DEBTS.TITLE') %}
       {% set errors = form.getAllErrors() %}
       {% if form.hasErrors() %}
@@ -121,7 +120,7 @@
         <div class="govuk-grid-column-two-thirds">
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
-            {{ yesNoRadioButton(t,'debtsRadio','option',title, form,'',{yesHtml:yesHtml}) }}
+              {{ yesNoRadioButton(t,'option','option',title, form,'',{yesHtml:yesHtml}) }}
               <div class="govuk-form-group">
                 {{ govukButton({
                   text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
@@ -131,6 +130,5 @@
           </form>
         </div>
      </div>
-    </main>
-  </div>
+
 {% endblock %}

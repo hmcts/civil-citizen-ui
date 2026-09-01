@@ -14,11 +14,12 @@ const CARM_ENABLED_FOR_CASE = 'cam-enabled-for-case';
 const MULTI_OR_INTERMEDIATE_TRACK = 'multi-or-intermediate-track';
 const EA_COURT_FOR_GA_LIPS = 'ea-courts-whitelisted-for-ga-lips';
 const QUERY_MANAGEMENT = 'cui-query-management';
-const GA_FOR_WELSH = 'generalApplicationsForWelshParty';
 const WELSH_FOR_MAIN_CLAIM = 'enableWelshForMainCase';
 const IS_DEFENDANT_NOC_ONLINE_FOR_CASE = 'is-defendant-noc-online-for-case';
 const CUI_GA_NRO = 'cui-ga-nro';
 const JUDGMENT_BUFFER = 'judgment-buffer';
+const HMCTS_ACCESS_MIGRATION = 'hmcts-access-migration';
+const USER_CASE_ROLES_SESSION_CACHE = 'cui-user-case-roles-session-cache-enabled';
 
 async function getClient(): Promise<void> {
   const launchDarklyTestSdk =  process.env.LAUNCH_DARKLY_SDK || config.get<string>('services.launchDarkly.sdk');
@@ -36,9 +37,10 @@ async function getClient(): Promise<void> {
       await testData.update(testData.flag(GA_FOR_LIPS).booleanFlag().variationForAll(false));
       await testData.update(testData.flag(EA_COURT_FOR_GA_LIPS).booleanFlag().variationForAll(false));
       await testData.update(testData.flag(QUERY_MANAGEMENT).booleanFlag().variationForAll(false));
-      await testData.update(testData.flag(GA_FOR_WELSH).booleanFlag().variationForAll(false));
       await testData.update(testData.flag(CUI_GA_NRO).booleanFlag().variationForAll(false));
       await testData.update(testData.flag(JUDGMENT_BUFFER).booleanFlag().variationForAll(false));
+      await testData.update(testData.flag(HMCTS_ACCESS_MIGRATION).booleanFlag().variationForAll(false));
+      await testData.update(testData.flag(USER_CASE_ROLES_SESSION_CACHE).booleanFlag().variationForAll(true));
 
       client = init(launchDarklyTestSdk, { updateProcessor: testData.getFactory() });
     } else {
@@ -121,6 +123,10 @@ export async function isGaForLipsEnabled(): Promise<boolean> {
   return await getFlagValue(GA_FOR_LIPS) as boolean;
 }
 
+export async function isHmctsAccessMigrationEnabled(): Promise<boolean> {
+  return await getFlagValue(HMCTS_ACCESS_MIGRATION) as boolean;
+}
+
 export async function isDashboardEnabledForCase(date: Date): Promise<boolean> {
   const { DateTime } = require('luxon');
   const systemTimeZone = DateTime.local().zoneName;
@@ -155,10 +161,6 @@ export async function isQueryManagementEnabled(date: Date): Promise<boolean> {
   return await getFlagValue(QUERY_MANAGEMENT, epoch) as boolean;
 }
 
-export async function isGaForWelshEnabled(): Promise<boolean> {
-  return await getFlagValue(GA_FOR_WELSH) as boolean;
-}
-
 export async function isWelshEnabledForMainCase(): Promise<boolean> {
   return await getFlagValue(WELSH_FOR_MAIN_CLAIM) as boolean;
 }
@@ -176,4 +178,25 @@ export async function isCuiGaNroEnabled(): Promise<boolean> {
 
 export async function isJudgmentBufferEnabled(): Promise<boolean> {
   return await getFlagValue(JUDGMENT_BUFFER) as boolean;
+}
+
+/**
+ * Kill-switch for DTSCCI-5946 session-scoped /userCaseRoles cache.
+ * Requires config `caches.userCaseRoles.enabled` and LD flag
+ * `cui-user-case-roles-session-cache-enabled` (defaults to true when LD is unavailable).
+ */
+export async function isUserCaseRolesSessionCacheEnabled(): Promise<boolean> {
+  try {
+    const enabled = config.get<boolean | string>('caches.userCaseRoles.enabled');
+    if (enabled !== true && enabled !== 'true') {
+      return false;
+    }
+  } catch {
+    return false;
+  }
+  if (!ldClient) await getClient();
+  if (!ldClient) {
+    return true;
+  }
+  return await ldClient.variation(USER_CASE_ROLES_SESSION_CACHE, await getUser(undefined), true) as boolean;
 }

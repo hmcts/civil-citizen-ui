@@ -17,7 +17,7 @@ services:
     env: 'default'
   idam:
     url: 'http://localhost:5000'
-    authorizationURL: 'http://localhost:9002/login'
+    authorizationURL: 'http://localhost:9002/o/authorize'
     tokenURL: 'http://localhost:5000/o/token'
     clientID: 'civil_citizen_ui'
     clientSecret: 'citizen-ui-secret'
@@ -26,6 +26,7 @@ services:
     scope: '&scope=profile%20openid%20roles%20manage-user%20create-user%20search-user'
     terminateSessionURL: 'http://localhost:9002/o/endSession'
     signOutCallBackURL: 'http://localhost:3001/dashboard'
+    hmctsAccessURL: 'http://localhost:9002'
   draftStore:
     redis:
       host: 'localhost'
@@ -34,7 +35,7 @@ services:
       tls: false
       ttl:
         # Draft claims (claim journey data keyed by claim id)
-        draftClaim: 180
+        draftClaim: 30
         # Journey cache keys (e.g. claimId+userId progress during response/claimant response)
         journeyCache: 180
         # Payment session and confirmation-url keys
@@ -99,6 +100,13 @@ webChat:
     buttonContainerId: '__8x8-chat-button-container-script_202736819566d85c96c386f8.18964185'
 featureToggles:
   settlementAgreementEnabled: false
+caches:
+  userCaseRoles:
+    # Config gate for session-scoped /userCaseRoles cache (DTSCCI-5946).
+    # Runtime kill-switch: LaunchDarkly `cui-user-case-roles-session-cache-enabled`.
+    enabled: true
+    ttlSeconds: 60
+    negativeTtlSeconds: 15
 cookieMaxAge: 5400000
 uploadRateLimit:
   enabled: true

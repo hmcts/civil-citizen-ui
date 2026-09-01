@@ -14,7 +14,7 @@
 {% endblock %}
 {% block content %}
 <div class="govuk-width-container caseProgression">
-  <main class="govuk-main-wrapper" role="main">
+
     {% if form != null and form.hasErrors() %}
       {{ errorSummary(form.getAllErrors(), t) }}
     {% endif %}
@@ -118,7 +118,7 @@
         </div>
       </form>
     </div>
-  </main>
+
 </div>
 
 <script nonce="{{ nonceValue }}">

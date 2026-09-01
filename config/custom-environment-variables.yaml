@@ -11,6 +11,7 @@ services:
     callbackURL: OAUTH_CLIENT_REDIRECT
     terminateSessionURL: IDAM_END_SESSION_URL
     signOutCallBackURL: IDAM_SIGN_OUT_REDIRECT_URL
+    hmctsAccessURL: HMCTS_ACCESS_URL
   launchDarkly:
     sdk: LAUNCH_DARKLY_SDK
     env: LAUNCH_DARKLY_ENV
@@ -72,6 +73,15 @@ webChat:
     buttonContainerId: WEB_CHAT_MEDIATION_BUTTON_ID
 featureToggles:
   settlementAgreementEnabled: SETTLEMENT_AGREEMENT_ENABLED
+caches:
+  userCaseRoles:
+    enabled: USER_CASE_ROLES_CACHE_ENABLED
+    ttlSeconds:
+      __name: USER_CASE_ROLES_CACHE_TTL_SECONDS
+      __format: number
+    negativeTtlSeconds:
+      __name: USER_CASE_ROLES_CACHE_NEGATIVE_TTL_SECONDS
+      __format: number
 cookieMaxAge:
   __name: SESSION_COOKIE_MAX_AGE
   __format: number

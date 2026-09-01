@@ -13,8 +13,7 @@
 {% endblock %}
 
 {% block content %}
-  <div class="govuk-width-container">
-    <main class="govuk-main-wrapper" role="main">
+
       {% set errors = form.getAllErrors() %}
       {% set declaredError = form.errorFor('declared') %}
       {% set atLeastOneNumberShouldBeEnteredError = form.errorFor('numberOfChildren') %}
@@ -36,7 +35,7 @@
              }
             }) %}
             {% set numberOfChildrenHtml %}
-              <div class="govuk-form-group {% if atLeastOneNumberShouldBeEnteredError %} govuk-form-group--error {% endif %}">
+              <div id="numberOfChildren" class="govuk-form-group {% if atLeastOneNumberShouldBeEnteredError %} govuk-form-group--error {% endif %}">
                 {% if atLeastOneNumberShouldBeEnteredError %}
                   <p class="govuk-error-message">
                     <span class="govuk-visually-hidden">Error:</span> {{ t(atLeastOneNumberShouldBeEnteredError) }}
@@ -123,6 +122,5 @@
           {{ contactUsForHelp(t) }}
         </div>
       </div>
-    </main>
-  </div>
+
 {% endblock %}

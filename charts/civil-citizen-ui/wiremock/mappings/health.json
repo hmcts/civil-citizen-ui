@@ -1,0 +1,55 @@
+{
+  "mappings": [
+    {
+      "name": "health",
+      "priority": 10,
+      "request": {
+        "method": "GET",
+        "urlPath": "/health"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "jsonBody": {
+          "status": "UP"
+        }
+      }
+    },
+    {
+      "name": "health-liveness",
+      "priority": 10,
+      "request": {
+        "method": "GET",
+        "urlPath": "/health/liveness"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "jsonBody": {
+          "status": "UP"
+        }
+      }
+    },
+    {
+      "name": "health-readiness",
+      "priority": 10,
+      "request": {
+        "method": "GET",
+        "urlPath": "/health/readiness"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "jsonBody": {
+          "status": "UP"
+        }
+      }
+    }
+  ]
+}
