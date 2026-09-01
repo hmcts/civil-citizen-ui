@@ -29,6 +29,7 @@
     "test:payments": "MOCHAWESOME_REPORTFILENAME=payments FUNCTIONAL=true codeceptjs run --grep '@ui-payments' --reporter mocha-multi --plugins allure --verbose",
     "test:functional": "src/test/functionalTests/run-functional-tests.sh",
     "test:civil-citizen-nightly": "MOCHAWESOME_REPORTFILENAME=civil-citizen-nightly FUNCTIONAL=true codeceptjs run-workers --suites 10 --grep '@civil-citizen-nightly' --reporter mocha-multi --plugins allure --verbose",
+    "test:thin-full-stack": "REPORT_DIR=test-results/thin-full-stack ALLURE_RESULTS_DIR=test-results/thin-full-stack/allure-results REPORT_FILE=test-results/thin-full-stack/result.xml MOCHAWESOME_REPORTFILENAME=thin-full-stack DISABLE_TEST_RETRIES=true FUNCTIONAL=true codeceptjs run-workers --suites 8 --grep '@thin-full-stack' --reporter mocha-multi --plugins allure --verbose",
     "test:fullfunctional": "./src/test/functionalTests/run-full-functional-tests.sh",
     "test:crossbrowser-functional": "MOCHAWESOME_REPORTFILENAME=crossbrowser codeceptjs run-multiple --grep @crossbrowser ${BROWSER_GROUP:-'--all'} -c src/test/functionalTests/saucelabs.conf.js --reporter mocha-multi",
     "test:crossbrowser": "src/test/functionalTests/run-crossbrowser-tests.sh",

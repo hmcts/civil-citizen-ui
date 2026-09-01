@@ -34,17 +34,6 @@ const TARGETS = {
   IN_PROCESS: 'in-process-integration',
 };
 
-const proposedThinFullStackFiles = new Set([
-  'bundles/cp_LiPvLiP_bundles_small_claims_tests.js',
-  'case-struck-out/cp_LiPvLiP_case_struck_out_fast_track_tests.js',
-  'create-claim/IndividualvsIndividual_tests.js',
-  'defendant-linking/defendantLinkingThroughCUI_tests.js',
-  'ga/LiPvLiP_GA_DismissAnOrder_tests.js',
-  'hearings/cp_LiPvLiP_hearing_fee_tests_fast_track_tests.js',
-  'noc/LipVLR_NoC_e2e_tests.js',
-  'qm/qm_Hearing_LiPvLiP_followUp_tests.js',
-]);
-
 const domainRules = {
   bundles: ['Document generation and persistence must be observed through CCD and document services.', 'CCD, Camunda, document management', 'documents'],
   'case-offline': ['The assertion depends on a genuine CCD state transition and workflow completion.', 'Civil Service, CCD, Camunda', 'state-transitions'],
@@ -197,7 +186,7 @@ function collectInventory() {
       deliveryBatch: classification.batch,
       secondaryTargets: classification.secondaryTargets || 'none',
       executionDecision: classification.target === TARGETS.FULL_STACK
-        ? (proposedThinFullStackFiles.has(file) && ordinal === 1 ? 'proposed-thin-full-stack' : 'nightly/on-demand-full-stack')
+        ? (scenario.tags.includes('@thin-full-stack') ? 'proposed-thin-full-stack' : 'nightly/on-demand-full-stack')
         : 'migrate-off-full-stack',
     };
   });

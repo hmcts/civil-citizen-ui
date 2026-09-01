@@ -10,6 +10,7 @@ This document records the agreed migration boundary for deterministic CUI browse
 | Reduced-stack create claim | `@reduced-stack-create-claim` | `npx codeceptjs run --grep '@reduced-stack-create-claim' --reporter mocha-multi --verbose` | The independently selectable first migration batch |
 | Full-stack PR | `@civil-citizen-pr` | `yarn test:civil-citizen-pr` | Behaviour that depends on real service transitions or wiring |
 | Full-stack nightly | `@civil-citizen-nightly` | `yarn test:civil-citizen-nightly` | Wider real-service regression coverage |
+| Thin full-stack | `@thin-full-stack` | `yarn test:thin-full-stack` | Eight independently reported representative real-service risks; see [operating specification](thin-full-stack-functional-tests.md) |
 
 `@mocked-functional` remains on migrated scenarios as a compatibility tag while callers move to the layer-specific `@reduced-stack` selector. The Allure feature name starts with `Reduced-stack` and the Mochawesome report is named `reduced-stack`, so the execution layer is visible in Jenkins artifacts.
 
@@ -51,8 +52,8 @@ At classification time the executable suite contained:
 | --- | ---: | ---: |
 | Declared scenarios | 198 | — |
 | Skipped declarations | 23 | — |
-| Active scenarios classified | 175 | 100% |
-| Full-stack primary target | 166 | 94.9% |
+| Active scenarios classified | 174 | 100% |
+| Full-stack primary target | 165 | 94.8% |
 | Reduced-stack browser primary target | 3 | 1.7% |
 | In-process integration primary target | 6 | 3.4% |
 
@@ -65,7 +66,7 @@ Primary target and execution frequency are separate decisions. A scenario may ge
 | Proposed execution decision | Scenarios | Purpose |
 | --- | ---: | --- |
 | Proposed thin full-stack | 8 | Representative cross-service categories used for release investigation and the trigger/gating policy delivered by DTSCCI-5974 |
-| Nightly/on-demand full-stack | 158 | Wider genuine state-transition regression retained outside ordinary PR feedback |
+| Nightly/on-demand full-stack | 157 | Wider genuine state-transition regression retained outside ordinary PR feedback |
 | Migrate off full-stack | 9 | Deterministic browser or CUI-only controller/session assertions delivered through DTSCCI-6133 batches |
 
 The proposed thin set covers the minimum distinct real-service risks without retaining every variant:
@@ -93,7 +94,7 @@ The proposal selects one active scenario from each representative source, produc
 | 4 | DTSCCI-5974: thin full-stack | Finalise the eight-scenario candidate, split redundant page assertions, implement independent trigger/reporting and collect ten-run evidence | CUI engineering, QA and delivery-lead approval of policy/owners |
 | 5 | DTSCCI-6134: default PR cutover | Make the approved reduced-stack suite the default ordinary-PR route | DTSCCI-6132, DTSCCI-6133, DTSCCI-5974 and DTSCCI-5977 |
 
-The 158 wider full-stack scenarios are classified as nightly/on-demand because their primary business assertions involve genuine workflow, state, assignment, payment or document behaviour. They are not automatically permanent: each DTSCCI-6133 batch must split deterministic UI assertions where replacement coverage provides equivalent confidence, and update the CSV decision in the same change.
+The 157 wider full-stack scenarios are classified as nightly/on-demand because their primary business assertions involve genuine workflow, state, assignment, payment or document behaviour. They are not automatically permanent: each DTSCCI-6133 batch must split deterministic UI assertions where replacement coverage provides equivalent confidence, and update the CSV decision in the same change.
 
 ## Old-versus-new coverage comparison
 
@@ -143,7 +144,7 @@ This first migration batch requires a QA person. On the deployed preview, QA mus
 
 DTSCCI-6132 additionally requires QA-person approval of the complete classification. The QA person must:
 
-1. Reconcile the generated total with the executable suite and confirm all 175 active scenarios are represented.
+1. Reconcile the generated total with the executable suite and confirm all 174 active scenarios are represented.
 2. Sample every primary target category: in-process integration, reduced-stack browser and full-stack.
 3. Review each of the eight proposed thin full-stack scenarios and confirm they collectively cover the stated payment, CCD/Camunda, assignment, GA, document, hearing, WA/Query Management, NoC and scheduler/state risks.
 4. Challenge at least one `nightly/on-demand-full-stack` decision in each domain group and confirm mocks/contracts cannot provide equivalent confidence for its primary assertion.
