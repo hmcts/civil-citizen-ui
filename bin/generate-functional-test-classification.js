@@ -5,6 +5,7 @@ const path = require('path');
 
 const repoRoot = path.resolve(__dirname, '..');
 const outputFile = path.join(repoRoot, 'docs/functional-test-scenario-classification.csv');
+const assertionOutputFile = path.join(repoRoot, 'docs/functional-test-assertion-classification.csv');
 
 const safeUrl = 'http://localhost';
 [
@@ -29,20 +30,33 @@ const {
 } = require('../src/test/e2e-documentation/generator/support/data-gen-utils');
 
 const TARGETS = {
-  FULL_STACK: 'full-stack',
+  RETAINED_FULL_STACK: 'retained-thin-full-stack',
   REDUCED_STACK: 'reduced-stack-browser',
   IN_PROCESS: 'in-process-integration',
+  CONTRACT: 'contract-or-focused-integration',
+  SETUP: 'setup-only-not-coverage',
 };
 
-const proposedThinFullStackFiles = new Set([
-  'bundles/cp_LiPvLiP_bundles_small_claims_tests.js',
-  'case-struck-out/cp_LiPvLiP_case_struck_out_fast_track_tests.js',
-  'create-claim/IndividualvsIndividual_tests.js',
-  'defendant-linking/defendantLinkingThroughCUI_tests.js',
-  'ga/LiPvLiP_GA_DismissAnOrder_tests.js',
-  'hearings/cp_LiPvLiP_hearing_fee_tests_fast_track_tests.js',
-  'noc/LipVLR_NoC_e2e_tests.js',
-  'qm/qm_Hearing_LiPvLiP_followUp_tests.js',
+const retainedThinFullStackScenarios = new Set([
+  'bundles/cp_LiPvLiP_bundles_small_claims_tests.js#1',
+  'case-struck-out/cp_LiPvLiP_case_struck_out_fast_track_tests.js#1',
+  'create-claim/IndividualvsIndividual_tests.js#1',
+  'defendant-linking/defendantLinkingThroughCUI_tests.js#1',
+  'ga/LiPvLiP_GA_DismissAnOrder_tests.js#1',
+  'hearings/cp_LiPvLiP_hearing_fee_tests_fast_track_tests.js#2',
+  'noc/LipVLR_NoC_e2e_tests.js#1',
+  'qm/qm_Hearing_LiPvLiP_followUp_tests.js#1',
+]);
+
+const retainedObservableAssertions = new Map([
+  ['bundles/cp_LiPvLiP_bundles_small_claims_tests.js#1', /viewBundlePage\.verifyPageContent/],
+  ['case-struck-out/cp_LiPvLiP_case_struck_out_fast_track_tests.js#1', /verifyNotificationTitleAndContent/],
+  ['create-claim/IndividualvsIndividual_tests.js#1', /createGASteps\.askForMoreTimeCourtOrderGA/],
+  ['defendant-linking/defendantLinkingThroughCUI_tests.js#1', /ResponseSteps\.AssignCaseToLipSupportingBothJourneys/],
+  ['ga/LiPvLiP_GA_DismissAnOrder_tests.js#1', /verifyNotificationTitleAndContent/],
+  ['hearings/cp_LiPvLiP_hearing_fee_tests_fast_track_tests.js#2', /api\.assertEmailSent/],
+  ['noc/LipVLR_NoC_e2e_tests.js#1', /api\.checkUserCaseAccess/],
+  ['qm/qm_Hearing_LiPvLiP_followUp_tests.js#1', /ResponseSteps\.verifyClosedQuery/],
 ]);
 
 const domainRules = {
@@ -50,6 +64,7 @@ const domainRules = {
   'case-offline': ['The assertion depends on a genuine CCD state transition and workflow completion.', 'Civil Service, CCD, Camunda', 'state-transitions'],
   'case-progression': ['The order and dashboard state are produced by genuine CCD/Camunda processing.', 'Civil Service, CCD, Camunda', 'state-transitions'],
   'case-struck-out': ['The struck-out state and resulting notifications depend on real scheduled workflow processing.', 'Civil Service, CCD, Camunda', 'state-transitions'],
+  'create-claim': ['Claim issue may include payment, workflow, assignment and GA state; only the selected representative cross-service assertion is retained.', 'Civil Service, CCD, Camunda, payments, role assignment, General Applications', 'create-claim'],
   'deadline-extension': ['The response deadline must be persisted and observed through the real case workflow.', 'Civil Service, CCD, Camunda', 'responses'],
   'defendant-linking': ['Defendant linking exercises real case and role-assignment wiring.', 'Civil Service, CCD, role assignment', 'assignment'],
   'discontinue-claim': ['Discontinuance requires a real CCD transition and downstream workflow effects.', 'Civil Service, CCD, Camunda', 'state-transitions'],
@@ -74,27 +89,45 @@ const domainRules = {
   welsh: ['Welsh-language case data, documents and translation workflow must be observed across real services.', 'Civil Service, CCD, Camunda, document management', 'welsh'],
 };
 
-const reducedStackFiles = new Set([
-  'part-admit/LRvLip_response_negativeScenarios_tests.js',
-]);
-
-const compoundCreateClaimFiles = new Set([
-  'create-claim/CompanyVsIndividual_tests.js',
-  'create-claim/CompanyVsOrg__tests.js',
-  'create-claim/IndividualvsCompany_tests.js',
-  'create-claim/OrgVsSoleTrader_tests.js',
-  'create-claim/SoleTraderVsIndividual_tests.js',
-]);
-
 const inProcessFiles = new Set([
   'payments/payment_auth_guard_tests.js',
 ]);
+
+const migrationTicketByDomain = {
+  bundles: 'DTSCCI-6259',
+  'case-offline': 'DTSCCI-6259',
+  'case-progression': 'DTSCCI-6259',
+  'case-struck-out': 'DTSCCI-6259',
+  'create-claim': 'DTSCCI-6156',
+  'deadline-extension': 'DTSCCI-6259',
+  'defendant-linking': 'DTSCCI-6260',
+  'discontinue-claim': 'DTSCCI-6258',
+  dj: 'DTSCCI-6258',
+  'full-admit': 'DTSCCI-6258',
+  ga: 'DTSCCI-6260',
+  'ga-welsh': 'DTSCCI-6260',
+  hearings: 'DTSCCI-6259',
+  'intermediate-track': 'DTSCCI-6261',
+  jba: 'DTSCCI-6258',
+  'judgment-buffer': 'DTSCCI-6258',
+  mediation: 'DTSCCI-6258',
+  'multi-track': 'DTSCCI-6261',
+  noc: 'DTSCCI-6260',
+  'part-admit': 'DTSCCI-6258',
+  payments: 'DTSCCI-6259',
+  qm: 'DTSCCI-6260',
+  'reject-all': 'DTSCCI-6258',
+  rfr: 'DTSCCI-6259',
+  'settle-claim': 'DTSCCI-6258',
+  'upload-evidence': 'DTSCCI-6259',
+  welsh: 'DTSCCI-6261',
+};
 
 function relativeTestPath(filePath) {
   return filePath.replace('src/test/functionalTests/tests/ui_tests/', '');
 }
 
-function classify(scenario) {
+function classify(scenario, scenarioId) {
   const file = relativeTestPath(scenario.filePath);
   const domain = file.split('/')[0];
 
@@ -104,40 +137,18 @@ function classify(scenario) {
       reason: 'Authentication and redirect guards are CUI controller/session behaviour; real payment or CCD services add no confidence.',
       services: 'CUI process only; downstream clients mocked',
       owner: 'civil-citizen-ui route/integration tests',
-      batch: 'DTSCCI-6133 payment guards',
+      batch: 'DTSCCI-6155 payment guards',
     };
   }
 
-  if (reducedStackFiles.has(file)) {
+  if (retainedThinFullStackScenarios.has(scenarioId)) {
     return {
-      target: TARGETS.REDUCED_STACK,
-      reason: 'The material value is browser navigation, validation, session and rendered content; downstream responses can be deterministic.',
-      services: 'CUI, browser, Redis, WireMock',
-      owner: 'civil-citizen-ui reduced-stack browser suite',
-      batch: `DTSCCI-6133 ${domain}`,
-      secondaryTargets: 'none',
-    };
-  }
-
-  if (compoundCreateClaimFiles.has(file)) {
-    return {
-      target: TARGETS.FULL_STACK,
-      reason: 'This is a compound journey. Party-type form/navigation assertions belong in reduced-stack browser coverage and the submission contract belongs in Pact; payment, workflow, assignment and GA assertions require real services until separately reviewed.',
-      services: 'Civil Service, CCD, Camunda, payments, role assignment, General Applications',
-      owner: 'DTSCCI-5974 full-stack state assertions; DTSCCI-6133 deterministic split',
-      batch: 'DTSCCI-6133 create-claim split',
-      secondaryTargets: 'reduced-stack-browser: party/form/navigation; Pact: submission contract',
-    };
-  }
-
-  if (domain === 'create-claim') {
-    return {
-      target: TARGETS.FULL_STACK,
-      reason: 'This retained representative journey includes real fee payment, asynchronous workflow completion, defendant assignment and General Application creation. Deterministic claim-form assertions must be split to reduced-stack coverage rather than duplicated here.',
-      services: 'Civil Service, CCD, Camunda, payments, role assignment, General Applications',
-      owner: 'DTSCCI-5974 retained full-stack suite',
-      batch: 'DTSCCI-5974 claim lifecycle',
-      secondaryTargets: 'reduced-stack-browser: form/navigation; Pact: submission contract',
+      target: TARGETS.RETAINED_FULL_STACK,
+      reason: `${domainRules[domain][0]} This exception retains only the observable cross-service assertion; deterministic UI assertions must still migrate.`,
+      services: domainRules[domain][1],
+      owner: 'DTSCCI-5974 reviewed exception; deterministic assertions owned by DTSCCI-6133',
+      batch: 'DTSCCI-5974 retained exception plus DTSCCI-6133 assertion split',
+      secondaryTargets: 'reduced-stack-browser; in-process integration; Pact where the CUI/service boundary is material',
     };
   }
 
@@ -147,12 +158,45 @@ function classify(scenario) {
   }
 
   return {
-    target: TARGETS.FULL_STACK,
-    reason: rule[0],
-    services: rule[1],
-    owner: 'DTSCCI-5974 retained full-stack candidate; final scenario selection subject to reviewed thinning',
-    batch: rule[2],
-    secondaryTargets: 'none',
+    target: TARGETS.REDUCED_STACK,
+    reason: 'Migration required: browser, navigation, form, session and rendered-result assertions are deterministic. Existing real-service setup is not retention evidence; split any material client contract or focused controller assertion to its lower layer.',
+    services: 'CUI, browser, Redis and scenario-driven test doubles; no real CCD or Camunda',
+    owner: `${migrationTicketByDomain[domain] || 'DTSCCI-6262'} ${rule[2]} migration batch`,
+    batch: `${migrationTicketByDomain[domain] || 'DTSCCI-6262'} ${rule[2]}`,
+    secondaryTargets: 'in-process integration for routing/rendering; Pact for important CUI/service contracts; remove duplicate assertions',
+  };
+}
+
+function classifyMaterialStep(step, source, scenarioTarget, scenarioId) {
+  if (source !== 'scenario') {
+    return {
+      target: TARGETS.SETUP,
+      rationale: 'Hook activity creates or cleans data. It is test setup, not evidence that the asserted behaviour requires a real stack.',
+    };
+  }
+
+  if (scenarioTarget === TARGETS.RETAINED_FULL_STACK && retainedObservableAssertions.get(scenarioId)?.test(step)) {
+    return {
+      target: TARGETS.RETAINED_FULL_STACK,
+      rationale: 'Candidate observable cross-service assertion. Retain only after DTSCCI-5974 review confirms mocks, contracts and focused integration tests cannot provide equivalent confidence.',
+    };
+  }
+
+  if (/^(api|noc|qm|wa)\./i.test(step)) {
+    if (/\b(assert|check|verify|retrieve)/i.test(step)) {
+      return scenarioTarget === TARGETS.RETAINED_FULL_STACK
+        ? {target: TARGETS.RETAINED_FULL_STACK, rationale: 'Candidate observable service-state assertion; retain only after DTSCCI-5974 review confirms no lower layer provides equivalent confidence.'}
+        : {target: TARGETS.CONTRACT, rationale: 'Direct service assertion does not justify a browser full stack; replace with a focused integration/contract assertion or link existing coverage.'};
+    }
+    return {
+      target: TARGETS.SETUP,
+      rationale: 'Direct API action is setup or orchestration. Replace it with deterministic fixture/state setup for migrated coverage; it is not itself a browser assertion.',
+    };
+  }
+
+  return {
+    target: TARGETS.REDUCED_STACK,
+    rationale: 'Browser-visible navigation, form, session or rendered content belongs in the real-CUI reduced stack with deterministic downstream responses.',
   };
 }
 
@@ -168,23 +212,43 @@ function collectInventory() {
   const active = declared.filter(scenario => !scenario.skipped);
   const ordinalByFile = new Map();
 
+  const assertionRows = [];
   const rows = active.map(scenario => {
     const file = relativeTestPath(scenario.filePath);
     const ordinal = (ordinalByFile.get(file) || 0) + 1;
     ordinalByFile.set(file, ordinal);
-    const classification = classify(scenario);
+    const scenarioId = `${file}#${ordinal}`;
+    const classification = classify(scenario, scenarioId);
     const pipeline = scenario.tags
       .filter(tag => ['@civil-citizen-pr', '@civil-citizen-master', '@civil-citizen-nightly'].includes(tag))
       .map(tag => tag.replace('@civil-citizen-', ''))
       .join(';') || 'group/on-demand only';
-    const materialSteps = [
-      ...(scenario.beforeSuiteSteps || []),
-      ...(scenario.beforeSteps || []),
-      ...(scenario.collectedSteps || []),
+    const sourcedSteps = [
+      ...(scenario.beforeSuiteSteps || []).map(step => ({step, source: 'feature hook'})),
+      ...(scenario.beforeSteps || []).map(step => ({step, source: 'scenario hook'})),
+      ...(scenario.collectedSteps || []).map(step => ({step, source: 'scenario'})),
     ];
+    const materialSteps = sourcedSteps.map(({step}) => step);
+    (sourcedSteps.length ? sourcedSteps : [{step: 'Scenario-local browser assertion (source inspection required during migration)', source: 'scenario'}])
+      .forEach(({step, source}, index) => {
+        const decision = classifyMaterialStep(step, source, classification.target, scenarioId);
+        assertionRows.push({
+          id: `${scenarioId}.a${index + 1}`,
+          scenarioId,
+          file,
+          feature: scenario.featureName,
+          scenario: scenario.testName,
+          source,
+          materialStep: step,
+          target: decision.target,
+          rationale: decision.rationale,
+          deliveryBatch: classification.batch,
+          owner: classification.owner,
+        });
+      });
 
     return {
-      id: `${file}#${ordinal}`,
+      id: scenarioId,
       file,
       feature: scenario.featureName,
       scenario: scenario.testName,
@@ -196,14 +260,13 @@ function collectInventory() {
       rationale: classification.reason,
       deliveryBatch: classification.batch,
       secondaryTargets: classification.secondaryTargets || 'none',
-      executionDecision: classification.target === TARGETS.FULL_STACK
-        ? (proposedThinFullStackFiles.has(file) && ordinal === 1 ? 'proposed-thin-full-stack' : 'nightly/on-demand-full-stack')
-        : 'migrate-off-full-stack',
+      executionDecision: classification.target === TARGETS.RETAINED_FULL_STACK ? 'proposed-thin-full-stack' : 'migrate-off-full-stack',
     };
   });
 
   rows.sort((left, right) => left.id.localeCompare(right.id));
-  return { declared, active, rows };
+  assertionRows.sort((left, right) => left.id.localeCompare(right.id));
+  return { declared, active, rows, assertionRows };
 }
 
 function renderCsv(rows) {
@@ -230,17 +293,38 @@ function renderCsv(rows) {
   ].join('\n');
 }
 
-const { declared, active, rows } = collectInventory();
+function renderAssertionCsv(rows) {
+  const headings = ['assertion id', 'scenario id', 'file', 'feature', 'scenario', 'source', 'material step', 'target layer', 'rationale', 'delivery batch', 'coverage owner'];
+  const keys = ['id', 'scenarioId', 'file', 'feature', 'scenario', 'source', 'materialStep', 'target', 'rationale', 'deliveryBatch', 'owner'];
+  return [headings.map(escapeCsv).join(','), ...rows.map(row => keys.map(key => escapeCsv(row[key])).join(',')), ''].join('\n');
+}
+
+const { declared, active, rows, assertionRows } = collectInventory();
 const csv = renderCsv(rows);
+const assertionCsv = renderAssertionCsv(assertionRows);
 const checkMode = process.argv.includes('--check');
 
+if (rows.filter(row => row.target === TARGETS.RETAINED_FULL_STACK).length !== retainedThinFullStackScenarios.size) {
+  throw new Error('Every retained thin full-stack exception must resolve to one active scenario.');
+}
+const retainedAssertionScenarioIds = new Set(assertionRows
+  .filter(row => row.target === TARGETS.RETAINED_FULL_STACK)
+  .map(row => row.scenarioId));
+const missingRetainedAssertions = [...retainedThinFullStackScenarios]
+  .filter(scenarioId => !retainedAssertionScenarioIds.has(scenarioId));
+if (missingRetainedAssertions.length) {
+  throw new Error(`Retained scenarios lack an explicit observable assertion: ${missingRetainedAssertions.join(', ')}`);
+}
+
 if (checkMode) {
-  if (!fs.existsSync(outputFile) || fs.readFileSync(outputFile, 'utf8') !== csv) {
+  if (!fs.existsSync(outputFile) || fs.readFileSync(outputFile, 'utf8') !== csv
+    || !fs.existsSync(assertionOutputFile) || fs.readFileSync(assertionOutputFile, 'utf8') !== assertionCsv) {
     console.error('Functional-test classification is stale. Run: yarn test:generate:functional-classification');
     process.exit(1);
   }
 } else {
   fs.writeFileSync(outputFile, csv);
+  fs.writeFileSync(assertionOutputFile, assertionCsv);
 }
 
 const counts = rows.reduce((result, row) => {
@@ -256,6 +340,7 @@ console.log(JSON.stringify({
   active: active.length,
   skipped: declared.length - active.length,
   classified: rows.length,
+  materialDecisions: assertionRows.length,
   targets: counts,
   execution: executionCounts,
 }, null, 2));
