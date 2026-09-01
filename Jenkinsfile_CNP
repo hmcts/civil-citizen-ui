@@ -3,7 +3,7 @@ properties([
   copyArtifactPermission('/HMCTS_a_to_c/civil-citizen-ui/*'),
 ])
 
-@Library("Infrastructure@2.4.4")
+@Library("Infrastructure@2.5.4")
 import uk.gov.hmcts.contino.AppPipelineConfig
 import uk.gov.hmcts.contino.GithubAPI
 import uk.gov.hmcts.contino.AppPipelineDsl
@@ -110,6 +110,10 @@ def getCivilServiceSharedBranch() {
   def githubApi = new GithubAPI(this)
   for (label in githubApi.getLabelsbyPattern(env.BRANCH_NAME, "civilShared:")) {
     return label.minus("civilShared:").trim()
+  }
+  def civilServicePr = getCivilServicePr()
+  if (civilServicePr) {
+    return "pr-${civilServicePr}"
   }
   return "master"
 }
