@@ -23,6 +23,9 @@ claimantPhoneController.get(CLAIMANT_PHONE_NUMBER_URL, (async (req: AppRequest, 
       throw new Error('[claimantPhoneController] no draft claim found');
     }
     const claim: Claim = Object.assign(new Claim(), draftResult.claimResponse?.case_data as unknown as Claim);
+    if (draftResult.createdAt && !claim.draftClaimCreatedAt) {
+      claim.draftClaimCreatedAt = new Date(draftResult.createdAt);
+    }
     const carmEnabled = await isCarmEnabledForCase(claim.draftClaimCreatedAt);
 
     const form: CitizenTelephoneNumber = await getTelephone(req, ClaimantOrDefendant.CLAIMANT);
@@ -39,6 +42,9 @@ claimantPhoneController.post(CLAIMANT_PHONE_NUMBER_URL, (async (req: AppRequest,
       throw new Error('[claimantPhoneController] no draft claim found');
     }
     const claim: Claim = Object.assign(new Claim(), draftResult.claimResponse?.case_data as unknown as Claim);
+    if (draftResult.createdAt && !claim.draftClaimCreatedAt) {
+      claim.draftClaimCreatedAt = new Date(draftResult.createdAt);
+    }
     const carmEnabled = await isCarmEnabledForCase(claim.draftClaimCreatedAt);
     const form: GenericForm<CitizenTelephoneNumber> = new GenericForm(new CitizenTelephoneNumber(req.body.telephoneNumber === '' ? undefined : req.body.telephoneNumber, undefined, true));
     form.validateSync();
