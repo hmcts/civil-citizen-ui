@@ -7,14 +7,12 @@ import {t} from 'i18next';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {Claim} from 'models/claim';
 import {getDraftClaim, updateDraftClaim} from 'modules/draft-store/draftStoreManagerService';
-import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {CivilClaimResponse} from 'models/civilClaimResponse';
 import {DraftClaimManagerResult} from 'models/draft/draftClaim';
 import * as launchDarklyClient from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('modules/draft-store/draftStoreManagerService');
-jest.mock('modules/draft-store/draftStoreService');
 jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 jest.mock('../../../../../../main/routes/guards/claimIssueTaskListGuard', () => ({
   claimIssueTaskListGuard: jest.fn((req, res, next) => next()),
@@ -22,8 +20,6 @@ jest.mock('../../../../../../main/routes/guards/claimIssueTaskListGuard', () => 
 
 const mockGetDraftClaim = getDraftClaim as jest.Mock;
 const mockUpdateDraftClaim = updateDraftClaim as jest.Mock;
-const mockGetCaseDataFromStore = draftStoreService.getCaseDataFromStore as jest.Mock;
-const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
 
 const PHONE_NUMBER = '01632960001';
 
@@ -68,7 +64,6 @@ describe('Completing Claim', () => {
     it('should return on your claimant phone number page successfully', async () => {
       const mockClaim = new Claim();
       mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
 
       await request(app)
         .get(CLAIMANT_PHONE_NUMBER_URL)
@@ -76,11 +71,12 @@ describe('Completing Claim', () => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('PAGES.CLAIMANT_PHONE.TITLE'));
         });
+
+      expect(launchDarklyClient.isCarmEnabledForCase).toHaveBeenCalledWith(new Date('2026-08-01T10:00:00.000Z'));
     });
 
     it('should return 500 status code when error occurs', async () => {
       mockGetDraftClaim.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
-      mockGetCaseDataFromStore.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
 
       await request(app)
         .get(CLAIMANT_PHONE_NUMBER_URL)
@@ -99,7 +95,6 @@ describe('Completing Claim', () => {
     it('should return on your claimant phone number page successfully', async () => {
       const mockClaim = new Claim();
       mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
 
       await request(app)
         .get(CLAIMANT_PHONE_NUMBER_URL)
@@ -107,11 +102,12 @@ describe('Completing Claim', () => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('PAGES.CLAIMANT_PHONE.TITLE_MANDATORY'));
         });
+
+      expect(launchDarklyClient.isCarmEnabledForCase).toHaveBeenCalledWith(new Date('2026-08-01T10:00:00.000Z'));
     });
 
     it('should return 500 status code when error occurs', async () => {
       mockGetDraftClaim.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
-      mockGetCaseDataFromStore.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
 
       await request(app)
         .get(CLAIMANT_PHONE_NUMBER_URL)
@@ -130,9 +126,7 @@ describe('Completing Claim', () => {
     it('should redirect to task list when mandatory phone number provided', async () => {
       const mockClaim = new Claim();
       mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
       mockUpdateDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockSaveDraftClaim.mockResolvedValue(undefined);
 
       await request(app)
         .post(CLAIMANT_PHONE_NUMBER_URL)
@@ -141,12 +135,13 @@ describe('Completing Claim', () => {
           expect(res.status).toBe(302);
           expect(res.header.location).toEqual(CLAIMANT_TASK_LIST_URL);
         });
+
+      expect(launchDarklyClient.isCarmEnabledForCase).toHaveBeenCalledWith(new Date('2026-08-01T10:00:00.000Z'));
     });
 
     it('should return error on empty input', async () => {
       const mockClaim = new Claim();
       mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
 
       await request(app)
         .post(CLAIMANT_PHONE_NUMBER_URL)
@@ -160,7 +155,6 @@ describe('Completing Claim', () => {
     it('should return error on input with space', async () => {
       const mockClaim = new Claim();
       mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
 
       await request(app)
         .post(CLAIMANT_PHONE_NUMBER_URL)
@@ -174,7 +168,6 @@ describe('Completing Claim', () => {
     it('should return error on incorrect input', async () => {
       const mockClaim = new Claim();
       mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
 
       await request(app)
         .post(CLAIMANT_PHONE_NUMBER_URL)
@@ -188,7 +181,6 @@ describe('Completing Claim', () => {
     it('should return error on input with interior spaces', async () => {
       const mockClaim = new Claim();
       mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
 
       await request(app)
         .post(CLAIMANT_PHONE_NUMBER_URL)
@@ -202,9 +194,7 @@ describe('Completing Claim', () => {
     it('should accept input with trailing whitespaces', async () => {
       const mockClaim = new Claim();
       mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
       mockUpdateDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockSaveDraftClaim.mockResolvedValue(undefined);
 
       await request(app)
         .post(CLAIMANT_PHONE_NUMBER_URL)
@@ -214,11 +204,21 @@ describe('Completing Claim', () => {
         });
     });
 
-    it('should return status 500 when there is error', async () => {
-      mockGetDraftClaim.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
-      mockGetCaseDataFromStore.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
-      mockUpdateDraftClaim.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
-      mockSaveDraftClaim.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
+    it('should return 500 when no draft exists on GET', async () => {
+      isCarmEnabledSpy(false);
+      mockGetDraftClaim.mockResolvedValue(null);
+
+      await request(app)
+        .get(CLAIMANT_PHONE_NUMBER_URL)
+        .expect((res: request.Response) => {
+          expect(res.status).toBe(500);
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
+        });
+    });
+
+    it('should return 500 when no draft exists on POST', async () => {
+      isCarmEnabledSpy(true);
+      mockGetDraftClaim.mockResolvedValue(null);
 
       await request(app)
         .post(CLAIMANT_PHONE_NUMBER_URL)

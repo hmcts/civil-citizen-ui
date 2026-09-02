@@ -6,7 +6,7 @@ import {CITIZEN_PHONE_NUMBER_URL, RESPONSE_TASK_LIST_URL} from 'routes/urls';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {GenericForm} from 'form/models/genericForm';
 import {ClaimantOrDefendant} from 'models/partyType';
-import {getTelephone, saveTelephone} from 'services/features/claim/yourDetails/phoneService';
+import {getTelephoneFromStore, saveTelephoneToStore} from 'services/features/claim/yourDetails/phoneService';
 import {AppRequest} from 'common/models/AppRequest';
 import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {isCarmEnabledForCase} from '../../../../app/auth/launchdarkly/launchDarklyClient';
@@ -20,7 +20,7 @@ function renderView(form: GenericForm<CitizenTelephoneNumber>, res: Response, ca
 
 citizenPhoneController.get(CITIZEN_PHONE_NUMBER_URL, (async (req, res, next: NextFunction) => {
   try {
-    const citizenTelephoneNumber: CitizenTelephoneNumber = await getTelephone(generateRedisKey(<AppRequest>req), ClaimantOrDefendant.DEFENDANT);
+    const citizenTelephoneNumber: CitizenTelephoneNumber = await getTelephoneFromStore(generateRedisKey(<AppRequest>req), ClaimantOrDefendant.DEFENDANT);
     const redisKey = generateRedisKey(<AppRequest>req);
     const claim = await getCaseDataFromStore(redisKey);
     const carmEnabled = await isCarmEnabledForCase(claim.submittedDate);
@@ -41,7 +41,7 @@ citizenPhoneController.post(CITIZEN_PHONE_NUMBER_URL,
       if (citizenTelephoneNumberForm.hasErrors()) {
         renderView(citizenTelephoneNumberForm, res, carmEnabled);
       } else {
-        await saveTelephone(generateRedisKey(<AppRequest>req), model, ClaimantOrDefendant.DEFENDANT);
+        await saveTelephoneToStore(generateRedisKey(<AppRequest>req), model, ClaimantOrDefendant.DEFENDANT);
         const redirectURL = constructResponseUrlWithIdParams(req.params.id, RESPONSE_TASK_LIST_URL);
         res.redirect(redirectURL);
       }
