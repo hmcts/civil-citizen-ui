@@ -102,7 +102,7 @@ window.$ = $;
       const addressList = data;
 
       $(global.this).parent().find('select').closest('.govuk-visually-hidden').removeClass('govuk-visually-hidden');
-      $(global.this).parent().find('select').on('change', function () {
+      $(global.this).parent().find('select').off('change').on('change', function () {
         global.this = $(this).parents(POSTCODE_CONTAINER_CALSS);
         findSelectedAddress(addressList, $(this).find(':selected').val());
       });
@@ -115,7 +115,7 @@ window.$ = $;
         if (regex.test(text)) {
           return text.replace(regex, data.length);
         }
-        $(this).prepend(data.length + ' ');
+        return data.length + ' ' + text;
       });
     };
 
