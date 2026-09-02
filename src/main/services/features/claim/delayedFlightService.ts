@@ -1,4 +1,7 @@
 import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {getDraftClaim, updateDraftClaim} from 'modules/draft-store/draftStoreManagerService';
+import {AppRequest} from 'models/AppRequest';
+import {Claim} from 'models/claim';
 import {FlightDetails} from 'common/models/flightDetails';
 import {GenericYesNo} from 'common/form/models/genericYesNo';
 import {AirlineList} from 'common/models/airlines/flights';
@@ -19,12 +22,20 @@ export const getDelayedFlight = async (claimId: string): Promise<GenericYesNo> =
   }
 };
 
-export const deleteDelayedFlight = async (claimId: string): Promise<void> => {
+export const deleteDelayedFlight = async (req: AppRequest): Promise<void> => {
   try {
-    const claim = await getCaseDataFromStore(claimId);
+    const draftResult = await getDraftClaim(req);
+    if (!draftResult) {
+      throw new Error('[delayedFlightService] no draft claim found');
+    }
+    const claim = Object.assign(new Claim(), draftResult.claimResponse?.case_data as unknown as Claim);
+    const draftId = req.session?.draftId || draftResult.rawResponse?.draftId;
+    if (draftResult.createdAt && !claim.draftClaimCreatedAt) {
+      claim.draftClaimCreatedAt = new Date(draftResult.createdAt);
+    }
     delete claim.delayedFlight;
     delete claim.flightDetails;
-    await saveDraftClaim(claimId, claim);
+    await updateDraftClaim(req, claim, draftId);
   } catch (error) {
     logger.error(error);
     throw error;
