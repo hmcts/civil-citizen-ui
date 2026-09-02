@@ -213,8 +213,8 @@ def checkForRunAllFunctionalTests(branch_name) {
 
 def checkForReducedStackTests(branch_name) {
   return new GithubAPI(this)
-    .getLabelsbyPattern(branch_name, "tests:fullyMocked")
-    .contains("tests:fullyMocked")
+    .getLabelsbyPattern(branch_name, "tests:mocked")
+    .contains("tests:mocked")
 }
 
 def checkForThinFullStackTests(branch_name) {
@@ -303,7 +303,7 @@ withPipeline(type, product, component) {
     env.REDUCED_STACK_TESTS = checkForReducedStackTests(env.BRANCH_NAME).toString()
     env.THIN_FULL_STACK_TESTS = checkForThinFullStackTests(env.BRANCH_NAME).toString()
     if (env.REDUCED_STACK_TESTS == 'true' && env.THIN_FULL_STACK_TESTS == 'true') {
-      error 'tests:fullyMocked and tests:thinClient cannot be selected together.'
+      error 'tests:mocked and tests:thinClient cannot be selected together.'
     }
     def civilCcdDefinitionBranch = getCivilCcdDefinitionBranch()
     generalappCCDBranch = civilCcdDefinitionBranch

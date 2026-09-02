@@ -11,7 +11,7 @@ Run locally or against an already configured environment with:
 yarn test:thin-full-stack
 ```
 
-In the standard CNP PR pipeline, add the `tests:thinClient` label to run this suite against that PR's existing full preview deployment. The label is mutually exclusive with `tests:fullyMocked`. Removing it restores the current standard selection; DTSCCI-6134 will make fully mocked tests the ordinary PR default while retaining this explicit thin-client route.
+In the standard CNP PR pipeline, add the `tests:thinClient` label to run this suite against that PR's existing full preview deployment. The label is mutually exclusive with `tests:mocked`. Removing it restores the current standard selection; DTSCCI-6134 will make mocked tests the ordinary PR default while retaining this explicit thin-client route.
 
 Thin-suite results live below `test-results/thin-full-stack`, have their own JUnit, Mochawesome and Allure output, and are published as **Thin Full-Stack Allure Report**. They are not combined with reduced-stack results.
 

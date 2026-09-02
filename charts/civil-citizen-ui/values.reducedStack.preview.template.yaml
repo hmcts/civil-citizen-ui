@@ -1,4 +1,4 @@
-# Applied by the Jenkins library when a PR has the `tests:fullyMocked`
+# Applied by the Jenkins library when a PR has the `tests:mocked`
 # label. The standard preview and `pr-values:fullDeployment` paths are not
 # changed by this file.
 
