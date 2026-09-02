@@ -197,7 +197,7 @@ describe('GA Service Client', () => {
         baseURL: baseUrl,
       });
       expect(mockGet.mock.calls[0][0]).toContain(GA_GET_APPLICATION_URL.replace(':caseId','1718105701451856'));
-      expect(application.id).toBe('1718105701451856');
+      expect(application.id).toBe(1718105701451856);
     });
   });
 
