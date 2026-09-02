@@ -133,5 +133,3 @@ describe('Timeline service', () => {
   });
 });
 
-
-
