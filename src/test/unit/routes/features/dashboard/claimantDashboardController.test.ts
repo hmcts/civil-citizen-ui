@@ -4,7 +4,13 @@ import request from 'supertest';
 import {app} from '../../../../../main/app';
 import claimantDashboardController from '../../../../../main/routes/features/dashboard/claimantDashboardController';
 import {civilClaimResponseMock} from '../../../../utils/mockDraftStore';
-import {APPLICATION_TYPE_URL, BREATHING_SPACE_LIFT_URL, DASHBOARD_CLAIMANT_URL, GA_APPLICATION_SUMMARY_URL} from 'routes/urls';
+import {
+  APPLICATION_TYPE_URL,
+  BREATHING_SPACE_INFO_URL,
+  BREATHING_SPACE_LIFT_URL,
+  DASHBOARD_CLAIMANT_URL,
+  GA_APPLICATION_SUMMARY_URL,
+} from 'routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {PartyType} from 'common/models/partyType';
 import {PartyDetails} from 'common/form/models/partyDetails';
@@ -34,6 +40,7 @@ import {ClaimBilingualLanguagePreference} from 'models/claimBilingualLanguagePre
 import * as ClaimDetailsService from 'modules/claimDetailsService';
 import {BreathingSpaceEnterInfo} from 'models/breathingSpace/breathingSpaceEnterInfo';
 import {BreathingSpaceType} from 'models/breathingSpace/breathingSpaceType';
+import {BreathingSpaceLiftInfo} from 'models/breathingSpace/breathingSpaceLiftInfo';
 import {DashboardNotificationList} from 'models/dashboard/dashboardNotificationList';
 import {DashboardNotification} from 'models/dashboard/dashboardNotification';
 
@@ -905,6 +912,21 @@ describe('claimant Dashboard Controller', () => {
         expect(res.text).not.toContain(t('PAGES.DASHBOARD.NOTIFICATIONS.BREATHING_SPACE.USUALLY_LASTS'));
         expect(res.text).not.toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.LIFT_DEBT_RESPITE'));
         expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.GET_DEBT_RESPITE'));
+      });
+    });
+
+    it('should not show enter breathing space link after defendant 1 exits breathing space in a 1v1 claim', async () => {
+      const claim = new Claim();
+      claim.caseRole = CaseRole.CLAIMANT;
+      claim.ccdState = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
+      claim.enterBreathing = new BreathingSpaceEnterInfo(BreathingSpaceType.STANDARD);
+      claim.liftBreathing = new BreathingSpaceLiftInfo(new Date('2026-08-10'));
+      jest.spyOn(UtilityService, 'getClaimById').mockResolvedValueOnce(claim);
+
+      await request(app).get(DASHBOARD_CLAIMANT_URL).expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).not.toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.GET_DEBT_RESPITE'));
+        expect(res.text).not.toContain(constructResponseUrlWithIdParams(':id', BREATHING_SPACE_INFO_URL));
       });
     });
   });
