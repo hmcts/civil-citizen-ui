@@ -11,9 +11,38 @@ import {YesNo} from 'common/form/models/yesNo';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {GenericYesNo} from 'common/form/models/genericYesNo';
 import {FlightDetails} from 'common/models/flightDetails';
+import {AppRequest} from 'models/AppRequest';
+import {getDraftClaim, updateDraftClaim} from 'modules/draft-store/draftStoreManagerService';
+import {CivilClaimResponse} from 'models/civilClaimResponse';
+import {DraftClaimManagerResult} from 'models/draft/draftClaim';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('modules/draft-store/draftStoreManagerService');
+
+const mockGetDraftClaim = getDraftClaim as jest.Mock;
+const mockUpdateDraftClaim = updateDraftClaim as jest.Mock;
+
+const mockReq = {
+  session: {
+    user: {id: '123'},
+    draftId: 'draft-123',
+  },
+} as unknown as AppRequest;
+
+const createMockManagerResult = (claim: Claim): DraftClaimManagerResult => ({
+  claimResponse: {
+    id: '123',
+    case_data: claim,
+  } as unknown as CivilClaimResponse,
+  rawResponse: {
+    draftId: 'draft-123',
+    payload: claim,
+  } as unknown as DraftClaimManagerResult['rawResponse'],
+  createdAt: '2026-08-01T10:00:00.000Z',
+  updatedAt: '2026-08-01T11:00:00.000Z',
+  expiresAt: '2026-09-01T10:00:00.000Z',
+});
 
 describe('Delayed Flight Service', () => {
   const claimId = '123';
@@ -141,26 +170,38 @@ describe('Delayed Flight Service', () => {
   });
 
   describe('deleteDelayedFlight', () => {
-    it('should delete delayed flight', async () => {
-      //Given
-      const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
-      const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
-      mockGetCaseData.mockImplementation(async () => {
-        return new Claim();
-      });
-      //When
-      await deleteDelayedFlight(claimId);
-      //Then
-      expect(spyGetCaseDataFromStore).toBeCalled();
+    beforeEach(() => {
+      jest.clearAllMocks();
     });
-    it('should throw an error', async () => {
-      //Given
-      const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
-      mockGetCaseData.mockImplementation(async () => {
-        throw new Error(TestMessages.REDIS_FAILURE);
-      });
-      //Then
-      await expect(deleteDelayedFlight(claimId)).rejects.toThrow(TestMessages.REDIS_FAILURE);
+
+    it('should delete delayed flight via the manager', async () => {
+      const claim = new Claim();
+      claim.delayedFlight = new GenericYesNo(YesNo.YES);
+      mockGetDraftClaim.mockResolvedValue(createMockManagerResult(claim));
+      mockUpdateDraftClaim.mockResolvedValue(createMockManagerResult(claim));
+
+      await deleteDelayedFlight(mockReq);
+
+      expect(mockGetDraftClaim).toHaveBeenCalledWith(mockReq);
+      expect(mockUpdateDraftClaim).toHaveBeenCalledTimes(1);
+      const savedClaim = mockUpdateDraftClaim.mock.calls[0][1] as Claim;
+      expect(mockUpdateDraftClaim.mock.calls[0][0]).toBe(mockReq);
+      expect(mockUpdateDraftClaim.mock.calls[0][2]).toBe('draft-123');
+      expect(savedClaim.delayedFlight).toBeUndefined();
+      expect(savedClaim.flightDetails).toBeUndefined();
+      expect(savedClaim.draftClaimCreatedAt).toEqual(new Date('2026-08-01T10:00:00.000Z'));
+    });
+
+    it('should throw when no draft exists', async () => {
+      mockGetDraftClaim.mockResolvedValue(null);
+
+      await expect(deleteDelayedFlight(mockReq)).rejects.toThrow('[delayedFlightService] no draft claim found');
+    });
+
+    it('should throw when the manager fails', async () => {
+      mockGetDraftClaim.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
+
+      await expect(deleteDelayedFlight(mockReq)).rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
   });
 });
