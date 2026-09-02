@@ -162,7 +162,7 @@ run_reduced_stack_functional_tests() {
 }
 
 assert_thin_full_stack_results() {
-  local report_dir="${THIN_JUNIT_REPORT_DIR:-test-results/thin-full-stack/junit}"
+  local report_dir="${THIN_JUNIT_REPORT_DIR:-test-results/thin-full-stack}"
   local aggregate_report="${THIN_JUNIT_REPORT:-test-results/thin-full-stack/result.xml}"
   local allure_dir="${THIN_ALLURE_RESULTS_DIR:-test-results/thin-full-stack/allure-results}"
 
@@ -179,7 +179,7 @@ assert_thin_full_stack_results() {
     }
 
     const reportFiles = fs.readdirSync(reportDir)
-      .filter((file) => file.endsWith('.xml'))
+      .filter((file) => file.startsWith('result-') && file.endsWith('.xml'))
       .map((file) => path.join(reportDir, file));
     if (reportFiles.length === 0) {
       throw new Error(`Thin full-stack JUnit reports are missing: ${reportDir}`);

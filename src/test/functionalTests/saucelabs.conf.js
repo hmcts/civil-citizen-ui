@@ -7,7 +7,7 @@ const {deleteAllIdamTestUsers} = require('./specClaimHelpers/api/idamHelper');
 
 const browser = process.env.SAUCELABS_BROWSER || 'chrome';
 const junitReportFile = process.env.THIN_FULL_STACK_TESTS === 'true'
-  ? `${testConfig.TestOutputDir}/junit/result-[hash].xml`
+  ? `${testConfig.TestOutputDir}/result-[hash].xml`
   : `${testConfig.TestOutputDir}/result.xml`;
 const defaultSauceOptions = {
   username: process.env.SAUCE_USERNAME,
