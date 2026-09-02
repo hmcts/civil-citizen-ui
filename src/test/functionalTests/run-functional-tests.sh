@@ -187,11 +187,26 @@ assert_thin_full_stack_results() {
 
     const parser = new XMLParser({ignoreAttributes: false, attributeNamePrefix: ''});
     const summaries = reportFiles.map((file) => parser.parse(fs.readFileSync(file, 'utf8')).testsuites);
-    const total = (field) => summaries.reduce((sum, summary) => sum + Number(summary?.[field] || 0), 0);
+    const suites = summaries.flatMap((summary) => {
+      const value = summary?.testsuite;
+      return value ? (Array.isArray(value) ? value : [value]) : [];
+    }).map((suite) => {
+      const value = suite?.testcase;
+      const testcases = value ? (Array.isArray(value) ? value : [value]) : [];
+      return {
+        ...suite,
+        tests: testcases.length,
+        failures: testcases.filter((testcase) => testcase.failure !== undefined).length,
+        errors: testcases.filter((testcase) => testcase.error !== undefined).length,
+        skipped: testcases.filter((testcase) => testcase.skipped !== undefined).length,
+        testcase: testcases,
+      };
+    }).filter((suite) => suite.tests > 0);
+    const total = (field) => suites.reduce((sum, suite) => sum + Number(suite[field] || 0), 0);
     const tests = total('tests');
     const failures = total('failures');
     const errors = total('errors');
-    const skipped = total('skipped') + total('disabled');
+    const skipped = total('skipped');
 
     if (tests !== expectedTests || failures !== 0 || errors !== 0 || skipped !== 0) {
       throw new Error(
@@ -200,10 +215,6 @@ assert_thin_full_stack_results() {
       );
     }
 
-    const suites = summaries.flatMap((summary) => {
-      const value = summary?.testsuite;
-      return value ? (Array.isArray(value) ? value : [value]) : [];
-    });
     const aggregate = {
       testsuites: {
         name: 'Thin full-stack tests',
