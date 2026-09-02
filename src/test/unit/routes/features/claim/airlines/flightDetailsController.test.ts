@@ -10,7 +10,6 @@ import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
 import {Claim} from 'models/claim';
 import {getDraftClaim, updateDraftClaim} from 'modules/draft-store/draftStoreManagerService';
-import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {CivilClaimResponse} from 'models/civilClaimResponse';
 import {DraftClaimManagerResult} from 'models/draft/draftClaim';
@@ -19,15 +18,12 @@ import { AirlineList } from 'models/airlines/flights';
 jest.mock('client/civilServiceClient');
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('modules/draft-store/draftStoreManagerService');
-jest.mock('modules/draft-store/draftStoreService');
 jest.mock('routes/guards/claimIssueTaskListGuard', () => ({
   claimIssueTaskListGuard: jest.fn((req, res, next) => next()),
 }));
 
 const mockGetDraftClaim = getDraftClaim as jest.Mock;
 const mockUpdateDraftClaim = updateDraftClaim as jest.Mock;
-const mockGetCaseDataFromDraftStore = draftStoreService.getCaseDataFromStore as jest.Mock;
-const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
 
 const createMockManagerResult = (claim: Claim): DraftClaimManagerResult => ({
   claimResponse: {
@@ -67,10 +63,9 @@ describe('Flight details Controller', () => {
     it('should return flight details page', async () => {
       const mockClaim = new Claim();
       mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockGetCaseDataFromDraftStore.mockResolvedValue(mockClaim);
 
       await request(app)
-        .get(FLIGHT_DETAILS_URL)
+        .get(`${FLIGHT_DETAILS_URL}?lang=en`)
         .expect((res: request.Response) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('PAGES.FLIGHT_DETAILS.FLIGHT_DETAILS'));
@@ -79,7 +74,6 @@ describe('Flight details Controller', () => {
 
     it('should return http 500 when has error in the get method', async () => {
       mockGetDraftClaim.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
-      mockGetCaseDataFromDraftStore.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
 
       await request(app)
         .get(FLIGHT_DETAILS_URL)
@@ -101,9 +95,7 @@ describe('Flight details Controller', () => {
       };
       const mockClaim = new Claim();
       mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockGetCaseDataFromDraftStore.mockResolvedValue(mockClaim);
       mockUpdateDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockSaveDraftClaim.mockResolvedValue(undefined);
 
       await request(app)
         .post(FLIGHT_DETAILS_URL)
@@ -117,10 +109,9 @@ describe('Flight details Controller', () => {
     it('should return errors on empty inputs', async () => {
       const mockClaim = new Claim();
       mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockGetCaseDataFromDraftStore.mockResolvedValue(mockClaim);
 
       await request(app)
-        .post(FLIGHT_DETAILS_URL)
+        .post(`${FLIGHT_DETAILS_URL}?lang=en`)
         .send({})
         .expect((res: request.Response) => {
           expect(res.status).toBe(200);
@@ -142,9 +133,7 @@ describe('Flight details Controller', () => {
       };
 
       mockGetDraftClaim.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
-      mockGetCaseDataFromDraftStore.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
       mockUpdateDraftClaim.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
-      mockSaveDraftClaim.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
 
       await request(app)
         .post(FLIGHT_DETAILS_URL)
