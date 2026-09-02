@@ -8,7 +8,7 @@ import {CivilServiceClient} from 'client/civilServiceClient';
 import {Claim} from 'models/claim';
 import nock from 'nock';
 import config from 'config';
-import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {generateRedisKey, getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {ClaimDetails} from 'form/models/claim/details/claimDetails';
 import {Session} from 'express-session';
 import * as feePaymentServiceModule from 'services/features/feePayment/feePaymentService';
@@ -61,7 +61,6 @@ describe('on GET', () => {
   });
 
   it('should handle the get call of fee summary details', async () => {
-    //given
     const claimId = '111111';
     const mockClaimData = {
       totalClaimAmount: 1000,
@@ -85,7 +84,6 @@ describe('on GET', () => {
       hasBusinessProcessFinished: () => true,
     };
     (getClaimBusinessProcess as jest.Mock).mockResolvedValueOnce(mockBusinessProcessData);
-    //when-then
     await request(app)
       .get(CLAIM_FEE_BREAKUP.replace(':id', claimId)).expect((res: request.Response) => {
         expect(res.status).toBe(200);
@@ -103,7 +101,6 @@ describe('on GET', () => {
   });
 
   it('should handle the get call of fee summary details when business process has not finished', async () => {
-    //given
     const claimId = '111111';
     const mockClaimData = {
       totalClaimAmount: 1000,
@@ -128,7 +125,6 @@ describe('on GET', () => {
       isInterestFromASpecificDate: () => false,
     };
     (getClaimBusinessProcess as jest.Mock).mockResolvedValueOnce(mockBusinessProcessData);
-    //when-then
     await request(app)
       .get(CLAIM_FEE_BREAKUP.replace(':id', claimId)).expect((res: request.Response) => {
         expect(res.status).toBe(200);
@@ -146,9 +142,7 @@ describe('on GET', () => {
   });
 
   it('should return 500 status code when error occurs', async () => {
-    //given
     (getClaimById as jest.Mock).mockRejectedValueOnce(new Error('Redis failure'));
-    //when-then
     await request(app)
       .get(CLAIM_FEE_BREAKUP)
       .expect((res: request.Response) => {
@@ -176,6 +170,8 @@ describe('on POST', () => {
       next();
     });
     app.use(claimFeeBreakDownController);
+    (generateRedisKey as jest.Mock).mockReturnValue('jfkdljfd');
+    (saveDraftClaim as jest.Mock).mockResolvedValue(undefined);
   });
 
   it('should handle the get call of fee summary details', async () => {
@@ -192,6 +188,9 @@ describe('on POST', () => {
   });
 
   it('should enable the warning text if payment request is failed', async () => {
+    const claim = new Claim();
+    claim.claimDetails = new ClaimDetails();
+    (getCaseDataFromStore as jest.Mock).mockResolvedValue(claim);
     jest.spyOn(CivilServiceClient.prototype, 'getFeePaymentRedirectInformation').mockRejectedValueOnce(new Error('something went wrong'));
     (getClaimById as jest.Mock).mockResolvedValueOnce(new Claim());
 
