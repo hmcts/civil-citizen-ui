@@ -30,7 +30,7 @@ Before(async () => {
 });
 
 // LiP Individual vs LiP Company
-Scenario.skip('LiP vs LiP Unsuccessful Mediation with Upload Documents', async ({ api }) => {
+Scenario('LiP vs LiP Unsuccessful Mediation with Upload Documents', async ({ api }) => {
   claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType, carmEnabled, 'DefendantCompany');
   console.log('LIP vs LIP claim has been created Successfully    <===>  ', claimRef);
   await api.setCaseId(claimRef);
