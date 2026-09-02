@@ -6,6 +6,9 @@ const {unAssignAllUsers} = require('./specClaimHelpers/api/caseRoleAssignmentHel
 const {deleteAllIdamTestUsers} = require('./specClaimHelpers/api/idamHelper');
 
 const browser = process.env.SAUCELABS_BROWSER || 'chrome';
+const junitReportFile = process.env.THIN_FULL_STACK_TESTS === 'true'
+  ? `${testConfig.TestOutputDir}/junit/result-[hash].xml`
+  : `${testConfig.TestOutputDir}/result.xml`;
 const defaultSauceOptions = {
   username: process.env.SAUCE_USERNAME,
   accessKey: process.env.SAUCE_ACCESS_KEY,
@@ -131,7 +134,7 @@ const setupConfig = {
       },
       'mocha-junit-reporter': {
         stdout: '-',
-        options: {mochaFile: `${testConfig.TestOutputDir}/result.xml`},
+        options: {mochaFile: junitReportFile},
       },
       mochawesome: {
         stdout: testConfig.TestOutputDir + '/console.log',

@@ -162,28 +162,36 @@ run_reduced_stack_functional_tests() {
 }
 
 assert_thin_full_stack_results() {
-  local report_file="${THIN_JUNIT_REPORT:-test-results/thin-full-stack/result.xml}"
+  local report_dir="${THIN_JUNIT_REPORT_DIR:-test-results/thin-full-stack/junit}"
+  local aggregate_report="${THIN_JUNIT_REPORT:-test-results/thin-full-stack/result.xml}"
   local allure_dir="${THIN_ALLURE_RESULTS_DIR:-test-results/thin-full-stack/allure-results}"
 
-  node - "$report_file" "$allure_dir" <<'NODE'
+  node - "$report_dir" "$aggregate_report" "$allure_dir" <<'NODE'
     const fs = require('fs');
     const path = require('path');
-    const { XMLParser } = require('fast-xml-parser');
+    const {XMLBuilder, XMLParser} = require('fast-xml-parser');
 
-    const [reportFile, allureDir] = process.argv.slice(2);
+    const [reportDir, aggregateReport, allureDir] = process.argv.slice(2);
     const expectedTests = 8;
 
-    if (!fs.existsSync(reportFile) || fs.statSync(reportFile).size === 0) {
-      throw new Error(`Thin full-stack JUnit report is missing or empty: ${reportFile}`);
+    if (!fs.existsSync(reportDir)) {
+      throw new Error(`Thin full-stack JUnit report directory is missing: ${reportDir}`);
     }
 
-    const report = new XMLParser({ignoreAttributes: false, attributeNamePrefix: ''})
-      .parse(fs.readFileSync(reportFile, 'utf8'));
-    const summary = report.testsuites;
-    const tests = Number(summary?.tests ?? 0);
-    const failures = Number(summary?.failures ?? 0);
-    const errors = Number(summary?.errors ?? 0);
-    const skipped = Number(summary?.skipped ?? summary?.disabled ?? 0);
+    const reportFiles = fs.readdirSync(reportDir)
+      .filter((file) => file.endsWith('.xml'))
+      .map((file) => path.join(reportDir, file));
+    if (reportFiles.length === 0) {
+      throw new Error(`Thin full-stack JUnit reports are missing: ${reportDir}`);
+    }
+
+    const parser = new XMLParser({ignoreAttributes: false, attributeNamePrefix: ''});
+    const summaries = reportFiles.map((file) => parser.parse(fs.readFileSync(file, 'utf8')).testsuites);
+    const total = (field) => summaries.reduce((sum, summary) => sum + Number(summary?.[field] || 0), 0);
+    const tests = total('tests');
+    const failures = total('failures');
+    const errors = total('errors');
+    const skipped = total('skipped') + total('disabled');
 
     if (tests !== expectedTests || failures !== 0 || errors !== 0 || skipped !== 0) {
       throw new Error(
@@ -191,6 +199,25 @@ assert_thin_full_stack_results() {
         `found ${tests} with ${failures} failures, ${errors} errors and ${skipped} skipped`,
       );
     }
+
+    const suites = summaries.flatMap((summary) => {
+      const value = summary?.testsuite;
+      return value ? (Array.isArray(value) ? value : [value]) : [];
+    });
+    const aggregate = {
+      testsuites: {
+        name: 'Thin full-stack tests',
+        tests,
+        failures,
+        errors,
+        skipped,
+        testsuite: suites,
+      },
+    };
+    fs.writeFileSync(
+      aggregateReport,
+      new XMLBuilder({ignoreAttributes: false, attributeNamePrefix: '', format: true}).build(aggregate),
+    );
 
     if (!fs.existsSync(allureDir)) {
       throw new Error(`Thin full-stack Allure results directory is missing: ${allureDir}`);
