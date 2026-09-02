@@ -127,10 +127,6 @@ describe('Claimant Interest Rate', () => {
     });
 
     it('should return error when negative interest rate is provided', async () => {
-      const mockClaim = new Claim();
-      mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
-
       await request(app)
         .post(CLAIM_INTEREST_RATE_URL)
         .send({
