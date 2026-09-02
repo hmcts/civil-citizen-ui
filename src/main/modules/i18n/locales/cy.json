@@ -5922,6 +5922,8 @@
     "VALID_HOUSING": "Disgrifiwch eich cartref",
     "VALID_INSTALMENT_AMOUNT": "Ni all swm y rhandaliad fod yn fwy na, neu'n hafal â'r swm hawlio",
     "VALID_INTEGER": "Rhowch rif, er enghraifft 3",
+    "VALID_INTEREST_AMOUNT": "Nodwch swm llog positif",
+    "VALID_INTEREST_RATE": "Nodwch gyfradd llog positif",
     "VALID_INTEREST_TYPE_OPTION": "Dewiswch sut ydych chi am hawlio llog",
     "VALID_MONTH": "Rhowch fis dilys",
     "VALID_NAME": "Rhowch enw",

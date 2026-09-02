@@ -5923,6 +5923,8 @@
     "VALID_HOUSING": "Describe your housing",
     "VALID_INSTALMENT_AMOUNT": "Instalment amount cannot be more than, or equal to the claim amount",
     "VALID_INTEGER": "Enter a numeric, for example 3",
+    "VALID_INTEREST_AMOUNT": "Enter a positive interest amount",
+    "VALID_INTEREST_RATE": "Enter a positive interest rate",
     "VALID_INTEREST_TYPE_OPTION": "Select how you want to claim interest",
     "VALID_MONTH": "Enter a valid month",
     "VALID_NAME": "Enter name",
