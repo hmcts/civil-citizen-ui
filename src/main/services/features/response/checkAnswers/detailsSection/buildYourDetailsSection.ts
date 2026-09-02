@@ -22,11 +22,9 @@ export const buildYourDetailsSection = (claim: Claim, claimId: string, lang: str
   const yourDetailsSection = summarySection({
     title: t('PAGES.CHECK_YOUR_ANSWER.DETAILS_TITLE', {lng: getLng(lang)}),
     summaryRows: [
+      summaryRow(t('PAGES.CHECK_YOUR_ANSWER.FULL_NAME', {lng: getLng(lang)}), claim.getDefendantFullName(), yourDetailsHref, changeLabel(lang)),
     ],
   });
-  if (claim.respondent1.partyDetails.firstName || claim.respondent1.partyDetails.lastName) {
-    yourDetailsSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.FULL_NAME', {lng: getLng(lang)}), claim.getDefendantFullName(), yourDetailsHref, changeLabel(lang)));
-  }
   if (claim.respondent1.partyDetails.contactPerson) {
     yourDetailsSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CONTACT_PERSON', {lng: getLng(lang)}), claim.respondent1.partyDetails.contactPerson, yourDetailsHref, changeLabel(lang)));
   }
