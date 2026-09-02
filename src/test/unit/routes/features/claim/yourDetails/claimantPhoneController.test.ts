@@ -71,6 +71,8 @@ describe('Completing Claim', () => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('PAGES.CLAIMANT_PHONE.TITLE'));
         });
+
+      expect(launchDarklyClient.isCarmEnabledForCase).toHaveBeenCalledWith(new Date('2026-08-01T10:00:00.000Z'));
     });
 
     it('should return 500 status code when error occurs', async () => {
@@ -100,6 +102,8 @@ describe('Completing Claim', () => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('PAGES.CLAIMANT_PHONE.TITLE_MANDATORY'));
         });
+
+      expect(launchDarklyClient.isCarmEnabledForCase).toHaveBeenCalledWith(new Date('2026-08-01T10:00:00.000Z'));
     });
 
     it('should return 500 status code when error occurs', async () => {
@@ -131,6 +135,8 @@ describe('Completing Claim', () => {
           expect(res.status).toBe(302);
           expect(res.header.location).toEqual(CLAIMANT_TASK_LIST_URL);
         });
+
+      expect(launchDarklyClient.isCarmEnabledForCase).toHaveBeenCalledWith(new Date('2026-08-01T10:00:00.000Z'));
     });
 
     it('should return error on empty input', async () => {
