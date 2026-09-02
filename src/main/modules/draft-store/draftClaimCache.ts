@@ -46,7 +46,9 @@ const case_data = {
       month: 8,
       day: 28,
     },
-    partyPhone: {},
+    partyPhone: {
+      phone: '07800000000',
+    },
     emailAddress: {
       emailAddress: 'civilmoneyclaimsdemo@gmail.com',
     },
@@ -121,22 +123,11 @@ const case_data = {
   pcqId: '4c10fec5-1278-45f3-89f0-d3d016d47f95',
 };
 
-const cloneDefaultDraftClaimCaseData = (isCarmEnabled = false) => {
-  const apiData = structuredClone(case_data);
-  if (isCarmEnabled) {
-    apiData.applicant1.partyPhone = {
-      phone: '07800000000',
-    };
-  }
-  return apiData;
+const cloneDefaultDraftClaimCaseData = (_isCarmEnabled = false) => {
+  return structuredClone(case_data);
 };
 
-const saveDraftClaimToCache = async (userId: string, apiData = case_data, isCarmEnabled = false) => {
-  if (isCarmEnabled) {
-    apiData.applicant1.partyPhone = {
-      phone: '07800000000',
-    };
-  }
+const saveDraftClaimToCache = async (userId: string, apiData = case_data, _isCarmEnabled = false) => {
   const creationTime = new Date();
   const claimToSave = draftClaim;
   claimToSave.case_data = apiData;

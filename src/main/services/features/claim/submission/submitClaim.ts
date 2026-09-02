@@ -1,5 +1,5 @@
 import {AppRequest} from 'common/models/AppRequest';
-import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {getDraftClaim, updateDraftClaim} from 'modules/draft-store/draftStoreManagerService';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {Claim} from 'common/models/claim';
@@ -14,13 +14,20 @@ const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServi
 
 export const submitClaim = async (req: AppRequest): Promise<Claim> => {
   try {
-    const claimId = (<AppRequest>req).session.user?.id;
+    const draftResult = await getDraftClaim(req);
+    if (!draftResult) {
+      throw new Error('[submitClaim] no draft claim found');
+    }
     const user = (<AppRequest>req).session.user;
-    const claim = await getCaseDataFromStore(claimId);
+    const draftId = req.session?.draftId || draftResult.rawResponse?.draftId;
+    const claim = Object.assign(new Claim(), draftResult.claimResponse?.case_data as unknown as Claim);
     logger.info('Claim fee retrieved from check-your-answers');
     if (claim.applicant1) {
       claim.applicant1.emailAddress = new Email(user.email);
-      await saveDraftClaim(claimId, claim);
+      if (draftResult.createdAt && !claim.draftClaimCreatedAt) {
+        claim.draftClaimCreatedAt = new Date(draftResult.createdAt);
+      }
+      await updateDraftClaim(req, claim, draftId);
     }
     const ccdClaim = translateDraftClaimToCCDR2(claim, req);
     return await civilServiceClient.submitDraftClaim(ccdClaim, req);

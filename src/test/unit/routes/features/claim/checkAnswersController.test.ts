@@ -14,7 +14,7 @@ import {ClaimDetails} from 'form/models/claim/details/claimDetails';
 import {HelpWithFees} from 'form/models/claim/details/helpWithFees';
 import {submitClaim} from 'services/features/claim/submission/submitClaim';
 import * as draftStoreService from '../../../../../main/modules/draft-store/draftStoreService';
-import {isPcqShutterOn} from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
+import {isCarmEnabledForCase, isPcqShutterOn} from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {Party} from 'models/party';
 import {Email} from 'models/Email';
 import {PartyPhone} from 'models/PartyPhone';
@@ -99,7 +99,7 @@ describe('Claim - Check answers', () => {
       const claim = new Claim();
       claim.claimDetails = new ClaimDetails();
 
-      mockGetClaim.mockImplementation(() => claim);
+      mockGetClaim.mockResolvedValue(claim);
       mockGetDraftClaim.mockResolvedValue(createMockManagerResult(claim));
 
       const response = await session(app).get(CLAIM_CHECK_ANSWERS_URL);
@@ -159,6 +159,7 @@ describe('Claim - Check answers', () => {
 
     it('should return check your answer page', async () => {
       mockGetDraftClaim.mockResolvedValue(createMockManagerResult(new Claim()));
+      mockGetClaim.mockResolvedValue(new Claim());
 
       await request(app).get(CLAIM_CHECK_ANSWERS_URL)
         .expect((res: request.Response) => {
@@ -172,12 +173,13 @@ describe('Claim - Check answers', () => {
       const mockClaim = new Claim();
       mockClaim.claimDetails = new ClaimDetails();
       mockClaim.pcqId = 'existing-pcq-id';
-      (app.request as unknown as { claim?: Claim }).claim = mockClaim;
+      const appReq = app.request as unknown as {locals?: {claim?: Claim; env: string; lang: string}};
+      appReq.locals = {env: '', lang: '', claim: mockClaim};
 
       await session(app).get(CLAIM_CHECK_ANSWERS_URL);
 
       expect(mockGetClaim).toHaveBeenCalledTimes(0);
-      delete (app.request as unknown as { claim?: Claim }).claim;
+      delete appReq.locals.claim;
     });
 
     it('should return status 500 when error thrown', async () => {
@@ -219,7 +221,6 @@ describe('Claim - Check answers', () => {
       claim.totalClaimAmount = 1000;
       claim.claimDetails.helpWithFees.option = YesNo.NO;
 
-      mockGetClaim.mockImplementation(() => claim);
       mockGetDraftClaim.mockResolvedValue(createMockManagerResult(claim));
 
       const postData = {
@@ -257,7 +258,6 @@ describe('Claim - Check answers', () => {
       claim.totalClaimAmount = 1000;
       claim.claimDetails.helpWithFees.option = YesNo.NO;
 
-      mockGetClaim.mockImplementation(() => claim);
       mockGetDraftClaim.mockResolvedValue(createMockManagerResult(claim));
 
       const postData = {
@@ -298,7 +298,6 @@ describe('Claim - Check answers', () => {
         version: 1,
       };
 
-      mockGetClaim.mockImplementation(() => claim);
       mockGetDraftClaim.mockResolvedValue(createMockManagerResult(claim));
 
       const postData = {signed: ''};
@@ -332,7 +331,6 @@ describe('Claim - Check answers', () => {
         version: 1,
       };
 
-      mockGetClaim.mockImplementation(() => claim);
       mockGetDraftClaim.mockResolvedValue(createMockManagerResult(claim));
 
       const postData = {signed: ''};
@@ -343,6 +341,38 @@ describe('Claim - Check answers', () => {
           expect(res.status).toBe(200);
           expect(res.text).toContain('Submit claim');
         });
+    });
+
+    it('should map draftResult.createdAt onto claim before checking CARM', async () => {
+      jest
+        .spyOn(CivilServiceClient.prototype, 'getClaimFeeData')
+        .mockResolvedValueOnce({calculatedAmountInPence: 50} as unknown as ReturnType<CivilServiceClient['getClaimFeeData']>);
+      const mockIsCarmEnabledForCase = isCarmEnabledForCase as jest.Mock;
+      mockIsCarmEnabledForCase.mockResolvedValue(false);
+
+      const claim = new Claim();
+      claim.applicant1 = new Party();
+      claim.applicant1.emailAddress = new Email('aaaa@gmail.com');
+      claim.applicant1.partyPhone = new PartyPhone('07557350546');
+      claim.respondent1 = new Party();
+      claim.respondent1.emailAddress = new Email('aaaa@gmail.com');
+      claim.respondent1.partyPhone = new PartyPhone('07557350546');
+      claim.claimDetails = new ClaimDetails();
+      claim.claimDetails.helpWithFees = new HelpWithFees();
+      claim.claimDetails.helpWithFees.option = YesNo.YES;
+      claim.claimFee = {
+        calculatedAmountInPence: 1000,
+        code: 'FEE202',
+        version: 1,
+      };
+
+      mockGetDraftClaim.mockResolvedValue(createMockManagerResult(claim));
+
+      await request(app)
+        .post(CLAIM_CHECK_ANSWERS_URL)
+        .send({signed: ''});
+
+      expect(mockIsCarmEnabledForCase).toHaveBeenCalledWith(new Date('2026-08-01T10:00:00.000Z'));
     });
 
     it('should redirect to claim submitted confirmation page and delete draft from DB when help with fees is set to yes', async () => {
@@ -372,7 +402,6 @@ describe('Claim - Check answers', () => {
         version: 1,
       };
 
-      mockGetClaim.mockImplementation(() => claim);
       mockGetDraftClaim.mockResolvedValue(createMockManagerResult(claim));
       mockDeleteDraftClaim.mockResolvedValue(undefined);
 
@@ -427,7 +456,6 @@ describe('Claim - Check answers', () => {
         version: 1,
       };
 
-      mockGetClaim.mockImplementation(() => claim);
       mockGetDraftClaim.mockResolvedValue(createMockManagerResult(claim));
       mockDeleteDraftClaim.mockResolvedValue(undefined);
 
@@ -455,6 +483,17 @@ describe('Claim - Check answers', () => {
       expect(mockDeleteDraftClaim).toHaveBeenCalled();
       expect(spyClearcookie).toBeCalledWith('eligibilityCompleted');
       expect(spyClearcookie).toBeCalledWith('eligibility');
+    });
+
+    it('should return 500 when no draft exists', async () => {
+      mockGetDraftClaim.mockResolvedValue(null);
+      await request(app)
+        .post(CLAIM_CHECK_ANSWERS_URL)
+        .send({signed: 'Test'})
+        .expect((res: request.Response) => {
+          expect(res.status).toBe(500);
+          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
+        });
     });
 
     it('should return 500 when error in service', async () => {

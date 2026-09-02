@@ -79,6 +79,9 @@ describe('createDraftClaim Router', () => {
           resolvingDispute: true,
           completingClaimConfirmed: true,
           claimInterest: 'no',
+          applicant1: expect.objectContaining({
+            partyPhone: expect.objectContaining({phone: '07800000000'}),
+          }),
         }),
       );
       expect(draftStoreManagerService.updateDraftClaim).toHaveBeenCalledWith(
