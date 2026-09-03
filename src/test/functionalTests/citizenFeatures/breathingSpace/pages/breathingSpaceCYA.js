@@ -33,9 +33,9 @@ class EnterBreathingSpaceCheckAnswers {
   }
 
   async verifyBreathingSpaceType(type) {
-    if(type === 'Standard Breathing Space'){
+    if (type === 'Standard Breathing Space') {
       await I.see(type, '.govuk-summary-list__value');
-    }else{
+    } else {
       await I.see('Mental Health Crisis Moratorium', '.govuk-summary-list__value');
     }
   }

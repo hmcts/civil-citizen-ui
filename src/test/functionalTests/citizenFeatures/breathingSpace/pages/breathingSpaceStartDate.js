@@ -26,9 +26,9 @@ class EnterBreathingSpaceStartDate {
   }
 
   async verifyContent(type) {
-    if(type === 'Standard Breathing Space') {
+    if (type === 'Standard Breathing Space') {
       await I.see('Breathing space will start from today, unless you enter a different start date.');
-    }else{
+    } else {
       await I.see('Mental health crisis breathing space will start from today, unless you enter a different start date.');
       await I.see('It will remain until you lift it.');
     }
