@@ -2471,15 +2471,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ministryofjustice/frontend@npm:^1.6.3":
-  version: 1.8.1
-  resolution: "@ministryofjustice/frontend@npm:1.8.1"
-  dependencies:
-    govuk-frontend: "npm:^3.0.0 || ^4.0.0"
-    moment: "npm:^2.27.0"
+"@ministryofjustice/frontend@npm:9.0.0":
+  version: 9.0.0
+  resolution: "@ministryofjustice/frontend@npm:9.0.0"
   peerDependencies:
-    jquery: ^3.6.0
-  checksum: 10/c25fe932be8148fa5773b16c53e1802937109c01b54c32b835a3af725c644c3052632f622c94ab14b5d9ea95efd1fae3059e83f0a8009fb748218ac8b240c388
+    govuk-frontend: ^6.0.0
+    moment: 2.30.1
+  checksum: 10/91402390dcbf26558684be9200c9b2ae47c77267fd074ae889bd907ec94e3c29072f40d1aebed8aae3cd2ae771806f8e90d57f03dcaf7de0f4fb470f3219a9a1
   languageName: node
   linkType: hard
 
@@ -5407,7 +5405,7 @@ __metadata:
     "@hmcts/nodejs-logging": "npm:^4.0.4"
     "@hmcts/properties-volume": "npm:^0.0.14"
     "@launchdarkly/node-server-sdk": "npm:^8.0.0"
-    "@ministryofjustice/frontend": "npm:^1.6.3"
+    "@ministryofjustice/frontend": "npm:9.0.0"
     "@pact-foundation/pact": "npm:^15.0.1"
     "@pact-foundation/pact-node": "npm:^10.18.0"
     "@playwright/test": "npm:^1.47.2"
@@ -5487,6 +5485,7 @@ __metadata:
     mocha-junit-reporter: "npm:^2.2.1"
     mocha-multi: "npm:1.1.7"
     mochawesome: "npm:7.1.3"
+    moment: "npm:2.30.1"
     multer: "npm:^2.2.0"
     nock: "npm:^13.2.9"
     node-cache: "npm:^5.1.2"
@@ -7898,13 +7897,6 @@ __metadata:
   version: 6.2.0
   resolution: "govuk-frontend@npm:6.2.0"
   checksum: 10/3d92ae94d1030d839cb8db0ae114df98f151bc851728514f80c99d9e61633cface7019fb4203f284289582717ca6de29d5bf1f4ff65b4bf14ecc65d214e7f8e0
-  languageName: node
-  linkType: hard
-
-"govuk-frontend@npm:^3.0.0 || ^4.0.0":
-  version: 4.10.1
-  resolution: "govuk-frontend@npm:4.10.1"
-  checksum: 10/7fc16896b73134d227e3c8f6ed4017015293dd12e81262b6dea30b97156727523fb6c133f95f34461846a32cafe516cccf1d94100d936ae1c48a9059177e79cc
   languageName: node
   linkType: hard
 
@@ -10353,7 +10345,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"moment@npm:^2.27.0, moment@npm:^2.29.4":
+"moment@npm:2.30.1, moment@npm:^2.29.4":
   version: 2.30.1
   resolution: "moment@npm:2.30.1"
   checksum: 10/ae42d876d4ec831ef66110bdc302c0657c664991e45cf2afffc4b0f6cd6d251dde11375c982a5c0564ccc0fa593fc564576ddceb8c8845e87c15f58aa6baca69
@@ -11275,7 +11267,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss-selector-parser@npm:^7.1.3":
+"postcss-selector-parser@npm:^7.1.5":
   version: 7.1.5
   resolution: "postcss-selector-parser@npm:7.1.5"
   dependencies:
