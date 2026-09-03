@@ -40,7 +40,6 @@ jobs:
         run: |
           semgrep scan --strict --metrics=off --no-rewrite-rule-ids \
             --config .semgrep/logging-pii.yml \
-            --exclude src/main/assets/js/mojAll.js \
             --json-output semgrep-results.json \
             src/main
           python .semgrep/annotate.py semgrep-results.json
