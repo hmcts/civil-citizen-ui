@@ -3,7 +3,7 @@ properties([
   copyArtifactPermission('/HMCTS_a_to_c/civil-citizen-ui/*'),
 ])
 
-@Library("Infrastructure@2.4.4")
+@Library("Infrastructure@2.5.4")
 import uk.gov.hmcts.contino.AppPipelineConfig
 import uk.gov.hmcts.contino.GithubAPI
 import uk.gov.hmcts.contino.AppPipelineDsl
@@ -111,6 +111,10 @@ def getCivilServiceSharedBranch() {
   for (label in githubApi.getLabelsbyPattern(env.BRANCH_NAME, "civilShared:")) {
     return label.minus("civilShared:").trim()
   }
+  def civilServicePr = getCivilServicePr()
+  if (civilServicePr) {
+    return "pr-${civilServicePr}"
+  }
   return "master"
 }
 
@@ -213,6 +217,12 @@ def checkForReducedStackTests(branch_name) {
     .contains("pr-values:reducedStack")
 }
 
+def checkForThinFullStackTests(branch_name) {
+  return new GithubAPI(this)
+    .getLabelsbyPattern(branch_name, "pr-values:thinFullStack")
+    .contains("pr-values:thinFullStack")
+}
+
 def generateAllureReport(String resultsDir, String reportDir, String reportLabel) {
   try {
     sh "npx allure generate ${resultsDir} --clean -o ${reportDir}"
@@ -291,6 +301,10 @@ withPipeline(type, product, component) {
     env.PR_FT_GROUPS = getFunctionalTestsGroups()
     env.CIVIL_SERVICE_IMAGE = getCivilServiceImage()
     env.REDUCED_STACK_TESTS = checkForReducedStackTests(env.BRANCH_NAME).toString()
+    env.THIN_FULL_STACK_TESTS = checkForThinFullStackTests(env.BRANCH_NAME).toString()
+    if (env.REDUCED_STACK_TESTS == 'true' && env.THIN_FULL_STACK_TESTS == 'true') {
+      error 'pr-values:reducedStack and pr-values:thinFullStack cannot be selected together.'
+    }
     def civilCcdDefinitionBranch = getCivilCcdDefinitionBranch()
     generalappCCDBranch = civilCcdDefinitionBranch
     loadVaultSecrets(secrets)
@@ -360,11 +374,17 @@ withPipeline(type, product, component) {
       echo "Skipping Allure report generation due to label: pr-values:skip-functional-tests"
       return
     }
-    generateAllureReport('test-results/functional/allure-results', 'test-results/functional/allure-report', 'functional')
-    publishAllureHtml('test-results/functional/allure-report', 'Non-Prod E2E Allure Report')
-    collectWiremockDiagnostics()
-    generateFunctionalFailureSummary()
-    archiveDiagnosticArtifacts('test-results/functional/**/*', 'functional test artifacts')
+    if (env.THIN_FULL_STACK_TESTS == 'true') {
+      generateAllureReport('test-results/thin-full-stack/allure-results', 'test-results/thin-full-stack/allure-report', 'thin full-stack')
+      publishAllureHtml('test-results/thin-full-stack/allure-report', 'Thin Full-Stack Allure Report')
+      archiveDiagnosticArtifacts('test-results/thin-full-stack/**/*', 'thin full-stack test artifacts')
+    } else {
+      generateAllureReport('test-results/functional/allure-results', 'test-results/functional/allure-report', 'functional')
+      publishAllureHtml('test-results/functional/allure-report', 'Non-Prod E2E Allure Report')
+      collectWiremockDiagnostics()
+      generateFunctionalFailureSummary()
+      archiveDiagnosticArtifacts('test-results/functional/**/*', 'functional test artifacts')
+    }
 
     // Security tests exercise integrations outside the reduced-stack PoC.
     if (env.REDUCED_STACK_TESTS == 'true') {

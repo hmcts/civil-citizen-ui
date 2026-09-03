@@ -1,10 +1,28 @@
 import {TTLCategory, calculateExpiryTimestamp, reconstructCreationDateFromRemainingTtl} from 'modules/draft-store/ttlConfig';
+import config from 'config';
 
 describe('ttlConfig', () => {
-  it('should calculate draft claim expiry from creation date', () => {
+  it('should calculate draft claim expiry at UK midnight after the submit-by date', () => {
     const creationDate = new Date('2024-06-01T00:00:00.000Z');
     const expiry = calculateExpiryTimestamp(TTLCategory.DRAFT_CLAIM, {creationDate});
-    expect(expiry).toBe(Math.round(creationDate.getTime() / 1000) + (180 * 86400));
+    expect(new Date(expiry * 1000).toISOString()).toBe('2024-07-01T23:00:00.000Z');
+  });
+
+  it('should calculate draft claim expiry at UK midnight across winter time', () => {
+    const creationDate = new Date('2026-11-01T10:00:00.000Z');
+    const expiry = calculateExpiryTimestamp(TTLCategory.DRAFT_CLAIM, {creationDate});
+    expect(new Date(expiry * 1000).toISOString()).toBe('2026-12-02T00:00:00.000Z');
+  });
+
+  it('should treat environment TTL values as numbers when calculating draft claim expiry', () => {
+    const configSpy = jest.spyOn(config, 'get').mockReturnValueOnce('30');
+    const creationDate = new Date('2026-08-17T08:51:21.000Z');
+
+    const expiry = calculateExpiryTimestamp(TTLCategory.DRAFT_CLAIM, {creationDate});
+
+    expect(new Date(expiry * 1000).toISOString()).toBe('2026-09-16T23:00:00.000Z');
+    expect(configSpy).toHaveBeenCalledWith('services.draftStore.redis.ttl.draftClaim');
+    configSpy.mockRestore();
   });
 
   it('should calculate payment session expiry from current time when no creation date', () => {
@@ -34,5 +52,14 @@ describe('ttlConfig', () => {
 
     expect(creationDate.getTime()).toBeGreaterThanOrEqual(before - expectedElapsedMs);
     expect(creationDate.getTime()).toBeLessThanOrEqual(after - expectedElapsedMs);
+  });
+
+  it('should not reconstruct a future creation date when remaining TTL is longer than the legacy draft TTL', () => {
+    const before = Date.now();
+    const creationDate = reconstructCreationDateFromRemainingTtl(100 * 365 * 86400, TTLCategory.DRAFT_CLAIM);
+    const after = Date.now();
+
+    expect(creationDate.getTime()).toBeGreaterThanOrEqual(before);
+    expect(creationDate.getTime()).toBeLessThanOrEqual(after);
   });
 });
