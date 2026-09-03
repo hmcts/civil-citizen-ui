@@ -1,10 +1,24 @@
 {
-  "name": "create-claim-address-search",
-  "priority": 10,
-  "request": {
-    "method": "GET",
-    "urlPath": "/search/places/v1/postcode",
-    "queryParameters": {"postcode": {"matches": "MK5(?:%20|\\s|\\+)7HH"}}
-  },
-  "response": {"status": 200, "headers": {"Content-Type": "application/json"}, "bodyFileName": "create-claim-address-search.json"}
+  "mappings": [
+    {
+      "name": "create-claim-address-search",
+      "priority": 10,
+      "request": {
+        "method": "GET",
+        "urlPath": "/search/places/v1/postcode",
+        "queryParameters": {"postcode": {"matches": "MK5(?:%20|\\s|\\+)7HH"}}
+      },
+      "response": {"status": 200, "headers": {"Content-Type": "application/json"}, "bodyFileName": "create-claim-address-search.json"}
+    },
+    {
+      "name": "response-claim-address-validation",
+      "priority": 20,
+      "request": {
+        "method": "GET",
+        "urlPath": "/search/places/v1/postcode",
+        "queryParameters": {"postcode": {"matches": "IG6(?:%20|\\s|\\+)1JD"}}
+      },
+      "response": {"status": 200, "headers": {"Content-Type": "application/json"}, "bodyFileName": "create-claim-address-search.json"}
+    }
+  ]
 }
