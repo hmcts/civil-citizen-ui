@@ -3,73 +3,61 @@ import $ from 'jquery';
 window.$ = $;
 
 (function () {
-  let global;
+  const SPACE = ' ';
+  const EMPTY_STRING = '';
+  const POSTCODE_CONTAINER_CLASS = '.postcode-container';
+
+  let appSettings;
   let addressSelected = [];
-  let organisationName = '';
-  let buildingNumber = '';
-  let subBuildingName = '';
-  let thoroughfareName = '';
-  let dependentLocality = '';
-  let buildingName = '';
-  let postTown = '';
-  let postcode = '';
-  const POSTCODE_CONTAINER_CALSS = '.postcode-container';
-  const postcodeContainer = $(POSTCODE_CONTAINER_CALSS);
+  const postcodeContainer = $(POSTCODE_CONTAINER_CLASS);
 
-  let Ajax = () => {
-    const getData = function (val) {
-      return $.ajax({
-        type: 'GET',
-        url: '/postcode-lookup?postcode=' + encodeURIComponent(val),
-        data: val,
-        datatype: 'json',
-      });
-    };
-
-    const getList = function (val) {
-      return getData(val);
-    };
+  const Ajax = () => {
+    const getData = (val) => $.ajax({
+      type: 'GET',
+      url: '/postcode-lookup?postcode=' + encodeURIComponent(val),
+      dataType: 'json',
+    });
 
     return {
-      getList: getList,
+      getList: (val) => getData(val),
     };
   };
 
-  let FindAddress = {
+  const FindAddress = {
     settings: {
-      this: null,
+      container: null,
       findAddressButton: postcodeContainer.find('button'),
       manualAddressLink: postcodeContainer.find('a'),
     },
 
     init: function () {
-      global = this.settings;
+      appSettings = this.settings;
       this.bindUIActions();
     },
 
     bindUIActions: function () {
-      global.findAddressButton.on('click', function (event) {
+      appSettings.findAddressButton.on('click', function (event) {
         event.preventDefault();
-        global.this = $(this).parents(POSTCODE_CONTAINER_CALSS);
+        appSettings.container = $(this).parents(POSTCODE_CONTAINER_CLASS);
         FindAddress.getAddressList(FindAddress.getPostcode());
       });
 
-      global.manualAddressLink.on('click', function (event) {
+      appSettings.manualAddressLink.on('click', function (event) {
         event.preventDefault();
-        global.this = $(this).parents(POSTCODE_CONTAINER_CALSS);
+        appSettings.container = $(this).parents(POSTCODE_CONTAINER_CLASS);
         formContainer.toggleForm(true);
       });
 
     },
 
-    getPostcode: () => $(global.this).parent().find('.postcode-val').val(),
+    getPostcode: () => appSettings.container.find('.postcode-val').val(),
 
     getAddressList: function (postcodeVal) {
 
       ajax.getList(postcodeVal)
         .fail(function () {
           FindAddress.showPostcodeError(true);
-          formContainer.getFormContainer().find('input').val('');
+          formContainer.getFormContainer().find('input').val(EMPTY_STRING);
         })
         .done(function (data) {
           formContainer.toggleForm(false);
@@ -79,43 +67,42 @@ window.$ = $;
     },
 
     showPostcodeError: (flag) => {
-      const postcodeErrorContainer = $(global.this).parent().find('.govuk-error-message');
-      flag === true ? postcodeErrorContainer.removeClass('govuk-!-display-none') : postcodeErrorContainer.addClass('govuk-!-display-none');
+      const postcodeErrorContainer = appSettings.container.find('.govuk-error-message');
+      flag ? postcodeErrorContainer.removeClass('govuk-!-display-none') : postcodeErrorContainer.addClass('govuk-!-display-none');
     },
   };
 
-  let SelectMenu = () => {
+  const SelectMenu = () => {
     const bindDataToSelectMenu = (data) => {
-      $(global.this).parent().find('select option').not(':first').remove();
+      const $select = appSettings.container.find('select');
+      $select.find('option').not(':first').remove();
 
       addAddressesFoundValue(data);
 
-      data.map((item) => {
+      data.forEach((item) => {
         $('<option/>', {
-          'value': item.udprn,
-          'text': item.formattedAddress,
-          'disabled': false,
-          'selected': false,
-        }).appendTo($(global.this).parent().find('select'));
+          value: item.udprn,
+          text: item.formattedAddress,
+          disabled: false,
+          selected: false,
+        }).appendTo($select);
       });
 
-      const addressList = data;
-
-      $(global.this).parent().find('select').closest('.govuk-visually-hidden').removeClass('govuk-visually-hidden');
-      $(global.this).parent().find('select').off('change').on('change', function () {
-        global.this = $(this).parents(POSTCODE_CONTAINER_CALSS);
-        findSelectedAddress(addressList, $(this).find(':selected').val());
+      $select.closest('.govuk-visually-hidden').removeClass('govuk-visually-hidden');
+      $select.off('change').on('change', function () {
+        appSettings.container = $(this).parents(POSTCODE_CONTAINER_CLASS);
+        findSelectedAddress(data, $(this).find(':selected').val());
       });
 
     };
 
     const addAddressesFoundValue = (data) => {
       const regex = /\d+/g;
-      $(global.this).parent().find('select option:first').text(function (index, text) {
+      appSettings.container.find('select option:first').text((_, text) => {
         if (regex.test(text)) {
           return text.replace(regex, data.length);
         }
-        return data.length + ' ' + text;
+        return `${data.length}${SPACE}${text}`;
       });
     };
 
@@ -125,65 +112,51 @@ window.$ = $;
     };
 
     return {
-      bindDataToSelectMenu: bindDataToSelectMenu,
-      findSelectedAddress: findSelectedAddress,
+      bindDataToSelectMenu,
+      findSelectedAddress,
     };
   };
 
-  let AddressForm = () => {
-    const hasAddressProperty = (property) => (property ? property : '');
+  const AddressForm = () => {
+    const getVal = (val) => (val || EMPTY_STRING).toString().trim();
 
     const fillForm = () => {
-      organisationName = hasAddressProperty(addressSelected[0]?.organisationName);
-      buildingNumber = hasAddressProperty(addressSelected[0]?.buildingNumber);
-      subBuildingName = hasAddressProperty(addressSelected[0]?.subBuildingName);
-      thoroughfareName = hasAddressProperty(addressSelected[0]?.thoroughfareName);
-      dependentLocality = hasAddressProperty(addressSelected[0]?.dependentLocality);
-      buildingName = hasAddressProperty(addressSelected[0]?.buildingName);
-      postTown = hasAddressProperty(addressSelected[0]?.postTown);
-      postcode = hasAddressProperty(addressSelected[0]?.postcode);
+      const address = addressSelected[0] || {};
 
       formContainer.toggleForm(true);
-      formContainer.getFormContainer().find('input').val('');
-      breakAddressIntoDifferentFormFields(formContainer);
+      formContainer.getFormContainer().find('input').val(EMPTY_STRING);
+      breakAddressIntoDifferentFormFields(formContainer, address);
     };
 
-    const breakAddressIntoDifferentFormFields = (formContainer) => {
-      const parts = [
-        organisationName,
-        buildingNumber,
-        subBuildingName,
-        buildingName,
-        thoroughfareName,
-        dependentLocality,
-      ].map(part => part ? String(part).trim() : '');
+    const breakAddressIntoDifferentFormFields = (formContainer, address) => {
+      const org = getVal(address.organisationName);
+      const bNum = getVal(address.buildingNumber);
+      const subBName = getVal(address.subBuildingName);
+      const bName = getVal(address.buildingName);
+      const thoroughfare = getVal(address.thoroughfareName);
+      const locality = getVal(address.dependentLocality);
+      const postTown = getVal(address.postTown);
+      const postcode = getVal(address.postcode);
 
-      const ORGANISATION = 0;
-      const BUILDING_NUMBER = 1;
-      const SUB_BUILDING_NAME = 2;
-      const BUILDING_NAME = 3;
-      const THOROUGHFARE_NAME = 4;
-      const DEPENDENT_LOCALITY = 5;
+      let line1;
+      let line2;
+      let line3 = EMPTY_STRING;
 
-      let line1 = '';
-      let line2 = '';
-      let line3 = '';
-
-      if (parts[ORGANISATION]) {
-        line1 = parts[ORGANISATION];
-        line2 = [parts[BUILDING_NUMBER], parts[SUB_BUILDING_NAME], parts[BUILDING_NAME], parts[THOROUGHFARE_NAME]].filter(Boolean).join(' ');
-        line3 = parts[DEPENDENT_LOCALITY];
-      } else if (parts[BUILDING_NUMBER] && !parts[SUB_BUILDING_NAME] && !parts[BUILDING_NAME]) {
-        line1 = [parts[BUILDING_NUMBER], parts[THOROUGHFARE_NAME]].filter(Boolean).join(' ');
-        line2 = parts[DEPENDENT_LOCALITY];
+      if (org) {
+        line1 = org;
+        line2 = [bNum, subBName, bName, thoroughfare].filter(Boolean).join(SPACE);
+        line3 = locality;
+      } else if (bNum && !subBName && !bName) {
+        line1 = [bNum, thoroughfare].filter(Boolean).join(SPACE);
+        line2 = locality;
       } else {
-        line1 = [parts[SUB_BUILDING_NAME], parts[BUILDING_NAME]].filter(Boolean).join(' ');
+        line1 = [subBName, bName].filter(Boolean).join(SPACE);
         if (line1) {
-          line2 = [parts[BUILDING_NUMBER], parts[THOROUGHFARE_NAME]].filter(Boolean).join(' ');
-          line3 = parts[DEPENDENT_LOCALITY];
+          line2 = [bNum, thoroughfare].filter(Boolean).join(SPACE);
+          line3 = locality;
         } else {
-          line1 = parts[THOROUGHFARE_NAME];
-          line2 = parts[DEPENDENT_LOCALITY];
+          line1 = thoroughfare;
+          line2 = locality;
         }
       }
 
@@ -195,30 +168,32 @@ window.$ = $;
     };
 
     return {
-      fillForm: fillForm,
+      fillForm,
     };
   };
 
   const AddressFormContainer = () => {
 
     const toggleForm = (flag) => {
-      let container = getFormContainer();
-      let addressManuallyHref = getAnchorElement();
-      flag ? container.removeClass('govuk-!-display-none') : container.addClass('govuk-!-display-none');
-      flag ? addressManuallyHref.addClass('govuk-!-display-none') : addressManuallyHref.removeClass('govuk-!-display-none');
-      flag ? container.attr('aria-hidden', 'false') : container.attr('aria-hidden', 'true');
-      flag ? addressManuallyHref.attr('aria-hidden', 'true') : addressManuallyHref.attr('aria-hidden', 'false');
+      const container = getFormContainer();
+      const addressManuallyHref = getAnchorElement();
+      const displayNone = 'govuk-!-display-none';
+
+      flag ? container.removeClass(displayNone) : container.addClass(displayNone);
+      flag ? addressManuallyHref.addClass(displayNone) : addressManuallyHref.removeClass(displayNone);
+      container.attr('aria-hidden', !flag);
+      addressManuallyHref.attr('aria-hidden', flag);
     };
 
-    const getFormContainer = () => $(global.this).parent().find('.address-form');
-    const getFormInput = (index) => $(global.this).parent().find(`.address-form input:eq(${index})`);
-    const getAnchorElement = () => $(global.this).parent().find('a');
+    const getFormContainer = () => appSettings.container.find('.address-form');
+    const getFormInput = (index) => appSettings.container.find(`.address-form input:eq(${index})`);
+    const getAnchorElement = () => appSettings.container.find('a');
 
     return {
-      toggleForm: toggleForm,
-      getFormContainer: getFormContainer,
-      getFormInput: getFormInput,
-      getAnchorElement: getAnchorElement,
+      toggleForm,
+      getFormContainer,
+      getFormInput,
+      getAnchorElement,
     };
   };
 
