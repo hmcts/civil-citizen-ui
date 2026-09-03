@@ -16,8 +16,7 @@ import {getLng} from 'common/utils/languageToggleUtils';
 import {getClaimTimeline} from 'services/features/common/claimTimelineService';
 import { AppRequest } from 'common/models/AppRequest';
 import { getFirstContactData } from 'services/firstcontact/firstcontactService';
-
-const CryptoJS = require('crypto-js');
+import { decrypt } from 'common/utils/cryptoUtils';
 
 const firstContactClaimSummaryController = Router();
 
@@ -36,8 +35,12 @@ firstContactClaimSummaryController.get(FIRST_CONTACT_CLAIM_SUMMARY_URL,
         return res.redirect(FIRST_CONTACT_ACCESS_DENIED_URL);
       }
 
-      const bytes = CryptoJS.AES.decrypt(firstContact?.pin, claim.respondent1PinToPostLRspec?.accessCode);
-      const originalText = bytes.toString(CryptoJS.enc.Utf8);
+      let originalText: string;
+      try {
+        originalText = decrypt(firstContact?.pin, claim.respondent1PinToPostLRspec?.accessCode);
+      } catch {
+        originalText = '';
+      }
       if (claimId && originalText === YesNo.YES) {
         const interestData = await getInterestDetails(claim, req);
         const totalAmount = await getTotalAmountWithInterestAndFeesAndFixedCost(claim, req);

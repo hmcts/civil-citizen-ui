@@ -9,8 +9,7 @@ import {YesNo} from 'form/models/yesNo';
 import {saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {Claim} from 'models/claim';
 import {getFirstContactData, saveFirstContactData} from 'services/firstcontact/firstcontactService';
-
-const CryptoJS = require('crypto-js');
+import {encrypt} from 'common/utils/cryptoUtils';
 
 const pinController = Router();
 const pinViewPath = 'features/public/firstContact/pin';
@@ -52,7 +51,7 @@ pinController.post(FIRST_CONTACT_PIN_URL, (async (req: Request, res: Response, n
           renderView(pinForm, false, res, true);
         } else {
           await saveDraftClaim(claim.id, claim, true);
-          const ciphertext = CryptoJS.AES.encrypt(YesNo.YES, pin).toString();
+          const ciphertext = encrypt(YesNo.YES, pin);
           req.session = saveFirstContactData(req.session as AppSession, {claimId: claim.id, pin: ciphertext});
           res.redirect(FIRST_CONTACT_CLAIM_SUMMARY_URL);
         }
