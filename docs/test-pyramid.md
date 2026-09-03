@@ -18,12 +18,10 @@ Related: [functional-test-migration-matrix.md](functional-test-migration-matrix.
 
 A unit test isolates one unit. Controllers are units: extract the GET/POST handler from the Router and call it with mock `req` / `res` / `next`.
 
-Reference: `src/test/unit/routes/features/claim/defendant/defendantDetailsController.test.ts`.
+Reference: `src/test/utils/getRouteHandler.ts` (used from converted controller tests).
 
 ```ts
-const getHandler = (controller as any).stack.find(
-  (layer: any) => layer.route?.methods?.get,
-).route.stack[0].handle;
+const getHandler = getRouteHandler(controller, 'get');
 
 await getHandler(req as Request, res as Response, next);
 
@@ -62,9 +60,11 @@ If a journey has an owner in this table, do not add new `request(app)` tests und
 
 If a journey has no owner, add the integration test first, then convert the unit file.
 
+The claim-issue dashboard integration owner is notification rendering only. `src/test/unit/routes/features/dashboard/claimantDashboardController.test.ts` still uses HTTP for other dashboard branches; converting that file is a follow-up, not part of the already-owned-journey conversion.
+
 ## Jest retries
 
-`jest.retryTimes` is for integration flakiness only. It must not be set in the unit Jest setup (`jest.setup.js`). Put retries on `jest.functionaltest.config.js` if they are still required.
+`jest.retryTimes` is for integration flakiness only. It still lives in `jest.setup.js` because that file is shared by unit and integration, and hundreds of HTTP tests remain under `src/test/unit`. After those tests have left the unit folder, remove retries from unit setup and keep them on `jest.functionaltest.config.js` if they are still required.
 
 ## Converting an existing HTTP unit test
 
