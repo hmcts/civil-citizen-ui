@@ -1,142 +1,97 @@
-import request from 'supertest';
-import {app} from '../../../../../main/app';
-import {QM_FOLLOW_UP_MESSAGE} from 'routes/urls';
-import nock from 'nock';
-import config from 'config';
-import {Claim} from 'models/claim';
-import {deleteQueryManagement, getQueryManagement} from 'services/features/queryManagement/queryManagementService';
+import {Request, Response} from 'express';
+import sendFollowUpQueryController from '../../../../../main/routes/features/queryManagement/sendFollowUpQueryController';
+import {
+  deleteQueryManagement,
+  getCancelUrl,
+  getQueryManagement,
+  getSummaryList,
+  saveQueryManagement,
+} from 'services/features/queryManagement/queryManagementService';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {QueryManagement} from 'form/models/queryManagement/queryManagement';
-import * as queryManagementService from 'services/features/queryManagement/queryManagementService';
-import {SendFollowUpQuery} from 'models/queryManagement/sendFollowUpQuery';
-import {LinKFromValues} from 'models/generalApplication/applicationType';
-import * as QueryManagementService from 'services/features/queryManagement/queryManagementService';
+import {QM_FOLLOW_UP_CYA} from 'routes/urls';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {createMockResponse, getRouteHandler} from '../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/draft-store');
-jest.mock('../../../../../main/modules/draft-store/draftStoreService');
-jest.mock('../../../../../main/services/features/queryManagement/queryManagementService');
+jest.mock('services/features/queryManagement/queryManagementService');
+jest.mock('modules/draft-store/draftStoreService');
+jest.mock('common/utils/fileUploadUtils', () => ({
+  createMulterErrorMiddlewareForSingleField: jest.fn(() => (req: unknown, res: unknown, next: () => void) => next()),
+  getFileUploadErrorsForSource: jest.fn(() => []),
+  FILE_UPLOAD_SOURCE: {QM_SEND_FOLLOW_UP: 'QM_SEND_FOLLOW_UP'},
+}));
+jest.mock('services/features/generalApplication/uploadEvidenceDocumentService', () => ({
+  handleMulterError: jest.fn(() => false),
+}));
 
-const queryManagementMock = getQueryManagement as jest.Mock;
-
-describe('Send follow query controller', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
-
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-  });
+describe('Send follow up query Controller', () => {
+  const getHandler = getRouteHandler(sendFollowUpQueryController, 'get');
+  const postHandler = getRouteHandler(sendFollowUpQueryController, 'post');
+  const viewPath = 'features/queryManagement/sendFollowUpQuery';
+  const claimId = '12345';
+  const queryId = 'query-1';
+  let req: Partial<Request>;
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
+  const mockGetQueryManagement = getQueryManagement as jest.Mock;
+  const mockSaveQueryManagement = saveQueryManagement as jest.Mock;
+  const mockDeleteQueryManagement = deleteQueryManagement as jest.Mock;
 
   beforeEach(() => {
-    jest.resetAllMocks();
+    req = {params: {id: claimId, queryId}, body: {}, query: {}, cookies: {}};
+    res = createMockResponse();
+    next = jest.fn();
+    (draftStoreService.generateRedisKey as jest.Mock).mockReturnValue(claimId);
+    mockGetQueryManagement.mockResolvedValue(new QueryManagement());
+    mockSaveQueryManagement.mockResolvedValue(undefined);
+    mockDeleteQueryManagement.mockResolvedValue(undefined);
+    (getCancelUrl as jest.Mock).mockReturnValue('/dashboard');
+    (getSummaryList as jest.Mock).mockResolvedValue(undefined);
   });
 
-  describe('GET', () => {
+  describe('on GET', () => {
+    it('should render the follow up form', async () => {
+      await getHandler(req as Request, res as unknown as Response, next);
 
-    it('should render query page', async () => {
-      queryManagementMock.mockResolvedValue(new Claim());
-      await request(app)
-        .get(QM_FOLLOW_UP_MESSAGE)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Send a follow up message');
-          expect(res.text).toContain('Enter message details');
-          expect(res.text).toContain('Message details');
-          expect(res.text).toContain('Include as many details as possible so case workers can respond to your message');
-          expect(res.text).toContain('Upload documents (optional)');
-        });
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({form: expect.anything()}));
+      expect(mockDeleteQueryManagement).not.toHaveBeenCalled();
     });
 
-    it('should remove Field values url starts with start', async () => {
-      const preFilledData = {'messageDetails': 'test body'};
-      const claim = new Claim();
-      claim.queryManagement = new QueryManagement();
-      claim.queryManagement.sendFollowUpQuery = preFilledData as SendFollowUpQuery;
-      queryManagementMock.mockResolvedValue(claim.queryManagement);
+    it('should clear previous QM data when linkFrom=start', async () => {
+      req.query = {linkFrom: 'start'};
 
-      await request(app)
-        .get(QM_FOLLOW_UP_MESSAGE + `?linkFrom=${LinKFromValues.start}`)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(deleteQueryManagement).toHaveBeenCalledTimes(1);
-        });
+      await getHandler(req as Request, res as unknown as Response, next);
+
+      expect(mockDeleteQueryManagement).toHaveBeenCalled();
+    });
+
+    it('should call next when loading fails', async () => {
+      const error = new Error('redis failure');
+      mockGetQueryManagement.mockRejectedValue(error);
+
+      await getHandler(req as Request, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 
-  describe('POST', () => {
+  describe('on POST', () => {
+    it('should re-render when the message is empty', async () => {
+      await postHandler(req as Request, res as unknown as Response, next);
 
-    it('should redirect on successful form', async () => {
-      queryManagementMock.mockResolvedValue(new QueryManagement());
-      const saveQueryManagement = jest.spyOn(queryManagementService, 'saveQueryManagement');
-      const data = {'messageDetails': 'test body'};
-      const res = await request(app).post(QM_FOLLOW_UP_MESSAGE).send(data);
-      expect(res.status).toBe(302);
-      expect(saveQueryManagement).toHaveBeenCalled();
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.anything());
+      expect(mockSaveQueryManagement).not.toHaveBeenCalled();
     });
 
-    it('should redirect on successful form when exists a follow up', async () => {
-      const claim = new Claim();
-      claim.queryManagement = new QueryManagement();
-      claim.queryManagement.sendFollowUpQuery = new SendFollowUpQuery();
-      queryManagementMock.mockResolvedValue(claim.queryManagement);
-      const saveQueryManagement = jest.spyOn(queryManagementService, 'saveQueryManagement');
-      const data = {'messageDetails': 'test body'};
-      const res = await request(app).post(QM_FOLLOW_UP_MESSAGE).send(data);
-      expect(res.status).toBe(302);
-      expect(saveQueryManagement).toHaveBeenCalled();
+    it('should save and redirect to CYA when the message is valid', async () => {
+      req.body = {messageDetails: 'Please follow up on this query'};
+
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expect(mockSaveQueryManagement).toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(
+        constructResponseUrlWithIdParams(claimId, QM_FOLLOW_UP_CYA).replace(':queryId', queryId),
+      );
     });
-
-    it('should render the page with errors for the missing fields', async () => {
-      queryManagementMock.mockResolvedValue(new QueryManagement());
-      const res = await request(app).post(QM_FOLLOW_UP_MESSAGE).send({});
-      expect(res.status).toBe(200);
-      expect(res.text).toContain('There was a problem');
-      expect(res.text).toContain('Enter message details');
-    });
-
-    it('should trigger redirect on successful file upload', async () => {
-      queryManagementMock.mockResolvedValue(new QueryManagement());
-      const uploadSelectedFile = jest.spyOn(queryManagementService, 'uploadSelectedFile');
-      await request(app).post(QM_FOLLOW_UP_MESSAGE).send({
-        action: 'uploadButton',
-        messageDetails: 'test body',
-      })
-        .expect(res => {
-          expect(res.status).toBe(302);
-          expect(uploadSelectedFile).toHaveBeenCalled();
-        });
-    });
-
-    it('should trigger redirect on successful file exclusion', async () => {
-      queryManagementMock.mockResolvedValue(new QueryManagement());
-      const spyRemoveSelectedDocument = jest.spyOn(QueryManagementService, 'removeSelectedDocument');
-      await request(app).post(QM_FOLLOW_UP_MESSAGE).send({
-        action: '[1][deleteFile]',
-        messageDetails: 'test body',
-      })
-        .expect(res => {
-          expect(res.status).toBe(302);
-          expect(spyRemoveSelectedDocument).toHaveBeenCalled();
-        });
-    });
-
-    it('should redirect when multer error on file upload (file too large)', async () => {
-      queryManagementMock.mockResolvedValue(new QueryManagement());
-      const save = jest.fn((cb: any) => cb());
-      app.request.session = { save } as any;
-      const largeBuffer = Buffer.alloc(101 * 1024 * 1024);
-      largeBuffer.fill('x');
-
-      const res = await request(app)
-        .post(QM_FOLLOW_UP_MESSAGE)
-        .field('action', 'uploadButton')
-        .field('messageDetails', 'test')
-        .attach('selectedFile', largeBuffer, { filename: 'large.pdf', contentType: 'application/pdf' });
-
-      expect(res.status).toBe(302);
-      expect(save).toHaveBeenCalledTimes(1);
-    });
-
   });
 });

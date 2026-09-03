@@ -1,90 +1,69 @@
-import {CLAIM_CONFIRMATION_URL} from 'routes/urls';
-
-import nock from 'nock';
-import request from 'supertest';
-import config from 'config';
-import {mockCivilClaim} from '../../../../utils/mockDraftStore';
+import {Request, Response} from 'express';
+import claimSubmittedController from '../../../../../main/routes/features/claim/claimSubmittedController';
+import {CLAIM_FEE_BREAKUP} from 'routes/urls';
 import {Claim} from 'models/claim';
-import claim from '../../../../utils/mocks/civilClaimResponseMock.json';
 import {YesNo} from 'form/models/yesNo';
 import {CivilServiceClient} from 'client/civilServiceClient';
+import {createMockResponse, getRouteHandler} from '../../../../utils/getRouteHandler';
 
-const {app} = require('../../../../../main/app');
-
-jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/draft-store');
-jest.mock('services/features/claim/amount/checkClaimFee');
-jest.mock('modules/utilityService', () => ({
-  getRedisStoreForSession: jest.fn(),
-}));
-
-describe('Claim - Claim Submitted', () => {
-  const idamServiceUrl: string = config.get('services.idam.url');
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-
+describe('Claim Submitted Controller', () => {
+  const getHandler = getRouteHandler(claimSubmittedController, 'get');
   const claimId = '1111111111';
-  const caseData = Object.assign(new Claim(), claim.case_data);
+  let req: Partial<Request>;
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
 
-  beforeAll(() => {
-    nock(idamServiceUrl)
-      .post('/o/token')
-      .reply(200, { id_token: citizenRoleToken });
-    app.locals.draftStoreClient = mockCivilClaim;
+  const buildClaim = (helpWithFees: YesNo): Claim => {
+    const claim = new Claim();
+    jest.spyOn(claim, 'isEmpty').mockReturnValue(false);
+    jest.spyOn(claim, 'hasHelpWithFees').mockReturnValue(helpWithFees === YesNo.YES);
+    jest.spyOn(claim, 'getFormattedCaseReferenceNumber').mockReturnValue(claimId);
+    jest.spyOn(claim, 'getDefendantFullName').mockReturnValue('Jane Defendant');
+    return claim;
+  };
+
+  beforeEach(() => {
+    req = {params: {id: claimId}, query: {}, cookies: {}};
+    res = createMockResponse();
+    next = jest.fn();
+    jest.restoreAllMocks();
   });
 
-  describe('on GET', () => {
+  it('should render the claim submitted page without help with fees', async () => {
+    jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockResolvedValue(buildClaim(YesNo.NO));
 
-    it('should return claim submitted page and HWF number not submitted ' +
-      ': Pay Fee button set with Pay  fee Breakup Url', async () => {
-      //given
-      caseData.claimDetails.helpWithFees = {
-        'option': YesNo.NO,
-      };
-      jest
-        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
-        .mockResolvedValueOnce(caseData);
-      //when-then
-      await request(app)
-        .get(CLAIM_CONFIRMATION_URL.replace(':id', claimId))
-        .expect(res => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Claim submitted');
-          expect(res.text).toContain(claimId);
-          expect(res.text).toContain('/claim/'+claimId+'/fee');
-        });
-    });
+    await getHandler(req as Request, res as unknown as Response, next);
 
-    it('should contain help with fees info', async () => {
-      //given
-      caseData.claimDetails.helpWithFees = {
-        'option': YesNo.YES,
-      };
-      jest
-        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
-        .mockResolvedValueOnce(caseData);
-      const text = 'Your claim will be issued once your Help With Fees application has been confirmed.';
-      //when-then
-      await request(app)
-        .get(CLAIM_CONFIRMATION_URL)
-        .expect(res => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Claim submitted');
-          expect(res.text).toContain(text);
-        });
-    });
+    expect(res.render).toHaveBeenCalledWith(
+      'features/claim/claim-submitted',
+      expect.objectContaining({
+        claimId,
+        helpWithFee: false,
+        redirectUrl: CLAIM_FEE_BREAKUP.replace(':id', claimId),
+        pageTitle: 'PAGES.CLAIM_SUBMITTED.PAGE_TITLE',
+      }),
+    );
+    expect(next).not.toHaveBeenCalled();
+  });
 
-    it('should return 500 status code when error occurs', async () => {
-      //given
-      const error = new Error('Test error');
-      jest
-        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
-        .mockRejectedValueOnce(error);
-      //when-then
-      await request(app)
-        .get(CLAIM_CONFIRMATION_URL.replace(':id', claimId))
-        .expect((res) => {
-          expect(res.status).toBe(500);
-        });
-    });
+  it('should render with help with fees when the claim has HWF', async () => {
+    jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockResolvedValue(buildClaim(YesNo.YES));
+
+    await getHandler(req as Request, res as unknown as Response, next);
+
+    expect(res.render).toHaveBeenCalledWith(
+      'features/claim/claim-submitted',
+      expect.objectContaining({helpWithFee: true}),
+    );
+  });
+
+  it('should call next when retrieveClaimDetails fails', async () => {
+    const error = new Error('Test error');
+    jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockRejectedValue(error);
+
+    await getHandler(req as Request, res as unknown as Response, next);
+
+    expect(next).toHaveBeenCalledWith(error);
+    expect(res.render).not.toHaveBeenCalled();
   });
 });

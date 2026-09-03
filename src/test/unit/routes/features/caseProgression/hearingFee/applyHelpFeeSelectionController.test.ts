@@ -1,117 +1,91 @@
-import request from 'supertest';
-import {app} from '../../../../../../main/app';
-import nock from 'nock';
-import config from 'config';
-import {APPLY_HELP_WITH_FEES, HEARING_FEE_APPLY_HELP_FEE_SELECTION,
-} from 'routes/urls';
-import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
-import {mockCivilClaimHearingFee} from '../../../../../utils/mockDraftStore';
-import {t} from 'i18next';
+import {Request, Response} from 'express';
+import applyHelpFeeSelectionController from '../../../../../../main/routes/features/caseProgression/hearingFee/applyHelpFeeSelectionController';
+import {APPLY_HELP_WITH_FEES} from 'routes/urls';
 import {YesNo} from 'form/models/yesNo';
-import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import {Session} from 'express-session';
 import {getRedirectUrl} from 'services/features/caseProgression/hearingFee/applyHelpFeeSelectionService';
-import {CivilServiceClient} from 'client/civilServiceClient';
+import {getClaimById, refreshDraftStoreClaimFrom} from 'modules/utilityService';
+import {Claim} from 'models/claim';
+import {createMockResponse, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
 jest.mock('services/features/caseProgression/hearingFee/applyHelpFeeSelectionService');
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
-jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
-const spyDel = jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails');
+jest.mock('services/features/caseProgression/hearingFee/applyHelpFeeSelectionContents', () => ({
+  getApplyHelpFeeSelectionContents: jest.fn(() => []),
+}));
+jest.mock('services/features/caseProgression/hearingFee/applyHelpFeeSelectionButtonContents', () => ({
+  getButtonsContents: jest.fn(() => []),
+}));
+jest.mock('modules/utilityService', () => ({
+  getClaimById: jest.fn(),
+  refreshDraftStoreClaimFrom: jest.fn(),
+}));
 
-describe('Apply for help with fees', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
+describe('Apply help fee selection', () => {
+  const getHandler = getRouteHandler(applyHelpFeeSelectionController, 'get');
+  const postHandler = getRouteHandler(applyHelpFeeSelectionController, 'post');
+  const viewPath = 'features/caseProgression/hearingFee/apply-help-fee-selection';
+  const claimId = '12345';
+  let req: Partial<Request>;
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
+  const mockGetClaimById = getClaimById as jest.Mock;
+  const mockRefresh = refreshDraftStoreClaimFrom as jest.Mock;
 
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
+  const hearingClaim = (): Claim => {
+    const claim = new Claim();
+    claim.totalClaimAmount = 1000;
+    claim.caseProgressionHearing = {hearingFeeInformation: {hearingFee: {calculatedAmountInPence: '1000'}}} as Claim['caseProgressionHearing'];
+    return claim;
+  };
+
+  beforeEach(() => {
+    req = {params: {id: claimId}, body: {}, query: {}, cookies: {}};
+    res = createMockResponse();
+    next = jest.fn();
+    mockGetClaimById.mockResolvedValue(hearingClaim());
+    mockRefresh.mockResolvedValue(hearingClaim());
   });
+
   describe('on GET', () => {
-    it('should return resolving apply help fees page', async () => {
-      app.locals.draftStoreClient = mockCivilClaimHearingFee;
-      await request(app)
-        .get(HEARING_FEE_APPLY_HELP_FEE_SELECTION)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Hearing');
-        });
+    it('should render the apply help fee selection page', async () => {
+      await getHandler(req as Request, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({form: expect.anything()}));
     });
 
-    it('should return resolving apply help fees page with no case progression data', async () => {
-      app.locals.draftStoreClient = mockCivilClaimHearingFee;
+    it('should call next when loading the claim fails', async () => {
+      const error = new Error('redis failure');
+      mockGetClaimById.mockRejectedValue(error);
 
-      spyDel.mockImplementation(() => {return null;});
+      await getHandler(req as Request, res as unknown as Response, next);
 
-      await request(app)
-        .get(HEARING_FEE_APPLY_HELP_FEE_SELECTION)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Hearing');
-        });
-    });
-
-    it('should return resolving apply help fees page with option marked', async () => {
-      app.locals.draftStoreClient = mockCivilClaimHearingFee;
-      await request(app)
-        .get(HEARING_FEE_APPLY_HELP_FEE_SELECTION)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Hearing');
-        });
-    });
-
-    it('should return 500 error page for redis failure', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .get(HEARING_FEE_APPLY_HELP_FEE_SELECTION)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 
   describe('on POST', () => {
-    it('should show error if there is no option', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
-      await request(app)
-        .post(HEARING_FEE_APPLY_HELP_FEE_SELECTION)
-        .send({})
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.VALID_YES_NO_SELECTION_UPPER'));
-        });
+    it('should re-render when no option is selected', async () => {
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({form: expect.anything()}));
+      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
     });
 
-    it('should redirect to payments if option is NO', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
-      const mockHearingFeePaymentRedirectInfo = {
-        status: 'initiated',
-        nextUrl: 'https://card.payments.service.gov.uk/secure/7b0716b2-40c4-413e-b62e-72c599c91960',
-      };
-      app.request['session'] = {user: {id: 'jfkdljfd'}} as unknown as Session;
-      (getRedirectUrl as jest.Mock).mockResolvedValue(mockHearingFeePaymentRedirectInfo.nextUrl);
-      await request(app)
-        .post(HEARING_FEE_APPLY_HELP_FEE_SELECTION)
-        .send({option: YesNo.NO})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(mockHearingFeePaymentRedirectInfo.nextUrl);
-        });
+    it('should redirect using the service URL when no is selected', async () => {
+      (getRedirectUrl as jest.Mock).mockResolvedValue('https://card.payments.service.gov.uk/secure/abc');
+      req.body = {option: YesNo.NO};
+
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expect(res.redirect).toHaveBeenCalledWith('https://card.payments.service.gov.uk/secure/abc');
     });
 
-    it('should redirect to help with fees if option is YES', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+    it('should redirect to apply help with fees when yes is selected', async () => {
       (getRedirectUrl as jest.Mock).mockResolvedValue(APPLY_HELP_WITH_FEES);
-      await request(app)
-        .post(HEARING_FEE_APPLY_HELP_FEE_SELECTION)
-        .send({option: YesNo.YES})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(APPLY_HELP_WITH_FEES);
-        });
+      req.body = {option: YesNo.YES};
+
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expect(res.redirect).toHaveBeenCalledWith(APPLY_HELP_WITH_FEES);
     });
   });
 });
