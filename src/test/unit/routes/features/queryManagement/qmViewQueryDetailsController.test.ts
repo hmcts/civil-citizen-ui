@@ -4,7 +4,7 @@ import {CivilServiceClient} from 'client/civilServiceClient';
 import {ViewQueriesService} from 'services/features/queryManagement/viewQueriesService';
 import {Claim} from 'models/claim';
 import {CaseState} from 'form/models/claimDetails';
-import {createMockResponse, getRouteHandler} from '../../../../utils/getRouteHandler';
+import {createMockResponse, createMockSession, getRouteHandler} from '../../../../utils/getRouteHandler';
 
 jest.mock('services/features/queryManagement/viewQueriesService', () => ({
   ViewQueriesService: {buildQueryListItemsByQueryId: jest.fn(() => ({id: 'query-1'}))},
@@ -19,7 +19,7 @@ describe('Query management view query details Controller', () => {
   let next: jest.Mock;
 
   beforeEach(() => {
-    req = {params: {id: claimId, queryId}, query: {}, cookies: {}, session: {user: {id: 'user-1'}} as Request['session']};
+    req = {params: {id: claimId, queryId}, query: {}, cookies: {}, session: createMockSession({user: {id: 'user-1'}})};
     res = createMockResponse();
     next = jest.fn();
   });

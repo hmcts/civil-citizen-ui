@@ -9,10 +9,10 @@ import {createMockResponse, getRouteHandler} from '../../../../../utils/getRoute
 
 jest.mock('services/features/caseProgression/hearingFee/applyHelpFeeSelectionService');
 jest.mock('services/features/caseProgression/hearingFee/applyHelpFeeSelectionContents', () => ({
-  getApplyHelpFeeSelectionContents: jest.fn(() => []),
+  getApplyHelpFeeSelectionContents: jest.fn((): unknown[] => []),
 }));
 jest.mock('services/features/caseProgression/hearingFee/applyHelpFeeSelectionButtonContents', () => ({
-  getButtonsContents: jest.fn(() => []),
+  getButtonsContents: jest.fn((): unknown[] => []),
 }));
 jest.mock('modules/utilityService', () => ({
   getClaimById: jest.fn(),

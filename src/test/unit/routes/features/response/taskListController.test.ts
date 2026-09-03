@@ -1,11 +1,12 @@
-import {Request, Response} from 'express';
+import {Response} from 'express';
 import taskListController from '../../../../../main/routes/features/response/taskListController';
 import {getClaimById} from 'modules/utilityService';
 import {setResponseDeadline} from 'services/features/common/responseDeadlineAgreedService';
 import * as taskListService from 'services/features/common/taskListService';
 import * as launchDarklyClient from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {Claim} from 'models/claim';
-import {createMockResponse, getRouteHandler} from '../../../../utils/getRouteHandler';
+import {AppRequest} from 'models/AppRequest';
+import {createMockResponse, createMockSession, getRouteHandler} from '../../../../utils/getRouteHandler';
 
 jest.mock('modules/utilityService', () => ({
   getClaimById: jest.fn(),
@@ -20,7 +21,7 @@ describe('Response task list', () => {
   const viewPath = 'features/response/task-list';
   const claimId = '1645882162449409';
   const submittedDate = new Date('2024-01-02T00:00:00.000Z');
-  let req: Partial<Request>;
+  let req: Partial<AppRequest>;
   let res: ReturnType<typeof createMockResponse>;
   let next: jest.Mock;
   const mockGetClaimById = getClaimById as jest.Mock;
@@ -42,7 +43,7 @@ describe('Response task list', () => {
       params: {id: claimId},
       query: {lang: 'en'},
       cookies: {},
-      session: {} as Request['session'],
+      session: createMockSession(),
     };
     res = createMockResponse();
     next = jest.fn();
@@ -56,7 +57,7 @@ describe('Response task list', () => {
   });
 
   it('should render the task list', async () => {
-    await getHandler(req as Request, res as unknown as Response, next);
+    await getHandler(req as AppRequest, res as unknown as Response, next);
 
     expect(setResponseDeadline).toHaveBeenCalled();
     expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
@@ -70,7 +71,7 @@ describe('Response task list', () => {
     isCarmEnabledForCase.mockResolvedValue(false);
     isMintiEnabledForCase.mockResolvedValue(false);
 
-    await getHandler(req as Request, res as unknown as Response, next);
+    await getHandler(req as AppRequest, res as unknown as Response, next);
 
     expect(isCarmEnabledForCase).toHaveBeenCalledWith(submittedDate);
     expect(isMintiEnabledForCase).toHaveBeenCalledWith(submittedDate);
@@ -81,7 +82,7 @@ describe('Response task list', () => {
     const error = new Error('redis failure');
     mockGetClaimById.mockRejectedValue(error);
 
-    await getHandler(req as Request, res as unknown as Response, next);
+    await getHandler(req as AppRequest, res as unknown as Response, next);
 
     expect(next).toHaveBeenCalledWith(error);
   });

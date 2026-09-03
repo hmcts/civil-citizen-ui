@@ -1,4 +1,5 @@
 import {RequestHandler, Router} from 'express';
+import {AppSession} from 'models/AppRequest';
 
 type HttpMethod = 'get' | 'post' | 'put' | 'delete' | 'patch';
 
@@ -39,6 +40,9 @@ export const createMockResponse = (): {
   redirect: jest.fn(),
   cookie: jest.fn(),
 });
+
+export const createMockSession = (overrides: Record<string, unknown> = {}): AppSession =>
+  overrides as unknown as AppSession;
 
 /**
  * Express-free stand-in for `src/main/app-instance`.

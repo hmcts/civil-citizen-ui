@@ -1,17 +1,18 @@
-import {Request, Response} from 'express';
+import {Response} from 'express';
 import claimantResponseTasklistController from '../../../../../main/routes/features/claimantResponse/claimantResponseTasklistController';
 import {getClaimById} from 'modules/utilityService';
 import {getClaimantResponseTaskLists} from 'services/features/claimantResponse/claimantResponseTasklistService/claimantResponseTasklistService';
 import * as taskListService from 'services/features/common/taskListService';
 import * as launchDarklyClient from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {Claim} from 'models/claim';
-import {createMockResponse, getRouteHandler} from '../../../../utils/getRouteHandler';
+import {AppRequest} from 'models/AppRequest';
+import {createMockResponse, createMockSession, getRouteHandler} from '../../../../utils/getRouteHandler';
 
 jest.mock('modules/utilityService', () => ({
   getClaimById: jest.fn(),
 }));
 jest.mock('services/features/claimantResponse/claimantResponseTasklistService/claimantResponseTasklistService', () => ({
-  getClaimantResponseTaskLists: jest.fn(() => []),
+  getClaimantResponseTaskLists: jest.fn((): unknown[] => []),
 }));
 jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 
@@ -20,7 +21,7 @@ describe('Claimant response task list', () => {
   const viewPath = 'features/claimantResponse/claimant-response-task-list';
   const claimId = '12345';
   const submittedDate = new Date('2024-01-02T00:00:00.000Z');
-  let req: Partial<Request>;
+  let req: Partial<AppRequest>;
   let res: ReturnType<typeof createMockResponse>;
   let next: jest.Mock;
   const mockGetClaimById = getClaimById as jest.Mock;
@@ -33,7 +34,7 @@ describe('Claimant response task list', () => {
       params: {id: claimId},
       query: {lang: 'en'},
       cookies: {},
-      session: {} as Request['session'],
+      session: createMockSession(),
     };
     res = createMockResponse();
     next = jest.fn();
@@ -48,7 +49,7 @@ describe('Claimant response task list', () => {
   });
 
   it('should render the claimant response task list', async () => {
-    await getHandler(req as Request, res as unknown as Response, next);
+    await getHandler(req as AppRequest, res as unknown as Response, next);
 
     expect(mockGetClaimantResponseTaskLists).toHaveBeenCalledWith(expect.any(Claim), claimId, 'en', false, false);
     expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
@@ -61,7 +62,7 @@ describe('Claimant response task list', () => {
   it('should pass carm enabled to the task list service', async () => {
     isCarmEnabledForCase.mockResolvedValue(true);
 
-    await getHandler(req as Request, res as unknown as Response, next);
+    await getHandler(req as AppRequest, res as unknown as Response, next);
 
     expect(isCarmEnabledForCase).toHaveBeenCalledWith(submittedDate);
     expect(mockGetClaimantResponseTaskLists).toHaveBeenCalledWith(expect.any(Claim), claimId, 'en', true, false);
@@ -71,7 +72,7 @@ describe('Claimant response task list', () => {
     const error = new Error('redis failure');
     mockGetClaimById.mockRejectedValue(error);
 
-    await getHandler(req as Request, res as unknown as Response, next);
+    await getHandler(req as AppRequest, res as unknown as Response, next);
 
     expect(next).toHaveBeenCalledWith(error);
   });

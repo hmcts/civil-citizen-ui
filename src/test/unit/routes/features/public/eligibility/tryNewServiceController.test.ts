@@ -8,7 +8,7 @@ import {
   CLAIM_BILINGUAL_LANGUAGE_PREFERENCE_URL,
   ELIGIBILITY_KNOWN_CLAIM_AMOUNT_URL,
 } from '../../../../../../main/routes/urls';
-import {createMockResponse, getRouteHandler} from '../../../../../utils/getRouteHandler';
+import {createMockResponse, createMockSession, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
 describe('Try the new online service', () => {
   const getHandler = getRouteHandler(tryNewServiceController, 'get');
@@ -16,7 +16,7 @@ describe('Try the new online service', () => {
   let res: ReturnType<typeof createMockResponse>;
 
   beforeEach(() => {
-    req = {cookies: {}, body: {}, query: {}, session: {} as Request['session']};
+    req = {cookies: {}, body: {}, query: {}, session: createMockSession()};
     res = createMockResponse();
   });
 
@@ -35,7 +35,7 @@ describe('Try the new online service', () => {
 
   it('should redirect to bilingual preference when eligibility is complete and the user is signed in', async () => {
     req.cookies = {eligibilityCompleted: true};
-    req.session = {user: {id: '123'}} as Request['session'];
+    req.session = createMockSession({user: {id: '123'}});
 
     await getHandler(req as Request, res as unknown as Response, jest.fn());
 

@@ -19,10 +19,10 @@ jest.mock('services/features/caseProgression/hearingFee/hearingFeeService', () =
   triggerNotifyEvent: jest.fn().mockResolvedValue(undefined),
 }));
 jest.mock('services/features/caseProgression/hearingFee/applyHelpFeeReferenceContents', () => ({
-  getApplyHelpFeeReferenceContents: jest.fn(() => []),
+  getApplyHelpFeeReferenceContents: jest.fn((): unknown[] => []),
 }));
 jest.mock('services/features/caseProgression/hearingFee/applyHelpFeeSelectionButtonContents', () => ({
-  getButtonsContents: jest.fn(() => []),
+  getButtonsContents: jest.fn((): unknown[] => []),
 }));
 
 describe('Apply help fees reference', () => {

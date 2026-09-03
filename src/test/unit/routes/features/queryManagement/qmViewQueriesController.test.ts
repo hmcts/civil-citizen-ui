@@ -5,12 +5,11 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {ViewQueriesService} from 'services/features/queryManagement/viewQueriesService';
 import {getNotifications} from 'services/dashboard/dashboardService';
-import {getTotalAmountWithInterestAndFees} from 'modules/claimDetailsService';
 import {Claim} from 'models/claim';
-import {createMockResponse, getRouteHandler} from '../../../../utils/getRouteHandler';
+import {createMockResponse, createMockSession, getRouteHandler} from '../../../../utils/getRouteHandler';
 
 jest.mock('services/features/queryManagement/viewQueriesService', () => ({
-  ViewQueriesService: {buildQueryListItems: jest.fn(() => [])},
+  ViewQueriesService: {buildQueryListItems: jest.fn((): unknown[] => [])},
 }));
 jest.mock('services/dashboard/dashboardService', () => ({
   getNotifications: jest.fn().mockResolvedValue({items: []}),
@@ -27,7 +26,7 @@ describe('Query management view queries Controller', () => {
   let next: jest.Mock;
 
   beforeEach(() => {
-    req = {params: {id: claimId}, query: {}, cookies: {}, session: {user: {id: 'user-1'}} as Request['session']};
+    req = {params: {id: claimId}, query: {}, cookies: {}, session: createMockSession({user: {id: 'user-1'}})};
     res = createMockResponse();
     next = jest.fn();
     (getNotifications as jest.Mock).mockResolvedValue({items: []});

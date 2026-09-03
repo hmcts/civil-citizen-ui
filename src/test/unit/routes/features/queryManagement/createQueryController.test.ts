@@ -17,7 +17,7 @@ jest.mock('modules/utilityService', () => ({
 jest.mock('services/features/queryManagement/queryManagementService');
 jest.mock('common/utils/fileUploadUtils', () => ({
   createMulterErrorMiddlewareForSingleField: jest.fn(() => (req: unknown, res: unknown, next: () => void) => next()),
-  getFileUploadErrorsForSource: jest.fn(() => []),
+  getFileUploadErrorsForSource: jest.fn((): unknown[] => []),
   FILE_UPLOAD_SOURCE: {QM_CREATE_QUERY: 'QM_CREATE_QUERY'},
 }));
 jest.mock('services/features/generalApplication/uploadEvidenceDocumentService', () => ({
