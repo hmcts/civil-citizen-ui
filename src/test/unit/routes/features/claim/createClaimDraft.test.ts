@@ -12,7 +12,13 @@ import { draftClaim } from '../../../../../main/modules/draft-store/draftClaimCa
 import {mockRedisFailure} from '../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import * as draftStoreManagerService from 'modules/draft-store/draftStoreManagerService';
+import * as draftClaimCache from '../../../../../main/modules/draft-store/draftClaimCache';
+import * as launchDarkly from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {CivilServiceClient} from 'client/civilServiceClient';
+
+jest.mock('../../../../../main/modules/draft-store/draftStoreManagerService');
+jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 
 describe('createDraftClaim Router', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -23,6 +29,24 @@ describe('createDraftClaim Router', () => {
     nock(idamUrl).post('/o/token').reply(200, { id_token: citizenRoleToken });
     jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
     jest.spyOn(CivilServiceClient.prototype, 'createDashboard').mockReturnValue(null);
+  });
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+    (launchDarkly.isCarmEnabledForCase as jest.Mock).mockResolvedValue(false);
+    jest.spyOn(draftClaimCache, 'saveDraftClaimToCache').mockResolvedValue();
+    (draftStoreManagerService.createOrLoadDraft as jest.Mock).mockResolvedValue({
+      claimResponse: {case_data: draftClaim},
+      createdAt: '2026-08-14T10:00:00.000Z',
+      rawResponse: {draftId: 'draft-123'},
+      isNew: true,
+    });
+    (draftStoreManagerService.updateDraftClaim as jest.Mock).mockResolvedValue({
+      claimResponse: {case_data: draftClaim},
+      createdAt: '2026-08-14T10:00:00.000Z',
+      rawResponse: {draftId: 'draft-123'},
+      isNew: false,
+    });
   });
 
   describe('on GET', () => {
@@ -61,15 +85,36 @@ describe('createDraftClaim Router', () => {
       );
     });
 
-    it('should redirect to check answers page', async () => {
+    it('should persist the fixture and redirect to check answers', async () => {
       await request(app)
         .post(TESTING_SUPPORT_URL)
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.header.location).toBe(CLAIM_CHECK_ANSWERS_URL);
         });
+
+      expect(draftStoreManagerService.createOrLoadDraft).toHaveBeenCalledWith(
+        expect.anything(),
+        expect.objectContaining({
+          resolvingDispute: true,
+          completingClaimConfirmed: true,
+          claimInterest: 'no',
+        }),
+      );
+      expect(draftStoreManagerService.updateDraftClaim).toHaveBeenCalledWith(
+        expect.anything(),
+        expect.objectContaining({
+          resolvingDispute: true,
+          completingClaimConfirmed: true,
+          claimInterest: 'no',
+        }),
+        'draft-123',
+      );
     });
     it('should return http 500 when has error in the get method', async () => {
+      (draftStoreManagerService.createOrLoadDraft as jest.Mock).mockRejectedValue(
+        new Error(TestMessages.REDIS_FAILURE),
+      );
       app.locals.draftStoreClient = mockRedisFailure;
       await request(app)
         .post(TESTING_SUPPORT_URL)
