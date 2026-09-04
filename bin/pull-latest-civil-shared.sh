@@ -4,6 +4,11 @@
 #
 # Usage: ./pull-latest-civil-shared.sh [branch]
 #   branch: Optional branch/tag name or pr-<number> (default: master)
+#
+# The branch is chosen by getCivilServiceSharedBranch() in Jenkinsfile_CNP, which reads a
+# `civilShared:<branch>` PR label first, then falls back to `pr-<civilServicePr>`, then master.
+# Label a PR `civilShared:pr-<n>` to test an unmerged civil-service change to bin/shared here,
+# which is the only place those scripts actually run in CI.
 
 set -eu
 
