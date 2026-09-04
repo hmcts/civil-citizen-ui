@@ -51,7 +51,7 @@ hearingArrangementController.post(GA_HEARING_ARRANGEMENT_URL, (async (req: AppRe
       await renderView(claimId, claim, form, req, res);
     } else {
       await saveHearingArrangement(redisKey, hearingArrangement);
-      const index  = queryParamNumber(req, 'index') || claim.generalApplication.applicationTypes.length - 1;
+      const index  = queryParamNumber(req, 'index') ?? claim.generalApplication.applicationTypes.length - 1;
       res.redirect(constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, GA_HEARING_CONTACT_DETAILS_URL), index));
     }
   } catch (error) {

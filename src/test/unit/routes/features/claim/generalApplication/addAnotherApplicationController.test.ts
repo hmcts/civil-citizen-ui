@@ -1,13 +1,13 @@
 import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
-import { GA_ADD_ANOTHER_APPLICATION_URL } from 'routes/urls';
+import { GA_ADD_ANOTHER_APPLICATION_URL, GA_WANT_TO_UPLOAD_DOCUMENTS_URL } from 'routes/urls';
 import { app } from '../../../../../../main/app';
 import * as draftService from 'modules/draft-store/draftStoreService';
 import { Claim } from 'common/models/claim';
 import { t } from 'i18next';
 import { GeneralApplication } from 'common/models/generalApplication/GeneralApplication';
-import { ApplicationType, ApplicationTypeOption } from 'common/models/generalApplication/applicationType';
+import { ApplicationType, ApplicationTypeOption, LinkFromValues } from 'common/models/generalApplication/applicationType';
 import { TestMessages } from '../../../../../utils/errorMessageTestConstants';
 import { isGaForLipsEnabled } from 'app/auth/launchdarkly/launchDarklyClient';
 
@@ -69,6 +69,22 @@ describe('General Application - add another application', () => {
         .send({ option: 'yes' })
         .expect((res) => {
           expect(res.status).toBe(302);
+          expect(res.headers.location).toContain(`linkFrom=${LinkFromValues.addAnotherApp}&index=1`);
+        });
+    });
+
+    it('should keep index 0 when first application is selected in a multi-application journey', async () => {
+      claim.generalApplication.applicationTypes = [
+        new ApplicationType(ApplicationTypeOption.EXTEND_TIME),
+        new ApplicationType(ApplicationTypeOption.STAY_THE_CLAIM),
+      ];
+
+      await request(app)
+        .post(`${GA_ADD_ANOTHER_APPLICATION_URL}?index=0`)
+        .send({ option: 'no' })
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.headers.location).toContain(`${GA_WANT_TO_UPLOAD_DOCUMENTS_URL}?index=0`);
         });
     });
 

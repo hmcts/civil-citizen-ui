@@ -22,7 +22,7 @@ export class HearingSupport {
   @ValidateNested()
     otherSupport?: Support;
 
-  constructor(selectedSupport: SupportType[], signLanguageContent?: string, languageContent?: string, otherContent?: string) {
+  constructor(selectedSupport: SupportType[] = [], signLanguageContent?: string, languageContent?: string, otherContent?: string) {
     this.stepFreeAccess = new Support(SupportType.STEP_FREE_ACCESS, selectedSupport.includes(SupportType.STEP_FREE_ACCESS));
     this.hearingLoop = new Support(SupportType.HEARING_LOOP, selectedSupport.includes(SupportType.HEARING_LOOP));
     this.signLanguageInterpreter = new Support(SupportType.SIGN_LANGUAGE_INTERPRETER, selectedSupport.includes(SupportType.SIGN_LANGUAGE_INTERPRETER), signLanguageContent);

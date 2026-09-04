@@ -18,10 +18,16 @@ export enum ApplicationTypeOption {
   CONFIRM_CCJ_DEBT_PAID = 'CONFIRM_CCJ_DEBT_PAID',
 }
 
-export const getPersistableApplicationTypeOptions = (): ApplicationTypeOption[] => Object.values(ApplicationTypeOption)
+export type SelectedApplicationTypeOption = {
+  applicationType: string;
+  applicationTypeDescription: string;
+  displayFromCcd: string;
+};
+
+const PERSISTABLE_APPLICATION_TYPE_OPTIONS: ApplicationTypeOption[] = Object.values(ApplicationTypeOption)
   .filter(applicationTypeOption => applicationTypeOption !== ApplicationTypeOption.OTHER_OPTION);
 
-export const getOtherApplicationTypeOptions = (): ApplicationTypeOption[] => [
+const OTHER_APPLICATION_TYPE_OPTIONS: ApplicationTypeOption[] = [
   ApplicationTypeOption.AMEND_A_STMT_OF_CASE,
   ApplicationTypeOption.SUMMARY_JUDGEMENT,
   ApplicationTypeOption.STRIKE_OUT,
@@ -31,11 +37,18 @@ export const getOtherApplicationTypeOptions = (): ApplicationTypeOption[] => [
   ApplicationTypeOption.OTHER,
 ];
 
+const PERSISTABLE_APPLICATION_TYPE_OPTION_SET = new Set<unknown>(PERSISTABLE_APPLICATION_TYPE_OPTIONS);
+const OTHER_APPLICATION_TYPE_OPTION_SET = new Set<unknown>(OTHER_APPLICATION_TYPE_OPTIONS);
+
+export const getPersistableApplicationTypeOptions = (): ApplicationTypeOption[] => [...PERSISTABLE_APPLICATION_TYPE_OPTIONS];
+
+export const getOtherApplicationTypeOptions = (): ApplicationTypeOption[] => [...OTHER_APPLICATION_TYPE_OPTIONS];
+
 export const isPersistableApplicationTypeOption = (applicationTypeOption: unknown): applicationTypeOption is ApplicationTypeOption =>
-  getPersistableApplicationTypeOptions().includes(applicationTypeOption as ApplicationTypeOption);
+  PERSISTABLE_APPLICATION_TYPE_OPTION_SET.has(applicationTypeOption);
 
 export const isOtherApplicationTypeOption = (applicationTypeOption: unknown): applicationTypeOption is ApplicationTypeOption =>
-  getOtherApplicationTypeOptions().includes(applicationTypeOption as ApplicationTypeOption);
+  OTHER_APPLICATION_TYPE_OPTION_SET.has(applicationTypeOption);
 
 export const getInvalidApplicationTypeIndex = (applicationTypes?: ApplicationType[]): number =>
   applicationTypes?.findIndex(applicationType => !isPersistableApplicationTypeOption(applicationType?.option)) ?? -1;
@@ -43,15 +56,33 @@ export const getInvalidApplicationTypeIndex = (applicationTypes?: ApplicationTyp
 export const hasInvalidApplicationType = (applicationTypes?: ApplicationType[]): boolean =>
   getInvalidApplicationTypeIndex(applicationTypes) >= 0;
 
+export const getDuplicateApplicationTypeIndex = (applicationTypes?: ApplicationType[]): number => {
+  const seenApplicationTypeOptions = new Set<ApplicationTypeOption>();
+  return applicationTypes?.findIndex((applicationType) => {
+    const option = applicationType?.option;
+    if (!option) {
+      return false;
+    }
+    if (seenApplicationTypeOptions.has(option)) {
+      return true;
+    }
+    seenApplicationTypeOptions.add(option);
+    return false;
+  }) ?? -1;
+};
+
+export const hasDuplicateApplicationType = (applicationTypes?: ApplicationType[]): boolean =>
+  getDuplicateApplicationTypeIndex(applicationTypes) >= 0;
+
 export const assertValidApplicationTypes = (applicationTypes?: ApplicationType[]): void => {
-  if (!applicationTypes?.length || hasInvalidApplicationType(applicationTypes)) {
+  if (!applicationTypes?.length || hasInvalidApplicationType(applicationTypes) || hasDuplicateApplicationType(applicationTypes)) {
     throw new Error('Invalid general application type selected');
   }
 };
 
 export class ApplicationType {
   @IsDefined({ message: 'ERRORS.APPLICATION_TYPE_REQUIRED' })
-  @IsIn(getPersistableApplicationTypeOptions(), { message: 'ERRORS.APPLICATION_TYPE_REQUIRED' })
+  @IsIn(PERSISTABLE_APPLICATION_TYPE_OPTIONS, { message: 'ERRORS.APPLICATION_TYPE_REQUIRED' })
     option?: ApplicationTypeOption;
 
   constructor(option?: ApplicationTypeOption) {
@@ -64,10 +95,12 @@ export class ApplicationType {
 
 }
 
-export const LinKFromValues = {
+export const LinkFromValues = {
   start: 'start',
   addAnotherApp: 'addAnotherApp',
-};
+} as const;
+
+export const LinKFromValues = LinkFromValues;
 
 export enum ApplicationTypeOptionSelection {
   BY_APPLICATION_TYPE = 'BY_APPLICATION_TYPE',
@@ -77,15 +110,15 @@ export enum ApplicationTypeOptionSelection {
 
 export const getApplicationTypeOptionByTypeAndDescription = (applicationOption: ApplicationTypeOption, applicationTypeOptionSelection: ApplicationTypeOptionSelection) => {
 
-  const selectedApplicationTypeByOptionElement: [string, string, string] = selectedApplicationTypeByOptions[applicationOption];
+  const selectedApplicationTypeByOptionElement = selectedApplicationTypeByOptions[applicationOption];
   if (selectedApplicationTypeByOptionElement) {
     switch (applicationTypeOptionSelection) {
       case ApplicationTypeOptionSelection.BY_APPLICATION_TYPE:
-        return selectedApplicationTypeByOptionElement[0];
+        return selectedApplicationTypeByOptionElement.applicationType;
       case  ApplicationTypeOptionSelection.BY_APPLICATION_TYPE_DESCRIPTION:
-        return selectedApplicationTypeByOptionElement[1];
+        return selectedApplicationTypeByOptionElement.applicationTypeDescription;
       case ApplicationTypeOptionSelection.BY_APPLICATION_DISPLAY_FROM_CCD:
-        return selectedApplicationTypeByOptionElement[2];
+        return selectedApplicationTypeByOptionElement.displayFromCcd;
       default:
         return undefined;
     }
@@ -93,20 +126,84 @@ export const getApplicationTypeOptionByTypeAndDescription = (applicationOption: 
   return undefined;
 };
 
-export const selectedApplicationTypeByOptions: Partial<{ [key in ApplicationTypeOption]: [string, string, string]; }> = {
-  [ApplicationTypeOption.ADJOURN_HEARING]: ['PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.CHANGE_HEARING', 'PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_CHANGE_HEARING_DESCRIPTION', 'Adjourn a hearing'],
-  [ApplicationTypeOption.AMEND_A_STMT_OF_CASE]: ['PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.CHANGE_CLAIM', 'PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_CHANGE_CLAIM_DESCRIPTION', 'Amend a statement of case'],
-  [ApplicationTypeOption.EXTEND_TIME]: ['PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.MORE_TIME', 'PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_MORE_TIME_DESCRIPTION', 'Extend time'],
-  [ApplicationTypeOption.OTHER]: ['PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.NOT_ON_LIST', 'PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_DO_SOMETHING_DESCRIPTION', 'Other'],
-  [ApplicationTypeOption.OTHER_OPTION]: ['', '', 'Other option'],
-  [ApplicationTypeOption.RELIEF_FROM_SANCTIONS]: ['PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.RELIEF_PENALTY', 'PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_RELIEF_PENALTY_DESCRIPTION', 'Relief from sanctions'],
-  [ApplicationTypeOption.SETTLE_BY_CONSENT]: ['PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.SETTLING', 'PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_SETTLING_DESCRIPTION', 'Settle by consent'],
-  [ApplicationTypeOption.SET_ASIDE_JUDGEMENT]: ['PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.CANCEL_JUDGMENT', 'PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_CANCEL_JUDGMENT_DESCRIPTION', 'Set aside judgment'],
-  [ApplicationTypeOption.STAY_THE_CLAIM]: ['PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.PAUSE', 'PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_PAUSE_DESCRIPTION', 'Stay the claim'],
-  [ApplicationTypeOption.STRIKE_OUT]: ['PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.STRIKE_OUT', 'PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_STRIKE_OUT_DESCRIPTION', 'Strike out'],
-  [ApplicationTypeOption.SUMMARY_JUDGEMENT]: ['PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.SUMMARY_JUDGMENT', 'PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_SUMMARY_JUDGMENT_DESCRIPTION', 'Summary judgment'],
-  [ApplicationTypeOption.UNLESS_ORDER]: ['PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.IMPOSE_SANCTION', 'PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_IMPOSE_SANCTION_DESCRIPTION', 'Unless order'],
-  [ApplicationTypeOption.VARY_ORDER]: ['PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.RECONSIDER', 'PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_RECONSIDER_DESCRIPTION', 'Vary order'],
-  [ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT]: ['PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.VARY_JUDGMENT', 'PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_VARY_JUDGMENT_DESCRIPTION', 'Vary payment terms of judgment'],
-  [ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID]: ['PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.CONFIRM_YOU_PAID_CCJ', 'PAGES.GENERAL_APPLICATION.SELECT_TYPE.CONFIRM_YOU_PAID_DESCRIPTION', 'Confirm you\'ve paid a judgment debt'],
+export const getApplicationTypeOptionByDisplayValue = (displayValue?: string): ApplicationTypeOption | undefined =>
+  (Object.keys(selectedApplicationTypeByOptions) as ApplicationTypeOption[])
+    .find(key => selectedApplicationTypeByOptions[key]?.displayFromCcd === displayValue);
+
+export const selectedApplicationTypeByOptions: Partial<Record<ApplicationTypeOption, SelectedApplicationTypeOption>> = {
+  [ApplicationTypeOption.ADJOURN_HEARING]: {
+    applicationType: 'PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.CHANGE_HEARING',
+    applicationTypeDescription: 'PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_CHANGE_HEARING_DESCRIPTION',
+    displayFromCcd: 'Adjourn a hearing',
+  },
+  [ApplicationTypeOption.AMEND_A_STMT_OF_CASE]: {
+    applicationType: 'PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.CHANGE_CLAIM',
+    applicationTypeDescription: 'PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_CHANGE_CLAIM_DESCRIPTION',
+    displayFromCcd: 'Amend a statement of case',
+  },
+  [ApplicationTypeOption.EXTEND_TIME]: {
+    applicationType: 'PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.MORE_TIME',
+    applicationTypeDescription: 'PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_MORE_TIME_DESCRIPTION',
+    displayFromCcd: 'Extend time',
+  },
+  [ApplicationTypeOption.OTHER]: {
+    applicationType: 'PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.NOT_ON_LIST',
+    applicationTypeDescription: 'PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_DO_SOMETHING_DESCRIPTION',
+    displayFromCcd: 'Other',
+  },
+  [ApplicationTypeOption.OTHER_OPTION]: {
+    applicationType: '',
+    applicationTypeDescription: '',
+    displayFromCcd: 'Other option',
+  },
+  [ApplicationTypeOption.RELIEF_FROM_SANCTIONS]: {
+    applicationType: 'PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.RELIEF_PENALTY',
+    applicationTypeDescription: 'PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_RELIEF_PENALTY_DESCRIPTION',
+    displayFromCcd: 'Relief from sanctions',
+  },
+  [ApplicationTypeOption.SETTLE_BY_CONSENT]: {
+    applicationType: 'PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.SETTLING',
+    applicationTypeDescription: 'PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_SETTLING_DESCRIPTION',
+    displayFromCcd: 'Settle by consent',
+  },
+  [ApplicationTypeOption.SET_ASIDE_JUDGEMENT]: {
+    applicationType: 'PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.CANCEL_JUDGMENT',
+    applicationTypeDescription: 'PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_CANCEL_JUDGMENT_DESCRIPTION',
+    displayFromCcd: 'Set aside judgment',
+  },
+  [ApplicationTypeOption.STAY_THE_CLAIM]: {
+    applicationType: 'PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.PAUSE',
+    applicationTypeDescription: 'PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_PAUSE_DESCRIPTION',
+    displayFromCcd: 'Stay the claim',
+  },
+  [ApplicationTypeOption.STRIKE_OUT]: {
+    applicationType: 'PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.STRIKE_OUT',
+    applicationTypeDescription: 'PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_STRIKE_OUT_DESCRIPTION',
+    displayFromCcd: 'Strike out',
+  },
+  [ApplicationTypeOption.SUMMARY_JUDGEMENT]: {
+    applicationType: 'PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.SUMMARY_JUDGMENT',
+    applicationTypeDescription: 'PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_SUMMARY_JUDGMENT_DESCRIPTION',
+    displayFromCcd: 'Summary judgment',
+  },
+  [ApplicationTypeOption.UNLESS_ORDER]: {
+    applicationType: 'PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.IMPOSE_SANCTION',
+    applicationTypeDescription: 'PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_IMPOSE_SANCTION_DESCRIPTION',
+    displayFromCcd: 'Unless order',
+  },
+  [ApplicationTypeOption.VARY_ORDER]: {
+    applicationType: 'PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.RECONSIDER',
+    applicationTypeDescription: 'PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_RECONSIDER_DESCRIPTION',
+    displayFromCcd: 'Vary order',
+  },
+  [ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT]: {
+    applicationType: 'PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.VARY_JUDGMENT',
+    applicationTypeDescription: 'PAGES.GENERAL_APPLICATION.SELECT_TYPE.ASK_VARY_JUDGMENT_DESCRIPTION',
+    displayFromCcd: 'Vary payment terms of judgment',
+  },
+  [ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID]: {
+    applicationType: 'PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.CONFIRM_YOU_PAID_CCJ',
+    applicationTypeDescription: 'PAGES.GENERAL_APPLICATION.SELECT_TYPE.CONFIRM_YOU_PAID_DESCRIPTION',
+    displayFromCcd: 'Confirm you\'ve paid a judgment debt',
+  },
 };

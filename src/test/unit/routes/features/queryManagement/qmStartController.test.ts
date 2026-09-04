@@ -16,7 +16,7 @@ import {Claim} from 'models/claim';
 import {getQueryManagement, saveQueryManagement} from 'services/features/queryManagement/queryManagementService';
 import {QueryManagement, WhatToDoTypeOption} from 'form/models/queryManagement/queryManagement';
 import {getGaRedirectionUrl} from 'services/commons/generalApplicationHelper';
-import {LinKFromValues} from 'models/generalApplication/applicationType';
+import {LinkFromValues} from 'models/generalApplication/applicationType';
 import {CivilServiceClient} from 'client/civilServiceClient';
 
 jest.mock('../../../../../main/modules/oidc');
@@ -121,7 +121,7 @@ describe('Query management start Controller', () => {
         .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
         .mockResolvedValueOnce(new Claim());
       const getUrlMock = getGaRedirectionUrl as jest.Mock;
-      getUrlMock.mockReturnValue(APPLICATION_TYPE_URL + `?linkFrom=${LinKFromValues.start}`);
+      getUrlMock.mockReturnValue(APPLICATION_TYPE_URL + `?linkFrom=${LinkFromValues.start}`);
       await request(app)
         .post(CONTROLLER_URL)
         .send({option: WhatToDoTypeOption.CHANGE_CASE})

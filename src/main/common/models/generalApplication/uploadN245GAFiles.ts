@@ -7,13 +7,12 @@ export class UploadN245GAFiles {
   @ValidateNested()
   @ValidateIf((object) => object.caseDocument === undefined || object.caseDocument === null || object.caseDocument === '')
   @IsNotEmpty({ message: 'ERRORS.GENERAL_APPLICATION.UPLOAD_ONE_FILE' })
-    fileUpload: FileUpload;
-  caseDocument: CaseDocument;
+    fileUpload?: FileUpload;
+  caseDocument?: CaseDocument;
 
   constructor(n245Files?: UploadGAFiles) {
-    this.fileUpload = n245Files.fileUpload;
-    this.caseDocument = n245Files.caseDocument;
+    this.fileUpload = n245Files?.fileUpload;
+    this.caseDocument = n245Files?.caseDocument;
   }
 
 }
-

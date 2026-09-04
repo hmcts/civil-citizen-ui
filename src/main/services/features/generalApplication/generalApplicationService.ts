@@ -4,19 +4,21 @@ import {
   getCaseDataFromStore,
   saveDraftClaim,
 } from 'modules/draft-store/draftStoreService';
-import {GeneralApplication} from 'common/models/generalApplication/GeneralApplication';
+import {toGeneralApplication} from 'common/models/generalApplication/GeneralApplication';
 import {
   assertValidApplicationTypes,
   ApplicationType,
   ApplicationTypeOption,
   ApplicationTypeOptionSelection,
   getApplicationTypeOptionByTypeAndDescription,
+  LinkFromValues,
 } from 'common/models/generalApplication/applicationType';
 import {HearingSupport} from 'models/generalApplication/hearingSupport';
 import {Claim} from 'models/claim';
 import {
   CANCEL_URL, GA_ADD_ANOTHER_APPLICATION_URL, GA_APPLICATION_COSTS_URL,
   GA_APPLICATION_RESPONSE_SUMMARY_URL,
+  GA_CHECK_ANSWERS_URL,
   GA_APPLICATION_SUMMARY_URL,
   GA_RESPONSE_VIEW_APPLICATION_URL,
   GA_VIEW_APPLICATION_URL, GA_WANT_TO_UPLOAD_DOCUMENTS_URL, INFORM_OTHER_PARTIES_URL, ORDER_JUDGE_URL,
@@ -78,13 +80,57 @@ const logger = Logger.getLogger('claimantResponseService');
 const baseUrl: string = config.get<string>('services.generalApplication.url');
 const generalApplicationClient = new GaServiceClient(baseUrl);
 
-export const saveApplicationType = async (claimId: string, claim: Claim, applicationType: ApplicationType, index?: number): Promise<void> => {
+type ApplicationTypeSelectionBody = {
+  option?: unknown;
+  optionOther?: unknown;
+};
+
+type ApplicationTypeValidationConstraint =
+  'duplicateApplicationError'
+  | 'additionalApplicationError'
+  | 'ccjApplicationError';
+
+export const CHANGE_SCREEN_QUERY_PARAM = 'changeScreen';
+
+export const isChangeScreenFromCya = (req: AppRequest | Request): boolean =>
+  req.query[CHANGE_SCREEN_QUERY_PARAM] === 'true';
+
+export const addChangeScreenToUrlIfPresent = (url: string, req: AppRequest | Request): string =>
+  isChangeScreenFromCya(req)
+    ? `${url}${url.includes('?') ? '&' : '?'}${CHANGE_SCREEN_QUERY_PARAM}=true`
+    : url;
+
+export const startApplicationTypeChangeFromCya = async (claimId: string, claim: Claim, index?: number): Promise<void> => {
+  try {
+    claim.generalApplication = toGeneralApplication(claim.generalApplication);
+    claim.generalApplication.applicationTypeChangeInProgress = true;
+    claim.generalApplication.applicationTypeChangeIndex = index;
+    await saveDraftClaim(claimId, claim);
+  } catch (error) {
+    logger.error(error);
+    throw error;
+  }
+};
+
+export const saveApplicationType = async (
+  claimId: string,
+  claim: Claim,
+  applicationType: ApplicationType,
+  index?: number,
+): Promise<void> => {
   try {
     assertValidApplicationTypes([applicationType]);
-    claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
+    claim.generalApplication = toGeneralApplication(claim.generalApplication);
+    const previousApplicationType = getByIndex(claim.generalApplication?.applicationTypes, index)?.option;
+    const hasChangedExistingApplicationType = !!previousApplicationType && previousApplicationType !== applicationType.option;
     updateByIndexOrAppend(claim.generalApplication?.applicationTypes, applicationType, index);
     assertValidApplicationTypes(claim.generalApplication?.applicationTypes);
     resetClaimDataByApplicationType(claim, applicationType);
+    if (hasChangedExistingApplicationType) {
+      resetClaimDataForChangedApplicationType(claim, index);
+    }
+    delete claim.generalApplication.applicationTypeChangeInProgress;
+    delete claim.generalApplication.applicationTypeChangeIndex;
     await saveDraftClaim(claimId, claim);
   } catch (error) {
     logger.error(error);
@@ -107,7 +153,7 @@ export const removeAllOtherApplications = async (claimId: string, claim: Claim):
 export const saveInformOtherParties = async (redisKey: string, informOtherParties: InformOtherParties): Promise<void> => {
   try {
     const claim = await getCaseDataFromStore(redisKey);
-    claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
+    claim.generalApplication = toGeneralApplication(claim.generalApplication);
     claim.generalApplication.informOtherParties = informOtherParties;
     await saveDraftClaim(redisKey, claim);
   } catch (error) {
@@ -161,7 +207,7 @@ export const saveAcceptDefendantOffer = async (redisKey: string, acceptDefendant
 export const saveOrderJudge = async (claimId: string, orderJudge: OrderJudge, index: number): Promise<void> => {
   try {
     const claim = await getCaseDataFromStore(claimId, true);
-    claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
+    claim.generalApplication = toGeneralApplication(claim.generalApplication);
     const orderJudges = claim.generalApplication?.orderJudges || [];
     updateByIndexOrAppend(orderJudges, orderJudge, index);
     await saveDraftClaim(claimId, claim);
@@ -174,7 +220,7 @@ export const saveOrderJudge = async (claimId: string, orderJudge: OrderJudge, in
 export const saveHearingSupport = async (claimId: string, hearingSupport: HearingSupport): Promise<void> => {
   try {
     const claim = await getCaseDataFromStore(claimId, true);
-    claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
+    claim.generalApplication = toGeneralApplication(claim.generalApplication);
     claim.generalApplication.hearingSupport = hearingSupport;
     await saveDraftClaim(claimId, claim);
   } catch (error) {
@@ -185,7 +231,7 @@ export const saveHearingSupport = async (claimId: string, hearingSupport: Hearin
 
 export const saveAgreementFromOtherParty = async (claimId: string, claim: Claim, agreementFromOtherParty: YesNo): Promise<void> => {
   try {
-    claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
+    claim.generalApplication = toGeneralApplication(claim.generalApplication);
     claim.generalApplication.agreementFromOtherParty = agreementFromOtherParty;
     if (agreementFromOtherParty === YesNo.YES && claim.generalApplication.informOtherParties?.option) {
       claim.generalApplication.informOtherParties = undefined;
@@ -200,7 +246,7 @@ export const saveAgreementFromOtherParty = async (claimId: string, claim: Claim,
 export const saveApplicationCosts = async (claimId: string, applicationCosts: YesNo): Promise<void> => {
   try {
     const claim = await getCaseDataFromStore(claimId, true);
-    claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
+    claim.generalApplication = toGeneralApplication(claim.generalApplication);
     claim.generalApplication.applicationCosts = applicationCosts;
     await saveDraftClaim(claimId, claim);
   } catch (error) {
@@ -245,7 +291,7 @@ export function validateNoConsentOption(req: AppRequest, errors: ValidationError
 
 export const saveUnavailableDates = async (claimId: string, claim: Claim, unavailableDates: UnavailableDatesGaHearing): Promise<void> => {
   try {
-    claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
+    claim.generalApplication = toGeneralApplication(claim.generalApplication);
     while (unavailableDates?.items?.length > 0 && !unavailableDates.items[unavailableDates.items.length - 1].type) {
       unavailableDates?.items.pop();
     }
@@ -260,7 +306,7 @@ export const saveUnavailableDates = async (claimId: string, claim: Claim, unavai
 export const saveRequestingReason = async (claimId: string, requestingReason: RequestingReason, index?: number): Promise<void> => {
   try {
     const claim = await getCaseDataFromStore(claimId, true);
-    claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
+    claim.generalApplication = toGeneralApplication(claim.generalApplication);
     updateByIndexOrAppend(claim.generalApplication?.requestingReasons, requestingReason, index);
     await saveDraftClaim(claimId, claim);
   } catch (error) {
@@ -271,7 +317,7 @@ export const saveRequestingReason = async (claimId: string, requestingReason: Re
 
 export const saveN245Form = async (redisKey: string, claim: Claim, fileDetails: UploadGAFiles): Promise<void> => {
   try {
-    claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
+    claim.generalApplication = toGeneralApplication(claim.generalApplication);
     claim.generalApplication.uploadN245Form = fileDetails;
     await saveDraftClaim(redisKey, claim);
   }catch (error) {
@@ -283,7 +329,7 @@ export const saveN245Form = async (redisKey: string, claim: Claim, fileDetails: 
 export const saveHearingArrangement = async (claimId: string, hearingArrangement: HearingArrangement): Promise<void> => {
   try {
     const claim = await getCaseDataFromStore(claimId, true);
-    claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
+    claim.generalApplication = toGeneralApplication(claim.generalApplication);
     claim.generalApplication.hearingArrangement = hearingArrangement;
     await saveDraftClaim(claimId, claim);
   } catch (error) {
@@ -295,7 +341,7 @@ export const saveHearingArrangement = async (claimId: string, hearingArrangement
 export const saveHearingContactDetails = async (claimId: string, hearingContactDetails: HearingContactDetails): Promise<void> => {
   try {
     const claim = await getCaseDataFromStore(claimId, true);
-    claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
+    claim.generalApplication = toGeneralApplication(claim.generalApplication);
     claim.generalApplication.hearingContactDetails = hearingContactDetails;
     await saveDraftClaim(claimId, claim);
   } catch (error) {
@@ -307,7 +353,7 @@ export const saveHearingContactDetails = async (claimId: string, hearingContactD
 export const saveStatementOfTruth = async (claimId: string, statementOfTruth: StatementOfTruthForm): Promise<void> => {
   try {
     const claim = await getCaseDataFromStore(claimId, true);
-    claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
+    claim.generalApplication = toGeneralApplication(claim.generalApplication);
     claim.generalApplication.statementOfTruth = statementOfTruth;
     await saveDraftClaim(claimId, claim);
   } catch (error) {
@@ -345,34 +391,77 @@ export const updateByIndexOrAppend = <T>(array: T[], newElem: T, index: number |
   }
 };
 
-export const validateAdditionalApplicationtType = (claim : Claim, errors : ValidationError[], applicationType : ApplicationType,body : any) => {
+export const resolveApplicationTypeIndexForGet = (req: AppRequest, claim: Claim): number | undefined => {
+  const applicationIndex = queryParamNumber(req, 'index');
+  if (applicationIndex !== undefined) {
+    return applicationIndex;
+  }
 
-  if(claim.generalApplication?.applicationTypes?.length > 0 && getListOfNotAllowedAdditionalAppType().includes(applicationType.option)) {
+  if (req.query.linkFrom !== LinkFromValues.addAnotherApp && claim.generalApplication?.applicationTypes?.length === 1) {
+    return 0;
+  }
+
+  return undefined;
+};
+
+export const resolveApplicationTypeIndexForPost = (req: AppRequest | Request, claim: Claim): number | undefined => {
+  const applicationIndex = queryParamNumber(req, 'index');
+  if (applicationIndex !== undefined) {
+    return applicationIndex;
+  }
+
+  const applicationTypes = claim.generalApplication?.applicationTypes || [];
+  if (req.query.linkFrom === LinkFromValues.addAnotherApp) {
+    return applicationTypes.length > 1 ? applicationTypes.length - 1 : undefined;
+  }
+
+  return applicationTypes.length === 1 ? 0 : undefined;
+};
+
+const addApplicationTypeValidationError = (
+  errors: ValidationError[],
+  body: ApplicationTypeSelectionBody,
+  constraintName: ApplicationTypeValidationConstraint,
+  errorMessage: string,
+): void => {
+  const optionOther = typeof body.optionOther === 'string' ? body.optionOther : undefined;
+  errors.push(new FormValidationError({
+    target: new GenericYesNo(optionOther, ''),
+    value: body.option,
+    constraints: {
+      [constraintName]: errorMessage,
+    },
+    property: 'option',
+  }));
+};
+
+const hasApplicationTypeAtDifferentIndex = (applicationTypes: ApplicationType[], applicationType: ApplicationType, currentIndex?: number): boolean =>
+  !!applicationType.option && applicationTypes.some((existingApplicationType, index) =>
+    index !== currentIndex && existingApplicationType?.option === applicationType.option);
+
+const hasOtherApplicationTypes = (applicationTypes: ApplicationType[], currentIndex?: number): boolean =>
+  applicationTypes.some((_existingApplicationType, index) => index !== currentIndex);
+
+export const validateAdditionalApplicationType = (
+  claim : Claim,
+  errors : ValidationError[],
+  applicationType : ApplicationType,
+  body : ApplicationTypeSelectionBody,
+  currentIndex?: number,
+): void => {
+  const existingApplicationTypes = claim.generalApplication?.applicationTypes || [];
+
+  if (hasApplicationTypeAtDifferentIndex(existingApplicationTypes, applicationType, currentIndex)) {
+    addApplicationTypeValidationError(errors, body, 'duplicateApplicationError', 'ERRORS.GENERAL_APPLICATION.ADDITIONAL_APPLICATION_DUPLICATE');
+  } else if(hasOtherApplicationTypes(existingApplicationTypes, currentIndex) && getListOfNotAllowedAdditionalAppType().includes(applicationType.option)) {
     const errorMessage = additionalApplicationErrorMessages[applicationType.option];
-
-    const validationError = new FormValidationError({
-      target: new GenericYesNo(body.optionOther, ''),
-      value: body.option,
-      constraints: {
-        additionalApplicationError : errorMessage,
-      },
-      property: 'option',
-    });
-
-    errors.push(validationError);
+    addApplicationTypeValidationError(errors, body, 'additionalApplicationError', errorMessage);
   } else if (applicationType.option === ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID && (claim.joIsLiveJudgmentExists === undefined || claim.joIsLiveJudgmentExists?.option === YesNo.NO)) {
-
-    const validationError = new FormValidationError({
-      target: new GenericYesNo(body.optionOther, ''),
-      value: body.option,
-      constraints: {
-        ccjApplicationError : 'ERRORS.GENERAL_APPLICATION.ADDITIONAL_APPLICATION_CCJ_DEBT',
-      },
-      property: 'option',
-    });
-    errors.push(validationError);
+    addApplicationTypeValidationError(errors, body, 'ccjApplicationError', 'ERRORS.GENERAL_APPLICATION.ADDITIONAL_APPLICATION_CCJ_DEBT');
   }
 };
+
+export const validateAdditionalApplicationtType = validateAdditionalApplicationType;
 
 export const getListOfNotAllowedAdditionalAppType = () => {
   return [ApplicationTypeOption.SET_ASIDE_JUDGEMENT,
@@ -518,7 +607,7 @@ export const getClaimDetailsById = async (req: AppRequest): Promise<Claim> => {
   try {
     const claimId = getRouteParam(req, 'id');
     const claim = await getClaimById(claimId, req, true);
-    const gaApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
+    const gaApplication = toGeneralApplication(claim.generalApplication);
     claim.generalApplication = gaApplication;
     return claim;
   } catch (error) {
@@ -641,10 +730,34 @@ export const resetClaimDataByApplicationType = (claim: Claim, applicationType: A
   }
 };
 
+const resetClaimDataForChangedApplicationType = (claim: Claim, index?: number): void => {
+  const generalApplication = claim.generalApplication;
+
+  delete generalApplication['agreementFromOtherParty'];
+  delete generalApplication['informOtherParties'];
+  delete generalApplication['applicationCosts'];
+  delete generalApplication['applicationFee'];
+  delete generalApplication['applicationFeePaymentDetails'];
+  delete generalApplication['statementOfTruth'];
+  delete generalApplication['uploadN245Form'];
+
+  if (index !== undefined && index >= 0) {
+    if (generalApplication.orderJudges?.length > index) {
+      generalApplication.orderJudges[index] = new OrderJudge();
+    }
+    if (generalApplication.requestingReasons?.length > index) {
+      generalApplication.requestingReasons[index] = new RequestingReason();
+    }
+  } else {
+    delete generalApplication['orderJudges'];
+    delete generalApplication['requestingReasons'];
+  }
+};
+
 export const saveUnavailabilityDatesConfirmation = async (claimId: string, hasUnavailableDatesHearing: YesNo): Promise<void> => {
   try {
     const claim = await getCaseDataFromStore(claimId, true);
-    claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
+    claim.generalApplication = toGeneralApplication(claim.generalApplication);
     claim.generalApplication.hasUnavailableDatesHearing = hasUnavailableDatesHearing;
     if (hasUnavailableDatesHearing === YesNo.NO) {
       delete claim.generalApplication.unavailableDatesHearing;
@@ -670,13 +783,18 @@ export const getAgreementFromOtherPartiesNextUrl = (req: AppRequest | Request, c
 };
 
 export const getRequestingReasonNextUrl = (req: AppRequest | Request, claim: Claim): string => {
+  if (isChangeScreenFromCya(req) && claim.generalApplication?.applicationFee) {
+    const claimId = getRouteParam(req, 'id');
+    return constructResponseUrlWithIdParams(claimId, GA_CHECK_ANSWERS_URL);
+  }
+
   const options = [ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT, ApplicationTypeOption.SET_ASIDE_JUDGEMENT, ApplicationTypeOption.SETTLE_BY_CONSENT];
   const isAddAnotherApplicationNotAllowed = options.some(value => claim.generalApplication?.applicationTypes.some(obj => obj.option === value));
   if (isAddAnotherApplicationNotAllowed) {
     const claimId = getRouteParam(req, 'id');
     return constructResponseUrlWithIdParams(claimId, GA_WANT_TO_UPLOAD_DOCUMENTS_URL);
   } else {
-    const applicationIndex = queryParamNumber(req, 'index') || 0;
+    const applicationIndex = queryParamNumber(req, 'index') ?? 0;
     const claimId = getRouteParam(req, 'id');
     return constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, GA_ADD_ANOTHER_APPLICATION_URL), applicationIndex);
   }
@@ -688,7 +806,7 @@ export const getClaimApplicationCostNextUrl = (req: AppRequest | Request, claim:
   if (isOrderJudgeNotAllowed) {
     return getRequestingReasonNextUrl(req, claim);
   } else {
-    const index  = queryParamNumber(req, 'index') || claim.generalApplication.applicationTypes.length - 1;
+    const index  = queryParamNumber(req, 'index') ?? claim.generalApplication.applicationTypes.length - 1;
     const claimId = getRouteParam(req, 'id');
     return constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, ORDER_JUDGE_URL), index);
   }

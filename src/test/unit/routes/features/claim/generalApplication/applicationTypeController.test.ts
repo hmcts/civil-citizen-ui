@@ -5,13 +5,18 @@ import request from 'supertest';
 import {APPLICATION_TYPE_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
-import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
-import {ApplicationType, ApplicationTypeOption, LinKFromValues} from 'common/models/generalApplication/applicationType';
+import {mockCivilClaim, mockDraftClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
+import {ApplicationType, ApplicationTypeOption, LinkFromValues} from 'common/models/generalApplication/applicationType';
 import {isGaForLipsEnabled, isQueryManagementEnabled} from 'app/auth/launchdarkly/launchDarklyClient';
 import { Claim } from 'common/models/claim';
 import { GeneralApplication } from 'common/models/generalApplication/GeneralApplication';
 import { getClaimById } from 'modules/utilityService';
 import * as generalApplicationService from 'services/features/generalApplication/generalApplicationService';
+import {YesNo} from 'form/models/yesNo';
+import {
+  SHOW_APPLICATION_TYPE_ERROR_QUERY_PARAM,
+  SHOW_DUPLICATE_APPLICATION_TYPE_ERROR_QUERY_PARAM,
+} from 'routes/guards/generalApplication/applicationTypeGuard';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -25,6 +30,9 @@ jest.mock('../../../../../../main/routes/guards/generalAplicationGuard',() => ({
   isGAForLiPEnabled: jest.fn((req, res, next) => {
     next();
   }),
+}));
+jest.mock('routes/guards/uploadRateLimitGuard', () => ({
+  createUploadRateLimitGuard: jest.fn(),
 }));
 const isQueryManagementEnabledMock = isQueryManagementEnabled as jest.Mock;
 
@@ -60,11 +68,40 @@ describe('General Application - Application type', () => {
           expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.TITLE'));
         });
     });
+
+    it('should show validation error when application type is missing from a later GA screen', async () => {
+      (getClaimById as jest.Mock).mockResolvedValueOnce(new Claim());
+      await request(app)
+        .get(APPLICATION_TYPE_URL)
+        .query({[SHOW_APPLICATION_TYPE_ERROR_QUERY_PARAM]: 'true'})
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(t('ERRORS.APPLICATION_TYPE_REQUIRED'));
+        });
+    });
+
+    it('should show duplicate validation error when duplicate application type is selected', async () => {
+      const claim = new Claim();
+      claim.generalApplication = new GeneralApplication();
+      claim.generalApplication.applicationTypes = [
+        new ApplicationType(ApplicationTypeOption.VARY_ORDER),
+        new ApplicationType(ApplicationTypeOption.VARY_ORDER),
+      ];
+      (getClaimById as jest.Mock).mockResolvedValueOnce(claim);
+      await request(app)
+        .get(APPLICATION_TYPE_URL)
+        .query({index: 1, [SHOW_DUPLICATE_APPLICATION_TYPE_ERROR_QUERY_PARAM]: 'true'})
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(t('ERRORS.GENERAL_APPLICATION.ADDITIONAL_APPLICATION_DUPLICATE'));
+        });
+    });
+
     it('should delete GA when url contains start', async () => {
       const spyDelete = jest.spyOn(generalApplicationService, 'deleteGAFromClaimsByUserId');
       (getClaimById as jest.Mock).mockResolvedValueOnce(new Claim());
       await request(app)
-        .get(APPLICATION_TYPE_URL + `?linkFrom=${LinKFromValues.start}`)
+        .get(APPLICATION_TYPE_URL + `?linkFrom=${LinkFromValues.start}`)
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(spyDelete).toBeCalled();
@@ -75,7 +112,7 @@ describe('General Application - Application type', () => {
       const spyDelete = jest.spyOn(generalApplicationService, 'deleteGAFromClaimsByUserId');
       (getClaimById as jest.Mock).mockResolvedValueOnce(new Claim());
       await request(app)
-        .get(APPLICATION_TYPE_URL + `?linkFrom=${LinKFromValues.start}&isAskMoreTime=true`)
+        .get(APPLICATION_TYPE_URL + `?linkFrom=${LinkFromValues.start}&isAskMoreTime=true`)
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(spyDelete).toBeCalled();
@@ -93,6 +130,24 @@ describe('General Application - Application type', () => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.SELECT_TYPE.TITLE'));
         });
+    });
+
+    it('should not mark the application type change as in progress when entered from CYA', async () => {
+      const claim = new Claim();
+      claim.generalApplication = new GeneralApplication();
+      claim.generalApplication.applicationTypes = [new ApplicationType(ApplicationTypeOption.EXTEND_TIME)];
+      app.locals.draftStoreClient = mockDraftClaim(claim);
+      (getClaimById as jest.Mock).mockResolvedValueOnce(claim);
+
+      await request(app)
+        .get(APPLICATION_TYPE_URL)
+        .query({index: 0, changeScreen: 'true'})
+        .expect((res) => {
+          expect(res.status).toBe(200);
+        });
+
+      expect(claim.generalApplication.applicationTypeChangeInProgress).toBeUndefined();
+      expect(claim.generalApplication.applicationTypeChangeIndex).toBeUndefined();
     });
 
     it('should return http 500 when has error in the get method', async () => {
@@ -129,6 +184,138 @@ describe('General Application - Application type', () => {
         });
     });
 
+    it('should update existing application type instead of appending when revisiting without index', async () => {
+      const claim = new Claim();
+      claim.generalApplication = new GeneralApplication();
+      claim.generalApplication.applicationTypes = [new ApplicationType(ApplicationTypeOption.EXTEND_TIME)];
+      app.locals.draftStoreClient = mockDraftClaim(claim);
+      (getClaimById as jest.Mock).mockResolvedValueOnce(claim);
+
+      await request(app)
+        .post(APPLICATION_TYPE_URL)
+        .send({option: ApplicationTypeOption.ADJOURN_HEARING})
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.headers.location).toContain('/general-application/agreement-from-other-party?index=0');
+        });
+
+      expect(claim.generalApplication.applicationTypes).toHaveLength(1);
+      expect(claim.generalApplication.applicationTypes[0].option).toEqual(ApplicationTypeOption.ADJOURN_HEARING);
+    });
+
+    it('should append application type when add another application flow provides next index', async () => {
+      const claim = new Claim();
+      claim.generalApplication = new GeneralApplication();
+      claim.generalApplication.applicationTypes = [new ApplicationType(ApplicationTypeOption.EXTEND_TIME)];
+      app.locals.draftStoreClient = mockDraftClaim(claim);
+      (getClaimById as jest.Mock).mockResolvedValueOnce(claim);
+
+      await request(app)
+        .post(APPLICATION_TYPE_URL + `?linkFrom=${LinkFromValues.addAnotherApp}&index=1`)
+        .send({option: ApplicationTypeOption.ADJOURN_HEARING})
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.headers.location).toContain('/general-application/order-judge?index=1');
+        });
+
+      expect(claim.generalApplication.applicationTypes).toHaveLength(2);
+      expect(claim.generalApplication.applicationTypes[1].option).toEqual(ApplicationTypeOption.ADJOURN_HEARING);
+    });
+
+    it('should not keep CYA change screen query params when changing one application in a multi-application CYA', async () => {
+      const claim = new Claim();
+      claim.generalApplication = new GeneralApplication();
+      claim.generalApplication.applicationTypes = [
+        new ApplicationType(ApplicationTypeOption.EXTEND_TIME),
+        new ApplicationType(ApplicationTypeOption.STAY_THE_CLAIM),
+      ];
+      app.locals.draftStoreClient = mockDraftClaim(claim);
+      (getClaimById as jest.Mock).mockResolvedValueOnce(claim);
+
+      await request(app)
+        .post(`${APPLICATION_TYPE_URL}?index=0&changeScreen=true`)
+        .send({option: ApplicationTypeOption.ADJOURN_HEARING})
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.headers.location).toContain('/general-application/order-judge?index=0');
+          expect(res.headers.location).not.toContain('changeScreen=true');
+        });
+
+      expect(claim.generalApplication.applicationTypes).toHaveLength(2);
+      expect(claim.generalApplication.applicationTypes[0].option).toEqual(ApplicationTypeOption.ADJOURN_HEARING);
+    });
+
+    it('should return to CYA and preserve journey data when the same application type is selected from CYA', async () => {
+      const claim = new Claim();
+      claim.generalApplication = new GeneralApplication();
+      claim.generalApplication.applicationTypes = [new ApplicationType(ApplicationTypeOption.EXTEND_TIME)];
+      claim.generalApplication.agreementFromOtherParty = YesNo.YES;
+      claim.generalApplication.applicationFee = {
+        calculatedAmountInPence: 5000,
+      };
+      claim.generalApplication.applicationTypeChangeInProgress = true;
+      claim.generalApplication.applicationTypeChangeIndex = 0;
+      app.locals.draftStoreClient = mockDraftClaim(claim);
+      (getClaimById as jest.Mock).mockResolvedValueOnce(claim);
+
+      await request(app)
+        .post(`${APPLICATION_TYPE_URL}?index=0&changeScreen=true`)
+        .send({option: ApplicationTypeOption.EXTEND_TIME})
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.headers.location).toContain('/general-application/check-and-send');
+        });
+
+      expect(claim.generalApplication.applicationTypes).toHaveLength(1);
+      expect(claim.generalApplication.applicationTypes[0].option).toEqual(ApplicationTypeOption.EXTEND_TIME);
+      expect(claim.generalApplication.agreementFromOtherParty).toBe(YesNo.YES);
+      expect(claim.generalApplication.applicationFee).toEqual({
+        calculatedAmountInPence: 5000,
+      });
+      expect(claim.generalApplication.applicationTypeChangeInProgress).toBeUndefined();
+      expect(claim.generalApplication.applicationTypeChangeIndex).toBeUndefined();
+    });
+
+    it('should update latest added application type when add another page is resubmitted without index', async () => {
+      const claim = new Claim();
+      claim.generalApplication = new GeneralApplication();
+      claim.generalApplication.applicationTypes = [
+        new ApplicationType(ApplicationTypeOption.EXTEND_TIME),
+        new ApplicationType(ApplicationTypeOption.STAY_THE_CLAIM),
+      ];
+      app.locals.draftStoreClient = mockDraftClaim(claim);
+      (getClaimById as jest.Mock).mockResolvedValueOnce(claim);
+
+      await request(app)
+        .post(APPLICATION_TYPE_URL + `?linkFrom=${LinkFromValues.addAnotherApp}`)
+        .send({option: ApplicationTypeOption.ADJOURN_HEARING})
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.headers.location).toContain('/general-application/order-judge?index=1');
+        });
+
+      expect(claim.generalApplication.applicationTypes).toHaveLength(2);
+      expect(claim.generalApplication.applicationTypes[1].option).toEqual(ApplicationTypeOption.ADJOURN_HEARING);
+    });
+
+    it('should return error when adding a duplicate application type', async () => {
+      const claim = new Claim();
+      claim.generalApplication = new GeneralApplication();
+      claim.generalApplication.applicationTypes = [new ApplicationType(ApplicationTypeOption.VARY_ORDER)];
+      app.locals.draftStoreClient = mockDraftClaim(claim);
+      (getClaimById as jest.Mock).mockResolvedValueOnce(claim);
+
+      await request(app)
+        .post(APPLICATION_TYPE_URL + `?linkFrom=${LinkFromValues.addAnotherApp}&index=1`)
+        .send({option: ApplicationTypeOption.VARY_ORDER})
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(t('ERRORS.GENERAL_APPLICATION.ADDITIONAL_APPLICATION_DUPLICATE'));
+        });
+
+      expect(claim.generalApplication.applicationTypes).toHaveLength(1);
+    });
+
     it('should return errors on no input', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       (getClaimById as jest.Mock).mockResolvedValueOnce(new Claim());
@@ -153,7 +340,7 @@ describe('General Application - Application type', () => {
 
       claim = new Claim();
       await request(app)
-        .post(APPLICATION_TYPE_URL)
+        .post(APPLICATION_TYPE_URL + `?linkFrom=${LinkFromValues.addAnotherApp}`)
         .send({option: applicationType})
         .expect((res) => {
           expect(res.status).toBe(200);
