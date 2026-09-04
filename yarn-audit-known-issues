@@ -1,1 +1,0 @@
-{"value":"crypto-js","children":{"ID":"crypto-js (deprecation)","Issue":"Active development of CryptoJS has been discontinued. This library is no longer maintained.","Severity":"moderate","Vulnerable Versions":"4.2.0","Tree Versions":["4.2.0"],"Dependents":["civil-citizen-ui@workspace:."]}}
