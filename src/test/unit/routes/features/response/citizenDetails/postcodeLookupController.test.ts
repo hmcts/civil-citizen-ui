@@ -3,12 +3,12 @@ import config from 'config';
 import request from 'supertest';
 import {POSTCODE_LOOKUP_URL} from 'routes/urls';
 
-import {lookupByPostcodeAndDataSet} from 'modules/ordance-survey-key/ordanceSurveyKeyService';
-import {MOCK_API_ADDRESS} from '../../../../../utils/mocks/ordanceSurvey/osMocks';
+import {lookupByPostcodeAndDataSet} from 'modules/ordnance-survey-key/ordnanceSurveyKeyService';
+import {MOCK_API_ADDRESS} from '../../../../../utils/mocks/ordnanceSurvey/osMocks';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
-jest.mock('modules/ordance-survey-key/ordanceSurveyKeyService');
+jest.mock('modules/ordnance-survey-key/ordnanceSurveyKeyService');
 const nock = require('nock');
 
 const mockLookupByPostcodeAndDataSet = lookupByPostcodeAndDataSet as jest.Mock;

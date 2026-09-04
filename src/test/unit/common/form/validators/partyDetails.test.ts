@@ -1,8 +1,8 @@
 import { GenericForm } from 'common/form/models/genericForm';
 import {PartyDetails} from 'form/models/partyDetails';
-import * as ordnanceSurveyService from '../../../../../main/modules/ordance-survey-key/ordanceSurveyKeyService';
+import * as ordnanceSurveyService from '../../../../../main/modules/ordnance-survey-key/ordnanceSurveyKeyService';
 
-jest.mock('../../../../../main/modules/ordance-survey-key/ordanceSurveyKeyService');
+jest.mock('../../../../../main/modules/ordnance-survey-key/ordnanceSurveyKeyService');
 
 const mockLookupByPostcode = ordnanceSurveyService.lookupByPostcodeAndDataSet as jest.Mock;
 const valid70charNamePart1of3 = ' Abcdefghi jklmno ';

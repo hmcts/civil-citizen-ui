@@ -1,8 +1,8 @@
 import { Address } from 'common/form/models/address';
 import { GenericForm } from 'common/form/models/genericForm';
-import * as ordnanceSurveyService from '../../../../../main/modules/ordance-survey-key/ordanceSurveyKeyService';
+import * as ordnanceSurveyService from '../../../../../main/modules/ordnance-survey-key/ordnanceSurveyKeyService';
 
-jest.mock('../../../../../main/modules/ordance-survey-key/ordanceSurveyKeyService');
+jest.mock('../../../../../main/modules/ordnance-survey-key/ordnanceSurveyKeyService');
 
 const mockLookupByPostcode = ordnanceSurveyService.lookupByPostcodeAndDataSet as jest.Mock;
 const string36charLong = 'This is a 36 char address aAbBcCdDeE';

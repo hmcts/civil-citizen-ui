@@ -11,13 +11,13 @@ import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftSto
 import {PartyDetails} from 'form/models/partyDetails';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import * as launchDarklyClient from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
-import * as ordnanceSurveyService from '../../../../../../main/modules/ordance-survey-key/ordanceSurveyKeyService';
+import * as ordnanceSurveyService from '../../../../../../main/modules/ordnance-survey-key/ordnanceSurveyKeyService';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
-jest.mock('../../../../../../main/modules/ordance-survey-key/ordanceSurveyKeyService');
+jest.mock('../../../../../../main/modules/ordnance-survey-key/ordnanceSurveyKeyService');
 
 const mockLookupByPostcode = ordnanceSurveyService.lookupByPostcodeAndDataSet as jest.Mock;
 const mockGetCaseData = getCaseDataFromStore as jest.Mock;

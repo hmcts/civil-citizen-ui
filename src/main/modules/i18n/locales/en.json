@@ -303,7 +303,7 @@
       "TELEPHONE": "Tel: 0300 123 7050"
     },
     "POSTCODE": {
-      "ADDESSES_FOUND": "addresses found",
+      "ADDRESSES_FOUND": "addresses found",
       "FIND_ADDRESS": "Find address",
       "MANUAL_ADDRESS": "Enter address manually",
       "PICK_ADDRESS": "Pick an address",

@@ -15,13 +15,13 @@ import * as draftStoreService from '../../../../../../main/modules/draft-store/d
 import {PartyDetails} from 'form/models/partyDetails';
 import * as enVars from '../../../../../../main/modules/i18n/locales/en.json';
 import * as launchDarklyClient from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
-import * as ordnanceSurveyService from '../../../../../../main/modules/ordance-survey-key/ordanceSurveyKeyService';
+import * as ordnanceSurveyService from '../../../../../../main/modules/ordnance-survey-key/ordnanceSurveyKeyService';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
-jest.mock('../../../../../../main/modules/ordance-survey-key/ordanceSurveyKeyService');
+jest.mock('../../../../../../main/modules/ordnance-survey-key/ordnanceSurveyKeyService');
 
 const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
 const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
