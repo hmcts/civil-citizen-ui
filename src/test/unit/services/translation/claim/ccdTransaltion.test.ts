@@ -20,6 +20,9 @@ import {InterestClaimOptionsType} from 'form/models/claim/interest/interestClaim
 import {TotalInterest} from 'form/models/interest/totalInterest';
 import {CCDInterestType} from 'models/ccdResponse/ccdInterestType';
 import {CcdStatementOfTruth} from 'models/ccdResponse/ccdStatementOfTruth';
+import {BreathingSpaceEnterInfo} from 'models/breathingSpace/breathingSpaceEnterInfo';
+import {BreathingSpaceLiftInfo} from 'models/breathingSpace/breathingSpaceLiftInfo';
+import {BreathingSpaceType} from 'models/breathingSpace/breathingSpaceType';
 
 describe('translate draft claim to ccd version', () => {
   it('should translate applicant1 to ccd', () => {
@@ -122,6 +125,36 @@ describe('translate draft claim to ccd version for interest calculation', () => 
     expect(ccdClaim.interestFromSpecificDateDescription).toBe(undefined);
     expect(ccdClaim.interestClaimUntil).toBe(InterestEndDateType.UNTIL_CLAIM_SUBMIT_DATE);
     expect(ccdClaim.submittedDate).toEqual(new Date('2025-01-01T15:00:00'));
+    expect(ccdClaim.enterBreathing).toBeUndefined();
+    expect(ccdClaim.liftBreathing).toBeUndefined();
+  });
+
+  it('should include breathing space enter and lift dates for interest calculation', () => {
+    //Given
+    const claim = new Claim();
+    claim.claimInterest = YesNo.YES;
+    claim.totalClaimAmount = 100;
+    claim.enterBreathing = new BreathingSpaceEnterInfo(
+      BreathingSpaceType.STANDARD,
+      'REF-123',
+      new Date('2025-11-15'),
+      new Date('2026-01-14'),
+    );
+    claim.liftBreathing = new BreathingSpaceLiftInfo(new Date('2025-12-01'));
+
+    //When
+    const ccdClaim = translateDraftClaimToCCDInterest(claim);
+
+    //Then
+    expect(ccdClaim.enterBreathing).toEqual({
+      type: BreathingSpaceType.STANDARD,
+      reference: 'REF-123',
+      start: '2025-11-15',
+      expectedEnd: '2026-01-14',
+    });
+    expect(ccdClaim.liftBreathing).toEqual({
+      expectedEnd: '2025-12-01',
+    });
   });
 });
 
