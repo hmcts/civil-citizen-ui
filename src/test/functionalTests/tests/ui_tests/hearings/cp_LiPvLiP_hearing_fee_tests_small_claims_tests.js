@@ -73,4 +73,4 @@ Scenario('Pay the Hearing Fee Journey - Small Claims', async ({I, api}) => {
   await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
   taskListItem = payTheHearingFee(hearingFeeDueDate);
   await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Done', false, false);
-}).tag('@civil-citizen-pr');
+}).tag('@civil-citizen-pr').tag('@test123');
