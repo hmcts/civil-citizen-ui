@@ -18,6 +18,7 @@ const WELSH_FOR_MAIN_CLAIM = 'enableWelshForMainCase';
 const IS_DEFENDANT_NOC_ONLINE_FOR_CASE = 'is-defendant-noc-online-for-case';
 const CUI_GA_NRO = 'cui-ga-nro';
 const JUDGMENT_BUFFER = 'judgment-buffer';
+const BREATHING_SPACE = 'cui-breathing-space';
 const HMCTS_ACCESS_MIGRATION = 'hmcts-access-migration';
 const USER_CASE_ROLES_SESSION_CACHE = 'cui-user-case-roles-session-cache-enabled';
 
@@ -39,6 +40,7 @@ async function getClient(): Promise<void> {
       await testData.update(testData.flag(QUERY_MANAGEMENT).booleanFlag().variationForAll(false));
       await testData.update(testData.flag(CUI_GA_NRO).booleanFlag().variationForAll(false));
       await testData.update(testData.flag(JUDGMENT_BUFFER).booleanFlag().variationForAll(false));
+      await testData.update(testData.flag(BREATHING_SPACE).booleanFlag().variationForAll(false));
       await testData.update(testData.flag(HMCTS_ACCESS_MIGRATION).booleanFlag().variationForAll(false));
       await testData.update(testData.flag(USER_CASE_ROLES_SESSION_CACHE).booleanFlag().variationForAll(true));
 
@@ -180,6 +182,9 @@ export async function isJudgmentBufferEnabled(): Promise<boolean> {
   return await getFlagValue(JUDGMENT_BUFFER) as boolean;
 }
 
+export async function isBreathingSpaceEnabled(): Promise<boolean> {
+  return await getFlagValue(BREATHING_SPACE) as boolean;
+}
 /**
  * Kill-switch for DTSCCI-5946 session-scoped /userCaseRoles cache.
  * Requires config `caches.userCaseRoles.enabled` and LD flag

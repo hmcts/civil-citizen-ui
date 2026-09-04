@@ -10,7 +10,7 @@ import {
 } from 'modules/utilityService';
 import { Claim } from 'common/models/claim';
 import claim from '../../../../utils/mocks/civilClaimResponseMock.json';
-import {BREATHING_SPACE_INFO_URL} from 'routes/urls';
+import {BREATHING_SPACE_ENTER_URL, BREATHING_SPACE_INFO_URL} from 'routes/urls';
 import * as launchDarkly from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 
 jest.mock('../../../../../main/modules/oidc');
@@ -43,8 +43,11 @@ describe('View Defendant Information', () => {
         expect(res.status).toBe(200);
         expect(res.text).toContain('Inform the court of a breathing space');
         expect(res.text).toContain('Related content');
-        expect(res.text).toContain('What you need to do now');
+        expect(res.text).toContain('When breathing space ends');
+        expect(res.text).toContain('Enter breathing space details');
+        expect(res.text).toContain(BREATHING_SPACE_ENTER_URL);
         expect(res.text).not.toContain('You can send messages and documents to the court');
+        expect(res.text).not.toContain('What you need to do now');
       });
   });
 
@@ -56,7 +59,10 @@ describe('View Defendant Information', () => {
       .get(BREATHING_SPACE_INFO_URL)
       .expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain('You can send messages and documents to the court');
+        expect(res.text).toContain('Inform the court of a breathing space');
+        expect(res.text).toContain('Enter breathing space details');
+        expect(res.text).toContain(BREATHING_SPACE_ENTER_URL);
+        expect(res.text).not.toContain('You can send messages and documents to the court');
       });
   });
 });

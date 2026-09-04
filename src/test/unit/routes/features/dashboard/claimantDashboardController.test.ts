@@ -4,7 +4,13 @@ import request from 'supertest';
 import {app} from '../../../../../main/app';
 import claimantDashboardController from '../../../../../main/routes/features/dashboard/claimantDashboardController';
 import {civilClaimResponseMock} from '../../../../utils/mockDraftStore';
-import {APPLICATION_TYPE_URL, DASHBOARD_CLAIMANT_URL, GA_APPLICATION_SUMMARY_URL} from 'routes/urls';
+import {
+  APPLICATION_TYPE_URL,
+  BREATHING_SPACE_INFO_URL,
+  BREATHING_SPACE_LIFT_URL,
+  DASHBOARD_CLAIMANT_URL,
+  GA_APPLICATION_SUMMARY_URL,
+} from 'routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {PartyType} from 'common/models/partyType';
 import {PartyDetails} from 'common/form/models/partyDetails';
@@ -32,6 +38,9 @@ import * as dashboardService from 'services/dashboard/dashboardService';
 import {ApplicationState} from 'models/generalApplication/applicationSummary';
 import {ClaimBilingualLanguagePreference} from 'models/claimBilingualLanguagePreference';
 import * as ClaimDetailsService from 'modules/claimDetailsService';
+import {BreathingSpaceEnterInfo} from 'models/breathingSpace/breathingSpaceEnterInfo';
+import {BreathingSpaceType} from 'models/breathingSpace/breathingSpaceType';
+import {BreathingSpaceLiftInfo} from 'models/breathingSpace/breathingSpaceLiftInfo';
 import {DashboardNotificationList} from 'models/dashboard/dashboardNotificationList';
 import {DashboardNotification} from 'models/dashboard/dashboardNotification';
 
@@ -173,6 +182,7 @@ describe('claimant Dashboard Controller', () => {
         .spyOn(ClaimDetailsService, 'getTotalAmountWithInterestAndFees')
         .mockResolvedValueOnce(10);
       jest.spyOn(launchDarkly, 'isJudgmentBufferEnabled').mockResolvedValue(false);
+      jest.spyOn(launchDarkly, 'isBreathingSpaceEnabled').mockResolvedValue(true);
     });
     it('should return claimant dashboard page when only draft', async () => {
 
@@ -467,6 +477,19 @@ describe('claimant Dashboard Controller', () => {
           expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.FIND_LEGAL_ADVICE'));
           expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.FIND_INFO_COURT'));
         });
+      });
+    });
+
+    it('should hide breathing space link when toggle is disabled', async () => {
+
+      const claim = new Claim();
+      claim.caseRole = CaseRole.CLAIMANT;
+      claim.ccdState = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
+      jest.spyOn(UtilityService, 'getClaimById').mockResolvedValueOnce(claim);
+      jest.spyOn(launchDarkly, 'isBreathingSpaceEnabled').mockResolvedValue(false);
+      await request(app).get(DASHBOARD_CLAIMANT_URL).expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).not.toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.GET_DEBT_RESPITE'));
       });
     });
 
@@ -828,6 +851,83 @@ describe('claimant Dashboard Controller', () => {
       );
       expect(draftStoreService.updateFieldDraftClaimFromStore).toHaveBeenCalledWith('12345', req, 'respondentSolicitor1EmailAddress', 'solicitor@example.com');
       expect(draftStoreService.updateFieldDraftClaimFromStore).toHaveBeenCalledWith('12345', req, 'specRespondent1Represented', YesNoUpperCamelCase.NO);
+    });
+  });
+
+  describe('breathing space AC3', () => {
+    beforeEach(() => {
+      jest.spyOn(ClaimDetailsService, 'getTotalAmountWithInterestAndFees').mockResolvedValue(10);
+      jest.spyOn(launchDarkly, 'isJudgmentBufferEnabled').mockResolvedValue(false);
+      jest.spyOn(launchDarkly, 'isBreathingSpaceEnabled').mockResolvedValue(true);
+      jest.spyOn(dashboardService, 'getNotifications').mockResolvedValue(new DashboardNotificationList([]));
+    });
+
+    it('should show standard breathing space Important banner and lift link when claim is in standard BS', async () => {
+      const claim = new Claim();
+      claim.caseRole = CaseRole.CLAIMANT;
+      claim.ccdState = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
+      claim.enterBreathing = new BreathingSpaceEnterInfo(BreathingSpaceType.STANDARD);
+      jest.spyOn(UtilityService, 'getClaimById').mockResolvedValueOnce(claim);
+
+      await request(app).get(DASHBOARD_CLAIMANT_URL).expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(t('PAGES.DASHBOARD.NOTIFICATIONS.BREATHING_SPACE.TITLE'));
+        expect(res.text).toContain(t('PAGES.DASHBOARD.NOTIFICATIONS.BREATHING_SPACE.CLAIMANT_CONTENT_STANDARD'));
+        expect(res.text).toContain(t('PAGES.DASHBOARD.NOTIFICATIONS.BREATHING_SPACE.USUALLY_LASTS'));
+        expect(res.text).toContain(t('PAGES.DASHBOARD.NOTIFICATIONS.BREATHING_SPACE.LIFT_LINK_TEXT_STANDARD'));
+        expect(res.text).toContain('when you know when it will end.');
+        expect(res.text).toContain(constructResponseUrlWithIdParams(':id', BREATHING_SPACE_LIFT_URL));
+        expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.LIFT_DEBT_RESPITE'));
+        expect(res.text).not.toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.GET_DEBT_RESPITE'));
+      });
+    });
+
+    it('should show mental health breathing space Important banner without usually lasts text', async () => {
+      const claim = new Claim();
+      claim.caseRole = CaseRole.CLAIMANT;
+      claim.ccdState = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
+      claim.enterBreathing = new BreathingSpaceEnterInfo(BreathingSpaceType.MENTAL_HEALTH);
+      jest.spyOn(UtilityService, 'getClaimById').mockResolvedValueOnce(claim);
+
+      await request(app).get(DASHBOARD_CLAIMANT_URL).expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(t('PAGES.DASHBOARD.NOTIFICATIONS.BREATHING_SPACE.CLAIMANT_CONTENT_MENTAL_HEALTH'));
+        expect(res.text).toContain(t('PAGES.DASHBOARD.NOTIFICATIONS.BREATHING_SPACE.LIFT_LINK_TEXT'));
+        expect(res.text).toContain('This will remain in place until you');
+        expect(res.text).not.toContain(t('PAGES.DASHBOARD.NOTIFICATIONS.BREATHING_SPACE.USUALLY_LASTS'));
+        expect(res.text).toContain(constructResponseUrlWithIdParams(':id', BREATHING_SPACE_LIFT_URL));
+        expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.LIFT_DEBT_RESPITE'));
+        expect(res.text).not.toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.GET_DEBT_RESPITE'));
+      });
+    });
+
+    it('should not show breathing space banner when claim is not in breathing space', async () => {
+      const claim = new Claim();
+      claim.caseRole = CaseRole.CLAIMANT;
+      claim.ccdState = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
+      jest.spyOn(UtilityService, 'getClaimById').mockResolvedValueOnce(claim);
+
+      await request(app).get(DASHBOARD_CLAIMANT_URL).expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).not.toContain(t('PAGES.DASHBOARD.NOTIFICATIONS.BREATHING_SPACE.USUALLY_LASTS'));
+        expect(res.text).not.toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.LIFT_DEBT_RESPITE'));
+        expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.GET_DEBT_RESPITE'));
+      });
+    });
+
+    it('should not show enter breathing space link after defendant 1 exits breathing space in a 1v1 claim', async () => {
+      const claim = new Claim();
+      claim.caseRole = CaseRole.CLAIMANT;
+      claim.ccdState = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
+      claim.enterBreathing = new BreathingSpaceEnterInfo(BreathingSpaceType.STANDARD);
+      claim.liftBreathing = new BreathingSpaceLiftInfo(new Date('2026-08-10'));
+      jest.spyOn(UtilityService, 'getClaimById').mockResolvedValueOnce(claim);
+
+      await request(app).get(DASHBOARD_CLAIMANT_URL).expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).not.toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.GET_DEBT_RESPITE'));
+        expect(res.text).not.toContain(constructResponseUrlWithIdParams(':id', BREATHING_SPACE_INFO_URL));
+      });
     });
   });
 
