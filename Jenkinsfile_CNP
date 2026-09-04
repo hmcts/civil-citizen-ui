@@ -75,11 +75,19 @@ def getFunctionalTestsGroups() {
 }
 
 def getCivilCcdDefinitionBranch() {
-  return "OCCC-359"
+  def githubApi = new GithubAPI(this)
+  for (label in githubApi.getLabelsbyPattern(env.BRANCH_NAME, "civilDefinitionBranch:")) {
+    return label.minus("civilDefinitionBranch:").trim()
+  }
+  return "master"
 }
 
 def getCivilServicePr() {
-  return "8273"
+  def githubApi = new GithubAPI(this)
+  for (label in githubApi.getLabelsbyPattern(env.BRANCH_NAME, "civilServicePr:") ) {
+    return label.minus("civilServicePr:").trim()
+  }
+  return ""
 }
 
 def getCivilServiceImage() {
