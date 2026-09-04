@@ -1,128 +1,113 @@
-import {app} from '../../../../../main/app';
-import request from 'supertest';
-import config from 'config';
-import nock from 'nock';
-import {
-  CITIZEN_REJECT_ALL_CLAIM_URL,
-  RESPONSE_TASK_LIST_URL,
-  SEND_RESPONSE_BY_EMAIL_URL,
-} from 'routes/urls';
-import {
-  mockCivilClaim,
-  mockCivilClaimUndefined,
-  mockCivilClaimUnemploymentRetired,
-  mockNoStatementOfMeans,
-  mockRedisFailure,
-} from '../../../../utils/mockDraftStore';
-import {TestMessages} from '../../../../utils/errorMessageTestConstants';
+import {Request, Response} from 'express';
+import rejectAllOfClaimController from '../../../../../main/routes/features/response/rejectAllOfClaimController';
+import {RESPONSE_TASK_LIST_URL, SEND_RESPONSE_BY_EMAIL_URL} from 'routes/urls';
 import {RejectAllOfClaimType} from 'form/models/rejectAllOfClaimType';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import * as rejectAllOfClaimService from 'services/features/response/rejectAllOfClaimService';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {Claim} from 'models/claim';
+import {createMockResponse, getRouteHandler} from '../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../main/modules/oidc');
+jest.mock('modules/draft-store/draftStoreService');
+jest.mock('services/features/response/rejectAllOfClaimService');
 
 describe('rejectAllOfClaim', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
+  const getHandler = getRouteHandler(rejectAllOfClaimController, 'get');
+  const postHandler = getRouteHandler(rejectAllOfClaimController, 'post');
+  const viewPath = 'features/response/reject-all-of-claim';
+  const claimId = '12345';
+  let req: Partial<Request>;
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
+  const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
+  const mockGenerateRedisKey = draftStoreService.generateRedisKey as jest.Mock;
+  const mockGetRejectAllOfClaim = rejectAllOfClaimService.getRejectAllOfClaim as jest.Mock;
+  const mockSaveRejectAllOfClaim = rejectAllOfClaimService.saveRejectAllOfClaim as jest.Mock;
 
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
+  const stubClaim = (): Claim => {
+    const claim = new Claim();
+    jest.spyOn(claim, 'getClaimantFullName').mockReturnValue('Mr. Jan Clark');
+    return claim;
+  };
+
+  beforeEach(() => {
+    req = {params: {id: claimId}, body: {}, query: {}, cookies: {}};
+    res = createMockResponse();
+    next = jest.fn();
+    mockGenerateRedisKey.mockReturnValue(claimId);
+    mockGetCaseData.mockResolvedValue(stubClaim());
+    mockGetRejectAllOfClaim.mockResolvedValue({option: undefined});
+    mockSaveRejectAllOfClaim.mockResolvedValue(undefined);
+    jest.clearAllMocks();
+    mockGenerateRedisKey.mockReturnValue(claimId);
+    mockGetCaseData.mockResolvedValue(stubClaim());
   });
 
-  describe('on Get', () => {
-    it('should return rejectAllOfClaim page successfully', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
-      await request(app).get(CITIZEN_REJECT_ALL_CLAIM_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Why do you believe you don’t owe Mr. Jan Clark any money?');
-        });
+  describe('on GET', () => {
+    it('should render the reject all of claim page', async () => {
+      await getHandler(req as Request, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        rejectAllOfClaimType: RejectAllOfClaimType,
+        claimantName: 'Mr. Jan Clark',
+      }));
+      expect(next).not.toHaveBeenCalled();
     });
 
-    it('should return rejectAllOfClaim page successfully', async () => {
-      app.locals.draftStoreClient = mockCivilClaimUnemploymentRetired;
-      const header = 'Why do you believe you don’t owe Mr. Jan Clark any money?';
-      await request(app).get(CITIZEN_REJECT_ALL_CLAIM_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(header);
-        });
-    });
+    it('should call next when loading the claim fails', async () => {
+      const error = new Error('redis failure');
+      mockGetCaseData.mockRejectedValue(error);
 
-    it('should return rejectAllOfClaim page successfully', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
-      const header = 'Why do you believe you don’t owe Mr. Jan Clark any money?';
-      await request(app).get(CITIZEN_REJECT_ALL_CLAIM_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(header);
-        });
-    });
+      await getHandler(req as Request, res as unknown as Response, next);
 
-    it('should return http 500 when has error', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .get(CITIZEN_REJECT_ALL_CLAIM_URL)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 
-  describe('on Post', () => {
-    it('should return error message when any option is selected', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
-      await request(app).post(CITIZEN_REJECT_ALL_CLAIM_URL)
-        .send()
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toMatch(/Select why you don(?:'|\u2019|&#39;|&apos;)t believe you owe Mr\. Jan Clark any money/);
-          expect(res.text).toContain('govuk-error-message');
-        });
+  describe('on POST', () => {
+    it('should re-render when no option is selected', async () => {
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        claimantName: 'Mr. Jan Clark',
+      }));
+      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
+      expect(mockSaveRejectAllOfClaim).not.toHaveBeenCalled();
     });
 
-    it('should redirect to claim task list page option DISPUTE is selected', async () => {
-      app.locals.draftStoreClient = mockNoStatementOfMeans;
-      await request(app).post(CITIZEN_REJECT_ALL_CLAIM_URL)
-        .send({option: RejectAllOfClaimType.DISPUTE})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(RESPONSE_TASK_LIST_URL);
-        });
+    it('should save and redirect to the task list when DISPUTE is selected', async () => {
+      req.body = {option: RejectAllOfClaimType.DISPUTE};
+
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expect(mockSaveRejectAllOfClaim).toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, RESPONSE_TASK_LIST_URL));
     });
 
-    it('should redirect to claim task list page option ALREADY_PAID is selected', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
-      await request(app).post(CITIZEN_REJECT_ALL_CLAIM_URL)
-        .send({option: RejectAllOfClaimType.ALREADY_PAID})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(RESPONSE_TASK_LIST_URL);
-        });
+    it('should save and redirect to the task list when ALREADY_PAID is selected', async () => {
+      req.body = {option: RejectAllOfClaimType.ALREADY_PAID};
+
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, RESPONSE_TASK_LIST_URL));
     });
 
-    it('should redirect to send response by email page option COUNTER_CLAIM is selected', async () => {
-      app.locals.draftStoreClient = mockCivilClaimUndefined;
-      await request(app).post(CITIZEN_REJECT_ALL_CLAIM_URL)
-        .send({option: RejectAllOfClaimType.COUNTER_CLAIM})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(SEND_RESPONSE_BY_EMAIL_URL);
-        });
+    it('should redirect to send response by email when COUNTER_CLAIM is selected', async () => {
+      req.body = {option: RejectAllOfClaimType.COUNTER_CLAIM};
+
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, SEND_RESPONSE_BY_EMAIL_URL));
     });
 
-    it('should return http 500 when has error', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .post(CITIZEN_REJECT_ALL_CLAIM_URL)
-        .send({option: RejectAllOfClaimType.ALREADY_PAID})
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+    it('should call next when saving fails', async () => {
+      const error = new Error('redis failure');
+      mockGetCaseData.mockRejectedValue(error);
+      req.body = {option: RejectAllOfClaimType.ALREADY_PAID};
+
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 });

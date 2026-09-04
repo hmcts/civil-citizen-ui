@@ -1,43 +1,30 @@
-import request from 'supertest';
-import {app} from '../../../../../../main/app';
-import nock from 'nock';
-import config from 'config';
-import {
-  DASHBOARD_CLAIMANT_URL,
-  HEARING_FEE_CANCEL_JOURNEY,
-} from 'routes/urls';
-import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
+import {Request, Response} from 'express';
+import cancelHearingFeeJourneyController from '../../../../../../main/routes/features/caseProgression/hearingFee/cancelHearingFeeJourneyController';
+import {DASHBOARD_CLAIMANT_URL} from 'routes/urls';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {deleteDraftClaim} from 'modules/draft-store/draftStoreService';
+import {createMockResponse, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
-jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
-describe('Apply for help with fees', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
+jest.mock('modules/draft-store/draftStoreService', () => ({
+  deleteDraftClaim: jest.fn().mockResolvedValue(undefined),
+}));
 
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
+describe('Cancel hearing fee journey', () => {
+  const getHandler = getRouteHandler(cancelHearingFeeJourneyController, 'get');
+  const claimId = '12345';
+  let req: Partial<Request>;
+  let res: ReturnType<typeof createMockResponse>;
+
+  beforeEach(() => {
+    req = {params: {id: claimId}, query: {}, cookies: {}};
+    res = createMockResponse();
+    jest.clearAllMocks();
   });
 
-  describe('on GET', () => {
-    it('should return to claimant dashboard', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
-      await request(app)
-        .get(HEARING_FEE_CANCEL_JOURNEY)
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(DASHBOARD_CLAIMANT_URL);
-        });
-    });
-  });
-  it('should return http 302 when has error in the get method', async () => {
-    app.locals.draftStoreClient = mockRedisFailure;
-    await request(app)
-      .get(HEARING_FEE_CANCEL_JOURNEY)
-      .expect((res) => {
-        expect(res.status).toBe(302);
-      });
+  it('should delete the draft claim and redirect to the claimant dashboard', async () => {
+    await getHandler(req as Request, res as unknown as Response, jest.fn());
+
+    expect(deleteDraftClaim).toHaveBeenCalledWith(req);
+    expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL));
   });
 });

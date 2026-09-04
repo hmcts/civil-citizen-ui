@@ -1,66 +1,76 @@
-import request from 'supertest';
-import {app} from '../../../../../../main/app';
+import {Request, Response} from 'express';
+import tenancyDepositController from '../../../../../../main/routes/features/public/eligibility/tenancyDepositController';
 import {
-  ELIGIBILITY_TENANCY_DEPOSIT_URL,
   ELIGIBILITY_GOVERNMENT_DEPARTMENT_URL,
   NOT_ELIGIBLE_FOR_THIS_SERVICE_URL,
 } from '../../../../../../main/routes/urls';
 import {YesNo} from '../../../../../../main/common/form/models/yesNo';
 import {NotEligibleReason} from '../../../../../../main/common/form/models/eligibility/NotEligibleReason';
 import {constructUrlWithNotEligibleReason} from '../../../../../../main/common/utils/urlFormatter';
+import {GenericForm} from '../../../../../../main/common/form/models/genericForm';
+import {createMockResponse, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
 describe('Tenancy Deposit Controller', () => {
+  const getHandler = getRouteHandler(tenancyDepositController, 'get');
+  const postHandler = getRouteHandler(tenancyDepositController, 'post');
+  const viewPath = 'features/public/eligibility/tenancy-deposit';
+  let req: Partial<Request>;
+  let res: ReturnType<typeof createMockResponse>;
+
+  beforeEach(() => {
+    req = {cookies: {}, body: {}, query: {}};
+    res = createMockResponse();
+  });
 
   describe('on GET', () => {
-    it('should render claim against tenancy deposit eligibility page successfully', async () => {
-      const res = await request(app).get(ELIGIBILITY_TENANCY_DEPOSIT_URL);
-      expect(res.status).toBe(200);
-      expect(res.text).toContain('Is your claim for a tenancy deposit?');
+    it('should render the page', () => {
+      getHandler(req as Request, res as unknown as Response, jest.fn());
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        pageTitle: 'PAGES.TENANCY_DEPOSIT.TITLE',
+      }));
+      expect((res.render as jest.Mock).mock.calls[0][1].form).toBeInstanceOf(GenericForm);
     });
 
-    it('should render claim against tenancy deposit with set cookie value', async () => {
-      app.request['cookies'] = {'eligibility': {tenancyDeposit: YesNo.YES}};
-      const res = await request(app).get(ELIGIBILITY_TENANCY_DEPOSIT_URL);
-      expect(res.status).toBe(200);
-      expect(res.text).toContain('Is your claim for a tenancy deposit?');
-    });
+    it('should pre-populate the form from the eligibility cookie', () => {
+      req.cookies = {eligibility: {tenancyDeposit: YesNo.NO}};
 
-    it('should render claim against teancy deposit view when cookie for defendant eligibility does not exist', async () => {
-      app.request['cookies'] = {'eligibility': {foo: 'blah'}};
-      const res = await request(app).get(ELIGIBILITY_TENANCY_DEPOSIT_URL);
-      expect(res.status).toBe(200);
-      expect(res.text).toContain('Is your claim for a tenancy deposit?');
+      getHandler(req as Request, res as unknown as Response, jest.fn());
+
+      expect((res.render as jest.Mock).mock.calls[0][1].form.model.option).toBe(YesNo.NO);
     });
   });
 
   describe('on POST', () => {
-    it('should render claim against tenancy deposit eligibility page ', async () => {
-      const res = await request(app).post(ELIGIBILITY_TENANCY_DEPOSIT_URL);
-      expect(res.status).toBe(200);
-      expect(res.text).toContain('Is your claim for a tenancy deposit?');
+    it('should re-render when no option is selected', () => {
+      postHandler(req as Request, res as unknown as Response, jest.fn());
+
+      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
+      expect(res.redirect).not.toHaveBeenCalled();
     });
 
-    it('should redirect to not eligible page if radio selection is yes', async () => {
-      const res = await request(app).post(ELIGIBILITY_TENANCY_DEPOSIT_URL).send({option: YesNo.YES});
-      expect(res.status).toBe(302);
-      expect(res.header.location).toBe(constructUrlWithNotEligibleReason(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL, NotEligibleReason.CLAIM_IS_FOR_TENANCY_DEPOSIT));
+    it('should redirect to not eligible when yes is selected', () => {
+      req.body = {option: YesNo.YES};
+
+      postHandler(req as Request, res as unknown as Response, jest.fn());
+
+      expect(res.redirect).toHaveBeenCalledWith(
+        constructUrlWithNotEligibleReason(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL, NotEligibleReason.CLAIM_IS_FOR_TENANCY_DEPOSIT),
+      );
     });
 
-    it('should redirect and set cookie value if radio selection is no', async () => {
-      app.request.cookies = {eligibility: {foo: 'blah'}};
-      const res = await request(app).post(ELIGIBILITY_TENANCY_DEPOSIT_URL).send({option: YesNo.NO});
-      expect(res.status).toBe(302);
-      expect(res.header.location).toBe(ELIGIBILITY_GOVERNMENT_DEPARTMENT_URL);
-      expect(app.request.cookies.eligibility.tenancyDeposit).toBe(YesNo.NO);
-      expect(app.request.cookies.eligibility.foo).toBe('blah');
-    });
+    it('should redirect to government department when no is selected', () => {
+      req.cookies = {eligibility: {foo: 'blah'}};
+      req.body = {option: YesNo.NO};
 
-    it('should redirect and update cookie value if radio selection is yes', async () => {
-      app.request.cookies = {eligibility: {foo: 'blah', tenancyDeposit: YesNo.YES}};
-      const res = await request(app).post(ELIGIBILITY_TENANCY_DEPOSIT_URL).send({option: YesNo.YES});
-      expect(res.status).toBe(302);
-      expect(app.request.cookies.eligibility.tenancyDeposit).toBe(YesNo.YES);
-      expect(app.request.cookies.eligibility.foo).toBe('blah');
+      postHandler(req as Request, res as unknown as Response, jest.fn());
+
+      expect(res.cookie).toHaveBeenCalledWith(
+        'eligibility',
+        {foo: 'blah', tenancyDeposit: YesNo.NO},
+        {httpOnly: true, sameSite: 'lax'},
+      );
+      expect(res.redirect).toHaveBeenCalledWith(ELIGIBILITY_GOVERNMENT_DEPARTMENT_URL);
     });
   });
 });

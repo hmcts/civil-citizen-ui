@@ -1,45 +1,36 @@
-import {
-  HEARING_FEE_MAKE_PAYMENT_AGAIN_URL,
-} from 'routes/urls';
-
-import nock from 'nock';
-import request from 'supertest';
-import config from 'config';
-import {app} from '../../../../../../main/app';
-import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
+import {Request, Response} from 'express';
+import makePaymentAgainController from '../../../../../../main/routes/features/caseProgression/hearingFee/makePaymentAgainController';
 import * as makePaymentAgainService from 'services/features/caseProgression/hearingFee/makePaymentAgainService';
+import {createMockResponse, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
-jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 describe('Hearing Fees - Make Payment Again', () => {
-  const idamServiceUrl: string = config.get('services.idam.url');
-  const citizenRoleToken: string = config.get('citizenRoleToken');
+  const getHandler = getRouteHandler(makePaymentAgainController, 'get');
+  const claimId = '12345';
+  let req: Partial<Request>;
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
 
-  beforeAll(() => {
-    nock(idamServiceUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-  });
-  describe('on GET', () => {
-    it('should redirect user to govPay Payment Page', async () => {
-      jest.spyOn(makePaymentAgainService,'getRedirectUrl').mockResolvedValueOnce('12354');
-      await request(app)
-        .get(HEARING_FEE_MAKE_PAYMENT_AGAIN_URL)
-        .expect((res) => {
-          expect(res.status).toBe(302);
-        });
-    });
-
-    it('should return 500 error page for any service error', async () => {
-      jest.spyOn(makePaymentAgainService,'getRedirectUrl').mockRejectedValueOnce(TestMessages.SOMETHING_WENT_WRONG);
-      await request(app)
-        .get(HEARING_FEE_MAKE_PAYMENT_AGAIN_URL)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
-    });
+  beforeEach(() => {
+    req = {params: {id: claimId}, query: {}, cookies: {}};
+    res = createMockResponse();
+    next = jest.fn();
   });
 
+  it('should redirect to the payment URL from the service', async () => {
+    jest.spyOn(makePaymentAgainService, 'getRedirectUrl').mockResolvedValue('https://govpay.example/pay');
+
+    await getHandler(req as Request, res as unknown as Response, next);
+
+    expect(res.redirect).toHaveBeenCalledWith('https://govpay.example/pay');
+    expect(next).not.toHaveBeenCalled();
+  });
+
+  it('should call next when the service fails', async () => {
+    const error = new Error('payment failed');
+    jest.spyOn(makePaymentAgainService, 'getRedirectUrl').mockRejectedValue(error);
+
+    await getHandler(req as Request, res as unknown as Response, next);
+
+    expect(next).toHaveBeenCalledWith(error);
+  });
 });

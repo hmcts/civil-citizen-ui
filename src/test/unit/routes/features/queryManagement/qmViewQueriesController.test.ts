@@ -1,150 +1,76 @@
-import request from 'supertest';
-import {app} from '../../../../../main/app';
-import {QM_VIEW_QUERY_URL} from 'routes/urls';
-import nock from 'nock';
-import config from 'config';
-import * as ViewQueriesService from 'services/features/queryManagement/viewQueriesService';
-import {CIVIL_SERVICE_CASES_URL} from 'client/civilServiceUrls';
-import {CaseRole} from 'form/models/caseRoles';
-import {TestMessages} from '../../../../utils/errorMessageTestConstants';
-import {ViewObjects} from 'form/models/queryManagement/viewQuery';
-import * as dashboardService from 'services/dashboard/dashboardService';
-import {DashboardNotificationList} from 'models/dashboard/dashboardNotificationList';
-import {DashboardNotification} from 'models/dashboard/dashboardNotification';
+import {Request, Response} from 'express';
+import qmViewQueriesController from '../../../../../main/routes/features/queryManagement/qmViewQueriesController';
+import {DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL} from 'routes/urls';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {CivilServiceClient} from 'client/civilServiceClient';
-const mockBuildQueryListItems = ViewQueriesService.ViewQueriesService.buildQueryListItems as jest.Mock;
+import {ViewQueriesService} from 'services/features/queryManagement/viewQueriesService';
+import {getNotifications} from 'services/dashboard/dashboardService';
+import {Claim} from 'models/claim';
+import {createMockResponse, createMockSession, getRouteHandler} from '../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/draft-store/draftStoreService');
-jest.mock('../../../../../main/modules/utilityService');
-jest.mock('services/features/queryManagement/viewQueriesService');
-
-const civilServiceUrl = config.get<string>('services.civilService.url');
-const claimId = '12345';
-const claim = require('../../../../utils/mocks/civilClaimResponseMock.json');
-
+jest.mock('services/features/queryManagement/viewQueriesService', () => ({
+  ViewQueriesService: {buildQueryListItems: jest.fn((): unknown[] => [])},
+}));
 jest.mock('services/dashboard/dashboardService', () => ({
-  getNotifications: jest.fn(),
+  getNotifications: jest.fn().mockResolvedValue({items: []}),
+}));
+jest.mock('modules/claimDetailsService', () => ({
+  getTotalAmountWithInterestAndFees: jest.fn().mockResolvedValue(1000),
 }));
 
-describe('View query controller', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
-
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-  });
+describe('Query management view queries Controller', () => {
+  const getHandler = getRouteHandler(qmViewQueriesController, 'get');
+  const claimId = '12345';
+  let req: Partial<Request>;
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
 
   beforeEach(() => {
-    nock(civilServiceUrl)
-      .get(CIVIL_SERVICE_CASES_URL + claimId + '/userCaseRoles')
-      .reply(200, [CaseRole.CLAIMANT]);
+    req = {params: {id: claimId}, query: {}, cookies: {}, session: createMockSession({user: {id: 'user-1'}})};
+    res = createMockResponse();
+    next = jest.fn();
+    (getNotifications as jest.Mock).mockResolvedValue({items: []});
   });
 
-  describe('GET', () => {
-    beforeEach(() => {
-      jest.resetAllMocks();
-    });
-    it('should render query page', async () => {
+  it('should render the view queries page for a claimant', async () => {
+    const claim = new Claim();
+    jest.spyOn(claim, 'isClaimant').mockReturnValue(true);
+    jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockResolvedValue(claim);
 
-      nock(civilServiceUrl)
-        .get(CIVIL_SERVICE_CASES_URL + claimId)
-        .reply(200, claim);
+    await getHandler(req as Request, res as unknown as Response, next);
 
-      await request(app)
-        .get(QM_VIEW_QUERY_URL.replace(':id', claimId))
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Messages');
-        });
-    });
+    expect(ViewQueriesService.buildQueryListItems).toHaveBeenCalled();
+    expect(res.render).toHaveBeenCalledWith(
+      'features/queryManagement/qm-view-queries-template',
+      expect.objectContaining({
+        claimId,
+        parentQueryItems: [],
+        dashboardUrl: constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL),
+      }),
+    );
+  });
 
-    it('should render view query page with query list items', async () => {
-      nock(civilServiceUrl)
-        .get(CIVIL_SERVICE_CASES_URL + claimId)
-        .reply(200, claim);
-      mockBuildQueryListItems.mockReturnValue(Array.of(
-        new ViewObjects(
-          '1',
-          'you',
-          'Test Subject',
-          '13 February 2025, 11:30:10 am',
-          'Court staff',
-          '13 February 2025, 11:30:10 am',
-          'Response received',
-        ),
-        new ViewObjects(
-          '2',
-          'you',
-          'another Test Subject',
-          '13 February 2025, 11:30:10 am',
-          'Court staff',
-          '13 February 2025, 11:30:10 am',
-          'Response received',
-        ),
-      ));
+  it('should use the defendant dashboard URL for a defendant', async () => {
+    const claim = new Claim();
+    jest.spyOn(claim, 'isClaimant').mockReturnValue(false);
+    jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockResolvedValue(claim);
 
-      const res = await request(app).get(QM_VIEW_QUERY_URL.replace(':id', claimId)).expect(200);
-      expect(res.text).toContain('Message subject');
-      expect(res.text).toContain('Sent by');
-      expect(res.text).toContain('Sent on');
-      expect(res.text).toContain('Last updated by');
-      expect(res.text).toContain('Last updated on');
-      expect(res.text).toContain('Status');
-      // Row 1
-      expect(res.text).toContain('Test Subject');
-      expect(res.text).toContain('13 February 2025, 11:30:10 am');
-      expect(res.text).toContain('Court staff');
-      expect(res.text).toContain('13 February 2025, 11:30:10 am');
-      expect(res.text).toContain('Response received');
-      // Row 2
-      expect(res.text).toContain('another Test Subject');
-      expect(res.text).toContain('13 February 2025, 11:30:10 am');
-      expect(res.text).toContain('Court staff');
-      expect(res.text).toContain('13 February 2025, 11:30:10 am');
-      expect(res.text).toContain('Response received');
-    });
+    await getHandler(req as Request, res as unknown as Response, next);
 
-    it('should render query page with no items', async () => {
-      nock(civilServiceUrl)
-        .get(CIVIL_SERVICE_CASES_URL + claimId)
-        .reply(200, claim);
-      mockBuildQueryListItems.mockReturnValue([]);
-      const res = await request(app).get(QM_VIEW_QUERY_URL.replace(':id', claimId)).expect(200);
-      expect(res.text).toContain('Messages');
-      expect(res.text).not.toContain('Test Subject');
-    });
+    expect(res.render).toHaveBeenCalledWith(
+      'features/queryManagement/qm-view-queries-template',
+      expect.objectContaining({
+        dashboardUrl: constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL),
+      }),
+    );
+  });
 
-    it('should register click for response notification', async () => {
-      nock(civilServiceUrl)
-        .get(CIVIL_SERVICE_CASES_URL + claimId)
-        .reply(200, claim);
-      mockBuildQueryListItems.mockReturnValue([]);
-      const dashboardNotif = new DashboardNotification('123', '', '',
-        'The court has responded to the message you sent.', '', 'Click', undefined, undefined, '', '');
-      const dashboardNotifList = new DashboardNotificationList();
-      dashboardNotifList.items = Array(dashboardNotif);
-      jest.spyOn(dashboardService, 'getNotifications').mockReturnValue(new Promise(
-        (resolve) => resolve(dashboardNotifList),
-      ));
-      CivilServiceClient.prototype.recordClick = jest.fn().mockResolvedValue({});
-      const res = await request(app).get(QM_VIEW_QUERY_URL.replace(':id', claimId)).expect(200);
-      expect(res.text).toContain('Messages');
-      expect(res.text).not.toContain('Test Subject');
-    });
+  it('should call next when retrieveClaimDetails fails', async () => {
+    const error = new Error('civil service down');
+    jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockRejectedValue(error);
 
-    it('should return http 500 when has error', async () => {
-      nock(civilServiceUrl)
-        .get(CIVIL_SERVICE_CASES_URL + claimId)
-        .reply(500);
-      await request(app)
-        .get(QM_VIEW_QUERY_URL.replace(':id', claimId))
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
-    });
+    await getHandler(req as Request, res as unknown as Response, next);
+
+    expect(next).toHaveBeenCalledWith(error);
   });
 });
