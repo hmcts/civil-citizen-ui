@@ -5447,7 +5447,6 @@ __metadata:
     connect-redis: "npm:^7.1.0"
     cookie-parser: "npm:^1.4.7"
     copy-webpack-plugin: "npm:^11.0.0"
-    crypto-js: "npm:^4.2.0"
     css-loader: "npm:^6.7.2"
     dayjs: "npm:^1.11.7"
     debug: "npm:^4.3.4"
@@ -6059,13 +6058,6 @@ __metadata:
   version: 0.0.2
   resolution: "crypt@npm:0.0.2"
   checksum: 10/2c72768de3d28278c7c9ffd81a298b26f87ecdfe94415084f339e6632f089b43fe039f2c93f612bcb5ffe447238373d93b2e8c90894cba6cfb0ac7a74616f8b9
-  languageName: node
-  linkType: hard
-
-"crypto-js@npm:^4.2.0":
-  version: 4.2.0
-  resolution: "crypto-js@npm:4.2.0"
-  checksum: 10/c7bcc56a6e01c3c397e95aa4a74e4241321f04677f9a618a8f48a63b5781617248afb9adb0629824792e7ec20ca0d4241a49b6b2938ae6f973ec4efc5c53c924
   languageName: node
   linkType: hard
 
