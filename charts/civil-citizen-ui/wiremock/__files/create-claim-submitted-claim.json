@@ -8,7 +8,9 @@
     },
     "claimDetails": {
       "claimFeePayment": {
-        "paymentReference": "RC-MOCK-CLAIM-FEE"
+        "paymentReference": "RC-MOCK-CLAIM-FEE",
+        "status": "Initiated",
+        "nextUrl": "/testing-support/mock-payment/1111222233334444"
       }
     },
     "legacyCaseReference": "000MC001",
