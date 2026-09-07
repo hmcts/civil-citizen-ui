@@ -65,7 +65,19 @@
       "name": "create-claim-defendant-dashboard-notifications",
       "priority": 10,
       "request": {"method": "GET", "urlPath": "/dashboard/notifications/1111222233334444/role/DEFENDANT"},
-      "response": {"status": 200, "headers": {"Content-Type": "application/json"}, "jsonBody": []}
+      "response": {
+        "status": 200,
+        "headers": {"Content-Type": "application/json"},
+        "jsonBody": [{
+          "id": "response-required",
+          "titleEn": "You haven't responded to the claim",
+          "titleCy": "You haven't responded to the claim",
+          "descriptionEn": "You have 19 days remaining. <a href=\"/case/1111222233334444/response/bilingual-language-preference\">Respond to the claim</a>.",
+          "descriptionCy": "You have 19 days remaining. <a href=\"/case/1111222233334444/response/bilingual-language-preference\">Respond to the claim</a>.",
+          "timeToLive": "",
+          "params": {}
+        }]
+      }
     }
   ]
 }
