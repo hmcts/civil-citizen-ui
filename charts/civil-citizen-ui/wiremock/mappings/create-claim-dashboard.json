@@ -36,6 +36,18 @@
         "headers": {"Content-Type": "application/json"},
         "jsonBody": {"claims": [{"claimId": "1111222233334444", "claimNumber": "000MC001", "claimAmount": 9000, "claimantName": "Claimant", "defendantName": "Defendant", "status": "NO_RESPONSE"}], "totalPages": 1}
       }
+    },
+    {
+      "name": "create-claim-dashboard-task-list",
+      "priority": 10,
+      "request": {"method": "GET", "urlPathPattern": "/dashboard/taskList/1111222233334444/role/(CLAIMANT|DEFENDANT)"},
+      "response": {"status": 200, "headers": {"Content-Type": "application/json"}, "jsonBody": []}
+    },
+    {
+      "name": "create-claim-dashboard-notifications",
+      "priority": 10,
+      "request": {"method": "GET", "urlPathPattern": "/dashboard/notifications/1111222233334444/role/(CLAIMANT|DEFENDANT)"},
+      "response": {"status": 200, "headers": {"Content-Type": "application/json"}, "jsonBody": []}
     }
   ]
 }
