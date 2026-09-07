@@ -44,9 +44,27 @@
       "response": {"status": 200, "headers": {"Content-Type": "application/json"}, "jsonBody": []}
     },
     {
-      "name": "create-claim-dashboard-notifications",
+      "name": "create-claim-claimant-dashboard-notifications",
       "priority": 10,
-      "request": {"method": "GET", "urlPathPattern": "/dashboard/notifications/1111222233334444/role/(CLAIMANT|DEFENDANT)"},
+      "request": {"method": "GET", "urlPath": "/dashboard/notifications/1111222233334444/role/CLAIMANT"},
+      "response": {
+        "status": 200,
+        "headers": {"Content-Type": "application/json"},
+        "jsonBody": [{
+          "id": "claim-fee-required",
+          "titleEn": "You need to pay your claim fee",
+          "titleCy": "You need to pay your claim fee",
+          "descriptionEn": "Your claim has not yet been issued, in order to proceed you must pay the claim fee of £455. Pay the claim fee.",
+          "descriptionCy": "Your claim has not yet been issued, in order to proceed you must pay the claim fee of £455. Pay the claim fee.",
+          "timeToLive": "",
+          "params": {}
+        }]
+      }
+    },
+    {
+      "name": "create-claim-defendant-dashboard-notifications",
+      "priority": 10,
+      "request": {"method": "GET", "urlPath": "/dashboard/notifications/1111222233334444/role/DEFENDANT"},
       "response": {"status": 200, "headers": {"Content-Type": "application/json"}, "jsonBody": []}
     }
   ]
