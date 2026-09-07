@@ -249,7 +249,17 @@ if(e2eTestMode){
     </body></html>`);
   });
 
-  app.post('/testing-support/mock-payment/:claimId/confirm', (req, res) => {
+  app.post('/testing-support/mock-payment/:claimId/confirm', async (req, res) => {
+    const userId = (req.session as AppSession).user?.id;
+    if (userId) {
+      const redisKey = `${req.params.claimId}${userId}`;
+      const claim = await app.locals.draftStoreClient.get(redisKey);
+      if (claim) {
+        const paidClaim = JSON.parse(claim);
+        paidClaim.ccdState = 'CASE_ISSUED';
+        await app.locals.draftStoreClient.set(redisKey, JSON.stringify(paidClaim));
+      }
+    }
     res.redirect(`/case/${req.params.claimId}/payment-successful`);
   });
 }
