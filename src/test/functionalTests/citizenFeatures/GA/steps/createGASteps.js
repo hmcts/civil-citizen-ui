@@ -67,7 +67,7 @@ class createGASteps {
         break;
     }
 
-    await I.amOnPage(`case/${caseRef}/general-application/application-type`);
+    await I.amOnPage(`/case/${caseRef}/general-application/application-type`);
     await applicationTypePage.verifyPageContent();
     await applicationTypePage.nextAction('Ask to set aside');
     await applicationTypePage.nextAction('Continue');
