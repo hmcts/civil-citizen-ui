@@ -88,6 +88,14 @@ const data = {
 
 let caseId, eventName, payload;
 let caseData = {};
+const reducedStackCaseId = '1111222233334444';
+const reducedStackCaseData = {
+  legacyCaseReference: '000MC001',
+  respondent1ResponseDeadline: '2026-10-05T16:00:00.000Z',
+  respondent1PinToPostLRspec: {accessCode: 'ABC12345'},
+  totalClaimAmount: 1000,
+};
+const isReducedStack = () => process.env.REDUCED_STACK_TESTS === 'true';
 
 module.exports = {
 
@@ -170,6 +178,9 @@ module.exports = {
   },
 
   waitForFinishedBusinessProcess: async () => {
+    if (isReducedStack()) {
+      return;
+    }
     await waitForFinishedBusinessProcess(caseId);
   },
 
@@ -429,6 +440,12 @@ module.exports = {
   },
 
   createSpecifiedClaim: async (user, multipartyScenario, claimType, carmEnabled = true, partyType, manualPIP = false) => {
+    if (isReducedStack()) {
+      caseId = reducedStackCaseId;
+      caseData = {...reducedStackCaseData};
+      return caseId;
+    }
+
     console.log('Creating specified claim');
     eventName = 'CREATE_CLAIM_SPEC';
 
@@ -617,6 +634,9 @@ module.exports = {
   },
 
   retrieveCaseData: async (user, caseId) => {
+    if (isReducedStack()) {
+      return {...reducedStackCaseData};
+    }
     await apiRequest.setupTokens(user);
     const {case_data} = await apiRequest.fetchCaseDetails(user, caseId);
     return case_data;
@@ -994,6 +1014,9 @@ module.exports = {
   },
 
   assignToLipDefendant: async (caseId) => {
+    if (isReducedStack()) {
+      return;
+    }
     await assignCaseRoleToUser(caseId, 'DEFENDANT', config.defendantCitizenUser);
     await addUserCaseMapping(caseId, config.defendantCitizenUser);
   },
