@@ -7,7 +7,7 @@ class LoginSteps {
 
   async EnterCitizenCredentials(username, password, manualPIP = false) {
     if (process.env.REDUCED_STACK_TESTS === 'true') {
-      await LoginPage.openReducedStackSession();
+      await LoginPage.openReducedStackSession(username);
       return;
     }
 

@@ -211,7 +211,8 @@ if(e2eTestMode){
   // Use your custom middleware to add the session information
   app.use((req, res, next) => {
     const session = ((req.session) as AppSession);
-    session.user = {accessToken: 'someAccessToken', idToken:'someIdToken', email: '', familyName: '', givenName: '', roles: [], id: 'someID'};
+    const testUserId = req.cookies['e2e-user-id'] || 'someID';
+    session.user = {accessToken: 'someAccessToken', idToken:'someIdToken', email: '', familyName: '', givenName: '', roles: [], id: testUserId};
     next();
   });
 }
