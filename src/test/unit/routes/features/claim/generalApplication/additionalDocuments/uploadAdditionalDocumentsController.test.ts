@@ -188,7 +188,7 @@ describe('uploadAdditionalDocumentsController', () => {
 
       expect(res.status).toBe(302);
       expect(res.header.location).toBe(constructResponseUrlWithIdAndAppIdParams(claimId, gaId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL));
-      expect(removeSelectedDocument).toHaveBeenCalledWith(redisKey, claim, 0);
+      expect(removeSelectedDocument).toHaveBeenCalledWith(redisKey, claim, 0, undefined);
     });
 
     it('should return page with errors when upload file button clicked without choosing file', async () => {

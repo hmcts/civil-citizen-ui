@@ -54,6 +54,14 @@ describe('Agreed response date', () => {
   });
 
   describe('on GET', () => {
+    it('should call getCaseDataFromStore only once per GET request', async () => {
+      app.locals.draftStoreClient = mockCivilClaimApplicantIndividualType;
+      const getCaseDataSpy = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
+      await request(app).get(AGREED_TO_MORE_TIME_URL);
+      expect(getCaseDataSpy).toHaveBeenCalledTimes(1);
+      getCaseDataSpy.mockRestore();
+    });
+
     it('should return agreed response date page', async () => {
       app.locals.draftStoreClient = mockCivilClaimApplicantIndividualType;
       await request(app)
@@ -88,6 +96,18 @@ describe('Agreed response date', () => {
     });
   });
   describe('on POST', () => {
+    it('should call getCaseDataFromStore only once per POST request', async () => {
+      app.locals.draftStoreClient = mockCivilClaim;
+      const getCaseDataSpy = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
+      await request(app)
+        .post(AGREED_TO_MORE_TIME_URL)
+        .send('year=')
+        .send('month=')
+        .send('day=');
+      expect(getCaseDataSpy).toHaveBeenCalledTimes(1);
+      getCaseDataSpy.mockRestore();
+    });
+
     it('should return errors on no input', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)

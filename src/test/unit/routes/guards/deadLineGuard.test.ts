@@ -2,6 +2,7 @@ import {Request, Response, NextFunction} from 'express';
 import {AdditionalTimeOptions} from 'form/models/additionalTime';
 import {ResponseDeadline, ResponseOptions} from 'form/models/responseDeadline';
 import {Claim} from 'models/claim';
+import {AppRequest} from 'common/models/AppRequest';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {deadLineGuard} from 'routes/guards/deadLineGuard';
 
@@ -16,6 +17,10 @@ const MOCK_RESPONSE = { redirect: jest.fn() } as unknown as Response;
 const MOCK_NEXT = jest.fn() as NextFunction;
 
 describe('Deadline Guard', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
   it('should respond unauthorized when isTaskComplete && isDeadlineExtended', async () => {
     //Given
     const mockClaim = new Claim();
@@ -78,10 +83,12 @@ describe('Deadline Guard', () => {
   it('should respond authorized', async () => {
     //Given
     const mockClaim = new Claim();
+    const mockRequest = {params: {id: '123'}} as unknown as Request;
     mockGetCaseData.mockImplementation(async () => mockClaim);
     //When
-    await deadLineGuard(MOCK_REQUEST, MOCK_RESPONSE, MOCK_NEXT);
+    await deadLineGuard(mockRequest, MOCK_RESPONSE, MOCK_NEXT);
     //Then
     expect(MOCK_NEXT).toHaveBeenCalled();
+    expect((<AppRequest>mockRequest).locals.claim).toBe(mockClaim);
   });
 });

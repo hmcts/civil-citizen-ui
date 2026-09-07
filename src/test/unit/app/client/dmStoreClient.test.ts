@@ -2,12 +2,18 @@ import {DmStoreClient} from '../../../../main/app/client/dmStoreClient';
 import axios, {AxiosInstance} from 'axios';
 import config from 'config';
 import {TestMessages} from '../../../utils/errorMessageTestConstants';
+import {getServiceAuthorisationToken} from '../../../../main/app/client/serviceAuthProviderClient';
 
 jest.mock('axios');
+jest.mock('../../../../main/app/client/serviceAuthProviderClient');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 const baseUrl: string = config.get('baseUrl');
 
 describe('DM Store Client', () => {
+  beforeEach(() => {
+    (getServiceAuthorisationToken as jest.Mock).mockResolvedValue('mock-service-auth-token');
+  });
+
   it('retrieve document by document id', async () => {
     const mockDecumentId = '1234-5678';
     const mockResponse = '<Buffer 25 50 44 73 5b 20 32 20 30 20 52 20 20 34 20 30 20 52 20>';

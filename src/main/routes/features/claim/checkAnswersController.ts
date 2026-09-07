@@ -9,6 +9,7 @@ import {
   deleteDraftClaimFromStore,
   getCaseDataFromStore,
 } from 'modules/draft-store/draftStoreService';
+import {getStashedClaimOrFromStore} from 'common/utils/claimRequestLocals';
 import {Claim} from 'common/models/claim';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {AppRequest} from 'common/models/AppRequest';
@@ -56,7 +57,7 @@ claimCheckAnswersController.get(CLAIM_CHECK_ANSWERS_URL,
     try {
       const userId = req.session?.user?.id;
       const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-      const claim = await getCaseDataFromStore(userId);
+      const claim = await getStashedClaimOrFromStore(req, userId);
       const form = new GenericForm(getStatementOfTruth(claim));
       const isCarmEnabled = await isCarmEnabledForCase(claim.draftClaimCreatedAt);
       renderView(res, form, claim, userId, lang, isCarmEnabled);
@@ -95,7 +96,7 @@ claimCheckAnswersController.post(CLAIM_CHECK_ANSWERS_URL, async (req: Request | 
     if (claim.respondent1?.partyPhone?.phone) {
       form.errors = validateFields(new GenericForm(new PhoneValidationWithMessage(claim.respondent1.partyPhone.phone, 'ERRORS.ENTER_VALID_CONTACT_DEFENDANT')), form.errors);
     }
-    const interestToDate = await calculateInterestToDate(claim);
+    const interestToDate = await calculateInterestToDate(claim, req as AppRequest);
     const claimFeeData = await civilServiceClient.getClaimFeeData(claim.totalClaimAmount + interestToDate, req as AppRequest);
     await saveClaimFee(userId, claimFeeData);
     if (form.hasErrors() ) {

@@ -25,16 +25,38 @@ const legacyConfirmationUrlKey = (userId: string) => userId + userIdForPayment;
  */
 const createBackingStore = () => {
   const map = new Map<string, string>();
+  const expirations = new Map<string, number>();
   return {
     map,
-    set: jest.fn((key: string, value: string) => {
+    set: jest.fn((key: string, value: string, ...args: string[]) => {
       map.set(key, value);
+      if (args[0] === 'EX') {
+        expirations.set(key, Math.floor(Date.now() / 1000) + Number(args[1]));
+      } else if (args[0] !== 'KEEPTTL') {
+        expirations.delete(key);
+      }
       return Promise.resolve('OK');
     }),
     get: jest.fn((key: string) => Promise.resolve(map.has(key) ? map.get(key) : null)),
     del: jest.fn((key: string) => {
+      expirations.delete(key);
       const existed = map.delete(key);
       return Promise.resolve(existed ? 1 : 0);
+    }),
+    ttl: jest.fn((key: string) => {
+      if (!map.has(key)) {
+        return Promise.resolve(-2);
+      }
+      const expiry = expirations.get(key);
+      if (!expiry) {
+        return Promise.resolve(-1);
+      }
+      const remaining = expiry - Math.floor(Date.now() / 1000);
+      return Promise.resolve(remaining > 0 ? remaining : -2);
+    }),
+    expireat: jest.fn((key: string, timestamp: number) => {
+      expirations.set(key, timestamp);
+      return Promise.resolve(1);
     }),
   };
 };
@@ -143,6 +165,68 @@ describe('Integration: paymentSessionStoreService (DTSCCI-4177 payment session k
 
       expect(store.map.has(newConfirmationUrlKey(CLAIM_ID, FeeType.HEARING, USER_ID))).toBe(false);
       expect(store.map.has(legacyConfirmationUrlKey(USER_ID))).toBe(false);
+    });
+  });
+
+  describe('TTL handling', () => {
+    const PAYMENT_SESSION_TTL_SECONDS = 7 * 86400;
+    const hearingUrl = 'https://card.payments.service.gov.uk/return/hearing';
+
+    const nowInSeconds = () => Math.floor(Date.now() / 1000);
+
+    it('applies the payment-session TTL when saving a new userId', async () => {
+      await saveUserId(CLAIM_ID, FeeType.HEARING, USER_ID);
+
+      const ttl = await store.ttl(newUserIdKey(CLAIM_ID, FeeType.HEARING));
+      expect(store.set).toHaveBeenCalledWith(
+        newUserIdKey(CLAIM_ID, FeeType.HEARING),
+        USER_ID,
+        'EX',
+        expect.any(Number),
+      );
+      expect(ttl).toBeGreaterThan(PAYMENT_SESSION_TTL_SECONDS - 5);
+      expect(ttl).toBeLessThanOrEqual(PAYMENT_SESSION_TTL_SECONDS + 2);
+    });
+
+    it('applies the payment-session TTL when saving a confirmation url', async () => {
+      await saveOriginalPaymentConfirmationUrl(CLAIM_ID, FeeType.HEARING, USER_ID, hearingUrl);
+
+      const ttl = await store.ttl(newConfirmationUrlKey(CLAIM_ID, FeeType.HEARING, USER_ID));
+      expect(ttl).toBeGreaterThan(PAYMENT_SESSION_TTL_SECONDS - 5);
+      expect(ttl).toBeLessThanOrEqual(PAYMENT_SESSION_TTL_SECONDS + 2);
+    });
+
+    it('preserves the existing TTL (KEEPTTL) when overwriting a userId rather than resetting it', async () => {
+      const key = newUserIdKey(CLAIM_ID, FeeType.HEARING);
+      await saveUserId(CLAIM_ID, FeeType.HEARING, USER_ID);
+
+      // Simulate the key being part way through its life.
+      await store.expireat(key, nowInSeconds() + 100);
+      store.set.mockClear();
+      store.expireat.mockClear();
+
+      await saveUserId(CLAIM_ID, FeeType.HEARING, 'user-bbbb');
+
+      const ttl = await store.ttl(key);
+      expect(store.map.get(key)).toEqual('user-bbbb');
+      expect(store.set).toHaveBeenCalledWith(key, 'user-bbbb', 'KEEPTTL');
+      expect(store.expireat).not.toHaveBeenCalled();
+      expect(ttl).toBeGreaterThan(90);
+      expect(ttl).toBeLessThanOrEqual(100);
+    });
+
+    it('applies a TTL to a legacy key that previously had none', async () => {
+      const key = newUserIdKey(CLAIM_ID, FeeType.HEARING);
+      // Pre-existing value written before this change, so it has no expiry.
+      store.map.set(key, 'legacy-user');
+      expect(await store.ttl(key)).toBe(-1);
+
+      await saveUserId(CLAIM_ID, FeeType.HEARING, USER_ID);
+
+      const ttl = await store.ttl(key);
+      expect(store.set).toHaveBeenCalledWith(key, USER_ID, 'EX', expect.any(Number));
+      expect(ttl).toBeGreaterThan(PAYMENT_SESSION_TTL_SECONDS - 5);
+      expect(ttl).toBeLessThanOrEqual(PAYMENT_SESSION_TTL_SECONDS + 2);
     });
   });
 });

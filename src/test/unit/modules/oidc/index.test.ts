@@ -4,8 +4,16 @@ import request from 'supertest';
 import {app} from '../../../../main/app';
 import {
   ASSIGN_CLAIM_URL,
-  CALLBACK_URL, CLAIM_FEE_PAYMENT_CONFIRMATION_URL_WITH_UNIQUE_ID, CLAIMANT_TASK_LIST_URL, DASHBOARD_URL,
+  APPLICATION_FEE_PAYMENT_CONFIRMATION_URL,
+  APPLICATION_FEE_PAYMENT_CONFIRMATION_URL_WITH_UNIQUE_ID,
+  CALLBACK_URL,
+  CLAIM_FEE_PAYMENT_CONFIRMATION_URL,
+  CLAIM_FEE_PAYMENT_CONFIRMATION_URL_WITH_UNIQUE_ID,
+  CLAIMANT_TASK_LIST_URL,
+  DASHBOARD_URL,
   FIRST_CONTACT_SIGNPOSTING_URL,
+  HEARING_FEE_PAYMENT_CONFIRMATION_URL,
+  HEARING_FEE_PAYMENT_CONFIRMATION_URL_WITH_UNIQUE_ID,
   SIGN_IN_URL,
   SIGN_OUT_URL, UNAUTHORISED_URL,
 } from 'routes/urls';
@@ -17,6 +25,7 @@ import {TestMessages} from '../../../utils/errorMessageTestConstants';
 jest.mock('../../../../main/modules/draft-store');
 const mockDraftStoreClient = {
   set: jest.fn(),
+  ttl: jest.fn(),
   expireat: jest.fn(),
   get: jest.fn(),
   keys: jest.fn(),
@@ -29,14 +38,34 @@ const mockGetSessionIssueTime = getSessionIssueTime as jest.Mock;
 
 const citizenRoleToken: string = config.get('citizenRoleToken');
 const idamServiceUrl: string = config.get('services.idam.authorizationURL');
-const signOutUrl = idamServiceUrl.replace('/login', '/o/endSession');
+const signOutUrl: string = config.get('services.idam.terminateSessionURL');
 const userDetails = {accessToken: citizenRoleToken, email:'dfkdh', id: 'jfkdljfd', familyName:'masslover', givenName:'tatiana', roles:['citizen']};
+const paymentClaimId = '1729760747011812';
+const generalApplicationId = '9876543210987654';
+const paymentConfirmationUrls = [
+  HEARING_FEE_PAYMENT_CONFIRMATION_URL.replace(':id', paymentClaimId),
+  CLAIM_FEE_PAYMENT_CONFIRMATION_URL.replace(':id', paymentClaimId),
+  APPLICATION_FEE_PAYMENT_CONFIRMATION_URL
+    .replace(':id', paymentClaimId)
+    .replace(':appId', generalApplicationId),
+  HEARING_FEE_PAYMENT_CONFIRMATION_URL_WITH_UNIQUE_ID
+    .replace(':id', paymentClaimId)
+    .replace(':uniqueId', 'abc-unique-123'),
+  CLAIM_FEE_PAYMENT_CONFIRMATION_URL_WITH_UNIQUE_ID
+    .replace(':id', paymentClaimId)
+    .replace(':uniqueId', 'abc-unique-456'),
+  APPLICATION_FEE_PAYMENT_CONFIRMATION_URL_WITH_UNIQUE_ID
+    .replace(':id', paymentClaimId)
+    .replace(':appId', generalApplicationId)
+    .replace(':uniqueId', 'abc-unique-789'),
+];
 
 jest.mock('../../../../main/app/auth/user/oidc');
 
 describe('OIDC middleware', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    mockDraftStoreClient.ttl.mockResolvedValue(-1);
     mockDraftStoreClient.keys.mockResolvedValue([]);
     app.request['session'] = {
       save: (callback: (err?: any) => void) => callback(),
@@ -186,15 +215,31 @@ describe('OIDC middleware', () => {
       jest.clearAllMocks();
     });
 
-    it('should store original url in local if user details expired', async () => {
+    it.each(paymentConfirmationUrls)('should guard unauthenticated payment confirmation URL %s', async paymentUrl => {
       mockDraftStoreClient.get.mockResolvedValue('123456789');
 
-      await request(app).get(CLAIM_FEE_PAYMENT_CONFIRMATION_URL_WITH_UNIQUE_ID.replace(':id', '1729760747011812')).expect((res) => {
+      await request(app).get(paymentUrl).expect((res) => {
+        expect(res.status).toBe(302);
+        expect(res.headers.location).toBe(SIGN_IN_URL);
+        expect(res.text).not.toContain('Your payment was');
+      });
+    });
+
+    it('should store original url in local if user details expired', async () => {
+      mockDraftStoreClient.get.mockResolvedValue('123456789');
+      const paymentUrl = CLAIM_FEE_PAYMENT_CONFIRMATION_URL_WITH_UNIQUE_ID
+        .replace(':id', paymentClaimId)
+        .replace(':uniqueId', 'abc-unique-456');
+
+      await request(app).get(paymentUrl).expect((res) => {
         expect(res.status).toBe(302);
         expect(mockDraftStoreClient.set).toHaveBeenCalledWith(
-          '1729760747011812CLAIMISSUED123456789confirmationUrl',
-          CLAIM_FEE_PAYMENT_CONFIRMATION_URL_WITH_UNIQUE_ID.replace(':id', '1729760747011812'),
+          `${paymentClaimId}CLAIMISSUED123456789confirmationUrl`,
+          paymentUrl,
+          'EX',
+          expect.any(Number),
         );
+        expect(mockDraftStoreClient.expireat).not.toHaveBeenCalled();
         expect(res.text).toContain(SIGN_IN_URL);
       });
     });

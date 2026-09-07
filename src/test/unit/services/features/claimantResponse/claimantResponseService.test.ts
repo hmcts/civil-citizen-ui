@@ -55,6 +55,7 @@ import {SignSettlmentAgreement} from 'form/models/claimantResponse/signSettlemen
 import {PaidAmount} from 'models/claimantResponse/ccj/paidAmount';
 import {RejectAllOfClaimType} from 'form/models/rejectAllOfClaimType';
 import {RejectAllOfClaim} from 'form/models/rejectAllOfClaim';
+import {Employer} from 'form/models/statementOfMeans/employment/employer';
 
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
@@ -92,13 +93,22 @@ describe('full defence claimant response', () => {
   });
 
   it('should set null mediation  if full defence paid agreed', async () => {
-    claim.rejectAllOfClaim.option = RejectAllOfClaimType.ALREADY_PAID;
-    mockGetCaseDataFromDraftStore.mockResolvedValueOnce(claim);
+    const paidClaim = new Claim();
+    paidClaim.respondent1 = new Party();
+    paidClaim.respondent1.responseType = ResponseType.FULL_DEFENCE;
+    paidClaim.rejectAllOfClaim = new RejectAllOfClaim();
+    paidClaim.rejectAllOfClaim.option = RejectAllOfClaimType.ALREADY_PAID;
+    paidClaim.claimantResponse = new ClaimantResponse();
+    paidClaim.claimantResponse.mediation = new Mediation();
+    paidClaim.claimantResponse.mediation.mediationDisagreement = new GenericYesNo(YesNo.YES);
+    paidClaim.claimantResponse.directionQuestionnaire = new DirectionQuestionnaire();
+    mockGetCaseDataFromDraftStore.mockResolvedValueOnce(paidClaim);
     jest.spyOn(draftStoreService, 'saveDraftClaim');
     //When
-    await saveClaimantResponse('validClaimId', new GenericYesNo(YesNo.NO), 'option', 'hasFullDefenceStatesPaidClaimSettled');
+    await saveClaimantResponse('validClaimId', new GenericYesNo(YesNo.NO), 'hasFullDefenceStatesPaidClaimSettled');
     //Then
-    expect(claim.claimantResponse.mediation).toBeUndefined();
+    expect(paidClaim.claimantResponse.mediation).toBeUndefined();
+    expect(paidClaim.claimantResponse.directionQuestionnaire).toBeUndefined();
   });
 });
 describe('Claimant Response Service', () => {
@@ -1149,11 +1159,11 @@ describe('Summary section', () => {
           {
             employerName: 'Bobs Burger',
             jobTitle: 'Master flipper',
-          },
+          } as Employer,
           {
             employerName: 'Avengers',
             jobTitle: 'Part Time Superhero',
-          },
+          } as Employer,
         ],
       };
       const response = constructEmploymentDetailsSection(claim, 'cimode');

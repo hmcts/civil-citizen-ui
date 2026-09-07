@@ -18,8 +18,7 @@
       {{ t(pageTitle) }}
     </p>
   {% endset -%}
-  <div class="govuk-width-container">
-    <main class="govuk-main-wrapper" role="main" aria-labelledby="page-title">
+
       {% if form.hasErrors() %}
         {{ errorSummary(form.getErrors(), t) }}
       {% endif %}
@@ -44,6 +43,5 @@
           </div>
         </div>
       </div>
-    </main>
-  </div>
+
 {% endblock %}

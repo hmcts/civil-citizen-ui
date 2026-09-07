@@ -11,8 +11,7 @@
   {{ setPageTitle(t, pageTitle) }}
 {% endblock %}
 {% block content %}
-  <div class="govuk-width-container">
-    <main class="govuk-main-wrapper" role="main">
+
       {% set title = t("PAGES.CLAIMANT_FORMALISE_REPAYMENT_TYPE.TITLE") %}
       {% set errors = form.getErrors() %}
       {% if form.hasErrors() %}
@@ -71,6 +70,5 @@
           </form>
         </div>
       </div>
-    </main>
-  </div>
+
 {% endblock %}

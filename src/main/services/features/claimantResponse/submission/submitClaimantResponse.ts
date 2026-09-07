@@ -24,7 +24,7 @@ export const submitClaimantResponse = async (req: AppRequest, judgmentBufferEnab
     setRespondentDateOfBirth(claim);
     const claimFee = convertToPoundsFilter(claim.claimFee?.calculatedAmountInPence);
     if (claim.isClaimantIntentionPending() || claim.isAllFinalOrdersIssued()) {
-      const ccdResponseForRequestDefaultJudgement = await translateClaimantResponseRequestDefaultJudgementByAdmissionToCCD(claim, claimFee);
+      const ccdResponseForRequestDefaultJudgement = await translateClaimantResponseRequestDefaultJudgementByAdmissionToCCD(claim, claimFee, req);
       return await civilServiceClient.submitClaimantResponseForRequestJudgementAdmission(req.params.id, ccdResponseForRequestDefaultJudgement, req);
     }
     const ccdResponse = await translateClaimantResponseDJToCCD(claim, judgmentBufferEnabled);

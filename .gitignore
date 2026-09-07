@@ -66,6 +66,8 @@ package-lock.json
 
 # WireMock mappings (pulled from civil-wiremock-mappings)
 wiremock/
+!charts/civil-citizen-ui/wiremock/
+!charts/civil-citizen-ui/wiremock/**
 
 # Shared scripts pulled from civil-service (run bin/pull-latest-civil-shared.sh)
 bin/shared/*

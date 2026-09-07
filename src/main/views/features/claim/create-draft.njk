@@ -9,14 +9,21 @@
 {% endblock %}
 
 {% block content %}
-  <div class="govuk-width-container">
-    <main class="govuk-main-wrapper" role="main">
+
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
           <form method="post" novalidate>
             <div class="govuk-form-group">
               {{ govukButton({
                 text: 'Create Draft Claim'
+              }) }}
+            </div>
+          </form>
+          <form method="post" novalidate>
+            <input type="hidden" name="draftType" value="response">
+            <div class="govuk-form-group">
+              {{ govukButton({
+                text: 'Create Defendant Response Draft'
               }) }}
             </div>
           </form>
@@ -27,6 +34,5 @@
           {{ contactUsForHelp(t) }}
         </div>
       </div>
-    </main>
-  </div>
+
 {% endblock %}

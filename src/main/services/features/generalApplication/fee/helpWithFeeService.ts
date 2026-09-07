@@ -46,7 +46,7 @@ export const getRedirectUrl = async (claimId: string, applyHelpWithFees: Generic
       generalApplicationId = ga?.value?.caseLink?.CaseReference;
       if (!generalApplicationId) {
         claim.paymentSyncError = true;
-        await saveDraftClaim(generateRedisKey(<AppRequest>req), claim, true);
+        await saveDraftClaim(generateRedisKey(req), claim, true, req.session.user?.id);
         return req.originalUrl;
       }
     } else {
@@ -61,7 +61,7 @@ export const getRedirectUrl = async (claimId: string, applyHelpWithFees: Generic
         claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
         claim.generalApplication.applicationFeePaymentDetails = paymentRedirectInformation;
       }
-      await saveDraftClaim(generateRedisKey(<AppRequest>req), claim, true);
+      await saveDraftClaim(generateRedisKey(req), claim, true, req.session.user?.id);
       await saveUserId(claimId, FeeType.GENERALAPPLICATION, req.session.user.id);
       try {
         const paymentReference = claim.generalApplication.applicationFeePaymentDetails?.paymentReference;
@@ -72,19 +72,19 @@ export const getRedirectUrl = async (claimId: string, applyHelpWithFees: Generic
           redirectUrl = constructResponseUrlWithIdAndAppIdParams(claimId, generalApplicationId, APPLICATION_FEE_PAYMENT_CONFIRMATION_URL);
         } else if (paymentStatus?.status === failed) {
           paymentRedirectInformation = await getGaFeePaymentRedirectInformation(generalApplicationId, req);
-          logger.info(`New payment ref after failed payment for application id ${generalApplicationId}: ${paymentRedirectInformation?.paymentReference}`);
+          logger.info(`New payment information requested after failed payment for application id ${generalApplicationId}`);
           if (!paymentRedirectInformation) {
             redirectUrl = req.originalUrl;
           } else {
             claim.generalApplication.applicationFeePaymentDetails = paymentRedirectInformation;
-            await saveDraftClaim(generateRedisKey(<AppRequest>req), claim, true);
+            await saveDraftClaim(generateRedisKey(req), claim, true, req.session.user?.id);
             redirectUrl = paymentRedirectInformation?.nextUrl;
           }
         } else {
           redirectUrl = paymentRedirectInformation?.nextUrl;
         }
       } catch (err: unknown) {
-        logger.info(`Error retrieving payment status for application id ${generalApplicationId}, payment ref ${paymentRedirectInformation?.paymentReference}`);
+        logger.info(`Error retrieving payment status for application id ${generalApplicationId}`);
         redirectUrl = paymentRedirectInformation?.nextUrl;
       }
     } else {
@@ -118,7 +118,7 @@ export const getRedirectUrl = async (claimId: string, applyHelpWithFees: Generic
       generalApplicationId = getRouteParam(req, 'appId');
     }
     claim.paymentSyncError = true;
-    await saveDraftClaim(generateRedisKey(<AppRequest>req), claim, true);
+    await saveDraftClaim(generateRedisKey(req), claim, true, req.session.user?.id);
     return constructResponseUrlWithIdAndAppIdParams(claimId, generalApplicationId, GA_APPLY_HELP_WITH_FEE_SELECTION);
   }
 };

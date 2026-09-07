@@ -55,7 +55,7 @@ mediationCancelUploadController.post(MEDIATION_UPLOAD_DOCUMENTS_CANCEL, (async (
     } else if (form.model.option === YesNo.NO) {
       res.redirect(url);
     } else {
-      await cancelMediationDocumentUpload(redisKey, claim);
+      await cancelMediationDocumentUpload(redisKey, claim, req.session.user?.id);
       req.session.previousUrl = undefined;
       res.redirect(constructResponseUrlWithIdParams(claimId, claim.isClaimant() ? DASHBOARD_CLAIMANT_URL : DEFENDANT_SUMMARY_URL));
     }

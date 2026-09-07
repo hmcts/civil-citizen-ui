@@ -149,6 +149,38 @@ describe('checkYourAnswersClaimGuard', () => {
     expect(MOCK_NEXT).not.toHaveBeenCalled();
   });
 
+  it('should stash claim on req.locals when next is called', async () => {
+    //Given
+    const mockRequest = MOCK_REQUEST(true);
+    const mockClaim = new Claim();
+    mockClaim.id = CLAIM_ID;
+    mockClaim.draftClaimCreatedAt = new Date(Date.now());
+    mockGetCaseData.mockImplementation(async () => mockClaim);
+    mockGetTaskList.mockImplementation(() => [
+      {
+        title: 'Task List',
+        tasks: [{description: 'Task 1', status: TaskStatus.COMPLETE, url: 'some URL'}],
+      },
+      {
+        title: 'Task List 2',
+        tasks: [{description: 'Task 1', status: TaskStatus.COMPLETE, url: 'some URL'}],
+      },
+      {
+        title: 'Task List 3',
+        tasks: [{description: 'Task 1', status: TaskStatus.COMPLETE, url: 'some URL'}],
+      },
+    ]);
+    mockOutstandingTasksFromTaskLists.mockImplementation(() => {
+      const outstandingTaskList: Task[] = [];
+      return outstandingTaskList;
+    });
+    //When
+    await checkYourAnswersClaimGuard(mockRequest, MOCK_RESPONSE, MOCK_NEXT);
+    //Then
+    expect(MOCK_NEXT).toHaveBeenCalledWith();
+    expect(mockRequest.locals.claim).toBe(mockClaim);
+  });
+
   it('should redirect to dashboard', async () => {
     //Given
     const mockRequest = MOCK_REQUEST(false);

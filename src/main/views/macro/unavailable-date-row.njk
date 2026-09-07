@@ -224,7 +224,7 @@
         {% if removeButton.hidden %}
           {{ govukButton({
             text: t('COMMON.REMOVE_CARM') if isCarm else t('COMMON.REMOVE') ,
-            classes: "govuk-button--secondary remove-row govuk-visually-hidden",
+            classes: "govuk-button--secondary remove-row govuk-!-display-none",
             type: "button" if not removeButton.noJs
           }) }}
         {% else %}

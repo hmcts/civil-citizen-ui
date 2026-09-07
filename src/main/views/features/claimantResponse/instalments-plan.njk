@@ -20,8 +20,7 @@
 {% set totalAmount = form.model.totalClaimAmount %}
 
 {% block content %}
-  <div class="govuk-width-container">
-    <main class="govuk-main-wrapper" role="main">
+
       {% set errors = form.getAllErrors() %}
       {% if form.hasErrors() %}
         {{ errorSummary(errors,t) }}
@@ -183,6 +182,5 @@
           {{ contactUsForHelp(t) }}
         </div>
       </div>
-    </main>
-  </div>
+
 {% endblock %}

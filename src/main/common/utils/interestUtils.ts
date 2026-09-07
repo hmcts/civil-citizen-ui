@@ -10,6 +10,7 @@ import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {translateDraftClaimToCCDInterest} from 'services/translation/claim/ccdTranslation';
 import {InterestClaimOptionsType} from 'form/models/claim/interest/interestClaimOptionsType';
+import {AppRequest} from 'models/AppRequest';
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('interestUtils');
 
@@ -18,7 +19,7 @@ const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServi
 
 const INTEREST_8 = 8;
 
-export const getInterestDetails = async (claim: Claim) => {
+export const getInterestDetails = async (claim: Claim, req?: AppRequest) => {
   if (claim?.claimInterest === YesNo.NO) {
     return undefined;
   }
@@ -26,7 +27,7 @@ export const getInterestDetails = async (claim: Claim) => {
   const interestToDate = getInterestToDate(claim);
   const numberOfDays = getNumberOfDaysBetweenTwoDays(interestFromDate, interestToDate);
   const rate = getInterestRate(claim);
-  const interest = await calculateInterestToDate(claim);
+  const interest = await calculateInterestToDate(claim, req);
 
   return {interestFromDate, interestToDate, numberOfDays, interest, rate};
 };
@@ -81,21 +82,21 @@ export const correctInterestSelected = (claim: Claim): boolean => {
   }
   return correctInterestOptionsNotSelected;
 };
-export const calculateInterestToDate = async (claim: Claim): Promise<number> => {
+export const calculateInterestToDate = async (claim: Claim, req?: AppRequest): Promise<number> => {
   if(!claim.hasInterest() || correctInterestSelected(claim) === false) {
     logger.debug(`Interest is not calculated for claim ${claim?.id} as claim has no interest or interest is not selected correctly`);
     return 0;
   }
   const caseDataInterest = translateDraftClaimToCCDInterest(claim);
-  return await civilServiceClient.calculateClaimInterest(caseDataInterest);
+  return await civilServiceClient.calculateClaimInterest(caseDataInterest, req);
 };
 
-export const getInterestData = async (claim: Claim, lang: string) => {
+export const getInterestData = async (claim: Claim, lang: string, req?: AppRequest) => {
   const startDate = getInterestStartDate(claim);
   const endDate = getInterestEndDate(claim);
   const numberOfDays = Math.abs(getNumberOfDaysBetweenTwoDays(startDate, endDate));
   const interestStartDate = formatDateToFullDate(startDate, getLng(lang));
-  const interestToDate = (await calculateInterestToDate(claim)).toFixed(2);
+  const interestToDate = (await calculateInterestToDate(claim, req)).toFixed(2);
   const interestRate = getInterestRate(claim);
   const isBreakDownInterest = claim.isInterestClaimOptionsBreakDownInterest();
   const howInterestIsCalculatedReason = isBreakDownInterest ? claim.getHowTheInterestCalculatedReason() : undefined;

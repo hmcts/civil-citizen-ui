@@ -8,18 +8,19 @@ import {generatePcqId} from 'client/pcq/generatePcqId';
 import {Claim} from 'common/models/claim';
 import {PartyType} from 'common/models/partyType';
 import {NextFunction, Response} from 'express';
-import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {CLAIM_CHECK_ANSWERS_URL} from 'routes/urls';
 import {AppRequest} from 'models/AppRequest';
 import {savePcqIdClaim} from 'client/pcq/savePcqIdClaim';
 import {getClaimantIdamDetails} from 'services/translation/response/claimantIdamDetails';
+import {getStashedClaimOrFromStore, stashClaimOnRequest} from 'common/utils/claimRequestLocals';
 
 const ACTOR = 'applicant';
 
 export const isFirstTimeInPCQ = async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const userId = (<AppRequest>req).session?.user?.id;
-    const caseData: Claim = await getCaseDataFromStore(userId);
+    const caseData: Claim = await getStashedClaimOrFromStore(req, userId);
+    stashClaimOnRequest(req, caseData);
     const pcqShutterOn = await isPcqShutterOn();
 
     if (pcqShutterOn || caseData.pcqId) {

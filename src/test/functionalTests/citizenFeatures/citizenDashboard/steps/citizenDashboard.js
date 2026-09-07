@@ -14,6 +14,10 @@ class CitizenCitizenDashboardSteps {
   async VerifyStatusOnDashboard(status, xpath) {
     await CitizenDashboardPage.verifyStatusOnDashboard(status, xpath);
   }
+
+  async VerifyStatusOnDashboardWelsh(status, xpath) {
+    await CitizenDashboardPage.verifyStatusOnDashboardWelsh(status, xpath);
+  }
 }
 
 module.exports = new CitizenCitizenDashboardSteps();

@@ -18,6 +18,9 @@ import {
 } from 'services/features/claimantResponse/claimantResponseTasklistService/claimantResponseTasklistService';
 import {DirectionQuestionnaire} from 'models/directionsQuestionnaire/directionQuestionnaire';
 import {Hearing} from 'models/directionsQuestionnaire/hearing/hearing';
+import {OtherWitnesses} from 'models/directionsQuestionnaire/witnesses/otherWitnesses';
+import {OtherWitnessItems} from 'models/directionsQuestionnaire/witnesses/otherWitnessItems';
+import {YesNo} from 'form/models/yesNo';
 
 const request = require('supertest');
 const {app} = require('../../../../../main/app');
@@ -126,6 +129,35 @@ describe('Claimant Response - Check answers', () => {
           expect(res.text).toContain('Tell us if you believe the hearing requirement details on this page are true');
           expect(res.text).toContain('Select a court');
           expect(res.text).toContain('Tell us why you want the hearing to be held at this court');
+        });
+    });
+
+    it('should return errors when a saved witness phone number is invalid', async () => {
+      (getClaimById as jest.Mock).mockClear();
+      app.locals.draftStoreClient = mockCivilClaimantIntention;
+      const claim = Object.assign(new Claim(), noRespondentTelephoneClaimantIntentionMock.case_data);
+      claim.claimantResponse.directionQuestionnaire = new DirectionQuestionnaire();
+      claim.claimantResponse.directionQuestionnaire.witnesses = {
+        otherWitnesses: new OtherWitnesses(YesNo.YES, [
+          new OtherWitnessItems({
+            firstName: 'Jane',
+            lastName: 'Doe',
+            telephone: 'not-a-phone-number',
+            details: 'Saw what happened',
+          }),
+        ]),
+      };
+      (getClaimById as jest.Mock).mockResolvedValue(claim);
+      const data = {
+        isClaimantRejectedDefendantOffer: 'false',
+        signed: 'true',
+      };
+      await request(app)
+        .post(CLAIMANT_RESPONSE_CHECK_ANSWERS_URL)
+        .send(data)
+        .expect((res: Response) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Phone number must be a UK number');
         });
     });
 

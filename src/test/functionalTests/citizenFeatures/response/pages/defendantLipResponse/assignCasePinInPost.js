@@ -37,6 +37,108 @@ class AssignCasePinInPost {
     await I.see('We have sent you the claim form by post. To view the claim form online or to download a copy, sign in to your account.');
     await I.see('How we use and store your personal information');
   }
+
+  async enterClaimNumber(claimNumber) {
+    await I.amOnPage('/first-contact/claim-reference/');
+    await I.waitForContent(
+      'Enter your claim number',
+      config.WaitForText,
+    );
+
+    await I.fillField(fields.claimNumber, claimNumber);
+    await I.click('Save and continue');
+
+    const hmctsAccessCookieHeading =
+      '//*[contains(normalize-space(.), "Cookies on hmcts-access.service.gov.uk")]';
+
+    const combinedSignInHeading =
+      '//*[contains(normalize-space(.), "Sign in or create an account")]';
+
+    const loginEmailField =
+      'input[id="username"], input[name="username"], input[id="email"], input[name="email"]';
+
+    const loginPasswordField =
+      'input[id="password"], input[name="password"]';
+
+    const maxWaitSeconds = Number(config.WaitForText) || 60;
+    let currentUrl = '';
+
+    for (let second = 0; second < maxWaitSeconds; second++) {
+      currentUrl = await I.grabCurrentUrl();
+
+      const securityCodeVisible =
+        await I.grabNumberOfVisibleElements(fields.securityCode);
+
+      if (securityCodeVisible > 0) {
+        console.log(
+          'Claim-linking journey: Security code before login',
+        );
+        return false;
+      }
+
+      const cookieHeadingVisible =
+        await I.grabNumberOfVisibleElements(
+          hmctsAccessCookieHeading,
+        );
+
+      const signInHeadingVisible =
+        await I.grabNumberOfVisibleElements(
+          combinedSignInHeading,
+        );
+
+      const emailFieldVisible =
+        await I.grabNumberOfVisibleElements(
+          loginEmailField,
+        );
+
+      const passwordFieldVisible =
+        await I.grabNumberOfVisibleElements(
+          loginPasswordField,
+        );
+
+      const hmctsAccessLoginRequired =
+        currentUrl.toLowerCase().includes('hmcts-access') ||
+        cookieHeadingVisible > 0 ||
+        signInHeadingVisible > 0 ||
+        (
+          emailFieldVisible > 0 &&
+          passwordFieldVisible > 0
+        );
+
+      if (hmctsAccessLoginRequired) {
+        console.log(
+          `Claim-linking journey: Login before security code. URL: ${currentUrl}`,
+        );
+        return true;
+      }
+
+      await I.wait(1);
+    }
+
+    throw new Error(
+      `Claim-linking journey did not reach login or the security-code page. Final URL: ${currentUrl}`,
+    );
+  }
+
+  async enterSecurityCodeAndContinue(claimNumber, securityCode) {
+    /*
+     * Wait directly for the PIN input and enter the security code
+     * immediately. Master briefly reaches this page after HMCTS Access
+     * authentication, so avoid additional content assertions here.
+     */
+    await I.waitForVisible(fields.securityCode, config.WaitForText);
+    console.log(
+      'Security-code page reached - entering PIN immediately',
+    );
+    await I.fillField(fields.securityCode, securityCode);
+    await I.click('Save and continue');
+
+    await this.verifyClaimSummaryPageContent(claimNumber);
+    await I.click('Respond to claim');
+
+    // Allow the defendant role allocation to complete.
+    await I.wait(10);
+  }
 }
 
 module.exports = AssignCasePinInPost;

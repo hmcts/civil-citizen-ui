@@ -51,4 +51,9 @@ Scenario('LipvLip Applicant GA creation e2e tests - Request for more info', asyn
   await I.wait(10);
   await verifyNotificationTitleAndContent(claimNumber, orderMoreInformationNotif.title, orderMoreInformationNotif.content);
   await I.click(orderMoreInformationNotif.nextSteps);
+
+  await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+  await I.amOnPage('/dashboard');
+  await I.click(claimNumber);
+  await verifyNotificationTitleAndContent(claimNumber, orderMoreInformationNotif.title, orderMoreInformationNotif.content);
 });

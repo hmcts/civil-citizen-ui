@@ -16,8 +16,7 @@ import {t} from "i18next";
 {% block content %}
    {% set unableToPayFullAmunt = t('PAGES.REVIEW_DEFENDANTS_RESPONSE.UNABLE_TO_PAY_FULL_AMOUNT') %}
    {% set reasonsWhyYouCantPayImmediately = t(claim.statementOfMeans.explanation.text) %}
-   <div class="govuk-width-container">
-    <main class="govuk-main-wrapper" role="main">
+
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
           <h1 class="govuk-heading-l">{{ t('PAGES.REVIEW_DEFENDANTS_RESPONSE.PART_ADMIT_HOW_THEY_WANT_TO_PAY_RESPONSE.TITLE') }}</h1>
@@ -40,6 +39,5 @@ import {t} from "i18next";
           </div>
         </div>
       </div>
-    </main>
-  </div>
+
 {% endblock %}

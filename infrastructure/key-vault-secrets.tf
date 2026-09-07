@@ -37,3 +37,14 @@ resource "azurerm_key_vault_secret" "redis_draft_store_access_key" {
     "source" : "redis ${module.citizen-ui-draft-store.host_name}"
   })
 }
+
+resource "azurerm_key_vault_secret" "managed_redis_access_key" {
+  name         = "managed-redis-access-key"
+  value        = module.managed_redis.primary_access_key
+  key_vault_id = module.key-vault.key_vault_id
+
+  content_type = "secret"
+  tags = merge(var.common_tags, {
+    "source" : "managed-redis ${module.managed_redis.hostname}"
+  })
+}

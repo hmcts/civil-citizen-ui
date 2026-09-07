@@ -22,3 +22,27 @@ module "citizen-ui-draft-store" {
   maxfragmentationmemory_reserved = var.maxfragmentationmemory_reserved
   maxmemory_delta                 = var.maxmemory_delta
 }
+
+# Azure Managed Redis (DTSCCI-5712)
+
+module "managed_redis" {
+  source = "git@github.com:hmcts/terraform-module-azure-managed-redis?ref=main"
+
+  product     = var.product
+  component   = var.component
+  env         = var.env
+  location    = var.location
+  common_tags = var.common_tags
+
+  sku_name          = var.managed_redis_sku
+  clustering_policy = "EnterpriseCluster"
+
+  public_network_access   = "Disabled"
+  create_private_endpoint = true
+  subnet_id               = data.azurerm_subnet.core_infra_redis_subnet.id
+  private_dns_zone_ids = [
+    "/subscriptions/${var.private_dns_subscription_id}/resourceGroups/core-infra-intsvc-rg/providers/Microsoft.Network/privateDnsZones/privatelink.redis.azure.net"
+  ]
+
+  access_keys_authentication_enabled = true
+}

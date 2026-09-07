@@ -17,8 +17,7 @@
       {{ t(pageTitle) }}
     </p>
   {% endset -%}
-  <div class="govuk-width-container">
-    <main class="govuk-main-wrapper" role="main">
+
       {% set optionErrorKey = form.errorFor('option') %}
       {% set optionErrorText = t(optionErrorKey) if optionErrorKey else '' %}
       {% if optionErrorKey and formatValues %}
@@ -45,6 +44,5 @@
           </div>
         </div>
       </div>
-    </main>
-  </div>
+
 {% endblock %}

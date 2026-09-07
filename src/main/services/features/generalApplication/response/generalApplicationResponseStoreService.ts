@@ -1,17 +1,19 @@
 import { app } from '../../../../../main/app';
 import { GaResponse } from 'common/models/generalApplication/response/gaResponse';
-import { calculateExpireTimeForDraftClaimInSeconds } from 'common/utils/dateUtils';
+import { TTLCategory } from 'modules/draft-store/ttlConfig';
+import { writeWithTTL } from 'modules/draft-store/redisWriteHelper';
 
 const { Logger } = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('draftStoreService');
 
 export const saveDraftGARespondentResponse = async (redisKey: string, response: GaResponse) => {
   try {
-    const draftStoreClient = app.locals.draftStoreClient;
-    await draftStoreClient.set(redisKey, JSON.stringify(response));
-    if (response.draftResponseCreatedAt) {
-      await draftStoreClient.expireat(redisKey, calculateExpireTimeForDraftClaimInSeconds(response.draftResponseCreatedAt));
+    if (!response.draftResponseCreatedAt) {
+      response.draftResponseCreatedAt = new Date();
     }
+    await writeWithTTL(redisKey, response, TTLCategory.GA_JOURNEY, {
+      creationDate: new Date(response.draftResponseCreatedAt),
+    });
   } catch (err) {
     logger.error('issue on saving respondent response' + err);
     throw err;

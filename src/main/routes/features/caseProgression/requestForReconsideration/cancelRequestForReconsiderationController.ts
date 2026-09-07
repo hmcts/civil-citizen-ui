@@ -19,7 +19,7 @@ cancelRequestForReconsiderationController.get(REQUEST_FOR_RECONSIDERATION_CANCEL
     const claimId = getRouteParam(req, 'id');
     const propertyName = getRouteParam(req, 'propertyName');
     const claim = await getClaimById(claimId, req,true);
-    await deleteFieldDraftClaimFromStore(generateRedisKey(<AppRequest>req), claim, propertyName);
+    await deleteFieldDraftClaimFromStore(generateRedisKey(<AppRequest>req), claim, propertyName, (<AppRequest>req).session.user?.id);
 
     if (claim.isClaimant()){
       res.redirect(constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL));

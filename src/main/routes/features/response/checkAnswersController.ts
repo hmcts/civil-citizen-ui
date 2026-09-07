@@ -7,6 +7,7 @@ import {
 } from 'services/features/response/checkAnswers/checkAnswersService';
 import {GenericForm} from 'form/models/genericForm';
 import {deleteDraftClaimFromStore, generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {getStashedClaimOrFromStore} from 'common/utils/claimRequestLocals';
 import {StatementOfTruthForm} from 'form/models/statementOfTruth/statementOfTruthForm';
 import {Claim} from 'models/claim';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
@@ -20,6 +21,7 @@ import {isMintiEnabledForCase, isCarmEnabledForCase} from '../../../app/auth/lau
 import {ValidationError, Validator} from 'class-validator';
 import {SpecificCourtLocation} from 'models/directionsQuestionnaire/hearing/specificCourtLocation';
 import {getRouteParam} from 'common/utils/routeParamUtils';
+import {validateOtherWitnesses} from 'services/features/directionsQuestionnaire/otherWitnessesService';
 
 const checkAnswersViewPath = 'features/response/check-answers';
 const validator = new Validator();
@@ -43,7 +45,7 @@ checkAnswersController.get(RESPONSE_CHECK_ANSWERS_URL,
     isFirstTimeInPCQ],
   (async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const claim = await getCaseDataFromStore(generateRedisKey(<AppRequest>req));
+      const claim = await getStashedClaimOrFromStore(req);
       const carmApplicable = await isCarmEnabledForCase(claim.submittedDate);
       const mintiApplicable = await isMintiEnabledForCase(claim.submittedDate);
       const form = new GenericForm(getStatementOfTruth(claim));
@@ -67,6 +69,10 @@ checkAnswersController.post(RESPONSE_CHECK_ANSWERS_URL, (async (req: Request, re
     if (claim?.directionQuestionnaire?.hearing && !claim.directionQuestionnaire.hearing?.specificCourtLocation?.courtLocation) {
       form.errors = validateFields(new GenericForm<SpecificCourtLocation>(SpecificCourtLocation.fromObject(claim.directionQuestionnaire.hearing?.specificCourtLocation as any)), form.errors);
     }
+    form.errors = [
+      ...form.errors,
+      ...validateOtherWitnesses(claim.directionQuestionnaire?.witnesses?.otherWitnesses),
+    ];
     if (form.hasErrors()) {
       const claimId = getRouteParam(req, 'id');
       logger.info(`form has error -  ${claimId}`);

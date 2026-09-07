@@ -1,4 +1,5 @@
 import {Claim} from 'models/claim';
+import {AppRequest} from 'common/models/AppRequest';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {app} from '../../../../main/app';
 import request from 'supertest';
@@ -10,6 +11,8 @@ import config from 'config';
 import nock from 'nock';
 import {t} from 'i18next';
 import {CivilServiceClient} from 'client/civilServiceClient';
+import {claimIssueTaskListGuard} from 'routes/guards/claimIssueTaskListGuard';
+import {NextFunction, Request, Response} from 'express';
 
 jest.mock('../../../../main/modules/oidc');
 jest.mock('../../../../main/modules/draft-store');
@@ -72,5 +75,24 @@ describe('Claim Issue TaskList Guard', () => {
     //Then
     expect(res.status).toBe(200);
     expect(res.text).toContain(t('PAGES.CLAIM_TASK_LIST.PAGE_TITLE'));
+  });
+
+  it('should stash claim on req.locals when next is called', async () => {
+    //Given
+    const mockClaim = new Claim();
+    mockClaim.draftClaimCreatedAt = new Date();
+    mockGetCaseData.mockImplementation(async () => mockClaim);
+    const mockRequest = {
+      session: {user: {id: 'user-1'}},
+      originalUrl: '/claim/check-answers',
+      cookies: {},
+    } as unknown as Request;
+    const mockResponse = {redirect: jest.fn()} as unknown as Response;
+    const mockNext = jest.fn() as NextFunction;
+    //When
+    await claimIssueTaskListGuard(mockRequest, mockResponse, mockNext);
+    //Then
+    expect(mockNext).toHaveBeenCalled();
+    expect((<AppRequest>mockRequest).locals.claim).toBe(mockClaim);
   });
 });

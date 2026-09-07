@@ -9,8 +9,6 @@
   {{ setPageTitle(t, pageTitle) }}
 {% endblock %}
 {% block content %}
-  <div class="govuk-width-container">
-    <main class="govuk-main-wrapper" role="main">
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
           <h1 class="govuk-heading-xl">{{ t('PAGES.YOU_CAN_USE.TITLE') }}</h1>
@@ -25,6 +23,4 @@
           {{ contactUsForHelp(t) }}
         </div>
       </div>
-    </main>
-  </div>
 {% endblock %}

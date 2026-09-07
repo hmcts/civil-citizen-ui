@@ -112,6 +112,19 @@ describe('Citizen court orders', () => {
         });
     });
 
+    it('when Yes option and claim number contains non-alphanumeric characters, should show an error', async () => {
+      await request(app)
+        .post(respondentCourtOrdersUrl)
+        .send('declared=yes')
+        .send('rows[0][claimNumber]=ABC-123')
+        .send('rows[0][amount]=120')
+        .send('rows[0][instalmentAmount]=10')
+        .expect((res: Response) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(TestMessages.VALID_CLAIM_NUMBER_ALPHANUMERIC);
+        });
+    });
+
     it('when Yes option and missing court order claim instalment amount, should show an error', async () => {
       await request(app)
         .post(respondentCourtOrdersUrl)

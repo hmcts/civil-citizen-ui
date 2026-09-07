@@ -181,6 +181,32 @@ describe('General Application - Check your answers', () => {
         });
     });
 
+    it('should submit a valid multi-application GA from index 2', async () => {
+      const claim = new Claim();
+      claim.generalApplication = new GeneralApplication();
+      claim.generalApplication.applicationTypes = [
+        new ApplicationType(ApplicationTypeOption.EXTEND_TIME),
+        new ApplicationType(ApplicationTypeOption.STRIKE_OUT),
+        new ApplicationType(ApplicationTypeOption.OTHER),
+      ];
+      claim.generalApplication.applicationFee = {
+        calculatedAmountInPence: 25000,
+      };
+      mockGetCaseData.mockImplementation(async () => claim);
+      mockSaveCaseData.mockResolvedValue(undefined);
+      mockSubmitApplication.mockResolvedValueOnce({generalApplications: [{id: '123454', value: {gaApp: 'yes'}}, {id: '123455', value: {gaApp: 'yes'}}, {id: '123456', value: {gaApp: 'yes'}}]});
+
+      await request(app)
+        .post(GA_CHECK_ANSWERS_URL + '?index=2')
+        .send({signed: 'yes', name: 'Mr Applicant'})
+        .expect((res) => {
+          expect(res.header.location).toBe(GENERAL_APPLICATION_CONFIRM_URL + '?appFee=250&id=123456');
+          expect(res.status).toBe(302);
+        });
+
+      expect(mockSubmitApplication).toHaveBeenCalled();
+    });
+
     it('should return http 500 when has error in the post method', async () => {
       mockSaveCaseData.mockImplementation(async () => {
         throw new Error(TestMessages.REDIS_FAILURE);
@@ -195,4 +221,3 @@ describe('General Application - Check your answers', () => {
     });
   });
 });
-

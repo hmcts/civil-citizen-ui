@@ -12,6 +12,7 @@ import {Claim} from 'models/claim';
 import {claimIssueTaskListGuard} from 'routes/guards/claimIssueTaskListGuard';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
+import {getDraftClaimDeletionDate} from 'common/utils/draftClaimUtils';
 
 const taskListViewPath = 'features/claim/task-list';
 const claimTaskListController = Router();
@@ -23,16 +24,22 @@ claimTaskListController.get(CLAIMANT_TASK_LIST_URL, claimIssueTaskListGuard, (as
   try {
     const userId = req.session?.user?.id;
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
-    const caseData: Claim = await getCaseDataFromStore(userId, true);
+    let caseData: Claim = await getCaseDataFromStore(userId, true);
     if (!caseData?.isDraftClaim()) {
       await createDraftClaimInStoreWithExpiryTime(userId);
       await civilServiceClient.createDashboard(req);
+      caseData = await getCaseDataFromStore(userId, true);
     }
     const taskLists = getTaskLists(caseData, userId, lng);
+    const draftClaimDeletionDate = getDraftClaimDeletionDate(
+      caseData?.draftClaimCreatedAt,
+      caseData?.draftClaimCacheTtlDays,
+      lng as string,
+    );
     const {completed, total} = calculateTotalAndCompleted(taskLists);
     const description = t('PAGES.CLAIM_TASK_LIST.COMPLETED_SECTIONS', {completed, total, lng});
     const title = completed < total ? t('PAGES.CLAIM_TASK_LIST.APPLICATION_COMPLETE', {lng}) : t('PAGES.CLAIM_TASK_LIST.APPLICATION_INCOMPLETE', {lng});
-    res.render(taskListViewPath, {taskLists, title, description, pageTitle:'PAGES.CLAIM_TASK_LIST.PAGE_TITLE'});
+    res.render(taskListViewPath, {taskLists, title, description, draftClaimDeletionDate, pageTitle:'PAGES.CLAIM_TASK_LIST.PAGE_TITLE'});
   } catch (error) {
     next(error);
   }

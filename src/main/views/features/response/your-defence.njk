@@ -9,8 +9,7 @@
   {{ setPageTitle(t, 'PAGES.YOUR_DEFENCE.TITLE') }}
 {% endblock %}
 {% block content %}
-  <div class="govuk-width-container">
-    <main class="govuk-main-wrapper" role="main">
+
       {% set heading = t('PAGES.YOUR_DEFENCE.TITLE') %}
       {% set errors = form.getAllErrors() %}
       {% set claimantFullName = claimantName %}
@@ -54,7 +53,7 @@
 
             <div class="govuk-inset-text">
               <p class="govuk-body">
-                {{ t('PAGES.YOUR_DEFENCE.CLAIMANT', { claimantFullName: claimantFullName }) }}
+                {{ t('PAGES.YOUR_DEFENCE.CLAIMANT', { claimantFullName: claimantFullName }) | safe }}
               </p>
             </div>
 
@@ -67,6 +66,5 @@
           </form>
         </div>
       </div>
-    </main>
-  </div>
+
 {% endblock %}

@@ -114,6 +114,22 @@ describe('Court Orders service', () => {
       expect(form.errorFor('rows[0][amount]')).toBeUndefined();
       expect(form.errorFor('rows[0][instalmentAmount]')).toBeUndefined();
     });
+    it('should raise an error if declared true and claim number contains non-alphanumeric characters', async () => {
+      //Given
+      const rows = [
+        new CourtOrder(120, 10, 'ABC-123'),
+      ];
+      const courtOrders = new CourtOrders(true, rows);
+      const form = new GenericForm(courtOrders);
+      //When
+      form.validateSync();
+      //Then
+      expect(form.errorFor('declared')).toBeUndefined();
+      expect(form.errorFor('rows')).toBeUndefined();
+      expect(form.errorFor('rows[0][claimNumber]')).toBe('ERRORS.VALID_CLAIM_NUMBER_ALPHANUMERIC');
+      expect(form.errorFor('rows[0][amount]')).toBeUndefined();
+      expect(form.errorFor('rows[0][instalmentAmount]')).toBeUndefined();
+    });
     it('should raise an error if declared true and the amount is unspecified', async () => {
       //Given
       const rows = [

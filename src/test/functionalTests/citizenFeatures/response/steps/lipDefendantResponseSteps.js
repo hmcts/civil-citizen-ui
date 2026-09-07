@@ -95,7 +95,7 @@ const SendDocumentsToCourt = require('../pages/defendantLipResponse/queryManagem
 const SolveProblem = require('../pages/defendantLipResponse/queryManagement/solveProblem');
 const ManageHearing = require('../pages/defendantLipResponse/queryManagement/manageHearing');
 const config = require('../../../../config');
-
+const LoginSteps = require('../../../commonFeatures/home/steps/login');
 const I = actor(); // eslint-disable-line no-unused-vars
 const requestMoreTime = new RequestMoreTime();
 const mediationCanWeUse = new MediationCanWeUse();
@@ -197,6 +197,28 @@ const ManageHearingPage = new ManageHearing();
 class ResponseSteps {
   async AssignCaseToLip(claimNumber, securityCode, manualPIP){
     await assignCaseToLip.open(claimNumber, securityCode, manualPIP);
+  }
+  async AssignCaseToLipSupportingBothJourneys(
+    claimNumber,
+    securityCode,
+    defendantUser,
+  ) {
+    const loggedInBeforeSecurityCode =
+      await assignCaseToLip.enterClaimNumber(claimNumber);
+
+    if (loggedInBeforeSecurityCode) {
+      await LoginSteps.EnterCitizenCredentialsForClaimLinking(
+        defendantUser.email,
+        defendantUser.password,
+      );
+    }
+
+    await assignCaseToLip.enterSecurityCodeAndContinue(
+      claimNumber,
+      securityCode,
+    );
+
+    return loggedInBeforeSecurityCode;
   }
   async RespondToClaim(claimRef, languageOption = 'en'){
     await defendantLatestUpdate.open(claimRef);
