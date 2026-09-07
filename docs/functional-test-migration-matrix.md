@@ -37,6 +37,21 @@ Current full-stack source: `src/test/functionalTests/tests/ui_tests/create-claim
 
 The reduced-stack scenario starts with CUI's public testing-support draft action and then uses browser-visible CUI behaviour. It does not call CCD, Camunda, Civil Service test-support APIs or assignment APIs. Its WireMock mappings are limited to postcode lookup, fee display, claim submission, claim lookup, user roles and the CUI dashboard notification request needed by this journey.
 
+## DTSCCI-6155: payment confirmation authentication guards
+
+The six unauthenticated payment-confirmation scenarios formerly in `payments/payment_auth_guard_tests.js` now run in the OIDC process-boundary suite at `src/test/unit/modules/oidc/index.test.ts`. They exercise the real Express application and OIDC middleware with in-process session and draft-store doubles, without a browser or deployed services.
+
+| Removed full-stack scenario | Focused replacement |
+| --- | --- |
+| Hearing-fee confirmation | Parameterised unauthenticated payment-confirmation guard test using `HEARING_FEE_PAYMENT_CONFIRMATION_URL` |
+| Claim-issue-fee confirmation | Parameterised unauthenticated payment-confirmation guard test using `CLAIM_FEE_PAYMENT_CONFIRMATION_URL` |
+| General-application-fee confirmation | Parameterised unauthenticated payment-confirmation guard test using `APPLICATION_FEE_PAYMENT_CONFIRMATION_URL` |
+| Hearing-fee confirmation with unique ID | Parameterised unauthenticated payment-confirmation guard test using `HEARING_FEE_PAYMENT_CONFIRMATION_URL_WITH_UNIQUE_ID` |
+| Claim-issue-fee confirmation with unique ID | Parameterised unauthenticated payment-confirmation guard test using `CLAIM_FEE_PAYMENT_CONFIRMATION_URL_WITH_UNIQUE_ID` |
+| General-application-fee confirmation with unique ID | Parameterised unauthenticated payment-confirmation guard test using `APPLICATION_FEE_PAYMENT_CONFIRMATION_URL_WITH_UNIQUE_ID` |
+
+Each replacement verifies the HTTP redirect to `/login` and that payment-result content is not rendered. Adjacent focused tests preserve original-URL storage, the post-login return redirect, session cleanup, and error propagation. Contract sufficiency is not applicable: these guards make no payment-provider or Civil Service request and claim no provider integration behaviour.
+
 ## Current scenario inventory
 
 The authoritative scenario inventory is [functional-test-scenario-classification.csv](functional-test-scenario-classification.csv). The companion [assertion decision inventory](functional-test-assertion-classification.csv) separates hooks/setup, direct service checks and browser-visible steps so full-stack setup cannot be treated as retention evidence. Both are generated from executable Codecept declarations:
@@ -52,15 +67,15 @@ At classification time the executable suite contained:
 
 | Measure | Count | Percentage of active |
 | --- | ---: | ---: |
-| Declared scenarios | 198 | — |
+| Declared scenarios | 189 | — |
 | Skipped declarations | 23 | — |
-| Active scenarios classified | 174 | 100% |
-| Must migrate off full-stack | 166 | 95.4% |
-| Mocked functional migration obligation | 166 | 95.4% |
-| Candidate retained thin full-stack exception | 8 | 4.6% |
-| Material setup/assertion decisions | 1227 | — |
+| Active scenarios classified | 166 | 100% |
+| Must migrate off full-stack | 158 | 95.2% |
+| Mocked functional migration obligation | 158 | 95.2% |
+| Candidate retained thin full-stack exception | 8 | 4.8% |
+| Material setup/assertion decisions | 1207 | — |
 
-No active scenario may remain in the wider full-stack suite by default. All 166 migration rows retain their functional browser scope while replacing business downstream dependencies. `Pact` or equivalent provider verification protects important CUI/downstream compatibility but does not replace the functional browser journey.
+No active scenario may remain in the wider full-stack suite by default. All 158 migration rows retain their functional browser scope while replacing business downstream dependencies. `Pact` or equivalent provider verification protects important CUI/downstream compatibility but does not replace the functional browser journey.
 
 ### Proposed execution split
 
