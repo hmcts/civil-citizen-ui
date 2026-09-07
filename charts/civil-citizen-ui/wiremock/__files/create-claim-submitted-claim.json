@@ -2,10 +2,10 @@
   "id": "1111222233334444",
   "state": "PENDING_CASE_ISSUED",
   "last_modified": "2026-07-23T12:00:00.000Z",
-  "businessProcess": {
-    "status": "FINISHED"
-  },
   "case_data": {
+    "businessProcess": {
+      "status": "FINISHED"
+    },
     "legacyCaseReference": "000MC001",
     "respondent1ResponseDeadline": "2026-08-20T16:00:00.000Z",
     "totalClaimAmount": 9000,

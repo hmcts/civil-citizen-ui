@@ -215,7 +215,7 @@ if(e2eTestMode){
       return res.sendStatus(404);
     }
     const assignedClaim = JSON.parse(claim);
-    assignedClaim.case_data.caseRole = '[DEFENDANT]';
+    assignedClaim.caseRole = '[DEFENDANT]';
     await app.locals.draftStoreClient.set(`${claimId}${toUserId}`, JSON.stringify(assignedClaim));
     return res.sendStatus(204);
   });
