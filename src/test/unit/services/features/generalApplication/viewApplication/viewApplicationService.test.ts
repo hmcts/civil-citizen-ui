@@ -313,7 +313,7 @@ describe('View Application service', () => {
       expect(result[0].value.html).toContain('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.STATUS.AWAITING_JUDICIAL_DECISION');
     });
 
-    it('view application content test for applicant - Listed for hearing', async () => {
+    it('view application content test for applicant - List for hearing', async () => {
       const application = Object.assign(new ApplicationResponse(), mockApplication);
       application.state = ApplicationState.LISTING_FOR_A_HEARING;
       const claim = new Claim();
