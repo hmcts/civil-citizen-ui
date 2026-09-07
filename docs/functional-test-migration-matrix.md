@@ -39,18 +39,9 @@ The reduced-stack scenario starts with CUI's public testing-support draft action
 
 ## DTSCCI-6155: payment confirmation authentication guards
 
-The six unauthenticated payment-confirmation scenarios formerly in `payments/payment_auth_guard_tests.js` now run in the OIDC process-boundary suite at `src/test/unit/modules/oidc/index.test.ts`. They exercise the real Express application and OIDC middleware with in-process session and draft-store doubles, without a browser or deployed services.
+The six original browser scenarios remain in `payments/payment_auth_guard_tests.js` with their assertions unchanged. They are tagged for both their existing standard selection and reduced-stack selection, so the same URLs, redirects and negative content assertions execute in both dependency modes. The focused OIDC coverage is complementary and does not replace these functional scenarios.
 
-| Removed full-stack scenario | Focused replacement |
-| --- | --- |
-| Hearing-fee confirmation | Parameterised unauthenticated payment-confirmation guard test using `HEARING_FEE_PAYMENT_CONFIRMATION_URL` |
-| Claim-issue-fee confirmation | Parameterised unauthenticated payment-confirmation guard test using `CLAIM_FEE_PAYMENT_CONFIRMATION_URL` |
-| General-application-fee confirmation | Parameterised unauthenticated payment-confirmation guard test using `APPLICATION_FEE_PAYMENT_CONFIRMATION_URL` |
-| Hearing-fee confirmation with unique ID | Parameterised unauthenticated payment-confirmation guard test using `HEARING_FEE_PAYMENT_CONFIRMATION_URL_WITH_UNIQUE_ID` |
-| Claim-issue-fee confirmation with unique ID | Parameterised unauthenticated payment-confirmation guard test using `CLAIM_FEE_PAYMENT_CONFIRMATION_URL_WITH_UNIQUE_ID` |
-| General-application-fee confirmation with unique ID | Parameterised unauthenticated payment-confirmation guard test using `APPLICATION_FEE_PAYMENT_CONFIRMATION_URL_WITH_UNIQUE_ID` |
-
-Each replacement verifies the HTTP redirect to `/login` and that payment-result content is not rendered. Adjacent focused tests preserve original-URL storage, the post-login return redirect, session cleanup, and error propagation. Contract sufficiency is not applicable: these guards make no payment-provider or Civil Service request and claim no provider integration behaviour.
+These guards do not invoke a CUI-facing business downstream service, so the mocked and standard executions should be behaviourally identical. Any timing difference measures deployment/runtime overhead rather than a changed test workload.
 
 ## DTSCCI-6156: create-claim party variants
 
@@ -68,6 +59,10 @@ Only the downstream deployment and responses may vary between the paired executi
 
 The individual-versus-company flight-delay branch consumes `GET /airlines`. This low-risk read-only lookup is protected by focused client/controller coverage plus an exact-path WireMock mapping, a minimal deterministic fixture, a positive mapping check and an unmatched incorrect-path check. No provider workflow or state transition is claimed.
 
+## DTSCCI-6258: defendant response validation
+
+The original `part-admit/LRvLip_response_negativeScenarios_tests.js` browser scenarios are restored with their scenario bodies, setup, helper calls and assertions unchanged. The same source is selectable through `@ui-part-admit` for the standard dependency mode and `@reduced-stack` for the mocked dependency mode. The shorter consolidated mocked-only scenario has been removed because it did not provide workload or assertion parity.
+
 ## Current scenario inventory
 
 The authoritative scenario inventory is [functional-test-scenario-classification.csv](functional-test-scenario-classification.csv). The companion [assertion decision inventory](functional-test-assertion-classification.csv) separates hooks/setup, direct service checks and browser-visible steps so full-stack setup cannot be treated as retention evidence. Both are generated from executable Codecept declarations:
@@ -83,15 +78,15 @@ At classification time the executable suite contained:
 
 | Measure | Count | Percentage of active |
 | --- | ---: | ---: |
-| Declared scenarios | 189 | — |
+| Declared scenarios | 198 | — |
 | Skipped declarations | 23 | — |
-| Active scenarios classified | 166 | 100% |
-| Must migrate off full-stack | 158 | 95.2% |
-| Mocked functional migration obligation | 158 | 95.2% |
-| Candidate retained thin full-stack exception | 8 | 4.8% |
-| Material setup/assertion decisions | 1207 | — |
+| Active scenarios classified | 175 | 100% |
+| Must migrate off full-stack | 167 | 95.4% |
+| Mocked functional migration obligation | 167 | 95.4% |
+| Candidate retained thin full-stack exception | 8 | 4.6% |
+| Material setup/assertion decisions | 1235 | — |
 
-No active scenario may remain in the wider full-stack suite by default. All 158 migration rows retain the same functional scenario and assertions while replacing business downstream dependencies where possible. `Pact` or equivalent provider verification protects important CUI/downstream compatibility but does not replace the functional browser journey.
+No active scenario may remain in the wider full-stack suite by default. All 167 migration rows retain the same functional scenario and assertions while replacing business downstream dependencies where possible. `Pact` or equivalent provider verification protects important CUI/downstream compatibility but does not replace the functional browser journey.
 
 ### Proposed execution split
 
@@ -100,7 +95,7 @@ Primary target and execution frequency are separate decisions. A scenario may ge
 | Proposed execution decision | Scenarios | Purpose |
 | --- | ---: | --- |
 | Proposed thin full-stack exception | 8 | Representative cross-service assertions subject to DTSCCI-5974 review and thinning |
-| Migrate to mocked functional | 158 | All other active scenarios retain browser coverage with deterministic CUI-facing downstream test doubles |
+| Migrate to mocked functional | 167 | All other active scenarios retain browser coverage with deterministic CUI-facing downstream test doubles |
 | Unreviewed wider full-stack allowance | 0 | No scenario is retained merely because its domain or setup uses real services |
 
 The proposed thin set covers the minimum distinct real-service risks without retaining every variant:
@@ -130,7 +125,7 @@ The proposal selects one active scenario from each representative source, produc
 | 6 | DTSCCI-5974: thin full-stack | Finalise and thin the eight exception candidates; implement independent standard-pipeline trigger/reporting and evidence | CUI engineering, QA and delivery-lead approval |
 | 7 | DTSCCI-6134: default PR cutover | Make the approved mocked functional suite the ordinary PR route without AAT/shared downstream dependency | All migration and stability gates complete |
 
-Every one of the 158 remaining migration obligations must be implemented or have a specifically approved, dated exception. A whole domain cannot be exempted. Each batch updates both generated inventories and proves the same scenario and assertions in both dependency modes before duplicate full-stack PR execution is removed.
+Every one of the 167 remaining migration obligations must be implemented or have a specifically approved, dated exception. A whole domain cannot be exempted. Each batch updates both generated inventories and proves the same scenario and assertions in both dependency modes before duplicate full-stack PR execution is removed.
 
 ## Old-versus-new coverage comparison
 
