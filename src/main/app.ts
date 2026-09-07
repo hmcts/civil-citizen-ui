@@ -191,9 +191,20 @@ new HealthCheck().enableFor(app);
 
 app.use(SIGN_OUT_URL, deleteGAGuard);
 
-if(!e2eTestMode){
-  new OidcMiddleware().enableFor(app);
+if(e2eTestMode){
+  app.use((req, res, next) => {
+    const session = ((req.session) as AppSession);
+    const testUserId = req.cookies['e2e-user-id'];
+    if (testUserId) {
+      session.user = {accessToken: 'someAccessToken', idToken:'someIdToken', email: '', familyName: '', givenName: '', roles: [], id: testUserId};
+    } else {
+      session.user = undefined;
+    }
+    next();
+  });
 }
+
+new OidcMiddleware().enableFor(app);
 
 if(e2eTestMode){
   app.get(TEST_SUPPORT_TOGGLE_FLAG_ENDPOINT, async (req, res) => {
@@ -206,14 +217,6 @@ if(e2eTestMode){
     } catch (error) {
       res.status(500).json({ message: 'Error changing the flag', error });
     }
-  });
-
-  // Use your custom middleware to add the session information
-  app.use((req, res, next) => {
-    const session = ((req.session) as AppSession);
-    const testUserId = req.cookies['e2e-user-id'] || 'someID';
-    session.user = {accessToken: 'someAccessToken', idToken:'someIdToken', email: '', familyName: '', givenName: '', roles: [], id: testUserId};
-    next();
   });
 }
 app.use(STATEMENT_OF_MEANS_URL, statementOfMeansGuard);

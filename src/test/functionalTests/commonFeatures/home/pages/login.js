@@ -26,7 +26,7 @@ class LoginPage {
   async openReducedStackSession(username) {
     await I.clearCookie();
     const testUserId = crypto.createHash('sha256').update(username).digest('hex').slice(0, 24);
-    await I.setCookie({name: 'e2e-user-id', value: testUserId});
+    await I.setCookie({name: 'e2e-user-id', value: testUserId, url: process.env.TEST_URL});
     await I.amOnPage('/');
   }
 
