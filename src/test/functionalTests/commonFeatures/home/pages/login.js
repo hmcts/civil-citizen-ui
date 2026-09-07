@@ -22,6 +22,11 @@ const buttons = {
 };
 
 class LoginPage {
+  async openReducedStackSession() {
+    await I.clearCookie();
+    await I.amOnPage('/');
+  }
+
   async #signOutIfNeeded() {
     const isSignedIn = await I.grabNumberOfVisibleElements('a[href="/logout"]');
 
