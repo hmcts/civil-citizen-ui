@@ -3,6 +3,7 @@ import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
 import {
+  DASHBOARD_CLAIMANT_URL,
   GA_HEARING_SUPPORT_URL,
   GA_UNAVAILABILITY_CONFIRMATION_URL,
   GA_UNAVAILABLE_HEARING_DATES_URL,
@@ -14,6 +15,8 @@ import {getCaseDataFromStore } from 'modules/draft-store/draftStoreService';
 import {Claim} from 'models/claim';
 import {GeneralApplication} from 'models/generalApplication/GeneralApplication';
 import * as launchDarkly from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
+import {CaseRole} from 'form/models/caseRoles';
+import {Party} from 'models/party';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
@@ -47,6 +50,20 @@ describe('General Application - Unavailable hearing dates confirmation', () => {
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.GA_UNAVAILABLE_DATES_CONFIRMATION.TITLE'));
+        });
+    });
+
+    it('should redirect to the claimant dashboard when the general application draft is missing', async () => {
+      const claimWithoutGa = new Claim();
+      claimWithoutGa.caseRole = CaseRole.CLAIMANT;
+      claimWithoutGa.applicant1 = new Party();
+      mockGetCaseData.mockImplementation(async () => claimWithoutGa);
+
+      await request(app)
+        .get(GA_UNAVAILABILITY_CONFIRMATION_URL)
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.header.location).toEqual(DASHBOARD_CLAIMANT_URL);
         });
     });
 

@@ -12,6 +12,7 @@ import {Claim} from 'models/claim';
 import {
   getCancelUrl,
   getDynamicHeaderForMultipleApplications,
+  resolveApplicationIndex,
   saveIfPartyWantsToUploadDoc,
 } from 'services/features/generalApplication/generalApplicationService';
 import {getClaimById} from 'modules/utilityService';
@@ -19,7 +20,6 @@ import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {constructResponseUrlWithIdParams, constructUrlWithIndex} from 'common/utils/urlFormatter';
 import {YesNo} from 'form/models/yesNo';
 import {removeAllUploadedDocuments} from 'services/features/generalApplication/uploadEvidenceDocumentService';
-import {queryParamNumber} from 'common/utils/requestUtils';
 import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const wantToUploadDocumentsController = Router();
@@ -40,7 +40,7 @@ wantToUploadDocumentsController.get(GA_WANT_TO_UPLOAD_DOCUMENTS_URL, (async (req
   try {
     const claimId = getRouteParam(req, 'id');
     const claim = await getClaimById(claimId, req, true);
-    const index  = queryParamNumber(req, 'index') || claim.generalApplication.applicationTypes.length - 1;
+    const index  = resolveApplicationIndex(req, claim);
     const form = new GenericForm(new GenericYesNo(claim.generalApplication?.wantToUploadDocuments));
     await renderView(form, claim, claimId, res, index);
   } catch (error) {
@@ -53,7 +53,7 @@ wantToUploadDocumentsController.post(GA_WANT_TO_UPLOAD_DOCUMENTS_URL, (async (re
     const claimId = getRouteParam(req, 'id');
 
     const claim = await getClaimById(claimId, req, true);
-    const index  = queryParamNumber(req, 'index') || claim.generalApplication.applicationTypes.length - 1;
+    const index  = resolveApplicationIndex(req, claim);
     const redisKey = generateRedisKey(req);
     const form = new GenericForm(new GenericYesNo(req.body.option, 'ERRORS.GENERAL_APPLICATION.WANT_TO_UPLOAD_DOCUMENTS_YES_NO_SELECTION'));
     await form.validate();
