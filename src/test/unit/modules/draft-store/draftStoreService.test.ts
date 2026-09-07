@@ -85,7 +85,7 @@ describe('Draft store service to save and retrieve claim', () => {
     const spyGet = jest.spyOn(app.locals.draftStoreClient, 'get').mockResolvedValue(null);
     //When
     //Then
-    expect(getDraftClaimFromStore(CLAIM_ID)).rejects.toThrowError('Case not found...');
+    await expect(getDraftClaimFromStore(CLAIM_ID)).rejects.toThrowError('Case not found...');
     expect(spyGet).toBeCalled();
   });
   it('should return empty civil claim response when redis data is malformed', async () => {
@@ -154,7 +154,7 @@ describe('Draft store service to save and retrieve claim', () => {
     const spyGet = jest.spyOn(app.locals.draftStoreClient, 'get').mockResolvedValue(null);
     //When
     //Then
-    expect(getCaseDataFromStore(CLAIM_ID)).rejects.toThrowError('Case not found...');
+    await expect(getCaseDataFromStore(CLAIM_ID)).rejects.toThrowError('Case not found...');
     expect(spyGet).toBeCalled();
   });
   it('should delete the claim successfully', async () => {
