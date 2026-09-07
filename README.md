@@ -132,14 +132,14 @@ in `charts/civil-citizen-ui/wiremock/mappings` as the preview chart. Chromium mu
 `yarn playwright install chromium` once if needed. Logs are written to
 `${TMPDIR:-/tmp}/civil-citizen-ui-mocked-functional`.
 
-To exercise the PoC in the authoritative Jenkins pipeline, apply the `pr-values:reducedStack` label to the PR.
-The Jenkins library then applies `values.reducedStack.preview.template.yaml`, deploying real CUI and WireMock in
+To exercise the PoC in the authoritative Jenkins pipeline, apply the `pr-values:mockedTests` label to the PR.
+The Jenkins library then applies `values.mockedTests.preview.template.yaml`, deploying real CUI and WireMock in
 the PR namespace. The selected journey runs against the CUI preview ingress; Civil Service (including its CCD and
 Camunda dependencies), WA and preview service buses are disabled. CUI uses its existing `e2eTest` in-memory
 draft/session stores and test session user; this PoC does not build or extend an IDAM stub. Jenkins publishes the
 normal functional Allure artifacts plus WireMock unmatched-request and expected-request diagnostics.
 
-Remove `pr-values:reducedStack` to restore the standard preview path. Do not combine it with
+Remove `pr-values:mockedTests` to restore the standard preview path. Do not combine it with
 `pr-values:fullDeployment`.
 
 Running E2E tests:

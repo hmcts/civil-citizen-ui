@@ -4,6 +4,7 @@ import createDraftClaimController from 'routes/features/claim/createDraftClaim';
 import config from 'config';
 import nock from 'nock';
 import {
+  BILINGUAL_LANGUAGE_PREFERENCE_URL,
   CLAIM_CHECK_ANSWERS_URL,
   TESTING_SUPPORT_URL,
 } from 'routes/urls';
@@ -41,6 +42,25 @@ describe('createDraftClaim Router', () => {
   });
 
   describe('on POST', () => {
+    it('creates a deterministic defendant response draft', async () => {
+      const saveDraftClaim = jest.spyOn(draftStoreService, 'saveDraftClaim').mockResolvedValue();
+
+      await request(app)
+        .post(TESTING_SUPPORT_URL)
+        .send('draftType=response')
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.header.location).toBe(BILINGUAL_LANGUAGE_PREFERENCE_URL.replace(':id', '1111222233334444'));
+        });
+
+      expect(saveDraftClaim).toHaveBeenCalledWith(
+        '1111222233334444undefined',
+        expect.objectContaining({legacyCaseReference: '1111-2222-3333-4444', totalClaimAmount: 1000}),
+        true,
+        undefined,
+      );
+    });
+
     it('should redirect to check answers page', async () => {
       await request(app)
         .post(TESTING_SUPPORT_URL)
