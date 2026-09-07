@@ -1,0 +1,13 @@
+{
+  "name": "create-claim-airlines",
+  "priority": 10,
+  "request": {
+    "method": "GET",
+    "urlPath": "/airlines"
+  },
+  "response": {
+    "status": 200,
+    "headers": {"Content-Type": "application/json"},
+    "bodyFileName": "create-claim-airlines.json"
+  }
+}

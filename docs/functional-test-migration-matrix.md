@@ -52,6 +52,32 @@ The six unauthenticated payment-confirmation scenarios formerly in `payments/pay
 
 Each replacement verifies the HTTP redirect to `/login` and that payment-result content is not rendered. Adjacent focused tests preserve original-URL storage, the post-login return redirect, session cleanup, and error propagation. Contract sufficiency is not applicable: these guards make no payment-provider or Civil Service request and claim no provider integration behaviour.
 
+## DTSCCI-6156: create-claim party variants
+
+Five compound create-claim variants have moved from full-stack execution to the reduced-stack browser suite. Each replacement drives the real CUI party-type forms, task-list navigation, check-and-submit page and confirmation page, while the established deterministic Civil Service mappings return the submitted case identity.
+
+| Removed compound source | Reduced-stack replacement |
+| --- | --- |
+| `CompanyVsIndividual_tests.js` | Company creates and submits a claim against an individual |
+| `CompanyVsOrg__tests.js` | Company creates and submits a claim against an organisation |
+| `IndividualvsCompany_tests.js` | Individual creates and submits a claim against a company |
+| `OrgVsSoleTrader_tests.js` | Organisation creates and submits a claim against a sole trader |
+| `SoleTraderVsIndividual_tests.js` | Sole trader creates and submits a claim against an individual |
+
+| Source assertion or setup | New owner or decision |
+| --- | --- |
+| `createClaimDraftViaTestingSupport` in all five sources | Reduced-stack `createAndSubmitClaim` bootstrap |
+| `addCompanyClaimant`, `addOrgClaimant`, `addSoleTraderClaimant`, `addCompanyDefendant`, `addOrgDefendant`, `addSoleTraderDefendant` | Corresponding named reduced-stack party-variant scenario |
+| `checkAndSubmit` in all five sources | Corresponding named reduced-stack scenario, including task list, check answers, submission and confirmation/reference assertions |
+| Claim-fee notification and `verifyAndPayClaimFee` | Removed as variant duplication; real payment remains in the approved individual-versus-individual thin full-stack scenario |
+| `waitForFinishedBusinessProcess` and case retrieval | Setup/coordination removed; workflow completion remains in the approved thin full-stack representative |
+| `assignToLipDefendant` | Setup removed; real role assignment remains in the approved thin full-stack representative |
+| Claimant and defendant `askForMoreTimeCourtOrderGA` calls | Duplicated GA tails removed; real GA creation remains in the approved thin full-stack representative and dedicated GA exception |
+
+The five duplicated payment, workflow-completion, assignment and General Application tails are removed rather than simulated. Those genuine cross-service risks remain represented by the approved `create-claim/IndividualvsIndividual_tests.js` thin full-stack journey. The CUI/Civil Service submission boundary continues to be protected by `CivilServiceCreateClaim.test.ts`; party selection, details, summary rendering and CUI-to-CCD party translation have focused route/service tests for all four party types.
+
+The individual-versus-company flight-delay branch consumes `GET /airlines`. This low-risk read-only lookup is protected by focused client/controller coverage plus an exact-path WireMock mapping, a minimal deterministic fixture, a positive mapping check and an unmatched incorrect-path check. No provider workflow or state transition is claimed.
+
 ## Current scenario inventory
 
 The authoritative scenario inventory is [functional-test-scenario-classification.csv](functional-test-scenario-classification.csv). The companion [assertion decision inventory](functional-test-assertion-classification.csv) separates hooks/setup, direct service checks and browser-visible steps so full-stack setup cannot be treated as retention evidence. Both are generated from executable Codecept declarations:
@@ -67,15 +93,15 @@ At classification time the executable suite contained:
 
 | Measure | Count | Percentage of active |
 | --- | ---: | ---: |
-| Declared scenarios | 189 | — |
+| Declared scenarios | 184 | — |
 | Skipped declarations | 23 | — |
-| Active scenarios classified | 166 | 100% |
-| Must migrate off full-stack | 158 | 95.2% |
-| Mocked functional migration obligation | 158 | 95.2% |
-| Candidate retained thin full-stack exception | 8 | 4.8% |
-| Material setup/assertion decisions | 1207 | — |
+| Active scenarios classified | 161 | 100% |
+| Must migrate off full-stack | 153 | 95.0% |
+| Mocked functional migration obligation | 153 | 95.0% |
+| Candidate retained thin full-stack exception | 8 | 5.0% |
+| Material setup/assertion decisions | 1173 | — |
 
-No active scenario may remain in the wider full-stack suite by default. All 158 migration rows retain their functional browser scope while replacing business downstream dependencies. `Pact` or equivalent provider verification protects important CUI/downstream compatibility but does not replace the functional browser journey.
+No active scenario may remain in the wider full-stack suite by default. All 153 migration rows retain their functional browser scope while replacing business downstream dependencies. `Pact` or equivalent provider verification protects important CUI/downstream compatibility but does not replace the functional browser journey.
 
 ### Proposed execution split
 
@@ -84,7 +110,7 @@ Primary target and execution frequency are separate decisions. A scenario may ge
 | Proposed execution decision | Scenarios | Purpose |
 | --- | ---: | --- |
 | Proposed thin full-stack exception | 8 | Representative cross-service assertions subject to DTSCCI-5974 review and thinning |
-| Migrate to mocked functional | 166 | All other active scenarios retain browser coverage with deterministic CUI-facing downstream test doubles |
+| Migrate to mocked functional | 153 | All other active scenarios retain browser coverage with deterministic CUI-facing downstream test doubles |
 | Unreviewed wider full-stack allowance | 0 | No scenario is retained merely because its domain or setup uses real services |
 
 The proposed thin set covers the minimum distinct real-service risks without retaining every variant:
@@ -114,7 +140,7 @@ The proposal selects one active scenario from each representative source, produc
 | 6 | DTSCCI-5974: thin full-stack | Finalise and thin the eight exception candidates; implement independent standard-pipeline trigger/reporting and evidence | CUI engineering, QA and delivery-lead approval |
 | 7 | DTSCCI-6134: default PR cutover | Make the approved mocked functional suite the ordinary PR route without AAT/shared downstream dependency | All migration and stability gates complete |
 
-Every one of the 166 migration obligations must be implemented or have a specifically approved, dated exception. A whole domain cannot be exempted. Each batch updates both generated inventories and links replacement coverage before duplicate full-stack PR execution is removed.
+Every one of the 153 remaining migration obligations must be implemented or have a specifically approved, dated exception. A whole domain cannot be exempted. Each batch updates both generated inventories and links replacement coverage before duplicate full-stack PR execution is removed.
 
 ## Old-versus-new coverage comparison
 
@@ -164,11 +190,11 @@ This first migration batch requires a QA person. On the deployed preview, QA mus
 
 DTSCCI-6132 additionally requires QA-person approval of the complete classification. The QA person must:
 
-1. Reconcile the generated total with the executable suite and confirm all 174 active scenarios and 1227 material setup/assertion decisions are represented.
+1. Reconcile the generated total with the executable suite and confirm all 161 active scenarios and 1173 material setup/assertion decisions are represented.
 2. Sample every target category: setup-only, mocked functional browser and retained thin full-stack.
 3. Review each of the eight proposed thin full-stack exceptions and challenge every retained service-state assertion; confirm mocks/contracts cannot provide equivalent confidence.
 4. Sample every domain migration batch and confirm deterministic assertions are assigned away from full-stack even when the source journey uses real-service setup.
-5. Review the 166 `migrate-to-mocked-functional` rows and confirm each has an implementable batch/owner and preserves its meaningful CUI browser behaviour without real business-service dependencies.
+5. Review the 153 `migrate-to-mocked-functional` rows and confirm each has an implementable batch/owner and preserves its meaningful CUI browser behaviour without real business-service dependencies.
 6. Confirm the migration batches and ordering are usable by QA and engineering.
 7. Record samples reviewed, findings, required corrections and approval on DTSCCI-6132 and the pull request.
 
