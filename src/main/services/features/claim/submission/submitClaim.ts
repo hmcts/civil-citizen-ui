@@ -5,6 +5,7 @@ import {CivilServiceClient} from 'client/civilServiceClient';
 import {Claim} from 'common/models/claim';
 import {translateDraftClaimToCCDR2} from 'services/translation/claim/ccdTranslation';
 import {Email} from 'models/Email';
+import {CaseRole} from 'form/models/caseRoles';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('partialAdmissionService');
@@ -26,6 +27,7 @@ export const submitClaim = async (req: AppRequest): Promise<Claim> => {
     const submittedClaim = await civilServiceClient.submitDraftClaim(ccdClaim, req);
     if (process.env.NODE_ENV === 'e2eTest') {
       Object.assign(claim, submittedClaim);
+      claim.caseRole = CaseRole.CREATOR;
       await saveDraftClaim(`${submittedClaim.id}${user.id}`, claim, true, user.id);
       return claim;
     }

@@ -214,7 +214,9 @@ if(e2eTestMode){
     if (!claim) {
       return res.sendStatus(404);
     }
-    await app.locals.draftStoreClient.set(`${claimId}${toUserId}`, claim);
+    const assignedClaim = JSON.parse(claim);
+    assignedClaim.case_data.caseRole = '[DEFENDANT]';
+    await app.locals.draftStoreClient.set(`${claimId}${toUserId}`, JSON.stringify(assignedClaim));
     return res.sendStatus(204);
   });
 }
