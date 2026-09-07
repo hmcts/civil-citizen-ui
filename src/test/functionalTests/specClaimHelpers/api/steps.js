@@ -1,4 +1,5 @@
 const config = require('../../../config');
+const crypto = require('crypto');
 const deepEqualInAnyOrder = require('deep-equal-in-any-order');
 const breathingSpace = require('../fixtures/events/breathingSpace.js');
 const extendResponseDeadline = require('../fixtures/events/extendResponseDeadline.js');
@@ -1015,6 +1016,19 @@ module.exports = {
 
   assignToLipDefendant: async (caseId) => {
     if (isReducedStack()) {
+      const userId = email => crypto.createHash('sha256').update(email).digest('hex').slice(0, 24);
+      const response = await fetch(`${process.env.TEST_URL}/testing-support/assign-case`, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          claimId: reducedStackCaseId,
+          fromUserId: userId(config.claimantCitizenUser.email),
+          toUserId: userId(config.defendantCitizenUser.email),
+        }),
+      });
+      if (!response.ok) {
+        throw new Error(`Unable to assign reduced-stack case: ${response.status}`);
+      }
       return;
     }
     await assignCaseRoleToUser(caseId, 'DEFENDANT', config.defendantCitizenUser);

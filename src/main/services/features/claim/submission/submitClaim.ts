@@ -23,7 +23,13 @@ export const submitClaim = async (req: AppRequest): Promise<Claim> => {
       await saveDraftClaim(claimId, claim);
     }
     const ccdClaim = translateDraftClaimToCCDR2(claim, req);
-    return await civilServiceClient.submitDraftClaim(ccdClaim, req);
+    const submittedClaim = await civilServiceClient.submitDraftClaim(ccdClaim, req);
+    if (process.env.NODE_ENV === 'e2eTest') {
+      Object.assign(claim, submittedClaim);
+      await saveDraftClaim(`${submittedClaim.id}${user.id}`, claim, true, user.id);
+      return claim;
+    }
+    return submittedClaim;
   } catch (err) {
     logger.error(err);
     throw err;

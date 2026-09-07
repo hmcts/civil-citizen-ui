@@ -202,6 +202,21 @@ if(e2eTestMode){
     }
     next();
   });
+
+  app.post('/testing-support/assign-case', async (req, res) => {
+    const {claimId, fromUserId, toUserId} = req.body;
+    const validClaimId = /^\d{16}$/.test(claimId);
+    const validUserId = (value: string) => /^[0-9a-f]{24}$/.test(value);
+    if (!validClaimId || !validUserId(fromUserId) || !validUserId(toUserId)) {
+      return res.sendStatus(400);
+    }
+    const claim = await app.locals.draftStoreClient.get(`${claimId}${fromUserId}`);
+    if (!claim) {
+      return res.sendStatus(404);
+    }
+    await app.locals.draftStoreClient.set(`${claimId}${toUserId}`, claim);
+    return res.sendStatus(204);
+  });
 }
 
 new OidcMiddleware().enableFor(app);

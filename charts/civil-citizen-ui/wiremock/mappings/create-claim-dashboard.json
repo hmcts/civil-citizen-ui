@@ -1,19 +1,41 @@
 {
-  "name": "create-claim-dashboard-scenario",
-  "priority": 10,
-  "request": {
-    "method": "POST",
-    "urlPathPattern": "/dashboard/scenarios/Scenario\\.AAA6\\.ClaimIssue\\.ClaimSubmit\\.Required/[^/]+",
-    "headers": {
-      "Content-Type": {"contains": "application/json"}
+  "mappings": [
+    {
+      "name": "create-claim-dashboard-scenario",
+      "priority": 10,
+      "request": {
+        "method": "POST",
+        "urlPathPattern": "/dashboard/scenarios/Scenario\\.AAA6\\.ClaimIssue\\.ClaimSubmit\\.Required/[^/]+",
+        "headers": {"Content-Type": {"contains": "application/json"}},
+        "bodyPatterns": [
+          {"equalToJson": "{\"params\":{}}", "ignoreArrayOrder": true, "ignoreExtraElements": false}
+        ]
+      },
+      "response": {
+        "status": 200,
+        "headers": {"Content-Type": "application/json"},
+        "bodyFileName": "create-claim-dashboard-scenario.json"
+      }
     },
-    "bodyPatterns": [
-      {"equalToJson": "{\"params\":{}}", "ignoreArrayOrder": true, "ignoreExtraElements": false}
-    ]
-  },
-  "response": {
-    "status": 200,
-    "headers": {"Content-Type": "application/json"},
-    "bodyFileName": "create-claim-dashboard-scenario.json"
-  }
+    {
+      "name": "create-claim-claimant-dashboard",
+      "priority": 10,
+      "request": {"method": "GET", "urlPathPattern": "/cases/claimant/[0-9a-f]{24}"},
+      "response": {
+        "status": 200,
+        "headers": {"Content-Type": "application/json"},
+        "jsonBody": {"claims": [{"claimId": "1111222233334444", "claimNumber": "000MC001", "claimAmount": 9000, "claimantName": "Claimant", "defendantName": "Defendant", "status": "CLAIM_SUBMITTED_NOT_PAID_OR_FAILED"}], "totalPages": 1}
+      }
+    },
+    {
+      "name": "create-claim-defendant-dashboard",
+      "priority": 10,
+      "request": {"method": "GET", "urlPathPattern": "/cases/defendant/[0-9a-f]{24}"},
+      "response": {
+        "status": 200,
+        "headers": {"Content-Type": "application/json"},
+        "jsonBody": {"claims": [{"claimId": "1111222233334444", "claimNumber": "000MC001", "claimAmount": 9000, "claimantName": "Claimant", "defendantName": "Defendant", "status": "NO_RESPONSE"}], "totalPages": 1}
+      }
+    }
+  ]
 }
