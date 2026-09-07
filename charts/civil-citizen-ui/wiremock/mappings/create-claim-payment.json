@@ -1,0 +1,40 @@
+{
+  "mappings": [
+    {
+      "name": "create-claim-payment-session",
+      "priority": 10,
+      "request": {
+        "method": "POST",
+        "urlPath": "/fees/CLAIMISSUED/case/1111222233334444/payment"
+      },
+      "response": {
+        "status": 200,
+        "headers": {"Content-Type": "application/json"},
+        "jsonBody": {
+          "externalReference": "MOCK-CLAIM-FEE",
+          "paymentReference": "RC-MOCK-CLAIM-FEE",
+          "status": "Initiated",
+          "nextUrl": "/testing-support/mock-payment/1111222233334444",
+          "dateCreated": "2026-07-23T12:00:00.000Z"
+        }
+      }
+    },
+    {
+      "name": "create-claim-payment-status",
+      "priority": 10,
+      "request": {
+        "method": "GET",
+        "urlPath": "/fees/CLAIMISSUED/case/1111222233334444/payment/RC-MOCK-CLAIM-FEE/status"
+      },
+      "response": {
+        "status": 200,
+        "headers": {"Content-Type": "application/json"},
+        "jsonBody": {
+          "externalReference": "MOCK-CLAIM-FEE",
+          "paymentReference": "RC-MOCK-CLAIM-FEE",
+          "status": "Initiated"
+        }
+      }
+    }
+  ]
+}

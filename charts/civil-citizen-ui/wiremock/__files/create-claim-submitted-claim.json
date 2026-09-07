@@ -6,6 +6,11 @@
     "businessProcess": {
       "status": "FINISHED"
     },
+    "claimDetails": {
+      "claimFeePayment": {
+        "paymentReference": "RC-MOCK-CLAIM-FEE"
+      }
+    },
     "legacyCaseReference": "000MC001",
     "respondent1ResponseDeadline": "2026-08-20T16:00:00.000Z",
     "totalClaimAmount": 9000,

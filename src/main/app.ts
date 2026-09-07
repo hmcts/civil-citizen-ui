@@ -219,6 +219,39 @@ if(e2eTestMode){
     await app.locals.draftStoreClient.set(`${claimId}${toUserId}`, JSON.stringify(assignedClaim));
     return res.sendStatus(204);
   });
+
+  app.get('/testing-support/mock-payment/:claimId', (req, res) => {
+    res.send(`<!doctype html><html><body>
+      <h1>Enter card details</h1><h2>Payment summary</h2>
+      <p>card payment</p><p>Total amount:</p><p>£115.00</p>
+      <form method="post">
+        <input id="card-no" name="card-no">
+        <input id="expiry-month" name="expiry-month">
+        <input id="expiry-year" name="expiry-year">
+        <input id="cardholder-name" name="cardholder-name">
+        <input id="cvc" name="cvc">
+        <input id="address-line-1" name="address-line-1" autocomplete="billing address-line1">
+        <input id="address-city" name="address-city">
+        <input id="address-postcode" name="address-postcode">
+        <input id="email" name="email">
+        <button type="submit">Continue</button>
+      </form>
+    </body></html>`);
+  });
+
+  app.post('/testing-support/mock-payment/:claimId', (req, res) => {
+    res.send(`<!doctype html><html><body>
+      <h1>Confirm your payment</h1><h2>Payment summary</h2>
+      <p>card payment</p><p>Total amount:</p><p>£115.00</p>
+      <form method="post" action="/testing-support/mock-payment/${req.params.claimId}/confirm">
+        <button id="confirm" type="submit">Confirm payment</button>
+      </form>
+    </body></html>`);
+  });
+
+  app.post('/testing-support/mock-payment/:claimId/confirm', (req, res) => {
+    res.redirect(`/case/${req.params.claimId}/payment-successful`);
+  });
 }
 
 new OidcMiddleware().enableFor(app);
