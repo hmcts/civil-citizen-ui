@@ -196,7 +196,7 @@ if(e2eTestMode){
     const session = ((req.session) as AppSession);
     const testUserId = req.cookies['e2e-user-id'];
     if (testUserId) {
-      session.user = {accessToken: 'someAccessToken', idToken:'someIdToken', email: '', familyName: '', givenName: '', roles: [], id: testUserId};
+      session.user = {accessToken: 'someAccessToken', idToken:'someIdToken', email: '', familyName: '', givenName: '', roles: ['citizen'], id: testUserId};
     } else {
       session.user = undefined;
     }
