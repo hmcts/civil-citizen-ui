@@ -21,7 +21,7 @@
     "respondent1ResponseDeadline": "2026-10-05T16:00:00.000Z",
     "totalClaimAmount": 9000,
     "claimFee": {"calculatedAmountInPence": "45500", "code": "FEE0208", "version": "3"},
-    "applicant1": {"type": "COMPANY", "partyDetails": {"partyName": "Test Inc"}},
+    "applicant1": {"type": "COMPANY", "companyName": "Test Inc"},
     "respondent1": {"type":"INDIVIDUAL","individualTitle":"Mr","individualFirstName":"John","individualLastName":"Smith"}
   }
 }
