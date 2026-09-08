@@ -67,7 +67,7 @@ export const getClaimById = async (claimId: RouteParam, req: Request, useRedisKe
 /**
  * Loads claim for dashboard: cache-aware read via getClaimById, then syncs latest civil-service
  * state (request-scoped memoisation avoids duplicate calls when cache was cold). Preserves
- * in-progress claimantResponse from Redis without deleting the draft entry first.
+ * in-progress claimantResponse and generalApplication from Redis without deleting the draft entry first.
  */
 export const getDashboardClaimById = async (claimId: RouteParam, req: Request, useRedisKey = false): Promise<Claim> => {
   const normalizedClaimId = normalizeRouteParam(claimId);
@@ -81,6 +81,7 @@ export const getDashboardClaimById = async (claimId: RouteParam, req: Request, u
   }
 
   latestClaim.claimantResponse = cachedClaim.claimantResponse ?? latestClaim.claimantResponse;
+  latestClaim.generalApplication = cachedClaim.generalApplication ?? latestClaim.generalApplication;
   await saveDraftClaim(redisKey, latestClaim, true, userId, TTLCategory.JOURNEY_CACHE);
   syncCaseReference(req, latestClaim);
   return latestClaim;
@@ -95,6 +96,7 @@ export const refreshDraftStoreClaimFrom = async (req: Request, useRedisKey = fal
   if (claim) {
     logger.info(`Refreshing claim from draft store: userId: ${userId} redisKey: ${redisKey} claimId: ${claimId}`);
     claim.claimantResponse = oldClaim?.case_data?.claimantResponse;
+    claim.generalApplication = oldClaim?.case_data?.generalApplication;
     logger.info(`Setting claimant response: userId: ${userId} redisKey: ${redisKey}`);
     await deleteDraftClaimFromStore(redisKey);
     await saveDraftClaim(redisKey, claim, true, userId, TTLCategory.JOURNEY_CACHE);
