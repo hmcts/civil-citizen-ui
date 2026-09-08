@@ -424,7 +424,7 @@ describe('Claim - Check answers', () => {
         });
 
       expect(mockSubmitClaim).toHaveBeenCalled();
-      expect(mockDeleteDraftClaim).toHaveBeenCalled();
+      expect(mockDeleteDraftClaim).toHaveBeenCalledWith(expect.anything(), '12345');
       expect(spyClearcookie).toBeCalledWith('eligibilityCompleted');
       expect(spyClearcookie).toBeCalledWith('eligibility');
     });
@@ -480,7 +480,7 @@ describe('Claim - Check answers', () => {
         });
 
       expect(mockSubmitClaim).toHaveBeenCalled();
-      expect(mockDeleteDraftClaim).toHaveBeenCalled();
+      expect(mockDeleteDraftClaim).toHaveBeenCalledWith(expect.anything(), '12345');
       expect(spyClearcookie).toBeCalledWith('eligibilityCompleted');
       expect(spyClearcookie).toBeCalledWith('eligibility');
     });
