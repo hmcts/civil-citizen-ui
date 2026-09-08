@@ -444,6 +444,22 @@ module.exports = {
     if (isReducedStack()) {
       caseId = reducedStackCaseId;
       caseData = {...reducedStackCaseData};
+      const userId = email => crypto.createHash('sha256').update(email).digest('hex').slice(0, 24);
+      const response = await fetch(`${process.env.TEST_URL}/testing-support/reset-case`, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          claimId: caseId,
+          userIds: [
+            userId(config.claimantCitizenUser.email),
+            userId(config.defendantCitizenUser.email),
+            'e2e-defendant-user',
+          ],
+        }),
+      });
+      if (!response.ok) {
+        throw new Error(`Unable to reset reduced-stack case: ${response.status}`);
+      }
       return caseId;
     }
 

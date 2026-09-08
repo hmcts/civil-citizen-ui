@@ -257,6 +257,23 @@ if(e2eTestMode){
     return res.sendStatus(204);
   });
 
+  app.post('/testing-support/reset-case', async (req, res) => {
+    const {claimId, userIds = []} = req.body;
+    const validClaimId = /^\d{16}$/.test(claimId);
+    const validUserIds = Array.isArray(userIds) && userIds.every((userId: string) => /^[0-9a-z-]{1,64}$/.test(userId));
+    if (!validClaimId || !validUserIds) {
+      return res.sendStatus(400);
+    }
+    await Promise.all([
+      app.locals.draftStoreClient.del(claimId),
+      ...userIds.flatMap((userId: string) => [
+        app.locals.draftStoreClient.del(userId),
+        app.locals.draftStoreClient.del(`${claimId}${userId}`),
+      ]),
+    ]);
+    return res.sendStatus(204);
+  });
+
   app.get('/testing-support/mock-payment/:claimId', (req, res) => {
     const amount = req.query.amount ?? '115.00';
     res.send(`<!doctype html><html><body>
