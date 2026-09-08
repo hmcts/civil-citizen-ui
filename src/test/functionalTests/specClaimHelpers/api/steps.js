@@ -1037,7 +1037,7 @@ module.exports = {
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({
-          claimId: reducedStackCaseId,
+          claimId: caseId,
           fromUserId: userId(config.claimantCitizenUser.email),
           toUserId: userId(config.defendantCitizenUser.email),
         }),
