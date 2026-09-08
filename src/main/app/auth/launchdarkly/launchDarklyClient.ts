@@ -30,11 +30,10 @@ async function getClient(): Promise<void> {
       testData = new TestData();
       await testData.update(testData.flag(SHUTTER_CUI_SERVICE).booleanFlag().variationForAll(false));
       await testData.update(testData.flag(SHUTTER_PCQ).booleanFlag().variationForAll(false));
-      await testData.update(testData.flag(GA_FOR_LIPS).booleanFlag().variationForAll(false));
+      await testData.update(testData.flag(GA_FOR_LIPS).booleanFlag().variationForAll(true));
       await testData.update(testData.flag(IS_DASHBOARD_ENABLED_FOR_CASE).booleanFlag().variationForAll(false));
       await testData.update(testData.flag(CARM_ENABLED_FOR_CASE).booleanFlag().variationForAll(false));
       await testData.update(testData.flag(MULTI_OR_INTERMEDIATE_TRACK).booleanFlag().variationForAll(false));
-      await testData.update(testData.flag(GA_FOR_LIPS).booleanFlag().variationForAll(false));
       await testData.update(testData.flag(EA_COURT_FOR_GA_LIPS).booleanFlag().variationForAll(false));
       await testData.update(testData.flag(QUERY_MANAGEMENT).booleanFlag().variationForAll(false));
       await testData.update(testData.flag(CUI_GA_NRO).booleanFlag().variationForAll(false));
