@@ -6,19 +6,22 @@ set -euo pipefail
 
 readonly output_dir='test-results/functional/wiremock'
 mkdir -p "${output_dir}"
+readonly raw_dir="$(mktemp -d "${TMPDIR:-/tmp}/cui-wiremock-verification.XXXXXX")"
+trap 'rm -rf "${raw_dir}"' EXIT
 
 curl --fail --silent --show-error \
   "${WIREMOCK_URL}/__admin/requests" \
-  > "${output_dir}/all-requests.json"
+  > "${raw_dir}/all-requests.json"
 
 curl --fail --silent --show-error \
   "${WIREMOCK_URL}/__admin/requests/unmatched" \
-  > "${output_dir}/unmatched-requests.json"
+  > "${raw_dir}/unmatched-requests.json"
 
-unmatched_count=$(jq '.requests | length' "${output_dir}/unmatched-requests.json")
+unmatched_count=$(jq '.requests | length' "${raw_dir}/unmatched-requests.json")
 if [ "${unmatched_count}" -ne 0 ]; then
   echo "WireMock received ${unmatched_count} unmatched request(s)." >&2
-  jq '[.requests[] | {method: .request.method, url: .request.url}]' \
+  node src/test/functionalTests/diagnostics/collectWiremockDiagnostics.js
+  jq '[((.body.requests // .requests)[]) | {method: (.method // .request.method), url: (.url // .request.url)}]' \
     "${output_dir}/unmatched-requests.json" >&2
   exit 1
 fi

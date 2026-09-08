@@ -57,7 +57,14 @@
                 </td>
                 <td class="govuk-table__cell">-</td>
                 <td class="govuk-table__cell">-</td>
-                <td class="govuk-table__cell">-</td>
+                {% set draftClaimDeletionDate = claimDraftSaved.getDraftClaimDeletionDate(lang) %}
+                <td class="govuk-table__cell">
+                  {% if draftClaimDeletionDate %}
+                    {{ t('PAGES.DASHBOARD.DRAFT_CLAIM_STATUS', {date: draftClaimDeletionDate}) }}
+                  {% else %}
+                    -
+                  {% endif %}
+                </td>
               </tr>
             {% endif %}
             {% for item in claimsAsClaimant %}

@@ -12,7 +12,7 @@
   {{ setPageTitle(t, 'PAGES.REJECT_ALL_CLAIM.PAGE_TITLE') }}
 {% endblock %}
 
-{% set heading = t('PAGES.REJECT_ALL_CLAIM.TITLE', { claimantName: claimantName }) %}
+{% set heading = t('PAGES.REJECT_ALL_CLAIM.TITLE', { claimantName: claimantName }) | safe %}
 
 {% block content %}
 
@@ -28,7 +28,7 @@
       {% endif %}
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-          <h1 class="govuk-heading-l">{{ t(heading) }}</h1>
+          <h1 class="govuk-heading-l">{{ heading }}</h1>
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
             <div class="govuk-form-group {% if optionError %} govuk-form-group--error {% endif %}">
@@ -37,7 +37,7 @@
               name: "option",
                 fieldset: {
                   legend: {
-                    text: t('PAGES.REJECT_ALL_CLAIM.TITLE', { claimantName: claimantName }),
+                    text: heading,
                     classes: "govuk-fieldset__legend--m",
                     isPageHeading: false
                   }

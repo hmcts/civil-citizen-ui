@@ -1,6 +1,8 @@
 {
   "mappings": [
     {
+      "name": "health",
+      "priority": 10,
       "request": {
         "method": "GET",
         "urlPath": "/health"
@@ -16,6 +18,8 @@
       }
     },
     {
+      "name": "health-liveness",
+      "priority": 10,
       "request": {
         "method": "GET",
         "urlPath": "/health/liveness"
@@ -31,6 +35,8 @@
       }
     },
     {
+      "name": "health-readiness",
+      "priority": 10,
       "request": {
         "method": "GET",
         "urlPath": "/health/readiness"

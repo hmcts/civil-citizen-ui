@@ -1,0 +1,11 @@
+{
+  "name": "create-claim-submit",
+  "priority": 10,
+  "request": {
+    "method": "POST",
+    "urlPathPattern": "/cases/draft/citizen/[^/]+/event",
+    "headers": {"Content-Type": {"contains": "application/json"}},
+    "bodyPatterns": [{"matchesJsonPath": "$[?(@.event == 'CREATE_LIP_CLAIM')]"}]
+  },
+  "response": {"status": 200, "headers": {"Content-Type": "application/json"}, "bodyFileName": "create-claim-submitted-claim.json"}
+}

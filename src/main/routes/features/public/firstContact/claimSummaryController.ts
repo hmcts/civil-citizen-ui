@@ -16,8 +16,7 @@ import {getLng} from 'common/utils/languageToggleUtils';
 import {getClaimTimeline} from 'services/features/common/claimTimelineService';
 import { AppRequest } from 'common/models/AppRequest';
 import { getFirstContactData } from 'services/firstcontact/firstcontactService';
-
-const CryptoJS = require('crypto-js');
+import {decryptSessionValue} from 'services/firstcontact/sessionValueCrypto';
 
 const firstContactClaimSummaryController = Router();
 
@@ -36,11 +35,10 @@ firstContactClaimSummaryController.get(FIRST_CONTACT_CLAIM_SUMMARY_URL,
         return res.redirect(FIRST_CONTACT_ACCESS_DENIED_URL);
       }
 
-      const bytes = CryptoJS.AES.decrypt(firstContact?.pin, claim.respondent1PinToPostLRspec?.accessCode);
-      const originalText = bytes.toString(CryptoJS.enc.Utf8);
+      const originalText = decryptSessionValue(firstContact.pin, claim.respondent1PinToPostLRspec.accessCode);
       if (claimId && originalText === YesNo.YES) {
-        const interestData = await getInterestDetails(claim);
-        const totalAmount = await getTotalAmountWithInterestAndFeesAndFixedCost(claim);
+        const interestData = await getInterestDetails(claim, req);
+        const totalAmount = await getTotalAmountWithInterestAndFeesAndFixedCost(claim, req);
         const timelineRows = getClaimTimeline(claim, getLng(lang));
         const fixedCost = await getFixedCost(claim);
         const timelinePdfUrl = claim.extractDocumentId() && CASE_TIMELINE_DOCUMENTS_URL.replace(':id', claimId).replace(':documentId', claim.extractDocumentId());

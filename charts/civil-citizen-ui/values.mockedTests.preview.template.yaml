@@ -1,4 +1,4 @@
-# Applied by the Jenkins library when a PR has the `pr-values:reducedStack`
+# Applied by the Jenkins library when a PR has the `pr-values:mockedTests`
 # label. The standard preview and `pr-values:fullDeployment` paths are not
 # changed by this file.
 
@@ -37,6 +37,11 @@ wiremock:
     - name: wiremock-mappings
       configMap:
         name: ${SERVICE_NAME}-wiremock-mappings
+    - name: wiremock-files
+      configMap:
+        name: ${SERVICE_NAME}-wiremock-files
   volumeMounts:
     - name: wiremock-mappings
       mountPath: /home/wiremock/mappings
+    - name: wiremock-files
+      mountPath: /home/wiremock/__files

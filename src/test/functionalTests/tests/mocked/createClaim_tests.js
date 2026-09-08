@@ -1,6 +1,6 @@
 const steps = require('../../citizenFeatures/createClaim/steps/createLipvLipClaimSteps');
 
-Feature('WireMock-backed create claim').tag('@mocked-functional');
+Feature('Reduced-stack | Create claim').tag('@reduced-stack @reduced-stack-create-claim @mocked-functional');
 
 Scenario('Individual creates and submits a claim without the full Civil stack', async ({I}) => {
   await I.amOnPage('/testing-support/create-draft-claim');
@@ -15,4 +15,4 @@ Scenario('Individual creates and submits a claim without the full Civil stack', 
   if (!caseReference.includes('1111-2222-3333-4444')) {
     throw new Error(`Expected mocked claim reference 1111-2222-3333-4444, received ${caseReference}`);
   }
-}).tag('@mocked-functional');
+}).tag('@reduced-stack @reduced-stack-create-claim @mocked-functional');
