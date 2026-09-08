@@ -58,6 +58,7 @@
           "titleCy": "You need to pay your claim fee",
           "descriptionEn": "Your claim has not yet been issued, in order to proceed you must pay the claim fee of £455. <a href=\"/claim/1111222233334444/fee\">Pay the claim fee</a>.",
           "descriptionCy": "Your claim has not yet been issued, in order to proceed you must pay the claim fee of £455. <a href=\"/claim/1111222233334444/fee\">Pay the claim fee</a>.",
+          "createdAt": "2026-07-23T12:00:00.000Z",
           "timeToLive": "",
           "params": {}
         }]
@@ -78,6 +79,7 @@
           "titleCy": "You need to pay your claim fee",
           "descriptionEn": "Your claim has not yet been issued, in order to proceed you must pay the claim fee of £455. <a href=\"/claim/1111222233334444/fee\">Pay the claim fee</a>.",
           "descriptionCy": "Your claim has not yet been issued, in order to proceed you must pay the claim fee of £455. <a href=\"/claim/1111222233334444/fee\">Pay the claim fee</a>.",
+          "createdAt": "2026-07-23T12:00:00.000Z",
           "timeToLive": "",
           "params": {}
         }, {
@@ -86,6 +88,7 @@
           "titleCy": "Wait for defendant to respond",
           "descriptionEn": "The defendant has until 5 October 2026 to respond. They can request an extra 14 days.",
           "descriptionCy": "The defendant has until 5 October 2026 to respond. They can request an extra 14 days.",
+          "createdAt": "2026-07-23T12:01:00.000Z",
           "timeToLive": "",
           "params": {}
         }]
