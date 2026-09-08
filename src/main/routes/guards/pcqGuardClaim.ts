@@ -36,7 +36,9 @@ export const isFirstTimeInPCQ = async (req: AppRequest, res: Response, next: Nex
 
     if (isHealthy && isEligible) {
       const pcqId = generatePcqId();
-      await savePcqIdClaim(pcqId, userId);
+      await savePcqIdClaim(pcqId, req);
+      caseData.pcqId = pcqId;
+      stashClaimOnRequest(req, caseData);
 
       const pcqUrl = generatePcqUrl(
         pcqId,
