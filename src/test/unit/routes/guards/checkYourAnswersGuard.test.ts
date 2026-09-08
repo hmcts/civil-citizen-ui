@@ -194,15 +194,14 @@ describe('checkYourAnswersClaimGuard', () => {
     expect(mockRequest.locals.claim).toEqual(expect.objectContaining({id: CLAIM_ID}));
   });
 
-  it('should throw when no draft exists', async () => {
+  it('should redirect to eligibility when no draft exists', async () => {
     const mockRequest = MOCK_REQUEST();
     mockGetDraftClaim.mockResolvedValue(null);
 
     await checkYourAnswersClaimGuard(mockRequest, MOCK_RESPONSE, MOCK_NEXT);
 
-    expect(MOCK_NEXT).toHaveBeenCalledWith(expect.objectContaining({
-      message: '[checkYourAnswersGuard] no draft claim found',
-    }));
+    expect(MOCK_RESPONSE.redirect).toHaveBeenCalledWith(BASE_ELIGIBILITY_URL);
+    expect(MOCK_NEXT).not.toHaveBeenCalled();
   });
 
   it('should copy createdAt onto the claim when missing', async () => {
