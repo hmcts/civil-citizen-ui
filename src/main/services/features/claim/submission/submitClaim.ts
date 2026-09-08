@@ -26,7 +26,11 @@ export const submitClaim = async (req: AppRequest): Promise<Claim> => {
     const ccdClaim = translateDraftClaimToCCDR2(claim, req);
     const submittedClaim = await civilServiceClient.submitDraftClaim(ccdClaim, req);
     if (process.env.NODE_ENV === 'e2eTest') {
+      const applicant1 = claim.applicant1;
+      const respondent1 = claim.respondent1;
       Object.assign(claim, submittedClaim);
+      claim.applicant1 = applicant1;
+      claim.respondent1 = respondent1;
       claim.caseRole = CaseRole.CREATOR;
       await saveDraftClaim(`${submittedClaim.id}${user.id}`, claim, true, user.id);
       return claim;

@@ -218,7 +218,19 @@ if(e2eTestMode){
   });
 
   app.use('/dashboard/:claimId/defendant', async (req, _res, next) => {
-    const userId = (req.session as AppSession).user?.id;
+    const session = req.session as AppSession;
+    if (!session.user) {
+      session.user = {
+        accessToken: 'someAccessToken',
+        idToken: 'someIdToken',
+        email: '',
+        familyName: '',
+        givenName: '',
+        roles: ['citizen'],
+        id: 'e2e-defendant-user',
+      };
+    }
+    const userId = session.user.id;
     if (userId) {
       await storeUserCaseRolesInSession(req as unknown as AppRequest, req.params.claimId, CaseRole.DEFENDANT);
       await updateCachedE2EClaim(req.params.claimId, userId, claim => {

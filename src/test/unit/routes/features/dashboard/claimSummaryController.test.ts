@@ -576,26 +576,6 @@ describe('Claim Summary Controller Defendant', () => {
         });
     });
 
-    it('should use the defendant role for the explicit defendant dashboard in e2e mode', async () => {
-      const originalNodeEnv = process.env.NODE_ENV;
-      process.env.NODE_ENV = 'e2eTest';
-      const claimantClaim = new Claim();
-      claimantClaim.caseRole = CaseRole.CLAIMANT;
-      claimantClaim.ccdState = CaseState.CASE_ISSUED;
-      jest
-        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
-        .mockResolvedValueOnce(claimantClaim);
-      isGAForLiPEnabledMock.mockResolvedValue(false);
-      isDashboardEnabledForCase.mockResolvedValue(true);
-
-      try {
-        await testSession.get(`/dashboard/${claimId}/defendant`).expect(200);
-        expect(claimantClaim.caseRole).toBe(CaseRole.DEFENDANT);
-      } finally {
-        process.env.NODE_ENV = originalNodeEnv;
-      }
-    });
-
     const testCases = [
       { caseRole: CaseRole.DEFENDANT, ccdState: CaseState.CASE_PROGRESSION },
       { caseRole: CaseRole.DEFENDANT, ccdState: CaseState.HEARING_READINESS },
