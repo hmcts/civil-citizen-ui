@@ -8,9 +8,9 @@ import {
   CLAIM_DEFENDANT_SOLE_TRADER_DETAILS_URL,
 } from '../../../urls';
 import {
-  getDefendantInformation,
-  saveDefendantProperty,
-} from '../../../../services/features/common/defendantDetailsService';
+  getDefendantInformationFromDraft,
+  saveDefendantPropertyToDraft,
+} from 'services/features/common/defendantDetailsService';
 import {GenericForm} from '../../../../common/form/models/genericForm';
 import {PartyType} from '../../../../common/models/partyType';
 import {PartyDetails} from '../../../../common/form/models/partyDetails';
@@ -36,8 +36,7 @@ function renderView(res: Response, form: GenericForm<PartyDetails>, defendantTyp
 
 defendantDetailsController.get(detailsURLs, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const userId = req.session?.user?.id;
-    const defendantDetails = await getDefendantInformation(userId);
+    const defendantDetails = await getDefendantInformationFromDraft(req);
     const partyDetails = new GenericForm<PartyDetails>(defendantDetails.partyDetails);
 
     renderView(res, partyDetails, defendantDetails.type);
@@ -47,17 +46,17 @@ defendantDetailsController.get(detailsURLs, (async (req: AppRequest, res: Respon
 }) as RequestHandler);
 
 defendantDetailsController.post(detailsURLs, (async (req: AppRequest | Request, res: Response, next: NextFunction) => {
-  const userId = (<AppRequest>req).session?.user?.id;
+  const appReq = req as AppRequest;
 
   try {
-    const defendant: Party = await getDefendantInformation(userId);
+    const defendant: Party = await getDefendantInformationFromDraft(appReq);
     const partyDetails = new GenericForm(new PartyDetails(req.body));
     await partyDetails.validate();
 
     if (partyDetails.hasErrors()) {
       renderView(res, partyDetails, defendant.type);
     } else {
-      await saveDefendantProperty(userId, 'partyDetails', partyDetails.model);
+      await saveDefendantPropertyToDraft(appReq, 'partyDetails', partyDetails.model);
       res.redirect(CLAIM_DEFENDANT_EMAIL_URL);
     }
   } catch (error) {
