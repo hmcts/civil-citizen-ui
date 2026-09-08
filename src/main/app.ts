@@ -264,6 +264,7 @@ if(e2eTestMode){
     const amount = req.query.amount ?? '115.00';
     res.send(`<!doctype html><html><body>
       <h1>Enter card details</h1><h2>Payment summary</h2>
+      <p>We’ll send your payment confirmation here</p>
       <p>card payment</p><p>Total amount:</p><p>£${amount}</p>
       <form method="post">
         <input id="card-no" name="card-no">
