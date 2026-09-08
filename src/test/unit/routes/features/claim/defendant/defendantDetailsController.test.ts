@@ -2,8 +2,8 @@ import {Request, Response, NextFunction} from 'express';
 import defendantDetailsController from '../../../../../../main/routes/features/claim/defendant/defendantDetailsController';
 
 import {
-  getDefendantInformation,
-  saveDefendantProperty,
+  getDefendantInformationFromDraft,
+  saveDefendantPropertyToDraft,
 } from '../../../../../../main/services/features/common/defendantDetailsService';
 
 import {PartyType} from '../../../../../../main/common/models/partyType';
@@ -19,8 +19,8 @@ jest.mock(
 );
 
 describe('defendantDetailsController', () => {
-  const mockGetDefendantInformation = getDefendantInformation as jest.Mock;
-  const mockSaveDefendantProperty = saveDefendantProperty as jest.Mock;
+  const mockGetDefendantInformation = getDefendantInformationFromDraft as jest.Mock;
+  const mockSaveDefendantProperty = saveDefendantPropertyToDraft as jest.Mock;
   const MockedGenericForm = GenericForm as jest.Mock;
 
   let req: Partial<Request>;
@@ -149,7 +149,7 @@ describe('defendantDetailsController', () => {
       await postHandler(req as Request, res as Response, next);
 
       expect(mockSaveDefendantProperty).toHaveBeenCalledWith(
-        'userId',
+        req,
         'partyDetails',
         {name: 'Test Ltd'},
       );
