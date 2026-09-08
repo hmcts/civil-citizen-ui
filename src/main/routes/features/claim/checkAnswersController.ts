@@ -101,7 +101,7 @@ claimCheckAnswersController.post(CLAIM_CHECK_ANSWERS_URL, async (req: AppRequest
     if (claim.respondent1?.partyPhone?.phone) {
       form.errors = validateFields(new GenericForm(new PhoneValidationWithMessage(claim.respondent1.partyPhone.phone, 'ERRORS.ENTER_VALID_CONTACT_DEFENDANT')), form.errors);
     }
-    const interestToDate = await calculateInterestToDate(claim);
+    const interestToDate = await calculateInterestToDate(claim, req);
     const claimFeeData = await civilServiceClient.getClaimFeeData(claim.totalClaimAmount + interestToDate, req as AppRequest);
     await saveClaimFee(req as AppRequest, claimFeeData);
     if (form.hasErrors() ) {
@@ -112,7 +112,7 @@ claimCheckAnswersController.post(CLAIM_CHECK_ANSWERS_URL, async (req: AppRequest
       const appReq = req as AppRequest;
       const submittedClaim = await submitClaim(appReq);
 
-      const draftId = appReq.session?.draftId;
+      const draftId = appReq.session?.draftId || draftResult.rawResponse?.draftId;
       if (draftId) {
         await deleteDraftClaim(appReq, draftId);
         delete appReq.session.draftId;
