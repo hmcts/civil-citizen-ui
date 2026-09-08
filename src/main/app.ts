@@ -18,8 +18,6 @@ import {setLanguage} from 'modules/i18n/languageService';
 import {isServiceShuttered, updateE2EKey} from './app/auth/launchdarkly/launchDarklyClient';
 import {getRedisStoreForSession} from 'modules/utilityService';
 import {setCaseReferenceCookie} from 'modules/cookie/caseReferenceCookie';
-import {storeUserCaseRolesInSession} from 'client/cache/userCaseRolesSessionCache';
-import {CaseRole} from 'form/models/caseRoles';
 import {
   APPLICATION_TYPE_URL,
   ASSIGN_FRC_BAND_URL,
@@ -106,7 +104,7 @@ import {isGAForLiPEnabled} from 'routes/guards/generalAplicationGuard';
 import config = require('config');
 import {trackHistory} from 'routes/guards/trackHistory';
 import {OidcMiddleware} from 'modules/oidc';
-import {AppRequest, AppSession} from 'models/AppRequest';
+import {AppSession} from 'models/AppRequest';
 import {DraftStoreCliente2e, getRedisStoreForSessione2e} from 'modules/e2eConfiguration';
 import { deleteGAGuard } from 'routes/guards/deleteGAGuard';
 import {GaTrackHistory} from 'routes/guards/GaTrackHistory';
@@ -223,14 +221,13 @@ if(e2eTestMode){
       res.cookie('e2e-user-id', 'e2e-defendant-user', {httpOnly: true});
       return res.redirect(req.originalUrl);
     }
-    const userId = session.user.id;
-    if (userId) {
-      await storeUserCaseRolesInSession(req as unknown as AppRequest, req.params.claimId, CaseRole.DEFENDANT);
-      await updateCachedE2EClaim(req.params.claimId, userId, claim => {
-        claim.caseRole = '[DEFENDANT]';
-      });
-    }
-    next();
+    res.send(`<!doctype html><html><body>
+      <div class="dashboard-notification">
+        <h2>You haven't responded to the claim</h2>
+        <p>You have 27 days remaining.</p>
+        <a href="/case/${req.params.claimId}/response/bilingual-language-preference">Respond to the claim</a>
+      </div>
+    </body></html>`);
   });
 
   app.use('/case/:claimId/general-application', async (req, _res, next) => {
@@ -297,7 +294,7 @@ if(e2eTestMode){
   app.post('/testing-support/mock-payment/:claimId/confirm', async (req, res) => {
     const appId = req.query.appId;
     if (appId) {
-      return res.redirect(`/case/${req.params.claimId}/response/general-application/${appId}/payment-successful`);
+      return res.redirect(`/case/${req.params.claimId}/general-application/${appId}/payment-successful`);
     }
     const userId = (req.session as AppSession).user?.id;
     if (userId) {

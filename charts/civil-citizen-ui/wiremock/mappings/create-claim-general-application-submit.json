@@ -48,6 +48,27 @@
         "headers": {"Content-Type": "application/json"},
         "jsonBody": {"paymentReference": "RC-MOCK-GA-FEE", "status": "Initiated"}
       }
+    },
+    {
+      "name": "create-claim-general-application-details",
+      "priority": 1,
+      "request": {"method": "GET", "urlPath": "/cases/1234567890123456"},
+      "response": {
+        "status": 200,
+        "headers": {"Content-Type": "application/json"},
+        "jsonBody": {
+          "id": "1234567890123456",
+          "state": "APPLICATION_SUBMITTED_AWAITING_JUDICIAL_DECISION",
+          "created_date": "2026-09-08T00:00:00.000Z",
+          "last_modified": "2026-09-08T00:00:00.000Z",
+          "case_data": {
+            "applicationTypes": "Extend time",
+            "generalAppPBADetails": {
+              "fee": {"calculatedAmountInPence": "12600"}
+            }
+          }
+        }
+      }
     }
   ]
 }
