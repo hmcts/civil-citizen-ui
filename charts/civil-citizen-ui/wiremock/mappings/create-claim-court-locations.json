@@ -1,0 +1,32 @@
+{
+  "mappings": [
+    {
+      "name": "create-claim-court-locations",
+      "priority": 10,
+      "request": {
+        "method": "GET",
+        "urlPath": "/locations/courtLocations"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "jsonBody": [
+          {
+            "court_venue_id": "0000",
+            "epimms_id": "000000",
+            "site_name": "Barnet Civil and Family Centre",
+            "court_address": "St Mary's Court, Regents Park Road",
+            "label": "Barnet Civil and Family Centre - St Mary's Court, Regents Park Road - N3 1BQ",
+            "postcode": "N3 1BQ",
+            "court_location_code": "121",
+            "court_status": "Open",
+            "is_hearing_location": "Y",
+            "location_type": "COURT"
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -39,6 +39,7 @@ import { getViewAllApplicationLink } from 'services/features/generalApplication/
 import {getViewMessagesLink} from 'services/features/queryManagement/viewMessagesService';
 import {getTotalAmountWithInterestAndFees} from 'modules/claimDetailsService';
 import {getRouteParam} from 'common/utils/routeParamUtils';
+import {CaseRole} from 'form/models/caseRoles';
 
 const claimSummaryViewPath = 'features/dashboard/claim-summary';
 const claimSummaryRedesignViewPath = 'features/dashboard/claim-summary-redesign';
@@ -54,6 +55,9 @@ claimSummaryController.get(DEFENDANT_SUMMARY_URL, (async (req: AppRequest, res: 
     const claimId = getRouteParam(req, 'id');
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const claim = await civilServiceClient.retrieveClaimDetails(claimId, <AppRequest>req);
+    if (process.env.NODE_ENV === 'e2eTest') {
+      claim.caseRole = CaseRole.DEFENDANT;
+    }
     const isDashboardEnabled = await isDashboardEnabledForCase(claim.submittedDate);
     const isGAFlagEnable = await isGaForLipsEnabled();
 
