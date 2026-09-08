@@ -73,6 +73,14 @@
         "status": 200,
         "headers": {"Content-Type": "application/json"},
         "jsonBody": [{
+          "id": "claim-fee-required",
+          "titleEn": "You need to pay your claim fee",
+          "titleCy": "You need to pay your claim fee",
+          "descriptionEn": "Your claim has not yet been issued, in order to proceed you must pay the claim fee of £455. <a href=\"/claim/1111222233334444/fee\">Pay the claim fee</a>.",
+          "descriptionCy": "Your claim has not yet been issued, in order to proceed you must pay the claim fee of £455. <a href=\"/claim/1111222233334444/fee\">Pay the claim fee</a>.",
+          "timeToLive": "",
+          "params": {}
+        }, {
           "id": "response-await",
           "titleEn": "Wait for defendant to respond",
           "titleCy": "Wait for defendant to respond",
