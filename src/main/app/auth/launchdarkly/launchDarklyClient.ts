@@ -35,7 +35,7 @@ async function getClient(): Promise<void> {
       await testData.update(testData.flag(CARM_ENABLED_FOR_CASE).booleanFlag().variationForAll(false));
       await testData.update(testData.flag(MULTI_OR_INTERMEDIATE_TRACK).booleanFlag().variationForAll(false));
       await testData.update(testData.flag(EA_COURT_FOR_GA_LIPS).booleanFlag().variationForAll(false));
-      await testData.update(testData.flag(QUERY_MANAGEMENT).booleanFlag().variationForAll(false));
+      await testData.update(testData.flag(QUERY_MANAGEMENT).booleanFlag().variationForAll(true));
       await testData.update(testData.flag(CUI_GA_NRO).booleanFlag().variationForAll(false));
       await testData.update(testData.flag(JUDGMENT_BUFFER).booleanFlag().variationForAll(false));
       await testData.update(testData.flag(HMCTS_ACCESS_MIGRATION).booleanFlag().variationForAll(false));
