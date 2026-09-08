@@ -197,7 +197,9 @@ if(e2eTestMode){
     const claim = await app.locals.draftStoreClient.get(redisKey);
     if (claim) {
       const cachedClaim = JSON.parse(claim);
-      update(cachedClaim);
+      if (cachedClaim.case_data) {
+        update(cachedClaim.case_data);
+      }
       await app.locals.draftStoreClient.set(redisKey, JSON.stringify(cachedClaim));
     }
   };
@@ -245,7 +247,7 @@ if(e2eTestMode){
       return res.sendStatus(404);
     }
     const assignedClaim = JSON.parse(claim);
-    assignedClaim.caseRole = '[DEFENDANT]';
+    assignedClaim.case_data.caseRole = '[DEFENDANT]';
     await app.locals.draftStoreClient.set(`${claimId}${toUserId}`, JSON.stringify(assignedClaim));
     return res.sendStatus(204);
   });
