@@ -15,7 +15,7 @@ export const checkYourAnswersClaimGuard = async (req: AppRequest, res: Response,
     const lang = req?.query?.lang ? req.query.lang : req?.cookies?.lang;
     const draftResult = await getDraftClaim(req);
     if (!draftResult) {
-      throw new Error('[checkYourAnswersGuard] no draft claim found');
+      return res.redirect(BASE_ELIGIBILITY_URL);
     }
     const caseData = Object.assign(new Claim(), draftResult.claimResponse?.case_data as unknown as Claim);
     if (draftResult.createdAt && !caseData.draftClaimCreatedAt) {
