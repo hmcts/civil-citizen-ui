@@ -297,7 +297,7 @@ if(e2eTestMode){
   app.post('/testing-support/mock-payment/:claimId/confirm', async (req, res) => {
     const appId = req.query.appId;
     if (appId) {
-      return res.redirect(`/general-application/payment-confirmation/${req.params.claimId}/gaid/${appId}`);
+      return res.redirect(`/case/${req.params.claimId}/response/general-application/${appId}/payment-successful`);
     }
     const userId = (req.session as AppSession).user?.id;
     if (userId) {

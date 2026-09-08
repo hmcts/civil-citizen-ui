@@ -2,7 +2,7 @@
   "mappings": [
     {
       "name": "create-claim-submit-general-application",
-      "priority": 10,
+      "priority": 1,
       "request": {
         "method": "POST",
         "urlPathPattern": "/cases/1111222233334444/citizen/[^/]+/event",
@@ -25,7 +25,7 @@
     },
     {
       "name": "create-claim-general-application-payment",
-      "priority": 10,
+      "priority": 1,
       "request": {"method": "POST", "urlPath": "/fees/case/1234567890123456/ga/payment"},
       "response": {
         "status": 200,
@@ -41,12 +41,12 @@
     },
     {
       "name": "create-claim-general-application-payment-status",
-      "priority": 10,
+      "priority": 1,
       "request": {"method": "GET", "urlPath": "/fees/case/1234567890123456/ga/payment/RC-MOCK-GA-FEE/status"},
       "response": {
         "status": 200,
         "headers": {"Content-Type": "application/json"},
-        "jsonBody": {"paymentReference": "RC-MOCK-GA-FEE", "status": "Success"}
+        "jsonBody": {"paymentReference": "RC-MOCK-GA-FEE", "status": "Initiated"}
       }
     }
   ]
