@@ -75,8 +75,8 @@ describe('Submit claim to ccd', () => {
 
     try {
       const result = await submitClaim(req as AppRequest);
-      expect(result.applicant1?.partyName).toBe('Journey claimant');
-      expect(result.respondent1?.partyName).toBe('Journey defendant');
+      expect(result.applicant1).toMatchObject({partyName: 'Journey claimant'});
+      expect(result.respondent1).toMatchObject({partyName: 'Journey defendant'});
       expect(saveDraftClaim).toHaveBeenCalledWith(
         `1111222233334444${req.session.user?.id}`,
         result,
