@@ -213,14 +213,14 @@ def checkForRunAllFunctionalTests(branch_name) {
 
 def checkForReducedStackTests(branch_name) {
   return new GithubAPI(this)
-    .getLabelsbyPattern(branch_name, "pr-values:reducedStack")
-    .contains("pr-values:reducedStack")
+    .getLabelsbyPattern(branch_name, "pr-values:mockedTests")
+    .contains("pr-values:mockedTests")
 }
 
 def checkForThinFullStackTests(branch_name) {
   return new GithubAPI(this)
-    .getLabelsbyPattern(branch_name, "pr-values:thinFullStack")
-    .contains("pr-values:thinFullStack")
+    .getLabelsbyPattern(branch_name, "pr-values:thinClientTests")
+    .contains("pr-values:thinClientTests")
 }
 
 def generateAllureReport(String resultsDir, String reportDir, String reportLabel) {
@@ -303,7 +303,7 @@ withPipeline(type, product, component) {
     env.REDUCED_STACK_TESTS = checkForReducedStackTests(env.BRANCH_NAME).toString()
     env.THIN_FULL_STACK_TESTS = checkForThinFullStackTests(env.BRANCH_NAME).toString()
     if (env.REDUCED_STACK_TESTS == 'true' && env.THIN_FULL_STACK_TESTS == 'true') {
-      error 'pr-values:reducedStack and pr-values:thinFullStack cannot be selected together.'
+      error 'pr-values:mockedTests and pr-values:thinClientTests cannot be selected together.'
     }
     def civilCcdDefinitionBranch = getCivilCcdDefinitionBranch()
     generalappCCDBranch = civilCcdDefinitionBranch
