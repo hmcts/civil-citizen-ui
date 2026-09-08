@@ -10,6 +10,14 @@
       "name": "create-claim-case-details",
       "priority": 10,
       "request": {"method": "GET", "urlPath": "/cases/1111222233334444"},
+      "response": {"status": 200, "headers": {"Content-Type": "application/json"}, "bodyFileName": "create-claim-submitted-claim.json"}
+    },
+    {
+      "request": {"method": "GET", "urlPath": "/cases/1111222233335555/userCaseRoles"},
+      "response": {"status": 200, "headers": {"Content-Type": "application/json"}, "jsonBody": ["[DEFENDANT]"]}
+    },
+    {
+      "request": {"method": "GET", "urlPath": "/cases/1111222233335555"},
       "response": {"status": 200, "headers": {"Content-Type": "application/json"}, "bodyFileName": "reduced-stack-defendant-claim.json"}
     }
   ]
