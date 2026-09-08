@@ -18,7 +18,7 @@
       }
     },
     "legacyCaseReference": "000MC001",
-    "respondent1ResponseDeadline": "2026-08-20T16:00:00.000Z",
+    "respondent1ResponseDeadline": "2026-10-05T16:00:00.000Z",
     "totalClaimAmount": 9000,
     "claimFee": {"calculatedAmountInPence": "45500", "code": "FEE0208", "version": "3"},
     "respondent1": {"type":"INDIVIDUAL","individualTitle":"Mr","individualFirstName":"John","individualLastName":"Smith"}

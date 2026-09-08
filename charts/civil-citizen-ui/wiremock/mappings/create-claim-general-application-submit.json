@@ -64,7 +64,8 @@
           "case_data": {
             "applicationTypes": "Extend time",
             "generalAppPBADetails": {
-              "fee": {"calculatedAmountInPence": "12600"}
+              "fee": {"calculatedAmountInPence": "12600"},
+              "paymentDetails": {"reference": "RC-MOCK-GA-FEE"}
             }
           }
         }
