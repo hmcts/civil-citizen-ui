@@ -192,6 +192,16 @@ new HealthCheck().enableFor(app);
 app.use(SIGN_OUT_URL, deleteGAGuard);
 
 if(e2eTestMode){
+  const updateCachedE2EClaim = async (claimId: string, userId: string, update: (claim: Record<string, unknown>) => void) => {
+    const redisKey = `${claimId}${userId}`;
+    const claim = await app.locals.draftStoreClient.get(redisKey);
+    if (claim) {
+      const cachedClaim = JSON.parse(claim);
+      update(cachedClaim);
+      await app.locals.draftStoreClient.set(redisKey, JSON.stringify(cachedClaim));
+    }
+  };
+
   app.use((req, res, next) => {
     const session = ((req.session) as AppSession);
     const testUserId = req.cookies['e2e-user-id'];
@@ -199,6 +209,26 @@ if(e2eTestMode){
       session.user = {accessToken: 'someAccessToken', idToken:'someIdToken', email: '', familyName: '', givenName: '', roles: ['citizen'], id: testUserId};
     } else {
       session.user = undefined;
+    }
+    next();
+  });
+
+  app.use('/dashboard/:claimId/defendant', async (req, _res, next) => {
+    const userId = (req.session as AppSession).user?.id;
+    if (userId) {
+      await updateCachedE2EClaim(req.params.claimId, userId, claim => {
+        claim.caseRole = '[DEFENDANT]';
+      });
+    }
+    next();
+  });
+
+  app.use('/case/:claimId/general-application', async (req, _res, next) => {
+    const userId = (req.session as AppSession).user?.id;
+    if (userId) {
+      await updateCachedE2EClaim(req.params.claimId, userId, claim => {
+        claim.ccdState = 'CASE_ISSUED';
+      });
     }
     next();
   });
@@ -252,13 +282,9 @@ if(e2eTestMode){
   app.post('/testing-support/mock-payment/:claimId/confirm', async (req, res) => {
     const userId = (req.session as AppSession).user?.id;
     if (userId) {
-      const redisKey = `${req.params.claimId}${userId}`;
-      const claim = await app.locals.draftStoreClient.get(redisKey);
-      if (claim) {
-        const paidClaim = JSON.parse(claim);
-        paidClaim.ccdState = 'CASE_ISSUED';
-        await app.locals.draftStoreClient.set(redisKey, JSON.stringify(paidClaim));
-      }
+      await updateCachedE2EClaim(req.params.claimId, userId, claim => {
+        claim.ccdState = 'CASE_ISSUED';
+      });
     }
     res.redirect(`/case/${req.params.claimId}/payment-successful`);
   });
