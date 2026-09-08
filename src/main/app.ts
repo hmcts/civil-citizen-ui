@@ -18,6 +18,8 @@ import {setLanguage} from 'modules/i18n/languageService';
 import {isServiceShuttered, updateE2EKey} from './app/auth/launchdarkly/launchDarklyClient';
 import {getRedisStoreForSession} from 'modules/utilityService';
 import {setCaseReferenceCookie} from 'modules/cookie/caseReferenceCookie';
+import {storeUserCaseRolesInSession} from 'client/cache/userCaseRolesSessionCache';
+import {CaseRole} from 'form/models/caseRoles';
 import {
   APPLICATION_TYPE_URL,
   ASSIGN_FRC_BAND_URL,
@@ -104,7 +106,7 @@ import {isGAForLiPEnabled} from 'routes/guards/generalAplicationGuard';
 import config = require('config');
 import {trackHistory} from 'routes/guards/trackHistory';
 import {OidcMiddleware} from 'modules/oidc';
-import {AppSession} from 'models/AppRequest';
+import {AppRequest, AppSession} from 'models/AppRequest';
 import {DraftStoreCliente2e, getRedisStoreForSessione2e} from 'modules/e2eConfiguration';
 import { deleteGAGuard } from 'routes/guards/deleteGAGuard';
 import {GaTrackHistory} from 'routes/guards/GaTrackHistory';
@@ -218,6 +220,7 @@ if(e2eTestMode){
   app.use('/dashboard/:claimId/defendant', async (req, _res, next) => {
     const userId = (req.session as AppSession).user?.id;
     if (userId) {
+      await storeUserCaseRolesInSession(req as unknown as AppRequest, req.params.claimId, CaseRole.DEFENDANT);
       await updateCachedE2EClaim(req.params.claimId, userId, claim => {
         claim.caseRole = '[DEFENDANT]';
       });
