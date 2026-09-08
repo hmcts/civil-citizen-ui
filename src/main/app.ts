@@ -217,18 +217,11 @@ if(e2eTestMode){
     next();
   });
 
-  app.use('/dashboard/:claimId/defendant', async (req, _res, next) => {
+  app.use('/dashboard/:claimId/defendant', async (req, res, next) => {
     const session = req.session as AppSession;
     if (!session.user) {
-      session.user = {
-        accessToken: 'someAccessToken',
-        idToken: 'someIdToken',
-        email: '',
-        familyName: '',
-        givenName: '',
-        roles: ['citizen'],
-        id: 'e2e-defendant-user',
-      };
+      res.cookie('e2e-user-id', 'e2e-defendant-user', {httpOnly: true});
+      return res.redirect(req.originalUrl);
     }
     const userId = session.user.id;
     if (userId) {
@@ -268,9 +261,10 @@ if(e2eTestMode){
   });
 
   app.get('/testing-support/mock-payment/:claimId', (req, res) => {
+    const amount = req.query.amount ?? '115.00';
     res.send(`<!doctype html><html><body>
       <h1>Enter card details</h1><h2>Payment summary</h2>
-      <p>card payment</p><p>Total amount:</p><p>£115.00</p>
+      <p>card payment</p><p>Total amount:</p><p>£${amount}</p>
       <form method="post">
         <input id="card-no" name="card-no">
         <input id="expiry-month" name="expiry-month">
@@ -287,16 +281,23 @@ if(e2eTestMode){
   });
 
   app.post('/testing-support/mock-payment/:claimId', (req, res) => {
+    const amount = req.query.amount ?? '115.00';
+    const appId = req.query.appId;
+    const confirmQuery = appId ? `?appId=${appId}` : '';
     res.send(`<!doctype html><html><body>
       <h1>Confirm your payment</h1><h2>Payment summary</h2>
-      <p>card payment</p><p>Total amount:</p><p>£115.00</p>
-      <form method="post" action="/testing-support/mock-payment/${req.params.claimId}/confirm">
+      <p>card payment</p><p>Total amount:</p><p>£${amount}</p>
+      <form method="post" action="/testing-support/mock-payment/${req.params.claimId}/confirm${confirmQuery}">
         <button id="confirm" type="submit">Confirm payment</button>
       </form>
     </body></html>`);
   });
 
   app.post('/testing-support/mock-payment/:claimId/confirm', async (req, res) => {
+    const appId = req.query.appId;
+    if (appId) {
+      return res.redirect(`/general-application/payment-confirmation/${req.params.claimId}/gaid/${appId}`);
+    }
     const userId = (req.session as AppSession).user?.id;
     if (userId) {
       await updateCachedE2EClaim(req.params.claimId, userId, claim => {
