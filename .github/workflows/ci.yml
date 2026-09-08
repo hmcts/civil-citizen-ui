@@ -40,7 +40,6 @@ jobs:
         run: |
           semgrep scan --strict --metrics=off --no-rewrite-rule-ids \
             --config .semgrep/logging-pii.yml \
-            --exclude src/main/assets/js/mojAll.js \
             --json-output semgrep-results.json \
             src/main
           python .semgrep/annotate.py semgrep-results.json
@@ -49,7 +48,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: 24
       - name: Install

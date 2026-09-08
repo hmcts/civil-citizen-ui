@@ -1,0 +1,17 @@
+{
+  "mappings": [
+    {
+      "name": "response-claim-no-agreed-deadline",
+      "priority": 10,
+      "request": {
+        "method": "GET",
+        "urlPathPattern": "/cases/response/agreeddeadline/[0-9]+"
+      },
+      "response": {
+        "status": 200,
+        "headers": {"Content-Type": "text/plain"},
+        "body": ""
+      }
+    }
+  ]
+}
