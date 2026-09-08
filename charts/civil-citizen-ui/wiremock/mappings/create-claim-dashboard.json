@@ -46,6 +46,8 @@
     {
       "name": "create-claim-claimant-dashboard-notifications",
       "priority": 10,
+      "scenarioName": "create-claim-fee-payment",
+      "requiredScenarioState": "Started",
       "request": {"method": "GET", "urlPath": "/dashboard/notifications/1111222233334444/role/CLAIMANT"},
       "response": {
         "status": 200,
@@ -56,6 +58,26 @@
           "titleCy": "You need to pay your claim fee",
           "descriptionEn": "Your claim has not yet been issued, in order to proceed you must pay the claim fee of £455. <a href=\"/claim/1111222233334444/fee\">Pay the claim fee</a>.",
           "descriptionCy": "Your claim has not yet been issued, in order to proceed you must pay the claim fee of £455. <a href=\"/claim/1111222233334444/fee\">Pay the claim fee</a>.",
+          "timeToLive": "",
+          "params": {}
+        }]
+      }
+    },
+    {
+      "name": "create-claim-claimant-dashboard-notifications-after-payment",
+      "priority": 5,
+      "scenarioName": "create-claim-fee-payment",
+      "requiredScenarioState": "Claim fee paid",
+      "request": {"method": "GET", "urlPath": "/dashboard/notifications/1111222233334444/role/CLAIMANT"},
+      "response": {
+        "status": 200,
+        "headers": {"Content-Type": "application/json"},
+        "jsonBody": [{
+          "id": "response-await",
+          "titleEn": "Wait for defendant to respond",
+          "titleCy": "Wait for defendant to respond",
+          "descriptionEn": "The defendant has until 5 October 2026 to respond. They can request an extra 14 days.",
+          "descriptionCy": "The defendant has until 5 October 2026 to respond. They can request an extra 14 days.",
           "timeToLive": "",
           "params": {}
         }]

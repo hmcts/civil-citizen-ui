@@ -3,6 +3,9 @@
     {
       "name": "create-claim-payment-session",
       "priority": 10,
+      "scenarioName": "create-claim-fee-payment",
+      "requiredScenarioState": "Started",
+      "newScenarioState": "Claim fee paid",
       "request": {
         "method": "POST",
         "urlPath": "/fees/CLAIMISSUED/case/1111222233334444/payment"
@@ -33,6 +36,25 @@
           "externalReference": "MOCK-CLAIM-FEE",
           "paymentReference": "RC-MOCK-CLAIM-FEE",
           "status": "Initiated"
+        }
+      }
+    },
+    {
+      "name": "create-claim-payment-session-after-transition",
+      "priority": 20,
+      "request": {
+        "method": "POST",
+        "urlPath": "/fees/CLAIMISSUED/case/1111222233334444/payment"
+      },
+      "response": {
+        "status": 200,
+        "headers": {"Content-Type": "application/json"},
+        "jsonBody": {
+          "externalReference": "MOCK-CLAIM-FEE",
+          "paymentReference": "RC-MOCK-CLAIM-FEE",
+          "status": "Initiated",
+          "nextUrl": "/testing-support/mock-payment/1111222233334444",
+          "dateCreated": "2026-07-23T12:00:00.000Z"
         }
       }
     }
