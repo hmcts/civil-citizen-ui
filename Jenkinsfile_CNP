@@ -14,8 +14,7 @@ def component = "citizen-ui"
 @groovy.transform.Field
 def camundaBranch = "master"
 def dmnBranch = "master"
-def waStandaloneBranch = "DTSCCI-5827-rename-wa-task"
-def ccdBranch = "DTSCCI-5827-rename-translating-final-order-option"
+def waStandaloneBranch = "master"
 AppPipelineConfig pipelineConf
 
 static Map<String, Object> secret(String secretName, String envVariable) {
