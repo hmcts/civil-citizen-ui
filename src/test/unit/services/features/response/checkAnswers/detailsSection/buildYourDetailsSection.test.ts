@@ -11,6 +11,7 @@ import {
   createClaimWithIndividualDetails,
   createClaimWithContactPersonDetails, createClaimWithIndividualDetailsWithPartyPhoneNotExist,
 } from '../../../../../../utils/mockClaimForCheckAnswers';
+import {Address} from '../../../../../../../main/common/form/models/address';
 import * as constVal from '../../../../../../utils/checkAnswersConstants';
 
 jest.mock('../../../../../../../main/modules/draft-store');
@@ -82,13 +83,13 @@ describe('Cirizen Details Section', () => {
   it('should return multi-line address when it exists', async () => {
     //Given
     const claim = createClaimWithIndividualDetails();
-    claim.respondent1.partyDetails.primaryAddress = {
-      addressLine1: 'line 1',
-      addressLine2: 'line 2',
-      addressLine3: 'line 3',
-      city: 'city',
-      postCode: 'postcode',
-    };
+    claim.respondent1.partyDetails.primaryAddress = new Address(
+      'line 1',
+      'line 2',
+      'line 3',
+      'city',
+      'postcode',
+    );
     //When
     const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
     //Then

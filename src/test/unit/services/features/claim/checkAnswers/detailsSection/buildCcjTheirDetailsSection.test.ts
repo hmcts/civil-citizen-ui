@@ -3,6 +3,7 @@ import {
   createClaimWithIndividualDetails,
 } from '../../../../../../utils/mockClaimForCheckAnswers';
 import {Email} from 'models/Email';
+import {Address} from 'form/models/address';
 import {getSummarySections} from 'services/features/claimantResponse/ccj/ccjCheckAnswersService';
 import {ClaimantResponse} from 'models/claimantResponse';
 import {CCJRequest} from 'models/claimantResponse/ccj/ccjRequest';
@@ -53,13 +54,13 @@ describe('Citizen Details Section', () => {
   it('should return address with multi-lines when it exists', async () => {
     //Given
     const claim = createClaimWithIndividualDetails();
-    claim.respondent1.partyDetails.primaryAddress = {
-      addressLine1: 'line 1',
-      addressLine2: 'line 2',
-      addressLine3: 'line 3',
-      city: 'city',
-      postCode: 'postcode',
-    };
+    claim.respondent1.partyDetails.primaryAddress = new Address(
+      'line 1',
+      'line 2',
+      'line 3',
+      'city',
+      'postcode',
+    );
     //When
     const summarySections = await getSummarySections(CLAIM_ID, claim, 'en');
     //Then

@@ -13,6 +13,7 @@ import {
 import {PartyType} from '../../../../../../../main/common/models/partyType';
 import {formatDateToFullDate} from '../../../../../../../main/common/utils/dateUtils';
 import {PartyDetails} from '../../../../../../../main/common/form/models/partyDetails';
+import {Address} from '../../../../../../../main/common/form/models/address';
 import {Email} from '../../../../../../../main/common/models/Email';
 import {CitizenDate} from '../../../../../../../main/common/form/models/claim/claimant/citizenDate';
 import {buildTheirDetailsSection} from 'services/features/claim/checkAnswers/detailsSection/buildTheirDetailsSection';
@@ -63,13 +64,13 @@ describe('Citizen Details Section', () => {
   it('should build Their Details Section with multi-line address', async () => {
     //Given
     const claim = createClaimWithIndividualDetails();
-    claim.respondent1.partyDetails.primaryAddress = {
-      addressLine1: 'line 1',
-      addressLine2: 'line 2',
-      addressLine3: 'line 3',
-      city: 'city',
-      postCode: 'postcode',
-    };
+    claim.respondent1.partyDetails.primaryAddress = new Address(
+      'line 1',
+      'line 2',
+      'line 3',
+      'city',
+      'postcode',
+    );
     //When
     const summarySections = await buildTheirDetailsSection(claim, CLAIM_ID, 'en');
     //Then
