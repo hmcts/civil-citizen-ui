@@ -2,13 +2,12 @@
 
 set -euo pipefail
 
-: "${WIREMOCK_DEPLOYMENT:?WIREMOCK_DEPLOYMENT must name the preview WireMock deployment}"
+: "${WIREMOCK_URL:?WIREMOCK_URL must point to the CUI preview hostname}"
 
 wiremock_curl() {
   local endpoint="$1"
   shift
-  kubectl exec -n "${WIREMOCK_NAMESPACE:-civil}" "deployment/${WIREMOCK_DEPLOYMENT}" -- \
-    curl --fail --silent --show-error "$@" "http://localhost:8080${endpoint}"
+  curl --fail --silent --show-error "$@" "${WIREMOCK_URL}${endpoint}"
 }
 
 readonly output_dir='test-results/functional/wiremock'

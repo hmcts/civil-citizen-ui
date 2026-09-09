@@ -2,14 +2,10 @@
 
 const fs = require('fs');
 const path = require('path');
-const {execFile} = require('child_process');
-const {promisify} = require('util');
 const { sanitize } = require('./functionalFailureDiagnostics');
 
 const wiremockUrl = process.env.WIREMOCK_URL;
-const wiremockDeployment = process.env.WIREMOCK_DEPLOYMENT;
-const diagnosticsEnabled = process.env.FUNCTIONAL_WIREMOCK_DIAGNOSTICS === 'true' || Boolean(wiremockUrl) || Boolean(wiremockDeployment);
-const execFileAsync = promisify(execFile);
+const diagnosticsEnabled = process.env.FUNCTIONAL_WIREMOCK_DIAGNOSTICS === 'true' || Boolean(wiremockUrl);
 const outputDir = process.env.WIREMOCK_DIAGNOSTICS_OUTPUT_DIR || 'test-results/functional/wiremock';
 const wiremockPayloadKey = /^(?:body|bodyAsBase64|bodyPatterns|jsonBody|base64Body|formParams|formParameters|multipartPatterns|queryParams|queryParameters)$/i;
 
@@ -39,15 +35,6 @@ function sanitizeWiremockPayload(value) {
 }
 
 async function fetchJson(endpoint, options = {}) {
-  if (wiremockDeployment) {
-    const method = options.method || 'GET';
-    const {stdout} = await execFileAsync('kubectl', [
-      'exec', '-n', process.env.WIREMOCK_NAMESPACE || 'civil',
-      `deployment/${wiremockDeployment}`, '--', 'curl', '-fsS',
-      '-X', method, `http://localhost:8080${endpoint}`,
-    ]);
-    return {status: 200, body: sanitizeWiremockPayload(JSON.parse(stdout))};
-  }
   const response = await fetch(`${wiremockUrl.replace(/\/$/, '')}${endpoint}`, options);
   return {
     status: response.status,

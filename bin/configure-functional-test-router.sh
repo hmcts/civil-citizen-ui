@@ -1,19 +1,18 @@
 #!/bin/bash
 set -euo pipefail
 
-: "${WIREMOCK_DEPLOYMENT:?WIREMOCK_DEPLOYMENT must name the preview WireMock deployment}"
+: "${WIREMOCK_URL:?WIREMOCK_URL must point to the CUI preview hostname}"
 
 profile="${1:-}"
 
 wiremock_curl() {
   local endpoint="$1"
   shift
-  kubectl exec -n "${WIREMOCK_NAMESPACE:-civil}" "deployment/${WIREMOCK_DEPLOYMENT}" -- \
-    curl --fail --silent --show-error "$@" "http://localhost:8080${endpoint}"
+  curl --fail --silent --show-error "$@" "${WIREMOCK_URL}${endpoint}"
 }
 
-# Deployment readiness and Kubernetes API visibility can briefly differ. Keep
-# this wait bounded and fail before changing mappings.
+# The shared preview ingress path can become ready shortly after the pods do.
+# Keep this wait bounded and fail before changing mappings.
 for attempt in $(seq 1 18); do
   if wiremock_curl '/__admin/mappings' >/dev/null 2>&1; then
     break

@@ -12,7 +12,7 @@ if [ "${OPTIMISED_FUNCTIONAL_TESTS:-false}" != "true" ]; then
 fi
 
 : "${TEST_URL:?TEST_URL must point to the preview CUI ingress}"
-: "${WIREMOCK_DEPLOYMENT:?WIREMOCK_DEPLOYMENT must name the preview WireMock deployment}"
+: "${WIREMOCK_URL:?WIREMOCK_URL must point to the CUI preview hostname}"
 
 readonly output_dir='test-results/smokeTest'
 mkdir -p "${output_dir}"
@@ -32,8 +32,7 @@ check_health() {
 }
 
 check_health 'civil-citizen-ui' "${TEST_URL}/health"
-kubectl exec -n "${WIREMOCK_NAMESPACE:-civil}" "deployment/${WIREMOCK_DEPLOYMENT}" -- \
-  curl --fail --silent --show-error http://localhost:8080/health/readiness \
+curl --fail --silent --show-error "${WIREMOCK_URL}/__admin/mappings" \
   > "${output_dir}/wiremock-health.json"
 
 echo 'Optimised preview router health checks passed.'

@@ -3,6 +3,8 @@
 # phase, not a second environment.
 
 nodejs:
+  additionalPathBasedRoutes:
+    /__admin: ${SERVICE_NAME}-wiremock
   environment:
     CIVIL_SERVICE_URL: http://${SERVICE_NAME}-wiremock
     ORDNANCE_SURVEY_API_URL: http://${SERVICE_NAME}-wiremock
