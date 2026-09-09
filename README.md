@@ -133,11 +133,12 @@ in `charts/civil-citizen-ui/wiremock/mappings` as the preview chart. Chromium mu
 `${TMPDIR:-/tmp}/civil-citizen-ui-mocked-functional`.
 
 To exercise the optimised path in Jenkins, apply the single `pr-values:optimisedTests` label. The full preview stack
-and the normal CUI ingress remain in use. One WireMock pod acts as an internal Civil Service router: residual and
-thin-client scenarios are first passed to the real Civil Service, then migrated mockable scenarios run against the
-deterministic mappings with proxy fallback disabled. The three mutually exclusive buckets use the same baseline
-selection as the unlabelled run, and their union is the complete selection. Bucket and total durations are archived
-in `test-results/functional/optimised-timings.csv`.
+and the normal CUI ingress remain in use. One WireMock pod acts as an internal Civil Service router. Jenkins controls
+it through a token-gated, test-only CUI endpoint; WireMock has no public ingress. Residual and thin-client scenarios
+are first passed to the real Civil Service, then migrated mockable scenarios run against deterministic mappings with
+proxy fallback disabled. The three mutually exclusive buckets use the same baseline selection as the unlabelled run,
+and their union is the complete selection. Bucket and total durations are archived in
+`test-results/functional/optimised-timings.csv`.
 
 With no optimisation label Jenkins follows the pre-epic deployment and functional-test path. The temporary real
 proxy profile can be removed when the epic has migrated every scenario and the residual bucket is empty; the
