@@ -3,10 +3,10 @@
 # phase, not a second environment.
 
 nodejs:
-  additionalPathBasedRoutes:
-    /__admin: ${SERVICE_NAME}-wiremock
   environment:
     CIVIL_SERVICE_URL: http://${SERVICE_NAME}-wiremock
+    FUNCTIONAL_TEST_ROUTER_URL: http://${SERVICE_NAME}-wiremock
+    FUNCTIONAL_TEST_ROUTER_TOKEN: ${SERVICE_NAME}
     ORDNANCE_SURVEY_API_URL: http://${SERVICE_NAME}-wiremock
     ORDNANCE_SURVEY_API_KEY: mock-key
     PCQ_URL: https://${SERVICE_FQDN}
@@ -17,8 +17,8 @@ wiremock:
   applicationPort: 8080
   imagePullPolicy: Always
   releaseNameOverride: ${SERVICE_NAME}-wiremock
-  # Jenkins administers this pod through Kubernetes; browser traffic reaches it
-  # only through CUI's internal CIVIL_SERVICE_URL. No second public ingress.
+  # Browser traffic and test administration both pass through CUI. WireMock has
+  # no public ingress of its own.
   ingressHost: ""
   verbose: true
   volumes:

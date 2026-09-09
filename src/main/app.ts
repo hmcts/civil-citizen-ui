@@ -149,6 +149,38 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json({ limit: '500mb' }));
 app.use(express.urlencoded({ limit: '500mb', extended: true }));
 app.use(ensureBodyObject);
+
+const functionalTestRouterUrl = process.env.FUNCTIONAL_TEST_ROUTER_URL;
+const functionalTestRouterToken = process.env.FUNCTIONAL_TEST_ROUTER_TOKEN;
+if (functionalTestRouterUrl && functionalTestRouterToken) {
+  app.use('/testing-support/functional-test-router', async (req, res) => {
+    if (req.get('x-functional-test-router-token') !== functionalTestRouterToken || !req.url.startsWith('/__admin/')) {
+      return res.sendStatus(404);
+    }
+
+    try {
+      const headers: Record<string, string> = {};
+      if (req.is('application/json')) {
+        headers['content-type'] = 'application/json';
+      }
+      const method = req.method.toUpperCase();
+      const response = await fetch(`${functionalTestRouterUrl}${req.url}`, {
+        method,
+        headers,
+        body: method === 'GET' || method === 'HEAD' ? undefined : JSON.stringify(req.body),
+      });
+      const body = await response.text();
+      const contentType = response.headers.get('content-type');
+      if (contentType) {
+        res.type(contentType);
+      }
+      return res.status(response.status).send(body);
+    } catch (error) {
+      logger.error(`Functional-test router request failed: ${(error as Error).message}`);
+      return res.sendStatus(502);
+    }
+  });
+}
 app.locals.ENV = env;
 I18Next.enableFor(app);
 

@@ -190,8 +190,9 @@ def setUrls(suffix) {
       env.CIVIL_SERVICE_URL = "https://wiremock-civil-citizen-ui-pr-${CHANGE_ID}.preview.platform.hmcts.net"
       env.CIVIL_GENERAL_APPLICATIONS_URL = env.CIVIL_SERVICE_URL
       // WireMock administration is exposed only as /__admin on the existing
-      // CUI preview hostname; application/browser traffic still uses CUI '/'.
-      env.WIREMOCK_URL = env.TEST_URL
+      // CUI preview hostname through a test-only, token-gated internal proxy.
+      env.WIREMOCK_URL = "${env.TEST_URL}/testing-support/functional-test-router"
+      env.FUNCTIONAL_TEST_ROUTER_TOKEN = "civil-citizen-ui-pr-${CHANGE_ID}"
     }
   }
   env.DM_STORE_URL = "http://dm-store-aat.service.core-compute-aat.internal"

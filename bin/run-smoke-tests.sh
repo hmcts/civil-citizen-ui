@@ -13,6 +13,7 @@ fi
 
 : "${TEST_URL:?TEST_URL must point to the preview CUI ingress}"
 : "${WIREMOCK_URL:?WIREMOCK_URL must point to the CUI preview hostname}"
+: "${FUNCTIONAL_TEST_ROUTER_TOKEN:?FUNCTIONAL_TEST_ROUTER_TOKEN must be set}"
 
 readonly output_dir='test-results/smokeTest'
 mkdir -p "${output_dir}"
@@ -32,7 +33,9 @@ check_health() {
 }
 
 check_health 'civil-citizen-ui' "${TEST_URL}/health"
-curl --fail --silent --show-error "${WIREMOCK_URL}/__admin/mappings" \
+curl --fail --silent --show-error \
+  --header "x-functional-test-router-token: ${FUNCTIONAL_TEST_ROUTER_TOKEN}" \
+  "${WIREMOCK_URL}/__admin/mappings" \
   > "${output_dir}/wiremock-health.json"
 
 echo 'Optimised preview router health checks passed.'

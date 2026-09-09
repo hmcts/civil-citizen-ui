@@ -2,13 +2,16 @@
 set -euo pipefail
 
 : "${WIREMOCK_URL:?WIREMOCK_URL must point to the CUI preview hostname}"
+: "${FUNCTIONAL_TEST_ROUTER_TOKEN:?FUNCTIONAL_TEST_ROUTER_TOKEN must be set}"
 
 profile="${1:-}"
 
 wiremock_curl() {
   local endpoint="$1"
   shift
-  curl --fail --silent --show-error "$@" "${WIREMOCK_URL}${endpoint}"
+  curl --fail --silent --show-error \
+    --header "x-functional-test-router-token: ${FUNCTIONAL_TEST_ROUTER_TOKEN}" \
+    "$@" "${WIREMOCK_URL}${endpoint}"
 }
 
 # The shared preview ingress path can become ready shortly after the pods do.
