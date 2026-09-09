@@ -10,7 +10,7 @@ const {
 
 let caseData,legacyCaseReference,caseRef,selectedHWF;
 
-Feature('Create Lip v Lip claim - SoleTrader vs Individual').tag('@ui-create-claim @reduced-stack @mocked-functional @dual-mode-parity');
+Feature('Create Lip v Lip claim - SoleTrader vs Individual').tag('@ui-create-claim @reduced-stack @mocked-functional');
 
 Scenario('Create Claim -  SoleTrader vs Individual - Fast Track - no interest - no hwf', async ({ I, api }) => {
   selectedHWF = false;
