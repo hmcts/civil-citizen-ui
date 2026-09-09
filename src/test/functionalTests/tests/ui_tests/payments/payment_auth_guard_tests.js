@@ -2,7 +2,7 @@ const FAKE_CLAIM_ID = '1234567890123456';
 const FAKE_GA_ID = '9876543210987654';
 
 Feature('Payment Confirmation URL Auth Guards - DTSCCI-4177')
-  .tag('@civil-citizen-nightly @ui-payments @reduced-stack @mocked-functional @dual-mode-parity');
+  .tag('@civil-citizen-nightly @ui-payments @reduced-stack @mocked-functional');
 
 Before(async ({I}) => {
   await I.clearCookie();

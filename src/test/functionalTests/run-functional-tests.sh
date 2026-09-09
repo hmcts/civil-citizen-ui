@@ -144,21 +144,60 @@ run_failed_not_executed_functional_tests() {
   run_functional_tests
 }
 
-run_reduced_stack_functional_tests() {
-  echo "Running the WireMock-backed functional journey against Jenkins preview"
-  # Jenkins may allocate a different VM for this stage than for the smoke
-  # stage, so install the browser on the agent that will actually launch it.
+run_optimised_functional_tests() {
+  local base_pattern mocked_pattern thin_pattern residual_pattern
+  local started bucket_started bucket_elapsed total_elapsed
+
+  echo "Running the standard functional-test selection through optimised execution buckets"
   yarn playwright install chromium
   export FUNCTIONAL=true
+  unset PREV_FAILED_TEST_FILES PREV_NOT_EXECUTED_TEST_FILES
 
-  if [[ -n "$PR_FT_GROUPS" ]]; then
-    run_functional_test_groups || browser_status=$?
+  if [[ -n "${PR_FT_GROUPS:-}" ]]; then
+    base_pattern=$(echo "$PR_FT_GROUPS" | tr '[:upper:]' '[:lower:]' | sed 's/[[:space:]]//g; s/,/|@/g; s/^/@/')
   else
-    yarn test:mocked-functional:browser || browser_status=$?
+    base_pattern='@civil-citizen-pr'
   fi
 
-  ./bin/assert-preview-wiremock.sh || wiremock_status=$?
-  exit "${browser_status:-${wiremock_status:-0}}"
+  mocked_pattern="(?=.*(?:${base_pattern}))(?=.*@mocked-functional)"
+  thin_pattern="(?=.*(?:${base_pattern}))(?=.*@thin-full-stack)(?!.*@mocked-functional)"
+  residual_pattern="(?=.*(?:${base_pattern}))(?!.*@mocked-functional)(?!.*@thin-full-stack)"
+  mkdir -p test-results/functional
+  printf 'bucket,duration_seconds\n' > test-results/functional/optimised-timings.csv
+  started=$SECONDS
+
+  ./bin/configure-functional-test-router.sh real
+  for bucket in residual thin-client; do
+    bucket_started=$SECONDS
+    if [[ "$bucket" = 'residual' ]]; then
+      pattern="$residual_pattern"
+    else
+      pattern="$thin_pattern"
+    fi
+    echo "Running ${bucket} bucket for baseline selection: ${base_pattern}"
+    MOCHAWESOME_REPORTFILENAME="optimised-${bucket}" \
+      run_functional_command yarn codeceptjs run-workers --suites 13 --grep "$pattern" \
+      --reporter mocha-multi --plugins allure --verbose
+    bucket_elapsed=$((SECONDS - bucket_started))
+    printf '%s,%s\n' "$bucket" "$bucket_elapsed" >> test-results/functional/optimised-timings.csv
+  done
+
+  ./bin/configure-functional-test-router.sh mocked
+  bucket_started=$SECONDS
+  echo "Running mocked bucket for baseline selection: ${base_pattern}"
+  if [[ "$base_pattern" = *'@ui-create-claim'* ]]; then
+    export WIREMOCK_EXPECT_CREATE_CLAIM=true
+  fi
+  MOCHAWESOME_REPORTFILENAME='optimised-mocked' \
+    run_functional_command yarn codeceptjs run-workers --suites 13 --grep "$mocked_pattern" \
+    --reporter mocha-multi --plugins allure --verbose
+  ./bin/assert-preview-wiremock.sh
+  bucket_elapsed=$((SECONDS - bucket_started))
+  printf 'mocked,%s\n' "$bucket_elapsed" >> test-results/functional/optimised-timings.csv
+
+  total_elapsed=$((SECONDS - started))
+  printf 'total,%s\n' "$total_elapsed" >> test-results/functional/optimised-timings.csv
+  echo "Optimised execution completed in ${total_elapsed}s; bucket timings are archived with the functional results"
 }
 
 assert_thin_full_stack_results() {
@@ -261,16 +300,15 @@ NODE
 TEST_FILES_REPORT="test-results/functional/testFilesReport.json"
 PREV_TEST_FILES_REPORT="test-results/functional/prevTestFilesReport.json"
 
-if [[ "${THIN_FULL_STACK_TESTS:-false}" = "true" ]]; then
-  echo "Running the thin full-stack suite against the standard full preview deployment"
-  yarn playwright install chromium
-  yarn test:thin-full-stack || thin_test_status=$?
-  assert_thin_full_stack_results || thin_attestation_status=$?
-  exit "${thin_test_status:-${thin_attestation_status:-0}}"
+if [[ "${SKIP_FUNCTIONAL_TESTS:-false}" = "true" ]]; then
+  echo "The label 'pr-values:skip-functional-tests' exists on the PR."
+  echo "Skipping functional tests."
+  exit 0
 fi
 
-if [[ "${REDUCED_STACK_TESTS:-false}" = "true" ]]; then
-  run_reduced_stack_functional_tests
+if [[ "${OPTIMISED_FUNCTIONAL_TESTS:-false}" = "true" ]]; then
+  run_optimised_functional_tests
+  exit 0
 fi
 
 # Check if SKIP_FUNCTIONAL_TESTS is set to true

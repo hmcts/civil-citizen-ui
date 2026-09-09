@@ -185,7 +185,8 @@ def setUrls(suffix) {
     env.CIVIL_GENERAL_APPLICATIONS_URL="https://civil-citizen-ui-pr-${CHANGE_ID}-civil-service.preview.platform.hmcts.net"
     env.AAC_API_URL="https://manage-case-assignment-civil-citizen-ui-pr-${CHANGE_ID}.preview.platform.hmcts.net"
     env.ROLE_ASSIGNMENT_URL = "https://am-role-assignment-civil-citizen-ui-pr-${CHANGE_ID}.preview.platform.hmcts.net"
-    if (env.REDUCED_STACK_TESTS == 'true') {
+    if (env.OPTIMISED_FUNCTIONAL_TESTS == 'true') {
+      env.REAL_CIVIL_SERVICE_URL = env.CIVIL_SERVICE_URL
       env.CIVIL_SERVICE_URL = "https://wiremock-civil-citizen-ui-pr-${CHANGE_ID}.preview.platform.hmcts.net"
       env.CIVIL_GENERAL_APPLICATIONS_URL = env.CIVIL_SERVICE_URL
       env.WIREMOCK_URL = env.CIVIL_SERVICE_URL
@@ -211,16 +212,10 @@ def checkForRunAllFunctionalTests(branch_name) {
   return new GithubAPI(this).getLabelsbyPattern(branch_name, "runAllFunctionalTests").contains("runAllFunctionalTests")
 }
 
-def checkForReducedStackTests(branch_name) {
+def checkForOptimisedFunctionalTests(branch_name) {
   return new GithubAPI(this)
-    .getLabelsbyPattern(branch_name, "pr-values:mockedTests")
-    .contains("pr-values:mockedTests")
-}
-
-def checkForThinFullStackTests(branch_name) {
-  return new GithubAPI(this)
-    .getLabelsbyPattern(branch_name, "pr-values:thinClientTests")
-    .contains("pr-values:thinClientTests")
+    .getLabelsbyPattern(branch_name, "pr-values:optimisedTests")
+    .contains("pr-values:optimisedTests")
 }
 
 def generateAllureReport(String resultsDir, String reportDir, String reportLabel) {
@@ -301,11 +296,7 @@ withPipeline(type, product, component) {
     env.NODE_TLS_REJECT_UNAUTHORIZED = "0"
     env.PR_FT_GROUPS = getFunctionalTestsGroups()
     env.CIVIL_SERVICE_IMAGE = getCivilServiceImage()
-    env.REDUCED_STACK_TESTS = checkForReducedStackTests(env.BRANCH_NAME).toString()
-    env.THIN_FULL_STACK_TESTS = checkForThinFullStackTests(env.BRANCH_NAME).toString()
-    if (env.REDUCED_STACK_TESTS == 'true' && env.THIN_FULL_STACK_TESTS == 'true') {
-      error 'pr-values:mockedTests and pr-values:thinClientTests cannot be selected together.'
-    }
+    env.OPTIMISED_FUNCTIONAL_TESTS = checkForOptimisedFunctionalTests(env.BRANCH_NAME).toString()
     def civilCcdDefinitionBranch = getCivilCcdDefinitionBranch()
     generalappCCDBranch = civilCcdDefinitionBranch
     loadVaultSecrets(secrets)
@@ -329,10 +320,7 @@ withPipeline(type, product, component) {
 
   before('smoketest:preview') {
     setUrls("civil-citizen-ui-pr-${CHANGE_ID}")
-    if (env.REDUCED_STACK_TESTS == 'true') {
-      echo 'Reduced-stack preview selected; skipping Civil Service, CCD and Camunda data setup.'
-    } else {
-      sh """
+    sh """
           eval \$(./bin/variables/load-preview-environment-variables.sh ${CHANGE_ID})
           ./bin/pull-latest-civil-shared.sh ${getCivilServiceSharedBranch()}
           . ./bin/shared/idam-get-tokens.sh
@@ -343,7 +331,9 @@ withPipeline(type, product, component) {
           ./bin/import-ccd-definition.sh "-e *-prod.json,*HNL-nonprod.json,*-shuttered.json" ${getCivilCcdDefinitionBranch()}
           ./bin/import-ga-ccd-definition.sh "-e *-prod.json" ${getCivilCcdDefinitionBranch()}
           ./bin/shared/add-org-roles-to-users.sh
-        """
+      """
+    if (env.OPTIMISED_FUNCTIONAL_TESTS == 'true') {
+      sh './bin/configure-functional-test-router.sh real'
     }
   }
 
@@ -358,9 +348,7 @@ withPipeline(type, product, component) {
 
   before('functionalTest:preview') {
     env.IDAM_STUB_ENABLED='false'
-    if (env.REDUCED_STACK_TESTS != 'true') {
-      copyPreviousAllureHistory()
-    }
+    copyPreviousAllureHistory()
     if(checkForSkipFunctionalTests(env.BRANCH_NAME)) {
       env.SKIP_FUNCTIONAL_TESTS = true
     } else if(checkForRunAllFunctionalTests(env.BRANCH_NAME)) {
@@ -375,22 +363,14 @@ withPipeline(type, product, component) {
       echo "Skipping Allure report generation due to label: pr-values:skip-functional-tests"
       return
     }
-    if (env.THIN_FULL_STACK_TESTS == 'true') {
-      generateAllureReport('test-results/thin-full-stack/allure-results', 'test-results/thin-full-stack/allure-report', 'thin full-stack')
-      publishAllureHtml('test-results/thin-full-stack/allure-report', 'Thin Full-Stack Allure Report')
-      archiveDiagnosticArtifacts('test-results/thin-full-stack/**/*', 'thin full-stack test artifacts')
-    } else {
-      generateAllureReport('test-results/functional/allure-results', 'test-results/functional/allure-report', 'functional')
-      publishAllureHtml('test-results/functional/allure-report', 'Non-Prod E2E Allure Report')
-      collectWiremockDiagnostics()
-      generateFunctionalFailureSummary()
-      archiveDiagnosticArtifacts('test-results/functional/**/*', 'functional test artifacts')
-    }
+    generateAllureReport('test-results/functional/allure-results', 'test-results/functional/allure-report', 'functional')
+    publishAllureHtml('test-results/functional/allure-report', 'Non-Prod E2E Allure Report')
+    collectWiremockDiagnostics()
+    generateFunctionalFailureSummary()
+    archiveDiagnosticArtifacts('test-results/functional/**/*', 'functional test artifacts')
 
-    // Security tests exercise integrations outside the reduced-stack PoC.
-    if (env.REDUCED_STACK_TESTS == 'true') {
-      echo 'Skipping preview security tests for the reduced-stack PoC.'
-      return
+    if (env.OPTIMISED_FUNCTIONAL_TESTS == 'true') {
+      sh './bin/configure-functional-test-router.sh real'
     }
     runPreviewSecurityDiagnostics()
     generateAllureReport('test-results/security/allure-results', 'test-results/security/allure-report', 'security')
@@ -406,10 +386,6 @@ withPipeline(type, product, component) {
   }
 
   afterSuccess('smoketest:preview') {
-    if (env.REDUCED_STACK_TESTS == 'true') {
-      echo 'Skipping the full accessibility suite for the reduced-stack PoC.'
-      return
-    }
     stage('Accessibility') {
       try {
         yarnBuilder.yarn('tests:a11y:parallel')

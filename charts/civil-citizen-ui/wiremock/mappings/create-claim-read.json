@@ -13,10 +13,14 @@
       "response": {"status": 200, "headers": {"Content-Type": "application/json"}, "bodyFileName": "create-claim-submitted-claim.json"}
     },
     {
+      "name": "defendant-response-user-roles",
+      "priority": 10,
       "request": {"method": "GET", "urlPath": "/cases/1111222233335555/userCaseRoles"},
       "response": {"status": 200, "headers": {"Content-Type": "application/json"}, "jsonBody": ["[DEFENDANT]"]}
     },
     {
+      "name": "defendant-response-case-details",
+      "priority": 10,
       "request": {"method": "GET", "urlPath": "/cases/1111222233335555"},
       "response": {"status": 200, "headers": {"Content-Type": "application/json"}, "bodyFileName": "reduced-stack-defendant-claim.json"}
     }

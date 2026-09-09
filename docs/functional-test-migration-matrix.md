@@ -45,7 +45,7 @@ These guards do not invoke a CUI-facing business downstream service, so the mock
 
 ## DTSCCI-6156: create-claim party variants
 
-The five existing create-claim variants are dual-mode scenarios. Their scenario bodies, helper calls and assertions are unchanged. The `@reduced-stack` tag only selects the same source scenarios for execution against the mocked downstream configuration; `@ui-create-claim` selects them against the standard downstream configuration.
+The five existing create-claim variants keep their scenario bodies, helper calls and assertions unchanged. Their existing functional-group tags select them in the baseline run; `@mocked-functional` is internal routing metadata that moves those selected scenarios into the mocked bucket only when `pr-values:optimisedTests` is active. It does not add or remove scenarios from the baseline selection.
 
 | Dual-mode source | Assertion parity |
 | --- | --- |

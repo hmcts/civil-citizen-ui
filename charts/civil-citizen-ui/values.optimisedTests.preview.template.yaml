@@ -1,29 +1,13 @@
-# Applied by the Jenkins library when a PR has the `pr-values:mockedTests`
-# label. The standard preview and `pr-values:fullDeployment` paths are not
-# changed by this file.
+# Applied when a PR has the single `pr-values:optimisedTests` label. The full
+# preview remains deployed; WireMock is a switchable router for the functional
+# phase, not a second environment.
 
 nodejs:
   environment:
-    NODE_ENV: e2eTest
     CIVIL_SERVICE_URL: http://${SERVICE_NAME}-wiremock
     ORDNANCE_SURVEY_API_URL: http://${SERVICE_NAME}-wiremock
     ORDNANCE_SURVEY_API_KEY: mock-key
     PCQ_URL: https://${SERVICE_FQDN}
-
-# Civil Service owns the CCD, Camunda and supporting preview dependencies in
-# this chart. Disabling it collapses the selected PoC path to CUI + WireMock;
-# CUI's e2eTest configuration supplies its in-memory draft/session stores.
-civil-service:
-  enabled: false
-
-wa:
-  enabled: false
-
-servicebus:
-  enabled: false
-
-hmcsb:
-  enabled: false
 
 wiremock:
   enabled: true

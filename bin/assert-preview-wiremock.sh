@@ -44,11 +44,13 @@ assert_request() {
   fi
 }
 
-assert_request 'the claim-submission request' \
-  '{"method":"POST","urlPattern":"/cases/draft/citizen/.*/event"}' \
-  'claim-submission-count.json'
-assert_request 'the submitted-claim lookup' \
-  '{"method":"GET","urlPath":"/cases/1111222233334444"}' \
-  'claim-lookup-count.json'
+if [ "${WIREMOCK_EXPECT_CREATE_CLAIM:-false}" = 'true' ]; then
+  assert_request 'the claim-submission request' \
+    '{"method":"POST","urlPattern":"/cases/draft/citizen/.*/event"}' \
+    'claim-submission-count.json'
+  assert_request 'the submitted-claim lookup' \
+    '{"method":"GET","urlPath":"/cases/1111222233334444"}' \
+    'claim-lookup-count.json'
+fi
 
-echo 'WireMock received all expected requests and no unmatched requests.'
+echo 'WireMock received no unmatched requests and all selected contract assertions passed.'

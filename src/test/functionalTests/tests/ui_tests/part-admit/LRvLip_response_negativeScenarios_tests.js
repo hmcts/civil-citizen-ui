@@ -17,7 +17,7 @@ let claimNumber;
 let securityCode;
 
 Feature('Negative Scenarios for Defendant Response')
-  .tag('@civil-citizen-nightly @ui-part-admit @reduced-stack @mocked-functional @dual-mode-parity');
+  .tag('@civil-citizen-nightly @ui-part-admit @reduced-stack @mocked-functional');
 
 Before(async ({api}) => {
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);

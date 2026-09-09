@@ -2,12 +2,13 @@
 
 set -euo pipefail
 
-if [ "${REDUCED_STACK_TESTS:-false}" != "true" ]; then
-  yarn playwright install
-  MOCHAWESOME_REPORTFILENAME=smokeTests \
-    REPORT_DIR=test-results/smokeTest \
-    codeceptjs run-workers --suites 1 --grep @smoketest --reporter mocha-multi --verbose
-  exit $?
+yarn playwright install
+MOCHAWESOME_REPORTFILENAME=smokeTests \
+  REPORT_DIR=test-results/smokeTest \
+  codeceptjs run-workers --suites 1 --grep @smoketest --reporter mocha-multi --verbose
+
+if [ "${OPTIMISED_FUNCTIONAL_TESTS:-false}" != "true" ]; then
+  exit 0
 fi
 
 : "${TEST_URL:?TEST_URL must point to the preview CUI ingress}"
@@ -33,4 +34,4 @@ check_health() {
 check_health 'civil-citizen-ui' "${TEST_URL}/health"
 check_health 'wiremock' "${WIREMOCK_URL}/health/readiness"
 
-echo 'Reduced-stack preview health checks passed.'
+echo 'Optimised preview router health checks passed.'

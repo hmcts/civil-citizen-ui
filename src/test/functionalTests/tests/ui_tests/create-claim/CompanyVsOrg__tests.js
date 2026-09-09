@@ -9,7 +9,7 @@ const { payClaimFee } = require('../../../specClaimHelpers/dashboardNotification
 let caseData,legacyCaseReference,caseRef,selectedHWF,claimantPartyType = 'Company';
 const createGASteps = require('../../../citizenFeatures/GA/steps/createGASteps');
 
-Feature('Create Lip v Lip claim - Company vs Org').tag('@ui-create-claim @reduced-stack @mocked-functional @dual-mode-parity');
+Feature('Create Lip v Lip claim - Company vs Org').tag('@ui-create-claim @reduced-stack @mocked-functional');
 
 Scenario('Create Claim -  Company vs Org - Fast track - no interest - no hwf - GA (Ask for more time)', async ({
   I,
