@@ -15,7 +15,9 @@ wiremock:
   applicationPort: 8080
   imagePullPolicy: Always
   releaseNameOverride: ${SERVICE_NAME}-wiremock
-  ingressHost: wiremock-${SERVICE_FQDN}
+  # Jenkins administers this pod through Kubernetes; browser traffic reaches it
+  # only through CUI's internal CIVIL_SERVICE_URL. No second public ingress.
+  ingressHost: ""
   verbose: true
   volumes:
     - name: wiremock-mappings

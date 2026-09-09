@@ -190,6 +190,8 @@ def setUrls(suffix) {
       env.CIVIL_SERVICE_URL = "https://wiremock-civil-citizen-ui-pr-${CHANGE_ID}.preview.platform.hmcts.net"
       env.CIVIL_GENERAL_APPLICATIONS_URL = env.CIVIL_SERVICE_URL
       env.WIREMOCK_URL = env.CIVIL_SERVICE_URL
+      env.WIREMOCK_DEPLOYMENT = "civil-citizen-ui-pr-${CHANGE_ID}-wiremock"
+      env.WIREMOCK_NAMESPACE = 'civil'
     }
   }
   env.DM_STORE_URL = "http://dm-store-aat.service.core-compute-aat.internal"

@@ -2,19 +2,24 @@
 
 set -euo pipefail
 
-: "${WIREMOCK_URL:?WIREMOCK_URL must point to the preview WireMock ingress}"
+: "${WIREMOCK_DEPLOYMENT:?WIREMOCK_DEPLOYMENT must name the preview WireMock deployment}"
+
+wiremock_curl() {
+  local endpoint="$1"
+  shift
+  kubectl exec -n "${WIREMOCK_NAMESPACE:-civil}" "deployment/${WIREMOCK_DEPLOYMENT}" -- \
+    curl --fail --silent --show-error "$@" "http://localhost:8080${endpoint}"
+}
 
 readonly output_dir='test-results/functional/wiremock'
 mkdir -p "${output_dir}"
 readonly raw_dir="$(mktemp -d "${TMPDIR:-/tmp}/cui-wiremock-verification.XXXXXX")"
 trap 'rm -rf "${raw_dir}"' EXIT
 
-curl --fail --silent --show-error \
-  "${WIREMOCK_URL}/__admin/requests" \
+wiremock_curl '/__admin/requests' \
   > "${raw_dir}/all-requests.json"
 
-curl --fail --silent --show-error \
-  "${WIREMOCK_URL}/__admin/requests/unmatched" \
+wiremock_curl '/__admin/requests/unmatched' \
   > "${raw_dir}/unmatched-requests.json"
 
 unmatched_count=$(jq '.requests | length' "${raw_dir}/unmatched-requests.json")
@@ -32,10 +37,9 @@ assert_request() {
   local response_file="$3"
   local count
 
-  curl --fail --silent --show-error \
+  wiremock_curl '/__admin/requests/count' \
     --header 'Content-Type: application/json' \
     --data "${pattern}" \
-    "${WIREMOCK_URL}/__admin/requests/count" \
     > "${output_dir}/${response_file}"
   count=$(jq -r '.count' "${output_dir}/${response_file}")
   if [ "${count}" -lt 1 ]; then
