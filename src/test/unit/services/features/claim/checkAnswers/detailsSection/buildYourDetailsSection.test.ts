@@ -49,7 +49,7 @@ describe('Cirizen Details Section', () => {
     expect(summarySections.summaryList.rows[0].value.html).toBe(`${FULL_NAME} T/A ${claim.applicant1.partyDetails.soleTraderTradingAs}`);
     expect(summarySections.summaryList.rows[1].value.html).toBe('test');
     expect(summarySections.summaryList.rows[2].value.html).toBe('contact');
-    expect(summarySections.summaryList.rows[3].value.html).toBe('Test street<br>London<br>123');
+    expect(summarySections.summaryList.rows[3].value.html).toBe('Test street<br>N1<br>London<br>123');
   });
 
   it('should return your details summary sections', async () => {

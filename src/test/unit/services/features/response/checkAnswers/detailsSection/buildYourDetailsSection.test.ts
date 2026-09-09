@@ -79,6 +79,21 @@ describe('Cirizen Details Section', () => {
     //Then
     expect(summarySections.sections[constVal.INDEX_DETAILS_SECTION].summaryList.rows[2].value.html).toBe(CORRESPONDENCE_ADDRESS);
   });
+  it('should return multi-line address when it exists', async () => {
+    //Given
+    const claim = createClaimWithIndividualDetails();
+    claim.respondent1.partyDetails.primaryAddress = {
+      addressLine1: 'line 1',
+      addressLine2: 'line 2',
+      addressLine3: 'line 3',
+      city: 'city',
+      postCode: 'postcode',
+    };
+    //When
+    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'en');
+    //Then
+    expect(summarySections.sections[constVal.INDEX_DETAILS_SECTION].summaryList.rows[1].value.html).toBe('line 1<br>line 2<br>line 3<br>city<br>postcode');
+  });
   it('should return phone contact when it exists', async () => {
     //Given
     const claim = createClaimWithIndividualDetailsWithPartyPhoneNotExist();

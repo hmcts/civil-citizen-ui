@@ -60,6 +60,21 @@ describe('Citizen Details Section', () => {
     expect(summarySections.summaryList.rows[5].value.html).toBe(EMAIL_ADDRESS);
     expect(summarySections.summaryList.rows[6].value.html).toBe(CONTACT_NUMBER);
   });
+  it('should build Their Details Section with multi-line address', async () => {
+    //Given
+    const claim = createClaimWithIndividualDetails();
+    claim.respondent1.partyDetails.primaryAddress = {
+      addressLine1: 'line 1',
+      addressLine2: 'line 2',
+      addressLine3: 'line 3',
+      city: 'city',
+      postCode: 'postcode',
+    };
+    //When
+    const summarySections = await buildTheirDetailsSection(claim, CLAIM_ID, 'en');
+    //Then
+    expect(summarySections.summaryList.rows[1].value.html).toBe('line 1<br>line 2<br>line 3<br>city<br>postcode');
+  });
   it('should build Their Details Section with DOB', async () => {
     //Given
     const claim = createClaimWithIndividualDetails();

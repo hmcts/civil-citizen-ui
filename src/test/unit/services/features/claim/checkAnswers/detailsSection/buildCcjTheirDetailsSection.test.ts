@@ -50,6 +50,22 @@ describe('Citizen Details Section', () => {
     expect(summarySections.sections[0].summaryList.rows[1].value.html).toBe(address);
   });
 
+  it('should return address with multi-lines when it exists', async () => {
+    //Given
+    const claim = createClaimWithIndividualDetails();
+    claim.respondent1.partyDetails.primaryAddress = {
+      addressLine1: 'line 1',
+      addressLine2: 'line 2',
+      addressLine3: 'line 3',
+      city: 'city',
+      postCode: 'postcode',
+    };
+    //When
+    const summarySections = await getSummarySections(CLAIM_ID, claim, 'en');
+    //Then
+    expect(summarySections.sections[0].summaryList.rows[1].value.html).toBe('line 1<br>line 2<br>line 3<br>city<br>postcode');
+  });
+
   it('should return full name of a person when full name is present', async () => {
     //Given
     const claim = createClaimWithIndividualDetails();
