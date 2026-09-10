@@ -351,6 +351,9 @@ withPipeline(type, product, component) {
 
   before('functionalTest:preview') {
     env.IDAM_STUB_ENABLED='false'
+    // Preserve reports and timings before JUnit fails the preview build. Without
+    // this, the shell exits first and the ephemeral test agent loses the evidence.
+    env.DEFER_FUNCTIONAL_FAILURE_TO_JUNIT='true'
     copyPreviousAllureHistory()
     if(checkForSkipFunctionalTests(env.BRANCH_NAME)) {
       env.SKIP_FUNCTIONAL_TESTS = true

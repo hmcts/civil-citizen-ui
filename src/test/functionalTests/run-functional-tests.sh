@@ -80,25 +80,33 @@ publish_functional_failure_diagnostic() {
 }
 
 run_functional_command() {
-  local exit_code
+  local exit_code report_exit_code
 
   set +e
   "$@"
   exit_code=$?
   set -e
 
-  if [[ "$exit_code" -ne 0 ]]; then
+  set +e
+  assert_no_functional_report_failures
+  report_exit_code=$?
+  set -e
+
+  if [[ "$exit_code" -ne 0 ]] || [[ "$report_exit_code" -ne 0 ]]; then
     publish_functional_failure_diagnostic
   fi
-  assert_no_functional_report_failures
 
-  if [[ "$exit_code" -ne 0 ]]; then
-    exit "$exit_code"
+  if [[ "$exit_code" -ne 0 ]] || [[ "$report_exit_code" -ne 0 ]]; then
+    if [[ "${DEFER_FUNCTIONAL_FAILURE_TO_JUNIT:-false}" = "true" ]]; then
+      echo "Functional failures will be reported by the Jenkins JUnit publisher after evidence is archived."
+      return 0
+    fi
+    exit $((exit_code != 0 ? exit_code : report_exit_code))
   fi
 }
 
 run_functional_test_groups() {
-  local command
+  local command report_exit_code
 
   command="yarn test:civil-citizen-pr --grep "
   pr_ft_groups=$(echo "$PR_FT_GROUPS" | awk '{print tolower($0)}')
@@ -122,13 +130,21 @@ run_functional_test_groups() {
   exit_code=$?
   set -e
 
-  if [[ "$exit_code" -ne 0 ]]; then
+  set +e
+  assert_no_functional_report_failures
+  report_exit_code=$?
+  set -e
+
+  if [[ "$exit_code" -ne 0 ]] || [[ "$report_exit_code" -ne 0 ]]; then
     publish_functional_failure_diagnostic
   fi
-  assert_no_functional_report_failures
 
-  if [[ "$exit_code" -ne 0 ]]; then
-    exit "$exit_code"
+  if [[ "$exit_code" -ne 0 ]] || [[ "$report_exit_code" -ne 0 ]]; then
+    if [[ "${DEFER_FUNCTIONAL_FAILURE_TO_JUNIT:-false}" = "true" ]]; then
+      echo "Functional failures will be reported by the Jenkins JUnit publisher after evidence is archived."
+      return 0
+    fi
+    exit $((exit_code != 0 ? exit_code : report_exit_code))
   fi
 }
 
