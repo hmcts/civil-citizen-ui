@@ -39,8 +39,6 @@ export const createOrLoadDraftClaimInDraftStoreDb = async (
     payload: (claim || new Claim()) as unknown as Record<string, unknown>,
   };
 
-  logger.info(`[draftStoreDbService] creating draft in db for user: ${req.session?.user?.id}`);
-
   try {
     const response: AxiosResponse<DraftClaimResponse> = await axios.post<DraftClaimResponse>(
       `${civilServiceApiBaseUrl}/dashboard/draft-claims`,
@@ -48,7 +46,9 @@ export const createOrLoadDraftClaimInDraftStoreDb = async (
       {headers: getHeaders(req)},
     );
     const isNew = response.status === 201;
-    logger.info(`[draftStoreDbService] draft POST responded with status ${response.status} (isNew: ${isNew}`);
+    if (isNew) {
+      logger.info(`[draftStoreDbService] created draft ${response.data.draftId}`);
+    }
 
     return {
       claimResponse: mapToCivilClaimResponse(response.data),
@@ -62,9 +62,6 @@ export const createOrLoadDraftClaimInDraftStoreDb = async (
 };
 
 export const getActiveDraftFromDraftStoreDb = async (req: AppRequest): Promise<{ claimResponse: CivilClaimResponse; rawResponse: DraftClaimResponse} | null> => {
-  const userId = req.session?.user?.id;
-  logger.info(`[DraftStoreDbService] fetching active draft from Draft Store Db for user ${userId}`);
-
   try {
     const response = await axios.get<DraftClaimResponse>(
       `${civilServiceApiBaseUrl}/dashboard/draft-claims/active`,
@@ -77,7 +74,6 @@ export const getActiveDraftFromDraftStoreDb = async (req: AppRequest): Promise<{
     };
   } catch (err: unknown) {
     if (axios.isAxiosError(err) && err.response?.status === 404) {
-      logger.info(`[draftStoreDbService] no active draft from db found for user: ${userId}`);
       return null;
     }
     logger.error(`[draftStoreDbService] error fetching active draft from db: ${getErrorMessage(err)}`);
@@ -97,7 +93,6 @@ export const updateDraftClaimInStore = async (
   const payload: DraftClaimRequest = {
     payload: claim as unknown as Record<string, unknown>,
   };
-  logger.info(`[draftStoreDbService] updating draft ${draftId} in db`);
 
   try {
     const response = await axios.put<DraftClaimResponse>(
