@@ -115,6 +115,9 @@ run_functional_test_groups() {
 }
 
 run_functional_tests() {
+  local started elapsed
+
+  started=$SECONDS
   echo "Running all functional tests on ${ENVIRONMENT} env"
   if [[ "$ENVIRONMENT" = "aat" ]]; then
     run_functional_command yarn test:civil-citizen-master
@@ -123,6 +126,12 @@ run_functional_tests() {
   else
     run_functional_test_groups
   fi
+
+  elapsed=$((SECONDS - started))
+  mkdir -p test-results/functional
+  printf 'mode,duration_seconds\nstandard,%s\n' "$elapsed" \
+    > test-results/functional/standard-timings.csv
+  echo "Standard functional execution completed in ${elapsed}s"
 }
 
 run_failed_not_executed_functional_tests() {
@@ -299,6 +308,7 @@ NODE
 #MAIN SCRIPT
 TEST_FILES_REPORT="test-results/functional/testFilesReport.json"
 PREV_TEST_FILES_REPORT="test-results/functional/prevTestFilesReport.json"
+export REPORT_FILE="${REPORT_FILE:-test-results/functional/result-[hash].xml}"
 
 if [[ "${SKIP_FUNCTIONAL_TESTS:-false}" = "true" ]]; then
   echo "The label 'pr-values:skip-functional-tests' exists on the PR."
