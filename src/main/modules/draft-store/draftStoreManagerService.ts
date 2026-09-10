@@ -17,9 +17,6 @@ import {
 } from './draftStoreService';
 import {getCachedDraft, setCachedDraft, deleteCachedDraft} from './draftClaimRedisCache';
 
-const {Logger} = require('@hmcts/nodejs-logging');
-const logger = Logger.getLogger('draftStoreManagerService');
-
 const buildManagerResult = (
   raw: DraftClaimResponse,
   isNew?: boolean,
@@ -65,10 +62,8 @@ export const getDraftClaim = async (req: AppRequest): Promise<DraftClaimManagerR
     const cached = await getCachedDraft(userId);
 
     if (cached) {
-      logger.info(`[draftStoreManagerService] returning cached draft for user: ${userId}`);
       return buildManagerResult(cached);
     }
-    logger.info(`[draftStoreManagerService] cache miss for user: ${userId} fetching from db instead`);
     const dbResult = await getActiveDraftFromDraftStoreDb(req);
     if (!dbResult) {
       return null;
@@ -77,7 +72,6 @@ export const getDraftClaim = async (req: AppRequest): Promise<DraftClaimManagerR
     return buildManagerResult(dbResult.rawResponse);
   }
 
-  logger.info(`[draftStoreManagerService] draft claim database flag off, fetching from redis for user: ${userId}`);
   const stored = await getDraftClaimFromStore(userId, true);
   if (!stored?.case_data) {
     return null;
@@ -97,7 +91,6 @@ export const createOrLoadDraft = async (req: AppRequest, claim?: Claim): Promise
     return buildManagerResult(dbResult.rawResponse, dbResult.isNew);
   }
 
-  logger.info(`[draftStoreManagerService] draft claim database flag off, creating/loading redis draft for user: ${userId}`);
   const stored = await getDraftClaimFromStore(userId, true);
   const isNew = !stored?.case_data;
   if (isNew) {
@@ -125,7 +118,6 @@ export const updateDraftClaim = async (req: AppRequest, claim: Claim, draftId: s
     return buildManagerResult(dbResult.rawResponse);
   }
 
-  logger.info(`[draftStoreManagerService] draft claim database flag off, saving redis draft for user: ${userId}`);
   await saveDraftClaim(userId, claim, true, userId);
   const latest = await getDraftClaimFromStore(userId, true);
   return buildManagerResultFromRedis(latest);
@@ -143,6 +135,5 @@ export const deleteDraftClaim = async (req: AppRequest, draftId: string): Promis
     return;
   }
 
-  logger.info(`[draftStoreManagerService] draft claim database flag off, deleting redis draft for user: ${userId}`);
   await deleteDraftClaimFromRedis(userId);
 };
