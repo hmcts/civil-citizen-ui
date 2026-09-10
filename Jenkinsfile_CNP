@@ -324,28 +324,16 @@ withPipeline(type, product, component) {
   before('smoketest:preview') {
     setUrls("civil-citizen-ui-pr-${CHANGE_ID}")
     sh """
-          setup_step=load-preview-environment-variables
-          trap 'kubectl create configmap civil-citizen-ui-pr-${CHANGE_ID}-setup-diagnostic --namespace civil --from-literal=failed-step="\${setup_step}" --dry-run=client -o yaml | kubectl apply -f - || true' ERR
           eval \$(./bin/variables/load-preview-environment-variables.sh ${CHANGE_ID})
-          setup_step=pull-latest-civil-shared
           ./bin/pull-latest-civil-shared.sh ${getCivilServiceSharedBranch()}
-          setup_step=idam-get-tokens
           . ./bin/shared/idam-get-tokens.sh
-          setup_step=add-roles
           ./bin/shared/add-roles.sh
-          setup_step=pull-latest-camunda-files
           ./bin/pull-latest-camunda-files.sh ${getCivilServiceCamundaRef()}
-          setup_step=pull-latest-dmn-files
           ./bin/pull-latest-dmn-files.sh ${dmnBranch}
-          setup_step=pull-latest-camunda-wa-files
           ./bin/pull-latest-camunda-wa-files.sh ${waStandaloneBranch}
-          setup_step=import-ccd-definition
           ./bin/import-ccd-definition.sh "-e *-prod.json,*HNL-nonprod.json,*-shuttered.json" ${getCivilCcdDefinitionBranch()}
-          setup_step=import-ga-ccd-definition
           ./bin/import-ga-ccd-definition.sh "-e *-prod.json" ${getCivilCcdDefinitionBranch()}
-          setup_step=add-org-roles-to-users
           ./bin/shared/add-org-roles-to-users.sh
-          trap - ERR
       """
     if (env.OPTIMISED_FUNCTIONAL_TESTS == 'true') {
       sh './bin/configure-functional-test-router.sh real'
