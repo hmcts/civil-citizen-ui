@@ -67,6 +67,18 @@ assert_no_functional_report_failures() {
   ' $report_files
 }
 
+publish_functional_failure_diagnostic() {
+  local summary_file='test-results/functional/functional-failure-summary.json'
+
+  node src/test/functionalTests/diagnostics/generateFunctionalFailureSummary.js || true
+  if [[ -n "${CHANGE_ID:-}" ]] && command -v kubectl >/dev/null 2>&1 && [[ -f "$summary_file" ]]; then
+    kubectl create configmap "civil-citizen-ui-pr-${CHANGE_ID}-functional-diagnostic" \
+      --namespace civil \
+      --from-file=functional-failure-summary.json="$summary_file" \
+      --dry-run=client -o yaml | kubectl apply -f - || true
+  fi
+}
+
 run_functional_command() {
   local exit_code
 
@@ -75,6 +87,9 @@ run_functional_command() {
   exit_code=$?
   set -e
 
+  if [[ "$exit_code" -ne 0 ]]; then
+    publish_functional_failure_diagnostic
+  fi
   assert_no_functional_report_failures
 
   if [[ "$exit_code" -ne 0 ]]; then
@@ -107,6 +122,9 @@ run_functional_test_groups() {
   exit_code=$?
   set -e
 
+  if [[ "$exit_code" -ne 0 ]]; then
+    publish_functional_failure_diagnostic
+  fi
   assert_no_functional_report_failures
 
   if [[ "$exit_code" -ne 0 ]]; then
