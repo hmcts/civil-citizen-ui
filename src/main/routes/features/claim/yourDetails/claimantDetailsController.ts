@@ -18,7 +18,7 @@ import {AppRequest} from 'models/AppRequest';
 import {PartyType} from 'models/partyType';
 import {generateCorrespondenceAddressErrorMessages, PartyDetails} from 'form/models/partyDetails';
 import {Claim} from 'models/claim';
-import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {getDraftClaim} from 'modules/draft-store/draftStoreManagerService';
 import {isCarmEnabledForCase} from '../../../../app/auth/launchdarkly/launchDarklyClient';
 
 const claimantDetailsController = Router();
@@ -51,10 +51,10 @@ function renderPage(res: Response, req: Request, claimantDetails: GenericForm<Pa
 
 claimantDetailsController.get(detailsURLs, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const caseId = req.session?.user?.id;
-    const claimant: Party = await getClaimantInformation(caseId);
+    const claimant: Party = await getClaimantInformation(req);
     const claimantDetails = new GenericForm<PartyDetails>(claimant.partyDetails);
-    const claim: Claim = await getCaseDataFromStore(caseId);
+    const draftResult = await getDraftClaim(req);
+    const claim: Claim = Object.assign(new Claim(), draftResult?.claimResponse?.case_data as unknown as Claim);
     const carmEnabled = await isCarmEnabledForCase(claim.draftClaimCreatedAt);
     renderPage(res, req, claimantDetails, claimant.type, carmEnabled);
   } catch (error) {
@@ -63,12 +63,14 @@ claimantDetailsController.get(detailsURLs, (async (req: AppRequest, res: Respons
 }) as RequestHandler);
 
 claimantDetailsController.post(detailsURLs, (async (req: AppRequest | Request, res: Response, next: NextFunction) => {
-  const caseId = (<AppRequest>req).session?.user?.id;
-  const claim: Claim = await getCaseDataFromStore(caseId);
+  const appReq = req as AppRequest;
+  const caseId = appReq.session?.user?.id;
+  const draftResult = await getDraftClaim(appReq);
+  const claim: Claim = Object.assign(new Claim(), draftResult?.claimResponse?.case_data as unknown as Claim);
   const carmEnabled = await isCarmEnabledForCase(claim.draftClaimCreatedAt);
 
   try {
-    const claimant = await getClaimantInformation(caseId);
+    const claimant = await getClaimantInformation(appReq);
     const partyDetails = new GenericForm<PartyDetails>(new PartyDetails(req.body, carmEnabled));
 
     await partyDetails.validate();
@@ -77,7 +79,7 @@ claimantDetailsController.post(detailsURLs, (async (req: AppRequest | Request, r
       generateCorrespondenceAddressErrorMessages(partyDetails);
       renderPage(res, req, partyDetails, claimant.type, carmEnabled);
     } else {
-      await saveClaimantProperty(caseId, 'partyDetails', partyDetails.model);
+      await saveClaimantProperty(appReq, 'partyDetails', partyDetails.model);
 
       if (claimant.type === PartyType.COMPANY || claimant.type === PartyType.ORGANISATION) {
         res.redirect(constructResponseUrlWithIdParams(caseId, CLAIMANT_PHONE_NUMBER_URL));
