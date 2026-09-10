@@ -44,7 +44,7 @@ timelineController.post(CLAIM_TIMELINE_URL, (async (req: AppRequest, res: Respon
       ];
       res.render(timelineViewPath, {form, dates, pageTitle});
     } else {
-      await saveTimeline(req.session?.user?.id, form.model);
+      await saveTimeline(req, form.model);
       res.redirect(CLAIM_EVIDENCE_URL);
     }
   } catch (error) {

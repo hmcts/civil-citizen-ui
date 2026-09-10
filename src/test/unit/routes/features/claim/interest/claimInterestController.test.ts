@@ -10,22 +10,18 @@ import {
 } from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {getDraftClaim, updateDraftClaim} from 'modules/draft-store/draftStoreManagerService';
-import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {Claim} from 'models/claim';
 import {CivilClaimResponse} from 'models/civilClaimResponse';
 import {DraftClaimManagerResult} from 'models/draft/draftClaim';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('modules/draft-store/draftStoreManagerService');
-jest.mock('modules/draft-store/draftStoreService');
 jest.mock('routes/guards/claimIssueTaskListGuard', () => ({
   claimIssueTaskListGuard: jest.fn((req, res, next) => next()),
 }));
 
 const mockGetDraftClaim = getDraftClaim as jest.Mock;
 const mockUpdateDraftClaim = updateDraftClaim as jest.Mock;
-const mockGetCaseDataFromStore = draftStoreService.getCaseDataFromStore as jest.Mock;
-const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
 
 const createMockManagerResult = (claim: Claim): DraftClaimManagerResult => ({
   claimResponse: {
@@ -60,7 +56,6 @@ describe('Claim Interest page', () => {
     it('should return on claim interest page successfully', async () => {
       const mockClaim = new Claim();
       mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
 
       await request(app)
         .get(CLAIM_INTEREST_URL)
@@ -72,7 +67,6 @@ describe('Claim Interest page', () => {
 
     it('should return status 500 when error thrown', async () => {
       mockGetDraftClaim.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
-      mockGetCaseDataFromStore.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
 
       await request(app)
         .get(CLAIM_INTEREST_URL)
@@ -87,7 +81,6 @@ describe('Claim Interest page', () => {
     it('should return error message when no option selected', async () => {
       const mockClaim = new Claim();
       mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
 
       await request(app)
         .post(CLAIM_INTEREST_URL)
@@ -100,9 +93,7 @@ describe('Claim Interest page', () => {
     it('should redirect to the How do you want to claim interest screen when option is Yes', async () => {
       const mockClaim = new Claim();
       mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
       mockUpdateDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockSaveDraftClaim.mockResolvedValue(undefined);
 
       await request(app)
         .post(CLAIM_INTEREST_URL)
@@ -116,9 +107,7 @@ describe('Claim Interest page', () => {
     it('should redirect to the Help with fees screen when option is Yes', async () => {
       const mockClaim = new Claim();
       mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
       mockUpdateDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockSaveDraftClaim.mockResolvedValue(undefined);
 
       await request(app)
         .post(CLAIM_INTEREST_URL)
@@ -131,9 +120,7 @@ describe('Claim Interest page', () => {
 
     it('should return status 500 when error thrown', async () => {
       mockGetDraftClaim.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
-      mockGetCaseDataFromStore.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
       mockUpdateDraftClaim.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
-      mockSaveDraftClaim.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
 
       await request(app)
         .post(CLAIM_INTEREST_URL)

@@ -1,4 +1,6 @@
-import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
+import {getDraftClaim, updateDraftClaim} from '../../../../modules/draft-store/draftStoreManagerService';
+import {AppRequest} from 'models/AppRequest';
+import {Claim} from 'models/claim';
 import {AmountBreakdown} from '../../../../common/form/models/claim/amount/amountBreakdown';
 import {ClaimAmountRow} from '../../../../common/form/models/claim/amount/claimAmountRow';
 import {ClaimAmountBreakup} from '../../../../common/form/models/claimDetails';
@@ -7,9 +9,13 @@ import {roundOffTwoDecimals} from 'common/utils/dateUtils';
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantPhoneAsService');
 
-export const getClaimAmountBreakdownForm = async (claimantId: string) : Promise<AmountBreakdown> => {
+export const getClaimAmountBreakdownForm = async (req: AppRequest) : Promise<AmountBreakdown> => {
   try{
-    const claim = await getCaseDataFromStore(claimantId);
+    const draftResult = await getDraftClaim(req);
+    if (!draftResult) {
+      throw new Error('[claimAmountBreakdownService] no draft claim found');
+    }
+    const claim = Object.assign(new Claim(), draftResult.claimResponse?.case_data as unknown as Claim);
     if(!claim.claimAmountBreakup){
       return AmountBreakdown.emptyForm();
     }
@@ -21,16 +27,25 @@ export const getClaimAmountBreakdownForm = async (claimantId: string) : Promise<
 
 };
 
-export const saveClaimAmountBreakdownForm = async (claimantId: string, amountBreakdown: AmountBreakdown) => {
+export const saveClaimAmountBreakdownForm = async (req: AppRequest, amountBreakdown: AmountBreakdown) => {
   try{
     let totalClaimAmount = 0;
-    const claim = await getCaseDataFromStore(claimantId);
+    const draftResult = await getDraftClaim(req);
+    if (!draftResult) {
+      throw new Error('[claimAmountBreakdownService] no draft claim found');
+    }
+
+    const claim = Object.assign(new Claim(), draftResult.claimResponse?.case_data as unknown as Claim);
+    const draftId = req.session?.draftId || draftResult.rawResponse?.draftId;
     claim.claimAmountBreakup = amountBreakdown.getPopulatedRows().map((row) => {
       totalClaimAmount = totalClaimAmount + row.amount;
       return convertFormToJson(row);
     });
     claim.totalClaimAmount = roundOffTwoDecimals(totalClaimAmount);
-    await saveDraftClaim(claimantId, claim, false, claimantId);
+    if (draftResult.createdAt && !claim.draftClaimCreatedAt) {
+      claim.draftClaimCreatedAt = new Date(draftResult.createdAt);
+    }
+    await updateDraftClaim(req, claim, draftId);
   }catch(error){
     logger.error(error);
     throw error;
