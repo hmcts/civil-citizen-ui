@@ -118,7 +118,6 @@ describe('Breathing Space Check Answers Controller', () => {
         BreathingSpaceType.MENTAL_HEALTH,
         '',
         new Date(2024, 5, 1),
-        null,
       ),
     });
     (getClaimById as jest.Mock).mockResolvedValueOnce(caseData);
