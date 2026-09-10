@@ -1,5 +1,6 @@
 import cookieParser from 'cookie-parser';
 import express from 'express';
+import {functionalTestRouterJsonBody} from './app/functionalTestRouterProxy';
 import {app} from './app-instance';
 import * as path from 'path';
 import favicon from 'serve-favicon';
@@ -159,15 +160,16 @@ if (functionalTestRouterUrl && functionalTestRouterToken) {
     }
 
     try {
+      const body = functionalTestRouterJsonBody(Boolean(req.is('application/json')), req.body);
       const headers: Record<string, string> = {};
-      if (req.is('application/json')) {
+      if (body) {
         headers['content-type'] = 'application/json';
       }
       const method = req.method.toUpperCase();
       const response = await fetch(`${functionalTestRouterUrl}${req.url}`, {
         method,
         headers,
-        body: method === 'GET' || method === 'HEAD' ? undefined : JSON.stringify(req.body),
+        body: method === 'GET' || method === 'HEAD' ? undefined : body,
       });
       const body = await response.text();
       const contentType = response.headers.get('content-type');
