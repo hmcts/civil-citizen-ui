@@ -20,7 +20,7 @@ export const getSummaryRows = (claimId: string, claim: Claim, lang: string): Sum
     ),
     summaryRow(
       t('PAGES.BREATHING_SPACE.LIFT.WHY_LIFTED', {lng: lang}),
-      liftBreathing?.eventDescription || '',
+      liftBreathing?.reasonToLift || '',
       changeUrl,
       changeLabel,
     ),

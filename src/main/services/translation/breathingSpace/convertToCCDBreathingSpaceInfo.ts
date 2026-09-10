@@ -17,9 +17,6 @@ export const toCCDBreathingSpaceEnterInfo = (
     type: enterBreathing.type,
     reference: enterBreathing.reference,
     ...(enterBreathing.start ? {start: convertDateToStringFormat(enterBreathing.start)} : {}),
-    expectedEnd: enterBreathing.expectedEnd
-      ? convertDateToStringFormat(enterBreathing.expectedEnd)
-      : enterBreathing.expectedEnd === null ? null : undefined,
   };
 };
 
@@ -32,5 +29,6 @@ export const toCCDBreathingSpaceLiftInfo = (
 
   return {
     expectedEnd: convertDateToStringFormat(liftBreathing.expectedEnd),
+    ...(liftBreathing.reasonToLift ? {reasonToLift: liftBreathing.reasonToLift} : {}),
   };
 };

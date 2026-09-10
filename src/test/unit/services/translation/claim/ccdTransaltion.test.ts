@@ -138,9 +138,8 @@ describe('translate draft claim to ccd version for interest calculation', () => 
       BreathingSpaceType.STANDARD,
       'REF-123',
       new Date('2025-11-15'),
-      new Date('2026-01-14'),
     );
-    claim.liftBreathing = new BreathingSpaceLiftInfo(new Date('2025-12-01'));
+    claim.liftBreathing = new BreathingSpaceLiftInfo(new Date('2025-12-01'), 'Period ended');
 
     //When
     const ccdClaim = translateDraftClaimToCCDInterest(claim);
@@ -150,9 +149,18 @@ describe('translate draft claim to ccd version for interest calculation', () => 
       type: BreathingSpaceType.STANDARD,
       reference: 'REF-123',
       start: '2025-11-15',
-      expectedEnd: '2026-01-14',
     });
     expect(ccdClaim.liftBreathing).toEqual({
+      expectedEnd: '2025-12-01',
+      reasonToLift: 'Period ended',
+    });
+  });
+
+  it('should omit optional reasonToLift when it is not provided', () => {
+    const claim = new Claim();
+    claim.liftBreathing = new BreathingSpaceLiftInfo(new Date('2025-12-01'));
+
+    expect(translateDraftClaimToCCDInterest(claim).liftBreathing).toEqual({
       expectedEnd: '2025-12-01',
     });
   });
