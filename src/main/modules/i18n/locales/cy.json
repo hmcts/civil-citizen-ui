@@ -2029,7 +2029,7 @@
         "THESE_DETAILS_ARE": "Bydd y manylion hyn yn cael eu rhannu gyda'r unigolyn, y busnes neu'r sefydliad yr ydych yn ei hawlio yn ei erbyn (y diffynnydd).",
         "TITLE": "Rhowch eich manylion",
         "TRADING": "Masnachu (dewisol)",
-        "YOUR_POSTAL_ADDRESS": "Eich cyfeiriad ar gyfer postio"
+        "YOUR_POSTAL_ADDRESS": "Eich cyfeiriad"
       },
       "CONTINUE_CLAIMING_INTEREST": {
         "PAGE_TITLE": "Parhau i hawlio llog",
@@ -5366,8 +5366,8 @@
       "DETERMINATION_REQUEST": "Cais am Benderfyniad â Llaw",
       "TRANSLATED_DETERMINATION_REQUEST": "Cais am Benderfyniad â Llaw wedi’i Gyfieithu",
       "DRAFT_CLAIM": "Ffurflen hawlio drafft",
-      "FINAL_ORDER": "Cais am Orchymyn Terfynol",
-      "TRANSLATED_FINAL_ORDER": "Cais am Orchymyn Terfynol wedi’i Gyfieithu",
+      "FINAL_ORDER": "Gorchymyn y Barnwr",
+      "TRANSLATED_FINAL_ORDER": "Gorchymyn y Barnwr Wedi'i Gyfieithu",
       "PAGE_CAPTION": "Gorchmynion a rhybuddion gan y llys",
       "PAGE_TITLE": "Gweld gorchmynion a rhybuddion",
       "PARTICULARS_CLAIM": "Manylion yr hawliad",
