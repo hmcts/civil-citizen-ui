@@ -585,6 +585,7 @@ civil-service:
   aac-manage-case-assignment:
     enabled: true
     java:
+      startupFailureThreshold: 40
       devcpuRequests: 50m
       devcpuLimits: 200m
       devmemoryRequests: 512Mi
