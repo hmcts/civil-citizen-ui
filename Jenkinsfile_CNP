@@ -371,6 +371,12 @@ withPipeline(type, product, component) {
     collectWiremockDiagnostics()
     generateFunctionalFailureSummary()
     archiveDiagnosticArtifacts('test-results/functional/**/*', 'functional test artifacts')
+    try {
+      junit allowEmptyResults: false, testResults: 'test-results/functional/result-*.xml'
+    } catch (Exception error) {
+      echo "Failed to publish functional JUnit results. Continuing so diagnostic artifacts are preserved. Error: ${error.toString()}"
+      currentBuild.result = 'FAILURE'
+    }
 
     if (env.OPTIMISED_FUNCTIONAL_TESTS == 'true') {
       sh './bin/configure-functional-test-router.sh real'
