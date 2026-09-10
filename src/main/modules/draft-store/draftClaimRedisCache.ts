@@ -25,14 +25,11 @@ export const getCachedDraft = async (userId: string): Promise<DraftClaimResponse
 
       const ttlSeconds = calculateTtlInSeconds(parsed.expiresAt);
       if (ttlSeconds <= 0) {
-        logger.info(`[draftClaimRedisCache] cache entry for ${key} has expired. Evicting...`);
         await deleteCachedDraft(userId);
         return null;
       }
-      logger.info(`[draftClaimRedisCache] redis cache hit for key: ${key}`);
       return parsed;
     }
-    logger.info(`[draftClaimRedisCache] redis cache miss for key: ${key}`);
     return null;
   } catch (err: any) {
     logger.warn(`[draftClaimRedisCache] redis read error for key ${key}: ${getErrorMessage(err)}`);
@@ -52,7 +49,6 @@ export const setCachedDraft = async (userId: string, data: DraftClaimResponse): 
   try {
     const jsonString = JSON.stringify(data);
     await app.locals.draftStoreClient.setex(key, ttlSeconds, jsonString);
-    logger.info(`[draftClaimRedisCache] successfully cached ${key} in redis with ttl: ${ttlSeconds}`);
   } catch (err: unknown) {
     logger.warn(`[draftClaimRedisCache] failed to write cache for key ${key}: ${getErrorMessage(err)}`);
   }
@@ -62,7 +58,6 @@ export const deleteCachedDraft = async (userId: string): Promise<void> => {
   const key = getRedisKey(userId);
   try {
     await app.locals.draftStoreClient.del(key);
-    logger.info(`[draftClaimRedisCache] successfully deleted from redis: ${key}`);
   } catch (err: unknown) {
     logger.warn(`[draftClaimRedisCache] failed to delete redis cache for key ${key}: ${getErrorMessage(err)}`);
   }
