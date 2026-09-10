@@ -248,7 +248,6 @@ civil-service:
 
     am-role-assignment-service:
       java:
-        startupFailureThreshold: 40
         devmemoryRequests: 2048Mi
         devcpuRequests: 50m
         devmemoryLimits: 4096Mi
