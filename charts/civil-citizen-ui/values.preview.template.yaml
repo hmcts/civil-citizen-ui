@@ -50,7 +50,7 @@ civil-service:
   enabled: true
   java:
     applicationPort: 4000
-    startupFailureThreshold: 40
+    startupFailureThreshold: 80
     releaseNameOverride: ${SERVICE_NAME}-civil-service
     image: hmctsprod.azurecr.io/civil/service:${CIVIL_SERVICE_IMAGE}
     imagePullPolicy: Always
