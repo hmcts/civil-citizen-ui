@@ -23,5 +23,8 @@ describe('translate TimeLine to CCD model', () => {
     );
     const timelineResponseCCD = toCCDTimelineEvent(claim.claimDetails.timeline);
     expect(timelineResponseCCD).toHaveLength(2);
+    expect(timelineResponseCCD[0]?.value.timelineDay).toBe('1');
+    expect(timelineResponseCCD[0]?.value.timelineMonth).toBe('1');
+    expect(timelineResponseCCD[0]?.value.timelineYear).toBe('2001');
   });
 });
