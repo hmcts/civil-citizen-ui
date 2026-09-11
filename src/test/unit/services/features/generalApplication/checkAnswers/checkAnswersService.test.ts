@@ -141,10 +141,13 @@ describe('Check Answers service', () => {
       expect(result[0].rows.length).toEqual(3);
       expect(result[0].rows[0].key.text).toEqual('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.APPLICATION_TYPE');
       expect(result[0].rows[0].value.html).toEqual('PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.MORE_TIME');
+      expect(result[0].rows[0].actions.items[0].href).toContain('?index=0&changeScreen=true');
       expect(result[0].rows[1].key.text).toEqual('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHAT_ORDER');
       expect(result[0].rows[1].value.text).toEqual('test1');
+      expect(result[0].rows[1].actions.items[0].href).toContain('?index=0&changeScreen=true');
       expect(result[0].rows[2].key.text).toEqual('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_REQUESTING');
       expect(result[0].rows[2].value.text).toEqual('test1');
+      expect(result[0].rows[2].actions.items[0].href).toContain('?index=0&changeScreen=true');
     });
 
     it('should give correct row count for application type = SETTLE_BY_CONSENT', () => {
@@ -294,4 +297,3 @@ describe('Check Answers service', () => {
     });
   });
 });
-

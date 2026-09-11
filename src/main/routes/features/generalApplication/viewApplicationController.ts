@@ -42,7 +42,7 @@ viewApplicationController.get(GA_VIEW_APPLICATION_URL, (async (req: AppRequest, 
     const claimId = getRouteParam(req, 'id');
     const applicationId = getRouteParam(req, 'appId');
     const claim: Claim = await getClaimById(claimId, req, true);
-    const applicationIndex = queryParamNumber(req, 'index') || await getApplicationIndex(claimId, applicationId, req, true);
+    const applicationIndex = queryParamNumber(req, 'index') ?? await getApplicationIndex(claimId, applicationId, req, true);
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const applicationResponse: ApplicationResponse = await getApplicationFromGAService(req, applicationId);
     const statusRow = getStatusRow(applicationResponse, lang);

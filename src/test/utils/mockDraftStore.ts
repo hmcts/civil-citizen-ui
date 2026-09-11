@@ -29,6 +29,7 @@ import civilClaimResponseHearingFeeMock from './mocks/civilClaimResponseHearingF
 import civilClaimResponseWithFeeType from './mocks/civilClaimResponseWithFeeTypeMock.json';
 import civilClaimResponseDefendantMock from './mocks/civilClaimResponseDefendantMock.json';
 import civilClaimResponseClaimantIntentionMockNotSettle from './mocks/civilClaimResponseClaimantIntentionMockNotSettle.json';
+import {ApplicationTypeOption} from 'models/generalApplication/applicationType';
 
 import {LoggerInstance} from 'winston';
 import {Claim} from 'models/claim';
@@ -44,6 +45,48 @@ const mockDraftClaim = (claim: Claim) => ({
 const mockCivilClaim = {
   set: jest.fn(() => Promise.resolve({})),
   get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseMock))),
+  del: jest.fn(() => Promise.resolve({})),
+  ttl: jest.fn(() => Promise.resolve(-1)),
+  expireat: jest.fn(() => Promise.resolve({})),
+};
+
+const civilClaimResponseCaseData = civilClaimResponseMock.case_data as typeof civilClaimResponseMock.case_data & Partial<Claim>;
+
+const civilClaimResponseWithApplicationTypeMock = {
+  ...civilClaimResponseMock,
+  case_data: {
+    ...civilClaimResponseMock.case_data,
+    generalApplication: {
+      ...civilClaimResponseCaseData.generalApplication,
+      applicationTypes: [{option: ApplicationTypeOption.ADJOURN_HEARING}],
+    },
+  },
+};
+
+const civilClaimResponseWithApplicationTypeAndFeeMock = {
+  ...civilClaimResponseWithApplicationTypeMock,
+  case_data: {
+    ...civilClaimResponseWithApplicationTypeMock.case_data,
+    generalApplication: {
+      ...civilClaimResponseWithApplicationTypeMock.case_data.generalApplication,
+      applicationFee: {
+        calculatedAmountInPence: 5000,
+      },
+    },
+  },
+};
+
+const mockCivilClaimWithApplicationType = {
+  set: jest.fn(() => Promise.resolve({})),
+  get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseWithApplicationTypeMock))),
+  del: jest.fn(() => Promise.resolve({})),
+  ttl: jest.fn(() => Promise.resolve(-1)),
+  expireat: jest.fn(() => Promise.resolve({})),
+};
+
+const mockCivilClaimWithApplicationTypeAndFee = {
+  set: jest.fn(() => Promise.resolve({})),
+  get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseWithApplicationTypeAndFeeMock))),
   del: jest.fn(() => Promise.resolve({})),
   ttl: jest.fn(() => Promise.resolve(-1)),
   expireat: jest.fn(() => Promise.resolve({})),
@@ -271,6 +314,8 @@ const mockCivilClaimDocumentClaimantUploaded = {
 
 export {
   mockCivilClaim,
+  mockCivilClaimWithApplicationType,
+  mockCivilClaimWithApplicationTypeAndFee,
   mockCivilClaimClaimantIntention,
   mockCivilClaimUndefined,
   mockNoStatementOfMeans,

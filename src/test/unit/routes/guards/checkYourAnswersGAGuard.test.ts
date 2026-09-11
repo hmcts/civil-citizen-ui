@@ -8,7 +8,10 @@ import {OrderJudge} from 'common/models/generalApplication/orderJudge';
 import {RequestingReason} from 'common/models/generalApplication/requestingReason';
 import {NextFunction, Request, Response} from 'express';
 import {checkYourAnswersGAGuard} from 'routes/guards/checkYourAnswersGAGuard';
-import {APPLICATION_TYPE_URL} from 'routes/urls';
+import {
+  GA_AGREEMENT_FROM_OTHER_PARTY_URL,
+  GA_APPLICATION_COSTS_URL,
+} from 'routes/urls';
 import {
   UnavailableDatePeriodGaHearing,
   UnavailableDatesGaHearing,
@@ -22,6 +25,10 @@ import {GaHelpWithFees} from 'common/models/generalApplication/gaHelpWithFees';
 import {FileUpload} from 'models/caseProgression/uploadDocumentsUserForm';
 import {GenericYesNo} from 'form/models/genericYesNo';
 import {ClaimFeeData} from 'models/civilClaimResponse';
+import {
+  applicationTypeErrorUrl,
+  duplicateApplicationTypeErrorUrl,
+} from 'routes/guards/generalApplication/applicationTypeGuard';
 
 jest.mock('../../../../main/modules/draft-store');
 jest.mock('../../../../main/modules/oidc');
@@ -34,8 +41,11 @@ const MOCK_RESPONSE = { redirect: jest.fn() } as unknown as Response;
 const MOCK_NEXT = jest.fn() as NextFunction;
 
 describe('Check your Answers GA Guard', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
 
-  it('should call next if GA journey is complete', async () => {
+  it('should call next if GA journey is complete even when a CYA application type change flag is present', async () => {
     //Given
     const claim = new Claim();
     const unavailableDates =
@@ -67,6 +77,8 @@ describe('Check your Answers GA Guard', () => {
       undefined,
       YesNo.YES,
     );
+    claim.generalApplication.applicationTypeChangeInProgress = true;
+    claim.generalApplication.applicationTypeChangeIndex = 0;
 
     mockGetCaseData.mockImplementation(async () => claim);
     //When
@@ -107,6 +119,8 @@ describe('Check your Answers GA Guard', () => {
       new UploadGAFiles(n245Form),
       new GenericYesNo(YesNo.NO, 'no'),
       mockClaimFee,
+      undefined,
+      YesNo.YES,
     );
     mockGetCaseData.mockImplementation(async () => claim);
     //When
@@ -144,6 +158,8 @@ describe('Check your Answers GA Guard', () => {
       new UploadGAFiles(),
       new GenericYesNo(YesNo.YES),
       mockClaimFee,
+      undefined,
+      YesNo.YES,
     );
     mockGetCaseData.mockImplementation(async () => claim);
     //When
@@ -179,6 +195,8 @@ describe('Check your Answers GA Guard', () => {
       new UploadGAFiles(),
       new GenericYesNo(YesNo.YES),
       mockClaimFee,
+      undefined,
+      YesNo.YES,
     );
     mockGetCaseData.mockImplementation(async () => claim);
     //When
@@ -215,8 +233,12 @@ describe('Check your Answers GA Guard', () => {
       new UploadGAFiles(),
       new GenericYesNo(YesNo.YES),
       mockClaimFee,
+      undefined,
+      YesNo.YES,
     );
     claim.generalApplication.applicationTypes = [new ApplicationType(ApplicationTypeOption.STAY_THE_CLAIM), new ApplicationType(ApplicationTypeOption.STRIKE_OUT)];
+    claim.generalApplication.orderJudges = [new OrderJudge('test'), new OrderJudge('test 2')];
+    claim.generalApplication.requestingReasons = [new RequestingReason('test'), new RequestingReason('test 2')];
     mockGetCaseData.mockImplementation(async () => claim);
     //When
     await checkYourAnswersGAGuard(MOCK_REQUEST, MOCK_RESPONSE, MOCK_NEXT);
@@ -252,6 +274,8 @@ describe('Check your Answers GA Guard', () => {
       new UploadGAFiles(),
       new GenericYesNo(YesNo.YES),
       mockClaimFee,
+      undefined,
+      YesNo.YES,
     );
     claim.generalApplication.applicationTypes = [new ApplicationType(ApplicationTypeOption.SUMMARY_JUDGEMENT)];
     mockGetCaseData.mockImplementation(async () => claim);
@@ -270,13 +294,70 @@ describe('Check your Answers GA Guard', () => {
       new ApplicationType(ApplicationTypeOption.STRIKE_OUT),
       new ApplicationType(ApplicationTypeOption.OTHER_OPTION),
     ];
-    (MOCK_RESPONSE.redirect as jest.Mock).mockClear();
-    (MOCK_NEXT as jest.Mock).mockClear();
     mockGetCaseData.mockImplementation(async () => claim);
     //When
     await checkYourAnswersGAGuard(MOCK_REQUEST, MOCK_RESPONSE, MOCK_NEXT);
     //Then
-    expect(MOCK_RESPONSE.redirect).toHaveBeenCalledWith(APPLICATION_TYPE_URL.replace(':id', '123') + '?index=2');
+    expect(MOCK_RESPONSE.redirect).toHaveBeenCalledWith(applicationTypeErrorUrl('123', 2));
+    expect(MOCK_NEXT).not.toHaveBeenCalled();
+  });
+
+  it('should redirect to duplicate application type error before submitting a multi-application GA', async () => {
+    //Given
+    const claim = new Claim();
+    claim.generalApplication = new GeneralApplication();
+    claim.generalApplication.applicationTypes = [
+      new ApplicationType(ApplicationTypeOption.VARY_ORDER),
+      new ApplicationType(ApplicationTypeOption.EXTEND_TIME),
+      new ApplicationType(ApplicationTypeOption.VARY_ORDER),
+    ];
+    mockGetCaseData.mockImplementation(async () => claim);
+    //When
+    await checkYourAnswersGAGuard(MOCK_REQUEST, MOCK_RESPONSE, MOCK_NEXT);
+    //Then
+    expect(MOCK_RESPONSE.redirect).toHaveBeenCalledWith(duplicateApplicationTypeErrorUrl('123', 2));
+    expect(MOCK_NEXT).not.toHaveBeenCalled();
+  });
+
+  it('should resume the incomplete journey when a stale CYA application type change flag is present', async () => {
+    //Given
+    const claim = new Claim();
+    claim.generalApplication = new GeneralApplication();
+    claim.generalApplication.applicationTypes = [new ApplicationType(ApplicationTypeOption.EXTEND_TIME)];
+    claim.generalApplication.applicationTypeChangeInProgress = true;
+    claim.generalApplication.applicationTypeChangeIndex = 0;
+    mockGetCaseData.mockImplementation(async () => claim);
+    //When
+    await checkYourAnswersGAGuard(MOCK_REQUEST, MOCK_RESPONSE, MOCK_NEXT);
+    //Then
+    expect(MOCK_RESPONSE.redirect).toHaveBeenCalledWith(GA_AGREEMENT_FROM_OTHER_PARTY_URL.replace(':id', '123') + '?index=0');
+    expect(MOCK_NEXT).not.toHaveBeenCalled();
+  });
+
+  it('should resume at agreement from other party when journey is incomplete but application type exists', async () => {
+    //Given
+    const claim = new Claim();
+    claim.generalApplication = new GeneralApplication();
+    claim.generalApplication.applicationTypes = [new ApplicationType(ApplicationTypeOption.EXTEND_TIME)];
+    mockGetCaseData.mockImplementation(async () => claim);
+    //When
+    await checkYourAnswersGAGuard(MOCK_REQUEST, MOCK_RESPONSE, MOCK_NEXT);
+    //Then
+    expect(MOCK_RESPONSE.redirect).toHaveBeenCalledWith(GA_AGREEMENT_FROM_OTHER_PARTY_URL.replace(':id', '123') + '?index=0');
+    expect(MOCK_NEXT).not.toHaveBeenCalled();
+  });
+
+  it('should resume at application costs when the selected type exists but fee has been reset', async () => {
+    //Given
+    const claim = new Claim();
+    claim.generalApplication = new GeneralApplication();
+    claim.generalApplication.applicationTypes = [new ApplicationType(ApplicationTypeOption.EXTEND_TIME)];
+    claim.generalApplication.agreementFromOtherParty = YesNo.YES;
+    mockGetCaseData.mockImplementation(async () => claim);
+    //When
+    await checkYourAnswersGAGuard(MOCK_REQUEST, MOCK_RESPONSE, MOCK_NEXT);
+    //Then
+    expect(MOCK_RESPONSE.redirect).toHaveBeenCalledWith(GA_APPLICATION_COSTS_URL.replace(':id', '123') + '?index=0');
     expect(MOCK_NEXT).not.toHaveBeenCalled();
   });
 
@@ -313,6 +394,6 @@ describe('Check your Answers GA Guard', () => {
     //When
     await checkYourAnswersGAGuard(MOCK_REQUEST, MOCK_RESPONSE, MOCK_NEXT);
     //Then
-    expect(MOCK_RESPONSE.redirect).toHaveBeenCalled();
+    expect(MOCK_RESPONSE.redirect).toHaveBeenCalledWith(applicationTypeErrorUrl('123'));
   });
 });

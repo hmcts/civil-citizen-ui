@@ -6,11 +6,15 @@ import {
   getApplicationStatus,
   getByIndex,
   getByIndexOrLast,
+  getClaimApplicationCostNextUrl,
   getCancelUrl,
   getDynamicHeaderForMultipleApplications,
+  getRequestingReasonNextUrl,
   getViewApplicationUrl,
   isConfirmYouPaidCCJAppType,
   removeAllOtherApplications,
+  resolveApplicationTypeIndexForGet,
+  resolveApplicationTypeIndexForPost,
   resetClaimDataByApplicationType,
   saveAcceptDefendantOffer,
   saveAdditionalText,
@@ -31,7 +35,7 @@ import {
   saveWrittenRepText,
   shouldDisplaySyncWarning,
   updateByIndexOrAppend,
-  validateAdditionalApplicationtType,
+  validateAdditionalApplicationType,
 } from 'services/features/generalApplication/generalApplicationService';
 import * as gaResponseDraftService
   from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
@@ -39,7 +43,7 @@ import {
   getDraftGARespondentResponse,
   saveDraftGARespondentResponse,
 } from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
-import {ApplicationType, ApplicationTypeOption} from 'common/models/generalApplication/applicationType';
+import {ApplicationType, ApplicationTypeOption, LinkFromValues} from 'common/models/generalApplication/applicationType';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {GeneralApplication} from 'common/models/generalApplication/GeneralApplication';
 import {CaseRole} from 'common/form/models/caseRoles';
@@ -47,7 +51,7 @@ import {RequestingReason} from 'models/generalApplication/requestingReason';
 import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
 import {GaResponse} from 'common/models/generalApplication/response/gaResponse';
 import {YesNo, YesNoUpperCamelCase} from 'common/form/models/yesNo';
-import {CANCEL_URL} from 'routes/urls';
+import {CANCEL_URL, GA_ADD_ANOTHER_APPLICATION_URL, GA_CHECK_ANSWERS_URL, ORDER_JUDGE_URL} from 'routes/urls';
 import {HearingSupport, SupportType} from 'models/generalApplication/hearingSupport';
 import {HearingArrangement, HearingTypeOptions} from 'models/generalApplication/hearingArrangement';
 import {HearingContactDetails} from 'models/generalApplication/hearingContactDetails';
@@ -172,6 +176,36 @@ describe('General Application service', () => {
       //Then
       expect(spy).toBeCalled();
     });
+    it('should reset dependent answers when an existing application type is changed', async () => {
+      //Given
+      const mockSaveClaim = draftStoreService.saveDraftClaim as jest.Mock;
+      mockSaveClaim.mockResolvedValue(undefined);
+      const claim = new Claim();
+      claim.generalApplication = new GeneralApplication();
+      claim.generalApplication.applicationTypes = [new ApplicationType(ApplicationTypeOption.EXTEND_TIME)];
+      claim.generalApplication.agreementFromOtherParty = YesNo.YES;
+      claim.generalApplication.informOtherParties = new InformOtherParties(YesNo.YES);
+      claim.generalApplication.applicationCosts = YesNo.YES;
+      claim.generalApplication.applicationFee = {
+        calculatedAmountInPence: 5000,
+        code: '123',
+        version: 1,
+      };
+      claim.generalApplication.statementOfTruth = {signed: true, name: 'Applicant'};
+      claim.generalApplication.orderJudges = [new OrderJudge('old order')];
+      claim.generalApplication.requestingReasons = [new RequestingReason('old reason')];
+      //When
+      await saveApplicationType('123', claim, new ApplicationType(ApplicationTypeOption.ADJOURN_HEARING), 0);
+      //Then
+      expect(claim.generalApplication.applicationTypes[0].option).toEqual(ApplicationTypeOption.ADJOURN_HEARING);
+      expect(claim.generalApplication.agreementFromOtherParty).toBeUndefined();
+      expect(claim.generalApplication.informOtherParties).toBeUndefined();
+      expect(claim.generalApplication.applicationCosts).toBeUndefined();
+      expect(claim.generalApplication.applicationFee).toBeUndefined();
+      expect(claim.generalApplication.statementOfTruth).toBeUndefined();
+      expect(claim.generalApplication.orderJudges[0].text).toBeUndefined();
+      expect(claim.generalApplication.requestingReasons[0].text).toBeUndefined();
+    });
     it('should not save UI-only OTHER_OPTION as an application type', async () => {
       //Given
       const mockSaveClaim = draftStoreService.saveDraftClaim as jest.Mock;
@@ -192,6 +226,19 @@ describe('General Application service', () => {
       mockSaveClaim.mockResolvedValue(undefined);
       //Then
       await expect(saveApplicationType('123', claim, new ApplicationType(ApplicationTypeOption.STRIKE_OUT), 1)).rejects.toThrow('Invalid general application type selected');
+      expect(mockSaveClaim).not.toBeCalled();
+    });
+    it('should not save duplicate application types', async () => {
+      //Given
+      const claim = new Claim();
+      claim.generalApplication = new GeneralApplication();
+      claim.generalApplication.applicationTypes = [
+        new ApplicationType(ApplicationTypeOption.VARY_ORDER),
+      ];
+      const mockSaveClaim = draftStoreService.saveDraftClaim as jest.Mock;
+      mockSaveClaim.mockResolvedValue(undefined);
+      //Then
+      await expect(saveApplicationType('123', claim, new ApplicationType(ApplicationTypeOption.VARY_ORDER), 1)).rejects.toThrow('Invalid general application type selected');
       expect(mockSaveClaim).not.toBeCalled();
     });
     it('should throw error when draft store throws error', async () => {
@@ -524,6 +571,49 @@ describe('General Application service', () => {
       });
   });
 
+  describe('next URL index handling', () => {
+    const claim = new Claim();
+    claim.generalApplication = new GeneralApplication();
+    claim.generalApplication.applicationTypes = [
+      new ApplicationType(ApplicationTypeOption.EXTEND_TIME),
+      new ApplicationType(ApplicationTypeOption.STRIKE_OUT),
+    ];
+    const req = {
+      params: {id: '123'},
+      query: {index: '0'},
+    } as unknown as AppRequest;
+
+    it('should keep index 0 in requesting reason next URL', () => {
+      expect(getRequestingReasonNextUrl(req, claim)).toEqual(`${GA_ADD_ANOTHER_APPLICATION_URL.replace(':id', '123')}?index=0`);
+    });
+
+    it('should return check your answers URL from CYA change screen when the fee is still valid', () => {
+      const changeScreenReq = {
+        params: {id: '123'},
+        query: {index: '0', changeScreen: 'true'},
+      } as unknown as AppRequest;
+      claim.generalApplication.applicationFee = {
+        calculatedAmountInPence: 5000,
+      };
+
+      expect(getRequestingReasonNextUrl(changeScreenReq, claim)).toEqual(GA_CHECK_ANSWERS_URL.replace(':id', '123'));
+      delete claim.generalApplication.applicationFee;
+    });
+
+    it('should continue the journey from CYA change screen when the application fee has been reset', () => {
+      const changeScreenReq = {
+        params: {id: '123'},
+        query: {index: '0', changeScreen: 'true'},
+      } as unknown as AppRequest;
+
+      expect(getRequestingReasonNextUrl(changeScreenReq, claim)).toEqual(`${GA_ADD_ANOTHER_APPLICATION_URL.replace(':id', '123')}?index=0`);
+    });
+
+    it('should keep index 0 in claim application cost next URL', () => {
+      expect(getClaimApplicationCostNextUrl(req, claim)).toEqual(`${ORDER_JUDGE_URL.replace(':id', '123')}?index=0`);
+    });
+  });
+
   describe('Get by index or last', () => {
     it.each`
       list           | index              | expected
@@ -554,6 +644,40 @@ describe('General Application service', () => {
       ({ list, index, expected }) => {
         expect(getByIndex(list, index)).toEqual(expected);
       });
+  });
+
+  describe('Resolve application type index', () => {
+    const buildClaim = (applicationTypes: ApplicationTypeOption[]): Claim => {
+      const claim = new Claim();
+      claim.generalApplication = new GeneralApplication();
+      claim.generalApplication.applicationTypes = applicationTypes.map((applicationType) => new ApplicationType(applicationType));
+      return claim;
+    };
+
+    it.each`
+      query                                            | applicationTypes                                                        | expected
+      ${{index: '2'}}                                  | ${[ApplicationTypeOption.EXTEND_TIME]}                                  | ${2}
+      ${{}}                                            | ${[ApplicationTypeOption.EXTEND_TIME]}                                  | ${0}
+      ${{linkFrom: LinkFromValues.addAnotherApp}}      | ${[ApplicationTypeOption.EXTEND_TIME]}                                  | ${undefined}
+      ${{}}                                            | ${[ApplicationTypeOption.EXTEND_TIME, ApplicationTypeOption.STRIKE_OUT]} | ${undefined}
+    `('should resolve GET application index as $expected', ({ query, applicationTypes, expected }) => {
+      const req = {query} as unknown as AppRequest;
+
+      expect(resolveApplicationTypeIndexForGet(req, buildClaim(applicationTypes))).toEqual(expected);
+    });
+
+    it.each`
+      query                                            | applicationTypes                                                        | expected
+      ${{index: '2'}}                                  | ${[ApplicationTypeOption.EXTEND_TIME]}                                  | ${2}
+      ${{}}                                            | ${[ApplicationTypeOption.EXTEND_TIME]}                                  | ${0}
+      ${{linkFrom: LinkFromValues.addAnotherApp}}      | ${[ApplicationTypeOption.EXTEND_TIME]}                                  | ${undefined}
+      ${{linkFrom: LinkFromValues.addAnotherApp}}      | ${[ApplicationTypeOption.EXTEND_TIME, ApplicationTypeOption.STRIKE_OUT]} | ${1}
+      ${{}}                                            | ${[ApplicationTypeOption.EXTEND_TIME, ApplicationTypeOption.STRIKE_OUT]} | ${undefined}
+    `('should resolve POST application index as $expected', ({ query, applicationTypes, expected }) => {
+      const req = {query} as unknown as AppRequest;
+
+      expect(resolveApplicationTypeIndexForPost(req, buildClaim(applicationTypes))).toEqual(expected);
+    });
   });
 
   describe('Update by index or append', () => {
@@ -611,6 +735,27 @@ describe('General Application service', () => {
   });
 
   describe('Validate additional application type', () => {
+    it('should return error message if additional application type is already selected', () => {
+
+      //Given
+      const claim = new Claim();
+      claim.generalApplication = new GeneralApplication();
+      claim.generalApplication.applicationTypes = [new ApplicationType(ApplicationTypeOption.VARY_ORDER)];
+      const errors : ValidationError[] = [];
+      const applicationType = new ApplicationType(ApplicationTypeOption.VARY_ORDER);
+      const body = {
+        optionOther: 'test',
+        option: ApplicationTypeOption.VARY_ORDER,
+      };
+      //When
+      validateAdditionalApplicationType(claim, errors, applicationType, body, 1);
+
+      //Then
+      const error : ValidationError = errors[0];
+      expect(errors.length).toBe(1);
+      expect(error.constraints['duplicateApplicationError']).toBe('ERRORS.GENERAL_APPLICATION.ADDITIONAL_APPLICATION_DUPLICATE');
+    });
+
     it('should return error message if additional application type is in excluded list', () => {
 
       //Given
@@ -624,7 +769,7 @@ describe('General Application service', () => {
         option: 'testOption',
       };
       //When
-      validateAdditionalApplicationtType(claim, errors, applicationType,body);
+      validateAdditionalApplicationType(claim, errors, applicationType, body, 1);
 
       //Then
       const error : ValidationError = errors[0];
@@ -647,7 +792,7 @@ describe('General Application service', () => {
         option: 'testOption',
       };
       //When
-      validateAdditionalApplicationtType(claim, errors, applicationType,body);
+      validateAdditionalApplicationType(claim, errors, applicationType, body, 0);
 
       //Then
       const error : ValidationError = errors[0];

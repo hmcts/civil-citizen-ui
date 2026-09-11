@@ -41,7 +41,7 @@ gaUnavailabilityDatesConfirmationController.get(GA_UNAVAILABILITY_CONFIRMATION_U
   try {
     const claimId = getRouteParam(req, 'id');
     const claim = await getClaimById(claimId, req, true);
-    const index  = queryParamNumber(req, 'index') || claim.generalApplication.applicationTypes.length - 1;
+    const index  = queryParamNumber(req, 'index') ?? claim.generalApplication.applicationTypes.length - 1;
     const form = new GenericForm(new GenericYesNo(claim.generalApplication?.hasUnavailableDatesHearing));
     await renderView(claimId, claim, form, res, req, index);
   } catch (error) {
@@ -54,7 +54,7 @@ gaUnavailabilityDatesConfirmationController.post(GA_UNAVAILABILITY_CONFIRMATION_
     const claimId = getRouteParam(req, 'id');
     const optionSelected = req.body.option;
     const claim = await getClaimById(claimId, req, true);
-    const index  = queryParamNumber(req, 'index') || claim.generalApplication.applicationTypes.length - 1;
+    const index  = queryParamNumber(req, 'index') ?? claim.generalApplication.applicationTypes.length - 1;
     const form = new GenericForm(new GenericYesNo(optionSelected, 'ERRORS.GENERAL_APPLICATION.ERROR_UNAVAILABLE_DATE_CONFIRMATION'));
     await form.validate();
     if (form.hasErrors()) {

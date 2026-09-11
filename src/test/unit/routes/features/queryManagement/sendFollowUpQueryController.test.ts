@@ -8,7 +8,7 @@ import {deleteQueryManagement, getQueryManagement} from 'services/features/query
 import {QueryManagement} from 'form/models/queryManagement/queryManagement';
 import * as queryManagementService from 'services/features/queryManagement/queryManagementService';
 import {SendFollowUpQuery} from 'models/queryManagement/sendFollowUpQuery';
-import {LinKFromValues} from 'models/generalApplication/applicationType';
+import {LinkFromValues} from 'models/generalApplication/applicationType';
 import * as QueryManagementService from 'services/features/queryManagement/queryManagementService';
 
 jest.mock('../../../../../main/modules/oidc');
@@ -56,7 +56,7 @@ describe('Send follow query controller', () => {
       queryManagementMock.mockResolvedValue(claim.queryManagement);
 
       await request(app)
-        .get(QM_FOLLOW_UP_MESSAGE + `?linkFrom=${LinKFromValues.start}`)
+        .get(QM_FOLLOW_UP_MESSAGE + `?linkFrom=${LinkFromValues.start}`)
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(deleteQueryManagement).toHaveBeenCalledTimes(1);

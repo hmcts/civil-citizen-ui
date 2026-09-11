@@ -21,7 +21,7 @@ import {
 import {GaHelpWithFees} from 'models/generalApplication/gaHelpWithFees';
 import {getDraftGAHWFDetails, saveDraftGAHWFDetails} from 'modules/draft-store/gaHwFeesDraftStore';
 import {getClaimById} from 'modules/utilityService';
-import {GeneralApplication} from 'models/generalApplication/GeneralApplication';
+import {toGeneralApplication} from 'models/generalApplication/GeneralApplication';
 import {convertToPoundsFilter} from 'common/utils/currencyFormat';
 import {saveUserId} from 'modules/draft-store/paymentSessionStoreService';
 import {getRouteParam} from 'common/utils/routeParamUtils';
@@ -58,7 +58,7 @@ export const getRedirectUrl = async (claimId: string, applyHelpWithFees: Generic
         paymentRedirectInformation = claim.generalApplication.applicationFeePaymentDetails;
       } else {
         paymentRedirectInformation = await getGaFeePaymentRedirectInformation(generalApplicationId, req);
-        claim.generalApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
+        claim.generalApplication = toGeneralApplication(claim.generalApplication);
         claim.generalApplication.applicationFeePaymentDetails = paymentRedirectInformation;
       }
       await saveDraftClaim(generateRedisKey(req), claim, true, req.session.user?.id);

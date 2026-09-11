@@ -45,7 +45,7 @@ export const addApplicationTypeRow = (
     const applicationType = claim.generalApplication.applicationTypes[appTypeIndex];
     const applicationTypeDisplay =
       getApplicationTypeOptionByTypeAndDescription(applicationType.option, ApplicationTypeOptionSelection.BY_APPLICATION_TYPE);
-    const href = `${constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL)}?index=${appTypeIndex}`;
+    const href = `${constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL)}?index=${appTypeIndex}&changeScreen=true`;
     rows.push(summaryRow(
       t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.APPLICATION_TYPE', {lng}),
       t(applicationTypeDisplay, {lng}),
@@ -116,7 +116,7 @@ export const addOrderJudgeRow = (claimId: string, claim: Claim, orderJudgeIndex:
   const rows: SummaryRow[] = [];
   if (claim.generalApplication?.orderJudges?.length > orderJudgeIndex) {
     const orderJudge = claim.generalApplication.orderJudges[orderJudgeIndex];
-    const href = `${constructResponseUrlWithIdParams(claimId, ORDER_JUDGE_URL)}?index=${orderJudgeIndex}`;
+    const href = `${constructResponseUrlWithIdParams(claimId, ORDER_JUDGE_URL)}?index=${orderJudgeIndex}&changeScreen=true`;
     rows.push(
       summaryRowWithTextValue(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHAT_ORDER', {lng}), orderJudge.text,
         href, changeLabel(), undefined),
@@ -131,7 +131,7 @@ export const addRequestingReasonRow = (claimId: string, claim: Claim, requesting
   const rows: SummaryRow[] = [];
   if (claim.generalApplication?.requestingReasons?.length > requestingReasonIndex) {
     const requestingReason = claim.generalApplication.requestingReasons[requestingReasonIndex];
-    const href = `${constructResponseUrlWithIdParams(claimId, GA_REQUESTING_REASON_URL)}?index=${requestingReasonIndex}`;
+    const href = `${constructResponseUrlWithIdParams(claimId, GA_REQUESTING_REASON_URL)}?index=${requestingReasonIndex}&changeScreen=true`;
     rows.push(
       summaryRowWithTextValue(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHY_REQUESTING', {lng}), requestingReason.text,
         href, changeLabel(), undefined),
