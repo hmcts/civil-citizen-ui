@@ -6,6 +6,9 @@ import {app} from '../../../../../../main/app';
 import {mockCivilClaim} from '../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {PAY_CLAIM_FEE_SUCCESSFUL_URL, PAY_CLAIM_FEE_UNSUCCESSFUL_URL, DASHBOARD_URL} from 'routes/urls';
+import {Claim} from 'models/claim';
+import {ClaimDetails} from 'form/models/claim/details/claimDetails';
+import {PaymentInformation} from 'models/feePayment/paymentInformation';
 
 jest.mock('modules/draft-store');
 jest.mock('services/features/directionsQuestionnaire/directionQuestionnaireService');
@@ -18,6 +21,21 @@ describe('Claim Fee PaymentConfirmation Service', () => {
   mockedAppRequest.params = {id: '123'};
   app.locals.draftStoreClient = mockCivilClaim;
   jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
+
+  const claimWithPaymentReference = (paymentReference?: string): Claim => {
+    const claim = new Claim();
+    claim.claimDetails = new ClaimDetails();
+    if (paymentReference) {
+      claim.claimDetails.claimFeePayment = new PaymentInformation(undefined, paymentReference);
+    }
+    return claim;
+  };
+
+  beforeEach(() => {
+    jest.spyOn(draftStoreService, 'getCaseDataFromStore').mockResolvedValue(
+      claimWithPaymentReference('RC-1701-0909-0602-0418'),
+    );
+  });
 
   it('should return to payment successful screen if payment is successful', async () => {
     const mockclaimFeePaymentInfo = {
@@ -75,6 +93,16 @@ describe('Claim Fee PaymentConfirmation Service', () => {
     await expect(getRedirectUrl(claimId, mockedAppRequest)).rejects.toBe(
       TestMessages.SOMETHING_WENT_WRONG,
     );
+  });
+
+  it('should return to Payment Unsuccessful page when payment reference is missing', async () => {
+    jest.spyOn(draftStoreService, 'getCaseDataFromStore').mockResolvedValueOnce(claimWithPaymentReference());
+    const getFeePaymentStatus = jest.spyOn(CivilServiceClient.prototype, 'getFeePaymentStatus');
+
+    const actualPaymentRedirectUrl = await getRedirectUrl(claimId, mockedAppRequest);
+
+    expect(actualPaymentRedirectUrl).toBe(PAY_CLAIM_FEE_UNSUCCESSFUL_URL);
+    expect(getFeePaymentStatus).not.toHaveBeenCalled();
   });
 
 });
