@@ -30,10 +30,13 @@ done
 case "$profile" in
   real)
     : "${REAL_CIVIL_SERVICE_URL:?REAL_CIVIL_SERVICE_URL must point to the preview Civil Service ingress}"
-    wiremock_curl '/__admin/mappings' -X DELETE >/dev/null
+    # Static mappings are mounted from a read-only ConfigMap, so WireMock cannot
+    # service DELETE /__admin/mappings. Reset removes the previous dynamic proxy,
+    # then priority 0 makes the real-service proxy outrank every packaged mock.
+    wiremock_curl '/__admin/mappings/reset' -X POST >/dev/null
     wiremock_curl '/__admin/mappings' -X POST \
       -H 'Content-Type: application/json' \
-      -d "$(jq -n --arg target "$REAL_CIVIL_SERVICE_URL" '{priority: 100, request: {urlPattern: ".*"}, response: {proxyBaseUrl: $target}}')" >/dev/null
+      -d "$(jq -n --arg target "$REAL_CIVIL_SERVICE_URL" '{priority: 0, request: {urlPattern: ".*"}, response: {proxyBaseUrl: $target}}')" >/dev/null
     ;;
   mocked)
     wiremock_curl '/__admin/mappings/reset' -X POST >/dev/null

@@ -7,6 +7,6 @@ describe('functionalTestRouterJsonBody', () => {
   });
 
   it('serializes a JSON mapping payload', () => {
-    expect(functionalTestRouterJsonBody(true, {priority: 100})).toBe('{"priority":100}');
+    expect(functionalTestRouterJsonBody(true, {priority: 0})).toBe('{"priority":0}');
   });
 });
