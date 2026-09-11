@@ -280,6 +280,21 @@ def runPreviewSecurityDiagnostics() {
   }
 }
 
+def publishPreviewPipelinePhase(String phase) {
+  try {
+    sh """
+      kubectl create configmap civil-citizen-ui-pr-${CHANGE_ID}-pipeline-phase \
+        --namespace civil \
+        --from-literal=buildNumber=${BUILD_NUMBER} \
+        --from-literal=commitSha=${GIT_COMMIT} \
+        --from-literal=phase=${phase} \
+        --dry-run=client -o yaml | kubectl apply -f -
+    """
+  } catch (Exception error) {
+    echo "Failed to retain preview pipeline phase '${phase}'. Continuing. Error: ${error.toString()}"
+  }
+}
+
 withPipeline(type, product, component) {
   pipelineConf = config
   disableLegacyDeployment()
@@ -348,6 +363,7 @@ withPipeline(type, product, component) {
 
 
   before('functionalTest:preview') {
+    publishPreviewPipelinePhase('functional-starting')
     env.IDAM_STUB_ENABLED='false'
     // Preserve reports and timings before JUnit fails the preview build. Without
     // this, the shell exits first and the ephemeral test agent loses the evidence.
@@ -398,7 +414,9 @@ withPipeline(type, product, component) {
   afterSuccess('smoketest:preview') {
     stage('Accessibility') {
       try {
+        publishPreviewPipelinePhase('accessibility-running')
         yarnBuilder.yarn('tests:a11y:parallel')
+        publishPreviewPipelinePhase('accessibility-completed')
       } catch (Exception error) {
         throw error
       } finally {
