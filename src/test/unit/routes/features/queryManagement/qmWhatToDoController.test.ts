@@ -1,152 +1,92 @@
-import request from 'supertest';
-import {app} from '../../../../../main/app';
-import nock from 'nock';
-import config from 'config';
-import {
-  QM_INFORMATION_URL, QM_SHARE_QUERY_CONFIRMATION, QM_WHAT_DO_YOU_WANT_TO_DO_URL,
-} from 'routes/urls';
-import {TestMessages} from '../../../../utils/errorMessageTestConstants';
+import {Request, Response} from 'express';
+import qmWhatToDoController from '../../../../../main/routes/features/queryManagement/qmWhatToDoController';
+import {QM_INFORMATION_URL, QM_SHARE_QUERY_CONFIRMATION} from 'routes/urls';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
-import {Claim} from 'models/claim';
-import {getCaption, getQueryManagement, saveQueryManagement} from 'services/features/queryManagement/queryManagementService';
-import {QualifyingQuestionTypeOption, QueryManagement, WhatToDoTypeOption} from 'form/models/queryManagement/queryManagement';
+import {
+  getCancelUrl,
+  getCaption,
+  getQueryManagement,
+  saveQueryManagement,
+} from 'services/features/queryManagement/queryManagementService';
+import {QueryManagement, QualifyingQuestionTypeOption, WhatToDoTypeOption} from 'form/models/queryManagement/queryManagement';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {createMockResponse, getRouteHandler} from '../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../main/modules/oidc');
 jest.mock('services/features/queryManagement/queryManagementService');
+jest.mock('modules/draft-store/draftStoreService');
 
-const CONTROLLER_URL = QM_WHAT_DO_YOU_WANT_TO_DO_URL;
-
-const getUrlByQmType = (option: WhatToDoTypeOption) :string => {
-  return CONTROLLER_URL.replace(':qmType', option);
-};
-
-function getRedirections(qmType: WhatToDoTypeOption, qmQualifyOption: QualifyingQuestionTypeOption ) {
-  return QM_INFORMATION_URL.replace(':qmType', qmType).replace(':qmQualifyOption', qmQualifyOption);
-}
-
-describe('Query management what do do controller', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
-  const mockGetCaseData = getQueryManagement as jest.Mock;
-  const mockGetCaption = getCaption as jest.Mock;
-
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
-  });
+describe('Query management what to do Controller', () => {
+  const getHandler = getRouteHandler(qmWhatToDoController, 'get');
+  const postHandler = getRouteHandler(qmWhatToDoController, 'post');
+  const viewPath = 'features/queryManagement/qm-questions-template.njk';
+  const claimId = '12345';
+  let req: Partial<Request>;
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
+  const mockGetQueryManagement = getQueryManagement as jest.Mock;
+  const mockSaveQueryManagement = saveQueryManagement as jest.Mock;
 
   beforeEach(() => {
-    jest.resetAllMocks();
-    mockGetCaseData.mockImplementation(async () => {
-      const claim = new Claim();
-      claim.queryManagement = new QueryManagement();
-      return claim;
-    });
+    req = {
+      params: {id: claimId, qmType: WhatToDoTypeOption.MANAGE_HEARING},
+      body: {},
+      query: {},
+      cookies: {},
+    };
+    res = createMockResponse();
+    next = jest.fn();
+    (draftStoreService.generateRedisKey as jest.Mock).mockReturnValue(claimId);
+    mockGetQueryManagement.mockResolvedValue(new QueryManagement());
+    mockSaveQueryManagement.mockResolvedValue(undefined);
+    (getCancelUrl as jest.Mock).mockReturnValue('/dashboard');
+    (getCaption as jest.Mock).mockReturnValue('caption');
   });
 
   describe('on GET', () => {
+    it('should render the qualifying question page', async () => {
+      await getHandler(req as Request, res as unknown as Response, next);
 
-    it.each([
-      [WhatToDoTypeOption.GET_UPDATE, 'Get an update on my case', 'What do you want to do?'],
-      [WhatToDoTypeOption.SEND_UPDATE, 'Send an update on my case', 'What do you want to do?'],
-      [WhatToDoTypeOption.SEND_DOCUMENTS, 'Send documents', 'What documents do you want to send?'],
-      [WhatToDoTypeOption.SOLVE_PROBLEM, 'Solve a problem I am having using the Money claims system', 'What are you trying to do?'],
-      [WhatToDoTypeOption.MANAGE_HEARING, 'Manage your hearing', 'What do you want to do?'],
-    ])('should open what to do page %s with caption %s and title %s', async (qmType, caption, title) => {
-      mockGetCaption.mockImplementation(() => `PAGES.QM.CAPTIONS.${qmType}`);
-      await request(app)
-        .get(getUrlByQmType(qmType))
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(caption);
-          expect(res.text).toContain(title);
-        });
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({form: expect.anything()}));
     });
 
-    it.each([
-      [WhatToDoTypeOption.MANAGE_HEARING, QualifyingQuestionTypeOption.MANAGE_HEARING_SOMETHING_ELSE],
-    ])(
-      'should redirect page when %s with %s selected',
-      async (qmType, option) => {
-        await request(app)
-          .post(getUrlByQmType(qmType))
-          .send({option})
-          .expect((res) => {
-            expect(res.status).toBe(302);
-            expect(res.header.location).toEqual(QM_SHARE_QUERY_CONFIRMATION);
-          });
-      },
-    );
+    it('should call next when loading fails', async () => {
+      const error = new Error('redis failure');
+      mockGetQueryManagement.mockRejectedValue(error);
 
-    it('should return http 500 when has error', async () => {
-      mockGetCaseData.mockImplementation(async () => {
-        throw new Error(TestMessages.REDIS_FAILURE);
-      });
-      await request(app)
-        .get(CONTROLLER_URL)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+      await getHandler(req as Request, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 
   describe('on POST', () => {
-    describe('Validation Tests', () => {
-      it.each([
-        [WhatToDoTypeOption.GET_UPDATE, 'You must select what update you want to get from the court.'],
-        [WhatToDoTypeOption.SEND_UPDATE, 'You must select what update you want to get from the court.'],
-        [WhatToDoTypeOption.SEND_DOCUMENTS, 'You must select which documents you want to send.'],
-        [WhatToDoTypeOption.SOLVE_PROBLEM, 'You must select what problem you are having with the Money claims system.'],
-        [WhatToDoTypeOption.MANAGE_HEARING, 'You must select how you want to manage your hearing.'],
-      ])(
-        'should validate the page %s',
-        async (qmType, expectedMessage) => {
-          await request(app)
-            .post(getUrlByQmType(qmType))
-            .expect((res) => {
-              expect(res.status).toBe(200);
-              expect(res.text).toContain(expectedMessage);
-            });
-        },
+    it('should re-render when no option is selected', async () => {
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.anything());
+      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
+    });
+
+    it('should save and redirect to information when an option is selected', async () => {
+      req.body = {option: QualifyingQuestionTypeOption.CHANGE_THE_HEARING_DATE};
+
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expect(mockSaveQueryManagement).toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(
+        constructResponseUrlWithIdParams(
+          claimId,
+          QM_INFORMATION_URL.replace(':qmType', WhatToDoTypeOption.MANAGE_HEARING).replace(':qmQualifyOption', QualifyingQuestionTypeOption.CHANGE_THE_HEARING_DATE),
+        ),
       );
     });
 
-    describe('Redirection Tests', () => {
-      it.each([
-        [WhatToDoTypeOption.GET_UPDATE, QualifyingQuestionTypeOption.GENERAL_UPDATE],
-        [WhatToDoTypeOption.SEND_UPDATE, QualifyingQuestionTypeOption.SETTLE_CLAIM],
-        [WhatToDoTypeOption.SEND_DOCUMENTS, QualifyingQuestionTypeOption.ENFORCEMENT_REQUESTS],
-        [WhatToDoTypeOption.SOLVE_PROBLEM, QualifyingQuestionTypeOption.SUBMIT_RESPONSE_CLAIM],
-        [WhatToDoTypeOption.MANAGE_HEARING, QualifyingQuestionTypeOption.CHANGE_THE_HEARING_DATE],
-      ])(
-        'should redirect page when %s with %s selected',
-        async (qmType, option) => {
-          await request(app)
-            .post(getUrlByQmType(qmType))
-            .send({ option })
-            .expect((res) => {
-              expect(res.status).toBe(302);
-              expect(res.header.location).toEqual(getRedirections(qmType, option));
-            });
-        },
-      );
-    });
+    it('should redirect to share query confirmation for something else', async () => {
+      req.body = {option: QualifyingQuestionTypeOption.MANAGE_HEARING_SOMETHING_ELSE};
 
-    it('should return http 500 when has error', async () => {
-      const mockSaveDraftClaim = saveQueryManagement as jest.Mock;
-      mockSaveDraftClaim.mockImplementation(async () => {
-        throw new Error(TestMessages.REDIS_FAILURE);
-      });
-      await request(app)
-        .post(CONTROLLER_URL)
-        .send({option: WhatToDoTypeOption.CHANGE_CASE})
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, QM_SHARE_QUERY_CONFIRMATION));
     });
   });
 });

@@ -1,68 +1,45 @@
-import {
-  HEARING_FEE_PAYMENT_CONFIRMATION_URL, HEARING_FEE_PAYMENT_CONFIRMATION_URL_WITH_UNIQUE_ID,
-} from 'routes/urls';
-
-import nock from 'nock';
-import request from 'supertest';
-import config from 'config';
-import {app} from '../../../../../../main/app';
-import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
+import {Request, Response} from 'express';
+import paymentConfirmationController from '../../../../../../main/routes/features/caseProgression/hearingFee/paymentConfirmationController';
 import * as paymentConfirmationService from 'services/features/caseProgression/hearingFee/paymentConfirmationService';
+import {deleteUserId} from 'modules/draft-store/paymentSessionStoreService';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {FeeType} from 'form/models/helpWithFees/feeType';
+import {PAY_HEARING_FEE_SUCCESSFUL_URL} from 'routes/urls';
+import {createMockResponse, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store/paymentSessionStoreService', () => ({
-  saveUserId: jest.fn(),
-  getUserId: jest.fn(),
-  saveOriginalPaymentConfirmationUrl: jest.fn(),
-  getPaymentConfirmationUrl: jest.fn(),
-  deleteUserId: jest.fn(),
-  deletePaymentConfirmationUrl: jest.fn(),
-}));
-jest.mock('../../../../../../main/modules/draft-store/draftStoreService', () => ({
-  getCaseDataFromStore: jest.fn(),
-  generateRedisKey: jest.fn(),
-  saveDraftClaim: jest.fn(),
-  deleteDraftClaimFromStore: jest.fn(),
+jest.mock('modules/draft-store/paymentSessionStoreService', () => ({
+  deleteUserId: jest.fn().mockResolvedValue(undefined),
 }));
 
 describe('Hearing Fees - Payment Status', () => {
-  const idamServiceUrl: string = config.get('services.idam.url');
-  const citizenRoleToken: string = config.get('citizenRoleToken');
+  const getHandler = getRouteHandler(paymentConfirmationController, 'get');
+  const claimId = '12345';
+  let req: Partial<Request>;
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
 
-  beforeAll(() => {
-    nock(idamServiceUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
+  beforeEach(() => {
+    req = {params: {id: claimId}, query: {}, cookies: {}};
+    res = createMockResponse();
+    next = jest.fn();
+    jest.clearAllMocks();
   });
 
-  describe('on GET', () => {
-    it('should redirect user to success/failure page', async () => {
-      jest.spyOn(paymentConfirmationService,'getRedirectUrl').mockResolvedValueOnce('12354');
-      await request(app)
-        .get(HEARING_FEE_PAYMENT_CONFIRMATION_URL)
-        .expect((res) => {
-          expect(res.status).toBe(302);
-        });
-    });
+  it('should delete the payment session and redirect to the confirmation URL', async () => {
+    jest.spyOn(paymentConfirmationService, 'getRedirectUrl').mockResolvedValue(PAY_HEARING_FEE_SUCCESSFUL_URL);
 
-    it('should redirect user to success/failure page', async () => {
-      jest.spyOn(paymentConfirmationService,'getRedirectUrl').mockResolvedValueOnce('12354');
-      await request(app)
-        .get(HEARING_FEE_PAYMENT_CONFIRMATION_URL_WITH_UNIQUE_ID)
-        .expect((res) => {
-          expect(res.status).toBe(302);
-        });
-    });
+    await getHandler(req as Request, res as unknown as Response, next);
 
-    it('should return 500 error page for any service error', async () => {
-      jest.spyOn(paymentConfirmationService,'getRedirectUrl').mockRejectedValueOnce(TestMessages.SOMETHING_WENT_WRONG);
-      await request(app)
-        .get(HEARING_FEE_PAYMENT_CONFIRMATION_URL)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
-    });
+    expect(deleteUserId).toHaveBeenCalledWith(claimId, FeeType.HEARING);
+    expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, PAY_HEARING_FEE_SUCCESSFUL_URL));
   });
 
+  it('should call next when the confirmation service fails', async () => {
+    const error = new Error('confirmation failed');
+    jest.spyOn(paymentConfirmationService, 'getRedirectUrl').mockRejectedValue(error);
+
+    await getHandler(req as Request, res as unknown as Response, next);
+
+    expect(next).toHaveBeenCalledWith(error);
+  });
 });

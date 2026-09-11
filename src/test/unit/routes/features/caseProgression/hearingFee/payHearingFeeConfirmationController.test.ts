@@ -1,44 +1,51 @@
-import {app} from '../../../../../../main/app';
-import {HEARING_FEE_CONFIRMATION_URL} from 'routes/urls';
-import nock from 'nock';
-import config from 'config';
-import {mockCivilClaimHearingFee, mockRedisFailure} from '../../../../../utils/mockDraftStore';
-import request from 'supertest';
-import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
+import {Request, Response} from 'express';
+import payHearingFeeConfirmationController from '../../../../../../main/routes/features/caseProgression/hearingFee/payHearingFeeConfirmationController';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {Claim} from 'models/claim';
+import {createMockResponse, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
-jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
+jest.mock('modules/draft-store/draftStoreService');
+jest.mock('i18next', () => ({
+  t: (key: string) => key,
+}));
+
 describe('Pay Hearing Fee Confirmation Screen Controller', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
+  const getHandler = getRouteHandler(payHearingFeeConfirmationController, 'get');
+  const claimId = '12345';
+  let req: Partial<Request>;
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
+  const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
+  const mockGenerateRedisKey = draftStoreService.generateRedisKey as jest.Mock;
 
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-  });
-  it('should return expected confirmation pay hearing fee page when claim exists', async () => {
-    //Given
-    app.locals.draftStoreClient = mockCivilClaimHearingFee;
-    //When //Then
-    await request(app)
-      .get(HEARING_FEE_CONFIRMATION_URL)
-      .expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain('Your reference number');
-      });
+  beforeEach(() => {
+    req = {params: {id: claimId}, query: {}, cookies: {}};
+    res = createMockResponse();
+    next = jest.fn();
+    mockGenerateRedisKey.mockReturnValue(claimId);
+    const claim = new Claim();
+    claim.caseProgression = {helpFeeReferenceNumberForm: {referenceNumber: 'HWF-123'}} as Claim['caseProgression'];
+    mockGetCaseData.mockResolvedValue(claim);
   });
 
-  it('should return 500 error page for redis failure', async () => {
-    //Given
-    app.locals.draftStoreClient = mockRedisFailure;
-    //When //Then
-    await request(app)
-      .get(HEARING_FEE_CONFIRMATION_URL)
-      .expect((res) => {
-        expect(res.status).toBe(500);
-        expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-      });
+  it('should render the confirmation page when the claim exists', async () => {
+    await getHandler(req as Request, res as unknown as Response, next);
+
+    expect(res.render).toHaveBeenCalledWith(
+      'features/caseProgression/hearingFee/pay-hearing-fee-confirmation',
+      expect.objectContaining({
+        referenceNumber: 'HWF-123',
+        noCrumbs: true,
+      }),
+    );
+  });
+
+  it('should call next when loading the claim fails', async () => {
+    const error = new Error('redis failure');
+    mockGetCaseData.mockRejectedValue(error);
+
+    await getHandler(req as Request, res as unknown as Response, next);
+
+    expect(next).toHaveBeenCalledWith(error);
   });
 });

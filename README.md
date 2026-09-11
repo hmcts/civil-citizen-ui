@@ -89,6 +89,9 @@ $ yarn lint --fix
 
 ### Running the tests
 
+Unit tests must not boot the Express app. In-process HTTP (Supertest) belongs in `src/integration-test`.
+See [docs/test-pyramid.md](docs/test-pyramid.md) for the layer contract and conversion rules.
+
 This template app uses [Jest](https://jestjs.io//) as the test engine. You can run unit tests by executing
 the following command:
 

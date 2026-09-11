@@ -1,70 +1,72 @@
-import request from 'supertest';
-import {app} from '../../../../../../main/app';
+import {Request, Response} from 'express';
+import helpWithFeesEligibilityController from '../../../../../../main/routes/features/public/eligibility/helpWithFeesEligibilityController';
 import {
-  ELIGIBILITY_HELP_WITH_FEES_URL,
   ELIGIBILITY_INFORMATION_ABOUT_HELP_WITH_FEES_URL,
   ELIGIBLE_FOR_THIS_SERVICE_URL,
-} from 'routes/urls';
-import {YesNo} from 'common/form/models/yesNo';
-import {t} from 'i18next';
+} from '../../../../../../main/routes/urls';
+import {YesNo} from '../../../../../../main/common/form/models/yesNo';
+import {GenericForm} from '../../../../../../main/common/form/models/genericForm';
+import {createMockResponse, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
 describe('Help With Fees Eligibility Controller', () => {
+  const getHandler = getRouteHandler(helpWithFeesEligibilityController, 'get');
+  const postHandler = getRouteHandler(helpWithFeesEligibilityController, 'post');
+  const viewPath = 'features/public/eligibility/help-with-fees';
+  let req: Partial<Request>;
+  let res: ReturnType<typeof createMockResponse>;
+
+  beforeEach(() => {
+    req = {cookies: {}, body: {}, query: {}};
+    res = createMockResponse();
+  });
 
   describe('on GET', () => {
-    it('should render help with fees eligibility page successfully', async () => {
-      await request(app).get(ELIGIBILITY_HELP_WITH_FEES_URL).expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(t('PAGES.ELIGIBILITY_HELP_WITH_FEES.TITLE'));
-      });
+    it('should render the page', () => {
+      getHandler(req as Request, res as unknown as Response, jest.fn());
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        pageTitle: 'PAGES.ELIGIBILITY_HELP_WITH_FEES.PAGE_TITLE',
+      }));
+      expect((res.render as jest.Mock).mock.calls[0][1].form).toBeInstanceOf(GenericForm);
     });
 
-    it('should render help with fees eligibility with set cookie value', async () => {
-      app.request['cookies'] = {'eligibility': {eligibleHelpWithFees: YesNo.YES}};
-      await request(app).get(ELIGIBILITY_HELP_WITH_FEES_URL).expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(t('PAGES.ELIGIBILITY_HELP_WITH_FEES.TITLE'));
-      });
-    });
+    it('should pre-populate the form from the eligibility cookie', () => {
+      req.cookies = {eligibility: {eligibleHelpWithFees: YesNo.YES}};
 
-    it('should render help with fees eligibility view when cookie for help with fees does not exist', async () => {
-      app.request['cookies'] = {'eligibility': {foo: 'blah'}};
-      await request(app).get(ELIGIBILITY_HELP_WITH_FEES_URL).expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(t('PAGES.ELIGIBILITY_HELP_WITH_FEES.TITLE'));
-      });
+      getHandler(req as Request, res as unknown as Response, jest.fn());
+
+      expect((res.render as jest.Mock).mock.calls[0][1].form.model.option).toBe(YesNo.YES);
     });
   });
 
   describe('on POST', () => {
-    it('should information about help with fees page', async () => {
-      await request(app).post(ELIGIBILITY_HELP_WITH_FEES_URL).expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(t('PAGES.ELIGIBILITY_HELP_WITH_FEES.TITLE'));
-      });
+    it('should re-render when no option is selected', async () => {
+      await postHandler(req as Request, res as unknown as Response, jest.fn());
+
+      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
+      expect(res.redirect).not.toHaveBeenCalled();
     });
 
-    it('should redirect to eligible page if help with fees selection is no', async () => {
-      await request(app).post(ELIGIBILITY_HELP_WITH_FEES_URL).send({option: YesNo.NO}).expect((res) => {
-        expect(res.status).toBe(302);
-        expect(res.header.location).toBe(ELIGIBLE_FOR_THIS_SERVICE_URL);
-      });
+    it('should redirect to eligible page when no is selected', async () => {
+      req.body = {option: YesNo.NO};
+
+      await postHandler(req as Request, res as unknown as Response, jest.fn());
+
+      expect(res.redirect).toHaveBeenCalledWith(ELIGIBLE_FOR_THIS_SERVICE_URL);
     });
 
-    it('should redirect and set cookie value', async () => {
-      app.request.cookies = {eligibility: {foo: 'blah'}};
-      await request(app).post(ELIGIBILITY_HELP_WITH_FEES_URL).send({option: YesNo.YES}).expect((res) => {
-        expect(res.status).toBe(302);
-        expect(res.header.location).toBe(ELIGIBILITY_INFORMATION_ABOUT_HELP_WITH_FEES_URL);
-        expect(app.request.cookies.eligibility.eligibleHelpWithFees).toBe(YesNo.YES);
-      });
-    });
+    it('should redirect to information about help with fees when yes is selected', async () => {
+      req.cookies = {eligibility: {foo: 'blah'}};
+      req.body = {option: YesNo.YES};
 
-    it('should redirect and update cookie value', async () => {
-      app.request.cookies = {eligibility: {foo: 'blah', eligibleHelpWithFees: YesNo.NO}};
-      await request(app).post(ELIGIBILITY_HELP_WITH_FEES_URL).send({option: YesNo.NO}).expect((res) => {
-        expect(res.status).toBe(302);
-        expect(app.request.cookies.eligibility.eligibleHelpWithFees).toBe(YesNo.NO);
-      });
+      await postHandler(req as Request, res as unknown as Response, jest.fn());
+
+      expect(res.cookie).toHaveBeenCalledWith(
+        'eligibility',
+        {foo: 'blah', eligibleHelpWithFees: YesNo.YES},
+        {httpOnly: true, sameSite: 'lax'},
+      );
+      expect(res.redirect).toHaveBeenCalledWith(ELIGIBILITY_INFORMATION_ABOUT_HELP_WITH_FEES_URL);
     });
   });
 });
