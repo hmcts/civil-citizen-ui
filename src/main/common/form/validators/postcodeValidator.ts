@@ -1,6 +1,6 @@
 import { ValidatorConstraint, ValidatorConstraintInterface } from 'class-validator';
-import { AddressInfoResponse } from 'common/models/ordanceSurveyKey/ordanceSurveyKey';
-import { lookupByPostcodeAndDataSet } from 'modules/ordance-survey-key/ordanceSurveyKeyService';
+import { AddressInfoResponse } from 'common/models/ordnanceSurveyKey/ordnanceSurveyKey';
+import { lookupByPostcodeAndDataSet } from 'modules/ordnance-survey-key/ordnanceSurveyKeyService';
 import { existsSync, readFileSync } from 'fs';
 import path from 'path';
 
