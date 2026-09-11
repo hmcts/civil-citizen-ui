@@ -146,7 +146,8 @@ allowlisted thin-client routing remains. Its functional-stage duration is archiv
 `test-results/functional/standard-timings.csv` for like-for-like comparison with the optimised run. Apply the same
 `pr_ft_*` selection labels to both runs when measuring a migrated subset; the optimisation label must be the only
 selection difference. For example, the current migrated PR comparison uses `pr_ft_ui-create-claim` and
-`pr_ft_ui-part-admit` in both modes.
+`pr_ft_ui-part-admit` in both modes. Preview runs also retain their current mode, status, commit and exact timing in
+the `civil-citizen-ui-pr-<PR>-functional-execution` ConfigMap so comparison evidence survives the Jenkins agent.
 
 Running E2E tests:
 
