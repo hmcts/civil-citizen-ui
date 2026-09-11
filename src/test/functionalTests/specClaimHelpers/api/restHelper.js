@@ -20,4 +20,20 @@ const retriedRequest = async (url, headers, body, method = 'POST', expectedStatu
   });
 };
 
-module.exports = {request, retriedRequest};
+const retriedFormRequest = async (url, headers, body, method = 'POST', expectedStatus = 200) => {
+  return retry(() => {
+    return fetch(url, {
+      method,
+      body,
+      headers,
+    }).then(response => {
+      if (response.status !== expectedStatus) {
+        throw new Error(`Expected status: ${expectedStatus}, actual status: ${response.status}, `
+          + `message: ${response.statusText}, url: ${response.url}`);
+      }
+      return response;
+    });
+  });
+};
+
+module.exports = {request, retriedRequest, retriedFormRequest};
