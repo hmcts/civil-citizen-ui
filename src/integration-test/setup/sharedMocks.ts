@@ -8,6 +8,7 @@ const launchDarklyClientMock = {
   isQueryManagementEnabled: jest.fn().mockResolvedValue(false),
   isWelshEnabledForMainCase: jest.fn().mockResolvedValue(false),
   isJudgmentBufferEnabled: jest.fn().mockResolvedValue(false),
+  isBreathingSpaceEnabled: jest.fn().mockResolvedValue(false),
 };
 
 jest.mock('express-async-errors', () => ({}), {virtual: true});
