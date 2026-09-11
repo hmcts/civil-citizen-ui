@@ -145,7 +145,8 @@ proxy profile can be removed when the epic has migrated every scenario and the r
 allowlisted thin-client routing remains. Its functional-stage duration is archived in
 `test-results/functional/standard-timings.csv` for like-for-like comparison with the optimised run. Apply the same
 `pr_ft_*` selection labels to both runs when measuring a migrated subset; the optimisation label must be the only
-selection difference.
+selection difference. For example, the current migrated PR comparison uses `pr_ft_ui-create-claim` and
+`pr_ft_ui-part-admit` in both modes.
 
 Running E2E tests:
 
