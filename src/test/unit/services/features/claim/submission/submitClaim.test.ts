@@ -59,4 +59,33 @@ describe('Submit claim to ccd', () => {
     await expect(submitClaim(req as AppRequest)).rejects.toThrow(TestMessages.REDIS_FAILURE);
   });
 
+  it('should preserve the journey parties when the e2e submit adapter adds submitted case data', async () => {
+    const originalNodeEnv = process.env.NODE_ENV;
+    process.env.NODE_ENV = 'e2eTest';
+    const draftClaim = new Claim();
+    draftClaim.applicant1 = {partyName: 'Journey claimant'} as Claim['applicant1'];
+    draftClaim.respondent1 = {partyName: 'Journey defendant'} as Claim['respondent1'];
+    const submittedClaim = new Claim();
+    submittedClaim.id = '1111222233334444';
+    submittedClaim.applicant1 = {partyName: 'Static claimant'} as Claim['applicant1'];
+    submittedClaim.respondent1 = {partyName: 'Static defendant'} as Claim['respondent1'];
+    jest.spyOn(draftStoreService, 'getCaseDataFromStore').mockResolvedValue(draftClaim);
+    jest.spyOn(CivilServiceClient.prototype, 'submitDraftClaim').mockResolvedValue(submittedClaim);
+    const saveDraftClaim = jest.spyOn(draftStoreService, 'saveDraftClaim').mockResolvedValue();
+
+    try {
+      const result = await submitClaim(req as AppRequest);
+      expect(result.applicant1).toMatchObject({partyName: 'Journey claimant'});
+      expect(result.respondent1).toMatchObject({partyName: 'Journey defendant'});
+      expect(saveDraftClaim).toHaveBeenCalledWith(
+        `1111222233334444${req.session.user?.id}`,
+        result,
+        true,
+        req.session.user?.id,
+      );
+    } finally {
+      process.env.NODE_ENV = originalNodeEnv;
+    }
+  });
+
 });

@@ -67,23 +67,73 @@ assert_no_functional_report_failures() {
   ' $report_files
 }
 
+publish_functional_failure_diagnostic() {
+  local summary_file='test-results/functional/functional-failure-summary.json'
+
+  node src/test/functionalTests/diagnostics/generateFunctionalFailureSummary.js || true
+  if [[ -n "${CHANGE_ID:-}" ]] && command -v kubectl >/dev/null 2>&1 && [[ -f "$summary_file" ]]; then
+    kubectl create configmap "civil-citizen-ui-pr-${CHANGE_ID}-functional-diagnostic" \
+      --namespace civil \
+      --from-file=functional-failure-summary.json="$summary_file" \
+      --dry-run=client -o yaml | kubectl apply -f - || true
+  fi
+}
+
+publish_functional_execution_evidence() {
+  local mode="$1"
+  local status="$2"
+  local timing_file="${3:-}"
+  local configmap_name
+  local kubectl_args
+
+  if [[ -z "${CHANGE_ID:-}" ]] || ! command -v kubectl >/dev/null 2>&1; then
+    return 0
+  fi
+
+  configmap_name="civil-citizen-ui-pr-${CHANGE_ID}-functional-execution"
+  kubectl_args=(
+    create configmap "$configmap_name"
+    --namespace civil
+    --from-literal=buildNumber="${BUILD_NUMBER:-unknown}"
+    --from-literal=commitSha="${GIT_COMMIT:-unknown}"
+    --from-literal=mode="$mode"
+    --from-literal=status="$status"
+  )
+  if [[ -n "$timing_file" ]] && [[ -f "$timing_file" ]]; then
+    kubectl_args+=(--from-file="$(basename "$timing_file")=$timing_file")
+  fi
+
+  kubectl "${kubectl_args[@]}" --dry-run=client -o yaml | kubectl apply -f - || true
+}
+
 run_functional_command() {
-  local exit_code
+  local exit_code report_exit_code
 
   set +e
   "$@"
   exit_code=$?
   set -e
 
+  set +e
   assert_no_functional_report_failures
+  report_exit_code=$?
+  set -e
 
-  if [[ "$exit_code" -ne 0 ]]; then
-    exit "$exit_code"
+  if [[ "$exit_code" -ne 0 ]] || [[ "$report_exit_code" -ne 0 ]]; then
+    publish_functional_failure_diagnostic
+  fi
+
+  if [[ "$exit_code" -ne 0 ]] || [[ "$report_exit_code" -ne 0 ]]; then
+    if [[ "${DEFER_FUNCTIONAL_FAILURE_TO_JUNIT:-false}" = "true" ]]; then
+      echo "Functional failures will be reported by the Jenkins JUnit publisher after evidence is archived."
+      return 0
+    fi
+    exit $((exit_code != 0 ? exit_code : report_exit_code))
   fi
 }
 
 run_functional_test_groups() {
-  local command
+  local command report_exit_code
 
   command="yarn test:civil-citizen-pr --grep "
   pr_ft_groups=$(echo "$PR_FT_GROUPS" | awk '{print tolower($0)}')
@@ -107,14 +157,29 @@ run_functional_test_groups() {
   exit_code=$?
   set -e
 
+  set +e
   assert_no_functional_report_failures
+  report_exit_code=$?
+  set -e
 
-  if [[ "$exit_code" -ne 0 ]]; then
-    exit "$exit_code"
+  if [[ "$exit_code" -ne 0 ]] || [[ "$report_exit_code" -ne 0 ]]; then
+    publish_functional_failure_diagnostic
+  fi
+
+  if [[ "$exit_code" -ne 0 ]] || [[ "$report_exit_code" -ne 0 ]]; then
+    if [[ "${DEFER_FUNCTIONAL_FAILURE_TO_JUNIT:-false}" = "true" ]]; then
+      echo "Functional failures will be reported by the Jenkins JUnit publisher after evidence is archived."
+      return 0
+    fi
+    exit $((exit_code != 0 ? exit_code : report_exit_code))
   fi
 }
 
 run_functional_tests() {
+  local started elapsed
+
+  started=$SECONDS
+  publish_functional_execution_evidence standard running
   echo "Running all functional tests on ${ENVIRONMENT} env"
   if [[ "$ENVIRONMENT" = "aat" ]]; then
     run_functional_command yarn test:civil-citizen-master
@@ -123,6 +188,14 @@ run_functional_tests() {
   else
     run_functional_test_groups
   fi
+
+  elapsed=$((SECONDS - started))
+  mkdir -p test-results/functional
+  printf 'mode,duration_seconds\nstandard,%s\n' "$elapsed" \
+    > test-results/functional/standard-timings.csv
+  publish_functional_execution_evidence \
+    standard completed test-results/functional/standard-timings.csv
+  echo "Standard functional execution completed in ${elapsed}s"
 }
 
 run_failed_not_executed_functional_tests() {
@@ -144,21 +217,54 @@ run_failed_not_executed_functional_tests() {
   run_functional_tests
 }
 
-run_reduced_stack_functional_tests() {
-  echo "Running the WireMock-backed functional journey against Jenkins preview"
-  # Jenkins may allocate a different VM for this stage than for the smoke
-  # stage, so install the browser on the agent that will actually launch it.
-  yarn playwright install chromium
-  export FUNCTIONAL=true
+run_optimised_functional_tests() {
+  local base_pattern mocked_pattern real_pattern
+  local started bucket_started bucket_elapsed total_elapsed
 
-  if [[ -n "$PR_FT_GROUPS" ]]; then
-    run_functional_test_groups || browser_status=$?
+  echo "Running the standard functional-test selection through optimised execution buckets"
+  export FUNCTIONAL=true
+  unset PREV_FAILED_TEST_FILES PREV_NOT_EXECUTED_TEST_FILES
+
+  if [[ -n "${PR_FT_GROUPS:-}" ]]; then
+    base_pattern=$(echo "$PR_FT_GROUPS" | tr '[:upper:]' '[:lower:]' | sed 's/[[:space:]]//g; s/,/|@/g; s/^/@/')
   else
-    yarn test:mocked-functional:browser || browser_status=$?
+    base_pattern='@civil-citizen-pr'
   fi
 
-  ./bin/assert-preview-wiremock.sh || wiremock_status=$?
-  exit "${browser_status:-${wiremock_status:-0}}"
+  mocked_pattern="(?=.*(?:${base_pattern}))(?=.*@mocked-functional)"
+  real_pattern="(?=.*(?:${base_pattern}))(?!.*@mocked-functional)"
+  mkdir -p test-results/functional
+  printf 'bucket,duration_seconds\n' > test-results/functional/optimised-timings.csv
+  started=$SECONDS
+  publish_functional_execution_evidence optimised running
+
+  ./bin/configure-functional-test-router.sh real
+  bucket_started=$SECONDS
+  echo "Running the non-mocked bucket for baseline selection: ${base_pattern}"
+  MOCHAWESOME_REPORTFILENAME='optimised-real' \
+    run_functional_command yarn codeceptjs run-workers --suites 13 --grep "$real_pattern" \
+    --reporter mocha-multi --plugins allure --verbose
+  bucket_elapsed=$((SECONDS - bucket_started))
+  printf 'real,%s\n' "$bucket_elapsed" >> test-results/functional/optimised-timings.csv
+
+  ./bin/configure-functional-test-router.sh mocked
+  bucket_started=$SECONDS
+  echo "Running mocked bucket for baseline selection: ${base_pattern}"
+  if [[ "$base_pattern" = *'@ui-create-claim'* ]]; then
+    export WIREMOCK_EXPECT_CREATE_CLAIM=true
+  fi
+  MOCHAWESOME_REPORTFILENAME='optimised-mocked' \
+    run_functional_command yarn codeceptjs run-workers --suites 13 --grep "$mocked_pattern" \
+    --reporter mocha-multi --plugins allure --verbose
+  ./bin/assert-preview-wiremock.sh
+  bucket_elapsed=$((SECONDS - bucket_started))
+  printf 'mocked,%s\n' "$bucket_elapsed" >> test-results/functional/optimised-timings.csv
+
+  total_elapsed=$((SECONDS - started))
+  printf 'total,%s\n' "$total_elapsed" >> test-results/functional/optimised-timings.csv
+  publish_functional_execution_evidence \
+    optimised completed test-results/functional/optimised-timings.csv
+  echo "Optimised execution completed in ${total_elapsed}s; bucket timings are archived with the functional results"
 }
 
 assert_thin_full_stack_results() {
@@ -260,17 +366,17 @@ NODE
 #MAIN SCRIPT
 TEST_FILES_REPORT="test-results/functional/testFilesReport.json"
 PREV_TEST_FILES_REPORT="test-results/functional/prevTestFilesReport.json"
+export REPORT_FILE="${REPORT_FILE:-test-results/functional/result-[hash].xml}"
 
-if [[ "${THIN_FULL_STACK_TESTS:-false}" = "true" ]]; then
-  echo "Running the thin full-stack suite against the standard full preview deployment"
-  yarn playwright install chromium
-  yarn test:thin-full-stack || thin_test_status=$?
-  assert_thin_full_stack_results || thin_attestation_status=$?
-  exit "${thin_test_status:-${thin_attestation_status:-0}}"
+if [[ "${SKIP_FUNCTIONAL_TESTS:-false}" = "true" ]]; then
+  echo "The label 'pr-values:skip-functional-tests' exists on the PR."
+  echo "Skipping functional tests."
+  exit 0
 fi
 
-if [[ "${REDUCED_STACK_TESTS:-false}" = "true" ]]; then
-  run_reduced_stack_functional_tests
+if [[ "${OPTIMISED_FUNCTIONAL_TESTS:-false}" = "true" ]]; then
+  run_optimised_functional_tests
+  exit 0
 fi
 
 # Check if SKIP_FUNCTIONAL_TESTS is set to true

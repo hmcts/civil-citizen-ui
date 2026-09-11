@@ -41,11 +41,13 @@ assert_status 200 POST '/cases/draft/citizen/test-user/event' '{"event":"CREATE_
 assert_status 200 GET '/cases/1111222233334444/userCaseRoles'
 assert_status 200 GET '/cases/1111222233334444'
 assert_status 200 GET '/search/places/v1/postcode?postcode=MK5%207HH'
+assert_status 200 GET '/airlines'
 
 # Significant match rules must leave incorrect requests unmatched.
 assert_status 404 POST '/dashboard/scenarios/Scenario.WRONG/test-user' '{"params":{}}'
 assert_status 404 POST '/fees/claim/total-amount' '{"amount":1385}'
 assert_status 404 POST '/cases/draft/citizen/test-user/event' '{"event":"WRONG_EVENT"}'
 assert_status 404 GET '/search/places/v1/postcode?postcode=SW1A%201AA'
+assert_status 404 GET '/airlines/unexpected'
 
 echo 'WireMock complete-set startup and positive/negative contract checks passed.'

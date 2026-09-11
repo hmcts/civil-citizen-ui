@@ -1,4 +1,5 @@
 const config = require('../../../config');
+const crypto = require('crypto');
 const deepEqualInAnyOrder = require('deep-equal-in-any-order');
 const breathingSpace = require('../fixtures/events/breathingSpace.js');
 const extendResponseDeadline = require('../fixtures/events/extendResponseDeadline.js');
@@ -88,6 +89,14 @@ const data = {
 
 let caseId, eventName, payload;
 let caseData = {};
+const reducedStackCaseId = '1111222233335555';
+const reducedStackCaseData = {
+  legacyCaseReference: '000MC001',
+  respondent1ResponseDeadline: '2026-10-05T16:00:00.000Z',
+  respondent1PinToPostLRspec: {accessCode: 'ABC12345'},
+  totalClaimAmount: 1000,
+};
+const isReducedStack = () => process.env.REDUCED_STACK_TESTS === 'true';
 
 module.exports = {
 
@@ -170,6 +179,9 @@ module.exports = {
   },
 
   waitForFinishedBusinessProcess: async () => {
+    if (isReducedStack()) {
+      return;
+    }
     await waitForFinishedBusinessProcess(caseId);
   },
 
@@ -429,6 +441,28 @@ module.exports = {
   },
 
   createSpecifiedClaim: async (user, multipartyScenario, claimType, carmEnabled = true, partyType, manualPIP = false) => {
+    if (isReducedStack()) {
+      caseId = reducedStackCaseId;
+      caseData = {...reducedStackCaseData};
+      const userId = email => crypto.createHash('sha256').update(email).digest('hex').slice(0, 24);
+      const response = await fetch(`${process.env.TEST_URL}/testing-support/reset-case`, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          claimId: caseId,
+          userIds: [
+            userId(config.claimantCitizenUser.email),
+            userId(config.defendantCitizenUser.email),
+            'e2e-defendant-user',
+          ],
+        }),
+      });
+      if (!response.ok) {
+        throw new Error(`Unable to reset reduced-stack case: ${response.status}`);
+      }
+      return caseId;
+    }
+
     console.log('Creating specified claim');
     eventName = 'CREATE_CLAIM_SPEC';
 
@@ -617,6 +651,9 @@ module.exports = {
   },
 
   retrieveCaseData: async (user, caseId) => {
+    if (isReducedStack()) {
+      return {...reducedStackCaseData};
+    }
     await apiRequest.setupTokens(user);
     const {case_data} = await apiRequest.fetchCaseDetails(user, caseId);
     return case_data;
@@ -994,6 +1031,22 @@ module.exports = {
   },
 
   assignToLipDefendant: async (caseId) => {
+    if (isReducedStack()) {
+      const userId = email => crypto.createHash('sha256').update(email).digest('hex').slice(0, 24);
+      const response = await fetch(`${process.env.TEST_URL}/testing-support/assign-case`, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          claimId: caseId,
+          fromUserId: userId(config.claimantCitizenUser.email),
+          toUserId: userId(config.defendantCitizenUser.email),
+        }),
+      });
+      if (!response.ok) {
+        throw new Error(`Unable to assign reduced-stack case: ${response.status}`);
+      }
+      return;
+    }
     await assignCaseRoleToUser(caseId, 'DEFENDANT', config.defendantCitizenUser);
     await addUserCaseMapping(caseId, config.defendantCitizenUser);
   },

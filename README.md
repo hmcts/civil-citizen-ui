@@ -132,15 +132,22 @@ in `charts/civil-citizen-ui/wiremock/mappings` as the preview chart. Chromium mu
 `yarn playwright install chromium` once if needed. Logs are written to
 `${TMPDIR:-/tmp}/civil-citizen-ui-mocked-functional`.
 
-To exercise the PoC in the authoritative Jenkins pipeline, apply the `pr-values:mockedTests` label to the PR.
-The Jenkins library then applies `values.mockedTests.preview.template.yaml`, deploying real CUI and WireMock in
-the PR namespace. The selected journey runs against the CUI preview ingress; Civil Service (including its CCD and
-Camunda dependencies), WA and preview service buses are disabled. CUI uses its existing `e2eTest` in-memory
-draft/session stores and test session user; this PoC does not build or extend an IDAM stub. Jenkins publishes the
-normal functional Allure artifacts plus WireMock unmatched-request and expected-request diagnostics.
+To exercise the optimised path in Jenkins, apply the single `pr-values:optimisedTests` label. The full preview stack
+and the normal CUI ingress remain in use. One WireMock pod acts as an internal Civil Service router. Jenkins controls
+it through a token-gated, test-only CUI endpoint; WireMock has no public ingress. Residual and thin-client scenarios
+are first passed to the real Civil Service, then migrated mockable scenarios run against deterministic mappings with
+proxy fallback disabled. The three mutually exclusive buckets use the same baseline selection as the unlabelled run,
+and their union is the complete selection. Bucket and total durations are archived in
+`test-results/functional/optimised-timings.csv`.
 
-Remove `pr-values:mockedTests` to restore the standard preview path. Do not combine it with
-`pr-values:fullDeployment`.
+With no optimisation label Jenkins follows the pre-epic deployment and functional-test path. The temporary real
+proxy profile can be removed when the epic has migrated every scenario and the residual bucket is empty; the
+allowlisted thin-client routing remains. Its functional-stage duration is archived in
+`test-results/functional/standard-timings.csv` for like-for-like comparison with the optimised run. Apply the same
+`pr_ft_*` selection labels to both runs when measuring a migrated subset; the optimisation label must be the only
+selection difference. For example, the current migrated PR comparison uses `pr_ft_ui-create-claim` and
+`pr_ft_ui-part-admit` in both modes. Preview runs also retain their current mode, status, commit and exact timing in
+the `civil-citizen-ui-pr-<PR>-functional-execution` ConfigMap so comparison evidence survives the Jenkins agent.
 
 Running E2E tests:
 

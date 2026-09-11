@@ -2,16 +2,18 @@
 
 set -euo pipefail
 
-if [ "${REDUCED_STACK_TESTS:-false}" != "true" ]; then
-  yarn playwright install
-  MOCHAWESOME_REPORTFILENAME=smokeTests \
-    REPORT_DIR=test-results/smokeTest \
-    codeceptjs run-workers --suites 1 --grep @smoketest --reporter mocha-multi --verbose
-  exit $?
+yarn playwright install
+MOCHAWESOME_REPORTFILENAME=smokeTests \
+  REPORT_DIR=test-results/smokeTest \
+  codeceptjs run-workers --suites 1 --grep @smoketest --reporter mocha-multi --verbose
+
+if [ "${OPTIMISED_FUNCTIONAL_TESTS:-false}" != "true" ]; then
+  exit 0
 fi
 
 : "${TEST_URL:?TEST_URL must point to the preview CUI ingress}"
-: "${WIREMOCK_URL:?WIREMOCK_URL must point to the preview WireMock ingress}"
+: "${WIREMOCK_URL:?WIREMOCK_URL must point to the CUI preview hostname}"
+: "${FUNCTIONAL_TEST_ROUTER_TOKEN:?FUNCTIONAL_TEST_ROUTER_TOKEN must be set}"
 
 readonly output_dir='test-results/smokeTest'
 mkdir -p "${output_dir}"
@@ -31,6 +33,9 @@ check_health() {
 }
 
 check_health 'civil-citizen-ui' "${TEST_URL}/health"
-check_health 'wiremock' "${WIREMOCK_URL}/health/readiness"
+curl --fail --silent --show-error \
+  --header "x-functional-test-router-token: ${FUNCTIONAL_TEST_ROUTER_TOKEN}" \
+  "${WIREMOCK_URL}/__admin/mappings" \
+  > "${output_dir}/wiremock-health.json"
 
-echo 'Reduced-stack preview health checks passed.'
+echo 'Optimised preview router health checks passed.'

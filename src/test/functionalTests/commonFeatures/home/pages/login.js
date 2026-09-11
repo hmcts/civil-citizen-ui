@@ -1,4 +1,5 @@
 const I = actor();
+const crypto = require('crypto');
 const config = require('../../../../config');
 const cuiCookies = require('../../../specClaimHelpers/fixtures/cookies/cuiCookies');
 const cmcCookies = require('../../../specClaimHelpers/fixtures/cookies/cmcCookies');
@@ -22,6 +23,13 @@ const buttons = {
 };
 
 class LoginPage {
+  async openReducedStackSession(username) {
+    await I.clearCookie();
+    const testUserId = crypto.createHash('sha256').update(username).digest('hex').slice(0, 24);
+    await I.setCookie({name: 'e2e-user-id', value: testUserId, url: process.env.TEST_URL});
+    await I.amOnPage('/');
+  }
+
   async #signOutIfNeeded() {
     const isSignedIn = await I.grabNumberOfVisibleElements('a[href="/logout"]');
 

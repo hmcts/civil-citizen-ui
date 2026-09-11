@@ -1,19 +1,116 @@
 {
-  "name": "create-claim-dashboard-scenario",
-  "priority": 10,
-  "request": {
-    "method": "POST",
-    "urlPathPattern": "/dashboard/scenarios/Scenario\\.AAA6\\.ClaimIssue\\.ClaimSubmit\\.Required/[^/]+",
-    "headers": {
-      "Content-Type": {"contains": "application/json"}
+  "mappings": [
+    {
+      "name": "create-claim-dashboard-scenario",
+      "priority": 10,
+      "request": {
+        "method": "POST",
+        "urlPathPattern": "/dashboard/scenarios/Scenario\\.AAA6\\.ClaimIssue\\.ClaimSubmit\\.Required/[^/]+",
+        "headers": {"Content-Type": {"contains": "application/json"}},
+        "bodyPatterns": [
+          {"equalToJson": "{\"params\":{}}", "ignoreArrayOrder": true, "ignoreExtraElements": false}
+        ]
+      },
+      "response": {
+        "status": 200,
+        "headers": {"Content-Type": "application/json"},
+        "bodyFileName": "create-claim-dashboard-scenario.json"
+      }
     },
-    "bodyPatterns": [
-      {"equalToJson": "{\"params\":{}}", "ignoreArrayOrder": true, "ignoreExtraElements": false}
-    ]
-  },
-  "response": {
-    "status": 200,
-    "headers": {"Content-Type": "application/json"},
-    "bodyFileName": "create-claim-dashboard-scenario.json"
-  }
+    {
+      "name": "create-claim-claimant-dashboard",
+      "priority": 10,
+      "request": {"method": "GET", "urlPathPattern": "/cases/claimant/[0-9a-f]{24}"},
+      "response": {
+        "status": 200,
+        "headers": {"Content-Type": "application/json"},
+        "jsonBody": {"claims": [{"claimId": "1111222233334444", "claimNumber": "000MC001", "claimAmount": 9000, "claimantName": "Claimant", "defendantName": "Defendant", "status": "CLAIM_SUBMITTED_NOT_PAID_OR_FAILED"}], "totalPages": 1}
+      }
+    },
+    {
+      "name": "create-claim-defendant-dashboard",
+      "priority": 10,
+      "request": {"method": "GET", "urlPathPattern": "/cases/defendant/[0-9a-f]{24}"},
+      "response": {
+        "status": 200,
+        "headers": {"Content-Type": "application/json"},
+        "jsonBody": {"claims": [{"claimId": "1111222233334444", "claimNumber": "000MC001", "claimAmount": 9000, "claimantName": "Claimant", "defendantName": "Defendant", "status": "NO_RESPONSE"}], "totalPages": 1}
+      }
+    },
+    {
+      "name": "create-claim-dashboard-task-list",
+      "priority": 10,
+      "request": {"method": "GET", "urlPathPattern": "/dashboard/taskList/1111222233334444/role/(CLAIMANT|DEFENDANT)"},
+      "response": {"status": 200, "headers": {"Content-Type": "application/json"}, "jsonBody": []}
+    },
+    {
+      "name": "create-claim-claimant-dashboard-notifications",
+      "priority": 10,
+      "scenarioName": "create-claim-fee-payment",
+      "requiredScenarioState": "Started",
+      "request": {"method": "GET", "urlPath": "/dashboard/notifications/1111222233334444/role/CLAIMANT"},
+      "response": {
+        "status": 200,
+        "headers": {"Content-Type": "application/json"},
+        "jsonBody": [{
+          "id": "claim-fee-required",
+          "titleEn": "You need to pay your claim fee",
+          "titleCy": "You need to pay your claim fee",
+          "descriptionEn": "Your claim has not yet been issued, in order to proceed you must pay the claim fee of £455. <a href=\"/claim/1111222233334444/fee\">Pay the claim fee</a>.",
+          "descriptionCy": "Your claim has not yet been issued, in order to proceed you must pay the claim fee of £455. <a href=\"/claim/1111222233334444/fee\">Pay the claim fee</a>.",
+          "createdAt": "2026-07-23T12:00:00.000Z",
+          "timeToLive": "",
+          "params": {}
+        }]
+      }
+    },
+    {
+      "name": "create-claim-claimant-dashboard-notifications-after-payment",
+      "priority": 5,
+      "scenarioName": "create-claim-fee-payment",
+      "requiredScenarioState": "Claim fee paid",
+      "request": {"method": "GET", "urlPath": "/dashboard/notifications/1111222233334444/role/CLAIMANT"},
+      "response": {
+        "status": 200,
+        "headers": {"Content-Type": "application/json"},
+        "jsonBody": [{
+          "id": "claim-fee-required",
+          "titleEn": "You need to pay your claim fee",
+          "titleCy": "You need to pay your claim fee",
+          "descriptionEn": "Your claim has not yet been issued, in order to proceed you must pay the claim fee of £455. <a href=\"/claim/1111222233334444/fee\">Pay the claim fee</a>.",
+          "descriptionCy": "Your claim has not yet been issued, in order to proceed you must pay the claim fee of £455. <a href=\"/claim/1111222233334444/fee\">Pay the claim fee</a>.",
+          "createdAt": "2026-07-23T12:00:00.000Z",
+          "timeToLive": "",
+          "params": {}
+        }, {
+          "id": "response-await",
+          "titleEn": "Wait for defendant to respond",
+          "titleCy": "Wait for defendant to respond",
+          "descriptionEn": "The defendant has until 5 October 2026 to respond. They can request an extra 14 days.",
+          "descriptionCy": "The defendant has until 5 October 2026 to respond. They can request an extra 14 days.",
+          "createdAt": "2026-07-23T12:01:00.000Z",
+          "timeToLive": "",
+          "params": {}
+        }]
+      }
+    },
+    {
+      "name": "create-claim-defendant-dashboard-notifications",
+      "priority": 10,
+      "request": {"method": "GET", "urlPath": "/dashboard/notifications/1111222233334444/role/DEFENDANT"},
+      "response": {
+        "status": 200,
+        "headers": {"Content-Type": "application/json"},
+        "jsonBody": [{
+          "id": "response-required",
+          "titleEn": "You haven't responded to the claim",
+          "titleCy": "You haven't responded to the claim",
+          "descriptionEn": "You have 19 days remaining. <a href=\"/case/1111222233334444/response/bilingual-language-preference\">Respond to the claim</a>.",
+          "descriptionCy": "You have 19 days remaining. <a href=\"/case/1111222233334444/response/bilingual-language-preference\">Respond to the claim</a>.",
+          "timeToLive": "",
+          "params": {}
+        }]
+      }
+    }
+  ]
 }

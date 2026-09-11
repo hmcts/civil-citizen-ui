@@ -1,5 +1,6 @@
 import cookieParser from 'cookie-parser';
 import express from 'express';
+import {functionalTestRouterJsonBody} from './app/functionalTestRouterProxy';
 import {app} from './app-instance';
 import * as path from 'path';
 import favicon from 'serve-favicon';
@@ -149,6 +150,39 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json({ limit: '500mb' }));
 app.use(express.urlencoded({ limit: '500mb', extended: true }));
 app.use(ensureBodyObject);
+
+const functionalTestRouterUrl = process.env.FUNCTIONAL_TEST_ROUTER_URL;
+const functionalTestRouterToken = process.env.FUNCTIONAL_TEST_ROUTER_TOKEN;
+if (functionalTestRouterUrl && functionalTestRouterToken) {
+  app.use('/testing-support/functional-test-router', async (req, res) => {
+    if (req.get('x-functional-test-router-token') !== functionalTestRouterToken || !req.url.startsWith('/__admin/')) {
+      return res.sendStatus(404);
+    }
+
+    try {
+      const requestBody = functionalTestRouterJsonBody(Boolean(req.is('application/json')), req.body);
+      const headers: Record<string, string> = {};
+      if (requestBody) {
+        headers['content-type'] = 'application/json';
+      }
+      const method = req.method.toUpperCase();
+      const response = await fetch(`${functionalTestRouterUrl}${req.url}`, {
+        method,
+        headers,
+        body: method === 'GET' || method === 'HEAD' ? undefined : requestBody,
+      });
+      const body = await response.text();
+      const contentType = response.headers.get('content-type');
+      if (contentType) {
+        res.type(contentType);
+      }
+      return res.status(response.status).send(body);
+    } catch (error) {
+      logger.error(`Functional-test router request failed: ${(error as Error).message}`);
+      return res.sendStatus(502);
+    }
+  });
+}
 app.locals.ENV = env;
 I18Next.enableFor(app);
 
@@ -191,9 +225,139 @@ new HealthCheck().enableFor(app);
 
 app.use(SIGN_OUT_URL, deleteGAGuard);
 
-if(!e2eTestMode){
-  new OidcMiddleware().enableFor(app);
+if(e2eTestMode){
+  const updateCachedE2EClaim = async (claimId: string, userId: string, update: (claim: Record<string, unknown>) => void) => {
+    const redisKey = `${claimId}${userId}`;
+    const claim = await app.locals.draftStoreClient.get(redisKey);
+    if (claim) {
+      const cachedClaim = JSON.parse(claim);
+      if (cachedClaim.case_data) {
+        update(cachedClaim.case_data);
+      }
+      await app.locals.draftStoreClient.set(redisKey, JSON.stringify(cachedClaim));
+    }
+  };
+
+  app.use((req, res, next) => {
+    const session = ((req.session) as AppSession);
+    const testUserId = req.cookies['e2e-user-id'];
+    if (testUserId) {
+      session.user = {accessToken: 'someAccessToken', idToken:'someIdToken', email: '', familyName: '', givenName: '', roles: ['citizen'], id: testUserId};
+    } else {
+      session.user = undefined;
+    }
+    next();
+  });
+
+  app.use('/dashboard/:claimId/defendant', async (req, res, next) => {
+    const session = req.session as AppSession;
+    if (!session.user) {
+      res.cookie('e2e-user-id', 'e2e-defendant-user', {httpOnly: true});
+      return res.redirect(req.originalUrl);
+    }
+    res.send(`<!doctype html><html><body>
+      <div class="dashboard-notification">
+        <h2>You haven't responded to the claim</h2>
+        <p>You have 27 days remaining.</p>
+        <a href="/case/${req.params.claimId}/response/bilingual-language-preference">Respond to the claim</a>
+      </div>
+    </body></html>`);
+  });
+
+  app.use('/case/:claimId/general-application', async (req, _res, next) => {
+    const userId = (req.session as AppSession).user?.id;
+    if (userId) {
+      await updateCachedE2EClaim(req.params.claimId, userId, claim => {
+        claim.ccdState = 'CASE_ISSUED';
+      });
+    }
+    next();
+  });
+
+  app.post('/testing-support/assign-case', async (req, res) => {
+    const {claimId, fromUserId, toUserId} = req.body;
+    const validClaimId = /^\d{16}$/.test(claimId);
+    const validUserId = (value: string) => /^[0-9a-f]{24}$/.test(value);
+    if (!validClaimId || !validUserId(fromUserId) || !validUserId(toUserId)) {
+      return res.sendStatus(400);
+    }
+    const claim = await app.locals.draftStoreClient.get(`${claimId}${fromUserId}`);
+    if (!claim) {
+      return res.sendStatus(404);
+    }
+    const assignedClaim = JSON.parse(claim);
+    assignedClaim.case_data.caseRole = '[DEFENDANT]';
+    await app.locals.draftStoreClient.set(`${claimId}${toUserId}`, JSON.stringify(assignedClaim));
+    return res.sendStatus(204);
+  });
+
+  app.post('/testing-support/reset-case', async (req, res) => {
+    const {claimId, userIds = []} = req.body;
+    const validClaimId = /^\d{16}$/.test(claimId);
+    const validUserIds = Array.isArray(userIds) && userIds.every((userId: string) => /^[0-9a-z-]{1,64}$/.test(userId));
+    if (!validClaimId || !validUserIds) {
+      return res.sendStatus(400);
+    }
+    await Promise.all([
+      app.locals.draftStoreClient.del(claimId),
+      ...userIds.flatMap((userId: string) => [
+        app.locals.draftStoreClient.del(userId),
+        app.locals.draftStoreClient.del(`${claimId}${userId}`),
+      ]),
+    ]);
+    return res.sendStatus(204);
+  });
+
+  app.get('/testing-support/mock-payment/:claimId', (req, res) => {
+    const amount = req.query.amount ?? '115.00';
+    res.send(`<!doctype html><html><body>
+      <h1>Enter card details</h1><h2>Payment summary</h2>
+      <p>We’ll send your payment confirmation here</p>
+      <p>card payment</p><p>Total amount:</p><p>£${amount}</p>
+      <form method="post">
+        <input id="card-no" name="card-no">
+        <input id="expiry-month" name="expiry-month">
+        <input id="expiry-year" name="expiry-year">
+        <input id="cardholder-name" name="cardholder-name">
+        <input id="cvc" name="cvc">
+        <input id="address-line-1" name="address-line-1" autocomplete="billing address-line1">
+        <input id="address-city" name="address-city">
+        <input id="address-postcode" name="address-postcode">
+        <input id="email" name="email">
+        <button type="submit">Continue</button>
+      </form>
+    </body></html>`);
+  });
+
+  app.post('/testing-support/mock-payment/:claimId', (req, res) => {
+    const amount = req.query.amount ?? '115.00';
+    const appId = req.query.appId;
+    const confirmQuery = appId ? `?appId=${appId}` : '';
+    res.send(`<!doctype html><html><body>
+      <h1>Confirm your payment</h1><h2>Payment summary</h2>
+      <p>card payment</p><p>Total amount:</p><p>£${amount}</p>
+      <form method="post" action="/testing-support/mock-payment/${req.params.claimId}/confirm${confirmQuery}">
+        <button id="confirm" type="submit">Confirm payment</button>
+      </form>
+    </body></html>`);
+  });
+
+  app.post('/testing-support/mock-payment/:claimId/confirm', async (req, res) => {
+    const appId = req.query.appId;
+    if (appId) {
+      return res.redirect(`/case/${req.params.claimId}/general-application/${appId}/payment-successful`);
+    }
+    const userId = (req.session as AppSession).user?.id;
+    if (userId) {
+      await updateCachedE2EClaim(req.params.claimId, userId, claim => {
+        claim.ccdState = 'CASE_ISSUED';
+      });
+    }
+    res.redirect(`/case/${req.params.claimId}/payment-successful`);
+  });
 }
+
+new OidcMiddleware().enableFor(app);
 
 if(e2eTestMode){
   app.get(TEST_SUPPORT_TOGGLE_FLAG_ENDPOINT, async (req, res) => {
@@ -206,13 +370,6 @@ if(e2eTestMode){
     } catch (error) {
       res.status(500).json({ message: 'Error changing the flag', error });
     }
-  });
-
-  // Use your custom middleware to add the session information
-  app.use((req, res, next) => {
-    const session = ((req.session) as AppSession);
-    session.user = {accessToken: 'someAccessToken', idToken:'someIdToken', email: '', familyName: '', givenName: '', roles: [], id: 'someID'};
-    next();
   });
 }
 app.use(STATEMENT_OF_MEANS_URL, statementOfMeansGuard);

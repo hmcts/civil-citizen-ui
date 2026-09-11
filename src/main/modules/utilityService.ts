@@ -74,6 +74,9 @@ export const getDashboardClaimById = async (claimId: RouteParam, req: Request, u
   const userId = (<AppRequest>req)?.session?.user?.id;
   const redisKey = useRedisKey && normalizedClaimId !== userId ? generateRedisKey(<AppRequest>req) : normalizedClaimId;
   const cachedClaim = await getClaimById(claimId, req, useRedisKey);
+  if (process.env.NODE_ENV === 'e2eTest' && !cachedClaim.isEmpty()) {
+    return cachedClaim;
+  }
   const latestClaim = await civilServiceClient.retrieveClaimDetails(normalizedClaimId, <AppRequest>req);
 
   if (!latestClaim) {

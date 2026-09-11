@@ -151,6 +151,24 @@ describe('Utility service', () => {
       expect(saveDraftClaim as jest.Mock).toHaveBeenCalled();
     });
 
+    it('should retain the per-user cached claim in e2e mode', async () => {
+      const originalNodeEnv = process.env.NODE_ENV;
+      process.env.NODE_ENV = 'e2eTest';
+      const cachedClaim = new Claim();
+      cachedClaim.applicant1 = {} as Claim['applicant1'];
+      (getCaseDataFromStore as jest.Mock).mockResolvedValueOnce(cachedClaim);
+      const retrieveClaimDetails = jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails');
+
+      try {
+        const result = await getDashboardClaimById(request.params.id, request, true);
+
+        expect(result).toBe(cachedClaim);
+        expect(retrieveClaimDetails).not.toHaveBeenCalled();
+      } finally {
+        process.env.NODE_ENV = originalNodeEnv;
+      }
+    });
+
     it('should throw an error if the claim does not exist in civil service', async () => {
       (getCaseDataFromStore as jest.Mock).mockResolvedValueOnce(new Claim());
       jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockResolvedValueOnce(null as unknown as Claim);

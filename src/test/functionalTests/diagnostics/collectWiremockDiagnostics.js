@@ -35,7 +35,13 @@ function sanitizeWiremockPayload(value) {
 }
 
 async function fetchJson(endpoint, options = {}) {
-  const response = await fetch(`${wiremockUrl.replace(/\/$/, '')}${endpoint}`, options);
+  const response = await fetch(`${wiremockUrl.replace(/\/$/, '')}${endpoint}`, {
+    ...options,
+    headers: {
+      ...options.headers,
+      'x-functional-test-router-token': process.env.FUNCTIONAL_TEST_ROUTER_TOKEN,
+    },
+  });
   return {
     status: response.status,
     body: sanitizeWiremockPayload(await response.json().catch(() => null)),

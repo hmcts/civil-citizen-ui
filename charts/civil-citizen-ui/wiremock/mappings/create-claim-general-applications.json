@@ -1,0 +1,21 @@
+{
+  "mappings": [
+    {
+      "name": "create-claim-general-applications",
+      "priority": 10,
+      "request": {
+        "method": "GET",
+        "urlPathPattern": "/cases/1111222233334444/ga/applications"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "jsonBody": {
+          "cases": []
+        }
+      }
+    }
+  ]
+}
