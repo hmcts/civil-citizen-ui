@@ -1,54 +1,61 @@
-import request from 'supertest';
-import {app} from '../../../../../main/app';
-import nock from 'nock';
-import config from 'config';
-import {CLAIMANT_TASK_LIST_URL, CLAIM_RESOLVING_DISPUTE_URL} from 'routes/urls';
-import {TestMessages} from '../../../../utils/errorMessageTestConstants';
-import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
+import {Response} from 'express';
+import resolvingThisDisputeController from '../../../../../main/routes/features/claim/resolvingThisDisputeController';
+import {CLAIMANT_TASK_LIST_URL} from 'routes/urls';
+import {AppRequest} from 'models/AppRequest';
+import {saveResolvingDispute} from 'services/features/claim/resolvingDisputeService';
+import {createMockResponse, createMockSession, getRouteHandler} from '../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/draft-store');
+jest.mock('services/features/claim/resolvingDisputeService', () => ({
+  saveResolvingDispute: jest.fn(),
+}));
 
 describe('Resolving Dispute', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
-  app.request.cookies = {eligibilityCompleted: true};
+  const getHandler = getRouteHandler(resolvingThisDisputeController, 'get');
+  const postHandler = getRouteHandler(resolvingThisDisputeController, 'post');
+  const viewPath = 'features/claim/resolving-this-dispute';
+  let req: Partial<AppRequest>;
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
 
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-    app.locals.draftStoreClient = mockCivilClaim;
+  beforeEach(() => {
+    req = {
+      session: createMockSession({user: {id: 'user-id'}}),
+      body: {},
+      query: {},
+      cookies: {},
+    };
+    res = createMockResponse();
+    next = jest.fn();
+    (saveResolvingDispute as jest.Mock).mockResolvedValue(undefined);
   });
 
   describe('on GET', () => {
-    it('should return resolving dispute page', async () => {
-      await request(app)
-        .get(CLAIM_RESOLVING_DISPUTE_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Try to resolve the dispute');
-        });
+    it('should render resolving dispute page', async () => {
+      await getHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        pageTitle: 'PAGES.CLAIM_JOURNEY.RESOLVE_THE_DISPUTE.PAGE_TITLE',
+      }));
     });
   });
 
   describe('on POST', () => {
-    it('should redirect to TaskList page', async () => {
-      await request(app)
-        .post(CLAIM_RESOLVING_DISPUTE_URL)
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toBe(CLAIMANT_TASK_LIST_URL);
-        });
+    it('should redirect to task list', async () => {
+      postHandler(req as AppRequest, res as unknown as Response, next);
+      await new Promise((resolve) => setImmediate(resolve));
+
+      expect(saveResolvingDispute).toHaveBeenCalledWith('user-id');
+      expect(res.redirect).toHaveBeenCalledWith(CLAIMANT_TASK_LIST_URL);
     });
-    it('should return http 500 when has error in the get method', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .post(CLAIM_RESOLVING_DISPUTE_URL)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+
+    it('should call next when saveResolvingDispute fails', async () => {
+      const error = new Error('error');
+      (saveResolvingDispute as jest.Mock).mockRejectedValue(error);
+
+      postHandler(req as AppRequest, res as unknown as Response, next);
+      await new Promise((resolve) => setImmediate(resolve));
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 });

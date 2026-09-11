@@ -1,53 +1,61 @@
-import request from 'supertest';
-import {app} from '../../../../../main/app';
-import nock from 'nock';
-import config from 'config';
-import {CLAIMANT_TASK_LIST_URL, CLAIM_COMPLETING_CLAIM_URL} from 'routes/urls';
-import {TestMessages} from '../../../../utils/errorMessageTestConstants';
-import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
+import {Response} from 'express';
+import completingClaimController from '../../../../../main/routes/features/claim/completingClaimController';
+import {CLAIMANT_TASK_LIST_URL} from 'routes/urls';
+import {AppRequest} from 'models/AppRequest';
+import {saveCompletingClaim} from 'services/features/claim/completingClaimService';
+import {createMockResponse, createMockSession, getRouteHandler} from '../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/draft-store');
+jest.mock('services/features/claim/completingClaimService', () => ({
+  saveCompletingClaim: jest.fn(),
+}));
 
 describe('Completing Claim', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
-  app.request.cookies = {eligibilityCompleted: true};
+  const getHandler = getRouteHandler(completingClaimController, 'get');
+  const postHandler = getRouteHandler(completingClaimController, 'post');
+  const viewPath = 'features/claim/completing-claim';
+  let req: Partial<AppRequest>;
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
 
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-    app.locals.draftStoreClient = mockCivilClaim;
+  beforeEach(() => {
+    req = {
+      session: createMockSession({user: {id: 'user-id'}}),
+      body: {},
+      query: {},
+      cookies: {},
+    };
+    res = createMockResponse();
+    next = jest.fn();
+    (saveCompletingClaim as jest.Mock).mockReturnValue(undefined);
   });
 
   describe('on GET', () => {
-    it('should return completing claim page', async () => {
-      await request(app)
-        .get(CLAIM_COMPLETING_CLAIM_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Get the details right');
-        });
+    it('should render completing claim page', () => {
+      getHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        pageTitle: 'PAGES.COMPLETING_CLAIM.PAGE_TITLE',
+      }));
     });
   });
+
   describe('on POST', () => {
-    it('should redirect to TaskList page', async () => {
-      await request(app)
-        .post(CLAIM_COMPLETING_CLAIM_URL)
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toBe(CLAIMANT_TASK_LIST_URL);
-        });
+    it('should redirect to task list', async () => {
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(saveCompletingClaim).toHaveBeenCalledWith('user-id');
+      expect(res.redirect).toHaveBeenCalledWith(CLAIMANT_TASK_LIST_URL);
     });
-    it('should return http 500 when has error in the get method', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .post(CLAIM_COMPLETING_CLAIM_URL)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+
+    it('should call next when saveCompletingClaim throws', async () => {
+      const error = new Error('error');
+      (saveCompletingClaim as jest.Mock).mockImplementation(() => {
+        throw error;
+      });
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 });
