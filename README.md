@@ -166,7 +166,7 @@ Legacy scenario mapping:
 
 Running Preview pipeline :
 
-Pipeline verification PRs can use the normal preview path with targeted `pr_ft_*` labels.
+Pipeline verification PRs can use the normal preview path with targeted `pr_ft_*` labels and no optimisation label.
 
 ## Github Labels
 
