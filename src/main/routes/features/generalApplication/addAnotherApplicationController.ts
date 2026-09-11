@@ -9,6 +9,7 @@ import {getClaimById} from 'modules/utilityService';
 import {
   getByIndexOrLast,
   getCancelUrl, removeAllOtherApplications,
+  resolveApplicationIndex,
 } from 'services/features/generalApplication/generalApplicationService';
 import {
   ApplicationTypeOptionSelection,
@@ -20,7 +21,6 @@ import {GenericYesNo} from 'common/form/models/genericYesNo';
 import {generateRedisKey, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {YesNo} from 'form/models/yesNo';
 import {constructResponseUrlWithIdParams, constructUrlWithIndex} from 'common/utils/urlFormatter';
-import {queryParamNumber} from 'common/utils/requestUtils';
 import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const addAnotherApplicationController = Router();
@@ -29,7 +29,7 @@ const viewPath = 'features/generalApplication/add-another-application';
 const renderView = async (req: AppRequest, res: Response, form?: GenericForm<GenericYesNo>): Promise<void> => {
   const claimId = getRouteParam(req, 'id');
   const claim = await getClaimById(claimId, req, true);
-  const applicationIndex = queryParamNumber(req, 'index') || claim.generalApplication.applicationTypes.length - 1;
+  const applicationIndex = resolveApplicationIndex(req, claim);
   const backLinkUrl = BACK_URL;
   const cancelUrl = await getCancelUrl(claimId, claim);
   const applicationTypeOption = getByIndexOrLast(claim.generalApplication?.applicationTypes, applicationIndex)?.option;
@@ -68,7 +68,7 @@ addAnotherApplicationController.post(GA_ADD_ANOTHER_APPLICATION_URL, async (req:
         await saveDraftClaim(redisKey, claim);
         res.redirect(constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL) + '?linkFrom=' + LinKFromValues.addAnotherApp);
       } else {
-        let index = queryParamNumber(req, 'index') || claim.generalApplication.applicationTypes.length - 1;
+        let index = resolveApplicationIndex(req, claim);
         if (req.query['changeScreen'] === 'true'){
           await removeAllOtherApplications(redisKey, claim);
           index = claim.generalApplication.applicationTypes.length - 1;

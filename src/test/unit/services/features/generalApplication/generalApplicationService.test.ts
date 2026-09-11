@@ -7,11 +7,13 @@ import {
   getByIndex,
   getByIndexOrLast,
   getCancelUrl,
+  getDashboardUrlForParty,
   getDynamicHeaderForMultipleApplications,
   getViewApplicationUrl,
   isConfirmYouPaidCCJAppType,
   removeAllOtherApplications,
   resetClaimDataByApplicationType,
+  resolveApplicationIndex,
   saveAcceptDefendantOffer,
   saveAdditionalText,
   saveAgreementFromOtherParty,
@@ -23,6 +25,7 @@ import {
   saveHearingContactDetails,
   saveHearingSupport,
   saveHelpWithFeesDetails,
+  saveIfPartyWantsToUploadDoc,
   saveRequestingReason,
   saveRespondentAgreement,
   saveRespondentWantToUploadDoc,
@@ -47,7 +50,7 @@ import {RequestingReason} from 'models/generalApplication/requestingReason';
 import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
 import {GaResponse} from 'common/models/generalApplication/response/gaResponse';
 import {YesNo, YesNoUpperCamelCase} from 'common/form/models/yesNo';
-import {CANCEL_URL} from 'routes/urls';
+import {CANCEL_URL, DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL} from 'routes/urls';
 import {HearingSupport, SupportType} from 'models/generalApplication/hearingSupport';
 import {HearingArrangement, HearingTypeOptions} from 'models/generalApplication/hearingArrangement';
 import {HearingContactDetails} from 'models/generalApplication/hearingContactDetails';
@@ -405,6 +408,62 @@ describe('General Application service', () => {
       const cancelUrl = await getCancelUrl('123', claim);
       //Then
       expect(cancelUrl).toEqual(CANCEL_URL.replace(':id', '123').replace(':propertyName', 'generalApplication'));
+    });
+  });
+
+  describe('Get dashboard url for party', () => {
+    it('should return claimant dashboard when user is claimant', () => {
+      const claim = new Claim();
+      claim.caseRole = CaseRole.CLAIMANT;
+
+      expect(getDashboardUrlForParty('123', claim)).toEqual(DASHBOARD_CLAIMANT_URL.replace(':id', '123'));
+    });
+
+    it('should return defendant dashboard when user is defendant', () => {
+      const claim = new Claim();
+      claim.caseRole = CaseRole.DEFENDANT;
+
+      expect(getDashboardUrlForParty('123', claim)).toEqual(DEFENDANT_SUMMARY_URL.replace(':id', '123'));
+    });
+  });
+
+  describe('resolveApplicationIndex', () => {
+    const claimWithTwoTypes = (): Claim => {
+      const claim = new Claim();
+      claim.generalApplication = new GeneralApplication();
+      claim.generalApplication.applicationTypes = [
+        new ApplicationType(ApplicationTypeOption.STAY_THE_CLAIM),
+        new ApplicationType(ApplicationTypeOption.EXTEND_TIME),
+      ];
+      return claim;
+    };
+
+    it('should keep an explicit index of 0', () => {
+      const req = {query: {index: '0'}} as unknown as AppRequest;
+      expect(resolveApplicationIndex(req, claimWithTwoTypes())).toEqual(0);
+    });
+
+    it('should use the query index when present', () => {
+      const req = {query: {index: '1'}} as unknown as AppRequest;
+      expect(resolveApplicationIndex(req, claimWithTwoTypes())).toEqual(1);
+    });
+
+    it('should default to the last application type when index is missing', () => {
+      const req = {query: {}} as unknown as AppRequest;
+      expect(resolveApplicationIndex(req, claimWithTwoTypes())).toEqual(1);
+    });
+
+    it('should default to 0 when the general application draft is missing', () => {
+      const req = {query: {}} as unknown as AppRequest;
+      expect(resolveApplicationIndex(req, new Claim())).toEqual(0);
+    });
+  });
+
+  describe('saveIfPartyWantsToUploadDoc', () => {
+    it('should throw when the general application draft is missing', async () => {
+      mockGetCaseData.mockResolvedValueOnce(new Claim());
+
+      await expect(saveIfPartyWantsToUploadDoc('123', YesNo.YES)).rejects.toThrow('General application draft not found');
     });
   });
 

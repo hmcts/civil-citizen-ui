@@ -15,7 +15,7 @@ import {
 import {HearingSupport} from 'models/generalApplication/hearingSupport';
 import {Claim} from 'models/claim';
 import {
-  CANCEL_URL, GA_ADD_ANOTHER_APPLICATION_URL, GA_APPLICATION_COSTS_URL,
+  CANCEL_URL, DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL, GA_ADD_ANOTHER_APPLICATION_URL, GA_APPLICATION_COSTS_URL,
   GA_APPLICATION_RESPONSE_SUMMARY_URL,
   GA_APPLICATION_SUMMARY_URL,
   GA_RESPONSE_VIEW_APPLICATION_URL,
@@ -212,6 +212,9 @@ export const saveApplicationCosts = async (claimId: string, applicationCosts: Ye
 export const saveIfPartyWantsToUploadDoc = async (redisKey: string, wantToSaveDoc: YesNo): Promise<void> => {
   try {
     const claim = await getCaseDataFromStore(redisKey, true);
+    if (!claim.generalApplication) {
+      throw new Error('General application draft not found');
+    }
     claim.generalApplication.wantToUploadDocuments = wantToSaveDoc;
     await saveDraftClaim(redisKey, claim);
   } catch (error) {
@@ -224,6 +227,11 @@ export const getCancelUrl = async (claimId: string, claim: Claim): Promise<strin
   return CANCEL_URL
     .replace(':id', claimId)
     .replace(':propertyName', 'generalApplication');
+};
+
+export const getDashboardUrlForParty = (claimId: string, claim: Claim): string => {
+  const target = claim.isClaimant() ? DASHBOARD_CLAIMANT_URL : DEFENDANT_SUMMARY_URL;
+  return constructResponseUrlWithIdParams(claimId, target);
 };
 
 export function validateNoConsentOption(req: AppRequest, errors: ValidationError[], applicationTypeOption: string) {
@@ -336,6 +344,15 @@ export const getByIndex = <T>(array: T[] | undefined, index: number | undefined)
 
 export const getLast = <T>(array: T[] | undefined): T | undefined =>
   (array?.length) ? array[array.length - 1] : undefined;
+
+export const resolveApplicationIndex = (req: AppRequest | Request, claim: Claim): number => {
+  const index = queryParamNumber(req, 'index');
+  if (index !== undefined && Number.isFinite(index)) {
+    return index;
+  }
+  const typesLength = claim.generalApplication?.applicationTypes?.length;
+  return typesLength ? typesLength - 1 : 0;
+};
 
 export const updateByIndexOrAppend = <T>(array: T[], newElem: T, index: number | undefined): void => {
   if (index >= 0 && index < array.length) {
@@ -688,7 +705,7 @@ export const getClaimApplicationCostNextUrl = (req: AppRequest | Request, claim:
   if (isOrderJudgeNotAllowed) {
     return getRequestingReasonNextUrl(req, claim);
   } else {
-    const index  = queryParamNumber(req, 'index') || claim.generalApplication.applicationTypes.length - 1;
+    const index  = resolveApplicationIndex(req, claim);
     const claimId = getRouteParam(req, 'id');
     return constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, ORDER_JUDGE_URL), index);
   }
