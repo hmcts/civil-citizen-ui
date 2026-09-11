@@ -79,6 +79,33 @@ publish_functional_failure_diagnostic() {
   fi
 }
 
+publish_functional_execution_evidence() {
+  local mode="$1"
+  local status="$2"
+  local timing_file="${3:-}"
+  local configmap_name
+  local kubectl_args
+
+  if [[ -z "${CHANGE_ID:-}" ]] || ! command -v kubectl >/dev/null 2>&1; then
+    return 0
+  fi
+
+  configmap_name="civil-citizen-ui-pr-${CHANGE_ID}-functional-execution"
+  kubectl_args=(
+    create configmap "$configmap_name"
+    --namespace civil
+    --from-literal=buildNumber="${BUILD_NUMBER:-unknown}"
+    --from-literal=commitSha="${GIT_COMMIT:-unknown}"
+    --from-literal=mode="$mode"
+    --from-literal=status="$status"
+  )
+  if [[ -n "$timing_file" ]] && [[ -f "$timing_file" ]]; then
+    kubectl_args+=(--from-file="$(basename "$timing_file")=$timing_file")
+  fi
+
+  kubectl "${kubectl_args[@]}" --dry-run=client -o yaml | kubectl apply -f - || true
+}
+
 run_functional_command() {
   local exit_code report_exit_code
 
@@ -152,6 +179,7 @@ run_functional_tests() {
   local started elapsed
 
   started=$SECONDS
+  publish_functional_execution_evidence standard running
   echo "Running all functional tests on ${ENVIRONMENT} env"
   if [[ "$ENVIRONMENT" = "aat" ]]; then
     run_functional_command yarn test:civil-citizen-master
@@ -165,6 +193,8 @@ run_functional_tests() {
   mkdir -p test-results/functional
   printf 'mode,duration_seconds\nstandard,%s\n' "$elapsed" \
     > test-results/functional/standard-timings.csv
+  publish_functional_execution_evidence \
+    standard completed test-results/functional/standard-timings.csv
   echo "Standard functional execution completed in ${elapsed}s"
 }
 
@@ -206,6 +236,7 @@ run_optimised_functional_tests() {
   mkdir -p test-results/functional
   printf 'bucket,duration_seconds\n' > test-results/functional/optimised-timings.csv
   started=$SECONDS
+  publish_functional_execution_evidence optimised running
 
   ./bin/configure-functional-test-router.sh real
   bucket_started=$SECONDS
@@ -231,6 +262,8 @@ run_optimised_functional_tests() {
 
   total_elapsed=$((SECONDS - started))
   printf 'total,%s\n' "$total_elapsed" >> test-results/functional/optimised-timings.csv
+  publish_functional_execution_evidence \
+    optimised completed test-results/functional/optimised-timings.csv
   echo "Optimised execution completed in ${total_elapsed}s; bucket timings are archived with the functional results"
 }
 
