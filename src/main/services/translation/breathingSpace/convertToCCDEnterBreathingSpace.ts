@@ -11,9 +11,6 @@ export const translateDraftBreathingSpaceEnterToCCD = (claim: Claim): CCDEnterBr
       type: draft?.type,
       ...(reference ? {reference} : {}),
       ...(draft?.start ? {start: convertDateToStringFormat(draft.start)} : {}),
-      expectedEnd: draft?.expectedEnd
-        ? convertDateToStringFormat(draft.expectedEnd)
-        : null,
     },
   };
 };

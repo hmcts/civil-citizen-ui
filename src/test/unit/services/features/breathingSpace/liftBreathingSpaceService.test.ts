@@ -65,7 +65,7 @@ describe('Lift Breathing Space Service', () => {
       claim.breathingSpace = {
         liftBreathing: {
           expectedEnd: '2023-05-20',
-          eventDescription: 'Reason',
+          reasonToLift: 'Reason',
         },
       };
       const form = await getLiftBreathingSpaceForm('123', claim);
@@ -82,7 +82,7 @@ describe('Lift Breathing Space Service', () => {
       const form = new LiftBreathingSpaceForm('2023', '05', '20', 'Reason');
       await saveLiftBreathingSpace('123', claim, form);
       expect(claim.breathingSpace?.liftBreathing?.expectedEnd).toContain('2023-05-');
-      expect(claim.breathingSpace?.liftBreathing?.eventDescription).toBe('Reason');
+      expect(claim.breathingSpace?.liftBreathing?.reasonToLift).toBe('Reason');
       expect(mockSaveDraftClaim).toHaveBeenCalledWith('123', claim);
     });
 
