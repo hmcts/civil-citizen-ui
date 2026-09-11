@@ -45,7 +45,6 @@ function authenticate() {
 describe('i18n test - Dashboard', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const serviceAuthProviderUrl = config.get<string>('services.serviceAuthProvider.baseUrl');
-  const draftStoreUrl = config.get<string>('services.draftStore.legacy.url');
   const civilServiceUrl = config.get<string>('services.civilService.url');
   const data = require('../../../utils/mocks/defendantClaimsMock.json');
   beforeEach(() => {
@@ -59,13 +58,13 @@ describe('i18n test - Dashboard', () => {
       .reply(200, {claims: data, totalPages: 1});
     nock('http://localhost:5000')
       .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
+      .reply(200, {id_token: citizenRoleToken, access_token: 'accessToken'});
     nock(serviceAuthProviderUrl)
       .post('/lease')
       .reply(200, {});
-    nock(draftStoreUrl)
-      .get('/drafts')
-      .reply(200, {});
+    nock(civilServiceUrl)
+      .get('/dashboard/draft-claims/active')
+      .reply(404);
   });
 
   describe('on GET', () => {

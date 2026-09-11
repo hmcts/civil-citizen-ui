@@ -8,11 +8,38 @@ import {
   CLAIM_INTEREST_TYPE_URL,
   CLAIM_HELP_WITH_FEES_URL,
 } from 'routes/urls';
-import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
+import {getDraftClaim, updateDraftClaim} from 'modules/draft-store/draftStoreManagerService';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {Claim} from 'models/claim';
+import {CivilClaimResponse} from 'models/civilClaimResponse';
+import {DraftClaimManagerResult} from 'models/draft/draftClaim';
 
 jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('modules/draft-store/draftStoreManagerService');
+jest.mock('modules/draft-store/draftStoreService');
+jest.mock('routes/guards/claimIssueTaskListGuard', () => ({
+  claimIssueTaskListGuard: jest.fn((req, res, next) => next()),
+}));
+
+const mockGetDraftClaim = getDraftClaim as jest.Mock;
+const mockUpdateDraftClaim = updateDraftClaim as jest.Mock;
+const mockGetCaseDataFromStore = draftStoreService.getCaseDataFromStore as jest.Mock;
+const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
+
+const createMockManagerResult = (claim: Claim): DraftClaimManagerResult => ({
+  claimResponse: {
+    id: '123',
+    case_data: claim as unknown as Claim,
+  } as unknown as CivilClaimResponse,
+  rawResponse: {
+    draftId: '123',
+    payload: claim,
+  } as unknown as DraftClaimManagerResult['rawResponse'],
+  createdAt: '2026-08-01T10:00:00.000Z',
+  updatedAt: '2026-08-01T11:00:00.000Z',
+  expiresAt: '2026-09-01T10:00:00.000Z',
+});
 
 describe('Claim Interest page', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -25,20 +52,31 @@ describe('Claim Interest page', () => {
       .reply(200, {id_token: citizenRoleToken});
   });
 
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
   describe('on GET', () => {
     it('should return on claim interest page successfully', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
-      await request(app).get(CLAIM_INTEREST_URL).expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(t('PAGES.CLAIM_JOURNEY.CLAIM_INTEREST.TITLE'));
-      });
+      const mockClaim = new Claim();
+      mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
+      mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
+
+      await request(app)
+        .get(CLAIM_INTEREST_URL)
+        .expect((res: request.Response) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(t('PAGES.CLAIM_JOURNEY.CLAIM_INTEREST.TITLE'));
+        });
     });
 
     it('should return status 500 when error thrown', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetDraftClaim.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
+      mockGetCaseDataFromStore.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
+
       await request(app)
         .get(CLAIM_INTEREST_URL)
-        .expect((res) => {
+        .expect((res: request.Response) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
@@ -46,39 +84,61 @@ describe('Claim Interest page', () => {
   });
 
   describe('on POST', () => {
-    beforeEach(() => {
-      app.locals.draftStoreClient = mockCivilClaim;
-    });
-
     it('should return error message when no option selected', async () => {
-      await request(app).post(CLAIM_INTEREST_URL).expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(TestMessages.CLAIM_INTEREST_REQUIRED);
-      });
+      const mockClaim = new Claim();
+      mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
+      mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
+
+      await request(app)
+        .post(CLAIM_INTEREST_URL)
+        .expect((res: request.Response) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(TestMessages.CLAIM_INTEREST_REQUIRED);
+        });
     });
 
     it('should redirect to the How do you want to claim interest screen when option is Yes', async () => {
-      await request(app).post(CLAIM_INTEREST_URL).send({option: 'yes'})
-        .expect((res) => {
+      const mockClaim = new Claim();
+      mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
+      mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
+      mockUpdateDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
+      mockSaveDraftClaim.mockResolvedValue(undefined);
+
+      await request(app)
+        .post(CLAIM_INTEREST_URL)
+        .send({option: 'yes'})
+        .expect((res: request.Response) => {
           expect(res.status).toBe(302);
           expect(res.get('location')).toBe(CLAIM_INTEREST_TYPE_URL);
         });
     });
 
     it('should redirect to the Help with fees screen when option is Yes', async () => {
-      await request(app).post(CLAIM_INTEREST_URL).send({option: 'no'})
-        .expect((res) => {
+      const mockClaim = new Claim();
+      mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
+      mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
+      mockUpdateDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
+      mockSaveDraftClaim.mockResolvedValue(undefined);
+
+      await request(app)
+        .post(CLAIM_INTEREST_URL)
+        .send({option: 'no'})
+        .expect((res: request.Response) => {
           expect(res.status).toBe(302);
           expect(res.get('location')).toBe(CLAIM_HELP_WITH_FEES_URL);
         });
     });
 
     it('should return status 500 when error thrown', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
+      mockGetDraftClaim.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
+      mockGetCaseDataFromStore.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
+      mockUpdateDraftClaim.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
+      mockSaveDraftClaim.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
+
       await request(app)
         .post(CLAIM_INTEREST_URL)
         .send({option: 'yes'})
-        .expect((res) => {
+        .expect((res: request.Response) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });

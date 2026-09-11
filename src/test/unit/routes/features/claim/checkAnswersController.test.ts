@@ -1,16 +1,17 @@
 import nock from 'nock';
 import config from 'config';
+import request from 'supertest';
 import {getSummarySections} from 'services/features/claim/checkAnswers/checkAnswersService';
 import {CLAIM_CHECK_ANSWERS_URL, CLAIM_CONFIRMATION_URL} from 'routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {getElementsByXPath} from '../../../../utils/xpathExtractor';
 import {createClaimWithBasicDetails} from '../../../../utils/mocks/claimDetailsMock';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {getDraftClaim, deleteDraftClaim} from 'modules/draft-store/draftStoreManagerService';
 import {YesNo} from 'form/models/yesNo';
 import {Claim} from 'models/claim';
 import {ClaimDetails} from 'form/models/claim/details/claimDetails';
 import {HelpWithFees} from 'form/models/claim/details/helpWithFees';
-import {Response} from 'supertest';
 import {submitClaim} from 'services/features/claim/submission/submitClaim';
 import * as draftStoreService from '../../../../../main/modules/draft-store/draftStoreService';
 import {isPcqShutterOn} from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
@@ -18,10 +19,11 @@ import {Party} from 'models/party';
 import {Email} from 'models/Email';
 import {PartyPhone} from 'models/PartyPhone';
 import {CivilServiceClient} from 'client/civilServiceClient';
+import {CivilClaimResponse} from 'models/civilClaimResponse';
+import {DraftClaimManagerResult} from 'models/draft/draftClaim';
 
 const jsdom = require('jsdom');
 const {JSDOM} = jsdom;
-const request = require('supertest');
 
 const {app} = require('../../../../../main/app');
 const session = require('supertest-session');
@@ -32,6 +34,7 @@ jest.mock('axios');
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/claimDetailsService');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('../../../../../main/modules/draft-store/draftStoreManagerService');
 jest.mock('../../../../../main/services/features/claim/checkAnswers/checkAnswersService');
 jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 jest.mock('../../../../../main/services/features/claim/submission/submitClaim');
@@ -43,6 +46,8 @@ jest.mock('../../../../../main/routes/guards/checkYourAnswersGuard', () => ({
 
 const mockGetSummarySections = getSummarySections as jest.Mock;
 const mockGetClaim = getCaseDataFromStore as jest.Mock;
+const mockGetDraftClaim = getDraftClaim as jest.Mock;
+const mockDeleteDraftClaim = deleteDraftClaim as jest.Mock;
 const mockSubmitClaim = submitClaim as jest.Mock;
 
 const PARTY_NAME = 'Mrs. Mary Richards';
@@ -51,6 +56,20 @@ const isPcqShutterOnMock = isPcqShutterOn as jest.Mock;
 const mockGetCaseDataFromDraftStore = draftStoreService.getCaseDataFromStore as jest.Mock;
 const mockClaimWithPcqId = new Claim();
 mockClaimWithPcqId.pcqId = '123';
+
+const createMockManagerResult = (claim: Claim): DraftClaimManagerResult => ({
+  claimResponse: {
+    id: '12345',
+    case_data: claim as unknown as Claim,
+  } as unknown as CivilClaimResponse,
+  rawResponse: {
+    draftId: '12345',
+    payload: claim,
+  } as unknown as DraftClaimManagerResult['rawResponse'],
+  createdAt: '2026-08-01T10:00:00.000Z',
+  updatedAt: '2026-08-01T11:00:00.000Z',
+  expiresAt: '2026-09-01T10:00:00.000Z',
+});
 
 describe('Claim - Check answers', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -71,13 +90,17 @@ describe('Claim - Check answers', () => {
     isPcqShutterOnMock.mockResolvedValue(true);
   });
 
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
   describe('on GET', () => {
     it('should return check answers page', async () => {
-      mockGetClaim.mockImplementation(() => {
-        const claim = new Claim();
-        claim.claimDetails = new ClaimDetails();
-        return claim;
-      });
+      const claim = new Claim();
+      claim.claimDetails = new ClaimDetails();
+
+      mockGetClaim.mockImplementation(() => claim);
+      mockGetDraftClaim.mockResolvedValue(createMockManagerResult(claim));
 
       const response = await session(app).get(CLAIM_CHECK_ANSWERS_URL);
       expect(response.status).toBe(200);
@@ -88,15 +111,12 @@ describe('Claim - Check answers', () => {
 
       expect(header.length).toBe(1);
       expect(header[0].textContent).toBe(checkYourAnswerEng);
-
     });
+
     it('should return check answers page with Your details and their details sections', async () => {
-      mockGetSummarySections.mockImplementation(() => {
-        return createClaimWithBasicDetails();
-      });
-      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
-        return mockClaimWithPcqId;
-      });
+      mockGetSummarySections.mockImplementation(() => createClaimWithBasicDetails());
+      mockGetCaseDataFromDraftStore.mockImplementation(async () => mockClaimWithPcqId);
+      mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaimWithPcqId));
 
       const response = await session(app).get(CLAIM_CHECK_ANSWERS_URL);
       expect(response.status).toBe(200);
@@ -138,25 +158,26 @@ describe('Claim - Check answers', () => {
     });
 
     it('should return check your answer page', async () => {
+      mockGetDraftClaim.mockResolvedValue(createMockManagerResult(new Claim()));
+
       await request(app).get(CLAIM_CHECK_ANSWERS_URL)
-        .expect((res: Response) => {
+        .expect((res: request.Response) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(checkYourAnswerEng);
         });
     });
 
-    it('should call getCaseDataFromStore only once when isFirstTimeInPCQ has already stashed the claim', async () => {
+    it('should not call getCaseDataFromStore when claim is already stashed in the request', async () => {
       mockGetClaim.mockClear();
-      mockGetClaim.mockImplementation(async () => {
-        const claim = new Claim();
-        claim.claimDetails = new ClaimDetails();
-        claim.pcqId = 'existing-pcq-id';
-        return claim;
-      });
+      const mockClaim = new Claim();
+      mockClaim.claimDetails = new ClaimDetails();
+      mockClaim.pcqId = 'existing-pcq-id';
+      (app.request as unknown as { claim?: Claim }).claim = mockClaim;
 
       await session(app).get(CLAIM_CHECK_ANSWERS_URL);
 
-      expect(mockGetClaim).toHaveBeenCalledTimes(1);
+      expect(mockGetClaim).toHaveBeenCalledTimes(0);
+      delete (app.request as unknown as { claim?: Claim }).claim;
     });
 
     it('should return status 500 when error thrown', async () => {
@@ -165,14 +186,14 @@ describe('Claim - Check answers', () => {
       });
       await request(app)
         .get(CLAIM_CHECK_ANSWERS_URL)
-        .expect((res: Response) => {
+        .expect((res: request.Response) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
     });
   });
-  describe('on Post', () => {
 
+  describe('on Post', () => {
     beforeAll(() => {
       mockGetSummarySections.mockReset();
     });
@@ -181,25 +202,27 @@ describe('Claim - Check answers', () => {
     it('should return errors when form is incomplete', async () => {
       jest
         .spyOn(CivilServiceClient.prototype, 'getClaimFeeData')
-        .mockResolvedValueOnce(Promise.resolve({'calculatedAmountInPence': '50'}) as any);
+        .mockResolvedValueOnce({calculatedAmountInPence: 50} as unknown as ReturnType<CivilServiceClient['getClaimFeeData']>);
       jest
         .spyOn(CivilServiceClient.prototype, 'getHearingAmount')
-        .mockResolvedValueOnce(Promise.resolve({'calculatedAmountInPence': '50'}) as any);
-      mockGetClaim.mockImplementation(() => {
-        const claim = new Claim();
-        claim.applicant1 = new Party();
-        claim.applicant1.emailAddress = new Email('aaaa@gmail.com');
-        claim.applicant1.partyPhone = new PartyPhone('07557350546');
-        claim.respondent1 = new Party();
-        claim.respondent1.emailAddress = new Email('aaaa@gmail.com');
-        claim.respondent1.partyPhone = new PartyPhone('07557350546');
-        claim.claimDetails = new ClaimDetails();
-        claim.claimDetails.helpWithFees = new HelpWithFees();
-        claim.totalClaimAmount = 1000;
-        claim.claimDetails.helpWithFees.option = YesNo.NO;
-        return claim;
-      });
-      const data = {
+        .mockResolvedValueOnce({calculatedAmountInPence: 50} as unknown as ReturnType<CivilServiceClient['getHearingAmount']>);
+
+      const claim = new Claim();
+      claim.applicant1 = new Party();
+      claim.applicant1.emailAddress = new Email('aaaa@gmail.com');
+      claim.applicant1.partyPhone = new PartyPhone('07557350546');
+      claim.respondent1 = new Party();
+      claim.respondent1.emailAddress = new Email('aaaa@gmail.com');
+      claim.respondent1.partyPhone = new PartyPhone('07557350546');
+      claim.claimDetails = new ClaimDetails();
+      claim.claimDetails.helpWithFees = new HelpWithFees();
+      claim.totalClaimAmount = 1000;
+      claim.claimDetails.helpWithFees.option = YesNo.NO;
+
+      mockGetClaim.mockImplementation(() => claim);
+      mockGetDraftClaim.mockResolvedValue(createMockManagerResult(claim));
+
+      const postData = {
         type: 'qualified',
         isFullAmountRejected: 'true',
         directionsQuestionnaireSigned: 'Test',
@@ -208,33 +231,36 @@ describe('Claim - Check answers', () => {
       };
       await request(app)
         .post(CLAIM_CHECK_ANSWERS_URL)
-        .send(data)
-        .expect((res: Response) => {
+        .send(postData)
+        .expect((res: request.Response) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain('Tell us if you believe the facts stated in this response are true');
         });
     });
+
     it('should return errors when form claimant Phone Number is undefined', async () => {
       jest
         .spyOn(CivilServiceClient.prototype, 'getClaimFeeData')
-        .mockResolvedValueOnce(Promise.resolve({'calculatedAmountInPence': '50'}) as any);
+        .mockResolvedValueOnce({calculatedAmountInPence: 50} as unknown as ReturnType<CivilServiceClient['getClaimFeeData']>);
       jest
         .spyOn(CivilServiceClient.prototype, 'getHearingAmount')
-        .mockResolvedValueOnce(Promise.resolve({'calculatedAmountInPence': '50'}) as any);
-      mockGetClaim.mockImplementation(() => {
-        const claim = new Claim();
-        claim.applicant1 = new Party();
-        claim.applicant1.emailAddress = new Email('aaaa@gmail.com');
-        claim.respondent1 = new Party();
-        claim.respondent1.emailAddress = new Email('aaaa@gmail.com');
-        claim.respondent1.partyPhone = new PartyPhone('07557350546');
-        claim.claimDetails = new ClaimDetails();
-        claim.claimDetails.helpWithFees = new HelpWithFees();
-        claim.totalClaimAmount = 1000;
-        claim.claimDetails.helpWithFees.option = YesNo.NO;
-        return claim;
-      });
-      const data = {
+        .mockResolvedValueOnce({calculatedAmountInPence: 50} as unknown as ReturnType<CivilServiceClient['getHearingAmount']>);
+
+      const claim = new Claim();
+      claim.applicant1 = new Party();
+      claim.applicant1.emailAddress = new Email('aaaa@gmail.com');
+      claim.respondent1 = new Party();
+      claim.respondent1.emailAddress = new Email('aaaa@gmail.com');
+      claim.respondent1.partyPhone = new PartyPhone('07557350546');
+      claim.claimDetails = new ClaimDetails();
+      claim.claimDetails.helpWithFees = new HelpWithFees();
+      claim.totalClaimAmount = 1000;
+      claim.claimDetails.helpWithFees.option = YesNo.NO;
+
+      mockGetClaim.mockImplementation(() => claim);
+      mockGetDraftClaim.mockResolvedValue(createMockManagerResult(claim));
+
+      const postData = {
         type: 'qualified',
         isFullAmountRejected: 'true',
         directionsQuestionnaireSigned: 'Test',
@@ -243,103 +269,114 @@ describe('Claim - Check answers', () => {
       };
       await request(app)
         .post(CLAIM_CHECK_ANSWERS_URL)
-        .send(data)
-        .expect((res: Response) => {
+        .send(postData)
+        .expect((res: request.Response) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain('Tell us if you believe the facts stated in this response are true');
           expect(res.text).toContain('Enter telephone number');
         });
     });
+
     it('should return submit button when Fee is no', async () => {
       jest
         .spyOn(CivilServiceClient.prototype, 'getClaimFeeData')
-        .mockResolvedValueOnce(Promise.resolve({'calculatedAmountInPence': '50'}) as any);
-      mockGetClaim.mockImplementation(() => {
-        const claim = new Claim();
-        claim.applicant1 = new Party();
-        claim.applicant1.emailAddress = new Email('abbba@gmail.com');
-        claim.applicant1.partyPhone = new PartyPhone('07537350546');
-        claim.respondent1 = new Party();
-        claim.respondent1.emailAddress = new Email('aaaa@gmail.com');
-        claim.respondent1.partyPhone = new PartyPhone('07557350546');
-        claim.claimDetails = new ClaimDetails();
-        claim.claimDetails.helpWithFees = new HelpWithFees();
-        claim.claimDetails.helpWithFees.option = YesNo.NO;
-        claim.claimFee = {
-          calculatedAmountInPence: 1000,
-          code: 'FEE202',
-          version: 1,
-        };
-        return claim;
-      });
-      const data = {signed: ''};
+        .mockResolvedValueOnce({calculatedAmountInPence: 50} as unknown as ReturnType<CivilServiceClient['getClaimFeeData']>);
+
+      const claim = new Claim();
+      claim.applicant1 = new Party();
+      claim.applicant1.emailAddress = new Email('abbba@gmail.com');
+      claim.applicant1.partyPhone = new PartyPhone('07537350546');
+      claim.respondent1 = new Party();
+      claim.respondent1.emailAddress = new Email('aaaa@gmail.com');
+      claim.respondent1.partyPhone = new PartyPhone('07557350546');
+      claim.claimDetails = new ClaimDetails();
+      claim.claimDetails.helpWithFees = new HelpWithFees();
+      claim.claimDetails.helpWithFees.option = YesNo.NO;
+      claim.claimFee = {
+        calculatedAmountInPence: 1000,
+        code: 'FEE202',
+        version: 1,
+      };
+
+      mockGetClaim.mockImplementation(() => claim);
+      mockGetDraftClaim.mockResolvedValue(createMockManagerResult(claim));
+
+      const postData = {signed: ''};
       await request(app)
         .post(CLAIM_CHECK_ANSWERS_URL)
-        .send(data)
-        .expect((res: Response) => {
+        .send(postData)
+        .expect((res: request.Response) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain('Submit claim');
         });
     });
+
     it('should return submit button when Fee is yes', async () => {
       jest
         .spyOn(CivilServiceClient.prototype, 'getClaimFeeData')
-        .mockResolvedValueOnce(Promise.resolve({'calculatedAmountInPence': '50'}) as any);
-      mockGetClaim.mockImplementation(() => {
-        const claim = new Claim();
-        claim.applicant1 = new Party();
-        claim.applicant1.emailAddress = new Email('aaaa@gmail.com');
-        claim.applicant1.partyPhone = new PartyPhone('07557350546');
-        claim.respondent1 = new Party();
-        claim.respondent1.emailAddress = new Email('aaaa@gmail.com');
-        claim.respondent1.partyPhone = new PartyPhone('07557350546');
-        claim.claimDetails = new ClaimDetails();
-        claim.claimDetails.helpWithFees = new HelpWithFees();
-        claim.claimDetails.helpWithFees.option = YesNo.YES;
-        claim.claimFee = {
-          calculatedAmountInPence: 1000,
-          code: 'FEE202',
-          version: 1,
-        };
-        return claim;
-      });
-      const data = {signed: ''};
+        .mockResolvedValueOnce({calculatedAmountInPence: 50} as unknown as ReturnType<CivilServiceClient['getClaimFeeData']>);
+
+      const claim = new Claim();
+      claim.applicant1 = new Party();
+      claim.applicant1.emailAddress = new Email('aaaa@gmail.com');
+      claim.applicant1.partyPhone = new PartyPhone('07557350546');
+      claim.respondent1 = new Party();
+      claim.respondent1.emailAddress = new Email('aaaa@gmail.com');
+      claim.respondent1.partyPhone = new PartyPhone('07557350546');
+      claim.claimDetails = new ClaimDetails();
+      claim.claimDetails.helpWithFees = new HelpWithFees();
+      claim.claimDetails.helpWithFees.option = YesNo.YES;
+      claim.claimFee = {
+        calculatedAmountInPence: 1000,
+        code: 'FEE202',
+        version: 1,
+      };
+
+      mockGetClaim.mockImplementation(() => claim);
+      mockGetDraftClaim.mockResolvedValue(createMockManagerResult(claim));
+
+      const postData = {signed: ''};
       await request(app)
         .post(CLAIM_CHECK_ANSWERS_URL)
-        .send(data)
-        .expect((res: Response) => {
+        .send(postData)
+        .expect((res: request.Response) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain('Submit claim');
         });
     });
-    it('should redirect to claim submitted confirmation page when help with fees is set to yes', async () => {
+
+    it('should redirect to claim submitted confirmation page and delete draft from DB when help with fees is set to yes', async () => {
       jest
         .spyOn(CivilServiceClient.prototype, 'getClaimFeeData')
-        .mockResolvedValueOnce(Promise.resolve({'calculatedAmountInPence': '50'}) as any);
+        .mockResolvedValueOnce({calculatedAmountInPence: 50} as unknown as ReturnType<CivilServiceClient['getClaimFeeData']>);
+
       mockSubmitClaim.mockImplementation(() => {
         const submittedClaim = new Claim();
         submittedClaim.id = ':id';
         return submittedClaim;
       });
-      mockGetClaim.mockImplementation(() => {
-        const claim = new Claim();
-        claim.applicant1 = new Party();
-        claim.applicant1.emailAddress = new Email('aaaa@gmail.com');
-        claim.applicant1.partyPhone = new PartyPhone('07557350546');
-        claim.respondent1 = new Party();
-        claim.respondent1.emailAddress = new Email('aaaa@gmail.com');
-        claim.respondent1.partyPhone = new PartyPhone('07557350546');
-        claim.claimDetails = new ClaimDetails();
-        claim.claimDetails.helpWithFees = new HelpWithFees();
-        claim.claimDetails.helpWithFees.option = YesNo.YES;
-        claim.claimFee = {
-          calculatedAmountInPence: 1000,
-          code: 'FEE202',
-          version: 1,
-        };
-        return claim;
-      });
-      const data = {
+
+      const claim = new Claim();
+      claim.applicant1 = new Party();
+      claim.applicant1.emailAddress = new Email('aaaa@gmail.com');
+      claim.applicant1.partyPhone = new PartyPhone('07557350546');
+      claim.respondent1 = new Party();
+      claim.respondent1.emailAddress = new Email('aaaa@gmail.com');
+      claim.respondent1.partyPhone = new PartyPhone('07557350546');
+      claim.claimDetails = new ClaimDetails();
+      claim.claimDetails.helpWithFees = new HelpWithFees();
+      claim.claimDetails.helpWithFees.option = YesNo.YES;
+      claim.claimFee = {
+        calculatedAmountInPence: 1000,
+        code: 'FEE202',
+        version: 1,
+      };
+
+      mockGetClaim.mockImplementation(() => claim);
+      mockGetDraftClaim.mockResolvedValue(createMockManagerResult(claim));
+      mockDeleteDraftClaim.mockResolvedValue(undefined);
+
+      const postData = {
         signed: 'Test',
         type: 'qualified',
         isFullAmountRejected: 'true',
@@ -347,39 +384,54 @@ describe('Claim - Check answers', () => {
         signerRole: 'Test',
         signerName: 'Test',
       };
-      await request(app)
+
+      const testSession = session(app);
+      await testSession
         .post(CLAIM_CHECK_ANSWERS_URL)
-        .send(data)
-        .expect((res: Response) => {
+        .send(postData)
+        .expect((res: request.Response) => {
           expect(res.status).toBe(302);
           expect(res.header.location).toBe(CLAIM_CONFIRMATION_URL);
         });
+
+      expect(mockSubmitClaim).toHaveBeenCalled();
+      expect(mockDeleteDraftClaim).toHaveBeenCalled();
       expect(spyClearcookie).toBeCalledWith('eligibilityCompleted');
       expect(spyClearcookie).toBeCalledWith('eligibility');
     });
-    it('should redirect to claim confirmation page when Fee is no', async () => {
+
+    it('should redirect to claim confirmation page and call deleteDraftClaim immediately after submitClaim succeeds', async () => {
       jest
         .spyOn(CivilServiceClient.prototype, 'getClaimFeeData')
-        .mockResolvedValueOnce(Promise.resolve({'calculatedAmountInPence': '50'}) as any);
-      mockGetClaim.mockImplementation(() => {
-        const claim = new Claim();
-        claim.applicant1 = new Party();
-        claim.applicant1.emailAddress = new Email('aaaa@gmail.com');
-        claim.applicant1.partyPhone = new PartyPhone('07557350546');
-        claim.respondent1 = new Party();
-        claim.respondent1.emailAddress = new Email('aaaa@gmail.com');
-        claim.respondent1.partyPhone = new PartyPhone('07557350546');
-        claim.claimDetails = new ClaimDetails();
-        claim.claimDetails.helpWithFees = new HelpWithFees();
-        claim.claimDetails.helpWithFees.option = YesNo.NO;
-        claim.claimFee = {
-          calculatedAmountInPence: 1000,
-          code: 'FEE202',
-          version: 1,
-        };
-        return claim;
+        .mockResolvedValueOnce({calculatedAmountInPence: 50} as unknown as ReturnType<CivilServiceClient['getClaimFeeData']>);
+
+      mockSubmitClaim.mockImplementation(() => {
+        const submittedClaim = new Claim();
+        submittedClaim.id = '12345';
+        return submittedClaim;
       });
-      const data = {
+
+      const claim = new Claim();
+      claim.applicant1 = new Party();
+      claim.applicant1.emailAddress = new Email('aaaa@gmail.com');
+      claim.applicant1.partyPhone = new PartyPhone('07557350546');
+      claim.respondent1 = new Party();
+      claim.respondent1.emailAddress = new Email('aaaa@gmail.com');
+      claim.respondent1.partyPhone = new PartyPhone('07557350546');
+      claim.claimDetails = new ClaimDetails();
+      claim.claimDetails.helpWithFees = new HelpWithFees();
+      claim.claimDetails.helpWithFees.option = YesNo.NO;
+      claim.claimFee = {
+        calculatedAmountInPence: 1000,
+        code: 'FEE202',
+        version: 1,
+      };
+
+      mockGetClaim.mockImplementation(() => claim);
+      mockGetDraftClaim.mockResolvedValue(createMockManagerResult(claim));
+      mockDeleteDraftClaim.mockResolvedValue(undefined);
+
+      const postData = {
         signed: 'Test',
         type: 'qualified',
         isFullAmountRejected: 'true',
@@ -388,16 +440,23 @@ describe('Claim - Check answers', () => {
         signerName: 'Test',
         acceptNoChangesAllowed: 'true',
       };
+
+      const expectedUrl = CLAIM_CONFIRMATION_URL.replace(':id', '12345');
+
       await request(app)
         .post(CLAIM_CHECK_ANSWERS_URL)
-        .send(data)
-        .expect((res: Response) => {
+        .send(postData)
+        .expect((res: request.Response) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toBe(CLAIM_CONFIRMATION_URL);
+          expect(res.header.location).toBe(expectedUrl);
         });
+
+      expect(mockSubmitClaim).toHaveBeenCalled();
+      expect(mockDeleteDraftClaim).toHaveBeenCalled();
       expect(spyClearcookie).toBeCalledWith('eligibilityCompleted');
       expect(spyClearcookie).toBeCalledWith('eligibility');
     });
+
     it('should return 500 when error in service', async () => {
       mockGetSummarySections.mockImplementation(() => {
         throw new Error(TestMessages.REDIS_FAILURE);
@@ -405,7 +464,7 @@ describe('Claim - Check answers', () => {
       await request(app)
         .post(CLAIM_CHECK_ANSWERS_URL)
         .send()
-        .expect((res: Response) => {
+        .expect((res: request.Response) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
