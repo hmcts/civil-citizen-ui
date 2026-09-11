@@ -5,12 +5,11 @@ export interface CCDBreathingSpaceEnterInfo {
   type?: BreathingSpaceType;
   reference?: string;
   start?: string;
-  expectedEnd?: string | null;
 }
 
 export interface CCDBreathingSpaceLiftInfo {
   expectedEnd?: string;
-  eventDescription?: string;
+  reasonToLift?: string;
 }
 
 export interface CCDEnterBreathingSpace extends ClaimUpdate {

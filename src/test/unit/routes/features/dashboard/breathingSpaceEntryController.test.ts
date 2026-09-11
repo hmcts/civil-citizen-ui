@@ -93,7 +93,6 @@ describe('Breathing Space Entry Controller', () => {
         BreathingSpaceType.STANDARD,
         'REF123',
         new Date(2024, 0, 15),
-        new Date(2024, 2, 15),
       ),
     });
     (getClaimById as jest.Mock).mockResolvedValueOnce(caseData);

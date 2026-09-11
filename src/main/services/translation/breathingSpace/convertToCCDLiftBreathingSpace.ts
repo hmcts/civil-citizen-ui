@@ -7,7 +7,7 @@ export const translateDraftLiftBreathingSpaceToCCD = (claim: Claim): CCDLiftBrea
   return {
     liftBreathing: {
       ...(liftBreathing?.expectedEnd ? {expectedEnd: liftBreathing.expectedEnd} : {}),
-      ...(liftBreathing?.eventDescription ? {eventDescription: liftBreathing.eventDescription} : {}),
+      ...(liftBreathing?.reasonToLift ? {reasonToLift: liftBreathing.reasonToLift} : {}),
     },
   };
 };
