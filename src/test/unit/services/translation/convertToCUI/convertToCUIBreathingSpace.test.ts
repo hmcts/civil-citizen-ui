@@ -19,13 +19,11 @@ describe('convertToCUIBreathingSpace', () => {
       type: BreathingSpaceType.STANDARD,
       reference: 'REF123',
       start: '2024-01-15',
-      expectedEnd: null,
     });
 
     expect(result?.type).toBe(BreathingSpaceType.STANDARD);
     expect(result?.reference).toBe('REF123');
     expect(result?.start).toEqual(new Date('2024-01-15'));
-    expect(result?.expectedEnd).toBeNull();
   });
 
   it('should return undefined when liftBreathing has no expectedEnd', () => {
@@ -35,9 +33,20 @@ describe('convertToCUIBreathingSpace', () => {
   it('should map liftBreathing CCD fields to CUI', () => {
     const result = toCUIBreathingSpaceLiftInfo({
       expectedEnd: '2024-03-15',
+      reasonToLift: 'Period ended',
     });
 
     expect(result?.expectedEnd).toEqual(new Date('2024-03-15'));
+    expect(result?.reasonToLift).toBe('Period ended');
+  });
+
+  it('should leave reasonToLift undefined when CCD does not include it', () => {
+    const result = toCUIBreathingSpaceLiftInfo({
+      expectedEnd: '2024-03-15',
+    });
+
+    expect(result?.expectedEnd).toEqual(new Date('2024-03-15'));
+    expect(result?.reasonToLift).toBeUndefined();
   });
 
   it('should hydrate enterBreathing and liftBreathing on Claim via translateCCDCaseDataToCUIModel', () => {
@@ -45,7 +54,6 @@ describe('convertToCUIBreathingSpace', () => {
       enterBreathing: {
         type: BreathingSpaceType.MENTAL_HEALTH,
         start: '2024-06-01',
-        expectedEnd: null,
       },
     } as CCDClaim;
 

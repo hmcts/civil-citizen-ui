@@ -7,14 +7,14 @@ describe('translateDraftLiftBreathingSpaceToCCD', () => {
     claim.breathingSpace = {
       liftBreathing: {
         expectedEnd: '2026-08-06',
-        eventDescription: 'Reason for lifting',
+        reasonToLift: 'Reason for lifting',
       },
     };
 
     expect(translateDraftLiftBreathingSpaceToCCD(claim)).toEqual({
       liftBreathing: {
         expectedEnd: '2026-08-06',
-        eventDescription: 'Reason for lifting',
+        reasonToLift: 'Reason for lifting',
       },
     });
   });

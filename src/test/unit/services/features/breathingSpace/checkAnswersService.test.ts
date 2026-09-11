@@ -12,7 +12,7 @@ describe('Lift Breathing Space Check Answers Service', () => {
       claim.breathingSpace = {
         liftBreathing: {
           expectedEnd: '2023-05-20',
-          eventDescription: 'Reason',
+          reasonToLift: 'Reason',
         },
       };
       const rows = getSummaryRows('123', claim, 'en');
