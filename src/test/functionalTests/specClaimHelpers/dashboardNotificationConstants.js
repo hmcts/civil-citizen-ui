@@ -753,7 +753,7 @@ module.exports = {
     return {
       title: 'Your help with fees application has been rejected',
       content: `We've rejected your application for help with the ${applicationFeeTypeEn} fee. ` + `See email for further details. To progress your application, you must pay the full fee of ${applicationFee}. ` + `You can pay by phone by calling ${civilMoneyClaimsTelephone}.`,
-    };  
+    };
   },
 
   // Notice.AAA6.JudgmentsOnline.IssuedCCJ.Claimant
@@ -947,4 +947,36 @@ module.exports = {
       content: 'Y terfyn amser nawr yw 4pm ar',
     };
   },
+
+  //Breathing Space notifications
+  enterIntoStandardBS: () => {
+    return {
+      title: 'Important',
+      content:[
+        'Case is in standard breathing space',
+        'Breathing space usually lasts for 60 days.',
+        'Lift breathing space when you know when it will end.',
+      ],
+      nextSteps: 'Lift breathing space',
+    };
+  },
+
+  enterIntoMentalHealthBS: () => {
+    return {
+      title: 'Important',
+      content:[
+        'Case is in mental health crisis breathing space',
+        'This will remain in place until you lift breathing space.',
+      ],
+      nextSteps: 'lift breathing space',
+    };
+  },
+
+  defendantBS: () => {
+    return {
+      title: 'Important',
+      content:'Case is in breathing space',
+    };
+  },
+
 };
