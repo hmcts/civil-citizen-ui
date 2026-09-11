@@ -160,16 +160,16 @@ if (functionalTestRouterUrl && functionalTestRouterToken) {
     }
 
     try {
-      const body = functionalTestRouterJsonBody(Boolean(req.is('application/json')), req.body);
+      const requestBody = functionalTestRouterJsonBody(Boolean(req.is('application/json')), req.body);
       const headers: Record<string, string> = {};
-      if (body) {
+      if (requestBody) {
         headers['content-type'] = 'application/json';
       }
       const method = req.method.toUpperCase();
       const response = await fetch(`${functionalTestRouterUrl}${req.url}`, {
         method,
         headers,
-        body: method === 'GET' || method === 'HEAD' ? undefined : body,
+        body: method === 'GET' || method === 'HEAD' ? undefined : requestBody,
       });
       const body = await response.text();
       const contentType = response.headers.get('content-type');
