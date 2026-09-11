@@ -1,112 +1,119 @@
-import request from 'supertest';
-import {app} from '../../../../../main/app';
-import nock from 'nock';
-import config from 'config';
-import {
-  CLAIM_DEFENDANT_PHONE_NUMBER_URL, CLAIMANT_TASK_LIST_URL,
-} from 'routes/urls';
-import {t} from 'i18next';
-import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
-import {TestMessages} from '../../../../utils/errorMessageTestConstants';
+import {Response} from 'express';
+import defendantPhoneController from '../../../../../main/routes/features/claim/yourDetails/defendantPhoneController';
+import {CLAIMANT_TASK_LIST_URL} from 'routes/urls';
+import {AppRequest} from 'models/AppRequest';
+import {GenericForm} from 'form/models/genericForm';
+import {CitizenTelephoneNumber} from 'form/models/citizenTelephoneNumber';
+import {ClaimantOrDefendant} from 'models/partyType';
+import {getTelephone, saveTelephone} from 'services/features/claim/yourDetails/phoneService';
+import {createMockResponse, createMockSession, getRouteHandler} from '../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/draft-store');
+jest.mock('services/features/claim/yourDetails/phoneService', () => ({
+  getTelephone: jest.fn(),
+  saveTelephone: jest.fn(),
+}));
 
 const PHONE_NUMBER = '01632960001';
-describe('Completing Claim', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
-  app.request.cookies = {eligibilityCompleted: true};
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
+
+describe('Defendant Phone', () => {
+  const getHandler = getRouteHandler(defendantPhoneController, 'get');
+  const postHandler = getRouteHandler(defendantPhoneController, 'post');
+  const viewPath = 'features/public/claim/defendant-phone';
+  const pageTitle = 'PAGES.DEFENDANT_PHONE_NUMBER.PAGE_TITLE';
+  let req: Partial<AppRequest>;
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
+  const mockGetTelephone = getTelephone as jest.Mock;
+  const mockSaveTelephone = saveTelephone as jest.Mock;
+
+  beforeEach(() => {
+    req = {
+      session: createMockSession({user: {id: 'user-id'}}),
+      body: {},
+      query: {},
+      cookies: {},
+    };
+    res = createMockResponse();
+    next = jest.fn();
+    mockGetTelephone.mockResolvedValue(new CitizenTelephoneNumber());
+    mockSaveTelephone.mockResolvedValue(undefined);
   });
 
   describe('on GET', () => {
-    it('should return on your defendant phone number page successfully', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
-      await request(app)
-        .get(CLAIM_DEFENDANT_PHONE_NUMBER_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('PAGES.DEFENDANT_PHONE_NUMBER.TITLE'));
-        });
+    it('should render defendant phone number page', async () => {
+      await getHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(mockGetTelephone).toHaveBeenCalledWith('user-id', ClaimantOrDefendant.DEFENDANT);
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        pageTitle,
+        form: expect.any(GenericForm),
+      }));
     });
 
-    it('should return 500 status code when error occurs', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .get(CLAIM_DEFENDANT_PHONE_NUMBER_URL)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+    it('should call next when loading the telephone number fails', async () => {
+      const error = new Error('error');
+      mockGetTelephone.mockRejectedValue(error);
+
+      await getHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 
-  describe('on Post', () => {
-    it('should redirect to task list when optional phone number provided', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
-      await request(app)
-        .post(CLAIM_DEFENDANT_PHONE_NUMBER_URL)
-        .send({telephoneNumber: PHONE_NUMBER})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CLAIMANT_TASK_LIST_URL);
-        });
+  describe('on POST', () => {
+    it('should redirect to task list when optional phone number is provided', async () => {
+      req.body = {telephoneNumber: PHONE_NUMBER};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(mockSaveTelephone).toHaveBeenCalledWith('user-id', expect.any(CitizenTelephoneNumber), ClaimantOrDefendant.DEFENDANT);
+      expect(res.redirect).toHaveBeenCalledWith(CLAIMANT_TASK_LIST_URL);
     });
 
     it('should redirect to task list when optional phone number is not provided', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
-      await request(app)
-        .post(CLAIM_DEFENDANT_PHONE_NUMBER_URL)
-        .send({telephoneNumber: ''})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CLAIMANT_TASK_LIST_URL);
-        });
+      req.body = {telephoneNumber: ''};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(mockSaveTelephone).toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(CLAIMANT_TASK_LIST_URL);
     });
 
     it('should accept input with trailing whitespaces', async () => {
-      await request(app)
-        .post(CLAIM_DEFENDANT_PHONE_NUMBER_URL)
-        .send({telephoneNumber: PHONE_NUMBER})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-        });
+      req.body = {telephoneNumber: PHONE_NUMBER};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.redirect).toHaveBeenCalledWith(CLAIMANT_TASK_LIST_URL);
     });
 
-    it('should return error on incorrect input', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
-      await request(app)
-        .post(CLAIM_DEFENDANT_PHONE_NUMBER_URL)
-        .send({telephoneNumber: 'abc'})
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.VALID_PHONE_NUMBER'));
-        });
+    it('should re-render when phone number is incorrect', async () => {
+      req.body = {telephoneNumber: 'abc'};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({form: expect.any(GenericForm)}));
+      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
+      expect(res.redirect).not.toHaveBeenCalled();
     });
 
-    it('should return error on input with interior spaces', async () => {
-      await request(app)
-        .post(CLAIM_DEFENDANT_PHONE_NUMBER_URL)
-        .send({telephoneNumber: '123 456'})
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.VALID_PHONE_NUMBER'));
-        });
+    it('should re-render when phone number has interior spaces', async () => {
+      req.body = {telephoneNumber: '123 456'};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({form: expect.any(GenericForm)}));
+      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
     });
 
-    it('should return status 500 when there is error', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .post(CLAIM_DEFENDANT_PHONE_NUMBER_URL)
-        .send({telephoneNumber: PHONE_NUMBER})
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+    it('should call next when save fails', async () => {
+      const error = new Error('error');
+      mockSaveTelephone.mockRejectedValue(error);
+      req.body = {telephoneNumber: PHONE_NUMBER};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 });

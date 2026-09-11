@@ -45,6 +45,7 @@ Existing journey owners:
 | Journey | Owner |
 | --- | --- |
 | Eligibility decision matrix | `src/integration-test/routes/eligibility/eligibility.integration.test.ts` |
+| Claim issue | `src/integration-test/routes/claim/claimIssue.integration.test.ts` |
 | Claim-issue dashboard notifications | `src/integration-test/routes/dashboard/claimIssueDashboard.integration.test.ts` |
 | Case progression dashboard | `src/integration-test/routes/dashboard/caseProgressionDashboard.integration.test.ts` |
 | Mediation dashboard | `src/integration-test/routes/dashboard/mediationDashboard.integration.test.ts` |
@@ -60,7 +61,9 @@ If a journey has an owner in this table, do not add new `request(app)` tests und
 
 If a journey has no owner, add the integration test first, then convert the unit file.
 
-The claim-issue dashboard integration owner is notification rendering only. `src/test/unit/routes/features/dashboard/claimantDashboardController.test.ts` still uses HTTP for other dashboard branches; converting that file is a follow-up, not part of the already-owned-journey conversion.
+The claim-issue dashboard integration owner is notification rendering only. `src/test/unit/routes/features/dashboard/claimantDashboardController.test.ts` still uses HTTP for other dashboard branches; converting that file is a follow-up, not part of the claim-issue journey conversion.
+
+Claim-issue pages (task list, party type, amount, CYA, confirmation, and the rest of `src/test/unit/routes/features/claim/` excluding general application) are owned by `src/integration-test/routes/claim/claimIssue.integration.test.ts`.
 
 ## Jest retries
 
