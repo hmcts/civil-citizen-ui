@@ -190,6 +190,22 @@ describe('translate response to ccd version', () => {
 
   });
 
+  it('should not translate mediation unavailable dates when no dates were provided', () => {
+    //Given
+    const claim = createFullAdmitClaim();
+    claim.mediationCarm = {
+      hasUnavailabilityNextThreeMonths: {
+        option: YesNo.YES,
+      },
+    };
+
+    //When
+    const ccdResponse = translateDraftResponseToCCD(claim, false);
+
+    //Then
+    expect(ccdResponse.respondent1LiPResponseCarm.unavailableDatesForMediation).toBeUndefined();
+  });
+
   it('should translate Redis mediation date ranges to CCD date-only values', () => {
     //Given
     const claim = createFullAdmitClaim();

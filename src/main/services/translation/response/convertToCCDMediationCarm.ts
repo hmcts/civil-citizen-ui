@@ -4,29 +4,18 @@ import {toCCDUnavailableDates} from 'services/translation/response/convertToCCDS
 import {CcdMediationCarm} from 'models/ccdResponse/ccdMediationCarm';
 import {MediationCarm} from 'models/mediation/mediationCarm';
 import {UnavailableDatePeriodMediation} from 'models/mediation/unavailableDatesMediation';
-import {DateConverter} from 'common/utils/dateConverter';
 import {convertDateToStringFormat} from 'common/utils/dateUtils';
 
 const formatDateForCCD = (date: Date | string): Date => {
   // CCD date fields are modelled as Date here, but the API expects yyyy-MM-dd strings.
-  return typeof date === 'string' ? convertDateToStringFormat(date) as unknown as Date : date;
-};
-
-const resolveDate = (date: Date | string, year: number, month: number, day: number): Date => {
-  if (date) return formatDateForCCD(date);
-  if (!year || !month || !day) return undefined;
-  const dateFromParts = DateConverter.convertToDate(year.toString(), month.toString(), day.toString());
-  return convertDateToStringFormat(dateFromParts) as unknown as Date;
+  return convertDateToStringFormat(date) as unknown as Date;
 };
 
 const toCCDMediationUnavailableDates = (dateDetails: UnavailableDatePeriodMediation[]) => {
-  const unavailableDates = toCCDUnavailableDates(dateDetails?.map(datePeriod => ({
-    ...datePeriod,
-    from: resolveDate(datePeriod.from, datePeriod.startYear, datePeriod.startMonth, datePeriod.startDay),
-    until: resolveDate(datePeriod.until, datePeriod.endYear, datePeriod.endMonth, datePeriod.endDay),
-  })));
+  if (!dateDetails?.length) return undefined;
+  const unavailableDates = toCCDUnavailableDates(dateDetails);
 
-  return unavailableDates?.map(unavailableDate => ({
+  return unavailableDates.map(unavailableDate => ({
     ...unavailableDate,
     value: {
       ...unavailableDate.value,
