@@ -166,6 +166,8 @@ Legacy scenario mapping:
 
 Running Preview pipeline :
 
+Pipeline verification PRs can use the normal preview path with targeted `pr_ft_*` labels.
+
 ## Github Labels
 
 `enable_keep_helm` is necessary so the Jenkins pipeline doesn't delete the deployment at the end of it.
