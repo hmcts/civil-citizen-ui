@@ -188,11 +188,10 @@ run_failed_not_executed_functional_tests() {
 }
 
 run_optimised_functional_tests() {
-  local base_pattern mocked_pattern thin_pattern residual_pattern
+  local base_pattern mocked_pattern real_pattern
   local started bucket_started bucket_elapsed total_elapsed
 
   echo "Running the standard functional-test selection through optimised execution buckets"
-  yarn playwright install chromium
   export FUNCTIONAL=true
   unset PREV_FAILED_TEST_FILES PREV_NOT_EXECUTED_TEST_FILES
 
@@ -203,27 +202,19 @@ run_optimised_functional_tests() {
   fi
 
   mocked_pattern="(?=.*(?:${base_pattern}))(?=.*@mocked-functional)"
-  thin_pattern="(?=.*(?:${base_pattern}))(?=.*@thin-full-stack)(?!.*@mocked-functional)"
-  residual_pattern="(?=.*(?:${base_pattern}))(?!.*@mocked-functional)(?!.*@thin-full-stack)"
+  real_pattern="(?=.*(?:${base_pattern}))(?!.*@mocked-functional)"
   mkdir -p test-results/functional
   printf 'bucket,duration_seconds\n' > test-results/functional/optimised-timings.csv
   started=$SECONDS
 
   ./bin/configure-functional-test-router.sh real
-  for bucket in residual thin-client; do
-    bucket_started=$SECONDS
-    if [[ "$bucket" = 'residual' ]]; then
-      pattern="$residual_pattern"
-    else
-      pattern="$thin_pattern"
-    fi
-    echo "Running ${bucket} bucket for baseline selection: ${base_pattern}"
-    MOCHAWESOME_REPORTFILENAME="optimised-${bucket}" \
-      run_functional_command yarn codeceptjs run-workers --suites 13 --grep "$pattern" \
-      --reporter mocha-multi --plugins allure --verbose
-    bucket_elapsed=$((SECONDS - bucket_started))
-    printf '%s,%s\n' "$bucket" "$bucket_elapsed" >> test-results/functional/optimised-timings.csv
-  done
+  bucket_started=$SECONDS
+  echo "Running the non-mocked bucket for baseline selection: ${base_pattern}"
+  MOCHAWESOME_REPORTFILENAME='optimised-real' \
+    run_functional_command yarn codeceptjs run-workers --suites 13 --grep "$real_pattern" \
+    --reporter mocha-multi --plugins allure --verbose
+  bucket_elapsed=$((SECONDS - bucket_started))
+  printf 'real,%s\n' "$bucket_elapsed" >> test-results/functional/optimised-timings.csv
 
   ./bin/configure-functional-test-router.sh mocked
   bucket_started=$SECONDS
