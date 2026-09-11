@@ -143,7 +143,9 @@ and their union is the complete selection. Bucket and total durations are archiv
 With no optimisation label Jenkins follows the pre-epic deployment and functional-test path. The temporary real
 proxy profile can be removed when the epic has migrated every scenario and the residual bucket is empty; the
 allowlisted thin-client routing remains. Its functional-stage duration is archived in
-`test-results/functional/standard-timings.csv` for like-for-like comparison with the optimised run.
+`test-results/functional/standard-timings.csv` for like-for-like comparison with the optimised run. Apply the same
+`pr_ft_*` selection labels to both runs when measuring a migrated subset; the optimisation label must be the only
+selection difference.
 
 Running E2E tests:
 
