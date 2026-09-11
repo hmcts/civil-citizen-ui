@@ -101,7 +101,7 @@ export interface BreathingSpace {
   };
   liftBreathing?: {
     expectedEnd?: string;
-    eventDescription?: string;
+    reasonToLift?: string;
   };
 }
 

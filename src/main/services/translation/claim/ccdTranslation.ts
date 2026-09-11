@@ -27,6 +27,10 @@ import {toCCDFlightDetails} from '../response/convertToCCDFlightDetails';
 import {roundOffTwoDecimals} from 'common/utils/dateUtils';
 import {convertToCCDStatementOfTruth} from 'services/translation/response/convertToCCDStatementOfTruth';
 import {toCCDFixedCost} from 'models/ccdResponse/ccdFixedCosts';
+import {
+  toCCDBreathingSpaceEnterInfo,
+  toCCDBreathingSpaceLiftInfo,
+} from 'services/translation/breathingSpace/convertToCCDBreathingSpaceInfo';
 
 export const translateDraftClaimToCCD = (claim: Claim, req?: AppRequest): CCDClaim => {
   return {
@@ -94,5 +98,7 @@ export const translateDraftClaimToCCDInterest = (claim: Claim): CCDClaim => {
     claimFee:  toCCDClaimFee(claim.claimFee),
     fixedCosts: toCCDFixedCost(claim.fixedCosts),
     ccjJudgmentFixedCostAmount: !claim.ccjJudgmentFixedCostAmount ? undefined : claim.ccjJudgmentFixedCostAmount.toString(),
+    enterBreathing: toCCDBreathingSpaceEnterInfo(claim.enterBreathing),
+    liftBreathing: toCCDBreathingSpaceLiftInfo(claim.liftBreathing),
   };
 };

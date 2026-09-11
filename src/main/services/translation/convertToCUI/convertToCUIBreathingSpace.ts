@@ -24,9 +24,6 @@ export const toCUIBreathingSpaceEnterInfo = (
     ccdEnterBreathing.type,
     ccdEnterBreathing.reference,
     toDate(ccdEnterBreathing.start),
-    ccdEnterBreathing.expectedEnd === null
-      ? null
-      : toDate(ccdEnterBreathing.expectedEnd),
   );
 };
 
@@ -37,5 +34,8 @@ export const toCUIBreathingSpaceLiftInfo = (
     return undefined;
   }
 
-  return new BreathingSpaceLiftInfo(toDate(ccdLiftBreathing.expectedEnd));
+  return new BreathingSpaceLiftInfo(
+    toDate(ccdLiftBreathing.expectedEnd),
+    ccdLiftBreathing.reasonToLift,
+  );
 };

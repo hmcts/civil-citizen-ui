@@ -57,7 +57,7 @@ describe('Lift Breathing Space Check Answers Controller', () => {
       claim.breathingSpace = {
         liftBreathing: {
           expectedEnd: '2026-08-06',
-          eventDescription: 'Reason for lifting',
+          reasonToLift: 'Reason for lifting',
         },
       };
       mockGetClaimById.mockResolvedValue(claim);
@@ -75,7 +75,7 @@ describe('Lift Breathing Space Check Answers Controller', () => {
             {
               liftBreathing: {
                 expectedEnd: '2026-08-06',
-                eventDescription: 'Reason for lifting',
+                reasonToLift: 'Reason for lifting',
               },
             },
             expect.anything(),
