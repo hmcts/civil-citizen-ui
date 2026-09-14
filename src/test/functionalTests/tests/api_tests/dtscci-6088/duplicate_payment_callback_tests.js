@@ -1,11 +1,3 @@
-// DTSCCI-6088 - duplicate payment updates arriving simultaneously must not be applied twice.
-//
-// civil-service PR #8222 adds PaymentUtils.isPaymentAlreadyApplied and makes the payment
-// services re-read the case inside the CCD update transaction, skipping submitUpdate when a
-// SUCCESS payment with the same reference is already on the case.
-//
-// The service request callbacks are unauthenticated, so this fires genuine duplicate and
-// genuinely simultaneous callbacks at them, which is the part manual testing cannot do.
 const config = require('../../../../config');
 const apiRequest = require('../../../specClaimHelpers/api/apiRequest');
 const restHelper = require('../../../specClaimHelpers/api/restHelper');
@@ -14,14 +6,12 @@ const {assert} = require('chai');
 
 const CLAIM_ISSUED_ENDPOINT = '/service-request-update-claim-issued';
 
-const results = [];
+let results = [];
 function ev(step, expected, actual, pass) {
   results.push({step, expected, actual, pass});
   console.log(`6088|${pass ? 'PASS' : 'FAIL'}|${step}|expected=${expected}|actual=${actual}`);
 }
 
-// The payload the payments service sends. payment_reference is what the new
-// isPaymentAlreadyApplied check compares against the reference already on the case.
 const serviceUpdateDto = (caseId, paymentReference, status = 'Paid') => ({
   service_request_reference: '1324646546456',
   ccd_case_number: String(caseId),
@@ -35,8 +25,6 @@ const serviceUpdateDto = (caseId, paymentReference, status = 'Paid') => ({
   },
 });
 
-// Fires the callback directly so duplicates can be sent without going through the helper
-// that also waits for the business process.
 async function fireCallback(caseId, paymentReference, status = 'Paid') {
   const auth = await idamHelper.accessToken(config.applicantSolicitorUser);
   const {s2sAuth} = apiRequest.getTokens();
@@ -49,7 +37,6 @@ async function fireCallback(caseId, paymentReference, status = 'Paid') {
   return res.status;
 }
 
-// Snapshot of the fields a duplicate callback must not disturb.
 function paymentSnapshot(caseData) {
   const p = caseData.claimIssuedPaymentDetails || {};
   return {
@@ -64,8 +51,7 @@ function paymentSnapshot(caseData) {
 Feature('DTSCCI-6088 - duplicate payment callbacks (civil-service #8222)').tag('@dtscci-6088');
 
 Scenario('a repeated payment callback is a safe no-op, and simultaneous duplicates apply once', async ({api}) => {
-  // A spec claim, created and paid once through the normal helper. That first payment is the
-  // legitimate one; everything after this is a duplicate of it.
+  results = [];
   const caseId = await api.createSpecifiedClaim(config.applicantSolicitorUser, false, 'SmallClaims');
   await api.waitForFinishedBusinessProcess();
   await apiRequest.setupTokens(config.applicantSolicitorUser);
@@ -78,7 +64,6 @@ Scenario('a repeated payment callback is a safe no-op, and simultaneous duplicat
 
   const reference = before.paymentReference || '13213223';
 
-  // ---- 1. the same callback again, sequentially -------------------------
   const status1 = await fireCallback(caseId, reference);
   await api.waitForFinishedBusinessProcess();
   const afterSequential = paymentSnapshot(await api.retrieveCaseData(config.adminUser, caseId));
@@ -88,9 +73,6 @@ Scenario('a repeated payment callback is a safe no-op, and simultaneous duplicat
     JSON.stringify(before), JSON.stringify(afterSequential),
     JSON.stringify(before) === JSON.stringify(afterSequential));
 
-  // ---- 2. five identical callbacks at the same time ---------------------
-  // This is the reported defect: simultaneous duplicates starting multiple business
-  // processes, one of which fails and is then retried into a state it cannot handle.
   const statuses = await Promise.all(
     Array.from({length: 5}, () => fireCallback(caseId, reference)),
   );
@@ -103,16 +85,12 @@ Scenario('a repeated payment callback is a safe no-op, and simultaneous duplicat
     JSON.stringify(before), JSON.stringify(afterConcurrent),
     JSON.stringify(before) === JSON.stringify(afterConcurrent));
 
-  // ---- 3. the business process must be clean ----------------------------
-  // waitForFinishedBusinessProcess above would surface an incident; assert the case is not
-  // sitting in a started/failed process after all that duplication.
   const finalData = await api.retrieveCaseData(config.adminUser, caseId);
   const bp = finalData.businessProcess || {};
   ev('no business process left running or failed after the duplicates',
     'FINISHED or no active process', `status=${bp.status}, activityId=${bp.activityId}`,
     !bp.status || bp.status === 'FINISHED');
 
-  // ---- summary -----------------------------------------------------------
   console.log('\n========== DTSCCI-6088 RESULTS ==========');
   console.log(`caseId: ${caseId}`);
   results.forEach(r => console.log(`${r.pass ? 'PASS' : 'FAIL'}  ${r.step}`));
@@ -121,3 +99,60 @@ Scenario('a repeated payment callback is a safe no-op, and simultaneous duplicat
   failed.forEach(f => console.log(`FAILED ${f.step}: expected ${f.expected} got ${f.actual}`));
   assert.equal(failed.length, 0, `${failed.length} duplicate-payment check(s) failed`);
 });
+
+Scenario('a payment callback landing during another in-flight case update does not lose either write',
+  async ({api}) => {
+    results = [];
+    const caseId = await api.createSpecifiedClaim(config.applicantSolicitorUser, false, 'SmallClaims');
+    await api.waitForFinishedBusinessProcess();
+    await apiRequest.setupTokens(config.applicantSolicitorUser);
+
+    const before = paymentSnapshot(await api.retrieveCaseData(config.adminUser, caseId));
+    const reference = before.paymentReference || '13213223';
+    console.log(`6088|lost-update|caseId=${caseId}|before=${JSON.stringify(before)}`);
+
+    let held = null;
+    try {
+      held = await apiRequest.startEvent('AMEND_PARTY_DETAILS', caseId);
+    } catch (e) {
+      console.log(`6088|lost-update|could not open a holding event: ${e.message}`);
+    }
+    ev('a concurrent case update can be opened and held',
+      'an event token and the current case data', held ? 'event started' : 'could not start an event',
+      !!held);
+
+    if (held) {
+      const status = await fireCallback(caseId, reference);
+      await api.waitForFinishedBusinessProcess();
+      ev('the payment callback is accepted while another update is in flight',
+        'HTTP 2xx', `HTTP ${status}`, status >= 200 && status < 300);
+
+      let submitted = null;
+      try {
+        submitted = await apiRequest.submitEvent('AMEND_PARTY_DETAILS', held, caseId);
+      } catch (e) {
+        console.log(`6088|lost-update|submit of the held event failed: ${e.message}`);
+      }
+      const rejectedOnVersion = !submitted || submitted.status === 409;
+      ev('the stale write is either rejected on version or applied without loss',
+        '409, or a 2xx that preserves the payment', submitted ? `HTTP ${submitted.status}` : 'rejected',
+        rejectedOnVersion || (submitted.status >= 200 && submitted.status < 300));
+    }
+
+    const after = paymentSnapshot(await api.retrieveCaseData(config.adminUser, caseId));
+    console.log(`6088|lost-update|after=${JSON.stringify(after)}`);
+    ev('the payment survives a concurrent update to the same case',
+      `reference ${before.paymentReference}, status ${before.paymentStatus}`,
+      `reference ${after.paymentReference}, status ${after.paymentStatus}`,
+      after.paymentReference === before.paymentReference && after.paymentStatus === before.paymentStatus);
+
+    const bp = (await api.retrieveCaseData(config.adminUser, caseId)).businessProcess || {};
+    ev('no business process left running or failed after the collision',
+      'FINISHED or no active process', `status=${bp.status}`,
+      !bp.status || bp.status === 'FINISHED');
+
+    const failed = results.filter(r => !r.pass);
+    console.log(`========== lost-update ${results.length - failed.length}/${results.length} ==========`);
+    failed.forEach(f => console.log(`FAILED ${f.step}: expected ${f.expected} got ${f.actual}`));
+    assert.equal(failed.length, 0, `${failed.length} lost-update check(s) failed`);
+  });

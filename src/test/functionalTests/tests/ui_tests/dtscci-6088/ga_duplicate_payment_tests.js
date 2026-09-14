@@ -1,12 +1,3 @@
-// DTSCCI-6088 - duplicate payment callbacks on a General Application.
-//
-// PaymentRequestUpdateCallbackService dispatches on case type: when the case is a
-// GENERALAPPLICATION and the status is Paid it hands off to
-// GaPaymentRequestUpdateCallbackService, which is the service most changed by
-// civil-service PR #8222 (+122/-79) and the one that gained @Retryable / @Recover.
-//
-// So GA duplicates go through the SAME unauthenticated endpoint as civil ones, just with a
-// GA case number. This raises and pays a real GA, then hammers it with duplicates.
 const stamp = Math.random().toString(36).substring(2, 8);
 process.env.CLAIMANT_CITIZEN_EMAIL = `claimant6088-${stamp}@gmail.com`;
 process.env.DEFENDANT_CITIZEN_EMAIL = `defendant6088-${stamp}@gmail.com`;
@@ -94,10 +85,7 @@ async function fireCallback(caseId, paymentReference, status = 'Paid', serviceRe
   return res.status;
 }
 
-// Reads the GA case, which lives under the GENERALAPPLICATION case type.
 async function fetchGaCase(gaId) {
-  // Use ctscAdmin, not adminUser. The adminUser view of a GA is permission filtered down to
-  // three fields with no payment data, which would make a before/after comparison meaningless.
   const auth = await idamHelper.accessToken(config.ctscAdmin);
   const userId = await idamHelper.userId(auth);
   const {s2sAuth} = apiRequest.getTokens();
@@ -111,7 +99,6 @@ async function fetchGaCase(gaId) {
   return res.json();
 }
 
-// The fields a duplicate callback must leave alone.
 function gaSnapshot(ga) {
   const d = ga.case_data || {};
   const pba = d.generalAppPBADetails || {};
@@ -143,7 +130,6 @@ Scenario('duplicate and simultaneous callbacks on a paid GA are safe no-ops', as
 
   const u = (p) => `case/${claimRef}/general-application/${p}`;
 
-  // ---- raise and pay a real GA ------------------------------------------
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await I.amOnPage(u('application-type'));
   await I.waitForContent('Select application', 60);
@@ -205,9 +191,6 @@ Scenario('duplicate and simultaneous callbacks on a paid GA are safe no-ops', as
   console.log(`6088-GA|claimRef=${claimRef}|claimNumber=${claimNumber}|gaId=${gaId}|before=${JSON.stringify(before)}`);
   console.log(`6088-GA|visible case_data keys=${JSON.stringify(Object.keys(beforeCase.case_data || {}))}`);
 
-  // Guard against a false pass. The caseworker view of a GA case can be permission filtered,
-  // in which case the payment fields come back undefined and a before/after comparison would
-  // trivially match. Fail loudly here rather than reporting a green run built on empty data.
   const observable = Object.entries(before).filter(([, v]) => v !== undefined && v !== null);
   ev('the GA payment fields are actually visible to assert on',
     'at least the state and one payment field readable',
@@ -218,8 +201,6 @@ Scenario('duplicate and simultaneous callbacks on a paid GA are safe no-ops', as
   ev('GA is paid before the duplicates are sent', 'a payment on the GA', JSON.stringify(before),
     !!before.state);
 
-  // isPaymentAlreadyApplied compares the incoming payment reference against the one already
-  // on the case, so a duplicate is only a real duplicate if it reuses the actual reference.
   const reference = before.paymentReference;
   const srReference = before.serviceRequestReference;
   ev('captured the real payment reference to build a genuine duplicate',
@@ -227,7 +208,6 @@ Scenario('duplicate and simultaneous callbacks on a paid GA are safe no-ops', as
     !!reference);
   assert.isOk(reference, 'no payment reference readable, the duplicate would not be a duplicate');
 
-  // ---- 1. the same callback again, sequentially -------------------------
   const status1 = await fireCallback(gaId, reference, 'Paid', srReference);
   await I.wait(8);
   const afterSequential = gaSnapshot(await fetchGaCase(gaId));
@@ -237,7 +217,6 @@ Scenario('duplicate and simultaneous callbacks on a paid GA are safe no-ops', as
     JSON.stringify(before), JSON.stringify(afterSequential),
     JSON.stringify(before) === JSON.stringify(afterSequential));
 
-  // ---- 2. five identical callbacks at once -------------------------------
   const statuses = await Promise.all(
     Array.from({length: 5}, () => fireCallback(gaId, reference, 'Paid', srReference)));
   console.log(`6088-GA|simultaneous statuses=${JSON.stringify(statuses)}`);
@@ -249,14 +228,12 @@ Scenario('duplicate and simultaneous callbacks on a paid GA are safe no-ops', as
     JSON.stringify(before), JSON.stringify(afterConcurrent),
     JSON.stringify(before) === JSON.stringify(afterConcurrent));
 
-  // ---- 3. the GA must not be left mid-process ---------------------------
   const finalGa = await fetchGaCase(gaId);
   const bp = (finalGa.case_data || {}).businessProcess || {};
   ev('no GA business process left running or failed',
     'FINISHED or no active process', `status=${bp.status}, activityId=${bp.activityId}`,
     !bp.status || bp.status === 'FINISHED');
 
-  // ---- 4. the application must still be progressing normally ------------
   ev('GA not left in Awaiting Application Payment',
     'any state other than AWAITING_APPLICATION_PAYMENT', finalGa.state,
     finalGa.state && finalGa.state !== 'AWAITING_APPLICATION_PAYMENT');
