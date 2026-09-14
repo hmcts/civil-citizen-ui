@@ -259,6 +259,7 @@ describe('Application Fee PaymentConfirmation Service', () => {
     (getClaimById as jest.Mock).mockResolvedValueOnce(new Claim());
     jest.spyOn(generalApplicationService, 'getApplicationFromGAService').mockResolvedValueOnce(applicationResponse);
     const getGaFeePaymentStatus = jest.spyOn(GaServiceClient.prototype, 'getGaFeePaymentStatus');
+    getGaFeePaymentStatus.mockClear();
 
     const actualPaymentRedirectUrl = await getRedirectUrl(claimId, applicationId, mockedAppRequest);
 

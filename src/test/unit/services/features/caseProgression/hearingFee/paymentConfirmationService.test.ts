@@ -104,6 +104,7 @@ describe('PaymentConfirmation Service', () => {
   it('should return to Payment Unsuccessful page when payment reference is missing', async () => {
     (getClaimById as jest.Mock).mockResolvedValueOnce(claimWithPaymentReference());
     const getFeePaymentStatus = jest.spyOn(CivilServiceClient.prototype, 'getFeePaymentStatus');
+    getFeePaymentStatus.mockClear();
 
     const actualPaymentRedirectUrl = await getRedirectUrl(claimId, mockedAppRequest);
 
