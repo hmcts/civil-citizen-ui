@@ -17,6 +17,11 @@ jest.mock('../../../../../../main/routes/guards/generalAplicationGuard',() => ({
     next();
   }),
 }));
+jest.mock('../../../../../../main/routes/guards/requireGeneralApplicationDraft',() => ({
+  requireGeneralApplicationDraft: jest.fn((req, res, next) => {
+    next();
+  }),
+}));
 
 describe('General Application - Requesting reason', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
