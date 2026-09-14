@@ -7,6 +7,8 @@ import {Party} from 'models/party';
 import {getCaseDataFromStore, getDraftClaimFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {syncCaseReferenceCookie} from 'modules/cookie/caseReferenceCookie';
 import {ClaimantResponse} from 'models/claimantResponse';
+import {GeneralApplication} from 'models/generalApplication/GeneralApplication';
+import {ApplicationType, ApplicationTypeOption} from 'models/generalApplication/applicationType';
 
 jest.mock('modules/draft-store/draftStoreService', () => ({
   generateRedisKey: jest.fn(),
@@ -151,6 +153,20 @@ describe('Utility service', () => {
       expect(saveDraftClaim as jest.Mock).toHaveBeenCalled();
     });
 
+    it('should preserve an in-progress general application draft from cache', async () => {
+      const cachedClaim = new Claim();
+      cachedClaim.applicant1 = {} as Claim['applicant1'];
+      cachedClaim.generalApplication = new GeneralApplication(new ApplicationType(ApplicationTypeOption.STAY_THE_CLAIM));
+      const latestClaim = { id: '1645882162449409' } as Claim;
+
+      (getCaseDataFromStore as jest.Mock).mockResolvedValueOnce(cachedClaim);
+      jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockResolvedValueOnce(latestClaim);
+
+      const result = await getDashboardClaimById(request.params.id, request, true);
+
+      expect(result.generalApplication).toBe(cachedClaim.generalApplication);
+    });
+
     it('should throw an error if the claim does not exist in civil service', async () => {
       (getCaseDataFromStore as jest.Mock).mockResolvedValueOnce(new Claim());
       jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockResolvedValueOnce(null as unknown as Claim);
@@ -212,6 +228,28 @@ describe('Utility service', () => {
       expect(result).toBe(claim);
       expect(req.session.caseReference).toBe('1645882162449409');
 
+    });
+
+    it('should preserve an in-progress general application draft when refreshing from CCD', async () => {
+      const generalApplication = new GeneralApplication(new ApplicationType(ApplicationTypeOption.STAY_THE_CLAIM));
+      getDraftClaimFromStoreMock.mockResolvedValueOnce({
+        case_data: {
+          claimantResponse: new ClaimantResponse(),
+          generalApplication,
+        },
+      });
+      const claim = {
+        isClaimantIntentionPending: jest.fn().mockReturnValue(false),
+        id: '1645882162449409',
+      } as unknown as Claim;
+      jest
+        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
+        .mockResolvedValueOnce(claim);
+
+      const result = await refreshDraftStoreClaimFrom(req);
+
+      expect(result.generalApplication).toBe(generalApplication);
+      expect(result.claimantResponse).toBeInstanceOf(ClaimantResponse);
     });
 
     it('should throw an error if the claim does not exist', async () => {
