@@ -1,169 +1,132 @@
-import {app} from '../../../../../../../main/app';
-import request from 'supertest';
-import config from 'config';
-import nock from 'nock';
-import {CITIZEN_BANK_ACCOUNT_URL} from 'routes/urls';
-import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
-import {mockResponseFullAdmitPayBySetDate} from '../../../../../../utils/mockDraftStore';
-import * as draftStoreService from 'modules/draft-store/draftStoreService';
-
-jest.mock('../../../../../../../main/modules/oidc');
+import {Response} from 'express';
+import bankAccountsController from '../../../../../../../main/routes/features/response/statementOfMeans/bankAccounts/bankAccountsController';
+import {CITIZEN_DISABILITY_URL} from 'routes/urls';
+import {AppRequest} from 'models/AppRequest';
+import {GenericForm} from 'form/models/genericForm';
+import {BankAccounts} from 'form/models/bankAndSavings/bankAccounts';
+import {BankAccount} from 'form/models/bankAndSavings/bankAccount';
+import {BankAccountService} from 'services/features/response/statementOfMeans/bankAccounts/bankAccountService';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {createMockResponse, createMockSession, getRouteHandler} from '../../../../../../utils/getRouteHandler';
 
 describe('Bank Accounts and Savings', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
+  const getHandler = getRouteHandler(bankAccountsController, 'get');
+  const postHandler = getRouteHandler(bankAccountsController, 'post');
+  const viewPath = 'features/response/statementOfMeans/citizenBankAndSavings/citizen-bank-accounts';
+  const claimId = 'aaa';
+  let req: Partial<AppRequest>;
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
+  const renderedForm = () => (res.render as jest.Mock).mock.calls[0][1].form;
 
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
+  beforeEach(() => {
+    req = {
+      params: {id: claimId},
+      session: createMockSession({user: {id: 'user-id'}}),
+      body: {},
+      query: {},
+      cookies: {},
+    };
+    res = createMockResponse();
+    next = jest.fn();
+    jest.spyOn(BankAccountService.prototype, 'getBankAccounts').mockResolvedValue(new BankAccounts([new BankAccount(), new BankAccount()]));
+    jest.spyOn(BankAccountService.prototype, 'saveBankAccounts').mockResolvedValue(undefined);
   });
 
-  describe('on Get', () => {
-    it('should return accounts page successfully', async () => {
-      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
-      await request(app).get(CITIZEN_BANK_ACCOUNT_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('List your bank and savings accounts');
-        });
+  describe('on GET', () => {
+    it('should render accounts page successfully', async () => {
+      await getHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        form: expect.any(GenericForm),
+        bankAccountDropDownItems: expect.anything(),
+      }));
     });
   });
-  describe('on Post', () => {
-    beforeEach(() => {
-      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
-    });
-    it('should return error when type of account is not specified', async () => {
-      const data = {
+
+  describe('on POST', () => {
+    it('should re-render when type of account is not specified', async () => {
+      req.body = {
         accounts: [
-          {
-            typeOfAccount: '',
-            joint: 'true',
-            balance: '-234.33',
-          },
-          {
-            typeOfAccount: '',
-            joint: '',
-            balance: '',
-          },
+          {typeOfAccount: '', joint: 'true', balance: '-234.33'},
+          {typeOfAccount: '', joint: '', balance: ''},
         ],
       };
-      await request(app).post(CITIZEN_BANK_ACCOUNT_URL)
-        .send(data)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.TYPE_OF_ACCOUNT_REQUIRED);
-        });
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({form: expect.any(GenericForm)}));
+      expect(renderedForm().hasErrors() || renderedForm().hasNestedErrors()).toBe(true);
     });
-    it('should return error when joint is not specified', async () => {
-      const data = {
+
+    it('should re-render when joint is not specified', async () => {
+      req.body = {
         accounts: [
-          {
-            typeOfAccount: 'CURRENT_ACCOUNT',
-            joint: '',
-            balance: '-234.33',
-          },
-          {
-            typeOfAccount: '',
-            joint: '',
-            balance: '',
-          },
+          {typeOfAccount: 'CURRENT_ACCOUNT', joint: '', balance: '-234.33'},
+          {typeOfAccount: '', joint: '', balance: ''},
         ],
       };
-      await request(app).post(CITIZEN_BANK_ACCOUNT_URL)
-        .send(data)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.VALID_OPTION_SELECTION);
-        });
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({form: expect.any(GenericForm)}));
+      expect(renderedForm().hasErrors() || renderedForm().hasNestedErrors()).toBe(true);
     });
-    it('should return error when balance is not specified', async () => {
-      const data = {
+
+    it('should re-render when balance is not specified', async () => {
+      req.body = {
         accounts: [
-          {
-            typeOfAccount: 'CURRENT_ACCOUNT',
-            joint: 'No',
-            balance: '',
-          },
-          {
-            typeOfAccount: '',
-            joint: '',
-            balance: '',
-          },
+          {typeOfAccount: 'CURRENT_ACCOUNT', joint: 'No', balance: ''},
+          {typeOfAccount: '', joint: '', balance: ''},
         ],
       };
-      await request(app).post(CITIZEN_BANK_ACCOUNT_URL)
-        .send(data)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.VALID_NUMBER);
-        });
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({form: expect.any(GenericForm)}));
+      expect(renderedForm().hasErrors() || renderedForm().hasNestedErrors()).toBe(true);
     });
-    it('should return error when balance has more than two decimal places', async () => {
-      const data = {
+
+    it('should re-render when balance has more than two decimal places', async () => {
+      req.body = {
         accounts: [
-          {
-            typeOfAccount: 'CURRENT_ACCOUNT',
-            joint: 'No',
-            balance: '456.9090',
-          },
-          {
-            typeOfAccount: '',
-            joint: '',
-            balance: '',
-          },
+          {typeOfAccount: 'CURRENT_ACCOUNT', joint: 'No', balance: '456.9090'},
+          {typeOfAccount: '', joint: '', balance: ''},
         ],
       };
-      await request(app).post(CITIZEN_BANK_ACCOUNT_URL)
-        .send(data)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.VALID_TWO_DECIMAL_NUMBER);
-        });
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({form: expect.any(GenericForm)}));
+      expect(renderedForm().hasErrors() || renderedForm().hasNestedErrors()).toBe(true);
     });
-    it('should return error when balance for input is 00', async () => {
-      const data = {
+
+    it('should re-render when balance for input is 00', async () => {
+      req.body = {
         accounts: [
-          {
-            typeOfAccount: 'CURRENT_ACCOUNT',
-            joint: 'No',
-            balance: '00.0',
-          },
-          {
-            typeOfAccount: '',
-            joint: '',
-            balance: '',
-          },
+          {typeOfAccount: 'CURRENT_ACCOUNT', joint: 'No', balance: '00.0'},
+          {typeOfAccount: '', joint: '', balance: ''},
         ],
       };
-      await request(app).post(CITIZEN_BANK_ACCOUNT_URL)
-        .send(data)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.VALID_NUMBER);
-        });
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({form: expect.any(GenericForm)}));
+      expect(renderedForm().hasErrors() || renderedForm().hasNestedErrors()).toBe(true);
     });
-    it('should should redirect when no validation errors', async () => {
-      const data = {
+
+    it('should redirect when no validation errors', async () => {
+      req.body = {
         accounts: [
-          {
-            typeOfAccount: 'CURRENT_ACCOUNT',
-            joint: 'No',
-            balance: '456.90',
-          },
-          {
-            typeOfAccount: '',
-            joint: '',
-            balance: '',
-          },
+          {typeOfAccount: 'CURRENT_ACCOUNT', joint: 'No', balance: '456.90'},
+          {typeOfAccount: '', joint: '', balance: ''},
         ],
       };
-      await request(app).post(CITIZEN_BANK_ACCOUNT_URL)
-        .send(data)
-        .expect((res) => {
-          expect(res.status).toBe(302);
-        });
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(BankAccountService.prototype.saveBankAccounts).toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CITIZEN_DISABILITY_URL));
     });
   });
 });

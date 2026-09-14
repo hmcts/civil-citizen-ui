@@ -1,123 +1,134 @@
-import {app} from '../../../../../../../main/app';
-import request from 'supertest';
-import config from 'config';
-import nock from 'nock';
-import {CITIZEN_SELF_EMPLOYED_URL, ON_TAX_PAYMENTS_URL} from '../../../../../../../main/routes/urls';
-import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
-import {mockRedisFailure, mockResponseFullAdmitPayBySetDate} from '../../../../../../utils/mockDraftStore';
-import {t} from 'i18next';
-import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {Response} from 'express';
+import selfEmployedAsController from '../../../../../../../main/routes/features/response/statementOfMeans/employment/selfEmployed/selfEmployedAsController';
+import {ON_TAX_PAYMENTS_URL} from 'routes/urls';
+import {AppRequest} from 'models/AppRequest';
+import {GenericForm} from 'form/models/genericForm';
+import {SelfEmployedAsForm} from 'form/models/statementOfMeans/employment/selfEmployed/selfEmployedAsForm';
+import {
+  getSelfEmployedAsForm,
+  saveSelfEmployedAsData,
+} from 'services/features/response/statementOfMeans/employment/selfEmployed/selfEmployedAsService';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {createMockResponse, createMockSession, getRouteHandler} from '../../../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../../../main/modules/oidc');
+jest.mock('services/features/response/statementOfMeans/employment/selfEmployed/selfEmployedAsService', () => ({
+  getSelfEmployedAsForm: jest.fn(),
+  saveSelfEmployedAsData: jest.fn(),
+}));
 
 describe('Self Employed As', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
+  const getHandler = getRouteHandler(selfEmployedAsController, 'get');
+  const postHandler = getRouteHandler(selfEmployedAsController, 'post');
+  const viewPath = 'features/response/statementOfMeans/employment/selfEmployed/self-employed-as';
+  const claimId = 'aaa';
+  let req: Partial<AppRequest>;
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
+  const mockGetSelfEmployedAsForm = getSelfEmployedAsForm as jest.Mock;
+  const mockSaveSelfEmployedAsData = saveSelfEmployedAsData as jest.Mock;
+  const renderedForm = () => (res.render as jest.Mock).mock.calls[0][1].form;
 
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
+  beforeEach(() => {
+    req = {
+      params: {id: claimId},
+      session: createMockSession({user: {id: 'user-id'}}),
+      body: {},
+      query: {},
+      cookies: {},
+    };
+    res = createMockResponse();
+    next = jest.fn();
+    mockGetSelfEmployedAsForm.mockResolvedValue(new GenericForm(new SelfEmployedAsForm()));
+    mockSaveSelfEmployedAsData.mockResolvedValue(undefined);
   });
 
-  describe('on Get', () => {
-    it('should return on self employed page successfully', async () => {
-      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
-      await request(app).get(CITIZEN_SELF_EMPLOYED_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('PAGES.SELF_EMPLOYED.TITLE'));
-        });
+  describe('on GET', () => {
+    it('should render on self employed page successfully', async () => {
+      await getHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        form: expect.any(GenericForm),
+      }));
     });
-    it('should return 500 status code when error occurs', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .get(CITIZEN_SELF_EMPLOYED_URL)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+
+    it('should call next when error thrown', async () => {
+      const error = new Error('error');
+      mockGetSelfEmployedAsForm.mockRejectedValue(error);
+
+      await getHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 
-  describe('on Post', () => {
-    beforeEach(() => {
-      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
+  describe('on POST', () => {
+    it('should re-render when no input text is filled', async () => {
+      req.body = {};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({form: expect.any(GenericForm)}));
+      expect(renderedForm().errorFor('jobTitle')).toBe('ERRORS.JOB_TITLE_REQUIRED');
+      expect(renderedForm().errorFor('annualTurnover')).toBe('ERRORS.ANNUAL_TURNOVER_REQUIRED');
     });
-    it('should return error when no input text is filled', async () => {
-      await request(app)
-        .post(CITIZEN_SELF_EMPLOYED_URL)
-        .send('')
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.JOB_TITLE_REQUIRED'));
-          expect(res.text).toContain(t('ERRORS.ANNUAL_TURNOVER_REQUIRED'));
-        });
+
+    it('should re-render when job title is defined and amount is not defined', async () => {
+      req.body = {jobTitle: 'Developer', annualTurnover: undefined};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(renderedForm().errorFor('annualTurnover')).toBe('ERRORS.ANNUAL_TURNOVER_REQUIRED');
     });
-    it('should return errors when job title is defined and amount is not defined', async () => {
-      await request(app)
-        .post(CITIZEN_SELF_EMPLOYED_URL)
-        .send({jobTitle: 'Developer', annualTurnover: undefined})
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.ANNUAL_TURNOVER_REQUIRED'));
-        });
+
+    it('should re-render when job title is defined and amount is -1', async () => {
+      req.body = {jobTitle: 'Developer', annualTurnover: -1};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(renderedForm().hasErrors()).toBe(true);
     });
-    it('should return errors when job title is defined and amount is -1', async () => {
-      await request(app)
-        .post(CITIZEN_SELF_EMPLOYED_URL)
-        .send({jobTitle: 'Developer', annualTurnover: -1})
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('enter a negative number');
-        });
+
+    it('should re-render when job title is defined and amount is 0', async () => {
+      req.body = {jobTitle: 'Developer', annualTurnover: 0};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(renderedForm().errorFor('annualTurnover')).toBe('ERRORS.ANNUAL_TURNOVER_REQUIRED');
     });
-    it('should return errors when job title is defined and amount is 0', async () => {
-      await request(app)
-        .post(CITIZEN_SELF_EMPLOYED_URL)
-        .send({jobTitle: 'Developer', annualTurnover: 0})
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.ANNUAL_TURNOVER_REQUIRED'));
-        });
+
+    it('should re-render when job title is defined and amount has more than two decimal places', async () => {
+      req.body = {jobTitle: 'Developer', annualTurnover: 50.555};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(renderedForm().errorFor('annualTurnover')).toBe('ERRORS.VALID_TWO_DECIMAL_NUMBER');
     });
-    it('should return errors when job title is defined and amount has more than two decimal places', async () => {
-      await request(app)
-        .post(CITIZEN_SELF_EMPLOYED_URL)
-        .send({jobTitle: 'Developer', annualTurnover: 50.555})
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.AMOUNT_INVALID_DECIMALS'));
-        });
+
+    it('should re-render when job title is not defined and amount is defined', async () => {
+      req.body = {jobTitle: undefined, annualTurnover: 70000};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(renderedForm().errorFor('jobTitle')).toBe('ERRORS.JOB_TITLE_REQUIRED');
     });
-    it('should return errors when job title is not defined and amount is defined', async () => {
-      await request(app)
-        .post(CITIZEN_SELF_EMPLOYED_URL)
-        .send({jobTitle: undefined, annualTurnover: 70000})
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.JOB_TITLE_REQUIRED'));
-        });
-    });
+
     it('should redirect with valid input', async () => {
-      await request(app)
-        .post(CITIZEN_SELF_EMPLOYED_URL)
-        .send({jobTitle: 'Developer', annualTurnover: 70000})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(ON_TAX_PAYMENTS_URL);
-        });
+      req.body = {jobTitle: 'Developer', annualTurnover: 70000};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(mockSaveSelfEmployedAsData).toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, ON_TAX_PAYMENTS_URL));
     });
-    it('should return status 500 when there is error', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .post(CITIZEN_SELF_EMPLOYED_URL)
-        .send({jobTitle: 'Developer', annualTurnover: 70000})
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(t('ERRORS.SOMETHING_WENT_WRONG'));
-        });
+
+    it('should call next when save throws', async () => {
+      const error = new Error('error');
+      mockSaveSelfEmployedAsData.mockRejectedValue(error);
+      req.body = {jobTitle: 'Developer', annualTurnover: 70000};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 });

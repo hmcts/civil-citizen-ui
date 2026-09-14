@@ -1,52 +1,66 @@
-import request from 'supertest';
-import {app} from '../../../../../../main/app';
-import nock from 'nock';
-import config from 'config';
-import {SEND_RESPONSE_BY_EMAIL_URL} from 'routes/urls';
-import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
-import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {Response} from 'express';
+import sendYourResponseByEmailController from '../../../../../../main/routes/features/response/eligibility/sendYourResponseByEmailController';
+import {AppRequest} from 'models/AppRequest';
+import {Claim} from 'models/claim';
+import {FeeRanges} from 'models/feeRange';
+import {ResponseType} from 'form/models/responseType';
+import {RejectAllOfClaimType} from 'form/models/rejectAllOfClaimType';
+import {PartyType} from 'models/partyType';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {CivilServiceClient} from 'client/civilServiceClient';
+import {createMockResponse, createMockSession, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../../main/modules/oidc');
+jest.mock('modules/draft-store/draftStoreService');
 
 describe('Send your response by email', () => {
-  const data = require('../../../../../utils/mocks/feeRangesMock.json');
-  const citizenBaseUrl: string = config.get('services.civilService.url');
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
+  const getHandler = getRouteHandler(sendYourResponseByEmailController, 'get');
+  const viewPath = 'features/response/eligibility/send-your-response-by-email';
+  const claimId = 'claim-id';
+  let req: Partial<AppRequest>;
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
+  const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-    nock(citizenBaseUrl).get('/fees/ranges').reply(200, data);
-    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
+  const buildClaim = (): Claim => {
+    const claim = new Claim();
+    jest.spyOn(claim, 'formattedResponseDeadline').mockReturnValue('15 May 2050');
+    return claim;
+  };
+
+  beforeEach(() => {
+    req = {
+      params: {id: claimId},
+      session: createMockSession({user: {id: 'user-id'}}),
+      query: {},
+      cookies: {},
+    };
+    res = createMockResponse();
+    next = jest.fn();
+    mockGetCaseData.mockResolvedValue(buildClaim());
+    jest.spyOn(CivilServiceClient.prototype, 'getFeeRanges').mockResolvedValue(new FeeRanges([]));
   });
 
   describe('on GET', () => {
-    it('should return send your response by email page', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
-      await request(app)
-        .get(SEND_RESPONSE_BY_EMAIL_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.SEND_YOUR_RESPONSE_BY_EMAIL);
-          expect(res.text).toContain('How to counterclaim');
-          expect(res.text).toContain('View claim fees');
-          expect(res.text).toContain('How to counterclaim');
-          expect(res.text).toContain('Help and support');
-          expect(res.text).toContain('Email');
-          expect(res.text).toContain('Telephone');
-        });
+    it('should render send your response by email page', async () => {
+      await getHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        form: expect.any(Claim),
+        fees: expect.any(Array),
+        ResponseType,
+        RejectAllOfClaimType,
+        partyType: PartyType,
+        responseDeadline: '15 May 2050',
+      }));
     });
-    it('should return http 500 when has error', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .get(SEND_RESPONSE_BY_EMAIL_URL)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+
+    it('should call next when loading the claim fails', async () => {
+      const error = new Error('error');
+      mockGetCaseData.mockRejectedValue(error);
+
+      await getHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 });

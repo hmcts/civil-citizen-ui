@@ -1,154 +1,141 @@
-import request from 'supertest';
-import {app} from '../../../../../../../main/app';
-import nock from 'nock';
-import config from 'config';
-import {
-  CITIZEN_DEPENDANTS_URL,
-  CITIZEN_PARTNER_DISABILITY_URL,
-  CITIZEN_PARTNER_PENSION_URL,
-  RESPONSE_TASK_LIST_URL,
-} from '../../../../../../../main/routes/urls';
-import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
-import {
-  mockCivilClaimUndefined,
-  mockCivilClaimOptionNo,
-  mockRedisFailure,
-  mockResponseFullAdmitPayBySetDate,
-} from '../../../../../../utils/mockDraftStore';
-import {t} from 'i18next';
-import * as draftStoreService from 'modules/draft-store/draftStoreService';
-
-jest.mock('../../../../../../../main/modules/oidc');
+import {Response} from 'express';
+import partnerPensionController from '../../../../../../../main/routes/features/response/statementOfMeans/partner/partnerPensionController';
+import {CITIZEN_DEPENDANTS_URL, CITIZEN_PARTNER_DISABILITY_URL} from 'routes/urls';
+import {AppRequest} from 'models/AppRequest';
+import {GenericForm} from 'form/models/genericForm';
+import {GenericYesNo} from 'form/models/genericYesNo';
+import {YesNo} from 'form/models/yesNo';
+import {PartnerPensionService} from 'services/features/response/statementOfMeans/partner/partnerPensionService';
+import {DisabilityService} from 'services/features/response/statementOfMeans/disabilityService';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {createMockResponse, createMockSession, getRouteHandler} from '../../../../../../utils/getRouteHandler';
 
 describe('Partner Pension', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
+  const getHandler = getRouteHandler(partnerPensionController, 'get');
+  const postHandler = getRouteHandler(partnerPensionController, 'post');
+  const viewPath = 'features/response/statementOfMeans/partner/partner-pension';
+  const claimId = 'aaa';
+  let req: Partial<AppRequest>;
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
+  const renderedForm = () => (res.render as jest.Mock).mock.calls[0][1].form;
 
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
+  beforeEach(() => {
+    req = {
+      params: {id: claimId},
+      session: createMockSession({user: {id: 'user-id'}}),
+      body: {},
+      query: {},
+      cookies: {},
+    };
+    res = createMockResponse();
+    next = jest.fn();
+    jest.spyOn(PartnerPensionService.prototype, 'getPartnerPension').mockResolvedValue(new GenericForm(new GenericYesNo()));
+    jest.spyOn(PartnerPensionService.prototype, 'savePartnerPension').mockResolvedValue(undefined);
+    jest.spyOn(DisabilityService.prototype, 'getDisability').mockResolvedValue(new GenericForm(new GenericYesNo(YesNo.YES)));
   });
 
   describe('on GET', () => {
-    it('should return citizen partner pension page', async () => {
-      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
-      await request(app)
-        .get(CITIZEN_PARTNER_PENSION_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.DOES_YOUR_PARTNER_RECEIVE_PENSION);
-        });
+    it('should render citizen partner pension page', async () => {
+      await getHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        form: expect.any(GenericForm),
+      }));
     });
 
-    it('should show partner pension page when haven´t statementOfMeans', async () => {
-      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
-      await request(app)
-        .get(CITIZEN_PARTNER_PENSION_URL)
-        .send()
-        .expect((res) => {
-          expect(res.status).toBe(200);
-        });
+    it('should render partner pension page when statement of means is missing', async () => {
+      jest.spyOn(PartnerPensionService.prototype, 'getPartnerPension').mockResolvedValue(new GenericForm(new GenericYesNo()));
+
+      await getHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        form: expect.any(GenericForm),
+      }));
     });
 
-    it('should return http 500 when has error', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .get(CITIZEN_PARTNER_PENSION_URL)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+    it('should call next when error thrown', async () => {
+      const error = new Error('error');
+      jest.spyOn(PartnerPensionService.prototype, 'getPartnerPension').mockRejectedValue(error);
+
+      await getHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 
   describe('on POST', () => {
-    beforeEach(() => {
-      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
-    });
-    it('should redirect to response task list if redis claim is undefined', async () => {
-      app.locals.draftStoreClient = mockCivilClaimUndefined;
-      await request(app)
-        .post(CITIZEN_PARTNER_PENSION_URL)
-        .send('option=no')
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(RESPONSE_TASK_LIST_URL);
-        });
+    it('should redirect when redis claim is undefined', async () => {
+      req.body = {option: YesNo.NO};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(PartnerPensionService.prototype.savePartnerPension).toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CITIZEN_PARTNER_DISABILITY_URL));
     });
 
-    it('should redirect page when "no" and defendant disabled = yes', async () => {
-      await request(app)
-        .post(CITIZEN_PARTNER_PENSION_URL)
-        .send('option=no')
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CITIZEN_PARTNER_DISABILITY_URL);
-        });
+    it('should redirect when no and defendant disabled is yes', async () => {
+      jest.spyOn(DisabilityService.prototype, 'getDisability').mockResolvedValue(new GenericForm(new GenericYesNo(YesNo.YES)));
+      req.body = {option: YesNo.NO};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CITIZEN_PARTNER_DISABILITY_URL));
     });
 
-    it('should redirect page when "no" and defendant disabled = no', async () => {
-      app.locals.draftStoreClient = mockCivilClaimOptionNo;
-      await request(app)
-        .post(CITIZEN_PARTNER_PENSION_URL)
-        .send('option=no')
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CITIZEN_DEPENDANTS_URL);
-        });
+    it('should redirect when no and defendant disabled is no', async () => {
+      jest.spyOn(DisabilityService.prototype, 'getDisability').mockResolvedValue(new GenericForm(new GenericYesNo(YesNo.NO)));
+      req.body = {option: YesNo.NO};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CITIZEN_DEPENDANTS_URL));
     });
 
-    it('should redirect page when "yes" and defendant disabled = no', async () => {
-      app.locals.draftStoreClient = mockCivilClaimOptionNo;
-      await request(app)
-        .post(CITIZEN_PARTNER_PENSION_URL)
-        .send('option=yes')
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CITIZEN_DEPENDANTS_URL);
-        });
+    it('should redirect when yes and defendant disabled is no', async () => {
+      jest.spyOn(DisabilityService.prototype, 'getDisability').mockResolvedValue(new GenericForm(new GenericYesNo(YesNo.NO)));
+      req.body = {option: YesNo.YES};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CITIZEN_DEPENDANTS_URL));
     });
 
-    it('should redirect page when "yes" and defendant disabled = yes', async () => {
-      await request(app)
-        .post(CITIZEN_PARTNER_PENSION_URL)
-        .send('option=yes')
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CITIZEN_PARTNER_DISABILITY_URL);
-        });
+    it('should redirect when yes and defendant disabled is yes', async () => {
+      jest.spyOn(DisabilityService.prototype, 'getDisability').mockResolvedValue(new GenericForm(new GenericYesNo(YesNo.YES)));
+      req.body = {option: YesNo.YES};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CITIZEN_PARTNER_DISABILITY_URL));
     });
 
-    it('should return error on incorrect input', async () => {
-      await request(app)
-        .post(CITIZEN_PARTNER_PENSION_URL)
-        .send('')
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.VALID_YES_NO_OPTION'));
-        });
+    it('should re-render on incorrect input', async () => {
+      req.body = {};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({form: expect.any(GenericForm)}));
+      expect(renderedForm().hasErrors()).toBe(true);
+      expect(renderedForm().errorFor('option')).toBe('ERRORS.VALID_YES_NO_OPTION');
     });
 
-    it('should redirect partner disability page when "no" and haven´t statementOfMeans', async () => {
-      await request(app)
-        .post(CITIZEN_PARTNER_PENSION_URL)
-        .send('option=no')
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CITIZEN_PARTNER_DISABILITY_URL);
-        });
+    it('should redirect to partner disability page when no and statement of means is missing', async () => {
+      req.body = {option: YesNo.NO};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CITIZEN_PARTNER_DISABILITY_URL));
     });
 
-    it('should return http 500 when has error', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .post(CITIZEN_PARTNER_PENSION_URL)
-        .send('option=no')
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+    it('should call next when save throws', async () => {
+      const error = new Error('error');
+      jest.spyOn(PartnerPensionService.prototype, 'savePartnerPension').mockRejectedValue(error);
+      req.body = {option: YesNo.NO};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 });

@@ -53,6 +53,7 @@ Existing journey owners:
 | Hearing-fee payment | `src/integration-test/routes/payment/hearingFeePayment.integration.test.ts` |
 | Query management | `src/integration-test/routes/queryManagement/qm.integration.test.ts` |
 | Defendant reject-all | `src/integration-test/routes/response/rejectAll.integration.test.ts` |
+| Defendant full/part admission and statement of means | `src/integration-test/routes/response/admission.integration.test.ts` |
 | Claimant reject-all | `src/integration-test/routes/claimantResponse/rejectAll.integration.test.ts` |
 | General application (thin slice) | `src/integration-test/routes/generalApplication/generalApplication.integration.test.ts` |
 | Draft-store / GA / payment-session TTL | `src/integration-test/modules/draft-store/` |
@@ -64,6 +65,8 @@ If a journey has no owner, add the integration test first, then convert the unit
 The claim-issue dashboard integration owner is notification rendering only. `src/test/unit/routes/features/dashboard/claimantDashboardController.test.ts` still uses HTTP for other dashboard branches; converting that file is a follow-up, not part of the claim-issue journey conversion.
 
 Claim-issue pages (task list, party type, amount, CYA, confirmation, and the rest of `src/test/unit/routes/features/claim/` excluding general application) are owned by `src/integration-test/routes/claim/claimIssue.integration.test.ts`.
+
+Defendant response: reject-all is owned by `src/integration-test/routes/response/rejectAll.integration.test.ts`. Full/part admission and statement of means are owned by `src/integration-test/routes/response/admission.integration.test.ts`. Do not add new `request(app)` tests under `src/test/unit/routes/features/response/` for those journeys.
 
 ## Jest retries
 

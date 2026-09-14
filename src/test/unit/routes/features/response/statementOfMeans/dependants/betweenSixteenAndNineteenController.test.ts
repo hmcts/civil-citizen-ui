@@ -1,128 +1,139 @@
-import request from 'supertest';
-import config from 'config';
-import nock from 'nock';
-import {app} from '../../../../../../../main/app';
+import {Response} from 'express';
+import betweenSixteenAndNineteenController from '../../../../../../../main/routes/features/response/statementOfMeans/dependants/betweenSixteenAndNineteenController';
+import {CHILDREN_DISABILITY_URL, CITIZEN_OTHER_DEPENDANTS_URL} from 'routes/urls';
+import {AppRequest} from 'models/AppRequest';
+import {GenericForm} from 'form/models/genericForm';
+import {BetweenSixteenAndNineteenDependants} from 'form/models/statementOfMeans/dependants/betweenSixteenAndNineteenDependants';
+import {Claim} from 'models/claim';
 import {
-  CHILDREN_DISABILITY_URL,
-  CITIZEN_DEPENDANTS_EDUCATION_URL,
-  CITIZEN_OTHER_DEPENDANTS_URL,
-} from '../../../../../../../main/routes/urls';
-import {hasDisabledChildren}
-  from '../../../../../../../main/services/features/response/statementOfMeans/dependants/childrenDisabilityService';
-import {mockRedisFailure, mockResponseFullAdmitPayBySetDate} from '../../../../../../utils/mockDraftStore';
-import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
-import * as draftStoreService from 'modules/draft-store/draftStoreService';
+  getForm,
+  saveFormToDraftStore,
+} from 'services/features/response/statementOfMeans/dependants/betweenSixteenAndNineteenService';
+import {hasDisabledChildren} from 'services/features/response/statementOfMeans/dependants/childrenDisabilityService';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {createMockResponse, createMockSession, getRouteHandler} from '../../../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../../../main/modules/oidc');
-jest.mock('../../../../../../../main/services/features/response/statementOfMeans/dependants/childrenDisabilityService');
+jest.mock('services/features/response/statementOfMeans/dependants/betweenSixteenAndNineteenService', () => ({
+  getForm: jest.fn(),
+  saveFormToDraftStore: jest.fn(),
+}));
+jest.mock('services/features/response/statementOfMeans/dependants/childrenDisabilityService', () => ({
+  hasDisabledChildren: jest.fn(),
+  getChildrenDisability: jest.fn(),
+  saveChildrenDisability: jest.fn(),
+}));
+
 const mockHasDisabledChildren = hasDisabledChildren as jest.Mock;
 
-const EXPECTED_TEXT = 'Children aged 16 to 19 living with you';
-
 describe('Dependant Teenagers', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
+  const getHandler = getRouteHandler(betweenSixteenAndNineteenController, 'get');
+  const postHandler = getRouteHandler(betweenSixteenAndNineteenController, 'post');
+  const viewPath = 'features/response/statementOfMeans/dependants/between_16_and_19';
+  const claimId = 'aaa';
+  let req: Partial<AppRequest>;
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
+  const mockGetForm = getForm as jest.Mock;
+  const mockSaveFormToDraftStore = saveFormToDraftStore as jest.Mock;
+  const renderedForm = () => (res.render as jest.Mock).mock.calls[0][1].form;
 
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
+  beforeEach(() => {
+    req = {
+      params: {id: claimId},
+      session: createMockSession({user: {id: 'user-id'}}),
+      body: {},
+      query: {},
+      cookies: {},
+    };
+    res = createMockResponse();
+    next = jest.fn();
+    mockGetForm.mockResolvedValue(new GenericForm(new BetweenSixteenAndNineteenDependants(undefined, 3)));
+    mockSaveFormToDraftStore.mockResolvedValue(new Claim());
+    mockHasDisabledChildren.mockReturnValue(false);
   });
 
   describe('on GET', () => {
-    app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
-    it('should return dependent teenagers page', async () => {
-      await request(app)
-        .get(CITIZEN_DEPENDANTS_EDUCATION_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(EXPECTED_TEXT);
-        });
+    it('should render dependent teenagers page', async () => {
+      await getHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        form: expect.any(GenericForm),
+      }));
     });
-    it('should return 500 error code when there is an error', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .get(CITIZEN_DEPENDANTS_EDUCATION_URL)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+
+    it('should call next when error thrown', async () => {
+      const error = new Error('error');
+      mockGetForm.mockRejectedValue(error);
+
+      await getHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
+
   describe('on POST', () => {
-    beforeEach(() => {
-      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
+    it('should re-render when no number is added', async () => {
+      req.body = {};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({form: expect.any(GenericForm)}));
+      expect(renderedForm().errorFor('value')).toBe('ERRORS.VALID_INTEGER');
     });
-    it('should show error when no number is added', async () => {
-      await request(app)
-        .post(CITIZEN_DEPENDANTS_EDUCATION_URL)
-        .send('')
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.VALID_INTEGER);
-        });
+
+    it('should re-render when number is negative', async () => {
+      req.body = {value: -1, maxValue: 3};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({form: expect.any(GenericForm)}));
+      expect(renderedForm().errorFor('value')).toBe('ERRORS.VALID_POSITIVE_NUMBER');
     });
-    it('should show error when number is negative', async () => {
-      await request(app)
-        .post(CITIZEN_DEPENDANTS_EDUCATION_URL)
-        .send({value: -1, maxValue: 3})
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.VALID_POSITIVE_NUMBER);
-        });
+
+    it('should re-render when number is decimal', async () => {
+      req.body = {value: 1.3, maxValue: 3};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({form: expect.any(GenericForm)}));
+      expect(renderedForm().errorFor('value')).toBe('ERRORS.VALID_INTEGER');
     });
-    it('should show error when number is decimal', async () => {
-      await request(app)
-        .post(CITIZEN_DEPENDANTS_EDUCATION_URL)
-        .send({value: 1.3, maxValue: 3})
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.VALID_INTEGER);
-        });
+
+    it('should re-render when number is greater than maxValue', async () => {
+      req.body = {value: 4, maxValue: 3};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({form: expect.any(GenericForm)}));
+      expect(renderedForm().errorFor('value')).toBe('ERRORS.VALID_NUMBER_FOR_PREVIOUS_PAGE');
     });
-    it('should show error when number is greater than maxValue', async () => {
-      await request(app)
-        .post(CITIZEN_DEPENDANTS_EDUCATION_URL)
-        .send({value: 4, maxValue: 3})
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.VALID_NUMBER_FOR_PREVIOUS_PAGE);
-        });
-    });
+
     it('should redirect to other dependants when hasDisabledChildren returns false and no errors', async () => {
-      mockHasDisabledChildren.mockImplementation(() => {
-        return false;
-      });
-      await request(app)
-        .post(CITIZEN_DEPENDANTS_EDUCATION_URL)
-        .send({value: 1, maxValue: 3})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CITIZEN_OTHER_DEPENDANTS_URL);
-        });
+      mockHasDisabledChildren.mockReturnValue(false);
+      req.body = {value: 1, maxValue: 3};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CITIZEN_OTHER_DEPENDANTS_URL));
     });
-    it('should redirect to other dependants when hasDisabledChildren returns true and no errors', async () => {
-      mockHasDisabledChildren.mockImplementation(() => {
-        return true;
-      });
-      await request(app)
-        .post(CITIZEN_DEPENDANTS_EDUCATION_URL)
-        .send({value: 1, maxValue: 3})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CHILDREN_DISABILITY_URL);
-        });
+
+    it('should redirect to children disability when hasDisabledChildren returns true and no errors', async () => {
+      mockHasDisabledChildren.mockReturnValue(true);
+      req.body = {value: 1, maxValue: 3};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CHILDREN_DISABILITY_URL));
     });
-    it('should return 500 code when there is an error', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .post(CITIZEN_DEPENDANTS_EDUCATION_URL)
-        .send({value: 1, maxValue: 3})
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+
+    it('should call next when save throws', async () => {
+      const error = new Error('error');
+      mockSaveFormToDraftStore.mockRejectedValue(error);
+      req.body = {value: 1, maxValue: 3};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 });

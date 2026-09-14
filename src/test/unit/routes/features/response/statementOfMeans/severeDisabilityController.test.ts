@@ -1,107 +1,111 @@
-import request from 'supertest';
-import { app } from '../../../../../../main/app';
-import nock from 'nock';
-import config from 'config';
-import { CITIZEN_RESIDENCE_URL, CITIZEN_SEVERELY_DISABLED_URL } from '../../../../../../main/routes/urls';
-import { TestMessages } from '../../../../../utils/errorMessageTestConstants';
-import {mockCivilClaimOptionNo, mockRedisFailure, mockResponseFullAdmitPayBySetDate } from '../../../../../utils/mockDraftStore';
-import * as draftStoreService from 'modules/draft-store/draftStoreService';
-
-jest.mock('../../../../../../main/modules/oidc');
+import {Response} from 'express';
+import severeDisabilityController from '../../../../../../main/routes/features/response/statementOfMeans/severeDisabilityController';
+import {CITIZEN_RESIDENCE_URL} from 'routes/urls';
+import {AppRequest} from 'models/AppRequest';
+import {GenericForm} from 'form/models/genericForm';
+import {GenericYesNo} from 'form/models/genericYesNo';
+import {YesNo} from 'form/models/yesNo';
+import {SevereDisabilityService} from 'services/features/response/statementOfMeans/severeDisabilityService';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {createMockResponse, createMockSession, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
 describe('SevereDisability', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
+  const getHandler = getRouteHandler(severeDisabilityController, 'get');
+  const postHandler = getRouteHandler(severeDisabilityController, 'post');
+  const viewPath = 'features/response/statementOfMeans/are-you-severely-disabled';
+  const claimId = 'aaa';
+  let req: Partial<AppRequest>;
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
+  const renderedForm = () => (res.render as jest.Mock).mock.calls[0][1].form;
 
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
+  beforeEach(() => {
+    req = {
+      params: {id: claimId},
+      session: createMockSession({user: {id: 'user-id'}}),
+      body: {},
+      query: {},
+      cookies: {},
+    };
+    res = createMockResponse();
+    next = jest.fn();
+    jest.spyOn(SevereDisabilityService.prototype, 'getSevereDisability').mockResolvedValue(new GenericForm(new GenericYesNo()));
+    jest.spyOn(SevereDisabilityService.prototype, 'saveSevereDisability').mockResolvedValue(undefined);
   });
 
   describe('on GET', () => {
-    it('should return citizen severe disability page', async () => {
-      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
-      await request(app)
-        .get(CITIZEN_SEVERELY_DISABLED_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.ARE_YOU_SEVERELY_DISABLED);
-        });
-    });
-    it('should show disability page when haven´t statementOfMeans', async () => {
+    it('should render citizen severe disability page', async () => {
+      await getHandler(req as AppRequest, res as unknown as Response, next);
 
-      app.locals.draftStoreClient = mockCivilClaimOptionNo;
-      await request(app)
-        .get(CITIZEN_SEVERELY_DISABLED_URL)
-        .send('')
-        .expect((res) => {
-          expect(res.status).toBe(200);
-        });
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        form: expect.any(GenericForm),
+      }));
     });
-    it('should return http 500 when has error', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .get(CITIZEN_SEVERELY_DISABLED_URL)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+
+    it('should render disability page when statement of means is missing', async () => {
+      jest.spyOn(SevereDisabilityService.prototype, 'getSevereDisability').mockResolvedValue(new GenericForm(new GenericYesNo()));
+
+      await getHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        form: expect.any(GenericForm),
+      }));
+    });
+
+    it('should call next when error thrown', async () => {
+      const error = new Error('error');
+      jest.spyOn(SevereDisabilityService.prototype, 'getSevereDisability').mockRejectedValue(error);
+
+      await getHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 
   describe('on POST', () => {
-    beforeEach(() => {
-      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
+    it('should redirect when no and statement of means is missing', async () => {
+      req.body = {option: YesNo.NO};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CITIZEN_RESIDENCE_URL));
     });
 
-    it('should redirect page when "no" and haven´t statementOfMeans', async () => {
-      app.locals.draftStoreClient = mockCivilClaimOptionNo;
-      await request(app)
-        .post(CITIZEN_SEVERELY_DISABLED_URL)
-        .send('option=no')
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CITIZEN_RESIDENCE_URL);
-        });
+    it('should redirect when no', async () => {
+      req.body = {option: YesNo.NO};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(SevereDisabilityService.prototype.saveSevereDisability).toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CITIZEN_RESIDENCE_URL));
     });
-    it('should redirect page when "no"', async () => {
-      await request(app)
-        .post(CITIZEN_SEVERELY_DISABLED_URL)
-        .send('option=no')
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CITIZEN_RESIDENCE_URL);
-        });
+
+    it('should re-render on incorrect input', async () => {
+      req.body = {};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({form: expect.any(GenericForm)}));
+      expect(renderedForm().hasErrors()).toBe(true);
+      expect(renderedForm().errorFor('option')).toBe('ERRORS.VALID_YES_NO_OPTION');
     });
-    it('should return error on incorrect input', async () => {
-      await request(app)
-        .post(CITIZEN_SEVERELY_DISABLED_URL)
-        .send('')
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.VALID_YES_NO_OPTION);
-        });
+
+    it('should redirect when yes', async () => {
+      req.body = {option: YesNo.YES};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CITIZEN_RESIDENCE_URL));
     });
-    it('should redirect page when "yes"', async () => {
-      await request(app)
-        .post(CITIZEN_SEVERELY_DISABLED_URL)
-        .send('option=yes')
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CITIZEN_RESIDENCE_URL);
-        });
-    });
-    it('should return http 500 when has error', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .post(CITIZEN_SEVERELY_DISABLED_URL)
-        .send('option=yes')
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+
+    it('should call next when save throws', async () => {
+      const error = new Error('error');
+      jest.spyOn(SevereDisabilityService.prototype, 'saveSevereDisability').mockRejectedValue(error);
+      req.body = {option: YesNo.YES};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 });

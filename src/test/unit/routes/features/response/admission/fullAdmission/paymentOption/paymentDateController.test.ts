@@ -1,118 +1,119 @@
-import {app} from '../../../../../../../../main/app';
-import nock from 'nock';
-import config from 'config';
-import request from 'supertest';
-import {CITIZEN_PAYMENT_DATE_URL, RESPONSE_TASK_LIST_URL} from 'routes/urls';
-import {
-  mockCivilClaim,
-  mockNoStatementOfMeans,
-  mockRedisFailure,
-} from '../../../../../../../utils/mockDraftStore';
-import {TestMessages} from '../../../../../../../utils/errorMessageTestConstants';
-import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {Response} from 'express';
+import paymentDateController from '../../../../../../../../main/routes/features/response/admission/fullAdmission/paymentOption/paymentDateController';
+import {RESPONSE_TASK_LIST_URL} from 'routes/urls';
+import {PaymentDate} from 'form/models/admission/fullAdmission/paymentOption/paymentDate';
+import {ResponseType} from 'form/models/responseType';
+import {paymentDateService} from 'services/features/response/admission/fullAdmission/paymentOption/paymentDateService';
+import {generateRedisKey} from 'modules/draft-store/draftStoreService';
+import {AppRequest} from 'models/AppRequest';
+import {GenericForm} from 'form/models/genericForm';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {createMockResponse, createMockSession, getRouteHandler} from '../../../../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../../../../main/modules/oidc');
+jest.mock('modules/draft-store/draftStoreService');
 
 describe('Payment date', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamServiceUrl: string = config.get('services.idam.url');
+  const getHandler = getRouteHandler(paymentDateController, 'get');
+  const postHandler = getRouteHandler(paymentDateController, 'post');
+  const viewPath = 'features/response/admission/payment-date';
+  const title = 'PAGES.ADMISSION_PAYMENT_DATE.TITLE';
+  const claimId = '12345';
+  let req: Partial<AppRequest>;
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
+  const mockGenerateRedisKey = generateRedisKey as jest.Mock;
+  const mockGetPaymentDate = jest.spyOn(paymentDateService, 'getPaymentDate');
+  const mockSavePaymentDate = jest.spyOn(paymentDateService, 'savePaymentDate');
+  const renderedForm = () => (res.render as jest.Mock).mock.calls[0][1].form;
 
-  beforeAll(() => {
-    nock(idamServiceUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
-  });
-
-  describe('on Exception', () => {
-    it('should return http 500 when has error in the get method', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .get(CITIZEN_PAYMENT_DATE_URL)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
-    });
-
-    it('should return http 500 when has error in the post method', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .post(CITIZEN_PAYMENT_DATE_URL)
-        .send('year=9999')
-        .send('month=12')
-        .send('day=31')
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
-    });
+  beforeEach(() => {
+    req = {
+      params: {id: claimId},
+      session: createMockSession({user: {id: 'user-id'}}),
+      body: {},
+      query: {},
+      cookies: {},
+    };
+    res = createMockResponse();
+    next = jest.fn();
+    mockGenerateRedisKey.mockReturnValue(claimId);
+    mockGetPaymentDate.mockResolvedValue(new PaymentDate());
+    mockSavePaymentDate.mockResolvedValue(undefined);
   });
 
   describe('on GET', () => {
-    it('should return payment date page', async () => {
-      app.locals.draftStoreClient = mockNoStatementOfMeans;
-      await request(app)
-        .get(CITIZEN_PAYMENT_DATE_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('What date will you pay on?');
-          expect(res.text).toContain('name="year" type="text"');
-          expect(res.text).toContain('name="month" type="text"');
-          expect(res.text).toContain('name="day" type="text"');
-        });
+    it('should render payment date page', async () => {
+      await getHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        form: expect.any(GenericForm),
+        title,
+      }));
     });
-    it('should return payment date page with payment date loaded from Redis', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
-      await request(app)
-        .get(CITIZEN_PAYMENT_DATE_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('What date will you pay on?');
-          expect(res.text).toContain('name="year" type="text" value="2025"');
-          expect(res.text).toContain('name="month" type="text" value="6"');
-          expect(res.text).toContain('name="day" type="text" value="1"');
-        });
+
+    it('should render payment date page with payment date loaded from redis', async () => {
+      mockGetPaymentDate.mockResolvedValue(new PaymentDate('2025', '6', '1'));
+
+      await getHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        form: expect.any(GenericForm),
+        title,
+      }));
+      expect(renderedForm().model.year).toBe(2025);
+      expect(renderedForm().model.month).toBe(6);
+      expect(renderedForm().model.day).toBe(1);
+    });
+
+    it('should call next when loading the payment date fails', async () => {
+      const error = new Error('error');
+      mockGetPaymentDate.mockRejectedValue(error);
+
+      await getHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
+
   describe('on POST', () => {
-    it('should return errors on no input', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
-      await request(app)
-        .post(CITIZEN_PAYMENT_DATE_URL)
-        .send('year=')
-        .send('month=')
-        .send('day=')
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.VALID_DAY);
-          expect(res.text).toContain(TestMessages.VALID_MONTH);
-          expect(res.text).toContain(TestMessages.VALID_YEAR);
-        });
+    it('should re-render with errors on no input', async () => {
+      req.body = {year: '', month: '', day: ''};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({form: expect.any(GenericForm), title}));
+      expect(renderedForm().hasErrors()).toBe(true);
+      expect(renderedForm().errorFor('day')).toBe('ERRORS.VALID_DAY');
+      expect(renderedForm().errorFor('month')).toBe('ERRORS.VALID_MONTH');
+      expect(renderedForm().errorFor('year')).toBeTruthy();
     });
 
-    it('should return error on date in the past', async () => {
-      await request(app)
-        .post(CITIZEN_PAYMENT_DATE_URL)
-        .send('year=1999')
-        .send('month=1')
-        .send('day=1')
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.VALID_DATE_NOT_IN_PAST);
-        });
+    it('should re-render with error on date in the past', async () => {
+      req.body = {year: '1999', month: '1', day: '1'};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({form: expect.any(GenericForm), title}));
+      expect(renderedForm().errorFor('date')).toBe('ERRORS.VALID_DATE_NOT_IN_PAST');
     });
 
-    it('should redirect to claim task list page on valid payment date', async () => {
-      await request(app)
-        .post(CITIZEN_PAYMENT_DATE_URL)
-        .send('year=9999')
-        .send('month=1')
-        .send('day=1')
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.text).toContain(`Redirecting to ${RESPONSE_TASK_LIST_URL}`);
-        });
+    it('should redirect to claim task list on valid payment date', async () => {
+      req.body = {year: '9999', month: '1', day: '1'};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(mockSavePaymentDate).toHaveBeenCalledWith(claimId, expect.any(Date), ResponseType.FULL_ADMISSION);
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, RESPONSE_TASK_LIST_URL));
+    });
+
+    it('should call next when save fails', async () => {
+      const error = new Error('error');
+      mockSavePaymentDate.mockRejectedValue(error);
+      req.body = {year: '9999', month: '12', day: '31'};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 });

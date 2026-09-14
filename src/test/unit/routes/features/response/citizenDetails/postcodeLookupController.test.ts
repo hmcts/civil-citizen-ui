@@ -1,72 +1,81 @@
-import {app} from '../../../../../../main/app';
-import config from 'config';
-import request from 'supertest';
-import {POSTCODE_LOOKUP_URL} from 'routes/urls';
-
+import {Response} from 'express';
+import postcodeLookupController from '../../../../../../main/routes/features/response/citizenDetails/postcodeLookupController';
 import {lookupByPostcodeAndDataSet} from 'modules/ordance-survey-key/ordanceSurveyKeyService';
 import {MOCK_API_ADDRESS} from '../../../../../utils/mocks/ordanceSurvey/osMocks';
+import {AppRequest} from 'models/AppRequest';
+import {createMockResponse, createMockSession, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('modules/ordance-survey-key/ordanceSurveyKeyService');
-const nock = require('nock');
 
 const mockLookupByPostcodeAndDataSet = lookupByPostcodeAndDataSet as jest.Mock;
 
-const createResponse = (statusCode: number) => {
-  return {
-    response: {
-      status: statusCode,
-    },
-    message: 'Postcode not found',
+const createResponse = (statusCode: number) => ({
+  response: {
+    status: statusCode,
+  },
+  message: 'Postcode not found',
+});
+
+const createJsonResponse = () => {
+  const res = {
+    ...createMockResponse(),
+    status: jest.fn(),
+    json: jest.fn(),
   };
+  res.status.mockReturnValue(res);
+  return res;
 };
 
-describe('Postcode Lookup Controller - HTTP status', () => {
+describe('Postcode Lookup Controller', () => {
+  const getHandler = getRouteHandler(postcodeLookupController, 'get');
+  let req: Partial<AppRequest>;
+  let res: ReturnType<typeof createJsonResponse>;
+  let next: jest.Mock;
+
+  beforeEach(() => {
+    req = {
+      session: createMockSession({user: {id: 'user-id'}}),
+      body: {},
+      query: {},
+      cookies: {},
+    };
+    res = createJsonResponse();
+    next = jest.fn();
+    mockLookupByPostcodeAndDataSet.mockReset();
+  });
 
   it('should return 500 as postcode incomplete', async () => {
     const error = createResponse(500);
     mockLookupByPostcodeAndDataSet.mockRejectedValue(error);
+    req.query = {postcode: 'BT'};
 
-    await request(app)
-      .get(POSTCODE_LOOKUP_URL + '?postcode=BT')
-      .expect((res) => {
-        expect(res.status).toBe(500);
-      });
+    await getHandler(req as AppRequest, res as unknown as Response, next);
+
+    expect(res.status).toHaveBeenCalledWith(500);
+    expect(res.json).toHaveBeenCalledWith(expect.objectContaining({
+      error: expect.objectContaining({status: 500}),
+    }));
   });
 
   it('should return 400 as postcode not provided', async () => {
-    const error = createResponse(400);
-    mockLookupByPostcodeAndDataSet.mockRejectedValue(error);
+    req.query = {postcode: ''};
 
-    await request(app)
-      .get(POSTCODE_LOOKUP_URL + '?postcode=')
-      .expect((res) => {
-        expect(res.status).toBe(400);
-        expect(res.text).toContain('Postcode not provided');
-      });
-  });
-});
+    await getHandler(req as AppRequest, res as unknown as Response, next);
 
-describe('Postcode Lookup Controller', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, { id_token: citizenRoleToken });
-
+    expect(res.status).toHaveBeenCalledWith(400);
+    expect(res.json).toHaveBeenCalledWith({
+      error: {status: 400, message: 'Postcode not provided'},
+    });
+    expect(mockLookupByPostcodeAndDataSet).not.toHaveBeenCalled();
   });
 
   it('should return list of addresses', async () => {
+    mockLookupByPostcodeAndDataSet.mockResolvedValue({data: MOCK_API_ADDRESS});
+    req.query = {postcode: 'CV56GQ'};
 
-    mockLookupByPostcodeAndDataSet.mockReturnValue({data : MOCK_API_ADDRESS});
-    await request(app)
-      .get(POSTCODE_LOOKUP_URL + '?postcode=CV56GQ')
-      .expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(MOCK_API_ADDRESS.addresses[0].uprn); // uprn
-      });
+    await getHandler(req as AppRequest, res as unknown as Response, next);
+
+    expect(res.status).toHaveBeenCalledWith(200);
+    expect(res.json).toHaveBeenCalledWith({data: MOCK_API_ADDRESS});
   });
-
 });

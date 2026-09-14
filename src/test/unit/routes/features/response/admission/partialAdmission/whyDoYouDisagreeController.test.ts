@@ -1,100 +1,109 @@
-import request from 'supertest';
-import config from 'config';
-import nock from 'nock';
-import {app} from '../../../../../../../main/app';
-import {CITIZEN_TIMELINE_URL, CITIZEN_WHY_DO_YOU_DISAGREE_URL} from '../../../../../../../main/routes/urls';
-import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
-import {mockCivilClaim, mockRedisFailure} from '../../../../../../utils/mockDraftStore';
-import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {Response} from 'express';
+import whyDoYouDisagreeController from '../../../../../../../main/routes/features/response/admission/partialAdmission/whyDoYouDisagreeController';
+import {CITIZEN_TIMELINE_URL} from 'routes/urls';
+import {WhyDoYouDisagree} from 'form/models/admission/partialAdmission/whyDoYouDisagree';
+import {WhyDoYouDisagreeForm} from 'models/whyDoYouDisagreeForm';
+import {ResponseType} from 'form/models/responseType';
+import {getWhyDoYouDisagreeForm, saveWhyDoYouDisagreeData} from 'services/features/response/admission/whyDoYouDisagreeService';
+import {generateRedisKey} from 'modules/draft-store/draftStoreService';
+import {AppRequest} from 'models/AppRequest';
+import {GenericForm} from 'form/models/genericForm';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {createMockResponse, createMockSession, getRouteHandler} from '../../../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../../../main/modules/oidc');
+jest.mock('modules/draft-store/draftStoreService');
+jest.mock('services/features/response/admission/whyDoYouDisagreeService');
 
 describe('Why do you disagree Controller', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
+  const getHandler = getRouteHandler(whyDoYouDisagreeController, 'get');
+  const postHandler = getRouteHandler(whyDoYouDisagreeController, 'post');
+  const viewPath = 'features/response/admission/why-do-you-disagree';
+  const claimId = '12345';
+  let req: Partial<AppRequest>;
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
+  const mockGenerateRedisKey = generateRedisKey as jest.Mock;
+  const mockGetWhyDoYouDisagreeForm = getWhyDoYouDisagreeForm as jest.Mock;
+  const mockSaveWhyDoYouDisagreeData = saveWhyDoYouDisagreeData as jest.Mock;
+  const renderedForm = () => (res.render as jest.Mock).mock.calls[0][1].form;
 
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
+  const emptyForm = (): WhyDoYouDisagreeForm => {
+    const form = new WhyDoYouDisagreeForm();
+    form.claimAmount = 110;
+    form.whyDoYouDisagree = new WhyDoYouDisagree();
+    return form;
+  };
+
+  beforeEach(() => {
+    req = {
+      params: {id: claimId},
+      session: createMockSession({user: {id: 'user-id'}}),
+      body: {},
+      query: {},
+      cookies: {},
+    };
+    res = createMockResponse();
+    next = jest.fn();
+    mockGenerateRedisKey.mockReturnValue(claimId);
+    mockGetWhyDoYouDisagreeForm.mockResolvedValue(emptyForm());
+    mockSaveWhyDoYouDisagreeData.mockResolvedValue(undefined);
   });
 
-  describe('on Get', () => {
-    it('should return Why do you disagree page successfully', async () => {
-      const civilClaimResponseMock = {
-        'case_data': {
-          'respondent1': {
-            'responseType': 'PART_ADMISSION',
-          },
-          'partialAdmission': {
-            'alreadyPaid': {
-              'option': 'yes',
-            },
-          },
-        },
-      };
-      const mockCivilClaim = {
-        set: jest.fn(() => Promise.resolve({})),
-        get: jest.fn(() => Promise.resolve(JSON.stringify(civilClaimResponseMock))),
-      };
-      app.locals.draftStoreClient = mockCivilClaim;
-      await request(app)
-        .get(CITIZEN_WHY_DO_YOU_DISAGREE_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Why do you disagree with the claim amount?');
-        });
-    });
-    it('should redirect to task list when part adimit option not selected', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
-      await request(app)
-        .get(CITIZEN_WHY_DO_YOU_DISAGREE_URL)
-        .expect((res) => {
-          expect(res.status).toBe(302);
-        });
+  describe('on GET', () => {
+    it('should render why do you disagree page successfully', async () => {
+      await getHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        form: expect.any(GenericForm),
+        claimAmount: 110,
+      }));
     });
 
-    it('should return status 500 when there is an error', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .get(CITIZEN_WHY_DO_YOU_DISAGREE_URL)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+    it('should call next when loading the form fails', async () => {
+      const error = new Error('error');
+      mockGetWhyDoYouDisagreeForm.mockRejectedValue(error);
+
+      await getHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
-  describe('on Post', () => {
-    it('should validate when text is not fill', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
-      await request(app)
-        .post(CITIZEN_WHY_DO_YOU_DISAGREE_URL)
-        .send()
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Why do you disagree with the claim amount?');
-        });
+
+  describe('on POST', () => {
+    beforeEach(async () => {
+      await getHandler(req as AppRequest, res as unknown as Response, next);
+      res = createMockResponse();
+      next = jest.fn();
     });
-    it('should redirect to claim list when text is filled', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
-      await request(app)
-        .post(CITIZEN_WHY_DO_YOU_DISAGREE_URL)
-        .send('text=Test')
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CITIZEN_TIMELINE_URL);
-        });
+
+    it('should re-render when text is not filled', async () => {
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        form: expect.any(GenericForm),
+        claimAmount: 110,
+      }));
+      expect(renderedForm().hasErrors()).toBe(true);
+      expect(renderedForm().errorFor('text')).toBe('ERRORS.VALID_DISAGREE_REASON_REQUIRED');
     });
-    it('should return 500 status when there is error', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .post(CITIZEN_WHY_DO_YOU_DISAGREE_URL)
-        .send('text=Test')
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+
+    it('should redirect to timeline when text is filled', async () => {
+      req.body = {text: 'Test'};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(mockSaveWhyDoYouDisagreeData).toHaveBeenCalledWith(claimId, expect.any(WhyDoYouDisagree), ResponseType.PART_ADMISSION);
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CITIZEN_TIMELINE_URL));
+    });
+
+    it('should call next when save fails', async () => {
+      const error = new Error('error');
+      mockSaveWhyDoYouDisagreeData.mockRejectedValue(error);
+      req.body = {text: 'Test'};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 });
