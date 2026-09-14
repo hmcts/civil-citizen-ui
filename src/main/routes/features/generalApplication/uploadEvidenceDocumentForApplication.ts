@@ -115,7 +115,7 @@ uploadEvidenceDocumentsForApplicationController.post([GA_UPLOAD_DOCUMENTS_URL, G
     const uploadDoc = new UploadGAFiles();
     const form = new GenericForm(uploadDoc);
     form.validateSync();
-    if (form.hasFieldError('fileUpload') && claim.generalApplication.uploadEvidenceForApplication.length === 0) {
+    if (form.hasFieldError('fileUpload') && (claim.generalApplication?.uploadEvidenceForApplication?.length ?? 0) === 0) {
       req.session.fileUpload = JSON.stringify(createUploadOneFileError());
       req.session.fileUploadSource = FILE_UPLOAD_SOURCE.GA_UPLOAD_EVIDENCE;
       return req.session.save(() => {
