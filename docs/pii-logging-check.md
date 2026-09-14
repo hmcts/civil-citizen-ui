@@ -34,16 +34,14 @@ Scan changes relative to the target branch:
 semgrep scan --strict --metrics=off --no-rewrite-rule-ids \
   --config .semgrep/logging-pii.yml \
   --baseline-commit origin/master \
-  --exclude src/main/assets/js/mojAll.js \
   src/main
 ```
 
 The CI checkout uses full Git history and the pull request base SHA, so findings
 that already exist on the target branch are not reported on unrelated pull
 requests. When DTSCCI-5875 is merged, its cleaned state naturally becomes the
-baseline for subsequent pull requests. The generated `mojAll.js` bundle is
-excluded from the raw-console rule; authored JavaScript and TypeScript remain in
-scope.
+baseline for subsequent pull requests. Authored JavaScript and TypeScript remain
+in scope.
 
 ## Initial tuning result
 
