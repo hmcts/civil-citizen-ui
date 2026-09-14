@@ -39,7 +39,6 @@ describe('breathingSpaceEntryService', () => {
     const form = getBreathingSpaceEnterDraftForm(claim);
     expect(form.type).toBe(BreathingSpaceType.STANDARD);
     expect(form.reference).toBe('ABC');
-    expect(form.expectedEnd).toBeNull();
   });
 
   it('should map saved start date to form fields', () => {
@@ -100,7 +99,7 @@ describe('breathingSpaceEntryService', () => {
     expect(draftStoreService.saveDraftClaim).toHaveBeenCalledWith('key', claim);
   });
 
-  it('should save start date without changing expected end', async () => {
+  it('should save start date onto the draft', async () => {
     const claim = new Claim();
     claim.breathingSpaceEnterDraft = new BreathingSpaceEnterDraft(
       BreathingSpaceType.STANDARD,
@@ -117,7 +116,6 @@ describe('breathingSpaceEntryService', () => {
     );
 
     expect(claim.breathingSpaceEnterDraft.start).toBe(start);
-    expect(claim.breathingSpaceEnterDraft.expectedEnd).toBeNull();
     expect(draftStoreService.saveDraftClaim).toHaveBeenCalledWith('key', claim);
   });
 

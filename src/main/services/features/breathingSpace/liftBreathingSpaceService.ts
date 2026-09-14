@@ -28,7 +28,7 @@ export const getLiftBreathingSpaceForm = async (claimId: string, claim: Claim): 
       date.getFullYear().toString(),
       (date.getMonth() + 1).toString(),
       date.getDate().toString(),
-      liftBreathing.eventDescription,
+      liftBreathing.reasonToLift,
       startDate,
       breathingSpaceType,
     );
@@ -53,7 +53,7 @@ export const saveLiftBreathingSpace = async (claimId: string, claim: Claim, form
   }
   claim.breathingSpace.liftBreathing = {
     expectedEnd: form.date?.toISOString().split('T')[0],
-    eventDescription: form.text,
+    reasonToLift: form.text,
   };
   await saveDraftClaim(claimId, claim);
 };

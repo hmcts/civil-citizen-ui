@@ -67,7 +67,6 @@ describe('Breathing Space Check Answers Controller', () => {
         BreathingSpaceType.STANDARD,
         'REF123',
         new Date(2024, 0, 15),
-        new Date(2024, 2, 15),
       ),
     });
     (getClaimById as jest.Mock).mockResolvedValueOnce(caseData);
@@ -119,7 +118,6 @@ describe('Breathing Space Check Answers Controller', () => {
         BreathingSpaceType.MENTAL_HEALTH,
         '',
         new Date(2024, 5, 1),
-        null,
       ),
     });
     (getClaimById as jest.Mock).mockResolvedValueOnce(caseData);
@@ -139,7 +137,6 @@ describe('Breathing Space Check Answers Controller', () => {
         BreathingSpaceType.STANDARD,
         'REF123',
         new Date(2024, 0, 15),
-        new Date(2024, 2, 15),
       ),
     });
     const submittedClaim = Object.assign(new Claim(), claim.case_data, {
@@ -147,7 +144,6 @@ describe('Breathing Space Check Answers Controller', () => {
         BreathingSpaceType.STANDARD,
         'REF123',
         new Date('2024-01-15'),
-        new Date('2024-03-15'),
       ),
     });
     (getClaimById as jest.Mock).mockResolvedValueOnce(caseData);
@@ -172,7 +168,6 @@ describe('Breathing Space Check Answers Controller', () => {
               type: BreathingSpaceType.STANDARD,
               reference: 'REF123',
               start: '2024-01-15',
-              expectedEnd: '2024-03-15',
             },
           },
           expect.anything(),
