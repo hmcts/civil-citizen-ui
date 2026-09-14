@@ -1,201 +1,203 @@
-import {app} from '../../../../../../main/app';
-import nock from 'nock';
-import config from 'config';
-import request from 'supertest';
-import {
-  AGREED_TO_MORE_TIME_URL,
-  NEW_RESPONSE_DEADLINE_URL,
-} from '../../../../../../main/routes/urls';
-import {
-  mockCivilClaim,
-  mockCivilClaimApplicantIndividualType,
-  mockRedisFailure,
-} from '../../../../../utils/mockDraftStore';
-import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {Response} from 'express';
+import agreedResponseDeadlineController from '../../../../../../main/routes/features/response/responseDeadline/agreedResponseDeadlineController';
+import {NEW_RESPONSE_DEADLINE_URL} from 'routes/urls';
+import {AppRequest} from 'models/AppRequest';
+import {Claim} from 'models/claim';
+import {GenericForm} from 'form/models/genericForm';
+import {PartyType} from 'models/partyType';
+import {getStashedClaimOrFromStore} from 'common/utils/claimRequestLocals';
+import {ResponseDeadlineService} from 'services/features/response/responseDeadlineService';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {createMockResponse, createMockSession, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
+jest.mock('modules/draft-store/draftStoreService');
+jest.mock('common/utils/claimRequestLocals', () => ({
+  getStashedClaimOrFromStore: jest.fn(),
+}));
 
 describe('Agreed response date', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamServiceUrl: string = config.get('services.idam.url');
+  const getHandler = getRouteHandler(agreedResponseDeadlineController, 'get');
+  const postHandler = getRouteHandler(agreedResponseDeadlineController, 'post');
+  const viewPath = 'features/response/responseDeadline/agreed-response-deadline';
+  const claimId = 'claim-id';
+  const originalResponseDeadline = new Date('2050-05-15T02:59:59');
+  let req: Partial<AppRequest>;
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
+  const mockGetStashedClaim = getStashedClaimOrFromStore as jest.Mock;
 
-  beforeAll(() => {
-    nock(idamServiceUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
-  });
+  const buildClaim = (agreedResponseDeadline?: Date): Claim => {
+    const claim = new Claim();
+    claim.applicant1 = {
+      type: PartyType.INDIVIDUAL,
+      partyDetails: {
+        partyName: 'Joe Bloggs',
+      },
+    };
+    claim.respondent1ResponseDeadline = originalResponseDeadline;
+    if (agreedResponseDeadline) {
+      claim.responseDeadline = {agreedResponseDeadline};
+    }
+    jest.spyOn(claim, 'getClaimantFullName').mockReturnValue('Joe Bloggs');
+    return claim;
+  };
 
-  describe('on Exception', () => {
-    it('should return http 500 when has error in the get method', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .get(AGREED_TO_MORE_TIME_URL)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
-    });
+  const renderedForm = () => (res.render as jest.Mock).mock.calls[0][1].form as GenericForm<unknown>;
 
-    it('should return http 500 when has error in the post method', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .post(AGREED_TO_MORE_TIME_URL)
-        .send('year=9999')
-        .send('month=12')
-        .send('day=25')
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
-    });
+  beforeEach(() => {
+    req = {
+      params: {id: claimId},
+      session: createMockSession({user: {id: 'user-id'}}),
+      body: {},
+      query: {},
+      cookies: {},
+    };
+    res = createMockResponse();
+    next = jest.fn();
+    mockGetStashedClaim.mockReset();
+    mockGetStashedClaim.mockResolvedValue(buildClaim());
+    jest.spyOn(ResponseDeadlineService.prototype, 'saveAgreedResponseDeadline').mockResolvedValue(undefined);
   });
 
   describe('on GET', () => {
-    it('should call getCaseDataFromStore only once per GET request', async () => {
-      app.locals.draftStoreClient = mockCivilClaimApplicantIndividualType;
-      const getCaseDataSpy = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
-      await request(app).get(AGREED_TO_MORE_TIME_URL);
-      expect(getCaseDataSpy).toHaveBeenCalledTimes(1);
-      getCaseDataSpy.mockRestore();
+    it('should call next when loading the claim fails', async () => {
+      const error = new Error('error');
+      mockGetStashedClaim.mockRejectedValue(error);
+
+      await getHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
 
-    it('should return agreed response date page', async () => {
-      app.locals.draftStoreClient = mockCivilClaimApplicantIndividualType;
-      await request(app)
-        .get(AGREED_TO_MORE_TIME_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('You have already agreed to more time to respond');
-          expect(res.text).toContain('name="year" type="text"');
-          expect(res.text).toContain('name="month" type="text"');
-          expect(res.text).toContain('name="day" type="text"');
-        });
+    it('should call getStashedClaimOrFromStore only once per GET request', async () => {
+      await getHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(mockGetStashedClaim).toHaveBeenCalledTimes(1);
     });
-    it('should return agreed response date with payment date loaded from Redis', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
-      await request(app)
-        .get(AGREED_TO_MORE_TIME_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('You have already agreed to more time to respond');
-          expect(res.text).toContain('name="year" type="text" value="2025"');
-          expect(res.text).toContain('name="month" type="text" value="6"');
-          expect(res.text).toContain('name="day" type="text" value="1"');
-        });
+
+    it('should render agreed response date page', async () => {
+      await getHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        form: expect.any(GenericForm),
+        claimantName: 'Joe Bloggs',
+        today: expect.any(Date),
+        isReleaseTwoEnabled: true,
+      }));
     });
-    it('should show error when draft store throws error', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app).get(AGREED_TO_MORE_TIME_URL)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+
+    it('should render agreed response date with payment date loaded from store', async () => {
+      mockGetStashedClaim.mockResolvedValue(buildClaim(new Date('2025-06-01T00:00:00.000Z')));
+
+      await getHandler(req as AppRequest, res as unknown as Response, next);
+
+      const form = renderedForm();
+      expect(form.model).toEqual(expect.objectContaining({
+        year: 2025,
+        month: 6,
+        day: 1,
+      }));
+    });
+
+    it('should call next when draft store throws error', async () => {
+      const error = new Error('error');
+      mockGetStashedClaim.mockRejectedValue(error);
+
+      await getHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
+
   describe('on POST', () => {
-    it('should call getCaseDataFromStore only once per POST request', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
-      const getCaseDataSpy = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
-      await request(app)
-        .post(AGREED_TO_MORE_TIME_URL)
-        .send('year=')
-        .send('month=')
-        .send('day=');
-      expect(getCaseDataSpy).toHaveBeenCalledTimes(1);
-      getCaseDataSpy.mockRestore();
+    it('should call next when loading the claim fails', async () => {
+      const error = new Error('error');
+      mockGetStashedClaim.mockRejectedValue(error);
+      req.body = {year: '9999', month: '12', day: '25'};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
 
-    it('should return errors on no input', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
-      await request(app)
-        .post(AGREED_TO_MORE_TIME_URL)
-        .send('year=')
-        .send('month=')
-        .send('day=')
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.VALID_AGREED_RESPONSE_DATE);
-        });
-    });
-    it('should return error on agreed date in the past', async () => {
-      await request(app)
-        .post(AGREED_TO_MORE_TIME_URL)
-        .send('year=1999')
-        .send('month=1')
-        .send('day=1')
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.VALID_AGREED_RESPONSE_DATE_NOT_IN_THE_PAST);
-        });
+    it('should call getStashedClaimOrFromStore only once per POST request', async () => {
+      req.body = {year: '', month: '', day: ''};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(mockGetStashedClaim).toHaveBeenCalledTimes(1);
     });
 
-    it('should return error on agreed date in the past', async () => {
-      await request(app)
-        .post(AGREED_TO_MORE_TIME_URL)
-        .send('year=2022')
-        .send('month=05')
-        .send('day=10')
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.VALID_AGREED_RESPONSE_DATE_NOT_IN_THE_PAST);
-        });
-    });
-    it('should return error on incorrect input', async () => {
-      await request(app)
-        .post(AGREED_TO_MORE_TIME_URL)
-        .send('year=199')
-        .send('month=1')
-        .send('day=1')
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.VALID_FOUR_DIGIT_YEAR);
-        });
-    });
-    it('should return error on agreed response date is bigger 28 days', async () => {
-      await request(app)
-        .post(AGREED_TO_MORE_TIME_URL)
-        .send('year=2050')
-        .send('month=6')
-        .send('day=13')
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.DATE_NOT_MORE_THAN_28_DAYS);
-        });
+    it('should re-render with errors on no input', async () => {
+      req.body = {year: '', month: '', day: ''};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({form: expect.any(GenericForm)}));
+      expect(renderedForm().hasErrors()).toBe(true);
+      expect(renderedForm().errorFor('date')).toBe('ERRORS.VALID_AGREED_RESPONSE_DATE');
     });
 
-    it('should accept the 28th day after the original response deadline as input and redirect to next page', async () => {
-      await request(app)
-        .post(AGREED_TO_MORE_TIME_URL)
-        .send('year=2050')
-        .send('month=6')
-        .send('day=12')
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toBe(NEW_RESPONSE_DEADLINE_URL);
-        });
+    it('should re-render with error on agreed date in the past', async () => {
+      req.body = {year: '1999', month: '1', day: '1'};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(renderedForm().hasErrors()).toBe(true);
+      expect(renderedForm().errorFor('date')).toBe('ERRORS.VALID_AGREED_RESPONSE_DATE_NOT_IN_THE_PAST');
     });
 
-    it('should accept the input date when it is less then 28 after original response deadline and redirect to next page', async () => {
-      await request(app)
-        .post(AGREED_TO_MORE_TIME_URL)
-        .send('year=2050')
-        .send('month=6')
-        .send('day=11')
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toBe(NEW_RESPONSE_DEADLINE_URL);
-        });
+    it('should re-render with error on agreed date before the original deadline', async () => {
+      req.body = {year: '2022', month: '05', day: '10'};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(renderedForm().hasErrors()).toBe(true);
+      expect(renderedForm().errorFor('date')).toBe('ERRORS.VALID_AGREED_RESPONSE_DATE_NOT_IN_THE_PAST');
     });
-    it('should show error when draft store throws error', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app).post(AGREED_TO_MORE_TIME_URL)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+
+    it('should re-render with error on incorrect year', async () => {
+      req.body = {year: '199', month: '1', day: '1'};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(renderedForm().hasErrors()).toBe(true);
+      expect(renderedForm().errorFor('year')).toBe('ERRORS.VALID_FOUR_DIGIT_YEAR');
+    });
+
+    it('should re-render when agreed response date is more than 28 days', async () => {
+      req.body = {year: '2050', month: '6', day: '13'};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(renderedForm().hasErrors()).toBe(true);
+      expect(renderedForm().errorFor('date')).toBe('ERRORS.DATE_NOT_MORE_THAN_28_DAYS');
+    });
+
+    it('should accept the 28th day after the original response deadline and redirect', async () => {
+      req.body = {year: '2050', month: '6', day: '12'};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(ResponseDeadlineService.prototype.saveAgreedResponseDeadline).toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, NEW_RESPONSE_DEADLINE_URL));
+    });
+
+    it('should accept a date less than 28 days after original response deadline and redirect', async () => {
+      req.body = {year: '2050', month: '6', day: '11'};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, NEW_RESPONSE_DEADLINE_URL));
+    });
+
+    it('should call next when saving the agreed date fails', async () => {
+      const error = new Error('error');
+      mockGetStashedClaim.mockRejectedValue(error);
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 });

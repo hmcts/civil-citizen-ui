@@ -1,57 +1,68 @@
-import config from 'config';
-import nock from 'nock';
-import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
-import {app} from '../../../../../../main/app';
-import request from 'supertest';
-import {CITIZEN_EVIDENCE_URL, CITIZEN_TIMELINE_URL} from 'routes/urls';
-import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {Response} from 'express';
+import defendantTimelineController from '../../../../../../main/routes/features/response/timelineOfEvents/defendantTimelineController';
+import {CITIZEN_EVIDENCE_URL} from 'routes/urls';
+import {AppRequest} from 'models/AppRequest';
+import {GenericForm} from 'form/models/genericForm';
+import {Claim} from 'models/claim';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {saveDefendantTimeline} from 'services/features/response/timelineOfEvents/defendantTimelineService';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {createMockResponse, createMockSession, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
+jest.mock('services/features/response/timelineOfEvents/defendantTimelineService', () => ({
+  getDefendantTimeline: jest.requireActual('services/features/response/timelineOfEvents/defendantTimelineService').getDefendantTimeline,
+  saveDefendantTimeline: jest.fn(),
+}));
 
 describe('defendant timeline controller', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
+  const getHandler = getRouteHandler(defendantTimelineController, 'get');
+  const postHandler = getRouteHandler(defendantTimelineController, 'post');
+  const viewPath = 'features/response/timelineOfEvents/defendant-timeline';
+  const claimId = '12345';
+  let req: Partial<AppRequest>;
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
+  const mockGetCaseData = getCaseDataFromStore as jest.Mock;
+  const mockSaveDefendantTimeline = saveDefendantTimeline as jest.Mock;
 
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
+  beforeEach(() => {
+    req = {
+      params: {id: claimId},
+      session: createMockSession({user: {id: 'user-id'}}),
+      body: {},
+      query: {},
+      cookies: {},
+    };
+    res = createMockResponse();
+    next = jest.fn();
+    mockGetCaseData.mockResolvedValue(new Claim());
+    mockSaveDefendantTimeline.mockResolvedValue(undefined);
+    jest.spyOn(Claim.prototype, 'extractDocumentId').mockReturnValue(undefined);
   });
 
-  describe('on Get', () => {
-    it('should display the page successfully', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
-      await request(app)
-        .get(CITIZEN_TIMELINE_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Add your timeline of events');
-          expect(res.text).toContain('Their timeline');
-          expect(res.text).toContain('Add your timeline of events (optional)');
-          expect(res.text).toContain('Add another event');
-        });
+  describe('on GET', () => {
+    it('should render the timeline page', async () => {
+      await getHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        form: expect.any(GenericForm),
+      }));
     });
-    it('should return http 500 when has error', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .get(CITIZEN_TIMELINE_URL)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+
+    it('should call next when loading the claim fails', async () => {
+      const error = new Error('error');
+      mockGetCaseData.mockRejectedValue(error);
+
+      await getHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 
-  describe('on Post', () => {
-    beforeEach(() => {
-      app.locals.draftStoreClient = mockCivilClaim;
-    });
-
-    it('should return error message when date is entered but no description', async () => {
-      const data = {
+  describe('on POST', () => {
+    it('should re-render when date is entered but no description', async () => {
+      req.body = {
         rows: [
           {
             day: 17,
@@ -61,16 +72,17 @@ describe('defendant timeline controller', () => {
           },
         ],
       };
-      await request(app)
-        .post(CITIZEN_TIMELINE_URL)
-        .send(data)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.DESCRIPTION_REQUIRED);
-        });
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({form: expect.any(GenericForm)}));
+      const form = (res.render as jest.Mock).mock.calls[0][1].form as GenericForm<unknown>;
+      expect(form.hasErrors()).toBe(true);
+      expect(res.redirect).not.toHaveBeenCalled();
     });
-    it('should return error message when date is empty and description is defined', async () => {
-      const data = {
+
+    it('should re-render when date is empty and description is defined', async () => {
+      req.body = {
         rows: [
           {
             date: '',
@@ -78,16 +90,15 @@ describe('defendant timeline controller', () => {
           },
         ],
       };
-      await request(app)
-        .post(CITIZEN_TIMELINE_URL)
-        .send(data)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.DATE_REQUIRED);
-        });
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({form: expect.any(GenericForm)}));
+      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
     });
+
     it('should redirect when no errors', async () => {
-      const data = {
+      req.body = {
         rows: [
           {
             day: 17,
@@ -97,17 +108,17 @@ describe('defendant timeline controller', () => {
           },
         ],
       };
-      await request(app)
-        .post(CITIZEN_TIMELINE_URL)
-        .send(data)
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toContain(CITIZEN_EVIDENCE_URL);
-        });
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(mockSaveDefendantTimeline).toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CITIZEN_EVIDENCE_URL));
     });
-    it('should return http 500 on redis error', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      const data = {
+
+    it('should call next when save fails', async () => {
+      const error = new Error('error');
+      mockSaveDefendantTimeline.mockRejectedValue(error);
+      req.body = {
         rows: [
           {
             day: 17,
@@ -117,14 +128,10 @@ describe('defendant timeline controller', () => {
           },
         ],
       };
-      await request(app)
-        .post(CITIZEN_TIMELINE_URL)
-        .send(data)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 });
-

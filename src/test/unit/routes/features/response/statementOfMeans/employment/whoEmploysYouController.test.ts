@@ -1,184 +1,157 @@
-import {app} from '../../../../../../../main/app';
-import request from 'supertest';
-import config from 'config';
-import nock from 'nock';
-import {t} from 'i18next';
-import {
-  CITIZEN_WHO_EMPLOYS_YOU_URL,
-  CITIZEN_COURT_ORDERS_URL,
-  CITIZEN_SELF_EMPLOYED_URL,
-} from '../../../../../../../main/routes/urls';
-import {mockRedisFailure, mockResponseFullAdmitPayBySetDate} from '../../../../../../utils/mockDraftStore';
-import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
-import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {Response} from 'express';
+import whoEmploysYouController from '../../../../../../../main/routes/features/response/statementOfMeans/employment/whoEmploysYouController';
+import {CITIZEN_COURT_ORDERS_URL, CITIZEN_SELF_EMPLOYED_URL} from 'routes/urls';
+import {AppRequest} from 'models/AppRequest';
+import {GenericForm} from 'form/models/genericForm';
+import {Employers} from 'form/models/statementOfMeans/employment/employers';
+import {Employer} from 'form/models/statementOfMeans/employment/employer';
+import {EmploymentForm} from 'form/models/statementOfMeans/employment/employmentForm';
+import {EmploymentCategory} from 'form/models/statementOfMeans/employment/employmentCategory';
+import {YesNo} from 'form/models/yesNo';
+import {getEmployers, saveEmployers} from 'services/features/response/statementOfMeans/employment/employerService';
+import {getEmploymentForm} from 'services/features/response/statementOfMeans/employment/employmentService';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {createMockResponse, createMockSession, getRouteHandler} from '../../../../../../utils/getRouteHandler';
+
+jest.mock('services/features/response/statementOfMeans/employment/employerService', () => ({
+  getEmployers: jest.fn(),
+  saveEmployers: jest.fn(),
+}));
+jest.mock('services/features/response/statementOfMeans/employment/employmentService', () => ({
+  getEmploymentForm: jest.fn(),
+  saveEmploymentData: jest.fn(),
+}));
 
 const mockEmployer = {rows: [{employerName: 'Felipe', jobTitle: 'Developer'}]};
 
-function getMockWithEmploymentType(employmentType: string[]) {
-  return {
-    'id': 1645882162449409,
-    'case_data': {
-      'respondent1': {
-        'responseType': 'FULL_ADMISSION',
-      },
-      'fullAdmission': {
-        'paymentIntention': {
-          'paymentOption': 'BY_SET_DATE',
-          'paymentDate': '2023-11-11T00:00:00.000Z',
-        },
-      },
-      'statementOfMeans': {
-        'employment': {
-          'declared': true,
-          'employmentType': employmentType,
-        },
-      },
-    },
-  };
-}
-
-const mockRedisEmployed = getMockWithEmploymentType(['EMPLOYED']);
-
-const mockRedisEmployedAndSelfEmployed = getMockWithEmploymentType(['EMPLOYED', 'SELF-EMPLOYED']);
-
-const mockRedisSelfEmployed = getMockWithEmploymentType(['SELF-EMPLOYED']);
-
-const mockEmployed = {
-  set: jest.fn(() => Promise.resolve({})),
-  get: jest.fn(() => Promise.resolve(JSON.stringify(mockRedisEmployed))),
-  ttl: jest.fn(() => Promise.resolve({})),
-  expireat: jest.fn(() => Promise.resolve({})),
-};
-
-const mockEmployedAndSelfEmployed = {
-  set: jest.fn(() => Promise.resolve({})),
-  get: jest.fn(() => Promise.resolve(JSON.stringify(mockRedisEmployedAndSelfEmployed))),
-  ttl: jest.fn(() => Promise.resolve({})),
-  expireat: jest.fn(() => Promise.resolve({})),
-};
-
-const mockSelfEmployed = {
-  set: jest.fn(() => Promise.resolve({})),
-  get: jest.fn(() => Promise.resolve(JSON.stringify(mockRedisSelfEmployed))),
-  ttl: jest.fn(() => Promise.resolve({})),
-  expireat: jest.fn(() => Promise.resolve({})),
-};
-
-jest.mock('../../../../../../../main/modules/oidc');
-
 describe('Who employs you', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
+  const getHandler = getRouteHandler(whoEmploysYouController, 'get');
+  const postHandler = getRouteHandler(whoEmploysYouController, 'post');
+  const viewPath = 'features/response/statementOfMeans/employment/who-employs-you';
+  const claimId = 'aaa';
+  let req: Partial<AppRequest>;
+  let res: ReturnType<typeof createMockResponse> & {status: jest.Mock};
+  let next: jest.Mock;
+  const mockGetEmployers = getEmployers as jest.Mock;
+  const mockSaveEmployers = saveEmployers as jest.Mock;
+  const mockGetEmploymentForm = getEmploymentForm as jest.Mock;
+  const renderedForm = () => (res.render as jest.Mock).mock.calls[0][1].form;
 
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
+  beforeEach(() => {
+    req = {
+      params: {id: claimId},
+      session: createMockSession({user: {id: 'user-id'}}),
+      body: {},
+      query: {},
+      cookies: {},
+    };
+    res = {
+      ...createMockResponse(),
+      status: jest.fn().mockReturnThis(),
+    };
+    next = jest.fn();
+    mockGetEmployers.mockResolvedValue(new Employers([new Employer()]));
+    mockSaveEmployers.mockResolvedValue(undefined);
+    mockGetEmploymentForm.mockResolvedValue(new GenericForm(new EmploymentForm(YesNo.YES, [EmploymentCategory.EMPLOYED])));
   });
 
-  describe('on Get', () => {
-    it('should return who employs you page successfully', async () => {
-      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
-      await request(app).get(CITIZEN_WHO_EMPLOYS_YOU_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.WHO_EMPLOYS_YOU);
-        });
+  describe('on GET', () => {
+    it('should render who employs you page successfully', async () => {
+      await getHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        form: expect.any(GenericForm),
+      }));
     });
 
-    it('should return who employs you page with data from redis', async () => {
-      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
-      await request(app).get(CITIZEN_WHO_EMPLOYS_YOU_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.WHO_EMPLOYS_YOU);
-        });
+    it('should render who employs you page with data from redis', async () => {
+      mockGetEmployers.mockResolvedValue(new Employers([new Employer('Felipe', 'Developer')]));
+
+      await getHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        form: expect.any(GenericForm),
+      }));
     });
 
-    it('should return http 500 when has error', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .get(CITIZEN_WHO_EMPLOYS_YOU_URL)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+    it('should call next when error thrown', async () => {
+      const error = new Error('error');
+      mockGetEmployers.mockRejectedValue(error);
+
+      await getHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 
-  describe('on Post', () => {
-    it('should return error message when form is empty', async () => {
-      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
-      await request(app).post(CITIZEN_WHO_EMPLOYS_YOU_URL)
-        .send({rows: [{employerName: '', jobTitle: ''}]})
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.VALID_ENTER_AT_LEAST_ONE_EMPLOYER'));
-          expect(res.text).toContain('govuk-error-message');
-        });
+  describe('on POST', () => {
+    it('should re-render when form is empty', async () => {
+      req.body = {rows: [{employerName: '', jobTitle: ''}]};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({form: expect.any(GenericForm)}));
+      expect(renderedForm().hasErrors() || renderedForm().hasNestedErrors()).toBe(true);
     });
 
-    it('should return error message when jobTitle is empty', async () => {
-      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
-      await request(app).post(CITIZEN_WHO_EMPLOYS_YOU_URL)
-        .send({rows: [{employerName: 'Test', jobTitle: ''}]})
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.JOB_TITLE_REQUIRED'));
-          expect(res.text).toContain('govuk-error-message');
-        });
+    it('should re-render when jobTitle is empty', async () => {
+      req.body = {rows: [{employerName: 'Test', jobTitle: ''}]};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({form: expect.any(GenericForm)}));
+      expect(renderedForm().hasErrors() || renderedForm().hasNestedErrors()).toBe(true);
     });
 
-    it('should create statementOfMeans if empty', async () => {
-      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
-      await request(app).post(CITIZEN_WHO_EMPLOYS_YOU_URL)
-        .send(mockEmployer)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+    it('should render error page when employment type is missing', async () => {
+      mockGetEmploymentForm.mockResolvedValue(new GenericForm(new EmploymentForm()));
+      req.body = mockEmployer;
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.status).toHaveBeenCalledWith(500);
+      expect(res.render).toHaveBeenCalledWith('error');
     });
 
     it('should redirect to self-employment page when employment type is employed and self-employed', async () => {
-      app.locals.draftStoreClient = mockEmployedAndSelfEmployed;
-      await request(app).post(CITIZEN_WHO_EMPLOYS_YOU_URL)
-        .send(mockEmployer)
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CITIZEN_SELF_EMPLOYED_URL);
-        });
+      mockGetEmploymentForm.mockResolvedValue(new GenericForm(new EmploymentForm(
+        YesNo.YES,
+        [EmploymentCategory.EMPLOYED, EmploymentCategory.SELF_EMPLOYED],
+      )));
+      req.body = mockEmployer;
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CITIZEN_SELF_EMPLOYED_URL));
     });
 
     it('should redirect to courts order page when employment type is employed', async () => {
-      app.locals.draftStoreClient = mockEmployed;
-      await request(app).post(CITIZEN_WHO_EMPLOYS_YOU_URL)
-        .send(mockEmployer)
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CITIZEN_COURT_ORDERS_URL);
-        });
+      mockGetEmploymentForm.mockResolvedValue(new GenericForm(new EmploymentForm(YesNo.YES, [EmploymentCategory.EMPLOYED])));
+      req.body = mockEmployer;
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CITIZEN_COURT_ORDERS_URL));
     });
 
-    it('should redirect to error page when employment type is self-employed and user is on this page', async () => {
-      app.locals.draftStoreClient = mockSelfEmployed;
-      await request(app).post(CITIZEN_WHO_EMPLOYS_YOU_URL)
-        .send(mockEmployer)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+    it('should render error page when employment type is self-employed and user is on this page', async () => {
+      mockGetEmploymentForm.mockResolvedValue(new GenericForm(new EmploymentForm(YesNo.YES, [EmploymentCategory.SELF_EMPLOYED])));
+      req.body = mockEmployer;
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.status).toHaveBeenCalledWith(500);
+      expect(res.render).toHaveBeenCalledWith('error');
     });
 
-    it('should return http 500 when has error', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .post(CITIZEN_WHO_EMPLOYS_YOU_URL)
-        .send(mockEmployer)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+    it('should call next when save throws', async () => {
+      const error = new Error('error');
+      mockSaveEmployers.mockRejectedValue(error);
+      req.body = mockEmployer;
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 });

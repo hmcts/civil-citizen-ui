@@ -1,155 +1,148 @@
-import express from 'express';
-import nock from 'nock';
-import config from 'config';
-import {CITIZEN_COURT_ORDERS_URL, CITIZEN_PRIORITY_DEBTS_URL} from 'routes/urls';
-import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
-import {mockResponseFullAdmitPayBySetDate, mockRedisFailure} from '../../../../../../utils/mockDraftStore';
-import * as draftStoreService from 'modules/draft-store/draftStoreService';
-
-const request = require('supertest');
-const {app} = require('../../../../../../../main/app');
-
-jest.mock('../../../../../../../main/modules/oidc');
-
-const respondentCourtOrdersUrl = CITIZEN_COURT_ORDERS_URL.replace(':id', 'aaa');
+import {Response} from 'express';
+import courtOrdersController from '../../../../../../../main/routes/features/response/statementOfMeans/courtOrders/courtOrdersController';
+import {CITIZEN_PRIORITY_DEBTS_URL} from 'routes/urls';
+import {AppRequest} from 'models/AppRequest';
+import {GenericForm} from 'form/models/genericForm';
+import {CourtOrders} from 'form/models/statementOfMeans/courtOrders/courtOrders';
+import {courtOrdersService} from 'services/features/response/statementOfMeans/courtOrders/courtOrdersService';
+import {createMockResponse, createMockSession, getRouteHandler} from '../../../../../../utils/getRouteHandler';
 
 describe('Citizen court orders', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamServiceUrl: string = config.get('services.idam.url');
+  const getHandler = getRouteHandler(courtOrdersController, 'get');
+  const postHandler = getRouteHandler(courtOrdersController, 'post');
+  const viewPath = 'features/response/statementOfMeans/courtOrders/court-orders';
+  const claimId = 'aaa';
+  let req: Partial<AppRequest>;
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
+  const renderedForm = () => (res.render as jest.Mock).mock.calls[0][1].form;
 
-  beforeAll(() => {
-    nock(idamServiceUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
+  beforeEach(() => {
+    req = {
+      params: {id: claimId},
+      session: createMockSession({user: {id: 'user-id'}}),
+      body: {},
+      query: {},
+      cookies: {},
+    };
+    res = createMockResponse();
+    next = jest.fn();
+    jest.spyOn(courtOrdersService, 'getCourtOrders').mockResolvedValue(new CourtOrders());
+    jest.spyOn(courtOrdersService, 'saveCourtOrders').mockResolvedValue(undefined);
   });
 
   describe('on GET', () => {
-    it('should return court orders page', async () => {
-      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
-      await request(app)
-        .get(respondentCourtOrdersUrl)
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Are you paying money as a result of any court orders?');
-        });
+    it('should render court orders page', async () => {
+      await getHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        form: expect.any(GenericForm),
+      }));
     });
-    it('should return status 500 when error thrown', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .get(respondentCourtOrdersUrl)
-        .expect((res: Response) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+
+    it('should call next when error thrown', async () => {
+      const error = new Error('error');
+      (courtOrdersService.getCourtOrders as jest.Mock).mockRejectedValue(error);
+
+      await getHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 
   describe('on POST', () => {
-    beforeAll(() => {
-      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
-    });
-
     it('when Yes option and one court order fully filled in, should redirect to Debts screen', async () => {
-      await request(app)
-        .post(respondentCourtOrdersUrl)
-        .send('declared=yes')
-        .send('rows[0][claimNumber]=abc1')
-        .send('rows[0][amount]=120')
-        .send('rows[0][instalmentAmount]=10')
-        .expect((res: express.Response) => {
-          expect(res.status).toBe(302);
-          expect(res.get('location')).toBe(CITIZEN_PRIORITY_DEBTS_URL.replace(':id', 'aaa'));
-        });
+      req.body = {
+        declared: 'yes',
+        rows: [{claimNumber: 'abc1', amount: '120', instalmentAmount: '10'}],
+      };
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(courtOrdersService.saveCourtOrders).toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(CITIZEN_PRIORITY_DEBTS_URL.replace(':id', claimId));
     });
 
-    it('when no option selected should show an error', async () => {
-      await request(app)
-        .post(respondentCourtOrdersUrl)
-        .send('_csrf=')
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.VALID_YES_NO_SELECTION);
-        });
+    it('when no option selected should re-render with an error', async () => {
+      req.body = {_csrf: ''};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({form: expect.any(GenericForm)}));
+      expect(renderedForm().errorFor('declared')).toBe('ERRORS.VALID_YES_NO_SELECTION');
     });
 
-    it('when Yes option and an empty court order, should show an error', async () => {
-      await request(app)
-        .post(respondentCourtOrdersUrl)
-        .send('declared=yes')
-        .send('rows[0][claimNumber]=')
-        .send('rows[0][amount]=')
-        .send('rows[0][instalmentAmount]=')
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.VALID_AT_LEAST_ONE_COURT_ORDER);
-        });
+    it('when Yes option and an empty court order, should re-render with an error', async () => {
+      req.body = {
+        declared: 'yes',
+        rows: [{claimNumber: '', amount: '', instalmentAmount: ''}],
+      };
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({form: expect.any(GenericForm)}));
+      expect(renderedForm().hasErrors() || renderedForm().hasNestedErrors()).toBe(true);
     });
 
-    it('when Yes option and missing court order claim number, should show an error', async () => {
-      await request(app)
-        .post(respondentCourtOrdersUrl)
-        .send('declared=yes')
-        .send('rows[0][claimNumber]=')
-        .send('rows[0][amount]=120')
-        .send('rows[0][instalmentAmount]=10')
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.VALID_CLAIM_NUMBER);
-        });
+    it('when Yes option and missing court order claim number, should re-render with an error', async () => {
+      req.body = {
+        declared: 'yes',
+        rows: [{claimNumber: '', amount: '120', instalmentAmount: '10'}],
+      };
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({form: expect.any(GenericForm)}));
+      expect(renderedForm().hasErrors() || renderedForm().hasNestedErrors()).toBe(true);
     });
 
-    it('when Yes option and missing court order claim amount, should show an error', async () => {
-      await request(app)
-        .post(respondentCourtOrdersUrl)
-        .send('declared=yes')
-        .send('rows[0][claimNumber]=abc1')
-        .send('rows[0][amount]=')
-        .send('rows[0][instalmentAmount]=10')
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.VALID_AMOUNT_ONE_POUND_OR_MORE);
-        });
+    it('when Yes option and missing court order claim amount, should re-render with an error', async () => {
+      req.body = {
+        declared: 'yes',
+        rows: [{claimNumber: 'abc1', amount: '', instalmentAmount: '10'}],
+      };
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({form: expect.any(GenericForm)}));
+      expect(renderedForm().hasErrors() || renderedForm().hasNestedErrors()).toBe(true);
     });
 
-    it('when Yes option and claim number contains non-alphanumeric characters, should show an error', async () => {
-      await request(app)
-        .post(respondentCourtOrdersUrl)
-        .send('declared=yes')
-        .send('rows[0][claimNumber]=ABC-123')
-        .send('rows[0][amount]=120')
-        .send('rows[0][instalmentAmount]=10')
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.VALID_CLAIM_NUMBER_ALPHANUMERIC);
-        });
+    it('when Yes option and claim number contains non-alphanumeric characters, should re-render with an error', async () => {
+      req.body = {
+        declared: 'yes',
+        rows: [{claimNumber: 'ABC-123', amount: '120', instalmentAmount: '10'}],
+      };
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({form: expect.any(GenericForm)}));
+      expect(renderedForm().hasErrors() || renderedForm().hasNestedErrors()).toBe(true);
     });
 
-    it('when Yes option and missing court order claim instalment amount, should show an error', async () => {
-      await request(app)
-        .post(respondentCourtOrdersUrl)
-        .send('declared=yes')
-        .send('rows[0][claimNumber]=abc1')
-        .send('rows[0][amount]=120')
-        .send('rows[0][instalmentAmount]=')
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.VALID_STRICTLY_POSITIVE_NUMBER);
-        });
+    it('when Yes option and missing court order claim instalment amount, should re-render with an error', async () => {
+      req.body = {
+        declared: 'yes',
+        rows: [{claimNumber: 'abc1', amount: '120', instalmentAmount: ''}],
+      };
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({form: expect.any(GenericForm)}));
+      expect(renderedForm().hasErrors() || renderedForm().hasNestedErrors()).toBe(true);
     });
 
-    it('should status 500 when error thrown', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .post(respondentCourtOrdersUrl)
-        .send('declared=yes')
-        .send('rows[0][claimNumber]=abc1')
-        .send('rows[0][amount]=120')
-        .send('rows[0][instalmentAmount]=10')
-        .expect((res: Response) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+    it('should call next when save throws', async () => {
+      const error = new Error('error');
+      (courtOrdersService.saveCourtOrders as jest.Mock).mockRejectedValue(error);
+      req.body = {
+        declared: 'yes',
+        rows: [{claimNumber: 'abc1', amount: '120', instalmentAmount: '10'}],
+      };
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 });

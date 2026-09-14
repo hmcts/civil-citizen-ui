@@ -1,291 +1,262 @@
-import {app} from '../../../../../../main/app';
-import config from 'config';
-import nock from 'nock';
-import request from 'supertest';
+import {Response} from 'express';
+import citizenDobController from '../../../../../../main/routes/features/response/citizenDob/citizenDobController';
 import {
   AGE_ELIGIBILITY_URL,
-  DOB_URL,
   CITIZEN_PHONE_NUMBER_URL,
   RESPONSE_TASK_LIST_URL,
 } from 'routes/urls';
-import {
-  mockCivilClaim,
-  mockCivilClaimUndefined,
-  mockRedisFailure,
-  mockNoStatementOfMeans,
-  mockCivilClaimRespondentIndividualTypeWithPhoneNumber,
-  mockCivilClaimRespondentIndividualTypeWithoutPhoneNumber,
-  mockCivilClaimRespondentIndividualTypeWithCcdPhoneNumberFalse,
-  mockCivilClaimApplicantIndividualType,
-  mockDraftClaim,
-} from '../../../../../utils/mockDraftStore';
-import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import {t} from 'i18next';
-import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {AppRequest} from 'models/AppRequest';
+import {GenericForm} from 'form/models/genericForm';
+import {Claim} from 'models/claim';
+import {Party} from 'models/party';
+import {PartyPhone} from 'models/PartyPhone';
+import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {createMockResponse, createMockSession, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../../main/modules/oidc');
+jest.mock('modules/draft-store/draftStoreService');
 
 describe('Citizen date of birth', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
+  const getHandler = getRouteHandler(citizenDobController, 'get');
+  const postHandler = getRouteHandler(citizenDobController, 'post');
+  const viewPath = 'features/response/citizenDob/citizen-dob';
+  const claimId = '12345';
+  let req: Partial<AppRequest>;
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
+  const mockGetCaseData = getCaseDataFromStore as jest.Mock;
+  const mockSaveDraftClaim = saveDraftClaim as jest.Mock;
+
+  const claimWithRespondent = (phone?: PartyPhone): Claim => {
+    const claim = new Claim();
+    claim.respondent1 = new Party();
+    if (phone) {
+      claim.respondent1.partyPhone = phone;
+    }
+    return claim;
+  };
+
+  beforeEach(() => {
+    req = {
+      params: {id: claimId},
+      session: createMockSession({user: {id: 'user-id'}}),
+      body: {},
+      query: {},
+      cookies: {},
+    };
+    res = createMockResponse();
+    next = jest.fn();
+    mockGetCaseData.mockResolvedValue(claimWithRespondent());
+    mockSaveDraftClaim.mockResolvedValue(undefined);
   });
 
   describe('on GET', () => {
-    it('should return citizen date of birth page empty when dont have information on redis ', async () => {
-      app.locals.draftStoreClient = mockNoStatementOfMeans;
-      await request(app)
-        .get(DOB_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.ENTER_DATE_OF_BIRTH);
-          expect(res.text).not.toContain('NaN');
-        });
+    it('should render date of birth page empty when there is no information on redis', async () => {
+      mockGetCaseData.mockResolvedValue(new Claim());
+
+      await getHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        form: expect.any(GenericForm),
+        today: expect.any(Date),
+      }));
+      expect((res.render as jest.Mock).mock.calls[0][1].form.model.day).not.toBe(NaN);
     });
-    it('should return citizen date of birth page with all information from redis', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
-      await request(app)
-        .get(DOB_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.ENTER_DATE_OF_BIRTH);
-        });
+
+    it('should render date of birth page with information from redis', async () => {
+      await getHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        form: expect.any(GenericForm),
+      }));
     });
-    it('should return citizen date of birth page with all information from redis when date of birth is stored as a string', async () => {
-      app.locals.draftStoreClient = mockDraftClaim({
-        case_data: {
-          respondent1: {
-            dateOfBirth: '2000-01-02',
-          },
-        },
-      } as never);
-      await request(app)
-        .get(DOB_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('value="2"');
-          expect(res.text).toContain('value="1"');
-          expect(res.text).toContain('value="2000"');
-        });
+
+    it('should render saved date of birth when it is stored as a string', async () => {
+      const claim = claimWithRespondent();
+      claim.respondent1.dateOfBirth = '2000-01-02' as never;
+      mockGetCaseData.mockResolvedValue(claim);
+
+      await getHandler(req as AppRequest, res as unknown as Response, next);
+
+      const form = (res.render as jest.Mock).mock.calls[0][1].form;
+      expect(form.model.day).toBe(2);
+      expect(form.model.month).toBe(1);
+      expect(form.model.year).toBe(2000);
     });
+
     it('should not render NaN when date of birth from redis is invalid', async () => {
-      app.locals.draftStoreClient = mockDraftClaim({
-        case_data: {
-          respondent1: {
-            dateOfBirth: {
-              date: undefined,
-            },
-          },
-        },
-      } as never);
-      await request(app)
-        .get(DOB_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.ENTER_DATE_OF_BIRTH);
-          expect(res.text).not.toContain('NaN');
-        });
+      const claim = claimWithRespondent();
+      claim.respondent1.dateOfBirth = {date: undefined} as never;
+      mockGetCaseData.mockResolvedValue(claim);
+
+      await getHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        form: expect.any(GenericForm),
+      }));
+      expect((res.render as jest.Mock).mock.calls[0][1].form.model.day).not.toBe(NaN);
     });
-    it('should return http 500 when has error in the get method', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .get(DOB_URL)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+
+    it('should call next when loading the claim fails', async () => {
+      const error = new Error('error');
+      mockGetCaseData.mockRejectedValue(error);
+
+      await getHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 
   describe('on POST', () => {
-    it('should create a new claim if redis gives undefined', async () => {
-      app.locals.draftStoreClient = mockCivilClaimUndefined;
-      await request(app)
-        .post(DOB_URL)
-        .send('year=2000')
-        .send('month=1')
-        .send('day=1')
-        .expect((res) => {
-          expect(res.status).toBe(302);
-        });
+    it('should create a new respondent if redis gives an empty claim', async () => {
+      mockGetCaseData.mockResolvedValue(new Claim());
+      req.body = {year: '2000', month: '1', day: '1'};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(mockSaveDraftClaim).toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalled();
     });
-    it('should return errors on no input', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
-      await request(app)
-        .post(DOB_URL)
-        .send('year=')
-        .send('month=')
-        .send('day=')
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.VALID_DAY'));
-          expect(res.text).toContain(t('ERRORS.VALID_MONTH'));
-          expect(res.text).toContain(t('ERRORS.VALID_FOUR_DIGIT_YEAR'));
-        });
+
+    it('should re-render on no input', async () => {
+      req.body = {year: '', month: '', day: ''};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      const form = (res.render as jest.Mock).mock.calls[0][1].form as GenericForm<unknown>;
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({form: expect.any(GenericForm)}));
+      expect(form.hasErrors()).toBe(true);
+      expect(form.errorFor('day')).toBe('ERRORS.VALID_DAY');
+      expect(form.errorFor('month')).toBe('ERRORS.VALID_MONTH');
+      expect(form.errorFor('year')).toBe('ERRORS.VALID_FOUR_DIGIT_YEAR');
     });
-    it('should return error on year less than 1872', async () => {
-      await request(app)
-        .post(DOB_URL)
-        .send('year=1871')
-        .send('month=1')
-        .send('day=1')
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.VALID_YEAR'));
-        });
+
+    it('should re-render on year less than 1872', async () => {
+      req.body = {year: '1871', month: '1', day: '1'};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      const form = (res.render as jest.Mock).mock.calls[0][1].form as GenericForm<unknown>;
+      expect(form.hasErrors()).toBe(true);
+      expect(form.errorFor('year')).toBe('ERRORS.VALID_YEAR');
     });
-    it('should return error on empty year', async () => {
-      await request(app)
-        .post(DOB_URL)
-        .send('year=')
-        .send('month=1')
-        .send('day=1')
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.VALID_FOUR_DIGIT_YEAR'));
-        });
+
+    it('should re-render on empty year', async () => {
+      req.body = {year: '', month: '1', day: '1'};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      const form = (res.render as jest.Mock).mock.calls[0][1].form as GenericForm<unknown>;
+      expect(form.errorFor('year')).toBe('ERRORS.VALID_FOUR_DIGIT_YEAR');
     });
-    it('should return error on future date', async () => {
-      await request(app)
-        .post(DOB_URL)
-        .send('year=2400')
-        .send('month=1')
-        .send('day=1')
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.VALID_DATE'));
-        });
+
+    it('should re-render on future date', async () => {
+      req.body = {year: '2400', month: '1', day: '1'};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      const form = (res.render as jest.Mock).mock.calls[0][1].form as GenericForm<unknown>;
+      expect(form.hasErrors()).toBe(true);
+      expect(form.errorFor('dateOfBirth')).toBe('ERRORS.VALID_DATE');
     });
-    it('should return error 4 digit year', async () => {
-      await request(app)
-        .post(DOB_URL)
-        .send('year=22')
-        .send('month=1')
-        .send('day=1')
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.VALID_FOUR_DIGIT_YEAR'));
-        });
+
+    it('should re-render on 2 digit year', async () => {
+      req.body = {year: '22', month: '1', day: '1'};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      const form = (res.render as jest.Mock).mock.calls[0][1].form as GenericForm<unknown>;
+      expect(form.errorFor('year')).toBe('ERRORS.VALID_FOUR_DIGIT_YEAR');
     });
+
     it('should accept a valid input', async () => {
-      await request(app)
-        .post(DOB_URL)
-        .send('year=2000')
-        .send('month=1')
-        .send('day=1')
-        .expect((res) => {
-          expect(res.status).toBe(302);
-        });
+      req.body = {year: '2000', month: '1', day: '1'};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(mockSaveDraftClaim).toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalled();
     });
+
     it('should redirect to under 18 contact court page', async () => {
-      await request(app)
-        .post(DOB_URL)
-        .send('year=2021')
-        .send('month=1')
-        .send('day=1')
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.text).toContain(`Redirecting to ${AGE_ELIGIBILITY_URL}`);
-        });
+      req.body = {year: '2021', month: '1', day: '1'};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, AGE_ELIGIBILITY_URL));
     });
+
     it('should redirect to under 18 contact court page when has information on redis', async () => {
-      await request(app)
-        .post(DOB_URL)
-        .send('year=2021')
-        .send('month=1')
-        .send('day=1')
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.text).toContain(`Redirecting to ${AGE_ELIGIBILITY_URL}`);
-        });
+      mockGetCaseData.mockResolvedValue(claimWithRespondent());
+      req.body = {year: '2021', month: '1', day: '1'};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, AGE_ELIGIBILITY_URL));
     });
+
     it('should redirect to phone number page on valid DOB', async () => {
-      await request(app)
-        .post(DOB_URL)
-        .send('year=1981')
-        .send('month=1')
-        .send('day=1')
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.text).toContain(`Redirecting to ${CITIZEN_PHONE_NUMBER_URL}`);
-        });
+      req.body = {year: '1981', month: '1', day: '1'};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CITIZEN_PHONE_NUMBER_URL));
     });
-    it('should redirect to phone number page on valid DOB when has undefined on redis', async () => {
-      app.locals.draftStoreClient = mockNoStatementOfMeans;
-      await request(app)
-        .post(DOB_URL)
-        .send('year=1981')
-        .send('month=1')
-        .send('day=1')
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.text).toContain(`Redirecting to ${CITIZEN_PHONE_NUMBER_URL}`);
-        });
+
+    it('should redirect to phone number page on valid DOB when respondent is missing', async () => {
+      mockGetCaseData.mockResolvedValue(new Claim());
+      req.body = {year: '1981', month: '1', day: '1'};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CITIZEN_PHONE_NUMBER_URL));
     });
-    it('should return http 500 when has error in the post method', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .post(DOB_URL)
-        .send('year=1981')
-        .send('month=1')
-        .send('day=1')
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+
+    it('should call next when save fails', async () => {
+      const error = new Error('error');
+      mockSaveDraftClaim.mockRejectedValue(error);
+      req.body = {year: '1981', month: '1', day: '1'};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
+
     describe('Redirect to phone-number or task-list screen', () => {
       it('should redirect to task-list screen if phone-number provided', async () => {
-        app.locals.draftStoreClient = mockCivilClaimRespondentIndividualTypeWithPhoneNumber;
-        await request(app)
-          .post(DOB_URL)
-          .send('year=1981')
-          .send('month=1')
-          .send('day=1')
-          .expect((res) => {
-            expect(res.status).toBe(302);
-            expect(res.header.location).toEqual(RESPONSE_TASK_LIST_URL);
-          });
+        mockGetCaseData.mockResolvedValue(claimWithRespondent(new PartyPhone('01234567890', true)));
+        req.body = {year: '1981', month: '1', day: '1'};
+
+        await postHandler(req as AppRequest, res as unknown as Response, next);
+
+        expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, RESPONSE_TASK_LIST_URL));
       });
+
       it('should redirect to phone-number screen if phone-number NOT provided', async () => {
-        app.locals.draftStoreClient = mockCivilClaimApplicantIndividualType;
-        await request(app)
-          .post(DOB_URL)
-          .send('year=1981')
-          .send('month=1')
-          .send('day=1')
-          .expect((res) => {
-            expect(res.status).toBe(302);
-            expect(res.header.location).toEqual(CITIZEN_PHONE_NUMBER_URL);
-          });
+        mockGetCaseData.mockResolvedValue(claimWithRespondent());
+        req.body = {year: '1981', month: '1', day: '1'};
+
+        await postHandler(req as AppRequest, res as unknown as Response, next);
+
+        expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CITIZEN_PHONE_NUMBER_URL));
       });
+
       it('should redirect to phone-number screen if phone-number is empty', async () => {
-        app.locals.draftStoreClient = mockCivilClaimRespondentIndividualTypeWithoutPhoneNumber;
-        await request(app)
-          .post(DOB_URL)
-          .send('year=1981')
-          .send('month=1')
-          .send('day=1')
-          .expect((res) => {
-            expect(res.status).toBe(302);
-            expect(res.header.location).toEqual(CITIZEN_PHONE_NUMBER_URL);
-          });
+        mockGetCaseData.mockResolvedValue(claimWithRespondent(new PartyPhone('')));
+        req.body = {year: '1981', month: '1', day: '1'};
+
+        await postHandler(req as AppRequest, res as unknown as Response, next);
+
+        expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CITIZEN_PHONE_NUMBER_URL));
       });
+
       it('should redirect to phone-number screen if ccd phone number exist is false', async () => {
-        app.locals.draftStoreClient = mockCivilClaimRespondentIndividualTypeWithCcdPhoneNumberFalse;
-        await request(app)
-          .post(DOB_URL)
-          .send('year=1981')
-          .send('month=1')
-          .send('day=1')
-          .expect((res) => {
-            expect(res.status).toBe(302);
-            expect(res.header.location).toEqual(CITIZEN_PHONE_NUMBER_URL);
-          });
+        mockGetCaseData.mockResolvedValue(claimWithRespondent(new PartyPhone('01234567890', false)));
+        req.body = {year: '1981', month: '1', day: '1'};
+
+        await postHandler(req as AppRequest, res as unknown as Response, next);
+
+        expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CITIZEN_PHONE_NUMBER_URL));
       });
     });
   });

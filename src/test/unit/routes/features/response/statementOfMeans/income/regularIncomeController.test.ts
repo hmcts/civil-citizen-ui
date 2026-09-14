@@ -1,551 +1,274 @@
-import request from 'supertest';
-import config from 'config';
-import nock from 'nock';
-import {app} from '../../../../../../../main/app';
-import {CITIZEN_EXPLANATION_URL, CITIZEN_MONTHLY_INCOME_URL} from '../../../../../../../main/routes/urls';
-import {mockRedisFailure, mockResponseFullAdmitPayBySetDate} from '../../../../../../utils/mockDraftStore';
-import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
-import {t} from 'i18next';
-import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {Response} from 'express';
+import regularIncomeController from '../../../../../../../main/routes/features/response/statementOfMeans/income/regularIncomeController';
+import {CITIZEN_EXPLANATION_URL} from 'routes/urls';
+import {AppRequest} from 'models/AppRequest';
+import {GenericForm} from 'form/models/genericForm';
+import {RegularIncome} from 'form/models/statementOfMeans/expensesAndIncome/regularIncome';
+import {
+  getRegularIncome,
+  saveRegularIncome,
+} from 'services/features/response/statementOfMeans/income/regularIncomeService';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {createMockResponse, createMockSession, getRouteHandler} from '../../../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../../../main/modules/oidc');
+jest.mock('services/features/response/statementOfMeans/income/regularIncomeService', () => ({
+  getRegularIncome: jest.fn(),
+  saveRegularIncome: jest.fn(),
+}));
+
+const jobIncomeBody = (name: string, amount: string, schedule?: string) => ({
+  declared: 'job',
+  model: {
+    job: {
+      transactionSource: {name, amount, schedule},
+    },
+  },
+});
 
 describe('Regular Income Controller', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamServiceUrl: string = config.get('services.idam.url');
+  const getHandler = getRouteHandler(regularIncomeController, 'get');
+  const postHandler = getRouteHandler(regularIncomeController, 'post');
+  const viewPath = 'features/response/statementOfMeans/income/regular-income';
+  const claimId = 'aaa';
+  let req: Partial<AppRequest>;
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
+  const mockGetRegularIncome = getRegularIncome as jest.Mock;
+  const mockSaveRegularIncome = saveRegularIncome as jest.Mock;
+  const renderedForm = () => (res.render as jest.Mock).mock.calls[0][1].form;
+  const errorTexts = (): string[] => renderedForm().getAllErrors()
+    .map((error: {text?: string}) => error.text)
+    .filter(Boolean);
 
-  beforeAll(() => {
-    nock(idamServiceUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
+  beforeEach(() => {
+    req = {
+      params: {id: claimId},
+      session: createMockSession({user: {id: 'user-id'}}),
+      body: {},
+      query: {},
+      cookies: {},
+    };
+    res = createMockResponse();
+    next = jest.fn();
+    mockGetRegularIncome.mockResolvedValue(RegularIncome.buildEmptyForm());
+    mockSaveRegularIncome.mockResolvedValue(undefined);
   });
 
   describe('on GET', () => {
-    test('should display page successfully', async () => {
-      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
-      await request(app)
-        .get(CITIZEN_MONTHLY_INCOME_URL)
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('PAGES.REGULAR_INCOME.WHAT_REGULAR_INCOME'));
-        });
+    it('should display page successfully', async () => {
+      await getHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        form: expect.any(GenericForm),
+      }));
     });
-    test('it should return status 500 when error occurs', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .get(CITIZEN_MONTHLY_INCOME_URL)
-        .expect((res: Response) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(t('ERRORS.SOMETHING_WENT_WRONG'));
-        });
+
+    it('should call next when error thrown', async () => {
+      const error = new Error('error');
+      mockGetRegularIncome.mockRejectedValue(error);
+
+      await getHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
+
   describe('on POST', () => {
-    beforeEach(() => {
-      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
-    });
-    test('should display errors when job is selected but no amount or schedule are specified', async () => {
-      await request(app)
-        .post(CITIZEN_MONTHLY_INCOME_URL)
-        .send({
-          declared: 'job', model: {
-            job: {
-              transactionSource:
-                {
-                  name: 'Income from your job', amount: '', schedule: undefined,
-                },
-            },
-          },
-        })
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.TRANSACTION_SOURCE.HOW_MUCH_INCOME.INCOME_JOB'));
-          expect(res.text).toContain(t('ERRORS.TRANSACTION_SOURCE.HOW_OFTEN_RECEIVE.INCOME_JOB'));
-        });
+    const expectAmountAndScheduleErrors = async (name: string, amountKey: string, scheduleKey: string) => {
+      req.body = jobIncomeBody(name, '', undefined);
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({form: expect.any(GenericForm)}));
+      expect(errorTexts()).toEqual(expect.arrayContaining([amountKey, scheduleKey]));
+    };
+
+    const expectAmountFormatError = async (name: string, amountKey: string) => {
+      req.body = jobIncomeBody(name, '40.666', 'WEEK');
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({form: expect.any(GenericForm)}));
+      expect(errorTexts()).toContain(amountKey);
+    };
+
+    it('should display errors when job is selected but no amount or schedule are specified', async () => {
+      await expectAmountAndScheduleErrors(
+        'Income from your job',
+        'ERRORS.TRANSACTION_SOURCE.HOW_MUCH_INCOME.INCOME_JOB',
+        'ERRORS.TRANSACTION_SOURCE.HOW_OFTEN_RECEIVE.INCOME_JOB',
+      );
     });
 
-    test('should display errors when universal credit is selected but no amount or schedule are specified', async () => {
-      await request(app)
-        .post(CITIZEN_MONTHLY_INCOME_URL)
-        .send({
-          declared: 'job', model: {
-            job: {
-              transactionSource:
-                {
-                  name: 'Universal Credit', amount: '', schedule: undefined,
-                },
-            },
-          },
-        })
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.TRANSACTION_SOURCE.HOW_MUCH_INCOME.UNIVERSAL_CREDIT'));
-          expect(res.text).toContain(t('ERRORS.TRANSACTION_SOURCE.HOW_OFTEN_RECEIVE.UNIVERSAL_CREDIT'));
-        });
+    it('should display errors when universal credit is selected but no amount or schedule are specified', async () => {
+      await expectAmountAndScheduleErrors(
+        'Universal Credit',
+        'ERRORS.TRANSACTION_SOURCE.HOW_MUCH_INCOME.UNIVERSAL_CREDIT',
+        'ERRORS.TRANSACTION_SOURCE.HOW_OFTEN_RECEIVE.UNIVERSAL_CREDIT',
+      );
     });
 
-    test('should display errors when Jobseeker income based is selected but no amount or schedule are specified', async () => {
-      await request(app)
-        .post(CITIZEN_MONTHLY_INCOME_URL)
-        .send({
-          declared: 'job', model: {
-            job: {
-              transactionSource:
-                {
-                  name: 'Jobseeker’s Allowance (income based)', amount: '', schedule: undefined,
-                },
-            },
-          },
-        })
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.TRANSACTION_SOURCE.HOW_MUCH_INCOME.JOBSEEKER_INCOME'));
-          expect(res.text).toContain(t('ERRORS.TRANSACTION_SOURCE.HOW_OFTEN_RECEIVE.JOBSEEKER_INCOME'));
-        });
+    it('should display errors when Jobseeker income based is selected but no amount or schedule are specified', async () => {
+      await expectAmountAndScheduleErrors(
+        'Jobseeker’s Allowance (income based)',
+        'ERRORS.TRANSACTION_SOURCE.HOW_MUCH_INCOME.JOBSEEKER_INCOME',
+        'ERRORS.TRANSACTION_SOURCE.HOW_OFTEN_RECEIVE.JOBSEEKER_INCOME',
+      );
     });
 
-    test('should display errors when Jobseeker contribution is selected but no amount or schedule are specified', async () => {
-      await request(app)
-        .post(CITIZEN_MONTHLY_INCOME_URL)
-        .send({
-          declared: 'job', model: {
-            job: {
-              transactionSource:
-                {
-                  name: 'Jobseeker’s Allowance (contribution based)', amount: '', schedule: undefined,
-                },
-            },
-          },
-        })
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.TRANSACTION_SOURCE.HOW_MUCH_INCOME.JOBSEEKER_CONTRIBUTION'));
-          expect(res.text).toContain(t('ERRORS.TRANSACTION_SOURCE.HOW_OFTEN_RECEIVE.JOBSEEKER_CONTRIBUTION'));
-        });
+    it('should display errors when Jobseeker contribution is selected but no amount or schedule are specified', async () => {
+      await expectAmountAndScheduleErrors(
+        'Jobseeker’s Allowance (contribution based)',
+        'ERRORS.TRANSACTION_SOURCE.HOW_MUCH_INCOME.JOBSEEKER_CONTRIBUTION',
+        'ERRORS.TRANSACTION_SOURCE.HOW_OFTEN_RECEIVE.JOBSEEKER_CONTRIBUTION',
+      );
     });
 
-    test('should display errors when income support is selected but no amount or schedule are specified', async () => {
-      await request(app)
-        .post(CITIZEN_MONTHLY_INCOME_URL)
-        .send({
-          declared: 'job', model: {
-            job: {
-              transactionSource:
-                {
-                  name: 'Income Support', amount: '', schedule: undefined,
-                },
-            },
-          },
-        })
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.TRANSACTION_SOURCE.HOW_MUCH_INCOME.INCOME_SUPPORT'));
-          expect(res.text).toContain(t('ERRORS.TRANSACTION_SOURCE.HOW_OFTEN_RECEIVE.INCOME_SUPPORT'));
-        });
+    it('should display errors when income support is selected but no amount or schedule are specified', async () => {
+      await expectAmountAndScheduleErrors(
+        'Income Support',
+        'ERRORS.TRANSACTION_SOURCE.HOW_MUCH_INCOME.INCOME_SUPPORT',
+        'ERRORS.TRANSACTION_SOURCE.HOW_OFTEN_RECEIVE.INCOME_SUPPORT',
+      );
     });
 
-    test('should display errors when Working Tax Credit is selected but no amount or schedule are specified', async () => {
-      await request(app)
-        .post(CITIZEN_MONTHLY_INCOME_URL)
-        .send({
-          declared: 'job', model: {
-            job: {
-              transactionSource:
-                {
-                  name: 'Working Tax Credit', amount: '', schedule: undefined,
-                },
-            },
-          },
-        })
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.TRANSACTION_SOURCE.HOW_MUCH_INCOME.WORKING_TAX'));
-          expect(res.text).toContain(t('ERRORS.TRANSACTION_SOURCE.HOW_OFTEN_RECEIVE.WORKING_TAX'));
-        });
+    it('should display errors when Working Tax Credit is selected but no amount or schedule are specified', async () => {
+      await expectAmountAndScheduleErrors(
+        'Working Tax Credit',
+        'ERRORS.TRANSACTION_SOURCE.HOW_MUCH_INCOME.WORKING_TAX',
+        'ERRORS.TRANSACTION_SOURCE.HOW_OFTEN_RECEIVE.WORKING_TAX',
+      );
     });
 
-    test('should display errors when Child Tax Credit is selected but no amount or schedule are specified', async () => {
-      await request(app)
-        .post(CITIZEN_MONTHLY_INCOME_URL)
-        .send({
-          declared: 'job', model: {
-            job: {
-              transactionSource:
-                {
-                  name: 'Child Tax Credit', amount: '', schedule: undefined,
-                },
-            },
-          },
-        })
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.TRANSACTION_SOURCE.HOW_MUCH_INCOME.CHILD_TAX'));
-          expect(res.text).toContain(t('ERRORS.TRANSACTION_SOURCE.HOW_OFTEN_RECEIVE.CHILD_TAX'));
-        });
+    it('should display errors when Child Tax Credit is selected but no amount or schedule are specified', async () => {
+      await expectAmountAndScheduleErrors(
+        'Child Tax Credit',
+        'ERRORS.TRANSACTION_SOURCE.HOW_MUCH_INCOME.CHILD_TAX',
+        'ERRORS.TRANSACTION_SOURCE.HOW_OFTEN_RECEIVE.CHILD_TAX',
+      );
     });
 
-    test('should display errors when Child Benefit is selected but no amount or schedule are specified', async () => {
-      await request(app)
-        .post(CITIZEN_MONTHLY_INCOME_URL)
-        .send({
-          declared: 'job', model: {
-            job: {
-              transactionSource:
-                {
-                  name: 'Child Benefit', amount: '', schedule: undefined,
-                },
-            },
-          },
-        })
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.TRANSACTION_SOURCE.HOW_MUCH_INCOME.CHILD_BENEFIT'));
-          expect(res.text).toContain(t('ERRORS.TRANSACTION_SOURCE.HOW_OFTEN_RECEIVE.CHILD_BENEFIT'));
-        });
+    it('should display errors when Child Benefit is selected but no amount or schedule are specified', async () => {
+      await expectAmountAndScheduleErrors(
+        'Child Benefit',
+        'ERRORS.TRANSACTION_SOURCE.HOW_MUCH_INCOME.CHILD_BENEFIT',
+        'ERRORS.TRANSACTION_SOURCE.HOW_OFTEN_RECEIVE.CHILD_BENEFIT',
+      );
     });
 
-    test('should display errors when Council Tax Support is selected but no amount or schedule are specified', async () => {
-      await request(app)
-        .post(CITIZEN_MONTHLY_INCOME_URL)
-        .send({
-          declared: 'job', model: {
-            job: {
-              transactionSource:
-                {
-                  name: 'Council Tax Support', amount: '', schedule: undefined,
-                },
-            },
-          },
-        })
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.TRANSACTION_SOURCE.HOW_MUCH_INCOME.COUNCIL_TAX'));
-          expect(res.text).toContain(t('ERRORS.TRANSACTION_SOURCE.HOW_OFTEN_RECEIVE.COUNCIL_TAX'));
-        });
+    it('should display errors when Council Tax Support is selected but no amount or schedule are specified', async () => {
+      await expectAmountAndScheduleErrors(
+        'Council Tax Support',
+        'ERRORS.TRANSACTION_SOURCE.HOW_MUCH_INCOME.COUNCIL_TAX',
+        'ERRORS.TRANSACTION_SOURCE.HOW_OFTEN_RECEIVE.COUNCIL_TAX',
+      );
     });
 
-    test('should display errors when Pension is selected but no amount or schedule are specified', async () => {
-      await request(app)
-        .post(CITIZEN_MONTHLY_INCOME_URL)
-        .send({
-          declared: 'job', model: {
-            job: {
-              transactionSource:
-                {
-                  name: 'Pension', amount: '', schedule: undefined,
-                },
-            },
-          },
-        })
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.TRANSACTION_SOURCE.HOW_MUCH_INCOME.PENSION'));
-          expect(res.text).toContain(t('ERRORS.TRANSACTION_SOURCE.HOW_OFTEN_RECEIVE.PENSION'));
-        });
+    it('should display errors when Pension is selected but no amount or schedule are specified', async () => {
+      await expectAmountAndScheduleErrors(
+        'Pension',
+        'ERRORS.TRANSACTION_SOURCE.HOW_MUCH_INCOME.PENSION',
+        'ERRORS.TRANSACTION_SOURCE.HOW_OFTEN_RECEIVE.PENSION',
+      );
     });
 
-    test('should display errors when other is selected but no amount or schedule are specified', async () => {
-      await request(app)
-        .post(CITIZEN_MONTHLY_INCOME_URL)
-        .send({
-          declared: 'job', model: {
-            job: {
-              transactionSource:
-                {
-                  name: 'Other income', amount: '', schedule: undefined,
-                },
-            },
-          },
-        })
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.TRANSACTION_SOURCE.HOW_MUCH_INCOME.OTHER'));
-          expect(res.text).toContain(t('ERRORS.TRANSACTION_SOURCE.HOW_OFTEN_RECEIVE.OTHER'));
-        });
+    it('should display errors when other is selected but no amount or schedule are specified', async () => {
+      await expectAmountAndScheduleErrors(
+        'Other income',
+        'ERRORS.TRANSACTION_SOURCE.HOW_MUCH_INCOME.OTHER',
+        'ERRORS.TRANSACTION_SOURCE.HOW_OFTEN_RECEIVE.OTHER',
+      );
     });
 
-    test('should display errors for  Income from your job amount when amount has more than two decimal places', async () => {
-      await request(app)
-        .post(CITIZEN_MONTHLY_INCOME_URL)
-        .send({
-          declared: 'job', model: {
-            job: {
-              transactionSource:
-                {
-                  name: 'Income from your job', amount: '40.666', schedule: 'WEEK',
-                },
-            },
-          },
-        })
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.TRANSACTION_SOURCE.VALID_NUMBER_AMOUNT.INCOME_JOB'));
-        });
+    it('should display errors for Income from your job amount when amount has more than two decimal places', async () => {
+      await expectAmountFormatError('Income from your job', 'ERRORS.TRANSACTION_SOURCE.VALID_NUMBER_AMOUNT.INCOME_JOB');
     });
 
-    test('should display errors for Universal Credit amount when amount has more than two decimal places', async () => {
-      await request(app)
-        .post(CITIZEN_MONTHLY_INCOME_URL)
-        .send({
-          declared: 'job', model: {
-            job: {
-              transactionSource:
-                {
-                  name: 'Universal Credit', amount: '40.666', schedule: 'WEEK',
-                },
-            },
-          },
-        })
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.TRANSACTION_SOURCE.VALID_NUMBER_AMOUNT.UNIVERSAL_CREDIT'));
-        });
-    });
-    test('should display errors for Jobseeker’s Allowance (income based) amount when amount has more than two decimal places', async () => {
-      await request(app)
-        .post(CITIZEN_MONTHLY_INCOME_URL)
-        .send({
-          declared: 'job', model: {
-            job: {
-              transactionSource:
-                {
-                  name: 'Jobseeker’s Allowance (income based)', amount: '40.666', schedule: 'WEEK',
-                },
-            },
-          },
-        })
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.TRANSACTION_SOURCE.VALID_NUMBER_AMOUNT.JOBSEEKER_INCOME'));
-        });
-    });
-    test('should display errors for Jobseeker’s Allowance (contribution based) amount when amount has more than two decimal places', async () => {
-      await request(app)
-        .post(CITIZEN_MONTHLY_INCOME_URL)
-        .send({
-          declared: 'job', model: {
-            job: {
-              transactionSource:
-                {
-                  name: 'Jobseeker’s Allowance (contribution based)', amount: '40.666', schedule: 'WEEK',
-                },
-            },
-          },
-        })
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.TRANSACTION_SOURCE.VALID_NUMBER_AMOUNT.JOBSEEKER_CONTRIBUTION'));
-        });
-    });
-    test('should display errors for Income Support amount when amount has more than two decimal places', async () => {
-      await request(app)
-        .post(CITIZEN_MONTHLY_INCOME_URL)
-        .send({
-          declared: 'job', model: {
-            job: {
-              transactionSource:
-                {
-                  name: 'Income Support', amount: '40.666', schedule: 'WEEK',
-                },
-            },
-          },
-        })
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.TRANSACTION_SOURCE.VALID_NUMBER_AMOUNT.INCOME_SUPPORT'));
-        });
-    });
-    test('should display errors for Working Tax Credit amount when amount has more than two decimal places', async () => {
-      await request(app)
-        .post(CITIZEN_MONTHLY_INCOME_URL)
-        .send({
-          declared: 'job', model: {
-            job: {
-              transactionSource:
-                {
-                  name: 'Working Tax Credit', amount: '40.666', schedule: 'WEEK',
-                },
-            },
-          },
-        })
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.TRANSACTION_SOURCE.VALID_NUMBER_AMOUNT.WORKING_TAX'));
-        });
-    });
-    test('should display errors for Child Tax Credit amount when amount has more than two decimal places', async () => {
-      await request(app)
-        .post(CITIZEN_MONTHLY_INCOME_URL)
-        .send({
-          declared: 'job', model: {
-            job: {
-              transactionSource:
-                {
-                  name: 'Child Tax Credit', amount: '40.666', schedule: 'WEEK',
-                },
-            },
-          },
-        })
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.TRANSACTION_SOURCE.VALID_NUMBER_AMOUNT.CHILD_TAX'));
-        });
-    });
-    test('should display errors for Child Benefit amount when amount has more than two decimal places', async () => {
-      await request(app)
-        .post(CITIZEN_MONTHLY_INCOME_URL)
-        .send({
-          declared: 'job', model: {
-            job: {
-              transactionSource:
-                {
-                  name: 'Child Benefit', amount: '40.666', schedule: 'WEEK',
-                },
-            },
-          },
-        })
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.TRANSACTION_SOURCE.VALID_NUMBER_AMOUNT.CHILD_BENEFIT'));
-        });
-    });
-    test('should display errors for Council Tax Support amount when amount has more than two decimal places', async () => {
-      await request(app)
-        .post(CITIZEN_MONTHLY_INCOME_URL)
-        .send({
-          declared: 'job', model: {
-            job: {
-              transactionSource:
-                {
-                  name: 'Council Tax Support', amount: '40.666', schedule: 'WEEK',
-                },
-            },
-          },
-        })
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.TRANSACTION_SOURCE.VALID_NUMBER_AMOUNT.COUNCIL_TAX'));
-        });
-    });
-    test('should display errors for Pension amount when amount has more than two decimal places', async () => {
-      await request(app)
-        .post(CITIZEN_MONTHLY_INCOME_URL)
-        .send({
-          declared: 'job', model: {
-            job: {
-              transactionSource:
-                {
-                  name: 'Pension', amount: '40.666', schedule: 'WEEK',
-                },
-            },
-          },
-        })
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.TRANSACTION_SOURCE.VALID_NUMBER_AMOUNT.PENSION'));
-        });
-    });
-    test('should display errors for other income amount when amount has more than two decimal places', async () => {
-      await request(app)
-        .post(CITIZEN_MONTHLY_INCOME_URL)
-        .send({
-          declared: 'job', model: {
-            job: {
-              transactionSource:
-                {
-                  name: 'Other income', amount: '40.666', schedule: 'WEEK',
-                },
-            },
-          },
-        })
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.TRANSACTION_SOURCE.VALID_NUMBER_AMOUNT.OTHER'));
-        });
+    it('should display errors for Universal Credit amount when amount has more than two decimal places', async () => {
+      await expectAmountFormatError('Universal Credit', 'ERRORS.TRANSACTION_SOURCE.VALID_NUMBER_AMOUNT.UNIVERSAL_CREDIT');
     });
 
-    test('should display errors for amount when amount is negative', async () => {
-      await request(app)
-        .post(CITIZEN_MONTHLY_INCOME_URL)
-        .send({
-          declared: 'job', model: {
-            job: {
-              transactionSource:
-                {
-                  name: 'Income from your job', amount: '-40.66', schedule: 'WEEK',
-                },
-            },
-          },
-        })
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.TRANSACTION_SOURCE.VALID_NUMBER_AMOUNT.INCOME_JOB'));
-        });
+    it('should display errors for Jobseeker’s Allowance (income based) amount when amount has more than two decimal places', async () => {
+      await expectAmountFormatError('Jobseeker’s Allowance (income based)', 'ERRORS.TRANSACTION_SOURCE.VALID_NUMBER_AMOUNT.JOBSEEKER_INCOME');
     });
-    test('should show errors when other is selected and data for other is not correctly selected', async () => {
-      await request(app)
-        .post(CITIZEN_MONTHLY_INCOME_URL)
-        .send({
-          declared: 'other', model: {
-            other: {
-              transactionSources: [
-                {
-                  name: undefined, amount: '123.33', schedule: 'WEEK',
-                },
-                {
-                  name: 'Universal Credit', amount: '123.33', schedule: undefined,
-                },
-                {
-                  name: 'Income Support', amount: '123.333', schedule: 'MONTH',
-                },
-              ],
-            },
-          },
-        })
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.TRANSACTION_SOURCE.ENTER_OTHER_INCOME'));
-          expect(res.text).toContain(t('ERRORS.TRANSACTION_SOURCE.HOW_OFTEN_RECEIVE.UNIVERSAL_CREDIT'));
-          expect(res.text).toContain(t('ERRORS.TRANSACTION_SOURCE.VALID_NUMBER_AMOUNT.INCOME_SUPPORT'));
-        });
+
+    it('should display errors for Jobseeker’s Allowance (contribution based) amount when amount has more than two decimal places', async () => {
+      await expectAmountFormatError('Jobseeker’s Allowance (contribution based)', 'ERRORS.TRANSACTION_SOURCE.VALID_NUMBER_AMOUNT.JOBSEEKER_CONTRIBUTION');
     });
-    test('should redirect when all values are correct', async () => {
-      await request(app)
-        .post(CITIZEN_MONTHLY_INCOME_URL)
-        .send({
-          declared: 'job', model: {
-            job: {
-              transactionSource:
-                {
-                  name: 'income from your job', amount: '40.66', schedule: 'WEEK',
-                },
-            },
-          },
-        })
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CITIZEN_EXPLANATION_URL);
-        });
+
+    it('should display errors for Income Support amount when amount has more than two decimal places', async () => {
+      await expectAmountFormatError('Income Support', 'ERRORS.TRANSACTION_SOURCE.VALID_NUMBER_AMOUNT.INCOME_SUPPORT');
     });
-    test('should return 500 status when error occurs', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .post(CITIZEN_MONTHLY_INCOME_URL)
-        .send({
-          declared: 'job', model: {
-            job: {
-              transactionSource:
-                {
-                  name: 'income from your job', amount: '40.66', schedule: 'WEEK',
-                },
-            },
+
+    it('should display errors for Working Tax Credit amount when amount has more than two decimal places', async () => {
+      await expectAmountFormatError('Working Tax Credit', 'ERRORS.TRANSACTION_SOURCE.VALID_NUMBER_AMOUNT.WORKING_TAX');
+    });
+
+    it('should display errors for Child Tax Credit amount when amount has more than two decimal places', async () => {
+      await expectAmountFormatError('Child Tax Credit', 'ERRORS.TRANSACTION_SOURCE.VALID_NUMBER_AMOUNT.CHILD_TAX');
+    });
+
+    it('should display errors for Child Benefit amount when amount has more than two decimal places', async () => {
+      await expectAmountFormatError('Child Benefit', 'ERRORS.TRANSACTION_SOURCE.VALID_NUMBER_AMOUNT.CHILD_BENEFIT');
+    });
+
+    it('should display errors for Council Tax Support amount when amount has more than two decimal places', async () => {
+      await expectAmountFormatError('Council Tax Support', 'ERRORS.TRANSACTION_SOURCE.VALID_NUMBER_AMOUNT.COUNCIL_TAX');
+    });
+
+    it('should display errors for Pension amount when amount has more than two decimal places', async () => {
+      await expectAmountFormatError('Pension', 'ERRORS.TRANSACTION_SOURCE.VALID_NUMBER_AMOUNT.PENSION');
+    });
+
+    it('should display errors for other income amount when amount has more than two decimal places', async () => {
+      await expectAmountFormatError('Other income', 'ERRORS.TRANSACTION_SOURCE.VALID_NUMBER_AMOUNT.OTHER');
+    });
+
+    it('should display errors for amount when amount is negative', async () => {
+      req.body = jobIncomeBody('Income from your job', '-40.66', 'WEEK');
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(errorTexts()).toContain('ERRORS.TRANSACTION_SOURCE.VALID_NUMBER_AMOUNT.INCOME_JOB');
+    });
+
+    it('should show errors when other is selected and data for other is not correctly selected', async () => {
+      req.body = {
+        declared: 'other',
+        model: {
+          other: {
+            transactionSources: [
+              {name: undefined, amount: '123.33', schedule: 'WEEK'},
+              {name: 'Universal Credit', amount: '123.33', schedule: undefined},
+              {name: 'Income Support', amount: '123.333', schedule: 'MONTH'},
+            ],
           },
-        })
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+        },
+      };
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({form: expect.any(GenericForm)}));
+      expect(errorTexts()).toEqual(expect.arrayContaining([
+        'ERRORS.TRANSACTION_SOURCE.ENTER_OTHER_INCOME',
+        'ERRORS.TRANSACTION_SOURCE.HOW_OFTEN_RECEIVE.UNIVERSAL_CREDIT',
+        'ERRORS.TRANSACTION_SOURCE.VALID_NUMBER_AMOUNT.INCOME_SUPPORT',
+      ]));
+    });
+
+    it('should redirect when all values are correct', async () => {
+      req.body = jobIncomeBody('income from your job', '40.66', 'WEEK');
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(mockSaveRegularIncome).toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CITIZEN_EXPLANATION_URL));
+    });
+
+    it('should call next when save throws', async () => {
+      const error = new Error('error');
+      mockSaveRegularIncome.mockRejectedValue(error);
+      req.body = jobIncomeBody('income from your job', '40.66', 'WEEK');
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 });
