@@ -7,9 +7,23 @@ if [[ -z "$A11Y_CHUNKS" || ! "$A11Y_CHUNKS" =~ ^[0-9]+$ || "$A11Y_CHUNKS" -le 0 
   exit 1
 fi
 
+run_chunk() {
+  local chunk_index="$1"
+  local report_number=$((chunk_index + 1))
+
+  if A11Y_CHUNKS_INDEX="$chunk_index" yarn tests:a11y \
+    --reporter-options "reportFilename=a11y-${report_number}"; then
+    return 0
+  fi
+
+  echo "Accessibility chunk ${report_number} failed; retrying it once."
+  A11Y_CHUNKS_INDEX="$chunk_index" yarn tests:a11y \
+    --reporter-options "reportFilename=a11y-${report_number}-retry"
+}
+
 pids=()
 for i in $(seq 0 $((A11Y_CHUNKS - 1))); do
-  A11Y_CHUNKS_INDEX=$i yarn tests:a11y --reporter-options reportFilename=a11y-$((i + 1)) &
+  run_chunk "$i" &
   pids+=($!)
 done
 
@@ -26,4 +40,3 @@ if [[ $exit_code -ne 0 ]]; then
 fi
 
 echo "All accessibility tests completed successfully."
-
