@@ -50,7 +50,9 @@ civil-service:
   enabled: true
   java:
     applicationPort: 4000
-    startupFailureThreshold: 40
+    # Preview databases are created from scratch and Flyway can spend several
+    # minutes creating dashboard indexes before the health endpoint is exposed.
+    startupFailureThreshold: 80
     releaseNameOverride: ${SERVICE_NAME}-civil-service
     image: hmctsprod.azurecr.io/civil/service:${CIVIL_SERVICE_IMAGE}
     imagePullPolicy: Always
