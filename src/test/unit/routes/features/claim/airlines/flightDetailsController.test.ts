@@ -4,24 +4,44 @@ import nock from 'nock';
 import request from 'supertest';
 import {
   CLAIM_DEFENDANT_COMPANY_DETAILS_URL,
-  FLIGHT_DETAILS_URL, 
+  FLIGHT_DETAILS_URL,
 } from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
 import {Claim} from 'models/claim';
-import {mockCivilClaim} from '../../../../../utils/mockDraftStore';
+import {getDraftClaim, updateDraftClaim} from 'modules/draft-store/draftStoreManagerService';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
-import { CivilServiceClient } from 'client/civilServiceClient';
+import {CivilServiceClient} from 'client/civilServiceClient';
+import {CivilClaimResponse} from 'models/civilClaimResponse';
+import {DraftClaimManagerResult} from 'models/draft/draftClaim';
+import { AirlineList } from 'models/airlines/flights';
 
 jest.mock('client/civilServiceClient');
 jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('modules/draft-store/draftStoreManagerService');
+jest.mock('modules/draft-store/draftStoreService');
+jest.mock('routes/guards/claimIssueTaskListGuard', () => ({
+  claimIssueTaskListGuard: jest.fn((req, res, next) => next()),
+}));
 
-const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
-const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
-
+const mockGetDraftClaim = getDraftClaim as jest.Mock;
+const mockUpdateDraftClaim = updateDraftClaim as jest.Mock;
 const mockGetCaseDataFromDraftStore = draftStoreService.getCaseDataFromStore as jest.Mock;
-const mockGetAirlines = civilServiceClient.getAirlines as jest.Mock;
+const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
+
+const createMockManagerResult = (claim: Claim): DraftClaimManagerResult => ({
+  claimResponse: {
+    id: '123',
+    case_data: claim as unknown as Claim,
+  } as unknown as CivilClaimResponse,
+  rawResponse: {
+    draftId: '123',
+    payload: claim,
+  } as unknown as DraftClaimManagerResult['rawResponse'],
+  createdAt: '2026-08-01T10:00:00.000Z',
+  updatedAt: '2026-08-01T11:00:00.000Z',
+  expiresAt: '2026-09-01T10:00:00.000Z',
+});
 
 describe('Flight details Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -32,32 +52,38 @@ describe('Flight details Controller', () => {
     nock(idamUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
-    app.locals.draftStoreClient = mockCivilClaim;
 
-    mockGetAirlines.mockImplementation(() => {
-      return [
-        {airline: 'airline 1', epimsID: '1'}, 
-        {airline: 'airline 2', epimsID: '2'},
-      ];
-    });
+    jest.spyOn(CivilServiceClient.prototype, 'getAirlines').mockResolvedValue([
+      {airline: 'airline 1', epimsID: '1'},
+      {airline: 'airline 2', epimsID: '2'},
+    ] as AirlineList[]);
+  });
+
+  beforeEach(() => {
+    jest.clearAllMocks();
   });
 
   describe('on GET', () => {
     it('should return flight details page', async () => {
-      mockGetCaseDataFromDraftStore.mockImplementation(async () => new Claim());
+      const mockClaim = new Claim();
+      mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
+      mockGetCaseDataFromDraftStore.mockResolvedValue(mockClaim);
+
       await request(app)
         .get(FLIGHT_DETAILS_URL)
-        .expect((res) => {
+        .expect((res: request.Response) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('PAGES.FLIGHT_DETAILS.FLIGHT_DETAILS'));
         });
     });
 
     it('should return http 500 when has error in the get method', async () => {
-      mockGetCaseDataFromDraftStore.mockImplementation(async () => {throw new Error(TestMessages.REDIS_FAILURE);});
+      mockGetDraftClaim.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
+      mockGetCaseDataFromDraftStore.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
+
       await request(app)
         .get(FLIGHT_DETAILS_URL)
-        .expect((res) => {
+        .expect((res: request.Response) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
@@ -73,20 +99,30 @@ describe('Flight details Controller', () => {
         month: '9',
         day: '29',
       };
-      mockGetCaseDataFromDraftStore.mockImplementation(async () => new Claim());
+      const mockClaim = new Claim();
+      mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
+      mockGetCaseDataFromDraftStore.mockResolvedValue(mockClaim);
+      mockUpdateDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
+      mockSaveDraftClaim.mockResolvedValue(undefined);
+
       await request(app)
         .post(FLIGHT_DETAILS_URL)
         .send(flightDetails)
-        .expect((res) => {
+        .expect((res: request.Response) => {
           expect(res.status).toBe(302);
           expect(res.header.location).toBe(CLAIM_DEFENDANT_COMPANY_DETAILS_URL);
         });
     });
+
     it('should return errors on empty inputs', async () => {
+      const mockClaim = new Claim();
+      mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
+      mockGetCaseDataFromDraftStore.mockResolvedValue(mockClaim);
+
       await request(app)
         .post(FLIGHT_DETAILS_URL)
         .send({})
-        .expect((res) => {
+        .expect((res: request.Response) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('ERRORS.FLIGHT_DETAILS.AIRLINE_REQUIRED'));
           expect(res.text).toContain(t('ERRORS.FLIGHT_DETAILS.FLIGHT_NUMBER_REQUIRED'));
@@ -95,12 +131,25 @@ describe('Flight details Controller', () => {
           expect(res.text).toContain(t('ERRORS.VALID_DAY'));
         });
     });
+
     it('should return http 500 when has error in the post method', async () => {
-      mockGetCaseDataFromDraftStore.mockImplementation(async () => {throw new Error(TestMessages.REDIS_FAILURE);});
+      const flightDetails = {
+        airline: 'Ryanair',
+        flightNumber: '121314',
+        year: '2023',
+        month: '9',
+        day: '29',
+      };
+
+      mockGetDraftClaim.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
+      mockGetCaseDataFromDraftStore.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
+      mockUpdateDraftClaim.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
+      mockSaveDraftClaim.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
+
       await request(app)
         .post(FLIGHT_DETAILS_URL)
-        .send({})
-        .expect((res) => {
+        .send(flightDetails)
+        .expect((res: request.Response) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
