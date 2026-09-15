@@ -47,6 +47,7 @@ timelineController.post(CLAIM_TIMELINE_URL, (async (req: AppRequest, res: Respon
       ];
       res.render(timelineViewPath, {timelineForm, dates, pageTitle});
     } else {
+      timelineForm.model.filterOutEmptyRows();
       await saveClaimDetails(req as AppRequest, timelineForm.model, timelineClaimDetailsProperty);
       res.redirect(CLAIM_EVIDENCE_URL);
     }
