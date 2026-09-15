@@ -161,9 +161,113 @@ run_reduced_stack_functional_tests() {
   exit "${browser_status:-${wiremock_status:-0}}"
 }
 
+assert_thin_full_stack_results() {
+  local report_dir="${THIN_JUNIT_REPORT_DIR:-test-results/thin-full-stack}"
+  local aggregate_report="${THIN_JUNIT_REPORT:-test-results/thin-full-stack/result.xml}"
+  local allure_dir="${THIN_ALLURE_RESULTS_DIR:-test-results/thin-full-stack/allure-results}"
+
+  node - "$report_dir" "$aggregate_report" "$allure_dir" <<'NODE'
+    const fs = require('fs');
+    const path = require('path');
+    const {XMLBuilder, XMLParser} = require('fast-xml-parser');
+
+    const [reportDir, aggregateReport, allureDir] = process.argv.slice(2);
+    const expectedTests = 8;
+
+    if (!fs.existsSync(reportDir)) {
+      throw new Error(`Thin full-stack JUnit report directory is missing: ${reportDir}`);
+    }
+
+    const reportFiles = fs.readdirSync(reportDir)
+      .filter((file) => file.startsWith('result-') && file.endsWith('.xml'))
+      .map((file) => path.join(reportDir, file));
+    if (reportFiles.length === 0) {
+      throw new Error(`Thin full-stack JUnit reports are missing: ${reportDir}`);
+    }
+
+    const parser = new XMLParser({ignoreAttributes: false, attributeNamePrefix: ''});
+    const summaries = reportFiles.map((file) => parser.parse(fs.readFileSync(file, 'utf8')).testsuites);
+    const suites = summaries.flatMap((summary) => {
+      const value = summary?.testsuite;
+      return value ? (Array.isArray(value) ? value : [value]) : [];
+    }).map((suite) => {
+      const value = suite?.testcase;
+      const testcases = value ? (Array.isArray(value) ? value : [value]) : [];
+      return {
+        ...suite,
+        tests: testcases.length,
+        failures: testcases.filter((testcase) => testcase.failure !== undefined).length,
+        errors: testcases.filter((testcase) => testcase.error !== undefined).length,
+        skipped: testcases.filter((testcase) => testcase.skipped !== undefined).length,
+        testcase: testcases,
+      };
+    }).filter((suite) => suite.tests > 0);
+    const total = (field) => suites.reduce((sum, suite) => sum + Number(suite[field] || 0), 0);
+    const tests = total('tests');
+    const failures = total('failures');
+    const errors = total('errors');
+    const skipped = total('skipped');
+
+    if (tests !== expectedTests || failures !== 0 || errors !== 0 || skipped !== 0) {
+      throw new Error(
+        `Thin full-stack JUnit attestation failed: expected ${expectedTests} tests, ` +
+        `found ${tests} with ${failures} failures, ${errors} errors and ${skipped} skipped`,
+      );
+    }
+
+    const aggregate = {
+      testsuites: {
+        name: 'Thin full-stack tests',
+        tests,
+        failures,
+        errors,
+        skipped,
+        testsuite: suites,
+      },
+    };
+    fs.writeFileSync(
+      aggregateReport,
+      new XMLBuilder({ignoreAttributes: false, attributeNamePrefix: '', format: true}).build(aggregate),
+    );
+
+    if (!fs.existsSync(allureDir)) {
+      throw new Error(`Thin full-stack Allure results directory is missing: ${allureDir}`);
+    }
+
+    const resultFiles = fs.readdirSync(allureDir).filter((file) => file.endsWith('-result.json'));
+    if (resultFiles.length !== expectedTests) {
+      throw new Error(
+        `Thin full-stack Allure attestation failed: expected ${expectedTests} result files, ` +
+        `found ${resultFiles.length}`,
+      );
+    }
+
+    const nonPassingResults = resultFiles
+      .map((file) => ({file, result: JSON.parse(fs.readFileSync(path.join(allureDir, file), 'utf8'))}))
+      .filter(({result}) => result.status !== 'passed');
+    if (nonPassingResults.length > 0) {
+      throw new Error(
+        `Thin full-stack Allure attestation found non-passing results: ${nonPassingResults
+          .map(({file, result}) => `${file} (${result.status || 'missing status'})`)
+          .join(', ')}`,
+      );
+    }
+
+    console.log(`Thin full-stack attestation passed: ${expectedTests} tests executed and passed`);
+NODE
+}
+
 #MAIN SCRIPT
 TEST_FILES_REPORT="test-results/functional/testFilesReport.json"
 PREV_TEST_FILES_REPORT="test-results/functional/prevTestFilesReport.json"
+
+if [[ "${THIN_FULL_STACK_TESTS:-false}" = "true" ]]; then
+  echo "Running the thin full-stack suite against the standard full preview deployment"
+  yarn playwright install chromium
+  yarn test:thin-full-stack || thin_test_status=$?
+  assert_thin_full_stack_results || thin_attestation_status=$?
+  exit "${thin_test_status:-${thin_attestation_status:-0}}"
+fi
 
 if [[ "${REDUCED_STACK_TESTS:-false}" = "true" ]]; then
   run_reduced_stack_functional_tests

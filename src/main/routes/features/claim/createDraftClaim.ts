@@ -1,17 +1,42 @@
 import { AppRequest, AppSession } from 'common/models/AppRequest';
 import { NextFunction, Request, RequestHandler, Response, Router } from 'express';
-import { CLAIM_CHECK_ANSWERS_URL, TESTING_SUPPORT_URL } from 'routes/urls';
+import { BILINGUAL_LANGUAGE_PREFERENCE_URL, CLAIM_CHECK_ANSWERS_URL, TESTING_SUPPORT_URL } from 'routes/urls';
 import { saveDraftClaimToCache } from 'modules/draft-store/draftClaimCache';
 const createDraftViewPath = 'features/claim/create-draft';
 import jwt_decode from 'jwt-decode';
 import {isCarmEnabledForCase} from '../../../app/auth/launchdarkly/launchDarklyClient';
 import {Claim} from 'models/claim';
-import {createDraftClaimInStoreWithExpiryTime} from 'modules/draft-store/draftStoreService';
+import {createDraftClaimInStoreWithExpiryTime, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {CaseState} from 'common/form/models/claimDetails';
+import {PartyType} from 'common/models/partyType';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
+const RESPONSE_TEST_CLAIM_ID = '1111222233334444';
+
+const buildResponseTestClaim = (): Claim => Object.assign(new Claim(), {
+  legacyCaseReference: '1111-2222-3333-4444',
+  ccdState: CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT,
+  submittedDate: new Date().toISOString(),
+  respondent1ResponseDeadline: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000),
+  totalClaimAmount: 1000,
+  applicant1: {
+    type: PartyType.COMPANY,
+    partyDetails: {partyName: 'Test Inc'},
+  },
+  respondent1: {
+    type: PartyType.INDIVIDUAL,
+    partyDetails: {
+      partyName: 'Joe Defendant',
+      firstName: 'Joe',
+      lastName: 'Defendant',
+      primaryAddress: {},
+    },
+  },
+});
 
 interface IdTokenJwtPayload {
   uid: string;
@@ -37,6 +62,12 @@ createDraftClaimController.post(TESTING_SUPPORT_URL, (async (req: Request, res: 
   try {
     let userId = ((req.session) as AppSession)?.user?.id;
     const caseData = req.body?.caseData ? JSON.parse(req.body?.caseData) : undefined;
+
+    if (req.body?.draftType === 'response') {
+      const responseClaim = buildResponseTestClaim();
+      await saveDraftClaim(`${RESPONSE_TEST_CLAIM_ID}${userId}`, responseClaim, true, userId);
+      return res.redirect(constructResponseUrlWithIdParams(RESPONSE_TEST_CLAIM_ID, BILINGUAL_LANGUAGE_PREFERENCE_URL));
+    }
 
     if (req.body?.idToken) {
       const jwt: IdTokenJwtPayload = jwt_decode(req.body?.idToken);

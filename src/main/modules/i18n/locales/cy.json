@@ -1985,6 +1985,7 @@
       "COMPLETED_SECTIONS": "Rydych wedi cwblhau {{ completed }} allan o {{ total }} rhan",
       "COMPLETING_CLAIM": "Cwblhau eich hawliad",
       "CONSIDER_OPTIONS": "Ystyried opsiynau eraill",
+      "DRAFT_CLAIM_WARNING": "Mae'r hawliad wedi'i gadw fel drafft - cyflwynwch ef erbyn {{ date }} neu caiff ei ddileu",
       "PAGE_TITLE": "Gwneud hawliad am arian",
       "PAY_FEE": "Talu eich ffi hawlio",
       "PREPARE_CLAIM": "Paratoi eich hawliad",
@@ -2004,7 +2005,7 @@
         "THESE_DETAILS_ARE": "Bydd y manylion hyn yn cael eu rhannu gyda'r unigolyn, y busnes neu'r sefydliad yr ydych yn ei hawlio yn ei erbyn (y diffynnydd).",
         "TITLE": "Rhowch eich manylion",
         "TRADING": "Masnachu (dewisol)",
-        "YOUR_POSTAL_ADDRESS": "Eich cyfeiriad ar gyfer postio"
+        "YOUR_POSTAL_ADDRESS": "Eich cyfeiriad"
       },
       "CONTINUE_CLAIMING_INTEREST": {
         "PAGE_TITLE": "Parhau i hawlio llog",
@@ -2596,8 +2597,14 @@
       "DEADLINE": "Dyddiad cau",
       "DEFENDANT_NAME": "Enw'r diffynnydd",
       "DEFENDANT_TITLE": "Hawliadau a wnaed yn eich erbyn",
-      "DRAFT_CLAIM_NEXT_STEPS": "Parhau gyda'r hawliad",
+      "DRAFT_CLAIM_NEXT_STEPS": "Parhau â'r hawliad",
       "DRAFT_CLAIM_NUMBER": "Hawliad drafft",
+      "DRAFT_CLAIM_STATUS": "Cyflwynwch yr hawliad erbyn {{ date }} neu caiff yr hawliad ei ddileu",
+      "DRAFT_CLAIM_NOTIFICATION": {
+        "LINK": "Parhau â'r hawliad",
+        "MESSAGE": "Mae eich hawliad wedi'i gadw fel drafft - caiff ei ddileu ar {{ date }}.",
+        "TITLE": "Pwysig"
+      },
       "HEARINGS": {
         "ADD_TRIAL": "Add the trial arrangements",
         "CREATED": "Crëwyd ar ",
@@ -5280,8 +5287,8 @@
       "DETERMINATION_REQUEST": "Cais am Benderfyniad â Llaw",
       "TRANSLATED_DETERMINATION_REQUEST": "Cais am Benderfyniad â Llaw wedi’i Gyfieithu",
       "DRAFT_CLAIM": "Ffurflen hawlio drafft",
-      "FINAL_ORDER": "Cais am Orchymyn Terfynol",
-      "TRANSLATED_FINAL_ORDER": "Cais am Orchymyn Terfynol wedi’i Gyfieithu",
+      "FINAL_ORDER": "Gorchymyn y Barnwr",
+      "TRANSLATED_FINAL_ORDER": "Gorchymyn y Barnwr Wedi'i Gyfieithu",
       "PAGE_CAPTION": "Gorchmynion a rhybuddion gan y llys",
       "PAGE_TITLE": "Gweld gorchmynion a rhybuddion",
       "PARTICULARS_CLAIM": "Manylion yr hawliad",
@@ -5917,6 +5924,8 @@
     "VALID_HOUSING": "Disgrifiwch eich cartref",
     "VALID_INSTALMENT_AMOUNT": "Ni all swm y rhandaliad fod yn fwy na, neu'n hafal â'r swm hawlio",
     "VALID_INTEGER": "Rhowch rif, er enghraifft 3",
+    "VALID_INTEREST_AMOUNT": "Nodwch swm llog positif",
+    "VALID_INTEREST_RATE": "Nodwch gyfradd llog positif",
     "VALID_INTEREST_TYPE_OPTION": "Dewiswch sut ydych chi am hawlio llog",
     "VALID_MONTH": "Rhowch fis dilys",
     "VALID_NAME": "Rhowch enw",

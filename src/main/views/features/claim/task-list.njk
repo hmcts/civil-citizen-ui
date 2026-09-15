@@ -1,5 +1,6 @@
 {% extends "claim-details-tpl.njk" %}
 {% from "../../macro/page-title.njk" import setPageTitle %}
+{% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
 
 {% block pageTitle %}
   {{ setPageTitle(t, 'PAGES.CLAIM_TASK_LIST.PAGE_TITLE') }}
@@ -13,6 +14,12 @@
           <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
             <h1 class="govuk-fieldset__heading govuk-!-margin-bottom-7">{{ t('PAGES.CLAIM_TASK_LIST.PAGE_TITLE') }}</h1>
           </legend>
+          {% if draftClaimDeletionDate %}
+            {{ govukWarningText({
+              text: t('PAGES.CLAIM_TASK_LIST.DRAFT_CLAIM_WARNING', {date: draftClaimDeletionDate}),
+              iconFallbackText: "Warning"
+            }) }}
+          {% endif %}
         </div>
         <div class="govuk-grid-column-two-thirds govuk-!-margin-top-0">
           <h2 class="govuk-heading-s govuk-!-margin-bottom-2">{{ title }}</h2>

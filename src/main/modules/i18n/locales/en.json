@@ -1987,6 +1987,7 @@
       "COMPLETED_SECTIONS": "You have completed {{ completed }} of {{ total }} sections",
       "COMPLETING_CLAIM": "Completing your claim",
       "CONSIDER_OPTIONS": "Consider other options",
+      "DRAFT_CLAIM_WARNING": "Claim is saved as a draft - submit it by {{ date }} or it will be deleted",
       "PAGE_TITLE": "Make a money claim",
       "PAY_FEE": "Pay your claim fee",
       "PREPARE_CLAIM": "Prepare your claim",
@@ -2006,7 +2007,7 @@
         "THESE_DETAILS_ARE": "These details are shared with the person, business or organisation you are claiming from (the defendant).",
         "TITLE": "Enter your details",
         "TRADING": "Trading (optional)",
-        "YOUR_POSTAL_ADDRESS": "Your postal address"
+        "YOUR_POSTAL_ADDRESS": "Your address"
       },
       "CONTINUE_CLAIMING_INTEREST": {
         "PAGE_TITLE": "Continue claiming interest",
@@ -2600,6 +2601,12 @@
       "DEFENDANT_TITLE": "Claims made against you",
       "DRAFT_CLAIM_NEXT_STEPS": "Continue with claim",
       "DRAFT_CLAIM_NUMBER": "Draft claim",
+      "DRAFT_CLAIM_STATUS": "Submit by {{ date }} or claim will be deleted",
+      "DRAFT_CLAIM_NOTIFICATION": {
+        "LINK": "Continue with claim",
+        "MESSAGE": "Your claim is saved as a draft - it will be deleted on {{ date }}.",
+        "TITLE": "Important"
+      },
       "HEARINGS": {
         "ADD_TRIAL": "Add the trial arrangements",
         "CREATED": "Created ",
@@ -5282,8 +5289,8 @@
       "DETERMINATION_REQUEST": "Manual Determination request",
       "TRANSLATED_DETERMINATION_REQUEST": "Translated Manual Determination Request",
       "DRAFT_CLAIM": "Draft claim form",
-      "FINAL_ORDER": "Final Order Request",
-      "TRANSLATED_FINAL_ORDER": "Translated Final Order Request",
+      "FINAL_ORDER": "Judge's Order",
+      "TRANSLATED_FINAL_ORDER": "Translated Judge's Order",
       "PAGE_CAPTION": "Orders and notices from the court",
       "PAGE_TITLE": "View orders and notices",
       "PARTICULARS_CLAIM": "Particulars of claim",
@@ -5918,6 +5925,8 @@
     "VALID_HOUSING": "Describe your housing",
     "VALID_INSTALMENT_AMOUNT": "Instalment amount cannot be more than, or equal to the claim amount",
     "VALID_INTEGER": "Enter a numeric, for example 3",
+    "VALID_INTEREST_AMOUNT": "Enter a positive interest amount",
+    "VALID_INTEREST_RATE": "Enter a positive interest rate",
     "VALID_INTEREST_TYPE_OPTION": "Select how you want to claim interest",
     "VALID_MONTH": "Enter a valid month",
     "VALID_NAME": "Enter name",

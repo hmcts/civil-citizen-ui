@@ -65,7 +65,7 @@ Scenario('Defendant links a LiP claim using claim number and security code throu
   }
   await CitizenDashboardSteps.VerifyClaimOnDashboard(claimNumber);
   await completeFullAdmitPayImmediatelyJourney(I, api, claimRef, claimNumber, defendantUser);
-});
+}).tag('@thin-full-stack');
 
 async function createScenarioUsers() {
   const uniqueId = `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
