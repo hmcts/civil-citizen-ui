@@ -17,7 +17,6 @@ import {YesNo, YesNoUpperCamelCase} from 'form/models/yesNo';
 import {DefendantTimeline} from 'form/models/timeLineOfEvents/defendantTimeline';
 import {WhyDoYouDisagree} from 'form/models/admission/partialAdmission/whyDoYouDisagree';
 import {DefendantEvidence} from 'models/evidence/evidence';
-import {toCCDUnavailableDates} from 'services/translation/response/convertToCCDSmallClaimHearing';
 import {UnavailableDateType} from 'models/directionsQuestionnaire/hearing/unavailableDates';
 import {CcdStatementOfTruth} from 'models/ccdResponse/ccdStatementOfTruth';
 
@@ -191,7 +190,23 @@ describe('translate response to ccd version', () => {
 
   });
 
-  it('should translate mediation option to CCD with carm fields with hasTelephoneMeditationAccessed true and hasAvailabilityMediationFinished true and all option as no', () => {
+  it('should not translate mediation unavailable dates when no dates were provided', () => {
+    //Given
+    const claim = createFullAdmitClaim();
+    claim.mediationCarm = {
+      hasUnavailabilityNextThreeMonths: {
+        option: YesNo.YES,
+      },
+    };
+
+    //When
+    const ccdResponse = translateDraftResponseToCCD(claim, false);
+
+    //Then
+    expect(ccdResponse.respondent1LiPResponseCarm.unavailableDatesForMediation).toBeUndefined();
+  });
+
+  it('should translate Redis mediation date ranges to CCD date-only values', () => {
     //Given
     const claim = createFullAdmitClaim();
     claim.mediationCarm = {
@@ -219,17 +234,21 @@ describe('translate response to ccd version', () => {
       unavailableDatesForMediation: {
         items: [
           {
-            date: new Date('2024-01-01T00:00:00.000Z'),
-            from: new Date('2024-01-01T00:00:00.000Z'),
-            until: new Date('2024-01-02T00:00:00.000Z'),
-            unavailableDateType: UnavailableDateType.SINGLE_DATE,
+            type: UnavailableDateType.LONGER_PERIOD,
+            from: '2026-10-11T00:00:00.000Z' as unknown as Date,
+            until: '2026-10-25T00:00:00.000Z' as unknown as Date,
+            startYear: 2026,
+            startMonth: 10,
+            startDay: 11,
+            endYear: 2026,
+            endMonth: 10,
+            endDay: 25,
           },
         ],
       },
       hasTelephoneMeditationAccessed: true,
       hasAvailabilityMediationFinished: true,
     };
-    const dateExpected = toCCDUnavailableDates(claim.mediationCarm.unavailableDatesForMediation.items);
     //When
     const ccdResponse = translateDraftResponseToCCD(claim, false);
     //Then
@@ -239,10 +258,15 @@ describe('translate response to ccd version', () => {
     expect(claim.mediationCarm.alternativeMediationContactPerson.alternativeContactPerson).toBe(ccdResponse.respondent1LiPResponseCarm.alternativeMediationContactPerson);
     expect(claim.mediationCarm.alternativeMediationTelephone.alternativeTelephone).toBe(ccdResponse.respondent1LiPResponseCarm.alternativeMediationTelephone);
     expect(claim.mediationCarm.alternativeMediationEmail.alternativeEmailAddress).toBe(ccdResponse.respondent1LiPResponseCarm.alternativeMediationEmail);
-    expect(dateExpected[0].value.toDate).toBe(ccdResponse.respondent1LiPResponseCarm.unavailableDatesForMediation[0].value.toDate);
-    expect(dateExpected[0].value.fromDate).toBe(ccdResponse.respondent1LiPResponseCarm.unavailableDatesForMediation[0].value.fromDate);
-    expect(dateExpected[0].value.unavailableDateType).toBe(ccdResponse.respondent1LiPResponseCarm.unavailableDatesForMediation[0].value.unavailableDateType);
-    expect('defendant').toBe(ccdResponse.respondent1LiPResponseCarm.unavailableDatesForMediation[0].value.who);
+    expect(ccdResponse.respondent1LiPResponseCarm.unavailableDatesForMediation).toEqual([{
+      value: {
+        who: 'defendant',
+        date: '2026-10-11',
+        fromDate: '2026-10-11',
+        toDate: '2026-10-25',
+        unavailableDateType: 'DATE_RANGE',
+      },
+    }]);
 
   });
 

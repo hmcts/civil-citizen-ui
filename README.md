@@ -83,6 +83,7 @@ We use [ESLint](https://github.com/typescript-eslint/typescript-eslint)
 alongside [stylelint](https://github.com/stylelint/stylelint)
 
 Running the linting with auto fix:
+
 ```bash
 $ yarn lint --fix
 ```
