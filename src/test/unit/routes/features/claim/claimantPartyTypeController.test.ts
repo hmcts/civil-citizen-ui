@@ -12,37 +12,17 @@ import {
   CLAIMANT_SOLE_TRADER_DETAILS_URL,
 } from 'routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
-import {Claim} from 'models/claim';
-import {getDraftClaim, updateDraftClaim} from 'modules/draft-store/draftStoreManagerService';
-import * as draftStoreService from 'modules/draft-store/draftStoreService';
-import {CivilClaimResponse} from 'models/civilClaimResponse';
-import {DraftClaimManagerResult} from 'models/draft/draftClaim';
+import {Party} from 'models/party';
+import {getClaimantInformation, saveClaimantProperty} from 'services/features/claim/yourDetails/claimantDetailsService';
 
 jest.mock('../../../../../main/modules/oidc');
-jest.mock('modules/draft-store/draftStoreManagerService');
-jest.mock('modules/draft-store/draftStoreService');
+jest.mock('services/features/claim/yourDetails/claimantDetailsService');
 jest.mock('routes/guards/claimIssueTaskListGuard', () => ({
   claimIssueTaskListGuard: jest.fn((req, res, next) => next()),
 }));
 
-const mockGetDraftClaim = getDraftClaim as jest.Mock;
-const mockUpdateDraftClaim = updateDraftClaim as jest.Mock;
-const mockGetCaseDataFromStore = draftStoreService.getCaseDataFromStore as jest.Mock;
-const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
-
-const createMockManagerResult = (claim: Claim): DraftClaimManagerResult => ({
-  claimResponse: {
-    id: '123',
-    case_data: claim as unknown as Claim,
-  } as unknown as CivilClaimResponse,
-  rawResponse: {
-    draftId: '123',
-    payload: claim,
-  } as unknown as DraftClaimManagerResult['rawResponse'],
-  createdAt: '2026-08-01T10:00:00.000Z',
-  updatedAt: '2026-08-01T11:00:00.000Z',
-  expiresAt: '2026-09-01T10:00:00.000Z',
-});
+const mockGetClaimantInformation = getClaimantInformation as jest.Mock;
+const mockSaveClaimantProperty = saveClaimantProperty as jest.Mock;
 
 describe('Claim Party Type Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -57,22 +37,20 @@ describe('Claim Party Type Controller', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
+    mockGetClaimantInformation.mockResolvedValue(new Party());
+    mockSaveClaimantProperty.mockResolvedValue(undefined);
   });
 
   describe('on GET', () => {
     it('should render claimant party type selection page successfully', async () => {
-      const mockClaim = new Claim();
-      mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
-
       const res = await request(app).get(CLAIMANT_PARTY_TYPE_SELECTION_URL);
       expect(res.status).toBe(200);
       expect(res.text).toContain(t('PAGES.CLAIMANT_PARTY_TYPE_SELECTION.TITLE'));
+      expect(mockGetClaimantInformation).toHaveBeenCalledWith(expect.any(Object));
     });
 
     it('should return 500 status code when error occurs', async () => {
-      mockGetDraftClaim.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
-      mockGetCaseDataFromStore.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
+      mockGetClaimantInformation.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
 
       const res = await request(app).get(CLAIMANT_PARTY_TYPE_SELECTION_URL);
       expect(res.status).toBe(500);
@@ -82,37 +60,27 @@ describe('Claim Party Type Controller', () => {
 
   describe('on POST', () => {
     it('should render error message when claiming as is not selected', async () => {
-      const mockClaim = new Claim();
-      mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
-
       const res = await request(app).post(CLAIMANT_PARTY_TYPE_SELECTION_URL);
       expect(res.status).toBe(200);
       expect(res.text).toContain('There was a problem');
       expect(res.text).toContain(TestMessages.CLAIMANT_PARTY_TYPE_REQUIRED);
+      expect(mockSaveClaimantProperty).not.toHaveBeenCalled();
     });
 
     it('should render claimant individual details page when radio "An individual" is selected', async () => {
-      const mockClaim = new Claim();
-      mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
-      mockUpdateDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockSaveDraftClaim.mockResolvedValue(undefined);
-
       const res = await request(app)
         .post(CLAIMANT_PARTY_TYPE_SELECTION_URL)
         .send({'option': PartyType.INDIVIDUAL});
       expect(res.status).toBe(302);
       expect(res.header.location).toBe(CLAIMANT_INDIVIDUAL_DETAILS_URL);
+      expect(mockSaveClaimantProperty).toHaveBeenCalledWith(
+        expect.any(Object),
+        'type',
+        PartyType.INDIVIDUAL,
+      );
     });
 
     it('should render claimant sole trader details page when radio "A sole trader or self-employed person" is selected', async () => {
-      const mockClaim = new Claim();
-      mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
-      mockUpdateDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockSaveDraftClaim.mockResolvedValue(undefined);
-
       const res = await request(app)
         .post(CLAIMANT_PARTY_TYPE_SELECTION_URL)
         .send({'option': PartyType.SOLE_TRADER});
@@ -121,12 +89,6 @@ describe('Claim Party Type Controller', () => {
     });
 
     it('should render claimant company details page when radio "A limited company" is selected', async () => {
-      const mockClaim = new Claim();
-      mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
-      mockUpdateDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockSaveDraftClaim.mockResolvedValue(undefined);
-
       const res = await request(app)
         .post(CLAIMANT_PARTY_TYPE_SELECTION_URL)
         .send({'option': PartyType.COMPANY});
@@ -135,12 +97,6 @@ describe('Claim Party Type Controller', () => {
     });
 
     it('should render claimant organisation details page when radio "Another type of organisation" is selected', async () => {
-      const mockClaim = new Claim();
-      mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
-      mockUpdateDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockSaveDraftClaim.mockResolvedValue(undefined);
-
       const res = await request(app)
         .post(CLAIMANT_PARTY_TYPE_SELECTION_URL)
         .send({'option': PartyType.ORGANISATION});
@@ -149,10 +105,7 @@ describe('Claim Party Type Controller', () => {
     });
 
     it('should return http 500 when has error in the post method', async () => {
-      mockGetDraftClaim.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
-      mockGetCaseDataFromStore.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
-      mockUpdateDraftClaim.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
-      mockSaveDraftClaim.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
+      mockSaveClaimantProperty.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
 
       const res = await request(app)
         .post(CLAIMANT_PARTY_TYPE_SELECTION_URL)

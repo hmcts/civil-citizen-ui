@@ -4,27 +4,29 @@ import {CLAIM_EVIDENCE_URL, CLAIM_TIMELINE_URL} from 'routes/urls';
 import {ClaimantTimeline} from 'form/models/timeLineOfEvents/claimantTimeline';
 import {GenericForm} from 'form/models/genericForm';
 import {getDateInThePast} from 'common/utils/dateUtils';
-import {getClaimDetails} from 'services/features/claim/details/claimDetailsService';
+import {getClaimDetails, saveClaimDetails} from 'services/features/claim/details/claimDetailsService';
 import {
   getTimeline,
-  saveTimeline,
 } from 'services/features/claim/yourDetails/timelineService';
+import {ClaimDetails} from 'form/models/claim/details/claimDetails';
 
 const timelineController = Router();
 const timelineViewPath = 'features/claim/yourDetails/timeline';
 const pageTitle= 'PAGES.TIMELINE.TITLE';
+const timelineClaimDetailsProperty = 'timeline';
 
 timelineController.get(CLAIM_TIMELINE_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const userId = req.session?.user?.id;
-    const form = new GenericForm(getTimeline(await getClaimDetails(userId)));
+    const claimDetails: ClaimDetails = await getClaimDetails(req);
+    const timeline: ClaimantTimeline = getTimeline(claimDetails);
+    const timelineForm = new GenericForm(timeline);
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const dates = [
       getDateInThePast(lang, 90),
       getDateInThePast(lang, 88),
       getDateInThePast(lang, 60),
     ];
-    res.render(timelineViewPath, {form, dates, pageTitle });
+    res.render(timelineViewPath, {timelineForm, dates, pageTitle });
   } catch (error) {
     next(error);
   }
@@ -33,19 +35,20 @@ timelineController.get(CLAIM_TIMELINE_URL, (async (req: AppRequest, res: Respons
 timelineController.post(CLAIM_TIMELINE_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const body = Object.assign(req.body);
-    const form = new GenericForm(ClaimantTimeline.buildPopulatedForm(body.rows));
-    form.validateSync();
+    const timelineForm = new GenericForm(ClaimantTimeline.buildPopulatedForm(body.rows));
+    timelineForm.validateSync();
 
-    if (form.hasErrors()) {
+    if (timelineForm.hasErrors()) {
       const lang = req.query.lang ? req.query.lang : req.cookies.lang;
       const dates = [
         getDateInThePast(lang, 90),
         getDateInThePast(lang, 88),
         getDateInThePast(lang, 60),
       ];
-      res.render(timelineViewPath, {form, dates, pageTitle});
+      res.render(timelineViewPath, {timelineForm, dates, pageTitle});
     } else {
-      await saveTimeline(req.session?.user?.id, form.model);
+      timelineForm.model.filterOutEmptyRows();
+      await saveClaimDetails(req as AppRequest, timelineForm.model, timelineClaimDetailsProperty);
       res.redirect(CLAIM_EVIDENCE_URL);
     }
   } catch (error) {
