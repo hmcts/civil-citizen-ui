@@ -10,6 +10,8 @@ import {EvidenceType} from 'models/evidence/evidenceType';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {CivilClaimResponse} from 'models/civilClaimResponse';
 import {DraftClaimManagerResult} from 'models/draft/draftClaim';
+import {ClaimantTimeline} from 'form/models/timeLineOfEvents/claimantTimeline';
+import {TimelineRow} from 'form/models/timeLineOfEvents/timelineRow';
 
 jest.mock('modules/draft-store/draftStoreManagerService');
 
@@ -53,7 +55,7 @@ describe('Claim Details Service', () => {
       expect(claimDetails?.reason).toBeUndefined();
     });
 
-    it('should return claimDetails object with reason', async () => {
+    it('should return claimDetails object with reason when previously added', async () => {
       const claim = new Claim();
       claim.claimDetails = new ClaimDetails();
       claim.claimDetails.reason = new Reason('Test reason');
@@ -62,6 +64,18 @@ describe('Claim Details Service', () => {
       const claimDetails = await getClaimDetails(mockReq);
 
       expect(claimDetails?.reason?.text).toBe('Test reason');
+    });
+
+    it('should return claimDetails object with timeline when previously added', async () => {
+      const rows = [new TimelineRow()];
+      const claim = new Claim();
+      claim.claimDetails = new ClaimDetails();
+      claim.claimDetails.timeline = new ClaimantTimeline(rows);
+      mockGetDraftClaim.mockResolvedValue(createMockManagerResult(claim));
+
+      const claimDetails = await getClaimDetails(mockReq);
+
+      expect(claimDetails?.timeline.rows.length).toBe(1);
     });
 
     it('should return empty ClaimDetails when no draft exists', async () => {
