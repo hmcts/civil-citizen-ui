@@ -90,6 +90,66 @@ export const uploadSelectedFile = async (req: AppRequest, summarySection: Summar
   }
 };
 
+/** Spike helper: upload one file and return MOJ MultiFileUpload AJAX response payload. */
+export const uploadSelectedFileForAjax = async (req: AppRequest): Promise<{
+  success?: { messageText: string; messageHtml: string };
+  error?: { message: string };
+  file?: { filename: string; originalname: string };
+}> => {
+  try {
+    const uploadDocument = new UploadGAFiles();
+    const redisKey = generateRedisKey(req);
+    const fileUpload = TypeOfDocumentSectionMapper.mapToSingleFile(req);
+    if (!fileUpload) {
+      return { error: { message: t('ERRORS.GENERAL_APPLICATION.UPLOAD_ONE_FILE') } };
+    }
+    uploadDocument.fileUpload = fileUpload;
+    const form = new GenericForm(uploadDocument);
+    form.validateSync();
+    delete uploadDocument.fileUpload;
+    if (form.hasErrors()) {
+      const errors = translateErrors(form.getAllErrors(), t);
+      return { error: { message: errors[0]?.text || t('ERRORS.FILE_UPLOAD_FAILED') } };
+    }
+    uploadDocument.caseDocument = await civilServiceClientForDocRetrieve.uploadDocument(req, fileUpload);
+    await saveDocumentsToUploaded(redisKey, uploadDocument);
+    const documentName = uploadDocument.caseDocument.documentName;
+    return {
+      success: {
+        messageText: documentName,
+        messageHtml: documentName,
+      },
+      file: {
+        filename: documentName,
+        originalname: documentName,
+      },
+    };
+  } catch (error) {
+    logger.error(error);
+    return { error: { message: t('ERRORS.FILE_UPLOAD_FAILED') } };
+  }
+};
+
+export const removeSelectedDocumentByName = async (redisKey: string, documentName: string): Promise<boolean> => {
+  try {
+    const claim = await getCaseDataFromStore(redisKey, true);
+    const documents = claim?.generalApplication?.uploadEvidenceForApplication;
+    if (!documents?.length) {
+      return false;
+    }
+    const index = documents.findIndex((doc) => doc.caseDocument?.documentName === documentName);
+    if (index < 0) {
+      return false;
+    }
+    documents.splice(index, 1);
+    await saveDraftClaim(redisKey, claim);
+    return true;
+  } catch (error) {
+    logger.error(error);
+    throw error;
+  }
+};
+
 export const handleMulterError = (req: AppRequest, fileUploadSource?: string): boolean => {
   if (!(req as any).multerError || req.body?.action !== 'uploadButton') {
     return false;
