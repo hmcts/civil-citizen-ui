@@ -45,17 +45,21 @@ These guards do not invoke a CUI-facing business downstream service, so the mock
 
 ## DTSCCI-6156: create-claim party variants
 
-The five existing create-claim variants keep their scenario bodies, helper calls and assertions unchanged. Their existing functional-group tags select them in the baseline run; `@mocked-functional` is internal routing metadata that moves those selected scenarios into the mocked bucket only when `pr-values:optimisedTests` is active. It does not add or remove scenarios from the baseline selection.
+The five party variants (`CompanyVsIndividual_tests.js`, `CompanyVsOrg__tests.js`,
+`IndividualvsCompany_tests.js`, `OrgVsSoleTrader_tests.js` and
+`SoleTraderVsIndividual_tests.js`) are outside the pre-epic default PR selection.
+Their original `@ui-create-claim` selection remains available, but their mocked
+routing tags have been removed. They are not completed PR migration work.
+Scenario bodies, helper calls and assertions remain unchanged.
 
-| Dual-mode source | Assertion parity |
-| --- | --- |
-| `CompanyVsIndividual_tests.js` | Same scenario and assertions in both modes |
-| `CompanyVsOrg__tests.js` | Same scenario and assertions in both modes |
-| `IndividualvsCompany_tests.js` | Same scenario and assertions in both modes |
-| `OrgVsSoleTrader_tests.js` | Same scenario and assertions in both modes |
-| `SoleTraderVsIndividual_tests.js` | Same scenario and assertions in both modes |
-
-Only the downstream deployment and responses may vary between the paired executions. A mapping or thin-client substitute must support the existing scenario contract; it must not remove, shorten or replace a functional assertion. If an assertion genuinely requires provider-side processing that cannot be represented by the approved test double, the unchanged scenario remains a thin-full-stack test until that boundary is explicitly resolved.
+The default PR baseline contains 14 active scenarios and five existing skips.
+Currently zero of those active scenarios is mocked: six are classified thin-client
+and eight residual, all using real services. Each subsequent PR migration batch
+must take scenarios from that baseline without expanding its selection. Wider
+nightly and explicitly selected groups need their own baseline and execution
+evidence before migration is counted. The classification inventory below describes
+candidates across the wider suite, not approved default PR migration scope or
+completed migration. See [baseline evidence](functional-test-parity-review.md).
 
 The individual-versus-company flight-delay branch consumes `GET /airlines`. This low-risk read-only lookup is protected by focused client/controller coverage plus an exact-path WireMock mapping, a minimal deterministic fixture, a positive mapping check and an unmatched incorrect-path check. No provider workflow or state transition is claimed.
 

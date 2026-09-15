@@ -15,7 +15,9 @@ the baseline; this epic did not remove those variants.
 Two files were added after the baseline: the supplementary mocked create-claim
 probe and the defendant-linking scenarios introduced by DTSCCI-5974. They do
 not replace baseline scenarios. The probe has no ordinary pipeline selection
-tag; the defendant-linking file retains its current selection and skips.
+tag. The defendant-linking scenarios are explicitly selectable through
+`@ui-defendant-linking`; their added PR tag has been removed to restore the
+pre-epic default selection. Their bodies and existing skip remain unchanged.
 
 Standard execution retains normal downstream configuration, existing selection
 and previous-failure rerun behaviour. Preview startup resource/probe adjustments
@@ -24,15 +26,31 @@ Mock-specific setup and routing remain gated by the router/e2e configuration.
 
 ## Paired verification
 
-Use `pr_ft_civil-citizen-pr`, `pr_ft_ui-create-claim` and `runAllFunctionalTests`
-for both runs. Toggle only `pr-values:optimisedTests`. This exercises the normal
-PR selection plus all five migrated create-claim variants without changing
-the ordinary default selection.
+Use the ordinary PR selection with no `pr_ft_*` or `runAllFunctionalTests`
+labels. Toggle only `pr-values:optimisedTests`. Do not broaden the selection to
+make migrated scenarios appear in this comparison.
 
-Codecept's loader currently selects 26 scenarios: 20 active and six existing
-skips. The active partition is five mocked, seven thin-client and eight residual.
-Thin-client denotes the existing `@thin-full-stack` classification; these
-scenarios still use the full real preview stack during this transitional phase.
+Codecept's loader was run against an isolated pre-epic source snapshot and the
+current branch using `@civil-citizen-pr`. The baseline selects 19 scenarios:
+14 active and five existing skips. After removing the epic-added defendant-linking
+PR tag, the branch selects the same scenario identities and skip states, ignoring
+only internal routing tags. The active partition is zero mocked, six thin-client
+and eight residual. All 14 active tests still use real downstream services.
+
+The five create-claim party variants have only the existing `@ui-create-claim`
+selection tag in the pre-epic source. They are outside the default PR baseline;
+their mocked routing tags have been removed. Their bodies and assertions remain
+unchanged, and explicit group selection still runs them against real services.
+Payment-authentication and response-validation mocked scenarios belong to the
+nightly selection, not the default PR baseline. The added mocked create-claim
+probe is supplementary. None counts as default PR migration progress.
+
+A migration batch must identify scenarios already selected by the pipeline it
+optimises. Existing optional groups and nightly coverage must be assessed against
+their own pre-epic selections; absence from the PR default does not prove a test
+has never been run. Default PR mocked migration coverage is currently 0/14.
+Thin-client denotes the existing `@thin-full-stack` classification and does not
+represent migration off real services.
 
 `execution-selection.json` records the revision, baseline expression, identities,
 bucket ownership and pre-existing skips. `execution-results.json` reconciles
@@ -74,6 +92,6 @@ not replace, the outstanding paired Jenkins evidence.
 The next local variant reaches a pre-existing shared assertion mismatch in
 `citizenFeatures/GA/pages/applicationType.js`: it expects the long "Ask the court
 to change something on your case" heading, while the application template uses
-"Make an application" (unchanged since 2024). The assertion is preserved pending
-explicit approval to correct its expected text in both modes. No production
-content change is proposed.
+"Make an application" (unchanged since 2024). The assertion remains unchanged and is outside this PR-baseline migration.
+Its failure was reproduced locally, not on master. No production content change
+is proposed. Accessibility provisioning is tracked separately in DTSCCI-6415.
