@@ -5,8 +5,9 @@ import {app} from '../../../../../../main/app';
 import {CLAIM_EVIDENCE_URL, CLAIM_TIMELINE_URL} from 'routes/urls';
 import {mockCivilClaim, mockNoStatementOfMeans} from '../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import {getClaimDetails} from 'services/features/claim/details/claimDetailsService';
+import {getClaimDetails, saveClaimDetails} from 'services/features/claim/details/claimDetailsService';
 import {ClaimDetails} from 'form/models/claim/details/claimDetails';
+import {ClaimantTimeline} from 'form/models/timeLineOfEvents/claimantTimeline';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -18,6 +19,7 @@ jest.mock('routes/guards/claimIssueTaskListGuard', () => ({
 }));
 
 const mockGetClaimDetails = getClaimDetails as jest.Mock;
+const mockSaveClaimDetails = saveClaimDetails as jest.Mock;
 
 describe('Claimant Timeline Controller', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -29,9 +31,14 @@ describe('Claimant Timeline Controller', () => {
       .reply(200, {id_token: citizenRoleToken});
   });
 
+  beforeEach(() => {
+    jest.clearAllMocks();
+    mockGetClaimDetails.mockResolvedValue(new ClaimDetails());
+    mockSaveClaimDetails.mockResolvedValue(undefined);
+  });
+
   describe('on GET', () => {
     it('should render timeline page', async () => {
-      mockGetClaimDetails.mockResolvedValue(new ClaimDetails());
       await request(app).get(CLAIM_TIMELINE_URL).expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain('Timeline of events');
@@ -76,6 +83,11 @@ describe('Claimant Timeline Controller', () => {
       await request(app).post(CLAIM_TIMELINE_URL).send({rows: mockData}).expect((res) => {
         expect(res.status).toBe(302);
         expect(res.header.location).toBe(CLAIM_EVIDENCE_URL);
+        expect(mockSaveClaimDetails).toHaveBeenCalledWith(
+          expect.any(Object),
+          expect.any(ClaimantTimeline),
+          'timeline',
+        );
       });
     });
 
@@ -90,6 +102,11 @@ describe('Claimant Timeline Controller', () => {
       await request(app).post(CLAIM_TIMELINE_URL).send({rows: mockData}).expect((res) => {
         expect(res.status).toBe(302);
         expect(res.header.location).toBe(CLAIM_EVIDENCE_URL);
+        expect(mockSaveClaimDetails).toHaveBeenCalledWith(
+          expect.any(Object),
+          expect.any(ClaimantTimeline),
+          'timeline',
+        );
       });
     });
   });
