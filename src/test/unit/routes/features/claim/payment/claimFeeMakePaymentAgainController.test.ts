@@ -8,8 +8,6 @@ import config from 'config';
 import {app} from '../../../../../../main/app';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import * as makePaymentAgainService from 'services/features/claim/payment/claimFeeMakePaymentAgainService';
-import * as draftStoreService from '../../../../../../main/modules/draft-store/draftStoreService';
-import {mockCivilClaim} from '../../../../../utils/mockDraftStore';
 import {Session} from 'express-session';
 
 jest.mock('../../../../../../main/modules/oidc');
@@ -21,11 +19,6 @@ jest.mock('../../../../../../main/modules/draft-store/paymentSessionStoreService
   getPaymentConfirmationUrl: jest.fn(),
   deleteUserId: jest.fn(),
   deletePaymentConfirmationUrl: jest.fn(),
-}));
-jest.mock('../../../../../../main/modules/draft-store/draftStoreService', () => ({
-  getCaseDataFromStore: jest.fn(),
-  generateRedisKey: jest.fn(),
-  saveDraftClaim: jest.fn(),
 }));
 jest.mock('modules/utilityService', () => ({
   getClaimById: jest.fn(),
@@ -44,11 +37,8 @@ describe('Claim Fee - Make Payment Again', () => {
 
   describe('on GET', () => {
     it('should redirect user to govPay Payment Page', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
-      app.request['session'] = {user: {id: 'jfkdljfd'}} as unknown as Session;
+      app.request['session'] = {user: {id: 'jfkdljfd'}, draftId: 'draft-123'} as unknown as Session;
       jest.spyOn(makePaymentAgainService,'getRedirectUrl').mockResolvedValueOnce('12354876');
-      jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
-      jest.spyOn(draftStoreService,'saveDraftClaim');
 
       await request(app)
         .get(CLAIM_FEE_MAKE_PAYMENT_AGAIN_URL)
