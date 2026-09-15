@@ -65,12 +65,12 @@ const getClaim = async (claimId: RouteParam): Promise<Claim> => {
   return claim;
 };
 
-const getCookieLanguage =  (isWelsh: boolean, language: string) => {
+const getCookieLanguage =  (language: string) => {
   switch (language) {
     case ClaimBilingualLanguagePreference.ENGLISH:
       return 'en';
     case ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH:
-      return isWelsh ? 'en' : 'cy';
+      return 'en';
     case ClaimBilingualLanguagePreference.WELSH:
       return 'cy';
     default:
