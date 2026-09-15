@@ -41,6 +41,11 @@ async function addIdamUserToBeDeletedList(userEmail) {
 }
 
 async function createAccount(email, password) {
+  if (process.env.REDUCED_STACK_TESTS === 'true') {
+    console.log('Using the reduced-stack in-process session; IDAM account creation is not required');
+    return;
+  }
+
   try {
     const token = await accessToken(adminUser);
     let body = {'password': password, 'user': {'email': email, 'forename': 'forename', 'surname': 'surname', 'displayName': 'displayName', 'roleNames': ['citizen']}};

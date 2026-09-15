@@ -1,0 +1,27 @@
+{
+  "mappings": [
+    {
+      "name": "reduced-stack-defendant-respond-to-claim-notification",
+      "priority": 1,
+      "request": {
+        "method": "GET",
+        "urlPath": "/dashboard/notifications/1111222233335555/role/DEFENDANT"
+      },
+      "response": {
+        "status": 200,
+        "headers": {"Content-Type": "application/json"},
+        "jsonBody": [
+          {
+            "id": "reduced-stack-respond-to-claim",
+            "titleEn": "You haven't responded to the claim",
+            "titleCy": "Nid ydych wedi ymateb i'r hawliad",
+            "descriptionEn": "You have 27 days remaining. <a class=\"govuk-notification-banner__link\" href=\"/case/1111222233335555/response/bilingual-language-preference\">Respond to the claim</a>",
+            "descriptionCy": "Mae gennych 27 diwrnod ar ôl. <a class=\"govuk-notification-banner__link\" href=\"/case/1111222233335555/response/bilingual-language-preference\">Ymateb i'r hawliad</a>",
+            "timeToLive": "Session",
+            "createdAt": "2026-09-08T10:00:00.000Z"
+          }
+        ]
+      }
+    }
+  ]
+}
