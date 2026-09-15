@@ -232,6 +232,7 @@ functional_base_pattern() {
 run_optimised_functional_tests() {
   local base_pattern bucket pattern count started bucket_started
   export FUNCTIONAL=true
+  export REDUCED_STACK_TESTS=false
   unset PREV_FAILED_TEST_FILES PREV_NOT_EXECUTED_TEST_FILES
   base_pattern=$(functional_base_pattern)
   node bin/functional-execution-evidence.js plan "$base_pattern"
@@ -248,6 +249,7 @@ run_optimised_functional_tests() {
     fi
     if [[ "$bucket" = mocked ]]; then
       ./bin/configure-functional-test-router.sh mocked
+      export REDUCED_STACK_TESTS=true
     fi
     pattern=$(node bin/functional-execution-evidence.js pattern "$bucket")
     echo "Running ${bucket}: ${count} active scenarios from ${base_pattern}"

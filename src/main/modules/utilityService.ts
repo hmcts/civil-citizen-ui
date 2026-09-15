@@ -1,3 +1,4 @@
+import {isMockedFunctionalRequest} from '../app/functionalTestRouterProxy';
 import {AppRequest, AppSession} from 'models/AppRequest';
 import config from 'config';
 import {
@@ -74,7 +75,7 @@ export const getDashboardClaimById = async (claimId: RouteParam, req: Request, u
   const userId = (<AppRequest>req)?.session?.user?.id;
   const redisKey = useRedisKey && normalizedClaimId !== userId ? generateRedisKey(<AppRequest>req) : normalizedClaimId;
   const cachedClaim = await getClaimById(claimId, req, useRedisKey);
-  if (process.env.NODE_ENV === 'e2eTest' && !cachedClaim.isEmpty()) {
+  if (isMockedFunctionalRequest(req) && !cachedClaim.isEmpty()) {
     return cachedClaim;
   }
   const latestClaim = await civilServiceClient.retrieveClaimDetails(normalizedClaimId, <AppRequest>req);

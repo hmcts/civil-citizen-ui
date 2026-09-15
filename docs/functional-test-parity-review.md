@@ -54,3 +54,26 @@ reuse make total pipeline time unsuitable as a direct optimisation measurement.
 Paired verification is pending. This is partial migration, not an epic-wide
 performance result. This ticket does not require QA-person involvement;
 developer review and automated verification are required.
+
+## Mock setup review
+
+Switching the router alone did not activate the migrated scenarios' setup:
+the helpers still used real workflow/assignment APIs and the mock support
+routes were restricted to local `e2eTest` mode. The mocked bucket now explicitly
+activates that setup. In the shared preview, support requires both the configured
+router and its request control header/cookie; ordinary requests retain normal
+behaviour. Browser control cookies are HTTP-only so client-side cookie cleanup
+does not discard the test session. The old local-only synthetic defendant
+dashboard is not enabled in preview.
+
+The SoleTrader-versus-Individual scenario passes against WireMock using normal
+application mode and a real local Redis instance, with zero unmatched requests.
+The request boundary and cache/submission tests pass. This supplements, and does
+not replace, the outstanding paired Jenkins evidence.
+
+The next local variant reaches a pre-existing shared assertion mismatch in
+`citizenFeatures/GA/pages/applicationType.js`: it expects the long "Ask the court
+to change something on your case" heading, while the application template uses
+"Make an application" (unchanged since 2024). The assertion is preserved pending
+explicit approval to correct its expected text in both modes. No production
+content change is proposed.

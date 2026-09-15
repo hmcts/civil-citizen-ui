@@ -1,6 +1,6 @@
 import cookieParser from 'cookie-parser';
 import express from 'express';
-import {functionalTestRouterJsonBody} from './app/functionalTestRouterProxy';
+import {functionalTestRouterJsonBody, isMockedFunctionalRequest} from './app/functionalTestRouterProxy';
 import {app} from './app-instance';
 import * as path from 'path';
 import favicon from 'serve-favicon';
@@ -226,7 +226,9 @@ new HealthCheck().enableFor(app);
 
 app.use(SIGN_OUT_URL, deleteGAGuard);
 
-if(e2eTestMode){
+if(e2eTestMode || (functionalTestRouterUrl && functionalTestRouterToken)){
+  const mockSupport = express.Router();
+  app.use((req, res, next) => isMockedFunctionalRequest(req) ? mockSupport(req, res, next) : next());
   const updateCachedE2EClaim = async (claimId: string, userId: string, update: (claim: Record<string, unknown>) => void) => {
     const redisKey = `${claimId}${userId}`;
     const claim = await app.locals.draftStoreClient.get(redisKey);
@@ -239,7 +241,7 @@ if(e2eTestMode){
     }
   };
 
-  app.use((req, res, next) => {
+  mockSupport.use((req, res, next) => {
     const session = ((req.session) as AppSession);
     const testUserId = req.cookies['e2e-user-id'];
     if (testUserId) {
@@ -250,7 +252,8 @@ if(e2eTestMode){
     next();
   });
 
-  app.use('/dashboard/:claimId/defendant', async (req, res, next) => {
+  mockSupport.use('/dashboard/:claimId/defendant', async (req, res, next) => {
+    if (!e2eTestMode) return next();
     const session = req.session as AppSession;
     if (!session.user) {
       res.cookie('e2e-user-id', 'e2e-defendant-user', {httpOnly: true});
@@ -265,7 +268,7 @@ if(e2eTestMode){
     </body></html>`);
   });
 
-  app.use('/case/:claimId/general-application', async (req, _res, next) => {
+  mockSupport.use('/case/:claimId/general-application', async (req, _res, next) => {
     const userId = (req.session as AppSession).user?.id;
     if (userId) {
       await updateCachedE2EClaim(req.params.claimId, userId, claim => {
@@ -275,7 +278,7 @@ if(e2eTestMode){
     next();
   });
 
-  app.post('/testing-support/assign-case', async (req, res) => {
+  mockSupport.post('/testing-support/assign-case', async (req, res) => {
     const {claimId, fromUserId, toUserId} = req.body;
     const validClaimId = /^\d{16}$/.test(claimId);
     const validUserId = (value: string) => /^[0-9a-f]{24}$/.test(value);
@@ -292,7 +295,7 @@ if(e2eTestMode){
     return res.sendStatus(204);
   });
 
-  app.post('/testing-support/reset-case', async (req, res) => {
+  mockSupport.post('/testing-support/reset-case', async (req, res) => {
     const {claimId, userIds = []} = req.body;
     const validClaimId = /^\d{16}$/.test(claimId);
     const validUserIds = Array.isArray(userIds) && userIds.every((userId: string) => /^[0-9a-z-]{1,64}$/.test(userId));
@@ -309,7 +312,7 @@ if(e2eTestMode){
     return res.sendStatus(204);
   });
 
-  app.get('/testing-support/mock-payment/:claimId', (req, res) => {
+  mockSupport.get('/testing-support/mock-payment/:claimId', (req, res) => {
     const amount = req.query.amount ?? '115.00';
     res.send(`<!doctype html><html><body>
       <h1>Enter card details</h1><h2>Payment summary</h2>
@@ -330,7 +333,7 @@ if(e2eTestMode){
     </body></html>`);
   });
 
-  app.post('/testing-support/mock-payment/:claimId', (req, res) => {
+  mockSupport.post('/testing-support/mock-payment/:claimId', (req, res) => {
     const amount = req.query.amount ?? '115.00';
     const appId = req.query.appId;
     const confirmQuery = appId ? `?appId=${appId}` : '';
@@ -343,7 +346,7 @@ if(e2eTestMode){
     </body></html>`);
   });
 
-  app.post('/testing-support/mock-payment/:claimId/confirm', async (req, res) => {
+  mockSupport.post('/testing-support/mock-payment/:claimId/confirm', async (req, res) => {
     const appId = req.query.appId;
     if (appId) {
       return res.redirect(`/case/${req.params.claimId}/general-application/${appId}/payment-successful`);

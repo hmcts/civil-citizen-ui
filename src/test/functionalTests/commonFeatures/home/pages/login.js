@@ -26,7 +26,10 @@ class LoginPage {
   async openReducedStackSession(username) {
     await I.clearCookie();
     const testUserId = crypto.createHash('sha256').update(username).digest('hex').slice(0, 24);
-    await I.setCookie({name: 'e2e-user-id', value: testUserId, url: process.env.TEST_URL});
+    await I.setCookie({name: 'e2e-user-id', value: testUserId, url: process.env.TEST_URL, httpOnly: true});
+    if (process.env.FUNCTIONAL_TEST_ROUTER_TOKEN) {
+      await I.setCookie({name: 'functional-test-router-token', value: process.env.FUNCTIONAL_TEST_ROUTER_TOKEN, url: process.env.TEST_URL, httpOnly: true});
+    }
     await I.amOnPage('/');
   }
 

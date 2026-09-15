@@ -447,7 +447,7 @@ module.exports = {
       const userId = email => crypto.createHash('sha256').update(email).digest('hex').slice(0, 24);
       const response = await fetch(`${process.env.TEST_URL}/testing-support/reset-case`, {
         method: 'POST',
-        headers: {'Content-Type': 'application/json'},
+        headers: {'Content-Type': 'application/json', 'x-functional-test-router-token': process.env.FUNCTIONAL_TEST_ROUTER_TOKEN || ''},
         body: JSON.stringify({
           claimId: caseId,
           userIds: [
@@ -1035,7 +1035,7 @@ module.exports = {
       const userId = email => crypto.createHash('sha256').update(email).digest('hex').slice(0, 24);
       const response = await fetch(`${process.env.TEST_URL}/testing-support/assign-case`, {
         method: 'POST',
-        headers: {'Content-Type': 'application/json'},
+        headers: {'Content-Type': 'application/json', 'x-functional-test-router-token': process.env.FUNCTIONAL_TEST_ROUTER_TOKEN || ''},
         body: JSON.stringify({
           claimId: caseId,
           fromUserId: userId(config.claimantCitizenUser.email),

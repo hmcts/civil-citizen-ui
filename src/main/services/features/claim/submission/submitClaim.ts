@@ -1,3 +1,4 @@
+import {isMockedFunctionalRequest} from '../../../../app/functionalTestRouterProxy';
 import {AppRequest} from 'common/models/AppRequest';
 import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import config from 'config';
@@ -25,7 +26,7 @@ export const submitClaim = async (req: AppRequest): Promise<Claim> => {
     }
     const ccdClaim = translateDraftClaimToCCDR2(claim, req);
     const submittedClaim = await civilServiceClient.submitDraftClaim(ccdClaim, req);
-    if (process.env.NODE_ENV === 'e2eTest') {
+    if (isMockedFunctionalRequest(req)) {
       const applicant1 = claim.applicant1;
       const respondent1 = claim.respondent1;
       Object.assign(claim, submittedClaim);
