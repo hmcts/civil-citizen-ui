@@ -54,7 +54,7 @@ Scenario('LipVLR - NoC and DefendantLR respond as DefenceAll', async ({
   camundaEvent = 'APPLY_NOC_DECISION_DEFENDANT_LIP';
   expectedState = 'AWAITING_APPLICANT_INTENTION';
   await api.defendantLRResponse(config.defendantSolicitorUser, 'FULL_DEFENCE', camundaEvent, expectedState);
-}).tag('@civil-citizen-master @civil-citizen-pr');
+}).tag('@civil-citizen-master @civil-citizen-pr @thin-full-stack');
 
 Scenario('LipVLR - NoC and DefendantLR respond as AdmitAll', async ({
   I,

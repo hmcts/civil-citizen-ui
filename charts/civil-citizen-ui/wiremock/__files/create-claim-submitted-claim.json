@@ -1,0 +1,10 @@
+{
+  "id": "1111222233334444",
+  "state": "PENDING_CASE_ISSUED",
+  "last_modified": "2026-07-23T12:00:00.000Z",
+  "case_data": {
+    "legacyCaseReference": "000MC001",
+    "respondent1ResponseDeadline": "2026-08-20T16:00:00.000Z",
+    "respondent1": {"type":"INDIVIDUAL","individualTitle":"Mr","individualFirstName":"John","individualLastName":"Smith"}
+  }
+}

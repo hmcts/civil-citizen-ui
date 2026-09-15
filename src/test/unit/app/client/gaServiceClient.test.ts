@@ -149,7 +149,7 @@ describe('GA Service Client', () => {
         baseURL: baseUrl,
       });
       expect(mockPost.mock.calls[0][0]).toContain(GA_SERVICE_CASES_URL);
-      expect(claimantDashboardItems.length).toEqual(1);
+      expect(claimantDashboardItems).toHaveLength(1);
     });
     it('should throw error on getApplications', async () => {
       //Given
@@ -178,7 +178,7 @@ describe('GA Service Client', () => {
         baseURL: baseUrl,
       });
       expect(mockPost.mock.calls[0][0]).toContain(GA_SERVICE_CASES_URL);
-      expect(claimantDashboardItems.length).toEqual(1);
+      expect(claimantDashboardItems).toHaveLength(1);
     });
   });
 

@@ -15,5 +15,5 @@ mkdir wa-dmn
 cp -r ./civil-wa-task-configuration/src/main/resources ./wa-dmn/.
 rm -rf ./civil-wa-task-configuration
 
-./bin/import-dmn-diagram.sh ./wa-dmn/. civil civil
+./bin/shared/import-dmn-diagram.sh ./wa-dmn/. civil civil
 rm -rf ./wa-dmn

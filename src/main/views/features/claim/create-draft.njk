@@ -19,6 +19,14 @@
               }) }}
             </div>
           </form>
+          <form method="post" novalidate>
+            <input type="hidden" name="draftType" value="response">
+            <div class="govuk-form-group">
+              {{ govukButton({
+                text: 'Create Defendant Response Draft'
+              }) }}
+            </div>
+          </form>
         </div>
       </div>
       <div class="govuk-grid-row">
