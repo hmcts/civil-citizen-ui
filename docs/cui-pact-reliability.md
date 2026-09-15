@@ -38,27 +38,26 @@ one IDAM and one S2S interaction in three artifacts.
 | Oidc / getOidcResponse | POST /o/token | a token is requested | DTSCCI-6449 |
 | ServiceAuthProvider / generateServiceToken | POST /lease | microservice with valid credentials | Existing coverage |
 
-The provider state methods are shared by `CivilCitizenUiProviderContractTest`
-(Broker) and `CivilCitizenUiLocalProviderContractTest` (local generated file) in
-Civil Service's `CivilCitizenUiProviderSupport`. The target applies production
+The Broker verifier `CivilCitizenUiProviderContractTest` uses the provider states
+and setup in Civil Service's `CivilCitizenUiProviderSupport`. The target applies production
 `JacksonConfiguration` and controller advice, with JSON and string converters.
-It does not rewrite responses or tolerate an absent Pact. Local verification is
-separate from the Broker task and does not publish verification results.
+It does not rewrite responses or tolerate an absent Pact. Runtime regression
+checks also exercise this setup through the existing provider test task.
 
 ## Reproduce provider evidence
 
-Apply the accompanying Civil Service changes, generate CUI Pacts, and run from
-that Civil Service checkout:
+Apply the accompanying Civil Service changes and publish the CUI Pact through
+the consumer pipeline. Run the supported Civil Service provider workflow with
+the matching provider branch. For a focused Broker-backed check:
 
 ```sh
-python3 bin/verify-cui-pact-regressions.py /path/to/civil-citizen-ui/src/test/contract/pacts/civil_citizen_ui-civil_service.json
+PACT_BROKER_FULL_URL=https://pact-broker.platform.hmcts.net ./gradlew providerContractTests --tests uk.gov.hmcts.reform.civil.provider.CivilCitizenUiProviderContractTest -Ppact.provider.branch=YOUR_BRANCH
 ```
 
-This runs the same provider target against the generated Pact, then controlled
-date-type, missing-response-header and empty-interaction variants. It checks
-exit codes and diagnostics and retains logs and JUnit XML under
-`build/reports/cui-pact-regressions`. The compatible run must verify every supplied
-interaction with none skipped. The temporary local Pact is restored afterwards.
+Inspect `build/reports/tests/providerContractTests` and its JUnit XML for the
+selected consumer versions and interaction counts. This command does not publish
+verification results; retain the supported provider pipeline's published result
+as completion evidence. Selectors may also include older main-branch contracts.
 
 Initial local runtime verification exposed two failures: production Jackson
 returned `2023-11-27T13:15:06.313Z`, while the old consumer expected decimal epoch
