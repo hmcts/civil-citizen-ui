@@ -1,6 +1,6 @@
 import {app} from '../../../../../../main/app';
 import request from 'supertest';
-import {GA_APPLICATION_COSTS_URL} from 'routes/urls';
+import {DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL, GA_APPLICATION_COSTS_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
 import {getApplicationCostsContent} from 'services/features/generalApplication/applicationCostsService';
@@ -13,6 +13,7 @@ import config from 'config';
 import nock from 'nock';
 import {isGaForLipsEnabled} from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import { gaApplicationFeeDetails } from 'services/features/generalApplication/feeDetailsService';
+import {CaseRole} from 'form/models/caseRoles';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
@@ -22,6 +23,11 @@ jest.mock('../../../../../../main/services/features/generalApplication/applicati
 jest.mock('../../../../../../main/services/features/generalApplication/feeDetailsService');
 jest.mock('../../../../../../main/routes/guards/generalAplicationGuard',() => ({
   isGAForLiPEnabled: jest.fn((req, res, next) => {
+    next();
+  }),
+}));
+jest.mock('../../../../../../main/routes/guards/requireGeneralApplicationDraft',() => ({
+  requireGeneralApplicationDraft: jest.fn((req, res, next) => {
     next();
   }),
 }));
@@ -76,6 +82,37 @@ describe('General Application - Application costs', () => {
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
+        });
+    });
+
+    it('should redirect a claimant to the dashboard when generalApplication is missing', async () => {
+      mockGetClaim.mockImplementation(() => {
+        const claim = new Claim();
+        claim.caseRole = CaseRole.CLAIMANT;
+        return claim;
+      });
+      await request(app)
+        .get(GA_APPLICATION_COSTS_URL.replace(':id', '123'))
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.header.location).toEqual(DASHBOARD_CLAIMANT_URL.replace(':id', '123'));
+          expect(res.text).not.toContain(TestMessages.SOMETHING_WENT_WRONG);
+        });
+    });
+
+    it('should redirect a defendant to the dashboard when applicationTypes is empty', async () => {
+      mockGetClaim.mockImplementation(() => {
+        const claim = new Claim();
+        claim.caseRole = CaseRole.DEFENDANT;
+        claim.generalApplication = new GeneralApplication();
+        return claim;
+      });
+      await request(app)
+        .get(GA_APPLICATION_COSTS_URL.replace(':id', '123'))
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.header.location).toEqual(DEFENDANT_SUMMARY_URL.replace(':id', '123'));
+          expect(res.text).not.toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
     });
   });
