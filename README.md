@@ -138,7 +138,9 @@ it through a token-gated, test-only CUI endpoint; WireMock has no public ingress
 are first passed to the real Civil Service, then migrated mockable scenarios run against deterministic mappings with
 proxy fallback disabled. The three mutually exclusive buckets use the same baseline selection as the unlabelled run,
 and their union is the complete selection. Bucket and total durations are archived in
-`test-results/functional/optimised-timings.csv`.
+`test-results/functional/optimised-timings.csv`. The Codecept loader records the baseline identities and existing skips
+in `execution-selection.json`; `execution-results.json` reconciles reports against it, rejecting missing, duplicated,
+unexpected or newly skipped scenarios. Empty buckets report zero without starting workers.
 
 With no optimisation label Jenkins follows the pre-epic deployment and functional-test path. The temporary real
 proxy profile can be removed when the epic has migrated every scenario and the residual bucket is empty; the
@@ -146,7 +148,8 @@ allowlisted thin-client routing remains. Its functional-stage duration is archiv
 `test-results/functional/standard-timings.csv` for like-for-like comparison with the optimised run. Apply the same
 `pr_ft_*` selection labels to both runs when measuring a migrated subset; the optimisation label must be the only
 selection difference. For example, the current migrated PR comparison uses `pr_ft_ui-create-claim` and
-`pr_ft_ui-part-admit` in both modes. Preview runs also retain their current mode, status, commit and exact timing in
+`pr_ft_civil-citizen-pr` in both modes, with `runAllFunctionalTests` to avoid previous-failure-only reruns. Compare the archived result files with
+`node bin/functional-execution-evidence.js compare standard-results.json optimised-results.json`. Preview runs also retain their current mode, status, commit and exact timing in
 the `civil-citizen-ui-pr-<PR>-functional-execution` ConfigMap so comparison evidence survives the Jenkins agent.
 
 Running E2E tests:

@@ -39,6 +39,7 @@ Scenario('Case progression journey - Small Claims - Verify Bundles tab', async (
   //verify as claimant
   notification = bundleReady();
   await api.waitForFinishedBusinessProcess();
+  await I.wait(10);
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
   taskListItem = viewTheBundle();

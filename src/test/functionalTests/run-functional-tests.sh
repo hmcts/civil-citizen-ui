@@ -179,6 +179,7 @@ run_functional_tests() {
   local started elapsed
 
   started=$SECONDS
+  FUNCTIONAL=true node bin/functional-execution-evidence.js plan "$(functional_base_pattern)"
   publish_functional_execution_evidence standard running
   echo "Running all functional tests on ${ENVIRONMENT} env"
   if [[ "$ENVIRONMENT" = "aat" ]]; then
@@ -193,6 +194,7 @@ run_functional_tests() {
   mkdir -p test-results/functional
   printf 'mode,duration_seconds\nstandard,%s\n' "$elapsed" \
     > test-results/functional/standard-timings.csv
+  node bin/functional-execution-evidence.js check standard
   publish_functional_execution_evidence \
     standard completed test-results/functional/standard-timings.csv
   echo "Standard functional execution completed in ${elapsed}s"
@@ -217,54 +219,53 @@ run_failed_not_executed_functional_tests() {
   run_functional_tests
 }
 
-run_optimised_functional_tests() {
-  local base_pattern mocked_pattern real_pattern
-  local started bucket_started bucket_elapsed total_elapsed
+functional_base_pattern() {
+  if [[ "$ENVIRONMENT" = "aat" ]]; then
+    echo '@civil-citizen-master'
+  elif [[ -n "${PR_FT_GROUPS:-}" ]]; then
+    echo "$PR_FT_GROUPS" | tr '[:upper:]' '[:lower:]' | sed 's/,/|@/g; s/^/@/'
+  else
+    echo '@civil-citizen-pr'
+  fi
+}
 
-  echo "Running the standard functional-test selection through optimised execution buckets"
+run_optimised_functional_tests() {
+  local base_pattern bucket pattern count started bucket_started
   export FUNCTIONAL=true
   unset PREV_FAILED_TEST_FILES PREV_NOT_EXECUTED_TEST_FILES
-
-  if [[ -n "${PR_FT_GROUPS:-}" ]]; then
-    base_pattern=$(echo "$PR_FT_GROUPS" | tr '[:upper:]' '[:lower:]' | sed 's/[[:space:]]//g; s/,/|@/g; s/^/@/')
-  else
-    base_pattern='@civil-citizen-pr'
-  fi
-
-  mocked_pattern="(?=.*(?:${base_pattern}))(?=.*@mocked-functional)"
-  real_pattern="(?=.*(?:${base_pattern}))(?!.*@mocked-functional)"
-  mkdir -p test-results/functional
+  base_pattern=$(functional_base_pattern)
+  node bin/functional-execution-evidence.js plan "$base_pattern"
   printf 'bucket,duration_seconds\n' > test-results/functional/optimised-timings.csv
   started=$SECONDS
   publish_functional_execution_evidence optimised running
-
   ./bin/configure-functional-test-router.sh real
-  bucket_started=$SECONDS
-  echo "Running the non-mocked bucket for baseline selection: ${base_pattern}"
-  MOCHAWESOME_REPORTFILENAME='optimised-real' \
-    run_functional_command yarn codeceptjs run-workers --suites 13 --grep "$real_pattern" \
-    --reporter mocha-multi --plugins allure --verbose
-  bucket_elapsed=$((SECONDS - bucket_started))
-  printf 'real,%s\n' "$bucket_elapsed" >> test-results/functional/optimised-timings.csv
 
-  ./bin/configure-functional-test-router.sh mocked
-  bucket_started=$SECONDS
-  echo "Running mocked bucket for baseline selection: ${base_pattern}"
-  if [[ "$base_pattern" = *'@ui-create-claim'* ]]; then
-    export WIREMOCK_EXPECT_CREATE_CLAIM=true
-  fi
-  MOCHAWESOME_REPORTFILENAME='optimised-mocked' \
-    run_functional_command yarn codeceptjs run-workers --suites 13 --grep "$mocked_pattern" \
-    --reporter mocha-multi --plugins allure --verbose
-  ./bin/assert-preview-wiremock.sh
-  bucket_elapsed=$((SECONDS - bucket_started))
-  printf 'mocked,%s\n' "$bucket_elapsed" >> test-results/functional/optimised-timings.csv
-
-  total_elapsed=$((SECONDS - started))
-  printf 'total,%s\n' "$total_elapsed" >> test-results/functional/optimised-timings.csv
-  publish_functional_execution_evidence \
-    optimised completed test-results/functional/optimised-timings.csv
-  echo "Optimised execution completed in ${total_elapsed}s; bucket timings are archived with the functional results"
+  for bucket in thin-client residual mocked; do
+    count=$(node bin/functional-execution-evidence.js count "$bucket")
+    if [[ "$count" -eq 0 ]]; then
+      printf '%s,0\n' "$bucket" >> test-results/functional/optimised-timings.csv
+      continue
+    fi
+    if [[ "$bucket" = mocked ]]; then
+      ./bin/configure-functional-test-router.sh mocked
+    fi
+    pattern=$(node bin/functional-execution-evidence.js pattern "$bucket")
+    echo "Running ${bucket}: ${count} active scenarios from ${base_pattern}"
+    bucket_started=$SECONDS
+    MOCHAWESOME_REPORTFILENAME="optimised-${bucket}" \
+      run_functional_command yarn codeceptjs run-workers --suites 13 --grep "$pattern" \
+      --reporter mocha-multi --plugins allure --verbose
+    if [[ "$bucket" = mocked ]]; then
+      if [[ "$base_pattern" = *'@ui-create-claim'* ]]; then
+        export WIREMOCK_EXPECT_CREATE_CLAIM=true
+      fi
+      ./bin/assert-preview-wiremock.sh
+    fi
+    printf '%s,%s\n' "$bucket" "$((SECONDS - bucket_started))" >> test-results/functional/optimised-timings.csv
+  done
+  printf 'total,%s\n' "$((SECONDS - started))" >> test-results/functional/optimised-timings.csv
+  node bin/functional-execution-evidence.js check optimised
+  publish_functional_execution_evidence optimised completed test-results/functional/optimised-timings.csv
 }
 
 assert_thin_full_stack_results() {
