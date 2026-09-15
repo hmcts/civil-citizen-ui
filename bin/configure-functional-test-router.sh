@@ -31,12 +31,17 @@ case "$profile" in
   real)
     : "${REAL_CIVIL_SERVICE_URL:?REAL_CIVIL_SERVICE_URL must point to the preview Civil Service ingress}"
     # Static mappings are mounted from a read-only ConfigMap, so WireMock cannot
-    # service DELETE /__admin/mappings. Reset removes the previous dynamic proxy,
-    # then priority 0 makes the real-service proxy outrank every packaged mock.
+    # service DELETE /__admin/mappings. Reset removes the previous dynamic proxies.
+    # CUI also sends postcode lookups through this router: keep those on the
+    # Ordnance Survey upstream instead of forwarding them to Civil Service.
     wiremock_curl '/__admin/mappings/reset' -X POST >/dev/null
     wiremock_curl '/__admin/mappings' -X POST \
       -H 'Content-Type: application/json' \
-      -d "$(jq -n --arg target "$REAL_CIVIL_SERVICE_URL" '{priority: 0, request: {urlPattern: ".*"}, response: {proxyBaseUrl: $target}}')" >/dev/null
+      -d "$(jq -n --arg target "${REAL_ORDNANCE_SURVEY_API_URL:-https://api.os.uk}" '{priority: 0, request: {urlPathPattern: "/search/places/.*"}, response: {proxyBaseUrl: $target}}')" >/dev/null
+    # Priority 1 still outranks every packaged Civil Service mock.
+    wiremock_curl '/__admin/mappings' -X POST \
+      -H 'Content-Type: application/json' \
+      -d "$(jq -n --arg target "$REAL_CIVIL_SERVICE_URL" '{priority: 1, request: {urlPattern: ".*"}, response: {proxyBaseUrl: $target}}')" >/dev/null
     ;;
   mocked)
     wiremock_curl '/__admin/mappings/reset' -X POST >/dev/null
