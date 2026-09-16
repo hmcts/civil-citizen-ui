@@ -4,7 +4,8 @@ import {
   PAY_CLAIM_FEE_UNSUCCESSFUL_URL,
   DASHBOARD_URL,
 } from 'routes/urls';
-import {deleteDraftClaim, getDraftClaim} from 'modules/draft-store/draftStoreManagerService';
+import { generateRedisKey, getCaseDataFromStore } from 'modules/draft-store/draftStoreService';
+import {deleteDraftClaim} from 'modules/draft-store/draftStoreManagerService';
 import {getFeePaymentStatus} from 'services/features/feePayment/feePaymentService';
 import {FeeType} from 'form/models/helpWithFees/feeType';
 import {Claim} from 'models/claim';
@@ -20,15 +21,16 @@ const paymentCancelledByUser = 'Payment was cancelled by the user';
 
 export const getRedirectUrl = async (claimId: string, req: AppRequest): Promise<string> => {
   try {
-    const claim: Claim = await getDraftClaim(req);
+    const redisClaimId = generateRedisKey(req);
+    logger.info(`claim id ${redisClaimId}`);
+    const claim: Claim = await getCaseDataFromStore(redisClaimId);
     const paymentInfo = claim.claimDetails?.claimFeePayment;
     const paymentReference = paymentInfo?.paymentReference;
-    logger.info(`Payment information retrieved for claim id ${req.params.id}`);
-    if (!isUsablePathSegment(paymentReference)) {
+    logger.info(`Payment information retrieved from Redis for claim id ${req.params.id}`);    if (!isUsablePathSegment(paymentReference)) {
       logger.info(`No payment reference for claim id ${req.params.id}`);
       return PAY_CLAIM_FEE_UNSUCCESSFUL_URL;
     }
-    const paymentStatus = await getFeePaymentStatus(claimId, paymentInfo?.paymentReference, FeeType.CLAIMISSUED, req);
+    const paymentStatus = await getFeePaymentStatus(claimId, paymentReference, FeeType.CLAIMISSUED, req);
     logger.info(`Payment status retrieved for claim id ${req.params.id}: ${paymentStatus.status}`);
     if(paymentStatus.status === success) {
       const isCUIWelshEnabled = await isWelshEnabledForMainCase();
