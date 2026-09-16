@@ -5,7 +5,10 @@ import {
   getSummarySections,
   saveStatementOfTruth,
 } from 'services/features/claim/checkAnswers/checkAnswersService';
-import {deleteDraftClaim, getDraftClaim} from 'modules/draft-store/draftStoreManagerService';
+import {
+  deleteDraftClaimFromStore,
+  getCaseDataFromStore,
+} from 'modules/draft-store/draftStoreService';
 import {getStashedClaimOrFromStore} from 'common/utils/claimRequestLocals';
 import {Claim} from 'common/models/claim';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
@@ -33,7 +36,7 @@ const checkAnswersViewPath = 'features/claim/check-answers';
 //const paymentUrl = 'https://www.payments.service.gov.uk/card_details/:id';
 const claimCheckAnswersController = Router();
 
-function renderView(res: Response, form: GenericForm<any>, claim: Claim, userId: string, lang: string, isCarmEnabled = true) {
+function renderView(res: Response, form: GenericForm<unknown>, claim: Claim, userId: string, lang: string, isCarmEnabled = true) {
 
   const summarySections = getSummarySections(userId, claim, lang, isCarmEnabled);
   const signatureType = form.model?.type;
@@ -65,11 +68,11 @@ claimCheckAnswersController.get(CLAIM_CHECK_ANSWERS_URL,
 
 claimCheckAnswersController.post(CLAIM_CHECK_ANSWERS_URL, async (req: Request | AppRequest, res: Response, next: NextFunction) => {
   try {
-    const appReq = req as AppRequest;
-    const userId = appReq.session?.user?.id;
+
+    const userId = (<AppRequest>req).session?.user?.id;
     const isFullAmountRejected = (req.body?.isFullAmountRejected === 'true');
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-    const claim = await getDraftClaim(appReq);
+    const claim = await getCaseDataFromStore(userId);
     const isCarmEnabled = await isCarmEnabledForCase(claim.draftClaimCreatedAt);
     const acceptNotChangesAllowedValue =  (claim.claimDetails.helpWithFees.option === YesNo.YES) ? false : req.body.acceptNoChangesAllowed;
 
@@ -95,13 +98,13 @@ claimCheckAnswersController.post(CLAIM_CHECK_ANSWERS_URL, async (req: Request | 
     }
     const interestToDate = await calculateInterestToDate(claim, req as AppRequest);
     const claimFeeData = await civilServiceClient.getClaimFeeData(claim.totalClaimAmount + interestToDate, req as AppRequest);
-    await saveClaimFee(appReq, claimFeeData);
+    await saveClaimFee(userId, claimFeeData);
     if (form.hasErrors() ) {
       renderView(res, form, claim, userId, lang, isCarmEnabled);
       return;
     } else {
-      await saveStatementOfTruth(appReq, form.model);
-      const submittedClaim = await submitClaim(appReq);
+      await saveStatementOfTruth(userId, form.model);
+      const submittedClaim = await submitClaim(<AppRequest>req);
       res.clearCookie('eligibilityCompleted');
       res.clearCookie('eligibility');
       if (claim.claimDetails.helpWithFees.option === YesNo.NO) {
@@ -110,12 +113,7 @@ claimCheckAnswersController.post(CLAIM_CHECK_ANSWERS_URL, async (req: Request | 
         //res.redirect(paymentUrlWithId);
         res.clearCookie('eligibilityCompleted');
       }
-      const appReq = req as AppRequest;
-      const draftId = appReq.session?.draftId;
-      if (draftId) {
-        await deleteDraftClaim(appReq, draftId);
-        delete appReq.session.draftId;
-      }
+      await deleteDraftClaimFromStore(userId);
       res.redirect(constructResponseUrlWithIdParams(submittedClaim.id, CLAIM_CONFIRMATION_URL));
     }
   } catch (error) {
@@ -126,6 +124,6 @@ claimCheckAnswersController.post(CLAIM_CHECK_ANSWERS_URL, async (req: Request | 
 
 export default claimCheckAnswersController;
 
-const validateFields = (genericForm: GenericForm<any>, formErrors: ValidationError[]): ValidationError[] => {
+const validateFields = (genericForm: GenericForm<unknown>, formErrors: ValidationError[]): ValidationError[] => {
   return [...formErrors, ...validator.validateSync(genericForm.model)];
 };

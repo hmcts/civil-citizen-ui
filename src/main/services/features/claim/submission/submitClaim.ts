@@ -1,5 +1,5 @@
 import {AppRequest} from 'common/models/AppRequest';
-import {getDraftClaim, updateDraftClaim} from 'modules/draft-store/draftStoreManagerService';
+import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {Claim} from 'common/models/claim';
@@ -14,13 +14,13 @@ const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServi
 
 export const submitClaim = async (req: AppRequest): Promise<Claim> => {
   try {
-    const draftId = req.session?.draftId;
-    const user = req.session?.user;
-    const claim = await getDraftClaim(req);
+    const claimId = (<AppRequest>req).session.user?.id;
+    const user = (<AppRequest>req).session.user;
+    const claim = await getCaseDataFromStore(claimId);
     logger.info('Claim fee retrieved from check-your-answers');
     if (claim.applicant1) {
-      claim.applicant1.emailAddress = new Email(user?.email);
-      await updateDraftClaim(req, claim, draftId);
+      claim.applicant1.emailAddress = new Email(user.email);
+      await saveDraftClaim(claimId, claim);
     }
     const ccdClaim = translateDraftClaimToCCDR2(claim, req);
     return await civilServiceClient.submitDraftClaim(ccdClaim, req);
