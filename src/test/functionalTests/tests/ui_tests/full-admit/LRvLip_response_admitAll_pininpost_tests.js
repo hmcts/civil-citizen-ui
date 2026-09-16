@@ -31,7 +31,7 @@ Before(async ({api}) => {
   await CitizenDashboardSteps.VerifyClaimOnDashboard(claimNumber);
 });
 
-Scenario.skip('Response with AdmitAll and Immediate payment', async ({api}) => {
+Scenario('Response with AdmitAll and Immediate payment', async ({api}) => {
   await CitizenDashboardSteps.CitizenDashboardPage();
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterPersonalDetails(claimRef);

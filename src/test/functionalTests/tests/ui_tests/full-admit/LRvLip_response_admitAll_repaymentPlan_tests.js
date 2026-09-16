@@ -29,7 +29,7 @@ Before(async ({api}) => {
   await CitizenDashboardSteps.VerifyClaimOnDashboard(claimNumber);
 });
 
-Scenario.skip('Response with AdmitAll and Repayment plan', async ({api}) => {
+Scenario('Response with AdmitAll and Repayment plan', async ({api}) => {
   console.log('Response with AdmitAll claimRef --> ' + claimRef);
   await ResponseSteps.RespondToClaim(claimRef);
   await ResponseSteps.EnterPersonalDetails(claimRef);
