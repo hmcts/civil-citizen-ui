@@ -25,7 +25,7 @@ Before(async ({ api }) => {
   await api.waitForFinishedBusinessProcess();
 });
 
-Scenario.skip('Small Claims LiPvLiP case is struck out due to hearing fee not being paid', async () => {
+Scenario('Small Claims LiPvLiP case is struck out due to hearing fee not being paid', async () => {
   //Claimant verifies dashboard
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   const claimStruckOutNotif = claimStruckOut();

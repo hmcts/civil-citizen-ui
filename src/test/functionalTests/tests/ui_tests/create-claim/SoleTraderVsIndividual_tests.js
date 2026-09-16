@@ -12,7 +12,7 @@ let caseData,legacyCaseReference,caseRef,selectedHWF;
 
 Feature('Create Lip v Lip claim - SoleTrader vs Individual').tag('@ui-create-claim');
 
-Scenario.skip('Create Claim -  SoleTrader vs Individual - Fast Track - no interest - no hwf', async ({ I, api }) => {
+Scenario('Create Claim -  SoleTrader vs Individual - Fast Track - no interest - no hwf', async ({ I, api }) => {
   selectedHWF = false;
   const defaultClaimFee = 455;
   const defaultClaimAmount = 9000;
