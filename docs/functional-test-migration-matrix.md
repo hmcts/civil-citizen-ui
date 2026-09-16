@@ -48,9 +48,11 @@ These guards do not invoke a CUI-facing business downstream service, so the mock
 The five party variants (`CompanyVsIndividual_tests.js`, `CompanyVsOrg__tests.js`,
 `IndividualvsCompany_tests.js`, `OrgVsSoleTrader_tests.js` and
 `SoleTraderVsIndividual_tests.js`) are outside the pre-epic default PR selection.
-Their original `@ui-create-claim` selection remains available, but their mocked
-routing tags have been removed. They are not completed PR migration work.
-Scenario bodies, helper calls and assertions remain unchanged.
+Their original `@ui-create-claim` selection remains available. With that group
+selected, the unlabelled run keeps all five on real services; the optimised run
+routes them to the mocked bucket using their `@mocked-functional` metadata.
+Scenario bodies, helper calls and assertions remain unchanged. Paired Jenkins
+verification for this group is still required before migration is complete.
 
 The default PR baseline contains 14 active scenarios and five existing skips.
 Currently zero of those active scenarios is mocked: six are classified thin-client

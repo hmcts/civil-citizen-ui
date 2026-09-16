@@ -38,9 +38,10 @@ only internal routing tags. The active partition is zero mocked, six thin-client
 and eight residual. All 14 active tests still use real downstream services.
 
 The five create-claim party variants have only the existing `@ui-create-claim`
-selection tag in the pre-epic source. They are outside the default PR baseline;
-their mocked routing tags have been removed. Their bodies and assertions remain
-unchanged, and explicit group selection still runs them against real services.
+selection tag in the pre-epic source. They are outside the default PR baseline.
+Their `@mocked-functional` routing metadata sends them to the mocked bucket when
+the group is selected with the optimisation label; without the label, they run
+against real services. Their bodies and assertions remain unchanged.
 Payment-authentication and response-validation mocked scenarios belong to the
 nightly selection, not the default PR baseline. The added mocked create-claim
 probe is supplementary. None counts as default PR migration progress.
