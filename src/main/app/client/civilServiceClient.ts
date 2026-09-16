@@ -73,7 +73,7 @@ import {
   executeRequest,
   RequestErrorHandler,
 } from 'client/common/civilServiceRequest';
-import {normalizeRouteParam, RouteParam} from 'common/utils/routeParamUtils';
+import {normalizeRouteParam, requirePathSegment, RouteParam} from 'common/utils/routeParamUtils';
 import {ClassConstructor} from 'class-transformer/types/interfaces';
 import {
   getUserCaseRolesFromSession,
@@ -703,8 +703,14 @@ export class CivilServiceClient {
   }
 
   async getFeePaymentStatus(claimId: RouteParam, paymentReference: string, feeType: string,  req: AppRequest): Promise<PaymentInformation> {
+    const usableClaimId = requirePathSegment(claimId, 'claimId');
+    const usableFeeType = requirePathSegment(feeType, 'feeType');
+    const usablePaymentReference = requirePathSegment(paymentReference, 'paymentReference');
     const response = await this.authenticatedGet(
-      CIVIL_SERVICE_FEES_PAYMENT_STATUS_URL.replace(':claimId', normalizeRouteParam(claimId)).replace(':feeType', feeType).replace(':paymentReference', paymentReference),
+      CIVIL_SERVICE_FEES_PAYMENT_STATUS_URL
+        .replace(':claimId', usableClaimId)
+        .replace(':feeType', usableFeeType)
+        .replace(':paymentReference', usablePaymentReference),
       req,
       'Error when getting fee payment status',
     );
