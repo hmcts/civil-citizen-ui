@@ -38,7 +38,7 @@ Scenario.skip('Response with RejectAll-DisputeAll Small claims', async ({ api, I
   await api.waitForFinishedBusinessProcess();
 });
 
-Scenario.skip('Response with RejectAll-DisputeAll Fast Track', async ({api}) => {
+Scenario('Response with RejectAll-DisputeAll Fast Track', async ({api}) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   claimType = 'FastTrack';
