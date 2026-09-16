@@ -39,10 +39,12 @@ describe('Claimant Timeline Controller', () => {
 
   describe('on GET', () => {
     it('should render timeline page', async () => {
-      await request(app).get(CLAIM_TIMELINE_URL).expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain('Timeline of events');
-      });
+      await request(app)
+        .get(CLAIM_TIMELINE_URL)
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Timeline of events');
+        });
       expect(mockGetClaimDetails).toHaveBeenCalledWith(expect.any(Object));
     });
 
