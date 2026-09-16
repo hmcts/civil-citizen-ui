@@ -26,7 +26,7 @@ timelineController.get(CLAIM_TIMELINE_URL, (async (req: AppRequest, res: Respons
       getDateInThePast(lang, 88),
       getDateInThePast(lang, 60),
     ];
-    res.render(timelineViewPath, {timelineForm, dates, pageTitle });
+    res.render(timelineViewPath, {form: timelineForm, dates, pageTitle });
   } catch (error) {
     next(error);
   }
@@ -45,7 +45,7 @@ timelineController.post(CLAIM_TIMELINE_URL, (async (req: AppRequest, res: Respon
         getDateInThePast(lang, 88),
         getDateInThePast(lang, 60),
       ];
-      res.render(timelineViewPath, {timelineForm, dates, pageTitle});
+      res.render(timelineViewPath, {form: timelineForm, dates, pageTitle});
     } else {
       timelineForm.model.filterOutEmptyRows();
       await saveClaimDetails(req as AppRequest, timelineForm.model, timelineClaimDetailsProperty);
