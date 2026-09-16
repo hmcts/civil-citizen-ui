@@ -9,37 +9,18 @@ import {
 import {t} from 'i18next';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {SameRateInterestType} from 'form/models/claimDetails';
-import {getDraftClaim, updateDraftClaim} from 'modules/draft-store/draftStoreManagerService';
-import * as draftStoreService from 'modules/draft-store/draftStoreService';
-import {Claim} from 'models/claim';
-import {CivilClaimResponse} from 'models/civilClaimResponse';
-import {DraftClaimManagerResult} from 'models/draft/draftClaim';
+import {getInterest, saveInterest} from 'services/features/claim/interest/interestService';
+import {Interest} from 'form/models/interest/interest';
+import {HowMuchContinueClaiming} from 'form/models/interest/howMuchContinueClaiming';
 
 jest.mock('../../../../../../main/modules/oidc');
-jest.mock('modules/draft-store/draftStoreManagerService');
-jest.mock('modules/draft-store/draftStoreService');
+jest.mock('services/features/claim/interest/interestService');
 jest.mock('routes/guards/claimIssueTaskListGuard', () => ({
   claimIssueTaskListGuard: jest.fn((req, res, next) => next()),
 }));
 
-const mockGetDraftClaim = getDraftClaim as jest.Mock;
-const mockUpdateDraftClaim = updateDraftClaim as jest.Mock;
-const mockGetCaseDataFromStore = draftStoreService.getCaseDataFromStore as jest.Mock;
-const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
-
-const createMockManagerResult = (claim: Claim): DraftClaimManagerResult => ({
-  claimResponse: {
-    id: '123',
-    case_data: claim as unknown as Claim,
-  } as unknown as CivilClaimResponse,
-  rawResponse: {
-    draftId: '123',
-    payload: claim,
-  } as unknown as DraftClaimManagerResult['rawResponse'],
-  createdAt: '2026-08-01T10:00:00.000Z',
-  updatedAt: '2026-08-01T11:00:00.000Z',
-  expiresAt: '2026-09-01T10:00:00.000Z',
-});
+const mockGetInterest = getInterest as jest.Mock;
+const mockSaveInterest = saveInterest as jest.Mock;
 
 describe('How Much Continue Claiming Page', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -54,25 +35,24 @@ describe('How Much Continue Claiming Page', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
+    mockGetInterest.mockResolvedValue(new Interest());
+    mockSaveInterest.mockResolvedValue(undefined);
   });
 
   describe('on GET', () => {
     it('should return on how much continue claiming page successfully', async () => {
-      const mockClaim = new Claim();
-      mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
-
       await request(app)
         .get(CLAIM_INTEREST_HOW_MUCH_URL)
         .expect((res: request.Response) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('PAGES.CLAIM_JOURNEY.HOW_MUCH_CONTINUE.TITLE'));
         });
+
+      expect(mockGetInterest).toHaveBeenCalledWith(expect.any(Object));
     });
 
     it('should return 500 status code when error occurs', async () => {
-      mockGetDraftClaim.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
-      mockGetCaseDataFromStore.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
+      mockGetInterest.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
 
       await request(app)
         .get(CLAIM_INTEREST_HOW_MUCH_URL)
@@ -85,12 +65,6 @@ describe('How Much Continue Claiming Page', () => {
 
   describe('on POST', () => {
     it('should redirect to help with fees page when interest is provided with 8% rate', async () => {
-      const mockClaim = new Claim();
-      mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
-      mockUpdateDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockSaveDraftClaim.mockResolvedValue(undefined);
-
       await request(app)
         .post(CLAIM_INTEREST_HOW_MUCH_URL)
         .send({
@@ -100,16 +74,15 @@ describe('How Much Continue Claiming Page', () => {
         .expect((res: request.Response) => {
           expect(res.status).toBe(302);
           expect(res.header.location).toEqual(CLAIM_HELP_WITH_FEES_URL);
+          expect(mockSaveInterest).toHaveBeenCalledWith(
+            expect.any(Object),
+            expect.any(HowMuchContinueClaiming),
+            'howMuchContinueClaiming',
+          );
         });
     });
 
     it('should redirect to help with fees page when interest is provided with specific daily rate', async () => {
-      const mockClaim = new Claim();
-      mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
-      mockUpdateDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockSaveDraftClaim.mockResolvedValue(undefined);
-
       await request(app)
         .post(CLAIM_INTEREST_HOW_MUCH_URL)
         .send({
@@ -123,10 +96,6 @@ describe('How Much Continue Claiming Page', () => {
     });
 
     it('should return error when no option selected', async () => {
-      const mockClaim = new Claim();
-      mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
-
       await request(app)
         .post(CLAIM_INTEREST_HOW_MUCH_URL)
         .send({
@@ -137,13 +106,11 @@ describe('How Much Continue Claiming Page', () => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(t('ERRORS.CHOOSE_TYPE_OF_INTEREST'));
         });
+
+      expect(mockSaveInterest).not.toHaveBeenCalled();
     });
 
     it('should return error when specific daily amount selected and not provided', async () => {
-      const mockClaim = new Claim();
-      mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
-
       await request(app)
         .post(CLAIM_INTEREST_HOW_MUCH_URL)
         .send({
@@ -157,10 +124,6 @@ describe('How Much Continue Claiming Page', () => {
     });
 
     it('should return error when specific daily amount selected and more than two decimal places', async () => {
-      const mockClaim = new Claim();
-      mockGetDraftClaim.mockResolvedValue(createMockManagerResult(mockClaim));
-      mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
-
       await request(app)
         .post(CLAIM_INTEREST_HOW_MUCH_URL)
         .send({
@@ -174,10 +137,7 @@ describe('How Much Continue Claiming Page', () => {
     });
 
     it('should return status 500 when there is error', async () => {
-      mockGetDraftClaim.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
-      mockGetCaseDataFromStore.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
-      mockUpdateDraftClaim.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
-      mockSaveDraftClaim.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
+      mockSaveInterest.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
 
       await request(app)
         .post(CLAIM_INTEREST_HOW_MUCH_URL)

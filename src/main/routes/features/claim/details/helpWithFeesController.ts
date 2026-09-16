@@ -17,8 +17,7 @@ function renderView(form: GenericForm<HelpWithFees>, res: Response): void {
 
 helpWithFeesController.get(CLAIM_HELP_WITH_FEES_URL, async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const userId = req.session?.user?.id;
-    const claimDetails: ClaimDetails = await getClaimDetails(userId);
+    const claimDetails: ClaimDetails = await getClaimDetails(req);
     const form = new GenericForm(claimDetails.helpWithFees);
     renderView(form, res);
   } catch (error) {
@@ -28,7 +27,6 @@ helpWithFeesController.get(CLAIM_HELP_WITH_FEES_URL, async (req: AppRequest, res
 
 helpWithFeesController.post(CLAIM_HELP_WITH_FEES_URL, async (req: AppRequest | Request, res: Response, next: NextFunction) => {
   try {
-    const userId = (<AppRequest>req).session?.user?.id;
     const referenceNumber = req.body.option === YesNo.NO ? '' : req.body.referenceNumber;
     const helpWithFees = new HelpWithFees(req.body.option, referenceNumber);
     const form = new GenericForm(helpWithFees);
@@ -36,7 +34,7 @@ helpWithFeesController.post(CLAIM_HELP_WITH_FEES_URL, async (req: AppRequest | R
     if (form.hasErrors()) {
       renderView(form, res);
     } else {
-      await saveClaimDetails(userId, form.model, helpWithFeesPropertyName);
+      await saveClaimDetails(req as AppRequest, form.model, helpWithFeesPropertyName);
       res.redirect(CLAIM_TOTAL_URL);
     }
   } catch (error) {
