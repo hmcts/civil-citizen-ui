@@ -6,7 +6,7 @@ import {AppRequest} from 'models/AppRequest';
 import {CitizenTelephoneNumber} from 'form/models/citizenTelephoneNumber';
 import {ClaimantOrDefendant} from 'models/partyType';
 import {Claim} from 'models/claim';
-import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {getClaimFromDraft} from 'modules/draft-store/draftStoreManagerService';
 import {isCarmEnabledForCase} from '../../../../app/auth/launchdarkly/launchDarklyClient';
 
 const claimantPhoneViewPath = 'features/claim/claimant-phone';
@@ -18,21 +18,20 @@ function renderView(form: GenericForm<CitizenTelephoneNumber>, res: Response, ca
 
 claimantPhoneController.get(CLAIMANT_PHONE_NUMBER_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const claimId = req.session.user?.id;
-    const claim: Claim = await getCaseDataFromStore(claimId);
+    const claim: Claim = await getClaimFromDraft(req);
     const carmEnabled = await isCarmEnabledForCase(claim.draftClaimCreatedAt);
 
-    const form: CitizenTelephoneNumber = await getTelephone(claimId, ClaimantOrDefendant.CLAIMANT);
+    const form: CitizenTelephoneNumber = await getTelephone(req, ClaimantOrDefendant.CLAIMANT);
     renderView(new GenericForm<CitizenTelephoneNumber>(form), res, carmEnabled);
   } catch (error) {
     next(error);
   }
 }) as RequestHandler);
 
-claimantPhoneController.post(CLAIMANT_PHONE_NUMBER_URL, (async (req: AppRequest | Request, res: Response, next: NextFunction) => {
+claimantPhoneController.post(CLAIMANT_PHONE_NUMBER_URL, (async (req: request, res: Response, next: NextFunction) => {
   try {
-    const claimId = (<AppRequest>req).session.user?.id;
-    const claim: Claim = await getCaseDataFromStore(claimId);
+    const appReq = req as AppRequest;
+    const claim: Claim = await getClaimFromDraft(appReq);
     const carmEnabled = await isCarmEnabledForCase(claim.draftClaimCreatedAt);
     const form: GenericForm<CitizenTelephoneNumber> = new GenericForm(new CitizenTelephoneNumber(req.body.telephoneNumber === '' ? undefined : req.body.telephoneNumber, undefined, true));
     form.validateSync();
@@ -40,7 +39,7 @@ claimantPhoneController.post(CLAIMANT_PHONE_NUMBER_URL, (async (req: AppRequest 
     if (form.hasErrors()) {
       renderView(form, res, carmEnabled);
     } else {
-      await saveTelephone(claimId, form.model, ClaimantOrDefendant.CLAIMANT);
+      await saveTelephone(appReq, form.model, ClaimantOrDefendant.CLAIMANT);
       res.redirect(CLAIMANT_TASK_LIST_URL);
     }
   } catch (error) {
