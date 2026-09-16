@@ -38,7 +38,7 @@ defendantPartyTypeController.post(CLAIM_DEFENDANT_PARTY_TYPE_URL, (async (req: A
       res.render(defendantPartyTypeViewPath, {form, pageTitle, partyType: PartyType});
     } else {
       if (form.model.option !== PartyType.COMPANY) {
-        await deleteDelayedFlight(caseId);
+        await deleteDelayedFlight(req);
       }
       await saveDefendantProperty(caseId, 'type', form.model.option);
       redirectToPage(form.model.option, res, ClaimantOrDefendant.DEFENDANT);
