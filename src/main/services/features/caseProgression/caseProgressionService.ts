@@ -213,40 +213,38 @@ export const getUploadDocumentsForm = (req: Request): UploadDocumentsUserForm =>
   );
 };
 
+const ADD_ANOTHER_SECTIONS: Record<string, {property: keyof UploadDocumentsUserForm; create: () => unknown}> = {
+  disclosure: {property: 'documentsForDisclosure', create: () => new TypeOfDocumentSection()},
+  documentsForDisclosure: {property: 'documentsForDisclosure', create: () => new TypeOfDocumentSection()},
+  disclosureList: {property: 'disclosureList', create: () => new FileOnlySection()},
+  witness: {property: 'witnessStatement', create: () => new WitnessSection()},
+  witnessStatement: {property: 'witnessStatement', create: () => new WitnessSection()},
+  witnessSummary: {property: 'witnessSummary', create: () => new WitnessSummarySection()},
+  noticeOfIntention: {property: 'noticeOfIntention', create: () => new WitnessSection()},
+  documentsReferred: {property: 'documentsReferred', create: () => new ReferredToInTheStatementSection()},
+  expertReport: {property: 'expertReport', create: () => new ExpertSection()},
+  expertStatement: {property: 'expertStatement', create: () => new ExpertSection()},
+  questionsForExperts: {property: 'questionsForExperts', create: () => new ExpertSection()},
+  answersForExperts: {property: 'answersForExperts', create: () => new ExpertSection()},
+  trialCaseSummary: {property: 'trialCaseSummary', create: () => new FileOnlySection()},
+  trialSkeletonArgument: {property: 'trialSkeletonArgument', create: () => new FileOnlySection()},
+  trialAuthorities: {property: 'trialAuthorities', create: () => new FileOnlySection()},
+  trialCosts: {property: 'trialCosts', create: () => new FileOnlySection()},
+  trialDocumentary: {property: 'trialDocumentary', create: () => new TypeOfDocumentSection()},
+};
+
 export const addAnother = (uploadDocuments: UploadDocumentsUserForm, action: string ) => {
   const [ actionValue ] = action.split(/[[\]]/).filter((word: string) => word !== '');
   const category = actionValue.split('-')[1];
   logger.info(`adding new category: ${category}`);
-  if (category === 'disclosure') {
-    uploadDocuments.documentsForDisclosure.push(new TypeOfDocumentSection());
-  } else if (category === 'disclosureList') {
-    uploadDocuments.disclosureList.push(new FileOnlySection());
-  } else if (category === 'witness') {
-    uploadDocuments.witnessStatement.push(new WitnessSection());
-  } else if (category === 'witnessSummary') {
-    uploadDocuments.witnessSummary.push(new WitnessSummarySection());
-  } else if (category === 'noticeOfIntention') {
-    uploadDocuments.noticeOfIntention.push(new WitnessSection());
-  } else if (category === 'documentsReferred') {
-    uploadDocuments.documentsReferred.push(new ReferredToInTheStatementSection());
-  } else if (category === 'expertReport') {
-    uploadDocuments.expertReport.push(new ExpertSection());
-  } else if (category === 'expertStatement') {
-    uploadDocuments.expertStatement.push(new ExpertSection());
-  } else if (category === 'questionsForExperts') {
-    uploadDocuments.questionsForExperts.push(new ExpertSection());
-  } else if (category === 'answersForExperts') {
-    uploadDocuments.answersForExperts.push(new ExpertSection());
-  } else if (category === 'trialCaseSummary') {
-    uploadDocuments.trialCaseSummary.push(new FileOnlySection());
-  } else if (category === 'trialSkeletonArgument') {
-    uploadDocuments.trialSkeletonArgument.push(new FileOnlySection());
-  } else if (category === 'trialAuthorities') {
-    uploadDocuments.trialAuthorities.push(new FileOnlySection());
-  } else if (category === 'trialCosts') {
-    uploadDocuments.trialCosts.push(new FileOnlySection());
-  } else if (category === 'trialDocumentary') {
-    uploadDocuments.trialDocumentary.push(new TypeOfDocumentSection());}
+  const section = ADD_ANOTHER_SECTIONS[category];
+  if (!section) {
+    return;
+  }
+  const existing = uploadDocuments[section.property] as unknown[] | undefined;
+  const list = existing ?? [];
+  list.push(section.create());
+  Object.assign(uploadDocuments, {[section.property]: list});
 };
 
 const getFormSection = <T>(data: [], bindFunction: (request: unknown) => T): T[] => {
