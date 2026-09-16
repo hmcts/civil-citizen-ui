@@ -10,6 +10,7 @@ import {FeeType} from 'form/models/helpWithFees/feeType';
 import {Claim} from 'models/claim';
 import { ClaimBilingualLanguagePreference } from 'common/models/claimBilingualLanguagePreference';
 import {isWelshEnabledForMainCase} from '../../../../app/auth/launchdarkly/launchDarklyClient';
+import {isUsablePathSegment} from 'common/utils/routeParamUtils';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimFeePaymentConfirmationService');
@@ -23,8 +24,13 @@ export const getRedirectUrl = async (claimId: string, req: AppRequest): Promise<
     logger.info(`claim id ${redisClaimId}`);
     const claim: Claim = await getCaseDataFromStore(redisClaimId);
     const paymentInfo = claim.claimDetails?.claimFeePayment;
+    const paymentReference = paymentInfo?.paymentReference;
     logger.info(`Payment information retrieved from Redis for claim id ${req.params.id}`);
-    const paymentStatus = await getFeePaymentStatus(claimId, paymentInfo?.paymentReference, FeeType.CLAIMISSUED, req);
+    if (!isUsablePathSegment(paymentReference)) {
+      logger.info(`No payment reference for claim id ${req.params.id}`);
+      return PAY_CLAIM_FEE_UNSUCCESSFUL_URL;
+    }
+    const paymentStatus = await getFeePaymentStatus(claimId, paymentReference, FeeType.CLAIMISSUED, req);
     logger.info(`Payment status retrieved for claim id ${req.params.id}: ${paymentStatus.status}`);
     if(paymentStatus.status === success) {
       const isCUIWelshEnabled = await isWelshEnabledForMainCase();

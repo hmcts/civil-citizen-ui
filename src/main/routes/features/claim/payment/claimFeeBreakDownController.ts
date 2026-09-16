@@ -12,7 +12,7 @@ import {claimFeePaymentGuard} from 'routes/guards/claimFeePaymentGuard';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {saveUserId} from 'modules/draft-store/paymentSessionStoreService';
 import {PaymentInformation} from 'models/feePayment/paymentInformation';
-import {getRouteParam} from 'common/utils/routeParamUtils';
+import {getRouteParam, isUsablePathSegment} from 'common/utils/routeParamUtils';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimFeeBreakDownController');
@@ -60,7 +60,7 @@ claimFeeBreakDownController.post(CLAIM_FEE_BREAKUP, (async (req: AppRequest, res
     const redisKey = generateRedisKey(req);
     const claim = await getCaseDataFromStore(redisKey);
     let paymentRedirectInformation: PaymentInformation;
-    if (claim.claimDetails?.claimFeePayment?.paymentReference) {
+    if (isUsablePathSegment(claim.claimDetails?.claimFeePayment?.paymentReference)) {
       paymentRedirectInformation = claim.claimDetails.claimFeePayment;
       logger.info(`Existing payment information found for claim id ${claimId}`);
     } else {
@@ -75,7 +75,11 @@ claimFeeBreakDownController.post(CLAIM_FEE_BREAKUP, (async (req: AppRequest, res
       await saveDraftClaim(redisKey, claim, true, req.session.user?.id);
       await saveUserId(claimId, FeeType.CLAIMISSUED, req.session.user.id);
       try {
-        const paymentStatus = await getFeePaymentStatus(claimId, paymentRedirectInformation?.paymentReference, FeeType.CLAIMISSUED, req);
+        if (!isUsablePathSegment(paymentRedirectInformation?.paymentReference)) {
+          res.redirect(paymentRedirectInformation?.nextUrl);
+          return;
+        }
+        const paymentStatus = await getFeePaymentStatus(claimId, paymentRedirectInformation.paymentReference, FeeType.CLAIMISSUED, req);
         logger.info(`Existing payment status for claim id ${claimId}: ${paymentStatus?.status}`);
         if (paymentStatus?.status === success) {
           logger.info(`Redirecting to claim fee payment confirmation url for claim id ${claimId}`);
