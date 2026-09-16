@@ -26,7 +26,8 @@ export const getRedirectUrl = async (claimId: string, req: AppRequest): Promise<
     const claim: Claim = await getCaseDataFromStore(redisClaimId);
     const paymentInfo = claim.claimDetails?.claimFeePayment;
     const paymentReference = paymentInfo?.paymentReference;
-    logger.info(`Payment information retrieved from Redis for claim id ${req.params.id}`);    if (!isUsablePathSegment(paymentReference)) {
+    logger.info(`Payment information retrieved from Redis for claim id ${req.params.id}`);
+    if (!isUsablePathSegment(paymentReference)) {
       logger.info(`No payment reference for claim id ${req.params.id}`);
       return PAY_CLAIM_FEE_UNSUCCESSFUL_URL;
     }
