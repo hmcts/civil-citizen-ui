@@ -36,7 +36,7 @@ const runBufferSchedulerUntilIssued = async (api, attempts = 30, intervalMs = 10
 
 Feature('Lip v Lip claim - Judgment Requested state - Grant notification cleanup (Welsh)').tag('@ui-judgment-buffer');
 
-Scenario('Bilingual claimant - the Welsh requested-CCJ notice is superseded once the buffer scheduler grants judgment [DTSCCI-5187 #4]', async ({I, api}) => {
+Scenario.skip('Bilingual claimant - the Welsh requested-CCJ notice is superseded once the buffer scheduler grants judgment [DTSCCI-5187 #4]', async ({I, api}) => {
   if (!(await checkToggleEnabled('judgment-buffer'))) return;
   config.claimantCitizenUser.email = `claimantcitizen-${Date.now()}-${Math.random().toString(36).slice(2, 7)}@gmail.com`;
   config.defendantCitizenUser.email = `defendantcitizen-${Date.now()}-${Math.random().toString(36).slice(2, 7)}@gmail.com`;

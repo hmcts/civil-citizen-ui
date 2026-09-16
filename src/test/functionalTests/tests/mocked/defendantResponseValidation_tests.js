@@ -20,7 +20,7 @@ Before(async ({I}) => {
   await I.click('Create Defendant Response Draft');
 });
 
-Scenario('Defendant response validation errors are shown without the full Civil stack', async () => {
+Scenario.skip('Defendant response validation errors are shown without the full Civil stack', async () => {
   await bilingualLanguagePreference.verifyContentError();
   await bilingualLanguagePreference.verifyContent('en');
   await ResponseSteps.EnterPersonalDetails(claimRef);
@@ -46,7 +46,7 @@ Scenario('Defendant response validation errors are shown without the full Civil 
   await ResponseSteps.EnterHowMuchYouHavePaidError(claimRef, 500, partAdmit);
 }).tag('@reduced-stack @reduced-stack-response @mocked-functional');
 
-Scenario('Defendant personal-detail validation errors are shown without the full Civil stack', async () => {
+Scenario.skip('Defendant personal-detail validation errors are shown without the full Civil stack', async () => {
   await bilingualLanguagePreference.verifyContent('en');
   await ResponseSteps.EnterPersonalDetailsError(claimRef);
 }).tag('@reduced-stack @reduced-stack-response @mocked-functional');

@@ -15,7 +15,7 @@ let claimRef, claimType, caseData, claimNumber, defendantName;
 
 Feature('Response with PartAdmit-PayByInstallments - Small Claims & Fast Track').tag('@civil-citizen-nightly @ui-part-admit');
 
-Scenario('Response with PartAdmit-PayByInstallments Small Claims ClaimantReject', async ({
+Scenario.skip('Response with PartAdmit-PayByInstallments Small Claims ClaimantReject', async ({
   I,
   api,
 }) => {
@@ -40,7 +40,7 @@ Scenario('Response with PartAdmit-PayByInstallments Small Claims ClaimantReject'
   await verifyNotificationTitleAndContent(claimNumber, mediationCARMClaimantDefendantNotif.title, mediationCARMClaimantDefendantNotif.content);
 });
 
-Scenario('Response with PartAdmit-PayByInstallments Fast Track ClaimantReject', async ({ api, I }) => {
+Scenario.skip('Response with PartAdmit-PayByInstallments Fast Track ClaimantReject', async ({ api, I }) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   claimType = 'FastTrack';

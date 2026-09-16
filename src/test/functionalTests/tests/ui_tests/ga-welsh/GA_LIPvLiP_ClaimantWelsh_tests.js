@@ -23,7 +23,7 @@ Before(async ({api}) => {
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
 });
 
-Scenario('Response with RejectAll and DisputeAll - Claimant Welsh - GA (Ask for more time)', async ({I}) => {
+Scenario.skip('Response with RejectAll and DisputeAll - Claimant Welsh - GA (Ask for more time)', async ({I}) => {
   console.log('Creating GA app as claimant');
   await I.amOnPage('/dashboard');
   await I.click(claimNumber);

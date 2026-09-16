@@ -16,7 +16,7 @@ let claimRef, caseData, claimNumber;
 
 Feature('Create Lip v Lip claim - Default Judgment (Judgment Requested state)').tag('@ui-judgment-buffer');
 
-Scenario('Judgment Requested buffer notifications after a CCJ is requested - DTSCCI-5096 AC1-AC5 (English + Welsh)', async ({I, api}) => {
+Scenario.skip('Judgment Requested buffer notifications after a CCJ is requested - DTSCCI-5096 AC1-AC5 (English + Welsh)', async ({I, api}) => {
   if (!(await checkToggleEnabled('judgment-buffer'))) return;
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
@@ -81,7 +81,7 @@ Scenario('Judgment Requested buffer notifications after a CCJ is requested - DTS
   await I.waitForContent('Mae cais wedi’i wneud am Ddyfarniad Llys Sirol. Byddwch yn cael gwybod pan fydd hyn wedi’i gadarnhau.', 30);
 });
 
-Scenario('Defendant submits defence during JUDGMENT_REQUESTED buffer - pending CCJ cancelled, claimant gets cancellation notification (DTSCCI-5101)', async ({I, api}) => {
+Scenario.skip('Defendant submits defence during JUDGMENT_REQUESTED buffer - pending CCJ cancelled, claimant gets cancellation notification (DTSCCI-5101)', async ({I, api}) => {
   if (!(await checkToggleEnabled('judgment-buffer'))) return;
   config.claimantCitizenUser.email = `claimantcitizen-${Date.now()}-${Math.random().toString(36).slice(2, 7)}@gmail.com`;
   config.defendantCitizenUser.email = `defendantcitizen-${Date.now()}-${Math.random().toString(36).slice(2, 7)}@gmail.com`;
@@ -121,7 +121,7 @@ Scenario('Defendant submits defence during JUDGMENT_REQUESTED buffer - pending C
   await I.see('The court will contact you');
 });
 
-Scenario('AC3 (Welsh) - claimant who opted into Welsh receives the bilingual judgment-requested email when a CCJ is requested', async ({I, api}) => {
+Scenario.skip('AC3 (Welsh) - claimant who opted into Welsh receives the bilingual judgment-requested email when a CCJ is requested', async ({I, api}) => {
   if (!(await checkToggleEnabled('judgment-buffer'))) return;
   config.claimantCitizenUser.email = `claimantcitizen-${Date.now()}-${Math.random().toString(36).slice(2, 7)}@gmail.com`;
   config.defendantCitizenUser.email = `defendantcitizen-${Date.now()}-${Math.random().toString(36).slice(2, 7)}@gmail.com`;

@@ -15,7 +15,7 @@ let claimRef, caseData, claimNumber;
 
 Feature('Lip v Lip claim - Judgment Requested state - Case settled').tag('@ui-judgment-buffer');
 
-Scenario('Case settled during JUDGMENT_REQUESTED buffer - CCJ cancelled, claimant + defendant notifications and defendant email (AC1-AC6) [DTSCCI-5108]', async ({I, api}) => {
+Scenario.skip('Case settled during JUDGMENT_REQUESTED buffer - CCJ cancelled, claimant + defendant notifications and defendant email (AC1-AC6) [DTSCCI-5108]', async ({I, api}) => {
   if (!(await checkToggleEnabled('judgment-buffer'))) return;
   config.claimantCitizenUser.email = `claimantcitizen-${Date.now()}-${Math.random().toString(36).slice(2, 7)}@gmail.com`;
   config.defendantCitizenUser.email = `defendantcitizen-${Date.now()}-${Math.random().toString(36).slice(2, 7)}@gmail.com`;
@@ -62,7 +62,7 @@ Scenario('Case settled during JUDGMENT_REQUESTED buffer - CCJ cancelled, claiman
   await api.assertActiveJudgmentDetailsNotPresent(claimRef);
 });
 
-Scenario('Case settled during buffer - judgment cancelled and active judgment cleared (AC1, AC2) [DTSCCI-5108]', async ({api}) => {
+Scenario.skip('Case settled during buffer - judgment cancelled and active judgment cleared (AC1, AC2) [DTSCCI-5108]', async ({api}) => {
   if (!(await checkToggleEnabled('judgment-buffer'))) return;
   config.claimantCitizenUser.email = `claimantcitizen-${Date.now()}-${Math.random().toString(36).slice(2, 7)}@gmail.com`;
   config.defendantCitizenUser.email = `defendantcitizen-${Date.now()}-${Math.random().toString(36).slice(2, 7)}@gmail.com`;

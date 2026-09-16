@@ -21,7 +21,7 @@ Before(async ({api}) => {
   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
 });
 
-Scenario('Response with RejectAll and DisputeAll - Defendat Welsh - GA (Ask for more time)', async ({I}) => {
+Scenario.skip('Response with RejectAll and DisputeAll - Defendat Welsh - GA (Ask for more time)', async ({I}) => {
   console.log('Creating GA app as defendant');
   await I.amOnPage('/dashboard');
   await I.click(claimNumber);

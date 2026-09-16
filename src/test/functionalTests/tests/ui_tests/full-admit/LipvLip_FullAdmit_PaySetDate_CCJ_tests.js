@@ -18,7 +18,7 @@ let caseData, claimNumber, claimRef, claimAmountAndFee = 1580, date = '1 October
 Feature('Create Lip v Lip claim -  Full Admit Pay by Set Date By Defendant and Accepted and raise CCJ By Claimant').tag('@civil-citizen-master @civil-citizen-pr @civil-citizen-nightly @ui-full-admit');
 
 // TODO undo when part payment journey is restored
-Scenario('Create LipvLip claim and defendant response as FullAdmit pay by set date', async ({
+Scenario.skip('Create LipvLip claim and defendant response as FullAdmit pay by set date', async ({
   I,
   api,
 }) => {

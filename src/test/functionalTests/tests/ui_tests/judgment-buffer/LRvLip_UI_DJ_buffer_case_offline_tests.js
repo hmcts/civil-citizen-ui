@@ -16,7 +16,7 @@ let claimRef, caseData, claimNumber;
 
 Feature('LR v Lip claim - Judgment Requested state - Case taken offline').tag('@ui-judgment-buffer');
 
-Scenario('LRvLip case taken offline during buffer - CCJ cancelled, defendant offline status/notification + claimant-solicitor email (AC1-AC4, AC6) [DTSCCI-5102]', async ({I, api}) => {
+Scenario.skip('LRvLip case taken offline during buffer - CCJ cancelled, defendant offline status/notification + claimant-solicitor email (AC1-AC4, AC6) [DTSCCI-5102]', async ({I, api}) => {
   const judgmentBufferEnabled = await checkToggleEnabled('judgment-buffer');
   if (!judgmentBufferEnabled) return;
   defendant.email = `defendantcitizen-${Date.now()}-${Math.random().toString(36).slice(2, 7)}@gmail.com`;

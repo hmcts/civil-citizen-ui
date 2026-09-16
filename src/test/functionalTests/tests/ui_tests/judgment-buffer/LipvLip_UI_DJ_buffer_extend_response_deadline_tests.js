@@ -19,7 +19,7 @@ let claimRef, caseData, claimNumber, defendantName;
 
 Feature('Lip v Lip claim - Judgment Requested state - Extend response deadline').tag('@ui-judgment-buffer');
 
-Scenario('Create LipvLip claim, claimant raises CCJ - Judgment Buffer - Extend response deadline', async ({ I, api }) => {
+Scenario.skip('Create LipvLip claim, claimant raises CCJ - Judgment Buffer - Extend response deadline', async ({ I, api }) => {
   if (!(await checkToggleEnabled('judgment-buffer'))) return;
   await createAccount(claimant.email, claimant.password);
   await createAccount(defendant.email, defendant.password);

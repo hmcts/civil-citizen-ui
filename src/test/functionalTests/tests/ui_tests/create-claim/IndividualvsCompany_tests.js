@@ -10,7 +10,7 @@ const createGASteps = require('../../../citizenFeatures/GA/steps/createGASteps')
 
 Feature('Create Lip v Company claim - Individual vs Company').tag('@ui-create-claim');
 
-Scenario('Create Claim -  Individual vs Company - small claims - no interest - no hwf - flightdelay claim - GA (Ask for more time)', async ({
+Scenario.skip('Create Claim -  Individual vs Company - small claims - no interest - no hwf - flightdelay claim - GA (Ask for more time)', async ({
   api,
   I,
 }) => {

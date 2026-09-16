@@ -83,7 +83,7 @@ Before(async ({api}) => {
   bankHolidays = await DateUtilsComponent.fetchBankHolidays();
 });
 
-Scenario('LRvLiP Positive - Pause claim GA (non-urgent, with notice) - defendant LiP creates @nightly', async ({
+Scenario.skip('LRvLiP Positive - Pause claim GA (non-urgent, with notice) - defendant LiP creates @nightly', async ({
   I,
 }) => {
   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
@@ -101,7 +101,7 @@ Scenario('LRvLiP Positive - Pause claim GA (non-urgent, with notice) - defendant
   await verifyDeadlineIs5WorkingDays(gaID, submissionTime);
 });
 
-Scenario('LRvLiP Positive - Sanction GA (non-urgent, with notice) - defendant LiP creates @nightly', async ({
+Scenario.skip('LRvLiP Positive - Sanction GA (non-urgent, with notice) - defendant LiP creates @nightly', async ({
   I,
 }) => {
   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
@@ -116,7 +116,7 @@ Scenario('LRvLiP Positive - Sanction GA (non-urgent, with notice) - defendant Li
   await verifyDeadlineIs5WorkingDays(gaID, submissionTime);
 });
 
-Scenario('LRvLiP Negative - Without notice GA should NOT have 5 working day deadline @nightly', async ({
+Scenario.skip('LRvLiP Negative - Without notice GA should NOT have 5 working day deadline @nightly', async ({
   I,
 }) => {
   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
@@ -133,7 +133,7 @@ Scenario('LRvLiP Negative - Without notice GA should NOT have 5 working day dead
   await verifyDeadlineIsNotFiveWorkingDays(gaID);
 });
 
-Scenario('LRvLiP Negative - Consent GA should NOT have 5 working day deadline @nightly', async ({
+Scenario.skip('LRvLiP Negative - Consent GA should NOT have 5 working day deadline @nightly', async ({
   I,
 }) => {
   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);

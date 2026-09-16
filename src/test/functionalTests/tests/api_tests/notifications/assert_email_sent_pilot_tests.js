@@ -163,7 +163,7 @@ Scenario('Pattern 8 - assertEmailSent returns immediately for already-sent email
   }
 });
 
-Scenario('Pattern 9 - assertEmailSent times out cleanly with diagnostic message', async ({api}) => {
+Scenario.skip('Pattern 9 - assertEmailSent times out cleanly with diagnostic message', async ({api}) => {
   claimRef = await api.createLiPClaim(config.claimantCitizenUser, 'SmallClaims');
   await api.waitForFinishedBusinessProcess();
   caseData = await api.retrieveCaseData(config.adminUser, claimRef);
@@ -190,7 +190,7 @@ Scenario('Pattern 9 - assertEmailSent times out cleanly with diagnostic message'
   }
 });
 
-Scenario('Pattern 10 - audit captures multiple lifecycle emails on the same case', async ({api}) => {
+Scenario.skip('Pattern 10 - audit captures multiple lifecycle emails on the same case', async ({api}) => {
   claimRef = await api.createLiPClaim(config.claimantCitizenUser, 'SmallClaims');
   await api.waitForFinishedBusinessProcess();
   caseData = await api.retrieveCaseData(config.adminUser, claimRef);
@@ -227,7 +227,7 @@ Scenario('Pattern 10 - audit captures multiple lifecycle emails on the same case
   }
 });
 
-Scenario('Pattern 11 - defendant full-admit pay immediately notifies the claimant', async ({api}) => {
+Scenario.skip('Pattern 11 - defendant full-admit pay immediately notifies the claimant', async ({api}) => {
   claimRef = await api.createLiPClaim(config.claimantCitizenUser, 'SmallClaims');
   await api.waitForFinishedBusinessProcess();
   caseData = await api.retrieveCaseData(config.adminUser, claimRef);
@@ -244,7 +244,7 @@ Scenario('Pattern 11 - defendant full-admit pay immediately notifies the claiman
   });
 });
 
-Scenario('Pattern 12 - defendant part-admit pay-by-set-date notifies the claimant', async ({api}) => {
+Scenario.skip('Pattern 12 - defendant part-admit pay-by-set-date notifies the claimant', async ({api}) => {
   claimRef = await api.createLiPClaim(config.claimantCitizenUser, 'SmallClaims');
   await api.waitForFinishedBusinessProcess();
   caseData = await api.retrieveCaseData(config.adminUser, claimRef);

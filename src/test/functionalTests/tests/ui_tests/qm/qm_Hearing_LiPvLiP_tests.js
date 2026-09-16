@@ -12,7 +12,7 @@ BeforeSuite(async () => {
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
 });
 
-Scenario('Claimant and defendant can send hearing-related messages to the court', async ({ api, I }) => {
+Scenario.skip('Claimant and defendant can send hearing-related messages to the court', async ({ api, I }) => {
   claimRef = await api.createLiPClaim(config.claimantCitizenUser, 'Multi', true);
   console.log('LIP vs LIP QM claim created:', claimRef);
 

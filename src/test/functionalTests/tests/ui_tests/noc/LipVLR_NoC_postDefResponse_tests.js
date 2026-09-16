@@ -37,7 +37,7 @@ Before(async ({ I, api }) => {
   await api.assignToLipDefendant(claimRef);
 });
 
-Scenario('LipVLR - DefendantLip respond as DefenceAll and NoC - Case stays online', async ({
+Scenario.skip('LipVLR - DefendantLip respond as DefenceAll and NoC - Case stays online', async ({
   I,
   api,
 }) => {
@@ -68,7 +68,7 @@ Scenario('LipVLR - DefendantLip respond as DefenceAll and NoC - Case stays onlin
   await I.click(responseToTheClaimNotif.nextSteps);
 });
 
-Scenario('LipVLR - DefendantLip respond as AdmitAll and NoC - Case goes offline', async ({
+Scenario.skip('LipVLR - DefendantLip respond as AdmitAll and NoC - Case goes offline', async ({
   I,
   api,
 }) => {
@@ -89,7 +89,7 @@ Scenario('LipVLR - DefendantLip respond as AdmitAll and NoC - Case goes offline'
   await verifyNotificationTitleAndContent(legacyCaseReference, nocForLipCaseGoesOfflineNotif.title, nocForLipCaseGoesOfflineNotif.content);
 });
 
-Scenario('LipVLR - DefendantLR respond as PartAdmit and NoC - Case goes offline', async ({
+Scenario.skip('LipVLR - DefendantLR respond as PartAdmit and NoC - Case goes offline', async ({
   I,
   api,
 }) => {

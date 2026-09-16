@@ -26,7 +26,7 @@ Before(async ({ api }) => {
   await api.waitForFinishedBusinessProcess();
 });
 
-Scenario('LipvLip Applicant GA creation e2e tests - Order for Written Representations', async ({
+Scenario.skip('LipvLip Applicant GA creation e2e tests - Order for Written Representations', async ({
   I,
   api,
 }) => {

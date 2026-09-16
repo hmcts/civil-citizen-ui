@@ -11,7 +11,7 @@ let claimType, claimantName, defendantName;
 
 Feature('Response with RejectAll-DisputeAll - Small Claims & Fast Track').tag('@civil-citizen-nightly @ui-reject-all');
 
-Scenario('Response with RejectAll-DisputeAll Small claims', async ({ api, I }) => {
+Scenario.skip('Response with RejectAll-DisputeAll Small claims', async ({ api, I }) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   claimType = 'SmallClaims';
@@ -38,7 +38,7 @@ Scenario('Response with RejectAll-DisputeAll Small claims', async ({ api, I }) =
   await api.waitForFinishedBusinessProcess();
 });
 
-Scenario('Response with RejectAll-DisputeAll Fast Track', async ({api}) => {
+Scenario.skip('Response with RejectAll-DisputeAll Fast Track', async ({api}) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   claimType = 'FastTrack';

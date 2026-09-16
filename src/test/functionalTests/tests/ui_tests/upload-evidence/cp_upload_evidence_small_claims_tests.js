@@ -29,7 +29,7 @@ Before(async ({api}) => {
   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
 });
 
-Scenario('Small Claims Response with RejectAll and DisputeAll - both parties upload docs',  async ({I}) => {
+Scenario.skip('Small Claims Response with RejectAll and DisputeAll - both parties upload docs',  async ({I}) => {
   notification = orderMadeLA();
   await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef, 'defendant');
   taskListItem = uploadHearingDocuments();

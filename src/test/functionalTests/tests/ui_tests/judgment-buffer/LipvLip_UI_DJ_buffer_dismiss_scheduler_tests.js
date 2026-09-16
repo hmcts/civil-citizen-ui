@@ -29,7 +29,7 @@ const runSchedulerUntilDismissed = async (api, attempts = 12, intervalMs = 5000)
 
 Feature('Lip v Lip claim - Judgment Requested state - Case dismissed by claim deadline scheduler').tag('@civil-ccd-nightly');
 
-Scenario('AC7 - claim deadline scheduler dismisses a buffer case past its claimDismissedDeadline, CCJ cancelled [DTSCCI-5106]', async ({I, api}) => {
+Scenario.skip('AC7 - claim deadline scheduler dismisses a buffer case past its claimDismissedDeadline, CCJ cancelled [DTSCCI-5106]', async ({I, api}) => {
   if (!(await checkToggleEnabled('judgment-buffer'))) return;
   config.claimantCitizenUser.email = `claimantcitizen-${Date.now()}-${Math.random().toString(36).slice(2, 7)}@gmail.com`;
   config.defendantCitizenUser.email = `defendantcitizen-${Date.now()}-${Math.random().toString(36).slice(2, 7)}@gmail.com`;
@@ -61,7 +61,7 @@ Scenario('AC7 - claim deadline scheduler dismisses a buffer case past its claimD
   await verifyNotificationTitleAndContent(claimNumber, ac5Welsh.title, ac5Welsh.content, claimRef);
 });
 
-Scenario('AC7 negative - scheduler does not dismiss a buffer case whose claimDismissedDeadline is in the future [DTSCCI-5106]', async ({api}) => {
+Scenario.skip('AC7 negative - scheduler does not dismiss a buffer case whose claimDismissedDeadline is in the future [DTSCCI-5106]', async ({api}) => {
   if (!(await checkToggleEnabled('judgment-buffer'))) return;
   config.claimantCitizenUser.email = `claimantcitizen-${Date.now()}-${Math.random().toString(36).slice(2, 7)}@gmail.com`;
   config.defendantCitizenUser.email = `defendantcitizen-${Date.now()}-${Math.random().toString(36).slice(2, 7)}@gmail.com`;

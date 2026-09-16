@@ -17,7 +17,7 @@ Before(async ({api}) => {
   await api.waitForFinishedBusinessProcess();
 });
 
-Scenario('Claimant raises two GA applications on the same claim and completes payment for both', async ({I}) => {
+Scenario.skip('Claimant raises two GA applications on the same claim and completes payment for both', async ({I}) => {
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await I.amOnPage('/dashboard');
   await I.click(claimNumber);

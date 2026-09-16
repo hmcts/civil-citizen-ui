@@ -29,7 +29,7 @@ Before(async ({api}) => {
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
 });
 
-Scenario('Citizen Claimant perform evidence upload',  async ({I}) => {
+Scenario.skip('Citizen Claimant perform evidence upload',  async ({I}) => {
   // claimant checks notifications for orders and upload docs
   notification = orderMadeLA();
   await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);

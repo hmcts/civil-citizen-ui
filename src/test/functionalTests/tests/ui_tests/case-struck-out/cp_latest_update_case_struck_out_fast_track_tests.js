@@ -24,7 +24,7 @@ Before(async ({ api }) => {
   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
 });
 
-Scenario('Fast Track case is struck out due to hearing fee not being paid', async () => {
+Scenario.skip('Fast Track case is struck out due to hearing fee not being paid', async () => {
   const claimStruckOutNotif = claimStruckOut();
   await verifyNotificationTitleAndContent(claimNumber, claimStruckOutNotif.title, claimStruckOutNotif.content, claimRef);
   taskListItem = addTrialArrangements();

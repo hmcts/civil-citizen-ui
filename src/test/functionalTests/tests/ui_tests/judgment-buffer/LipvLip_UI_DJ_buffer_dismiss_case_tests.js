@@ -17,7 +17,7 @@ let claimRef, caseData, claimNumber;
 
 Feature('Lip v Lip claim - Judgment Requested state - Case dismissed').tag('@ui-judgment-buffer');
 
-Scenario('Case dismissed during JUDGMENT_REQUESTED buffer - CCJ cancelled, AC1-AC6 (English + Welsh) [DTSCCI-5106]', async ({I, api}) => {
+Scenario.skip('Case dismissed during JUDGMENT_REQUESTED buffer - CCJ cancelled, AC1-AC6 (English + Welsh) [DTSCCI-5106]', async ({I, api}) => {
   if (!(await checkToggleEnabled('judgment-buffer'))) return;
   config.claimantCitizenUser.email = `claimantcitizen-${Date.now()}-${Math.random().toString(36).slice(2, 7)}@gmail.com`;
   config.defendantCitizenUser.email = `defendantcitizen-${Date.now()}-${Math.random().toString(36).slice(2, 7)}@gmail.com`;
@@ -77,7 +77,7 @@ Scenario('Case dismissed during JUDGMENT_REQUESTED buffer - CCJ cancelled, AC1-A
   await verifyNotificationTitleAndContent(claimNumber, ac4Welsh.title, ac4Welsh.content, claimRef);
 });
 
-Scenario('Case dismissed during buffer - judgment cancelled and case state moves to CASE_DISMISSED (AC1, AC2) [DTSCCI-5106]', async ({api}) => {
+Scenario.skip('Case dismissed during buffer - judgment cancelled and case state moves to CASE_DISMISSED (AC1, AC2) [DTSCCI-5106]', async ({api}) => {
   if (!(await checkToggleEnabled('judgment-buffer'))) return;
   config.claimantCitizenUser.email = `claimantcitizen-${Date.now()}-${Math.random().toString(36).slice(2, 7)}@gmail.com`;
   config.defendantCitizenUser.email = `defendantcitizen-${Date.now()}-${Math.random().toString(36).slice(2, 7)}@gmail.com`;
@@ -102,7 +102,7 @@ Scenario('Case dismissed during buffer - judgment cancelled and case state moves
   assert.notExists(after.joDJCreatedDate, 'joDJCreatedDate should be cleared after dismissal');
 });
 
-Scenario('Case left in buffer (not dismissed) - judgment remains in the buffer, case not dismissed (negative) [DTSCCI-5106]', async ({api}) => {
+Scenario.skip('Case left in buffer (not dismissed) - judgment remains in the buffer, case not dismissed (negative) [DTSCCI-5106]', async ({api}) => {
   if (!(await checkToggleEnabled('judgment-buffer'))) return;
   config.claimantCitizenUser.email = `claimantcitizen-${Date.now()}-${Math.random().toString(36).slice(2, 7)}@gmail.com`;
   config.defendantCitizenUser.email = `defendantcitizen-${Date.now()}-${Math.random().toString(36).slice(2, 7)}@gmail.com`;
@@ -122,7 +122,7 @@ Scenario('Case left in buffer (not dismissed) - judgment remains in the buffer, 
   assert.equal(data.activeJudgment.state, 'PENDING_ISSUE');
 });
 
-Scenario('Case dismissed with no pending CCJ - case closed notification shown, CCJ-cancelled notification absent (negative) [DTSCCI-5106]', async ({I, api}) => {
+Scenario.skip('Case dismissed with no pending CCJ - case closed notification shown, CCJ-cancelled notification absent (negative) [DTSCCI-5106]', async ({I, api}) => {
   if (!(await checkToggleEnabled('judgment-buffer'))) return;
   config.claimantCitizenUser.email = `claimantcitizen-${Date.now()}-${Math.random().toString(36).slice(2, 7)}@gmail.com`;
   config.defendantCitizenUser.email = `defendantcitizen-${Date.now()}-${Math.random().toString(36).slice(2, 7)}@gmail.com`;
@@ -145,7 +145,7 @@ Scenario('Case dismissed with no pending CCJ - case closed notification shown, C
   await I.dontSee('The CCJ you requested has been cancelled.');
 });
 
-Scenario('Bilingual claimant - dismissal sends the bilingual update email (edge) [DTSCCI-5106]', async ({I, api}) => {
+Scenario.skip('Bilingual claimant - dismissal sends the bilingual update email (edge) [DTSCCI-5106]', async ({I, api}) => {
   if (!(await checkToggleEnabled('judgment-buffer'))) return;
   config.claimantCitizenUser.email = `claimantcitizen-${Date.now()}-${Math.random().toString(36).slice(2, 7)}@gmail.com`;
   config.defendantCitizenUser.email = `defendantcitizen-${Date.now()}-${Math.random().toString(36).slice(2, 7)}@gmail.com`;

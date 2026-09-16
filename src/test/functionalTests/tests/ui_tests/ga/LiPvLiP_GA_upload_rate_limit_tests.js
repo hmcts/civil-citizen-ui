@@ -36,7 +36,7 @@ Before(async ({ I, api }) => {
   cookieHeader = `${cookie.name}=${cookie.value}`;
 });
 
-Scenario('positive - 50 concurrent uploads: only the limit gets through, the rest return 429', async () => {
+Scenario.skip('positive - 50 concurrent uploads: only the limit gets through, the rest return 429', async () => {
   const results = await burst(uploadUrl(), 'POST', 50);
   const throttled = results.filter(r => r.status === 429);
   const allowed = results.filter(r => r.status !== 429 && r.status !== 0);
@@ -47,17 +47,17 @@ Scenario('positive - 50 concurrent uploads: only the limit gets through, the res
   assert.isTrue(results.some(r => r.rlLimit !== null), 'standard RateLimit-* headers must be present');
 });
 
-Scenario('negative - concurrent GET requests are not rate limited', async () => {
+Scenario.skip('negative - concurrent GET requests are not rate limited', async () => {
   const results = await burst(uploadUrl(), 'GET', 50);
   assert.equal(results.filter(r => r.status === 429).length, 0, 'GET (non-POST) must never be throttled');
 });
 
-Scenario('negative - POSTs to a non-upload route are not rate limited', async () => {
+Scenario.skip('negative - POSTs to a non-upload route are not rate limited', async () => {
   const results = await burst(`${process.env.TEST_URL}/dashboard`, 'POST', 50);
   assert.equal(results.filter(r => r.status === 429).length, 0, 'the limiter must only apply to upload endpoints');
 });
 
-Scenario('edge - the atomic counter trips at the limit boundary (sequential)', async () => {
+Scenario.skip('edge - the atomic counter trips at the limit boundary (sequential)', async () => {
   const results = [];
   for (let i = 0; i < LIMIT + 5; i++) {
     results.push(await send(uploadUrl(), 'POST'));

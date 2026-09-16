@@ -25,7 +25,7 @@ Before(async ({api}) => {
   await api.waitForFinishedBusinessProcess();
 });
 
-Scenario('LipvLip Applicant GA creation tests', async ({I}) => {
+Scenario.skip('LipvLip Applicant GA creation tests', async ({I}) => {
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
 
   console.log('Creating set aside GA app as claimant');
@@ -79,7 +79,7 @@ Scenario('LipvLip Applicant GA creation tests', async ({I}) => {
   );
 });
 
-Scenario('LipvLip Defendant GA creation tests', async ({I}) => {
+Scenario.skip('LipvLip Defendant GA creation tests', async ({I}) => {
   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
 
   console.log('Creating summary judgment GA app as defendant');

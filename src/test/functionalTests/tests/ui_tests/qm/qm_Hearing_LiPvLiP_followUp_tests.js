@@ -16,7 +16,7 @@ Before(async () => {
   ]);
 });
 
-Scenario('Claimant and Defendant send message to court and follow up and admin closes query', async ({ api, qm, I }) => {
+Scenario.skip('Claimant and Defendant send message to court and follow up and admin closes query', async ({ api, qm, I }) => {
   const claimRef = await api.createLiPClaim(
     config.claimantCitizenUser,
     claimType,

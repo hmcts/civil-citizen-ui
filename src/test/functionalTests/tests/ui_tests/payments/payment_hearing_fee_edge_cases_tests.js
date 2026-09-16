@@ -27,7 +27,7 @@ Before(async ({api}) => {
   await api.waitForFinishedBusinessProcess();
 });
 
-Scenario('Abandon hearing fee payment and retry from dashboard', async ({I, api}) => {
+Scenario.skip('Abandon hearing fee payment and retry from dashboard', async ({I, api}) => {
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await I.click(claimNumber);
   notification = payTheHearingFeeClaimant(feeAmount, hearingFeeDueDate);

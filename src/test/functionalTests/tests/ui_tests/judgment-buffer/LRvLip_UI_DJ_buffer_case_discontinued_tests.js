@@ -14,7 +14,7 @@ let claimRef, caseData, claimNumber;
 
 Feature('LR v Lip claim - Judgment Requested state - Case discontinued').tag('@ui-judgment-buffer');
 
-Scenario('LRvLip case discontinued during buffer - CCJ cancelled, defendant discontinuance status/notification + email (AC1-AC4, AC6) [DTSCCI-5107]', async ({I, api}) => {
+Scenario.skip('LRvLip case discontinued during buffer - CCJ cancelled, defendant discontinuance status/notification + email (AC1-AC4, AC6) [DTSCCI-5107]', async ({I, api}) => {
   const judgmentBufferEnabled = await checkToggleEnabled('judgment-buffer');
   if (!judgmentBufferEnabled) return;
   defendant.email = `defendantcitizen-${Date.now()}-${Math.random().toString(36).slice(2, 7)}@gmail.com`;

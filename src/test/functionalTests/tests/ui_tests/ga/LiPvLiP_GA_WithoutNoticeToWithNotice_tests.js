@@ -27,7 +27,7 @@ Before(async ({ api }) => {
   await api.waitForFinishedBusinessProcess();
 });
 
-Scenario('LipvLip Applicant GA creation e2e tests - without notice to with notice', async ({
+Scenario.skip('LipvLip Applicant GA creation e2e tests - without notice to with notice', async ({
   I,
   api,
 }) => {

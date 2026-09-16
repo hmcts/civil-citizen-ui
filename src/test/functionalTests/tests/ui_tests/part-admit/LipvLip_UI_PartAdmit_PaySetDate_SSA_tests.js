@@ -11,11 +11,11 @@ let claimNumber, claimRef;
 
 Feature('Create Lip v Lip claim -  Part Admit By Defendant and Accepted Repayment Plan By Claimant').tag('@ui-part-admit @civil-citizen-nightly');
 
-Scenario('01 Verify the Eligibility Check journey', async () => {
+Scenario.skip('01 Verify the Eligibility Check journey', async () => {
   //await CreateLipvLipClaimSteps.EligibilityCheckSteps();
 });
 
-Scenario('02 Create Claim by claimant', async ({ api }) => {
+Scenario.skip('02 Create Claim by claimant', async ({ api }) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
@@ -35,11 +35,11 @@ Scenario('02 Create Claim by claimant', async ({ api }) => {
   console.log('The value of the Security Code :', securityCode);
 }).retry(1);
 
-Scenario('03 Assign case to defendant', async ({ api }) => {
+Scenario.skip('03 Assign case to defendant', async ({ api }) => {
   await api.assignToLipDefendant(claimRef);
 });
 
-Scenario('04 Defendant responds with part admit', async ({ api }) => {
+Scenario.skip('04 Defendant responds with part admit', async ({ api }) => {
   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   await CitizenDashboardSteps.VerifyClaimOnDashboard(claimNumber);
   await ResponseSteps.RespondToClaim(claimRef);

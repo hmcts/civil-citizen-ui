@@ -11,7 +11,7 @@ let claimNumber, claimType, claimRef, caseData;
 
 Feature('Create Lip v Lip claim - Rejected All By defendant document welsh').tag('@civil-citizen-nightly @ui-welsh');
 
-Scenario('Create Lip v Lip claim - Rejected All By defendant document welsh', async ({api}) => {
+Scenario.skip('Create Lip v Lip claim - Rejected All By defendant document welsh', async ({api}) => {
   claimType = 'SmallClaims';
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);

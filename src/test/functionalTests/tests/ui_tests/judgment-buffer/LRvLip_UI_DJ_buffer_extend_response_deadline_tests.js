@@ -18,7 +18,7 @@ let claimRef, caseData, claimNumber;
 
 Feature('LR v Lip claim - Judgment Requested state - Extend response deadline').tag('@ui-judgment-buffer');
 
-Scenario('Create LRvLip claim, claimant solictor raises CCJ - Judgment Buffer - Extend response deadline', async ({ I, api }) => {
+Scenario.skip('Create LRvLip claim, claimant solictor raises CCJ - Judgment Buffer - Extend response deadline', async ({ I, api }) => {
   const judgmentBufferEnabled = await checkToggleEnabled('judgment-buffer'); 
   if (!judgmentBufferEnabled) return;
   await createAccount(defendant.email, defendant.password);

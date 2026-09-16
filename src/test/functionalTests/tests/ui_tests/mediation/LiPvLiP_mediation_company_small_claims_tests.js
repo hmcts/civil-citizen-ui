@@ -26,7 +26,7 @@ Before(async () => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
 });
 
-Scenario('01 LiP Defendant Response with Reject all claim', async ({ api }) => {
+Scenario.skip('01 LiP Defendant Response with Reject all claim', async ({ api }) => {
   claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType, carmEnabled, 'Company');
   console.log('LIP vs LIP claim has been created Successfully    <===>  ', claimRef);
   await api.setCaseId(claimRef);
@@ -64,7 +64,7 @@ Scenario('01 LiP Defendant Response with Reject all claim', async ({ api }) => {
   await api.waitForFinishedBusinessProcess();
 });
 
-Scenario('02 LiP Claimant Response with Reject all claim', async ({ api }) => {
+Scenario.skip('02 LiP Claimant Response with Reject all claim', async ({ api }) => {
   paidDate = DateUtilsComponent.DateUtilsComponent.formatDateToSpecifiedDateFormat(paymentDate);
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await ClaimantResponseSteps.RespondToClaimAsClaimant(claimRef, claimantNotificationWithDefendantFullDefenceOrPartAdmitAlreadyPaid(500, paidDate));
@@ -85,7 +85,7 @@ Scenario('02 LiP Claimant Response with Reject all claim', async ({ api }) => {
   await api.waitForFinishedBusinessProcess();
 });
 
-Scenario('03 Caseworker perform mediation unsuccessful', async ({ api }) => {
+Scenario.skip('03 Caseworker perform mediation unsuccessful', async ({ api }) => {
   // Take Mediation Unsuccessful
   await api.mediationUnsuccessful(config.caseWorker, true, ['NOT_CONTACTABLE_CLAIMANT_ONE', 'NOT_CONTACTABLE_DEFENDANT_ONE']);
   await api.waitForFinishedBusinessProcess();

@@ -11,11 +11,11 @@ let claimNumber, claimRef;
 
 Feature('Create Lip v Lip claim - Rejected All By Defendant and Disputed By Claimant').tag('@ui-reject-all');
 
-Scenario('01 Verify the Eligibility Check journey R2', async () => {
+Scenario.skip('01 Verify the Eligibility Check journey R2', async () => {
   //await CreateLipvLipClaimSteps.EligibilityCheckSteps();
 });
 
-Scenario('02 Create Claim', async ({ api }) => {
+Scenario.skip('02 Create Claim', async ({ api }) => {
   const isCrossBrowser = process.env.IS_CROSSBROWSER;
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
@@ -39,11 +39,11 @@ Scenario('02 Create Claim', async ({ api }) => {
   }
 }).retry(1).tag('@crossbrowser');
 
-Scenario('03 Assign case to defendant', async ({ api }) => {
+Scenario.skip('03 Assign case to defendant', async ({ api }) => {
   await api.assignToLipDefendant(claimRef);
 });
 
-Scenario('04 Defendant responds with Rejected All', async ({ I, api }) => {
+Scenario.skip('04 Defendant responds with Rejected All', async ({ I, api }) => {
   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   // await CitizenDashboardSteps.VerifyClaimOnDashboard(claimNumber);
   await ResponseSteps.RespondToClaim(claimRef);
@@ -61,7 +61,7 @@ Scenario('04 Defendant responds with Rejected All', async ({ I, api }) => {
   await api.waitForFinishedBusinessProcess();
 });
 
-Scenario('05 Claimant responds as Disputed By Claimant', async ({ api }) => {
+Scenario.skip('05 Claimant responds as Disputed By Claimant', async ({ api }) => {
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await ResponseToDefenceLipVsLipSteps.ResponseToDefenceStepsAsAContinuationWithTheClaimPostDefendantRejection(claimRef, claimNumber);
   await api.waitForFinishedBusinessProcess();

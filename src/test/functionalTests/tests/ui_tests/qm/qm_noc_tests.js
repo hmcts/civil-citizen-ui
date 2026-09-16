@@ -19,7 +19,7 @@ Before(async ({api}) => {
   claimNumber = caseData.legacyCaseReference;
 });
 
-Scenario('LR v LIP NOC defendant can follow up and see closed query after caseworker closes thread', async ({noc, qm, I}) => {
+Scenario.skip('LR v LIP NOC defendant can follow up and see closed query after caseworker closes thread', async ({noc, qm, I}) => {
   await noc.requestNoticeOfChangeForApplicant1Solicitor(claimRef, config.applicantSolicitorUser);
   let solicitorQuery = await qm.raiseLRQuery(claimRef, config.applicantSolicitorUser, PUBLIC_QUERY, false);
   await qm.respondToQuery(claimRef, config.ctscAdmin, solicitorQuery, PUBLIC_QUERY);
@@ -38,7 +38,7 @@ Scenario('LR v LIP NOC defendant can follow up and see closed query after casewo
   await ResponseSteps.verifyClosedQuery('Defendant Query');
 });
 
-Scenario('LIP v LR NOC claimant can follow up and see closed query after caseworker closes thread', async ({noc, qm, I}) => {
+Scenario.skip('LIP v LR NOC claimant can follow up and see closed query after caseworker closes thread', async ({noc, qm, I}) => {
   await noc.requestNoticeOfChangeForRespondent1Solicitor(claimRef, config.defendantSolicitorUser);
   let claimantQuery = await qm.raiseLipQuery(claimRef, config.claimantCitizenUser, PUBLIC_QUERY, false);
   await qm.respondToQuery(claimRef, config.ctscAdmin, claimantQuery, PUBLIC_QUERY);

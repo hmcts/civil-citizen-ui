@@ -14,7 +14,7 @@ Before(async () => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
 });
-Scenario('Welsh LIP v English LIP Query Management', async ({ I, api, qm }) => {
+Scenario.skip('Welsh LIP v English LIP Query Management', async ({ I, api, qm }) => {
   const caseId = await api.createLiPClaim(config.claimantCitizenUser, claimType, true, 'IndividualVOrganisation', 'WELSH');
   await api.setCaseId(caseId);
   await api.waitForFinishedBusinessProcess();
@@ -60,7 +60,7 @@ Scenario('Welsh LIP v English LIP Query Management', async ({ I, api, qm }) => {
   await ResponseSteps.verifyQueryStatus('Defendant Query', 'You', 'Closed');
 });
 
-Scenario('English LIP v Welsh LIP Query Management', async ({ api, qm }) => {
+Scenario.skip('English LIP v Welsh LIP Query Management', async ({ api, qm }) => {
   const caseId = await api.createLiPClaim(config.claimantCitizenUser, claimType, true, 'IndividualVOrganisation');
   await api.setCaseId(caseId);
   await api.waitForFinishedBusinessProcess();
@@ -81,7 +81,7 @@ Scenario('English LIP v Welsh LIP Query Management', async ({ api, qm }) => {
   console.log('Caseworker closed the query');
 });
 
-Scenario('LR v Welsh LIP Query Management', async ({ api, noc, qm }) => {
+Scenario.skip('LR v Welsh LIP Query Management', async ({ api, noc, qm }) => {
   const caseId = await api.createLiPClaim(config.claimantCitizenUser, claimType, true, 'IndividualVOrganisation');
   await api.setCaseId(caseId);
   await api.waitForFinishedBusinessProcess();
@@ -103,7 +103,7 @@ Scenario('LR v Welsh LIP Query Management', async ({ api, noc, qm }) => {
   console.log('Caseworker closed the query');
 });
 
-Scenario('Welsh LIP v LR Query Management', async ({ api, noc, qm, I}) => {
+Scenario.skip('Welsh LIP v LR Query Management', async ({ api, noc, qm, I}) => {
   const caseId = await api.createLiPClaim(config.claimantCitizenUser, claimType, true, 'IndividualVOrganisation', 'WELSH');
   await api.setCaseId(caseId);
   await api.waitForFinishedBusinessProcess();

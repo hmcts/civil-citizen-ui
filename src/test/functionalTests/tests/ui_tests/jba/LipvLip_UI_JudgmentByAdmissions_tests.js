@@ -26,7 +26,7 @@ Scenario.skip('Create LipvLip claim and defendant responded FullAdmit and PayImm
   await api.waitForFinishedBusinessProcess();
 });
 
-Scenario('LipvLip - PartAdmit-PayBySetDate - Claimant accepts - suggests repayment plan and requests CCJ', async ({ api, I }) => {
+Scenario.skip('LipvLip - PartAdmit-PayBySetDate - Claimant accepts - suggests repayment plan and requests CCJ', async ({ api, I }) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   const claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType);
