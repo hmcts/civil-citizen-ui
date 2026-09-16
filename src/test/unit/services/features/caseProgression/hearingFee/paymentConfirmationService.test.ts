@@ -10,17 +10,41 @@ import {
   PAY_HEARING_FEE_SUCCESSFUL_URL,
   HEARING_FEE_APPLY_HELP_FEE_SELECTION,
 } from 'routes/urls';
+import {Claim} from 'models/claim';
+import {CaseProgression} from 'common/models/caseProgression/caseProgression';
+import {Hearing} from 'models/caseProgression/hearing';
+import {PaymentInformation} from 'models/feePayment/paymentInformation';
+import {getClaimById} from 'modules/utilityService';
 
 jest.mock('modules/draft-store');
 jest.mock('services/features/directionsQuestionnaire/directionQuestionnaireService');
+jest.mock('modules/utilityService', () => ({
+  getClaimById: jest.fn(),
+  getRedisStoreForSession: jest.fn(),
+}));
 
 declare const appRequest: requestModels.AppRequest;
 const mockedAppRequest = requestModels as jest.Mocked<typeof appRequest>;
 const claimId = '1';
 
+const claimWithPaymentReference = (paymentReference?: string): Claim => {
+  const claim = new Claim();
+  claim.caseProgression = new CaseProgression();
+  claim.caseProgression.hearing = new Hearing();
+  if (paymentReference) {
+    claim.caseProgression.hearing.paymentInformation = new PaymentInformation(undefined, paymentReference);
+  }
+  return claim;
+};
+
 describe('PaymentConfirmation Service', () => {
   app.locals.draftStoreClient = mockCivilClaim;
   jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
+
+  beforeEach(() => {
+    (getClaimById as jest.Mock).mockResolvedValue(claimWithPaymentReference('RC-1701-0909-0602-0418'));
+  });
+
   it('should return to payment successful screen if payment is successful', async () => {
     const mockHearingFeePaymentInfo = {
       status: 'Success',
@@ -77,4 +101,14 @@ describe('PaymentConfirmation Service', () => {
     );
   });
 
+  it('should return to Payment Unsuccessful page when payment reference is missing', async () => {
+    (getClaimById as jest.Mock).mockResolvedValueOnce(claimWithPaymentReference());
+    const getFeePaymentStatus = jest.spyOn(CivilServiceClient.prototype, 'getFeePaymentStatus');
+    getFeePaymentStatus.mockClear();
+
+    const actualPaymentRedirectUrl = await getRedirectUrl(claimId, mockedAppRequest);
+
+    expect(actualPaymentRedirectUrl).toBe(PAY_HEARING_FEE_UNSUCCESSFUL_URL);
+    expect(getFeePaymentStatus).not.toHaveBeenCalled();
+  });
 });
