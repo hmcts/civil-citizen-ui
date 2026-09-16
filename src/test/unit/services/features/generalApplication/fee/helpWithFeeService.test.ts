@@ -241,6 +241,7 @@ describe('apply help with application fee selection', () => {
       .mockResolvedValueOnce(ccdClaim);
     const mockClaimFeePaymentRedirectInfo = {
       status: 'initiated',
+      paymentReference: 'RC-1701-0909-0602-0418',
       nextUrl: nextUrl,
     };
     jest.spyOn(feePaymentServiceModule, 'getGaFeePaymentRedirectInformation').mockResolvedValueOnce(mockClaimFeePaymentRedirectInfo);
@@ -259,6 +260,7 @@ describe('apply help with application fee selection', () => {
       .mockResolvedValueOnce(ccdClaim);
     const mockClaimFeePaymentRedirectInfo = {
       status: 'initiated',
+      paymentReference: 'RC-1701-0909-0602-0418',
       nextUrl: nextUrl,
     };
     jest.spyOn(feePaymentServiceModule, 'getGaFeePaymentRedirectInformation').mockResolvedValueOnce(mockClaimFeePaymentRedirectInfo);
@@ -279,6 +281,7 @@ describe('apply help with application fee selection', () => {
       .mockResolvedValueOnce(ccdClaim);
     const mockClaimFeePaymentRedirectInfo = {
       status: 'initiated',
+      paymentReference: 'RC-1701-0909-0602-0418',
       nextUrl: nextUrl,
     };
     jest.spyOn(feePaymentServiceModule, 'getGaFeePaymentRedirectInformation').mockResolvedValueOnce(mockClaimFeePaymentRedirectInfo);
@@ -299,6 +302,7 @@ describe('apply help with application fee selection', () => {
       .mockResolvedValueOnce(ccdClaim);
     const mockClaimFeePaymentRedirectInfo = {
       status: 'initiated',
+      paymentReference: 'RC-1701-0909-0602-0418',
       nextUrl: nextUrl,
     };
     jest.spyOn(feePaymentServiceModule, 'getGaFeePaymentRedirectInformation').mockResolvedValueOnce(mockClaimFeePaymentRedirectInfo);
