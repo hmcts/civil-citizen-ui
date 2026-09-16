@@ -247,6 +247,9 @@ civil-service:
 
     am-role-assignment-service:
       java:
+        livenessDelay: 0
+        startupPeriod: 120
+        startupFailureThreshold: 3
         devmemoryRequests: 2048Mi
         devcpuRequests: 50m
         devmemoryLimits: 4096Mi
