@@ -8,12 +8,10 @@ import {CivilServiceClient} from 'client/civilServiceClient';
 import {Claim} from 'models/claim';
 import nock from 'nock';
 import config from 'config';
-import {getDraftClaim, updateDraftClaim} from 'modules/draft-store/draftStoreManagerService';
+import {generateRedisKey, getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {ClaimDetails} from 'form/models/claim/details/claimDetails';
 import {Session} from 'express-session';
 import * as feePaymentServiceModule from 'services/features/feePayment/feePaymentService';
-import {CivilClaimResponse} from 'models/civilClaimResponse';
-import {DraftClaimManagerResult} from 'models/draft/draftClaim';
 
 const civilServiceUrl = config.get<string>('services.civilService.url');
 
@@ -23,24 +21,6 @@ jest.mock('../../../../../../main/modules/draft-store/draftStoreService', () => 
   generateRedisKey: jest.fn(),
   saveDraftClaim: jest.fn(),
 }));
-jest.mock('modules/draft-store/draftStoreManagerService');
-
-const mockGetDraftClaim = getDraftClaim as jest.Mock;
-const mockUpdateDraftClaim = updateDraftClaim as jest.Mock;
-
-const createMockManagerResult = (claim: Claim): DraftClaimManagerResult => ({
-  claimResponse: {
-    id: '123',
-    case_data: claim,
-  } as unknown as CivilClaimResponse,
-  rawResponse: {
-    draftId: 'draft-123',
-    payload: claim,
-  } as unknown as DraftClaimManagerResult['rawResponse'],
-  createdAt: '2026-08-01T10:00:00.000Z',
-  updatedAt: '2026-08-01T11:00:00.000Z',
-  expiresAt: '2026-09-01T10:00:00.000Z',
-});
 jest.mock('modules/utilityService', () => ({
   getClaimById: jest.fn(),
   getRedisStoreForSession: jest.fn(),
@@ -81,7 +61,6 @@ describe('on GET', () => {
   });
 
   it('should handle the get call of fee summary details', async () => {
-    //given
     const claimId = '111111';
     const mockClaimData = {
       totalClaimAmount: 1000,
@@ -105,7 +84,6 @@ describe('on GET', () => {
       hasBusinessProcessFinished: () => true,
     };
     (getClaimBusinessProcess as jest.Mock).mockResolvedValueOnce(mockBusinessProcessData);
-    //when-then
     await request(app)
       .get(CLAIM_FEE_BREAKUP.replace(':id', claimId)).expect((res: request.Response) => {
         expect(res.status).toBe(200);
@@ -123,7 +101,6 @@ describe('on GET', () => {
   });
 
   it('should handle the get call of fee summary details when business process has not finished', async () => {
-    //given
     const claimId = '111111';
     const mockClaimData = {
       totalClaimAmount: 1000,
@@ -148,7 +125,6 @@ describe('on GET', () => {
       isInterestFromASpecificDate: () => false,
     };
     (getClaimBusinessProcess as jest.Mock).mockResolvedValueOnce(mockBusinessProcessData);
-    //when-then
     await request(app)
       .get(CLAIM_FEE_BREAKUP.replace(':id', claimId)).expect((res: request.Response) => {
         expect(res.status).toBe(200);
@@ -166,9 +142,7 @@ describe('on GET', () => {
   });
 
   it('should return 500 status code when error occurs', async () => {
-    //given
     (getClaimById as jest.Mock).mockRejectedValueOnce(new Error('Redis failure'));
-    //when-then
     await request(app)
       .get(CLAIM_FEE_BREAKUP)
       .expect((res: request.Response) => {
@@ -192,17 +166,18 @@ describe('on POST', () => {
     app = express();
     app.use(express.json());
     app.use((req, res, next) => {
-      req.session = { user: { id: 'jfkdljfd' }, draftId: 'draft-123' } as unknown as Session;
+      req.session = { user: { id: 'jfkdljfd' } } as unknown as Session;
       next();
     });
     app.use(claimFeeBreakDownController);
-    mockUpdateDraftClaim.mockResolvedValue({});
+    (generateRedisKey as jest.Mock).mockReturnValue('jfkdljfd');
+    (saveDraftClaim as jest.Mock).mockResolvedValue(undefined);
   });
 
   it('should handle the get call of fee summary details', async () => {
     const claim = new Claim();
     claim.claimDetails = new ClaimDetails();
-    mockGetDraftClaim.mockResolvedValue(createMockManagerResult(claim));
+    (getCaseDataFromStore as jest.Mock).mockResolvedValue(claim);
     jest.spyOn(CivilServiceClient.prototype, 'getFeePaymentRedirectInformation').mockResolvedValueOnce({});
 
     await request(app)
@@ -215,7 +190,7 @@ describe('on POST', () => {
   it('should enable the warning text if payment request is failed', async () => {
     const claim = new Claim();
     claim.claimDetails = new ClaimDetails();
-    mockGetDraftClaim.mockResolvedValue(createMockManagerResult(claim));
+    (getCaseDataFromStore as jest.Mock).mockResolvedValue(claim);
     jest.spyOn(CivilServiceClient.prototype, 'getFeePaymentRedirectInformation').mockRejectedValueOnce(new Error('something went wrong'));
     (getClaimById as jest.Mock).mockResolvedValueOnce(new Claim());
 
@@ -230,7 +205,7 @@ describe('on POST', () => {
     const claim = new Claim();
     claim.claimDetails = new ClaimDetails();
     claim.claimDetails.claimFeePayment = {paymentReference: 'RC-1234-1234-1234-1234'};
-    mockGetDraftClaim.mockResolvedValue(createMockManagerResult(claim));
+    (getCaseDataFromStore as jest.Mock).mockResolvedValue(claim);
     (getClaimById as jest.Mock).mockResolvedValueOnce(claim);
     jest.spyOn(feePaymentServiceModule, 'getFeePaymentStatus').mockResolvedValueOnce({status: 'Success'});
 
@@ -246,7 +221,7 @@ describe('on POST', () => {
     const claim = new Claim();
     claim.claimDetails = new ClaimDetails();
     claim.claimDetails.claimFeePayment = {paymentReference: 'RC-1234-1234-1234-1234'};
-    mockGetDraftClaim.mockResolvedValue(createMockManagerResult(claim));
+    (getCaseDataFromStore as jest.Mock).mockResolvedValue(claim);
     (getClaimById as jest.Mock).mockResolvedValueOnce(claim);
     jest.spyOn(feePaymentServiceModule, 'getFeePaymentStatus').mockResolvedValueOnce({status: 'Failed'});
     jest.spyOn(CivilServiceClient.prototype, 'getFeePaymentRedirectInformation').mockResolvedValueOnce({nextUrl: paymentUrl});
@@ -262,7 +237,7 @@ describe('on POST', () => {
     const claim = new Claim();
     claim.claimDetails = new ClaimDetails();
     claim.claimDetails.claimFeePayment = {paymentReference: 'RC-1234-1234-1234-1234'};
-    mockGetDraftClaim.mockResolvedValue(createMockManagerResult(claim));
+    (getCaseDataFromStore as jest.Mock).mockResolvedValue(claim);
     (getClaimById as jest.Mock).mockResolvedValueOnce(claim);
     jest.spyOn(feePaymentServiceModule, 'getFeePaymentStatus').mockResolvedValueOnce({status: 'Failed'});
     jest.spyOn(CivilServiceClient.prototype, 'getFeePaymentRedirectInformation').mockResolvedValueOnce(undefined);
@@ -279,7 +254,7 @@ describe('on POST', () => {
     jest.spyOn(CivilServiceClient.prototype, 'getFeePaymentRedirectInformation').mockResolvedValueOnce({nextUrl: paymentUrl});
     const claim = new Claim();
     claim.claimDetails = new ClaimDetails();
-    mockGetDraftClaim.mockResolvedValue(createMockManagerResult(claim));
+    (getCaseDataFromStore as jest.Mock).mockResolvedValue(claim);
     (getClaimById as jest.Mock).mockResolvedValueOnce(new Claim());
     jest.spyOn(feePaymentServiceModule, 'getFeePaymentStatus').mockRejectedValueOnce(new Error('something went wrong'));
 
