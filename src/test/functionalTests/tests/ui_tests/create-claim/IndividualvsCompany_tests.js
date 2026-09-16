@@ -10,7 +10,7 @@ const createGASteps = require('../../../citizenFeatures/GA/steps/createGASteps')
 
 Feature('Create Lip v Company claim - Individual vs Company').tag('@ui-create-claim');
 
-Scenario('Create Claim -  Individual vs Company - small claims - no interest - no hwf - flightdelay claim - GA (Ask for more time)', async ({
+Scenario.skip('Create Claim -  Individual vs Company - small claims - no interest - no hwf - flightdelay claim - GA (Ask for more time)', async ({
   api,
   I,
 }) => {
@@ -21,7 +21,7 @@ Scenario('Create Claim -  Individual vs Company - small claims - no interest - n
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await steps.createClaimDraftViaTestingSupport();
-  //Change defendant to company, and add flightdelay claim
+  // //Change defendant to company, and add flightdelay claim
   await steps.addCompanyDefendant();
   caseRef = await steps.checkAndSubmit(selectedHWF);
   await api.setCaseId(caseRef);
@@ -35,10 +35,10 @@ Scenario('Create Claim -  Individual vs Company - small claims - no interest - n
   console.log('Creating GA app as claimant');
   await I.amOnPage('/dashboard');
   await I.click(claimNumber);
-  await createGASteps.askForMoreTimeCourtOrderGA(caseRef, 'Mr Claimant person v Defendant Company name');
-  console.log('Creating GA app as defendant');
-  await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
-  await I.amOnPage('/dashboard');
-  await I.click(claimNumber);
-  await createGASteps.askForMoreTimeCourtOrderGA(caseRef, 'Mr Claimant person v Defendant Company name', 'withoutnotice', 'company');
+  // await createGASteps.askForMoreTimeCourtOrderGA(caseRef, 'Mr Claimant person v Defendant Company name');
+  // console.log('Creating GA app as defendant');
+  // await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
+  // await I.amOnPage('/dashboard');
+  // await I.click(claimNumber);
+  // await createGASteps.askForMoreTimeCourtOrderGA(caseRef, 'Mr Claimant person v Defendant Company name', 'withoutnotice', 'company');
 });

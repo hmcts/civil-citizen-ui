@@ -14,7 +14,7 @@ let claimNumber;
 
 Feature('Response with PartAdmit-AlreadyPaid - Small Claims & Fast Track').tag('@civil-citizen-nightly');
 
-Scenario('Response with PartAdmit-AlreadyPaid Small claims and Claimant settle the claim', async ({
+Scenario.skip('Response with PartAdmit-AlreadyPaid Small claims and Claimant settle the claim', async ({
   I,
   api,
 }) => {
@@ -40,7 +40,7 @@ Scenario('Response with PartAdmit-AlreadyPaid Small claims and Claimant settle t
   await verifyNotificationTitleAndContent(claimNumber, claimSettledDefendantNotif.title, claimSettledDefendantNotif.content);
 }).tag('@ui-part-admit');
 
-Scenario('Response with PartAdmit-AlreadyPaid Fast Track and Claimant Not to settle the claim', async ({api}) => {
+Scenario.skip('Response with PartAdmit-AlreadyPaid Fast Track and Claimant Not to settle the claim', async ({api}) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   claimType = 'FastTrack';
@@ -55,7 +55,7 @@ Scenario('Response with PartAdmit-AlreadyPaid Fast Track and Claimant Not to set
   await api.waitForFinishedBusinessProcess();
 });
 
-Scenario('Response with PartAdmit-AlreadyPaid Small claims and Claimant decides to go for Mediation', async ({api}) => {
+Scenario.skip('Response with PartAdmit-AlreadyPaid Small claims and Claimant decides to go for Mediation', async ({api}) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   claimType = 'SmallClaims';

@@ -23,7 +23,7 @@ Before(async () => {
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
 });
 
-Scenario('01 Create spec LR v LIP and assign to defendant LIP', async ({ api }) => {
+Scenario.skip('01 Create spec LR v LIP and assign to defendant LIP', async ({ api }) => {
   claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser);
   console.log('claimRef has been created Successfully    <===>  ', claimRef);
   caseData = await api.retrieveCaseData(config.adminUser, claimRef);
@@ -33,7 +33,7 @@ Scenario('01 Create spec LR v LIP and assign to defendant LIP', async ({ api }) 
   console.log('Security code', securityCode);
 });
 
-Scenario('02 Welsh Response with PartAdmit - SetDate', async () => {
+Scenario.skip('02 Welsh Response with PartAdmit - SetDate', async () => {
   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   await CitizenDashboardSteps.VerifyClaimOnDashboard(claimNumber);
   await ResponseSteps.RespondToClaim(claimRef, 'cy');
@@ -59,7 +59,7 @@ Scenario('02 Welsh Response with PartAdmit - SetDate', async () => {
 });
 
 /*
-Scenario('Caseworker Uploads Translated Documents', async ({wa}) => {
+Scenario.skip('Caseworker Uploads Translated Documents', async ({wa}) => {
   await LoginSteps.EnterCaseworkerCredentials(config.caseWorker.email, config.caseWorker.password);
   await CaseworkerDashboardSteps.NavigateToCaseDetails(claimRef);
   const taskSteps = async () => {

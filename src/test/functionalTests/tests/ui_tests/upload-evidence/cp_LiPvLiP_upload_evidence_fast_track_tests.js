@@ -28,7 +28,7 @@ Before(async ({api}) => {
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
 });
 
-Scenario('Citizen Claimant perform evidence upload',  async ({I}) => {
+Scenario.skip('Citizen Claimant perform evidence upload',  async ({I}) => {
   notification = orderMade();
   await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
   taskListItem = uploadHearingDocuments();

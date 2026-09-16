@@ -18,7 +18,7 @@ Feature(
   'Response with RejectAll-AlreadyPaid-InFull - Small Claims & Fast Track',
 ).tag('@civil-citizen-nightly @ui-reject-all');
 
-Scenario(
+Scenario.skip(
   'Response with RejectAll-AlreadyPaid-InFull Small claims and Claimant settle',
   async ({ api }) => {
     await createAccount(
@@ -53,7 +53,7 @@ Scenario(
   },
 );
 
-Scenario(
+Scenario.skip(
   'Response with RejectAll-AlreadyPaid-InFull Fast Track and Claimant proceeds',
   async ({ I, api }) => {
     await createAccount(

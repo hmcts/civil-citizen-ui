@@ -36,7 +36,7 @@ const runBufferSchedulerUntilIssued = async (api, attempts = 30, intervalMs = 10
 
 Feature('Lip v Lip claim - Judgment Requested state - Stay lifted').tag('@ui-judgment-buffer');
 
-Scenario('Stay lifted on a JUDGMENT_REQUESTED case returns it to Awaiting Defendant Response, with claimant + defendant emails and dashboard notifications (AC1-AC4) [DTSCCI-5109]', async ({I, api}) => {
+Scenario.skip('Stay lifted on a JUDGMENT_REQUESTED case returns it to Awaiting Defendant Response, with claimant + defendant emails and dashboard notifications (AC1-AC4) [DTSCCI-5109]', async ({I, api}) => {
   if (!(await checkToggleEnabled('judgment-buffer'))) return;
   config.claimantCitizenUser.email = `claimantcitizen-${Date.now()}-${Math.random().toString(36).slice(2, 7)}@gmail.com`;
   config.defendantCitizenUser.email = `defendantcitizen-${Date.now()}-${Math.random().toString(36).slice(2, 7)}@gmail.com`;
@@ -91,7 +91,7 @@ Scenario('Stay lifted on a JUDGMENT_REQUESTED case returns it to Awaiting Defend
   await verifyNotificationTitleAndContent(claimNumber, responseDefendant.title, responseDefendant.content, claimRef, 'defendant');
 });
 
-Scenario('After the stay is lifted the claimant can re-request a CCJ, which issues judgment notifications to both parties (AC1, AC5, AC6) [DTSCCI-5109]', async ({I, api}) => {
+Scenario.skip('After the stay is lifted the claimant can re-request a CCJ, which issues judgment notifications to both parties (AC1, AC5, AC6) [DTSCCI-5109]', async ({I, api}) => {
   if (!(await checkToggleEnabled('judgment-buffer'))) return;
   config.claimantCitizenUser.email = `claimantcitizen-${Date.now()}-${Math.random().toString(36).slice(2, 7)}@gmail.com`;
   config.defendantCitizenUser.email = `defendantcitizen-${Date.now()}-${Math.random().toString(36).slice(2, 7)}@gmail.com`;

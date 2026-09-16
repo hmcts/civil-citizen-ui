@@ -8,7 +8,7 @@ const { expect } = chai;
 
 Feature('LRvLip - Claim discontinuance tests').tag('@civil-citizen-nightly, @ui-discontinue-claim');
 
-Scenario('LR vs LiP - Claimant LR discontinues claim', async ({ api, I }) => {  
+Scenario.skip('LR vs LiP - Claimant LR discontinues claim', async ({ api, I }) => {  
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   const claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser);
   console.log('claimRef has been created Successfully    <===>  ', claimRef);

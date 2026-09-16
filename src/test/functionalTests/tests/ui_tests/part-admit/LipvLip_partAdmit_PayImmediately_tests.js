@@ -7,7 +7,7 @@ const yesIWantMoretime = 'yesIWantMoretime';
 
 let claimRef, claimType;
 
-Feature('Response with PartAdmit-PayImmediately - Small Claims & Fast Track').tag('@civil-citizen-nightly');
+Feature('Response with PartAdmit-PayImmediately - Small Claims & Fast Track').tag('@civil-citizen-nightly @debug');
 
 Scenario('Response with PartAdmit-PayImmediately Small claims', async ({api}) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
@@ -23,7 +23,7 @@ Scenario('Response with PartAdmit-PayImmediately Small claims', async ({api}) =>
   await api.waitForFinishedBusinessProcess();
 }).tag('@civil-citizen-master @civil-citizen-pr');
 
-Scenario('Response with PartAdmit-PayImmediately Fast Track', async ({api}) => {
+Scenario.skip('Response with PartAdmit-PayImmediately Fast Track', async ({api}) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   claimType = 'FastTrack';

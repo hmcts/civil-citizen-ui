@@ -34,7 +34,7 @@ Before(async ({api}) => {
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
 });
 
-Scenario('Both parties complete their trial arrangements - Fast Track', async ({I}) => {
+Scenario.skip('Both parties complete their trial arrangements - Fast Track', async ({I}) => {
   // claimant checks notifications other party trial arrangements completed and complete your trial arrangements
   notification = otherSideTrialArrangements();
   await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);

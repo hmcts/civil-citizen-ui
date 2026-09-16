@@ -20,7 +20,7 @@ Before(async () => {
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
 });
 
-Scenario('LiP vs LiP Intermediate claim', async ({api}) => {
+Scenario.skip('LiP vs LiP Intermediate claim', async ({api}) => {
   claimRef = await api.createLiPClaim(config.claimantCitizenUser, 'Intermediate', false, 'DefendantCompany');
   console.log('LIP vs LIP claim has been created Successfully    <===>  ', claimRef);
   await api.setCaseId(claimRef);

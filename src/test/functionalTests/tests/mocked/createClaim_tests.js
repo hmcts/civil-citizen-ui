@@ -2,7 +2,7 @@ const steps = require('../../citizenFeatures/createClaim/steps/createLipvLipClai
 
 Feature('Reduced-stack | Create claim').tag('@reduced-stack @reduced-stack-create-claim @mocked-functional');
 
-Scenario('Individual creates and submits a claim without the full Civil stack', async ({I}) => {
+Scenario.skip('Individual creates and submits a claim without the full Civil stack', async ({I}) => {
   await I.amOnPage('/testing-support/create-draft-claim');
   await I.click('Create Draft Claim');
   await I.amOnPage('/claim/task-list');

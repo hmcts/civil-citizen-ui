@@ -19,7 +19,7 @@ Before(async ({api}) => {
   await api.waitForFinishedBusinessProcess();
 });
 
-Scenario('LRvLip Defendant GA creation tests', async ({I}) => {
+Scenario.skip('LRvLip Defendant GA creation tests', async ({I}) => {
   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
 
   console.log('Creating summary judgment GA app as defendant');

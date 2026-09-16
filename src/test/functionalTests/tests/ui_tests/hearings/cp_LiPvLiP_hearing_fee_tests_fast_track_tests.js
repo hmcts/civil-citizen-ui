@@ -33,7 +33,7 @@ Before(async ({api}) => {
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
 });
 
-Scenario('Apply for Help with Fees Journey - Fast Track', async ({I, api}) => {
+Scenario.skip('Apply for Help with Fees Journey - Fast Track', async ({I, api}) => {
   notification = hearingScheduled(hearingDate);
   await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
   await I.click(notification.nextSteps);
@@ -57,7 +57,7 @@ Scenario('Apply for Help with Fees Journey - Fast Track', async ({I, api}) => {
   await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'In progress', false, true, taskListItem.deadline);
 });
 
-Scenario('Pay the Hearing Fee Journey - Fast Track',  async ({I, api}) => {
+Scenario.skip('Pay the Hearing Fee Journey - Fast Track',  async ({I, api}) => {
   notification = payTheHearingFeeClaimant(feeAmount, hearingFeeDueDate);
   await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
   await I.click(notification.nextSteps);

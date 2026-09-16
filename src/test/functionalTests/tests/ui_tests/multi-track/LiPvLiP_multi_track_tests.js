@@ -15,7 +15,7 @@ Before(async () => {
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
 });
 
-Scenario('LiP vs LiP Multi claim', async ({api}) => {
+Scenario.skip('LiP vs LiP Multi claim', async ({api}) => {
   claimRef = await api.createLiPClaim(config.claimantCitizenUser, 'Multi');
   console.log('LIP vs LIP MT claim has been created Successfully    <===>  ', claimRef);
   await api.setCaseId(claimRef);

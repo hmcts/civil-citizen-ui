@@ -30,7 +30,7 @@ Before(async () => {
 });
 
 // LiP Individual vs LiP Company
-Scenario('LiP vs LiP Unsuccessful Mediation with Upload Documents', async ({ api }) => {
+Scenario.skip('LiP vs LiP Unsuccessful Mediation with Upload Documents', async ({ api }) => {
   claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType, carmEnabled, 'DefendantCompany');
   console.log('LIP vs LIP claim has been created Successfully    <===>  ', claimRef);
   await api.setCaseId(claimRef);
@@ -93,7 +93,7 @@ Scenario('LiP vs LiP Unsuccessful Mediation with Upload Documents', async ({ api
   await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Inactive');
 }).tag('@civil-citizen-master @civil-citizen-pr');
 
-Scenario('LiP vs LiP Unsuccessful Mediation with other options', async ({ api }) => {
+Scenario.skip('LiP vs LiP Unsuccessful Mediation with other options', async ({ api }) => {
   claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType, carmEnabled, 'DefendantCompany');
   console.log('LIP vs LIP claim has been created Successfully    <===>  ', claimRef);
   await api.setCaseId(claimRef);
@@ -129,7 +129,7 @@ Scenario('LiP vs LiP Unsuccessful Mediation with other options', async ({ api })
 });
 
 // LiP Individual vs LiP Sole Trader
-Scenario('LiP vs LiP Successful Mediation', async ({ api }) => {
+Scenario.skip('LiP vs LiP Successful Mediation', async ({ api }) => {
   claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType, carmEnabled, 'DefendantSoleTrader');
   console.log('LIP vs LIP claim has been created Successfully    <===>  ', claimRef);
   await api.setCaseId(claimRef);

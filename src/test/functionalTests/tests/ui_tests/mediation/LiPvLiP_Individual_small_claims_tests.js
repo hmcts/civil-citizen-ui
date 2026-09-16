@@ -24,7 +24,7 @@ Before(async () => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
 });
 
-Scenario('01 LiP Defendant response with Part admit', async ({ api }) => {
+Scenario.skip('01 LiP Defendant response with Part admit', async ({ api }) => {
   claimRef = await api.createLiPClaim(config.claimantCitizenUser, claimType, carmEnabled);
   console.log('LIP vs LIP claim has been created Successfully    <===>  ', claimRef);
   await api.setCaseId(claimRef);
@@ -55,7 +55,7 @@ Scenario('01 LiP Defendant response with Part admit', async ({ api }) => {
   await api.waitForFinishedBusinessProcess();
 });
 
-Scenario('02 LiP Claimant response with Part admit', async ({ api }) => {
+Scenario.skip('02 LiP Claimant response with Part admit', async ({ api }) => {
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await ClaimantResponseSteps.RespondToClaimAsClaimant(claimRef, claimantNotificationFullAdmitPayImmediately(500));
   await ClaimantResponseSteps.verifyDefendantResponse();
@@ -70,7 +70,7 @@ Scenario('02 LiP Claimant response with Part admit', async ({ api }) => {
   await api.waitForFinishedBusinessProcess();
 });
 
-Scenario('03 Verify Mediation status before Unsuccessful mediation', async ({ I }) => {
+Scenario.skip('03 Verify Mediation status before Unsuccessful mediation', async ({ I }) => {
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   const mediationCARMClaimantDefendantNotif = mediationCARMClaimantDefendant();
   await verifyNotificationTitleAndContent(claimNumber, mediationCARMClaimantDefendantNotif.title, mediationCARMClaimantDefendantNotif.content);

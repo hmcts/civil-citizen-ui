@@ -96,8 +96,9 @@ module.exports = {
     let url = getCivilServiceUrl();
     const userId = await idamHelper.userId(tokens.userAuth);
     url += `/cases/draft/citizen/${userId}/event`;
-
+    console.log('draft url>>>> ', url);
     const response = await restHelper.request(url, getRequestHeaders(tokens.userAuth), payload, 'POST', 200);
+    console.log('response>>>> ', response);
     const data = await response.json();
     console.log('***************** case id ***************** ' + data.id);
     return data.id;

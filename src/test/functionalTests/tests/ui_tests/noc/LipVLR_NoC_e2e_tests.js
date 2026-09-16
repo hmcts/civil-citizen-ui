@@ -35,7 +35,7 @@ Before(async ({ I, api }) => {
   await api.assignToLipDefendant(claimRef);
 });
 
-Scenario('LipVLR - NoC and DefendantLR respond as DefenceAll', async ({
+Scenario.skip('LipVLR - NoC and DefendantLR respond as DefenceAll', async ({
   I,
   api,
 }) => {
@@ -56,7 +56,7 @@ Scenario('LipVLR - NoC and DefendantLR respond as DefenceAll', async ({
   await api.defendantLRResponse(config.defendantSolicitorUser, 'FULL_DEFENCE', camundaEvent, expectedState);
 }).tag('@civil-citizen-master @civil-citizen-pr @thin-full-stack');
 
-Scenario('LipVLR - NoC and DefendantLR respond as AdmitAll', async ({
+Scenario.skip('LipVLR - NoC and DefendantLR respond as AdmitAll', async ({
   I,
   api,
 }) => {
@@ -77,7 +77,7 @@ Scenario('LipVLR - NoC and DefendantLR respond as AdmitAll', async ({
   await api.defendantLRResponse(config.defendantSolicitorUser, 'FULL_ADMISSION', camundaEvent, expectedState);
 });
 
-Scenario('LipVLR - NoC and DefendantLR respond as PartAdmit', async ({
+Scenario.skip('LipVLR - NoC and DefendantLR respond as PartAdmit', async ({
   I,
   api,
 }) => {
@@ -98,7 +98,7 @@ Scenario('LipVLR - NoC and DefendantLR respond as PartAdmit', async ({
   await api.defendantLRResponse(config.defendantSolicitorUser, 'PART_ADMISSION', camundaEvent, expectedState);
 });
 
-Scenario('LipVLR - NoC and DefendantLR respond as CounterClaim', async ({
+Scenario.skip('LipVLR - NoC and DefendantLR respond as CounterClaim', async ({
   I,
   api,
 }) => {

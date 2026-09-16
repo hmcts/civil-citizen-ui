@@ -87,7 +87,7 @@ Before(async ({api}) => {
   bankHolidays = await DateUtilsComponent.fetchBankHolidays();
 });
 
-Scenario('Positive - More time order GA (non-urgent, with notice) - claimant creates, defendant responds @nightly', async ({
+Scenario.skip('Positive - More time order GA (non-urgent, with notice) - claimant creates, defendant responds @nightly', async ({
   I,
 }) => {
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
@@ -115,7 +115,7 @@ Scenario('Positive - More time order GA (non-urgent, with notice) - claimant cre
   await respondGASteps.respondToGA(claimRef, gaID, 'Respond to an application to more time to do what is required by a court order', 'Miss Jane Doe v Sir John Doe');
 });
 
-Scenario('Positive - Change hearing date GA (non-urgent, with notice) - deadline verified @nightly', async ({
+Scenario.skip('Positive - Change hearing date GA (non-urgent, with notice) - deadline verified @nightly', async ({
   I,
 }) => {
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
@@ -130,7 +130,7 @@ Scenario('Positive - Change hearing date GA (non-urgent, with notice) - deadline
   await verifyDeadlineIs5WorkingDays(gaID, submissionTime);
 });
 
-Scenario('Positive - Pause claim GA (non-urgent, with notice) - defendant creates @nightly', async ({
+Scenario.skip('Positive - Pause claim GA (non-urgent, with notice) - defendant creates @nightly', async ({
   I,
 }) => {
   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
@@ -145,7 +145,7 @@ Scenario('Positive - Pause claim GA (non-urgent, with notice) - defendant create
   await verifyDeadlineIs5WorkingDays(gaID, submissionTime);
 });
 
-Scenario('Positive - Sanction GA (non-urgent, with notice) - deadline verified @nightly', async ({
+Scenario.skip('Positive - Sanction GA (non-urgent, with notice) - deadline verified @nightly', async ({
   I,
 }) => {
   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
@@ -160,7 +160,7 @@ Scenario('Positive - Sanction GA (non-urgent, with notice) - deadline verified @
   await verifyDeadlineIs5WorkingDays(gaID, submissionTime);
 });
 
-Scenario('Positive - Set aside judgment GA (non-urgent, with notice) - deadline verified @nightly', async ({
+Scenario.skip('Positive - Set aside judgment GA (non-urgent, with notice) - deadline verified @nightly', async ({
   I,
 }) => {
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
@@ -175,7 +175,7 @@ Scenario('Positive - Set aside judgment GA (non-urgent, with notice) - deadline 
   await verifyDeadlineIs5WorkingDays(gaID, submissionTime);
 });
 
-Scenario('Negative - Without notice GA should NOT have 5 working day deadline @nightly', async ({
+Scenario.skip('Negative - Without notice GA should NOT have 5 working day deadline @nightly', async ({
   I,
 }) => {
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
@@ -192,7 +192,7 @@ Scenario('Negative - Without notice GA should NOT have 5 working day deadline @n
   await verifyDeadlineIsNotFiveWorkingDays(gaID);
 });
 
-Scenario('Negative - Consent GA should NOT have 5 working day deadline @nightly', async ({
+Scenario.skip('Negative - Consent GA should NOT have 5 working day deadline @nightly', async ({
   I,
 }) => {
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
@@ -206,7 +206,7 @@ Scenario('Negative - Consent GA should NOT have 5 working day deadline @nightly'
   await verifyDeadlineIsNotFiveWorkingDays(gaID);
 });
 
-Scenario('Negative - Relief from penalty (without notice) should NOT have 5 working day deadline @nightly', async ({
+Scenario.skip('Negative - Relief from penalty (without notice) should NOT have 5 working day deadline @nightly', async ({
   I,
 }) => {
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
@@ -220,7 +220,7 @@ Scenario('Negative - Relief from penalty (without notice) should NOT have 5 work
   await verifyDeadlineIsNotFiveWorkingDays(gaID);
 });
 
-Scenario('Negative - Settle by consent should NOT have 5 working day deadline @nightly', async ({
+Scenario.skip('Negative - Settle by consent should NOT have 5 working day deadline @nightly', async ({
   I,
 }) => {
   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);

@@ -506,7 +506,7 @@ module.exports = {
     let userId = await idamHelper.userId(userAuth);
 
     await apiRequest.setupTokens(user);
-
+    console.log('partyType..... ', partyType);
     if (partyType === 'Company') {
       payload = data.CREATE_LIP_CLAIM_FOR_COMPANY(user, userId, totalClaimAmount);
     } else if (partyType === 'DefendantCompany') {
@@ -518,11 +518,14 @@ module.exports = {
     } else if (partyType === 'IndividualVOrganisation') {
       payload = data.CREATE_LIP_CLAIM_IND_V_ORGANISATION(user, userId, totalClaimAmount);
     } else {
+      console.log('1');
       payload = data.CREATE_LIP_CLAIM(user, userId, totalClaimAmount, language);
     }
-    caseId = await apiRequest.startEventForLiPCitizen(payload);
-    await waitForFinishedBusinessProcess(caseId, user);
 
+    caseId = await apiRequest.startEventForLiPCitizen(payload);
+    console.log('2');
+    await waitForFinishedBusinessProcess(caseId, user);
+    console.log('3');
     console.log('qmEnabled flag .. ', qmEnabled);
 
     if (qmEnabled) {

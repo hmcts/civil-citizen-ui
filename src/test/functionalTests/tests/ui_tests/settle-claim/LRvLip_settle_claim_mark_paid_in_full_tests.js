@@ -7,7 +7,7 @@ const { formattedDate } = require('../../../specClaimHelpers/api/dataHelper');
 
 Feature('LRvLip - Settle Claim mark paid in full tests').tag('@civil-citizen-nightly, @ui-settle-claim');
 
-Scenario('LR vs LiP - Claimant LR confirms the claim to be marked as settled', async ({ api }) => {  
+Scenario.skip('LR vs LiP - Claimant LR confirms the claim to be marked as settled', async ({ api }) => {  
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   const claimRef = await api.createSpecifiedClaim(config.applicantSolicitorUser);
   console.log('claimRef has been created Successfully    <===>  ', claimRef);

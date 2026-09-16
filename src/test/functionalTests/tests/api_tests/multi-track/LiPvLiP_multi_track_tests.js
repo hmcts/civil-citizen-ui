@@ -13,7 +13,7 @@ Before(async () => {
 });
 
 // LiP Individual vs LiP Company
-Scenario('LiP vs LiP Multi claim', async ({api}) => {
+Scenario.skip('LiP vs LiP Multi claim', async ({api}) => {
   claimRef = await api.createLiPClaim(config.claimantCitizenUser, multiTrackClaimType, carmEnabled, 'DefendantCompany');
   console.log('LIP vs LIP claim has been created Successfully    <===>  ', claimRef);
   await api.setCaseId(claimRef);

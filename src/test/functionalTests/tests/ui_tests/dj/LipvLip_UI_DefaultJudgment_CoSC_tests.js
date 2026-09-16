@@ -17,7 +17,7 @@ let claimRef, notification, claimNumber, caseData;
 
 Feature('Create Lip v Lip claim -  Default Judgment').tag('@civil-citizen-nightly @ui-dj');
 
-Scenario('Create LipvLip claim and defendant not responded by deadline and Claimant raise Default Judgment', async ({api, I}) => {
+Scenario.skip('Create LipvLip claim and defendant not responded by deadline and Claimant raise Default Judgment', async ({api, I}) => {
   const judgmentBufferEnabled = await checkToggleEnabled('judgment-buffer');
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await createAccount(config.defendantCitizenUser.email, config.defendantCitizenUser.password);

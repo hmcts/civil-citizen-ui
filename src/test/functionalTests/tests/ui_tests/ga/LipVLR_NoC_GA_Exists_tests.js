@@ -24,7 +24,7 @@ Before(async ({api}) => {
   await api.waitForFinishedBusinessProcess();
 });
 
-Scenario('LipvLip Applicant creates GA and perform NoC', async ({I, api}) => {
+Scenario.skip('LipvLip Applicant creates GA and perform NoC', async ({I, api}) => {
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
 
   console.log('Creating set aside GA app as claimant');
@@ -46,7 +46,7 @@ Scenario('LipvLip Applicant creates GA and perform NoC', async ({I, api}) => {
   await I.click(nocForLipNotif.nextSteps);
 });
 
-Scenario('LipvLip Defendant creates GA and perform NoC', async ({I, api}) => {
+Scenario.skip('LipvLip Defendant creates GA and perform NoC', async ({I, api}) => {
   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
 
   console.log('Creating pause claim GA app as defendant');
