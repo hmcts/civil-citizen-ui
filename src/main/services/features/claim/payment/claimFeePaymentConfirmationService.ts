@@ -25,7 +25,8 @@ export const getRedirectUrl = async (claimId: string, req: AppRequest): Promise<
       throw new Error('[claimFeePaymentConfirmationService] no draft claim found');
     }
 
-    const claim: Claim = Object.assign(new Claim(), draftResult.claimResponse?.case_data as unknown as Claim);
+    const claim: Claim = Object.assign(new Claim(), draftResult?.claimResponse?.case_data as unknown as Claim);
+    const draftId = req.session?.draftId || draftResult.rawResponse?.draftId;
     const paymentInfo = claim.claimDetails?.claimFeePayment;
     const paymentReference = paymentInfo?.paymentReference;
     logger.info(`Payment information retrieved from draft for claim id ${req.params.id}`);
@@ -40,13 +41,11 @@ export const getRedirectUrl = async (claimId: string, req: AppRequest): Promise<
       const isCUIWelshEnabled = await isWelshEnabledForMainCase();
       const lang = claim.claimantBilingualLanguagePreference === ClaimBilingualLanguagePreference.WELSH
       || (!isCUIWelshEnabled && claim.claimantBilingualLanguagePreference === ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH) ? 'cy' : 'en';
+      if (draftId) {
+        await deleteDraftClaim(req, draftId);
+        delete req.session.draftId;
 
-      const draftId = req.session?.draftId || draftResult.rawResponse?.draftId;
-      if (!draftId) {
-        throw new Error('[claimFeePaymentConfirmationService] draft id required to delete draft');
       }
-      await deleteDraftClaim(req, draftId);
-      delete req.session.draftId;
       return `${PAY_CLAIM_FEE_SUCCESSFUL_URL}?lang=${lang}`;
     }
     const redirectingUrl = paymentStatus.errorDescription !== paymentCancelledByUser ?
