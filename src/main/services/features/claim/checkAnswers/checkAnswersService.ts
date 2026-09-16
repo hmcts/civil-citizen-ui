@@ -1,4 +1,3 @@
-import {AppRequest} from 'common/models/AppRequest';
 import {SummarySections} from 'models/summaryList/summarySections';
 import {Claim} from 'models/claim';
 import {buildYourDetailsSection} from './detailsSection/buildYourDetailsSection';
@@ -8,7 +7,7 @@ import {buildClaimSection} from './claimSection/buildClaimSection';
 import {StatementOfTruthForm} from 'form/models/statementOfTruth/statementOfTruthForm';
 import {QualifiedStatementOfTruth} from 'form/models/statementOfTruth/qualifiedStatementOfTruth';
 import {SignatureType} from 'models/signatureType';
-import {getDraftClaim, updateDraftClaim} from 'modules/draft-store/draftStoreManagerService';
+import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {isCounterpartyIndividual} from 'common/utils/taskList/tasks/taskListHelpers';
 import {ClaimDetails} from 'form/models/claim/details/claimDetails';
 import {QualifiedStatementOfTruthClaimIssue} from 'form/models/statementOfTruth/qualifiedStatementOfTruthClaimIssue';
@@ -45,14 +44,14 @@ export const getStatementOfTruth = (claim: Claim): StatementOfTruthForm | Qualif
 export const getSignatureType = (claim: Claim): SignatureType => {
   return isCounterpartyIndividual(claim.applicant1) ? SignatureType.BASIC : SignatureType.QUALIFIED;
 };
-export const saveStatementOfTruth = async (req: AppRequest, claimantStatementOfTruth: StatementOfTruthForm) => {
+export const saveStatementOfTruth = async (claimId: string, claimantStatementOfTruth: StatementOfTruthForm) => {
   try {
-    const claim = await getDraftClaim(req);
+    const claim = await getCaseDataFromStore(claimId);
     if (!claim.claimDetails) {
       claim.claimDetails = new ClaimDetails();
     }
     claim.claimDetails.statementOfTruth = claimantStatementOfTruth;
-    await updateDraftClaim(req, claim, req.session?.draftId);
+    await saveDraftClaim(claimId, claim);
   } catch (error) {
     logger.error(error);
     throw error;
