@@ -1,5 +1,4 @@
-import {AppRequest} from 'common/models/AppRequest';
-import {getDraftClaim, updateDraftClaim} from '../../../../modules/draft-store/draftStoreManagerService';
+import {getCaseDataFromStore, saveDraftClaim} from '../../../../modules/draft-store/draftStoreService';
 import {AmountBreakdown} from '../../../../common/form/models/claim/amount/amountBreakdown';
 import {ClaimAmountRow} from '../../../../common/form/models/claim/amount/claimAmountRow';
 import {ClaimAmountBreakup} from '../../../../common/form/models/claimDetails';
@@ -8,9 +7,9 @@ import {roundOffTwoDecimals} from 'common/utils/dateUtils';
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantPhoneAsService');
 
-export const getClaimAmountBreakdownForm = async (req: AppRequest) : Promise<AmountBreakdown> => {
+export const getClaimAmountBreakdownForm = async (claimantId: string) : Promise<AmountBreakdown> => {
   try{
-    const claim = await getDraftClaim(req);
+    const claim = await getCaseDataFromStore(claimantId);
     if(!claim.claimAmountBreakup){
       return AmountBreakdown.emptyForm();
     }
@@ -22,16 +21,16 @@ export const getClaimAmountBreakdownForm = async (req: AppRequest) : Promise<Amo
 
 };
 
-export const saveClaimAmountBreakdownForm = async (req: AppRequest, amountBreakdown: AmountBreakdown) => {
+export const saveClaimAmountBreakdownForm = async (claimantId: string, amountBreakdown: AmountBreakdown) => {
   try{
     let totalClaimAmount = 0;
-    const claim = await getDraftClaim(req);
+    const claim = await getCaseDataFromStore(claimantId);
     claim.claimAmountBreakup = amountBreakdown.getPopulatedRows().map((row) => {
       totalClaimAmount = totalClaimAmount + row.amount;
       return convertFormToJson(row);
     });
     claim.totalClaimAmount = roundOffTwoDecimals(totalClaimAmount);
-    await updateDraftClaim(req, claim, req.session?.draftId);
+    await saveDraftClaim(claimantId, claim, false, claimantId);
   }catch(error){
     logger.error(error);
     throw error;
