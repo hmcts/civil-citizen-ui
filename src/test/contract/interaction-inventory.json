@@ -1,6 +1,14 @@
 {
   "civil_service": [
     {
+      "description": "a Civil PIN request with invalid PIN",
+      "state": "Civil PIN validation fails for invalid PIN"
+    },
+    {
+      "description": "a Civil PIN request with missing claim",
+      "state": "Civil PIN validation fails for missing claim"
+    },
+    {
       "description": "a citizen event rejected with callback errors and warnings",
       "state": "Citizen event submission returns callback errors and warnings"
     },
@@ -11,6 +19,54 @@
     {
       "description": "a citizen event rejected with no actionable validation fields",
       "state": "Citizen event submission returns no actionable validation fields"
+    },
+    {
+      "description": "a defendant link lookup returning linked",
+      "state": "Defendant link status is linked"
+    },
+    {
+      "description": "a defendant link lookup returning no search result",
+      "state": "Defendant link status is no search result"
+    },
+    {
+      "description": "a defendant link lookup returning provider failure",
+      "state": "Defendant link status is provider failure"
+    },
+    {
+      "description": "a defendant link lookup returning unlinked",
+      "state": "Defendant link status is unlinked"
+    },
+    {
+      "description": "a defendant link lookup returning upstream not found",
+      "state": "Defendant link status is upstream not found"
+    },
+    {
+      "description": "a public Civil PIN validation",
+      "state": "A Civil reference and PIN are valid"
+    },
+    {
+      "description": "a public OCMC PIN validation",
+      "state": "An OCMC reference and PIN are valid"
+    },
+    {
+      "description": "a request for claimant dashboard page 1",
+      "state": "The claimant dashboard page 1 is available"
+    },
+    {
+      "description": "a request for claimant dashboard page 2",
+      "state": "The claimant dashboard page 2 is available"
+    },
+    {
+      "description": "a request for defendant dashboard page 1",
+      "state": "The defendant dashboard page 1 is available"
+    },
+    {
+      "description": "a request for defendant dashboard page 2",
+      "state": "The defendant dashboard page 2 is available"
+    },
+    {
+      "description": "a request for missing case details",
+      "state": "The requested case does not exist"
     },
     {
       "description": "a request for the claim issue fee",
@@ -47,6 +103,42 @@
     {
       "description": "a request to submit the sole-trader-individual draft claim",
       "state": "A draft sole-trader-individual claim can be submitted"
+    },
+    {
+      "description": "an authenticated defendant assignment with accepted",
+      "state": "Defendant assignment is accepted"
+    },
+    {
+      "description": "an authenticated defendant assignment with rejected PIN",
+      "state": "Defendant assignment is rejected PIN"
+    },
+    {
+      "description": "an invalid OCMC PIN validation",
+      "state": "An OCMC PIN is invalid"
+    },
+    {
+      "description": "case details for claimant access",
+      "state": "Case details and claimant access are available"
+    },
+    {
+      "description": "case details for defendant access",
+      "state": "Case details and defendant access are available"
+    },
+    {
+      "description": "case details for no roles access",
+      "state": "Case details and no roles access are available"
+    },
+    {
+      "description": "case roles for claimant access",
+      "state": "Case details and claimant access are available"
+    },
+    {
+      "description": "case roles for defendant access",
+      "state": "Case details and defendant access are available"
+    },
+    {
+      "description": "case roles for no roles access",
+      "state": "Case details and no roles access are available"
     }
   ],
   "idamApi_oidc": [
