@@ -55,9 +55,9 @@ civil-service:
     imagePullPolicy: Always
     ingressHost: ${SERVICE_NAME}-civil-service.preview.platform.hmcts.net
     devcpuRequests: 50m
-    devcpuLimits: 700m
-    devmemoryRequests: 1536Mi
-    devmemoryLimits: 2048Mi
+    devcpuLimits: 1400m
+    devmemoryRequests: 3072Mi
+    devmemoryLimits: 4096Mi
     keyVaults:
       civil:
         resourceGroup: civil
