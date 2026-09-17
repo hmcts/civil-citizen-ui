@@ -179,6 +179,7 @@
     "nodemon": "^2.0.22",
     "pa11y": "^8.0.0",
     "proper-lockfile": "^4.1.2",
+    "puppeteer": "22.15.0",
     "sass": "^1.57.1",
     "sass-loader": "^13.2.0",
     "sonar-scanner": "^3.1.0",

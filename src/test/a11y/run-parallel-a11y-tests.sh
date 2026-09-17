@@ -7,6 +7,9 @@ if [[ -z "$A11Y_CHUNKS" || ! "$A11Y_CHUNKS" =~ ^[0-9]+$ || "$A11Y_CHUNKS" -le 0 
   exit 1
 fi
 
+# Jenkins may run this stage on an agent without Puppeteer's cached Chrome.
+yarn puppeteer browsers install chrome
+
 run_chunk() {
   local chunk_index="$1"
   local report_number=$((chunk_index + 1))
