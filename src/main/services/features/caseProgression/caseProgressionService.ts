@@ -233,10 +233,19 @@ const ADD_ANOTHER_SECTIONS: Record<string, {property: keyof UploadDocumentsUserF
   trialDocumentary: {property: 'trialDocumentary', create: () => new TypeOfDocumentSection()},
 };
 
-export const addAnother = (uploadDocuments: UploadDocumentsUserForm, action: string ) => {
+export const addAnother = (
+  uploadDocuments: UploadDocumentsUserForm,
+  action: string,
+  claimId?: string,
+  userid?: string,
+) => {
   const [ actionValue ] = action.split(/[[\]]/).filter((word: string) => word !== '');
   const category = actionValue.split('-')[1];
-  logger.info(`adding new category: ${category}`);
+  logger.info('adding new category', {
+    category,
+    claimId,
+    userid,
+  });
   const section = ADD_ANOTHER_SECTIONS[category];
   if (!section) {
     return;

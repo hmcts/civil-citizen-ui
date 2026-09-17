@@ -991,7 +991,7 @@ describe('on POST', () => {
       .send({action: 'add_another-disclosure'});
 
     expect(response.status).toBe(200);
-    expect(addAnother).toHaveBeenCalledWith(formWithDisclosure, 'add_another-disclosure');
+    expect(addAnother).toHaveBeenCalledWith(formWithDisclosure, 'add_another-disclosure', expect.any(String), undefined);
     expect(saveCaseProgression).not.toHaveBeenCalled();
   });
 
@@ -1008,7 +1008,7 @@ describe('on POST', () => {
 
     expect(response.status).toBe(200);
     expect(validateSyncSpy).not.toHaveBeenCalled();
-    expect(addAnother).toHaveBeenCalledWith(formWithDisclosure, 'add_another-disclosure');
+    expect(addAnother).toHaveBeenCalledWith(formWithDisclosure, 'add_another-disclosure', expect.any(String), undefined);
     validateSyncSpy.mockRestore();
   });
 
