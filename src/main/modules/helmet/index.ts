@@ -70,6 +70,11 @@ const manifestSrc = [
   self,
 ];
 
+const workerSrc = [
+  self,
+  'blob:',
+];
+
 const frameSrc = [...webChat];
 const setDynatraceCorsHeaders: express.RequestHandler = (_req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
@@ -129,6 +134,7 @@ export class Helmet {
             manifestSrc: manifestSrc,
             formAction: [self, loginUrl, ocmcBaseUrl, govPayUrl],
             frameSrc: frameSrc,
+            workerSrc: workerSrc,
           },
         },
         crossOriginOpenerPolicy: {
