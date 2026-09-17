@@ -368,6 +368,9 @@ withPipeline(type, product, component) {
     } else {
       copyPrevFailedAndNotExecutedTestFilesJson()
     }
+    if (env.SKIP_FUNCTIONAL_TESTS != 'true') {
+      sh './bin/wait-for-civil-service-ready.sh'
+    }
   }
 
   afterAlways('functionalTest:preview') {
