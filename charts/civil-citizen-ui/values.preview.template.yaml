@@ -289,9 +289,9 @@ civil-service:
         releaseNameOverride: ${SERVICE_NAME}-ccd-data-store-api
         imagePullPolicy: Always
         devcpuRequests: 50m
+        devmemoryRequests: 1024Mi
         devcpuLimits: 700m
-        devmemoryRequests: 768Mi
-        devmemoryLimits: 2048Mi
+        devmemoryLimits: 4096Mi
         environment:
           CASE_DOCUMENT_AM_API_ATTACH_DOCUMENT_ENABLED: true
           CASE_DOCUMENT_AM_URL: http://${SERVICE_NAME}-cdam
