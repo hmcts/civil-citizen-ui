@@ -288,8 +288,8 @@ civil-service:
       java:
         releaseNameOverride: ${SERVICE_NAME}-ccd-data-store-api
         imagePullPolicy: Always
-        devcpuRequests: 50m
-        devcpuLimits: 700m
+        devcpuRequests: 100m
+        devcpuLimits: 1400m
         devmemoryRequests: 1024Mi
         devmemoryLimits: 4096Mi
         environment:
