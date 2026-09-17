@@ -15,11 +15,15 @@ import {
   getCertificateOfSatisfactionOrCancellation,
 } from 'services/features/generalApplication/certOfSorC/certificateOfSatisfactionOrCancellationService';
 import * as launchDarkly from '../../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
+import {GeneralApplication} from 'models/generalApplication/GeneralApplication';
+import {ApplicationType, ApplicationTypeOption} from 'models/generalApplication/applicationType';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 
 jest.mock('modules/oidc');
 jest.mock('modules/draft-store/draftStoreService');
 jest.mock('services/features/generalApplication/certOfSorC/certificateOfSatisfactionOrCancellationService');
 const mockGetCertificateOfSatisfactionOrCancellation = getCertificateOfSatisfactionOrCancellation as jest.Mock;
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
 
 jest.mock('../../../../../../../main/routes/guards/generalAplicationGuard',() => ({
   isGAForLiPEnabled: jest.fn((req, res, next) => {
@@ -42,6 +46,8 @@ describe('General Application - CoSorC - debt payment evidence controller', () =
 
   beforeEach(() => {
     claim.id = 'id';
+    claim.generalApplication = new GeneralApplication(new ApplicationType(ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID));
+    mockGetCaseData.mockResolvedValue(claim);
     mockGetCertificateOfSatisfactionOrCancellation.mockReturnValue(claim);
   });
 
