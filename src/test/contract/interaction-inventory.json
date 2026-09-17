@@ -1,6 +1,18 @@
 {
   "civil_service": [
     {
+      "description": "a citizen event rejected with callback errors and warnings",
+      "state": "Citizen event submission returns callback errors and warnings"
+    },
+    {
+      "description": "a citizen event rejected with field validation errors",
+      "state": "Citizen event submission returns field validation errors"
+    },
+    {
+      "description": "a citizen event rejected with no actionable validation fields",
+      "state": "Citizen event submission returns no actionable validation fields"
+    },
+    {
       "description": "a request for the claim issue fee",
       "state": "A claim issue fee is available for a claim amount of 1000"
     },
@@ -21,8 +33,20 @@
       "state": "Payment status SUCCESS is available for payment RC-1701-0909-0602-0418"
     },
     {
-      "description": "a request to submit a create-claim event",
-      "state": "Draft case 1111222233334444 can be submitted by the CUI user"
+      "description": "a request to submit the company-organisation draft claim",
+      "state": "A draft company-organisation claim can be submitted"
+    },
+    {
+      "description": "a request to submit the individual-company draft claim",
+      "state": "A draft individual-company claim can be submitted"
+    },
+    {
+      "description": "a request to submit the organisation-sole-trader draft claim",
+      "state": "A draft organisation-sole-trader claim can be submitted"
+    },
+    {
+      "description": "a request to submit the sole-trader-individual draft claim",
+      "state": "A draft sole-trader-individual claim can be submitted"
     }
   ],
   "idamApi_oidc": [

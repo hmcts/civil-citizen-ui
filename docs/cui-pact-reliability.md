@@ -24,13 +24,14 @@ job before recording completion. No Can-I-Deploy gate is added (DTSCCI-824).
 
 The machine-checked [inventory](../src/test/contract/interaction-inventory.json)
 lists every interaction description and provider state. It must change with any
-new or removed consumer interaction. The current union is six Civil Service,
+new or removed consumer interaction. The current union is twelve Civil Service,
 one IDAM and one S2S interaction in three artifacts.
 
 | Consumer file / client method | HTTP boundary | State reference in inventory | Follow-up |
 |---|---|---|---|
 | CivilServiceCreateClaim / getClaimFeeData | GET /fees/claim/1000 | A claim issue fee is available… | DTSCCI-6420 |
-| CivilServiceCreateClaim / submitEvent | POST /cases/1111222233334444/citizen/cui-user-id/event | Draft case 1111222233334444… | DTSCCI-6413: real draft route and translated data remain uncovered |
+| CivilServiceCreateClaim / submitDraftClaim | POST /cases/draft/citizen/cui-user-id/event | A draft {variant} claim can be submitted | Four translated party pairings; DTSCCI-6413 |
+| CivilServiceCreateClaim / submitEvent | POST /cases/1111222233334444/citizen/cui-user-id/event | Citizen event submission returns {error variant} | Three 422 envelopes; DTSCCI-6413 |
 | CivilServiceFeePayment / getFeePaymentRedirectInformation | POST /fees/CLAIMISSUED/case/{id}/payment | Claim issue payment can be initiated for case… | DTSCCI-6432 |
 | CivilServiceFeePayment / getFeePaymentStatus | GET /fees/CLAIMISSUED/case/{id}/payment/{reference}/status | Payment status SUCCESS is available for payment… | DTSCCI-6432 |
 | CivilServiceFeePayment / getGaFeePaymentRedirectInformation | POST /fees/case/{id}/ga/payment | Claim issue payment can be initiated for general application case… | DTSCCI-6432 |
@@ -43,6 +44,36 @@ and setup in Civil Service's `CivilCitizenUiProviderSupport`. The target applies
 `JacksonConfiguration` and controller advice, with JSON and string converters.
 It does not rewrite responses or tolerate an absent Pact. Runtime regression
 checks also exercise this setup through the existing provider test task.
+
+## Draft submission and validation errors
+
+The draft contracts replace the skeletal numeric-case submission with four calls
+through `translateDraftClaimToCCDR2` and `submitDraftClaim`: individual/company,
+company/organisation, organisation/sole trader and sole trader/individual. Together
+these exercise every party type on both sides and English, Welsh and bilingual
+language preferences without repeating every browser journey.
+
+`fixtures/draftClaimRequest.json` contains fixed, reviewed wire examples. Required
+party names, addresses, amount in pounds, breakdown in pence, interest enums and
+start date, fee strings, language and statement-of-truth fields are matched in
+the actual HTTP request. Update the corresponding Civil Service resource
+`civil-cui-draft-claims.json` alongside intentional contract changes. Provider
+states match the complete event submission parameters, use real Party models and
+return a populated CaseDetails response with id, state and last_modified. Consumer
+assertions cover converted identity, party names/types/addresses, amount, fee and
+language. The legacy numeric-case provider state remains while older Pacts select it.
+
+Three citizen-event rejection contracts cover callbackErrors/callbackWarnings,
+details.field_errors[].message and a valid 422 without actionable fields. The
+provider service throws a downstream Feign 422; the real RequestFilter and
+ResourceExceptionHandler produce the HTTP response. The consumer must raise
+CallbackError with actionable messages/warnings for the first two and preserve
+the Axios error for the third.
+
+The active DTSCCI-6156 PR (#8218, reviewed on 16 September 2026) changes functional
+execution and submission plumbing but adds no consumer Pact interactions. This
+package owns these interactions and provider states; existing functional journeys
+remain intact. No production application files are changed.
 
 ## Reproduce provider evidence
 
@@ -67,6 +98,18 @@ application code changed.
 
 ## Completion evidence still required
 
+Draft/error checks on 16 September 2026 passed: fourteen consumer tests across
+four suites, eleven tooling regressions, twelve generated-file Civil Service
+interactions (none skipped), and four runtime regressions. Artifact validation,
+focused ESLint and provider Checkstyle passed. Controlled contracts requiring a
+numeric last_modified or a renamed fieldErrors envelope were rejected by the
+provider verifier. These runs used temporary verification helpers outside the
+repositories; no local-only verifier or Gradle task is part of the change.
+Publication and Broker-backed pipeline verification of this expanded contract
+remain outstanding. Record the published version, Pact URL and provider result
+after running the supported workflows; the earlier six-interaction result does
+not verify these new interactions.
+
 Local checks on 14 September 2026 passed: eight consumer tests, eleven tooling
 regressions, six generated-file provider interactions and four runtime regressions.
 All three controlled provider variants failed as expected. Default one-worker
@@ -82,4 +125,4 @@ Retain the supported Jenkins run, published consumer version/branch and Pact URL
 Broker-selected CUI interaction count, and published provider verification result.
 Local generated-file verification and mocked publisher transport regressions do
 not prove Broker publication or selection. The other epic work packages remain
-open; this change adds no new endpoint coverage.
+open; publication and provider results must be recorded for each new contract version.
