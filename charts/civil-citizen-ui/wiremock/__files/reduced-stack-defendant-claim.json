@@ -3,6 +3,7 @@
   "state": "CASE_ISSUED",
   "last_modified": "2026-07-23T12:00:00.000Z",
   "case_data": {
+    "submittedDate": "2026-09-17T12:00:00.000Z",
     "businessProcess": {
       "status": "FINISHED"
     },
