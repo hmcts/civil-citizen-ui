@@ -290,8 +290,8 @@ civil-service:
         imagePullPolicy: Always
         devcpuRequests: 50m
         devcpuLimits: 700m
-        devmemoryRequests: 768Mi
-        devmemoryLimits: 2048Mi
+        devmemoryRequests: 1024Mi
+        devmemoryLimits: 4096Mi
         environment:
           CASE_DOCUMENT_AM_API_ATTACH_DOCUMENT_ENABLED: true
           CASE_DOCUMENT_AM_URL: http://${SERVICE_NAME}-cdam
