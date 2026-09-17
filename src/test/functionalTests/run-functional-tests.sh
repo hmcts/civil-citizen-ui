@@ -133,9 +133,9 @@ run_functional_command() {
 }
 
 run_functional_test_groups() {
-  local command report_exit_code
+  local command report_exit_code test_script
 
-  command="yarn test:civil-citizen-pr --grep "
+  test_script='test:civil-citizen-pr'
   pr_ft_groups=$(echo "$PR_FT_GROUPS" | awk '{print tolower($0)}')
   
   regex_pattern=""
@@ -143,13 +143,18 @@ run_functional_test_groups() {
   IFS=',' read -ra ft_groups_array <<< "$pr_ft_groups"
 
   for ft_group in "${ft_groups_array[@]}"; do
+      # CCD claim creation exceeds the preview request window when these
+      # journeys submit in parallel. Keep the standard path, one worker at a time.
+      if [[ "$ft_group" == 'ui-create-claim' ]]; then
+          test_script='test:civil-citizen-pr:serial'
+      fi
       if [[ -n "$regex_pattern" ]]; then
           regex_pattern+="|"
       fi
       regex_pattern+="@$ft_group"
   done
 
-  command+="'$regex_pattern'"
+  command="yarn $test_script --grep '$regex_pattern'"
   echo "Executing: $command"
 
   set +e
