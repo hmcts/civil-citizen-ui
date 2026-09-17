@@ -273,6 +273,7 @@ if(e2eTestMode || (functionalTestRouterUrl && functionalTestRouterToken)){
     if (userId) {
       await updateCachedE2EClaim(req.params.claimId, userId, claim => {
         claim.ccdState = 'CASE_ISSUED';
+        claim.submittedDate ??= new Date().toISOString();
       });
     }
     next();

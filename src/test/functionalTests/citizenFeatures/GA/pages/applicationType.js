@@ -27,10 +27,7 @@ class ApplicationType {
   }
 
   async verifyHeadingDetails() {
-    const heading = process.env.REDUCED_STACK_TESTS === 'true'
-      ? 'Make an application'
-      : 'Ask the court to change something on your case (make an application)';
-    await I.see(heading, 'h1');
+    await I.see('Ask the court to change something on your case (make an application)', 'h1');
     await I.see('Select application', 'h1');
   }
 
