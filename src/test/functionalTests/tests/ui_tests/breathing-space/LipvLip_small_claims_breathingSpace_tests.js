@@ -21,7 +21,7 @@ Before(async ({api}) => {
   await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.rejectAllDisputeAllWithIndividual);
 });
 
-Scenario('Claimant Lip enters into Standard Breathing Space when case is in Mediation', async ({I, api}) => {
+Scenario('Claimant Lip enters and exit from Standard Breathing Space when case is in Mediation', async ({I, api}) => {
   await api.claimantLipRespondToDefence(config.claimantCitizenUser, claimRef, false, 'IN_MEDIATION');
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await I.amOnPage('/dashboard');
@@ -57,7 +57,7 @@ Scenario('Claimant Lip enters into Standard Breathing Space when case is in Medi
   await exitFromBSSteps.exitFromBS(type, claimRef, exitDay, exitMonth, exitYear);
 });
 
-Scenario('Claimant Lip enters into Mental Health Breathing Space when case is in Claimant Intention', async ({I}) => {
+Scenario('Claimant Lip enters and exit from Mental Health Breathing Space when case is in Claimant Intention', async ({I}) => {
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await I.amOnPage('/dashboard');
   await I.click(claimNumber);

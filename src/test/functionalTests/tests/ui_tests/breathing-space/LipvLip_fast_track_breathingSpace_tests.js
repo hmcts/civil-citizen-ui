@@ -22,7 +22,7 @@ Before(async ({api}) => {
   await api.waitForFinishedBusinessProcess();
 });
 
-Scenario('Claimant Lip enters into Standard Breathing Space when case is Awaiting Defendant Response', async ({I}) => {
+Scenario('Claimant Lip enters and exit from Standard Breathing Space when case is Awaiting Defendant Response', async ({I}) => {
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await I.amOnPage('/dashboard');
   await I.click(claimNumber);
@@ -57,7 +57,7 @@ Scenario('Claimant Lip enters into Standard Breathing Space when case is Awaitin
   await exitFromBSSteps.exitFromBS(type, claimRef, exitDay, exitMonth, exitYear);
 });
 
-Scenario('Claimant Lip enters into Mental Health Breathing Space when case is in Case Progression', async ({I, api}) => {
+Scenario('Claimant Lip enters and exit from Mental Health Breathing Space when case is in Case Progression', async ({I, api}) => {
   await api.performCitizenResponse(config.defendantCitizenUser, claimRef, claimType, config.defenceType.rejectAllDisputeAllWithIndividual);
   await api.claimantLipRespondToDefence(config.claimantCitizenUser, claimRef, false, 'JUDICIAL_REFERRAL');
   await api.performCaseProgressedToSDO(config.judgeUserWithRegionId2, claimRef, 'fastTrack');
