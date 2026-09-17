@@ -97,7 +97,7 @@ claimCheckAnswersController.post(CLAIM_CHECK_ANSWERS_URL, async (req: Request | 
     }
     const interestToDate = await calculateInterestToDate(claim);
     const claimFeeData = await civilServiceClient.getClaimFeeData(claim.totalClaimAmount + interestToDate, req as AppRequest);
-    await saveClaimFee(userId, claimFeeData);
+    await saveClaimFee(req as AppRequest, claimFeeData);
     if (form.hasErrors() ) {
       renderView(res, form, claim, userId, lang, isCarmEnabled);
       return;
