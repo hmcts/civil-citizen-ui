@@ -2,6 +2,7 @@ const config = require('../../../../config');
 const LoginSteps = require('../../../commonFeatures/home/steps/login');
 const DateUtilsComponent = require('../../../citizenFeatures/caseProgression/util/DateUtilsComponent');
 const enterIntoBSSteps = require('../../../citizenFeatures/breathingSpace/steps/enterIntoBSSteps');
+const exitFromBSSteps = require('../../../citizenFeatures/breathingSpace/steps/exitFromBSSteps');
 const {createAccount} = require('../../../specClaimHelpers/api/idamHelper');
 const { enterIntoStandardBS, enterIntoMentalHealthBS, defendantBS } = require('../../../specClaimHelpers/dashboardNotificationConstants');
 const {verifyNotificationTitleAndContent} = require('../../../specClaimHelpers/e2e/dashboardHelper');
@@ -33,12 +34,27 @@ Scenario('Claimant Lip enters into Standard Breathing Space when case is Awaitin
   await enterIntoBSSteps.enterIntoBS(type, claimRef, currentDay, currentMonth, currentYear);
   const enterIntoStandardBSNotif = enterIntoStandardBS();
   await verifyNotificationTitleAndContent(claimNumber, enterIntoStandardBSNotif.title, enterIntoStandardBSNotif.content, claimRef);
+  await I.click('Sign out');
 
   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   await I.amOnPage('/dashboard');
   await I.click(claimNumber);
   const defendantBSNotif = defendantBS();
   await verifyNotificationTitleAndContent(claimNumber, defendantBSNotif.title, defendantBSNotif.content, claimRef);
+  await I.click('Sign out');
+
+  await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+  await I.amOnPage('/dashboard');
+  await I.click(claimNumber);
+
+  //For next weeks date
+  const exitDate = new Date();
+  exitDate.setDate(exitDate.getDate() + 7);
+  const exitDay = exitDate.getDate().toString();
+  const exitMonth = (exitDate.getMonth() + 1).toString();
+  const exitYear = exitDate.getFullYear().toString();
+
+  await exitFromBSSteps.exitFromBS(type, claimRef, exitDay, exitMonth, exitYear);
 });
 
 Scenario('Claimant Lip enters into Mental Health Breathing Space when case is in Case Progression', async ({I, api}) => {
@@ -57,11 +73,26 @@ Scenario('Claimant Lip enters into Mental Health Breathing Space when case is in
   await enterIntoBSSteps.enterIntoBS(type, claimRef, currentDay, currentMonth, currentYear);
   const enterIntoMentalHealthBSNotif = enterIntoMentalHealthBS();
   await verifyNotificationTitleAndContent(claimNumber, enterIntoMentalHealthBSNotif.title, enterIntoMentalHealthBSNotif.content, claimRef);
+  await I.click('Sign out');
 
   await LoginSteps.EnterCitizenCredentials(config.defendantCitizenUser.email, config.defendantCitizenUser.password);
   await I.amOnPage('/dashboard');
   await I.click(claimNumber);
   const defendantBSNotif = defendantBS();
   await verifyNotificationTitleAndContent(claimNumber, defendantBSNotif.title, defendantBSNotif.content, claimRef);
+  await I.click('Sign out');
+
+  await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
+  await I.amOnPage('/dashboard');
+  await I.click(claimNumber);
+
+  //For next weeks date
+  const exitDate = new Date();
+  exitDate.setDate(exitDate.getDate() + 7);
+  const exitDay = exitDate.getDate().toString();
+  const exitMonth = (exitDate.getMonth() + 1).toString();
+  const exitYear = exitDate.getFullYear().toString();
+
+  await exitFromBSSteps.exitFromBS(type, claimRef, exitDay, exitMonth, exitYear);
 });
 
