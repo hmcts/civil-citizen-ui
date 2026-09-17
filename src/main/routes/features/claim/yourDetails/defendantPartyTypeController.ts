@@ -5,8 +5,8 @@ import {PartyTypeSelection} from 'form/models/claim/partyTypeSelection';
 import {redirectToPage} from 'services/features/claim/partyTypeService';
 import {ClaimantOrDefendant, PartyType} from 'models/partyType';
 import {
-  getDefendantInformation,
-  saveDefendantProperty,
+  getDefendantInformationFromDraft,
+  saveDefendantPropertyToDraft,
 } from 'services/features/common/defendantDetailsService';
 import {Party} from 'models/party';
 import {AppRequest} from 'models/AppRequest';
@@ -18,8 +18,7 @@ const pageTitle = 'PAGES.DEFENDANT_PARTY_TYPE.PAGE_TITLE';
 
 defendantPartyTypeController.get(CLAIM_DEFENDANT_PARTY_TYPE_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const caseId = req.session?.user?.id;
-    const defendant: Party = await getDefendantInformation(caseId);
+    const defendant: Party = await getDefendantInformationFromDraft(req);
     const defendantPartyType = defendant?.type;
     const form = new GenericForm(new PartyTypeSelection(defendantPartyType, 'ERRORS.DEFENDANT_PARTY_TYPE_REQUIRED'));
     res.render(defendantPartyTypeViewPath, {form, pageTitle, partyType: PartyType});
@@ -30,7 +29,6 @@ defendantPartyTypeController.get(CLAIM_DEFENDANT_PARTY_TYPE_URL, (async (req: Ap
 
 defendantPartyTypeController.post(CLAIM_DEFENDANT_PARTY_TYPE_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const caseId = req.session?.user?.id;
     const form = new GenericForm(new PartyTypeSelection(Object.assign(req.body).option, 'ERRORS.DEFENDANT_PARTY_TYPE_REQUIRED'));
     form.validateSync();
 
@@ -38,9 +36,9 @@ defendantPartyTypeController.post(CLAIM_DEFENDANT_PARTY_TYPE_URL, (async (req: A
       res.render(defendantPartyTypeViewPath, {form, pageTitle, partyType: PartyType});
     } else {
       if (form.model.option !== PartyType.COMPANY) {
-        await deleteDelayedFlight(caseId);
+        await deleteDelayedFlight(req);
       }
-      await saveDefendantProperty(caseId, 'type', form.model.option);
+      await saveDefendantPropertyToDraft(req, 'type', form.model.option);
       redirectToPage(form.model.option, res, ClaimantOrDefendant.DEFENDANT);
     }
   } catch (error) {
