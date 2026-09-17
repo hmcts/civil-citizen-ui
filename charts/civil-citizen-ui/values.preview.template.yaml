@@ -145,6 +145,7 @@ civil-service:
       CORE_CASE_DATA_API_URL: http://${SERVICE_NAME}-ccd-data-store-api
       CASE_DOCUMENT_AM_URL: http://${SERVICE_NAME}-cdam
       REFERENCE_DATABASE_MIGRATION: true
+      SPRING_FLYWAY_POSTGRESQL_TRANSACTIONAL_LOCK: "false"
       EM_CCD_ORCHESTRATOR_URL: http://${SERVICE_NAME}-em-ccdorc
       CAMUNDA_URL: http://${SERVICE_NAME}-camunda/engine-rest/
       POLLING_EVENT_EMITTER_ENABLED: false
