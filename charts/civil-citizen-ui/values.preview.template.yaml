@@ -50,16 +50,11 @@ civil-service:
   enabled: true
   java:
     applicationPort: 4000
-    # Preview databases are created from scratch and Flyway can spend several
-    # minutes creating dashboard indexes before the health endpoint is exposed.
-    startupFailureThreshold: 80
     releaseNameOverride: ${SERVICE_NAME}-civil-service
     image: hmctsprod.azurecr.io/civil/service:${CIVIL_SERVICE_IMAGE}
     imagePullPolicy: Always
     ingressHost: ${SERVICE_NAME}-civil-service.preview.platform.hmcts.net
-    # Fresh preview schemas create large dashboard indexes during startup.
-    # Reserve enough CPU for Flyway to complete without a probe-driven restart.
-    devcpuRequests: 500m
+    devcpuRequests: 50m
     devcpuLimits: 700m
     devmemoryRequests: 1536Mi
     devmemoryLimits: 2048Mi
