@@ -19,7 +19,6 @@ import {setLanguage} from 'modules/i18n/languageService';
 import {isServiceShuttered, updateE2EKey} from './app/auth/launchdarkly/launchDarklyClient';
 import {getRedisStoreForSession} from 'modules/utilityService';
 import {setCaseReferenceCookie} from 'modules/cookie/caseReferenceCookie';
-import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {
   APPLICATION_TYPE_URL,
   ASSIGN_FRC_BAND_URL,
@@ -269,7 +268,7 @@ if(e2eTestMode || (functionalTestRouterUrl && functionalTestRouterToken)){
     </body></html>`);
   });
 
-  mockSupport.use('/case/:claimId/general-application', async (req, res, next) => {
+  mockSupport.use('/case/:claimId/general-application', async (req, _res, next) => {
     const userId = (req.session as AppSession).user?.id;
     if (userId) {
       await updateCachedE2EClaim(req.params.claimId, userId, claim => {
@@ -277,11 +276,6 @@ if(e2eTestMode || (functionalTestRouterUrl && functionalTestRouterToken)){
         claim.submittedDate ??= new Date().toISOString();
       });
     }
-    // Synthetic claims should show the same query management contact panel as current claims.
-    res.locals.showCreateQuery = true;
-    res.locals.isQMFlagEnabled = true;
-    res.locals.disableSendMessage = true;
-    res.locals.qmStartUrl = constructResponseUrlWithIdParams(req.params.claimId, QM_START_URL) + '?linkFrom=start';
     next();
   });
 

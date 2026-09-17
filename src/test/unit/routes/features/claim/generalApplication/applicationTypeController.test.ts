@@ -49,6 +49,8 @@ describe('General Application - Application type', () => {
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain('Ask the court to change something on your case (make an application)');
+          expect(res.text).toContain('Send a message (our preferred method of communication)');
+          expect(res.text).toContain('qm/start?linkFrom=start');
         });
     });
     it('should return page', async () => {
