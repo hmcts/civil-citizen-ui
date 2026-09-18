@@ -11,7 +11,7 @@ describe('Some useful information about Help with Fees Controller', () => {
     it('should render Some info about Help with Fees page successfully', async () => {
       const res = await request(app).get(ELIGIBILITY_APPLY_HELP_WITH_FEES_URL);
       expect(res.status).toBe(200);
-      expect(res.text).toContain('Apply For Help With Fees');
+      expect(res.text).toContain('Apply for Help with Fees');
     });
 
     describe('on POST', () => {
