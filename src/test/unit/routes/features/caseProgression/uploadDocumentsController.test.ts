@@ -1006,15 +1006,32 @@ describe('on POST', () => {
     const formWithDisclosure = new UploadDocumentsUserForm();
     formWithDisclosure.documentsForDisclosure = [new TypeOfDocumentSection()];
     (getUploadDocumentsForm as jest.Mock).mockReturnValue(formWithDisclosure);
-    (saveCaseProgression as jest.Mock).mockResolvedValue(true);
+    (saveCaseProgression as jest.Mock).mockClear();
 
     const response = await request(app)
       .post(CP_UPLOAD_DOCUMENTS_URL)
-      .send({action: 'add_another-documentsForDisclosure'});
+      .send({action: 'add_another-disclosure'});
 
     expect(response.status).toBe(200);
-    expect(addAnother).toHaveBeenCalledWith(formWithDisclosure, 'add_another-documentsForDisclosure');
-    expect(saveCaseProgression).toHaveBeenCalled();
+    expect(addAnother).toHaveBeenCalledWith(formWithDisclosure, 'add_another-disclosure', expect.any(String), undefined);
+    expect(saveCaseProgression).not.toHaveBeenCalled();
+  });
+
+  it('should not validate the form when add another is submitted', async () => {
+    const formWithDisclosure = new UploadDocumentsUserForm();
+    formWithDisclosure.documentsForDisclosure = [new TypeOfDocumentSection()];
+    formWithDisclosure.documentsForDisclosure[0].typeOfDocument = '';
+    (getUploadDocumentsForm as jest.Mock).mockReturnValue(formWithDisclosure);
+    const validateSyncSpy = jest.spyOn(GenericForm.prototype, 'validateSync');
+
+    const response = await request(app)
+      .post(CP_UPLOAD_DOCUMENTS_URL)
+      .send({action: 'add_another-disclosure'});
+
+    expect(response.status).toBe(200);
+    expect(validateSyncSpy).not.toHaveBeenCalled();
+    expect(addAnother).toHaveBeenCalledWith(formWithDisclosure, 'add_another-disclosure', expect.any(String), undefined);
+    validateSyncSpy.mockRestore();
   });
 
   it('should sanitize unknown/empty validation errors and redirect when no real errors remain', async () => {
