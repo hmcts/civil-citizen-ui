@@ -3008,9 +3008,11 @@
       "TITLE": "Ydych chi'n credu bod yr unigolyn rydych chi'n gwneud hawliad yn ei erbyn yn 18 oed neu'n hŷn?"
     },
     "ELIGIBILITY_HELP_WITH_FEES": {
-      "PAGE_TITLE": "Ydych chi angen help i dalu ffi’r llys?",
-      "TITLE": "Ydych chi angen help i dalu ffi’r llys?",
-      "FINANCIAL_HELP": "Gallech gael cymorth ariannol gyda ffioedd llys os nad oes gennych lawer neu ddim cynilion, os ydych ar incwm isel neu os ydych yn cael budd-daliadau penodol."
+      "PAGE_TITLE": "Ydych chi angen help i dalu eich ffioedd llys?",
+      "TITLE": "Ydych chi angen help i dalu eich ffioedd llys?",
+      "FINANCIAL_HELP": "Gallech gael cymorth ariannol gyda ffioedd llys os nad oes gennych lawer neu ddim cynilion o gwbl, os ydych ar incwm isel neu os ydych yn cael budd-daliadau penodol.",
+      "COURT_CALCULATOR_HELP": "Gallwch ddefnyddio cyfrifiannell y llys i weld a allech chi gael help i dalu ffioedd.",
+      "FEE_REMISSION_CALCULATOR_LINK": "Cyfrifiannell Dileu Ffi: EX160C - ar gyfer Microsoft Excel (yn agor mewn tab newydd)"
     },
     "ELIGIBILITY_HWF_REFERENCE": {
       "ALREADY_APPLIED": "Dim ond os ydych eisoes wedi gwneud cais am Help i Dalu Ffioedd mewn perthynas â'r hawliad hwn y bydd gennych chi un.",
@@ -3043,11 +3045,13 @@
       "TITLE": "Ydych chi'n 18 oed neu'n hŷn?"
     },
     "ELIGIBILITY_USEFUL_INFO_FEES": {
-      "CONTINUE_HELP_WITH_FEES": "Ydych chi am ddal i wneud Cais Help i Dalu Ffioedd?",
-      "HELP_WITH_FEES": "Os ydych chi am wneud cais am Help i Dalu Ffioedd, byddwch yn llenwi ffurflen ar-lein mewn ffenestr newydd. Bydd hyn yn rhoi rhif cyfeirnod i chi. Nodwch y rhif a'i gadw'n ddiogel, gan y bydd ei angen arnoch yn nes ymlaen yn y broses hawlio. (DS: os oes gennych fwy nag un hawliad yn mynd ymlaen, rhaid i bob hawliad gael cais Help i Dalu Ffioedd ar wahân a rhif cyfeirnod). Gallwch anfon eich cais cyn gynted ag y bydd gennych y cyfeirnod Help i Dalu Ffioedd, ond ni fydd yr hawliad yn cael ei gychwyn nes bydd y cais Help i Dalu Ffioedd wedi ei brosesu gan y llys. Gwneir hyn fel y byddwch yn gwybod pa ffioedd sy'n cael eu cynnwys a'r hyn y mae'n rhaid i chi  ei dalu o hyd. Os ydych chi'n dewis peidio talu, ni fydd yr hawliad yn cael ei gychwyn. Bydd yr hawliad yn dod i ben yma oni bai eich bod yn newid eich meddwl o fewn 95 diwrnod.",
-      "HELP_WITH_FEES_ADVICE": "Efallai y bydd y llys yn gofyn i chi e-bostio tystiolaeth i gefnogi eich cais cyn i'ch cais gael ei gychwyn.",
-      "HELP_WITH_FEES_INTRO": "Nid yw gwneud cais am Help i Dalu Ffioedd o reidrwydd yn golygu y byddwch yn cael help i dalu eich ffi. Efallai y bydd yn rhaid i chi dalu rhywfaint neu'r cyfan o'ch ffi llys i gyhoeddi’r hawliad (er mwyn i'r system llys ddechrau'r hawliad yn swyddogol ac anfon manylion i'r ochr arall). Pan fyddwch yn gwneud cais am Help i Dalu Ffioedd, ein nod yw darparu diweddariad o fewn 5-10 diwrnod gwaith.",
-      "TITLE": "Gwybodaeth ddefnyddiol am Help i Dalu Ffioedd"
+      "CONTINUE_HELP_WITH_FEES": "Ydych chi am ddal i wneud Cais am Help i Dalu Ffioedd?",
+      "HELP_WITH_FEES_ONLINE_FORM": "Os ydych chi am wneud cais am Help gyda Ffioedd, byddwch yn llenwi ffurflen ar-lein mewn ffenestr newydd. Bydd hyn yn rhoi rhif cyfeirnod i chi. Nodwch y rhif a'i gadw'n ddiogel, gan y bydd ei angen arnoch yn nes ymlaen yn y broses hawlio.",
+      "HELP_WITH_FEES_INSET": "Mae angen i chi gwblhau cais Help i Dalu Ffioedd ar-lein newydd a chyflwyno'r cyfeirnod Help i Dalu Ffioedd i'r llys bob tro y bydd gennych ffi llys i'w thalu. Mae hyn oherwydd mai dim ond unwaith y gellir defnyddio pob cyfeirnod Help i Dalu Ffioedd.",
+      "HELP_WITH_FEES": "Gallwch gyflwyno'ch hawliad cyn gynted ag y bydd gennych y cyfeirnod Help i Dalu Ffioedd, ond ni fydd yr hawliad yn cael ei gyhoeddi nes bod y cais am Help i Dalu Ffioedd wedi'i brosesu gan y llys. Gwneir hyn fel y byddwch yn gwybod pa ffioedd sy'n cael eu cynnwys a'r hyn y mae'n rhaid i chi  ei dalu o hyd. Os ydych chi'n dewis peidio talu, ni fydd yr hawliad yn cael ei gyhoeddi.",
+      "HELP_WITH_FEES_ADVICE": "Efallai y bydd y llys yn gofyn i chi e-bostio tystiolaeth i gefnogi eich cais am Help i Dalu Ffioedd cyn i'ch cais gael ei gyhoeddi.",
+      "HELP_WITH_FEES_INTRO": "Nid yw gwneud cais am Help gyda Ffioedd yn gwarantu na fyddwch yn gorfod talu’r ffi. Efallai y bydd yn rhaid i chi dalu rhywfaint neu'r holl ffi o hyd i gyhoeddi’r hawliad (er mwyn i'r system llys ddechrau'r hawliad yn swyddogol ac anfon manylion i'r ochr arall). Pan fyddwch chi'n gwneud cais am Help i Dalu Ffioedd, ein nod yw rhoi diweddariad i chi o fewn 5-10 diwrnod gwaith.",
+      "TITLE": "Gwybodaeth ddefnyddiol am Help gyda Ffioedd"
     },
     "EMPLOYMENT_STATUS": {
       "BOTH": "Gallwch ddewis y ddau",
