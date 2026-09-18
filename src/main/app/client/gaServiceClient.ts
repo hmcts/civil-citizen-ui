@@ -42,7 +42,7 @@ export class GaServiceClient {
         baseURL,
       });
     }
-    this.client.interceptors?.request.use(config => {
+    this.client?.interceptors?.request?.use(config => {
       const routerUrl = mockedFunctionalServiceUrl();
       if (routerUrl) config.baseURL = routerUrl;
       return config;
