@@ -251,6 +251,9 @@ civil-service:
         devcpuRequests: 50m
         devmemoryLimits: 4096Mi
         devcpuLimits: 1400m
+        livenessDelay: 0
+        startupPeriod: 120
+        startupFailureThreshold: 3
         releaseNameOverride: ${SERVICE_NAME}-am-role-assignment-service
         imagePullPolicy: Always
         image: hmctsprod.azurecr.io/am/role-assignment-service:latest
