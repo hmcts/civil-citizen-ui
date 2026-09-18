@@ -1,200 +1,161 @@
-import request from 'supertest';
-import {app} from '../../../../../main/app';
-import nock from 'nock';
-import config from 'config';
+import {Request, Response} from 'express';
+import qmStartController from '../../../../../main/routes/features/queryManagement/qmStartController';
 import {
   APPLICATION_TYPE_URL,
-  QM_FOLLOW_UP_URL,
-  QM_START_URL,
-  QM_WHAT_DO_YOU_WANT_TO_DO_URL,
-  QM_SHARE_QUERY_CONFIRMATION,
   GA_SUBMIT_OFFLINE,
+  QM_FOLLOW_UP_URL,
+  QM_SHARE_QUERY_CONFIRMATION,
+  QM_WHAT_DO_YOU_WANT_TO_DO_URL,
 } from 'routes/urls';
-import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
-import {Claim} from 'models/claim';
-import {getQueryManagement, saveQueryManagement} from 'services/features/queryManagement/queryManagementService';
+import {
+  deleteQueryManagement,
+  getCancelUrl,
+  getQueryManagement,
+  saveQueryManagement,
+} from 'services/features/queryManagement/queryManagementService';
 import {QueryManagement, WhatToDoTypeOption} from 'form/models/queryManagement/queryManagement';
 import {getGaRedirectionUrl} from 'services/commons/generalApplicationHelper';
-import {LinKFromValues} from 'models/generalApplication/applicationType';
 import {CivilServiceClient} from 'client/civilServiceClient';
+import {Claim} from 'models/claim';
+import {LinKFromValues} from 'models/generalApplication/applicationType';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {createMockResponse, getRouteHandler} from '../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../main/modules/oidc');
 jest.mock('services/features/queryManagement/queryManagementService');
-jest.mock('services/commons/generalApplicationHelper.ts');
-jest.mock('../../../../../main/modules/draft-store');
-jest.mock('../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('services/commons/generalApplicationHelper');
+jest.mock('modules/draft-store/draftStoreService');
 
-const CONTROLLER_URL = QM_START_URL;
 describe('Query management start Controller', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
-  const mockGetCaseData = getQueryManagement as jest.Mock;
-
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
-  });
+  const getHandler = getRouteHandler(qmStartController, 'get');
+  const postHandler = getRouteHandler(qmStartController, 'post');
+  const viewPath = 'features/queryManagement/qm-questions-template.njk';
+  const claimId = '12345';
+  let req: Partial<Request>;
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
+  const mockGetQueryManagement = getQueryManagement as jest.Mock;
+  const mockSaveQueryManagement = saveQueryManagement as jest.Mock;
+  const mockDeleteQueryManagement = deleteQueryManagement as jest.Mock;
+  const mockGenerateRedisKey = draftStoreService.generateRedisKey as jest.Mock;
+  const mockGetGaRedirectionUrl = getGaRedirectionUrl as jest.Mock;
 
   beforeEach(() => {
-    mockGetCaseData.mockImplementation(async () => {
-      const claim = new Claim();
-      claim.queryManagement = new QueryManagement();
-      return claim;
-    });
+    req = {params: {id: claimId}, body: {}, query: {}, cookies: {}};
+    res = createMockResponse();
+    next = jest.fn();
+    mockGenerateRedisKey.mockReturnValue(claimId);
+    mockGetQueryManagement.mockResolvedValue(new QueryManagement());
+    mockSaveQueryManagement.mockResolvedValue(undefined);
+    mockDeleteQueryManagement.mockResolvedValue(undefined);
+    (getCancelUrl as jest.Mock).mockReturnValue('/dashboard');
+    jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockResolvedValue(new Claim());
   });
 
   describe('on GET', () => {
-    it('should return query management start page', async () => {
-      await request(app)
-        .get(CONTROLLER_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-        });
+    it('should render the start page', async () => {
+      await getHandler(req as Request, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        pageTitle: 'PAGES.QM.WHAT_DO_YOU_WANT_TODO_TITLE',
+      }));
+      expect(mockDeleteQueryManagement).not.toHaveBeenCalled();
     });
 
-    it('should return query management start page and remove the old QM information', async () => {
-      await request(app)
-        .get(`${CONTROLLER_URL}?linkFrom=start`)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-        });
+    it('should clear previous QM data when linkFrom=start', async () => {
+      req.query = {linkFrom: 'start'};
+
+      await getHandler(req as Request, res as unknown as Response, next);
+
+      expect(mockDeleteQueryManagement).toHaveBeenCalled();
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.anything());
     });
 
-    it('should return http 500 when has error', async () => {
-      mockGetCaseData.mockImplementation(async () => {
-        throw new Error(TestMessages.REDIS_FAILURE);
-      });
-      await request(app)
-        .get(CONTROLLER_URL)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+    it('should call next when loading fails', async () => {
+      const error = new Error('redis failure');
+      mockGetQueryManagement.mockRejectedValue(error);
+
+      await getHandler(req as Request, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 
   describe('on POST', () => {
-    it('should Valid page', async () => {
-      await request(app)
-        .post(CONTROLLER_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.QUERY_MANAGEMENT_YOU_MUST_SELECT);
-        });
+    it('should re-render when no option is selected', async () => {
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.anything());
+      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
+      expect(mockSaveQueryManagement).not.toHaveBeenCalled();
     });
 
-    it('should redirect page when CHANGE_CASE when GA is Offline open New guidance scree', async () => {
-      jest
-        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
-        .mockResolvedValueOnce(new Claim());
-      const getUrlMock = getGaRedirectionUrl as jest.Mock;
-      getUrlMock.mockReturnValue('/case/:id/qm/information/CHANGE_CASE/GA_OFFLINE');
-      await request(app)
-        .post(CONTROLLER_URL)
-        .send({option: WhatToDoTypeOption.CHANGE_CASE})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual('/case/:id/qm/information/CHANGE_CASE/GA_OFFLINE');
-        });
+    it('should redirect using the GA helper when CHANGE_CASE is selected', async () => {
+      mockGetGaRedirectionUrl.mockResolvedValue(APPLICATION_TYPE_URL + `?linkFrom=${LinKFromValues.start}`);
+      req.body = {option: WhatToDoTypeOption.CHANGE_CASE};
+
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expect(res.redirect).toHaveBeenCalledWith(
+        constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL + `?linkFrom=${LinKFromValues.start}`),
+      );
     });
 
-    it('should redirect page when CHANGE_CASE when GA is Welsh', async () => {
-      jest
-        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
-        .mockResolvedValueOnce(new Claim());
-      const getUrlMock = getGaRedirectionUrl as jest.Mock;
-      getUrlMock.mockReturnValue(GA_SUBMIT_OFFLINE);
-      await request(app)
-        .post(CONTROLLER_URL)
-        .send({option: WhatToDoTypeOption.CHANGE_CASE})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(GA_SUBMIT_OFFLINE);
-        });
+    it('should redirect to GA offline when the helper returns that URL', async () => {
+      mockGetGaRedirectionUrl.mockResolvedValue(GA_SUBMIT_OFFLINE);
+      req.body = {option: WhatToDoTypeOption.CHANGE_CASE};
+
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, GA_SUBMIT_OFFLINE));
     });
 
-    it('should redirect page when CHANGE_CASE when GA online', async () => {
-      jest
-        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
-        .mockResolvedValueOnce(new Claim());
-      const getUrlMock = getGaRedirectionUrl as jest.Mock;
-      getUrlMock.mockReturnValue(APPLICATION_TYPE_URL + `?linkFrom=${LinKFromValues.start}`);
-      await request(app)
-        .post(CONTROLLER_URL)
-        .send({option: WhatToDoTypeOption.CHANGE_CASE})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual('/case/:id/general-application/application-type?linkFrom=start');
-        });
+    it('should redirect to share query confirmation for GET_SUPPORT', async () => {
+      mockGetGaRedirectionUrl.mockResolvedValue('/ga');
+      req.body = {option: WhatToDoTypeOption.GET_SUPPORT};
+
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, QM_SHARE_QUERY_CONFIRMATION));
     });
 
-    it('should redirect page when GET_SUPPORT', async () => {
-      jest
-        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
-        .mockResolvedValueOnce(new Claim());
-      await request(app)
-        .post(CONTROLLER_URL)
-        .send({option: WhatToDoTypeOption.GET_SUPPORT})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(QM_SHARE_QUERY_CONFIRMATION);
-        });
+    it('should redirect to follow up for FOLLOW_UP', async () => {
+      mockGetGaRedirectionUrl.mockResolvedValue('/ga');
+      req.body = {option: WhatToDoTypeOption.FOLLOW_UP};
+
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, QM_FOLLOW_UP_URL));
     });
 
-    it('should redirect page when FOLLOW_UP', async () => {
-      jest
-        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
-        .mockResolvedValueOnce(new Claim());
-      await request(app)
-        .post(CONTROLLER_URL)
-        .send({option: WhatToDoTypeOption.FOLLOW_UP})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(QM_FOLLOW_UP_URL);
-        });
+    it('should redirect to share query confirmation for SOMETHING_ELSE', async () => {
+      mockGetGaRedirectionUrl.mockResolvedValue('/ga');
+      req.body = {option: WhatToDoTypeOption.SOMETHING_ELSE};
+
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, QM_SHARE_QUERY_CONFIRMATION));
     });
 
-    it('should redirect page when SOMETHING_ELSE', async () => {
-      jest
-        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
-        .mockResolvedValueOnce(new Claim());
-      await request(app)
-        .post(CONTROLLER_URL)
-        .send({option: WhatToDoTypeOption.SOMETHING_ELSE})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(QM_SHARE_QUERY_CONFIRMATION);
-        });
+    it('should redirect to what to do for MANAGE_HEARING', async () => {
+      mockGetGaRedirectionUrl.mockResolvedValue('/ga');
+      req.body = {option: WhatToDoTypeOption.MANAGE_HEARING};
+
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expect(res.redirect).toHaveBeenCalledWith(
+        constructResponseUrlWithIdParams(claimId, QM_WHAT_DO_YOU_WANT_TO_DO_URL.replace(':qmType', WhatToDoTypeOption.MANAGE_HEARING)),
+      );
     });
 
-    it('should redirect page when MANAGE_HEARING', async () => {
-      jest
-        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
-        .mockResolvedValueOnce(new Claim());
-      await request(app)
-        .post(CONTROLLER_URL)
-        .send({option: WhatToDoTypeOption.MANAGE_HEARING})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(QM_WHAT_DO_YOU_WANT_TO_DO_URL.replace(':qmType', WhatToDoTypeOption.MANAGE_HEARING));
-        });
-    });
+    it('should call next when saving fails', async () => {
+      const error = new Error('redis failure');
+      mockSaveQueryManagement.mockRejectedValue(error);
+      req.body = {option: WhatToDoTypeOption.CHANGE_CASE};
 
-    it('should return http 500 when has error', async () => {
-      const mockSaveDraftClaim = saveQueryManagement as jest.Mock;
-      mockSaveDraftClaim.mockImplementation(async () => {
-        throw new Error(TestMessages.REDIS_FAILURE);
-      });
-      await request(app)
-        .post(CONTROLLER_URL)
-        .send({option: WhatToDoTypeOption.CHANGE_CASE})
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 });
