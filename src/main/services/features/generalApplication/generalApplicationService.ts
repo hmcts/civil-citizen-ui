@@ -560,7 +560,7 @@ export const shouldDisplaySyncWarning = (applicationResponse: ApplicationRespons
 
 export const getApplicationIndex = async(claimId: string, applicationId: string, req: AppRequest, indexWithPlusOne = false) : Promise<number> => {
   const applications = await generalApplicationClient.getApplicationsByCaseId(claimId, req);
-  const index =  applications.findIndex(application => application.id == applicationId);
+  const index = (applications ?? []).findIndex(application => application.id == applicationId);
   return indexWithPlusOne? index + 1 : index;
 };
 
@@ -688,7 +688,7 @@ export const getAgreementFromOtherPartiesNextUrl = (req: AppRequest | Request, c
 
 export const getRequestingReasonNextUrl = (req: AppRequest | Request, claim: Claim): string => {
   const options = [ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT, ApplicationTypeOption.SET_ASIDE_JUDGEMENT, ApplicationTypeOption.SETTLE_BY_CONSENT];
-  const isAddAnotherApplicationNotAllowed = options.some(value => claim.generalApplication?.applicationTypes.some(obj => obj.option === value));
+  const isAddAnotherApplicationNotAllowed = options.some(value => claim.generalApplication?.applicationTypes?.some(obj => obj.option === value));
   if (isAddAnotherApplicationNotAllowed) {
     const claimId = getRouteParam(req, 'id');
     return constructResponseUrlWithIdParams(claimId, GA_WANT_TO_UPLOAD_DOCUMENTS_URL);
@@ -701,7 +701,7 @@ export const getRequestingReasonNextUrl = (req: AppRequest | Request, claim: Cla
 
 export const getClaimApplicationCostNextUrl = (req: AppRequest | Request, claim: Claim): string => {
   const options = [ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT];
-  const isOrderJudgeNotAllowed = options.some(value => claim.generalApplication?.applicationTypes.some(obj => obj.option === value));
+  const isOrderJudgeNotAllowed = options.some(value => claim.generalApplication?.applicationTypes?.some(obj => obj.option === value));
   if (isOrderJudgeNotAllowed) {
     return getRequestingReasonNextUrl(req, claim);
   } else {

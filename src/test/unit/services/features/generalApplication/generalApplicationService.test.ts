@@ -7,8 +7,10 @@ import {
   getByIndex,
   getByIndexOrLast,
   getCancelUrl,
+  getClaimApplicationCostNextUrl,
   getDashboardUrlForParty,
   getDynamicHeaderForMultipleApplications,
+  getRequestingReasonNextUrl,
   getViewApplicationUrl,
   isConfirmYouPaidCCJAppType,
   removeAllOtherApplications,
@@ -50,7 +52,13 @@ import {RequestingReason} from 'models/generalApplication/requestingReason';
 import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
 import {GaResponse} from 'common/models/generalApplication/response/gaResponse';
 import {YesNo, YesNoUpperCamelCase} from 'common/form/models/yesNo';
-import {CANCEL_URL, DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL} from 'routes/urls';
+import {
+  CANCEL_URL,
+  DASHBOARD_CLAIMANT_URL,
+  DEFENDANT_SUMMARY_URL,
+  GA_ADD_ANOTHER_APPLICATION_URL,
+  ORDER_JUDGE_URL,
+} from 'routes/urls';
 import {HearingSupport, SupportType} from 'models/generalApplication/hearingSupport';
 import {HearingArrangement, HearingTypeOptions} from 'models/generalApplication/hearingArrangement';
 import {HearingContactDetails} from 'models/generalApplication/hearingContactDetails';
@@ -1335,6 +1343,30 @@ describe('Should get the application index', () => {
     const result = await getApplicationIndex('123', '1234', undefined);
     //Then
     expect(result).toEqual(-1);
+  });
+
+  it('should return -1 when applications list is undefined', async () => {
+    jest
+      .spyOn(GaServiceClient.prototype, 'getApplicationsByCaseId')
+      .mockResolvedValue(undefined);
+    //When
+    const result = await getApplicationIndex('123', '1234', undefined);
+    //Then
+    expect(result).toEqual(-1);
+  });
+
+  it('should not throw when applicationTypes is missing and send the user to add another application', () => {
+    const req = {params: {id: '123'}, query: {}, body: {}} as unknown as AppRequest;
+    expect(getRequestingReasonNextUrl(req, new Claim())).toEqual(
+      `${GA_ADD_ANOTHER_APPLICATION_URL.replace(':id', '123')}?index=0`,
+    );
+  });
+
+  it('should not throw when applicationTypes is missing and send the user to order judge', () => {
+    const req = {params: {id: '123'}, query: {}, body: {}} as unknown as AppRequest;
+    expect(getClaimApplicationCostNextUrl(req, new Claim())).toEqual(
+      `${ORDER_JUDGE_URL.replace(':id', '123')}?index=0`,
+    );
   });
 
   describe('deleteGAFromClaimsByUserId', () => {
