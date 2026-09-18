@@ -1,71 +1,74 @@
-import request from 'supertest';
-import {app} from '../../../../../../main/app';
+import {Request, Response} from 'express';
+import singleDefendantController from '../../../../../../main/routes/features/public/eligibility/singleDefendantController';
 import {
   ELIGIBILITY_DEFENDANT_ADDRESS_URL,
-  ELIGIBILITY_SINGLE_DEFENDANT_URL,
   NOT_ELIGIBLE_FOR_THIS_SERVICE_URL,
 } from '../../../../../../main/routes/urls';
 import {YesNo} from '../../../../../../main/common/form/models/yesNo';
+import {GenericForm} from '../../../../../../main/common/form/models/genericForm';
+import {createMockResponse, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
 describe('Single Defendant Controller', () => {
+  const getHandler = getRouteHandler(singleDefendantController, 'get');
+  const postHandler = getRouteHandler(singleDefendantController, 'post');
+  const viewPath = 'features/public/eligibility/single-defendant';
+  let req: Partial<Request>;
+  let res: ReturnType<typeof createMockResponse>;
+
+  beforeEach(() => {
+    req = {cookies: {}, body: {}, query: {}};
+    res = createMockResponse();
+  });
 
   describe('on GET', () => {
-    it('should render single defendant controller page', async () => {
-      await request(app).get(ELIGIBILITY_SINGLE_DEFENDANT_URL).expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain('Is this claim against more than one person or organisation?');
-      });
+    it('should render the page with an empty form', () => {
+      getHandler(req as Request, res as unknown as Response, jest.fn());
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        pageTitle: 'PAGES.ELIGIBILITY_SINGLE_DEFENDANT.PAGE_TITLE',
+      }));
+      expect((res.render as jest.Mock).mock.calls[0][1].form).toBeInstanceOf(GenericForm);
     });
 
-    it('should render single defendant controller page with singleDefendant cookie value', async () => {
-      app.request['cookies'] = {'eligibility': {singleDefendant: YesNo.YES}};
-      await request(app).get(ELIGIBILITY_SINGLE_DEFENDANT_URL).expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain('Is this claim against more than one person or organisation?');
-      });
-    });
+    it('should pre-populate the form from the eligibility cookie', () => {
+      req.cookies = {eligibility: {singleDefendant: YesNo.YES}};
 
-    it('should render single defendant controller page with if singleDefendant does not exist in the cookie', async () => {
-      app.request['cookies'] = {'eligibility': {foo: 'blah'}};
-      await request(app).get(ELIGIBILITY_SINGLE_DEFENDANT_URL).expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain('Is this claim against more than one person or organisation?');
-      });
+      getHandler(req as Request, res as unknown as Response, jest.fn());
+
+      expect((res.render as jest.Mock).mock.calls[0][1].form.model.option).toBe(YesNo.YES);
     });
   });
 
   describe('on POST', () => {
-    it('should render single defendant controller page', async () => {
-      await request(app).post(ELIGIBILITY_SINGLE_DEFENDANT_URL).expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain('Is this claim against more than one person or organisation?');
-      });
+    it('should re-render when no option is selected', () => {
+      postHandler(req as Request, res as unknown as Response, jest.fn());
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.anything());
+      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
+      expect(res.redirect).not.toHaveBeenCalled();
     });
 
-    it('should redirect to not eligible page if single radio selection is yes', async () => {
-      await request(app).post(ELIGIBILITY_SINGLE_DEFENDANT_URL).send({option: YesNo.YES}).expect((res) => {
-        expect(res.status).toBe(302);
-        expect(res.header.location).toBe(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL + '?reason=multiple-defendants');
-      });
+    it('should redirect to not eligible when yes is selected', () => {
+      req.body = {option: YesNo.YES};
+
+      postHandler(req as Request, res as unknown as Response, jest.fn());
+
+      expect(res.cookie).toHaveBeenCalledWith('eligibility', {singleDefendant: YesNo.YES}, {httpOnly: true, sameSite: 'lax'});
+      expect(res.redirect).toHaveBeenCalledWith(`${NOT_ELIGIBLE_FOR_THIS_SERVICE_URL}?reason=multiple-defendants`);
     });
 
-    it('should redirect and set cookie value', async () => {
-      app.request.cookies = {eligibility: {foo: 'blah'}};
-      await request(app).post(ELIGIBILITY_SINGLE_DEFENDANT_URL).send({option: YesNo.NO}).expect((res) => {
-        expect(res.status).toBe(302);
-        expect(res.header.location).toBe(ELIGIBILITY_DEFENDANT_ADDRESS_URL);
-        expect(app.request.cookies.eligibility.singleDefendant).toBe(YesNo.NO);
-        expect(app.request.cookies.eligibility.foo).toBe('blah');
-      });
-    });
+    it('should redirect to defendant address and preserve existing cookie values', () => {
+      req.cookies = {eligibility: {foo: 'blah'}};
+      req.body = {option: YesNo.NO};
 
-    it('should redirect and update cookie value', async () => {
-      app.request.cookies = {eligibility: {foo: 'blah', singleDefendant: YesNo.NO}};
-      await request(app).post(ELIGIBILITY_SINGLE_DEFENDANT_URL).send({option: YesNo.YES}).expect((res) => {
-        expect(res.status).toBe(302);
-        expect(app.request.cookies.eligibility.singleDefendant).toBe(YesNo.YES);
-        expect(app.request.cookies.eligibility.foo).toBe('blah');
-      });
+      postHandler(req as Request, res as unknown as Response, jest.fn());
+
+      expect(res.cookie).toHaveBeenCalledWith(
+        'eligibility',
+        {foo: 'blah', singleDefendant: YesNo.NO},
+        {httpOnly: true, sameSite: 'lax'},
+      );
+      expect(res.redirect).toHaveBeenCalledWith(ELIGIBILITY_DEFENDANT_ADDRESS_URL);
     });
   });
 });
