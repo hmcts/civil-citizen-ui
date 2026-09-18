@@ -1,0 +1,35 @@
+{
+  "mappings": [
+    {
+      "name": "create-claim-extend-time-general-application-fee",
+      "priority": 10,
+      "request": {
+        "method": "POST",
+        "urlPath": "/fees/general-application",
+        "headers": {
+          "Content-Type": {
+            "contains": "application/json"
+          }
+        },
+        "bodyPatterns": [
+          {
+            "equalToJson": "{\"applicationTypes\":[\"EXTEND_TIME\"],\"withConsent\":false,\"withNotice\":false,\"hearingDate\":null}",
+            "ignoreArrayOrder": true,
+            "ignoreExtraElements": false
+          }
+        ]
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "jsonBody": {
+          "calculatedAmountInPence": "12600",
+          "code": "FEE0443",
+          "version": "2"
+        }
+      }
+    }
+  ]
+}

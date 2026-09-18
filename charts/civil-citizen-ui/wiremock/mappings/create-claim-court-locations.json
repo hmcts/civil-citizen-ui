@@ -1,0 +1,32 @@
+{
+  "mappings": [
+    {
+      "name": "create-claim-court-locations",
+      "priority": 10,
+      "request": {
+        "method": "GET",
+        "urlPath": "/locations/courtLocations"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "jsonBody": [
+          {
+            "court_venue_id": "0000",
+            "epimms_id": "000000",
+            "site_name": "Birmingham Civil and Family Justice Centre",
+            "court_address": "Priory Courts, 33 Bull Street",
+            "label": "Birmingham Civil and Family Justice Centre - Priory Courts, 33 Bull Street - B4 6DS",
+            "postcode": "B4 6DS",
+            "court_location_code": "121",
+            "court_status": "Open",
+            "is_hearing_location": "Y",
+            "location_type": "COURT"
+          }
+        ]
+      }
+    }
+  ]
+}

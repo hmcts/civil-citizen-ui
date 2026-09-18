@@ -5507,6 +5507,7 @@ __metadata:
     otplib: "npm:^13.0.0"
     pa11y: "npm:^8.0.0"
     proper-lockfile: "npm:^4.1.2"
+    puppeteer: "npm:22.15.0"
     rate-limit-redis: "npm:^5.0.0"
     reflect-metadata: "npm:^0.1.13"
     require-directory: "npm:^2.1.1"
@@ -11515,7 +11516,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"puppeteer@npm:^22.3.0":
+"puppeteer@npm:22.15.0, puppeteer@npm:^22.3.0":
   version: 22.15.0
   resolution: "puppeteer@npm:22.15.0"
   dependencies:
