@@ -260,7 +260,7 @@ run_optimised_functional_tests() {
     echo "Running ${bucket}: ${count} active scenarios from ${base_pattern}"
     bucket_started=$SECONDS
     MOCHAWESOME_REPORTFILENAME="optimised-${bucket}" \
-      run_functional_command yarn codeceptjs run-workers --suites 13 --grep "$pattern" \
+      run_functional_command yarn codeceptjs run-workers --suites 1 --grep "$pattern" \
       --reporter mocha-multi --plugins allure --verbose
     if [[ "$bucket" = mocked ]]; then
       if [[ "$base_pattern" = *'@ui-create-claim'* ]]; then
