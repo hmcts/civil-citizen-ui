@@ -6,7 +6,6 @@ const launchDarklyClientMock = {
   isMintiEnabledForCase: jest.fn().mockResolvedValue(false),
   isGaForLipsEnabled: jest.fn().mockResolvedValue(false),
   isQueryManagementEnabled: jest.fn().mockResolvedValue(false),
-  isWelshEnabledForMainCase: jest.fn().mockResolvedValue(false),
   isJudgmentBufferEnabled: jest.fn().mockResolvedValue(false),
 };
 
@@ -168,4 +167,3 @@ jest.mock('services/features/feePayment/feePaymentService', () => paymentService
 jest.mock('client/dmStoreClient', () => ({
   DmStoreClient: jest.fn().mockImplementation(() => dmStoreClientMock),
 }));
-
