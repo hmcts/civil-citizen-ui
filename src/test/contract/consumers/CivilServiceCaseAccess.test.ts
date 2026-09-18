@@ -1,4 +1,4 @@
-import {MatchersV3, PactV3} from '@pact-foundation/pact';
+import {MatchersV3, PactV3, SpecificationVersion} from '@pact-foundation/pact';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {AppRequest} from 'models/AppRequest';
@@ -54,7 +54,7 @@ function assertClaim(claim: Claim, defendant = false) {
 describe('Civil Service case reads, dashboards and defendant assignment', () => {
   let provider: PactV3;
   beforeEach(() => {
-    provider = new PactV3({consumer: 'civil_citizen_ui', provider: 'civil_service',
+    provider = new PactV3({spec: SpecificationVersion.SPECIFICATION_VERSION_V4, consumer: 'civil_citizen_ui', provider: 'civil_service',
       dir: PACT_DIRECTORY_PATH, logLevel: 'warn'});
   });
   const exercise = (check: (client: CivilServiceClient) => Promise<void>) =>

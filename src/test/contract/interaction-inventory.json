@@ -9,6 +9,22 @@
       "state": "Civil PIN validation fails for missing claim"
     },
     {
+      "description": "a General Application fee request for adjourn hearing",
+      "state": "A General Application fee for adjourn hearing is available"
+    },
+    {
+      "description": "a General Application fee request for consent",
+      "state": "A General Application fee for consent is available"
+    },
+    {
+      "description": "a General Application fee request for notice",
+      "state": "A General Application fee for notice is available"
+    },
+    {
+      "description": "a General Application fee request for without notice",
+      "state": "A General Application fee for without notice is available"
+    },
+    {
       "description": "a citizen event rejected with callback errors and warnings",
       "state": "Citizen event submission returns callback errors and warnings"
     },
@@ -19,6 +35,14 @@
     {
       "description": "a citizen event rejected with no actionable validation fields",
       "state": "Citizen event submission returns no actionable validation fields"
+    },
+    {
+      "description": "a claimant repayment plan returning IN_FAVOUR_OF_CLAIMANT",
+      "state": "The repayment decision is IN_FAVOUR_OF_CLAIMANT"
+    },
+    {
+      "description": "a claimant repayment plan returning IN_FAVOUR_OF_DEFENDANT",
+      "state": "The repayment decision is IN_FAVOUR_OF_DEFENDANT"
     },
     {
       "description": "a defendant link lookup returning linked",
@@ -65,12 +89,32 @@
       "state": "The defendant dashboard page 2 is available"
     },
     {
+      "description": "a request for fee ranges",
+      "state": "Flat and percentage fee ranges are available"
+    },
+    {
       "description": "a request for missing case details",
       "state": "The requested case does not exist"
     },
     {
       "description": "a request for the claim issue fee",
       "state": "A claim issue fee is available for a claim amount of 1000"
+    },
+    {
+      "description": "a request for the hearing fee",
+      "state": "A hearing fee is available for a claim amount of 1000"
+    },
+    {
+      "description": "a request to calculate breakdown claim interest",
+      "state": "Claim interest breakdown can be calculated"
+    },
+    {
+      "description": "a request to calculate different rate zero claim interest",
+      "state": "Claim interest different rate zero can be calculated"
+    },
+    {
+      "description": "a request to calculate statutory claim interest",
+      "state": "Claim interest statutory can be calculated"
     },
     {
       "description": "a request to create a GovPay payment",
@@ -103,6 +147,22 @@
     {
       "description": "a request to submit the sole-trader-individual draft claim",
       "state": "A draft sole-trader-individual claim can be submitted"
+    },
+    {
+      "description": "a response deadline request with 0 extra days",
+      "state": "A response deadline with 0 extra days can be calculated"
+    },
+    {
+      "description": "a response deadline request with 5 extra days",
+      "state": "A response deadline with 5 extra days can be calculated"
+    },
+    {
+      "description": "an agreed response deadline lookup with a date",
+      "state": "An agreed response deadline is present"
+    },
+    {
+      "description": "an agreed response deadline lookup with no date",
+      "state": "An agreed response deadline is absent"
     },
     {
       "description": "an authenticated defendant assignment with accepted",

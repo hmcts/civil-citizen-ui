@@ -22,6 +22,7 @@ const request = {
 } as unknown as AppRequest;
 
 const createProvider = () => new Pact({
+  spec: 4,
   consumer: 'civil_citizen_ui',
   provider: 'civil_service',
   host: '127.0.0.1',
@@ -60,12 +61,13 @@ describe('Civil Service create-claim contract', () => {
         body: {
           calculatedAmountInPence: like('11500'),
           code: like('FEE0209'),
+          version: like('1'),
         },
       },
     });
 
     await expect(client.getClaimFeeData(1000, request)).resolves.toEqual({
-      calculatedAmountInPence: 11500, code: 'FEE0209',
+      calculatedAmountInPence: 11500, code: 'FEE0209', version: '1',
     });
   });
 

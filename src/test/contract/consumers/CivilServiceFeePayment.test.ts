@@ -5,6 +5,7 @@ import { AppRequest } from '../../../main/common/models/AppRequest';
 import { PACT_DIRECTORY_PATH, PACT_LOG_PATH } from '../utils';
 
 const createMockProvider = () => new Pact({
+  spec: 4,
   log: PACT_LOG_PATH,
   dir: PACT_DIRECTORY_PATH,
   logLevel: 'info',

@@ -25,6 +25,11 @@ function validate(path = directory) {
     if (pact.consumer.name !== 'civil_citizen_ui' || !expected || file !== `civil_citizen_ui-${pact.provider.name}.json`) {
       throw new Error(`Unexpected Pact participant in ${file}`);
     }
+    // V2/V3 cannot reliably preserve JSON scalar strings in the JVM verifier.
+    // All Civil Service suites must write the same V4 artifact when merging.
+    if (pact.provider.name === 'civil_service' && !pact.metadata?.pactSpecification?.version?.startsWith('4.')) {
+      throw new Error('Civil Service Pact must use specification V4 to preserve JSON scalar bodies');
+    }
     const actualKeys = pact.interactions.map(key).sort();
     const expectedKeys = expected.map(item => key({ description: item.description, providerState: item.state })).sort();
     if (JSON.stringify(actualKeys) !== JSON.stringify(expectedKeys)) {

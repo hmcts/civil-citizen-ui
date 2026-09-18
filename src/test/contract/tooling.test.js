@@ -11,6 +11,7 @@ beforeEach(() => {
   for (const [provider, interactions] of Object.entries(inventory)) {
     writeFileSync(join(directory, `civil_citizen_ui-${provider}.json`), JSON.stringify({
       consumer: { name: 'civil_citizen_ui' }, provider: { name: provider },
+      metadata: { pactSpecification: { version: provider === 'civil_service' ? '4.0' : '2.0.0' } },
       interactions: interactions.map(item => ({ description: item.description, providerState: item.state })),
     }));
   }
@@ -19,6 +20,14 @@ afterEach(() => rmSync(directory, { recursive: true, force: true }));
 
 test('accepts the complete union across consumer suites', () => {
   expect(validate(directory)).toHaveLength(3);
+});
+
+test.each(['2.0.0', '3.0.0'])('rejects a Civil Service artifact downgraded to %s', version => {
+  const path = join(directory, 'civil_citizen_ui-civil_service.json');
+  const pact = JSON.parse(readFileSync(path, 'utf8'));
+  pact.metadata.pactSpecification.version = version;
+  writeFileSync(path, JSON.stringify(pact));
+  expect(() => validate(directory)).toThrow('must use specification V4');
 });
 
 test('cleans previous artifacts before generation', () => {
