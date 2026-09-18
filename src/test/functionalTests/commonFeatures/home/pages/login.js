@@ -127,6 +127,7 @@ class LoginPage {
   async #login(email, password, endpoint, attempts = 0) {
     const MAX_ATTEMPTS = 2;
 
+    await I.reloadOnGatewayTimeout();
     const currentUrl = await I.grabCurrentUrl();
 
     /*

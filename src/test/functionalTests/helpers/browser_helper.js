@@ -103,6 +103,21 @@ module.exports = class BrowserHelpers extends Helper {
     return false;
   }
 
+  async reloadOnGatewayTimeout(retries = 2) {
+    if (!this.isPlaywright()) return;
+
+    const page = this.helpers.Playwright.page;
+    for (let attempt = 0; attempt < retries; attempt++) {
+      if (!(await page.content()).includes('504 Gateway Time-out')) return;
+      console.log(`Gateway timeout on sign-in page; reloading (${attempt + 1}/${retries})`);
+      await page.reload();
+      await page.waitForTimeout(1000);
+    }
+    if ((await page.content()).includes('504 Gateway Time-out')) {
+      throw new Error(`Sign-in gateway still returned 504 after ${retries} reloads`);
+    }
+  }
+
   async clickClaimNumber(claimNumber, retries = 2) {
     if (!this.isPlaywright()) {
       await this.getHelper().click(claimNumber);
