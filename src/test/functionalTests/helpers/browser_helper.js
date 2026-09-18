@@ -130,11 +130,17 @@ module.exports = class BrowserHelpers extends Helper {
 
     for (let attempt = 0; attempt <= retries; attempt++) {
       try {
-        await claimLink.click();
+        await claimLink.waitFor({state: 'visible', timeout: 10000});
+        await claimLink.click({timeout: 10000});
       } catch (err) {
         lastError = err;
         console.log(`Claim click attempt ${attempt + 1}/${retries + 1} failed: ${err.message}`);
-        await page.waitForTimeout(500);
+        if (attempt < retries) {
+          // A transient dashboard fetch error can leave the generic error page
+          // visible. Reloading makes the claimant-claims request again.
+          await page.reload();
+          await page.waitForTimeout(1000);
+        }
         continue;
       }
 
