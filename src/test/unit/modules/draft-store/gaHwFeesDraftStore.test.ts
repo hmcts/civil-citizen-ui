@@ -1,4 +1,6 @@
-import {app} from '../../../../main/app';
+jest.mock('../../../../main/app-instance', () => jest.requireActual('../../../utils/getRouteHandler'));
+
+import {app} from '../../../../main/app-instance';
 import {GaHelpWithFees} from 'models/generalApplication/gaHelpWithFees';
 import {getDraftGAHWFDetails, saveDraftGAHWFDetails} from 'modules/draft-store/gaHwFeesDraftStore';
 import {YesNo} from 'form/models/yesNo';
