@@ -5,6 +5,7 @@ import { AppRequest } from '../../../main/common/models/AppRequest';
 import { PACT_DIRECTORY_PATH, PACT_LOG_PATH } from '../utils';
 
 const createMockProvider = () => new Pact({
+  spec: 4,
   log: PACT_LOG_PATH,
   dir: PACT_DIRECTORY_PATH,
   logLevel: 'info',
@@ -13,7 +14,7 @@ const createMockProvider = () => new Pact({
   host: '127.0.0.1',
 });
 
-const { like, decimal } = Matchers;
+const { like, iso8601DateTimeWithMillis } = Matchers;
 
 const CLAIM_REFERENCE = '1234567890123456';
 const FEE_TYPE = 'CLAIMISSUED';
@@ -89,7 +90,7 @@ describe('Civil Service fee payment contract', () => {
             paymentReference: like(PAYMENT_REFERENCE),
             status: like('Initiated'),
             nextUrl: like('https://card.payments.service.gov.uk/secure/7b0716b2-40c4-413e-b62e-72c599c91960'),
-            dateCreated: decimal(1701090906.313),
+            dateCreated: iso8601DateTimeWithMillis('2023-11-27T13:15:06.313Z'),
           },
         },
       });
@@ -110,7 +111,7 @@ describe('Civil Service fee payment contract', () => {
         status: 'Initiated',
         nextUrl: 'https://card.payments.service.gov.uk/secure/7b0716b2-40c4-413e-b62e-72c599c91960',
       }));
-      expect(response.dateCreated).toEqual(expect.any(Number));
+      expect(response.dateCreated).toBe('2023-11-27T13:15:06.313Z');
     });
   });
 
@@ -181,7 +182,7 @@ describe('Civil Service fee payment contract', () => {
             paymentReference: like(PAYMENT_REFERENCE),
             status: like('Initiated'),
             nextUrl: like('https://card.payments.service.gov.uk/secure/7b0716b2-40c4-413e-b62e-72c599c91960'),
-            dateCreated: decimal(1701090906.313),
+            dateCreated: iso8601DateTimeWithMillis('2023-11-27T13:15:06.313Z'),
           },
         },
       });
@@ -201,7 +202,7 @@ describe('Civil Service fee payment contract', () => {
         status: 'Initiated',
         nextUrl: 'https://card.payments.service.gov.uk/secure/7b0716b2-40c4-413e-b62e-72c599c91960',
       }));
-      expect(response.dateCreated).toEqual(expect.any(Number));
+      expect(response.dateCreated).toBe('2023-11-27T13:15:06.313Z');
     });
   });
 
