@@ -1,5 +1,5 @@
 import {Request} from 'express';
-import {functionalTestRouterJsonBody, isMockedFunctionalRequest} from '../../../main/app/functionalTestRouterProxy';
+import {functionalTestRouterJsonBody, isMockedFunctionalRequest, mockedFunctionalServiceUrl, runWithFunctionalTestRoute} from '../../../main/app/functionalTestRouterProxy';
 
 describe('functionalTestRouterJsonBody', () => {
   it('does not add an empty body to a bodyless admin request', () => {
@@ -36,5 +36,21 @@ describe('mocked functional request boundary', () => {
     process.env.FUNCTIONAL_TEST_ROUTER_TOKEN = 'preview-control';
     expect(isMockedFunctionalRequest(request('preview-control'))).toBe(true);
     expect(isMockedFunctionalRequest(request(undefined, 'preview-control'))).toBe(true);
+  });
+
+  it('routes only an authorized request to WireMock across async work', async () => {
+    process.env.NODE_ENV = 'test';
+    process.env.FUNCTIONAL_TEST_ROUTER_URL = 'http://wiremock';
+    process.env.FUNCTIONAL_TEST_ROUTER_TOKEN = 'preview-control';
+
+    const route = (header?: string) => new Promise<string | undefined>(resolve => {
+      runWithFunctionalTestRoute(request(header), () => {
+        setImmediate(() => resolve(mockedFunctionalServiceUrl()));
+      });
+    });
+
+    expect(await Promise.all([route(), route('preview-control')]))
+      .toEqual([undefined, 'http://wiremock']);
+    expect(mockedFunctionalServiceUrl()).toBeUndefined();
   });
 });

@@ -1,6 +1,6 @@
 import cookieParser from 'cookie-parser';
 import express from 'express';
-import {functionalTestRouterJsonBody, isMockedFunctionalRequest} from './app/functionalTestRouterProxy';
+import {functionalTestRouterJsonBody, isMockedFunctionalRequest, runWithFunctionalTestRoute} from './app/functionalTestRouterProxy';
 import {app} from './app-instance';
 import * as path from 'path';
 import favicon from 'serve-favicon';
@@ -144,6 +144,7 @@ const setDefaultHeaders: express.RequestHandler = (_req, res, next) => {
 
 export {app};
 app.use(cookieParser());
+app.use((req, _res, next) => runWithFunctionalTestRoute(req, next));
 app.use(setLanguage);
 app.use(favicon(path.join(__dirname, 'public', 'assets', 'images', 'favicon.ico')) as any);
 app.use(express.static(path.join(__dirname, 'public')));

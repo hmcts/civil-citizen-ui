@@ -1,4 +1,14 @@
 import {Request} from 'express';
+import {AsyncLocalStorage} from 'async_hooks';
+
+const mockedRequestContext = new AsyncLocalStorage<boolean>();
+
+export const runWithFunctionalTestRoute = (req: Request, next: () => void): void => {
+  mockedRequestContext.run(isMockedFunctionalRequest(req), next);
+};
+
+export const mockedFunctionalServiceUrl = (): string | undefined =>
+  mockedRequestContext.getStore() ? process.env.FUNCTIONAL_TEST_ROUTER_URL : undefined;
 
 export const isMockedFunctionalRequest = (req: Request): boolean => {
   if (process.env.NODE_ENV === 'e2eTest') {
