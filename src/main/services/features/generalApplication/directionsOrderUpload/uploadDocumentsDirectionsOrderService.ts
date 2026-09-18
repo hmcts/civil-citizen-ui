@@ -3,7 +3,6 @@ import {UploadGAFiles} from 'models/generalApplication/uploadGAFiles';
 import {t} from 'i18next';
 import {SummaryRow, summaryRow} from 'models/summaryList/summaryList';
 import {
-  CASE_DOCUMENT_VIEW_URL,
   GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_URL,
 } from 'routes/urls';
 import {constructResponseUrlWithIdAndAppIdParams} from 'common/utils/urlFormatter';
@@ -12,13 +11,14 @@ import {getCancelUrl} from 'services/features/generalApplication/generalApplicat
 import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
 import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
 import {documentIdExtractor} from 'common/utils/stringUtils';
+import {buildCaseDocumentViewUrl} from 'common/utils/formatDocumentURL';
 import {getGADocumentsFromDraftStore} from 'modules/draft-store/draftGADocumentService';
 
 export const getDirectionOrderDocumentUrl = (claimId: string, applicationResponse: ApplicationResponse): string => {
   const directionOrderDocument = applicationResponse?.case_data?.directionOrderDocument;
   const documentId = documentIdExtractor(directionOrderDocument?.slice()?.reverse()
     ?.find(doc => doc.value?.documentType === 'DIRECTION_ORDER')?.value?.documentLink?.document_binary_url);
-  return CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', documentId);
+  return buildCaseDocumentViewUrl(claimId, documentId) ?? '';
 };
 
 export const getSummaryList = async (formattedSummary: SummarySection, redisKey: string, claimId: string, gaId: string): Promise<void> => {

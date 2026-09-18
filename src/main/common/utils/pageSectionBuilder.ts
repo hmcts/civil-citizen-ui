@@ -130,7 +130,7 @@ export class PageSectionBuilder {
     return this;
   }
 
-  addLink(text: string, href: string, textBefore?: string, textAfter?: string, variables?: any, externalLink = false) {
+  addLink(text: string, href?: string | null, textBefore?: string, textAfter?: string, variables?: any, externalLink = false) {
     const linkSection = ({
       type: ClaimSummaryType.LINK,
       data: {
@@ -146,7 +146,7 @@ export class PageSectionBuilder {
     return this;
   }
 
-  addFullStopLink(text: string, href: string, textBefore?: string, textAfter?: string, variables?: any, externalLink = false) {
+  addFullStopLink(text: string, href?: string | null, textBefore?: string, textAfter?: string, variables?: any, externalLink = false) {
     const linkSection = ({
       type: ClaimSummaryType.FULL_STOP_LINK,
       data: {

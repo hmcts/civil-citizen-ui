@@ -17,6 +17,7 @@ import {getClaimTimeline} from 'services/features/common/claimTimelineService';
 import { AppRequest } from 'common/models/AppRequest';
 import { getFirstContactData } from 'services/firstcontact/firstcontactService';
 import {decryptSessionValue} from 'services/firstcontact/sessionValueCrypto';
+import {buildDocumentPathUrl} from 'common/utils/formatDocumentURL';
 
 const firstContactClaimSummaryController = Router();
 
@@ -41,7 +42,7 @@ firstContactClaimSummaryController.get(FIRST_CONTACT_CLAIM_SUMMARY_URL,
         const totalAmount = await getTotalAmountWithInterestAndFeesAndFixedCost(claim, req);
         const timelineRows = getClaimTimeline(claim, getLng(lang));
         const fixedCost = await getFixedCost(claim);
-        const timelinePdfUrl = claim.extractDocumentId() && CASE_TIMELINE_DOCUMENTS_URL.replace(':id', claimId).replace(':documentId', claim.extractDocumentId());
+        const timelinePdfUrl = buildDocumentPathUrl(CASE_TIMELINE_DOCUMENTS_URL, claimId, claim.extractDocumentId());
         res.render('features/public/firstContact/claim-summary', {
           claim, totalAmount, interestData, timelineRows, timelinePdfUrl, claimId, fixedCost,
         });

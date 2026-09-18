@@ -4,7 +4,7 @@ import {
   DocumentLinkInformation,
   DocumentsViewComponent,
 } from 'form/models/documents/DocumentsViewComponent';
-import { CASE_DOCUMENT_VIEW_URL } from 'routes/urls';
+import { buildCaseDocumentViewUrl } from 'common/utils/formatDocumentURL';
 import { documentIdExtractor } from 'common/utils/stringUtils';
 import { formatDateToFullDate } from 'common/utils/dateUtils';
 import { Claim } from 'models/claim';
@@ -23,8 +23,7 @@ export const mapperMediationAgreementToDocumentView = (documentTitle: string, me
       mediationAgreement.name,
       formatDateToFullDate(mediationSettlementAgreedAt, lang),
       new DocumentLinkInformation(
-        CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId',
-          documentIdExtractor(mediationAgreement.document.document_binary_url)),
+        buildCaseDocumentViewUrl(claimId, documentIdExtractor(mediationAgreement.document.document_binary_url)) ?? '',
         mediationAgreement.document.document_filename))));
 };
 
@@ -35,9 +34,7 @@ export const mapperDefendantResponseToDocumentView = (documentTitle: string, fil
       fileName,
       formatDateToFullDate(claim.respondent1ResponseDate, lang),
       new DocumentLinkInformation(
-        CASE_DOCUMENT_VIEW_URL.replace(':id', claimId)
-          .replace(':documentId',
-            getDocumentId(claim, 'Stitched')),
+        buildCaseDocumentViewUrl(claimId, getDocumentId(claim, 'Stitched')) ?? '',
         `defendant-response-${caseId}.pdf`))));
 };
 
@@ -55,16 +52,15 @@ export const mapperMediationDocumentsToDocumentView = (documentTitle: string, me
           fileName,
           formatDateToFullDate(item.value.documentUploadedDatetime, lang),
           new DocumentLinkInformation(
-            CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId',
-              documentIdExtractor(item.value.document.document_binary_url)),
+            buildCaseDocumentViewUrl(claimId, documentIdExtractor(item.value.document.document_binary_url)) ?? '',
             item.value.document.document_filename));
       }),
     );
   }
 };
 
-export function getDocumentId(claim: Claim, stitchedDoc?: string): string {
-  let documentId;
+export function getDocumentId(claim: Claim, stitchedDoc?: string): string | null {
+  let documentId: string | null = null;
   const systemGeneratedCaseDocuments = claim.systemGeneratedCaseDocuments;
   if (systemGeneratedCaseDocuments?.length > 0) {
     systemGeneratedCaseDocuments.forEach(doc => {
@@ -81,8 +77,7 @@ export function getDocumentId(claim: Claim, stitchedDoc?: string): string {
     if (!documentId) {
       documentId = getSystemGeneratedCaseDocumentIdByType(systemGeneratedCaseDocuments, DocumentType.SEALED_CLAIM, 'defendant');
     }
-    return documentId;
-  } else {
-    return undefined;
+    return documentId ?? null;
   }
+  return null;
 }

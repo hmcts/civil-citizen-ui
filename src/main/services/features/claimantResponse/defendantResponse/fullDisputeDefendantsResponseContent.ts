@@ -7,7 +7,7 @@ import {TableCell} from 'models/summaryList/summaryList';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
 import {convertToEvidenceTypeToTranslationKey} from 'models/evidence/evidenceType';
 import {getLng} from 'common/utils/languageToggleUtils';
-import {CASE_DOCUMENT_DOWNLOAD_URL} from 'routes/urls';
+import {buildCaseDocumentDownloadUrl} from 'common/utils/formatDocumentURL';
 import {getSystemGeneratedCaseDocumentIdByType} from 'models/document/systemGeneratedCaseDocuments';
 import {DocumentType} from 'models/document/documentType';
 import {documentIdExtractor} from 'common/utils/stringUtils';
@@ -47,7 +47,7 @@ const getResponseStatement = (name: string, text: string, amount?: number) => {
 export const getTheirTOEs = (claim: Claim, lng: string): ClaimSummarySection[] => {
   if (claim.defendantResponseTimelineDocument) {
     const timelineDocId = documentIdExtractor(claim.defendantResponseTimelineDocument.document_binary_url);
-    const timelineDocumentLink= CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claim.id).replace(':documentId', timelineDocId);
+    const timelineDocumentLink = buildCaseDocumentDownloadUrl(claim.id, timelineDocId);
     return [
       {
         type: ClaimSummaryType.SUBTITLE,
@@ -59,7 +59,7 @@ export const getTheirTOEs = (claim: Claim, lng: string): ClaimSummarySection[] =
         type: ClaimSummaryType.LINK,
         data: {
           text: 'PAGES.REVIEW_DEFENDANTS_RESPONSE.DOWNLOAD_TIMELINE',
-          href: timelineDocumentLink,
+        href: timelineDocumentLink ?? undefined,
         },
       },
     ];
@@ -129,7 +129,7 @@ export const getTheirEvidence = (claim: Claim, lng: string): ClaimSummarySection
     const evidenceDocumentLinkText = evidenceDocFileType
       ? `${t('PAGES.REVIEW_DEFENDANTS_RESPONSE.DOWNLOAD_EVIDENCE', {lng})} (${evidenceDocFileType.toUpperCase()})`
       : t('PAGES.REVIEW_DEFENDANTS_RESPONSE.DOWNLOAD_EVIDENCE', {lng});
-    const evidenceDocumentLink = CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claim.id).replace(':documentId', evidenceDocId);
+    const evidenceDocumentLink = buildCaseDocumentDownloadUrl(claim.id, evidenceDocId);
     return [
       {
         type: ClaimSummaryType.SUBTITLE,
@@ -141,7 +141,7 @@ export const getTheirEvidence = (claim: Claim, lng: string): ClaimSummarySection
         type: ClaimSummaryType.LINK,
         data: {
           text: evidenceDocumentLinkText,
-          href: evidenceDocumentLink,
+          href: evidenceDocumentLink ?? undefined,
         },
       },
     ];

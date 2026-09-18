@@ -1,7 +1,7 @@
 import {Claim} from 'models/claim';
 import {ClaimSummarySection, ClaimSummaryType} from 'form/models/claimSummarySection';
 import {DocumentType} from 'models/document/documentType';
-import {CASE_DOCUMENT_DOWNLOAD_URL} from 'routes/urls';
+import {buildCaseDocumentDownloadUrl} from 'common/utils/formatDocumentURL';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
 import {displayDocumentSizeInKB} from 'common/utils/documentSizeDisplayFormatter';
 import {t} from 'i18next';
@@ -25,7 +25,7 @@ const buildDownloadHearingNoticeSection = (claim: Claim, claimId: string, lang: 
     return {
       type: ClaimSummaryType.LINK,
       data: {
-        href: CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claimId).replace(':documentId', getSystemGeneratedCaseDocumentIdByType(claim.caseProgressionHearing.hearingDocuments, DocumentType.HEARING_FORM)),
+        href: buildCaseDocumentDownloadUrl(claimId, getSystemGeneratedCaseDocumentIdByType(claim.caseProgressionHearing.hearingDocuments, DocumentType.HEARING_FORM)) ?? undefined,
         text: `${document.documentName} (PDF, ${displayDocumentSizeInKB(document.documentSize)})`,
         subtitle: `${t(createdLabel, lang)} ${formatDateToFullDate(document.createdDatetime)}`,
       },
@@ -42,7 +42,7 @@ const buildDownloadSealedResponseSection = (claim: Claim, claimId: string, lang:
     return {
       type: ClaimSummaryType.LINK,
       data: {
-        href: CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claimId).replace(':documentId', getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.DEFENDANT_DEFENCE)),
+        href: buildCaseDocumentDownloadUrl(claimId, getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.DEFENDANT_DEFENCE)) ?? undefined,
         text: `${t(downloadClaimLabel, {lng : lang})} (PDF, ${displayDocumentSizeInKB(document.documentSize)})`,
         subtitle: `${t(createdLabel, {lng : lang})} ${formatDateToFullDate(document.createdDatetime, lang)}`,
       },
@@ -57,18 +57,18 @@ const buildTrialReadyDocumentSection = (claim: Claim, claimId: string, lang: str
 
   if (document) {
     const documentId = documentIdExtractor(document.documentLink.document_binary_url);
-    const href = CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claimId).replace(':documentId', documentId);
+    const href = buildCaseDocumentDownloadUrl(claimId, documentId);
     const text = `${document.documentName} (PDF, ${displayDocumentSizeInKB(document.documentSize)})`;
     const subtitle = `${createdLabel} ${formatDateToFullDate(document.createdDatetime, lang)}`;
     return createLink(href, text, subtitle);
   }
 };
 
-const createLink = (href: string, text: string, subtitle: string) => {
+const createLink = (href: string | null, text: string, subtitle: string) => {
   return {
-    type: ClaimSummaryType.LINK,
+    type: href ? ClaimSummaryType.LINK : ClaimSummaryType.PARAGRAPH,
     data: {
-      href: href,
+      href: href ?? undefined,
       text: text,
       subtitle: subtitle,
     },

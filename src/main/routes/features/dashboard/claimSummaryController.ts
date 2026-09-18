@@ -1,7 +1,8 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
 import config from 'config';
 import {AppRequest} from 'models/AppRequest';
-import { CASE_DOCUMENT_DOWNLOAD_URL, DEFENDANT_SUMMARY_URL } from '../../urls';
+import { DEFENDANT_SUMMARY_URL } from '../../urls';
+import {buildCaseDocumentDownloadUrl} from 'common/utils/formatDocumentURL';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {
   isDashboardEnabledForCase,
@@ -106,7 +107,9 @@ claimSummaryController.get(DEFENDANT_SUMMARY_URL, (async (req: AppRequest, res: 
         const respondentPaymentDeadline =  await getClaimWithExtendedPaymentDeadline(claim, <AppRequest>req);
         const judgmentBufferEnabled = await isJudgmentBufferEnabled();
         const tabContent = await getTabs(claimId, claim, lang, respondentPaymentDeadline, judgmentBufferEnabled);
-        const responseDetailsUrl = claim.getDocumentDetails(DocumentType.DEFENDANT_DEFENCE) ? CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claimId).replace(':documentId', getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.DEFENDANT_DEFENCE)) : undefined;
+        const responseDetailsUrl = claim.getDocumentDetails(DocumentType.DEFENDANT_DEFENCE)
+          ? buildCaseDocumentDownloadUrl(claimId, getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.DEFENDANT_DEFENCE))
+          : undefined;
         res.render(claimSummaryViewPath, {claim, claimId, tabContent, responseDetailsUrl});
       }
     }

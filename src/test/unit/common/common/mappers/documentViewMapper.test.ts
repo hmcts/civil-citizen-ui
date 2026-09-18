@@ -39,6 +39,25 @@ describe('Test of Document View Mapper', () => {
     );
     //Then
     expect(expected).toEqual(result);
+    expect(result.documents[0].linkInformation.url).not.toContain('/undefined');
+    expect(result.documents[0].linkInformation.url).not.toContain('/null');
+  });
+
+  it('should keep the mediation agreement row without a href when the binary url is missing', () => {
+    const mediationAgreement = MEDIATION_AGREEMENT_MOCK();
+    mediationAgreement.case_data.mediationAgreement.document.document_binary_url = undefined;
+
+    const result = mapperMediationAgreementToDocumentView(
+      'PAGES.VIEW_MEDIATION_SETTLEMENT_AGREEMENT_DOCUMENT.DOCUMENT_TABLE_TITLE',
+      mediationAgreement.case_data.mediationAgreement,
+      mediationAgreement.case_data.mediationSettlementAgreedAt,
+      mediationAgreement.id,
+      'en',
+    );
+
+    expect(result.documents[0].linkInformation.url).toEqual('');
+    expect(result.documents[0].linkInformation.text)
+      .toEqual(mediationAgreement.case_data.mediationAgreement.document.document_filename);
   });
 
   it('should map defendant response to Document View', () => {
@@ -54,9 +73,7 @@ describe('Test of Document View Mapper', () => {
         fileName,
         formatDateToFullDate(claim.respondent1ResponseDate, 'lang'),
         new DocumentLinkInformation(
-          CASE_DOCUMENT_VIEW_URL.replace(':id', claimId)
-            .replace(':documentId',
-              getDocumentId(claim, 'Stitched')),
+          '',
           'defendant-response-000JE001.pdf'))));
     //When
     const result = mapperDefendantResponseToDocumentView(

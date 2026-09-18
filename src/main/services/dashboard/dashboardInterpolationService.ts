@@ -3,7 +3,6 @@ import {getNumberOfDaysBetweenTwoDays} from 'common/utils/dateUtils';
 import {
   APPLY_HELP_WITH_FEES_START,
   BILINGUAL_LANGUAGE_PREFERENCE_URL,
-  CASE_DOCUMENT_VIEW_URL,
   CCJ_DEFENDANT_DOB_URL,
   CCJ_PAID_AMOUNT_URL,
   CCJ_REPAYMENT_PLAN_CLAIMANT_URL,
@@ -54,6 +53,7 @@ import {DocumentType} from 'models/document/documentType';
 import {DirectionQuestionnaireType} from 'models/directionsQuestionnaire/directionQuestionnaireType';
 import {displayDocumentSizeInKB} from 'common/utils/documentSizeDisplayFormatter';
 import {documentIdExtractor} from 'common/utils/stringUtils';
+import {buildCaseDocumentViewUrl} from 'common/utils/formatDocumentURL';
 import {getHearingDocumentsCaseDocumentIdByType} from 'models/caseProgression/caseProgressionHearing';
 import { t } from 'i18next';
 import {DashboardNotification} from 'models/dashboard/dashboardNotification';
@@ -62,8 +62,8 @@ import {LinKFromValues} from 'models/generalApplication/applicationType';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 
 const replaceId = (url: string, claimId: string) => url.replace(':id', claimId);
-const caseDocViewUrl = (claimId:string, documentId: string) =>
-  CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', documentId);
+const caseDocViewUrl = (claimId:string, documentId: string | null) =>
+  buildCaseDocumentViewUrl(claimId, documentId) ?? '';
 const dashboardHomeWithTranslationError = (claim: Claim, claimId: string) =>
   constructResponseUrlWithIdParams(claimId, claim.isClaimant() ? DASHBOARD_CLAIMANT_URL : DEFENDANT_SUMMARY_URL) +
   '?errorAwaitingTranslation';
@@ -192,9 +192,11 @@ export const populateDashboardValues = async (claim: Claim, claimId: string, ful
     const hiddenDocumentId = getHiddenDocumentIdFromParams(notification);
     let extractedDocumentId: string;
     if (hiddenDocumentId?.length > 0 && hiddenDocumentNowVisible(hiddenDocumentId, claim)) {
-      extractedDocumentId = documentIdExtractor(hiddenDocumentId);
+      extractedDocumentId = documentIdExtractor(hiddenDocumentId) ?? 'awaiting-translation';
     } else {
-      extractedDocumentId = documentId?.length > 0 ? documentIdExtractor(documentId) : 'awaiting-translation';
+      extractedDocumentId = documentId?.length > 0
+        ? (documentIdExtractor(documentId) ?? 'awaiting-translation')
+        : 'awaiting-translation';
     }
     valuesMap.set('{VIEW_FINAL_ORDER}', replaceId(DASHBOARD_NOTIFICATION_REDIRECT_DOCUMENT, claimId)
       .replace(':locationName', 'VIEW_FINAL_ORDER')

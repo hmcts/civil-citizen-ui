@@ -3,7 +3,6 @@ import {AppRequest} from 'common/models/AppRequest';
 import {GenericForm} from 'common/form/models/genericForm';
 import {generateRedisKey, generateRedisKeyForGA, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {
-  CASE_DOCUMENT_VIEW_URL,
   GA_ACCEPT_DEFENDANT_OFFER_URL,
   GA_RESPONDENT_WANT_TO_UPLOAD_DOCUMENT_URL,
   GA_RESPONSE_VIEW_APPLICATION_URL,
@@ -26,6 +25,7 @@ import {GaResponse} from 'models/generalApplication/response/gaResponse';
 import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
 import {formN245Url} from 'common/utils/externalURLs';
 import {documentIdExtractor} from 'common/utils/stringUtils';
+import {buildCaseDocumentViewUrl} from 'common/utils/formatDocumentURL';
 import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const acceptDefendantOfferController = Router();
@@ -98,9 +98,7 @@ function getN245(applicationResponse: ApplicationResponse, applicationId: string
   const n245DocIn = applicationResponse?.case_data?.generalAppN245FormUpload;
   let n245Doc = formN245Url;
   if(n245DocIn) {
-    n245Doc = CASE_DOCUMENT_VIEW_URL.replace(':id', applicationId)
-      .replace(':documentId',
-        documentIdExtractor(n245DocIn.document_binary_url));
+    n245Doc = buildCaseDocumentViewUrl(applicationId, documentIdExtractor(n245DocIn.document_binary_url)) ?? formN245Url;
   }
   return n245Doc;
 }

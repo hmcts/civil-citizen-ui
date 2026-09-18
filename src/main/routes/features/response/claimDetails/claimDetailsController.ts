@@ -22,6 +22,7 @@ import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {AppRequest} from 'models/AppRequest';
 import {getRouteParam} from 'common/utils/routeParamUtils';
+import {buildDocumentPathUrl} from 'common/utils/formatDocumentURL';
 
 const claimDetailsController = Router();
 const claimDetailsViewPathNew = 'features/response/claimDetails/claim-details-new';
@@ -40,7 +41,7 @@ claimDetailsController.get(CLAIM_DETAILS_URL, (async (req: AppRequest, res: Resp
     const interestData = await getInterestDetails(claim, req);
     const totalAmount = await getTotalAmountWithInterestAndFeesAndFixedCost(claim, req);
     const timelineRows = getClaimTimeline(claim, getLng(lang));
-    const timelinePdfUrl = claim.extractDocumentId() && CASE_TIMELINE_DOCUMENTS_URL.replace(':id', claimId).replace(':documentId', claim.extractDocumentId());
+    const timelinePdfUrl = buildDocumentPathUrl(CASE_TIMELINE_DOCUMENTS_URL, claimId, claim.extractDocumentId());
     const showErrorAwaitingTranslation = welshEnabled && claim.ccdState === CaseState.PENDING_CASE_ISSUED && claim.preTranslationDocuments?.length > 0;
     const sealedClaimPdfUrl = showErrorAwaitingTranslation ? constructResponseUrlWithIdParams(claimId, CLAIM_DETAILS_URL) : getTheClaimFormUrl(claimId, claim, CASE_DOCUMENT_VIEW_URL);
     const pageTitle = 'PAGES.CLAIM_DETAILS.PAGE_TITLE_NEW';
@@ -66,8 +67,14 @@ claimDetailsController.get(CLAIM_DETAILS_URL, (async (req: AppRequest, res: Resp
 }) as RequestHandler);
 
 function getTheClaimFormUrl(claimId: string, claim: Claim, claimFormUrl: string) {
-  return  claimFormUrl.replace(':id', claimId).replace(':documentId', getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments,
-    (claim.ccdState === CaseState.PENDING_CASE_ISSUED) ? DocumentType.DRAFT_CLAIM_FORM : DocumentType.SEALED_CLAIM));
+  return buildDocumentPathUrl(
+    claimFormUrl,
+    claimId,
+    getSystemGeneratedCaseDocumentIdByType(
+      claim.systemGeneratedCaseDocuments,
+      (claim.ccdState === CaseState.PENDING_CASE_ISSUED) ? DocumentType.DRAFT_CLAIM_FORM : DocumentType.SEALED_CLAIM,
+    ),
+  );
 }
 
 export default claimDetailsController;

@@ -73,7 +73,7 @@ import {
   executeRequest,
   RequestErrorHandler,
 } from 'client/common/civilServiceRequest';
-import {normalizeRouteParam, requirePathSegment, RouteParam} from 'common/utils/routeParamUtils';
+import {normalizeRouteParam, requirePathSegment, getRouteParam, isUsablePathSegment, RouteParam} from 'common/utils/routeParamUtils';
 import {ClassConstructor} from 'class-transformer/types/interfaces';
 import {
   getUserCaseRolesFromSession,
@@ -429,8 +429,13 @@ export class CivilServiceClient {
   }
 
   async retrieveDocument(req: AppRequest, documentId: string ) {
+    const claimId = getRouteParam(req, 'id');
+    let url = CIVIL_SERVICE_DOWNLOAD_DOCUMENT_URL.replace(':documentId', documentId);
+    if (isUsablePathSegment(claimId)) {
+      url = `${url}?caseId=${encodeURIComponent(claimId)}`;
+    }
     const response = await this.authenticatedGet(
-      CIVIL_SERVICE_DOWNLOAD_DOCUMENT_URL.replace(':documentId', documentId),
+      url,
       req,
       `Error when retrieving document, - documentId- ${documentId}`,
     );

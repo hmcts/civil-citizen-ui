@@ -1,7 +1,8 @@
 import {LatestUpdateSectionBuilder} from 'models/LatestUpdateSectionBuilder/latestUpdateSectionBuilder';
 import {Claim} from 'models/claim';
 import {DocumentType} from 'models/document/documentType';
-import {CASE_DOCUMENT_VIEW_URL, DEFENDANT_SUMMARY_TAB_URL} from 'routes/urls';
+import {buildCaseDocumentViewUrl} from 'common/utils/formatDocumentURL';
+import {DEFENDANT_SUMMARY_TAB_URL} from 'routes/urls';
 import {getHearingDocumentsCaseDocumentIdByType} from 'models/caseProgression/caseProgressionHearing';
 import {TabId} from 'routes/tabs';
 
@@ -30,8 +31,11 @@ export const getHearingTrialLatestUpload = (claim: Claim, lang: string) => {
     .addTitle(trialHearingTitle)
     .addParagraph(trialHearingParagraph, { hearingDate, hearingTimeHourMinute, courtName })
     .addParagraph(keepContactDetaislUpToDate)
-    .addLink(noticesAndOrdersLinkText,DEFENDANT_SUMMARY_TAB_URL.replace(':id', claim.id).replace(':tab', TabId.NOTICES),noticesAndOrdersBeforeText, noticesAndOrdersAfterText)
-    .addButtonOpensNewTab(`${TRIAL_HEARING_CONTENT}.VIEW_HEARING_NOTICE_BUTTON`,  CASE_DOCUMENT_VIEW_URL.replace(':id', claim.id).replace(':documentId', getHearingDocumentsCaseDocumentIdByType(claim.caseProgressionHearing.hearingDocuments, DocumentType.HEARING_FORM)));
+    .addLink(noticesAndOrdersLinkText,DEFENDANT_SUMMARY_TAB_URL.replace(':id', claim.id).replace(':tab', TabId.NOTICES),noticesAndOrdersBeforeText, noticesAndOrdersAfterText);
+  const hearingNoticeHref = buildCaseDocumentViewUrl(claim.id, getHearingDocumentsCaseDocumentIdByType(claim.caseProgressionHearing.hearingDocuments, DocumentType.HEARING_FORM));
+  if (hearingNoticeHref) {
+    latestUpdateSectionBuilder.addButtonOpensNewTab(`${TRIAL_HEARING_CONTENT}.VIEW_HEARING_NOTICE_BUTTON`, hearingNoticeHref);
+  }
 
   return latestUpdateSectionBuilder.build();
 };

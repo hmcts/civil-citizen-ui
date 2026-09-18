@@ -28,6 +28,22 @@ describe('format <a> element for document', ()=>{
     const expectedResult = `<a class="govuk-link" target="_blank" href="${hrefExpected}">${fileName}</a>`;
     expect(urlElement).toEqual(expectedResult);
   });
+
+  it('Should return inert document name when binary url is missing', () => {
+    expect(formatDocumentViewURL('Name of file', '1234', undefined)).toEqual('Name of file');
+    expect(formatDocumentViewURL('Name of file', '1234', null)).toEqual('Name of file');
+    expect(formatDocumentViewURL('Name of file', '1234', '')).toEqual('Name of file');
+  });
+
+  it('Should return inert document name when binary url is a JS sentinel', () => {
+    expect(formatDocumentViewURL('Name of file', '1234', 'undefined')).toEqual('Name of file');
+    expect(formatDocumentViewURL('Name of file', '1234', 'null')).toEqual('Name of file');
+    expect(formatDocumentViewURL(
+      'Name of file',
+      '1234',
+      'http://dm-store:8080/documents/undefined/binary',
+    )).toEqual('Name of file');
+  });
 });
 describe('format hint element for document', ()=>{
   const lang = 'en';
