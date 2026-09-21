@@ -343,6 +343,46 @@
     {
       "description": "a GA Help with Fees submission for rejected",
       "state": "GA Help with Fees submission is rejected"
+    },
+    {
+      "description": "a translated defence citizen response",
+      "state": "The defence citizen response can be submitted"
+    },
+    {
+      "description": "a translated full-admission citizen response",
+      "state": "The full-admission citizen response can be submitted"
+    },
+    {
+      "description": "a translated part-admission citizen response",
+      "state": "The part-admission citizen response can be submitted"
+    },
+    {
+      "description": "a translated claimant-acceptance citizen response",
+      "state": "The claimant-acceptance citizen response can be submitted"
+    },
+    {
+      "description": "a translated claimant-rejection citizen response",
+      "state": "The claimant-rejection citizen response can be submitted"
+    },
+    {
+      "description": "a translated claimant-instalments citizen response",
+      "state": "The claimant-instalments citizen response can be submitted"
+    },
+    {
+      "description": "a translated claimant-set-date citizen response",
+      "state": "The claimant-set-date citizen response can be submitted"
+    },
+    {
+      "description": "an agreed response extension submission",
+      "state": "An agreed response extension can be submitted"
+    },
+    {
+      "description": "a new Query Management submission",
+      "state": "A new citizen query can be submitted"
+    },
+    {
+      "description": "a follow-up Query Management submission",
+      "state": "A follow-up citizen query can be submitted"
     }
   ],
   "idamApi_oidc": [
