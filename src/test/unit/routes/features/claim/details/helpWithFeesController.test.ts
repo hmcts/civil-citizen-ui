@@ -1,122 +1,106 @@
-import {app} from '../../../../../../main/app';
-import config from 'config';
-import nock from 'nock';
-import request from 'supertest';
-import {CLAIM_HELP_WITH_FEES_URL, CLAIM_TOTAL_URL} from 'routes/urls';
-import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import {t} from 'i18next';
+import {Response} from 'express';
+import helpWithFeesController from '../../../../../../main/routes/features/claim/details/helpWithFeesController';
+import {CLAIM_TOTAL_URL} from 'routes/urls';
+import {AppRequest} from 'models/AppRequest';
+import {GenericForm} from 'form/models/genericForm';
 import {YesNo} from 'form/models/yesNo';
-import {
-  getClaimDetails,
-  saveClaimDetails,
-} from 'services/features/claim/details/claimDetailsService';
-import {Claim} from 'models/claim';
-import {mockCivilClaim} from '../../../../../utils/mockDraftStore';
+import {ClaimDetails} from 'form/models/claim/details/claimDetails';
+import {getClaimDetails, saveClaimDetails} from 'services/features/claim/details/claimDetailsService';
+import {createMockResponse, createMockSession, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
-jest.mock('../../../../../../main/services/features/claim/details/claimDetailsService');
-
-const mockClaimDetails = getClaimDetails as jest.Mock;
-const mockSaveClaimDetails = saveClaimDetails as jest.Mock;
+jest.mock('services/features/claim/details/claimDetailsService', () => ({
+  getClaimDetails: jest.fn(),
+  saveClaimDetails: jest.fn(),
+}));
 
 describe('Claim Details - Help With Fees', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
-  app.request.cookies = {eligibilityCompleted: true};
+  const getHandler = getRouteHandler(helpWithFeesController, 'get');
+  const postHandler = getRouteHandler(helpWithFeesController, 'post');
+  const viewPath = 'features/claim/details/help-with-fees';
+  const pageTitle = 'PAGES.HELP_WITH_FEES.PAGE_TITLE';
+  let req: Partial<AppRequest>;
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
+  const mockGetClaimDetails = getClaimDetails as jest.Mock;
+  const mockSaveClaimDetails = saveClaimDetails as jest.Mock;
 
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-    app.locals.draftStoreClient = mockCivilClaim;
+  beforeEach(() => {
+    req = {
+      session: createMockSession({user: {id: 'user-id'}}),
+      body: {},
+      query: {},
+      cookies: {},
+    };
+    res = createMockResponse();
+    next = jest.fn();
+    mockGetClaimDetails.mockResolvedValue(new ClaimDetails());
+    mockSaveClaimDetails.mockResolvedValue(undefined);
   });
 
   describe('on GET', () => {
-    it('should return Help With Fees page', async () => {
-      mockClaimDetails.mockImplementationOnce(async () => {
-        return new Claim();
-      });
-      await request(app)
-        .get(CLAIM_HELP_WITH_FEES_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('PAGES.HELP_WITH_FEES.TITLE'));
-        });
+    it('should render Help With Fees page', async () => {
+      await getHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        pageTitle,
+        form: expect.any(GenericForm),
+      }));
     });
-    it('should return status 500 when error thrown', async () => {
-      mockClaimDetails.mockImplementationOnce(async () => {
-        throw new Error(TestMessages.REDIS_FAILURE);
-      });
-      await request(app)
-        .get(CLAIM_HELP_WITH_FEES_URL)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+
+    it('should call next when loading claim details fails', async () => {
+      const error = new Error('error');
+      mockGetClaimDetails.mockRejectedValue(error);
+
+      await getHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 
   describe('on POST', () => {
-    beforeAll(() => {
-      mockClaimDetails.mockImplementationOnce(async () => {
-        return new Claim();
-      });
-      mockSaveClaimDetails.mockImplementation(async () => Promise<void>);
+    it('should redirect to total page when NO is selected', async () => {
+      req.body = {option: YesNo.NO};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(mockSaveClaimDetails).toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(CLAIM_TOTAL_URL);
     });
 
-    it('should redirect to total page when NO selected', async () => {
-      await request(app)
-        .post(CLAIM_HELP_WITH_FEES_URL)
-        .send({option: YesNo.NO})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.get('location')).toBe(CLAIM_TOTAL_URL);
-        });
+    it('should redirect to total page when YES is selected', async () => {
+      req.body = {option: YesNo.YES, referenceNumber: 'test'};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.redirect).toHaveBeenCalledWith(CLAIM_TOTAL_URL);
     });
 
-    it('should redirect to total page when YES selected', async () => {
-      await request(app)
-        .post(CLAIM_HELP_WITH_FEES_URL)
-        .send({option: YesNo.YES, referenceNumber: 'test'})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.get('location')).toBe(CLAIM_TOTAL_URL);
-        });
+    it('should re-render if no radio button is selected', async () => {
+      req.body = {option: ''};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({form: expect.any(GenericForm)}));
+      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
     });
 
-    it('should show error if no radio button selected', async () => {
-      await request(app)
-        .post(CLAIM_HELP_WITH_FEES_URL)
-        .send({option: ''})
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.CLAIM_HWF_REFERENCE_SELECTION_REQUIRED'));
-        });
+    it('should re-render if Yes is selected and reference number is empty', async () => {
+      req.body = {option: YesNo.YES};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({form: expect.any(GenericForm)}));
+      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
     });
 
-    it('should show error if Yes selected and reference number is empty', async () => {
-      await request(app)
-        .post(CLAIM_HELP_WITH_FEES_URL)
-        .send({option: YesNo.YES})
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.HELP_WITH_FEES_REFERENCE_REQUIRED'));
-        });
-    });
+    it('should call next when save fails', async () => {
+      const error = new Error('error');
+      mockSaveClaimDetails.mockRejectedValue(error);
+      req.body = {option: YesNo.NO};
 
-    it('should return status 500 when error thrown', async () => {
-      mockSaveClaimDetails.mockImplementationOnce(async () => {
-        throw new Error(TestMessages.REDIS_FAILURE);
-      });
+      await postHandler(req as AppRequest, res as unknown as Response, next);
 
-      await request(app)
-        .post(CLAIM_HELP_WITH_FEES_URL)
-        .send({option: YesNo.NO})
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 });
