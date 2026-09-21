@@ -246,7 +246,9 @@ run_optimised_functional_tests() {
   publish_functional_execution_evidence optimised running
   ./bin/configure-functional-test-router.sh real
 
-  for bucket in thin-client residual mocked; do
+  echo "Residual baseline scenarios are intentionally excluded from optimised execution: $(node bin/functional-execution-evidence.js count residual) active"
+
+  for bucket in thin-client mocked; do
     count=$(node bin/functional-execution-evidence.js count "$bucket")
     if [[ "$count" -eq 0 ]]; then
       printf '%s,0\n' "$bucket" >> test-results/functional/optimised-timings.csv

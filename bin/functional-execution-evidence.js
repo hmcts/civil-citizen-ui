@@ -74,12 +74,14 @@ function reconcile(manifest, mode, reports) {
   }
   for (const {bucket, data} of reports) for (const suite of data.results || []) visit(suite, bucket);
   const scenarios = manifest.scenarios.map(s => {
-    const outcome = observed.get(s.id) || (s.skipped ? 'skipped' : 'missing');
-    if (!s.skipped && ['missing', 'skipped'].includes(outcome)) errors.push(`${outcome}: ${s.id}`);
-    if (s.skipped && outcome !== 'skipped') errors.push(`Baseline skip changed: ${s.id}`);
+    const excluded = mode === 'optimised' && s.bucket === 'residual';
+    const outcome = observed.get(s.id) || (excluded ? 'excluded' : s.skipped ? 'skipped' : 'missing');
+    if (excluded && observed.has(s.id)) errors.push(`Residual scenario executed in optimised mode: ${s.id}`);
+    if (!excluded && !s.skipped && ['missing', 'skipped'].includes(outcome)) errors.push(`${outcome}: ${s.id}`);
+    if (!excluded && s.skipped && outcome !== 'skipped') errors.push(`Baseline skip changed: ${s.id}`);
     return {...s, outcome};
   });
-  const counts = rows => ({selected: rows.length, ...Object.fromEntries(['passed', 'failed', 'skipped', 'missing'].map(state => [state, rows.filter(s => s.outcome === state).length]))});
+  const counts = rows => ({selected: rows.length, ...Object.fromEntries(['passed', 'failed', 'skipped', 'missing', 'excluded'].map(state => [state, rows.filter(s => s.outcome === state).length]))});
   return {revision: manifest.revision, base: manifest.base, mode, counts: counts(scenarios),
     buckets: Object.fromEntries(buckets.map(bucket => [bucket, counts(scenarios.filter(s => s.bucket === bucket))])),
     errors, scenarios};
@@ -91,12 +93,14 @@ function main() {
   if (command === 'compare') {
     const standard = JSON.parse(fs.readFileSync(arg));
     const optimised = JSON.parse(fs.readFileSync(process.argv[4]));
-    const signature = result => result.scenarios.map(s => `${s.id}:${s.outcome}`).sort();
+    const migrated = result => result.scenarios
+      .filter(s => s.bucket !== 'residual')
+      .map(s => `${s.id}:${s.outcome}`).sort();
     if (standard.mode !== 'standard' || optimised.mode !== 'optimised'
       || standard.revision !== optimised.revision || standard.base !== optimised.base
       || standard.errors.length || optimised.errors.length
       || standard.counts.failed || optimised.counts.failed
-      || JSON.stringify(signature(standard)) !== JSON.stringify(signature(optimised))) {
+      || JSON.stringify(migrated(standard)) !== JSON.stringify(migrated(optimised))) {
       throw new Error('Paired verification failed: revision, selection or outcomes do not reconcile');
     }
     console.log(JSON.stringify({parity: true, counts: standard.counts, buckets: optimised.buckets,

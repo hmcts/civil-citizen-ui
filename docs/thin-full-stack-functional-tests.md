@@ -11,7 +11,7 @@ Run locally or against an already configured environment with:
 yarn test:thin-full-stack
 ```
 
-In Jenkins, the `pr-values:optimisedTests` label routes scenarios carrying `@thin-full-stack` into the thin-client bucket. It is not a separate pipeline mode: mocked, thin-client and residual buckets partition the same baseline selection. With no label, these scenarios run in their original standard selection against the normal platform.
+In Jenkins, the `pr-values:optimisedTests` label routes baseline scenarios carrying `@thin-full-stack` into the thin-client bucket on the reduced preview profile. Baseline scenarios carrying `@mocked-functional` run through WireMock in the same deployment. Residual baseline scenarios are recorded as excluded and do not execute in optimised mode. With no label, every baseline scenario runs in its original standard selection against the normal platform.
 
 Thin-suite results live below `test-results/thin-full-stack`, have their own JUnit, Mochawesome and Allure output, and are published as **Thin Full-Stack Allure Report**. They are not combined with reduced-stack results.
 
