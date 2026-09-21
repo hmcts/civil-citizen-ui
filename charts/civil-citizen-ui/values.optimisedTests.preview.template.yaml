@@ -19,8 +19,6 @@ civil-service:
     enabled: false
   em-ccdorc:
     enabled: false
-  ccd-case-document-am-api:
-    enabled: false
 
 nodejs:
   environment:

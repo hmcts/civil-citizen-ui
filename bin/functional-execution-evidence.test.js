@@ -44,8 +44,8 @@ test('reporter grep exclusions do not count as executed tests or baseline skips'
 test('optimised preview keeps thin-client dependencies and removes unused workloads', () => {
   const preview = yaml.load(fs.readFileSync('charts/civil-citizen-ui/values.preview.template.yaml', 'utf8'));
   const optimised = yaml.load(fs.readFileSync('charts/civil-citizen-ui/values.optimisedTests.preview.template.yaml', 'utf8'));
-  const retained = ['camunda-bpm', 'ccd', 'idam-pr', 'aac-manage-case-assignment'];
-  const removed = ['xui-webapp', 'em-stitching', 'em-ccdorc', 'ccd-case-document-am-api'];
+  const retained = ['camunda-bpm', 'ccd', 'idam-pr', 'aac-manage-case-assignment', 'ccd-case-document-am-api'];
+  const removed = ['xui-webapp', 'em-stitching', 'em-ccdorc'];
 
   assert.equal(preview['civil-service'].enabled, true);
   retained.forEach(component => {
