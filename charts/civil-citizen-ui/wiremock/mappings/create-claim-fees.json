@@ -1,0 +1,16 @@
+{
+  "mappings": [
+    {
+      "name": "create-claim-claim-fee",
+      "priority": 10,
+      "request": {"method": "GET", "urlPathPattern": "/fees/claim/[0-9]+(?:\\.[0-9]{1,2})?"},
+      "response": {"status": 200, "headers": {"Content-Type": "application/json"}, "bodyFileName": "create-claim-claim-fee.json"}
+    },
+    {
+      "name": "create-claim-hearing-fee",
+      "priority": 10,
+      "request": {"method": "GET", "urlPathPattern": "/fees/hearing/[0-9]+(?:\\.[0-9]{1,2})?"},
+      "response": {"status": 200, "headers": {"Content-Type": "application/json"}, "bodyFileName": "create-claim-hearing-fee.json"}
+    }
+  ]
+}

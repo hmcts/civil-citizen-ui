@@ -51,6 +51,12 @@ function getCheckbox(element) {
 }
 
 async function getCalculation() {
+  const totalMonthlyIncomeExpense = document.getElementsByClassName('total-monthly-income-expense')[0];
+  const csrfInput = document.getElementsByName('_csrf')[0];
+
+  if (!totalMonthlyIncomeExpense || !csrfInput) {
+    return;
+  }
   const amountToCalculate = [];
   const amountRows = Array.from(document.getElementsByClassName('civil-amountRow'));
   amountRows.forEach(element => {
@@ -62,21 +68,20 @@ async function getCalculation() {
       amountToCalculate.push({amount: amount[0].value, schedule: selectedSchedule.value});
     }
   });
-  const csrfToken = document.getElementsByName('_csrf')[0].value;
   const options = {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'CSRF-Token': csrfToken,
+      'CSRF-Token': csrfInput.value,
     },
     body: JSON.stringify(amountToCalculate),
   };
   if (amountToCalculate.length > 0) {
     const response = await fetch('/total-income-expense-calculation', options);
     const data = await response.json();
-    document.getElementsByClassName('total-monthly-income-expense')[0].innerHTML = data;
+    totalMonthlyIncomeExpense.innerHTML = data;
   } else {
-    document.getElementsByClassName('total-monthly-income-expense')[0].innerHTML = '0';
+    totalMonthlyIncomeExpense.innerHTML = '0';
   }
 }
 

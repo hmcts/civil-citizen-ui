@@ -39,7 +39,6 @@ Scenario('Case progression journey - Small Claims - Verify Bundles tab', async (
   //verify as claimant
   notification = bundleReady();
   await api.waitForFinishedBusinessProcess();
-  await I.wait(10);
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
   taskListItem = viewTheBundle();
@@ -52,4 +51,4 @@ Scenario('Case progression journey - Small Claims - Verify Bundles tab', async (
   await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Available', true);
   await I.click(taskListItem.title);
   await viewBundlePage.verifyPageContent(formattedCaseId, claimAmount, uploadDate, partyType);
-});
+}).tag('@thin-full-stack');

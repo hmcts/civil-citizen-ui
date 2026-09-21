@@ -1,5 +1,6 @@
 require('dotenv').config({path: '.env.tests.local'});
 
+const { threadId } = require('worker_threads');
 const { testFilesHelper } = require('./src/test/functionalTests/plugins/failedAndNotExecutedTestFilesPlugin.js');
 const testConfig = require('./src/test/config.js');
 const { unAssignAllUsers } = require('./src/test/functionalTests/specClaimHelpers/api/caseRoleAssignmentHelper');
@@ -20,6 +21,17 @@ const getTests = () => {
 };
 
 exports.config = {
+  // Staggers each worker's start so `run-workers` doesn't open a burst of
+  // simultaneous connections to the preview backend the moment the suite
+  // starts (each worker is a real Node worker_threads.Worker, so threadId
+  // reliably distinguishes them). Set WORKER_STAGGER_MS to enable; 0/unset
+  // keeps this a no-op for local/non-worker runs.
+  bootstrap: async () => {
+    const staggerMs = parseInt(process.env.WORKER_STAGGER_MS || '0', 10);
+    if (staggerMs > 0 && threadId > 0) {
+      await new Promise((resolve) => setTimeout(resolve, (threadId - 1) * staggerMs));
+    }
+  },
   bootstrapAll: async () => {
     if (functional) {
       await testFilesHelper.createTempFailedTestsFile();
@@ -86,7 +98,7 @@ exports.config = {
       ],
     },
     retryFailedStep: {
-      enabled: true,
+      enabled: process.env.DISABLE_TEST_RETRIES !== 'true',
     },
     screenshotOnFail: {
       enabled: true,
@@ -99,7 +111,7 @@ exports.config = {
     allure: {
       enabled: true,
       require: 'allure-codeceptjs',
-      resultsDir: 'test-results/functional/allure-results',
+      resultsDir: process.env.ALLURE_RESULTS_DIR || 'test-results/functional/allure-results',
     },
   },
   mocha: {
@@ -124,7 +136,7 @@ exports.config = {
           reportFilename: `${process.env.MOCHAWESOME_REPORTFILENAME + '-' + new Date().getTime()}`,
           inlineAssets: true,
           overwrite: false,
-          json: false,
+          json: true,
         },
       },
     },

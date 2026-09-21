@@ -1,244 +1,178 @@
-import request from 'supertest';
-import express from 'express';
-import {app} from '../../../../../../main/app';
-import claimFeeBreakDownController from 'routes/features/claim/payment/claimFeeBreakDownController';
+import {Response} from 'express';
+import claimFeeBreakDownController from '../../../../../../main/routes/features/claim/payment/claimFeeBreakDownController';
 import {CLAIM_FEE_BREAKUP, CLAIM_FEE_PAYMENT_CONFIRMATION_URL} from 'routes/urls';
-import {mockRedisFailure} from '../../../../../utils/mockDraftStore';
-import {InterestClaimOptionsType} from 'common/form/models/claim/interest/interestClaimOptionsType';
-import {getClaimBusinessProcess, getClaimById} from 'modules/utilityService';
-import {CivilServiceClient} from 'client/civilServiceClient';
+import {AppRequest} from 'models/AppRequest';
+import {YesNo} from 'form/models/yesNo';
 import {Claim} from 'models/claim';
-import nock from 'nock';
-import config from 'config';
-import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {ClaimDetails} from 'form/models/claim/details/claimDetails';
-import {Session} from 'express-session';
-import * as feePaymentServiceModule from 'services/features/feePayment/feePaymentService';
+import {PaymentInformation} from 'models/feePayment/paymentInformation';
+import {getClaimBusinessProcess, getClaimById} from 'modules/utilityService';
+import {generateRedisKey, getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {getFeePaymentRedirectInformation, getFeePaymentStatus} from 'services/features/feePayment/feePaymentService';
+import {calculateInterestToDate} from 'common/utils/interestUtils';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {createMockResponse, createMockSession, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
-const civilServiceUrl = config.get<string>('services.civilService.url');
-
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store/draftStoreService', () => ({
+jest.mock('modules/utilityService', () => ({
+  getClaimById: jest.fn(),
+  getClaimBusinessProcess: jest.fn(),
+}));
+jest.mock('modules/draft-store/draftStoreService', () => ({
   getCaseDataFromStore: jest.fn(),
   generateRedisKey: jest.fn(),
   saveDraftClaim: jest.fn(),
 }));
-jest.mock('modules/utilityService', () => ({
-  getClaimById: jest.fn(),
-  getRedisStoreForSession: jest.fn(),
-  getClaimBusinessProcess: jest.fn(),
-}));
-jest.mock('routes/guards/claimFeePaymentGuard', () => ({
-  claimFeePaymentGuard: jest.fn((req, res, next) => {
-    next();
-  }),
-}));
-jest.mock('../../../../../../main/modules/draft-store/paymentSessionStoreService', () => ({
+jest.mock('modules/draft-store/paymentSessionStoreService', () => ({
   saveUserId: jest.fn(),
-  getUserId: jest.fn(),
-  saveOriginalPaymentConfirmationUrl: jest.fn(),
-  getPaymentConfirmationUrl: jest.fn(),
-  deleteUserId: jest.fn(),
-  deletePaymentConfirmationUrl: jest.fn(),
+}));
+jest.mock('services/features/feePayment/feePaymentService', () => ({
+  getFeePaymentRedirectInformation: jest.fn(),
+  getFeePaymentStatus: jest.fn(),
+}));
+jest.mock('common/utils/interestUtils', () => ({
+  calculateInterestToDate: jest.fn(),
 }));
 
-describe('on GET', () => {
-  const app = express();
-  app.use(express.json());
-  app.use((req, res, next) => {
-    res.render = jest.fn((view, options) => res.status(200).send(options));
-    next();
-  });
-  app.use(claimFeeBreakDownController);
+describe('Claim fee breakdown', () => {
+  const getHandler = getRouteHandler(claimFeeBreakDownController, 'get');
+  const postHandler = getRouteHandler(claimFeeBreakDownController, 'post');
+  const viewPath = 'features/claim/payment/claim-fee-breakdown';
+  const claimId = '111111';
+  const paymentUrl = 'paymentUrl';
+  let req: Partial<AppRequest>;
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
+  const mockGetClaimById = getClaimById as jest.Mock;
+  const mockGetClaimBusinessProcess = getClaimBusinessProcess as jest.Mock;
+  const mockGetCaseDataFromStore = getCaseDataFromStore as jest.Mock;
+  const mockGenerateRedisKey = generateRedisKey as jest.Mock;
+  const mockSaveDraftClaim = saveDraftClaim as jest.Mock;
+  const mockGetFeePaymentRedirectInformation = getFeePaymentRedirectInformation as jest.Mock;
+  const mockGetFeePaymentStatus = getFeePaymentStatus as jest.Mock;
+  const mockCalculateInterestToDate = calculateInterestToDate as jest.Mock;
+
+  const buildClaim = (): Claim => {
+    const claim = new Claim();
+    claim.totalClaimAmount = 1000;
+    claim.claimInterest = YesNo.YES;
+    claim.claimFee = {calculatedAmountInPence: 10000} as Claim['claimFee'];
+    claim.claimDetails = new ClaimDetails();
+    return claim;
+  };
 
   beforeEach(() => {
-    nock(civilServiceUrl)
-      .post('/fees/claim/calculate-interest')
-      .reply(200, '100');
-    nock(civilServiceUrl)
-      .post('/fees/claim/interest')
-      .reply(200, '100');
-  });
-
-  it('should handle the get call of fee summary details', async () => {
-    //given
-    const claimId = '111111';
-    const mockClaimData = {
-      totalClaimAmount: 1000,
-      interest: {
-        interestClaimOptions: InterestClaimOptionsType.BREAK_DOWN_INTEREST,
-        totalInterest: { amount: 100 },
-      },
-      claimInterest: 'yes' ,
-      claimFee: {
-        calculatedAmountInPence: 10000,
-      },
-      isInterestFromASpecificDate: () => false,
-      hasBusinessProcessFinished: () => false,
-      hasInterest:() => true,
+    req = {
+      params: {id: claimId},
+      session: createMockSession({user: {id: 'user-id'}}),
+      body: {},
+      query: {},
+      cookies: {},
     };
-    const mockClaimFee = 100;
-    const mockTotalAmount = 1200;
-    (getClaimById as jest.Mock).mockResolvedValueOnce(mockClaimData);
-
-    const mockBusinessProcessData = {
-      hasBusinessProcessFinished: () => true,
-    };
-    (getClaimBusinessProcess as jest.Mock).mockResolvedValueOnce(mockBusinessProcessData);
-    //when-then
-    await request(app)
-      .get(CLAIM_FEE_BREAKUP.replace(':id', claimId)).expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.body).toEqual({
-          totalClaimAmount: mockClaimData.totalClaimAmount.toFixed(2),
-          interest: mockClaimData.interest.totalInterest.amount,
-          claimFee: mockClaimFee,
-          paymentSyncError: false,
-          hasInterest: true,
-          pageTitle: 'PAGES.FEE_AMOUNT.TITLE',
-          totalAmount: mockTotalAmount.toFixed(2),
-          hasBusinessProcessFinished: true,
-        });
-      });
+    res = createMockResponse();
+    next = jest.fn();
+    mockGetClaimById.mockResolvedValue(buildClaim());
+    mockGetClaimBusinessProcess.mockResolvedValue({hasBusinessProcessFinished: () => true});
+    mockGetCaseDataFromStore.mockResolvedValue(buildClaim());
+    mockGenerateRedisKey.mockReturnValue('redis-key');
+    mockSaveDraftClaim.mockResolvedValue(undefined);
+    mockCalculateInterestToDate.mockResolvedValue(100);
+    mockGetFeePaymentRedirectInformation.mockResolvedValue({nextUrl: paymentUrl});
+    mockGetFeePaymentStatus.mockResolvedValue({status: 'Initiated'});
   });
 
-  it('should handle the get call of fee summary details when business process has not finished', async () => {
-    //given
-    const claimId = '111111';
-    const mockClaimData = {
-      totalClaimAmount: 1000,
-      interest: {
-        interestClaimOptions: InterestClaimOptionsType.BREAK_DOWN_INTEREST,
-        totalInterest: { amount: 100 },
-      },
-      claimInterest: 'yes' ,
-      claimFee: {
-        calculatedAmountInPence: 10000,
-      },
-      hasBusinessProcessFinished: () => false,
-      isInterestFromASpecificDate: () => false,
-      hasInterest:() => true,
-    };
-    const mockClaimFee = 100;
-    const mockTotalAmount = 1200;
-    (getClaimById as jest.Mock).mockResolvedValueOnce(mockClaimData);
+  describe('on GET', () => {
+    it('should render fee summary details when business process has finished', async () => {
+      await getHandler(req as AppRequest, res as unknown as Response, next);
 
-    const mockBusinessProcessData = {
-      hasBusinessProcessFinished: () => false,
-      isInterestFromASpecificDate: () => false,
-    };
-    (getClaimBusinessProcess as jest.Mock).mockResolvedValueOnce(mockBusinessProcessData);
-    //when-then
-    await request(app)
-      .get(CLAIM_FEE_BREAKUP.replace(':id', claimId)).expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.body).toEqual({
-          totalClaimAmount: mockClaimData.totalClaimAmount.toFixed(2),
-          interest: mockClaimData.interest.totalInterest.amount,
-          claimFee: mockClaimFee,
-          paymentSyncError: false,
-          hasInterest: true,
-          pageTitle: 'PAGES.FEE_AMOUNT.TITLE',
-          totalAmount: mockTotalAmount.toFixed(2),
-          hasBusinessProcessFinished: false,
-        });
+      expect(res.render).toHaveBeenCalledWith(viewPath, {
+        totalClaimAmount: '1000.00',
+        interest: 100,
+        claimFee: 100,
+        hasInterest: true,
+        totalAmount: '1200.00',
+        pageTitle: 'PAGES.FEE_AMOUNT.TITLE',
+        paymentSyncError: false,
+        hasBusinessProcessFinished: true,
       });
+    });
+
+    it('should render fee summary details when business process has not finished', async () => {
+      mockGetClaimBusinessProcess.mockResolvedValue({hasBusinessProcessFinished: () => false});
+
+      await getHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        hasBusinessProcessFinished: false,
+        pageTitle: 'PAGES.FEE_AMOUNT.TITLE',
+      }));
+    });
+
+    it('should call next when loading the claim fails', async () => {
+      const error = new Error('error');
+      mockGetClaimById.mockRejectedValue(error);
+
+      await getHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
+    });
   });
 
-  it('should return 500 status code when error occurs', async () => {
-    //given
-    app.locals.draftStoreClient = mockRedisFailure;
-    //when-then
-    await request(app)
-      .get(CLAIM_FEE_BREAKUP)
-      .expect((res) => {
-        expect(res.status).toBe(500);
-      });
-  });
-});
-describe('on POST', () => {
-  const idamServiceUrl: string = config.get('services.idam.url');
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  beforeAll(() => {
-    nock(idamServiceUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-  });
-  it('should handle the get call of fee summary details', async () => {
-    const claim = new Claim();
-    claim.claimDetails = new ClaimDetails();
-    (getCaseDataFromStore as jest.Mock).mockResolvedValue(claim);
-    jest.spyOn(CivilServiceClient.prototype, 'getFeePaymentRedirectInformation').mockResolvedValueOnce({});
-    app.request['session'] = {user: {id: 'jfkdljfd'}} as unknown as Session;
-    await request(app)
-      .post(CLAIM_FEE_BREAKUP)
-      .expect((res) => {
-        expect(res.status).toBe(302);
-      });
-  });
-  it('should enable the warning text if payment request is failed', async () => {
-    jest.spyOn(CivilServiceClient.prototype, 'getFeePaymentRedirectInformation').mockRejectedValueOnce(new Error('something went wrong'));
-    (getClaimById as jest.Mock).mockResolvedValueOnce(new Claim());
-    await request(app)
-      .post(CLAIM_FEE_BREAKUP).expect((res) => {
-        expect(res.status).toBe(302);
-        expect(res.header.location).toEqual(CLAIM_FEE_BREAKUP);
-      });
-  });
-  it('should redirect to confirmation url if already paid', async () => {
-    const claim = new Claim();
-    claim.claimDetails = new ClaimDetails();
-    claim.claimDetails.claimFeePayment = {paymentReference: 'RC-1234-1234-1234-1234'};
-    (getCaseDataFromStore as jest.Mock).mockResolvedValue(claim);
-    (getClaimById as jest.Mock).mockResolvedValueOnce(claim);
-    jest.spyOn(feePaymentServiceModule, 'getFeePaymentStatus').mockResolvedValueOnce({status: 'Success'});
-    await request(app)
-      .post(CLAIM_FEE_BREAKUP).expect((res) => {
-        expect(res.status).toBe(302);
-        expect(res.header.location).toEqual(CLAIM_FEE_PAYMENT_CONFIRMATION_URL);
-      });
-  });
-  it('should get new payment ref if previous payment failed', async () => {
-    const paymentUrl = 'paymentUrl';
-    const claim = new Claim();
-    claim.claimDetails = new ClaimDetails();
-    claim.claimDetails.claimFeePayment = {paymentReference: 'RC-1234-1234-1234-1234'};
-    (getCaseDataFromStore as jest.Mock).mockResolvedValue(claim);
-    (getClaimById as jest.Mock).mockResolvedValueOnce(claim);
-    jest.spyOn(feePaymentServiceModule, 'getFeePaymentStatus').mockResolvedValueOnce({status: 'Failed'});
-    jest.spyOn(CivilServiceClient.prototype, 'getFeePaymentRedirectInformation').mockResolvedValueOnce({nextUrl: paymentUrl});
-    await request(app)
-      .post(CLAIM_FEE_BREAKUP).expect((res) => {
-        expect(res.status).toBe(302);
-        expect(res.header.location).toEqual(paymentUrl);
-      });
-  });
-  it('should get new payment ref if previous payment failed - no payment data returned', async () => {
-    const claim = new Claim();
-    claim.claimDetails = new ClaimDetails();
-    claim.claimDetails.claimFeePayment = {paymentReference: 'RC-1234-1234-1234-1234'};
-    (getCaseDataFromStore as jest.Mock).mockResolvedValue(claim);
-    (getClaimById as jest.Mock).mockResolvedValueOnce(claim);
-    jest.spyOn(feePaymentServiceModule, 'getFeePaymentStatus').mockResolvedValueOnce({status: 'Failed'});
-    jest.spyOn(CivilServiceClient.prototype, 'getFeePaymentRedirectInformation').mockResolvedValueOnce(undefined);
-    await request(app)
-      .post(CLAIM_FEE_BREAKUP).expect((res) => {
-        expect(res.status).toBe(302);
-        expect(res.header.location).toEqual(CLAIM_FEE_BREAKUP);
-      });
-  });
-  it('should redirect to payment if cannot get payment status', async () => {
-    const paymentUrl = 'paymentUrl';
-    jest.spyOn(CivilServiceClient.prototype, 'getFeePaymentRedirectInformation').mockResolvedValueOnce({nextUrl: paymentUrl});
-    const claim = new Claim();
-    claim.claimDetails = new ClaimDetails();
-    (getCaseDataFromStore as jest.Mock).mockResolvedValue(claim);
-    (getClaimById as jest.Mock).mockResolvedValueOnce(new Claim());
-    jest.spyOn(feePaymentServiceModule, 'getFeePaymentStatus').mockRejectedValueOnce(new Error('something went wrong'));
-    await request(app)
-      .post(CLAIM_FEE_BREAKUP).expect((res) => {
-        expect(res.status).toBe(302);
-        expect(res.header.location).toEqual(paymentUrl);
-      });
+  describe('on POST', () => {
+    it('should redirect to the payment URL when there is no existing payment reference', async () => {
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.redirect).toHaveBeenCalledWith(paymentUrl);
+    });
+
+    it('should redirect to the fee breakdown page when the payment request fails', async () => {
+      mockGetFeePaymentRedirectInformation.mockRejectedValue(new Error('something went wrong'));
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CLAIM_FEE_BREAKUP));
+    });
+
+    it('should redirect to confirmation url if already paid', async () => {
+      const claim = buildClaim();
+      claim.claimDetails.claimFeePayment = new PaymentInformation('', 'RC-1234-1234-1234-1234', 'status');
+      mockGetCaseDataFromStore.mockResolvedValue(claim);
+      mockGetFeePaymentStatus.mockResolvedValue({status: 'Success'});
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CLAIM_FEE_PAYMENT_CONFIRMATION_URL));
+    });
+
+    it('should get a new payment ref if previous payment failed', async () => {
+      const claim = buildClaim();
+      claim.claimDetails.claimFeePayment = new PaymentInformation('', 'RC-1234-1234-1234-1234', 'Failed');
+      mockGetCaseDataFromStore.mockResolvedValue(claim);
+      mockGetFeePaymentStatus.mockResolvedValue({status: 'Failed'});
+      mockGetFeePaymentRedirectInformation.mockResolvedValue({nextUrl: paymentUrl});
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.redirect).toHaveBeenCalledWith(paymentUrl);
+    });
+
+    it('should redirect to the fee breakdown page if previous payment failed and no payment data is returned', async () => {
+      const claim = buildClaim();
+      claim.claimDetails.claimFeePayment = new PaymentInformation('', 'RC-1234-1234-1234-1234', 'Failed');
+      mockGetCaseDataFromStore.mockResolvedValue(claim);
+      mockGetFeePaymentStatus.mockResolvedValue({status: 'Failed'});
+      mockGetFeePaymentRedirectInformation.mockResolvedValue(undefined);
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CLAIM_FEE_BREAKUP));
+    });
+
+    it('should redirect to payment if payment status cannot be retrieved', async () => {
+      mockGetFeePaymentStatus.mockRejectedValue(new Error('something went wrong'));
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.redirect).toHaveBeenCalledWith(paymentUrl);
+    });
   });
 });

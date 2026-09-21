@@ -8,7 +8,7 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {HEARING_FEE_APPLY_HELP_FEE_SELECTION, HEARING_FEE_PAYMENT_CONFIRMATION_URL} from 'routes/urls';
 import {saveUserId} from 'modules/draft-store/paymentSessionStoreService';
 import {getClaimById} from 'modules/utilityService';
-import {getRouteParam} from 'common/utils/routeParamUtils';
+import {getRouteParam, isUsablePathSegment} from 'common/utils/routeParamUtils';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('PaymentServiceUtils');
@@ -24,8 +24,11 @@ export const getRedirectUrlCommon = async (claimId: string, req: AppRequest): Pr
   let redirectUrl;
   let paymentRedirectInformation: PaymentInformation;
   const claim = await getCaseDataFromStore(redisClaimId);
-  paymentRedirectInformation = claim.caseProgression?.hearing?.paymentInformation || await getRedirectInformation(req);
-  logger.info(`Payment redirect information for claimId: ${claimId}: ${JSON.stringify(paymentRedirectInformation)}`);
+  const storedPaymentInformation = claim.caseProgression?.hearing?.paymentInformation;
+  paymentRedirectInformation = isUsablePathSegment(storedPaymentInformation?.paymentReference)
+    ? storedPaymentInformation
+    : await getRedirectInformation(req);
+  logger.info(`Payment redirect information retrieved for claimId: ${claimId}`);
 
   if (!paymentRedirectInformation) {
     redirectUrl = constructResponseUrlWithIdParams(claimId, HEARING_FEE_APPLY_HELP_FEE_SELECTION);
@@ -34,18 +37,22 @@ export const getRedirectUrlCommon = async (claimId: string, req: AppRequest): Pr
     await saveCaseProgression(req, paymentRedirectInformation, paymentInformation, hearing);
     await saveUserId(claimId, FeeType.HEARING, req.session.user.id);
 
-    const paymentStatus = await getFeePaymentStatus(claimId, paymentRedirectInformation.paymentReference, FeeType.HEARING, req);
-    logger.info(`Existing hearing payment status for claim id ${claimId}, payment reference ${paymentRedirectInformation.paymentReference}: ${paymentStatus?.status}`);
-
-    if (paymentStatus?.status === success) {
-      redirectUrl = constructResponseUrlWithIdParams(claimId, HEARING_FEE_PAYMENT_CONFIRMATION_URL);
-    } else if (paymentStatus?.status === failed) {
-      paymentRedirectInformation = await getRedirectInformation(req);
-      await saveCaseProgression(req, paymentRedirectInformation, paymentInformation, hearing);
-      logger.info(`New payment ref after failed payment for claim id ${claimId}: ${JSON.stringify(paymentRedirectInformation)}`);
-      redirectUrl = paymentRedirectInformation ? paymentRedirectInformation.nextUrl : constructResponseUrlWithIdParams(claimId, HEARING_FEE_APPLY_HELP_FEE_SELECTION);
-    } else {
+    if (!isUsablePathSegment(paymentRedirectInformation.paymentReference)) {
       redirectUrl = paymentRedirectInformation.nextUrl;
+    } else {
+      const paymentStatus = await getFeePaymentStatus(claimId, paymentRedirectInformation.paymentReference, FeeType.HEARING, req);
+      logger.info(`Existing hearing payment status for claim id ${claimId}: ${paymentStatus?.status}`);
+
+      if (paymentStatus?.status === success) {
+        redirectUrl = constructResponseUrlWithIdParams(claimId, HEARING_FEE_PAYMENT_CONFIRMATION_URL);
+      } else if (paymentStatus?.status === failed) {
+        paymentRedirectInformation = await getRedirectInformation(req);
+        await saveCaseProgression(req, paymentRedirectInformation, paymentInformation, hearing);
+        logger.info(`New payment information requested after failed payment for claim id ${claimId}`);
+        redirectUrl = paymentRedirectInformation ? paymentRedirectInformation.nextUrl : constructResponseUrlWithIdParams(claimId, HEARING_FEE_APPLY_HELP_FEE_SELECTION);
+      } else {
+        redirectUrl = paymentRedirectInformation.nextUrl;
+      }
     }
   }
   logger.info(`getRedirectUrlCommon completed for claimId: ${claimId}`);

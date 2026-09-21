@@ -58,7 +58,7 @@ judgmentAmountSummaryExtendedController.post(CCJ_EXTENDED_PAID_AMOUNT_SUMMARY_UR
     claim.claimantResponse.chooseHowToProceed = new ChooseHowToProceed(ChooseHowProceed.REQUEST_A_CCJ);
     const userId = (<AppRequest>req).session.user?.id;
     const claimId = claim.id;
-    logger.info(`Saving claimant response : userId: ${userId}  claimId: ${claimId} ccjRequest: ${claim?.case_data?.ccjRequest? JSON.stringify(claim?.case_data?.ccjRequest) : 'undefined'}`);
+    logger.info(`Saving claimant response: userId: ${userId} claimId: ${claimId}`);
     await saveDraftClaim(claimId, claim, true, userId);
     res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIMANT_RESPONSE_TASK_LIST_URL));
   })();

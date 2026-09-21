@@ -13,20 +13,23 @@
 {% endblock %}
 
 {% block content %}
-
-      {% set errors = form.getAllErrors() %}
-      {% if errors.length > 0 %}
-        {{ errorSummary(errors, t) }}
+      {% set formErrors = form.getAllErrors() %}
+      {% set atLeastOneRequired = form.errorFor('rows') %}
+      {% if form.hasErrors() %}
+        {{ errorSummary(formErrors, t) }}
       {% endif %}
       <h1 class="govuk-heading-l">{{ t('PAGES.WHO_EMPLOYS_YOU.WHO_EMPLOYS') }}</h1>
       <form method="post" novalidate>
         {{ csrfProtection(csrf) }}
-        <div class="govuk-form-group-!-margin-9 {%- if errors[0].text %} govuk-form-group--error{% endif %}">
-          {% if errors[0].text %}
-            {{ govukErrorMessage({ text:t(errors[0].text) })  }}
+        <div id="rows" class="govuk-form-group-!-margin-9 {%- if atLeastOneRequired %} govuk-form-group--error{% endif %}">
+          {% if atLeastOneRequired %}
+            <p class="govuk-error-message" id="atLeastOneFieldRequired">
+              <span class="govuk-visually-hidden">{{ t('ERRORS.ERROR') }} :</span>
+              {{ t(atLeastOneRequired) }}
+            </p>
            {% endif %}
           {% for employer in form.model.rows %}
-            {{employerRow(employer, loop.index0, form.errorFor,t)}}
+            {{employerRow(employer, loop.index0, form.errorFor,t, formErrors)}}
           {% endfor %}
         </div>
         <div class="govuk-grid-row">

@@ -1,4 +1,4 @@
-import {TTLCategory} from './ttlConfig';
+import {TTLCategory, getTTLDaysForCategory} from './ttlConfig';
 import {writeWithTTL} from './redisWriteHelper';
 
 const draftClaim: { id: string, case_data?: CaseData } = {
@@ -9,6 +9,7 @@ const draftClaim: { id: string, case_data?: CaseData } = {
 export interface CaseData {
   id?: string;
   draftClaimCreatedAt?: string;
+  draftClaimCacheTtlDays?: number;
 }
 
 const case_data = {
@@ -132,6 +133,7 @@ const saveDraftClaimToCache = async (userId: string, apiData = case_data, isCarm
   claimToSave.id = userId;
   claimToSave.case_data.id = userId;
   claimToSave.case_data.draftClaimCreatedAt = creationTime.toISOString();
+  claimToSave.case_data.draftClaimCacheTtlDays = getTTLDaysForCategory(TTLCategory.DRAFT_CLAIM);
 
   await writeWithTTL(userId, claimToSave, TTLCategory.DRAFT_CLAIM, {creationDate: creationTime});
 };

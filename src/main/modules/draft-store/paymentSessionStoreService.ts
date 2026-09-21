@@ -61,7 +61,7 @@ export const saveOriginalPaymentConfirmationUrl = async (claimId: string, feeTyp
   try {
     const existingUrl = await getPaymentConfirmationUrl(claimId, feeType, userId, false);
     if (existingUrl && existingUrl !== url) {
-      logger.warn(`Overwriting existing payment confirmation url ${existingUrl} with ${url} for userId ${userId} and claimId ${claimId}`);
+      logger.warn(`Overwriting existing payment confirmation URL for userId ${userId} and claimId ${claimId}`);
     }
 
     await writeWithTTL(

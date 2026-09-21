@@ -2,7 +2,11 @@
 import {readFileSync} from 'fs';
 import {createServer} from 'https';
 import * as path from 'path';
-import { app } from './app';
+import {installPiiLoggingRedaction} from './common/logging/piiRedaction';
+
+installPiiLoggingRedaction();
+// Load the application after installing redaction so its module-level loggers are wrapped.
+const {app} = require('./app');
 
 const { Logger } = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('server');
@@ -16,16 +20,14 @@ process.on('uncaughtException', (error: Error) => {
     stack: error.stack,
     timestamp: new Date().toISOString(),
   });
-  
 });
 
-process.on('unhandledRejection', (reason: any, promise: Promise<any>) => {
+process.on('unhandledRejection', (reason: unknown) => {
   logger.error('Unhandled Rejection:', {
-    reason: reason?.message || reason,
-    stack: reason?.stack,
+    reason: reason instanceof Error ? reason.message : reason,
+    stack: reason instanceof Error ? reason.stack : undefined,
     timestamp: new Date().toISOString(),
   });
-  
 });
 
 // Node's default keepAliveTimeout (5s) is below Traefik's 90s backend idleConnTimeout, so Node

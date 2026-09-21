@@ -345,6 +345,12 @@ export interface ClaimFeeData {
   version?: number;
 }
 
+export interface CivilServiceClaimFeeData {
+  calculatedAmountInPence?: string;
+  code?: string;
+  version?: number;
+}
+
 export interface IdamUserDetails {
   email: string;
   id: string;
