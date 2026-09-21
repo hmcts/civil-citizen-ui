@@ -294,8 +294,8 @@ class EligibilityCheck {
 
   async eligibilityHWFReferenceValidations(){
     await I.seeInCurrentUrl('/eligibility/help-with-fees-reference');
-    await I.waitForContent('Do you have a Help With Fees reference number?');
-    await I.see('You’ll only have one if you’ve already applied for Help with Fees in respect of this claim.');
+    await I.waitForContent('Do you have a Help with Fees reference number?');
+    await I.see('You’ll only have one if you’ve already made an online application for Help with Fees for this claim.');
     await I.click(fields.hwfReferenceYes);
     await I.click('Save and continue');
     await I.seeInCurrentUrl('/eligibility/hwf-eligible-reference');
@@ -305,9 +305,9 @@ class EligibilityCheck {
   }
 
   async eligibilityHWFReference() {
-    await I.waitForContent('Do you have a Help With Fees reference number?');
+    await I.waitForContent('Do you have a Help with Fees reference number?');
     await I.click(fields.hwfReferenceNo);
-    await I.waitForContent('Decide whether to apply for Help with Fees');
+    await I.waitForContent('Deciding whether to apply for Help with Fees');
     await I.seeElement('//a[contains(normalize-space(), \'Apply for Help with Fees (opens in a new tab)\')]');
     await I.see('and make a claim using a Help with Fees number. If you need to use the paper Help with Fees application rather than the online version then you will not be able to use Online Civil Money Claims to issue your claim.');
     await I.see('When you apply for Help with Fees you will be asked for the number on your court or tribunal form. Please note that this is N1.');

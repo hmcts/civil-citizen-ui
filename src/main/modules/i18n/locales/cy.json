@@ -3016,14 +3016,15 @@
       "FEE_REMISSION_CALCULATOR_LINK": "Cyfrifiannell Dileu Ffi: EX160C - ar gyfer Microsoft Excel (yn agor mewn tab newydd)"
     },
     "ELIGIBILITY_HWF_REFERENCE": {
-      "ALREADY_APPLIED": "Dim ond os ydych eisoes wedi gwneud cais am Help i Dalu Ffioedd mewn perthynas â'r hawliad hwn y bydd gennych chi un.",
-      "APPLY_FOR_HELP_LINK": "Gwneud cais am Help i Dalu Ffioedd",
+      "ALREADY_APPLIED": "Dim ond os ydych eisoes wedi gwneud cais ar-lein am Help i Dalu Ffioedd ar gyfer yr hawliad hwn y bydd gennych un. Ni allwch ddefnyddio cyfeirnod Help i Dalu Ffioedd blaenorol sy’n gysylltiedig â hawliad gwahanol neu gais i'r llys.",
+      "APPLY_FOR_HELP_LINK": "Gwneud cais am Help i Dalu Ffioedd (yn agor mewn tab newydd)",
       "DECIDE": "Penderfynu a ddylid gwneud cais am Help i Dalu Ffioedd",
+      "ENTER_REFERENCE": "Nodwch eich cyfeirnod Help i Dalu Ffioedd",
       "MAKE_A_NOTE": "Gwnewch nodyn o'r rhif Help i Dalu Ffioedd pan fyddwch yn gwneud cais.",
-      "MAKE_CLAIM_USING": " a gwneud hawliad gan ddefnyddio rhif Help i Dalu Ffioedd. Os oes angen i chi ddefnyddio'r cais papur am Help i Dalu Ffioedd yn hytrach na'r fersiwn ar-lein  yna ni fyddwch yn gallu defnyddio Hawliadau Arian Sifil Ar-lein i gychwyn eich cais.",
-      "PAGE_TITLE": "Oes gennych chi gyfeirnod Help i Dalu Ffioedd?",
-      "TITLE": "Oes gennych chi gyfeirnod Help i Dalu Ffioedd?",
-      "WHEN_YOU_APPLY": "Pan fyddwch yn gwneud cais am Help i Dalu Ffioedd gofynnir i chi am y rhif ar eich ffurflen llys neu dribiwnlys. Sylwch mai N1 yw honno.",
+      "MAKE_CLAIM_USING": " a gwneud hawliad gan ddefnyddio rhif Help i Dalu Ffioedd. Os oes angen i chi ddefnyddio'r cais papur am help i dalu ffioedd yn hytrach na'r fersiwn ar-lein yna ni fyddwch yn gallu defnyddio Hawliadau am Arian Sifil Ar-lein i gyhoeddi eich cais.",
+      "PAGE_TITLE": "A oes gennych chi gyfeirnod Help i Dalu Ffioedd?",
+      "TITLE": "A oes gennych chi gyfeirnod Help i Dalu Ffioedd?",
+      "WHEN_YOU_APPLY": "Pan fyddwch yn gwneud cais am Help i Dalu Ffioedd gofynnir i chi am y rhif ar eich ffurflen llys neu dribiwnlys. Sylwch mai N1 yw hwn.",
       "WILL_NEED": "Bydd angen y rhif hwn arnoch i wneud eich cais pan fyddwch yn dychwelyd i'r gwasanaeth hwn."
     },
     "ELIGIBILITY_SINGLE_DEFENDANT": {

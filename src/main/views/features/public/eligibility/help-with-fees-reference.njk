@@ -1,5 +1,6 @@
 {% extends "claim-details-tpl.njk" %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp with context %}
 {% from "../../../macro/csrf.njk" import csrfProtection %}
 {% from "../../../macro/yesNoGenericForm.njk" import yesNoRadioButton %}
@@ -13,11 +14,24 @@
 {% endblock %}
 {% block content %}
 
+      {% set yesHtml %}
+        <p class="govuk-body">{{ t('PAGES.ELIGIBILITY_HWF_REFERENCE.ENTER_REFERENCE') }}</p>
+          {{ govukInput({
+            id: 'hwfReferenceNumber',
+            name: 'hwfReferenceNumber',
+            classes: 'govuk-!-width-one-half',
+            label: {
+              text: t('PAGES.ELIGIBILITY_HWF_REFERENCE.ENTER_REFERENCE'),
+              classes: 'govuk-visually-hidden'
+            }
+          }) }}
+      {% endset -%}
+
       {% set noHtml %}
 
         <h2 class="govuk-heading-s">{{ t('PAGES.ELIGIBILITY_HWF_REFERENCE.DECIDE') }}</h2>
         <p class="govuk-body">
-          {{ externalLink(t, 'PAGES.ELIGIBILITY_HWF_REFERENCE.APPLY_FOR_HELP_LINK', externalURLs.feesHelpUrl, true) }}
+          {{ externalLink(t, 'PAGES.ELIGIBILITY_HWF_REFERENCE.APPLY_FOR_HELP_LINK', externalURLs.feesHelpUrl, false) }}
           {{ t('PAGES.ELIGIBILITY_HWF_REFERENCE.MAKE_CLAIM_USING') }}
         </p>
         <p class="govuk-body">{{ t('PAGES.ELIGIBILITY_HWF_REFERENCE.WHEN_YOU_APPLY') }}</p>
@@ -39,7 +53,7 @@
               <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
                 {{ t('PAGES.ELIGIBILITY_HWF_REFERENCE.TITLE') }}
               </legend>
-              {{ yesNoRadioButton(t, 'option', 'option', '', form, '', {yes: 'COMMON.YES', no: 'COMMON.NO', noHtml:noHtml}) }}
+              {{ yesNoRadioButton(t, 'option', 'option', '', form, '', {yes: 'COMMON.YES', no: 'COMMON.NO', classes: 'govuk-radios--inline', yesHtml: yesHtml, noHtml: noHtml}) }}
             </fieldset>
             <div class="govuk-form-group">
               {{ govukButton({
