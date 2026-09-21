@@ -3,7 +3,7 @@ import nock from 'nock';
 import config from 'config';
 import request from 'supertest';
 import {COSC_FINAL_PAYMENT_DATE_URL} from 'routes/urls';
-import {mockCivilClaim} from '../../../../../../utils/mockDraftStore';
+import {mockCivilClaimWithApplicationType} from '../../../../../../utils/mockDraftStore';
 import * as launchDarkly from '../../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
@@ -54,7 +54,7 @@ describe('CoSorS - defendant Payment date', () => {
   });
 
   beforeEach(() => {
-    app.locals.draftStoreClient = mockCivilClaim;
+    app.locals.draftStoreClient = mockCivilClaimWithApplicationType;
 
     jest
       .spyOn(draftStoreService, 'generateRedisKey')
