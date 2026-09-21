@@ -53,12 +53,20 @@ describe('CoSorS - defendant Payment date', () => {
       .reply(200, {id_token: citizenRoleToken});
   });
 
+  beforeEach(() => {
+    app.locals.draftStoreClient = mockCivilClaim;
+
+    jest
+      .spyOn(draftStoreService, 'generateRedisKey')
+      .mockReturnValue('12345');
+
+    mockGetCertificateOfSatisfactionOrCancellation.mockResolvedValue(
+      new CertificateOfSatisfactionOrCancellation(),
+    );
+  });
+
   describe('on GET', () => {
     it('should return payment date page', async () => {
-      mockGetCertificateOfSatisfactionOrCancellation.mockResolvedValue(
-        new CertificateOfSatisfactionOrCancellation(),
-      );
-
       await request(app)
         .get(COSC_FINAL_PAYMENT_DATE_URL)
         .expect((res) => {
@@ -71,24 +79,15 @@ describe('CoSorS - defendant Payment date', () => {
   });
 
   describe('on POST', () => {
-    beforeEach(() => {
-      app.locals.draftStoreClient = mockCivilClaim;
-
-      jest
-        .spyOn(draftStoreService, 'generateRedisKey')
-        .mockReturnValue('12345');
-
-      mockGetCertificateOfSatisfactionOrCancellation.mockResolvedValue(
-        new CertificateOfSatisfactionOrCancellation(),
-      );
-    });
-
     it('should return errors on no input', async () => {
       await request(app)
         .post(COSC_FINAL_PAYMENT_DATE_URL)
-        .send('year=')
-        .send('month=')
-        .send('day=')
+        .type('form')
+        .send({
+          year: '',
+          month: '',
+          day: '',
+        })
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(TestMessages.VALID_DAY);
@@ -97,12 +96,15 @@ describe('CoSorS - defendant Payment date', () => {
         });
     });
 
-    it('should return errors on no input : invalid month', async () => {
+    it('should return errors on invalid month', async () => {
       await request(app)
         .post(COSC_FINAL_PAYMENT_DATE_URL)
-        .send('year=2023')
-        .send('month=13')
-        .send('day=1')
+        .type('form')
+        .send({
+          year: '2023',
+          month: '13',
+          day: '1',
+        })
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(TestMessages.VALID_MONTH);
@@ -112,9 +114,12 @@ describe('CoSorS - defendant Payment date', () => {
     it('should not return error on date in the past', async () => {
       await request(app)
         .post(COSC_FINAL_PAYMENT_DATE_URL)
-        .send('year=1999')
-        .send('month=1')
-        .send('day=1')
+        .type('form')
+        .send({
+          year: '1999',
+          month: '1',
+          day: '1',
+        })
         .expect((res) => {
           expect(res.status).toBe(302);
         });
@@ -123,9 +128,12 @@ describe('CoSorS - defendant Payment date', () => {
     it('should show a message to add a valid payment date', async () => {
       await request(app)
         .post(COSC_FINAL_PAYMENT_DATE_URL)
-        .send('year=9999')
-        .send('month=1')
-        .send('day=1')
+        .type('form')
+        .send({
+          year: '9999',
+          month: '1',
+          day: '1',
+        })
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(
