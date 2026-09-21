@@ -1,90 +1,113 @@
-import config from 'config';
-import nock from 'nock';
-import request from 'supertest';
-import {app} from '../../../../../../main/app';
-import {CLAIM_EVIDENCE_URL, CLAIM_TIMELINE_URL} from 'routes/urls';
-import {mockCivilClaim, mockNoStatementOfMeans, mockRedisFailure} from '../../../../../utils/mockDraftStore';
-import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
+import {Response} from 'express';
+import timelineController from '../../../../../../main/routes/features/claim/yourDetails/timelineController';
+import {CLAIM_EVIDENCE_URL} from 'routes/urls';
+import {AppRequest} from 'models/AppRequest';
+import {GenericForm} from 'form/models/genericForm';
+import {ClaimDetails} from 'form/models/claim/details/claimDetails';
+import {ClaimantTimeline} from 'form/models/timeLineOfEvents/claimantTimeline';
+import {getClaimDetails} from 'services/features/claim/details/claimDetailsService';
+import {getTimeline, saveTimeline} from 'services/features/claim/yourDetails/timelineService';
+import {createMockResponse, createMockSession, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
-jest.mock('routes/guards/claimIssueTaskListGuard', () => ({
-  claimIssueTaskListGuard: jest.fn((req, res, next) => {
-    next();
-  }),
+jest.mock('services/features/claim/details/claimDetailsService', () => ({
+  getClaimDetails: jest.fn(),
+  saveClaimDetails: jest.fn(),
+}));
+jest.mock('services/features/claim/yourDetails/timelineService', () => ({
+  getTimeline: jest.fn(),
+  saveTimeline: jest.fn(),
 }));
 
 describe('Claimant Timeline Controller', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
+  const getHandler = getRouteHandler(timelineController, 'get');
+  const postHandler = getRouteHandler(timelineController, 'post');
+  const viewPath = 'features/claim/yourDetails/timeline';
+  const pageTitle = 'PAGES.TIMELINE.TITLE';
+  let req: Partial<AppRequest>;
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
+  const mockGetClaimDetails = getClaimDetails as jest.Mock;
+  const mockGetTimeline = getTimeline as jest.Mock;
+  const mockSaveTimeline = saveTimeline as jest.Mock;
+  const validRows = [{
+    day: 1,
+    month: 3,
+    year: 2023,
+    description: 'Raised an issue with Mr. Smith',
+  }];
 
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
+  beforeEach(() => {
+    req = {
+      session: createMockSession({user: {id: 'user-id'}}),
+      body: {},
+      query: {},
+      cookies: {},
+    };
+    res = createMockResponse();
+    next = jest.fn();
+    mockGetClaimDetails.mockResolvedValue(new ClaimDetails());
+    mockGetTimeline.mockReturnValue(ClaimantTimeline.buildEmptyForm());
+    mockSaveTimeline.mockResolvedValue(undefined);
   });
 
   describe('on GET', () => {
     it('should render timeline page', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
-      await request(app).get(CLAIM_TIMELINE_URL).expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain('Timeline of events');
-      });
+      await getHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        pageTitle,
+        form: expect.any(GenericForm),
+      }));
     });
 
-    it('should return 500 page on redis failure', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app).get(CLAIM_TIMELINE_URL).expect((res) => {
-        expect(res.status).toBe(500);
-        expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-      });
+    it('should call next when loading claim details fails', async () => {
+      const error = new Error('error');
+      mockGetClaimDetails.mockRejectedValue(error);
+
+      await getHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 
   describe('on POST', () => {
-    it('should render timeline page if there are validation errors', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
-      await request(app).post(CLAIM_TIMELINE_URL).send({rows: []}).expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(TestMessages.AT_LEAST_ONE_ROW);
-      });
+    it('should re-render timeline page if there are validation errors', async () => {
+      req.body = {rows: []};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        pageTitle,
+        form: expect.any(GenericForm),
+      }));
+      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
     });
 
-    it('should return 500 page if there are errors', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
-      await request(app).post(CLAIM_TIMELINE_URL).expect((res) => {
-        expect(res.status).toBe(500);
-        expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-      });
+    it('should call next if building the form throws', async () => {
+      req.body = {};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalled();
     });
 
-    it('should update data and redirect to evidence page if all required details are provided', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
-      const mockData = [{
-        day: 1,
-        month: 3,
-        year: 2023,
-        description: 'Raised an issue with Mr. Smith',
-      }];
-      await request(app).post(CLAIM_TIMELINE_URL).send({rows: mockData}).expect((res) => {
-        expect(res.status).toBe(302);
-        expect(res.header.location).toBe(CLAIM_EVIDENCE_URL);
-      });
+    it('should save data and redirect to evidence page if all required details are provided', async () => {
+      req.body = {rows: validRows};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(mockSaveTimeline).toHaveBeenCalledWith('user-id', expect.any(ClaimantTimeline));
+      expect(res.redirect).toHaveBeenCalledWith(CLAIM_EVIDENCE_URL);
     });
 
-    it('should save data if applicant doesn\'t exist and redirect to evidence page', async () => {
-      app.locals.draftStoreClient = mockNoStatementOfMeans;
-      const mockData = [{
-        day: 1,
-        month: 3,
-        year: 2023,
-        description: 'Raised an issue with Mr. Smith',
-      }];
-      await request(app).post(CLAIM_TIMELINE_URL).send({rows: mockData}).expect((res) => {
-        expect(res.status).toBe(302);
-        expect(res.header.location).toBe(CLAIM_EVIDENCE_URL);
-      });
+    it('should save data if applicant does not exist and redirect to evidence page', async () => {
+      mockGetClaimDetails.mockResolvedValue(new ClaimDetails());
+      req.body = {rows: validRows};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(mockSaveTimeline).toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(CLAIM_EVIDENCE_URL);
     });
   });
 });

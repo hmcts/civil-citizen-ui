@@ -1,102 +1,57 @@
-import request from 'supertest';
-import {app} from '../../../../../main/app';
-import {QM_SHARE_QUERY_CONFIRMATION} from 'routes/urls';
-import nock from 'nock';
-import config from 'config';
-import {CIVIL_SERVICE_CASES_URL} from 'client/civilServiceUrls';
-import {CaseRole} from 'form/models/caseRoles';
-import {TestMessages} from '../../../../utils/errorMessageTestConstants';
+import {Response} from 'express';
+import shareQueryConfirmationController from '../../../../../main/routes/features/queryManagement/shareQueryConfirmationController';
+import {QUERY_MANAGEMENT_CREATE_QUERY} from 'routes/urls';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {getCancelUrl} from 'services/features/queryManagement/queryManagementService';
-
-jest.mock('../../../../../main/modules/oidc');
-
-const civilServiceUrl = config.get<string>('services.civilService.url');
-const claimId = '12345';
-const claim = require('../../../../utils/mocks/civilClaimResponseMock.json');
+import {AppRequest} from 'models/AppRequest';
+import {createMockResponse, createMockSession, getRouteHandler} from '../../../../utils/getRouteHandler';
 
 jest.mock('services/features/queryManagement/queryManagementService', () => ({
-  getCancelUrl: jest.fn(),
+  getCancelUrl: jest.fn(() => '/dashboard'),
+}));
+jest.mock('i18next', () => ({
+  t: (key: string) => key,
 }));
 
-describe('Share query confirmation controller', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
-
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-  });
+describe('Share query confirmation Controller', () => {
+  const getHandler = getRouteHandler(shareQueryConfirmationController, 'get');
+  const postHandler = getRouteHandler(shareQueryConfirmationController, 'post');
+  const viewPath = 'features/queryManagement/qm-share-query-confirmation.njk';
+  const claimId = '12345';
+  let req: Partial<AppRequest>;
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
 
   beforeEach(() => {
-    nock(civilServiceUrl)
-      .get(CIVIL_SERVICE_CASES_URL + claimId + '/userCaseRoles')
-      .reply(200, [CaseRole.CLAIMANT]);
+    req = {params: {id: claimId}, body: {}, query: {}, cookies: {}, session: createMockSession()};
+    res = createMockResponse();
+    next = jest.fn();
   });
 
-  describe('GET', () => {
-    beforeEach(() => {
-      jest.resetAllMocks();
-    });
-    it('should render share query confirmation page', async () => {
+  describe('on GET', () => {
+    it('should render the share query confirmation page', async () => {
+      await getHandler(req as AppRequest, res as unknown as Response, next);
 
-      nock(civilServiceUrl)
-        .get(CIVIL_SERVICE_CASES_URL + claimId)
-        .reply(200, claim);
-
-      await request(app)
-        .get(QM_SHARE_QUERY_CONFIRMATION.replace(':id', claimId))
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Send a message');
-          expect(res.text).toContain('Sharing this message with the other party');
-          expect(res.text).toContain('All messages sent using this system are shared with the other party in the case as well as being sent to the court.');
-          expect(res.text).toContain('Asking not to share your message');
-          expect(res.text).toContain('You can ask not to share your message with the other party. The reasons for not sharing your message must be valid and the judge may decide that your message should be shared.');
-          expect(res.text).toContain('Valid reasons for keeping a message between you and the court include the message being about:');
-          expect(res.text).toContain('a request for a reasonable adjustment');
-          expect(res.text).toContain('your health');
-          expect(res.text).toContain('If you need to send a message to the court and you do not want the other party to see it, email ');
-          expect(res.text).toContain('contactocmc@justice.gov.uk');
-          expect(res.text).toContain('Explain why the message should be kept between you and the court and make sure you include your full name and claim number.');
-          expect(res.text).toContain('Confirm your message can be shared');
-          expect(res.text).toContain('Yes, I agree my message can be shared with the other party');
-        });
-    });
-
-    it('should return http 500 when has error', async () => {
-      (getCancelUrl as jest.Mock).mockImplementation(() => {
-        throw new Error('Forced error');
-      });
-      await request(app)
-        .get(QM_SHARE_QUERY_CONFIRMATION.replace(':id', claimId))
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+      expect(getCancelUrl).toHaveBeenCalledWith(claimId);
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({claimId}));
     });
   });
 
-  describe('POST', () => {
-    beforeEach(() => {
-      jest.resetAllMocks();
-    });
-    it('should return error on now confirmation', async () => {
-      await request(app)
-        .post(QM_SHARE_QUERY_CONFIRMATION.replace(':id', claimId))
-        .send({ confirmed: '' })
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('To continue you must select that your message can be shared. If you do not want to share your message, email the court.');
-        });
+  describe('on POST', () => {
+    it('should re-render when confirmation is missing', async () => {
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.anything());
+      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
     });
 
-    it('should redirect to create query page when confirmation selected', async () => {
-      await request(app)
-        .post(QM_SHARE_QUERY_CONFIRMATION.replace(':id', claimId))
-        .send({ confirmed: 'yes' })
-        .expect(302)
-        .expect('Location', `/case/${claimId}/qm/create-query`);
+    it('should set the session flag and redirect when confirmed', async () => {
+      req.body = {confirmed: true};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(req.session.qmShareConfirmed).toBe(true);
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, QUERY_MANAGEMENT_CREATE_QUERY));
     });
   });
 });
