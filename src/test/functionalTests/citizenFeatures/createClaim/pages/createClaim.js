@@ -605,7 +605,7 @@ class CreateClaim {
     await I.see('Payment for');
     await I.see('Claim fee');
     await I.see('Total amount');
-    await I.click('Go to your account');
+    await I.amOnPage('/dashboard');
   }
 
   async signOut() {
