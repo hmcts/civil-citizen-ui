@@ -11,27 +11,43 @@ import {
   getCertificateOfSatisfactionOrCancellation,
 } from 'services/features/generalApplication/certOfSorC/certificateOfSatisfactionOrCancellationService';
 import {CertificateOfSatisfactionOrCancellation} from 'models/generalApplication/CertificateOfSatisfactionOrCancellation';
+
 jest.mock('modules/oidc');
 jest.mock('modules/draft-store');
-jest.mock('services/features/generalApplication/certOfSorC/certificateOfSatisfactionOrCancellationService');
-const mockGetCertificateOfSatisfactionOrCancellation = getCertificateOfSatisfactionOrCancellation as jest.Mock;
-jest.mock('../../../../../../../main/routes/guards/generalAplicationGuard',() => ({
-  isGAForLiPEnabled: jest.fn((req, res, next) => {
-    next();
+jest.mock(
+  'services/features/generalApplication/certOfSorC/certificateOfSatisfactionOrCancellationService',
+);
+
+const mockGetCertificateOfSatisfactionOrCancellation =
+  getCertificateOfSatisfactionOrCancellation as jest.Mock;
+
+jest.mock(
+  '../../../../../../../main/routes/guards/generalAplicationGuard',
+  () => ({
+    isGAForLiPEnabled: jest.fn((req, res, next) => {
+      next();
+    }),
   }),
-}));
-jest.mock('../../../../../../../main/routes/guards/requireGeneralApplicationDraft',() => ({
-  requireGeneralApplicationDraft: jest.fn((req, res, next) => {
-    next();
+);
+
+jest.mock(
+  '../../../../../../../main/routes/guards/requireGeneralApplicationDraft',
+  () => ({
+    requireGeneralApplicationDraft: jest.fn((req, res, next) => {
+      next();
+    }),
   }),
-}));
+);
 
 describe('CoSorS - defendant Payment date', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamServiceUrl: string = config.get('services.idam.url');
 
   beforeAll(() => {
-    jest.spyOn(launchDarkly, 'isGaForLipsEnabled').mockResolvedValue(true);
+    jest
+      .spyOn(launchDarkly, 'isGaForLipsEnabled')
+      .mockResolvedValue(true);
+
     nock(idamServiceUrl)
       .post('/o/token')
       .reply(200, {id_token: citizenRoleToken});
@@ -39,7 +55,10 @@ describe('CoSorS - defendant Payment date', () => {
 
   describe('on GET', () => {
     it('should return payment date page', async () => {
-      mockGetCertificateOfSatisfactionOrCancellation.mockReturnValue(new CertificateOfSatisfactionOrCancellation());
+      mockGetCertificateOfSatisfactionOrCancellation.mockResolvedValue(
+        new CertificateOfSatisfactionOrCancellation(),
+      );
+
       await request(app)
         .get(COSC_FINAL_PAYMENT_DATE_URL)
         .expect((res) => {
@@ -52,13 +71,19 @@ describe('CoSorS - defendant Payment date', () => {
   });
 
   describe('on POST', () => {
-    beforeAll(() => {
-      mockGetCertificateOfSatisfactionOrCancellation.mockReturnValue(new CertificateOfSatisfactionOrCancellation());
+    beforeEach(() => {
+      app.locals.draftStoreClient = mockCivilClaim;
+
+      jest
+        .spyOn(draftStoreService, 'generateRedisKey')
+        .mockReturnValue('12345');
+
+      mockGetCertificateOfSatisfactionOrCancellation.mockResolvedValue(
+        new CertificateOfSatisfactionOrCancellation(),
+      );
     });
 
     it('should return errors on no input', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
-      jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
       await request(app)
         .post(COSC_FINAL_PAYMENT_DATE_URL)
         .send('year=')
@@ -70,25 +95,21 @@ describe('CoSorS - defendant Payment date', () => {
           expect(res.text).toContain(TestMessages.VALID_MONTH);
           expect(res.text).toContain(TestMessages.VALID_YEAR);
         });
-
     });
+
     it('should return errors on no input : invalid month', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
-      jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
       await request(app)
         .post(COSC_FINAL_PAYMENT_DATE_URL)
-        .send('year= 2023')
+        .send('year=2023')
         .send('month=13')
         .send('day=1')
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(TestMessages.VALID_MONTH);
         });
-
     });
 
     it('should not return error on date in the past', async () => {
-      jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
       await request(app)
         .post(COSC_FINAL_PAYMENT_DATE_URL)
         .send('year=1999')
@@ -100,7 +121,6 @@ describe('CoSorS - defendant Payment date', () => {
     });
 
     it('should show a message to add a valid payment date', async () => {
-      jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
       await request(app)
         .post(COSC_FINAL_PAYMENT_DATE_URL)
         .send('year=9999')
@@ -108,7 +128,9 @@ describe('CoSorS - defendant Payment date', () => {
         .send('day=1')
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.VALID_DATE_NOT_IN_THE_FUTURE);
+          expect(res.text).toContain(
+            TestMessages.VALID_DATE_NOT_IN_THE_FUTURE,
+          );
         });
     });
   });
