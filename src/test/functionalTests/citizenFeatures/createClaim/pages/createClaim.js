@@ -166,8 +166,7 @@ class CreateClaim {
     await I.see('First name');
     await I.see('Last name');
     await I.see('Your address', 'h2');
-    await I.see('If your address is not correct you can change it here.');
-    await I.see('Any changes will be shared with the claimant when you submit your response.');
+    await I.see('All correspondence will be sent to this address.');
     await I.see('Enter a UK postcode');
     await I.see('Correspondence address', 'h2');
     await I.see('Would you like correspondence sent to a different address?');
