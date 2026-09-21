@@ -496,7 +496,6 @@ to the responses. Apart from default Helmet functions, following headers are set
 There is a configuration section related with those headers, where you can specify:
 * `referrerPolicy` - value of the `Referrer-Policy` header
 
-
 Here's an example setup:
 
 ```json
