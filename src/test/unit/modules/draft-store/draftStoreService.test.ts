@@ -1,3 +1,5 @@
+jest.mock('../../../../main/app-instance', () => jest.requireActual('../../../utils/getRouteHandler'));
+
 import {
   createDraftClaimInStoreWithExpiryTime,
   deleteDraftClaimFromStore,
@@ -10,7 +12,7 @@ import {
   getDraftClaimFromStore,
   saveDraftClaim,
 } from 'modules/draft-store/draftStoreService';
-import {app} from '../../../../main/app';
+import {app} from '../../../../main/app-instance';
 import {Claim} from 'models/claim';
 import {AppRequest} from 'common/models/AppRequest';
 import {req} from '../../../utils/UserDetails';
