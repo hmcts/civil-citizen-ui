@@ -53,7 +53,7 @@ export const buildTheirDetailsSection = (claim: Claim, claimId: string, lang: st
     yourDetailsSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CONTACT_PERSON', {lng}), claim.respondent1.partyDetails.contactPerson, theirDetailsHref, changeLabel(lng), title));
   }
   yourDetailsSection.summaryList.rows.push(...[summaryRowHtml(t('COMMON.ADDRESS', {lng}), addressToHtml(claim.respondent1?.partyDetails?.primaryAddress), theirDetailsHref, changeLabel(lng), title),
-    summaryRowHtml(t('PAGES.CHECK_YOUR_ANSWER.CORRESPONDENCE_ADDRESS', {lng}), claim.respondent1?.partyDetails?.correspondenceAddress ? addressToHtml(claim.respondent1?.partyDetails.correspondenceAddress) : t('PAGES.CHECK_YOUR_ANSWER.SAME_ADDRESS', {lng}), theirDetailsHref, changeLabel(lng), title)]);
+    summaryRowHtml(t('PAGES.CHECK_YOUR_ANSWER.CORRESPONDENCE_ADDRESS', {lng}), claim.respondent1?.partyDetails?.correspondenceAddress ? addressToHtml(claim.respondent1?.partyDetails.correspondenceAddress) : escapeHtml(t('PAGES.CHECK_YOUR_ANSWER.SAME_ADDRESS', {lng})), theirDetailsHref, changeLabel(lng), title)]);
   if (!claim.isBusiness() && claim.respondent1?.dateOfBirth?.date) {
     const yourDOBHref = DOB_URL.replace(':id', claimId);
     yourDetailsSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.DOB', {lng}), formatDateToFullDate(claim.respondent1.dateOfBirth.date, lng), yourDOBHref, changeLabel(lng), title));

@@ -137,7 +137,7 @@ export const addApplicationTypesAndDescriptionRows = (
             t('PAGES.GENERAL_APPLICATION.RESPONDENT_VIEW_APPLICATION.APPLICATION_TYPE_AND_DESC', {
               lng,
             }),
-            t(applicationTypeDisplay, { lng }) + '.</br>' + t(applicationTypeDescription, {lng}),
+            escapeHtml(t(applicationTypeDisplay, { lng })) + '.</br>' + escapeHtml(t(applicationTypeDescription, {lng})),
             null,
             null,
             undefined,
@@ -198,7 +198,7 @@ export const addOrderJudgeRow = (application: ApplicationResponse, index: number
   const rows: SummaryRow[] = [];
   if (application.case_data.generalAppDetailsOfOrderColl?.[index]) {
     const orderForCost = application.case_data.generalAppAskForCosts === YesNoUpperCamelCase.YES ? 'PAGES.GENERAL_APPLICATION.ORDER_FOR_COSTS' : '';
-    const html = `<p class="govuk-body">${escapeHtml(application.case_data.generalAppDetailsOfOrderColl[index].value)} <br> ${t(orderForCost, {lng})}</p>`;
+    const html = `<p class="govuk-body">${escapeHtml(application.case_data.generalAppDetailsOfOrderColl[index].value)} <br> ${escapeHtml(t(orderForCost, {lng}))}</p>`;
     rows.push(
       summaryRowHtml(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.WHAT_ORDER', {lng}), html),
     );
@@ -232,7 +232,7 @@ export const addDocumentUploadRow = (application: ApplicationResponse, lang: str
   const rows: SummaryRow[] = [];
   let rowValue: string;
   if (application.case_data.gaAddlDoc) {
-    rowValue = `<p class="govuk-border-colour-border-bottom-1 govuk-!-padding-bottom-2 govuk-!-margin-top-0">${t('COMMON.VARIATION_2.YES', {lng})}</p>`;
+    rowValue = `<p class="govuk-border-colour-border-bottom-1 govuk-!-padding-bottom-2 govuk-!-margin-top-0">${escapeHtml(t('COMMON.VARIATION_2.YES', {lng}))}</p>`;
     rowValue += '<ul class="no-list-style">';
     application.case_data.gaAddlDoc.forEach(uploadGAFile => {
       const documentUrl = CASE_DOCUMENT_VIEW_URL.replace(':id', application.id).replace(':documentId', documentIdExtractor(uploadGAFile?.value?.documentLink.document_binary_url));
@@ -242,7 +242,7 @@ export const addDocumentUploadRow = (application: ApplicationResponse, lang: str
     rowValue += '</ul>';
 
   } else {
-    rowValue = t('COMMON.VARIATION_2.NO', {lng});
+    rowValue = escapeHtml(t('COMMON.VARIATION_2.NO', {lng}));
   }
   rows.push(
     summaryRowHtml(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.UPLOAD_DOCUMENTS', {lng}), rowValue),
@@ -302,9 +302,9 @@ export const addUnavailableDatesRows = (application: ApplicationResponse, lang: 
     let unavailableDatesHtml = '<ul class="no-list-style">';
     application.case_data.generalAppHearingDetails.generalAppUnavailableDates.forEach((value) => {
       if (value.value.unavailableTrialDateTo === undefined) {
-        unavailableDatesHtml += `<li>${formatDateToFullDate(new Date(value.value.unavailableTrialDateFrom), lang)}</li>`;
+        unavailableDatesHtml += `<li>${escapeHtml(formatDateToFullDate(new Date(value.value.unavailableTrialDateFrom), lang))}</li>`;
       } else{
-        unavailableDatesHtml += `<li>${formatDateToFullDate(new Date(value.value.unavailableTrialDateFrom), lang)} - ${formatDateToFullDate(new Date(value.value.unavailableTrialDateTo), lang)}</li>`;
+        unavailableDatesHtml += `<li>${escapeHtml(formatDateToFullDate(new Date(value.value.unavailableTrialDateFrom), lang))} - ${escapeHtml(formatDateToFullDate(new Date(value.value.unavailableTrialDateTo), lang))}</li>`;
       }
     });
     unavailableDatesHtml += '</ul>';
@@ -323,24 +323,24 @@ export const addHearingSupportRows = (application: ApplicationResponse, lang: st
   if (application.case_data.generalAppHearingDetails.SupportRequirement) {
     let supportHtml = '<ul class="no-list-style">';
     if (application.case_data.generalAppHearingDetails.SupportRequirement.includes(CcdSupportRequirement.DISABLED_ACCESS)) {
-      supportHtml += `<li>${t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.STEP_FREE_ACCESS', {lng})}</li>`;
+      supportHtml += `<li>${escapeHtml(t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.STEP_FREE_ACCESS', {lng}))}</li>`;
     }
     if (application.case_data.generalAppHearingDetails.SupportRequirement.includes(CcdSupportRequirement.HEARING_LOOPS)) {
-      supportHtml += `<li>${t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.HEARING_LOOP', {lng})}</li>`;
+      supportHtml += `<li>${escapeHtml(t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.HEARING_LOOP', {lng}))}</li>`;
     }
     if (application.case_data.generalAppHearingDetails.SupportRequirement.includes(CcdSupportRequirement.SIGN_INTERPRETER)) {
-      supportHtml += `<li>${t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.SIGN_LANGUAGE_INTERPRETER', {lng})} - '${escapeHtml(application.case_data.generalAppHearingDetails.SupportRequirementSignLanguage)}'</li>`;
+      supportHtml += `<li>${escapeHtml(t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.SIGN_LANGUAGE_INTERPRETER', {lng}))} - '${escapeHtml(application.case_data.generalAppHearingDetails.SupportRequirementSignLanguage)}'</li>`;
     }
     if (application.case_data.generalAppHearingDetails.SupportRequirement.includes(CcdSupportRequirement.LANGUAGE_INTERPRETER)) {
-      supportHtml += `<li>${t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.LANGUAGE_INTERPRETER', {lng})} - '${escapeHtml(application.case_data.generalAppHearingDetails.SupportRequirementLanguageInterpreter)}'</li>`;
+      supportHtml += `<li>${escapeHtml(t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.LANGUAGE_INTERPRETER', {lng}))} - '${escapeHtml(application.case_data.generalAppHearingDetails.SupportRequirementLanguageInterpreter)}'</li>`;
     }
     if (application.case_data.generalAppHearingDetails.SupportRequirement.includes(CcdSupportRequirement.OTHER_SUPPORT)) {
-      supportHtml += `<li>${t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.OTHER', {lng})} - '${escapeHtml(application.case_data.generalAppHearingDetails.SupportRequirementOther)}'</li>`;
+      supportHtml += `<li>${escapeHtml(t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.OTHER', {lng}))} - '${escapeHtml(application.case_data.generalAppHearingDetails.SupportRequirementOther)}'</li>`;
     }
     supportHtml += '</ul>';
     rows.push(
       summaryRowHtml(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.NEED_ADJUSTMENTS', {lng}),
-        supportHtml.includes('<li>') ? supportHtml : t('COMMON.NO', {lng})),
+        supportHtml.includes('<li>') ? supportHtml : escapeHtml(t('COMMON.NO', {lng}))),
     );
   } else {
     rows.push(
@@ -371,7 +371,7 @@ export const addEvidenceOfDebtPaymentRow = (application: ApplicationResponse, la
     const evidenceOption = application.case_data.certOfSC.debtPaymentEvidence.debtPaymentOption;
     if (evidenceOption === debtPaymentOptions.UNABLE_TO_PROVIDE_EVIDENCE_OF_FULL_PAYMENT) {
       rowValue = `<p class="govuk-border-colour-border-bottom-1 govuk-!-padding-bottom-2 govuk-!-margin-top-0">
-                        ${t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.COSC.UPLOAD_EVIDENCE_PAID_IN_FULL_NO', {lng})}</p>`;
+                        ${escapeHtml(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.COSC.UPLOAD_EVIDENCE_PAID_IN_FULL_NO', {lng}))}</p>`;
 
       rowValue += `<p class="govuk-!-padding-bottom-2 govuk-!-margin-top-0">
         ${escapeHtml(application.case_data.certOfSC.debtPaymentEvidence.provideDetails)}</p>`;

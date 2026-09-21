@@ -63,7 +63,7 @@ export const getSummarySections = (claimId: string, appId: string, gaResponse: G
     [formattedHtmlRow('PAGES.GENERAL_APPLICATION.RESPONDENT_AGREEMENT.TITLE',
       gaResponse?.respondentAgreement,
       ra => (ra?.option === YesNo.YES)
-        ? yesNoFormatter2(ra?.option as YesNo)
+        ? escapeHtml(yesNoFormatter2(ra?.option as YesNo))
         : `${escapeHtml(yesNoFormatter2(ra?.option as YesNo))}<br/>${escapeHtml(ra?.reasonForDisagreement)}`,
       constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_RESPONDENT_AGREEMENT_URL))];
 
@@ -92,14 +92,14 @@ export const getSummarySections = (claimId: string, appId: string, gaResponse: G
       const href = `${constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_RESPONDENT_WANT_TO_UPLOAD_DOCUMENT_URL)}`;
       let rowValue: string;
       if (wantToUploadDocuments === YesNo.YES) {
-        rowValue = `<p class="govuk-border-colour-border-bottom-1 govuk-!-padding-bottom-2 govuk-!-margin-top-0">${t('COMMON.VARIATION_2.YES', {lng})}</p>`;
+        rowValue = `<p class="govuk-border-colour-border-bottom-1 govuk-!-padding-bottom-2 govuk-!-margin-top-0">${escapeHtml(t('COMMON.VARIATION_2.YES', {lng}))}</p>`;
         rowValue += '<ul class="no-list-style">';
         gaResponse.uploadEvidenceDocuments.forEach(uploadGAFile => {
           rowValue += `<li>${escapeHtml(uploadGAFile.caseDocument.documentName)}</li>`;
         });
         rowValue += '</ul>';
       } else {
-        rowValue = t('COMMON.VARIATION_2.NO', {lng});
+        rowValue = escapeHtml(t('COMMON.VARIATION_2.NO', {lng}));
       }
       rows.push(
         summaryRowHtml(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.UPLOAD_DOCUMENTS_RESPONSE', {lng}), rowValue, href, changeLabel()),
@@ -158,7 +158,7 @@ export const getSummarySections = (claimId: string, appId: string, gaResponse: G
       .filter(option => option.selected)
       .map(option => `<li>${escapeHtml(t(option.text, { lng }))}${option.content ? ` - '${escapeHtml(option.content)}'` : ''}</li>`)
       .join('');
-    const noSupport = yesNoFormatter(YesNo.NO);
+    const noSupport = escapeHtml(yesNoFormatter(YesNo.NO));
     const resultHtml = selectedHtml ? `<ul class="no-list-style">${selectedHtml}</ul>` : noSupport;
 
     return [rowHtml('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.NEED_ADJUSTMENTS', resultHtml, GA_RESPONSE_HEARING_SUPPORT_URL)];

@@ -27,7 +27,7 @@ export const buildResponseSummaries = (generalApplication: CCDApplication, lng: 
 
   const gaAgreeWithApplicant = (): SummaryRow[] => {
     const hasApplicantAgreed = response?.generalAppRespondent1Representative === YesNoUpperCamelCase.YES;
-    let html =  yesNoFormatter(hasApplicantAgreed ? YesNo.YES : YesNo.NO);
+    let html = escapeHtml(yesNoFormatter(hasApplicantAgreed ? YesNo.YES : YesNo.NO));
     if (!hasApplicantAgreed){
       html += `<ul class="no-list-style">${escapeHtml(response.gaRespondentResponseReason)}</ul>`;
     }
@@ -117,7 +117,7 @@ export const buildResponseSummaries = (generalApplication: CCDApplication, lng: 
 
     return (supportRequirementItems?.length > 0)
       ? `<ul class="no-list-style">${html()}</ul>`
-      : t('COMMON.NO', {lng});
+      : escapeHtml(t('COMMON.NO', {lng}));
   };
 
   const row = (title: string, value: string): SummaryRow | undefined => formattedRow(title, value, f => f);

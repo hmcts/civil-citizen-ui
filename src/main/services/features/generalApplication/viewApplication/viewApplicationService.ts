@@ -46,6 +46,7 @@ import {
   getApplicationTypeOptionByTypeAndDescription,
 } from 'models/generalApplication/applicationType';
 import {DocumentType} from 'models/document/documentType';
+import {escapeHtml} from 'common/utils/escapeHtml';
 
 export type ViewApplicationSummaries = {
   summaryRows: SummaryRow[];
@@ -179,7 +180,7 @@ export const getPreResponseSummaryCardSections = (applicationResponse: Applicati
           t('PAGES.GENERAL_APPLICATION.RESPONDENT_VIEW_APPLICATION.APPLICATION_TYPE_AND_DESC', {
             lng,
           }),
-          t(applicationTypeDisplay, { lng }) + '.</br>' + t(applicationTypeDescription, {lng}),
+          escapeHtml(t(applicationTypeDisplay, { lng })) + '.</br>' + escapeHtml(t(applicationTypeDescription, {lng})),
           null,
           null,
           undefined,
