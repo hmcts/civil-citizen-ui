@@ -39,20 +39,17 @@ The reduced-stack scenario starts with CUI's public testing-support draft action
 
 ## DTSCCI-6155: payment confirmation authentication guards
 
-The six original browser scenarios remain in `payments/payment_auth_guard_tests.js` with their assertions unchanged. They are tagged for both their existing standard selection and reduced-stack selection, so the same URLs, redirects and negative content assertions execute in both dependency modes. The focused OIDC coverage is complementary and does not replace these functional scenarios.
-
-These guards do not invoke a CUI-facing business downstream service, so the mocked and standard executions should be behaviourally identical. Any timing difference measures deployment/runtime overhead rather than a changed test workload.
+The six browser scenarios remain in their existing nightly `@ui-payments` selection with their assertions unchanged. They are outside the preview/master optimisation baseline and are not classified as migrated mocked scenarios.
 
 ## DTSCCI-6156: create-claim party variants
 
 The five party variants (`CompanyVsIndividual_tests.js`, `CompanyVsOrg__tests.js`,
 `IndividualvsCompany_tests.js`, `OrgVsSoleTrader_tests.js` and
 `SoleTraderVsIndividual_tests.js`) are outside the pre-epic default PR selection.
-Their original `@ui-create-claim` selection remains available. With that group
-selected, the unlabelled run keeps all five on real services; the optimised run
-routes them to the mocked bucket using their `@mocked-functional` metadata.
-Scenario bodies, helper calls and assertions remain unchanged. Paired Jenkins
-verification for this group is still required before migration is complete.
+Their original `@ui-create-claim` selection remains available, but they are not
+classified as migrated mocked scenarios because that optional group is outside
+the preview/master optimisation baseline. Scenario bodies, helper calls and
+assertions remain unchanged.
 
 The default PR baseline contains 14 active scenarios and five existing skips.
 Currently zero of those active scenarios is mocked: six are classified thin-client
@@ -67,7 +64,7 @@ The individual-versus-company flight-delay branch consumes `GET /airlines`. This
 
 ## DTSCCI-6258: defendant response validation
 
-The original `part-admit/LRvLip_response_negativeScenarios_tests.js` browser scenarios are restored with their scenario bodies, setup, helper calls and assertions unchanged. The same source is selectable through `@ui-part-admit` for the standard dependency mode and `@reduced-stack` for the mocked dependency mode. The shorter consolidated mocked-only scenario has been removed because it did not provide workload or assertion parity.
+The original `part-admit/LRvLip_response_negativeScenarios_tests.js` browser scenarios remain in their nightly `@ui-part-admit` selection with their scenario bodies, setup, helper calls and assertions unchanged. They are outside the preview/master optimisation baseline and are not classified as migrated mocked scenarios. The shorter consolidated mocked-only scenario remains removed because it did not provide workload or assertion parity.
 
 ## Current scenario inventory
 

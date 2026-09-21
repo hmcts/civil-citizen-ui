@@ -145,10 +145,10 @@ unexpected or newly skipped scenarios. Empty buckets report zero without startin
 With no optimisation label Jenkins follows the pre-epic deployment and functional-test path. The temporary real
 proxy profile can be removed when the epic has migrated every scenario and the residual bucket is empty; the
 allowlisted thin-client routing remains. Its functional-stage duration is archived in
-`test-results/functional/standard-timings.csv` for like-for-like comparison with the optimised run. Apply the same
-`pr_ft_*` selection labels to both runs when measuring a migrated subset; the optimisation label must be the only
-selection difference. For example, the current migrated PR comparison uses `pr_ft_ui-create-claim` and
-`pr_ft_civil-citizen-pr` in both modes, with `runAllFunctionalTests` to avoid previous-failure-only reruns. Compare the archived result files with
+`test-results/functional/standard-timings.csv` for like-for-like comparison with the optimised run. Preview/master
+optimisation evidence must use the ordinary pre-epic selection without adding nightly or optional `pr_ft_*` groups;
+the optimisation label must be the only selection difference. Use `runAllFunctionalTests` to avoid
+previous-failure-only reruns. Compare the archived result files with
 `node bin/functional-execution-evidence.js compare standard-results.json optimised-results.json`. Preview runs also retain their current mode, status, commit and exact timing in
 the `civil-citizen-ui-pr-<PR>-functional-execution` ConfigMap so comparison evidence survives the Jenkins agent.
 
