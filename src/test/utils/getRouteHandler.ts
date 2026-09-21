@@ -35,10 +35,12 @@ export const createMockResponse = (): {
   render: jest.Mock;
   redirect: jest.Mock;
   cookie: jest.Mock;
+  clearCookie: jest.Mock;
 } => ({
   render: jest.fn(),
   redirect: jest.fn(),
   cookie: jest.fn(),
+  clearCookie: jest.fn(),
 });
 
 export const createMockSession = (overrides: Record<string, unknown> = {}): AppSession =>
