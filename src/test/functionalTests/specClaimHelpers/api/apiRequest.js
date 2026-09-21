@@ -98,7 +98,6 @@ module.exports = {
     url += `/cases/draft/citizen/${userId}/event`;
 
     const response = await restHelper.retriedRequest(url, getRequestHeaders(tokens.userAuth), payload, 'POST', 200);
-    console.log(response);
     const data = await response.json();
     console.log('***************** case id ***************** ' + data.id);
     return data.id;

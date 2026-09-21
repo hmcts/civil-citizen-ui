@@ -166,7 +166,7 @@ class CreateClaim {
     await I.see('First name');
     await I.see('Last name');
     await I.see('Your address', 'h2');
-    await I.see('All correspondence will be sent to this address.');
+    await I.see('All correspondence will be sent to this address. These details are shared with the person, business or organisation you are claiming from (the defendant).');
     await I.see('Enter a UK postcode');
     await I.see('Correspondence address', 'h2');
     await I.see('Would you like correspondence sent to a different address?');

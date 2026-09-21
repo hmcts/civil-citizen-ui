@@ -25,7 +25,7 @@
     "sonar-scan": "sonar-scanner",
     "test:smoke": "./bin/run-smoke-tests.sh",
     "test:civil-citizen-master": "REPORT_FILE='test-results/functional/result-[hash].xml' MOCHAWESOME_REPORTFILENAME=civil-citizen-master FUNCTIONAL=true codeceptjs run-workers --suites 13 --grep '@civil-citizen-master' --reporter mocha-multi --plugins allure --verbose",
-    "test:civil-citizen-pr": "REPORT_FILE='test-results/functional/result-[hash].xml' MOCHAWESOME_REPORTFILENAME=civil-citizen-pr FUNCTIONAL=true codeceptjs run-workers --suites 1 --grep '@civil-citizen-pr' --reporter mocha-multi --plugins allure --verbose",
+    "test:civil-citizen-pr": "REPORT_FILE='test-results/functional/result-[hash].xml' MOCHAWESOME_REPORTFILENAME=civil-citizen-pr FUNCTIONAL=true WORKER_STAGGER_MS=2000 codeceptjs run-workers --suites 13 --grep '@civil-citizen-pr' --reporter mocha-multi --plugins allure --verbose",
     "test:civil-citizen-pr:serial": "REPORT_FILE='test-results/functional/result-[hash].xml' MOCHAWESOME_REPORTFILENAME=civil-citizen-pr FUNCTIONAL=true codeceptjs run-workers --suites 1 --grep '@civil-citizen-pr' --reporter mocha-multi --plugins allure --verbose",
     "test:payments": "MOCHAWESOME_REPORTFILENAME=payments FUNCTIONAL=true codeceptjs run --grep '@ui-payments' --reporter mocha-multi --plugins allure --verbose",
     "test:functional": "src/test/functionalTests/run-functional-tests.sh",
@@ -64,9 +64,11 @@
     "test:e2e": "yarn test:fullfunctional",
     "_comment:testgalip:e2e": "DEPRECATED (April 2026) - legacy @lipga tests were removed; use tests tagged @ui-ga instead.",
     "testgalip:e2e": "MOCHAWESOME_REPORTFILENAME=galip FUNCTIONAL=true codeceptjs run-workers --suites 13 --grep '@ui-ga' --reporter mocha-multi --plugins allure --verbose",
-    "test:pact": "jest -c jest.pact.config.js",
+    "test:pact": "yarn test:pact:tooling && jest -c jest.pact.config.js",
+    "test:pact:tooling": "jest -c jest.pact-tooling.config.js --runInBand",
+    "pact:validate": "node src/test/contract/check-artifacts.js",
     "pact:publish": "ts-node src/test/contract/publish/publish.ts",
-    "test:pact:run-and-publish": "yarn test:pact && yarn pact:publish",
+    "test:pact:run-and-publish": "yarn test:pact && yarn pact:validate && yarn pact:publish",
     "postinstall": "./bin/pull-latest-civil-shared.sh || true"
   },
   "dependencies": {
@@ -193,8 +195,8 @@
     "ts-loader": "^9.4.2",
     "webdriverio": "^8.3.2",
     "webpack": "^5.102.1",
-    "webpack-cli": "^5.1.4",
-    "webpack-dev-middleware": "7.1.0",
+    "webpack-cli": "^7.0.0",
+    "webpack-dev-middleware": "8.3.0",
     "webpack-node-externals": "^3.0.0",
     "wiremock-standalone": "^3.2.1"
   },
