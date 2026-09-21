@@ -1,111 +1,118 @@
-import config from 'config';
-import nock from 'nock';
-import request from 'supertest';
-import {app} from '../../../../../../main/app';
-import {mockCivilClaim} from '../../../../../utils/mockDraftStore';
-import {CLAIM_HELP_WITH_FEES_URL, CLAIM_INTEREST_TOTAL_URL} from 'routes/urls';
-import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
+import {Response} from 'express';
+import claimTotalInterestController from '../../../../../../main/routes/features/claim/interest/claimTotalInterestController';
+import {CLAIM_HELP_WITH_FEES_URL} from 'routes/urls';
+import {AppRequest} from 'models/AppRequest';
+import {GenericForm} from 'form/models/genericForm';
+import {Interest} from 'form/models/interest/interest';
+import {TotalInterest} from 'form/models/interest/totalInterest';
 import {getInterest, saveInterest} from 'services/features/claim/interest/interestService';
-import {Claim} from 'models/claim';
+import {createMockResponse, createMockSession, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
-jest.mock('../../../../../../main/services/features/claim/interest/interestService');
-const getInterestMock = getInterest as jest.Mock;
-const saveInterestMock = saveInterest as jest.Mock;
+jest.mock('services/features/claim/interest/interestService', () => ({
+  getInterest: jest.fn(),
+  saveInterest: jest.fn(),
+}));
 
 describe('Claim Total Interest Controller', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
-  app.request.cookies = {eligibilityCompleted: true};
+  const getHandler = getRouteHandler(claimTotalInterestController, 'get');
+  const postHandler = getRouteHandler(claimTotalInterestController, 'post');
+  const viewPath = 'features/claim/interest/total-claim-interest';
+  const pageTitle = 'PAGES.TOTAL_INTEREST.PAGE_TITLE';
+  let req: Partial<AppRequest>;
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
+  const mockGetInterest = getInterest as jest.Mock;
+  const mockSaveInterest = saveInterest as jest.Mock;
 
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
+  beforeEach(() => {
+    req = {
+      session: createMockSession({user: {id: 'user-id'}}),
+      body: {},
+      query: {},
+      cookies: {},
+    };
+    res = createMockResponse();
+    next = jest.fn();
+    mockGetInterest.mockResolvedValue(new Interest());
+    mockSaveInterest.mockResolvedValue(undefined);
   });
 
   describe('on GET', () => {
-    it('should render total claim interest controller', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
-      await request(app).get(CLAIM_INTEREST_TOTAL_URL).expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain('What is the total interest for your claim?');
-      });
+    it('should render total claim interest page', async () => {
+      await getHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        pageTitle,
+        form: expect.any(GenericForm),
+      }));
     });
 
-    it('should render total claim interest controller with set data', async () => {
-      getInterestMock.mockImplementationOnce(async () => {
-        const claim = new Claim();
-        claim.interest = {
-          totalInterest: {
-            amount: 8,
-            reason: '99 reasons',
-          },
-        };
-        return claim;
-      });
-      await request(app).get(CLAIM_INTEREST_TOTAL_URL).expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain('What is the total interest for your claim?');
-      });
+    it('should render total claim interest page with set data', async () => {
+      const interest = new Interest();
+      interest.totalInterest = new TotalInterest('8', '99 reasons');
+      mockGetInterest.mockResolvedValue(interest);
+
+      await getHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        pageTitle,
+        form: expect.any(GenericForm),
+      }));
+      expect((res.render as jest.Mock).mock.calls[0][1].form.model.amount).toBe(8);
+      expect((res.render as jest.Mock).mock.calls[0][1].form.model.reason).toBe('99 reasons');
     });
 
-    it('should return 500 status code when error occurs', async () => {
-      getInterestMock.mockImplementationOnce(async () => {
-        throw new Error(TestMessages.REDIS_FAILURE);
-      });
-      await request(app).get(CLAIM_INTEREST_TOTAL_URL).expect((res) => {
-        expect(res.status).toBe(500);
-        expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-      });
+    it('should call next when error occurs', async () => {
+      const error = new Error('error');
+      mockGetInterest.mockRejectedValue(error);
+
+      await getHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 
   describe('on POST', () => {
-    it('should render page with errors', async () => {
-      getInterestMock.mockImplementationOnce(async () => {
-        return new Claim();
-      });
+    const renderedForm = () => (res.render as jest.Mock).mock.calls[0][1].form;
 
-      await request(app).post(CLAIM_INTEREST_TOTAL_URL).send({amount: '', reason: ''}).expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain('Enter total interest amount');
-        expect(res.text).toContain('Enter how you calculated the amount');
-      });
+    it('should re-render page with errors', async () => {
+      req.body = {amount: '', reason: ''};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({form: expect.any(GenericForm)}));
+      expect(renderedForm().hasErrors()).toBe(true);
+      expect(renderedForm().errorFor('amount')).toBe('ERRORS.TOTAL_INTEREST_AMOUNT_REQUIRED');
+      expect(renderedForm().errorFor('reason')).toBe('ERRORS.HOW_YOU_CALCULATED_AMOUNT');
     });
 
-    it('should render page with error when negative interest amount is provided', async () => {
-      getInterestMock.mockImplementationOnce(async () => {
-        return new Claim();
-      });
+    it('should re-render page with error when negative interest amount is provided', async () => {
+      req.body = {amount: '-5', reason: '99 reasons'};
 
-      await request(app).post(CLAIM_INTEREST_TOTAL_URL).send({amount: '-5', reason: '99 reasons'}).expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(TestMessages.VALID_INTEREST_AMOUNT);
-        expect(res.header.location).toBeUndefined();
-      });
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({form: expect.any(GenericForm)}));
+      expect(renderedForm().errorFor('amount')).toBe('ERRORS.VALID_INTEREST_AMOUNT');
+      expect(res.redirect).not.toHaveBeenCalled();
     });
 
     it('should redirect to the continue claiming interest page', async () => {
-      getInterestMock.mockImplementationOnce(async () => {
-        return new Claim();
-      });
+      req.body = {amount: '8', reason: '99 reasons'};
 
-      await request(app).post(CLAIM_INTEREST_TOTAL_URL).send({amount: '8', reason: '99 reasons'}).expect((res) => {
-        expect(res.status).toBe(302);
-        expect(res.header.location).toBe(CLAIM_HELP_WITH_FEES_URL);
-      });
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(mockSaveInterest).toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(CLAIM_HELP_WITH_FEES_URL);
     });
 
-    it('should return 500 status code when error occurs', async () => {
-      saveInterestMock.mockImplementationOnce(async () => {
-        throw new Error(TestMessages.REDIS_FAILURE);
-      });
-      await request(app).post(CLAIM_INTEREST_TOTAL_URL).send({amount: '321', reason: 'my reason'}).expect((res) => {
-        expect(res.status).toBe(500);
-        expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-      });
+    it('should call next when save fails', async () => {
+      const error = new Error('error');
+      mockSaveInterest.mockRejectedValue(error);
+      req.body = {amount: '321', reason: 'my reason'};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 });
