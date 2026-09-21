@@ -34,7 +34,7 @@ Scenario('LipvLip Applicant GA creation e2e tests - Dismiss an Order', async ({
 
   console.log('Creating an Adjourn Hearing Order GA app as claimant');
   await I.amOnPage('/dashboard');
-  await I.click(claimNumber);
+  await I.clickClaimNumber(claimNumber);
   gaID = await createGASteps.askToChangeHearingDateGA(claimRef, 'Miss Jane Doe v Sir John Doe', 'withoutnotice');
 
   await api.makeOrderGA(gaID, courtResponseType);
@@ -42,7 +42,7 @@ Scenario('LipvLip Applicant GA creation e2e tests - Dismiss an Order', async ({
 
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await I.amOnPage('/dashboard');
-  await I.click(claimNumber);
+  await I.clickClaimNumber(claimNumber);
 
   const orderMadeGANotif = orderMadeGA();
   await verifyNotificationTitleAndContent(claimNumber, orderMadeGANotif.title, orderMadeGANotif.content);
