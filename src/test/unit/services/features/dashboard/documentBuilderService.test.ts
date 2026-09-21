@@ -65,14 +65,14 @@ describe('documentBuilderService.ts', () => {
     const document = mockClaim.caseProgression.finalOrderDocumentCollection[0].value;
     mockClaim.caseProgression.finalOrderDocumentCollection[0].value.documentLink = undefined;
 
-    const generatedDocumentSectionExpected = ({
+    const generatedDocumentSectionExpected: ClaimSummarySection = {
       type: ClaimSummaryType.PARAGRAPH,
       data: {
         href: undefined,
         text: `${document.documentName} (PDF, ${displayDocumentSizeInKB(document.documentSize)})`,
         subtitle: `${createdLabel} ${formatDateToFullDate(document.createdDatetime, lang)}`,
       },
-    });
+    };
 
     //When
     const generatedDocumentSection = generateDocumentSection(document, claimId, lang);

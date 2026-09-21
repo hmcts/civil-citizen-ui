@@ -48,14 +48,14 @@ export function formatDocumentViewURL(documentName: string, claimId: string, bin
   }
   return `<a class="govuk-link" target="_blank" href="${href}">${documentName}</a>`;
 }
-export function formatEvidenceDocumentAlignedViewURL(documentName: string, claimId: string, binaryURL?: string | null, align:alignText): string {
+export function formatEvidenceDocumentAlignedViewURL(documentName: string, claimId: string, binaryURL: string | null | undefined, align:alignText): string {
   const href = buildCaseDocumentViewUrl(claimId, documentIdExtractor(binaryURL));
   if (!href) {
     return `<div class="${align} govuk-body govuk-grid-column-one-half">${documentName}</div>`;
   }
   return `<div class="${align} govuk-body govuk-grid-column-one-half"><a class="govuk-link" target="_blank" href="${href}">${documentName}</a></div>`;
 }
-export function formatDocumentAlignedViewURL(documentName: string, claimId: string, binaryURL?: string | null, align:alignText): string {
+export function formatDocumentAlignedViewURL(documentName: string, claimId: string, binaryURL: string | null | undefined, align:alignText): string {
   const href = buildCaseDocumentViewUrl(claimId, documentIdExtractor(binaryURL));
   if (!href) {
     return `<div class="${align}">${documentName}</div>`;
