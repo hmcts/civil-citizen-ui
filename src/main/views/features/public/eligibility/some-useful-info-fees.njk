@@ -34,7 +34,7 @@
               <legend class="govuk-visually-hidden">
                 {{ t('PAGES.ELIGIBILITY_USEFUL_INFO_FEES.CONTINUE_HELP_WITH_FEES') }}
               </legend>
-              {{ yesNoRadioButton(t, 'option', 'option', '', form, '', {classes: 'govuk-radios--inline'}) }}
+              {{ yesNoRadioButton(t, 'option', 'option', '', form, '', {classes: 'govuk-radios--inline', yes: 'COMMON.VARIATION_2.YES', no: 'COMMON.VARIATION_2.NO'}) }}
             </fieldset>
             <div class="govuk-form-group">
               {{ govukButton({
