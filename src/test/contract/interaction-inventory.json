@@ -383,6 +383,26 @@
     {
       "description": "a follow-up Query Management submission",
       "state": "A follow-up citizen query can be submitted"
+    },
+    {
+      "description": "a DEFAULT_JUDGEMENT_SPEC citizen event",
+      "state": "The default judgment or settlement event can be submitted"
+    },
+    {
+      "description": "a REQUEST_JUDGEMENT_ADMISSION_SPEC citizen event",
+      "state": "The admission judgment or settlement event can be submitted"
+    },
+    {
+      "description": "a LIP_CLAIM_SETTLED citizen event",
+      "state": "The settled judgment or settlement event can be submitted"
+    },
+    {
+      "description": "a DEFENDANT_SIGN_SETTLEMENT_AGREEMENT citizen event",
+      "state": "The signed judgment or settlement event can be submitted"
+    },
+    {
+      "description": "a JUDGMENT_PAID_IN_FULL citizen event",
+      "state": "The paid judgment or settlement event can be submitted"
     }
   ],
   "idamApi_oidc": [
