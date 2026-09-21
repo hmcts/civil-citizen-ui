@@ -352,7 +352,7 @@ describe('getSummaryList', () => {
                       text: 'name',
                     },
                     value: {
-                      html: '1',
+                      text: '1',
                     },
                   },
                 ],
@@ -421,7 +421,7 @@ describe('getSummaryList', () => {
                       text: 'name',
                     },
                     value: {
-                      html: '1',
+                      text: '1',
                     },
                   },
                 ],

@@ -14,7 +14,7 @@ import {
   addUnavailableDatesRows,
   addApplicationTypeRow,
 } from './addViewApplicationRows';
-import {SummaryCard, SummaryRow, summaryRow} from 'models/summaryList/summaryList';
+import {SummaryCard, SummaryRow, summaryRowHtml} from 'models/summaryList/summaryList';
 import { ApplicationResponse } from 'models/generalApplication/applicationResponse';
 import { AppRequest } from 'models/AppRequest';
 import {
@@ -175,7 +175,7 @@ export const getPreResponseSummaryCardSections = (applicationResponse: Applicati
         title: {text: `${t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.APPLICATION', {lng})} ${index + 1}`},
       },
       rows: [
-        summaryRow(
+        summaryRowHtml(
           t('PAGES.GENERAL_APPLICATION.RESPONDENT_VIEW_APPLICATION.APPLICATION_TYPE_AND_DESC', {
             lng,
           }),

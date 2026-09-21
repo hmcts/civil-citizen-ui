@@ -1,5 +1,5 @@
 import {SummarySection, SummarySections} from 'models/summaryList/summarySections';
-import {SummaryList, SummaryRow, summaryRow} from 'models/summaryList/summaryList';
+import {SummaryList, SummaryRow, summaryRowHtml} from 'models/summaryList/summaryList';
 import {t} from 'i18next';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {getLng} from 'common/utils/languageToggleUtils';
@@ -61,7 +61,7 @@ const getMediationDocumentReferredSummaryRows = (title: string, nameStatement: s
     };
     const documentElement = {
       title: documentUploaded(lang),
-      value: formatDocumentViewURL(document.caseDocument.documentName, claimId, document.caseDocument.documentLink.document_binary_url),
+      html: formatDocumentViewURL(document.caseDocument.documentName, claimId, document.caseDocument.documentLink.document_binary_url),
     };
 
     let sectionTitle = t(title, {lng: getLng(lang)});
@@ -70,7 +70,7 @@ const getMediationDocumentReferredSummaryRows = (title: string, nameStatement: s
     const sectionValueList = [documentReferredNameElement, dateElement, documentElement];
     const sectionValue = buildTitledSummaryRowValue(sectionValueList);
 
-    documentReferredSummaryRow = summaryRow(sectionTitle, sectionValue.html, uploadDocumentsHref, changeLabel(lang));
+    documentReferredSummaryRow = summaryRowHtml(sectionTitle, sectionValue.html, uploadDocumentsHref, changeLabel(lang));
 
     summaryList.rows.push(documentReferredSummaryRow);
   }
@@ -92,7 +92,7 @@ const getMediationYourNameSummaryRows = (title: string, nameStatement: string, d
     };
     const documentElement = {
       title: documentUploaded(lang),
-      value: formatDocumentViewURL(document.caseDocument.documentName, claimId, document.caseDocument.documentLink.document_binary_url),
+      html: formatDocumentViewURL(document.caseDocument.documentName, claimId, document.caseDocument.documentLink.document_binary_url),
     };
 
     let sectionTitle = t(title, {lng: getLng(lang)});
@@ -101,7 +101,7 @@ const getMediationYourNameSummaryRows = (title: string, nameStatement: string, d
     const sectionValueList = [yourNameElement, dateElement, documentElement];
     const sectionValue = buildTitledSummaryRowValue(sectionValueList);
 
-    yourNameSummaryRow = summaryRow(sectionTitle, sectionValue.html, uploadDocumentsHref, changeLabel(lang));
+    yourNameSummaryRow = summaryRowHtml(sectionTitle, sectionValue.html, uploadDocumentsHref, changeLabel(lang));
 
     summaryList.rows.push(yourNameSummaryRow);
   }

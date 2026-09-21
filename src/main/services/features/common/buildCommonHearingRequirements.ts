@@ -1,4 +1,4 @@
-import {summaryRow, summaryRowWithTextValue, SummaryRow} from 'models/summaryList/summaryList';
+import {summaryRow, summaryRowHtml, summaryRowWithTextValue, SummaryRow} from 'models/summaryList/summaryList';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {
   DQ_DEFENDANT_WITNESSES_URL, DQ_GIVE_EVIDENCE_YOURSELF_URL,
@@ -26,6 +26,7 @@ import {
 } from 'services/features/directionsQuestionnaire/hearing/unavailableDatesCalculation';
 import {addSupportRequiredList} from 'services/features/claimantResponse/checkAnswers/hearing/addSupportRequiredList';
 import {DirectionQuestionnaire} from 'models/directionsQuestionnaire/directionQuestionnaire';
+import {escapeHtml} from 'common/utils/escapeHtml';
 
 const MAX_UNAVAILABLE_DAYS_FOR_HEARING_WITHOUT_REASON = 30;
 
@@ -156,9 +157,9 @@ export const phoneAndVideoInfo = ( lng: string, directionQuestionnaire : Directi
 
 export const getUnavailableDatesList = ( claimId: string, lng: string, directionQuestionnaire : DirectionQuestionnaire): SummaryRow => {
   const hasUnavailableDatesForHearing = getListOfUnavailableDate(directionQuestionnaire?.hearing?.unavailableDatesForHearing, lng);
-  return summaryRow(
+  return summaryRowHtml(
     t('PAGES.CANT_ATTEND_HEARING_IN_NEXT_12MONTHS.UNAVAILABLE_DATES', {lng}),
-    ` ${[...hasUnavailableDatesForHearing].join('<br>')}`,
+    ` ${[...hasUnavailableDatesForHearing].map(escapeHtml).join('<br>')}`,
     constructResponseUrlWithIdParams(claimId, DQ_AVAILABILITY_DATES_FOR_HEARING_URL),
     changeLabel(lng),
   );
