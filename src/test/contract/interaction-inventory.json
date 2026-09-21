@@ -271,6 +271,78 @@
     {
       "description": "case roles for no roles access",
       "state": "Case details and no roles access are available"
+    },
+    {
+      "description": "a request to create a hearing payment",
+      "state": "A hearing payment can be initiated"
+    },
+    {
+      "description": "a CLAIMISSUED payment status request returning Failed",
+      "state": "The CLAIMISSUED payment status is Failed"
+    },
+    {
+      "description": "a CLAIMISSUED payment status request returning Initiated",
+      "state": "The CLAIMISSUED payment status is Initiated"
+    },
+    {
+      "description": "a CLAIMISSUED payment status request returning Pending",
+      "state": "The CLAIMISSUED payment status is Pending"
+    },
+    {
+      "description": "a CLAIMISSUED status request for a missing payment",
+      "state": "The CLAIMISSUED payment cannot be found upstream"
+    },
+    {
+      "description": "a HEARING payment status request returning Success",
+      "state": "The HEARING payment status is Success"
+    },
+    {
+      "description": "a HEARING payment status request returning Failed",
+      "state": "The HEARING payment status is Failed"
+    },
+    {
+      "description": "a HEARING payment status request returning Initiated",
+      "state": "The HEARING payment status is Initiated"
+    },
+    {
+      "description": "a HEARING payment status request returning Pending",
+      "state": "The HEARING payment status is Pending"
+    },
+    {
+      "description": "a HEARING status request for a missing payment",
+      "state": "The HEARING payment cannot be found upstream"
+    },
+    {
+      "description": "a GA payment status request returning Failed",
+      "state": "The GA payment status is Failed"
+    },
+    {
+      "description": "a GA payment status request returning Initiated",
+      "state": "The GA payment status is Initiated"
+    },
+    {
+      "description": "a GA payment status request returning Pending",
+      "state": "The GA payment status is Pending"
+    },
+    {
+      "description": "a GA status request for a missing payment",
+      "state": "The GA payment cannot be found upstream"
+    },
+    {
+      "description": "a hearing Help with Fees submission",
+      "state": "Hearing Help with Fees can be submitted"
+    },
+    {
+      "description": "a GA Help with Fees submission for Yes",
+      "state": "GA Help with Fees submission is Yes"
+    },
+    {
+      "description": "a GA Help with Fees submission for No",
+      "state": "GA Help with Fees submission is No"
+    },
+    {
+      "description": "a GA Help with Fees submission for rejected",
+      "state": "GA Help with Fees submission is rejected"
     }
   ],
   "idamApi_oidc": [

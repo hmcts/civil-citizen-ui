@@ -88,7 +88,7 @@ describe('Civil Service fee payment contract', () => {
           body: {
             externalReference: like('2023-1701090705688'),
             paymentReference: like(PAYMENT_REFERENCE),
-            status: like('Initiated'),
+            status: 'Initiated',
             nextUrl: like('https://card.payments.service.gov.uk/secure/7b0716b2-40c4-413e-b62e-72c599c91960'),
             dateCreated: iso8601DateTimeWithMillis('2023-11-27T13:15:06.313Z'),
           },
@@ -134,7 +134,7 @@ describe('Civil Service fee payment contract', () => {
           body: {
             externalReference: like('2023-1701090705688'),
             paymentReference: like(PAYMENT_REFERENCE),
-            status: like('Success'),
+            status: 'Success',
             paymentFor: like('claimissued'),
             paymentAmount: like(200),
           },
@@ -156,7 +156,9 @@ describe('Civil Service fee payment contract', () => {
         externalReference: '2023-1701090705688',
         paymentReference: PAYMENT_REFERENCE,
         status: 'Success',
+        paymentAmount: 200,
       }));
+      expect(response.nextUrl).toBeUndefined();
     });
   });
 
@@ -180,7 +182,7 @@ describe('Civil Service fee payment contract', () => {
           body: {
             externalReference: like('2023-1701090705688'),
             paymentReference: like(PAYMENT_REFERENCE),
-            status: like('Initiated'),
+            status: 'Initiated',
             nextUrl: like('https://card.payments.service.gov.uk/secure/7b0716b2-40c4-413e-b62e-72c599c91960'),
             dateCreated: iso8601DateTimeWithMillis('2023-11-27T13:15:06.313Z'),
           },
@@ -225,8 +227,7 @@ describe('Civil Service fee payment contract', () => {
           body: {
             externalReference: like('2023-1701090705688'),
             paymentReference: like(PAYMENT_REFERENCE),
-            status: like('Success'),
-            paymentFor: like('claimissued'),
+            status: 'Success',
             paymentAmount: like(200),
           },
         },
@@ -246,7 +247,9 @@ describe('Civil Service fee payment contract', () => {
         externalReference: '2023-1701090705688',
         paymentReference: PAYMENT_REFERENCE,
         status: 'Success',
+        paymentAmount: 200,
       }));
+      expect(response.nextUrl).toBeUndefined();
     });
   });
 });
