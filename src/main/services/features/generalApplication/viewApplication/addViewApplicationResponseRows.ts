@@ -6,12 +6,13 @@ import {
 import { CcdGeneralApplicationUnavailableHearingDatesElement } from 'common/models/ccdGeneralApplication/ccdGeneralApplicationUnavailableHearingDates';
 import { CcdSupportRequirement } from 'common/models/ccdGeneralApplication/ccdSupportRequirement';
 import { CCDApplication } from 'common/models/generalApplication/applicationResponse';
-import {CSS_CLASS_SUMMARY_LIST_KEY, summaryRow, SummaryRow, summaryRowWithTextValue} from 'common/models/summaryList/summaryList';
+import {CSS_CLASS_SUMMARY_LIST_KEY, summaryRow, summaryRowHtml, SummaryRow, summaryRowWithTextValue} from 'common/models/summaryList/summaryList';
 import {formatDateSlash, formatDateToFullDate} from 'common/utils/dateUtils';
 import { t } from 'i18next';
 import { exhaustiveMatchingGuard } from 'services/genericService';
 import { fromCcdHearingType } from 'services/translation/generalApplication/ccdTranslation';
 import {convertToPoundsFilter} from 'common/utils/currencyFormat';
+import {escapeHtml} from 'common/utils/escapeHtml';
 export const buildResponseSummaries = (generalApplication: CCDApplication, lng: string): SummaryRow[] => {
   const responses = generalApplication.respondentsResponses;
   const response = (responses?.length > 0) ? responses[0].value : undefined;
@@ -28,9 +29,9 @@ export const buildResponseSummaries = (generalApplication: CCDApplication, lng: 
     const hasApplicantAgreed = response?.generalAppRespondent1Representative === YesNoUpperCamelCase.YES;
     let html =  yesNoFormatter(hasApplicantAgreed ? YesNo.YES : YesNo.NO);
     if (!hasApplicantAgreed){
-      html += `<ul class="no-list-style">${response.gaRespondentResponseReason}</ul>`;
+      html += `<ul class="no-list-style">${escapeHtml(response.gaRespondentResponseReason)}</ul>`;
     }
-    return [row('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.DO_YOU_AGREE_WITH_APPLICANT_REQUEST',
+    return [rowHtml('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.DO_YOU_AGREE_WITH_APPLICANT_REQUEST',
       html)];
   };
 
@@ -57,7 +58,7 @@ export const buildResponseSummaries = (generalApplication: CCDApplication, lng: 
         (debtOffer?.paymentPlan === CcdGADebtorPaymentPlanGAspec.INSTALMENT) ? proposedInstallmentsHtml() : proposedBySetDateHtml();
 
       return [
-        row('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.PROPOSED_PAYMENT_PLAN',
+        rowHtml('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.PROPOSED_PAYMENT_PLAN',
           `<ul class="no-list-style">${proposedPaymentPlanHtml()}</ul>`),
       ];
     }
@@ -78,9 +79,9 @@ export const buildResponseSummaries = (generalApplication: CCDApplication, lng: 
       hearingDetails?.HearingDetailsEmailID),
     row('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.UNAVAILABLE_DATES',
       t(`COMMON.VARIATION_8.${hasUnavailableDates(hearingDetails?.generalAppUnavailableDates)? YesNoUpperCase.YES: YesNoUpperCase.NO}`, {lng})),
-    row('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.DATES_CANNOT_ATTEND',
+    rowHtml('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.DATES_CANNOT_ATTEND',
       unavailableDatesHtml(hearingDetails?.generalAppUnavailableDates, lng)),
-    row('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.NEED_ADJUSTMENTS',
+    rowHtml('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.NEED_ADJUSTMENTS',
       hearingSupportHtml(hearingDetails?.SupportRequirement))];
 
   const unavailableDatesHtml = (unavailableDates: CcdGeneralApplicationUnavailableHearingDatesElement[], lang: string): string => {
@@ -121,6 +122,8 @@ export const buildResponseSummaries = (generalApplication: CCDApplication, lng: 
 
   const row = (title: string, value: string): SummaryRow | undefined => formattedRow(title, value, f => f);
 
+  const rowHtml = (title: string, value: string): SummaryRow | undefined => formattedHtmlRow(title, value, f => f);
+
   const rowWithTextValue = (title: string, value: string | undefined): SummaryRow | undefined =>
     value ? summaryRowWithTextValue(t(title, {lng}), value) : undefined;
 
@@ -129,10 +132,15 @@ export const buildResponseSummaries = (generalApplication: CCDApplication, lng: 
       ? summaryRow(t(title, {lng}), formatter(value))
       : undefined;
 
-  const listItem = (value: string) => `<li>${value}</li>`;
+  const formattedHtmlRow = <T>(title: string, value: T, formatter: ((v: T) => string)): SummaryRow | undefined =>
+    value
+      ? summaryRowHtml(t(title, {lng}), formatter(value))
+      : undefined;
+
+  const listItem = (value: string) => `<li>${escapeHtml(value)}</li>`;
 
   const listItemCaption = (caption: string, cssClass?: string) =>
-    `<li${cssClass ? ` class="${cssClass}"` : ''}>${t(caption, {lng})}</li>`;
+    `<li${cssClass ? ` class="${cssClass}"` : ''}>${escapeHtml(t(caption, {lng}))}</li>`;
 
   const yesNoFormatter = (yesNo: YesNo): string => t(`COMMON.VARIATION_2.${yesNo.toUpperCase()}`, {lng});
 

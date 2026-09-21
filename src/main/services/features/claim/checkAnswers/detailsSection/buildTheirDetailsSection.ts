@@ -1,6 +1,6 @@
 import {SummarySection, summarySection} from '../../../../../common/models/summaryList/summarySections';
 import {Claim} from '../../../../../common/models/claim';
-import {summaryRow} from '../../../../../common/models/summaryList/summaryList';
+import {summaryRow, summaryRowHtml} from '../../../../../common/models/summaryList/summaryList';
 import {t} from 'i18next';
 import {getLng} from '../../../../../common/utils/languageToggleUtils';
 import {
@@ -17,11 +17,12 @@ import {formatDateToFullDate} from '../../../../../common/utils/dateUtils';
 import {PartyType} from '../../../../../common/models/partyType';
 import {Address} from '../../../../../common/form/models/address';
 import {YesNo, YesNoUpperCase} from 'form/models/yesNo';
+import {escapeHtml} from 'common/utils/escapeHtml';
 
 const changeLabel = (lang: string): string => t('COMMON.BUTTONS.CHANGE', {lng: lang});
 
-const addressToString = (address: Address) => {
-  return address?.addressLine1 + '<br>' + address?.city + '<br>' + address?.postCode;
+const addressToHtml = (address: Address) => {
+  return [address?.addressLine1, address?.city, address?.postCode].map(escapeHtml).join('<br>');
 };
 
 export const buildTheirDetailsSection = (claim: Claim, claimId: string, lang: string ): SummarySection => {
@@ -51,8 +52,8 @@ export const buildTheirDetailsSection = (claim: Claim, claimId: string, lang: st
   if (claim.respondent1?.partyDetails?.contactPerson) {
     yourDetailsSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CONTACT_PERSON', {lng}), claim.respondent1.partyDetails.contactPerson, theirDetailsHref, changeLabel(lng), title));
   }
-  yourDetailsSection.summaryList.rows.push(...[summaryRow(t('COMMON.ADDRESS', {lng}), addressToString(claim.respondent1?.partyDetails?.primaryAddress), theirDetailsHref, changeLabel(lng), title),
-    summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CORRESPONDENCE_ADDRESS', {lng}), claim.respondent1?.partyDetails?.correspondenceAddress ? addressToString(claim.respondent1?.partyDetails.correspondenceAddress) : t('PAGES.CHECK_YOUR_ANSWER.SAME_ADDRESS', {lng}), theirDetailsHref, changeLabel(lng), title)]);
+  yourDetailsSection.summaryList.rows.push(...[summaryRowHtml(t('COMMON.ADDRESS', {lng}), addressToHtml(claim.respondent1?.partyDetails?.primaryAddress), theirDetailsHref, changeLabel(lng), title),
+    summaryRowHtml(t('PAGES.CHECK_YOUR_ANSWER.CORRESPONDENCE_ADDRESS', {lng}), claim.respondent1?.partyDetails?.correspondenceAddress ? addressToHtml(claim.respondent1?.partyDetails.correspondenceAddress) : t('PAGES.CHECK_YOUR_ANSWER.SAME_ADDRESS', {lng}), theirDetailsHref, changeLabel(lng), title)]);
   if (!claim.isBusiness() && claim.respondent1?.dateOfBirth?.date) {
     const yourDOBHref = DOB_URL.replace(':id', claimId);
     yourDetailsSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.DOB', {lng}), formatDateToFullDate(claim.respondent1.dateOfBirth.date, lng), yourDOBHref, changeLabel(lng), title));
