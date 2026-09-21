@@ -59,7 +59,7 @@ export const getTheirTOEs = (claim: Claim, lng: string): ClaimSummarySection[] =
         type: ClaimSummaryType.LINK,
         data: {
           text: 'PAGES.REVIEW_DEFENDANTS_RESPONSE.DOWNLOAD_TIMELINE',
-        href: timelineDocumentLink ?? undefined,
+          href: timelineDocumentLink ?? undefined,
         },
       },
     ];

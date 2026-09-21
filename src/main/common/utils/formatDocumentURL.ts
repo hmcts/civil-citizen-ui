@@ -10,12 +10,14 @@ export function buildDocumentPathUrl(
   claimId?: string | null,
   documentId?: string | null,
 ): string | null {
-  if (!isUsablePathSegment(claimId) || !isUsablePathSegment(documentId)) {
+  const claimIdSegment = typeof claimId === 'string' ? claimId.trim() : '';
+  const documentIdSegment = typeof documentId === 'string' ? documentId.trim() : '';
+  if (!isUsablePathSegment(claimIdSegment) || !isUsablePathSegment(documentIdSegment)) {
     return null;
   }
   return urlTemplate
-    .replace(':id', claimId!.trim())
-    .replace(':documentId', documentId!.trim());
+    .replace(':id', claimIdSegment)
+    .replace(':documentId', documentIdSegment);
 }
 
 export function buildCaseDocumentViewUrl(claimId?: string | null, documentId?: string | null): string | null {
