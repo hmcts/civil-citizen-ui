@@ -20,6 +20,11 @@ jest.mock('../../../../../../main/routes/guards/generalAplicationGuard',() => ({
     next();
   }),
 }));
+jest.mock('../../../../../../main/routes/guards/requireGeneralApplicationDraft',() => ({
+  requireGeneralApplicationDraft: jest.fn((req, res, next) => {
+    next();
+  }),
+}));
 
 const civilClaimWithGeneralApplication = {
   ...civilClaimResponseMock,

@@ -26,6 +26,11 @@ jest.mock('../../../../../../main/routes/guards/generalAplicationGuard',() => ({
     next();
   }),
 }));
+jest.mock('../../../../../../main/routes/guards/requireGeneralApplicationDraft',() => ({
+  requireGeneralApplicationDraft: jest.fn((req, res, next) => {
+    next();
+  }),
+}));
 
 describe('General Application - Unavailable hearing dates', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');

@@ -101,6 +101,7 @@ import {trialArrangementsGuard} from 'routes/guards/caseProgression/trialArragem
 import {claimIssueTaskListGuard} from 'routes/guards/claimIssueTaskListGuard';
 import {ErrorHandler} from 'modules/error';
 import {isGAForLiPEnabled} from 'routes/guards/generalAplicationGuard';
+import {requireGeneralApplicationDraft} from 'routes/guards/requireGeneralApplicationDraft';
 import config = require('config');
 import {trackHistory} from 'routes/guards/trackHistory';
 import {OidcMiddleware} from 'modules/oidc';
@@ -234,10 +235,15 @@ app.use([
   GA_UNAVAILABLE_HEARING_DATES_URL,
   GA_HEARING_SUPPORT_URL,
   PAYING_FOR_APPLICATION_URL,
+  GA_CHECK_ANSWERS_URL,
   ORDER_JUDGE_URL,
   GA_REQUESTING_REASON_URL,
   GA_ADD_ANOTHER_APPLICATION_URL,
-], applicationTypeGuard);
+  GA_DEBT_PAYMENT_EVIDENCE_COSC_URL,
+  GA_UPLOAD_DOCUMENTS_COSC_URL,
+  GA_CHECK_YOUR_ANSWERS_COSC_URL,
+  COSC_FINAL_PAYMENT_DATE_URL,
+], requireGeneralApplicationDraft, applicationTypeGuard);
 app.use(BASE_CLAIM_URL, claimIssueTaskListGuard);
 app.use([CP_FINALISE_TRIAL_ARRANGEMENTS_URL,
   HAS_ANYTHING_CHANGED_URL,
