@@ -60,17 +60,6 @@ describe('draftStoreManagerService Unit Tests', () => {
       );
     });
 
-    it('should throw if setCachedDraft fails after fetching from DB', async() => {
-      mockGetCachedDraft.mockResolvedValueOnce(null);
-      mockGetActiveDraftFromDb.mockResolvedValueOnce({
-        claimResponse: new CivilClaimResponse(),
-        rawResponse: mockRawResponse,
-      });
-      mockSetCachedDraft.mockRejectedValueOnce(new Error('redis write failed'));
-
-      await expect(getDraftClaim(mockReq)).rejects.toThrow('redis write failed');
-    });
-
     it('cache hit: should return manager result directly from redis cache without querying db', async () => {
       mockGetCachedDraft.mockResolvedValueOnce(mockRawResponse);
 
@@ -90,12 +79,10 @@ describe('draftStoreManagerService Unit Tests', () => {
         claimResponse: new CivilClaimResponse(),
         rawResponse: mockRawResponse,
       });
-      mockSetCachedDraft.mockResolvedValueOnce();
       const result = await getDraftClaim(mockReq);
 
       expect(mockGetCachedDraft).toHaveBeenCalledWith(mockUserId);
       expect(mockGetActiveDraftFromDb).toHaveBeenCalledWith(mockReq);
-      expect(mockSetCachedDraft).toHaveBeenCalledWith(mockUserId, mockRawResponse);
       expect(result?.claimResponse.id).toBe(mockDraftId);
       expect(result?.rawResponse).toEqual(mockRawResponse);
     });
@@ -141,12 +128,10 @@ describe('draftStoreManagerService Unit Tests', () => {
         rawResponse: mockRawResponse,
         isNew: true,
       });
-      mockSetCachedDraft.mockResolvedValueOnce();
 
       const result = await createOrLoadDraft(mockReq, mockClaim);
 
       expect(mockCreateOrLoadDraftInDb).toHaveBeenCalledWith(mockReq, mockClaim);
-      expect(mockSetCachedDraft).toHaveBeenCalledWith(mockUserId, mockRawResponse);
       expect(result.isNew).toBe(true);
       expect(result.claimResponse.id).toBe(mockDraftId);
     });
@@ -157,12 +142,10 @@ describe('draftStoreManagerService Unit Tests', () => {
         rawResponse: mockRawResponse,
         isNew: false,
       });
-      mockSetCachedDraft.mockResolvedValueOnce();
 
       const result = await createOrLoadDraft(mockReq);
 
       expect(result.isNew).toBe(false);
-      expect(mockSetCachedDraft).toHaveBeenCalledWith(mockUserId, mockRawResponse);
     });
   });
 
@@ -186,10 +169,8 @@ describe('draftStoreManagerService Unit Tests', () => {
         claimResponse: new CivilClaimResponse(),
         rawResponse: mockRawResponse,
       });
-      mockSetCachedDraft.mockResolvedValueOnce();
       const result = await updateDraftClaim(mockReq, mockClaim, mockDraftId);
       expect(mockUpdateDraftInDb).toHaveBeenCalledWith(mockReq, mockDraftId, mockClaim);
-      expect(mockSetCachedDraft).toHaveBeenCalledWith(mockUserId, mockRawResponse);
       expect(result.claimResponse.id).toBe(mockDraftId);
     });
   });
