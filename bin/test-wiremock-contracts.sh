@@ -41,11 +41,28 @@ assert_status 200 POST '/cases/draft/citizen/test-user/event' '{"event":"CREATE_
 assert_status 200 GET '/cases/1111222233334444/userCaseRoles'
 assert_status 200 GET '/cases/1111222233334444'
 assert_status 200 GET '/search/places/v1/postcode?postcode=MK5%207HH'
-assert_status 201 POST '/service-request' '{"case_reference":"000MC001","fees":[{"code":"FEE0209"}]}'
-assert_status 201 POST '/service-request/2026-THIN-CLIENT-SERVICE-REQUEST/card-payments' '{"amount":455,"currency":"GBP","return-url":"https://example.test/claim-issued-payment-confirmation/1234"}'
+service_request_body='{"case_reference":"000MC001","fees":[{"code":"FEE0209"}]}'
+service_request_response=$(curl --fail --silent --request POST --header 'Content-Type: application/json' --data "${service_request_body}" "${url}/service-request")
+second_service_request_response=$(curl --fail --silent --request POST --header 'Content-Type: application/json' --data "${service_request_body}" "${url}/service-request")
+service_request_reference=$(node -e 'console.log(JSON.parse(process.argv[1]).service_request_reference)' "${service_request_response}")
+second_service_request_reference=$(node -e 'console.log(JSON.parse(process.argv[1]).service_request_reference)' "${second_service_request_response}")
+if [ "${service_request_reference}" = "${second_service_request_reference}" ]; then
+  echo 'Expected each service request to return a unique reference' >&2
+  exit 1
+fi
 assert_status 200 GET '/thin-pay/card?return_url=https%3A%2F%2Fexample.test%2Fclaim-issued-payment-confirmation%2F1234&amount=115.00'
 assert_status 200 GET '/thin-pay/confirm?return_url=https%3A%2F%2Fexample.test%2Fclaim-issued-payment-confirmation%2F1234&amount=115.00'
-assert_status 200 GET '/card-payments/RC-THIN-CLIENT-CLAIM/statuses'
+
+payment_body='{"amount":455,"currency":"GBP","return-url":"https://example.test/claim-issued-payment-confirmation/1234"}'
+payment_response=$(curl --fail --silent --request POST --header 'Content-Type: application/json' --data "${payment_body}" "${url}/service-request/2026-THIN-CLIENT-SERVICE-REQUEST/card-payments")
+second_payment_response=$(curl --fail --silent --request POST --header 'Content-Type: application/json' --data "${payment_body}" "${url}/service-request/2026-THIN-CLIENT-SERVICE-REQUEST/card-payments")
+payment_reference=$(node -e 'console.log(JSON.parse(process.argv[1]).payment_reference)' "${payment_response}")
+second_payment_reference=$(node -e 'console.log(JSON.parse(process.argv[1]).payment_reference)' "${second_payment_response}")
+if [ "${payment_reference}" = "${second_payment_reference}" ]; then
+  echo 'Expected each card payment to return a unique payment reference' >&2
+  exit 1
+fi
+assert_status 200 GET "/card-payments/${payment_reference}/statuses"
 assert_status 200 GET '/cases/documents/00000000-0000-4000-8000-000000000001'
 assert_status 200 GET '/cases/documents/00000000-0000-4000-8000-000000000001/binary'
 assert_status 204 DELETE '/cases/documents/00000000-0000-4000-8000-000000000001?permanent=true'
