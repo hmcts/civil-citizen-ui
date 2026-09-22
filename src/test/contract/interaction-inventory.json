@@ -1,0 +1,360 @@
+{
+  "civil_service": [
+    {
+      "description": "a Civil PIN request with invalid PIN",
+      "state": "Civil PIN validation fails for invalid PIN"
+    },
+    {
+      "description": "a Civil PIN request with missing claim",
+      "state": "Civil PIN validation fails for missing claim"
+    },
+    {
+      "description": "a General Application fee request for adjourn hearing",
+      "state": "A General Application fee for adjourn hearing is available"
+    },
+    {
+      "description": "a General Application fee request for consent",
+      "state": "A General Application fee for consent is available"
+    },
+    {
+      "description": "a General Application fee request for notice",
+      "state": "A General Application fee for notice is available"
+    },
+    {
+      "description": "a General Application fee request for without notice",
+      "state": "A General Application fee for without notice is available"
+    },
+    {
+      "description": "a citizen event rejected with callback errors and warnings",
+      "state": "Citizen event submission returns callback errors and warnings"
+    },
+    {
+      "description": "a citizen event rejected with field validation errors",
+      "state": "Citizen event submission returns field validation errors"
+    },
+    {
+      "description": "a citizen event rejected with no actionable validation fields",
+      "state": "Citizen event submission returns no actionable validation fields"
+    },
+    {
+      "description": "a claimant repayment plan returning IN_FAVOUR_OF_CLAIMANT",
+      "state": "The repayment decision is IN_FAVOUR_OF_CLAIMANT"
+    },
+    {
+      "description": "a claimant repayment plan returning IN_FAVOUR_OF_DEFENDANT",
+      "state": "The repayment decision is IN_FAVOUR_OF_DEFENDANT"
+    },
+    {
+      "description": "a dashboard notification update with a malformed identifier",
+      "state": "A dashboard notification update has a malformed identifier"
+    },
+    {
+      "description": "a dashboard notification update with a valid identifier",
+      "state": "A dashboard notification update has a valid identifier"
+    },
+    {
+      "description": "a dashboard task update with a malformed identifier",
+      "state": "A dashboard task update has a malformed identifier"
+    },
+    {
+      "description": "a dashboard task update with a valid identifier",
+      "state": "A dashboard task update has a valid identifier"
+    },
+    {
+      "description": "a dashboard update for an unknown task",
+      "state": "The dashboard task to update does not exist"
+    },
+    {
+      "description": "a defendant link lookup returning linked",
+      "state": "Defendant link status is linked"
+    },
+    {
+      "description": "a defendant link lookup returning no search result",
+      "state": "Defendant link status is no search result"
+    },
+    {
+      "description": "a defendant link lookup returning provider failure",
+      "state": "Defendant link status is provider failure"
+    },
+    {
+      "description": "a defendant link lookup returning unlinked",
+      "state": "Defendant link status is unlinked"
+    },
+    {
+      "description": "a defendant link lookup returning upstream not found",
+      "state": "Defendant link status is upstream not found"
+    },
+    {
+      "description": "a empty APPLICANT notification request for multiple GAs",
+      "state": "The APPLICANT GA notifications are empty"
+    },
+    {
+      "description": "a empty CLAIMANT Civil notification request",
+      "state": "The CLAIMANT Civil notifications are empty"
+    },
+    {
+      "description": "a empty CLAIMANT dashboard task list request",
+      "state": "The CLAIMANT dashboard task list is empty"
+    },
+    {
+      "description": "a empty DEFENDANT Civil notification request",
+      "state": "The DEFENDANT Civil notifications are empty"
+    },
+    {
+      "description": "a empty DEFENDANT dashboard task list request",
+      "state": "The DEFENDANT dashboard task list is empty"
+    },
+    {
+      "description": "a empty RESPONDENT notification request for multiple GAs",
+      "state": "The RESPONDENT GA notifications are empty"
+    },
+    {
+      "description": "a populated APPLICANT notification request for multiple GAs",
+      "state": "The APPLICANT GA notifications are populated"
+    },
+    {
+      "description": "a populated CLAIMANT Civil notification request",
+      "state": "The CLAIMANT Civil notifications are populated"
+    },
+    {
+      "description": "a populated CLAIMANT dashboard task list request",
+      "state": "The CLAIMANT dashboard task list is populated"
+    },
+    {
+      "description": "a populated DEFENDANT Civil notification request",
+      "state": "The DEFENDANT Civil notifications are populated"
+    },
+    {
+      "description": "a populated DEFENDANT dashboard task list request",
+      "state": "The DEFENDANT dashboard task list is populated"
+    },
+    {
+      "description": "a populated RESPONDENT notification request for multiple GAs",
+      "state": "The RESPONDENT GA notifications are populated"
+    },
+    {
+      "description": "a public Civil PIN validation",
+      "state": "A Civil reference and PIN are valid"
+    },
+    {
+      "description": "a public OCMC PIN validation",
+      "state": "An OCMC reference and PIN are valid"
+    },
+    {
+      "description": "a request for claimant dashboard page 1",
+      "state": "The claimant dashboard page 1 is available"
+    },
+    {
+      "description": "a request for claimant dashboard page 2",
+      "state": "The claimant dashboard page 2 is available"
+    },
+    {
+      "description": "a request for defendant dashboard page 1",
+      "state": "The defendant dashboard page 1 is available"
+    },
+    {
+      "description": "a request for defendant dashboard page 2",
+      "state": "The defendant dashboard page 2 is available"
+    },
+    {
+      "description": "a request for fee ranges",
+      "state": "Flat and percentage fee ranges are available"
+    },
+    {
+      "description": "a request for missing case details",
+      "state": "The requested case does not exist"
+    },
+    {
+      "description": "a request for the claim issue fee",
+      "state": "A claim issue fee is available for a claim amount of 1000"
+    },
+    {
+      "description": "a request for the hearing fee",
+      "state": "A hearing fee is available for a claim amount of 1000"
+    },
+    {
+      "description": "a request to calculate breakdown claim interest",
+      "state": "Claim interest breakdown can be calculated"
+    },
+    {
+      "description": "a request to calculate different rate zero claim interest",
+      "state": "Claim interest different rate zero can be calculated"
+    },
+    {
+      "description": "a request to calculate statutory claim interest",
+      "state": "Claim interest statutory can be calculated"
+    },
+    {
+      "description": "a request to create a GovPay payment",
+      "state": "Claim issue payment can be initiated for case 1234567890123456"
+    },
+    {
+      "description": "a request to create a GovPay payment",
+      "state": "Claim issue payment can be initiated for general application case 1234567890123456"
+    },
+    {
+      "description": "a request to create the draft claim dashboard scenario",
+      "state": "A draft dashboard scenario can be created"
+    },
+    {
+      "description": "a request to retrieve GovPay payment status",
+      "state": "Payment status SUCCESS is available for general application payment RC-1701-0909-0602-0418"
+    },
+    {
+      "description": "a request to retrieve GovPay payment status",
+      "state": "Payment status SUCCESS is available for payment RC-1701-0909-0602-0418"
+    },
+    {
+      "description": "a request to submit the company-organisation draft claim",
+      "state": "A draft company-organisation claim can be submitted"
+    },
+    {
+      "description": "a request to submit the individual-company draft claim",
+      "state": "A draft individual-company claim can be submitted"
+    },
+    {
+      "description": "a request to submit the organisation-sole-trader draft claim",
+      "state": "A draft organisation-sole-trader claim can be submitted"
+    },
+    {
+      "description": "a request to submit the sole-trader-individual draft claim",
+      "state": "A draft sole-trader-individual claim can be submitted"
+    },
+    {
+      "description": "a response deadline request with 0 extra days",
+      "state": "A response deadline with 0 extra days can be calculated"
+    },
+    {
+      "description": "a response deadline request with 5 extra days",
+      "state": "A response deadline with 5 extra days can be calculated"
+    },
+    {
+      "description": "an agreed response deadline lookup with a date",
+      "state": "An agreed response deadline is present"
+    },
+    {
+      "description": "an agreed response deadline lookup with no date",
+      "state": "An agreed response deadline is absent"
+    },
+    {
+      "description": "an authenticated defendant assignment with accepted",
+      "state": "Defendant assignment is accepted"
+    },
+    {
+      "description": "an authenticated defendant assignment with rejected PIN",
+      "state": "Defendant assignment is rejected PIN"
+    },
+    {
+      "description": "an invalid OCMC PIN validation",
+      "state": "An OCMC PIN is invalid"
+    },
+    {
+      "description": "case details for claimant access",
+      "state": "Case details and claimant access are available"
+    },
+    {
+      "description": "case details for defendant access",
+      "state": "Case details and defendant access are available"
+    },
+    {
+      "description": "case details for no roles access",
+      "state": "Case details and no roles access are available"
+    },
+    {
+      "description": "case roles for claimant access",
+      "state": "Case details and claimant access are available"
+    },
+    {
+      "description": "case roles for defendant access",
+      "state": "Case details and defendant access are available"
+    },
+    {
+      "description": "case roles for no roles access",
+      "state": "Case details and no roles access are available"
+    },
+    {
+      "description": "a request to create a hearing payment",
+      "state": "A hearing payment can be initiated"
+    },
+    {
+      "description": "a CLAIMISSUED payment status request returning Failed",
+      "state": "The CLAIMISSUED payment status is Failed"
+    },
+    {
+      "description": "a CLAIMISSUED payment status request returning Initiated",
+      "state": "The CLAIMISSUED payment status is Initiated"
+    },
+    {
+      "description": "a CLAIMISSUED payment status request returning Pending",
+      "state": "The CLAIMISSUED payment status is Pending"
+    },
+    {
+      "description": "a CLAIMISSUED status request for a missing payment",
+      "state": "The CLAIMISSUED payment cannot be found upstream"
+    },
+    {
+      "description": "a HEARING payment status request returning Success",
+      "state": "The HEARING payment status is Success"
+    },
+    {
+      "description": "a HEARING payment status request returning Failed",
+      "state": "The HEARING payment status is Failed"
+    },
+    {
+      "description": "a HEARING payment status request returning Initiated",
+      "state": "The HEARING payment status is Initiated"
+    },
+    {
+      "description": "a HEARING payment status request returning Pending",
+      "state": "The HEARING payment status is Pending"
+    },
+    {
+      "description": "a HEARING status request for a missing payment",
+      "state": "The HEARING payment cannot be found upstream"
+    },
+    {
+      "description": "a GA payment status request returning Failed",
+      "state": "The GA payment status is Failed"
+    },
+    {
+      "description": "a GA payment status request returning Initiated",
+      "state": "The GA payment status is Initiated"
+    },
+    {
+      "description": "a GA payment status request returning Pending",
+      "state": "The GA payment status is Pending"
+    },
+    {
+      "description": "a GA status request for a missing payment",
+      "state": "The GA payment cannot be found upstream"
+    },
+    {
+      "description": "a hearing Help with Fees submission",
+      "state": "Hearing Help with Fees can be submitted"
+    },
+    {
+      "description": "a GA Help with Fees submission for Yes",
+      "state": "GA Help with Fees submission is Yes"
+    },
+    {
+      "description": "a GA Help with Fees submission for No",
+      "state": "GA Help with Fees submission is No"
+    },
+    {
+      "description": "a GA Help with Fees submission for rejected",
+      "state": "GA Help with Fees submission is rejected"
+    }
+  ],
+  "idamApi_oidc": [
+    {
+      "description": "a request to get user details",
+      "state": "a token is requested"
+    }
+  ],
+  "s2s_auth": [
+    {
+      "description": "a request for a token",
+      "state": "microservice with valid credentials"
+    }
+  ]
+}
