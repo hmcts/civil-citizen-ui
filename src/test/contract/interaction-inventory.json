@@ -483,6 +483,22 @@
     {
       "description": "a translated RESPOND_TO_APPLICATION_URGENT_LIP response",
       "state": "An urgent GA response can be submitted"
+    },
+    {
+      "description": "a request for populated court locations",
+      "state": "Court locations are available"
+    },
+    {
+      "description": "a request for empty court locations",
+      "state": "No court locations are available"
+    },
+    {
+      "description": "a request for populated airlines",
+      "state": "Airlines are available"
+    },
+    {
+      "description": "a request for empty airlines",
+      "state": "No airlines are available"
     }
   ],
   "idamApi_oidc": [
