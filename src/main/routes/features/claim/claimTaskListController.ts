@@ -10,6 +10,7 @@ import {claimIssueTaskListGuard} from 'routes/guards/claimIssueTaskListGuard';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {getDraftClaimDeletionDate} from 'common/utils/draftClaimUtils';
+import {getTTLDaysForCategory, TTLCategory} from 'modules/draft-store/ttlConfig';
 
 const taskListViewPath = 'features/claim/task-list';
 const claimTaskListController = Router();
@@ -40,6 +41,7 @@ claimTaskListController.get(CLAIMANT_TASK_LIST_URL, claimIssueTaskListGuard, (as
 
     if (!caseData.draftClaimCreatedAt && draftResult?.createdAt) {
       caseData.draftClaimCreatedAt = new Date(draftResult.createdAt);
+      caseData.draftClaimCacheTtlDays = getTTLDaysForCategory(TTLCategory.DRAFT_CLAIM);
     }
 
     if (req.session && draftResult?.rawResponse?.draftId) {
