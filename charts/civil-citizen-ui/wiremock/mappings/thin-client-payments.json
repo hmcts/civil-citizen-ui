@@ -169,7 +169,7 @@
       "priority": 3,
       "request": {
         "method": "GET",
-        "urlPath": "/payments/RC-THIN-CLIENT-CLAIM"
+        "urlPath": "/card-payments/RC-THIN-CLIENT-CLAIM/statuses"
       },
       "response": {
         "status": 200,
@@ -199,7 +199,7 @@
       "priority": 3,
       "request": {
         "method": "GET",
-        "urlPath": "/payments/RC-THIN-CLIENT-HEARING"
+        "urlPath": "/card-payments/RC-THIN-CLIENT-HEARING/statuses"
       },
       "response": {
         "status": 200,
@@ -229,7 +229,7 @@
       "priority": 3,
       "request": {
         "method": "GET",
-        "urlPath": "/payments/RC-THIN-CLIENT-GA"
+        "urlPath": "/card-payments/RC-THIN-CLIENT-GA/statuses"
       },
       "response": {
         "status": 200,

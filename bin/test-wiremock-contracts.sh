@@ -45,7 +45,7 @@ assert_status 201 POST '/service-request' '{"case_reference":"000MC001","fees":[
 assert_status 201 POST '/service-request/2026-THIN-CLIENT-SERVICE-REQUEST/card-payments' '{"amount":455,"currency":"GBP","return-url":"https://example.test/claim-issued-payment-confirmation/1234"}'
 assert_status 200 GET '/thin-pay/card?return_url=https%3A%2F%2Fexample.test%2Fclaim-issued-payment-confirmation%2F1234&amount=115.00'
 assert_status 200 GET '/thin-pay/confirm?return_url=https%3A%2F%2Fexample.test%2Fclaim-issued-payment-confirmation%2F1234&amount=115.00'
-assert_status 200 GET '/payments/RC-THIN-CLIENT-CLAIM'
+assert_status 200 GET '/card-payments/RC-THIN-CLIENT-CLAIM/statuses'
 
 # Significant match rules must leave incorrect requests unmatched.
 assert_status 404 POST '/dashboard/scenarios/Scenario.WRONG/test-user' '{"params":{}}'
@@ -53,6 +53,6 @@ assert_status 404 POST '/fees/claim/total-amount' '{"amount":1385}'
 assert_status 404 POST '/cases/draft/citizen/test-user/event' '{"event":"WRONG_EVENT"}'
 assert_status 404 GET '/search/places/v1/postcode?postcode=SW1A%201AA'
 assert_status 404 POST '/service-request/2026-THIN-CLIENT-SERVICE-REQUEST/card-payments' '{"amount":115,"currency":"USD","return-url":"https://example.test/payment"}'
-assert_status 404 GET '/payments/RC-UNKNOWN'
+assert_status 404 GET '/card-payments/RC-UNKNOWN/statuses'
 
 echo 'WireMock complete-set startup and positive/negative contract checks passed.'
