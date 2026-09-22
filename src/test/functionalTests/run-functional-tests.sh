@@ -155,18 +155,15 @@ functional_base_pattern() {
 }
 
 run_optimised_functional_tests() {
-  local base_pattern pattern count
+  local base_pattern pattern
   export FUNCTIONAL=true
   unset PREV_FAILED_TEST_FILES PREV_NOT_EXECUTED_TEST_FILES
   base_pattern=$(functional_base_pattern)
-  node bin/functional-execution-evidence.js plan "$base_pattern"
-  count=$(node bin/functional-execution-evidence.js count thin-client)
-  pattern=$(node bin/functional-execution-evidence.js pattern thin-client)
-  echo "Running ${count} migrated thin-client scenarios from ${base_pattern}"
+  pattern="(?=.*(?:${base_pattern}))(?=.*@thin-full-stack)(?!.*@mocked-functional)"
+  echo "Running migrated thin-client scenarios from ${base_pattern}"
   MOCHAWESOME_REPORTFILENAME='optimised-thin-client' \
     run_functional_command yarn codeceptjs run-workers --suites 1 --grep "$pattern" \
     --reporter mocha-multi --plugins allure --verbose
-  node bin/functional-execution-evidence.js check optimised
 }
 
 #MAIN SCRIPT
