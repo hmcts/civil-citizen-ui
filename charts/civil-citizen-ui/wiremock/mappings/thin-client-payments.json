@@ -27,6 +27,9 @@
     {
       "name": "thin-client-create-claim-card-payment",
       "priority": 3,
+      "scenarioName": "thin-client-payment",
+      "requiredScenarioState": "Started",
+      "newScenarioState": "PaymentCreated",
       "request": {
         "method": "POST",
         "urlPathPattern": "/service-request/[^/]+/card-payments",
@@ -56,6 +59,9 @@
     {
       "name": "thin-client-create-hearing-card-payment",
       "priority": 3,
+      "scenarioName": "thin-client-payment",
+      "requiredScenarioState": "Started",
+      "newScenarioState": "PaymentCreated",
       "request": {
         "method": "POST",
         "urlPathPattern": "/service-request/[^/]+/card-payments",
@@ -85,6 +91,9 @@
     {
       "name": "thin-client-create-general-application-card-payment",
       "priority": 3,
+      "scenarioName": "thin-client-payment",
+      "requiredScenarioState": "Started",
+      "newScenarioState": "PaymentCreated",
       "request": {
         "method": "POST",
         "urlPathPattern": "/service-request/[^/]+/card-payments",
@@ -140,6 +149,9 @@
     {
       "name": "thin-client-confirm-card-payment-page",
       "priority": 4,
+      "scenarioName": "thin-client-payment",
+      "requiredScenarioState": "PaymentCreated",
+      "newScenarioState": "Confirmed",
       "request": {
         "method": "GET",
         "urlPath": "/thin-pay/confirm",
@@ -164,8 +176,65 @@
       }
     },
     {
+      "name": "thin-client-initiated-claim-card-payment-status",
+      "priority": 3,
+      "scenarioName": "thin-client-payment",
+      "requiredScenarioState": "PaymentCreated",
+      "request": {
+        "method": "GET",
+        "urlPathPattern": "/card-payments/RC-THIN-CLIENT-CLAIM-[^/]+/statuses"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "transformers": ["response-template"],
+        "body": "{\"amount\":115,\"currency\":\"GBP\",\"external_reference\":\"thin-client-external-reference\",\"payment_group_reference\":\"2026-THIN-CLIENT-SERVICE-REQUEST\",\"reference\":\"{{request.pathSegments.[1]}}\",\"status\":\"Initiated\",\"status_histories\":[{\"status\":\"Initiated\"}]}"
+      }
+    },
+    {
+      "name": "thin-client-initiated-hearing-card-payment-status",
+      "priority": 3,
+      "scenarioName": "thin-client-payment",
+      "requiredScenarioState": "PaymentCreated",
+      "request": {
+        "method": "GET",
+        "urlPathPattern": "/card-payments/RC-THIN-CLIENT-HEARING-[^/]+/statuses"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "transformers": ["response-template"],
+        "body": "{\"amount\":619,\"currency\":\"GBP\",\"external_reference\":\"thin-client-external-reference\",\"payment_group_reference\":\"2026-THIN-CLIENT-SERVICE-REQUEST\",\"reference\":\"{{request.pathSegments.[1]}}\",\"status\":\"Initiated\",\"status_histories\":[{\"status\":\"Initiated\"}]}"
+      }
+    },
+    {
+      "name": "thin-client-initiated-general-application-card-payment-status",
+      "priority": 3,
+      "scenarioName": "thin-client-payment",
+      "requiredScenarioState": "PaymentCreated",
+      "request": {
+        "method": "GET",
+        "urlPathPattern": "/card-payments/RC-THIN-CLIENT-GA-[^/]+/statuses"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "transformers": ["response-template"],
+        "body": "{\"amount\":184,\"currency\":\"GBP\",\"external_reference\":\"thin-client-external-reference\",\"payment_group_reference\":\"2026-THIN-CLIENT-SERVICE-REQUEST\",\"reference\":\"{{request.pathSegments.[1]}}\",\"status\":\"Initiated\",\"status_histories\":[{\"status\":\"Initiated\"}]}"
+      }
+    },
+    {
       "name": "thin-client-successful-claim-card-payment-status",
       "priority": 3,
+      "scenarioName": "thin-client-payment",
+      "requiredScenarioState": "Confirmed",
+      "newScenarioState": "Started",
       "request": {
         "method": "GET",
         "urlPathPattern": "/card-payments/RC-THIN-CLIENT-CLAIM-[^/]+/statuses"
@@ -182,6 +251,9 @@
     {
       "name": "thin-client-successful-hearing-card-payment-status",
       "priority": 3,
+      "scenarioName": "thin-client-payment",
+      "requiredScenarioState": "Confirmed",
+      "newScenarioState": "Started",
       "request": {
         "method": "GET",
         "urlPathPattern": "/card-payments/RC-THIN-CLIENT-HEARING-[^/]+/statuses"
@@ -198,6 +270,9 @@
     {
       "name": "thin-client-successful-general-application-card-payment-status",
       "priority": 3,
+      "scenarioName": "thin-client-payment",
+      "requiredScenarioState": "Confirmed",
+      "newScenarioState": "Started",
       "request": {
         "method": "GET",
         "urlPathPattern": "/card-payments/RC-THIN-CLIENT-GA-[^/]+/statuses"

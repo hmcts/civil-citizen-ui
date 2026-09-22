@@ -50,19 +50,33 @@ if [ "${service_request_reference}" = "${second_service_request_reference}" ]; t
   echo 'Expected each service request to return a unique reference' >&2
   exit 1
 fi
-assert_status 200 GET '/thin-pay/card?return_url=https%3A%2F%2Fexample.test%2Fclaim-issued-payment-confirmation%2F1234&amount=115.00'
-assert_status 200 GET '/thin-pay/confirm?return_url=https%3A%2F%2Fexample.test%2Fclaim-issued-payment-confirmation%2F1234&amount=115.00'
-
 payment_body='{"amount":455,"currency":"GBP","return-url":"https://example.test/claim-issued-payment-confirmation/1234"}'
 payment_response=$(curl --fail --silent --request POST --header 'Content-Type: application/json' --data "${payment_body}" "${url}/service-request/2026-THIN-CLIENT-SERVICE-REQUEST/card-payments")
-second_payment_response=$(curl --fail --silent --request POST --header 'Content-Type: application/json' --data "${payment_body}" "${url}/service-request/2026-THIN-CLIENT-SERVICE-REQUEST/card-payments")
 payment_reference=$(node -e 'console.log(JSON.parse(process.argv[1]).payment_reference)' "${payment_response}")
+initiated_status=$(curl --fail --silent "${url}/card-payments/${payment_reference}/statuses")
+if ! grep --quiet '"status":"Initiated"' <<<"${initiated_status}"; then
+  echo "Expected a newly created payment to be initiated, got ${initiated_status}" >&2
+  exit 1
+fi
+assert_status 200 GET '/thin-pay/card?return_url=https%3A%2F%2Fexample.test%2Fclaim-issued-payment-confirmation%2F1234&amount=115.00'
+assert_status 200 GET '/thin-pay/confirm?return_url=https%3A%2F%2Fexample.test%2Fclaim-issued-payment-confirmation%2F1234&amount=115.00'
+successful_status=$(curl --fail --silent "${url}/card-payments/${payment_reference}/statuses")
+if ! grep --quiet '"status":"Success"' <<<"${successful_status}"; then
+  echo "Expected a confirmed payment to be successful, got ${successful_status}" >&2
+  exit 1
+fi
+
+second_payment_response=$(curl --fail --silent --request POST --header 'Content-Type: application/json' --data "${payment_body}" "${url}/service-request/2026-THIN-CLIENT-SERVICE-REQUEST/card-payments")
 second_payment_reference=$(node -e 'console.log(JSON.parse(process.argv[1]).payment_reference)' "${second_payment_response}")
 if [ "${payment_reference}" = "${second_payment_reference}" ]; then
   echo 'Expected each card payment to return a unique payment reference' >&2
   exit 1
 fi
-assert_status 200 GET "/card-payments/${payment_reference}/statuses"
+second_initiated_status=$(curl --fail --silent "${url}/card-payments/${second_payment_reference}/statuses")
+if ! grep --quiet '"status":"Initiated"' <<<"${second_initiated_status}"; then
+  echo "Expected the payment scenario to reset for the next payment, got ${second_initiated_status}" >&2
+  exit 1
+fi
 assert_status 200 GET '/cases/documents/00000000-0000-4000-8000-000000000001'
 assert_status 200 GET '/cases/documents/00000000-0000-4000-8000-000000000001/binary'
 assert_status 204 DELETE '/cases/documents/00000000-0000-4000-8000-000000000001?permanent=true'
