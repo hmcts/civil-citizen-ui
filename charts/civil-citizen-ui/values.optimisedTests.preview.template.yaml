@@ -3,6 +3,10 @@
 # preview components those scenarios do not call.
 
 civil-service:
+  java:
+    environment:
+      FEES_API_URL: http://${SERVICE_NAME}-wiremock
+      DOCMOSIS_TORNADO_URL: http://${SERVICE_NAME}-wiremock
   ccd:
     postgresql:
       setup:
@@ -19,5 +23,28 @@ civil-service:
   em-ccdorc:
     enabled: false
 
+nodejs:
+  environment:
+    ORDNANCE_SURVEY_API_URL: http://${SERVICE_NAME}-wiremock
+    ORDNANCE_SURVEY_API_KEY: mock-key
+
 wiremock:
-  enabled: false
+  enabled: true
+  image: wiremock/wiremock
+  applicationPort: 8080
+  imagePullPolicy: Always
+  releaseNameOverride: ${SERVICE_NAME}-wiremock
+  ingressHost: ""
+  verbose: true
+  volumes:
+    - name: wiremock-mappings
+      configMap:
+        name: ${SERVICE_NAME}-wiremock-mappings
+    - name: wiremock-files
+      configMap:
+        name: ${SERVICE_NAME}-wiremock-files
+  volumeMounts:
+    - name: wiremock-mappings
+      mountPath: /home/wiremock/mappings
+    - name: wiremock-files
+      mountPath: /home/wiremock/__files

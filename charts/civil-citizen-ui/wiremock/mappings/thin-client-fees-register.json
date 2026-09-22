@@ -1,0 +1,67 @@
+{
+  "mappings": [
+    {
+      "name": "thin-client-claim-issue-fee",
+      "priority": 5,
+      "request": {
+        "method": "GET",
+        "urlPath": "/fees-register/fees/lookup",
+        "queryParameters": {
+          "event": {"equalTo": "issue"}
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {"Content-Type": "application/json"},
+        "jsonBody": {
+          "code": "FEE0209",
+          "description": "Claim issue fee",
+          "fee_amount": 455,
+          "version": 1
+        }
+      }
+    },
+    {
+      "name": "thin-client-fast-track-hearing-fee",
+      "priority": 4,
+      "request": {
+        "method": "GET",
+        "urlPath": "/fees-register/fees/lookup",
+        "queryParameters": {
+          "keyword": {"equalTo": "FastTrackHrg"}
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {"Content-Type": "application/json"},
+        "jsonBody": {
+          "code": "FEE0444",
+          "description": "Fast track hearing fee",
+          "fee_amount": 619,
+          "version": 1
+        }
+      }
+    },
+    {
+      "name": "thin-client-general-application-fee",
+      "priority": 4,
+      "request": {
+        "method": "GET",
+        "urlPath": "/fees-register/fees/lookup",
+        "queryParameters": {
+          "keyword": {"matches": "GAOnNotice|GeneralAppWithoutNotice"}
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {"Content-Type": "application/json"},
+        "jsonBody": {
+          "code": "FEE0442",
+          "description": "General application fee",
+          "fee_amount": 184,
+          "version": 1
+        }
+      }
+    }
+  ]
+}
