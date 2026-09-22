@@ -1,7 +1,8 @@
+import { createHmac } from 'crypto';
 import { Pact, Matchers } from '@pact-foundation/pact';
 import config from 'config';
 import { PACT_DIRECTORY_PATH, PACT_LOG_PATH } from '../utils';
-import { getOidcResponse, OidcResponse } from '../../../main/app/auth/user/oidc';
+import { getOidcResponse, getSessionIssueTime, getUserDetails, OidcResponse } from '../../../main/app/auth/user/oidc';
 
 jest.mock('config');
 
@@ -14,7 +15,7 @@ const mockProvider = new Pact({
   port: 5000,
 });
 
-describe('Odic Pact Test', () => {
+describe('OIDC Pact Test', () => {
   beforeAll(async () => {
     await mockProvider.setup();
   });
@@ -25,16 +26,39 @@ describe('Odic Pact Test', () => {
     await mockProvider.verify();
   });
 
-  describe('get Oidc response', () => {
-    const odicResponse: OidcResponse = {
-      id_token: 'someIdToken',
-      access_token: 'someAccessToken',
+  describe('get OIDC response and consume sign-in claims', () => {
+    const claims = {
+      uid: 'cui-test-user-001',
+      sub: 'cui-test-user@example.test',
+      given_name: 'Contract',
+      family_name: 'User',
+      roles: ['citizen'],
+      iat: 1_756_000_000,
     };
+    const encodeBase64Url = (value: string): string => Buffer.from(value).toString('base64')
+      .replace(/=/g, '')
+      .replace(/\+/g, '-')
+      .replace(/\//g, '_');
+    const signingInput = `${encodeBase64Url(JSON.stringify({ alg: 'HS256', typ: 'JWT' }))}.${encodeBase64Url(JSON.stringify(claims))}`;
+    const signature = createHmac('sha256', 'cui-contract-only-signing-key')
+      .update(signingInput)
+      .digest('base64')
+      .replace(/=/g, '')
+      .replace(/\+/g, '-')
+      .replace(/\//g, '_');
+    const syntheticIdToken = `${signingInput}.${signature}`;
+    const authorizationCode = 'code+with/special chars';
+    const oidcResponse: OidcResponse = {
+      id_token: syntheticIdToken,
+      access_token: 'synthetic-access-token',
+    };
+    const encodedClaims = encodeBase64Url(JSON.stringify(claims));
+    const jwtPattern = `^[A-Za-z0-9_-]+\\.${encodedClaims}\\.[A-Za-z0-9_-]+$`;
 
     beforeAll(async () => {
       await mockProvider.addInteraction({
-        state: 'a token is requested',
-        uponReceiving: 'a request to get user details',
+        state: 'IDAM returns an ID token with CUI sign-in claims',
+        uponReceiving: 'an authorisation-code request for a token with CUI sign-in claims',
         withRequest: {
           method: 'POST',
           path: '/o/token',
@@ -44,20 +68,20 @@ describe('Odic Pact Test', () => {
             'Access-Control-Allow-Origin' : '*',
             'Access-Control-Allow-Methods':'GET,PUT,POST,DELETE,PATCH,OPTIONS',
           },
-          body: 'client_id=someClientId&client_secret=someClientSecret&grant_type=authorization_code&redirect_uri=someURL&code=someCode',
+          body: 'client_id=someClientId&client_secret=someClientSecret&grant_type=authorization_code&redirect_uri=someURL&code=code%2Bwith%2Fspecial%20chars',
         },
         willRespondWith: {
           status: 200,
           headers: {'Content-Type': 'application/json'},
           body: {
-            access_token: Matchers.like(odicResponse.access_token),
-            id_token: odicResponse.id_token,
+            access_token: Matchers.like(oidcResponse.access_token),
+            id_token: Matchers.regex({ matcher: jwtPattern, generate: oidcResponse.id_token }),
           },
         },
       });
     });
 
-    test('should receive a response when making a request to the idam token endpoint', async () => {
+    test('decodes the claims consumed by sign-in from the token response', async () => {
       (config.get as jest.Mock).mockImplementation((value) => {
         switch (value) {
           case 'services.idam.clientID':
@@ -71,9 +95,19 @@ describe('Odic Pact Test', () => {
         }
       });
 
-      const response = await getOidcResponse('someURL', 'someCode');
+      const response = await getOidcResponse('someURL', authorizationCode);
 
-      expect(response).toEqual(odicResponse);
+      expect(response).toEqual(oidcResponse);
+      expect(getUserDetails(response)).toEqual({
+        accessToken: oidcResponse.access_token,
+        idToken: oidcResponse.id_token,
+        id: claims.uid,
+        email: claims.sub,
+        givenName: claims.given_name,
+        familyName: claims.family_name,
+        roles: claims.roles,
+      });
+      expect(getSessionIssueTime(response)).toBe(claims.iat);
     });
   });
 });
