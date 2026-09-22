@@ -439,6 +439,50 @@
     {
       "description": "a comments response REQUEST_FOR_RECONSIDERATION event",
       "state": "A translated reconsideration comments response can be submitted"
+    },
+    {
+      "description": "a request for a GA case by id",
+      "state": "A General Application case exists"
+    },
+    {
+      "description": "a parent-case General Application list request with empty results",
+      "state": "General Applications for parent case are empty"
+    },
+    {
+      "description": "a parent-case General Application list request with populated results",
+      "state": "General Applications for parent case are populated"
+    },
+    {
+      "description": "a UPLOAD_ADDL_DOCUMENTS document submission",
+      "state": "additional documents can be submitted to a General Application"
+    },
+    {
+      "description": "a RESPOND_TO_JUDGE_ADDITIONAL_INFO document submission",
+      "state": "judge additional information documents can be submitted to a General Application"
+    },
+    {
+      "description": "a RESPOND_TO_JUDGE_DIRECTIONS document submission",
+      "state": "judge directions documents can be submitted to a General Application"
+    },
+    {
+      "description": "a RESPOND_TO_JUDGE_WRITTEN_REPRESENTATION document submission",
+      "state": "judge written representation documents can be submitted to a General Application"
+    },
+    {
+      "description": "a translated INITIATE_GENERAL_APPLICATION application",
+      "state": "An ordinary GA can be initiated"
+    },
+    {
+      "description": "a translated INITIATE_GENERAL_APPLICATION_COSC application",
+      "state": "A COSC GA can be initiated"
+    },
+    {
+      "description": "a translated RESPOND_TO_APPLICATION response",
+      "state": "An ordinary GA response can be submitted"
+    },
+    {
+      "description": "a translated RESPOND_TO_APPLICATION_URGENT_LIP response",
+      "state": "An urgent GA response can be submitted"
     }
   ],
   "idamApi_oidc": [

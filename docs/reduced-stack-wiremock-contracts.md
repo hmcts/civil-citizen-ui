@@ -54,7 +54,7 @@ The provider dashboard DTO has no URL field: CUI builds links from claimId, ocmc
 
 The successful OCMC response is an unquoted URL labelled application/json. Its provider state enables Pact's [content-type override](https://docs.pact.io/implementation_guides/jvm/provider/maven) for that interaction only, comparing exact text while checking the unchanged header. JSON diff formatting is disabled for the same interaction because it attempts to parse the raw URL. Both properties are restored afterwards, and the CUI verifier is isolated from concurrent tests so the override cannot affect other JSON contracts.
 
-These are test protections, with no production behaviour changes. Generated local contracts and local verification do not establish publication or successful live Broker verification; retain the published consumer version, Pact reference, provider result and pipeline evidence before closing the ticket.
+These are test protections, with no production behaviour changes.
 
 
 ## Fees and calculation Pact coverage
@@ -92,8 +92,6 @@ Civil Service suites all generate Pact specification V4 so JSON scalar date and 
 
 The GA notification service retains every requested ID even when its list is empty; the contract does not invent an empty-object response for two requested IDs. Task statuses are checked against the provider enum and its Welsh labels. The notification examples exercise consumed action fields through existing client filtering; exhaustive session rules and UI navigation remain in their existing tests. A missing task raises the existing IllegalArgumentException mapped to 412. Missing notification clicks are a no-op in the provider service, so no fabricated not-found rejection is added.
 
-Local verification: 67 consumer tests and 13 publication/tooling regressions passed using `yarn test:pact`; all three artifact inventories validated. Civil Service verified 68 interactions and four runtime regressions. Temporary incompatible contracts changed a Welsh task-status field to a number and the GA keyed collection to an array; both failed verification. The valid artifact was restored. These results do not establish Broker publication: retain the published consumer version, Pact reference and successful provider/pipeline results before closing the work.
-
 ## Payments and Help with Fees Pact coverage
 
 `CivilServiceFeePayment.test.ts` retains the existing claim-issue and GA creation/success interactions, with exact business-significant status values. `CivilServicePaymentsAndHelpWithFees.test.ts` adds hearing payments, non-final and failed statuses, missing payments, and both Help with Fees events. The [interaction inventory](../src/test/contract/interaction-inventory.json) lists every interaction and provider state.
@@ -109,8 +107,6 @@ Local verification: 67 consumer tests and 13 publication/tooling regressions pas
 
 Provider states use FeesPaymentController and CasesController with production serializers and exception advice. GA payment status does not populate paymentFor, unlike the generic fee endpoint; the previous manufactured GA value was removed. Status responses do not supply a redirect URL. Missing downstream payments are wrapped in PaymentsApiException and become HTTP 500 through existing advice, rather than a fabricated 404. The GA rejection state raises a downstream Feign validation exception so the real advice generates the response. The service checks isolate unused web-app startup and redirect only service URL configuration to Pact; HTTP clients, translators and response conversion remain real.
 
-Local verification on 18 September 2026 passed 85 consumer tests, 13 publication/tooling regressions, all three artifact inventories, 86 Civil Service provider interactions and four runtime regressions. TypeScript, focused ESLint and provider Checkstyle passed. Controlled incompatible contracts changed the hearing payment status from Failed to failed and the hearing Help with Fees reference from a string to a number; both failed provider verification. The restored valid contract passed all 86 interactions again. Broker publication and supported pipeline verification remain outstanding; retain the published consumer version, Pact reference and successful provider result before closing the work.
-
 ## Response, extension and Query Management Pact coverage
 
 `CivilServiceResponses.test.ts` calls the real response clients with production translation output from deterministic claims in `responseClaims.ts`. `responseRequests.json` records the reviewed request shapes and is mirrored by the provider's `civil-cui-responses.json`. Response assertions cover consumed Claim values rather than assuming that request and response date or money types are identical. Exact interaction names and states are recorded in the [interaction inventory](../src/test/contract/interaction-inventory.json).
@@ -124,13 +120,9 @@ Local verification on 18 September 2026 passed 85 consumer tests, 13 publication
 
 Provider states match the complete translated event envelope and verify the exact CaseEventService call through CasesController. Returned responses use production CaseData, party, query and date models with runtime Jackson configuration. Query request timestamps and UUID generation are fixed only in tests; HTTP calls and query construction remain real. Cache/session mechanics, UI navigation and functional scenarios remain in their existing tests.
 
-Local verification: 95 consumer tests and 13 publication/tooling regressions passed; all three artifact inventories validated. Civil Service verified 96 interactions and four runtime regressions, with provider Checkstyle, TypeScript and focused ESLint passing. Controlled incompatible contracts changed FULL_DEFENCE to lowercase and a follow-up parentId from a string to a number; both failed verification. The valid contract was restored. These local results do not prove publication: retain the published consumer version, Pact reference and successful supported provider/pipeline result before closing the work.
-
 ## Judgment and settlement Pact coverage
 
 `CivilServiceJudgmentEvents.test.ts` exercises the real client wrappers for default judgment, judgment by admission, settlement, signed settlement agreement and judgment paid in full. The interactions protect the distinct event names and consumed payment, settlement, signature and paid-in-full fields; workflow eligibility and judgment calculations remain outside Pact coverage. Provider states use the production citizen event controller and return converted Claim identity, state and last-modified values.
-
-The current local totals include 100 consumer tests, 13 publication/tooling regressions, 101 Civil Service interactions and four runtime regressions. The valid Pact artifact was verified with provider Checkstyle. Broker publication and supported pipeline verification remain required before closing the ticket.
 
 ## Document and case progression Pact coverage
 
@@ -145,4 +137,17 @@ The current local totals include 100 consumer tests, 13 publication/tooling regr
 | `submitTrialArrangement`: `TRIAL_READINESS` | Production trial-arrangement translator output for readiness and hearing requirements/comments; converted Claim identity/state | `A translated trial readiness response can be submitted` |
 | `submitRequestForReconsideration`: `REQUEST_FOR_RECONSIDERATION` | Production translation for the initial defendant request and claimant comments response; converted Claim identity/state | `A translated reconsideration {initial request/comments response} can be submitted` |
 
-On 22 September 2026, the full consumer Pact run passed 109 tests across 12 suites and 13 publication/tooling regressions; artifact validation passed for all three Pact files. The Civil Service provider verifier passed all 110 consumer/provider interactions plus four runtime-regression tests against the local generated Pact. A controlled mutation of the `TRIAL_READINESS` request event to `TRIAL_READINESS_BROKEN` failed provider verification with HTTP 400; restoring the valid artifact returned the full provider verification to green. Contract-test compilation and Checkstyle passed. This is local evidence only: no Pact Broker publication or supported CI provider run has been performed for this update.
+## General Application Pact coverage
+
+`CivilServiceGeneralApplications.test.ts` exercises the deployed CUI-to-Civil-Service boundary with the real GA clients and production translators. It protects ordinary and COSC initiation, GA case retrieval, parent-case application lists, ordinary and urgent responses, and the four distinct judge/additional-document event collections. Initiation checks the parent-case link returned for the next CUI journey; GA response checks the request because the current response converter intentionally returns an empty `Application`. Parent-case list examples arrive out of creation-date order so the client sort is asserted, including an empty result.
+
+| Client / event | Request shape and consumed response | Provider state |
+| --- | --- | --- |
+| `submitInitiateGeneralApplicationEvent`: `INITIATE_GENERAL_APPLICATION` | Production translation for an adjourn-hearing application; protects type, respondent agreement, order/reasons, notice, hearing details, statement of truth and evidence links; checks returned GA ID and parent-case link | `An ordinary GA can be initiated` |
+| `submitInitiateGeneralApplicationEventForCosc`: `INITIATE_GENERAL_APPLICATION_COSC` | Production certificate-of-satisfaction translation; protects application type, final payment date, payment evidence, statement of truth and evidence; checks returned GA ID and parent-case link | `A COSC GA can be initiated` |
+| `GaServiceClient.getApplication`: `GET /cases/{applicationId}` | Case identity, state, created/modified dates, GA type, fee, response offer, parent link and document fields | `A General Application case exists` |
+| `GaServiceClient.getApplicationsByCaseId`: `GET /cases/{parentId}/ga/applications` | Populated and empty `cases` arrays; multiple case IDs and dates verify ascending creation-date sorting and consumed GA type, fee and parent link | `General Applications for parent case are {populated/empty}` |
+| `submitRespondToApplicationEvent` / `RESPOND_TO_APPLICATION`; `submitRespondToApplicationEventForUrgent` / `RESPOND_TO_APPLICATION_URGENT_LIP` | Production response translation protects hearing details, debtor offer, consent/reason, statement of truth and document links; asserts the actual empty-`Application` client result | `An {ordinary/urgent} GA response can be submitted` |
+| `GaServiceClient.submitEvent`: `UPLOAD_ADDL_DOCUMENTS`, `RESPOND_TO_JUDGE_DIRECTIONS`, `RESPOND_TO_JUDGE_ADDITIONAL_INFO`, `RESPOND_TO_JUDGE_WRITTEN_REPRESENTATION` | Distinct collection names and their document URL, binary URL and filename wrappers; the additional-information event also protects the submitted text | `additional documents can be submitted to a General Application`; `judge {directions/additional information/written representation} documents can be submitted to a General Application` |
+
+The contracts target Civil Service because the deployed GA base URL maps to `CIVIL_SERVICE_URL`. Provider-state names and interaction descriptions are listed in the [interaction inventory](../src/test/contract/interaction-inventory.json). Document identifiers and links are synthetic; the upload binary transport remains covered by the separate document boundary contracts.
