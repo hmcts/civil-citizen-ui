@@ -25,7 +25,7 @@ Before(async ({api}) => {
   await api.waitForFinishedBusinessProcess();
 });
 
-Scenario('LipvLip Applicant GA creation tests', async ({I}) => {
+Scenario('LipvLip Applicant GA creation tests @debug', async ({I}) => {
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
 
   console.log('Creating set aside GA app as claimant');
