@@ -74,7 +74,6 @@ import {
   RequestErrorHandler,
 } from 'client/common/civilServiceRequest';
 import {normalizeRouteParam, requirePathSegment, RouteParam} from 'common/utils/routeParamUtils';
-import {mockedFunctionalServiceUrl} from '../functionalTestRouterProxy';
 import {ClassConstructor} from 'class-transformer/types/interfaces';
 import {
   getUserCaseRolesFromSession,
@@ -145,11 +144,6 @@ export class CivilServiceClient {
         baseURL,
       });
     }
-    this.client?.interceptors?.request?.use(config => {
-      const routerUrl = mockedFunctionalServiceUrl();
-      if (routerUrl) config.baseURL = routerUrl;
-      return config;
-    });
   }
 
   private getClaimDetailsRequestCache(req: AppRequest): Map<string, Promise<Claim>> {

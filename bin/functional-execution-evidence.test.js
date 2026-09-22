@@ -66,5 +66,5 @@ test('optimised preview keeps thin-client dependencies and removes unused worklo
       'pr-${CHANGE_ID}-role-assignment',
     ],
   );
-  assert.equal(optimised.wiremock.enabled, true);
+  assert.equal(optimised.wiremock.enabled, false);
 });

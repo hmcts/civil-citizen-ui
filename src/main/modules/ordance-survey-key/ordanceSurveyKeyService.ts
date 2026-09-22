@@ -2,11 +2,10 @@ import config from 'config';
 import axios from 'axios';
 import { Address, AddressInfoResponse, Point } from 'models/ordanceSurveyKey/ordanceSurveyKey';
 import {AssertionError} from 'assert';
-import {mockedFunctionalServiceUrl} from '../../app/functionalTestRouterProxy';
 
 export async function lookupByPostcodeAndDataSet(postCode: string): Promise<AddressInfoResponse> {
   const apiKey = config.get<string>('services.postcodeLookup.ordnanceSurveyApiKey');
-  const url = mockedFunctionalServiceUrl() ?? config.get<string>('services.postcodeLookup.ordnanceSurveyApiUrl');
+  const url = config.get<string>('services.postcodeLookup.ordnanceSurveyApiUrl');
 
   // Fixed URL string
   const response = await axios.get(`${url}/search/places/v1/postcode?dataset=DPA,LPI&postcode=${postCode}&key=${apiKey}`);

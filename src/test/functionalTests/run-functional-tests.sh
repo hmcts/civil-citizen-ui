@@ -67,75 +67,25 @@ assert_no_functional_report_failures() {
   ' $report_files
 }
 
-publish_functional_failure_diagnostic() {
-  local summary_file='test-results/functional/functional-failure-summary.json'
-
-  node src/test/functionalTests/diagnostics/generateFunctionalFailureSummary.js || true
-  if [[ -n "${CHANGE_ID:-}" ]] && command -v kubectl >/dev/null 2>&1 && [[ -f "$summary_file" ]]; then
-    kubectl create configmap "civil-citizen-ui-pr-${CHANGE_ID}-functional-diagnostic" \
-      --namespace civil \
-      --from-file=functional-failure-summary.json="$summary_file" \
-      --dry-run=client -o yaml | kubectl apply -f - || true
-  fi
-}
-
-publish_functional_execution_evidence() {
-  local mode="$1"
-  local status="$2"
-  local timing_file="${3:-}"
-  local configmap_name
-  local kubectl_args
-
-  if [[ -z "${CHANGE_ID:-}" ]] || ! command -v kubectl >/dev/null 2>&1; then
-    return 0
-  fi
-
-  configmap_name="civil-citizen-ui-pr-${CHANGE_ID}-functional-execution"
-  kubectl_args=(
-    create configmap "$configmap_name"
-    --namespace civil
-    --from-literal=buildNumber="${BUILD_NUMBER:-unknown}"
-    --from-literal=commitSha="${GIT_COMMIT:-unknown}"
-    --from-literal=mode="$mode"
-    --from-literal=status="$status"
-  )
-  if [[ -n "$timing_file" ]] && [[ -f "$timing_file" ]]; then
-    kubectl_args+=(--from-file="$(basename "$timing_file")=$timing_file")
-  fi
-
-  kubectl "${kubectl_args[@]}" --dry-run=client -o yaml | kubectl apply -f - || true
-}
-
 run_functional_command() {
-  local exit_code report_exit_code
+  local exit_code
 
   set +e
   "$@"
   exit_code=$?
   set -e
 
-  set +e
   assert_no_functional_report_failures
-  report_exit_code=$?
-  set -e
 
-  if [[ "$exit_code" -ne 0 ]] || [[ "$report_exit_code" -ne 0 ]]; then
-    publish_functional_failure_diagnostic
-  fi
-
-  if [[ "$exit_code" -ne 0 ]] || [[ "$report_exit_code" -ne 0 ]]; then
-    if [[ "${DEFER_FUNCTIONAL_FAILURE_TO_JUNIT:-false}" = "true" ]]; then
-      echo "Functional failures will be reported by the Jenkins JUnit publisher after evidence is archived."
-      return 0
-    fi
-    exit $((exit_code != 0 ? exit_code : report_exit_code))
+  if [[ "$exit_code" -ne 0 ]]; then
+    exit "$exit_code"
   fi
 }
 
 run_functional_test_groups() {
-  local command report_exit_code test_script
+  local command
 
-  test_script='test:civil-citizen-pr'
+  command="yarn test:civil-citizen-pr --grep "
   pr_ft_groups=$(echo "$PR_FT_GROUPS" | awk '{print tolower($0)}')
   
   regex_pattern=""
@@ -143,18 +93,13 @@ run_functional_test_groups() {
   IFS=',' read -ra ft_groups_array <<< "$pr_ft_groups"
 
   for ft_group in "${ft_groups_array[@]}"; do
-      # CCD claim creation exceeds the preview request window when these
-      # journeys submit in parallel. Keep the standard path, one worker at a time.
-      if [[ "$ft_group" == 'ui-create-claim' ]]; then
-          test_script='test:civil-citizen-pr:serial'
-      fi
       if [[ -n "$regex_pattern" ]]; then
           regex_pattern+="|"
       fi
       regex_pattern+="@$ft_group"
   done
 
-  command="yarn $test_script --grep '$regex_pattern'"
+  command+="'$regex_pattern'"
   echo "Executing: $command"
 
   set +e
@@ -162,30 +107,14 @@ run_functional_test_groups() {
   exit_code=$?
   set -e
 
-  set +e
   assert_no_functional_report_failures
-  report_exit_code=$?
-  set -e
 
-  if [[ "$exit_code" -ne 0 ]] || [[ "$report_exit_code" -ne 0 ]]; then
-    publish_functional_failure_diagnostic
-  fi
-
-  if [[ "$exit_code" -ne 0 ]] || [[ "$report_exit_code" -ne 0 ]]; then
-    if [[ "${DEFER_FUNCTIONAL_FAILURE_TO_JUNIT:-false}" = "true" ]]; then
-      echo "Functional failures will be reported by the Jenkins JUnit publisher after evidence is archived."
-      return 0
-    fi
-    exit $((exit_code != 0 ? exit_code : report_exit_code))
+  if [[ "$exit_code" -ne 0 ]]; then
+    exit "$exit_code"
   fi
 }
 
 run_functional_tests() {
-  local started elapsed
-
-  started=$SECONDS
-  FUNCTIONAL=true node bin/functional-execution-evidence.js plan "$(functional_base_pattern)"
-  publish_functional_execution_evidence standard running
   echo "Running all functional tests on ${ENVIRONMENT} env"
   if [[ "$ENVIRONMENT" = "aat" ]]; then
     run_functional_command yarn test:civil-citizen-master
@@ -194,15 +123,6 @@ run_functional_tests() {
   else
     run_functional_test_groups
   fi
-
-  elapsed=$((SECONDS - started))
-  mkdir -p test-results/functional
-  printf 'mode,duration_seconds\nstandard,%s\n' "$elapsed" \
-    > test-results/functional/standard-timings.csv
-  node bin/functional-execution-evidence.js check standard
-  publish_functional_execution_evidence \
-    standard completed test-results/functional/standard-timings.csv
-  echo "Standard functional execution completed in ${elapsed}s"
 }
 
 run_failed_not_executed_functional_tests() {
@@ -235,165 +155,32 @@ functional_base_pattern() {
 }
 
 run_optimised_functional_tests() {
-  local base_pattern bucket pattern count started bucket_started
+  local base_pattern pattern count
   export FUNCTIONAL=true
-  export REDUCED_STACK_TESTS=false
   unset PREV_FAILED_TEST_FILES PREV_NOT_EXECUTED_TEST_FILES
   base_pattern=$(functional_base_pattern)
   node bin/functional-execution-evidence.js plan "$base_pattern"
-  printf 'bucket,duration_seconds\n' > test-results/functional/optimised-timings.csv
-  started=$SECONDS
-  publish_functional_execution_evidence optimised running
-  ./bin/configure-functional-test-router.sh real
-
-  echo "Residual baseline scenarios are intentionally excluded from optimised execution: $(node bin/functional-execution-evidence.js count residual) active"
-
-  for bucket in thin-client mocked; do
-    count=$(node bin/functional-execution-evidence.js count "$bucket")
-    if [[ "$count" -eq 0 ]]; then
-      printf '%s,0\n' "$bucket" >> test-results/functional/optimised-timings.csv
-      continue
-    fi
-    if [[ "$bucket" = mocked ]]; then
-      ./bin/configure-functional-test-router.sh mocked
-      export REDUCED_STACK_TESTS=true
-    fi
-    pattern=$(node bin/functional-execution-evidence.js pattern "$bucket")
-    echo "Running ${bucket}: ${count} active scenarios from ${base_pattern}"
-    bucket_started=$SECONDS
-    MOCHAWESOME_REPORTFILENAME="optimised-${bucket}" \
-      run_functional_command yarn codeceptjs run-workers --suites 1 --grep "$pattern" \
-      --reporter mocha-multi --plugins allure --verbose
-    if [[ "$bucket" = mocked ]]; then
-      if [[ "$base_pattern" = *'@ui-create-claim'* ]]; then
-        export WIREMOCK_EXPECT_CREATE_CLAIM=true
-      fi
-      ./bin/assert-preview-wiremock.sh
-    fi
-    printf '%s,%s\n' "$bucket" "$((SECONDS - bucket_started))" >> test-results/functional/optimised-timings.csv
-  done
-  printf 'total,%s\n' "$((SECONDS - started))" >> test-results/functional/optimised-timings.csv
+  count=$(node bin/functional-execution-evidence.js count thin-client)
+  pattern=$(node bin/functional-execution-evidence.js pattern thin-client)
+  echo "Running ${count} migrated thin-client scenarios from ${base_pattern}"
+  MOCHAWESOME_REPORTFILENAME='optimised-thin-client' \
+    run_functional_command yarn codeceptjs run-workers --suites 1 --grep "$pattern" \
+    --reporter mocha-multi --plugins allure --verbose
   node bin/functional-execution-evidence.js check optimised
-  publish_functional_execution_evidence optimised completed test-results/functional/optimised-timings.csv
-}
-
-assert_thin_full_stack_results() {
-  local report_dir="${THIN_JUNIT_REPORT_DIR:-test-results/thin-full-stack}"
-  local aggregate_report="${THIN_JUNIT_REPORT:-test-results/thin-full-stack/result.xml}"
-  local allure_dir="${THIN_ALLURE_RESULTS_DIR:-test-results/thin-full-stack/allure-results}"
-
-  node - "$report_dir" "$aggregate_report" "$allure_dir" <<'NODE'
-    const fs = require('fs');
-    const path = require('path');
-    const {XMLBuilder, XMLParser} = require('fast-xml-parser');
-
-    const [reportDir, aggregateReport, allureDir] = process.argv.slice(2);
-    const expectedTests = 8;
-
-    if (!fs.existsSync(reportDir)) {
-      throw new Error(`Thin full-stack JUnit report directory is missing: ${reportDir}`);
-    }
-
-    const reportFiles = fs.readdirSync(reportDir)
-      .filter((file) => file.startsWith('result-') && file.endsWith('.xml'))
-      .map((file) => path.join(reportDir, file));
-    if (reportFiles.length === 0) {
-      throw new Error(`Thin full-stack JUnit reports are missing: ${reportDir}`);
-    }
-
-    const parser = new XMLParser({ignoreAttributes: false, attributeNamePrefix: ''});
-    const summaries = reportFiles.map((file) => parser.parse(fs.readFileSync(file, 'utf8')).testsuites);
-    const suites = summaries.flatMap((summary) => {
-      const value = summary?.testsuite;
-      return value ? (Array.isArray(value) ? value : [value]) : [];
-    }).map((suite) => {
-      const value = suite?.testcase;
-      const testcases = value ? (Array.isArray(value) ? value : [value]) : [];
-      return {
-        ...suite,
-        tests: testcases.length,
-        failures: testcases.filter((testcase) => testcase.failure !== undefined).length,
-        errors: testcases.filter((testcase) => testcase.error !== undefined).length,
-        skipped: testcases.filter((testcase) => testcase.skipped !== undefined).length,
-        testcase: testcases,
-      };
-    }).filter((suite) => suite.tests > 0);
-    const total = (field) => suites.reduce((sum, suite) => sum + Number(suite[field] || 0), 0);
-    const tests = total('tests');
-    const failures = total('failures');
-    const errors = total('errors');
-    const skipped = total('skipped');
-
-    if (tests !== expectedTests || failures !== 0 || errors !== 0 || skipped !== 0) {
-      throw new Error(
-        `Thin full-stack JUnit attestation failed: expected ${expectedTests} tests, ` +
-        `found ${tests} with ${failures} failures, ${errors} errors and ${skipped} skipped`,
-      );
-    }
-
-    const aggregate = {
-      testsuites: {
-        name: 'Thin full-stack tests',
-        tests,
-        failures,
-        errors,
-        skipped,
-        testsuite: suites,
-      },
-    };
-    fs.writeFileSync(
-      aggregateReport,
-      new XMLBuilder({ignoreAttributes: false, attributeNamePrefix: '', format: true}).build(aggregate),
-    );
-
-    if (!fs.existsSync(allureDir)) {
-      throw new Error(`Thin full-stack Allure results directory is missing: ${allureDir}`);
-    }
-
-    const resultFiles = fs.readdirSync(allureDir).filter((file) => file.endsWith('-result.json'));
-    if (resultFiles.length !== expectedTests) {
-      throw new Error(
-        `Thin full-stack Allure attestation failed: expected ${expectedTests} result files, ` +
-        `found ${resultFiles.length}`,
-      );
-    }
-
-    const nonPassingResults = resultFiles
-      .map((file) => ({file, result: JSON.parse(fs.readFileSync(path.join(allureDir, file), 'utf8'))}))
-      .filter(({result}) => result.status !== 'passed');
-    if (nonPassingResults.length > 0) {
-      throw new Error(
-        `Thin full-stack Allure attestation found non-passing results: ${nonPassingResults
-          .map(({file, result}) => `${file} (${result.status || 'missing status'})`)
-          .join(', ')}`,
-      );
-    }
-
-    console.log(`Thin full-stack attestation passed: ${expectedTests} tests executed and passed`);
-NODE
 }
 
 #MAIN SCRIPT
 TEST_FILES_REPORT="test-results/functional/testFilesReport.json"
 PREV_TEST_FILES_REPORT="test-results/functional/prevTestFilesReport.json"
-export REPORT_FILE="${REPORT_FILE:-test-results/functional/result-[hash].xml}"
-
-if [[ "${SKIP_FUNCTIONAL_TESTS:-false}" = "true" ]]; then
-  echo "The label 'pr-values:skip-functional-tests' exists on the PR."
-  echo "Skipping functional tests."
-  exit 0
-fi
-
-if [[ "${OPTIMISED_FUNCTIONAL_TESTS:-false}" = "true" ]]; then
-  run_optimised_functional_tests
-  exit 0
-fi
 
 # Check if SKIP_FUNCTIONAL_TESTS is set to true
 if [[ "$SKIP_FUNCTIONAL_TESTS" = "true" ]]; then
   echo "The label 'pr-values:skip-functional-tests' exists on the PR."
   echo "Skipping functional tests."
   exit 0
+
+elif [[ "${OPTIMISED_FUNCTIONAL_TESTS:-false}" = "true" ]]; then
+  run_optimised_functional_tests
 
 #Check if RUN_ALL_FUNCTIONAL_TESTS is set to true
 elif [[ "$RUN_ALL_FUNCTIONAL_TESTS" = "true" ]]; then

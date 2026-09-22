@@ -11,7 +11,7 @@ const claimType = 'SmallClaims';
 let claimAmount = 1500, claimFee = 80, deadline = '6 March 2024';
 let claimTotalAmount = claimAmount + claimFee;
 
-Feature('Defendant linking through CUI').tag('@ui-defendant-linking');
+Feature('Defendant linking through CUI').tag('@civil-citizen-pr');
 
 Scenario.skip('CTSC admin links a defendant to a LiP claim through Manage Case', async ({I, api}) => {
   const {claimantUser, defendantUser} = await createScenarioUsers();

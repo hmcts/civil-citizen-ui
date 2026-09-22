@@ -103,21 +103,6 @@ module.exports = class BrowserHelpers extends Helper {
     return false;
   }
 
-  async reloadOnGatewayTimeout(retries = 2) {
-    if (!this.isPlaywright()) return;
-
-    const page = this.helpers.Playwright.page;
-    for (let attempt = 0; attempt < retries; attempt++) {
-      if (!(await page.content()).includes('504 Gateway Time-out')) return;
-      console.log(`Gateway timeout on sign-in page; reloading (${attempt + 1}/${retries})`);
-      await page.reload();
-      await page.waitForTimeout(1000);
-    }
-    if ((await page.content()).includes('504 Gateway Time-out')) {
-      throw new Error(`Sign-in gateway still returned 504 after ${retries} reloads`);
-    }
-  }
-
   async clickClaimNumber(claimNumber, retries = 2) {
     if (!this.isPlaywright()) {
       await this.getHelper().click(claimNumber);
@@ -130,17 +115,11 @@ module.exports = class BrowserHelpers extends Helper {
 
     for (let attempt = 0; attempt <= retries; attempt++) {
       try {
-        await claimLink.waitFor({state: 'visible', timeout: 10000});
-        await claimLink.click({timeout: 10000});
+        await claimLink.click();
       } catch (err) {
         lastError = err;
         console.log(`Claim click attempt ${attempt + 1}/${retries + 1} failed: ${err.message}`);
-        if (attempt < retries) {
-          // A transient dashboard fetch error can leave the generic error page
-          // visible. Reloading makes the claimant-claims request again.
-          await page.reload();
-          await page.waitForTimeout(1000);
-        }
+        await page.waitForTimeout(500);
         continue;
       }
 

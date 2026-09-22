@@ -11,7 +11,7 @@ Run locally or against an already configured environment with:
 yarn test:thin-full-stack
 ```
 
-In Jenkins, the `pr-values:optimisedTests` label routes baseline scenarios carrying `@thin-full-stack` into the thin-client bucket on the reduced preview profile. Baseline scenarios carrying `@mocked-functional` run through WireMock in the same deployment. Residual baseline scenarios are recorded as excluded and do not execute in optimised mode. With no label, every baseline scenario runs in its original standard selection against the normal platform.
+In the standard CNP PR pipeline, add the `pr-values:thinClientTests` label to run this suite against that PR's existing full preview deployment. The label is mutually exclusive with `pr-values:mockedTests`. Removing it restores the current standard selection; DTSCCI-6134 will make mocked tests the ordinary PR default while retaining this explicit thin-client route.
 
 Thin-suite results live below `test-results/thin-full-stack`, have their own JUnit, Mochawesome and Allure output, and are published as **Thin Full-Stack Allure Report**. They are not combined with reduced-stack results.
 
@@ -19,7 +19,7 @@ The Jenkins run is successful only when the thin JUnit report is present and rec
 
 ## Trigger, gating and ownership policy
 
-- Trigger: the single `pr-values:optimisedTests` label on the standard CNP PR pipeline.
+- Trigger: explicit `pr-values:thinClientTests` label on the standard CNP PR pipeline, providing an on-demand route for release investigation.
 - Merge gating: the suite does not run on every PR and does not block merge.
 - Release gating: a first-attempt application failure blocks promotion until triaged; a confirmed environment-only failure does not block promotion when the incident and a successful rerun are linked.
 - Primary triage owner: Mike Lemos (DTSCCI-5974 assignee).

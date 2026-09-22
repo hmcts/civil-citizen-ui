@@ -1,7 +1,7 @@
 import { NextFunction, Request, RequestHandler, Response, Router } from 'express';
 import {
   APPLICATION_TYPE_URL, BACK_URL,
-  GA_AGREEMENT_FROM_OTHER_PARTY_URL, GA_ASK_PROOF_OF_DEBT_PAYMENT_GUIDANCE_URL, ORDER_JUDGE_URL, QM_START_URL,
+  GA_AGREEMENT_FROM_OTHER_PARTY_URL, GA_ASK_PROOF_OF_DEBT_PAYMENT_GUIDANCE_URL, ORDER_JUDGE_URL,
 } from 'routes/urls';
 import { GenericForm } from 'common/form/models/genericForm';
 import { AppRequest } from 'common/models/AppRequest';
@@ -59,9 +59,6 @@ applicationTypeController.get(APPLICATION_TYPE_URL, (async (req: AppRequest, res
       isOtherSelected: applicationType.isOtherSelected() || isAmendClaim,
       showCCJ: showCCJ,
       isQMEnabled,
-      isQMFlagEnabled: isQMEnabled,
-      disableSendMessage: isQMEnabled,
-      qmStartUrl: constructResponseUrlWithIdParams(claimId, QM_START_URL) + '?linkFrom=start',
       isAskMoreTime,
       isAdjournHearing,
       isAmendClaim,

@@ -1,5 +1,4 @@
 import Axios, {AxiosInstance, AxiosResponse} from 'axios';
-import {mockedFunctionalServiceUrl} from '../functionalTestRouterProxy';
 import {AppRequest} from 'common/models/AppRequest';
 import {CCDGaHelpWithFees, CCDGeneralApplication, CCDRespondToApplication, EventDto} from 'models/gaEvents/eventDto';
 import {ApplicationEvent} from 'models/gaEvents/applicationEvent';
@@ -42,11 +41,6 @@ export class GaServiceClient {
         baseURL,
       });
     }
-    this.client?.interceptors?.request?.use(config => {
-      const routerUrl = mockedFunctionalServiceUrl();
-      if (routerUrl) config.baseURL = routerUrl;
-      return config;
-    });
   }
 
   getConfig(req: AppRequest) {

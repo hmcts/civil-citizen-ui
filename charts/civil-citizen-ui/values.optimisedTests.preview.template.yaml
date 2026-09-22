@@ -1,7 +1,6 @@
 # Applied when a PR has the single `pr-values:optimisedTests` label. This keeps
 # the real services used by the migrated thin-client scenarios and removes
-# preview components those scenarios do not call. WireMock is present for
-# migrated scenarios that have no real-service boundary.
+# preview components those scenarios do not call.
 
 civil-service:
   ccd:
@@ -20,31 +19,5 @@ civil-service:
   em-ccdorc:
     enabled: false
 
-nodejs:
-  environment:
-    FUNCTIONAL_TEST_ROUTER_URL: http://${SERVICE_NAME}-wiremock
-    FUNCTIONAL_TEST_ROUTER_TOKEN: ${SERVICE_NAME}
-    PCQ_URL: https://${SERVICE_FQDN}
-
 wiremock:
-  enabled: true
-  image: wiremock/wiremock
-  applicationPort: 8080
-  imagePullPolicy: Always
-  releaseNameOverride: ${SERVICE_NAME}-wiremock
-  # Browser traffic and test administration both pass through CUI. WireMock has
-  # no public ingress of its own.
-  ingressHost: ""
-  verbose: true
-  volumes:
-    - name: wiremock-mappings
-      configMap:
-        name: ${SERVICE_NAME}-wiremock-mappings
-    - name: wiremock-files
-      configMap:
-        name: ${SERVICE_NAME}-wiremock-files
-  volumeMounts:
-    - name: wiremock-mappings
-      mountPath: /home/wiremock/mappings
-    - name: wiremock-files
-      mountPath: /home/wiremock/__files
+  enabled: false
