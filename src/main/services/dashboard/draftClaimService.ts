@@ -2,6 +2,7 @@ import {AppRequest} from 'common/models/AppRequest';
 import {DashboardClaimantItem, toDraftClaimDashboardItem} from 'models/dashboard/dashboardItem';
 import {Claim} from 'models/claim';
 import {getDraftClaim} from 'modules/draft-store/draftStoreManagerService';
+import {getTTLDaysForCategory, TTLCategory} from 'modules/draft-store/ttlConfig';
 
 export interface DraftClaimData {
    claimCreationUrl: string;
@@ -30,5 +31,8 @@ const getDashboardDraftClaimItem = async (req: AppRequest): Promise<DashboardCla
   const claim = new Claim();
   Object.assign(claim, draftResult.claimResponse.case_data);
   claim.draftClaimCreatedAt = new Date(draftResult.createdAt);
+  if (draftResult.expiresAt) {
+    claim.draftClaimCacheTtlDays = getTTLDaysForCategory(TTLCategory.DRAFT_CLAIM);
+  }
   return toDraftClaimDashboardItem(claim) ?? null;
 };
