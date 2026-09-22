@@ -55,7 +55,7 @@
           "Content-Type": "application/json"
         },
         "jsonBody": {
-          "result": "SUCCESS"
+          "Result": "SUCCESS"
         }
       }
     },

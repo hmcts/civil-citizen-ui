@@ -49,7 +49,14 @@ assert_status 200 GET '/card-payments/RC-THIN-CLIENT-CLAIM/statuses'
 assert_status 200 GET '/cases/documents/00000000-0000-4000-8000-000000000001'
 assert_status 200 GET '/cases/documents/00000000-0000-4000-8000-000000000001/binary'
 assert_status 204 DELETE '/cases/documents/00000000-0000-4000-8000-000000000001?permanent=true'
-assert_status 200 PATCH '/cases/documents/attachToCase' '{"caseId":"1111222233334444","caseTypeId":"CIVIL","jurisdictionId":"CIVIL","documentHashTokens":[{"id":"00000000-0000-4000-8000-000000000001","hashToken":"thin-client-document-hash"}]}'
+attach_response=$(curl --fail --silent --request PATCH \
+  --header 'Content-Type: application/json' \
+  --data '{"caseId":"1111222233334444","caseTypeId":"CIVIL","jurisdictionId":"CIVIL","documentHashTokens":[{"id":"00000000-0000-4000-8000-000000000001","hashToken":"thin-client-document-hash"}]}' \
+  "${url}/cases/documents/attachToCase")
+if [ "${attach_response}" != '{"Result":"SUCCESS"}' ]; then
+  echo "Expected attach-to-case to return the CDAM response schema, got ${attach_response}" >&2
+  exit 1
+fi
 
 upload_response=$(curl --fail --silent \
   --form 'classification=RESTRICTED' \
