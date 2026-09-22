@@ -15,7 +15,7 @@ import {
   createDraftClaimInStoreWithExpiryTime,
   deleteDraftClaimFromStore as deleteDraftClaimFromRedis,
 } from './draftStoreService';
-import {getCachedDraft, setCachedDraft, deleteCachedDraft} from './draftClaimRedisCache';
+import {getCachedDraft, deleteCachedDraft} from './draftClaimRedisCache';
 
 const buildManagerResult = (
   raw: DraftClaimResponse,
@@ -68,7 +68,6 @@ export const getDraftClaim = async (req: AppRequest): Promise<DraftClaimManagerR
     if (!dbResult) {
       return null;
     }
-    await setCachedDraft(userId, dbResult.rawResponse);
     return buildManagerResult(dbResult.rawResponse);
   }
 
@@ -87,7 +86,6 @@ export const createOrLoadDraft = async (req: AppRequest, claim?: Claim): Promise
 
   if (await isDraftClaimDatabaseEnabled()) {
     const dbResult = await createOrLoadDraftClaimInDraftStoreDb(req, claim);
-    await setCachedDraft(userId, dbResult.rawResponse);
     return buildManagerResult(dbResult.rawResponse, dbResult.isNew);
   }
 
@@ -114,7 +112,6 @@ export const updateDraftClaim = async (req: AppRequest, claim: Claim, draftId: s
 
   if (await isDraftClaimDatabaseEnabled()) {
     const dbResult = await updateDraftClaimInStore(req, draftId, claim);
-    await setCachedDraft(userId, dbResult.rawResponse);
     return buildManagerResult(dbResult.rawResponse);
   }
 
