@@ -31,10 +31,10 @@
               "hashToken": "thin-client-document-hash",
               "_links": {
                 "self": {
-                  "href": "__WIREMOCK_PUBLIC_URL__/cases/documents/00000000-0000-4000-8000-000000000001"
+                  "href": "http://dm-store-aat.service.core-compute-aat.internal/documents/00000000-0000-4000-8000-000000000001"
                 },
                 "binary": {
-                  "href": "__WIREMOCK_PUBLIC_URL__/cases/documents/00000000-0000-4000-8000-000000000001/binary"
+                  "href": "http://dm-store-aat.service.core-compute-aat.internal/documents/00000000-0000-4000-8000-000000000001/binary"
                 }
               }
             }
@@ -66,10 +66,10 @@
           "hashToken": "thin-client-document-hash",
           "_links": {
             "self": {
-              "href": "__WIREMOCK_PUBLIC_URL__/cases/documents/00000000-0000-4000-8000-000000000001"
+              "href": "http://dm-store-aat.service.core-compute-aat.internal/documents/00000000-0000-4000-8000-000000000001"
             },
             "binary": {
-              "href": "__WIREMOCK_PUBLIC_URL__/cases/documents/00000000-0000-4000-8000-000000000001/binary"
+              "href": "http://dm-store-aat.service.core-compute-aat.internal/documents/00000000-0000-4000-8000-000000000001/binary"
             }
           }
         }

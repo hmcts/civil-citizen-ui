@@ -50,14 +50,14 @@ assert_status 200 GET '/cases/documents/00000000-0000-4000-8000-000000000001'
 assert_status 200 GET '/cases/documents/00000000-0000-4000-8000-000000000001/binary'
 assert_status 204 DELETE '/cases/documents/00000000-0000-4000-8000-000000000001?permanent=true'
 
-actual=$(curl --silent --output /dev/null --write-out '%{http_code}' \
+upload_response=$(curl --fail --silent \
   --form 'classification=RESTRICTED' \
   --form 'caseTypeId=CIVIL' \
   --form 'jurisdictionId=CIVIL' \
   --form 'files=@charts/civil-citizen-ui/wiremock/__files/create-claim-claim-fee.json;type=application/pdf' \
   "${url}/cases/documents")
-if [ "${actual}" != '200' ]; then
-  echo "Expected multipart document upload to return 200, got ${actual}" >&2
+if ! grep --quiet 'dm-store-aat.service.core-compute-aat.internal/documents/00000000-0000-4000-8000-000000000001' <<<"${upload_response}"; then
+  echo 'Expected multipart document upload to return a CCD-compatible DM Store link' >&2
   exit 1
 fi
 
