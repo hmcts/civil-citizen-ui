@@ -9,6 +9,7 @@ import {
 } from 'services/features/queryManagement/queryManagementService';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {QueryManagement} from 'form/models/queryManagement/queryManagement';
+import {LinkFromValues} from 'models/generalApplication/applicationType';
 import {QM_FOLLOW_UP_CYA} from 'routes/urls';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {createMockResponse, getRouteHandler} from '../../../../utils/getRouteHandler';
@@ -58,7 +59,7 @@ describe('Send follow up query Controller', () => {
     });
 
     it('should clear previous QM data when linkFrom=start', async () => {
-      req.query = {linkFrom: 'start'};
+      req.query = {linkFrom: LinkFromValues.start};
 
       await getHandler(req as Request, res as unknown as Response, next);
 

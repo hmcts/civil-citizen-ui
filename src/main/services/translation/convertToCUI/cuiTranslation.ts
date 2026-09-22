@@ -37,7 +37,7 @@ import {toCUIClaimantMediation} from 'services/translation/convertToCUI/convertT
 import { RepaymentPlan } from 'common/models/repaymentPlan';
 import {
   ApplicationTypeOption,
-  selectedApplicationTypeByOptions,
+  getApplicationTypeOptionByDisplayValue,
 } from 'common/models/generalApplication/applicationType';
 import {ClaimGeneralApplication, ClaimGeneralApplicationValue} from 'models/generalApplication/claimGeneralApplication';
 import {CCDGeneralApplication} from 'models/gaEvents/eventDto';
@@ -199,5 +199,5 @@ function toCUIClaimGeneralApplications(ccdClaimGeneralApplications: CCDGeneralAp
 }
 
 export const displayToEnumKey = (displayValue: string): ApplicationTypeOption => {
-  return (Object.keys(selectedApplicationTypeByOptions) as Array<keyof typeof selectedApplicationTypeByOptions>)
-    .find(key => selectedApplicationTypeByOptions[key]?.[2] === displayValue) as ApplicationTypeOption | undefined;};
+  return getApplicationTypeOptionByDisplayValue(displayValue);
+};
