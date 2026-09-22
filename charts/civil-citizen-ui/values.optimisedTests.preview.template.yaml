@@ -6,6 +6,7 @@ civil-service:
   java:
     environment:
       FEES_API_URL: http://${SERVICE_NAME}-wiremock
+      PAYMENTS_API_URL: http://${SERVICE_NAME}-wiremock
       DOCMOSIS_TORNADO_URL: http://${SERVICE_NAME}-wiremock
   ccd:
     postgresql:
@@ -34,7 +35,8 @@ wiremock:
   applicationPort: 8080
   imagePullPolicy: Always
   releaseNameOverride: ${SERVICE_NAME}-wiremock
-  ingressHost: ""
+  ingressHost: wiremock-${SERVICE_FQDN}
+  publicUrl: https://wiremock-${SERVICE_FQDN}
   verbose: true
   volumes:
     - name: wiremock-mappings
