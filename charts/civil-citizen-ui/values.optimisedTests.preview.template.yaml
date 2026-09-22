@@ -35,6 +35,7 @@ nodejs:
   environment:
     ORDNANCE_SURVEY_API_URL: http://${SERVICE_NAME}-wiremock
     ORDNANCE_SURVEY_API_KEY: mock-key
+    GOVPAY_URL: https://wiremock-${SERVICE_FQDN}
 
 wiremock:
   enabled: true
