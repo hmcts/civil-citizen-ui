@@ -28,7 +28,6 @@
       "name": "thin-client-create-claim-card-payment",
       "priority": 3,
       "scenarioName": "thin-client-payment",
-      "requiredScenarioState": "Started",
       "newScenarioState": "PaymentCreated",
       "request": {
         "method": "POST",
@@ -60,7 +59,6 @@
       "name": "thin-client-create-hearing-card-payment",
       "priority": 3,
       "scenarioName": "thin-client-payment",
-      "requiredScenarioState": "Started",
       "newScenarioState": "PaymentCreated",
       "request": {
         "method": "POST",
@@ -92,7 +90,6 @@
       "name": "thin-client-create-general-application-card-payment",
       "priority": 3,
       "scenarioName": "thin-client-payment",
-      "requiredScenarioState": "Started",
       "newScenarioState": "PaymentCreated",
       "request": {
         "method": "POST",

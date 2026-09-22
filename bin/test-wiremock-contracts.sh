@@ -53,6 +53,13 @@ fi
 payment_body='{"amount":455,"currency":"GBP","return-url":"https://example.test/claim-issued-payment-confirmation/1234"}'
 payment_response=$(curl --fail --silent --request POST --header 'Content-Type: application/json' --data "${payment_body}" "${url}/service-request/2026-THIN-CLIENT-SERVICE-REQUEST/card-payments")
 payment_reference=$(node -e 'console.log(JSON.parse(process.argv[1]).payment_reference)' "${payment_response}")
+replacement_payment_response=$(curl --fail --silent --request POST --header 'Content-Type: application/json' --data "${payment_body}" "${url}/service-request/2026-THIN-CLIENT-SERVICE-REQUEST/card-payments")
+replacement_payment_reference=$(node -e 'console.log(JSON.parse(process.argv[1]).payment_reference)' "${replacement_payment_response}")
+if [ "${payment_reference}" = "${replacement_payment_reference}" ]; then
+  echo 'Expected a new payment to replace an unfinished payment with a unique reference' >&2
+  exit 1
+fi
+payment_reference="${replacement_payment_reference}"
 initiated_status=$(curl --fail --silent "${url}/card-payments/${payment_reference}/statuses")
 if ! grep --quiet '"status":"Initiated"' <<<"${initiated_status}"; then
   echo "Expected a newly created payment to be initiated, got ${initiated_status}" >&2
