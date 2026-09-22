@@ -17,29 +17,8 @@
         "headers": {
           "Content-Type": "application/json"
         },
-        "jsonBody": {
-          "documents": [
-            {
-              "classification": "RESTRICTED",
-              "size": 321,
-              "mimeType": "application/pdf",
-              "originalDocumentName": "thin-client-document.pdf",
-              "createdOn": "2026-01-01T00:00:00.000+0000",
-              "modifiedOn": "2026-01-01T00:00:00.000+0000",
-              "createdBy": "thin-client",
-              "lastModifiedBy": "thin-client",
-              "hashToken": "thin-client-document-hash",
-              "_links": {
-                "self": {
-                  "href": "http://dm-store-aat.service.core-compute-aat.internal/documents/00000000-0000-4000-8000-000000000001"
-                },
-                "binary": {
-                  "href": "http://dm-store-aat.service.core-compute-aat.internal/documents/00000000-0000-4000-8000-000000000001/binary"
-                }
-              }
-            }
-          ]
-        }
+        "transformers": ["response-template"],
+        "body": "{{#assign 'documentId'}}{{randomValue type='UUID'}}{{/assign}}{\"documents\":[{\"classification\":\"RESTRICTED\",\"size\":321,\"mimeType\":\"application/pdf\",\"originalDocumentName\":\"thin-client-document.pdf\",\"createdOn\":\"2026-01-01T00:00:00.000+0000\",\"modifiedOn\":\"2026-01-01T00:00:00.000+0000\",\"createdBy\":\"thin-client\",\"lastModifiedBy\":\"thin-client\",\"hashToken\":\"thin-client-{{documentId}}\",\"_links\":{\"self\":{\"href\":\"http://dm-store-aat.service.core-compute-aat.internal/documents/{{documentId}}\"},\"binary\":{\"href\":\"http://dm-store-aat.service.core-compute-aat.internal/documents/{{documentId}}/binary\"}}}]}"
       }
     },
     {
@@ -71,25 +50,8 @@
         "headers": {
           "Content-Type": "application/json"
         },
-        "jsonBody": {
-          "classification": "RESTRICTED",
-          "size": 321,
-          "mimeType": "application/pdf",
-          "originalDocumentName": "thin-client-document.pdf",
-          "createdOn": "2026-01-01T00:00:00.000+0000",
-          "modifiedOn": "2026-01-01T00:00:00.000+0000",
-          "createdBy": "thin-client",
-          "lastModifiedBy": "thin-client",
-          "hashToken": "thin-client-document-hash",
-          "_links": {
-            "self": {
-              "href": "http://dm-store-aat.service.core-compute-aat.internal/documents/00000000-0000-4000-8000-000000000001"
-            },
-            "binary": {
-              "href": "http://dm-store-aat.service.core-compute-aat.internal/documents/00000000-0000-4000-8000-000000000001/binary"
-            }
-          }
-        }
+        "transformers": ["response-template"],
+        "body": "{\"classification\":\"RESTRICTED\",\"size\":321,\"mimeType\":\"application/pdf\",\"originalDocumentName\":\"thin-client-document.pdf\",\"createdOn\":\"2026-01-01T00:00:00.000+0000\",\"modifiedOn\":\"2026-01-01T00:00:00.000+0000\",\"createdBy\":\"thin-client\",\"lastModifiedBy\":\"thin-client\",\"hashToken\":\"thin-client-{{request.pathSegments.[2]}}\",\"_links\":{\"self\":{\"href\":\"http://dm-store-aat.service.core-compute-aat.internal/documents/{{request.pathSegments.[2]}}\"},\"binary\":{\"href\":\"http://dm-store-aat.service.core-compute-aat.internal/documents/{{request.pathSegments.[2]}}/binary\"}}}"
       }
     },
     {

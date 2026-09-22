@@ -58,14 +58,30 @@ if [ "${attach_response}" != '{"Result":"SUCCESS"}' ]; then
   exit 1
 fi
 
-upload_response=$(curl --fail --silent \
+upload_document() {
+  curl --fail --silent \
   --form 'classification=RESTRICTED' \
   --form 'caseTypeId=CIVIL' \
   --form 'jurisdictionId=CIVIL' \
   --form 'files=@charts/civil-citizen-ui/wiremock/__files/create-claim-claim-fee.json;type=application/pdf' \
-  "${url}/cases/documents")
-if ! grep --quiet 'dm-store-aat.service.core-compute-aat.internal/documents/00000000-0000-4000-8000-000000000001' <<<"${upload_response}"; then
+  "${url}/cases/documents"
+}
+
+upload_response=$(upload_document)
+second_upload_response=$(upload_document)
+document_id=$(node -e 'const response=JSON.parse(process.argv[1]); console.log(response.documents[0]._links.self.href.split("/").pop())' "${upload_response}")
+second_document_id=$(node -e 'const response=JSON.parse(process.argv[1]); console.log(response.documents[0]._links.self.href.split("/").pop())' "${second_upload_response}")
+if [ "${document_id}" = "${second_document_id}" ]; then
+  echo 'Expected each multipart document upload to return a unique document ID' >&2
+  exit 1
+fi
+if ! grep --quiet "dm-store-aat.service.core-compute-aat.internal/documents/${document_id}" <<<"${upload_response}"; then
   echo 'Expected multipart document upload to return a CCD-compatible DM Store link' >&2
+  exit 1
+fi
+metadata_response=$(curl --fail --silent "${url}/cases/documents/${document_id}")
+if ! grep --quiet "\"hashToken\":\"thin-client-${document_id}\"" <<<"${metadata_response}"; then
+  echo 'Expected document metadata to preserve the upload hash token' >&2
   exit 1
 fi
 
