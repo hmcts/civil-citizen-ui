@@ -403,6 +403,42 @@
     {
       "description": "a JUDGMENT_PAID_IN_FULL citizen event",
       "state": "The paid judgment or settlement event can be submitted"
+    },
+    {
+      "description": "a multipart citizen document upload",
+      "state": "A synthetic citizen document can be uploaded"
+    },
+    {
+      "description": "a document download by identifier",
+      "state": "A synthetic document exists for download"
+    },
+    {
+      "description": "a request to download a missing document",
+      "state": "The requested document does not exist"
+    },
+    {
+      "description": "a translated EVIDENCE_UPLOAD_APPLICANT evidence event",
+      "state": "A translated EVIDENCE_UPLOAD_APPLICANT event can be submitted"
+    },
+    {
+      "description": "a translated EVIDENCE_UPLOAD_RESPONDENT evidence event",
+      "state": "A translated EVIDENCE_UPLOAD_RESPONDENT event can be submitted"
+    },
+    {
+      "description": "a CUI_UPLOAD_MEDIATION_DOCUMENTS event with a referred document",
+      "state": "A CUI mediation document submission can be made"
+    },
+    {
+      "description": "a TRIAL_READINESS event",
+      "state": "A translated trial readiness response can be submitted"
+    },
+    {
+      "description": "an initial request REQUEST_FOR_RECONSIDERATION event",
+      "state": "A translated reconsideration initial request can be submitted"
+    },
+    {
+      "description": "a comments response REQUEST_FOR_RECONSIDERATION event",
+      "state": "A translated reconsideration comments response can be submitted"
     }
   ],
   "idamApi_oidc": [
