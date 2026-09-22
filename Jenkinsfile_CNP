@@ -3,7 +3,7 @@ properties([
   copyArtifactPermission('/HMCTS_a_to_c/civil-citizen-ui/*'),
 ])
 
-@Library("Infrastructure@2.5.4")
+@Library("Infrastructure@2.7.0")
 import uk.gov.hmcts.contino.AppPipelineConfig
 import uk.gov.hmcts.contino.GithubAPI
 import uk.gov.hmcts.contino.AppPipelineDsl
@@ -291,6 +291,7 @@ withPipeline(type, product, component) {
   enableSlackNotifications('#civil_notifications')
   enableSlackNotifications('#citizen-ui-techteam')
   syncBranchesWithMaster(branchesToSync)
+  enableBuildCache()
 
   onPR {
     enablePactAs([AppPipelineDsl.PactRoles.CONSUMER])

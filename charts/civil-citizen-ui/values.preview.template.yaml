@@ -54,10 +54,10 @@ civil-service:
     image: hmctsprod.azurecr.io/civil/service:${CIVIL_SERVICE_IMAGE}
     imagePullPolicy: Always
     ingressHost: ${SERVICE_NAME}-civil-service.preview.platform.hmcts.net
-    devcpuRequests: 50m
-    devcpuLimits: 700m
-    devmemoryRequests: 1536Mi
-    devmemoryLimits: 2048Mi
+    devcpuRequests: 100m
+    devcpuLimits: 1400m
+    devmemoryRequests: 3072Mi
+    devmemoryLimits: 4096Mi
     keyVaults:
       civil:
         resourceGroup: civil
@@ -248,6 +248,9 @@ civil-service:
 
     am-role-assignment-service:
       java:
+        livenessDelay: 0
+        startupPeriod: 120
+        startupFailureThreshold: 3
         devmemoryRequests: 2048Mi
         devcpuRequests: 50m
         devmemoryLimits: 4096Mi
@@ -286,10 +289,10 @@ civil-service:
       java:
         releaseNameOverride: ${SERVICE_NAME}-ccd-data-store-api
         imagePullPolicy: Always
-        devcpuRequests: 50m
-        devcpuLimits: 700m
-        devmemoryRequests: 768Mi
-        devmemoryLimits: 2048Mi
+        devcpuRequests: 100m
+        devcpuLimits: 1400m
+        devmemoryRequests: 1024Mi
+        devmemoryLimits: 4096Mi
         environment:
           CASE_DOCUMENT_AM_API_ATTACH_DOCUMENT_ENABLED: true
           CASE_DOCUMENT_AM_URL: http://${SERVICE_NAME}-cdam

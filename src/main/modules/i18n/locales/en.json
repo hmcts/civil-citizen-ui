@@ -3012,7 +3012,9 @@
     "ELIGIBILITY_HELP_WITH_FEES": {
       "PAGE_TITLE": "Do you need help paying your court fee?",
       "TITLE": "Do you need help paying your court fee?",
-      "FINANCIAL_HELP": "You could get financial help with court fees if you have little or no savings, are on a low income or get certain benefits."
+      "FINANCIAL_HELP": "You could get financial help with court fees if you have little or no savings, are on a low income or get certain benefits.",
+      "COURT_CALCULATOR_HELP": "You can use the court calculator to see if you could get help with fees.",
+      "FEE_REMISSION_CALCULATOR_LINK": "Fee remission calculator: EX160C - for Microsoft Excel (opens in a new tab)"
     },
     "ELIGIBILITY_HWF_REFERENCE": {
       "ALREADY_APPLIED": "You’ll only have one if you’ve already applied for Help with Fees in respect of this claim.",
@@ -5287,8 +5289,8 @@
       "DETERMINATION_REQUEST": "Manual Determination request",
       "TRANSLATED_DETERMINATION_REQUEST": "Translated Manual Determination Request",
       "DRAFT_CLAIM": "Draft claim form",
-      "FINAL_ORDER": "Final Order Request",
-      "TRANSLATED_FINAL_ORDER": "Translated Final Order Request",
+      "FINAL_ORDER": "Judge's Order",
+      "TRANSLATED_FINAL_ORDER": "Translated Judge's Order",
       "PAGE_CAPTION": "Orders and notices from the court",
       "PAGE_TITLE": "View orders and notices",
       "PARTICULARS_CLAIM": "Particulars of claim",
