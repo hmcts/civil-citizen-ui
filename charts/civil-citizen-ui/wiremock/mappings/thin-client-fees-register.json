@@ -58,7 +58,7 @@
         "jsonBody": {
           "code": "FEE0442",
           "description": "General application fee",
-          "fee_amount": 184,
+          "fee_amount": 126,
           "version": 1
         }
       }
