@@ -1,0 +1,111 @@
+{
+  "mappings": [
+    {
+      "name": "thin-client-case-document-upload",
+      "priority": 3,
+      "request": {
+        "method": "POST",
+        "urlPath": "/cases/documents",
+        "headers": {
+          "Content-Type": {
+            "matches": "multipart/form-data.*"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "jsonBody": {
+          "documents": [
+            {
+              "classification": "RESTRICTED",
+              "size": 321,
+              "mimeType": "application/pdf",
+              "originalDocumentName": "thin-client-document.pdf",
+              "createdOn": "2026-01-01T00:00:00.000+0000",
+              "modifiedOn": "2026-01-01T00:00:00.000+0000",
+              "createdBy": "thin-client",
+              "lastModifiedBy": "thin-client",
+              "hashToken": "thin-client-document-hash",
+              "_links": {
+                "self": {
+                  "href": "__WIREMOCK_PUBLIC_URL__/cases/documents/00000000-0000-4000-8000-000000000001"
+                },
+                "binary": {
+                  "href": "__WIREMOCK_PUBLIC_URL__/cases/documents/00000000-0000-4000-8000-000000000001/binary"
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "thin-client-case-document-metadata",
+      "priority": 4,
+      "request": {
+        "method": "GET",
+        "urlPathPattern": "/cases/documents/[0-9a-fA-F-]{36}"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "jsonBody": {
+          "classification": "RESTRICTED",
+          "size": 321,
+          "mimeType": "application/pdf",
+          "originalDocumentName": "thin-client-document.pdf",
+          "createdOn": "2026-01-01T00:00:00.000+0000",
+          "modifiedOn": "2026-01-01T00:00:00.000+0000",
+          "createdBy": "thin-client",
+          "lastModifiedBy": "thin-client",
+          "hashToken": "thin-client-document-hash",
+          "_links": {
+            "self": {
+              "href": "__WIREMOCK_PUBLIC_URL__/cases/documents/00000000-0000-4000-8000-000000000001"
+            },
+            "binary": {
+              "href": "__WIREMOCK_PUBLIC_URL__/cases/documents/00000000-0000-4000-8000-000000000001/binary"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "thin-client-case-document-binary",
+      "priority": 3,
+      "request": {
+        "method": "GET",
+        "urlPathPattern": "/cases/documents/[0-9a-fA-F-]{36}/binary"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/pdf",
+          "Original-File-Name": "thin-client-document.pdf"
+        },
+        "base64Body": "JVBERi0xLjQKMSAwIG9iago8PCAvVHlwZSAvQ2F0YWxvZyAvUGFnZXMgMiAwIFIgPj4KZW5kb2JqCjIgMCBvYmoKPDwgL1R5cGUgL1BhZ2VzIC9LaWRzIFszIDAgUl0gL0NvdW50IDEgPj4KZW5kb2JqCjMgMCBvYmoKPDwgL1R5cGUgL1BhZ2UgL1BhcmVudCAyIDAgUiAvTWVkaWFCb3ggWzAgMCA2MTIgNzkyXSA+PgplbmRvYmoKeHJlZgowIDQKMDAwMDAwMDAwMCA2NTUzNSBmIAowMDAwMDAwMDA5IDAwMDAwIG4gCjAwMDAwMDAwNTggMDAwMDAgbiAKMDAwMDAwMDExNSAwMDAwMCBuIAp0cmFpbGVyCjw8IC9TaXplIDQgL1Jvb3QgMSAwIFIgPj4Kc3RhcnR4cmVmCjE4NQolJUVPRgo="
+      }
+    },
+    {
+      "name": "thin-client-case-document-delete",
+      "priority": 3,
+      "request": {
+        "method": "DELETE",
+        "urlPathPattern": "/cases/documents/[0-9a-fA-F-]{36}",
+        "queryParameters": {
+          "permanent": {
+            "matches": "true|false"
+          }
+        }
+      },
+      "response": {
+        "status": 204
+      }
+    }
+  ]
+}

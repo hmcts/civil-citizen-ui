@@ -46,6 +46,20 @@ assert_status 201 POST '/service-request/2026-THIN-CLIENT-SERVICE-REQUEST/card-p
 assert_status 200 GET '/thin-pay/card?return_url=https%3A%2F%2Fexample.test%2Fclaim-issued-payment-confirmation%2F1234&amount=115.00'
 assert_status 200 GET '/thin-pay/confirm?return_url=https%3A%2F%2Fexample.test%2Fclaim-issued-payment-confirmation%2F1234&amount=115.00'
 assert_status 200 GET '/card-payments/RC-THIN-CLIENT-CLAIM/statuses'
+assert_status 200 GET '/cases/documents/00000000-0000-4000-8000-000000000001'
+assert_status 200 GET '/cases/documents/00000000-0000-4000-8000-000000000001/binary'
+assert_status 204 DELETE '/cases/documents/00000000-0000-4000-8000-000000000001?permanent=true'
+
+actual=$(curl --silent --output /dev/null --write-out '%{http_code}' \
+  --form 'classification=RESTRICTED' \
+  --form 'caseTypeId=CIVIL' \
+  --form 'jurisdictionId=CIVIL' \
+  --form 'files=@charts/civil-citizen-ui/wiremock/__files/create-claim-claim-fee.json;type=application/pdf' \
+  "${url}/cases/documents")
+if [ "${actual}" != '200' ]; then
+  echo "Expected multipart document upload to return 200, got ${actual}" >&2
+  exit 1
+fi
 
 # Significant match rules must leave incorrect requests unmatched.
 assert_status 404 POST '/dashboard/scenarios/Scenario.WRONG/test-user' '{"params":{}}'
@@ -54,5 +68,6 @@ assert_status 404 POST '/cases/draft/citizen/test-user/event' '{"event":"WRONG_E
 assert_status 404 GET '/search/places/v1/postcode?postcode=SW1A%201AA'
 assert_status 404 POST '/service-request/2026-THIN-CLIENT-SERVICE-REQUEST/card-payments' '{"amount":115,"currency":"USD","return-url":"https://example.test/payment"}'
 assert_status 404 GET '/card-payments/RC-UNKNOWN/statuses'
+assert_status 404 POST '/cases/documents' '{}'
 
 echo 'WireMock complete-set startup and positive/negative contract checks passed.'

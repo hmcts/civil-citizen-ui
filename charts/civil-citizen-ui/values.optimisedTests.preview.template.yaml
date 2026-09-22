@@ -8,6 +8,7 @@ civil-service:
       FEES_API_URL: http://${SERVICE_NAME}-wiremock
       PAYMENTS_API_URL: http://${SERVICE_NAME}-wiremock
       DOCMOSIS_TORNADO_URL: http://${SERVICE_NAME}-wiremock
+      CASE_DOCUMENT_AM_URL: http://${SERVICE_NAME}-wiremock
   ccd:
     postgresql:
       setup:
@@ -22,6 +23,8 @@ civil-service:
   em-stitching:
     enabled: false
   em-ccdorc:
+    enabled: false
+  ccd-case-document-am-api:
     enabled: false
 
 nodejs:
