@@ -43,6 +43,23 @@
       }
     },
     {
+      "name": "thin-client-attach-documents-to-case",
+      "priority": 3,
+      "request": {
+        "method": "PATCH",
+        "urlPath": "/cases/documents/attachToCase"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "jsonBody": {
+          "result": "SUCCESS"
+        }
+      }
+    },
+    {
       "name": "thin-client-case-document-metadata",
       "priority": 4,
       "request": {

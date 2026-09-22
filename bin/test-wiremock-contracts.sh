@@ -49,6 +49,7 @@ assert_status 200 GET '/card-payments/RC-THIN-CLIENT-CLAIM/statuses'
 assert_status 200 GET '/cases/documents/00000000-0000-4000-8000-000000000001'
 assert_status 200 GET '/cases/documents/00000000-0000-4000-8000-000000000001/binary'
 assert_status 204 DELETE '/cases/documents/00000000-0000-4000-8000-000000000001?permanent=true'
+assert_status 200 PATCH '/cases/documents/attachToCase' '{"caseId":"1111222233334444","caseTypeId":"CIVIL","jurisdictionId":"CIVIL","documentHashTokens":[{"id":"00000000-0000-4000-8000-000000000001","hashToken":"thin-client-document-hash"}]}'
 
 upload_response=$(curl --fail --silent \
   --form 'classification=RESTRICTED' \
@@ -69,5 +70,6 @@ assert_status 404 GET '/search/places/v1/postcode?postcode=SW1A%201AA'
 assert_status 404 POST '/service-request/2026-THIN-CLIENT-SERVICE-REQUEST/card-payments' '{"amount":115,"currency":"USD","return-url":"https://example.test/payment"}'
 assert_status 404 GET '/card-payments/RC-UNKNOWN/statuses'
 assert_status 404 POST '/cases/documents' '{}'
+assert_status 404 PATCH '/cases/documents/attach-to-case' '{}'
 
 echo 'WireMock complete-set startup and positive/negative contract checks passed.'

@@ -10,6 +10,10 @@ civil-service:
       DOCMOSIS_TORNADO_URL: http://${SERVICE_NAME}-wiremock
       CASE_DOCUMENT_AM_URL: http://${SERVICE_NAME}-wiremock
   ccd:
+    ccd-data-store-api:
+      java:
+        environment:
+          CASE_DOCUMENT_AM_URL: http://${SERVICE_NAME}-wiremock
     postgresql:
       setup:
         databases:
