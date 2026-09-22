@@ -3008,9 +3008,11 @@
       "TITLE": "Ydych chi'n credu bod yr unigolyn rydych chi'n gwneud hawliad yn ei erbyn yn 18 oed neu'n hŷn?"
     },
     "ELIGIBILITY_HELP_WITH_FEES": {
-      "PAGE_TITLE": "Ydych chi angen help i dalu ffi’r llys?",
-      "TITLE": "Ydych chi angen help i dalu ffi’r llys?",
-      "FINANCIAL_HELP": "Gallech gael cymorth ariannol gyda ffioedd llys os nad oes gennych lawer neu ddim cynilion, os ydych ar incwm isel neu os ydych yn cael budd-daliadau penodol."
+      "PAGE_TITLE": "Ydych chi angen help i dalu eich ffioedd llys?",
+      "TITLE": "Ydych chi angen help i dalu eich ffioedd llys?",
+      "FINANCIAL_HELP": "Gallech gael cymorth ariannol gyda ffioedd llys os nad oes gennych lawer neu ddim cynilion o gwbl, os ydych ar incwm isel neu os ydych yn cael budd-daliadau penodol.",
+      "COURT_CALCULATOR_HELP": "Gallwch ddefnyddio cyfrifiannell y llys i weld a allech chi gael help i dalu ffioedd.",
+      "FEE_REMISSION_CALCULATOR_LINK": "Cyfrifiannell Dileu Ffi: EX160C - ar gyfer Microsoft Excel (yn agor mewn tab newydd)"
     },
     "ELIGIBILITY_HWF_REFERENCE": {
       "ALREADY_APPLIED": "Dim ond os ydych eisoes wedi gwneud cais am Help i Dalu Ffioedd mewn perthynas â'r hawliad hwn y bydd gennych chi un.",
