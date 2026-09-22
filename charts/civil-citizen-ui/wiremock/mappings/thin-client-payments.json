@@ -39,7 +39,7 @@
             "matchesJsonPath": "$[?(@.currency == 'GBP')]"
           },
           {
-            "matchesJsonPath": "$.return_url"
+            "matchesJsonPath": "$['return-url']"
           }
         ]
       },
@@ -48,7 +48,7 @@
         "headers": {
           "Content-Type": "application/json"
         },
-        "body": "{\"external_reference\":\"thin-client-external-reference\",\"payment_reference\":\"RC-THIN-CLIENT-CLAIM\",\"status\":\"Initiated\",\"next_url\":\"__WIREMOCK_PUBLIC_URL__/thin-pay/card?return_url={{urlEncode (jsonPath request.body '$.return_url')}}&amount=115.00\",\"date_created\":\"2026-01-01T00:00:00Z\"}",
+        "body": "{\"external_reference\":\"thin-client-external-reference\",\"payment_reference\":\"RC-THIN-CLIENT-CLAIM\",\"status\":\"Initiated\",\"next_url\":\"__WIREMOCK_PUBLIC_URL__/thin-pay/card?return_url={{urlEncode (jsonPath request.body '$.return-url')}}&amount=115.00\",\"date_created\":\"2026-01-01T00:00:00Z\"}",
         "transformers": [
           "response-template"
         ]
@@ -68,7 +68,7 @@
             "matchesJsonPath": "$[?(@.currency == 'GBP')]"
           },
           {
-            "matchesJsonPath": "$.return_url"
+            "matchesJsonPath": "$['return-url']"
           }
         ]
       },
@@ -77,7 +77,7 @@
         "headers": {
           "Content-Type": "application/json"
         },
-        "body": "{\"external_reference\":\"thin-client-external-reference\",\"payment_reference\":\"RC-THIN-CLIENT-HEARING\",\"status\":\"Initiated\",\"next_url\":\"__WIREMOCK_PUBLIC_URL__/thin-pay/card?return_url={{urlEncode (jsonPath request.body '$.return_url')}}&amount=619\",\"date_created\":\"2026-01-01T00:00:00Z\"}",
+        "body": "{\"external_reference\":\"thin-client-external-reference\",\"payment_reference\":\"RC-THIN-CLIENT-HEARING\",\"status\":\"Initiated\",\"next_url\":\"__WIREMOCK_PUBLIC_URL__/thin-pay/card?return_url={{urlEncode (jsonPath request.body '$.return-url')}}&amount=619\",\"date_created\":\"2026-01-01T00:00:00Z\"}",
         "transformers": [
           "response-template"
         ]
@@ -97,7 +97,7 @@
             "matchesJsonPath": "$[?(@.currency == 'GBP')]"
           },
           {
-            "matchesJsonPath": "$.return_url"
+            "matchesJsonPath": "$['return-url']"
           }
         ]
       },
@@ -106,7 +106,7 @@
         "headers": {
           "Content-Type": "application/json"
         },
-        "body": "{\"external_reference\":\"thin-client-external-reference\",\"payment_reference\":\"RC-THIN-CLIENT-GA\",\"status\":\"Initiated\",\"next_url\":\"__WIREMOCK_PUBLIC_URL__/thin-pay/card?return_url={{urlEncode (jsonPath request.body '$.return_url')}}&amount=184\",\"date_created\":\"2026-01-01T00:00:00Z\"}",
+        "body": "{\"external_reference\":\"thin-client-external-reference\",\"payment_reference\":\"RC-THIN-CLIENT-GA\",\"status\":\"Initiated\",\"next_url\":\"__WIREMOCK_PUBLIC_URL__/thin-pay/card?return_url={{urlEncode (jsonPath request.body '$.return-url')}}&amount=184\",\"date_created\":\"2026-01-01T00:00:00Z\"}",
         "transformers": [
           "response-template"
         ]
