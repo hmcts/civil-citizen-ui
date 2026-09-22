@@ -1,5 +1,6 @@
 import pact from '@pact-foundation/pact-node';
 import * as git from 'git-rev-sync';
+import { dirname } from 'path';
 
 const { canonicalize, validate } = require('../artifacts');
 
@@ -19,7 +20,8 @@ Promise.resolve()
     if (!PACT_BRANCH_NAME.trim() || PACT_BRANCH_NAME === 'HEAD') {
       throw new Error('Set PACT_BRANCH_NAME to the consumer source branch');
     }
-    canonicalize();
+    const pactFiles = validate();
+    canonicalize(dirname(pactFiles[0]));
     return pact.publishPacts({ ...opts, pactFilesOrDirs: validate() });
   })
   .then(() => {
