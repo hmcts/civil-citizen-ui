@@ -13,7 +13,7 @@ import config from 'config';
 import { CivilServiceClient } from 'client/civilServiceClient';
 import { GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL } from 'routes/urls';
 import { getClaimById } from 'modules/utilityService';
-import { GeneralApplication } from 'common/models/generalApplication/GeneralApplication';
+import { toGeneralApplication } from 'common/models/generalApplication/GeneralApplication';
 import { PaymentSuccessfulSectionBuilder } from '../claim/paymentSuccessfulSectionBuilder';
 import { getLng } from 'common/utils/languageToggleUtils';
 import { constructResponseUrlWithIdAndAppIdParams } from 'common/utils/urlFormatter';
@@ -75,7 +75,7 @@ export const uploadSelectedFile = async (req: AppRequest, claim: Claim) => {
 export const getClaimDetailsById = async (req: AppRequest): Promise<Claim> => {
   try {
     const claim = await getClaimById(req.params.id, req, true);
-    const gaApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
+    const gaApplication = toGeneralApplication(claim.generalApplication);
     claim.generalApplication = gaApplication;
     return claim;
   } catch (error) {

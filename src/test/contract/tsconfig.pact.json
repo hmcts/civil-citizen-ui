@@ -1,7 +1,7 @@
 {
   "extends": "../../../tsconfig.json",
   "compilerOptions": {
-    "types": ["node", "jest"],
+    "types": ["node", "jest", "multer"],
     "noEmit": true,
     "baseUrl": "../../main",
     "paths": {
@@ -10,6 +10,7 @@
       "form/*": ["common/form/*"],
       "modules/*": ["modules/*"],
       "client/*": ["app/client/*"],
+      "app/*": ["app/*"],
       "routes/*": ["routes/*"],
       "services/*": ["services/*"]
     }
