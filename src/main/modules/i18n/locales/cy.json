@@ -2972,11 +2972,10 @@
       "REASON": "Esboniwch pam rydych chi'n hawlio o'r dyddiad hwn?"
     },
     "ELIGIBILITY_APPLY_FOR_HELP_WITH_FEES": {
-      "INTRO": "Os ydych eisoes wedi gwneud cais ar-lein am Help i Dalu Ffioedd ar gyfer yr hawliad hwn, bydd gennych gyfeirnod Help i Dalu Ffioedd. Os felly, gallwch arbed a pharhau isod a nodi'r cyfeirnod pan ofynnir amdano.",
+      "INTRO": "Os ydych eisoes wedi gwneud cais ar-lein am Help gyda Ffioedd ar gyfer yr hawliad hwn bydd gennych gyfeirnod Help gyda Ffioedd. Os felly, gallwch arbed a pharhau isod a rhoi’r cyfeirnod pan ofynnir.",
       "REFERENCE_NUMBER_INSET": "Dim ond unwaith y gellir defnyddio pob cyfeirnod Help i Dalu Ffioedd. Rhaid i chi gwblhau cais am Help i Dalu Ffioedd newydd a defnyddio ei rif cyfeirnod unigryw bob tro y bydd gennych ffi llys i'w dalu.",
       "NO_REFERENCE_NUMBER": "Os nad oes gennych gyfeirnod Help i Dalu Ffioedd ar gyfer yr hawliad hwn, dylech wneud cais am Help i Dalu Ffioedd a fydd yn rhoi cyfeirnod i chi.",
-      "APPLY_LINK": "Gwneud cais am Help i Dalu Ffioedd",
-      "GET_HELP_LINK": "Get help paying court and tribunal fees - GOV.UK",
+      "APPLY_LINK": "Gwneud cais am Help i Dalu Ffioedd (yn agor mewn ffenestr newydd)",
       "MAKE_A_NOTE": "Pan fyddwch wedi cwblhau eich cais am Help i Dalu Ffioedd, gwnewch nodyn o'ch cyfeirnod (er enghraifft HWF-C2D-45E). Bydd ei angen arnoch yn nes ymlaen yn yr hawliad. Ar ôl i chi gael eich cyfeirnod dewch yn ôl yma a chliciwch ar 'arbed a pharhau' i ddechrau eich hawliad.",
       "PAPER_FORM_HEADING": "Hawlio gyda'r ffurflen bapur",
       "PAPER_FORM_PARAGRAPH1": "Os oes angen i chi ddefnyddio'r cais papur am Help i Dalu Ffioedd (ffurflen EX160) ac nid y fersiwn ar-lein, ni allwch wneud hawliad ar-lein.",

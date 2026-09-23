@@ -281,15 +281,15 @@ class EligibilityCheck {
     await I.see('If you do not have a Help with Fees reference number for this claim,');
     await I.see('you should make a Help with Fees application which will provide you with a reference number.');
     await I.seeElement('//a[@href=\'https://www.gov.uk/get-help-with-court-fees\']');
-    await I.see('Apply for Help with Fees');
-    await I.see('Get help paying court and tribunal fees - GOV.UK');
+    await I.see('Apply For Help With Fees (opens in a new window)');
+    await I.dontSee('Get help paying court and tribunal fees - GOV.UK');
     await I.see('When you have completed your Help with Fees application make a note of your reference number (for example HWF-C2D-45E).');
     await I.see('You\'ll need this later in the claim.');
     await I.see('Once you have your reference number come back here and \'save and continue\' to start your claim.');
     await I.see('Claiming with the paper form');
     await I.see('If you need to use the paper Help with Fees application (form EX160) and not the online version, you cannot make a claim online.');
     await I.see('You\'ll need to send your claim paperwork and Help with Fees application to the court directly.');
-    await I.click('Continue');
+    await I.click('Save and continue');
   }
 
   async eligibilityHWFReferenceValidations(){
