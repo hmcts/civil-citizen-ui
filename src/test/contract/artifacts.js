@@ -1,4 +1,4 @@
-const { readdirSync, readFileSync, rmSync, mkdirSync } = require('fs');
+const { readdirSync, readFileSync, writeFileSync, rmSync, mkdirSync } = require('fs');
 const { resolve, join } = require('path');
 const inventory = require('./interaction-inventory.json');
 
@@ -11,6 +11,32 @@ const key = interaction => JSON.stringify([
 function clean(path = directory) {
   rmSync(path, { recursive: true, force: true });
   mkdirSync(path, { recursive: true });
+}
+
+function canonicalize(path = directory) {
+  const stableBoundary = 'cui-contract-boundary';
+  const pactFile = join(path, 'civil_citizen_ui-civil_service.json');
+  const pact = JSON.parse(readFileSync(pactFile, 'utf8'));
+  for (const interaction of pact.interactions) {
+    if (interaction.description !== 'a multipart citizen document upload') continue;
+
+    if (!interaction.request) continue; // Minimal synthetic artifacts used by tooling tests.
+    const contentType = interaction.request.headers?.['Content-Type']?.[0];
+    const boundary = contentType?.match(/(?:^|;)\s*boundary=([^;\s]+)/i)?.[1];
+    const body = interaction.request.body;
+    if (!boundary || !body || body.encoded !== 'base64') {
+      throw new Error('Multipart document upload Pact is missing its encoded body or boundary');
+    }
+
+    // Pact's multipart DSL creates a random MIME boundary. The consumer request
+    // still uses its real FormData boundary; the header matcher accepts it. Only
+    // canonicalize the saved example so one commit always publishes the same Pact.
+    const bytes = Buffer.from(body.content, 'base64');
+    const normalizedBody = bytes.toString('latin1').split(`--${boundary}`).join(`--${stableBoundary}`);
+    body.content = Buffer.from(normalizedBody, 'latin1').toString('base64');
+    interaction.request.headers['Content-Type'][0] = contentType.replace(boundary, stableBoundary);
+  }
+  writeFileSync(pactFile, `${JSON.stringify(pact, null, 2)}\n`);
 }
 
 function validate(path = directory) {
@@ -39,4 +65,4 @@ function validate(path = directory) {
   return files.map(file => join(path, file));
 }
 
-module.exports = { clean, validate, directory };
+module.exports = { clean, canonicalize, validate, directory };
