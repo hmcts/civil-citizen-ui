@@ -43,6 +43,7 @@ async function getClient(): Promise<void> {
       await testData.update(testData.flag(BREATHING_SPACE).booleanFlag().variationForAll(false));
       await testData.update(testData.flag(HMCTS_ACCESS_MIGRATION).booleanFlag().variationForAll(false));
       await testData.update(testData.flag(USER_CASE_ROLES_SESSION_CACHE).booleanFlag().variationForAll(true));
+      await testData.update(testData.flag(BREATHING_SPACE).booleanFlag().variationForAll(false));
 
       client = init(launchDarklyTestSdk, { updateProcessor: testData.getFactory() });
     } else {
@@ -185,6 +186,7 @@ export async function isJudgmentBufferEnabled(): Promise<boolean> {
 export async function isBreathingSpaceEnabled(): Promise<boolean> {
   return await getFlagValue(BREATHING_SPACE) as boolean;
 }
+
 /**
  * Kill-switch for DTSCCI-5946 session-scoped /userCaseRoles cache.
  * Requires config `caches.userCaseRoles.enabled` and LD flag

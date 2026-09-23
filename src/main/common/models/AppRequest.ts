@@ -57,6 +57,8 @@ export interface AppSession extends Session {
   breathingSpaceAppliedStart?: string;
   /** Short-TTL session cache for /userCaseRoles (DTSCCI-5946). Key: ucr:userId:caseId */
   userCaseRolesCache?: Record<string, UserCaseRolesCacheEntry>;
+  breathingSpaceAppliedType?: string;
+  breathingSpaceAppliedStart?: string;
 }
 
 export interface UserDetails {
