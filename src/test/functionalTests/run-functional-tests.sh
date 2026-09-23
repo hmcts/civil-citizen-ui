@@ -144,140 +144,40 @@ run_failed_not_executed_functional_tests() {
   run_functional_tests
 }
 
-run_reduced_stack_functional_tests() {
-  echo "Running the WireMock-backed functional journey against Jenkins preview"
-  # Jenkins may allocate a different VM for this stage than for the smoke
-  # stage, so install the browser on the agent that will actually launch it.
-  yarn playwright install chromium
-  export FUNCTIONAL=true
-
-  if [[ -n "$PR_FT_GROUPS" ]]; then
-    run_functional_test_groups || browser_status=$?
+functional_base_pattern() {
+  if [[ "$ENVIRONMENT" = "aat" ]]; then
+    echo '@civil-citizen-master'
+  elif [[ -n "${PR_FT_GROUPS:-}" ]]; then
+    echo "$PR_FT_GROUPS" | tr '[:upper:]' '[:lower:]' | sed 's/,/|@/g; s/^/@/'
   else
-    yarn test:mocked-functional:browser || browser_status=$?
+    echo '@civil-citizen-pr'
   fi
-
-  ./bin/assert-preview-wiremock.sh || wiremock_status=$?
-  exit "${browser_status:-${wiremock_status:-0}}"
 }
 
-assert_thin_full_stack_results() {
-  local report_dir="${THIN_JUNIT_REPORT_DIR:-test-results/thin-full-stack}"
-  local aggregate_report="${THIN_JUNIT_REPORT:-test-results/thin-full-stack/result.xml}"
-  local allure_dir="${THIN_ALLURE_RESULTS_DIR:-test-results/thin-full-stack/allure-results}"
-
-  node - "$report_dir" "$aggregate_report" "$allure_dir" <<'NODE'
-    const fs = require('fs');
-    const path = require('path');
-    const {XMLBuilder, XMLParser} = require('fast-xml-parser');
-
-    const [reportDir, aggregateReport, allureDir] = process.argv.slice(2);
-    const expectedTests = 8;
-
-    if (!fs.existsSync(reportDir)) {
-      throw new Error(`Thin full-stack JUnit report directory is missing: ${reportDir}`);
-    }
-
-    const reportFiles = fs.readdirSync(reportDir)
-      .filter((file) => file.startsWith('result-') && file.endsWith('.xml'))
-      .map((file) => path.join(reportDir, file));
-    if (reportFiles.length === 0) {
-      throw new Error(`Thin full-stack JUnit reports are missing: ${reportDir}`);
-    }
-
-    const parser = new XMLParser({ignoreAttributes: false, attributeNamePrefix: ''});
-    const summaries = reportFiles.map((file) => parser.parse(fs.readFileSync(file, 'utf8')).testsuites);
-    const suites = summaries.flatMap((summary) => {
-      const value = summary?.testsuite;
-      return value ? (Array.isArray(value) ? value : [value]) : [];
-    }).map((suite) => {
-      const value = suite?.testcase;
-      const testcases = value ? (Array.isArray(value) ? value : [value]) : [];
-      return {
-        ...suite,
-        tests: testcases.length,
-        failures: testcases.filter((testcase) => testcase.failure !== undefined).length,
-        errors: testcases.filter((testcase) => testcase.error !== undefined).length,
-        skipped: testcases.filter((testcase) => testcase.skipped !== undefined).length,
-        testcase: testcases,
-      };
-    }).filter((suite) => suite.tests > 0);
-    const total = (field) => suites.reduce((sum, suite) => sum + Number(suite[field] || 0), 0);
-    const tests = total('tests');
-    const failures = total('failures');
-    const errors = total('errors');
-    const skipped = total('skipped');
-
-    if (tests !== expectedTests || failures !== 0 || errors !== 0 || skipped !== 0) {
-      throw new Error(
-        `Thin full-stack JUnit attestation failed: expected ${expectedTests} tests, ` +
-        `found ${tests} with ${failures} failures, ${errors} errors and ${skipped} skipped`,
-      );
-    }
-
-    const aggregate = {
-      testsuites: {
-        name: 'Thin full-stack tests',
-        tests,
-        failures,
-        errors,
-        skipped,
-        testsuite: suites,
-      },
-    };
-    fs.writeFileSync(
-      aggregateReport,
-      new XMLBuilder({ignoreAttributes: false, attributeNamePrefix: '', format: true}).build(aggregate),
-    );
-
-    if (!fs.existsSync(allureDir)) {
-      throw new Error(`Thin full-stack Allure results directory is missing: ${allureDir}`);
-    }
-
-    const resultFiles = fs.readdirSync(allureDir).filter((file) => file.endsWith('-result.json'));
-    if (resultFiles.length !== expectedTests) {
-      throw new Error(
-        `Thin full-stack Allure attestation failed: expected ${expectedTests} result files, ` +
-        `found ${resultFiles.length}`,
-      );
-    }
-
-    const nonPassingResults = resultFiles
-      .map((file) => ({file, result: JSON.parse(fs.readFileSync(path.join(allureDir, file), 'utf8'))}))
-      .filter(({result}) => result.status !== 'passed');
-    if (nonPassingResults.length > 0) {
-      throw new Error(
-        `Thin full-stack Allure attestation found non-passing results: ${nonPassingResults
-          .map(({file, result}) => `${file} (${result.status || 'missing status'})`)
-          .join(', ')}`,
-      );
-    }
-
-    console.log(`Thin full-stack attestation passed: ${expectedTests} tests executed and passed`);
-NODE
+run_optimised_functional_tests() {
+  local base_pattern pattern
+  export FUNCTIONAL=true
+  unset PREV_FAILED_TEST_FILES PREV_NOT_EXECUTED_TEST_FILES
+  base_pattern=$(functional_base_pattern)
+  pattern="(?=.*(?:${base_pattern}))(?=.*@thin-full-stack)(?!.*@mocked-functional)"
+  echo "Running migrated thin-client scenarios from ${base_pattern}"
+  MOCHAWESOME_REPORTFILENAME='optimised-thin-client' \
+    run_functional_command yarn codeceptjs run-workers --suites 1 --grep "$pattern" \
+    --reporter mocha-multi --plugins allure --verbose
 }
 
 #MAIN SCRIPT
 TEST_FILES_REPORT="test-results/functional/testFilesReport.json"
 PREV_TEST_FILES_REPORT="test-results/functional/prevTestFilesReport.json"
 
-if [[ "${THIN_FULL_STACK_TESTS:-false}" = "true" ]]; then
-  echo "Running the thin full-stack suite against the standard full preview deployment"
-  yarn playwright install chromium
-  yarn test:thin-full-stack || thin_test_status=$?
-  assert_thin_full_stack_results || thin_attestation_status=$?
-  exit "${thin_test_status:-${thin_attestation_status:-0}}"
-fi
-
-if [[ "${REDUCED_STACK_TESTS:-false}" = "true" ]]; then
-  run_reduced_stack_functional_tests
-fi
-
 # Check if SKIP_FUNCTIONAL_TESTS is set to true
 if [[ "$SKIP_FUNCTIONAL_TESTS" = "true" ]]; then
   echo "The label 'pr-values:skip-functional-tests' exists on the PR."
   echo "Skipping functional tests."
   exit 0
+
+elif [[ "${OPTIMISED_FUNCTIONAL_TESTS:-false}" = "true" ]]; then
+  run_optimised_functional_tests
 
 #Check if RUN_ALL_FUNCTIONAL_TESTS is set to true
 elif [[ "$RUN_ALL_FUNCTIONAL_TESTS" = "true" ]]; then
