@@ -43,8 +43,10 @@ describe('View Defendant Information', () => {
         expect(res.status).toBe(200);
         expect(res.text).toContain('Inform the court of a breathing space');
         expect(res.text).toContain('Related content');
-        expect(res.text).toContain('What you need to do now');
+        expect(res.text).toContain('When breathing space ends');
+        expect(res.text).toContain('Enter breathing space details');
         expect(res.text).not.toContain('You can send messages and documents to the court');
+        expect(res.text).not.toContain('What you need to do now');
       });
   });
 
@@ -56,7 +58,9 @@ describe('View Defendant Information', () => {
       .get(BREATHING_SPACE_INFO_URL)
       .expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain('You can send messages and documents to the court');
+        expect(res.text).toContain('Inform the court of a breathing space');
+        expect(res.text).toContain('Enter breathing space details');
+        expect(res.text).not.toContain('You can send messages and documents to the court');
       });
   });
 });
