@@ -146,8 +146,6 @@ civil-service:
       primary:
         persistence:
           enabled: false
-        containerSecurityContext:
-          readOnlyRootFilesystem: false
         resources:
           requests:
             cpu: 500m
