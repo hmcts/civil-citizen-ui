@@ -89,4 +89,9 @@ export const IGNORED_URLS = [
 
   urls.QM_BASE, //no controller for the base
 
+  urls.BREATHING_SPACE_ENTER_URL,
+  urls.BREATHING_SPACE_START_DATE_URL,
+  urls.BREATHING_SPACE_CANCEL_URL,
+  urls.BREATHING_SPACE_CYA_URL,
+
 ];
