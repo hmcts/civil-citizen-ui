@@ -3089,9 +3089,11 @@
       "TITLE": "Ydych chi'n credu bod yr unigolyn rydych chi'n gwneud hawliad yn ei erbyn yn 18 oed neu'n hŷn?"
     },
     "ELIGIBILITY_HELP_WITH_FEES": {
-      "PAGE_TITLE": "Ydych chi angen help i dalu ffi’r llys?",
-      "TITLE": "Ydych chi angen help i dalu ffi’r llys?",
-      "FINANCIAL_HELP": "Gallech gael cymorth ariannol gyda ffioedd llys os nad oes gennych lawer neu ddim cynilion, os ydych ar incwm isel neu os ydych yn cael budd-daliadau penodol."
+      "PAGE_TITLE": "Ydych chi angen help i dalu eich ffioedd llys?",
+      "TITLE": "Ydych chi angen help i dalu eich ffioedd llys?",
+      "FINANCIAL_HELP": "Gallech gael cymorth ariannol gyda ffioedd llys os nad oes gennych lawer neu ddim cynilion o gwbl, os ydych ar incwm isel neu os ydych yn cael budd-daliadau penodol.",
+      "COURT_CALCULATOR_HELP": "Gallwch ddefnyddio cyfrifiannell y llys i weld a allech chi gael help i dalu ffioedd.",
+      "FEE_REMISSION_CALCULATOR_LINK": "Cyfrifiannell Dileu Ffi: EX160C - ar gyfer Microsoft Excel (yn agor mewn tab newydd)"
     },
     "ELIGIBILITY_HWF_REFERENCE": {
       "ALREADY_APPLIED": "Dim ond os ydych eisoes wedi gwneud cais am Help i Dalu Ffioedd mewn perthynas â'r hawliad hwn y bydd gennych chi un.",
@@ -6101,6 +6103,7 @@
       "ADDITIONAL_APPLICATION_ASK_CANCEL_JUDGMENT": "Ni allwch ddewis \"Gofyn i roi dyfarniad o’r neilltu (ei ddileu)\" fel cais ychwanegol",
       "ADDITIONAL_APPLICATION_ASK_SETTLING": "Ni allwch ddewis \"Gofyn i’r llys wneud gorchymyn i setlo’n hawliad drwy gydsyniad\" fel cais ychwanegol",
       "ADDITIONAL_APPLICATION_ASK_VARY_JUDGMENT": "Ni allwch ddewis \"Gofyn i amrywio dyfarniad\" fel cais ychwanegol",
+      "ADDITIONAL_APPLICATION_DUPLICATE": "Ni allwch ddewis yr un cais fwy nag unwaith",
       "ADDITIONAL_APPLICATION_CCJ_DEBT": "You cannot apply to confirm you've paid a county court (CCJ) debt as there is no active judgment",
       "AGREE_TO_ORDER_NOT_SELECTED": "Mae arnoch angen dweud wrthym os ydych wedi cytuno i'r gorchymyn y gofynnwyd amdano. Dewiswch opsiwn: Ydy neu Nac ydy",
       "APPLICATION_FROM_OTHER_PARTY_EMPTY_OPTION": "Mae arnoch angen dweud wrthym os yw’r partïon eraill wedi cytuno i’r cais hwn. Dewiswch opsiwn: Do neu Naddo",

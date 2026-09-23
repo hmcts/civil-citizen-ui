@@ -3093,7 +3093,9 @@
     "ELIGIBILITY_HELP_WITH_FEES": {
       "PAGE_TITLE": "Do you need help paying your court fee?",
       "TITLE": "Do you need help paying your court fee?",
-      "FINANCIAL_HELP": "You could get financial help with court fees if you have little or no savings, are on a low income or get certain benefits."
+      "FINANCIAL_HELP": "You could get financial help with court fees if you have little or no savings, are on a low income or get certain benefits.",
+      "COURT_CALCULATOR_HELP": "You can use the court calculator to see if you could get help with fees.",
+      "FEE_REMISSION_CALCULATOR_LINK": "Fee remission calculator: EX160C - for Microsoft Excel (opens in a new tab)"
     },
     "ELIGIBILITY_HWF_REFERENCE": {
       "ALREADY_APPLIED": "You’ll only have one if you’ve already applied for Help with Fees in respect of this claim.",
@@ -6102,6 +6104,7 @@
       "ADDITIONAL_APPLICATION_ASK_CANCEL_JUDGMENT":  "You cannot select \"Ask to set aside (cancel) a judgment\" as an additional application.",
       "ADDITIONAL_APPLICATION_ASK_SETTLING":  "You cannot select \"Ask the court to make an order settling the claim by consent\" as an additional application.",
       "ADDITIONAL_APPLICATION_ASK_VARY_JUDGMENT":  "You cannot select \"Ask to vary a judgment\" as an additional application.",
+      "ADDITIONAL_APPLICATION_DUPLICATE": "You cannot select the same application more than once.",
       "ADDITIONAL_APPLICATION_CCJ_DEBT":  "You cannot apply to confirm you've paid a county court (CCJ) debt as there is no active judgment",
       "AGREE_TO_ORDER_NOT_SELECTED": "You need to tell us if you have agreed to the order requested. Choose option: Yes or No",
       "APPLICATION_FROM_OTHER_PARTY_EMPTY_OPTION": "You need to tell us if the other parties have agreed to this application.  Choose option: Yes or No",
