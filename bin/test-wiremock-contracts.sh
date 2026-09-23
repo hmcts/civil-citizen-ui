@@ -38,6 +38,9 @@ assert_status 200 POST '/fees/claim/total-amount' '{"totalClaimAmount":1385}'
 assert_status 200 GET '/fees/claim/1385'
 assert_status 200 GET '/fees/hearing/1385'
 assert_status 200 GET '/fees-register/fees/lookup?service=other&jurisdiction1=civil&jurisdiction2=civil&channel=default&event=miscellaneous&keyword=AppnToVaryOrSuspend'
+cos_fee_response=$(curl --fail --silent "${url}/fees-register/fees/lookup?service=other&jurisdiction1=civil&jurisdiction2=civil&channel=default&event=miscellaneous&keyword=CoS")
+node -e 'const assert = require("node:assert/strict"); const fee = JSON.parse(process.argv[1]); assert.deepEqual(fee, {code: "FEE0459", description: "Issue of a certificate of satisfaction", fee_amount: 19, version: 4});' "${cos_fee_response}"
+assert_status 404 GET '/fees-register/fees/lookup?service=other&jurisdiction1=civil&jurisdiction2=civil&channel=default&event=general%20application&keyword=CoS'
 assert_status 200 POST '/cases/draft/citizen/test-user/event' '{"event":"CREATE_LIP_CLAIM","caseDataUpdate":{}}'
 assert_status 200 GET '/cases/1111222233334444/userCaseRoles'
 assert_status 200 GET '/cases/1111222233334444'
