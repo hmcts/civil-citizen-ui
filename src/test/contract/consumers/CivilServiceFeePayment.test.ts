@@ -135,7 +135,6 @@ describe('Civil Service fee payment contract', () => {
             externalReference: like('2023-1701090705688'),
             paymentReference: like(PAYMENT_REFERENCE),
             status: 'Success',
-            paymentFor: like('claimissued'),
             paymentAmount: like(200),
           },
         },
