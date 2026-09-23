@@ -2,6 +2,7 @@ import {getRedirectUrl} from 'services/features/claim/payment/claimFeePaymentCon
 import {getClaimById} from 'modules/utilityService';
 import {getFeePaymentStatus} from 'services/features/feePayment/feePaymentService';
 import {isWelshEnabledForMainCase} from 'app/auth/launchdarkly/launchDarklyClient';
+import {deleteDraftClaimFromStore, generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'models/AppRequest';
 import {Claim} from 'models/claim';
 import {ClaimDetails} from 'form/models/claim/details/claimDetails';
@@ -13,10 +14,16 @@ import {PAY_CLAIM_FEE_SUCCESSFUL_URL, PAY_CLAIM_FEE_UNSUCCESSFUL_URL, DASHBOARD_
 jest.mock('modules/utilityService');
 jest.mock('services/features/feePayment/feePaymentService');
 jest.mock('app/auth/launchdarkly/launchDarklyClient');
+jest.mock('modules/draft-store/draftStoreService', () => ({
+  deleteDraftClaimFromStore: jest.fn(),
+  generateRedisKey: jest.fn((req) => `${req.params.id}${req.session.user.id}`),
+}));
 
 const mockGetClaimById = getClaimById as jest.Mock;
 const mockGetFeePaymentStatus = getFeePaymentStatus as jest.Mock;
 const mockIsWelshEnabledForMainCase = isWelshEnabledForMainCase as jest.Mock;
+const mockDeleteDraftClaimFromStore = deleteDraftClaimFromStore as jest.Mock;
+const mockGenerateRedisKey = generateRedisKey as jest.Mock;
 
 const claimId = '1';
 const paymentReference = 'RC-1701-0909-0602-0418';
@@ -60,6 +67,8 @@ describe('Claim Fee PaymentConfirmation Service', () => {
 
     expect(mockGetClaimById).toHaveBeenCalledWith(claimId, req, true);
     expect(mockGetFeePaymentStatus).toHaveBeenCalledWith(claimId, paymentReference, FeeType.CLAIMISSUED, req);
+    expect(mockGenerateRedisKey).toHaveBeenCalledWith(req);
+    expect(mockDeleteDraftClaimFromStore).toHaveBeenCalledWith('123user-id');
     expect(actualPaymentRedirectUrl).toBe(`${PAY_CLAIM_FEE_SUCCESSFUL_URL}?lang=en`);
   });
 
@@ -69,6 +78,7 @@ describe('Claim Fee PaymentConfirmation Service', () => {
 
     const actualPaymentRedirectUrl = await getRedirectUrl(claimId, createReq());
 
+    expect(mockDeleteDraftClaimFromStore).toHaveBeenCalledWith('123user-id');
     expect(actualPaymentRedirectUrl).toBe(`${PAY_CLAIM_FEE_SUCCESSFUL_URL}?lang=cy`);
   });
 
@@ -84,6 +94,7 @@ describe('Claim Fee PaymentConfirmation Service', () => {
 
     const actualPaymentRedirectUrl = await getRedirectUrl(claimId, createReq());
 
+    expect(mockDeleteDraftClaimFromStore).not.toHaveBeenCalled();
     expect(actualPaymentRedirectUrl).toBe(PAY_CLAIM_FEE_UNSUCCESSFUL_URL);
   });
 
@@ -99,6 +110,7 @@ describe('Claim Fee PaymentConfirmation Service', () => {
 
     const actualPaymentRedirectUrl = await getRedirectUrl(claimId, createReq());
 
+    expect(mockDeleteDraftClaimFromStore).not.toHaveBeenCalled();
     expect(actualPaymentRedirectUrl).toBe(DASHBOARD_URL);
   });
 
@@ -109,6 +121,7 @@ describe('Claim Fee PaymentConfirmation Service', () => {
     await expect(getRedirectUrl(claimId, createReq())).rejects.toBe(
       TestMessages.SOMETHING_WENT_WRONG,
     );
+    expect(mockDeleteDraftClaimFromStore).not.toHaveBeenCalled();
   });
 
   it('should return to Payment Unsuccessful page when payment reference is missing', async () => {
@@ -121,6 +134,7 @@ describe('Claim Fee PaymentConfirmation Service', () => {
 
     expect(actualPaymentRedirectUrl).toBe(PAY_CLAIM_FEE_UNSUCCESSFUL_URL);
     expect(mockGetFeePaymentStatus).not.toHaveBeenCalled();
+    expect(mockDeleteDraftClaimFromStore).not.toHaveBeenCalled();
   });
 
 });
