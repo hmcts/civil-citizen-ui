@@ -115,6 +115,7 @@ import {clearShareQuerySessionIfLeftJourney} from 'routes/guards/shareQueryConfi
 import {mediationClaimantPhoneRedirectionGuard} from 'routes/guards/mediationClaimantPhoneRedirectionGuard';
 import {createUploadRateLimitGuard} from 'routes/guards/uploadRateLimitGuard';
 import {restrictFormContentType} from 'modules/security/restrictFormContentType';
+import {applicationTypeGuard} from 'routes/guards/generalApplication/applicationTypeGuard';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const {setupDev} = require('./development');
@@ -242,7 +243,7 @@ app.use([
   GA_UPLOAD_DOCUMENTS_COSC_URL,
   GA_CHECK_YOUR_ANSWERS_COSC_URL,
   COSC_FINAL_PAYMENT_DATE_URL,
-], requireGeneralApplicationDraft);
+], requireGeneralApplicationDraft, applicationTypeGuard);
 app.use(BASE_CLAIM_URL, claimIssueTaskListGuard);
 app.use([CP_FINALISE_TRIAL_ARRANGEMENTS_URL,
   HAS_ANYTHING_CHANGED_URL,
