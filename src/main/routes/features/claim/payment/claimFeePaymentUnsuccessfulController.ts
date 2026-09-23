@@ -1,7 +1,7 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {CLAIM_FEE_MAKE_PAYMENT_AGAIN_URL, DASHBOARD_CLAIMANT_URL, PAY_CLAIM_FEE_UNSUCCESSFUL_URL} from 'routes/urls';
 import {AppRequest} from 'models/AppRequest';
-import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {getClaimById} from 'modules/utilityService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {getRouteParam} from 'common/utils/routeParamUtils';
 
@@ -13,7 +13,7 @@ paymentUnsuccessfulController.get(PAY_CLAIM_FEE_UNSUCCESSFUL_URL, (async (req: A
   try {
     const claimId = getRouteParam(req, 'id');
     const makePaymentAgainUrl = constructResponseUrlWithIdParams(claimId, CLAIM_FEE_MAKE_PAYMENT_AGAIN_URL);
-    const claim = await getCaseDataFromStore(generateRedisKey(req));
+    const claim = await getClaimById(claimId, req, true);
     const claimNumber : string = claim.getFormattedCaseReferenceNumber(claimId);
     res.render(paymentUnsuccessfulViewPath, {
       claimNumber,
