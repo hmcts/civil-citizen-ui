@@ -10,7 +10,7 @@ metadata:
 data:
   {{- range $path, $_ := .Files.Glob "wiremock/mappings/*.json" }}
   {{ base $path }}: |
-{{ $.Files.Get $path | indent 4 }}
+{{ $.Files.Get $path | replace "__WIREMOCK_PUBLIC_URL__" $.Values.wiremock.publicUrl | indent 4 }}
 {{- end }}
 ---
 apiVersion: v1
