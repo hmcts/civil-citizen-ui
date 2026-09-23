@@ -366,6 +366,7 @@ import breathingSpaceEntryController from 'routes/features/dashboard/breathingSp
 import breathingSpaceStartDateController from 'routes/features/dashboard/breathingSpaceStartDateController';
 import breathingSpaceCancelController from 'routes/features/dashboard/breathingSpaceCancelController';
 import breathingSpaceCheckAnswersController from 'routes/features/dashboard/breathingSpaceCheckAnswersController';
+import breathingSpaceConfirmationController from 'routes/features/dashboard/breathingSpaceConfirmationController';
 import multiTrackDisclosureNonElectronicDocuments
   from 'routes/features/directionsQuestionnaire/mintiMultitrack/disclosureNonElectronicDocumentsController';
 import disclosureOfDocumentsController
@@ -755,6 +756,7 @@ export default [
   breathingSpaceStartDateController,
   breathingSpaceCancelController,
   breathingSpaceCheckAnswersController,
+  breathingSpaceConfirmationController,
   multiTrackDisclosureNonElectronicDocuments,
   disclosureOfDocumentsController,
   disclosureOfElectronicDocumentsIssues,
