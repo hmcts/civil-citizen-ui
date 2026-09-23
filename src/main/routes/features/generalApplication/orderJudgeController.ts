@@ -11,7 +11,13 @@ import {
   ApplicationTypeOptionSelection,
   getApplicationTypeOptionByTypeAndDescription,
 } from 'common/models/generalApplication/applicationType';
-import { getByIndex, getByIndexOrLast, getCancelUrl, saveOrderJudge } from 'services/features/generalApplication/generalApplicationService';
+import {
+  addChangeScreenToUrlIfPresent,
+  getByIndex,
+  getByIndexOrLast,
+  getCancelUrl,
+  saveOrderJudge,
+} from 'services/features/generalApplication/generalApplicationService';
 import { generateRedisKey } from 'modules/draft-store/draftStoreService';
 import { getClaimById } from 'modules/utilityService';
 import { OrderJudge } from 'common/models/generalApplication/orderJudge';
@@ -78,8 +84,9 @@ orderJudgeController.post(ORDER_JUDGE_URL, (async (req: AppRequest, res: Respons
       });
     } else {
       await saveOrderJudge(redisKey, orderJudge, index);
-      res.redirect(constructResponseUrlWithIdParams(claimId, GA_REQUESTING_REASON_URL)
-        + (index >= 0 ? `?index=${index}` : ''));
+      const redirectUrl = constructResponseUrlWithIdParams(claimId, GA_REQUESTING_REASON_URL)
+        + (index >= 0 ? `?index=${index}` : '');
+      res.redirect(addChangeScreenToUrlIfPresent(redirectUrl, req));
     }
   } catch (error) {
     next(error);
