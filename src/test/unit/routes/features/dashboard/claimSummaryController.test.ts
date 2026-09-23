@@ -27,6 +27,11 @@ import {APPLICATION_TYPE_URL, GA_APPLICATION_RESPONSE_SUMMARY_URL} from 'routes/
 import { YesNoUpperCamelCase } from 'common/form/models/yesNo';
 import { getContactCourtLink } from 'services/dashboard/dashboardService';
 import {ClaimBilingualLanguagePreference} from 'models/claimBilingualLanguagePreference';
+import {BreathingSpaceEnterInfo} from 'models/breathingSpace/breathingSpaceEnterInfo';
+import {BreathingSpaceType} from 'models/breathingSpace/breathingSpaceType';
+import {DashboardNotificationList} from 'models/dashboard/dashboardNotificationList';
+import * as dashboardService from 'services/dashboard/dashboardService';
+import {DashboardNotification} from 'models/dashboard/dashboardNotification';
 
 const nock = require('nock');
 const session = require('supertest-session');
@@ -41,6 +46,8 @@ const isCarmEnabledForCaseMock = launchDarklyClient.isCarmEnabledForCase as jest
 const isDashboardEnabledForCase = launchDarklyClient.isDashboardEnabledForCase as jest.Mock;
 const isGAForLiPEnabledMock = launchDarklyClient.isGaForLipsEnabled as jest.Mock;
 const isWelshEnabledForMainCaseMock = launchDarklyClient.isWelshEnabledForMainCase as jest.Mock;
+const isBreathingSpaceEnabledMock = launchDarklyClient.isBreathingSpaceEnabled as jest.Mock;
+const getNotificationsMock = dashboardService.getNotifications as jest.Mock;
 
 const mockExpectedDashboardInfo=
   [{
@@ -649,6 +656,97 @@ describe('Claim Summary Controller Defendant', () => {
         .get(`/dashboard/${claimId}/defendant`).expect((res: Response) => {
           expect(res.status).toBe(200);
           expect(res.text).not.toContain(t('BANNERS.WELSH_PARTY.MESSAGE'));
+        });
+    });
+
+    it('should show breathing space Important banner for defendant when claim is in standard BS', async () => {
+      const claim = new Claim();
+      claim.caseRole = CaseRole.DEFENDANT;
+      claim.ccdState = CaseState.CASE_ISSUED;
+      claim.totalClaimAmount = 649;
+      claim.submittedDate = new Date();
+      claim.enterBreathing = new BreathingSpaceEnterInfo(BreathingSpaceType.STANDARD);
+
+      jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockResolvedValueOnce(claim);
+      isDashboardEnabledForCase.mockResolvedValue(true);
+      isBreathingSpaceEnabledMock.mockResolvedValue(true);
+      getNotificationsMock.mockResolvedValue(new DashboardNotificationList([]));
+      jest.spyOn(draftStoreService, 'updateFieldDraftClaimFromStore');
+
+      await testSession
+        .get(`/dashboard/${claimId}/defendant`)
+        .expect((res: Response) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Case is in breathing space');
+          expect(res.text).toContain('Important');
+        });
+    });
+
+    it('should show breathing space Important banner for defendant when claim is in mental health BS', async () => {
+      const claim = new Claim();
+      claim.caseRole = CaseRole.DEFENDANT;
+      claim.ccdState = CaseState.CASE_ISSUED;
+      claim.totalClaimAmount = 649;
+      claim.submittedDate = new Date();
+      claim.enterBreathing = new BreathingSpaceEnterInfo(BreathingSpaceType.MENTAL_HEALTH);
+
+      jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockResolvedValueOnce(claim);
+      isDashboardEnabledForCase.mockResolvedValue(true);
+      isBreathingSpaceEnabledMock.mockResolvedValue(true);
+      getNotificationsMock.mockResolvedValue(new DashboardNotificationList([]));
+      jest.spyOn(draftStoreService, 'updateFieldDraftClaimFromStore');
+
+      await testSession
+        .get(`/dashboard/${claimId}/defendant`)
+        .expect((res: Response) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Case is in breathing space');
+          expect(res.text).toContain('Important');
+        });
+    });
+
+    it('should not show breathing space banner when claim is not in breathing space', async () => {
+      const claim = new Claim();
+      claim.caseRole = CaseRole.DEFENDANT;
+      claim.ccdState = CaseState.CASE_ISSUED;
+      claim.totalClaimAmount = 649;
+      claim.submittedDate = new Date();
+
+      jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockResolvedValueOnce(claim);
+      isDashboardEnabledForCase.mockResolvedValue(true);
+      isBreathingSpaceEnabledMock.mockResolvedValue(true);
+      getNotificationsMock.mockResolvedValue(new DashboardNotificationList([
+        new DashboardNotification('other', 'Important', 'Important', '<p>Other</p>', '<p>Other</p>', '', undefined, undefined, '', undefined),
+      ]));
+      jest.spyOn(draftStoreService, 'updateFieldDraftClaimFromStore');
+
+      await testSession
+        .get(`/dashboard/${claimId}/defendant`)
+        .expect((res: Response) => {
+          expect(res.status).toBe(200);
+          expect(res.text).not.toContain('Case is in breathing space');
+        });
+    });
+
+    it('should not show breathing space banner when breathing space feature is disabled', async () => {
+      const claim = new Claim();
+      claim.caseRole = CaseRole.DEFENDANT;
+      claim.ccdState = CaseState.CASE_ISSUED;
+      claim.totalClaimAmount = 649;
+      claim.submittedDate = new Date();
+      claim.enterBreathing = new BreathingSpaceEnterInfo(BreathingSpaceType.STANDARD);
+
+      jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockResolvedValueOnce(claim);
+      isDashboardEnabledForCase.mockResolvedValue(true);
+      isBreathingSpaceEnabledMock.mockResolvedValue(false);
+      getNotificationsMock.mockResolvedValue(new DashboardNotificationList([]));
+      jest.spyOn(draftStoreService, 'updateFieldDraftClaimFromStore');
+
+      await testSession
+        .get(`/dashboard/${claimId}/defendant`)
+        .expect((res: Response) => {
+          expect(res.status).toBe(200);
+          expect(res.text).not.toContain('Case is in breathing space');
         });
     });
   });
