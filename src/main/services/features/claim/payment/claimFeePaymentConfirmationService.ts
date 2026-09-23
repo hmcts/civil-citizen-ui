@@ -10,6 +10,7 @@ import {FeeType} from 'form/models/helpWithFees/feeType';
 import { ClaimBilingualLanguagePreference } from 'common/models/claimBilingualLanguagePreference';
 import {isWelshEnabledForMainCase} from '../../../../app/auth/launchdarkly/launchDarklyClient';
 import {isUsablePathSegment} from 'common/utils/routeParamUtils';
+import {deleteDraftClaimFromStore, generateRedisKey} from 'modules/draft-store/draftStoreService';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimFeePaymentConfirmationService');
@@ -34,6 +35,7 @@ export const getRedirectUrl = async (claimId: string, req: AppRequest): Promise<
       const isCUIWelshEnabled = await isWelshEnabledForMainCase();
       const lang = claim.claimantBilingualLanguagePreference === ClaimBilingualLanguagePreference.WELSH
       || (!isCUIWelshEnabled && claim.claimantBilingualLanguagePreference === ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH) ? 'cy' : 'en';
+      await deleteDraftClaimFromStore(generateRedisKey(req));
       return `${PAY_CLAIM_FEE_SUCCESSFUL_URL}?lang=${lang}`;
     }
     const redirectingUrl = paymentStatus.errorDescription !== paymentCancelledByUser ?
