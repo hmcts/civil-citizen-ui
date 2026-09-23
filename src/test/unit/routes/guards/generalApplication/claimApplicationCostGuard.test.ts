@@ -7,6 +7,7 @@ import * as utilityService from 'modules/utilityService';
 import * as generalApplicationService from 'services/features/generalApplication/generalApplicationService';
 import {AppRequest} from 'models/AppRequest';
 import {claimApplicationCostGuard} from 'routes/guards/generalApplication/claimApplicationCostGuard';
+import {applicationTypeErrorUrl} from 'routes/guards/generalApplication/applicationTypeGuard';
 
 jest.mock('modules/utilityService', () => ({
   getClaimById: jest.fn(),
@@ -53,6 +54,19 @@ describe('Order Judge Guard', () => {
     await claimApplicationCostGuard(MOCK_REQUEST, MOCK_RESPONSE, MOCK_NEXT);
 
     //Then
+    expect(MOCK_NEXT).not.toHaveBeenCalled();
+  });
+  it('should redirect to application type validation when application type is missing', async () => {
+    //Given
+    const claim = new Claim();
+    jest.spyOn(utilityService, 'getClaimById').mockResolvedValueOnce(claim);
+    jest.spyOn(generalApplicationService, 'getByIndexOrLast').mockReturnValue(undefined);
+
+    //When
+    await claimApplicationCostGuard(MOCK_REQUEST, MOCK_RESPONSE, MOCK_NEXT);
+
+    //Then
+    expect(MOCK_RESPONSE.redirect).toHaveBeenCalledWith(applicationTypeErrorUrl('123'));
     expect(MOCK_NEXT).not.toHaveBeenCalled();
   });
   it('should throw error', async () => {
