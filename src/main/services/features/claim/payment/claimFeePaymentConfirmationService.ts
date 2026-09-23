@@ -4,10 +4,9 @@ import {
   PAY_CLAIM_FEE_UNSUCCESSFUL_URL,
   DASHBOARD_URL,
 } from 'routes/urls';
-import {deleteDraftClaim, getDraftClaim} from 'modules/draft-store/draftStoreManagerService';
+import {getClaimById} from 'modules/utilityService';
 import {getFeePaymentStatus} from 'services/features/feePayment/feePaymentService';
 import {FeeType} from 'form/models/helpWithFees/feeType';
-import {Claim} from 'models/claim';
 import { ClaimBilingualLanguagePreference } from 'common/models/claimBilingualLanguagePreference';
 import {isWelshEnabledForMainCase} from '../../../../app/auth/launchdarkly/launchDarklyClient';
 import {isUsablePathSegment} from 'common/utils/routeParamUtils';
@@ -20,16 +19,10 @@ const paymentCancelledByUser = 'Payment was cancelled by the user';
 
 export const getRedirectUrl = async (claimId: string, req: AppRequest): Promise<string> => {
   try {
-    const draftResult = await getDraftClaim(req);
-    if (!draftResult) {
-      throw new Error('[claimFeePaymentConfirmationService] no draft claim found');
-    }
-
-    const claim: Claim = Object.assign(new Claim(), draftResult?.claimResponse?.case_data as unknown as Claim);
-    const draftId = req.session?.draftId || draftResult.rawResponse?.draftId;
+    const claim = await getClaimById(claimId, req, true);
     const paymentInfo = claim.claimDetails?.claimFeePayment;
     const paymentReference = paymentInfo?.paymentReference;
-    logger.info(`Payment information retrieved from draft for claim id ${req.params.id}`);
+    logger.info(`Payment information retrieved for claim id ${req.params.id}`);
     if (!isUsablePathSegment(paymentReference)) {
       logger.info(`No payment reference for claim id ${req.params.id}`);
       return PAY_CLAIM_FEE_UNSUCCESSFUL_URL;
@@ -41,11 +34,6 @@ export const getRedirectUrl = async (claimId: string, req: AppRequest): Promise<
       const isCUIWelshEnabled = await isWelshEnabledForMainCase();
       const lang = claim.claimantBilingualLanguagePreference === ClaimBilingualLanguagePreference.WELSH
       || (!isCUIWelshEnabled && claim.claimantBilingualLanguagePreference === ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH) ? 'cy' : 'en';
-      if (draftId) {
-        await deleteDraftClaim(req, draftId);
-        delete req.session.draftId;
-
-      }
       return `${PAY_CLAIM_FEE_SUCCESSFUL_URL}?lang=${lang}`;
     }
     const redirectingUrl = paymentStatus.errorDescription !== paymentCancelledByUser ?
