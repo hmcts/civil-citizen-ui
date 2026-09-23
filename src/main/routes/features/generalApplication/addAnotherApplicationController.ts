@@ -14,7 +14,7 @@ import {
 import {
   ApplicationTypeOptionSelection,
   getApplicationTypeOptionByTypeAndDescription,
-  LinKFromValues,
+  LinkFromValues,
 } from 'common/models/generalApplication/applicationType';
 import {GenericForm} from 'common/form/models/genericForm';
 import {GenericYesNo} from 'common/form/models/genericYesNo';
@@ -66,7 +66,8 @@ addAnotherApplicationController.post(GA_ADD_ANOTHER_APPLICATION_URL, async (req:
       claim.generalApplication.addType = true;
       if (req.body.option === YesNo.YES) {
         await saveDraftClaim(redisKey, claim);
-        res.redirect(constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL) + '?linkFrom=' + LinKFromValues.addAnotherApp);
+        const newApplicationIndex = claim.generalApplication.applicationTypes.length;
+        res.redirect(constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL) + '?linkFrom=' + LinkFromValues.addAnotherApp + `&index=${newApplicationIndex}`);
       } else {
         let index = resolveApplicationIndex(req, claim);
         if (req.query['changeScreen'] === 'true'){
