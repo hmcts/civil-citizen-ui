@@ -33,6 +33,7 @@ import {CaseLink} from 'models/generalApplication/CaseLink';
 import {CaseProgressionHearing} from 'models/caseProgression/caseProgressionHearing';
 import {FIXED_DATE} from '../../../../utils/dateUtils';
 import {BreathingSpaceEnterInfo} from 'models/breathingSpace/breathingSpaceEnterInfo';
+import {BreathingSpaceLiftInfo} from 'models/breathingSpace/breathingSpaceLiftInfo';
 import {BreathingSpaceType} from 'models/breathingSpace/breathingSpaceType';
 
 jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
@@ -511,7 +512,7 @@ describe('dashboardService', () => {
       expect(notifications.items[0].id).toEqual('other-1');
     });
 
-    it('should not hide default judgment request notifications when claim is not in breathing space', async () => {
+    it('should show default judgment request notifications after breathing space is lifted', async () => {
       (isGaForLipsEnabled as jest.Mock).mockResolvedValueOnce(false);
       const djNotification = new DashboardNotification(
         'dj-1',
@@ -530,6 +531,8 @@ describe('dashboardService', () => {
       jest.spyOn(CivilServiceClient.prototype, 'retrieveNotification').mockResolvedValueOnce(dashboardNotificationList);
 
       const claim = new Claim();
+      claim.enterBreathing = new BreathingSpaceEnterInfo(BreathingSpaceType.STANDARD);
+      claim.liftBreathing = new BreathingSpaceLiftInfo(new Date('2024-03-15'));
 
       const notifications = await getNotifications('1234567890', claim, '2000', ClaimantOrDefendant.CLAIMANT, appReq, 'en');
 

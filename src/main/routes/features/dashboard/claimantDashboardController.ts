@@ -193,7 +193,7 @@ const getSupportLinks = async (req: AppRequest, claim: Claim, claimId: string, l
         text: t('PAGES.DASHBOARD.SUPPORT_LINKS.LIFT_DEBT_RESPITE', { lng }),
         url: constructResponseUrlWithIdParams(claimId, BREATHING_SPACE_LIFT_URL),
       });
-    } else if (showGetDebtRespiteLink || showGetDebtRespiteLinkCaseProgression) {
+    } else if (!claim.liftBreathing && (showGetDebtRespiteLink || showGetDebtRespiteLinkCaseProgression)) {
       iWantToLinks.push({
         text: t('PAGES.DASHBOARD.SUPPORT_LINKS.GET_DEBT_RESPITE', { lng }),
         url: constructResponseUrlWithIdParams(claimId, BREATHING_SPACE_INFO_URL),

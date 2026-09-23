@@ -94,6 +94,17 @@ import {BreathingSpaceEnterInfo} from 'models/breathingSpace/breathingSpaceEnter
 import {BreathingSpaceLiftInfo} from 'models/breathingSpace/breathingSpaceLiftInfo';
 import {BreathingSpaceType} from 'models/breathingSpace/breathingSpaceType';
 
+export interface BreathingSpace {
+  enterBreathing?: {
+    type?: string;
+    start?: string;
+  };
+  liftBreathing?: {
+    expectedEnd?: string;
+    eventDescription?: string;
+  };
+}
+
 export class Claim {
   resolvingDispute: boolean;
   completingClaimConfirmed: boolean;
@@ -206,6 +217,7 @@ export class Claim {
   queries?: CaseQueries;
   previousCCDState?: string;
   preTranslationDocumentType?: PreTranslationDocumentType;
+  breathingSpace?: BreathingSpace;
   breathingSpaceEnterDraft?: BreathingSpaceEnterDraft;
   enterBreathing?: BreathingSpaceEnterInfo;
   liftBreathing?: BreathingSpaceLiftInfo;

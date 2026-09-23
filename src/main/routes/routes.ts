@@ -362,6 +362,10 @@ import requestForReconsiderationConfirmationController
 import cancelRequestForReconsiderationController
   from 'routes/features/caseProgression/requestForReconsideration/cancelRequestForReconsiderationController';
 import viewBreathingSpaceInformationController from 'routes/features/dashboard/viewBreathingSpaceInformationController';
+import liftBreathingSpaceController from 'routes/features/breathingSpace/liftBreathingSpaceController';
+import liftBreathingSpaceCheckAnswersController from 'routes/features/breathingSpace/checkAnswersController';
+import liftBreathingSpaceExitController from 'routes/features/breathingSpace/liftBreathingSpaceExitController';
+import liftBreathingSpaceConfirmationController from 'routes/features/breathingSpace/liftBreathingSpaceConfirmationController';
 import breathingSpaceEntryController from 'routes/features/dashboard/breathingSpaceEntryController';
 import breathingSpaceStartDateController from 'routes/features/dashboard/breathingSpaceStartDateController';
 import breathingSpaceCancelController from 'routes/features/dashboard/breathingSpaceCancelController';
@@ -752,6 +756,10 @@ export default [
   payApplicationFeeConfirmationController,
   viewApplicationController,
   viewBreathingSpaceInformationController,
+  liftBreathingSpaceController,
+  liftBreathingSpaceCheckAnswersController,
+  liftBreathingSpaceExitController,
+  liftBreathingSpaceConfirmationController,
   breathingSpaceEntryController,
   breathingSpaceStartDateController,
   breathingSpaceCancelController,
