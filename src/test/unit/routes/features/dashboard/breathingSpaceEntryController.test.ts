@@ -83,6 +83,26 @@ describe('Breathing Space Entry Controller', () => {
         expect(res.status).toBe(200);
         expect(res.text).toContain('value="REF123"');
         expect(res.text).toContain(`value="${BreathingSpaceType.STANDARD}"`);
+        expect(res.text).toContain(BREATHING_SPACE_INFO_URL);
+      });
+  });
+
+  it('should pre-fill form when returning from CYA to edit', async () => {
+    const caseData = Object.assign(new Claim(), claim.case_data, {
+      breathingSpaceEnterDraft: new BreathingSpaceEnterDraft(
+        BreathingSpaceType.STANDARD,
+        'REF123',
+        new Date(2024, 0, 15),
+        new Date(2024, 2, 15),
+      ),
+    });
+    (getClaimById as jest.Mock).mockResolvedValueOnce(caseData);
+    await request(app)
+      .get(BREATHING_SPACE_ENTER_URL)
+      .expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain('value="REF123"');
+        expect(res.text).toContain(BREATHING_SPACE_INFO_URL);
       });
   });
 
