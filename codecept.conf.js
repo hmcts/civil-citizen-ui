@@ -55,6 +55,12 @@ exports.config = {
   tests: getTests(),
   output: process.env.REPORT_DIR || 'test-results/functional',
   helpers: {
+    ...(process.env.OPTIMISED_FUNCTIONAL_TESTS === 'true' ? {
+      WiremockBoundary: {
+        require: './src/test/functionalTests/helpers/wiremockBoundary.js',
+        url: process.env.WIREMOCK_URL,
+      },
+    } : {}),
     Playwright: {
       url: testConfig.TestUrl,
       show: process.env.SHOW_BROWSER_WINDOW === 'true' || false,

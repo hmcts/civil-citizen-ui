@@ -135,6 +135,24 @@ assert_status 404 POST '/cases/draft/citizen/test-user/event' '{"event":"WRONG_E
 assert_status 404 GET '/search/places/v1/postcode?postcode=SW1A%201AA'
 assert_status 404 POST '/service-request/2026-THIN-CLIENT-SERVICE-REQUEST/card-payments' '{"amount":115,"currency":"USD","return-url":"https://example.test/payment"}'
 assert_status 404 GET '/card-payments/RC-UNKNOWN/statuses'
+assert_status 200 POST '/__admin/scenarios/reset'
+small_claims_fee_query='/fees-register/fees/lookup?service=civil%20money%20claims&jurisdiction1=civil&jurisdiction2=county%20court&channel=default&event=hearing&keyword=HearingSmallClaims&amount_or_volume=1500.00'
+small_claims_fee=$(curl --fail --silent "${url}${small_claims_fee_query}")
+node -e 'const assert = require("node:assert/strict"); const fee = JSON.parse(process.argv[1]); assert.equal(fee.code, "FEE0223"); assert.equal(fee.fee_amount, 123); assert.equal(fee.version, 8);' "${small_claims_fee}"
+assert_status 404 GET "${small_claims_fee_query/1500.00/3000.00}"
+assert_status 404 GET "${small_claims_fee_query/event=hearing/event=miscellaneous}"
+assert_status 404 GET '/thin-pay/confirm?return_url=https%3A%2F%2Fexample.test%2Fhearing-payment&amount=123'
+small_claims_payment=$(curl --fail --silent --request POST --header 'Content-Type: application/json' \
+  --data '{"amount":123,"currency":"GBP","return-url":"https://example.test/hearing-payment"}' \
+  "${url}/service-request/small-claims-hearing/card-payments")
+small_claims_reference=$(node -e 'const assert = require("node:assert/strict"); const payment = JSON.parse(process.argv[1]); assert.match(payment.next_url, /amount=123$/); assert.match(payment.payment_reference, /^RC-THIN-CLIENT-SMALL-CLAIMS-HEARING-/); console.log(payment.payment_reference);' "${small_claims_payment}")
+small_claims_status=$(curl --fail --silent "${url}/card-payments/${small_claims_reference}/statuses")
+node -e 'const assert = require("node:assert/strict"); const payment = JSON.parse(process.argv[1]); assert.equal(payment.amount, 123); assert.equal(payment.status, "Initiated");' "${small_claims_status}"
+assert_status 200 GET '/thin-pay/confirm?return_url=https%3A%2F%2Fexample.test%2Fhearing-payment&amount=123'
+small_claims_status=$(curl --fail --silent "${url}/card-payments/${small_claims_reference}/statuses")
+node -e 'const assert = require("node:assert/strict"); const payment = JSON.parse(process.argv[1]); assert.equal(payment.amount, 123); assert.equal(payment.status, "Success");' "${small_claims_status}"
+assert_status 404 GET '/thin-pay/confirm?return_url=https%3A%2F%2Fexample.test%2Fhearing-payment&amount=123'
+assert_status 404 POST '/service-request/small-claims-hearing/card-payments' '{"amount":123,"currency":"USD","return-url":"https://example.test/hearing-payment"}'
 assert_status 404 POST '/cases/documents' '{}'
 assert_status 404 PATCH '/cases/documents/attach-to-case' '{}'
 
