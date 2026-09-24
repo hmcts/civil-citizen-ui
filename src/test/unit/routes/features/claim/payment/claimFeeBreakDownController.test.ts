@@ -6,21 +6,22 @@ import {YesNo} from 'form/models/yesNo';
 import {Claim} from 'models/claim';
 import {ClaimDetails} from 'form/models/claim/details/claimDetails';
 import {PaymentInformation} from 'models/feePayment/paymentInformation';
-import {getClaimBusinessProcess, getClaimById} from 'modules/utilityService';
-import {generateRedisKey, getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {getClaimBusinessProcess} from 'modules/utilityService';
+import {getClaimIssuePaymentClaim} from '../../../../../../main/routes/features/claim/payment/claimIssuePaymentDraftService';
+import {updateDraftClaim} from 'modules/draft-store/draftStoreManagerService';
 import {getFeePaymentRedirectInformation, getFeePaymentStatus} from 'services/features/feePayment/feePaymentService';
 import {calculateInterestToDate} from 'common/utils/interestUtils';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {createMockResponse, createMockSession, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
 jest.mock('modules/utilityService', () => ({
-  getClaimById: jest.fn(),
   getClaimBusinessProcess: jest.fn(),
 }));
-jest.mock('modules/draft-store/draftStoreService', () => ({
-  getCaseDataFromStore: jest.fn(),
-  generateRedisKey: jest.fn(),
-  saveDraftClaim: jest.fn(),
+jest.mock('modules/draft-store/draftStoreManagerService', () => ({
+  updateDraftClaim: jest.fn(),
+}));
+jest.mock('../../../../../../main/routes/features/claim/payment/claimIssuePaymentDraftService', () => ({
+  getClaimIssuePaymentClaim: jest.fn(),
 }));
 jest.mock('modules/draft-store/paymentSessionStoreService', () => ({
   saveUserId: jest.fn(),
@@ -38,15 +39,14 @@ describe('Claim fee breakdown', () => {
   const postHandler = getRouteHandler(claimFeeBreakDownController, 'post');
   const viewPath = 'features/claim/payment/claim-fee-breakdown';
   const claimId = '111111';
+  const draftId = 'draft-123';
   const paymentUrl = 'paymentUrl';
   let req: Partial<AppRequest>;
   let res: ReturnType<typeof createMockResponse>;
   let next: jest.Mock;
-  const mockGetClaimById = getClaimById as jest.Mock;
   const mockGetClaimBusinessProcess = getClaimBusinessProcess as jest.Mock;
-  const mockGetCaseDataFromStore = getCaseDataFromStore as jest.Mock;
-  const mockGenerateRedisKey = generateRedisKey as jest.Mock;
-  const mockSaveDraftClaim = saveDraftClaim as jest.Mock;
+  const mockGetClaimIssuePaymentClaim = getClaimIssuePaymentClaim as jest.Mock;
+  const mockUpdateDraftClaim = updateDraftClaim as jest.Mock;
   const mockGetFeePaymentRedirectInformation = getFeePaymentRedirectInformation as jest.Mock;
   const mockGetFeePaymentStatus = getFeePaymentStatus as jest.Mock;
   const mockCalculateInterestToDate = calculateInterestToDate as jest.Mock;
@@ -60,6 +60,10 @@ describe('Claim fee breakdown', () => {
     return claim;
   };
 
+  const mockDraft = (claim: Claim) => {
+    mockGetClaimIssuePaymentClaim.mockResolvedValue({claim, draftId});
+  };
+
   beforeEach(() => {
     req = {
       params: {id: claimId},
@@ -70,11 +74,9 @@ describe('Claim fee breakdown', () => {
     };
     res = createMockResponse();
     next = jest.fn();
-    mockGetClaimById.mockResolvedValue(buildClaim());
+    mockDraft(buildClaim());
     mockGetClaimBusinessProcess.mockResolvedValue({hasBusinessProcessFinished: () => true});
-    mockGetCaseDataFromStore.mockResolvedValue(buildClaim());
-    mockGenerateRedisKey.mockReturnValue('redis-key');
-    mockSaveDraftClaim.mockResolvedValue(undefined);
+    mockUpdateDraftClaim.mockResolvedValue(undefined);
     mockCalculateInterestToDate.mockResolvedValue(100);
     mockGetFeePaymentRedirectInformation.mockResolvedValue({nextUrl: paymentUrl});
     mockGetFeePaymentStatus.mockResolvedValue({status: 'Initiated'});
@@ -109,7 +111,7 @@ describe('Claim fee breakdown', () => {
 
     it('should call next when loading the claim fails', async () => {
       const error = new Error('error');
-      mockGetClaimById.mockRejectedValue(error);
+      mockGetClaimIssuePaymentClaim.mockRejectedValue(error);
 
       await getHandler(req as AppRequest, res as unknown as Response, next);
 
@@ -121,6 +123,7 @@ describe('Claim fee breakdown', () => {
     it('should redirect to the payment URL when there is no existing payment reference', async () => {
       await postHandler(req as AppRequest, res as unknown as Response, next);
 
+      expect(mockUpdateDraftClaim).toHaveBeenCalledWith(req, expect.any(Claim), draftId);
       expect(res.redirect).toHaveBeenCalledWith(paymentUrl);
     });
 
@@ -135,7 +138,7 @@ describe('Claim fee breakdown', () => {
     it('should redirect to confirmation url if already paid', async () => {
       const claim = buildClaim();
       claim.claimDetails.claimFeePayment = new PaymentInformation('', 'RC-1234-1234-1234-1234', 'status');
-      mockGetClaimById.mockResolvedValue(claim);
+      mockDraft(claim);
       mockGetFeePaymentStatus.mockResolvedValue({status: 'Success'});
 
       await postHandler(req as AppRequest, res as unknown as Response, next);
@@ -146,19 +149,20 @@ describe('Claim fee breakdown', () => {
     it('should get a new payment ref if previous payment failed', async () => {
       const claim = buildClaim();
       claim.claimDetails.claimFeePayment = new PaymentInformation('', 'RC-1234-1234-1234-1234', 'Failed');
-      mockGetClaimById.mockResolvedValue(claim);
+      mockDraft(claim);
       mockGetFeePaymentStatus.mockResolvedValue({status: 'Failed'});
       mockGetFeePaymentRedirectInformation.mockResolvedValue({nextUrl: paymentUrl});
 
       await postHandler(req as AppRequest, res as unknown as Response, next);
 
+      expect(mockUpdateDraftClaim).toHaveBeenCalled();
       expect(res.redirect).toHaveBeenCalledWith(paymentUrl);
     });
 
     it('should redirect to the fee breakdown page if previous payment failed and no payment data is returned', async () => {
       const claim = buildClaim();
       claim.claimDetails.claimFeePayment = new PaymentInformation('', 'RC-1234-1234-1234-1234', 'Failed');
-      mockGetClaimById.mockResolvedValue(claim);
+      mockDraft(claim);
       mockGetFeePaymentStatus.mockResolvedValue({status: 'Failed'});
       mockGetFeePaymentRedirectInformation.mockResolvedValue(undefined);
 
