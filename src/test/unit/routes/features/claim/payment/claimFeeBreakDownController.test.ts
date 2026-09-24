@@ -135,7 +135,7 @@ describe('Claim fee breakdown', () => {
     it('should redirect to confirmation url if already paid', async () => {
       const claim = buildClaim();
       claim.claimDetails.claimFeePayment = new PaymentInformation('', 'RC-1234-1234-1234-1234', 'status');
-      mockGetCaseDataFromStore.mockResolvedValue(claim);
+      mockGetClaimById.mockResolvedValue(claim);
       mockGetFeePaymentStatus.mockResolvedValue({status: 'Success'});
 
       await postHandler(req as AppRequest, res as unknown as Response, next);
@@ -146,7 +146,7 @@ describe('Claim fee breakdown', () => {
     it('should get a new payment ref if previous payment failed', async () => {
       const claim = buildClaim();
       claim.claimDetails.claimFeePayment = new PaymentInformation('', 'RC-1234-1234-1234-1234', 'Failed');
-      mockGetCaseDataFromStore.mockResolvedValue(claim);
+      mockGetClaimById.mockResolvedValue(claim);
       mockGetFeePaymentStatus.mockResolvedValue({status: 'Failed'});
       mockGetFeePaymentRedirectInformation.mockResolvedValue({nextUrl: paymentUrl});
 
@@ -158,7 +158,7 @@ describe('Claim fee breakdown', () => {
     it('should redirect to the fee breakdown page if previous payment failed and no payment data is returned', async () => {
       const claim = buildClaim();
       claim.claimDetails.claimFeePayment = new PaymentInformation('', 'RC-1234-1234-1234-1234', 'Failed');
-      mockGetCaseDataFromStore.mockResolvedValue(claim);
+      mockGetClaimById.mockResolvedValue(claim);
       mockGetFeePaymentStatus.mockResolvedValue({status: 'Failed'});
       mockGetFeePaymentRedirectInformation.mockResolvedValue(undefined);
 
