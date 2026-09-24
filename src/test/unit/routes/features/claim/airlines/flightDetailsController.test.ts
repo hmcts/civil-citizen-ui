@@ -78,7 +78,7 @@ describe('Flight details Controller', () => {
 
       await postHandler(req as AppRequest, res as unknown as Response, next);
 
-      expect(mockSaveFlightDetails).toHaveBeenCalledWith('user-id', expect.any(FlightDetails));
+      expect(mockSaveFlightDetails).toHaveBeenCalledWith(req, expect.any(FlightDetails));
       expect(res.redirect).toHaveBeenCalledWith(CLAIM_DEFENDANT_COMPANY_DETAILS_URL);
     });
 

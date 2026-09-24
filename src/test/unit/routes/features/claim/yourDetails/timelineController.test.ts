@@ -5,8 +5,8 @@ import {AppRequest} from 'models/AppRequest';
 import {GenericForm} from 'form/models/genericForm';
 import {ClaimDetails} from 'form/models/claim/details/claimDetails';
 import {ClaimantTimeline} from 'form/models/timeLineOfEvents/claimantTimeline';
-import {getClaimDetails} from 'services/features/claim/details/claimDetailsService';
-import {getTimeline, saveTimeline} from 'services/features/claim/yourDetails/timelineService';
+import {getClaimDetails, saveClaimDetails} from 'services/features/claim/details/claimDetailsService';
+import {getTimeline} from 'services/features/claim/yourDetails/timelineService';
 import {createMockResponse, createMockSession, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
 jest.mock('services/features/claim/details/claimDetailsService', () => ({
@@ -15,7 +15,6 @@ jest.mock('services/features/claim/details/claimDetailsService', () => ({
 }));
 jest.mock('services/features/claim/yourDetails/timelineService', () => ({
   getTimeline: jest.fn(),
-  saveTimeline: jest.fn(),
 }));
 
 describe('Claimant Timeline Controller', () => {
@@ -28,7 +27,7 @@ describe('Claimant Timeline Controller', () => {
   let next: jest.Mock;
   const mockGetClaimDetails = getClaimDetails as jest.Mock;
   const mockGetTimeline = getTimeline as jest.Mock;
-  const mockSaveTimeline = saveTimeline as jest.Mock;
+  const mockSaveClaimDetails = saveClaimDetails as jest.Mock;
   const validRows = [{
     day: 1,
     month: 3,
@@ -47,7 +46,7 @@ describe('Claimant Timeline Controller', () => {
     next = jest.fn();
     mockGetClaimDetails.mockResolvedValue(new ClaimDetails());
     mockGetTimeline.mockReturnValue(ClaimantTimeline.buildEmptyForm());
-    mockSaveTimeline.mockResolvedValue(undefined);
+    mockSaveClaimDetails.mockResolvedValue(undefined);
   });
 
   describe('on GET', () => {
@@ -96,7 +95,7 @@ describe('Claimant Timeline Controller', () => {
 
       await postHandler(req as AppRequest, res as unknown as Response, next);
 
-      expect(mockSaveTimeline).toHaveBeenCalledWith('user-id', expect.any(ClaimantTimeline));
+      expect(mockSaveClaimDetails).toHaveBeenCalledWith(req, expect.any(ClaimantTimeline), 'timeline');
       expect(res.redirect).toHaveBeenCalledWith(CLAIM_EVIDENCE_URL);
     });
 
@@ -106,7 +105,7 @@ describe('Claimant Timeline Controller', () => {
 
       await postHandler(req as AppRequest, res as unknown as Response, next);
 
-      expect(mockSaveTimeline).toHaveBeenCalled();
+      expect(mockSaveClaimDetails).toHaveBeenCalled();
       expect(res.redirect).toHaveBeenCalledWith(CLAIM_EVIDENCE_URL);
     });
   });

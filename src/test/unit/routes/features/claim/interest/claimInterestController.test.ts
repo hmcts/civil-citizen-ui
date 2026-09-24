@@ -81,7 +81,7 @@ describe('Claim Interest page', () => {
 
       await postHandler(req as AppRequest, res as unknown as Response, next);
 
-      expect(mockSaveClaimInterest).toHaveBeenCalledWith('user-id', YesNo.YES);
+      expect(mockSaveClaimInterest).toHaveBeenCalledWith(req, YesNo.YES);
       expect(res.redirect).toHaveBeenCalledWith(CLAIM_INTEREST_TYPE_URL);
     });
 
@@ -90,7 +90,7 @@ describe('Claim Interest page', () => {
 
       await postHandler(req as AppRequest, res as unknown as Response, next);
 
-      expect(mockSaveClaimInterest).toHaveBeenCalledWith('user-id', YesNo.NO);
+      expect(mockSaveClaimInterest).toHaveBeenCalledWith(req, YesNo.NO);
       expect(res.redirect).toHaveBeenCalledWith(CLAIM_HELP_WITH_FEES_URL);
     });
 
