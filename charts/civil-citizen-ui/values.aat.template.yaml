@@ -142,7 +142,6 @@ civil-service:
       image:
         registry: hmctsprod.azurecr.io
         repository: imported/bitnami/postgresql
-        tag: '11.6.0'
         debug: true
       primary:
         persistence:
