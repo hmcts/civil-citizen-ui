@@ -12,7 +12,7 @@ import {PartyPhone} from 'models/PartyPhone';
 import {GenericForm} from 'form/models/genericForm';
 import {StatementOfTruthFormClaimIssue} from 'form/models/statementOfTruth/statementOfTruthFormClaimIssue';
 import {getStashedClaimOrFromStore} from 'common/utils/claimRequestLocals';
-import {deleteDraftClaim, getDraftClaim} from 'modules/draft-store/draftStoreManagerService';
+import {getDraftClaim, updateDraftClaim} from 'modules/draft-store/draftStoreManagerService';
 import {getStatementOfTruth, getSummarySections, saveStatementOfTruth} from 'services/features/claim/checkAnswers/checkAnswersService';
 import {submitClaim} from 'services/features/claim/submission/submitClaim';
 import {saveClaimFee} from 'services/features/claim/amount/claimFeesService';
@@ -59,7 +59,7 @@ describe('Claim - Check answers', () => {
   const mockSaveClaimFee = saveClaimFee as jest.Mock;
   const mockCalculateInterestToDate = calculateInterestToDate as jest.Mock;
   const mockIsCarmEnabledForCase = isCarmEnabledForCase as jest.Mock;
-  const mockDeleteDraftClaim = deleteDraftClaim as jest.Mock;
+  const mockUpdateDraftClaim = updateDraftClaim as jest.Mock;
 
   const signedBody = {
     signed: 'Test',
@@ -108,7 +108,7 @@ describe('Claim - Check answers', () => {
     mockSaveClaimFee.mockResolvedValue(undefined);
     mockCalculateInterestToDate.mockResolvedValue(0);
     mockIsCarmEnabledForCase.mockResolvedValue(true);
-    mockDeleteDraftClaim.mockResolvedValue(undefined);
+    mockUpdateDraftClaim.mockResolvedValue(undefined);
     jest.spyOn(CivilServiceClient.prototype, 'getClaimFeeData').mockResolvedValue({
       calculatedAmountInPence: '50',
     } as never);
@@ -188,14 +188,18 @@ describe('Claim - Check answers', () => {
 
       await postHandler(req as AppRequest, res as unknown as Response, next);
 
-      expect(mockDeleteDraftClaim).toHaveBeenCalledWith(req, 'draft-123');
-      expect(req.session.draftId).toBeUndefined();
+      expect(mockUpdateDraftClaim).toHaveBeenCalledWith(
+        req,
+        expect.objectContaining({id: submittedClaim.id}),
+        'draft-123',
+      );
+      expect(req.session.draftId).toBe('draft-123');
       expect(res.clearCookie).toHaveBeenCalledWith('eligibilityCompleted');
       expect(res.clearCookie).toHaveBeenCalledWith('eligibility');
       expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(submittedClaim.id, CLAIM_CONFIRMATION_URL));
     });
 
-    it('should redirect to confirmation and clear cookies when help with fees is no', async () => {
+    it('should redirect to confirmation and keep the draft when help with fees is no', async () => {
       mockGetDraftClaim.mockResolvedValue({
         claimResponse: {case_data: buildClaim(YesNo.NO)},
         rawResponse: {draftId: 'draft-123'},
@@ -208,8 +212,12 @@ describe('Claim - Check answers', () => {
 
       await postHandler(req as AppRequest, res as unknown as Response, next);
 
-      expect(mockDeleteDraftClaim).toHaveBeenCalledWith(req, 'draft-123');
-      expect(req.session.draftId).toBeUndefined();
+      expect(mockUpdateDraftClaim).toHaveBeenCalledWith(
+        req,
+        expect.objectContaining({id: submittedClaim.id}),
+        'draft-123',
+      );
+      expect(req.session.draftId).toBe('draft-123');
       expect(res.clearCookie).toHaveBeenCalledWith('eligibilityCompleted');
       expect(res.clearCookie).toHaveBeenCalledWith('eligibility');
       expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(submittedClaim.id, CLAIM_CONFIRMATION_URL));
