@@ -1,9 +1,11 @@
 const config = require('../../../../config');
 const LoginSteps = require('../../../commonFeatures/home/steps/login');
 const { createAccount } = require('../../../specClaimHelpers/api/idamHelper');
+const ApplicationTypePage = require('../../../citizenFeatures/GA/pages/applicationType');
 const chai = require('chai');
 
 const { assert } = chai;
+const applicationTypePage = new ApplicationTypePage();
 const LIMIT = 20;
 const claimType = 'SmallClaims';
 let claimRef, cookieHeader;
@@ -32,6 +34,14 @@ Before(async ({ I, api }) => {
 
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await I.amOnPage('/dashboard');
+
+  // Create a draft GA application - without this the middleware will do a redirect (302) on all 50 requests
+  // for the scenario: positive - 50 concurrent uploads: only the limit gets through, the rest return 429
+  await I.amOnPage(`case/${claimRef}/general-application/application-type`);
+  await applicationTypePage.verifyPageContent();
+  await applicationTypePage.nextAction('Ask to set aside');
+  await applicationTypePage.nextAction('Continue');
+
   const cookie = await I.grabCookie('citizen-ui-session');
   cookieHeader = `${cookie.name}=${cookie.value}`;
 });
