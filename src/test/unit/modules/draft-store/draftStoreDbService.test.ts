@@ -146,6 +146,13 @@ describe('draftStoreDbService Unit Tests', () => {
       );
     });
 
+    it('should throw error if draftId contains unsafe characters', async () => {
+      await expect(updateDraftClaimInStore(mockReq, '../evil', new Claim())).rejects.toThrow(
+        '[draftStoreDbService] invalid draftId',
+      );
+      expect(mockedAxios.put).not.toHaveBeenCalled();
+    });
+
     it('should update draft in backend DB and return updated result', async () => {
       const mockClaim = new Claim();
       mockedAxios.put.mockResolvedValueOnce({
@@ -172,6 +179,13 @@ describe('draftStoreDbService Unit Tests', () => {
       await expect(deleteDraftClaimFromStore(mockReq, '')).rejects.toThrow(
         '[draftStoreDbService] draftId is required for deletion',
       );
+    });
+
+    it('should throw error if draftId contains unsafe characters', async () => {
+      await expect(deleteDraftClaimFromStore(mockReq, 'http://evil')).rejects.toThrow(
+        '[draftStoreDbService] invalid draftId',
+      );
+      expect(mockedAxios.delete).not.toHaveBeenCalled();
     });
 
     it('should call DELETE endpoint on backend DB', async () => {
