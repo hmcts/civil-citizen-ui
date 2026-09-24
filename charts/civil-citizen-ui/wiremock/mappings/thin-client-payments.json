@@ -1,0 +1,287 @@
+{
+  "mappings": [
+    {
+      "name": "thin-client-create-service-request",
+      "priority": 4,
+      "request": {
+        "method": "POST",
+        "urlPath": "/service-request",
+        "bodyPatterns": [
+          {
+            "matchesJsonPath": "$[?(@.case_reference || @.ccd_case_number)]"
+          },
+          {
+            "matchesJsonPath": "$.fees[0]"
+          }
+        ]
+      },
+      "response": {
+        "status": 201,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "transformers": ["response-template"],
+        "body": "{\"service_request_reference\":\"2026-THIN-CLIENT-{{randomValue type='UUID'}}\"}"
+      }
+    },
+    {
+      "name": "thin-client-create-claim-card-payment",
+      "priority": 3,
+      "scenarioName": "thin-client-payment",
+      "newScenarioState": "PaymentCreated",
+      "request": {
+        "method": "POST",
+        "urlPathPattern": "/service-request/[^/]+/card-payments",
+        "bodyPatterns": [
+          {
+            "matchesJsonPath": "$[?(@.amount == 455)]"
+          },
+          {
+            "matchesJsonPath": "$[?(@.currency == 'GBP')]"
+          },
+          {
+            "matchesJsonPath": "$['return-url']"
+          }
+        ]
+      },
+      "response": {
+        "status": 201,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": "{\"external_reference\":\"thin-client-external-{{randomValue type='UUID'}}\",\"payment_reference\":\"RC-THIN-CLIENT-CLAIM-{{randomValue type='UUID'}}\",\"status\":\"Initiated\",\"next_url\":\"__WIREMOCK_PUBLIC_URL__/thin-pay/card?return_url={{urlEncode (jsonPath request.body '$.return-url')}}&amount=115.00\",\"date_created\":\"2026-01-01T00:00:00Z\"}",
+        "transformers": [
+          "response-template"
+        ]
+      }
+    },
+    {
+      "name": "thin-client-create-hearing-card-payment",
+      "priority": 3,
+      "scenarioName": "thin-client-payment",
+      "newScenarioState": "PaymentCreated",
+      "request": {
+        "method": "POST",
+        "urlPathPattern": "/service-request/[^/]+/card-payments",
+        "bodyPatterns": [
+          {
+            "matchesJsonPath": "$[?(@.amount == 619)]"
+          },
+          {
+            "matchesJsonPath": "$[?(@.currency == 'GBP')]"
+          },
+          {
+            "matchesJsonPath": "$['return-url']"
+          }
+        ]
+      },
+      "response": {
+        "status": 201,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": "{\"external_reference\":\"thin-client-external-{{randomValue type='UUID'}}\",\"payment_reference\":\"RC-THIN-CLIENT-HEARING-{{randomValue type='UUID'}}\",\"status\":\"Initiated\",\"next_url\":\"__WIREMOCK_PUBLIC_URL__/thin-pay/card?return_url={{urlEncode (jsonPath request.body '$.return-url')}}&amount=619\",\"date_created\":\"2026-01-01T00:00:00Z\"}",
+        "transformers": [
+          "response-template"
+        ]
+      }
+    },
+    {
+      "name": "thin-client-create-general-application-card-payment",
+      "priority": 3,
+      "scenarioName": "thin-client-payment",
+      "newScenarioState": "PaymentCreated",
+      "request": {
+        "method": "POST",
+        "urlPathPattern": "/service-request/[^/]+/card-payments",
+        "bodyPatterns": [
+          {
+            "matchesJsonPath": "$[?(@.amount == 126)]"
+          },
+          {
+            "matchesJsonPath": "$[?(@.currency == 'GBP')]"
+          },
+          {
+            "matchesJsonPath": "$['return-url']"
+          }
+        ]
+      },
+      "response": {
+        "status": 201,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": "{\"external_reference\":\"thin-client-external-{{randomValue type='UUID'}}\",\"payment_reference\":\"RC-THIN-CLIENT-GA-{{randomValue type='UUID'}}\",\"status\":\"Initiated\",\"next_url\":\"__WIREMOCK_PUBLIC_URL__/thin-pay/card?return_url={{urlEncode (jsonPath request.body '$.return-url')}}&amount=126\",\"date_created\":\"2026-01-01T00:00:00Z\"}",
+        "transformers": [
+          "response-template"
+        ]
+      }
+    },
+    {
+      "name": "thin-client-card-entry-page",
+      "priority": 4,
+      "request": {
+        "method": "GET",
+        "urlPath": "/thin-pay/card",
+        "queryParameters": {
+          "return_url": {
+            "matches": "https?://.+"
+          },
+          "amount": {
+            "matches": "[0-9]+(?:\\.[0-9]+)?"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "text/html; charset=utf-8"
+        },
+        "body": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><title>Enter card details</title></head><body><main><h1>Enter card details</h1><h2>Payment summary</h2><p>card payment</p><p>Total amount: &pound;{{request.query.amount}}</p><p>We’ll send your payment confirmation here</p><form method=\"get\" action=\"/thin-pay/confirm\"><input type=\"hidden\" name=\"return_url\" value=\"{{request.query.return_url}}\"><input type=\"hidden\" name=\"amount\" value=\"{{request.query.amount}}\"><label>Card number<input id=\"card-no\" name=\"card-no\"></label><label>Expiry month<input id=\"expiry-month\" name=\"expiry-month\"></label><label>Expiry year<input id=\"expiry-year\" name=\"expiry-year\"></label><label>Name on card<input id=\"cardholder-name\" name=\"cardholder-name\"></label><label>Security code<input id=\"cvc\" name=\"cvc\"></label><label>Address line 1<input id=\"address-line-1\" name=\"address-line-1\" autocomplete=\"billing address-line1\"></label><label>Town or city<input id=\"address-city\" name=\"address-city\"></label><label>Postcode<input id=\"address-postcode\" name=\"address-postcode\"></label><label>Email<input id=\"email\" name=\"email\"></label><button type=\"submit\">Continue</button></form></main></body></html>",
+        "transformers": [
+          "response-template"
+        ]
+      }
+    },
+    {
+      "name": "thin-client-confirm-card-payment-page",
+      "priority": 4,
+      "scenarioName": "thin-client-payment",
+      "requiredScenarioState": "PaymentCreated",
+      "newScenarioState": "Confirmed",
+      "request": {
+        "method": "GET",
+        "urlPath": "/thin-pay/confirm",
+        "queryParameters": {
+          "return_url": {
+            "matches": "https?://.+"
+          },
+          "amount": {
+            "matches": "[0-9]+(?:\\.[0-9]+)?"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "text/html; charset=utf-8"
+        },
+        "body": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><title>Confirm your payment</title></head><body><main><h1>Confirm your payment</h1><h2>Payment summary</h2><p>card payment</p><p>Total amount: &pound;{{request.query.amount}}</p><form method=\"get\" action=\"{{request.query.return_url}}\"><button id=\"confirm\" type=\"submit\">Confirm payment</button></form></main></body></html>",
+        "transformers": [
+          "response-template"
+        ]
+      }
+    },
+    {
+      "name": "thin-client-initiated-claim-card-payment-status",
+      "priority": 3,
+      "scenarioName": "thin-client-payment",
+      "requiredScenarioState": "PaymentCreated",
+      "request": {
+        "method": "GET",
+        "urlPathPattern": "/card-payments/RC-THIN-CLIENT-CLAIM-[^/]+/statuses"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "transformers": ["response-template"],
+        "body": "{\"amount\":115,\"currency\":\"GBP\",\"external_reference\":\"thin-client-external-reference\",\"payment_group_reference\":\"2026-THIN-CLIENT-SERVICE-REQUEST\",\"reference\":\"{{request.pathSegments.[1]}}\",\"status\":\"Initiated\",\"status_histories\":[{\"status\":\"Initiated\"}]}"
+      }
+    },
+    {
+      "name": "thin-client-initiated-hearing-card-payment-status",
+      "priority": 3,
+      "scenarioName": "thin-client-payment",
+      "requiredScenarioState": "PaymentCreated",
+      "request": {
+        "method": "GET",
+        "urlPathPattern": "/card-payments/RC-THIN-CLIENT-HEARING-[^/]+/statuses"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "transformers": ["response-template"],
+        "body": "{\"amount\":619,\"currency\":\"GBP\",\"external_reference\":\"thin-client-external-reference\",\"payment_group_reference\":\"2026-THIN-CLIENT-SERVICE-REQUEST\",\"reference\":\"{{request.pathSegments.[1]}}\",\"status\":\"Initiated\",\"status_histories\":[{\"status\":\"Initiated\"}]}"
+      }
+    },
+    {
+      "name": "thin-client-initiated-general-application-card-payment-status",
+      "priority": 3,
+      "scenarioName": "thin-client-payment",
+      "requiredScenarioState": "PaymentCreated",
+      "request": {
+        "method": "GET",
+        "urlPathPattern": "/card-payments/RC-THIN-CLIENT-GA-[^/]+/statuses"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "transformers": ["response-template"],
+        "body": "{\"amount\":126,\"currency\":\"GBP\",\"external_reference\":\"thin-client-external-reference\",\"payment_group_reference\":\"2026-THIN-CLIENT-SERVICE-REQUEST\",\"reference\":\"{{request.pathSegments.[1]}}\",\"status\":\"Initiated\",\"status_histories\":[{\"status\":\"Initiated\"}]}"
+      }
+    },
+    {
+      "name": "thin-client-successful-claim-card-payment-status",
+      "priority": 3,
+      "scenarioName": "thin-client-payment",
+      "requiredScenarioState": "Confirmed",
+      "newScenarioState": "Started",
+      "request": {
+        "method": "GET",
+        "urlPathPattern": "/card-payments/RC-THIN-CLIENT-CLAIM-[^/]+/statuses"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "transformers": ["response-template"],
+        "body": "{\"amount\":115,\"currency\":\"GBP\",\"external_reference\":\"thin-client-external-reference\",\"payment_group_reference\":\"2026-THIN-CLIENT-SERVICE-REQUEST\",\"reference\":\"{{request.pathSegments.[1]}}\",\"status\":\"Success\",\"status_histories\":[{\"status\":\"Initiated\"},{\"status\":\"Success\"}]}"
+      }
+    },
+    {
+      "name": "thin-client-successful-hearing-card-payment-status",
+      "priority": 3,
+      "scenarioName": "thin-client-payment",
+      "requiredScenarioState": "Confirmed",
+      "newScenarioState": "Started",
+      "request": {
+        "method": "GET",
+        "urlPathPattern": "/card-payments/RC-THIN-CLIENT-HEARING-[^/]+/statuses"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "transformers": ["response-template"],
+        "body": "{\"amount\":619,\"currency\":\"GBP\",\"external_reference\":\"thin-client-external-reference\",\"payment_group_reference\":\"2026-THIN-CLIENT-SERVICE-REQUEST\",\"reference\":\"{{request.pathSegments.[1]}}\",\"status\":\"Success\",\"status_histories\":[{\"status\":\"Initiated\"},{\"status\":\"Success\"}]}"
+      }
+    },
+    {
+      "name": "thin-client-successful-general-application-card-payment-status",
+      "priority": 3,
+      "scenarioName": "thin-client-payment",
+      "requiredScenarioState": "Confirmed",
+      "newScenarioState": "Started",
+      "request": {
+        "method": "GET",
+        "urlPathPattern": "/card-payments/RC-THIN-CLIENT-GA-[^/]+/statuses"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "transformers": ["response-template"],
+        "body": "{\"amount\":126,\"currency\":\"GBP\",\"external_reference\":\"thin-client-external-reference\",\"payment_group_reference\":\"2026-THIN-CLIENT-SERVICE-REQUEST\",\"reference\":\"{{request.pathSegments.[1]}}\",\"status\":\"Success\",\"status_histories\":[{\"status\":\"Initiated\"},{\"status\":\"Success\"}]}"
+      }
+    }
+  ]
+}
