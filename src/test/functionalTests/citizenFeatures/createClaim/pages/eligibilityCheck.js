@@ -310,7 +310,7 @@ class EligibilityCheck {
     await I.waitForContent('Deciding whether to apply for Help with Fees');
     await I.seeElement('//a[contains(normalize-space(), \'Apply for Help with Fees (opens in a new tab)\')]');
     await I.see('and make a claim using a Help with Fees number. If you need to use the paper Help with Fees application rather than the online version then you will not be able to use Online Civil Money Claims to issue your claim.');
-    await I.see('When you apply for Help with Fees you will be asked for the number on your court or tribunal form. Please note that this is N1.');
+    await I.see('When you apply for Help with Fees you will be asked for the number on your court or Tribunal form. Please note that this is N1.');
     await I.see('Make a note of the Help with Fees number when you make an application.');
     await I.see('You will need this number to make your claim when you are returned to this service.');
     await I.click('Save and continue');
