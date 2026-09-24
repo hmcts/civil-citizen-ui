@@ -74,7 +74,7 @@ describe('Claim Party Type Controller', () => {
 
       await postHandler(req as AppRequest, res as unknown as Response, next);
 
-      expect(mockSaveClaimantProperty).toHaveBeenCalledWith('user-id', 'type', PartyType.INDIVIDUAL);
+      expect(mockSaveClaimantProperty).toHaveBeenCalledWith(req, 'type', PartyType.INDIVIDUAL);
       expect(res.redirect).toHaveBeenCalledWith(CLAIMANT_INDIVIDUAL_DETAILS_URL);
     });
 

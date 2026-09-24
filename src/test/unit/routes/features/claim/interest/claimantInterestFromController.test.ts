@@ -83,7 +83,7 @@ describe('Claimant Interest From Controller', () => {
 
       await postHandler(req as AppRequest, res as unknown as Response, next);
 
-      expect(mockSaveInterest).toHaveBeenCalledWith('user-id', InterestClaimFromType.FROM_CLAIM_SUBMIT_DATE, 'interestClaimFrom');
+      expect(mockSaveInterest).toHaveBeenCalledWith(req, InterestClaimFromType.FROM_CLAIM_SUBMIT_DATE, 'interestClaimFrom');
       expect(res.redirect).toHaveBeenCalledWith(CLAIM_HELP_WITH_FEES_URL);
     });
 
