@@ -4,6 +4,8 @@ import {DraftClaimRequest, DraftClaimResponse} from 'common/models/draft/draftCl
 import {Claim} from 'models/claim';
 import {CCDClaim, CivilClaimResponse} from 'models/civilClaimResponse';
 import {AppRequest} from 'common/models/AppRequest';
+import {getTTLDaysForCategory, TTLCategory} from './ttlConfig';
+
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('draftStoreDbService');
@@ -41,12 +43,20 @@ const mapToCivilClaimResponse = (dbDraft: DraftClaimResponse): CivilClaimRespons
   return response;
 };
 
+const ensureDraftClaimTtl = (claim: Claim): void => {
+  if (!claim.draftClaimCacheTtlDays) {
+    claim.draftClaimCacheTtlDays = getTTLDaysForCategory(TTLCategory.DRAFT_CLAIM);
+  }
+};
+
 export const createOrLoadDraftClaimInDraftStoreDb = async (
   req: AppRequest,
   claim?: Claim,
 ): Promise<{ claimResponse: CivilClaimResponse; rawResponse: DraftClaimResponse; isNew: boolean}> => {
+  const claimToSave = claim || new Claim();
+  ensureDraftClaimTtl(claimToSave);
   const payload: DraftClaimRequest = {
-    payload: (claim || new Claim()) as unknown as Record<string, unknown>,
+    payload: claimToSave as unknown as Record<string, unknown>,
   };
 
   try {
@@ -101,6 +111,7 @@ export const updateDraftClaimInStore = async (
   }
 
   const url = draftClaimUrl(draftId);
+  ensureDraftClaimTtl(claim);
   const payload: DraftClaimRequest = {
     payload: claim as unknown as Record<string, unknown>,
   };
