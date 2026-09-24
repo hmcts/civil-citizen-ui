@@ -8,9 +8,18 @@ import {
   deleteDraftClaimFromStore,
 } from 'modules/draft-store/draftStoreDbService';
 import {DraftClaimResponse} from 'common/models/draft/draftClaim';
+import {getTTLDaysForCategory, TTLCategory} from 'modules/draft-store/ttlConfig';
 
 jest.mock('axios');
+jest.mock('modules/draft-store/ttlConfig', () => {
+  const actual = jest.requireActual('modules/draft-store/ttlConfig');
+  return {
+    ...actual,
+    getTTLDaysForCategory: jest.fn(() => 30),
+  };
+});
 const mockedAxios = axios as jest.Mocked<typeof axios>;
+const mockedGetTTLDaysForCategory = getTTLDaysForCategory as jest.MockedFunction<typeof getTTLDaysForCategory>;
 
 describe('draftStoreDbService Unit Tests', () => {
   let mockReq: AppRequest;
@@ -101,10 +110,37 @@ describe('draftStoreDbService Unit Tests', () => {
 
       const result = await createOrLoadDraftClaimInDraftStoreDb(mockReq, mockClaim);
 
-      expect(mockedAxios.post).toHaveBeenCalled();
+      expect(mockedGetTTLDaysForCategory).toHaveBeenCalledWith(TTLCategory.DRAFT_CLAIM);
+      expect(mockedAxios.post).toHaveBeenCalledWith(
+        expect.stringContaining('/dashboard/draft-claims'),
+        expect.objectContaining({
+          payload: expect.objectContaining({draftClaimCacheTtlDays: 30}),
+        }),
+        expect.anything(),
+      );
       expect(result.isNew).toBe(true);
       expect(result.rawResponse).toEqual(mockRawResponse);
       expect(result.claimResponse.id).toBe(mockDraftId);
+    });
+
+    it('should keep an existing draftClaimCacheTtlDays on create', async () => {
+      const mockClaim = new Claim();
+      mockClaim.draftClaimCacheTtlDays = 180;
+      mockedAxios.post.mockResolvedValueOnce({
+        status: 201,
+        data: mockRawResponse,
+      });
+
+      await createOrLoadDraftClaimInDraftStoreDb(mockReq, mockClaim);
+
+      expect(mockedGetTTLDaysForCategory).not.toHaveBeenCalled();
+      expect(mockedAxios.post).toHaveBeenCalledWith(
+        expect.stringContaining('/dashboard/draft-claims'),
+        expect.objectContaining({
+          payload: expect.objectContaining({draftClaimCacheTtlDays: 180}),
+        }),
+        expect.anything(),
+      );
     });
 
     it('should default to new Claim() when claim parameter is undefined', async () => {
@@ -162,9 +198,36 @@ describe('draftStoreDbService Unit Tests', () => {
 
       const result = await updateDraftClaimInStore(mockReq, mockDraftId, mockClaim);
 
-      expect(mockedAxios.put).toHaveBeenCalled();
+      expect(mockedGetTTLDaysForCategory).toHaveBeenCalledWith(TTLCategory.DRAFT_CLAIM);
+      expect(mockedAxios.put).toHaveBeenCalledWith(
+        expect.stringContaining(`/dashboard/draft-claims/${mockDraftId}`),
+        expect.objectContaining({
+          payload: expect.objectContaining({draftClaimCacheTtlDays: 30}),
+        }),
+        expect.anything(),
+      );
       expect(result.rawResponse).toEqual(mockRawResponse);
       expect(result.claimResponse.id).toBe(mockDraftId);
+    });
+
+    it('should keep an existing draftClaimCacheTtlDays on update', async () => {
+      const mockClaim = new Claim();
+      mockClaim.draftClaimCacheTtlDays = 180;
+      mockedAxios.put.mockResolvedValueOnce({
+        status: 200,
+        data: mockRawResponse,
+      });
+
+      await updateDraftClaimInStore(mockReq, mockDraftId, mockClaim);
+
+      expect(mockedGetTTLDaysForCategory).not.toHaveBeenCalled();
+      expect(mockedAxios.put).toHaveBeenCalledWith(
+        expect.stringContaining(`/dashboard/draft-claims/${mockDraftId}`),
+        expect.objectContaining({
+          payload: expect.objectContaining({draftClaimCacheTtlDays: 180}),
+        }),
+        expect.anything(),
+      );
     });
 
     it('should rethrow backend API errors during update', async () => {
