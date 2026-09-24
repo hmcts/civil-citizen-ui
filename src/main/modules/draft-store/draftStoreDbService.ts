@@ -6,7 +6,6 @@ import {CCDClaim, CivilClaimResponse} from 'models/civilClaimResponse';
 import {AppRequest} from 'common/models/AppRequest';
 import {getTTLDaysForCategory, TTLCategory} from './ttlConfig';
 
-
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('draftStoreDbService');
 
