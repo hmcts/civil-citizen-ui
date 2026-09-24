@@ -62,6 +62,58 @@
           "version": 1
         }
       }
+    },
+    {
+      "name": "thin-client-certificate-of-satisfaction-fee",
+      "priority": 4,
+      "request": {
+        "method": "GET",
+        "urlPath": "/fees-register/fees/lookup",
+        "queryParameters": {
+          "service": {"equalTo": "other"},
+          "jurisdiction1": {"equalTo": "civil"},
+          "jurisdiction2": {"equalTo": "civil"},
+          "channel": {"equalTo": "default"},
+          "event": {"equalTo": "miscellaneous"},
+          "keyword": {"equalTo": "CoS"}
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {"Content-Type": "application/json"},
+        "jsonBody": {
+          "code": "FEE0459",
+          "description": "Issue of a certificate of satisfaction",
+          "fee_amount": 19.00,
+          "version": 4
+        }
+      }
+    },
+    {
+      "name": "thin-client-vary-or-suspend-fee",
+      "priority": 4,
+      "request": {
+        "method": "GET",
+        "urlPath": "/fees-register/fees/lookup",
+        "queryParameters": {
+          "service": {"equalTo": "other"},
+          "jurisdiction1": {"equalTo": "civil"},
+          "jurisdiction2": {"equalTo": "civil"},
+          "channel": {"equalTo": "default"},
+          "event": {"equalTo": "miscellaneous"},
+          "keyword": {"equalTo": "AppnToVaryOrSuspend"}
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {"Content-Type": "application/json"},
+        "jsonBody": {
+          "code": "FEE0447",
+          "description": "Application to vary or suspend enforcement",
+          "fee_amount": 120.00,
+          "version": 1
+        }
+      }
     }
   ]
 }
