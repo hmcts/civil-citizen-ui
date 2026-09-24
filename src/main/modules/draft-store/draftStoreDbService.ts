@@ -24,8 +24,15 @@ const getHeaders = (req: AppRequest) => {
   };
 };
 
-const draftClaimUrl = (draftId: string): string =>
-  `${civilServiceApiBaseUrl}/dashboard/draft-claims/${encodeURIComponent(draftId)}`;
+const safeDraftId = /^[A-Za-z0-9_-]+$/;
+
+const draftClaimUrl = (draftId: string): string => {
+  const match = draftId.match(safeDraftId);
+  if (!match) {
+    throw new Error('[draftStoreDbService] invalid draftId');
+  }
+  return `${civilServiceApiBaseUrl}/dashboard/draft-claims/${encodeURIComponent(match[0])}`;
+};
 
 const mapToCivilClaimResponse = (dbDraft: DraftClaimResponse): CivilClaimResponse => {
   const response = new CivilClaimResponse();
@@ -93,13 +100,14 @@ export const updateDraftClaimInStore = async (
     throw new Error('[draftStoreDbService] draftId is required for PUT update');
   }
 
+  const url = draftClaimUrl(draftId);
   const payload: DraftClaimRequest = {
     payload: claim as unknown as Record<string, unknown>,
   };
 
   try {
     const response = await axios.put<DraftClaimResponse>(
-      draftClaimUrl(draftId),
+      url,
       payload,
       {headers: getHeaders(req)},
     );
@@ -117,11 +125,12 @@ export const deleteDraftClaimFromStore = async (req: AppRequest, draftId: string
   if (!draftId) {
     throw new Error('[draftStoreDbService] draftId is required for deletion');
   }
+  const url = draftClaimUrl(draftId);
   logger.info(`[draftStoreDbService] deleting draft ${draftId} from db`);
 
   try {
     await axios.delete(
-      draftClaimUrl(draftId),
+      url,
       {headers: getHeaders(req)},
     );
   } catch (err: unknown) {
