@@ -8,7 +8,7 @@ import {Claim} from 'models/claim';
 import {Party} from 'models/party';
 import {PartyDetails} from 'form/models/partyDetails';
 import {getClaimantInformation, saveClaimantProperty} from 'services/features/claim/yourDetails/claimantDetailsService';
-import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {getDraftClaim} from 'modules/draft-store/draftStoreManagerService';
 import {buildAddress} from '../../../../../utils/mockClaim';
 import * as launchDarklyClient from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {lookupByPostcodeAndDataSet} from 'modules/ordance-survey-key/ordanceSurveyKeyService';
@@ -18,7 +18,7 @@ jest.mock('services/features/claim/yourDetails/claimantDetailsService', () => ({
   getClaimantInformation: jest.fn(),
   saveClaimantProperty: jest.fn(),
 }));
-jest.mock('modules/draft-store/draftStoreService');
+jest.mock('modules/draft-store/draftStoreManagerService');
 jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 jest.mock('modules/ordance-survey-key/ordanceSurveyKeyService', () => ({
   lookupByPostcodeAndDataSet: jest.fn(),
@@ -26,7 +26,7 @@ jest.mock('modules/ordance-survey-key/ordanceSurveyKeyService', () => ({
 
 const mockGetClaimantInformation = getClaimantInformation as jest.Mock;
 const mockSaveClaimantProperty = saveClaimantProperty as jest.Mock;
-const mockGetCaseData = getCaseDataFromStore as jest.Mock;
+const mockGetDraftClaim = getDraftClaim as jest.Mock;
 const mockLookupByPostcode = lookupByPostcodeAndDataSet as jest.Mock;
 
 const buildApplicantWithType = (type: PartyType): Party => {
@@ -86,7 +86,10 @@ describe('Claimant Organisation Details page', () => {
       valid: true,
       addresses: [{country: 'England'}],
     });
-    mockGetCaseData.mockResolvedValue(new Claim());
+    mockGetDraftClaim.mockResolvedValue({
+      claimResponse: {case_data: new Claim()},
+      rawResponse: {draftId: 'draft-123'},
+    });
     mockGetClaimantInformation.mockResolvedValue(buildApplicantType(PartyType.ORGANISATION));
     mockSaveClaimantProperty.mockResolvedValue(undefined);
     (launchDarklyClient.isCarmEnabledForCase as jest.Mock).mockResolvedValue(true);
