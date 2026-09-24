@@ -15,14 +15,12 @@
 {% block content %}
 
       {% set yesHtml %}
-        <p class="govuk-body">{{ t('PAGES.ELIGIBILITY_HWF_REFERENCE.ENTER_REFERENCE') }}</p>
           {{ govukInput({
             id: 'hwfReferenceNumber',
             name: 'hwfReferenceNumber',
             classes: 'govuk-!-width-one-half',
             label: {
-              text: t('PAGES.ELIGIBILITY_HWF_REFERENCE.ENTER_REFERENCE'),
-              classes: 'govuk-visually-hidden'
+              text: t('PAGES.ELIGIBILITY_HWF_REFERENCE.ENTER_REFERENCE')
             }
           }) }}
       {% endset -%}
@@ -53,7 +51,7 @@
               <legend class="govuk-fieldset__legend govuk-fieldset__legend--m">
                 {{ t('PAGES.ELIGIBILITY_HWF_REFERENCE.TITLE') }}
               </legend>
-              {{ yesNoRadioButton(t, 'option', 'option', '', form, '', {yes: 'COMMON.YES', no: 'COMMON.NO', classes: 'govuk-radios--inline', yesHtml: yesHtml, noHtml: noHtml}) }}
+              {{ yesNoRadioButton(t, 'option', 'option', '', form, '', {yes: 'COMMON.YES', no: 'COMMON.NO', classes: 'govuk-radios--inline app-radios--inline-conditional', yesHtml: yesHtml, noHtml: noHtml}) }}
             </fieldset>
             <div class="govuk-form-group">
               {{ govukButton({

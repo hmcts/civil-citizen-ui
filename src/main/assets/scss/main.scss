@@ -506,3 +506,11 @@
   white-space: nowrap;
   width: 1px;
 }
+
+// Inline radios with conditional reveals: show the revealed content below all options, full width
+@media (width >= 40.0625em) {
+  .app-radios--inline-conditional .govuk-radios__conditional {
+    order: 1;
+    flex-basis: 100%;
+  }
+}
