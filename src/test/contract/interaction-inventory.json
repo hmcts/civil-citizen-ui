@@ -503,8 +503,8 @@
   ],
   "idamApi_oidc": [
     {
-      "description": "a request to get user details",
-      "state": "a token is requested"
+      "description": "an authorisation-code request for a token with CUI sign-in claims",
+      "state": "IDAM returns an ID token with CUI sign-in claims"
     }
   ],
   "s2s_auth": [
