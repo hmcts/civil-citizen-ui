@@ -4,7 +4,11 @@ import {DocumentType} from 'models/document/documentType';
 
 export class CaseDocumentInfoExtractor {
   static getSystemGeneratedCaseDocumentIdByType = ((systemGeneratedCaseDocuments: SystemGeneratedCaseDocuments[], documentType: DocumentType, defendantOrClaimant?: string) => {
-    const sealedDocument = systemGeneratedCaseDocuments.find((document) => {
+    return CaseDocumentInfoExtractor.getLatestSystemGeneratedCaseDocumentIdByType(systemGeneratedCaseDocuments, documentType, defendantOrClaimant);
+  });
+
+  static getLatestSystemGeneratedCaseDocumentIdByType = ((systemGeneratedCaseDocuments: SystemGeneratedCaseDocuments[], documentType: DocumentType, defendantOrClaimant?: string) => {
+    const sealedDocument = [...systemGeneratedCaseDocuments].reverse().find((document) => {
       if (documentType == DocumentType.DIRECTIONS_QUESTIONNAIRE) {
         return document.value.documentType === documentType && document.value.documentName.startsWith(defendantOrClaimant);
       }
