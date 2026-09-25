@@ -49,14 +49,21 @@ const syncCaseReference = (req: Request, claim?: Claim): void => {
 export const getClaimById = async (claimId: RouteParam, req: Request, useRedisKey = false): Promise<Claim> => {
   const normalizedClaimId = normalizeRouteParam(claimId);
   const userId = (<AppRequest>req)?.session?.user?.id;
+  if (useRedisKey && normalizedClaimId === userId) {
+    logger.error(`getClaimById: claimId and userId are identical (${normalizedClaimId}), which may lead to incorrect redis key generation.`);
+  }
   const redisKey = useRedisKey && normalizedClaimId !== userId ? generateRedisKey(<AppRequest>req) : normalizedClaimId;
+  logger.info(`getClaimById: userId: ${userId} claimId: ${normalizedClaimId} redisKey: ${redisKey} useRedisKey: ${useRedisKey}`);
   let claim: Claim = await getCaseDataFromStore(redisKey, true);
 
   if (claim.isEmpty() && redisKey !== userId) {
+    logger.info(`Claim not found in draft store, fetching from civil service: claimId: ${normalizedClaimId}`);
     claim = await civilServiceClient.retrieveClaimDetails(normalizedClaimId, <AppRequest>req);
     if (claim) {
+      logger.info(`Claim found in civil service, saving to draft store: claimId: ${normalizedClaimId}`);
       await saveDraftClaim(redisKey, claim, true, userId, TTLCategory.JOURNEY_CACHE);
     } else {
+      logger.error(`Case not found in civil service for claimId: ${normalizedClaimId}`);
       throw new Error('Case not found...');
     }
   }
