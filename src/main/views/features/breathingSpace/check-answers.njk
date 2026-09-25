@@ -1,0 +1,51 @@
+{% extends "claim-details-tpl-dashboard.njk" %}
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "../../macro/csrf.njk" import csrfProtection %}
+{% from "../../macro/page-title.njk" import setPageTitle %}
+{% from "../../macro/support-links.njk" import supportLinks %}
+{% from "../../macro/contact-us-for-help.njk" import contactUsForHelp with context %}
+
+{% set pageTitle = 'PAGES.BREATHING_SPACE.LIFT.CHECK_ANSWERS' %}
+{{ setPageTitle(t, pageTitle) }}
+
+{% block content %}
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    <h1 class="govuk-heading-l">
+      <span class="govuk-caption-l">{{ t('PAGES.BREATHING_SPACE.LIFT.CAPTION') }}</span>
+      {{ t('PAGES.BREATHING_SPACE.LIFT.CHECK_ANSWERS') }}
+    </h1>
+
+    <form method="post" novalidate>
+      {{ csrfProtection(csrf) }}
+
+      {{ govukSummaryList({
+        rows: summaryRows
+      }) }}
+
+      <div class="govuk-button-group">
+        {{ govukButton({
+          text: t('COMMON.BUTTONS.CONTINUE')
+        }) }}
+        {{ govukButton({
+          text: t('COMMON.BUTTONS.PREVIOUS'),
+          classes: 'govuk-button--secondary',
+          href: liftBreathingSpaceUrl
+        }) }}
+      </div>
+
+      <p class="govuk-body">
+        <a href="{{ exitUrl }}" class="govuk-link">{{ t('COMMON.BUTTONS.CANCEL') }}</a>
+      </p>
+    </form>
+  </div>
+  <div class="govuk-grid-column-one-third">
+    <div class="border-small-top"></div>
+    {% if helpSupportLinks != null and helpSupportLinks.length %}
+      {{ supportLinks(t, helpSupportTitle, helpSupportLinks) }}
+    {% endif %}
+    {{ contactUsForHelp(t) }}
+  </div>
+</div>
+{% endblock %}
