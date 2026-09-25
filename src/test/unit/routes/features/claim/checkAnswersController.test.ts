@@ -204,7 +204,8 @@ describe('Claim - Check answers', () => {
         createdAt: '2026-08-01T10:00:00.000Z',
       });
       const submittedClaim = new Claim();
-      submittedClaim.id = 'claim-id';
+      submittedClaim.id = '1790322528949860';
+      submittedClaim.legacyCaseReference = '000JE005';
       mockSubmitClaim.mockResolvedValue(submittedClaim);
       req.body = signedBody;
 
@@ -212,7 +213,10 @@ describe('Claim - Check answers', () => {
 
       expect(mockUpdateDraftClaim).toHaveBeenCalledWith(
         req,
-        expect.objectContaining({id: submittedClaim.id}),
+        expect.objectContaining({
+          id: submittedClaim.id,
+          legacyCaseReference: '000JE005',
+        }),
         'draft-123',
       );
       expect(req.session.draftId).toBe('draft-123');
