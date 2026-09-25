@@ -12,7 +12,7 @@ import {PartyPhone} from 'models/PartyPhone';
 import {GenericForm} from 'form/models/genericForm';
 import {StatementOfTruthFormClaimIssue} from 'form/models/statementOfTruth/statementOfTruthFormClaimIssue';
 import {getStashedClaimOrFromStore} from 'common/utils/claimRequestLocals';
-import {getDraftClaim, updateDraftClaim} from 'modules/draft-store/draftStoreManagerService';
+import {getDraftClaim, updateDraftClaim, deleteDraftClaim} from 'modules/draft-store/draftStoreManagerService';
 import {getStatementOfTruth, getSummarySections, saveStatementOfTruth} from 'services/features/claim/checkAnswers/checkAnswersService';
 import {submitClaim} from 'services/features/claim/submission/submitClaim';
 import {saveClaimFee} from 'services/features/claim/amount/claimFeesService';
@@ -60,6 +60,7 @@ describe('Claim - Check answers', () => {
   const mockCalculateInterestToDate = calculateInterestToDate as jest.Mock;
   const mockIsCarmEnabledForCase = isCarmEnabledForCase as jest.Mock;
   const mockUpdateDraftClaim = updateDraftClaim as jest.Mock;
+  const mockDeleteDraftClaim = deleteDraftClaim as jest.Mock;
 
   const signedBody = {
     signed: 'Test',
@@ -175,7 +176,7 @@ describe('Claim - Check answers', () => {
       expect(res.redirect).not.toHaveBeenCalled();
     });
 
-    it('should redirect to confirmation and clear cookies when help with fees is yes', async () => {
+    it('should redirect to confirmation and delete the draft when help with fees is yes', async () => {
       mockGetDraftClaim.mockResolvedValue({
         claimResponse: {case_data: buildClaim(YesNo.YES)},
         rawResponse: {draftId: 'draft-123'},
@@ -188,12 +189,9 @@ describe('Claim - Check answers', () => {
 
       await postHandler(req as AppRequest, res as unknown as Response, next);
 
-      expect(mockUpdateDraftClaim).toHaveBeenCalledWith(
-        req,
-        expect.objectContaining({id: submittedClaim.id}),
-        'draft-123',
-      );
-      expect(req.session.draftId).toBe('draft-123');
+      expect(mockDeleteDraftClaim).toHaveBeenCalledWith(req, 'draft-123');
+      expect(mockUpdateDraftClaim).not.toHaveBeenCalled();
+      expect(req.session.draftId).toBeUndefined();
       expect(res.clearCookie).toHaveBeenCalledWith('eligibilityCompleted');
       expect(res.clearCookie).toHaveBeenCalledWith('eligibility');
       expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(submittedClaim.id, CLAIM_CONFIRMATION_URL));
