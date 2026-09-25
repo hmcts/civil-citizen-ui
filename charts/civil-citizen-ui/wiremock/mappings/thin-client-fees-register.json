@@ -114,6 +114,49 @@
           "version": 1
         }
       }
+    },
+    {
+      "name": "thin-client-small-claims-hearing-fee",
+      "priority": 4,
+      "request": {
+        "method": "GET",
+        "urlPath": "/fees-register/fees/lookup",
+        "queryParameters": {
+          "service": {
+            "equalTo": "civil money claims"
+          },
+          "jurisdiction1": {
+            "equalTo": "civil"
+          },
+          "jurisdiction2": {
+            "equalTo": "county court"
+          },
+          "channel": {
+            "equalTo": "default"
+          },
+          "event": {
+            "equalTo": "hearing"
+          },
+          "keyword": {
+            "equalTo": "HearingSmallClaims"
+          },
+          "amount_or_volume": {
+            "matches": "1500(?:\\.0+)?"
+          }
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "jsonBody": {
+          "code": "FEE0223",
+          "description": "Hearing fee: Small claims case (exceeds 1000 but not 1500 GBP)",
+          "version": 8,
+          "fee_amount": 123
+        }
+      }
     }
   ]
 }
