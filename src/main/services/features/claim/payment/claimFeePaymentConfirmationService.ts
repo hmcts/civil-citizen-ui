@@ -4,13 +4,13 @@ import {
   PAY_CLAIM_FEE_UNSUCCESSFUL_URL,
   DASHBOARD_URL,
 } from 'routes/urls';
-import {getClaimById} from 'modules/utilityService';
 import {getFeePaymentStatus} from 'services/features/feePayment/feePaymentService';
 import {FeeType} from 'form/models/helpWithFees/feeType';
 import { ClaimBilingualLanguagePreference } from 'common/models/claimBilingualLanguagePreference';
 import {isWelshEnabledForMainCase} from '../../../../app/auth/launchdarkly/launchDarklyClient';
 import {isUsablePathSegment} from 'common/utils/routeParamUtils';
-import {deleteDraftClaimFromStore, generateRedisKey} from 'modules/draft-store/draftStoreService';
+import {deleteDraftClaim} from 'modules/draft-store/draftStoreManagerService';
+import {getClaimIssuePaymentClaim} from 'routes/features/claim/payment/claimIssuePaymentDraftService';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimFeePaymentConfirmationService');
@@ -20,7 +20,7 @@ const paymentCancelledByUser = 'Payment was cancelled by the user';
 
 export const getRedirectUrl = async (claimId: string, req: AppRequest): Promise<string> => {
   try {
-    const claim = await getClaimById(claimId, req, true);
+    const {claim, draftId} = await getClaimIssuePaymentClaim(req);
     const paymentInfo = claim.claimDetails?.claimFeePayment;
     const paymentReference = paymentInfo?.paymentReference;
     logger.info(`Payment information retrieved for claim id ${req.params.id}`);
@@ -35,7 +35,10 @@ export const getRedirectUrl = async (claimId: string, req: AppRequest): Promise<
       const isCUIWelshEnabled = await isWelshEnabledForMainCase();
       const lang = claim.claimantBilingualLanguagePreference === ClaimBilingualLanguagePreference.WELSH
       || (!isCUIWelshEnabled && claim.claimantBilingualLanguagePreference === ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH) ? 'cy' : 'en';
-      await deleteDraftClaimFromStore(generateRedisKey(req));
+      await deleteDraftClaim(req, draftId);
+      if (req.session) {
+        delete req.session.draftId;
+      }
       return `${PAY_CLAIM_FEE_SUCCESSFUL_URL}?lang=${lang}`;
     }
     const redirectingUrl = paymentStatus.errorDescription !== paymentCancelledByUser ?
