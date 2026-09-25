@@ -50,4 +50,4 @@ Scenario('Response with RejectAll-DisputeAll Fast Track', async ({api}) => {
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await ResponseToDefenceLipVsLipSteps.ResponseToDefenceStepsAsAnRejectionOfFullDefenceDisputeAll(claimRef, claimNumber);
   await api.waitForFinishedBusinessProcess();
-}).tag('@civil-citizen-master @civil-citizen-pr');
+}).tag('@civil-citizen-master @civil-citizen-pr @thin-full-stack');
