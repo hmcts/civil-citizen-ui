@@ -206,8 +206,29 @@ describe('draftStoreDbService Unit Tests', () => {
         }),
         expect.anything(),
       );
+      expect(mockedAxios.put.mock.calls[0][1]).not.toHaveProperty('caseId');
       expect(result.rawResponse).toEqual(mockRawResponse);
       expect(result.claimResponse.id).toBe(mockDraftId);
+    });
+
+    it('should send CCD caseId on PUT after the claim has been submitted', async () => {
+      const mockClaim = new Claim();
+      mockClaim.id = '1790322528949860';
+      mockedAxios.put.mockResolvedValueOnce({
+        status: 200,
+        data: mockRawResponse,
+      });
+
+      await updateDraftClaimInStore(mockReq, mockDraftId, mockClaim);
+
+      expect(mockedAxios.put).toHaveBeenCalledWith(
+        expect.stringContaining(`/dashboard/draft-claims/${mockDraftId}`),
+        expect.objectContaining({
+          caseId: '1790322528949860',
+          payload: expect.objectContaining({id: '1790322528949860'}),
+        }),
+        expect.anything(),
+      );
     });
 
     it('should keep an existing draftClaimCacheTtlDays on update', async () => {

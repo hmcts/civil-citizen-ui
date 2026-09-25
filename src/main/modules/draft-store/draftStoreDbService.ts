@@ -48,6 +48,20 @@ const ensureDraftClaimTtl = (claim: Claim): void => {
   }
 };
 
+const ccdCaseIdFromClaim = (claim: Claim): string | undefined => {
+  if (claim?.id && /^\d+$/.test(String(claim.id))) {
+    return String(claim.id);
+  }
+  return undefined;
+};
+
+const toDraftClaimRequest = (claim: Claim): DraftClaimRequest => {
+  const caseId = ccdCaseIdFromClaim(claim);
+  return caseId
+    ? {caseId, payload: claim as unknown as Record<string, unknown>}
+    : {payload: claim as unknown as Record<string, unknown>};
+};
+
 export const createOrLoadDraftClaimInDraftStoreDb = async (
   req: AppRequest,
   claim?: Claim,
@@ -111,9 +125,10 @@ export const updateDraftClaimInStore = async (
 
   const url = draftClaimUrl(draftId);
   ensureDraftClaimTtl(claim);
-  const payload: DraftClaimRequest = {
-    payload: claim as unknown as Record<string, unknown>,
-  };
+  const payload = toDraftClaimRequest(claim);
+  if (payload.caseId) {
+    logger.info(`[draftStoreDbService] updating draft ${draftId} with CCD caseId=${payload.caseId}`);
+  }
 
   try {
     const response = await axios.put<DraftClaimResponse>(
