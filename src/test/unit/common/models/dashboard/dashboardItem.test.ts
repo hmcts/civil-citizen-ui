@@ -263,6 +263,15 @@ describe('Dashboard Items', ()=> {
       expect(status).toBe('PAGES.DASHBOARD.STATUS_CLAIMANT.NO_RESPONSE_ON_TIME');
     });
 
+    it('should return wait-for-response status when RESPONSE_OVERDUE during breathing space', () => {
+      const dashboardClaim = new DashboardClaimantItem();
+      dashboardClaim.status = 'RESPONSE_OVERDUE';
+
+      const status = dashboardClaim.getStatus('en');
+
+      expect(status).toBe('PAGES.DASHBOARD.STATUS_CLAIMANT.NO_RESPONSE_ON_TIME');
+    });
+
     it('should return translated status for claim CLAIM_SUBMIT_HWF', () => {
       //Given
       const dashboardClaim = new DashboardClaimantItem();
