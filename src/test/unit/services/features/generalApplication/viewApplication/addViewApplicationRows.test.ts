@@ -10,10 +10,11 @@ import {
   addHearingArrangementsRows,
   addHearingSupportRows, addOrderJudgeRow, addRequestingReasonRow,
 } from 'services/features/generalApplication/viewApplication/addViewApplicationRows';
+import {t} from 'i18next';
 
 jest.mock('../../../../../../main/modules/i18n');
 jest.mock('i18next', () => ({
-  t: (i: string | unknown) => i,
+  t: jest.fn((i: string | unknown) => i),
   use: jest.fn(),
 }));
 
@@ -52,6 +53,10 @@ const applicationResponse = new ApplicationResponse(
 );
 
 describe('addViewApplicationsRows', () => {
+  afterEach(() => {
+    (t as jest.Mock).mockImplementation((i: string | unknown) => i);
+  });
+
   describe('build addHearingSupportRows', () => {
 
     it('should return a summary row with selected supports', () => {
@@ -73,6 +78,18 @@ describe('addViewApplicationsRows', () => {
       expect(result[0].value.html).toContain(
         "<li>PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.SIGN_LANGUAGE_INTERPRETER - 'ASL'</li>",
       );
+    });
+
+    it('should escape translated support labels inside trusted HTML', () => {
+      (t as jest.Mock).mockImplementation((key: string) => key === 'PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.STEP_FREE_ACCESS'
+        ? '<strong>Step-free access</strong>'
+        : key);
+      caseData.generalAppHearingDetails.SupportRequirement = [CcdSupportRequirement.DISABLED_ACCESS];
+
+      const result = addHearingSupportRows(applicationResponse, 'en');
+
+      expect(result[0].value.html).toContain('<li>&lt;strong&gt;Step-free access&lt;/strong&gt;</li>');
+      expect(result[0].value.html).not.toContain('<strong>Step-free access</strong>');
     });
 
     it('should return NO when no support is selected', () => {

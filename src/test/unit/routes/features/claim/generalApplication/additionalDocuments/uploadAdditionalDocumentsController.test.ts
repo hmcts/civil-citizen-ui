@@ -78,7 +78,7 @@ describe('uploadAdditionalDocumentsController', () => {
                 text: 'Type of document',
               },
               value: {
-                html: 'test',
+                text: 'test',
               },
             },
             {
@@ -86,7 +86,7 @@ describe('uploadAdditionalDocumentsController', () => {
                 text: 'n245form.pdf',
               },
               value: {
-                html: '',
+                text: '',
               },
               actions: {
                 items: [
@@ -129,7 +129,7 @@ describe('uploadAdditionalDocumentsController', () => {
                 text: 'Type of document',
               },
               value: {
-                html: 'test',
+                text: 'test',
               },
             },
             {
@@ -137,7 +137,7 @@ describe('uploadAdditionalDocumentsController', () => {
                 text: 'n245form.pdf',
               },
               value: {
-                html: '',
+                text: '',
               },
               actions: {
                 items: [

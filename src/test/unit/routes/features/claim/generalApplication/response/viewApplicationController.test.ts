@@ -11,7 +11,7 @@ import {app} from '../../../../../../../main/app';
 import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
 import { DocumentInformation, DocumentLinkInformation, DocumentsViewComponent } from 'common/form/models/documents/DocumentsViewComponent';
 import { constructResponseUrlWithIdAndAppIdParams } from 'common/utils/urlFormatter';
-import { SummaryRow, summaryRow } from 'common/models/summaryList/summaryList';
+import { SummaryRow, summaryRow, summaryRowHtml } from 'common/models/summaryList/summaryList';
 import { CourtResponseSummaryList, ResponseButton } from 'common/models/generalApplication/CourtResponseSummary';
 import {Claim} from 'models/claim';
 import {getClaimById} from 'modules/utilityService';
@@ -59,6 +59,7 @@ describe('General Application - View application', () => {
     const claim = new Claim();
     application = Object.assign(new ApplicationResponse(), mockApplication);
     mockRespondentDocs.mockImplementation(() => []);
+    mockedSummaryRows.mockResolvedValue({summaryRows: [], responseSummaries: []});
     mockGetApplicationFromGAService.mockResolvedValue(application);
     (getClaimById as jest.Mock).mockResolvedValue(claim);
     mockGetApplicationIndex.mockImplementation(() => 1);
@@ -217,13 +218,13 @@ describe('General Application - View application', () => {
         judgeDirectionRows.push(
           summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE'), '1 Aug 2024'),
           summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE'), 'Judge has made order'),
-          summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE'), '<a href="#">Judge Order</a>'));
+          summaryRowHtml(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE'), '<a href="#">Judge Order</a>'));
 
         const hearingNotices = new CourtResponseSummaryList(hearingNoticeRows);
         hearingNoticeRows.push(
           summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE'), '2 Aug 2024'),
           summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE'), 'Hearing Notice has been generated'),
-          summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE'), '<a href="#">Hearing Notice</a>'));
+          summaryRowHtml(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE'), '<a href="#">Hearing Notice</a>'));
 
         responseFromCourt.push(judgeDirections);
         responseFromCourt.push(hearingNotices);
@@ -285,4 +286,3 @@ describe('General Application - View application', () => {
     });
   });
 });
-

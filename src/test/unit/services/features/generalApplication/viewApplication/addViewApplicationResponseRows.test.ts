@@ -95,7 +95,7 @@ describe('addViewApplicationResponseRows', () => {
         },
         {
           key: { text: 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.DO_YOU_AGREE_WITH_APPLICANT_REQUEST'},
-          value: {html: 'COMMON.VARIATION_2.NO<ul class="no-list-style">undefined</ul>'},
+          value: {html: 'COMMON.VARIATION_2.NO<ul class="no-list-style"></ul>'},
         },
         {
           'key': {
@@ -185,7 +185,7 @@ describe('addViewApplicationResponseRows', () => {
       expect(buildResponseSummaries(application as CCDApplication, 'en')).toStrictEqual([
         {
           key: { text: 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.DO_YOU_AGREE_WITH_APPLICANT_REQUEST' },
-          value: { html: 'COMMON.VARIATION_2.NO<ul class="no-list-style">undefined</ul>' },
+          value: { html: 'COMMON.VARIATION_2.NO<ul class="no-list-style"></ul>' },
         },
         {
           key: { text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.CHOOSE_PREFERRED_TYPE' },
@@ -195,7 +195,7 @@ describe('addViewApplicationResponseRows', () => {
           value: { text: 'I prefer in person' },
         }, {
           key: { text: 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER_RESPONSE.PREFERRED_LOCATION' },
-          value: { html: "Barnet Civil and Family Centre - St Mary's Court, Regents Park Road - N3 1BQ" },
+          value: { html: 'Barnet Civil and Family Centre - St Mary&#039;s Court, Regents Park Road - N3 1BQ' },
         }, {
           key: { text: 'PAGES.GENERAL_APPLICATION.HEARING_CONTACT_DETAILS.PREFERRED_TELEPHONE_NUMBER' },
           value: { html: '07878787878' },
@@ -253,7 +253,7 @@ describe('addViewApplicationResponseRows', () => {
       expect(buildResponseSummaries(application as CCDApplication, 'en')).toStrictEqual([
         {
           key: {text: 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.DO_YOU_AGREE_WITH_APPLICANT_REQUEST'},
-          value: {html: 'COMMON.VARIATION_2.NO<ul class="no-list-style">undefined</ul>'},
+          value: {html: 'COMMON.VARIATION_2.NO<ul class="no-list-style"></ul>'},
         },
         {
           key: {text: 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.UNAVAILABLE_DATES'},
@@ -305,7 +305,7 @@ describe('addViewApplicationResponseRows', () => {
       expect(buildResponseSummaries(application as CCDApplication, 'en')).toStrictEqual([
         {
           key: {text: 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.DO_YOU_AGREE_WITH_APPLICANT_REQUEST'},
-          value: {html: 'COMMON.VARIATION_2.NO<ul class="no-list-style">undefined</ul>'},
+          value: {html: 'COMMON.VARIATION_2.NO<ul class="no-list-style"></ul>'},
         },
         {
           key: {text: 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.UNAVAILABLE_DATES'},
@@ -344,7 +344,7 @@ describe('addViewApplicationResponseRows', () => {
 
       expect(buildResponseSummaries(application as CCDApplication, 'en')).toStrictEqual([{
         key: {text: 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.DO_YOU_AGREE_WITH_APPLICANT_REQUEST'},
-        value: {html: 'COMMON.VARIATION_2.NO<ul class="no-list-style">undefined</ul>'},
+        value: {html: 'COMMON.VARIATION_2.NO<ul class="no-list-style"></ul>'},
       }, {
         'key': {
           'text': 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE.UNAVAILABLE_DATES',
