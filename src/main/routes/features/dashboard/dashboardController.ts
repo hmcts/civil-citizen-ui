@@ -1,7 +1,7 @@
 import {RequestHandler, Response, Router} from 'express';
 import config from 'config';
-import {DASHBOARD_URL} from '../../urls';
-import {AppRequest, UserDetails} from 'models/AppRequest';
+import {DASHBOARD_URL, CLAIMANT_TASK_LIST_URL} from '../../urls';
+import {AppRequest} from 'models/AppRequest';
 import {DashboardClaimantItem, DashboardDefendantItem} from 'common/models/dashboard/dashboardItem';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {DraftClaimData, getDraftClaimData} from 'services/dashboard/draftClaimService';
@@ -35,7 +35,6 @@ const dashboardController = Router();
 dashboardController.get(DASHBOARD_URL, (async function (req, res, next) {
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
   const appRequest = <AppRequest> req;
-  const user: UserDetails = appRequest.session.user;
   if (appRequest.session?.caseReference) {
     delete appRequest.session.caseReference;
   }
@@ -45,9 +44,9 @@ dashboardController.get(DASHBOARD_URL, (async function (req, res, next) {
   }
   clearCaseReferenceCookie(appRequest, res);
   try{
-    const draftClaimData: DraftClaimData = await getDraftClaimData(user?.accessToken, user?.id);
+    const draftClaimData: DraftClaimData = await getDraftClaimData(appRequest);
     const claimsAsClaimant: DashboardClaimantResponse = await civilServiceClient.getClaimsForClaimant(appRequest);
-    const showUpdateStatus = claimsAsClaimant.claims?.some(item => item?.status === 'NO_STATUS') ? true : false;
+    const showUpdateStatus = !!claimsAsClaimant.claims?.some(item => item?.status === 'NO_STATUS');
     const claimDraftSaved = draftClaimData?.draftClaim;
     const claimsAsDefendant: DashboardDefendantResponse = await civilServiceClient.getClaimsForDefendant(appRequest);
     const claimantPage = req.query?.claimantPage ? 'claimantPage=' + req.query?.claimantPage : '';
@@ -55,7 +54,7 @@ dashboardController.get(DASHBOARD_URL, (async function (req, res, next) {
     const claimsAsDefendantPaginationList = buildPagination(claimsAsDefendant.totalPages, req.query?.defendantPage as string, lang, 'defendantPage', claimantPage);
     const responseDraftSaved = false;
     const paginationArgumentClaimant = buildPagination(claimsAsClaimant.totalPages, req.query?.claimantPage as string, lang, 'claimantPage', defendantPage);
-    const draftClaimUrl = draftClaimData?.claimCreationUrl;
+    const draftClaimUrl = claimDraftSaved ? CLAIMANT_TASK_LIST_URL : draftClaimData?.claimCreationUrl;
     renderPage(res, claimsAsClaimant.claims, claimDraftSaved, claimsAsDefendant.claims, responseDraftSaved, draftClaimUrl, paginationArgumentClaimant, claimsAsDefendantPaginationList, showUpdateStatus, lang);
   }catch(error){
     next(error);

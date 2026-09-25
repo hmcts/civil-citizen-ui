@@ -3,13 +3,15 @@ import claimantDoBController from '../../../../../main/routes/features/claim/you
 import {CLAIMANT_PHONE_NUMBER_URL} from 'routes/urls';
 import {AppRequest} from 'models/AppRequest';
 import {GenericForm} from 'form/models/genericForm';
-import {Claim} from 'models/claim';
 import {Party} from 'models/party';
 import {DOBDate} from 'common/form/models/claim/claimant/dobDate';
-import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {getClaimantInformation, saveClaimantProperty} from 'services/features/claim/yourDetails/claimantDetailsService';
 import {createMockResponse, createMockSession, getRouteHandler} from '../../../../utils/getRouteHandler';
 
-jest.mock('modules/draft-store/draftStoreService');
+jest.mock('services/features/claim/yourDetails/claimantDetailsService', () => ({
+  getClaimantInformation: jest.fn(),
+  saveClaimantProperty: jest.fn(),
+}));
 
 describe('Claimant Date of Birth Controller', () => {
   const getHandler = getRouteHandler(claimantDoBController, 'get');
@@ -19,14 +21,8 @@ describe('Claimant Date of Birth Controller', () => {
   let req: Partial<AppRequest>;
   let res: ReturnType<typeof createMockResponse>;
   let next: jest.Mock;
-  const mockGetCaseData = getCaseDataFromStore as jest.Mock;
-  const mockSaveDraftClaim = saveDraftClaim as jest.Mock;
-
-  const claimWithApplicant = (): Claim => {
-    const claim = new Claim();
-    claim.applicant1 = new Party();
-    return claim;
-  };
+  const mockGetClaimantInformation = getClaimantInformation as jest.Mock;
+  const mockSaveClaimantProperty = saveClaimantProperty as jest.Mock;
 
   beforeEach(() => {
     req = {
@@ -37,8 +33,8 @@ describe('Claimant Date of Birth Controller', () => {
     };
     res = createMockResponse();
     next = jest.fn();
-    mockGetCaseData.mockResolvedValue(claimWithApplicant());
-    mockSaveDraftClaim.mockResolvedValue(undefined);
+    mockGetClaimantInformation.mockResolvedValue(new Party());
+    mockSaveClaimantProperty.mockResolvedValue(undefined);
   });
 
   describe('on GET', () => {
@@ -54,8 +50,7 @@ describe('Claimant Date of Birth Controller', () => {
     });
 
     it('should render date of birth page with applicant values', async () => {
-      const claim = claimWithApplicant();
-      mockGetCaseData.mockResolvedValue(claim);
+      mockGetClaimantInformation.mockResolvedValue(new Party());
 
       await getHandler(req as AppRequest, res as unknown as Response, next);
 
@@ -67,9 +62,9 @@ describe('Claimant Date of Birth Controller', () => {
     });
 
     it('should render saved date of birth values', async () => {
-      const claim = claimWithApplicant();
-      claim.applicant1.dateOfBirth = new DOBDate('2', '3', '1980');
-      mockGetCaseData.mockResolvedValue(claim);
+      const claimant = new Party();
+      claimant.dateOfBirth = new DOBDate('2', '3', '1980');
+      mockGetClaimantInformation.mockResolvedValue(claimant);
 
       await getHandler(req as AppRequest, res as unknown as Response, next);
 
@@ -82,7 +77,7 @@ describe('Claimant Date of Birth Controller', () => {
 
     it('should call next when loading the claim fails', async () => {
       const error = new Error('error');
-      mockGetCaseData.mockRejectedValue(error);
+      mockGetClaimantInformation.mockRejectedValue(error);
 
       await getHandler(req as AppRequest, res as unknown as Response, next);
 
@@ -117,13 +112,13 @@ describe('Claimant Date of Birth Controller', () => {
 
       await postHandler(req as AppRequest, res as unknown as Response, next);
 
-      expect(mockSaveDraftClaim).toHaveBeenCalled();
+      expect(mockSaveClaimantProperty).toHaveBeenCalledWith(req, 'dateOfBirth', expect.any(DOBDate));
       expect(res.redirect).toHaveBeenCalledWith(CLAIMANT_PHONE_NUMBER_URL);
     });
 
     it('should call next when save fails', async () => {
       const error = new Error('error');
-      mockSaveDraftClaim.mockRejectedValue(error);
+      mockSaveClaimantProperty.mockRejectedValue(error);
       req.body = {day: 4, month: 5, year: 1952};
 
       await postHandler(req as AppRequest, res as unknown as Response, next);

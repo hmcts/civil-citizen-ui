@@ -12,7 +12,7 @@ import {PartyPhone} from 'models/PartyPhone';
 import {GenericForm} from 'form/models/genericForm';
 import {StatementOfTruthFormClaimIssue} from 'form/models/statementOfTruth/statementOfTruthFormClaimIssue';
 import {getStashedClaimOrFromStore} from 'common/utils/claimRequestLocals';
-import {deleteDraftClaimFromStore, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {deleteDraftClaim, getDraftClaim} from 'modules/draft-store/draftStoreManagerService';
 import {getStatementOfTruth, getSummarySections, saveStatementOfTruth} from 'services/features/claim/checkAnswers/checkAnswersService';
 import {submitClaim} from 'services/features/claim/submission/submitClaim';
 import {saveClaimFee} from 'services/features/claim/amount/claimFeesService';
@@ -25,7 +25,7 @@ import {createMockResponse, createMockSession, getRouteHandler} from '../../../.
 jest.mock('common/utils/claimRequestLocals', () => ({
   getStashedClaimOrFromStore: jest.fn(),
 }));
-jest.mock('modules/draft-store/draftStoreService');
+jest.mock('modules/draft-store/draftStoreManagerService');
 jest.mock('services/features/claim/checkAnswers/checkAnswersService', () => ({
   getSummarySections: jest.fn(),
   getStatementOfTruth: jest.fn(),
@@ -51,7 +51,7 @@ describe('Claim - Check answers', () => {
   let res: ReturnType<typeof createMockResponse>;
   let next: jest.Mock;
   const mockGetStashedClaim = getStashedClaimOrFromStore as jest.Mock;
-  const mockGetClaim = getCaseDataFromStore as jest.Mock;
+  const mockGetDraftClaim = getDraftClaim as jest.Mock;
   const mockGetSummarySections = getSummarySections as jest.Mock;
   const mockGetStatementOfTruth = getStatementOfTruth as jest.Mock;
   const mockSaveStatementOfTruth = saveStatementOfTruth as jest.Mock;
@@ -59,7 +59,7 @@ describe('Claim - Check answers', () => {
   const mockSaveClaimFee = saveClaimFee as jest.Mock;
   const mockCalculateInterestToDate = calculateInterestToDate as jest.Mock;
   const mockIsCarmEnabledForCase = isCarmEnabledForCase as jest.Mock;
-  const mockDeleteDraftClaim = deleteDraftClaimFromStore as jest.Mock;
+  const mockDeleteDraftClaim = deleteDraftClaim as jest.Mock;
 
   const signedBody = {
     signed: 'Test',
@@ -89,7 +89,7 @@ describe('Claim - Check answers', () => {
 
   beforeEach(() => {
     req = {
-      session: createMockSession({user: {id: 'user-id'}}),
+      session: createMockSession({user: {id: 'user-id'}, draftId: 'draft-123'}),
       body: {},
       query: {},
       cookies: {},
@@ -97,7 +97,11 @@ describe('Claim - Check answers', () => {
     res = createMockResponse();
     next = jest.fn();
     mockGetStashedClaim.mockResolvedValue(buildClaim(YesNo.NO));
-    mockGetClaim.mockResolvedValue(buildClaim(YesNo.NO));
+    mockGetDraftClaim.mockResolvedValue({
+      claimResponse: {case_data: buildClaim(YesNo.NO)},
+      rawResponse: {draftId: 'draft-123'},
+      createdAt: '2026-08-01T10:00:00.000Z',
+    });
     mockGetSummarySections.mockReturnValue({sections: []});
     mockGetStatementOfTruth.mockReturnValue(new StatementOfTruthFormClaimIssue(false));
     mockSaveStatementOfTruth.mockResolvedValue(undefined);
@@ -155,7 +159,11 @@ describe('Claim - Check answers', () => {
     });
 
     it('should re-render when claimant phone number is missing', async () => {
-      mockGetClaim.mockResolvedValue(buildClaim(YesNo.NO, false));
+      mockGetDraftClaim.mockResolvedValue({
+        claimResponse: {case_data: buildClaim(YesNo.NO, false)},
+        rawResponse: {draftId: 'draft-123'},
+        createdAt: '2026-08-01T10:00:00.000Z',
+      });
       req.body = signedBody;
 
       await postHandler(req as AppRequest, res as unknown as Response, next);
@@ -168,7 +176,11 @@ describe('Claim - Check answers', () => {
     });
 
     it('should redirect to confirmation and clear cookies when help with fees is yes', async () => {
-      mockGetClaim.mockResolvedValue(buildClaim(YesNo.YES));
+      mockGetDraftClaim.mockResolvedValue({
+        claimResponse: {case_data: buildClaim(YesNo.YES)},
+        rawResponse: {draftId: 'draft-123'},
+        createdAt: '2026-08-01T10:00:00.000Z',
+      });
       const submittedClaim = new Claim();
       submittedClaim.id = 'claim-id';
       mockSubmitClaim.mockResolvedValue(submittedClaim);
@@ -176,13 +188,19 @@ describe('Claim - Check answers', () => {
 
       await postHandler(req as AppRequest, res as unknown as Response, next);
 
+      expect(mockDeleteDraftClaim).toHaveBeenCalledWith(req, 'draft-123');
+      expect(req.session.draftId).toBeUndefined();
       expect(res.clearCookie).toHaveBeenCalledWith('eligibilityCompleted');
       expect(res.clearCookie).toHaveBeenCalledWith('eligibility');
       expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(submittedClaim.id, CLAIM_CONFIRMATION_URL));
     });
 
     it('should redirect to confirmation and clear cookies when help with fees is no', async () => {
-      mockGetClaim.mockResolvedValue(buildClaim(YesNo.NO));
+      mockGetDraftClaim.mockResolvedValue({
+        claimResponse: {case_data: buildClaim(YesNo.NO)},
+        rawResponse: {draftId: 'draft-123'},
+        createdAt: '2026-08-01T10:00:00.000Z',
+      });
       const submittedClaim = new Claim();
       submittedClaim.id = 'claim-id';
       mockSubmitClaim.mockResolvedValue(submittedClaim);
@@ -190,6 +208,8 @@ describe('Claim - Check answers', () => {
 
       await postHandler(req as AppRequest, res as unknown as Response, next);
 
+      expect(mockDeleteDraftClaim).toHaveBeenCalledWith(req, 'draft-123');
+      expect(req.session.draftId).toBeUndefined();
       expect(res.clearCookie).toHaveBeenCalledWith('eligibilityCompleted');
       expect(res.clearCookie).toHaveBeenCalledWith('eligibility');
       expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(submittedClaim.id, CLAIM_CONFIRMATION_URL));
@@ -197,7 +217,7 @@ describe('Claim - Check answers', () => {
 
     it('should call next when submitting the claim fails', async () => {
       const error = new Error('error');
-      mockGetClaim.mockRejectedValue(error);
+      mockGetDraftClaim.mockRejectedValue(error);
 
       await postHandler(req as AppRequest, res as unknown as Response, next);
 

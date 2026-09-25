@@ -10,13 +10,13 @@ import {
 import {AppRequest} from 'models/AppRequest';
 import {GenericForm} from 'form/models/genericForm';
 import {Party} from 'models/party';
-import {getDefendantInformation, saveDefendantProperty} from 'services/features/common/defendantDetailsService';
+import {getDefendantInformationFromDraft, saveDefendantPropertyToDraft} from 'services/features/common/defendantDetailsService';
 import {deleteDelayedFlight} from 'services/features/claim/delayedFlightService';
 import {createMockResponse, createMockSession, getRouteHandler} from '../../../../utils/getRouteHandler';
 
 jest.mock('services/features/common/defendantDetailsService', () => ({
-  getDefendantInformation: jest.fn(),
-  saveDefendantProperty: jest.fn(),
+  getDefendantInformationFromDraft: jest.fn(),
+  saveDefendantPropertyToDraft: jest.fn(),
 }));
 jest.mock('services/features/claim/delayedFlightService', () => ({
   deleteDelayedFlight: jest.fn(),
@@ -30,8 +30,8 @@ describe('Defendant party type controller', () => {
   let req: Partial<AppRequest>;
   let res: ReturnType<typeof createMockResponse>;
   let next: jest.Mock;
-  const mockGetDefendantInformation = getDefendantInformation as jest.Mock;
-  const mockSaveDefendantProperty = saveDefendantProperty as jest.Mock;
+  const mockGetDefendantInformation = getDefendantInformationFromDraft as jest.Mock;
+  const mockSaveDefendantProperty = saveDefendantPropertyToDraft as jest.Mock;
 
   beforeEach(() => {
     req = {
@@ -79,7 +79,7 @@ describe('Defendant party type controller', () => {
 
       await postHandler(req as AppRequest, res as unknown as Response, next);
 
-      expect(deleteDelayedFlight).toHaveBeenCalledWith('user-id');
+      expect(deleteDelayedFlight).toHaveBeenCalledWith(req);
       expect(res.redirect).toHaveBeenCalledWith(CLAIM_DEFENDANT_INDIVIDUAL_DETAILS_URL);
     });
 

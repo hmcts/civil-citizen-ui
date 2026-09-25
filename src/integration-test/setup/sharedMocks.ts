@@ -8,6 +8,7 @@ const launchDarklyClientMock = {
   isQueryManagementEnabled: jest.fn().mockResolvedValue(false),
   isWelshEnabledForMainCase: jest.fn().mockResolvedValue(false),
   isJudgmentBufferEnabled: jest.fn().mockResolvedValue(false),
+  isDraftClaimDatabaseEnabled: jest.fn().mockResolvedValue(false),
 };
 
 jest.mock('express-async-errors', () => ({}), {virtual: true});
@@ -52,7 +53,10 @@ export const draftStoreServiceMock = {
   generateRedisKey: jest.fn(() => 'test-redis-key'),
   generateRedisKeyForGA: jest.fn(() => 'redis-ga'),
   getCaseDataFromStore: jest.fn(),
+  getDraftClaimFromStore: jest.fn().mockResolvedValue({id: 'test-draft'}),
   saveDraftClaim: jest.fn().mockResolvedValue(undefined),
+  createDraftClaimInStoreWithExpiryTime: jest.fn().mockResolvedValue(undefined),
+  deleteDraftClaimFromStore: jest.fn().mockResolvedValue(undefined),
   updateFieldDraftClaimFromStore: jest.fn().mockResolvedValue(undefined),
   deleteFieldDraftClaimFromStore: jest.fn().mockResolvedValue(undefined),
 };

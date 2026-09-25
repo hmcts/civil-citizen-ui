@@ -63,7 +63,7 @@ describe('Delayed flight Controller', () => {
 
       await postHandler(req as AppRequest, res as unknown as Response, next);
 
-      expect(mockSaveDelayedFlight).toHaveBeenCalledWith('user-id', expect.any(GenericYesNo));
+      expect(mockSaveDelayedFlight).toHaveBeenCalledWith(req, expect.any(GenericYesNo));
       expect(res.redirect).toHaveBeenCalledWith(FLIGHT_DETAILS_URL);
     });
 
