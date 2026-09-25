@@ -5,7 +5,7 @@ import {
   getSummarySections,
   saveStatementOfTruth,
 } from 'services/features/claim/checkAnswers/checkAnswersService';
-import {getDraftClaim, updateDraftClaim} from 'modules/draft-store/draftStoreManagerService';
+import {deleteDraftClaim, getDraftClaim, updateDraftClaim} from 'modules/draft-store/draftStoreManagerService';
 import {getStashedClaimOrFromStore} from 'common/utils/claimRequestLocals';
 import {Claim} from 'common/models/claim';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
@@ -114,11 +114,19 @@ claimCheckAnswersController.post(CLAIM_CHECK_ANSWERS_URL, async (req: AppRequest
 
       const draftId = appReq.session?.draftId || draftResult.rawResponse?.draftId;
       if (draftId) {
-        const latestDraft = await getDraftClaim(appReq);
-        if (latestDraft?.claimResponse?.case_data) {
-          const claimToStore = Object.assign(new Claim(), latestDraft.claimResponse?.case_data as unknown as Claim);
-          claimToStore.id = submittedClaim.id;
-          await updateDraftClaim(appReq, claimToStore, draftId);
+        if (claim.claimDetails.helpWithFees.option === YesNo.YES) {
+          await deleteDraftClaim(appReq, draftId);
+          delete appReq.session.draftId;
+        } else {
+          const latestDraft = await getDraftClaim(appReq);
+          if (latestDraft?.claimResponse?.case_data) {
+            const claimToStore = Object.assign(new Claim(), latestDraft.claimResponse?.case_data as unknown as Claim);
+            claimToStore.id = submittedClaim.id;
+            if (submittedClaim.legacyCaseReference) {
+              claimToStore.legacyCaseReference = submittedClaim.legacyCaseReference;
+            }
+            await updateDraftClaim(appReq, claimToStore, draftId);
+          }
         }
       }
 
