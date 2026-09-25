@@ -106,6 +106,6 @@ describe('hasAnythingChanged', () => {
     const actualIsCaseReadyContent = getHasAnythingChanged(claim.id.toString(), claim);
 
     //Then
-    expect(actualIsCaseReadyContent[5].data.href).toEqual('/case/1645882162449409/documents/undefined');
+    expect(actualIsCaseReadyContent[5].data.href).toBeNull();
   });
 });

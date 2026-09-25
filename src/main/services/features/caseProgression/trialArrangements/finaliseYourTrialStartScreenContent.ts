@@ -1,6 +1,5 @@
 import {Claim} from 'models/claim';
 import {
-  CASE_DOCUMENT_DOWNLOAD_URL,
   DASHBOARD_CLAIMANT_URL,
   DEFENDANT_SUMMARY_URL,
   IS_CASE_READY_URL,
@@ -13,6 +12,7 @@ import {DirectionQuestionnaireType} from 'models/directionsQuestionnaire/directi
 import {currencyFormatWithNoTrailingZeros} from 'common/utils/currencyFormat';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
 import {getLng} from 'common/utils/languageToggleUtils';
+import {buildCaseDocumentDownloadUrl} from 'common/utils/formatDocumentURL';
 
 export const getFinaliseTrialArrangementContents = (claimId: string, claim: Claim, lang: string) => {
   let defendantOrClaimant;
@@ -34,13 +34,13 @@ export const getFinaliseTrialArrangementContents = (claimId: string, claim: Clai
     .addWarning('PAGES.FINALISE_TRIAL_ARRANGEMENTS.YOU_HAVE_UNTIL_DATE',{hearingDueDate: formatDateToFullDate(claim.fourWeeksBeforeHearingDate(), getLng(lang)) })
     .addParagraph('PAGES.FINALISE_TRIAL_ARRANGEMENTS.YOU_SHOULD_FINALISE')
     .addTitle('PAGES.FINALISE_TRIAL_ARRANGEMENTS.IS_THE_CASE_READY_FOR_TRIAL')
-    .addLink('PAGES.FINALISE_TRIAL_ARRANGEMENTS.DIRECTIONS_ORDER', CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claimId).replace(':documentId', getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.SDO_ORDER)),
+    .addLink('PAGES.FINALISE_TRIAL_ARRANGEMENTS.DIRECTIONS_ORDER', buildCaseDocumentDownloadUrl(claimId, getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.SDO_ORDER)),
       'PAGES.FINALISE_TRIAL_ARRANGEMENTS.WE_ARE_ASKING_YOU',
       'PAGES.FINALISE_TRIAL_ARRANGEMENTS.YOU_HAVE_RECEIVED','', true)
     .addParagraph('PAGES.FINALISE_TRIAL_ARRANGEMENTS.IF_YOUR_CASE_NOT_READY')
     .addInsetText('PAGES.FINALISE_TRIAL_ARRANGEMENTS.IF_YOU_NEED_TO_MAKE_APPLICATION')
     .addTitle('PAGES.FINALISE_TRIAL_ARRANGEMENTS.HEARING_ADJUSTMENTS_AND_DURATION')
-    .addFullStopLink('PAGES.FINALISE_TRIAL_ARRANGEMENTS.DIRECTIONS_QUESTIONNAIRE', CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claimId).replace(':documentId', getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.DIRECTIONS_QUESTIONNAIRE, defendantOrClaimant)),
+    .addFullStopLink('PAGES.FINALISE_TRIAL_ARRANGEMENTS.DIRECTIONS_QUESTIONNAIRE', buildCaseDocumentDownloadUrl(claimId, getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.DIRECTIONS_QUESTIONNAIRE, defendantOrClaimant)),
       'PAGES.FINALISE_TRIAL_ARRANGEMENTS.YOU_WILL_BE_ASKED',
       'PAGES.FINALISE_TRIAL_ARRANGEMENTS.YOU_SHOULD_REVIEW','', true)
     .addParagraph('PAGES.FINALISE_TRIAL_ARRANGEMENTS.WE_WILL_REMIND_YOU')

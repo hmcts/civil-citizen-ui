@@ -1,5 +1,5 @@
 import {NotEligibleReason} from '../../common/form/models/eligibility/NotEligibleReason';
-import {normalizeRouteParam, RouteParam} from 'common/utils/routeParamUtils';
+import {isUsablePathSegment, normalizeRouteParam, RouteParam} from 'common/utils/routeParamUtils';
 
 export function constructResponseUrlWithIdParams(id: RouteParam, path: string): string{
   return path.replace(/(:id)/i, normalizeRouteParam(id));
@@ -10,6 +10,9 @@ export function constructResponseUrlWithIdAndAppIdParams(id: RouteParam, appId: 
 }
 
 export function constructDocumentUrlWithIdParamsAndDocumentId(id: RouteParam, documentId: RouteParam, path: string): string{
+  if (!isUsablePathSegment(id) || !isUsablePathSegment(documentId)) {
+    return '';
+  }
   return path.replace(/(:id)/i, normalizeRouteParam(id)).replace(/(:documentId)/i, normalizeRouteParam(documentId));
 }
 

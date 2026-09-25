@@ -33,10 +33,10 @@ import {
   CcdGeneralApplicationAddlDocument,
 } from 'models/ccdGeneralApplication/ccdGeneralApplicationAddlDocument';
 import { buildResponseSummaries } from './addViewApplicationResponseRows';
+import { buildCaseDocumentViewUrl } from 'common/utils/formatDocumentURL';
 import { documentIdExtractor } from 'common/utils/stringUtils';
 import { buildResponseFromCourtSection } from './responseFromCourtService';
 import { CourtResponseSummaryList } from 'common/models/generalApplication/CourtResponseSummary';
-import { CASE_DOCUMENT_VIEW_URL } from 'routes/urls';
 import { t } from 'i18next';
 import { GaDocumentType } from 'models/generalApplication/gaDocumentType';
 import {displayToEnumKey} from 'services/translation/convertToCUI/cuiTranslation';
@@ -349,9 +349,7 @@ const setUpDocumentLinkObject = (document: CcdDocument, documentDate: Date, appl
     getTranslatedDocumentName(fileName, lang),
     formatDateToFullDate(documentDate, lang),
     new DocumentLinkInformation(
-      CASE_DOCUMENT_VIEW_URL.replace(':id', applicationId)
-        .replace(':documentId',
-          documentIdExtractor(document.document_binary_url)),
+      buildCaseDocumentViewUrl(applicationId, documentIdExtractor(document.document_binary_url)) ?? '',
       documentName ?? document.document_filename));
 };
 

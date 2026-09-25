@@ -3,7 +3,7 @@ import {CivilServiceClient} from 'client/civilServiceClient';
 import {RequestHandler, Router} from 'express';
 import {
   BUNDLES_URL,
-  CASE_DOCUMENT_VIEW_URL, DASHBOARD_CLAIMANT_URL,
+  DASHBOARD_CLAIMANT_URL,
   DASHBOARD_NOTIFICATION_REDIRECT,
   DASHBOARD_NOTIFICATION_REDIRECT_DOCUMENT, DEFENDANT_SUMMARY_URL, QM_VIEW_QUERY_URL, VIEW_ORDERS_AND_NOTICES_URL,
 } from 'routes/urls';
@@ -15,6 +15,7 @@ import {YesNo} from 'form/models/yesNo';
 
 import {generateRedisKey, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {getSystemGeneratedCaseDocumentIdByType} from 'models/document/systemGeneratedCaseDocuments';
+import {buildCaseDocumentViewUrl} from 'common/utils/formatDocumentURL';
 import {documentIdExtractor} from 'common/utils/stringUtils';
 import {checkWelshHearingNotice} from 'services/features/caseProgression/hearing/hearingService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
@@ -66,8 +67,8 @@ async function getDashboardNotificationRedirectUrl(locationName: string, claimId
     case 'VIEW_HEARING_NOTICE':
       if (claim?.caseProgressionHearing?.hearingDocumentsWelsh && claim.caseProgressionHearing.hearingDocumentsWelsh[0] && lang === 'cy') {
         if (checkWelshHearingNotice(claim)) {
-          redirectUrl = CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(
-            ':documentId', documentIdExtractor(claim.caseProgressionHearing.hearingDocumentsWelsh[0].value.documentLink.document_binary_url));
+          redirectUrl = buildCaseDocumentViewUrl(claimId, documentIdExtractor(claim.caseProgressionHearing.hearingDocumentsWelsh[0].value.documentLink.document_binary_url))
+            ?? constructResponseUrlWithIdParams(claimId, claim.isClaimant() ? DASHBOARD_CLAIMANT_URL : DEFENDANT_SUMMARY_URL) + '?errorAwaitingTranslation';
           break;
         }
       }
@@ -75,8 +76,8 @@ async function getDashboardNotificationRedirectUrl(locationName: string, claimId
         redirectUrl = constructResponseUrlWithIdParams(claimId, claim.isClaimant() ? DASHBOARD_CLAIMANT_URL : DEFENDANT_SUMMARY_URL) + '?errorAwaitingTranslation';
         break;
       }
-      redirectUrl = CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(
-        ':documentId', documentIdExtractor(claim?.caseProgressionHearing?.hearingDocuments[0]?.value?.documentLink?.document_binary_url));
+      redirectUrl = buildCaseDocumentViewUrl(claimId, documentIdExtractor(claim?.caseProgressionHearing?.hearingDocuments[0]?.value?.documentLink?.document_binary_url))
+        ?? constructResponseUrlWithIdParams(claimId, claim.isClaimant() ? DASHBOARD_CLAIMANT_URL : DEFENDANT_SUMMARY_URL) + '?errorAwaitingTranslation';
       break;
     case 'PAY_HEARING_FEE_URL':
       await saveDraftClaim(generateRedisKey(req), claim, true, req.session.user?.id);
@@ -87,10 +88,12 @@ async function getDashboardNotificationRedirectUrl(locationName: string, claimId
         redirectUrl = constructResponseUrlWithIdParams(claimId, claim.isClaimant() ? DASHBOARD_CLAIMANT_URL : DEFENDANT_SUMMARY_URL) + '?errorAwaitingTranslation';
         break;
       }
-      redirectUrl = CASE_DOCUMENT_VIEW_URL.replace(':id', claim.id).replace(':documentId', getRouteParam(req, 'documentId'));
+      redirectUrl = buildCaseDocumentViewUrl(claim.id, getRouteParam(req, 'documentId'))
+        ?? constructResponseUrlWithIdParams(claimId, claim.isClaimant() ? DASHBOARD_CLAIMANT_URL : DEFENDANT_SUMMARY_URL) + '?errorAwaitingTranslation';
       break;
     case 'VIEW_DECISION_RECONSIDERATION':
-      redirectUrl =  CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.DECISION_MADE_ON_APPLICATIONS));
+      redirectUrl = buildCaseDocumentViewUrl(claimId, getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.DECISION_MADE_ON_APPLICATIONS))
+        ?? constructResponseUrlWithIdParams(claimId, claim.isClaimant() ? DASHBOARD_CLAIMANT_URL : DEFENDANT_SUMMARY_URL) + '?errorAwaitingTranslation';
       break;
   }
   return redirectUrl;

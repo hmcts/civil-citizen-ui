@@ -1,22 +1,23 @@
 import {CaseDocument} from 'models/document/caseDocument';
 import {ClaimSummarySection, ClaimSummaryType} from 'form/models/claimSummarySection';
-import {CASE_DOCUMENT_DOWNLOAD_URL} from 'routes/urls';
 import {displayDocumentSizeInKB} from 'common/utils/documentSizeDisplayFormatter';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
 import {documentIdExtractor} from 'common/utils/stringUtils';
+import {buildCaseDocumentDownloadUrl} from 'common/utils/formatDocumentURL';
 import {t} from 'i18next';
 
 export const generateDocumentSection = (document: CaseDocument, claimId: string, lang:string): ClaimSummarySection => {
   if (document) {
-    let documentId: string;
+    let documentId: string | null = null;
     if (document.documentLink) {
       documentId = documentIdExtractor(document.documentLink.document_binary_url);
     }
     const createdLabel = t('PAGES.CLAIM_SUMMARY.DOCUMENT_CREATED', {lng: lang});
+    const href = buildCaseDocumentDownloadUrl(claimId, documentId);
     return {
-      type: ClaimSummaryType.LINK,
+      type: href ? ClaimSummaryType.LINK : ClaimSummaryType.PARAGRAPH,
       data: {
-        href: CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claimId).replace(':documentId', documentId),
+        href: href ?? undefined,
         text: `${document.documentName} (PDF, ${displayDocumentSizeInKB(document.documentSize)})`,
         subtitle: `${createdLabel} ${formatDateToFullDate(document.createdDatetime, lang)}`,
       },

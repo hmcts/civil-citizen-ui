@@ -12,7 +12,7 @@ import {buildPartAdmitAlreadyPaidResponseContent} from './partAdmissionAlreadyPa
 import {buildFullAdmissionInstallmentsResponseContent} from './fullAdmissionPayInstallmentsDefendantResponseContent';
 import {getSystemGeneratedCaseDocumentIdByType} from 'models/document/systemGeneratedCaseDocuments';
 import {DocumentType} from 'models/document/documentType';
-import {CASE_DOCUMENT_DOWNLOAD_URL} from 'routes/urls';
+import {buildCaseDocumentDownloadUrl} from 'common/utils/formatDocumentURL';
 
 export const getDefendantsResponseContent = (claim: Claim, lang: string): ClaimSummarySection[] => {
   switch (claim.responseStatus) {
@@ -44,5 +44,5 @@ export const getDefendantResponseLink = (claim: Claim): string => {
   if (!documentId) {
     documentId = getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.SEALED_CLAIM, 'defendant');
   }
-  return CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claim.id).replace(':documentId', documentId);
+  return buildCaseDocumentDownloadUrl(claim.id, documentId) ?? '';
 };

@@ -1,12 +1,12 @@
 import {Claim} from 'models/claim';
 import {caseNumberPrettify} from 'common/utils/stringUtils';
-import {CASE_DOCUMENT_DOWNLOAD_URL} from 'routes/urls';
 import {DocumentType} from 'models/document/documentType';
 import {getSystemGeneratedCaseDocumentIdByType} from 'models/document/systemGeneratedCaseDocuments';
 import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
 import {CaseRole} from 'form/models/caseRoles';
 import {DirectionQuestionnaireType} from 'models/directionsQuestionnaire/directionQuestionnaireType';
 import {currencyFormatWithNoTrailingZeros} from 'common/utils/currencyFormat';
+import {buildCaseDocumentDownloadUrl} from 'common/utils/formatDocumentURL';
 
 export const getHasAnythingChanged = (claimId: string, claim: Claim) => {
   let defendantOrClaimant;
@@ -24,7 +24,7 @@ export const getHasAnythingChanged = (claimId: string, claim: Claim) => {
     .addLeadParagraph('COMMON.CASE_NUMBER_PARAM', {claimId:caseNumberPrettify(claimId)}, 'govuk-!-margin-bottom-1')
     .addLeadParagraph('COMMON.CLAIM_AMOUNT_WITH_VALUE', {claimAmount: currencyFormatWithNoTrailingZeros(claim.totalClaimAmount)})
     .addTitle('PAGES.HAS_ANYTHING_CHANGED.HAS_ANYTHING')
-    .addFullStopLink('PAGES.HAS_ANYTHING_CHANGED.DIRECTIONS',CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claimId).replace(':documentId', documentId), 'PAGES.HAS_ANYTHING_CHANGED.YOU_CAN')
+    .addFullStopLink('PAGES.HAS_ANYTHING_CHANGED.DIRECTIONS', buildCaseDocumentDownloadUrl(claimId, documentId), 'PAGES.HAS_ANYTHING_CHANGED.YOU_CAN')
     .build();
 
   function getDocumentId(claim:Claim, documentType: DocumentType, defendantOrClaimant?: string):string {

@@ -1,5 +1,5 @@
 import {LatestUpdateSectionBuilder} from 'models/LatestUpdateSectionBuilder/latestUpdateSectionBuilder';
-import {CASE_DOCUMENT_VIEW_URL} from 'routes/urls';
+import {buildCaseDocumentViewUrl} from 'common/utils/formatDocumentURL';
 import {Claim} from 'models/claim';
 import {documentIdExtractor} from 'common/utils/stringUtils';
 
@@ -28,7 +28,10 @@ export const getViewTrialArrangements = (isOtherParty: boolean, claim: Claim) =>
 
   const latestUpdateSectionBuilder = new LatestUpdateSectionBuilder()
     .addTitle(viewTrialArrangementsTitle)
-    .addParagraph(viewTrialArrangementsParagraph)
-    .addButtonOpensNewTab(`${VIEW_TRIAL_ARRANGEMENTS}.VIEW_TRIAL_ARRANGEMENTS_BUTTON`, CASE_DOCUMENT_VIEW_URL.replace(':id', claim.id).replace(':documentId', documentId));
+    .addParagraph(viewTrialArrangementsParagraph);
+  const href = buildCaseDocumentViewUrl(claim.id, documentId);
+  if (href) {
+    latestUpdateSectionBuilder.addButtonOpensNewTab(`${VIEW_TRIAL_ARRANGEMENTS}.VIEW_TRIAL_ARRANGEMENTS_BUTTON`, href);
+  }
   return latestUpdateSectionBuilder.build();
 };

@@ -20,11 +20,16 @@ describe('case number formatter', () => {
     expect(result).toEqual('testId');
   });
 
-  it('should return undefined', () => {
-    //When
-    const result = documentIdExtractor(undefined);
-    //Then
-    expect(result).toEqual(undefined);
+  it('should return null when the binary url is missing', () => {
+    expect(documentIdExtractor(undefined)).toBeNull();
+    expect(documentIdExtractor(null)).toBeNull();
+    expect(documentIdExtractor('')).toBeNull();
+  });
+
+  it('should return null for JS sentinel strings and non-binary paths', () => {
+    expect(documentIdExtractor('undefined')).toBeNull();
+    expect(documentIdExtractor('null')).toBeNull();
+    expect(documentIdExtractor('documents/testId')).toBeNull();
   });
 });
 describe('removeWhiteSpacesIfNoText', () => {

@@ -15,11 +15,12 @@ import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftS
 import {TimeLineOfEvents} from 'models/timelineOfEvents/timeLineOfEvents';
 import {AppRequest} from 'common/models/AppRequest';
 import {getRouteParam} from 'common/utils/routeParamUtils';
+import {buildDocumentPathUrl} from 'common/utils/formatDocumentURL';
 
 const defendantTimelineController = Router();
 const defendantTimelineView = 'features/response/timelineOfEvents/defendant-timeline';
 
-function renderView(form: GenericForm<DefendantTimeline>, theirTimeline: TimeLineOfEvents[], pdfUrl: string, res: Response) {
+function renderView(form: GenericForm<DefendantTimeline>, theirTimeline: TimeLineOfEvents[], pdfUrl: string | null, res: Response) {
   res.render(defendantTimelineView, {
     form, theirTimeline, pdfUrl,
   });
@@ -31,7 +32,7 @@ defendantTimelineController.get(CITIZEN_TIMELINE_URL,
       const claimId = getRouteParam(req, 'id');
       const claim = await getCaseDataFromStore(generateRedisKey(<AppRequest>req));
       const theirTimeline = claim.timelineOfEvents;
-      const pdfUrl = claim.extractDocumentId() && CASE_TIMELINE_DOCUMENTS_URL.replace(':id', claimId).replace(':documentId', claim.extractDocumentId());
+      const pdfUrl = buildDocumentPathUrl(CASE_TIMELINE_DOCUMENTS_URL, claimId, claim.extractDocumentId());
       const form = new GenericForm(getDefendantTimeline(claim));
       renderView(form, theirTimeline, pdfUrl, res);
     } catch (error) {
@@ -47,7 +48,7 @@ defendantTimelineController.post(CITIZEN_TIMELINE_URL, (async (req, res, next: N
     await form.validate();
     if (form.hasErrors()) {
       const claim = await getCaseDataFromStore(redisKey);
-      const pdfUrl = claim.extractDocumentId() && CASE_TIMELINE_DOCUMENTS_URL.replace(':id', claimId).replace(':documentId', claim.extractDocumentId());
+      const pdfUrl = buildDocumentPathUrl(CASE_TIMELINE_DOCUMENTS_URL, claimId, claim.extractDocumentId());
       renderView(form, claim.timelineOfEvents, pdfUrl, res);
     } else {
       await saveDefendantTimeline(redisKey, form.model);

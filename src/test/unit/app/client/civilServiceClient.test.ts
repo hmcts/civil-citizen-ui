@@ -298,7 +298,7 @@ describe('Civil Service Client', () => {
       const fileResponse: FileResponse = await civilServiceClient.retrieveDocument(appReq, documentId);
 
       //Then
-      expect(mockGet.mock.calls[0][0]).toEqual(CIVIL_SERVICE_DOWNLOAD_DOCUMENT_URL.replace(':documentId', documentId));
+      expect(mockGet.mock.calls[0][0]).toEqual(`${CIVIL_SERVICE_DOWNLOAD_DOCUMENT_URL.replace(':documentId', documentId)}?caseId=12345`);
       expect(fileResponse).toEqual(fileResponseExpected);
       expect(mockedAxios.create).toHaveBeenCalledWith({
         baseURL: baseUrl,

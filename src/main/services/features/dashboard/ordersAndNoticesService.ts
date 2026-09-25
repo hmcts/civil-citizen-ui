@@ -6,7 +6,7 @@ import {
   DocumentsViewComponent,
 } from 'form/models/documents/DocumentsViewComponent';
 import { formatDateToFullDate } from 'common/utils/dateUtils';
-import { CASE_DOCUMENT_VIEW_URL } from 'routes/urls';
+import { buildCaseDocumentViewUrl } from 'common/utils/formatDocumentURL';
 import { DirectionQuestionnaireType } from 'models/directionsQuestionnaire/directionQuestionnaireType';
 import { ClaimBilingualLanguagePreference } from 'models/claimBilingualLanguagePreference';
 import { Document } from 'models/document/document';
@@ -405,9 +405,7 @@ const setUpDocumentLinkObject = (document: Document, documentDate: Date, claimId
     fileName,
     formatDateToFullDate(documentDate, lang),
     new DocumentLinkInformation(
-      CASE_DOCUMENT_VIEW_URL.replace(':id', claimId)
-        .replace(':documentId',
-          documentIdExtractor(document.document_binary_url)),
+      buildCaseDocumentViewUrl(claimId, documentIdExtractor(document.document_binary_url)) ?? '',
       document.document_filename));
 };
 

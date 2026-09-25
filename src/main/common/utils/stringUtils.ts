@@ -1,14 +1,16 @@
+import {isUsablePathSegment} from 'common/utils/routeParamUtils';
+
 export function caseNumberPrettify(caseNumber: string) {
   return caseNumber.replace(/(.{4})(?! )(?=\S)/g, '$1 ');
 }
 
-export function documentIdExtractor(documentBinaryUrl: string){
-  if (documentBinaryUrl){
-    const regex = /\/([\w-]+)\/binary$/;
-    const match = regex.exec(documentBinaryUrl);
-    return match[1];
+export function documentIdExtractor(documentBinaryUrl?: string | null): string | null {
+  if (!isUsablePathSegment(documentBinaryUrl)) {
+    return null;
   }
-  return documentBinaryUrl;
+  const match = /\/([\w-]+)\/binary$/.exec(documentBinaryUrl.trim());
+  const documentId = match?.[1];
+  return isUsablePathSegment(documentId) ? documentId : null;
 }
 
 export function generalApplicationDocumentIdExtractor(documentBinaryUrl: string){

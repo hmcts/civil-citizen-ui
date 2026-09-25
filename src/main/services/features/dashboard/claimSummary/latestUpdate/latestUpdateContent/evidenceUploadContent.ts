@@ -1,9 +1,10 @@
 import {LatestUpdateSectionBuilder} from 'models/LatestUpdateSectionBuilder/latestUpdateSectionBuilder';
 import {Claim} from 'models/claim';
-import {CASE_DOCUMENT_DOWNLOAD_URL, UPLOAD_YOUR_DOCUMENTS_URL} from 'routes/urls';
+import {UPLOAD_YOUR_DOCUMENTS_URL} from 'routes/urls';
 import {DocumentType} from 'models/document/documentType';
 import {ClaimSummarySection} from 'form/models/claimSummarySection';
 import {getSystemGeneratedCaseDocumentIdByType} from 'models/document/systemGeneratedCaseDocuments';
+import {buildCaseDocumentDownloadUrl} from 'common/utils/formatDocumentURL';
 
 export const getEvidenceUpload = (claim: Claim) : ClaimSummarySection[] => {
   if (claim?.caseProgressionHearing?.hearingDate){
@@ -18,7 +19,7 @@ const getEvidenceUploadSectionWithBundleDeadline = (claimId: string, deadline: s
     .addTitle('PAGES.LATEST_UPDATE_CONTENT.EVIDENCE_UPLOAD.TITLE')
     .addWarning('PAGES.LATEST_UPDATE_CONTENT.EVIDENCE_UPLOAD.DOCUMENTS_DUE_BY', {bundleStitchingDeadline: deadline})
     .addParagraph('PAGES.LATEST_UPDATE_CONTENT.EVIDENCE_UPLOAD.YOU_CAN_UPLOAD_AND_SUBMIT_DOCUMENTS')
-    .addLink('PAGES.LATEST_UPDATE_CONTENT.EVIDENCE_UPLOAD.SDO', CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claimId).replace(':documentId', getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.SDO_ORDER)), 'PAGES.LATEST_UPDATE_CONTENT.EVIDENCE_UPLOAD.FOLLOW_INSTRUCTIONS_IN', 'PAGES.LATEST_UPDATE_CONTENT.EVIDENCE_UPLOAD.FOUND_UNDER_NOTICES_AND_ORDERS')
+    .addLink('PAGES.LATEST_UPDATE_CONTENT.EVIDENCE_UPLOAD.SDO', buildCaseDocumentDownloadUrl(claimId, getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.SDO_ORDER)), 'PAGES.LATEST_UPDATE_CONTENT.EVIDENCE_UPLOAD.FOLLOW_INSTRUCTIONS_IN', 'PAGES.LATEST_UPDATE_CONTENT.EVIDENCE_UPLOAD.FOUND_UNDER_NOTICES_AND_ORDERS')
     .addParagraph('PAGES.LATEST_UPDATE_CONTENT.EVIDENCE_UPLOAD.DOCUMENTS_SUBMITTED_NOT_CONSIDERED')
     .addButton('PAGES.LATEST_UPDATE_CONTENT.EVIDENCE_UPLOAD.TITLE', UPLOAD_YOUR_DOCUMENTS_URL.replace(':id', claimId))
     .build();
@@ -28,7 +29,7 @@ const getEvidenceUploadSectionWithoutBundleDeadline = (claimId: string, claim: C
   return new LatestUpdateSectionBuilder()
     .addTitle('PAGES.LATEST_UPDATE_CONTENT.EVIDENCE_UPLOAD.TITLE')
     .addParagraph('PAGES.LATEST_UPDATE_CONTENT.EVIDENCE_UPLOAD.YOU_CAN_UPLOAD_AND_SUBMIT_DOCUMENTS')
-    .addLink('PAGES.LATEST_UPDATE_CONTENT.EVIDENCE_UPLOAD.SDO', CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claimId).replace(':documentId', getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.SDO_ORDER)), 'PAGES.LATEST_UPDATE_CONTENT.EVIDENCE_UPLOAD.FOLLOW_INSTRUCTIONS_IN', 'PAGES.LATEST_UPDATE_CONTENT.EVIDENCE_UPLOAD.FOUND_UNDER_NOTICES_AND_ORDERS')
+    .addLink('PAGES.LATEST_UPDATE_CONTENT.EVIDENCE_UPLOAD.SDO', buildCaseDocumentDownloadUrl(claimId, getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.SDO_ORDER)), 'PAGES.LATEST_UPDATE_CONTENT.EVIDENCE_UPLOAD.FOLLOW_INSTRUCTIONS_IN', 'PAGES.LATEST_UPDATE_CONTENT.EVIDENCE_UPLOAD.FOUND_UNDER_NOTICES_AND_ORDERS')
     .addParagraph('PAGES.LATEST_UPDATE_CONTENT.EVIDENCE_UPLOAD.DOCUMENTS_SUBMITTED_NOT_CONSIDERED')
     .addButton('PAGES.LATEST_UPDATE_CONTENT.EVIDENCE_UPLOAD.TITLE', UPLOAD_YOUR_DOCUMENTS_URL.replace(':id', claimId))
     .build();

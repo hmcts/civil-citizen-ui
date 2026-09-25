@@ -2,12 +2,12 @@ import {Claim} from 'models/claim';
 import {summaryRow, summaryRowWithTextValue, SummaryRow} from 'models/summaryList/summaryList';
 import {t} from 'i18next';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {CASE_DOCUMENT_VIEW_URL, QM_FOLLOW_UP_MESSAGE, QUERY_MANAGEMENT_CREATE_QUERY} from 'routes/urls';
+import {QM_FOLLOW_UP_MESSAGE, QUERY_MANAGEMENT_CREATE_QUERY} from 'routes/urls';
+import {formatDocumentHtmlLink} from 'common/utils/formatDocumentURL';
 import {CreateQuery, UploadQMAdditionalFile} from 'models/queryManagement/createQuery';
 import {AppRequest} from 'models/AppRequest';
 import {CaseQueries, FormDocument} from 'models/queryManagement/caseQueries';
 import {YesNo, YesNoUpperCamelCase} from 'form/models/yesNo';
-import {documentIdExtractor} from 'common/utils/stringUtils';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {v4 as uuidV4} from 'uuid';
@@ -183,9 +183,7 @@ const buildDocLink = (uploadedFiles: UploadQMAdditionalFile[], claimId: string, 
     return t('PAGES.QM.SEND_MESSAGE_CYA.NO_DOCUMENTS_UPLOADED', {lng});
   }
   uploadedFiles.forEach(doc => {
-    const docUrl = `${CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId',
-      documentIdExtractor(doc.caseDocument.documentLink.document_binary_url))}`;
-    docLinks = docLinks + `<a class='govuk-link' href='${docUrl}'   rel='noopener noreferrer' target='_blank'>${doc.caseDocument.documentName}</a><br>`;
+    docLinks = docLinks + `${formatDocumentHtmlLink(doc.caseDocument.documentName, claimId, doc.caseDocument.documentLink.document_binary_url, "class='govuk-link' rel='noopener noreferrer' target='_blank'")}<br>`;
   });
   return docLinks;
 };

@@ -1,7 +1,7 @@
 import {ClaimSummarySection, ClaimSummaryType} from 'common/form/models/claimSummarySection';
 import {Claim} from 'common/models/claim';
 import {t} from 'i18next';
-import {CASE_DOCUMENT_DOWNLOAD_URL, CITIZEN_CONTACT_THEM_URL} from 'routes/urls';
+import {CITIZEN_CONTACT_THEM_URL} from 'routes/urls';
 import {getPaymentDate} from 'common/utils/repaymentUtils';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
 import {YesNoUpperCamelCase} from 'form/models/yesNo';
@@ -10,6 +10,7 @@ import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOpti
 import {PaymentDate} from 'form/models/admission/fullAdmission/paymentOption/paymentDate';
 import {getSystemGeneratedCaseDocumentIdByType} from 'models/document/systemGeneratedCaseDocuments';
 import {DocumentType} from 'models/document/documentType';
+import {buildCaseDocumentDownloadUrl} from 'common/utils/formatDocumentURL';
 
 export function buildPanelSection(claim: Claim, lang: string): ClaimSummarySection[] {
   if (claim?.respondentSignSettlementAgreement === YesNoUpperCamelCase.YES) {
@@ -20,13 +21,17 @@ export function buildPanelSection(claim: Claim, lang: string): ClaimSummarySecti
 }
 
 const getAcceptConfirmationPanel = (claim: Claim, lang: string) => {
-  const documentLinkUrl = CASE_DOCUMENT_DOWNLOAD_URL.replace(':id', claim.id).replace(':documentId', getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.SETTLEMENT_AGREEMENT));
+  const documentLinkUrl = buildCaseDocumentDownloadUrl(claim.id, getSystemGeneratedCaseDocumentIdByType(claim.systemGeneratedCaseDocuments, DocumentType.SETTLEMENT_AGREEMENT));
+  const downloadText = t('PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT_CONFIRMATION.DOWNLOAD_SETTLEMENT_AGREEMENT_LINK_TEXT', {lng: lang});
+  const downloadHtml = documentLinkUrl
+    ? `<a class="white-link" href="${documentLinkUrl}">${downloadText}</a>`
+    : downloadText;
   return [
     {
       type: ClaimSummaryType.PANEL,
       data: {
         title: `<span class='govuk-!-font-size-36'>${t('PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT_CONFIRMATION.ACCEPTED_SETTLEMENT_AGREEMENT_TITLE', {lng: lang})}</span>`,
-        html: `<span class='govuk-!-font-size-27'><a class="white-link" href="${documentLinkUrl}">${t('PAGES.DEFENDANT_RESPOND_TO_SETTLEMENT_AGREEMENT_CONFIRMATION.DOWNLOAD_SETTLEMENT_AGREEMENT_LINK_TEXT', {lng: lang})}</a></span>`,
+        html: `<span class='govuk-!-font-size-27'>${downloadHtml}</span>`,
       },
     },
   ];
