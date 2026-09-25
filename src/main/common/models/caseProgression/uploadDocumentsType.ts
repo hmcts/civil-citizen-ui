@@ -3,7 +3,7 @@ import {
   EvidenceUploadDisclosure, EvidenceUploadExpert,
   EvidenceUploadTrial,
   EvidenceUploadWitness,
-  OtherManageUpload,
+  OtherManageUpload, WithoutPrejudiceUpload,
 } from 'models/document/documentType';
 import {AtLeastOneCheckboxSelectedValidator} from 'form/validators/atLeastOneCheckboxSelectedValidator';
 import {Document} from 'common/models/document/document';
@@ -20,16 +20,18 @@ export class UploadDocuments {
   @ValidateNested()
     trial?: UploadDocumentTypes[];
   otherManaged?: UploadDocumentTypes[];
+  withoutPrejudice?: UploadDocumentTypes[];
   @Validate(AtLeastOneCheckboxSelectedValidator, {message: 'ERRORS.VALID_ENTER_AT_LEAST_ONE_UPLOAD' })
     checkboxGrp?: boolean [];
 
   [key: string]: string | UploadDocumentTypes[] | boolean[];
-  constructor(disclosure?: UploadDocumentTypes[],witness?: UploadDocumentTypes[],expert?: UploadDocumentTypes[],trial?: UploadDocumentTypes[], otherManaged?: UploadDocumentTypes[]) {
+  constructor(disclosure?: UploadDocumentTypes[],witness?: UploadDocumentTypes[],expert?: UploadDocumentTypes[],trial?: UploadDocumentTypes[], otherManaged?: UploadDocumentTypes[], withoutPrejudice?: UploadDocumentTypes[]) {
     this.disclosure = disclosure;
     this.witness = witness;
     this.expert = expert;
     this.trial = trial;
     this.otherManaged = otherManaged;
+    this.withoutPrejudice = withoutPrejudice;
     this.checkboxGrp = [
       disclosure?.[0]?.selected, disclosure?.[1]?.selected,
       witness?.[0]?.selected, witness?.[1]?.selected, witness?.[2]?.selected, witness?.[3]?.selected,
@@ -39,16 +41,16 @@ export class UploadDocuments {
   }
 
 }
-type caseDocumentType = UploadEvidenceWitness | UploadEvidenceExpert | UploadEvidenceDocumentType | UploadOtherDocumentType;
+type caseDocumentType = UploadEvidenceWitness | UploadEvidenceExpert | UploadEvidenceDocumentType | UploadOtherDocumentType | UploadPart36RejectionDocumentType;
 
 export class UploadDocumentTypes {
   selected?: boolean;
   uuid?: string;
   caseDocument?: caseDocumentType;
-  documentType?: EvidenceUploadWitness | EvidenceUploadDisclosure | EvidenceUploadExpert | EvidenceUploadTrial | OtherManageUpload;
+  documentType?: EvidenceUploadWitness | EvidenceUploadDisclosure | EvidenceUploadExpert | EvidenceUploadTrial | OtherManageUpload | WithoutPrejudiceUpload;
 
-  constructor(selected?: boolean, caseDocument?: UploadEvidenceWitness | UploadEvidenceExpert | UploadEvidenceDocumentType | UploadOtherDocumentType,
-    documentType?: EvidenceUploadWitness | EvidenceUploadDisclosure | EvidenceUploadExpert | EvidenceUploadTrial| OtherManageUpload, uuid?: string) {
+  constructor(selected?: boolean, caseDocument?: UploadEvidenceWitness | UploadEvidenceExpert | UploadEvidenceDocumentType | UploadOtherDocumentType | UploadPart36RejectionDocumentType,
+    documentType?: EvidenceUploadWitness | EvidenceUploadDisclosure | EvidenceUploadExpert | EvidenceUploadTrial| OtherManageUpload | WithoutPrejudiceUpload, uuid?: string) {
     this.selected = selected;
     this.caseDocument = caseDocument;
     this.documentType = documentType;
@@ -130,7 +132,19 @@ export class  UploadOtherDocumentType{
   }
 }
 
+export class  UploadPart36RejectionDocumentType{
+  documentDescription?: string;
+  document: Document;
+  createdDatetime: Date;
+
+  constructor(documentDescription: string,document: Document, createdDateTime: Date) {
+    this.documentDescription = documentDescription;
+    this.document = document;
+    this.createdDatetime = new Date(createdDateTime);
+  }
+}
+
 export class UploadEvidenceElementCCD {
   id: string;
-  value: UploadEvidenceDocumentType | UploadEvidenceExpert | UploadEvidenceWitness | UploadOtherDocumentType;
+  value: UploadEvidenceDocumentType | UploadEvidenceExpert | UploadEvidenceWitness | UploadOtherDocumentType | UploadPart36RejectionDocumentType;
 }

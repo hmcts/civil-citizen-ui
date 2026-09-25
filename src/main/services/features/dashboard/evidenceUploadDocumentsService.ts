@@ -1,18 +1,23 @@
 import {Claim} from 'models/claim';
 import {ClaimSummaryContent, ClaimSummarySection, ClaimSummaryType} from 'form/models/claimSummarySection';
 import {t} from 'i18next';
-import {UploadDocumentTypes, UploadOtherDocumentType} from 'models/caseProgression/uploadDocumentsType';
+import {
+  UploadDocumentTypes,
+  UploadOtherDocumentType,
+  UploadPart36RejectionDocumentType,
+} from 'models/caseProgression/uploadDocumentsType';
 import {orderDocumentNewestToOldest} from 'services/features/caseProgression/documentTableBuilder';
 import {UploadedEvidenceFormatter} from 'services/features/caseProgression/uploadedEvidenceFormatter';
 import {
   EvidenceUploadDisclosure,
   EvidenceUploadExpert,
   EvidenceUploadTrial,
-  EvidenceUploadWitness, OtherManageUpload,
+  EvidenceUploadWitness, OtherManageUpload, WithoutPrejudiceUpload,
 } from 'models/document/documentType';
 import {formatEvidenceDocumentWithHintText} from 'common/utils/formatDocumentURL';
 import {DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL} from 'routes/urls';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {TypesOfEvidenceUploadDocuments} from 'models/caseProgression/TypesOfEvidenceUploadDocument';
 
 export function getEvidenceUploadContent(claim: Claim, lang: string): ClaimSummaryContent[] {
   const claimSummaryContent = [] as ClaimSummaryContent[];
@@ -34,6 +39,7 @@ function getDocuments(claim: Claim, lang: string): ClaimSummaryContent {
     getTrialListClaimant(claim, lang),
     getTrialListDefendant(claim, lang),
     getAdditionalList(claim, lang),
+    getWithoutPrejudiceList(claim, lang),
     addSeparation(),
     addButton(claim, lang),
   ];
@@ -132,6 +138,17 @@ function getTrialListDefendant(claim: Claim, lang: string): ClaimSummarySection 
   };
 }
 
+function getWithoutPrejudiceList(claim: Claim, lang: string): ClaimSummarySection {
+
+  const additionalDocumentHeading = 'PAGES.CLAIM_SUMMARY.DOCUMENT_HEADERS.COMMON.WITHOUT_PREJUDICE';
+  const additionalList = claim.caseProgression?.defendantUploadDocuments?.withoutPrejudice;
+
+  return {
+    type: ClaimSummaryType.HTML,
+    data: {html: getWithoutPrejudiceHTML(additionalList, additionalDocumentHeading, claim, lang)},
+  };
+}
+
 function getAdditionalList(claim: Claim, lang: string): ClaimSummarySection {
 
   const additionalDocumentHeading = 'PAGES.CLAIM_SUMMARY.DOCUMENT_HEADERS.COMMON.CLAIM_DOCUMENTS';
@@ -202,30 +219,85 @@ function getDocumentHTML(rows: UploadDocumentTypes[], title: string, claim: Clai
 
 function getAdditionalDocumentHTML(rows: UploadDocumentTypes[], title: string, claim: Claim, lang: string) {
 
-  let documentsHTML = '';
-  if (rows?.length > 0) {
-    orderDocumentNewestToOldest(rows);
-    const header = t(title, {lng: lang});
-    documentsHTML = documentsHTML.concat('<h2 class="govuk-body"><span class="govuk-body govuk-!-font-weight-bold">' + header + '</span></h2>');
-    documentsHTML = documentsHTML.concat('<hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">');
-    for (const upload of rows) {
+  return getOtherManagedDocumentHTML(
+    rows,
+    title,
+    claim,
+    lang,
+    upload => upload.documentType !== WithoutPrejudiceUpload.WITHOUT_PREJUDICE_DOCUMENT,
+    'PAGES.CLAIM_SUMMARY.DOCUMENTS_FOR_CLAIM',
+  );
+}
 
-      const documentTypeName = t('PAGES.CLAIM_SUMMARY.DOCUMENTS_FOR_CLAIM', {lng: lang});
-      documentsHTML = documentsHTML.concat('<div class="govuk-grid-row">');
-      documentsHTML = documentsHTML.concat(formatEvidenceDocumentWithHintText(documentTypeName, upload.caseDocument.createdDatetime, lang));
-      const document = upload.caseDocument as UploadOtherDocumentType;
-      const documentName = document.documentLink?.document_filename;
-      const documentBinary = document.documentLink?.document_binary_url;
-      documentsHTML = documentsHTML.concat(UploadedEvidenceFormatter.getOtherDocumentLinkAlignedToRight(documentName, documentBinary, claim.id));
-      documentsHTML = documentsHTML.concat('</div>');
-    }
-    documentsHTML = documentsHTML.concat('<hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-7">');
+function getWithoutPrejudiceHTML(rows: UploadDocumentTypes[], title: string, claim: Claim, lang: string) {
+  return getOtherManagedDocumentHTML(
+    rows,
+    title,
+    claim,
+    lang,
+    upload => upload.documentType === WithoutPrejudiceUpload.WITHOUT_PREJUDICE_DOCUMENT,
+    'PAGES.CLAIM_SUMMARY.DOCUMENT_NAME',
+  );
+}
+
+function getOtherManagedDocumentHTML(
+  rows: UploadDocumentTypes[],
+  title: string,
+  claim: Claim,
+  lang: string,
+  shouldIncludeUpload: (upload: UploadDocumentTypes) => boolean,
+  documentTypeNameKey: string,
+) {
+  if (!rows?.length) {
+    return '';
   }
+
+  orderDocumentNewestToOldest(rows);
+
+  let documentsHTML = '';
+  const header = t(title, {lng: lang});
+
+  documentsHTML = documentsHTML.concat(`<h2 class="govuk-body"><span class="govuk-body govuk-!-font-weight-bold">${header}</span></h2>`);
+  documentsHTML = documentsHTML.concat('<hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">');
+
+  for (const upload of rows) {
+    if (!shouldIncludeUpload(upload)) {
+      continue;
+    }
+
+    let documentTypeName;
+    let documentName;
+    let documentBinary;
+    let createdDatetime;
+
+    if(TypesOfEvidenceUploadDocuments.DOCUMENT_LINK in upload.caseDocument) {
+      const document = upload.caseDocument as UploadOtherDocumentType;
+      documentTypeName = t(documentTypeNameKey, {lng: lang});
+      documentName = document.documentLink?.document_filename;
+      documentBinary = document.documentLink?.document_binary_url;
+      createdDatetime = document.createdDatetime;
+    }
+    else if(TypesOfEvidenceUploadDocuments.DOCUMENT in upload.caseDocument) {
+      const document = upload.caseDocument as UploadPart36RejectionDocumentType;
+      documentTypeName = t(documentTypeNameKey, {lng: lang});
+      documentName = document.document?.document_filename;
+      documentBinary = document.document?.document_binary_url;
+      createdDatetime = document.createdDatetime;
+    }
+
+    documentsHTML = documentsHTML.concat('<div class="govuk-grid-row">');
+    documentsHTML = documentsHTML.concat(formatEvidenceDocumentWithHintText(documentTypeName, createdDatetime, lang));
+    documentsHTML = documentsHTML.concat(UploadedEvidenceFormatter.getOtherDocumentLinkAlignedToRight(documentName, documentBinary, claim.id));
+    documentsHTML = documentsHTML.concat('</div>');
+  }
+
+  documentsHTML = documentsHTML.concat('<hr class="govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-7">');
+
   return documentsHTML;
 }
 
 function getDocumentTypeName(isClaimant: boolean,
-  documentType: EvidenceUploadDisclosure | EvidenceUploadWitness | EvidenceUploadExpert | EvidenceUploadTrial | OtherManageUpload,
+  documentType: EvidenceUploadDisclosure | EvidenceUploadWitness | EvidenceUploadExpert | EvidenceUploadTrial | OtherManageUpload| WithoutPrejudiceUpload,
   lang: string) {
   let key: string;
   switch (documentType) {
