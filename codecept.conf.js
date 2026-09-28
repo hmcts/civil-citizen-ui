@@ -107,7 +107,7 @@ exports.config = {
       ],
     },
     retryFailedStep: {
-      enabled: process.env.DISABLE_TEST_RETRIES !== 'true',
+      enabled: true,
     },
     screenshotOnFail: {
       enabled: true,
@@ -120,7 +120,7 @@ exports.config = {
     allure: {
       enabled: true,
       require: 'allure-codeceptjs',
-      resultsDir: process.env.ALLURE_RESULTS_DIR || 'test-results/functional/allure-results',
+      resultsDir: 'test-results/functional/allure-results',
     },
   },
   mocha: {

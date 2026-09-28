@@ -91,11 +91,6 @@ function reconcile(expected, reports) {
 
 function main() {
   const [command, ...args] = process.argv.slice(2);
-  if (command === 'snapshot') {
-    const rows = collect(args[0]);
-    fs.writeFileSync(args[1], JSON.stringify({scenarios: rows.filter(row => row.tags.some(tag => ['@civil-citizen-pr', '@civil-citizen-master'].includes(tag)))}, null, 2) + '\n');
-    return;
-  }
   const baseline = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
   if (command === 'worker-plan') {
     console.log(JSON.stringify(workerPlan(baseline, args[0])));
@@ -131,7 +126,7 @@ function main() {
     console.log('Standard and optimised baseline identities and outcomes match on the same revision.');
     return;
   }
-  throw new Error('Usage: functional-baseline.js snapshot ROOT OUTPUT | check | worker-plan pr|master | results pr|master DIRECTORY PREFIX | compare STANDARD OPTIMISED');
+  throw new Error('Usage: functional-baseline.js check | worker-plan pr|master | results pr|master DIRECTORY PREFIX | compare STANDARD OPTIMISED');
 }
 
 if (require.main === module) main();
