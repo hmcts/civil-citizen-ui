@@ -8,7 +8,7 @@ export interface ClaimIssuePaymentDraft {
   draftId: string;
 }
 
-const draftEqualsClaimId = (draftCaseId: string | undefined, claimId: string): boolean => {
+const isDraftCaseIdEqualToClaimId = (draftCaseId: string | undefined, claimId: string): boolean => {
   return Boolean(draftCaseId) && String(draftCaseId) === String(claimId);
 };
 
@@ -30,7 +30,7 @@ export const getClaimIssuePaymentClaim = async (req: AppRequest): Promise<ClaimI
   }
 
   const draftCaseId = draftResult.rawResponse?.caseId || claim.id;
-  if (!draftEqualsClaimId(draftCaseId, claimId)) {
+  if (!isDraftCaseIdEqualToClaimId(draftCaseId, claimId)) {
     throw new Error('[claimIssuePaymentDraftService] draft does not match claim id');
   }
 
