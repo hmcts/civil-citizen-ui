@@ -20,8 +20,7 @@
             text: t('PAGES.ELIGIBILITY_APPLY_FOR_HELP_WITH_FEES.REFERENCE_NUMBER_INSET')
           }) }}
           <p class="govuk-body-m">{{ t('PAGES.ELIGIBILITY_APPLY_FOR_HELP_WITH_FEES.NO_REFERENCE_NUMBER') }}</p>
-          <p class="govuk-body-m">{{ externalLink(t, 'PAGES.ELIGIBILITY_APPLY_FOR_HELP_WITH_FEES.APPLY_LINK', externalURLs.feesHelpUrl, true) }}</p>
-          <p class="govuk-body-m">{{ externalLink(t, 'PAGES.ELIGIBILITY_APPLY_FOR_HELP_WITH_FEES.GET_HELP_LINK', externalURLs.feesHelpUrl, false) }}</p>
+          <p class="govuk-body-m">{{ externalLink(t, 'PAGES.ELIGIBILITY_APPLY_FOR_HELP_WITH_FEES.APPLY_LINK', externalURLs.feesHelpUrl, false) }}</p>
           <p class="govuk-body-m">{{ t('PAGES.ELIGIBILITY_APPLY_FOR_HELP_WITH_FEES.MAKE_A_NOTE') }}</p>
           <p class="govuk-body-m govuk-!-font-weight-bold">{{ t('PAGES.ELIGIBILITY_APPLY_FOR_HELP_WITH_FEES.PAPER_FORM_HEADING') }}</p>
           <p class="govuk-body-m">{{ t('PAGES.ELIGIBILITY_APPLY_FOR_HELP_WITH_FEES.PAPER_FORM_PARAGRAPH1') }}</p>
@@ -30,8 +29,8 @@
             {{ csrfProtection(csrf) }}
             <div class="govuk-form-group">
               {{ govukButton({
-                text: t('COMMON.BUTTONS.CONTINUE'),
-                attributes: { 'aria-label': t('COMMON.BUTTONS.CONTINUE') }
+                text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE'),
+                attributes: { 'aria-label': t('COMMON.BUTTONS.SAVE_AND_CONTINUE') }
               }) }}
               {{ contactUsForHelp(t) }}
             </div>
