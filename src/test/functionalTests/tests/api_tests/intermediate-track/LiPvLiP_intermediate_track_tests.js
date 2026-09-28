@@ -1,11 +1,10 @@
 const config = require('../../../../config');
 const {createAccount} = require('../../../specClaimHelpers/api/idamHelper');
 
-const intTrackClaimType = 'Intermediate';
-const carmEnabled = true;
+const intTrackClaimType = 'SmallClaims';
 let claimRef, caseData, claimNumber, securityCode;
 
-Feature('LiP - Minti Intermediate').tag('@civil-citizen-nightly @api-intermediate-track');
+Feature('LiP - Minti Small Claim with invalid mediation date @debug').tag('@civil-citizen-nightly @api-intermediate-track');
 
 Before(async () => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
@@ -13,8 +12,8 @@ Before(async () => {
 });
 
 // LiP Individual vs LiP Company
-Scenario('LiP vs LiP Intermediate claim', async ({api}) => {
-  claimRef = await api.createLiPClaim(config.claimantCitizenUser, intTrackClaimType, carmEnabled, 'DefendantCompany');
+Scenario('LiP vs LiP small claim', async ({api}) => {
+  claimRef = await api.createLiPClaim(config.claimantCitizenUser, intTrackClaimType);
   console.log('LIP vs LIP claim has been created Successfully    <===>  ', claimRef);
   await api.setCaseId(claimRef);
   await api.waitForFinishedBusinessProcess();
@@ -23,6 +22,5 @@ Scenario('LiP vs LiP Intermediate claim', async ({api}) => {
   securityCode = caseData.respondent1PinToPostLRspec.accessCode;
   console.log('claim number', claimNumber);
   console.log('Security code', securityCode);
-  await api.performCitizenResponse(config.defendantCitizenUser, claimRef, intTrackClaimType, config.defenceType.rejectAllIntermediateTrackMinti, 'DefendantCompany');
-  await api.claimantLipRespondToDefence(config.claimantCitizenUser, claimRef, true, 'AWAITING_APPLICANT_INTENTION', intTrackClaimType);
+  await api.performCitizenResponse(config.defendantCitizenUser, claimRef, intTrackClaimType, config.defenceType.rejectAllDisputeAllWithIndividual);
 });
