@@ -282,6 +282,78 @@
         "transformers": ["response-template"],
         "body": "{\"amount\":126,\"currency\":\"GBP\",\"external_reference\":\"thin-client-external-reference\",\"payment_group_reference\":\"2026-THIN-CLIENT-SERVICE-REQUEST\",\"reference\":\"{{request.pathSegments.[1]}}\",\"status\":\"Success\",\"status_histories\":[{\"status\":\"Initiated\"},{\"status\":\"Success\"}]}"
       }
+    },
+    {
+      "name": "thin-client-create-small-claims-hearing-card-payment",
+      "priority": 3,
+      "scenarioName": "thin-client-payment",
+      "newScenarioState": "PaymentCreated",
+      "request": {
+        "method": "POST",
+        "urlPathPattern": "/service-request/[^/]+/card-payments",
+        "bodyPatterns": [
+          {
+            "matchesJsonPath": "$[?(@.amount == 123)]"
+          },
+          {
+            "matchesJsonPath": "$[?(@.currency == 'GBP')]"
+          },
+          {
+            "matchesJsonPath": "$['return-url']"
+          }
+        ]
+      },
+      "response": {
+        "status": 201,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": "{\"external_reference\":\"thin-client-external-{{randomValue type='UUID'}}\",\"payment_reference\":\"RC-THIN-CLIENT-SMALL-CLAIMS-HEARING-{{randomValue type='UUID'}}\",\"status\":\"Initiated\",\"next_url\":\"__WIREMOCK_PUBLIC_URL__/thin-pay/card?return_url={{urlEncode (jsonPath request.body '$.return-url')}}&amount=123\",\"date_created\":\"2026-01-01T00:00:00Z\"}",
+        "transformers": [
+          "response-template"
+        ]
+      }
+    },
+    {
+      "name": "thin-client-initiated-small-claims-hearing-card-payment-status",
+      "priority": 3,
+      "scenarioName": "thin-client-payment",
+      "requiredScenarioState": "PaymentCreated",
+      "request": {
+        "method": "GET",
+        "urlPathPattern": "/card-payments/RC-THIN-CLIENT-SMALL-CLAIMS-HEARING-[^/]+/statuses"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "transformers": [
+          "response-template"
+        ],
+        "body": "{\"amount\":123,\"currency\":\"GBP\",\"external_reference\":\"thin-client-external-reference\",\"payment_group_reference\":\"2026-THIN-CLIENT-SERVICE-REQUEST\",\"reference\":\"{{request.pathSegments.[1]}}\",\"status\":\"Initiated\",\"status_histories\":[{\"status\":\"Initiated\"}]}"
+      }
+    },
+    {
+      "name": "thin-client-successful-small-claims-hearing-card-payment-status",
+      "priority": 3,
+      "scenarioName": "thin-client-payment",
+      "requiredScenarioState": "Confirmed",
+      "newScenarioState": "Started",
+      "request": {
+        "method": "GET",
+        "urlPathPattern": "/card-payments/RC-THIN-CLIENT-SMALL-CLAIMS-HEARING-[^/]+/statuses"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "transformers": [
+          "response-template"
+        ],
+        "body": "{\"amount\":123,\"currency\":\"GBP\",\"external_reference\":\"thin-client-external-reference\",\"payment_group_reference\":\"2026-THIN-CLIENT-SERVICE-REQUEST\",\"reference\":\"{{request.pathSegments.[1]}}\",\"status\":\"Success\",\"status_histories\":[{\"status\":\"Initiated\"},{\"status\":\"Success\"}]}"
+      }
     }
   ]
 }
