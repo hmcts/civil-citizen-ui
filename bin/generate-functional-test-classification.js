@@ -131,6 +131,17 @@ function classify(scenario, scenarioId) {
   const file = relativeTestPath(scenario.filePath);
   const domain = file.split('/')[0];
 
+  if (scenarioId === 'welsh/LipvLip_UI_RejectAll_DisputeAll_Mediation__Claimant_English_document_welsh_tests.js#1') {
+    return {
+      target: TARGETS.THIN_CLIENT,
+      reason: 'Run the existing Welsh journey unchanged. Real claimant-intention and translated-document events produce the processing and mediation dashboard states; document rendering and CDAM responses are deterministic mocks.',
+      services: 'Real CUI, Civil Service, CCD, Camunda, IDAM and role assignment; mocked Fees Register, Payments, Docmosis and CDAM',
+      owner: 'DTSCCI-6133 Welsh journey and complete baseline reconciliation',
+      batch: 'DTSCCI-6133',
+      secondaryTargets: 'Historical PR/master scenario identity and outcome parity; see functional-baseline.json and functional-baseline-reconciliation.md',
+    };
+  }
+
   if (migratedJudgmentMediationHearingScenarios.has(scenarioId)) {
     return {
       target: TARGETS.THIN_CLIENT,

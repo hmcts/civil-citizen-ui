@@ -75,6 +75,12 @@ run_functional_command() {
   exit_code=$?
   set -e
 
+  if [[ "${VERIFY_FUNCTIONAL_BASELINE:-false}" = "true" ]]; then
+    local pipeline='pr'
+    [[ "$ENVIRONMENT" = "aat" ]] && pipeline='master'
+    node bin/functional-baseline.js results "$pipeline" "${REPORT_DIR:-test-results/functional}" \
+      "${MOCHAWESOME_REPORTFILENAME:-civil-citizen-${pipeline}}"
+  fi
   assert_no_functional_report_failures
 
   if [[ "$exit_code" -ne 0 ]]; then
@@ -161,6 +167,10 @@ run_optimised_functional_tests() {
   unset PREV_FAILED_TEST_FILES PREV_NOT_EXECUTED_TEST_FILES
   base_pattern=$(functional_base_pattern)
   pattern="(?=.*(?:${base_pattern}))(?=.*@thin-full-stack)(?!.*@mocked-functional)"
+  # The complete default baseline is migrated. Preserve its existing skips too.
+  if [[ -z "${PR_FT_GROUPS:-}" ]]; then
+    pattern="$base_pattern"
+  fi
   echo "Running migrated thin-client scenarios from ${base_pattern}"
   MOCHAWESOME_REPORTFILENAME='optimised-thin-client' \
     run_functional_command yarn codeceptjs run-workers --suites 1 --grep "$pattern" \
@@ -178,10 +188,18 @@ if [[ "$SKIP_FUNCTIONAL_TESTS" = "true" ]]; then
   exit 0
 
 elif [[ "${OPTIMISED_FUNCTIONAL_TESTS:-false}" = "true" ]]; then
+  if [[ -z "${PR_FT_GROUPS:-}" ]]; then
+    node bin/functional-baseline.js check
+    VERIFY_FUNCTIONAL_BASELINE=true
+  fi
   run_optimised_functional_tests
 
 #Check if RUN_ALL_FUNCTIONAL_TESTS is set to true
 elif [[ "$RUN_ALL_FUNCTIONAL_TESTS" = "true" ]]; then
+  if [[ -z "${PR_FT_GROUPS:-}" ]]; then
+    node bin/functional-baseline.js check
+    VERIFY_FUNCTIONAL_BASELINE=true
+  fi
   echo "The label 'runAllFunctionalTests' exists on the PR."
   echo "Running all functional tests."
   run_functional_tests
