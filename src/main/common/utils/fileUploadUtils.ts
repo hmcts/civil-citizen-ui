@@ -154,6 +154,31 @@ export const extractCategoryAndIndex = (submitAction: string): [string, string] 
   return [parts[0], parts[1]];
 };
 
+/** Parses an action like 'witnessStatement[0][deleteFile][1]' into [category, sectionIndex, fileIndex]. */
+export const extractCategorySectionAndFileIndex = (submitAction: string): [string, string, string] => {
+  const parts = submitAction.split(/[[\]]/).filter((word: string) => word !== '');
+  return [parts[0], parts[1], parts[3]];
+};
+
+/** Normalises a legacy single CaseDocument (pre-multi-file-upload data) or an existing array into an array. */
+export const normaliseCaseDocuments = <T>(value: T | T[] | undefined | null): T[] => {
+  if (!value) {
+    return [];
+  }
+  return Array.isArray(value) ? value : [value];
+};
+
+export const removeUploadedFile = (categoryModel: any, index: string, fileIndex: string): boolean => {
+  const section = categoryModel?.[+index];
+  const caseDocuments = normaliseCaseDocuments(section?.caseDocuments);
+  if (!section || +fileIndex < 0 || +fileIndex >= caseDocuments.length) {
+    return false;
+  }
+  caseDocuments.splice(+fileIndex, 1);
+  section.caseDocuments = caseDocuments;
+  return true;
+};
+
 export const createUploadOneFileError = () => {
   return [{
     target: {
@@ -219,13 +244,16 @@ export const uploadAndValidateFile = async (
     } else {
       try {
         if (categoryModel && categoryModel[+index]) {
-          categoryModel[+index].caseDocument = await civilServiceClient.uploadDocument(req, fileUpload);
-         
-          if (!categoryModel[+index].caseDocument?.documentLink) {
+          const uploadedDocument = await civilServiceClient.uploadDocument(req, fileUpload);
+
+          if (!uploadedDocument?.documentLink) {
             logger.error('[SAVE FILE] File upload response missing documentLink');
             const apiError = createFileUploadError(category, index, 'uploadError', 'ERRORS.FILE_UPLOAD_FAILED');
             form.errors.push(apiError);
-            categoryModel[+index].caseDocument = undefined;
+          } else {
+            const caseDocuments = normaliseCaseDocuments(categoryModel[+index].caseDocuments);
+            caseDocuments.push(uploadedDocument);
+            categoryModel[+index].caseDocuments = caseDocuments;
           }
         }
       } catch (uploadError) {

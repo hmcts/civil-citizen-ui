@@ -24,7 +24,7 @@ export const getMockSectionArray = (documentType: EvidenceUploadWitness|Evidence
 
   const typeOfDocument = new TypeOfDocumentSection('12', '12', '2022');
   typeOfDocument.typeOfDocument = 'document type';
-  typeOfDocument.caseDocument = caseDoc(documentType);
+  typeOfDocument.caseDocuments = [caseDoc(documentType)];
   sectionArray.push(typeOfDocument);
   sectionArray.push(typeOfDocument);
   return sectionArray;
@@ -36,7 +36,7 @@ export const getMockDocumentsReferredSectionArray = (documentType: EvidenceUploa
   const typeOfDocument = new ReferredToInTheStatementSection('12', '12', '2022');
   typeOfDocument.witnessName = 'John Smith';
   typeOfDocument.typeOfDocument = 'document type';
-  typeOfDocument.caseDocument = caseDoc(documentType);
+  typeOfDocument.caseDocuments = [caseDoc(documentType)];
   sectionArray.push(typeOfDocument);
   sectionArray.push(typeOfDocument);
   return sectionArray;
@@ -47,7 +47,7 @@ export const getMockWitnessSectionArray = (documentType: EvidenceUploadWitness) 
 
   const witnessDocument = new WitnessSection('12', '12', '2022');
   witnessDocument.witnessName = 'John Smith';
-  witnessDocument.caseDocument = caseDoc(documentType);
+  witnessDocument.caseDocuments = [caseDoc(documentType)];
 
   sectionArray.push(witnessDocument);
   sectionArray.push(witnessDocument);
@@ -63,7 +63,7 @@ export const getMockExpertSectionArray = (documentType: EvidenceUploadExpert) =>
   expertDocument.fieldOfExpertise = 'expertise';
   expertDocument.questionDocumentName = 'other party document';
   expertDocument.otherPartyQuestionsDocumentName = 'other party document';
-  expertDocument.caseDocument = caseDoc(documentType);
+  expertDocument.caseDocuments = [caseDoc(documentType)];
 
   sectionArray.push(expertDocument);
   sectionArray.push(expertDocument);

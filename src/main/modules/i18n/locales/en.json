@@ -96,6 +96,7 @@
       "CHANGE": "Change",
       "CONTINUE": "Continue",
       "CANCEL": "Cancel",
+      "DELETE": "Delete",
       "GO_BACK_AND_TRY_PAYMENT_AGAIN": "Go back and try payment again",
       "GO_TO_ACCOUNT": "Go to your account",
       "I_CONFIRM_IVE_READ_THIS": "I confirm I've read this",
@@ -5152,6 +5153,9 @@
     },
     "UPLOAD_DOCUMENTS": {
       "ADD": "Add another",
+      "ADD_ANOTHER_FILE": "Add another file",
+      "ADD_ANOTHER_FILE_HINT": "Click 'add another file' to upload multiple files one-by-one",
+      "UPLOADED_FILE": "Uploaded file",
       "DATE": "Date statement was written",
       "DATE_EXAMPLE": "For example, 27 9 2022",
       "DAY": "Day",

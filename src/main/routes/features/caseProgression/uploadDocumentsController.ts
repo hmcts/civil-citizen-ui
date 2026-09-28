@@ -30,6 +30,8 @@ import {
   createFileUploadError,
   getMulterErrorConstraint,
   extractCategoryAndIndex,
+  extractCategorySectionAndFileIndex,
+  removeUploadedFile,
   uploadAndValidateFile,
 } from 'common/utils/fileUploadUtils';
 import {ValidationError} from 'class-validator';
@@ -176,6 +178,9 @@ uploadDocumentsController.post(CP_UPLOAD_DOCUMENTS_URL, multerMiddleware, (async
       return renderView(res, claim, claimId, form);
     } else if (action?.includes('[uploadButton]')) {
       await uploadSingleFile(req, action, form);
+    } else if (action?.includes('[deleteFile]')) {
+      const [category, index, fileIndex] = extractCategorySectionAndFileIndex(action);
+      removeUploadedFile((form.model as any)[category], index, fileIndex);
     } else if (action?.includes('[removeButton]')) {
       const [category, index] = action.split(/[[\]]/).filter((word: string) => word !== '');
       (form.model as any)[category].splice(Number(index), 1);
