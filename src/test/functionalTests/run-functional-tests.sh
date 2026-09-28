@@ -157,6 +157,7 @@ functional_base_pattern() {
 run_optimised_functional_tests() {
   local base_pattern pattern
   export FUNCTIONAL=true
+  export WIREMOCK_URL="${WIREMOCK_URL:-${TEST_URL/https:\/\//https:\/\/wiremock-}}"
   unset PREV_FAILED_TEST_FILES PREV_NOT_EXECUTED_TEST_FILES
   base_pattern=$(functional_base_pattern)
   pattern="(?=.*(?:${base_pattern}))(?=.*@thin-full-stack)(?!.*@mocked-functional)"

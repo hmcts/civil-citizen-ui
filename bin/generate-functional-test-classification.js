@@ -33,7 +33,14 @@ const TARGETS = {
   RETAINED_FULL_STACK: 'retained-thin-full-stack',
   MOCKED_FUNCTIONAL: 'mocked-functional-browser',
   SETUP: 'setup-only-not-coverage',
+  THIN_CLIENT: 'thin-client-with-mocked-boundaries',
 };
+
+const migratedJudgmentMediationHearingScenarios = new Set([
+  'dj/LipvLip_UI_DefaultJudgment_CoSC_tests.js#1',
+  'mediation/LiPvLiP_mediation_tests.js#1',
+  'hearings/cp_LiPvLiP_hearing_fee_tests_small_claims_tests.js#2',
+]);
 
 const retainedThinFullStackScenarios = new Set([
   'bundles/cp_LiPvLiP_bundles_small_claims_tests.js#1',
@@ -124,6 +131,17 @@ function classify(scenario, scenarioId) {
   const file = relativeTestPath(scenario.filePath);
   const domain = file.split('/')[0];
 
+  if (migratedJudgmentMediationHearingScenarios.has(scenarioId)) {
+    return {
+      target: TARGETS.THIN_CLIENT,
+      reason: 'Existing scenario and assertions run unchanged on one thin-client deployment. Real case events and asynchronous processing produce the judgment, mediation notifications/document availability, or paid hearing task state; synchronous fees, payments, document generation and CDAM responses use deterministic mocks.',
+      services: 'Real CUI, Civil Service, CCD, Camunda, IDAM and role assignment; mocked Fees Register, Payments, Docmosis and CDAM',
+      owner: 'DTSCCI-5977 judgment, mediation and hearing migration',
+      batch: 'DTSCCI-5977',
+      secondaryTargets: 'WireMock positive/negative contract checks; paired standard and optimised Jenkins verification',
+    };
+  }
+
   if (retainedThinFullStackScenarios.has(scenarioId)) {
     return {
       target: TARGETS.RETAINED_FULL_STACK,
@@ -151,6 +169,12 @@ function classify(scenario, scenarioId) {
 }
 
 function classifyMaterialStep(step, source, scenarioTarget, scenarioId) {
+  if (scenarioTarget === TARGETS.THIN_CLIENT) {
+    return {
+      target: source !== 'scenario' ? TARGETS.SETUP : TARGETS.THIN_CLIENT,
+      rationale: 'Preserve the existing journey, helpers and assertions. Use real case/workflow state and deterministic synchronous downstream responses as recorded in the scenario boundary classification.',
+    };
+  }
   if (source !== 'scenario') {
     return {
       target: TARGETS.SETUP,
@@ -243,7 +267,8 @@ function collectInventory() {
       rationale: classification.reason,
       deliveryBatch: classification.batch,
       secondaryTargets: classification.secondaryTargets || 'none',
-      executionDecision: classification.target === TARGETS.RETAINED_FULL_STACK ? 'proposed-thin-full-stack' : 'migrate-to-mocked-functional',
+      executionDecision: classification.target === TARGETS.THIN_CLIENT ? 'migrated-thin-client-with-mocks'
+        : classification.target === TARGETS.RETAINED_FULL_STACK ? 'proposed-thin-full-stack' : 'migrate-to-mocked-functional',
     };
   });
 
