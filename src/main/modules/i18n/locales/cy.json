@@ -560,6 +560,17 @@
     "TITLE_WITH_DEFENDANT": "Dogfennau’r diffynnydd i'w hystyried"
   },
   "PAGES": {
+    "CANCEL_UNISSUED_CLAIM_SPEC": {
+      "BUTTON": "Canslo hawliad nad yw wedi'i gyflwyno",
+      "CONFIRMATION_PAGE_TITLE": "Claim cancelled",
+      "CONFIRMATION_TITLE": "This claim has been cancelled",
+      "GUIDANCE_CANNOT_BE_COURT_PROCEEDINGS": "Unless and until a claim is issued it cannot be regarded as court proceedings.",
+      "GUIDANCE_NO_FURTHER_ACTION": "By cancelling the claim you will no longer be able to take any action on it and it will be eventually removed from the system.",
+      "NO_FURTHER_ACTION": "No further action can be taken on this case as this is now cancelled.",
+      "PAGE_TITLE": "Canslo hawliad nad yw wedi'i gyflwyno",
+      "START_NEW_CLAIM": "If you want to start a new claim you can do this from your account.",
+      "TITLE": "Explain why you are cancelling the claim"
+    },
     "QM": {
       "CONFIRMATION_PAGE": {
         "TITLE": "Neges wedi’i hanfon",
@@ -2645,6 +2656,7 @@
       "PAGE_TITLE": "Hawliadau a wnaed gennych neu yn eich erbyn",
       "PREVIOUS": "Blaenorol",
       "STATUS_CLAIMANT": {
+        "CLAIM_UNISSUED_CANCELLED": "Nid yw’r hawliad wedi ei gyflwyno ac mae wedi'i ganslo",
         "ACCEPTED_PARTIAL_ADMISSION": "Rydych wedi derbyn addefiad rhannol y diffynnydd. Maent wedi dweud y byddant yn talu ar unwaith.",
         "ADMIT_PAY_IMMEDIATELY_CLAIMANT": "Arhoswch i'r diffynnydd eich talu.",
         "AWAITING_JUDGMENT": "Yn aros am ganlyniad yr achos.",
@@ -2758,6 +2770,7 @@
         "CASE_DISCONTINUED": "Mae’r hawliad hwn wedi dirwyn i ben."
       },
       "SUPPORT_LINKS": {
+        "CANCEL_UNISSUED_CLAIM": "Canslo hawliad nad yw wedi'i gyflwyno",
         "APPLYING_TO_COURT_AS_A_CREDITOR": "Gwneud cais i’r llys fel credydwr dyled mewn lle i anadlu",
         "CONTACT_COURT": "Cysylltu â’r llys i wneud cais am newid i fy achos (gwneud cais)",
         "CONTACT_APPLY_COURT": "Cysylltu â’r llys neu wneud cais i’r llys",

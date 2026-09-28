@@ -560,6 +560,17 @@
     "TITLE_WITH_DEFENDANT": "Defendant documents to be considered"
   },
   "PAGES": {
+    "CANCEL_UNISSUED_CLAIM_SPEC": {
+      "BUTTON": "Cancel unissued claim",
+      "CONFIRMATION_PAGE_TITLE": "Claim cancelled",
+      "CONFIRMATION_TITLE": "This claim has been cancelled",
+      "GUIDANCE_CANNOT_BE_COURT_PROCEEDINGS": "Unless and until a claim is issued it cannot be regarded as court proceedings.",
+      "GUIDANCE_NO_FURTHER_ACTION": "By cancelling the claim you will no longer be able to take any action on it and it will be eventually removed from the system.",
+      "NO_FURTHER_ACTION": "No further action can be taken on this case as this is now cancelled.",
+      "PAGE_TITLE": "Cancel unissued claim",
+      "START_NEW_CLAIM": "If you want to start a new claim you can do this from your account.",
+      "TITLE": "Explain why you are cancelling the claim"
+    },
     "QM": {
       "CONFIRMATION_PAGE": {
         "TITLE" : "Message sent",
@@ -2647,6 +2658,7 @@
       "PAGE_TITLE": "Claims made by or against you",
       "PREVIOUS": "Previous",
       "STATUS_CLAIMANT": {
+        "CLAIM_UNISSUED_CANCELLED": "Claim is unissued and cancelled",
         "ACCEPTED_PARTIAL_ADMISSION": "You have accepted the defendant’s part admission. They said they would pay immediately.",
         "ADMIT_PAY_IMMEDIATELY_CLAIMANT": "Wait for the defendant to pay you.",
         "AWAITING_JUDGMENT": "Awaiting case outcome.",
@@ -2760,6 +2772,7 @@
         "CASE_DISCONTINUED": "This claim is discontinued."
       },
       "SUPPORT_LINKS": {
+        "CANCEL_UNISSUED_CLAIM": "Cancel unissued claim",
         "APPLYING_TO_COURT_AS_A_CREDITOR":"Applying to the court as a creditor of a debt in breathing space",
         "CONTACT_COURT": "Contact the court to request a change to my case (make an application)",
         "CONTACT_APPLY_COURT": "Contact or apply to the court",

@@ -9,6 +9,7 @@ import {getFeePaymentRedirectInformation, getFeePaymentStatus} from 'services/fe
 import {FeeType} from 'form/models/helpWithFees/feeType';
 import {getClaimBusinessProcess, getClaimById} from 'modules/utilityService';
 import {claimFeePaymentGuard} from 'routes/guards/claimFeePaymentGuard';
+import {claimUnissuedCancelledGuard} from 'routes/guards/claimUnissuedCancelledGuard';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {saveUserId} from 'modules/draft-store/paymentSessionStoreService';
 import {PaymentInformation} from 'models/feePayment/paymentInformation';
@@ -21,7 +22,7 @@ const viewPath = 'features/claim/payment/claim-fee-breakdown';
 const success = 'Success';
 const failed = 'Failed';
 
-claimFeeBreakDownController.get(CLAIM_FEE_BREAKUP, claimFeePaymentGuard, (async (req: AppRequest, res: Response, next: NextFunction) => {
+claimFeeBreakDownController.get(CLAIM_FEE_BREAKUP, claimUnissuedCancelledGuard, claimFeePaymentGuard, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = getRouteParam(req, 'id');
     const claim = await getClaimById(claimId, req, true);
@@ -54,7 +55,7 @@ claimFeeBreakDownController.get(CLAIM_FEE_BREAKUP, claimFeePaymentGuard, (async 
   }
 })as RequestHandler);
 
-claimFeeBreakDownController.post(CLAIM_FEE_BREAKUP, (async (req: AppRequest, res: Response, next: NextFunction) => {
+claimFeeBreakDownController.post(CLAIM_FEE_BREAKUP, claimUnissuedCancelledGuard, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = getRouteParam(req, 'id');
     const redisKey = generateRedisKey(req);

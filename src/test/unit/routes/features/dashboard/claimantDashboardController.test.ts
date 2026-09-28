@@ -4,7 +4,7 @@ import request from 'supertest';
 import {app} from '../../../../../main/app';
 import claimantDashboardController from '../../../../../main/routes/features/dashboard/claimantDashboardController';
 import {civilClaimResponseMock} from '../../../../utils/mockDraftStore';
-import {APPLICATION_TYPE_URL, DASHBOARD_CLAIMANT_URL, GA_APPLICATION_SUMMARY_URL} from 'routes/urls';
+import {APPLICATION_TYPE_URL, CANCEL_UNISSUED_CLAIM_SPEC_URL, DASHBOARD_CLAIMANT_URL, GA_APPLICATION_SUMMARY_URL} from 'routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {PartyType} from 'common/models/partyType';
 import {PartyDetails} from 'common/form/models/partyDetails';
@@ -22,7 +22,7 @@ import * as launchDarkly from '../../../../../main/app/auth/launchdarkly/launchD
 import {DashboardTask} from 'models/dashboard/taskList/dashboardTask';
 import {DashboardTaskList} from 'models/dashboard/taskList/dashboardTaskList';
 import {Dashboard} from 'models/dashboard/dashboard';
-import { applicationNoticeUrl } from 'common/utils/externalURLs';
+import { applicationNoticeUrl, feesHelpUrl } from 'common/utils/externalURLs';
 import { constructResponseUrlWithIdParams } from 'common/utils/urlFormatter';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import { GaServiceClient } from 'client/gaServiceClient';
@@ -404,6 +404,64 @@ describe('claimant Dashboard Controller', () => {
         expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.FIND_INFO_COURT'));
       });
     });
+    it('should show cancel unissued claim link for claimant when claim issue is pending and flag is enabled', async () => {
+      const claim = new Claim();
+      claim.caseRole = CaseRole.CLAIMANT;
+      claim.ccdState = CaseState.PENDING_CASE_ISSUED;
+      jest.spyOn(UtilityService, 'getClaimById').mockResolvedValueOnce(claim);
+      jest.spyOn(launchDarkly, 'isCancelUnissuedClaimSpecEnabled').mockResolvedValueOnce(true);
+      await request(app).get(DASHBOARD_CLAIMANT_URL).expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.CANCEL_UNISSUED_CLAIM'));
+        expect(res.text).toContain(CANCEL_UNISSUED_CLAIM_SPEC_URL);
+        expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.HELP_FEES'));
+      });
+    });
+
+    it('should not show cancel unissued claim link when flag is disabled', async () => {
+      const claim = new Claim();
+      claim.caseRole = CaseRole.CLAIMANT;
+      claim.ccdState = CaseState.PENDING_CASE_ISSUED;
+      jest.spyOn(UtilityService, 'getClaimById').mockResolvedValueOnce(claim);
+      jest.spyOn(launchDarkly, 'isCancelUnissuedClaimSpecEnabled').mockResolvedValueOnce(false);
+      await request(app).get(DASHBOARD_CLAIMANT_URL).expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).not.toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.CANCEL_UNISSUED_CLAIM'));
+      });
+    });
+
+    it('should not show cancel unissued claim link when claim has been issued', async () => {
+      const claim = new Claim();
+      claim.caseRole = CaseRole.CLAIMANT;
+      claim.ccdState = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
+      jest.spyOn(UtilityService, 'getClaimById').mockResolvedValueOnce(claim);
+      jest.spyOn(launchDarkly, 'isCancelUnissuedClaimSpecEnabled').mockResolvedValueOnce(true);
+      await request(app).get(DASHBOARD_CLAIMANT_URL).expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).not.toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.CANCEL_UNISSUED_CLAIM'));
+      });
+    });
+
+    it('should show no i want to links and hide help with fees when unissued claim is cancelled', async () => {
+      const claim = new Claim();
+      claim.caseRole = CaseRole.CLAIMANT;
+      claim.ccdState = CaseState.CLAIM_UNISSUED_CANCELLED;
+      jest.spyOn(UtilityService, 'getClaimById').mockResolvedValueOnce(claim);
+      (dashboardService.getHelpSupportLinks as jest.Mock).mockReturnValueOnce([
+        { text: t('PAGES.DASHBOARD.SUPPORT_LINKS.HELP_FEES'), url: feesHelpUrl },
+        ...HELP_SUPPORT_LINKS.slice(1),
+      ]);
+      await request(app).get(DASHBOARD_CLAIMANT_URL).expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).not.toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.I_WANT_TO'));
+        expect(res.text).not.toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.CANCEL_UNISSUED_CLAIM'));
+        expect(res.text).not.toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.CONTACT_COURT'));
+        expect(res.text).not.toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.HELP_FEES'));
+        expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.FIND_MEDIATION'));
+        expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.FIND_INFO_COURT'));
+      });
+    });
+
     it('should show support links for claimant when judgment requested and judgment buffer is enabled', async () => {
 
       const claim = new Claim();

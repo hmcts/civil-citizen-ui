@@ -5,10 +5,11 @@ import {AppRequest} from 'models/AppRequest';
 import {saveUserId} from 'modules/draft-store/paymentSessionStoreService';
 import {getRouteParam} from 'common/utils/routeParamUtils';
 import {FeeType} from 'form/models/helpWithFees/feeType';
+import {claimUnissuedCancelledGuard} from 'routes/guards/claimUnissuedCancelledGuard';
 
 const claimFeeMakePaymentAgainController: Router = Router();
 
-claimFeeMakePaymentAgainController.get(CLAIM_FEE_MAKE_PAYMENT_AGAIN_URL, (async (req:AppRequest, res:Response, next: NextFunction) => {
+claimFeeMakePaymentAgainController.get(CLAIM_FEE_MAKE_PAYMENT_AGAIN_URL, claimUnissuedCancelledGuard, (async (req:AppRequest, res:Response, next: NextFunction) => {
   try {
     const claimId = getRouteParam(req, 'id');
     const redirectUrl = await getRedirectUrl(claimId, <AppRequest>req);

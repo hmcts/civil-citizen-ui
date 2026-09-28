@@ -1,0 +1,39 @@
+{% extends "claim-details-tpl.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/textarea/macro.njk" import govukTextarea %}
+{% from "../../macro/contact-us-for-help.njk" import contactUsForHelp with context %}
+{% from "../../macro/csrf.njk" import csrfProtection %}
+{% from "../../macro/page-title.njk" import setPageTitle %}
+{% block pageTitle %}
+  {{ setPageTitle(t, pageTitle) }}
+{% endblock %}
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <form method="post" novalidate>
+        {{ csrfProtection(csrf) }}
+        {{ govukTextarea({
+          name: "cancelReason",
+          id: "cancelReason",
+          label: {
+            text: t('PAGES.CANCEL_UNISSUED_CLAIM_SPEC.TITLE'),
+            classes: "govuk-label--l",
+            isPageHeading: true
+          },
+          hint: {
+            html: '<p class="govuk-body">' + t('PAGES.CANCEL_UNISSUED_CLAIM_SPEC.GUIDANCE_CANNOT_BE_COURT_PROCEEDINGS') + '</p>'
+              + '<p class="govuk-body">' + t('PAGES.CANCEL_UNISSUED_CLAIM_SPEC.GUIDANCE_NO_FURTHER_ACTION') + '</p>'
+          }
+        }) }}
+        <div class="govuk-button-group">
+          {{ govukButton({
+            text: t('PAGES.CANCEL_UNISSUED_CLAIM_SPEC.BUTTON'),
+            attributes: { id: 'cancelUnissuedClaimButton' }
+          }) }}
+          <a class="govuk-link" href="{{ dashboardUrl }}">{{ t('COMMON.BUTTONS.CANCEL') }}</a>
+        </div>
+        {{ contactUsForHelp(t) }}
+      </form>
+    </div>
+  </div>
+{% endblock %}
