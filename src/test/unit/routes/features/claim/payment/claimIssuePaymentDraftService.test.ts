@@ -8,6 +8,7 @@ import {DraftClaimManagerResult} from 'models/draft/draftClaim';
 import {PaymentInformation} from 'models/feePayment/paymentInformation';
 import {ClaimDetails} from 'form/models/claim/details/claimDetails';
 import {Party} from 'models/party';
+import {getTTLDaysForCategory, TTLCategory} from 'modules/draft-store/ttlConfig';
 
 jest.mock('modules/draft-store/draftStoreManagerService');
 
@@ -119,6 +120,7 @@ describe('getClaimIssuePaymentClaim', () => {
     const result = await getClaimIssuePaymentClaim(req);
 
     expect(retrieveClaimDetailsSpy).toHaveBeenCalledWith(claimId, req);
+    expect(ccdClaim.draftClaimCacheTtlDays).toBe(getTTLDaysForCategory(TTLCategory.JOURNEY_CACHE));
     expect(mockCreateOrLoadDraft).toHaveBeenCalledWith(req, ccdClaim);
     expect(mockUpdateDraftClaim).toHaveBeenCalledWith(req, ccdClaim, draftId);
     expect(result.claim).toBe(ccdClaim);
