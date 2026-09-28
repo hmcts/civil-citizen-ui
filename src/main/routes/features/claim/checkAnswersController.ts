@@ -17,7 +17,7 @@ import {checkYourAnswersClaimGuard} from 'routes/guards/checkYourAnswersGuard';
 import {StatementOfTruthFormClaimIssue} from 'form/models/statementOfTruth/statementOfTruthFormClaimIssue';
 import {QualifiedStatementOfTruthClaimIssue} from 'form/models/statementOfTruth/qualifiedStatementOfTruthClaimIssue';
 import {isFirstTimeInPCQ} from 'routes/guards/pcqGuardClaim';
-import {isCarmEnabledForCase} from '../../../app/auth/launchdarkly/launchDarklyClient';
+import {isCarmEnabledForCase, isDraftClaimDatabaseEnabled} from '../../../app/auth/launchdarkly/launchDarklyClient';
 import {ValidationError, Validator} from 'class-validator';
 import {EmailValidationWithMessage} from 'form/models/EmailValidationWithMessage';
 import {PhoneValidationWithMessage} from 'form/models/PhoneValidationWithMessage';
@@ -114,10 +114,8 @@ claimCheckAnswersController.post(CLAIM_CHECK_ANSWERS_URL, async (req: AppRequest
 
       const draftId = appReq.session?.draftId || draftResult.rawResponse?.draftId;
       if (draftId) {
-        if (claim.claimDetails.helpWithFees.option === YesNo.YES) {
-          await deleteDraftClaim(appReq, draftId);
-          delete appReq.session.draftId;
-        } else {
+        const helpWithFees = claim.claimDetails.helpWithFees.option === YesNo.YES;
+        if (await isDraftClaimDatabaseEnabled() && !helpWithFees) {
           const latestDraft = await getDraftClaim(appReq);
           if (latestDraft?.claimResponse?.case_data) {
             const claimToStore = Object.assign(new Claim(), latestDraft.claimResponse?.case_data as unknown as Claim);
@@ -127,6 +125,9 @@ claimCheckAnswersController.post(CLAIM_CHECK_ANSWERS_URL, async (req: AppRequest
             }
             await updateDraftClaim(appReq, claimToStore, draftId);
           }
+        } else {
+          await deleteDraftClaim(appReq, draftId);
+          delete appReq.session.draftId;
         }
       }
 
