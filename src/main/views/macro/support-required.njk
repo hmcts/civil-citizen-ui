@@ -7,6 +7,7 @@
 
 {% macro supportRequired(index, value, errorFor, t, removeButton, nameList) %}
 
+  <div class="row-container">
   <div class='multiple-row'>
     {% set checkedSignHtml %}
     {% set signLanguageInterpretedError = errorFor('model[items][' + index + '][signLanguageInterpreter][content]', 'model') %}
@@ -142,5 +143,6 @@
         type: "button"
       }) }}
     {% endif %}
+  </div>
   </div>
 {% endmacro %}
