@@ -7,6 +7,10 @@ if [[ -z "$A11Y_CHUNKS" || ! "$A11Y_CHUNKS" =~ ^[0-9]+$ || "$A11Y_CHUNKS" -le 0 
   exit 1
 fi
 
+# Jenkins may restore node_modules on an agent without Puppeteer's browser
+# cache. Install the version pinned by the local package before starting workers.
+yarn puppeteer browsers install chrome
+
 pids=()
 for i in $(seq 0 $((A11Y_CHUNKS - 1))); do
   A11Y_CHUNKS_INDEX=$i yarn tests:a11y --reporter-options reportFilename=a11y-$((i + 1)) &
@@ -26,4 +30,3 @@ if [[ $exit_code -ne 0 ]]; then
 fi
 
 echo "All accessibility tests completed successfully."
-

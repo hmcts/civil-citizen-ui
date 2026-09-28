@@ -49,6 +49,8 @@ WireMock 3.13.2 and state extension 0.10.1 are pinned for local/preview executio
 
 For comparable whole-pipeline measurements, apply `benchmarkPipeline` alongside `runAllFunctionalTests` in both modes. This sets the shared pipeline's `NO_SKIP_IMG_BUILD` override so both runs execute build, unit/integration checks and image stages rather than comparing an uncached run to a cached one. Remove the benchmark label after verification. Record total and functional durations, cache conditions and any infrastructure queue delays; the optimised result must not regress.
 
+Accessibility also installs the Chrome version pinned by the local Puppeteer package before starting its four workers. This handles fresh Jenkins agents that restore Node dependencies without the browser cache and prevents every page check from retrying a missing executable. Both deployment modes use this preflight; accessibility assertions are unchanged.
+
 ## Verification
 
 Run `yarn test:generate:functional-classification`, `yarn test:functional-classification` and `yarn test:functional-baseline`. The classification check requires every reviewed identity to resolve to an active PR baseline scenario and every active historical baseline identity to have exactly one migrated classification. Render standard and optimised charts to verify that the gateway disappears only from the latter. Run the complete baseline in both Jenkins modes, compare their `baseline-results.json` artifacts using `bin/functional-baseline.js compare`, and check optimised WireMock diagnostics for unmatched requests.
