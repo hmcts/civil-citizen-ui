@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 const assert = require('node:assert/strict');
-const fs = require('node:fs');
+const {workerPlan} = require('./functional-baseline');
 const baseUrl = process.argv[2];
 
 async function request(path, expected = 200, body) {
@@ -18,8 +18,7 @@ async function request(path, expected = 200, body) {
 async function main() {
   const scripts = require('../package.json').scripts;
   const standardWorkers = Number(scripts['test:civil-citizen-pr'].match(/--suites (\d+)/)[1]);
-  const runner = fs.readFileSync('src/test/functionalTests/run-functional-tests.sh', 'utf8');
-  const optimisedWorkers = Number(runner.match(/run_functional_command yarn codeceptjs run-workers --suites (\d+)/)[1]);
+  const optimisedWorkers = workerPlan(require('../docs/functional-baseline.json'), 'pr').workers;
   assert.ok(optimisedWorkers >= standardWorkers, 'Optimised concurrency must match or exceed standard');
   // More simultaneous payments than workers, including repeated amounts and
   // unfinished replacements for the same service request/case.
@@ -54,8 +53,8 @@ async function main() {
     assert.ok(confirm.includes(`name="payment_ref" value="${payment.payment_reference}"`));
     await status(payment, 'Initiated');
   }));
-  const completed = payments.slice(0, standardWorkers);
-  const unfinished = payments.slice(standardWorkers);
+  const completed = payments.slice(0, optimisedWorkers);
+  const unfinished = payments.slice(optimisedWorkers);
   await Promise.all(completed.reverse().map(async payment => {
     const response = await request(`/thin-pay/complete${payment.next.search}`, 303);
     assert.equal(response.headers.get('location'), payment.returnUrl);

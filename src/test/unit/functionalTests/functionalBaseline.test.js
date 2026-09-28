@@ -1,10 +1,27 @@
-const {normalise, verifySelection, reconcile} = require('../../../../bin/functional-baseline');
+const {normalise, workerPlan, verifySelection, reconcile} = require('../../../../bin/functional-baseline');
 
 const row = (title = 'Feature: Journey', skipped = false) => ({file: 'src/test/functionalTests/tests/ui_tests/example.js', title, skipped, tags: ['@civil-citizen-pr', '@civil-citizen-master', '@thin-full-stack']});
 const report = tests => ({results: [{file: '/src/test/functionalTests/tests/ui_tests/example.js', tests}]});
 const result = (title = 'Feature @civil-citizen-pr: Journey @thin-full-stack', status = 'pass') => ({fullTitle: title, pass: status === 'pass', fail: status === 'fail', pending: status === 'pending', skipped: status === 'excluded'});
 
 describe('Historical functional baseline', () => {
+  it('keeps skipped baseline files and excludes unrelated suites from worker allocation', () => {
+    const active = row();
+    const skipped = {...row('Skipped feature: Existing skip', true), file: 'src/test/functionalTests/tests/skipped.js'};
+    const unrelated = {...row('Nightly: Other'), file: 'src/test/functionalTests/tests/nightly.js', tags: ['@civil-citizen-nightly']};
+    const plan = workerPlan({scenarios: [skipped, active, {...active, title: 'Feature: Second'}, unrelated]}, 'pr');
+    expect(plan.files).toEqual([active.file, skipped.file]);
+    expect(plan.workers).toBeGreaterThanOrEqual(13);
+  });
+
+  it.each(['pr', 'master'])('gives every %s baseline file its own worker', pipeline => {
+    const baseline = require('../../../../docs/functional-baseline.json');
+    const expectedFiles = new Set(baseline.scenarios.filter(row => row.tags.includes(`@civil-citizen-${pipeline}`)).map(row => row.file));
+    const plan = workerPlan(baseline, pipeline);
+    expect(new Set(plan.files)).toEqual(expectedFiles);
+    expect(plan.workers).toBeGreaterThanOrEqual(expectedFiles.size);
+  });
+
   it('ignores routing metadata and spacing when comparing identities', () => {
     expect(normalise('Feature @ui-example : Journey  @thin-full-stack')).toBe('Feature: Journey');
     expect(() => verifySelection({scenarios: [row()]}, [row()])).not.toThrow();

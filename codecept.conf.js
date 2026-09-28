@@ -8,6 +8,9 @@ const { deleteAllIdamTestUsers } = require('./src/test/functionalTests/specClaim
 const functional = process.env.FUNCTIONAL;
 
 const getTests = () => {
+  if (process.env.OPTIMISED_FUNCTIONAL_TESTS === 'true' && process.env.FUNCTIONAL_WORKER_PLAN) {
+    return JSON.parse(process.env.FUNCTIONAL_WORKER_PLAN).files;
+  }
   let prevFailedTestFiles = process.env.PREV_FAILED_TEST_FILES;
   let prevNotExecutedTestFiles = process.env.PREV_NOT_EXECUTED_TEST_FILES;
 

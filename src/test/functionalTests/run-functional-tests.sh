@@ -161,19 +161,23 @@ functional_base_pattern() {
 }
 
 run_optimised_functional_tests() {
-  local base_pattern pattern
+  local base_pattern pattern workers=13 pipeline=pr
   export FUNCTIONAL=true
   export WIREMOCK_URL="${WIREMOCK_URL:-${TEST_URL/https:\/\//https:\/\/wiremock-}}"
   unset PREV_FAILED_TEST_FILES PREV_NOT_EXECUTED_TEST_FILES
+  unset FUNCTIONAL_WORKER_PLAN
   base_pattern=$(functional_base_pattern)
   pattern="(?=.*(?:${base_pattern}))(?=.*@thin-full-stack)(?!.*@mocked-functional)"
   # The complete default baseline is migrated. Preserve its existing skips too.
   if [[ -z "${PR_FT_GROUPS:-}" ]]; then
     pattern="$base_pattern"
+    [[ "$ENVIRONMENT" = "aat" ]] && pipeline=master
+    export FUNCTIONAL_WORKER_PLAN="$(node bin/functional-baseline.js worker-plan "$pipeline")"
+    workers=$(node -p 'JSON.parse(process.env.FUNCTIONAL_WORKER_PLAN).workers')
   fi
   echo "Running migrated thin-client scenarios from ${base_pattern}"
   MOCHAWESOME_REPORTFILENAME='optimised-thin-client' WORKER_STAGGER_MS=3000 \
-    run_functional_command yarn codeceptjs run-workers --suites 13 --grep "$pattern" \
+    run_functional_command yarn codeceptjs run-workers --suites "$workers" --grep "$pattern" \
     --reporter mocha-multi --plugins allure --verbose
 }
 
