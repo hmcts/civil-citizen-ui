@@ -44,6 +44,7 @@
     "test:generate:ft-groups-api-data": "node src/test/e2e-documentation/generator/ft-groups-data/generate-ft-groups-api-data.js",
     "test:generate:functional-classification": "node bin/generate-functional-test-classification.js",
     "test:functional-classification": "node bin/generate-functional-test-classification.js --check",
+    "test:functional-baseline": "node bin/functional-baseline.js check",
     "test:confluence:ft-groups-ui-table": "node src/test/e2e-documentation/confluence/ft-groups-table/upload-ft-groups-ui-table.js",
     "test:confluence:ft-groups-api-table": "node src/test/e2e-documentation/confluence/ft-groups-table/upload-ft-groups-api-table.js",
     "test:readme:ft-groups-ui-table": "node src/test/e2e-documentation/readme/ft-groups-table/update-ft-groups-ui-table.js",
