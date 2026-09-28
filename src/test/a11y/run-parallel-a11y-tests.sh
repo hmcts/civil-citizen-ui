@@ -9,7 +9,7 @@ fi
 
 # Jenkins may restore node_modules on an agent without Puppeteer's browser
 # cache. Install the version pinned by the local package before starting workers.
-yarn puppeteer browsers install chrome
+node bin/install-a11y-browser.js
 
 pids=()
 for i in $(seq 0 $((A11Y_CHUNKS - 1))); do
