@@ -152,7 +152,7 @@ function classify(scenario, scenarioId) {
     return {
       target: TARGETS.THIN_CLIENT,
       reason: `${reviewedRealBoundaryScenarios.get(scenarioId)} Preserve the complete existing journey, helpers and assertions.`,
-      services: 'Real CUI, Civil Service, CCD, Camunda, IDAM/S2S and role assignment; AAC and professional reference data for NoC; mocked Fees, Payments, GovPay, Docmosis, CDAM and CUI address lookup. See functional-real-boundary-review.md for the deployment inventory.',
+      services: 'Real CUI, Civil Service, CCD, Camunda, IDAM/S2S and role assignment; AAC and professional reference data for NoC; mocked Fees, Payments, GovPay, Docmosis, CDAM and CUI address lookup. See functional-tests.md for the deployment inventory.',
       owner: 'DTSCCI-5979 retained-service review and classification reconciliation',
       batch: 'DTSCCI-5979',
       secondaryTargets: 'Historical baseline identity/outcome parity; WireMock rejects unmatched requests; unchanged assertions verified in standard and optimised Jenkins runs',
@@ -166,7 +166,7 @@ function classify(scenario, scenarioId) {
       services: 'Real CUI, Civil Service, CCD, Camunda, IDAM and role assignment; mocked Fees Register, Payments, Docmosis and CDAM',
       owner: 'DTSCCI-6133 Welsh journey and complete baseline reconciliation',
       batch: 'DTSCCI-6133',
-      secondaryTargets: 'Historical PR/master scenario identity and outcome parity; see functional-baseline.json and functional-baseline-reconciliation.md',
+      secondaryTargets: 'Historical PR/master scenario identity and outcome parity; see functional-baseline.json and functional-tests.md',
     };
   }
 
