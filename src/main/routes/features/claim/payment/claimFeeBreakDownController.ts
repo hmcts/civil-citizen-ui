@@ -7,13 +7,17 @@ import {calculateInterestToDate} from 'common/utils/interestUtils';
 import {convertToPoundsFilter} from 'common/utils/currencyFormat';
 import {getFeePaymentRedirectInformation, getFeePaymentStatus} from 'services/features/feePayment/feePaymentService';
 import {FeeType} from 'form/models/helpWithFees/feeType';
-import {getClaimBusinessProcess} from 'modules/utilityService';
+import {getClaimBusinessProcess, getClaimById} from 'modules/utilityService';
 import {claimFeePaymentGuard} from 'routes/guards/claimFeePaymentGuard';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {saveUserId} from 'modules/draft-store/paymentSessionStoreService';
 import {PaymentInformation} from 'models/feePayment/paymentInformation';
 import {getRouteParam, isUsablePathSegment} from 'common/utils/routeParamUtils';
 import {updateDraftClaim} from 'modules/draft-store/draftStoreManagerService';
+import {generateRedisKey, saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {TTLCategory} from 'modules/draft-store/ttlConfig';
+import {Claim} from 'models/claim';
+import {isDraftClaimDatabaseEnabled} from 'app/auth/launchdarkly/launchDarklyClient';
 import {getClaimIssuePaymentClaim} from './claimIssuePaymentDraftService';
 
 const {Logger} = require('@hmcts/nodejs-logging');
@@ -23,19 +27,38 @@ const viewPath = 'features/claim/payment/claim-fee-breakdown';
 const success = 'Success';
 const failed = 'Failed';
 
+const loadClaim = async (req: AppRequest): Promise<{claim: Claim; draftId?: string}> => {
+  if (await isDraftClaimDatabaseEnabled()) {
+    return getClaimIssuePaymentClaim(req);
+  }
+  const claimId = getRouteParam(req, 'id');
+  const claim = await getClaimById(claimId, req, true);
+  return {claim};
+};
+
+const saveClaim = async (req: AppRequest, claim: Claim, draftId?: string): Promise<void> => {
+  if (draftId) {
+    await updateDraftClaim(req, claim, draftId);
+    return;
+  }
+  await saveDraftClaim(
+    generateRedisKey(req),
+    claim,
+    true,
+    req.session.user?.id,
+    TTLCategory.JOURNEY_CACHE,
+  );
+};
+
 claimFeeBreakDownController.get(CLAIM_FEE_BREAKUP, claimFeePaymentGuard, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = getRouteParam(req, 'id');
-    const {claim, draftId} = await getClaimIssuePaymentClaim(req);
+    const {claim, draftId} = await loadClaim(req);
     let paymentSyncError = false;
     if (claim.paymentSyncError) {
       paymentSyncError = true;
       claim.paymentSyncError = undefined;
-      await updateDraftClaim(
-        req,
-        claim,
-        draftId,
-      );
+      await saveClaim(req, claim, draftId);
     }
     const claimFee = convertToPoundsFilter(claim.claimFee?.calculatedAmountInPence);
     const hasInterest = claim.claimInterest === YesNo.YES;
@@ -63,7 +86,7 @@ claimFeeBreakDownController.get(CLAIM_FEE_BREAKUP, claimFeePaymentGuard, (async 
 claimFeeBreakDownController.post(CLAIM_FEE_BREAKUP, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = getRouteParam(req, 'id');
-    const {claim, draftId} = await getClaimIssuePaymentClaim(req);
+    const {claim, draftId} = await loadClaim(req);
     if (!claim.claimDetails) {
       claim.claimDetails = new ClaimDetails();
     }
@@ -79,7 +102,7 @@ claimFeeBreakDownController.post(CLAIM_FEE_BREAKUP, (async (req: AppRequest, res
       res.redirect(constructResponseUrlWithIdParams(claimId, CLAIM_FEE_BREAKUP));
     } else {
       logger.info(`Saving payment information for claim id ${claimId}`);
-      await updateDraftClaim(req, claim, draftId);
+      await saveClaim(req, claim, draftId);
       await saveUserId(claimId, FeeType.CLAIMISSUED, req.session.user.id);
       try {
         if (!isUsablePathSegment(paymentRedirectInformation?.paymentReference)) {
@@ -98,7 +121,7 @@ claimFeeBreakDownController.post(CLAIM_FEE_BREAKUP, (async (req: AppRequest, res
             res.redirect(constructResponseUrlWithIdParams(claimId, CLAIM_FEE_BREAKUP));
           } else {
             claim.claimDetails.claimFeePayment = paymentRedirectInformation;
-            await updateDraftClaim(req, claim, draftId);
+            await saveClaim(req, claim, draftId);
             res.redirect(paymentRedirectInformation?.nextUrl);
           }
         } else {
@@ -123,9 +146,9 @@ async function getRedirectInformation(req: AppRequest) {
       req,
     );
   } catch (error) {
-    const {claim, draftId} = await getClaimIssuePaymentClaim(req);
+    const {claim, draftId} = await loadClaim(req);
     claim.paymentSyncError = true;
-    await updateDraftClaim(req, claim, draftId);
+    await saveClaim(req, claim, draftId);
     return null;
   }
 }
