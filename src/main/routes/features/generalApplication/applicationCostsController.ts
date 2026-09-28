@@ -24,7 +24,7 @@ const viewPath = 'features/generalApplication/application-costs';
 async function renderView(claim: Claim, req: AppRequest, res: Response): Promise<void> {
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
   const applicationTypes = claim.generalApplication?.applicationTypes;
-  const index  = queryParamNumber(req, 'index') || applicationTypes.length - 1;
+  const index  = queryParamNumber(req, 'index') ?? applicationTypes.length - 1;
   const selectedAppType = applicationTypes[applicationTypes.length - 1]?.option;
   const applicationType = getApplicationTypeOptionByTypeAndDescription(selectedAppType, ApplicationTypeOptionSelection.BY_APPLICATION_TYPE);
   const gaFeeData = await gaApplicationFeeDetails(claim, req);

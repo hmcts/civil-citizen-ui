@@ -1,0 +1,65 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://docs.os.uk/os-apis/accessing-os-apis/os-places-api/technical-specification/postcode",
+  "title": "OS Places API postcode response fields consumed by CUI",
+  "description": "Consumer-side schema subset transcribed from the OS Places API Postcode technical specification and DPA/LPI dataset documentation. OS does not publish a semantic schema version on these pages; see os-postcode-fixtures.md.",
+  "type": "object",
+  "required": ["results"],
+  "properties": {
+    "results": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "oneOf": [
+          {"$ref": "#/definitions/dpaResult"},
+          {"$ref": "#/definitions/lpiResult"}
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "coordinate": {"type": "number"},
+    "addressCommon": {
+      "type": "object",
+      "required": ["UPRN", "ADDRESS", "X_COORDINATE", "Y_COORDINATE", "COUNTRY_CODE"],
+      "properties": {
+        "UPRN": {"type": "integer"},
+        "ADDRESS": {"type": "string"},
+        "X_COORDINATE": {"$ref": "#/definitions/coordinate"},
+        "Y_COORDINATE": {"$ref": "#/definitions/coordinate"},
+        "COUNTRY_CODE": {"type": "string"},
+        "ORGANISATION_NAME": {"type": "string"},
+        "ORGANISATION": {"type": "string"},
+        "POST_TOWN": {"type": "string"},
+        "TOWN_NAME": {"type": "string"},
+        "POSTCODE": {"type": "string"},
+        "POSTCODE_LOCATOR": {"type": "string"},
+        "POSTAL_ADDRESS_CODE": {"type": "string"},
+        "BUILDING_NUMBER": {"type": "integer"},
+        "BUILDING_NAME": {"type": "string"},
+        "PAO_TEXT": {"type": "string"},
+        "SUB_BUILDING_NAME": {"type": "string"},
+        "SAO_TEXT": {"type": "string"},
+        "THOROUGHFARE_NAME": {"type": "string"},
+        "STREET_DESCRIPTION": {"type": "string"},
+        "DEPENDENT_THOROUGHFARE_NAME": {"type": "string"},
+        "DEPENDENT_LOCALITY": {"type": "string"},
+        "DOUBLE_DEPENDENT_LOCALITY": {"type": "string"}
+      },
+      "additionalProperties": true
+    },
+    "dpaResult": {
+      "type": "object",
+      "required": ["DPA"],
+      "properties": {"DPA": {"$ref": "#/definitions/addressCommon"}},
+      "additionalProperties": true
+    },
+    "lpiResult": {
+      "type": "object",
+      "required": ["LPI"],
+      "properties": {"LPI": {"$ref": "#/definitions/addressCommon"}},
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": true
+}

@@ -1,97 +1,103 @@
-import {app} from '../../../../../../main/app';
-import config from 'config';
-import nock from 'nock';
-import request from 'supertest';
-import {
-  CLAIM_DEFENDANT_COMPANY_DETAILS_URL, 
-  DELAYED_FLIGHT_URL, 
-  FLIGHT_DETAILS_URL,
-} from 'routes/urls';
-import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import {t} from 'i18next';
-import {Claim} from 'models/claim';
-import {mockCivilClaim} from '../../../../../utils/mockDraftStore';
-import {YesNo} from 'common/form/models/yesNo';
-import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {Response} from 'express';
+import delayedFlightController from '../../../../../../main/routes/features/claim/airlines/delayedFlightController';
+import {CLAIM_DEFENDANT_COMPANY_DETAILS_URL, FLIGHT_DETAILS_URL} from 'routes/urls';
+import {AppRequest} from 'models/AppRequest';
+import {YesNo} from 'form/models/yesNo';
+import {GenericForm} from 'form/models/genericForm';
+import {GenericYesNo} from 'form/models/genericYesNo';
+import {getDelayedFlight, saveDelayedFlight} from 'services/features/claim/delayedFlightService';
+import {createMockResponse, createMockSession, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('services/features/claim/delayedFlightService', () => ({
+  getDelayedFlight: jest.fn(),
+  saveDelayedFlight: jest.fn(),
+}));
 
-const mockGetCaseDataFromDraftStore = draftStoreService.getCaseDataFromStore as jest.Mock;
+describe('Delayed flight Controller', () => {
+  const getHandler = getRouteHandler(delayedFlightController, 'get');
+  const postHandler = getRouteHandler(delayedFlightController, 'post');
+  const viewPath = 'features/claim/airlines/delayed-flight';
+  const pageTitle = 'PAGES.DELAYED_FLIGHT.CLAIMING_FOR_DELAYED';
+  let req: Partial<AppRequest>;
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
+  const mockGetDelayedFlight = getDelayedFlight as jest.Mock;
+  const mockSaveDelayedFlight = saveDelayedFlight as jest.Mock;
 
-describe('Delyaed flight Controller', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
-  app.request.cookies = {eligibilityCompleted: true};
-
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-    app.locals.draftStoreClient = mockCivilClaim;
+  beforeEach(() => {
+    req = {
+      session: createMockSession({user: {id: 'user-id'}}),
+      body: {},
+      query: {},
+      cookies: {},
+    };
+    res = createMockResponse();
+    next = jest.fn();
+    mockGetDelayedFlight.mockResolvedValue(new GenericYesNo());
+    mockSaveDelayedFlight.mockResolvedValue(undefined);
   });
 
   describe('on GET', () => {
-    it('should return delayed flight page', async () => {
-      mockGetCaseDataFromDraftStore.mockImplementation(async () => new Claim());
-      await request(app)
-        .get(DELAYED_FLIGHT_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('PAGES.DELAYED_FLIGHT.CLAIMING_FOR_DELAYED'));
-        });
+    it('should render delayed flight', async () => {
+      await getHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        pageTitle,
+        form: expect.any(GenericForm),
+      }));
     });
 
-    it('should return http 500 when has error in the get method', async () => {
-      mockGetCaseDataFromDraftStore.mockImplementation(async () => {throw new Error(TestMessages.REDIS_FAILURE);});
-      await request(app)
-        .get(DELAYED_FLIGHT_URL)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+    it('should call next when loading delayed flight fails', async () => {
+      const error = new Error('error');
+      mockGetDelayedFlight.mockRejectedValue(error);
+
+      await getHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 
   describe('on POST', () => {
-    it('should redirect when Yes', async () => {
-      mockGetCaseDataFromDraftStore.mockImplementation(async () => new Claim());
-      await request(app)
-        .post(DELAYED_FLIGHT_URL)
-        .send({option: YesNo.YES})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toBe(FLIGHT_DETAILS_URL);
-        });
+    it('should redirect to flight details when Yes is selected', async () => {
+      req.body = {option: YesNo.YES};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(mockSaveDelayedFlight).toHaveBeenCalledWith('user-id', expect.any(GenericYesNo));
+      expect(res.redirect).toHaveBeenCalledWith(FLIGHT_DETAILS_URL);
     });
-    it('should redirect when No', async () => {
-      mockGetCaseDataFromDraftStore.mockImplementation(async () => new Claim());
-      await request(app)
-        .post(DELAYED_FLIGHT_URL)
-        .send({option: YesNo.NO})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toBe(CLAIM_DEFENDANT_COMPANY_DETAILS_URL);
-        });
+
+    it('should redirect to defendant company details when No is selected', async () => {
+      req.body = {option: YesNo.NO};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.redirect).toHaveBeenCalledWith(CLAIM_DEFENDANT_COMPANY_DETAILS_URL);
     });
-    it('should return errors on no input', async () => {
-      await request(app)
-        .post(DELAYED_FLIGHT_URL)
-        .send({option: null})
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.DELAYED_FLIGHT.CLAIMING_FOR_DELAY_REQUIRED'));
-        });
+
+    it('should re-render when no option is selected', async () => {
+      req.body = {option: null};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        pageTitle,
+        form: expect.any(GenericForm),
+      }));
+      const form = (res.render as jest.Mock).mock.calls[0][1].form as GenericForm<GenericYesNo>;
+      expect(form.hasErrors()).toBe(true);
+      expect(form.errorFor('option')).toBe('ERRORS.DELAYED_FLIGHT.CLAIMING_FOR_DELAY_REQUIRED');
+      expect(res.redirect).not.toHaveBeenCalled();
     });
-    it('should return http 500 when has error in the post method', async () => {
-      mockGetCaseDataFromDraftStore.mockImplementation(async () => {throw new Error(TestMessages.REDIS_FAILURE);});
-      await request(app)
-        .post(DELAYED_FLIGHT_URL)
-        .send({option: YesNo.NO})
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+
+    it('should call next when saving delayed flight fails', async () => {
+      const error = new Error('error');
+      mockSaveDelayedFlight.mockRejectedValue(error);
+      req.body = {option: YesNo.NO};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 });

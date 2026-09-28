@@ -1,818 +1,668 @@
-import {app} from '../../../../../../main/app';
-import config from 'config';
-import request from 'supertest';
-import {
-  CLAIMANT_COMPANY_DETAILS_URL,
-  CLAIMANT_ORGANISATION_DETAILS_URL,
-  CLAIMANT_PHONE_NUMBER_URL,
-} from 'routes/urls';
-import {buildAddress} from '../../../../../utils/mockClaim';
-import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
+import {Response} from 'express';
+import claimantDetailsController from '../../../../../../main/routes/features/claim/yourDetails/claimantDetailsController';
+import {CLAIMANT_PHONE_NUMBER_URL} from 'routes/urls';
+import {AppRequest} from 'models/AppRequest';
+import {GenericForm} from 'form/models/genericForm';
 import {PartyType} from 'models/partyType';
 import {Claim} from 'models/claim';
 import {Party} from 'models/party';
-import * as draftStoreService from '../../../../../../main/modules/draft-store/draftStoreService';
 import {PartyDetails} from 'form/models/partyDetails';
-import * as enVars from '../../../../../../main/modules/i18n/locales/en.json';
+import {getClaimantInformation, saveClaimantProperty} from 'services/features/claim/yourDetails/claimantDetailsService';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {buildAddress} from '../../../../../utils/mockClaim';
 import * as launchDarklyClient from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
-import * as ordnanceSurveyService from '../../../../../../main/modules/ordance-survey-key/ordanceSurveyKeyService';
+import {lookupByPostcodeAndDataSet} from 'modules/ordance-survey-key/ordanceSurveyKeyService';
+import {createMockResponse, createMockSession, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
-jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('services/features/claim/yourDetails/claimantDetailsService', () => ({
+  getClaimantInformation: jest.fn(),
+  saveClaimantProperty: jest.fn(),
+}));
+jest.mock('modules/draft-store/draftStoreService');
 jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
-jest.mock('../../../../../../main/modules/ordance-survey-key/ordanceSurveyKeyService');
+jest.mock('modules/ordance-survey-key/ordanceSurveyKeyService', () => ({
+  lookupByPostcodeAndDataSet: jest.fn(),
+}));
 
-const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
-const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
+const mockGetClaimantInformation = getClaimantInformation as jest.Mock;
+const mockSaveClaimantProperty = saveClaimantProperty as jest.Mock;
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
+const mockLookupByPostcode = lookupByPostcodeAndDataSet as jest.Mock;
 
-const claim = new Claim();
-
-const buildClaimOfApplicantWithType = (type: PartyType): Claim => {
-  claim.applicant1 = new Party();
-  claim.applicant1.partyDetails = new PartyDetails({});
-  claim.applicant1.partyDetails.title = 'title';
-  claim.applicant1.partyDetails.firstName = 'firstName';
-  claim.applicant1.partyDetails.lastName = 'lastName';
-  claim.applicant1.partyDetails.primaryAddress = buildAddress();
-  claim.applicant1.partyDetails.correspondenceAddress = buildAddress();
-  claim.applicant1.partyDetails.partyName = 'partyName';
-  claim.applicant1.partyDetails.contactPerson = 'contactPerson';
-  claim.applicant1.type = type;
-  return claim;
+const buildApplicantWithType = (type: PartyType): Party => {
+  const applicant = new Party();
+  applicant.partyDetails = new PartyDetails({});
+  applicant.partyDetails.title = 'title';
+  applicant.partyDetails.firstName = 'firstName';
+  applicant.partyDetails.lastName = 'lastName';
+  applicant.partyDetails.primaryAddress = buildAddress();
+  applicant.partyDetails.correspondenceAddress = buildAddress();
+  applicant.partyDetails.partyName = 'partyName';
+  applicant.partyDetails.contactPerson = 'contactPerson';
+  applicant.type = type;
+  return applicant;
 };
 
-const buildClaimOfApplicantType = (type: PartyType): Claim => {
-  claim.applicant1 = new Party();
-  claim.applicant1.partyDetails = new PartyDetails({});
-  claim.applicant1.type = type;
-  claim.applicant1.partyDetails.primaryAddress = buildAddress();
-  claim.applicant1.partyDetails.correspondenceAddress = buildAddress();
-  claim.applicant1.partyDetails.partyName = 'partyName';
-  claim.applicant1.partyDetails.contactPerson = 'contactPerson';
-  return claim;
+const buildApplicantType = (type: PartyType): Party => {
+  const applicant = new Party();
+  applicant.partyDetails = new PartyDetails({});
+  applicant.type = type;
+  applicant.partyDetails.primaryAddress = buildAddress();
+  applicant.partyDetails.correspondenceAddress = buildAddress();
+  applicant.partyDetails.partyName = 'partyName';
+  applicant.partyDetails.contactPerson = 'contactPerson';
+  return applicant;
 };
-
-const nock = require('nock');
 
 const validDataForPost = {
   addressLine1: ['Flat 3A Middle Road', 'Flat 3A Middle Road'],
-  addressLine2: ['',''],
-  addressLine3: ['',''],
-  city: ['London','London'],
-  postCode: ['SW1H 9AJ','SW1H 9AJ'],
+  addressLine2: ['', ''],
+  addressLine3: ['', ''],
+  city: ['London', 'London'],
+  postCode: ['SW1H 9AJ', 'SW1H 9AJ'],
   partyName: 'partyName',
   contactPerson: 'contactPerson',
 };
 
-const mockLookupByPostcode = ordnanceSurveyService.lookupByPostcodeAndDataSet as jest.Mock;
-const configureSpy = (service: any, method: string) => jest.spyOn(service, method).mockReset();
-const getCaseDataFromStoreSpy = (claim: Claim) => jest.spyOn(draftStoreService, 'getCaseDataFromStore')
-  .mockReturnValue(Promise.resolve(claim));
-const carmToggleSpy = (calmEnabled: boolean) => configureSpy(launchDarklyClient, 'isCarmEnabledForCase')
-  .mockReturnValue(Promise.resolve(calmEnabled));
-
 describe('Claimant Organisation Details page', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
-  app.request.cookies = {eligibilityCompleted: true};
+  const getHandler = getRouteHandler(claimantDetailsController, 'get');
+  const postHandler = getRouteHandler(claimantDetailsController, 'post');
+  const viewPath = 'features/claim/yourDetails/claimant-organisation-details';
+  const pageTitle = 'PAGES.COMPANY_DETAILS.CLAIMANT_PAGE_TITLE';
+  let req: Partial<AppRequest>;
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
 
   beforeEach(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-    jest.resetAllMocks();
+    req = {
+      session: createMockSession({user: {id: 'user-id'}}),
+      body: {},
+      query: {},
+      cookies: {},
+    };
+    res = createMockResponse();
+    next = jest.fn();
     mockLookupByPostcode.mockResolvedValue({
       valid: true,
-      addresses: [{ country: 'England' }],
+      addresses: [{country: 'England'}],
     });
-
-    const mockClaim = { submittedDate: new Date(2024, 5, 23) } as Claim;
-    getCaseDataFromStoreSpy(mockClaim);
-    carmToggleSpy(true);
+    mockGetCaseData.mockResolvedValue(new Claim());
+    mockGetClaimantInformation.mockResolvedValue(buildApplicantType(PartyType.ORGANISATION));
+    mockSaveClaimantProperty.mockResolvedValue(undefined);
+    (launchDarklyClient.isCarmEnabledForCase as jest.Mock).mockResolvedValue(true);
   });
+
+  const renderedParty = () => (res.render as jest.Mock).mock.calls[0][1].party;
 
   describe('Organisation Type', () => {
     describe('on Exception', () => {
-      it('should return http 500 when has error in the get method', async () => {
-        mockGetCaseData.mockImplementation(async () => {
-          throw new Error(TestMessages.REDIS_FAILURE);
-        });
-        await request(app)
-          .get(CLAIMANT_ORGANISATION_DETAILS_URL)
-          .expect((res) => {
-            expect(res.status).toBe(500);
-            expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-          });
+      it('should call next when loading claimant information fails', async () => {
+        const error = new Error('error');
+        mockGetClaimantInformation.mockRejectedValue(error);
+
+        await getHandler(req as AppRequest, res as unknown as Response, next);
+
+        expect(next).toHaveBeenCalledWith(error);
       });
 
-      it('should return http 500 when has error in the post method', async () => {
-        mockSaveDraftClaim.mockImplementation(async () => {
-          throw new Error(TestMessages.REDIS_FAILURE);
-        });
-        await request(app)
-          .post(CLAIMANT_ORGANISATION_DETAILS_URL)
-          .send(validDataForPost)
-          .expect((res) => {
-            expect(res.status).toBe(500);
-            expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-          });
+      it('should call next when save fails', async () => {
+        const error = new Error('error');
+        mockSaveClaimantProperty.mockRejectedValue(error);
+        req.body = validDataForPost;
+
+        await postHandler(req as AppRequest, res as unknown as Response, next);
+
+        expect(next).toHaveBeenCalledWith(error);
       });
     });
 
-    it('should return your company or organisation details page with empty information', async () => {
-      mockGetCaseData.mockImplementation(async () => {
-        const claim = new Claim();
-        claim.applicant1 = {type: PartyType.ORGANISATION};
-        return claim;
-      });
-      await request(app)
-        .get(CLAIMANT_ORGANISATION_DETAILS_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Enter organisation details');
-        });
+    it('should render organisation details page with empty information', async () => {
+      const applicant = new Party();
+      applicant.type = PartyType.ORGANISATION;
+      mockGetClaimantInformation.mockResolvedValue(applicant);
+
+      await getHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        pageTitle,
+        type: PartyType.ORGANISATION,
+        party: expect.any(GenericForm),
+      }));
     });
 
-    it('should return your company or organisation details page with information', async () => {
-      mockGetCaseData.mockImplementation(async () => {
-        return buildClaimOfApplicantWithType(PartyType.ORGANISATION);
-      });
-      await request(app)
-        .get(CLAIMANT_ORGANISATION_DETAILS_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Enter organisation details');
-        });
+    it('should render organisation details page with information', async () => {
+      mockGetClaimantInformation.mockResolvedValue(buildApplicantWithType(PartyType.ORGANISATION));
+
+      await getHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        pageTitle,
+        type: PartyType.ORGANISATION,
+        party: expect.any(GenericForm),
+      }));
     });
 
-    it('should return mandatory contact person label and error on empty contact person', async () => {
-      mockGetCaseData.mockImplementation(async () => {
-        return buildClaimOfApplicantWithType(PartyType.ORGANISATION);
-      });
-      await request(app)
-        .post(CLAIMANT_ORGANISATION_DETAILS_URL)
-        .send({
-          contactPerson: '',
-        })
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.ENTER_CONTACT_PERSON);
-          expect(res.text).toContain(enVars.COMMON.MANDATORY_CONTACT_PERSON);
-          expect(res.text).not.toContain(enVars.COMMON.OPTIONAL_CONTACT_PERSON);
-        });
+    it('should re-render with contact person error when contact person is empty and CARM is on', async () => {
+      mockGetClaimantInformation.mockResolvedValue(buildApplicantWithType(PartyType.ORGANISATION));
+      req.body = {contactPerson: ''};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        carmEnabled: true,
+        party: expect.any(GenericForm),
+      }));
+      expect(renderedParty().hasErrors()).toBe(true);
+      expect(renderedParty().hasFieldError('contactPerson')).toBe(true);
     });
 
-    it('should return optional contact person label when carm toggle disabled', async () => {
-      mockGetCaseData.mockImplementation(async () => {
-        return buildClaimOfApplicantWithType(PartyType.ORGANISATION);
-      });
-      carmToggleSpy(false);
-      await request(app)
-        .post(CLAIMANT_ORGANISATION_DETAILS_URL)
-        .send({
-          contactPerson: '',
-        })
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(enVars.COMMON.OPTIONAL_CONTACT_PERSON);
-        });
+    it('should re-render without mandatory contact person when CARM is off', async () => {
+      mockGetClaimantInformation.mockResolvedValue(buildApplicantWithType(PartyType.ORGANISATION));
+      (launchDarklyClient.isCarmEnabledForCase as jest.Mock).mockResolvedValue(false);
+      req.body = {contactPerson: ''};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        carmEnabled: false,
+        party: expect.any(GenericForm),
+      }));
+      expect(renderedParty().hasFieldError('contactPerson')).toBe(false);
     });
 
-    it('should return your company or organisation details page with information without correspondent address', async () => {
-      const buildClaimOfApplicantWithoutCorrespondent = (): Claim => {
-        claim.applicant1 = new Party();
-        claim.applicant1.partyDetails = new PartyDetails({});
-        claim.applicant1.type = PartyType.ORGANISATION;
-        claim.applicant1.partyDetails.title = 'title';
-        claim.applicant1.partyDetails.firstName = 'firstName';
-        claim.applicant1.partyDetails.lastName = 'lastName';
-        claim.applicant1.partyDetails.primaryAddress = buildAddress();
-        return claim;
+    it('should render organisation details page without correspondent address', async () => {
+      const applicant = new Party();
+      applicant.partyDetails = new PartyDetails({});
+      applicant.type = PartyType.ORGANISATION;
+      applicant.partyDetails.title = 'title';
+      applicant.partyDetails.firstName = 'firstName';
+      applicant.partyDetails.lastName = 'lastName';
+      applicant.partyDetails.primaryAddress = buildAddress();
+      mockGetClaimantInformation.mockResolvedValue(applicant);
+
+      await getHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        pageTitle,
+        type: PartyType.ORGANISATION,
+      }));
+    });
+
+    it('should render organisation details page with no primary, correspondence address or claimant details', async () => {
+      const applicant = new Party();
+      applicant.partyDetails = new PartyDetails({});
+      applicant.partyDetails.primaryAddress = undefined;
+      applicant.type = PartyType.ORGANISATION;
+      mockGetClaimantInformation.mockResolvedValue(applicant);
+
+      await getHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        pageTitle,
+        type: PartyType.ORGANISATION,
+      }));
+    });
+
+    it('should render organisation details page when there is no data on redis and civil-service', async () => {
+      const applicant = new Party();
+      applicant.type = PartyType.ORGANISATION;
+      mockGetClaimantInformation.mockResolvedValue(applicant);
+
+      await getHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        pageTitle,
+        type: PartyType.ORGANISATION,
+      }));
+    });
+
+    it('should redirect on correct primary address', async () => {
+      mockGetClaimantInformation.mockResolvedValue(new Party());
+      req.body = validDataForPost;
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(mockSaveClaimantProperty).toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalled();
+    });
+
+    it('should redirect on correct correspondence address', async () => {
+      mockGetClaimantInformation.mockResolvedValue(buildApplicantType(PartyType.ORGANISATION));
+      req.body = validDataForPost;
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.redirect).toHaveBeenCalledWith(CLAIMANT_PHONE_NUMBER_URL);
+    });
+
+    it('should re-render on empty primary address line', async () => {
+      mockGetClaimantInformation.mockResolvedValue(buildApplicantType(PartyType.ORGANISATION));
+      req.body = {
+        addressLine1: ['', ''],
+        addressLine2: ['', ''],
+        addressLine3: ['', ''],
+        city: ['London', ''],
+        postCode: ['SW1H 9AJ', ''],
+        provideCorrespondenceAddress: 'no',
       };
-      mockGetCaseData.mockImplementation(async () => {
-        return buildClaimOfApplicantWithoutCorrespondent();
-      });
-      await request(app)
-        .get(CLAIMANT_ORGANISATION_DETAILS_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Enter organisation details');
-        });
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(renderedParty().hasErrors()).toBe(true);
     });
 
-    it('should return your company or organisation details page with no primary, correspondence address or claimant details', async () => {
-      const buildClaimOfApplicantWithoutInformation = (): Claim => {
-        claim.applicant1 = new Party();
-        claim.applicant1.partyDetails = new PartyDetails({});
-        claim.applicant1.partyDetails.primaryAddress = undefined;
-        claim.applicant1.type = PartyType.ORGANISATION;
-        return claim;
+    it('should re-render on empty primary city', async () => {
+      mockGetClaimantInformation.mockResolvedValue(buildApplicantType(PartyType.ORGANISATION));
+      req.body = {
+        addressLine1: ['Flat 3A Middle Road', ''],
+        addressLine2: ['', ''],
+        addressLine3: ['', ''],
+        city: ['', ''],
+        postCode: ['SW1H 9AJ', ''],
+        provideCorrespondenceAddress: 'no',
       };
-      mockGetCaseData.mockImplementation(async () => {
-        return buildClaimOfApplicantWithoutInformation();
-      });
-      await request(app)
-        .get(CLAIMANT_ORGANISATION_DETAILS_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Enter organisation details');
-        });
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(renderedParty().hasErrors()).toBe(true);
     });
 
-    it('get/Claimant organisation details - should return test variable when there is no data on redis and civil-service', async () => {
-      mockGetCaseData.mockImplementation(async () => {
-        const claim = new Claim();
-        claim.applicant1 = {type: PartyType.ORGANISATION};
-        return claim;
-      });
-      await request(app)
-        .get('/claim/claimant-organisation-details')
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Enter organisation details');
-        });
+    it('should re-render on empty primary postcode', async () => {
+      mockGetClaimantInformation.mockResolvedValue(buildApplicantWithType(PartyType.ORGANISATION));
+      req.body = {
+        addressLine1: ['Flat 3A Middle Road', ''],
+        addressLine2: ['', ''],
+        addressLine3: ['', ''],
+        city: ['London', ''],
+        postCode: ['', ''],
+        provideCorrespondenceAddress: 'no',
+      };
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(renderedParty().hasErrors()).toBe(true);
     });
 
-    it('POST/Claimant organisation details - should redirect on correct primary address', async () => {
-      mockGetCaseData.mockImplementation(async () => {
-        return new Claim();
-      });
-      await request(app)
-        .post(CLAIMANT_ORGANISATION_DETAILS_URL)
-        .send(validDataForPost)
-        .expect((res) => {
-          expect(res.status).toBe(302);
-        });
+    it('should re-render on empty correspondence address line', async () => {
+      mockGetClaimantInformation.mockResolvedValue(buildApplicantType(PartyType.ORGANISATION));
+      req.body = {
+        addressLine1: ['', ''],
+        addressLine2: ['', ''],
+        addressLine3: ['', ''],
+        city: ['London', 'London'],
+        postCode: ['SW1H 9AJ', 'SW1H 9AJ'],
+        provideCorrespondenceAddress: 'yes',
+      };
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(renderedParty().hasErrors()).toBe(true);
     });
 
-    it('POST/Claimant organisation details - should redirect on correct correspondence address', async () => {
-      mockGetCaseData.mockImplementation(async () => {
-        return buildClaimOfApplicantType(PartyType.ORGANISATION);
-      });
-      await request(app)
-        .post(CLAIMANT_ORGANISATION_DETAILS_URL)
-        .send(validDataForPost)
-        .expect((res) => {
-          expect(res.status).toBe(302);
-        });
+    it('should re-render on empty correspondence city', async () => {
+      mockGetClaimantInformation.mockResolvedValue(buildApplicantType(PartyType.ORGANISATION));
+      req.body = {
+        addressLine1: ['Flat 3A Middle Road', 'Flat 3A Middle Road'],
+        addressLine2: ['', ''],
+        addressLine3: ['', ''],
+        city: ['London', ''],
+        postCode: ['SW1H 9AJ', 'SW1H 9AJ'],
+        provideCorrespondenceAddress: 'yes',
+      };
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(renderedParty().hasErrors()).toBe(true);
     });
 
-    it('POST/Claimant Organisation details - should return error on empty primary address line', async () => {
-      mockGetCaseData.mockImplementation(async () => {
-        return buildClaimOfApplicantType(PartyType.ORGANISATION);
-      });
-      await request(app)
-        .post(CLAIMANT_ORGANISATION_DETAILS_URL)
-        .send({
-          addressLine1: ['',''],
-          addressLine2: ['',''],
-          addressLine3: ['',''],
-          city: ['London',''],
-          postCode: ['SW1H 9AJ',''],
-          provideCorrespondenceAddress: 'no',
-        })
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.ENTER_FIRST_ADDRESS);
-        });
+    it('should re-render on empty correspondence postcode', async () => {
+      mockGetClaimantInformation.mockResolvedValue(buildApplicantType(PartyType.ORGANISATION));
+      req.body = {
+        addressLine1: ['Flat 3A Middle Road', 'Flat 3A Middle Road'],
+        addressLine2: ['', ''],
+        addressLine3: ['', ''],
+        city: ['London', 'London'],
+        postCode: ['SW1H 9AJ', ''],
+        provideCorrespondenceAddress: 'yes',
+      };
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(renderedParty().hasErrors()).toBe(true);
     });
 
-    it('POST/Claimant organisation details - should return error on empty primary city', async () => {
-      mockGetCaseData.mockImplementation(async () => {
-        return buildClaimOfApplicantType(PartyType.ORGANISATION);
-      });
-      await request(app)
-        .post(CLAIMANT_ORGANISATION_DETAILS_URL)
-        .send({
-          addressLine1: ['Flat 3A Middle Road',''],
-          addressLine2: ['',''],
-          addressLine3: ['',''],
-          city: ['',''],
-          postCode: ['SW1H 9AJ',''],
-          provideCorrespondenceAddress: 'no',
-        })
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.ENTER_TOWN);
-        });
+    it('should re-render on no input', async () => {
+      mockGetClaimantInformation.mockResolvedValue(buildApplicantType(PartyType.ORGANISATION));
+      req.body = {
+        addressLine1: ['', ''],
+        addressLine2: ['', ''],
+        addressLine3: ['', ''],
+        city: ['', ''],
+        postCode: ['', ''],
+        provideCorrespondenceAddress: 'yes',
+      };
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(renderedParty().hasErrors()).toBe(true);
     });
 
-    it('POST/Claimant Organisation details - should return error on empty primary postcode', async () => {
-      mockGetCaseData.mockImplementation(async () => {
-        return buildClaimOfApplicantWithType(PartyType.ORGANISATION);
-      });
-      await request(app)
-        .post(CLAIMANT_ORGANISATION_DETAILS_URL)
-        .send({
-          addressLine1: ['Flat 3A Middle Road',''],
-          addressLine2: ['',''],
-          addressLine3: ['',''],
-          city: ['London',''],
-          postCode: ['',''],
-          provideCorrespondenceAddress: 'no',
-        })
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.ENTER_POSTCODE);
-        });
+    it('should re-render on empty primary address when provideCorrespondenceAddress is no', async () => {
+      mockGetClaimantInformation.mockResolvedValue(buildApplicantWithType(PartyType.ORGANISATION));
+      req.body = {
+        addressLine1: ['', ''],
+        addressLine2: ['', ''],
+        addressLine3: ['', ''],
+        city: ['', ''],
+        postCode: ['', ''],
+        provideCorrespondenceAddress: 'no',
+      };
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(renderedParty().hasErrors()).toBe(true);
     });
 
-    it('POST/Claimant Organisation details - should return error on empty correspondence address line', async () => {
-      mockGetCaseData.mockImplementation(async () => {
-        return buildClaimOfApplicantType(PartyType.ORGANISATION);
-      });
-      await request(app)
-        .post(CLAIMANT_ORGANISATION_DETAILS_URL)
-        .send({
-          addressLine1: ['',''],
-          addressLine2: ['',''],
-          addressLine3: ['',''],
-          city: ['London','London'],
-          postCode: ['SW1H 9AJ','SW1H 9AJ'],
-          provideCorrespondenceAddress: 'yes',
-        })
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.ENTER_FIRST_ADDRESS);
-        });
-    });
+    it('should re-render on empty correspondence address when provideCorrespondenceAddress is yes', async () => {
+      mockGetClaimantInformation.mockResolvedValue(buildApplicantType(PartyType.ORGANISATION));
+      req.body = {
+        addressLine1: ['Flat 3A Middle Road', ''],
+        addressLine2: ['', ''],
+        addressLine3: ['', ''],
+        city: ['London', ''],
+        postCode: ['SW1H 9AJ', ''],
+        provideCorrespondenceAddress: 'yes',
+      };
 
-    it('POST/Claimant Organisation details - should return error on empty correspondence city', async () => {
-      mockGetCaseData.mockImplementation(async () => {
-        return buildClaimOfApplicantType(PartyType.ORGANISATION);
-      });
-      await request(app)
-        .post(CLAIMANT_ORGANISATION_DETAILS_URL)
-        .send({
-          addressLine1: ['Flat 3A Middle Road','Flat 3A Middle Road'],
-          addressLine2: ['',''],
-          addressLine3: ['',''],
-          city: ['London',''],
-          postCode: ['SW1H 9AJ','SW1H 9AJ'],
-          provideCorrespondenceAddress: 'yes',
-        })
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.VALID_CORRESPONDENCE_CITY);
-        });
-    });
+      await postHandler(req as AppRequest, res as unknown as Response, next);
 
-    it('POST/Claimant Organisation details - should return error on empty correspondence postcode', async () => {
-      mockGetCaseData.mockImplementation(async () => {
-        return buildClaimOfApplicantType(PartyType.ORGANISATION);
-      });
-      await request(app)
-        .post(CLAIMANT_ORGANISATION_DETAILS_URL)
-        .send({
-          addressLine1: ['Flat 3A Middle Road','Flat 3A Middle Road'],
-          addressLine2: ['',''],
-          addressLine3: ['',''],
-          city: ['London','London'],
-          postCode: ['SW1H 9AJ',''],
-          provideCorrespondenceAddress: 'yes',
-        })
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.VALID_CORRESPONDENCE_POSTCODE);
-        });
-    });
-
-    it('POST/Claimant Organisation details - should return error on no input', async () => {
-      mockGetCaseData.mockImplementation(async () => {
-        return buildClaimOfApplicantType(PartyType.ORGANISATION);
-      });
-      await request(app)
-        .post(CLAIMANT_ORGANISATION_DETAILS_URL)
-        .send({
-          addressLine1: ['',''],
-          addressLine2: ['',''],
-          addressLine3: ['',''],
-          city: ['',''],
-          postCode: ['',''],
-          provideCorrespondenceAddress: 'yes',
-        })
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.ENTER_FIRST_ADDRESS);
-          expect(res.text).toContain(TestMessages.ENTER_TOWN);
-          expect(res.text).toContain(TestMessages.ENTER_POSTCODE);
-          expect(res.text).toContain(TestMessages.ENTER_FIRST_ADDRESS);
-          expect(res.text).toContain(TestMessages.ENTER_TOWN);
-          expect(res.text).toContain(TestMessages.ENTER_POSTCODE);
-        });
-    });
-
-    it('POST/Claimant Organisation details - should return error on input for primary address when provideCorrespondenceAddress is set to NO', async () => {
-      mockGetCaseData.mockImplementation(async () => {
-        return buildClaimOfApplicantWithType(PartyType.ORGANISATION);
-      });
-      await request(app)
-        .post(CLAIMANT_ORGANISATION_DETAILS_URL)
-        .send({
-          addressLine1: ['',''],
-          addressLine2: ['',''],
-          addressLine3: ['',''],
-          city: ['',''],
-          postCode: ['',''],
-          provideCorrespondenceAddress: 'no',
-        })
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.ENTER_FIRST_ADDRESS);
-          expect(res.text).toContain(TestMessages.ENTER_TOWN);
-          expect(res.text).toContain(TestMessages.ENTER_POSTCODE);
-        });
-    });
-
-    it('POST/Claimant Organisation details - should return error on input for correspondence address when provideCorrespondenceAddress is set to YES', async () => {
-      mockGetCaseData.mockImplementation(async () => {
-        return buildClaimOfApplicantType(PartyType.ORGANISATION);
-      });
-      await request(app)
-        .post(CLAIMANT_ORGANISATION_DETAILS_URL)
-        .send({
-          addressLine1: ['Flat 3A Middle Road',''],
-          addressLine2: ['',''],
-          addressLine3: ['',''],
-          city: ['London',''],
-          postCode: ['SW1H 9AJ',''],
-          provideCorrespondenceAddress: 'yes',
-        })
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.VALID_CORRESPONDENCE_ADDRESS_LINE_1);
-          expect(res.text).toContain(TestMessages.VALID_CORRESPONDENCE_CITY);
-          expect(res.text).toContain(TestMessages.VALID_CORRESPONDENCE_POSTCODE);
-        });
+      expect(renderedParty().hasErrors()).toBe(true);
     });
 
     it('should redirect to claimant phone number screen', async () => {
-      mockGetCaseData.mockImplementation(async () => {
-        return buildClaimOfApplicantType(PartyType.ORGANISATION);
-      });
-      await request(app)
-        .post(CLAIMANT_ORGANISATION_DETAILS_URL)
-        .send(validDataForPost)
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CLAIMANT_PHONE_NUMBER_URL);
-        });
+      mockGetClaimantInformation.mockResolvedValue(buildApplicantType(PartyType.ORGANISATION));
+      req.body = validDataForPost;
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.redirect).toHaveBeenCalledWith(CLAIMANT_PHONE_NUMBER_URL);
     });
   });
 
   describe('Company Type', () => {
+    beforeEach(() => {
+      mockGetClaimantInformation.mockResolvedValue(buildApplicantType(PartyType.COMPANY));
+    });
+
     describe('on Exception', () => {
-      it('should return http 500 when has error in the get method', async () => {
-        mockGetCaseData.mockImplementation(async () => {
-          throw new Error(TestMessages.REDIS_FAILURE);
-        });
-        await request(app)
-          .get(CLAIMANT_COMPANY_DETAILS_URL)
-          .expect((res) => {
-            expect(res.status).toBe(500);
-            expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-          });
+      it('should call next when loading claimant information fails', async () => {
+        const error = new Error('error');
+        mockGetClaimantInformation.mockRejectedValue(error);
+
+        await getHandler(req as AppRequest, res as unknown as Response, next);
+
+        expect(next).toHaveBeenCalledWith(error);
       });
 
-      it('should return http 500 when has error in the post method', async () => {
-        mockSaveDraftClaim.mockImplementation(async () => {
-          throw new Error(TestMessages.REDIS_FAILURE);
-        });
-        await request(app)
-          .post(CLAIMANT_COMPANY_DETAILS_URL)
-          .send(validDataForPost)
-          .expect((res) => {
-            expect(res.status).toBe(500);
-            expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-          });
+      it('should call next when save fails', async () => {
+        const error = new Error('error');
+        mockSaveClaimantProperty.mockRejectedValue(error);
+        req.body = validDataForPost;
+
+        await postHandler(req as AppRequest, res as unknown as Response, next);
+
+        expect(next).toHaveBeenCalledWith(error);
       });
     });
 
-    it('should return your company details page with empty information', async () => {
-      mockGetCaseData.mockImplementation(async () => {
-        const claim = new Claim();
-        claim.applicant1 = {type: PartyType.COMPANY};
-        return claim;
-      });
-      await request(app)
-        .get(CLAIMANT_COMPANY_DETAILS_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Enter company details');
-        });
+    it('should render company details page with empty information', async () => {
+      const applicant = new Party();
+      applicant.type = PartyType.COMPANY;
+      mockGetClaimantInformation.mockResolvedValue(applicant);
+
+      await getHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        pageTitle,
+        type: PartyType.COMPANY,
+        party: expect.any(GenericForm),
+      }));
     });
 
-    it('should return your company details page with information', async () => {
-      mockGetCaseData.mockImplementation(async () => {
-        return buildClaimOfApplicantWithType(PartyType.COMPANY);
-      });
-      await request(app)
-        .get(CLAIMANT_COMPANY_DETAILS_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Enter company details');
-        });
+    it('should render company details page with information', async () => {
+      mockGetClaimantInformation.mockResolvedValue(buildApplicantWithType(PartyType.COMPANY));
+
+      await getHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        pageTitle,
+        type: PartyType.COMPANY,
+      }));
     });
 
-    it('should return mandatory contact person label and error on empty contact person', async () => {
-      mockGetCaseData.mockImplementation(async () => {
-        return buildClaimOfApplicantWithType(PartyType.COMPANY);
-      });
-      await request(app)
-        .post(CLAIMANT_ORGANISATION_DETAILS_URL)
-        .send({
-          contactPerson: '',
-        })
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.ENTER_CONTACT_PERSON);
-          expect(res.text).toContain(enVars.COMMON.MANDATORY_CONTACT_PERSON);
-          expect(res.text).not.toContain(enVars.COMMON.OPTIONAL_CONTACT_PERSON);
-        });
+    it('should re-render with contact person error when contact person is empty and CARM is on', async () => {
+      mockGetClaimantInformation.mockResolvedValue(buildApplicantWithType(PartyType.COMPANY));
+      req.body = {contactPerson: ''};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({carmEnabled: true}));
+      expect(renderedParty().hasFieldError('contactPerson')).toBe(true);
     });
 
-    it('should return optional contact person label when carm toggle disabled', async () => {
-      mockGetCaseData.mockImplementation(async () => {
-        return buildClaimOfApplicantWithType(PartyType.COMPANY);
-      });
-      carmToggleSpy(false);
-      await request(app)
-        .post(CLAIMANT_ORGANISATION_DETAILS_URL)
-        .send({
-          contactPerson: '',
-        })
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(enVars.COMMON.OPTIONAL_CONTACT_PERSON);
-        });
+    it('should re-render without mandatory contact person when CARM is off', async () => {
+      mockGetClaimantInformation.mockResolvedValue(buildApplicantWithType(PartyType.COMPANY));
+      (launchDarklyClient.isCarmEnabledForCase as jest.Mock).mockResolvedValue(false);
+      req.body = {contactPerson: ''};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({carmEnabled: false}));
+      expect(renderedParty().hasFieldError('contactPerson')).toBe(false);
     });
 
-    it('should return your company details page with information without correspondent address', async () => {
-      const buildClaimOfApplicantWithoutCorrespondent = (): Claim => {
-        claim.applicant1 = new Party();
-        claim.applicant1.partyDetails = new PartyDetails({});
-        claim.applicant1.type = PartyType.COMPANY;
-        claim.applicant1.partyDetails.title = 'title';
-        claim.applicant1.partyDetails.firstName = 'firstName';
-        claim.applicant1.partyDetails.lastName = 'lastName';
-        claim.applicant1.partyDetails.primaryAddress = buildAddress();
-        return claim;
+    it('should render company details page without correspondent address', async () => {
+      const applicant = new Party();
+      applicant.partyDetails = new PartyDetails({});
+      applicant.type = PartyType.COMPANY;
+      applicant.partyDetails.title = 'title';
+      applicant.partyDetails.firstName = 'firstName';
+      applicant.partyDetails.lastName = 'lastName';
+      applicant.partyDetails.primaryAddress = buildAddress();
+      mockGetClaimantInformation.mockResolvedValue(applicant);
+
+      await getHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        pageTitle,
+        type: PartyType.COMPANY,
+      }));
+    });
+
+    it('should render company details page with no primary, correspondence address or claimant details', async () => {
+      const applicant = new Party();
+      applicant.partyDetails = new PartyDetails({});
+      applicant.type = PartyType.COMPANY;
+      applicant.partyDetails.primaryAddress = undefined;
+      mockGetClaimantInformation.mockResolvedValue(applicant);
+
+      await getHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        pageTitle,
+        type: PartyType.COMPANY,
+      }));
+    });
+
+    it('should redirect on correct primary address', async () => {
+      mockGetClaimantInformation.mockResolvedValue(new Party());
+      req.body = validDataForPost;
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.redirect).toHaveBeenCalled();
+    });
+
+    it('should redirect on correct correspondence address', async () => {
+      mockGetClaimantInformation.mockResolvedValue(buildApplicantType(PartyType.COMPANY));
+      req.body = validDataForPost;
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.redirect).toHaveBeenCalledWith(CLAIMANT_PHONE_NUMBER_URL);
+    });
+
+    it('should re-render on empty primary address line', async () => {
+      mockGetClaimantInformation.mockResolvedValue(buildApplicantType(PartyType.COMPANY));
+      req.body = {
+        addressLine1: ['', ''],
+        addressLine2: ['', ''],
+        addressLine3: ['', ''],
+        city: ['London', 'London'],
+        postCode: ['SW1H 9AJ', 'SW1H 9AJ'],
+        provideCorrespondenceAddress: 'yes',
       };
-      mockGetCaseData.mockImplementation(async () => {
-        return buildClaimOfApplicantWithoutCorrespondent();
-      });
-      await request(app)
-        .get(CLAIMANT_COMPANY_DETAILS_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Enter company details');
-        });
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(renderedParty().hasErrors()).toBe(true);
     });
 
-    it('should return your company details page with no primary, correspondence address or claimant details', async () => {
-      const buildClaimOfApplicantWithoutInformation = (): Claim => {
-        claim.applicant1 = new Party();
-        claim.applicant1.partyDetails = new PartyDetails({});
-        claim.applicant1.type = PartyType.COMPANY;
-        claim.applicant1.partyDetails.primaryAddress = undefined;
-        return claim;
+    it('should re-render on empty primary city', async () => {
+      mockGetClaimantInformation.mockResolvedValue(buildApplicantType(PartyType.COMPANY));
+      req.body = {
+        addressLine1: 'Flat 3A Middle Road',
+        addressLine2: '',
+        addressLine3: '',
+        city: '',
+        postCode: 'SW1H 9AJ',
+        provideCorrespondenceAddress: 'no',
       };
-      mockGetCaseData.mockImplementation(async () => {
-        return buildClaimOfApplicantWithoutInformation();
-      });
-      await request(app)
-        .get(CLAIMANT_COMPANY_DETAILS_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Enter company details');
-        });
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(renderedParty().hasErrors()).toBe(true);
     });
 
-    it('POST/Claimant company details - should redirect on correct primary address', async () => {
-      mockGetCaseData.mockImplementation(async () => {
-        return new Claim();
-      });
-      await request(app)
-        .post(CLAIMANT_COMPANY_DETAILS_URL)
-        .send(validDataForPost)
-        .expect((res) => {
-          expect(res.status).toBe(302);
-        });
+    it('should re-render on empty primary postcode', async () => {
+      mockGetClaimantInformation.mockResolvedValue(buildApplicantType(PartyType.COMPANY));
+      req.body = {
+        addressLine1: 'Flat 3A Middle Road',
+        addressLine2: '',
+        addressLine3: '',
+        city: 'London',
+        postCode: '',
+        provideCorrespondenceAddress: 'no',
+      };
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(renderedParty().hasErrors()).toBe(true);
     });
 
-    it('POST/Claimant company details - should redirect on correct correspondence address', async () => {
-      mockGetCaseData.mockImplementation(async () => {
-        return buildClaimOfApplicantType(PartyType.COMPANY);
-      });
-      await request(app)
-        .post(CLAIMANT_COMPANY_DETAILS_URL)
-        .send(validDataForPost)
-        .expect((res) => {
-          expect(res.status).toBe(302);
-        });
+    it('should re-render on empty correspondence address line', async () => {
+      mockGetClaimantInformation.mockResolvedValue(buildApplicantType(PartyType.COMPANY));
+      req.body = {
+        addressLine1: ['', ''],
+        addressLine2: ['', ''],
+        addressLine3: ['', ''],
+        city: ['London', 'London'],
+        postCode: ['SW1H 9AJ', 'SW1H 9AJ'],
+        provideCorrespondenceAddress: 'yes',
+      };
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(renderedParty().hasErrors()).toBe(true);
     });
 
-    it('POST/Claimant company details - should return error on empty primary address line', async () => {
-      mockGetCaseData.mockImplementation(async () => {
-        return buildClaimOfApplicantType(PartyType.COMPANY);
-      });
-      await request(app)
-        .post(CLAIMANT_COMPANY_DETAILS_URL)
-        .send({
-          addressLine1: ['',''],
-          addressLine2: ['',''],
-          addressLine3: ['',''],
-          city: ['London','London'],
-          postCode: ['SW1H 9AJ','SW1H 9AJ'],
-          provideCorrespondenceAddress: 'yes',
-        })
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.ENTER_FIRST_ADDRESS);
-        });
+    it('should re-render on empty correspondence city', async () => {
+      mockGetClaimantInformation.mockResolvedValue(buildApplicantType(PartyType.COMPANY));
+      req.body = {
+        addressLine1: ['Flat 3A Middle Road', 'Flat 3A Middle Road'],
+        addressLine2: ['', ''],
+        addressLine3: ['', ''],
+        city: ['London', ''],
+        postCode: ['SW1H 9AJ', 'SW1H 9AJ'],
+        provideCorrespondenceAddress: 'yes',
+      };
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(renderedParty().hasErrors()).toBe(true);
     });
 
-    it('POST/Claimant company details - should return error on empty primary city', async () => {
-      mockGetCaseData.mockImplementation(async () => {
-        return buildClaimOfApplicantType(PartyType.COMPANY);
-      });
-      await request(app)
-        .post(CLAIMANT_COMPANY_DETAILS_URL)
-        .send({
-          addressLine1: 'Flat 3A Middle Road',
-          addressLine2: '',
-          addressLine3: '',
-          city: '',
-          postCode: 'SW1H 9AJ',
-          provideCorrespondenceAddress: 'no',
-        })
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.ENTER_TOWN);
-        });
+    it('should re-render on empty correspondence postcode', async () => {
+      mockGetClaimantInformation.mockResolvedValue(buildApplicantType(PartyType.COMPANY));
+      req.body = {
+        addressLine1: ['Flat 3A Middle Road', 'Flat 3A Middle Road'],
+        addressLine2: ['', ''],
+        addressLine3: ['', ''],
+        city: ['London', 'London'],
+        postCode: ['SW1H 9AJ', ''],
+        provideCorrespondenceAddress: 'yes',
+      };
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(renderedParty().hasErrors()).toBe(true);
     });
 
-    it('POST/Claimant company details - should return error on empty primary postcode', async () => {
-      mockGetCaseData.mockImplementation(async () => {
-        return buildClaimOfApplicantType(PartyType.COMPANY);
-      });
-      await request(app)
-        .post(CLAIMANT_COMPANY_DETAILS_URL)
-        .send({
-          addressLine1: 'Flat 3A Middle Road',
-          addressLine2: '',
-          addressLine3: '',
-          city: 'London',
-          postCode: '',
-          provideCorrespondenceAddress: 'no',
-        })
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.ENTER_POSTCODE);
-        });
+    it('should re-render on no input', async () => {
+      mockGetClaimantInformation.mockResolvedValue(buildApplicantType(PartyType.COMPANY));
+      req.body = {
+        addressLine1: ['', ''],
+        addressLine2: ['', ''],
+        addressLine3: ['', ''],
+        city: ['', ''],
+        postCode: ['', ''],
+        provideCorrespondenceAddress: 'yes',
+      };
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(renderedParty().hasErrors()).toBe(true);
     });
 
-    it('POST/Claimant company details - should return error on empty correspondence address line', async () => {
-      mockGetCaseData.mockImplementation(async () => {
-        return buildClaimOfApplicantType(PartyType.COMPANY);
-      });
-      await request(app)
-        .post(CLAIMANT_COMPANY_DETAILS_URL)
-        .send({
-          addressLine1: ['',''],
-          addressLine2: ['',''],
-          addressLine3: ['',''],
-          city: ['London','London'],
-          postCode: ['SW1H 9AJ','SW1H 9AJ'],
-          provideCorrespondenceAddress: 'yes',
-        })
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.ENTER_FIRST_ADDRESS);
-        });
+    it('should re-render on empty primary address when provideCorrespondenceAddress is no', async () => {
+      mockGetClaimantInformation.mockResolvedValue(buildApplicantType(PartyType.COMPANY));
+      req.body = {
+        addressLine1: ['', ''],
+        addressLine2: ['', ''],
+        addressLine3: ['', ''],
+        city: ['', ''],
+        postCode: ['', ''],
+        provideCorrespondenceAddress: 'no',
+      };
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(renderedParty().hasErrors()).toBe(true);
     });
 
-    it('POST/Claimant Company details - should return error on empty correspondence city', async () => {
-      mockGetCaseData.mockImplementation(async () => {
-        return buildClaimOfApplicantType(PartyType.COMPANY);
-      });
-      await request(app)
-        .post(CLAIMANT_COMPANY_DETAILS_URL)
-        .send({
-          addressLine1: ['Flat 3A Middle Road','Flat 3A Middle Road'],
-          addressLine2: ['',''],
-          addressLine3: ['',''],
-          city: ['London',''],
-          postCode: ['SW1H 9AJ','SW1H 9AJ'],
-          provideCorrespondenceAddress: 'yes',
-        })
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.VALID_CORRESPONDENCE_CITY);
-        });
-    });
+    it('should re-render on empty correspondence address when provideCorrespondenceAddress is yes', async () => {
+      mockGetClaimantInformation.mockResolvedValue(buildApplicantType(PartyType.COMPANY));
+      req.body = {
+        addressLine1: ['Flat 3A Middle Road', ''],
+        addressLine2: ['', ''],
+        addressLine3: ['', ''],
+        city: ['London', ''],
+        postCode: ['SW1H 9AJ', ''],
+        provideCorrespondenceAddress: 'yes',
+      };
 
-    it('POST/Claimant Company details - should return error on empty correspondence postcode', async () => {
-      mockGetCaseData.mockImplementation(async () => {
-        return buildClaimOfApplicantType(PartyType.COMPANY);
-      });
-      await request(app)
-        .post(CLAIMANT_COMPANY_DETAILS_URL)
-        .send({
-          addressLine1: ['Flat 3A Middle Road','Flat 3A Middle Road'],
-          addressLine2: ['',''],
-          addressLine3: ['',''],
-          city: ['London','London'],
-          postCode: ['SW1H 9AJ',''],
-          provideCorrespondenceAddress: 'yes',
-        })
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.VALID_CORRESPONDENCE_POSTCODE);
-        });
-    });
+      await postHandler(req as AppRequest, res as unknown as Response, next);
 
-    it('POST/Claimant Company details - should return error on no input', async () => {
-      mockGetCaseData.mockImplementation(async () => {
-        return buildClaimOfApplicantType(PartyType.COMPANY);
-      });
-      await request(app)
-        .post(CLAIMANT_COMPANY_DETAILS_URL)
-        .send({
-          addressLine1: ['',''],
-          addressLine2: ['',''],
-          addressLine3: ['',''],
-          city: ['',''],
-          postCode: ['',''],
-          provideCorrespondenceAddress: 'yes',
-        })
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.ENTER_FIRST_ADDRESS);
-          expect(res.text).toContain(TestMessages.ENTER_TOWN);
-          expect(res.text).toContain(TestMessages.ENTER_POSTCODE);
-          expect(res.text).toContain(TestMessages.ENTER_FIRST_ADDRESS);
-          expect(res.text).toContain(TestMessages.ENTER_FIRST_ADDRESS);
-          expect(res.text).toContain(TestMessages.ENTER_POSTCODE);
-        });
-    });
-
-    it('POST/Claimant Company details - should return error on input for primary address when provideCorrespondenceAddress is set to NO', async () => {
-      mockGetCaseData.mockImplementation(async () => {
-        return buildClaimOfApplicantType(PartyType.COMPANY);
-      });
-      await request(app)
-        .post(CLAIMANT_COMPANY_DETAILS_URL)
-        .send({
-          addressLine1: ['',''],
-          addressLine2: ['',''],
-          addressLine3: ['',''],
-          city: ['',''],
-          postCode: ['',''],
-          provideCorrespondenceAddress: 'no',
-        })
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.ENTER_FIRST_ADDRESS);
-          expect(res.text).toContain(TestMessages.ENTER_TOWN);
-          expect(res.text).toContain(TestMessages.ENTER_POSTCODE);
-        });
-    });
-
-    it('POST/Claimant Company details - should return error on input for correspondence address when provideCorrespondenceAddress is set to YES', async () => {
-      mockGetCaseData.mockImplementation(async () => {
-        return buildClaimOfApplicantType(PartyType.COMPANY);
-      });
-      await request(app)
-        .post(CLAIMANT_COMPANY_DETAILS_URL)
-        .send({
-          addressLine1: ['Flat 3A Middle Road',''],
-          addressLine2: ['',''],
-          addressLine3: ['',''],
-          city: ['London',''],
-          postCode: ['SW1H 9AJ',''],
-          provideCorrespondenceAddress: 'yes',
-        })
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.VALID_CORRESPONDENCE_ADDRESS_LINE_1);
-          expect(res.text).toContain(TestMessages.VALID_CORRESPONDENCE_CITY);
-          expect(res.text).toContain(TestMessages.VALID_CORRESPONDENCE_POSTCODE);
-        });
+      expect(renderedParty().hasErrors()).toBe(true);
     });
 
     it('should redirect to claimant phone number screen', async () => {
-      mockGetCaseData.mockImplementation(async () => {
-        return buildClaimOfApplicantType(PartyType.COMPANY);
-      });
-      await request(app)
-        .post(CLAIMANT_COMPANY_DETAILS_URL)
-        .send(validDataForPost)
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CLAIMANT_PHONE_NUMBER_URL);
-        });
+      mockGetClaimantInformation.mockResolvedValue(buildApplicantType(PartyType.COMPANY));
+      req.body = validDataForPost;
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.redirect).toHaveBeenCalledWith(CLAIMANT_PHONE_NUMBER_URL);
     });
   });
 });

@@ -1,73 +1,75 @@
-import request from 'supertest';
+import {Response} from 'express';
+import totalAmountController from '../../../../../main/routes/features/claim/totalAmountController';
 import * as claimFeeService from 'services/features/claim/amount/claimFeesService';
-import {app} from '../../../../../main/app';
-import nock from 'nock';
-import config from 'config';
-import {CLAIM_TOTAL_URL, CLAIMANT_TASK_LIST_URL} from 'routes/urls';
+import {CLAIMANT_TASK_LIST_URL} from 'routes/urls';
 import {Claim} from 'models/claim';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {CivilServiceClient} from 'client/civilServiceClient';
+import {AppRequest} from 'models/AppRequest';
+import {createMockResponse, createMockSession, getRouteHandler} from '../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/claimDetailsService');
-jest.mock('../../../../../main/modules/draft-store/draftStoreService');
-jest.mock('../../../../../main/modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
 jest.mock('services/features/claim/amount/claimFeesService');
-jest.mock('routes/guards/claimIssueTaskListGuard', () => ({
-  claimIssueTaskListGuard: jest.fn((req, res, next) => {
-    next();
-  }),
-}));
 
 describe('Total amount', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
+  const getHandler = getRouteHandler(totalAmountController, 'get');
+  const postHandler = getRouteHandler(totalAmountController, 'post');
+  const viewPath = 'features/claim/total-amount';
+  const pageTitle = 'PAGES.TOTAL_AMOUNT.PAGE_TITLE';
+  let req: Partial<AppRequest>;
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
 
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
+  beforeEach(() => {
+    req = {
+      session: createMockSession({user: {id: 'user-id'}}),
+      body: {},
+      query: {},
+      cookies: {},
+    };
+    res = createMockResponse();
+    next = jest.fn();
+    const claim = new Claim();
+    claim.draftClaimCreatedAt = new Date();
+    claim.totalClaimAmount = 1000;
+    (getCaseDataFromStore as jest.Mock).mockResolvedValue(claim);
+    (claimFeeService.saveClaimFee as jest.Mock).mockResolvedValue(undefined);
+    jest
+      .spyOn(CivilServiceClient.prototype, 'getClaimFeeData')
+      .mockResolvedValue({calculatedAmountInPence: '50'} as never);
+    jest
+      .spyOn(CivilServiceClient.prototype, 'getHearingAmount')
+      .mockResolvedValue({calculatedAmountInPence: '50'} as never);
   });
 
   describe('on GET', () => {
-    it('should return total amount page', async () => {
-      const spySave = jest.spyOn(claimFeeService, 'saveClaimFee');
-      const claim = new Claim();
-      claim.draftClaimCreatedAt = new Date();
-      claim.totalClaimAmount = 1000;
-      jest
-        .spyOn(CivilServiceClient.prototype, 'getClaimFeeData')
-        .mockResolvedValueOnce(Promise.resolve({'calculatedAmountInPence': '50'}) as any);
-      jest
-        .spyOn(CivilServiceClient.prototype, 'getHearingAmount')
-        .mockResolvedValueOnce(Promise.resolve({'calculatedAmountInPence': '50'}) as any);
-      jest
-        .spyOn(CivilServiceClient.prototype, 'calculateClaimInterest')
-        .mockResolvedValueOnce(Promise.resolve(0.02) as any);
-      (getCaseDataFromStore as jest.Mock).mockResolvedValue(claim);
-      const res = await request(app)
-        .get(CLAIM_TOTAL_URL.replace(':id', '5129'));
+    it('should render total amount page', async () => {
+      await getHandler(req as AppRequest, res as unknown as Response, next);
 
-      expect(res.status).toBe(200);
-      expect(res.text).toContain('Total amount you’re claiming');
-      expect(spySave).toBeCalled();
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        pageTitle,
+        form: expect.objectContaining({
+          claimAmount: '1000.00',
+        }),
+      }));
+      expect(claimFeeService.saveClaimFee).toHaveBeenCalled();
     });
 
-    it('should return http 500 when has error in the claim amount fee get method', async () => {
-      jest
-        .spyOn(CivilServiceClient.prototype, 'getClaimFeeData').mockRejectedValueOnce(new Error('test error'));
-      const res = await request(app)
-        .get(CLAIM_TOTAL_URL);
+    it('should call next when claim amount fee get fails', async () => {
+      const error = new Error('test error');
+      jest.spyOn(CivilServiceClient.prototype, 'getClaimFeeData').mockRejectedValue(error);
 
-      expect(res.status).toBe(500);
+      await getHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 
   describe('on POST', () => {
-    it('should redirect to the defendant individual details if individual radio is selected', async () => {
-      const res = await request(app).post(CLAIM_TOTAL_URL);
-      expect(res.status).toBe(302);
-      expect(res.header.location).toBe(CLAIMANT_TASK_LIST_URL);
+    it('should redirect to the claimant task list', async () => {
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.redirect).toHaveBeenCalledWith(CLAIMANT_TASK_LIST_URL);
     });
   });
 });

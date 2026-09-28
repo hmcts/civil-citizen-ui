@@ -1,50 +1,59 @@
-import request from 'supertest';
-import {app} from '../../../../../../main/app';
-import nock from 'nock';
-import config from 'config';
+import {Response} from 'express';
+import claimAmountBreakdownController from '../../../../../../main/routes/features/claim/amount/claimAmountBreakdownController';
 import * as claimAmountbreakdownService
   from '../../../../../../main/services/features/claim/amount/claimAmountBreakdownService';
 import {AmountBreakdown} from 'form/models/claim/amount/amountBreakdown';
 import {ClaimAmountRow} from 'form/models/claim/amount/claimAmountRow';
-import {CLAIM_AMOUNT_URL, CLAIM_INTEREST_URL} from 'routes/urls';
-import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import {mockCivilClaim} from '../../../../../utils/mockDraftStore';
+import {CLAIM_INTEREST_URL} from 'routes/urls';
+import {AppRequest} from 'models/AppRequest';
+import {GenericForm} from 'form/models/genericForm';
+import {createMockResponse, createMockSession, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/services/features/claim/amount/claimAmountBreakdownService');
 
 const mockServiceGet = claimAmountbreakdownService.getClaimAmountBreakdownForm as jest.Mock;
 
-describe('claimAmountBreakdownController test', ()=>{
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
-  app.request.cookies = {eligibilityCompleted: true};
+describe('claimAmountBreakdownController test', () => {
+  const getHandler = getRouteHandler(claimAmountBreakdownController, 'get');
+  const postHandler = getRouteHandler(claimAmountBreakdownController, 'post');
+  const viewPath = 'features/claim/amount/claim-amount-breakdown';
+  let req: Partial<AppRequest>;
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
 
   beforeEach(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-    app.locals.draftStoreClient = mockCivilClaim;
+    req = {
+      session: createMockSession({user: {id: 'user-id'}}),
+      body: {},
+      query: {},
+      cookies: {},
+    };
+    res = createMockResponse();
+    next = jest.fn();
+    mockServiceGet.mockResolvedValue(new AmountBreakdown([new ClaimAmountRow(), new ClaimAmountRow()]));
+    (claimAmountbreakdownService.saveClaimAmountBreakdownForm as jest.Mock).mockResolvedValue(undefined);
   });
+
   describe('On Get', () => {
-    it('should return page successfully', async () => {
-      mockServiceGet.mockImplementation(async () => new AmountBreakdown([new ClaimAmountRow(), new ClaimAmountRow()]));
-      await request(app).get(CLAIM_AMOUNT_URL).expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain('Claim amount');
-      });
+    it('should render the claim amount page', async () => {
+      await getHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        pageTitle: 'PAGES.CLAIM_AMOUNT_BREAKDOWN.TITLE',
+        form: expect.any(GenericForm),
+      }));
     });
-    it('should show error page when exception is thrown from the service', async () => {
-      mockServiceGet.mockImplementation(async () => {
-        throw new Error(TestMessages.REDIS_FAILURE);
-      });
-      await request(app).get(CLAIM_AMOUNT_URL).expect((res) => {
-        expect(res.status).toBe(500);
-        expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-      });
+
+    it('should call next when the service throws', async () => {
+      const error = new Error('error');
+      mockServiceGet.mockRejectedValue(error);
+
+      await getHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
+
   describe('On Post', () => {
     const correctData = {
       claimAmountRows: [
@@ -55,8 +64,9 @@ describe('claimAmountBreakdownController test', ()=>{
       ],
       totalAmount: '1',
     };
-    it('should show errors when there are errors', async () => {
-      const data = {
+
+    it('should re-render when there are validation errors', async () => {
+      req.body = {
         claimAmountRows: [
           {
             reason: '',
@@ -66,32 +76,29 @@ describe('claimAmountBreakdownController test', ()=>{
         totalAmount: '1',
       };
 
-      await request(app).post(CLAIM_AMOUNT_URL)
-        .send(data)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Enter a reason');
-        });
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({form: expect.any(GenericForm)}));
+      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
     });
-    it('should redirect to the next page successfully when data is correct', async () => {
-      await request(app).post(CLAIM_AMOUNT_URL)
-        .send(correctData)
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toBe(CLAIM_INTEREST_URL);
-        });
+
+    it('should redirect to the interest page when data is valid', async () => {
+      req.body = correctData;
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(claimAmountbreakdownService.saveClaimAmountBreakdownForm).toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(CLAIM_INTEREST_URL);
     });
-    it('should show error page when there is an error with service', async () => {
-      const saveForm = claimAmountbreakdownService.saveClaimAmountBreakdownForm as jest.Mock;
-      saveForm.mockImplementation(async () => {
-        throw new Error(TestMessages.REDIS_FAILURE);
-      });
-      await request(app).post(CLAIM_AMOUNT_URL)
-        .send(correctData)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+
+    it('should call next when save fails', async () => {
+      const error = new Error('error');
+      (claimAmountbreakdownService.saveClaimAmountBreakdownForm as jest.Mock).mockRejectedValue(error);
+      req.body = correctData;
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 });

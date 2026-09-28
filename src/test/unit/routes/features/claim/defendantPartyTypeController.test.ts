@@ -1,121 +1,130 @@
-import config from 'config';
-import nock from 'nock';
-import request from 'supertest';
-import {app} from '../../../../../main/app';
+import {Response} from 'express';
+import defendantPartyTypeController from '../../../../../main/routes/features/claim/yourDetails/defendantPartyTypeController';
 import {PartyType} from 'models/partyType';
-import {mockRedisFailure} from '../../../../utils/mockDraftStore';
 import {
   DELAYED_FLIGHT_URL,
   CLAIM_DEFENDANT_INDIVIDUAL_DETAILS_URL,
   CLAIM_DEFENDANT_ORGANISATION_DETAILS_URL,
-  CLAIM_DEFENDANT_PARTY_TYPE_URL,
   CLAIM_DEFENDANT_SOLE_TRADER_DETAILS_URL,
 } from 'routes/urls';
-import {TestMessages} from '../../../../utils/errorMessageTestConstants';
-import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
-import {Claim} from 'models/claim';
+import {AppRequest} from 'models/AppRequest';
+import {GenericForm} from 'form/models/genericForm';
+import {Party} from 'models/party';
+import {getDefendantInformation, saveDefendantProperty} from 'services/features/common/defendantDetailsService';
+import {deleteDelayedFlight} from 'services/features/claim/delayedFlightService';
+import {createMockResponse, createMockSession, getRouteHandler} from '../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/draft-store');
-jest.mock('../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('services/features/common/defendantDetailsService', () => ({
+  getDefendantInformation: jest.fn(),
+  saveDefendantProperty: jest.fn(),
+}));
+jest.mock('services/features/claim/delayedFlightService', () => ({
+  deleteDelayedFlight: jest.fn(),
+}));
 
 describe('Defendant party type controller', () => {
-  const mockGetClaim = getCaseDataFromStore as jest.Mock;
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
-  app.request.cookies = {eligibilityCompleted: true};
-
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-  });
+  const getHandler = getRouteHandler(defendantPartyTypeController, 'get');
+  const postHandler = getRouteHandler(defendantPartyTypeController, 'post');
+  const viewPath = 'features/claim/defendant-party-type';
+  const pageTitle = 'PAGES.DEFENDANT_PARTY_TYPE.PAGE_TITLE';
+  let req: Partial<AppRequest>;
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
+  const mockGetDefendantInformation = getDefendantInformation as jest.Mock;
+  const mockSaveDefendantProperty = saveDefendantProperty as jest.Mock;
 
   beforeEach(() => {
-    mockGetClaim.mockImplementation(async () => {
-      return new Claim();
-    });
+    req = {
+      session: createMockSession({user: {id: 'user-id'}}),
+      body: {},
+      query: {},
+      cookies: {},
+    };
+    res = createMockResponse();
+    next = jest.fn();
+    jest.clearAllMocks();
+    mockGetDefendantInformation.mockResolvedValue(new Party());
+    mockSaveDefendantProperty.mockResolvedValue(undefined);
+    (deleteDelayedFlight as jest.Mock).mockResolvedValue(undefined);
   });
 
   describe('on GET', () => {
-    it('should display defendant party type page', async () => {
-      const response = await request(app).get(CLAIM_DEFENDANT_PARTY_TYPE_URL);
-      expect(response.status).toBe(200);
-      expect(response.text).toContain('Who are you making the claim against?');
+    it('should render defendant party type page', async () => {
+      await getHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({pageTitle}));
+      expect((res.render as jest.Mock).mock.calls[0][1].form).toBeInstanceOf(GenericForm);
     });
 
-    it('should return status 500 when error is thrown', async () => {
-      mockGetClaim.mockImplementation(async () => {
-        throw new Error(TestMessages.REDIS_FAILURE);
-      });
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .get(CLAIM_DEFENDANT_PARTY_TYPE_URL)
-        .expect((res: Response) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+    it('should call next when loading defendant information fails', async () => {
+      const error = new Error('error');
+      mockGetDefendantInformation.mockRejectedValue(error);
+
+      await getHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 
   describe('on POST', () => {
-    it('should display defendant party type page if there is no selection', async () => {
-      const response = await request(app).post(CLAIM_DEFENDANT_PARTY_TYPE_URL);
-      expect(response.status).toBe(200);
-      expect(response.text).toContain('Who are you making the claim against?');
+    it('should re-render when no selection is made', async () => {
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({pageTitle, form: expect.any(GenericForm)}));
+      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
     });
 
-    it('should redirect to the defendant individual details if individual radio is selected', async () => {
-      await request(app).post(CLAIM_DEFENDANT_PARTY_TYPE_URL).send({option: PartyType.INDIVIDUAL}).then((response) => {
-        expect(response.status).toBe(302);
-        expect(response.header.location).toBe(CLAIM_DEFENDANT_INDIVIDUAL_DETAILS_URL);
-      });
+    it('should redirect to individual details when individual is selected', async () => {
+      req.body = {option: PartyType.INDIVIDUAL};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(deleteDelayedFlight).toHaveBeenCalledWith('user-id');
+      expect(res.redirect).toHaveBeenCalledWith(CLAIM_DEFENDANT_INDIVIDUAL_DETAILS_URL);
     });
 
-    it('should redirect to the defendant company details if company radio is selected', async () => {
-      await request(app).post(CLAIM_DEFENDANT_PARTY_TYPE_URL).send({option: PartyType.COMPANY}).then((response) => {
-        expect(response.status).toBe(302);
-        expect(response.header.location).toBe(DELAYED_FLIGHT_URL);
-      });
+    it('should redirect to delayed flight when company is selected', async () => {
+      req.body = {option: PartyType.COMPANY};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(deleteDelayedFlight).not.toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(DELAYED_FLIGHT_URL);
     });
 
-    it('should redirect to the sole trader details if sole trader radio is selected', async () => {
-      await request(app).post(CLAIM_DEFENDANT_PARTY_TYPE_URL).send({option: PartyType.SOLE_TRADER}).then((response) => {
-        expect(response.status).toBe(302);
-        expect(response.header.location).toBe(CLAIM_DEFENDANT_SOLE_TRADER_DETAILS_URL);
-      });
+    it('should redirect to sole trader details when sole trader is selected', async () => {
+      req.body = {option: PartyType.SOLE_TRADER};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.redirect).toHaveBeenCalledWith(CLAIM_DEFENDANT_SOLE_TRADER_DETAILS_URL);
     });
 
-    it('should redirect to the organisation details if organisation radio is selected', async () => {
-      await request(app).post(CLAIM_DEFENDANT_PARTY_TYPE_URL).send({option: PartyType.ORGANISATION}).then((response) => {
-        expect(response.status).toBe(302);
-        expect(response.header.location).toBe(CLAIM_DEFENDANT_ORGANISATION_DETAILS_URL);
-      });
+    it('should redirect to organisation details when organisation is selected', async () => {
+      req.body = {option: PartyType.ORGANISATION};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.redirect).toHaveBeenCalledWith(CLAIM_DEFENDANT_ORGANISATION_DETAILS_URL);
     });
 
-    it('should render page if non-existent party type is provided', async () => {
-      await request(app)
-        .post(CLAIM_DEFENDANT_PARTY_TYPE_URL)
-        .send({foo: 'blah'})
-        .expect((response: Response) => {
-          expect(response.status).toBe(200);
-          expect(response.text).toContain(TestMessages.DEFENDANT_PARTY_TYPE_REQUIRED);
-        });
+    it('should re-render when a non-existent party type is provided', async () => {
+      req.body = {foo: 'blah'};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({form: expect.any(GenericForm)}));
+      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
     });
 
-    it('should return something went wrong page if redis failure occurs', async () => {
-      const mockSaveDraftClaim = saveDraftClaim as jest.Mock;
-      mockSaveDraftClaim.mockImplementation(async () => {
-        throw new Error(TestMessages.REDIS_FAILURE);
-      });
+    it('should call next when save fails', async () => {
+      const error = new Error('error');
+      mockSaveDefendantProperty.mockRejectedValue(error);
+      req.body = {option: PartyType.ORGANISATION};
 
-      await request(app)
-        .post(CLAIM_DEFENDANT_PARTY_TYPE_URL)
-        .send({option: PartyType.ORGANISATION})
-        .expect((response: Response) => {
-          expect(response.status).toBe(500);
-          expect(response.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 });

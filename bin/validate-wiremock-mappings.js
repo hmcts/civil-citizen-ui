@@ -51,6 +51,8 @@ for (const {mapping, source} of mappings) {
     headers: request.headers || {},
     bodyPatterns: request.bodyPatterns || [],
     priority: mapping.priority,
+    scenarioName: mapping.scenarioName,
+    requiredScenarioState: mapping.requiredScenarioState,
   });
   if (signatures.has(signature)) errors.push(`${source}: conflicts with ${signatures.get(signature)}`);
   else signatures.set(signature, source);

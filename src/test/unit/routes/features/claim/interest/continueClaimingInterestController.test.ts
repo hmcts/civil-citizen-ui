@@ -1,93 +1,98 @@
-import config from 'config';
-import nock from 'nock';
-import {app} from '../../../../../../main/app';
-import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
-import request from 'supertest';
+import {Response} from 'express';
+import continueClaimingInterestController from '../../../../../../main/routes/features/claim/interest/continueClaimingInterestController';
 import {
   CLAIM_HELP_WITH_FEES_URL,
-  CLAIM_INTEREST_CONTINUE_CLAIMING_URL,
   CLAIM_INTEREST_HOW_MUCH_URL,
 } from 'routes/urls';
-import {t} from 'i18next';
-import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
+import {AppRequest} from 'models/AppRequest';
+import {GenericForm} from 'form/models/genericForm';
+import {Interest} from 'form/models/interest/interest';
+import {YesNo} from 'form/models/yesNo';
+import {getInterest, saveInterest} from 'services/features/claim/interest/interestService';
+import {createMockResponse, createMockSession, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('services/features/claim/interest/interestService', () => ({
+  getInterest: jest.fn(),
+  saveInterest: jest.fn(),
+}));
 
 describe('Continue Claiming Interest page', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
-  app.request.cookies = {eligibilityCompleted: true};
+  const getHandler = getRouteHandler(continueClaimingInterestController, 'get');
+  const postHandler = getRouteHandler(continueClaimingInterestController, 'post');
+  const viewPath = 'features/claim/interest/continue-claiming-interest';
+  const pageTitle = 'PAGES.CLAIM_JOURNEY.CONTINUE_CLAIMING_INTEREST.PAGE_TITLE';
+  let req: Partial<AppRequest>;
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
+  const mockGetInterest = getInterest as jest.Mock;
+  const mockSaveInterest = saveInterest as jest.Mock;
 
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
+  beforeEach(() => {
+    req = {
+      session: createMockSession({user: {id: 'user-id'}}),
+      body: {},
+      query: {},
+      cookies: {},
+    };
+    res = createMockResponse();
+    next = jest.fn();
+    mockGetInterest.mockResolvedValue(new Interest());
+    mockSaveInterest.mockResolvedValue(undefined);
   });
 
   describe('on GET', () => {
-    it('should return on continue claiming interest page successfully', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
-      await request(app).get(CLAIM_INTEREST_CONTINUE_CLAIMING_URL).expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(t('PAGES.CLAIM_JOURNEY.CONTINUE_CLAIMING_INTEREST.TITLE'));
-      });
+    it('should render continue claiming interest page', async () => {
+      await getHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        pageTitle,
+        form: expect.any(GenericForm),
+      }));
     });
 
-    it('should return status 500 when error thrown', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .get(CLAIM_INTEREST_CONTINUE_CLAIMING_URL)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+    it('should call next when error thrown', async () => {
+      const error = new Error('error');
+      mockGetInterest.mockRejectedValue(error);
+
+      await getHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 
   describe('on POST', () => {
-    beforeEach(() => {
-      app.locals.draftStoreClient = mockCivilClaim;
-    });
+    it('should re-render when no option selected', async () => {
+      await postHandler(req as AppRequest, res as unknown as Response, next);
 
-    it('should return error message when no option selected', async () => {
-      await request(app)
-        .post(CLAIM_INTEREST_CONTINUE_CLAIMING_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.CLAIM_INTEREST_REQUIRED'));
-        });
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({pageTitle, form: expect.any(GenericForm)}));
+      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
     });
 
     it('should redirect to the How much do you want to continue claiming screen when option is Yes', async () => {
-      await request(app)
-        .post(CLAIM_INTEREST_CONTINUE_CLAIMING_URL)
-        .send({option: 'yes'})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.get('location')).toBe(CLAIM_INTEREST_HOW_MUCH_URL);
-        });
+      req.body = {option: YesNo.YES};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(mockSaveInterest).toHaveBeenCalledWith('user-id', YesNo.YES, 'continueClaimingInterest');
+      expect(res.redirect).toHaveBeenCalledWith(CLAIM_INTEREST_HOW_MUCH_URL);
     });
 
     it('should redirect to the Help with fees screen when option is No', async () => {
-      await request(app)
-        .post(CLAIM_INTEREST_CONTINUE_CLAIMING_URL)
-        .send({option: 'no'})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.get('location')).toBe(CLAIM_HELP_WITH_FEES_URL);
-        });
+      req.body = {option: YesNo.NO};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.redirect).toHaveBeenCalledWith(CLAIM_HELP_WITH_FEES_URL);
     });
 
-    it('should return status 500 when error thrown', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .post(CLAIM_INTEREST_CONTINUE_CLAIMING_URL)
-        .send({option: 'yes'})
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+    it('should call next when save fails', async () => {
+      const error = new Error('error');
+      mockSaveInterest.mockRejectedValue(error);
+      req.body = {option: YesNo.YES};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 });

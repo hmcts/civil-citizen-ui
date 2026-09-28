@@ -133,15 +133,15 @@ Every one of the 166 migration obligations must be implemented or have a specifi
 
 Do not remove duplicate PR execution until every required entry below is complete on one commit.
 
-| Evidence | Required record | Status |
-| --- | --- | --- |
-| Baseline purpose, setup and assertions | Matrix above | Complete |
-| Dependencies and known failure modes | Reduced-stack uses preview CUI, IDAM and WireMock; full-stack additionally waits on workflow, payment, assignment and GA. Reduced-stack builds 2–11 averaged 604 seconds (range 477–1099 seconds) with no first-attempt failures. | Complete for reduced-stack; full-stack baseline pending |
-| Same-revision old/new comparison | Jenkins URLs, commit SHA, outcomes, durations and Allure links for both suites | Pending |
-| Ten consecutive first-attempt reduced-stack runs | Ten rows in the run table below, all using one Jenkins revision | Complete |
-| WireMock request journal | Archived `test-results/functional/wiremock` link for each reduced-stack run; expected submission and lookup counts and zero unmatched requests | Complete; journals linked below |
-| QA approval | One-off preview comparison of the migrated browser journey | Pending |
-| Duplicate PR execution removal | Follow-up change and coverage-owner review after all gates pass | Not started |
+| Evidence | Required record |
+| --- | --- |
+| Baseline purpose, setup and assertions | Matrix above |
+| Dependencies and known failure modes | Reduced-stack uses preview CUI, IDAM and WireMock; full-stack additionally waits on workflow, payment, assignment and GA. Record baseline duration and first-attempt outcomes for both suites. Existing reduced-stack builds 2–11 averaged 604 seconds (range 477–1099 seconds) with no first-attempt failures. |
+| Same-revision old/new comparison | Jenkins URLs, commit SHA, outcomes, durations and Allure links for both suites |
+| Ten consecutive first-attempt reduced-stack runs | Ten rows in the run table below, all using one Jenkins revision |
+| WireMock request journal | Archived `test-results/functional/wiremock` link for each reduced-stack run; expected submission and lookup counts and zero unmatched requests |
+| QA approval | One-off preview comparison of the migrated browser journey |
+| Duplicate PR execution removal | Follow-up change and coverage-owner review after all evidence and approval gates pass |
 
 ### Ten-run table
 

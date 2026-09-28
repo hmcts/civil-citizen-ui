@@ -1,0 +1,60 @@
+# Applied when a PR has the single `pr-values:optimisedTests` label. This keeps
+# the real services used by the migrated thin-client scenarios and removes
+# preview components those scenarios do not call.
+
+civil-service:
+  java:
+    environment:
+      FEES_API_URL: http://${SERVICE_NAME}-wiremock
+      PAYMENTS_API_URL: http://${SERVICE_NAME}-wiremock
+      DOCMOSIS_TORNADO_URL: http://${SERVICE_NAME}-wiremock
+      CASE_DOCUMENT_AM_URL: http://${SERVICE_NAME}-wiremock
+  ccd:
+    ccd-data-store-api:
+      java:
+        environment:
+          CASE_DOCUMENT_AM_URL: http://${SERVICE_NAME}-wiremock
+    postgresql:
+      setup:
+        databases:
+          - name: "pr-${CHANGE_ID}-cmc"
+          - name: "pr-${CHANGE_ID}-data-store"
+          - name: "pr-${CHANGE_ID}-definition-store"
+          - name: "pr-${CHANGE_ID}-camunda"
+          - name: "pr-${CHANGE_ID}-role-assignment"
+  xui-webapp:
+    enabled: false
+  em-stitching:
+    enabled: false
+  em-ccdorc:
+    enabled: false
+  ccd-case-document-am-api:
+    enabled: false
+
+nodejs:
+  environment:
+    ORDNANCE_SURVEY_API_URL: http://${SERVICE_NAME}-wiremock
+    ORDNANCE_SURVEY_API_KEY: mock-key
+    GOVPAY_URL: https://wiremock-${SERVICE_FQDN}
+
+wiremock:
+  enabled: true
+  image: wiremock/wiremock
+  applicationPort: 8080
+  imagePullPolicy: Always
+  releaseNameOverride: ${SERVICE_NAME}-wiremock
+  ingressHost: wiremock-${SERVICE_FQDN}
+  publicUrl: https://wiremock-${SERVICE_FQDN}
+  verbose: true
+  volumes:
+    - name: wiremock-mappings
+      configMap:
+        name: ${SERVICE_NAME}-wiremock-mappings
+    - name: wiremock-files
+      configMap:
+        name: ${SERVICE_NAME}-wiremock-files
+  volumeMounts:
+    - name: wiremock-mappings
+      mountPath: /home/wiremock/mappings
+    - name: wiremock-files
+      mountPath: /home/wiremock/__files
