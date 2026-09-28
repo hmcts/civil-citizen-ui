@@ -38,8 +38,8 @@ export const getClaimIssuePaymentClaim = async (req: AppRequest): Promise<ClaimI
       }
       return {claim, draftId: draftIdFromDraft};
     }
-      throw new Error('[claimIssuePaymentDraftService] draft does not match claim id');
-    }
+    throw new Error('[claimIssuePaymentDraftService] draft does not match claim id');
+  }
 
   const ccdClaim = await civilServiceClient.retrieveClaimDetails(claimId, req);
   if (!ccdClaim || ccdClaim.isEmpty()) {
