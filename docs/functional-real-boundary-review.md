@@ -1,6 +1,6 @@
 # DTSCCI-5979: retained-service review
 
-This review reconciles the six historical PR/master journeys assigned to DTSCCI-5979 with the complete baseline delivered by DTSCCI-6133. All six already run in both modes. Their scenario bodies, helpers, assertions and selection are unchanged. The classification now records their delivered thin-client execution instead of proposing an assertion split under the completed Welsh ticket.
+This review reconciles the six historical PR/master journeys assigned to DTSCCI-5979 with the complete baseline delivered by DTSCCI-6133. All six already run in both modes. Their scenario bodies, assertions and selection are unchanged. The classification now records their delivered thin-client execution instead of proposing an assertion split under the completed Welsh ticket.
 
 The four response journeys already delivered by DTSCCI-6157 also had stale migration-required classifications. Those entries now retain their original delivery ownership and record the delivered execution model. The generator checks every active historical baseline identity, so all fourteen must have exactly one migrated classification. This corrects omissions from the completed migration batches; it does not introduce another migration batch.
 
@@ -19,7 +19,7 @@ Paths below are relative to `src/test/functionalTests/tests/ui_tests/`. Existing
 | `noc/LipVLR_NoC_e2e_tests.js#1` | `requestNoticeOfChangeForRespondent1Solicitor` checks the new organisation in CCD. `checkUserCaseAccess` checks the citizen loses access and the solicitor gains it. `defendantLRResponse` waits for the resulting workflow state. AAC, professional reference data, CCD and role assignment support actual access replacement; Civil Service/Camunda process the response. |
 | `qm/qm_Hearing_LiPvLiP_followUp_tests.js#1` | `verifyFollowUpMessage` observes persisted conversations for each party and `verifyClosedQuery` observes the caseworker's closure. Civil Service/CCD and party access are retained. Work Allocation is disabled in preview and is not required by these assertions. |
 
-Setup actions are not independent coverage. They create the same cases, users and workflows subsequently observed by these assertions; replacing them with disconnected canned IDs would break that relationship. This review does not rewrite setup helpers or browser assertions.
+Setup actions are not independent coverage. They create the same cases, users and workflows subsequently observed by these assertions; replacing them with disconnected canned IDs would break that relationship. Browser assertions remain unchanged.
 
 ## Deployment decisions
 
@@ -50,6 +50,8 @@ WireMock 3.13.2 and state extension 0.10.1 are pinned for local/preview executio
 For comparable whole-pipeline measurements, apply `benchmarkPipeline` alongside `runAllFunctionalTests` in both modes. This sets the shared pipeline's `NO_SKIP_IMG_BUILD` override so both runs execute build, unit/integration checks and image stages rather than comparing an uncached run to a cached one. Remove the benchmark label after verification. Record total and functional durations, cache conditions and any infrastructure queue delays; the optimised result must not regress.
 
 Accessibility also installs the Chrome version pinned by the local Puppeteer package before starting its four workers. This handles fresh Jenkins agents that restore Node dependencies without the browser cache and prevents every page check from retrying a missing executable. Both deployment modes use this preflight; accessibility assertions are unchanged.
+
+Paired verification exposed an existing Welsh upload race in standard mode: the dashboard changed while `CLAIMANT_RESPONSE_CUI` was still running, so CCD rejected `UPLOAD_TRANSLATED_DOCUMENT` with 422 and subsequent retries reused the consumed event token. The shared upload helper now waits for the preceding business process to finish before starting the translation event. Both modes use the existing bounded workflow wait, including its incident failure checks; no journey assertion or timeout is weakened.
 
 ## Verification
 
