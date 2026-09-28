@@ -2,6 +2,8 @@
 
 const fs = require('fs');
 const path = require('path');
+const {normalise} = require('./functional-baseline');
+const baseline = require('../docs/functional-baseline.json');
 
 const repoRoot = path.resolve(__dirname, '..');
 const outputFile = path.join(repoRoot, 'docs/functional-test-scenario-classification.csv');
@@ -40,6 +42,13 @@ const migratedJudgmentMediationHearingScenarios = new Set([
   'dj/LipvLip_UI_DefaultJudgment_CoSC_tests.js#1',
   'mediation/LiPvLiP_mediation_tests.js#1',
   'hearings/cp_LiPvLiP_hearing_fee_tests_small_claims_tests.js#2',
+]);
+
+const migratedResponseScenarios = new Set([
+  'full-admit/LiPvLiP_FullAdmit_PayImmediately_tests.js#1',
+  'full-admit/LipvLip_FullAdmit_PaySetDate_CCJ_tests.js#1',
+  'part-admit/LipvLip_partAdmit_PayImmediately_tests.js#1',
+  'reject-all/LipvLip_RejectAll_DisputeAll_Intention_UI_tests.js#2',
 ]);
 
 const retainedThinFullStackScenarios = new Set([
@@ -127,6 +136,17 @@ function relativeTestPath(filePath) {
 function classify(scenario, scenarioId) {
   const file = relativeTestPath(scenario.filePath);
   const domain = file.split('/')[0];
+
+  if (migratedResponseScenarios.has(scenarioId)) {
+    return {
+      target: TARGETS.THIN_CLIENT,
+      reason: 'Delivered by DTSCCI-6157: unchanged admission, repayment and claimant-intention journeys observe persisted case data and workflow-produced dashboard state. Preserve the existing helpers and assertions; fees, payments and document responses are mocked.',
+      services: 'Real CUI, Civil Service, CCD, Camunda, IDAM/S2S and role assignment; mocked Fees, Payments, GovPay, Docmosis and CDAM',
+      owner: 'DTSCCI-6157 defendant-response migration; classification reconciled by DTSCCI-5979',
+      batch: 'DTSCCI-6157',
+      secondaryTargets: 'Historical baseline identity/outcome parity; paired standard and optimised Jenkins verification',
+    };
+  }
 
   if (reviewedRealBoundaryScenarios.has(scenarioId)) {
     return {
@@ -330,6 +350,14 @@ const { declared, active, rows, assertionRows } = collectInventory();
 const csv = renderCsv(rows);
 const assertionCsv = renderAssertionCsv(assertionRows);
 const checkMode = process.argv.includes('--check');
+
+for (const scenario of baseline.scenarios.filter(scenario => !scenario.skipped)) {
+  const matches = rows.filter(row => `src/test/functionalTests/tests/ui_tests/${row.file}` === scenario.file
+    && normalise(`${row.feature}: ${row.scenario}`) === scenario.title);
+  if (matches.length !== 1 || matches[0].target !== TARGETS.THIN_CLIENT) {
+    throw new Error(`Delivered baseline scenario must have one migrated classification: ${scenario.file}::${scenario.title}`);
+  }
+}
 
 for (const scenarioId of reviewedRealBoundaryScenarios.keys()) {
   const matches = rows.filter(row => row.id === scenarioId && row.pipeline.split(';').includes('pr'));

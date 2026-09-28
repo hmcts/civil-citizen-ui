@@ -2,6 +2,8 @@
 
 This review reconciles the six historical PR/master journeys assigned to DTSCCI-5979 with the complete baseline delivered by DTSCCI-6133. All six already run in both modes. Their scenario bodies, helpers, assertions and selection are unchanged. The classification now records their delivered thin-client execution instead of proposing an assertion split under the completed Welsh ticket.
 
+The four response journeys already delivered by DTSCCI-6157 also had stale migration-required classifications. Those entries now retain their original delivery ownership and record the delivered execution model. The generator checks every active historical baseline identity, so all fourteen must have exactly one migrated classification. This corrects omissions from the completed migration batches; it does not introduce another migration batch.
+
 Defendant linking is excluded: it was added after the historical snapshot and remains on-demand coverage. Bundles are also outside this batch. Their separate classification does not represent an unfinished PR/master migration.
 
 ## Scenario evidence
@@ -39,6 +41,6 @@ The gateway removal applies only to `values.optimisedTests.preview.template.yaml
 
 ## Verification
 
-Run `yarn test:generate:functional-classification`, `yarn test:functional-classification` and `yarn test:functional-baseline`. The classification check requires every reviewed identity to resolve to an active PR baseline scenario. Render standard and optimised charts to verify that the gateway disappears only from the latter. Run the complete baseline in both Jenkins modes, compare their `baseline-results.json` artifacts using `bin/functional-baseline.js compare`, and check optimised WireMock diagnostics for unmatched requests.
+Run `yarn test:generate:functional-classification`, `yarn test:functional-classification` and `yarn test:functional-baseline`. The classification check requires every reviewed identity to resolve to an active PR baseline scenario and every active historical baseline identity to have exactly one migrated classification. Render standard and optimised charts to verify that the gateway disappears only from the latter. Run the complete baseline in both Jenkins modes, compare their `baseline-results.json` artifacts using `bin/functional-baseline.js compare`, and check optimised WireMock diagnostics for unmatched requests.
 
 This ticket does not require QA-person involvement. Developer review and automated checks verify the unchanged behaviour and deployment change.
