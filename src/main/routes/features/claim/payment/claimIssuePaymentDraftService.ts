@@ -1,9 +1,10 @@
 import {AppRequest} from 'common/models/AppRequest';
 import {Claim} from 'models/claim';
-import {getDraftClaim, createOrLoadDraft, updateDraftClaim} from 'modules/draft-store/draftStoreManagerService';
+import {createOrLoadDraft, getDraftClaim, updateDraftClaim} from 'modules/draft-store/draftStoreManagerService';
 import {getRouteParam, isUsablePathSegment} from 'common/utils/routeParamUtils';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
+import {getTTLDaysForCategory, TTLCategory} from 'modules/draft-store/ttlConfig';
 
 export interface ClaimIssuePaymentDraft {
   claim: Claim;
@@ -47,6 +48,8 @@ export const getClaimIssuePaymentClaim = async (req: AppRequest): Promise<ClaimI
   }
 
   ccdClaim.id = claimId;
+  ccdClaim.draftClaimCacheTtlDays = getTTLDaysForCategory(TTLCategory.JOURNEY_CACHE);
+
   const created = await createOrLoadDraft(req, ccdClaim);
   const draftId = req.session?.draftId || created.rawResponse?.draftId;
   if (!draftId) {
