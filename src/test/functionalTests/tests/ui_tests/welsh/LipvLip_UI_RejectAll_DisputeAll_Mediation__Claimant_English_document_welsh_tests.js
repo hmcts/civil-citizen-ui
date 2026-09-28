@@ -53,4 +53,4 @@ Scenario('Create Lip v Lip claim - Rejected All By claimant document welsh', asy
   await api.submitUploadTranslatedDoc('CLAIMANT_INTENTION', claimRef);
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await CitizenDashboardSteps.VerifyStatusOnDashboard('Your mediation appointment will be arranged within', statusCell);
-}).tag('@civil-citizen-master @civil-citizen-pr');
+}).tag('@civil-citizen-master @civil-citizen-pr @thin-full-stack');
