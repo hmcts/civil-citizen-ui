@@ -15,6 +15,8 @@ The defendant-linking feature was added to PR selection during the epic, after t
 
 All fourteen active PR identities now carry `@thin-full-stack`; none remains awaiting migration. Standard execution retains its existing worker configuration. Optimised execution selects exactly the same default tag in one worker, including the five declared skips. Nightly and on-demand scenarios are not added to either default selection.
 
+The [DTSCCI-5979 retained-service review](functional-real-boundary-review.md) records the exact assertions for the six retained-boundary journeys, reconciles their delivered classification and removes the unused CCD browser gateway from the optimised deployment.
+
 The optimised chart replaces Fees, Payments, Docmosis and CDAM endpoints with WireMock. Citizen UI address lookup and the browser payment endpoint also use WireMock. XUI, EM stitching, EM CCD orchestration and the deployed CDAM component are disabled. Citizen UI, Civil Service, CCD, Camunda, IDAM, access/role assignment and their required data stores remain real. Notification checks retain the existing Civil Service notification-audit boundary.
 
 | Active journey | Why the retained real boundary is required |

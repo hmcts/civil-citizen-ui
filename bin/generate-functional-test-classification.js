@@ -44,24 +44,21 @@ const migratedJudgmentMediationHearingScenarios = new Set([
 
 const retainedThinFullStackScenarios = new Set([
   'bundles/cp_LiPvLiP_bundles_small_claims_tests.js#1',
-  'case-struck-out/cp_LiPvLiP_case_struck_out_fast_track_tests.js#1',
-  'create-claim/IndividualvsIndividual_tests.js#1',
   'defendant-linking/defendantLinkingThroughCUI_tests.js#1',
-  'ga/LiPvLiP_GA_DismissAnOrder_tests.js#1',
-  'hearings/cp_LiPvLiP_hearing_fee_tests_fast_track_tests.js#2',
-  'noc/LipVLR_NoC_e2e_tests.js#1',
-  'qm/qm_Hearing_LiPvLiP_followUp_tests.js#1',
+]);
+
+const reviewedRealBoundaryScenarios = new Map([
+  ['case-struck-out/cp_LiPvLiP_case_struck_out_fast_track_tests.js#1', 'Civil Service, CCD and Camunda produce the struck-out notification and inactive hearing tasks checked for both parties by verifyNotificationTitleAndContent and verifyTasklistLinkAndState.'],
+  ['create-claim/IndividualvsIndividual_tests.js#1', 'Civil Service, CCD and Camunda persist the issued claim and paid general applications; verifyAndPayClaimFee and askForMoreTimeCourtOrderGA observe payment confirmation and application access for both parties.'],
+  ['ga/LiPvLiP_GA_DismissAnOrder_tests.js#1', 'Civil Service, CCD and Camunda process makeOrderGA; verifyNotificationTitleAndContent observes the resulting order-made notification on the parent claim.'],
+  ['hearings/cp_LiPvLiP_hearing_fee_tests_fast_track_tests.js#2', 'Civil Service, CCD and Camunda process the payment callback; verifyTasklistLinkAndState observes Done and assertEmailSent checks the real Civil notification audit. Fees and payment-provider responses are mocked.'],
+  ['noc/LipVLR_NoC_e2e_tests.js#1', 'AAC, CCD and role assignment apply the Notice of Change. checkUserCaseAccess verifies revoked citizen access and granted solicitor access; the helper checks the new organisation and defendantLRResponse waits for the real workflow state.'],
+  ['qm/qm_Hearing_LiPvLiP_followUp_tests.js#1', 'Civil Service and CCD persist party-specific query conversations; verifyFollowUpMessage and verifyClosedQuery observe real follow-up and closure. Work Allocation is disabled and is not a retained dependency.'],
 ]);
 
 const retainedObservableAssertions = new Map([
   ['bundles/cp_LiPvLiP_bundles_small_claims_tests.js#1', /viewBundlePage\.verifyPageContent/],
-  ['case-struck-out/cp_LiPvLiP_case_struck_out_fast_track_tests.js#1', /verifyNotificationTitleAndContent/],
-  ['create-claim/IndividualvsIndividual_tests.js#1', /createGASteps\.askForMoreTimeCourtOrderGA/],
   ['defendant-linking/defendantLinkingThroughCUI_tests.js#1', /ResponseSteps\.AssignCaseToLipSupportingBothJourneys/],
-  ['ga/LiPvLiP_GA_DismissAnOrder_tests.js#1', /verifyNotificationTitleAndContent/],
-  ['hearings/cp_LiPvLiP_hearing_fee_tests_fast_track_tests.js#2', /api\.assertEmailSent/],
-  ['noc/LipVLR_NoC_e2e_tests.js#1', /api\.checkUserCaseAccess/],
-  ['qm/qm_Hearing_LiPvLiP_followUp_tests.js#1', /ResponseSteps\.verifyClosedQuery/],
 ]);
 const domainRules = {
   bundles: ['Document generation and persistence must be observed through CCD and document services.', 'CCD, Camunda, document management', 'documents'],
@@ -131,6 +128,17 @@ function classify(scenario, scenarioId) {
   const file = relativeTestPath(scenario.filePath);
   const domain = file.split('/')[0];
 
+  if (reviewedRealBoundaryScenarios.has(scenarioId)) {
+    return {
+      target: TARGETS.THIN_CLIENT,
+      reason: `${reviewedRealBoundaryScenarios.get(scenarioId)} Preserve the complete existing journey, helpers and assertions.`,
+      services: 'Real CUI, Civil Service, CCD, Camunda, IDAM/S2S and role assignment; AAC and professional reference data for NoC; mocked Fees, Payments, GovPay, Docmosis, CDAM and CUI address lookup. See functional-real-boundary-review.md for the deployment inventory.',
+      owner: 'DTSCCI-5979 retained-service review and classification reconciliation',
+      batch: 'DTSCCI-5979',
+      secondaryTargets: 'Historical baseline identity/outcome parity; WireMock rejects unmatched requests; unchanged assertions verified in standard and optimised Jenkins runs',
+    };
+  }
+
   if (scenarioId === 'welsh/LipvLip_UI_RejectAll_DisputeAll_Mediation__Claimant_English_document_welsh_tests.js#1') {
     return {
       target: TARGETS.THIN_CLIENT,
@@ -158,8 +166,8 @@ function classify(scenario, scenarioId) {
       target: TARGETS.RETAINED_FULL_STACK,
       reason: `${domainRules[domain][0]} This exception retains only the observable cross-service assertion; deterministic UI assertions must still migrate.`,
       services: domainRules[domain][1],
-      owner: 'DTSCCI-5974 reviewed exception; deterministic assertions owned by DTSCCI-6133',
-      batch: 'DTSCCI-5974 retained exception plus DTSCCI-6133 assertion split',
+      owner: `${migrationTicketByDomain[domain]} outside the pre-epic PR/master baseline`,
+      batch: `${migrationTicketByDomain[domain]} nightly/on-demand review`,
       secondaryTargets: 'mocked-functional-browser for deterministic CUI behaviour; contract-sufficiency evidence for material mocked boundaries',
     };
   }
@@ -322,6 +330,13 @@ const { declared, active, rows, assertionRows } = collectInventory();
 const csv = renderCsv(rows);
 const assertionCsv = renderAssertionCsv(assertionRows);
 const checkMode = process.argv.includes('--check');
+
+for (const scenarioId of reviewedRealBoundaryScenarios.keys()) {
+  const matches = rows.filter(row => row.id === scenarioId && row.pipeline.split(';').includes('pr'));
+  if (matches.length !== 1 || matches[0].target !== TARGETS.THIN_CLIENT) {
+    throw new Error(`Reviewed boundary must resolve to one active PR baseline scenario: ${scenarioId}`);
+  }
+}
 
 if (rows.filter(row => row.target === TARGETS.RETAINED_FULL_STACK).length !== retainedThinFullStackScenarios.size) {
   throw new Error('Every retained thin full-stack exception must resolve to one active scenario.');
