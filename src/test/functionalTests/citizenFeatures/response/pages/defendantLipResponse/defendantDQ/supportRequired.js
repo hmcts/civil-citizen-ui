@@ -53,7 +53,9 @@ class SupportRequired {
     await I.fillField(fields.person1SignLanguageText, inputs.person1SignLanguage[language]);
     await I.click(buttons.addPerson[language]);
     await I.waitForElement(fields.person2Dropdown, config.WaitForText);
-    await I.selectOption(fields.person2Dropdown, 'John Doe');
+    const person2Options = await I.grabAttributeFromAll(`${fields.person2Dropdown} option`, 'value');
+    const person2Selection = person2Options.find(value => value);
+    await I.selectOption(fields.person2Dropdown, person2Selection);
     await I.click(fields.person2DisabledAccess);
     await I.click(fields.person2OtherSupport);
     await I.fillField(fields.person2OtherSupportText, inputs.person2OtherSupport[language]);
