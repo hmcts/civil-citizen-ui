@@ -54,8 +54,8 @@ async function main() {
     assert.ok(confirm.includes(`name="payment_ref" value="${payment.payment_reference}"`));
     await status(payment, 'Initiated');
   }));
-  const completed = payments.filter((_, index) => index % 2 === 0);
-  const unfinished = payments.filter((_, index) => index % 2 !== 0);
+  const completed = payments.slice(0, standardWorkers);
+  const unfinished = payments.slice(standardWorkers);
   await Promise.all(completed.reverse().map(async payment => {
     const response = await request(`/thin-pay/complete${payment.next.search}`, 303);
     assert.equal(response.headers.get('location'), payment.returnUrl);

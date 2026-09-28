@@ -45,7 +45,7 @@ The optimised runner uses 13 workers with the same 3-second worker stagger as th
 
 WireMock 3.13.2 and state extension 0.10.1 are pinned for local/preview execution. The extension is downloaded outside the checkout and SHA-256 verified before Java loads it. The preview remains one mock instance (autoscaling disabled); workers share it safely through separate payment contexts. State expires after the extension's default one hour. No application or functional journey assertions are changed.
 
-`yarn test:wiremock-contracts` now creates 26 concurrent payments spanning all four fee types, including unfinished payments for the same case. It completes alternating payments in reverse order and repeatedly checks that the others remain Initiated. It also enforces that optimised worker capacity is at least standard capacity.
+`yarn test:wiremock-contracts` now creates 26 concurrent payments spanning all four fee types, including unfinished payments for the same case. It completes half the payments (covering every fee type) in reverse order and repeatedly checks that the others remain Initiated. It also enforces that optimised worker capacity is at least standard capacity.
 
 For comparable whole-pipeline measurements, apply `benchmarkPipeline` alongside `runAllFunctionalTests` in both modes. This sets the shared pipeline's `NO_SKIP_IMG_BUILD` override so both runs execute build, unit/integration checks and image stages rather than comparing an uncached run to a cached one. Remove the benchmark label after verification. Record total and functional durations, cache conditions and any infrastructure queue delays; the optimised result must not regress.
 
