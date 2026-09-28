@@ -133,7 +133,7 @@ describe('getClaimIssuePaymentClaim', () => {
     retrieveClaimDetailsSpy.mockResolvedValueOnce(new Claim());
 
     await expect(getClaimIssuePaymentClaim(createReq())).rejects.toThrow(
-      '[claimIssuePaymentDraftService] no draft claim found for payment resume',
+      '[claimIssuePaymentDraftService] no claim found',
     );
     expect(mockCreateOrLoadDraft).not.toHaveBeenCalled();
     expect(mockUpdateDraftClaim).not.toHaveBeenCalled();

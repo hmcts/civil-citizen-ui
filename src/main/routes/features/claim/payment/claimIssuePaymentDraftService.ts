@@ -44,7 +44,7 @@ export const getClaimIssuePaymentClaim = async (req: AppRequest): Promise<ClaimI
 
   const ccdClaim = await civilServiceClient.retrieveClaimDetails(claimId, req);
   if (!ccdClaim || ccdClaim.isEmpty()) {
-    throw new Error('[claimIssuePaymentDraftService] no draft claim found for payment resume');
+    throw new Error('[claimIssuePaymentDraftService] no claim found');
   }
 
   ccdClaim.id = claimId;
