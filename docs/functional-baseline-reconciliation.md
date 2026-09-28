@@ -13,7 +13,7 @@ The defendant-linking feature was added to PR selection during the epic, after t
 
 ## Final boundary inventory
 
-All fourteen active PR identities now carry `@thin-full-stack`; none remains awaiting migration. Standard execution retains its existing worker configuration. Optimised execution selects exactly the same default tag in one worker, including the five declared skips. Nightly and on-demand scenarios are not added to either default selection.
+All fourteen active PR identities now carry `@thin-full-stack`; none remains awaiting migration. Standard execution retains its existing worker configuration. Optimised execution selects exactly the same default tag with 13 workers, matching standard concurrency and including the five declared skips. Nightly and on-demand scenarios are not added to either default selection.
 
 The [DTSCCI-5979 retained-service review](functional-real-boundary-review.md) records the exact assertions for the six retained-boundary journeys, reconciles their delivered classification and removes the unused CCD browser gateway from the optimised deployment.
 

@@ -284,6 +284,10 @@ withPipeline(type, product, component) {
   onPR {
     enablePactAs([AppPipelineDsl.PactRoles.CONSUMER])
     env.ENVIRONMENT = "preview"
+    // Paired performance comparisons must execute the same uncached stages.
+    if (new GithubAPI(this).getLabelsbyPattern(env.BRANCH_NAME, "benchmarkPipeline").contains("benchmarkPipeline")) {
+      env.NO_SKIP_IMG_BUILD = 'true'
+    }
     env.A11Y_CHUNKS=4
     env.NODE_OPTIONS= "--max-old-space-size=8192"
     env.NODE_TLS_REJECT_UNAUTHORIZED = "0"

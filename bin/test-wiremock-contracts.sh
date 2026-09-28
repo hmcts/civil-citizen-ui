@@ -14,7 +14,7 @@ cleanup() {
 }
 trap cleanup EXIT INT TERM
 
-./node_modules/.bin/wiremock --root-dir "${root}" --port "${port}" >"${log_file}" 2>&1 &
+./bin/start-preview-wiremock.sh --root-dir "${root}" --port "${port}" >"${log_file}" 2>&1 &
 wiremock_pid=$!
 for _ in $(seq 1 60); do
   curl --fail --silent "${url}/__admin/mappings" >/dev/null 2>&1 && break
@@ -54,40 +54,7 @@ if [ "${service_request_reference}" = "${second_service_request_reference}" ]; t
   echo 'Expected each service request to return a unique reference' >&2
   exit 1
 fi
-payment_body='{"amount":455,"currency":"GBP","return-url":"https://example.test/claim-issued-payment-confirmation/1234"}'
-payment_response=$(curl --fail --silent --request POST --header 'Content-Type: application/json' --data "${payment_body}" "${url}/service-request/2026-THIN-CLIENT-SERVICE-REQUEST/card-payments")
-payment_reference=$(node -e 'console.log(JSON.parse(process.argv[1]).payment_reference)' "${payment_response}")
-replacement_payment_response=$(curl --fail --silent --request POST --header 'Content-Type: application/json' --data "${payment_body}" "${url}/service-request/2026-THIN-CLIENT-SERVICE-REQUEST/card-payments")
-replacement_payment_reference=$(node -e 'console.log(JSON.parse(process.argv[1]).payment_reference)' "${replacement_payment_response}")
-if [ "${payment_reference}" = "${replacement_payment_reference}" ]; then
-  echo 'Expected a new payment to replace an unfinished payment with a unique reference' >&2
-  exit 1
-fi
-payment_reference="${replacement_payment_reference}"
-initiated_status=$(curl --fail --silent "${url}/card-payments/${payment_reference}/statuses")
-if ! grep --quiet '"status":"Initiated"' <<<"${initiated_status}"; then
-  echo "Expected a newly created payment to be initiated, got ${initiated_status}" >&2
-  exit 1
-fi
-assert_status 200 GET '/thin-pay/card?return_url=https%3A%2F%2Fexample.test%2Fclaim-issued-payment-confirmation%2F1234&amount=115.00'
-assert_status 200 GET '/thin-pay/confirm?return_url=https%3A%2F%2Fexample.test%2Fclaim-issued-payment-confirmation%2F1234&amount=115.00'
-successful_status=$(curl --fail --silent "${url}/card-payments/${payment_reference}/statuses")
-if ! grep --quiet '"status":"Success"' <<<"${successful_status}"; then
-  echo "Expected a confirmed payment to be successful, got ${successful_status}" >&2
-  exit 1
-fi
-
-second_payment_response=$(curl --fail --silent --request POST --header 'Content-Type: application/json' --data "${payment_body}" "${url}/service-request/2026-THIN-CLIENT-SERVICE-REQUEST/card-payments")
-second_payment_reference=$(node -e 'console.log(JSON.parse(process.argv[1]).payment_reference)' "${second_payment_response}")
-if [ "${payment_reference}" = "${second_payment_reference}" ]; then
-  echo 'Expected each card payment to return a unique payment reference' >&2
-  exit 1
-fi
-second_initiated_status=$(curl --fail --silent "${url}/card-payments/${second_payment_reference}/statuses")
-if ! grep --quiet '"status":"Initiated"' <<<"${second_initiated_status}"; then
-  echo "Expected the payment scenario to reset for the next payment, got ${second_initiated_status}" >&2
-  exit 1
-fi
+node bin/test-parallel-payment-contracts.js "${url}"
 assert_status 200 GET '/cases/documents/00000000-0000-4000-8000-000000000001'
 assert_status 200 GET '/cases/documents/00000000-0000-4000-8000-000000000001/binary'
 assert_status 204 DELETE '/cases/documents/00000000-0000-4000-8000-000000000001?permanent=true'
@@ -141,16 +108,6 @@ small_claims_fee=$(curl --fail --silent "${url}${small_claims_fee_query}")
 node -e 'const assert = require("node:assert/strict"); const fee = JSON.parse(process.argv[1]); assert.equal(fee.code, "FEE0223"); assert.equal(fee.fee_amount, 123); assert.equal(fee.version, 8);' "${small_claims_fee}"
 assert_status 404 GET "${small_claims_fee_query/1500.00/3000.00}"
 assert_status 404 GET "${small_claims_fee_query/event=hearing/event=miscellaneous}"
-assert_status 404 GET '/thin-pay/confirm?return_url=https%3A%2F%2Fexample.test%2Fhearing-payment&amount=123'
-small_claims_payment=$(curl --fail --silent --request POST --header 'Content-Type: application/json' \
-  --data '{"amount":123,"currency":"GBP","return-url":"https://example.test/hearing-payment"}' \
-  "${url}/service-request/small-claims-hearing/card-payments")
-small_claims_reference=$(node -e 'const assert = require("node:assert/strict"); const payment = JSON.parse(process.argv[1]); assert.match(payment.next_url, /amount=123$/); assert.match(payment.payment_reference, /^RC-THIN-CLIENT-SMALL-CLAIMS-HEARING-/); console.log(payment.payment_reference);' "${small_claims_payment}")
-small_claims_status=$(curl --fail --silent "${url}/card-payments/${small_claims_reference}/statuses")
-node -e 'const assert = require("node:assert/strict"); const payment = JSON.parse(process.argv[1]); assert.equal(payment.amount, 123); assert.equal(payment.status, "Initiated");' "${small_claims_status}"
-assert_status 200 GET '/thin-pay/confirm?return_url=https%3A%2F%2Fexample.test%2Fhearing-payment&amount=123'
-small_claims_status=$(curl --fail --silent "${url}/card-payments/${small_claims_reference}/statuses")
-node -e 'const assert = require("node:assert/strict"); const payment = JSON.parse(process.argv[1]); assert.equal(payment.amount, 123); assert.equal(payment.status, "Success");' "${small_claims_status}"
 assert_status 404 GET '/thin-pay/confirm?return_url=https%3A%2F%2Fexample.test%2Fhearing-payment&amount=123'
 assert_status 404 POST '/service-request/small-claims-hearing/card-payments' '{"amount":123,"currency":"USD","return-url":"https://example.test/hearing-payment"}'
 assert_status 404 POST '/cases/documents' '{}'

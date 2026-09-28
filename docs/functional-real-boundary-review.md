@@ -39,6 +39,16 @@ Shared AAT services remain outside the per-PR deployment: identity/authenticatio
 
 The gateway removal applies only to `values.optimisedTests.preview.template.yaml`. Standard deployment and scenario routing tags are unchanged. The default-path cutover remains DTSCCI-6134.
 
+## Parallel execution
+
+The optimised runner uses 13 workers with the same 3-second worker stagger as the standard PR runner. Both select the same baseline. The per-test global WireMock reset is removed: payment creation, card entry, confirmation and status reads use a unique payment reference, with independent state held by the official WireMock state extension. Opening the confirmation page leaves payment Initiated; clicking Confirm changes only that payment to Success. Repeated status reads preserve success. Unknown references, mismatched amounts/return URLs and completion before confirmation are unmatched.
+
+WireMock 3.13.2 and state extension 0.10.1 are pinned for local/preview execution. The extension is downloaded outside the checkout and SHA-256 verified before Java loads it. The preview remains one mock instance (autoscaling disabled); workers share it safely through separate payment contexts. State expires after the extension's default one hour. No application or functional journey assertions are changed.
+
+`yarn test:wiremock-contracts` now creates 26 concurrent payments spanning all four fee types, including unfinished payments for the same case. It completes alternating payments in reverse order and repeatedly checks that the others remain Initiated. It also enforces that optimised worker capacity is at least standard capacity.
+
+For comparable whole-pipeline measurements, apply `benchmarkPipeline` alongside `runAllFunctionalTests` in both modes. This sets the shared pipeline's `NO_SKIP_IMG_BUILD` override so both runs execute build, unit/integration checks and image stages rather than comparing an uncached run to a cached one. Remove the benchmark label after verification. Record total and functional durations, cache conditions and any infrastructure queue delays; the optimised result must not regress.
+
 ## Verification
 
 Run `yarn test:generate:functional-classification`, `yarn test:functional-classification` and `yarn test:functional-baseline`. The classification check requires every reviewed identity to resolve to an active PR baseline scenario and every active historical baseline identity to have exactly one migrated classification. Render standard and optimised charts to verify that the gateway disappears only from the latter. Run the complete baseline in both Jenkins modes, compare their `baseline-results.json` artifacts using `bin/functional-baseline.js compare`, and check optimised WireMock diagnostics for unmatched requests.

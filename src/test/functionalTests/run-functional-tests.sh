@@ -172,8 +172,8 @@ run_optimised_functional_tests() {
     pattern="$base_pattern"
   fi
   echo "Running migrated thin-client scenarios from ${base_pattern}"
-  MOCHAWESOME_REPORTFILENAME='optimised-thin-client' \
-    run_functional_command yarn codeceptjs run-workers --suites 1 --grep "$pattern" \
+  MOCHAWESOME_REPORTFILENAME='optimised-thin-client' WORKER_STAGGER_MS=3000 \
+    run_functional_command yarn codeceptjs run-workers --suites 13 --grep "$pattern" \
     --reporter mocha-multi --plugins allure --verbose
 }
 
