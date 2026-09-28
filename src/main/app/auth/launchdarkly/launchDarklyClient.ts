@@ -182,8 +182,13 @@ export async function isJudgmentBufferEnabled(): Promise<boolean> {
   return await getFlagValue(JUDGMENT_BUFFER) as boolean;
 }
 
+// Defaults to true when the flag is not defined in LaunchDarkly or LaunchDarkly is unavailable
 export async function isCancelUnissuedClaimSpecEnabled(): Promise<boolean> {
-  return await getFlagValue(CANCEL_UNISSUED_CLAIM_SPEC) as boolean;
+  if (!ldClient) await getClient();
+  if (!ldClient) {
+    return true;
+  }
+  return await ldClient.variation(CANCEL_UNISSUED_CLAIM_SPEC, await getUser(undefined), true) as boolean;
 }
 
 /**
