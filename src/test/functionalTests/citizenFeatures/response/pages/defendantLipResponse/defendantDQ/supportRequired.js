@@ -34,7 +34,7 @@ const inputs = {
   person1SignLanguage: {
     en: 'Spanish',
     cy: 'Sbaeneg',
-  }, 
+  },
   person2OtherSupport: {
     en: 'No support required',
     cy: 'Dim cymorth sydd ei angen',
@@ -44,7 +44,7 @@ const inputs = {
 class SupportRequired {
 
   async selectOptionForSupportRequired() {
-    const { language } = sharedData; 
+    const { language } = sharedData;
     await I.waitForContent(content.heading[language], config.WaitForText);
     await I.click(fields.yesButton);
     await I.selectOption(fields.person1Dropdown, 'WitnessFirstName WitnessLastName');
@@ -52,6 +52,7 @@ class SupportRequired {
     await I.click(fields.person1SignLanguage);
     await I.fillField(fields.person1SignLanguageText, inputs.person1SignLanguage[language]);
     await I.click(buttons.addPerson[language]);
+    await I.waitForElement(fields.person2Dropdown, config.WaitForText);
     await I.selectOption(fields.person2Dropdown, 'John Doe');
     await I.click(fields.person2DisabledAccess);
     await I.click(fields.person2OtherSupport);
