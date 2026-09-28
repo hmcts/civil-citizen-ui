@@ -31,8 +31,6 @@ Real services supply persisted case/workflow state, notifications and access cha
 
 ```sh
 yarn test:functional-baseline
-yarn test:generate:functional-classification
-yarn test:functional-classification
 ```
 
 The baseline check reads the complete source inventory before worker filtering. Default optimised and full standard runs reconcile results against it and fail for missing, duplicate, failed, newly skipped or unexpectedly executed journeys. Compare the archived results from opposite modes on the same revision with:
@@ -41,7 +39,7 @@ The baseline check reads the complete source inventory before worker filtering. 
 node bin/functional-baseline.js compare standard-baseline-results.json optimised-baseline-results.json
 ```
 
-The generated [scenario](functional-test-scenario-classification.csv) and [assertion](functional-test-assertion-classification.csv) inventories are checked by CI; regenerate them when declarations or classifications change. They include wider coverage proposals, not just the completed PR/master migration. Use [test-pyramid.md](test-pyramid.md) for unit and integration ownership. Keep migration plans, approval records and run-by-run evidence in Jira/PRs.
+Use [test-pyramid.md](test-pyramid.md) for unit and integration ownership. Keep migration plans, approval records and run-by-run evidence in Jira/PRs.
 
 ## Maintaining mocks and contracts
 
