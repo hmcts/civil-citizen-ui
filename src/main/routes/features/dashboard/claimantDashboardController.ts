@@ -61,7 +61,7 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
       caseRole = ClaimantOrDefendant.CLAIMANT;
       const draftResult = await getDraftClaim(req);
       claim = draftResult?.claimResponse?.case_data
-      ? Object.assign(new Claim(), draftResult.claimResponse.case_data)
+        ? Object.assign(new Claim(), draftResult.claimResponse.case_data)
         : new Claim();
       if (draftResult?.createdAt) {
         claim.draftClaimCreatedAt = new Date(draftResult.createdAt);
