@@ -204,7 +204,7 @@ elif [[ "$RUN_ALL_FUNCTIONAL_TESTS" = "true" ]]; then
     node bin/functional-baseline.js check
     VERIFY_FUNCTIONAL_BASELINE=true
   fi
-  echo "The label 'runAllFunctionalTests' exists on the PR."
+  echo "Full functional execution requested."
   echo "Running all functional tests."
   run_functional_tests
 

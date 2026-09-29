@@ -7,7 +7,8 @@ Configure the environment URLs and credentials as described in the [README](../R
 | Run | Command or PR label |
 | --- | --- |
 | Standard PR / master baseline | `yarn test:civil-citizen-pr` / `yarn test:civil-citizen-master` |
-| Optimised preview | Add `pr-values:optimisedTests`; remove it to restore standard execution |
+| Default PR preview | Optimised deployment; no label required |
+| Standard preview comparison | Add `pr-values:standardTests`; remove it to restore the default |
 | Full baseline verification | Add `runAllFunctionalTests`, with no `pr_ft_*` group labels; remove it after verification |
 | Selected functional group | Use the existing `pr_ft_ui-*` / `pr_ft_api-*` labels listed in the README |
 | Nightly suite | `yarn test:civil-citizen-nightly` |
@@ -17,13 +18,13 @@ The local mocked runner starts CUI, WireMock and in-memory session/draft stores.
 
 ## Optimised preview
 
-Both modes run the same baseline journeys and assertions. Optimised execution loads only baseline files and gives each file its own worker: 18 for PRs and 16 for master, compared with 13 standard workers. The default cutover is tracked in [DTSCCI-6134](https://hmcts.atlassian.net/browse/DTSCCI-6134); optimised preview remains opt-in.
+Both modes run the same baseline journeys and assertions. Optimised execution loads only baseline files and gives each file its own worker: 18 for PRs and 16 for master, compared with 13 standard workers. PR previews use optimised execution by default. `pr-values:standardTests` restores the previous standard deployment and complete baseline selection; it does not enable extra Work Allocation or messaging services. Both modes run the complete baseline again on reruns. Master and nightly deployment remain unchanged.
 
 | Real boundaries | Mocked boundaries |
 | --- | --- |
 | CUI, Redis, Civil Service, CCD, Camunda, identity/authentication, access/role assignment and required data stores | Fees, Payments/GovPay, Docmosis, CDAM and CUI address lookup |
 
-Real services supply persisted case/workflow state, notifications and access changes. Mock payments and documents do not prove provider settlement, PDF content or inbox delivery. Shared reference services and the Civil Service notification audit remain in use. XUI, the CCD browser gateway, EM stitching, EM CCD orchestration and deployed CDAM are disabled in the optimised overlay.
+Real services supply persisted case/workflow state, notifications and access changes. Mock payments and documents do not prove provider settlement, PDF content or inbox delivery. Shared reference services and the Civil Service notification audit remain in use. XUI, the CCD browser gateway, EM stitching, EM CCD orchestration and deployed CDAM are disabled in the default preview. `pr-values:fullDeployment` also restores standard dependencies and enables its additional Work Allocation, messaging and hearing integrations. Use the standard deployment for groups outside the migrated baseline.
 
 ## Baseline and coverage checks
 
@@ -33,7 +34,7 @@ Real services supply persisted case/workflow state, notifications and access cha
 yarn test:functional-baseline
 ```
 
-The baseline check reads the complete source inventory before worker filtering. Default optimised and full standard runs reconcile results against it and fail for missing, duplicate, failed, newly skipped or unexpectedly executed journeys. Compare the archived results from opposite modes on the same revision with:
+The baseline check reads the complete source inventory before worker filtering. Default and standard comparison runs reconcile results against it and fail for missing, duplicate, failed, newly skipped or unexpectedly executed journeys. Compare the archived results from opposite modes on the same revision with:
 
 ```sh
 node bin/functional-baseline.js compare standard-baseline-results.json optimised-baseline-results.json
