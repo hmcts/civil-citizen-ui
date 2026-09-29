@@ -15,14 +15,10 @@ import {
 } from '../../../../../routes/urls';
 import {formatDateToFullDate} from '../../../../../common/utils/dateUtils';
 import {PartyType} from '../../../../../common/models/partyType';
-import {Address} from '../../../../../common/form/models/address';
+import {addressToString} from '../../../../../common/utils/addressUtils';
 import {YesNo, YesNoUpperCase} from 'form/models/yesNo';
 
 const changeLabel = (lang: string): string => t('COMMON.BUTTONS.CHANGE', {lng: lang});
-
-const addressToString = (address: Address) => {
-  return address?.addressLine1 + '<br>' + address?.city + '<br>' + address?.postCode;
-};
 
 export const buildTheirDetailsSection = (claim: Claim, claimId: string, lang: string ): SummarySection => {
   let theirDetailsHref = CLAIM_DEFENDANT_COMPANY_DETAILS_URL;

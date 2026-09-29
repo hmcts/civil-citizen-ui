@@ -1,6 +1,6 @@
 import { isPostcodeOnExceptionList, PostcodeValidator } from 'common/form/validators/postcodeValidator';
-import * as osService from 'modules/ordance-survey-key/ordanceSurveyKeyService';
-import { AddressInfoResponse } from 'common/models/ordanceSurveyKey/ordanceSurveyKey';
+import * as osService from 'modules/ordnance-survey-key/ordnanceSurveyKeyService';
+import { AddressInfoResponse } from 'common/models/ordnanceSurveyKey/ordnanceSurveyKey';
 
 describe('PostcodeValidator', () => {
   let validator: PostcodeValidator;
