@@ -323,7 +323,7 @@ module.exports = {
     payload = defendantResponse.createDefendantResponse(totalClaimAmount, responseType, claimType, partyType, language, respondentLanguage);
     //console.log('The payload : ' + payload);
     await apiRequest.setupTokens(user);
-    await apiRequest.startEventForCitizen(eventName, caseId, payload, 500);
+    await apiRequest.startEventForCitizen(eventName, caseId, payload, claimType === 'SmallClaims' ? 500 : 200);
     await waitForFinishedBusinessProcess(caseId);
     console.log('End of performCitizenResponse()');
   },
