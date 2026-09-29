@@ -1,109 +1,112 @@
-import {app} from '../../../../../../main/app';
-import config from 'config';
-import nock from 'nock';
-import request from 'supertest';
-import {
-  CLAIM_DEFENDANT_COMPANY_DETAILS_URL,
-  FLIGHT_DETAILS_URL, 
-} from 'routes/urls';
-import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import {t} from 'i18next';
-import {Claim} from 'models/claim';
-import {mockCivilClaim} from '../../../../../utils/mockDraftStore';
-import * as draftStoreService from 'modules/draft-store/draftStoreService';
-import { CivilServiceClient } from 'client/civilServiceClient';
+import {Response} from 'express';
+import flightDetailsController from '../../../../../../main/routes/features/claim/airlines/flightDetailsController';
+import {CLAIM_DEFENDANT_COMPANY_DETAILS_URL} from 'routes/urls';
+import {AppRequest} from 'models/AppRequest';
+import {GenericForm} from 'form/models/genericForm';
+import {FlightDetails} from 'common/models/flightDetails';
+import {buildDataList, getFlightDetails, saveFlightDetails} from 'services/features/claim/delayedFlightService';
+import {CivilServiceClient} from 'client/civilServiceClient';
+import {createMockResponse, createMockSession, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
-jest.mock('client/civilServiceClient');
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
-
-const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
-const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
-
-const mockGetCaseDataFromDraftStore = draftStoreService.getCaseDataFromStore as jest.Mock;
-const mockGetAirlines = civilServiceClient.getAirlines as jest.Mock;
+jest.mock('services/features/claim/delayedFlightService', () => ({
+  getFlightDetails: jest.fn(),
+  saveFlightDetails: jest.fn(),
+  buildDataList: jest.fn(() => ''),
+}));
 
 describe('Flight details Controller', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
-  app.request.cookies = {eligibilityCompleted: true};
+  const getHandler = getRouteHandler(flightDetailsController, 'get');
+  const postHandler = getRouteHandler(flightDetailsController, 'post');
+  const viewPath = 'features/claim/airlines/flight-details';
+  const pageTitle = 'PAGES.FLIGHT_DETAILS.FLIGHT_DETAILS';
+  let req: Partial<AppRequest>;
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
+  const mockGetFlightDetails = getFlightDetails as jest.Mock;
+  const mockSaveFlightDetails = saveFlightDetails as jest.Mock;
+  const mockBuildDataList = buildDataList as jest.Mock;
+  const airlines = [
+    {airline: 'airline 1', epimsID: '1'},
+    {airline: 'airline 2', epimsID: '2'},
+  ];
 
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-    app.locals.draftStoreClient = mockCivilClaim;
-
-    mockGetAirlines.mockImplementation(() => {
-      return [
-        {airline: 'airline 1', epimsID: '1'}, 
-        {airline: 'airline 2', epimsID: '2'},
-      ];
-    });
+  beforeEach(() => {
+    req = {
+      session: createMockSession({user: {id: 'user-id'}}),
+      body: {},
+      query: {},
+      cookies: {},
+    };
+    res = createMockResponse();
+    next = jest.fn();
+    mockGetFlightDetails.mockResolvedValue(new FlightDetails());
+    mockSaveFlightDetails.mockResolvedValue(undefined);
+    mockBuildDataList.mockReturnValue('');
+    jest.spyOn(CivilServiceClient.prototype, 'getAirlines').mockResolvedValue(airlines);
   });
 
   describe('on GET', () => {
-    it('should return flight details page', async () => {
-      mockGetCaseDataFromDraftStore.mockImplementation(async () => new Claim());
-      await request(app)
-        .get(FLIGHT_DETAILS_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('PAGES.FLIGHT_DETAILS.FLIGHT_DETAILS'));
-        });
+    it('should render flight details', async () => {
+      await getHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        pageTitle,
+        form: expect.any(GenericForm),
+        airlines,
+      }));
     });
 
-    it('should return http 500 when has error in the get method', async () => {
-      mockGetCaseDataFromDraftStore.mockImplementation(async () => {throw new Error(TestMessages.REDIS_FAILURE);});
-      await request(app)
-        .get(FLIGHT_DETAILS_URL)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+    it('should call next when loading flight details fails', async () => {
+      const error = new Error('error');
+      mockGetFlightDetails.mockRejectedValue(error);
+
+      await getHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 
   describe('on POST', () => {
-    it('should redirect when flight details are ok', async () => {
-      const flightDetails = {
+    it('should redirect when flight details are valid', async () => {
+      req.body = {
         airline: 'Ryanair',
         flightNumber: '121314',
         year: '2023',
         month: '9',
         day: '29',
       };
-      mockGetCaseDataFromDraftStore.mockImplementation(async () => new Claim());
-      await request(app)
-        .post(FLIGHT_DETAILS_URL)
-        .send(flightDetails)
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toBe(CLAIM_DEFENDANT_COMPANY_DETAILS_URL);
-        });
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(mockSaveFlightDetails).toHaveBeenCalledWith('user-id', expect.any(FlightDetails));
+      expect(res.redirect).toHaveBeenCalledWith(CLAIM_DEFENDANT_COMPANY_DETAILS_URL);
     });
-    it('should return errors on empty inputs', async () => {
-      await request(app)
-        .post(FLIGHT_DETAILS_URL)
-        .send({})
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.FLIGHT_DETAILS.AIRLINE_REQUIRED'));
-          expect(res.text).toContain(t('ERRORS.FLIGHT_DETAILS.FLIGHT_NUMBER_REQUIRED'));
-          expect(res.text).toContain(t('ERRORS.VALID_YEAR'));
-          expect(res.text).toContain(t('ERRORS.VALID_MONTH'));
-          expect(res.text).toContain(t('ERRORS.VALID_DAY'));
-        });
+
+    it('should re-render when inputs are empty', async () => {
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        pageTitle,
+        form: expect.any(GenericForm),
+      }));
+      const form = (res.render as jest.Mock).mock.calls[0][1].form as GenericForm<FlightDetails>;
+      expect(form.hasErrors()).toBe(true);
+      expect(form.errorFor('airline')).toBe('ERRORS.FLIGHT_DETAILS.AIRLINE_REQUIRED');
+      expect(form.errorFor('flightNumber')).toBe('ERRORS.FLIGHT_DETAILS.FLIGHT_NUMBER_REQUIRED');
+      expect(form.errorFor('year')).toBe('ERRORS.VALID_YEAR');
+      expect(form.errorFor('month')).toBe('ERRORS.VALID_MONTH');
+      expect(form.errorFor('day')).toBe('ERRORS.VALID_DAY');
+      expect(res.redirect).not.toHaveBeenCalled();
     });
-    it('should return http 500 when has error in the post method', async () => {
-      mockGetCaseDataFromDraftStore.mockImplementation(async () => {throw new Error(TestMessages.REDIS_FAILURE);});
-      await request(app)
-        .post(FLIGHT_DETAILS_URL)
-        .send({})
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+
+    it('should call next when saving flight details fails', async () => {
+      const error = new Error('error');
+      mockGetFlightDetails.mockRejectedValue(error);
+      jest.spyOn(CivilServiceClient.prototype, 'getAirlines').mockRejectedValue(error);
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 });

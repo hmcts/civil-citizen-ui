@@ -1,88 +1,74 @@
-import request from 'supertest';
-import {app} from '../../../../../main/app';
-import nock from 'nock';
-import config from 'config';
-import {PAY_HEARING_FEE_SUCCESSFUL_URL} from 'routes/urls';
-import {mockCivilClaimApplicantCompanyType} from '../../../../utils/mockDraftStore';
-import {mockCivilClaimHearingFee} from '../../../../utils/mockDraftStore';
-import {TestMessages} from '../../../../utils/errorMessageTestConstants';
-import {CivilServiceClient} from 'client/civilServiceClient';
-import claim from '../../../../utils/mocks/civilClaimResponseMock.json';
+import {Response} from 'express';
+import paymentSuccessfulController from '../../../../../main/routes/features/claim/paymentSuccessfulController';
+import {DASHBOARD_URL} from 'routes/urls';
+import {AppRequest} from 'models/AppRequest';
 import {Claim} from 'models/claim';
-import {t} from 'i18next';
+import {CivilServiceClient} from 'client/civilServiceClient';
+import {getClaimById} from 'modules/utilityService';
+import {
+  getPaymentSuccessfulBodyContent,
+  getPaymentSuccessfulButtonContent,
+  getPaymentSuccessfulPanelContent,
+} from 'services/features/claim/paymentSuccessfulContents';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {createMockResponse, createMockSession, getRouteHandler} from '../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/draft-store');
-const spyDel = jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails');
-jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
-describe('Apply for help with fees', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
+jest.mock('modules/utilityService', () => ({
+  getClaimById: jest.fn(),
+}));
+jest.mock('services/features/claim/paymentSuccessfulContents', () => ({
+  getPaymentSuccessfulPanelContent: jest.fn((): unknown[] => []),
+  getPaymentSuccessfulBodyContent: jest.fn((): unknown[] => []),
+  getPaymentSuccessfulButtonContent: jest.fn((): unknown[] => []),
+}));
 
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
+describe('Hearing fee payment successful', () => {
+  const getHandler = getRouteHandler(paymentSuccessfulController, 'get');
+  const viewPath = 'features/claim/payment-successful';
+  const claimId = 'claim-id';
+  let req: Partial<AppRequest>;
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
+  const mockGetClaimById = getClaimById as jest.Mock;
+
+  beforeEach(() => {
+    req = {
+      params: {id: claimId},
+      session: createMockSession({user: {id: 'user-id'}}),
+      query: {},
+      cookies: {},
+    };
+    res = createMockResponse();
+    next = jest.fn();
+    mockGetClaimById.mockResolvedValue(new Claim());
+    (getPaymentSuccessfulPanelContent as jest.Mock).mockReturnValue([]);
+    (getPaymentSuccessfulBodyContent as jest.Mock).mockReturnValue([]);
+    (getPaymentSuccessfulButtonContent as jest.Mock).mockReturnValue([]);
+    jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockResolvedValue(new Claim());
   });
+
   describe('on GET', () => {
-    it('should return resolving successful payment page', async () => {
-      const caseData = Object.assign(new Claim(), claim.case_data);
-      jest
-        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
-        .mockResolvedValueOnce(caseData);
-      app.request.cookies = {lang: 'en'};
-      app.locals.draftStoreClient = mockCivilClaimHearingFee;
-      await request(app)
-        .get(PAY_HEARING_FEE_SUCCESSFUL_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Hearing fee');
-        });
-    });
-    it('should return resolving successful payment page in english', async () => {
-      const caseData = Object.assign(new Claim(), claim.case_data);
-      jest
-        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
-        .mockResolvedValueOnce(caseData);
-      app.locals.draftStoreClient = mockCivilClaimHearingFee;
-      await request(app)
-        .get(PAY_HEARING_FEE_SUCCESSFUL_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('PAGES.PAYMENT_CONFIRMATION.SUCCESSFUL.PAGE_TITLE',{lng:'en'}));
-          expect(res.text).toContain(t('PAGES.PAYMENT_CONFIRMATION.SUCCESSFUL.PAYMENT_IS',{lng:'en'}));
-          expect(res.text).toContain(t('COMMON.MICRO_TEXT.HEARING_FEE',{lng:'cy'}));
-        });
-    });
-    it('should return resolving successful payment page in welsh', async () => {
-      const caseData = Object.assign(new Claim(), claim.case_data);
-      jest
-        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
-        .mockResolvedValueOnce(caseData);
-      app.request.cookies = {lang: 'cy'};
-      app.locals.draftStoreClient = mockCivilClaimHearingFee;
-      await request(app)
-        .get(PAY_HEARING_FEE_SUCCESSFUL_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.HEARING_FEE.PAYMENT.SUCCESSFUL.CONFIRMATION',{lng:'cy'}));
-          expect(res.text).toContain(t('PAGES.LATEST_UPDATE_CONTENT.CASE_PROGRESSION.HEARING_FEE.PAYMENT.SUCCESSFUL.PAYMENT_SUMMARY',{lng:'cy'}));
-          expect(res.text).toContain(t('COMMON.MICRO_TEXT.HEARING_FEE',{lng:'cy'}));
-        });
+    it('should render the payment successful page', async () => {
+      await getHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, {
+        paymentSuccessfulPanel: [],
+        paymentSuccessfulBody: [],
+        paymentSuccessfulButton: [],
+        pageTitle: 'PAGES.PAY_HEARING_FEE.CONFIRMATION_PAGE.TITLE',
+        noCrumbs: true,
+      });
+      expect(getPaymentSuccessfulButtonContent).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, DASHBOARD_URL));
     });
 
-    it('should return error if there is no case progression data', async () => {
-      app.request.cookies = {lang: 'en'};
-      app.locals.draftStoreClient = mockCivilClaimApplicantCompanyType;
+    it('should call next when retrieveClaimDetails fails', async () => {
+      const error = new Error('error');
+      jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockRejectedValue(error);
 
-      spyDel.mockImplementation(() => {return null;});
+      await getHandler(req as AppRequest, res as unknown as Response, next);
 
-      await request(app)
-        .get(PAY_HEARING_FEE_SUCCESSFUL_URL)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+      expect(next).toHaveBeenCalledWith(error);
+      expect(res.render).not.toHaveBeenCalled();
     });
   });
 });

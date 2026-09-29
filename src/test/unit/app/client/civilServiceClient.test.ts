@@ -36,6 +36,7 @@ import { ApplicationTypeOption } from 'models/generalApplication/applicationType
 import {ClaimUpdate} from 'models/events/eventDto';
 import {CCDGeneralApplication} from 'models/gaEvents/eventDto';
 import {isUserCaseRolesSessionCacheEnabled} from '../../../../main/app/auth/launchdarkly/launchDarklyClient';
+import {MissingPaymentReferenceError} from 'common/utils/routeParamUtils';
 
 jest.mock('axios');
 jest.mock('../../../../main/app/auth/launchdarkly/launchDarklyClient');
@@ -1434,6 +1435,19 @@ describe('Civil Service Client', () => {
       //Then
       await expect(civilServiceClient.getFeePaymentStatus('1', mockHearingFeePaymentRedirectInfo.paymentReference,  FeeType.HEARING , appReq)).rejects.toThrow('error');
     });
+
+    it.each([undefined, null, '', 'undefined', 'null', ' UNDEFINED '])(
+      'should not call civil-service when paymentReference is %p',
+      async (paymentReference) => {
+        const mockGet = jest.fn();
+        mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
+        const civilServiceClient = new CivilServiceClient(baseUrl);
+
+        await expect(civilServiceClient.getFeePaymentStatus('1', paymentReference as string, FeeType.HEARING, appReq))
+          .rejects.toThrow(MissingPaymentReferenceError);
+        expect(mockGet).not.toHaveBeenCalled();
+      },
+    );
   });
 
   describe('getDashboard', () => {

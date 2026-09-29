@@ -6,6 +6,7 @@ import {PaymentInformation} from 'models/feePayment/paymentInformation';
 import {GaServiceClient} from 'client/gaServiceClient';
 import { GA_GET_APPLICATION_URL, GA_SERVICE_CASES_URL } from 'client/gaServiceUrls';
 import { Application } from 'common/models/generalApplication/application';
+import {MissingPaymentReferenceError} from 'common/utils/routeParamUtils';
 
 jest.mock('../../../../main/services/features/generalApplication/generalApplicationService');
 
@@ -133,6 +134,19 @@ describe('GA Service Client', () => {
       //Then
       await expect(gaServiceClient.getGaFeePaymentStatus('1', mockHearingFeePaymentRedirectInfo.paymentReference, appReq)).rejects.toThrow('error');
     });
+
+    it.each([undefined, null, '', 'undefined', 'null'])(
+      'should not call civil-service when paymentReference is %p',
+      async (paymentReference) => {
+        const mockGet = jest.fn();
+        mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
+        const gaServiceClient = new GaServiceClient(baseUrl);
+
+        await expect(gaServiceClient.getGaFeePaymentStatus('1', paymentReference as string, appReq))
+          .rejects.toThrow(MissingPaymentReferenceError);
+        expect(mockGet).not.toHaveBeenCalled();
+      },
+    );
   });
   describe('get dashboard GA', () => {
     it('should return GAs successfully', async () => {

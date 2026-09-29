@@ -2,7 +2,7 @@ import {app} from '../../../../../../main/app';
 import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
-import {GA_HEARING_CONTACT_DETAILS_URL} from 'routes/urls';
+import {GA_HEARING_CONTACT_DETAILS_URL, DASHBOARD_CLAIMANT_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
 import {GeneralApplication} from 'models/generalApplication/GeneralApplication';
@@ -10,6 +10,8 @@ import {ApplicationType, ApplicationTypeOption} from 'models/generalApplication/
 import { Claim } from 'common/models/claim';
 import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import * as launchDarkly from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
+import {CaseRole} from 'form/models/caseRoles';
+import {Party} from 'models/party';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
@@ -83,7 +85,23 @@ describe('General Application - Contact Details', () => {
         });
     });
 
+    it('should redirect to the claimant dashboard when the general application draft is missing', async () => {
+      const claimWithoutGa = new Claim();
+      claimWithoutGa.caseRole = CaseRole.CLAIMANT;
+      claimWithoutGa.applicant1 = new Party();
+      mockGetCaseData.mockImplementation(async () => claimWithoutGa);
+
+      await request(app)
+        .post(GA_HEARING_CONTACT_DETAILS_URL)
+        .send({telephoneNumber: '04432188664', emailAddress: 'test@gmail.com'})
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.header.location).toEqual(DASHBOARD_CLAIMANT_URL);
+        });
+    });
+
     it('should return http 500 when has error in the post method', async () => {
+      mockGetCaseData.mockImplementation(async () => mockClaim);
       mockSaveCaseData.mockImplementation(async () => {
         throw new Error(TestMessages.REDIS_FAILURE);
       });

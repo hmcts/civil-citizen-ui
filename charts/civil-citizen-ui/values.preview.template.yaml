@@ -54,10 +54,10 @@ civil-service:
     image: hmctsprod.azurecr.io/civil/service:${CIVIL_SERVICE_IMAGE}
     imagePullPolicy: Always
     ingressHost: ${SERVICE_NAME}-civil-service.preview.platform.hmcts.net
-    devcpuRequests: 50m
-    devcpuLimits: 700m
-    devmemoryRequests: 1536Mi
-    devmemoryLimits: 2048Mi
+    devcpuRequests: 100m
+    devcpuLimits: 1400m
+    devmemoryRequests: 3072Mi
+    devmemoryLimits: 4096Mi
     keyVaults:
       civil:
         resourceGroup: civil
@@ -247,6 +247,9 @@ civil-service:
 
     am-role-assignment-service:
       java:
+        livenessDelay: 0
+        startupPeriod: 120
+        startupFailureThreshold: 3
         devmemoryRequests: 2048Mi
         devcpuRequests: 50m
         devmemoryLimits: 4096Mi
@@ -285,10 +288,10 @@ civil-service:
       java:
         releaseNameOverride: ${SERVICE_NAME}-ccd-data-store-api
         imagePullPolicy: Always
-        devcpuRequests: 50m
-        devcpuLimits: 700m
-        devmemoryRequests: 768Mi
-        devmemoryLimits: 2048Mi
+        devcpuRequests: 100m
+        devcpuLimits: 1400m
+        devmemoryRequests: 1024Mi
+        devmemoryLimits: 4096Mi
         environment:
           CASE_DOCUMENT_AM_API_ATTACH_DOCUMENT_ENABLED: true
           CASE_DOCUMENT_AM_URL: http://${SERVICE_NAME}-cdam
@@ -528,7 +531,8 @@ civil-service:
           DEFINITION_STORE_DB_HOST: "{{ .Values.global.postgresHostname }}"
           DEFINITION_STORE_DB_USERNAME: "{{ .Values.global.postgresUsername }}"
           DEFINITION_STORE_IDAM_KEY: ${CCD_DEFINITION_STORE_S2S_SECRET}
-          DEFINITION_STORE_TX_TIMEOUT_DEFAULT: 60
+          # Allow the Civil definition import to finish on preview resources.
+          DEFINITION_STORE_TX_TIMEOUT_DEFAULT: 300
           WELSH_TRANSLATION_ENABLED: false
           IDAM_USER_URL: https://idam-web-public.aat.platform.hmcts.net
           ELASTIC_SEARCH_ENABLED: true

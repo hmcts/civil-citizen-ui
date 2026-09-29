@@ -1,89 +1,108 @@
-import config from 'config';
-import nock from 'nock';
-import request from 'supertest';
-import {app} from '../../../../../../main/app';
-import {CLAIM_INTEREST_END_DATE_URL, CLAIM_HELP_WITH_FEES_URL} from 'routes/urls';
-import {mockCivilClaim, mockNoStatementOfMeans, mockRedisFailure} from '../../../../../utils/mockDraftStore';
-import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
+import {Response} from 'express';
+import interestEndDateController from '../../../../../../main/routes/features/claim/interest/interestEndDateController';
+import {CLAIM_HELP_WITH_FEES_URL} from 'routes/urls';
+import {AppRequest} from 'models/AppRequest';
+import {GenericForm} from 'form/models/genericForm';
+import {Interest} from 'form/models/interest/interest';
 import {InterestEndDateType} from 'form/models/claimDetails';
+import {getInterest, saveInterest} from 'services/features/claim/interest/interestService';
+import {createMockResponse, createMockSession, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('services/features/claim/interest/interestService', () => ({
+  getInterest: jest.fn(),
+  saveInterest: jest.fn(),
+}));
 
 describe('Claimant Interest From Controller', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
-  app.request.cookies = {eligibilityCompleted: true};
+  const getHandler = getRouteHandler(interestEndDateController, 'get');
+  const postHandler = getRouteHandler(interestEndDateController, 'post');
+  const viewPath = 'features/claim/interest/interest-end-date';
+  const pageTitle = 'PAGES.CLAIM_JOURNEY.INTEREST_END_DATE.TITLE';
+  let req: Partial<AppRequest>;
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
+  const mockGetInterest = getInterest as jest.Mock;
+  const mockSaveInterest = saveInterest as jest.Mock;
 
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-    app.locals.draftStoreClient = mockCivilClaim;
+  beforeEach(() => {
+    req = {
+      session: createMockSession({user: {id: 'user-id'}}),
+      body: {},
+      query: {},
+      cookies: {},
+    };
+    res = createMockResponse();
+    next = jest.fn();
+    mockGetInterest.mockResolvedValue(new Interest());
+    mockSaveInterest.mockResolvedValue(undefined);
   });
 
   describe('on GET', () => {
     it('should render interest end page', async () => {
-      const res = await request(app).get(CLAIM_INTEREST_END_DATE_URL);
-      expect(res.status).toBe(200);
-      expect(res.text).toContain('When do you want to stop claiming interest?');
+      await getHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        pageTitle,
+        form: expect.any(GenericForm),
+      }));
     });
 
     it('should render interest end page with values', async () => {
-      app.locals.draftStoreClient = mockNoStatementOfMeans;
-      const res = await request(app).get(CLAIM_INTEREST_END_DATE_URL);
-      expect(res.status).toBe(200);
-      expect(res.text).toContain('When do you want to stop claiming interest?');
+      const interest = new Interest();
+      interest.interestEndDate = InterestEndDateType.UNTIL_CLAIM_SUBMIT_DATE;
+      mockGetInterest.mockResolvedValue(interest);
+
+      await getHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        pageTitle,
+        form: expect.any(GenericForm),
+      }));
     });
 
-    it('should return http 500 when has error in the get method', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .get(CLAIM_INTEREST_END_DATE_URL)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+    it('should call next when get fails', async () => {
+      const error = new Error('error');
+      mockGetInterest.mockRejectedValue(error);
+
+      await getHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 
   describe('on POST', () => {
-    it('should render interest end page if there are form errors', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
-      const res = await request(app).post(CLAIM_INTEREST_END_DATE_URL);
-      expect(res.status).toBe(200);
-      expect(res.text).toContain('There was a problem');
+    it('should re-render interest end page if there are form errors', async () => {
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({pageTitle, form: expect.any(GenericForm)}));
+      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
     });
 
     it('should redirect to the help with fees page with until claim submitted option selected', async () => {
-      app.locals.draftStoreClient = mockNoStatementOfMeans;
-      await request(app).post(CLAIM_INTEREST_END_DATE_URL)
-        .send({'option': InterestEndDateType.UNTIL_CLAIM_SUBMIT_DATE})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toBe(CLAIM_HELP_WITH_FEES_URL);
-        });
+      req.body = {option: InterestEndDateType.UNTIL_CLAIM_SUBMIT_DATE};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(mockSaveInterest).toHaveBeenCalledWith('user-id', InterestEndDateType.UNTIL_CLAIM_SUBMIT_DATE, 'interestEndDate');
+      expect(res.redirect).toHaveBeenCalledWith(CLAIM_HELP_WITH_FEES_URL);
     });
 
     it('should redirect to the help with fees page with until settled option selected', async () => {
-      app.locals.draftStoreClient = mockNoStatementOfMeans;
-      await request(app).post(CLAIM_INTEREST_END_DATE_URL)
-        .send({'option': InterestEndDateType.UNTIL_SETTLED_OR_JUDGEMENT_MADE})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toBe(CLAIM_HELP_WITH_FEES_URL);
-        });
+      req.body = {option: InterestEndDateType.UNTIL_SETTLED_OR_JUDGEMENT_MADE};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.redirect).toHaveBeenCalledWith(CLAIM_HELP_WITH_FEES_URL);
     });
 
-    it('should return http 500 when has error in the post method', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .post(CLAIM_INTEREST_END_DATE_URL)
-        .send({'option': InterestEndDateType.UNTIL_CLAIM_SUBMIT_DATE})
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+    it('should call next when save fails', async () => {
+      const error = new Error('error');
+      mockSaveInterest.mockRejectedValue(error);
+      req.body = {option: InterestEndDateType.UNTIL_CLAIM_SUBMIT_DATE};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 });

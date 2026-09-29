@@ -1,61 +1,64 @@
-import {
-  PAY_HEARING_FEE_UNSUCCESSFUL_URL,
-  DASHBOARD_CLAIMANT_URL,
-} from 'routes/urls';
+import {Request, Response} from 'express';
+import paymentUnsuccessfulController from '../../../../../../main/routes/features/caseProgression/hearingFee/paymentUnsuccessfulController';
+import {DASHBOARD_CLAIMANT_URL, HEARING_FEE_MAKE_PAYMENT_AGAIN_URL} from 'routes/urls';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {getClaimById} from 'modules/utilityService';
+import {Claim} from 'models/claim';
+import {createMockResponse, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
-import nock from 'nock';
-import request from 'supertest';
-import config from 'config';
-import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
-import {app} from '../../../../../../main/app';
-import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
-jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
+jest.mock('modules/utilityService', () => ({
+  getClaimById: jest.fn(),
+}));
 
 describe('Hearing Fees - Payment Unsuccessful', () => {
-  const idamServiceUrl: string = config.get('services.idam.url');
-  const citizenRoleToken: string = config.get('citizenRoleToken');
+  const getHandler = getRouteHandler(paymentUnsuccessfulController, 'get');
+  const postHandler = getRouteHandler(paymentUnsuccessfulController, 'post');
+  const claimId = '12345';
+  let req: Partial<Request>;
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
+  const mockGetClaimById = getClaimById as jest.Mock;
 
-  beforeAll(() => {
-    nock(idamServiceUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
+  beforeEach(() => {
+    req = {params: {id: claimId}, query: {}, cookies: {}};
+    res = createMockResponse();
+    next = jest.fn();
+    const claim = new Claim();
+    jest.spyOn(claim, 'getFormattedCaseReferenceNumber').mockReturnValue('000MC001');
+    mockGetClaimById.mockResolvedValue(claim);
   });
-  describe('on GET', () => {
-    it('should return hearing fees payment unsuccessful page', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
 
-      await request(app)
-        .get(PAY_HEARING_FEE_UNSUCCESSFUL_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Your payment was unsuccessful');
-        });
+  describe('on GET', () => {
+    it('should render the payment unsuccessful page', async () => {
+      await getHandler(req as Request, res as unknown as Response, next);
+      await new Promise((resolve) => setImmediate(resolve));
+
+      expect(res.render).toHaveBeenCalledWith(
+        'features/caseProgression/hearingFee/payment-unsuccessful',
+        {
+          claimNumber: '000MC001',
+          makePaymentAgainUrl: constructResponseUrlWithIdParams(claimId, HEARING_FEE_MAKE_PAYMENT_AGAIN_URL),
+          noCrumbs: true,
+        },
+      );
     });
 
-    it('should return 500 error page for redis failure', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .get(PAY_HEARING_FEE_UNSUCCESSFUL_URL)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+    it('should call next when loading the claim fails', async () => {
+      const error = new Error('redis failure');
+      mockGetClaimById.mockRejectedValue(error);
+
+      await getHandler(req as Request, res as unknown as Response, next);
+      await new Promise((resolve) => setImmediate(resolve));
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 
   describe('on POST', () => {
-    it('should redirect to claimant dashboard', async () => {
+    it('should redirect to the claimant dashboard', async () => {
+      await postHandler(req as Request, res as unknown as Response, next);
 
-      await request(app)
-        .post(PAY_HEARING_FEE_UNSUCCESSFUL_URL)
-        .send()
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(DASHBOARD_CLAIMANT_URL);
-        });
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL));
     });
   });
 });

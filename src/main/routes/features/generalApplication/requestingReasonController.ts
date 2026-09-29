@@ -31,7 +31,7 @@ requestingReasonController.get(GA_REQUESTING_REASON_URL, (async (req: AppRequest
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
     const claimId = getRouteParam(req, 'id');
     const claim = await getClaimById(claimId, req, true);
-    const applicationIndex = queryParamNumber(req, 'index') || 0;
+    const applicationIndex = queryParamNumber(req, 'index') ?? 0;
     const generalApplication = claim.generalApplication;
     const applicationTypeOption = getByIndexOrLast(generalApplication?.applicationTypes, applicationIndex)?.option;
     const requestingReasonText = getByIndex(generalApplication?.requestingReasons, applicationIndex)?.text;
@@ -60,7 +60,7 @@ requestingReasonController.post(GA_REQUESTING_REASON_URL, (async (req: AppReques
     const claim = await getClaimById(claimId, req, true);
     const redisKey = generateRedisKey(<AppRequest>req);
     const requestingReason = new RequestingReason(req.body.text);
-    const applicationIndex = queryParamNumber(req, 'index') || 0;
+    const applicationIndex = queryParamNumber(req, 'index') ?? 0;
     const applicationTypeOption = getByIndexOrLast(claim.generalApplication?.applicationTypes, applicationIndex)?.option;
     const contentList = buildRequestingReasonPageContent(applicationTypeOption, lng);
     const backLinkUrl = BACK_URL;

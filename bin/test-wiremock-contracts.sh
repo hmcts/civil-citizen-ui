@@ -14,7 +14,7 @@ cleanup() {
 }
 trap cleanup EXIT INT TERM
 
-./node_modules/.bin/wiremock --root-dir "${root}" --port "${port}" >"${log_file}" 2>&1 &
+./bin/start-preview-wiremock.sh --root-dir "${root}" --port "${port}" >"${log_file}" 2>&1 &
 wiremock_pid=$!
 for _ in $(seq 1 60); do
   curl --fail --silent "${url}/__admin/mappings" >/dev/null 2>&1 && break
@@ -37,15 +37,79 @@ assert_status 200 POST '/dashboard/scenarios/Scenario.AAA6.ClaimIssue.ClaimSubmi
 assert_status 200 POST '/fees/claim/total-amount' '{"totalClaimAmount":1385}'
 assert_status 200 GET '/fees/claim/1385'
 assert_status 200 GET '/fees/hearing/1385'
+assert_status 200 GET '/fees-register/fees/lookup?service=other&jurisdiction1=civil&jurisdiction2=civil&channel=default&event=miscellaneous&keyword=AppnToVaryOrSuspend'
+cos_fee_response=$(curl --fail --silent "${url}/fees-register/fees/lookup?service=other&jurisdiction1=civil&jurisdiction2=civil&channel=default&event=miscellaneous&keyword=CoS")
+node -e 'const assert = require("node:assert/strict"); const fee = JSON.parse(process.argv[1]); assert.deepEqual(fee, {code: "FEE0459", description: "Issue of a certificate of satisfaction", fee_amount: 19, version: 4});' "${cos_fee_response}"
+assert_status 404 GET '/fees-register/fees/lookup?service=other&jurisdiction1=civil&jurisdiction2=civil&channel=default&event=general%20application&keyword=CoS'
 assert_status 200 POST '/cases/draft/citizen/test-user/event' '{"event":"CREATE_LIP_CLAIM","caseDataUpdate":{}}'
 assert_status 200 GET '/cases/1111222233334444/userCaseRoles'
 assert_status 200 GET '/cases/1111222233334444'
 assert_status 200 GET '/search/places/v1/postcode?postcode=MK5%207HH'
+service_request_body='{"case_reference":"000MC001","fees":[{"code":"FEE0209"}]}'
+service_request_response=$(curl --fail --silent --request POST --header 'Content-Type: application/json' --data "${service_request_body}" "${url}/service-request")
+second_service_request_response=$(curl --fail --silent --request POST --header 'Content-Type: application/json' --data "${service_request_body}" "${url}/service-request")
+service_request_reference=$(node -e 'console.log(JSON.parse(process.argv[1]).service_request_reference)' "${service_request_response}")
+second_service_request_reference=$(node -e 'console.log(JSON.parse(process.argv[1]).service_request_reference)' "${second_service_request_response}")
+if [ "${service_request_reference}" = "${second_service_request_reference}" ]; then
+  echo 'Expected each service request to return a unique reference' >&2
+  exit 1
+fi
+node bin/test-parallel-payment-contracts.js "${url}"
+assert_status 200 GET '/cases/documents/00000000-0000-4000-8000-000000000001'
+assert_status 200 GET '/cases/documents/00000000-0000-4000-8000-000000000001/binary'
+assert_status 204 DELETE '/cases/documents/00000000-0000-4000-8000-000000000001?permanent=true'
+attach_response=$(curl --fail --silent --request PATCH \
+  --header 'Content-Type: application/json' \
+  --data '{"caseId":"1111222233334444","caseTypeId":"CIVIL","jurisdictionId":"CIVIL","documentHashTokens":[{"id":"00000000-0000-4000-8000-000000000001","hashToken":"thin-client-document-hash"}]}' \
+  "${url}/cases/documents/attachToCase")
+if [ "${attach_response}" != '{"Result":"SUCCESS"}' ]; then
+  echo "Expected attach-to-case to return the CDAM response schema, got ${attach_response}" >&2
+  exit 1
+fi
+
+upload_document() {
+  curl --fail --silent \
+  --form 'classification=RESTRICTED' \
+  --form 'caseTypeId=CIVIL' \
+  --form 'jurisdictionId=CIVIL' \
+  --form 'files=@charts/civil-citizen-ui/wiremock/__files/create-claim-claim-fee.json;type=application/pdf' \
+  "${url}/cases/documents"
+}
+
+upload_response=$(upload_document)
+second_upload_response=$(upload_document)
+document_id=$(node -e 'const response=JSON.parse(process.argv[1]); console.log(response.documents[0]._links.self.href.split("/").pop())' "${upload_response}")
+second_document_id=$(node -e 'const response=JSON.parse(process.argv[1]); console.log(response.documents[0]._links.self.href.split("/").pop())' "${second_upload_response}")
+if [ "${document_id}" = "${second_document_id}" ]; then
+  echo 'Expected each multipart document upload to return a unique document ID' >&2
+  exit 1
+fi
+if ! grep --quiet "dm-store-aat.service.core-compute-aat.internal/documents/${document_id}" <<<"${upload_response}"; then
+  echo 'Expected multipart document upload to return a CCD-compatible DM Store link' >&2
+  exit 1
+fi
+metadata_response=$(curl --fail --silent "${url}/cases/documents/${document_id}")
+if ! grep --quiet "\"hashToken\":\"thin-client-${document_id}\"" <<<"${metadata_response}"; then
+  echo 'Expected document metadata to preserve the upload hash token' >&2
+  exit 1
+fi
 
 # Significant match rules must leave incorrect requests unmatched.
 assert_status 404 POST '/dashboard/scenarios/Scenario.WRONG/test-user' '{"params":{}}'
 assert_status 404 POST '/fees/claim/total-amount' '{"amount":1385}'
+assert_status 404 GET '/fees-register/fees/lookup?service=other&jurisdiction1=civil&jurisdiction2=civil&channel=default&event=miscellaneous&keyword=WrongKeyword'
 assert_status 404 POST '/cases/draft/citizen/test-user/event' '{"event":"WRONG_EVENT"}'
 assert_status 404 GET '/search/places/v1/postcode?postcode=SW1A%201AA'
+assert_status 404 POST '/service-request/2026-THIN-CLIENT-SERVICE-REQUEST/card-payments' '{"amount":115,"currency":"USD","return-url":"https://example.test/payment"}'
+assert_status 404 GET '/card-payments/RC-UNKNOWN/statuses'
+small_claims_fee_query='/fees-register/fees/lookup?service=civil%20money%20claims&jurisdiction1=civil&jurisdiction2=county%20court&channel=default&event=hearing&keyword=HearingSmallClaims&amount_or_volume=1500.00'
+small_claims_fee=$(curl --fail --silent "${url}${small_claims_fee_query}")
+node -e 'const assert = require("node:assert/strict"); const fee = JSON.parse(process.argv[1]); assert.equal(fee.code, "FEE0223"); assert.equal(fee.fee_amount, 123); assert.equal(fee.version, 8);' "${small_claims_fee}"
+assert_status 404 GET "${small_claims_fee_query/1500.00/3000.00}"
+assert_status 404 GET "${small_claims_fee_query/event=hearing/event=miscellaneous}"
+assert_status 404 GET '/thin-pay/confirm?return_url=https%3A%2F%2Fexample.test%2Fhearing-payment&amount=123'
+assert_status 404 POST '/service-request/small-claims-hearing/card-payments' '{"amount":123,"currency":"USD","return-url":"https://example.test/hearing-payment"}'
+assert_status 404 POST '/cases/documents' '{}'
+assert_status 404 PATCH '/cases/documents/attach-to-case' '{}'
 
 echo 'WireMock complete-set startup and positive/negative contract checks passed.'

@@ -49,8 +49,11 @@ for (const {mapping, source} of mappings) {
     url: urlMatchers.map(key => [key, request[key]]),
     queryParameters: request.queryParameters || {},
     headers: request.headers || {},
+    customMatcher: request.customMatcher,
     bodyPatterns: request.bodyPatterns || [],
     priority: mapping.priority,
+    scenarioName: mapping.scenarioName,
+    requiredScenarioState: mapping.requiredScenarioState,
   });
   if (signatures.has(signature)) errors.push(`${source}: conflicts with ${signatures.get(signature)}`);
   else signatures.set(signature, source);

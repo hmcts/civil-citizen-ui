@@ -462,8 +462,10 @@ describe('case Progression service', () => {
   describe('addAnother', () => {
     it.each([
       ['action-disclosure', 'documentsForDisclosure', TypeOfDocumentSection],
+      ['add_another-documentsForDisclosure', 'documentsForDisclosure', TypeOfDocumentSection],
       ['action-disclosureList', 'disclosureList', FileOnlySection],
       ['action-witness', 'witnessStatement', WitnessSection],
+      ['add_another-witnessStatement', 'witnessStatement', WitnessSection],
       ['action-witnessSummary', 'witnessSummary', WitnessSummarySection],
       ['action-noticeOfIntention', 'noticeOfIntention', WitnessSection],
       ['action-documentsReferred', 'documentsReferred', ReferredToInTheStatementSection],
@@ -507,6 +509,15 @@ describe('case Progression service', () => {
       addAnother(uploadDocuments, 'action-unknown');
 
       expect(uploadDocuments.documentsForDisclosure).toHaveLength(0);
+    });
+
+    it('initialises a missing array before adding a section', () => {
+      const uploadDocuments = new UploadDocumentsUserForm();
+
+      addAnother(uploadDocuments, 'add_another-documentsForDisclosure');
+
+      expect(uploadDocuments.documentsForDisclosure).toHaveLength(1);
+      expect(uploadDocuments.documentsForDisclosure[0]).toBeInstanceOf(TypeOfDocumentSection);
     });
   });
 });

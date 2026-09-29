@@ -12,6 +12,7 @@ import {getApplicationFromGAService} from 'services/features/generalApplication/
 import {Claim} from 'models/claim';
 import {getClaimById} from 'modules/utilityService';
 import {displayToEnumKey} from 'services/translation/convertToCUI/cuiTranslation';
+import {isUsablePathSegment} from 'common/utils/routeParamUtils';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('applicationFeePaymentConfirmationService');
@@ -24,7 +25,6 @@ export const getRedirectUrl = async (claimId: string, applicationId: string, req
     const applicationResponse: ApplicationResponse = await getApplicationFromGAService(req, applicationId);
     const claim: Claim = await getClaimById(claimId, req, true);
     const paymentReference = claim.generalApplication?.applicationFeePaymentDetails?.paymentReference;
-    const paymentStatus = await getGaFeePaymentStatus(applicationId, paymentReference, req);
     const isAdditionalFee = !!applicationResponse.case_data.generalAppPBADetails?.additionalPaymentServiceRef;
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
     const isCoscGa =  displayToEnumKey(applicationResponse.case_data.applicationTypes) === 'CONFIRM_CCJ_DEBT_PAID';
@@ -32,6 +32,15 @@ export const getRedirectUrl = async (claimId: string, applicationId: string, req
     const paymentCancelledUrl = isAdditionalFee
       ? `${GA_APPLY_HELP_ADDITIONAL_FEE_SELECTION_URL}?lang=${lang}`
       : `${GA_APPLY_HELP_WITH_FEE_SELECTION}?lang=${lang}`;
+
+    if (!isUsablePathSegment(paymentReference)) {
+      logger.info(`No payment reference for application ${applicationId}`);
+      return isCoscGa
+        ? `${GA_PAYMENT_UNSUCCESSFUL_COSC_URL}?lang=${lang}`
+        : `${GA_PAYMENT_UNSUCCESSFUL_URL}?lang=${lang}`;
+    }
+
+    const paymentStatus = await getGaFeePaymentStatus(applicationId, paymentReference, req);
 
     if(isCoscGa) {
       if(paymentStatus.status === success) {

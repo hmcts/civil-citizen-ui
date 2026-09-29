@@ -1,200 +1,154 @@
-import {app} from '../../../../../../main/app';
-import request from 'supertest';
-import config from 'config';
-import nock from 'nock';
-import {
-  CLAIM_EVIDENCE_URL,
-  CLAIMANT_TASK_LIST_URL,
-} from 'routes/urls';
-import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import {mockCivilClaim,mockRedisFailure} from '../../../../../utils/mockDraftStore';
+import {Response} from 'express';
+import claimantEvidenceController from '../../../../../../main/routes/features/claim/yourDetails/claimantEvidenceController';
+import {CLAIMANT_TASK_LIST_URL} from 'routes/urls';
+import {AppRequest} from 'models/AppRequest';
+import {GenericForm} from 'form/models/genericForm';
+import {ClaimDetails} from 'form/models/claim/details/claimDetails';
+import {Evidence} from 'form/models/evidence/evidence';
+import {EvidenceItem} from 'form/models/evidence/evidenceItem';
 import {EvidenceType} from 'models/evidence/evidenceType';
 import {FREE_TEXT_MAX_LENGTH} from 'form/validators/validationConstraints';
+import {getClaimDetails, saveClaimDetails} from 'services/features/claim/details/claimDetailsService';
+import {createMockResponse, createMockSession, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
-
-const civilClaimResponseMockWithNoEvidence =
-{
-  'case_data': {
-    'claimDetails': {
-      'evidence': {
-        'comment': '',
-        'evidenceItem': [{}],
-      },
-    },
-  },
-};
-
-const civilClaimResponseMock =
-{
-  'case_data': {
-    'claimDetails': {
-      'reason': '',
-      'evidence': {
-        'comment': '',
-        'evidenceItem': [
-          { 'type': 'Expert witness', 'description': 'Nam ac ante id turpis elementum laoreet.' },
-        ],
-      },
-    },
-  },
-};
-
-const civilClaimResponseMockWithMultipleEvidences =
-{
-  'case_data': {
-    'claimDetails': {
-      'reason': '',
-      'evidence': {
-        'comment': '',
-        'evidenceItem': [
-          { 'type': 'Expert witness', 'description': 'Nam ac ante id turpis elementum laoreet.' },
-          { 'type': 'Contracts and agreements', 'description': 'Nam ac ante id turpis elementum laoreet.' },
-          { 'type': 'Letters, emails and other correspondence', 'description': 'Nam ac ante id turpis elementum laoreet.' },
-          { 'type': 'Photo evidence', 'description': 'Nam ac ante id turpis elementum laoreet.' },
-          { 'type': 'Receipts', 'description': 'Nam ac ante id turpis elementum laoreet.' },
-          { 'type': 'Statements of account', 'description': 'Nam ac ante id turpis elementum laoreet.' },
-          { 'type': 'Expert witness', 'description': 'Nam ac ante id turpis elementum laoreet.' },
-        ],
-      },
-    },
-  },
-};
-
-const civilClaimResponseMockWithNoEvidenceItem: string = JSON.stringify(civilClaimResponseMockWithNoEvidence);
-const mockWithNoEvidence = {
-  set: jest.fn(() => Promise.resolve({})),
-  get: jest.fn(() => Promise.resolve(civilClaimResponseMockWithNoEvidenceItem)),
-  expireat: jest.fn(() => Promise.resolve({})),
-  ttl: jest.fn(() => Promise.resolve({})),
-};
-
-const civilClaimResponseMockWithOneEvidenceItem: string = JSON.stringify(civilClaimResponseMock);
-const mockWithLessThaFourEvidence = {
-  set: jest.fn(() => Promise.resolve({})),
-  get: jest.fn(() => Promise.resolve(civilClaimResponseMockWithOneEvidenceItem)),
-  expireat: jest.fn(() => Promise.resolve({})),
-  ttl: jest.fn(() => Promise.resolve({})),
-};
-
-const civilClaimResponseMockWithMoreThanOneEvidenceItem: string = JSON.stringify(civilClaimResponseMockWithMultipleEvidences);
-const mockWithMoreThaFourEvidence = {
-  set: jest.fn(() => Promise.resolve({})),
-  get: jest.fn(() => Promise.resolve(civilClaimResponseMockWithMoreThanOneEvidenceItem)),
-  expireat: jest.fn(() => Promise.resolve({})),
-  ttl: jest.fn(() => Promise.resolve({})),
-};
+jest.mock('services/features/claim/details/claimDetailsService', () => ({
+  getClaimDetails: jest.fn(),
+  saveClaimDetails: jest.fn(),
+}));
 
 describe('Claimant Evidence', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
-  app.request.cookies = {eligibilityCompleted: true};
+  const getHandler = getRouteHandler(claimantEvidenceController, 'get');
+  const postHandler = getRouteHandler(claimantEvidenceController, 'post');
+  const viewPath = 'features/claim/claimant-evidences';
+  const pageTitle = 'PAGES.EVIDENCE.PAGE_TITLE';
+  let req: Partial<AppRequest>;
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
+  const mockGetClaimDetails = getClaimDetails as jest.Mock;
+  const mockSaveClaimDetails = saveClaimDetails as jest.Mock;
+  const tooLongEvidenceDetails = Array(FREE_TEXT_MAX_LENGTH + 2).join('a');
+  const evidenceItem = [
+    {type: EvidenceType.CONTRACTS_AND_AGREEMENTS, description: 'Test evidence details'},
+    {type: null, description: ''},
+    {type: null, description: ''},
+    {type: null, description: ''},
+  ];
+  const evidenceItemInvalid = [
+    {type: EvidenceType.CONTRACTS_AND_AGREEMENTS, description: tooLongEvidenceDetails},
+    {type: null, description: ''},
+    {type: null, description: ''},
+    {type: null, description: ''},
+  ];
 
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
+  beforeEach(() => {
+    req = {
+      session: createMockSession({user: {id: 'user-id'}}),
+      body: {},
+      query: {},
+      cookies: {},
+    };
+    res = createMockResponse();
+    next = jest.fn();
+    mockGetClaimDetails.mockResolvedValue(new ClaimDetails());
+    mockSaveClaimDetails.mockResolvedValue(undefined);
   });
 
-  describe('on Get', () => {
-    it('should return on your evidence list page successfully', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
-      await request(app).get(CLAIM_EVIDENCE_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('List your evidence');
-        });
+  describe('on GET', () => {
+    it('should render evidence list page', async () => {
+      await getHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        pageTitle,
+        form: expect.any(GenericForm),
+      }));
     });
 
-    it('should return on your evidence list page successfully when no items saved', async () => {
-      app.locals.draftStoreClient = mockWithNoEvidence;
-      await request(app)
-        .get(CLAIM_EVIDENCE_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('List your evidence');
-        });
+    it('should render evidence list page when no items are saved', async () => {
+      const claimDetails = new ClaimDetails();
+      claimDetails.evidence = new Evidence('', [new EvidenceItem(null, '')]);
+      mockGetClaimDetails.mockResolvedValue(claimDetails);
+
+      await getHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        pageTitle,
+        form: expect.any(GenericForm),
+      }));
     });
 
-    it('should return on your evidence list page successfully when less than 4 items saved', async () => {
-      app.locals.draftStoreClient = mockWithLessThaFourEvidence;
-      await request(app)
-        .get(CLAIM_EVIDENCE_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('List your evidence');
-        });
+    it('should render evidence list page when less than 4 items are saved', async () => {
+      const claimDetails = new ClaimDetails();
+      claimDetails.evidence = new Evidence('', [
+        new EvidenceItem(EvidenceType.EXPERT_WITNESS, 'Nam ac ante id turpis elementum laoreet.'),
+      ]);
+      mockGetClaimDetails.mockResolvedValue(claimDetails);
+
+      await getHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        pageTitle,
+        form: expect.any(GenericForm),
+      }));
     });
 
-    it('should return on your evidence list page successfully when more than 4 items saved', async () => {
-      app.locals.draftStoreClient = mockWithMoreThaFourEvidence;
-      await request(app)
-        .get(CLAIM_EVIDENCE_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('List your evidence');
-        });
+    it('should render evidence list page when more than 4 items are saved', async () => {
+      const claimDetails = new ClaimDetails();
+      claimDetails.evidence = new Evidence('', [
+        new EvidenceItem(EvidenceType.EXPERT_WITNESS, 'Nam ac ante id turpis elementum laoreet.'),
+        new EvidenceItem(EvidenceType.CONTRACTS_AND_AGREEMENTS, 'Nam ac ante id turpis elementum laoreet.'),
+        new EvidenceItem(EvidenceType.CORRESPONDENCE, 'Nam ac ante id turpis elementum laoreet.'),
+        new EvidenceItem(EvidenceType.PHOTO, 'Nam ac ante id turpis elementum laoreet.'),
+        new EvidenceItem(EvidenceType.RECEIPTS, 'Nam ac ante id turpis elementum laoreet.'),
+        new EvidenceItem(EvidenceType.STATEMENT_OF_ACCOUNT, 'Nam ac ante id turpis elementum laoreet.'),
+        new EvidenceItem(EvidenceType.EXPERT_WITNESS, 'Nam ac ante id turpis elementum laoreet.'),
+      ]);
+      mockGetClaimDetails.mockResolvedValue(claimDetails);
+
+      await getHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        pageTitle,
+        form: expect.any(GenericForm),
+      }));
     });
 
-    it('should return 500 status code when error occurs', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .get(CLAIM_EVIDENCE_URL)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+    it('should call next when loading claim details fails', async () => {
+      const error = new Error('error');
+      mockGetClaimDetails.mockRejectedValue(error);
+
+      await getHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 
-  describe('on Post', () => {
-    const tooLongEvidenceDetails: string = Array(FREE_TEXT_MAX_LENGTH + 2).join('a');
-    const EVIDENCE_ITEM = [
-      {'type': EvidenceType.CONTRACTS_AND_AGREEMENTS, 'description': 'Test evidence details'},
-      {'type': null, 'description': ''},
-      {'type': null, 'description': ''},
-      {'type': null, 'description': ''},
-    ];
+  describe('on POST', () => {
+    it('should re-render when evidence description is longer than the max length', async () => {
+      req.body = {evidenceItem: evidenceItemInvalid};
 
-    const EVIDENCE_ITEM_INVALID = [
-      {'type': EvidenceType.CONTRACTS_AND_AGREEMENTS, 'description': tooLongEvidenceDetails},
-      {'type': null, 'description': ''},
-      {'type': null, 'description': ''},
-      {'type': null, 'description': ''},
-    ];
+      await postHandler(req as AppRequest, res as unknown as Response, next);
 
-    it('should return errors when comment max length is greater than 99000 characters', async () => {
-      app.locals.draftStoreClient = mockWithLessThaFourEvidence;
-      await request(app)
-        .post(CLAIM_EVIDENCE_URL)
-        .send({evidenceItem: EVIDENCE_ITEM_INVALID})
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.VALID_TEXT_LENGTH);
-        });
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({form: expect.any(GenericForm)}));
+      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
     });
 
-    it('should redirect with empties input and redirect to task list', async () => {
-      app.locals.draftStoreClient = mockWithLessThaFourEvidence;
-      await request(app)
-        .post(CLAIM_EVIDENCE_URL)
-        .send({evidenceItem: []})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CLAIMANT_TASK_LIST_URL);
-        });
+    it('should redirect to task list when evidence items are empty', async () => {
+      req.body = {evidenceItem: []};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(mockSaveClaimDetails).toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(CLAIMANT_TASK_LIST_URL);
     });
 
-    it('should return status 500 when there is error', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .post(CLAIM_EVIDENCE_URL)
-        .send({evidenceItem: EVIDENCE_ITEM})
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+    it('should call next when save fails', async () => {
+      const error = new Error('error');
+      mockSaveClaimDetails.mockRejectedValue(error);
+      req.body = {evidenceItem};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 });

@@ -29,6 +29,9 @@ civil-service:
         enabled: true
     ccd-message-publisher:
       java:
+        livenessDelay: 0
+        startupPeriod: 120
+        startupFailureThreshold: 3
         ingressHost: ccd-message-publisher-${SERVICE_FQDN}
         releaseNameOverride: ${SERVICE_NAME}-ccd-message-publisher
         keyVaults:

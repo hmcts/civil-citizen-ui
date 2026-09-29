@@ -13,11 +13,19 @@ import {getRedirectUrl} from 'services/features/generalApplication/payment/appli
 import {GaServiceClient} from 'client/gaServiceClient';
 import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
 import * as generalApplicationService from 'services/features/generalApplication/generalApplicationService';
+import {Claim} from 'models/claim';
+import {GeneralApplication} from 'models/generalApplication/GeneralApplication';
+import {PaymentInformation} from 'models/feePayment/paymentInformation';
+import {getClaimById} from 'modules/utilityService';
 
 jest.mock('modules/draft-store');
 jest.mock('services/features/directionsQuestionnaire/directionQuestionnaireService');
 jest.mock('services/features/generalApplication/generalApplicationService', () => ({
   getApplicationFromGAService: jest.fn(), getGaFeePaymentRedirectInformation: jest.fn(),
+}));
+jest.mock('modules/utilityService', () => ({
+  getClaimById: jest.fn(),
+  getRedisStoreForSession: jest.fn(),
 }));
 
 declare const appRequest: requestModels.AppRequest;
@@ -57,6 +65,15 @@ describe('Application Fee PaymentConfirmation Service', () => {
       last_modified: '',
       state: undefined,
     };
+    (getClaimById as jest.Mock).mockResolvedValue((() => {
+      const claim = new Claim();
+      claim.generalApplication = new GeneralApplication();
+      claim.generalApplication.applicationFeePaymentDetails = new PaymentInformation(
+        undefined,
+        'RC-1701-0909-0602-0418',
+      );
+      return claim;
+    })());
   });
   app.locals.draftStoreClient = mockCivilClaim;
   jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
@@ -181,11 +198,7 @@ describe('Application Fee PaymentConfirmation Service', () => {
   });
 
   it('should return 500 error page for any service error', async () => {
-    const mockClaimFeePaymentRedirectInfo = {
-      status: 'initiated',
-      paymentReference:'RC-1701-0909-0602-0418',
-    };
-    jest.spyOn(GaServiceClient.prototype, 'getGaFeePaymentRedirectInformation').mockResolvedValueOnce(mockClaimFeePaymentRedirectInfo);
+    jest.spyOn(generalApplicationService, 'getApplicationFromGAService').mockResolvedValueOnce(applicationResponse);
     jest.spyOn(GaServiceClient.prototype, 'getGaFeePaymentStatus').mockRejectedValueOnce(TestMessages.SOMETHING_WENT_WRONG);
 
     //Then
@@ -240,5 +253,17 @@ describe('Application Fee PaymentConfirmation Service', () => {
 
     //Then
     expect(actualPaymentRedirectUrl).toBe(GA_PAYMENT_UNSUCCESSFUL_COSC_URL+lang);
+  });
+
+  it('should return to Payment Unsuccessful page when payment reference is missing', async () => {
+    (getClaimById as jest.Mock).mockResolvedValueOnce(new Claim());
+    jest.spyOn(generalApplicationService, 'getApplicationFromGAService').mockResolvedValueOnce(applicationResponse);
+    const getGaFeePaymentStatus = jest.spyOn(GaServiceClient.prototype, 'getGaFeePaymentStatus');
+    getGaFeePaymentStatus.mockClear();
+
+    const actualPaymentRedirectUrl = await getRedirectUrl(claimId, applicationId, mockedAppRequest);
+
+    expect(actualPaymentRedirectUrl).toBe(GA_PAYMENT_UNSUCCESSFUL_URL+lang);
+    expect(getGaFeePaymentStatus).not.toHaveBeenCalled();
   });
 });

@@ -5,6 +5,7 @@
 {% from "../../../macro/yesNoGenericForm.njk" import yesNoRadioButton %}
 {% from "../../../macro/page-title.njk" import setPageTitle %}
 {% from "../../../macro/error-summary.njk" import errorSummary %}
+{% import "external-urls.njk" as externalURLs %}
 
 {% block pageTitle %}
   {{ setPageTitle(t, pageTitle) }}
@@ -20,13 +21,17 @@
         <div class="govuk-grid-column-two-thirds">
           <h1 class="govuk-heading-l">{{t('PAGES.ELIGIBILITY_HELP_WITH_FEES.TITLE')}}</h1>
           <p class="govuk-body-m">{{ t('PAGES.ELIGIBILITY_HELP_WITH_FEES.FINANCIAL_HELP') }}</p>
+          <p class="govuk-body-m">{{ t('PAGES.ELIGIBILITY_HELP_WITH_FEES.COURT_CALCULATOR_HELP') }}</p>
+          <p class="govuk-body-m">
+            <a class="govuk-link" target="_blank" rel="noopener noreferrer" href="{{ externalURLs.ex160cCalculatorUrl }}">{{ t('PAGES.ELIGIBILITY_HELP_WITH_FEES.FEE_REMISSION_CALCULATOR_LINK') }}</a>
+          </p>
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
              <fieldset class="govuk-fieldset">
                 <legend class="govuk-visually-hidden">
                  {{ t('PAGES.ELIGIBILITY_HELP_WITH_FEES.TITLE') }}
                 </legend>
-            {{ yesNoRadioButton(t, 'option', 'option', '', form, '', {classes: 'govuk-radios--inline'}) }}
+            {{ yesNoRadioButton(t, 'option', 'option', '', form, '', {classes: 'govuk-radios--inline', yes: 'COMMON.VARIATION_2.YES', no: 'COMMON.VARIATION_2.NO'}) }}
            </fieldset>
             <div class="govuk-form-group">
               {{ govukButton({

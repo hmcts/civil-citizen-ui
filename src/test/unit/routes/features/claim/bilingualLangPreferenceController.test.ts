@@ -1,125 +1,108 @@
-import {app} from '../../../../../main/app';
-import request from 'supertest';
-import config from 'config';
-import nock from 'nock';
-import {CLAIM_BILINGUAL_LANGUAGE_PREFERENCE_URL, CLAIMANT_TASK_LIST_URL} from 'routes/urls';
-import {TestMessages} from '../../../../utils/errorMessageTestConstants';
-import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
+import {Response} from 'express';
+import claimBilingualLangPreferenceController from '../../../../../main/routes/features/claim/bilingualLangPreferenceController';
+import {CLAIMANT_TASK_LIST_URL} from 'routes/urls';
 import {ClaimBilingualLanguagePreference} from 'common/models/claimBilingualLanguagePreference';
-import {t} from 'i18next';
+import {AppRequest} from 'models/AppRequest';
+import {GenericForm} from 'form/models/genericForm';
+import {Claim} from 'models/claim';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
-import  {CivilServiceClient} from 'client/civilServiceClient';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {CivilServiceClient} from 'client/civilServiceClient';
+import {saveClaimantBilingualLangPreference} from 'services/features/response/bilingualLangPreferenceService';
+import * as launchDarklyClient from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
+import {createMockResponse, createMockSession, getRouteHandler} from '../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../main/modules/oidc');
+jest.mock('modules/draft-store/draftStoreService');
+jest.mock('services/features/response/bilingualLangPreferenceService', () => ({
+  saveClaimantBilingualLangPreference: jest.fn(),
+  getCookieLanguage: jest.fn((welshEnabled: boolean, option: string) => option),
+}));
+jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
+
+const flush = (): Promise<void> => new Promise((resolve) => setImmediate(resolve));
 
 describe('Bilingual language preference', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
-  app.request.cookies = {eligibilityCompleted: true};
+  const getHandler = getRouteHandler(claimBilingualLangPreferenceController, 'get');
+  const postHandler = getRouteHandler(claimBilingualLangPreferenceController, 'post');
+  const viewPath = 'features/claim/claim-bilingual-language-preference';
+  let req: Partial<AppRequest>;
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
 
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
-    jest.spyOn(CivilServiceClient.prototype, 'createDashboard').mockReturnValue(null);
+  beforeEach(() => {
+    req = {
+      params: {id: 'claim-id'},
+      session: createMockSession({user: {id: 'user-id'}}),
+      body: {},
+      query: {},
+      cookies: {},
+    };
+    res = createMockResponse();
+    next = jest.fn();
+    const draftClaim = new Claim();
+    draftClaim.draftClaimCreatedAt = new Date();
+    (getCaseDataFromStore as jest.Mock).mockResolvedValue(draftClaim);
+    (saveClaimantBilingualLangPreference as jest.Mock).mockResolvedValue(undefined);
+    (launchDarklyClient.isWelshEnabledForMainCase as jest.Mock).mockResolvedValue(false);
+    jest.spyOn(draftStoreService, 'createDraftClaimInStoreWithExpiryTime').mockResolvedValue(undefined);
+    jest.spyOn(CivilServiceClient.prototype, 'createDashboard').mockResolvedValue(undefined as never);
   });
 
-  describe('on Get', () => {
-    it('should return on bilingual language preference page successfully', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
-      await request(app).get(CLAIM_BILINGUAL_LANGUAGE_PREFERENCE_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('PAGES.CLAIM_BILINGUAL_LANGUAGE_PREFERENCE.DESCRIPTION_1'));
-        });
+  describe('on GET', () => {
+    it('should render bilingual language preference', async () => {
+      await getHandler(req as AppRequest, res as unknown as Response, next);
+      await flush();
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        pageTitle: 'PAGES.CLAIM_BILINGUAL_LANGUAGE_PREFERENCE.PAGE_TITLE',
+        form: expect.any(GenericForm),
+      }));
     });
 
-    it('should return 500 status code when error occurs', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .get(CLAIM_BILINGUAL_LANGUAGE_PREFERENCE_URL)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
-    });
+    it('should call next when loading the claim fails', async () => {
+      const error = new Error('error');
+      (getCaseDataFromStore as jest.Mock).mockRejectedValue(error);
 
-    it('should return http 500 when has error in the get method', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .get(CLAIM_BILINGUAL_LANGUAGE_PREFERENCE_URL)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
-    });
-  });
+      await getHandler(req as AppRequest, res as unknown as Response, next);
+      await flush();
 
-  describe('on Post', () => {
-    it('should return errors when option is not selected', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
-      await request(app)
-        .post(CLAIM_BILINGUAL_LANGUAGE_PREFERENCE_URL)
-        .send({})
-        .expect((res) => {
-          expect(res.status).toBe(200);
-        });
-    });
-
-    it('should redirect with bilingual language preference set to ENGLISH and redirect to task list', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
-      await request(app)
-        .post(CLAIM_BILINGUAL_LANGUAGE_PREFERENCE_URL)
-        .send({option: ClaimBilingualLanguagePreference.ENGLISH})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CLAIMANT_TASK_LIST_URL);
-        });
-    });
-
-    it('should redirect with with bilingual language preference set to WELSH_AND_ENGLISH and redirect to task list', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
-      await request(app)
-        .post(CLAIM_BILINGUAL_LANGUAGE_PREFERENCE_URL)
-        .send({option: ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CLAIMANT_TASK_LIST_URL);
-        });
-    });
-
-    it('should return status 500 when there is error with bilingual language preference set to ENGLISH', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .post(CLAIM_BILINGUAL_LANGUAGE_PREFERENCE_URL)
-        .send({option: ClaimBilingualLanguagePreference.ENGLISH})
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
-    });
-
-    it('should return status 500 when there is error with bilingual language preference set to WELSH_AND_ENGLISH', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .post(CLAIM_BILINGUAL_LANGUAGE_PREFERENCE_URL)
-        .send({option: ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH})
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 
-  it('should return http 500 when has error in the post method', async () => {
-    app.locals.draftStoreClient = mockRedisFailure;
-    await request(app)
-      .post(CLAIM_BILINGUAL_LANGUAGE_PREFERENCE_URL)
-      .expect((res) => {
-        expect(res.status).toBe(500);
-        expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-      });
-  });
+  describe('on POST', () => {
+    it('should re-render when option is not selected', async () => {
+      await postHandler(req as AppRequest, res as unknown as Response, next);
 
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({form: expect.any(GenericForm)}));
+      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
+    });
+
+    it('should redirect to task list when ENGLISH is selected', async () => {
+      req.body = {option: ClaimBilingualLanguagePreference.ENGLISH};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(saveClaimantBilingualLangPreference).toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(CLAIMANT_TASK_LIST_URL);
+    });
+
+    it('should redirect to task list when WELSH_AND_ENGLISH is selected', async () => {
+      req.body = {option: ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.redirect).toHaveBeenCalledWith(CLAIMANT_TASK_LIST_URL);
+    });
+
+    it('should call next when save fails', async () => {
+      const error = new Error('error');
+      (saveClaimantBilingualLangPreference as jest.Mock).mockRejectedValue(error);
+      req.body = {option: ClaimBilingualLanguagePreference.ENGLISH};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
+    });
+  });
 });

@@ -41,8 +41,20 @@ jest.mock('services/features/generalApplication/generalApplicationService', () =
   deleteGAFromClaimsByUserId: jest.fn().mockResolvedValue(undefined),
   getByIndex: jest.fn(),
   getCancelUrl: jest.fn().mockResolvedValue('/dashboard'),
+  resolveApplicationTypeIndexForGet: jest.fn((_req, claim) =>
+    claim.generalApplication?.applicationTypes?.length === 1 ? 0 : undefined,
+  ),
+  resolveApplicationTypeIndexForPost: jest.fn((req, claim) =>
+    req.query.index !== undefined
+      ? Number(req.query.index)
+      : claim.generalApplication?.applicationTypes?.length === 1 ? 0 : undefined,
+  ),
   saveApplicationType: jest.fn().mockResolvedValue(undefined),
+  isChangeScreenFromCya: jest.fn((req) => req.query.changeScreen === 'true'),
+  startApplicationTypeChangeFromCya: jest.fn().mockResolvedValue(undefined),
+  validateAdditionalApplicationType: jest.fn(),
   validateAdditionalApplicationtType: jest.fn(),
+  addChangeScreenToUrlIfPresent: jest.fn((url: string) => url),
   getDynamicHeaderForMultipleApplications: jest.fn(() => 'Application 1'),
   saveRespondentAgreement: jest.fn().mockResolvedValue(undefined),
 }));

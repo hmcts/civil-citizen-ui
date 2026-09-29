@@ -1,62 +1,63 @@
-import {CLAIM_FEE_PAYMENT_CONFIRMATION_URL,CLAIM_FEE_PAYMENT_CONFIRMATION_URL_WITH_UNIQUE_ID} from 'routes/urls';
+import {Response} from 'express';
+import claimFeePaymentConfirmationController from '../../../../../../main/routes/features/claim/payment/claimFeePaymentConfirmationController';
+import {CLAIM_FEE_PAYMENT_CONFIRMATION_URL, CLAIM_FEE_PAYMENT_CONFIRMATION_URL_WITH_UNIQUE_ID} from 'routes/urls';
+import {AppRequest} from 'models/AppRequest';
+import {getRedirectUrl} from 'services/features/claim/payment/claimFeePaymentConfirmationService';
+import {deleteUserId} from 'modules/draft-store/paymentSessionStoreService';
+import {FeeType} from 'form/models/helpWithFees/feeType';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {createMockResponse, createMockSession, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
-import nock from 'nock';
-import request from 'supertest';
-import config from 'config';
-import {app} from '../../../../../../main/app';
-import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import * as claimFeePaymentConfirmationService from 'services/features/claim/payment/claimFeePaymentConfirmationService';
-import {Session} from 'express-session';
-
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store/paymentSessionStoreService', () => ({
-  saveUserId: jest.fn(),
-  getUserId: jest.fn(),
-  saveOriginalPaymentConfirmationUrl: jest.fn(),
-  getPaymentConfirmationUrl: jest.fn(),
-  deleteUserId: jest.fn(),
-  deletePaymentConfirmationUrl: jest.fn(),
+jest.mock('services/features/claim/payment/claimFeePaymentConfirmationService', () => ({
+  getRedirectUrl: jest.fn(),
 }));
-jest.mock('../../../../../../main/modules/draft-store/draftStoreService', () => ({
-  getCaseDataFromStore: jest.fn(),
-  generateRedisKey: jest.fn(),
-  saveDraftClaim: jest.fn(),
-  deleteDraftClaimFromStore: jest.fn(),
+jest.mock('modules/draft-store/paymentSessionStoreService', () => ({
+  deleteUserId: jest.fn(),
 }));
 
 describe('Claim Fees - Payment Status', () => {
-  const idamServiceUrl: string = config.get('services.idam.url');
-  const citizenRoleToken: string = config.get('citizenRoleToken');
+  const getHandler = getRouteHandler(claimFeePaymentConfirmationController, 'get');
+  const claimId = 'claim-id';
+  let req: Partial<AppRequest>;
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
+  const mockGetRedirectUrl = getRedirectUrl as jest.Mock;
+  const mockDeleteUserId = deleteUserId as jest.Mock;
 
-  beforeAll(() => {
-    nock(idamServiceUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
+  beforeEach(() => {
+    req = {
+      params: {id: claimId},
+      session: createMockSession({user: {id: 'user-id'}}),
+      query: {},
+      cookies: {},
+    };
+    res = createMockResponse();
+    next = jest.fn();
+    mockGetRedirectUrl.mockResolvedValue('/payment-successful');
+    mockDeleteUserId.mockResolvedValue(undefined);
   });
 
   describe('on GET', () => {
     it.each([
       CLAIM_FEE_PAYMENT_CONFIRMATION_URL,
       CLAIM_FEE_PAYMENT_CONFIRMATION_URL_WITH_UNIQUE_ID,
-    ])('should redirect user to success/failure page when url is %s', async (url) => {
-      jest.spyOn(claimFeePaymentConfirmationService,'getRedirectUrl').mockResolvedValueOnce('12354');
-      app.request['session'] = {user: {id: 'jfkdljfd'}} as unknown as Session;
-      await request(app)
-        .get(url)
-        .expect((res) => {
-          expect(res.status).toBe(302);
-        });
+    ])('should redirect the user to the success or failure page when url is %s', async () => {
+      const handler = getRouteHandler(claimFeePaymentConfirmationController, 'get');
+
+      await handler(req as AppRequest, res as unknown as Response, next);
+
+      expect(mockGetRedirectUrl).toHaveBeenCalledWith(claimId, req);
+      expect(mockDeleteUserId).toHaveBeenCalledWith(claimId, FeeType.CLAIMISSUED);
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, '/payment-successful'));
     });
 
-    it('should return 500 error page for any service error', async () => {
-      jest.spyOn(claimFeePaymentConfirmationService,'getRedirectUrl').mockRejectedValueOnce(TestMessages.SOMETHING_WENT_WRONG);
-      await request(app)
-        .get(CLAIM_FEE_PAYMENT_CONFIRMATION_URL)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+    it('should call next when getRedirectUrl fails', async () => {
+      const error = new Error('error');
+      mockGetRedirectUrl.mockRejectedValue(error);
+
+      await getHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
-
 });
