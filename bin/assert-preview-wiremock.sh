@@ -10,10 +10,6 @@ readonly raw_dir="$(mktemp -d "${TMPDIR:-/tmp}/cui-wiremock-verification.XXXXXX"
 trap 'rm -rf "${raw_dir}"' EXIT
 
 curl --fail --silent --show-error \
-  "${WIREMOCK_URL}/__admin/requests" \
-  > "${raw_dir}/all-requests.json"
-
-curl --fail --silent --show-error \
   "${WIREMOCK_URL}/__admin/requests/unmatched" \
   > "${raw_dir}/unmatched-requests.json"
 
