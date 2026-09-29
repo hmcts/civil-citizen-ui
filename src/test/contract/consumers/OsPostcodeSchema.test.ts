@@ -4,7 +4,7 @@ import nock from 'nock';
 import {readFileSync} from 'fs';
 import {resolve} from 'path';
 import {AssertionError} from 'assert';
-import {lookupByPostcodeAndDataSet} from 'modules/ordance-survey-key/ordanceSurveyKeyService';
+import {lookupByPostcodeAndDataSet} from 'modules/ordnance-survey-key/ordnanceSurveyKeyService';
 
 const apiUrl = 'https://os-places.synthetic.test';
 const apiKey = 'synthetic-os-api-key';
