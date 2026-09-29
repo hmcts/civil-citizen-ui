@@ -58,7 +58,7 @@ import {getHearingDocumentsCaseDocumentIdByType} from 'models/caseProgression/ca
 import { t } from 'i18next';
 import {DashboardNotification} from 'models/dashboard/dashboardNotification';
 import {getLng} from 'common/utils/languageToggleUtils';
-import {LinKFromValues} from 'models/generalApplication/applicationType';
+import {LinkFromValues} from 'models/generalApplication/applicationType';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 
 const replaceId = (url: string, claimId: string) => url.replace(':id', claimId);
@@ -151,7 +151,7 @@ export const populateDashboardValues = async (claim: Claim, claimId: string, ful
   valuesMap.set('{REQUEST_FOR_RECONSIDERATION}', replaceId(REQUEST_FOR_RECONSIDERATION_URL,claimId));
   valuesMap.set('{REQUEST_FOR_RECONSIDERATION_COMMENTS}', replaceId(REQUEST_FOR_RECONSIDERATION_COMMENTS_URL,claimId));
   valuesMap.set('{VIEW_SDO_DOCUMENT}', systemGeneratedDocOrAwaitingTranslation(DocumentType.SDO_ORDER));
-  valuesMap.set('{GENERAL_APPLICATIONS_INITIATION_PAGE_URL}', replaceId(APPLICATION_TYPE_URL, claimId) + `?linkFrom=${LinKFromValues.start}`);
+  valuesMap.set('{GENERAL_APPLICATIONS_INITIATION_PAGE_URL}', replaceId(APPLICATION_TYPE_URL, claimId) + `?linkFrom=${LinkFromValues.start}`);
   valuesMap.set('{VIEW_MEDIATION_DOCUMENTS}', replaceId(VIEW_MEDIATION_DOCUMENTS,claimId));
   valuesMap.set('{CONFIRM_YOU_HAVE_BEEN_PAID_URL}', replaceId(CONFIRM_YOU_HAVE_BEEN_PAID_URL,claimId));
   valuesMap.set('{VIEW_REQUEST_FOR_RECONSIDERATION_DOCUMENT}', caseDocViewUrl(claimId, documentIdExtractor(getRequestForReconsiderationDocument(claim))));

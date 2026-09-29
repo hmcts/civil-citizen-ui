@@ -67,7 +67,7 @@ describe('Civil Service payments and Help with Fees', () => {
     // The existing claim-issue and GA success interactions are reused.
     test.each(kind === 'HEARING' ? ['Success', 'Failed', 'Initiated', 'Pending'] : ['Failed', 'Initiated', 'Pending'])('preserves the case-sensitive %s status', async status => {
       const body: Record<string, string | number | null> = {externalReference: '2023-1701090705688', paymentReference: PAYMENT_REFERENCE,
-        status, paymentAmount: 200, paymentFor: kind === 'GA' ? null : kind.toLowerCase(), nextUrl: null,
+        status, paymentAmount: 200, nextUrl: null,
         errorCode: status === 'Failed' ? 'P010' : null,
         errorDescription: status === 'Failed' ? 'Payment was cancelled by the user' : null};
       provider.addInteraction({states: [{description: `The ${kind} payment status is ${status}`}],

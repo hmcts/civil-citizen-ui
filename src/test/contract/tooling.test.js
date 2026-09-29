@@ -2,7 +2,7 @@ const { mkdtempSync, readFileSync, writeFileSync, rmSync, mkdirSync } = require(
 const { tmpdir } = require('os');
 const { join, resolve } = require('path');
 const { spawnSync } = require('child_process');
-const { clean, validate } = require('./artifacts');
+const { clean, canonicalize, validate } = require('./artifacts');
 const inventory = require('./interaction-inventory.json');
 
 let directory;
@@ -34,6 +34,31 @@ test('cleans previous artifacts before generation', () => {
   writeFileSync(join(directory, 'obsolete-provider.json'), '{}');
   clean(directory);
   expect(require('fs').readdirSync(directory)).toEqual([]);
+});
+
+test('canonicalizes random multipart boundaries without changing uploaded bytes', () => {
+  const pactFile = join(directory, 'civil_citizen_ui-civil_service.json');
+  const makePact = boundary => ({
+    consumer: { name: 'civil_citizen_ui' }, provider: { name: 'civil_service' },
+    metadata: { pactSpecification: { version: '4.0' } },
+    interactions: [{
+      description: 'a multipart citizen document upload',
+      request: {
+        headers: { 'Content-Type': [`multipart/form-data; boundary=${boundary}`] },
+        body: { content: Buffer.from(`--${boundary}\r\nfile-bytes\r\n--${boundary}--\r\n`, 'latin1').toString('base64'), encoded: 'base64' },
+      },
+    }],
+  });
+  writeFileSync(pactFile, JSON.stringify(makePact('randomBoundaryOne')));
+  canonicalize(directory);
+  const first = readFileSync(pactFile, 'utf8');
+  writeFileSync(pactFile, JSON.stringify(makePact('randomBoundaryTwo')));
+  canonicalize(directory);
+  expect(readFileSync(pactFile, 'utf8')).toBe(first);
+  const pact = JSON.parse(first);
+  expect(pact.interactions[0].request.headers['Content-Type'][0]).toContain('boundary=cui-contract-boundary');
+  expect(Buffer.from(pact.interactions[0].request.body.content, 'base64').toString('latin1'))
+    .toContain('file-bytes');
 });
 
 test('rejects parallel execution before cleaning artifacts', () => {

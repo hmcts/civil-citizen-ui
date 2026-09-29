@@ -531,7 +531,8 @@ civil-service:
           DEFINITION_STORE_DB_HOST: "{{ .Values.global.postgresHostname }}"
           DEFINITION_STORE_DB_USERNAME: "{{ .Values.global.postgresUsername }}"
           DEFINITION_STORE_IDAM_KEY: ${CCD_DEFINITION_STORE_S2S_SECRET}
-          DEFINITION_STORE_TX_TIMEOUT_DEFAULT: 60
+          # Allow the Civil definition import to finish on preview resources.
+          DEFINITION_STORE_TX_TIMEOUT_DEFAULT: 300
           WELSH_TRANSLATION_ENABLED: false
           IDAM_USER_URL: https://idam-web-public.aat.platform.hmcts.net
           ELASTIC_SEARCH_ENABLED: true

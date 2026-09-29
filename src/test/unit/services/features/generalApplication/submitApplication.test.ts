@@ -102,6 +102,25 @@ describe('Submit application to ccd', () => {
     expect(CivilServiceClientServiceMock).not.toBeCalled();
   });
 
+  it('should reject duplicate application types before civil-service submit', async () => {
+    const invalidClaim = new Claim();
+    invalidClaim.generalApplication = new GeneralApplication();
+    invalidClaim.generalApplication.applicationTypes = [
+      new ApplicationType(ApplicationTypeOption.VARY_ORDER),
+      new ApplicationType(ApplicationTypeOption.VARY_ORDER),
+    ];
+    mockGetClaim.mockImplementation(() => invalidClaim);
+    const CivilServiceClientServiceMock = jest
+      .spyOn(CivilServiceClient.prototype, 'submitInitiateGeneralApplicationEvent')
+      .mockResolvedValue(claim);
+    CivilServiceClientServiceMock.mockClear();
+    (req as AppRequest).params = {id: '123'};
+
+    await expect(submitApplication(req as AppRequest)).rejects.toThrow('Invalid general application type selected');
+
+    expect(CivilServiceClientServiceMock).not.toBeCalled();
+  });
+
   it('should return http 500 when has error in the get method', async () => {
     mockGetClaim.mockImplementation(() => {
       throw new Error(TestMessages.REDIS_FAILURE);
