@@ -120,7 +120,7 @@ describe('getClaimIssuePaymentClaim', () => {
     const result = await getClaimIssuePaymentClaim(req);
 
     expect(retrieveClaimDetailsSpy).toHaveBeenCalledWith(claimId, req);
-    expect(ccdClaim.draftClaimCacheTtlDays).toBe(getTTLDaysForCategory(TTLCategory.JOURNEY_CACHE));
+    expect(ccdClaim.draftClaimCacheTtlDays).toBe(getTTLDaysForCategory(TTLCategory.DRAFT_CLAIM));
     expect(mockCreateOrLoadDraft).toHaveBeenCalledWith(req, ccdClaim);
     expect(mockUpdateDraftClaim).toHaveBeenCalledWith(req, ccdClaim, draftId);
     expect(result.claim).toBe(ccdClaim);

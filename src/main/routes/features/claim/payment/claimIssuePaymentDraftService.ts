@@ -48,7 +48,7 @@ export const getClaimIssuePaymentClaim = async (req: AppRequest): Promise<ClaimI
   }
 
   ccdClaim.id = claimId;
-  ccdClaim.draftClaimCacheTtlDays = getTTLDaysForCategory(TTLCategory.JOURNEY_CACHE);
+  ccdClaim.draftClaimCacheTtlDays = getTTLDaysForCategory(TTLCategory.DRAFT_CLAIM);
 
   const created = await createOrLoadDraft(req, ccdClaim);
   const draftId = req.session?.draftId || created.rawResponse?.draftId;
