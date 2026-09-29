@@ -28,6 +28,22 @@ describe('Check Answers response service', () => {
       const summaryRows = getSummarySections('123455', claim,'en', false);
       expect(summaryRows.length).toBe(5);
     });
+
+    it('returns null when the create-query draft is missing', () => {
+      const claim = new Claim();
+      claim.queryManagement = new QueryManagement();
+      claim.queryManagement.createQuery = null;
+
+      expect(getSummarySections('123455', claim, 'en', false)).toBeNull();
+    });
+
+    it('returns null when query management is missing', () => {
+      const claim = new Claim();
+      claim.queryManagement = null;
+
+      expect(getSummarySections('123455', claim, 'en', false)).toBeNull();
+      expect(getSummarySections('123455', claim, 'en', true, 'query-id')).toBeNull();
+    });
   });
 
   describe('getSummarySections for follow up query', () => {
@@ -43,6 +59,14 @@ describe('Check Answers response service', () => {
       } as UploadQMAdditionalFile];
       const summaryRows = getSummarySections('123455', claim,'en', true);
       expect(summaryRows.length).toBe(2);
+    });
+
+    it('returns null when the follow-up draft is missing', () => {
+      const claim = new Claim();
+      claim.queryManagement = new QueryManagement();
+      claim.queryManagement.sendFollowUpQuery = null;
+
+      expect(getSummarySections('123455', claim, 'en', true, 'query-id')).toBeNull();
     });
   });
 
