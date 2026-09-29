@@ -1,5 +1,9 @@
+const {date} = require('../../api/dataHelper');
+
+const invalidDate = '2026-10-48';
+
 module.exports = {
-  rejectAllDisputeAllWithIndividual: (totalClaimAmount, language, respondentLanguage) => {
+  rejectAllDisputeAllWithIndividual: (totalClaimAmount, language, respondentLanguage, invalidMediationDate = false) => {
     return {
       event: 'DEFENDANT_RESPONSE_CUI',
       caseDataUpdate: {
@@ -11,17 +15,17 @@ module.exports = {
             {
               value: {
                 who: 'defendant',
-                date: '2026-10-28',
-                fromDate: '2026-10-48',
+                date: date(30),
+                fromDate: invalidMediationDate ? invalidDate : date(30),
                 unavailableDateType: 'SINGLE_DATE',
               },
             },
             {
               value: {
                 who: 'defendant',
-                date: '2026-11-07',
-                toDate: '2026-11-12',
-                fromDate: '2026-11-07',
+                date: date(40),
+                toDate: date(45),
+                fromDate: date(40),
                 unavailableDateType: 'DATE_RANGE',
               },
             },

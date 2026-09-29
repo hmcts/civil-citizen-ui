@@ -302,7 +302,7 @@ module.exports = {
     console.log('End of performTranslatedDocUpload()');
   },
 
-  performCitizenResponse: async (user, caseId, claimType = 'SmallClaims', responseType, partyType, language = 'ENGLISH', respondentLanguage = 'ENGLISH') => {
+  performCitizenResponse: async (user, caseId, claimType = 'SmallClaims', responseType, partyType, language = 'ENGLISH', respondentLanguage = 'ENGLISH', expectedStatus = 200) => {
     console.log('This is inside performCitizenResponse : ' + caseId);
     let totalClaimAmount, eventName = 'DEFENDANT_RESPONSE_CUI';
     let payload = {};
@@ -323,8 +323,10 @@ module.exports = {
     payload = defendantResponse.createDefendantResponse(totalClaimAmount, responseType, claimType, partyType, language, respondentLanguage);
     //console.log('The payload : ' + payload);
     await apiRequest.setupTokens(user);
-    await apiRequest.startEventForCitizen(eventName, caseId, payload, claimType === 'SmallClaims' ? 500 : 200);
-    await waitForFinishedBusinessProcess(caseId);
+    await apiRequest.startEventForCitizen(eventName, caseId, payload, expectedStatus);
+    if (expectedStatus === 200) {
+      await waitForFinishedBusinessProcess(caseId);
+    }
     console.log('End of performCitizenResponse()');
   },
 

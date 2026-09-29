@@ -22,5 +22,5 @@ Scenario('LiP vs LiP small claim', async ({api}) => {
   securityCode = caseData.respondent1PinToPostLRspec.accessCode;
   console.log('claim number', claimNumber);
   console.log('Security code', securityCode);
-  await api.performCitizenResponse(config.defendantCitizenUser, claimRef, intTrackClaimType, config.defenceType.rejectAllDisputeAllWithIndividual);
+  await api.performCitizenResponse(config.defendantCitizenUser, claimRef, intTrackClaimType, config.defenceType.rejectAllDisputeAllWithIndividualInvalidMediationDate, undefined, 'ENGLISH', 'ENGLISH', 500);
 });
