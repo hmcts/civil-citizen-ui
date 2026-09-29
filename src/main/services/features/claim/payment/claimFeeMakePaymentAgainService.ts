@@ -35,7 +35,7 @@ export const getRedirectUrl = async (claimId: string, req: AppRequest): Promise<
         claim,
         true,
         req.session.user?.id,
-        TTLCategory.JOURNEY_CACHE,
+        TTLCategory.DRAFT_CLAIM,
       );
     }
     return paymentRedirectInformation?.nextUrl;

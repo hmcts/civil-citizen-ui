@@ -151,7 +151,7 @@ describe('Claim fee breakdown', () => {
         claim,
         true,
         'user-id',
-        TTLCategory.JOURNEY_CACHE,
+        TTLCategory.DRAFT_CLAIM,
       );
       expect(mockUpdateDraftClaim).not.toHaveBeenCalled();
       expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
@@ -234,7 +234,7 @@ describe('Claim fee breakdown', () => {
         claim,
         true,
         'user-id',
-        TTLCategory.JOURNEY_CACHE,
+        TTLCategory.DRAFT_CLAIM,
       );
       expect(mockUpdateDraftClaim).not.toHaveBeenCalled();
       expect(res.redirect).toHaveBeenCalledWith(paymentUrl);

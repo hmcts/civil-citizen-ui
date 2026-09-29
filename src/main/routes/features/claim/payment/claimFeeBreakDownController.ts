@@ -46,7 +46,7 @@ const saveClaim = async (req: AppRequest, claim: Claim, draftId?: string): Promi
     claim,
     true,
     req.session.user?.id,
-    TTLCategory.JOURNEY_CACHE,
+    TTLCategory.DRAFT_CLAIM,
   );
 };
 

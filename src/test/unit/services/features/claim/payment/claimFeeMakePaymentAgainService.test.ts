@@ -104,7 +104,7 @@ describe('ClaimFeeMakePaymentAgain Service', () => {
       mockClaim,
       true,
       'user-id',
-      TTLCategory.JOURNEY_CACHE,
+      TTLCategory.DRAFT_CLAIM,
     );
     expect(mockUpdateDraftClaim).not.toHaveBeenCalled();
   });
