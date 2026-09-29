@@ -4,7 +4,7 @@ const {createAccount} = require('../../../specClaimHelpers/api/idamHelper');
 const intTrackClaimType = 'SmallClaims';
 let claimRef, caseData, claimNumber, securityCode;
 
-Feature('LiP - Minti Small Claim with invalid mediation date @debug').tag('@civil-citizen-nightly @api-intermediate-track');
+Feature('LiP - Minti Small Claim with invalid mediation date').tag('@civil-citizen-nightly @api-intermediate-track');
 
 Before(async () => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
