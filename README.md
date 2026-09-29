@@ -122,28 +122,8 @@ Update required secrets on your machine then run below command
 $ yarn test:functional
 ```
 
-Running the reduced-stack create-claim functional test:
-
-```bash
-$ yarn test:mocked-functional
-```
-
-This local command starts CUI in `e2eTest` mode, WireMock and the in-memory Redis test implementation, then runs
-the same `@mocked-functional` browser journey used by the reduced-stack Jenkins preview. It is a developer
-diagnostic and is not the authoritative CI execution. The runner uses the same consumer-owned mappings packaged
-in `charts/civil-citizen-ui/wiremock/mappings` as the preview chart. Chromium must be installed locally; run
-`yarn playwright install chromium` once if needed. Logs are written to
-`${TMPDIR:-/tmp}/civil-citizen-ui-mocked-functional`.
-
-To exercise the PoC in the authoritative Jenkins pipeline, apply the `pr-values:mockedTests` label to the PR.
-The Jenkins library then applies `values.mockedTests.preview.template.yaml`, deploying real CUI and WireMock in
-the PR namespace. The selected journey runs against the CUI preview ingress; Civil Service (including its CCD and
-Camunda dependencies), WA and preview service buses are disabled. CUI uses its existing `e2eTest` in-memory
-draft/session stores and test session user; this PoC does not build or extend an IDAM stub. Jenkins publishes the
-normal functional Allure artifacts plus WireMock unmatched-request and expected-request diagnostics.
-
-Remove `pr-values:mockedTests` to restore the standard preview path. Do not combine it with
-`pr-values:fullDeployment`.
+See [Functional tests](docs/functional-tests.md) for standard/optimised preview selection,
+the local mocked runner, coverage checks and failure diagnostics.
 
 Running E2E tests:
 
@@ -171,11 +151,9 @@ Running Preview pipeline :
 
 ## Github Labels
 
-`enable_keep_helm` is necessary so the Jenkins pipeline doesn't delete the deployment at the end of it.
+`enable_keep_helm` retains the preview deployment after the pipeline finishes. Remove it when the preview is no longer needed.
 
-`pr-values: fullDeployment` is recommended, otherwise the vast majority of downstream components calls will be just mocked responses,
-effectively turning off some functionality like Hearings. Also, some often required components won't be active like Elasticsearch
-The standard preview deployment, i.e. without the github label present, intends to serve FT performance.
+`pr-values:fullDeployment` enables additional Work Allocation, messaging and hearing integrations through the full-deployment overlay. Standard and optimised functional selection is described in the [functional testing guide](docs/functional-tests.md).
 
 `civilDefinitionBranch:????` where ???? is the civil-ccd-definition branch name you want to point to. e.g civilDefinitionBranch:DTSCCI-1699
 
