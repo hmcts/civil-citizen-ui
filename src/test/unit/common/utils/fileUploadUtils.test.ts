@@ -6,8 +6,13 @@ import {
   createFileUploadError,
   getMulterErrorConstraint,
   extractCategoryAndIndex,
+  extractCategorySectionAndFileIndex,
   createUploadOneFileError,
   uploadAndValidateFile,
+  normaliseCaseDocuments,
+  migrateLegacyCaseDocuments,
+  migrateLegacyCaseDocumentsOnForm,
+  removeUploadedFile,
 } from 'common/utils/fileUploadUtils';
 import {FILE_SIZE_LIMIT} from 'form/validators/isFileSize';
 
@@ -354,6 +359,111 @@ describe('fileUploadUtils', () => {
 
       expect(category).toBe('expertReport');
       expect(index).toBe('2');
+    });
+  });
+
+  describe('extractCategorySectionAndFileIndex', () => {
+    it('should extract category, section index and file index from a delete action', () => {
+      const [category, index, fileIndex] = extractCategorySectionAndFileIndex('witnessStatement[0][deleteFile][1]');
+
+      expect(category).toBe('witnessStatement');
+      expect(index).toBe('0');
+      expect(fileIndex).toBe('1');
+    });
+  });
+
+  describe('normaliseCaseDocuments', () => {
+    it('returns an empty array for undefined or null', () => {
+      expect(normaliseCaseDocuments(undefined)).toEqual([]);
+      expect(normaliseCaseDocuments(null)).toEqual([]);
+    });
+
+    it('wraps a single legacy value in an array', () => {
+      const doc = {documentName: 'test.pdf'};
+      expect(normaliseCaseDocuments(doc)).toEqual([doc]);
+    });
+
+    it('returns an existing array unchanged', () => {
+      const docs = [{documentName: 'a.pdf'}, {documentName: 'b.pdf'}];
+      expect(normaliseCaseDocuments(docs)).toBe(docs);
+    });
+  });
+
+  describe('migrateLegacyCaseDocuments', () => {
+    it('migrates a legacy single caseDocument onto caseDocuments', () => {
+      const legacyDoc = {documentName: 'legacy.pdf'};
+      const sections: any[] = [{caseDocument: legacyDoc}];
+
+      migrateLegacyCaseDocuments(sections);
+
+      expect(sections[0].caseDocuments).toEqual([legacyDoc]);
+    });
+
+    it('does not overwrite an already-populated caseDocuments array', () => {
+      const newDoc = {documentName: 'new.pdf'};
+      const legacyDoc = {documentName: 'legacy.pdf'};
+      const sections: any[] = [{caseDocument: legacyDoc, caseDocuments: [newDoc]}];
+
+      migrateLegacyCaseDocuments(sections);
+
+      expect(sections[0].caseDocuments).toEqual([newDoc]);
+    });
+
+    it('leaves a section with no documents at all untouched', () => {
+      const sections: any[] = [{}];
+
+      migrateLegacyCaseDocuments(sections);
+
+      expect(sections[0].caseDocuments).toBeUndefined();
+    });
+
+    it('does nothing when sections is undefined', () => {
+      expect(() => migrateLegacyCaseDocuments(undefined)).not.toThrow();
+    });
+  });
+
+  describe('migrateLegacyCaseDocumentsOnForm', () => {
+    it('migrates every array field on the form', () => {
+      const legacyWitnessDoc = {documentName: 'witness.pdf'};
+      const legacyExpertDoc = {documentName: 'expert.pdf'};
+      const form: Record<string, unknown> = {
+        witnessStatement: [{caseDocument: legacyWitnessDoc}],
+        expertReport: [{caseDocument: legacyExpertDoc}],
+        notAnArrayField: 'ignored',
+      };
+
+      migrateLegacyCaseDocumentsOnForm(form);
+
+      expect((form.witnessStatement as any[])[0].caseDocuments).toEqual([legacyWitnessDoc]);
+      expect((form.expertReport as any[])[0].caseDocuments).toEqual([legacyExpertDoc]);
+    });
+
+    it('does nothing when form is undefined', () => {
+      expect(() => migrateLegacyCaseDocumentsOnForm(undefined)).not.toThrow();
+    });
+  });
+
+  describe('removeUploadedFile', () => {
+    it('removes the file at the given index', () => {
+      const categoryModel = [{caseDocuments: [{documentName: 'a.pdf'}, {documentName: 'b.pdf'}]}];
+
+      const result = removeUploadedFile(categoryModel, '0', '0');
+
+      expect(result).toBe(true);
+      expect(categoryModel[0].caseDocuments).toEqual([{documentName: 'b.pdf'}]);
+    });
+
+    it('returns false when the section does not exist', () => {
+      const categoryModel: any[] = [];
+
+      expect(removeUploadedFile(categoryModel, '0', '0')).toBe(false);
+    });
+
+    it('returns false when the file index is out of range', () => {
+      const categoryModel = [{caseDocuments: [{documentName: 'a.pdf'}]}];
+
+      expect(removeUploadedFile(categoryModel, '0', '5')).toBe(false);
+      expect(categoryModel[0].caseDocuments).toEqual([{documentName: 'a.pdf'}]);
     });
   });
 

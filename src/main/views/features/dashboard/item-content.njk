@@ -282,8 +282,6 @@
     <div id={{content.data.category+'['+content.data.index+']['+content.data.field+'][size]'}} ></div>
     <div id={{content.data.category+'['+content.data.index+']['+content.data.field+'][mimetype]'}} ></div>
     <div class="govuk-form-group">
-      <label class="govuk-label"><strong>{{ t(content.data.text) }}</strong></label>
-      <div class="govuk-hint">{{ t('PAGES.UPLOAD_DOCUMENTS.ADD_ANOTHER_FILE_HINT') }}</div>
       <div class="file-upload-slots">
         <div class="row-container govuk-inset-text">
           {{ govukFileUpload({
@@ -291,6 +289,13 @@
               name: content.data.category+'['+content.data.index+']['+content.data.field+']',
               classes: 'uploadFile govuk-!-width-three-half '+content.data.classes,
               value: content.data.value,
+              javascript: true,
+              label: {
+                html: '<strong>' + t(content.data.text) + '</strong>'
+              },
+              hint: {
+                text: t('PAGES.UPLOAD_DOCUMENTS.ADD_ANOTHER_FILE_HINT')
+              },
               errorMessage: { text: t(content.data.errorMessage) } if content.data.errorMessage,
               attributes: {
                  'data-name': content.data.category+'[%index%]['+content.data.field+']',
@@ -298,9 +303,10 @@
               }
            }) }}
             {{ govukButton({
-                             id: 'uploadFileButton',
+                             id: content.data.category+'-'+content.data.index+'-uploadFileButton',
                              name: 'action',
                              value: content.data.category+'['+content.data.index+'][uploadButton]',
+                             text: t('COMMON.SAVE_FILE'),
                              classes: "govuk-button--secondary govuk-!-margin-bottom-0 js-auto-upload-button",
                              attributes: {
                                'data-value': content.data.category+'[%index%][uploadButton]'

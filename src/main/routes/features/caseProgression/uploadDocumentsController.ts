@@ -32,6 +32,7 @@ import {
   extractCategoryAndIndex,
   extractCategorySectionAndFileIndex,
   removeUploadedFile,
+  migrateLegacyCaseDocumentsOnForm,
   uploadAndValidateFile,
 } from 'common/utils/fileUploadUtils';
 import {ValidationError} from 'class-validator';
@@ -88,8 +89,10 @@ async function renderView(res: Response, claim: Claim, claimId: string, form: Ge
   const isSmallClaims = claim.isSmallClaimsTrackDQ;
 
   if (!claim.isClaimant() && !form && claim.caseProgression?.defendantDocuments) {
+    migrateLegacyCaseDocumentsOnForm(claim.caseProgression.defendantDocuments as unknown as Record<string, unknown>);
     form = new GenericForm(claim.caseProgression?.defendantDocuments);
   } else if (claim.isClaimant() && !form && claim.caseProgression?.claimantDocuments) {
+    migrateLegacyCaseDocumentsOnForm(claim.caseProgression.claimantDocuments as unknown as Record<string, unknown>);
     form = new GenericForm(claim.caseProgression?.claimantDocuments);
   }
 

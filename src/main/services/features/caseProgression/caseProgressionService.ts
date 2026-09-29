@@ -327,7 +327,10 @@ export function toNonEmptyTrimmedString(value: unknown): string {
 
 const parseCaseDocuments = (request: Record<string, unknown>): CaseDocument[] => {
   const CASE_DOCUMENTS = 'caseDocuments';
-  const rawCaseDocs = request?.[CASE_DOCUMENTS];
+  // Falls back to the pre-multi-file-upload field name so a browser tab that loaded the page
+  // before this change shipped doesn't silently lose its already-uploaded document on submit.
+  const CASE_DOCUMENT_LEGACY = 'caseDocument';
+  const rawCaseDocs = request?.[CASE_DOCUMENTS] ?? request?.[CASE_DOCUMENT_LEGACY];
   if (rawCaseDocs === undefined || rawCaseDocs === null || rawCaseDocs === '') {
     return [];
   }

@@ -168,6 +168,32 @@ export const normaliseCaseDocuments = <T>(value: T | T[] | undefined | null): T[
   return Array.isArray(value) ? value : [value];
 };
 
+/**
+ * Migrates sections persisted under the old single-document shape (`caseDocument`) onto the new
+ * `caseDocuments` array, in place. Existing drafts saved before the multi-file-upload change only
+ * have `caseDocument`, and every read path now only looks at `caseDocuments` - without this, an
+ * already-uploaded document disappears from the page and is discarded on the next save.
+ */
+export const migrateLegacyCaseDocuments = (sections: Array<{caseDocuments?: unknown[]; caseDocument?: unknown}> | undefined): void => {
+  sections?.forEach((section) => {
+    if (!section.caseDocuments?.length && section.caseDocument) {
+      section.caseDocuments = [section.caseDocument];
+    }
+  });
+};
+
+/** Migrates every section array on a plain upload-documents-shaped object (see migrateLegacyCaseDocuments). */
+export const migrateLegacyCaseDocumentsOnForm = (form: Record<string, unknown> | undefined): void => {
+  if (!form) {
+    return;
+  }
+  Object.values(form).forEach((value) => {
+    if (Array.isArray(value)) {
+      migrateLegacyCaseDocuments(value as Array<{caseDocuments?: unknown[]; caseDocument?: unknown}>);
+    }
+  });
+};
+
 export const removeUploadedFile = (categoryModel: any, index: string, fileIndex: string): boolean => {
   const section = categoryModel?.[+index];
   const caseDocuments = normaliseCaseDocuments(section?.caseDocuments);

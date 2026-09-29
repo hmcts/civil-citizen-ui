@@ -8,15 +8,17 @@ import {
   UploadDocumentsForm,
 } from 'form/models/mediation/uploadDocuments/uploadDocumentsForm';
 import {CaseDocument} from 'models/document/caseDocument';
-import {normaliseCaseDocuments} from 'common/utils/fileUploadUtils';
+import {migrateLegacyCaseDocuments, normaliseCaseDocuments} from 'common/utils/fileUploadUtils';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('freeMediationService');
 const CASE_DOCUMENTS = 'caseDocuments';
+const CASE_DOCUMENT_LEGACY = 'caseDocument';
 
 export const getUploadDocuments = (claim: Claim): UploadDocuments => {
   try {
     if (!claim.mediationUploadDocuments) return new UploadDocuments([]);
+    claim.mediationUploadDocuments.typeOfDocuments?.forEach((typeOfDocument) => migrateLegacyCaseDocuments(typeOfDocument.uploadDocuments));
     return new UploadDocuments(claim.mediationUploadDocuments.typeOfDocuments);
   } catch (error) {
     logger.error(error);
@@ -77,10 +79,13 @@ const getFormSection = <T>(data: any[], bindFunction: (request: any) => T): T[] 
 };
 
 const parseCaseDocuments = (request: any): CaseDocument[] => {
-  if (!request[CASE_DOCUMENTS] || request[CASE_DOCUMENTS] === '') {
+  // Falls back to the pre-multi-file-upload field name so a browser tab that loaded the page
+  // before this change shipped doesn't silently lose its already-uploaded document on submit.
+  const rawCaseDocs = request[CASE_DOCUMENTS] || request[CASE_DOCUMENT_LEGACY];
+  if (!rawCaseDocs || rawCaseDocs === '') {
     return [];
   }
-  return normaliseCaseDocuments(JSON.parse(request[CASE_DOCUMENTS]) as CaseDocument | CaseDocument[]);
+  return normaliseCaseDocuments(JSON.parse(rawCaseDocs) as CaseDocument | CaseDocument[]);
 };
 
 const bindRequestToTypeOfDocumentSectionObj = (request: any): MediationTypeOfDocumentSection => {

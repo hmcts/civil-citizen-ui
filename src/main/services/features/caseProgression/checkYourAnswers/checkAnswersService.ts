@@ -34,7 +34,7 @@ import {CivilServiceClient} from 'client/civilServiceClient';
 import {CaseEvent} from 'models/events/caseEvent';
 import {caseNumberPrettify} from 'common/utils/stringUtils';
 import {currencyFormatWithNoTrailingZeros} from 'common/utils/currencyFormat';
-import {normaliseCaseDocuments} from 'common/utils/fileUploadUtils';
+import {migrateLegacyCaseDocumentsOnForm, normaliseCaseDocuments} from 'common/utils/fileUploadUtils';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
@@ -78,12 +78,14 @@ export const saveUploadedDocuments = async (claim: Claim, req: AppRequest): Prom
   if(claim.isClaimant())
   {
     newUploadDocuments = claim.caseProgression.claimantDocuments;
+    migrateLegacyCaseDocumentsOnForm(newUploadDocuments as unknown as Record<string, unknown>);
     existingUploadDocuments = oldClaim.caseProgression.claimantUploadDocuments;
     caseProgression.claimantUploadDocuments = mapUploadedFileToDocumentType(newUploadDocuments, existingUploadDocuments);
     updatedCcdClaim = toCCDEvidenceUpload(caseProgression, updatedCcdClaim, true);
     return await civilServiceClient.submitEvent(CaseEvent.EVIDENCE_UPLOAD_APPLICANT, req.params.id, updatedCcdClaim, req);
   } else {
     newUploadDocuments = claim.caseProgression.defendantDocuments;
+    migrateLegacyCaseDocumentsOnForm(newUploadDocuments as unknown as Record<string, unknown>);
     existingUploadDocuments = oldClaim.caseProgression.defendantUploadDocuments;
     caseProgression.defendantUploadDocuments =  mapUploadedFileToDocumentType(newUploadDocuments, existingUploadDocuments);
     updatedCcdClaim = toCCDEvidenceUpload(caseProgression, updatedCcdClaim, false);

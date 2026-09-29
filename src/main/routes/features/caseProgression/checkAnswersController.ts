@@ -20,6 +20,7 @@ import {CivilServiceClient} from 'client/civilServiceClient';
 import config from 'config';
 import {getClaimById} from 'modules/utilityService';
 import {getRouteParam} from 'common/utils/routeParamUtils';
+import {migrateLegacyCaseDocumentsOnForm} from 'common/utils/fileUploadUtils';
 
 const checkAnswersViewPath = 'features/caseProgression/check-answers';
 const documentUploadCheckAnswerController = Router();
@@ -32,8 +33,10 @@ function renderView(res: Response, form: GenericForm<DocumentUploadSubmissionFor
   const backLinkUrl = constructResponseUrlWithIdParams(claimId, CP_UPLOAD_DOCUMENTS_URL);
 
   if(isClaimant) {
+    migrateLegacyCaseDocumentsOnForm(claim.caseProgression.claimantDocuments as unknown as Record<string, unknown>);
     summarySections = getSummarySections(claim.caseProgression.claimantDocuments, claimId, isSmallClaims, lang);
   } else {
+    migrateLegacyCaseDocumentsOnForm(claim.caseProgression.defendantDocuments as unknown as Record<string, unknown>);
     summarySections = getSummarySections(claim.caseProgression.defendantDocuments, claimId, isSmallClaims, lang);
   }
   const bottomPageContents = getBottomElements();
