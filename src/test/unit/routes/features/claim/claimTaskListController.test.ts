@@ -82,6 +82,26 @@ describe('Claim TaskList page', () => {
     }));
   });
 
+  it('should create a new draft when the active draft has already been submitted', async () => {
+    const submittedClaim = new Claim();
+    submittedClaim.id = '1790606730013600';
+    submittedClaim.draftClaimCreatedAt = new Date();
+    const newClaim = new Claim();
+    newClaim.draftClaimCreatedAt = new Date();
+    newClaim.draftClaimCacheTtlDays = 30;
+    mockGetDraftClaim.mockResolvedValue(createMockManagerResult(submittedClaim));
+    mockCreateOrLoadDraft.mockResolvedValue(createMockManagerResult(newClaim, true));
+
+    await getHandler(req as AppRequest, res as unknown as Response, next);
+
+    expect(mockCreateOrLoadDraft).toHaveBeenCalledWith(req);
+    expect(createDashboardSpy).toHaveBeenCalled();
+    expect(req.session.draftId).toBe('draft-123');
+    expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+      pageTitle: 'PAGES.CLAIM_TASK_LIST.PAGE_TITLE',
+    }));
+  });
+
   it('should call next when loading the claim fails', async () => {
     const error = new Error('error');
     mockGetDraftClaim.mockRejectedValue(error);

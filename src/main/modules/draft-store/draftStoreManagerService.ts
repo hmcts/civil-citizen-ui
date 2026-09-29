@@ -61,7 +61,7 @@ export const getDraftClaim = async (req: AppRequest): Promise<DraftClaimManagerR
   if (await isDraftClaimDatabaseEnabled()) {
     const cached = await getCachedDraft(userId);
 
-    if (cached) {
+    if (cached && !cached.caseId) {
       return buildManagerResult(cached);
     }
     const dbResult = await getActiveDraftFromDraftStoreDb(req);

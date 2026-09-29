@@ -24,22 +24,18 @@ export const getClaimIssuePaymentClaim = async (req: AppRequest): Promise<ClaimI
   }
 
   const draftResult = await getDraftClaim(req);
-  const draftIdFromDraft = req.session?.draftId || draftResult?.rawResponse?.draftId;
-
-  if (draftResult?.claimResponse?.case_data && draftIdFromDraft) {
+  const draftResultCaseId = draftResult?.rawResponse?.caseId
+    || (draftResult?.claimResponse?.case_data as unknown as Claim | undefined)?.id;
+  if (draftResult?.claimResponse?.case_data && isDraftCaseIdEqualToClaimId(draftResultCaseId, claimId)) {
     const claim = Object.assign(new Claim(), draftResult.claimResponse.case_data as unknown as Claim);
     if (draftResult.createdAt && !claim.draftClaimCreatedAt) {
       claim.draftClaimCreatedAt = new Date(draftResult.createdAt);
     }
-
-    const draftCaseId = draftResult.rawResponse?.caseId || claim.id;
-    if (isDraftCaseIdEqualToClaimId(draftCaseId, claimId)) {
-      if (req.session && !req.session.draftId) {
-        req.session.draftId = draftIdFromDraft;
-      }
-      return {claim, draftId: draftIdFromDraft};
+    const draftId = draftResult.rawResponse.draftId;
+    if (req.session && !req.session.draftId) {
+      req.session.draftId = draftId;
     }
-    throw new Error('[claimIssuePaymentDraftService] draft does not match claim id');
+    return {claim, draftId};
   }
 
   const ccdClaim = await civilServiceClient.retrieveClaimDetails(claimId, req);
@@ -51,13 +47,10 @@ export const getClaimIssuePaymentClaim = async (req: AppRequest): Promise<ClaimI
   ccdClaim.draftClaimCacheTtlDays = getTTLDaysForCategory(TTLCategory.DRAFT_CLAIM);
 
   const created = await createOrLoadDraft(req, ccdClaim);
-  const draftId = req.session?.draftId || created.rawResponse?.draftId;
+  const draftId = created.rawResponse?.draftId;
   if (!draftId) {
     throw new Error('[claimIssuePaymentDraftService] no draft claim found for payment resume');
   }
   await updateDraftClaim(req, ccdClaim, draftId);
-  if (req.session && !req.session.draftId) {
-    req.session.draftId = draftId;
-  }
   return {claim: ccdClaim, draftId};
 };

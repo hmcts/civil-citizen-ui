@@ -68,9 +68,7 @@ export const createOrLoadDraftClaimInDraftStoreDb = async (
 ): Promise<{ claimResponse: CivilClaimResponse; rawResponse: DraftClaimResponse; isNew: boolean}> => {
   const claimToSave = claim || new Claim();
   ensureDraftClaimTtl(claimToSave);
-  const payload: DraftClaimRequest = {
-    payload: claimToSave as unknown as Record<string, unknown>,
-  };
+  const payload: DraftClaimRequest = toDraftClaimRequest(claimToSave);
 
   try {
     const response: AxiosResponse<DraftClaimResponse> = await axios.post<DraftClaimResponse>(

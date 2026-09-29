@@ -125,7 +125,7 @@ describe('getClaimIssuePaymentClaim', () => {
     expect(mockUpdateDraftClaim).toHaveBeenCalledWith(req, ccdClaim, draftId);
     expect(result.claim).toBe(ccdClaim);
     expect(result.draftId).toBe(draftId);
-    expect(req.session.draftId).toBe(draftId);
+    expect(req.session.draftId).toBeUndefined();
   });
 
   it('should throw when there is no durable draft and CCD has no claim', async () => {
@@ -139,12 +139,24 @@ describe('getClaimIssuePaymentClaim', () => {
     expect(mockUpdateDraftClaim).not.toHaveBeenCalled();
   });
 
-  it('should throw when draft case id does not match url claim id', async () => {
-    mockGetDraftClaim.mockResolvedValueOnce(createManagerResult(createClaim('0000000000000000')));
+  it('should load the unpaid claim from CCD when the active draft is a different claim', async () => {
+    const req = createReq(claimId, true);
+    const inProgressClaim = createClaim('0000000000000000');
+    const ccdClaim = createClaim(claimId, true);
+    const paymentDraftId = 'payment-draft-id';
+    const paymentDraft = createManagerResult(ccdClaim, claimId);
+    paymentDraft.rawResponse.draftId = paymentDraftId;
+    mockGetDraftClaim.mockResolvedValueOnce(createManagerResult(inProgressClaim));
+    retrieveClaimDetailsSpy.mockResolvedValueOnce(ccdClaim);
+    mockCreateOrLoadDraft.mockResolvedValueOnce(paymentDraft);
+    mockUpdateDraftClaim.mockResolvedValueOnce(paymentDraft);
 
-    await expect(getClaimIssuePaymentClaim(createReq())).rejects.toThrow(
-      '[claimIssuePaymentDraftService] draft does not match claim id',
-    );
-    expect(retrieveClaimDetailsSpy).not.toHaveBeenCalled();
+    const result = await getClaimIssuePaymentClaim(req);
+
+    expect(retrieveClaimDetailsSpy).toHaveBeenCalledWith(claimId, req);
+    expect(mockCreateOrLoadDraft).toHaveBeenCalledWith(req, ccdClaim);
+    expect(mockUpdateDraftClaim).toHaveBeenCalledWith(req, ccdClaim, paymentDraftId);
+    expect(result.draftId).toBe(paymentDraftId);
+    expect(req.session.draftId).toBe(draftId);
   });
 });
