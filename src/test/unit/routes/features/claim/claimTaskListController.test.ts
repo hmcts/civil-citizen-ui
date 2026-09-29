@@ -49,7 +49,7 @@ describe('Claim TaskList page', () => {
       .mockResolvedValue(undefined as never);
   });
 
-  it('should render claim task list with an existing draft claim', async () => {
+  it('should load an active in-progress draft and not create another', async () => {
     const claim = new Claim();
     claim.draftClaimCreatedAt = new Date();
     claim.draftClaimCacheTtlDays = 30;
@@ -57,12 +57,14 @@ describe('Claim TaskList page', () => {
 
     await getHandler(req as AppRequest, res as unknown as Response, next);
 
+    expect(mockGetDraftClaim).toHaveBeenCalledWith(req);
+    expect(mockCreateOrLoadDraft).not.toHaveBeenCalled();
+    expect(createDashboardSpy).not.toHaveBeenCalled();
+    expect(req.session.draftId).toBe('draft-123');
     expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
       pageTitle: 'PAGES.CLAIM_TASK_LIST.PAGE_TITLE',
       draftClaimDeletionDate: expect.anything(),
     }));
-    expect(mockCreateOrLoadDraft).not.toHaveBeenCalled();
-    expect(createDashboardSpy).not.toHaveBeenCalled();
     expect(next).not.toHaveBeenCalled();
   });
 
@@ -80,6 +82,25 @@ describe('Claim TaskList page', () => {
     expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
       pageTitle: 'PAGES.CLAIM_TASK_LIST.PAGE_TITLE',
     }));
+  });
+
+  it('should create a new draft when the draft in the store has expired', async () => {
+    const newClaim = new Claim();
+    newClaim.draftClaimCreatedAt = new Date();
+    newClaim.draftClaimCacheTtlDays = 30;
+    mockGetDraftClaim.mockResolvedValue(null);
+    mockCreateOrLoadDraft.mockResolvedValue(createMockManagerResult(newClaim, true));
+
+    await getHandler(req as AppRequest, res as unknown as Response, next);
+
+    expect(mockGetDraftClaim).toHaveBeenCalledWith(req);
+    expect(mockCreateOrLoadDraft).toHaveBeenCalledWith(req);
+    expect(createDashboardSpy).toHaveBeenCalled();
+    expect(req.session.draftId).toBe('draft-123');
+    expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+      pageTitle: 'PAGES.CLAIM_TASK_LIST.PAGE_TITLE',
+    }));
+    expect(next).not.toHaveBeenCalled();
   });
 
   it('should create a new draft when the active draft has already been submitted', async () => {
