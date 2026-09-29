@@ -71,7 +71,7 @@ mkdir -p "${WIREMOCK_ROOT_DIR}/__files"
 cp -r ./charts/civil-citizen-ui/wiremock/mappings/* "${WIREMOCK_ROOT_DIR}/mappings/"
 cp -r ./charts/civil-citizen-ui/wiremock/__files/* "${WIREMOCK_ROOT_DIR}/__files/"
 
-./node_modules/.bin/wiremock --root-dir "${WIREMOCK_ROOT_DIR}" --port "${WIREMOCK_PORT}" >"${RUN_LOG_DIR}/wiremock.log" 2>&1 &
+./bin/start-preview-wiremock.sh --root-dir "${WIREMOCK_ROOT_DIR}" --port "${WIREMOCK_PORT}" >"${RUN_LOG_DIR}/wiremock.log" 2>&1 &
 wiremock_pid=$!
 wait_for_url 'WireMock' "${WIREMOCK_URL}/__admin/mappings" "${wiremock_pid}" "${RUN_LOG_DIR}/wiremock.log"
 
