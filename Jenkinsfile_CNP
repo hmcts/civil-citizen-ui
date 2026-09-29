@@ -202,10 +202,6 @@ def checkForSkipFunctionalTests(branch_name) {
     .contains("pr-values:skip-functional-tests")
 }
 
-def checkForRunAllFunctionalTests(branch_name) {
-  return new GithubAPI(this).getLabelsbyPattern(branch_name, "runAllFunctionalTests").contains("runAllFunctionalTests")
-}
-
 def checkForStandardFunctionalTests(branch_name) {
   def labels = new GithubAPI(this).getLabelsbyPattern(branch_name, "pr-values:")
   return labels.contains("pr-values:standardTests") || labels.contains("pr-values:fullDeployment")
@@ -343,10 +339,9 @@ withPipeline(type, product, component) {
     copyPreviousAllureHistory()
     if(checkForSkipFunctionalTests(env.BRANCH_NAME)) {
       env.SKIP_FUNCTIONAL_TESTS = true
-    } else if(checkForRunAllFunctionalTests(env.BRANCH_NAME) || checkForStandardFunctionalTests(env.BRANCH_NAME)) {
-      env.RUN_ALL_FUNCTIONAL_TESTS = true
     } else {
-      copyPrevFailedAndNotExecutedTestFilesJson()
+      // Both PR modes rerun the complete selection, including after switching mode.
+      env.RUN_ALL_FUNCTIONAL_TESTS = true
     }
   }
 

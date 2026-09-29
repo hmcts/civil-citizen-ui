@@ -9,7 +9,7 @@ Configure the environment URLs and credentials as described in the [README](../R
 | Standard PR / master baseline | `yarn test:civil-citizen-pr` / `yarn test:civil-citizen-master` |
 | Default PR preview | Optimised deployment; no label required |
 | Standard preview comparison | Add `pr-values:standardTests`; remove it to restore the default |
-| Full baseline verification | Add `runAllFunctionalTests`, with no `pr_ft_*` group labels; remove it after verification |
+| Full baseline rerun | Rebuild without `pr_ft_*` group labels; no `runAllFunctionalTests` label is needed |
 | Selected functional group | Use the existing `pr_ft_ui-*` / `pr_ft_api-*` labels listed in the README |
 | Nightly suite | `yarn test:civil-citizen-nightly` |
 | Local mocked create-claim journey | `yarn test:mocked-functional` (requires Java and `yarn playwright install chromium`) |
