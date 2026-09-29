@@ -11,6 +11,7 @@ import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {getDraftClaimDeletionDate} from 'common/utils/draftClaimUtils';
 import {getTTLDaysForCategory, TTLCategory} from 'modules/draft-store/ttlConfig';
+import {hasDraftClaimBeenSubmitted} from 'common/models/dashboard/dashboardItem';
 
 const taskListViewPath = 'features/claim/task-list';
 const claimTaskListController = Router();
@@ -27,6 +28,16 @@ claimTaskListController.get(CLAIMANT_TASK_LIST_URL, claimIssueTaskListGuard, (as
     let caseData: Claim = draftResult?.claimResponse?.case_data
       ? Object.assign(new Claim(), draftResult.claimResponse.case_data)
       : new Claim();
+
+    if (draftResult && hasDraftClaimBeenSubmitted(caseData)) {
+      draftResult = await createOrLoadDraft(req);
+      caseData = draftResult?.claimResponse?.case_data
+        ? Object.assign(new Claim(), draftResult.claimResponse.case_data)
+        : new Claim();
+      if (draftResult?.isNew) {
+        await civilServiceClient.createDashboard(req);
+      }
+    }
 
     if (!draftResult) {
       draftResult = await createOrLoadDraft(req);
