@@ -561,6 +561,9 @@ module.exports = {
   },
 
   submitUploadTranslatedDoc: async (translationDocType, targetCaseId = caseId) => {
+    // The dashboard can update before the preceding response workflow finishes.
+    // CCD rejects overlapping events and consumes the rejected event token.
+    await waitForFinishedBusinessProcess(targetCaseId);
     eventName = 'UPLOAD_TRANSLATED_DOCUMENT';
     await validateUploadTranslatedDoc(translationDocType, targetCaseId);
     await assertSubmittedSpecEvent(undefined, undefined, true, targetCaseId);

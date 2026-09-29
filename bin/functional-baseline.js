@@ -18,6 +18,8 @@ function collect(root = repoRoot) {
   }
   delete process.env.PREV_FAILED_TEST_FILES;
   delete process.env.PREV_NOT_EXECUTED_TEST_FILES;
+  // Verify the complete source inventory, never the narrower worker input.
+  delete process.env.FUNCTIONAL_WORKER_PLAN;
   const Codecept = require('codeceptjs/lib/codecept');
   const config = require('codeceptjs/lib/config').load(root);
   config.plugins = {};
@@ -37,6 +39,17 @@ function collect(root = repoRoot) {
 
 function selection(rows, pipeline) {
   return rows.filter(row => row.tags.includes(`@civil-citizen-${pipeline}`));
+}
+
+function workerPlan(baseline, pipeline) {
+  assert.ok(['pr', 'master'].includes(pipeline), 'Expected pr or master pipeline');
+  const rows = selection(baseline.scenarios, pipeline);
+  const activeFiles = [...new Set(rows.filter(row => !row.skipped).map(row => row.file))];
+  const files = [...new Set([...activeFiles, ...rows.map(row => row.file)])];
+  // Codecept allocates suites before applying grep. Loading unrelated files
+  // otherwise leaves workers idle while long selected journeys queue together.
+  // Keep suites intact and preserve the baseline's explicitly skipped files.
+  return {files, workers: Math.max(13, files.length)};
 }
 
 function verifySelection(baseline, current) {
@@ -78,12 +91,11 @@ function reconcile(expected, reports) {
 
 function main() {
   const [command, ...args] = process.argv.slice(2);
-  if (command === 'snapshot') {
-    const rows = collect(args[0]);
-    fs.writeFileSync(args[1], JSON.stringify({scenarios: rows.filter(row => row.tags.some(tag => ['@civil-citizen-pr', '@civil-citizen-master'].includes(tag)))}, null, 2) + '\n');
+  const baseline = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
+  if (command === 'worker-plan') {
+    console.log(JSON.stringify(workerPlan(baseline, args[0])));
     return;
   }
-  const baseline = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
   if (command === 'check') {
     verifySelection(baseline, collect());
     console.log('PR/master selection matches the pre-epic baseline; no active scenarios remain unmigrated.');
@@ -114,8 +126,8 @@ function main() {
     console.log('Standard and optimised baseline identities and outcomes match on the same revision.');
     return;
   }
-  throw new Error('Usage: functional-baseline.js snapshot ROOT OUTPUT | check | results pr|master DIRECTORY PREFIX | compare STANDARD OPTIMISED');
+  throw new Error('Usage: functional-baseline.js check | worker-plan pr|master | results pr|master DIRECTORY PREFIX | compare STANDARD OPTIMISED');
 }
 
 if (require.main === module) main();
-module.exports = {normalise, identity, selection, verifySelection, reconcile};
+module.exports = {normalise, identity, selection, workerPlan, verifySelection, reconcile};
