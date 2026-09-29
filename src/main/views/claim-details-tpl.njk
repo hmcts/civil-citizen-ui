@@ -10,13 +10,7 @@
 {% extends "govuk/template.njk" %}
 {% block head %}
 
-<!-- Dynatrace -->
-  <script type="text/javascript" src="{{ dynatraceUrl }}" crossorigin="anonymous"></script>
-{% if user and user.id %}
-  <!-- Correlation key for Dynatrace RUM. Read by cookieConfig.ts once APM consent is given. Id only, never the email address. -->
-  <meta name="dt-user-id" content="{{ user.id }}">
-{% endif %}
-<!-- End Dynatrace -->
+{% include "./macro/dynatrace.njk" %}
 <!-- Google Tag Manager -->
 <script nonce={{ nonceDataLayer }}>
 window.dataLayer = window.dataLayer || [];
