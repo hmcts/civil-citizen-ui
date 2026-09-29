@@ -10,7 +10,7 @@ Configure the environment URLs and credentials as described in the [README](../R
 | Default PR preview | Optimised deployment; no label required |
 | Standard preview comparison | Add `pr-values:standardTests`; remove it to restore the default |
 | Full baseline rerun | Rebuild without `pr_ft_*` group labels; no `runAllFunctionalTests` label is needed |
-| Selected functional group | Use the existing `pr_ft_ui-*` / `pr_ft_api-*` labels listed in the README |
+| Selected functional group | Add `pr-values:standardTests` (or `fullDeployment`) with the existing `pr_ft_ui-*` / `pr_ft_api-*` labels |
 | Nightly suite | `yarn test:civil-citizen-nightly` |
 | Local mocked create-claim journey | `yarn test:mocked-functional` (requires Java and `yarn playwright install chromium`) |
 
@@ -24,7 +24,7 @@ Both modes run the same baseline journeys and assertions. Optimised execution lo
 | --- | --- |
 | CUI, Redis, Civil Service, CCD, Camunda, identity/authentication, access/role assignment and required data stores | Fees, Payments/GovPay, Docmosis, CDAM and CUI address lookup |
 
-Real services supply persisted case/workflow state, notifications and access changes. Mock payments and documents do not prove provider settlement, PDF content or inbox delivery. Shared reference services and the Civil Service notification audit remain in use. XUI, the CCD browser gateway, EM stitching, EM CCD orchestration and deployed CDAM are disabled in the default preview. `pr-values:fullDeployment` also restores standard dependencies and enables its additional Work Allocation, messaging and hearing integrations. Use the standard deployment for groups outside the migrated baseline.
+Real services supply persisted case/workflow state, notifications and access changes. Mock payments and documents do not prove provider settlement, PDF content or inbox delivery. Shared reference services and the Civil Service notification audit remain in use. XUI, the CCD browser gateway, EM stitching, EM CCD orchestration and deployed CDAM are disabled in the default preview. `pr-values:fullDeployment` also restores standard dependencies and enables its additional Work Allocation, messaging and hearing integrations. Grouped runs require a standard deployment and fail early without its label; the default never silently filters requested groups.
 
 ## Baseline and coverage checks
 

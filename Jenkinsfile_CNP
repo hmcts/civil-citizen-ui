@@ -285,6 +285,9 @@ withPipeline(type, product, component) {
     env.PR_FT_GROUPS = getFunctionalTestsGroups()
     env.CIVIL_SERVICE_IMAGE = getCivilServiceImage()
     env.OPTIMISED_FUNCTIONAL_TESTS = (!checkForStandardFunctionalTests(env.BRANCH_NAME)).toString()
+    if (env.PR_FT_GROUPS?.trim() && env.OPTIMISED_FUNCTIONAL_TESTS == 'true') {
+      error 'Selected functional groups require pr-values:standardTests or pr-values:fullDeployment so every requested test can run.'
+    }
     def civilCcdDefinitionBranch = getCivilCcdDefinitionBranch()
     generalappCCDBranch = civilCcdDefinitionBranch
     loadVaultSecrets(secrets)

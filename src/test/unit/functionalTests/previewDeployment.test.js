@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const yaml = require('js-yaml');
+const {spawnSync} = require('child_process');
 
 const chart = path.resolve(__dirname, '../../../../charts/civil-citizen-ui');
 const read = name => yaml.load(fs.readFileSync(path.join(chart, name), 'utf8'));
@@ -60,4 +61,15 @@ describe('PR deployment selection', () => {
       expect(values.servicebus.enabled).toBe(true);
       expect(values.hmcsb.enabled).toBe(true);
     });
+});
+
+it('rejects grouped optimised runs instead of silently dropping requested tests', () => {
+  const root = path.resolve(__dirname, '../../../..');
+  const result = spawnSync('bash', ['src/test/functionalTests/run-functional-tests.sh'], {
+    cwd: root,
+    env: {...process.env, OPTIMISED_FUNCTIONAL_TESTS: 'true', PR_FT_GROUPS: 'ui-payments', SKIP_FUNCTIONAL_TESTS: 'false'},
+    encoding: 'utf8',
+  });
+  expect(result.status).toBe(1);
+  expect(result.stderr).toContain('Selected functional groups require pr-values:standardTests or pr-values:fullDeployment');
 });
