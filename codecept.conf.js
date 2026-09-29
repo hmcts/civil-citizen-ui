@@ -7,6 +7,10 @@ const { unAssignAllUsers } = require('./src/test/functionalTests/specClaimHelper
 const { deleteAllIdamTestUsers } = require('./src/test/functionalTests/specClaimHelpers/api/idamHelper');
 const functional = process.env.FUNCTIONAL;
 
+// Reports default to the functional directory. A run that overrides REPORT_DIR, such as test:smoke,
+// must have its JUnit XML follow, or the XML is written where that stage does not archive it.
+const reportDir = process.env.REPORT_DIR || 'test-results/functional';
+
 const getTests = () => {
   if (process.env.OPTIMISED_FUNCTIONAL_TESTS === 'true' && process.env.FUNCTIONAL_WORKER_PLAN) {
     return JSON.parse(process.env.FUNCTIONAL_WORKER_PLAN).files;
@@ -56,7 +60,7 @@ exports.config = {
     await deleteAllIdamTestUsers();
   },
   tests: getTests(),
-  output: process.env.REPORT_DIR || 'test-results/functional',
+  output: reportDir,
   helpers: {
     ...(functional === 'true' && process.env.OPTIMISED_FUNCTIONAL_TESTS === 'true' ? {
       WiremockBoundary: {
@@ -135,13 +139,13 @@ exports.config = {
       'mocha-junit-reporter': {
         stdout: '-',
         options: {
-          mochaFile: process.env.REPORT_FILE || 'test-results/functional/result.xml',
+          mochaFile: process.env.REPORT_FILE || `${reportDir}/result.xml`,
         },
       },
       'mochawesome': {
         stdout: '-',
         options: {
-          reportDir: process.env.REPORT_DIR || 'test-results/functional',
+          reportDir,
           reportFilename: `${process.env.MOCHAWESOME_REPORTFILENAME + '-' + new Date().getTime()}`,
           inlineAssets: true,
           overwrite: false,
