@@ -3,34 +3,34 @@ module.exports = {
     return {
       event: 'DEFENDANT_RESPONSE_CUI',
       caseDataUpdate: {
-        "respondent1LiPResponseCarm": {
-    "isMediationEmailCorrect": "No",
-    "isMediationPhoneCorrect": "No",
-    "alternativeMediationEmail": "defendantmediation@email.com",
-    "unavailableDatesForMediation": [
-      {
-        value: {
-          who: "defendant",
-          date: "2026-10-28",
-          fromDate: "2026-10-48",
-          unavailableDateType: "SINGLE_DATE"
-        }
-      },
-      {
-        value: {
-          who: "defendant",
-          date: "2026-11-07",
-          toDate: "2026-11-12",
-          fromDate: "2026-11-07",
-          unavailableDateType: "DATE_RANGE"
-        }
-      }
-    ],
-    alternativeMediationTelephone: "07744444444",
-    isMediationContactNameCorrect: "No",
-    hasUnavailabilityNextThreeMonths: "Yes",
-    alternativeMediationContactPerson: "new defendant cp"
-  },
+        'respondent1LiPResponseCarm': {
+          'isMediationEmailCorrect': 'No',
+          'isMediationPhoneCorrect': 'No',
+          'alternativeMediationEmail': 'defendantmediation@email.com',
+          'unavailableDatesForMediation': [
+            {
+              value: {
+                who: 'defendant',
+                date: '2026-10-28',
+                fromDate: '2026-10-48',
+                unavailableDateType: 'SINGLE_DATE',
+              },
+            },
+            {
+              value: {
+                who: 'defendant',
+                date: '2026-11-07',
+                toDate: '2026-11-12',
+                fromDate: '2026-11-07',
+                unavailableDateType: 'DATE_RANGE',
+              },
+            },
+          ],
+          alternativeMediationTelephone: '07744444444',
+          isMediationContactNameCorrect: 'No',
+          hasUnavailabilityNextThreeMonths: 'Yes',
+          alternativeMediationContactPerson: 'new defendant cp',
+        },
         respondent1ClaimResponseTypeForSpec: 'FULL_DEFENCE',
         respondToClaimAdmitPartLRspec: {},
         responseClaimMediationSpecRequired: 'No',
