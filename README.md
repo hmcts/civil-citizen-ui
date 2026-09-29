@@ -153,7 +153,7 @@ Running Preview pipeline :
 
 `enable_keep_helm` retains the preview deployment after the pipeline finishes. Remove it when the preview is no longer needed.
 
-PR previews use the optimised deployment by default. `pr-values:standardTests` restores the standard deployment for comparison. `pr-values:fullDeployment` restores standard dependencies and additionally enables Work Allocation, messaging and hearing integrations. See the [functional testing guide](docs/functional-tests.md) for selection and reruns.
+PR previews use the optimised deployment by default. `pr-values:noWiremock` restores the standard deployment for comparison. `pr-values:fullDeployment` restores standard dependencies and additionally enables Work Allocation, messaging and hearing integrations. See the [functional testing guide](docs/functional-tests.md) for selection and reruns.
 
 `civilDefinitionBranch:????` where ???? is the civil-ccd-definition branch name you want to point to. e.g civilDefinitionBranch:DTSCCI-1699
 

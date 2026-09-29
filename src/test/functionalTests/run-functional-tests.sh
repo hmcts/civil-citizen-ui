@@ -152,7 +152,7 @@ run_failed_not_executed_functional_tests() {
 
 run_optimised_functional_tests() {
   if [[ -n "${PR_FT_GROUPS:-}" ]]; then
-    echo 'Selected functional groups require pr-values:standardTests or pr-values:fullDeployment so every requested test can run.' >&2
+    echo 'Selected functional groups require pr-values:noWiremock or pr-values:fullDeployment so every requested test can run.' >&2
     exit 1
   fi
   local pipeline=pr workers

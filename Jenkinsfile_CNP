@@ -204,7 +204,7 @@ def checkForSkipFunctionalTests(branch_name) {
 
 def checkForStandardFunctionalTests(branch_name) {
   def labels = new GithubAPI(this).getLabelsbyPattern(branch_name, "pr-values:")
-  return labels.contains("pr-values:standardTests") || labels.contains("pr-values:fullDeployment")
+  return labels.contains("pr-values:noWiremock") || labels.contains("pr-values:fullDeployment")
 }
 
 def generateAllureReport(String resultsDir, String reportDir, String reportLabel) {
@@ -286,7 +286,7 @@ withPipeline(type, product, component) {
     env.CIVIL_SERVICE_IMAGE = getCivilServiceImage()
     env.OPTIMISED_FUNCTIONAL_TESTS = (!checkForStandardFunctionalTests(env.BRANCH_NAME)).toString()
     if (env.PR_FT_GROUPS?.trim() && env.OPTIMISED_FUNCTIONAL_TESTS == 'true') {
-      error 'Selected functional groups require pr-values:standardTests or pr-values:fullDeployment so every requested test can run.'
+      error 'Selected functional groups require pr-values:noWiremock or pr-values:fullDeployment so every requested test can run.'
     }
     def civilCcdDefinitionBranch = getCivilCcdDefinitionBranch()
     generalappCCDBranch = civilCcdDefinitionBranch

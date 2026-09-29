@@ -8,9 +8,9 @@ Configure the environment URLs and credentials as described in the [README](../R
 | --- | --- |
 | Standard PR / master baseline | `yarn test:civil-citizen-pr` / `yarn test:civil-citizen-master` |
 | Default PR preview | Optimised deployment; no label required |
-| Standard preview comparison | Add `pr-values:standardTests`; remove it to restore the default |
+| Standard preview comparison | Add `pr-values:noWiremock`; remove it to restore the default |
 | Full baseline rerun | Rebuild without `pr_ft_*` group labels; no `runAllFunctionalTests` label is needed |
-| Selected functional group | Add `pr-values:standardTests` (or `fullDeployment`) with the existing `pr_ft_ui-*` / `pr_ft_api-*` labels |
+| Selected functional group | Add `pr-values:noWiremock` (or `fullDeployment`) with the existing `pr_ft_ui-*` / `pr_ft_api-*` labels |
 | Nightly suite | `yarn test:civil-citizen-nightly` |
 | Local mocked create-claim journey | `yarn test:mocked-functional` (requires Java and `yarn playwright install chromium`) |
 
@@ -18,7 +18,7 @@ The local mocked runner starts CUI, WireMock and in-memory session/draft stores.
 
 ## Optimised preview
 
-Both modes run the same baseline journeys and assertions. Optimised execution loads only baseline files and gives each file its own worker: 18 for PRs and 16 for master, compared with 13 standard workers. PR previews use optimised execution by default. `pr-values:standardTests` restores the previous standard deployment and complete baseline selection; it does not enable extra Work Allocation or messaging services. Both modes run the complete baseline again on reruns. Master and nightly deployment remain unchanged.
+Both modes run the same baseline journeys and assertions. Optimised execution loads only baseline files and gives each file its own worker: 18 for PRs and 16 for master, compared with 13 standard workers. PR previews use optimised execution by default. `pr-values:noWiremock` restores the previous standard deployment and complete baseline selection; it does not enable extra Work Allocation or messaging services. Both modes run the complete baseline again on reruns. Master and nightly deployment remain unchanged.
 
 | Real boundaries | Mocked boundaries |
 | --- | --- |

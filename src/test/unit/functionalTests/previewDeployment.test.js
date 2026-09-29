@@ -46,14 +46,14 @@ describe('PR deployment selection', () => {
   });
 
   it('restores standard dependencies without enabling extra integrations', () => {
-    const values = preview('standardTests');
+    const values = preview('noWiremock');
     expectBoundaries(values, false);
     expect(values.wa.enabled).toBe(false);
     expect(values.servicebus.enabled).toBe(false);
     expect(values['civil-service'].ccd.postgresql.setup.databases).toHaveLength(10);
   });
 
-  it.each([['fullDeployment'], ['fullDeployment', 'standardTests'], ['standardTests', 'fullDeployment']])(
+  it.each([['fullDeployment'], ['fullDeployment', 'noWiremock'], ['noWiremock', 'fullDeployment']])(
     'keeps full-deployment integrations on real dependencies for overlays %j', (...overlays) => {
       const values = preview(...overlays);
       expectBoundaries(values, false);
@@ -71,5 +71,5 @@ it('rejects grouped optimised runs instead of silently dropping requested tests'
     encoding: 'utf8',
   });
   expect(result.status).toBe(1);
-  expect(result.stderr).toContain('Selected functional groups require pr-values:standardTests or pr-values:fullDeployment');
+  expect(result.stderr).toContain('Selected functional groups require pr-values:noWiremock or pr-values:fullDeployment');
 });
