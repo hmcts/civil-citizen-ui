@@ -4,7 +4,7 @@ import nock from 'nock';
 import {readFileSync} from 'fs';
 import {resolve} from 'path';
 import {AssertionError} from 'assert';
-import {lookupByPostcodeAndDataSet} from 'modules/ordance-survey-key/ordanceSurveyKeyService';
+import {lookupByPostcodeAndDataSet} from 'modules/ordnance-survey-key/ordnanceSurveyKeyService';
 
 const apiUrl = 'https://os-places.synthetic.test';
 const apiKey = 'synthetic-os-api-key';
@@ -30,7 +30,7 @@ const lpiAddress = {
   STREET_DESCRIPTION: 'VILLAGE GREEN',
   TOWN_NAME: 'SAMPLETON',
   POSTCODE_LOCATOR: 'SY1 2ZZ',
-  POSTAL_ADDRESS_CODE: 'N',
+  POSTAL_ADDRESS_CODE: 'D',
   X_COORDINATE: 350000,
   Y_COORDINATE: 320000,
   COUNTRY_CODE: 'W',
@@ -98,7 +98,7 @@ describe('OS Places postcode consumer schema and HTTP boundary', () => {
       thoroughfareName: 'VILLAGE GREEN',
       postTown: 'SAMPLETON',
       postcode: 'SY1 2ZZ',
-      postcodeType: 'N',
+      postcodeType: 'D',
       formattedAddress: lpiAddress.ADDRESS,
       country: 'Wales',
       point: {type: 'Point', coordinates: [350000, 320000]},
