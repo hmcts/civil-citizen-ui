@@ -28,17 +28,17 @@ describe('cookieConfig Dynatrace user identification', () => {
     enableSessionReplay: jest.Mock;
     disable: jest.Mock;
     disableSessionReplay: jest.Mock;
-    identifyUser: jest.Mock;
+    identifyUser?: jest.Mock;
   };
 
-  const load = (headHtml: string, withDtrum = true) => {
+  const load = (headHtml: string, withDtrum = true, withIdentifyUser = true) => {
     const dom = new JsDom(`<!DOCTYPE html><html><head>${headHtml}</head><body></body></html>`);
     dtrum = {
       enable: jest.fn(),
       enableSessionReplay: jest.fn(),
       disable: jest.fn(),
       disableSessionReplay: jest.fn(),
-      identifyUser: jest.fn(),
+      ...(withIdentifyUser ? {identifyUser: jest.fn()} : {}),
     };
     Object.keys(handlers).forEach(key => delete handlers[key]);
     (global as unknown as Record<string, unknown>).document = dom.window.document;
@@ -67,7 +67,8 @@ describe('cookieConfig Dynatrace user identification', () => {
     handlers['UserPreferencesSaved']({analytics: 'off', apm: 'on'});
 
     const enableOrder = dtrum.enable.mock.invocationCallOrder[0];
-    const identifyOrder = dtrum.identifyUser.mock.invocationCallOrder[0];
+    const identifyUser = dtrum.identifyUser as jest.Mock;
+    const identifyOrder = identifyUser.mock.invocationCallOrder[0];
     expect(identifyOrder).toBeGreaterThan(enableOrder);
   });
 
@@ -95,6 +96,14 @@ describe('cookieConfig Dynatrace user identification', () => {
     handlers['UserPreferencesSaved']({analytics: 'off', apm: 'on'});
 
     expect(dtrum.identifyUser).not.toHaveBeenCalled();
+  });
+
+  it('does not throw when the agent does not expose identifyUser', () => {
+    load(metaTag(USER_ID), true, false);
+
+    expect(() => handlers['UserPreferencesSaved']({analytics: 'off', apm: 'on'})).not.toThrow();
+    expect(dtrum.enable).toHaveBeenCalled();
+    expect(dtrum.enableSessionReplay).toHaveBeenCalled();
   });
 
   it('does nothing when the Dynatrace agent has not loaded', () => {

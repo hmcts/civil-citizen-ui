@@ -27,7 +27,7 @@ const updateDynatracePreference = (preferences: Preferences) => {
 
     // Must follow enable(): identifyUser is ignored while the agent is disabled.
     const userId = getDynatraceUserId();
-    if (userId) {
+    if (userId && typeof dtrum.identifyUser === 'function') {
       dtrum.identifyUser(userId);
     }
   } else {
@@ -101,7 +101,10 @@ interface DtrumApi {
   enableSessionReplay(): void;
   disable(): void;
   disableSessionReplay(): void;
-  identifyUser(userId: string): void;
+  // Optional on purpose: not every deployed agent version exposes identifyUser, and
+  // this handler runs on UserPreferencesLoaded. An unguarded call against an older
+  // agent would throw there and take out cookie handling for the whole page.
+  identifyUser?(userId: string): void;
 }
 
 interface Preferences {
