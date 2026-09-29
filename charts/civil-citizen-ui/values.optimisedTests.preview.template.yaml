@@ -10,6 +10,10 @@ civil-service:
       DOCMOSIS_TORNADO_URL: http://${SERVICE_NAME}-wiremock
       CASE_DOCUMENT_AM_URL: http://${SERVICE_NAME}-wiremock
   ccd:
+    ccd:
+      # CUI and the API helpers call data/definition stores directly; XUI is off.
+      apiGatewayWeb:
+        enabled: false
     ccd-data-store-api:
       java:
         environment:
@@ -39,7 +43,13 @@ nodejs:
 
 wiremock:
   enabled: true
-  image: wiremock/wiremock
+  image: wiremock/wiremock:3.13.2
+  command: ["sh", "/opt/wiremock/start.sh"]
+  args: ["--root-dir", "/home/wiremock", "--port", "8080"]
+  # State is local to this mock instance and keyed by payment reference.
+  replicas: 1
+  autoscaling:
+    enabled: false
   applicationPort: 8080
   imagePullPolicy: Always
   releaseNameOverride: ${SERVICE_NAME}-wiremock
@@ -47,6 +57,9 @@ wiremock:
   publicUrl: https://wiremock-${SERVICE_FQDN}
   verbose: true
   volumes:
+    - name: wiremock-start
+      configMap:
+        name: ${SERVICE_NAME}-wiremock-start
     - name: wiremock-mappings
       configMap:
         name: ${SERVICE_NAME}-wiremock-mappings
@@ -54,6 +67,8 @@ wiremock:
       configMap:
         name: ${SERVICE_NAME}-wiremock-files
   volumeMounts:
+    - name: wiremock-start
+      mountPath: /opt/wiremock
     - name: wiremock-mappings
       mountPath: /home/wiremock/mappings
     - name: wiremock-files
