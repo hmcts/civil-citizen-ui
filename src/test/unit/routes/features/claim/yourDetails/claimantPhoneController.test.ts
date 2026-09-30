@@ -7,7 +7,7 @@ import {CitizenTelephoneNumber} from 'form/models/citizenTelephoneNumber';
 import {Claim} from 'models/claim';
 import {ClaimantOrDefendant} from 'models/partyType';
 import {getTelephone, saveTelephone} from 'services/features/claim/yourDetails/phoneService';
-import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {getDraftClaim} from 'modules/draft-store/draftStoreManagerService';
 import * as launchDarklyClient from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {createMockResponse, createMockSession, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
@@ -15,7 +15,7 @@ jest.mock('services/features/claim/yourDetails/phoneService', () => ({
   getTelephone: jest.fn(),
   saveTelephone: jest.fn(),
 }));
-jest.mock('modules/draft-store/draftStoreService');
+jest.mock('modules/draft-store/draftStoreManagerService');
 jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 
 const PHONE_NUMBER = '01632960001';
@@ -30,7 +30,7 @@ describe('Claimant Phone', () => {
   let next: jest.Mock;
   const mockGetTelephone = getTelephone as jest.Mock;
   const mockSaveTelephone = saveTelephone as jest.Mock;
-  const mockGetCaseData = getCaseDataFromStore as jest.Mock;
+  const mockGetDraftClaim = getDraftClaim as jest.Mock;
 
   beforeEach(() => {
     req = {
@@ -41,7 +41,11 @@ describe('Claimant Phone', () => {
     };
     res = createMockResponse();
     next = jest.fn();
-    mockGetCaseData.mockResolvedValue(new Claim());
+    mockGetDraftClaim.mockResolvedValue({
+      claimResponse: {case_data: new Claim()},
+      rawResponse: {draftId: 'draft-123'},
+      createdAt: '2026-08-01T10:00:00.000Z',
+    });
     mockGetTelephone.mockResolvedValue(new CitizenTelephoneNumber());
     mockSaveTelephone.mockResolvedValue(undefined);
     (launchDarklyClient.isCarmEnabledForCase as jest.Mock).mockResolvedValue(false);
@@ -55,7 +59,7 @@ describe('Claimant Phone', () => {
     it('should render claimant phone number page', async () => {
       await getHandler(req as AppRequest, res as unknown as Response, next);
 
-      expect(mockGetTelephone).toHaveBeenCalledWith('user-id', ClaimantOrDefendant.CLAIMANT);
+      expect(mockGetTelephone).toHaveBeenCalledWith(req, ClaimantOrDefendant.CLAIMANT);
       expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
         pageTitle,
         carmEnabled: false,
@@ -65,7 +69,7 @@ describe('Claimant Phone', () => {
 
     it('should call next when loading the claim fails', async () => {
       const error = new Error('error');
-      mockGetCaseData.mockRejectedValue(error);
+      mockGetDraftClaim.mockRejectedValue(error);
 
       await getHandler(req as AppRequest, res as unknown as Response, next);
 
@@ -108,7 +112,7 @@ describe('Claimant Phone', () => {
 
       await postHandler(req as AppRequest, res as unknown as Response, next);
 
-      expect(mockSaveTelephone).toHaveBeenCalledWith('user-id', expect.any(CitizenTelephoneNumber), ClaimantOrDefendant.CLAIMANT);
+      expect(mockSaveTelephone).toHaveBeenCalledWith(req, expect.any(CitizenTelephoneNumber), ClaimantOrDefendant.CLAIMANT);
       expect(res.redirect).toHaveBeenCalledWith(CLAIMANT_TASK_LIST_URL);
     });
 

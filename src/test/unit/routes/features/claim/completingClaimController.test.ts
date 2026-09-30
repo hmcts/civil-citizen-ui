@@ -43,7 +43,7 @@ describe('Completing Claim', () => {
     it('should redirect to task list', async () => {
       await postHandler(req as AppRequest, res as unknown as Response, next);
 
-      expect(saveCompletingClaim).toHaveBeenCalledWith('user-id');
+      expect(saveCompletingClaim).toHaveBeenCalledWith(req);
       expect(res.redirect).toHaveBeenCalledWith(CLAIMANT_TASK_LIST_URL);
     });
 
