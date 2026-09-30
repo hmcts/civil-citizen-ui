@@ -3,7 +3,7 @@ properties([
   copyArtifactPermission('/HMCTS_a_to_c/civil-citizen-ui/*'),
 ])
 
-@Library("Infrastructure@2.9.0")
+@Library("Infrastructure@2.10.1")
 import uk.gov.hmcts.contino.AppPipelineConfig
 import uk.gov.hmcts.contino.GithubAPI
 import uk.gov.hmcts.contino.AppPipelineDsl
@@ -338,6 +338,9 @@ withPipeline(type, product, component) {
 
   before('functionalTest:preview') {
     env.IDAM_STUB_ENABLED='false'
+    if (env.OPTIMISED_FUNCTIONAL_TESTS == 'true') {
+      env.WIREMOCK_URL = "https://wiremock-civil-citizen-ui-pr-${CHANGE_ID}.preview.platform.hmcts.net"
+    }
     copyPreviousAllureHistory()
     if(checkForSkipFunctionalTests(env.BRANCH_NAME)) {
       env.SKIP_FUNCTIONAL_TESTS = true

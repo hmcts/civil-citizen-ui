@@ -13,11 +13,10 @@ describe('Optimised functional mock boundaries', () => {
     global.fetch = originalFetch;
   });
 
-  it('resets scenario state before each journey without deleting diagnostic requests', async () => {
+  it('does not reset another concurrent journey or delete its diagnostic requests', async () => {
     await boundary._before();
     await boundary._before();
-    expect(global.fetch).toHaveBeenCalledTimes(2);
-    expect(global.fetch).toHaveBeenLastCalledWith('https://wiremock.example.test/__admin/scenarios/reset', expect.objectContaining({method: 'POST'}));
+    expect(global.fetch).not.toHaveBeenCalled();
   });
 
   it('accepts journeys whose downstream requests all matched', async () => {
