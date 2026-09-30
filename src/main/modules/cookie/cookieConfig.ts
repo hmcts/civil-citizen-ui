@@ -5,6 +5,15 @@ const pushCookiePreferencesEvent = (preferences: Preferences) => {
   dataLayer.push({'event': 'Cookie Preferences', 'cookiePreferences': preferences});
 };
 
+// The IDAM user id is rendered into a meta tag by the base templates. It is the
+// correlation key for claim creation business events, where there is no case id
+// until the claim is submitted. Read from the DOM rather than an inline script so
+// no CSP nonce is involved.
+const getDynatraceUserId = (): string | undefined => {
+  const meta = document.querySelector<HTMLMetaElement>('meta[name="dt-user-id"]');
+  return meta?.content || undefined;
+};
+
 const updateDynatracePreference = (preferences: Preferences) => {
   const dtrum = window.dtrum;
 
@@ -15,6 +24,12 @@ const updateDynatracePreference = (preferences: Preferences) => {
   if (preferences.apm === 'on') {
     dtrum.enable();
     dtrum.enableSessionReplay();
+
+    // Must follow enable(): identifyUser is ignored while the agent is disabled.
+    const userId = getDynatraceUserId();
+    if (userId && typeof dtrum.identifyUser === 'function') {
+      dtrum.identifyUser(userId);
+    }
   } else {
     dtrum.disableSessionReplay();
     dtrum.disable();
@@ -86,6 +101,10 @@ interface DtrumApi {
   enableSessionReplay(): void;
   disable(): void;
   disableSessionReplay(): void;
+  // Optional on purpose: not every deployed agent version exposes identifyUser, and
+  // this handler runs on UserPreferencesLoaded. An unguarded call against an older
+  // agent would throw there and take out cookie handling for the whole page.
+  identifyUser?(userId: string): void;
 }
 
 interface Preferences {
