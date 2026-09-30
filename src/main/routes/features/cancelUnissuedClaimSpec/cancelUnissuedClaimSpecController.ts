@@ -12,6 +12,11 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {getRouteParam} from 'common/utils/routeParamUtils';
 import {deleteDraftClaimFromStore, generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {cancelUnissuedClaimSpecGuard} from 'routes/guards/cancelUnissuedClaimSpecGuard';
+import {GenericForm} from 'form/models/genericForm';
+import {
+  CANCEL_UNISSUED_CLAIM_SPEC_REASON_MAX_LENGTH,
+  CancelUnissuedClaimSpecReason,
+} from 'form/models/cancelUnissuedClaimSpec/cancelUnissuedClaimSpecReason';
 
 const cancelUnissuedClaimSpecViewPath = 'features/cancelUnissuedClaimSpec/cancel-unissued-claim-spec';
 const cancelUnissuedClaimSpecConfirmationViewPath = 'features/cancelUnissuedClaimSpec/cancel-unissued-claim-spec-confirmation';
@@ -19,13 +24,18 @@ const cancelUnissuedClaimSpecController = Router();
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
+const renderView = (res: Response, claimId: string, form: GenericForm<CancelUnissuedClaimSpecReason>): void => {
+  res.render(cancelUnissuedClaimSpecViewPath, {
+    form,
+    maxLength: CANCEL_UNISSUED_CLAIM_SPEC_REASON_MAX_LENGTH,
+    dashboardUrl: constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL),
+    pageTitle: 'PAGES.CANCEL_UNISSUED_CLAIM_SPEC.PAGE_TITLE',
+  });
+};
+
 cancelUnissuedClaimSpecController.get(CANCEL_UNISSUED_CLAIM_SPEC_URL, cancelUnissuedClaimSpecGuard, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const claimId = getRouteParam(req, 'id');
-    res.render(cancelUnissuedClaimSpecViewPath, {
-      dashboardUrl: constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL),
-      pageTitle: 'PAGES.CANCEL_UNISSUED_CLAIM_SPEC.PAGE_TITLE',
-    });
+    renderView(res, getRouteParam(req, 'id'), new GenericForm(new CancelUnissuedClaimSpecReason()));
   } catch (error) {
     next(error);
   }
@@ -34,7 +44,13 @@ cancelUnissuedClaimSpecController.get(CANCEL_UNISSUED_CLAIM_SPEC_URL, cancelUnis
 cancelUnissuedClaimSpecController.post(CANCEL_UNISSUED_CLAIM_SPEC_URL, cancelUnissuedClaimSpecGuard, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const claimId = getRouteParam(req, 'id');
-    const reason = typeof req.body.cancelReason === 'string' ? req.body.cancelReason.trim() : '';
+    // Browsers submit new lines as \r\n; count them as one character, as the character count component does
+    const reason = typeof req.body.cancelReason === 'string' ? req.body.cancelReason.replace(/\r\n/g, '\n').trim() : '';
+    const form = new GenericForm(new CancelUnissuedClaimSpecReason(reason));
+    await form.validate();
+    if (form.hasErrors()) {
+      return renderView(res, claimId, form);
+    }
     const claimUpdate: ClaimUpdate = reason ? {cancelUnissuedClaimSpecReason: reason} : {};
     await civilServiceClient.submitCancelUnissuedClaimSpec(claimId, claimUpdate, req);
     await deleteDraftClaimFromStore(generateRedisKey(req));

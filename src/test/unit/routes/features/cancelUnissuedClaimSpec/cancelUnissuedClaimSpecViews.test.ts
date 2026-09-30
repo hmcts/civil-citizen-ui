@@ -32,10 +32,24 @@ describe('Cancel unissued claim spec views', () => {
 
     expect(res.status).toBe(200);
     expect(res.text).toContain(t('PAGES.CANCEL_UNISSUED_CLAIM_SPEC.TITLE'));
-    expect(res.text).toContain(t('PAGES.CANCEL_UNISSUED_CLAIM_SPEC.GUIDANCE_CANNOT_BE_COURT_PROCEEDINGS'));
+    expect(res.text).toContain(t('PAGES.CANCEL_UNISSUED_CLAIM_SPEC.WARNING'));
+    expect(res.text).toContain(t('PAGES.CANCEL_UNISSUED_CLAIM_SPEC.REASON_LABEL'));
+    expect(res.text).toContain('You can enter up to 200 characters');
+    expect(res.text).toContain('data-maxlength="200"');
     expect(res.text).toContain(t('PAGES.CANCEL_UNISSUED_CLAIM_SPEC.BUTTON'));
     expect(res.text).toContain('name="cancelReason"');
     expect(res.text).toContain(`href="/dashboard/${claimId}/claimantNewDesign"`);
+  });
+
+  it('should show the error summary and field error when the reason is invalid', async () => {
+    const res = await request(app)
+      .post(CANCEL_UNISSUED_CLAIM_SPEC_URL.replace(':id', claimId))
+      .send({cancelReason: 'Placeholder input text$$$'});
+
+    expect(res.status).toBe(200);
+    expect(res.text).toContain(t('ERRORS.THERE_WAS_A_PROBLEM'));
+    expect(res.text.match(new RegExp(t('ERRORS.CANCEL_UNISSUED_CLAIM_SPEC_REASON_INVALID_CHARACTERS'), 'g'))).toHaveLength(2);
+    expect(res.text).toContain('Placeholder input text$$$');
   });
 
   it('should render the confirmation page', async () => {

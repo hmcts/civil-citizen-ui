@@ -44,10 +44,14 @@ describe('Cancel unissued claim spec controller', () => {
     it('should render the cancel unissued claim page with a link back to the dashboard', async () => {
       await getHandler(req as AppRequest, res as never, next);
 
-      expect(res.render).toHaveBeenCalledWith('features/cancelUnissuedClaimSpec/cancel-unissued-claim-spec', {
+      expect(res.render).toHaveBeenCalledWith('features/cancelUnissuedClaimSpec/cancel-unissued-claim-spec', expect.objectContaining({
+        maxLength: 200,
         dashboardUrl: `/dashboard/${claimId}/claimantNewDesign`,
         pageTitle: 'PAGES.CANCEL_UNISSUED_CLAIM_SPEC.PAGE_TITLE',
-      });
+      }));
+      const form = (res.render as jest.Mock).mock.calls[0][1].form;
+      expect(form.model.cancelReason).toBeUndefined();
+      expect(form.hasErrors()).toBe(false);
       expect(next).not.toHaveBeenCalled();
     });
   });
@@ -71,6 +75,29 @@ describe('Cancel unissued claim spec controller', () => {
 
       expect(mockSubmit).toHaveBeenCalledWith(claimId, {}, req);
       expect(res.redirect).toHaveBeenCalledWith(`/case/${claimId}/cancel-unissued-claim/confirmation`);
+    });
+
+    it('should count a submitted new line as one character', async () => {
+      req.body = {cancelReason: 'a'.repeat(99) + '\r\n' + 'b'.repeat(100)};
+
+      await postHandler(req as AppRequest, res as never, next);
+
+      expect(mockSubmit).toHaveBeenCalledWith(claimId, {cancelUnissuedClaimSpecReason: 'a'.repeat(99) + '\n' + 'b'.repeat(100)}, req);
+    });
+
+    it.each([
+      ['more than 200 characters', 'a'.repeat(201), 'ERRORS.CANCEL_UNISSUED_CLAIM_SPEC_REASON_TOO_LONG'],
+      ['non-standard characters', 'Placeholder input text$$$', 'ERRORS.CANCEL_UNISSUED_CLAIM_SPEC_REASON_INVALID_CHARACTERS'],
+    ])('should re-render with an error and not submit when the reason has %s', async (_case, reason, error) => {
+      req.body = {cancelReason: reason};
+
+      await postHandler(req as AppRequest, res as never, next);
+
+      expect(mockSubmit).not.toHaveBeenCalled();
+      expect(res.redirect).not.toHaveBeenCalled();
+      const form = (res.render as jest.Mock).mock.calls[0][1].form;
+      expect(form.errorFor('cancelReason')).toBe(error);
+      expect(form.model.cancelReason).toBe(reason);
     });
 
     it('should pass errors to next when submission fails', async () => {
