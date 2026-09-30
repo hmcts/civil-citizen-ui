@@ -1,5 +1,3 @@
-const fetch = require('node-fetch');
-
 const {retry} = require('./retryHelper');
 
 const request = (url, headers, body, method = 'POST') => fetch(url, {

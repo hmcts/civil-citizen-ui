@@ -11,11 +11,7 @@ module.exports = class WiremockBoundary extends Helper {
     return response;
   }
 
-  async _before() {
-    // One worker owns the mock. Keep the request journal for failure diagnostics.
-    await this.request('/__admin/scenarios/reset', 'POST');
-  }
-
+  // Payment state is isolated by reference; never reset another worker's state.
   async _after() {
     const response = await this.request('/__admin/requests/unmatched');
     const {requests} = await response.json();

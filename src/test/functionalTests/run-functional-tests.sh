@@ -75,6 +75,12 @@ run_functional_command() {
   exit_code=$?
   set -e
 
+  if [[ "${VERIFY_FUNCTIONAL_BASELINE:-false}" = "true" ]]; then
+    local pipeline='pr'
+    [[ "$ENVIRONMENT" = "aat" ]] && pipeline='master'
+    node bin/functional-baseline.js results "$pipeline" "${REPORT_DIR:-test-results/functional}" \
+      "${MOCHAWESOME_REPORTFILENAME:-civil-citizen-${pipeline}}"
+  fi
   assert_no_functional_report_failures
 
   if [[ "$exit_code" -ne 0 ]]; then
@@ -155,15 +161,23 @@ functional_base_pattern() {
 }
 
 run_optimised_functional_tests() {
-  local base_pattern pattern
+  local base_pattern pattern workers=13 pipeline=pr
   export FUNCTIONAL=true
   export WIREMOCK_URL="${WIREMOCK_URL:-${TEST_URL/https:\/\//https:\/\/wiremock-}}"
   unset PREV_FAILED_TEST_FILES PREV_NOT_EXECUTED_TEST_FILES
+  unset FUNCTIONAL_WORKER_PLAN
   base_pattern=$(functional_base_pattern)
   pattern="(?=.*(?:${base_pattern}))(?=.*@thin-full-stack)(?!.*@mocked-functional)"
+  # The complete default baseline is migrated. Preserve its existing skips too.
+  if [[ -z "${PR_FT_GROUPS:-}" ]]; then
+    pattern="$base_pattern"
+    [[ "$ENVIRONMENT" = "aat" ]] && pipeline=master
+    export FUNCTIONAL_WORKER_PLAN="$(node bin/functional-baseline.js worker-plan "$pipeline")"
+    workers=$(node -p 'JSON.parse(process.env.FUNCTIONAL_WORKER_PLAN).workers')
+  fi
   echo "Running migrated thin-client scenarios from ${base_pattern}"
-  MOCHAWESOME_REPORTFILENAME='optimised-thin-client' \
-    run_functional_command yarn codeceptjs run-workers --suites 1 --grep "$pattern" \
+  MOCHAWESOME_REPORTFILENAME='optimised-thin-client' WORKER_STAGGER_MS=3000 \
+    run_functional_command yarn codeceptjs run-workers --suites "$workers" --grep "$pattern" \
     --reporter mocha-multi --plugins allure --verbose
 }
 
@@ -178,10 +192,18 @@ if [[ "$SKIP_FUNCTIONAL_TESTS" = "true" ]]; then
   exit 0
 
 elif [[ "${OPTIMISED_FUNCTIONAL_TESTS:-false}" = "true" ]]; then
+  if [[ -z "${PR_FT_GROUPS:-}" ]]; then
+    node bin/functional-baseline.js check
+    VERIFY_FUNCTIONAL_BASELINE=true
+  fi
   run_optimised_functional_tests
 
 #Check if RUN_ALL_FUNCTIONAL_TESTS is set to true
 elif [[ "$RUN_ALL_FUNCTIONAL_TESTS" = "true" ]]; then
+  if [[ -z "${PR_FT_GROUPS:-}" ]]; then
+    node bin/functional-baseline.js check
+    VERIFY_FUNCTIONAL_BASELINE=true
+  fi
   echo "The label 'runAllFunctionalTests' exists on the PR."
   echo "Running all functional tests."
   run_functional_tests
