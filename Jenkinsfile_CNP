@@ -13,7 +13,7 @@ def product = "civil"
 def component = "citizen-ui"
 @groovy.transform.Field
 def camundaBranch = "master"
-def dmnBranch = "master"
+def dmnBranch = "DTSCCI-6210"
 def waStandaloneBranch = "master"
 AppPipelineConfig pipelineConf
 
