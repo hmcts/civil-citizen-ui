@@ -483,7 +483,7 @@ module.exports = {
     return caseId;
   },
 
-  createLiPClaim: async (user, claimType, qmEnabled = false, partyType = 'Individual', language, mainClaimWelshEnabled = false, assignDefendant = true) => {
+  createLiPClaim: async (user, claimType, qmEnabled = false, partyType = 'Individual', language, awaitClaimTranslationBeforeAssignment = language === 'BOTH', assignDefendant = true) => {
     console.log(' Creating LIP claim');
 
     const currentDate = new Date();
@@ -550,13 +550,13 @@ module.exports = {
           'reference': 'RC-1234-1234-1234-1234',
         },
         issueDate: currentDate,
-        ...(!mainClaimWelshEnabled && {respondent1ResponseDeadline: currentDate}),
+        ...(!awaitClaimTranslationBeforeAssignment && {respondent1ResponseDeadline: currentDate}),
       },
     };
     await apiRequest.startEventForCitizen('', caseId, newPayload);
     await waitForTimeout(1000);
     await waitForFinishedBusinessProcess(caseId, user);
-    if (!mainClaimWelshEnabled && assignDefendant) {
+    if (!awaitClaimTranslationBeforeAssignment && assignDefendant) {
       await assignSpecCase(caseId, null);
     }
     return caseId;

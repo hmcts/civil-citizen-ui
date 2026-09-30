@@ -8,16 +8,17 @@ import {Claim} from 'models/claim';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {CivilServiceClient} from 'client/civilServiceClient';
-import {saveClaimantBilingualLangPreference} from 'services/features/response/bilingualLangPreferenceService';
-import * as launchDarklyClient from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
+import {
+  getCookieLanguage,
+  saveClaimantBilingualLangPreference,
+} from 'services/features/response/bilingualLangPreferenceService';
 import {createMockResponse, createMockSession, getRouteHandler} from '../../../../utils/getRouteHandler';
 
 jest.mock('modules/draft-store/draftStoreService');
 jest.mock('services/features/response/bilingualLangPreferenceService', () => ({
   saveClaimantBilingualLangPreference: jest.fn(),
-  getCookieLanguage: jest.fn((welshEnabled: boolean, option: string) => option),
+  getCookieLanguage: jest.fn((option: string) => option === 'WELSH' ? 'cy' : 'en'),
 }));
-jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 
 const flush = (): Promise<void> => new Promise((resolve) => setImmediate(resolve));
 
@@ -43,7 +44,6 @@ describe('Bilingual language preference', () => {
     draftClaim.draftClaimCreatedAt = new Date();
     (getCaseDataFromStore as jest.Mock).mockResolvedValue(draftClaim);
     (saveClaimantBilingualLangPreference as jest.Mock).mockResolvedValue(undefined);
-    (launchDarklyClient.isWelshEnabledForMainCase as jest.Mock).mockResolvedValue(false);
     jest.spyOn(draftStoreService, 'createDraftClaimInStoreWithExpiryTime').mockResolvedValue(undefined);
     jest.spyOn(CivilServiceClient.prototype, 'createDashboard').mockResolvedValue(undefined as never);
   });
@@ -92,6 +92,19 @@ describe('Bilingual language preference', () => {
 
       await postHandler(req as AppRequest, res as unknown as Response, next);
 
+      expect(getCookieLanguage).toHaveBeenCalledWith(ClaimBilingualLanguagePreference.WELSH_AND_ENGLISH);
+      expect(res.cookie).toHaveBeenCalledWith('lang', 'en');
+      expect(res.redirect).toHaveBeenCalledWith(CLAIMANT_TASK_LIST_URL);
+    });
+
+    it('should set the Welsh cookie and redirect to task list when WELSH is selected', async () => {
+      req.body = {option: ClaimBilingualLanguagePreference.WELSH};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(getCookieLanguage).toHaveBeenCalledWith(ClaimBilingualLanguagePreference.WELSH);
+      expect(res.cookie).toHaveBeenCalledWith('lang', 'cy');
+      expect(saveClaimantBilingualLangPreference).toHaveBeenCalled();
       expect(res.redirect).toHaveBeenCalledWith(CLAIMANT_TASK_LIST_URL);
     });
 
