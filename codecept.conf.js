@@ -8,6 +8,9 @@ const { deleteAllIdamTestUsers } = require('./src/test/functionalTests/specClaim
 const functional = process.env.FUNCTIONAL;
 
 const getTests = () => {
+  if (process.env.OPTIMISED_FUNCTIONAL_TESTS === 'true' && process.env.FUNCTIONAL_WORKER_PLAN) {
+    return JSON.parse(process.env.FUNCTIONAL_WORKER_PLAN).files;
+  }
   let prevFailedTestFiles = process.env.PREV_FAILED_TEST_FILES;
   let prevNotExecutedTestFiles = process.env.PREV_NOT_EXECUTED_TEST_FILES;
 
@@ -104,7 +107,7 @@ exports.config = {
       ],
     },
     retryFailedStep: {
-      enabled: process.env.DISABLE_TEST_RETRIES !== 'true',
+      enabled: true,
     },
     screenshotOnFail: {
       enabled: true,
@@ -117,7 +120,7 @@ exports.config = {
     allure: {
       enabled: true,
       require: 'allure-codeceptjs',
-      resultsDir: process.env.ALLURE_RESULTS_DIR || 'test-results/functional/allure-results',
+      resultsDir: 'test-results/functional/allure-results',
     },
   },
   mocha: {

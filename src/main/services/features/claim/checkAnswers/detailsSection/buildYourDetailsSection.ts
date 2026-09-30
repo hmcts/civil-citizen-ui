@@ -13,13 +13,9 @@ import {
 } from 'routes/urls';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
 import {PartyType} from 'models/partyType';
-import {Address} from 'form/models/address';
+import {addressToString} from 'common/utils/addressUtils';
 
 const changeLabel = (lang: string): string => t('COMMON.BUTTONS.CHANGE', {lng: lang});
-
-const addressToString = (address: Address) => {
-  return address?.addressLine1 + '<br>' + address?.city + '<br>' + address?.postCode;
-};
 
 export const buildYourDetailsSection = (claim: Claim, claimId: string, lang: string, isCarmEnabled = false): SummarySection => {
 
