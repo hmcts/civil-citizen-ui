@@ -1,5 +1,5 @@
 import {getClaimIssuePaymentClaim} from 'routes/features/claim/payment/claimIssuePaymentDraftService';
-import {createOrLoadDraft, getDraftClaim, updateDraftClaim} from 'modules/draft-store/draftStoreManagerService';
+import {createOrLoadDraft, updateDraftClaim} from 'modules/draft-store/draftStoreManagerService';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {AppRequest} from 'models/AppRequest';
 import {Claim} from 'models/claim';
@@ -12,7 +12,6 @@ import {getTTLDaysForCategory, TTLCategory} from 'modules/draft-store/ttlConfig'
 
 jest.mock('modules/draft-store/draftStoreManagerService');
 
-const mockGetDraftClaim = getDraftClaim as jest.Mock;
 const mockCreateOrLoadDraft = createOrLoadDraft as jest.Mock;
 const mockUpdateDraftClaim = updateDraftClaim as jest.Mock;
 
@@ -27,7 +26,7 @@ const createReq = (id = claimId, withSessionDraftId = false): AppRequest => ({
   },
 } as unknown as AppRequest);
 
-const createClaim = (id?: string, withApplicant = false): Claim => {
+const createClaim = (id?: string, withApplicant = false, withFeePayment = true): Claim => {
   const claim = new Claim();
   if (id) {
     claim.id = id;
@@ -35,8 +34,12 @@ const createClaim = (id?: string, withApplicant = false): Claim => {
   if (withApplicant) {
     claim.applicant1 = new Party();
   }
-  claim.claimDetails = new ClaimDetails();
-  claim.claimDetails.claimFeePayment = new PaymentInformation('ext', 'RC-1');
+  if (withFeePayment) {
+    claim.claimDetails = new ClaimDetails();
+    claim.claimDetails.claimFeePayment = new PaymentInformation('ext', 'RC-1');
+    claim.claimFee = { calculatedAmountInPence: '432100' } as any;
+    claim.paymentDetails = new PaymentInformation('ext', 'RC-1');
+  }
   return claim;
 };
 
@@ -47,7 +50,7 @@ const createManagerResult = (claim: Claim, rawCaseId?: string): DraftClaimManage
   } as unknown as CivilClaimResponse,
   rawResponse: {
     draftId,
-    caseId: rawCaseId,
+    caseId: rawCaseId || claim.id,
     payload: claim as unknown as Record<string, unknown>,
     createdAt: '2026-08-01T10:00:00.000Z',
     updatedAt: '2026-08-01T11:00:00.000Z',
@@ -70,31 +73,24 @@ describe('getClaimIssuePaymentClaim', () => {
     retrieveClaimDetailsSpy.mockRestore();
   });
 
-  it('should return claim and draftId when payload id matches url claim id', async () => {
-    mockGetDraftClaim.mockResolvedValueOnce(createManagerResult(createClaim(claimId)));
+  it('should return local draft claim and draftId when hydrated draft exists for caseId', async () => {
+    const localDraftClaim = createClaim(claimId, true, true);
+    mockCreateOrLoadDraft.mockResolvedValueOnce(createManagerResult(localDraftClaim, claimId));
 
     const result = await getClaimIssuePaymentClaim(createReq());
 
     expect(result.draftId).toBe(draftId);
     expect(result.claim.id).toBe(claimId);
     expect(result.claim.claimDetails.claimFeePayment?.paymentReference).toBe('RC-1');
+    expect(mockCreateOrLoadDraft).toHaveBeenCalledWith(expect.anything(), {caseId: claimId});
     expect(retrieveClaimDetailsSpy).not.toHaveBeenCalled();
+    expect(mockUpdateDraftClaim).not.toHaveBeenCalled();
   });
 
-  it('should match using rawResponse.caseId when payload id is missing', async () => {
-    const claim = createClaim();
-    mockGetDraftClaim.mockResolvedValueOnce(createManagerResult(claim, claimId));
-
-    const result = await getClaimIssuePaymentClaim(createReq());
-
-    expect(result.claim.claimDetails.claimFeePayment?.paymentReference).toBe('RC-1');
-    expect(result.draftId).toBe(draftId);
-    expect(retrieveClaimDetailsSpy).not.toHaveBeenCalled();
-  });
-
-  it('should restore session.draftId from the durable draft', async () => {
+  it('should restore session.draftId from local draft when returning draft', async () => {
     const req = createReq();
-    mockGetDraftClaim.mockResolvedValueOnce(createManagerResult(createClaim(claimId)));
+    const localDraftClaim = createClaim(claimId, true, true);
+    mockCreateOrLoadDraft.mockResolvedValueOnce(createManagerResult(localDraftClaim, claimId));
 
     await getClaimIssuePaymentClaim(req);
 
@@ -105,58 +101,39 @@ describe('getClaimIssuePaymentClaim', () => {
     await expect(getClaimIssuePaymentClaim(createReq(''))).rejects.toThrow(
       '[claimIssuePaymentDraftService] claim id is required',
     );
-    expect(mockGetDraftClaim).not.toHaveBeenCalled();
+    expect(mockCreateOrLoadDraft).not.toHaveBeenCalled();
     expect(retrieveClaimDetailsSpy).not.toHaveBeenCalled();
   });
 
-  it('should load the claim from CCD and persist a draft when there is no durable draft', async () => {
-    const ccdClaim = createClaim(claimId, true);
+  it('should load claim from CCD and persist local draft when local draft is unhydrated', async () => {
+    const ccdClaim = createClaim(claimId, true, true);
+    const unhydratedDraftClaim = createClaim(claimId, false, false);
     const req = createReq();
-    mockGetDraftClaim.mockResolvedValueOnce(null);
+
+    mockCreateOrLoadDraft.mockResolvedValueOnce(createManagerResult(unhydratedDraftClaim, claimId));
     retrieveClaimDetailsSpy.mockResolvedValueOnce(ccdClaim);
-    mockCreateOrLoadDraft.mockResolvedValueOnce(createManagerResult(ccdClaim));
-    mockUpdateDraftClaim.mockResolvedValueOnce(createManagerResult(ccdClaim));
+    mockCreateOrLoadDraft.mockResolvedValueOnce(createManagerResult(ccdClaim, claimId));
+    mockUpdateDraftClaim.mockResolvedValueOnce(createManagerResult(ccdClaim, claimId));
 
     const result = await getClaimIssuePaymentClaim(req);
 
     expect(retrieveClaimDetailsSpy).toHaveBeenCalledWith(claimId, req);
     expect(ccdClaim.draftClaimCacheTtlDays).toBe(getTTLDaysForCategory(TTLCategory.DRAFT_CLAIM));
-    expect(mockCreateOrLoadDraft).toHaveBeenCalledWith(req, ccdClaim);
+    expect(mockCreateOrLoadDraft).toHaveBeenNthCalledWith(1, req, {caseId: claimId});
+    expect(mockCreateOrLoadDraft).toHaveBeenNthCalledWith(2, req, ccdClaim);
     expect(mockUpdateDraftClaim).toHaveBeenCalledWith(req, ccdClaim, draftId);
     expect(result.claim).toBe(ccdClaim);
     expect(result.draftId).toBe(draftId);
-    expect(req.session.draftId).toBeUndefined();
   });
 
-  it('should throw when there is no durable draft and CCD has no claim', async () => {
-    mockGetDraftClaim.mockResolvedValueOnce(null);
+  it('should throw when local draft is unhydrated and CCD has no claim', async () => {
+    const unhydratedDraftClaim = createClaim(claimId, false, false);
+    mockCreateOrLoadDraft.mockResolvedValueOnce(createManagerResult(unhydratedDraftClaim, claimId));
     retrieveClaimDetailsSpy.mockResolvedValueOnce(new Claim());
 
     await expect(getClaimIssuePaymentClaim(createReq())).rejects.toThrow(
       '[claimIssuePaymentDraftService] no claim found',
     );
-    expect(mockCreateOrLoadDraft).not.toHaveBeenCalled();
     expect(mockUpdateDraftClaim).not.toHaveBeenCalled();
-  });
-
-  it('should load the unpaid claim from CCD when the active draft is a different claim', async () => {
-    const req = createReq(claimId, true);
-    const inProgressClaim = createClaim('0000000000000000');
-    const ccdClaim = createClaim(claimId, true);
-    const paymentDraftId = 'payment-draft-id';
-    const paymentDraft = createManagerResult(ccdClaim, claimId);
-    paymentDraft.rawResponse.draftId = paymentDraftId;
-    mockGetDraftClaim.mockResolvedValueOnce(createManagerResult(inProgressClaim));
-    retrieveClaimDetailsSpy.mockResolvedValueOnce(ccdClaim);
-    mockCreateOrLoadDraft.mockResolvedValueOnce(paymentDraft);
-    mockUpdateDraftClaim.mockResolvedValueOnce(paymentDraft);
-
-    const result = await getClaimIssuePaymentClaim(req);
-
-    expect(retrieveClaimDetailsSpy).toHaveBeenCalledWith(claimId, req);
-    expect(mockCreateOrLoadDraft).toHaveBeenCalledWith(req, ccdClaim);
-    expect(mockUpdateDraftClaim).toHaveBeenCalledWith(req, ccdClaim, paymentDraftId);
-    expect(result.draftId).toBe(paymentDraftId);
-    expect(req.session.draftId).toBe(draftId);
   });
 });
