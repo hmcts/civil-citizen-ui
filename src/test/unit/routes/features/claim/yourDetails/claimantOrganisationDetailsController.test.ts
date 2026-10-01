@@ -11,7 +11,7 @@ import {getClaimantInformation, saveClaimantProperty} from 'services/features/cl
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {buildAddress} from '../../../../../utils/mockClaim';
 import * as launchDarklyClient from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
-import {lookupByPostcodeAndDataSet} from 'modules/ordance-survey-key/ordanceSurveyKeyService';
+import {lookupByPostcodeAndDataSet} from 'modules/ordnance-survey-key/ordnanceSurveyKeyService';
 import {createMockResponse, createMockSession, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
 jest.mock('services/features/claim/yourDetails/claimantDetailsService', () => ({
@@ -20,7 +20,7 @@ jest.mock('services/features/claim/yourDetails/claimantDetailsService', () => ({
 }));
 jest.mock('modules/draft-store/draftStoreService');
 jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
-jest.mock('modules/ordance-survey-key/ordanceSurveyKeyService', () => ({
+jest.mock('modules/ordnance-survey-key/ordnanceSurveyKeyService', () => ({
   lookupByPostcodeAndDataSet: jest.fn(),
 }));
 
