@@ -23,18 +23,18 @@ const content = {
   },
 };
 
-// const buttons = {
-//   addPerson: {
-//     en: 'Add another person',
-//     cy: 'Ychwanegu unigolyn arall',
-//   },
-// };
+const buttons = {
+  addPerson: {
+    en: 'Add another person',
+    cy: 'Ychwanegu unigolyn arall',
+  },
+};
 
 const inputs = {
   person1SignLanguage: {
     en: 'Spanish',
     cy: 'Sbaeneg',
-  }, 
+  },
   person2OtherSupport: {
     en: 'No support required',
     cy: 'Dim cymorth sydd ei angen',
@@ -44,18 +44,21 @@ const inputs = {
 class SupportRequired {
 
   async selectOptionForSupportRequired() {
-    const { language } = sharedData; 
+    const { language } = sharedData;
     await I.waitForContent(content.heading[language], config.WaitForText);
     await I.click(fields.yesButton);
     await I.selectOption(fields.person1Dropdown, 'WitnessFirstName WitnessLastName');
     await I.click(fields.person1HearingLoop);
     await I.click(fields.person1SignLanguage);
     await I.fillField(fields.person1SignLanguageText, inputs.person1SignLanguage[language]);
-    // await I.click(buttons.addPerson[language]);
-    // await I.selectOption(fields.person2Dropdown, 'John Doe');
-    // await I.click(fields.person2DisabledAccess);
-    // await I.click(fields.person2OtherSupport);
-    // await I.fillField(fields.person2OtherSupportText, inputs.person2OtherSupport[language]);
+    await I.click(buttons.addPerson[language]);
+    await I.waitForElement(fields.person2Dropdown, config.WaitForText);
+    const person2Options = await I.grabAttributeFromAll(`${fields.person2Dropdown} option`, 'value');
+    const person2Selection = person2Options.find(value => value);
+    await I.selectOption(fields.person2Dropdown, person2Selection);
+    await I.click(fields.person2DisabledAccess);
+    await I.click(fields.person2OtherSupport);
+    await I.fillField(fields.person2OtherSupportText, inputs.person2OtherSupport[language]);
     await I.click(cButtons.saveAndContinue[language]);
   }
 }
