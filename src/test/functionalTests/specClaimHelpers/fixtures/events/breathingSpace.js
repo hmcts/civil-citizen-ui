@@ -7,9 +7,6 @@ module.exports = {
           reference: 'Reference',
           start: '2023-06-22',
           type: 'STANDARD',
-          expectedEnd: null,
-          event: 'Summary',
-          eventDescription: 'Description',
         },
       },
     };  
@@ -21,8 +18,7 @@ module.exports = {
       caseData: {
         liftBreathing: {
           expectedEnd: '2023-06-23',
-          event: 'Summary',
-          eventDescription: 'Description',
+          reasonToLift: 'Description',
         },
       },
     };  
