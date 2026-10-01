@@ -45,6 +45,9 @@ nodejs:
     CIVIL_SERVICE_URL: http://${SERVICE_NAME}-civil-service
     IDAM_SIGN_OUT_REDIRECT_URL: https://${SERVICE_FQDN}/dashboard
     LAUNCH_DARKLY_ENV: ${SERVICE_FQDN}
+    ORDNANCE_SURVEY_API_URL: http://${SERVICE_NAME}-wiremock
+    ORDNANCE_SURVEY_API_KEY: mock-key
+    GOVPAY_URL: https://wiremock-${SERVICE_FQDN}
 
 civil-service:
   enabled: true
@@ -123,22 +126,22 @@ civil-service:
       AUTH_PROVIDER_SERVICE_CLIENT_BASEURL: http://rpe-service-auth-provider-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
       OIDC_ISSUER: https://forgerock-am.service.core-compute-idam-aat2.internal:8443/openam/oauth2/realms/root/realms/hmcts
       TESTING_SUPPORT_ENABLED: true
-      FEES_API_URL: http://fees-register-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
-      PAYMENTS_API_URL: http://payment-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
+      FEES_API_URL: http://${SERVICE_NAME}-wiremock
+      PAYMENTS_API_URL: http://${SERVICE_NAME}-wiremock
       SEND_LETTER_URL: http://rpe-send-letter-service-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
       CUI_URL: https://${SERVICE_FQDN}
       CUI_URL_RESPOND_TO_CLAIM: https://${SERVICE_FQDN}/first-contact/start
       CLAIM_STORE_URL: http://cmc-claim-store-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
       GENAPP_LRD_URL: http://rd-location-ref-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
       GENAPP_JRD_URL: http://rd-judicial-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
-      DOCMOSIS_TORNADO_URL: https://docmosis.aat.platform.hmcts.net
+      DOCMOSIS_TORNADO_URL: http://${SERVICE_NAME}-wiremock
       DOCUMENT_MANAGEMENT_URL: http://dm-store-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
       SPRING_CLOUD_BOOTSTRAP_ENABLED: true
       RD_PROFESSIONAL_API_URL: http://rd-professional-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
       RD_COMMONDATA_API_URL: http://rd-commondata-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
       LAUNCH_DARKLY_ENV: ${SERVICE_FQDN}
       CORE_CASE_DATA_API_URL: http://${SERVICE_NAME}-ccd-data-store-api
-      CASE_DOCUMENT_AM_URL: http://${SERVICE_NAME}-cdam
+      CASE_DOCUMENT_AM_URL: http://${SERVICE_NAME}-wiremock
       REFERENCE_DATABASE_MIGRATION: true
       EM_CCD_ORCHESTRATOR_URL: http://${SERVICE_NAME}-em-ccdorc
       CAMUNDA_URL: http://${SERVICE_NAME}-camunda/engine-rest/
@@ -202,7 +205,7 @@ civil-service:
       adminWeb:
         enabled: false
       apiGatewayWeb:
-        enabled: true
+        enabled: false
       definitionImporter:
         enabled: false
       s2s:
@@ -226,11 +229,6 @@ civil-service:
           - name: "pr-${CHANGE_ID}-definition-store"
           - name: "pr-${CHANGE_ID}-camunda"
           - name: "pr-${CHANGE_ID}-role-assignment"
-          - name: "pr-${CHANGE_ID}-wa-task-management-api"
-          - name: "pr-${CHANGE_ID}-wa-case-event-handler"
-          - name: "pr-${CHANGE_ID}-wa-workflow-api"
-          - name: "pr-${CHANGE_ID}-cft-task-db"
-          - name: "pr-${CHANGE_ID}-emstitch"
 
     ccd-api-gateway-web:
       nodejs:
@@ -294,7 +292,7 @@ civil-service:
         devmemoryLimits: 4096Mi
         environment:
           CASE_DOCUMENT_AM_API_ATTACH_DOCUMENT_ENABLED: true
-          CASE_DOCUMENT_AM_URL: http://${SERVICE_NAME}-cdam
+          CASE_DOCUMENT_AM_URL: http://${SERVICE_NAME}-wiremock
           DATA_STORE_DB_NAME: "{{ .Values.global.databaseNamePrefix }}data-store"
           DATA_STORE_DB_HOST: "{{ .Values.global.postgresHostname }}"
           DATA_STORE_DB_USERNAME: "{{ .Values.global.postgresUsername }}"
@@ -547,7 +545,7 @@ civil-service:
         ingressHost: ccd-definition-store-${SERVICE_NAME}.preview.platform.hmcts.net
 
   xui-webapp:
-    enabled: true
+    enabled: false
     memoryLimits: 1Gi
     nodejs:
       imagePullPolicy: Always
@@ -619,7 +617,7 @@ civil-service:
         enabled: false
 
   em-stitching:
-    enabled: true
+    enabled: false
     java:
       devcpuRequests: 50m
       devcpuLimits: 500m
@@ -659,7 +657,7 @@ civil-service:
               alias: S2S_KEY
 
   em-ccdorc:
-    enabled: true
+    enabled: false
     java:
       devcpuRequests: 50m
       devcpuLimits: 200m
@@ -687,7 +685,7 @@ civil-service:
               alias: NOTIFICATION_API_KEY
 
   ccd-case-document-am-api:
-    enabled: true
+    enabled: false
     java:
       devcpuRequests: 50m
       devcpuLimits: 200m
@@ -706,3 +704,42 @@ civil-service:
         CCD_DATA_STORE_API_BASE_URL: http://${SERVICE_NAME}-ccd-data-store-api
         CASE_DOCUMENT_AM_API_S2S_SECRET: ${CASE_DOCUMENT_AM_API_S2S_SECRET}
       keyVaults: [ ]
+
+wiremock:
+  # Shared mock state is isolated by payment reference, so keep one replica.
+  enabled: true
+  image: wiremock/wiremock:3.13.2
+  command:
+    - sh
+    - /opt/wiremock/start.sh
+  args:
+    - '--root-dir'
+    - /home/wiremock
+    - '--port'
+    - '8080'
+  replicas: 1
+  autoscaling:
+    enabled: false
+  applicationPort: 8080
+  imagePullPolicy: Always
+  releaseNameOverride: ${SERVICE_NAME}-wiremock
+  ingressHost: wiremock-${SERVICE_FQDN}
+  publicUrl: https://wiremock-${SERVICE_FQDN}
+  verbose: true
+  volumes:
+    - name: wiremock-start
+      configMap:
+        name: ${SERVICE_NAME}-wiremock-start
+    - name: wiremock-mappings
+      configMap:
+        name: ${SERVICE_NAME}-wiremock-mappings
+    - name: wiremock-files
+      configMap:
+        name: ${SERVICE_NAME}-wiremock-files
+  volumeMounts:
+    - name: wiremock-start
+      mountPath: /opt/wiremock
+    - name: wiremock-mappings
+      mountPath: /home/wiremock/mappings
+    - name: wiremock-files
+      mountPath: /home/wiremock/__files

@@ -49,6 +49,7 @@ for (const {mapping, source} of mappings) {
     url: urlMatchers.map(key => [key, request[key]]),
     queryParameters: request.queryParameters || {},
     headers: request.headers || {},
+    customMatcher: request.customMatcher,
     bodyPatterns: request.bodyPatterns || [],
     priority: mapping.priority,
     scenarioName: mapping.scenarioName,

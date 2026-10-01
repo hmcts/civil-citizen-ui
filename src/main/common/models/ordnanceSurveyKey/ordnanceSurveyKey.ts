@@ -15,7 +15,7 @@ export interface AddressOptions {
   poBoxNumber?: string;
   buildingName?: string;
   subBuildingName?: string;
-  buildingNumber?: number;
+  buildingNumber?: string;
   thoroughfareName?: string;
   dependentThoroughfareName?: string;
   dependentLocality?: string;
@@ -36,7 +36,7 @@ export class Address {
   readonly poBoxNumber?: string;
   readonly buildingName?: string;
   readonly subBuildingName?: string;
-  readonly buildingNumber?: number;
+  readonly buildingNumber?: string;
   readonly thoroughfareName?: string;
   readonly dependentThoroughfareName?: string;
   readonly dependentLocality?: string;
