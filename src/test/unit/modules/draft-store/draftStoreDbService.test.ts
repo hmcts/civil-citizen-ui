@@ -203,17 +203,32 @@ describe('draftStoreDbService Unit Tests', () => {
       expect(result.isNew).toBe(true);
     });
 
-    it('should return rawResponse and set isNew=false when backend returns existing draft (200)', async () => {
-      const mockClaim = new Claim();
-      mockedAxios.post.mockResolvedValueOnce({
+    it('should load the active draft and set isNew=false when backend returns 409 (draft already exists)', async () => {
+      mockedAxios.isAxiosError.mockReturnValueOnce(true);
+      mockedAxios.post.mockRejectedValueOnce({isAxiosError: true, response: {status: 409}});
+      mockedAxios.get.mockResolvedValueOnce({
         status: 200,
         data: mockRawResponse,
       });
 
-      const result = await createOrLoadDraftClaimInDraftStoreDb(mockReq, mockClaim);
+      const result = await createOrLoadDraftClaimInDraftStoreDb(mockReq, new Claim());
 
+      expect(mockedAxios.get).toHaveBeenCalledWith(
+        expect.stringContaining('/dashboard/draft-claims/active'),
+        expect.anything(),
+      );
       expect(result.isNew).toBe(false);
       expect(result.rawResponse).toEqual(mockRawResponse);
+      expect(result.claimResponse.id).toBe(mockDraftId);
+    });
+
+    it('should rethrow the 409 when no active draft can be loaded', async () => {
+      const error409 = {isAxiosError: true, response: {status: 409}};
+      mockedAxios.isAxiosError.mockReturnValueOnce(true).mockReturnValueOnce(true);
+      mockedAxios.post.mockRejectedValueOnce(error409);
+      mockedAxios.get.mockRejectedValueOnce({isAxiosError: true, response: {status: 404}});
+
+      await expect(createOrLoadDraftClaimInDraftStoreDb(mockReq, new Claim())).rejects.toBe(error409);
     });
 
     it('should rethrow backend API errors during createOrLoad', async () => {
