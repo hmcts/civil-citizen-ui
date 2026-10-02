@@ -21,6 +21,7 @@ import {isCarmEnabledForCase, isDraftClaimDatabaseEnabled} from '../../../../../
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {createMockResponse, createMockSession, getRouteHandler} from '../../../../utils/getRouteHandler';
+import {getTTLDaysForCategory, TTLCategory} from 'modules/draft-store/ttlConfig';
 
 jest.mock('common/utils/claimRequestLocals', () => ({
   getStashedClaimOrFromStore: jest.fn(),
@@ -238,10 +239,11 @@ describe('Claim - Check answers', () => {
         expect.objectContaining({
           id: submittedClaim.id,
           legacyCaseReference: '000JE005',
+          draftClaimCacheTtlDays: getTTLDaysForCategory(TTLCategory.PAYMENT_SESSION),
         }),
         'draft-123',
       );
-      expect(req.session.draftId).toBe('draft-123');
+      expect(req.session.draftId).toBeUndefined();
       expect(res.clearCookie).toHaveBeenCalledWith('eligibilityCompleted');
       expect(res.clearCookie).toHaveBeenCalledWith('eligibility');
       expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(submittedClaim.id, CLAIM_CONFIRMATION_URL));

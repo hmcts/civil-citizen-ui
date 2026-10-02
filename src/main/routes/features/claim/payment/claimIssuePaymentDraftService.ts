@@ -1,17 +1,17 @@
 import {AppRequest} from 'common/models/AppRequest';
 import {Claim} from 'models/claim';
-import {createOrLoadDraft, updateDraftClaim} from 'modules/draft-store/draftStoreManagerService';
+import {getDraftClaimForCase, updateDraftClaim} from 'modules/draft-store/draftStoreManagerService';
+import {generateRedisKey, saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {getClaimById} from 'modules/utilityService';
 import {getRouteParam, isUsablePathSegment} from 'common/utils/routeParamUtils';
-import config from 'config';
-import {CivilServiceClient} from 'client/civilServiceClient';
-import {getTTLDaysForCategory, TTLCategory} from 'modules/draft-store/ttlConfig';
+
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('claimIssuePaymentDraftService');
 
 export interface ClaimIssuePaymentDraft {
   claim: Claim;
-  draftId: string;
+  draftId?: string;
 }
-
-const civilServiceClient = new CivilServiceClient(config.get<string>('services.civilService.url'));
 
 export const getClaimIssuePaymentClaim = async (req: AppRequest): Promise<ClaimIssuePaymentDraft> => {
   const claimId = getRouteParam(req, 'id');
@@ -19,37 +19,26 @@ export const getClaimIssuePaymentClaim = async (req: AppRequest): Promise<ClaimI
     throw new Error('[claimIssuePaymentDraftService] claim id is required');
   }
 
-  const draftResult = await createOrLoadDraft(req, { caseId: claimId } as unknown as Claim);
-
+  const draftResult = await getDraftClaimForCase(req, claimId);
   if (draftResult?.claimResponse?.case_data) {
     const claim = Object.assign(new Claim(), draftResult.claimResponse.case_data as unknown as Claim);
-
-    if (claim.paymentDetails || claim.claimFee) {
-      if (draftResult.createdAt && !claim.draftClaimCreatedAt) {
-        claim.draftClaimCreatedAt = new Date(draftResult.createdAt);
-      }
-      const draftId = draftResult.rawResponse.draftId;
-      if (req.session && !req.session.draftId) {
-        req.session.draftId = draftId;
-      }
-      return { claim, draftId };
+    if (draftResult.createdAt && !claim.draftClaimCreatedAt) {
+      claim.draftClaimCreatedAt = new Date(draftResult.createdAt);
     }
+    const draftId = draftResult.rawResponse.draftId;
+    logger.info(`Payment draft ${draftId} loaded from db for claim id ${claimId}`);
+    return {claim, draftId};
   }
 
-  const ccdClaim = await civilServiceClient.retrieveClaimDetails(claimId, req);
-  if (!ccdClaim || ccdClaim.isEmpty()) {
-    throw new Error('[claimIssuePaymentDraftService] no claim found');
+  const claim = await getClaimById(claimId, req, true);
+  logger.info(`Payment claim loaded from Redis for claim id ${claimId}`);
+  return {claim};
+};
+
+export const saveClaimIssuePaymentClaim = async (req: AppRequest, claim: Claim, draftId?: string): Promise<void> => {
+  if (draftId) {
+    await updateDraftClaim(req, claim, draftId);
+    return;
   }
-
-  ccdClaim.id = claimId;
-  ccdClaim.draftClaimCacheTtlDays = getTTLDaysForCategory(TTLCategory.DRAFT_CLAIM);
-
-  const created = await createOrLoadDraft(req, ccdClaim);
-  const draftId = created.rawResponse?.draftId;
-  if (!draftId) {
-    throw new Error('[claimIssuePaymentDraftService] no draft claim found for payment resume');
-  }
-
-  await updateDraftClaim(req, ccdClaim, draftId);
-  return { claim: ccdClaim, draftId };
+  await saveDraftClaim(generateRedisKey(req), claim, true, req.session.user?.id);
 };

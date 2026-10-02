@@ -3,6 +3,7 @@ import {AppRequest} from 'common/models/AppRequest';
 import {Claim} from 'common/models/claim';
 import {
   getActiveDraftFromDraftStoreDb,
+  getDraftForCaseFromDraftStoreDb,
   createOrLoadDraftClaimInDraftStoreDb,
   updateDraftClaimInStore,
   deleteDraftClaimFromStore,
@@ -54,6 +55,53 @@ describe('draftStoreDbService Unit Tests', () => {
       await expect(getActiveDraftFromDraftStoreDb(invalidReq)).rejects.toThrow(
         '[draftStoreDbService] access token is required to communicate with API',
       );
+    });
+  });
+
+  describe('getDraftForCaseFromDraftStoreDb', () => {
+    const caseId = '1790252856529614';
+
+    it('should return the draft linked to the case when backend API responds with 200', async () => {
+      mockedAxios.get.mockResolvedValueOnce({
+        status: 200,
+        data: {...mockRawResponse, caseId},
+      });
+
+      const result = await getDraftForCaseFromDraftStoreDb(mockReq, caseId);
+
+      expect(mockedAxios.get).toHaveBeenCalledWith(
+        expect.stringContaining(`/dashboard/draft-claims/case/${caseId}`),
+        expect.objectContaining({
+          headers: expect.objectContaining({
+            Authorization: `Bearer ${mockUserToken}`,
+          }),
+        }),
+      );
+      expect(result?.rawResponse.caseId).toBe(caseId);
+      expect(result?.claimResponse.id).toBe(mockDraftId);
+    });
+
+    it('should return null when backend API responds with 404 (no draft for case)', async () => {
+      mockedAxios.isAxiosError.mockReturnValueOnce(true);
+      mockedAxios.get.mockRejectedValueOnce({isAxiosError: true, response: {status: 404}});
+
+      const result = await getDraftForCaseFromDraftStoreDb(mockReq, caseId);
+
+      expect(result).toBeNull();
+    });
+
+    it('should rethrow non-404 errors from backend API', async () => {
+      mockedAxios.isAxiosError.mockReturnValueOnce(false);
+      mockedAxios.get.mockRejectedValueOnce(new Error('Internal Server Error'));
+
+      await expect(getDraftForCaseFromDraftStoreDb(mockReq, caseId)).rejects.toThrow('Internal Server Error');
+    });
+
+    it('should throw for a non-numeric caseId without calling the API', async () => {
+      await expect(getDraftForCaseFromDraftStoreDb(mockReq, '../active')).rejects.toThrow(
+        '[draftStoreDbService] invalid caseId',
+      );
+      expect(mockedAxios.get).not.toHaveBeenCalled();
     });
   });
 
