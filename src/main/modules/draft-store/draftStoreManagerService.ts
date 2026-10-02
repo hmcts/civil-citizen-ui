@@ -6,6 +6,7 @@ import {CCDClaim, CivilClaimResponse} from 'models/civilClaimResponse';
 import {
   createOrLoadDraftClaimInDraftStoreDb,
   getActiveDraftFromDraftStoreDb,
+  getDraftForCaseFromDraftStoreDb,
   updateDraftClaimInStore,
   deleteDraftClaimFromStore,
 } from './draftStoreDbService';
@@ -76,6 +77,14 @@ export const getDraftClaim = async (req: AppRequest): Promise<DraftClaimManagerR
     return null;
   }
   return buildManagerResultFromRedis(stored);
+};
+
+export const getDraftClaimForCase = async (req: AppRequest, caseId: string): Promise<DraftClaimManagerResult | null> => {
+  if (!(await isDraftClaimDatabaseEnabled())) {
+    return null;
+  }
+  const dbResult = await getDraftForCaseFromDraftStoreDb(req, caseId);
+  return dbResult ? buildManagerResult(dbResult.rawResponse) : null;
 };
 
 export const createOrLoadDraft = async (req: AppRequest, claim?: Claim): Promise<DraftClaimManagerResult> => {

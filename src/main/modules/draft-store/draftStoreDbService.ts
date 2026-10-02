@@ -112,6 +112,29 @@ export const getActiveDraftFromDraftStoreDb = async (req: AppRequest): Promise<{
   }
 };
 
+export const getDraftForCaseFromDraftStoreDb = async (req: AppRequest, caseId: string): Promise<{ claimResponse: CivilClaimResponse; rawResponse: DraftClaimResponse} | null> => {
+  if (!/^\d+$/.test(caseId)) {
+    throw new Error('[draftStoreDbService] invalid caseId');
+  }
+  try {
+    const response = await axios.get<DraftClaimResponse>(
+      `${civilServiceApiBaseUrl}/dashboard/draft-claims/case/${encodeURIComponent(caseId)}`,
+      {headers: getHeaders(req)},
+    );
+
+    return {
+      claimResponse: mapToCivilClaimResponse(response.data),
+      rawResponse: response.data,
+    };
+  } catch (err: unknown) {
+    if (axios.isAxiosError(err) && err.response?.status === 404) {
+      return null;
+    }
+    logger.error(`[draftStoreDbService] error fetching draft for case ${caseId} from db: ${getErrorMessage(err)}`);
+    throw err;
+  }
+};
+
 export const updateDraftClaimInStore = async (
   req: AppRequest,
   draftId: string,

@@ -1,9 +1,8 @@
 import {getRedirectUrl} from 'services/features/claim/payment/claimFeePaymentConfirmationService';
 import {getFeePaymentStatus} from 'services/features/feePayment/feePaymentService';
-import {isDraftClaimDatabaseEnabled, isWelshEnabledForMainCase} from 'app/auth/launchdarkly/launchDarklyClient';
+import {isWelshEnabledForMainCase} from 'app/auth/launchdarkly/launchDarklyClient';
 import {deleteDraftClaim} from 'modules/draft-store/draftStoreManagerService';
 import {deleteDraftClaimFromStore, generateRedisKey} from 'modules/draft-store/draftStoreService';
-import {getClaimById} from 'modules/utilityService';
 import {getClaimIssuePaymentClaim} from 'routes/features/claim/payment/claimIssuePaymentDraftService';
 import {AppRequest} from 'models/AppRequest';
 import {Claim} from 'models/claim';
@@ -17,16 +16,13 @@ jest.mock('services/features/feePayment/feePaymentService');
 jest.mock('app/auth/launchdarkly/launchDarklyClient');
 jest.mock('modules/draft-store/draftStoreManagerService');
 jest.mock('modules/draft-store/draftStoreService');
-jest.mock('modules/utilityService');
 jest.mock('routes/features/claim/payment/claimIssuePaymentDraftService');
 
 const mockGetFeePaymentStatus = getFeePaymentStatus as jest.Mock;
 const mockIsWelshEnabledForMainCase = isWelshEnabledForMainCase as jest.Mock;
-const mockIsDraftClaimDatabaseEnabled = isDraftClaimDatabaseEnabled as jest.Mock;
 const mockDeleteDraftClaim = deleteDraftClaim as jest.Mock;
 const mockDeleteDraftClaimFromStore = deleteDraftClaimFromStore as jest.Mock;
 const mockGenerateRedisKey = generateRedisKey as jest.Mock;
-const mockGetClaimById = getClaimById as jest.Mock;
 const mockGetClaimIssuePaymentClaim = getClaimIssuePaymentClaim as jest.Mock;
 
 const claimId = '1';
@@ -65,7 +61,6 @@ const successPaymentStatus = {
 describe('Claim Fee PaymentConfirmation Service', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    mockIsDraftClaimDatabaseEnabled.mockResolvedValue(true);
     mockIsWelshEnabledForMainCase.mockResolvedValue(true);
     mockDeleteDraftClaim.mockResolvedValue(undefined);
     mockGenerateRedisKey.mockReturnValue('123user-id');
@@ -156,17 +151,13 @@ describe('Claim Fee PaymentConfirmation Service', () => {
     expect(mockDeleteDraftClaim).not.toHaveBeenCalled();
   });
 
-  it('should clear the Redis payment key when the draft database flag is off', async () => {
+  it('should clear the Redis payment key when the claim was loaded from Redis', async () => {
     const req = createReq();
-    const claim = createClaim();
-    mockIsDraftClaimDatabaseEnabled.mockResolvedValue(false);
-    mockGetClaimById.mockResolvedValue(claim);
+    mockGetClaimIssuePaymentClaim.mockResolvedValue({claim: createClaim()});
     mockGetFeePaymentStatus.mockResolvedValueOnce(successPaymentStatus);
 
     const actualPaymentRedirectUrl = await getRedirectUrl(claimId, req);
 
-    expect(mockGetClaimById).toHaveBeenCalledWith(claimId, req, true);
-    expect(mockGetClaimIssuePaymentClaim).not.toHaveBeenCalled();
     expect(mockDeleteDraftClaimFromStore).toHaveBeenCalledWith('123user-id');
     expect(mockDeleteDraftClaim).not.toHaveBeenCalled();
     expect(req.session.draftId).toBe(draftId);

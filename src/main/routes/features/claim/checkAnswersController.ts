@@ -25,6 +25,7 @@ import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {saveClaimFee} from 'services/features/claim/amount/claimFeesService';
 import {calculateInterestToDate} from 'common/utils/interestUtils';
+import {getTTLDaysForCategory, TTLCategory} from 'modules/draft-store/ttlConfig';
 const validator = new Validator();
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
@@ -123,12 +124,14 @@ claimCheckAnswersController.post(CLAIM_CHECK_ANSWERS_URL, async (req: AppRequest
             if (submittedClaim.legacyCaseReference) {
               claimToStore.legacyCaseReference = submittedClaim.legacyCaseReference;
             }
+            claimToStore.draftClaimCacheTtlDays = getTTLDaysForCategory(TTLCategory.PAYMENT_SESSION);
             await updateDraftClaim(appReq, claimToStore, draftId);
           }
         } else {
           await deleteDraftClaim(appReq, draftId);
-          delete appReq.session.draftId;
         }
+        // The submitted draft is no longer the working draft; payment loads it by case id
+        delete appReq.session.draftId;
       }
 
       res.clearCookie('eligibilityCompleted');
