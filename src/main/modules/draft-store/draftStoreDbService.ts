@@ -87,6 +87,12 @@ export const createOrLoadDraftClaimInDraftStoreDb = async (
       isNew,
     };
   } catch (err: unknown) {
+    if (axios.isAxiosError(err) && err.response?.status === 409) {
+      const existing = await getActiveDraftFromDraftStoreDb(req);
+      if (existing) {
+        return {...existing, isNew: false};
+      }
+    }
     logger.error(`[draftStoreDbService] failed to create/load draft in db: ${getErrorMessage(err)}`);
     throw err;
   }
