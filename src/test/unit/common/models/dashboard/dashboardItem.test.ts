@@ -78,6 +78,15 @@ describe('Dashboard Items', ()=> {
       expect(item.getDraftClaimDeletionDate()).toBeUndefined();
     });
 
+    it('should not show a Draft claim row after the claim has been submitted to CCD', () => {
+      const claim = new Claim();
+      claim.draftClaimCreatedAt = new Date();
+      claim.id = '1790322528949860';
+      claim.legacyCaseReference = '000JE005';
+
+      expect(toDraftClaimDashboardItem(claim)).toBeUndefined();
+    });
+
     it('should return undefined when claim is empty', async () => {
       //Given
       const claim = new Claim();
