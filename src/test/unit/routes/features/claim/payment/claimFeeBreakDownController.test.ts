@@ -6,12 +6,11 @@ import {YesNo} from 'form/models/yesNo';
 import {Claim} from 'models/claim';
 import {ClaimDetails} from 'form/models/claim/details/claimDetails';
 import {PaymentInformation} from 'models/feePayment/paymentInformation';
-import {getClaimBusinessProcess, getClaimById} from 'modules/utilityService';
-import {getClaimIssuePaymentClaim} from '../../../../../../main/routes/features/claim/payment/claimIssuePaymentDraftService';
-import {updateDraftClaim} from 'modules/draft-store/draftStoreManagerService';
-import {generateRedisKey, saveDraftClaim} from 'modules/draft-store/draftStoreService';
-import {isDraftClaimDatabaseEnabled} from 'app/auth/launchdarkly/launchDarklyClient';
-import {TTLCategory} from 'modules/draft-store/ttlConfig';
+import {getClaimBusinessProcess} from 'modules/utilityService';
+import {
+  getClaimIssuePaymentClaim,
+  saveClaimIssuePaymentClaim,
+} from '../../../../../../main/routes/features/claim/payment/claimIssuePaymentDraftService';
 import {getFeePaymentRedirectInformation, getFeePaymentStatus} from 'services/features/feePayment/feePaymentService';
 import {calculateInterestToDate} from 'common/utils/interestUtils';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
@@ -19,20 +18,10 @@ import {createMockResponse, createMockSession, getRouteHandler} from '../../../.
 
 jest.mock('modules/utilityService', () => ({
   getClaimBusinessProcess: jest.fn(),
-  getClaimById: jest.fn(),
-}));
-jest.mock('modules/draft-store/draftStoreManagerService', () => ({
-  updateDraftClaim: jest.fn(),
-}));
-jest.mock('modules/draft-store/draftStoreService', () => ({
-  generateRedisKey: jest.fn(),
-  saveDraftClaim: jest.fn(),
-}));
-jest.mock('app/auth/launchdarkly/launchDarklyClient', () => ({
-  isDraftClaimDatabaseEnabled: jest.fn(),
 }));
 jest.mock('../../../../../../main/routes/features/claim/payment/claimIssuePaymentDraftService', () => ({
   getClaimIssuePaymentClaim: jest.fn(),
+  saveClaimIssuePaymentClaim: jest.fn(),
 }));
 jest.mock('modules/draft-store/paymentSessionStoreService', () => ({
   saveUserId: jest.fn(),
@@ -56,12 +45,8 @@ describe('Claim fee breakdown', () => {
   let res: ReturnType<typeof createMockResponse>;
   let next: jest.Mock;
   const mockGetClaimBusinessProcess = getClaimBusinessProcess as jest.Mock;
-  const mockGetClaimById = getClaimById as jest.Mock;
   const mockGetClaimIssuePaymentClaim = getClaimIssuePaymentClaim as jest.Mock;
-  const mockUpdateDraftClaim = updateDraftClaim as jest.Mock;
-  const mockSaveDraftClaim = saveDraftClaim as jest.Mock;
-  const mockGenerateRedisKey = generateRedisKey as jest.Mock;
-  const mockIsDraftClaimDatabaseEnabled = isDraftClaimDatabaseEnabled as jest.Mock;
+  const mockSaveClaimIssuePaymentClaim = saveClaimIssuePaymentClaim as jest.Mock;
   const mockGetFeePaymentRedirectInformation = getFeePaymentRedirectInformation as jest.Mock;
   const mockGetFeePaymentStatus = getFeePaymentStatus as jest.Mock;
   const mockCalculateInterestToDate = calculateInterestToDate as jest.Mock;
@@ -90,11 +75,9 @@ describe('Claim fee breakdown', () => {
     };
     res = createMockResponse();
     next = jest.fn();
-    mockIsDraftClaimDatabaseEnabled.mockResolvedValue(true);
-    mockGenerateRedisKey.mockReturnValue(`${claimId}user-id`);
     mockDraft(buildClaim());
     mockGetClaimBusinessProcess.mockResolvedValue({hasBusinessProcessFinished: () => true});
-    mockUpdateDraftClaim.mockResolvedValue(undefined);
+    mockSaveClaimIssuePaymentClaim.mockResolvedValue(undefined);
     mockCalculateInterestToDate.mockResolvedValue(100);
     mockGetFeePaymentRedirectInformation.mockResolvedValue({nextUrl: paymentUrl});
     mockGetFeePaymentStatus.mockResolvedValue({status: 'Initiated'});
@@ -136,24 +119,15 @@ describe('Claim fee breakdown', () => {
       expect(next).toHaveBeenCalledWith(error);
     });
 
-    it('should load the claim from Redis when the draft database flag is off', async () => {
+    it('should clear the payment sync error and save the claim without a draftId when loaded from Redis', async () => {
       const claim = buildClaim();
       claim.paymentSyncError = true;
-      mockIsDraftClaimDatabaseEnabled.mockResolvedValue(false);
-      mockGetClaimById.mockResolvedValue(claim);
+      mockGetClaimIssuePaymentClaim.mockResolvedValue({claim});
 
       await getHandler(req as AppRequest, res as unknown as Response, next);
 
-      expect(mockGetClaimById).toHaveBeenCalledWith(claimId, req, true);
-      expect(mockGetClaimIssuePaymentClaim).not.toHaveBeenCalled();
-      expect(mockSaveDraftClaim).toHaveBeenCalledWith(
-        `${claimId}user-id`,
-        claim,
-        true,
-        'user-id',
-        TTLCategory.DRAFT_CLAIM,
-      );
-      expect(mockUpdateDraftClaim).not.toHaveBeenCalled();
+      expect(claim.paymentSyncError).toBeUndefined();
+      expect(mockSaveClaimIssuePaymentClaim).toHaveBeenCalledWith(req, claim, undefined);
       expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
         paymentSyncError: true,
       }));
@@ -164,7 +138,7 @@ describe('Claim fee breakdown', () => {
     it('should redirect to the payment URL when there is no existing payment reference', async () => {
       await postHandler(req as AppRequest, res as unknown as Response, next);
 
-      expect(mockUpdateDraftClaim).toHaveBeenCalledWith(req, expect.any(Claim), draftId);
+      expect(mockSaveClaimIssuePaymentClaim).toHaveBeenCalledWith(req, expect.any(Claim), draftId);
       expect(res.redirect).toHaveBeenCalledWith(paymentUrl);
     });
 
@@ -196,7 +170,7 @@ describe('Claim fee breakdown', () => {
 
       await postHandler(req as AppRequest, res as unknown as Response, next);
 
-      expect(mockUpdateDraftClaim).toHaveBeenCalled();
+      expect(mockSaveClaimIssuePaymentClaim).toHaveBeenCalledTimes(2);
       expect(res.redirect).toHaveBeenCalledWith(paymentUrl);
     });
 
@@ -220,23 +194,13 @@ describe('Claim fee breakdown', () => {
       expect(res.redirect).toHaveBeenCalledWith(paymentUrl);
     });
 
-    it('should save payment information to Redis when the draft database flag is off', async () => {
+    it('should save payment information without a draftId when the claim was loaded from Redis', async () => {
       const claim = buildClaim();
-      mockIsDraftClaimDatabaseEnabled.mockResolvedValue(false);
-      mockGetClaimById.mockResolvedValue(claim);
+      mockGetClaimIssuePaymentClaim.mockResolvedValue({claim});
 
       await postHandler(req as AppRequest, res as unknown as Response, next);
 
-      expect(mockGetClaimById).toHaveBeenCalledWith(claimId, req, true);
-      expect(mockGetClaimIssuePaymentClaim).not.toHaveBeenCalled();
-      expect(mockSaveDraftClaim).toHaveBeenCalledWith(
-        `${claimId}user-id`,
-        claim,
-        true,
-        'user-id',
-        TTLCategory.DRAFT_CLAIM,
-      );
-      expect(mockUpdateDraftClaim).not.toHaveBeenCalled();
+      expect(mockSaveClaimIssuePaymentClaim).toHaveBeenCalledWith(req, claim, undefined);
       expect(res.redirect).toHaveBeenCalledWith(paymentUrl);
     });
   });

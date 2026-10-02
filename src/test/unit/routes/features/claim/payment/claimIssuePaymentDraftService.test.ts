@@ -1,139 +1,125 @@
-import {getClaimIssuePaymentClaim} from 'routes/features/claim/payment/claimIssuePaymentDraftService';
-import {createOrLoadDraft, updateDraftClaim} from 'modules/draft-store/draftStoreManagerService';
-import {CivilServiceClient} from 'client/civilServiceClient';
+import {
+  getClaimIssuePaymentClaim,
+  saveClaimIssuePaymentClaim,
+} from 'routes/features/claim/payment/claimIssuePaymentDraftService';
+import {getDraftClaimForCase, updateDraftClaim} from 'modules/draft-store/draftStoreManagerService';
+import {generateRedisKey, saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {getClaimById} from 'modules/utilityService';
 import {AppRequest} from 'models/AppRequest';
 import {Claim} from 'models/claim';
 import {CivilClaimResponse} from 'models/civilClaimResponse';
 import {DraftClaimManagerResult} from 'models/draft/draftClaim';
 import {PaymentInformation} from 'models/feePayment/paymentInformation';
 import {ClaimDetails} from 'form/models/claim/details/claimDetails';
-import {Party} from 'models/party';
-import {getTTLDaysForCategory, TTLCategory} from 'modules/draft-store/ttlConfig';
 
 jest.mock('modules/draft-store/draftStoreManagerService');
+jest.mock('modules/draft-store/draftStoreService');
+jest.mock('modules/utilityService');
 
-const mockCreateOrLoadDraft = createOrLoadDraft as jest.Mock;
+const mockGetDraftClaimForCase = getDraftClaimForCase as jest.Mock;
 const mockUpdateDraftClaim = updateDraftClaim as jest.Mock;
+const mockGenerateRedisKey = generateRedisKey as jest.Mock;
+const mockSaveDraftClaim = saveDraftClaim as jest.Mock;
+const mockGetClaimById = getClaimById as jest.Mock;
 
 const claimId = '1790252856529614';
 const draftId = 'draft-123';
+const redisKey = `${claimId}user-id`;
 
-const createReq = (id = claimId, withSessionDraftId = false): AppRequest => ({
+const createReq = (id = claimId): AppRequest => ({
   params: {id},
   session: {
     user: {id: 'user-id'},
-    ...(withSessionDraftId ? {draftId} : {}),
   },
 } as unknown as AppRequest);
 
-const createClaim = (id?: string, withApplicant = false, withFeePayment = true): Claim => {
+const createClaim = (): Claim => {
   const claim = new Claim();
-  if (id) {
-    claim.id = id;
-  }
-  if (withApplicant) {
-    claim.applicant1 = new Party();
-  }
-  if (withFeePayment) {
-    claim.claimDetails = new ClaimDetails();
-    claim.claimDetails.claimFeePayment = new PaymentInformation('ext', 'RC-1');
-    claim.claimFee = { calculatedAmountInPence: '432100' } as any;
-    claim.paymentDetails = new PaymentInformation('ext', 'RC-1');
-  }
+  claim.id = claimId;
+  claim.claimDetails = new ClaimDetails();
+  claim.claimDetails.claimFeePayment = new PaymentInformation('ext', 'RC-1');
   return claim;
 };
 
-const createManagerResult = (claim: Claim, rawCaseId?: string): DraftClaimManagerResult => ({
+const createManagerResult = (claim: Claim): DraftClaimManagerResult => ({
   claimResponse: {
     id: draftId,
     case_data: claim,
   } as unknown as CivilClaimResponse,
   rawResponse: {
     draftId,
-    caseId: rawCaseId || claim.id,
+    caseId: claimId,
     payload: claim as unknown as Record<string, unknown>,
     createdAt: '2026-08-01T10:00:00.000Z',
     updatedAt: '2026-08-01T11:00:00.000Z',
-    expiresAt: '2026-09-01T10:00:00.000Z',
+    expiresAt: '2026-08-08T10:00:00.000Z',
   },
   createdAt: '2026-08-01T10:00:00.000Z',
   updatedAt: '2026-08-01T11:00:00.000Z',
-  expiresAt: '2026-09-01T10:00:00.000Z',
+  expiresAt: '2026-08-08T10:00:00.000Z',
 });
 
-describe('getClaimIssuePaymentClaim', () => {
-  const retrieveClaimDetailsSpy = jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails');
-
+describe('claimIssuePaymentDraftService', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    retrieveClaimDetailsSpy.mockReset();
+    mockGenerateRedisKey.mockReturnValue(redisKey);
   });
 
-  afterAll(() => {
-    retrieveClaimDetailsSpy.mockRestore();
+  describe('getClaimIssuePaymentClaim', () => {
+    it('should return the db draft linked to the case with its draftId', async () => {
+      const req = createReq();
+      mockGetDraftClaimForCase.mockResolvedValueOnce(createManagerResult(createClaim()));
+
+      const result = await getClaimIssuePaymentClaim(req);
+
+      expect(mockGetDraftClaimForCase).toHaveBeenCalledWith(req, claimId);
+      expect(result.draftId).toBe(draftId);
+      expect(result.claim).toBeInstanceOf(Claim);
+      expect(result.claim.claimDetails.claimFeePayment?.paymentReference).toBe('RC-1');
+      expect(result.claim.draftClaimCreatedAt).toEqual(new Date('2026-08-01T10:00:00.000Z'));
+      expect(mockGetClaimById).not.toHaveBeenCalled();
+    });
+
+    it('should fall back to the Redis payment key when no db draft exists', async () => {
+      const req = createReq();
+      const redisClaim = createClaim();
+      mockGetDraftClaimForCase.mockResolvedValueOnce(null);
+      mockGetClaimById.mockResolvedValueOnce(redisClaim);
+
+      const result = await getClaimIssuePaymentClaim(req);
+
+      expect(mockGetClaimById).toHaveBeenCalledWith(claimId, req, true);
+      expect(result).toEqual({claim: redisClaim});
+    });
+
+    it('should throw when url claim id is missing', async () => {
+      await expect(getClaimIssuePaymentClaim(createReq(''))).rejects.toThrow(
+        '[claimIssuePaymentDraftService] claim id is required',
+      );
+      expect(mockGetDraftClaimForCase).not.toHaveBeenCalled();
+      expect(mockGetClaimById).not.toHaveBeenCalled();
+    });
   });
 
-  it('should return local draft claim and draftId when hydrated draft exists for caseId', async () => {
-    const localDraftClaim = createClaim(claimId, true, true);
-    mockCreateOrLoadDraft.mockResolvedValueOnce(createManagerResult(localDraftClaim, claimId));
+  describe('saveClaimIssuePaymentClaim', () => {
+    it('should update the db draft when a draftId is given', async () => {
+      const req = createReq();
+      const claim = createClaim();
 
-    const result = await getClaimIssuePaymentClaim(createReq());
+      await saveClaimIssuePaymentClaim(req, claim, draftId);
 
-    expect(result.draftId).toBe(draftId);
-    expect(result.claim.id).toBe(claimId);
-    expect(result.claim.claimDetails.claimFeePayment?.paymentReference).toBe('RC-1');
-    expect(mockCreateOrLoadDraft).toHaveBeenCalledWith(expect.anything(), {caseId: claimId});
-    expect(retrieveClaimDetailsSpy).not.toHaveBeenCalled();
-    expect(mockUpdateDraftClaim).not.toHaveBeenCalled();
-  });
+      expect(mockUpdateDraftClaim).toHaveBeenCalledWith(req, claim, draftId);
+      expect(mockSaveDraftClaim).not.toHaveBeenCalled();
+    });
 
-  it('should restore session.draftId from local draft when returning draft', async () => {
-    const req = createReq();
-    const localDraftClaim = createClaim(claimId, true, true);
-    mockCreateOrLoadDraft.mockResolvedValueOnce(createManagerResult(localDraftClaim, claimId));
+    it('should save to the Redis payment key when no draftId is given', async () => {
+      const req = createReq();
+      const claim = createClaim();
 
-    await getClaimIssuePaymentClaim(req);
+      await saveClaimIssuePaymentClaim(req, claim);
 
-    expect(req.session.draftId).toBe(draftId);
-  });
-
-  it('should throw when url claim id is missing', async () => {
-    await expect(getClaimIssuePaymentClaim(createReq(''))).rejects.toThrow(
-      '[claimIssuePaymentDraftService] claim id is required',
-    );
-    expect(mockCreateOrLoadDraft).not.toHaveBeenCalled();
-    expect(retrieveClaimDetailsSpy).not.toHaveBeenCalled();
-  });
-
-  it('should load claim from CCD and persist local draft when local draft is unhydrated', async () => {
-    const ccdClaim = createClaim(claimId, true, true);
-    const unhydratedDraftClaim = createClaim(claimId, false, false);
-    const req = createReq();
-
-    mockCreateOrLoadDraft.mockResolvedValueOnce(createManagerResult(unhydratedDraftClaim, claimId));
-    retrieveClaimDetailsSpy.mockResolvedValueOnce(ccdClaim);
-    mockCreateOrLoadDraft.mockResolvedValueOnce(createManagerResult(ccdClaim, claimId));
-    mockUpdateDraftClaim.mockResolvedValueOnce(createManagerResult(ccdClaim, claimId));
-
-    const result = await getClaimIssuePaymentClaim(req);
-
-    expect(retrieveClaimDetailsSpy).toHaveBeenCalledWith(claimId, req);
-    expect(ccdClaim.draftClaimCacheTtlDays).toBe(getTTLDaysForCategory(TTLCategory.DRAFT_CLAIM));
-    expect(mockCreateOrLoadDraft).toHaveBeenNthCalledWith(1, req, {caseId: claimId});
-    expect(mockCreateOrLoadDraft).toHaveBeenNthCalledWith(2, req, ccdClaim);
-    expect(mockUpdateDraftClaim).toHaveBeenCalledWith(req, ccdClaim, draftId);
-    expect(result.claim).toBe(ccdClaim);
-    expect(result.draftId).toBe(draftId);
-  });
-
-  it('should throw when local draft is unhydrated and CCD has no claim', async () => {
-    const unhydratedDraftClaim = createClaim(claimId, false, false);
-    mockCreateOrLoadDraft.mockResolvedValueOnce(createManagerResult(unhydratedDraftClaim, claimId));
-    retrieveClaimDetailsSpy.mockResolvedValueOnce(new Claim());
-
-    await expect(getClaimIssuePaymentClaim(createReq())).rejects.toThrow(
-      '[claimIssuePaymentDraftService] no claim found',
-    );
-    expect(mockUpdateDraftClaim).not.toHaveBeenCalled();
+      expect(mockSaveDraftClaim).toHaveBeenCalledWith(redisKey, claim, true, 'user-id');
+      expect(mockUpdateDraftClaim).not.toHaveBeenCalled();
+    });
   });
 });
