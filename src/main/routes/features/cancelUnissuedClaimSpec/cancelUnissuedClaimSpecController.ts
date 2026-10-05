@@ -35,7 +35,16 @@ const renderView = (res: Response, claimId: string, form: GenericForm<CancelUnis
 
 cancelUnissuedClaimSpecController.get(CANCEL_UNISSUED_CLAIM_SPEC_URL, cancelUnissuedClaimSpecGuard, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    renderView(res, getRouteParam(req, 'id'), new GenericForm(new CancelUnissuedClaimSpecReason()));
+    const claimId = getRouteParam(req, 'id');
+    const unsubmittedReason = req.session.cancelUnissuedClaimSpecReason;
+    // The language toggle reloads the page with ?lang=, so keep text that failed validation and show its error again
+    if (req.query.lang && unsubmittedReason?.claimId === claimId) {
+      const form = new GenericForm(new CancelUnissuedClaimSpecReason(unsubmittedReason.reason));
+      await form.validate();
+      return renderView(res, claimId, form);
+    }
+    delete req.session.cancelUnissuedClaimSpecReason;
+    renderView(res, claimId, new GenericForm(new CancelUnissuedClaimSpecReason()));
   } catch (error) {
     next(error);
   }
@@ -49,8 +58,10 @@ cancelUnissuedClaimSpecController.post(CANCEL_UNISSUED_CLAIM_SPEC_URL, cancelUni
     const form = new GenericForm(new CancelUnissuedClaimSpecReason(reason));
     await form.validate();
     if (form.hasErrors()) {
+      req.session.cancelUnissuedClaimSpecReason = {claimId, reason};
       return renderView(res, claimId, form);
     }
+    delete req.session.cancelUnissuedClaimSpecReason;
     const claimUpdate: ClaimUpdate = reason ? {cancelUnissuedClaimSpecReason: reason} : {};
     await civilServiceClient.submitCancelUnissuedClaimSpec(claimId, claimUpdate, req);
     await deleteDraftClaimFromStore(generateRedisKey(req));

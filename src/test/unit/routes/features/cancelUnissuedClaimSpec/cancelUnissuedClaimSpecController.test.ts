@@ -56,6 +56,41 @@ describe('Cancel unissued claim spec controller', () => {
     });
   });
 
+  describe('on GET after switching language', () => {
+    it('should restore the reason that failed validation and show its error again', async () => {
+      req.query = {lang: 'cy'};
+      req.session.cancelUnissuedClaimSpecReason = {claimId, reason: 'a'.repeat(201)};
+
+      await getHandler(req as AppRequest, res as never, next);
+
+      const form = (res.render as jest.Mock).mock.calls[0][1].form;
+      expect(form.model.cancelReason).toBe('a'.repeat(201));
+      expect(form.errorFor('cancelReason')).toBe('ERRORS.CANCEL_UNISSUED_CLAIM_SPEC_REASON_TOO_LONG');
+    });
+
+    it('should not restore a reason saved for a different claim', async () => {
+      req.query = {lang: 'cy'};
+      req.session.cancelUnissuedClaimSpecReason = {claimId: 'other-claim', reason: '$$$'};
+
+      await getHandler(req as AppRequest, res as never, next);
+
+      const form = (res.render as jest.Mock).mock.calls[0][1].form;
+      expect(form.model.cancelReason).toBeUndefined();
+      expect(form.hasErrors()).toBe(false);
+      expect(req.session.cancelUnissuedClaimSpecReason).toBeUndefined();
+    });
+
+    it('should start empty and clear the saved reason when the page is revisited without a language switch', async () => {
+      req.session.cancelUnissuedClaimSpecReason = {claimId, reason: '$$$'};
+
+      await getHandler(req as AppRequest, res as never, next);
+
+      const form = (res.render as jest.Mock).mock.calls[0][1].form;
+      expect(form.model.cancelReason).toBeUndefined();
+      expect(req.session.cancelUnissuedClaimSpecReason).toBeUndefined();
+    });
+  });
+
   describe('on POST', () => {
     it('should submit the event with the reason and redirect to confirmation', async () => {
       req.body = {cancelReason: '  Settled outside the portal  '};
@@ -98,6 +133,17 @@ describe('Cancel unissued claim spec controller', () => {
       const form = (res.render as jest.Mock).mock.calls[0][1].form;
       expect(form.errorFor('cancelReason')).toBe(error);
       expect(form.model.cancelReason).toBe(reason);
+      expect(req.session.cancelUnissuedClaimSpecReason).toEqual({claimId, reason});
+    });
+
+    it('should clear any saved reason once the claim is cancelled', async () => {
+      req.session.cancelUnissuedClaimSpecReason = {claimId, reason: '$$$'};
+      req.body = {cancelReason: 'Settled'};
+
+      await postHandler(req as AppRequest, res as never, next);
+
+      expect(req.session.cancelUnissuedClaimSpecReason).toBeUndefined();
+      expect(mockSubmit).toHaveBeenCalled();
     });
 
     it('should pass errors to next when submission fails', async () => {
