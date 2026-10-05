@@ -41,6 +41,16 @@ describe('Cancel unissued claim spec views', () => {
     expect(res.text).toContain(`href="/dashboard/${claimId}/claimantNewDesign"`);
   });
 
+  it('should give the character count Welsh messages when the page is in Welsh', async () => {
+    const res = await request(app).get(CANCEL_UNISSUED_CLAIM_SPEC_URL.replace(':id', claimId) + '?lang=cy');
+
+    expect(res.status).toBe(200);
+    expect(res.text).toContain('Mae gennych %{count} nod yn weddill');
+    expect(res.text).toContain('Mae gennych %{count} nod yn ormod');
+    expect(res.text).toContain('Mae gennych 0 nod yn weddill');
+    expect(res.text).not.toContain('characters remaining');
+  });
+
   it('should show the error summary and field error when the reason is invalid', async () => {
     const res = await request(app)
       .post(CANCEL_UNISSUED_CLAIM_SPEC_URL.replace(':id', claimId))

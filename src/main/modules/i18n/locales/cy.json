@@ -562,11 +562,11 @@
   "PAGES": {
     "CANCEL_UNISSUED_CLAIM_SPEC": {
       "BUTTON": "Canslo hawliad nad yw wedi'i gyflwyno",
-      "CHARACTERS_AT_LIMIT": "You have 0 characters remaining",
+      "CHARACTERS_AT_LIMIT": "Mae gennych 0 nod yn weddill",
       "CHARACTERS_OVER_LIMIT_ONE": "Mae gennych %{count} nod yn ormod",
       "CHARACTERS_OVER_LIMIT_OTHER": "Mae gennych %{count} nod yn ormod",
-      "CHARACTERS_UNDER_LIMIT_ONE": "You have %{count} character remaining",
-      "CHARACTERS_UNDER_LIMIT_OTHER": "You have %{count} characters remaining",
+      "CHARACTERS_UNDER_LIMIT_ONE": "Mae gennych %{count} nod yn weddill",
+      "CHARACTERS_UNDER_LIMIT_OTHER": "Mae gennych %{count} nod yn weddill",
       "CONFIRMATION_PAGE_TITLE": "Claim cancelled",
       "CONFIRMATION_TITLE": "This claim is now cancelled",
       "NO_FURTHER_ACTION": "No further action can be taken on this case as this is now cancelled.",
