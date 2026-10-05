@@ -1,0 +1,1 @@
+{"value":"braces","children":{"ID":1240992,"Issue":"braces vulnerable to stack-exhaustion denial of service through deeply nested patterns","URL":"https://github.com/advisories/GHSA-vfj7-8cjw-p6xm","Severity":"high","Vulnerable Versions":"<=3.0.3","Tree Versions":["3.0.3"],"Dependents":["micromatch@npm:4.0.8"]}}
