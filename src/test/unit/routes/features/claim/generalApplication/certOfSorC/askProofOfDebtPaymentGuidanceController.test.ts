@@ -68,6 +68,58 @@ describe('General Application - ask proof of debt payment guidance', () => {
           expect(decodedText).toContain(t('PAGES.GENERAL_APPLICATION.ASK_FOR_PROOF_OF_DEBT_PAYMENT.PARA_8'));
         });
     });
+
+    it('should initialize generalApplication and applicationTypes when claim.generalApplication is undefined', async () => {
+      const claimWithoutGA = new Claim();
+      mockGetCaseData.mockImplementation(async () => claimWithoutGA);
+
+      (gaApplicationFeeDetails as jest.Mock).mockResolvedValueOnce({
+        calculatedAmountInPence: 1400,
+        code: 'FEE0459',
+        version: 0,
+      });
+
+      await request(app)
+        .get(GA_ASK_PROOF_OF_DEBT_PAYMENT_GUIDANCE_URL)
+        .expect(200);
+
+      expect(claimWithoutGA.generalApplication).toBeDefined();
+      expect(claimWithoutGA.generalApplication?.applicationTypes).toHaveLength(1);
+      expect(claimWithoutGA.generalApplication?.applicationTypes[0].option).toBe(
+        ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID,
+      );
+    });
+
+    it('should inject ApplicationType when generalApplication exists but applicationTypes is empty (EXC-CUI-022 regression test)', async () => {
+      const claimWithEmptyTypes = new Claim();
+      claimWithEmptyTypes.generalApplication = new GeneralApplication();
+      claimWithEmptyTypes.generalApplication.applicationTypes = [];
+
+      mockGetCaseData.mockImplementation(async () => claimWithEmptyTypes);
+
+      (gaApplicationFeeDetails as jest.Mock).mockResolvedValueOnce({
+        calculatedAmountInPence: 1400,
+        code: 'FEE0459',
+        version: 0,
+      });
+
+      await request(app)
+        .get(GA_ASK_PROOF_OF_DEBT_PAYMENT_GUIDANCE_URL)
+        .expect(200);
+
+      expect(claimWithEmptyTypes.generalApplication?.applicationTypes).toHaveLength(1);
+      expect(claimWithEmptyTypes.generalApplication?.applicationTypes[0].option).toBe(
+        ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID,
+      );
+    });
+
+    it('should call next with error when loading case data fails', async () => {
+      const error = new Error('Database connection failed');
+      mockGetCaseData.mockRejectedValueOnce(error);
+
+      await request(app)
+        .get(GA_ASK_PROOF_OF_DEBT_PAYMENT_GUIDANCE_URL)
+        .expect(500);
+    });
   });
 });
-
