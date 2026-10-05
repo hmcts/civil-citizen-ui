@@ -150,34 +150,21 @@ run_failed_not_executed_functional_tests() {
   run_functional_tests
 }
 
-functional_base_pattern() {
-  if [[ "$ENVIRONMENT" = "aat" ]]; then
-    echo '@civil-citizen-master'
-  elif [[ -n "${PR_FT_GROUPS:-}" ]]; then
-    echo "$PR_FT_GROUPS" | tr '[:upper:]' '[:lower:]' | sed 's/,/|@/g; s/^/@/'
-  else
-    echo '@civil-citizen-pr'
-  fi
-}
-
 run_optimised_functional_tests() {
-  local base_pattern pattern workers=13 pipeline=pr
+  if [[ -n "${PR_FT_GROUPS:-}" ]]; then
+    echo 'Selected functional groups require pr-values:noWiremock or pr-values:fullDeployment so every requested test can run.' >&2
+    exit 1
+  fi
+  local pipeline=pr workers
+  [[ "$ENVIRONMENT" = "aat" ]] && pipeline=master
   export FUNCTIONAL=true
   export WIREMOCK_URL="${WIREMOCK_URL:-${TEST_URL/https:\/\//https:\/\/wiremock-}}"
   unset PREV_FAILED_TEST_FILES PREV_NOT_EXECUTED_TEST_FILES
-  unset FUNCTIONAL_WORKER_PLAN
-  base_pattern=$(functional_base_pattern)
-  pattern="(?=.*(?:${base_pattern}))(?=.*@thin-full-stack)(?!.*@mocked-functional)"
-  # The complete default baseline is migrated. Preserve its existing skips too.
-  if [[ -z "${PR_FT_GROUPS:-}" ]]; then
-    pattern="$base_pattern"
-    [[ "$ENVIRONMENT" = "aat" ]] && pipeline=master
-    export FUNCTIONAL_WORKER_PLAN="$(node bin/functional-baseline.js worker-plan "$pipeline")"
-    workers=$(node -p 'JSON.parse(process.env.FUNCTIONAL_WORKER_PLAN).workers')
-  fi
-  echo "Running migrated thin-client scenarios from ${base_pattern}"
+  export FUNCTIONAL_WORKER_PLAN="$(node bin/functional-baseline.js worker-plan "$pipeline")"
+  workers=$(node -p 'JSON.parse(process.env.FUNCTIONAL_WORKER_PLAN).workers')
+  echo "Running the complete ${pipeline} baseline on the optimised deployment"
   MOCHAWESOME_REPORTFILENAME='optimised-thin-client' WORKER_STAGGER_MS=3000 \
-    run_functional_command yarn codeceptjs run-workers --suites "$workers" --grep "$pattern" \
+    run_functional_command yarn codeceptjs run-workers --suites "$workers" --grep "@civil-citizen-${pipeline}" \
     --reporter mocha-multi --plugins allure --verbose
 }
 
@@ -204,7 +191,7 @@ elif [[ "$RUN_ALL_FUNCTIONAL_TESTS" = "true" ]]; then
     node bin/functional-baseline.js check
     VERIFY_FUNCTIONAL_BASELINE=true
   fi
-  echo "The label 'runAllFunctionalTests' exists on the PR."
+  echo "Full functional execution requested."
   echo "Running all functional tests."
   run_functional_tests
 

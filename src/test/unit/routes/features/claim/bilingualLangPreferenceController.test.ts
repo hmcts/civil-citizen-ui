@@ -83,6 +83,7 @@ describe('Bilingual language preference', () => {
 
       await postHandler(req as AppRequest, res as unknown as Response, next);
 
+      expect(res.cookie).toHaveBeenCalledWith('lang', ClaimBilingualLanguagePreference.ENGLISH, {secure: true});
       expect(saveClaimantBilingualLangPreference).toHaveBeenCalled();
       expect(res.redirect).toHaveBeenCalledWith(CLAIMANT_TASK_LIST_URL);
     });
