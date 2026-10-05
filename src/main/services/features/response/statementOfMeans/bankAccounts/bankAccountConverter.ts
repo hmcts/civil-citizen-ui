@@ -3,7 +3,7 @@ import {CitizenBankAccount} from '../../../../../common/models/citizenBankAccoun
 import {BankAccount} from '../../../../../common/form/models/bankAndSavings/bankAccount';
 
 export function convertFormToCitizenBankAccount(bankAccountForm: BankAccounts): CitizenBankAccount[] {
-  if (bankAccountsExist) {
+  if (bankAccountsExist(bankAccountForm)) {
     const accounts = bankAccountForm.getOnlyCompletedAccounts();
     if (accounts?.length > 0) {
       return accounts.map(account => (new CitizenBankAccount(account.typeOfAccount, account.joint, account.balance)));
