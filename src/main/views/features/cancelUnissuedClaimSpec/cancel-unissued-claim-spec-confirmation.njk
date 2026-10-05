@@ -3,7 +3,6 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "../../macro/page-title.njk" import setPageTitle %}
 {% from "../../macro/external-link.njk" import externalLink %}
-{% from "../../macro/contact-us-for-help.njk" import contactUsForHelp with context %}
 {% import "external-urls.njk" as externalURLs %}
 
 {% block pageTitle %}
@@ -25,9 +24,10 @@
           href: '/dashboard'
         }) }}
       </div>
-      <p class="govuk-body">{{ t('PAGES.CANCEL_UNISSUED_CLAIM_SPEC.NO_FURTHER_ACTION') }}</p>
-      <p class="govuk-body">{{ t('PAGES.CANCEL_UNISSUED_CLAIM_SPEC.START_NEW_CLAIM') }}</p>
-      {{ contactUsForHelp(t, '', true) }}
+      <p class="govuk-body">
+        {{ t('PAGES.CANCEL_UNISSUED_CLAIM_SPEC.NO_FURTHER_ACTION') }}<br>
+        {{ t('PAGES.CANCEL_UNISSUED_CLAIM_SPEC.START_NEW_CLAIM') }}
+      </p>
     </div>
   </div>
 {% endblock %}

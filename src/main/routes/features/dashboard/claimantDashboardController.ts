@@ -104,7 +104,7 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
       }
     });
     const welshEnabled = await isWelshEnabledForMainCase();
-    const showWelshPartyBanner = welshEnabled && claim.isAnyPartyBilingual();
+    const showWelshPartyBanner = welshEnabled && claim.isAnyPartyBilingual() && !isClaimUnissuedCancelled(claim);
     const showErrorAwaitingTranslation = welshEnabled && 'errorAwaitingTranslation' in req.query;
 
     res.render(claimantDashboardViewPath, {

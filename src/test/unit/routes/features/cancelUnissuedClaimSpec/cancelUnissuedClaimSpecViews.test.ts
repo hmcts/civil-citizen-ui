@@ -59,5 +59,7 @@ describe('Cancel unissued claim spec views', () => {
     expect(res.text).toContain(t('PAGES.CANCEL_UNISSUED_CLAIM_SPEC.CONFIRMATION_TITLE'));
     expect(res.text).toContain(t('PAGES.CANCEL_UNISSUED_CLAIM_SPEC.NO_FURTHER_ACTION'));
     expect(res.text).toContain(t('PAGES.SUBMIT_CONFIRMATION.GO_TO_ACCOUNT'));
+    expect(res.text).toContain(t('PAGES.CANCEL_UNISSUED_CLAIM_SPEC.START_NEW_CLAIM'));
+    expect(res.text).not.toContain(t('COMMON.CONTACT_US_FOR_HELP.TITLE'));
   });
 });

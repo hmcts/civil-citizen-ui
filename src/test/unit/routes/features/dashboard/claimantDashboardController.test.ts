@@ -663,6 +663,21 @@ describe('claimant Dashboard Controller', () => {
     });
   });
 
+  it('should not show welsh party banner once the unissued claim is cancelled', async () => {
+    const claim = new Claim();
+    claim.caseRole = CaseRole.CLAIMANT;
+    claim.ccdState = CaseState.CLAIM_UNISSUED_CANCELLED;
+    claim.claimantBilingualLanguagePreference = ClaimBilingualLanguagePreference.WELSH;
+    jest.spyOn(UtilityService, 'getClaimById').mockResolvedValueOnce(claim);
+    jest.spyOn(launchDarkly, 'isGaForLipsEnabled').mockResolvedValueOnce(false);
+    jest.spyOn(launchDarkly, 'isWelshEnabledForMainCase').mockResolvedValueOnce(true);
+
+    await request(app).get(DASHBOARD_CLAIMANT_URL).expect((res) => {
+      expect(res.status).toBe(200);
+      expect(res.text).not.toContain(t('BANNERS.WELSH_PARTY.MESSAGE'));
+    });
+  });
+
   it('should not show welsh party banner if Welsh feature disabled', async () => {
     const claim = new Claim();
     claim.caseRole = CaseRole.CLAIMANT;
