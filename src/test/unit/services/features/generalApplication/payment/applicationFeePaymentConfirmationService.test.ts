@@ -266,4 +266,20 @@ describe('Application Fee PaymentConfirmation Service', () => {
     expect(actualPaymentRedirectUrl).toBe(GA_PAYMENT_UNSUCCESSFUL_URL+lang);
     expect(getGaFeePaymentStatus).not.toHaveBeenCalled();
   });
+
+  it.each(['', '   ', 'undefined', 'null'])(
+    'should not request GA payment status for unusable reference %p',
+    async (paymentReference) => {
+      const claim = new Claim();
+      claim.generalApplication = new GeneralApplication();
+      claim.generalApplication.applicationFeePaymentDetails = new PaymentInformation(undefined, paymentReference);
+      (getClaimById as jest.Mock).mockResolvedValueOnce(claim);
+      jest.spyOn(generalApplicationService, 'getApplicationFromGAService').mockResolvedValueOnce(applicationResponse);
+      const getGaFeePaymentStatus = jest.spyOn(GaServiceClient.prototype, 'getGaFeePaymentStatus');
+      getGaFeePaymentStatus.mockClear();
+
+      expect(await getRedirectUrl(claimId, applicationId, mockedAppRequest)).toBe(GA_PAYMENT_UNSUCCESSFUL_URL+lang);
+      expect(getGaFeePaymentStatus).not.toHaveBeenCalled();
+    },
+  );
 });
