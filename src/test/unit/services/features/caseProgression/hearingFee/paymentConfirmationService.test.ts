@@ -111,4 +111,18 @@ describe('PaymentConfirmation Service', () => {
     expect(actualPaymentRedirectUrl).toBe(PAY_HEARING_FEE_UNSUCCESSFUL_URL);
     expect(getFeePaymentStatus).not.toHaveBeenCalled();
   });
+
+  it.each(['', '   ', 'undefined', 'null'])(
+    'should not request hearing payment status for unusable reference %p',
+    async (paymentReference) => {
+      const claim = claimWithPaymentReference('RC-1701-0909-0602-0418');
+      claim.caseProgression.hearing.paymentInformation.paymentReference = paymentReference;
+      (getClaimById as jest.Mock).mockResolvedValueOnce(claim);
+      const getFeePaymentStatus = jest.spyOn(CivilServiceClient.prototype, 'getFeePaymentStatus');
+      getFeePaymentStatus.mockClear();
+
+      expect(await getRedirectUrl(claimId, mockedAppRequest)).toBe(PAY_HEARING_FEE_UNSUCCESSFUL_URL);
+      expect(getFeePaymentStatus).not.toHaveBeenCalled();
+    },
+  );
 });
