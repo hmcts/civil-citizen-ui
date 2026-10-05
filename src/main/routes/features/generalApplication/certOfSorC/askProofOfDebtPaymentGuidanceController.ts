@@ -22,14 +22,16 @@ askProofOfDebtPaymentGuidanceController.get(GA_ASK_PROOF_OF_DEBT_PAYMENT_GUIDANC
     const claim = await getClaimById(claimId, req, true);
     const cancelUrl = await getCancelUrl(claimId, claim);
     let backLinkUrl = BACK_URL;
-    if(claim.generalApplication == null) {
+
+    if (!claim.generalApplication || !claim.generalApplication.applicationTypes?.length) {
       claim.generalApplication = toGeneralApplication(claim.generalApplication);
       const applicationType = new ApplicationType(ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID);
-      claim.generalApplication?.applicationTypes.push(applicationType);
+      claim.generalApplication.applicationTypes = [applicationType];
       backLinkUrl = cancelUrl;
     }
+
     const gaFeeData = await gaApplicationFeeDetails(claim, req);
-    const applicationFee = convertToPoundsFilter(gaFeeData?.calculatedAmountInPence.toString());
+    const applicationFee = convertToPoundsFilter(gaFeeData?.calculatedAmountInPence);
     const nextPageUrl = constructResponseUrlWithIdParams(claimId, COSC_FINAL_PAYMENT_DATE_URL);
 
     res.render(viewPath, { cancelUrl, backLinkUrl, nextPageUrl, applicationFee});
