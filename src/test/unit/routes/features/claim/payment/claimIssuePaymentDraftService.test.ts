@@ -2,7 +2,11 @@ import {
   getClaimIssuePaymentClaim,
   saveClaimIssuePaymentClaim,
 } from 'routes/features/claim/payment/claimIssuePaymentDraftService';
-import {getDraftClaimForCase, updateDraftClaim} from 'modules/draft-store/draftStoreManagerService';
+import {
+  getDraftClaimForCase,
+  updateDraftClaim,
+  createOrLoadDraft,
+} from 'modules/draft-store/draftStoreManagerService';
 import {generateRedisKey, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {getClaimById} from 'modules/utilityService';
 import {AppRequest} from 'models/AppRequest';
@@ -11,16 +15,23 @@ import {CivilClaimResponse} from 'models/civilClaimResponse';
 import {DraftClaimManagerResult} from 'models/draft/draftClaim';
 import {PaymentInformation} from 'models/feePayment/paymentInformation';
 import {ClaimDetails} from 'form/models/claim/details/claimDetails';
+import {isDraftClaimDatabaseEnabled} from 'app/auth/launchdarkly/launchDarklyClient';
+import {getTTLDaysForCategory, TTLCategory} from 'modules/draft-store/ttlConfig';
 
 jest.mock('modules/draft-store/draftStoreManagerService');
 jest.mock('modules/draft-store/draftStoreService');
 jest.mock('modules/utilityService');
+jest.mock('app/auth/launchdarkly/launchDarklyClient');
+jest.mock('modules/draft-store/ttlConfig');
 
 const mockGetDraftClaimForCase = getDraftClaimForCase as jest.Mock;
 const mockUpdateDraftClaim = updateDraftClaim as jest.Mock;
+const mockCreateOrLoadDraft = createOrLoadDraft as jest.Mock;
 const mockGenerateRedisKey = generateRedisKey as jest.Mock;
 const mockSaveDraftClaim = saveDraftClaim as jest.Mock;
 const mockGetClaimById = getClaimById as jest.Mock;
+const mockIsDraftClaimDatabaseEnabled = isDraftClaimDatabaseEnabled as jest.Mock;
+const mockGetTTLDaysForCategory = getTTLDaysForCategory as jest.Mock;
 
 const claimId = '1790252856529614';
 const draftId = 'draft-123';
@@ -63,6 +74,7 @@ describe('claimIssuePaymentDraftService', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     mockGenerateRedisKey.mockReturnValue(redisKey);
+    mockGetTTLDaysForCategory.mockReturnValue(7);
   });
 
   describe('getClaimIssuePaymentClaim', () => {
@@ -80,16 +92,46 @@ describe('claimIssuePaymentDraftService', () => {
       expect(mockGetClaimById).not.toHaveBeenCalled();
     });
 
-    it('should fall back to the Redis payment key when no db draft exists', async () => {
+    it('should take claim from Redis and create draft in DB with 7 days TTL when DB draft is missing and DB flag is ON', async () => {
       const req = createReq();
       const redisClaim = createClaim();
+      const createdDraftId = 'newly-created-db-draft-789';
+
       mockGetDraftClaimForCase.mockResolvedValueOnce(null);
       mockGetClaimById.mockResolvedValueOnce(redisClaim);
+      mockIsDraftClaimDatabaseEnabled.mockResolvedValueOnce(true);
+      mockGetTTLDaysForCategory.mockReturnValueOnce(7);
+      mockCreateOrLoadDraft.mockResolvedValueOnce({
+        rawResponse: { draftId: createdDraftId },
+      });
+
+      const result = await getClaimIssuePaymentClaim(req);
+
+      expect(mockGetDraftClaimForCase).toHaveBeenCalledWith(req, claimId);
+      expect(mockGetClaimById).toHaveBeenCalledWith(claimId, req, true);
+      expect(mockIsDraftClaimDatabaseEnabled).toHaveBeenCalled();
+
+      expect(mockGetTTLDaysForCategory).toHaveBeenCalledWith(TTLCategory.PAYMENT_SESSION);
+      expect(mockGetTTLDaysForCategory).toHaveReturnedWith(7);
+      expect(redisClaim.draftClaimCacheTtlDays).toBe(7);
+
+      expect(mockCreateOrLoadDraft).toHaveBeenCalledWith(req, redisClaim);
+      expect(result).toEqual({ claim: redisClaim, draftId: createdDraftId });
+    });
+
+    it('should fall back to Redis without saving to DB when DB flag is OFF', async () => {
+      const req = createReq();
+      const redisClaim = createClaim();
+
+      mockGetDraftClaimForCase.mockResolvedValueOnce(null);
+      mockGetClaimById.mockResolvedValueOnce(redisClaim);
+      mockIsDraftClaimDatabaseEnabled.mockResolvedValueOnce(false);
 
       const result = await getClaimIssuePaymentClaim(req);
 
       expect(mockGetClaimById).toHaveBeenCalledWith(claimId, req, true);
-      expect(result).toEqual({claim: redisClaim});
+      expect(mockCreateOrLoadDraft).not.toHaveBeenCalled();
+      expect(result).toEqual({ claim: redisClaim });
     });
 
     it('should throw when url claim id is missing', async () => {
