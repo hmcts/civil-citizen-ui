@@ -1,9 +1,11 @@
 import {AppRequest} from 'common/models/AppRequest';
 import {Claim} from 'models/claim';
-import {getDraftClaimForCase, updateDraftClaim} from 'modules/draft-store/draftStoreManagerService';
+import {getDraftClaimForCase, updateDraftClaim, createOrLoadDraft} from 'modules/draft-store/draftStoreManagerService';
 import {generateRedisKey, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {getClaimById} from 'modules/utilityService';
 import {getRouteParam, isUsablePathSegment} from 'common/utils/routeParamUtils';
+import {isDraftClaimDatabaseEnabled} from 'app/auth/launchdarkly/launchDarklyClient';
+import { getTTLDaysForCategory, TTLCategory } from 'modules/draft-store/ttlConfig';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimIssuePaymentDraftService');
@@ -32,6 +34,12 @@ export const getClaimIssuePaymentClaim = async (req: AppRequest): Promise<ClaimI
 
   const claim = await getClaimById(claimId, req, true);
   logger.info(`Payment claim loaded from Redis for claim id ${claimId}`);
+  if (await isDraftClaimDatabaseEnabled() && claim) {
+    claim.draftClaimCacheTtlDays = getTTLDaysForCategory(TTLCategory.PAYMENT_SESSION);
+    const dbDraft = await createOrLoadDraft(req, claim);
+    const draftId = dbDraft.rawResponse.draftId;
+    return {claim, draftId};
+  }
   return {claim};
 };
 
