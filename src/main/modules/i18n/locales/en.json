@@ -573,6 +573,7 @@
       "PAGE_TITLE": "Cancel unissued claim",
       "REASON_HINT": "You can enter up to %{count} characters",
       "REASON_LABEL": "Explain why you are cancelling the claim (optional)",
+      "SURVEY_LINK": "What did you think of this service? (opens in a new tab)",
       "START_NEW_CLAIM": "If you want to start a new claim you can do this from your login portal/page.",
       "TITLE": "Reasons for cancelling the claim",
       "WARNING": "If you cancel the claim it will not be issued. It will not count as court proceedings. You will no longer be able to take any action on it and it will be eventually removed from the system."

@@ -71,5 +71,15 @@ describe('Cancel unissued claim spec views', () => {
     expect(res.text).toContain(t('PAGES.SUBMIT_CONFIRMATION.GO_TO_ACCOUNT'));
     expect(res.text).toContain(t('PAGES.CANCEL_UNISSUED_CLAIM_SPEC.START_NEW_CLAIM'));
     expect(res.text).not.toContain(t('COMMON.CONTACT_US_FOR_HELP.TITLE'));
+    expect(res.text).toContain(t('PAGES.CANCEL_UNISSUED_CLAIM_SPEC.SURVEY_LINK'));
+  });
+
+  it('should render the confirmation page in Welsh', async () => {
+    const res = await request(app).get(CANCEL_UNISSUED_CLAIM_SPEC_CONFIRMATION_URL.replace(':id', claimId) + '?lang=cy');
+
+    expect(res.status).toBe(200);
+    expect(res.text).toContain('Mae&#39;r hawliad hwn bellach wedi&#39;i ganslo');
+    expect(res.text).toContain('Beth oeddech chi&#39;n ei feddwl o&#39;r gwasanaeth hwn? (yn agor mewn tab newydd)');
+    expect(res.text).toContain('Ni ellir cymryd unrhyw gamau pellach ar yr achos hwn gan ei fod bellach wedi&#39;i ganslo.');
   });
 });
