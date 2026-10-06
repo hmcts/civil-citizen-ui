@@ -1,0 +1,1 @@
+{"value":"sprintf-js","children":{"ID":1241202,"Issue":"sprintf-js vulnerable to denial of service through unbounded precision specifiers","URL":"https://github.com/advisories/GHSA-hp3w-g68c-fv3c","Severity":"moderate","Vulnerable Versions":"<=1.1.3","Tree Versions":["1.1.3"],"Dependents":["fengari@npm:0.1.5"]}}
