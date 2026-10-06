@@ -16,7 +16,8 @@ describe('CancelUnissuedClaimSpecReason', () => {
   });
 
   it('should accept letters, numbers, new lines and standard punctuation', async () => {
-    const form = await validate('We agreed £500 (50%) - paid on 01/02/2026.\nIt\'s done; thanks: "ok"! Why? A&B ’quoted’ “text”');
+    const form = await validate('We agreed £500 (50%) - paid on 01/02/2026.\nIt\'s done; thanks: "ok"! Why? A&B ’quoted’ “text”'
+      + ' email@test.com #1 $20 +5 =ok – — …');
 
     expect(form.hasErrors()).toBe(false);
   });
@@ -31,7 +32,7 @@ describe('CancelUnissuedClaimSpecReason', () => {
     expect(form.errorFor('cancelReason')).toBe(TOO_LONG);
   });
 
-  it.each(['$$$', 'a#b', 'email@test', '<script>', 'a*b', '{x}', 'a~b', 'a^b', 'a`b', '😀'])(
+  it.each(['<script>', 'a*b', '{x}', '[x]', 'a~b', 'a^b', 'a`b', 'a|b', 'a\\b', '😀'])(
     'should reject non-standard characters: %p', async (reason) => {
       const form = await validate(reason);
 
@@ -39,7 +40,7 @@ describe('CancelUnissuedClaimSpecReason', () => {
     });
 
   it('should show the length error first when both rules fail', async () => {
-    const form = await validate('$'.repeat(201));
+    const form = await validate('*'.repeat(201));
 
     expect(form.errorFor('cancelReason')).toBe(TOO_LONG);
     expect(form.getErrors()).toHaveLength(1);

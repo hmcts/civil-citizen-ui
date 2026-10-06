@@ -54,12 +54,12 @@ describe('Cancel unissued claim spec views', () => {
   it('should show the error summary and field error when the reason is invalid', async () => {
     const res = await request(app)
       .post(CANCEL_UNISSUED_CLAIM_SPEC_URL.replace(':id', claimId))
-      .send({cancelReason: 'Placeholder input text$$$'});
+      .send({cancelReason: 'Placeholder input text***'});
 
     expect(res.status).toBe(200);
     expect(res.text).toContain(t('ERRORS.THERE_WAS_A_PROBLEM'));
     expect(res.text.match(new RegExp(t('ERRORS.CANCEL_UNISSUED_CLAIM_SPEC_REASON_INVALID_CHARACTERS'), 'g'))).toHaveLength(2);
-    expect(res.text).toContain('Placeholder input text$$$');
+    expect(res.text).toContain('Placeholder input text***');
   });
 
   it('should render the confirmation page', async () => {

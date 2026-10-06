@@ -122,7 +122,7 @@ describe('Cancel unissued claim spec controller', () => {
 
     it.each([
       ['more than 200 characters', 'a'.repeat(201), 'ERRORS.CANCEL_UNISSUED_CLAIM_SPEC_REASON_TOO_LONG'],
-      ['non-standard characters', 'Placeholder input text$$$', 'ERRORS.CANCEL_UNISSUED_CLAIM_SPEC_REASON_INVALID_CHARACTERS'],
+      ['non-standard characters', 'Placeholder input text***', 'ERRORS.CANCEL_UNISSUED_CLAIM_SPEC_REASON_INVALID_CHARACTERS'],
     ])('should re-render with an error and not submit when the reason has %s', async (_case, reason, error) => {
       req.body = {cancelReason: reason};
 

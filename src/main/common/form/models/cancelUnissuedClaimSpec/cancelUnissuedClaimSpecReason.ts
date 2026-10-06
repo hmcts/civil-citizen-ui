@@ -2,8 +2,7 @@ import {IsOptional, Matches, MaxLength} from 'class-validator';
 
 export const CANCEL_UNISSUED_CLAIM_SPEC_REASON_MAX_LENGTH = 200;
 
-// Letters, numbers, whitespace and standard punctuation, including typographic quotes from mobile keyboards
-const ALLOWED_CHARACTERS = /^[A-Za-z0-9\s.,;:'"‘’“”!?()\-/&£%]*$/;
+const ALLOWED_CHARACTERS = /^[A-Za-z0-9 \t\r\n.,!?'"()&:;@#/$%+=£‘’“”–—…-]*$/;
 
 export class CancelUnissuedClaimSpecReason {
 
