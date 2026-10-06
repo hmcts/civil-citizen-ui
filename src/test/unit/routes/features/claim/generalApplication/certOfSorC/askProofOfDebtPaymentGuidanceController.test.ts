@@ -113,6 +113,29 @@ describe('General Application - ask proof of debt payment guidance', () => {
       );
     });
 
+    it('should replace applicationTypes when the draft contains a non-persistable type', async () => {
+      const claimWithInvalidType = new Claim();
+      claimWithInvalidType.generalApplication = new GeneralApplication();
+      claimWithInvalidType.generalApplication.applicationTypes = [new ApplicationType(ApplicationTypeOption.OTHER_OPTION)];
+
+      mockGetCaseData.mockImplementation(async () => claimWithInvalidType);
+
+      (gaApplicationFeeDetails as jest.Mock).mockResolvedValueOnce({
+        calculatedAmountInPence: 1400,
+        code: 'FEE0459',
+        version: 0,
+      });
+
+      await request(app)
+        .get(GA_ASK_PROOF_OF_DEBT_PAYMENT_GUIDANCE_URL)
+        .expect(200);
+
+      expect(claimWithInvalidType.generalApplication?.applicationTypes).toHaveLength(1);
+      expect(claimWithInvalidType.generalApplication?.applicationTypes[0].option).toBe(
+        ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID,
+      );
+    });
+
     it('should call next with error when loading case data fails', async () => {
       const error = new Error('Database connection failed');
       mockGetCaseData.mockRejectedValueOnce(error);

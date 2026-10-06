@@ -10,7 +10,11 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {gaApplicationFeeDetails} from 'services/features/generalApplication/feeDetailsService';
 import {convertToPoundsFilter} from 'common/utils/currencyFormat';
 import {toGeneralApplication} from 'models/generalApplication/GeneralApplication';
-import {ApplicationType, ApplicationTypeOption} from 'models/generalApplication/applicationType';
+import {
+  ApplicationType,
+  ApplicationTypeOption,
+  hasInvalidApplicationType,
+} from 'models/generalApplication/applicationType';
 import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const askProofOfDebtPaymentGuidanceController = Router();
@@ -23,7 +27,8 @@ askProofOfDebtPaymentGuidanceController.get(GA_ASK_PROOF_OF_DEBT_PAYMENT_GUIDANC
     const cancelUrl = await getCancelUrl(claimId, claim);
     let backLinkUrl = BACK_URL;
 
-    if (!claim.generalApplication || !claim.generalApplication.applicationTypes?.length) {
+    const applicationTypes = claim.generalApplication?.applicationTypes;
+    if (!applicationTypes?.length || hasInvalidApplicationType(applicationTypes)) {
       claim.generalApplication = toGeneralApplication(claim.generalApplication);
       const applicationType = new ApplicationType(ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID);
       claim.generalApplication.applicationTypes = [applicationType];
