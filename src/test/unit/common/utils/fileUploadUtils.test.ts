@@ -549,5 +549,61 @@ describe('fileUploadUtils', () => {
       expect(form.errors).toHaveLength(1);
       expect(form.errors[0].children[0].children[0].constraints.unexpectedError).toBe('ERRORS.FILE_UPLOAD_FAILED');
     });
+
+    describe('when several files are selected for one upload control', () => {
+      const reqWithFiles = (count: number) => ({
+        files: [
+          ...Array.from({length: count}, (_, i) => ({ fieldname: 'documentsReferred[0][fileUpload]', originalname: `file-${i}.pdf` })),
+          { fieldname: 'witnessStatement[0][fileUpload]', originalname: 'other-section.pdf' },
+        ],
+      }) as any;
+      const uploadedDocument = (name: string) => ({ documentLink: { document_filename: name } });
+      const filenames = () => (form.model.documentsReferred[0] as any).caseDocuments.map((doc: any) => doc.documentLink.document_filename);
+
+      it('uploads every file for that section and appends them to any already uploaded', async () => {
+        (form.model.documentsReferred[0] as any).caseDocuments = [uploadedDocument('existing.pdf')];
+        mockUploadDocument
+          .mockResolvedValueOnce(uploadedDocument('file-0.pdf'))
+          .mockResolvedValueOnce(uploadedDocument('file-1.pdf'))
+          .mockResolvedValueOnce(uploadedDocument('file-2.pdf'));
+
+        await uploadAndValidateFile(reqWithFiles(3), 'documentsReferred[0][uploadButton]', form, { uploadDocument: mockUploadDocument });
+
+        expect(mockUploadDocument).toHaveBeenCalledTimes(3);
+        expect(filenames()).toEqual(['existing.pdf', 'file-0.pdf', 'file-1.pdf', 'file-2.pdf']);
+        expect(form.errors).toHaveLength(0);
+        expect(form.model.documentsReferred[0].fileUpload).toBeUndefined();
+      });
+
+      it('still uploads the valid files when one of them fails validation', async () => {
+        const {Validator} = require('class-validator');
+        Validator.mockImplementation(() => ({
+          validateSync: jest.fn()
+            .mockReturnValueOnce([])
+            .mockReturnValueOnce([{ constraints: { isFileSize: 'ERRORS.VALID_SIZE_FILE' } }])
+            .mockReturnValueOnce([]),
+        }));
+        mockUploadDocument
+          .mockResolvedValueOnce(uploadedDocument('file-0.pdf'))
+          .mockResolvedValueOnce(uploadedDocument('file-2.pdf'));
+
+        await uploadAndValidateFile(reqWithFiles(3), 'documentsReferred[0][uploadButton]', form, { uploadDocument: mockUploadDocument });
+
+        expect(mockUploadDocument).toHaveBeenCalledTimes(2);
+        expect(filenames()).toEqual(['file-0.pdf', 'file-2.pdf']);
+        expect(form.errors).toHaveLength(1);
+        expect(form.errors[0].children[0].children[0].constraints.isFileSize).toBe('ERRORS.VALID_SIZE_FILE');
+      });
+
+      it('reports only one error for the section when several files fail', async () => {
+        mockUploadDocument.mockRejectedValue(new Error('API error'));
+
+        await uploadAndValidateFile(reqWithFiles(2), 'documentsReferred[0][uploadButton]', form, { uploadDocument: mockUploadDocument });
+
+        expect(mockUploadDocument).toHaveBeenCalledTimes(2);
+        expect(form.errors).toHaveLength(1);
+        expect(form.errors[0].children[0].children[0].constraints.uploadError).toBe('ERRORS.FILE_UPLOAD_FAILED');
+      });
+    });
   });
 });

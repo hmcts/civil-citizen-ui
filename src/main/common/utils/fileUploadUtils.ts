@@ -234,72 +234,68 @@ export const uploadAndValidateFile = async (
 
   const [category, index] = extractCategoryAndIndex(submitAction);
   const target = `${category}[${index}][fileUpload]`;
-  const inputFile = (req.files as Express.Multer.File[]).find((file: Express.Multer.File) =>
+  // The upload control allows selecting / dropping several files at once, all under the same field name.
+  const inputFiles = ((req.files as Express.Multer.File[]) || []).filter((file: Express.Multer.File) =>
     file.fieldname === target,
   );
 
-  if (!inputFile) {
+  if (!inputFiles.length) {
     return;
   }
 
-  try {
-    const fileUpload = TypeOfDocumentSectionMapper.mapMulterFileToSingleFile(inputFile as Express.Multer.File);
-    const categoryModel = form.model[category];
-    if (categoryModel && categoryModel[+index]) {
-      categoryModel[+index].fileUpload = fileUpload;
+  if (!form.errors) {
+    form.errors = [];
+  }
+
+  // Only one error is shown per upload control, so stop reporting once the section has one.
+  let sectionHasError = false;
+  const addSectionError = (constraintKey: string, constraintValue: string) => {
+    if (!sectionHasError) {
+      form.errors.push(createFileUploadError(category, index, constraintKey, constraintValue));
+      sectionHasError = true;
     }
+  };
 
-    if (!form.errors) {
-      form.errors = [];
-    }
+  const categoryModel = form.model[category];
 
-    const fileErrors = validator.validateSync(fileUpload);
+  for (const inputFile of inputFiles) {
+    try {
+      const fileUpload = TypeOfDocumentSectionMapper.mapMulterFileToSingleFile(inputFile);
+      if (categoryModel && categoryModel[+index]) {
+        categoryModel[+index].fileUpload = fileUpload;
+      }
 
-    if (fileErrors && fileErrors.length > 0) {
-      const firstError = fileErrors[0];
-      const firstConstraintKey = firstError?.constraints ? Object.keys(firstError.constraints)[0] : null;
-      const firstConstraintValue = firstError?.constraints?.[firstConstraintKey];
+      const fileErrors = validator.validateSync(fileUpload);
 
-      const nestedError = createFileUploadError(
-        category,
-        index,
-        firstConstraintKey || 'validationError',
-        firstConstraintValue || 'ERRORS.FILE_UPLOAD_FAILED',
-      );
-      form.errors.push(nestedError);
-    } else {
-      try {
-        if (categoryModel && categoryModel[+index]) {
+      if (fileErrors && fileErrors.length > 0) {
+        const firstError = fileErrors[0];
+        const firstConstraintKey = firstError?.constraints ? Object.keys(firstError.constraints)[0] : null;
+        const firstConstraintValue = firstError?.constraints?.[firstConstraintKey];
+        addSectionError(firstConstraintKey || 'validationError', firstConstraintValue || 'ERRORS.FILE_UPLOAD_FAILED');
+      } else if (categoryModel && categoryModel[+index]) {
+        try {
           const uploadedDocument = await civilServiceClient.uploadDocument(req, fileUpload);
 
           if (!uploadedDocument?.documentLink) {
             logger.error('[SAVE FILE] File upload response missing documentLink');
-            const apiError = createFileUploadError(category, index, 'uploadError', 'ERRORS.FILE_UPLOAD_FAILED');
-            form.errors.push(apiError);
+            addSectionError('uploadError', 'ERRORS.FILE_UPLOAD_FAILED');
           } else {
             const caseDocuments = normaliseCaseDocuments(categoryModel[+index].caseDocuments);
             caseDocuments.push(uploadedDocument);
             categoryModel[+index].caseDocuments = caseDocuments;
           }
+        } catch (uploadError) {
+          logger.error(`[SAVE FILE] API upload failed: error=${uploadError?.message || uploadError}`, uploadError);
+          addSectionError('uploadError', 'ERRORS.FILE_UPLOAD_FAILED');
         }
-      } catch (uploadError) {
-        logger.error(`[SAVE FILE] API upload failed: error=${uploadError?.message || uploadError}`, uploadError);
-
-        const apiError = createFileUploadError(category, index, 'uploadError', 'ERRORS.FILE_UPLOAD_FAILED');
-        form.errors.push(apiError);
+      }
+    } catch (error) {
+      logger.error(`[SAVE FILE] Unexpected error: ${error?.message || error}`, error);
+      addSectionError('unexpectedError', 'ERRORS.FILE_UPLOAD_FAILED');
+    } finally {
+      if (categoryModel && categoryModel[+index]) {
+        delete categoryModel[+index].fileUpload;
       }
     }
-
-    if (categoryModel && categoryModel[+index]) {
-      delete categoryModel[+index].fileUpload;
-    }
-  } catch (error) {
-    logger.error(`[SAVE FILE] Unexpected error: ${error?.message || error}`, error);
-
-    if (!form.errors) {
-      form.errors = [];
-    }
-    const unexpectedError = createFileUploadError(category, index, 'unexpectedError', 'ERRORS.FILE_UPLOAD_FAILED');
-    form.errors.push(unexpectedError);
   }
 };

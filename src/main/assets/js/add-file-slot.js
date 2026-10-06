@@ -33,6 +33,9 @@ function resetAndEnhanceFileUpload(row, slotIndex) {
   if (inputName) {
     freshInput.setAttribute('name', inputName);
   }
+  if (originalInput?.multiple) {
+    freshInput.multiple = true;
+  }
 
   // The hint (and any other describedby target) was cloned with the original's static id, so it's
   // now a duplicate on the page - give it a fresh id matching this slot and re-link the input.
