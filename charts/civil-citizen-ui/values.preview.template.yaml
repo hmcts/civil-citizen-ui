@@ -103,10 +103,10 @@ civil-service:
             alias: OS_POSTCODE_LOOKUP_API_KEY
           - name: notification-caseworker-spec-receiver
             alias: notification.caseworker.spec.receiver
-          - name: mediation-notification-sender
-            alias: mediation.emails.sender
-          - name: mediation-notification-recipient
-            alias: mediation.emails.recipient
+          - name: -notification-sender
+            alias: .emails.sender
+          - name: -notification-recipient
+            alias: .emails.recipient
           - name: hmc-servicebus-shared-access-key-tf
             alias: HMC_HEARINGS_TOPIC_ACCESS_KEY
     environment:
@@ -169,9 +169,10 @@ civil-service:
       CMC_DB_CONNECTION_OPTIONS: "?stringtype=unspecified&reWriteBatchedInserts=true&sslmode=require"
       CMC_DB_USERNAME: hmcts
       CMC_DB_NAME: "pr-${CHANGE_ID}-cmc"
-      SCHEDULER_ACTIVE_SCHEDULERS: SettlementNoResponseFromDefendantCheck,GenerateCsvAndSendToMmt
+      SCHEDULER_ACTIVE_SCHEDULERS: SettlementNoResponseFromDefendantCheck,GenerateCsvAndSendToMmt,PollingEventEmitter
       CRON_EXPRESSION_SETTLEMENT_NO_RESPONSE_FROM_DEFENDANT_CHECK: "0 */30 * * * ?"
-      CRON_EXPRESSION_MEDIATION_FILE_TRANSFER: "0 */30 * * * ?"
+      CRON_EXPRESSION__FILE_TRANSFER: "0 */30 * * * ?"
+      CRON_EXPRESSION_POLLING_EVENT_EMITTER: "0 */30 * * * ?"
 
 
     secrets:
