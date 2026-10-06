@@ -178,7 +178,7 @@ const getSupportLinks = async (req: AppRequest, claim: Claim, claimId: string, l
     return [iWantToTitle, iWantToLinks, getHelpSupportTitle(lng), helpSupportLinksWithoutFees] as const;
   }
 
-  if (await isCancelUnissuedClaimSpecAvailable(claim)) {
+  if (isCancelUnissuedClaimSpecAvailable(claim)) {
     iWantToLinks.push({ text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CANCEL_UNISSUED_CLAIM', { lng }), url: constructResponseUrlWithIdParams(claimId, CANCEL_UNISSUED_CLAIM_SPEC_URL) });
   }
 

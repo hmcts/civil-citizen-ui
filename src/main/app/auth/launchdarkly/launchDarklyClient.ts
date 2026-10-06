@@ -20,7 +20,6 @@ const CUI_GA_NRO = 'cui-ga-nro';
 const JUDGMENT_BUFFER = 'judgment-buffer';
 const HMCTS_ACCESS_MIGRATION = 'hmcts-access-migration';
 const USER_CASE_ROLES_SESSION_CACHE = 'cui-user-case-roles-session-cache-enabled';
-const CANCEL_UNISSUED_CLAIM_SPEC = 'cui-cancel-unissued-claim-spec';
 
 async function getClient(): Promise<void> {
   const launchDarklyTestSdk =  process.env.LAUNCH_DARKLY_SDK || config.get<string>('services.launchDarkly.sdk');
@@ -41,7 +40,6 @@ async function getClient(): Promise<void> {
       await testData.update(testData.flag(CUI_GA_NRO).booleanFlag().variationForAll(false));
       await testData.update(testData.flag(JUDGMENT_BUFFER).booleanFlag().variationForAll(false));
       await testData.update(testData.flag(HMCTS_ACCESS_MIGRATION).booleanFlag().variationForAll(false));
-      await testData.update(testData.flag(CANCEL_UNISSUED_CLAIM_SPEC).booleanFlag().variationForAll(false));
       await testData.update(testData.flag(USER_CASE_ROLES_SESSION_CACHE).booleanFlag().variationForAll(true));
 
       client = init(launchDarklyTestSdk, { updateProcessor: testData.getFactory() });
@@ -180,15 +178,6 @@ export async function isCuiGaNroEnabled(): Promise<boolean> {
 
 export async function isJudgmentBufferEnabled(): Promise<boolean> {
   return await getFlagValue(JUDGMENT_BUFFER) as boolean;
-}
-
-// Defaults to true when the flag is not defined in LaunchDarkly or LaunchDarkly is unavailable
-export async function isCancelUnissuedClaimSpecEnabled(): Promise<boolean> {
-  if (!ldClient) await getClient();
-  if (!ldClient) {
-    return true;
-  }
-  return await ldClient.variation(CANCEL_UNISSUED_CLAIM_SPEC, await getUser(undefined), true) as boolean;
 }
 
 /**

@@ -3,6 +3,8 @@ import config from 'config';
 import {
   CANCEL_UNISSUED_CLAIM_SPEC_CONFIRMATION_URL,
   CANCEL_UNISSUED_CLAIM_SPEC_URL,
+  CLAIM_FEE_BREAKUP,
+  CLAIM_FEE_MAKE_PAYMENT_AGAIN_URL,
   DASHBOARD_CLAIMANT_URL,
 } from 'routes/urls';
 import {AppRequest} from 'models/AppRequest';
@@ -12,6 +14,7 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {getRouteParam} from 'common/utils/routeParamUtils';
 import {deleteDraftClaimFromStore, generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {cancelUnissuedClaimSpecGuard} from 'routes/guards/cancelUnissuedClaimSpecGuard';
+import {claimUnissuedCancelledGuard} from 'routes/guards/claimUnissuedCancelledGuard';
 import {GenericForm} from 'form/models/genericForm';
 import {
   CANCEL_UNISSUED_CLAIM_SPEC_REASON_MAX_LENGTH,
@@ -23,6 +26,10 @@ const cancelUnissuedClaimSpecConfirmationViewPath = 'features/cancelUnissuedClai
 const cancelUnissuedClaimSpecController = Router();
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
+
+// This router is registered before the claim fee payment routers, so the guard runs first and stops payment once
+// the unissued claim has been cancelled; otherwise it passes the request on to the payment routes
+cancelUnissuedClaimSpecController.all([CLAIM_FEE_BREAKUP, CLAIM_FEE_MAKE_PAYMENT_AGAIN_URL], claimUnissuedCancelledGuard);
 
 const renderView = (res: Response, claimId: string, form: GenericForm<CancelUnissuedClaimSpecReason>): void => {
   res.render(cancelUnissuedClaimSpecViewPath, {

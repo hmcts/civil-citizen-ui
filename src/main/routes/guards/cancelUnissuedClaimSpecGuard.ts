@@ -10,7 +10,7 @@ export const cancelUnissuedClaimSpecGuard = (async (req: AppRequest, res: Respon
   try {
     const claimId = getRouteParam(req, 'id');
     const claim = await getClaimById(claimId, req, true);
-    if (await isCancelUnissuedClaimSpecAvailable(claim)) {
+    if (isCancelUnissuedClaimSpecAvailable(claim)) {
       next();
     } else {
       res.redirect(constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL));

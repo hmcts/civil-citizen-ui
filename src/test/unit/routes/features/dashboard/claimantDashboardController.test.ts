@@ -404,12 +404,11 @@ describe('claimant Dashboard Controller', () => {
         expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.FIND_INFO_COURT'));
       });
     });
-    it('should show cancel unissued claim link for claimant when claim issue is pending and flag is enabled', async () => {
+    it('should show cancel unissued claim link for claimant when claim issue is pending', async () => {
       const claim = new Claim();
       claim.caseRole = CaseRole.CLAIMANT;
       claim.ccdState = CaseState.PENDING_CASE_ISSUED;
       jest.spyOn(UtilityService, 'getClaimById').mockResolvedValueOnce(claim);
-      jest.spyOn(launchDarkly, 'isCancelUnissuedClaimSpecEnabled').mockResolvedValueOnce(true);
       await request(app).get(DASHBOARD_CLAIMANT_URL).expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.CANCEL_UNISSUED_CLAIM'));
@@ -418,24 +417,11 @@ describe('claimant Dashboard Controller', () => {
       });
     });
 
-    it('should not show cancel unissued claim link when flag is disabled', async () => {
-      const claim = new Claim();
-      claim.caseRole = CaseRole.CLAIMANT;
-      claim.ccdState = CaseState.PENDING_CASE_ISSUED;
-      jest.spyOn(UtilityService, 'getClaimById').mockResolvedValueOnce(claim);
-      jest.spyOn(launchDarkly, 'isCancelUnissuedClaimSpecEnabled').mockResolvedValueOnce(false);
-      await request(app).get(DASHBOARD_CLAIMANT_URL).expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).not.toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.CANCEL_UNISSUED_CLAIM'));
-      });
-    });
-
     it('should not show cancel unissued claim link when claim has been issued', async () => {
       const claim = new Claim();
       claim.caseRole = CaseRole.CLAIMANT;
       claim.ccdState = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
       jest.spyOn(UtilityService, 'getClaimById').mockResolvedValueOnce(claim);
-      jest.spyOn(launchDarkly, 'isCancelUnissuedClaimSpecEnabled').mockResolvedValueOnce(true);
       await request(app).get(DASHBOARD_CLAIMANT_URL).expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).not.toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.CANCEL_UNISSUED_CLAIM'));

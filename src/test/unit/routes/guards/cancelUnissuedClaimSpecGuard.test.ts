@@ -3,21 +3,16 @@ import {Claim} from 'models/claim';
 import {CaseRole} from 'form/models/caseRoles';
 import {CaseState} from 'form/models/claimDetails';
 import {getClaimById} from 'modules/utilityService';
-import {isCancelUnissuedClaimSpecEnabled} from '../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {cancelUnissuedClaimSpecGuard} from 'routes/guards/cancelUnissuedClaimSpecGuard';
 import {claimUnissuedCancelledGuard} from 'routes/guards/claimUnissuedCancelledGuard';
 
 jest.mock('modules/utilityService', () => ({
   getClaimById: jest.fn(),
 }));
-jest.mock('../../../../main/app/auth/launchdarkly/launchDarklyClient', () => ({
-  isCancelUnissuedClaimSpecEnabled: jest.fn(),
-}));
 
 const claimId = '1234567890123456';
 const dashboardUrl = `/dashboard/${claimId}/claimantNewDesign`;
 const mockGetClaimById = getClaimById as jest.Mock;
-const mockIsEnabled = isCancelUnissuedClaimSpecEnabled as jest.Mock;
 
 const buildClaim = (ccdState: CaseState, caseRole = CaseRole.CLAIMANT): Claim => {
   const claim = new Claim();
@@ -37,9 +32,8 @@ const runGuard = async (guard: typeof cancelUnissuedClaimSpecGuard) => {
 describe('cancelUnissuedClaimSpecGuard', () => {
   beforeEach(() => jest.clearAllMocks());
 
-  it('should allow claimant on pending case issued claim when flag enabled', async () => {
+  it('should allow claimant on pending case issued claim', async () => {
     mockGetClaimById.mockResolvedValueOnce(buildClaim(CaseState.PENDING_CASE_ISSUED));
-    mockIsEnabled.mockResolvedValueOnce(true);
 
     const {res, next} = await runGuard(cancelUnissuedClaimSpecGuard);
 
@@ -47,19 +41,8 @@ describe('cancelUnissuedClaimSpecGuard', () => {
     expect(res.redirect).not.toHaveBeenCalled();
   });
 
-  it('should redirect to dashboard when flag disabled', async () => {
-    mockGetClaimById.mockResolvedValueOnce(buildClaim(CaseState.PENDING_CASE_ISSUED));
-    mockIsEnabled.mockResolvedValueOnce(false);
-
-    const {res, next} = await runGuard(cancelUnissuedClaimSpecGuard);
-
-    expect(res.redirect).toHaveBeenCalledWith(dashboardUrl);
-    expect(next).not.toHaveBeenCalled();
-  });
-
   it('should redirect to dashboard when claim already issued', async () => {
     mockGetClaimById.mockResolvedValueOnce(buildClaim(CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT));
-    mockIsEnabled.mockResolvedValueOnce(true);
 
     const {res} = await runGuard(cancelUnissuedClaimSpecGuard);
 
@@ -68,7 +51,6 @@ describe('cancelUnissuedClaimSpecGuard', () => {
 
   it('should redirect to dashboard when user is the defendant', async () => {
     mockGetClaimById.mockResolvedValueOnce(buildClaim(CaseState.PENDING_CASE_ISSUED, CaseRole.DEFENDANT));
-    mockIsEnabled.mockResolvedValueOnce(true);
 
     const {res} = await runGuard(cancelUnissuedClaimSpecGuard);
 
