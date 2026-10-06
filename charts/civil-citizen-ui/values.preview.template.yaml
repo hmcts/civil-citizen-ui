@@ -169,9 +169,10 @@ civil-service:
       CMC_DB_CONNECTION_OPTIONS: "?stringtype=unspecified&reWriteBatchedInserts=true&sslmode=require"
       CMC_DB_USERNAME: hmcts
       CMC_DB_NAME: "pr-${CHANGE_ID}-cmc"
-      SCHEDULER_ACTIVE_SCHEDULERS: CaseDismissed,DefendantResponseDeadline
-      CRON_EXPRESSION_CASE_DISMISSED: "0 */15 * * * ?"
-      CRON_EXPRESSION_DEFENDANT_RESPONSE: "0 */15 * * * ?"
+      SCHEDULER_ACTIVE_SCHEDULERS: SettlementNoResponseFromDefendantCheck,GenerateCsvAndSendToMmt
+      CRON_EXPRESSION_SETTLEMENT_NO_RESPONSE_FROM_DEFENDANT_CHECK: "0 */30 * * * ?"
+      CRON_EXPRESSION_MEDIATION_FILE_TRANSFER: "0 */30 * * * ?"
+
 
     secrets:
       CMC_DB_PASSWORD:
