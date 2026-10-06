@@ -15,6 +15,7 @@ describe('Lift Breathing Space Check Answers Service', () => {
           reasonToLift: 'Reason',
         },
       };
+
       const rows = getSummaryRows('123', claim, 'en');
       expect(rows.length).toBe(2);
       expect(rows[0].key.text).toBe('PAGES.BREATHING_SPACE.LIFT.WHEN_END');

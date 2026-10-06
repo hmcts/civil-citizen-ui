@@ -117,7 +117,6 @@ liftBreathingSpaceController.post(BREATHING_SPACE_LIFT_URL, async (req: Request,
       const exitUrl = constructResponseUrlWithIdParams(claimId, LIFT_BREATHING_SPACE_EXIT_URL) + '?returnUrl=' + encodeURIComponent(liftUrl);
       const isQMFlagEnabled = await isQueryManagementEnabled(claim.submittedDate);
 
-
       res.render(liftBreathingSpaceViewPath, {
         form: genericForm,
         claim,
