@@ -1,7 +1,8 @@
 import {getRedirectUrl} from 'services/features/claim/payment/claimFeeMakePaymentAgainService';
-import {generateRedisKey, saveDraftClaim} from 'modules/draft-store/draftStoreService';
-import {TTLCategory} from 'modules/draft-store/ttlConfig';
-import {getClaimById} from 'modules/utilityService';
+import {
+  getClaimIssuePaymentClaim,
+  saveClaimIssuePaymentClaim,
+} from 'routes/features/claim/payment/claimIssuePaymentDraftService';
 import {getFeePaymentRedirectInformation} from 'services/features/feePayment/feePaymentService';
 import {AppRequest} from 'models/AppRequest';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
@@ -10,17 +11,15 @@ import {ClaimDetails} from 'form/models/claim/details/claimDetails';
 import {PaymentInformation} from 'models/feePayment/paymentInformation';
 import {FeeType} from 'form/models/helpWithFees/feeType';
 
-jest.mock('modules/draft-store/draftStoreService');
-jest.mock('modules/utilityService');
+jest.mock('routes/features/claim/payment/claimIssuePaymentDraftService');
 jest.mock('services/features/feePayment/feePaymentService');
 
-const mockGenerateRedisKey = generateRedisKey as jest.Mock;
-const mockSaveDraftClaim = saveDraftClaim as jest.Mock;
-const mockGetClaimById = getClaimById as jest.Mock;
+const mockSaveClaimIssuePaymentClaim = saveClaimIssuePaymentClaim as jest.Mock;
+const mockGetClaimIssuePaymentClaim = getClaimIssuePaymentClaim as jest.Mock;
 const mockGetFeePaymentRedirectInformation = getFeePaymentRedirectInformation as jest.Mock;
 
 const claimId = '12345';
-const redisKey = '12345user-id';
+const draftId = 'draft-123';
 
 const createReq = (): AppRequest => ({
   params: {id: claimId},
@@ -38,42 +37,54 @@ describe('ClaimFeeMakePaymentAgain Service', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    mockGenerateRedisKey.mockReturnValue(redisKey);
-    mockSaveDraftClaim.mockResolvedValue(undefined);
+    mockSaveClaimIssuePaymentClaim.mockResolvedValue(undefined);
   });
 
   it('should update with payment reference on generation of payment link', async () => {
     const mockClaim = new Claim();
     mockClaim.claimDetails = new ClaimDetails();
     mockClaim.claimDetails.claimFeePayment = new PaymentInformation('1234', 'RC-1701-0909-0602-0417');
-    mockGetClaimById.mockResolvedValue(mockClaim);
+    mockGetClaimIssuePaymentClaim.mockResolvedValue({claim: mockClaim, draftId});
     mockGetFeePaymentRedirectInformation.mockResolvedValueOnce(mockClaimFeePaymentRedirectInfo);
 
-    const actualPaymentRedirectUrl = await getRedirectUrl(claimId, createReq());
+    const req = createReq();
+    const actualPaymentRedirectUrl = await getRedirectUrl(claimId, req);
 
     expect(actualPaymentRedirectUrl).toBe(mockClaimFeePaymentRedirectInfo.nextUrl);
     expect(mockGetFeePaymentRedirectInformation).toHaveBeenCalledWith(claimId, FeeType.CLAIMISSUED, expect.anything());
-    expect(mockSaveDraftClaim).toHaveBeenCalledWith(
-      redisKey,
+    expect(mockGetClaimIssuePaymentClaim).toHaveBeenCalledWith(req);
+    expect(mockSaveClaimIssuePaymentClaim).toHaveBeenCalledWith(
+      req,
       expect.objectContaining({
         claimDetails: expect.objectContaining({
           claimFeePayment: mockClaimFeePaymentRedirectInfo,
         }),
       }),
-      true,
-      'user-id',
-      TTLCategory.JOURNEY_CACHE,
+      draftId,
     );
   });
 
   it('should still pay when the issued claim has no claimDetails yet', async () => {
-    mockGetClaimById.mockResolvedValue(new Claim());
+    mockGetClaimIssuePaymentClaim.mockResolvedValue({claim: new Claim(), draftId});
     mockGetFeePaymentRedirectInformation.mockResolvedValueOnce(mockClaimFeePaymentRedirectInfo);
 
     const actualPaymentRedirectUrl = await getRedirectUrl(claimId, createReq());
 
     expect(actualPaymentRedirectUrl).toBe(mockClaimFeePaymentRedirectInfo.nextUrl);
-    expect(mockSaveDraftClaim).toHaveBeenCalled();
+    expect(mockSaveClaimIssuePaymentClaim).toHaveBeenCalled();
+  });
+
+  it('should save payment information without a draftId when the claim was loaded from Redis', async () => {
+    const mockClaim = new Claim();
+    mockClaim.claimDetails = new ClaimDetails();
+    mockGetClaimIssuePaymentClaim.mockResolvedValue({claim: mockClaim});
+    mockGetFeePaymentRedirectInformation.mockResolvedValueOnce(mockClaimFeePaymentRedirectInfo);
+
+    const req = createReq();
+    const actualPaymentRedirectUrl = await getRedirectUrl(claimId, req);
+
+    expect(actualPaymentRedirectUrl).toBe(mockClaimFeePaymentRedirectInfo.nextUrl);
+    expect(mockSaveClaimIssuePaymentClaim).toHaveBeenCalledWith(req, mockClaim, undefined);
   });
 
   it('should return 500 error page for any service error', async () => {
@@ -82,6 +93,6 @@ describe('ClaimFeeMakePaymentAgain Service', () => {
     await expect(getRedirectUrl(claimId, createReq())).rejects.toBe(
       TestMessages.SOMETHING_WENT_WRONG,
     );
-    expect(mockSaveDraftClaim).not.toHaveBeenCalled();
+    expect(mockSaveClaimIssuePaymentClaim).not.toHaveBeenCalled();
   });
 });

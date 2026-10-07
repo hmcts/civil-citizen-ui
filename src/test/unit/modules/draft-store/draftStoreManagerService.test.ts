@@ -1,5 +1,5 @@
-import {getDraftClaim, updateDraftClaim, createOrLoadDraft, deleteDraftClaim} from 'modules/draft-store/draftStoreManagerService';
-import {createOrLoadDraftClaimInDraftStoreDb, getActiveDraftFromDraftStoreDb, updateDraftClaimInStore, deleteDraftClaimFromStore} from 'modules/draft-store/draftStoreDbService';
+import {getDraftClaim, getDraftClaimForCase, updateDraftClaim, createOrLoadDraft, deleteDraftClaim} from 'modules/draft-store/draftStoreManagerService';
+import {createOrLoadDraftClaimInDraftStoreDb, getActiveDraftFromDraftStoreDb, getDraftForCaseFromDraftStoreDb, updateDraftClaimInStore, deleteDraftClaimFromStore} from 'modules/draft-store/draftStoreDbService';
 import {getCachedDraft, setCachedDraft, deleteCachedDraft} from 'modules/draft-store/draftClaimRedisCache';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {isDraftClaimDatabaseEnabled} from 'app/auth/launchdarkly/launchDarklyClient';
@@ -20,6 +20,7 @@ const mockSetCachedDraft = setCachedDraft as jest.MockedFunction<typeof setCache
 const mockDeleteCachedDraft = deleteCachedDraft as jest.MockedFunction<typeof deleteCachedDraft>;
 
 const mockGetActiveDraftFromDb = getActiveDraftFromDraftStoreDb as jest.MockedFunction<typeof getActiveDraftFromDraftStoreDb>;
+const mockGetDraftForCaseFromDb = getDraftForCaseFromDraftStoreDb as jest.MockedFunction<typeof getDraftForCaseFromDraftStoreDb>;
 const mockCreateOrLoadDraftInDb = createOrLoadDraftClaimInDraftStoreDb as jest.MockedFunction<typeof createOrLoadDraftClaimInDraftStoreDb>;
 const mockUpdateDraftInDb = updateDraftClaimInStore as jest.MockedFunction<typeof updateDraftClaimInStore>;
 const mockDeleteDraftFromDb = deleteDraftClaimFromStore as jest.MockedFunction<typeof deleteDraftClaimFromStore>;
@@ -110,6 +111,36 @@ describe('draftStoreManagerService Unit Tests', () => {
       mockGetActiveDraftFromDb.mockRejectedValueOnce(dbError);
 
       await expect(getDraftClaim(mockReq)).rejects.toThrow('database connection failed');
+    });
+  });
+
+  describe('getDraftClaimForCase', () => {
+    const caseId = '1790252856529614';
+
+    it('should return manager result for the draft linked to the case', async () => {
+      mockGetDraftForCaseFromDb.mockResolvedValueOnce({
+        claimResponse: new CivilClaimResponse(),
+        rawResponse: {...mockRawResponse, caseId},
+      });
+
+      const result = await getDraftClaimForCase(mockReq, caseId);
+
+      expect(mockGetDraftForCaseFromDb).toHaveBeenCalledWith(mockReq, caseId);
+      expect(result?.claimResponse.id).toBe(mockDraftId);
+      expect(result?.rawResponse.caseId).toBe(caseId);
+    });
+
+    it('should return null when no draft is linked to the case', async () => {
+      mockGetDraftForCaseFromDb.mockResolvedValueOnce(null);
+
+      expect(await getDraftClaimForCase(mockReq, caseId)).toBeNull();
+    });
+
+    it('should return null without calling the db when the draft database flag is disabled', async () => {
+      mockIsDraftClaimDatabaseEnabled.mockResolvedValue(false);
+
+      expect(await getDraftClaimForCase(mockReq, caseId)).toBeNull();
+      expect(mockGetDraftForCaseFromDb).not.toHaveBeenCalled();
     });
   });
 
