@@ -42,7 +42,7 @@ Scenario('Claim fee not paid', async ({ api }) => {
   }
 });
 
-Scenario('Awaiting Welsh translation of the claim @1bharat', async ({ api }) => {
+Scenario('Awaiting Welsh translation of the claim @bharat', async ({ api }) => {
   // Claimant chooses Welsh and English; after the fee is paid the claim waits for the translated claim document
   const caseId = await api.createLiPClaim(claimant, 'SmallClaims', false, 'Individual', 'BOTH', true);
 
@@ -56,7 +56,7 @@ Scenario('Awaiting Welsh translation of the claim @1bharat', async ({ api }) => 
   }
 });
 
-Scenario('Help with Fees application pending @bharat', async ({ api }) => {
+Scenario('Help with Fees application pending @1bharat', async ({ api }) => {
   const caseId = await api.createLiPClaimPendingIssue(claimant, 'HWF-A1B-2C3');
 
   const details = await logClaimForManualTest('Help with Fees application pending', caseId);
