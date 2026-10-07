@@ -98,10 +98,31 @@ export const createMulterUpload = (fileSizeLimit: number = FILE_SIZE_LIMIT) => {
   });
 };
 
+/**
+ * Multer middleware for forms whose upload controls accept several files at once (case progression and
+ * mediation upload documents). Unlike handleMulterResult, a file whose content does not match its type
+ * only drops that file: the rest of the batch is kept, and the rejected field names are recorded on
+ * req.rejectedFileFields so uploadAndValidateFile can show an error against the right upload control.
+ */
+const handleMultiFileMulterResult = (req: Request, err: any, loggerName: string, next: NextFunction): void => {
+  if (err || !Array.isArray(req.files)) {
+    handleMulterResult(req, err, loggerName, next);
+    return;
+  }
+  const rejected = req.files.filter((file) => !isFileContentAllowed(file.buffer, file.mimetype));
+  if (rejected.length) {
+    const {Logger} = require('@hmcts/nodejs-logging');
+    Logger.getLogger(loggerName).error(`[MULTER ERROR] Invalid file content type rejected for ${rejected.length} file(s), code=${createInvalidFileContentError().code}`);
+    (req as any).rejectedFileFields = rejected.map((file) => file.fieldname);
+    (req as Request & {files?: Express.Multer.File[]}).files = req.files.filter((file) => !rejected.includes(file));
+  }
+  next();
+};
+
 export const createMulterErrorMiddleware = (loggerName = 'uploadDocumentsController') => {
   return (req: Request, res: Response, next: NextFunction) => {
     const upload = createMulterUpload(FILE_SIZE_LIMIT);
-    upload.any()(req, res, (err: any) => handleMulterResult(req, err, loggerName, next));
+    upload.any()(req, res, (err: any) => handleMultiFileMulterResult(req, err, loggerName, next));
   };
 };
 
@@ -239,7 +260,9 @@ export const uploadAndValidateFile = async (
     file.fieldname === target,
   );
 
-  if (!inputFiles.length) {
+  const hasRejectedContent = ((req as any).rejectedFileFields as string[] | undefined)?.includes(target);
+
+  if (!inputFiles.length && !hasRejectedContent) {
     return;
   }
 
@@ -255,6 +278,10 @@ export const uploadAndValidateFile = async (
       sectionHasError = true;
     }
   };
+
+  if (hasRejectedContent) {
+    addSectionError('multerError', getMulterErrorConstraint(createInvalidFileContentError()));
+  }
 
   const categoryModel = form.model[category];
 

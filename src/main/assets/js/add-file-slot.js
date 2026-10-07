@@ -82,6 +82,15 @@ document.addEventListener('DOMContentLoaded', function () {
         return;
       }
       const newSlotIndex = rows.length;
+
+      // After an auto-upload the page reloads with the upload box empty again, so a new slot would
+      // just sit next to an identical empty one. Open the empty box's file chooser instead.
+      const lastInput = rows[newSlotIndex - 1].querySelector('input[type="file"]');
+      if (lastInput && !lastInput.files?.length) {
+        lastInput.click();
+        return;
+      }
+
       const newRow = rows[newSlotIndex - 1].cloneNode(true);
 
       newRow.querySelectorAll('.govuk-error-message').forEach((el) => el.remove());

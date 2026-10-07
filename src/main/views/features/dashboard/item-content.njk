@@ -329,7 +329,7 @@
                 {{ govukButton({
                   name: 'action',
                   value: content.data.category+'['+content.data.index+'][deleteFile]['+loop.index0+']',
-                  text: t('COMMON.BUTTONS.DELETE'),
+                  html: t('COMMON.BUTTONS.DELETE') + '<span class="govuk-visually-hidden"> ' + (documentName | escape) + '</span>',
                   classes: 'govuk-button--secondary govuk-!-margin-bottom-0'
                 }) }}
               </dd>

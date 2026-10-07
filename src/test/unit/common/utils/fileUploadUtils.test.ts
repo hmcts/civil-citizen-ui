@@ -127,15 +127,22 @@ describe('fileUploadUtils', () => {
       expect((mockReq as any).multerError).toBeUndefined();
     });
 
-    it('should reject spoofed Content-Type when file magic bytes do not match', () => {
+    it('should drop only the files whose magic bytes do not match their Content-Type', () => {
       const multer = require('multer');
-      mockReq.files = [{
+      const validPdf = {
         fieldname: 'documentsReferred[0][fileUpload]',
+        originalname: 'real.pdf',
+        mimetype: 'application/pdf',
+        size: 64,
+        buffer: Buffer.from('%PDF-1.4 real pdf'),
+      } as Express.Multer.File;
+      mockReq.files = [{
+        fieldname: 'witnessStatement[0][fileUpload]',
         originalname: 'spoofed.pdf',
         mimetype: 'application/pdf',
         size: 64,
         buffer: Buffer.from('not a pdf'),
-      } as Express.Multer.File];
+      } as Express.Multer.File, validPdf];
       const mockMulterInstance = {
         any: jest.fn(() => (req: any, res: any, callback: any) => {
           callback(null);
@@ -146,11 +153,9 @@ describe('fileUploadUtils', () => {
       const middleware = createMulterErrorMiddleware('testLogger');
       middleware(mockReq as Request, mockRes as Response, mockNext);
 
-      expect((mockReq as any).multerError).toEqual({
-        code: 'LIMIT_UNEXPECTED_FILE',
-        message: 'File content type is not allowed',
-      });
-      expect(mockReq.files).toBeUndefined();
+      expect((mockReq as any).multerError).toBeUndefined();
+      expect((mockReq as any).rejectedFileFields).toEqual(['witnessStatement[0][fileUpload]']);
+      expect(mockReq.files).toEqual([validPdf]);
       expect(mockNext).toHaveBeenCalled();
     });
 
@@ -593,6 +598,27 @@ describe('fileUploadUtils', () => {
         expect(filenames()).toEqual(['file-0.pdf', 'file-2.pdf']);
         expect(form.errors).toHaveLength(1);
         expect(form.errors[0].children[0].children[0].constraints.isFileSize).toBe('ERRORS.VALID_SIZE_FILE');
+      });
+
+      it('shows a file type error when a file for this section was rejected for its content', async () => {
+        const req = {...reqWithFiles(1), rejectedFileFields: ['documentsReferred[0][fileUpload]']};
+        mockUploadDocument.mockResolvedValueOnce(uploadedDocument('file-0.pdf'));
+
+        await uploadAndValidateFile(req, 'documentsReferred[0][uploadButton]', form, { uploadDocument: mockUploadDocument });
+
+        expect(filenames()).toEqual(['file-0.pdf']);
+        expect(form.errors).toHaveLength(1);
+        expect(form.errors[0].children[0].children[0].constraints.multerError).toBe('ERRORS.VALID_MIME_TYPE_FILE');
+      });
+
+      it('shows a file type error when every file for this section was rejected for its content', async () => {
+        const req = {files: [], rejectedFileFields: ['documentsReferred[0][fileUpload]']} as any;
+
+        await uploadAndValidateFile(req, 'documentsReferred[0][uploadButton]', form, { uploadDocument: mockUploadDocument });
+
+        expect(mockUploadDocument).not.toHaveBeenCalled();
+        expect(form.errors).toHaveLength(1);
+        expect(form.errors[0].children[0].children[0].constraints.multerError).toBe('ERRORS.VALID_MIME_TYPE_FILE');
       });
 
       it('reports only one error for the section when several files fail', async () => {
