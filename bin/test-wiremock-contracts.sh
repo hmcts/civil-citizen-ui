@@ -14,7 +14,7 @@ cleanup() {
 }
 trap cleanup EXIT INT TERM
 
-./node_modules/.bin/wiremock --root-dir "${root}" --port "${port}" >"${log_file}" 2>&1 &
+./bin/start-preview-wiremock.sh --root-dir "${root}" --port "${port}" >"${log_file}" 2>&1 &
 wiremock_pid=$!
 for _ in $(seq 1 60); do
   curl --fail --silent "${url}/__admin/mappings" >/dev/null 2>&1 && break
@@ -37,6 +37,10 @@ assert_status 200 POST '/dashboard/scenarios/Scenario.AAA6.ClaimIssue.ClaimSubmi
 assert_status 200 POST '/fees/claim/total-amount' '{"totalClaimAmount":1385}'
 assert_status 200 GET '/fees/claim/1385'
 assert_status 200 GET '/fees/hearing/1385'
+assert_status 200 GET '/fees-register/fees/lookup?service=other&jurisdiction1=civil&jurisdiction2=civil&channel=default&event=miscellaneous&keyword=AppnToVaryOrSuspend'
+cos_fee_response=$(curl --fail --silent "${url}/fees-register/fees/lookup?service=other&jurisdiction1=civil&jurisdiction2=civil&channel=default&event=miscellaneous&keyword=CoS")
+node -e 'const assert = require("node:assert/strict"); const fee = JSON.parse(process.argv[1]); assert.deepEqual(fee, {code: "FEE0459", description: "Issue of a certificate of satisfaction", fee_amount: 19, version: 4});' "${cos_fee_response}"
+assert_status 404 GET '/fees-register/fees/lookup?service=other&jurisdiction1=civil&jurisdiction2=civil&channel=default&event=general%20application&keyword=CoS'
 assert_status 200 POST '/cases/draft/citizen/test-user/event' '{"event":"CREATE_LIP_CLAIM","caseDataUpdate":{}}'
 assert_status 200 GET '/cases/1111222233334444/userCaseRoles'
 assert_status 200 GET '/cases/1111222233334444'
@@ -50,40 +54,7 @@ if [ "${service_request_reference}" = "${second_service_request_reference}" ]; t
   echo 'Expected each service request to return a unique reference' >&2
   exit 1
 fi
-payment_body='{"amount":455,"currency":"GBP","return-url":"https://example.test/claim-issued-payment-confirmation/1234"}'
-payment_response=$(curl --fail --silent --request POST --header 'Content-Type: application/json' --data "${payment_body}" "${url}/service-request/2026-THIN-CLIENT-SERVICE-REQUEST/card-payments")
-payment_reference=$(node -e 'console.log(JSON.parse(process.argv[1]).payment_reference)' "${payment_response}")
-replacement_payment_response=$(curl --fail --silent --request POST --header 'Content-Type: application/json' --data "${payment_body}" "${url}/service-request/2026-THIN-CLIENT-SERVICE-REQUEST/card-payments")
-replacement_payment_reference=$(node -e 'console.log(JSON.parse(process.argv[1]).payment_reference)' "${replacement_payment_response}")
-if [ "${payment_reference}" = "${replacement_payment_reference}" ]; then
-  echo 'Expected a new payment to replace an unfinished payment with a unique reference' >&2
-  exit 1
-fi
-payment_reference="${replacement_payment_reference}"
-initiated_status=$(curl --fail --silent "${url}/card-payments/${payment_reference}/statuses")
-if ! grep --quiet '"status":"Initiated"' <<<"${initiated_status}"; then
-  echo "Expected a newly created payment to be initiated, got ${initiated_status}" >&2
-  exit 1
-fi
-assert_status 200 GET '/thin-pay/card?return_url=https%3A%2F%2Fexample.test%2Fclaim-issued-payment-confirmation%2F1234&amount=115.00'
-assert_status 200 GET '/thin-pay/confirm?return_url=https%3A%2F%2Fexample.test%2Fclaim-issued-payment-confirmation%2F1234&amount=115.00'
-successful_status=$(curl --fail --silent "${url}/card-payments/${payment_reference}/statuses")
-if ! grep --quiet '"status":"Success"' <<<"${successful_status}"; then
-  echo "Expected a confirmed payment to be successful, got ${successful_status}" >&2
-  exit 1
-fi
-
-second_payment_response=$(curl --fail --silent --request POST --header 'Content-Type: application/json' --data "${payment_body}" "${url}/service-request/2026-THIN-CLIENT-SERVICE-REQUEST/card-payments")
-second_payment_reference=$(node -e 'console.log(JSON.parse(process.argv[1]).payment_reference)' "${second_payment_response}")
-if [ "${payment_reference}" = "${second_payment_reference}" ]; then
-  echo 'Expected each card payment to return a unique payment reference' >&2
-  exit 1
-fi
-second_initiated_status=$(curl --fail --silent "${url}/card-payments/${second_payment_reference}/statuses")
-if ! grep --quiet '"status":"Initiated"' <<<"${second_initiated_status}"; then
-  echo "Expected the payment scenario to reset for the next payment, got ${second_initiated_status}" >&2
-  exit 1
-fi
+node bin/test-parallel-payment-contracts.js "${url}"
 assert_status 200 GET '/cases/documents/00000000-0000-4000-8000-000000000001'
 assert_status 200 GET '/cases/documents/00000000-0000-4000-8000-000000000001/binary'
 assert_status 204 DELETE '/cases/documents/00000000-0000-4000-8000-000000000001?permanent=true'
@@ -126,10 +97,18 @@ fi
 # Significant match rules must leave incorrect requests unmatched.
 assert_status 404 POST '/dashboard/scenarios/Scenario.WRONG/test-user' '{"params":{}}'
 assert_status 404 POST '/fees/claim/total-amount' '{"amount":1385}'
+assert_status 404 GET '/fees-register/fees/lookup?service=other&jurisdiction1=civil&jurisdiction2=civil&channel=default&event=miscellaneous&keyword=WrongKeyword'
 assert_status 404 POST '/cases/draft/citizen/test-user/event' '{"event":"WRONG_EVENT"}'
 assert_status 404 GET '/search/places/v1/postcode?postcode=SW1A%201AA'
 assert_status 404 POST '/service-request/2026-THIN-CLIENT-SERVICE-REQUEST/card-payments' '{"amount":115,"currency":"USD","return-url":"https://example.test/payment"}'
 assert_status 404 GET '/card-payments/RC-UNKNOWN/statuses'
+small_claims_fee_query='/fees-register/fees/lookup?service=civil%20money%20claims&jurisdiction1=civil&jurisdiction2=county%20court&channel=default&event=hearing&keyword=HearingSmallClaims&amount_or_volume=1500.00'
+small_claims_fee=$(curl --fail --silent "${url}${small_claims_fee_query}")
+node -e 'const assert = require("node:assert/strict"); const fee = JSON.parse(process.argv[1]); assert.equal(fee.code, "FEE0223"); assert.equal(fee.fee_amount, 123); assert.equal(fee.version, 8);' "${small_claims_fee}"
+assert_status 404 GET "${small_claims_fee_query/1500.00/3000.00}"
+assert_status 404 GET "${small_claims_fee_query/event=hearing/event=miscellaneous}"
+assert_status 404 GET '/thin-pay/confirm?return_url=https%3A%2F%2Fexample.test%2Fhearing-payment&amount=123'
+assert_status 404 POST '/service-request/small-claims-hearing/card-payments' '{"amount":123,"currency":"USD","return-url":"https://example.test/hearing-payment"}'
 assert_status 404 POST '/cases/documents' '{}'
 assert_status 404 PATCH '/cases/documents/attach-to-case' '{}'
 
