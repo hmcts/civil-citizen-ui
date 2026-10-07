@@ -171,7 +171,7 @@ civil-service:
       CMC_DB_NAME: "pr-${CHANGE_ID}-cmc"
       SCHEDULER_ACTIVE_SCHEDULERS: SettlementNoResponseFromDefendantCheck,GenerateCsvAndSendToMmt,PollingEventEmitter
       CRON_EXPRESSION_SETTLEMENT_NO_RESPONSE_FROM_DEFENDANT_CHECK: "0 */30 * * * ?"
-      CRON_EXPRESSION__FILE_TRANSFER: "0 */30 * * * ?"
+      CRON_EXPRESSION_MEDIATION_FILE_TRANSFER: "0 */30 * * * ?"
       CRON_EXPRESSION_POLLING_EVENT_EMITTER: "0 */30 * * * ?"
 
 
