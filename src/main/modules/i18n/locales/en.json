@@ -560,7 +560,7 @@
     "TITLE_WITH_DEFENDANT": "Defendant documents to be considered"
   },
   "PAGES": {
-    "CANCEL_UNISSUED_CLAIM_SPEC": {
+    "CANCEL_UNISSUED_CLAIM": {
       "BUTTON": "Cancel unissued claim",
       "CHARACTERS_AT_LIMIT": "You have 0 characters remaining",
       "CHARACTERS_OVER_LIMIT_ONE": "You have %{count} character too many",
@@ -2665,7 +2665,7 @@
       "PAGE_TITLE": "Claims made by or against you",
       "PREVIOUS": "Previous",
       "STATUS_CLAIMANT": {
-        "CLAIM_UNISSUED_CANCELLED": "Claim is unissued and cancelled",
+        "UNISSUED_CLAIM_CANCELLED": "Claim is unissued and cancelled",
         "ACCEPTED_PARTIAL_ADMISSION": "You have accepted the defendant’s part admission. They said they would pay immediately.",
         "ADMIT_PAY_IMMEDIATELY_CLAIMANT": "Wait for the defendant to pay you.",
         "AWAITING_JUDGMENT": "Awaiting case outcome.",
@@ -5521,8 +5521,8 @@
     "SUPPORT_LINKS": "Footer support links"
   },
   "ERRORS": {
-    "CANCEL_UNISSUED_CLAIM_SPEC_REASON_INVALID_CHARACTERS": "Enter alphanumerical characters or standard punctuation marks only",
-    "CANCEL_UNISSUED_CLAIM_SPEC_REASON_TOO_LONG": "Explain why you are cancelling the claim must be 200 characters or less",
+    "CANCEL_UNISSUED_CLAIM_REASON_INVALID_CHARACTERS": "Enter alphanumerical characters or standard punctuation marks only",
+    "CANCEL_UNISSUED_CLAIM_REASON_TOO_LONG": "Explain why you are cancelling the claim must be 200 characters or less",
     "QUERY_MANAGEMENT_YOU_MUST_SELECT": "You must select what you want to do before you can continue.",
     "QUERY_MANAGEMENT_YOU_SELECT_UPDATE_YOU_WANT": "You must select what update you want to get from the court.",
     "QUERY_MANAGEMENT_YOU_MUST_SELECT_SEND_DOCUMENTS": "You must select which documents you want to send.",

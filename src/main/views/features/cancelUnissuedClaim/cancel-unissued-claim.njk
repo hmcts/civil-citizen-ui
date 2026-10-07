@@ -16,9 +16,9 @@
   {% endif %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
-      <h1 class="govuk-heading-l">{{ t('PAGES.CANCEL_UNISSUED_CLAIM_SPEC.TITLE') }}</h1>
+      <h1 class="govuk-heading-l">{{ t('PAGES.CANCEL_UNISSUED_CLAIM.TITLE') }}</h1>
       {{ govukWarningText({
-        text: t('PAGES.CANCEL_UNISSUED_CLAIM_SPEC.WARNING')
+        text: t('PAGES.CANCEL_UNISSUED_CLAIM.WARNING')
       }) }}
       <form method="post" novalidate>
         {{ csrfProtection(csrf) }}
@@ -28,18 +28,18 @@
           maxlength: maxLength,
           value: form.model.cancelReason,
           label: {
-            text: t('PAGES.CANCEL_UNISSUED_CLAIM_SPEC.REASON_LABEL'),
+            text: t('PAGES.CANCEL_UNISSUED_CLAIM.REASON_LABEL'),
             classes: "govuk-label--s"
           },
-          textareaDescriptionText: t('PAGES.CANCEL_UNISSUED_CLAIM_SPEC.REASON_HINT'),
+          textareaDescriptionText: t('PAGES.CANCEL_UNISSUED_CLAIM.REASON_HINT'),
           charactersUnderLimitText: {
-            one: t('PAGES.CANCEL_UNISSUED_CLAIM_SPEC.CHARACTERS_UNDER_LIMIT_ONE'),
-            other: t('PAGES.CANCEL_UNISSUED_CLAIM_SPEC.CHARACTERS_UNDER_LIMIT_OTHER')
+            one: t('PAGES.CANCEL_UNISSUED_CLAIM.CHARACTERS_UNDER_LIMIT_ONE'),
+            other: t('PAGES.CANCEL_UNISSUED_CLAIM.CHARACTERS_UNDER_LIMIT_OTHER')
           },
-          charactersAtLimitText: t('PAGES.CANCEL_UNISSUED_CLAIM_SPEC.CHARACTERS_AT_LIMIT'),
+          charactersAtLimitText: t('PAGES.CANCEL_UNISSUED_CLAIM.CHARACTERS_AT_LIMIT'),
           charactersOverLimitText: {
-            one: t('PAGES.CANCEL_UNISSUED_CLAIM_SPEC.CHARACTERS_OVER_LIMIT_ONE'),
-            other: t('PAGES.CANCEL_UNISSUED_CLAIM_SPEC.CHARACTERS_OVER_LIMIT_OTHER')
+            one: t('PAGES.CANCEL_UNISSUED_CLAIM.CHARACTERS_OVER_LIMIT_ONE'),
+            other: t('PAGES.CANCEL_UNISSUED_CLAIM.CHARACTERS_OVER_LIMIT_OTHER')
           },
           errorMessage: {
             text: t(form.errorFor('cancelReason'))
@@ -47,7 +47,7 @@
         }) }}
         <div class="govuk-button-group">
           {{ govukButton({
-            text: t('PAGES.CANCEL_UNISSUED_CLAIM_SPEC.BUTTON'),
+            text: t('PAGES.CANCEL_UNISSUED_CLAIM.BUTTON'),
             attributes: { id: 'cancelUnissuedClaimButton' }
           }) }}
           <a class="govuk-link" href="{{ dashboardUrl }}">{{ t('COMMON.BUTTONS.CANCEL') }}</a>

@@ -4,7 +4,7 @@ import request from 'supertest';
 import {app} from '../../../../../main/app';
 import claimantDashboardController from '../../../../../main/routes/features/dashboard/claimantDashboardController';
 import {civilClaimResponseMock} from '../../../../utils/mockDraftStore';
-import {APPLICATION_TYPE_URL, CANCEL_UNISSUED_CLAIM_SPEC_URL, DASHBOARD_CLAIMANT_URL, GA_APPLICATION_SUMMARY_URL} from 'routes/urls';
+import {APPLICATION_TYPE_URL, CANCEL_UNISSUED_CLAIM_URL, DASHBOARD_CLAIMANT_URL, GA_APPLICATION_SUMMARY_URL} from 'routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {PartyType} from 'common/models/partyType';
 import {PartyDetails} from 'common/form/models/partyDetails';
@@ -412,7 +412,7 @@ describe('claimant Dashboard Controller', () => {
       await request(app).get(DASHBOARD_CLAIMANT_URL).expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.CANCEL_UNISSUED_CLAIM'));
-        expect(res.text).toContain(CANCEL_UNISSUED_CLAIM_SPEC_URL);
+        expect(res.text).toContain(CANCEL_UNISSUED_CLAIM_URL);
         expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.HELP_FEES'));
       });
     });
@@ -431,7 +431,7 @@ describe('claimant Dashboard Controller', () => {
     it('should show no i want to links and hide help with fees when unissued claim is cancelled', async () => {
       const claim = new Claim();
       claim.caseRole = CaseRole.CLAIMANT;
-      claim.ccdState = CaseState.CLAIM_UNISSUED_CANCELLED;
+      claim.ccdState = CaseState.UNISSUED_CLAIM_CANCELLED;
       jest.spyOn(UtilityService, 'getClaimById').mockResolvedValueOnce(claim);
       (dashboardService.getHelpSupportLinks as jest.Mock).mockReturnValueOnce([
         { text: t('PAGES.DASHBOARD.SUPPORT_LINKS.HELP_FEES'), url: feesHelpUrl },
@@ -652,7 +652,7 @@ describe('claimant Dashboard Controller', () => {
   it('should not show welsh party banner once the unissued claim is cancelled', async () => {
     const claim = new Claim();
     claim.caseRole = CaseRole.CLAIMANT;
-    claim.ccdState = CaseState.CLAIM_UNISSUED_CANCELLED;
+    claim.ccdState = CaseState.UNISSUED_CLAIM_CANCELLED;
     claim.claimantBilingualLanguagePreference = ClaimBilingualLanguagePreference.WELSH;
     jest.spyOn(UtilityService, 'getClaimById').mockResolvedValueOnce(claim);
     jest.spyOn(launchDarkly, 'isGaForLipsEnabled').mockResolvedValueOnce(false);

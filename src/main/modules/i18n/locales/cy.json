@@ -560,7 +560,7 @@
     "TITLE_WITH_DEFENDANT": "Dogfennau’r diffynnydd i'w hystyried"
   },
   "PAGES": {
-    "CANCEL_UNISSUED_CLAIM_SPEC": {
+    "CANCEL_UNISSUED_CLAIM": {
       "BUTTON": "Canslo hawliad nad yw wedi'i gyflwyno",
       "CHARACTERS_AT_LIMIT": "Mae gennych 0 nod yn weddill",
       "CHARACTERS_OVER_LIMIT_ONE": "Mae gennych %{count} nod yn ormod",
@@ -2663,7 +2663,7 @@
       "PAGE_TITLE": "Hawliadau a wnaed gennych neu yn eich erbyn",
       "PREVIOUS": "Blaenorol",
       "STATUS_CLAIMANT": {
-        "CLAIM_UNISSUED_CANCELLED": "Nid yw’r hawliad wedi ei gyflwyno ac mae wedi'i ganslo",
+        "UNISSUED_CLAIM_CANCELLED": "Nid yw’r hawliad wedi ei gyflwyno ac mae wedi'i ganslo",
         "ACCEPTED_PARTIAL_ADMISSION": "Rydych wedi derbyn addefiad rhannol y diffynnydd. Maent wedi dweud y byddant yn talu ar unwaith.",
         "ADMIT_PAY_IMMEDIATELY_CLAIMANT": "Arhoswch i'r diffynnydd eich talu.",
         "AWAITING_JUDGMENT": "Yn aros am ganlyniad yr achos.",
@@ -5520,8 +5520,8 @@
     "SUPPORT_LINKS": "Footer support links"
   },
   "ERRORS": {
-    "CANCEL_UNISSUED_CLAIM_SPEC_REASON_INVALID_CHARACTERS": "Rhowch nodau alffaniwmerig neu farciau atalnodi safonol yn unig",
-    "CANCEL_UNISSUED_CLAIM_SPEC_REASON_TOO_LONG": "Rhaid i ‘Esboniwch pam rydych chi'n canslo'r hawliad’ fod yn 200 nod neu lai",
+    "CANCEL_UNISSUED_CLAIM_REASON_INVALID_CHARACTERS": "Rhowch nodau alffaniwmerig neu farciau atalnodi safonol yn unig",
+    "CANCEL_UNISSUED_CLAIM_REASON_TOO_LONG": "Rhaid i ‘Esboniwch pam rydych chi'n canslo'r hawliad’ fod yn 200 nod neu lai",
     "QUERY_MANAGEMENT_YOU_MUST_SELECT": "Mae'n rhaid i chi ddewis beth rydych chi am ei wneud cyn y gallwch chi barhau.",
     "QUERY_MANAGEMENT_YOU_SELECT_UPDATE_YOU_WANT": "Rhaid ichi ddewis pa ddiweddariad rydych eisiau ei dderbyn gan y llys.",
     "QUERY_MANAGEMENT_YOU_MUST_SELECT_SEND_DOCUMENTS": "Mae’n rhaid i chi ddewis pa ddogfennau rydych eisiau eu hanfon.",

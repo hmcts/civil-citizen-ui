@@ -1,16 +1,16 @@
 import {GenericForm} from 'form/models/genericForm';
-import {CancelUnissuedClaimSpecReason} from 'form/models/cancelUnissuedClaimSpec/cancelUnissuedClaimSpecReason';
+import {CancelUnissuedClaimReason} from 'form/models/cancelUnissuedClaim/cancelUnissuedClaimReason';
 
-const TOO_LONG = 'ERRORS.CANCEL_UNISSUED_CLAIM_SPEC_REASON_TOO_LONG';
-const INVALID_CHARACTERS = 'ERRORS.CANCEL_UNISSUED_CLAIM_SPEC_REASON_INVALID_CHARACTERS';
+const TOO_LONG = 'ERRORS.CANCEL_UNISSUED_CLAIM_REASON_TOO_LONG';
+const INVALID_CHARACTERS = 'ERRORS.CANCEL_UNISSUED_CLAIM_REASON_INVALID_CHARACTERS';
 
 const validate = async (reason?: string) => {
-  const form = new GenericForm(new CancelUnissuedClaimSpecReason(reason));
+  const form = new GenericForm(new CancelUnissuedClaimReason(reason));
   await form.validate();
   return form;
 };
 
-describe('CancelUnissuedClaimSpecReason', () => {
+describe('CancelUnissuedClaimReason', () => {
   it.each([undefined, '', 'Settled outside the portal'])('should accept an optional reason: %p', async (reason) => {
     expect((await validate(reason)).hasErrors()).toBe(false);
   });

@@ -53,7 +53,7 @@ export interface AppSession extends Session {
   qmShareConfirmed: boolean;
   caseReference?: string;
   paymentConfirmationContext?: PaymentConfirmationContext;
-  cancelUnissuedClaimSpecReason?: {claimId: string; reason: string};
+  cancelUnissuedClaimReason?: {claimId: string; reason: string};
   /** Short-TTL session cache for /userCaseRoles (DTSCCI-5946). Key: ucr:userId:caseId */
   userCaseRolesCache?: Record<string, UserCaseRolesCacheEntry>;
 }
