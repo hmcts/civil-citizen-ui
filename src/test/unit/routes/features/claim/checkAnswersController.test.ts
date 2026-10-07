@@ -12,15 +12,16 @@ import {PartyPhone} from 'models/PartyPhone';
 import {GenericForm} from 'form/models/genericForm';
 import {StatementOfTruthFormClaimIssue} from 'form/models/statementOfTruth/statementOfTruthFormClaimIssue';
 import {getStashedClaimOrFromStore} from 'common/utils/claimRequestLocals';
-import {deleteDraftClaim, getDraftClaim} from 'modules/draft-store/draftStoreManagerService';
+import {getDraftClaim, updateDraftClaim, deleteDraftClaim} from 'modules/draft-store/draftStoreManagerService';
 import {getStatementOfTruth, getSummarySections, saveStatementOfTruth} from 'services/features/claim/checkAnswers/checkAnswersService';
 import {submitClaim} from 'services/features/claim/submission/submitClaim';
 import {saveClaimFee} from 'services/features/claim/amount/claimFeesService';
 import {calculateInterestToDate} from 'common/utils/interestUtils';
-import {isCarmEnabledForCase} from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
+import {isCarmEnabledForCase, isDraftClaimDatabaseEnabled} from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {createMockResponse, createMockSession, getRouteHandler} from '../../../../utils/getRouteHandler';
+import {getTTLDaysForCategory, TTLCategory} from 'modules/draft-store/ttlConfig';
 
 jest.mock('common/utils/claimRequestLocals', () => ({
   getStashedClaimOrFromStore: jest.fn(),
@@ -59,6 +60,8 @@ describe('Claim - Check answers', () => {
   const mockSaveClaimFee = saveClaimFee as jest.Mock;
   const mockCalculateInterestToDate = calculateInterestToDate as jest.Mock;
   const mockIsCarmEnabledForCase = isCarmEnabledForCase as jest.Mock;
+  const mockIsDraftClaimDatabaseEnabled = isDraftClaimDatabaseEnabled as jest.Mock;
+  const mockUpdateDraftClaim = updateDraftClaim as jest.Mock;
   const mockDeleteDraftClaim = deleteDraftClaim as jest.Mock;
 
   const signedBody = {
@@ -108,7 +111,8 @@ describe('Claim - Check answers', () => {
     mockSaveClaimFee.mockResolvedValue(undefined);
     mockCalculateInterestToDate.mockResolvedValue(0);
     mockIsCarmEnabledForCase.mockResolvedValue(true);
-    mockDeleteDraftClaim.mockResolvedValue(undefined);
+    mockIsDraftClaimDatabaseEnabled.mockResolvedValue(true);
+    mockUpdateDraftClaim.mockResolvedValue(undefined);
     jest.spyOn(CivilServiceClient.prototype, 'getClaimFeeData').mockResolvedValue({
       calculatedAmountInPence: '50',
     } as never);
@@ -175,7 +179,7 @@ describe('Claim - Check answers', () => {
       expect(res.redirect).not.toHaveBeenCalled();
     });
 
-    it('should redirect to confirmation and clear cookies when help with fees is yes', async () => {
+    it('should redirect to confirmation and delete the draft when help with fees is yes', async () => {
       mockGetDraftClaim.mockResolvedValue({
         claimResponse: {case_data: buildClaim(YesNo.YES)},
         rawResponse: {draftId: 'draft-123'},
@@ -189,26 +193,56 @@ describe('Claim - Check answers', () => {
       await postHandler(req as AppRequest, res as unknown as Response, next);
 
       expect(mockDeleteDraftClaim).toHaveBeenCalledWith(req, 'draft-123');
+      expect(mockUpdateDraftClaim).not.toHaveBeenCalled();
       expect(req.session.draftId).toBeUndefined();
       expect(res.clearCookie).toHaveBeenCalledWith('eligibilityCompleted');
       expect(res.clearCookie).toHaveBeenCalledWith('eligibility');
       expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(submittedClaim.id, CLAIM_CONFIRMATION_URL));
     });
 
-    it('should redirect to confirmation and clear cookies when help with fees is no', async () => {
+    it('should delete the redis draft when the database flag is off and help with fees is no', async () => {
+      mockIsDraftClaimDatabaseEnabled.mockResolvedValue(false);
       mockGetDraftClaim.mockResolvedValue({
         claimResponse: {case_data: buildClaim(YesNo.NO)},
         rawResponse: {draftId: 'draft-123'},
         createdAt: '2026-08-01T10:00:00.000Z',
       });
       const submittedClaim = new Claim();
-      submittedClaim.id = 'claim-id';
+      submittedClaim.id = '1790322528949860';
       mockSubmitClaim.mockResolvedValue(submittedClaim);
       req.body = signedBody;
 
       await postHandler(req as AppRequest, res as unknown as Response, next);
 
       expect(mockDeleteDraftClaim).toHaveBeenCalledWith(req, 'draft-123');
+      expect(mockUpdateDraftClaim).not.toHaveBeenCalled();
+      expect(req.session.draftId).toBeUndefined();
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(submittedClaim.id, CLAIM_CONFIRMATION_URL));
+    });
+
+    it('should redirect to confirmation and keep the draft when help with fees is no', async () => {
+      mockGetDraftClaim.mockResolvedValue({
+        claimResponse: {case_data: buildClaim(YesNo.NO)},
+        rawResponse: {draftId: 'draft-123'},
+        createdAt: '2026-08-01T10:00:00.000Z',
+      });
+      const submittedClaim = new Claim();
+      submittedClaim.id = '1790322528949860';
+      submittedClaim.legacyCaseReference = '000JE005';
+      mockSubmitClaim.mockResolvedValue(submittedClaim);
+      req.body = signedBody;
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(mockUpdateDraftClaim).toHaveBeenCalledWith(
+        req,
+        expect.objectContaining({
+          id: submittedClaim.id,
+          legacyCaseReference: '000JE005',
+          draftClaimCacheTtlDays: getTTLDaysForCategory(TTLCategory.PAYMENT_SESSION),
+        }),
+        'draft-123',
+      );
       expect(req.session.draftId).toBeUndefined();
       expect(res.clearCookie).toHaveBeenCalledWith('eligibilityCompleted');
       expect(res.clearCookie).toHaveBeenCalledWith('eligibility');

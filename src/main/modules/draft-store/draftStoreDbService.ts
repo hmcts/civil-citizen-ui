@@ -48,15 +48,27 @@ const ensureDraftClaimTtl = (claim: Claim): void => {
   }
 };
 
+const ccdCaseIdFromClaim = (claim: Claim): string | undefined => {
+  if (claim?.id && /^\d+$/.test(String(claim.id))) {
+    return String(claim.id);
+  }
+  return undefined;
+};
+
+const toDraftClaimRequest = (claim: Claim): DraftClaimRequest => {
+  const caseId = ccdCaseIdFromClaim(claim);
+  return caseId
+    ? {caseId, payload: claim as unknown as Record<string, unknown>}
+    : {payload: claim as unknown as Record<string, unknown>};
+};
+
 export const createOrLoadDraftClaimInDraftStoreDb = async (
   req: AppRequest,
   claim?: Claim,
 ): Promise<{ claimResponse: CivilClaimResponse; rawResponse: DraftClaimResponse; isNew: boolean}> => {
   const claimToSave = claim || new Claim();
   ensureDraftClaimTtl(claimToSave);
-  const payload: DraftClaimRequest = {
-    payload: claimToSave as unknown as Record<string, unknown>,
-  };
+  const payload: DraftClaimRequest = toDraftClaimRequest(claimToSave);
 
   try {
     const response: AxiosResponse<DraftClaimResponse> = await axios.post<DraftClaimResponse>(
@@ -75,6 +87,12 @@ export const createOrLoadDraftClaimInDraftStoreDb = async (
       isNew,
     };
   } catch (err: unknown) {
+    if (axios.isAxiosError(err) && err.response?.status === 409) {
+      const existing = await getActiveDraftFromDraftStoreDb(req);
+      if (existing) {
+        return {...existing, isNew: false};
+      }
+    }
     logger.error(`[draftStoreDbService] failed to create/load draft in db: ${getErrorMessage(err)}`);
     throw err;
   }
@@ -100,6 +118,29 @@ export const getActiveDraftFromDraftStoreDb = async (req: AppRequest): Promise<{
   }
 };
 
+export const getDraftForCaseFromDraftStoreDb = async (req: AppRequest, caseId: string): Promise<{ claimResponse: CivilClaimResponse; rawResponse: DraftClaimResponse} | null> => {
+  if (!/^\d+$/.test(caseId)) {
+    throw new Error('[draftStoreDbService] invalid caseId');
+  }
+  try {
+    const response = await axios.get<DraftClaimResponse>(
+      `${civilServiceApiBaseUrl}/dashboard/draft-claims/case/${encodeURIComponent(caseId)}`,
+      {headers: getHeaders(req)},
+    );
+
+    return {
+      claimResponse: mapToCivilClaimResponse(response.data),
+      rawResponse: response.data,
+    };
+  } catch (err: unknown) {
+    if (axios.isAxiosError(err) && err.response?.status === 404) {
+      return null;
+    }
+    logger.error(`[draftStoreDbService] error fetching draft for case ${caseId} from db: ${getErrorMessage(err)}`);
+    throw err;
+  }
+};
+
 export const updateDraftClaimInStore = async (
   req: AppRequest,
   draftId: string,
@@ -111,9 +152,10 @@ export const updateDraftClaimInStore = async (
 
   const url = draftClaimUrl(draftId);
   ensureDraftClaimTtl(claim);
-  const payload: DraftClaimRequest = {
-    payload: claim as unknown as Record<string, unknown>,
-  };
+  const payload = toDraftClaimRequest(claim);
+  if (payload.caseId) {
+    logger.info(`[draftStoreDbService] updating draft ${draftId} with CCD caseId=${payload.caseId}`);
+  }
 
   try {
     const response = await axios.put<DraftClaimResponse>(
