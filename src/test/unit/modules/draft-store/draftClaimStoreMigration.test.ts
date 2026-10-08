@@ -126,5 +126,12 @@ describe('draftClaimStoreMigration', () => {
 
       expect(await migrateDbDraftToRedis(req, userId)).toBeNull();
     });
+
+    it('returns null when the DB lookup throws', async () => {
+      (draftStoreService.getDraftClaimFromStore as jest.Mock).mockResolvedValueOnce(new CivilClaimResponse());
+      mockGetActiveDraftFromDb.mockRejectedValueOnce(new Error('access token is required'));
+
+      expect(await migrateDbDraftToRedis(req, userId)).toBeNull();
+    });
   });
 });
