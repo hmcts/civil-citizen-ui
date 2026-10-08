@@ -509,6 +509,10 @@ export class CivilServiceClient {
     return this.submitEvent(CaseEvent.ENTER_BREATHING_SPACE_SPEC, claimId, updatedClaim, req);
   }
 
+  async submitLiftBreathingSpace(claimId: RouteParam, updatedClaim: ClaimUpdate, req?: AppRequest): Promise<Claim> {
+    return this.submitEvent(CaseEvent.LIFT_BREATHING_SPACE_SPEC, claimId, updatedClaim, req);
+  }
+
   async submitEvent(event: CaseEvent, claimId: RouteParam, updatedClaim?: ClaimUpdate, req?: AppRequest): Promise<Claim> {
     const normalizedClaimId = normalizeRouteParam(claimId);
     const userId = req.session?.user?.id;
