@@ -93,7 +93,7 @@ export const migrateDbDraftToRedis = async (
 
   const redisDraft = new CivilClaimResponse();
   redisDraft.id = userId;
-  redisDraft.case_data = claim as CivilClaimResponse['case_data'];
+  redisDraft.case_data = claim as unknown as CivilClaimResponse['case_data'];
   await app.locals.draftStoreClient.set(userId, JSON.stringify(redisDraft), 'EX', remainingSeconds);
   return redisDraft;
 };
