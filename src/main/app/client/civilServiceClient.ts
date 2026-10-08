@@ -481,6 +481,10 @@ export class CivilServiceClient {
     return this.submitEvent(CaseEvent.LIP_CLAIM_SETTLED,  claimId, updatedClaim, req);
   }
 
+  async submitCancelUnissuedClaim(claimId: RouteParam, updatedClaim: ClaimUpdate, req: AppRequest): Promise<Claim> {
+    return this.submitEvent(CaseEvent.CANCEL_UNISSUED_CLAIM, claimId, updatedClaim, req);
+  }
+
   async submitDefendantSignSettlementAgreementEvent(claimId: RouteParam, updatedClaim: ClaimUpdate, req: AppRequest): Promise<Claim> {
     return this.submitEvent(CaseEvent.DEFENDANT_SIGN_SETTLEMENT_AGREEMENT, claimId, updatedClaim, req);
   }
