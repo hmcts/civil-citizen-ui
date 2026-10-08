@@ -4,12 +4,12 @@ import {DraftClaimRequest, DraftClaimResponse} from 'common/models/draft/draftCl
 import {Claim} from 'models/claim';
 import {CCDClaim, CivilClaimResponse} from 'models/civilClaimResponse';
 import {AppRequest} from 'common/models/AppRequest';
-import {getTTLDaysForCategory, TTLCategory} from './ttlConfig';
-
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('draftStoreDbService');
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
+
+export const CIVIL_SERVICE_DRAFT_CLAIM_RETENTION_DAYS = 30;
 
 const getErrorMessage = (error: unknown): string =>
   error instanceof Error ? error.message : String(error);
@@ -43,9 +43,7 @@ const mapToCivilClaimResponse = (dbDraft: DraftClaimResponse): CivilClaimRespons
 };
 
 const ensureDraftClaimTtl = (claim: Claim): void => {
-  if (!claim.draftClaimCacheTtlDays) {
-    claim.draftClaimCacheTtlDays = getTTLDaysForCategory(TTLCategory.DRAFT_CLAIM);
-  }
+  claim.draftClaimCacheTtlDays = CIVIL_SERVICE_DRAFT_CLAIM_RETENTION_DAYS;
 };
 
 const ccdCaseIdFromClaim = (claim: Claim): string | undefined => {
@@ -169,6 +167,31 @@ export const updateDraftClaimInStore = async (
     };
   } catch (err: unknown) {
     logger.error(`[draftStoreDbService] failed to update draft ${draftId} in db: ${getErrorMessage(err)}`);
+    throw err;
+  }
+};
+
+export const applyPaymentRetentionInDraftStoreDb = async (
+  req: AppRequest,
+  draftId: string,
+): Promise<{ claimResponse: CivilClaimResponse; rawResponse: DraftClaimResponse}> => {
+  if (!draftId) {
+    throw new Error('[draftStoreDbService] draftId is required for payment retention');
+  }
+
+  const url = `${draftClaimUrl(draftId)}/payment-retention`;
+  try {
+    const response: AxiosResponse<DraftClaimResponse> = await axios.put<DraftClaimResponse>(
+      url,
+      undefined,
+      {headers: getHeaders(req)},
+    );
+    return {
+      claimResponse: mapToCivilClaimResponse(response.data),
+      rawResponse: response.data,
+    };
+  } catch (err: unknown) {
+    logger.error(`[draftStoreDbService] failed to apply payment retention for ${draftId}: ${getErrorMessage(err)}`);
     throw err;
   }
 };

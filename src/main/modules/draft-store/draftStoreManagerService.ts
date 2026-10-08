@@ -8,6 +8,7 @@ import {
   getActiveDraftFromDraftStoreDb,
   getDraftForCaseFromDraftStoreDb,
   updateDraftClaimInStore,
+  applyPaymentRetentionInDraftStoreDb,
   deleteDraftClaimFromStore,
 } from './draftStoreDbService';
 import {
@@ -142,4 +143,25 @@ export const deleteDraftClaim = async (req: AppRequest, draftId: string): Promis
   }
 
   await deleteDraftClaimFromRedis(userId);
+};
+
+export const applyPaymentRetention = async (
+  req: AppRequest,
+  draftId: string,
+): Promise<DraftClaimManagerResult | null> => {
+  const userId = req.session?.user?.id;
+  if (!userId) {
+    throw new Error('[draftStoreManagerService] user id required to apply payment retention');
+  }
+  if (!draftId) {
+    throw new Error('[draftStoreManagerService] draft id required to apply payment retention');
+  }
+
+  if (!(await isDraftClaimDatabaseEnabled())) {
+    return null;
+  }
+
+  const dbResult = await applyPaymentRetentionInDraftStoreDb(req, draftId);
+  await deleteCachedDraft(userId);
+  return buildManagerResult(dbResult.rawResponse);
 };

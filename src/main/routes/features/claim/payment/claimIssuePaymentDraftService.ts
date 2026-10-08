@@ -1,6 +1,6 @@
 import {AppRequest} from 'common/models/AppRequest';
 import {Claim} from 'models/claim';
-import {getDraftClaimForCase, updateDraftClaim} from 'modules/draft-store/draftStoreManagerService';
+import {applyPaymentRetention, getDraftClaimForCase, updateDraftClaim} from 'modules/draft-store/draftStoreManagerService';
 import {generateRedisKey, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {getClaimById} from 'modules/utilityService';
 import {getRouteParam, isUsablePathSegment} from 'common/utils/routeParamUtils';
@@ -38,6 +38,7 @@ export const getClaimIssuePaymentClaim = async (req: AppRequest): Promise<ClaimI
 export const saveClaimIssuePaymentClaim = async (req: AppRequest, claim: Claim, draftId?: string): Promise<void> => {
   if (draftId) {
     await updateDraftClaim(req, claim, draftId);
+    await applyPaymentRetention(req, draftId);
     return;
   }
   await saveDraftClaim(generateRedisKey(req), claim, true, req.session.user?.id);
