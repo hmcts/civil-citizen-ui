@@ -13,6 +13,7 @@ import {toGeneralApplication} from 'models/generalApplication/GeneralApplication
 import {
   ApplicationType,
   ApplicationTypeOption,
+  hasDuplicateApplicationType,
   hasInvalidApplicationType,
 } from 'models/generalApplication/applicationType';
 import {getRouteParam} from 'common/utils/routeParamUtils';
@@ -28,10 +29,11 @@ askProofOfDebtPaymentGuidanceController.get(GA_ASK_PROOF_OF_DEBT_PAYMENT_GUIDANC
     let backLinkUrl = BACK_URL;
 
     const applicationTypes = claim.generalApplication?.applicationTypes;
-    if (!applicationTypes?.length || hasInvalidApplicationType(applicationTypes)) {
+    if (!applicationTypes?.length || hasInvalidApplicationType(applicationTypes) || hasDuplicateApplicationType(applicationTypes)) {
       claim.generalApplication = toGeneralApplication(claim.generalApplication);
-      const applicationType = new ApplicationType(ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID);
-      claim.generalApplication.applicationTypes = [applicationType];
+      claim.generalApplication.applicationTypes = [
+        new ApplicationType(ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID),
+      ];
       backLinkUrl = cancelUrl;
     }
 
