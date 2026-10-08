@@ -319,24 +319,27 @@
         {{ t('PAGES.UPLOAD_DOCUMENTS.ADD_ANOTHER_FILE') }}
       </button>
 
-      {% if content.data.documentNames.length %}
-        <h3 class="govuk-heading-s">{{ t('PAGES.UPLOAD_DOCUMENTS.UPLOADED_FILE') }}</h3>
-        <dl class="govuk-summary-list">
-          {% for documentName in content.data.documentNames %}
-            <div class="govuk-summary-list__row">
-              <dt class="govuk-summary-list__value">{{ documentName }}</dt>
-              <dd class="govuk-summary-list__actions">
-                {{ govukButton({
-                  name: 'action',
-                  value: content.data.category+'['+content.data.index+'][deleteFile]['+loop.index0+']',
-                  html: t('COMMON.BUTTONS.DELETE') + '<span class="govuk-visually-hidden"> ' + (documentName | escape) + '</span>',
-                  classes: 'govuk-button--secondary govuk-!-margin-bottom-0'
-                }) }}
-              </dd>
-            </div>
-          {% endfor %}
-        </dl>
-      {% endif %}
+      <h3 class="govuk-heading-s">{{ t('PAGES.UPLOAD_DOCUMENTS.UPLOADED_FILE') }}</h3>
+      <dl class="govuk-summary-list">
+        {% if not content.data.documentNames.length %}
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__value">{{ t('PAGES.UPLOAD_DOCUMENTS.NO_FILE_UPLOADED') }}</dt>
+          </div>
+        {% endif %}
+        {% for documentName in content.data.documentNames %}
+          <div class="govuk-summary-list__row">
+            <dt class="govuk-summary-list__value app-uploaded-file">{{ documentName }}</dt>
+            <dd class="govuk-summary-list__actions">
+              {{ govukButton({
+                name: 'action',
+                value: content.data.category+'['+content.data.index+'][deleteFile]['+loop.index0+']',
+                html: t('COMMON.BUTTONS.DELETE') + '<span class="govuk-visually-hidden"> ' + (documentName | escape) + '</span>',
+                classes: 'govuk-button--secondary govuk-!-margin-bottom-0'
+              }) }}
+            </dd>
+          </div>
+        {% endfor %}
+      </dl>
     </div>
     {{ govukInput({
        id: content.data.category+'['+content.data.index+'][caseDocuments]',

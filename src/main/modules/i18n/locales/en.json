@@ -5156,6 +5156,7 @@
       "ADD_ANOTHER_FILE": "Add another file",
       "ADD_ANOTHER_FILE_HINT": "Click 'add another file' to upload multiple files one-by-one",
       "UPLOADED_FILE": "Uploaded file",
+      "NO_FILE_UPLOADED": "No file uploaded",
       "DATE": "Date statement was written",
       "DATE_EXAMPLE": "For example, 27 9 2022",
       "DAY": "Day",

@@ -5154,6 +5154,7 @@
       "ADD_ANOTHER_FILE": "Ychwanegu ffeil arall",
       "ADD_ANOTHER_FILE_HINT": "Cliciwch ar 'ychwanegu ffeil arall' i uwchlwytho sawl ffeil fesul un",
       "UPLOADED_FILE": "Ffeil wedi'i huwchlwytho",
+      "NO_FILE_UPLOADED": "Nid oes ffeil wedi cael ei huwchlwytho",
       "DATE": "Dyddiad ysgrifennu’r datganiad",
       "DATE_EXAMPLE": "Er enghraifft, 27 9 2022",
       "DAY": "Diwrnod",

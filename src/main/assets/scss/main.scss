@@ -514,3 +514,21 @@
     flex-basis: 100%;
   }
 }
+
+// Uploaded file rows on the upload-documents component: green tick and bold green file name
+.app-uploaded-file {
+  @include govuk-typography-weight-bold;
+
+  color: govuk-functional-colour("success");
+
+  &::before {
+    content: "";
+    display: inline-block;
+    width: 6px;
+    height: 12px;
+    margin-right: govuk-spacing(2);
+    border: solid currentcolor;
+    border-width: 0 3px 3px 0;
+    transform: rotate(45deg) translateY(-2px);
+  }
+}
