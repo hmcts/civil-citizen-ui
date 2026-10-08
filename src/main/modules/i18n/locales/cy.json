@@ -560,6 +560,24 @@
     "TITLE_WITH_DEFENDANT": "Dogfennau’r diffynnydd i'w hystyried"
   },
   "PAGES": {
+    "CANCEL_UNISSUED_CLAIM": {
+      "BUTTON": "Canslo hawliad nad yw wedi'i gyflwyno",
+      "CHARACTERS_AT_LIMIT": "Mae gennych 0 nod yn weddill",
+      "CHARACTERS_OVER_LIMIT_ONE": "Mae gennych %{count} nod yn ormod",
+      "CHARACTERS_OVER_LIMIT_OTHER": "Mae gennych %{count} nod yn ormod",
+      "CHARACTERS_UNDER_LIMIT_ONE": "Mae gennych %{count} nod yn weddill",
+      "CHARACTERS_UNDER_LIMIT_OTHER": "Mae gennych %{count} nod yn weddill",
+      "CONFIRMATION_PAGE_TITLE": "Claim cancelled",
+      "CONFIRMATION_TITLE": "Mae'r hawliad hwn bellach wedi'i ganslo",
+      "NO_FURTHER_ACTION": "Ni ellir cymryd unrhyw gamau pellach ar yr achos hwn gan ei fod bellach wedi'i ganslo.",
+      "PAGE_TITLE": "Canslo hawliad nad yw wedi'i gyflwyno",
+      "REASON_HINT": "You can enter up to %{count} characters",
+      "REASON_LABEL": "Esboniwch pam eich bod yn canslo'r hawliad (dewisol)",
+      "SURVEY_LINK": "Beth oeddech chi'n ei feddwl o'r gwasanaeth hwn? (yn agor mewn tab newydd)",
+      "START_NEW_CLAIM": "Os ydych chi am ddechrau hawliad newydd, gallwch wneud hyn o'ch porth/tudalen mewngofnodi.",
+      "TITLE": "Reasons for cancelling the claim",
+      "WARNING": "Os byddwch yn canslo'r hawliad, ni fydd yn cael ei gyflwyno. Ni fydd yn cyfrif fel achos llys. Ni fyddwch yn gallu cymryd unrhyw gamau pellach arno a bydd yn cael ei ddileu o'r system yn y pen draw."
+    },
     "QM": {
       "CONFIRMATION_PAGE": {
         "TITLE": "Neges wedi’i hanfon",
@@ -2645,6 +2663,7 @@
       "PAGE_TITLE": "Hawliadau a wnaed gennych neu yn eich erbyn",
       "PREVIOUS": "Blaenorol",
       "STATUS_CLAIMANT": {
+        "UNISSUED_CLAIM_CANCELLED": "Nid yw’r hawliad wedi ei gyflwyno ac mae wedi'i ganslo",
         "ACCEPTED_PARTIAL_ADMISSION": "Rydych wedi derbyn addefiad rhannol y diffynnydd. Maent wedi dweud y byddant yn talu ar unwaith.",
         "ADMIT_PAY_IMMEDIATELY_CLAIMANT": "Arhoswch i'r diffynnydd eich talu.",
         "AWAITING_JUDGMENT": "Yn aros am ganlyniad yr achos.",
@@ -2758,6 +2777,7 @@
         "CASE_DISCONTINUED": "Mae’r hawliad hwn wedi dirwyn i ben."
       },
       "SUPPORT_LINKS": {
+        "CANCEL_UNISSUED_CLAIM": "Canslo hawliad nad yw wedi'i gyflwyno",
         "APPLYING_TO_COURT_AS_A_CREDITOR": "Gwneud cais i’r llys fel credydwr dyled mewn lle i anadlu",
         "CONTACT_COURT": "Cysylltu â’r llys i wneud cais am newid i fy achos (gwneud cais)",
         "CONTACT_APPLY_COURT": "Cysylltu â’r llys neu wneud cais i’r llys",
@@ -5500,6 +5520,8 @@
     "SUPPORT_LINKS": "Footer support links"
   },
   "ERRORS": {
+    "CANCEL_UNISSUED_CLAIM_REASON_INVALID_CHARACTERS": "Rhowch nodau alffaniwmerig neu farciau atalnodi safonol yn unig",
+    "CANCEL_UNISSUED_CLAIM_REASON_TOO_LONG": "Rhaid i ‘Esboniwch pam rydych chi'n canslo'r hawliad’ fod yn 200 nod neu lai",
     "QUERY_MANAGEMENT_YOU_MUST_SELECT": "Mae'n rhaid i chi ddewis beth rydych chi am ei wneud cyn y gallwch chi barhau.",
     "QUERY_MANAGEMENT_YOU_SELECT_UPDATE_YOU_WANT": "Rhaid ichi ddewis pa ddiweddariad rydych eisiau ei dderbyn gan y llys.",
     "QUERY_MANAGEMENT_YOU_MUST_SELECT_SEND_DOCUMENTS": "Mae’n rhaid i chi ddewis pa ddogfennau rydych eisiau eu hanfon.",

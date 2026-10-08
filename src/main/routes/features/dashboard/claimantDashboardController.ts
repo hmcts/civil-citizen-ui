@@ -1,6 +1,7 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {
   BREATHING_SPACE_INFO_URL,
+  CANCEL_UNISSUED_CLAIM_URL,
   DASHBOARD_CLAIMANT_URL,
   DATE_PAID_URL,
 } from '../../urls';
@@ -37,6 +38,12 @@ import {getRouteParam} from 'common/utils/routeParamUtils';
 import {getDraftClaimDeletionDate} from 'common/utils/draftClaimUtils';
 import {DashboardNotificationList} from 'models/dashboard/dashboardNotificationList';
 import {DashboardNotification} from 'models/dashboard/dashboardNotification';
+import {
+  isCancelUnissuedClaimAvailable,
+  isUnissuedClaimCancelled,
+} from 'services/features/cancelUnissuedClaim/cancelUnissuedClaimService';
+import {feesHelpUrl} from 'common/utils/externalURLs';
+import {iWantToLinks} from 'common/models/dashboard/iWantToLinks';
 
 const claimantDashboardViewPath = 'features/dashboard/claim-summary-redesign';
 const claimantDashboardController = Router();
@@ -97,7 +104,7 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
       }
     });
     const welshEnabled = await isWelshEnabledForMainCase();
-    const showWelshPartyBanner = welshEnabled && claim.isAnyPartyBilingual();
+    const showWelshPartyBanner = welshEnabled && claim.isAnyPartyBilingual() && !isUnissuedClaimCancelled(claim);
     const showErrorAwaitingTranslation = welshEnabled && 'errorAwaitingTranslation' in req.query;
 
     res.render(claimantDashboardViewPath, {
@@ -164,7 +171,16 @@ const getSupportLinks = async (req: AppRequest, claim: Claim, claimId: string, l
     claim.ccdState === CaseState.All_FINAL_ORDERS_ISSUED;
 
   const iWantToTitle = t('PAGES.DASHBOARD.SUPPORT_LINKS.I_WANT_TO', { lng });
-  const iWantToLinks = [];
+  const iWantToLinks: iWantToLinks[] = [];
+
+  if (isUnissuedClaimCancelled(claim)) {
+    const helpSupportLinksWithoutFees = getHelpSupportLinks(lng).filter(link => link.url !== feesHelpUrl);
+    return [iWantToTitle, iWantToLinks, getHelpSupportTitle(lng), helpSupportLinksWithoutFees] as const;
+  }
+
+  if (isCancelUnissuedClaimAvailable(claim)) {
+    iWantToLinks.push({ text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CANCEL_UNISSUED_CLAIM', { lng }), url: constructResponseUrlWithIdParams(claimId, CANCEL_UNISSUED_CLAIM_URL) });
+  }
 
   iWantToLinks.push(await getContactCourtLink(claimId, claim, isGAFlagEnable, lng));
 
