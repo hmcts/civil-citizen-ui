@@ -1,5 +1,5 @@
-import {getDraftClaim, getDraftClaimForCase, updateDraftClaim, createOrLoadDraft, deleteDraftClaim} from 'modules/draft-store/draftStoreManagerService';
-import {createOrLoadDraftClaimInDraftStoreDb, getActiveDraftFromDraftStoreDb, getDraftForCaseFromDraftStoreDb, updateDraftClaimInStore, deleteDraftClaimFromStore} from 'modules/draft-store/draftStoreDbService';
+import {getDraftClaim, getDraftClaimForCase, updateDraftClaim, createOrLoadDraft, deleteDraftClaim, applyPaymentRetention} from 'modules/draft-store/draftStoreManagerService';
+import {createOrLoadDraftClaimInDraftStoreDb, getActiveDraftFromDraftStoreDb, getDraftForCaseFromDraftStoreDb, updateDraftClaimInStore, applyPaymentRetentionInDraftStoreDb, deleteDraftClaimFromStore} from 'modules/draft-store/draftStoreDbService';
 import {getCachedDraft, setCachedDraft, deleteCachedDraft} from 'modules/draft-store/draftClaimRedisCache';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {isDraftClaimDatabaseEnabled} from 'app/auth/launchdarkly/launchDarklyClient';
@@ -23,6 +23,7 @@ const mockGetActiveDraftFromDb = getActiveDraftFromDraftStoreDb as jest.MockedFu
 const mockGetDraftForCaseFromDb = getDraftForCaseFromDraftStoreDb as jest.MockedFunction<typeof getDraftForCaseFromDraftStoreDb>;
 const mockCreateOrLoadDraftInDb = createOrLoadDraftClaimInDraftStoreDb as jest.MockedFunction<typeof createOrLoadDraftClaimInDraftStoreDb>;
 const mockUpdateDraftInDb = updateDraftClaimInStore as jest.MockedFunction<typeof updateDraftClaimInStore>;
+const mockApplyPaymentRetentionInDb = applyPaymentRetentionInDraftStoreDb as jest.MockedFunction<typeof applyPaymentRetentionInDraftStoreDb>;
 const mockDeleteDraftFromDb = deleteDraftClaimFromStore as jest.MockedFunction<typeof deleteDraftClaimFromStore>;
 
 describe('draftStoreManagerService Unit Tests', () => {
@@ -225,6 +226,22 @@ describe('draftStoreManagerService Unit Tests', () => {
     });
   });
 
+  describe('applyPaymentRetention', () => {
+    it('should call db payment retention and clear cache when flag enabled', async () => {
+      mockApplyPaymentRetentionInDb.mockResolvedValueOnce({
+        claimResponse: Object.assign(new CivilClaimResponse(), {id: mockDraftId}),
+        rawResponse: mockRawResponse,
+      });
+      mockDeleteCachedDraft.mockResolvedValueOnce();
+
+      const result = await applyPaymentRetention(mockReq, mockDraftId);
+
+      expect(mockApplyPaymentRetentionInDb).toHaveBeenCalledWith(mockReq, mockDraftId);
+      expect(mockDeleteCachedDraft).toHaveBeenCalledWith(mockUserId);
+      expect(result?.expiresAt).toBe(mockRawResponse.expiresAt);
+    });
+  });
+
   describe('when draft claim database flag is disabled', () => {
     beforeEach(() => {
       mockIsDraftClaimDatabaseEnabled.mockResolvedValue(false);
@@ -283,6 +300,13 @@ describe('draftStoreManagerService Unit Tests', () => {
 
       expect(draftStoreService.saveDraftClaim).toHaveBeenCalledWith(mockUserId, mockClaim, true, mockUserId);
       expect(mockUpdateDraftInDb).not.toHaveBeenCalled();
+    });
+
+    it('applyPaymentRetention should no-op and not call the db', async () => {
+      const result = await applyPaymentRetention(mockReq, mockDraftId);
+
+      expect(result).toBeNull();
+      expect(mockApplyPaymentRetentionInDb).not.toHaveBeenCalled();
     });
 
     it('deleteDraftClaim should delete from redis and not call the db', async () => {

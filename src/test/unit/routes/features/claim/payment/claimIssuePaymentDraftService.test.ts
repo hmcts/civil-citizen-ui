@@ -2,7 +2,7 @@ import {
   getClaimIssuePaymentClaim,
   saveClaimIssuePaymentClaim,
 } from 'routes/features/claim/payment/claimIssuePaymentDraftService';
-import {getDraftClaimForCase, updateDraftClaim} from 'modules/draft-store/draftStoreManagerService';
+import {applyPaymentRetention, getDraftClaimForCase, updateDraftClaim} from 'modules/draft-store/draftStoreManagerService';
 import {generateRedisKey, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {getClaimById} from 'modules/utilityService';
 import {AppRequest} from 'models/AppRequest';
@@ -18,6 +18,7 @@ jest.mock('modules/utilityService');
 
 const mockGetDraftClaimForCase = getDraftClaimForCase as jest.Mock;
 const mockUpdateDraftClaim = updateDraftClaim as jest.Mock;
+const mockApplyPaymentRetention = applyPaymentRetention as jest.Mock;
 const mockGenerateRedisKey = generateRedisKey as jest.Mock;
 const mockSaveDraftClaim = saveDraftClaim as jest.Mock;
 const mockGetClaimById = getClaimById as jest.Mock;
@@ -63,6 +64,7 @@ describe('claimIssuePaymentDraftService', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     mockGenerateRedisKey.mockReturnValue(redisKey);
+    mockApplyPaymentRetention.mockResolvedValue(null);
   });
 
   describe('getClaimIssuePaymentClaim', () => {
@@ -109,6 +111,7 @@ describe('claimIssuePaymentDraftService', () => {
       await saveClaimIssuePaymentClaim(req, claim, draftId);
 
       expect(mockUpdateDraftClaim).toHaveBeenCalledWith(req, claim, draftId);
+      expect(mockApplyPaymentRetention).toHaveBeenCalledWith(req, draftId);
       expect(mockSaveDraftClaim).not.toHaveBeenCalled();
     });
 

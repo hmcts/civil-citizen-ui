@@ -6,21 +6,14 @@ import {
   getDraftForCaseFromDraftStoreDb,
   createOrLoadDraftClaimInDraftStoreDb,
   updateDraftClaimInStore,
+  applyPaymentRetentionInDraftStoreDb,
   deleteDraftClaimFromStore,
+  CIVIL_SERVICE_DRAFT_CLAIM_RETENTION_DAYS,
 } from 'modules/draft-store/draftStoreDbService';
 import {DraftClaimResponse} from 'common/models/draft/draftClaim';
-import {getTTLDaysForCategory, TTLCategory} from 'modules/draft-store/ttlConfig';
 
 jest.mock('axios');
-jest.mock('modules/draft-store/ttlConfig', () => {
-  const actual = jest.requireActual('modules/draft-store/ttlConfig');
-  return {
-    ...actual,
-    getTTLDaysForCategory: jest.fn(() => 30),
-  };
-});
 const mockedAxios = axios as jest.Mocked<typeof axios>;
-const mockedGetTTLDaysForCategory = getTTLDaysForCategory as jest.MockedFunction<typeof getTTLDaysForCategory>;
 
 describe('draftStoreDbService Unit Tests', () => {
   let mockReq: AppRequest;
@@ -158,11 +151,12 @@ describe('draftStoreDbService Unit Tests', () => {
 
       const result = await createOrLoadDraftClaimInDraftStoreDb(mockReq, mockClaim);
 
-      expect(mockedGetTTLDaysForCategory).toHaveBeenCalledWith(TTLCategory.DRAFT_CLAIM);
       expect(mockedAxios.post).toHaveBeenCalledWith(
         expect.stringContaining('/dashboard/draft-claims'),
         expect.objectContaining({
-          payload: expect.objectContaining({draftClaimCacheTtlDays: 30}),
+          payload: expect.objectContaining({
+            draftClaimCacheTtlDays: CIVIL_SERVICE_DRAFT_CLAIM_RETENTION_DAYS,
+          }),
         }),
         expect.anything(),
       );
@@ -171,7 +165,7 @@ describe('draftStoreDbService Unit Tests', () => {
       expect(result.claimResponse.id).toBe(mockDraftId);
     });
 
-    it('should keep an existing draftClaimCacheTtlDays on create', async () => {
+    it('should overwrite Redis TTL values with civil-service retention on create', async () => {
       const mockClaim = new Claim();
       mockClaim.draftClaimCacheTtlDays = 180;
       mockedAxios.post.mockResolvedValueOnce({
@@ -181,11 +175,12 @@ describe('draftStoreDbService Unit Tests', () => {
 
       await createOrLoadDraftClaimInDraftStoreDb(mockReq, mockClaim);
 
-      expect(mockedGetTTLDaysForCategory).not.toHaveBeenCalled();
       expect(mockedAxios.post).toHaveBeenCalledWith(
         expect.stringContaining('/dashboard/draft-claims'),
         expect.objectContaining({
-          payload: expect.objectContaining({draftClaimCacheTtlDays: 180}),
+          payload: expect.objectContaining({
+            draftClaimCacheTtlDays: CIVIL_SERVICE_DRAFT_CLAIM_RETENTION_DAYS,
+          }),
         }),
         expect.anything(),
       );
@@ -261,11 +256,12 @@ describe('draftStoreDbService Unit Tests', () => {
 
       const result = await updateDraftClaimInStore(mockReq, mockDraftId, mockClaim);
 
-      expect(mockedGetTTLDaysForCategory).toHaveBeenCalledWith(TTLCategory.DRAFT_CLAIM);
       expect(mockedAxios.put).toHaveBeenCalledWith(
         expect.stringContaining(`/dashboard/draft-claims/${mockDraftId}`),
         expect.objectContaining({
-          payload: expect.objectContaining({draftClaimCacheTtlDays: 30}),
+          payload: expect.objectContaining({
+            draftClaimCacheTtlDays: CIVIL_SERVICE_DRAFT_CLAIM_RETENTION_DAYS,
+          }),
         }),
         expect.anything(),
       );
@@ -294,7 +290,7 @@ describe('draftStoreDbService Unit Tests', () => {
       );
     });
 
-    it('should keep an existing draftClaimCacheTtlDays on update', async () => {
+    it('should overwrite Redis TTL values with civil-service retention on update', async () => {
       const mockClaim = new Claim();
       mockClaim.draftClaimCacheTtlDays = 180;
       mockedAxios.put.mockResolvedValueOnce({
@@ -304,11 +300,12 @@ describe('draftStoreDbService Unit Tests', () => {
 
       await updateDraftClaimInStore(mockReq, mockDraftId, mockClaim);
 
-      expect(mockedGetTTLDaysForCategory).not.toHaveBeenCalled();
       expect(mockedAxios.put).toHaveBeenCalledWith(
         expect.stringContaining(`/dashboard/draft-claims/${mockDraftId}`),
         expect.objectContaining({
-          payload: expect.objectContaining({draftClaimCacheTtlDays: 180}),
+          payload: expect.objectContaining({
+            draftClaimCacheTtlDays: CIVIL_SERVICE_DRAFT_CLAIM_RETENTION_DAYS,
+          }),
         }),
         expect.anything(),
       );
@@ -318,6 +315,30 @@ describe('draftStoreDbService Unit Tests', () => {
       mockedAxios.put.mockRejectedValueOnce(new Error('Failed to update'));
 
       await expect(updateDraftClaimInStore(mockReq, mockDraftId, new Claim())).rejects.toThrow('Failed to update');
+    });
+  });
+
+  describe('applyPaymentRetentionInDraftStoreDb', () => {
+    it('should throw error if draftId is empty', async () => {
+      await expect(applyPaymentRetentionInDraftStoreDb(mockReq, '')).rejects.toThrow(
+        '[draftStoreDbService] draftId is required for payment retention',
+      );
+    });
+
+    it('should call payment-retention endpoint on backend DB', async () => {
+      mockedAxios.put.mockResolvedValueOnce({
+        status: 200,
+        data: mockRawResponse,
+      });
+
+      const result = await applyPaymentRetentionInDraftStoreDb(mockReq, mockDraftId);
+
+      expect(mockedAxios.put).toHaveBeenCalledWith(
+        expect.stringContaining(`/dashboard/draft-claims/${mockDraftId}/payment-retention`),
+        undefined,
+        expect.anything(),
+      );
+      expect(result.rawResponse).toEqual(mockRawResponse);
     });
   });
 
