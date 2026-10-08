@@ -99,11 +99,54 @@ describe('draftStoreManagerService Unit Tests', () => {
     it('cache miss and db 404 should return null if not active draft exists in db', async () => {
       mockGetCachedDraft.mockResolvedValueOnce(null);
       mockGetActiveDraftFromDb.mockResolvedValueOnce(null);
+      (draftStoreService.getDraftClaimFromStore as jest.Mock).mockResolvedValueOnce(new CivilClaimResponse());
 
       const result = await getDraftClaim(mockReq);
 
       expect(result).toBeNull();
       expect(mockSetCachedDraft).not.toHaveBeenCalled();
+    });
+
+    it('should migrate a populated Redis draft into the DB when the flag is on and DB is empty', async () => {
+      const createdAt = new Date('2026-07-01T10:00:00.000Z');
+      const redisClaim = Object.assign(new Claim(), {
+        totalClaimAmount: 500,
+        draftClaimCreatedAt: createdAt,
+      });
+      mockGetCachedDraft.mockResolvedValueOnce(null);
+      mockGetActiveDraftFromDb.mockResolvedValueOnce(null);
+      (draftStoreService.getDraftClaimFromStore as jest.Mock).mockResolvedValueOnce(
+        Object.assign(new CivilClaimResponse(), {id: mockUserId, case_data: redisClaim}),
+      );
+      mockCreateOrLoadDraftInDb.mockResolvedValueOnce({
+        claimResponse: new CivilClaimResponse(),
+        rawResponse: {
+          ...mockRawResponse,
+          payload: redisClaim as unknown as Record<string, unknown>,
+          createdAt: createdAt.toISOString(),
+        },
+        isNew: true,
+      });
+      (draftStoreService.deleteDraftClaimFromStore as jest.Mock).mockResolvedValueOnce(undefined);
+
+      const {app} = require('../../../../main/app-instance');
+      app.locals.draftStoreClient = {
+        ttl: jest.fn().mockResolvedValue(2 * 86400),
+      };
+
+      const result = await getDraftClaim(mockReq);
+
+      expect(mockCreateOrLoadDraftInDb).toHaveBeenCalledWith(
+        mockReq,
+        expect.objectContaining({
+          totalClaimAmount: 500,
+          draftClaimCreatedAt: createdAt,
+          draftClaimCacheTtlDays: 2,
+        }),
+      );
+      expect(draftStoreService.deleteDraftClaimFromStore).toHaveBeenCalledWith(mockUserId);
+      expect(result?.rawResponse.payload).toEqual(expect.objectContaining({totalClaimAmount: 500}));
+      expect(result?.createdAt).toBe(createdAt.toISOString());
     });
 
     it('should rethrow database errors', async () => {
@@ -155,6 +198,8 @@ describe('draftStoreManagerService Unit Tests', () => {
 
     it('should execute POST db call first, use redis and set isNew to true for 201 created', async () => {
       const mockClaim = new Claim();
+      mockGetActiveDraftFromDb.mockResolvedValueOnce(null);
+      (draftStoreService.getDraftClaimFromStore as jest.Mock).mockResolvedValueOnce(new CivilClaimResponse());
       mockCreateOrLoadDraftInDb.mockResolvedValueOnce({
         claimResponse: new CivilClaimResponse(),
         rawResponse: mockRawResponse,
@@ -169,6 +214,10 @@ describe('draftStoreManagerService Unit Tests', () => {
     });
 
     it('should set isNew=false when POST loads an existing draft (200)', async () => {
+      mockGetActiveDraftFromDb.mockResolvedValueOnce({
+        claimResponse: new CivilClaimResponse(),
+        rawResponse: mockRawResponse,
+      });
       mockCreateOrLoadDraftInDb.mockResolvedValueOnce({
         claimResponse: new CivilClaimResponse(),
         rawResponse: mockRawResponse,
@@ -178,6 +227,41 @@ describe('draftStoreManagerService Unit Tests', () => {
       const result = await createOrLoadDraft(mockReq);
 
       expect(result.isNew).toBe(false);
+    });
+
+    it('should migrate Redis answers before creating a blank DB draft', async () => {
+      const createdAt = new Date('2026-07-01T10:00:00.000Z');
+      const redisClaim = Object.assign(new Claim(), {
+        totalClaimAmount: 900,
+        draftClaimCreatedAt: createdAt,
+      });
+      mockGetActiveDraftFromDb.mockResolvedValueOnce(null);
+      (draftStoreService.getDraftClaimFromStore as jest.Mock).mockResolvedValueOnce(
+        Object.assign(new CivilClaimResponse(), {id: mockUserId, case_data: redisClaim}),
+      );
+      mockCreateOrLoadDraftInDb.mockResolvedValueOnce({
+        claimResponse: new CivilClaimResponse(),
+        rawResponse: {
+          ...mockRawResponse,
+          payload: redisClaim as unknown as Record<string, unknown>,
+        },
+        isNew: true,
+      });
+      (draftStoreService.deleteDraftClaimFromStore as jest.Mock).mockResolvedValueOnce(undefined);
+
+      const {app} = require('../../../../main/app-instance');
+      app.locals.draftStoreClient = {
+        ttl: jest.fn().mockResolvedValue(86400),
+      };
+
+      const result = await createOrLoadDraft(mockReq);
+
+      expect(mockCreateOrLoadDraftInDb).toHaveBeenCalledWith(
+        mockReq,
+        expect.objectContaining({totalClaimAmount: 900, draftClaimCacheTtlDays: 1}),
+      );
+      expect(result.isNew).toBe(false);
+      expect(result.rawResponse.payload).toEqual(expect.objectContaining({totalClaimAmount: 900}));
     });
   });
 
@@ -263,21 +347,62 @@ describe('draftStoreManagerService Unit Tests', () => {
     });
 
     it('getDraftClaim should return null when redis has no case data', async () => {
-      (draftStoreService.getDraftClaimFromStore as jest.Mock).mockResolvedValueOnce(new CivilClaimResponse());
+      (draftStoreService.getDraftClaimFromStore as jest.Mock)
+        .mockResolvedValueOnce(new CivilClaimResponse())
+        .mockResolvedValueOnce(new CivilClaimResponse());
+      mockGetActiveDraftFromDb.mockResolvedValueOnce(null);
 
       const result = await getDraftClaim(mockReq);
 
       expect(result).toBeNull();
     });
 
+    it('should hydrate Redis from the DB when the flag is rolled back and Redis is empty', async () => {
+      const createdAt = new Date('2026-07-01T10:00:00.000Z');
+      const expiresAt = new Date(Date.now() + 3 * 86400 * 1000).toISOString();
+      const dbPayload = {
+        totalClaimAmount: 750,
+        draftClaimCreatedAt: createdAt.toISOString(),
+      };
+      (draftStoreService.getDraftClaimFromStore as jest.Mock)
+        .mockResolvedValueOnce(new CivilClaimResponse())
+        .mockResolvedValueOnce(new CivilClaimResponse());
+      mockGetActiveDraftFromDb.mockResolvedValueOnce({
+        claimResponse: new CivilClaimResponse(),
+        rawResponse: {
+          ...mockRawResponse,
+          payload: dbPayload,
+          createdAt: createdAt.toISOString(),
+          expiresAt,
+        },
+      });
+
+      const setMock = jest.fn().mockResolvedValue('OK');
+      const {app} = require('../../../../main/app-instance');
+      app.locals.draftStoreClient = {set: setMock};
+
+      const result = await getDraftClaim(mockReq);
+
+      expect(mockGetActiveDraftFromDb).toHaveBeenCalledWith(mockReq);
+      expect(setMock).toHaveBeenCalledWith(
+        mockUserId,
+        expect.stringContaining('"totalClaimAmount":750'),
+        'EX',
+        expect.any(Number),
+      );
+      expect(result?.claimResponse.case_data).toEqual(expect.objectContaining({totalClaimAmount: 750}));
+    });
+
     it('createOrLoadDraft should create a redis draft when none exists', async () => {
       const mockClaim = new Claim();
       (draftStoreService.getDraftClaimFromStore as jest.Mock)
+        .mockResolvedValueOnce(new CivilClaimResponse())
         .mockResolvedValueOnce(new CivilClaimResponse())
         .mockResolvedValueOnce(Object.assign(new CivilClaimResponse(), {
           id: mockUserId,
           case_data: mockClaim,
         }));
+      mockGetActiveDraftFromDb.mockResolvedValueOnce(null);
       (draftStoreService.createDraftClaimInStoreWithExpiryTime as jest.Mock).mockResolvedValueOnce(undefined);
       (draftStoreService.saveDraftClaim as jest.Mock).mockResolvedValueOnce(undefined);
 
