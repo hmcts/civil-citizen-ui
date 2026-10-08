@@ -23,16 +23,9 @@ import {convertToEvidenceTypeToTranslationKey} from 'common/models/evidence/evid
 
 const changeLabel = (lang: string ): string => t('COMMON.BUTTONS.CHANGE', {lng: getLng(lang)});
 
-const addTimeline = (claimId: string, lang: string , section: SummarySection, timeline: DefendantTimeline = new DefendantTimeline([], '')) => {
-  if (!Array.isArray(timeline?.rows)) {
-    throw new TypeError('Timeline.rows must be an array');
-  }
-  if (typeof timeline.comment !== 'string' && timeline.comment != null) {
-    throw new TypeError('Timeline.comment must be a string or null/undefined');
-  }
-
-  const rows = timeline.rows;
-  const comment = timeline.comment ?? '';
+const addTimeline = (claimId: string, lang: string , section: SummarySection, timeline?: DefendantTimeline) => {
+  const rows = Array.isArray(timeline?.rows) ? timeline.rows.filter(Boolean) : [];
+  const comment = typeof timeline?.comment === 'string' ? timeline.comment : '';
   const yourTimelineHref = constructResponseUrlWithIdParams(claimId, CITIZEN_TIMELINE_URL);
 
   section.summaryList.rows.push(
