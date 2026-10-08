@@ -14,6 +14,7 @@ import {
   getDocumentTypeSummaryRow, getExpertEvidenceSummaryRow, getExpertOtherPartySummaryRow, getFileOnlySummaryRow,
   getWitnessEvidenceSummaryRow,
 } from '../../../../../utils/caseProgression/mockEvidenceUploadSummaryRows';
+import {WitnessSection} from 'models/caseProgression/uploadDocumentsUserForm';
 import {t} from 'i18next';
 const {Logger} = require('@hmcts/nodejs-logging');
 jest.mock('i18next');
@@ -89,6 +90,61 @@ describe('buildEvidenceUploadedSummaryRows', () => {
       expect(actualSummaryRows.sections[0]).toBeUndefined();
     });
 
+    test('should return no sections when uploaded documents are undefined', () => {
+      //when
+      const actual = getWitnessSummarySection(undefined, '1234', 'en');
+      //then
+      expect(actual.sections).toEqual([]);
+    });
+
+    test('should skip witness statement with missing case document', () => {
+      //given
+      const uploadDocumentsUserForm = getMockFullUploadDocumentsUserForm();
+      uploadDocumentsUserForm.witnessStatement[0] = {
+        ...uploadDocumentsUserForm.witnessStatement[0],
+        caseDocument: undefined,
+      } as WitnessSection;
+      //when
+      const actual = getWitnessSummarySection(uploadDocumentsUserForm, '1234', 'en');
+      //then
+      expect(actual.sections[0].summaryList.rows).toHaveLength(7);
+      expect(loggerSpy).toHaveBeenCalled();
+    });
+
+    test('should skip null witness statement items', () => {
+      //given
+      const uploadDocumentsUserForm = getMockFullUploadDocumentsUserForm();
+      uploadDocumentsUserForm.witnessStatement = [null, ...uploadDocumentsUserForm.witnessStatement];
+      //when / then
+      expect(() => getWitnessSummarySection(uploadDocumentsUserForm, '1234', 'en')).not.toThrow();
+    });
+
+    test('should show empty date when date input fields are missing', () => {
+      //given
+      const uploadDocumentsUserForm = getMockFullUploadDocumentsUserForm();
+      uploadDocumentsUserForm.witnessStatement[0].dateInputFields = undefined;
+      //when / then
+      expect(() => getWitnessSummarySection(uploadDocumentsUserForm, '1234', 'en')).not.toThrow();
+    });
+
+    test('should log document name when witness document link is missing', () => {
+      //given
+      loggerSpy.mockClear();
+      const uploadDocumentsUserForm = getMockFullUploadDocumentsUserForm();
+      uploadDocumentsUserForm.witnessStatement[0] = {
+        ...uploadDocumentsUserForm.witnessStatement[0],
+        caseDocument: {
+          ...uploadDocumentsUserForm.witnessStatement[0].caseDocument,
+          documentLink: undefined,
+        },
+      } as WitnessSection;
+      //when
+      const actual = getWitnessSummarySection(uploadDocumentsUserForm, '1234', 'en');
+      //then
+      expect(actual.sections[0].summaryList.rows).toHaveLength(7);
+      expect(loggerSpy).toHaveBeenCalledWith(expect.stringContaining('Witness document link is missing'));
+      expect(loggerSpy).toHaveBeenCalledWith(expect.stringContaining('DocumentName: test.png'));
+    });
   });
   describe('getExpertSummary', () => {
     test('should return summary rows for all claimant values', () => {
