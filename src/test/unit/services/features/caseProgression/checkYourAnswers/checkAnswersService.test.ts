@@ -213,6 +213,42 @@ describe('checkAnswersServiceTest', () => {
         expect(mockSubmitEvent).toHaveBeenCalled();
         expect(mockSubmitEvent).toHaveBeenCalledWith('EVIDENCE_UPLOAD_RESPONDENT', req.params.id, createCCDClaimForUploadedDocuments(0,false),  <AppRequest>req);
       });
+
+      test('For claimant - should not throw when uploaded documents are undefined', async () => {
+        //given
+        const mockSubmitEvent = jest.spyOn(CivilServiceClient.prototype, 'submitEvent');
+        const claimWithNoDraft = new Claim();
+        claimWithNoDraft.caseRole = CaseRole.CLAIMANT;
+        claimWithNoDraft.caseProgression = new CaseProgression();
+        const req = request;
+        req.params = {
+          id: '12345',
+        };
+
+        //when
+        await saveUploadedDocuments(claimWithNoDraft, <AppRequest>req);
+
+        //then
+        expect(mockSubmitEvent).toHaveBeenCalledWith('EVIDENCE_UPLOAD_APPLICANT', req.params.id, createCCDClaimForUploadedDocuments(0, true), <AppRequest>req);
+      });
+
+      test('For defendant - should not throw when uploaded documents are undefined', async() => {
+        //given
+        const mockSubmitEvent = jest.spyOn(CivilServiceClient.prototype, 'submitEvent');
+        const claimWithNoDraft = new Claim();
+        claimWithNoDraft.caseRole = CaseRole.DEFENDANT;
+        claimWithNoDraft.caseProgression = new CaseProgression();
+        const req = request;
+        req.params = {
+          id: '12345',
+        };
+
+        //when
+        await saveUploadedDocuments(claimWithNoDraft, <AppRequest>req);
+
+        //then
+        expect(mockSubmitEvent).toHaveBeenCalledWith('EVIDENCE_UPLOAD_RESPONDENT', req.params.id, createCCDClaimForUploadedDocuments(0, false), <AppRequest>req);
+      });
     });
   });
 });

@@ -92,6 +92,10 @@ export const saveUploadedDocuments = async (claim: Claim, req: AppRequest): Prom
 
 const mapUploadedFileToDocumentType = (newUploadedDocuments: UploadDocumentsUserForm, existingUploadDocuments: UploadDocuments): UploadDocuments => {
 
+  if (!newUploadedDocuments) {
+    return existingUploadDocuments;
+  }
+
   if(newUploadedDocuments.documentsForDisclosure){
     for(const document of newUploadedDocuments.documentsForDisclosure) {
       const documentType = EvidenceUploadDisclosure.DOCUMENTS_FOR_DISCLOSURE;
