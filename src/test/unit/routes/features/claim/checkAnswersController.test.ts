@@ -91,6 +91,7 @@ describe('Claim - Check answers', () => {
   };
 
   beforeEach(() => {
+    jest.clearAllMocks();
     req = {
       session: createMockSession({user: {id: 'user-id'}, draftId: 'draft-123'}),
       body: {},
@@ -113,6 +114,7 @@ describe('Claim - Check answers', () => {
     mockIsCarmEnabledForCase.mockResolvedValue(true);
     mockIsDraftClaimDatabaseEnabled.mockResolvedValue(true);
     mockUpdateDraftClaim.mockResolvedValue(undefined);
+    mockDeleteDraftClaim.mockResolvedValue(undefined);
     jest.spyOn(CivilServiceClient.prototype, 'getClaimFeeData').mockResolvedValue({
       calculatedAmountInPence: '50',
     } as never);
@@ -256,6 +258,60 @@ describe('Claim - Check answers', () => {
       await postHandler(req as AppRequest, res as unknown as Response, next);
 
       expect(next).toHaveBeenCalledWith(error);
+    });
+
+    it('should still redirect to confirmation when payment draft linking fails after CCD accept', async () => {
+      const draftClaim = buildClaim(YesNo.NO);
+      const submittedClaim = new Claim();
+      submittedClaim.id = '1790322528949860';
+      submittedClaim.legacyCaseReference = '000JE005';
+
+      mockGetDraftClaim
+        .mockResolvedValueOnce({
+          claimResponse: {case_data: draftClaim},
+          rawResponse: {draftId: 'draft-123'},
+          createdAt: '2026-08-01T10:00:00.000Z',
+        })
+        .mockResolvedValueOnce({
+          claimResponse: {case_data: draftClaim},
+          rawResponse: {draftId: 'draft-123'},
+          createdAt: '2026-08-01T10:00:00.000Z',
+        });
+      mockSubmitClaim.mockResolvedValue(submittedClaim);
+      mockUpdateDraftClaim.mockRejectedValueOnce(new Error('link draft to case failed'));
+      req.body = signedBody;
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(mockSubmitClaim).toHaveBeenCalledTimes(1);
+      expect(next).not.toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(
+        constructResponseUrlWithIdParams(submittedClaim.id, CLAIM_CONFIRMATION_URL),
+      );
+    });
+
+    it('should still redirect to confirmation when help-with-fees draft deletion fails after CCD accept', async () => {
+      const draftClaim = buildClaim(YesNo.YES);
+      const submittedClaim = new Claim();
+      submittedClaim.id = '1790322528949860';
+
+      mockGetDraftClaim.mockResolvedValue({
+        claimResponse: {case_data: draftClaim},
+        rawResponse: {draftId: 'draft-123'},
+        createdAt: '2026-08-01T10:00:00.000Z',
+      });
+      mockSubmitClaim.mockResolvedValue(submittedClaim);
+      mockDeleteDraftClaim.mockRejectedValueOnce(new Error('delete draft failed'));
+      req.body = signedBody;
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(mockSubmitClaim).toHaveBeenCalledTimes(1);
+      expect(mockDeleteDraftClaim).toHaveBeenCalledTimes(1);
+      expect(next).not.toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(
+        constructResponseUrlWithIdParams(submittedClaim.id, CLAIM_CONFIRMATION_URL),
+      );
     });
   });
 });

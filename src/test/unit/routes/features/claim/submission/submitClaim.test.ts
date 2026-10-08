@@ -1,8 +1,8 @@
 import {submitClaim} from 'services/features/claim/submission/submitClaim';
+import {AppRequest} from 'common/models/AppRequest';
+import {CivilServiceClient} from 'client/civilServiceClient';
 import * as ccdTranslationService from 'services/translation/claim/ccdTranslation';
 import {Claim} from 'models/claim';
-import {AppRequest} from 'models/AppRequest';
-import {CivilServiceClient} from 'client/civilServiceClient';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {req} from '../../../../../utils/UserDetails';
 import {getDraftClaim, updateDraftClaim} from 'modules/draft-store/draftStoreManagerService';
@@ -56,15 +56,25 @@ describe('Submit claim to ccd', () => {
 
     const ccdTranslationServiceMock = jest.spyOn(ccdTranslationService, 'translateDraftClaimToCCDR2');
 
+    const submittedClaim = new Claim();
+    submittedClaim.id = '1790322528949860';
+    submittedClaim.legacyCaseReference = '000JE005';
     const CivilServiceClientServiceMock = jest
       .spyOn(CivilServiceClient.prototype, 'submitDraftClaim')
-      .mockResolvedValue(claim);
+      .mockResolvedValue(submittedClaim);
 
     const result = await submitClaim(mockReq);
 
-    expect(result).toBe(claim);
+    expect(result).toBe(submittedClaim);
     expect(mockGetDraftClaim).toHaveBeenCalledWith(mockReq);
-    expect(mockUpdateDraftClaim).not.toHaveBeenCalled();
+    expect(mockUpdateDraftClaim).toHaveBeenCalledWith(
+      mockReq,
+      expect.objectContaining({
+        id: '1790322528949860',
+        legacyCaseReference: '000JE005',
+      }),
+      'draft-123',
+    );
     expect(ccdTranslationServiceMock).toHaveBeenCalled();
     expect(CivilServiceClientServiceMock).toHaveBeenCalled();
   });
@@ -75,7 +85,9 @@ describe('Submit claim to ccd', () => {
     mockGetDraftClaim.mockResolvedValue(createMockManagerResult(claimWithApplicant));
     mockUpdateDraftClaim.mockResolvedValue(undefined);
     jest.spyOn(ccdTranslationService, 'translateDraftClaimToCCDR2');
-    jest.spyOn(CivilServiceClient.prototype, 'submitDraftClaim').mockResolvedValue(claimWithApplicant);
+    const submittedClaim = new Claim();
+    submittedClaim.id = '1790322528949860';
+    jest.spyOn(CivilServiceClient.prototype, 'submitDraftClaim').mockResolvedValue(submittedClaim);
 
     await submitClaim(mockReq);
 
@@ -91,13 +103,64 @@ describe('Submit claim to ccd', () => {
     );
   });
 
+  it('should skip CCD create when draft already has a submitted case id', async () => {
+    const linkedClaim = new Claim();
+    linkedClaim.id = '1790322528949860';
+    linkedClaim.legacyCaseReference = '000JE005';
+    mockGetDraftClaim.mockResolvedValue(createMockManagerResult(linkedClaim));
+    const submitSpy = jest.spyOn(CivilServiceClient.prototype, 'submitDraftClaim');
+
+    const result = await submitClaim(mockReq);
+
+    expect(result.id).toBe('1790322528949860');
+    expect(result.legacyCaseReference).toBe('000JE005');
+    expect(submitSpy).not.toHaveBeenCalled();
+  });
+
+  it('should still return submitted claim when persisting case id to draft fails', async () => {
+    mockGetDraftClaim.mockResolvedValue(createMockManagerResult(claim));
+    mockUpdateDraftClaim.mockRejectedValueOnce(new Error('draft update failed'));
+    const submittedClaim = new Claim();
+    submittedClaim.id = '1790322528949860';
+    jest.spyOn(ccdTranslationService, 'translateDraftClaimToCCDR2');
+    jest.spyOn(CivilServiceClient.prototype, 'submitDraftClaim').mockResolvedValue(submittedClaim);
+
+    const result = await submitClaim(mockReq);
+
+    expect(result).toBe(submittedClaim);
+  });
+
+  it('should use rawResponse draftId when session has none', async () => {
+    const reqWithoutDraftId = {
+      ...req,
+      session: {
+        ...req.session,
+      },
+    } as unknown as AppRequest;
+    mockGetDraftClaim.mockResolvedValue(createMockManagerResult(claim));
+    mockUpdateDraftClaim.mockResolvedValue(undefined);
+    jest.spyOn(ccdTranslationService, 'translateDraftClaimToCCDR2');
+    const submittedClaim = new Claim();
+    submittedClaim.id = '1790322528949860';
+    jest.spyOn(CivilServiceClient.prototype, 'submitDraftClaim').mockResolvedValue(submittedClaim);
+
+    await submitClaim(reqWithoutDraftId);
+
+    expect(mockGetDraftClaim).toHaveBeenCalled();
+    expect(mockUpdateDraftClaim).toHaveBeenCalledWith(
+      reqWithoutDraftId,
+      expect.objectContaining({id: '1790322528949860'}),
+      'draft-123',
+    );
+  });
+
   it('should throw when no draft exists', async () => {
     mockGetDraftClaim.mockResolvedValue(null);
 
     await expect(submitClaim(mockReq)).rejects.toThrow('[submitClaim] no draft claim found');
   });
 
-  it('should rethrow error when the manager fails', async () => {
+  it('should throw an error', async () => {
     mockGetDraftClaim.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
 
     await expect(submitClaim(mockReq)).rejects.toThrow(TestMessages.REDIS_FAILURE);

@@ -26,6 +26,9 @@ import {CivilServiceClient} from 'client/civilServiceClient';
 import {saveClaimFee} from 'services/features/claim/amount/claimFeesService';
 import {calculateInterestToDate} from 'common/utils/interestUtils';
 import {getTTLDaysForCategory, TTLCategory} from 'modules/draft-store/ttlConfig';
+
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('claimCheckAnswersController');
 const validator = new Validator();
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
@@ -115,20 +118,27 @@ claimCheckAnswersController.post(CLAIM_CHECK_ANSWERS_URL, async (req: AppRequest
 
       const draftId = appReq.session?.draftId || draftResult.rawResponse?.draftId;
       if (draftId) {
-        const helpWithFees = claim.claimDetails.helpWithFees.option === YesNo.YES;
-        if (await isDraftClaimDatabaseEnabled() && !helpWithFees) {
-          const latestDraft = await getDraftClaim(appReq);
-          if (latestDraft?.claimResponse?.case_data) {
-            const claimToStore = Object.assign(new Claim(), latestDraft.claimResponse?.case_data as unknown as Claim);
-            claimToStore.id = submittedClaim.id;
-            if (submittedClaim.legacyCaseReference) {
-              claimToStore.legacyCaseReference = submittedClaim.legacyCaseReference;
+        try {
+          const helpWithFees = claim.claimDetails.helpWithFees.option === YesNo.YES;
+          if (await isDraftClaimDatabaseEnabled() && !helpWithFees) {
+            const latestDraft = await getDraftClaim(appReq);
+            if (latestDraft?.claimResponse?.case_data) {
+              const claimToStore = Object.assign(new Claim(), latestDraft.claimResponse?.case_data as unknown as Claim);
+              claimToStore.id = submittedClaim.id;
+              if (submittedClaim.legacyCaseReference) {
+                claimToStore.legacyCaseReference = submittedClaim.legacyCaseReference;
+              }
+              claimToStore.draftClaimCacheTtlDays = getTTLDaysForCategory(TTLCategory.PAYMENT_SESSION);
+              await updateDraftClaim(appReq, claimToStore, draftId);
             }
-            claimToStore.draftClaimCacheTtlDays = getTTLDaysForCategory(TTLCategory.PAYMENT_SESSION);
-            await updateDraftClaim(appReq, claimToStore, draftId);
+          } else {
+            await deleteDraftClaim(appReq, draftId);
           }
-        } else {
-          await deleteDraftClaim(appReq, draftId);
+        } catch (postSubmitDraftError) {
+          logger.error(
+            `[checkAnswersController] post-submit draft work failed after CCD accept for case ${submittedClaim.id}`,
+            postSubmitDraftError,
+          );
         }
         // The submitted draft is no longer the working draft; payment loads it by case id
         delete appReq.session.draftId;
