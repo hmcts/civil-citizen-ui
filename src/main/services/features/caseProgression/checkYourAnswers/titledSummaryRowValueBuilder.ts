@@ -1,4 +1,5 @@
 import {TitledSummaryRowElement, Value} from 'models/summaryList/summaryList';
+import {escapeHtml} from 'common/utils/escapeHtml';
 
 export const buildTitledSummaryRowValue = (titledSummaryRowElements: TitledSummaryRowElement[]): Value => {
 
@@ -9,7 +10,8 @@ export const buildTitledSummaryRowValue = (titledSummaryRowElements: TitledSumma
   let index = 0;
   for(const element of titledSummaryRowElements){
     index++;
-    summaryRowValue.html = summaryRowValue.html + getBoldTitle(element.title)+nextLine+element.value;
+    const elementValue = element.html ?? escapeHtml(element.value);
+    summaryRowValue.html = summaryRowValue.html + getBoldTitle(element.title)+nextLine+elementValue;
     summaryRowValue.html = index < titledSummaryRowElements.length ? summaryRowValue.html + sectionBreak : summaryRowValue.html;
   }
 
@@ -18,6 +20,6 @@ export const buildTitledSummaryRowValue = (titledSummaryRowElements: TitledSumma
 
 const getBoldTitle = (title: string): string => {
 
-  return `<span class="govuk-!-font-weight-bold">${title}</span>`;
+  return `<span class="govuk-!-font-weight-bold">${escapeHtml(title)}</span>`;
 
 };

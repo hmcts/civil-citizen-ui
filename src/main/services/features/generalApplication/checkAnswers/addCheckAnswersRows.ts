@@ -1,7 +1,7 @@
 import { Claim } from 'models/claim';
 import { getLng } from 'common/utils/languageToggleUtils';
 import { t } from 'i18next';
-import { SummaryRow, summaryRow, summaryRowWithTextValue } from 'models/summaryList/summaryList';
+import { SummaryRow, summaryRow, summaryRowHtml, summaryRowWithTextValue } from 'models/summaryList/summaryList';
 import {
   APPLICATION_TYPE_URL,
   GA_AGREEMENT_FROM_OTHER_PARTY_URL,
@@ -163,17 +163,17 @@ export const addDocumentUploadRow = (claimId: string, claim: Claim, lang: string
     const href = `${constructResponseUrlWithIdParams(claimId, GA_WANT_TO_UPLOAD_DOCUMENTS_URL)}`;
     let rowValue: string;
     if (claim.generalApplication.wantToUploadDocuments === YesNo.YES) {
-      rowValue = `<p class="govuk-border-colour-border-bottom-1 govuk-!-padding-bottom-2 govuk-!-margin-top-0">${t('COMMON.VARIATION_2.YES', {lng})}</p>`;
+      rowValue = `<p class="govuk-border-colour-border-bottom-1 govuk-!-padding-bottom-2 govuk-!-margin-top-0">${escapeHtml(t('COMMON.VARIATION_2.YES', {lng}))}</p>`;
       rowValue += '<ul class="no-list-style">';
       claim.generalApplication.uploadEvidenceForApplication.forEach(uploadGAFile => {
-        rowValue += `<li>${uploadGAFile.caseDocument.documentName}</li>`;
+        rowValue += `<li>${escapeHtml(uploadGAFile.caseDocument.documentName)}</li>`;
       });
       rowValue += '</ul>';
     } else {
-      rowValue = t('COMMON.VARIATION_2.NO', {lng});
+      rowValue = escapeHtml(t('COMMON.VARIATION_2.NO', {lng}));
     }
     rows.push(
-      summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.UPLOAD_DOCUMENTS', {lng}), rowValue, href, changeLabel()),
+      summaryRowHtml(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.UPLOAD_DOCUMENTS', {lng}), rowValue, href, changeLabel()),
     );
   }
   return rows;
@@ -239,15 +239,15 @@ export const addUnavailableDatesRows = (claimId: string, claim: Claim, lang: str
     let unavailableDatesHtml = '<ul class="no-list-style">';
     claim.generalApplication.unavailableDatesHearing.items.forEach((value, index) => {
       if (value.type === UnavailableDateType.SINGLE_DATE) {
-        unavailableDatesHtml += `<li>${formatDateToFullDate(value.from, lang)}</li>`;
+        unavailableDatesHtml += `<li>${escapeHtml(formatDateToFullDate(value.from, lang))}</li>`;
       } else if (value.type === UnavailableDateType.LONGER_PERIOD) {
-        unavailableDatesHtml += `<li>${formatDateToFullDate(value.from, lang)} - ${formatDateToFullDate(value.until, lang)}</li>`;
+        unavailableDatesHtml += `<li>${escapeHtml(formatDateToFullDate(value.from, lang))} - ${escapeHtml(formatDateToFullDate(value.until, lang))}</li>`;
       }
     });
     unavailableDatesHtml += '</ul>';
     rows.push(
-      summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.DATES_CANNOT_ATTEND', {lng}),
-        unavailableDatesHtml.length > 0 ? unavailableDatesHtml : t('COMMON.NO', {lng}),
+      summaryRowHtml(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.DATES_CANNOT_ATTEND', {lng}),
+        unavailableDatesHtml.length > 0 ? unavailableDatesHtml : escapeHtml(t('COMMON.NO', {lng})),
         constructResponseUrlWithIdParams(claimId, GA_UNAVAILABLE_HEARING_DATES_URL), changeLabel()),
     );
   }
@@ -261,10 +261,10 @@ export const addHearingSupportRows = (claimId: string, claim: Claim, lang: strin
   if (claim.generalApplication?.hearingSupport) {
     let supportHtml = '<ul class="no-list-style">';
     if (claim.generalApplication.hearingSupport.stepFreeAccess?.selected) {
-      supportHtml += `<li>${t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.STEP_FREE_ACCESS', {lng})}</li>`;
+      supportHtml += `<li>${escapeHtml(t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.STEP_FREE_ACCESS', {lng}))}</li>`;
     }
     if (claim.generalApplication.hearingSupport.hearingLoop?.selected) {
-      supportHtml += `<li>${t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.HEARING_LOOP', {lng})}</li>`;
+      supportHtml += `<li>${escapeHtml(t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.SUPPORT.HEARING_LOOP', {lng}))}</li>`;
     }
     if (claim.generalApplication.hearingSupport.signLanguageInterpreter?.selected) {
       supportHtml += escapedListItem(
@@ -283,8 +283,8 @@ export const addHearingSupportRows = (claimId: string, claim: Claim, lang: strin
     }
     supportHtml += '</ul>';
     rows.push(
-      summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.NEED_ADJUSTMENTS', {lng}),
-        supportHtml.includes('<li>') ? supportHtml : t('COMMON.NO', {lng}),
+      summaryRowHtml(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.NEED_ADJUSTMENTS', {lng}),
+        supportHtml.includes('<li>') ? supportHtml : escapeHtml(t('COMMON.NO', {lng})),
         constructResponseUrlWithIdParams(claimId, GA_HEARING_SUPPORT_URL), changeLabel()),
     );
   }
@@ -314,11 +314,11 @@ export const addCoScDocumentUploadRow = (claimId: string, claim: Claim, lang: st
   if(getEvidencePaymentOption(claim.generalApplication.certificateOfSatisfactionOrCancellation?.debtPaymentEvidence?.debtPaymentOption) !== undefined) {
     rowValue = '<ul class="no-list-style">';
     claim.generalApplication.uploadEvidenceForApplication.forEach(uploadGAFile => {
-      rowValue += `<li>${uploadGAFile.caseDocument.documentName}</li>`;
+      rowValue += `<li>${escapeHtml(uploadGAFile.caseDocument.documentName)}</li>`;
     });
     rowValue += '</ul>';
     rows.push(
-      summaryRow(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.COSC.UPLOAD_DOCUMENTS', {lng}), rowValue, href, changeLabel()),
+      summaryRowHtml(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.COSC.UPLOAD_DOCUMENTS', {lng}), rowValue, href, changeLabel()),
     );
   }
   return rows;
@@ -334,12 +334,12 @@ export const addHasEvidenceOfDebtPaymentRow = (claimId: string, claim: Claim, la
     const evidenceOption = claim.generalApplication.certificateOfSatisfactionOrCancellation.debtPaymentEvidence.debtPaymentOption;
     if(evidenceOption === debtPaymentOptions.UNABLE_TO_PROVIDE_EVIDENCE_OF_FULL_PAYMENT) {
       rowValue = `<p class="govuk-border-colour-border-bottom-1 govuk-!-padding-bottom-2 govuk-!-margin-top-0">
-                        ${t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.COSC.UPLOAD_EVIDENCE_PAID_IN_FULL_NO', {lng})}</p>`;
+                        ${escapeHtml(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.COSC.UPLOAD_EVIDENCE_PAID_IN_FULL_NO', {lng}))}</p>`;
 
       rowValue += `<p class="govuk-!-padding-bottom-2 govuk-!-margin-top-0">
         ${escapeHtml(claim.generalApplication.certificateOfSatisfactionOrCancellation.debtPaymentEvidence.provideDetails)}</p>`;
       rows.push(
-        summaryRow(t('PAGES.GENERAL_APPLICATION.DEBT_PAYMENT.DO_YOU_WANT_PROVIDE_EVIDENCE', {lng}), rowValue, href, changeLabel()));
+        summaryRowHtml(t('PAGES.GENERAL_APPLICATION.DEBT_PAYMENT.DO_YOU_WANT_PROVIDE_EVIDENCE', {lng}), rowValue, href, changeLabel()));
     }
     else {
       rows.push(
@@ -367,10 +367,10 @@ export const addN245Row = (claimId: string, claim: Claim, lang: string): Summary
   const href = `${constructResponseUrlWithIdParams(claimId, GA_UPLOAD_N245_FORM_URL)}`;
   if(claim.generalApplication?.uploadN245Form) {
     let rowValue = '<ul class="no-list-style">';
-    rowValue += `<li>${claim.generalApplication?.uploadN245Form.caseDocument.documentName}</li>`;
+    rowValue += `<li>${escapeHtml(claim.generalApplication?.uploadN245Form.caseDocument.documentName)}</li>`;
     rowValue += '</ul>';
     rows.push(
-      summaryRow(t('PAGES.GENERAL_APPLICATION.UPLOAD_N245_FORM.TITLE', {lng}), rowValue, href, changeLabel()),
+      summaryRowHtml(t('PAGES.GENERAL_APPLICATION.UPLOAD_N245_FORM.TITLE', {lng}), rowValue, href, changeLabel()),
     );
   }
   return rows;

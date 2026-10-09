@@ -62,13 +62,13 @@
             <div class="govuk-section-break--s govuk-section-break--visible"></div>
             {% for row in formattedSummary.summaryList.rows %}
                 <dl class="govuk-summary-list govuk-!-margin-bottom-0">
-                    {% if row.value.html %}
+                    {% if row.value.text %}
                      <div class="govuk-summary-list__row ">
                         <dt class="govuk-summary-list__key">
                             {{ row.key.text }}
                         </dt>
                          <dd class="govuk-summary-list__value">
-                            <p class="govuk-body">{{row.value.html}}</p>
+                            <p class="govuk-body">{{row.value.text}}</p>
                           </dd>
                         </div>
                         {% else %}
