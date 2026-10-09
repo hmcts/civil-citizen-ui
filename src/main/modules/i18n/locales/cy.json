@@ -579,8 +579,11 @@
           "PAGE_TITLE": "Cadarnhad bod y lle i anadlu wedi'i godi",
           "STANDARD_PAGE_TITLE": "Lle i anadlu safonol - Wedi'i godi",
           "MENTAL_HEALTH_PAGE_TITLE": "Lle i anadu iechyd meddwl - Wedi'i godi",
+          "STANDARD_WILL_LIFT_ON": "Bydd lle i anadlu safonol yn codi ar {{date}}",
+          "MENTAL_HEALTH_WILL_LIFT_ON": "Bydd lle i anadlu Iechyd Meddwl yn codi ar {{date}}",
           "CASE_NUMBER": "Rhif yr achos:",
           "EMAIL_SENT": "Rydym wedi anfon e-bost cadarnhad atoch.",
+          "EMAIL_WHEN_ENDED": "Byddwn yn anfon e-bost atoch i gadarnhau pryd fydd y lle i anadlu wedi dod i ben",
           "RETURN_TO_CASE_SUMMARY": "Dychwelyd i grynodeb eich achos"
         }
       }
@@ -2662,6 +2665,7 @@
           "LIFT_MENTAL_HEALTH": "Bydd hwn yn parhau i fod mewn lle nes eich bod yn {{liftLink}}.",
           "LIFT_STANDARD": "Dylech {{liftLink}} pan fyddwch yn gwybod pryd fydd yn dod i ben.",
           "TITLE": "Pwysig",
+          "UNTIL": "tan {{endDate}}",
           "USUALLY_LASTS": "Mae lle i anadlu yn para am 60 diwrnod fel arfer."
         },
         "HEARINGS": {

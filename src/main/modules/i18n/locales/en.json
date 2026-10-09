@@ -579,8 +579,11 @@
           "PAGE_TITLE": "Breathing space lifted confirmation",
           "STANDARD_PAGE_TITLE": "Standard breathing space lifted",
           "MENTAL_HEALTH_PAGE_TITLE": "Mental health breathing space lifted",
+          "STANDARD_WILL_LIFT_ON": "Standard breathing space will lift on {{date}}",
+          "MENTAL_HEALTH_WILL_LIFT_ON": "Mental health breathing space will lift on {{date}}",
           "CASE_NUMBER": "Case number:",
           "EMAIL_SENT": "We have sent you a confirmation email.",
+          "EMAIL_WHEN_ENDED": "We will send you an email to confirm when breathing space has ended",
           "RETURN_TO_CASE_SUMMARY": "Return to your case summary"
         }
       }
@@ -2664,6 +2667,7 @@
           "LIFT_MENTAL_HEALTH": "This will remain in place until you {{liftLink}}.",
           "LIFT_STANDARD": "{{liftLink}} when you know when it will end.",
           "TITLE": "Important",
+          "UNTIL": "until {{endDate}}",
           "USUALLY_LASTS": "Breathing space usually lasts for 60 days."
         },
         "HEARINGS": {

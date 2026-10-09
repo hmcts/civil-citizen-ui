@@ -188,7 +188,7 @@ const getSupportLinks = async (req: AppRequest, claim: Claim, claimId: string, l
     iWantToLinks.push({ text: t('PAGES.DASHBOARD.SUPPORT_LINKS.TELL_US_SETTLED', { lng }), url: constructResponseUrlWithIdParams(claimId, DATE_PAID_URL) });
   }
   if (claim.isClaimant() && breathingSpaceEnabled) {
-    if (claim.hasBreathingSpace()) {
+    if (claim.hasBreathingSpace() && !claim.hasFutureDatedBreathingSpaceExit()) {
       iWantToLinks.push({
         text: t('PAGES.DASHBOARD.SUPPORT_LINKS.LIFT_DEBT_RESPITE', { lng }),
         url: constructResponseUrlWithIdParams(claimId, BREATHING_SPACE_LIFT_URL),

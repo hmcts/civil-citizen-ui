@@ -43,6 +43,7 @@ import {DashboardNotification} from 'models/dashboard/dashboardNotification';
 import {BreathingSpaceEnterInfo} from 'models/breathingSpace/breathingSpaceEnterInfo';
 import {BreathingSpaceLiftInfo} from 'models/breathingSpace/breathingSpaceLiftInfo';
 import {BreathingSpaceType} from 'models/breathingSpace/breathingSpaceType';
+import {formatDateToFullDate} from 'common/utils/dateUtils';
 
 jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 
@@ -912,6 +913,27 @@ describe('claimant Dashboard Controller', () => {
         expect(res.text).not.toContain(t('PAGES.DASHBOARD.NOTIFICATIONS.BREATHING_SPACE.USUALLY_LASTS'));
         expect(res.text).not.toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.LIFT_DEBT_RESPITE'));
         expect(res.text).toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.GET_DEBT_RESPITE'));
+      });
+    });
+
+    it('should keep the breathing space banner without an exit link when the end date is in the future', async () => {
+      const futureEnd = new Date(2099, 8, 10);
+      const claim = new Claim();
+      claim.caseRole = CaseRole.CLAIMANT;
+      claim.ccdState = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
+      claim.enterBreathing = new BreathingSpaceEnterInfo(BreathingSpaceType.STANDARD);
+      claim.liftBreathing = new BreathingSpaceLiftInfo(futureEnd);
+      jest.spyOn(UtilityService, 'getClaimById').mockResolvedValueOnce(claim);
+
+      await request(app).get(DASHBOARD_CLAIMANT_URL).expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(`${t('PAGES.DASHBOARD.NOTIFICATIONS.BREATHING_SPACE.CLAIMANT_CONTENT_STANDARD')} ${t('PAGES.DASHBOARD.NOTIFICATIONS.BREATHING_SPACE.UNTIL', {
+          endDate: formatDateToFullDate(futureEnd, 'en'),
+        })}`);
+        expect(res.text).not.toContain(t('PAGES.DASHBOARD.NOTIFICATIONS.BREATHING_SPACE.LIFT_LINK_TEXT_STANDARD'));
+        expect(res.text).not.toContain(constructResponseUrlWithIdParams(':id', BREATHING_SPACE_LIFT_URL));
+        expect(res.text).not.toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.LIFT_DEBT_RESPITE'));
+        expect(res.text).not.toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.GET_DEBT_RESPITE'));
       });
     });
 

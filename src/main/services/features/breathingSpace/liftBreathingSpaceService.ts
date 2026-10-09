@@ -6,6 +6,10 @@ import {
 } from 'common/form/models/breathingSpace/liftBreathingSpaceForm';
 import {Claim} from 'common/models/claim';
 
+export const getLiftExpectedEnd = (claim: Claim): Date | string | undefined => {
+  return claim.liftBreathing?.expectedEnd ?? claim.breathingSpace?.liftBreathing?.expectedEnd;
+};
+
 export const getBreathingSpaceEnterStartDate = (claim: Claim): Date => {
   if (claim.enterBreathing?.start) {
     const d = new Date(claim.enterBreathing.start);
