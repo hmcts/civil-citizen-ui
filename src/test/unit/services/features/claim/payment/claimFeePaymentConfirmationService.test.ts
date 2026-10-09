@@ -106,4 +106,18 @@ describe('Claim Fee PaymentConfirmation Service', () => {
     expect(getFeePaymentStatus).not.toHaveBeenCalled();
   });
 
+  it.each(['', '   ', 'undefined', 'null'])(
+    'should not request payment status for unusable reference %p',
+    async (paymentReference) => {
+      const claim = claimWithPaymentReference('RC-1701-0909-0602-0418');
+      claim.claimDetails.claimFeePayment.paymentReference = paymentReference;
+      jest.spyOn(draftStoreService, 'getCaseDataFromStore').mockResolvedValueOnce(claim);
+      const getFeePaymentStatus = jest.spyOn(CivilServiceClient.prototype, 'getFeePaymentStatus');
+      getFeePaymentStatus.mockClear();
+
+      expect(await getRedirectUrl(claimId, mockedAppRequest)).toBe(PAY_CLAIM_FEE_UNSUCCESSFUL_URL);
+      expect(getFeePaymentStatus).not.toHaveBeenCalled();
+    },
+  );
+
 });
