@@ -36,25 +36,25 @@ export const getWitnessSummarySection = (uploadedDocuments: UploadDocumentsUserF
   witnessSummarySection.summaryList = {} as SummaryList;
   witnessSummarySection.summaryList.rows = [] as SummaryRow[];
 
-  const witnessStatement = uploadedDocuments?.witnessStatement;
-  if(Array.isArray(witnessStatement))
+  const witnessStatement = uploadedDocuments.witnessStatement;
+  if(witnessStatement)
   {
     getWitnessSummaryRows('PAGES.UPLOAD_DOCUMENTS.WITNESS.STATEMENT', 'PAGES.UPLOAD_DOCUMENTS.WITNESS.DATE_STATEMENT',witnessStatement, witnessSummarySection.summaryList, claimId, lang);
   }
 
-  const witnessSummary = uploadedDocuments?.witnessSummary;
-  if(Array.isArray(witnessSummary))
+  const witnessSummary = uploadedDocuments.witnessSummary;
+  if(witnessSummary)
   {
     getWitnessSummaryRows('PAGES.UPLOAD_DOCUMENTS.WITNESS.SUMMARY', 'PAGES.UPLOAD_DOCUMENTS.WITNESS.DATE_SUMMARY', witnessSummary, witnessSummarySection.summaryList, claimId, lang);
   }
 
-  const noticeOfIntention = uploadedDocuments?.noticeOfIntention;
-  if(Array.isArray(noticeOfIntention)){
+  const noticeOfIntention = uploadedDocuments.noticeOfIntention;
+  if(noticeOfIntention){
     getWitnessSummaryRows('PAGES.UPLOAD_DOCUMENTS.WITNESS.NOTICE', 'PAGES.UPLOAD_DOCUMENTS.WITNESS.DATE_STATEMENT', noticeOfIntention, witnessSummarySection.summaryList, claimId, lang);
   }
 
-  const documentsReferred = uploadedDocuments?.documentsReferred;
-  if(Array.isArray(documentsReferred)){
+  const documentsReferred = uploadedDocuments.documentsReferred;
+  if(documentsReferred){
     getDocumentReferredToSummaryRows('PAGES.UPLOAD_DOCUMENTS.WITNESS.DOCUMENT', documentsReferred, witnessSummarySection.summaryList, claimId, lang);
   }
 
