@@ -21,7 +21,8 @@ import {isCarmEnabledForCase, isDraftClaimDatabaseEnabled} from '../../../../../
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {createMockResponse, createMockSession, getRouteHandler} from '../../../../utils/getRouteHandler';
-import {getTTLDaysForCategory, TTLCategory} from 'modules/draft-store/ttlConfig';
+import * as ccdTranslationService from 'services/translation/claim/ccdTranslation';
+import {app} from '../../../../../main/app-instance';
 
 jest.mock('common/utils/claimRequestLocals', () => ({
   getStashedClaimOrFromStore: jest.fn(),
@@ -241,7 +242,6 @@ describe('Claim - Check answers', () => {
         expect.objectContaining({
           id: submittedClaim.id,
           legacyCaseReference: '000JE005',
-          draftClaimCacheTtlDays: getTTLDaysForCategory(TTLCategory.PAYMENT_SESSION),
         }),
         'draft-123',
       );
@@ -266,17 +266,11 @@ describe('Claim - Check answers', () => {
       submittedClaim.id = '1790322528949860';
       submittedClaim.legacyCaseReference = '000JE005';
 
-      mockGetDraftClaim
-        .mockResolvedValueOnce({
-          claimResponse: {case_data: draftClaim},
-          rawResponse: {draftId: 'draft-123'},
-          createdAt: '2026-08-01T10:00:00.000Z',
-        })
-        .mockResolvedValueOnce({
-          claimResponse: {case_data: draftClaim},
-          rawResponse: {draftId: 'draft-123'},
-          createdAt: '2026-08-01T10:00:00.000Z',
-        });
+      mockGetDraftClaim.mockResolvedValue({
+        claimResponse: {case_data: draftClaim},
+        rawResponse: {draftId: 'draft-123'},
+        createdAt: '2026-08-01T10:00:00.000Z',
+      });
       mockSubmitClaim.mockResolvedValue(submittedClaim);
       mockUpdateDraftClaim.mockRejectedValueOnce(new Error('link draft to case failed'));
       req.body = signedBody;
@@ -312,6 +306,69 @@ describe('Claim - Check answers', () => {
       expect(res.redirect).toHaveBeenCalledWith(
         constructResponseUrlWithIdParams(submittedClaim.id, CLAIM_CONFIRMATION_URL),
       );
+    });
+
+    describe('retry after the draft could not be linked to the CCD case', () => {
+      const redisStore = new Map<string, string>();
+
+      beforeEach(() => {
+        redisStore.clear();
+        app.locals.draftStoreClient = {
+          get: jest.fn((key: string) => Promise.resolve(redisStore.get(key) ?? null)),
+          set: jest.fn((key: string, value: string, ...options: unknown[]) => {
+            if (options.includes('NX') && redisStore.has(key)) {
+              return Promise.resolve(null);
+            }
+            redisStore.set(key, value);
+            return Promise.resolve('OK');
+          }),
+          del: jest.fn((key: string) => Promise.resolve(Number(redisStore.delete(key)))),
+        };
+        mockSubmitClaim.mockImplementation(
+          jest.requireActual('services/features/claim/submission/submitClaim').submitClaim,
+        );
+        jest.spyOn(ccdTranslationService, 'translateDraftClaimToCCDR2').mockReturnValue({} as never);
+        mockUpdateDraftClaim.mockImplementation((_req: AppRequest, claim: Claim) =>
+          claim.id ? Promise.reject(new Error('link draft to case failed')) : Promise.resolve(undefined));
+        mockDeleteDraftClaim.mockRejectedValue(new Error('delete draft failed'));
+      });
+
+      it.each([
+        ['without help with fees', YesNo.NO],
+        ['with help with fees', YesNo.YES],
+      ])('should not create a second CCD case when the blank draft is resubmitted %s', async (_label, helpWithFees) => {
+        mockGetDraftClaim.mockImplementation(() => Promise.resolve({
+          claimResponse: {case_data: buildClaim(helpWithFees)},
+          rawResponse: {draftId: 'draft-123'},
+          createdAt: '2026-08-01T10:00:00.000Z',
+        }));
+        const submittedClaim = new Claim();
+        submittedClaim.id = '1790322528949860';
+        submittedClaim.legacyCaseReference = '000JE005';
+        const submitDraftClaimSpy = jest
+          .spyOn(CivilServiceClient.prototype, 'submitDraftClaim')
+          .mockResolvedValue(submittedClaim);
+        req.body = signedBody;
+
+        await postHandler(req as AppRequest, res as unknown as Response, next);
+
+        const retryReq = {
+          session: createMockSession({user: {id: 'user-id'}}),
+          body: signedBody,
+          query: {},
+          cookies: {},
+        } as unknown as AppRequest;
+        const retryRes = createMockResponse();
+        const retryNext = jest.fn();
+        await postHandler(retryReq, retryRes as unknown as Response, retryNext);
+
+        const confirmationUrl = constructResponseUrlWithIdParams(submittedClaim.id, CLAIM_CONFIRMATION_URL);
+        expect(submitDraftClaimSpy).toHaveBeenCalledTimes(1);
+        expect(next).not.toHaveBeenCalled();
+        expect(retryNext).not.toHaveBeenCalled();
+        expect(res.redirect).toHaveBeenCalledWith(confirmationUrl);
+        expect(retryRes.redirect).toHaveBeenCalledWith(confirmationUrl);
+      });
     });
   });
 });

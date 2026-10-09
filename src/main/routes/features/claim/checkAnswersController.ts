@@ -25,7 +25,6 @@ import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {saveClaimFee} from 'services/features/claim/amount/claimFeesService';
 import {calculateInterestToDate} from 'common/utils/interestUtils';
-import {getTTLDaysForCategory, TTLCategory} from 'modules/draft-store/ttlConfig';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimCheckAnswersController');
@@ -128,7 +127,6 @@ claimCheckAnswersController.post(CLAIM_CHECK_ANSWERS_URL, async (req: AppRequest
               if (submittedClaim.legacyCaseReference) {
                 claimToStore.legacyCaseReference = submittedClaim.legacyCaseReference;
               }
-              claimToStore.draftClaimCacheTtlDays = getTTLDaysForCategory(TTLCategory.PAYMENT_SESSION);
               await updateDraftClaim(appReq, claimToStore, draftId);
             }
           } else {

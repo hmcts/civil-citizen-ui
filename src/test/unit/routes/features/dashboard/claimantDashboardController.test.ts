@@ -703,6 +703,8 @@ describe('claimant Dashboard Controller', () => {
     });
 
     it('should suppress the generic draft notification when the draft expiry notification is shown', async () => {
+      jest.useFakeTimers({doNotFake: ['nextTick', 'setImmediate', 'setTimeout', 'setInterval', 'queueMicrotask']})
+        .setSystemTime(new Date('2026-09-01T10:00:00.000Z'));
       mockGetDraftClaim.mockResolvedValueOnce({
         createdAt: '2026-08-17T08:51:21.000Z',
         expiresAt: '2026-09-16T08:51:21.000Z',
@@ -747,6 +749,7 @@ describe('claimant Dashboard Controller', () => {
       const res: any = {render: jest.fn()};
 
       await claimantDashboardHandler(req, res, jest.fn());
+      jest.useRealTimers();
 
       const renderedOptions = res.render.mock.calls[0][1];
       expect(renderedOptions.draftClaimDeletionDate).toBe('16 September 2026');
