@@ -2665,7 +2665,8 @@
           "LIFT_MENTAL_HEALTH": "Bydd hwn yn parhau i fod mewn lle nes eich bod yn {{liftLink}}.",
           "LIFT_STANDARD": "Dylech {{liftLink}} pan fyddwch yn gwybod pryd fydd yn dod i ben.",
           "TITLE": "Pwysig",
-          "USUALLY_LASTS": "Mae lle i anadlu yn para am 60 diwrnod fel arfer."
+          "USUALLY_LASTS": "Mae lle i anadlu yn para am 60 diwrnod fel arfer.",
+          "WILL_END_ON": "Bydd y lle i anadlu yn dod i ben ar {{endDate}}."
         },
         "HEARINGS": {
           "PAY_FEE": "of £{{ feeAmount }} by {{ hearingDueDate }}. If you do not do this, your claim may be struck out.",

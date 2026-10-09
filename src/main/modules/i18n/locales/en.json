@@ -2667,7 +2667,8 @@
           "LIFT_MENTAL_HEALTH": "This will remain in place until you {{liftLink}}.",
           "LIFT_STANDARD": "{{liftLink}} when you know when it will end.",
           "TITLE": "Important",
-          "USUALLY_LASTS": "Breathing space usually lasts for 60 days."
+          "USUALLY_LASTS": "Breathing space usually lasts for 60 days.",
+          "WILL_END_ON": "Breathing space will end on {{endDate}}."
         },
         "HEARINGS": {
           "PAY_FEE": "of £{{ feeAmount }} by {{ hearingDueDate }}. If you do not do this, your claim may be struck out.",

@@ -1,6 +1,7 @@
 import {t} from 'i18next';
 import {Claim} from 'models/claim';
 import {DashboardNotification} from 'models/dashboard/dashboardNotification';
+import {formatDateToFullDate} from 'common/utils/dateUtils';
 
 const BODY_HTML = (lng: string) =>
   `<p class="govuk-body"><strong>${t('PAGES.DASHBOARD.NOTIFICATIONS.BREATHING_SPACE.DEFENDANT_CONTENT', {lng})}</strong></p>`;
@@ -16,9 +17,17 @@ const claimantBodyHtml = (claim: Claim, liftUrl: string, lng: string): string =>
   const liftLinkTextKey = isMentalHealth
     ? 'PAGES.DASHBOARD.NOTIFICATIONS.BREATHING_SPACE.LIFT_LINK_TEXT'
     : 'PAGES.DASHBOARD.NOTIFICATIONS.BREATHING_SPACE.LIFT_LINK_TEXT_STANDARD';
-  const liftLink = `<a class="govuk-link" href="${liftUrl}">${t(liftLinkTextKey, {lng})}</a>`;
 
   let html = `<p class="govuk-body"><strong>${t(contentKey, {lng})}</strong></p>`;
+  const expectedEnd = claim.liftBreathing?.expectedEnd;
+  if (expectedEnd && claim.hasFutureDatedBreathingSpaceExit()) {
+    html += `<p class="govuk-body">${t('PAGES.DASHBOARD.NOTIFICATIONS.BREATHING_SPACE.WILL_END_ON', {
+      lng,
+      endDate: formatDateToFullDate(expectedEnd, lng),
+    })}</p>`;
+    return html;
+  }
+  const liftLink = `<a class="govuk-link" href="${liftUrl}">${t(liftLinkTextKey, {lng})}</a>`;
   if (!isMentalHealth) {
     html += `<p class="govuk-body">${t('PAGES.DASHBOARD.NOTIFICATIONS.BREATHING_SPACE.USUALLY_LASTS', {lng})}</p>`;
   }
