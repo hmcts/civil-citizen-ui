@@ -1,7 +1,7 @@
 import { AppRequest } from 'common/models/AppRequest';
 import { Claim } from 'common/models/claim';
 import { UploadAdditionalDocument } from 'common/models/generalApplication/UploadAdditionalDocument';
-import { SummaryRow, summaryRow } from 'common/models/summaryList/summaryList';
+import { SummaryRow, summaryRow, summaryRowWithTextValue } from 'common/models/summaryList/summaryList';
 import { SummarySection, summarySection } from 'common/models/summaryList/summarySections';
 import { generateRedisKey, saveDraftClaim } from 'modules/draft-store/draftStoreService';
 import { TypeOfDocumentSectionMapper } from '../caseProgression/TypeOfDocumentSectionMapper';
@@ -36,8 +36,8 @@ export const getSummaryList = (additionalDocumentsList: UploadAdditionalDocument
     });
   additionalDocumentsList.forEach((uploadDocument: UploadAdditionalDocument) => {
     index = index + 1;
-    formattedSummary.summaryList.rows.push(summaryRow(toc, uploadDocument.typeOfDocument));
-    formattedSummary.summaryList.rows.push(summaryRow(uploadDocument.caseDocument.documentName, '', `${constructResponseUrlWithIdAndAppIdParams(claimId, gaId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL)}?indexId=${index}`, 'Remove document'));
+    formattedSummary.summaryList.rows.push(summaryRowWithTextValue(toc, uploadDocument.typeOfDocument));
+    formattedSummary.summaryList.rows.push(summaryRowWithTextValue(uploadDocument.caseDocument.documentName, '', `${constructResponseUrlWithIdAndAppIdParams(claimId, gaId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL)}?indexId=${index}`, 'Remove document'));
   });
   return formattedSummary;
 };

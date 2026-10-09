@@ -1,6 +1,6 @@
 import {SummarySection, summarySection} from 'models/summaryList/summarySections';
 import {Claim} from 'models/claim';
-import {summaryRow} from 'models/summaryList/summaryList';
+import {summaryRow, summaryRowHtml} from 'models/summaryList/summaryList';
 import {t} from 'i18next';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {getLng} from 'common/utils/languageToggleUtils';
@@ -13,6 +13,7 @@ import {caseNumberPrettify} from 'common/utils/stringUtils';
 import {ClaimSummarySection} from 'form/models/claimSummarySection';
 import {CaseRole} from 'form/models/caseRoles';
 import {currencyFormatWithNoTrailingZeros} from 'common/utils/currencyFormat';
+import {escapeHtml} from 'common/utils/escapeHtml';
 
 const changeLabel = (lang: string ): string => t('COMMON.BUTTONS.CHANGE', { lng: getLng(lang) });
 
@@ -29,15 +30,15 @@ export const buildIsCaseReadyForTrialOrHearing = (claim: Claim, claimId: string,
     t(`COMMON.VARIATION_4.${trialArrangements.isCaseReady.toUpperCase()}`, { lng: getLng(lang) }),
     constructResponseUrlWithIdParams(claimId, IS_CASE_READY_URL), changeLabel(lang)));
 
-  trialReadySummarySections.summaryList.rows.push(summaryRow(t('PAGES.FINALISE_TRIAL_ARRANGEMENTS.ARE_THERE_ANY_CHANGES', { lng: getLng(lang) }),
-    '<p>'+t(`COMMON.${trialArrangements.hasAnythingChanged.option.toUpperCase()}`, { lng: getLng(lang) })
+  trialReadySummarySections.summaryList.rows.push(summaryRowHtml(t('PAGES.FINALISE_TRIAL_ARRANGEMENTS.ARE_THERE_ANY_CHANGES', { lng: getLng(lang) }),
+    '<p>'+escapeHtml(t(`COMMON.${trialArrangements.hasAnythingChanged.option.toUpperCase()}`, { lng: getLng(lang) }))
     +'</p><hr class="govuk-section-break--visible--l" ><p>'
-    + t(`${trialArrangements.hasAnythingChanged.textArea}`, { lng: getLng(lang) })
+    + escapeHtml(trialArrangements.hasAnythingChanged.textArea)
     +'</p>', constructResponseUrlWithIdParams(claimId, HAS_ANYTHING_CHANGED_URL), changeLabel(lang)));
 
   if (trialArrangements.otherTrialInformation.length > 0) {
     trialReadySummarySections.summaryList.rows.push(summaryRow(t('PAGES.FINALISE_TRIAL_ARRANGEMENTS.OTHER_INFORMATION_TITLE',
-      {lng: getLng(lang)}), t(`${trialArrangements.otherTrialInformation}`, {lng: getLng(lang)}),
+      {lng: getLng(lang)}), trialArrangements.otherTrialInformation,
     constructResponseUrlWithIdParams(claimId, TRIAL_ARRANGEMENTS_HEARING_DURATION), changeLabel(lang)));
   }
 
