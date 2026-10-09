@@ -1,6 +1,7 @@
 import {Dashboard} from 'models/dashboard/dashboard';
 import {ApplicantOrRespondent, ClaimantOrDefendant} from 'models/partyType';
 import {DashboardNotificationList} from 'models/dashboard/dashboardNotificationList';
+import {DashboardNotification} from 'models/dashboard/dashboardNotification';
 import {AppRequest} from 'models/AppRequest';
 import {Claim} from 'models/claim';
 import {
@@ -41,6 +42,12 @@ const GA_DASHBOARD_EXCLUSIONS_QM = Array.of(new DashboardTaskList('Applications 
 const QMLIP_DASHBOARD_EXCLUSIONS = Array.of(
   new DashboardTaskList('Applications to the court', '', []),
   new DashboardTaskList('Messages to the court', '', []));
+
+const isDefaultJudgmentRequestNotification = (notification: DashboardNotification): boolean => {
+  const description = `${notification.descriptionEn ?? ''} ${notification.descriptionCy ?? ''}`;
+  return description.includes('{REQUEST_CCJ_URL}')
+    || description.includes('{COUNTY_COURT_JUDGEMENT_URL}');
+};
 
 export const getDashboardForm = async (caseRole: ClaimantOrDefendant, claim: Claim, totalAmountWithInterestAndFees: string, claimId: string, req: AppRequest, isCarmApplicable = false, isGAFlagEnable = false): Promise<Dashboard> => {
   const queryManagementFlagEnabled = await isQueryManagementEnabled(claim.submittedDate);
@@ -134,6 +141,11 @@ export const getNotifications = async (claimId: string, claim: Claim, totalAmoun
     : new Map<string, DashboardNotificationList>();
 
   if (dashboardNotifications) {
+    if (claim.hasBreathingSpace() && caseRole === ClaimantOrDefendant.CLAIMANT) {
+      dashboardNotifications.items = (dashboardNotifications.items ?? []).filter(
+        (notification) => !isDefaultJudgmentRequestNotification(notification),
+      );
+    }
     for (const notification of dashboardNotifications.items) {
       const mappedValues = await populateDashboardValues(claim, claimId,totalAmountWithInterestAndFees, notification, lng);
       notification.descriptionEn = await replaceDashboardPlaceholders(notification.descriptionEn, mappedValues);

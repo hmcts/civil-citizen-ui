@@ -1,8 +1,8 @@
 {% from "./new-line.njk" import newLine %}
 
-{% macro aboutClaimWidget(t, aboutClaimParams) %}
-{% set containerStyle= "govuk-grid-column-one-third" %}
-{% if aboutClaimParams.header %}
+{% macro aboutClaimWidget(t, aboutClaimParams, customContainerClass) %}
+{% set containerStyle= customContainerClass if customContainerClass !== undefined else "govuk-grid-column-one-third" %}
+{% if aboutClaimParams.header and customContainerClass === undefined %}
   {% set containerStyle= "govuk-grid-column-one-third govuk-!-padding-top-9" %}
 {% endif %}
 
