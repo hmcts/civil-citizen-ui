@@ -76,14 +76,14 @@ export const saveUploadedDocuments = async (claim: Claim, req: AppRequest): Prom
 
   if(claim.isClaimant())
   {
-    newUploadDocuments = claim.caseProgression.claimantDocuments;
-    existingUploadDocuments = oldClaim.caseProgression.claimantUploadDocuments;
+    newUploadDocuments = claim.caseProgression?.claimantDocuments;
+    existingUploadDocuments = oldClaim.caseProgression?.claimantUploadDocuments;
     caseProgression.claimantUploadDocuments = mapUploadedFileToDocumentType(newUploadDocuments, existingUploadDocuments);
     updatedCcdClaim = toCCDEvidenceUpload(caseProgression, updatedCcdClaim, true);
     return await civilServiceClient.submitEvent(CaseEvent.EVIDENCE_UPLOAD_APPLICANT, req.params.id, updatedCcdClaim, req);
   } else {
-    newUploadDocuments = claim.caseProgression.defendantDocuments;
-    existingUploadDocuments = oldClaim.caseProgression.defendantUploadDocuments;
+    newUploadDocuments = claim.caseProgression?.defendantDocuments;
+    existingUploadDocuments = oldClaim.caseProgression?.defendantUploadDocuments;
     caseProgression.defendantUploadDocuments =  mapUploadedFileToDocumentType(newUploadDocuments, existingUploadDocuments);
     updatedCcdClaim = toCCDEvidenceUpload(caseProgression, updatedCcdClaim, false);
     return await civilServiceClient.submitEvent(CaseEvent.EVIDENCE_UPLOAD_RESPONDENT, req.params.id, updatedCcdClaim, req);
@@ -91,6 +91,12 @@ export const saveUploadedDocuments = async (claim: Claim, req: AppRequest): Prom
 };
 
 const mapUploadedFileToDocumentType = (newUploadedDocuments: UploadDocumentsUserForm, existingUploadDocuments: UploadDocuments): UploadDocuments => {
+
+  existingUploadDocuments = existingUploadDocuments ?? new UploadDocuments();
+  existingUploadDocuments.disclosure = existingUploadDocuments.disclosure ?? [];
+  existingUploadDocuments.witness = existingUploadDocuments.witness ?? [];
+  existingUploadDocuments.expert = existingUploadDocuments.expert ?? [];
+  existingUploadDocuments.trial = existingUploadDocuments.trial ?? [];
 
   if (!newUploadedDocuments) {
     return existingUploadDocuments;

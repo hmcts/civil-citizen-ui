@@ -271,6 +271,113 @@ describe('checkAnswersServiceTest', () => {
         //then
         expect(mockSubmitEvent).toHaveBeenCalledWith('EVIDENCE_UPLOAD_RESPONDENT', req.params.id, createCCDClaimForUploadedDocuments(0, false), <AppRequest>req);
       });
+
+      test('For claimant - should not throw when existing uploaded documents are undefined', async () => {
+        //given
+        const mockSubmitEvent = jest.spyOn(CivilServiceClient.prototype, 'submitEvent');
+        const claimWithNoExistingDocuments = new Claim();
+        claimWithNoExistingDocuments.caseProgression = new CaseProgression();
+        jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockResolvedValue(claimWithNoExistingDocuments);
+        claimWithUploadedDocuments.caseRole = CaseRole.CLAIMANT;
+        const req = request;
+        req.params = {
+          id: '12345',
+        };
+
+        //when
+        await saveUploadedDocuments(claimWithUploadedDocuments, <AppRequest>req);
+
+        //then
+        expect(mockSubmitEvent).toHaveBeenCalledWith('EVIDENCE_UPLOAD_APPLICANT', req.params.id, createCCDClaimForUploadedDocuments(2, true), <AppRequest>req);
+      });
+
+      test('For defendant - should not throw when existing case progression is undefined', async () => {
+        //given
+        const mockSubmitEvent = jest.spyOn(CivilServiceClient.prototype, 'submitEvent');
+        jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockResolvedValue(new Claim());
+        claimWithUploadedDocuments.caseRole = CaseRole.DEFENDANT;
+        const req = request;
+        req.params = {
+          id: '12345',
+        };
+
+        //when
+        await saveUploadedDocuments(claimWithUploadedDocuments, <AppRequest>req);
+
+        //then
+        expect(mockSubmitEvent).toHaveBeenCalledWith('EVIDENCE_UPLOAD_RESPONDENT', req.params.id, createCCDClaimForUploadedDocuments(2, false), <AppRequest>req);
+      });
+
+      test('For claimant - should not throw when some existing document arrays are undefined', async () => {
+        //given
+        const mockSubmitEvent = jest.spyOn(CivilServiceClient.prototype, 'submitEvent');
+        const claimWithPartialDocuments = new Claim();
+        claimWithPartialDocuments.caseProgression = new CaseProgression();
+        claimWithPartialDocuments.caseProgression.claimantUploadDocuments = {disclosure: []} as UploadDocuments;
+        jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockResolvedValue(claimWithPartialDocuments);
+        claimWithUploadedDocuments.caseRole = CaseRole.CLAIMANT;
+        const req = request;
+        req.params = {
+          id: '12345',
+        };
+
+        //when
+        await saveUploadedDocuments(claimWithUploadedDocuments, <AppRequest>req);
+
+        //then
+        expect(mockSubmitEvent).toHaveBeenCalledWith('EVIDENCE_UPLOAD_APPLICANT', req.params.id, createCCDClaimForUploadedDocuments(2, true), <AppRequest>req);
+      });
+
+      test('For claimant - should not throw when claim case progression is undefined', async () => {
+        //given
+        const mockSubmitEvent = jest.spyOn(CivilServiceClient.prototype, 'submitEvent');
+        const claimWithNoCaseProgression = new Claim();
+        claimWithNoCaseProgression.caseRole = CaseRole.CLAIMANT;
+        const req = request;
+        req.params = {
+          id: '12345',
+        };
+
+        //when
+        await saveUploadedDocuments(claimWithNoCaseProgression, <AppRequest>req);
+
+        //then
+        expect(mockSubmitEvent).toHaveBeenCalledWith('EVIDENCE_UPLOAD_APPLICANT', req.params.id, createCCDClaimForUploadedDocuments(0, true), <AppRequest>req);
+      });
+
+      test('For claimant - should not throw when existing case progression is undefined', async () => {
+        //given
+        const mockSubmitEvent = jest.spyOn(CivilServiceClient.prototype, 'submitEvent');
+        jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockResolvedValue(new Claim());
+        claimWithUploadedDocuments.caseRole = CaseRole.CLAIMANT;
+        const req = request;
+        req.params = {
+          id: '12345',
+        };
+
+        //when
+        await saveUploadedDocuments(claimWithUploadedDocuments, <AppRequest>req);
+
+        //then
+        expect(mockSubmitEvent).toHaveBeenCalledWith('EVIDENCE_UPLOAD_APPLICANT', req.params.id, createCCDClaimForUploadedDocuments(2, true), <AppRequest>req);
+      });
+
+      test('For defendant - should not throw when claim case progression is undefined', async () => {
+        //given
+        const mockSubmitEvent = jest.spyOn(CivilServiceClient.prototype, 'submitEvent');
+        const claimWithNoCaseProgression = new Claim();
+        claimWithNoCaseProgression.caseRole = CaseRole.DEFENDANT;
+        const req = request;
+        req.params = {
+          id: '12345',
+        };
+
+        //when
+        await saveUploadedDocuments(claimWithNoCaseProgression, <AppRequest>req);
+
+        //then
+        expect(mockSubmitEvent).toHaveBeenCalledWith('EVIDENCE_UPLOAD_RESPONDENT', req.params.id, createCCDClaimForUploadedDocuments(0, false), <AppRequest>req);
+      });
     });
   });
 });
