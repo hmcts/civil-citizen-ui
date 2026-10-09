@@ -39,12 +39,12 @@ const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
 export const getSummarySections = (uploadedDocuments: UploadDocumentsUserForm, claimId: string, isSmallClaims: boolean, lang: string ): DocumentUploadSections => {
-
+  const documents = uploadedDocuments ?? new UploadDocumentsUserForm();
   return {
-    witnessEvidenceSection: getWitnessSummarySection(uploadedDocuments, claimId, lang),
-    disclosureEvidenceSection: getDisclosureSummarySection(uploadedDocuments, claimId, lang),
-    expertEvidenceSection: getExpertSummarySection(uploadedDocuments, claimId, lang),
-    trialEvidenceSection: getTrialSummarySection(uploadedDocuments, isSmallClaims, claimId, lang),
+    witnessEvidenceSection: getWitnessSummarySection(documents, claimId, lang),
+    disclosureEvidenceSection: getDisclosureSummarySection(documents, claimId, lang),
+    expertEvidenceSection: getExpertSummarySection(documents, claimId, lang),
+    trialEvidenceSection: getTrialSummarySection(documents, isSmallClaims, claimId, lang),
   };
 };
 
@@ -76,14 +76,14 @@ export const saveUploadedDocuments = async (claim: Claim, req: AppRequest): Prom
 
   if(claim.isClaimant())
   {
-    newUploadDocuments = claim.caseProgression.claimantDocuments;
-    existingUploadDocuments = oldClaim.caseProgression.claimantUploadDocuments;
+    newUploadDocuments = claim.caseProgression?.claimantDocuments;
+    existingUploadDocuments = oldClaim.caseProgression?.claimantUploadDocuments;
     caseProgression.claimantUploadDocuments = mapUploadedFileToDocumentType(newUploadDocuments, existingUploadDocuments);
     updatedCcdClaim = toCCDEvidenceUpload(caseProgression, updatedCcdClaim, true);
     return await civilServiceClient.submitEvent(CaseEvent.EVIDENCE_UPLOAD_APPLICANT, req.params.id, updatedCcdClaim, req);
   } else {
-    newUploadDocuments = claim.caseProgression.defendantDocuments;
-    existingUploadDocuments = oldClaim.caseProgression.defendantUploadDocuments;
+    newUploadDocuments = claim.caseProgression?.defendantDocuments;
+    existingUploadDocuments = oldClaim.caseProgression?.defendantUploadDocuments;
     caseProgression.defendantUploadDocuments =  mapUploadedFileToDocumentType(newUploadDocuments, existingUploadDocuments);
     updatedCcdClaim = toCCDEvidenceUpload(caseProgression, updatedCcdClaim, false);
     return await civilServiceClient.submitEvent(CaseEvent.EVIDENCE_UPLOAD_RESPONDENT, req.params.id, updatedCcdClaim, req);
@@ -91,6 +91,16 @@ export const saveUploadedDocuments = async (claim: Claim, req: AppRequest): Prom
 };
 
 const mapUploadedFileToDocumentType = (newUploadedDocuments: UploadDocumentsUserForm, existingUploadDocuments: UploadDocuments): UploadDocuments => {
+
+  existingUploadDocuments = existingUploadDocuments ?? new UploadDocuments();
+  existingUploadDocuments.disclosure = existingUploadDocuments.disclosure ?? [];
+  existingUploadDocuments.witness = existingUploadDocuments.witness ?? [];
+  existingUploadDocuments.expert = existingUploadDocuments.expert ?? [];
+  existingUploadDocuments.trial = existingUploadDocuments.trial ?? [];
+
+  if (!newUploadedDocuments) {
+    return existingUploadDocuments;
+  }
 
   if(newUploadedDocuments.documentsForDisclosure){
     for(const document of newUploadedDocuments.documentsForDisclosure) {

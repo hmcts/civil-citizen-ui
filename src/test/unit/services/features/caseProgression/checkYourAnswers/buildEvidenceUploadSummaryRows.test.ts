@@ -12,8 +12,9 @@ import {SummaryList, SummaryRow} from 'models/summaryList/summaryList';
 import {
   getDocumentReferredToSummaryRow,
   getDocumentTypeSummaryRow, getExpertEvidenceSummaryRow, getExpertOtherPartySummaryRow, getFileOnlySummaryRow,
-  getWitnessEvidenceSummaryRow,
+  getWitnessEvidenceSummaryRow, mockDateValue,
 } from '../../../../../utils/caseProgression/mockEvidenceUploadSummaryRows';
+import {WitnessSection} from 'models/caseProgression/uploadDocumentsUserForm';
 import {t} from 'i18next';
 const {Logger} = require('@hmcts/nodejs-logging');
 jest.mock('i18next');
@@ -89,6 +90,51 @@ describe('buildEvidenceUploadedSummaryRows', () => {
       expect(actualSummaryRows.sections[0]).toBeUndefined();
     });
 
+    test('should skip null witness statement items', () => {
+      //given
+      const uploadDocumentsUserForm = getMockFullUploadDocumentsUserForm();
+      uploadDocumentsUserForm.witnessStatement = [null, ...uploadDocumentsUserForm.witnessStatement];
+      //when
+      const actual = getWitnessSummarySection(uploadDocumentsUserForm, '1234', 'en');
+      //then
+      expect(actual.sections[0].summaryList.rows).toHaveLength(8);
+    });
+
+    test('should show empty date when date input fields are missing', () => {
+      //given
+      const uploadDocumentsUserForm = getMockFullUploadDocumentsUserForm();
+      uploadDocumentsUserForm.witnessStatement[0] = {
+        ...uploadDocumentsUserForm.witnessStatement[0],
+        dateInputFields: undefined,
+      } as WitnessSection;
+      //when
+      const actual = getWitnessSummarySection(uploadDocumentsUserForm, '1234', 'en');
+      //then
+      const rows = actual.sections[0].summaryList.rows;
+      expect(rows).toHaveLength(8);
+      expect(rows[0].value.html).toContain('PAGES.UPLOAD_DOCUMENTS.WITNESS.DATE_STATEMENT</span></br><hr');
+      expect(rows[0].value.html).not.toContain(mockDateValue);
+      expect(rows[1]).toEqual(getWitnessEvidenceSummaryRow('PAGES.UPLOAD_DOCUMENTS.WITNESS.STATEMENT 2', 'PAGES.UPLOAD_DOCUMENTS.WITNESS.DATE_STATEMENT', '1234'));
+    });
+
+    test('should log document name when witness document link is missing', () => {
+      //given
+      loggerSpy.mockClear();
+      const uploadDocumentsUserForm = getMockFullUploadDocumentsUserForm();
+      uploadDocumentsUserForm.witnessStatement[0] = {
+        ...uploadDocumentsUserForm.witnessStatement[0],
+        caseDocument: {
+          ...uploadDocumentsUserForm.witnessStatement[0].caseDocument,
+          documentLink: undefined,
+        },
+      } as WitnessSection;
+      //when
+      const actual = getWitnessSummarySection(uploadDocumentsUserForm, '1234', 'en');
+      //then
+      expect(actual.sections[0].summaryList.rows).toHaveLength(7);
+      expect(loggerSpy).toHaveBeenCalledWith(expect.stringContaining('Witness document link is missing'));
+      expect(loggerSpy).toHaveBeenCalledWith(expect.stringContaining('DocumentName: test.png'));
+    });
   });
   describe('getExpertSummary', () => {
     test('should return summary rows for all claimant values', () => {

@@ -180,6 +180,12 @@ const getWitnessSummaryRows = (title: string, dateTitle: string,  documents: Wit
 
   let index = 1;
   for(const document of documents) {
+    if(!document?.caseDocument?.documentLink?.document_binary_url){
+      logger.error(`Witness document link is missing for document
+                            ClaimId: ${claimId}
+                            DocumentName: ${document?.caseDocument?.documentName}`);
+      continue;
+    }
 
     const uploadDocumentsHref = constructResponseUrlWithIdParams(claimId, CP_UPLOAD_DOCUMENTS_URL);
     let witnessSummaryRow = {} as SummaryRow;
@@ -187,7 +193,7 @@ const getWitnessSummaryRows = (title: string, dateTitle: string,  documents: Wit
     const witnessNameElement = {title: t('PAGES.UPLOAD_DOCUMENTS.WITNESS.WITNESS_NAME', {lng: getLng(lang)}), value: document.witnessName};
     const dateElement = {
       title: t(dateTitle, {lng: getLng(lang)}),
-      value: getDate(document.dateInputFields.date.toString()),
+      value: document.dateInputFields?.date ? getDate(document.dateInputFields.date.toString()) : '',
     };
     const documentElement = {title: documentUploaded(lang), value: formatDocumentViewURL(document.caseDocument.documentName, claimId, document.caseDocument.documentLink.document_binary_url)};
 
@@ -272,7 +278,7 @@ const getDocumentReferredToSummaryRows = (title: string, documents: ReferredToIn
 
     const witnessNameElement = {title: t('PAGES.UPLOAD_DOCUMENTS.WITNESS.WITNESS_NAME', {lng: getLng(lang)}), value: document.witnessName};
     const typeOfDocumentElement = {title: t('PAGES.UPLOAD_DOCUMENTS.TYPE_OF_DOCUMENT', {lng: getLng(lang)}), value: document.typeOfDocument};
-    const dateElement = {title: t('PAGES.UPLOAD_DOCUMENTS.DOCUMENT_ISSUE_DATE', {lng: getLng(lang)}), value: getDate(document.dateInputFields.date.toString())};
+    const dateElement = {title: t('PAGES.UPLOAD_DOCUMENTS.DOCUMENT_ISSUE_DATE', {lng: getLng(lang)}), value: document.dateInputFields?.date ? getDate(document.dateInputFields.date.toString()) : ''};
     const documentElement = {title: documentUploaded(lang), value: formatDocumentViewURL(document.caseDocument.documentName, claimId, document.caseDocument.documentLink.document_binary_url)};
 
     let sectionTitle = t(title, { lng: getLng(lang) });

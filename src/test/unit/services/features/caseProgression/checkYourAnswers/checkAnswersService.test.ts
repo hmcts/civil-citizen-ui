@@ -81,6 +81,28 @@ describe('checkAnswersServiceTest', () => {
       expect(summarySectionActual).toEqual(summarySectionExpected);
     });
 
+    test('should pass an empty form to each section builder when uploaded documents are undefined', () => {
+      //when
+      getSummarySections(undefined, '1234', false, 'en');
+      //then
+      const emptyForm = new UploadDocumentsUserForm();
+      expect(mockWitnessSummarySection).toHaveBeenLastCalledWith(emptyForm, '1234', 'en');
+      expect(mockDisclosureSummarySection).toHaveBeenLastCalledWith(emptyForm, '1234', 'en');
+      expect(mockExpertSummarySection).toHaveBeenLastCalledWith(emptyForm, '1234', 'en');
+      expect(mockTrialSummarySection).toHaveBeenLastCalledWith(emptyForm, false, '1234', 'en');
+    });
+
+    test('should pass an empty form to each section builder when uploaded documents are null', () => {
+      //when
+      getSummarySections(undefined, '1234', false, 'en');
+      //then
+      const emptyForm = new UploadDocumentsUserForm();
+      expect(mockWitnessSummarySection).toHaveBeenLastCalledWith(emptyForm, '1234', 'en');
+      expect(mockDisclosureSummarySection).toHaveBeenLastCalledWith(emptyForm, '1234', 'en');
+      expect(mockExpertSummarySection).toHaveBeenLastCalledWith(emptyForm, '1234', 'en');
+      expect(mockTrialSummarySection).toHaveBeenLastCalledWith(emptyForm, false, '1234', 'en');
+    });
+
     test('return top page elements', () => {
       //given
       const claim = new Claim();
@@ -212,6 +234,149 @@ describe('checkAnswersServiceTest', () => {
         //then
         expect(mockSubmitEvent).toHaveBeenCalled();
         expect(mockSubmitEvent).toHaveBeenCalledWith('EVIDENCE_UPLOAD_RESPONDENT', req.params.id, createCCDClaimForUploadedDocuments(0,false),  <AppRequest>req);
+      });
+
+      test('For claimant - should not throw when uploaded documents are undefined', async () => {
+        //given
+        const mockSubmitEvent = jest.spyOn(CivilServiceClient.prototype, 'submitEvent');
+        const claimWithNoDraft = new Claim();
+        claimWithNoDraft.caseRole = CaseRole.CLAIMANT;
+        claimWithNoDraft.caseProgression = new CaseProgression();
+        const req = request;
+        req.params = {
+          id: '12345',
+        };
+
+        //when
+        await saveUploadedDocuments(claimWithNoDraft, <AppRequest>req);
+
+        //then
+        expect(mockSubmitEvent).toHaveBeenCalledWith('EVIDENCE_UPLOAD_APPLICANT', req.params.id, createCCDClaimForUploadedDocuments(0, true), <AppRequest>req);
+      });
+
+      test('For defendant - should not throw when uploaded documents are undefined', async() => {
+        //given
+        const mockSubmitEvent = jest.spyOn(CivilServiceClient.prototype, 'submitEvent');
+        const claimWithNoDraft = new Claim();
+        claimWithNoDraft.caseRole = CaseRole.DEFENDANT;
+        claimWithNoDraft.caseProgression = new CaseProgression();
+        const req = request;
+        req.params = {
+          id: '12345',
+        };
+
+        //when
+        await saveUploadedDocuments(claimWithNoDraft, <AppRequest>req);
+
+        //then
+        expect(mockSubmitEvent).toHaveBeenCalledWith('EVIDENCE_UPLOAD_RESPONDENT', req.params.id, createCCDClaimForUploadedDocuments(0, false), <AppRequest>req);
+      });
+
+      test('For claimant - should not throw when existing uploaded documents are undefined', async () => {
+        //given
+        const mockSubmitEvent = jest.spyOn(CivilServiceClient.prototype, 'submitEvent');
+        const claimWithNoExistingDocuments = new Claim();
+        claimWithNoExistingDocuments.caseProgression = new CaseProgression();
+        jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockResolvedValue(claimWithNoExistingDocuments);
+        claimWithUploadedDocuments.caseRole = CaseRole.CLAIMANT;
+        const req = request;
+        req.params = {
+          id: '12345',
+        };
+
+        //when
+        await saveUploadedDocuments(claimWithUploadedDocuments, <AppRequest>req);
+
+        //then
+        expect(mockSubmitEvent).toHaveBeenCalledWith('EVIDENCE_UPLOAD_APPLICANT', req.params.id, createCCDClaimForUploadedDocuments(2, true), <AppRequest>req);
+      });
+
+      test('For defendant - should not throw when existing case progression is undefined', async () => {
+        //given
+        const mockSubmitEvent = jest.spyOn(CivilServiceClient.prototype, 'submitEvent');
+        jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockResolvedValue(new Claim());
+        claimWithUploadedDocuments.caseRole = CaseRole.DEFENDANT;
+        const req = request;
+        req.params = {
+          id: '12345',
+        };
+
+        //when
+        await saveUploadedDocuments(claimWithUploadedDocuments, <AppRequest>req);
+
+        //then
+        expect(mockSubmitEvent).toHaveBeenCalledWith('EVIDENCE_UPLOAD_RESPONDENT', req.params.id, createCCDClaimForUploadedDocuments(2, false), <AppRequest>req);
+      });
+
+      test('For claimant - should not throw when some existing document arrays are undefined', async () => {
+        //given
+        const mockSubmitEvent = jest.spyOn(CivilServiceClient.prototype, 'submitEvent');
+        const claimWithPartialDocuments = new Claim();
+        claimWithPartialDocuments.caseProgression = new CaseProgression();
+        claimWithPartialDocuments.caseProgression.claimantUploadDocuments = {disclosure: []} as UploadDocuments;
+        jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockResolvedValue(claimWithPartialDocuments);
+        claimWithUploadedDocuments.caseRole = CaseRole.CLAIMANT;
+        const req = request;
+        req.params = {
+          id: '12345',
+        };
+
+        //when
+        await saveUploadedDocuments(claimWithUploadedDocuments, <AppRequest>req);
+
+        //then
+        expect(mockSubmitEvent).toHaveBeenCalledWith('EVIDENCE_UPLOAD_APPLICANT', req.params.id, createCCDClaimForUploadedDocuments(2, true), <AppRequest>req);
+      });
+
+      test('For claimant - should not throw when claim case progression is undefined', async () => {
+        //given
+        const mockSubmitEvent = jest.spyOn(CivilServiceClient.prototype, 'submitEvent');
+        const claimWithNoCaseProgression = new Claim();
+        claimWithNoCaseProgression.caseRole = CaseRole.CLAIMANT;
+        const req = request;
+        req.params = {
+          id: '12345',
+        };
+
+        //when
+        await saveUploadedDocuments(claimWithNoCaseProgression, <AppRequest>req);
+
+        //then
+        expect(mockSubmitEvent).toHaveBeenCalledWith('EVIDENCE_UPLOAD_APPLICANT', req.params.id, createCCDClaimForUploadedDocuments(0, true), <AppRequest>req);
+      });
+
+      test('For claimant - should not throw when existing case progression is undefined', async () => {
+        //given
+        const mockSubmitEvent = jest.spyOn(CivilServiceClient.prototype, 'submitEvent');
+        jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockResolvedValue(new Claim());
+        claimWithUploadedDocuments.caseRole = CaseRole.CLAIMANT;
+        const req = request;
+        req.params = {
+          id: '12345',
+        };
+
+        //when
+        await saveUploadedDocuments(claimWithUploadedDocuments, <AppRequest>req);
+
+        //then
+        expect(mockSubmitEvent).toHaveBeenCalledWith('EVIDENCE_UPLOAD_APPLICANT', req.params.id, createCCDClaimForUploadedDocuments(2, true), <AppRequest>req);
+      });
+
+      test('For defendant - should not throw when claim case progression is undefined', async () => {
+        //given
+        const mockSubmitEvent = jest.spyOn(CivilServiceClient.prototype, 'submitEvent');
+        const claimWithNoCaseProgression = new Claim();
+        claimWithNoCaseProgression.caseRole = CaseRole.DEFENDANT;
+        const req = request;
+        req.params = {
+          id: '12345',
+        };
+
+        //when
+        await saveUploadedDocuments(claimWithNoCaseProgression, <AppRequest>req);
+
+        //then
+        expect(mockSubmitEvent).toHaveBeenCalledWith('EVIDENCE_UPLOAD_RESPONDENT', req.params.id, createCCDClaimForUploadedDocuments(0, false), <AppRequest>req);
       });
     });
   });
