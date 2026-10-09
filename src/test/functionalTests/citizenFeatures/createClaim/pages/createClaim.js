@@ -558,11 +558,11 @@ class CreateClaim {
     await I.waitForContent('You can ask the defendant to pay back your claim fee as part of the settlement.', 60);
     await I.see('Pay your claim fee', 'h1');
     await I.see('Claim amount');
-    await I.see(claimAmount);
+    await I.see(String(claimAmount));
     await I.see('Claim fee');
-    await I.see(claimFee);
+    await I.see(String(claimFee));
     await I.see('Total claim amount');
-    await I.see(claimAmount+claimFee+interestAmount);
+    await I.see(String(claimAmount+claimFee+interestAmount));
     await I.see('If you settle out of court we won\'t refund your claim fee.');
     await I.waitForText(`continue to payment(£${claimFee})`);
     await I.click('continue to payment');
