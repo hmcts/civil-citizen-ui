@@ -30,6 +30,9 @@ import {
   createFileUploadError,
   getMulterErrorConstraint,
   extractCategoryAndIndex,
+  extractCategorySectionAndFileIndex,
+  removeUploadedFile,
+  migrateLegacyCaseDocumentsOnForm,
   uploadAndValidateFile,
 } from 'common/utils/fileUploadUtils';
 import {ValidationError} from 'class-validator';
@@ -86,8 +89,10 @@ async function renderView(res: Response, claim: Claim, claimId: string, form: Ge
   const isSmallClaims = claim.isSmallClaimsTrackDQ;
 
   if (!claim.isClaimant() && !form && claim.caseProgression?.defendantDocuments) {
+    migrateLegacyCaseDocumentsOnForm(claim.caseProgression.defendantDocuments as unknown as Record<string, unknown>);
     form = new GenericForm(claim.caseProgression?.defendantDocuments);
   } else if (claim.isClaimant() && !form && claim.caseProgression?.claimantDocuments) {
+    migrateLegacyCaseDocumentsOnForm(claim.caseProgression.claimantDocuments as unknown as Record<string, unknown>);
     form = new GenericForm(claim.caseProgression?.claimantDocuments);
   }
 
@@ -176,6 +181,9 @@ uploadDocumentsController.post(CP_UPLOAD_DOCUMENTS_URL, multerMiddleware, (async
       return renderView(res, claim, claimId, form);
     } else if (action?.includes('[uploadButton]')) {
       await uploadSingleFile(req, action, form);
+    } else if (action?.includes('[deleteFile]')) {
+      const [category, index, fileIndex] = extractCategorySectionAndFileIndex(action);
+      removeUploadedFile((form.model as any)[category], index, fileIndex);
     } else if (action?.includes('[removeButton]')) {
       const [category, index] = action.split(/[[\]]/).filter((word: string) => word !== '');
       (form.model as any)[category].splice(Number(index), 1);

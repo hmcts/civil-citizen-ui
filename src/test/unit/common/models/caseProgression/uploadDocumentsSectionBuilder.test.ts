@@ -77,10 +77,10 @@ describe('UploadDocumentsSectionBuilder tests', ()=> {
         text: 'title',
         html: 'html',
         index: 0,
-        caseDocument: '',
+        caseDocuments: '',
         classes: '',
         errorMessage: '',
-        documentName: '',
+        documentNames: [] as string[],
       },
     });
 
