@@ -12,20 +12,22 @@ import {PartyPhone} from 'models/PartyPhone';
 import {GenericForm} from 'form/models/genericForm';
 import {StatementOfTruthFormClaimIssue} from 'form/models/statementOfTruth/statementOfTruthFormClaimIssue';
 import {getStashedClaimOrFromStore} from 'common/utils/claimRequestLocals';
-import {deleteDraftClaimFromStore, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {getDraftClaim, updateDraftClaim, deleteDraftClaim} from 'modules/draft-store/draftStoreManagerService';
 import {getStatementOfTruth, getSummarySections, saveStatementOfTruth} from 'services/features/claim/checkAnswers/checkAnswersService';
 import {submitClaim} from 'services/features/claim/submission/submitClaim';
 import {saveClaimFee} from 'services/features/claim/amount/claimFeesService';
 import {calculateInterestToDate} from 'common/utils/interestUtils';
-import {isCarmEnabledForCase} from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
+import {isCarmEnabledForCase, isDraftClaimDatabaseEnabled} from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {createMockResponse, createMockSession, getRouteHandler} from '../../../../utils/getRouteHandler';
+import * as ccdTranslationService from 'services/translation/claim/ccdTranslation';
+import {app} from '../../../../../main/app-instance';
 
 jest.mock('common/utils/claimRequestLocals', () => ({
   getStashedClaimOrFromStore: jest.fn(),
 }));
-jest.mock('modules/draft-store/draftStoreService');
+jest.mock('modules/draft-store/draftStoreManagerService');
 jest.mock('services/features/claim/checkAnswers/checkAnswersService', () => ({
   getSummarySections: jest.fn(),
   getStatementOfTruth: jest.fn(),
@@ -51,7 +53,7 @@ describe('Claim - Check answers', () => {
   let res: ReturnType<typeof createMockResponse>;
   let next: jest.Mock;
   const mockGetStashedClaim = getStashedClaimOrFromStore as jest.Mock;
-  const mockGetClaim = getCaseDataFromStore as jest.Mock;
+  const mockGetDraftClaim = getDraftClaim as jest.Mock;
   const mockGetSummarySections = getSummarySections as jest.Mock;
   const mockGetStatementOfTruth = getStatementOfTruth as jest.Mock;
   const mockSaveStatementOfTruth = saveStatementOfTruth as jest.Mock;
@@ -59,7 +61,9 @@ describe('Claim - Check answers', () => {
   const mockSaveClaimFee = saveClaimFee as jest.Mock;
   const mockCalculateInterestToDate = calculateInterestToDate as jest.Mock;
   const mockIsCarmEnabledForCase = isCarmEnabledForCase as jest.Mock;
-  const mockDeleteDraftClaim = deleteDraftClaimFromStore as jest.Mock;
+  const mockIsDraftClaimDatabaseEnabled = isDraftClaimDatabaseEnabled as jest.Mock;
+  const mockUpdateDraftClaim = updateDraftClaim as jest.Mock;
+  const mockDeleteDraftClaim = deleteDraftClaim as jest.Mock;
 
   const signedBody = {
     signed: 'Test',
@@ -88,8 +92,9 @@ describe('Claim - Check answers', () => {
   };
 
   beforeEach(() => {
+    jest.clearAllMocks();
     req = {
-      session: createMockSession({user: {id: 'user-id'}}),
+      session: createMockSession({user: {id: 'user-id'}, draftId: 'draft-123'}),
       body: {},
       query: {},
       cookies: {},
@@ -97,13 +102,19 @@ describe('Claim - Check answers', () => {
     res = createMockResponse();
     next = jest.fn();
     mockGetStashedClaim.mockResolvedValue(buildClaim(YesNo.NO));
-    mockGetClaim.mockResolvedValue(buildClaim(YesNo.NO));
+    mockGetDraftClaim.mockResolvedValue({
+      claimResponse: {case_data: buildClaim(YesNo.NO)},
+      rawResponse: {draftId: 'draft-123'},
+      createdAt: '2026-08-01T10:00:00.000Z',
+    });
     mockGetSummarySections.mockReturnValue({sections: []});
     mockGetStatementOfTruth.mockReturnValue(new StatementOfTruthFormClaimIssue(false));
     mockSaveStatementOfTruth.mockResolvedValue(undefined);
     mockSaveClaimFee.mockResolvedValue(undefined);
     mockCalculateInterestToDate.mockResolvedValue(0);
     mockIsCarmEnabledForCase.mockResolvedValue(true);
+    mockIsDraftClaimDatabaseEnabled.mockResolvedValue(true);
+    mockUpdateDraftClaim.mockResolvedValue(undefined);
     mockDeleteDraftClaim.mockResolvedValue(undefined);
     jest.spyOn(CivilServiceClient.prototype, 'getClaimFeeData').mockResolvedValue({
       calculatedAmountInPence: '50',
@@ -155,7 +166,11 @@ describe('Claim - Check answers', () => {
     });
 
     it('should re-render when claimant phone number is missing', async () => {
-      mockGetClaim.mockResolvedValue(buildClaim(YesNo.NO, false));
+      mockGetDraftClaim.mockResolvedValue({
+        claimResponse: {case_data: buildClaim(YesNo.NO, false)},
+        rawResponse: {draftId: 'draft-123'},
+        createdAt: '2026-08-01T10:00:00.000Z',
+      });
       req.body = signedBody;
 
       await postHandler(req as AppRequest, res as unknown as Response, next);
@@ -167,8 +182,12 @@ describe('Claim - Check answers', () => {
       expect(res.redirect).not.toHaveBeenCalled();
     });
 
-    it('should redirect to confirmation and clear cookies when help with fees is yes', async () => {
-      mockGetClaim.mockResolvedValue(buildClaim(YesNo.YES));
+    it('should redirect to confirmation and delete the draft when help with fees is yes', async () => {
+      mockGetDraftClaim.mockResolvedValue({
+        claimResponse: {case_data: buildClaim(YesNo.YES)},
+        rawResponse: {draftId: 'draft-123'},
+        createdAt: '2026-08-01T10:00:00.000Z',
+      });
       const submittedClaim = new Claim();
       submittedClaim.id = 'claim-id';
       mockSubmitClaim.mockResolvedValue(submittedClaim);
@@ -176,20 +195,57 @@ describe('Claim - Check answers', () => {
 
       await postHandler(req as AppRequest, res as unknown as Response, next);
 
+      expect(mockDeleteDraftClaim).toHaveBeenCalledWith(req, 'draft-123');
+      expect(mockUpdateDraftClaim).not.toHaveBeenCalled();
+      expect(req.session.draftId).toBeUndefined();
       expect(res.clearCookie).toHaveBeenCalledWith('eligibilityCompleted');
       expect(res.clearCookie).toHaveBeenCalledWith('eligibility');
       expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(submittedClaim.id, CLAIM_CONFIRMATION_URL));
     });
 
-    it('should redirect to confirmation and clear cookies when help with fees is no', async () => {
-      mockGetClaim.mockResolvedValue(buildClaim(YesNo.NO));
+    it('should delete the redis draft when the database flag is off and help with fees is no', async () => {
+      mockIsDraftClaimDatabaseEnabled.mockResolvedValue(false);
+      mockGetDraftClaim.mockResolvedValue({
+        claimResponse: {case_data: buildClaim(YesNo.NO)},
+        rawResponse: {draftId: 'draft-123'},
+        createdAt: '2026-08-01T10:00:00.000Z',
+      });
       const submittedClaim = new Claim();
-      submittedClaim.id = 'claim-id';
+      submittedClaim.id = '1790322528949860';
       mockSubmitClaim.mockResolvedValue(submittedClaim);
       req.body = signedBody;
 
       await postHandler(req as AppRequest, res as unknown as Response, next);
 
+      expect(mockDeleteDraftClaim).toHaveBeenCalledWith(req, 'draft-123');
+      expect(mockUpdateDraftClaim).not.toHaveBeenCalled();
+      expect(req.session.draftId).toBeUndefined();
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(submittedClaim.id, CLAIM_CONFIRMATION_URL));
+    });
+
+    it('should redirect to confirmation and keep the draft when help with fees is no', async () => {
+      mockGetDraftClaim.mockResolvedValue({
+        claimResponse: {case_data: buildClaim(YesNo.NO)},
+        rawResponse: {draftId: 'draft-123'},
+        createdAt: '2026-08-01T10:00:00.000Z',
+      });
+      const submittedClaim = new Claim();
+      submittedClaim.id = '1790322528949860';
+      submittedClaim.legacyCaseReference = '000JE005';
+      mockSubmitClaim.mockResolvedValue(submittedClaim);
+      req.body = signedBody;
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(mockUpdateDraftClaim).toHaveBeenCalledWith(
+        req,
+        expect.objectContaining({
+          id: submittedClaim.id,
+          legacyCaseReference: '000JE005',
+        }),
+        'draft-123',
+      );
+      expect(req.session.draftId).toBeUndefined();
       expect(res.clearCookie).toHaveBeenCalledWith('eligibilityCompleted');
       expect(res.clearCookie).toHaveBeenCalledWith('eligibility');
       expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(submittedClaim.id, CLAIM_CONFIRMATION_URL));
@@ -197,11 +253,122 @@ describe('Claim - Check answers', () => {
 
     it('should call next when submitting the claim fails', async () => {
       const error = new Error('error');
-      mockGetClaim.mockRejectedValue(error);
+      mockGetDraftClaim.mockRejectedValue(error);
 
       await postHandler(req as AppRequest, res as unknown as Response, next);
 
       expect(next).toHaveBeenCalledWith(error);
+    });
+
+    it('should still redirect to confirmation when payment draft linking fails after CCD accept', async () => {
+      const draftClaim = buildClaim(YesNo.NO);
+      const submittedClaim = new Claim();
+      submittedClaim.id = '1790322528949860';
+      submittedClaim.legacyCaseReference = '000JE005';
+
+      mockGetDraftClaim.mockResolvedValue({
+        claimResponse: {case_data: draftClaim},
+        rawResponse: {draftId: 'draft-123'},
+        createdAt: '2026-08-01T10:00:00.000Z',
+      });
+      mockSubmitClaim.mockResolvedValue(submittedClaim);
+      mockUpdateDraftClaim.mockRejectedValueOnce(new Error('link draft to case failed'));
+      req.body = signedBody;
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(mockSubmitClaim).toHaveBeenCalledTimes(1);
+      expect(next).not.toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(
+        constructResponseUrlWithIdParams(submittedClaim.id, CLAIM_CONFIRMATION_URL),
+      );
+    });
+
+    it('should still redirect to confirmation when help-with-fees draft deletion fails after CCD accept', async () => {
+      const draftClaim = buildClaim(YesNo.YES);
+      const submittedClaim = new Claim();
+      submittedClaim.id = '1790322528949860';
+
+      mockGetDraftClaim.mockResolvedValue({
+        claimResponse: {case_data: draftClaim},
+        rawResponse: {draftId: 'draft-123'},
+        createdAt: '2026-08-01T10:00:00.000Z',
+      });
+      mockSubmitClaim.mockResolvedValue(submittedClaim);
+      mockDeleteDraftClaim.mockRejectedValueOnce(new Error('delete draft failed'));
+      req.body = signedBody;
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(mockSubmitClaim).toHaveBeenCalledTimes(1);
+      expect(mockDeleteDraftClaim).toHaveBeenCalledTimes(1);
+      expect(next).not.toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(
+        constructResponseUrlWithIdParams(submittedClaim.id, CLAIM_CONFIRMATION_URL),
+      );
+    });
+
+    describe('retry after the draft could not be linked to the CCD case', () => {
+      const redisStore = new Map<string, string>();
+
+      beforeEach(() => {
+        redisStore.clear();
+        app.locals.draftStoreClient = {
+          get: jest.fn((key: string) => Promise.resolve(redisStore.get(key) ?? null)),
+          set: jest.fn((key: string, value: string, ...options: unknown[]) => {
+            if (options.includes('NX') && redisStore.has(key)) {
+              return Promise.resolve(null);
+            }
+            redisStore.set(key, value);
+            return Promise.resolve('OK');
+          }),
+          del: jest.fn((key: string) => Promise.resolve(Number(redisStore.delete(key)))),
+        };
+        mockSubmitClaim.mockImplementation(
+          jest.requireActual('services/features/claim/submission/submitClaim').submitClaim,
+        );
+        jest.spyOn(ccdTranslationService, 'translateDraftClaimToCCDR2').mockReturnValue({} as never);
+        mockUpdateDraftClaim.mockImplementation((_req: AppRequest, claim: Claim) =>
+          claim.id ? Promise.reject(new Error('link draft to case failed')) : Promise.resolve(undefined));
+        mockDeleteDraftClaim.mockRejectedValue(new Error('delete draft failed'));
+      });
+
+      it.each([
+        ['without help with fees', YesNo.NO],
+        ['with help with fees', YesNo.YES],
+      ])('should not create a second CCD case when the blank draft is resubmitted %s', async (_label, helpWithFees) => {
+        mockGetDraftClaim.mockImplementation(() => Promise.resolve({
+          claimResponse: {case_data: buildClaim(helpWithFees)},
+          rawResponse: {draftId: 'draft-123'},
+          createdAt: '2026-08-01T10:00:00.000Z',
+        }));
+        const submittedClaim = new Claim();
+        submittedClaim.id = '1790322528949860';
+        submittedClaim.legacyCaseReference = '000JE005';
+        const submitDraftClaimSpy = jest
+          .spyOn(CivilServiceClient.prototype, 'submitDraftClaim')
+          .mockResolvedValue(submittedClaim);
+        req.body = signedBody;
+
+        await postHandler(req as AppRequest, res as unknown as Response, next);
+
+        const retryReq = {
+          session: createMockSession({user: {id: 'user-id'}}),
+          body: signedBody,
+          query: {},
+          cookies: {},
+        } as unknown as AppRequest;
+        const retryRes = createMockResponse();
+        const retryNext = jest.fn();
+        await postHandler(retryReq, retryRes as unknown as Response, retryNext);
+
+        const confirmationUrl = constructResponseUrlWithIdParams(submittedClaim.id, CLAIM_CONFIRMATION_URL);
+        expect(submitDraftClaimSpy).toHaveBeenCalledTimes(1);
+        expect(next).not.toHaveBeenCalled();
+        expect(retryNext).not.toHaveBeenCalled();
+        expect(res.redirect).toHaveBeenCalledWith(confirmationUrl);
+        expect(retryRes.redirect).toHaveBeenCalledWith(confirmationUrl);
+      });
     });
   });
 });

@@ -43,7 +43,7 @@ describe('Defendant Phone', () => {
     it('should render defendant phone number page', async () => {
       await getHandler(req as AppRequest, res as unknown as Response, next);
 
-      expect(mockGetTelephone).toHaveBeenCalledWith('user-id', ClaimantOrDefendant.DEFENDANT);
+      expect(mockGetTelephone).toHaveBeenCalledWith(req, ClaimantOrDefendant.DEFENDANT);
       expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
         pageTitle,
         form: expect.any(GenericForm),
@@ -66,7 +66,7 @@ describe('Defendant Phone', () => {
 
       await postHandler(req as AppRequest, res as unknown as Response, next);
 
-      expect(mockSaveTelephone).toHaveBeenCalledWith('user-id', expect.any(CitizenTelephoneNumber), ClaimantOrDefendant.DEFENDANT);
+      expect(mockSaveTelephone).toHaveBeenCalledWith(req, expect.any(CitizenTelephoneNumber), ClaimantOrDefendant.DEFENDANT);
       expect(res.redirect).toHaveBeenCalledWith(CLAIMANT_TASK_LIST_URL);
     });
 

@@ -1,12 +1,13 @@
 import { AppRequest, AppSession } from 'common/models/AppRequest';
 import { NextFunction, Request, RequestHandler, Response, Router } from 'express';
 import { BILINGUAL_LANGUAGE_PREFERENCE_URL, CLAIM_CHECK_ANSWERS_URL, TESTING_SUPPORT_URL } from 'routes/urls';
-import { saveDraftClaimToCache } from 'modules/draft-store/draftClaimCache';
+import {createOrLoadDraft, updateDraftClaim} from 'modules/draft-store/draftStoreManagerService';
+import {cloneDefaultDraftClaimCaseData, saveDraftClaimToCache} from 'modules/draft-store/draftClaimCache';
 const createDraftViewPath = 'features/claim/create-draft';
 import jwt_decode from 'jwt-decode';
 import {isCarmEnabledForCase} from '../../../app/auth/launchdarkly/launchDarklyClient';
 import {Claim} from 'models/claim';
-import {createDraftClaimInStoreWithExpiryTime, saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
@@ -47,6 +48,7 @@ interface IdTokenJwtPayload {
 }
 
 const createDraftClaimController = Router();
+
 createDraftClaimController.get(TESTING_SUPPORT_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     return res.render(createDraftViewPath, res);
@@ -56,12 +58,14 @@ createDraftClaimController.get(TESTING_SUPPORT_URL, (async (req: AppRequest, res
 }) as RequestHandler);
 
 createDraftClaimController.post(TESTING_SUPPORT_URL, (async (req: Request, res: Response, next: NextFunction) => {
+  const submittedDate = new Date();
   const claimWithSubmittedDate = {
-    submittedDate : new Date().toISOString(),
+    submittedDate : submittedDate.toISOString(),
   };
   try {
+    const appReq = req as AppRequest;
     let userId = ((req.session) as AppSession)?.user?.id;
-    const caseData = req.body?.caseData ? JSON.parse(req.body?.caseData) : undefined;
+    const rawCaseData = req.body?.caseData ? JSON.parse(req.body?.caseData) : undefined;
 
     if (req.body?.draftType === 'response') {
       const responseClaim = buildResponseTestClaim();
@@ -72,22 +76,43 @@ createDraftClaimController.post(TESTING_SUPPORT_URL, (async (req: Request, res: 
     if (req.body?.idToken) {
       const jwt: IdTokenJwtPayload = jwt_decode(req.body?.idToken);
       userId = jwt?.uid;
+      if (appReq.session?.user) {
+        appReq.session.user.id = userId;
+      }
     }
 
-    if(!req.cookies['eligibilityCompleted']){
+    if(!req.cookies['eligibilityCompleted']) {
       const MILLISECONDS_IN_1_HOUR = 3600000;
       res.cookie('eligibilityCompleted', true, {maxAge: MILLISECONDS_IN_1_HOUR, httpOnly: true });
     }
 
-    if (!caseData?.isDraftClaim()) {
-      await createDraftClaimInStoreWithExpiryTime(userId);
-      await civilServiceClient.createDashboard(<AppRequest> req);
+    const isCarmEnabled = await isCarmEnabledForCase(submittedDate);
+    const caseDataToStore = rawCaseData ?? cloneDefaultDraftClaimCaseData(isCarmEnabled);
+    const initialClaimData = Object.assign(new Claim(), caseDataToStore, claimWithSubmittedDate);
+    if (!initialClaimData.draftClaimCreatedAt) {
+      initialClaimData.draftClaimCreatedAt = submittedDate;
     }
 
-    const claimData = Object.assign(new Claim(), claimWithSubmittedDate);
-    const isCarmEnabled = await isCarmEnabledForCase(claimData.submittedDate);
+    const draftResult = await createOrLoadDraft(appReq, initialClaimData);
+    const draftId = draftResult.rawResponse?.draftId;
+    const isNewDraft = draftResult.isNew;
 
-    await saveDraftClaimToCache(userId, caseData, isCarmEnabled);
+    if (appReq.session && draftId) {
+      appReq.session.draftId = draftId;
+    }
+
+    if (userId) {
+      await saveDraftClaimToCache(userId, caseDataToStore, isCarmEnabled);
+    }
+
+    if (draftId) {
+      await updateDraftClaim(appReq, initialClaimData, draftId);
+    }
+
+    if (isNewDraft) {
+      await civilServiceClient.createDashboard(appReq);
+    }
+
     if (req.body?.idToken && userId) {
       return res.sendStatus(200);
     }
