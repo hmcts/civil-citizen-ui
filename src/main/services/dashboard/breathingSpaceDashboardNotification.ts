@@ -18,15 +18,15 @@ const claimantBodyHtml = (claim: Claim, liftUrl: string, lng: string): string =>
     ? 'PAGES.DASHBOARD.NOTIFICATIONS.BREATHING_SPACE.LIFT_LINK_TEXT'
     : 'PAGES.DASHBOARD.NOTIFICATIONS.BREATHING_SPACE.LIFT_LINK_TEXT_STANDARD';
 
-  let html = `<p class="govuk-body"><strong>${t(contentKey, {lng})}</strong></p>`;
   const expectedEnd = claim.liftBreathing?.expectedEnd;
   if (expectedEnd && claim.hasFutureDatedBreathingSpaceExit()) {
-    html += `<p class="govuk-body">${t('PAGES.DASHBOARD.NOTIFICATIONS.BREATHING_SPACE.WILL_END_ON', {
+    const until = t('PAGES.DASHBOARD.NOTIFICATIONS.BREATHING_SPACE.UNTIL', {
       lng,
       endDate: formatDateToFullDate(expectedEnd, lng),
-    })}</p>`;
-    return html;
+    });
+    return `<p class="govuk-body"><strong>${t(contentKey, {lng})} ${until}</strong></p>`;
   }
+  let html = `<p class="govuk-body"><strong>${t(contentKey, {lng})}</strong></p>`;
   const liftLink = `<a class="govuk-link" href="${liftUrl}">${t(liftLinkTextKey, {lng})}</a>`;
   if (!isMentalHealth) {
     html += `<p class="govuk-body">${t('PAGES.DASHBOARD.NOTIFICATIONS.BREATHING_SPACE.USUALLY_LASTS', {lng})}</p>`;

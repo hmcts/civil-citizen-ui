@@ -98,14 +98,14 @@ describe('breathingSpaceDashboardNotification', () => {
       'PAGES.DASHBOARD.NOTIFICATIONS.BREATHING_SPACE.CLAIMANT_CONTENT_STANDARD',
     );
     expect(notification.descriptionEn).toContain(
-      `PAGES.DASHBOARD.NOTIFICATIONS.BREATHING_SPACE.WILL_END_ON ${formatDateToFullDate(futureEnd, 'en')}`,
+      `PAGES.DASHBOARD.NOTIFICATIONS.BREATHING_SPACE.UNTIL ${formatDateToFullDate(futureEnd, 'en')}`,
     );
     expect(notification.descriptionEn).not.toContain(liftUrl);
     expect(notification.descriptionEn).not.toContain(
       'PAGES.DASHBOARD.NOTIFICATIONS.BREATHING_SPACE.LIFT_STANDARD',
     );
     expect(notification.descriptionCy).toContain(
-      `PAGES.DASHBOARD.NOTIFICATIONS.BREATHING_SPACE.WILL_END_ON ${formatDateToFullDate(futureEnd, 'cy')}`,
+      `PAGES.DASHBOARD.NOTIFICATIONS.BREATHING_SPACE.UNTIL ${formatDateToFullDate(futureEnd, 'cy')}`,
     );
   });
 });

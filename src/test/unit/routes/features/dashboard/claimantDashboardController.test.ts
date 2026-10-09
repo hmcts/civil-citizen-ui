@@ -927,10 +927,9 @@ describe('claimant Dashboard Controller', () => {
 
       await request(app).get(DASHBOARD_CLAIMANT_URL).expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain(t('PAGES.DASHBOARD.NOTIFICATIONS.BREATHING_SPACE.CLAIMANT_CONTENT_STANDARD'));
-        expect(res.text).toContain(t('PAGES.DASHBOARD.NOTIFICATIONS.BREATHING_SPACE.WILL_END_ON', {
+        expect(res.text).toContain(`${t('PAGES.DASHBOARD.NOTIFICATIONS.BREATHING_SPACE.CLAIMANT_CONTENT_STANDARD')} ${t('PAGES.DASHBOARD.NOTIFICATIONS.BREATHING_SPACE.UNTIL', {
           endDate: formatDateToFullDate(futureEnd, 'en'),
-        }));
+        })}`);
         expect(res.text).not.toContain(t('PAGES.DASHBOARD.NOTIFICATIONS.BREATHING_SPACE.LIFT_LINK_TEXT_STANDARD'));
         expect(res.text).not.toContain(constructResponseUrlWithIdParams(':id', BREATHING_SPACE_LIFT_URL));
         expect(res.text).not.toContain(t('PAGES.DASHBOARD.SUPPORT_LINKS.LIFT_DEBT_RESPITE'));
