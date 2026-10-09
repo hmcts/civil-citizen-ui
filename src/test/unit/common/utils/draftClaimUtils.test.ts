@@ -1,6 +1,14 @@
 import {getDraftClaimDeletionDate} from 'common/utils/draftClaimUtils';
 
 describe('draftClaimUtils', () => {
+  beforeEach(() => {
+    jest.useFakeTimers().setSystemTime(new Date('2026-07-01T12:00:00.000Z'));
+  });
+
+  afterEach(() => {
+    jest.useRealTimers();
+  });
+
   it('should return formatted draft deletion date from creation date and ttl days', () => {
     expect(getDraftClaimDeletionDate(new Date('2026-07-01T10:00:00.000Z'), 30, 'en')).toBe('31 July 2026');
   });
@@ -29,10 +37,20 @@ describe('draftClaimUtils', () => {
   });
 
   it('should use today when stored creation date is in the future', () => {
-    jest.useFakeTimers().setSystemTime(new Date('2026-08-13T10:00:00.000Z'));
+    jest.setSystemTime(new Date('2026-08-13T10:00:00.000Z'));
 
     expect(getDraftClaimDeletionDate(new Date('2062-08-01T10:00:00.000Z'), 30, 'en')).toBe('12 September 2026');
+  });
 
-    jest.useRealTimers();
+  it('should still return the deletion date on the day the draft is deleted', () => {
+    jest.setSystemTime(new Date('2026-07-31T22:00:00.000Z'));
+
+    expect(getDraftClaimDeletionDate(new Date('2026-07-01T10:00:00.000Z'), 30, 'en')).toBe('31 July 2026');
+  });
+
+  it('should not return a deletion date that has passed for a draft kept under legacy retention', () => {
+    jest.setSystemTime(new Date('2026-10-08T10:00:00.000Z'));
+
+    expect(getDraftClaimDeletionDate(new Date('2026-07-01T10:00:00.000Z'), 30, 'en')).toBeUndefined();
   });
 });

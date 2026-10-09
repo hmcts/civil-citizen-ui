@@ -43,9 +43,7 @@ const mapToCivilClaimResponse = (dbDraft: DraftClaimResponse): CivilClaimRespons
 };
 
 const ensureDraftClaimTtl = (claim: Claim): void => {
-  if (!claim.draftClaimCacheTtlDays) {
-    claim.draftClaimCacheTtlDays = CIVIL_SERVICE_DRAFT_CLAIM_RETENTION_DAYS;
-  }
+  claim.draftClaimCacheTtlDays = CIVIL_SERVICE_DRAFT_CLAIM_RETENTION_DAYS;
 };
 
 const ccdCaseIdFromClaim = (claim: Claim): string | undefined => {

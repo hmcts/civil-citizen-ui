@@ -7,6 +7,16 @@ jest.mock('../../../main/modules/draft-store/draftStoreService', () =>
   jest.requireActual('../../setup/sharedMocks').draftStoreServiceMock,
 );
 
+jest.mock('../../../main/modules/draft-store/draftStoreDbService', () => ({
+  ...jest.requireActual('../../../main/modules/draft-store/draftStoreDbService'),
+  getActiveDraftFromDraftStoreDb: jest.fn().mockResolvedValue(null),
+  getDraftForCaseFromDraftStoreDb: jest.fn().mockResolvedValue(null),
+  createOrLoadDraftClaimInDraftStoreDb: jest.fn(),
+  updateDraftClaimInStore: jest.fn(),
+  applyPaymentRetentionInDraftStoreDb: jest.fn(),
+  deleteDraftClaimFromStore: jest.fn().mockResolvedValue(undefined),
+}));
+
 jest.mock('routes/guards/checkYourAnswersGuard', () => ({
   checkYourAnswersClaimGuard: (_req: unknown, _res: unknown, next: NextFunction) => next(),
 }));
@@ -27,11 +37,16 @@ import {
   CLAIMANT_TASK_LIST_URL,
 } from '../../../main/routes/urls';
 import {civilServiceClientMock, draftStoreServiceMock} from '../../setup/sharedMocks';
+import {getActiveDraftFromDraftStoreDb} from '../../../main/modules/draft-store/draftStoreDbService';
 import {asUser, installSessionUserInjector} from '../../setup/sessionHelper';
 import {Claim} from '../../../main/common/models/claim';
 import {Party} from '../../../main/common/models/party';
 import {PartyType} from '../../../main/common/models/partyType';
 import {PartyDetails} from '../../../main/common/form/models/partyDetails';
+
+const mockGetActiveDraftFromDb = getActiveDraftFromDraftStoreDb as jest.MockedFunction<
+  typeof getActiveDraftFromDraftStoreDb
+>;
 
 const USER_ID = 'claim-issue-user';
 const SUBMITTED_CLAIM_ID = '1111222233334444';
@@ -85,6 +100,7 @@ describe('Integration: claim-issue journey', () => {
     draftStoreServiceMock.getCaseDataFromStore.mockResolvedValue(buildDraftClaim());
     draftStoreServiceMock.getDraftClaimFromStore.mockResolvedValue(asStoredDraft(buildDraftClaim()));
     draftStoreServiceMock.saveDraftClaim.mockResolvedValue(undefined);
+    mockGetActiveDraftFromDb.mockResolvedValue(null);
     (civilServiceClientMock as unknown as {createDashboard: jest.Mock}).createDashboard =
       jest.fn().mockResolvedValue(undefined);
     civilServiceClientMock.retrieveClaimDetails.mockResolvedValue(buildSubmittedClaim());

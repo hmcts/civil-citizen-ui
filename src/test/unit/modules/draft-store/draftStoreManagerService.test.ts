@@ -1,5 +1,13 @@
 import {getDraftClaim, getDraftClaimForCase, updateDraftClaim, createOrLoadDraft, deleteDraftClaim, applyPaymentRetention} from 'modules/draft-store/draftStoreManagerService';
-import {createOrLoadDraftClaimInDraftStoreDb, getActiveDraftFromDraftStoreDb, getDraftForCaseFromDraftStoreDb, updateDraftClaimInStore, applyPaymentRetentionInDraftStoreDb, deleteDraftClaimFromStore} from 'modules/draft-store/draftStoreDbService';
+import {
+  CIVIL_SERVICE_DRAFT_CLAIM_RETENTION_DAYS,
+  createOrLoadDraftClaimInDraftStoreDb,
+  getActiveDraftFromDraftStoreDb,
+  getDraftForCaseFromDraftStoreDb,
+  updateDraftClaimInStore,
+  applyPaymentRetentionInDraftStoreDb,
+  deleteDraftClaimFromStore,
+} from 'modules/draft-store/draftStoreDbService';
 import {getCachedDraft, setCachedDraft, deleteCachedDraft} from 'modules/draft-store/draftClaimRedisCache';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {isDraftClaimDatabaseEnabled} from 'app/auth/launchdarkly/launchDarklyClient';
@@ -8,7 +16,15 @@ import {Claim} from 'models/claim';
 import {CivilClaimResponse} from 'models/civilClaimResponse';
 import {DraftClaimResponse} from 'models/draft/draftClaim';
 
-jest.mock('modules/draft-store/draftStoreDbService');
+jest.mock('modules/draft-store/draftStoreDbService', () => ({
+  ...jest.requireActual('modules/draft-store/draftStoreDbService'),
+  createOrLoadDraftClaimInDraftStoreDb: jest.fn(),
+  getActiveDraftFromDraftStoreDb: jest.fn(),
+  getDraftForCaseFromDraftStoreDb: jest.fn(),
+  updateDraftClaimInStore: jest.fn(),
+  applyPaymentRetentionInDraftStoreDb: jest.fn(),
+  deleteDraftClaimFromStore: jest.fn(),
+}));
 jest.mock('modules/draft-store/draftClaimRedisCache');
 jest.mock('modules/draft-store/draftStoreService');
 jest.mock('app/auth/launchdarkly/launchDarklyClient');
@@ -43,6 +59,7 @@ describe('draftStoreManagerService Unit Tests', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     mockIsDraftClaimDatabaseEnabled.mockResolvedValue(true);
+    require('../../../../main/app-instance').app.locals.draftStoreClient = {ttl: jest.fn().mockResolvedValue(-1)};
 
     mockReq = {
       session: {
@@ -129,11 +146,6 @@ describe('draftStoreManagerService Unit Tests', () => {
       });
       (draftStoreService.deleteDraftClaimFromStore as jest.Mock).mockResolvedValueOnce(undefined);
 
-      const {app} = require('../../../../main/app-instance');
-      app.locals.draftStoreClient = {
-        ttl: jest.fn().mockResolvedValue(2 * 86400),
-      };
-
       const result = await getDraftClaim(mockReq);
 
       expect(mockCreateOrLoadDraftInDb).toHaveBeenCalledWith(
@@ -141,7 +153,7 @@ describe('draftStoreManagerService Unit Tests', () => {
         expect.objectContaining({
           totalClaimAmount: 500,
           draftClaimCreatedAt: createdAt,
-          draftClaimCacheTtlDays: 2,
+          draftClaimCacheTtlDays: CIVIL_SERVICE_DRAFT_CLAIM_RETENTION_DAYS,
         }),
       );
       expect(draftStoreService.deleteDraftClaimFromStore).toHaveBeenCalledWith(mockUserId);
@@ -155,6 +167,21 @@ describe('draftStoreManagerService Unit Tests', () => {
       mockGetActiveDraftFromDb.mockRejectedValueOnce(dbError);
 
       await expect(getDraftClaim(mockReq)).rejects.toThrow('database connection failed');
+    });
+
+    it('should propagate Redis→DB migration failures instead of returning null', async () => {
+      mockGetCachedDraft.mockResolvedValueOnce(null);
+      mockGetActiveDraftFromDb.mockResolvedValueOnce(null);
+      (draftStoreService.getDraftClaimFromStore as jest.Mock).mockResolvedValueOnce(
+        Object.assign(new CivilClaimResponse(), {
+          id: mockUserId,
+          case_data: {totalClaimAmount: 500},
+        }),
+      );
+      mockCreateOrLoadDraftInDb.mockRejectedValueOnce(new Error('draftClaimCacheTtlDays must be 30'));
+
+      await expect(getDraftClaim(mockReq)).rejects.toThrow('draftClaimCacheTtlDays must be 30');
+      expect(draftStoreService.deleteDraftClaimFromStore).not.toHaveBeenCalled();
     });
   });
 
@@ -249,16 +276,14 @@ describe('draftStoreManagerService Unit Tests', () => {
       });
       (draftStoreService.deleteDraftClaimFromStore as jest.Mock).mockResolvedValueOnce(undefined);
 
-      const {app} = require('../../../../main/app-instance');
-      app.locals.draftStoreClient = {
-        ttl: jest.fn().mockResolvedValue(86400),
-      };
-
       const result = await createOrLoadDraft(mockReq);
 
       expect(mockCreateOrLoadDraftInDb).toHaveBeenCalledWith(
         mockReq,
-        expect.objectContaining({totalClaimAmount: 900, draftClaimCacheTtlDays: 1}),
+        expect.objectContaining({
+          totalClaimAmount: 900,
+          draftClaimCacheTtlDays: CIVIL_SERVICE_DRAFT_CLAIM_RETENTION_DAYS,
+        }),
       );
       expect(result.isNew).toBe(false);
       expect(result.rawResponse.payload).toEqual(expect.objectContaining({totalClaimAmount: 900}));
@@ -364,6 +389,7 @@ describe('draftStoreManagerService Unit Tests', () => {
         totalClaimAmount: 750,
         draftClaimCreatedAt: createdAt.toISOString(),
       };
+      mockReq.session.draftId = mockDraftId;
       (draftStoreService.getDraftClaimFromStore as jest.Mock)
         .mockResolvedValueOnce(new CivilClaimResponse())
         .mockResolvedValueOnce(new CivilClaimResponse());
@@ -376,10 +402,11 @@ describe('draftStoreManagerService Unit Tests', () => {
           expiresAt,
         },
       });
+      mockDeleteDraftFromDb.mockResolvedValueOnce(undefined);
 
       const setMock = jest.fn().mockResolvedValue('OK');
       const {app} = require('../../../../main/app-instance');
-      app.locals.draftStoreClient = {set: setMock};
+      app.locals.draftStoreClient = {set: setMock, ttl: jest.fn().mockResolvedValue(-1)};
 
       const result = await getDraftClaim(mockReq);
 
@@ -390,6 +417,8 @@ describe('draftStoreManagerService Unit Tests', () => {
         'EX',
         expect.any(Number),
       );
+      expect(mockDeleteDraftFromDb).toHaveBeenCalledWith(mockReq, mockDraftId);
+      expect(mockReq.session.draftId).toBeUndefined();
       expect(result?.claimResponse.case_data).toEqual(expect.objectContaining({totalClaimAmount: 750}));
     });
 
@@ -442,6 +471,106 @@ describe('draftStoreManagerService Unit Tests', () => {
       expect(draftStoreService.deleteDraftClaimFromStore).toHaveBeenCalledWith(mockUserId);
       expect(mockDeleteDraftFromDb).not.toHaveBeenCalled();
       expect(mockDeleteCachedDraft).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('flag round-trip ownership', () => {
+    const expiresAt = () => new Date(Date.now() + 3 * 86400 * 1000).toISOString();
+
+    it('keeps rollback edits when the flag is re-enabled', async () => {
+      const {app} = require('../../../../main/app-instance');
+      const setMock = jest.fn().mockResolvedValue('OK');
+      app.locals.draftStoreClient = {set: setMock, ttl: jest.fn().mockResolvedValue(-1)};
+
+      // Flag off: DB has 100, Redis empty → migrate to Redis and retire DB
+      mockIsDraftClaimDatabaseEnabled.mockResolvedValue(false);
+      (draftStoreService.getDraftClaimFromStore as jest.Mock)
+        .mockResolvedValueOnce(new CivilClaimResponse())
+        .mockResolvedValueOnce(new CivilClaimResponse());
+      mockGetActiveDraftFromDb.mockResolvedValueOnce({
+        claimResponse: new CivilClaimResponse(),
+        rawResponse: {
+          ...mockRawResponse,
+          payload: {totalClaimAmount: 100},
+          expiresAt: expiresAt(),
+        },
+      });
+      mockDeleteDraftFromDb.mockResolvedValueOnce(undefined);
+
+      const rolledBack = await getDraftClaim(mockReq);
+      expect(rolledBack?.claimResponse.case_data).toEqual(expect.objectContaining({totalClaimAmount: 100}));
+      expect(mockDeleteDraftFromDb).toHaveBeenCalledWith(mockReq, mockDraftId);
+
+      // Flag off: user edits Redis to 200
+      const editedClaim = Object.assign(new Claim(), {totalClaimAmount: 200});
+      (draftStoreService.saveDraftClaim as jest.Mock).mockResolvedValueOnce(undefined);
+      (draftStoreService.getDraftClaimFromStore as jest.Mock).mockResolvedValueOnce(
+        Object.assign(new CivilClaimResponse(), {id: mockUserId, case_data: editedClaim}),
+      );
+      await updateDraftClaim(mockReq, editedClaim, mockDraftId);
+
+      // Flag on: DB empty (retired), Redis has 200 → migrate edited answers into DB
+      mockIsDraftClaimDatabaseEnabled.mockResolvedValue(true);
+      mockGetCachedDraft.mockResolvedValueOnce(null);
+      mockGetActiveDraftFromDb.mockResolvedValueOnce(null);
+      (draftStoreService.getDraftClaimFromStore as jest.Mock).mockResolvedValueOnce(
+        Object.assign(new CivilClaimResponse(), {id: mockUserId, case_data: editedClaim}),
+      );
+      mockCreateOrLoadDraftInDb.mockResolvedValueOnce({
+        claimResponse: new CivilClaimResponse(),
+        rawResponse: {
+          ...mockRawResponse,
+          draftId: 'draft-new',
+          payload: editedClaim as unknown as Record<string, unknown>,
+        },
+        isNew: true,
+      });
+      (draftStoreService.deleteDraftClaimFromStore as jest.Mock).mockResolvedValueOnce(undefined);
+
+      const reEnabled = await getDraftClaim(mockReq);
+
+      expect(mockCreateOrLoadDraftInDb).toHaveBeenCalledWith(
+        mockReq,
+        expect.objectContaining({totalClaimAmount: 200}),
+      );
+      expect(reEnabled?.rawResponse.payload).toEqual(expect.objectContaining({totalClaimAmount: 200}));
+    });
+
+    it('does not resurrect a draft deleted while the flag is off', async () => {
+      const {app} = require('../../../../main/app-instance');
+      app.locals.draftStoreClient = {set: jest.fn().mockResolvedValue('OK'), ttl: jest.fn().mockResolvedValue(-1)};
+
+      // Flag off: migrate DB → Redis and retire DB
+      mockIsDraftClaimDatabaseEnabled.mockResolvedValue(false);
+      (draftStoreService.getDraftClaimFromStore as jest.Mock)
+        .mockResolvedValueOnce(new CivilClaimResponse())
+        .mockResolvedValueOnce(new CivilClaimResponse());
+      mockGetActiveDraftFromDb.mockResolvedValueOnce({
+        claimResponse: new CivilClaimResponse(),
+        rawResponse: {
+          ...mockRawResponse,
+          payload: {totalClaimAmount: 100},
+          expiresAt: expiresAt(),
+        },
+      });
+      mockDeleteDraftFromDb.mockResolvedValueOnce(undefined);
+      await getDraftClaim(mockReq);
+      expect(mockDeleteDraftFromDb).toHaveBeenCalledWith(mockReq, mockDraftId);
+
+      // Flag off: user deletes Redis draft
+      (draftStoreService.deleteDraftClaimFromStore as jest.Mock).mockResolvedValueOnce(undefined);
+      await deleteDraftClaim(mockReq, mockDraftId);
+
+      // Next flag-off read: Redis empty and DB retired → stays deleted
+      (draftStoreService.getDraftClaimFromStore as jest.Mock)
+        .mockResolvedValueOnce(new CivilClaimResponse())
+        .mockResolvedValueOnce(new CivilClaimResponse());
+      mockGetActiveDraftFromDb.mockResolvedValueOnce(null);
+
+      const afterDelete = await getDraftClaim(mockReq);
+
+      expect(afterDelete).toBeNull();
+      expect(mockCreateOrLoadDraftInDb).not.toHaveBeenCalled();
     });
   });
 });
