@@ -29,9 +29,13 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: '3.13'
       - name: Install Semgrep
-        run: python -m pip install semgrep==1.136.0
+        run: |
+          python -m pip install semgrep==1.137.0
+          python -m pip install pydantic==2.11.7
+          python -m pip check
+          python -c "from mcp.server.fastmcp import FastMCP; print('MCP import successful')"
       - name: Test PII logging rules
         run: semgrep test .semgrep
       - name: Scan changed application code for PII logging
