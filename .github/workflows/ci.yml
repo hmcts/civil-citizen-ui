@@ -31,7 +31,11 @@ jobs:
         with:
           python-version: '3.13'
       - name: Install Semgrep
-        run: python -m pip install semgrep==1.137.0
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install semgrep==1.137.0
+          python -m pip show semgrep mcp pydantic
+          python -m pip check
       - name: Test PII logging rules
         run: semgrep test .semgrep
       - name: Scan changed application code for PII logging
