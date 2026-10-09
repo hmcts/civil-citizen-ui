@@ -39,12 +39,12 @@ const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
 export const getSummarySections = (uploadedDocuments: UploadDocumentsUserForm, claimId: string, isSmallClaims: boolean, lang: string ): DocumentUploadSections => {
-
+  const documents = uploadedDocuments ?? new UploadDocumentsUserForm();
   return {
-    witnessEvidenceSection: getWitnessSummarySection(uploadedDocuments, claimId, lang),
-    disclosureEvidenceSection: getDisclosureSummarySection(uploadedDocuments, claimId, lang),
-    expertEvidenceSection: getExpertSummarySection(uploadedDocuments, claimId, lang),
-    trialEvidenceSection: getTrialSummarySection(uploadedDocuments, isSmallClaims, claimId, lang),
+    witnessEvidenceSection: getWitnessSummarySection(documents, claimId, lang),
+    disclosureEvidenceSection: getDisclosureSummarySection(documents, claimId, lang),
+    expertEvidenceSection: getExpertSummarySection(documents, claimId, lang),
+    trialEvidenceSection: getTrialSummarySection(documents, isSmallClaims, claimId, lang),
   };
 };
 

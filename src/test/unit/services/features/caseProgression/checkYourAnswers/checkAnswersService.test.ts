@@ -81,6 +81,28 @@ describe('checkAnswersServiceTest', () => {
       expect(summarySectionActual).toEqual(summarySectionExpected);
     });
 
+    test('should pass an empty form to each section builder when uploaded documents are undefined', () => {
+      //when
+      getSummarySections(undefined, '1234', false, 'en');
+      //then
+      const emptyForm = new UploadDocumentsUserForm();
+      expect(mockWitnessSummarySection).toHaveBeenLastCalledWith(emptyForm, '1234', 'en');
+      expect(mockDisclosureSummarySection).toHaveBeenLastCalledWith(emptyForm, '1234', 'en');
+      expect(mockExpertSummarySection).toHaveBeenLastCalledWith(emptyForm, '1234', 'en');
+      expect(mockTrialSummarySection).toHaveBeenLastCalledWith(emptyForm, false, '1234', 'en');
+    });
+
+    test('should pass an empty form to each section builder when uploaded documents are null', () => {
+      //when
+      getSummarySections(undefined, '1234', false, 'en');
+      //then
+      const emptyForm = new UploadDocumentsUserForm();
+      expect(mockWitnessSummarySection).toHaveBeenLastCalledWith(emptyForm, '1234', 'en');
+      expect(mockDisclosureSummarySection).toHaveBeenLastCalledWith(emptyForm, '1234', 'en');
+      expect(mockExpertSummarySection).toHaveBeenLastCalledWith(emptyForm, '1234', 'en');
+      expect(mockTrialSummarySection).toHaveBeenLastCalledWith(emptyForm, false, '1234', 'en');
+    });
+
     test('return top page elements', () => {
       //given
       const claim = new Claim();
