@@ -197,7 +197,7 @@
   },
   "resolutions": {
     "flatted": "3.4.4",
-    "undici": "7.30.0",
+    "undici": "8.11.2",
     "proxy-addr": "^2.0.8",
     "table/ajv": "^8.18.0",
     "@tootallnate/once": "^3.0.1",
