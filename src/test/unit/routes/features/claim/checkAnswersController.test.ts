@@ -23,14 +23,21 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {createMockResponse, createMockSession, getRouteHandler} from '../../../../utils/getRouteHandler';
 import * as ccdTranslationService from 'services/translation/claim/ccdTranslation';
 import {app} from '../../../../../main/app-instance';
-import {clearRedisWorkingDraftForPayment} from 'routes/features/claim/payment/claimIssuePaymentDraftService';
+import {
+  deleteDraftClaimFromStore,
+  getDraftClaimFromStore,
+  saveDraftClaim,
+} from 'modules/draft-store/draftStoreService';
 
 jest.mock('common/utils/claimRequestLocals', () => ({
   getStashedClaimOrFromStore: jest.fn(),
 }));
 jest.mock('modules/draft-store/draftStoreManagerService');
-jest.mock('routes/features/claim/payment/claimIssuePaymentDraftService', () => ({
-  clearRedisWorkingDraftForPayment: jest.fn(),
+jest.mock('modules/draft-store/draftStoreService', () => ({
+  ...jest.requireActual('modules/draft-store/draftStoreService'),
+  getDraftClaimFromStore: jest.fn(),
+  saveDraftClaim: jest.fn(),
+  deleteDraftClaimFromStore: jest.fn(),
 }));
 jest.mock('services/features/claim/checkAnswers/checkAnswersService', () => ({
   getSummarySections: jest.fn(),
@@ -68,7 +75,9 @@ describe('Claim - Check answers', () => {
   const mockIsDraftClaimDatabaseEnabled = isDraftClaimDatabaseEnabled as jest.Mock;
   const mockUpdateDraftClaim = updateDraftClaim as jest.Mock;
   const mockDeleteDraftClaim = deleteDraftClaim as jest.Mock;
-  const mockClearRedisWorkingDraftForPayment = clearRedisWorkingDraftForPayment as jest.Mock;
+  const mockGetDraftClaimFromStore = getDraftClaimFromStore as jest.Mock;
+  const mockSaveDraftClaim = saveDraftClaim as jest.Mock;
+  const mockDeleteDraftClaimFromStore = deleteDraftClaimFromStore as jest.Mock;
 
   const signedBody = {
     signed: 'Test',
@@ -121,7 +130,9 @@ describe('Claim - Check answers', () => {
     mockIsDraftClaimDatabaseEnabled.mockResolvedValue(true);
     mockUpdateDraftClaim.mockResolvedValue(undefined);
     mockDeleteDraftClaim.mockResolvedValue(undefined);
-    mockClearRedisWorkingDraftForPayment.mockResolvedValue(false);
+    mockGetDraftClaimFromStore.mockResolvedValue({});
+    mockSaveDraftClaim.mockResolvedValue(undefined);
+    mockDeleteDraftClaimFromStore.mockResolvedValue(undefined);
     jest.spyOn(CivilServiceClient.prototype, 'getClaimFeeData').mockResolvedValue({
       calculatedAmountInPence: '50',
     } as never);
@@ -243,13 +254,6 @@ describe('Claim - Check answers', () => {
 
       await postHandler(req as AppRequest, res as unknown as Response, next);
 
-      expect(mockClearRedisWorkingDraftForPayment).toHaveBeenCalledWith(
-        req,
-        expect.objectContaining({
-          id: submittedClaim.id,
-          legacyCaseReference: '000JE005',
-        }),
-      );
       expect(mockUpdateDraftClaim).toHaveBeenCalledWith(
         req,
         expect.objectContaining({
@@ -258,14 +262,16 @@ describe('Claim - Check answers', () => {
         }),
         'draft-123',
       );
+      expect(mockSaveDraftClaim).not.toHaveBeenCalled();
+      expect(mockDeleteDraftClaimFromStore).not.toHaveBeenCalled();
       expect(req.session.draftId).toBeUndefined();
       expect(res.clearCookie).toHaveBeenCalledWith('eligibilityCompleted');
       expect(res.clearCookie).toHaveBeenCalledWith('eligibility');
       expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(submittedClaim.id, CLAIM_CONFIRMATION_URL));
     });
 
-    it('should clear redis working draft for fee-paying claims and skip db update', async () => {
-      mockClearRedisWorkingDraftForPayment.mockResolvedValue(true);
+    it('regression: fee-paying redis draft moves to payment key and clears working draft', async () => {
+      mockGetDraftClaimFromStore.mockResolvedValue({case_data: buildClaim(YesNo.NO)});
       mockGetDraftClaim.mockResolvedValue({
         claimResponse: {case_data: buildClaim(YesNo.NO)},
         rawResponse: {draftId: 'draft-123'},
@@ -279,13 +285,16 @@ describe('Claim - Check answers', () => {
 
       await postHandler(req as AppRequest, res as unknown as Response, next);
 
-      expect(mockClearRedisWorkingDraftForPayment).toHaveBeenCalledWith(
-        req,
+      expect(mockSaveDraftClaim).toHaveBeenCalledWith(
+        `${submittedClaim.id}user-id`,
         expect.objectContaining({
           id: submittedClaim.id,
           legacyCaseReference: '000JE005',
         }),
+        true,
+        'user-id',
       );
+      expect(mockDeleteDraftClaimFromStore).toHaveBeenCalledWith('user-id');
       expect(mockUpdateDraftClaim).not.toHaveBeenCalled();
       expect(mockDeleteDraftClaim).not.toHaveBeenCalled();
       expect(req.session.draftId).toBeUndefined();

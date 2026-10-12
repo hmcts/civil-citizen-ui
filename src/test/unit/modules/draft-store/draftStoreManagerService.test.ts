@@ -219,6 +219,22 @@ describe('draftStoreManagerService Unit Tests', () => {
       expect(result.isNew).toBe(false);
       expect(result.claimResponse.id).toBe(mockUserId);
     });
+
+    it('regression: after redis working draft is cleared, createOrLoadDraft starts a fresh db draft', async () => {
+      const mockClaim = new Claim();
+      (draftStoreService.getDraftClaimFromStore as jest.Mock).mockResolvedValueOnce(new CivilClaimResponse());
+      mockCreateOrLoadDraftInDb.mockResolvedValueOnce({
+        claimResponse: new CivilClaimResponse(),
+        rawResponse: mockRawResponse,
+        isNew: true,
+      });
+
+      const result = await createOrLoadDraft(mockReq, mockClaim);
+
+      expect(mockCreateOrLoadDraftInDb).toHaveBeenCalledWith(mockReq, mockClaim);
+      expect(result.isNew).toBe(true);
+      expect(result.claimResponse.id).toBe(mockDraftId);
+    });
   });
 
   describe('updateDraftClaim', () => {

@@ -108,6 +108,25 @@ describe('claimIssuePaymentDraftService', () => {
       expect(cleared).toBe(false);
       expect(mockGetDraftClaimFromStore).not.toHaveBeenCalled();
     });
+
+    it('regression: after clear, payment can still load redis while working draft is gone', async () => {
+      const req = createReq();
+      const claim = createClaim();
+      mockGetDraftClaimFromStore.mockResolvedValueOnce({case_data: createClaim()});
+
+      const cleared = await clearRedisWorkingDraftForPayment(req, claim);
+      expect(cleared).toBe(true);
+      expect(mockDeleteDraftClaimFromStore).toHaveBeenCalledWith('user-id');
+
+      mockGetDraftClaimForCase.mockResolvedValueOnce(null);
+      mockGetClaimById.mockResolvedValueOnce(claim);
+
+      const paymentDraft = await getClaimIssuePaymentClaim(req);
+
+      expect(mockGetClaimById).toHaveBeenCalledWith(claimId, req, true);
+      expect(paymentDraft).toEqual({claim});
+      expect(paymentDraft.draftId).toBeUndefined();
+    });
   });
 
   describe('getClaimIssuePaymentClaim', () => {
