@@ -166,6 +166,25 @@ describe('Evidence Upload - checkYourAnswers Controller', () => {
         });
     });
 
+    it('should redirect to upload documents page when the claim has no case progression', async () => {
+      //Given
+      const claim: Claim = new Claim();
+      Object.assign(claim, civilClaimResponse.case_data);
+      claim.caseProgression = undefined;
+      mockDraftStore.mockReturnValueOnce(claim);
+      mockSummarySections.mockReturnValueOnce(null);
+
+      //When
+      await testSession
+        .get(CP_CHECK_ANSWERS_URL.replace(':id', claimId)).query({lang: 'en'})
+        //Then
+        .expect((res: { status: unknown; header: { location: string }; }) => {
+          expect(res.status).toBe(302);
+          expect(res.header.location).toBe(CP_UPLOAD_DOCUMENTS_URL.replace(':id', claimId));
+        });
+      expect(mockSummarySections).toHaveBeenLastCalledWith(undefined, claimId.toString(), true, 'en');
+    });
+
     it('should return status 500 when error thrown', async () => {
       //given
       jest.spyOn(draftStoreService, 'getDraftClaimFromStore')
@@ -247,6 +266,24 @@ describe('Evidence Upload - checkYourAnswers Controller', () => {
       const claim: Claim = new Claim();
       Object.assign(claim, civilClaimResponse.case_data);
       claim.caseProgression = {...claim.caseProgression, defendantDocuments: undefined} as Claim['caseProgression'];
+      mockDraftStore.mockReturnValueOnce(claim);
+      mockSaveUploadedDocuments.mockClear();
+
+      //when
+      await testSession.post(CP_CHECK_ANSWERS_URL.replace(':id', claimId)).send({signed: true}).expect((res: { status: unknown; header: { location: string }; }) => {
+        //then
+        expect(res.status).toBe(302);
+        expect(res.header.location).toBe(CP_UPLOAD_DOCUMENTS_URL.replace(':id', claimId));
+      });
+      expect(mockSaveUploadedDocuments).not.toHaveBeenCalled();
+    });
+
+    test('should redirect to upload documents page when a claimant claim has no case progression', async () => {
+      //given
+      const claim: Claim = new Claim();
+      Object.assign(claim, civilClaimResponse.case_data);
+      claim.caseRole = CaseRole.CLAIMANT;
+      claim.caseProgression = undefined;
       mockDraftStore.mockReturnValueOnce(claim);
       mockSaveUploadedDocuments.mockClear();
 
