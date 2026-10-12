@@ -2,7 +2,7 @@ import config from 'config';
 import nock from 'nock';
 import {app} from '../../../../../main/app';
 import {mockCivilClaim} from '../../../../utils/mockDraftStore';
-import {CP_CHECK_ANSWERS_URL} from 'routes/urls';
+import {CP_CHECK_ANSWERS_URL, CP_UPLOAD_DOCUMENTS_URL} from 'routes/urls';
 import * as checkAnswersService from 'services/features/caseProgression/checkYourAnswers/checkAnswersService';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
@@ -15,6 +15,7 @@ jest.mock('services/features/caseProgression/checkYourAnswers/checkAnswersServic
 jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 
 const mockSummarySections = checkAnswersService.getSummarySections as jest.Mock;
+const mockSaveUploadedDocuments = checkAnswersService.saveUploadedDocuments as jest.Mock;
 mockSummarySections.mockReturnValue({} as SummarySections);
 const mockDraftStore = draftStoreService.getCaseDataFromStore as jest.Mock;
 const mockGenerateRedisKey = draftStoreService.generateRedisKey as jest.Mock;
@@ -147,6 +148,24 @@ describe('Evidence Upload - checkYourAnswers Controller', () => {
         });
     });
 
+    it('should redirect to upload documents page when the upload draft is missing', async () => {
+      //Given
+      const claim: Claim = new Claim();
+      Object.assign(claim, civilClaimResponse.case_data);
+      claim.caseProgression = {...claim.caseProgression, defendantDocuments: undefined} as Claim['caseProgression'];
+      mockDraftStore.mockReturnValueOnce(claim);
+      mockSummarySections.mockReturnValueOnce(null);
+
+      //When
+      await testSession
+        .get(CP_CHECK_ANSWERS_URL.replace(':id', claimId)).query({lang: 'en'})
+        //Then
+        .expect((res: { status: unknown; header: { location: string }; }) => {
+          expect(res.status).toBe(302);
+          expect(res.header.location).toBe(CP_UPLOAD_DOCUMENTS_URL.replace(':id', claimId));
+        });
+    });
+
     it('should return status 500 when error thrown', async () => {
       //given
       jest.spyOn(draftStoreService, 'getDraftClaimFromStore')
@@ -223,6 +242,23 @@ describe('Evidence Upload - checkYourAnswers Controller', () => {
         expect(res.text).toContain('Found. Redirecting to /case/:id/case-progression/documents-uploaded');
       });
     });
+    test('should redirect to upload documents page without submitting when the upload draft is missing', async () => {
+      //given
+      const claim: Claim = new Claim();
+      Object.assign(claim, civilClaimResponse.case_data);
+      claim.caseProgression = {...claim.caseProgression, defendantDocuments: undefined} as Claim['caseProgression'];
+      mockDraftStore.mockReturnValueOnce(claim);
+      mockSaveUploadedDocuments.mockClear();
+
+      //when
+      await testSession.post(CP_CHECK_ANSWERS_URL.replace(':id', claimId)).send({signed: true}).expect((res: { status: unknown; header: { location: string }; }) => {
+        //then
+        expect(res.status).toBe(302);
+        expect(res.header.location).toBe(CP_UPLOAD_DOCUMENTS_URL.replace(':id', claimId));
+      });
+      expect(mockSaveUploadedDocuments).not.toHaveBeenCalled();
+    });
+
     test('Throw error', async () => {
       //given
       jest.spyOn(draftStoreService, 'getDraftClaimFromStore')

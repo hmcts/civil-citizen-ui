@@ -16,6 +16,7 @@ import {AppRequest} from 'common/models/AppRequest';
 import {GenericForm} from 'common/form/models/genericForm';
 import {DocumentUploadSubmissionForm} from 'form/models/caseProgression/documentUploadSubmission';
 import {DocumentUploadSections} from 'models/caseProgression/documentUploadSections';
+import {UploadDocumentsUserForm} from 'models/caseProgression/uploadDocumentsUserForm';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import config from 'config';
 import {getClaimById} from 'modules/utilityService';
@@ -25,17 +26,13 @@ const checkAnswersViewPath = 'features/caseProgression/check-answers';
 const documentUploadCheckAnswerController = Router();
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
-function renderView(res: Response, form: GenericForm<DocumentUploadSubmissionForm>, claim: Claim, claimId: string, isClaimant: boolean, lang: string) {
+const getUploadedDocuments = (claim: Claim): UploadDocumentsUserForm =>
+  claim.isClaimant() ? claim.caseProgression?.claimantDocuments : claim.caseProgression?.defendantDocuments;
+
+function renderView(res: Response, form: GenericForm<DocumentUploadSubmissionForm>, claim: Claim, claimId: string, summarySections: DocumentUploadSections) {
   const topPageContents = getTopElements(claim);
-  let summarySections: DocumentUploadSections;
   const isSmallClaims = claim.isSmallClaimsTrackDQ;
   const backLinkUrl = constructResponseUrlWithIdParams(claimId, CP_UPLOAD_DOCUMENTS_URL);
-
-  if(isClaimant) {
-    summarySections = getSummarySections(claim.caseProgression.claimantDocuments, claimId, isSmallClaims, lang);
-  } else {
-    summarySections = getSummarySections(claim.caseProgression.defendantDocuments, claimId, isSmallClaims, lang);
-  }
   const bottomPageContents = getBottomElements();
   const cancelUrl = constructResponseUrlWithIdParams(claimId, CP_EVIDENCE_UPLOAD_CANCEL);
 
@@ -50,8 +47,12 @@ documentUploadCheckAnswerController.get(CP_CHECK_ANSWERS_URL, (async (req: AppRe
   try {
     req.session.previousUrl = req.originalUrl;
     const claim = await getClaimById(claimId, req,true);
+    const summarySections = getSummarySections(getUploadedDocuments(claim), claimId, claim.isSmallClaimsTrackDQ, lang);
+    if (summarySections === null) {
+      return res.redirect(constructResponseUrlWithIdParams(claimId, CP_UPLOAD_DOCUMENTS_URL));
+    }
     const form = new GenericForm(new DocumentUploadSubmissionForm());
-    renderView(res, form, claim, claimId, claim.isClaimant(), lang);
+    renderView(res, form, claim, claimId, summarySections);
   } catch (error) {
     next(error);
   }
@@ -65,11 +66,14 @@ documentUploadCheckAnswerController.post(CP_CHECK_ANSWERS_URL, (async (req: Requ
   try {
     const form = new GenericForm<DocumentUploadSubmissionForm>(new DocumentUploadSubmissionForm(req.body.signed));
     const claim = await getClaimById(claimId, req, true);
+    const uploadedDocuments = getUploadedDocuments(claim);
+    if (!uploadedDocuments) {
+      return res.redirect(constructResponseUrlWithIdParams(claimId, CP_UPLOAD_DOCUMENTS_URL));
+    }
     await form.validate();
 
     if (form.hasErrors()) {
-      const isClaimant = claim.isClaimant();
-      renderView(res, form, claim, claimId, isClaimant, lang);
+      renderView(res, form, claim, claimId, getSummarySections(uploadedDocuments, claimId, claim.isSmallClaimsTrackDQ, lang));
       return;
     }
     await saveUploadedDocuments(claim, appReq);
