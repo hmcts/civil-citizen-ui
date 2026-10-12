@@ -70,8 +70,10 @@ const createSubmittedClaim = (id = '1790322528949860'): Claim => {
 };
 
 beforeEach(() => {
+  jest.restoreAllMocks();
   jest.clearAllMocks();
   redisStore.clear();
+  app.locals.draftStoreClient = mockDraftStoreClient;
 });
 
 describe('Submit claim to ccd', () => {
@@ -217,20 +219,40 @@ describe('Submit claim to ccd', () => {
     expect(second.id).toBe('1790322528949860');
   });
 
-  it('should allow a retry when CCD rejects the submission', async () => {
+  it('should allow a retry when CCD definitively rejects the submission', async () => {
+    mockGetDraftClaim.mockResolvedValue(createMockManagerResult(claim));
+    mockUpdateDraftClaim.mockResolvedValue(undefined);
+    jest.spyOn(ccdTranslationService, 'translateDraftClaimToCCDR2');
+    const rejected = Object.assign(new Error('CCD validation failed'), {
+      response: {status: 422},
+      isAxiosError: true,
+    });
+    const submitSpy = jest
+      .spyOn(CivilServiceClient.prototype, 'submitDraftClaim')
+      .mockRejectedValueOnce(rejected)
+      .mockResolvedValueOnce(createSubmittedClaim());
+
+    await expect(submitClaim(mockReq)).rejects.toThrow('CCD validation failed');
+    const result = await submitClaim(mockReq);
+
+    expect(submitSpy).toHaveBeenCalledTimes(2);
+    expect(result.id).toBe('1790322528949860');
+  });
+
+  it('should not release the reservation on an uncertain CCD response', async () => {
     mockGetDraftClaim.mockResolvedValue(createMockManagerResult(claim));
     mockUpdateDraftClaim.mockResolvedValue(undefined);
     jest.spyOn(ccdTranslationService, 'translateDraftClaimToCCDR2');
     const submitSpy = jest
       .spyOn(CivilServiceClient.prototype, 'submitDraftClaim')
-      .mockRejectedValueOnce(new Error('CCD unavailable'))
-      .mockResolvedValueOnce(createSubmittedClaim());
+      .mockRejectedValueOnce(new Error('timeout'));
 
-    await expect(submitClaim(mockReq)).rejects.toThrow('CCD unavailable');
-    const result = await submitClaim(mockReq);
+    await expect(submitClaim(mockReq)).rejects.toThrow('timeout');
 
-    expect(submitSpy).toHaveBeenCalledTimes(2);
-    expect(result.id).toBe('1790322528949860');
+    expect(submitSpy).toHaveBeenCalledTimes(1);
+    expect(mockDraftStoreClient.del).not.toHaveBeenCalled();
+    expect(redisStore.get(`submitted-claim:${mockReq.session.user.id}:draft-123:${draftCreatedAt}`))
+      .toBe('pending');
   });
 
   it('should use rawResponse draftId when session has none', async () => {
