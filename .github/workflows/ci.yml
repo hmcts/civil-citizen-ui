@@ -56,8 +56,17 @@ jobs:
         with:
           node-version: 24
       - name: Install
-        run: yarn install
+        env:
+          YARN_ENABLE_HARDENED_MODE: '1'
+        run: node .yarn/releases/yarn-4.18.1.cjs install
+      - name: Check dependency pins and lockfile checksums
+        run: node .yarn/releases/yarn-4.18.1.cjs deps:check
+      - name: Audit dependencies
+        run: node .yarn/releases/yarn-4.18.1.cjs deps:audit
       - name: Build
-        run: yarn build
+        run: node .yarn/releases/yarn-4.18.1.cjs build
+      - name: Coverage for Renovate changes
+        if: github.event_name == 'pull_request' && (github.actor == 'renovate[bot]' || startsWith(github.head_ref, 'renovate/'))
+        run: node .yarn/releases/yarn-4.18.1.cjs test:coverage
       - name: Pull WireMock mappings
-        run: yarn wiremock:pull
+        run: node .yarn/releases/yarn-4.18.1.cjs wiremock:pull
