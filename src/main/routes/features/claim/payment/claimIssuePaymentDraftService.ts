@@ -1,7 +1,12 @@
 import {AppRequest} from 'common/models/AppRequest';
 import {Claim} from 'models/claim';
 import {applyPaymentRetention, getDraftClaimForCase, updateDraftClaim} from 'modules/draft-store/draftStoreManagerService';
-import {generateRedisKey, saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {
+  deleteDraftClaimFromStore as deleteDraftClaimFromRedis,
+  generateRedisKey,
+  getDraftClaimFromStore,
+  saveDraftClaim,
+} from 'modules/draft-store/draftStoreService';
 import {getClaimById} from 'modules/utilityService';
 import {getRouteParam, isUsablePathSegment} from 'common/utils/routeParamUtils';
 
@@ -12,6 +17,28 @@ export interface ClaimIssuePaymentDraft {
   claim: Claim;
   draftId?: string;
 }
+
+export const clearRedisWorkingDraftForPayment = async (
+  req: AppRequest,
+  claim: Claim,
+): Promise<boolean> => {
+  const userId = req.session?.user?.id;
+  const caseId = claim?.id;
+  if (!userId || !caseId || typeof caseId !== 'string') {
+    return false;
+  }
+
+  const workingDraft = await getDraftClaimFromStore(userId, true);
+  if (!workingDraft?.case_data) {
+    return false;
+  }
+
+  const paymentKey = `${caseId}${userId}`;
+  await saveDraftClaim(paymentKey, claim, true, userId);
+  await deleteDraftClaimFromRedis(userId);
+  logger.info(`Moved Redis working draft to payment key for claim id ${caseId}`);
+  return true;
+};
 
 export const getClaimIssuePaymentClaim = async (req: AppRequest): Promise<ClaimIssuePaymentDraft> => {
   const claimId = getRouteParam(req, 'id');

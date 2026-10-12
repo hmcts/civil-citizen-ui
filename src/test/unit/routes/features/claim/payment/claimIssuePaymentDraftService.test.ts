@@ -1,9 +1,15 @@
 import {
+  clearRedisWorkingDraftForPayment,
   getClaimIssuePaymentClaim,
   saveClaimIssuePaymentClaim,
 } from 'routes/features/claim/payment/claimIssuePaymentDraftService';
 import {applyPaymentRetention, getDraftClaimForCase, updateDraftClaim} from 'modules/draft-store/draftStoreManagerService';
-import {generateRedisKey, saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {
+  deleteDraftClaimFromStore,
+  generateRedisKey,
+  getDraftClaimFromStore,
+  saveDraftClaim,
+} from 'modules/draft-store/draftStoreService';
 import {getClaimById} from 'modules/utilityService';
 import {AppRequest} from 'models/AppRequest';
 import {Claim} from 'models/claim';
@@ -21,6 +27,8 @@ const mockUpdateDraftClaim = updateDraftClaim as jest.Mock;
 const mockApplyPaymentRetention = applyPaymentRetention as jest.Mock;
 const mockGenerateRedisKey = generateRedisKey as jest.Mock;
 const mockSaveDraftClaim = saveDraftClaim as jest.Mock;
+const mockGetDraftClaimFromStore = getDraftClaimFromStore as jest.Mock;
+const mockDeleteDraftClaimFromStore = deleteDraftClaimFromStore as jest.Mock;
 const mockGetClaimById = getClaimById as jest.Mock;
 
 const claimId = '1790252856529614';
@@ -65,6 +73,41 @@ describe('claimIssuePaymentDraftService', () => {
     jest.clearAllMocks();
     mockGenerateRedisKey.mockReturnValue(redisKey);
     mockApplyPaymentRetention.mockResolvedValue(null);
+  });
+
+  describe('clearRedisWorkingDraftForPayment', () => {
+    it('should move the working draft to the payment key and clear the user key', async () => {
+      const req = createReq();
+      const claim = createClaim();
+      mockGetDraftClaimFromStore.mockResolvedValueOnce({case_data: createClaim()});
+
+      const cleared = await clearRedisWorkingDraftForPayment(req, claim);
+
+      expect(cleared).toBe(true);
+      expect(mockSaveDraftClaim).toHaveBeenCalledWith(redisKey, claim, true, 'user-id');
+      expect(mockDeleteDraftClaimFromStore).toHaveBeenCalledWith('user-id');
+    });
+
+    it('should return false when there is no redis working draft', async () => {
+      const req = createReq();
+      mockGetDraftClaimFromStore.mockResolvedValueOnce({});
+
+      const cleared = await clearRedisWorkingDraftForPayment(req, createClaim());
+
+      expect(cleared).toBe(false);
+      expect(mockSaveDraftClaim).not.toHaveBeenCalled();
+      expect(mockDeleteDraftClaimFromStore).not.toHaveBeenCalled();
+    });
+
+    it('should return false when user or case id is missing', async () => {
+      const cleared = await clearRedisWorkingDraftForPayment(
+        {session: {}} as AppRequest,
+        createClaim(),
+      );
+
+      expect(cleared).toBe(false);
+      expect(mockGetDraftClaimFromStore).not.toHaveBeenCalled();
+    });
   });
 
   describe('getClaimIssuePaymentClaim', () => {

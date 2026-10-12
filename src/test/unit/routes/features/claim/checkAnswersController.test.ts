@@ -23,11 +23,15 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {createMockResponse, createMockSession, getRouteHandler} from '../../../../utils/getRouteHandler';
 import * as ccdTranslationService from 'services/translation/claim/ccdTranslation';
 import {app} from '../../../../../main/app-instance';
+import {clearRedisWorkingDraftForPayment} from 'routes/features/claim/payment/claimIssuePaymentDraftService';
 
 jest.mock('common/utils/claimRequestLocals', () => ({
   getStashedClaimOrFromStore: jest.fn(),
 }));
 jest.mock('modules/draft-store/draftStoreManagerService');
+jest.mock('routes/features/claim/payment/claimIssuePaymentDraftService', () => ({
+  clearRedisWorkingDraftForPayment: jest.fn(),
+}));
 jest.mock('services/features/claim/checkAnswers/checkAnswersService', () => ({
   getSummarySections: jest.fn(),
   getStatementOfTruth: jest.fn(),
@@ -64,6 +68,7 @@ describe('Claim - Check answers', () => {
   const mockIsDraftClaimDatabaseEnabled = isDraftClaimDatabaseEnabled as jest.Mock;
   const mockUpdateDraftClaim = updateDraftClaim as jest.Mock;
   const mockDeleteDraftClaim = deleteDraftClaim as jest.Mock;
+  const mockClearRedisWorkingDraftForPayment = clearRedisWorkingDraftForPayment as jest.Mock;
 
   const signedBody = {
     signed: 'Test',
@@ -116,6 +121,7 @@ describe('Claim - Check answers', () => {
     mockIsDraftClaimDatabaseEnabled.mockResolvedValue(true);
     mockUpdateDraftClaim.mockResolvedValue(undefined);
     mockDeleteDraftClaim.mockResolvedValue(undefined);
+    mockClearRedisWorkingDraftForPayment.mockResolvedValue(false);
     jest.spyOn(CivilServiceClient.prototype, 'getClaimFeeData').mockResolvedValue({
       calculatedAmountInPence: '50',
     } as never);
@@ -223,7 +229,7 @@ describe('Claim - Check answers', () => {
       expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(submittedClaim.id, CLAIM_CONFIRMATION_URL));
     });
 
-    it('should redirect to confirmation and keep the draft when help with fees is no', async () => {
+    it('should redirect to confirmation and keep the db draft when help with fees is no', async () => {
       mockGetDraftClaim.mockResolvedValue({
         claimResponse: {case_data: buildClaim(YesNo.NO)},
         rawResponse: {draftId: 'draft-123'},
@@ -237,6 +243,13 @@ describe('Claim - Check answers', () => {
 
       await postHandler(req as AppRequest, res as unknown as Response, next);
 
+      expect(mockClearRedisWorkingDraftForPayment).toHaveBeenCalledWith(
+        req,
+        expect.objectContaining({
+          id: submittedClaim.id,
+          legacyCaseReference: '000JE005',
+        }),
+      );
       expect(mockUpdateDraftClaim).toHaveBeenCalledWith(
         req,
         expect.objectContaining({
@@ -248,6 +261,34 @@ describe('Claim - Check answers', () => {
       expect(req.session.draftId).toBeUndefined();
       expect(res.clearCookie).toHaveBeenCalledWith('eligibilityCompleted');
       expect(res.clearCookie).toHaveBeenCalledWith('eligibility');
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(submittedClaim.id, CLAIM_CONFIRMATION_URL));
+    });
+
+    it('should clear redis working draft for fee-paying claims and skip db update', async () => {
+      mockClearRedisWorkingDraftForPayment.mockResolvedValue(true);
+      mockGetDraftClaim.mockResolvedValue({
+        claimResponse: {case_data: buildClaim(YesNo.NO)},
+        rawResponse: {draftId: 'draft-123'},
+        createdAt: '2026-08-01T10:00:00.000Z',
+      });
+      const submittedClaim = new Claim();
+      submittedClaim.id = '1790322528949860';
+      submittedClaim.legacyCaseReference = '000JE005';
+      mockSubmitClaim.mockResolvedValue(submittedClaim);
+      req.body = signedBody;
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(mockClearRedisWorkingDraftForPayment).toHaveBeenCalledWith(
+        req,
+        expect.objectContaining({
+          id: submittedClaim.id,
+          legacyCaseReference: '000JE005',
+        }),
+      );
+      expect(mockUpdateDraftClaim).not.toHaveBeenCalled();
+      expect(mockDeleteDraftClaim).not.toHaveBeenCalled();
+      expect(req.session.draftId).toBeUndefined();
       expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(submittedClaim.id, CLAIM_CONFIRMATION_URL));
     });
 
