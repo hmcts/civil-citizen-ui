@@ -15,16 +15,22 @@ import {formatDateToFullDate} from 'common/utils/dateUtils';
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
-export const getSummarySections = (claimId: string, claim: Claim, lng: string, isFollowUpQuery:boolean, queryId = ''): SummaryRow[] => {
+export const getSummarySections = (claimId: string, claim: Claim, lng: string, isFollowUpQuery:boolean, queryId = ''): SummaryRow[] | null => {
   if (isFollowUpQuery) {
-    const followUpQuery = claim.queryManagement.sendFollowUpQuery;
+    const followUpQuery = claim.queryManagement?.sendFollowUpQuery;
+    if (!followUpQuery) {
+      return null;
+    }
     return [
       ...getMessageDescription(followUpQuery.messageDetails, claimId, lng, isFollowUpQuery,queryId),
       ...getUploadedFiles(followUpQuery.uploadedFiles, claimId, lng, isFollowUpQuery, queryId),
     ];
   }
 
-  const createQuery = claim.queryManagement.createQuery;
+  const createQuery = claim.queryManagement?.createQuery;
+  if (!createQuery) {
+    return null;
+  }
   return [
     ...getMessageSubject(createQuery.messageSubject, claimId, lng),
     ...getMessageDescription(createQuery.messageDetails, claimId, lng, isFollowUpQuery, queryId),
