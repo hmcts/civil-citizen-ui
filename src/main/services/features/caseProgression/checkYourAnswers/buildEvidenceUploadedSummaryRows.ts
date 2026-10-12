@@ -22,12 +22,21 @@ import {
   buildTitledSummaryRowValue,
 } from 'services/features/caseProgression/checkYourAnswers/titledSummaryRowValueBuilder';
 import {formatDocumentViewURL} from 'common/utils/formatDocumentURL';
+import {CaseDocument} from 'models/document/caseDocument';
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('buildEvidenceUploadedSummaryRows');
 
 const changeLabel = (lang: string): string => t('COMMON.BUTTONS.CHANGE', { lng: getLng(lang) });
 const getDate = (date: string): string => formatStringDateSlash(date);
 const documentUploaded = (lang: string ): string => t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.CHECK_YOUR_ANSWERS_DOCUMENT_UPLOADED', {lng: getLng(lang)});
+
+const hasViewableDocument = (document: {caseDocument?: CaseDocument}, title: string, claimId: string): boolean => {
+  if (document?.caseDocument?.documentLink?.document_binary_url) {
+    return true;
+  }
+  logger.warn(`Skipping evidence upload row with missing document link. ClaimId: ${claimId}, Section: ${title}, DocumentLink present: ${!!document?.caseDocument?.documentLink}`);
+  return false;
+};
 
 export const getWitnessSummarySection = (uploadedDocuments: UploadDocumentsUserForm, claimId: string, lang: string ): SummarySections => {
   const witnessEvidenceSection = {} as SummarySections;
@@ -180,10 +189,7 @@ const getWitnessSummaryRows = (title: string, dateTitle: string,  documents: Wit
 
   let index = 1;
   for(const document of documents) {
-    if(!document?.caseDocument?.documentLink?.document_binary_url){
-      logger.error(`Witness document link is missing for document
-                            ClaimId: ${claimId}
-                            DocumentName: ${document?.caseDocument?.documentName}`);
+    if(!hasViewableDocument(document, title, claimId)){
       continue;
     }
 
@@ -265,12 +271,7 @@ const getDocumentReferredToSummaryRows = (title: string, documents: ReferredToIn
 
   let index = 1;
   for(const document of documents) {
-    if(!document?.caseDocument?.documentLink?.document_binary_url){
-      logger.error(`Document link is missing for document
-                          ClaimId: ${claimId}
-                          DocumentName: ${document?.caseDocument?.documentName}
-                          DocumentLink present: ${!!document?.caseDocument?.documentLink}
-                          document_binary_url present: ${!!document?.caseDocument?.documentLink?.document_binary_url}`);
+    if(!hasViewableDocument(document, title, claimId)){
       continue;
     }
     const uploadDocumentsHref = constructResponseUrlWithIdParams(claimId, CP_UPLOAD_DOCUMENTS_URL);
