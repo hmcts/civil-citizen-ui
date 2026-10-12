@@ -6,7 +6,8 @@ import './assets/js/calculate-length-repayment.js';
 import './assets/js/calculate-total-amount.js';
 import './assets/js/remove-error-content';
 import './assets/js/conditionally-hide-add-button';
-import './assets/js/select-toggle';
+import {initSelectToggle} from './assets/js/select-toggle';
+import {initAddAnother} from './assets/js/add-another';
 import './assets/js/reindex-add-another-actions';
 import './assets/js/language-toggle';
 import { initAll as initGovukFrontend } from 'govuk-frontend';
@@ -17,3 +18,5 @@ import './assets/js/disable-submit.js';
 
 initGovukFrontend();
 initMojFrontend();
+initSelectToggle();
+initAddAnother();

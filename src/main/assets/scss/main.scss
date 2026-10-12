@@ -514,3 +514,19 @@
     flex-basis: 100%;
   }
 }
+
+// Client-managed controls are available only after successful enhancement.
+.cui-add-another {
+  &__item {
+    margin-bottom: govuk-spacing(6);
+  }
+
+  &__add-button[hidden],
+  &__remove-button[hidden] {
+    display: none;
+  }
+}
+
+.select-toggle .panel[hidden] {
+  display: none;
+}
