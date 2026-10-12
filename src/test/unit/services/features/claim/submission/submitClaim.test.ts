@@ -10,6 +10,9 @@ import {CivilClaimResponse} from 'models/civilClaimResponse';
 import {DraftClaimManagerResult} from 'models/draft/draftClaim';
 import {Party} from 'models/party';
 import {Email} from 'models/Email';
+import {YesNo} from 'form/models/yesNo';
+import {ClaimDetails} from 'form/models/claim/details/claimDetails';
+import {HelpWithFees} from 'form/models/claim/details/helpWithFees';
 import {app} from '../../../../../../main/app-instance';
 
 jest.mock('modules/draft-store/draftStoreManagerService');
@@ -105,7 +108,11 @@ describe('Submit claim to ccd', () => {
       30 * 86400,
     );
     expect(ccdTranslationServiceMock).toHaveBeenCalled();
-    expect(CivilServiceClientServiceMock).toHaveBeenCalled();
+    expect(CivilServiceClientServiceMock).toHaveBeenCalledWith(
+      expect.anything(),
+      mockReq,
+      `${mockReq.session.user.id}:draft-123:${draftCreatedAt}`,
+    );
   });
 
   it('should set applicant email and createdAt then update the draft before submit', async () => {
@@ -217,20 +224,85 @@ describe('Submit claim to ccd', () => {
     expect(second.id).toBe('1790322528949860');
   });
 
-  it('should allow a retry when CCD rejects the submission', async () => {
+  it('should allow a retry when CCD definitively rejects the submission', async () => {
+    mockGetDraftClaim.mockResolvedValue(createMockManagerResult(claim));
+    mockUpdateDraftClaim.mockResolvedValue(undefined);
+    jest.spyOn(ccdTranslationService, 'translateDraftClaimToCCDR2');
+    const rejected = Object.assign(new Error('CCD validation failed'), {
+      response: {status: 422},
+      isAxiosError: true,
+    });
+    const submitSpy = jest
+      .spyOn(CivilServiceClient.prototype, 'submitDraftClaim')
+      .mockRejectedValueOnce(rejected)
+      .mockResolvedValueOnce(createSubmittedClaim());
+
+    await expect(submitClaim(mockReq)).rejects.toThrow('CCD validation failed');
+    const result = await submitClaim(mockReq);
+
+    expect(submitSpy).toHaveBeenCalledTimes(2);
+    expect(result.id).toBe('1790322528949860');
+  });
+
+  it('should not release the reservation on an uncertain CCD response', async () => {
     mockGetDraftClaim.mockResolvedValue(createMockManagerResult(claim));
     mockUpdateDraftClaim.mockResolvedValue(undefined);
     jest.spyOn(ccdTranslationService, 'translateDraftClaimToCCDR2');
     const submitSpy = jest
       .spyOn(CivilServiceClient.prototype, 'submitDraftClaim')
-      .mockRejectedValueOnce(new Error('CCD unavailable'))
+      .mockRejectedValueOnce(new Error('timeout'));
+
+    await expect(submitClaim(mockReq)).rejects.toThrow('timeout');
+
+    expect(submitSpy).toHaveBeenCalledTimes(1);
+    expect(mockDraftStoreClient.del).not.toHaveBeenCalled();
+    expect(redisStore.get(`submitted-claim:${mockReq.session.user.id}:draft-123:${draftCreatedAt}`))
+      .toBe('pending');
+  });
+
+  it('should retry with the same submissionId after CCD accept, lost response, and reservation expiry', async () => {
+    mockGetDraftClaim.mockResolvedValue(createMockManagerResult(claim));
+    mockUpdateDraftClaim.mockResolvedValue(undefined);
+    jest.spyOn(ccdTranslationService, 'translateDraftClaimToCCDR2');
+    const submissionId = `${mockReq.session.user.id}:draft-123:${draftCreatedAt}`;
+    const submitSpy = jest
+      .spyOn(CivilServiceClient.prototype, 'submitDraftClaim')
+      .mockRejectedValueOnce(new Error('timeout'))
       .mockResolvedValueOnce(createSubmittedClaim());
 
-    await expect(submitClaim(mockReq)).rejects.toThrow('CCD unavailable');
+    await expect(submitClaim(mockReq)).rejects.toThrow('timeout');
+    redisStore.delete(`submitted-claim:${submissionId}`);
+
     const result = await submitClaim(mockReq);
 
     expect(submitSpy).toHaveBeenCalledTimes(2);
+    expect(submitSpy).toHaveBeenNthCalledWith(1, expect.anything(), mockReq, submissionId);
+    expect(submitSpy).toHaveBeenNthCalledWith(2, expect.anything(), mockReq, submissionId);
     expect(result.id).toBe('1790322528949860');
+  });
+
+  it.each([
+    ['fee-paying', YesNo.NO],
+    ['help with fees', YesNo.YES],
+  ])('should pass submissionId for %s submission after lost CCD response', async (_label, hwfOption) => {
+    const hwfClaim = new Claim();
+    hwfClaim.claimDetails = new ClaimDetails();
+    hwfClaim.claimDetails.helpWithFees = new HelpWithFees(hwfOption);
+    mockGetDraftClaim.mockResolvedValue(createMockManagerResult(hwfClaim));
+    mockUpdateDraftClaim.mockResolvedValue(undefined);
+    jest.spyOn(ccdTranslationService, 'translateDraftClaimToCCDR2');
+    const submissionId = `${mockReq.session.user.id}:draft-123:${draftCreatedAt}`;
+    const submitSpy = jest
+      .spyOn(CivilServiceClient.prototype, 'submitDraftClaim')
+      .mockRejectedValueOnce(new Error('timeout'))
+      .mockResolvedValueOnce(createSubmittedClaim());
+
+    await expect(submitClaim(mockReq)).rejects.toThrow('timeout');
+    redisStore.delete(`submitted-claim:${submissionId}`);
+    await submitClaim(mockReq);
+
+    expect(submitSpy).toHaveBeenNthCalledWith(1, expect.anything(), mockReq, submissionId);
+    expect(submitSpy).toHaveBeenNthCalledWith(2, expect.anything(), mockReq, submissionId);
   });
 
   it('should use rawResponse draftId when session has none', async () => {

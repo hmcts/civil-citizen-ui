@@ -3,10 +3,12 @@ import {getDraftClaim, updateDraftClaim} from 'modules/draft-store/draftStoreMan
 import {CIVIL_SERVICE_DRAFT_CLAIM_RETENTION_DAYS} from 'modules/draft-store/draftStoreDbService';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
+import {CallbackError} from 'client/common/error/callbackError';
 import {Claim} from 'common/models/claim';
 import {translateDraftClaimToCCDR2} from 'services/translation/claim/ccdTranslation';
 import {Email} from 'models/Email';
 import {app} from '../../../../app-instance';
+import {AxiosError} from 'axios';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('partialAdmissionService');
@@ -20,13 +22,24 @@ const SUBMISSION_RESERVATION_TTL_SECONDS = 60;
 const SUBMISSION_WAIT_INTERVAL_MS = 500;
 const SUBMISSION_WAIT_ATTEMPTS = 30;
 
+const isDefinitiveSubmissionFailure = (error: unknown): boolean => {
+  if (error instanceof CallbackError) {
+    return true;
+  }
+  const status = (error as AxiosError)?.response?.status;
+  return typeof status === 'number' && status >= 400 && status < 500 && status !== 408;
+};
+
 interface SubmittedClaim {
   id: string;
   legacyCaseReference?: string;
 }
 
+const getSubmissionId = (userId: string, draftId: string, draftCreatedAt: string): string =>
+  `${userId}:${draftId}:${draftCreatedAt}`;
+
 const getSubmittedClaimKey = (userId: string, draftId: string, draftCreatedAt: string): string =>
-  `submitted-claim:${userId}:${draftId}:${draftCreatedAt}`;
+  `submitted-claim:${getSubmissionId(userId, draftId, draftCreatedAt)}`;
 
 const reserveSubmission = async (key: string): Promise<boolean> =>
   (await app.locals.draftStoreClient.set(key, SUBMISSION_PENDING, 'EX', SUBMISSION_RESERVATION_TTL_SECONDS, 'NX')) === 'OK';
@@ -92,7 +105,9 @@ export const submitClaim = async (req: AppRequest): Promise<Claim> => {
       return claim;
     }
 
-    const submittedClaimKey = getSubmittedClaimKey(user.id, draftResult.rawResponse?.draftId, draftResult.createdAt);
+    const submissionDraftId = draftResult.rawResponse?.draftId;
+    const submissionId = getSubmissionId(user.id, submissionDraftId, draftResult.createdAt);
+    const submittedClaimKey = getSubmittedClaimKey(user.id, submissionDraftId, draftResult.createdAt);
     if (!(await reserveSubmission(submittedClaimKey))) {
       const previouslySubmitted = await waitForSubmittedClaim(submittedClaimKey);
       if (!previouslySubmitted) {
@@ -114,9 +129,13 @@ export const submitClaim = async (req: AppRequest): Promise<Claim> => {
         await updateDraftClaim(req, claim, draftId);
       }
       const ccdClaim = translateDraftClaimToCCDR2(claim, req);
-      submittedClaim = await civilServiceClient.submitDraftClaim(ccdClaim, req);
+      submittedClaim = await civilServiceClient.submitDraftClaim(ccdClaim, req, submissionId);
     } catch (submitError) {
-      await releaseSubmission(submittedClaimKey);
+      if (isDefinitiveSubmissionFailure(submitError)) {
+        await releaseSubmission(submittedClaimKey);
+      } else {
+        logger.warn(`[submitClaim] uncertain CCD response; keeping submission reservation ${submittedClaimKey}`);
+      }
       throw submitError;
     }
     await saveSubmittedClaim(submittedClaimKey, {
