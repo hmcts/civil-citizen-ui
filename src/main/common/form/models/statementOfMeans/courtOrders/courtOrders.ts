@@ -1,4 +1,4 @@
-import {IsDefined, ValidateIf, ValidateNested} from 'class-validator';
+import {ArrayMaxSize, IsDefined, ValidateIf, ValidateNested} from 'class-validator';
 import {boolean, isBooleanable} from 'common/utils/boolean';
 import {CourtOrder} from './courtOrder';
 import {AtLeastOneRowIsPopulated} from 'form/validators/atLeastOneRowIsPopulated';
@@ -10,6 +10,7 @@ export class CourtOrders {
   @ValidateIf(o => o.declared === true)
   @ValidateNested()
   @AtLeastOneRowIsPopulated({message: 'ERRORS.VALID_ENTER_AT_LEAST_ONE_COURT_ORDER'})
+  @ArrayMaxSize(10, {message: 'ERRORS.MAXIMUM_TEN_COURT_ORDERS'})
     rows: CourtOrder[];
 
   constructor(declared?: boolean, rows?: CourtOrder[]) {
