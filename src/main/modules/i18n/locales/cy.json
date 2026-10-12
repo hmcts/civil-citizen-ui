@@ -5918,6 +5918,7 @@
     "VALID_ENTER_A_DATE_BEFORE": "Rhowch ddyddiad geni cyn {{ maxDate }}",
     "VALID_ENTER_AN_EMPLOYER_NAME": "Rhowch enw cyflogwr",
     "VALID_ENTER_AT_LEAST_ONE_COURT_ORDER": "Rhowch fanylion o leiaf un gorchymyn llys",
+    "MAXIMUM_TEN_COURT_ORDERS": "Gallwch nodi uchafswm o 10 gorchymyn llys",
     "VALID_ENTER_AT_LEAST_ONE_EMPLOYER": "Rhowch o leiaf un cyflogwr",
     "VALID_ENTER_AT_LEAST_ONE_NUMBER": "Rhowch rif ar gyfer o leiaf un maes",
     "VALID_ENTER_AT_LEAST_ONE_UPLOAD": "Rhaid i chi ddewis o leiaf un math o ddogfen",
