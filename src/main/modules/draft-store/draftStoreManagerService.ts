@@ -18,7 +18,6 @@ import {
   deleteDraftClaimFromStore as deleteDraftClaimFromRedis,
 } from './draftStoreService';
 import {getCachedDraft, deleteCachedDraft} from './draftClaimRedisCache';
-import {migrateDbDraftToRedis, migrateRedisDraftToDb} from './draftClaimStoreMigration';
 
 const buildManagerResult = (
   raw: DraftClaimResponse,
@@ -68,19 +67,17 @@ export const getDraftClaim = async (req: AppRequest): Promise<DraftClaimManagerR
       return buildManagerResult(cached);
     }
     const dbResult = await getActiveDraftFromDraftStoreDb(req);
-    if (dbResult) {
-      return buildManagerResult(dbResult.rawResponse);
+    if (!dbResult) {
+      return null;
     }
-    const migrated = await migrateRedisDraftToDb(req, userId);
-    return migrated ? buildManagerResult(migrated) : null;
+    return buildManagerResult(dbResult.rawResponse);
   }
 
   const stored = await getDraftClaimFromStore(userId, true);
-  if (stored?.case_data) {
-    return buildManagerResultFromRedis(stored);
+  if (!stored?.case_data) {
+    return null;
   }
-  const migrated = await migrateDbDraftToRedis(req, userId);
-  return migrated ? buildManagerResultFromRedis(migrated) : null;
+  return buildManagerResultFromRedis(stored);
 };
 
 export const getDraftClaimForCase = async (req: AppRequest, caseId: string): Promise<DraftClaimManagerResult | null> => {
@@ -98,33 +95,14 @@ export const createOrLoadDraft = async (req: AppRequest, claim?: Claim): Promise
   }
 
   if (await isDraftClaimDatabaseEnabled()) {
-    const existingDb = await getActiveDraftFromDraftStoreDb(req);
-    if (!existingDb) {
-      const migrated = await migrateRedisDraftToDb(req, userId);
-      if (migrated) {
-        if (claim) {
-          const updated = await updateDraftClaimInStore(req, migrated.draftId, claim);
-          return buildManagerResult(updated.rawResponse, false);
-        }
-        return buildManagerResult(migrated, false);
-      }
-    }
     const dbResult = await createOrLoadDraftClaimInDraftStoreDb(req, claim);
     return buildManagerResult(dbResult.rawResponse, dbResult.isNew);
   }
 
-  let stored = await getDraftClaimFromStore(userId, true);
-  let isNew = !stored?.case_data;
+  const stored = await getDraftClaimFromStore(userId, true);
+  const isNew = !stored?.case_data;
   if (isNew) {
-    const migrated = await migrateDbDraftToRedis(req, userId);
-    if (migrated) {
-      stored = migrated;
-      isNew = false;
-    }
-  }
-  if (!stored?.case_data) {
     await createDraftClaimInStoreWithExpiryTime(userId);
-    isNew = true;
   }
   if (claim) {
     await saveDraftClaim(userId, claim, true, userId);

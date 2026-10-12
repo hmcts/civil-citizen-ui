@@ -157,7 +157,6 @@ export class Claim {
   caseDismissedHearingFeeDueDate?: Date;
   caseRole?: CaseRole;
   draftClaimCreatedAt?: Date;
-  draftClaimExpiresAt?: Date;
   draftClaimCacheTtlDays?: number;
   helpWithFees ?: CCDHelpWithFees;
   respondent1PinToPostLRspec: PinToPost;
