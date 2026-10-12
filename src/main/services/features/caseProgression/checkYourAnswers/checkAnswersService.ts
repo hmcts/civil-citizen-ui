@@ -34,17 +34,24 @@ import {CivilServiceClient} from 'client/civilServiceClient';
 import {CaseEvent} from 'models/events/caseEvent';
 import {caseNumberPrettify} from 'common/utils/stringUtils';
 import {currencyFormatWithNoTrailingZeros} from 'common/utils/currencyFormat';
+import {CaseDocument} from 'models/document/caseDocument';
+import {getRouteParam} from 'common/utils/routeParamUtils';
+
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('checkAnswersService');
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
-export const getSummarySections = (uploadedDocuments: UploadDocumentsUserForm, claimId: string, isSmallClaims: boolean, lang: string ): DocumentUploadSections => {
-  const documents = uploadedDocuments ?? new UploadDocumentsUserForm();
+export const getSummarySections = (uploadedDocuments: UploadDocumentsUserForm, claimId: string, isSmallClaims: boolean, lang: string ): DocumentUploadSections | null => {
+  if (!uploadedDocuments) {
+    return null;
+  }
   return {
-    witnessEvidenceSection: getWitnessSummarySection(documents, claimId, lang),
-    disclosureEvidenceSection: getDisclosureSummarySection(documents, claimId, lang),
-    expertEvidenceSection: getExpertSummarySection(documents, claimId, lang),
-    trialEvidenceSection: getTrialSummarySection(documents, isSmallClaims, claimId, lang),
+    witnessEvidenceSection: getWitnessSummarySection(uploadedDocuments, claimId, lang),
+    disclosureEvidenceSection: getDisclosureSummarySection(uploadedDocuments, claimId, lang),
+    expertEvidenceSection: getExpertSummarySection(uploadedDocuments, claimId, lang),
+    trialEvidenceSection: getTrialSummarySection(uploadedDocuments, isSmallClaims, claimId, lang),
   };
 };
 
@@ -78,19 +85,27 @@ export const saveUploadedDocuments = async (claim: Claim, req: AppRequest): Prom
   {
     newUploadDocuments = claim.caseProgression?.claimantDocuments;
     existingUploadDocuments = oldClaim.caseProgression?.claimantUploadDocuments;
-    caseProgression.claimantUploadDocuments = mapUploadedFileToDocumentType(newUploadDocuments, existingUploadDocuments);
+    caseProgression.claimantUploadDocuments = mapUploadedFileToDocumentType(newUploadDocuments, existingUploadDocuments, getRouteParam(req, 'id'));
     updatedCcdClaim = toCCDEvidenceUpload(caseProgression, updatedCcdClaim, true);
     return await civilServiceClient.submitEvent(CaseEvent.EVIDENCE_UPLOAD_APPLICANT, req.params.id, updatedCcdClaim, req);
   } else {
     newUploadDocuments = claim.caseProgression?.defendantDocuments;
     existingUploadDocuments = oldClaim.caseProgression?.defendantUploadDocuments;
-    caseProgression.defendantUploadDocuments =  mapUploadedFileToDocumentType(newUploadDocuments, existingUploadDocuments);
+    caseProgression.defendantUploadDocuments =  mapUploadedFileToDocumentType(newUploadDocuments, existingUploadDocuments, getRouteParam(req, 'id'));
     updatedCcdClaim = toCCDEvidenceUpload(caseProgression, updatedCcdClaim, false);
     return await civilServiceClient.submitEvent(CaseEvent.EVIDENCE_UPLOAD_RESPONDENT, req.params.id, updatedCcdClaim, req);
   }
 };
 
-const mapUploadedFileToDocumentType = (newUploadedDocuments: UploadDocumentsUserForm, existingUploadDocuments: UploadDocuments): UploadDocuments => {
+const hasDocumentLink = (document: {caseDocument?: CaseDocument}, claimId: string): boolean => {
+  if (document?.caseDocument?.documentLink) {
+    return true;
+  }
+  logger.warn(`Skipping evidence upload document with missing document link. ClaimId: ${claimId}`);
+  return false;
+};
+
+const mapUploadedFileToDocumentType = (newUploadedDocuments: UploadDocumentsUserForm, existingUploadDocuments: UploadDocuments, claimId: string): UploadDocuments => {
 
   existingUploadDocuments = existingUploadDocuments ?? new UploadDocuments();
   existingUploadDocuments.disclosure = existingUploadDocuments.disclosure ?? [];
@@ -104,13 +119,19 @@ const mapUploadedFileToDocumentType = (newUploadedDocuments: UploadDocumentsUser
 
   if(newUploadedDocuments.documentsForDisclosure){
     for(const document of newUploadedDocuments.documentsForDisclosure) {
+      if(!hasDocumentLink(document, claimId)){
+        continue;
+      }
       const documentType = EvidenceUploadDisclosure.DOCUMENTS_FOR_DISCLOSURE;
-      const documentToUpload = new UploadEvidenceDocumentType(null, document.typeOfDocument, document.dateInputFields.date, document.caseDocument.documentLink, document.caseDocument.createdDatetime);
+      const documentToUpload = new UploadEvidenceDocumentType(null, document.typeOfDocument, document.dateInputFields?.date, document.caseDocument.documentLink, document.caseDocument.createdDatetime);
       existingUploadDocuments.disclosure.push(new UploadDocumentTypes(null, documentToUpload, documentType, null));
     }
   }
   if(newUploadedDocuments.disclosureList){
     for(const document of newUploadedDocuments.disclosureList) {
+      if(!hasDocumentLink(document, claimId)){
+        continue;
+      }
       const documentType = EvidenceUploadDisclosure.DISCLOSURE_LIST;
       const documentToUpload = new UploadEvidenceDocumentType(null,null, null, document.caseDocument.documentLink, document.caseDocument.createdDatetime);
       existingUploadDocuments.disclosure.push(new UploadDocumentTypes(null, documentToUpload, documentType, null));
@@ -119,54 +140,75 @@ const mapUploadedFileToDocumentType = (newUploadedDocuments: UploadDocumentsUser
 
   if(newUploadedDocuments.witnessStatement){
     for(const document of newUploadedDocuments.witnessStatement){
+      if(!hasDocumentLink(document, claimId)){
+        continue;
+      }
       const documentType = EvidenceUploadWitness.WITNESS_STATEMENT;
-      const documentToUpload = new UploadEvidenceWitness(document.witnessName, document.dateInputFields.date, document.caseDocument.documentLink, document.caseDocument.createdDatetime);
+      const documentToUpload = new UploadEvidenceWitness(document.witnessName, document.dateInputFields?.date, document.caseDocument.documentLink, document.caseDocument.createdDatetime);
       existingUploadDocuments.witness.push(new UploadDocumentTypes(null, documentToUpload, documentType, null));
     }
   }
 
   if(newUploadedDocuments.witnessSummary) {
     for(const document of newUploadedDocuments.witnessSummary){
+      if(!hasDocumentLink(document, claimId)){
+        continue;
+      }
       const documentType = EvidenceUploadWitness.WITNESS_SUMMARY;
-      const documentToUpload = new UploadEvidenceWitness(document.witnessName, document.dateInputFields.date, document.caseDocument.documentLink, document.caseDocument.createdDatetime);
+      const documentToUpload = new UploadEvidenceWitness(document.witnessName, document.dateInputFields?.date, document.caseDocument.documentLink, document.caseDocument.createdDatetime);
       existingUploadDocuments.witness.push(new UploadDocumentTypes(null, documentToUpload, documentType, null));
     }
   }
 
   if(newUploadedDocuments.noticeOfIntention) {
     for(const document of newUploadedDocuments.noticeOfIntention){
+      if(!hasDocumentLink(document, claimId)){
+        continue;
+      }
       const documentType = EvidenceUploadWitness.NOTICE_OF_INTENTION;
-      const documentToUpload = new UploadEvidenceWitness(document.witnessName, document.dateInputFields.date, document.caseDocument.documentLink, document.caseDocument.createdDatetime);
+      const documentToUpload = new UploadEvidenceWitness(document.witnessName, document.dateInputFields?.date, document.caseDocument.documentLink, document.caseDocument.createdDatetime);
       existingUploadDocuments.witness.push(new UploadDocumentTypes(null, documentToUpload, documentType, null));
     }
   }
 
   if(newUploadedDocuments.documentsReferred) {
     for(const document of newUploadedDocuments.documentsReferred){
+      if(!hasDocumentLink(document, claimId)){
+        continue;
+      }
       const documentType = EvidenceUploadWitness.DOCUMENTS_REFERRED;
-      const documentToUpload = new UploadEvidenceDocumentType(document.witnessName, document.typeOfDocument, document.dateInputFields.date, document.caseDocument.documentLink, document.caseDocument.createdDatetime);
+      const documentToUpload = new UploadEvidenceDocumentType(document.witnessName, document.typeOfDocument, document.dateInputFields?.date, document.caseDocument.documentLink, document.caseDocument.createdDatetime);
       existingUploadDocuments.witness.push(new UploadDocumentTypes(null, documentToUpload, documentType, null));
     }
   }
 
   if(newUploadedDocuments.expertStatement){
     for(const document of newUploadedDocuments.expertStatement){
+      if(!hasDocumentLink(document, claimId)){
+        continue;
+      }
       const documentType = EvidenceUploadExpert.STATEMENT;
-      const documentToUpload = new UploadEvidenceExpert(document.expertName, null, document.fieldOfExpertise, null, null, null, document.dateInputFields.date, document.caseDocument.documentLink, document.caseDocument.createdDatetime);
+      const documentToUpload = new UploadEvidenceExpert(document.expertName, null, document.fieldOfExpertise, null, null, null, document.dateInputFields?.date, document.caseDocument.documentLink, document.caseDocument.createdDatetime);
       existingUploadDocuments.expert.push(new UploadDocumentTypes(null, documentToUpload, documentType, null));
     }
   }
 
   if(newUploadedDocuments.expertReport){
     for(const document of newUploadedDocuments.expertReport){
+      if(!hasDocumentLink(document, claimId)){
+        continue;
+      }
       const documentType = EvidenceUploadExpert.EXPERT_REPORT;
-      const documentToUpload = new UploadEvidenceExpert(document.expertName, document.fieldOfExpertise, null, null, null, null, document.dateInputFields.date, document.caseDocument.documentLink, document.caseDocument.createdDatetime);
+      const documentToUpload = new UploadEvidenceExpert(document.expertName, document.fieldOfExpertise, null, null, null, null, document.dateInputFields?.date, document.caseDocument.documentLink, document.caseDocument.createdDatetime);
       existingUploadDocuments.expert.push(new UploadDocumentTypes(null, documentToUpload, documentType, null));
     }
   }
 
   if(newUploadedDocuments.questionsForExperts){
     for(const document of newUploadedDocuments.questionsForExperts){
+      if(!hasDocumentLink(document, claimId)){
+        continue;
+      }
       const documentType = EvidenceUploadExpert.QUESTIONS_FOR_EXPERTS;
       const documentToUpload = new UploadEvidenceExpert(document.expertName, document.fieldOfExpertise, null, document.otherPartyName, document.questionDocumentName, null, new Date(), document.caseDocument.documentLink, document.caseDocument.createdDatetime);
       existingUploadDocuments.expert.push(new UploadDocumentTypes(null, documentToUpload, documentType, null));
@@ -175,6 +217,9 @@ const mapUploadedFileToDocumentType = (newUploadedDocuments: UploadDocumentsUser
 
   if(newUploadedDocuments.answersForExperts){
     for(const document of newUploadedDocuments.answersForExperts){
+      if(!hasDocumentLink(document, claimId)){
+        continue;
+      }
       const documentType = EvidenceUploadExpert.ANSWERS_FOR_EXPERTS;
       const documentToUpload = new UploadEvidenceExpert(document.expertName, document.fieldOfExpertise, null, document.otherPartyName, null, document.otherPartyQuestionsDocumentName, new Date(), document.caseDocument.documentLink, document.caseDocument.createdDatetime);
       existingUploadDocuments.expert.push(new UploadDocumentTypes(null, documentToUpload, documentType, null));
@@ -183,6 +228,9 @@ const mapUploadedFileToDocumentType = (newUploadedDocuments: UploadDocumentsUser
 
   if(newUploadedDocuments.trialCaseSummary){
     for(const document of newUploadedDocuments.trialCaseSummary){
+      if(!hasDocumentLink(document, claimId)){
+        continue;
+      }
       const documentType = EvidenceUploadTrial.CASE_SUMMARY;
       const documentToUpload = new UploadEvidenceDocumentType(null, null, null, document.caseDocument.documentLink, document.caseDocument.createdDatetime);
       existingUploadDocuments.trial.push(new UploadDocumentTypes(null, documentToUpload, documentType, null));
@@ -191,6 +239,9 @@ const mapUploadedFileToDocumentType = (newUploadedDocuments: UploadDocumentsUser
 
   if(newUploadedDocuments.trialSkeletonArgument){
     for(const document of newUploadedDocuments.trialSkeletonArgument){
+      if(!hasDocumentLink(document, claimId)){
+        continue;
+      }
       const documentType = EvidenceUploadTrial.SKELETON_ARGUMENT;
       const documentToUpload = new UploadEvidenceDocumentType(null,null, null, document.caseDocument.documentLink, document.caseDocument.createdDatetime);
       existingUploadDocuments.trial.push(new UploadDocumentTypes(null, documentToUpload, documentType, null));
@@ -199,6 +250,9 @@ const mapUploadedFileToDocumentType = (newUploadedDocuments: UploadDocumentsUser
 
   if(newUploadedDocuments.trialAuthorities){
     for(const document of newUploadedDocuments.trialAuthorities){
+      if(!hasDocumentLink(document, claimId)){
+        continue;
+      }
       const documentType = EvidenceUploadTrial.AUTHORITIES;
       const documentToUpload = new UploadEvidenceDocumentType(null,null, null, document.caseDocument.documentLink, document.caseDocument.createdDatetime);
       existingUploadDocuments.trial.push(new UploadDocumentTypes(null, documentToUpload, documentType, null));
@@ -207,6 +261,9 @@ const mapUploadedFileToDocumentType = (newUploadedDocuments: UploadDocumentsUser
 
   if(newUploadedDocuments.trialCosts){
     for(const document of newUploadedDocuments.trialCosts){
+      if(!hasDocumentLink(document, claimId)){
+        continue;
+      }
       const documentType = EvidenceUploadTrial.COSTS;
       const documentToUpload = new UploadEvidenceDocumentType(null,null, null, document.caseDocument.documentLink, document.caseDocument.createdDatetime);
       existingUploadDocuments.trial.push(new UploadDocumentTypes(null, documentToUpload, documentType, null));
@@ -215,8 +272,11 @@ const mapUploadedFileToDocumentType = (newUploadedDocuments: UploadDocumentsUser
 
   if(newUploadedDocuments.trialDocumentary){
     for(const document of newUploadedDocuments.trialDocumentary){
+      if(!hasDocumentLink(document, claimId)){
+        continue;
+      }
       const documentType = EvidenceUploadTrial.DOCUMENTARY;
-      const documentToUpload = new UploadEvidenceDocumentType(null, document.typeOfDocument, document.dateInputFields.date, document.caseDocument.documentLink, document.caseDocument.createdDatetime);
+      const documentToUpload = new UploadEvidenceDocumentType(null, document.typeOfDocument, document.dateInputFields?.date, document.caseDocument.documentLink, document.caseDocument.createdDatetime);
       existingUploadDocuments.trial.push(new UploadDocumentTypes(null, documentToUpload, documentType, null));
     }
   }
