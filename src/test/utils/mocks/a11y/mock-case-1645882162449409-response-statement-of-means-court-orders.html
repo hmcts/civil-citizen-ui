@@ -322,15 +322,13 @@ data-module="govuk-service-navigation"
 
         <main class="govuk-main-wrapper " id="main-content" role="main">
 
-  <div class="govuk-width-container">
-    <main class="govuk-main-wrapper" role="main">
 
 
 
 
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-          <div data-module="moj-add-another">
+          <div>
             <form method="post" novalidate>
 
   <input type="hidden" name="_csrf" value="">
@@ -348,40 +346,44 @@ data-module="govuk-service-navigation"
 
 
 
+
+
 <div class="govuk-form-group">
 
-  <div class="govuk-radios govuk-!-width-two-thirds"
-    data-module="govuk-radios">
+  <div class="govuk-radios govuk-!-width-two-thirds" data-module="govuk-radios">
 
 
 
 
 
 
-        <div class="govuk-radios__item">
-          <input class="govuk-radios__input" id="declared" name="declared" type="radio" value="yes" data-aria-controls="conditional-declared">
-          <label class="govuk-label govuk-radios__label" for="declared">
+
+    <div class="govuk-radios__item">
+      <input class="govuk-radios__input" id="declared" name="declared" type="radio" value="yes" data-aria-controls="conditional-declared">
+      <label class="govuk-label govuk-radios__label" for="declared">
         Yes
       </label>
 
-        </div>
+    </div>
 
-          <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-declared">
-
-                <div
-                  class="govuk-form-group ">
-
-
+    <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-declared">
+      <div
+                  class="govuk-form-group "
+                  id="rows" tabindex="-1" data-module="cui-add-another" data-max-items="10">
 
 
+                  <div class="cui-add-another__items">
 
-  <fieldset class="govuk-fieldset moj-add-another__item govuk-!-margin-bottom-6">
 
-  <legend class="govuk-fieldset__legend moj-add-another__title govuk-fieldset__legend--m">
+
+  <fieldset class="govuk-fieldset cui-add-another__item govuk-!-margin-bottom-6">
+
+  <legend class="govuk-fieldset__legend cui-add-another__title govuk-fieldset__legend--m">
 
     Court order
 
   </legend>
+
 
 
 
@@ -392,7 +394,76 @@ data-module="govuk-service-navigation"
     Claim number
   </label>
 
-<input class="govuk-input" id="rows[0][claimNumber]" name="rows[0][claimNumber]" type="text" data-name="rows[%index%][claimNumber]" data-id="rows[%index%][claimNumber]">
+
+  <input
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   class="govuk-input" id="rows[0][claimNumber]" name="rows[0][claimNumber]" type="text" value=""
+
+
+
+
+
+
+
+
+
+
+
+
+
+   data-name="rows[%index%][claimNumber]" data-id="rows[%index%][claimNumber]">
 
 </div>
 
@@ -400,17 +471,95 @@ data-module="govuk-service-navigation"
     <p class="govuk-label">Amount you owe</p>
 
 
+
 <div class="govuk-form-group">
   <label class="govuk-label govuk-visually-hidden" for="rows[0][amount]">
     Amount you owe, in pounds
   </label>
 
-<div class="govuk-input__wrapper"><div class="govuk-input__prefix" aria-hidden="true">£</div>
-  <input class="govuk-input" id="rows[0][amount]" name="rows[0][amount]" type="number" value="undefined" data-name="rows[%index%][amount]" data-id="rows[%index%][amount]"></div>
+
+  <div class="govuk-input__wrapper">
+
+
+    <div class="govuk-input__prefix" aria-hidden="true">£</div>
+
+    <input
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   class="govuk-input" id="rows[0][amount]" name="rows[0][amount]" type="number" value=""
+
+
+
+
+
+
+
+
+
+
+
+
+
+   data-name="rows[%index%][amount]" data-id="rows[%index%][amount]">
+
+
+  </div>
 
 </div>
 
     <p class="govuk-label">Monthly instalment amount</p>
+
 
 
 <div class="govuk-form-group">
@@ -418,12 +567,91 @@ data-module="govuk-service-navigation"
     Monthly instalment amount, in pounds
   </label>
 
-<div class="govuk-input__wrapper"><div class="govuk-input__prefix" aria-hidden="true">£</div>
-  <input class="govuk-input" id="rows[0][instalmentAmount]" name="rows[0][instalmentAmount]" type="number" value="undefined" data-name="rows[%index%][instalmentAmount]" data-id="rows[%index%][instalmentAmount]"></div>
+
+  <div class="govuk-input__wrapper">
+
+
+    <div class="govuk-input__prefix" aria-hidden="true">£</div>
+
+    <input
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+   class="govuk-input" id="rows[0][instalmentAmount]" name="rows[0][instalmentAmount]" type="number" value=""
+
+
+
+
+
+
+
+
+
+
+
+
+
+   data-name="rows[%index%][instalmentAmount]" data-id="rows[%index%][instalmentAmount]">
+
+
+  </div>
 
 </div>
 
 
+    <button type="button" class="govuk-button govuk-button--secondary cui-add-another__remove-button" hidden>
+      Remove<span class="govuk-visually-hidden"> Court order <span data-row-number>1</span></span>
+    </button>
 
 
 </fieldset>
@@ -431,7 +659,12 @@ data-module="govuk-service-navigation"
 
 
 
-                  <div class="moj-button-action">
+                  </div>
+                  <div class="cui-add-another__actions">
+
+
+
+<button type="button" class="govuk-button govuk-button--secondary cui-add-another__add-button govuk-!-margin-bottom-1" data-module="govuk-button"
 
 
 
@@ -440,15 +673,18 @@ data-module="govuk-service-navigation"
 
 
 
-<button type="button" class="govuk-button govuk-button--secondary moj-add-another__add-button govuk-!-margin-bottom-1" data-module="govuk-button" id="add-another-court-order">
+
+
+
+
+
+   id="add-another-court-order" hidden="true">
   Add another court order
 </button>
 
                   </div>
                 </div>
-
-          </div>
-
+    </div>
 
 
 
@@ -456,13 +692,14 @@ data-module="govuk-service-navigation"
 
 
 
-        <div class="govuk-radios__item">
-          <input class="govuk-radios__input" id="declared-2" name="declared" type="radio" value="no">
-          <label class="govuk-label govuk-radios__label" for="declared-2">
+
+    <div class="govuk-radios__item">
+      <input class="govuk-radios__input" id="declared-2" name="declared" type="radio" value="no" checked>
+      <label class="govuk-label govuk-radios__label" for="declared-2">
         No
       </label>
 
-        </div>
+    </div>
 
 
 
@@ -474,12 +711,7 @@ data-module="govuk-service-navigation"
 
               <div class="govuk-form-group">
 
-
-
-
-
-
-<button class="govuk-button" data-module="govuk-button">
+<button type="submit" class="govuk-button" data-module="govuk-button">
   Save and continue
 </button>
 
@@ -515,7 +747,20 @@ data-module="govuk-service-navigation"
 
 
 
-    <details class="govuk-details" data-module="govuk-details">
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <details id="contact-us-for-help" class="govuk-details">
   <summary class="govuk-details__summary">
     <span class="govuk-details__summary-text">
       Contact us for help
@@ -528,11 +773,11 @@ data-module="govuk-service-navigation"
 
 
 
-  <h3 class="govuk-heading-m">Email</h3>
+  <h2 class="govuk-heading-m">Email</h2>
 
 
 
-    <a target=_self href=mailto:contactocmc@justice.gov.uk rel="noopener noreferrer">contactocmc@justice.gov.uk</a>
+    <a class="govuk-link" target=_self href=mailto:contactocmc@justice.gov.uk rel="noopener noreferrer">contactocmc@justice.gov.uk</a>
     </a></p>
 
 
@@ -540,7 +785,7 @@ data-module="govuk-service-navigation"
 
 
 
-  <h3 class="govuk-heading-m">Telephone</h3>
+  <h2 class="govuk-heading-m">Telephone</h2>
 
     0300 123 7050
 
@@ -548,7 +793,7 @@ data-module="govuk-service-navigation"
     <p class="govuk-!-margin-top-0"><span class="block">Monday to Friday, 8.30am to 5pm.</span></p>
 
 
-    <a target=_blank href=https://www.gov.uk/call-charges rel="noopener noreferrer">Find out about call charges (opens in a new tab)</a></p>
+    <a class="govuk-link" target=_blank href=https://www.gov.uk/call-charges rel="noopener noreferrer">Find out about call charges (opens in a new tab)</a></p>
 
 
   </div>
@@ -556,12 +801,11 @@ data-module="govuk-service-navigation"
 
 
 
+
         </div>
       </div>
-    </main>
-  </div>
 
-        </main>
+</main>
       </div>
 
 

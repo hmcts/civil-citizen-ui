@@ -1,7 +1,27 @@
 import {CourtOrder} from 'form/models/statementOfMeans/courtOrders/courtOrder';
 import {CourtOrders} from 'form/models/statementOfMeans/courtOrders/courtOrders';
+import {validateSync} from 'class-validator';
 
 describe('CourtOrders model', () => {
+  describe('maximum court orders', () => {
+    it.each([1, 10])('accepts %s populated orders', count => {
+      const form = new CourtOrders(true, Array.from({length: count}, (_, index) => new CourtOrder(100, 0, `CN${index}`)));
+      expect(validateSync(form)).toHaveLength(0);
+    });
+
+    it('rejects eleven orders without dropping values', () => {
+      const form = new CourtOrders(true, Array.from({length: 11}, (_, index) => new CourtOrder(100, 0, `CN${index}`)));
+      const error = validateSync(form).find(item => item.property === 'rows');
+      expect(error?.constraints?.arrayMaxSize).toBe('ERRORS.MAXIMUM_TEN_COURT_ORDERS');
+      expect(form.rows).toHaveLength(11);
+      expect(form.rows[10].claimNumber).toBe('CN10');
+    });
+
+    it('does not validate hidden orders when the answer is no', () => {
+      const form = new CourtOrders(false, Array.from({length: 11}, () => new CourtOrder()));
+      expect(validateSync(form)).toHaveLength(0);
+    });
+  });
   describe('fromObject', () => {
     it('should return undefined when input is not provided', () => {
       expect(CourtOrders.fromObject(undefined)).toBeUndefined();
