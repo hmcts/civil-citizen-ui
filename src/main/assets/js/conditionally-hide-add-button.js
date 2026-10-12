@@ -12,6 +12,7 @@ const maximumNumberOfRowsByButtonId = [
 
 maximumNumberOfRowsByButtonId.forEach(entry => {
   const addButton = document.getElementById(entry.buttonId);
+  if (addButton?.closest('[data-module="cui-add-another"]')) return;
   addButton?.addEventListener('click', () => {
     const addAnotherItemsCount = [...document.getElementsByClassName('moj-add-another__item')].length;
     if (addAnotherItemsCount > entry.maximumNumberOfRows - 2) {
