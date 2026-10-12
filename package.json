@@ -19,7 +19,7 @@
     "test:coverage": "LOG_LEVEL=OFF node --disable-warning=DEP0060 --no-sparkplug ./node_modules/jest/bin/jest.js --coverage --maxWorkers=8 --silent",
     "test:routes": "node --no-sparkplug ./node_modules/jest/bin/jest.js -c jest.functionaltest.config.js --runInBand",
     "test:integration": "yarn test:routes",
-    "test:a11y": "yarn tests:a11y",
+    "test:a11y": "node bin/install-a11y-browser.js && yarn tests:a11y",
     "tests:a11y": "NODE_TLS_REJECT_UNAUTHORIZED=0 NODE_ENV=test LOG_LEVEL=ERROR mocha --exit --reporter mochawesome --require ts-node/register --require tsconfig-paths/register src/test/a11y/a11y.mock-test.ts --timeout 60000 --reporter-options reportDir=functional-output/accessibility-report,inlineAssets=true,reportTitle=civil-citizen-ui",
     "tests:a11y:parallel": "./src/test/a11y/run-parallel-a11y-tests.sh",
     "sonar-scan": "sonar-scanner",
