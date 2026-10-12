@@ -43,6 +43,7 @@ describe('draftStoreManagerService Unit Tests', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     mockIsDraftClaimDatabaseEnabled.mockResolvedValue(true);
+    (draftStoreService.getDraftClaimFromStore as jest.Mock).mockResolvedValue(new CivilClaimResponse());
 
     mockReq = {
       session: {
@@ -62,11 +63,28 @@ describe('draftStoreManagerService Unit Tests', () => {
       );
     });
 
+    it('should continue on Redis when the flag is on and a Redis draft already exists', async () => {
+      const stored = Object.assign(new CivilClaimResponse(), {
+        id: mockUserId,
+        case_data: {claimAmount: 500},
+      });
+      (draftStoreService.getDraftClaimFromStore as jest.Mock).mockResolvedValueOnce(stored);
+
+      const result = await getDraftClaim(mockReq);
+
+      expect(draftStoreService.getDraftClaimFromStore).toHaveBeenCalledWith(mockUserId, true);
+      expect(mockGetCachedDraft).not.toHaveBeenCalled();
+      expect(mockGetActiveDraftFromDb).not.toHaveBeenCalled();
+      expect(result?.claimResponse.id).toBe(mockUserId);
+      expect(result?.rawResponse.payload).toEqual(expect.objectContaining({claimAmount: 500}));
+    });
+
     it('cache hit: should return manager result directly from redis cache without querying db', async () => {
       mockGetCachedDraft.mockResolvedValueOnce(mockRawResponse);
 
       const result = await getDraftClaim(mockReq);
 
+      expect(draftStoreService.getDraftClaimFromStore).toHaveBeenCalledWith(mockUserId, true);
       expect(mockGetCachedDraft).toHaveBeenCalledWith(mockUserId);
       expect(mockGetActiveDraftFromDb).not.toHaveBeenCalled();
       expect(result).not.toBeNull();
@@ -179,6 +197,28 @@ describe('draftStoreManagerService Unit Tests', () => {
 
       expect(result.isNew).toBe(false);
     });
+
+    it('should continue on Redis when the flag is on and a Redis draft already exists', async () => {
+      const mockClaim = new Claim();
+      const stored = Object.assign(new CivilClaimResponse(), {
+        id: mockUserId,
+        case_data: {claimAmount: 500},
+      });
+      (draftStoreService.getDraftClaimFromStore as jest.Mock)
+        .mockResolvedValueOnce(stored)
+        .mockResolvedValueOnce(Object.assign(new CivilClaimResponse(), {
+          id: mockUserId,
+          case_data: mockClaim,
+        }));
+      (draftStoreService.saveDraftClaim as jest.Mock).mockResolvedValueOnce(undefined);
+
+      const result = await createOrLoadDraft(mockReq, mockClaim);
+
+      expect(draftStoreService.saveDraftClaim).toHaveBeenCalledWith(mockUserId, mockClaim, true, mockUserId);
+      expect(mockCreateOrLoadDraftInDb).not.toHaveBeenCalled();
+      expect(result.isNew).toBe(false);
+      expect(result.claimResponse.id).toBe(mockUserId);
+    });
   });
 
   describe('updateDraftClaim', () => {
@@ -205,6 +245,27 @@ describe('draftStoreManagerService Unit Tests', () => {
       expect(mockUpdateDraftInDb).toHaveBeenCalledWith(mockReq, mockDraftId, mockClaim);
       expect(result.claimResponse.id).toBe(mockDraftId);
     });
+
+    it('should update Redis when the flag is on and a Redis draft already exists', async () => {
+      const mockClaim = new Claim();
+      const stored = Object.assign(new CivilClaimResponse(), {
+        id: mockUserId,
+        case_data: {claimAmount: 500},
+      });
+      (draftStoreService.getDraftClaimFromStore as jest.Mock)
+        .mockResolvedValueOnce(stored)
+        .mockResolvedValueOnce(Object.assign(new CivilClaimResponse(), {
+          id: mockUserId,
+          case_data: mockClaim,
+        }));
+      (draftStoreService.saveDraftClaim as jest.Mock).mockResolvedValueOnce(undefined);
+
+      const result = await updateDraftClaim(mockReq, mockClaim, mockDraftId);
+
+      expect(draftStoreService.saveDraftClaim).toHaveBeenCalledWith(mockUserId, mockClaim, true, mockUserId);
+      expect(mockUpdateDraftInDb).not.toHaveBeenCalled();
+      expect(result.claimResponse.id).toBe(mockUserId);
+    });
   });
 
   describe('deleteDraftClaim', () => {
@@ -224,6 +285,19 @@ describe('draftStoreManagerService Unit Tests', () => {
       expect(mockDeleteDraftFromDb).toHaveBeenCalledWith(mockReq, mockDraftId);
       expect(mockDeleteCachedDraft).toHaveBeenCalledWith(mockUserId);
     });
+
+    it('should delete from Redis when the flag is on and a Redis draft already exists', async () => {
+      (draftStoreService.getDraftClaimFromStore as jest.Mock).mockResolvedValueOnce(
+        Object.assign(new CivilClaimResponse(), {id: mockUserId, case_data: {claimAmount: 500}}),
+      );
+      (draftStoreService.deleteDraftClaimFromStore as jest.Mock).mockResolvedValueOnce(undefined);
+
+      await deleteDraftClaim(mockReq, mockDraftId);
+
+      expect(draftStoreService.deleteDraftClaimFromStore).toHaveBeenCalledWith(mockUserId);
+      expect(mockDeleteDraftFromDb).not.toHaveBeenCalled();
+      expect(mockDeleteCachedDraft).not.toHaveBeenCalled();
+    });
   });
 
   describe('applyPaymentRetention', () => {
@@ -239,6 +313,17 @@ describe('draftStoreManagerService Unit Tests', () => {
       expect(mockApplyPaymentRetentionInDb).toHaveBeenCalledWith(mockReq, mockDraftId);
       expect(mockDeleteCachedDraft).toHaveBeenCalledWith(mockUserId);
       expect(result?.expiresAt).toBe(mockRawResponse.expiresAt);
+    });
+
+    it('should no-op when the flag is on but the draft is still on Redis', async () => {
+      (draftStoreService.getDraftClaimFromStore as jest.Mock).mockResolvedValueOnce(
+        Object.assign(new CivilClaimResponse(), {id: mockUserId, case_data: {claimAmount: 500}}),
+      );
+
+      const result = await applyPaymentRetention(mockReq, mockDraftId);
+
+      expect(result).toBeNull();
+      expect(mockApplyPaymentRetentionInDb).not.toHaveBeenCalled();
     });
   });
 

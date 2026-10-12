@@ -54,6 +54,23 @@ const buildManagerResultFromRedis = (
   }, isNew);
 };
 
+const getRedisDraftIfExists = async (userId: string): Promise<CivilClaimResponse | null> => {
+  const stored = await getDraftClaimFromStore(userId, true);
+  return stored?.case_data ? stored : null;
+};
+
+const continueOnRedis = async (
+  userId: string,
+  claim?: Claim,
+  isNew = false,
+): Promise<DraftClaimManagerResult> => {
+  if (claim) {
+    await saveDraftClaim(userId, claim, true, userId);
+  }
+  const latest = await getDraftClaimFromStore(userId, true);
+  return buildManagerResultFromRedis(latest, isNew);
+};
+
 export const getDraftClaim = async (req: AppRequest): Promise<DraftClaimManagerResult | null> => {
   const userId = req.session?.user?.id;
   if (!userId) {
@@ -61,8 +78,12 @@ export const getDraftClaim = async (req: AppRequest): Promise<DraftClaimManagerR
   }
 
   if (await isDraftClaimDatabaseEnabled()) {
-    const cached = await getCachedDraft(userId);
+    const redisDraft = await getRedisDraftIfExists(userId);
+    if (redisDraft) {
+      return buildManagerResultFromRedis(redisDraft);
+    }
 
+    const cached = await getCachedDraft(userId);
     if (cached && !cached.caseId) {
       return buildManagerResult(cached);
     }
@@ -95,6 +116,10 @@ export const createOrLoadDraft = async (req: AppRequest, claim?: Claim): Promise
   }
 
   if (await isDraftClaimDatabaseEnabled()) {
+    const redisDraft = await getRedisDraftIfExists(userId);
+    if (redisDraft) {
+      return continueOnRedis(userId, claim, false);
+    }
     const dbResult = await createOrLoadDraftClaimInDraftStoreDb(req, claim);
     return buildManagerResult(dbResult.rawResponse, dbResult.isNew);
   }
@@ -104,11 +129,7 @@ export const createOrLoadDraft = async (req: AppRequest, claim?: Claim): Promise
   if (isNew) {
     await createDraftClaimInStoreWithExpiryTime(userId);
   }
-  if (claim) {
-    await saveDraftClaim(userId, claim, true, userId);
-  }
-  const latest = await getDraftClaimFromStore(userId, true);
-  return buildManagerResultFromRedis(latest, isNew);
+  return continueOnRedis(userId, claim, isNew);
 };
 
 export const updateDraftClaim = async (req: AppRequest, claim: Claim, draftId: string): Promise<DraftClaimManagerResult> => {
@@ -121,13 +142,15 @@ export const updateDraftClaim = async (req: AppRequest, claim: Claim, draftId: s
   }
 
   if (await isDraftClaimDatabaseEnabled()) {
+    const redisDraft = await getRedisDraftIfExists(userId);
+    if (redisDraft) {
+      return continueOnRedis(userId, claim, false);
+    }
     const dbResult = await updateDraftClaimInStore(req, draftId, claim);
     return buildManagerResult(dbResult.rawResponse);
   }
 
-  await saveDraftClaim(userId, claim, true, userId);
-  const latest = await getDraftClaimFromStore(userId, true);
-  return buildManagerResultFromRedis(latest);
+  return continueOnRedis(userId, claim, false);
 };
 
 export const deleteDraftClaim = async (req: AppRequest, draftId: string): Promise<void> => {
@@ -137,6 +160,11 @@ export const deleteDraftClaim = async (req: AppRequest, draftId: string): Promis
   }
 
   if (await isDraftClaimDatabaseEnabled()) {
+    const redisDraft = await getRedisDraftIfExists(userId);
+    if (redisDraft) {
+      await deleteDraftClaimFromRedis(userId);
+      return;
+    }
     await deleteDraftClaimFromStore(req, draftId);
     await deleteCachedDraft(userId);
     return;
@@ -158,6 +186,11 @@ export const applyPaymentRetention = async (
   }
 
   if (!(await isDraftClaimDatabaseEnabled())) {
+    return null;
+  }
+
+  const redisDraft = await getRedisDraftIfExists(userId);
+  if (redisDraft) {
     return null;
   }
 
