@@ -81,18 +81,21 @@ export const buildMediationSection = (claim: Claim, claimId: string, lang: strin
       constructResponseUrlWithIdParams(claimId, MEDIATION_ALTERNATIVE_EMAIL_URL), changeLabel(lang)));
   }
   //UNAVAILABILITY SECTION
-  const hasUnavailabilityOption = isClaimantResponse ? claim.claimantResponse.mediationCarm.hasUnavailabilityNextThreeMonths.option : claim.mediationCarm.hasUnavailabilityNextThreeMonths.option;
-  mediationSection.summaryList.rows.push(summaryRow(t('PAGES.UNAVAILABILITY_NEXT_THREE_MONTHS_MEDIATION_CONFIRMATION.PAGE_TEXT', {lng: getLng(lang)}),
-    t(`COMMON.VARIATION.${hasUnavailabilityOption.toUpperCase()}`, {lng: getLng(lang)}),
-    constructResponseUrlWithIdParams(claimId, MEDIATION_NEXT_3_MONTHS_URL), changeLabel(lang)));
-  if (hasUnavailabilityOption === YesNo.YES) {
-    const hasUnavailableDatesMediation = isClaimantResponse ? getListOfUnavailableDate(claim.claimantResponse.mediationCarm.unavailableDatesForMediation, getLng(lang)) : getListOfUnavailableDate(claim.mediationCarm.unavailableDatesForMediation, getLng(lang));
-    mediationSection.summaryList.rows.push(summaryRow(
-      t('COMMON.UNAVAILABLE_DATES', {lng: getLng(lang)}),
-      ` ${[...hasUnavailableDatesMediation].join('<br>')}`,
-      constructResponseUrlWithIdParams(claimId, MEDIATION_UNAVAILABLE_SELECT_DATES_URL),
-      changeLabel(lang),
-    ));
+  const mediationCarm = isClaimantResponse ? claim.claimantResponse.mediationCarm : claim.mediationCarm;
+  const hasUnavailabilityOption = mediationCarm.hasUnavailabilityNextThreeMonths?.option;
+  if (hasUnavailabilityOption) {
+    mediationSection.summaryList.rows.push(summaryRow(t('PAGES.UNAVAILABILITY_NEXT_THREE_MONTHS_MEDIATION_CONFIRMATION.PAGE_TEXT', {lng: getLng(lang)}),
+      t(`COMMON.VARIATION.${hasUnavailabilityOption.toUpperCase()}`, {lng: getLng(lang)}),
+      constructResponseUrlWithIdParams(claimId, MEDIATION_NEXT_3_MONTHS_URL), changeLabel(lang)));
+    if (hasUnavailabilityOption === YesNo.YES) {
+      const hasUnavailableDatesMediation = getListOfUnavailableDate(mediationCarm.unavailableDatesForMediation, getLng(lang));
+      mediationSection.summaryList.rows.push(summaryRow(
+        t('COMMON.UNAVAILABLE_DATES', {lng: getLng(lang)}),
+        ` ${[...hasUnavailableDatesMediation].join('<br>')}`,
+        constructResponseUrlWithIdParams(claimId, MEDIATION_UNAVAILABLE_SELECT_DATES_URL),
+        changeLabel(lang),
+      ));
+    }
   }
 
   return mediationSection;
