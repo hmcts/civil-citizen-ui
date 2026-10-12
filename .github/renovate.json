@@ -2,18 +2,26 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
     "local>hmcts/.github:renovate-config",
-    "local>hmcts/.github//renovate/automerge-all"
+    "local>hmcts/.github//renovate/automerge-minor"
   ],
   "labels": [
     "dependencies",
     "pr-values:elasticsearch"
   ],
-"automergeSchedule": [
-  "after 7am and before 8am every weekday",
-  "after 6pm and before 8pm every weekday"
-],
-"platformAutomerge": false,
-  "schedule": ["after 8am and before 12am every weekday"],
+  "automergeSchedule": [
+    "after 7am and before 8am every weekday",
+    "after 6pm and before 8pm every weekday"
+  ],
+  "platformAutomerge": false,
+  "ignoreTests": false,
+  "vulnerabilityAlerts": {
+    "enabled": true,
+    "minimumReleaseAge": "0 days",
+    "prCreation": "immediate"
+  },
+  "schedule": [
+    "after 8am and before 12am every weekday"
+  ],
   "rebaseWhen": "behind-base-branch",
   "automergeStrategy": "squash",
   "prConcurrentLimit": 5,
@@ -32,55 +40,131 @@
   ],
   "packageRules": [
     {
-      "matchUpdateTypes": ["minor", "patch"],
+      "description": "Match the seven-day Yarn npm age gate for routine updates",
+      "matchDatasources": [
+        "npm"
+      ],
+      "minimumReleaseAge": "7 days",
+      "internalChecksFilter": "strict",
+      "prCreation": "not-pending"
+    },
+    {
+      "description": "Keep major updates for review",
+      "matchUpdateTypes": [
+        "major"
+      ],
+      "automerge": false
+    },
+    {
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
+      "matchPackageNames": [
+        "*",
+        "!govuk-frontend"
+      ],
       "groupName": "All non-major updates",
       "groupSlug": "all-non-major",
       "automerge": true,
       "automergeType": "pr"
     },
     {
-      "matchManagers": ["helmv3"],
+      "matchManagers": [
+        "helmv3"
+      ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
       "groupName": "Helm chart updates",
       "groupSlug": "helm-charts",
       "automerge": true,
       "automergeType": "pr"
     },
     {
-      "matchManagers": ["dockerfile"],
+      "matchManagers": [
+        "dockerfile"
+      ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
       "groupName": "Dockerfile updates",
       "groupSlug": "dockerfile",
       "automerge": true,
       "automergeType": "pr"
     },
     {
-      "matchPackageNames": ["@playwright/test", "playwright-core", "@axe-core/playwright"],
+      "matchPackageNames": [
+        "@playwright/test",
+        "playwright-core",
+        "@axe-core/playwright"
+      ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
       "groupName": "Playwright",
       "groupSlug": "playwright",
       "automerge": true,
       "automergeType": "pr"
     },
     {
-      "matchPackagePatterns": ["^allure-"],
+      "matchPackagePatterns": [
+        "^allure-"
+      ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
       "groupName": "Allure reporting",
       "groupSlug": "allure",
       "automerge": true,
       "automergeType": "pr"
     },
     {
-      "matchPackageNames": ["eslint", "typescript-eslint"],
-      "matchPackagePatterns": ["^@eslint/", "^@typescript-eslint/", "^eslint-"],
+      "matchPackageNames": [
+        "eslint",
+        "typescript-eslint"
+      ],
+      "matchPackagePatterns": [
+        "^@eslint/",
+        "^@typescript-eslint/",
+        "^eslint-"
+      ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
       "groupName": "ESLint",
       "groupSlug": "eslint",
       "automerge": true,
       "automergeType": "pr"
     },
     {
-      "matchPackageNames": ["typescript"],
-      "matchPackagePatterns": ["^@types/"],
+      "matchPackageNames": [
+        "typescript"
+      ],
+      "matchPackagePatterns": [
+        "^@types/"
+      ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
       "groupName": "TypeScript",
       "groupSlug": "typescript",
       "automerge": true,
       "automergeType": "pr"
+    },
+    {
+      "description": "Review GOV.UK Frontend updates with rendered fixtures and journeys",
+      "matchPackageNames": [
+        "govuk-frontend"
+      ],
+      "automerge": false
     }
-  ]
+  ],
+  "rangeStrategy": "pin"
 }

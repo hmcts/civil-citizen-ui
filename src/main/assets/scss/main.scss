@@ -147,6 +147,15 @@
   color: govuk-colour('white');
 }
 
+.govuk-footer__licence-description a[rel='license'] {
+  &:link,
+  &:visited,
+  &:hover,
+  &:active {
+    color: #0b0c0c;
+  }
+}
+
 #footer {
   a {
     &:link {
@@ -188,15 +197,6 @@
     &:active {
       color: #0b0c0c;
     }
-  }
-}
-
-.govuk-footer__licence-description a[rel='license'] {
-  &:link,
-  &:visited,
-  &:hover,
-  &:active {
-    color: #0b0c0c;
   }
 }
 
@@ -451,7 +451,7 @@
 }
 
 .hmcts-banner-icon {
-  fill: currentColor;
+  fill: currentcolor;
   float: left;
   margin-right: 10px;
 }
@@ -487,10 +487,10 @@
   }
 }
 
-@media (min-width: 40.0625em) {
+@media (min-width: 40.0625em) { /* stylelint-disable-line media-feature-range-notation */
   .hmcts-banner-message {
     font-size: 19px;
-    line-height: 1.31579;
+    line-height: 1.3158;
   }
 }
 
