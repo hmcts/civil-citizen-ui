@@ -14,7 +14,7 @@
 
 ## Getting Started
 
-### Prerequisites
+### Prerequisites### Prerequisites### Prerequisites
 
 Running the application requires the following tools to be installed in your environment:
 
