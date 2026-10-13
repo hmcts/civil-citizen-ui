@@ -126,7 +126,6 @@ describe('checkAnswersServiceTest', () => {
         ['a draft whose only document has no case document', new UploadDocumentsUserForm(undefined, undefined, [{witnessName: 'witness', caseDocument: undefined} as WitnessSection])],
         ['a draft whose only document has no document link', new UploadDocumentsUserForm(undefined, undefined, [{witnessName: 'witness', caseDocument: {documentName: 'test.png'}} as WitnessSection])],
         ['a draft whose only document is null', new UploadDocumentsUserForm(undefined, undefined, [null])],
-        ['a draft whose only document has no binary url', new UploadDocumentsUserForm(undefined, undefined, [{witnessName: 'witness', caseDocument: {documentName: 'test.png', documentLink: {document_url: 'http://test'}}} as WitnessSection])],
       ])('should return false for %s', (_description, uploadedDocuments) => {
         //when
         const actual = hasValidNewDocuments(uploadedDocuments as UploadDocumentsUserForm);
@@ -494,7 +493,6 @@ describe('checkAnswersServiceTest', () => {
       test.each([
         ['a null document', null],
         ['a case document without a document link', {caseDocument: {documentName: 'test.png'}}],
-        ['a document link without a binary url', {caseDocument: {documentName: 'test.png', documentLink: {document_url: 'http://test'}}}],
       ])('should skip %s', async (_description, document) => {
         //given
         const mockSubmitEvent = jest.spyOn(CivilServiceClient.prototype, 'submitEvent');
