@@ -172,7 +172,7 @@ uploadDocumentsController.post(CP_UPLOAD_DOCUMENTS_URL, multerMiddleware, (async
     const isClaimant = claim.isClaimant() ? dqPropertyNameClaimant : dqPropertyName;
 
     if (action?.includes('add_another-')) {
-      addAnother(uploadDocumentsForm, action);
+      addAnother(uploadDocumentsForm, action, claimId, userid);
       return renderView(res, claim, claimId, form);
     } else if (action?.includes('[uploadButton]')) {
       await uploadSingleFile(req, action, form);

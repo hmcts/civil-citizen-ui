@@ -4,13 +4,9 @@ import {summaryRow} from 'models/summaryList/summaryList';
 import {t} from 'i18next';
 import {getLng} from 'common/utils/languageToggleUtils';
 import {PartyType} from 'models/partyType';
-import {Address} from 'form/models/address';
+import {addressToString} from 'common/utils/addressUtils';
 import {formatDateToFullDate} from 'common/utils/dateUtils';
 import {YesNo} from 'form/models/yesNo';
-
-const addressToString = (address: Address) => {
-  return address?.addressLine1 + '<br>' + address?.city + '<br>' + address?.postCode;
-};
 
 export const buildTheirDetailsSection = (claim: Claim, claimId: string, lang: string ): SummarySection => {
   const lng = getLng(lang);

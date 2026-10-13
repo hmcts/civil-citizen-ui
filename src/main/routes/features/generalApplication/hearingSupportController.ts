@@ -42,7 +42,7 @@ hearingSupportController.get(GA_HEARING_SUPPORT_URL, (async (req: AppRequest, re
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
     const claimId = getRouteParam(req, 'id');
     const claim = await getClaimById(claimId, req, true);
-    const index  = queryParamNumber(req, 'index') || (claim.generalApplication?.applicationTypes?.length - 1 || 0);
+    const index  = queryParamNumber(req, 'index') ?? (claim.generalApplication?.applicationTypes?.length - 1 || 0);
     const hearingSupport = claim.generalApplication?.hearingSupport || new HearingSupport([]);
     const form = new GenericForm(hearingSupport);
     await renderView(claimId, claim, form, res, lng, index);
@@ -57,7 +57,7 @@ hearingSupportController.post(GA_HEARING_SUPPORT_URL, (async (req: AppRequest | 
     const claimId = getRouteParam(req, 'id');
     const claim = await getClaimById(claimId, req, true);
     const redisKey = generateRedisKey(<AppRequest>req);
-    const index  = queryParamNumber(req, 'index') || (claim.generalApplication?.applicationTypes?.length - 1 || 0);
+    const index  = queryParamNumber(req, 'index') ?? (claim.generalApplication?.applicationTypes?.length - 1 || 0);
     const hearingSupport: HearingSupport = new HearingSupport(HearingSupport.convertToArray(req.body.requiredSupport),
       req.body.signLanguageContent, req.body.languageContent, req.body.otherContent);
 

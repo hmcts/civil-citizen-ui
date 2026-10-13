@@ -1,5 +1,9 @@
 const ContactUs = require('../../common/contactUs');
 const I = actor();
+const config = require('../../../../config');
+const apiRequest = require('../../../specClaimHelpers/api/apiRequest');
+const {retry} = require('../../../specClaimHelpers/api/retryHelper');
+const {waitForGAFinishedBusinessProcess} = require('../../../specClaimHelpers/api/testingSupport');
 
 const contactUs = new ContactUs();
 
@@ -10,6 +14,20 @@ class SubmitGAConfirmation {
   }
 
   async nextAction (nextAction) {
+    if (nextAction === 'Pay application fee') {
+      // The confirmation page can appear before the GA payment reference exists.
+      const href = await I.grabAttributeFrom('//a[contains(text(), "Pay application fee")]', 'href');
+      const url = new URL(href, config.TestUrl);
+      const parentCaseId = url.pathname.match(/\/case\/(\d+)\//)[1];
+      const applicationId = url.searchParams.get('id');
+      let gaCaseId;
+      await retry(async () => {
+        const {case_data: caseData} = await apiRequest.fetchCaseDetails(config.systemUpdate, parentCaseId);
+        gaCaseId = caseData.generalApplications?.find(application => application.id === applicationId)?.value?.caseLink?.CaseReference;
+        if (!gaCaseId) throw new Error('General application case has not been created yet');
+      }, 60, 4000);
+      await waitForGAFinishedBusinessProcess(gaCaseId, config.systemUpdate);
+    }
     await I.click(nextAction);
   }
 

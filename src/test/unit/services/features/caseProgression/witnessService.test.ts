@@ -1,6 +1,6 @@
 import {CaseState} from 'form/models/claimDetails';
 import {getWitnessContent} from 'services/features/caseProgression/witnessService';
-import {UploadDocumentsUserForm} from 'models/caseProgression/uploadDocumentsUserForm';
+import {UploadDocumentsUserForm, WitnessSection, WitnessSummarySection} from 'models/caseProgression/uploadDocumentsUserForm';
 import {GenericForm} from 'form/models/genericForm';
 import {
   getMockDocumentsReferredSectionArray,
@@ -248,6 +248,34 @@ describe('Witness service', () => {
     const actualContent = getWitnessContent(witnessSection.case_data, genericForm);
 
     //Then
+    expect(actualContent[0].length).toEqual(2);
+  });
+
+  it('should render an empty newly added witness summary without throwing', () => {
+    witnessSection.case_data.caseProgression.defendantUploadDocuments.witness.find(
+      (document: { documentType: string; }) => document.documentType === 'WITNESS_SUMMARY',
+    ).selected = true;
+
+    const form = new UploadDocumentsUserForm();
+    form.witnessSummary = [new WitnessSummarySection(), new WitnessSummarySection()];
+    const genericForm = new GenericForm<UploadDocumentsUserForm>(form);
+
+    expect(() => getWitnessContent(witnessSection.case_data, genericForm)).not.toThrow();
+    const actualContent = getWitnessContent(witnessSection.case_data, genericForm);
+    expect(actualContent[0].length).toEqual(2);
+  });
+
+  it('should render an empty newly added witness statement without throwing', () => {
+    witnessSection.case_data.caseProgression.defendantUploadDocuments.witness.find(
+      (document: { documentType: string; }) => document.documentType === 'WITNESS_STATEMENT',
+    ).selected = true;
+
+    const form = new UploadDocumentsUserForm();
+    form.witnessStatement = [new WitnessSection(), new WitnessSection()];
+    const genericForm = new GenericForm<UploadDocumentsUserForm>(form);
+
+    expect(() => getWitnessContent(witnessSection.case_data, genericForm)).not.toThrow();
+    const actualContent = getWitnessContent(witnessSection.case_data, genericForm);
     expect(actualContent[0].length).toEqual(2);
   });
 

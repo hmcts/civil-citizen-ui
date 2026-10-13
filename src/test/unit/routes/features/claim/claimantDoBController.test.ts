@@ -1,125 +1,134 @@
-import config from 'config';
-import nock from 'nock';
-import request from 'supertest';
-import {app} from '../../../../../main/app';
-import {CLAIMANT_DOB_URL, CLAIMANT_PHONE_NUMBER_URL} from 'routes/urls';
-import {mockCivilClaim, mockDraftClaim, mockNoStatementOfMeans, mockRedisFailure} from '../../../../utils/mockDraftStore';
-import {TestMessages} from '../../../../utils/errorMessageTestConstants';
-import {t} from 'i18next';
-import {
-  addDaysToDate, 
-  formatDateToFullDate, 
-  getDOBforAgeFromCurrentTime,
-} from 'common/utils/dateUtils';
+import {Response} from 'express';
+import claimantDoBController from '../../../../../main/routes/features/claim/yourDetails/claimantDoBController';
+import {CLAIMANT_PHONE_NUMBER_URL} from 'routes/urls';
+import {AppRequest} from 'models/AppRequest';
+import {GenericForm} from 'form/models/genericForm';
 import {Claim} from 'models/claim';
+import {Party} from 'models/party';
+import {DOBDate} from 'common/form/models/claim/claimant/dobDate';
+import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {createMockResponse, createMockSession, getRouteHandler} from '../../../../utils/getRouteHandler';
 
-const jsdom = require('jsdom');
-const {JSDOM} = jsdom;
-
-jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
 
 describe('Claimant Date of Birth Controller', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
-  app.request.cookies = {eligibilityCompleted: true};
+  const getHandler = getRouteHandler(claimantDoBController, 'get');
+  const postHandler = getRouteHandler(claimantDoBController, 'post');
+  const viewPath = 'features/response/citizenDob/citizen-dob';
+  const pageTitle = 'PAGES.CLAIMANT_DOB.PAGE_TITLE';
+  let req: Partial<AppRequest>;
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
+  const mockGetCaseData = getCaseDataFromStore as jest.Mock;
+  const mockSaveDraftClaim = saveDraftClaim as jest.Mock;
 
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-  });
+  const claimWithApplicant = (): Claim => {
+    const claim = new Claim();
+    claim.applicant1 = new Party();
+    return claim;
+  };
 
-  afterAll(() => {
-    jest.clearAllMocks();
+  beforeEach(() => {
+    req = {
+      session: createMockSession({user: {id: 'user-id'}}),
+      body: {},
+      query: {},
+      cookies: {},
+    };
+    res = createMockResponse();
+    next = jest.fn();
+    mockGetCaseData.mockResolvedValue(claimWithApplicant());
+    mockSaveDraftClaim.mockResolvedValue(undefined);
   });
 
   describe('on GET', () => {
     it('should render date of birth page', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
-      const res = await request(app).get(CLAIMANT_DOB_URL);
-      expect(res.status).toBe(200);
-      expect(res.text).toContain('What is your date of birth?');
-      expect(res.text).not.toContain('NaN');
+      await getHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        pageTitle,
+        claimantView: true,
+        form: expect.any(GenericForm),
+      }));
+      expect((res.render as jest.Mock).mock.calls[0][1].form.model.day).not.toBe(NaN);
     });
 
-    it('should render date of birth page with values', async () => {
-      app.locals.draftStoreClient = mockNoStatementOfMeans;
-      const res = await request(app).get(CLAIMANT_DOB_URL);
-      expect(res.status).toBe(200);
-      expect(res.text).toContain('What is your date of birth?');
-      expect(res.text).not.toContain('NaN');
+    it('should render date of birth page with applicant values', async () => {
+      const claim = claimWithApplicant();
+      mockGetCaseData.mockResolvedValue(claim);
+
+      await getHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        pageTitle,
+        form: expect.any(GenericForm),
+      }));
+      expect((res.render as jest.Mock).mock.calls[0][1].form.model.day).not.toBe(NaN);
     });
 
     it('should render saved date of birth values', async () => {
-      app.locals.draftStoreClient = mockDraftClaim({
-        case_data: {
-          applicant1: {
-            dateOfBirth: {
-              date: new Date('1980-03-02T00:00:00.000Z'),
-            },
-          },
-        },
-      } as unknown as Claim);
-      const res = await request(app).get(CLAIMANT_DOB_URL);
-      const dom = new JSDOM(res.text);
+      const claim = claimWithApplicant();
+      claim.applicant1.dateOfBirth = new DOBDate('2', '3', '1980');
+      mockGetCaseData.mockResolvedValue(claim);
 
-      expect(res.status).toBe(200);
-      expect(dom.window.document.getElementById('day').getAttribute('value')).toBe('2');
-      expect(dom.window.document.getElementById('month').getAttribute('value')).toBe('3');
-      expect(dom.window.document.getElementById('year').getAttribute('value')).toBe('1980');
+      await getHandler(req as AppRequest, res as unknown as Response, next);
+
+      const form = (res.render as jest.Mock).mock.calls[0][1].form;
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({pageTitle, form: expect.any(GenericForm)}));
+      expect(form.model.day).toBe(2);
+      expect(form.model.month).toBe(3);
+      expect(form.model.year).toBe(1980);
     });
 
-    it('should return http 500 when has error in the get method', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .get(CLAIMANT_DOB_URL)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+    it('should call next when loading the claim fails', async () => {
+      const error = new Error('error');
+      mockGetCaseData.mockRejectedValue(error);
+
+      await getHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 
   describe('on POST', () => {
-    it('should render date of birth page if there are form errors', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
-      const res = await request(app).post(CLAIMANT_DOB_URL);
-      expect(res.status).toBe(200);
-      expect(res.text).toContain('What is your date of birth?');
+    it('should re-render date of birth page if there are form errors', async () => {
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        pageTitle,
+        form: expect.any(GenericForm),
+      }));
+      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
     });
 
-    it('should show validation error for claimant under 18', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+    it('should re-render when claimant is under 18', async () => {
       const today = new Date();
-      const maxDate = formatDateToFullDate(addDaysToDate(getDOBforAgeFromCurrentTime(18), 1), 'en');
-      await request(app).post(CLAIMANT_DOB_URL)
-        .send({ day:today.getDate(), month:today.getMonth(), year: today.getFullYear() - 16 })
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.VALID_ENTER_A_DATE_BEFORE', { maxDate }));
-        });
+      req.body = {day: today.getDate(), month: today.getMonth(), year: today.getFullYear() - 16};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({form: expect.any(GenericForm)}));
+      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
+      expect(res.redirect).not.toHaveBeenCalled();
     });
 
     it('should redirect to the claimant phone number page', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
-      await request(app).post(CLAIMANT_DOB_URL)
-        .send({day: 2, month: 3, year: 1980})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toBe(CLAIMANT_PHONE_NUMBER_URL);
-        });
+      req.body = {day: 2, month: 3, year: 1980};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(mockSaveDraftClaim).toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(CLAIMANT_PHONE_NUMBER_URL);
     });
 
-    it('should return http 500 when has error in the post method', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .post(CLAIMANT_DOB_URL)
-        .send({day: 4, month: 5, year: 1952})
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+    it('should call next when save fails', async () => {
+      const error = new Error('error');
+      mockSaveDraftClaim.mockRejectedValue(error);
+      req.body = {day: 4, month: 5, year: 1952};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 });

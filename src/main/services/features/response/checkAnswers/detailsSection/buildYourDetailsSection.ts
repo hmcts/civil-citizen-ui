@@ -6,13 +6,9 @@ import {getLng} from '../../../../../common/utils/languageToggleUtils';
 import {CITIZEN_DETAILS_URL, CITIZEN_PHONE_NUMBER_URL, DOB_URL} from '../../../../../routes/urls';
 import {formatDateToFullDate} from '../../../../../common/utils/dateUtils';
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
-import {Address} from '../../../../../common/form/models/address';
+import {addressToString} from '../../../../../common/utils/addressUtils';
 
 const changeLabel = (lang: string ): string => t('COMMON.BUTTONS.CHANGE', {lng: getLng(lang)});
-
-const addressToString = (address: Address) => {
-  return address.addressLine1 + '<br>' + address.city + '<br>' + address.postCode;
-};
 
 export const buildYourDetailsSection = (claim: Claim, claimId: string, lang: string ): SummarySection => {
   const yourDetailsHref = constructResponseUrlWithIdParams(claimId, CITIZEN_DETAILS_URL);

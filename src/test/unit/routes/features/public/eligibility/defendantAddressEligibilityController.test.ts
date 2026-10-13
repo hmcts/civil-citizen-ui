@@ -1,71 +1,72 @@
-import request from 'supertest';
-import {app} from '../../../../../../main/app';
+import {Request, Response} from 'express';
+import defendantAddressEligibilityController from '../../../../../../main/routes/features/public/eligibility/defendantAddressEligibilityController';
 import {
-  ELIGIBILITY_DEFENDANT_ADDRESS_URL,
   ELIGIBILITY_CLAIM_TYPE_URL,
   NOT_ELIGIBLE_FOR_THIS_SERVICE_URL,
 } from '../../../../../../main/routes/urls';
 import {YesNo} from '../../../../../../main/common/form/models/yesNo';
+import {GenericForm} from '../../../../../../main/common/form/models/genericForm';
+import {createMockResponse, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
-describe('Defendant Eligibility Address Controller', () => {
+describe('Defendant Address Eligibility Controller', () => {
+  const getHandler = getRouteHandler(defendantAddressEligibilityController, 'get');
+  const postHandler = getRouteHandler(defendantAddressEligibilityController, 'post');
+  const viewPath = 'features/public/eligibility/defendant-eligible-address';
+  let req: Partial<Request>;
+  let res: ReturnType<typeof createMockResponse>;
+
+  beforeEach(() => {
+    req = {cookies: {}, body: {}, query: {}};
+    res = createMockResponse();
+  });
 
   describe('on GET', () => {
-    it('should render defendant address eligibility page successfully', async () => {
-      await request(app).get(ELIGIBILITY_DEFENDANT_ADDRESS_URL).expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain('Does the person or organisation you’re claiming against have a postal address in England or Wales?');
-      });
+    it('should render the page', () => {
+      getHandler(req as Request, res as unknown as Response, jest.fn());
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        pageTitle: 'PAGES.ELIGIBILITY_DEFENDANT_ADDRESS.PAGE_TITLE',
+      }));
+      expect((res.render as jest.Mock).mock.calls[0][1].form).toBeInstanceOf(GenericForm);
     });
 
-    it('should render defendant address eligibility with set cookie value', async () => {
-      app.request['cookies'] = {'eligibility': {eligibleDefendantAddress: YesNo.YES}};
-      await request(app).get(ELIGIBILITY_DEFENDANT_ADDRESS_URL).expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain('Does the person or organisation you’re claiming against have a postal address in England or Wales?');
-      });
-    });
+    it('should pre-populate the form from the eligibility cookie', () => {
+      req.cookies = {eligibility: {eligibleDefendantAddress: YesNo.YES}};
 
-    it('should render defendant address eligibility view when cookie for defendant eligibility does not exist', async () => {
-      app.request['cookies'] = {'eligibility': {foo: 'blah'}};
-      await request(app).get(ELIGIBILITY_DEFENDANT_ADDRESS_URL).expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain('Does the person or organisation you’re claiming against have a postal address in England or Wales?');
-      });
+      getHandler(req as Request, res as unknown as Response, jest.fn());
+
+      expect((res.render as jest.Mock).mock.calls[0][1].form.model.option).toBe(YesNo.YES);
     });
   });
 
   describe('on POST', () => {
-    it('should render single defendant controller page', async () => {
-      await request(app).post(ELIGIBILITY_DEFENDANT_ADDRESS_URL).expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain('Does the person or organisation you’re claiming against have a postal address in England or Wales?');
-      });
+    it('should re-render when no option is selected', () => {
+      postHandler(req as Request, res as unknown as Response, jest.fn());
+
+      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
+      expect(res.redirect).not.toHaveBeenCalled();
     });
 
-    it('should redirect to not eligible page if address question radio selection is no', async () => {
-      await request(app).post(ELIGIBILITY_DEFENDANT_ADDRESS_URL).send({option: YesNo.NO}).expect((res) => {
-        expect(res.status).toBe(302);
-        expect(res.header.location).toBe(NOT_ELIGIBLE_FOR_THIS_SERVICE_URL + '?reason=defendant-address');
-      });
+    it('should redirect to claim type when yes is selected', () => {
+      req.body = {option: YesNo.YES};
+
+      postHandler(req as Request, res as unknown as Response, jest.fn());
+
+      expect(res.redirect).toHaveBeenCalledWith(ELIGIBILITY_CLAIM_TYPE_URL);
     });
 
-    it('should redirect and set cookie value', async () => {
-      app.request.cookies = {eligibility: {foo: 'blah'}};
-      await request(app).post(ELIGIBILITY_DEFENDANT_ADDRESS_URL).send({option: YesNo.YES}).expect((res) => {
-        expect(res.status).toBe(302);
-        expect(res.header.location).toBe(ELIGIBILITY_CLAIM_TYPE_URL);
-        expect(app.request.cookies.eligibility.eligibleDefendantAddress).toBe(YesNo.YES);
-        expect(app.request.cookies.eligibility.foo).toBe('blah');
-      });
-    });
+    it('should redirect to not eligible when no is selected and preserve cookie values', () => {
+      req.cookies = {eligibility: {foo: 'blah'}};
+      req.body = {option: YesNo.NO};
 
-    it('should redirect and update cookie value', async () => {
-      app.request.cookies = {eligibility: {foo: 'blah', singleDefendant: YesNo.NO}};
-      await request(app).post(ELIGIBILITY_DEFENDANT_ADDRESS_URL).send({option: YesNo.NO}).expect((res) => {
-        expect(res.status).toBe(302);
-        expect(app.request.cookies.eligibility.eligibleDefendantAddress).toBe(YesNo.NO);
-        expect(app.request.cookies.eligibility.foo).toBe('blah');
-      });
+      postHandler(req as Request, res as unknown as Response, jest.fn());
+
+      expect(res.cookie).toHaveBeenCalledWith(
+        'eligibility',
+        {foo: 'blah', eligibleDefendantAddress: YesNo.NO},
+        {httpOnly: true, sameSite: 'lax'},
+      );
+      expect(res.redirect).toHaveBeenCalledWith(`${NOT_ELIGIBLE_FOR_THIS_SERVICE_URL}?reason=defendant-address`);
     });
   });
 });

@@ -13,6 +13,7 @@ import {
 import {PartyType} from '../../../../../../../main/common/models/partyType';
 import {formatDateToFullDate} from '../../../../../../../main/common/utils/dateUtils';
 import {PartyDetails} from '../../../../../../../main/common/form/models/partyDetails';
+import {Address} from '../../../../../../../main/common/form/models/address';
 import {Email} from '../../../../../../../main/common/models/Email';
 import {CitizenDate} from '../../../../../../../main/common/form/models/claim/claimant/citizenDate';
 import {buildTheirDetailsSection} from 'services/features/claim/checkAnswers/detailsSection/buildTheirDetailsSection';
@@ -59,6 +60,21 @@ describe('Citizen Details Section', () => {
     expect(summarySections.summaryList.rows[4].value.html).toBe(CORRESPONDENCE_ADDRESS);
     expect(summarySections.summaryList.rows[5].value.html).toBe(EMAIL_ADDRESS);
     expect(summarySections.summaryList.rows[6].value.html).toBe(CONTACT_NUMBER);
+  });
+  it('should build Their Details Section with multi-line address', async () => {
+    //Given
+    const claim = createClaimWithIndividualDetails();
+    claim.respondent1.partyDetails.primaryAddress = new Address(
+      'line 1',
+      'line 2',
+      'line 3',
+      'city',
+      'postcode',
+    );
+    //When
+    const summarySections = await buildTheirDetailsSection(claim, CLAIM_ID, 'en');
+    //Then
+    expect(summarySections.summaryList.rows[1].value.html).toBe('line 1<br>line 2<br>line 3<br>city<br>postcode');
   });
   it('should build Their Details Section with DOB', async () => {
     //Given

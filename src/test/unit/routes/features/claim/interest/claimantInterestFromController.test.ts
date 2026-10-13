@@ -1,87 +1,108 @@
-import config from 'config';
-import nock from 'nock';
-import request from 'supertest';
-import {app} from '../../../../../../main/app';
-import {CLAIM_INTEREST_DATE_URL, CLAIM_INTEREST_START_DATE_URL, CLAIM_HELP_WITH_FEES_URL} from 'routes/urls';
-import {mockCivilClaim, mockNoStatementOfMeans, mockRedisFailure} from '../../../../../utils/mockDraftStore';
-import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
+import {Response} from 'express';
+import claimantInterestFromController from '../../../../../../main/routes/features/claim/interest/claimantInterestFromController';
+import {CLAIM_INTEREST_START_DATE_URL, CLAIM_HELP_WITH_FEES_URL} from 'routes/urls';
+import {AppRequest} from 'models/AppRequest';
+import {GenericForm} from 'form/models/genericForm';
+import {Interest} from 'form/models/interest/interest';
 import {InterestClaimFromType} from 'form/models/claimDetails';
+import {getInterest, saveInterest} from 'services/features/claim/interest/interestService';
+import {createMockResponse, createMockSession, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('services/features/claim/interest/interestService', () => ({
+  getInterest: jest.fn(),
+  saveInterest: jest.fn(),
+}));
 
 describe('Claimant Interest From Controller', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
-  app.request.cookies = {eligibilityCompleted: true};
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-    app.locals.draftStoreClient = mockCivilClaim;
+  const getHandler = getRouteHandler(claimantInterestFromController, 'get');
+  const postHandler = getRouteHandler(claimantInterestFromController, 'post');
+  const viewPath = 'features/claim/interest/claimant-interest-from';
+  const pageTitle = 'PAGES.CLAIM_JOURNEY.WHEN_CLAIM_INTEREST_FROM.TITLE';
+  let req: Partial<AppRequest>;
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
+  const mockGetInterest = getInterest as jest.Mock;
+  const mockSaveInterest = saveInterest as jest.Mock;
+
+  beforeEach(() => {
+    req = {
+      session: createMockSession({user: {id: 'user-id'}}),
+      body: {},
+      query: {},
+      cookies: {},
+    };
+    res = createMockResponse();
+    next = jest.fn();
+    mockGetInterest.mockResolvedValue(new Interest());
+    mockSaveInterest.mockResolvedValue(undefined);
   });
 
   describe('on GET', () => {
     it('should render claimant interest from page', async () => {
-      const res = await request(app).get(CLAIM_INTEREST_DATE_URL);
-      expect(res.status).toBe(200);
-      expect(res.text).toContain('When are you claiming interest from?');
+      await getHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        pageTitle,
+        form: expect.any(GenericForm),
+      }));
     });
 
-    it('should render date of birth page with values', async () => {
-      app.locals.draftStoreClient = mockNoStatementOfMeans;
-      const res = await request(app).get(CLAIM_INTEREST_DATE_URL);
-      expect(res.status).toBe(200);
-      expect(res.text).toContain('When are you claiming interest from?');
+    it('should render claimant interest from page with values', async () => {
+      const interest = new Interest();
+      interest.interestClaimFrom = InterestClaimFromType.FROM_CLAIM_SUBMIT_DATE;
+      mockGetInterest.mockResolvedValue(interest);
+
+      await getHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        pageTitle,
+        form: expect.any(GenericForm),
+      }));
     });
 
-    it('should return http 500 when has error in the get method', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .get(CLAIM_INTEREST_DATE_URL)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+    it('should call next when get fails', async () => {
+      const error = new Error('error');
+      mockGetInterest.mockRejectedValue(error);
+
+      await getHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 
   describe('on POST', () => {
-    it('should render claimant interest from page if there are form errors', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
-      const res = await request(app).post(CLAIM_INTEREST_DATE_URL);
-      expect(res.status).toBe(200);
-      expect(res.text).toContain('There was a problem');
+    it('should re-render claimant interest from page if there are form errors', async () => {
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({pageTitle, form: expect.any(GenericForm)}));
+      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
     });
 
     it('should redirect to the help with fees page', async () => {
-      app.locals.draftStoreClient = mockNoStatementOfMeans;
-      await request(app).post(CLAIM_INTEREST_DATE_URL)
-        .send({'option': InterestClaimFromType.FROM_CLAIM_SUBMIT_DATE})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toBe(CLAIM_HELP_WITH_FEES_URL);
-        });
+      req.body = {option: InterestClaimFromType.FROM_CLAIM_SUBMIT_DATE};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(mockSaveInterest).toHaveBeenCalledWith('user-id', InterestClaimFromType.FROM_CLAIM_SUBMIT_DATE, 'interestClaimFrom');
+      expect(res.redirect).toHaveBeenCalledWith(CLAIM_HELP_WITH_FEES_URL);
     });
 
     it('should redirect to the interest enter date from page', async () => {
-      await request(app).post(CLAIM_INTEREST_DATE_URL)
-        .send({'option': InterestClaimFromType.FROM_A_SPECIFIC_DATE})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toBe(CLAIM_INTEREST_START_DATE_URL);
-        });
+      req.body = {option: InterestClaimFromType.FROM_A_SPECIFIC_DATE};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.redirect).toHaveBeenCalledWith(CLAIM_INTEREST_START_DATE_URL);
     });
 
-    it('should return http 500 when has error in the post method', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .post(CLAIM_INTEREST_DATE_URL)
-        .send({'option': InterestClaimFromType.FROM_CLAIM_SUBMIT_DATE})
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+    it('should call next when save fails', async () => {
+      const error = new Error('error');
+      mockSaveInterest.mockRejectedValue(error);
+      req.body = {option: InterestClaimFromType.FROM_CLAIM_SUBMIT_DATE};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 });
