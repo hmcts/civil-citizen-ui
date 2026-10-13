@@ -44,7 +44,7 @@ const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
 export const getSummarySections = (uploadedDocuments: UploadDocumentsUserForm, claimId: string, isSmallClaims: boolean, lang: string ): DocumentUploadSections | null => {
-  if (!uploadedDocuments) {
+  if (!hasValidNewDocuments(uploadedDocuments)) {
     return null;
   }
   return {
@@ -97,8 +97,18 @@ export const saveUploadedDocuments = async (claim: Claim, req: AppRequest): Prom
   }
 };
 
+const isDocumentLinkPresent = (document: {caseDocument?: CaseDocument}): boolean => !!document?.caseDocument?.documentLink?.document_binary_url;
+
+export const hasValidNewDocuments = (uploadedDocuments: UploadDocumentsUserForm): boolean => {
+  if (!uploadedDocuments) {
+    return false;
+  }
+  return Object.values(uploadedDocuments)
+    .some(documents => Array.isArray(documents) && documents.some(isDocumentLinkPresent));
+};
+
 const hasDocumentLink = (document: {caseDocument?: CaseDocument}, claimId: string): boolean => {
-  if (document?.caseDocument?.documentLink) {
+  if (isDocumentLinkPresent(document)) {
     return true;
   }
   logger.warn(`Skipping evidence upload document with missing document link. ClaimId: ${claimId}`);

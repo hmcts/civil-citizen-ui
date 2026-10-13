@@ -9,6 +9,7 @@ import {
   getBottomElements,
   getSummarySections,
   getTopElements,
+  hasValidNewDocuments,
   saveUploadedDocuments,
 } from 'services/features/caseProgression/checkYourAnswers/checkAnswersService';
 import {DocumentUploadSections} from 'models/caseProgression/documentUploadSections';
@@ -67,7 +68,7 @@ describe('checkAnswersServiceTest', () => {
   describe('return page elements', () => {
     test('return all evidence sections', () => {
       //given
-      const uploadedDocuments = new UploadDocumentsUserForm();
+      const uploadedDocuments = getMockFullUploadDocumentsUserForm();
       const claimId = '1234';
       const isSmallClaims = true;
       const lang = 'en';
@@ -105,6 +106,43 @@ describe('checkAnswersServiceTest', () => {
       const actualSummarySection = getSummarySections(null, '1234', false, 'en');
       //then
       expect(actualSummarySection).toBeNull();
+    });
+
+    test('should return null when no uploaded documents have a document link', () => {
+      //given
+      const uploadedDocuments = new UploadDocumentsUserForm();
+      uploadedDocuments.witnessStatement = [{witnessName: 'witness', caseDocument: undefined} as WitnessSection];
+      //when
+      const actualSummarySection = getSummarySections(uploadedDocuments, '1234', false, 'en');
+      //then
+      expect(actualSummarySection).toBeNull();
+    });
+
+    describe('hasValidNewDocuments', () => {
+      test.each([
+        ['undefined', undefined],
+        ['null', null],
+        ['an empty draft', getMockEmptyUploadDocumentsUserForm()],
+        ['a draft whose only document has no case document', new UploadDocumentsUserForm(undefined, undefined, [{witnessName: 'witness', caseDocument: undefined} as WitnessSection])],
+        ['a draft whose only document has no document link', new UploadDocumentsUserForm(undefined, undefined, [{witnessName: 'witness', caseDocument: {documentName: 'test.png'}} as WitnessSection])],
+        ['a draft whose only document is null', new UploadDocumentsUserForm(undefined, undefined, [null])],
+        ['a draft whose only document has no binary url', new UploadDocumentsUserForm(undefined, undefined, [{witnessName: 'witness', caseDocument: {documentName: 'test.png', documentLink: {document_url: 'http://test'}}} as WitnessSection])],
+      ])('should return false for %s', (_description, uploadedDocuments) => {
+        //when
+        const actual = hasValidNewDocuments(uploadedDocuments as UploadDocumentsUserForm);
+        //then
+        expect(actual).toBe(false);
+      });
+
+      test('should return true when at least one document has a document link', () => {
+        //given
+        const uploadedDocuments = getMockFullUploadDocumentsUserForm();
+        uploadedDocuments.witnessStatement[0] = {...uploadedDocuments.witnessStatement[0], caseDocument: undefined} as WitnessSection;
+        //when
+        const actual = hasValidNewDocuments(uploadedDocuments);
+        //then
+        expect(actual).toBe(true);
+      });
     });
 
     test('return top page elements', () => {
@@ -456,6 +494,7 @@ describe('checkAnswersServiceTest', () => {
       test.each([
         ['a null document', null],
         ['a case document without a document link', {caseDocument: {documentName: 'test.png'}}],
+        ['a document link without a binary url', {caseDocument: {documentName: 'test.png', documentLink: {document_url: 'http://test'}}}],
       ])('should skip %s', async (_description, document) => {
         //given
         const mockSubmitEvent = jest.spyOn(CivilServiceClient.prototype, 'submitEvent');
