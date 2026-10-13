@@ -49,12 +49,17 @@ export const getClaimIssuePaymentClaim = async (req: AppRequest): Promise<ClaimI
   const draftResult = await getDraftClaimForCase(req, claimId);
   if (draftResult?.claimResponse?.case_data) {
     const claim = Object.assign(new Claim(), draftResult.claimResponse.case_data as unknown as Claim);
-    if (draftResult.createdAt && !claim.draftClaimCreatedAt) {
-      claim.draftClaimCreatedAt = new Date(draftResult.createdAt);
+    if (!claim.isEmpty()) {
+      if (draftResult.createdAt && !claim.draftClaimCreatedAt) {
+        claim.draftClaimCreatedAt = new Date(draftResult.createdAt);
+      }
+      const draftId = draftResult.rawResponse.draftId;
+      logger.info(`Payment draft ${draftId} loaded from db for claim id ${claimId}`);
+      return {claim, draftId};
     }
-    const draftId = draftResult.rawResponse.draftId;
-    logger.info(`Payment draft ${draftId} loaded from db for claim id ${claimId}`);
-    return {claim, draftId};
+    logger.info(
+      `DB draft for claim id ${claimId} is empty; falling back to Redis payment data`,
+    );
   }
 
   const claim = await getClaimById(claimId, req, true);

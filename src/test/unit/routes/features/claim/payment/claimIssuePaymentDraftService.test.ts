@@ -17,6 +17,7 @@ import {CivilClaimResponse} from 'models/civilClaimResponse';
 import {DraftClaimManagerResult} from 'models/draft/draftClaim';
 import {PaymentInformation} from 'models/feePayment/paymentInformation';
 import {ClaimDetails} from 'form/models/claim/details/claimDetails';
+import {Party} from 'models/party';
 
 jest.mock('modules/draft-store/draftStoreManagerService');
 jest.mock('modules/draft-store/draftStoreService');
@@ -45,6 +46,7 @@ const createReq = (id = claimId): AppRequest => ({
 const createClaim = (): Claim => {
   const claim = new Claim();
   claim.id = claimId;
+  claim.applicant1 = new Party();
   claim.claimDetails = new ClaimDetails();
   claim.claimDetails.claimFeePayment = new PaymentInformation('ext', 'RC-1');
   return claim;
@@ -109,7 +111,7 @@ describe('claimIssuePaymentDraftService', () => {
       expect(mockGetDraftClaimFromStore).not.toHaveBeenCalled();
     });
 
-    it('regression: after clear, payment can still load redis while working draft is gone', async () => {
+    it('should load payment through redis after clear while working draft is gone', async () => {
       const req = createReq();
       const claim = createClaim();
       mockGetDraftClaimFromStore.mockResolvedValueOnce({case_data: createClaim()});
@@ -154,6 +156,21 @@ describe('claimIssuePaymentDraftService', () => {
 
       expect(mockGetClaimById).toHaveBeenCalledWith(claimId, req, true);
       expect(result).toEqual({claim: redisClaim});
+    });
+
+    it('should not use empty DB tracking row to shadow Redis payment data', async () => {
+      const req = createReq();
+      const redisClaim = createClaim();
+      const emptyDbClaim = new Claim();
+      emptyDbClaim.id = claimId;
+      mockGetDraftClaimForCase.mockResolvedValueOnce(createManagerResult(emptyDbClaim));
+      mockGetClaimById.mockResolvedValueOnce(redisClaim);
+
+      const result = await getClaimIssuePaymentClaim(req);
+
+      expect(mockGetClaimById).toHaveBeenCalledWith(claimId, req, true);
+      expect(result).toEqual({claim: redisClaim});
+      expect(result.draftId).toBeUndefined();
     });
 
     it('should throw when url claim id is missing', async () => {
