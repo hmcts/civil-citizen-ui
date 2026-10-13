@@ -7,7 +7,7 @@ import {
 import {
   getBottomElements,
   getSummarySections,
-  getTopElements, saveUploadedDocuments,
+  getTopElements, hasValidNewDocuments, saveUploadedDocuments,
 } from 'services/features/caseProgression/checkYourAnswers/checkAnswersService';
 import {deleteDraftClaimFromStore, generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {Claim} from 'common/models/claim';
@@ -67,7 +67,7 @@ documentUploadCheckAnswerController.post(CP_CHECK_ANSWERS_URL, (async (req: Requ
     const form = new GenericForm<DocumentUploadSubmissionForm>(new DocumentUploadSubmissionForm(req.body.signed));
     const claim = await getClaimById(claimId, req, true);
     const uploadedDocuments = getUploadedDocuments(claim);
-    if (!uploadedDocuments) {
+    if (!hasValidNewDocuments(uploadedDocuments)) {
       return res.redirect(constructResponseUrlWithIdParams(claimId, CP_UPLOAD_DOCUMENTS_URL));
     }
     await form.validate();
