@@ -21,6 +21,7 @@ const request = () => ({session: {user: {id: 'cui-user-id', accessToken: 'some-a
   params: {appId: CASE_ID}, locals: {}} as unknown as AppRequest);
 const paymentPath = (kind: string) => kind === 'GA' ? `/fees/case/${CASE_ID}/ga/payment`
   : `/fees/${kind}/case/${CASE_ID}/payment`;
+const ISO_DATE_TIME_WITH_MILLIS = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}(?:Z|[+-]\d{2}:\d{2})$/;
 
 // Only redirect configuration to Pact; service translators, HTTP clients and converters remain real.
 function loadServices(url: string, load: () => void) {
@@ -51,7 +52,7 @@ describe('Civil Service payments and Help with Fees', () => {
       willRespondWith: {status: 200, headers: {'Content-Type': 'application/json'}, body: {
         externalReference: '2023-1701090705688', paymentReference: PAYMENT_REFERENCE, status: 'Initiated',
         nextUrl: 'https://card.payments.service.gov.uk/secure/hearing-payment',
-        dateCreated: MatchersV3.timestamp("yyyy-MM-dd'T'HH:mm:ss.SSSX", '2023-11-27T13:15:06.313Z'),
+        dateCreated: MatchersV3.regex(ISO_DATE_TIME_WITH_MILLIS, '2023-11-27T13:15:06.313Z'),
         paymentAmount: null,
       }}});
     await provider.executeTest(async server => {
