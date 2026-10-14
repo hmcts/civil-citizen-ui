@@ -1,155 +1,105 @@
-import express from 'express';
-import nock from 'nock';
-import config from 'config';
-import {CITIZEN_COURT_ORDERS_URL, CITIZEN_PRIORITY_DEBTS_URL} from 'routes/urls';
-import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
-import {mockResponseFullAdmitPayBySetDate, mockRedisFailure} from '../../../../../../utils/mockDraftStore';
+import {Request, Response} from 'express';
+import courtOrdersController from '../../../../../../../main/routes/features/response/statementOfMeans/courtOrders/courtOrdersController';
+import {CITIZEN_PRIORITY_DEBTS_URL} from 'routes/urls';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {Claim} from 'models/claim';
+import {createMockResponse, getRouteHandler} from '../../../../../../utils/getRouteHandler';
 
-const request = require('supertest');
-const {app} = require('../../../../../../../main/app');
-
-jest.mock('../../../../../../../main/modules/oidc');
-
-const respondentCourtOrdersUrl = CITIZEN_COURT_ORDERS_URL.replace(':id', 'aaa');
+jest.mock('modules/draft-store/draftStoreService');
 
 describe('Citizen court orders', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamServiceUrl: string = config.get('services.idam.url');
+  const getHandler = getRouteHandler(courtOrdersController, 'get');
+  const postHandler = getRouteHandler(courtOrdersController, 'post');
+  const viewPath = 'features/response/statementOfMeans/courtOrders/court-orders';
+  const claimId = '12345';
+  let req: Partial<Request>;
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
+  const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
+  const mockGenerateRedisKey = draftStoreService.generateRedisKey as jest.Mock;
+  const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
 
-  beforeAll(() => {
-    nock(idamServiceUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
+  const validCourtOrder = {
+    declared: 'yes',
+    rows: [{claimNumber: 'abc1', amount: '120', instalmentAmount: '10'}],
+  };
+
+  beforeEach(() => {
+    req = {params: {id: claimId}, body: {}, query: {}, cookies: {}};
+    res = createMockResponse();
+    next = jest.fn();
+    jest.clearAllMocks();
+    mockGenerateRedisKey.mockReturnValue(claimId);
+    mockGetCaseData.mockResolvedValue(new Claim());
+    mockSaveDraftClaim.mockResolvedValue(undefined);
   });
 
   describe('on GET', () => {
-    it('should return court orders page', async () => {
-      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
-      await request(app)
-        .get(respondentCourtOrdersUrl)
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Are you paying money as a result of any court orders?');
-        });
+    it('should render the court orders page', async () => {
+      await getHandler(req as Request, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        form: expect.anything(),
+      }));
+      expect(next).not.toHaveBeenCalled();
     });
-    it('should return status 500 when error thrown', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .get(respondentCourtOrdersUrl)
-        .expect((res: Response) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+
+    it('should call next when loading the claim fails', async () => {
+      const error = new Error('redis failure');
+      mockGetCaseData.mockRejectedValue(error);
+
+      await getHandler(req as Request, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 
   describe('on POST', () => {
-    beforeAll(() => {
-      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
+    it('should re-render when no option is selected', async () => {
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
+      expect(mockSaveDraftClaim).not.toHaveBeenCalled();
     });
 
-    it('when Yes option and one court order fully filled in, should redirect to Debts screen', async () => {
-      await request(app)
-        .post(respondentCourtOrdersUrl)
-        .send('declared=yes')
-        .send('rows[0][claimNumber]=abc1')
-        .send('rows[0][amount]=120')
-        .send('rows[0][instalmentAmount]=10')
-        .expect((res: express.Response) => {
-          expect(res.status).toBe(302);
-          expect(res.get('location')).toBe(CITIZEN_PRIORITY_DEBTS_URL.replace(':id', 'aaa'));
-        });
+    it('should re-render when yes is selected and the court order is empty', async () => {
+      req.body = {
+        declared: 'yes',
+        rows: [{claimNumber: '', amount: '', instalmentAmount: ''}],
+      };
+
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
+      expect(res.redirect).not.toHaveBeenCalled();
     });
 
-    it('when no option selected should show an error', async () => {
-      await request(app)
-        .post(respondentCourtOrdersUrl)
-        .send('_csrf=')
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.VALID_YES_NO_SELECTION);
-        });
+    it('should save and redirect when yes and a court order are provided', async () => {
+      req.body = validCourtOrder;
+
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expect(mockSaveDraftClaim).toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CITIZEN_PRIORITY_DEBTS_URL));
     });
 
-    it('when Yes option and an empty court order, should show an error', async () => {
-      await request(app)
-        .post(respondentCourtOrdersUrl)
-        .send('declared=yes')
-        .send('rows[0][claimNumber]=')
-        .send('rows[0][amount]=')
-        .send('rows[0][instalmentAmount]=')
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.VALID_AT_LEAST_ONE_COURT_ORDER);
-        });
+    it('should save and redirect when no is selected', async () => {
+      req.body = {declared: 'no'};
+
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CITIZEN_PRIORITY_DEBTS_URL));
     });
 
-    it('when Yes option and missing court order claim number, should show an error', async () => {
-      await request(app)
-        .post(respondentCourtOrdersUrl)
-        .send('declared=yes')
-        .send('rows[0][claimNumber]=')
-        .send('rows[0][amount]=120')
-        .send('rows[0][instalmentAmount]=10')
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.VALID_CLAIM_NUMBER);
-        });
-    });
+    it('should call next when saving fails', async () => {
+      const error = new Error('redis failure');
+      mockGetCaseData.mockRejectedValue(error);
+      req.body = validCourtOrder;
 
-    it('when Yes option and missing court order claim amount, should show an error', async () => {
-      await request(app)
-        .post(respondentCourtOrdersUrl)
-        .send('declared=yes')
-        .send('rows[0][claimNumber]=abc1')
-        .send('rows[0][amount]=')
-        .send('rows[0][instalmentAmount]=10')
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.VALID_AMOUNT_ONE_POUND_OR_MORE);
-        });
-    });
+      await postHandler(req as Request, res as unknown as Response, next);
 
-    it('when Yes option and claim number contains non-alphanumeric characters, should show an error', async () => {
-      await request(app)
-        .post(respondentCourtOrdersUrl)
-        .send('declared=yes')
-        .send('rows[0][claimNumber]=ABC-123')
-        .send('rows[0][amount]=120')
-        .send('rows[0][instalmentAmount]=10')
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.VALID_CLAIM_NUMBER_ALPHANUMERIC);
-        });
-    });
-
-    it('when Yes option and missing court order claim instalment amount, should show an error', async () => {
-      await request(app)
-        .post(respondentCourtOrdersUrl)
-        .send('declared=yes')
-        .send('rows[0][claimNumber]=abc1')
-        .send('rows[0][amount]=120')
-        .send('rows[0][instalmentAmount]=')
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.VALID_STRICTLY_POSITIVE_NUMBER);
-        });
-    });
-
-    it('should status 500 when error thrown', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .post(respondentCourtOrdersUrl)
-        .send('declared=yes')
-        .send('rows[0][claimNumber]=abc1')
-        .send('rows[0][amount]=120')
-        .send('rows[0][instalmentAmount]=10')
-        .expect((res: Response) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 });
