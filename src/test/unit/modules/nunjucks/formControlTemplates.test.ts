@@ -65,9 +65,12 @@ describe('date error composition and master content preservation', () => {
     const view = 'features/generalApplication/response/accept-defendant-offer.njk';
     const form = formControlForm({option: 'no', type: 'PROPOSE_BY_SET_DATE'}, {day: 'ERRORS.VALID_DAY'});
     const translate = formControlTranslate();
-    dom = new JSDOM(renderFormControlPage(view, 'en', 'error', {form, t: (key: string) => key === 'ERRORS.VALID_DAY' ? '<img src=x onerror=alert(1) alt="">' : translate(key)}));
-    expect(dom.window.document.querySelector('.govuk-error-message img')).toBeNull();
-    expect(dom.window.document.querySelector('.govuk-date-input')?.parentElement.textContent).toContain('<img src=x onerror=alert(1)>');
+    const translatedError = '<img src=x onerror=alert(1) alt="">';
+    dom = new JSDOM(renderFormControlPage(view, 'en', 'error', {form, t: (key: string) => key === 'ERRORS.VALID_DAY' ? translatedError : translate(key)}));
+    const error = dom.window.document.getElementById('proposedSetDate-error');
+    expect(error).not.toBeNull();
+    expect(error.querySelector('img')).toBeNull();
+    expect(error.textContent).toContain(translatedError);
   });
   it.each(['en', 'cy'])('preserves interpolated DOB maximum dates in %s', language => {
     const form = formControlForm({day: 1, month: 1, year: 2020}, {dateOfBirth: 'ERRORS.VALID_ENTER_A_DATE_BEFORE'});
