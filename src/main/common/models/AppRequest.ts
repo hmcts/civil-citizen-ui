@@ -53,6 +53,8 @@ export interface AppSession extends Session {
   qmShareConfirmed: boolean;
   caseReference?: string;
   paymentConfirmationContext?: PaymentConfirmationContext;
+  /** When the user was last sent to sign in after a civil-service 401 (DTSCCI-6600). */
+  reauthOn401At?: number;
   /** Short-TTL session cache for /userCaseRoles (DTSCCI-5946). Key: ucr:userId:caseId */
   userCaseRolesCache?: Record<string, UserCaseRolesCacheEntry>;
 }
