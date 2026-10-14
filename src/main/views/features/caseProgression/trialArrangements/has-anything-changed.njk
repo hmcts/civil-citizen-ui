@@ -37,12 +37,7 @@
     <form method="post" novalidate>
       {{ csrfProtection(csrf) }}
 
-      <fieldset class="govuk-fieldset">
-        <legend class="govuk-visually-hidden">
-          {{ t('PAGES.HAS_ANYTHING_CHANGED.PAGE_TITLE') }}
-        </legend>
-        {{ yesNoRadioButton(t, 'option', 'option', '', form, '', {yesHtml: yesHtml, yes: 'COMMON.YES', no: 'COMMON.NO'}) }}
-      </fieldset>
+      {{ yesNoRadioButton(t, 'option', 'option', t('PAGES.HAS_ANYTHING_CHANGED.PAGE_TITLE'), form, '', {yesHtml: yesHtml, yes: 'COMMON.YES', no: 'COMMON.NO', isPageHeading: false, legendClasses: 'govuk-visually-hidden'}) }}
 
       {{ addButton(t, 'CONTINUE',cancelUrl) }}
     </form>

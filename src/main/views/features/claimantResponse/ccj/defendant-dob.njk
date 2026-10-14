@@ -29,11 +29,11 @@
             {% set id = "option" %}
             {% set name = "option" %}
             {% set yesHtml %}
-            <div class="govuk-form-group {% if form.hasErrors() %} govuk-form-group--error{% endif %}">
+            <div class="govuk-form-group">
               {% set errorHtml %}
-              {% if form.hasErrors() and not form.errorFor('option') %}
-                {% for error in errors %}
-                  <span class="govuk-error-message">{{ t(error.text, {maxDate: maxDate}) }}</span>
+              {% if form.hasErrors() %}
+                {% for error in errors | selectattr("text") %}
+                  {% if error.property != "option" %}{{ t(error.text, {maxDate: maxDate}) }}<br>{% endif %}
                 {% endfor %}
               {% endif %}
               {% endset %}
@@ -55,7 +55,7 @@
                 },
                 errorMessage: {
                   html: errorHtml
-                } if form.hasErrors(),
+                } if errorHtml | trim,
                 items: [
                   {
                     classes: "govuk-input--width-2 govuk-input--error" if form.errorFor('dob[day]') else "govuk-input--width-2",
@@ -86,12 +86,7 @@
             </div>
             {% endset %}
 
-            <fieldset class="govuk-fieldset">
-              <legend class="govuk-visually-hidden">
-                {{ t('PAGES.CCJ_DEFENDANT_DOB.TITLE') }}
-              </legend>
-              {{ yesNoRadioButton(t,id,name, '', form, description, {yesHtml: yesHtml, yes:'COMMON.VARIATION_2.YES', no: 'COMMON.VARIATION_2.NO'}) }}
-            </fieldset>
+            {{ yesNoRadioButton(t, id, name, t('PAGES.CCJ_DEFENDANT_DOB.TITLE'), form, description, {yesHtml: yesHtml, yes:'COMMON.VARIATION_2.YES', no: 'COMMON.VARIATION_2.NO', isPageHeading: false, legendClasses: 'govuk-visually-hidden'}) }}
 
             <div class="govuk-form-group">
               {{ govukButton({
