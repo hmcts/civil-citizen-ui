@@ -53,6 +53,7 @@ export const FILE_UPLOAD_SOURCE = {
   GA_ADDITIONAL_INFO: 'ga_additional_info',
   GA_RESPONDENT_UPLOAD: 'ga_respondent_upload',
   GA_WRITTEN_REPRESENTATION: 'ga_written_representation',
+  CP_UPLOAD_DOCUMENTS: 'cp_upload_documents',
 } as const;
 
 /** Returns file upload errors only if session.fileUploadSource matches; otherwise clears and returns null. */
@@ -168,6 +169,20 @@ export const createUploadOneFileError = () => {
   }];
 };
 
+export const createNoValidDocumentsError = () => {
+  return [{
+    target: {
+      fileUpload: '',
+      typeOfDocument: '',
+    },
+    value: '',
+    property: '',
+    constraints: {
+      isNotEmpty: 'ERRORS.NO_VALID_DOCUMENTS',
+    },
+  }];
+};
+
 export const uploadAndValidateFile = async (
   req: Request,
   submitAction: string,
@@ -220,7 +235,7 @@ export const uploadAndValidateFile = async (
       try {
         if (categoryModel && categoryModel[+index]) {
           categoryModel[+index].caseDocument = await civilServiceClient.uploadDocument(req, fileUpload);
-         
+
           if (!categoryModel[+index].caseDocument?.documentLink) {
             logger.error('[SAVE FILE] File upload response missing documentLink');
             const apiError = createFileUploadError(category, index, 'uploadError', 'ERRORS.FILE_UPLOAD_FAILED');

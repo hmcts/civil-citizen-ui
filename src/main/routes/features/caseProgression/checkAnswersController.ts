@@ -21,6 +21,7 @@ import {CivilServiceClient} from 'client/civilServiceClient';
 import config from 'config';
 import {getClaimById} from 'modules/utilityService';
 import {getRouteParam} from 'common/utils/routeParamUtils';
+import {createNoValidDocumentsError, FILE_UPLOAD_SOURCE} from 'common/utils/fileUploadUtils';
 
 const checkAnswersViewPath = 'features/caseProgression/check-answers';
 const documentUploadCheckAnswerController = Router();
@@ -28,6 +29,12 @@ const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 const getUploadedDocuments = (claim: Claim): UploadDocumentsUserForm =>
   claim.isClaimant() ? claim.caseProgression?.claimantDocuments : claim.caseProgression?.defendantDocuments;
+
+const redirectWithNoValidDocumentsError = (req: AppRequest, res: Response, claimId: string) => {
+  req.session.fileUpload = JSON.stringify(createNoValidDocumentsError());
+  req.session.fileUploadSource = FILE_UPLOAD_SOURCE.CP_UPLOAD_DOCUMENTS;
+  req.session.save(() => res.redirect(constructResponseUrlWithIdParams(claimId, CP_UPLOAD_DOCUMENTS_URL)));
+};
 
 function renderView(res: Response, form: GenericForm<DocumentUploadSubmissionForm>, claim: Claim, claimId: string, summarySections: DocumentUploadSections) {
   const topPageContents = getTopElements(claim);
@@ -49,7 +56,7 @@ documentUploadCheckAnswerController.get(CP_CHECK_ANSWERS_URL, (async (req: AppRe
     const claim = await getClaimById(claimId, req,true);
     const summarySections = getSummarySections(getUploadedDocuments(claim), claimId, claim.isSmallClaimsTrackDQ, lang);
     if (summarySections === null) {
-      return res.redirect(constructResponseUrlWithIdParams(claimId, CP_UPLOAD_DOCUMENTS_URL));
+      return redirectWithNoValidDocumentsError(req, res, claimId);
     }
     const form = new GenericForm(new DocumentUploadSubmissionForm());
     renderView(res, form, claim, claimId, summarySections);
@@ -68,7 +75,7 @@ documentUploadCheckAnswerController.post(CP_CHECK_ANSWERS_URL, (async (req: Requ
     const claim = await getClaimById(claimId, req, true);
     const uploadedDocuments = getUploadedDocuments(claim);
     if (!hasValidNewDocuments(uploadedDocuments)) {
-      return res.redirect(constructResponseUrlWithIdParams(claimId, CP_UPLOAD_DOCUMENTS_URL));
+      return redirectWithNoValidDocumentsError(appReq, res, claimId);
     }
     await form.validate();
 

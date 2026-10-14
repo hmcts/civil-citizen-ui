@@ -10,6 +10,7 @@ import {SummarySection, SummarySections} from 'models/summaryList/summarySection
 import {Claim} from 'models/claim';
 import {CaseRole} from 'form/models/caseRoles';
 import {UploadDocumentsUserForm, WitnessSection} from 'models/caseProgression/uploadDocumentsUserForm';
+import {CivilServiceClient} from 'client/civilServiceClient';
 
 jest.mock('modules/draft-store/draftStoreService');
 jest.mock('services/features/caseProgression/checkYourAnswers/checkAnswersService');
@@ -28,6 +29,25 @@ const mockGenerateRedisKey = draftStoreService.generateRedisKey as jest.Mock;
 const session = require('supertest-session');
 const testSession = session(app);
 const citizenRoleToken: string = config.get('citizenRoleToken');
+const buildAllInvalidDraft = (): UploadDocumentsUserForm =>
+  new UploadDocumentsUserForm([], [], [{witnessName: 'witness', caseDocument: undefined} as WitnessSection], [], [], [], [], [], [], [], [], [], [], [], []);
+const noValidDocumentsMessage = 'We could not submit your documents. Please upload them again and try submitting.';
+
+const expectNoValidDocumentsErrorShownOnceOnUploadPage = async (claim: Claim, claimId: string) => {
+  mockDraftStore.mockReturnValueOnce(claim);
+  await testSession.get(CP_UPLOAD_DOCUMENTS_URL.replace(':id', claimId)).query({lang: 'en'})
+    .expect((res: { status: unknown; text: string; }) => {
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(noValidDocumentsMessage);
+    });
+
+  mockDraftStore.mockReturnValueOnce(claim);
+  await testSession.get(CP_UPLOAD_DOCUMENTS_URL.replace(':id', claimId)).query({lang: 'en'})
+    .expect((res: { status: unknown; text: string; }) => {
+      expect(res.status).toBe(200);
+      expect(res.text).not.toContain(noValidDocumentsMessage);
+    });
+};
 
 describe('Evidence Upload - checkYourAnswers Controller', () => {
   const civilServiceUrl = config.get<string>('services.civilService.url');
@@ -194,6 +214,7 @@ describe('Evidence Upload - checkYourAnswers Controller', () => {
       //Given
       const claim: Claim = new Claim();
       Object.assign(claim, civilClaimResponse.case_data);
+      claim.caseProgression = {...claim.caseProgression, defendantDocuments: buildAllInvalidDraft()} as Claim['caseProgression'];
       mockDraftStore.mockReturnValueOnce(claim);
       mockSummarySections.mockReturnValueOnce(null);
 
@@ -205,6 +226,7 @@ describe('Evidence Upload - checkYourAnswers Controller', () => {
           expect(res.status).toBe(302);
           expect(res.header.location).toBe(CP_UPLOAD_DOCUMENTS_URL.replace(':id', claimId));
         });
+      await expectNoValidDocumentsErrorShownOnceOnUploadPage(claim, claimId);
     });
 
     it('should return status 500 when error thrown', async () => {
@@ -330,12 +352,13 @@ describe('Evidence Upload - checkYourAnswers Controller', () => {
       const claim: Claim = new Claim();
       Object.assign(claim, civilClaimResponse.case_data);
       claim.caseRole = caseRole;
-      const allInvalidDraft = new UploadDocumentsUserForm(undefined, undefined, [{witnessName: 'witness', caseDocument: undefined} as WitnessSection]);
+      const allInvalidDraft = buildAllInvalidDraft();
       claim.caseProgression = {...claim.caseProgression, claimantDocuments: allInvalidDraft, defendantDocuments: allInvalidDraft} as Claim['caseProgression'];
       mockDraftStore.mockReturnValueOnce(claim);
       mockHasValidNewDocuments.mockImplementationOnce(actualCheckAnswersService.hasValidNewDocuments);
       mockSaveUploadedDocuments.mockClear();
       mockDeleteDraftClaimFromStore.mockClear();
+      const spyUpdateTaskStatus = jest.spyOn(CivilServiceClient.prototype, 'updateTaskStatus');
 
       //when
       await testSession.post(CP_CHECK_ANSWERS_URL.replace(':id', claimId)).send({signed: true}).expect((res: { status: unknown; header: { location: string }; }) => {
@@ -347,6 +370,9 @@ describe('Evidence Upload - checkYourAnswers Controller', () => {
       expect(mockHasValidNewDocuments).toHaveLastReturnedWith(false);
       expect(mockSaveUploadedDocuments).not.toHaveBeenCalled();
       expect(mockDeleteDraftClaimFromStore).not.toHaveBeenCalled();
+      expect(spyUpdateTaskStatus).not.toHaveBeenCalled();
+      spyUpdateTaskStatus.mockRestore();
+      await expectNoValidDocumentsErrorShownOnceOnUploadPage(claim, claimId);
     });
 
     test('Throw error', async () => {
