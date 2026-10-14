@@ -4,10 +4,13 @@ for example {yesHtml:'<span>you clicked on yes</span>'}
 To include html on when no is selected add htmlNo parameter
 for example {noHtml:'<span>you clicked on no</span>' #}
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
+{# Omitted legend options retain existing page-heading behaviour; callers with a
+   separate heading opt out explicitly. Conditional HTML remains caller-owned. #}
 {% macro yesNoRadioButton(t, id, name, title, form, description, params) %}
   {% set yes = params.yes if params.yes else 'COMMON.VARIATION.YES' %}
   {% set no = params.no if params.no else 'COMMON.VARIATION.NO' %}
-  {% set errors = form.getAllErrors() %}
+  {% set legendIsPageHeading = params.isPageHeading if params and params.isPageHeading is defined else true %}
+  {% set legendClasses = params.legendClasses if params and params.legendClasses is defined else "govuk-fieldset__legend--l" %}
   {{ govukRadios({
     idPrefix: id,
     name: name,
@@ -15,8 +18,8 @@ for example {noHtml:'<span>you clicked on no</span>' #}
     fieldset: {
       legend: {
         text: title,
-        isPageHeading: true,
-        classes: "govuk-fieldset__legend--l"
+        isPageHeading: legendIsPageHeading,
+        classes: legendClasses
       }
     } if title,
     hint: {
