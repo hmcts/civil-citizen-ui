@@ -1,263 +1,189 @@
-import request from 'supertest';
-import {app} from '../../../../../../../main/app';
-import nock from 'nock';
-import config from 'config';
-import {
-  CITIZEN_CARER_URL,
-  CITIZEN_EMPLOYMENT_URL,
-  CITIZEN_OTHER_DEPENDANTS_URL,
-} from '../../../../../../../main/routes/urls';
-import {TestMessages} from '../../../../../../../test/utils/errorMessageTestConstants';
-import {mockResponseFullAdmitPayBySetDate, mockCivilClaimOptionNo, mockRedisFailure} from '../../../../../../utils/mockDraftStore';
-import severelyDisabledDefendantMock from './severelyDisabledDefendantMock.json';
-import disabledPartnerMock from './disabledPartnerMock.json';
-import disabledChildrenMock from './disabledChildrenMock.json';
+import {Request, Response} from 'express';
+import otherDependantsController from '../../../../../../../main/routes/features/response/statementOfMeans/otherDependants/otherDependantsController';
+import {CITIZEN_CARER_URL, CITIZEN_EMPLOYMENT_URL} from 'routes/urls';
+import {Dependants} from 'form/models/statementOfMeans/dependants/dependants';
+import {GenericYesNo} from 'form/models/genericYesNo';
+import {YesNo} from 'form/models/yesNo';
+import {Claim} from 'models/claim';
+import {StatementOfMeans} from 'models/statementOfMeans';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {createMockResponse, getRouteHandler} from '../../../../../../utils/getRouteHandler';
 
-const withoutOtherDependentJson = require('./withoutOtherDependantsMock.json');
-const option1ToRedirectToCarerJson = require('./option1ToRedirectToCarerMock.json');
-const option2ToRedirectToCarerJson = require('./option2ToRedirectToCarerMock.json');
-
-const civilClaimResponseWithoutOtherDependent: string = JSON.stringify(withoutOtherDependentJson);
-const civilClaimResponseOption1ToRedirectToCarer: string = JSON.stringify(option1ToRedirectToCarerJson);
-const civilClaimResponseOption2ToRedirectToCarer: string = JSON.stringify(option2ToRedirectToCarerJson);
-export const civilClaimResponseSeverelyDisabledDefendant: string = JSON.stringify(severelyDisabledDefendantMock);
-const civilClaimResponseDisabledPartnerMock: string = JSON.stringify(disabledPartnerMock);
-const civilClaimResponseDisabledChildrenMock: string = JSON.stringify(disabledChildrenMock);
-
-export function mockDraftStore(mockData: string) {
-  return {
-    set: jest.fn(() => Promise.resolve({})),
-    get: jest.fn(() => Promise.resolve(mockData)),
-    ttl: jest.fn(() => Promise.resolve({})),
-    expireat: jest.fn(() => Promise.resolve({})),
-  };
-}
-
-jest.mock('../../../../../../../main/modules/oidc');
-jest.mock('../../../../../../../main/modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
 
 describe('Other Dependants', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
+  const getHandler = getRouteHandler(otherDependantsController, 'get');
+  const postHandler = getRouteHandler(otherDependantsController, 'post');
+  const viewPath = 'features/response/statementOfMeans/otherDependants/other-dependants';
+  const claimId = '12345';
+  let req: Partial<Request>;
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
+  const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
+  const mockGetDraftClaim = draftStoreService.getDraftClaimFromStore as jest.Mock;
+  const mockGenerateRedisKey = draftStoreService.generateRedisKey as jest.Mock;
+  const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
 
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
+  const claimWith = (configure: (statementOfMeans: StatementOfMeans) => void): Claim => {
+    const claim = new Claim();
+    claim.statementOfMeans = new StatementOfMeans();
+    configure(claim.statementOfMeans);
+    return claim;
+  };
+
+  const severelyDisabledDefendant = (): Claim => claimWith((statementOfMeans) => {
+    statementOfMeans.disability = new GenericYesNo(YesNo.YES);
+    statementOfMeans.severeDisability = new GenericYesNo(YesNo.YES);
+  });
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+    req = {params: {id: claimId}, body: {}, query: {}, cookies: {}};
+    res = createMockResponse();
+    next = jest.fn();
+    mockGenerateRedisKey.mockReturnValue(claimId);
+    mockGetCaseData.mockResolvedValue(new Claim());
+    mockGetDraftClaim.mockResolvedValue({});
+    mockSaveDraftClaim.mockResolvedValue(undefined);
   });
 
   describe('on GET', () => {
-    it('should return other dependants page', async () => {
-      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
-      await request(app)
-        .get(CITIZEN_OTHER_DEPENDANTS_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Do you support anyone else financially?');
-        });
+    it('should render the other dependants page', async () => {
+      await getHandler(req as Request, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({form: expect.anything()}));
+      expect(next).not.toHaveBeenCalled();
     });
 
-    it('should show "Number of people and Give details" section when "yes"', async () => {
-      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
-      await request(app)
-        .get(CITIZEN_OTHER_DEPENDANTS_URL)
-        .send('option=yes')
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Number of people');
-          expect(res.text).toContain('Give details');
-        });
-    });
+    it('should call next when loading the claim fails', async () => {
+      const error = new Error('redis failure');
+      mockGetDraftClaim.mockRejectedValue(error);
 
-    it('should return error when Cannot read property \'numberOfPeople\' and \'details\' of undefined', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .get(CITIZEN_OTHER_DEPENDANTS_URL)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
-    });
+      await getHandler(req as Request, res as unknown as Response, next);
 
-    it('should return empty OtherDependants object', async () => {
-      app.locals.draftStoreClient = mockDraftStore(civilClaimResponseWithoutOtherDependent);
-      await request(app)
-        .get(CITIZEN_OTHER_DEPENDANTS_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Do you support anyone else financially?');
-        });
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 
   describe('on POST', () => {
-    it('should return error when radio box is not selected', async () => {
-      app.locals.draftStoreClient = mockCivilClaimOptionNo;
-      await request(app)
-        .post(CITIZEN_OTHER_DEPENDANTS_URL)
-        .send('')
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.VALID_YES_NO_OPTION);
-        });
+    it('should re-render when no option is selected', async () => {
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({form: expect.anything()}));
+      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
+      expect(mockSaveDraftClaim).not.toHaveBeenCalled();
     });
 
-    it('should redirect when "no" is selected', async () => {
-      app.locals.draftStoreClient = mockDraftStore(civilClaimResponseDisabledPartnerMock);
-      await request(app)
-        .post(CITIZEN_OTHER_DEPENDANTS_URL)
-        .send({ option: 'no', numberOfPeople: '', details: '' })
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CITIZEN_EMPLOYMENT_URL);
-        });
+    it('should redirect to employment when the defendant is severely disabled', async () => {
+      mockGetCaseData.mockResolvedValue(severelyDisabledDefendant());
+      req.body = {option: 'no', numberOfPeople: '', details: ''};
+
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expect(mockSaveDraftClaim).toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CITIZEN_EMPLOYMENT_URL));
     });
 
-    it('should redirect when "yes" is selected and number of people and details are valid', async () => {
-      app.locals.draftStoreClient = mockDraftStore(civilClaimResponseDisabledChildrenMock);
-      await request(app)
-        .post(CITIZEN_OTHER_DEPENDANTS_URL)
-        .send({ option: 'no', numberOfPeople: '1', details: 'Test details' })
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CITIZEN_EMPLOYMENT_URL);
-        });
+    it('should redirect to employment when the partner is disabled', async () => {
+      mockGetCaseData.mockResolvedValue(claimWith((statementOfMeans) => {
+        statementOfMeans.cohabiting = new GenericYesNo(YesNo.YES);
+        statementOfMeans.partnerDisability = new GenericYesNo(YesNo.YES);
+      }));
+      req.body = {option: 'no', numberOfPeople: '', details: ''};
+
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CITIZEN_EMPLOYMENT_URL));
     });
 
-    it('should redirect employment page when defendant is disabled and severely disabled', async () => {
-      app.locals.draftStoreClient = mockDraftStore(civilClaimResponseSeverelyDisabledDefendant);
-      await request(app)
-        .post(CITIZEN_OTHER_DEPENDANTS_URL)
-        .send({option: 'no', numberOfPeople: '', details: ''})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CITIZEN_EMPLOYMENT_URL);
-        });
+    it('should redirect to employment when a child is disabled', async () => {
+      mockGetCaseData.mockResolvedValue(claimWith((statementOfMeans) => {
+        statementOfMeans.dependants = new Dependants(true);
+        statementOfMeans.childrenDisability = new GenericYesNo(YesNo.YES);
+      }));
+      req.body = {option: 'no', numberOfPeople: '', details: ''};
+
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CITIZEN_EMPLOYMENT_URL));
     });
 
-    it('should redirect employment page when partner is selected and disabled', async () => {
-      app.locals.draftStoreClient = mockDraftStore(civilClaimResponseDisabledChildrenMock);
-      await request(app)
-        .post(CITIZEN_OTHER_DEPENDANTS_URL)
-        .send({option: 'no', numberOfPeople: '', details: ''})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CITIZEN_EMPLOYMENT_URL);
-        });
+    it('should redirect to employment when yes is selected with valid details and the defendant is severely disabled', async () => {
+      mockGetCaseData.mockResolvedValue(severelyDisabledDefendant());
+      req.body = {option: 'yes', numberOfPeople: '1', details: 'Test details'};
+
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CITIZEN_EMPLOYMENT_URL));
     });
 
-    it('should redirect employment page when children is existing and any of them is disabled', async () => {
-      app.locals.draftStoreClient = mockDraftStore(civilClaimResponseDisabledPartnerMock);
-      await request(app)
-        .post(CITIZEN_OTHER_DEPENDANTS_URL)
-        .send({option: 'no', numberOfPeople: '', details: ''})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CITIZEN_EMPLOYMENT_URL);
-        });
+    it('should redirect to carer when disability, cohabiting and children disability are no', async () => {
+      mockGetCaseData.mockResolvedValue(claimWith((statementOfMeans) => {
+        statementOfMeans.disability = new GenericYesNo(YesNo.NO);
+        statementOfMeans.cohabiting = new GenericYesNo(YesNo.NO);
+        statementOfMeans.childrenDisability = new GenericYesNo(YesNo.NO);
+      }));
+      req.body = {option: 'no', numberOfPeople: '', details: ''};
+
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CITIZEN_CARER_URL));
     });
 
-    it('should redirect when disability, cohabiting and childrenDisability are "no"', async () => {
-      app.locals.draftStoreClient = mockDraftStore(civilClaimResponseOption1ToRedirectToCarer);
-      await request(app)
-        .post(CITIZEN_OTHER_DEPENDANTS_URL)
-        .send({ option: 'no', numberOfPeople: '', details: '' })
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CITIZEN_CARER_URL);
-        });
+    it('should redirect to carer when the defendant is disabled but the partner is not', async () => {
+      mockGetCaseData.mockResolvedValue(claimWith((statementOfMeans) => {
+        statementOfMeans.disability = new GenericYesNo(YesNo.YES);
+        statementOfMeans.cohabiting = new GenericYesNo(YesNo.YES);
+        statementOfMeans.partnerDisability = new GenericYesNo(YesNo.NO);
+      }));
+      req.body = {option: 'no', numberOfPeople: '', details: ''};
+
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CITIZEN_CARER_URL));
     });
 
-    it('should redirect when disability, cohabiting are "no" and partnerDisability is "yes"', async () => {
-      app.locals.draftStoreClient = mockDraftStore(civilClaimResponseOption2ToRedirectToCarer);
-      await request(app)
-        .post(CITIZEN_OTHER_DEPENDANTS_URL)
-        .send({ option: 'no', numberOfPeople: '', details: '' })
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CITIZEN_CARER_URL);
-        });
+    it('should re-render when yes is selected and the number of people is empty', async () => {
+      req.body = {option: 'yes', numberOfPeople: '', details: ''};
+
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
     });
 
-    it('should return error when number of people is undefined', async () => {
-      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
-      await request(app)
-        .post(CITIZEN_OTHER_DEPENDANTS_URL)
-        .send({ option: 'yes', numberOfPeople: '', details: '' })
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.VALID_INTEGER);
-        });
+    it('should re-render when the number of people is negative', async () => {
+      req.body = {option: 'yes', numberOfPeople: '-1', details: ''};
+
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
     });
 
-    it('should return error when number of people is negative', async () => {
-      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
-      await request(app)
-        .post(CITIZEN_OTHER_DEPENDANTS_URL)
-        .send({ option: 'yes', numberOfPeople: '-1', details: '' })
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.VALID_STRICTLY_POSITIVE_NUMBER);
-        });
+    it('should re-render when the number of people is valid and details are empty', async () => {
+      req.body = {option: 'yes', numberOfPeople: '1', details: ''};
+
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
     });
 
-    it('should return error when number of people is valid details is undefined', async () => {
-      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
-      await request(app)
-        .post(CITIZEN_OTHER_DEPENDANTS_URL)
-        .send({ option: 'yes', numberOfPeople: '1', details: '' })
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.DETAILS_REQUIRED);
-        });
+    it('should re-render when the number of people is zero and details are empty', async () => {
+      req.body = {option: 'yes', numberOfPeople: '0', details: ''};
+
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
     });
 
-    it('should return error when number of people and details are undefined', async () => {
-      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
-      await request(app)
-        .post(CITIZEN_OTHER_DEPENDANTS_URL)
-        .send({ option: 'yes', numberOfPeople: '', details: '' })
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.VALID_INTEGER);
-          expect(res.text).toContain(TestMessages.DETAILS_REQUIRED);
-        });
-    });
+    it('should call next when saving fails', async () => {
+      const error = new Error('redis failure');
+      mockGetCaseData.mockRejectedValue(error);
+      req.body = {option: 'no', numberOfPeople: '', details: ''};
 
-    it('should return error when number of people is 0 details is undefined', async () => {
-      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
-      await request(app)
-        .post(CITIZEN_OTHER_DEPENDANTS_URL)
-        .send({ option: 'yes', numberOfPeople: '0', details: '' })
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.VALID_INTEGER);
-          expect(res.text).toContain(TestMessages.DETAILS_REQUIRED);
-        });
-    });
+      await postHandler(req as Request, res as unknown as Response, next);
 
-    it('should save when we dont have information on redis', async () => {
-      app.locals.draftStoreClient = mockDraftStore(civilClaimResponseWithoutOtherDependent);
-      await request(app)
-        .post(CITIZEN_OTHER_DEPENDANTS_URL)
-        .send({ option: 'no', numberOfPeople: '1', details: 'Test details' })
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CITIZEN_EMPLOYMENT_URL);
-        });
-    });
-
-    it('should throw an error when call redis', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .post(CITIZEN_OTHER_DEPENDANTS_URL)
-        .send({ option: 'no', numberOfPeople: '1', details: 'Test details' })
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 });
