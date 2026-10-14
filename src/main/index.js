@@ -1,5 +1,6 @@
 import './assets/scss/main.scss';
-import './assets/js/postcode-lookup.js';
+import $ from 'jquery';
+import {initPostcodeLookup} from './assets/js/postcode-lookup.js';
 import './assets/js/append-row.js';
 import './assets/js/calculate-amount.js';
 import './assets/js/calculate-length-repayment.js';
@@ -16,7 +17,11 @@ import './modules/cookie/cookieConfig';
 import './assets/js/cookies-controller.js';
 import './assets/js/disable-submit.js';
 
+// Preserve the existing global bootstrap for remaining consumers during migration.
+window.$ = $;
+
 initGovukFrontend();
 initMojFrontend();
 initSelectToggle();
 initAddAnother();
+initPostcodeLookup();
