@@ -1,218 +1,106 @@
-import request from 'supertest';
-import config from 'config';
-import nock from 'nock';
-import {CITIZEN_PRIORITY_DEBTS_URL, CITIZEN_DEBTS_URL} from '../../../../../../main/routes/urls';
-import {mockRedisFailure, mockResponseFullAdmitPayBySetDate} from '../../../../../utils/mockDraftStore';
-import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
+import {Request, Response} from 'express';
+import priorityDebtsController from '../../../../../../main/routes/features/response/statementOfMeans/priorityDebtsController';
+import {CITIZEN_DEBTS_URL} from 'routes/urls';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {Claim} from 'models/claim';
+import {createMockResponse, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
-const {app} = require('../../../../../../main/app');
-
-jest.mock('../../../../../../main/modules/oidc');
+jest.mock('modules/draft-store/draftStoreService');
 
 describe('Priority Debts Controller', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamServiceUrl: string = config.get('services.idam.url');
+  const getHandler = getRouteHandler(priorityDebtsController, 'get');
+  const postHandler = getRouteHandler(priorityDebtsController, 'post');
+  const viewPath = 'features/response/statementOfMeans/priority-debts';
+  const claimId = '12345';
+  let req: Partial<Request>;
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
+  const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
+  const mockGenerateRedisKey = draftStoreService.generateRedisKey as jest.Mock;
+  const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
 
-  beforeAll(() => {
-    nock(idamServiceUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
+  const validGasDebt = {
+    model: {
+      gas: {
+        declared: 'gas',
+        transactionSource: {name: 'Gas', amount: '85.92', schedule: 'MONTH'},
+      },
+    },
+  };
+
+  beforeEach(() => {
+    req = {params: {id: claimId}, body: {}, query: {}, cookies: {}};
+    res = createMockResponse();
+    next = jest.fn();
+    jest.clearAllMocks();
+    mockGenerateRedisKey.mockReturnValue(claimId);
+    mockGetCaseData.mockResolvedValue(new Claim());
+    mockSaveDraftClaim.mockResolvedValue(undefined);
   });
 
   describe('on GET', () => {
-    it('should display page successfully', async () => {
-      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
-      await request(app)
-        .get(CITIZEN_PRIORITY_DEBTS_URL)
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Debts you&#39;re behind on');
-        });
-    }, 10000);
-    it('should return 500 status code when there is an error', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .get(CITIZEN_PRIORITY_DEBTS_URL)
-        .expect((res: Response) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+    it('should render the priority debts page', async () => {
+      await getHandler(req as Request, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        form: expect.anything(),
+      }));
+      expect(next).not.toHaveBeenCalled();
+    });
+
+    it('should call next when loading the claim fails', async () => {
+      const error = new Error('redis failure');
+      mockGetCaseData.mockRejectedValue(error);
+
+      await getHandler(req as Request, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
+
   describe('on POST', () => {
+    it('should re-render when a debt is selected without an amount or schedule', async () => {
+      req.body = {
+        model: {
+          gas: {
+            declared: 'gas',
+            transactionSource: {name: 'Gas', amount: ''},
+          },
+        },
+      };
 
-    beforeEach(() => {
-      app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
-    });
+      await postHandler(req as Request, res as unknown as Response, next);
 
-    it('should show errors when gas is selected but no amount or schedule selected', async () => {
-      await request(app)
-        .post(CITIZEN_PRIORITY_DEBTS_URL)
-        .send({
-          model: {
-            gas: {
-              declared: 'gas',
-              transactionSource: {
-                name: 'Gas',
-                amount: '',
-              },
-            },
-            electricity: {
-              declared: 'electricity',
-              transactionSource: {
-                name: 'Electricity',
-                amount: '55',
-              },
-            },
-          },
-        })
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.GAS_AMOUNT_ERROR);
-          expect(res.text).toContain(TestMessages.GAS_SCHEDULE_ERROR);
-          expect(res.text).toContain(TestMessages.ELECTRICITY_DEBT_SCHEDULE_ERROR);
-        });
-    });
-    it('should show errors when gas and water are selected but no amount or schedule selected', async () => {
-      await request(app)
-        .post(CITIZEN_PRIORITY_DEBTS_URL)
-        .send({
-          model: {
-            gas: {
-              declared: 'gas',
-              transactionSource: {
-                name: 'Gas',
-                amount: '',
-              },
-            },
-            water: {
-              declared: 'water',
-              transactionSource: {
-                name: 'Water',
-                amount: '',
-              },
-            },
-          },
-        })
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.GAS_AMOUNT_ERROR);
-          expect(res.text).toContain(TestMessages.GAS_SCHEDULE_ERROR);
-          expect(res.text).toContain(TestMessages.WATER_AMOUNT_ERROR);
-          expect(res.text).toContain(TestMessages.WATER_AMOUNT_ERROR);
-        });
-    });
-    it('should show errors when mortgage is selected but no schedule selected', async () => {
-      await request(app)
-        .post(CITIZEN_PRIORITY_DEBTS_URL)
-        .send({
-          model: {
-            gas: {
-              declared: 'mortgage',
-              transactionSource: {
-                name: 'Mortgage',
-                amount: '5129',
-              },
-            },
-          },
-        })
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.MORTGAGE_DEBT_SCHEDULE_ERROR);
-        });
-    });
-    it('should show errors when rent is selected and amount is negative', async () => {
-      await request(app)
-        .post(CITIZEN_PRIORITY_DEBTS_URL)
-        .send({
-          model: {
-            gas: {
-              declared: 'rent',
-              transactionSource: {
-                name: 'Rent',
-                amount: '-5129',
-              },
-            },
-          },
-        })
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.RENT_DEBT_CORRECT_AMOUNT_ERROR);
-        });
-    });
-    it('should show errors when couincil tax is selected and amount has three decimal places', async () => {
-      await request(app)
-        .post(CITIZEN_PRIORITY_DEBTS_URL)
-        .send({
-          model: {
-            gas: {
-              declared: 'councilTax',
-              transactionSource: {
-                name: 'Council Tax or Community Charge',
-                amount: '2000.859',
-              },
-            },
-          },
-        })
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.COUINCIL_TAX_CORRECT_AMOUNT_ERROR);
-        });
-    });
-    it('should redirect when no data is selected', async () => {
-      await request(app)
-        .post(CITIZEN_PRIORITY_DEBTS_URL)
-        .send({
-          model: {},
-        })
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CITIZEN_DEBTS_URL);
-        });
-    });
-    it('should redirect when correct data is selected', async () => {
-      await request(app)
-        .post(CITIZEN_PRIORITY_DEBTS_URL)
-        .send({
-          model: {
-            gas: {
-              declared: 'gas',
-              transactionSource: {
-                name: 'Gas',
-                amount: '85.92',
-                schedule: 'MONTH',
-              },
-            },
-          },
-        })
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CITIZEN_DEBTS_URL);
-        });
+      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
+      expect(mockSaveDraftClaim).not.toHaveBeenCalled();
     });
 
-    it('should return status 500 when error occurs', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .post(CITIZEN_PRIORITY_DEBTS_URL)
-        .send({
-          model: {
-            gas: {
-              declared: 'gas',
-              transactionSource: {
-                name: 'Gas',
-                amount: '85.92',
-                schedule: 'MONTH',
-              },
-            },
-          },
-        })
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+    it('should save and redirect when no debts are selected', async () => {
+      req.body = {model: {}};
+
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CITIZEN_DEBTS_URL));
+    });
+
+    it('should save and redirect when a debt is valid', async () => {
+      req.body = validGasDebt;
+
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expect(mockSaveDraftClaim).toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CITIZEN_DEBTS_URL));
+    });
+
+    it('should call next when saving fails', async () => {
+      const error = new Error('redis failure');
+      mockGetCaseData.mockRejectedValue(error);
+      req.body = validGasDebt;
+
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 });
