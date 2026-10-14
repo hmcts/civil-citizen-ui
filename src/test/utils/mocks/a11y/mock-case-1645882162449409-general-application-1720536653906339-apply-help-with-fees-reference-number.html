@@ -513,85 +513,53 @@ data-module="govuk-service-navigation"
 
 
                     <div class="govuk-form-group">
-
-                        <div id="option-hint" class="govuk-hint">
-
-                        </div>
-
-
-                        <div class="govuk-radios" data-module="govuk-radios">
-
-
-
-
-
-
-
-                            <div class="govuk-radios__item">
-                                <input class="govuk-radios__input" id="option" name="option" type="radio" value="yes" checked data-aria-controls="conditional-option">
-                                <label class="govuk-label govuk-radios__label" for="option">
-                                    <span>Yes</span>
-                                </label>
-
-                            </div>
-
-                            <div class="govuk-radios__conditional" id="conditional-option">
-                                <p class="govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-1">Enter your help with fees reference number</p>
-
-
-
+  <fieldset class="govuk-fieldset" aria-describedby="option-hint">
+  <legend class="govuk-fieldset__legend govuk-visually-hidden">
+    Do you have a help with fees reference number?
+  </legend>
+  <div id="option-hint" class="govuk-hint">
+  </div>
+  <div class="govuk-radios" data-module="govuk-radios">
+    <div class="govuk-radios__item">
+      <input class="govuk-radios__input" id="option" name="option" type="radio" value="yes" checked data-aria-controls="conditional-option">
+      <label class="govuk-label govuk-radios__label" for="option">
+        <span>Yes</span>
+      </label>
+    </div>
+    <div class="govuk-radios__conditional" id="conditional-option">
+      <p class="govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-1">Enter your help with fees reference number</p>
                                 <div class="govuk-form-group">
                                     <label class="govuk-label" for="referenceNumber">
                                         You'll only have this reference number if you've applied for help with fees. Do not submit a number that has already been used for a previous application.
                                     </label>
-
-
-
                                     <div id="referenceNumber-hint" class="govuk-hint">
                                         For example, HWF-A1B-23C
                                     </div>
-
-
                                     <input class="govuk-input govuk-!-width-one-half" id="referenceNumber" name="referenceNumber" type="text" value="HWF-A1B-23C" aria-describedby="referenceNumber-hint">
-
                                 </div>
-                            </div>
-
-
-
-
-
-
-
-
-                            <div class="govuk-radios__item">
-                                <input class="govuk-radios__input" id="option-2" name="option" type="radio" value="no" data-aria-controls="conditional-option-2">
-                                <label class="govuk-label govuk-radios__label" for="option-2">
-                                    <span>No</span>
-                                </label>
-
-                            </div>
-
-                            <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-option-2">
-                                <p class="govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-1">Next steps</p>
+    </div>
+    <div class="govuk-radios__item">
+      <input class="govuk-radios__input" id="option-2" name="option" type="radio" value="no" data-aria-controls="conditional-option-2">
+      <label class="govuk-label govuk-radios__label" for="option-2">
+        <span>No</span>
+      </label>
+    </div>
+    <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-option-2">
+      <p class="govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-1">Next steps</p>
                                 <p class="govuk-body govuk-!-margin-bottom-1">You must apply for help with fees before submitting your application.</p>
                                 <ol class="govuk-list govuk-list--number govuk-!-margin-bottom-1 govuk-!-margin-left-2">
                                     <li class="govuk-body">Go to
                                         <a class="govuk-link" target="_blank" rel="noreferrer noopener" href="https://www.gov.uk/get-help-with-court-fees">apply for help with fees (opens in a new tab).</a>
                                     </li>
-                                    <li class="govuk-body">When you are asked to enter a court or tribunal number, enter &#39;application fee&#39; followed by short explanation, for example &#39;application fee for an application to set aside (cancel) a judgment&#39;.</li>
+                                    <li class="govuk-body">When you are asked to enter a court or tribunal number, enter 'application fee' followed by short explanation, for example 'application fee for an application to set aside (cancel) a judgment'.</li>
                                     <li class="govuk-body">Complete the help with fees application.</li>
                                     <li class="govuk-body">Return here to your online money claims account.</li>
                                     <li class="govuk-body">Complete the application fee payment by entering your help with fees reference number.</li>
                                 </ol>
-                            </div>
-
-
-
-
-                        </div>
-
-                    </div>
+    </div>
+  </div>
+</fieldset>
+</div>
 
 
 

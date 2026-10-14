@@ -344,64 +344,35 @@ data-module="govuk-service-navigation"
 
 
 <div class="govuk-form-group">
-
+  <fieldset class="govuk-fieldset" aria-describedby="option-hint">
+  <legend class="govuk-fieldset__legend govuk-visually-hidden">
+    Do you want to ask for a telephone or video hearing?
+  </legend>
   <div id="option-hint" class="govuk-hint">
-
   </div>
-
-
-  <div class="govuk-radios"
-    data-module="govuk-radios">
-
-
-
-
-
-
-        <div class="govuk-radios__item">
-          <input class="govuk-radios__input" id="option" name="option" type="radio" value="yes" data-aria-controls="conditional-option">
-          <label class="govuk-label govuk-radios__label" for="option">
+  <div class="govuk-radios" data-module="govuk-radios">
+    <div class="govuk-radios__item">
+      <input class="govuk-radios__input" id="option" name="option" type="radio" value="yes" data-aria-controls="conditional-option">
+      <label class="govuk-label govuk-radios__label" for="option">
         <span>Yes</span>
       </label>
-
-        </div>
-
-          <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-option">
-
-
-
-<div class="govuk-form-group">
+    </div>
+    <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-option">
+      <div class="govuk-form-group">
   <label class="govuk-label" for="details">
     Tell us why you want a telephone or video hearing
   </label>
-
-
   <textarea class="govuk-textarea" id="details" name="details" rows="5"></textarea>
 </div>
-
-
-          </div>
-
-
-
-
-
-
-
-
-        <div class="govuk-radios__item">
-          <input class="govuk-radios__input" id="option-2" name="option" type="radio" value="no">
-          <label class="govuk-label govuk-radios__label" for="option-2">
+    </div>
+    <div class="govuk-radios__item">
+      <input class="govuk-radios__input" id="option-2" name="option" type="radio" value="no">
+      <label class="govuk-label govuk-radios__label" for="option-2">
         <span>No</span>
       </label>
-
-        </div>
-
-
-
-
+    </div>
   </div>
-
+</fieldset>
 </div>
 
 

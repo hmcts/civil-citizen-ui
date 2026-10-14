@@ -30,11 +30,6 @@
 
           <form method="post" novalidate autocomplete="off">
             {{ csrfProtection(csrf) }}
-            <fieldset class="govuk-fieldset" role="group" aria-describedby="determination-legend">
-              <legend id="determination-legend" class="govuk-fieldset__legend govuk-visually-hidden">
-                {{ t('PAGES.DETERMINATION_WITHOUT_HEARING.PAGE_TITLE') }}
-              </legend>
-
             {% set noHtml %}
               {{ govukTextarea({
                 name: "reasonForHearing",
@@ -49,8 +44,7 @@
               }) }}
             {% endset %}
 
-            {{ yesNoRadioButton(t, 'option', 'option', '', form, '', {noHtml: noHtml, yes: 'COMMON.VARIATION_2.YES', no: 'COMMON.VARIATION_2.NO'}) }}
-            </fieldset>
+            {{ yesNoRadioButton(t, 'option', 'option', t('PAGES.DETERMINATION_WITHOUT_HEARING.PAGE_TITLE'), form, '', {noHtml: noHtml, yes: 'COMMON.VARIATION_2.YES', no: 'COMMON.VARIATION_2.NO', isPageHeading: false, legendClasses: 'govuk-visually-hidden'}) }}
 
             <div class="govuk-form-group">
               {{ govukButton({

@@ -2,7 +2,6 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/date-input/macro.njk" import govukDateInput %}
 {% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
-{% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
 {% from "../../../macro/error-summary.njk" import errorSummary %}
 {% from "../../../macro/contact-us-for-help.njk" import contactUsForHelp with context %}
 {% from "../../../macro/csrf.njk" import csrfProtection %}
@@ -21,11 +20,11 @@
         {{ errorSummary(errors, t,[{keyError:'ERRORS.FIRST_PAYMENT_MESSAGE',keyToReplace:'{{firstPaymentDate}}',valueToReplace:firstPaymentDate}]) }}
         {% set errorMessages %}
           {% if errors %}
-            {% for error in errors %}
+            {% for error in errors | selectattr("text") %}
             {% if error.text == 'ERRORS.FIRST_PAYMENT_MESSAGE' %}
-              <span class="govuk-error-message">{{  t(error.text,{firstPaymentDate:firstPaymentDate}) | safe}}</span>
+              {{ t(error.text,{firstPaymentDate:firstPaymentDate}) }}{% if not loop.last %}<br>{% endif %}
               {% else %}
-              <span class="govuk-error-message">{{ t(error.text) }}</span>
+              {{ t(error.text) }}{% if not loop.last %}<br>{% endif %}
               {% endif %}
             {% endfor %}
           {% endif %}
@@ -33,13 +32,7 @@
       {% endif %}
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-          {% call govukFieldset({
-             legend: {
-                text: t(title),
-                classes: "govuk-fieldset__legend--l",
-                isPageHeading: true
-             }
-          }) %}
+          <h1 class="govuk-heading-l">{{ t(title) }}</h1>
           {% if insetText %}
             {{ govukInsetText({
               text: t(insetText)
@@ -68,7 +61,7 @@
                 },
                 errorMessage: {
                   html: errorMessages
-                } if form.hasErrors(),
+                } if errorMessages and errorMessages | trim,
                 items: [
                   {
                     classes: "govuk-input--width-2 govuk-input--error" if form.hasFieldError('day') else "govuk-input--width-2",
@@ -101,7 +94,6 @@
               text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE'),
               attributes: { 'aria-label': t('COMMON.BUTTONS.SAVE_AND_CONTINUE') }
             }) }}
-            {% endcall %}
           </form>
         </div>
       </div>

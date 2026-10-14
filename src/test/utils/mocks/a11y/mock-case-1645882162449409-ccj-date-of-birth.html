@@ -343,110 +343,95 @@ data-module="govuk-service-navigation"
 
 
 <div class="govuk-form-group">
-
+  <fieldset class="govuk-fieldset" aria-describedby="option-hint">
+  <legend class="govuk-fieldset__legend govuk-visually-hidden">
+    Do you know the defendant&#39;s date of birth?
+  </legend>
   <div id="option-hint" class="govuk-hint">
-
   </div>
-
-
-  <div class="govuk-radios"
-    data-module="govuk-radios">
-
-
-
-
-
-
-        <div class="govuk-radios__item">
-          <input class="govuk-radios__input" id="option" name="option" type="radio" value="yes" data-aria-controls="conditional-option">
-          <label class="govuk-label govuk-radios__label" for="option">
+  <div class="govuk-radios" data-module="govuk-radios">
+    <div class="govuk-radios__item">
+      <input class="govuk-radios__input" id="option" name="option" type="radio" value="yes" data-aria-controls="conditional-option">
+      <label class="govuk-label govuk-radios__label" for="option">
         <span>Yes</span>
       </label>
-
-        </div>
-
-          <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-option">
-
-            <div class="govuk-form-group ">
-
-
-
-
-
-
-
-
-
+    </div>
+    <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-option">
+      <div class="govuk-form-group ">
 <div class="govuk-form-group">
 
-  <div id="dob[dateOfBirth]-hint" class="govuk-hint">
+  <fieldset class="govuk-fieldset" role="group" aria-describedby="dob[dateOfBirth]-hint">
+
+    <legend class="govuk-fieldset__legend govuk-visually-hidden">
+
+      Do you know the defendant's date of birth?
+
+    </legend>
+
+
+    <div id="dob[dateOfBirth]-hint" class="govuk-hint">
     For example, 23 0 2006
   </div>
 
 
-  <div class="govuk-date-input" id="dob[dateOfBirth]">
-
-    <div class="govuk-date-input__item">
-      <div class="govuk-form-group">
-        <label class="govuk-label govuk-date-input__label" for="dob[day]">
-          Day
-        </label>
-
-      <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="dob[day]" name="dob[day]" type="text" inputmode="numeric">
-
-      </div>
-    </div>
-
-    <div class="govuk-date-input__item">
-      <div class="govuk-form-group">
-        <label class="govuk-label govuk-date-input__label" for="dob[month]">
-          Month
-        </label>
-
-      <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="dob[month]" name="dob[month]" type="text" inputmode="numeric">
-
-      </div>
-    </div>
-
-    <div class="govuk-date-input__item">
-      <div class="govuk-form-group">
-        <label class="govuk-label govuk-date-input__label" for="dob[year]">
-          Year
-        </label>
-
-      <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="dob[year]" name="dob[year]" type="text" inputmode="numeric">
-
-      </div>
-    </div>
-
-  </div>
-
-</div>
-
-            </div>
-
-          </div>
+    <div class="govuk-date-input" id="dob[dateOfBirth]">
 
 
+            <div class="govuk-date-input__item">
+        <div class="govuk-form-group">
+          <label class="govuk-label govuk-date-input__label" for="dob[day]">
+            Day
+          </label>
 
 
-
-
-
-
-        <div class="govuk-radios__item">
-          <input class="govuk-radios__input" id="option-2" name="option" type="radio" value="no">
-          <label class="govuk-label govuk-radios__label" for="option-2">
-        <span>No</span>
-      </label>
+          <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="dob[day]" name="dob[day]" type="text" value="" inputmode="numeric">
 
         </div>
+      </div>
+
+
+            <div class="govuk-date-input__item">
+        <div class="govuk-form-group">
+          <label class="govuk-label govuk-date-input__label" for="dob[month]">
+            Month
+          </label>
+
+
+          <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="dob[month]" name="dob[month]" type="text" value="" inputmode="numeric">
+
+        </div>
+      </div>
+
+
+            <div class="govuk-date-input__item">
+        <div class="govuk-form-group">
+          <label class="govuk-label govuk-date-input__label" for="dob[year]">
+            Year
+          </label>
+
+
+          <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="dob[year]" name="dob[year]" type="text" value="" inputmode="numeric">
+
+        </div>
+      </div>
 
 
 
+    </div>
 
+  </fieldset>
+
+</div>
+            </div>
+    </div>
+    <div class="govuk-radios__item">
+      <input class="govuk-radios__input" id="option-2" name="option" type="radio" value="no">
+      <label class="govuk-label govuk-radios__label" for="option-2">
+        <span>No</span>
+      </label>
+    </div>
   </div>
-
+</fieldset>
 </div>
 
 
