@@ -73,7 +73,7 @@ export class CaseProgressionHearing {
     return this.hearingDate ? HearingDateTimeFormatter.getHearingDateFormatted(this.hearingDate, lang): '';
   }
 
-  getDurationOfDaysForHearing(): number | undefined{
+  getDurationOfDaysForHearing(): number | undefined {
     if (this.hearingDate) {
       return getNumberOfDaysBetweenTwoDays(new Date(), this.hearingDate);
     }
