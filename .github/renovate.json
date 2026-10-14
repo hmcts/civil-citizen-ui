@@ -14,12 +14,6 @@
     "after 6pm and before 8pm every weekday"
   ],
   "platformAutomerge": false,
-  "ignoreTests": false,
-  "vulnerabilityAlerts": {
-    "enabled": true,
-    "minimumReleaseAge": "0 days",
-    "prCreation": "immediate"
-  },
   "schedule": [
     "after 7am and before 8am every weekday",
     "after 6pm and before 8pm every weekday"
@@ -42,29 +36,9 @@
   ],
   "packageRules": [
     {
-      "description": "Match the seven-day Yarn npm age gate for routine updates",
-      "matchDatasources": [
-        "npm"
-      ],
-      "minimumReleaseAge": "7 days",
-      "internalChecksFilter": "strict",
-      "prCreation": "not-pending"
-    },
-    {
-      "description": "Keep major updates for review",
-      "matchUpdateTypes": [
-        "major"
-      ],
-      "automerge": false
-    },
-    {
       "matchUpdateTypes": [
         "minor",
         "patch"
-      ],
-      "matchPackageNames": [
-        "*",
-        "!govuk-frontend"
       ],
       "groupName": "All non-major updates",
       "groupSlug": "all-non-major",
@@ -75,10 +49,6 @@
       "matchManagers": [
         "helmv3"
       ],
-      "matchUpdateTypes": [
-        "minor",
-        "patch"
-      ],
       "groupName": "Helm chart updates",
       "groupSlug": "helm-charts",
       "automerge": true,
@@ -87,10 +57,6 @@
     {
       "matchManagers": [
         "dockerfile"
-      ],
-      "matchUpdateTypes": [
-        "minor",
-        "patch"
       ],
       "groupName": "Dockerfile updates",
       "groupSlug": "dockerfile",
@@ -103,10 +69,6 @@
         "playwright-core",
         "@axe-core/playwright"
       ],
-      "matchUpdateTypes": [
-        "minor",
-        "patch"
-      ],
       "groupName": "Playwright",
       "groupSlug": "playwright",
       "automerge": true,
@@ -115,10 +77,6 @@
     {
       "matchPackagePatterns": [
         "^allure-"
-      ],
-      "matchUpdateTypes": [
-        "minor",
-        "patch"
       ],
       "groupName": "Allure reporting",
       "groupSlug": "allure",
@@ -135,10 +93,6 @@
         "^@typescript-eslint/",
         "^eslint-"
       ],
-      "matchUpdateTypes": [
-        "minor",
-        "patch"
-      ],
       "groupName": "ESLint",
       "groupSlug": "eslint",
       "automerge": true,
@@ -150,10 +104,6 @@
       ],
       "matchPackagePatterns": [
         "^@types/"
-      ],
-      "matchUpdateTypes": [
-        "minor",
-        "patch"
       ],
       "groupName": "TypeScript",
       "groupSlug": "typescript",
