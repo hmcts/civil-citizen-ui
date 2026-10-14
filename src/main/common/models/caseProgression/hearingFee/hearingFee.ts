@@ -17,12 +17,13 @@ export class HearingFeeInformation {
     this.hearingDueDate = hearingDueDate;
   }
 
-  getHearingFeeFormatted(): number {
-    return convertToPoundsFilter(this.hearingFee?.calculatedAmountInPence);
+  getHearingFeeFormatted(): number | undefined {
+    const amountInPence = this.hearingFee?.calculatedAmountInPence;
+    return amountInPence ? convertToPoundsFilter(amountInPence) : undefined;
   }
 
-  getHearingDueDateFormatted(lang: string): string {
-    return HearingDateTimeFormatter.getHearingDateFormatted(this.hearingDueDate, lang);
+  getHearingDueDateFormatted(lang: string): string | undefined {
+    return this.hearingDueDate ? HearingDateTimeFormatter.getHearingDateFormatted(this.hearingDueDate, lang) : undefined;
   }
 }
 
