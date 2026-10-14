@@ -3,10 +3,12 @@ import {TaskItem} from 'models/taskList/task';
 import {TaskStatus} from 'models/taskList/TaskStatus';
 import {DashboardTask} from 'models/dashboard/taskList/dashboardTask';
 import {DashboardTaskList} from 'models/dashboard/taskList/dashboardTaskList';
+import * as urls from 'routes/urls';
 import {renderTaskListPage, taskListPageFixture, taskListTranslate, taskListViews, journeyTaskListFixture} from '../../../utils/renderTaskLists';
 
 const {JSDOM} = require('jsdom');
 const nunjucks = require('nunjucks');
+const claimantTaskLocators = require('../../../functionalTests/specClaimHelpers/claimantResponseTaskListLocators');
 const doms: InstanceType<typeof JSDOM>[] = [];
 function parse(html: string): Document {
   const dom = new JSDOM(html);
@@ -73,6 +75,37 @@ describe.each(Object.entries(taskListViews).filter(([name]) => name !== 'dashboa
     expect(rows[1].querySelector('a')).toBeNull();
     expect(rows[2].querySelector('a')).toBeNull();
     associations(document);
+  });
+});
+
+describe.each([TaskStatus.INCOMPLETE, TaskStatus.COMPLETE])('claimant functional task-link selectors (%s)', status => {
+  const next = 'CLAIMANT_RESPONSE_TASK_LIST.CHOOSE_WHAT_TODO_NEXT.';
+  it.each([
+    ['view_defendants_response', 'CLAIMANT_RESPONSE_TASK_LIST.HOW_THEY_RESPONDED.VIEW_DEFENDANTS_RESPONSE', urls.CLAIMANT_RESPONSE_REVIEW_DEFENDANTS_RESPONSE_URL],
+    ['accept_or_reject', next + 'ACCEPT_OR_REJECT_ADMITTED', urls.CLAIMANT_RESPONSE_SETTLE_ADMITTED_CLAIM_URL],
+    ['accept_or_reject_their_response', next + 'ACCEPT_OR_REJECT_THEIR_RESPONSE', urls.CLAIMANT_RESPONSE_SETTLE_CLAIM_URL],
+    ['how_to_formalise_repayment', next + 'HOW_FORMALISE', urls.CLAIMANT_RESPONSE_CHOOSE_HOW_TO_PROCEED_URL],
+    ['sign_a_settlements_agreement', next + 'SIGN_SETTLEMENT', urls.CLAIMANT_SIGN_SETTLEMENT_AGREEMENT],
+    ['request_a_CCJ', next + 'REQUEST_COUNTY_COURT_JUDGMENT', urls.CCJ_EXTENDED_PAID_AMOUNT_URL],
+    ['check_and_submit_your_response', 'TASK_LIST.SUBMIT.CHECK_AND_SUBMIT', urls.CLAIMANT_RESPONSE_CHECK_ANSWERS_URL],
+    ['decide_whether_to_proceed', next + 'DECIDE_WHETHER_TO_PROCEED', urls.CLAIMANT_RESPONSE_INTENTION_TO_PROCEED_URL],
+    ['free_mediation', next + 'FREE_TELEPHONE_MEDIATION', urls.CITIZEN_FREE_TELEPHONE_MEDIATION_URL],
+    ['details_in_case_of_a_hearing', 'TASK_LIST.YOUR_HEARING_REQUIREMENTS.GIVE_US_DETAILS', urls.DETERMINATION_WITHOUT_HEARING_URL],
+  ])('finds only the intended link for %s despite component whitespace', (locator, key, route) => {
+    const description = taskListTranslate()(key, {admittedAmount: '500.00'});
+    const href = route.replace(':id', '1645882162449409');
+    const tasks = [
+      new TaskItem(description, href, status),
+      new TaskItem(description + ' (previous)', '/fixture/other-task', status),
+      new TaskItem(description, '/fixture/unavailable', TaskStatus.NOT_AVAILABLE_YET),
+    ];
+    const document = parse(renderTaskListPage(taskListViews.claimant, {
+      ...taskListPageFixture(), taskLists: [{title: 'CLAIMANT_RESPONSE_TASK_LIST.HOW_THEY_RESPONDED.TITLE', tasks}],
+    }));
+    const matches = document.evaluate(claimantTaskLocators[locator], document, null,
+      document.defaultView!.XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
+    expect(matches.snapshotLength).toBe(1);
+    expect((matches.snapshotItem(0) as HTMLAnchorElement).getAttribute('href')).toBe(href);
   });
 });
 
