@@ -2,7 +2,6 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/date-input/macro.njk" import govukDateInput %}
 {% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
-{% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
 {% from "../../../macro/error-summary.njk" import errorSummary %}
 {% from "../../../macro/csrf.njk" import csrfProtection %}
 {% from "../../../macro/page-title.njk" import setPageTitle %}
@@ -20,11 +19,11 @@
       {% if form.hasErrors() %}
         {% set errorMessages %}
           {% if errors %}
-            {% for error in errors %}
+            {% for error in errors | selectattr("text") %}
               {% if error.text == 'ERRORS.FIRST_PAYMENT_MESSAGE' %}
-                <span class="govuk-error-message">{{ t(error.text,{firstPaymentDate:firstPaymentDate}) | safe }}</span>
+                {{ t(error.text,{firstPaymentDate:firstPaymentDate}) }}{% if not loop.last %}<br>{% endif %}
               {% else %}
-                <span class="govuk-error-message">{{ t(error.text) }}</span>
+                {{ t(error.text) }}{% if not loop.last %}<br>{% endif %}
               {% endif %}
             {% endfor %}
           {% endif %}
@@ -33,13 +32,7 @@
       <span class="govuk-caption-l">
             {{ t('COMMON.ASK_FOR_PROOF_OF_DEBT_PAYMENT') }}
           </span>
-      {% call govukFieldset({
-        legend: {
-          text: t("PAGES.GENERAL_APPLICATION.FINAL_DEFENDANT_PAYMENT_DATE.TITLE"),
-          classes: "govuk-fieldset__legend--l",
-          isPageHeading: true
-        }
-      }) %}
+      <h1 class="govuk-heading-l">{{ t("PAGES.GENERAL_APPLICATION.FINAL_DEFENDANT_PAYMENT_DATE.TITLE") }}</h1>
       {% if insetText %}
         {{ govukInsetText({
           text: t(insetText)
@@ -67,7 +60,7 @@
             },
             errorMessage: {
               html: errorMessages
-            } if form.hasErrors(),
+            } if errorMessages and errorMessages | trim,
             items: [
               {
                 classes: "govuk-input--width-2 govuk-input--error" if form.hasFieldError('day') else "govuk-input--width-2",
@@ -97,6 +90,5 @@
           }) }}
         </div>
         {{ addButton(t, 'CONTINUE',cancelUrl) }}
-        {% endcall %}
       </form>
 {% endblock %}

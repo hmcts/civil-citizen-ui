@@ -30,12 +30,9 @@
           <p class="govuk-heading-m">{{ t('PAGES.ELIGIBILITY_USEFUL_INFO_FEES.CONTINUE_HELP_WITH_FEES') }}</p>
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
-            <fieldset class="govuk-fieldset govuk-!-margin-bottom-0">
-              <legend class="govuk-visually-hidden">
-                {{ t('PAGES.ELIGIBILITY_USEFUL_INFO_FEES.CONTINUE_HELP_WITH_FEES') }}
-              </legend>
-              {{ yesNoRadioButton(t, 'option', 'option', '', form, '', {classes: 'govuk-radios--inline', yes: 'COMMON.VARIATION_2.YES', no: 'COMMON.VARIATION_2.NO'}) }}
-            </fieldset>
+
+              {{ yesNoRadioButton(t, 'option', 'option', t('PAGES.ELIGIBILITY_USEFUL_INFO_FEES.CONTINUE_HELP_WITH_FEES'), form, '', {classes: 'govuk-radios--inline', yes: 'COMMON.VARIATION_2.YES', no: 'COMMON.VARIATION_2.NO', isPageHeading: false, legendClasses: 'govuk-visually-hidden'}) }}
+
             <div class="govuk-form-group">
               {{ govukButton({
                 text: t('COMMON.BUTTONS.CONTINUE'),

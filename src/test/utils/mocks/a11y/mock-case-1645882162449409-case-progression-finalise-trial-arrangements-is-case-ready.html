@@ -618,46 +618,27 @@ data-module="govuk-service-navigation"
 
 
 <div class="govuk-form-group">
-
+  <fieldset class="govuk-fieldset" aria-describedby="option-hint">
+  <legend class="govuk-fieldset__legend govuk-visually-hidden">
+    Finalise your trial arrangements
+  </legend>
   <div id="option-hint" class="govuk-hint">
-
   </div>
-
-
-  <div class="govuk-radios"
-    data-module="govuk-radios">
-
-
-
-
-
-
-        <div class="govuk-radios__item">
-          <input class="govuk-radios__input" id="option" name="option" type="radio" value="yes">
-          <label class="govuk-label govuk-radios__label" for="option">
+  <div class="govuk-radios" data-module="govuk-radios">
+    <div class="govuk-radios__item">
+      <input class="govuk-radios__input" id="option" name="option" type="radio" value="yes">
+      <label class="govuk-label govuk-radios__label" for="option">
         <span>Yes</span>
       </label>
-
-        </div>
-
-
-
-
-
-
-
-
-        <div class="govuk-radios__item">
-          <input class="govuk-radios__input" id="option-2" name="option" type="radio" value="no" checked data-aria-controls="conditional-option-2">
-          <label class="govuk-label govuk-radios__label" for="option-2">
+    </div>
+    <div class="govuk-radios__item">
+      <input class="govuk-radios__input" id="option-2" name="option" type="radio" value="no" checked data-aria-controls="conditional-option-2">
+      <label class="govuk-label govuk-radios__label" for="option-2">
         <span>No</span>
       </label>
-
-        </div>
-
-          <div class="govuk-radios__conditional" id="conditional-option-2">
-
-  <p class="govuk-body govuk-!-margin-bottom-1">You will still need to continue and provide some information on trial arrangements.</p>
+    </div>
+    <div class="govuk-radios__conditional" id="conditional-option-2">
+      <p class="govuk-body govuk-!-margin-bottom-1">You will still need to continue and provide some information on trial arrangements.</p>
   <div class="govuk-warning-text govuk-!-margin-bottom-1">
   <span class="govuk-warning-text__icon" aria-hidden="true">!</span>
   <strong class="govuk-warning-text__text">
@@ -665,16 +646,10 @@ data-module="govuk-service-navigation"
     You will need to make an application to the court if this case is not ready for the trial.
   </strong>
 </div>
-
   <p class="govuk-body">The trial will go ahead as planned on the specified date unless a judge makes an order changing the date of the trial. If you want the date of the trial to be changed (or any other order to make the case ready for trial) you will need to make an application to the court.</p>
-
-          </div>
-
-
-
-
+    </div>
   </div>
-
+</fieldset>
 </div>
 
 
