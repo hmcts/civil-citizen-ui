@@ -10,11 +10,11 @@ export class Bundle {
   constructor(title: string, stitchedDocument?: Document, createdOn?: Date, bundleHearingDate?: Date) {
     this.title = title;
     this.stitchedDocument = stitchedDocument;
-    this.createdOn = createdOn ? new Date(createdOn) : null;
-    this.bundleHearingDate = bundleHearingDate? new Date(bundleHearingDate) : null;
+    this.createdOn = createdOn ? new Date(createdOn) : undefined;
+    this.bundleHearingDate = bundleHearingDate? new Date(bundleHearingDate) : undefined;
   }
 
-  get getFormattedCreatedOn(): string {
+  get getFormattedCreatedOn(): string | undefined {
     if(this.createdOn){
       const createdOnDateFormatted = formatStringDateDMY(this.createdOn);
 
@@ -23,7 +23,7 @@ export class Bundle {
     return undefined;
   }
 
-  get getFormattedHearingDate(): string {
+  get getFormattedHearingDate(): string | undefined {
     if(this.bundleHearingDate){
       return formatStringDateDMY(this.bundleHearingDate);
     }
