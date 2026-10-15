@@ -9,10 +9,12 @@ import {Party} from 'models/party';
 import {PartyType} from 'models/partyType';
 import {CaseRole} from 'form/models/caseRoles';
 import {YesNo} from 'form/models/yesNo';
+import {GenericForm} from 'form/models/genericForm';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {getClaimById} from 'modules/utilityService';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {submitApplication} from 'services/features/generalApplication/submitApplication';
+import {CallbackError} from 'client/common/error/callbackError';
 import {
   GA_APPLICATION_SUBMITTED_URL,
   GENERAL_APPLICATION_CONFIRM_URL,
@@ -189,6 +191,40 @@ describe('General Application - Check your answers', () => {
       await postHandler(req as never, res as unknown as Response, next);
 
       expect(next).toHaveBeenCalledWith(error);
+    });
+
+    it('should re-render with GDS errors when submitApplication throws CallbackError with field errors', async () => {
+      mockSubmitApplication.mockRejectedValue(new CallbackError(
+        [],
+        [],
+        [{id: 'generalAppType', message: 'Enter a valid application type'}],
+      ));
+      req.body = {signed: 'yes', name: 'Mr Applicant'};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        form: expect.any(GenericForm),
+      }));
+      const form = (res.render as jest.Mock).mock.calls[0][1].form as GenericForm<unknown>;
+      expect(form.hasErrors()).toBe(true);
+      expect(form.errorFor('generalAppType')).toBe('Enter a valid application type');
+      expect(res.redirect).not.toHaveBeenCalled();
+      expect(next).not.toHaveBeenCalled();
+    });
+
+    it('should call next when submitApplication throws CallbackError with only callbackErrors so the error page is used', async () => {
+      const callbackError = new CallbackError([
+        'There is a technical issue causing a delay. You do not need to do anything. Please come back later.',
+      ]);
+      mockSubmitApplication.mockRejectedValue(callbackError);
+      req.body = {signed: 'yes', name: 'Mr Applicant'};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(callbackError);
+      expect(res.render).not.toHaveBeenCalled();
+      expect(res.redirect).not.toHaveBeenCalled();
     });
   });
 });
