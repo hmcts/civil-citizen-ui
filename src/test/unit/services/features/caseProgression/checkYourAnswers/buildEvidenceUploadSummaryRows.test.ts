@@ -58,7 +58,7 @@ describe('buildEvidenceUploadedSummaryRows', () => {
 
       const uploadDocumentsUserForm = getMockFullUploadDocumentsUserForm();
       for( const documentRef of uploadDocumentsUserForm.documentsReferred) {
-        documentRef.caseDocument.documentLink = undefined;
+        documentRef.caseDocuments.forEach((caseDocument) => { caseDocument.documentLink = undefined; });
       }
       //when
       const actualSummaryRows = getWitnessSummarySection(uploadDocumentsUserForm, '1234', 'en');

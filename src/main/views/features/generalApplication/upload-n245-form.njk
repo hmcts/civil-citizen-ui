@@ -26,6 +26,7 @@
       {{ govukFileUpload({
                   id: idValue,
                   name: "selectedFile",
+                  javascript: true,
                   label: {
                    html: uploadFileLabel
                   },
@@ -38,7 +39,7 @@
                           name: 'action',
                           value: 'uploadButton',
                           text:  t('COMMON.SAVE_FILE'),
-                           classes: "govuk-button--secondary govuk-!-margin-bottom-0"
+                           classes: "govuk-button--secondary govuk-!-margin-bottom-0 js-auto-upload-button"
                 }) }}
     </div>
     {% if documentName %}

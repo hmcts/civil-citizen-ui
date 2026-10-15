@@ -42,8 +42,8 @@ const content = {
       cy: 'Fformatau derbyniol ar gyfer cyflwyno dogfennau',
     },
     hint: {
-      en: 'Each document must be less than 100MB. You can upload the following file types: Word, Excel, PowerPoint, PDF, RTF, TXT, CSV, JPG, JPEG, PNG, BMP, TIF,TIFF.',
-      cy: 'Rhaid i bob dogfen fod yn llai na 100MB. Gallwch uwchlwytho\'r mathau canlynol o ffeiliau: Word, Excel, PowerPoint, PDF, RTF, TXT, CSV, JPG, JPEG, PNG, BMP, TIF,TIFF.',
+      en: 'Each document must be less than 100MB. You can upload the following file types: Word, Excel, PowerPoint, PDF, RTF, TXT, CSV, JPG, JPEG, PNG, BMP, TIF, TIFF.',
+      cy: 'Rhaid i bob dogfen fod yn llai na 100MB. Gallwch uwchlwytho\'r mathau canlynol o ffeiliau: Word, Excel, PowerPoint, PDF, RTF, TXT, CSV, JPG, JPEG, PNG, BMP, TIF, TIFF.',
     },
   },
   disclosure: {

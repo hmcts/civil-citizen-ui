@@ -281,44 +281,75 @@
   {% if content.type === ClaimSummaryType.UPLOAD_ARRAY %}
     <div id={{content.data.category+'['+content.data.index+']['+content.data.field+'][size]'}} ></div>
     <div id={{content.data.category+'['+content.data.index+']['+content.data.field+'][mimetype]'}} ></div>
-     <div class="govuk-inset-text">
-       {{ govukFileUpload({
-           id: content.data.category+'['+content.data.index+']['+content.data.field+']',
-           name: content.data.category+'['+content.data.index+']['+content.data.field+']',
-           classes: 'uploadFile govuk-!-width-three-half '+content.data.classes,
-           value: content.data.value,
-           label: {
-             html: '<strong>' + t(content.data.text) + '</strong><div id="' + content.data.category + '[' + content.data.index + '][documentName]"><p class="documentName">' + content.data.documentName + '</p><hr class="govuk-section-break--s govuk-section-break--visible"></div>'
-           },
-           errorMessage: { text: t(content.data.errorMessage) } if content.data.errorMessage,
-           attributes: {
-              'data-name': content.data.category+'[%index%]['+content.data.field+']',
-              'data-id': content.data.category+'[%index%]['+content.data.field+']'
-           }
-        }) }}
-         {{ govukButton({
-                          id: 'uploadFileButton',
-                          name: 'action',
-                          value: content.data.category+'['+content.data.index+'][uploadButton]',
-                          attributes: {
-                            'data-value': content.data.category+'[%index%][uploadButton]'
-                          },
-           text: t('COMMON.SAVE_FILE'),
-           classes: "govuk-button--secondary govuk-!-margin-bottom-0"
-         }) }}
+    <div class="govuk-form-group">
+      <div class="file-upload-slots">
+        <div class="row-container govuk-inset-text">
+          {{ govukFileUpload({
+              id: content.data.category+'['+content.data.index+']['+content.data.field+']',
+              name: content.data.category+'['+content.data.index+']['+content.data.field+']',
+              classes: 'uploadFile govuk-!-width-three-half '+content.data.classes,
+              value: content.data.value,
+              javascript: true,
+              multiple: true,
+              label: {
+                html: '<strong>' + t(content.data.text) + '</strong>'
+              },
+              hint: {
+                text: t('PAGES.UPLOAD_DOCUMENTS.ADD_ANOTHER_FILE_HINT')
+              },
+              errorMessage: { text: t(content.data.errorMessage) } if content.data.errorMessage,
+              attributes: {
+                 'data-name': content.data.category+'[%index%]['+content.data.field+']',
+                 'data-id': content.data.category+'[%index%]['+content.data.field+']'
+              }
+           }) }}
+            {{ govukButton({
+                             id: content.data.category+'-'+content.data.index+'-uploadFileButton',
+                             name: 'action',
+                             value: content.data.category+'['+content.data.index+'][uploadButton]',
+                             text: t('COMMON.SAVE_FILE'),
+                             classes: "govuk-button--secondary govuk-!-margin-bottom-0 js-auto-upload-button",
+                             attributes: {
+                               'data-value': content.data.category+'[%index%][uploadButton]'
+                             }
+            }) }}
+       </div>
+      </div>
+      <button type="button" class="govuk-button govuk-button--secondary add-file-slot govuk-!-margin-bottom-4">
+        {{ t('PAGES.UPLOAD_DOCUMENTS.ADD_ANOTHER_FILE') }}
+      </button>
+
+      {% if content.data.documentNames.length %}
+        <h3 class="govuk-heading-s">{{ t('PAGES.UPLOAD_DOCUMENTS.UPLOADED_FILE') }}</h3>
+        <dl class="govuk-summary-list">
+          {% for documentName in content.data.documentNames %}
+            <div class="govuk-summary-list__row">
+              <dt class="govuk-summary-list__value">{{ documentName }}</dt>
+              <dd class="govuk-summary-list__actions">
+                {{ govukButton({
+                  name: 'action',
+                  value: content.data.category+'['+content.data.index+'][deleteFile]['+loop.index0+']',
+                  html: t('COMMON.BUTTONS.DELETE') + '<span class="govuk-visually-hidden"> ' + (documentName | escape) + '</span>',
+                  classes: 'govuk-button--secondary govuk-!-margin-bottom-0'
+                }) }}
+              </dd>
+            </div>
+          {% endfor %}
+        </dl>
+      {% endif %}
     </div>
     {{ govukInput({
-       id: content.data.category+'['+content.data.index+'][caseDocument]',
-       name: content.data.category+'['+content.data.index+'][caseDocument]',
+       id: content.data.category+'['+content.data.index+'][caseDocuments]',
+       name: content.data.category+'['+content.data.index+'][caseDocuments]',
        type:'hidden',
        label: {
-        text: 'Case Document',
+        text: 'Case Documents',
         classes: 'govuk-visually-hidden'
        },
-       value: content.data.caseDocument,
+       value: content.data.caseDocuments,
        attributes: {
-         'data-name': content.data.category+'[%index%][caseDocument]',
-         'data-id': content.data.category+'[%index%][caseDocument]'
+         'data-name': content.data.category+'[%index%][caseDocuments]',
+         'data-id': content.data.category+'[%index%][caseDocuments]'
        }
     }) }}
   {% endif %}

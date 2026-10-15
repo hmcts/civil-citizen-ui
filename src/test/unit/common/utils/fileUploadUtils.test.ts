@@ -6,8 +6,13 @@ import {
   createFileUploadError,
   getMulterErrorConstraint,
   extractCategoryAndIndex,
+  extractCategorySectionAndFileIndex,
   createUploadOneFileError,
   uploadAndValidateFile,
+  normaliseCaseDocuments,
+  migrateLegacyCaseDocuments,
+  migrateLegacyCaseDocumentsOnForm,
+  removeUploadedFile,
 } from 'common/utils/fileUploadUtils';
 import {FILE_SIZE_LIMIT} from 'form/validators/isFileSize';
 
@@ -122,15 +127,22 @@ describe('fileUploadUtils', () => {
       expect((mockReq as any).multerError).toBeUndefined();
     });
 
-    it('should reject spoofed Content-Type when file magic bytes do not match', () => {
+    it('should drop only the files whose magic bytes do not match their Content-Type', () => {
       const multer = require('multer');
-      mockReq.files = [{
+      const validPdf = {
         fieldname: 'documentsReferred[0][fileUpload]',
+        originalname: 'real.pdf',
+        mimetype: 'application/pdf',
+        size: 64,
+        buffer: Buffer.from('%PDF-1.4 real pdf'),
+      } as Express.Multer.File;
+      mockReq.files = [{
+        fieldname: 'witnessStatement[0][fileUpload]',
         originalname: 'spoofed.pdf',
         mimetype: 'application/pdf',
         size: 64,
         buffer: Buffer.from('not a pdf'),
-      } as Express.Multer.File];
+      } as Express.Multer.File, validPdf];
       const mockMulterInstance = {
         any: jest.fn(() => (req: any, res: any, callback: any) => {
           callback(null);
@@ -141,11 +153,9 @@ describe('fileUploadUtils', () => {
       const middleware = createMulterErrorMiddleware('testLogger');
       middleware(mockReq as Request, mockRes as Response, mockNext);
 
-      expect((mockReq as any).multerError).toEqual({
-        code: 'LIMIT_UNEXPECTED_FILE',
-        message: 'File content type is not allowed',
-      });
-      expect(mockReq.files).toBeUndefined();
+      expect((mockReq as any).multerError).toBeUndefined();
+      expect((mockReq as any).rejectedFileFields).toEqual(['witnessStatement[0][fileUpload]']);
+      expect(mockReq.files).toEqual([validPdf]);
       expect(mockNext).toHaveBeenCalled();
     });
 
@@ -357,6 +367,111 @@ describe('fileUploadUtils', () => {
     });
   });
 
+  describe('extractCategorySectionAndFileIndex', () => {
+    it('should extract category, section index and file index from a delete action', () => {
+      const [category, index, fileIndex] = extractCategorySectionAndFileIndex('witnessStatement[0][deleteFile][1]');
+
+      expect(category).toBe('witnessStatement');
+      expect(index).toBe('0');
+      expect(fileIndex).toBe('1');
+    });
+  });
+
+  describe('normaliseCaseDocuments', () => {
+    it('returns an empty array for undefined or null', () => {
+      expect(normaliseCaseDocuments(undefined)).toEqual([]);
+      expect(normaliseCaseDocuments(null)).toEqual([]);
+    });
+
+    it('wraps a single legacy value in an array', () => {
+      const doc = {documentName: 'test.pdf'};
+      expect(normaliseCaseDocuments(doc)).toEqual([doc]);
+    });
+
+    it('returns an existing array unchanged', () => {
+      const docs = [{documentName: 'a.pdf'}, {documentName: 'b.pdf'}];
+      expect(normaliseCaseDocuments(docs)).toBe(docs);
+    });
+  });
+
+  describe('migrateLegacyCaseDocuments', () => {
+    it('migrates a legacy single caseDocument onto caseDocuments', () => {
+      const legacyDoc = {documentName: 'legacy.pdf'};
+      const sections: any[] = [{caseDocument: legacyDoc}];
+
+      migrateLegacyCaseDocuments(sections);
+
+      expect(sections[0].caseDocuments).toEqual([legacyDoc]);
+    });
+
+    it('does not overwrite an already-populated caseDocuments array', () => {
+      const newDoc = {documentName: 'new.pdf'};
+      const legacyDoc = {documentName: 'legacy.pdf'};
+      const sections: any[] = [{caseDocument: legacyDoc, caseDocuments: [newDoc]}];
+
+      migrateLegacyCaseDocuments(sections);
+
+      expect(sections[0].caseDocuments).toEqual([newDoc]);
+    });
+
+    it('leaves a section with no documents at all untouched', () => {
+      const sections: any[] = [{}];
+
+      migrateLegacyCaseDocuments(sections);
+
+      expect(sections[0].caseDocuments).toBeUndefined();
+    });
+
+    it('does nothing when sections is undefined', () => {
+      expect(() => migrateLegacyCaseDocuments(undefined)).not.toThrow();
+    });
+  });
+
+  describe('migrateLegacyCaseDocumentsOnForm', () => {
+    it('migrates every array field on the form', () => {
+      const legacyWitnessDoc = {documentName: 'witness.pdf'};
+      const legacyExpertDoc = {documentName: 'expert.pdf'};
+      const form: Record<string, unknown> = {
+        witnessStatement: [{caseDocument: legacyWitnessDoc}],
+        expertReport: [{caseDocument: legacyExpertDoc}],
+        notAnArrayField: 'ignored',
+      };
+
+      migrateLegacyCaseDocumentsOnForm(form);
+
+      expect((form.witnessStatement as any[])[0].caseDocuments).toEqual([legacyWitnessDoc]);
+      expect((form.expertReport as any[])[0].caseDocuments).toEqual([legacyExpertDoc]);
+    });
+
+    it('does nothing when form is undefined', () => {
+      expect(() => migrateLegacyCaseDocumentsOnForm(undefined)).not.toThrow();
+    });
+  });
+
+  describe('removeUploadedFile', () => {
+    it('removes the file at the given index', () => {
+      const categoryModel = [{caseDocuments: [{documentName: 'a.pdf'}, {documentName: 'b.pdf'}]}];
+
+      const result = removeUploadedFile(categoryModel, '0', '0');
+
+      expect(result).toBe(true);
+      expect(categoryModel[0].caseDocuments).toEqual([{documentName: 'b.pdf'}]);
+    });
+
+    it('returns false when the section does not exist', () => {
+      const categoryModel: any[] = [];
+
+      expect(removeUploadedFile(categoryModel, '0', '0')).toBe(false);
+    });
+
+    it('returns false when the file index is out of range', () => {
+      const categoryModel = [{caseDocuments: [{documentName: 'a.pdf'}]}];
+
+      expect(removeUploadedFile(categoryModel, '0', '5')).toBe(false);
+      expect(categoryModel[0].caseDocuments).toEqual([{documentName: 'a.pdf'}]);
+    });
+  });
+
   describe('createUploadOneFileError', () => {
     it('should return correct error structure', () => {
       const error = createUploadOneFileError();
@@ -438,6 +553,83 @@ describe('fileUploadUtils', () => {
       await uploadAndValidateFile(mockReq, 'documentsReferred[0][uploadButton]', form, { uploadDocument: mockUploadDocument });
       expect(form.errors).toHaveLength(1);
       expect(form.errors[0].children[0].children[0].constraints.unexpectedError).toBe('ERRORS.FILE_UPLOAD_FAILED');
+    });
+
+    describe('when several files are selected for one upload control', () => {
+      const reqWithFiles = (count: number) => ({
+        files: [
+          ...Array.from({length: count}, (_, i) => ({ fieldname: 'documentsReferred[0][fileUpload]', originalname: `file-${i}.pdf` })),
+          { fieldname: 'witnessStatement[0][fileUpload]', originalname: 'other-section.pdf' },
+        ],
+      }) as any;
+      const uploadedDocument = (name: string) => ({ documentLink: { document_filename: name } });
+      const filenames = () => (form.model.documentsReferred[0] as any).caseDocuments.map((doc: any) => doc.documentLink.document_filename);
+
+      it('uploads every file for that section and appends them to any already uploaded', async () => {
+        (form.model.documentsReferred[0] as any).caseDocuments = [uploadedDocument('existing.pdf')];
+        mockUploadDocument
+          .mockResolvedValueOnce(uploadedDocument('file-0.pdf'))
+          .mockResolvedValueOnce(uploadedDocument('file-1.pdf'))
+          .mockResolvedValueOnce(uploadedDocument('file-2.pdf'));
+
+        await uploadAndValidateFile(reqWithFiles(3), 'documentsReferred[0][uploadButton]', form, { uploadDocument: mockUploadDocument });
+
+        expect(mockUploadDocument).toHaveBeenCalledTimes(3);
+        expect(filenames()).toEqual(['existing.pdf', 'file-0.pdf', 'file-1.pdf', 'file-2.pdf']);
+        expect(form.errors).toHaveLength(0);
+        expect(form.model.documentsReferred[0].fileUpload).toBeUndefined();
+      });
+
+      it('still uploads the valid files when one of them fails validation', async () => {
+        const {Validator} = require('class-validator');
+        Validator.mockImplementation(() => ({
+          validateSync: jest.fn()
+            .mockReturnValueOnce([])
+            .mockReturnValueOnce([{ constraints: { isFileSize: 'ERRORS.VALID_SIZE_FILE' } }])
+            .mockReturnValueOnce([]),
+        }));
+        mockUploadDocument
+          .mockResolvedValueOnce(uploadedDocument('file-0.pdf'))
+          .mockResolvedValueOnce(uploadedDocument('file-2.pdf'));
+
+        await uploadAndValidateFile(reqWithFiles(3), 'documentsReferred[0][uploadButton]', form, { uploadDocument: mockUploadDocument });
+
+        expect(mockUploadDocument).toHaveBeenCalledTimes(2);
+        expect(filenames()).toEqual(['file-0.pdf', 'file-2.pdf']);
+        expect(form.errors).toHaveLength(1);
+        expect(form.errors[0].children[0].children[0].constraints.isFileSize).toBe('ERRORS.VALID_SIZE_FILE');
+      });
+
+      it('shows a file type error when a file for this section was rejected for its content', async () => {
+        const req = {...reqWithFiles(1), rejectedFileFields: ['documentsReferred[0][fileUpload]']};
+        mockUploadDocument.mockResolvedValueOnce(uploadedDocument('file-0.pdf'));
+
+        await uploadAndValidateFile(req, 'documentsReferred[0][uploadButton]', form, { uploadDocument: mockUploadDocument });
+
+        expect(filenames()).toEqual(['file-0.pdf']);
+        expect(form.errors).toHaveLength(1);
+        expect(form.errors[0].children[0].children[0].constraints.multerError).toBe('ERRORS.VALID_MIME_TYPE_FILE');
+      });
+
+      it('shows a file type error when every file for this section was rejected for its content', async () => {
+        const req = {files: [], rejectedFileFields: ['documentsReferred[0][fileUpload]']} as any;
+
+        await uploadAndValidateFile(req, 'documentsReferred[0][uploadButton]', form, { uploadDocument: mockUploadDocument });
+
+        expect(mockUploadDocument).not.toHaveBeenCalled();
+        expect(form.errors).toHaveLength(1);
+        expect(form.errors[0].children[0].children[0].constraints.multerError).toBe('ERRORS.VALID_MIME_TYPE_FILE');
+      });
+
+      it('reports only one error for the section when several files fail', async () => {
+        mockUploadDocument.mockRejectedValue(new Error('API error'));
+
+        await uploadAndValidateFile(reqWithFiles(2), 'documentsReferred[0][uploadButton]', form, { uploadDocument: mockUploadDocument });
+
+        expect(mockUploadDocument).toHaveBeenCalledTimes(2);
+        expect(form.errors).toHaveLength(1);
+        expect(form.errors[0].children[0].children[0].constraints.uploadError).toBe('ERRORS.FILE_UPLOAD_FAILED');
+      });
     });
   });
 });

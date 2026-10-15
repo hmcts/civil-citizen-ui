@@ -26,7 +26,7 @@ export const buildDocumentsReferredSection = (section: MediationTypeOfDocumentSe
     .addTitle(`${MEDIATION_UPLOAD_DOCUMENTS_PAGE}TITLE.${TypeOfMediationDocuments.DOCUMENTS_REFERRED_TO_IN_STATEMENT}`, null, 'govuk-!-width-three-quarters')
     .addInputArray(`${MEDIATION_UPLOAD_DOCUMENTS_PAGE}YOUR_NAME.${TypeOfMediationDocuments.DOCUMENTS_REFERRED_TO_IN_STATEMENT}`, '', '', documentsForDocumentsReferred, 'typeOfDocument', section?.typeOfDocument, index, form?.errorFor(`${errorFieldNamePrefix}[typeOfDocument]`, documentsForDocumentsReferred))
     .addDateArray(`${MEDIATION_UPLOAD_DOCUMENTS_PAGE}DATE_INPUT.${TypeOfMediationDocuments.DOCUMENTS_REFERRED_TO_IN_STATEMENT}`, invalidDateErrors, 'PAGES.UPLOAD_DOCUMENTS.DATE_EXAMPLE', documentsForDocumentsReferred, 'date', section?.dateInputFields?.dateDay?.toString(), section?.dateInputFields?.dateMonth?.toString(), section?.dateInputFields?.dateYear?.toString(), index, 'dateInputFields' )
-    .addUploadArray('PAGES.UPLOAD_DOCUMENTS.UPLOAD', '', documentsForDocumentsReferred, fileUpload, index,section?.fileUpload?.fieldname, invalidDateErrors.invalidFileError, section?.caseDocument)
+    .addUploadArray('PAGES.UPLOAD_DOCUMENTS.UPLOAD', '', documentsForDocumentsReferred, fileUpload, index,section?.fileUpload?.fieldname, invalidDateErrors.invalidFileError, section?.caseDocuments)
     .addRemoveSectionButton(documentsForDocumentsReferred, index)
     .build();
 };

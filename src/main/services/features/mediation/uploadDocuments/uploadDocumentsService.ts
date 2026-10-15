@@ -8,14 +8,17 @@ import {
   UploadDocumentsForm,
 } from 'form/models/mediation/uploadDocuments/uploadDocumentsForm';
 import {CaseDocument} from 'models/document/caseDocument';
+import {migrateLegacyCaseDocuments, normaliseCaseDocuments} from 'common/utils/fileUploadUtils';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('freeMediationService');
-const CASE_DOCUMENT = 'caseDocument';
+const CASE_DOCUMENTS = 'caseDocuments';
+const CASE_DOCUMENT_LEGACY = 'caseDocument';
 
 export const getUploadDocuments = (claim: Claim): UploadDocuments => {
   try {
     if (!claim.mediationUploadDocuments) return new UploadDocuments([]);
+    claim.mediationUploadDocuments.typeOfDocuments?.forEach((typeOfDocument) => migrateLegacyCaseDocuments(typeOfDocument.uploadDocuments));
     return new UploadDocuments(claim.mediationUploadDocuments.typeOfDocuments);
   } catch (error) {
     logger.error(error);
@@ -75,20 +78,26 @@ const getFormSection = <T>(data: any[], bindFunction: (request: any) => T): T[] 
   return formSection;
 };
 
+const parseCaseDocuments = (request: any): CaseDocument[] => {
+  // Falls back to the pre-multi-file-upload field name so a browser tab that loaded the page
+  // before this change shipped doesn't silently lose its already-uploaded document on submit.
+  const rawCaseDocs = request[CASE_DOCUMENTS] || request[CASE_DOCUMENT_LEGACY];
+  if (!rawCaseDocs || rawCaseDocs === '') {
+    return [];
+  }
+  return normaliseCaseDocuments(JSON.parse(rawCaseDocs) as CaseDocument | CaseDocument[]);
+};
+
 const bindRequestToTypeOfDocumentSectionObj = (request: any): MediationTypeOfDocumentSection => {
   const formObj: MediationTypeOfDocumentSection = new MediationTypeOfDocumentSection(request['dateInputFields'].dateDay, request['dateInputFields'].dateMonth, request['dateInputFields'].dateYear);
   formObj.typeOfDocument = request['typeOfDocument'].trim();
-  if (request[CASE_DOCUMENT] && request[CASE_DOCUMENT] !== '') {
-    formObj.caseDocument = JSON.parse(request[CASE_DOCUMENT]) as CaseDocument;
-  }
+  formObj.caseDocuments = parseCaseDocuments(request);
   return formObj;
 };
 
 const bindRequestYourNameSectionObj = (request: any): TypeOfDocumentYourNameSection => {
   const formObj: TypeOfDocumentYourNameSection = new TypeOfDocumentYourNameSection(request['dateInputFields'].dateDay, request['dateInputFields'].dateMonth, request['dateInputFields'].dateYear);
   formObj.yourName = request['yourName'].trim();
-  if (request[CASE_DOCUMENT] && request[CASE_DOCUMENT] !== '') {
-    formObj.caseDocument = JSON.parse(request[CASE_DOCUMENT]) as CaseDocument;
-  }
+  formObj.caseDocuments = parseCaseDocuments(request);
   return formObj as TypeOfDocumentYourNameSection;
 };

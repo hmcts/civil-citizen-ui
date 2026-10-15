@@ -23,13 +23,14 @@
       <a href="{{ directionOrderDocUrl }}" target="_blank">{{ t('PAGES.GENERAL_APPLICATION.UPLOAD_DIRECTIONS_ORDER_DOCUMENTS.COURT_DOCUMENT') }}</a>
       {{ t('PAGES.GENERAL_APPLICATION.UPLOAD_DIRECTIONS_ORDER_DOCUMENTS.IF_NOT_SURE_END') }}
   </p>
-  <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.UPLOAD_DOCUMENTS.DOCUMENT_TYPE_SIZE_WITH_SAVE_FILE') }}</p>
+  <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.UPLOAD_DOCUMENTS.DOCUMENT_TYPE_SIZE') }}</p>
   <form method="post" action="{{ currentUrl }}?_csrf={{ csrf }}" enctype='multipart/form-data' novalidate>
     {{ csrfProtection(csrf) }}
     <div class="govuk-inset-text" >
       {{govukFileUpload({
         id: idValue,
         name: "selectedFile",
+        javascript: true,
         label: {
           html: '<strong>' + t('COMMON.UPLOAD_FILE_LABEL') +'</strong>'
         },
@@ -40,7 +41,7 @@
         name: 'action',
         value: 'uploadButton',
         text: t('COMMON.SAVE_FILE'),
-        classes: "govuk-button--secondary govuk-!-margin-bottom-0"
+        classes: "govuk-button--secondary govuk-!-margin-bottom-0 js-auto-upload-button"
       }) }}
     </div>
     {% if formattedSummary.summaryList.rows.length > 0 %}
