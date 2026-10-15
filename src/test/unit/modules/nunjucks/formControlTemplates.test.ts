@@ -4,7 +4,7 @@ import path from 'path';
 import {GenericForm} from 'common/form/models/genericForm';
 import {CitizenDob} from 'common/form/models/citizenDob';
 import {CitizenDate} from 'common/form/models/claim/claimant/citizenDate';
-import {formControlForm, formControlPages, formControlTranslate, renderFormControlPage} from '../../../utils/renderFormControls';
+import {formControlForm, formControlPages, formControlsEnvironment, formControlTranslate, renderFormControlPage} from '../../../utils/renderFormControls';
 import type {FormControlState} from '../../../utils/renderFormControls';
 
 const dateViews = formControlPages.filter(view => /citizen-dob|date-paid|defendant-dob|payment-date|accept-defendant-offer/.test(view));
@@ -44,6 +44,30 @@ describe.each(formControlPages)('real form-control caller %s', view => {
         expect([...doc.querySelectorAll<HTMLInputElement>('.govuk-date-input input')].map(input => input.value)).toEqual(state === 'blank' ? ['', '', ''] : ['12', '6', '1980']);
       }
     });
+  });
+});
+
+describe('extra four weeks radio group', () => {
+  let dom: JSDOM;
+  afterEach(() => dom?.window.close());
+  it.each(['en', 'cy'])('uses the controller pageTitle for its legend in %s', language => {
+    const t = formControlTranslate(language);
+    const pageTitle = 'PAGES.REQUEST_EXTRA_4WEEKS.PAGE_TITLE';
+    // The controller supplies pageTitle, but no separate title for the radio group.
+    dom = new JSDOM(formControlsEnvironment().render('features/directionsQuestionnaire/request-extra-4weeks.njk', {
+      form: formControlForm(), pageTitle, t, lang: language, csrf: 'fixture-csrf',
+    }));
+    const doc = dom.window.document;
+    const radios = [...doc.querySelectorAll<HTMLInputElement>('input[type=radio][name=option]')];
+    expect(radios).toHaveLength(2);
+    const fieldset = radios[0].closest('fieldset');
+    expect(fieldset).not.toBeNull();
+    expect(radios[1].closest('fieldset')).toBe(fieldset);
+    const legend = fieldset.querySelector('legend');
+    expect(legend?.textContent.trim()).toBe(t(pageTitle));
+    expect(legend?.classList.contains('govuk-visually-hidden')).toBe(true);
+    expect(doc.querySelectorAll('h1')).toHaveLength(1);
+    expect(doc.querySelector('h1')?.textContent.trim()).toBe(t(pageTitle));
   });
 });
 
