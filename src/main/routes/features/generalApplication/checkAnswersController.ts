@@ -23,6 +23,7 @@ import {convertToPoundsFilter} from 'common/utils/currencyFormat';
 import {YesNo} from 'form/models/yesNo';
 import {QualifiedStatementOfTruth} from 'models/generalApplication/QualifiedStatementOfTruth';
 import {getRouteParam} from 'common/utils/routeParamUtils';
+import {applyCcdFieldErrorsToForm, isCallbackFieldValidationError} from 'client/common/error/callbackError';
 
 const gaCheckAnswersController = Router();
 const viewPath = 'features/generalApplication/check-answers';
@@ -69,13 +70,21 @@ gaCheckAnswersController.post(GA_CHECK_ANSWERS_URL, checkYourAnswersGAGuard, (as
     if (form.hasErrors()) {
       await renderView(claimId, claim, form, req, res);
       return;
-    } else {
-      await saveStatementOfTruth(redisKey, statementOfTruth);
+    }
+    await saveStatementOfTruth(redisKey, statementOfTruth);
+    try {
       const claimResponse = await submitApplication(req);
       const genApps = claimResponse.generalApplications;
       const genAppId = genApps ? genApps[genApps.length - 1].id : undefined;
       await deleteDraftClaimFromStore(redisKey);
       res.redirect(getRedirectUrl(claimId, claim, applicationFee,genAppId));
+    } catch (error) {
+      if (isCallbackFieldValidationError(error)) {
+        applyCcdFieldErrorsToForm(form, error.fieldErrors);
+        await renderView(claimId, claim, form, req, res);
+        return;
+      }
+      throw error;
     }
   } catch (error) {
     next(error);

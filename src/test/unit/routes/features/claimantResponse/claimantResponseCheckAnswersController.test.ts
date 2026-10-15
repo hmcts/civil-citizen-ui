@@ -21,6 +21,9 @@ import {Hearing} from 'models/directionsQuestionnaire/hearing/hearing';
 import {OtherWitnesses} from 'models/directionsQuestionnaire/witnesses/otherWitnesses';
 import {OtherWitnessItems} from 'models/directionsQuestionnaire/witnesses/otherWitnessItems';
 import {YesNo} from 'form/models/yesNo';
+import {submitClaimantResponse} from 'services/features/claimantResponse/submitClaimantResponse';
+import {CallbackError} from 'client/common/error/callbackError';
+import {saveStatementOfTruth} from 'services/features/claimantResponse/checkAnswers/checkAnswersService';
 
 const request = require('supertest');
 const {app} = require('../../../../../main/app');
@@ -30,6 +33,11 @@ jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/services/features/claimantResponse/ccj/ccjCheckAnswersService');
 jest.mock('../../../../../main/services/features/claimantResponse/claimantResponseTasklistService/claimantResponseTasklistService');
+jest.mock('../../../../../main/services/features/claimantResponse/submitClaimantResponse');
+jest.mock('../../../../../main/services/features/claimantResponse/checkAnswers/checkAnswersService', () => ({
+  ...jest.requireActual('../../../../../main/services/features/claimantResponse/checkAnswers/checkAnswersService'),
+  saveStatementOfTruth: jest.fn(),
+}));
 
 jest.mock('modules/utilityService', () => ({
   getClaimById: jest.fn(),
@@ -50,6 +58,8 @@ mockOutstandingClaimantResponseTasks.mockImplementation(() => {
   const outstandingTaskList: Task[] = [];
   return outstandingTaskList;
 });
+const mockSubmitClaimantResponse = submitClaimantResponse as jest.Mock;
+const mockSaveStatementOfTruth = saveStatementOfTruth as jest.Mock;
 
 describe('Claimant Response - Check answers', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -172,6 +182,46 @@ describe('Claimant Response - Check answers', () => {
         .expect((res: Response) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
+        });
+    });
+
+    it('should re-render with GDS errors when submitClaimantResponse throws CallbackError with field errors', async () => {
+      (getClaimById as jest.Mock).mockClear();
+      app.locals.draftStoreClient = mockCivilClaimantIntention;
+      const claim = Object.assign(new Claim(), noRespondentTelephoneClaimantIntentionMock.case_data);
+      claim.claimantResponse.directionQuestionnaire = undefined;
+      (getClaimById as jest.Mock).mockResolvedValue(claim);
+      mockSaveStatementOfTruth.mockResolvedValue(undefined);
+      mockSubmitClaimantResponse.mockRejectedValue(new CallbackError(
+        [],
+        [],
+        [{id: 'applicant1.partyEmail', message: 'Enter a valid email'}],
+      ));
+      await request(app)
+        .post(CLAIMANT_RESPONSE_CHECK_ANSWERS_URL)
+        .send({isClaimantRejectedDefendantOffer: 'false', signed: 'true'})
+        .expect((res: Response) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Enter a valid email');
+        });
+    });
+
+    it('should return error page when submitClaimantResponse throws CallbackError with only callbackErrors', async () => {
+      (getClaimById as jest.Mock).mockClear();
+      app.locals.draftStoreClient = mockCivilClaimantIntention;
+      const claim = Object.assign(new Claim(), noRespondentTelephoneClaimantIntentionMock.case_data);
+      claim.claimantResponse.directionQuestionnaire = undefined;
+      (getClaimById as jest.Mock).mockResolvedValue(claim);
+      mockSaveStatementOfTruth.mockResolvedValue(undefined);
+      mockSubmitClaimantResponse.mockRejectedValue(new CallbackError([
+        'There is a technical issue causing a delay. You do not need to do anything. Please come back later.',
+      ]));
+      await request(app)
+        .post(CLAIMANT_RESPONSE_CHECK_ANSWERS_URL)
+        .send({isClaimantRejectedDefendantOffer: 'false', signed: 'true'})
+        .expect((res: Response) => {
+          expect(res.status).toBe(422);
+          expect(res.text).toContain('There is a technical issue causing a delay');
         });
     });
   });

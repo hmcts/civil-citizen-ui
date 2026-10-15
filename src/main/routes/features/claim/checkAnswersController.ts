@@ -26,6 +26,7 @@ import {CivilServiceClient} from 'client/civilServiceClient';
 import {saveClaimFee} from 'services/features/claim/amount/claimFeesService';
 import {calculateInterestToDate} from 'common/utils/interestUtils';
 import {clearRedisWorkingDraftForPayment} from 'routes/features/claim/payment/claimIssuePaymentDraftService';
+import {applyCcdFieldErrorsToForm, isCallbackFieldValidationError} from 'client/common/error/callbackError';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimCheckAnswersController');
@@ -108,11 +109,13 @@ claimCheckAnswersController.post(CLAIM_CHECK_ANSWERS_URL, async (req: AppRequest
     const interestToDate = await calculateInterestToDate(claim, req);
     const claimFeeData = await civilServiceClient.getClaimFeeData(claim.totalClaimAmount + interestToDate, req as AppRequest);
     await saveClaimFee(req as AppRequest, claimFeeData);
-    if (form.hasErrors() ) {
+    if (form.hasErrors()) {
       renderView(res, form, claim, userId, lang, isCarmEnabled);
       return;
-    } else {
-      await saveStatementOfTruth(req, form.model);
+    }
+
+    await saveStatementOfTruth(req, form.model);
+    try {
       const appReq = req as AppRequest;
       const submittedClaim = await submitClaim(appReq);
 
@@ -155,6 +158,13 @@ claimCheckAnswersController.post(CLAIM_CHECK_ANSWERS_URL, async (req: AppRequest
         res.clearCookie('eligibilityCompleted');
       }
       res.redirect(constructResponseUrlWithIdParams(submittedClaim.id, CLAIM_CONFIRMATION_URL));
+    } catch (error) {
+      if (isCallbackFieldValidationError(error)) {
+        applyCcdFieldErrorsToForm(form, error.fieldErrors);
+        renderView(res, form, claim, userId, lang, isCarmEnabled);
+        return;
+      }
+      next(error);
     }
   } catch (error) {
     next(error);

@@ -22,6 +22,8 @@ import {PartyType} from 'common/models/partyType';
 import {Email} from 'common/models/Email';
 import {DirectionQuestionnaire} from 'models/directionsQuestionnaire/directionQuestionnaire';
 import {Hearing} from 'models/directionsQuestionnaire/hearing/hearing';
+import {submitResponse} from 'services/features/response/submission/submitResponse';
+import {CallbackError} from 'client/common/error/callbackError';
 
 const request = require('supertest');
 const {app} = require('../../../../../main/app');
@@ -34,6 +36,7 @@ jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../main/modules/claimDetailsService');
 jest.mock('../../../../../main/services/features/response/checkAnswers/checkAnswersService');
+jest.mock('../../../../../main/services/features/response/submission/submitResponse');
 jest.mock('../../../../../main/services/features/common/responseDeadlineAgreedService');
 jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 jest.mock('../../../../../main/services/features/common/taskListService', () => ({
@@ -44,6 +47,7 @@ jest.mock('../../../../../main/services/features/common/taskListService', () => 
 const isPcqShutterOnMock = isPcqShutterOn as jest.Mock;
 const mockGetSummarySections = getSummarySections as jest.Mock;
 const mockSaveStatementOfTruth = saveStatementOfTruth as jest.Mock;
+const mockSubmitResponse = submitResponse as jest.Mock;
 const mockRejectingFullAmount = isFullAmountReject as jest.Mock;
 const mockSetResponseDeadline = setResponseDeadline as jest.Mock;
 mockRejectingFullAmount.mockImplementation(() => true);
@@ -199,6 +203,39 @@ describe('Response - Check answers', () => {
         .expect((res: Response) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
+        });
+    });
+
+    it('should re-render with GDS errors when submitResponse throws CallbackError with field errors', async () => {
+      mockGetSummarySections.mockImplementation(() => createClaimWithBasicRespondentDetails());
+      mockGetCaseDataFromDraftStore.mockResolvedValue(new Claim());
+      mockSaveStatementOfTruth.mockResolvedValue(undefined);
+      mockSubmitResponse.mockRejectedValue(new CallbackError(
+        [],
+        [],
+        [{id: 'respondent1.partyEmail', message: 'notanemail is not a valid Email address'}],
+      ));
+      await request(app)
+        .post(respondentCheckAnswersUrl)
+        .send({signed: 'true'})
+        .expect((res: Response) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('notanemail is not a valid Email address');
+        });
+    });
+
+    it('should return error page when submitResponse throws CallbackError with only callbackErrors', async () => {
+      mockGetCaseDataFromDraftStore.mockResolvedValue(new Claim());
+      mockSaveStatementOfTruth.mockResolvedValue(undefined);
+      mockSubmitResponse.mockRejectedValue(new CallbackError([
+        'There is a technical issue causing a delay. You do not need to do anything. Please come back later.',
+      ]));
+      await request(app)
+        .post(respondentCheckAnswersUrl)
+        .send({signed: 'true'})
+        .expect((res: Response) => {
+          expect(res.status).toBe(422);
+          expect(res.text).toContain('There is a technical issue causing a delay');
         });
     });
   });

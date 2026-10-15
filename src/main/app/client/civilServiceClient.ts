@@ -65,7 +65,7 @@ import {CCDGeneralApplication} from 'models/gaEvents/eventDto';
 import {roundOffTwoDecimals} from 'common/utils/dateUtils';
 import {syncCaseReferenceCookie} from 'modules/cookie/caseReferenceCookie';
 import {assertHasData, assertNonEmpty} from 'client/common/error/eventSubmissionError';
-import {CallbackError, CallbackErrorResponseBody, extractCallbackErrorMessages} from 'client/common/error/callbackError';
+import {CallbackError, CallbackErrorResponseBody, extractCallbackOnlyMessages, extractCcdFieldErrors} from 'client/common/error/callbackError';
 import {
   buildAuthenticatedConfig,
   buildAuthorizationOnlyConfig,
@@ -534,9 +534,10 @@ export class CivilServiceClient {
         // the message instead of a generic 500 page. Throwing here replaces the axios error
         // that executeRequest would otherwise re-throw.
         if (status === HTTP_STATUS_UNPROCESSABLE_ENTITY) {
-          const messages = extractCallbackErrorMessages(body);
-          if (messages.length) {
-            throw new CallbackError(messages, body?.callbackWarnings);
+          const callbackMessages = extractCallbackOnlyMessages(body);
+          const fieldErrors = extractCcdFieldErrors(body);
+          if (callbackMessages.length || fieldErrors.length) {
+            throw new CallbackError(callbackMessages, body?.callbackWarnings, fieldErrors);
           }
         }
       },
