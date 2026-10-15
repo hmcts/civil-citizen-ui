@@ -736,8 +736,9 @@ describe('Civil Service Client', () => {
       const mockPost = jest.fn().mockResolvedValue({data: mockResponse});
       mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
       const civilServiceClient = new CivilServiceClient(baseUrl);
+      const submissionId = 'user-1:aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee:2026-10-12T10:00:00Z';
       //When
-      const claim = await civilServiceClient.submitDraftClaim(claimUpdate, appReq);
+      const claim = await civilServiceClient.submitDraftClaim(claimUpdate, appReq, submissionId);
       //Then
       expect(mockedAxios.create).toHaveBeenCalledWith({
         baseURL: baseUrl,
@@ -745,6 +746,9 @@ describe('Civil Service Client', () => {
       expect(mockPost.mock.calls[0][0]).toEqual(CIVIL_SERVICE_SUBMIT_EVENT
         .replace(':submitterId', '1')
         .replace(':caseId', 'draft'));
+      expect(mockPost.mock.calls[0][1]).toEqual(expect.objectContaining({
+        submissionId,
+      }));
       expect(claim.issueDate).toEqual(date);
       expect(claim.respondent1ResponseDeadline).toEqual(date);
     });

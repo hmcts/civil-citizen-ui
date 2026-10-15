@@ -14,7 +14,9 @@ const createMockProvider = () => new Pact({
   host: '127.0.0.1',
 });
 
-const { like, iso8601DateTimeWithMillis } = Matchers;
+const { like, regex } = Matchers;
+
+const ISO_DATE_TIME_WITH_MILLIS = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}(?:Z|[+-]\d{2}:\d{2})$/;
 
 const CLAIM_REFERENCE = '1234567890123456';
 const FEE_TYPE = 'CLAIMISSUED';
@@ -90,7 +92,10 @@ describe('Civil Service fee payment contract', () => {
             paymentReference: like(PAYMENT_REFERENCE),
             status: 'Initiated',
             nextUrl: like('https://card.payments.service.gov.uk/secure/7b0716b2-40c4-413e-b62e-72c599c91960'),
-            dateCreated: iso8601DateTimeWithMillis('2023-11-27T13:15:06.313Z'),
+            dateCreated: regex({
+              matcher: ISO_DATE_TIME_WITH_MILLIS.source,
+              generate: '2023-11-27T13:15:06.313Z',
+            }),
           },
         },
       });
@@ -183,7 +188,10 @@ describe('Civil Service fee payment contract', () => {
             paymentReference: like(PAYMENT_REFERENCE),
             status: 'Initiated',
             nextUrl: like('https://card.payments.service.gov.uk/secure/7b0716b2-40c4-413e-b62e-72c599c91960'),
-            dateCreated: iso8601DateTimeWithMillis('2023-11-27T13:15:06.313Z'),
+            dateCreated: regex({
+              matcher: ISO_DATE_TIME_WITH_MILLIS.source,
+              generate: '2023-11-27T13:15:06.313Z',
+            }),
           },
         },
       });

@@ -452,8 +452,8 @@ export class CivilServiceClient {
     return this.submitEvent(CaseEvent.INFORM_AGREED_EXTENSION_DATE_SPEC, claimId, updatedClaim, req);
   }
 
-  async submitDraftClaim(updatedClaim: ClaimUpdate, req: AppRequest):  Promise<Claim> {
-    return this.submitEvent(CaseEvent.CREATE_LIP_CLAIM, 'draft', updatedClaim, req);
+  async submitDraftClaim(updatedClaim: ClaimUpdate, req: AppRequest, submissionId?: string):  Promise<Claim> {
+    return this.submitEvent(CaseEvent.CREATE_LIP_CLAIM, 'draft', updatedClaim, req, submissionId);
   }
 
   async submitClaimAfterPayment(claimId: RouteParam, claim: Claim, req: AppRequest):  Promise<Claim> {
@@ -509,12 +509,13 @@ export class CivilServiceClient {
     return this.submitEvent(CaseEvent.REQUEST_FOR_RECONSIDERATION, claimId, updatedClaim, req);
   }
 
-  async submitEvent(event: CaseEvent, claimId: RouteParam, updatedClaim?: ClaimUpdate, req?: AppRequest): Promise<Claim> {
+  async submitEvent(event: CaseEvent, claimId: RouteParam, updatedClaim?: ClaimUpdate, req?: AppRequest, submissionId?: string): Promise<Claim> {
     const normalizedClaimId = normalizeRouteParam(claimId);
     const userId = req.session?.user?.id;
     const data: EventDto = {
       event: event,
       caseDataUpdate: updatedClaim,
+      ...(submissionId ? {submissionId} : {}),
     };
     assertNonEmpty(userId, 'User id is undefined');
     assertNonEmpty(normalizedClaimId, 'Claim id is undefined');
