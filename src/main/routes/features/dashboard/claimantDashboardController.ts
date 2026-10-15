@@ -15,7 +15,7 @@ import {
 } from 'services/dashboard/dashboardService';
 import {Claim} from 'models/claim';
 import {CaseState} from 'common/form/models/claimDetails';
-import {getClaimById, getDashboardClaimById} from 'modules/utilityService';
+import {getDashboardClaimById} from 'modules/utilityService';
 import {AppRequest} from 'models/AppRequest';
 import {ClaimantOrDefendant} from 'models/partyType';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
@@ -44,6 +44,8 @@ import {
 } from 'services/features/cancelUnissuedClaim/cancelUnissuedClaimService';
 import {feesHelpUrl} from 'common/utils/externalURLs';
 import {iWantToLinks} from 'common/models/dashboard/iWantToLinks';
+import {getDraftClaim} from 'modules/draft-store/draftStoreManagerService';
+import {getTTLDaysForCategory, TTLCategory} from 'modules/draft-store/ttlConfig';
 
 const claimantDashboardViewPath = 'features/dashboard/claim-summary-redesign';
 const claimantDashboardController = Router();
@@ -64,7 +66,16 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
 
     if(claimId === 'draft') {
       caseRole = ClaimantOrDefendant.CLAIMANT;
-      claim = await getClaimById(userId, req, true);
+      const draftResult = await getDraftClaim(req);
+      claim = draftResult?.claimResponse?.case_data
+        ? Object.assign(new Claim(), draftResult.claimResponse.case_data)
+        : new Claim();
+      if (draftResult?.createdAt) {
+        claim.draftClaimCreatedAt = new Date(draftResult.createdAt);
+      }
+      if (draftResult?.expiresAt) {
+        claim.draftClaimCacheTtlDays = getTTLDaysForCategory(TTLCategory.DRAFT_CLAIM);
+      }
       dashboardId = userId;
     } else {
       claim = await getDashboardClaimById(claimId, req, true);
