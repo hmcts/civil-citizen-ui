@@ -167,14 +167,17 @@ describe('Claim Fee PaymentConfirmation Service', () => {
   it.each(['', '   ', 'undefined', 'null'])(
     'should not request payment status for unusable reference %p',
     async (paymentReference) => {
-      const claim = claimWithPaymentReference('RC-1701-0909-0602-0418');
+      const req = createReq();
+      const claim = createClaim();
       claim.claimDetails.claimFeePayment.paymentReference = paymentReference;
-      jest.spyOn(draftStoreService, 'getCaseDataFromStore').mockResolvedValueOnce(claim);
-      const getFeePaymentStatus = jest.spyOn(CivilServiceClient.prototype, 'getFeePaymentStatus');
-      getFeePaymentStatus.mockClear();
+      mockDraft(claim);
 
-      expect(await getRedirectUrl(claimId, mockedAppRequest)).toBe(PAY_CLAIM_FEE_UNSUCCESSFUL_URL);
-      expect(getFeePaymentStatus).not.toHaveBeenCalled();
+      expect(await getRedirectUrl(claimId, req)).toBe(PAY_CLAIM_FEE_UNSUCCESSFUL_URL);
+      expect(mockGetClaimIssuePaymentClaim).toHaveBeenCalledWith(req);
+      expect(mockGetFeePaymentStatus).not.toHaveBeenCalled();
+      expect(mockDeleteDraftClaim).not.toHaveBeenCalled();
+      expect(mockDeleteDraftClaimFromStore).not.toHaveBeenCalled();
+      expect(req.session.draftId).toBe(draftId);
     },
   );
 
