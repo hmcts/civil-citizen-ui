@@ -1,11 +1,7 @@
-import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
+import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {CLAIMANT_DOB_URL, CLAIMANT_PHONE_NUMBER_URL} from 'routes/urls';
 import {GenericForm} from 'form/models/genericForm';
-import {Claim} from 'models/claim';
-import {
-  getCaseDataFromStore,
-  saveDraftClaim,
-} from 'modules/draft-store/draftStoreService';
+import {getClaimantInformation, saveClaimantProperty} from 'services/features/claim/yourDetails/claimantDetailsService';
 import {AppRequest} from 'models/AppRequest';
 import {getDOBforAgeFromCurrentTime} from 'common/utils/dateUtils';
 import { DOBDate } from 'common/form/models/claim/claimant/dobDate';
@@ -29,10 +25,9 @@ function getDateOfBirth(dateOfBirth: unknown): Date | undefined {
 
 claimantDoBController.get(CLAIMANT_DOB_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const caseId = req.session?.user?.id;
-    const claim: Claim = await getCaseDataFromStore(caseId);
+    const claimant = await getClaimantInformation(req);
     let form = new GenericForm(new DOBDate());
-    const dateOfBirth = getDateOfBirth(claim.applicant1?.dateOfBirth);
+    const dateOfBirth = getDateOfBirth(claimant?.dateOfBirth);
     if (dateOfBirth) {
       form = new GenericForm(new DOBDate(dateOfBirth.getDate().toString(), (dateOfBirth.getMonth() + 1).toString(), dateOfBirth.getFullYear().toString()));
     }
@@ -42,9 +37,8 @@ claimantDoBController.get(CLAIMANT_DOB_URL, (async (req: AppRequest, res: Respon
   }
 }) as RequestHandler);
 
-claimantDoBController.post(CLAIMANT_DOB_URL, (async (req: AppRequest | Request, res: Response, next: NextFunction) => {
+claimantDoBController.post(CLAIMANT_DOB_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
-    const claimId = (<AppRequest>req).session.user?.id;
     const {year, month, day} = req.body;
     const form = new GenericForm(new DOBDate(day, month, year));
     form.validateSync();
@@ -52,9 +46,7 @@ claimantDoBController.post(CLAIMANT_DOB_URL, (async (req: AppRequest | Request, 
     if (form.hasErrors()) {
       res.render(claimantDoBViewPath, {form, today: new Date(), claimantView: true, maxDateForAge18: getDOBforAgeFromCurrentTime(18), pageTitle});
     } else {
-      const claim = await getCaseDataFromStore(claimId);
-      claim.applicant1.dateOfBirth = new DOBDate(day, month, year);
-      await saveDraftClaim(claimId, claim);
+      await saveClaimantProperty(req, 'dateOfBirth', new DOBDate(day, month, year));
       res.redirect(CLAIMANT_PHONE_NUMBER_URL);
     }
   } catch (error) {

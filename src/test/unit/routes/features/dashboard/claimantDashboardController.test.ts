@@ -34,8 +34,12 @@ import {ClaimBilingualLanguagePreference} from 'models/claimBilingualLanguagePre
 import * as ClaimDetailsService from 'modules/claimDetailsService';
 import {DashboardNotificationList} from 'models/dashboard/dashboardNotificationList';
 import {DashboardNotification} from 'models/dashboard/dashboardNotification';
+import {getDraftClaim} from 'modules/draft-store/draftStoreManagerService';
 
 jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
+jest.mock('modules/draft-store/draftStoreManagerService');
+
+const mockGetDraftClaim = getDraftClaim as jest.Mock;
 
 const isCarmEnabledForCaseMock = launchDarkly.isCarmEnabledForCase as jest.Mock;
 
@@ -173,10 +177,10 @@ describe('claimant Dashboard Controller', () => {
         .spyOn(ClaimDetailsService, 'getTotalAmountWithInterestAndFees')
         .mockResolvedValueOnce(10);
       jest.spyOn(launchDarkly, 'isJudgmentBufferEnabled').mockResolvedValue(false);
+      mockGetDraftClaim.mockResolvedValue(null);
     });
     it('should return claimant dashboard page when only draft', async () => {
 
-      jest.spyOn(UtilityService, 'getClaimById').mockReturnValueOnce(Promise.resolve(new Claim()));
       await request(app).get(DASHBOARD_CLAIMANT_URL.replace(':id', 'draft')).expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).not.toContain('Mr. Jan Clark v Version 1');
@@ -184,8 +188,6 @@ describe('claimant Dashboard Controller', () => {
       });
     });
     it('should return old claimant dashboard page', async () => {
-
-      jest.spyOn(UtilityService, 'getClaimById').mockReturnValueOnce(Promise.resolve(new Claim()));
 
       await request(app).get(DASHBOARD_CLAIMANT_URL.replace(':id', 'draft')).expect((res) => {
         expect(res.status).toBe(200);
@@ -701,9 +703,13 @@ describe('claimant Dashboard Controller', () => {
     });
 
     it('should suppress the generic draft notification when the draft expiry notification is shown', async () => {
-      const claim = new Claim();
-      claim.draftClaimCreatedAt = new Date('2026-08-17T08:51:21.000Z');
-      claim.draftClaimCacheTtlDays = 30;
+      jest.useFakeTimers({doNotFake: ['nextTick', 'setImmediate', 'setTimeout', 'setInterval', 'queueMicrotask']})
+        .setSystemTime(new Date('2026-09-01T10:00:00.000Z'));
+      mockGetDraftClaim.mockResolvedValueOnce({
+        createdAt: '2026-08-17T08:51:21.000Z',
+        expiresAt: '2026-09-16T08:51:21.000Z',
+        claimResponse: {case_data: {}},
+      });
 
       const dashboardNotifications = new DashboardNotificationList([
         new DashboardNotification(
@@ -732,7 +738,6 @@ describe('claimant Dashboard Controller', () => {
         ),
       ]);
 
-      jest.spyOn(UtilityService, 'getClaimById').mockResolvedValueOnce(claim);
       jest.spyOn(dashboardService, 'getNotifications').mockResolvedValueOnce(dashboardNotifications);
 
       const req: any = {
@@ -744,6 +749,7 @@ describe('claimant Dashboard Controller', () => {
       const res: any = {render: jest.fn()};
 
       await claimantDashboardHandler(req, res, jest.fn());
+      jest.useRealTimers();
 
       const renderedOptions = res.render.mock.calls[0][1];
       expect(renderedOptions.draftClaimDeletionDate).toBe('16 September 2026');
