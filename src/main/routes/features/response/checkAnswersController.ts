@@ -22,6 +22,7 @@ import {ValidationError, Validator} from 'class-validator';
 import {SpecificCourtLocation} from 'models/directionsQuestionnaire/hearing/specificCourtLocation';
 import {getRouteParam} from 'common/utils/routeParamUtils';
 import {validateOtherWitnesses} from 'services/features/directionsQuestionnaire/otherWitnessesService';
+import {applyCcdFieldErrorsToForm, isCallbackFieldValidationError} from 'client/common/error/callbackError';
 
 const checkAnswersViewPath = 'features/response/check-answers';
 const validator = new Validator();
@@ -78,13 +79,21 @@ checkAnswersController.post(RESPONSE_CHECK_ANSWERS_URL, (async (req: Request, re
       logger.info(`form has error -  ${claimId}`);
       renderView(req, res, form, claim);
       return;
-    } else {
-      logger.info('form has no error');
-      await saveStatementOfTruth(redisKey, form.model);
+    }
+    logger.info('form has no error');
+    await saveStatementOfTruth(redisKey, form.model);
+    try {
       await submitResponse(<AppRequest>req);
       await deleteDraftClaimFromStore(redisKey);
       const claimId = getRouteParam(req, 'id');
       res.redirect(constructResponseUrlWithIdParams(claimId, CONFIRMATION_URL));
+    } catch (error) {
+      if (isCallbackFieldValidationError(error)) {
+        applyCcdFieldErrorsToForm(form, error.fieldErrors);
+        renderView(req, res, form, claim);
+        return;
+      }
+      throw error;
     }
   } catch (error) {
     logger.error(`Error when posting check your answers -  ${error.message}`);
