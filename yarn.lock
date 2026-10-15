@@ -5830,7 +5830,7 @@ __metadata:
     stylelint-config-standard-scss: "npm:^13.1.0"
     supertest: "npm:^7.1.4"
     supertest-session: "npm:^4.1.0"
-    totp-generator: "npm:^0.0.14"
+    totp-generator: "npm:^2.0.0"
     ts-jest: "npm:^29.3.2"
     ts-loader: "npm:^9.4.2"
     ts-node: "npm:^10.9.1"
@@ -10136,7 +10136,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jssha@npm:^3.1.2":
+"jssha@npm:^3.3.1":
   version: 3.3.2
   resolution: "jssha@npm:3.3.2"
   checksum: 10/8731aacb3c3e64d96b1375596e88ef2de94e298c121963f0e7b949a419ac452b01451b4f64269a91bf1f4b27131a977ce96e8dc7c2b4a3099e16dc5a9d640b4f
@@ -14511,12 +14511,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"totp-generator@npm:^0.0.14":
-  version: 0.0.14
-  resolution: "totp-generator@npm:0.0.14"
+"totp-generator@npm:^2.0.0":
+  version: 2.0.1
+  resolution: "totp-generator@npm:2.0.1"
   dependencies:
-    jssha: "npm:^3.1.2"
-  checksum: 10/4906712f3b5b8ae2ad1d0d7d95944b5746e6987f6657ed23314242dff0e5ed9c8b44db693539b33f86e93f28c31456125c4b405233b4ac443234bd4635dee243
+    jssha: "npm:^3.3.1"
+  checksum: 10/4f2eb67c3c3a04493638fbf12a977aad53833071cd3ebe0e6796592865c0428393d70325727b5afe2f45398df89c17f41e9a62d43311d662e8a9b7a35616a2f3
   languageName: node
   linkType: hard
 
