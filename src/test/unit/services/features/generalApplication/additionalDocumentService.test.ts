@@ -5,7 +5,7 @@ import { Claim } from 'common/models/claim';
 import { CaseDocument } from 'common/models/document/caseDocument';
 import { GeneralApplication } from 'common/models/generalApplication/GeneralApplication';
 import { UploadAdditionalDocument } from 'common/models/generalApplication/UploadAdditionalDocument';
-import { summaryRow } from 'common/models/summaryList/summaryList';
+import { summaryRowWithTextValue } from 'common/models/summaryList/summaryList';
 import { constructResponseUrlWithIdAndAppIdParams } from 'common/utils/urlFormatter';
 import { generateRedisKey, saveDraftClaim } from 'modules/draft-store/draftStoreService';
 import { getClaimById } from 'modules/utilityService';
@@ -125,8 +125,8 @@ describe('Additional Documents Service', () => {
       const result = getSummaryList(additionalDocumentsList, claimId, gaId, undefined);
 
       expect(result.summaryList.rows).toHaveLength(4);
-      expect(result.summaryList.rows[0]).toEqual(summaryRow('PAGES.UPLOAD_DOCUMENTS.TYPE_OF_DOCUMENT', 'Type1'));
-      expect(result.summaryList.rows[1]).toEqual(summaryRow('Document1', '', `${constructResponseUrlWithIdAndAppIdParams(claimId, gaId,GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL)}?indexId=1`, 'Remove document'));
+      expect(result.summaryList.rows[0]).toEqual(summaryRowWithTextValue('PAGES.UPLOAD_DOCUMENTS.TYPE_OF_DOCUMENT', 'Type1'));
+      expect(result.summaryList.rows[1]).toEqual(summaryRowWithTextValue('Document1', '', `${constructResponseUrlWithIdAndAppIdParams(claimId, gaId,GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL)}?indexId=1`, 'Remove document'));
     });
   });
 

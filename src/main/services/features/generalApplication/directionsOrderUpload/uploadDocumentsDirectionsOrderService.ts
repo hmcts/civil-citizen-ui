@@ -1,7 +1,7 @@
 import {SummarySection} from 'models/summaryList/summarySections';
 import {UploadGAFiles} from 'models/generalApplication/uploadGAFiles';
 import {t} from 'i18next';
-import {SummaryRow, summaryRow} from 'models/summaryList/summaryList';
+import {SummaryRow, summaryRow, summaryRowHtml} from 'models/summaryList/summaryList';
 import {
   CASE_DOCUMENT_VIEW_URL,
   GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_URL,
@@ -13,6 +13,7 @@ import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
 import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
 import {documentIdExtractor} from 'common/utils/stringUtils';
 import {getGADocumentsFromDraftStore} from 'modules/draft-store/draftGADocumentService';
+import {escapeHtml} from 'common/utils/escapeHtml';
 
 export const getDirectionOrderDocumentUrl = (claimId: string, applicationResponse: ApplicationResponse): string => {
   const directionOrderDocument = applicationResponse?.case_data?.directionOrderDocument;
@@ -36,10 +37,10 @@ export const buildSummarySection = (uploadDocumentsList: UploadGAFiles[], claimI
   const changeLabel = (): string => t('COMMON.BUTTONS.CHANGE', {lng});
   rowValue = '<ul class="no-list-style">';
   uploadDocumentsList.forEach(doc => {
-    rowValue += `<li>${doc.caseDocument.documentName}</li>`;
+    rowValue += `<li>${escapeHtml(doc.caseDocument.documentName)}</li>`;
   });
   rowValue += '</ul>';
-  rows.push(summaryRow(t('PAGES.GENERAL_APPLICATION.UPLOAD_MORE_INFO_DOCUMENTS.UPLOAD_DOC_CYA_TITLE', {lng}), rowValue , constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_URL), changeLabel()));
+  rows.push(summaryRowHtml(t('PAGES.GENERAL_APPLICATION.UPLOAD_MORE_INFO_DOCUMENTS.UPLOAD_DOC_CYA_TITLE', {lng}), rowValue , constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_URL), changeLabel()));
   return rows;
 };
 
