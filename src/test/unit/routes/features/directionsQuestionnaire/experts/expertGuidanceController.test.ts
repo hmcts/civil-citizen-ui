@@ -1,43 +1,58 @@
-import request from 'supertest';
-import {app} from '../../../../../../main/app';
-import nock from 'nock';
-import config from 'config';
-import {EXPERT_GUIDANCE_URL, PERMISSION_FOR_EXPERT_URL} from 'routes/urls';
-import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
+import {Response} from 'express';
+import expertGuidanceController from '../../../../../../main/routes/features/directionsQuestionnaire/experts/expertGuidanceController';
+import {PERMISSION_FOR_EXPERT_URL} from 'routes/urls';
+import {Claim} from 'models/claim';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {createMockResponse, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../../main/modules/oidc');
+jest.mock('modules/draft-store/draftStoreService');
 
 describe('Using an expert in small claims', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
+  const getHandler = getRouteHandler(expertGuidanceController, 'get');
+  const postHandler = getRouteHandler(expertGuidanceController, 'post');
+  const viewPath = 'features/directionsQuestionnaire/experts/expert-guidance';
+  const claimId = '12345';
+  let req: {params: {id: string}; body: Record<string, unknown>};
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
+  const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
 
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
+  beforeEach(() => {
+    req = {params: {id: claimId}, body: {}};
+    res = createMockResponse();
+    next = jest.fn();
+    (draftStoreService.generateRedisKey as jest.Mock).mockReturnValue(claimId);
+    mockGetCaseData.mockResolvedValue(new Claim());
+    (draftStoreService.saveDraftClaim as jest.Mock).mockResolvedValue(undefined);
   });
 
   describe('on GET', () => {
-    it('should return Using an expert in small claims page', async () => {
-      await request(app)
-        .get(EXPERT_GUIDANCE_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.EXPERT_GUIDANCE_TITLE);
-        });
+    it('should render the expert guidance page', async () => {
+      await getHandler(req as never, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        pageTitle: 'PAGES.EXPERT_GUIDANCE.PAGE_TITLE',
+      }));
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.not.objectContaining({form: expect.anything()}));
+      expect(next).not.toHaveBeenCalled();
+    });
+
+    it('should call next when loading the claim fails', async () => {
+      const error = new Error('redis failure');
+      mockGetCaseData.mockRejectedValue(error);
+
+      await getHandler(req as never, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 
   describe('on POST', () => {
-    it('should redirect to Permission for expert page', async () => {
-      await request(app)
-        .post(EXPERT_GUIDANCE_URL)
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(PERMISSION_FOR_EXPERT_URL);
-        });
+    it('should redirect to the permission for expert page', async () => {
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, PERMISSION_FOR_EXPERT_URL));
     });
   });
 });
