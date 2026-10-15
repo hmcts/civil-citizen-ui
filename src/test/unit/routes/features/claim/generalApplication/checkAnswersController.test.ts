@@ -27,6 +27,7 @@ import { YesNo } from 'form/models/yesNo';
 import {Party} from 'models/party';
 import {PartyType} from 'models/partyType';
 import {CaseRole} from 'form/models/caseRoles';
+import {CallbackError} from 'client/common/error/callbackError';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
@@ -217,6 +218,38 @@ describe('General Application - Check your answers', () => {
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
+        });
+    });
+
+    it('should re-render with GDS errors when submitApplication throws CallbackError with field errors', async () => {
+      mockGetCaseData.mockImplementation(async () => mockClaim);
+      mockSaveCaseData.mockResolvedValue(undefined);
+      mockSubmitApplication.mockRejectedValue(new CallbackError(
+        [],
+        [],
+        [{id: 'generalAppType', message: 'Enter a valid application type'}],
+      ));
+      await request(app)
+        .post(GA_CHECK_ANSWERS_URL)
+        .send({signed: 'yes', name: 'Mr Applicant'})
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Enter a valid application type');
+        });
+    });
+
+    it('should return error page when submitApplication throws CallbackError with only callbackErrors', async () => {
+      mockGetCaseData.mockImplementation(async () => mockClaim);
+      mockSaveCaseData.mockResolvedValue(undefined);
+      mockSubmitApplication.mockRejectedValue(new CallbackError([
+        'There is a technical issue causing a delay. You do not need to do anything. Please come back later.',
+      ]));
+      await request(app)
+        .post(GA_CHECK_ANSWERS_URL)
+        .send({signed: 'yes', name: 'Mr Applicant'})
+        .expect((res) => {
+          expect(res.status).toBe(422);
+          expect(res.text).toContain('There is a technical issue causing a delay');
         });
     });
   });

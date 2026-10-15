@@ -1,4 +1,6 @@
 import {HTTPError} from '../../../../HttpError';
+import {GenericForm} from 'common/form/models/genericForm';
+import {FormValidationError} from 'common/form/validationErrors/formValidationError';
 
 /**
  * Shape of the structured body civil-service returns (from DTSCCI-5282) when a
@@ -20,6 +22,10 @@ export interface CallbackErrorResponseBody {
   };
 }
 
+export interface CcdFieldError {
+  id: string;
+  message: string;
+}
 /**
  * Pull the user-actionable messages out of either envelope a 422 can use:
  * the `callbackErrors` array and/or the CCD `details.field_errors` messages.
@@ -35,6 +41,20 @@ export function extractCallbackErrorMessages(body?: CallbackErrorResponseBody): 
   return [...callbackErrors, ...fieldErrors];
 }
 
+export function extractCallbackOnlyMessages(body?: CallbackErrorResponseBody): string[] {
+  return body?.callbackErrors ?? [];
+}
+
+export function extractCcdFieldErrors(body?: CallbackErrorResponseBody): CcdFieldError[] {
+  if (!body?.details?.field_errors?.length) {
+    return [];
+  }
+  return body.details.field_errors
+    .filter((fe): fe is {id: string; message: string} =>
+      typeof fe?.id === 'string' && fe.id.length > 0
+    && typeof fe?.message === 'string' && fe.message.length > 0)
+    .map(fe => ({id: fe.id, message: fe.message}));
+}
 /**
  * Raised when civil-service returns a 422 with callback errors for a citizen
  * event. Carries the user-actionable messages so they can be surfaced instead
@@ -43,12 +63,31 @@ export function extractCallbackErrorMessages(body?: CallbackErrorResponseBody): 
 export class CallbackError extends HTTPError {
   callbackErrors: string[];
   callbackWarnings: string[];
+  fieldErrors: CcdFieldError[];
 
-  constructor(callbackErrors: string[], callbackWarnings: string[] = []) {
-    super(callbackErrors?.[0] ?? 'Unprocessable Entity');
+  constructor(callbackErrors: string[], callbackWarnings: string[] = [], fieldErrors: CcdFieldError[] = []) {
+    super(callbackErrors?.[0] ?? fieldErrors?.[0]?.message?? 'Unprocessable Entity');
     this.name = 'CallbackError';
     this.status = 422;
     this.callbackErrors = callbackErrors ?? [];
     this.callbackWarnings = callbackWarnings ?? [];
+    this.fieldErrors = fieldErrors ?? [];
   }
+  hasFieldErrors(): boolean {
+    return this.fieldErrors.length > 0;
+  }
+}
+
+export function applyCcdFieldErrorsToForm<T>(form: GenericForm<T>, fieldErrors: CcdFieldError[]): void {
+  form.errors = form.errors ?? [];
+  for (const fieldError of fieldErrors) {
+    form.errors.push(new FormValidationError({
+      property: fieldError.id,
+      constraints: {ccdFieldError: fieldError.message},
+    }));
+  }
+}
+
+export function isCallbackFieldValidationError(error: unknown): error is CallbackError {
+  return error instanceof CallbackError && error.hasFieldErrors();
 }
