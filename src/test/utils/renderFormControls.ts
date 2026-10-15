@@ -66,7 +66,8 @@ export function formControlContext(view: string, language = 'en', state: FormCon
   const form = formControlForm(model, state === 'error' ? {[field]: isDate ? 'ERRORS.VALID_DAY' : 'ERRORS.VALID_YES_NO_OPTION'} : {});
   const titleKey = view.includes('subject-to-frc') ? 'PAGES.SUBJECT_TO_FRC.TITLE' : view.includes('frc-band-agreed') ? 'PAGES.FRC_BAND_AGREED.TITLE' : view.includes('expert-evidence') ? 'PAGES.DEFENDANT_EXPERT_EVIDENCE.TITLE' : view.includes('request-extra') ? 'PAGES.REQUEST_EXTRA_4WEEKS.PAGE_TITLE' : 'PAGES.ADMISSION_PAYMENT_DATE.TITLE';
   const content = (text: string) => [{type: ClaimSummaryType.MAINTITLE, data: {text}}];
-  return {t, lang: language, form, csrf: 'fixture-csrf', pageTitle: titleKey, title: view.includes('request-extra') || view.includes('expert-evidence') ? t(titleKey) : titleKey,
+  return {t, lang: language, form, csrf: 'fixture-csrf', pageTitle: titleKey,
+    ...(view.includes('request-extra') ? {} : {title: view.includes('expert-evidence') ? t(titleKey) : titleKey}),
     buttonTitle: titleKey.replace(/TITLE$/, 'BUTTON_TITLE'), componentText: 'PAGES.CONSIDER_CLAIMANT_DOCUMENTS.TITLE', nextMonth: new Date(2027, 5, 12), today: new Date(2026, 9, 14), maxDateForAge18: new Date(2008, 9, 14),
     claimantView: false, claimStatus: CaseState.AWAITING_APPLICANT_INTENTION, respondentTelNumber: '07700900123', isPaidInFull: false, admittedAmount: '125.00', paidAmount: '25.00',
     caption: 'COMMON.GENERAL_APPLICATION', applicationType: 'COMMON.GENERAL_APPLICATION', cancelUrl: '/cancel', data: {claimant: 'Alex', defendant: 'Morgan', agreementText: 'Pay in full', completionDateText: '12 June 2027'},
