@@ -1,6 +1,6 @@
 import {SummarySection, summarySection} from 'models/summaryList/summarySections';
 import {Claim} from 'models/claim';
-import {summaryRow, summaryRowHtml} from 'models/summaryList/summaryList';
+import {summaryRow} from 'models/summaryList/summaryList';
 import {t} from 'i18next';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {getLng} from 'common/utils/languageToggleUtils';
@@ -15,7 +15,6 @@ import {
 } from 'routes/urls';
 import {YesNo } from 'form/models/yesNo';
 import {getListOfUnavailableDate} from 'services/features/directionsQuestionnaire/hearing/unavailableDatesCalculation';
-import {escapeHtml} from 'common/utils/escapeHtml';
 const changeLabel = (lang: string ): string => t('COMMON.BUTTONS.CHANGE', {lng: getLng(lang)});
 
 export const buildMediationSection = (claim: Claim, claimId: string, lang: string , isClaimantResponse: boolean): SummarySection => {
@@ -82,19 +81,23 @@ export const buildMediationSection = (claim: Claim, claimId: string, lang: strin
       constructResponseUrlWithIdParams(claimId, MEDIATION_ALTERNATIVE_EMAIL_URL), changeLabel(lang)));
   }
   //UNAVAILABILITY SECTION
-  const hasUnavailabilityOption = isClaimantResponse ? claim.claimantResponse.mediationCarm.hasUnavailabilityNextThreeMonths.option : claim.mediationCarm.hasUnavailabilityNextThreeMonths.option;
-  mediationSection.summaryList.rows.push(summaryRow(t('PAGES.UNAVAILABILITY_NEXT_THREE_MONTHS_MEDIATION_CONFIRMATION.PAGE_TEXT', {lng: getLng(lang)}),
-    t(`COMMON.VARIATION.${hasUnavailabilityOption.toUpperCase()}`, {lng: getLng(lang)}),
-    constructResponseUrlWithIdParams(claimId, MEDIATION_NEXT_3_MONTHS_URL), changeLabel(lang)));
-  if (hasUnavailabilityOption === YesNo.YES) {
-    const hasUnavailableDatesMediation = isClaimantResponse ? getListOfUnavailableDate(claim.claimantResponse.mediationCarm.unavailableDatesForMediation, getLng(lang)) : getListOfUnavailableDate(claim.mediationCarm.unavailableDatesForMediation, getLng(lang));
-    mediationSection.summaryList.rows.push(summaryRowHtml(
-      t('COMMON.UNAVAILABLE_DATES', {lng: getLng(lang)}),
-      ` ${[...hasUnavailableDatesMediation].map(escapeHtml).join('<br>')}`,
-      constructResponseUrlWithIdParams(claimId, MEDIATION_UNAVAILABLE_SELECT_DATES_URL),
-      changeLabel(lang),
-    ));
+  const mediationCarm = isClaimantResponse ? claim.claimantResponse.mediationCarm : claim.mediationCarm;
+  const hasUnavailabilityOption = mediationCarm.hasUnavailabilityNextThreeMonths?.option;
+  if (hasUnavailabilityOption) {
+    mediationSection.summaryList.rows.push(summaryRow(t('PAGES.UNAVAILABILITY_NEXT_THREE_MONTHS_MEDIATION_CONFIRMATION.PAGE_TEXT', {lng: getLng(lang)}),
+      t(`COMMON.VARIATION.${hasUnavailabilityOption.toUpperCase()}`, {lng: getLng(lang)}),
+      constructResponseUrlWithIdParams(claimId, MEDIATION_NEXT_3_MONTHS_URL), changeLabel(lang)));
+    if (hasUnavailabilityOption === YesNo.YES) {
+      const hasUnavailableDatesMediation = getListOfUnavailableDate(mediationCarm.unavailableDatesForMediation, getLng(lang));
+      mediationSection.summaryList.rows.push(summaryRow(
+        t('COMMON.UNAVAILABLE_DATES', {lng: getLng(lang)}),
+        ` ${[...hasUnavailableDatesMediation].join('<br>')}`,
+        constructResponseUrlWithIdParams(claimId, MEDIATION_UNAVAILABLE_SELECT_DATES_URL),
+        changeLabel(lang),
+      ));
+    }
   }
 
   return mediationSection;
 };
+
