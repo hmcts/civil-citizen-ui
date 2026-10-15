@@ -279,7 +279,6 @@ withPipeline(type, product, component) {
 
   onPR {
     enablePactAs([AppPipelineDsl.PactRoles.CONSUMER])
-    env.STASH_DIAGNOSTICS = 'true'
     env.ENVIRONMENT = "preview"
     env.A11Y_CHUNKS=4
     env.NODE_OPTIONS= "--max-old-space-size=8192"
