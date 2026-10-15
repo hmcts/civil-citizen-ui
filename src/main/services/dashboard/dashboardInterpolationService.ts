@@ -201,9 +201,10 @@ export const populateDashboardValues = async (claim: Claim, claimId: string, ful
       .replace(':notificationId', notificationId)
       .replace(':documentId', extractedDocumentId));
 
-    valuesMap.set('{VIEW_DECISION_RECONSIDERATION}', replaceId(DASHBOARD_NOTIFICATION_REDIRECT, claimId)
+    valuesMap.set('{VIEW_DECISION_RECONSIDERATION}', replaceId(DASHBOARD_NOTIFICATION_REDIRECT_DOCUMENT, claimId)
       .replace(':locationName', 'VIEW_DECISION_RECONSIDERATION')
-      .replace(':notificationId', notificationId));
+      .replace(':notificationId', notificationId)
+      .replace(':documentId', extractedDocumentId));
 
     valuesMap.set('{QM_VIEW_MESSAGES_URL_CLICK}', replaceId(DASHBOARD_NOTIFICATION_REDIRECT, claimId)
       .replace(':locationName', 'QM_VIEW_MESSAGES_URL_CLICK')
