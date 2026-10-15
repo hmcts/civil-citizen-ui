@@ -3,9 +3,17 @@ import {NextFunction} from 'express';
 process.env.NODE_ENV = 'test';
 import '../../setup/testSetup';
 
-jest.mock('../../../main/modules/draft-store/draftStoreService', () => ({
-  ...jest.requireActual('../../setup/sharedMocks').draftStoreServiceMock,
-  createDraftClaimInStoreWithExpiryTime: jest.fn().mockResolvedValue(undefined),
+jest.mock('../../../main/modules/draft-store/draftStoreService', () =>
+  jest.requireActual('../../setup/sharedMocks').draftStoreServiceMock,
+);
+
+jest.mock('../../../main/modules/draft-store/draftStoreDbService', () => ({
+  ...jest.requireActual('../../../main/modules/draft-store/draftStoreDbService'),
+  getActiveDraftFromDraftStoreDb: jest.fn().mockResolvedValue(null),
+  getDraftForCaseFromDraftStoreDb: jest.fn().mockResolvedValue(null),
+  createOrLoadDraftClaimInDraftStoreDb: jest.fn(),
+  updateDraftClaimInStore: jest.fn(),
+  applyPaymentRetentionInDraftStoreDb: jest.fn(),
   deleteDraftClaimFromStore: jest.fn().mockResolvedValue(undefined),
 }));
 
@@ -29,17 +37,27 @@ import {
   CLAIMANT_TASK_LIST_URL,
 } from '../../../main/routes/urls';
 import {civilServiceClientMock, draftStoreServiceMock} from '../../setup/sharedMocks';
+import {getActiveDraftFromDraftStoreDb} from '../../../main/modules/draft-store/draftStoreDbService';
 import {asUser, installSessionUserInjector} from '../../setup/sessionHelper';
 import {Claim} from '../../../main/common/models/claim';
 import {Party} from '../../../main/common/models/party';
 import {PartyType} from '../../../main/common/models/partyType';
 import {PartyDetails} from '../../../main/common/form/models/partyDetails';
 
+const mockGetActiveDraftFromDb = getActiveDraftFromDraftStoreDb as jest.MockedFunction<
+  typeof getActiveDraftFromDraftStoreDb
+>;
+
 const USER_ID = 'claim-issue-user';
 const SUBMITTED_CLAIM_ID = '1111222233334444';
 const ELIGIBILITY_COOKIE = 'eligibilityCompleted=true';
 
 const withUser = (userId = USER_ID): Record<string, string> => asUser(userId);
+
+const asStoredDraft = (claim: Claim) => ({
+  id: 'draft-123',
+  case_data: claim,
+});
 
 const buildDraftClaim = (): Claim => {
   const claim = new Claim();
@@ -80,7 +98,9 @@ describe('Integration: claim-issue journey', () => {
 
   beforeEach(() => {
     draftStoreServiceMock.getCaseDataFromStore.mockResolvedValue(buildDraftClaim());
+    draftStoreServiceMock.getDraftClaimFromStore.mockResolvedValue(asStoredDraft(buildDraftClaim()));
     draftStoreServiceMock.saveDraftClaim.mockResolvedValue(undefined);
+    mockGetActiveDraftFromDb.mockResolvedValue(null);
     (civilServiceClientMock as unknown as {createDashboard: jest.Mock}).createDashboard =
       jest.fn().mockResolvedValue(undefined);
     civilServiceClientMock.retrieveClaimDetails.mockResolvedValue(buildSubmittedClaim());
@@ -99,6 +119,7 @@ describe('Integration: claim-issue journey', () => {
 
   it('redirects to eligibility when there is no draft claim and no eligibility cookie', async () => {
     draftStoreServiceMock.getCaseDataFromStore.mockResolvedValue(new Claim());
+    draftStoreServiceMock.getDraftClaimFromStore.mockResolvedValue({id: 'draft-123'});
 
     const response = await request(app)
       .get(CLAIMANT_TASK_LIST_URL)
