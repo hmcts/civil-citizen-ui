@@ -1,4 +1,6 @@
 import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {AppRequest} from 'models/AppRequest';
+import {getDraftClaim, updateDraftClaim} from 'modules/draft-store/draftStoreManagerService';
 import {Claim} from 'common/models/claim';
 import {GenericYesNo} from 'common/form/models/genericYesNo';
 import {ClaimBilingualLanguagePreference} from 'common/models/claimBilingualLanguagePreference';
@@ -34,11 +36,19 @@ const saveBilingualLangPreference = async (claimId: RouteParam, form: GenericYes
   }
 };
 
-const saveClaimantBilingualLangPreference = async (userId: string, form: GenericYesNo) => {
+const saveClaimantBilingualLangPreference = async (req: AppRequest, form: GenericYesNo) => {
   try {
-    const claim = await getCaseDataFromStore(userId);
+    const draftResult = await getDraftClaim(req);
+    if (!draftResult) {
+      throw new Error('[bilingualLangPreferenceService] no draft claim found');
+    }
+    const claim = Object.assign(new Claim(), draftResult.claimResponse?.case_data as unknown as Claim);
+    const draftId = req.session?.draftId || draftResult.rawResponse?.draftId;
     claim.claimantBilingualLanguagePreference = await getSelectedLanguage(form.option);
-    await saveDraftClaim(userId, claim, false, userId);
+    if (draftResult.createdAt && !claim.draftClaimCreatedAt) {
+      claim.draftClaimCreatedAt = new Date(draftResult.createdAt);
+    }
+    await updateDraftClaim(req, claim, draftId);
   } catch (error) {
     logger.error(error);
     throw error;
