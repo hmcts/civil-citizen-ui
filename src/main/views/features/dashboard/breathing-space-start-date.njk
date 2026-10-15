@@ -1,0 +1,79 @@
+{% extends "claim-details-tpl-dashboard.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/date-input/macro.njk" import govukDateInput %}
+{% from "../../macro/csrf.njk" import csrfProtection %}
+{% from "../../macro/heading-with-caption.njk" import headingWithCaption %}
+{% from "../../macro/cancelLink.njk" import cancelLink %}
+{% from "../../macro/error-summary.njk" import errorSummary %}
+
+{% block pageTitle %}
+  {{ setPageTitle(t, pageTitle) }}
+{% endblock %}
+
+{% block nestedContent %}
+  {% set errors = form.getAllErrors() %}
+  {% set hasDateError = form.hasFieldError('date') or form.hasFieldError('day') or form.hasFieldError('month') or form.hasFieldError('year') %}
+  {% set dateError = form.errorFor('date') or form.errorFor('day') or form.errorFor('month') or form.errorFor('year') %}
+
+  {% if form.hasErrors() %}
+    {{ errorSummary(errors, t) }}
+  {% endif %}
+
+  {{ headingWithCaption(t, 'PAGES.BREATHING_SPACE_ENTRY.PAGE_TITLE', 'PAGES.BREATHING_SPACE_ENTRY.START_DATE.HEADING') }}
+
+  {% if isMentalHealth %}
+    <p class="govuk-body">{{ t('PAGES.BREATHING_SPACE_ENTRY.START_DATE.INTRO_MENTAL_HEALTH') }}</p>
+    <p class="govuk-body">{{ t('PAGES.BREATHING_SPACE_ENTRY.START_DATE.INTRO_MENTAL_HEALTH_REMAIN') }}</p>
+  {% else %}
+    <p class="govuk-body">{{ t('PAGES.BREATHING_SPACE_ENTRY.START_DATE.INTRO_STANDARD') }}</p>
+  {% endif %}
+
+  <form method="post" novalidate>
+    {{ csrfProtection(csrf) }}
+
+    {{ govukDateInput({
+      id: 'startDate',
+      fieldset: {
+        legend: {
+          text: t('PAGES.BREATHING_SPACE_ENTRY.START_DATE.DATE_LABEL'),
+          classes: 'govuk-fieldset__legend--m'
+        }
+      },
+      hint: {
+        html: t('PAGES.BREATHING_SPACE_ENTRY.START_DATE.DATE_HINT') + '<br>' + t('COMMON.DATE_EXAMPLE', {
+          date: today.getDate() + ' ' + (today.getMonth() + 1) + ' ' + today.getFullYear()
+        })
+      },
+      errorMessage: {
+        text: t(dateError)
+      } if hasDateError,
+      items: [
+        {
+          classes: 'govuk-input--width-2 govuk-input--error' if form.hasFieldError('day') or form.hasFieldError('date') else 'govuk-input--width-2',
+          name: 'day',
+          label: t('COMMON.DAY'),
+          value: form.model.day
+        },
+        {
+          classes: 'govuk-input--width-2 govuk-input--error' if form.hasFieldError('month') or form.hasFieldError('date') else 'govuk-input--width-2',
+          name: 'month',
+          label: t('COMMON.MONTH'),
+          value: form.model.month
+        },
+        {
+          classes: 'govuk-input--width-4 govuk-input--error' if form.hasFieldError('year') or form.hasFieldError('date') else 'govuk-input--width-4',
+          name: 'year',
+          label: t('COMMON.YEAR'),
+          value: form.model.year
+        }
+      ]
+    }) }}
+
+    <div class="govuk-button-group">
+      {{ govukButton({
+        text: t('COMMON.BUTTONS.CONTINUE')
+      }) }}
+      {{ cancelLink(cancelUrl, t) }}
+    </div>
+  </form>
+{% endblock %}

@@ -3,42 +3,24 @@ import {
   applyingToCourtAsCreditor,
   bsCreditorsResponsibilities,
   bsGuidanceForCreditors,
-  findCourtTribunalUrl,
 } from 'common/utils/externalURLs';
 import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
 
-export const getBSGuidanceContent = (lng: string, qmContactLink: string, isQMLipEnabled = false) => {
-  const howToContactSection = t('PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.HOW_TO_CONTACT_PARA3', { lng });
+export const getBSGuidanceContent = (lng: string, entryUrl: string, _qmContactLink: string, _isQMLipEnabled = false) => {
   const bsGuidanceScheme = t('PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.MORE_INFO_PARA2', {lng});
-  const linkForContactYourLocalCourt = `<a href="${findCourtTribunalUrl}" target="_blank">${t('PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.CONTACT_LOCAL_COURT_LINK', { lng })}</a>`;
   const linkBSGuidanceForCreditors = `<a href="${bsGuidanceForCreditors}" target="_blank">${t('PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.DEBT_RESPITE_GUIDANCE_SCHEME_LINK', { lng })}</a>`;
-  const mailTo = 'mailto:contactocmc@justice.gov.uk';
   const content =  new PageSectionBuilder()
     .addTitle('PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.PAGE_TITLE')
     .addParagraph('PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.SUMMARY')
-    .addTitle('PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.WHAT_NEXT')
     .addParagraph('PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.WHAT_NEXT_PARAGRAPH_1')
     .addParagraph('PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.WHAT_NEXT_PARAGRAPH_2')
-    .addParagraph('PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.WHAT_NEXT_PARAGRAPH_3')
-    .addRawHtml(`<ul class="govuk-list govuk-list--bullet">
-              <li>${t('PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.REASON_1', { lng })}</li>
-              <li>${t('PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.REASON_2', { lng })}</li>
-              <li>${t('PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.REASON_3', { lng })}</li>
-              <li>${t('PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.REASON_4', { lng })}</li>
-            </ul>`)
-    .addParagraph('PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.WHAT_NEXT_PARAGRAPH_4')
-    .addTitle('PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.HOW_TO_CONTACT')
-    .addParagraph('PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.HOW_TO_CONTACT_PARA1');
-  if (isQMLipEnabled) {
-    content.addFullStopLink('COMMON.QM_INFORMATION_LINK', qmContactLink, 'COMMON.QM_INFORMATION_MESSAGES_DOCUMENTS');
-  } else {
-    content.addLink('PAGES.LATEST_UPDATE_CONTENT.EMAIL_ID', mailTo, 'PAGES.LATEST_UPDATE_CONTENT.EMAIL');
-  }
-  content.addParagraph('PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.POST')
-    .addRawHtml(`<p class="govuk-body">${howToContactSection.replace('LINK_TO_CONTACT_YOUR_LOCAL_COURT', linkForContactYourLocalCourt)}</p>`)
+    .addStartButton('PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.ENTER_BREATHING_SPACE_DETAILS', entryUrl)
     .addTitle('PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.WHAT_HAPPENS_DURING_BS')
     .addParagraph('PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.WHAT_HAPPENS_DURING_BS_PARA1')
     .addParagraph('PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.WHAT_HAPPENS_DURING_BS_PARA2')
+    .addTitle('PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.WHEN_BS_ENDS')
+    .addParagraph('PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.WHEN_BS_ENDS_PARA1')
+    .addParagraph('PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.WHEN_BS_ENDS_PARA2')
     .addTitle('PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.MORE_INFO')
     .addParagraph('PAGES.INFORM_THE_COURT_OF_A_BREATHING_SPACE.MORE_INFO_PARA1')
     .addRawHtml(`<p class="govuk-body">${bsGuidanceScheme.replace('DEBT_RESPITE_GUIDANCE_SCHEME_LINK', linkBSGuidanceForCreditors)}</p>`);
