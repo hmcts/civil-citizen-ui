@@ -26,7 +26,8 @@ const buildDocumentLinksElement = (caseDocuments: CaseDocument[], claimId: strin
   const links = normaliseCaseDocuments(caseDocuments)
     .filter((caseDocument) => caseDocument?.documentLink?.document_binary_url)
     .map((caseDocument) => formatDocumentViewURL(caseDocument.documentName, claimId, caseDocument.documentLink.document_binary_url));
-  return {title: documentUploaded(lang), value: links.join('</br>')};
+  // Each link is built by formatDocumentViewURL, which escapes the file name and URL
+  return {title: documentUploaded(lang), html: links.join('</br>')};
 };
 
 const MEDIATION_PAGE = 'PAGES.MEDIATION.UPLOAD_DOCUMENTS.';
@@ -70,10 +71,6 @@ const getMediationDocumentReferredSummaryRows = (title: string, nameStatement: s
       value: getDate(document.dateInputFields.date.toString()),
     };
     const documentElement = buildDocumentLinksElement(document.caseDocuments, claimId, lang);
-    const documentElement = {
-      title: documentUploaded(lang),
-      html: formatDocumentViewURL(document.caseDocument.documentName, claimId, document.caseDocument.documentLink.document_binary_url),
-    };
 
     let sectionTitle = t(title, {lng: getLng(lang)});
     sectionTitle = documents.length > 1 ? sectionTitle + ' ' + index : sectionTitle;
@@ -101,10 +98,7 @@ const getMediationYourNameSummaryRows = (title: string, nameStatement: string, d
       title: t(dateTitle, {lng: getLng(lang)}),
       value: getDate(document.dateInputFields.date.toString()),
     };
-    const documentElement = {
-      title: documentUploaded(lang),
-      value: formatDocumentViewURL(document.caseDocument.documentName, claimId, document.caseDocument.documentLink.document_binary_url),
-    };
+    const documentElement = buildDocumentLinksElement(document.caseDocuments, claimId, lang);
 
     let sectionTitle = t(title, {lng: getLng(lang)});
     sectionTitle = documents.length > 1 ? sectionTitle + ' ' + index : sectionTitle;

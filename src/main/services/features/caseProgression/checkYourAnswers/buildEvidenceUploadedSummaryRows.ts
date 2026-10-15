@@ -36,7 +36,8 @@ const buildDocumentLinksElement = (caseDocuments: CaseDocument[], claimId: strin
   const links = normaliseCaseDocuments(caseDocuments)
     .filter((caseDocument) => caseDocument?.documentLink?.document_binary_url)
     .map((caseDocument) => formatDocumentViewURL(caseDocument.documentName, claimId, caseDocument.documentLink.document_binary_url));
-  return {title: documentUploaded(lang), value: links.join('</br>')};
+  // Each link is built by formatDocumentViewURL, which escapes the file name and URL
+  return {title: documentUploaded(lang), html: links.join('</br>')};
 };
 
 export const getWitnessSummarySection = (uploadedDocuments: UploadDocumentsUserForm, claimId: string, lang: string ): SummarySections => {
@@ -199,7 +200,7 @@ const getWitnessSummaryRows = (title: string, dateTitle: string,  documents: Wit
       title: t(dateTitle, {lng: getLng(lang)}),
       value: getDate(document.dateInputFields.date.toString()),
     };
-    const documentElement = {title: documentUploaded(lang), value: formatDocumentViewURL(document.caseDocument.documentName, claimId, document.caseDocument.documentLink.document_binary_url)};
+    const documentElement = buildDocumentLinksElement(document.caseDocuments, claimId, lang);
 
     let sectionTitle = t(title, { lng: getLng(lang) });
     sectionTitle = documents.length > 1 ? sectionTitle +' '+ index : sectionTitle;
@@ -227,7 +228,7 @@ const getExpertSummaryRows = (title: string, expertTitle: string, dateTitle: str
       title: t(dateTitle, {lng: getLng(lang)}),
       value: getDate(document.dateInputFields.date.toString()),
     };
-    const documentElement = {title: documentUploaded(lang), value: formatDocumentViewURL(document.caseDocument.documentName, claimId, document.caseDocument.documentLink.document_binary_url)};
+    const documentElement = buildDocumentLinksElement(document.caseDocuments, claimId, lang);
 
     let sectionTitle = t(title, { lng: getLng(lang) });
     sectionTitle = documents.length > 1 ? sectionTitle +' '+ index : sectionTitle;
@@ -251,7 +252,7 @@ const getDocumentTypeSummaryRows = (title: string, documents: TypeOfDocumentSect
 
     const typeOfDocumentElement = {title: t('PAGES.UPLOAD_DOCUMENTS.TYPE_OF_DOCUMENT', {lng: getLng(lang)}), value: document.typeOfDocument};
     const dateElement = {title: t('PAGES.UPLOAD_DOCUMENTS.DOCUMENT_ISSUE_DATE', {lng: getLng(lang)}), value: getDate(document.dateInputFields.date.toString())};
-    const documentElement = {title: documentUploaded(lang), value: formatDocumentViewURL(document.caseDocument.documentName, claimId, document.caseDocument.documentLink.document_binary_url)};
+    const documentElement = buildDocumentLinksElement(document.caseDocuments, claimId, lang);
 
     let sectionTitle = t(title, { lng: getLng(lang) });
     sectionTitle = documents.length > 1 ? sectionTitle +' '+ index : sectionTitle;
@@ -282,7 +283,7 @@ const getDocumentReferredToSummaryRows = (title: string, documents: ReferredToIn
     const witnessNameElement = {title: t('PAGES.UPLOAD_DOCUMENTS.WITNESS.WITNESS_NAME', {lng: getLng(lang)}), value: document.witnessName};
     const typeOfDocumentElement = {title: t('PAGES.UPLOAD_DOCUMENTS.TYPE_OF_DOCUMENT', {lng: getLng(lang)}), value: document.typeOfDocument};
     const dateElement = {title: t('PAGES.UPLOAD_DOCUMENTS.DOCUMENT_ISSUE_DATE', {lng: getLng(lang)}), value: getDate(document.dateInputFields.date.toString())};
-    const documentElement = {title: documentUploaded(lang), value: formatDocumentViewURL(document.caseDocument.documentName, claimId, document.caseDocument.documentLink.document_binary_url)};
+    const documentElement = buildDocumentLinksElement(document.caseDocuments, claimId, lang);
 
     let sectionTitle = t(title, { lng: getLng(lang) });
     sectionTitle = documents.length > 1 ? sectionTitle +' '+ index : sectionTitle;
@@ -303,7 +304,7 @@ const getFileOnlySummaryRow = (title: string, documents: FileOnlySection[], summ
     const uploadDocumentsHref = constructResponseUrlWithIdParams(claimId, CP_UPLOAD_DOCUMENTS_URL);
     let fileOnlySummaryRow = {} as SummaryRow;
 
-    const documentUploadedElement = {title: documentUploaded(lang), value: formatDocumentViewURL(document.caseDocument.documentName, claimId, document.caseDocument.documentLink.document_binary_url)};
+    const documentUploadedElement = buildDocumentLinksElement(document.caseDocuments, claimId, lang);
 
     let sectionTitle = t(title, { lng: getLng(lang) });
     sectionTitle = documents.length > 1 ? sectionTitle +' '+ index : sectionTitle;
@@ -328,7 +329,7 @@ const getExpertOtherPartySummaryRows = (title: string, otherPartyTitle: string, 
     const expertNameElement: TitledSummaryRowElement = {title: t('PAGES.UPLOAD_DOCUMENTS.EXPERT.EXPERT_NAME', { lng: getLng(lang) }), value: document.expertName};
     const otherPartyElement: TitledSummaryRowElement = {title: t('PAGES.UPLOAD_DOCUMENTS.EXPERT.OTHER_PARTY_NAME', { lng: getLng(lang) }), value: document.otherPartyName};
     const otherPartyDocumentElement: TitledSummaryRowElement = {title: t(otherPartyTitle, {lng: getLng(lang)}), value: otherPartyDocumentName};
-    const documentUploadedElement: TitledSummaryRowElement = {title:documentUploaded(lang), value: formatDocumentViewURL(document.caseDocument.documentName, claimId, document.caseDocument.documentLink.document_binary_url)};
+    const documentUploadedElement = buildDocumentLinksElement(document.caseDocuments, claimId, lang);
 
     let sectionTitle = t(title, { lng: getLng(lang) });
     sectionTitle = documents.length > 1 ? sectionTitle +' '+ index : sectionTitle;
