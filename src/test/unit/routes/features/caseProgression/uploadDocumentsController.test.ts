@@ -208,7 +208,7 @@ describe('on POST', () => {
   uploadDocumentsUserForm.documentsForDisclosure[0].dateInputFields.dateDay = '';
   uploadDocumentsUserForm.documentsForDisclosure[0].dateInputFields.dateMonth = '';
   uploadDocumentsUserForm.documentsForDisclosure[0].dateInputFields.dateMonth = '';
-  uploadDocumentsUserForm.documentsForDisclosure[0].caseDocument = undefined;
+  uploadDocumentsUserForm.documentsForDisclosure[0].caseDocuments = [];
   uploadDocumentsUserForm.documentsForDisclosure[0].fileUpload = undefined;
 
   beforeEach(() => {
@@ -487,13 +487,13 @@ describe('on POST', () => {
     uploadDocumentsUserForm.documentsForDisclosure[0].dateInputFields.dateDay = '14';
     uploadDocumentsUserForm.documentsForDisclosure[0].dateInputFields.dateMonth = '10';
     uploadDocumentsUserForm.documentsForDisclosure[0].dateInputFields.dateYear = '2020';
-    uploadDocumentsUserForm.documentsForDisclosure[0].caseDocument = caseDoc;
+    uploadDocumentsUserForm.documentsForDisclosure[0].caseDocuments = [caseDoc];
 
     uploadDocumentsUserForm.answersForExperts = [new ExpertSection()];
     uploadDocumentsUserForm.answersForExperts[0].fileUpload = undefined;
 
     uploadDocumentsUserForm.disclosureList = [new FileOnlySection()];
-    uploadDocumentsUserForm.disclosureList[0].caseDocument = caseDoc;
+    uploadDocumentsUserForm.disclosureList[0].caseDocuments = [caseDoc];
 
     uploadDocumentsUserForm.witnessStatement[0].witnessName = 'witness Name';
     uploadDocumentsUserForm.witnessStatement[0].fileUpload = fileUpload;
@@ -515,7 +515,7 @@ describe('on POST', () => {
     uploadDocumentsUserForm.noticeOfIntention[0].dateInputFields.dateDay = '12';
     uploadDocumentsUserForm.noticeOfIntention[0].dateInputFields.dateMonth = '11';
     uploadDocumentsUserForm.noticeOfIntention[0].dateInputFields.dateYear = '2020';
-    uploadDocumentsUserForm.noticeOfIntention[0].caseDocument = caseDoc;
+    uploadDocumentsUserForm.noticeOfIntention[0].caseDocuments = [caseDoc];
 
     uploadDocumentsUserForm.documentsReferred = [new ReferredToInTheStatementSection()];
     uploadDocumentsUserForm.documentsReferred[0].witnessName = 'witness Name 3';
@@ -525,7 +525,7 @@ describe('on POST', () => {
     uploadDocumentsUserForm.documentsReferred[0].dateInputFields.dateDay = '13';
     uploadDocumentsUserForm.documentsReferred[0].dateInputFields.dateMonth = '11';
     uploadDocumentsUserForm.documentsReferred[0].dateInputFields.dateYear = '2020';
-    uploadDocumentsUserForm.documentsReferred[0].caseDocument = caseDoc;
+    uploadDocumentsUserForm.documentsReferred[0].caseDocuments = [caseDoc];
 
     uploadDocumentsUserForm.expertReport[0].expertName = 'expert Name';
     uploadDocumentsUserForm.expertReport[0].fieldOfExpertise = 'field Of Expertise';
@@ -535,7 +535,7 @@ describe('on POST', () => {
     uploadDocumentsUserForm.expertReport[0].dateInputFields.dateDay = '11';
     uploadDocumentsUserForm.expertReport[0].dateInputFields.dateMonth = '12';
     uploadDocumentsUserForm.expertReport[0].dateInputFields.dateYear = '2020';
-    uploadDocumentsUserForm.expertReport[0].caseDocument = caseDoc;
+    uploadDocumentsUserForm.expertReport[0].caseDocuments = [caseDoc];
 
     uploadDocumentsUserForm.questionsForExperts = [new ExpertSection()];
     uploadDocumentsUserForm.questionsForExperts[0].expertName = 'expert Name 1';
@@ -546,7 +546,7 @@ describe('on POST', () => {
     uploadDocumentsUserForm.questionsForExperts[0].dateInputFields.dateDay = '10';
     uploadDocumentsUserForm.questionsForExperts[0].dateInputFields.dateMonth = '10';
     uploadDocumentsUserForm.questionsForExperts[0].dateInputFields.dateYear = '2020';
-    uploadDocumentsUserForm.questionsForExperts[0].caseDocument = caseDoc;
+    uploadDocumentsUserForm.questionsForExperts[0].caseDocuments = [caseDoc];
 
     uploadDocumentsUserForm.expertStatement = [new ExpertSection()];
     uploadDocumentsUserForm.expertStatement[0].expertName = 'John Dhoe';
@@ -558,7 +558,7 @@ describe('on POST', () => {
     uploadDocumentsUserForm.expertStatement[0].dateInputFields.dateDay = '14';
     uploadDocumentsUserForm.expertStatement[0].dateInputFields.dateMonth = '10';
     uploadDocumentsUserForm.expertStatement[0].dateInputFields.dateYear = '2020';
-    uploadDocumentsUserForm.expertStatement[0].caseDocument = caseDoc;
+    uploadDocumentsUserForm.expertStatement[0].caseDocuments = [caseDoc];
 
     uploadDocumentsUserForm.answersForExperts = [new ExpertSection()];
     uploadDocumentsUserForm.answersForExperts[0].expertName = 'expert Name 2';
@@ -569,19 +569,19 @@ describe('on POST', () => {
     uploadDocumentsUserForm.answersForExperts[0].dateInputFields.dateDay = '14';
     uploadDocumentsUserForm.answersForExperts[0].dateInputFields.dateMonth = '10';
     uploadDocumentsUserForm.answersForExperts[0].dateInputFields.dateYear = '2020';
-    uploadDocumentsUserForm.answersForExperts[0].caseDocument = caseDoc;
+    uploadDocumentsUserForm.answersForExperts[0].caseDocuments = [caseDoc];
 
     uploadDocumentsUserForm.trialCaseSummary = [new FileOnlySection()];
-    uploadDocumentsUserForm.trialCaseSummary[0].caseDocument = caseDoc;
+    uploadDocumentsUserForm.trialCaseSummary[0].caseDocuments = [caseDoc];
 
     uploadDocumentsUserForm.trialSkeletonArgument = [new FileOnlySection()];
-    uploadDocumentsUserForm.trialSkeletonArgument[0].caseDocument = caseDoc;
+    uploadDocumentsUserForm.trialSkeletonArgument[0].caseDocuments = [caseDoc];
 
     uploadDocumentsUserForm.trialAuthorities = [new FileOnlySection()];
-    uploadDocumentsUserForm.trialAuthorities[0].caseDocument = caseDoc;
+    uploadDocumentsUserForm.trialAuthorities[0].caseDocuments = [caseDoc];
 
     uploadDocumentsUserForm.trialCosts = [new FileOnlySection()];
-    uploadDocumentsUserForm.trialCosts[0].caseDocument = caseDoc;
+    uploadDocumentsUserForm.trialCosts[0].caseDocuments = [caseDoc];
 
     uploadDocumentsUserForm.trialDocumentary = [new TypeOfDocumentSection()];
     uploadDocumentsUserForm.trialDocumentary[0].typeOfDocument = 'Word';
@@ -589,7 +589,7 @@ describe('on POST', () => {
     uploadDocumentsUserForm.trialDocumentary[0].dateInputFields.dateDay = '14';
     uploadDocumentsUserForm.trialDocumentary[0].dateInputFields.dateMonth = '11';
     uploadDocumentsUserForm.trialDocumentary[0].dateInputFields.dateYear = '2020';
-    uploadDocumentsUserForm.trialDocumentary[0].caseDocument = caseDoc;
+    uploadDocumentsUserForm.trialDocumentary[0].caseDocuments = [caseDoc];
 
     (saveCaseProgression as jest.Mock).mockResolvedValue(true);
     (getUploadDocumentsForm as jest.Mock).mockReturnValue(uploadDocumentsUserForm);
@@ -959,9 +959,9 @@ describe('on POST', () => {
       new FileOnlySection(),
     ];
 
-    formWithMultipleDocs.trialAuthorities[0].caseDocument = { documentName: 'Doc 1' } as CaseDocument;
-    formWithMultipleDocs.trialAuthorities[1].caseDocument = { documentName: 'Doc 2' } as CaseDocument;
-    formWithMultipleDocs.trialAuthorities[2].caseDocument = { documentName: 'Doc 3' } as CaseDocument;
+    formWithMultipleDocs.trialAuthorities[0].caseDocuments = [{ documentName: 'Doc 1' } as CaseDocument];
+    formWithMultipleDocs.trialAuthorities[1].caseDocuments = [{ documentName: 'Doc 2' } as CaseDocument];
+    formWithMultipleDocs.trialAuthorities[2].caseDocuments = [{ documentName: 'Doc 3' } as CaseDocument];
 
     (getUploadDocumentsForm as jest.Mock).mockReturnValue(formWithMultipleDocs);
     (saveCaseProgression as jest.Mock).mockResolvedValue(true);
@@ -975,9 +975,9 @@ describe('on POST', () => {
     expect(response.status).toBe(200);
     expect(formWithMultipleDocs.trialAuthorities).toHaveLength(2);
 
-    expect(formWithMultipleDocs.trialAuthorities[0].caseDocument.documentName).toBe('Doc 1');
-    expect(formWithMultipleDocs.trialAuthorities[1].caseDocument.documentName).toBe('Doc 3');
-    expect(formWithMultipleDocs.trialAuthorities.some(d => d.caseDocument?.documentName === 'Doc 2')).toBe(false);
+    expect(formWithMultipleDocs.trialAuthorities[0].caseDocuments[0].documentName).toBe('Doc 1');
+    expect(formWithMultipleDocs.trialAuthorities[1].caseDocuments[0].documentName).toBe('Doc 3');
+    expect(formWithMultipleDocs.trialAuthorities.some(d => d.caseDocuments?.[0]?.documentName === 'Doc 2')).toBe(false);
   });
 
   it('should handle add another action and render page', async () => {
@@ -1020,7 +1020,7 @@ describe('on POST', () => {
     validForm.documentsForDisclosure[0].dateInputFields.dateMonth = '10';
     validForm.documentsForDisclosure[0].dateInputFields.dateYear = '2020';
     validForm.documentsForDisclosure[0].dateInputFields.date = new Date(2020, 9, 10);
-    validForm.documentsForDisclosure[0].caseDocument = caseDoc;
+    validForm.documentsForDisclosure[0].caseDocuments = [caseDoc];
 
     (getUploadDocumentsForm as jest.Mock).mockReturnValue(validForm);
     (saveCaseProgression as jest.Mock).mockResolvedValue(true);

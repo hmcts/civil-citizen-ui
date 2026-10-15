@@ -9,6 +9,8 @@ import './assets/js/conditionally-hide-add-button';
 import './assets/js/select-toggle';
 import './assets/js/reindex-add-another-actions';
 import './assets/js/language-toggle';
+import './assets/js/auto-upload-file';
+import './assets/js/add-file-slot';
 import { initAll as initGovukFrontend } from 'govuk-frontend';
 import { initAll as initMojFrontend } from '@ministryofjustice/frontend';
 import './modules/cookie/cookieConfig';
