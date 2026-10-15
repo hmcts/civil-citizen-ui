@@ -74,6 +74,34 @@ describe('testing of caseProgressionHearingFee class', ()=> {
   });
 });
 
+describe('testing of caseProgressionHearing class with missing values', () => {
+  const caseProgressionHearing = new CaseProgressionHearing();
+
+  it('should return empty string for hearing time when not set', () => {
+    expect(caseProgressionHearing.getHearingTimeHourMinuteFormatted()).toBe('');
+  });
+
+  it('should return empty string for hearing date when not set', () => {
+    expect(caseProgressionHearing.getHearingDateFormatted('en')).toBe('');
+  });
+
+  it('should return empty string for court name when location value not set', () => {
+    expect(new HearingLocation().getCourtName()).toBe('');
+  });
+});
+
+describe('testing of caseProgressionHearingFee class with missing values', () => {
+  const hearingFeeInformation = new HearingFeeInformation();
+
+  it('should return undefined for hearing fee when not set', () => {
+    expect(hearingFeeInformation.getHearingFeeFormatted()).toBeUndefined();
+  });
+
+  it('should return undefined for hearing due date when not set', () => {
+    expect(hearingFeeInformation.getHearingDueDateFormatted('en')).toBeUndefined();
+  });
+});
+
 describe('CaseProgressionHearing', () => {
   it.each(Object.values(HearingDuration))('should getHearingDurationFormatted returns correct information for %s', (duration) => {
     // Given
