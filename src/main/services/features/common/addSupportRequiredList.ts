@@ -5,9 +5,10 @@ import {SUPPORT_REQUIRED_URL} from 'routes/urls';
 import {YesNo, YesNoUpperCase} from 'form/models/yesNo';
 import {t} from 'i18next';
 import {changeLabel} from 'common/utils/checkYourAnswer/changeButton';
-import {summaryRow} from 'models/summaryList/summaryList';
+import {summaryRow, summaryRowHtml} from 'models/summaryList/summaryList';
 import {DirectionQuestionnaire} from 'models/directionsQuestionnaire/directionQuestionnaire';
 import {SupportRequired} from 'models/directionsQuestionnaire/supportRequired';
+import {escapeHtml} from 'common/utils/escapeHtml';
 
 export const addSupportRequiredListCommon = (claim: Claim, hearingRequirementsSection: SummarySection, claimId: string, lng: string,directionQuestionnaire:DirectionQuestionnaire) => {
   const supportRequiredHref = constructResponseUrlWithIdParams(claimId, SUPPORT_REQUIRED_URL);
@@ -21,7 +22,7 @@ export const addSupportRequiredListCommon = (claim: Claim, hearingRequirementsSe
       const person = `${t('PAGES.SUPPORT_REQUIRED.PERSON_TEXT', {lng})} ${row}`;
       hearingRequirementsSection.summaryList.rows.push(summaryRow(person));
       hearingRequirementsSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.SUPPORT_REQUIRED_NAME', {lng}), item.fullName, supportRequiredHref, changeLabel(lng), person));
-      hearingRequirementsSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.SUPPORT_REQUIRED_DETAILS', {lng}), generateSupportDetails(item, lng), supportRequiredHref, changeLabel(lng), person));
+      hearingRequirementsSection.summaryList.rows.push(summaryRowHtml(t('PAGES.CHECK_YOUR_ANSWER.SUPPORT_REQUIRED_DETAILS', {lng}), generateSupportDetails(item, lng), supportRequiredHref, changeLabel(lng), person));
     });
   } else {
     hearingRequirementsSection.summaryList.rows.push(
@@ -46,5 +47,5 @@ export const generateSupportDetails = (item: SupportRequired, lng: string) => {
   if (item.otherSupport?.selected) {
     supportDetails.push(t('PAGES.CHECK_YOUR_ANSWER.EVIDENCE_OTHER', {lng}) + ` : ${item.otherSupport.content}`);
   }
-  return supportDetails.join('<br>');
+  return supportDetails.map(escapeHtml).join('<br>');
 };
