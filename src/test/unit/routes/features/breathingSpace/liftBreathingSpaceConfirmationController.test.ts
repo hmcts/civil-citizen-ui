@@ -6,7 +6,9 @@ import {LIFT_BREATHING_SPACE_CONFIRMATION_URL} from '../../../../../main/routes/
 import {getClaimById} from '../../../../../main/modules/utilityService';
 import {Claim} from '../../../../../main/common/models/claim';
 import {BreathingSpaceEnterInfo} from '../../../../../main/common/models/breathingSpace/breathingSpaceEnterInfo';
+import {BreathingSpaceLiftInfo} from '../../../../../main/common/models/breathingSpace/breathingSpaceLiftInfo';
 import {BreathingSpaceType} from '../../../../../main/common/models/breathingSpace/breathingSpaceType';
+import {formatDateToFullDate} from '../../../../../main/common/utils/dateUtils';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
@@ -53,6 +55,55 @@ describe('Lift Breathing Space Confirmation Controller', () => {
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain('Mental health breathing space lifted');
+        });
+    });
+
+    it('should keep the current confirmation when the end date is today', async () => {
+      const claim = new Claim();
+      claim.enterBreathing = new BreathingSpaceEnterInfo(BreathingSpaceType.STANDARD);
+      claim.liftBreathing = new BreathingSpaceLiftInfo(new Date());
+      mockGetClaimById.mockResolvedValue(claim);
+
+      await request(app)
+        .get(LIFT_BREATHING_SPACE_CONFIRMATION_URL.replace(':id', '123'))
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Standard breathing space lifted');
+          expect(res.text).toContain('We have sent you a confirmation email.');
+          expect(res.text).not.toContain('will lift on');
+        });
+    });
+
+    it('should show a future standard breathing space lift date', async () => {
+      const futureEnd = new Date(2099, 8, 10);
+      const claim = new Claim();
+      claim.enterBreathing = new BreathingSpaceEnterInfo(BreathingSpaceType.STANDARD);
+      claim.liftBreathing = new BreathingSpaceLiftInfo(futureEnd);
+      mockGetClaimById.mockResolvedValue(claim);
+
+      await request(app)
+        .get(LIFT_BREATHING_SPACE_CONFIRMATION_URL.replace(':id', '123'))
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(`Standard breathing space will lift on ${formatDateToFullDate(futureEnd, 'en')}`);
+          expect(res.text).toContain('We will send you an email to confirm when breathing space has ended');
+          expect(res.text).not.toContain('We have sent you a confirmation email.');
+        });
+    });
+
+    it('should show a future mental health breathing space lift date in Welsh', async () => {
+      const futureEnd = new Date(2099, 8, 10);
+      const claim = new Claim();
+      claim.enterBreathing = new BreathingSpaceEnterInfo(BreathingSpaceType.MENTAL_HEALTH);
+      claim.breathingSpace = {liftBreathing: {expectedEnd: '2099-09-10'}};
+      mockGetClaimById.mockResolvedValue(claim);
+
+      await request(app)
+        .get(`${LIFT_BREATHING_SPACE_CONFIRMATION_URL.replace(':id', '123')}?lang=cy`)
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(`Bydd lle i anadlu Iechyd Meddwl yn codi ar ${formatDateToFullDate(futureEnd, 'cy')}`);
+          expect(res.text).toContain('Byddwn yn anfon e-bost atoch i gadarnhau pryd fydd y lle i anadlu wedi dod i ben');
         });
     });
   });

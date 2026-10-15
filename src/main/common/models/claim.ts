@@ -10,7 +10,7 @@ import {ClaimantEvidence, DefendantEvidence} from './evidence/evidence';
 import {Mediation} from './mediation/mediation';
 import {RejectAllOfClaim} from 'form/models/rejectAllOfClaim';
 import {TimeLineOfEvents} from './timelineOfEvents/timeLineOfEvents';
-import {convertDateToLuxonDate, currentDateTime, isPastDeadline} from '../utils/dateUtils';
+import {convertDateToLuxonDate, currentDateTime, isDateAfterToday, isPastDeadline} from '../utils/dateUtils';
 import {StatementOfTruthForm} from 'form/models/statementOfTruth/statementOfTruthForm';
 import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
 import {
@@ -1132,8 +1132,15 @@ export class Claim {
     this.respondent1Represented === YesNoUpperCamelCase.YES;
   }
 
+  hasFutureDatedBreathingSpaceExit(): boolean {
+    return isDateAfterToday(this.liftBreathing?.expectedEnd);
+  }
+
   hasBreathingSpace(): boolean {
-    return this.enterBreathing && !this.liftBreathing;
+    if (!this.enterBreathing) {
+      return false;
+    }
+    return !this.liftBreathing || this.hasFutureDatedBreathingSpaceExit();
   }
 
   isStandardBreathingSpace(): boolean {

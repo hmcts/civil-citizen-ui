@@ -83,6 +83,28 @@ describe('Claim breathing space helpers', () => {
     claim.liftBreathing = new BreathingSpaceLiftInfo(new Date('2024-03-15'));
 
     expect(claim.hasBreathingSpace()).toBe(false);
+    expect(claim.hasFutureDatedBreathingSpaceExit()).toBe(false);
     expect(claim.isStandardBreathingSpace()).toBe(false);
+  });
+
+  it('should keep breathing space active when the exit date is after today', () => {
+    const claim = new Claim();
+    const futureEnd = new Date();
+    futureEnd.setDate(futureEnd.getDate() + 30);
+    claim.enterBreathing = new BreathingSpaceEnterInfo(BreathingSpaceType.STANDARD);
+    claim.liftBreathing = new BreathingSpaceLiftInfo(futureEnd);
+
+    expect(claim.hasFutureDatedBreathingSpaceExit()).toBe(true);
+    expect(claim.hasBreathingSpace()).toBe(true);
+    expect(claim.isStandardBreathingSpace()).toBe(true);
+  });
+
+  it('should treat an exit dated today as already lifted', () => {
+    const claim = new Claim();
+    claim.enterBreathing = new BreathingSpaceEnterInfo(BreathingSpaceType.MENTAL_HEALTH);
+    claim.liftBreathing = new BreathingSpaceLiftInfo(new Date());
+
+    expect(claim.hasFutureDatedBreathingSpaceExit()).toBe(false);
+    expect(claim.hasBreathingSpace()).toBe(false);
   });
 });
