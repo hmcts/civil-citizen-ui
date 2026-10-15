@@ -52,6 +52,23 @@ describe('Cirizen Details Section', () => {
     expect(summarySections.summaryList.rows[3].value.html).toBe('Test street<br>N1<br>London<br>123');
   });
 
+  it('should escape address text while retaining line breaks', async () => {
+    const claim = createClaimWithApplicantIndividualDetails();
+    claim.applicant1.partyDetails.primaryAddress = new Address(
+      '<strong>King\'s Road</strong>',
+      'Smith & Sons',
+      null,
+      'London',
+      'N1 1AA',
+    );
+
+    const summarySections = await buildYourDetailsSection(claim, CLAIM_ID, 'en');
+
+    expect(summarySections.summaryList.rows[1].value.html).toBe(
+      '&lt;strong&gt;King&#039;s Road&lt;/strong&gt;<br>Smith &amp; Sons<br>London<br>N1 1AA',
+    );
+  });
+
   it('should return your details summary sections', async () => {
     //When
     const summarySections = await getSummarySections(CLAIM_ID, claim, 'cimode');
