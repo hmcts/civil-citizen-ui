@@ -22,7 +22,7 @@
       {% endif %}
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
-          <div data-module="moj-add-another">
+          <div>
             <form method="post" novalidate>
               {{ csrfProtection(csrf) }}
             {% call govukFieldset({
@@ -34,26 +34,30 @@
             }) %}
               {% set courtOrdersHtml %}
                 <div
-                  class="govuk-form-group {% if atLeastOneCourtOrderError %} govuk-form-group--error {% endif %}">
+                  class="govuk-form-group {% if atLeastOneCourtOrderError %} govuk-form-group--error {% endif %}"
+                  id="rows" tabindex="-1" data-module="cui-add-another" data-max-items="10">
                   {% if atLeastOneCourtOrderError %}
-                    <p class="govuk-error-message">
+                    <p class="govuk-error-message" id="rows-error">
                       <span class="govuk-visually-hidden">{{ t('ERRORS.ERROR') }} :</span> {{ t(atLeastOneCourtOrderError) }}
                     </p>
                   {% endif %}
 
+                  <div class="cui-add-another__items">
                   {% for row in form.model.rows %}
                     {{ courtOrder(loop.index0, row, form.errorFor, t) }}
                   {% else %}
                     {{ courtOrder(0, '', form.errorFor, t) }}
                   {% endfor %}
 
-                  <div class="moj-button-action">
+                  </div>
+                  <div class="cui-add-another__actions">
                     {{ govukButton({
                       text: t('PAGES.COURT_ORDERS.ADD_ANOTHER'),
-                      classes: 'govuk-button--secondary moj-add-another__add-button govuk-!-margin-bottom-1',
+                      classes: 'govuk-button--secondary cui-add-another__add-button govuk-!-margin-bottom-1',
                       type: 'button',
                       attributes: {
-                        'id': 'add-another-court-order'
+                        'id': 'add-another-court-order',
+                        'hidden': true
                       }
                     }) }}
                   </div>

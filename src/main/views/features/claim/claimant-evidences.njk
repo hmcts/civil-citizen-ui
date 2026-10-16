@@ -27,16 +27,20 @@
             <h1 class="govuk-heading-l">{{ titleH1 }}</h1>
             <h2 class="govuk-heading-s">{{ titleH2 }}</h2>
             <p class="govuk-body-m">{{ paragraph }}</p>
-            <div data-module="moj-add-another" class="select-toggle">
+            <div data-module="cui-add-another" class="select-toggle">
+              <div class="cui-add-another__items">
               {% for row in form.model.evidenceItem %}
                 {{ evidence(loop.index0, row, form.errorFor, description, t) }}
               {% else %}
-                {{ evidence(0, '', '', description) }}
+                {{ evidence(0, '', form.errorFor, description, t) }}
               {% endfor %}
-              <div class="moj-button-action">
+              </div>
+              <div class="cui-add-another__actions">
                 {{ govukButton({
                     text: t('PAGES.EVIDENCE.ADD_MORE'),
-                    classes: 'govuk-button--secondary moj-add-another__add-button govuk-!-margin-bottom-4'
+                    classes: 'govuk-button--secondary cui-add-another__add-button govuk-!-margin-bottom-4',
+                    type: 'button',
+                    attributes: {'hidden': true}
                   }) }}
               </div>
             </div>
