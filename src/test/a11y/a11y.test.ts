@@ -49,7 +49,7 @@ async function runPally(url: string, actions: string[]): Promise<Pa11yResult> {
   const PAGE_URL = url.replace(':id', '1645882162449409');
   return await pa11y(PAGE_URL, {
     // Ignore GovUK template elements that are outside the team's control from a11y tests
-    hideElements: '#logo, .logo, .copyright, link[rel=mask-icon]',
+    hideElements: '#logo, .logo, .copyright, link[rel=mask-icon], .govuk-footer__crown',
     actions,
     standard:'WCAG2AA',
     includeWarnings: true,
