@@ -2,7 +2,7 @@
 
 This is the coverage-ownership contract for in-process tests. Follow it when adding or converting tests. It is the delivery of the DTSCCI-1961 spike follow-up: unit tests must not boot the Express app.
 
-Related: [functional-test-migration-matrix.md](functional-test-migration-matrix.md) owns browser-journey layering. This document owns unit vs in-process integration.
+Related: [functional-tests.md](functional-tests.md) covers browser journeys and preview execution. This document owns unit vs in-process integration.
 
 ## Layers
 

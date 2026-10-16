@@ -63,6 +63,9 @@ describe('Bilingual language preference', () => {
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.header.location).toEqual(RESPONSE_TASK_LIST_URL);
+          const languageCookies = ([] as string[]).concat(res.headers['set-cookie'] || []).filter((cookie: string) => cookie.startsWith('lang='));
+          expect(languageCookies.length).toBeGreaterThan(0);
+          languageCookies.forEach((cookie: string) => expect(cookie).toMatch(/; Secure(?:;|$)/));
         });
     });
 
@@ -74,6 +77,9 @@ describe('Bilingual language preference', () => {
         .expect((res) => {
           expect(res.status).toBe(302);
           expect(res.header.location).toEqual(RESPONSE_TASK_LIST_URL);
+          const languageCookies = ([] as string[]).concat(res.headers['set-cookie'] || []).filter((cookie: string) => cookie.startsWith('lang='));
+          expect(languageCookies.length).toBeGreaterThan(0);
+          languageCookies.forEach((cookie: string) => expect(cookie).toMatch(/; Secure(?:;|$)/));
         });
     });
 

@@ -1,4 +1,4 @@
-import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
+import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {
   saveClaimantBilingualLangPreference,
@@ -10,13 +10,9 @@ import {
 } from '../../urls';
 import {GenericForm} from 'common/form/models/genericForm';
 import {GenericYesNo} from 'common/form/models/genericYesNo';
-import {
-  createDraftClaimInStoreWithExpiryTime,
-  getCaseDataFromStore,
-} from 'modules/draft-store/draftStoreService';
+import {createOrLoadDraft} from 'modules/draft-store/draftStoreManagerService';
 import {AppRequest} from 'common/models/AppRequest';
 import {claimLanguagePreferenceGuard} from 'routes/guards/claimLanguagePreferenceGuard';
-import {Claim} from 'models/claim';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {isWelshEnabledForMainCase} from '../../../app/auth/launchdarkly/launchDarklyClient';
@@ -35,14 +31,15 @@ async function renderView(form: GenericForm<GenericYesNo>, res: Response) {
 claimBilingualLangPreferenceController.get(
   CLAIM_BILINGUAL_LANGUAGE_PREFERENCE_URL,
   claimLanguagePreferenceGuard,
-  (req: Request, res: Response, next: NextFunction) => {
+  (req: AppRequest, res: Response, next: NextFunction) => {
     (async () => {
       try {
-        const userId = (<AppRequest>req).session?.user?.id;
-        const caseData: Claim = await getCaseDataFromStore(userId, true);
-        if (!caseData?.isDraftClaim()) {
-          await createDraftClaimInStoreWithExpiryTime(userId);
-          await civilServiceClient.createDashboard(<AppRequest> req);
+        const draftResult = await createOrLoadDraft(req);
+        if (req.session && draftResult.rawResponse?.draftId) {
+          req.session.draftId = draftResult.rawResponse.draftId;
+        }
+        if (draftResult.isNew) {
+          await civilServiceClient.createDashboard(req);
         }
         const form: GenericYesNo = new GenericYesNo();
         await renderView(new GenericForm<GenericYesNo>(form), res);
@@ -53,16 +50,15 @@ claimBilingualLangPreferenceController.get(
   },
 );
 
-claimBilingualLangPreferenceController.post(CLAIM_BILINGUAL_LANGUAGE_PREFERENCE_URL, (async (req: Request, res: Response, next: NextFunction) => {
+claimBilingualLangPreferenceController.post(CLAIM_BILINGUAL_LANGUAGE_PREFERENCE_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const form = new GenericForm(new GenericYesNo(req.body.option, 'ERRORS.CLAIM_LANGUAGE_REQUIRED'));
     form.validateSync();
-    const userId = (<AppRequest>req).session?.user?.id;
     if (form.hasErrors()) {
       await renderView(form, res);
     } else {
       res.cookie('lang', getCookieLanguage(await isWelshEnabledForMainCase(), form.model.option));
-      await saveClaimantBilingualLangPreference(userId, form.model);
+      await saveClaimantBilingualLangPreference(req, form.model);
       res.redirect(constructResponseUrlWithIdParams(req.params.id, CLAIMANT_TASK_LIST_URL));
     }
   } catch (error) {

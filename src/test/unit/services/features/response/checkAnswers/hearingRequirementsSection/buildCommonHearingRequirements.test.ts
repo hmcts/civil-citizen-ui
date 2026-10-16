@@ -4,7 +4,7 @@ import {
   WelshLanguageRequirements,
 } from 'models/directionsQuestionnaire/welshLanguageRequirements/welshLanguageRequirements';
 import {LanguageOptions} from 'models/directionsQuestionnaire/languageOptions';
-import {SummaryRow, summaryRow, summaryRowWithTextValue} from 'models/summaryList/summaryList';
+import {SummaryRow, summaryRow, summaryRowHtml, summaryRowWithTextValue} from 'models/summaryList/summaryList';
 import {YesNo} from 'common/form/models/yesNo';
 import {
   VulnerabilityQuestions,
@@ -578,7 +578,7 @@ describe('Common Hearing Requirements Section', () => {
       claim.directionQuestionnaire.hearing.unavailableDatesForHearing = {
         items: [singleDateMockData],
       };
-      const mockSummarySection = summaryRow(
+      const mockSummarySection = summaryRowHtml(
         'PAGES.CANT_ATTEND_HEARING_IN_NEXT_12MONTHS.UNAVAILABLE_DATES',
         ' 30 December 2023',
         '/case/validClaimId/directions-questionnaire/availability-dates',
@@ -610,7 +610,7 @@ describe('Common Hearing Requirements Section', () => {
       claim.directionQuestionnaire.hearing.unavailableDatesForHearing = {
         items: [longerPeriod4DaysOverlapMockData],
       };
-      const mockSummarySection = summaryRow(
+      const mockSummarySection = summaryRowHtml(
         'PAGES.CANT_ATTEND_HEARING_IN_NEXT_12MONTHS.UNAVAILABLE_DATES',
         ' 10 December 2023<br>11 December 2023<br>12 December 2023<br>13 December 2023<br>14 December 2023',
         '/case/validClaimId/directions-questionnaire/availability-dates',

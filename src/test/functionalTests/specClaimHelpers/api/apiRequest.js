@@ -76,7 +76,7 @@ module.exports = {
     return response.case_details.case_data || {};
   },
 
-  startEventForCitizen: async (eventName, caseId, payload) => {
+  startEventForCitizen: async (eventName, caseId, payload, expectedStatus = 200) => {
     let url = getCivilServiceUrl();
     const userId = await idamHelper.userId(tokens.userAuth);
     if (caseId) {
@@ -84,7 +84,11 @@ module.exports = {
     }
     url += `/citizen/${userId}/event`;
 
-    let response = await restHelper.retriedRequest(url, getRequestHeaders(tokens.userAuth), payload, 'POST', 200);
+    let response = await restHelper.retriedRequest(url, getRequestHeaders(tokens.userAuth), payload, 'POST', expectedStatus);
+    if (expectedStatus === 500) {
+      return;
+    }
+    
     const data = await response.json();
     if (data?.token) {
       tokens.ccdEvent = data.token;

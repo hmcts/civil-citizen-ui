@@ -18,7 +18,7 @@ import {QueryManagement, WhatToDoTypeOption} from 'form/models/queryManagement/q
 import {getGaRedirectionUrl} from 'services/commons/generalApplicationHelper';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {Claim} from 'models/claim';
-import {LinKFromValues} from 'models/generalApplication/applicationType';
+import {LinkFromValues} from 'models/generalApplication/applicationType';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {createMockResponse, getRouteHandler} from '../../../../utils/getRouteHandler';
 
@@ -63,7 +63,7 @@ describe('Query management start Controller', () => {
     });
 
     it('should clear previous QM data when linkFrom=start', async () => {
-      req.query = {linkFrom: 'start'};
+      req.query = {linkFrom: LinkFromValues.start};
 
       await getHandler(req as Request, res as unknown as Response, next);
 
@@ -91,13 +91,13 @@ describe('Query management start Controller', () => {
     });
 
     it('should redirect using the GA helper when CHANGE_CASE is selected', async () => {
-      mockGetGaRedirectionUrl.mockResolvedValue(APPLICATION_TYPE_URL + `?linkFrom=${LinKFromValues.start}`);
+      mockGetGaRedirectionUrl.mockResolvedValue(APPLICATION_TYPE_URL + `?linkFrom=${LinkFromValues.start}`);
       req.body = {option: WhatToDoTypeOption.CHANGE_CASE};
 
       await postHandler(req as Request, res as unknown as Response, next);
 
       expect(res.redirect).toHaveBeenCalledWith(
-        constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL + `?linkFrom=${LinKFromValues.start}`),
+        constructResponseUrlWithIdParams(claimId, APPLICATION_TYPE_URL + `?linkFrom=${LinkFromValues.start}`),
       );
     });
 

@@ -1,7 +1,7 @@
 import { AppRequest } from 'common/models/AppRequest';
 import { Claim } from 'common/models/claim';
 import { UploadAdditionalDocument } from 'common/models/generalApplication/UploadAdditionalDocument';
-import { SummaryRow, summaryRow } from 'common/models/summaryList/summaryList';
+import { SummaryRow, summaryRow, summaryRowWithTextValue } from 'common/models/summaryList/summaryList';
 import { SummarySection, summarySection } from 'common/models/summaryList/summarySections';
 import { generateRedisKey, saveDraftClaim } from 'modules/draft-store/draftStoreService';
 import { TypeOfDocumentSectionMapper } from '../caseProgression/TypeOfDocumentSectionMapper';
@@ -13,7 +13,7 @@ import config from 'config';
 import { CivilServiceClient } from 'client/civilServiceClient';
 import { GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL } from 'routes/urls';
 import { getClaimById } from 'modules/utilityService';
-import { GeneralApplication } from 'common/models/generalApplication/GeneralApplication';
+import { toGeneralApplication } from 'common/models/generalApplication/GeneralApplication';
 import { PaymentSuccessfulSectionBuilder } from '../claim/paymentSuccessfulSectionBuilder';
 import { getLng } from 'common/utils/languageToggleUtils';
 import { constructResponseUrlWithIdAndAppIdParams } from 'common/utils/urlFormatter';
@@ -36,8 +36,8 @@ export const getSummaryList = (additionalDocumentsList: UploadAdditionalDocument
     });
   additionalDocumentsList.forEach((uploadDocument: UploadAdditionalDocument) => {
     index = index + 1;
-    formattedSummary.summaryList.rows.push(summaryRow(toc, uploadDocument.typeOfDocument));
-    formattedSummary.summaryList.rows.push(summaryRow(uploadDocument.caseDocument.documentName, '', `${constructResponseUrlWithIdAndAppIdParams(claimId, gaId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL)}?indexId=${index}`, 'Remove document'));
+    formattedSummary.summaryList.rows.push(summaryRowWithTextValue(toc, uploadDocument.typeOfDocument));
+    formattedSummary.summaryList.rows.push(summaryRowWithTextValue(uploadDocument.caseDocument.documentName, '', `${constructResponseUrlWithIdAndAppIdParams(claimId, gaId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL)}?indexId=${index}`, 'Remove document'));
   });
   return formattedSummary;
 };
@@ -75,7 +75,7 @@ export const uploadSelectedFile = async (req: AppRequest, claim: Claim) => {
 export const getClaimDetailsById = async (req: AppRequest): Promise<Claim> => {
   try {
     const claim = await getClaimById(req.params.id, req, true);
-    const gaApplication = Object.assign(new GeneralApplication(), claim.generalApplication);
+    const gaApplication = toGeneralApplication(claim.generalApplication);
     claim.generalApplication = gaApplication;
     return claim;
   } catch (error) {
