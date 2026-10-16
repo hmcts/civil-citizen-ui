@@ -53,8 +53,9 @@ Scenario('Claimant Lip enters and exit from Standard Breathing Space when case i
   const exitDay = exitDate.getDate().toString();
   const exitMonth = (exitDate.getMonth() + 1).toString();
   const exitYear = exitDate.getFullYear().toString();
+  const futureExit = true;
 
-  await exitFromBSSteps.exitFromBS(type, claimRef, exitDay, exitMonth, exitYear);
+  await exitFromBSSteps.exitFromBS(type, claimRef, exitDay, exitMonth, exitYear, futureExit);
 });
 
 Scenario('Claimant Lip enters and exit from Mental Health Breathing Space when case is in Claimant Intention', async ({I}) => {
@@ -88,7 +89,8 @@ Scenario('Claimant Lip enters and exit from Mental Health Breathing Space when c
   const exitDay = exitDate.getDate().toString();
   const exitMonth = (exitDate.getMonth() + 1).toString();
   const exitYear = exitDate.getFullYear().toString();
+  const futureExit = true;
 
-  await exitFromBSSteps.exitFromBS(type, claimRef, exitDay, exitMonth, exitYear);
+  await exitFromBSSteps.exitFromBS(type, claimRef, exitDay, exitMonth, exitYear, futureExit);
 });
 

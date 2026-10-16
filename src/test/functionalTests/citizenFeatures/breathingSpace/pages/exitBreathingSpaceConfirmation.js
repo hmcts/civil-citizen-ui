@@ -9,14 +9,23 @@ const fields = {
 };
 
 class ExitBreathingSpaceConfirmation {
-
-  async verifyPageContent(type) {
+  async verifyPageContent(type, futureExit) {
     if (type === 'Standard Breathing Space') {
-      await I.see('Standard breathing space lifted', 'h1');
-      await I.see('We have sent you a confirmation email.');
+      if (futureExit) {
+        await I.see('Standard breathing space will lift on', 'h1');
+        await I.see('We will send you an email to confirm when breathing space has ended');
+      }else {
+        await I.see('Standard breathing space lifted', 'h1');
+        await I.see('We have sent you a confirmation email.');
+      }
     } else {
-      await I.see('Mental health breathing space lifted', 'h1');
-      await I.see('We have sent you a confirmation email.');
+      if (futureExit) {
+        await I.see('Mental health breathing space will lift on', 'h1');
+        await I.see('We will send you an email to confirm when breathing space has ended');
+      } else {
+        await I.see('Mental health breathing space lifted', 'h1');
+        await I.see('We have sent you a confirmation email.');
+      }
     }
     await contactUs.verifyContactUs();
   }
