@@ -1,10 +1,6 @@
 import * as path from 'path';
 import * as nunjucks from 'nunjucks';
 
-/**
- * Renders macro/generalApplication/file-upload.njk, the upload area of the general application upload pages.
- * The translation function returns the key, so assertions use keys.
- */
 describe('gaFileUpload macro', () => {
   let env: nunjucks.Environment;
 

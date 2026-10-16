@@ -1,13 +1,6 @@
 {% from "govuk/components/file-upload/macro.njk" import govukFileUpload %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 
-{#
-  Upload area for the general application upload pages: a read-only section for each uploaded file, then one upload
-  box that takes several files at once. add-file-slot.js hides the box once files are uploaded until 'Add another file'
-  is clicked, and auto-upload-file.js clicks 'Save file' as soon as files are chosen.
-  Rows of params.summaryRows with a delete action are the uploaded files. Any caller() content (e.g. a type of document
-  field) goes in the upload box, above the file input.
-#}
 {% macro gaFileUpload(t, params) %}
   {% set uploadedRows = (params.summaryRows or []) | selectattr("actions") %}
   <div class="file-upload-slots" data-single-upload-box="true"{% if uploadedRows.length %} data-has-uploaded-files="true"{% endif %}>

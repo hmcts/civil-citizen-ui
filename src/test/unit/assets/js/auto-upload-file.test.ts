@@ -1,7 +1,3 @@
-/**
- * Uses manual JSDOM setup instead of @jest-environment jsdom to avoid
- * virtualConsole.sendTo incompatibility with jsdom 28.
- */
 import * as fs from 'fs';
 import * as path from 'path';
 import {JSDOM} from 'jsdom';

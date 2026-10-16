@@ -50,7 +50,6 @@ export const removeSelectedDocument = async (redisKey: string, claim: Claim, ind
 export const uploadSelectedFile = async (req: AppRequest, claim: Claim) => {
   const createDocument = () => {
     const uploadedDocument = new UploadAdditionalDocument();
-    // every file chosen in one go gets the same type of document
     uploadedDocument.typeOfDocument = req.body.typeOfDocument;
     return uploadedDocument;
   };

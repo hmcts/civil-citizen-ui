@@ -1,16 +1,11 @@
-/**
- * Uses manual JSDOM setup instead of @jest-environment jsdom to avoid
- * virtualConsole.sendTo incompatibility with jsdom 28.
- */
 import * as fs from 'fs';
 import * as path from 'path';
 import {JSDOM} from 'jsdom';
 
 describe('add-file-slot', () => {
-  // The script is an ES module importing govuk-frontend, which Jest doesn't transform here, so it's
-  // run in the JSDOM window with the import swapped for a FileUpload stub.
-  const scriptSource = fs.readFileSync(path.join(process.cwd(), 'src/main/assets/js/add-file-slot.js'), 'utf8')
-    .replace(/^import .*govuk-frontend.*$/m, '');
+  const govukFrontendImport = /^import .*govuk-frontend.*$/m;
+  const scriptWithStubbedFileUpload = fs.readFileSync(path.join(process.cwd(), 'src/main/assets/js/add-file-slot.js'), 'utf8')
+    .replace(govukFrontendImport, '');
   const HIDDEN_CLASS = 'govuk-!-display-none';
   let dom: JSDOM;
 
@@ -40,7 +35,7 @@ describe('add-file-slot', () => {
       </div>
       <button type="button" class="add-file-slot" id="add-file">Add another file</button>
     `;
-    dom.window.eval(scriptSource);
+    dom.window.eval(scriptWithStubbedFileUpload);
     document.dispatchEvent(new dom.window.Event('DOMContentLoaded'));
   }
 

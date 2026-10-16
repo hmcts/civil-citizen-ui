@@ -25,7 +25,6 @@
     <p class="govuk-body">{{ t('PAGES.GENERAL_APPLICATION.UPLOAD_DOCUMENTS.DOCUMENT_TYPE_SIZE') }}</p>
     <form method="post" action="{{ currentUrl }}?_csrf={{ csrf }}" enctype='multipart/form-data' novalidate>
         {{ csrfProtection(csrf) }}
-        {# the file is only uploaded once a type of document is entered (see auto-upload-file.js) #}
         {% call gaFileUpload(t, {
             id: idValue if uploadErrorMsg else 'selectedFile',
             errorText: t(uploadErrorMsg) if uploadErrorMsg,
