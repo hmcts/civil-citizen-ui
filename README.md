@@ -18,8 +18,8 @@
 
 Running the application requires the following tools to be installed in your environment:
 
-  * [Node.js](https://nodejs.org/) v14.0.0 or later
-  * [yarn](https://yarnpkg.com/)
+  * [Node.js](https://nodejs.org/) v24.21.0 (set by `.nvmrc`; `package.json` requires at least v24.18.0)
+  * [Yarn 4](https://yarnpkg.com/) (this repository pins Yarn 4.18.1)
   * [Docker](https://www.docker.com)
 
 ### Local Setup
@@ -75,6 +75,16 @@ This will start the frontend container exposing the application's port
 
 In order to test if the application is up, you can visit https://localhost:3001 in your browser.
 
+### Dependency checks
+
+`package.json` uses exact dependency versions. Run `yarn deps:check` to check those pins, their agreement with the lockfile workspace and the presence and format of SHA-512 checksum entries in `yarn.lock`. Yarn verifies downloaded archives against the lockfile during installation and waits seven days before selecting a newly published npm release; an urgent security update can use `YARN_NPM_MINIMAL_AGE_GATE=0` for that one resolution command.
+
+Run `yarn deps:audit` to review registry advisories. It runs in CI and `cichecks`, failing for any production advisory or unreviewed toolchain finding. `yarn-audit-known-issues` records the current development-only findings; audit needs registry access. The e2e Redis mock is loaded only in e2e mode and is a development dependency, so production startup does not require it.
+
+A live audit of the reconciled lockfile on 12 October 2026 found no production advisories and 15 reviewed development-tool findings. The lockfile pins `@xmldom/xmldom` 0.9.12 and `handlebars` 4.7.10 to address newly reported advisories. The remaining findings include development-tool deprecations, `braces`, `extract-zip`, `sprintf-js` through CodeceptJS, and three moderate `stream-json` advisories through optional Detox. Review the allowlist whenever the lockfile or registry advisories change; it must not contain production findings.
+
+Renovate writes exact pins and waits seven days for routine npm releases. It may automerge minor and patch updates during HMCTS's out-of-hours windows; major and GOV.UK Frontend updates require review. Vulnerability alerts can be raised immediately.
+
 ## Developing
 
 ### Code style
@@ -82,15 +92,16 @@ In order to test if the application is up, you can visit https://localhost:3001 
 We use [ESLint](https://github.com/typescript-eslint/typescript-eslint)
 alongside [stylelint](https://github.com/stylelint/stylelint)
 
-Running the linting with auto fix:
+Run both SCSS and JavaScript/TypeScript linting:
 ```bash
-$ yarn lint --fix
+$ yarn lint
 ```
 
 ### Running the tests
 
 Unit tests must not boot the Express app. In-process HTTP (Supertest) belongs in `src/integration-test`.
 See [docs/test-pyramid.md](docs/test-pyramid.md) for the layer contract and conversion rules.
+`yarn test:a11y` runs the mocked-page accessibility check separately from `cichecks`; a passing aggregate check does not constitute browser or accessibility acceptance.
 
 This template app uses [Jest](https://jestjs.io//) as the test engine. You can run unit tests by executing
 the following command:
