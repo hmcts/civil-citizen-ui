@@ -14,9 +14,6 @@
   {{ setPageTitle(t, pageTitle) }}
 {% endblock %}
 
-{% set rowNumberToShowRemoveButton = 2 %}
-{% set length = form.model.items.length %}
-{% set isRemoveButtonHidden = form.model.items.length < rowNumberToShowRemoveButton %}
 {% set itemsErrors = form.errorFor('items') %}
 
 {% block content %}
@@ -34,23 +31,26 @@
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
             {% if itemsErrors %}
-              <p class="govuk-error-message">
-                <span class="govuk-visually-hidden">{{ t('ERRORS.ERROR') }} :</span> {{ t(itemsErrors) }}
-              </p>
+              {{ govukErrorMessage({visuallyHiddenText: t('ERRORS.ERROR'), text: t(itemsErrors)}) }}
             {% endif %}
 
+            <div data-module="cui-add-another">
+            <div class="cui-add-another__items" id="items">
             {% for expertDetail in form.model.items %}
-              {{ expertDetailsRow(expertDetail, loop.index0, form.errorFor, t, {hidden:isRemoveButtonHidden}) }}
+              {{ expertDetailsRow(expertDetail, loop.index0, form.errorFor, t, {}) }}
             {% else %}
-                {{ expertDetailsRow(expertDetail, loop.index0, form.errorFor, t, {hidden:true}) }}
+                {{ expertDetailsRow({}, 0, form.errorFor, t, {}) }}
             {% endfor %}
+            </div>
 
             <div class="govuk-!-margin-top-6">
               {{ govukButton({
                 text: t('PAGES.EXPERT_DETAILS.ADD_ANOTHER_EXPERT'),
-                classes: "govuk-button--secondary append-row",
+                classes: "govuk-button--secondary cui-add-another__add-button",
+                attributes: {hidden: true},
                 type: "button"
               }) }}
+            </div>
             </div>
             <div class="govuk-form-group">
               {{ govukButton({

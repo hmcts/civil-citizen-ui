@@ -2,12 +2,16 @@
 {% from "govuk/components/textarea/macro.njk" import govukTextarea %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 
+{% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
 {% macro expertDetailsRow(expertDetail, index, errorFor, t, removeButton) %}
-  <div class="row-container">
-    <div class="multiple-row">
+  {% call govukFieldset({
+    classes: 'cui-add-another__item',
+    legend: {html: (t('PAGES.EXPERT_DETAILS.SECTION_TITLE') | escape) + ' <span data-row-number>' + (index + 1) + '</span>', classes: 'govuk-visually-hidden'}
+  }) %}
       {{ govukInput({
         id: 'items[' + index + '][firstName]',
         name: 'items[' + index + '][firstName]',
+        attributes: {'data-name': 'items[%index%][firstName]', 'data-id': 'items[%index%][firstName]'},
         value: expertDetail.firstName,
         classes: "govuk-!-width-two-thirds",
         label: {
@@ -21,6 +25,7 @@
       {{ govukInput({
         id: 'items[' + index + '][lastName]',
         name: 'items[' + index + '][lastName]',
+        attributes: {'data-name': 'items[%index%][lastName]', 'data-id': 'items[%index%][lastName]'},
         value: expertDetail.lastName,
         classes: "govuk-!-width-two-thirds",
         label: {
@@ -34,6 +39,7 @@
       {{ govukInput({
         id: 'items[' + index + '][emailAddress]',
         name: 'items[' + index + '][emailAddress]',
+        attributes: {'data-name': 'items[%index%][emailAddress]', 'data-id': 'items[%index%][emailAddress]'},
         value: expertDetail.emailAddress,
         classes: "govuk-!-width-two-thirds",
         label: {
@@ -47,6 +53,7 @@
       {{ govukInput({
         id: 'items[' + index + '][phoneNumber]',
         name: 'items[' + index + '][phoneNumber]',
+        attributes: {'data-name': 'items[%index%][phoneNumber]', 'data-id': 'items[%index%][phoneNumber]'},
         value: expertDetail.phoneNumber,
         classes: "govuk-!-width-two-thirds",
         type: "number",
@@ -62,6 +69,7 @@
       {{ govukInput({
         id: 'items[' + index + '][fieldOfExpertise]',
         name: 'items[' + index + '][fieldOfExpertise]',
+        attributes: {'data-name': 'items[%index%][fieldOfExpertise]', 'data-id': 'items[%index%][fieldOfExpertise]'},
         value: expertDetail.fieldOfExpertise,
         classes: "govuk-!-width-two-thirds",
         label: {
@@ -75,6 +83,7 @@
       {{ govukTextarea({
         id: 'items[' + index + '][whyNeedExpert]',
         name: 'items[' + index + '][whyNeedExpert]',
+        attributes: {'data-name': 'items[%index%][whyNeedExpert]', 'data-id': 'items[%index%][whyNeedExpert]'},
         value: expertDetail.whyNeedExpert,
         classes: "govuk-!-width-two-thirds",
         label: {
@@ -88,6 +97,7 @@
       {{ govukInput({
         id: 'items[' + index + '][estimatedCost]',
         name: 'items[' + index + '][estimatedCost]',
+        attributes: {'data-name': 'items[%index%][estimatedCost]', 'data-id': 'items[%index%][estimatedCost]'},
         value: expertDetail.estimatedCost,
         classes: "govuk-input--width-5",
         type: "number",
@@ -104,25 +114,10 @@
         } if errorFor('items['+index+'][estimatedCost]')
       }) }}
 
-      {% if removeButton %}
-        {% if removeButton.hidden %}
-          {{ govukButton({
-            text: t('PAGES.EXPERT_DETAILS.REMOVE_EXPERT'),
-            classes: "govuk-button--secondary remove-row govuk-!-display-none",
-            type: "button",
-            attributes: { "aria-label": t('PAGES.EXPERT_DETAILS.REMOVE_EXPERT') }
-          }) }}
-        {% else %}
-          {{ govukButton({
-            text: t('PAGES.EXPERT_DETAILS.REMOVE_EXPERT'),
-            classes: "govuk-button--secondary remove-row",
-            type: "button",
-            attributes: { "aria-label": t('PAGES.EXPERT_DETAILS.REMOVE_EXPERT') }
-          }) }}
-        {% endif %}
-      {% endif %}
-
-    </div>
-  </div>
-
+      {{ govukButton({
+        text: t('PAGES.EXPERT_DETAILS.REMOVE_EXPERT'),
+        classes: 'govuk-button--secondary cui-add-another__remove-button',
+        type: 'button', attributes: {hidden: true, 'aria-label': t('PAGES.EXPERT_DETAILS.REMOVE_EXPERT')}
+      }) }}
+  {% endcall %}
 {% endmacro %}

@@ -32,7 +32,7 @@
             <li>{{ dates[2] }} - {{ t('PAGES.TIMELINE.EXAMPLE_THREE') }}</li>
           </ul>
 
-          <form method="post" novalidate>
+          <form data-module="cui-append-row" data-row-name-prefix="rows" data-row-id-prefixes='["rows-%index%-"]' method="post" novalidate>
             {{ csrfProtection(csrf) }}
             <div id="rows" class="govuk-form-group {% if atLeastOneRequired %} govuk-form-group--error {% endif %}">
               {% if atLeastOneRequired %}
@@ -61,6 +61,7 @@
             </div>
 
             {{ govukButton({
+                type: "button", attributes: {hidden: true},
               text: t('COMMON.BUTTONS.ADD_ANOTHER_EVENT'),
               classes: "govuk-button--secondary append-row"
             }) }}
