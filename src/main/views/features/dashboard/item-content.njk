@@ -283,7 +283,6 @@
     <div id={{content.data.category+'['+content.data.index+']['+content.data.field+'][mimetype]'}} ></div>
     <div class="govuk-form-group">
       <div class="file-upload-slots" {%- if content.data.documentNames.length %} data-has-uploaded-files="true"{% endif %}>
-        {# One read-only section per uploaded file, as per the Figma designs; removed with its Delete button below #}
         {% for documentName in content.data.documentNames %}
           <div class="govuk-inset-text app-uploaded-file-slot">
             <p class="govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-1">{{ t(content.data.text) }}</p>

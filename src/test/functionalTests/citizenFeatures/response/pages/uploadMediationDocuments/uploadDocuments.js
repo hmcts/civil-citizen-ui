@@ -8,9 +8,7 @@ const fields = {
   statementDay: 'div[id*="documentsForYourStatement"] input[id*="dateDay"]',
   statementMonth: 'div[id*="documentsForYourStatement"] input[id*="dateMonth"]',
   statementYear: 'div[id*="documentsForYourStatement"] input[id*="dateYear"]',
-  // GOV.UK's file upload enhancement moves the id to its button, so the input is targeted by name
   statementFile: 'input[name="documentsForYourStatement[0][fileUpload]"]',
-  // Choosing a file uploads it automatically; its Delete button shows once the upload has finished
   statementDeleteButton: 'button[value="documentsForYourStatement[0][deleteFile][0]"]',
   yourDoc: 'input[id*="typeOfDocument"]',
   docDay: 'div[id*="documentsForDocumentsReferred"] input[id*="dateDay"]',

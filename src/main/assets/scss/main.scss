@@ -515,7 +515,6 @@
   }
 }
 
-// Uploaded file rows on the upload-documents component: green tick and bold green file name
 .app-uploaded-file {
   @include govuk-typography-weight-bold;
 
@@ -533,7 +532,6 @@
   }
 }
 
-// Read-only section for each uploaded file on the upload-documents component, as per the Figma designs
 .app-uploaded-file-slot__name {
   padding: govuk-spacing(2);
   border: $govuk-border-width-form-element solid govuk-functional-colour("input-border");

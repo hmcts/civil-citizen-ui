@@ -2,10 +2,6 @@ import * as path from 'path';
 import * as nunjucks from 'nunjucks';
 import {ClaimSummaryType} from 'common/form/models/claimSummarySection';
 
-/**
- * Renders the UPLOAD_ARRAY block of features/dashboard/item-content.njk, used by the hearing and
- * mediation upload documents pages. The translation function returns the key, so assertions use keys.
- */
 describe('item-content.njk UPLOAD_ARRAY', () => {
   let env: nunjucks.Environment;
 

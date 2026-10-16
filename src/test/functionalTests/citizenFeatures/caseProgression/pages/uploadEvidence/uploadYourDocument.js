@@ -6,7 +6,6 @@ const contactUs = new ContactUs();
 
 //const stringUtils = new StringUtilsComponent();
 let language = 'en';
-// Seconds to wait for an automatic upload to finish and the page to reload
 const uploadTimeout = 60;
 
 const content = {

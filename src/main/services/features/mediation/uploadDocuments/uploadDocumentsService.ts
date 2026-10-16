@@ -79,8 +79,6 @@ const getFormSection = <T>(data: any[], bindFunction: (request: any) => T): T[] 
 };
 
 const parseCaseDocuments = (request: any): CaseDocument[] => {
-  // Falls back to the pre-multi-file-upload field name so a browser tab that loaded the page
-  // before this change shipped doesn't silently lose its already-uploaded document on submit.
   const rawCaseDocs = request[CASE_DOCUMENTS] || request[CASE_DOCUMENT_LEGACY];
   if (!rawCaseDocs || rawCaseDocs === '') {
     return [];
