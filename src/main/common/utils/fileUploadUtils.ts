@@ -141,6 +141,21 @@ export const createMulterErrorMiddlewareForSingleField = (
   };
 };
 
+/**
+ * Multer error middleware for one file field that accepts several files at once (e.g. 'selectedFile' on the
+ * general application upload pages). Errors are handled as in createMulterErrorMiddlewareForSingleField, and
+ * on success req.files holds every chosen file, as with multer.array(fieldName).
+ */
+export const createMulterErrorMiddlewareForMultipleFiles = (
+  fieldName: string,
+  loggerName = 'uploadDocumentsController',
+) => {
+  return (req: Request, res: Response, next: NextFunction) => {
+    const upload = createMulterUpload(FILE_SIZE_LIMIT);
+    upload.array(fieldName)(req, res, (err: any) => handleMulterResult(req, err, loggerName, next));
+  };
+};
+
 export const createFileUploadError = (
   category: string,
   index: string | number,

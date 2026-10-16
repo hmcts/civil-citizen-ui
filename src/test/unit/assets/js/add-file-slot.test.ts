@@ -23,11 +23,11 @@ describe('add-file-slot', () => {
     `);
   });
 
-  function setupDom({uploadedFiles = 0, error = false} = {}) {
+  function setupDom({uploadedFiles = 0, error = false, singleUploadBox = false} = {}) {
     const uploadedSlots = Array.from({length: uploadedFiles}, (_, i) =>
       `<div class="govuk-inset-text app-uploaded-file-slot"><p class="app-uploaded-file-slot__name">file-${i}.pdf</p></div>`).join('');
     document.body.innerHTML = `
-      <div class="file-upload-slots" ${uploadedFiles ? 'data-has-uploaded-files="true"' : ''}>
+      <div class="file-upload-slots" ${uploadedFiles ? 'data-has-uploaded-files="true"' : ''} ${singleUploadBox ? 'data-single-upload-box="true"' : ''}>
         ${uploadedSlots}
         <div class="row-container govuk-inset-text">
           <label class="govuk-label" for="witnessStatement[0][fileUpload]">Upload a file</label>
@@ -84,5 +84,25 @@ describe('add-file-slot', () => {
     expect(rows).toHaveLength(2);
     expect(rows[1].querySelector('input[type="file"]')!.id).toBe('witnessStatement[0][fileUpload]-slot-1');
     expect(rows[1].querySelector('label')!.getAttribute('for')).toBe('witnessStatement[0][fileUpload]-slot-1');
+  });
+
+  it('does not add a second upload box on single upload box pages', () => {
+    setupDom({singleUploadBox: true});
+
+    clickAddAnotherFile();
+    clickAddAnotherFile();
+
+    expect(uploadRows()).toHaveLength(1);
+    expect(document.activeElement).toBe(document.querySelector('input[type="file"]'));
+  });
+
+  it('shows the hidden upload box once on single upload box pages', () => {
+    setupDom({uploadedFiles: 1, singleUploadBox: true});
+
+    clickAddAnotherFile();
+    clickAddAnotherFile();
+
+    expect(uploadRows()).toHaveLength(1);
+    expect(uploadRows()[0].classList.contains(HIDDEN_CLASS)).toBe(false);
   });
 });

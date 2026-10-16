@@ -25,7 +25,7 @@ import {
   getDraftGARespondentResponse,
 } from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
 import {
-  createMulterErrorMiddlewareForSingleField,
+  createMulterErrorMiddlewareForMultipleFiles,
   createUploadOneFileError,
   getFileUploadErrorsForSource,
   FILE_UPLOAD_SOURCE,
@@ -35,7 +35,7 @@ import {handleMulterError} from 'services/features/generalApplication/uploadEvid
 
 const respondentUploadEvidenceDocumentsController = Router();
 const viewPath = 'features/generalApplication/response/respondent-upload-documents';
-const multerMiddleware = createMulterErrorMiddlewareForSingleField('selectedFile', 'respondentUploadEvidenceDocumentsController');
+const multerMiddleware = createMulterErrorMiddlewareForMultipleFiles('selectedFile', 'respondentUploadEvidenceDocumentsController');
 
 async function renderView(req: AppRequest, form: GenericForm<UploadGAFiles>, claim: Claim, claimId: string, res: Response, appId: string, formattedSummary: SummarySection): Promise<void> {
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;

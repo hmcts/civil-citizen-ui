@@ -4,13 +4,10 @@ import { UploadAdditionalDocument } from 'common/models/generalApplication/Uploa
 import { SummaryRow, summaryRow, summaryRowWithTextValue } from 'common/models/summaryList/summaryList';
 import { SummarySection, summarySection } from 'common/models/summaryList/summarySections';
 import { generateRedisKey, saveDraftClaim } from 'modules/draft-store/draftStoreService';
-import { TypeOfDocumentSectionMapper } from '../caseProgression/TypeOfDocumentSectionMapper';
-import { GenericForm } from 'common/form/models/genericForm';
+import { uploadEachSelectedFile } from './documentUpload/uploadEachSelectedFile';
 import { translateErrors } from './uploadEvidenceDocumentService';
 import { FILE_UPLOAD_SOURCE } from 'common/utils/fileUploadUtils';
 import { t } from 'i18next';
-import config from 'config';
-import { CivilServiceClient } from 'client/civilServiceClient';
 import { GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL } from 'routes/urls';
 import { getClaimById } from 'modules/utilityService';
 import { toGeneralApplication } from 'common/models/generalApplication/GeneralApplication';
@@ -23,8 +20,6 @@ import {ApplicationState} from 'models/generalApplication/applicationSummary';
 const { v4: uuIdv4 } = require('uuid');
 const { Logger } = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('additionalDocumentService');
-const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
-const civilServiceClientForDocRetrieve: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl, true);
 
 export const getSummaryList = (additionalDocumentsList: UploadAdditionalDocument[], claimId: string, gaId: string, lng: any): SummarySection => {
   let index = 0;
@@ -53,21 +48,19 @@ export const removeSelectedDocument = async (redisKey: string, claim: Claim, ind
 };
 
 export const uploadSelectedFile = async (req: AppRequest, claim: Claim) => {
-  const uploadedDocument = new UploadAdditionalDocument();
-  const fileUpload = TypeOfDocumentSectionMapper.mapToSingleFile(req);
-  uploadedDocument.fileUpload = fileUpload;
-  uploadedDocument.typeOfDocument = req.body.typeOfDocument;
-  const form = new GenericForm(uploadedDocument);
-  const uploadAdditionalDocuments = claim.generalApplication.uploadAdditionalDocuments;
-  form.validateSync();
-  delete uploadedDocument.fileUpload; //release file memory
-  if (!form.hasErrors()) {
-    uploadedDocument.caseDocument = await civilServiceClientForDocRetrieve.uploadDocument(req, fileUpload);
-    uploadAdditionalDocuments.push(uploadedDocument);
+  const createDocument = () => {
+    const uploadedDocument = new UploadAdditionalDocument();
+    // every file chosen in one go gets the same type of document
+    uploadedDocument.typeOfDocument = req.body.typeOfDocument;
+    return uploadedDocument;
+  };
+  const saveDocument = async (uploadedDocument: UploadAdditionalDocument) => {
+    claim.generalApplication.uploadAdditionalDocuments.push(uploadedDocument);
     await saveDraftClaim(generateRedisKey(req), claim, false, req.session.user?.id);
-  } else {
-    const errors = translateErrors(form.getAllErrors(), t);
-    req.session.fileUpload = JSON.stringify(errors);
+  };
+  const errors = await uploadEachSelectedFile(req, createDocument, saveDocument);
+  if (errors.length) {
+    req.session.fileUpload = JSON.stringify(translateErrors(errors, t));
     req.session.fileUploadSource = FILE_UPLOAD_SOURCE.GA_ADDITIONAL_DOCUMENTS;
   }
 };

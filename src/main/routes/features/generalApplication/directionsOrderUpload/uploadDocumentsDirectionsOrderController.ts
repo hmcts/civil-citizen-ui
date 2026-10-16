@@ -26,7 +26,7 @@ import {
   uploadSelectedFile,
 } from 'services/features/generalApplication/documentUpload/uploadDocumentsService';
 import {
-  createMulterErrorMiddlewareForSingleField,
+  createMulterErrorMiddlewareForMultipleFiles,
   createUploadOneFileError,
   getFileUploadErrorsForSource,
   FILE_UPLOAD_SOURCE,
@@ -36,7 +36,7 @@ import {handleMulterError} from 'services/features/generalApplication/uploadEvid
 
 const uploadDocumentsDirectionsOrderController = Router();
 const viewPath = 'features/generalApplication/directionsOrderUpload/upload-documents';
-const multerMiddleware = createMulterErrorMiddlewareForSingleField('selectedFile', 'uploadDocumentsDirectionsOrderController');
+const multerMiddleware = createMulterErrorMiddlewareForMultipleFiles('selectedFile', 'uploadDocumentsDirectionsOrderController');
 
 async function renderView(form: GenericForm<UploadGAFiles>, claim: Claim, claimId: string, gaId: string, req: AppRequest, res: Response, formattedSummary: SummarySection): Promise<void> {
   const cancelUrl = await getCancelUrl(claimId, claim);

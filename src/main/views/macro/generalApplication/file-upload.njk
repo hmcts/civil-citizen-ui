@@ -1,0 +1,55 @@
+{% from "govuk/components/file-upload/macro.njk" import govukFileUpload %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{#
+  Upload area for the general application upload pages: a read-only section for each uploaded file, then one upload
+  box that takes several files at once. add-file-slot.js hides the box once files are uploaded until 'Add another file'
+  is clicked, and auto-upload-file.js clicks 'Save file' as soon as files are chosen.
+  Rows of params.summaryRows with a delete action are the uploaded files. Any caller() content (e.g. a type of document
+  field) goes in the upload box, above the file input.
+#}
+{% macro gaFileUpload(t, params) %}
+  {% set uploadedRows = (params.summaryRows or []) | selectattr("actions") %}
+  <div class="file-upload-slots" data-single-upload-box="true"{% if uploadedRows.length %} data-has-uploaded-files="true"{% endif %}>
+    {% for row in uploadedRows %}
+      <div class="govuk-inset-text app-uploaded-file-slot">
+        <p class="govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-1">{{ t('PAGES.UPLOAD_DOCUMENTS.UPLOADED_FILE') }}</p>
+        <p class="govuk-body govuk-!-margin-bottom-0 app-uploaded-file-slot__name">{{ row.key.text }}</p>
+      </div>
+    {% endfor %}
+    <div class="row-container govuk-inset-text">
+      {% if caller %}{{ caller() }}{% endif %}
+      {{ govukFileUpload({
+        id: params.id,
+        name: "selectedFile",
+        multiple: true,
+        javascript: true,
+        chooseFilesButtonText: t('COMMON.FILE_UPLOAD.CHOOSE_FILE'),
+        dropInstructionText: t('COMMON.FILE_UPLOAD.DROP_INSTRUCTION'),
+        noFileChosenText: t('COMMON.FILE_UPLOAD.NO_FILE_CHOSEN'),
+        multipleFilesChosenText: {
+          one: t('COMMON.FILE_UPLOAD.FILES_CHOSEN_ONE'),
+          other: t('COMMON.FILE_UPLOAD.FILES_CHOSEN_OTHER')
+        },
+        enteredDropZoneText: t('COMMON.FILE_UPLOAD.ENTERED_DROP_ZONE'),
+        leftDropZoneText: t('COMMON.FILE_UPLOAD.LEFT_DROP_ZONE'),
+        label: {
+          text: t('COMMON.UPLOAD_FILE_LABEL'),
+          classes: 'govuk-label--s'
+        },
+        errorMessage: { text: params.errorText } if params.errorText
+      }) }}
+      {{ govukButton({
+        id: 'uploadFileButton',
+        name: 'action',
+        value: 'uploadButton',
+        text: t('COMMON.SAVE_FILE'),
+        classes: "govuk-button--secondary govuk-!-margin-bottom-0 js-auto-upload-button",
+        attributes: params.saveButtonAttributes
+      }) }}
+    </div>
+  </div>
+  <button type="button" class="govuk-button govuk-button--secondary add-file-slot govuk-!-margin-bottom-4">
+    {{ t('PAGES.UPLOAD_DOCUMENTS.ADD_ANOTHER_FILE') }}
+  </button>
+{% endmacro %}

@@ -16,10 +16,22 @@ function wireAutoUpload(uploadButton) {
     return;
   }
 
+  // A button with data-auto-upload-requires="<field id>" only uploads once that field is filled in. Until then
+  // "Save file" is shown again and the field is focused, so the chosen files are kept and saved by hand.
+  const requiredField = uploadButton.dataset.autoUploadRequires
+    ? document.getElementById(uploadButton.dataset.autoUploadRequires)
+    : null;
+
   fileInput.addEventListener('change', () => {
-    if (fileInput.files && fileInput.files.length > 0) {
-      uploadButton.click();
+    if (!fileInput.files || fileInput.files.length === 0) {
+      return;
     }
+    if (requiredField && !requiredField.value.trim()) {
+      uploadButton.classList.remove('govuk-!-display-none');
+      requiredField.focus();
+      return;
+    }
+    uploadButton.click();
   });
 }
 

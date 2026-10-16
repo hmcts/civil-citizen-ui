@@ -3,6 +3,7 @@ import {
   createMulterUpload,
   createMulterErrorMiddleware,
   createMulterErrorMiddlewareForSingleField,
+  createMulterErrorMiddlewareForMultipleFiles,
   createFileUploadError,
   getMulterErrorConstraint,
   extractCategoryAndIndex,
@@ -265,6 +266,71 @@ describe('fileUploadUtils', () => {
 
       const middleware = createMulterErrorMiddlewareForSingleField('selectedFile', 'testLogger');
       middleware(mockReq as Request, mockRes as Response, mockNext);
+
+      expect((mockReq as any).multerError).toEqual(multerError);
+      expect(mockNext).toHaveBeenCalled();
+    });
+  });
+
+  describe('createMulterErrorMiddlewareForMultipleFiles', () => {
+    const pdfFile = (name: string, content: string) => ({
+      fieldname: 'selectedFile',
+      originalname: name,
+      mimetype: 'application/pdf',
+      size: content.length,
+      buffer: Buffer.from(content),
+    } as Express.Multer.File);
+    let mockReq: Partial<Request>;
+    let mockNext: NextFunction;
+    let arrayFieldName: string;
+
+    const mockMulterArray = (error: unknown = null) => {
+      const multer = require('multer');
+      multer.mockReturnValue({
+        any: jest.fn(),
+        array: jest.fn((fieldName: string) => {
+          arrayFieldName = fieldName;
+          return (req: any, res: any, callback: any) => callback(error);
+        }),
+      });
+    };
+
+    beforeEach(() => {
+      mockReq = {headers: {'content-type': 'multipart/form-data'}};
+      mockNext = jest.fn();
+    });
+
+    it('should keep every chosen file for the field', () => {
+      mockReq.files = [pdfFile('first.pdf', '%PDF-1.4 first'), pdfFile('second.pdf', '%PDF-1.4 second')];
+      mockMulterArray();
+
+      createMulterErrorMiddlewareForMultipleFiles('selectedFile', 'testLogger')(mockReq as Request, {} as Response, mockNext);
+
+      expect(arrayFieldName).toBe('selectedFile');
+      expect(mockReq.files).toHaveLength(2);
+      expect((mockReq as any).multerError).toBeUndefined();
+      expect(mockNext).toHaveBeenCalled();
+    });
+
+    it('should reject the upload when any file has spoofed content', () => {
+      mockReq.files = [pdfFile('real.pdf', '%PDF-1.4 real'), pdfFile('spoofed.pdf', 'not a pdf')];
+      mockMulterArray();
+
+      createMulterErrorMiddlewareForMultipleFiles('selectedFile', 'testLogger')(mockReq as Request, {} as Response, mockNext);
+
+      expect((mockReq as any).multerError).toEqual({
+        code: 'LIMIT_UNEXPECTED_FILE',
+        message: 'File content type is not allowed',
+      });
+      expect(mockReq.files).toBeUndefined();
+      expect(mockNext).toHaveBeenCalled();
+    });
+
+    it('should set multerError on request when multer error occurs', () => {
+      const multerError = {code: 'LIMIT_FILE_SIZE', message: 'File too large', field: 'selectedFile'};
+      mockMulterArray(multerError);
+
+      createMulterErrorMiddlewareForMultipleFiles('selectedFile', 'testLogger')(mockReq as Request, {} as Response, mockNext);
 
       expect((mockReq as any).multerError).toEqual(multerError);
       expect(mockNext).toHaveBeenCalled();

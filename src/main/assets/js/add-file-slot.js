@@ -98,6 +98,11 @@ document.addEventListener('DOMContentLoaded', function () {
         hiddenRow.querySelector('.govuk-file-upload-button, input[type="file"]')?.focus();
         return;
       }
+      // Pages with one upload box that takes several files (general application) never need a second box.
+      if (slotsContainer.dataset.singleUploadBox) {
+        rows[0].querySelector('.govuk-file-upload-button, input[type="file"]')?.focus();
+        return;
+      }
 
       const newSlotIndex = rows.length;
       const newRow = rows[newSlotIndex - 1].cloneNode(true);
