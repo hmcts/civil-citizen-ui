@@ -84,6 +84,7 @@
   </div>
   {% endset -%}
   {% set checkedOtherHtml %}
+<div data-module="cui-append-row" data-row-name-prefix="model[other][transactionSources]" data-row-id-prefixes='[]'>
   <div id="conditional-other" class="govuk-checkboxes__conditional" aria-label="{{ t('COMMON.CHECKBOX_FIELDS.OTHER') }}">
   <div class="govuk-form-group">
     {% for transactionSource in form.model.other.transactionSources %}
@@ -96,9 +97,11 @@
   </div>
   <div class="govuk-form-group">
     {{ govukButton({
+                type: "button", attributes: {hidden: true},
         text: t('PAGES.REGULAR_EXPENSES.ADD_ANOTHER_EXPENSE'),
         classes: "govuk-button--secondary append-row"
       }) }}
+  </div>
   </div>
   </div>
   {% endset -%}

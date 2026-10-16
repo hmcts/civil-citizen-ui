@@ -340,31 +340,33 @@ data-module="govuk-service-navigation"
 
 
 
-  <div class="row-container">
-    <div class="multiple-row">
+  <div data-module="cui-add-another">
+            <div class="cui-add-another__items" id="items">
+
+  <fieldset class="govuk-fieldset cui-add-another__item">
+  <legend class="govuk-fieldset__legend govuk-visually-hidden">
+    Expert Details <span data-row-number="">1</span>
+  </legend>
+
 
 
 <div class="govuk-form-group">
   <label class="govuk-label" for="items[0][firstName]">
-    First name (optional)
+    First name (Insert TBC, if expert name not known yet)
   </label>
 
-<input class="govuk-input govuk-!-width-two-thirds" id="items[0][firstName]" name="items[0][firstName]" type="text">
-
+  <input class="govuk-input govuk-!-width-two-thirds" id="items[0][firstName]" name="items[0][firstName]" type="text" value="" data-name="items[%index%][firstName]" data-id="items[%index%][firstName]">
 </div>
-
 
 
 
 <div class="govuk-form-group">
   <label class="govuk-label" for="items[0][lastName]">
-    Last name (optional)
+    Last name (Insert TBC, if expert name not known yet)
   </label>
 
-<input class="govuk-input govuk-!-width-two-thirds" id="items[0][lastName]" name="items[0][lastName]" type="text">
-
+  <input class="govuk-input govuk-!-width-two-thirds" id="items[0][lastName]" name="items[0][lastName]" type="text" value="" data-name="items[%index%][lastName]" data-id="items[%index%][lastName]">
 </div>
-
 
 
 
@@ -373,10 +375,8 @@ data-module="govuk-service-navigation"
     Email address (optional)
   </label>
 
-<input class="govuk-input govuk-!-width-two-thirds" id="items[0][emailAddress]" name="items[0][emailAddress]" type="text">
-
+  <input class="govuk-input govuk-!-width-two-thirds" id="items[0][emailAddress]" name="items[0][emailAddress]" type="text" value="" data-name="items[%index%][emailAddress]" data-id="items[%index%][emailAddress]">
 </div>
-
 
 
 
@@ -385,10 +385,8 @@ data-module="govuk-service-navigation"
     Phone number (optional)
   </label>
 
-<input class="govuk-input govuk-!-width-two-thirds" id="items[0][phoneNumber]" name="items[0][phoneNumber]" type="number" autocomplete="number">
-
+  <input class="govuk-input govuk-!-width-two-thirds" id="items[0][phoneNumber]" name="items[0][phoneNumber]" type="number" value="" autocomplete="number" data-name="items[%index%][phoneNumber]" data-id="items[%index%][phoneNumber]">
 </div>
-
 
 
 
@@ -397,11 +395,8 @@ data-module="govuk-service-navigation"
     Field of expertise
   </label>
 
-<input class="govuk-input govuk-!-width-two-thirds" id="items[0][fieldOfExpertise]" name="items[0][fieldOfExpertise]" type="text">
-
+  <input class="govuk-input govuk-!-width-two-thirds" id="items[0][fieldOfExpertise]" name="items[0][fieldOfExpertise]" type="text" value="" data-name="items[%index%][fieldOfExpertise]" data-id="items[%index%][fieldOfExpertise]">
 </div>
-
-
 
 
 <div class="govuk-form-group">
@@ -409,10 +404,8 @@ data-module="govuk-service-navigation"
     Tell us why you need this expert
   </label>
 
-
-  <textarea class="govuk-textarea govuk-!-width-two-thirds" id="items[0][whyNeedExpert]" name="items[0][whyNeedExpert]" rows="5"></textarea>
+  <textarea class="govuk-textarea govuk-!-width-two-thirds" id="items[0][whyNeedExpert]" name="items[0][whyNeedExpert]" rows="5" data-name="items[%index%][whyNeedExpert]" data-id="items[%index%][whyNeedExpert]"></textarea>
 </div>
-
 
 
 
@@ -421,48 +414,28 @@ data-module="govuk-service-navigation"
     Estimated cost (optional)
   </label>
 
-<div class="govuk-input__wrapper"><div class="govuk-input__prefix" aria-hidden="true">£</div>
-  <input class="govuk-input govuk-input--width-5" id="items[0][estimatedCost]" name="items[0][estimatedCost]" type="number" spellcheck="false" autocomplete="number"></div>
+  <div class="govuk-input__wrapper">
 
+    <div class="govuk-input__prefix" aria-hidden="true">£</div>
+    <input class="govuk-input govuk-input--width-5" id="items[0][estimatedCost]" name="items[0][estimatedCost]" type="number" spellcheck="false" value="" autocomplete="number" data-name="items[%index%][estimatedCost]" data-id="items[%index%][estimatedCost]">
+
+  </div>
 </div>
 
 
-
-
-
-
-
-
-
-
-
-
-<button class="govuk-button govuk-button--secondary remove-row govuk-visually-hidden" data-module="govuk-button">
+<button type="button" class="govuk-button govuk-button--secondary cui-add-another__remove-button" data-module="govuk-button" hidden="true" aria-label="Remove expert">
   Remove expert
 </button>
 
+</fieldset>
 
-
-
-    </div>
-  </div>
-
-
-
-
+            </div>
             <div class="govuk-!-margin-top-6">
 
-
-
-
-
-
-
-
-<button class="govuk-button govuk-button--secondary append-row" data-module="govuk-button">
+<button type="button" class="govuk-button govuk-button--secondary cui-add-another__add-button" data-module="govuk-button" hidden="true">
   Add another expert
 </button>
-
+            </div>
             </div>
             <div class="govuk-form-group">
 
