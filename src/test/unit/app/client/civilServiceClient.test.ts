@@ -442,7 +442,7 @@ describe('Civil Service Client', () => {
 
     const expectCallbackError = async (
       civilServiceClient: CivilServiceClient,
-      expected: Partial<CallbackError> & {hasFieldErrors?: boolean},
+      expected: Partial<Omit<CallbackError, 'hasFieldErrors'>> & {hasFieldErrors?: boolean},
     ) => {
       try {
         await civilServiceClient.submitDefendantResponseEvent('123', {}, appReq);
