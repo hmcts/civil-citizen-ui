@@ -12,27 +12,36 @@
   {{ setPageTitle(t, pageTitle) }}
 {% endblock %}
 
-{% set rowNumberToShowRemoveButton = 2 %}
-{% set isRemoveButtonHidden = form.model.items.length < rowNumberToShowRemoveButton %}
-{% set errors = form.getAllErrors('model') %}
+{# Group validation belongs to the first usable checkbox, not its wrapper div. #}
+{% set errors = [] %}
+{% for error in form.getAllErrors('model') %}
+  {% if error.property.startsWith('model[items][') and error.property.endsWith('][checkboxGrp]') %}
+    {% set rowIndex = error.property | replace('model[items][', '') | replace('][checkboxGrp]', '') %}
+    {% set errors = errors.concat([{text: error.text, href: '#declared-' + rowIndex + '-disabledAccess'}]) %}
+  {% else %}
+    {% set errors = errors.concat([error]) %}
+  {% endif %}
+{% endfor %}
 
 {% set supportDetailsHtml %}
-  <div>
+  <div data-module="cui-add-another">
+  <div class="cui-add-another__items" id="model[items]">
     {% for row in form.model.items %}
-      {{ supportRequired(loop.index0, row, form.errorFor, t, { hidden: isRemoveButtonHidden }, peopleLists[loop.index0]) }}
+      {{ supportRequired(loop.index0, row, form.errorFor, t, {}, peopleLists[loop.index0]) }}
     {% else %}
-      {{ supportRequired(0, '', form.errorFor, t, { hidden: true }, peopleLists[0]) }}
+      {{ supportRequired(0, {}, form.errorFor, t, {}, peopleLists[0]) }}
     {% endfor %}
   </div>
   <div>
     {{ govukButton({
       text: t('PAGES.SUPPORT_REQUIRED.ADD_ANOTHER'),
-      classes: "govuk-button--secondary append-row",
+      classes: "govuk-button--secondary cui-add-another__add-button",
       type: "button",
       attributes: {
-        "aria-label": t('PAGES.SUPPORT_REQUIRED.ADD_ANOTHER')
+        "aria-label": t('PAGES.SUPPORT_REQUIRED.ADD_ANOTHER'), hidden: true
       }
     }) }}
+  </div>
   </div>
 {% endset %}
 {% block content %}
@@ -44,15 +53,7 @@
         <div class="govuk-grid-column-two-thirds">
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
-            <fieldset class="govuk-fieldset">
-            <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-              <h1 class="govuk-fieldset__heading">{{ t('PAGES.SUPPORT_REQUIRED.TITLE') }}</h1>
-            </legend>
-            {% if carmEnabled %}
-              <div id="hint" class="govuk-hint">{{t('PAGES.SUPPORT_REQUIRED.MEDIATION_TEXT')}}</div>
-            {% endif %}
-            {{ yesNoRadioButton(t, 'model[option]', 'option', '', form, '', {yesHtml: supportDetailsHtml, yes: 'COMMON.VARIATION_3.YES', no: 'COMMON.VARIATION_3.NO'}) }}
-            </fieldset>
+            {{ yesNoRadioButton(t, 'model[option]', 'option', t('PAGES.SUPPORT_REQUIRED.TITLE'), form, t('PAGES.SUPPORT_REQUIRED.MEDIATION_TEXT') if carmEnabled else '', {yesHtml: supportDetailsHtml, yes: 'COMMON.VARIATION_3.YES', no: 'COMMON.VARIATION_3.NO'}) }}
             <div class="govuk-form-group">
               {{ govukButton({
                 text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE'),
