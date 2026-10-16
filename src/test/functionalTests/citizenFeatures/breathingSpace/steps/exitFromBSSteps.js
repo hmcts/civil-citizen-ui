@@ -9,7 +9,7 @@ const exitBreathingSpaceCYAPage = new exitBreathingSpaceCYA();
 const exitBreathingSpaceConfirmationPage = new exitBreathingSpaceConfirmation();
 
 class exitFromBSSteps {
-  async exitFromBS(type,caseRef, exitDay, exitMonth, exitYear) {
+  async exitFromBS(type,caseRef, exitDay, exitMonth, exitYear, futureExit) {
     await I.amOnPage(`dashboard/${caseRef}/breathing-space/lift`);
 
     await exitBreathingSpacePage.verifyPageContent();
@@ -21,7 +21,7 @@ class exitFromBSSteps {
     await exitBreathingSpaceCYAPage.verifyPageContent();
     await exitBreathingSpaceCYAPage.clickContinue();
 
-    await exitBreathingSpaceConfirmationPage.verifyPageContent(type);
+    await exitBreathingSpaceConfirmationPage.verifyPageContent(type, futureExit);
     await exitBreathingSpaceConfirmationPage.clickReturnToCaseSummary();
   }
 }

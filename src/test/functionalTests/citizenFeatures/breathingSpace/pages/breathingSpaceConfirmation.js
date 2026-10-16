@@ -13,7 +13,7 @@ class EnterBreathingSpaceConfirmation {
   async verifyPageContent(type) {
     if (type === 'Standard Breathing Space') {
       await I.see('Standard breathing space applied', 'h1');
-      await I.see('Breathing space will now be active. You can lift it when you know when it will end.');
+      await I.see('You can lift it when you know when it will end.');
     } else {
       await I.see('Mental health breathing space applied', 'h1');
       await I.see('Breathing space will now be active, and remain until you lift breathing space.');

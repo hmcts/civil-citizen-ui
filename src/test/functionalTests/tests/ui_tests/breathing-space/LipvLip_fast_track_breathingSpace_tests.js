@@ -26,12 +26,16 @@ Scenario('Claimant Lip enters and exit from Standard Breathing Space when case i
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await I.amOnPage('/dashboard');
   await I.click(claimNumber);
-  const currentDate = await DateUtilsComponent.DateUtilsComponent.getCurrentDateReturnIndividuals();
-  currentDay= currentDate.day;
-  currentMonth= currentDate.month;
-  currentYear= currentDate.year;
+
+  //For last weeks date
+  const entryDate = new Date();
+  entryDate.setDate(entryDate.getDate() - 7);
+  const entryDay = entryDate.getDate().toString();
+  const entryMonth = (entryDate.getMonth() + 1).toString();
+  const entryYear = entryDate.getFullYear().toString();
+
   const type = 'Standard Breathing Space';
-  await enterIntoBSSteps.enterIntoBS(type, claimRef, currentDay, currentMonth, currentYear);
+  await enterIntoBSSteps.enterIntoBS(type, claimRef, entryDay, entryMonth, entryYear);
   const enterIntoStandardBSNotif = enterIntoStandardBS();
   await verifyNotificationTitleAndContent(claimNumber, enterIntoStandardBSNotif.title, enterIntoStandardBSNotif.content, claimRef);
   await I.click('Sign out');
@@ -47,14 +51,14 @@ Scenario('Claimant Lip enters and exit from Standard Breathing Space when case i
   await I.amOnPage('/dashboard');
   await I.click(claimNumber);
 
-  //For next weeks date
+  //For todays date
   const exitDate = new Date();
-  exitDate.setDate(exitDate.getDate() + 7);
   const exitDay = exitDate.getDate().toString();
   const exitMonth = (exitDate.getMonth() + 1).toString();
   const exitYear = exitDate.getFullYear().toString();
+  const futureExit = false;
 
-  await exitFromBSSteps.exitFromBS(type, claimRef, exitDay, exitMonth, exitYear);
+  await exitFromBSSteps.exitFromBS(type, claimRef, exitDay, exitMonth, exitYear, futureExit);
 });
 
 Scenario('Claimant Lip enters and exit from Mental Health Breathing Space when case is in Case Progression', async ({I, api}) => {
@@ -92,7 +96,7 @@ Scenario('Claimant Lip enters and exit from Mental Health Breathing Space when c
   const exitDay = exitDate.getDate().toString();
   const exitMonth = (exitDate.getMonth() + 1).toString();
   const exitYear = exitDate.getFullYear().toString();
+  const futureExit = true;
 
-  await exitFromBSSteps.exitFromBS(type, claimRef, exitDay, exitMonth, exitYear);
+  await exitFromBSSteps.exitFromBS(type, claimRef, exitDay, exitMonth, exitYear, futureExit);
 });
-
