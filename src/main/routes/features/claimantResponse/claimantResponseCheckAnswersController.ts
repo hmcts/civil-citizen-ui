@@ -23,6 +23,7 @@ import {SpecificCourtLocation} from 'models/directionsQuestionnaire/hearing/spec
 import {ValidationError, Validator} from 'class-validator';
 import {getRouteParam} from 'common/utils/routeParamUtils';
 import {validateOtherWitnesses} from 'services/features/directionsQuestionnaire/otherWitnessesService';
+import {applyCcdFieldErrorsToForm, isCallbackFieldValidationError} from 'client/common/error/callbackError';
 
 const checkAnswersViewPath = 'features/claimantResponse/check-answers';
 const validator = new Validator();
@@ -75,10 +76,19 @@ claimantResponseCheckAnswersController.post(CLAIMANT_RESPONSE_CHECK_ANSWERS_URL,
     if (form.hasErrors()) {
       const claim = await getClaimById(claimId, req, true);
       await renderView(<AppRequest>req, res, form, claim, carmEnabled, mintiEnabled);
-    } else {
-      await saveStatementOfTruth(redisKey, form.model);
+      return;
+    }
+    await saveStatementOfTruth(redisKey, form.model);
+    try {
       await submitClaimantResponse(<AppRequest>req);
       res.redirect(constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_CONFIRMATION_URL));
+    } catch (error) {
+      if (isCallbackFieldValidationError(error)) {
+        applyCcdFieldErrorsToForm(form, error.fieldErrors);
+        await renderView(<AppRequest>req, res, form, claim, carmEnabled, mintiEnabled);
+        return;
+      }
+      throw error;
     }
   } catch (error) {
     next(error);

@@ -1,11 +1,25 @@
 {% extends "claim-details-tpl.njk" %}
 
 {% block content %}
-  {% if callbackErrors and callbackErrors.length %}
+  {% set hasCallbackErrors = callbackErrors and callbackErrors.length %}
+  {% set hasFieldErrorMessages = fieldErrorMessages and fieldErrorMessages.length %}
+  {% if hasCallbackErrors or hasFieldErrorMessages %}
     <h1 class="govuk-heading-xl">{{ t('ERRORS.THERE_IS_A_PROBLEM') }}</h1>
-    {% for callbackError in callbackErrors %}
-      <p class="govuk-body">{{ callbackError }}</p>
-    {% endfor %}
+    {% if hasCallbackErrors %}
+      {% for callbackError in callbackErrors %}
+        <p class="govuk-body">{{ callbackError }}</p>
+      {% endfor %}
+    {% endif %}
+    {% if hasFieldErrorMessages %}
+      {% for fieldErrorMessage in fieldErrorMessages %}
+        <p class="govuk-body">{{ fieldErrorMessage }}</p>
+      {% endfor %}
+    {% endif %}
+    {% if showGoBackAndAmend %}
+      <p class="govuk-body">
+        <a href="javascript:history.back()" class="govuk-link">{{ t('COMMON.BUTTONS.BACK') }}</a>
+      </p>
+    {% endif %}
   {% else %}
     <h1 class="govuk-heading-xl">{{ t('ERRORS.SOMETHING_WENT_WRONG') }}</h1>
     <p class="govuk-body">{{ t('COMMON.TECHNICAL_PROBLEMS') }}</p>
