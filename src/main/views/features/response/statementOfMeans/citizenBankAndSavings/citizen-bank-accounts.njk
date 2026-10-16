@@ -25,7 +25,7 @@
         </div>
       </div>
       <div class="govuk-grid-row">
-        <form name="accounts" method="post" novalidate>
+        <form data-module="cui-append-row" data-row-name-prefix="accounts" data-row-id-prefixes='[]' name="accounts" method="post" novalidate>
           {{ csrfProtection(csrf) }}
           <div class="govuk-grid-column-one-third govuk-!-display-inline">
             <div id="account-type-label" class="govuk-label--s govuk-!-margin-bottom-3">{{ t('COMMON.ACCOUNT_TYPE') }}</div>
@@ -43,6 +43,7 @@
           </div>
           <div class="govuk-grid-column-two-thirds">
             {{ govukButton({
+                type: "button", attributes: {hidden: true},
               text: t('PAGES.CITIZEN_BANK_ACCOUNTS.ADD_ANOTHER'),
               classes: "govuk-button--secondary append-row"
             }) }}

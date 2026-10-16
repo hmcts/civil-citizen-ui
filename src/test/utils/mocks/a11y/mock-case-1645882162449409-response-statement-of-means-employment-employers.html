@@ -327,7 +327,7 @@ data-module="govuk-service-navigation"
 
 
       <h1 class="govuk-heading-l">Who employs you?</h1>
-      <form method="post" novalidate>
+      <form method="post" novalidate data-module="cui-append-row" data-row-name-prefix="rows" data-row-id-prefixes="[]">
 
   <input type="hidden" name="_csrf" value="">
 
@@ -338,12 +338,14 @@ data-module="govuk-service-navigation"
 
   <div class="row-container govuk-grid-column-two-thirds">
     <div class="multiple-row">
+
       <div class="govuk-form-group">
         <div class="govuk-grid-column-one-third govuk-!-display-inline">
 
 
+
 <div class="govuk-form-group">
-  <label class="govuk-label govuk-visually-hidden" for="rows[0][employerName]">
+  <label class="govuk-label govuk-visually-hidden" data-row-label-template="Job %row% Employer name" for="rows[0][employerName]">
     Job 1 Employer name
   </label>
 
@@ -353,14 +355,16 @@ data-module="govuk-service-navigation"
     Employer name
   </div>
 
-<input class="govuk-input" id="rows[0][employerName]" name="rows[0][employerName]" type="text" value="Felipe" aria-describedby="rows[0][employerName]-hint">
+
+  <input class="govuk-input" id="rows[0][employerName]" name="rows[0][employerName]" type="text" value="Felipe" aria-describedby="rows[0][employerName]-hint">
 
 </div>
 
 
 
+
 <div class="govuk-form-group">
-  <label class="govuk-label govuk-visually-hidden" for="rows[0][jobTitle]">
+  <label class="govuk-label govuk-visually-hidden" data-row-label-template="Job %row% Job title" for="rows[0][jobTitle]">
     Job 1 Job title
   </label>
 
@@ -370,7 +374,8 @@ data-module="govuk-service-navigation"
     Job title
   </div>
 
-<input class="govuk-input" id="rows[0][jobTitle]" name="rows[0][jobTitle]" type="text" value="Developer" aria-describedby="rows[0][jobTitle]-hint">
+
+  <input class="govuk-input" id="rows[0][jobTitle]" name="rows[0][jobTitle]" type="text" value="Developer" aria-describedby="rows[0][jobTitle]-hint">
 
 </div>
 
@@ -384,12 +389,14 @@ data-module="govuk-service-navigation"
 
   <div class="row-container govuk-grid-column-two-thirds">
     <div class="multiple-row">
+
       <div class="govuk-form-group">
         <div class="govuk-grid-column-one-third govuk-!-display-inline">
 
 
+
 <div class="govuk-form-group">
-  <label class="govuk-label govuk-visually-hidden" for="rows[1][employerName]">
+  <label class="govuk-label govuk-visually-hidden" data-row-label-template="Job %row% Employer name" for="rows[1][employerName]">
     Job 2 Employer name
   </label>
 
@@ -399,14 +406,16 @@ data-module="govuk-service-navigation"
     Employer name
   </div>
 
-<input class="govuk-input" id="rows[1][employerName]" name="rows[1][employerName]" type="text" value="Tim" aria-describedby="rows[1][employerName]-hint">
+
+  <input class="govuk-input" id="rows[1][employerName]" name="rows[1][employerName]" type="text" value="Tim" aria-describedby="rows[1][employerName]-hint">
 
 </div>
 
 
 
+
 <div class="govuk-form-group">
-  <label class="govuk-label govuk-visually-hidden" for="rows[1][jobTitle]">
+  <label class="govuk-label govuk-visually-hidden" data-row-label-template="Job %row% Job title" for="rows[1][jobTitle]">
     Job 2 Job title
   </label>
 
@@ -416,7 +425,8 @@ data-module="govuk-service-navigation"
     Job title
   </div>
 
-<input class="govuk-input" id="rows[1][jobTitle]" name="rows[1][jobTitle]" type="text" value="Manager" aria-describedby="rows[1][jobTitle]-hint">
+
+  <input class="govuk-input" id="rows[1][jobTitle]" name="rows[1][jobTitle]" type="text" value="Manager" aria-describedby="rows[1][jobTitle]-hint">
 
 </div>
 
@@ -437,7 +447,7 @@ data-module="govuk-service-navigation"
 
 
 
-<button class="govuk-button govuk-button--secondary append-row" data-module="govuk-button">
+<button type="button" class="govuk-button govuk-button--secondary append-row" data-module="govuk-button" hidden="true">
   Add another job
 </button>
 

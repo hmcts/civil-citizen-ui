@@ -53,7 +53,7 @@
             {{ t('PAGES.DEFENDANT_TIMELINE.INCLUDE_DATES_IF_YOU_KNOW') }}
           </p>
 
-          <form method="post" novalidate>
+          <form data-module="cui-append-row" data-row-name-prefix="rows" data-row-id-prefixes='["rows-%index%-"]' method="post" novalidate>
             {{ csrfProtection(csrf) }}
             <div class="govuk-grid-column-one-half govuk-!-display-inline govuk-!-padding-left-0">
               <span id="timeline-date-heading" class="govuk-label--s">
@@ -79,6 +79,7 @@
             </div>
 
             {{ govukButton({
+                type: "button", attributes: {hidden: true},
               text: t('COMMON.BUTTONS.ADD_ANOTHER_EVENT'),
               classes: "govuk-button--secondary append-row"
             }) }}

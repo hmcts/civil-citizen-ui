@@ -2,6 +2,7 @@
 
 {% macro employerRow(employer, index, errorFor,t, formErrors) %}
   {% set commonLabel = t('PAGES.WHO_EMPLOYS_YOU.JOB', { indx: index+1 }) %}
+  {% set labelTemplate = t('PAGES.WHO_EMPLOYS_YOU.JOB', { indx: '%row%' }) %}
   <div class="row-container govuk-grid-column-two-thirds">
     <div class="multiple-row">
       {% set errors = formErrors %}
@@ -13,6 +14,7 @@
               value: employer.employerName,
               hint: { text: t('COMMON.EMPLOYER_NAME') },
               label: {
+                attributes: {'data-row-label-template': labelTemplate + t('COMMON.EMPLOYER_NAME')},
                 text: commonLabel + t('COMMON.EMPLOYER_NAME'),
                 classes: 'govuk-visually-hidden'
               },
@@ -24,6 +26,7 @@
               value: employer.jobTitle,
               hint: { text: t('COMMON.JOB_TITLE') },
               label: {
+                attributes: {'data-row-label-template': labelTemplate + t('COMMON.JOB_TITLE')},
                 text: commonLabel + t('COMMON.JOB_TITLE'),
                 classes: 'govuk-visually-hidden'
               },
