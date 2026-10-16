@@ -123,12 +123,12 @@ export class FileUpload {
 }
 
 export class FileOnlySection {
-  @ValidateIf((object) => object.caseDocument === undefined || object.caseDocument === null || object.caseDocument === '' )
+  @ValidateIf((object) => !object.caseDocuments?.length)
   @IsNotEmpty({message: 'ERRORS.VALID_CHOOSE_THE_FILE'})
   @ValidateNested()
   @Type(() => FileUpload)
     fileUpload: FileUpload;
-  caseDocument: CaseDocument;
+  caseDocuments: CaseDocument[] = [];
 }
 
 export class DateInputFields {
@@ -182,11 +182,11 @@ export class TypeOfDocumentSection {
   @ValidateNested()
     dateInputFields: DateInputFields;
   @ValidateNested()
-  @ValidateIf((object) => object.caseDocument === undefined || object.caseDocument === null || object.caseDocument === '' )
+  @ValidateIf((object) => !object.caseDocuments?.length)
   @IsNotEmpty({message: 'ERRORS.VALID_CHOOSE_THE_FILE'})
   @Type(() => FileUpload)
     fileUpload: FileUpload;
-  caseDocument: CaseDocument;
+  caseDocuments: CaseDocument[] = [];
 
   constructor(day?: string, month?: string, year?: string) {
     this.dateInputFields = new DateInputFields(day, month, year);
@@ -204,12 +204,12 @@ export class WitnessSection {
     witnessName: string;
   @ValidateNested()
     dateInputFields: DateInputFields;
-  @ValidateIf((object) => object.caseDocument === undefined || object.caseDocument === null || object.caseDocument === '' )
+  @ValidateIf((object) => !object.caseDocuments?.length)
   @IsNotEmpty({message: 'ERRORS.VALID_CHOOSE_THE_FILE'})
   @ValidateNested()
   @Type(() => FileUpload)
     fileUpload: FileUpload;
-  caseDocument: CaseDocument;
+  caseDocuments: CaseDocument[] = [];
 
   constructor(day?: string, month?: string, year?: string) {
     this.dateInputFields = new DateInputFields(day, month, year);
@@ -253,12 +253,12 @@ export class ExpertSection {
   @ValidateNested()
     dateInputFields: DateInputFields;
 
-  @ValidateIf((object) => object.caseDocument === undefined || object.caseDocument === null || object.caseDocument === '' )
+  @ValidateIf((object) => !object.caseDocuments?.length)
   @IsNotEmpty({message: 'ERRORS.VALID_CHOOSE_THE_FILE'})
   @ValidateNested()
   @Type(() => FileUpload)
     fileUpload: FileUpload;
-  caseDocument: CaseDocument;
+  caseDocuments: CaseDocument[] = [];
 
   constructor(day?: string, month?: string, year?: string) {
     this.dateInputFields = new DateInputFields(day, month, year);

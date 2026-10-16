@@ -4,11 +4,8 @@ import {UploadGAFiles} from 'models/generalApplication/uploadGAFiles';
 import {summaryRow} from 'models/summaryList/summaryList';
 import { constructResponseUrlWithIdAndAppIdParams } from 'common/utils/urlFormatter';
 import { GA_RESPONDENT_UPLOAD_DOCUMENT_URL } from 'routes/urls';
-import {GenericForm} from 'form/models/genericForm';
 import {AppRequest} from 'models/AppRequest';
-import {TypeOfDocumentSectionMapper} from 'services/features/caseProgression/TypeOfDocumentSectionMapper';
-import config from 'config';
-import {CivilServiceClient} from 'client/civilServiceClient';
+import {uploadEachSelectedFile} from 'services/features/generalApplication/documentUpload/uploadEachSelectedFile';
 import { t } from 'i18next';
 import {translateErrors} from 'services/features/generalApplication/uploadEvidenceDocumentService';
 import {FILE_UPLOAD_SOURCE} from 'common/utils/fileUploadUtils';
@@ -16,8 +13,6 @@ import { getDraftGARespondentResponse, saveDraftGARespondentResponse } from './g
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseService');
-const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
-const civilServiceClientForDocRetrieve: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl, true);
 
 export const getSummaryList = async (formattedSummary: SummarySection, redisKey: string, claimId: string, appId: string): Promise<void> => {
   const gaResponse = await getDraftGARespondentResponse(redisKey);
@@ -54,20 +49,11 @@ export const removeDocumentFromRedis = async (redisKey: string, index: number) :
 
 export const uploadSelectedFile = async (req: AppRequest, summarySection: SummarySection, claimId: string, appId: string): Promise<void> => {
   try {
-    const uploadDocument = new UploadGAFiles();
     const redisKey = generateRedisKeyForGA(req);
-    const fileUpload = TypeOfDocumentSectionMapper.mapToSingleFile(req);
-    uploadDocument.fileUpload = fileUpload;
-    const form = new GenericForm(uploadDocument);
-    form.validateSync();
-    delete uploadDocument.fileUpload; // release file memory
-    if (!form.hasErrors()) {
-      uploadDocument.caseDocument = await civilServiceClientForDocRetrieve.uploadDocument(<AppRequest>req, fileUpload);
-      await saveDocumentsToUploaded(redisKey, uploadDocument);
-      await getSummaryList(summarySection, redisKey, claimId, appId);
-    } else {
-      const errors = translateErrors(form.getAllErrors(), t);
-      req.session.fileUpload = JSON.stringify(errors);
+    const errors = await uploadEachSelectedFile(req, () => new UploadGAFiles(), (uploadDocument) => saveDocumentsToUploaded(redisKey, uploadDocument));
+    await getSummaryList(summarySection, redisKey, claimId, appId);
+    if (errors.length) {
+      req.session.fileUpload = JSON.stringify(translateErrors(errors, t));
       req.session.fileUploadSource = FILE_UPLOAD_SOURCE.GA_RESPONDENT_UPLOAD;
     }
   } catch(error) {

@@ -121,7 +121,7 @@ describe('Mediation upload your documents Controller', () => {
                 originalname: 'original name',
                 size: 1234,
               } as FileUpload,
-          caseDocument: caseDoc,
+          caseDocuments: caseDoc,
         }],
       };
 
@@ -146,7 +146,7 @@ describe('Mediation upload your documents Controller', () => {
             'dateMonth': '10',
             'dateYear': '2020',
           },
-          caseDocument: caseDoc,
+          caseDocuments: caseDoc,
         }],
       };
 
@@ -179,7 +179,7 @@ describe('Mediation upload your documents Controller', () => {
                 originalname: 'original name',
                 size: 1234,
               } as FileUpload,
-          caseDocument: caseDoc,
+          caseDocuments: caseDoc,
         }],
       };
 
@@ -204,7 +204,7 @@ describe('Mediation upload your documents Controller', () => {
             'dateMonth': '10',
             'dateYear': '2020',
           },
-          caseDocument: caseDoc,
+          caseDocuments: caseDoc,
         }],
       };
 
@@ -285,7 +285,7 @@ describe('Mediation upload your documents Controller', () => {
             'dateMonth': '10',
             'dateYear': '2020',
           },
-          caseDocument: caseDoc,
+          caseDocuments: caseDoc,
         }],
       };
 
@@ -310,7 +310,7 @@ describe('Mediation upload your documents Controller', () => {
             'dateMonth': '10',
             'dateYear': '2020',
           },
-          caseDocument: caseDoc,
+          caseDocuments: caseDoc,
         }],
       };
 
