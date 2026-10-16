@@ -12,7 +12,8 @@ import {
   UploadDocumentTypes,
   UploadEvidenceDocumentType,
   UploadEvidenceExpert,
-  UploadEvidenceWitness, UploadOtherDocumentType,
+  UploadEvidenceWitness,
+  UploadOtherDocumentType,
 } from 'models/caseProgression/uploadDocumentsType';
 import {toCUICaseProgression} from 'services/translation/convertToCUI/convertToCUICaseProgression';
 import {
@@ -145,8 +146,8 @@ describe('toCUICaseProgression', () => {
     expectedOutput.caseBundles = [] as Bundle[];
     expectedOutput.defendantLastUploadDate = undefined;
     expectedOutput.claimantLastUploadDate = undefined;
-    expectedOutput.claimantUploadDocuments = new UploadDocuments([], [], [], [], []);
-    expectedOutput.defendantUploadDocuments = new UploadDocuments([], [], [], [], []);
+    expectedOutput.claimantUploadDocuments = new UploadDocuments([], [], [], [], [], []);
+    expectedOutput.defendantUploadDocuments = new UploadDocuments([], [], [], [], [], []);
     expectedOutput.finalOrderDocumentCollection = undefined;
     expectedOutput.defendantTrialArrangements = undefined;
     expectedOutput.claimantTrialArrangements = undefined;
@@ -172,12 +173,14 @@ describe('toCUICaseProgression', () => {
     expectedOutput.caseBundles = [] as Bundle[];
     expectedOutput.defendantLastUploadDate = undefined;
     expectedOutput.claimantDocuments = undefined;
+    expectedOutput.claimantLastUploadDate = undefined;
     expectedOutput.claimantUploadDocuments = new UploadDocuments(
       [new UploadDocumentTypes(false, documentTypeAsParameter, EvidenceUploadDisclosure.DISCLOSURE_LIST, 'Claimant'),
         new UploadDocumentTypes(false, documentTypeAsParameter, EvidenceUploadDisclosure.DISCLOSURE_LIST, 'Claimant')],
       [new UploadDocumentTypes(false, witnessAsParameter, EvidenceUploadWitness.WITNESS_STATEMENT, 'Claimant')],
       [new UploadDocumentTypes(false, expertAsParameter, EvidenceUploadExpert.EXPERT_REPORT, 'Claimant')],
       [new UploadDocumentTypes(false, documentTypeAsParameter, EvidenceUploadTrial.COSTS, 'Claimant')],
+      [],
       [],
     );
     expectedOutput.defendantUploadDocuments = new UploadDocuments(
@@ -186,6 +189,7 @@ describe('toCUICaseProgression', () => {
       [],
       [new UploadDocumentTypes(false, documentTypeAsParameter, EvidenceUploadTrial.AUTHORITIES, 'Defendant')],
       [],
+      [],
     );
     expectedOutput.finalOrderDocumentCollection = [(new FinalOrderDocumentCollection(mockFinalOrderDocument1.id,  mockFinalOrderDocument1.value)),
       (new FinalOrderDocumentCollection(mockFinalOrderDocument2.id,  mockFinalOrderDocument2.value))];
@@ -193,6 +197,9 @@ describe('toCUICaseProgression', () => {
     const defendantTrialArrangements = new TrialArrangements();
     defendantTrialArrangements.isCaseReady = YesNo.YES;
     expectedOutput.defendantTrialArrangements = defendantTrialArrangements;
+    expectedOutput.requestForReconsiderationDeadline= undefined;
+    expectedOutput.requestForReconsiderationDocument= undefined;
+    expectedOutput.requestForReconsiderationDocumentRes=undefined;
 
     const actualOutput = toCUICaseProgression(ccdClaim);
     expect(actualOutput).toEqual(expectedOutput);
@@ -240,8 +247,8 @@ describe('toCUICaseProgression', () => {
     expectedOutput.caseBundles = [] as Bundle[];
     expectedOutput.defendantLastUploadDate = undefined;
     expectedOutput.claimantLastUploadDate = undefined;
-    expectedOutput.claimantUploadDocuments = new UploadDocuments([], [], [], [], []);
-    expectedOutput.defendantUploadDocuments = new UploadDocuments([], [], [], [], []);
+    expectedOutput.claimantUploadDocuments = new UploadDocuments([], [], [], [], [], []);
+    expectedOutput.defendantUploadDocuments = new UploadDocuments([], [], [], [], [], []);
     expectedOutput.finalOrderDocumentCollection = undefined;
     const defendantTrialArrangements = new TrialArrangements();
     defendantTrialArrangements.isCaseReady = YesNo.YES;
