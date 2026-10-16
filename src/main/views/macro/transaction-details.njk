@@ -1,9 +1,9 @@
 {% from "govuk/components/input/macro.njk" import govukInput %}
 {% from "govuk/components/radios/macro.njk" import govukRadios %}
 {% macro transactionDetails(t,hintAmount, property, transactionSource, labels, form, other, removeButton) %}
-  {% set amountValue =  '' + transactionSource.amount %}
+  {% set amountValue = transactionSource.amount | default('') %}
   {% if other %}
-<div class="govuk-form-group civil-amountRow  multiple-row">
+<div class="govuk-form-group civil-amountRow multiple-row row-container">
   {{ govukInput({
     id: property + "[name]",
     name: property + "[name]",
@@ -79,9 +79,9 @@
     }) }}
     {% if removeButton %}
       {% if removeButton.hidden %}
-        <button type="button" class="govuk-link-button remove-row govuk-!-display-none">{{ t(removeButton.text) }}</button>
+        <button type="button" hidden class="govuk-link-button remove-row govuk-!-display-none">{{ t(removeButton.text) }}</button>
       {% else %}
-        <button type="button" class="govuk-link-button remove-row">{{ t(removeButton.text) }}</button>
+        <button type="button" hidden class="govuk-link-button remove-row">{{ t(removeButton.text) }}</button>
       {% endif %}
     {% endif %}
   </div>
@@ -90,4 +90,3 @@
   {% macro otherTransactionDetails(t,property, index, transactionSource, labels, form, removeButton) %}
     {{ transactionDetails(t,'', property +'['+index +']', transactionSource, labels, form, true, removeButton) }}
   {% endmacro %}
-</div>

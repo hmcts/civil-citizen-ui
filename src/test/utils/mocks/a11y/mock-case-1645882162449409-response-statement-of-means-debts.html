@@ -339,8 +339,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
         </div>
 
-          <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-debtsRadio">
-
+          <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-debtsRadio"><div data-module="cui-append-row" data-row-name-prefix="debtsItems" data-row-id-prefixes="[]">
 
 
 <div class="govuk-form-group ">
@@ -358,8 +357,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 
 
-    <div class="multiple-row">
+    <div class="multiple-row row-container">
       <div class="govuk-grid-row govuk-!-padding-top-3  ">
+
 
 
 
@@ -370,12 +370,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div class="govuk-grid-column-one-half ">
 
 
+
+
+
 <div class="govuk-form-group">
-  <label class="govuk-label govuk-visually-hidden" for="debtsItems[0][debt]">
+  <label class="govuk-label govuk-visually-hidden" data-row-label-template="Debt %row% List each loan or credit card debt" for="debtsItems[0][debt]">
     Debt 1 List each loan or credit card debt
   </label>
 
-<input class="govuk-input govuk-grid-column-full" id="debtsItems[0][debt]" name="debtsItems[0][debt]" type="text" spellcheck="false">
+
+  <input class="govuk-input govuk-grid-column-full" id="debtsItems[0][debt]" name="debtsItems[0][debt]" type="text" spellcheck="false" value="">
 
 </div>
 
@@ -383,13 +387,24 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div class="govuk-grid-column-one-quarter">
 
 
+
+
+
 <div class="govuk-form-group">
-  <label class="govuk-label govuk-visually-hidden" for="debtsItems[0][totalOwned]">
+  <label class="govuk-label govuk-visually-hidden" data-row-label-template="Debt %row% Total owed, in pounds" for="debtsItems[0][totalOwned]">
     Debt 1 Total owed, in pounds
   </label>
 
-<div class="govuk-input__wrapper"><div class="govuk-input__prefix" aria-hidden="true">£</div>
-  <input class="govuk-input govuk-grid-column-full" id="debtsItems[0][totalOwned]" name="debtsItems[0][totalOwned]" type="number" spellcheck="false"></div>
+
+  <div class="govuk-input__wrapper">
+
+
+    <div class="govuk-input__prefix" aria-hidden="true">£</div>
+
+    <input class="govuk-input govuk-grid-column-full" id="debtsItems[0][totalOwned]" name="debtsItems[0][totalOwned]" type="number" spellcheck="false" value="">
+
+
+  </div>
 
 </div>
 
@@ -397,13 +412,24 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div class="govuk-grid-column-one-quarter">
 
 
+
+
+
 <div class="govuk-form-group">
-  <label class="govuk-label govuk-visually-hidden" for="debtsItems[0][monthlyPayments]">
+  <label class="govuk-label govuk-visually-hidden" data-row-label-template="Debt %row% Monthly payments, in pounds" for="debtsItems[0][monthlyPayments]">
     Debt 1 Monthly payments, in pounds
   </label>
 
-<div class="govuk-input__wrapper"><div class="govuk-input__prefix" aria-hidden="true">£</div>
-  <input class="govuk-input govuk-grid-column-full" id="debtsItems[0][monthlyPayments]" name="debtsItems[0][monthlyPayments]" type="number" spellcheck="false"></div>
+
+  <div class="govuk-input__wrapper">
+
+
+    <div class="govuk-input__prefix" aria-hidden="true">£</div>
+
+    <input class="govuk-input govuk-grid-column-full" id="debtsItems[0][monthlyPayments]" name="debtsItems[0][monthlyPayments]" type="number" spellcheck="false" value="">
+
+
+  </div>
 
 </div>
 
@@ -413,8 +439,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 
 
-    <div class="multiple-row">
+    <div class="multiple-row row-container">
       <div class="govuk-grid-row govuk-!-padding-top-3  ">
+
 
 
 
@@ -425,12 +452,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div class="govuk-grid-column-one-half ">
 
 
+
+
+
 <div class="govuk-form-group">
-  <label class="govuk-label govuk-visually-hidden" for="debtsItems[1][debt]">
+  <label class="govuk-label govuk-visually-hidden" data-row-label-template="Debt %row% List each loan or credit card debt" for="debtsItems[1][debt]">
     Debt 2 List each loan or credit card debt
   </label>
 
-<input class="govuk-input govuk-grid-column-full" id="debtsItems[1][debt]" name="debtsItems[1][debt]" type="text" spellcheck="false">
+
+  <input class="govuk-input govuk-grid-column-full" id="debtsItems[1][debt]" name="debtsItems[1][debt]" type="text" spellcheck="false" value="">
 
 </div>
 
@@ -438,13 +469,24 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div class="govuk-grid-column-one-quarter">
 
 
+
+
+
 <div class="govuk-form-group">
-  <label class="govuk-label govuk-visually-hidden" for="debtsItems[1][totalOwned]">
+  <label class="govuk-label govuk-visually-hidden" data-row-label-template="Debt %row% Total owed, in pounds" for="debtsItems[1][totalOwned]">
     Debt 2 Total owed, in pounds
   </label>
 
-<div class="govuk-input__wrapper"><div class="govuk-input__prefix" aria-hidden="true">£</div>
-  <input class="govuk-input govuk-grid-column-full" id="debtsItems[1][totalOwned]" name="debtsItems[1][totalOwned]" type="number" spellcheck="false"></div>
+
+  <div class="govuk-input__wrapper">
+
+
+    <div class="govuk-input__prefix" aria-hidden="true">£</div>
+
+    <input class="govuk-input govuk-grid-column-full" id="debtsItems[1][totalOwned]" name="debtsItems[1][totalOwned]" type="number" spellcheck="false" value="">
+
+
+  </div>
 
 </div>
 
@@ -452,13 +494,24 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div class="govuk-grid-column-one-quarter">
 
 
+
+
+
 <div class="govuk-form-group">
-  <label class="govuk-label govuk-visually-hidden" for="debtsItems[1][monthlyPayments]">
+  <label class="govuk-label govuk-visually-hidden" data-row-label-template="Debt %row% Monthly payments, in pounds" for="debtsItems[1][monthlyPayments]">
     Debt 2 Monthly payments, in pounds
   </label>
 
-<div class="govuk-input__wrapper"><div class="govuk-input__prefix" aria-hidden="true">£</div>
-  <input class="govuk-input govuk-grid-column-full" id="debtsItems[1][monthlyPayments]" name="debtsItems[1][monthlyPayments]" type="number" spellcheck="false"></div>
+
+  <div class="govuk-input__wrapper">
+
+
+    <div class="govuk-input__prefix" aria-hidden="true">£</div>
+
+    <input class="govuk-input govuk-grid-column-full" id="debtsItems[1][monthlyPayments]" name="debtsItems[1][monthlyPayments]" type="number" spellcheck="false" value="">
+
+
+  </div>
 
 </div>
 
@@ -472,19 +525,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 
 
-
-
-
-
-
-<button class="govuk-button govuk-button--secondary append-row" data-module="govuk-button">
+<button type="button" class="govuk-button govuk-button--secondary append-row" data-module="govuk-button" hidden="true">
   Add a debt
 </button>
 
   </div>
 </div>
-
-          </div>
+</div></div>
 
 
 

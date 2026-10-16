@@ -321,7 +321,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             Include dates if you know them.
           </p>
 
-          <form method="post" novalidate>
+          <form method="post" novalidate data-module="cui-append-row" data-row-name-prefix="rows" data-row-id-prefixes="[&quot;rows-%index%-&quot;]">
 
   <input type="hidden" name="_csrf" value="">
 
@@ -334,7 +334,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
               </p>
             </div>
             <div class="govuk-grid-column-one-half govuk-!-display-inline govuk-!-padding-left-0">
-              <label class="govuk-label--s">What happened</label>
+              <label id="timeline-description-heading" class="govuk-label--s">What happened</label>
               <p
                 class="govuk-hint govuk-!-margin-bottom-0 govuk-!-margin-top-0">For example, you might have signed a contract</p>
             </div>
@@ -351,44 +351,68 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 
 
+
+
+
+
+
 <div class="govuk-form-group">
 
-  <div class="govuk-date-input" id="rows[0][date]">
+  <fieldset class="govuk-fieldset" role="group">
 
-    <div class="govuk-date-input__item">
-      <div class="govuk-form-group">
-        <label class="govuk-label govuk-date-input__label" for="day">
-          Day
-        </label>
+    <legend class="govuk-fieldset__legend govuk-visually-hidden table-row-legend-new">
 
-      <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="day" name="rows[0][day]" type="text" inputmode="numeric">
+      Date row <span data-row-number="">1</span>
 
+    </legend>
+
+
+    <div class="govuk-date-input" data-error-target="rows-0-day" id="rows[0][date]">
+
+
+            <div class="govuk-date-input__item">
+        <div class="govuk-form-group">
+          <label class="govuk-label govuk-date-input__label" for="rows-0-day">
+            Day
+          </label>
+
+
+          <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="rows-0-day" name="rows[0][day]" type="text" value="" inputmode="numeric">
+
+        </div>
       </div>
+
+
+            <div class="govuk-date-input__item">
+        <div class="govuk-form-group">
+          <label class="govuk-label govuk-date-input__label" for="rows-0-month">
+            Month
+          </label>
+
+
+          <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="rows-0-month" name="rows[0][month]" type="text" value="" inputmode="numeric">
+
+        </div>
+      </div>
+
+
+            <div class="govuk-date-input__item">
+        <div class="govuk-form-group">
+          <label class="govuk-label govuk-date-input__label" for="rows-0-year">
+            Year
+          </label>
+
+
+          <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="rows-0-year" name="rows[0][year]" type="text" value="" inputmode="numeric">
+
+        </div>
+      </div>
+
+
+
     </div>
 
-    <div class="govuk-date-input__item">
-      <div class="govuk-form-group">
-        <label class="govuk-label govuk-date-input__label" for="month">
-          Month
-        </label>
-
-      <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="month" name="rows[0][month]" type="text" inputmode="numeric">
-
-      </div>
-    </div>
-
-    <div class="govuk-date-input__item">
-      <div class="govuk-form-group">
-        <label class="govuk-label govuk-date-input__label" for="year">
-          Year
-        </label>
-
-      <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="year" name="rows[0][year]" type="text" inputmode="numeric">
-
-      </div>
-    </div>
-
-  </div>
+  </fieldset>
 
 </div>
 
@@ -396,13 +420,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div class="govuk-grid-column-one-half govuk-!-display-inline govuk-!-padding-left-0">
 
 
+
 <div class="govuk-form-group">
-  <label class="govuk-label govuk-visually-hidden" for="rows[0][description]">
-    What happened
+  <label class="govuk-label govuk-visually-hidden table-row-legend-new" data-row-label-template="row %row%" for="rows[0][description]">
+    row 1
   </label>
 
 
-  <textarea class="govuk-textarea govuk-grid-column-full" id="rows[0][description]" name="rows[0][description]" rows="5" spellcheck="false"></textarea>
+
+  <textarea class="govuk-textarea govuk-grid-column-full" id="rows[0][description]" name="rows[0][description]" rows="5" spellcheck="false" aria-describedby="timeline-description-heading"></textarea>
+
 </div>
 
       </div>
@@ -422,44 +449,68 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 
 
+
+
+
+
+
 <div class="govuk-form-group">
 
-  <div class="govuk-date-input" id="rows[1][date]">
+  <fieldset class="govuk-fieldset" role="group">
 
-    <div class="govuk-date-input__item">
-      <div class="govuk-form-group">
-        <label class="govuk-label govuk-date-input__label" for="day">
-          Day
-        </label>
+    <legend class="govuk-fieldset__legend govuk-visually-hidden table-row-legend-new">
 
-      <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="day" name="rows[1][day]" type="text" inputmode="numeric">
+      Date row <span data-row-number="">2</span>
 
+    </legend>
+
+
+    <div class="govuk-date-input" data-error-target="rows-1-day" id="rows[1][date]">
+
+
+            <div class="govuk-date-input__item">
+        <div class="govuk-form-group">
+          <label class="govuk-label govuk-date-input__label" for="rows-1-day">
+            Day
+          </label>
+
+
+          <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="rows-1-day" name="rows[1][day]" type="text" value="" inputmode="numeric">
+
+        </div>
       </div>
+
+
+            <div class="govuk-date-input__item">
+        <div class="govuk-form-group">
+          <label class="govuk-label govuk-date-input__label" for="rows-1-month">
+            Month
+          </label>
+
+
+          <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="rows-1-month" name="rows[1][month]" type="text" value="" inputmode="numeric">
+
+        </div>
+      </div>
+
+
+            <div class="govuk-date-input__item">
+        <div class="govuk-form-group">
+          <label class="govuk-label govuk-date-input__label" for="rows-1-year">
+            Year
+          </label>
+
+
+          <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="rows-1-year" name="rows[1][year]" type="text" value="" inputmode="numeric">
+
+        </div>
+      </div>
+
+
+
     </div>
 
-    <div class="govuk-date-input__item">
-      <div class="govuk-form-group">
-        <label class="govuk-label govuk-date-input__label" for="month">
-          Month
-        </label>
-
-      <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="month" name="rows[1][month]" type="text" inputmode="numeric">
-
-      </div>
-    </div>
-
-    <div class="govuk-date-input__item">
-      <div class="govuk-form-group">
-        <label class="govuk-label govuk-date-input__label" for="year">
-          Year
-        </label>
-
-      <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="year" name="rows[1][year]" type="text" inputmode="numeric">
-
-      </div>
-    </div>
-
-  </div>
+  </fieldset>
 
 </div>
 
@@ -467,13 +518,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div class="govuk-grid-column-one-half govuk-!-display-inline govuk-!-padding-left-0">
 
 
+
 <div class="govuk-form-group">
-  <label class="govuk-label govuk-visually-hidden" for="rows[1][description]">
-    What happened
+  <label class="govuk-label govuk-visually-hidden table-row-legend-new" data-row-label-template="row %row%" for="rows[1][description]">
+    row 2
   </label>
 
 
-  <textarea class="govuk-textarea govuk-grid-column-full" id="rows[1][description]" name="rows[1][description]" rows="5" spellcheck="false"></textarea>
+
+  <textarea class="govuk-textarea govuk-grid-column-full" id="rows[1][description]" name="rows[1][description]" rows="5" spellcheck="false" aria-describedby="timeline-description-heading"></textarea>
+
 </div>
 
       </div>
@@ -493,44 +547,68 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 
 
+
+
+
+
+
 <div class="govuk-form-group">
 
-  <div class="govuk-date-input" id="rows[2][date]">
+  <fieldset class="govuk-fieldset" role="group">
 
-    <div class="govuk-date-input__item">
-      <div class="govuk-form-group">
-        <label class="govuk-label govuk-date-input__label" for="day">
-          Day
-        </label>
+    <legend class="govuk-fieldset__legend govuk-visually-hidden table-row-legend-new">
 
-      <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="day" name="rows[2][day]" type="text" inputmode="numeric">
+      Date row <span data-row-number="">3</span>
 
+    </legend>
+
+
+    <div class="govuk-date-input" data-error-target="rows-2-day" id="rows[2][date]">
+
+
+            <div class="govuk-date-input__item">
+        <div class="govuk-form-group">
+          <label class="govuk-label govuk-date-input__label" for="rows-2-day">
+            Day
+          </label>
+
+
+          <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="rows-2-day" name="rows[2][day]" type="text" value="" inputmode="numeric">
+
+        </div>
       </div>
+
+
+            <div class="govuk-date-input__item">
+        <div class="govuk-form-group">
+          <label class="govuk-label govuk-date-input__label" for="rows-2-month">
+            Month
+          </label>
+
+
+          <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="rows-2-month" name="rows[2][month]" type="text" value="" inputmode="numeric">
+
+        </div>
+      </div>
+
+
+            <div class="govuk-date-input__item">
+        <div class="govuk-form-group">
+          <label class="govuk-label govuk-date-input__label" for="rows-2-year">
+            Year
+          </label>
+
+
+          <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="rows-2-year" name="rows[2][year]" type="text" value="" inputmode="numeric">
+
+        </div>
+      </div>
+
+
+
     </div>
 
-    <div class="govuk-date-input__item">
-      <div class="govuk-form-group">
-        <label class="govuk-label govuk-date-input__label" for="month">
-          Month
-        </label>
-
-      <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="month" name="rows[2][month]" type="text" inputmode="numeric">
-
-      </div>
-    </div>
-
-    <div class="govuk-date-input__item">
-      <div class="govuk-form-group">
-        <label class="govuk-label govuk-date-input__label" for="year">
-          Year
-        </label>
-
-      <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="year" name="rows[2][year]" type="text" inputmode="numeric">
-
-      </div>
-    </div>
-
-  </div>
+  </fieldset>
 
 </div>
 
@@ -538,13 +616,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div class="govuk-grid-column-one-half govuk-!-display-inline govuk-!-padding-left-0">
 
 
+
 <div class="govuk-form-group">
-  <label class="govuk-label govuk-visually-hidden" for="rows[2][description]">
-    What happened
+  <label class="govuk-label govuk-visually-hidden table-row-legend-new" data-row-label-template="row %row%" for="rows[2][description]">
+    row 3
   </label>
 
 
-  <textarea class="govuk-textarea govuk-grid-column-full" id="rows[2][description]" name="rows[2][description]" rows="5" spellcheck="false"></textarea>
+
+  <textarea class="govuk-textarea govuk-grid-column-full" id="rows[2][description]" name="rows[2][description]" rows="5" spellcheck="false" aria-describedby="timeline-description-heading"></textarea>
+
 </div>
 
       </div>
@@ -564,44 +645,68 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 
 
+
+
+
+
+
 <div class="govuk-form-group">
 
-  <div class="govuk-date-input" id="rows[3][date]">
+  <fieldset class="govuk-fieldset" role="group">
 
-    <div class="govuk-date-input__item">
-      <div class="govuk-form-group">
-        <label class="govuk-label govuk-date-input__label" for="day">
-          Day
-        </label>
+    <legend class="govuk-fieldset__legend govuk-visually-hidden table-row-legend-new">
 
-      <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="day" name="rows[3][day]" type="text" inputmode="numeric">
+      Date row <span data-row-number="">4</span>
 
+    </legend>
+
+
+    <div class="govuk-date-input" data-error-target="rows-3-day" id="rows[3][date]">
+
+
+            <div class="govuk-date-input__item">
+        <div class="govuk-form-group">
+          <label class="govuk-label govuk-date-input__label" for="rows-3-day">
+            Day
+          </label>
+
+
+          <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="rows-3-day" name="rows[3][day]" type="text" value="" inputmode="numeric">
+
+        </div>
       </div>
+
+
+            <div class="govuk-date-input__item">
+        <div class="govuk-form-group">
+          <label class="govuk-label govuk-date-input__label" for="rows-3-month">
+            Month
+          </label>
+
+
+          <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="rows-3-month" name="rows[3][month]" type="text" value="" inputmode="numeric">
+
+        </div>
+      </div>
+
+
+            <div class="govuk-date-input__item">
+        <div class="govuk-form-group">
+          <label class="govuk-label govuk-date-input__label" for="rows-3-year">
+            Year
+          </label>
+
+
+          <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="rows-3-year" name="rows[3][year]" type="text" value="" inputmode="numeric">
+
+        </div>
+      </div>
+
+
+
     </div>
 
-    <div class="govuk-date-input__item">
-      <div class="govuk-form-group">
-        <label class="govuk-label govuk-date-input__label" for="month">
-          Month
-        </label>
-
-      <input class="govuk-input govuk-date-input__input govuk-input--width-2" id="month" name="rows[3][month]" type="text" inputmode="numeric">
-
-      </div>
-    </div>
-
-    <div class="govuk-date-input__item">
-      <div class="govuk-form-group">
-        <label class="govuk-label govuk-date-input__label" for="year">
-          Year
-        </label>
-
-      <input class="govuk-input govuk-date-input__input govuk-input--width-4" id="year" name="rows[3][year]" type="text" inputmode="numeric">
-
-      </div>
-    </div>
-
-  </div>
+  </fieldset>
 
 </div>
 
@@ -609,13 +714,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div class="govuk-grid-column-one-half govuk-!-display-inline govuk-!-padding-left-0">
 
 
+
 <div class="govuk-form-group">
-  <label class="govuk-label govuk-visually-hidden" for="rows[3][description]">
-    What happened
+  <label class="govuk-label govuk-visually-hidden table-row-legend-new" data-row-label-template="row %row%" for="rows[3][description]">
+    row 4
   </label>
 
 
-  <textarea class="govuk-textarea govuk-grid-column-full" id="rows[3][description]" name="rows[3][description]" rows="5" spellcheck="false"></textarea>
+
+  <textarea class="govuk-textarea govuk-grid-column-full" id="rows[3][description]" name="rows[3][description]" rows="5" spellcheck="false" aria-describedby="timeline-description-heading"></textarea>
+
 </div>
 
       </div>
@@ -632,7 +740,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 
 
-<button class="govuk-button govuk-button--secondary append-row" data-module="govuk-button">
+<button type="button" class="govuk-button govuk-button--secondary append-row" data-module="govuk-button" hidden="true">
   Add another event
 </button>
 
