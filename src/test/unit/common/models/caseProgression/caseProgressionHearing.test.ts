@@ -1,4 +1,10 @@
-import {CaseProgressionHearing, HearingLocation} from 'models/caseProgression/caseProgressionHearing';
+import {
+  CaseProgressionHearing,
+  CaseProgressionHearingDocuments,
+  getHearingDocumentsCaseDocumentIdByType,
+  HearingLocation,
+} from 'models/caseProgression/caseProgressionHearing';
+import {DocumentType} from 'models/document/documentType';
 import {HearingDuration} from 'models/caseProgression/hearingDuration';
 import {t} from 'i18next';
 import {HearingFeeInformation} from 'models/caseProgression/hearingFee/hearingFee';
@@ -88,6 +94,46 @@ describe('testing of caseProgressionHearing class with missing values', () => {
   it('should return empty string for court name when location value not set', () => {
     expect(new HearingLocation().getCourtName()).toBe('');
   });
+
+  it('should return undefined for duration of days when hearing date not set', () => {
+    expect(caseProgressionHearing.getDurationOfDaysForHearing()).toBeUndefined();
+  });
+});
+
+describe('testing of getDurationOfDaysForHearing', () => {
+  it('should return number of days until the hearing date', () => {
+    //Given
+    const hearingDate = new Date();
+    hearingDate.setDate(hearingDate.getDate() + 5);
+    const caseProgressionHearing = new CaseProgressionHearing(null, null, hearingDate, null);
+    //When
+    const result = caseProgressionHearing.getDurationOfDaysForHearing();
+    //Then
+    expect(result).toBe(5);
+  });
+});
+
+describe('testing of getHearingDocumentsCaseDocumentIdByType', () => {
+  const hearingDocuments = [{
+    id: '1',
+    value: {
+      documentType: DocumentType.HEARING_FORM,
+      documentName: 'hearing_form.pdf',
+      documentLink: {document_url: 'url', document_filename: 'hearing_form.pdf', document_binary_url: 'http://dm-store/documents/abc-123/binary'},
+    },
+  }] as unknown as CaseProgressionHearingDocuments[];
+
+  it('should return document id when document of type exists', () => {
+    expect(getHearingDocumentsCaseDocumentIdByType(hearingDocuments, DocumentType.HEARING_FORM)).toBe('abc-123');
+  });
+
+  it('should return undefined when no document of type exists', () => {
+    expect(getHearingDocumentsCaseDocumentIdByType(hearingDocuments, DocumentType.JUDGE_FINAL_ORDER)).toBeUndefined();
+  });
+
+  it('should return undefined when no hearing documents', () => {
+    expect(getHearingDocumentsCaseDocumentIdByType([], DocumentType.HEARING_FORM)).toBeUndefined();
+  });
 });
 
 describe('testing of caseProgressionHearingFee class with missing values', () => {
@@ -95,6 +141,11 @@ describe('testing of caseProgressionHearingFee class with missing values', () =>
 
   it('should return undefined for hearing fee when not set', () => {
     expect(hearingFeeInformation.getHearingFeeFormatted()).toBeUndefined();
+  });
+
+  it('should return zero for hearing fee when amount is zero', () => {
+    const zeroFeeInformation = new HearingFeeInformation({calculatedAmountInPence: '0', code: 'test', version: '1'});
+    expect(zeroFeeInformation.getHearingFeeFormatted()).toBe(0);
   });
 
   it('should return undefined for hearing due date when not set', () => {
