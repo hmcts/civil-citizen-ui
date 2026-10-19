@@ -81,7 +81,7 @@ describe('General Application - Pay additional fee Page', () => {
         applicationFeeAmountInPence: 10000,
         generalAppPBADetails: {fee: {calculatedAmountInPence: 5000}},
       },
-    } as ApplicationResponse);
+    } as unknown as ApplicationResponse);
   });
 
   describe('on GET', () => {

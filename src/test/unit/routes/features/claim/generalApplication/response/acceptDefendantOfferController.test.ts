@@ -51,7 +51,7 @@ describe('General Application - Accept defendant offer', () => {
         document_filename: 'test.png',
       },
     },
-  } as ApplicationResponse;
+  } as unknown as ApplicationResponse;
 
   const n245 = CASE_DOCUMENT_VIEW_URL.replace(':id', appId).replace(':documentId', 'test');
   const redirectUrl = constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_RESPONDENT_WANT_TO_UPLOAD_DOCUMENT_URL);

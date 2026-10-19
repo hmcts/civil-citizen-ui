@@ -110,7 +110,7 @@ describe('General Application - Check your answers', () => {
       claim.generalApplication.applicationFee = {calculatedAmountInPence: 25000, code: 'test', version: 1};
       mockSubmitApplication.mockResolvedValue({
         generalApplications: [{id: '123456', value: {gaApp: 'yes'}}],
-      } as Claim);
+      } as unknown as Claim);
       req.body = {signed: 'yes', name: 'Mr Defendant'};
 
       await postHandler(req as never, res as unknown as Response, next);
