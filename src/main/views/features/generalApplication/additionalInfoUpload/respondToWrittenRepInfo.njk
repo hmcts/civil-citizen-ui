@@ -39,12 +39,7 @@
             text: t(form.errorFor('writtenRepText'))
           } if form.hasFieldError('writtenRepText')
     }) }}
-    <fieldset class="govuk-fieldset">
-      <legend class="govuk-label govuk-!-font-weight-bold" for="option">
-            {{ t('PAGES.GENERAL_APPLICATION.RESPONDENT_UPLOAD_OPTION.OPTION') }}
-       </legend>
-    {{ yesNoRadioButton(t, 'option', 'option', '', form, '', {yes: 'COMMON.VARIATION_2.YES', no: 'COMMON.VARIATION_2.NO'}) }}
-   </fieldset>
+    {{ yesNoRadioButton(t, 'option', 'option', t('PAGES.GENERAL_APPLICATION.RESPONDENT_UPLOAD_OPTION.OPTION'), form, '', {yes: 'COMMON.VARIATION_2.YES', no: 'COMMON.VARIATION_2.NO', isPageHeading: false, legendClasses: 'govuk-!-font-weight-bold'}) }}
     <div class="govuk-button-group">
       {{ addButton(t, 'CONTINUE', cancelUrl) }}
     </div>
