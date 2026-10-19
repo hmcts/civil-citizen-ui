@@ -15,8 +15,12 @@
 {% block content %}
 
       {% set errors = form.getAllErrors() %}
+      {% set dateSummaryErrors = [] %}
+      {% for error in errors %}
+        {% set added = dateSummaryErrors.push({text: error.text, href: '#firstPaymentDate[day]' if error.property in ['firstPaymentDate[date]', 'firstPaymentDate'] else error.href}) %}
+      {% endfor %}
       {% if form.hasErrors() %}
-        {{ errorSummary(errors, t) }}
+        {{ errorSummary(dateSummaryErrors, t) }}
       {% endif %}
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">
@@ -52,7 +56,11 @@
             </div>
             <div id="first-payment-date">
               <h2 class='govuk-heading-m'>{{ t('PAGES.CCJ_REPAYMENT_PLAN_INSTALMENTS.FIRST_PAYMENT_DATE') }}</h2>
-              {{ govukDateInput({
+              {% set dateErrors = [] %}
+            {% for field in ['firstPaymentDate[date]', 'firstPaymentDate[day]', 'firstPaymentDate[month]', 'firstPaymentDate[year]'] %}
+              {% if form.errorFor(field) %}{% set dateErrors = (dateErrors.push(t(form.errorFor(field)) | escape), dateErrors) %}{% endif %}
+            {% endfor %}
+            {{ govukDateInput({
                 id: "firstPaymentDate",
                 type: "number",
                 inputmode: "numeric",
@@ -68,13 +76,8 @@
                     date: exampleDate.getDate() + ' ' + exampleDate.getMonth() + ' ' + (exampleDate.getFullYear() - 18)
                   })
                 },
-                errorMessage: {
-                  html: '<p class="govuk-error-message">' + t(form.errorFor('firstPaymentDate[date]')) + '</p>' +
-                  '<p class="govuk-error-message">' + t(form.errorFor('firstPaymentDate[day]')) + '</p>' +
-                  '<p class="govuk-error-message">' + t(form.errorFor('firstPaymentDate[month]')) + '</p>' +
-                  '<p class="govuk-error-message">' + t(form.errorFor('firstPaymentDate[year]')) + '</p>'
-                } if form.hasNestedErrors(),
-                items: [
+                errorMessage: { html: dateErrors | join('<br>') } if dateErrors.length,
+              items: [
                   {
                     classes: "govuk-input--width-2 govuk-input--error" if form.errorFor('firstPaymentDate[day]') else "govuk-input--width-2",
                     id: "firstPaymentDate[day]",
