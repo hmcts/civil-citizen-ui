@@ -19,6 +19,17 @@ Extra pass criteria:
 - page cycle (read, save, read back) p95 under the NFR
 - zero data-integrity failures, meaning a value that saved fine but read back differently
 
+## Run it
+
+```bash
+performance/run.sh draft-claim-store --pr <civil-service PR> --profile smoke
+performance/run.sh draft-claim-store --pr <civil-service PR> --profile nfr --label before-change --env SEED_EXPIRED=2000
+performance/run.sh draft-claim-store --pr <civil-service PR> --profile nfr --label after-change --env SEED_EXPIRED=2000
+node performance/tools/compare.js test-results/performance/<before run> test-results/performance/<after run>
+```
+
+The target is the civil-service preview for that PR. The suite only calls the draft claims API, so no Citizen UI preview is needed. Server metrics come from the preview's own Postgres pod, `civil-service-pr-<n>-postgresql-0`.
+
 ## Settings (`--env`)
 
 | Setting | Default | |
