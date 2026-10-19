@@ -54,15 +54,42 @@ export const getRedactedKeys = (): string[] => {
   return DEFAULT_REDACTED_KEYS;
 };
 
+// Matches nothing; used when there are no keys to redact.
+const NEVER_MATCH_REGEX = /(?!)/;
+let cachedRegexCacheKey: string | undefined;
+let cachedRegex: RegExp | undefined;
+
+/**
+ * Builds a regex that captures `$1` (everything up to the secret) and `$2` (the secret), so callers
+ * can replace with '$1[REDACTED]'. For each sensitive key it matches:
+ *  - query strings / form bodies:  `?key=abc`, `&key=abc`, `; key=abc`, `key=abc,`
+ *  - JSON (also escaped JSON):     `{"key":"abc"}`, `"key": 123`, `{\"key\":\"abc\"}`
+ *  - header style:                 `key: abc`, `Authorization: Bearer abc`
+ * An optional auth scheme (Bearer/Basic/Token) is kept in `$1` so the credential after it is redacted.
+ * The value ends at whitespace, a quote, or one of `& # ; , } \`.
+ *
+ * The regex is memoised on the (valid) key list so it is only rebuilt when the keys change,
+ * not for every telemetry envelope. Sharing the global regex is safe because
+ * String.prototype.replace resets lastIndex before use.
+ */
 export const buildSensitiveQueryParamsRegex = (keys: string[] = DEFAULT_REDACTED_KEYS): RegExp => {
-  if (!keys || keys.length === 0) {
-    return /$^/;
+  const validKeys = (keys || []).filter(Boolean);
+  if (validKeys.length === 0) {
+    return NEVER_MATCH_REGEX;
   }
-  const escaped = keys
-    .filter(Boolean)
+  const cacheKey = validKeys.join('\u0000');
+  if (cachedRegex && cachedRegexCacheKey === cacheKey) {
+    return cachedRegex;
+  }
+  const escaped = validKeys
     .map((k) => k.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
     .join('|');
-  return new RegExp(`((?:^|[?&\\s])(?:${escaped})=)([^&#\\s]+)`, 'gi');
+  const quote = '(?:\\\\?["\'])?';
+  const prefix = `(?:^|[?&;,\\s{\\[(])${quote}(?:${escaped})${quote}[ \\t]*[=:][ \\t]*${quote}(?:(?:Bearer|Basic|Token)[ \\t]+)?`;
+  const value = '[^&#;,\\s"\'\\\\}]+';
+  cachedRegex = new RegExp(`(${prefix})(${value})`, 'gi');
+  cachedRegexCacheKey = cacheKey;
+  return cachedRegex;
 };
 
 export const sanitizeCredentials = (
