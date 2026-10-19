@@ -41,7 +41,7 @@ jest.mock('i18next', () => ({
 }));
 jest.mock('../../../../../main/services/features/caseProgression/TypeOfDocumentSectionMapper', () => ({
   TypeOfDocumentSectionMapper: {
-    mapToSingleFile: jest.fn(),
+    mapToFiles: jest.fn(),
   },
 }));
 jest.mock('../../../../../main/services/features/generalApplication/generalApplicationService', () => ({
@@ -69,15 +69,34 @@ describe('Additional Documents Service', () => {
         documentType: null,
         documentSize: 123,
       } as CaseDocument;
-      (TypeOfDocumentSectionMapper.mapToSingleFile as jest.Mock).mockReturnValue(fileUpload);
+      (TypeOfDocumentSectionMapper.mapToFiles as jest.Mock).mockReturnValue([fileUpload]);
       const mockValue = jest.spyOn(CivilServiceClient.prototype, 'uploadDocument').mockResolvedValue(uploadedDocument as unknown as CaseDocument);
 
       await uploadSelectedFile(req, claim as Claim);
 
-      expect(TypeOfDocumentSectionMapper.mapToSingleFile).toHaveBeenCalledWith(req);
+      expect(TypeOfDocumentSectionMapper.mapToFiles).toHaveBeenCalledWith(req);
       expect(mockValue).toHaveBeenCalledWith(req, fileUpload);
       expect(claim.generalApplication.uploadAdditionalDocuments).toHaveLength(1);
       expect(saveDraftClaim).toHaveBeenCalledWith(generateRedisKey(req), claim, false, undefined);
+    });
+
+    it('should upload every chosen file with the same type of document', async () => {
+      const req = {
+        body: { typeOfDocument: 'Type1' },
+        session: { save: (cb: any) => cb() } as AppSession,
+      } as unknown as AppRequest;
+      const firstFile = { name: 'first' };
+      const secondFile = { name: 'second' };
+      (TypeOfDocumentSectionMapper.mapToFiles as jest.Mock).mockReturnValue([firstFile, secondFile]);
+      const mockValue = jest.spyOn(CivilServiceClient.prototype, 'uploadDocument').mockResolvedValue({documentName: 'Document1'} as CaseDocument);
+
+      await uploadSelectedFile(req, claim);
+
+      expect(mockValue).toHaveBeenCalledWith(req, firstFile);
+      expect(mockValue).toHaveBeenCalledWith(req, secondFile);
+      expect(claim.generalApplication.uploadAdditionalDocuments).toHaveLength(2);
+      expect(claim.generalApplication.uploadAdditionalDocuments.map((document) => document.typeOfDocument)).toEqual(['Type1', 'Type1']);
+      expect(req.session.fileUpload).toBeUndefined();
     });
 
     it('should set errors in session if validation fails', async () => {
@@ -86,7 +105,7 @@ describe('Additional Documents Service', () => {
         session: { fileUpload: undefined, save: (cb: any) => cb() } as AppSession,
       } as unknown as AppRequest;
 
-      (TypeOfDocumentSectionMapper.mapToSingleFile as jest.Mock).mockReturnValue(undefined);
+      (TypeOfDocumentSectionMapper.mapToFiles as jest.Mock).mockReturnValue([]);
 
       await uploadSelectedFile(req, claim);
 

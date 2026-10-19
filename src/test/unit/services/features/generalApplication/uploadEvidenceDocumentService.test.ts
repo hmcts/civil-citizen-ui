@@ -5,6 +5,7 @@ import {
   handleMulterError,
   removeSelectedDocument,
   saveDocumentsToUploaded,
+  saveUploadErrorsToSession,
 } from 'services/features/generalApplication/uploadEvidenceDocumentService';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {UploadGAFiles} from 'models/generalApplication/uploadGAFiles';
@@ -12,6 +13,9 @@ import {CaseDocument} from 'models/document/caseDocument';
 import {GeneralApplication} from 'models/generalApplication/GeneralApplication';
 import {summarySection} from 'models/summaryList/summarySections';
 import {ApplicationType, ApplicationTypeOption} from 'models/generalApplication/applicationType';
+import {FormValidationError} from 'form/validationErrors/formValidationError';
+import {AppRequest} from 'models/AppRequest';
+import {FILE_UPLOAD_SOURCE} from 'common/utils/fileUploadUtils';
 
 const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
 jest.mock('../../../../../main/modules/draft-store');
@@ -167,6 +171,29 @@ describe('Upload Evidence Document service', () => {
       expect(handleMulterError(req)).toBe(true);
       expect(req.session.fileUpload).toBeDefined();
       expect(JSON.parse(req.session.fileUpload)).toHaveLength(1);
+    });
+  });
+  describe('saveUploadErrorsToSession', () => {
+    const chooseFileError = new FormValidationError({
+      property: 'fileUpload',
+      constraints: {isNotEmpty: 'ERRORS.GENERAL_APPLICATION.UPLOAD_FILE_MESSAGE_V2'},
+    });
+
+    it('should save the translated errors and their source to the session', () => {
+      const req = {session: {}} as unknown as AppRequest;
+
+      saveUploadErrorsToSession(req, [chooseFileError], FILE_UPLOAD_SOURCE.GA_ADDITIONAL_DOCUMENTS);
+
+      expect(JSON.parse(req.session.fileUpload)[0].text).toBeDefined();
+      expect(req.session.fileUploadSource).toBe(FILE_UPLOAD_SOURCE.GA_ADDITIONAL_DOCUMENTS);
+    });
+
+    it('should leave the session unchanged when there are no errors', () => {
+      const req = {session: {}} as unknown as AppRequest;
+
+      saveUploadErrorsToSession(req, [], FILE_UPLOAD_SOURCE.GA_ADDITIONAL_DOCUMENTS);
+
+      expect(req.session).toEqual({});
     });
   });
 });

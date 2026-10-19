@@ -23,7 +23,7 @@ import {
 import {summarySection, SummarySection} from 'models/summaryList/summarySections';
 import {queryParamNumber} from 'common/utils/requestUtils';
 import {
-  createMulterErrorMiddlewareForSingleField,
+  createMulterErrorMiddlewareForMultipleFiles,
   createUploadOneFileError,
   getFileUploadErrorsForSource,
   FILE_UPLOAD_SOURCE,
@@ -33,7 +33,7 @@ import {handleMulterError} from 'services/features/generalApplication/uploadEvid
 
 const uploadEvidenceDocumentsForApplicationController = Router();
 const viewPath = 'features/generalApplication/upload_documents';
-const multerMiddleware = createMulterErrorMiddlewareForSingleField('selectedFile', 'uploadEvidenceDocumentsForApplicationController');
+const multerMiddleware = createMulterErrorMiddlewareForMultipleFiles('selectedFile', 'uploadEvidenceDocumentsForApplicationController');
 
 async function renderView(form: GenericForm<UploadGAFiles>, claim: Claim, claimId: string, res: Response, formattedSummary: SummarySection, index: number): Promise<void> {
   const cancelUrl = await getCancelUrl(claimId, claim);
