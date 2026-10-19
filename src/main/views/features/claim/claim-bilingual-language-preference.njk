@@ -73,17 +73,21 @@
           </p>
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
-            <fieldset class="govuk-fieldset">
-              <legend class="govuk-visually-hidden">{{ question }}</legend>
             {{ govukRadios({
               idPrefix: id,
               name: name,
+              fieldset: {
+                legend: {
+                  text: question,
+                  isPageHeading: false,
+                  classes: 'govuk-visually-hidden'
+                }
+              },
               items: items,
               errorMessage: {
                 html: t(form.errorFor(name))
               } if form.hasFieldError(name)
             }) }}
-            </fieldset>
             <div class="govuk-form-group">
               {{ govukButton({
                 text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')

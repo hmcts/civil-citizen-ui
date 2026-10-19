@@ -7,6 +7,7 @@
 {% from "../../../../macro/csrf.njk" import csrfProtection %}
 {% from "../../../../macro/page-title.njk" import setPageTitle %}
 {% from "../../../../macro/error-summary.njk" import errorSummary %}
+{% from "govuk/components/error-message/macro.njk" import govukErrorMessage %}
 
 {% block pageTitle %}
   {{ setPageTitle(t, 'PAGES.DEPENDANTS.PAGE_TITLE') }}
@@ -37,9 +38,9 @@
             {% set numberOfChildrenHtml %}
               <div id="numberOfChildren" class="govuk-form-group {% if atLeastOneNumberShouldBeEnteredError %} govuk-form-group--error {% endif %}">
                 {% if atLeastOneNumberShouldBeEnteredError %}
-                  <p class="govuk-error-message">
-                    <span class="govuk-visually-hidden">Error:</span> {{ t(atLeastOneNumberShouldBeEnteredError) }}
-                  </p>
+                  {{ govukErrorMessage({
+                    text: t(atLeastOneNumberShouldBeEnteredError)
+                  }) }}
                 {% else %}
                   <p class="govuk-body-m">{{ t('PAGES.DEPENDANTS.HOW_MANY') }}</p>
                 {% endif %}

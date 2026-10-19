@@ -21,43 +21,26 @@
                     </p>
 
                     <div class="wordWrap">
-                        <div class="govuk-tabs" data-module="govuk-tabs">
-                            <ul class="govuk-tabs__list">
-                                {% for i in range(0, tabContent.length)  %}
-                                    {% if i == 0 %}
-                                        <li class="govuk-tabs__list-item govuk-tabs__list-item--selected">
-                                            <a class="govuk-tabs__tab" href="#{{ tabContent[i].id }}">
-                                                {{ t(tabContent[i].label) }}
-                                            </a>
-                                        </li>
-                                    {% else %}
-                                        <li class="govuk-tabs__list-item">
-                                            <a class="govuk-tabs__tab" href="#{{ tabContent[i].id }}">
-                                                {{ t(tabContent[i].label) }}
-                                            </a>
-                                        </li>
-                                    {% endif %}
+                        {% set tabItems = [] %}
+                        {% for tab in tabContent %}
+                            {% set panelHtml %}
+                                {% for tabSection in tab.panels %}
+                                    {{ claimSummaryContent({
+                                        contentSections: tabSection.contentSections,
+                                        hasDivider: tabSection.hasDivider
+                                    }, t) }}
                                 {% endfor %}
-                            </ul>
-
-                            {% for i in range(0, tabContent.length)  %}
-                            {% if i == 0 %}
-                            <div class="govuk-tabs__panel" id="{{ tabContent[i].id }}">
-                                {% else %}
-                                <div class="govuk-tabs__panel govuk-tabs__panel--hidden" id="{{ tabContent[i].id }}">
-                                    {% endif %}
-                                    {% for tabSection in tabContent[i].panels %}
-                                        {{ claimSummaryContent({
-                                            contentSections: tabSection.contentSections,
-                                            hasDivider: tabSection.hasDivider
-                                        }, t) }}
-                                    {% endfor %}
-                                </div>
-                                {% endfor %}
-                            </div>
-                        </div>
-                        {{ contactUsForHelp(t) }}
+                            {% endset %}
+                            {% set tabItems = (tabItems.push({
+                                id: tab.id,
+                                label: t(tab.label),
+                                panel: { html: panelHtml }
+                            }), tabItems) %}
+                        {% endfor %}
+                        {# Official govukTabs — do not hand-write govuk-tabs list/panel markup. #}
+                        {{ govukTabs({ title: t('PAGES.CLAIM_SUMMARY.ABOUT_CLAIM'), items: tabItems }) }}
                     </div>
+                    {{ contactUsForHelp(t) }}
                     {{ aboutClaimWidget(t, {
                         header: t('PAGES.CLAIM_SUMMARY.ABOUT_CLAIM'),
                         lines:[
