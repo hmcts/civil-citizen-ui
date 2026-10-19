@@ -12,6 +12,7 @@ import {CaseState} from 'form/models/claimDetails';
 import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
 import {ApplicationState} from 'models/generalApplication/applicationSummary';
 import {DocumentInformation, DocumentLinkInformation, DocumentsViewComponent} from 'form/models/documents/DocumentsViewComponent';
+import {CourtResponseSummaryList} from 'models/generalApplication/CourtResponseSummary';
 import mockApplication from '../../../../../utils/mocks/applicationMock.json';
 import {constructResponseUrlWithIdAndAppIdParams, constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import * as generalApplicationService from 'services/features/generalApplication/generalApplicationService';
@@ -75,7 +76,7 @@ describe('General Application - View application', () => {
   const applicantDocuments = new DocumentsViewComponent('ApplicantDocuments', [orderDocument]);
   const courtDocuments = new DocumentsViewComponent('courtDocuments', [orderDocument]);
   const respondentDocuments = new DocumentsViewComponent('RespondentDocuments', [orderDocument]);
-  const responseFromCourt = [{rows: []}];
+  const responseFromCourt = [new CourtResponseSummaryList([])];
 
   const buildClaim = (): Claim => {
     const builtClaim = new Claim();

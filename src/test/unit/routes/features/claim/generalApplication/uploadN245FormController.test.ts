@@ -7,7 +7,6 @@ import {Claim} from 'common/models/claim';
 import {GeneralApplication} from 'common/models/generalApplication/GeneralApplication';
 import {ApplicationType, ApplicationTypeOption} from 'common/models/generalApplication/applicationType';
 import {UploadGAFiles} from 'common/models/generalApplication/uploadGAFiles';
-import {FILE_UPLOAD_SOURCE} from 'common/utils/fileUploadUtils';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {getClaimById} from 'modules/utilityService';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';

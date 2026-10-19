@@ -74,7 +74,7 @@ describe('Claim fee payment confirmation', () => {
           },
         },
       },
-    } as ApplicationResponse;
+    } as unknown as ApplicationResponse;
     req = {
       params: {id: claimId, appId},
       body: {},
