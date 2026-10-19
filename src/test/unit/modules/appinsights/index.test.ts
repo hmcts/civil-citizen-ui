@@ -62,7 +62,7 @@ describe('AppInsights module', () => {
       expect(getRedactedKeys()).toEqual(DEFAULT_REDACTED_KEYS);
     });
 
-    it('returns configured keys array when config has array', () => {
+    it('extends the defaults with configured keys array', () => {
       mockConfigHas.mockReturnValue(true);
       mockConfigGet.mockImplementation((key: string) => {
         if (key === 'appInsights.redactedKeys') {
@@ -70,18 +70,19 @@ describe('AppInsights module', () => {
         }
         return undefined;
       });
-      expect(getRedactedKeys()).toEqual(['customSecret', 'customToken']);
+      expect(getRedactedKeys()).toEqual([...DEFAULT_REDACTED_KEYS, 'customSecret', 'customToken']);
+      expect(getRedactedKeys()).toContain('key');
     });
 
-    it('returns configured keys split by comma when config has comma-separated string', () => {
+    it('extends the defaults with comma-separated configured keys, ignoring duplicates', () => {
       mockConfigHas.mockReturnValue(true);
       mockConfigGet.mockImplementation((key: string) => {
         if (key === 'appInsights.redactedKeys') {
-          return 'customSecret, customToken, customKey';
+          return 'customSecret, customToken, KEY';
         }
         return undefined;
       });
-      expect(getRedactedKeys()).toEqual(['customSecret', 'customToken', 'customKey']);
+      expect(getRedactedKeys()).toEqual([...DEFAULT_REDACTED_KEYS, 'customSecret', 'customToken']);
     });
 
     it('falls back to default keys when config has empty array or string', () => {
@@ -257,6 +258,21 @@ describe('AppInsights module', () => {
       };
       stripCredentialsTelemetryProcessor(pageEnv as unknown as Parameters<typeof stripCredentialsTelemetryProcessor>[0]);
       expect(pageEnv.data.baseData.url).toBe('http://localhost:3001/dashboard?access_token=[REDACTED]');
+    });
+
+    it('redacts property values by sensitive property name', () => {
+      const env = {
+        sampleRate: 1,
+        data: {
+          baseType: 'MessageData',
+          baseData: {
+            message: 'hello',
+            properties: {key: 'osSecret', Authorization: 'abc', postcode: 'SW1A1AA'},
+          },
+        },
+      };
+      stripCredentialsTelemetryProcessor(env as unknown as Parameters<typeof stripCredentialsTelemetryProcessor>[0]);
+      expect(env.data.baseData.properties).toEqual({key: '[REDACTED]', Authorization: '[REDACTED]', postcode: 'SW1A1AA'});
     });
 
     it('redacts JSON and header formatted credentials in messages, exceptions and properties', () => {
