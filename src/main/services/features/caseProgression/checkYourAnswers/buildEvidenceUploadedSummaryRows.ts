@@ -31,7 +31,6 @@ const changeLabel = (lang: string): string => t('COMMON.BUTTONS.CHANGE', { lng: 
 const getDate = (date: string): string => formatStringDateSlash(date);
 const documentUploaded = (lang: string ): string => t('PAGES.UPLOAD_EVIDENCE_DOCUMENTS.CHECK_YOUR_ANSWERS_DOCUMENT_UPLOADED', {lng: getLng(lang)});
 
-/** Renders one link per uploaded file, since a single section can now hold several files. */
 const buildDocumentLinksElement = (caseDocuments: CaseDocument[], claimId: string, lang: string): TitledSummaryRowElement => {
   const links = normaliseCaseDocuments(caseDocuments)
     .filter((caseDocument) => caseDocument?.documentLink?.document_binary_url)

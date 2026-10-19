@@ -98,13 +98,7 @@ export const createMulterUpload = (fileSizeLimit: number = FILE_SIZE_LIMIT) => {
   });
 };
 
-/**
- * Multer middleware for forms whose upload controls accept several files at once (case progression and
- * mediation upload documents). Unlike handleMulterResult, a file whose content does not match its type
- * only drops that file: the rest of the batch is kept, and the rejected field names are recorded on
- * req.rejectedFileFields so uploadAndValidateFile can show an error against the right upload control.
- */
-const handleMultiFileMulterResult = (req: Request, err: any, loggerName: string, next: NextFunction): void => {
+const handleMulterResultDroppingDisallowedFiles = (req: Request, err: any, loggerName: string, next: NextFunction): void => {
   if (err || !Array.isArray(req.files)) {
     handleMulterResult(req, err, loggerName, next);
     return;
@@ -122,7 +116,7 @@ const handleMultiFileMulterResult = (req: Request, err: any, loggerName: string,
 export const createMulterErrorMiddleware = (loggerName = 'uploadDocumentsController') => {
   return (req: Request, res: Response, next: NextFunction) => {
     const upload = createMulterUpload(FILE_SIZE_LIMIT);
-    upload.any()(req, res, (err: any) => handleMultiFileMulterResult(req, err, loggerName, next));
+    upload.any()(req, res, (err: any) => handleMulterResultDroppingDisallowedFiles(req, err, loggerName, next));
   };
 };
 
@@ -175,13 +169,11 @@ export const extractCategoryAndIndex = (submitAction: string): [string, string] 
   return [parts[0], parts[1]];
 };
 
-/** Parses an action like 'witnessStatement[0][deleteFile][1]' into [category, sectionIndex, fileIndex]. */
 export const extractCategorySectionAndFileIndex = (submitAction: string): [string, string, string] => {
   const parts = submitAction.split(/[[\]]/).filter((word: string) => word !== '');
   return [parts[0], parts[1], parts[3]];
 };
 
-/** Normalises a legacy single CaseDocument (pre-multi-file-upload data) or an existing array into an array. */
 export const normaliseCaseDocuments = <T>(value: T | T[] | undefined | null): T[] => {
   if (!value) {
     return [];
@@ -189,12 +181,6 @@ export const normaliseCaseDocuments = <T>(value: T | T[] | undefined | null): T[
   return Array.isArray(value) ? value : [value];
 };
 
-/**
- * Migrates sections persisted under the old single-document shape (`caseDocument`) onto the new
- * `caseDocuments` array, in place. Existing drafts saved before the multi-file-upload change only
- * have `caseDocument`, and every read path now only looks at `caseDocuments` - without this, an
- * already-uploaded document disappears from the page and is discarded on the next save.
- */
 export const migrateLegacyCaseDocuments = (sections: Array<{caseDocuments?: unknown[]; caseDocument?: unknown}> | undefined): void => {
   sections?.forEach((section) => {
     if (!section.caseDocuments?.length && section.caseDocument) {
@@ -203,7 +189,6 @@ export const migrateLegacyCaseDocuments = (sections: Array<{caseDocuments?: unkn
   });
 };
 
-/** Migrates every section array on a plain upload-documents-shaped object (see migrateLegacyCaseDocuments). */
 export const migrateLegacyCaseDocumentsOnForm = (form: Record<string, unknown> | undefined): void => {
   if (!form) {
     return;
@@ -226,7 +211,6 @@ export const removeUploadedFile = (categoryModel: any, index: string, fileIndex:
   return true;
 };
 
-/** Collects every document_url found anywhere inside a draft or form value. */
 export const collectDocumentUrls = (value: unknown, urls: Set<string> = new Set<string>(), seen: WeakSet<object> = new WeakSet()): Set<string> => {
   if (!value || typeof value !== 'object' || seen.has(value)) {
     return urls;
@@ -242,12 +226,6 @@ export const collectDocumentUrls = (value: unknown, urls: Set<string> = new Set<
   return urls;
 };
 
-/**
- * Deletes from document management the files that were in the saved draft but are no longer in the
- * updated form (removed with 'Delete', or by removing a whole section). Only URLs taken from the
- * server-side draft are ever deleted, never ones posted by the browser. Failures are logged and never
- * stop the user carrying on.
- */
 export const deleteRemovedDocuments = async (
   req: Request,
   savedDraft: unknown,
@@ -257,10 +235,10 @@ export const deleteRemovedDocuments = async (
 ): Promise<void> => {
   const {Logger} = require('@hmcts/nodejs-logging');
   const logger = Logger.getLogger(loggerName);
-  const remaining = collectDocumentUrls(updatedForm);
-  const removed = [...collectDocumentUrls(savedDraft)].filter((url) => !remaining.has(url));
+  const urlsStillInForm = collectDocumentUrls(updatedForm);
+  const removedUrls = [...collectDocumentUrls(savedDraft)].filter((url) => !urlsStillInForm.has(url));
 
-  await Promise.all(removed.map(async (url) => {
+  await Promise.all(removedUrls.map(async (url) => {
     const documentId = url.substring(url.lastIndexOf('/') + 1);
     try {
       await civilServiceClient.deleteDocument(req, documentId);
@@ -299,14 +277,13 @@ export const uploadAndValidateFile = async (
 
   const [category, index] = extractCategoryAndIndex(submitAction);
   const target = `${category}[${index}][fileUpload]`;
-  // The upload control allows selecting / dropping several files at once, all under the same field name.
-  const inputFiles = ((req.files as Express.Multer.File[]) || []).filter((file: Express.Multer.File) =>
+  const filesForSection = ((req.files as Express.Multer.File[]) || []).filter((file: Express.Multer.File) =>
     file.fieldname === target,
   );
 
   const hasRejectedContent = ((req as any).rejectedFileFields as string[] | undefined)?.includes(target);
 
-  if (!inputFiles.length && !hasRejectedContent) {
+  if (!filesForSection.length && !hasRejectedContent) {
     return;
   }
 
@@ -314,9 +291,8 @@ export const uploadAndValidateFile = async (
     form.errors = [];
   }
 
-  // Only one error is shown per upload control, so stop reporting once the section has one.
   let sectionHasError = false;
-  const addSectionError = (constraintKey: string, constraintValue: string) => {
+  const addErrorUnlessSectionHasOne = (constraintKey: string, constraintValue: string) => {
     if (!sectionHasError) {
       form.errors.push(createFileUploadError(category, index, constraintKey, constraintValue));
       sectionHasError = true;
@@ -324,12 +300,12 @@ export const uploadAndValidateFile = async (
   };
 
   if (hasRejectedContent) {
-    addSectionError('multerError', getMulterErrorConstraint(createInvalidFileContentError()));
+    addErrorUnlessSectionHasOne('multerError', getMulterErrorConstraint(createInvalidFileContentError()));
   }
 
   const categoryModel = form.model[category];
 
-  for (const inputFile of inputFiles) {
+  for (const inputFile of filesForSection) {
     try {
       const fileUpload = TypeOfDocumentSectionMapper.mapMulterFileToSingleFile(inputFile);
       if (categoryModel && categoryModel[+index]) {
@@ -342,14 +318,14 @@ export const uploadAndValidateFile = async (
         const firstError = fileErrors[0];
         const firstConstraintKey = firstError?.constraints ? Object.keys(firstError.constraints)[0] : null;
         const firstConstraintValue = firstError?.constraints?.[firstConstraintKey];
-        addSectionError(firstConstraintKey || 'validationError', firstConstraintValue || 'ERRORS.FILE_UPLOAD_FAILED');
+        addErrorUnlessSectionHasOne(firstConstraintKey || 'validationError', firstConstraintValue || 'ERRORS.FILE_UPLOAD_FAILED');
       } else if (categoryModel && categoryModel[+index]) {
         try {
           const uploadedDocument = await civilServiceClient.uploadDocument(req, fileUpload);
 
           if (!uploadedDocument?.documentLink) {
             logger.error('[SAVE FILE] File upload response missing documentLink');
-            addSectionError('uploadError', 'ERRORS.FILE_UPLOAD_FAILED');
+            addErrorUnlessSectionHasOne('uploadError', 'ERRORS.FILE_UPLOAD_FAILED');
           } else {
             const caseDocuments = normaliseCaseDocuments(categoryModel[+index].caseDocuments);
             caseDocuments.push(uploadedDocument);
@@ -357,12 +333,12 @@ export const uploadAndValidateFile = async (
           }
         } catch (uploadError) {
           logger.error(`[SAVE FILE] API upload failed: error=${uploadError?.message || uploadError}`, uploadError);
-          addSectionError('uploadError', 'ERRORS.FILE_UPLOAD_FAILED');
+          addErrorUnlessSectionHasOne('uploadError', 'ERRORS.FILE_UPLOAD_FAILED');
         }
       }
     } catch (error) {
       logger.error(`[SAVE FILE] Unexpected error: ${error?.message || error}`, error);
-      addSectionError('unexpectedError', 'ERRORS.FILE_UPLOAD_FAILED');
+      addErrorUnlessSectionHasOne('unexpectedError', 'ERRORS.FILE_UPLOAD_FAILED');
     } finally {
       if (categoryModel && categoryModel[+index]) {
         delete categoryModel[+index].fileUpload;
