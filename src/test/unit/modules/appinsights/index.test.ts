@@ -62,7 +62,7 @@ describe('AppInsights module', () => {
       expect(getRedactedKeys()).toEqual(DEFAULT_REDACTED_KEYS);
     });
 
-    it('extends the defaults with configured keys array', () => {
+    it('returns configured keys array when config has array', () => {
       mockConfigHas.mockReturnValue(true);
       mockConfigGet.mockImplementation((key: string) => {
         if (key === 'appInsights.redactedKeys') {
@@ -70,19 +70,18 @@ describe('AppInsights module', () => {
         }
         return undefined;
       });
-      expect(getRedactedKeys()).toEqual([...DEFAULT_REDACTED_KEYS, 'customSecret', 'customToken']);
-      expect(getRedactedKeys()).toContain('key');
+      expect(getRedactedKeys()).toEqual(['customSecret', 'customToken']);
     });
 
-    it('extends the defaults with comma-separated configured keys, ignoring duplicates', () => {
+    it('returns configured keys split by comma when config has comma-separated string', () => {
       mockConfigHas.mockReturnValue(true);
       mockConfigGet.mockImplementation((key: string) => {
         if (key === 'appInsights.redactedKeys') {
-          return 'customSecret, customToken, KEY';
+          return 'customSecret, customToken, customKey';
         }
         return undefined;
       });
-      expect(getRedactedKeys()).toEqual([...DEFAULT_REDACTED_KEYS, 'customSecret', 'customToken']);
+      expect(getRedactedKeys()).toEqual(['customSecret', 'customToken', 'customKey']);
     });
 
     it('falls back to default keys when config has empty array or string', () => {
@@ -99,24 +98,6 @@ describe('AppInsights module', () => {
     it('builds a non-matching regex when keys array is empty', () => {
       const regex = buildSensitiveQueryParamsRegex([]);
       expect('https://example.com?key=123'.match(regex)).toBeNull();
-    });
-
-    it('reuses the same regex for the same keys and rebuilds it when keys change', () => {
-      const first = buildSensitiveQueryParamsRegex(['alpha', 'beta']);
-      const second = buildSensitiveQueryParamsRegex(['alpha', 'beta']);
-      expect(second).toBe(first);
-
-      const third = buildSensitiveQueryParamsRegex(['gamma']);
-      expect(third).not.toBe(first);
-      expect('https://example.com?gamma=1&alpha=2'.replace(third, '$1[REDACTED]'))
-        .toBe('https://example.com?gamma=[REDACTED]&alpha=2');
-    });
-
-    it('produces consistent results when the shared regex is used repeatedly', () => {
-      const regex = buildSensitiveQueryParamsRegex(['key']);
-      const url = 'https://example.com?key=abc';
-      expect(url.replace(regex, '$1[REDACTED]')).toBe('https://example.com?key=[REDACTED]');
-      expect(url.replace(regex, '$1[REDACTED]')).toBe('https://example.com?key=[REDACTED]');
     });
   });
 
@@ -148,69 +129,6 @@ describe('AppInsights module', () => {
       const url = 'https://example.com?myCustomSecret=12345&key=normalKey';
       const sanitizedWithCustomKeys = sanitizeCredentials(url, ['myCustomSecret']);
       expect(sanitizedWithCustomKeys).toBe('https://example.com?myCustomSecret=[REDACTED]&key=normalKey');
-    });
-
-    describe('JSON formats', () => {
-      it.each([
-        ['compact', '{"key":"abc123"}', '{"key":"[REDACTED]"}'],
-        ['with spaces', '{ "key" : "abc123" }', '{ "key" : "[REDACTED]" }'],
-        ['among other fields', '{"postcode":"SW1A1AA","key":"abc123","dataset":"DPA"}', '{"postcode":"SW1A1AA","key":"[REDACTED]","dataset":"DPA"}'],
-        ['non-string value', '{"token":123456}', '{"token":[REDACTED]}'],
-        ['mixed case key', '{"ApiKey":"abc123"}', '{"ApiKey":"[REDACTED]"}'],
-        ['single quotes', '{\'password\':\'hunter2\'}', '{\'password\':\'[REDACTED]\'}'],
-        ['escaped JSON inside a string', '{\\"key\\":\\"abc123\\",\\"x\\":1}', '{\\"key\\":\\"[REDACTED]\\",\\"x\\":1}'],
-        ['nested object', '{"headers":{"authorization":"abc123","accept":"json"}}', '{"headers":{"authorization":"[REDACTED]","accept":"json"}}'],
-        ['array of objects', '[{"secret":"abc"},{"secret":"def"}]', '[{"secret":"[REDACTED]"},{"secret":"[REDACTED]"}]'],
-      ])('redacts %s', (_name, input, expected) => {
-        expect(sanitizeCredentials(input)).toBe(expected);
-      });
-
-      it('does not redact JSON keys that merely contain a sensitive word or have no value', () => {
-        expect(sanitizeCredentials('{"keyboard":"qwerty","monkey":"banana"}')).toBe('{"keyboard":"qwerty","monkey":"banana"}');
-        expect(sanitizeCredentials('{"key":""}')).toBe('{"key":""}');
-      });
-    });
-
-    describe('header formats', () => {
-      it.each([
-        ['simple header', 'key: abc123', 'key: [REDACTED]'],
-        ['no space after colon', 'key:abc123', 'key:[REDACTED]'],
-        ['mixed case header', 'KEY: abc123', 'KEY: [REDACTED]'],
-        ['header in a multi-line dump', 'accept: json\nkey: abc123\nhost: api.os.uk', 'accept: json\nkey: [REDACTED]\nhost: api.os.uk'],
-        ['Bearer authorization header', 'Authorization: Bearer abc.def.ghi', 'Authorization: Bearer [REDACTED]'],
-        ['Basic authorization header', 'authorization: Basic dXNlcjpwYXNz', 'authorization: Basic [REDACTED]'],
-        ['Bearer authorization with equals', 'authorization=Bearer abc def', 'authorization=Bearer [REDACTED] def'],
-        ['header in an error message', 'Request failed with headers key: abc123, status 401', 'Request failed with headers key: [REDACTED], status 401'],
-      ])('redacts %s', (_name, input, expected) => {
-        expect(sanitizeCredentials(input)).toBe(expected);
-      });
-
-      it('does not consume the next line when the header value is empty', () => {
-        expect(sanitizeCredentials('key:\nnext: line')).toBe('key:\nnext: line');
-      });
-    });
-
-    describe('delimiters', () => {
-      it.each([
-        ['semicolon separated', 'a=1;key=abc123;b=2', 'a=1;key=[REDACTED];b=2'],
-        ['comma separated', 'a=1,key=abc123,b=2', 'a=1,key=[REDACTED],b=2'],
-        ['after a space', 'GET /x ; key=abc123', 'GET /x ; key=[REDACTED]'],
-        ['cookie style', 'session=1; token=abc123; theme=dark', 'session=1; token=[REDACTED]; theme=dark'],
-        ['quoted value', 'key="abc123"', 'key="[REDACTED]"'],
-      ])('redacts %s', (_name, input, expected) => {
-        expect(sanitizeCredentials(input)).toBe(expected);
-      });
-    });
-
-    it('does not redact words that only contain a sensitive key', () => {
-      const text = 'keyboard=qwerty monkey: banana author=someone tokenizer=abc';
-      expect(sanitizeCredentials(text)).toBe(text);
-    });
-
-    it('redacts several formats within the same string', () => {
-      const text = 'GET /p?key=q1 headers {"authorization":"Bearer j1"} body password: p1';
-      expect(sanitizeCredentials(text))
-        .toBe('GET /p?key=[REDACTED] headers {"authorization":"Bearer [REDACTED]"} body password: [REDACTED]');
     });
   });
 
@@ -258,44 +176,6 @@ describe('AppInsights module', () => {
       };
       stripCredentialsTelemetryProcessor(pageEnv as unknown as Parameters<typeof stripCredentialsTelemetryProcessor>[0]);
       expect(pageEnv.data.baseData.url).toBe('http://localhost:3001/dashboard?access_token=[REDACTED]');
-    });
-
-    it('redacts property values by sensitive property name', () => {
-      const env = {
-        sampleRate: 1,
-        data: {
-          baseType: 'MessageData',
-          baseData: {
-            message: 'hello',
-            properties: {key: 'osSecret', Authorization: 'abc', postcode: 'SW1A1AA'},
-          },
-        },
-      };
-      stripCredentialsTelemetryProcessor(env as unknown as Parameters<typeof stripCredentialsTelemetryProcessor>[0]);
-      expect(env.data.baseData.properties).toEqual({key: '[REDACTED]', Authorization: '[REDACTED]', postcode: 'SW1A1AA'});
-    });
-
-    it('redacts JSON and header formatted credentials in messages, exceptions and properties', () => {
-      const env = {
-        sampleRate: 1,
-        data: {
-          baseType: 'ExceptionData',
-          baseData: {
-            message: 'Request failed: {"headers":{"key":"osSecret"}}',
-            exceptions: [{
-              message: 'Unauthorized, sent headers key: osSecret',
-              stack: 'AxiosError: {"config":{"headers":{"Authorization":"Bearer jwt.value"}}}\n at fn()',
-            }],
-            properties: {requestHeaders: 'accept: json\nkey: osSecret'},
-          },
-        },
-      };
-      stripCredentialsTelemetryProcessor(env as unknown as Parameters<typeof stripCredentialsTelemetryProcessor>[0]);
-      expect(env.data.baseData.message).toBe('Request failed: {"headers":{"key":"[REDACTED]"}}');
-      expect(env.data.baseData.exceptions[0].message).toBe('Unauthorized, sent headers key: [REDACTED]');
-      expect(env.data.baseData.exceptions[0].stack)
-        .toBe('AxiosError: {"config":{"headers":{"Authorization":"Bearer [REDACTED]"}}}\n at fn()');
-      expect(env.data.baseData.properties.requestHeaders).toBe('accept: json\nkey: [REDACTED]');
     });
 
     it('redacts sensitive query parameters from MessageData', () => {

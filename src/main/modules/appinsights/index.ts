@@ -41,70 +41,28 @@ export const DEFAULT_REDACTED_KEYS: string[] = [
   'authorization',
 ];
 
-/**
- * Configured keys (appInsights.redactedKeys / APPINSIGHTS_REDACTED_KEYS) extend the defaults rather
- * than replace them, so a mis-set value can never switch off redaction of the OS key.
- */
 export const getRedactedKeys = (): string[] => {
-  let extraKeys: string[] = [];
   if (config.has('appInsights.redactedKeys')) {
     const configuredKeys = config.get<string[] | string>('appInsights.redactedKeys');
-    if (Array.isArray(configuredKeys)) {
-      extraKeys = configuredKeys.map((k) => String(k).trim()).filter(Boolean);
-    } else if (typeof configuredKeys === 'string') {
-      extraKeys = configuredKeys.split(',').map((k) => k.trim()).filter(Boolean);
+    if (Array.isArray(configuredKeys) && configuredKeys.length > 0) {
+      return configuredKeys;
+    }
+    if (typeof configuredKeys === 'string' && configuredKeys.trim().length > 0) {
+      return configuredKeys.split(',').map((k) => k.trim()).filter(Boolean);
     }
   }
-  if (extraKeys.length === 0) {
-    return DEFAULT_REDACTED_KEYS;
-  }
-  const seen = new Set<string>();
-  return [...DEFAULT_REDACTED_KEYS, ...extraKeys].filter((k) => {
-    const lower = k.toLowerCase();
-    if (seen.has(lower)) {
-      return false;
-    }
-    seen.add(lower);
-    return true;
-  });
+  return DEFAULT_REDACTED_KEYS;
 };
 
-// Matches nothing; used when there are no keys to redact.
-const NEVER_MATCH_REGEX = /(?!)/;
-let cachedRegexCacheKey: string | undefined;
-let cachedRegex: RegExp | undefined;
-
-/**
- * Builds a regex that captures `$1` (everything up to the secret) and `$2` (the secret), so callers
- * can replace with '$1[REDACTED]'. For each sensitive key it matches:
- *  - query strings / form bodies:  `?key=abc`, `&key=abc`, `; key=abc`, `key=abc,`
- *  - JSON (also escaped JSON):     `{"key":"abc"}`, `"key": 123`, `{\"key\":\"abc\"}`
- *  - header style:                 `key: abc`, `Authorization: Bearer abc`
- * An optional auth scheme (Bearer/Basic/Token) is kept in `$1` so the credential after it is redacted.
- * The value ends at whitespace, a quote, or one of `& # ; , } \`.
- *
- * The regex is memoised on the (valid) key list so it is only rebuilt when the keys change,
- * not for every telemetry envelope. Sharing the global regex is safe because
- * String.prototype.replace resets lastIndex before use.
- */
 export const buildSensitiveQueryParamsRegex = (keys: string[] = DEFAULT_REDACTED_KEYS): RegExp => {
-  const validKeys = (keys || []).filter(Boolean);
-  if (validKeys.length === 0) {
-    return NEVER_MATCH_REGEX;
+  if (!keys || keys.length === 0) {
+    return /$^/;
   }
-  const cacheKey = validKeys.join('\u0000');
-  if (cachedRegex && cachedRegexCacheKey === cacheKey) {
-    return cachedRegex;
-  }
-  const escaped = validKeys
+  const escaped = keys
+    .filter(Boolean)
     .map((k) => k.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
     .join('|');
-  const quote = '(?:\\\\?["\'])?';
-  const prefix = `(?:^|[?&;,\\s{\\[(])${quote}(?:${escaped})${quote}[ \\t]*[=:][ \\t]*${quote}(?:(?:Bearer|Basic|Token)[ \\t]+)?`;
-  const value = '[^&#;,\\s"\'\\\\}]+';
-  cachedRegex = new RegExp(`(${prefix})(${value})`, 'gi');
-  cachedRegexCacheKey = cacheKey;
-  return cachedRegex;
+  return new RegExp(`((?:^|[?&\\s])(?:${escaped})=)([^&#\\s]+)`, 'gi');
 };
 
 export const sanitizeCredentials = (
@@ -169,12 +127,9 @@ export const stripCredentialsTelemetryProcessor = (envelope: TelemetryEnvelope):
   }
 
   if (baseData.properties && typeof baseData.properties === 'object') {
-    const sensitiveNames = new Set(getRedactedKeys().map((k) => k.toLowerCase()));
     for (const [key, propVal] of Object.entries(baseData.properties)) {
       if (typeof propVal === 'string') {
-        baseData.properties[key] = sensitiveNames.has(key.toLowerCase())
-          ? '[REDACTED]'
-          : sanitizeCredentials(propVal, regex);
+        baseData.properties[key] = sanitizeCredentials(propVal, regex);
       }
     }
   }
@@ -187,7 +142,7 @@ export const stripCredentialsTelemetryProcessor = (envelope: TelemetryEnvelope):
  * sampling. The SDK's sampling processor keeps anything with sampleRate >= 100.
  */
 export const keepFailuresTelemetryProcessor = (envelope: TelemetryEnvelope): boolean => {
-  const {baseType, baseData} = envelope?.data ?? {};
+  const {baseType, baseData} = envelope.data;
   if (baseType === 'ExceptionData'
     || (baseType === 'RequestData' && baseData?.success === false)
     || (baseType === 'RemoteDependencyData' && baseData?.success === false)) {
