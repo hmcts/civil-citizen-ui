@@ -203,6 +203,9 @@ describe('Claimant Response - Check answers', () => {
         .expect((res: Response) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain('Enter a valid email');
+          expect(res.text).toContain('href="#ccd-field-applicant1-partyEmail"');
+          expect(res.text).toContain('id="ccd-field-applicant1-partyEmail"');
+          expect(res.text).toContain('govuk-error-message');
         });
     });
 

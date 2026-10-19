@@ -442,7 +442,8 @@ describe('Claim - Check answers', () => {
       }));
       const form = (res.render as jest.Mock).mock.calls[0][1].form as GenericForm<unknown>;
       expect(form.hasErrors()).toBe(true);
-      expect(form.errorFor('respondent1.partyEmail')).toBe('notanemail is not a valid Email address');
+      expect(form.errorFor('ccd-field-respondent1-partyEmail')).toBe('notanemail is not a valid Email address');
+      expect(form.getErrors()[0].href).toBe('#ccd-field-respondent1-partyEmail');
       expect(res.redirect).not.toHaveBeenCalled();
       expect(next).not.toHaveBeenCalled();
     });
@@ -462,6 +463,27 @@ describe('Claim - Check answers', () => {
       await postHandler(req as AppRequest, res as unknown as Response, next);
 
       expect(next).toHaveBeenCalledWith(callbackError);
+      expect(res.render).not.toHaveBeenCalled();
+      expect(res.redirect).not.toHaveBeenCalled();
+    });
+
+    it('should call next when submitClaim throws mixed callbackErrors and field_errors so both show on the error page', async () => {
+      mockGetDraftClaim.mockResolvedValue({
+        claimResponse: {case_data: buildClaim(YesNo.YES)},
+        rawResponse: {draftId: 'draft-123'},
+        createdAt: '2026-08-01T10:00:00.000Z',
+      });
+      const mixedError = new CallbackError(
+        ['Business process must be finished before you can submit'],
+        [],
+        [{id: 'respondent1.partyEmail', message: 'notanemail is not a valid Email address'}],
+      );
+      mockSubmitClaim.mockRejectedValue(mixedError);
+      req.body = signedBody;
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(mixedError);
       expect(res.render).not.toHaveBeenCalled();
       expect(res.redirect).not.toHaveBeenCalled();
     });

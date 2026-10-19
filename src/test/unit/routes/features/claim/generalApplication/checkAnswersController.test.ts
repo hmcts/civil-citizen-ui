@@ -235,6 +235,9 @@ describe('General Application - Check your answers', () => {
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain('Enter a valid application type');
+          expect(res.text).toContain('href="#ccd-field-generalAppType"');
+          expect(res.text).toContain('id="ccd-field-generalAppType"');
+          expect(res.text).toContain('govuk-error-message');
         });
     });
 

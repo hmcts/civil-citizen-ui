@@ -78,16 +78,23 @@ export class CallbackError extends HTTPError {
   }
 }
 
+export function toCcdFieldErrorAnchorId(ccdFieldId: string): string {
+  return `ccd-field-${ccdFieldId.replace(/[^a-zA-Z0-9_-]+/g, '-')}`;
+}
+
 export function applyCcdFieldErrorsToForm<T>(form: GenericForm<T>, fieldErrors: CcdFieldError[]): void {
   form.errors = form.errors ?? [];
   for (const fieldError of fieldErrors) {
+    const anchorId = toCcdFieldErrorAnchorId(fieldError.id);
     form.errors.push(new FormValidationError({
-      property: fieldError.id,
+      property: anchorId,
       constraints: {ccdFieldError: fieldError.message},
     }));
   }
 }
 
 export function isCallbackFieldValidationError(error: unknown): error is CallbackError {
-  return error instanceof CallbackError && error.hasFieldErrors();
+  return error instanceof CallbackError
+    && error.hasFieldErrors()
+    && !(error.callbackErrors?.length);
 }
