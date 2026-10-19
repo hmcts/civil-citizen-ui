@@ -1,363 +1,186 @@
-import {app} from '../../../../../../main/app';
-import config from 'config';
-import nock from 'nock';
-import request from 'supertest';
-import {GA_VIEW_APPLICATION_URL} from 'routes/urls';
-import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import {t} from 'i18next';
-import * as launchDarkly from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
-import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
-import {getApplicationSections , getRespondentDocuments, getCourtDocuments, getApplicantDocuments, getResponseFromCourtSection} from 'services/features/generalApplication/viewApplication/viewApplicationService';
-import mockApplication from '../../../../../utils/mocks/applicationMock.json';
-import { DocumentInformation, DocumentLinkInformation, DocumentsViewComponent } from 'common/form/models/documents/DocumentsViewComponent';
-import { ApplicationState } from 'common/models/generalApplication/applicationSummary';
-import { SummaryRow, summaryRow, summaryRowHtml } from 'common/models/summaryList/summaryList';
-import { CourtResponseSummaryList, ResponseButton } from 'common/models/generalApplication/CourtResponseSummary';
-import { YesNoUpperCamelCase } from 'common/form/models/yesNo';
-import {getClaimById} from 'modules/utilityService';
+import {Response} from 'express';
+import viewApplicationController from '../../../../../../main/routes/features/generalApplication/viewApplicationController';
+import {
+  GA_APPLICATION_SUMMARY_URL,
+  GA_APPLY_HELP_WITH_FEE_SELECTION,
+  GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL,
+  UPLOAD_YOUR_DOCUMENTS_URL,
+} from 'routes/urls';
 import {Claim} from 'models/claim';
+import {PartyType} from 'models/partyType';
 import {CaseState} from 'form/models/claimDetails';
-import {getApplicationIndex} from 'services/features/generalApplication/generalApplicationService';
+import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
+import {ApplicationState} from 'models/generalApplication/applicationSummary';
+import {DocumentInformation, DocumentLinkInformation, DocumentsViewComponent} from 'form/models/documents/DocumentsViewComponent';
+import mockApplication from '../../../../../utils/mocks/applicationMock.json';
+import {constructResponseUrlWithIdAndAppIdParams, constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import * as generalApplicationService from 'services/features/generalApplication/generalApplicationService';
+import {
+  getApplicantDocuments,
+  getApplicationSections,
+  getCourtDocuments,
+  getRespondentDocuments,
+  getResponseFromCourtSection,
+  getStatusRow,
+  getSummaryCardSections,
+} from 'services/features/generalApplication/viewApplication/viewApplicationService';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {getClaimById} from 'modules/utilityService';
+import {createMockResponse, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/services/features/generalApplication/viewApplication/viewApplicationService');
-jest.mock('../../../../../../main/services/features/generalApplication/generalApplicationService');
-
+jest.mock('modules/draft-store/draftStoreService');
+jest.mock('services/features/generalApplication/response/generalApplicationResponseStoreService', () => ({
+  getDraftGARespondentResponse: jest.fn(),
+  saveDraftGARespondentResponse: jest.fn(),
+}));
 jest.mock('modules/utilityService', () => ({
   getClaimById: jest.fn(),
-  getRedisStoreForSession: jest.fn(),
 }));
-jest.mock('../../../../../../main/routes/guards/generalAplicationGuard',() => ({
-  isGAForLiPEnabled: jest.fn((req, res, next) => {
-    next();
-  }),
-}));
-
-const mockedSummaryRows = getApplicationSections as jest.Mock;
-const mockRespondentDocs = getRespondentDocuments as jest.Mock;
-const mockApplicantDocs = getApplicantDocuments as jest.Mock;
-const mockCourtDocs = getCourtDocuments as jest.Mock;
-const mockResponseFromCourt = getResponseFromCourtSection as jest.Mock;
-const mockGetApplicationIndex = getApplicationIndex as jest.Mock;
+jest.mock('services/features/generalApplication/viewApplication/viewApplicationService');
 
 describe('General Application - View application', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
+  const getHandler = getRouteHandler(viewApplicationController, 'get');
+  const viewPath = 'features/generalApplication/view-applications';
+  const claimId = '12345';
+  const appId = '345';
+  const pageTitle = 'PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.PAGE_TITLE';
+  let claim: Claim;
+  let application: ApplicationResponse;
+  let req: {
+    params: {id: string; appId: string};
+    body: Record<string, unknown>;
+    query: Record<string, unknown>;
+    cookies: Record<string, unknown>;
+    session: {user: {id: string}};
+  };
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
+  const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
+  const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
+  const mockDeleteDraftClaim = draftStoreService.deleteDraftClaimFromStore as jest.Mock;
+  const mockGetClaim = getClaimById as jest.Mock;
+  const mockSummaryRows = getApplicationSections as jest.Mock;
+  const mockRespondentDocs = getRespondentDocuments as jest.Mock;
+  const mockApplicantDocs = getApplicantDocuments as jest.Mock;
+  const mockCourtDocs = getCourtDocuments as jest.Mock;
+  const mockResponseFromCourt = getResponseFromCourtSection as jest.Mock;
+  const mockStatusRow = getStatusRow as jest.Mock;
+  const mockSummaryCards = getSummaryCardSections as jest.Mock;
+
   const orderDocument = new DocumentInformation(
     'Document',
     '1 August 2024',
     new DocumentLinkInformation('/case/1718105701451856/view-documents/4feaa073-c310-4096-979d-cd5b12ebddf8', '000MC039-settlement-agreement.pdf'),
   );
+  const applicantDocuments = new DocumentsViewComponent('ApplicantDocuments', [orderDocument]);
+  const courtDocuments = new DocumentsViewComponent('courtDocuments', [orderDocument]);
+  const respondentDocuments = new DocumentsViewComponent('RespondentDocuments', [orderDocument]);
+  const responseFromCourt = [{rows: []}];
 
-  let application : ApplicationResponse;
-
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-    jest.spyOn(generalApplicationService, 'getApplicationFromGAService').mockResolvedValue(application);
-    jest.spyOn(launchDarkly, 'isGaForLipsEnabled').mockResolvedValue(true);
-  });
+  const buildClaim = (): Claim => {
+    const builtClaim = new Claim();
+    builtClaim.applicant1 = {
+      type: PartyType.INDIVIDUAL,
+      partyDetails: {title: 'Mr', firstName: 'Jan', lastName: 'Clark'},
+    } as Claim['applicant1'];
+    return builtClaim;
+  };
 
   beforeEach(() => {
-    const claim = new Claim();
+    jest.clearAllMocks();
+    claim = buildClaim();
     application = Object.assign(new ApplicationResponse(), mockApplication);
     application.state = ApplicationState.AWAITING_APPLICATION_PAYMENT;
-    mockRespondentDocs.mockImplementation(() => []);
-    mockedSummaryRows.mockImplementation(() => []);
+    req = {
+      params: {id: claimId, appId},
+      body: {},
+      query: {index: '1'},
+      cookies: {},
+      session: {user: {id: 'u1'}},
+    };
+    res = createMockResponse();
+    next = jest.fn();
+    (draftStoreService.generateRedisKey as jest.Mock).mockReturnValue(claimId);
+    (draftStoreService.generateRedisKeyForGA as jest.Mock).mockReturnValue('ga-12345');
+    mockGetCaseData.mockResolvedValue(claim);
+    mockSaveDraftClaim.mockResolvedValue(undefined);
+    mockDeleteDraftClaim.mockResolvedValue(undefined);
+    mockGetClaim.mockResolvedValue(claim);
+    mockSummaryRows.mockResolvedValue({summaryRows: [], responseSummaries: []});
+    mockStatusRow.mockReturnValue([]);
+    mockSummaryCards.mockReturnValue([]);
+    mockApplicantDocs.mockReturnValue(applicantDocuments);
+    mockCourtDocs.mockReturnValue(courtDocuments);
+    mockRespondentDocs.mockReturnValue(respondentDocuments);
+    mockResponseFromCourt.mockResolvedValue(responseFromCourt);
     jest.spyOn(generalApplicationService, 'getApplicationFromGAService').mockResolvedValue(application);
-    (getClaimById as jest.Mock).mockResolvedValue(claim);
+    jest.spyOn(generalApplicationService, 'getApplicationIndex').mockResolvedValue(2);
   });
 
   describe('on GET', () => {
-    it('should return View application page', async () => {
-      mockedSummaryRows.mockImplementation(() => []);
-      application.state = ApplicationState.AWAITING_APPLICATION_PAYMENT;
-      await request(app)
-        .get(GA_VIEW_APPLICATION_URL)
-        .query({index: '1'})
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.PAGE_TITLE'));
-        });
+    it('should render the view application page with documents, the court response and the unpaid fee link', async () => {
+      await getHandler(req as never, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        pageTitle,
+        applicationIndex: 1,
+        backLinkUrl: constructResponseUrlWithIdParams(claimId, GA_APPLICATION_SUMMARY_URL),
+        applicantDocuments,
+        courtDocuments,
+        respondentDocuments,
+        responseFromCourt,
+        isApplicationFeeAmountNotPaid: true,
+        applicationFeeOptionUrl: expect.stringContaining(
+          constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_APPLY_HELP_WITH_FEE_SELECTION),
+        ),
+        additionalDocUrl: null,
+      }));
+      expect(mockDeleteDraftClaim).toHaveBeenCalledWith(claimId);
+      expect(next).not.toHaveBeenCalled();
     });
 
-    it('should return View application page when index is undefined', async () => {
-      mockGetApplicationIndex.mockImplementation(() => 1);
-      mockedSummaryRows.mockImplementation(() => []);
-      await request(app)
-        .get(GA_VIEW_APPLICATION_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.PAGE_TITLE'));
-        });
+    it('should use the application index from the service when the query index is missing', async () => {
+      req.query = {};
+
+      await getHandler(req as never, res as unknown as Response, next);
+
+      expect(generalApplicationService.getApplicationIndex).toHaveBeenCalled();
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        pageTitle,
+        applicationIndex: 2,
+      }));
     });
 
-    it('should return view application page with pay application fee button, no upload additional document link', async () => {
-      mockedSummaryRows.mockImplementation(() => []);
-      application.state = ApplicationState.AWAITING_APPLICATION_PAYMENT;
-      application.case_data.generalAppPBADetails.paymentDetails = {
-        'status': 'FAIL',
-        'reference' : '123-REF',
-      };
-      await request(app)
-        .get(GA_VIEW_APPLICATION_URL)
-        .query({index: '1'})
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.PAGE_TITLE'));
-          expect(res.text).toContain(t('COMMON.BUTTONS.PAY_APPLICATION_FEE'));
-          expect(res.text).not.toContain(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.UPLOAD_DOCUMENTS_2'));
-        });
-    });
-
-    it('should return view application page with upload additional document', async () => {
-      mockedSummaryRows.mockImplementation(() => []);
+    it('should include the additional documents link when more documents can be uploaded', async () => {
       application.state = ApplicationState.AWAITING_RESPONDENT_RESPONSE;
-      await request(app)
-        .get(GA_VIEW_APPLICATION_URL)
-        .query({index: '1'})
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.UPLOAD_DOCUMENTS_2'));
-        });
+
+      await getHandler(req as never, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        isApplicationFeeAmountNotPaid: false,
+        additionalDocUrl: constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL),
+      }));
     });
 
-    it('should return View application page without application documents section', async () => {
-      await request(app)
-        .get(GA_VIEW_APPLICATION_URL)
-        .query({index: '1'})
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).not.toContain(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.APPLICATION_DOCUMENTS'));
-        });
-    });
-
-    it('should return View application page with respondent documents section', async () => {
-      const respondentDocs =  new DocumentsViewComponent('RespondentDocuments',[orderDocument]);
-      mockRespondentDocs.mockImplementation(() => respondentDocs);
-      mockCourtDocs.mockImplementation(() => new DocumentsViewComponent('court',[]));
-      mockApplicantDocs.mockImplementation(() => new DocumentsViewComponent('applicant',[]));
-
-      await request(app)
-        .get(GA_VIEW_APPLICATION_URL)
-        .query({index: '1'})
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.APPLICATION_DOCUMENTS'));
-          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONDENTS_DOCUMENTS'));
-          expect(res.text).toContain('Document');
-          expect(res.text).toContain('1 August 2024');
-          expect(res.text).toContain('000MC039-settlement-agreement.pdf');
-          expect(res.text).not.toContain(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.APPLICANTS_DOCUMENTS'));
-          expect(res.text).not.toContain(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DOCUMENTS_FROM_COURT'));
-        });
-    });
-
-    it('should return View application page with applicant documents section', async () => {
-
-      const applicantDocs =  new DocumentsViewComponent('ApplicantDocuments',[orderDocument]);
-      mockApplicantDocs.mockImplementation(() => applicantDocs);
-      mockCourtDocs.mockImplementation(() => new DocumentsViewComponent('court',[]));
-      mockRespondentDocs.mockImplementation(() => new DocumentsViewComponent('respondent',[]));
-
-      await request(app)
-        .get(GA_VIEW_APPLICATION_URL)
-        .query({index: '1'})
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.APPLICATION_DOCUMENTS'));
-          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.APPLICANTS_DOCUMENTS'));
-          expect(res.text).toContain('Document');
-          expect(res.text).toContain('1 August 2024');
-          expect(res.text).toContain('000MC039-settlement-agreement.pdf');
-          expect(res.text).not.toContain(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONDENTS_DOCUMENTS'));
-          expect(res.text).not.toContain(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DOCUMENTS_FROM_COURT'));
-        });
-    });
-
-    it('should return View application page with court documents section', async () => {
-      const courtDocs =  new DocumentsViewComponent('courtDocuments',[orderDocument]);
-      mockCourtDocs.mockImplementation(() => courtDocs);
-      mockRespondentDocs.mockImplementation(() => new DocumentsViewComponent('respondent',[]));
-      mockApplicantDocs.mockImplementation(() => new DocumentsViewComponent('applicant',[]));
-
-      await request(app)
-        .get(GA_VIEW_APPLICATION_URL)
-        .query({index: '1'})
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.APPLICATION_DOCUMENTS'));
-          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DOCUMENTS_FROM_COURT'));
-          expect(res.text).toContain('Document');
-          expect(res.text).toContain('1 August 2024');
-          expect(res.text).toContain('000MC039-settlement-agreement.pdf');
-          expect(res.text).not.toContain(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.APPLICANTS_DOCUMENTS'));
-          expect(res.text).not.toContain(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONDENTS_DOCUMENTS'));
-        });
-    });
-
-    it('should return View application page with applicant , respondent and court documents sections', async () => {
-      const applicantDocument = new DocumentInformation(
-        'Applicant-Document',
-        '1 August 2024',
-        new DocumentLinkInformation('/case/1718105701451856/view-documents/4feaa073-c310-4096-979d-cd5b12ebddf8', '000MC039-applicant-doc.pdf'),
-      );
-
-      const respondentDocument = new DocumentInformation(
-        'Respondent-Document',
-        '4 August 2024',
-        new DocumentLinkInformation('/case/1718105701451856/view-documents/4feaa073-c310-4096-979d-cd5b12ebddf8', '000MC039-respondent-doc.pdf'),
-      );
-
-      const courtDocument = new DocumentInformation(
-        'Court-Document',
-        '5 August 2024',
-        new DocumentLinkInformation('/case/1718105701451856/view-documents/4feaa073-c310-4096-979d-cd5b12ebddf8', '000MC039-court-doc.pdf'),
-      );
-
-      const applicantDocs =  new DocumentsViewComponent('ApplicantDocuments',[applicantDocument]);
-      const courtDocs =  new DocumentsViewComponent('courtDocuments',[courtDocument]);
-      const respondentDocs =  new DocumentsViewComponent('RespondentDocuments',[respondentDocument]);
-      mockApplicantDocs.mockImplementation(() => applicantDocs);
-      mockCourtDocs.mockImplementation(() => courtDocs);
-      mockRespondentDocs.mockImplementation(() => respondentDocs);
-
-      await request(app)
-        .get(GA_VIEW_APPLICATION_URL)
-        .query({index: '1'})
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.APPLICATION_DOCUMENTS'));
-          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.APPLICANTS_DOCUMENTS'));
-          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DOCUMENTS_FROM_COURT'));
-          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONDENTS_DOCUMENTS'));
-          expect(res.text).toContain('Applicant-Document');
-          expect(res.text).toContain('1 August 2024');
-          expect(res.text).toContain('000MC039-applicant-doc.pdf');
-          expect(res.text).toContain('Respondent-Document');
-          expect(res.text).toContain('4 August 2024');
-          expect(res.text).toContain('000MC039-respondent-doc.pdf');
-          expect(res.text).toContain('Court-Document');
-          expect(res.text).toContain('5 August 2024');
-          expect(res.text).toContain('000MC039-court-doc.pdf');
-        });
-    });
-
-    it('should show case progression text when case progression state', async () => {
-      const claim = new Claim();
+    it('should include the trial document upload link when the claim is in case progression', async () => {
       claim.ccdState = CaseState.CASE_PROGRESSION;
-      (getClaimById as jest.Mock).mockResolvedValueOnce(claim);
-      mockedSummaryRows.mockImplementation(() => []);
-      await request(app)
-        .get(GA_VIEW_APPLICATION_URL)
-        .query({index: '1'})
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.PAGE_TITLE'));
-          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.UPLOAD_DOCUMENTS_TRIAL_3'));
-        });
+
+      await getHandler(req as never, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        pageTitle,
+        caseProgressionCaseState: true,
+        uploadDocsTrialUrl: constructResponseUrlWithIdParams(claimId, UPLOAD_YOUR_DOCUMENTS_URL),
+      }));
     });
 
-    it('should return http 500 when has error in the get method', async () => {
-      mockedSummaryRows.mockImplementation(() => {
-        throw new Error(TestMessages.REDIS_FAILURE);
-      });
-      await request(app)
-        .get(GA_VIEW_APPLICATION_URL)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+    it('should call next when loading the application fails', async () => {
+      const error = new Error('redis failure');
+      mockSummaryRows.mockRejectedValue(error);
+
+      await getHandler(req as never, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
-  });
-
-  it('should return response from court section', async () => {
-    mockResponseFromCourt.mockImplementation(() => {
-      const judgeDirectionRows : SummaryRow[] = [];
-      const responseFromCourt : CourtResponseSummaryList[] = [];
-      const hearingNoticeRows : SummaryRow[] = [];
-      const judgeDirections = new CourtResponseSummaryList(judgeDirectionRows, new Date(), new ResponseButton('Judge Direction', ''));
-
-      judgeDirectionRows.push(
-        summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE'), '1 Aug 2024'),
-        summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE'), 'Judge has made order'),
-        summaryRowHtml(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE'), '<a href="#">Judge Order</a>'));
-
-      const hearingNotices = new CourtResponseSummaryList(hearingNoticeRows);
-      hearingNoticeRows.push(
-        summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE'), '2 Aug 2024'),
-        summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE'), 'Hearing Notice has been generated'),
-        summaryRowHtml(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE'), '<a href="#">Hearing Notice</a>'));
-
-      responseFromCourt.push(judgeDirections);
-      responseFromCourt.push(hearingNotices);
-
-      return Promise.resolve(responseFromCourt);
-    });
-
-    await request(app)
-      .get(GA_VIEW_APPLICATION_URL)
-      .query({index: '1'})
-      .expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE_COURT'));
-        expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE'));
-        expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE'));
-        expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE'));
-        expect(res.text).toContain('Judge has made order');
-        expect(res.text).toContain('1 Aug 2024');
-        expect(res.text).toContain('<a href="#">Judge Order</a>');
-        expect(res.text).toContain('Hearing Notice has been generated');
-        expect(res.text).toContain('2 Aug 2024');
-        expect(res.text).toContain('<a href="#">Hearing Notice</a>');
-      });
-  });
-
-  it('should return response from court section for defendant', async () => {
-    mockResponseFromCourt.mockImplementation(() => {
-      const responseFromCourt : CourtResponseSummaryList[] = [];
-      const hearingNoticeRows : SummaryRow[] = [];
-
-      const hearingNotices = new CourtResponseSummaryList(hearingNoticeRows);
-      hearingNoticeRows.push(
-        summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE'), '2 Aug 2024'),
-        summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE'), 'Hearing Notice has been generated'),
-        summaryRowHtml(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE'), '<a href="#">Hearing Notice</a>'));
-
-      responseFromCourt.push(hearingNotices);
-      return Promise.resolve(responseFromCourt);
-    });
-    application.case_data.parentClaimantIsApplicant = YesNoUpperCamelCase.NO;
-
-    await request(app)
-      .get(GA_VIEW_APPLICATION_URL)
-      .query({index: '1'})
-      .expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE_COURT'));
-        expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE'));
-        expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE'));
-        expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE'));
-        expect(res.text).toContain('Hearing Notice has been generated');
-        expect(res.text).toContain('2 Aug 2024');
-        expect(res.text).toContain('<a href="#">Hearing Notice</a>');
-      });
-  });
-
-  it('should not display response from court section', async () => {
-
-    mockResponseFromCourt.mockImplementation(() => {
-      return Promise.resolve([]);
-    });
-
-    await request(app)
-      .get(GA_VIEW_APPLICATION_URL)
-      .query({index: '1'})
-      .expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).not.toContain(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.RESPONSE_COURT'));
-      });
   });
 });
