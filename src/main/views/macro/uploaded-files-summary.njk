@@ -1,0 +1,32 @@
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+
+{# Adapted from the fork. Text values follow master's summaryRowWithTextValue
+   contract; submit removal deliberately remains a button, not a link. #}
+{% macro uploadedFilesSummary(rows, removeText, submitRemove=false) %}
+  {% set summaryRows = [] %}
+  {% for row in rows %}
+    {% if submitRemove %}
+      {% set removeHtml %}
+        <button type="submit" class="link-button" name="action" value="[{{ row.value.text }}][deleteFile]">
+          {{ removeText }}<span class="govuk-visually-hidden"> {{ row.key.text }}</span>
+        </button>
+      {% endset %}
+      {% set summaryRows = (summaryRows.push({key: {text: row.key.text}, value: {html: removeHtml} }), summaryRows) %}
+    {% elif row.actions.items.length %}
+      {% set summaryRows = (summaryRows.push({
+        key: row.key,
+        value: row.value,
+        actions: {items: [{href: row.actions.items[0].href, text: removeText, visuallyHiddenText: row.key.text}]}
+      }), summaryRows) %}
+    {% else %}
+      {% set summaryRows = (summaryRows.push({key: row.key, value: row.value}), summaryRows) %}
+    {% endif %}
+  {% endfor %}
+  {% if summaryRows.length %}
+    {{ govukSummaryList({classes: 'govuk-!-margin-bottom-0', rows: summaryRows}) }}
+  {% endif %}
+{% endmacro %}
+
+{% macro uploadedFilesSummaryWithSubmitRemove(rows, removeText) %}
+  {{ uploadedFilesSummary(rows, removeText, true) }}
+{% endmacro %}

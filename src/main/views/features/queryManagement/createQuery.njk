@@ -11,20 +11,21 @@
 {% from "../../macro/error-summary.njk" import errorSummary %}
 {% from "govuk/components/date-input/macro.njk" import govukDateInput %}
 
+{% from "../../macro/uploaded-files-summary.njk" import uploadedFilesSummary, uploadedFilesSummaryWithSubmitRemove %}
+{% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
 {% block pageTitle %}
   {{ setPageTitle(t, pageHeaders.pageTitle) }}
 {% endblock %}
 
 {% block nestedContent %}
-  {% set errors = "" %}
-  {% set  idValue = "selectedFile" %}
-  {% if form.hasErrors() %}
-    {% set errors = translateErrors(form.getAllErrors(),t)[0] %}
-    {# Only show the first error on the file upload when it is actually a file-upload error (selectedFile). Do not assign date/day/month/year errors to the upload section. #}
-    {% if errors.fieldName != 'messageSubject' and errors.fieldName != 'messageDetails' and errors.fieldName != 'isHearingRelated' and errors.fieldName != 'date' and errors.fieldName != 'day' and errors.fieldName != 'month' and errors.fieldName != 'year' %}
-      {% set idValue = errors.fieldName %}
+  {% set uploadErrors = [] %}
+  {% for error in form.getAllErrors() %}
+    {% if error.text and (error.property == '' or error.property == 'selectedFile' or error.property == 'fileUpload' or 'fileUpload[' in error.property) %}
+      {% set uploadErrors = (uploadErrors.push(error), uploadErrors) %}
     {% endif %}
-  {% endif %}
+  {% endfor %}
+  {% set errors = uploadErrors[0] %}
+  {% set idValue = errors.fieldName or 'selectedFile' %}
   {{ headingWithCaption(t, pageHeaders.caption, pageHeaders.heading) }}
     <form method="post" action="{{ currentUrl }}?_csrf={{ csrf }}" enctype='multipart/form-data' novalidate>
       {{ csrfProtection(csrf) }}
@@ -131,7 +132,7 @@
                 text: t(form.errorFor('isHearingRelated'))
               } if form.errorFor('isHearingRelated')
             }) }}
-      <div class="govuk-inset-text">
+      {% set uploadHtml %}
         <h2 class="govuk-heading-s">{{ t('PAGES.QM.QUERY_FORM.DOCUMENTS_TITLE') }}</h2>
         {{ govukFileUpload({
           id: idValue,
@@ -149,35 +150,19 @@
         }) }}
 
         {{ govukButton({
-          id: 'fileUpload',
+          id: 'query-upload-button',
           name: 'action',
           value: 'uploadButton',
           text: t('COMMON.SAVE_FILE'),
           classes: "govuk-button--secondary govuk-!-margin-bottom-0"
         }) }}
-      </div>
+      {% endset %}
+        {{ govukInsetText({html: uploadHtml}) }}
 
       {% if formattedSummary.summaryList.rows.length > 0 %}
         <h2 class="govuk-heading-m">{{ t('COMMON.UPLOADED_FILES') }}</h2>
         <div class="govuk-section-break--s govuk-section-break--visible"></div>
-        {% for row in formattedSummary.summaryList.rows %}
-          <dl class="govuk-summary-list govuk-!-margin-bottom-0">
-              <div class="govuk-summary-list__row ">
-                <dt class="govuk-summary-list__key">
-                  <p class="govuk-body govuk-!-margin-bottom-0 govuk-!-font-weight-bold"> {{ row.key.text }}</p>
-                </dt>
-                <dd class="govuk-summary-list__actions">
-                  <button type="submit"
-                          class="link-button"
-                          name="action"
-                          value="[{{ row.value.text }}][deleteFile]">
-                    {{ t('PAGES.GENERAL_APPLICATION.UPLOAD_DOCUMENTS.REMOVE_DOC') }}
-                    <span class="govuk-visually-hidden">{{ row.key.text }}</span>
-                  </button>
-                </dd>
-              </div>
-          </dl>
-        {% endfor %}
+        {{ uploadedFilesSummaryWithSubmitRemove(formattedSummary.summaryList.rows, t('PAGES.GENERAL_APPLICATION.UPLOAD_DOCUMENTS.REMOVE_DOC')) }}
           <br>
       {% endif %}
 
