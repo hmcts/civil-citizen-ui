@@ -83,6 +83,17 @@ health:
   deadline: 15000
 appInsights:
   instrumentationKey:
+  redactedKeys:
+    - key
+    - apiKey
+    - api_key
+    - token
+    - access_token
+    - secret
+    - client_secret
+    - password
+    - auth
+    - authorization
 webChat:
   cnbc:
     enabled: false

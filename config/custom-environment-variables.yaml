@@ -56,6 +56,7 @@ services:
 port: PORT
 appInsights:
   instrumentationKey: APPINSIGHTS_KEY
+  redactedKeys: APPINSIGHTS_REDACTED_KEYS
 webChat:
   cnbc:
     enabled: WEB_CHAT_CNBC_ENABLED
