@@ -71,9 +71,13 @@ describe('OS Places postcode consumer schema and HTTP boundary', () => {
   });
 
   test('calls the postcode endpoint with both datasets and maps consumed DPA and LPI fields', async () => {
-    const scope = nock(apiUrl)
+    const scope = nock(apiUrl, {
+      reqheaders: {
+        key: apiKey,
+      },
+    })
       .get('/search/places/v1/postcode')
-      .query({dataset: 'DPA,LPI', postcode, key: apiKey})
+      .query({dataset: 'DPA,LPI', postcode})
       .reply(200, response);
 
     const result = await lookupByPostcodeAndDataSet(postcode);
@@ -106,9 +110,13 @@ describe('OS Places postcode consumer schema and HTTP boundary', () => {
   });
 
   test('surfaces the service error when OS returns no postcode matches', async () => {
-    const scope = nock(apiUrl)
+    const scope = nock(apiUrl, {
+      reqheaders: {
+        key: apiKey,
+      },
+    })
       .get('/search/places/v1/postcode')
-      .query({dataset: 'DPA,LPI', postcode, key: apiKey})
+      .query({dataset: 'DPA,LPI', postcode})
       .reply(200, {results: []});
 
     await expect(lookupByPostcodeAndDataSet(postcode)).rejects.toThrow(AssertionError);
