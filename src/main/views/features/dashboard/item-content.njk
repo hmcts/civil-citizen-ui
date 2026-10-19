@@ -216,9 +216,10 @@
   {% endif %}
 
   {% if content.type === ClaimSummaryType.DATE_ARRAY %}
-    {% if (content.data.invalidDateError !== undefined and content.data.invalidDateError != '') or (content.data.invalidDayError !== undefined and content.data.invalidDayError != '') or (content.data.invalidMonthError !== undefined and content.data.invalidMonthError != '') or (content.data.invalidYearError !== undefined and content.data.invalidYearError != '') %}
-       {% set isDateError = 'true' %}
-    {% endif %}
+    {% set dateErrors = [] %}
+    {% for key in [content.data.invalidDateError, content.data.invalidDayError, content.data.invalidMonthError, content.data.invalidYearError] %}
+      {% if key %}{% set dateErrors = (dateErrors.push(t(key) | escape), dateErrors) %}{% endif %}
+    {% endfor %}
      <div>
         {{ govukDateInput({
            id: content.data.category+'['+content.data.index+']['+content.data.parentField+']['+content.data.field+']-group',
@@ -234,11 +235,8 @@
             text: t(content.data.hint)
            },
            errorMessage: {
-            html: '<p class="govuk-error-message">' + t(content.data.invalidDateError) + '</p>' +
-                        '<p class="govuk-error-message">' + t(content.data.invalidDayError) + '</p>' +
-                        '<p class="govuk-error-message">' + t(content.data.invalidMonthError) + '</p>' +
-                        '<p class="govuk-error-message">' + t(content.data.invalidYearError) + '</p>'
-           } if (isDateError == 'true'),
+            html: dateErrors | join('<br>')
+           } if dateErrors.length,
            items: [
              {
                id: content.data.category+'['+content.data.index+']['+content.data.parentField+']['+content.data.field+']',
@@ -281,14 +279,18 @@
   {% if content.type === ClaimSummaryType.UPLOAD_ARRAY %}
     <div id={{content.data.category+'['+content.data.index+']['+content.data.field+'][size]'}} ></div>
     <div id={{content.data.category+'['+content.data.index+']['+content.data.field+'][mimetype]'}} ></div>
-     <div class="govuk-inset-text">
+    <div id={{content.data.category+'['+content.data.index+']['+content.data.field+'][buffer]'}} ></div>
+    {% set fileLabel %}
+      <strong>{{ t(content.data.text) }}</strong><span id="{{ content.data.category }}[{{ content.data.index }}][documentName]"><span class="documentName">{{ content.data.documentName }}</span><hr class="govuk-section-break--s govuk-section-break--visible"></span>
+    {% endset %}
+    {% set uploadArrayHtml %}
        {{ govukFileUpload({
            id: content.data.category+'['+content.data.index+']['+content.data.field+']',
            name: content.data.category+'['+content.data.index+']['+content.data.field+']',
            classes: 'uploadFile govuk-!-width-three-half '+content.data.classes,
            value: content.data.value,
            label: {
-             html: '<strong>' + t(content.data.text) + '</strong><div id="' + content.data.category + '[' + content.data.index + '][documentName]"><p class="documentName">' + content.data.documentName + '</p><hr class="govuk-section-break--s govuk-section-break--visible"></div>'
+             html: fileLabel
            },
            errorMessage: { text: t(content.data.errorMessage) } if content.data.errorMessage,
            attributes: {
@@ -297,7 +299,7 @@
            }
         }) }}
          {{ govukButton({
-                          id: 'uploadFileButton',
+                          id: content.data.category + '-' + content.data.index + '-upload-button',
                           name: 'action',
                           value: content.data.category+'['+content.data.index+'][uploadButton]',
                           attributes: {
@@ -306,7 +308,8 @@
            text: t('COMMON.SAVE_FILE'),
            classes: "govuk-button--secondary govuk-!-margin-bottom-0"
          }) }}
-    </div>
+    {% endset %}
+    {{ govukInsetText({html: uploadArrayHtml}) }}
     {{ govukInput({
        id: content.data.category+'['+content.data.index+'][caseDocument]',
        name: content.data.category+'['+content.data.index+'][caseDocument]',
@@ -324,7 +327,7 @@
   {% endif %}
 
   {% if content.type === ClaimSummaryType.UPLOAD %}
-    <div class="govuk-inset-text">
+    {% set uploadHtml %}
       {{ govukFileUpload({
            id: content.data.id,
            name: content.data.name,
@@ -332,7 +335,8 @@
              html: '<strong>'+t(content.data.text)+'</strong><hr class="govuk-section-break--s govuk-section-break--visible">'+t(content.data.html)+'</br></br>'
            }
         }) }}
-    </div>
+    {% endset %}
+    {{ govukInsetText({html: uploadHtml}) }}
   {% endif %}
 
   {% if content.type === ClaimSummaryType.DATE %}
