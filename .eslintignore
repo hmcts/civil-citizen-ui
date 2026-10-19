@@ -11,3 +11,6 @@ coverage/*
 jest.*config.js
 # Semgrep rule fixtures are parsed by Semgrep, not the application toolchain
 /.semgrep/
+
+# manual performance tool (k6), never part of lint or CI
+/performance/
