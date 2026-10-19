@@ -16,11 +16,13 @@
 
 {% macro addCreateFileInformation(t, fileName, createdDate) %}
     <p class="govuk-body govuk-!-margin-bottom-0">{{ fileName }}</p>
+    {% if createdDate and createdDate | string | trim %}
     {{
-        govukHint({
-            text: t('COMMON.CREATED_DATE', {createdDate: createdDate})
-        })
+    govukHint({
+        text: t('COMMON.CREATED_DATE', {createdDate: createdDate})
+    })
     }}
+    {% endif %}
 {% endmacro %}
 
 {% macro addDateUploadedFileInformation(t, fileName, uploadedDate) %}

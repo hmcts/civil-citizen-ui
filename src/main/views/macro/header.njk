@@ -1,35 +1,25 @@
-{% from 'govuk/macros/logo.njk' import govukLogo %}
+{% from "govuk/components/header/macro.njk" import govukHeader %}
 {% from "govuk/components/service-navigation/macro.njk" import govukServiceNavigation %}
 
 {% macro headerComponent(t, user, serviceName = null) %}
-  {% block header %}
-    <div class="civil-header">
-      <div class="govuk-header">
-        <div class="govuk-header__container govuk-width-container">
-          <div class="govuk-header__logo">
-            <a href="https://www.gov.uk" class="govuk-header__homepage-link">
-              {{ govukLogo({
-                classes: 'govuk-header__logotype',
-                ariaLabelText: 'GOV.UK'
-              }) }}
-            </a>
-          </div>
-        </div>
-      </div>
-      {{ govukServiceNavigation({
-        serviceName: serviceName or "Money Claims",
-        serviceUrl: "/dashboard",
-        navigation: [
-          {
-            href: "/dashboard",
-            text: t('COMMON.HEADER.MY_ACCOUNT')
-          },
-          {
-            href: "/logout",
-            text: t('COMMON.HEADER.SIGN_OUT')
-          }
-        ]
-      }) }}
-    </div>
-  {% endblock %}
+  {# Logo-only GOV.UK header plus service navigation is the Design System pattern (GOV.UK Frontend 5+/6). Do not hand-write govuk-header markup. #}
+  <div class="civil-header">
+    {{ govukHeader({
+      homepageUrl: 'https://www.gov.uk'
+    }) }}
+    {{ govukServiceNavigation({
+      serviceName: serviceName or "Money Claims",
+      serviceUrl: "/dashboard",
+      navigation: [
+        {
+          href: "/dashboard",
+          text: t('COMMON.HEADER.MY_ACCOUNT')
+        },
+        {
+          href: "/logout",
+          text: t('COMMON.HEADER.SIGN_OUT')
+        }
+      ]
+    }) }}
+  </div>
 {% endmacro %}
