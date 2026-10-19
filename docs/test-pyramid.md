@@ -57,6 +57,7 @@ Existing journey owners:
 | Small-claims directions questionnaire | `src/integration-test/routes/directionsQuestionnaire/smallClaims.integration.test.ts` |
 | Claimant reject-all | `src/integration-test/routes/claimantResponse/rejectAll.integration.test.ts` |
 | General application | `src/integration-test/routes/generalApplication/generalApplicationJourney.integration.test.ts` |
+| Auth, health and public pages | `src/integration-test/routes/public/authHealthPublic.integration.test.ts` |
 | Draft-store / GA / payment-session TTL | `src/integration-test/modules/draft-store/` |
 
 If a journey has an owner in this table, do not add new `request(app)` tests under `src/test/unit` for the same behaviour. Convert or delete the unit HTTP tests instead.
@@ -72,6 +73,8 @@ Defendant full admission, part admission, and statement of means are owned by `s
 Small-claims directions questionnaire pages under `src/test/unit/routes/features/directionsQuestionnaire/` are owned by `src/integration-test/routes/directionsQuestionnaire/smallClaims.integration.test.ts`. That suite is the representative small-claims path plus one validation error. Those unit tests call the route handler and must not use `request(app)`.
 
 General application pages under `src/test/unit/routes/features/claim/generalApplication/` are owned by `src/integration-test/routes/generalApplication/generalApplicationJourney.integration.test.ts`. That suite is an applicant happy path, a respondent happy path, and one validation error. Those unit tests call the route handler and must not use `request(app)`. `generalApplication.integration.test.ts` remains a controller-level slice for application-type branches.
+
+Auth, health, first contact, and the public pages for privacy, terms, cookies, contact us and accessibility are owned by `src/integration-test/routes/public/authHealthPublic.integration.test.ts`. That suite checks health up and down, the public pages, a Welsh language render, cookie preferences, one first-contact validation error, and sign-in wiring. The matching unit tests call the route handler or the OIDC middleware directly and must not use `request(app)`. `claimIssueTaskListGuard` is called as a function. Express static-before-session order is asserted from the app stack in `src/integration-test/setup/app.middlewareOrder.integration.test.ts`.
 
 ## Jest retries
 
