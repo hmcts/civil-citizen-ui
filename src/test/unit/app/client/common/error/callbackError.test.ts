@@ -6,6 +6,7 @@ import {
   extractCallbackOnlyMessages,
   extractCcdFieldErrors,
   isCallbackFieldValidationError,
+  toCcdFieldErrorAnchorId,
 } from '../../../../../../main/app/client/common/error/callbackError';
 
 describe('callbackError helpers', () => {
@@ -87,21 +88,39 @@ describe('callbackError helpers', () => {
     });
   });
 
+  describe('toCcdFieldErrorAnchorId', () => {
+    it('builds a safe HTML id from a CCD field path', () => {
+      expect(toCcdFieldErrorAnchorId('respondent1.partyEmail')).toBe('ccd-field-respondent1-partyEmail');
+      expect(toCcdFieldErrorAnchorId('generalAppType')).toBe('ccd-field-generalAppType');
+    });
+  });
+
   describe('applyCcdFieldErrorsToForm', () => {
-    it('applies CCD field errors onto a GenericForm for GDS summary', () => {
+    it('applies CCD field errors onto a GenericForm for GDS summary with linkable hrefs', () => {
       const form = new GenericForm({});
       applyCcdFieldErrorsToForm(form, [
         {id: 'respondent1.partyEmail', message: 'notanemail is not a valid Email address'},
       ]);
 
       expect(form.hasErrors()).toBe(true);
-      expect(form.errorFor('respondent1.partyEmail')).toBe('notanemail is not a valid Email address');
+      expect(form.errorFor('ccd-field-respondent1-partyEmail')).toBe('notanemail is not a valid Email address');
+      const [error] = form.getErrors();
+      expect(error.href).toBe('#ccd-field-respondent1-partyEmail');
+      expect(error.constraints?.ccdFieldError).toBe('notanemail is not a valid Email address');
     });
 
     it('detects CallbackError with field errors only', () => {
       expect(isCallbackFieldValidationError(new CallbackError([], [], [{id: 'email', message: 'bad'}]))).toBe(true);
       expect(isCallbackFieldValidationError(new CallbackError(['business rule']))).toBe(false);
       expect(isCallbackFieldValidationError(new Error('other'))).toBe(false);
+    });
+
+    it('does not treat mixed callbackErrors + field_errors as form remount', () => {
+      expect(isCallbackFieldValidationError(new CallbackError(
+        ['Business process must be finished'],
+        [],
+        [{id: 'email', message: 'Invalid email'}],
+      ))).toBe(false);
     });
   });
 });

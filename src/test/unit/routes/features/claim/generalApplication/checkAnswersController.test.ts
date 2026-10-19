@@ -208,7 +208,8 @@ describe('General Application - Check your answers', () => {
       }));
       const form = (res.render as jest.Mock).mock.calls[0][1].form as GenericForm<unknown>;
       expect(form.hasErrors()).toBe(true);
-      expect(form.errorFor('generalAppType')).toBe('Enter a valid application type');
+      expect(form.errorFor('ccd-field-generalAppType')).toBe('Enter a valid application type');
+      expect(form.getErrors()[0].href).toBe('#ccd-field-generalAppType');
       expect(res.redirect).not.toHaveBeenCalled();
       expect(next).not.toHaveBeenCalled();
     });
