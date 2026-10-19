@@ -42,7 +42,7 @@
 
             {% for yourStatementSection in yourStatementContent %}
             <div class="row-container" role="group" aria-labelledby="your-statement-heading">
-              <div data-module="moj-add-another">
+              <div data-module="cui-upload-rows" data-upload-category="documentsForYourStatement">
                 {% for section in yourStatementSection %}
 
                 <span class="govuk-visually-hidden">
@@ -50,11 +50,11 @@
                 </span>
 
                 {% call govukFieldset({
-                  classes: 'moj-add-another__item',
+                  classes: 'cui-upload-rows__item',
                   legend: {
-                  classes: 'moj-add-another__title',
+                  classes: 'cui-upload-rows__title govuk-visually-hidden',
                   isPageHeading: false,
-                  text: section.heading or ''
+                  text: section.heading or t(section.contentSections[0].data.text)
                 }
                 }) %}
                   {{ claimSummaryContent({ contentSections: section.contentSections }, t) }}
@@ -79,7 +79,7 @@
           {% if documentsReferredContent.length > 0 %}
           {% for documentsReferredSection in documentsReferredContent %}
           <div class="row-container" role="group" aria-labelledby="documents-referred-heading">
-            <div data-module="moj-add-another">
+            <div data-module="cui-upload-rows" data-upload-category="documentsForDocumentsReferred">
 
               {% for section in documentsReferredSection %}
 
@@ -88,11 +88,11 @@
               </span>
 
               {% call govukFieldset({
-                classes: 'moj-add-another__item',
+                classes: 'cui-upload-rows__item',
                 legend: {
-                classes: 'moj-add-another__title',
+                classes: 'cui-upload-rows__title govuk-visually-hidden',
                 isPageHeading: false,
-                text: section.heading or ''
+                text: section.heading or t(section.contentSections[0].data.text)
               }
               }) %}
                 {{ claimSummaryContent({contentSections: section.contentSections }, t) }}

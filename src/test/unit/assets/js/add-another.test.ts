@@ -227,17 +227,12 @@ describe('real court-order markup and the fork component adaptation', () => {
     expect(roots[1].querySelectorAll('.cui-add-another__item')).toHaveLength(2);
   });
 
-  it('coexists with legacy cleanup, limits and action reindexing without changing existing rows', async () => {
+  it('ignores retained MOJ compatibility markup without changing existing rows', async () => {
     const document = install(renderAddAnotherPage(courtPage, {declared: true, rows: [order(0)]}, {'rows[0][amount]': 'ERRORS.AMOUNT_REQUIRED'}));
     const legacy = document.createElement('div');
     legacy.dataset.module = 'moj-add-another';
     legacy.innerHTML = Array.from({length: 9}, () => '<fieldset class="moj-add-another__item"></fieldset>').join('');
     document.body.appendChild(legacy);
-    jest.isolateModules(() => {
-      require('../../../../main/assets/js/remove-error-content');
-      require('../../../../main/assets/js/conditionally-hide-add-button');
-      require('../../../../main/assets/js/reindex-add-another-actions');
-    });
     document.dispatchEvent(new dom.window.Event('DOMContentLoaded'));
     enhance(document);
     add(document);
@@ -303,8 +298,8 @@ describe.each(evidencePages)('real evidence page %s', view => {
 describe('real server-managed upload markup', () => {
   it('ignores the repeated case-progression rows and preserves every server submission action', () => {
     const document = install(renderRepeatedUploads());
-    const root = document.querySelector('[data-module="moj-add-another"]')!;
-    const beforeRows = [...root.querySelectorAll('.moj-add-another__item')];
+    const root = document.querySelector('[data-module="cui-upload-rows"]')!;
+    const beforeRows = [...root.querySelectorAll('.cui-upload-rows__item')];
     const expected = ['documentsForDisclosure[0][uploadButton]', 'documentsForDisclosure[0][removeButton]',
       'documentsForDisclosure[1][uploadButton]', 'documentsForDisclosure[1][removeButton]', 'add_another-disclosure'];
     const buttons = [...document.querySelectorAll<HTMLButtonElement>('button[name="action"]')];
@@ -312,7 +307,7 @@ describe('real server-managed upload markup', () => {
     expect(buttons.map(button => button.value)).toEqual(expected);
     buttons.forEach(button => expect(button.type).toBe('submit'));
     enhance(document);
-    expect([...root.querySelectorAll('.moj-add-another__item')]).toEqual(beforeRows);
+    expect([...root.querySelectorAll('.cui-upload-rows__item')]).toEqual(beforeRows);
     expect(document.querySelector('[data-module="cui-add-another"]')).toBeNull();
     const submissions: string[] = [];
     document.querySelector('form')!.addEventListener('submit', event => {
@@ -325,7 +320,7 @@ describe('real server-managed upload markup', () => {
       expect(button.dispatchEvent(new dom.window.MouseEvent('click', {bubbles: true, cancelable: true}))).toBe(true);
     });
     expect(submissions).toEqual(expected);
-    expect([...root.querySelectorAll('.moj-add-another__item')]).toEqual(beforeRows);
+    expect([...root.querySelectorAll('.cui-upload-rows__item')]).toEqual(beforeRows);
     beforeRows.forEach((row, index) => {
       expect((row.querySelector(`[name="documentsForDisclosure[${index}][caseDocument]"]`) as HTMLInputElement).value).toBe(JSON.stringify(savedUploadDocument(index)));
       expect((row.querySelector(`[name="documentsForDisclosure[${index}][typeOfDocument]"]`) as HTMLInputElement).value).toBe(`Document ${index}`);
@@ -358,41 +353,21 @@ describe('real server-managed upload markup', () => {
   });
 });
 
-describe('newly inserted legacy clone cleanup', () => {
-  it('cleans the clone while retaining the original upload row and leaving CUI rows untouched', async () => {
+describe('server uploads after retirement of the legacy clone observer', () => {
+  it('retains existing upload errors and saved documents while client-managed rows are added', () => {
     const document = install(renderRepeatedUploads(true));
-    const root = document.querySelector('[data-module="moj-add-another"]')!;
-    const original = root.querySelector('.moj-add-another__item')!;
-    const loading = document.createElement('div');
-    loading.id = 'documentsForDisclosure[0]-loadingContainer';
-    loading.textContent = 'Loading';
-    original.appendChild(loading);
-    const originalMarkup = original.outerHTML;
+    const root = document.querySelector('[data-module="cui-upload-rows"]')!;
+    const original = root.outerHTML;
     const other = new JSDOM(renderAddAnotherPage(courtPage, {declared: true, rows: [order(0)]}, {'rows[0][amount]': 'ERRORS.AMOUNT_REQUIRED'}));
     const cui = document.importNode(other.window.document.querySelector('[data-module="cui-add-another"]'), true) as HTMLElement;
-    other.window.close();
-    document.body.appendChild(cui);
-    jest.isolateModules(() => { require('../../../../main/assets/js/remove-error-content'); });
-    const clone = original.cloneNode(true) as HTMLElement;
-    const cuiClone = cui.querySelector('.cui-add-another__item')!.cloneNode(true) as HTMLElement;
-    await new Promise<void>(resolve => {
-      const delivered = new dom.window.MutationObserver(() => { delivered.disconnect(); resolve(); });
-      delivered.observe(document.body, {childList: true, subtree: true});
-      root.insertBefore(clone, root.querySelector('.moj-button-action'));
-      cui.querySelector('.cui-add-another__items')!.appendChild(cuiClone);
-    });
-    expect(clone.querySelector('[id*="-loadingContainer"]')).toBeNull();
-    expect(clone.querySelector('[id*="[documentName]"]')).toBeNull();
-    expect(clone.querySelector('.govuk-error-message')!.classList.contains('hide')).toBe(true);
-    expect(clone.querySelector('.govuk-input--error')).toBeNull();
-    expect(clone.querySelector('.govuk-form-group--error')).toBeNull();
-    expect(original.outerHTML).toBe(originalMarkup);
-    expect(original.querySelector('.govuk-error-message')!.classList.contains('hide')).toBe(false);
-    expect(original.querySelector('[id*="-loadingContainer"]')).toBe(loading);
-    expect(original.querySelector('[id*="[documentName]"]')!.textContent).toContain('saved-0.pdf');
-    expect((original.querySelector('[name="documentsForDisclosure[0][caseDocument]"]') as HTMLInputElement).value).toBe(JSON.stringify(savedUploadDocument(0)));
-    expect(cuiClone.querySelector('.govuk-error-message')!.classList.contains('hide')).toBe(false);
-    expect(cuiClone.querySelector('.govuk-input--error')).not.toBeNull();
-    expect(cuiClone.querySelector('.govuk-form-group--error')).not.toBeNull();
+    other.window.close();document.body.appendChild(cui);
+    const {initUploadRows} = require('../../../../main/assets/js/upload-rows');
+    initUploadRows(document);enhance(document);
+    (cui.querySelector('.cui-add-another__add-button') as HTMLButtonElement).click();
+    expect(cui.querySelectorAll('.cui-add-another__item')).toHaveLength(2);
+    expect(root.outerHTML).toBe(original);
+    expect(root.querySelector('.govuk-error-message')!.classList.contains('hide')).toBe(false);
+    expect(root.querySelector('[id*="[documentName]"]')!.textContent).toContain('saved-0.pdf');
+    expect((root.querySelector('[name="documentsForDisclosure[0][caseDocument]"]') as HTMLInputElement).value).toBe(JSON.stringify(savedUploadDocument(0)));
   });
 });

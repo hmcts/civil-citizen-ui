@@ -6,13 +6,17 @@
 {% from "govuk/components/file-upload/macro.njk" import govukFileUpload %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 
+{% from "../../macro/uploaded-files-summary.njk" import uploadedFilesSummary %}
+{% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
 {% block nestedContent %}
-  {% set errors = "" %}
-  {% set  idValue = "selectedFile" %}
-  {% if form.hasErrors() %}
-    {% set errors = translateErrors(form.getAllErrors(),t)[0] %}
-    {% set idValue = errors.fieldName %}
-  {% endif %}
+  {% set uploadErrors = [] %}
+  {% for error in form.getAllErrors() %}
+    {% if error.text and (error.property == '' or error.property == 'selectedFile' or error.property == 'fileUpload' or 'fileUpload[' in error.property) %}
+      {% set uploadErrors = (uploadErrors.push(error), uploadErrors) %}
+    {% endif %}
+  {% endfor %}
+  {% set errors = uploadErrors[0] %}
+  {% set idValue = errors.fieldName or 'selectedFile' %}
   {% set uploadFileLabel %}
   <strong>{{ t('COMMON.UPLOAD_FILE_LABEL') }}</strong>
   {% endset %}
@@ -22,7 +26,7 @@
   {% endfor %}
   <form method="post" action="{{ currentUrl }}?_csrf={{ csrf }}" enctype='multipart/form-data' novalidate>
     {{ csrfProtection(csrf) }}
-    <div class="govuk-inset-text">
+    {% set uploadHtml %}
       {{ govukFileUpload({
                   id: idValue,
                   name: "selectedFile",
@@ -40,23 +44,12 @@
                           text:  t('COMMON.SAVE_FILE'),
                            classes: "govuk-button--secondary govuk-!-margin-bottom-0"
                 }) }}
-    </div>
+    {% endset %}
+    {{ govukInsetText({html: uploadHtml}) }}
     {% if documentName %}
       <h2 class="govuk-heading-m">{{t('PAGES.GENERAL_APPLICATION.UPLOAD_N245_FORM.UPLOADED_FILES')}}</h2>
       <div class="govuk-section-break--s govuk-section-break--visible"></div>
-      <dl class="govuk-summary-list">
-        <div class="govuk-summary-list__row">
-          <dt class="govuk-summary-list__key">
-            {{ documentName }}
-          </dt>
-          <dd class="govuk-summary-list__actions">
-            <a class="govuk-link" href="{{ currentUrl }}?action=REMOVE_DOC">
-              {{t('PAGES.GENERAL_APPLICATION.UPLOAD_N245_FORM.REMOVE_DOCUMENT')}}<span class="govuk-visually-hidden">
-                {{ documentName }}</span>
-            </a>
-          </dd>
-        </div>
-      </dl>
+      {{ uploadedFilesSummary([{key: {text: documentName}, actions: {items: [{href: currentUrl + '?action=REMOVE_DOC'}] } }], t('PAGES.GENERAL_APPLICATION.UPLOAD_N245_FORM.REMOVE_DOCUMENT')) }}
     {% endif %}
     <div class="govuk-button-group">
       {{ addButton(t, 'CONTINUE', cancelUrl) }}
