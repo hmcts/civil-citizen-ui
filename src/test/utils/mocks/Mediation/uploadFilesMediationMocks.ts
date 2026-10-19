@@ -26,11 +26,11 @@ const MOCK_CASE_DOCUMENT: CaseDocument = <CaseDocument>{  createdBy: 'test',
 
 const TYPE_OF_DOCUMENT_YOUR_NAME_SECTION = new TypeOfDocumentYourNameSection('1','1', '2024');
 TYPE_OF_DOCUMENT_YOUR_NAME_SECTION.yourName = 'John Smith';
-TYPE_OF_DOCUMENT_YOUR_NAME_SECTION.caseDocument = MOCK_CASE_DOCUMENT;
+TYPE_OF_DOCUMENT_YOUR_NAME_SECTION.caseDocuments = [MOCK_CASE_DOCUMENT];
 
 const TYPE_OF_DOCUMENT = new TypeOfDocumentSection('1','1', '2024');
 TYPE_OF_DOCUMENT.typeOfDocument = 'John Smith';
-TYPE_OF_DOCUMENT.caseDocument = MOCK_CASE_DOCUMENT;
+TYPE_OF_DOCUMENT.caseDocuments = [MOCK_CASE_DOCUMENT];
 
 const TYPE_OF_DOCUMENTS = Array.of(new TypeOfDocuments(
   1,
@@ -55,21 +55,21 @@ export const getYourStatement = (): TypeOfDocumentYourNameSection[] => {
 };
 
 export const getReferredDocumentCCD = (categoryId: string) => {
-  return getReferredDocument().map((newDoc : TypeOfDocumentSection) => {
+  return getReferredDocument().flatMap((newDoc : TypeOfDocumentSection) => newDoc.caseDocuments.map((caseDocument) => {
     const mediationUploadDocumentsCCD = new MediationUploadDocumentsCCD();
     mediationUploadDocumentsCCD.id = uuidv4();
-    mediationUploadDocumentsCCD.value = new MediationDocumentsReferred(mapperMediationDocumentToCCDDocuments(newDoc.caseDocument, categoryId), newDoc.dateInputFields.date, newDoc.typeOfDocument, new Date());
+    mediationUploadDocumentsCCD.value = new MediationDocumentsReferred(mapperMediationDocumentToCCDDocuments(caseDocument, categoryId), newDoc.dateInputFields.date, newDoc.typeOfDocument, new Date());
     return mediationUploadDocumentsCCD;
-  });
+  }));
 };
 
 export const getNonAttendanceDocumentsCCD = (categoryId: string) => {
-  return getYourStatement().map((newDoc : TypeOfDocumentYourNameSection) => {
+  return getYourStatement().flatMap((newDoc : TypeOfDocumentYourNameSection) => newDoc.caseDocuments.map((caseDocument) => {
     const mediationUploadDocumentsCCD = new MediationUploadDocumentsCCD();
     mediationUploadDocumentsCCD.id = uuidv4();
-    mediationUploadDocumentsCCD.value = new MediationMediationNonAttendanceDocs(mapperMediationDocumentToCCDDocuments(newDoc.caseDocument, categoryId), newDoc.yourName, newDoc.dateInputFields.date, new Date());
+    mediationUploadDocumentsCCD.value = new MediationMediationNonAttendanceDocs(mapperMediationDocumentToCCDDocuments(caseDocument, categoryId), newDoc.yourName, newDoc.dateInputFields.date, new Date());
     return mediationUploadDocumentsCCD;
-  });
+  }));
 };
 
 export const getTypeOfDocuments = () => {

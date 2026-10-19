@@ -1,10 +1,14 @@
 import {Request, Response, NextFunction} from 'express';
-import {ValidationError} from 'class-validator';
+import {ValidationError, Validator} from 'class-validator';
 import {FILE_SIZE_LIMIT} from 'form/validators/isFileSize';
 import {createInvalidFileContentError, isFileContentAllowed} from 'common/utils/fileContentTypeUtils';
+import {TypeOfDocumentSectionMapper} from 'services/features/caseProgression/TypeOfDocumentSectionMapper';
+import {CaseDocument} from 'models/document/caseDocument';
 
 const multer = require('multer');
 const {Logger} = require('@hmcts/nodejs-logging');
+
+export type RequestWithRejectedFiles = Request & {rejectedFileFields?: string[]};
 
 const rejectIfFileContentInvalid = (req: Request): boolean => {
   const files: Express.Multer.File[] = [];
@@ -101,10 +105,24 @@ export const createMulterUpload = (fileSizeLimit: number = FILE_SIZE_LIMIT, maxF
   });
 };
 
+const handleMulterResultDroppingDisallowedFiles = (req: Request, err: any, loggerName: string, next: NextFunction): void => {
+  if (err || !Array.isArray(req.files)) {
+    handleMulterResult(req, err, loggerName, next);
+    return;
+  }
+  const rejected = req.files.filter((file) => !isFileContentAllowed(file.buffer, file.mimetype));
+  if (rejected.length) {
+    Logger.getLogger(loggerName).error(`[MULTER ERROR] Invalid file content type rejected for ${rejected.length} file(s), code=${createInvalidFileContentError().code}`);
+    (req as RequestWithRejectedFiles).rejectedFileFields = rejected.map((file) => file.fieldname);
+    (req as Request & {files?: Express.Multer.File[]}).files = req.files.filter((file) => !rejected.includes(file));
+  }
+  next();
+};
+
 export const createMulterErrorMiddleware = (loggerName = 'uploadDocumentsController') => {
   return (req: Request, res: Response, next: NextFunction) => {
     const upload = createMulterUpload(FILE_SIZE_LIMIT);
-    upload.any()(req, res, (err: any) => handleMulterResult(req, err, loggerName, next));
+    upload.any()(req, res, (err: any) => handleMulterResultDroppingDisallowedFiles(req, err, loggerName, next));
   };
 };
 
@@ -169,6 +187,56 @@ export const extractCategoryAndIndex = (submitAction: string): [string, string] 
   return [parts[0], parts[1]];
 };
 
+export const extractCategorySectionAndFileIndex = (submitAction: string): [string, string, string] => {
+  const parts = submitAction.split(/[[\]]/).filter((word: string) => word !== '');
+  return [parts[0], parts[1], parts[3]];
+};
+
+export const normaliseCaseDocuments = <T>(value: T | T[] | undefined | null): T[] => {
+  if (!value) {
+    return [];
+  }
+  return Array.isArray(value) ? value : [value];
+};
+
+export const migrateLegacyCaseDocuments = (sections: Array<{caseDocuments?: unknown[]; caseDocument?: unknown}> | undefined): void => {
+  sections?.forEach((section) => {
+    if (!section.caseDocuments?.length && section.caseDocument) {
+      section.caseDocuments = [section.caseDocument];
+    }
+  });
+};
+
+export const viewableCaseDocuments = (caseDocuments: CaseDocument | CaseDocument[] | undefined): CaseDocument[] =>
+  normaliseCaseDocuments(caseDocuments).filter((caseDocument) => caseDocument?.documentLink?.document_binary_url);
+
+export const migrateLegacyCaseDocumentsOnForm = (form: object | undefined): void => {
+  if (!form) {
+    return;
+  }
+  Object.values(form).forEach((value) => {
+    if (Array.isArray(value)) {
+      migrateLegacyCaseDocuments(value as Array<{caseDocuments?: unknown[]; caseDocument?: unknown}>);
+    }
+  });
+};
+
+export const removeUploadedFile = (categoryModel: any, index: string, fileIndex: string): boolean => {
+  const section = categoryModel?.[+index];
+  const caseDocuments = normaliseCaseDocuments(section?.caseDocuments);
+  if (!section || +fileIndex < 0 || +fileIndex >= caseDocuments.length) {
+    return false;
+  }
+  caseDocuments.splice(+fileIndex, 1);
+  section.caseDocuments = caseDocuments;
+  return true;
+};
+
+export const removeUploadedFileForAction = (model: object, deleteFileAction: string): boolean => {
+  const [category, index, fileIndex] = extractCategorySectionAndFileIndex(deleteFileAction);
+  return removeUploadedFile((model as Record<string, unknown>)[category], index, fileIndex);
+};
+
 export const createUploadOneFileError = () => {
   return [{
     target: {
@@ -183,84 +251,104 @@ export const createUploadOneFileError = () => {
   }];
 };
 
+type DocumentUploader = {uploadDocument: (req: Request, file: any) => Promise<any>};
+type UploadSection = {fileUpload?: unknown; caseDocuments?: unknown};
+type ReportSectionError = (constraintKey: string, constraintValue: string) => void;
+
+interface SectionUpload {
+  req: Request;
+  section?: UploadSection;
+  civilServiceClient: DocumentUploader;
+  validator: Validator;
+  logger: {error: (...args: unknown[]) => void};
+  reportError: ReportSectionError;
+}
+
+const filesChosenFor = (req: Request, fieldName: string): Express.Multer.File[] =>
+  ((req.files as Express.Multer.File[]) || []).filter((file) => file.fieldname === fieldName);
+
+const firstConstraintOf = (validationErrors: ValidationError[]): [string, string] => {
+  const constraints = validationErrors[0]?.constraints ?? {};
+  const [constraintKey] = Object.keys(constraints);
+  return [constraintKey || 'validationError', constraints[constraintKey] || 'ERRORS.FILE_UPLOAD_FAILED'];
+};
+
+const oneErrorPerSection = (form: {errors?: any[]}, category: string, index: string): ReportSectionError => {
+  let sectionHasError = false;
+  return (constraintKey, constraintValue) => {
+    if (!sectionHasError) {
+      form.errors.push(createFileUploadError(category, index, constraintKey, constraintValue));
+      sectionHasError = true;
+    }
+  };
+};
+
+const addToUploadedDocuments = async (fileUpload: unknown, upload: SectionUpload): Promise<void> => {
+  try {
+    const uploadedDocument = await upload.civilServiceClient.uploadDocument(upload.req, fileUpload);
+    if (!uploadedDocument?.documentLink) {
+      upload.logger.error('[SAVE FILE] File upload response missing documentLink');
+      upload.reportError('uploadError', 'ERRORS.FILE_UPLOAD_FAILED');
+      return;
+    }
+    upload.section.caseDocuments = [...normaliseCaseDocuments(upload.section.caseDocuments), uploadedDocument];
+  } catch (uploadError) {
+    upload.logger.error(`[SAVE FILE] API upload failed: error=${uploadError?.message || uploadError}`, uploadError);
+    upload.reportError('uploadError', 'ERRORS.FILE_UPLOAD_FAILED');
+  }
+};
+
+const validateAndUpload = async (file: Express.Multer.File, upload: SectionUpload): Promise<void> => {
+  try {
+    const fileUpload = TypeOfDocumentSectionMapper.mapMulterFileToSingleFile(file);
+    if (upload.section) {
+      upload.section.fileUpload = fileUpload;
+    }
+    const validationErrors = upload.validator.validateSync(fileUpload);
+    if (validationErrors?.length) {
+      upload.reportError(...firstConstraintOf(validationErrors));
+    } else if (upload.section) {
+      await addToUploadedDocuments(fileUpload, upload);
+    }
+  } catch (error) {
+    upload.logger.error(`[SAVE FILE] Unexpected error: ${error?.message || error}`, error);
+    upload.reportError('unexpectedError', 'ERRORS.FILE_UPLOAD_FAILED');
+  } finally {
+    if (upload.section) {
+      delete upload.section.fileUpload;
+    }
+  }
+};
+
 export const uploadAndValidateFile = async (
   req: Request,
   submitAction: string,
   form: {model: Record<string, any>, errors?: any[]},
-  civilServiceClient: {uploadDocument: (req: Request, file: any) => Promise<any>},
+  civilServiceClient: DocumentUploader,
   loggerName = 'uploadDocumentsController',
 ): Promise<void> => {
-  const {Validator} = require('class-validator');
-  const {Logger} = require('@hmcts/nodejs-logging');
-  const logger = Logger.getLogger(loggerName);
-  const validator = new Validator();
-  const {TypeOfDocumentSectionMapper} = require('services/features/caseProgression/TypeOfDocumentSectionMapper');
-
   const [category, index] = extractCategoryAndIndex(submitAction);
-  const target = `${category}[${index}][fileUpload]`;
-  const inputFile = (req.files as Express.Multer.File[]).find((file: Express.Multer.File) =>
-    file.fieldname === target,
-  );
-
-  if (!inputFile) {
+  const fieldName = `${category}[${index}][fileUpload]`;
+  const files = filesChosenFor(req, fieldName);
+  const hasRejectedContent = (req as RequestWithRejectedFiles).rejectedFileFields?.includes(fieldName);
+  if (!files.length && !hasRejectedContent) {
     return;
   }
 
-  try {
-    const fileUpload = TypeOfDocumentSectionMapper.mapMulterFileToSingleFile(inputFile as Express.Multer.File);
-    const categoryModel = form.model[category];
-    if (categoryModel && categoryModel[+index]) {
-      categoryModel[+index].fileUpload = fileUpload;
-    }
+  form.errors ??= [];
+  const upload: SectionUpload = {
+    req,
+    section: form.model[category]?.[+index],
+    civilServiceClient,
+    validator: new Validator(),
+    logger: Logger.getLogger(loggerName),
+    reportError: oneErrorPerSection(form, category, index),
+  };
 
-    if (!form.errors) {
-      form.errors = [];
-    }
-
-    const fileErrors = validator.validateSync(fileUpload);
-
-    if (fileErrors && fileErrors.length > 0) {
-      const firstError = fileErrors[0];
-      const firstConstraintKey = firstError?.constraints ? Object.keys(firstError.constraints)[0] : null;
-      const firstConstraintValue = firstError?.constraints?.[firstConstraintKey];
-
-      const nestedError = createFileUploadError(
-        category,
-        index,
-        firstConstraintKey || 'validationError',
-        firstConstraintValue || 'ERRORS.FILE_UPLOAD_FAILED',
-      );
-      form.errors.push(nestedError);
-    } else {
-      try {
-        if (categoryModel && categoryModel[+index]) {
-          categoryModel[+index].caseDocument = await civilServiceClient.uploadDocument(req, fileUpload);
-         
-          if (!categoryModel[+index].caseDocument?.documentLink) {
-            logger.error('[SAVE FILE] File upload response missing documentLink');
-            const apiError = createFileUploadError(category, index, 'uploadError', 'ERRORS.FILE_UPLOAD_FAILED');
-            form.errors.push(apiError);
-            categoryModel[+index].caseDocument = undefined;
-          }
-        }
-      } catch (uploadError) {
-        logger.error(`[SAVE FILE] API upload failed: error=${uploadError?.message || uploadError}`, uploadError);
-
-        const apiError = createFileUploadError(category, index, 'uploadError', 'ERRORS.FILE_UPLOAD_FAILED');
-        form.errors.push(apiError);
-      }
-    }
-
-    if (categoryModel && categoryModel[+index]) {
-      delete categoryModel[+index].fileUpload;
-    }
-  } catch (error) {
-    logger.error(`[SAVE FILE] Unexpected error: ${error?.message || error}`, error);
-
-    if (!form.errors) {
-      form.errors = [];
-    }
-    const unexpectedError = createFileUploadError(category, index, 'unexpectedError', 'ERRORS.FILE_UPLOAD_FAILED');
-    form.errors.push(unexpectedError);
+  if (hasRejectedContent) {
+    upload.reportError('multerError', getMulterErrorConstraint(createInvalidFileContentError()));
+  }
+  for (const file of files) {
+    await validateAndUpload(file, upload);
   }
 };

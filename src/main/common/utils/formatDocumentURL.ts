@@ -4,12 +4,18 @@ import {HearingDateTimeFormatter} from 'services/features/caseProgression/hearin
 import {t} from 'i18next';
 import {alignText} from 'form/models/alignText';
 import {escapeHtml} from 'common/utils/escapeHtml';
+import {CaseDocument} from 'models/document/caseDocument';
 
 export function formatDocumentViewURL(documentName: string, claimId: string, binaryURL: string): string {
 
   const url = CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', documentIdExtractor(binaryURL));
 
   return `<a class="govuk-link" target="_blank" href="${escapeHtml(url)}">${escapeHtml(documentName)}</a>`;
+}
+export function formatDocumentViewURLs(caseDocuments: CaseDocument[], claimId: string): string {
+  return caseDocuments
+    .map((caseDocument) => formatDocumentViewURL(caseDocument.documentName, claimId, caseDocument.documentLink.document_binary_url))
+    .join('</br>');
 }
 export function formatEvidenceDocumentAlignedViewURL(documentName: string, claimId: string, binaryURL: string, align:alignText): string {
 
