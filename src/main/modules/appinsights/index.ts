@@ -41,17 +41,32 @@ export const DEFAULT_REDACTED_KEYS: string[] = [
   'authorization',
 ];
 
+/**
+ * Configured keys (appInsights.redactedKeys / APPINSIGHTS_REDACTED_KEYS) extend the defaults rather
+ * than replace them, so a mis-set value can never switch off redaction of the OS key.
+ */
 export const getRedactedKeys = (): string[] => {
+  let extraKeys: string[] = [];
   if (config.has('appInsights.redactedKeys')) {
     const configuredKeys = config.get<string[] | string>('appInsights.redactedKeys');
-    if (Array.isArray(configuredKeys) && configuredKeys.length > 0) {
-      return configuredKeys;
-    }
-    if (typeof configuredKeys === 'string' && configuredKeys.trim().length > 0) {
-      return configuredKeys.split(',').map((k) => k.trim()).filter(Boolean);
+    if (Array.isArray(configuredKeys)) {
+      extraKeys = configuredKeys.map((k) => String(k).trim()).filter(Boolean);
+    } else if (typeof configuredKeys === 'string') {
+      extraKeys = configuredKeys.split(',').map((k) => k.trim()).filter(Boolean);
     }
   }
-  return DEFAULT_REDACTED_KEYS;
+  if (extraKeys.length === 0) {
+    return DEFAULT_REDACTED_KEYS;
+  }
+  const seen = new Set<string>();
+  return [...DEFAULT_REDACTED_KEYS, ...extraKeys].filter((k) => {
+    const lower = k.toLowerCase();
+    if (seen.has(lower)) {
+      return false;
+    }
+    seen.add(lower);
+    return true;
+  });
 };
 
 // Matches nothing; used when there are no keys to redact.
@@ -154,9 +169,12 @@ export const stripCredentialsTelemetryProcessor = (envelope: TelemetryEnvelope):
   }
 
   if (baseData.properties && typeof baseData.properties === 'object') {
+    const sensitiveNames = new Set(getRedactedKeys().map((k) => k.toLowerCase()));
     for (const [key, propVal] of Object.entries(baseData.properties)) {
       if (typeof propVal === 'string') {
-        baseData.properties[key] = sanitizeCredentials(propVal, regex);
+        baseData.properties[key] = sensitiveNames.has(key.toLowerCase())
+          ? '[REDACTED]'
+          : sanitizeCredentials(propVal, regex);
       }
     }
   }
@@ -169,7 +187,7 @@ export const stripCredentialsTelemetryProcessor = (envelope: TelemetryEnvelope):
  * sampling. The SDK's sampling processor keeps anything with sampleRate >= 100.
  */
 export const keepFailuresTelemetryProcessor = (envelope: TelemetryEnvelope): boolean => {
-  const {baseType, baseData} = envelope.data;
+  const {baseType, baseData} = envelope?.data ?? {};
   if (baseType === 'ExceptionData'
     || (baseType === 'RequestData' && baseData?.success === false)
     || (baseType === 'RemoteDependencyData' && baseData?.success === false)) {
