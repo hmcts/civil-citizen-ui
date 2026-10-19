@@ -1,85 +1,109 @@
-import request from 'supertest';
-import {app} from '../../../../../../main/app';
-import nock from 'nock';
-import config from 'config';
+import {Response} from 'express';
+import {t} from 'i18next';
+import ccjConfirmationController from 'routes/features/claimantResponse/ccj/ccjConfirmationController';
 import {CCJ_CONFIRMATION_URL} from 'routes/urls';
-import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import {civilClaimResponseMock, mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
+import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {isJudgmentBufferEnabled} from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {Claim} from 'models/claim';
+import {Party} from 'models/party';
+import {PartyType} from 'models/partyType';
 import {CaseState} from 'form/models/claimDetails';
-import * as launchDarkly from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
+import {AppRequest} from 'models/AppRequest';
+import {createMockResponse, createMockSession, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
-jest.mock('routes/guards/ccjConfirmationGuard', () => ({
-  ccjConfirmationGuard: jest.fn((req, res, next) => {
-    next();
-  }),
+jest.mock('modules/draft-store/draftStoreService');
+jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient', () => ({
+  isJudgmentBufferEnabled: jest.fn(),
 }));
 
-const mockJudgmentRequestedCivilClaim = {
-  set: jest.fn(() => Promise.resolve({})),
-  get: jest.fn(() => Promise.resolve(JSON.stringify({
-    ...civilClaimResponseMock,
-    state: CaseState.JUDGMENT_REQUESTED,
-    case_data: {
-      ...civilClaimResponseMock.case_data,
-      ccdState: CaseState.JUDGMENT_REQUESTED,
-    },
-  }))),
-  del: jest.fn(() => Promise.resolve({})),
-  ttl: jest.fn(() => Promise.resolve({})),
-  expireat: jest.fn(() => Promise.resolve({})),
+const viewPath = 'features/claimantResponse/ccj/ccj-confirmation';
+const claimId = '12345';
+const defendantName = 'Joe Bloggs';
+
+const namedClaim = (): Claim => {
+  const claim = new Claim();
+  claim.respondent1 = new Party();
+  claim.respondent1.type = PartyType.INDIVIDUAL;
+  claim.respondent1.partyDetails = {firstName: 'Joe', lastName: 'Bloggs'} as unknown as Party['partyDetails'];
+  return claim;
+};
+
+const invoke = async () => {
+  const res = createMockResponse();
+  const next = jest.fn();
+  await getRouteHandler(ccjConfirmationController, 'get', CCJ_CONFIRMATION_URL)(
+    {
+      params: {id: claimId},
+      query: {},
+      cookies: {},
+      session: createMockSession({user: {id: 'user-1'}}),
+    } as unknown as AppRequest,
+    res as unknown as Response,
+    next,
+  );
+  return {res, next};
 };
 
 describe('CCJ confirmation controller', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
-
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
+  beforeEach(() => {
+    jest.clearAllMocks();
+    (generateRedisKey as jest.Mock).mockReturnValue(claimId);
+    (isJudgmentBufferEnabled as jest.Mock).mockResolvedValue(false);
   });
 
   describe('on GET', () => {
-    beforeEach(() => {
-      jest.spyOn(launchDarkly, 'isJudgmentBufferEnabled').mockResolvedValue(false);
+    it('should return ccj confirmation page', async () => {
+      const claim = namedClaim();
+      jest.spyOn(claim, 'isCCJCompleteForJo').mockReturnValue(false);
+      (getCaseDataFromStore as jest.Mock).mockResolvedValue(claim);
+
+      const {res} = await invoke();
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        isJudgmentOnline: false,
+        isJudgmentRequested: false,
+        pageTitle: 'PAGES.CCJ_CONFIRMATION.PAGE_TITLE',
+        processYourRequest: t('PAGES.CCJ_CONFIRMATION.PROCESS_YOUR_REQUEST', {defendantName}),
+        processYourRequest1: t('PAGES.CCJ_CONFIRMATION.PROCESS_YOUR_REQUEST_1', {defendantName}),
+      }));
     });
 
-    it('should return ccj confirmation page', async () => {
-      jest.spyOn(Claim.prototype, 'isCCJCompleteForJo').mockReturnValue(false);
-      app.locals.draftStoreClient = mockCivilClaim;
-      const res = await request(app).get(CCJ_CONFIRMATION_URL);
-      expect(res.status).toBe(200);
-      expect(res.text).toContain(TestMessages.CCJ_CONFIRMATION_TITLE);
-      expect(res.text).toContain(TestMessages.CCJ_CONFIRMATION_PROCESS_YOUR_REQUEST);
-      expect(res.text).toContain(TestMessages.CCJ_CONFIRMATION_PROCESS_YOUR_REQUEST_1);
-    });
     it('should return ccj confirmation page for JO', async () => {
-      jest.spyOn(Claim.prototype, 'isCCJCompleteForJo').mockReturnValue(true);
-      app.locals.draftStoreClient = mockCivilClaim;
-      const res = await request(app).get(CCJ_CONFIRMATION_URL);
-      expect(res.status).toBe(200);
-      expect(res.text).toContain(TestMessages.CCJ_CONFIRMATION_TITLE);
-      expect(res.text).toContain(TestMessages.CCJ_CONFIRMATION_NO_LONGER_RESPONSE);
-      expect(res.text).toContain(TestMessages.CCJ_CONFIRMATION_PROCESS_YOUR_REQUEST_JO);
+      const claim = namedClaim();
+      jest.spyOn(claim, 'isCCJCompleteForJo').mockReturnValue(true);
+      (getCaseDataFromStore as jest.Mock).mockResolvedValue(claim);
+
+      const {res} = await invoke();
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        isJudgmentOnline: true,
+        processYourRequest: t('PAGES.CCJ_CONFIRMATION.PROCESS_YOUR_REQUEST_JO', {defendantName}),
+        processYourRequest1: t('PAGES.CCJ_CONFIRMATION.NO_LONGER_RESPONSE', {defendantName}),
+      }));
     });
+
     it('should return ccj confirmation page when judgment requested and judgment buffer is enabled', async () => {
-      jest.spyOn(Claim.prototype, 'isCCJCompleteForJo').mockReturnValue(false);
-      jest.spyOn(launchDarkly, 'isJudgmentBufferEnabled').mockResolvedValueOnce(true);
-      app.locals.draftStoreClient = mockJudgmentRequestedCivilClaim;
-      const res = await request(app).get(CCJ_CONFIRMATION_URL);
-      expect(res.status).toBe(200);
-      expect(res.text).toContain(TestMessages.CCJ_CONFIRMATION_JUDGMENT_REQUESTED);
-      expect(res.text).not.toContain(TestMessages.CCJ_CONFIRMATION_PROCESS_YOUR_REQUEST);
-      expect(res.text).not.toContain(TestMessages.CCJ_CONFIRMATION_PROCESS_YOUR_REQUEST_1);
+      const claim = namedClaim();
+      claim.ccdState = CaseState.JUDGMENT_REQUESTED;
+      jest.spyOn(claim, 'isCCJCompleteForJo').mockReturnValue(false);
+      (isJudgmentBufferEnabled as jest.Mock).mockResolvedValue(true);
+      (getCaseDataFromStore as jest.Mock).mockResolvedValue(claim);
+
+      const {res} = await invoke();
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        isJudgmentOnline: false,
+        isJudgmentRequested: true,
+      }));
     });
+
     it('should return http 500 when has error in the get method', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      const res = await request(app).get(CCJ_CONFIRMATION_URL);
-      expect(res.status).toBe(500);
-      expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
+      const error = new Error('redis failure');
+      (getCaseDataFromStore as jest.Mock).mockRejectedValue(error);
+
+      const {next} = await invoke();
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 });
