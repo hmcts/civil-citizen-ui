@@ -1,3 +1,4 @@
+import {GenericForm} from 'form/models/genericForm';
 import {ClaimSummarySection, ClaimSummaryType} from 'form/models/claimSummarySection';
 import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
 import {CaseDocument} from 'models/document/caseDocument';
@@ -73,7 +74,7 @@ export class UploadDocumentsSectionBuilder extends PageSectionBuilder {
         category,
         index,
         text,
-        classes: 'govuk-button govuk-button--secondary moj-add-another__remove-button',
+        classes: 'govuk-button govuk-button--secondary cui-upload-rows__remove-button',
       },
     });
     this._claimSummarySections.push(titleSection);
@@ -106,4 +107,12 @@ export class UploadDocumentsSectionBuilder extends PageSectionBuilder {
   build() {
     return this._claimSummarySections;
   }
+}
+
+// Presentation only: all nested file-validation properties belong to the same
+// file control. Preserve the first applicable message without changing validation.
+export function uploadFileError(form: GenericForm<unknown>, category: string, index: number): string {
+  const prefix = `${category}[${category}][${index}][fileUpload]`;
+  return [prefix, `${prefix}[mimetype]`, `${prefix}[size]`, `${prefix}[buffer]`]
+    .map(field => form?.errorFor(field, category)).find(Boolean);
 }
