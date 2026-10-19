@@ -1,97 +1,102 @@
 import config from 'config';
-import {t} from 'i18next';
-import nock from 'nock';
-import request from 'supertest';
-import {app} from '../../../../../main/app';
-import {
-  CLAIMANT_RESPONSE_CHOOSE_HOW_TO_PROCEED_URL,
-  CLAIMANT_RESPONSE_TASK_LIST_URL,
-} from '../../../../../main/routes/urls';
-import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
-import {TestMessages} from '../../../../utils/errorMessageTestConstants';
+import {Response} from 'express';
+import chooseHowToProceedController from 'routes/features/claimantResponse/chooseHowToProceedController';
+import {CLAIMANT_RESPONSE_CHOOSE_HOW_TO_PROCEED_URL, CLAIMANT_RESPONSE_TASK_LIST_URL} from 'routes/urls';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {getClaimantResponse, saveClaimantResponse} from 'services/features/claimantResponse/claimantResponseService';
+import {generateRedisKey} from 'modules/draft-store/draftStoreService';
+import {ClaimantResponse} from 'models/claimantResponse';
 import {ChooseHowProceed} from 'models/chooseHowProceed';
+import {AppRequest} from 'models/AppRequest';
+import {createMockResponse, createMockSession, getRouteHandler} from '../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/draft-store');
-jest.mock('modules/utilityService', () => ({
-  getClaimById: jest.fn().mockResolvedValue({ isClaimantIntentionPending: () => true }),
-  getRedisStoreForSession: jest.fn(),
-}));
+jest.mock('services/features/claimantResponse/claimantResponseService');
+jest.mock('modules/draft-store/draftStoreService');
+
+const viewPath = 'features/claimantResponse/choose-how-to-proceed';
+const claimId = '12345';
+const taskListUrl = constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_TASK_LIST_URL);
+
+const invoke = async (method: 'get' | 'post', req: Record<string, unknown> = {}) => {
+  const res = createMockResponse();
+  const next = jest.fn();
+  await getRouteHandler(chooseHowToProceedController, method, CLAIMANT_RESPONSE_CHOOSE_HOW_TO_PROCEED_URL)(
+    {
+      params: {id: claimId},
+      body: {},
+      query: {},
+      cookies: {},
+      session: createMockSession({user: {id: 'user-1'}}),
+      ...req,
+    } as unknown as AppRequest,
+    res as unknown as Response,
+    next,
+  );
+  return {res, next};
+};
 
 describe('Choose how to proceed Controller', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
-  const settlementAgreementEnabled = config.get<boolean>('featureToggles.settlementAgreementEnabled') || false;
-
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
+  beforeEach(() => {
+    jest.clearAllMocks();
+    (generateRedisKey as jest.Mock).mockReturnValue(claimId);
+    (getClaimantResponse as jest.Mock).mockResolvedValue(new ClaimantResponse());
+    (saveClaimantResponse as jest.Mock).mockResolvedValue(undefined);
   });
 
   describe('on GET', () => {
     it('should return intention to proceed page', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
-      await request(app).get(CLAIMANT_RESPONSE_CHOOSE_HOW_TO_PROCEED_URL).expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(t('PAGES.CLAIMANT_FORMALISE_REPAYMENT_TYPE.TITLE'));
-      });
+      const {res, next} = await invoke('get');
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        pageTitle: 'PAGES.CLAIMANT_FORMALISE_REPAYMENT_TYPE.PAGE_TITLE',
+      }));
+      expect(next).not.toHaveBeenCalled();
     });
 
     it('should return status 500 when error thrown', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .get(CLAIMANT_RESPONSE_CHOOSE_HOW_TO_PROCEED_URL)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+      const error = new Error('redis failure');
+      (getClaimantResponse as jest.Mock).mockRejectedValue(error);
+
+      const {next} = await invoke('get');
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 
   describe('on POST', () => {
-    beforeEach(() => {
-      app.locals.draftStoreClient = mockCivilClaim;
-    });
-
     it('should return error on empty post', async () => {
-      await request(app).post(CLAIMANT_RESPONSE_CHOOSE_HOW_TO_PROCEED_URL).expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(t('ERRORS.SELECT_AN_OPTION'));
-      });
+      const {res} = await invoke('post');
+
+      expect(res.render.mock.calls[0][1].form.hasErrors()).toBe(true);
+      expect(saveClaimantResponse).not.toHaveBeenCalled();
     });
 
     it('should redirect to the claimant response task-list if option SIGN_A_SETTLEMENT_AGREEMENT is selected', async () => {
-      await request(app).post(CLAIMANT_RESPONSE_CHOOSE_HOW_TO_PROCEED_URL).send({option: ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT})
-        .expect((res) => {
-          // TODO undo this once the stop from choosing settlement agreement is removed
-          if (settlementAgreementEnabled) {
-            expect(res.status).toBe(302);
-            expect(res.get('location')).toBe(CLAIMANT_RESPONSE_TASK_LIST_URL);
-          } else {
-            expect(res.status).toBe(200);
-            expect(res.text).toContain(TestMessages.FEATURE_UNAVAILABLE_GUIDANCE_BELOW);
-          }
-        });
+      const settlementAgreementEnabled = config.get<boolean>('featureToggles.settlementAgreementEnabled') || false;
+      const {res} = await invoke('post', {body: {option: ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT}});
+
+      if (settlementAgreementEnabled) {
+        expect(res.redirect).toHaveBeenCalledWith(taskListUrl);
+      } else {
+        expect(res.render.mock.calls[0][1].form.hasErrors()).toBe(true);
+        expect(res.redirect).not.toHaveBeenCalled();
+      }
     });
 
     it('should redirect to the claimant response task-list if option REQUEST_A_CCJ is selected', async () => {
-      await request(app).post(CLAIMANT_RESPONSE_CHOOSE_HOW_TO_PROCEED_URL).send({option: ChooseHowProceed.REQUEST_A_CCJ})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.get('location')).toBe(CLAIMANT_RESPONSE_TASK_LIST_URL);
-        });
+      const {res} = await invoke('post', {body: {option: ChooseHowProceed.REQUEST_A_CCJ}});
+
+      expect(saveClaimantResponse).toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(taskListUrl);
     });
 
     it('should return status 500 when error thrown', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .post(CLAIMANT_RESPONSE_CHOOSE_HOW_TO_PROCEED_URL)
-        .send({option: 'yes'})
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+      const error = new Error('redis failure');
+      (saveClaimantResponse as jest.Mock).mockRejectedValue(error);
+
+      const {next} = await invoke('post', {body: {option: 'yes'}});
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 });
