@@ -130,7 +130,15 @@ export async function lookupByPostcodeAndDataSet(postCode: string): Promise<Addr
   const apiKey = config.get<string>('services.postcodeLookup.ordnanceSurveyApiKey');
   const url = config.get<string>('services.postcodeLookup.ordnanceSurveyApiUrl');
 
-  const response = await axios.get(`${url}/search/places/v1/postcode?dataset=DPA,LPI&postcode=${encodeURIComponent(postCode)}&key=${apiKey}`);
+  const response = await axios.get(`${url}/search/places/v1/postcode`, {
+    params: {
+      dataset: 'DPA,LPI',
+      postcode: postCode,
+    },
+    headers: {
+      key: apiKey,
+    },
+  });
 
   const results: OSResult[] = response?.data?.results ?? [];
   if (results.length === 0) {
