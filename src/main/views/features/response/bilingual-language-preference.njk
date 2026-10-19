@@ -70,19 +70,21 @@
           </div>
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
-             <fieldset class="govuk-fieldset">
-                <legend class="govuk-visually-hidden">
-                 {{ t('PAGES.BILINGUAL_LANGUAGE_PREFERENCE.QUESTION') }}
-                </legend>
             {{ govukRadios({
               idPrefix: id,
               name: name,
+              fieldset: {
+                legend: {
+                  text: t('PAGES.BILINGUAL_LANGUAGE_PREFERENCE.QUESTION'),
+                  isPageHeading: false,
+                  classes: 'govuk-visually-hidden'
+                }
+              },
               items: items,
               errorMessage: {
                 html: t(form.errorFor(name))
               } if form.hasFieldError(name)
             }) }}
-            </fieldset>
             <div class="govuk-form-group">
               {{ govukButton({
                 text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE')
