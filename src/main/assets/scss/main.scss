@@ -514,3 +514,27 @@
     flex-basis: 100%;
   }
 }
+
+.app-uploaded-file {
+  @include govuk-typography-weight-bold;
+
+  color: govuk-functional-colour("success");
+
+  &::before {
+    content: "";
+    display: inline-block;
+    width: 6px;
+    height: 12px;
+    margin-right: govuk-spacing(2);
+    border: solid currentcolor;
+    border-width: 0 3px 3px 0;
+    transform: rotate(45deg) translateY(-2px);
+  }
+}
+
+.app-uploaded-file-slot__name {
+  padding: govuk-spacing(2);
+  border: $govuk-border-width-form-element solid govuk-functional-colour("input-border");
+  background-color: govuk-functional-colour("body-background");
+  overflow-wrap: anywhere;
+}

@@ -4,6 +4,7 @@ import {FILE_SIZE_LIMIT} from 'form/validators/isFileSize';
 import {createInvalidFileContentError, isFileContentAllowed} from 'common/utils/fileContentTypeUtils';
 
 const multer = require('multer');
+const {Logger} = require('@hmcts/nodejs-logging');
 
 const rejectIfFileContentInvalid = (req: Request): boolean => {
   const files: Express.Multer.File[] = [];
@@ -28,7 +29,6 @@ const clearUploadedFiles = (req: Request): void => {
 };
 
 const handleMulterResult = (req: Request, err: any, loggerName: string, next: NextFunction): void => {
-  const {Logger} = require('@hmcts/nodejs-logging');
   const logger = Logger.getLogger(loggerName);
 
   if (err) {
@@ -117,6 +117,16 @@ export const createMulterErrorMiddlewareForSingleField = (
   return (req: Request, res: Response, next: NextFunction) => {
     const upload = createMulterUpload(FILE_SIZE_LIMIT);
     upload.single(fieldName)(req, res, (err: any) => handleMulterResult(req, err, loggerName, next));
+  };
+};
+
+export const createMulterErrorMiddlewareForMultipleFiles = (
+  fieldName: string,
+  loggerName = 'uploadDocumentsController',
+) => {
+  return (req: Request, res: Response, next: NextFunction) => {
+    const upload = createMulterUpload(FILE_SIZE_LIMIT);
+    upload.array(fieldName)(req, res, (err: any) => handleMulterResult(req, err, loggerName, next));
   };
 };
 
