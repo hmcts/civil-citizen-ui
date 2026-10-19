@@ -221,6 +221,9 @@ describe('Response - Check answers', () => {
         .expect((res: Response) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain('notanemail is not a valid Email address');
+          expect(res.text).toContain('href="#ccd-field-respondent1-partyEmail"');
+          expect(res.text).toContain('id="ccd-field-respondent1-partyEmail"');
+          expect(res.text).toContain('govuk-error-message');
         });
     });
 

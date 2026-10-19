@@ -1,0 +1,17 @@
+{#
+  Inline messages for CCD details.field_errors remounted on CYA.
+  Ids match FormValidationError.href from applyCcdFieldErrorsToForm so the
+  GDS error summary can link to each message.
+#}
+{% macro ccdFieldInlineErrors(errors, t) %}
+  {% if errors %}
+    {% for error in errors %}
+      {% if error.constraints and error.constraints.ccdFieldError and error.href %}
+        <p class="govuk-error-message" id="{{ error.href | replace('#', '') }}">
+          <span class="govuk-visually-hidden">{{ t('ERRORS.ERROR') }}:</span>
+          {{ t(error.text) }}
+        </p>
+      {% endif %}
+    {% endfor %}
+  {% endif %}
+{% endmacro %}
