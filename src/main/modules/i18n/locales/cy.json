@@ -7,9 +7,9 @@
     "SAVE_FILE": "Cadw ffeil",
     "UPLOAD_FILE_LABEL": "Uwchlwytho ffeil",
     "FILE_UPLOAD": {
-      "CHOOSE_FILE": "Choose file",
-      "DROP_INSTRUCTION": "or drop file",
-      "NO_FILE_CHOSEN": "No file chosen",
+      "CHOOSE_FILE": "Dewis ffeil",
+      "DROP_INSTRUCTION": "neu gollwng ffeil",
+      "NO_FILE_CHOSEN": "Dim ffeil wedi’i dewis",
       "FILES_CHOSEN_ONE": "%{count} file chosen",
       "FILES_CHOSEN_OTHER": "%{count} files chosen",
       "ENTERED_DROP_ZONE": "Entered drop zone",
@@ -5161,8 +5161,8 @@
     "UPLOAD_DOCUMENTS": {
       "ADD": "Ychwanegu ffeil arall",
       "ADD_ANOTHER_FILE": "Ychwanegu ffeil arall",
-      "ADD_ANOTHER_FILE_HINT": "Cliciwch ar 'ychwanegu ffeil arall' i uwchlwytho sawl ffeil fesul un",
-      "UPLOADED_FILE": "Ffeil wedi'i huwchlwytho",
+      "ADD_ANOTHER_FILE_HINT": "Cliciwch 'ychwanegu ffeil arall' i uwchlwytho mwy nag un ffeil fesul un",
+      "UPLOADED_FILE": "Ffeil wedi’i huwchlwytho",
       "NO_FILE_UPLOADED": "Nid oes ffeil wedi cael ei huwchlwytho",
       "DATE": "Dyddiad ysgrifennu’r datganiad",
       "DATE_EXAMPLE": "Er enghraifft, 27 9 2022",
