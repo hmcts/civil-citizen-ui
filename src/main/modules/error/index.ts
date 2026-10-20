@@ -58,12 +58,14 @@ export class ErrorHandler {
       // skipped for App Insights tracking below.
       if (err instanceof CallbackError && (err.callbackErrors?.length || err.hasFieldErrors())) {
         const fieldErrorMessages = err.fieldErrors.map(fieldError => fieldError.message);
+        const showGoBackAndAmend = err.hasFieldErrors();
         res.status(err.status || 422);
         return res.render('error', {
           callbackErrors: err.callbackErrors,
           callbackWarnings: err.callbackWarnings,
           fieldErrorMessages,
-          showGoBackAndAmend: err.hasFieldErrors(),
+          showGoBackAndAmend,
+          goBackAndAmendUrl: showGoBackAndAmend ? req.originalUrl : undefined,
           error: env === 'development' ? err : {},
         });
       }
