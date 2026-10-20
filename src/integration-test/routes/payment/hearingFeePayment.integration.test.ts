@@ -27,7 +27,7 @@ import {HearingFee, HearingFeeInformation} from '../../../main/common/models/cas
 import {constructResponseUrlWithIdParams} from '../../../main/common/utils/urlFormatter';
 
 const CLAIM_ID = '1640995200000000';
-const SESSION_USER_ID = 'integration-user';
+const SESSION_USER_ID = '550e8400-e29b-41d4-a716-446655440000';
 const PAYMENT_REFERENCE = 'RC-1640-9952-0000-0001';
 const GATEWAY_NEXT_URL = 'https://card.payments.service.gov.uk/secure/next';
 const NEW_GATEWAY_NEXT_URL = 'https://card.payments.service.gov.uk/secure/retry';

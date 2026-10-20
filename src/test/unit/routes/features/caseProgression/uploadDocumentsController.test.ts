@@ -991,7 +991,7 @@ describe('on POST', () => {
       .send({action: 'add_another-disclosure'});
 
     expect(response.status).toBe(200);
-    expect(addAnother).toHaveBeenCalledWith(formWithDisclosure, 'add_another-disclosure', expect.any(String), undefined);
+    expect(addAnother).toHaveBeenCalledWith(formWithDisclosure, 'add_another-disclosure', expect.any(String), '550e8400-e29b-41d4-a716-446655440000');
     expect(saveCaseProgression).not.toHaveBeenCalled();
   });
 
@@ -1008,7 +1008,7 @@ describe('on POST', () => {
 
     expect(response.status).toBe(200);
     expect(validateSyncSpy).not.toHaveBeenCalled();
-    expect(addAnother).toHaveBeenCalledWith(formWithDisclosure, 'add_another-disclosure', expect.any(String), undefined);
+    expect(addAnother).toHaveBeenCalledWith(formWithDisclosure, 'add_another-disclosure', expect.any(String), '550e8400-e29b-41d4-a716-446655440000');
     validateSyncSpy.mockRestore();
   });
 
