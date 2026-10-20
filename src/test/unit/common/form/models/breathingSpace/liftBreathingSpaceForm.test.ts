@@ -57,10 +57,7 @@ describe('LiftBreathingSpaceForm', () => {
       genericForm.validateSync();
 
       expect(genericForm.getErrors().some(e => e.property === 'text')).toBe(true);
-    }
-  );
-
-
+    });
 
   it('should accept breathing space lift reason when it contains only allowed characters', () => {
     const startDate = new Date('2024-06-01T00:00:00');
