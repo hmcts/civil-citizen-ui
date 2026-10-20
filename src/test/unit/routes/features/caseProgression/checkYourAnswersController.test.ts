@@ -2,7 +2,7 @@ import config from 'config';
 import nock from 'nock';
 import {app} from '../../../../../main/app';
 import {mockCivilClaim} from '../../../../utils/mockDraftStore';
-import {CP_CHECK_ANSWERS_URL, CP_UPLOAD_DOCUMENTS_URL} from 'routes/urls';
+import {CP_CHECK_ANSWERS_URL, TYPES_OF_DOCUMENTS_URL} from 'routes/urls';
 import * as checkAnswersService from 'services/features/caseProgression/checkYourAnswers/checkAnswersService';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
@@ -33,16 +33,16 @@ const buildAllInvalidDraft = (): UploadDocumentsUserForm =>
   new UploadDocumentsUserForm([], [], [{witnessName: 'witness', caseDocument: undefined} as WitnessSection], [], [], [], [], [], [], [], [], [], [], [], []);
 const noValidDocumentsMessage = 'We could not submit your documents. Please upload them again and try submitting.';
 
-const expectNoValidDocumentsErrorShownOnceOnUploadPage = async (claim: Claim, claimId: string) => {
-  mockDraftStore.mockReturnValueOnce(claim);
-  await testSession.get(CP_UPLOAD_DOCUMENTS_URL.replace(':id', claimId)).query({lang: 'en'})
+const expectNoValidDocumentsErrorShownOnceOnTypeOfDocumentsPage = async (claim: Claim, claimId: string) => {
+  mockDraftStore.mockReturnValueOnce(claim).mockReturnValueOnce(claim);
+  await testSession.get(TYPES_OF_DOCUMENTS_URL.replace(':id', claimId)).query({lang: 'en'})
     .expect((res: { status: unknown; text: string; }) => {
       expect(res.status).toBe(200);
       expect(res.text).toContain(noValidDocumentsMessage);
     });
 
-  mockDraftStore.mockReturnValueOnce(claim);
-  await testSession.get(CP_UPLOAD_DOCUMENTS_URL.replace(':id', claimId)).query({lang: 'en'})
+  mockDraftStore.mockReturnValueOnce(claim).mockReturnValueOnce(claim);
+  await testSession.get(TYPES_OF_DOCUMENTS_URL.replace(':id', claimId)).query({lang: 'en'})
     .expect((res: { status: unknown; text: string; }) => {
       expect(res.status).toBe(200);
       expect(res.text).not.toContain(noValidDocumentsMessage);
@@ -173,7 +173,7 @@ describe('Evidence Upload - checkYourAnswers Controller', () => {
         });
     });
 
-    it('should redirect to upload documents page when the upload draft is missing', async () => {
+    it('should redirect to type of documents page when the upload draft is missing', async () => {
       //Given
       const claim: Claim = new Claim();
       Object.assign(claim, civilClaimResponse.case_data);
@@ -187,11 +187,11 @@ describe('Evidence Upload - checkYourAnswers Controller', () => {
         //Then
         .expect((res: { status: unknown; header: { location: string }; }) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toBe(CP_UPLOAD_DOCUMENTS_URL.replace(':id', claimId));
+          expect(res.header.location).toBe(TYPES_OF_DOCUMENTS_URL.replace(':id', claimId));
         });
     });
 
-    it('should redirect to upload documents page when the claim has no case progression', async () => {
+    it('should redirect to type of documents page when the claim has no case progression', async () => {
       //Given
       const claim: Claim = new Claim();
       Object.assign(claim, civilClaimResponse.case_data);
@@ -205,12 +205,12 @@ describe('Evidence Upload - checkYourAnswers Controller', () => {
         //Then
         .expect((res: { status: unknown; header: { location: string }; }) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toBe(CP_UPLOAD_DOCUMENTS_URL.replace(':id', claimId));
+          expect(res.header.location).toBe(TYPES_OF_DOCUMENTS_URL.replace(':id', claimId));
         });
       expect(mockSummarySections).toHaveBeenLastCalledWith(undefined, claimId.toString(), true, 'en');
     });
 
-    it('should redirect to upload documents page when the upload draft has no valid documents', async () => {
+    it('should redirect to type of documents page when the upload draft has no valid documents', async () => {
       //Given
       const claim: Claim = new Claim();
       Object.assign(claim, civilClaimResponse.case_data);
@@ -224,9 +224,9 @@ describe('Evidence Upload - checkYourAnswers Controller', () => {
         //Then
         .expect((res: { status: unknown; header: { location: string }; }) => {
           expect(res.status).toBe(302);
-          expect(res.header.location).toBe(CP_UPLOAD_DOCUMENTS_URL.replace(':id', claimId));
+          expect(res.header.location).toBe(TYPES_OF_DOCUMENTS_URL.replace(':id', claimId));
         });
-      await expectNoValidDocumentsErrorShownOnceOnUploadPage(claim, claimId);
+      await expectNoValidDocumentsErrorShownOnceOnTypeOfDocumentsPage(claim, claimId);
     });
 
     it('should return status 500 when error thrown', async () => {
@@ -305,7 +305,7 @@ describe('Evidence Upload - checkYourAnswers Controller', () => {
         expect(res.text).toContain('Found. Redirecting to /case/:id/case-progression/documents-uploaded');
       });
     });
-    test('should redirect to upload documents page without submitting when the upload draft is missing', async () => {
+    test('should redirect to type of documents page without submitting when the upload draft is missing', async () => {
       //given
       const claim: Claim = new Claim();
       Object.assign(claim, civilClaimResponse.case_data);
@@ -318,13 +318,13 @@ describe('Evidence Upload - checkYourAnswers Controller', () => {
       await testSession.post(CP_CHECK_ANSWERS_URL.replace(':id', claimId)).send({signed: true}).expect((res: { status: unknown; header: { location: string }; }) => {
         //then
         expect(res.status).toBe(302);
-        expect(res.header.location).toBe(CP_UPLOAD_DOCUMENTS_URL.replace(':id', claimId));
+        expect(res.header.location).toBe(TYPES_OF_DOCUMENTS_URL.replace(':id', claimId));
       });
       expect(mockHasValidNewDocuments).toHaveBeenLastCalledWith(undefined);
       expect(mockSaveUploadedDocuments).not.toHaveBeenCalled();
     });
 
-    test('should redirect to upload documents page when a claimant claim has no case progression', async () => {
+    test('should redirect to type of documents page when a claimant claim has no case progression', async () => {
       //given
       const claim: Claim = new Claim();
       Object.assign(claim, civilClaimResponse.case_data);
@@ -338,7 +338,7 @@ describe('Evidence Upload - checkYourAnswers Controller', () => {
       await testSession.post(CP_CHECK_ANSWERS_URL.replace(':id', claimId)).send({signed: true}).expect((res: { status: unknown; header: { location: string }; }) => {
         //then
         expect(res.status).toBe(302);
-        expect(res.header.location).toBe(CP_UPLOAD_DOCUMENTS_URL.replace(':id', claimId));
+        expect(res.header.location).toBe(TYPES_OF_DOCUMENTS_URL.replace(':id', claimId));
       });
       expect(mockHasValidNewDocuments).toHaveBeenLastCalledWith(undefined);
       expect(mockSaveUploadedDocuments).not.toHaveBeenCalled();
@@ -347,7 +347,7 @@ describe('Evidence Upload - checkYourAnswers Controller', () => {
     test.each([
       ['defendant', CaseRole.DEFENDANT],
       ['claimant', CaseRole.CLAIMANT],
-    ])('should redirect to upload documents page without submitting when the %s upload draft has no valid documents', async (_party, caseRole) => {
+    ])('should redirect to type of documents page without submitting when the %s upload draft has no valid documents', async (_party, caseRole) => {
       //given
       const claim: Claim = new Claim();
       Object.assign(claim, civilClaimResponse.case_data);
@@ -364,7 +364,7 @@ describe('Evidence Upload - checkYourAnswers Controller', () => {
       await testSession.post(CP_CHECK_ANSWERS_URL.replace(':id', claimId)).send({signed: true}).expect((res: { status: unknown; header: { location: string }; }) => {
         //then
         expect(res.status).toBe(302);
-        expect(res.header.location).toBe(CP_UPLOAD_DOCUMENTS_URL.replace(':id', claimId));
+        expect(res.header.location).toBe(TYPES_OF_DOCUMENTS_URL.replace(':id', claimId));
       });
       expect(mockHasValidNewDocuments).toHaveBeenLastCalledWith(allInvalidDraft);
       expect(mockHasValidNewDocuments).toHaveLastReturnedWith(false);
@@ -372,7 +372,7 @@ describe('Evidence Upload - checkYourAnswers Controller', () => {
       expect(mockDeleteDraftClaimFromStore).not.toHaveBeenCalled();
       expect(spyUpdateTaskStatus).not.toHaveBeenCalled();
       spyUpdateTaskStatus.mockRestore();
-      await expectNoValidDocumentsErrorShownOnceOnUploadPage(claim, claimId);
+      await expectNoValidDocumentsErrorShownOnceOnTypeOfDocumentsPage(claim, claimId);
     });
 
     test('Throw error', async () => {

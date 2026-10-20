@@ -53,7 +53,7 @@ export const FILE_UPLOAD_SOURCE = {
   GA_ADDITIONAL_INFO: 'ga_additional_info',
   GA_RESPONDENT_UPLOAD: 'ga_respondent_upload',
   GA_WRITTEN_REPRESENTATION: 'ga_written_representation',
-  CP_UPLOAD_DOCUMENTS: 'cp_upload_documents',
+  CP_TYPE_OF_DOCUMENTS: 'cp_type_of_documents',
 } as const;
 
 /** Returns file upload errors only if session.fileUploadSource matches; otherwise clears and returns null. */

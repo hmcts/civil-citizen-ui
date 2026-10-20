@@ -2,7 +2,7 @@ import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {
   CP_CHECK_ANSWERS_URL,
   CP_EVIDENCE_UPLOAD_CANCEL,
-  CP_EVIDENCE_UPLOAD_SUBMISSION_URL, CP_UPLOAD_DOCUMENTS_URL,
+  CP_EVIDENCE_UPLOAD_SUBMISSION_URL, CP_UPLOAD_DOCUMENTS_URL, TYPES_OF_DOCUMENTS_URL,
 } from '../../urls';
 import {
   getBottomElements,
@@ -32,8 +32,8 @@ const getUploadedDocuments = (claim: Claim): UploadDocumentsUserForm =>
 
 const redirectWithNoValidDocumentsError = (req: AppRequest, res: Response, claimId: string) => {
   req.session.fileUpload = JSON.stringify(createNoValidDocumentsError());
-  req.session.fileUploadSource = FILE_UPLOAD_SOURCE.CP_UPLOAD_DOCUMENTS;
-  req.session.save(() => res.redirect(constructResponseUrlWithIdParams(claimId, CP_UPLOAD_DOCUMENTS_URL)));
+  req.session.fileUploadSource = FILE_UPLOAD_SOURCE.CP_TYPE_OF_DOCUMENTS;
+  req.session.save(() => res.redirect(constructResponseUrlWithIdParams(claimId, TYPES_OF_DOCUMENTS_URL)));
 };
 
 function renderView(res: Response, form: GenericForm<DocumentUploadSubmissionForm>, claim: Claim, claimId: string, summarySections: DocumentUploadSections) {

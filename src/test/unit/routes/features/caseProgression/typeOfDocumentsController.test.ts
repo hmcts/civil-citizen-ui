@@ -13,6 +13,7 @@ import {app} from '../../../../../main/app';
 import config from 'config';
 import nock from 'nock';
 import express from 'express';
+import * as fileUploadUtils from 'common/utils/fileUploadUtils';
 
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store');
@@ -63,6 +64,37 @@ describe('Upload document- type of documents controller', () => {
         expect(res.status).toBe(200);
         expect(res.text).toContain('Pa fath o ddogfennau ydych chi eisiau eu huwchlwytho?');
         expect(res.text).toContain('Gwrandawiad');
+      });
+    });
+
+    it('should display the no valid documents error when redirected from check your answers', async () => {
+      app.locals.draftStoreClient = mockCivilClaim;
+      const spyFileUploadErrors = jest.spyOn(fileUploadUtils, 'getFileUploadErrorsForSource')
+        .mockReturnValueOnce(fileUploadUtils.createNoValidDocumentsError());
+      await request(app).get(typeOfDocumentUrl).query({lang: 'en'}).expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain('There was a problem');
+        expect(res.text).toContain('We could not submit your documents. Please upload them again and try submitting.');
+        expect(res.text).toContain('What types of documents do you want to upload?');
+      });
+      expect(spyFileUploadErrors).toHaveBeenCalledWith(expect.anything(), fileUploadUtils.FILE_UPLOAD_SOURCE.CP_TYPE_OF_DOCUMENTS);
+    });
+
+    it('should display the no valid documents error in Welsh when redirected from check your answers', async () => {
+      app.locals.draftStoreClient = mockCivilClaimDefendantCaseProgression;
+      jest.spyOn(fileUploadUtils, 'getFileUploadErrorsForSource')
+        .mockReturnValueOnce(fileUploadUtils.createNoValidDocumentsError());
+      await request(app).get(typeOfDocumentUrl).query({lang: 'cy'}).expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain('Ni allem gyflwyno eich dogfennau. Uwchlwythwch nhw eto a cheisiwch eu cyflwyno.');
+      });
+    });
+
+    it('should not display the no valid documents error when there is none in the session', async () => {
+      app.locals.draftStoreClient = mockCivilClaim;
+      await request(app).get(typeOfDocumentUrl).query({lang: 'en'}).expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).not.toContain('We could not submit your documents. Please upload them again and try submitting.');
       });
     });
 

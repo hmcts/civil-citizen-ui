@@ -31,8 +31,6 @@ import {
   getMulterErrorConstraint,
   extractCategoryAndIndex,
   uploadAndValidateFile,
-  getFileUploadErrorsForSource,
-  FILE_UPLOAD_SOURCE,
 } from 'common/utils/fileUploadUtils';
 import {ValidationError} from 'class-validator';
 import {getRouteParam} from 'common/utils/routeParamUtils';
@@ -117,10 +115,6 @@ async function renderView(res: Response, claim: Claim, claimId: string, form: Ge
   }
 }
 
-// The upload page content builders read .length on every section, so each needs an empty array rather than undefined.
-const emptyUploadDocumentsForm = (): UploadDocumentsUserForm =>
-  new UploadDocumentsUserForm([], [], [], [], [], [], [], [], [], [], [], [], [], [], []);
-
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClientForDocRetrieve: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl, true);
 
@@ -129,13 +123,7 @@ uploadDocumentsController.get(CP_UPLOAD_DOCUMENTS_URL, (async (req: AppRequest, 
     const claimId = getRouteParam(req, 'id');
     req.session.previousUrl = req.originalUrl;
     const claim: Claim = await getClaimById(claimId, req, true);
-    const noValidDocumentsErrors = getFileUploadErrorsForSource(req, FILE_UPLOAD_SOURCE.CP_UPLOAD_DOCUMENTS);
-    let form: GenericForm<UploadDocumentsUserForm> = null;
-    if (noValidDocumentsErrors?.length) {
-      const uploadedDocuments = claim.isClaimant() ? claim.caseProgression?.claimantDocuments : claim.caseProgression?.defendantDocuments;
-      form = new GenericForm(uploadedDocuments ?? emptyUploadDocumentsForm(), noValidDocumentsErrors);
-    }
-    await renderView(res, claim, claimId, form);
+    await renderView(res, claim, claimId, null);
   } catch (error) {
     next(error);
   }

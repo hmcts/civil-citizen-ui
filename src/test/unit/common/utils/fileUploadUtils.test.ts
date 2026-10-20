@@ -399,12 +399,12 @@ describe('fileUploadUtils', () => {
       const req = {
         session: {
           fileUpload: JSON.stringify(createNoValidDocumentsError()),
-          fileUploadSource: FILE_UPLOAD_SOURCE.CP_UPLOAD_DOCUMENTS,
+          fileUploadSource: FILE_UPLOAD_SOURCE.CP_TYPE_OF_DOCUMENTS,
         },
       };
 
-      expect(getFileUploadErrorsForSource(req, FILE_UPLOAD_SOURCE.CP_UPLOAD_DOCUMENTS)).toEqual(createNoValidDocumentsError());
-      expect(getFileUploadErrorsForSource(req, FILE_UPLOAD_SOURCE.CP_UPLOAD_DOCUMENTS)).toBeNull();
+      expect(getFileUploadErrorsForSource(req, FILE_UPLOAD_SOURCE.CP_TYPE_OF_DOCUMENTS)).toEqual(createNoValidDocumentsError());
+      expect(getFileUploadErrorsForSource(req, FILE_UPLOAD_SOURCE.CP_TYPE_OF_DOCUMENTS)).toBeNull();
     });
   });
 
