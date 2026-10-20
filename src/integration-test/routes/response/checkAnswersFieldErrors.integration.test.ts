@@ -112,7 +112,7 @@ describe('Integration: response check-answers field_errors 422', () => {
     expect(response.status).toBe(422);
     expect(response.text).toContain('Business process must be finished');
     expect(response.text).toContain('notanemail is not a valid Email address');
-    expect(response.text).toContain('javascript:history.back()');
+    expect(response.text).toContain(`href="${checkAnswersUrl}"`);
     expect(response.text).toContain('Go back and amend');
   });
 });

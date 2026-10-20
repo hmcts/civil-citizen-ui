@@ -141,6 +141,7 @@ describe('ErrorHandler', () => {
       callbackErrors: [],
       fieldErrorMessages: ['Invalid email'],
       showGoBackAndAmend: true,
+      goBackAndAmendUrl: '/some/other/submit',
     }));
   });
 
