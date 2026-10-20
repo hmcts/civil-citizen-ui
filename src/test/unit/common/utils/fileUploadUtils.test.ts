@@ -17,6 +17,7 @@ import {
   removeUploadedFile,
   removeUploadedFileForAction,
   viewableCaseDocuments,
+  parseCaseDocuments,
 } from 'common/utils/fileUploadUtils';
 import {FILE_SIZE_LIMIT} from 'form/validators/isFileSize';
 import {CaseDocument} from 'models/document/caseDocument';
@@ -571,6 +572,20 @@ describe('fileUploadUtils', () => {
       expect(removeUploadedFile(categoryModel, '0', '5')).toBe(false);
       expect(categoryModel[0].caseDocuments).toEqual([{documentName: 'a.pdf'}]);
     });
+
+    it.each([undefined, '', 'abc', '-1', '1.5', ' 1'])('keeps every file when the file index is %p', (fileIndex) => {
+      const categoryModel = [{caseDocuments: [{documentName: 'a.pdf'}, {documentName: 'b.pdf'}]}];
+
+      expect(removeUploadedFile(categoryModel, '0', fileIndex)).toBe(false);
+      expect(categoryModel[0].caseDocuments).toEqual([{documentName: 'a.pdf'}, {documentName: 'b.pdf'}]);
+    });
+
+    it.each([undefined, 'abc', '0.5'])('keeps every file when the section index is %p', (index) => {
+      const categoryModel = [{caseDocuments: [{documentName: 'a.pdf'}]}];
+
+      expect(removeUploadedFile(categoryModel, index, '0')).toBe(false);
+      expect(categoryModel[0].caseDocuments).toEqual([{documentName: 'a.pdf'}]);
+    });
   });
 
   describe('removeUploadedFileForAction', () => {
@@ -583,6 +598,47 @@ describe('fileUploadUtils', () => {
 
     it('returns false when the category does not exist', () => {
       expect(removeUploadedFileForAction({}, 'witnessStatement[0][deleteFile][0]')).toBe(false);
+    });
+
+    it('keeps every file when the delete action has no file index', () => {
+      const model = {witnessStatement: [{caseDocuments: [{documentName: 'a.pdf'}, {documentName: 'b.pdf'}]}]};
+
+      expect(removeUploadedFileForAction(model, 'witnessStatement[0][deleteFile]')).toBe(false);
+      expect(model.witnessStatement[0].caseDocuments).toHaveLength(2);
+    });
+  });
+
+  describe('parseCaseDocuments', () => {
+    const first = {documentName: 'a.pdf'};
+    const second = {documentName: 'b.pdf'};
+
+    it('parses a JSON list of case documents', () => {
+      expect(parseCaseDocuments({caseDocuments: JSON.stringify([first, second])})).toEqual([first, second]);
+    });
+
+    it('wraps a single legacy case document', () => {
+      expect(parseCaseDocuments({caseDocument: JSON.stringify(first)})).toEqual([first]);
+    });
+
+    it('falls back to the legacy case document when the list is empty', () => {
+      expect(parseCaseDocuments({caseDocuments: '', caseDocument: JSON.stringify(first)})).toEqual([first]);
+    });
+
+    it('accepts case documents that are already parsed', () => {
+      expect(parseCaseDocuments({caseDocuments: [first]})).toEqual([first]);
+    });
+
+    it('returns no case documents for malformed JSON', () => {
+      expect(parseCaseDocuments({caseDocuments: '{not json'})).toEqual([]);
+    });
+
+    it('drops entries that are not case documents', () => {
+      expect(parseCaseDocuments({caseDocuments: JSON.stringify([null, 'x', 1, first])})).toEqual([first]);
+    });
+
+    it('returns no case documents when there are none', () => {
+      expect(parseCaseDocuments({})).toEqual([]);
+      expect(parseCaseDocuments(undefined)).toEqual([]);
     });
   });
 

@@ -7,13 +7,10 @@ import {
   TypeOfDocumentYourNameSection,
   UploadDocumentsForm,
 } from 'form/models/mediation/uploadDocuments/uploadDocumentsForm';
-import {CaseDocument} from 'models/document/caseDocument';
-import {migrateLegacyCaseDocuments, normaliseCaseDocuments} from 'common/utils/fileUploadUtils';
+import {migrateLegacyCaseDocuments, parseCaseDocuments} from 'common/utils/fileUploadUtils';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('freeMediationService');
-const CASE_DOCUMENTS = 'caseDocuments';
-const CASE_DOCUMENT_LEGACY = 'caseDocument';
 
 export const getUploadDocuments = (claim: Claim): UploadDocuments => {
   try {
@@ -76,14 +73,6 @@ const getFormSection = <T>(data: any[], bindFunction: (request: any) => T): T[] 
     formSection.push(bindFunction(request));
   });
   return formSection;
-};
-
-const parseCaseDocuments = (request: any): CaseDocument[] => {
-  const rawCaseDocs = request[CASE_DOCUMENTS] || request[CASE_DOCUMENT_LEGACY];
-  if (!rawCaseDocs) {
-    return [];
-  }
-  return normaliseCaseDocuments(JSON.parse(rawCaseDocs) as CaseDocument | CaseDocument[]);
 };
 
 const bindRequestToTypeOfDocumentSectionObj = (request: any): MediationTypeOfDocumentSection => {

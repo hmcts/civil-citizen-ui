@@ -221,13 +221,41 @@ export const migrateLegacyCaseDocumentsOnForm = (form: object | undefined): void
   });
 };
 
-export const removeUploadedFile = (categoryModel: any, index: string, fileIndex: string): boolean => {
-  const section = categoryModel?.[+index];
+const isObject = (value: unknown): value is object => typeof value === 'object' && value !== null;
+
+const parseCaseDocumentsJson = (rawCaseDocuments: string): unknown => {
+  try {
+    return JSON.parse(rawCaseDocuments);
+  } catch (err: unknown) {
+    Logger.getLogger('fileUploadUtils').error(`Error parsing case documents: ${err instanceof Error ? err.message : String(err)}`);
+    return [];
+  }
+};
+
+export const parseCaseDocuments = (section: Record<string, unknown> | undefined): CaseDocument[] => {
+  const rawCaseDocuments = section?.caseDocuments || section?.caseDocument;
+  if (!rawCaseDocuments) {
+    return [];
+  }
+  const caseDocuments = typeof rawCaseDocuments === 'string' ? parseCaseDocumentsJson(rawCaseDocuments) : rawCaseDocuments;
+  return normaliseCaseDocuments(caseDocuments).filter(isObject) as CaseDocument[];
+};
+
+const toListIndex = (value: string, length: number): number | undefined => {
+  const index = Number(value);
+  return /^\d+$/.test(value ?? '') && index < length ? index : undefined;
+};
+
+export const removeUploadedFile = (categoryModel: unknown, index: string, fileIndex: string): boolean => {
+  const sections = Array.isArray(categoryModel) ? categoryModel : [];
+  const sectionIndex = toListIndex(index, sections.length);
+  const section = sectionIndex === undefined ? undefined : sections[sectionIndex];
   const caseDocuments = normaliseCaseDocuments(section?.caseDocuments);
-  if (!section || +fileIndex < 0 || +fileIndex >= caseDocuments.length) {
+  const caseDocumentIndex = toListIndex(fileIndex, caseDocuments.length);
+  if (!section || caseDocumentIndex === undefined) {
     return false;
   }
-  caseDocuments.splice(+fileIndex, 1);
+  caseDocuments.splice(caseDocumentIndex, 1);
   section.caseDocuments = caseDocuments;
   return true;
 };

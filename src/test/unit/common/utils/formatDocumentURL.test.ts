@@ -44,7 +44,7 @@ describe('format <a> elements for several documents', () => {
     expect(html).toEqual([
       formatDocumentViewURL('first.pdf', '1234', 'http://dm-store:8080/documents/aaa/binary'),
       formatDocumentViewURL('second.pdf', '1234', 'http://dm-store:8080/documents/bbb/binary'),
-    ].join('</br>'));
+    ].join('<br>'));
   });
 
   it('returns an empty string when there are no documents', () => {

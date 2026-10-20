@@ -24,7 +24,7 @@ import {AppRequest} from 'models/AppRequest';
 import {getClaimById} from 'modules/utilityService';
 import { constructResponseUrlWithIdParams } from 'common/utils/urlFormatter';
 import { DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL } from 'routes/urls';
-import {normaliseCaseDocuments} from 'common/utils/fileUploadUtils';
+import {parseCaseDocuments} from 'common/utils/fileUploadUtils';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('caseProgressionService');
@@ -324,26 +324,6 @@ export const getCaseProgressionCancelUrl = async (claimId: string, claim: Claim)
 export function toNonEmptyTrimmedString(value: unknown): string {
   return typeof value === 'string' ? value.trim() : null;
 }
-
-const parseCaseDocuments = (request: Record<string, unknown>): CaseDocument[] => {
-  const CASE_DOCUMENTS = 'caseDocuments';
-  const CASE_DOCUMENT_LEGACY = 'caseDocument';
-  const rawCaseDocs = request?.[CASE_DOCUMENTS] ?? request?.[CASE_DOCUMENT_LEGACY];
-  if (rawCaseDocs === undefined || rawCaseDocs === null || rawCaseDocs === '') {
-    return [];
-  }
-  if (typeof rawCaseDocs === 'string') {
-    try {
-      logger.info(`Parsing case documents: ${rawCaseDocs}`);
-      return normaliseCaseDocuments(JSON.parse(rawCaseDocs) as CaseDocument | CaseDocument[]);
-    } catch (err: unknown){
-      const message = err instanceof Error ? err.message : String(err);
-      logger.error(`Error parsing case documents: ${message}`);
-      return [];
-    }
-  }
-  return normaliseCaseDocuments(rawCaseDocs as CaseDocument | CaseDocument[]);
-};
 
 type DateCtor<T> = new (day?: string, month?: string, year?: string) => T;
 

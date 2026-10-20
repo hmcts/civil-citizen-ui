@@ -15,7 +15,7 @@ export function formatDocumentViewURL(documentName: string, claimId: string, bin
 export function formatDocumentViewURLs(caseDocuments: CaseDocument[], claimId: string): string {
   return caseDocuments
     .map((caseDocument) => formatDocumentViewURL(caseDocument.documentName, claimId, caseDocument.documentLink.document_binary_url))
-    .join('</br>');
+    .join('<br>');
 }
 export function formatEvidenceDocumentAlignedViewURL(documentName: string, claimId: string, binaryURL: string, align:alignText): string {
 
