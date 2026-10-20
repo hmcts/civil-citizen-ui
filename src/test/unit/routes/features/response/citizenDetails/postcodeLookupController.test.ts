@@ -17,22 +17,57 @@ const createJsonResponse = () => {
   return res;
 };
 
-const invoke = async (query: Record<string, unknown> = {}) => {
-  const res = createJsonResponse();
-  const next = jest.fn();
-  await getRouteHandler(postcodeLookupController, 'get', POSTCODE_LOOKUP_URL)(
-    {
-      params: {},
-      body: {},
-      query,
-      cookies: {},
-      session: createMockSession(),
-    } as unknown as AppRequest,
-    res as unknown as Response,
-    next,
-  );
-  return {res, next};
-};
+describe('Postcode Lookup Controller - HTTP status', () => {
+
+  it('should return 404 when postcode has no matching addresses', async () => {
+    mockLookupByPostcodeAndDataSet.mockResolvedValue({
+      addresses: [],
+      valid: true,
+    });
+
+    await request(app)
+      .get(POSTCODE_LOOKUP_URL + '?postcode=SW1A1AA')
+      .expect((res) => {
+        expect(res.status).toBe(404);
+        expect(res.body.error.message).toBe('Postcode not found');
+      });
+  });
+
+  it('should return 500 as postcode incomplete', async () => {
+    const error = createResponse(500);
+    mockLookupByPostcodeAndDataSet.mockRejectedValue(error);
+
+    await request(app)
+      .get(POSTCODE_LOOKUP_URL + '?postcode=BT')
+      .expect((res) => {
+        expect(res.status).toBe(500);
+      });
+  });
+
+  it('should return 400 when OS service throws 400 error', async () => {
+    const error = createResponse(400);
+    mockLookupByPostcodeAndDataSet.mockRejectedValue(error);
+
+    await request(app)
+      .get(POSTCODE_LOOKUP_URL + '?postcode=AB')
+      .expect((res) => {
+        expect(res.status).toBe(400);
+      });
+  });
+
+  it('should return 400 as postcode not provided', async () => {
+    const error = createResponse(400);
+    mockLookupByPostcodeAndDataSet.mockRejectedValue(error);
+
+    await request(app)
+      .get(POSTCODE_LOOKUP_URL + '?postcode=')
+      .expect((res) => {
+        expect(res.status).toBe(400);
+        expect(res.text).toContain('Postcode not provided');
+      });
+  });
+
+});
 
 describe('Postcode Lookup Controller', () => {
   beforeEach(() => {
@@ -55,16 +90,14 @@ describe('Postcode Lookup Controller', () => {
 
     const {res} = await invoke({postcode: 'CV56GQ'});
 
-    expect(lookupByPostcodeAndDataSet).toHaveBeenCalledWith('CV56GQ');
-    expect(res.status).toHaveBeenCalledWith(200);
-    expect(res.json).toHaveBeenCalledWith(payload);
+mockLookupByPostcodeAndDataSet.mockResolvedValue(MOCK_API_ADDRESS);
+await request(app)
+  .get(POSTCODE_LOOKUP_URL + '?postcode=CV56GQ')
+  .expect((res) => {
+    expect(res.status).toBe(200);
+    expect(res.text).toContain(MOCK_API_ADDRESS.addresses[0].uprn); // uprn
   });
-
-  it('should return the upstream status when lookup fails', async () => {
-    (lookupByPostcodeAndDataSet as jest.Mock).mockRejectedValue({
-      response: {status: 500},
-      message: 'Postcode not found',
-    });
+expect(lookupByPostcodeAndDataSet).toHaveBeenCalledWith('CV56GQ');
 
     const {res} = await invoke({postcode: 'BT'});
 

@@ -1,8 +1,8 @@
 import config from 'config';
 import axios from 'axios';
 import { lookupByPostcodeAndDataSet } from 'modules/ordnance-survey-key/ordnanceSurveyKeyService';
+import { AddressInfoResponse } from 'models/ordnanceSurveyKey/ordnanceSurveyKey';
 import { MOCK_API_ADDRESS, MOCK_API_RESPONSE } from '../../../utils/mocks/ordnanceSurvey/osMocks';
-import { AssertionError } from 'assert';
 
 jest.mock('axios');
 jest.mock('config', () => ({
@@ -86,7 +86,7 @@ describe('lookupByPostcodeAndDataSet', () => {
     expect(goneAddress).toBeUndefined();
   });
 
-  it('should throw AssertionError if OS API returns no results', async () => {
+  it('should return empty AddressInfoResponse if OS API returns no results', async () => {
     (config.get as jest.Mock).mockImplementation((key: string) => {
       if (key.includes('ApiKey')) return mockApiKey;
       if (key.includes('ApiUrl')) return mockApiUrl;
@@ -95,10 +95,11 @@ describe('lookupByPostcodeAndDataSet', () => {
 
     (axios.get as jest.Mock).mockResolvedValue({ data: { results: [] } });
 
-    await expect(lookupByPostcodeAndDataSet('SW1A 1AA')).rejects.toThrowError(AssertionError);
+    const result = await lookupByPostcodeAndDataSet('SW1A 1AA');
+    expect(result).toEqual(new AddressInfoResponse([], true));
   });
 
-  it('should throw AssertionError if OS API returns undefined data', async () => {
+  it('should return empty AddressInfoResponse if OS API returns undefined data', async () => {
     (config.get as jest.Mock).mockImplementation((key: string) => {
       if (key.includes('ApiKey')) return mockApiKey;
       if (key.includes('ApiUrl')) return mockApiUrl;
@@ -107,7 +108,8 @@ describe('lookupByPostcodeAndDataSet', () => {
 
     (axios.get as jest.Mock).mockResolvedValue({ data: undefined });
 
-    await expect(lookupByPostcodeAndDataSet('SW1A 1AA')).rejects.toThrowError(AssertionError);
+    const result = await lookupByPostcodeAndDataSet('SW1A 1AA');
+    expect(result).toEqual(new AddressInfoResponse([], true));
   });
 
   it('should prioritize DPA results over LPI results for the same address', async () => {

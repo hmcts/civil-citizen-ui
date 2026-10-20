@@ -3,7 +3,6 @@ import config from 'config';
 import nock from 'nock';
 import {readFileSync} from 'fs';
 import {resolve} from 'path';
-import {AssertionError} from 'assert';
 import {lookupByPostcodeAndDataSet} from 'modules/ordnance-survey-key/ordnanceSurveyKeyService';
 
 const apiUrl = 'https://os-places.synthetic.test';
@@ -110,7 +109,7 @@ describe('OS Places postcode consumer schema and HTTP boundary', () => {
     });
   });
 
-  test('surfaces the service error when OS returns no postcode matches', async () => {
+  test('returns empty addresses without error when OS returns no postcode matches', async () => {
     const scope = nock(apiUrl, {
       reqheaders: {
         key: apiKey,
@@ -120,7 +119,9 @@ describe('OS Places postcode consumer schema and HTTP boundary', () => {
       .query({dataset: 'DPA,LPI', postcode})
       .reply(200, {results: []});
 
-    await expect(lookupByPostcodeAndDataSet(postcode)).rejects.toThrow(AssertionError);
+    const result = await lookupByPostcodeAndDataSet(postcode);
     expect(scope.isDone()).toBe(true);
+    expect(result.valid).toBe(true);
+    expect(result.addresses).toHaveLength(0);
   });
 });
