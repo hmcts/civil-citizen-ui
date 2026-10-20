@@ -5817,7 +5817,7 @@
     "STATEMENT_OF_TRUTH_REQUIRED_MESSAGE": "Tell us if you believe the facts stated in this response are true",
     "SPECIFIC_COURT": {
       "SELECT_YES_NO": "Select yes if you want to ask for the hearing to be held at a specific court",
-      "SELECT_COURT_LOCATION": "Select a court"
+      "SELECT_COURT_LOCATION": "Select a preferred court hearing location"
     },
     "SPECIFY_A_REASON": "You must specify a reason",
     "TELL_US_WHY": "Enter why you consider this claim is not suitable for determination without a hearing",

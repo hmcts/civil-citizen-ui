@@ -52,7 +52,22 @@ describe('specificCourtController test', ()=>{
     it('should show error message when court location is required but location is not selected and reason for court locaiton is not entered', async ()=>{
       await request(app).post(DQ_COURT_LOCATION_URL).send({option: 'yes'}).expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain('Select a court');
+        expect(res.text).toContain('Select a preferred court hearing location');
+        expect(res.text).toContain('Tell us why you want the hearing to be held at this court');
+      });
+    });
+
+    it('should show court location error when location is not selected but reason is entered', async ()=>{
+      await request(app).post(DQ_COURT_LOCATION_URL).send({courtLocation: '', reason: 'nearest location'}).expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain('Select a preferred court hearing location');
+      });
+    });
+
+    it('should not show court location error when location is selected but reason is not entered', async ()=>{
+      await request(app).post(DQ_COURT_LOCATION_URL).send({courtLocation: 'courtLocation', reason: ''}).expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).not.toContain('Select a preferred court hearing location');
         expect(res.text).toContain('Tell us why you want the hearing to be held at this court');
       });
     });
