@@ -6098,6 +6098,8 @@
     "VALID_DATE_WITNESS_SUMMARY": "Date summary was written is required",
     "VALID_ENTER_SUPPORT": "Nodwch y gofynion cymorth sydd eu hangen arnoch chi, eich arbenigwyr neu'ch tystion",
     "MEDIATION_VALID_YOU_MUST_ENTER_DOI": "Nodwch y dyddiad y cafodd y datganiad ei ysgrifennu neu ei gynhyrchu",
+    "STANDARD_CHARACTERS_ONLY": "Defnyddiwch lythrennau a rhifau neu atalnodau safonol yn unig",
+    "BREATHING_SPACE_LIFT_REASON_MAX_CHARACTERS": "Rhaid i pam bod lle i anadlu yn cael ei godi fod yn 1000 nod neu lai",
     "GENERAL_APPLICATION": {
       "ERROR_UNAVAILABLE_DATE_CONFIRMATION": "Dewiswch ‘Oes’ os oes unrhyw ddyddiadau yn y 3 mis nesaf pan na allwch fynd i wrandawiad",
       "ACCEPT_DEFENDANT_OFFER": {
