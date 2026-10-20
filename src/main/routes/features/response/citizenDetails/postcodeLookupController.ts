@@ -15,6 +15,12 @@ export default Router().get(POSTCODE_LOOKUP_URL, async (req, res, next: NextFunc
     const postcode = raw.trim();
     const response: AddressInfoResponse = await lookupByPostcodeAndDataSet(postcode);
 
+    if (!response?.addresses || response.addresses.length === 0) {
+      return res.status(404).json({
+        error: { status: 404, message: 'Postcode not found' },
+      });
+    }
+
     res.status(200).json(response);
   } catch (error: any) {
     const statusCode = error?.response?.status || 500;

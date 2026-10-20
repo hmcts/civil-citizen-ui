@@ -1,7 +1,6 @@
 import config from 'config';
 import axios from 'axios';
 import { Address, AddressInfoResponse, Point } from 'models/ordnanceSurveyKey/ordnanceSurveyKey';
-import {AssertionError} from 'assert';
 
 interface OSAddress {
   UPRN: string;
@@ -141,11 +140,6 @@ export async function lookupByPostcodeAndDataSet(postCode: string): Promise<Addr
   });
 
   const results: OSResult[] = response?.data?.results ?? [];
-  if (results.length === 0) {
-    throw new AssertionError({
-      message: 'Postcode is incorrect or no results returned',
-    });
-  }
 
   // Map results to Address objects, prioritizing DPA over LPI and deduplicating by UPRN
   const processedUprns = new Set<string>();
