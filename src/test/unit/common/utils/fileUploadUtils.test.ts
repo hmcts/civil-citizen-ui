@@ -4,6 +4,7 @@ import {
   createMulterErrorMiddleware,
   createMulterErrorMiddlewareForSingleField,
   createMulterErrorMiddlewareForMultipleFiles,
+  MAX_FILES_PER_UPLOAD,
   createFileUploadError,
   getMulterErrorConstraint,
   extractCategoryAndIndex,
@@ -76,6 +77,19 @@ describe('fileUploadUtils', () => {
       expect(multer.memoryStorage).toHaveBeenCalledWith({
         limits: {
           fileSize: customLimit,
+        },
+      });
+    });
+
+    it('should limit the number of files when a maximum is given', () => {
+      const multer = require('multer');
+      createMulterUpload(FILE_SIZE_LIMIT, 3);
+
+      expect(multer).toHaveBeenCalledWith({
+        storage: {},
+        limits: {
+          fileSize: FILE_SIZE_LIMIT,
+          files: 3,
         },
       });
     });
@@ -316,6 +330,17 @@ describe('fileUploadUtils', () => {
       expect(mockNext).toHaveBeenCalled();
     });
 
+    it('should limit how many files can be sent at once', () => {
+      const multer = require('multer');
+      mockMulterArray();
+
+      createMulterErrorMiddlewareForMultipleFiles('selectedFile', 'testLogger')(mockReq as Request, {} as Response, mockNext);
+
+      expect(multer).toHaveBeenLastCalledWith(expect.objectContaining({
+        limits: expect.objectContaining({files: MAX_FILES_PER_UPLOAD}),
+      }));
+    });
+
     it('should set multerError on request when multer error occurs', () => {
       const multerError = {code: 'LIMIT_FILE_SIZE', message: 'File too large', field: 'selectedFile'};
       mockMulterArray(multerError);
@@ -369,6 +394,13 @@ describe('fileUploadUtils', () => {
       const result = getMulterErrorConstraint(error);
 
       expect(result).toBe('ERRORS.VALID_SIZE_FILE');
+    });
+
+    it('should return TOO_MANY_FILES for LIMIT_FILE_COUNT error', () => {
+      const error = {code: 'LIMIT_FILE_COUNT'};
+      const result = getMulterErrorConstraint(error);
+
+      expect(result).toBe('ERRORS.TOO_MANY_FILES');
     });
 
     it('should return VALID_MIME_TYPE_FILE for LIMIT_UNEXPECTED_FILE error', () => {

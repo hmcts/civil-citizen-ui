@@ -83,7 +83,9 @@ export function clearFileUploadSession(req: { session?: { fileUpload?: string; f
   }
 }
 
-export const createMulterUpload = (fileSizeLimit: number = FILE_SIZE_LIMIT) => {
+export const MAX_FILES_PER_UPLOAD = 10;
+
+export const createMulterUpload = (fileSizeLimit: number = FILE_SIZE_LIMIT, maxFiles?: number) => {
   const storage = multer.memoryStorage({
     limits: {
       fileSize: fileSizeLimit,
@@ -94,6 +96,7 @@ export const createMulterUpload = (fileSizeLimit: number = FILE_SIZE_LIMIT) => {
     storage: storage,
     limits: {
       fileSize: fileSizeLimit,
+      ...(maxFiles && {files: maxFiles}),
     },
   });
 };
@@ -125,7 +128,7 @@ export const createMulterErrorMiddlewareForMultipleFiles = (
   loggerName = 'uploadDocumentsController',
 ) => {
   return (req: Request, res: Response, next: NextFunction) => {
-    const upload = createMulterUpload(FILE_SIZE_LIMIT);
+    const upload = createMulterUpload(FILE_SIZE_LIMIT, MAX_FILES_PER_UPLOAD);
     upload.array(fieldName)(req, res, (err: any) => handleMulterResult(req, err, loggerName, next));
   };
 };
@@ -153,6 +156,8 @@ export const createFileUploadError = (
 export const getMulterErrorConstraint = (multerError: any): string => {
   if (multerError.code === 'LIMIT_FILE_SIZE') {
     return 'ERRORS.VALID_SIZE_FILE';
+  } else if (multerError.code === 'LIMIT_FILE_COUNT') {
+    return 'ERRORS.TOO_MANY_FILES';
   } else if (multerError.code === 'LIMIT_UNEXPECTED_FILE' || multerError.field) {
     return 'ERRORS.VALID_MIME_TYPE_FILE';
   }
