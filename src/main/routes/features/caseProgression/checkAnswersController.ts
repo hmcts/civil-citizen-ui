@@ -30,10 +30,19 @@ const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServi
 const getUploadedDocuments = (claim: Claim): UploadDocumentsUserForm =>
   claim.isClaimant() ? claim.caseProgression?.claimantDocuments : claim.caseProgression?.defendantDocuments;
 
-const redirectWithNoValidDocumentsError = (req: AppRequest, res: Response, claimId: string) => {
+const hasSelectedDocumentTypes = (claim: Claim): boolean => {
+  const documentTypes = claim.isClaimant() ? claim.caseProgression?.claimantUploadDocuments : claim.caseProgression?.defendantUploadDocuments;
+  return [documentTypes?.disclosure, documentTypes?.witness, documentTypes?.expert, documentTypes?.trial]
+    .some(types => types?.some(type => type?.selected));
+};
+
+const redirectWithNoValidDocumentsError = (req: AppRequest, res: Response, claim: Claim, claimId: string) => {
+  const [source, url] = hasSelectedDocumentTypes(claim)
+    ? [FILE_UPLOAD_SOURCE.CP_UPLOAD_DOCUMENTS, CP_UPLOAD_DOCUMENTS_URL]
+    : [FILE_UPLOAD_SOURCE.CP_TYPE_OF_DOCUMENTS, TYPES_OF_DOCUMENTS_URL];
   req.session.fileUpload = JSON.stringify(createNoValidDocumentsError());
-  req.session.fileUploadSource = FILE_UPLOAD_SOURCE.CP_TYPE_OF_DOCUMENTS;
-  req.session.save(() => res.redirect(constructResponseUrlWithIdParams(claimId, TYPES_OF_DOCUMENTS_URL)));
+  req.session.fileUploadSource = source;
+  req.session.save(() => res.redirect(constructResponseUrlWithIdParams(claimId, url)));
 };
 
 function renderView(res: Response, form: GenericForm<DocumentUploadSubmissionForm>, claim: Claim, claimId: string, summarySections: DocumentUploadSections) {
@@ -56,7 +65,7 @@ documentUploadCheckAnswerController.get(CP_CHECK_ANSWERS_URL, (async (req: AppRe
     const claim = await getClaimById(claimId, req,true);
     const summarySections = getSummarySections(getUploadedDocuments(claim), claimId, claim.isSmallClaimsTrackDQ, lang);
     if (summarySections === null) {
-      return redirectWithNoValidDocumentsError(req, res, claimId);
+      return redirectWithNoValidDocumentsError(req, res, claim, claimId);
     }
     const form = new GenericForm(new DocumentUploadSubmissionForm());
     renderView(res, form, claim, claimId, summarySections);
@@ -75,7 +84,7 @@ documentUploadCheckAnswerController.post(CP_CHECK_ANSWERS_URL, (async (req: Requ
     const claim = await getClaimById(claimId, req, true);
     const uploadedDocuments = getUploadedDocuments(claim);
     if (!hasValidNewDocuments(uploadedDocuments)) {
-      return redirectWithNoValidDocumentsError(appReq, res, claimId);
+      return redirectWithNoValidDocumentsError(appReq, res, claim, claimId);
     }
     await form.validate();
 
