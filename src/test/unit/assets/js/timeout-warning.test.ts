@@ -14,7 +14,9 @@ describe('TimeoutWarning', () => {
   };
 
   beforeAll(() => {
-    const dom = new JSDOM('<!DOCTYPE html><html><body></body></html>');
+    const dom = new JSDOM('<!DOCTYPE html><html><body></body></html>', {
+      url: 'http://localhost/',
+    });
     (global as unknown as { window: Window }).window = dom.window as unknown as Window;
     (global as unknown as { document: Document }).document = dom.window.document;
     (global as unknown as { HTMLDialogElement: unknown }).HTMLDialogElement = dom.window.HTMLDialogElement;
@@ -22,6 +24,7 @@ describe('TimeoutWarning', () => {
   });
 
   beforeEach(() => {
+    jest.useFakeTimers();
     jest.resetModules();
     document.body.innerHTML = `
       <div id="main-content" class="govuk-modal-dialogue-inert-container"></div>
@@ -51,6 +54,11 @@ describe('TimeoutWarning', () => {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     const {TimeoutWarning} = require('../../../../main/assets/js/timeout-warning.js');
     moduleInstance = new TimeoutWarning(dialog);
+  });
+
+  afterEach(() => {
+    jest.clearAllTimers();
+    jest.useRealTimers();
   });
 
   it('converts numbers to words for screen readers', () => {
