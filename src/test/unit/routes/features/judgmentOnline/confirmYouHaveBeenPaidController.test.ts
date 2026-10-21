@@ -1,249 +1,232 @@
+import {Response} from 'express';
+import confirmYouHaveBeenPaidController from 'routes/features/judgmentOnline/confirmYouHaveBeenPaidController';
 import {
   CONFIRM_YOU_HAVE_BEEN_PAID_CONFIRMATION_URL,
   CONFIRM_YOU_HAVE_BEEN_PAID_URL,
+  DASHBOARD_CLAIMANT_URL,
+  VIEW_THE_JUDGMENT_URL,
 } from 'routes/urls';
-import {TestMessages} from '../../../../utils/errorMessageTestConstants';
-import {app} from '../../../../../main/app';
-import config from 'config';
-import nock from 'nock';
-const session = require('supertest-session');
-import {CIVIL_SERVICE_CASES_URL} from 'client/civilServiceUrls';
-import {
-  mockCivilClaim,
-  mockCivilClaimDefendantCaseProgression,
-  mockRedisFailure,
-} from '../../../../utils/mockDraftStore';
 import {CivilServiceClient} from 'client/civilServiceClient';
+import {getClaimById} from 'modules/utilityService';
+import {deleteDraftClaimFromStore} from 'modules/draft-store/draftStoreService';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {Claim} from 'models/claim';
+import {Party} from 'models/party';
+import {CaseRole} from 'form/models/caseRoles';
+import {GenericForm} from 'form/models/genericForm';
+import {DateYouHaveBeenPaidForm} from 'form/models/judmentOnline/confirmYouHaveBeenPaidForm';
+import {AppRequest} from 'models/AppRequest';
+import {createMockResponse, createMockSession, getRouteHandler} from '../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/draft-store');
-jest.mock('services/features/caseProgression/trialArrangements/hearingDurationAndOtherInformation');
+jest.mock('client/civilServiceClient', () => {
+  const methods = {
+    submitJudgmentPaidInFull: jest.fn(),
+  };
+  return {CivilServiceClient: jest.fn(() => methods)};
+});
+jest.mock('modules/utilityService', () => ({
+  getClaimById: jest.fn(),
+}));
+jest.mock('modules/draft-store/draftStoreService', () => ({
+  deleteDraftClaimFromStore: jest.fn(),
+}));
 
-const claim = require('../../../../utils/mocks/civilClaimResponseMock.json');
-const claimId = claim.id;
-const civilServiceUrl = config.get<string>('services.civilService.url');
-const testSession = session(app);
+const civilServiceMethods = new CivilServiceClient('http://localhost') as unknown as {
+  submitJudgmentPaidInFull: jest.Mock;
+};
+
+const viewPath = 'features/judgmentOnline/confirm-you-have-been-paid';
+const claimId = '1645882162449409';
+
+const buildClaim = (caseRole = CaseRole.CLAIMANT): Claim => {
+  const claim = new Claim();
+  claim.applicant1 = new Party();
+  claim.caseRole = caseRole;
+  claim.joJudgementByAdmissionIssueDate = new Date('2020-01-15');
+  return claim;
+};
+
+const invoke = async (method: 'get' | 'post', overrides: Record<string, unknown> = {}) => {
+  const res = createMockResponse();
+  const next = jest.fn();
+  await getRouteHandler(confirmYouHaveBeenPaidController, method, CONFIRM_YOU_HAVE_BEEN_PAID_URL)(
+    {
+      params: {id: claimId},
+      body: {},
+      query: {lang: 'en'},
+      cookies: {},
+      session: createMockSession({user: {id: 'user-1'}}),
+      ...overrides,
+    } as unknown as AppRequest,
+    res as unknown as Response,
+    next,
+  );
+  return {res, next};
+};
+
+const renderedForm = (res: ReturnType<typeof createMockResponse>): GenericForm<DateYouHaveBeenPaidForm> => {
+  expect(res.redirect).not.toHaveBeenCalled();
+  expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+    pageTitle: 'PAGES.CONFIRM_YOU_HAVE_BEEN_PAID.PAGE_TITLE',
+    claimId,
+    cancelUrl: DASHBOARD_CLAIMANT_URL.replace(':id', claimId),
+  }));
+  return res.render.mock.calls[0][1].form as GenericForm<DateYouHaveBeenPaidForm>;
+};
+
+const errorTexts = (form: GenericForm<DateYouHaveBeenPaidForm>): string[] =>
+  form.getAllErrors().map((error: {text: string}) => error.text);
 
 describe('Confirm you have been paid', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
+  let claim: Claim;
 
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
+  beforeEach(() => {
+    jest.clearAllMocks();
+    claim = buildClaim();
+    (getClaimById as jest.Mock).mockResolvedValue(claim);
+    (deleteDraftClaimFromStore as jest.Mock).mockResolvedValue(undefined);
+    civilServiceMethods.submitJudgmentPaidInFull.mockResolvedValue(undefined);
   });
-  describe('Confirm you have been paid - On GET', () => {
 
-    it('should render page successfully if cookie has correct values', async () => {
-    //Given
-      app.locals.draftStoreClient = mockCivilClaim;
-      //When
-      await testSession
-        .get(CONFIRM_YOU_HAVE_BEEN_PAID_URL.replace(':id', claimId))
-      //Then
-        .expect((res: { status: unknown; text: unknown; }) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.CONFIRM_YOU_HAVE_BEEN_PAID_PAGE_TITLE);
-          expect(res.text).toContain(TestMessages.CONFIRM_YOU_HAVE_BEEN_PAID_ENTER_THE_DATE);
-          expect(res.text).toContain(TestMessages.CONFIRM_YOU_HAVE_BEEN_PAID_HINT);
-          expect(res.text).toContain(TestMessages.CONFIRM_YOU_HAVE_BEEN_PAID_CONFIRM);
-          expect(res.text).toContain(TestMessages.CONFIRM_YOU_HAVE_BEEN_PAID_JUDGMENT_LINK);
-        });
+  describe('on GET', () => {
+    it('renders the form for the claimant and clears the draft', async () => {
+      const {res} = await invoke('get');
+      const form = renderedForm(res);
+
+      expect(form.hasErrors()).toBe(false);
+      expect(deleteDraftClaimFromStore).toHaveBeenCalledWith(claimId);
+      expect(getClaimById).toHaveBeenCalledWith(claimId, expect.anything(), true);
+      const view = res.render.mock.calls[0][1] as {iWantToLinks: Array<{url: string}>; dashboardUrl: string};
+      expect(view.dashboardUrl).toBe(DASHBOARD_CLAIMANT_URL.replace(':id', claimId));
+      expect(view.iWantToLinks[0].url).toBe(VIEW_THE_JUDGMENT_URL.replace(':id', claimId));
     });
 
-    it('should return "Something went wrong" page when claim does not exist', async () => {
-    //Given
-      app.locals.draftStoreClient = mockRedisFailure;
-      //When
-      await testSession
-        .get(CONFIRM_YOU_HAVE_BEEN_PAID_URL.replace(':id', '1111'))
-      //Then
-        .expect((res: { status: unknown; text: unknown; }) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+    it('calls next when the claim cannot be loaded', async () => {
+      const error = new Error('redis failure');
+      (getClaimById as jest.Mock).mockRejectedValue(error);
+
+      const {res, next} = await invoke('get');
+
+      expect(next).toHaveBeenCalledWith(error);
+      expect(res.render).not.toHaveBeenCalled();
     });
 
-    it('should return "Something went wrong" page when the logged-in user is the defendant', async () => {
-    //Given
-      app.locals.draftStoreClient = mockCivilClaimDefendantCaseProgression;
-      //When
-      await testSession
-        .get(CONFIRM_YOU_HAVE_BEEN_PAID_URL.replace(':id', '1645882162449409'))
-      //Then
-        .expect((res: { status: unknown; text: unknown; }) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+    it('calls next when the logged-in user is the defendant', async () => {
+      (getClaimById as jest.Mock).mockResolvedValue(buildClaim(CaseRole.DEFENDANT));
+
+      const {res, next} = await invoke('get');
+
+      expect(res.render).not.toHaveBeenCalled();
+      expect(next).toHaveBeenCalledWith(expect.any(Error));
     });
   });
 
-  describe('Confirm you have been paid - on POST', () => {
+  describe('on POST', () => {
+    const validBody = {day: '2', month: '3', year: '2020', confirmed: true};
 
-    beforeEach(() => {
-      app.locals.draftStoreClient = mockCivilClaim;
+    it('redirects to confirmation when the date is valid', async () => {
+      const {res} = await invoke('post', {body: validBody});
+
+      expect(civilServiceMethods.submitJudgmentPaidInFull).toHaveBeenCalledWith(
+        claimId,
+        expect.objectContaining({
+          joJudgmentPaidInFull: expect.objectContaining({
+            dateOfFullPaymentMade: expect.any(Date),
+            confirmFullPaymentMade: ['CONFIRMED'],
+          }),
+        }),
+        expect.anything(),
+      );
+      expect(deleteDraftClaimFromStore).toHaveBeenCalledWith(claimId);
+      expect(res.redirect).toHaveBeenCalledWith(
+        constructResponseUrlWithIdParams(claimId, CONFIRM_YOU_HAVE_BEEN_PAID_CONFIRMATION_URL),
+      );
+      expect(res.render).not.toHaveBeenCalled();
     });
 
-    it('should redirect to the Confirm you have been paid Confirmation page', async () => {
-    //Given
+    it('re-renders when the confirmation checkbox is not checked', async () => {
+      const {res} = await invoke('post', {body: {day: '2', month: '3', year: '2020'}});
+      const form = renderedForm(res);
+
+      expect(form.hasFieldError('confirmed')).toBe(true);
+      expect(form.errorFor('confirmed')).toBe('PAGES.CONFIRM_YOU_HAVE_BEEN_PAID.CHECK_ERROR_MESSAGE');
+      expect(civilServiceMethods.submitJudgmentPaidInFull).not.toHaveBeenCalled();
+    });
+
+    it('re-renders when the date is blank', async () => {
+      const {res} = await invoke('post', {body: {day: '', month: '', year: '', confirmed: true}});
+      const form = renderedForm(res);
+
+      expect(form.hasFieldError('day')).toBe(true);
+      expect(form.hasFieldError('month')).toBe(true);
+      expect(form.hasFieldError('year')).toBe(true);
+      expect(form.errorFor('day')).toBe('ERRORS.VALID_DAY');
+      expect(form.errorFor('month')).toBe('ERRORS.VALID_MONTH');
+      expect(civilServiceMethods.submitJudgmentPaidInFull).not.toHaveBeenCalled();
+    });
+
+    it('re-renders when the year is not four digits', async () => {
+      const {res} = await invoke('post', {body: {day: '2', month: '3', year: '202', confirmed: true}});
+      const form = renderedForm(res);
+
+      expect(form.hasFieldError('year')).toBe(true);
+      expect(errorTexts(form)).toContain('ERRORS.VALID_FOUR_DIGIT_YEAR');
+      expect(civilServiceMethods.submitJudgmentPaidInFull).not.toHaveBeenCalled();
+    });
+
+    it('re-renders when the date is not a real calendar date', async () => {
+      const {res} = await invoke('post', {body: {day: '31', month: '2', year: '1998', confirmed: true}});
+      const form = renderedForm(res);
+
+      expect(form.hasFieldError('date')).toBe(true);
+      expect(errorTexts(form)).toContain('ERRORS.VALID_DATE');
+      expect(civilServiceMethods.submitJudgmentPaidInFull).not.toHaveBeenCalled();
+    });
+
+    it('re-renders when the date is in the future', async () => {
       const today = new Date();
-      const month = today.getMonth() <12 ? today.getMonth() + 1 : 1;
-      const day = 28;
-      const year = today.getFullYear()-1;
-      claim.case_data.joJudgementByAdmissionIssueDate = `${year}-${month}-${day}`;
+      const {res} = await invoke('post', {body: {
+        day: String(today.getDate()),
+        month: String(today.getMonth() + 1),
+        year: String(today.getFullYear() + 1),
+        confirmed: true,
+      }});
+      const form = renderedForm(res);
 
-      const CivilServiceClientServiceMock = jest
-        .spyOn(CivilServiceClient.prototype, 'submitJudgmentPaidInFull')
-        .mockReturnValue(
-          new Promise((resolve) => resolve(claim),
-          ),
-        );
-      nock(civilServiceUrl)
-        .post(CIVIL_SERVICE_CASES_URL + '1645882162449409')
-        .reply(200, claimId);
-
-      //When
-      await testSession
-        .post(CONFIRM_YOU_HAVE_BEEN_PAID_URL.replace(':id', '1645882162449409'))
-        .send({ day:day, month:month, year: year, confirmed:true})
-      //Then
-        .expect((res: {status: unknown, header: {location: unknown}, text: unknown;}) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CONFIRM_YOU_HAVE_BEEN_PAID_CONFIRMATION_URL.replace(':id', '1645882162449409'));
-          expect(CivilServiceClientServiceMock).toBeCalled();
-        });
+      expect(errorTexts(form)).toContain('ERRORS.CORRECT_DATE_NOT_IN_FUTURE');
+      expect(civilServiceMethods.submitJudgmentPaidInFull).not.toHaveBeenCalled();
     });
 
-    it('should validate checkbox when not checked', async () => {
-    //Given
-      nock(civilServiceUrl)
-        .post(CIVIL_SERVICE_CASES_URL + '1645882162449409')
-        .reply(200, claimId);
+    it('re-renders when the date is before the judgment', async () => {
+      claim.joJudgementByAdmissionIssueDate = new Date('2020-06-15');
 
-      //When
-      await testSession
-        .post(CONFIRM_YOU_HAVE_BEEN_PAID_URL.replace(':id', '1645882162449409'))
-        .send({ day:2, month:3, year: 2024, confirm:false })
-      //Then
-        .expect((res: {status: unknown, header: {location: unknown}, text: unknown;}) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.CONFIRM_YOU_HAVE_BEEN_PAID_CHECK_ERROR_MESSAGE);
-        });
+      const {res} = await invoke('post', {body: validBody});
+      const form = renderedForm(res);
+
+      expect(errorTexts(form)).toContain('ERRORS.VALID_PAID_IN_FULL_DATE');
+      expect(res.redirect).not.toHaveBeenCalled();
+      expect(civilServiceMethods.submitJudgmentPaidInFull).not.toHaveBeenCalled();
     });
 
-    it('should show error if date is before the judgment by admission date', async () => {
-    //Given
-      const today = new Date();
-      nock(civilServiceUrl)
-        .post(CIVIL_SERVICE_CASES_URL + '1645882162449409')
-        .reply(200, claimId);
+    it('calls next when the claim cannot be loaded', async () => {
+      const error = new Error('redis failure');
+      (getClaimById as jest.Mock).mockRejectedValue(error);
 
-      const month = today.getMonth() <12 ? today.getMonth() + 1 : 1;
-      const day = 28;
-      const year = today.getFullYear()-1;
-      const joIssueDate =   `${year}-${month}-${day}`;
+      const {res, next} = await invoke('post', {body: validBody});
 
-      //When
-      await testSession
-        .post(CONFIRM_YOU_HAVE_BEEN_PAID_URL.replace(':id', '1645882162449409'))
-        .send({ day:20, month:month, year: year, confirmed:true, joIssueDate})
-      //Then
-        .expect((res: {status: unknown, header: {location: unknown}, text: unknown;}) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.VALID_PAID_IN_FULL_DATE);
-        });
+      expect(next).toHaveBeenCalledWith(error);
+      expect(res.render).not.toHaveBeenCalled();
+      expect(res.redirect).not.toHaveBeenCalled();
     });
 
-    it('should show error if date is in the future', async () => {
-      //Given
-      const today = new Date();
-      nock(civilServiceUrl)
-        .post(CIVIL_SERVICE_CASES_URL + '1645882162449409')
-        .reply(200, claimId);
+    it('calls next when the logged-in user is the defendant', async () => {
+      (getClaimById as jest.Mock).mockResolvedValue(buildClaim(CaseRole.DEFENDANT));
 
-      const month = today.getMonth() + 1;
-      const day = today.getDate();
-      const year = today.getFullYear();
-      const nextYear = year + 1;
-      const joIssueDate =   `${year}-${month}-${day}`;
+      const {res, next} = await invoke('post', {body: validBody});
 
-      //When
-      await testSession
-        .post(CONFIRM_YOU_HAVE_BEEN_PAID_URL.replace(':id', '1645882162449409'))
-        .send({ day:day, month:month, year: nextYear, confirmed:true, joIssueDate: joIssueDate})
-        //Then
-        .expect((res: {status: unknown, header: {location: unknown}, text: unknown;}) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.ERRORS_CORRECT_DATE_NOT_IN_FUTURE);
-        });
+      expect(res.render).not.toHaveBeenCalled();
+      expect(res.redirect).not.toHaveBeenCalled();
+      expect(next).toHaveBeenCalledWith(expect.any(Error));
     });
-
-    it('should show errors if date not present', async () => {
-    //Given
-      nock(civilServiceUrl)
-        .post(CIVIL_SERVICE_CASES_URL + '1645882162449409')
-        .reply(200, claimId);
-
-      //When
-      await testSession
-        .post(CONFIRM_YOU_HAVE_BEEN_PAID_URL.replace(':id', '1645882162449409'))
-        .send({ confirmed:true })
-      //Then
-        .expect((res: {status: unknown, header: {location: unknown}, text: unknown;}) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.VALID_DAY);
-          expect(res.text).toContain(TestMessages.VALID_MONTH);
-          expect(res.text).toContain(TestMessages.VALID_YEAR);
-        });
-    });
-
-    it('should show errors if year is not correct', async () => {
-    //Given
-      nock(civilServiceUrl)
-        .post(CIVIL_SERVICE_CASES_URL + '1645882162449409')
-        .reply(200, claimId);
-
-      //When
-      await testSession
-        .post(CONFIRM_YOU_HAVE_BEEN_PAID_URL.replace(':id', '1645882162449409'))
-        .send({ day:2, month:3, year: 202, confirmed:true })
-      //Then
-        .expect((res: {status: unknown, header: {location: unknown}, text: unknown;}) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.VALID_FOUR_DIGIT_YEAR);
-        });
-    });
-
-    it('should show errors if date is not valid', async () => {
-    //Given
-      nock(civilServiceUrl)
-        .post(CIVIL_SERVICE_CASES_URL + '1645882162449409')
-        .reply(200, claimId);
-
-      //When
-      await testSession
-        .post(CONFIRM_YOU_HAVE_BEEN_PAID_URL.replace(':id', '1645882162449409'))
-        .send({ day:null, month:2, year:1998, confirmed:true })
-      //Then
-        .expect((res: {status: unknown, header: {location: unknown}, text: unknown;}) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.ERRORS_VALID_DATE);
-        });
-    });
-
-    it('should return "Something went wrong" page when claim does not exist', async () => {
-    //Given
-      app.locals.draftStoreClient = mockRedisFailure;
-      //When
-      await testSession
-        .post(CONFIRM_YOU_HAVE_BEEN_PAID_URL.replace(':id', '1234'))
-      //Then
-        .expect((res: { status: unknown; text: unknown; }) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
-    });
-
   });
 });
