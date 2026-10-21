@@ -366,6 +366,116 @@ describe('Mediation Unavailability Select Dates Confirmation Controller', () => 
     });
   });
 
+  describe('on POST - longer period to date validation', () => {
+    const fromDate = new Date();
+    fromDate.setDate(fromDate.getDate() + 7);
+    const validStart = {day: String(fromDate.getDate()), month: String(fromDate.getMonth() + 1), year: String(fromDate.getFullYear())};
+    const toDate = new Date();
+    toDate.setDate(toDate.getDate() + 14);
+    const day = String(toDate.getDate());
+    const month = String(toDate.getMonth() + 1);
+    const year = String(toDate.getFullYear());
+
+    const longerPeriodBody = (end: Record<string, string>, start: Record<string, string> = validStart) => ({
+      items: [{type: UnavailableDateType.LONGER_PERIOD, period: {start, end}}],
+    });
+
+    beforeEach(() => {
+      const {getUnavailableDatesMediationForm: actualGetForm} = jest.requireActual('services/features/mediation/unavailableDatesForMediationService');
+      getUnavailableDatesMediationFormMock.mockImplementation(actualGetForm);
+    });
+
+    it.each(['0', '00', '000'])('should return to 4-digit year error when year is %s', async (invalidYear) => {
+      await request(app)
+        .post(CONTROLLER_URL)
+        .send(longerPeriodBody({day, month, year: invalidYear}))
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Unavailable to date must include a 4-digit year');
+          expect(res.text).not.toContain('Date you are unavailable to must include a year');
+        });
+    });
+
+    it('should return to valid month error when month is invalid', async () => {
+      await request(app)
+        .post(CONTROLLER_URL)
+        .send(longerPeriodBody({day, month: '13', year}))
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Unavailable to date must include a valid month');
+          expect(res.text).not.toContain('Date you are unavailable to must include a month');
+        });
+    });
+
+    it('should return to valid day error when day is invalid', async () => {
+      await request(app)
+        .post(CONTROLLER_URL)
+        .send(longerPeriodBody({day: '32', month, year}))
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Unavailable to date must include a valid day');
+          expect(res.text).not.toContain('Date you are unavailable to must include a day');
+        });
+    });
+
+    it('should return to day, month and year errors when all are invalid', async () => {
+      await request(app)
+        .post(CONTROLLER_URL)
+        .send(longerPeriodBody({day: '40', month: '13', year: '0'}))
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Unavailable to date must include a valid day');
+          expect(res.text).toContain('Unavailable to date must include a valid month');
+          expect(res.text).toContain('Unavailable to date must include a 4-digit year');
+        });
+    });
+
+    it('should keep to missing field errors when day or year are empty', async () => {
+      await request(app)
+        .post(CONTROLLER_URL)
+        .send(longerPeriodBody({day: '', month, year: ''}))
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Date you are unavailable to must include a day');
+          expect(res.text).toContain('Date you are unavailable to must include a year');
+          expect(res.text).not.toContain('Unavailable to date must include a valid day');
+          expect(res.text).not.toContain('Unavailable to date must include a 4-digit year');
+        });
+    });
+
+    it('should keep missing to date error when to date is empty', async () => {
+      await request(app)
+        .post(CONTROLLER_URL)
+        .send(longerPeriodBody({day: '', month: '', year: ''}))
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Enter the date you are unavailable to');
+        });
+    });
+
+    it('should return from and to errors independently when both are invalid', async () => {
+      await request(app)
+        .post(CONTROLLER_URL)
+        .send(longerPeriodBody({day, month: '13', year}, {...validStart, year: '0'}))
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Unavailable from date must include a 4-digit year');
+          expect(res.text).toContain('Unavailable to date must include a valid month');
+        });
+    });
+
+    it('should return welsh to 4-digit year error when year is invalid', async () => {
+      await request(app)
+        .post(CONTROLLER_URL)
+        .query({lang: 'cy'})
+        .send(longerPeriodBody({day, month, year: '0'}))
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Rhaid i ddim ar gael hyd at y dyddiad hwn gynnwys blwyddyn 4 digid');
+        });
+    });
+  });
+
   describe('on POST - defendant response', () => {
     it('should redirect to task list with single date', async () => {
       //given

@@ -64,18 +64,18 @@ export class UnavailableDatePeriodMediation {
     until?: Date;
 
   @ValidateIf(o => o.type === UnavailableDateType.LONGER_PERIOD && (o.endDay || o.endMonth || o.endYear))
-  @Min(1, {message: 'ERRORS.CARM_ENTER_DAY_FOR_UNAVAILABILITY_TO'})
-  @Max(31, {message: 'ERRORS.CARM_ENTER_DAY_FOR_UNAVAILABILITY_TO'})
+  @Min(1, { message: generateErrorMessage })
+  @Max(31, { message: generateErrorMessage })
     endDay?: number;
 
   @ValidateIf(o => o.type === UnavailableDateType.LONGER_PERIOD && (o.endDay || o.endMonth || o.endYear))
-  @Min(1, {message: 'ERRORS.CARM_ENTER_MONTH_FOR_UNAVAILABILITY_TO'})
-  @Max(12, {message: 'ERRORS.CARM_ENTER_MONTH_FOR_UNAVAILABILITY_TO'})
+  @Min(1, { message: generateErrorMessage })
+  @Max(12, { message: generateErrorMessage })
     endMonth?: number;
 
   @ValidateIf(o => o.type === UnavailableDateType.LONGER_PERIOD && (o.endDay || o.endMonth || o.endYear))
   @Validate(OptionalDateFourDigitValidator, {message: 'ERRORS.VALID_FOUR_DIGIT_YEAR'})
-  @Min(1872, {message: 'ERRORS.CARM_ENTER_YEAR_FOR_UNAVAILABILITY_TO'})
+  @Min(1872, { message: generateErrorMessage })
     endYear?: number;
 
   [key: string]: UnavailableDateType | Date | number;
@@ -114,6 +114,12 @@ function generateErrorMessage(args: ValidationArgs<UnavailableDatePeriodMediatio
         return hasValue ? 'ERRORS.CARM_VALID_YEAR_FOR_UNAVAILABILITY' : 'ERRORS.CARM_ENTER_YEAR_FOR_UNAVAILABILITY';
       }
       return hasValue ? 'ERRORS.CARM_VALID_YEAR_FOR_UNAVAILABILITY_FROM' : 'ERRORS.CARM_ENTER_YEAR_FOR_UNAVAILABILITY_FROM';
+    case 'endDay':
+      return hasValue ? 'ERRORS.CARM_VALID_DAY_FOR_UNAVAILABILITY_TO' : 'ERRORS.CARM_ENTER_DAY_FOR_UNAVAILABILITY_TO';
+    case 'endMonth':
+      return hasValue ? 'ERRORS.CARM_VALID_MONTH_FOR_UNAVAILABILITY_TO' : 'ERRORS.CARM_ENTER_MONTH_FOR_UNAVAILABILITY_TO';
+    case 'endYear':
+      return hasValue ? 'ERRORS.CARM_VALID_YEAR_FOR_UNAVAILABILITY_TO' : 'ERRORS.CARM_ENTER_YEAR_FOR_UNAVAILABILITY_TO';
     case 'until':
       if ((args.object.startDay || args.object.startMonth || args.object.startYear) && !args.object.until) {
         return 'ERRORS.CARM_ENTER_DATE_FOR_UNAVAILABILITY_TO';
