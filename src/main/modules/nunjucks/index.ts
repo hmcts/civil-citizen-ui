@@ -1,3 +1,4 @@
+import {isUiPreviewEnabled} from 'common/utils/uiPreviewConfig';
 import * as path from 'path';
 import {join} from 'path';
 import {Express} from 'express';
@@ -158,6 +159,7 @@ export class Nunjucks {
     nunjucksEnv.addGlobal('HearingTypeOptions', HearingTypeOptions);
     nunjucksEnv.addGlobal('ProposedPaymentPlanOption', ProposedPaymentPlanOption);
     // TODO : 'GTM-PBT2TQ2D' is test GTM id for integration to the Google Tag Manager for Google Analytics, it should be replaced with production GTM id when it's provided by HMCTS User experience team
+    nunjucksEnv.addGlobal('isUiPreview', isUiPreviewEnabled());
     nunjucksEnv.addGlobal('gtmScriptId', 'GTM-PBT2TQ2D');
     nunjucksEnv.addGlobal('dynatraceUrl', dynatraceUrl);
 

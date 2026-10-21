@@ -1,0 +1,305 @@
+{
+  "mappings": [
+    {
+      "name": "ui-preview-fixture-case-details",
+      "priority": 1,
+      "request": {
+        "method": "GET",
+        "urlPath": "/cases/1645882162449409"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "jsonBody": {
+          "id": "1645882162449409",
+          "state": "AWAITING_RESPONDENT_ACKNOWLEDGEMENT",
+          "last_modified": "2022-03-01T13:29:24.971Z",
+          "case_data": {
+            "legacyCaseReference": "000MC009",
+            "totalClaimAmount": 1000,
+            "claimFee": {
+              "code": "FEE0204",
+              "version": "4",
+              "calculatedAmountInPence": "7000"
+            },
+            "applicant1": {
+              "type": "INDIVIDUAL",
+              "partyName": "Jane Claimant",
+              "individualTitle": "Ms",
+              "individualFirstName": "Jane",
+              "individualLastName": "Claimant",
+              "partyEmail": "claimant@example.com",
+              "primaryAddress": {
+                "AddressLine1": "1 Claimant Road",
+                "PostTown": "London",
+                "PostCode": "SW1A 1AA"
+              }
+            },
+            "respondent1": {
+              "type": "INDIVIDUAL",
+              "partyName": "John Defendant",
+              "individualTitle": "Mr",
+              "individualFirstName": "John",
+              "individualLastName": "Defendant",
+              "partyEmail": "defendant@example.com",
+              "primaryAddress": {
+                "AddressLine1": "Defendant House",
+                "AddressLine2": "21",
+                "AddressLine3": "Church Road",
+                "PostTown": "Berkshire",
+                "PostCode": "RG4 7AD"
+              }
+            },
+            "respondent1ResponseDeadline": "2026-12-31T16:00:00.000Z",
+            "submittedDate": "2022-03-01T13:29:24.971Z",
+            "claimIssuedDate": "2022-03-01T13:29:24.971Z",
+            "responseClaimTrack": "SMALL_CLAIM",
+            "mediationSettlementAgreedAt": "2024-04-11T00:00:00.000Z",
+            "mediationAgreement": {
+              "name": "Mediation agreement",
+              "documentType": "MEDIATION_AGREEMENT",
+              "documentUploadedDatetime": "2024-04-11T00:00:00.000Z",
+              "document": {
+                "document_url": "http://dm-store:8080/documents/757f50dc-6978-4cf8-8fa0-38e05bde2d51",
+                "document_binary_url": "http://dm-store:8080/documents/757f50dc-6978-4cf8-8fa0-38e05bde2d51/binary",
+                "document_filename": "mediation-agreement.pdf"
+              }
+            },
+            "specResponseTimelineOfEvents": []
+          }
+        }
+      }
+    },
+    {
+      "name": "ui-preview-fixture-user-case-roles",
+      "priority": 1,
+      "request": {
+        "method": "GET",
+        "urlPath": "/cases/1645882162449409/userCaseRoles"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "jsonBody": [
+          "[DEFENDANT]"
+        ]
+      }
+    },
+    {
+      "name": "ui-preview-agreed-response-deadline",
+      "priority": 1,
+      "request": {
+        "method": "GET",
+        "urlPathPattern": "/cases/response/agreeddeadline/(1645882162449409|164588216244960[1-5])"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "jsonBody": "2026-12-31T16:00:00"
+      }
+    },
+    {
+      "name": "ui-preview-claimant-claims",
+      "priority": 1,
+      "request": {
+        "method": "GET",
+        "urlPath": "/cases/claimant/someID"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "jsonBody": {
+          "claims": [
+            {
+              "claimId": "1645882162449601",
+              "claimNumber": "000MC601",
+              "claimantName": "Jane Claimant",
+              "defendantName": "John Defendant",
+              "claimAmount": "1000",
+              "responseDeadline": "2026-12-31T16:00:00.000Z",
+              "status": "ADMIT_PAY_INSTALLMENTS",
+              "ocmc": false,
+              "numberOfDays": 10,
+              "numberOfDaysOverdue": 0
+            },
+            {
+              "claimId": "1645882162449602",
+              "claimNumber": "000MC602",
+              "claimantName": "Jane Claimant",
+              "defendantName": "John Defendant",
+              "claimAmount": "1000",
+              "responseDeadline": "2026-12-31T16:00:00.000Z",
+              "status": "DEFENDANT_PART_ADMIT",
+              "ocmc": false,
+              "numberOfDays": 10,
+              "numberOfDaysOverdue": 0
+            },
+            {
+              "claimId": "1645882162449603",
+              "claimNumber": "000MC603",
+              "claimantName": "Jane Claimant",
+              "defendantName": "John Defendant",
+              "claimAmount": "1500",
+              "responseDeadline": "2026-12-31T16:00:00.000Z",
+              "status": "SDO_ORDER_CREATED_CP",
+              "ocmc": false,
+              "numberOfDays": 10,
+              "numberOfDaysOverdue": 0
+            }
+          ],
+          "totalPages": 1
+        }
+      }
+    },
+    {
+      "name": "ui-preview-defendant-claims",
+      "priority": 1,
+      "request": {
+        "method": "GET",
+        "urlPath": "/cases/defendant/someID"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "jsonBody": {
+          "claims": [
+            {
+              "claimId": "1645882162449409",
+              "claimNumber": "000MC009",
+              "claimantName": "Jane Claimant",
+              "defendantName": "John Defendant",
+              "claimAmount": "1000",
+              "responseDeadline": "2026-12-31T16:00:00.000Z",
+              "status": "NO_RESPONSE",
+              "ocmc": false,
+              "numberOfDays": 10,
+              "numberOfDaysOverdue": 0
+            },
+            {
+              "claimId": "1645882162449604",
+              "claimNumber": "000MC604",
+              "claimantName": "Jane Claimant",
+              "defendantName": "John Defendant",
+              "claimAmount": "1000",
+              "responseDeadline": "2026-12-31T16:00:00.000Z",
+              "status": "NO_RESPONSE",
+              "ocmc": false,
+              "numberOfDays": 10,
+              "numberOfDaysOverdue": 0
+            },
+            {
+              "claimId": "1645882162449605",
+              "claimNumber": "000MC605",
+              "claimantName": "Jane Claimant",
+              "defendantName": "John Defendant",
+              "claimAmount": "1000",
+              "responseDeadline": "2026-12-31T16:00:00.000Z",
+              "status": "NO_RESPONSE",
+              "ocmc": false,
+              "numberOfDays": 10,
+              "numberOfDaysOverdue": 0
+            }
+          ],
+          "totalPages": 1
+        }
+      }
+    },
+    {
+      "name": "ui-preview-dashboard-notifications",
+      "priority": 1,
+      "request": {
+        "method": "GET",
+        "urlPathPattern": "/dashboard/notifications/(1645882162449409|164588216244960[1-5])/role/(CLAIMANT|DEFENDANT)"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "jsonBody": []
+      }
+    },
+    {
+      "name": "ui-preview-dashboard-task-list",
+      "priority": 1,
+      "request": {
+        "method": "GET",
+        "urlPath": "/dashboard/taskList/1645882162449603/role/CLAIMANT"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "jsonBody": [
+          {
+            "id": "preview-task-hearing-upload",
+            "categoryEn": "Hearing",
+            "categoryCy": "Gwrandawiad",
+            "taskNameEn": "<a href=\"/case/1645882162449603/case-progression/upload-your-documents\" class=\"govuk-link\">Upload hearing documents</a>",
+            "taskNameCy": "<a href=\"/case/1645882162449603/case-progression/upload-your-documents\" class=\"govuk-link\">Uwchlwytho dogfennau gwrandawiad</a>",
+            "currentStatusEn": "Action needed",
+            "currentStatusCy": "Angen gweithredu",
+            "hintTextEn": "The court needs your documents.",
+            "hintTextCy": "Mae angen eich dogfennau ar y llys.",
+            "role": "claimant",
+            "taskOrder": 10
+          },
+          {
+            "id": "preview-task-view-claim",
+            "categoryEn": "Claim",
+            "categoryCy": "Hawliad",
+            "taskNameEn": "<a href=\"/dashboard/1645882162449603/claimantNewDesign\" class=\"govuk-link\">View this claim</a>",
+            "taskNameCy": "<a href=\"/dashboard/1645882162449603/claimantNewDesign\" class=\"govuk-link\">Gweld y hawliad hwn</a>",
+            "currentStatusEn": "Incomplete",
+            "currentStatusCy": "Anghyflawn",
+            "hintTextEn": "",
+            "hintTextCy": "",
+            "role": "claimant",
+            "taskOrder": 20
+          }
+        ]
+      }
+    },
+    {
+      "name": "ui-preview-other-dashboard-task-lists",
+      "priority": 1,
+      "request": {
+        "method": "GET",
+        "urlPathPattern": "/dashboard/taskList/(1645882162449409|164588216244960[1245])/role/(CLAIMANT|DEFENDANT)"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "jsonBody": []
+      }
+    },
+    {
+      "name": "ui-preview-case-progression-defendant-task-list",
+      "priority": 1,
+      "request": {
+        "method": "GET",
+        "urlPath": "/dashboard/taskList/1645882162449603/role/DEFENDANT"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "jsonBody": []
+      }
+    }
+  ]
+}
