@@ -1,103 +1,72 @@
-import config from 'config';
-import nock from 'nock';
-import request from 'supertest';
-import {app} from '../../../../../main/app';
-import {
-  mockCivilClaim,
-  mockRedisFailure,
-  mockRedisFullAdmission,
-} from '../../../../utils/mockDraftStore';
-import {UNDERSTANDING_RESPONSE_OPTIONS_URL} from '../../../../../main/routes/urls';
-import {TestMessages} from '../../../../utils/errorMessageTestConstants';
-import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {Response} from 'express';
+import understandingYourOptionsController from 'routes/features/response/understandingYourOptionsController';
+import {UNDERSTANDING_RESPONSE_OPTIONS_URL} from 'routes/urls';
+import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {Claim} from 'models/claim';
+import {AppRequest} from 'models/AppRequest';
+import {createMockResponse, createMockSession, getRouteHandler} from '../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
+jest.mock('modules/draft-store/draftStoreService');
+
+const viewPath = 'features/response/understanding-your-options';
+const claimId = '12345';
+
+const storedClaim = (deadline?: Date): Claim => {
+  const claim = new Claim();
+  claim.respondent1ResponseDeadline = deadline;
+  return claim;
+};
+
+const invoke = async (req: Record<string, unknown> = {}) => {
+  const res = createMockResponse();
+  const next = jest.fn();
+  await getRouteHandler(understandingYourOptionsController, 'get', UNDERSTANDING_RESPONSE_OPTIONS_URL)(
+    {
+      params: {id: claimId},
+      body: {},
+      query: {},
+      cookies: {},
+      session: createMockSession({user: {id: 'user-1'}}),
+      ...req,
+    } as unknown as AppRequest,
+    res as unknown as Response,
+    next,
+  );
+  return {res, next};
+};
 
 describe('Understanding Your Options Controller', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
-
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
+  beforeEach(() => {
+    jest.clearAllMocks();
+    (generateRedisKey as jest.Mock).mockReturnValue(claimId);
+    (getCaseDataFromStore as jest.Mock).mockResolvedValue(storedClaim(new Date('2099-06-01T16:00:00.000Z')));
   });
 
-  describe('on GET', () => {
-    it('should call getCaseDataFromStore only once per GET request', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
-      const getCaseDataSpy = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
-      await request(app).get(UNDERSTANDING_RESPONSE_OPTIONS_URL);
-      expect(getCaseDataSpy).toHaveBeenCalledTimes(1);
-      getCaseDataSpy.mockRestore();
-    });
+  it('should render the response deadline in the requested language', async () => {
+    const claim = storedClaim(new Date('2099-06-01T16:00:00.000Z'));
+    (getCaseDataFromStore as jest.Mock).mockResolvedValue(claim);
 
-    it('should return understanding you options page successfully', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
-      await request(app)
-        .get(UNDERSTANDING_RESPONSE_OPTIONS_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Requesting extra time');
-        });
-    });
+    const {res} = await invoke({query: {lang: 'cy'}});
 
-    it('should pass welsh translation via query', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
-      await request(app).get(UNDERSTANDING_RESPONSE_OPTIONS_URL)
-        .query({lang: 'cy'})
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Gwneud cais am ragor o amser');
-        });
+    expect(res.render).toHaveBeenCalledWith(viewPath, {
+      responseDate: claim.formattedResponseDeadline('cy'),
     });
-    it('should pass english translation via query', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
-      await request(app).get(UNDERSTANDING_RESPONSE_OPTIONS_URL)
-        .query({lang: 'en'})
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Requesting extra time');
-        });
-    });
+  });
 
-    it('should pass welsh translation via cookie', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
-      await request(app).get(UNDERSTANDING_RESPONSE_OPTIONS_URL)
-        .set('Cookie', ['lang=cy'])
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Gwneud cais am ragor o amser');
-        });
-    });
+  it('should render an empty deadline when none is stored', async () => {
+    (getCaseDataFromStore as jest.Mock).mockResolvedValue(storedClaim());
 
-    it('should pass english translation via cookie', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
-      await request(app).get(UNDERSTANDING_RESPONSE_OPTIONS_URL)
-        .set('Cookie', ['lang=en'])
-        .query({lang: 'en'})
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Requesting extra time');
-        });
-    });
+    const {res} = await invoke();
 
-    it('should return understanding you options page when response deadline date is not set', async () => {
-      app.locals.draftStoreClient = mockRedisFullAdmission;
-      await request(app).get(UNDERSTANDING_RESPONSE_OPTIONS_URL).expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain('Requesting extra time');
-      });
-    });
+    expect(res.render).toHaveBeenCalledWith(viewPath, {responseDate: ''});
+  });
 
-    it('should return an error page if request fails', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app).get(UNDERSTANDING_RESPONSE_OPTIONS_URL).expect((res) => {
-        expect(res.status).toBe(500);
-        expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-      });
-    });
+  it('should return the error when the claim cannot be loaded', async () => {
+    const error = new Error('redis failure');
+    (getCaseDataFromStore as jest.Mock).mockRejectedValue(error);
+
+    const {next} = await invoke();
+
+    expect(next).toHaveBeenCalledWith(error);
   });
 });
