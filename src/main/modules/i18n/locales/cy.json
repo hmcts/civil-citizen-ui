@@ -5672,6 +5672,7 @@
     "GA_ENTER_UNAVAILABILITY_FROM_DATE_BEFORE_TO_DATE": "Rhaid i'r dyddiad pan nad ydych ar gael o fod cyn y dyddiad pan nad ydych ar gael tan",
     "ENTER_VALID_EMAIL": "Rhowch gyfeiriad e-bost dilys",
     "ENTER_VALID_EMAIL_CARM": "Nodwch gyfeiriad e-bost arall",
+    "ENTER_ALTERNATIVE_EMAIL_CARM": "Rhowch gyfeiriad e-bost amgen",
     "ENTER_VALID_EMAIL_EVIDENCE": "Rhowch gyfeiriad e-bost yn y fformat cywir, fel name@example.com",
     "ENTER_SECURITY_CODE": "Rhowch eich cod diogelwch",
     "ENTER_VALID_SECURITY_CODE": "Rhowch god diogelwch dilys",
