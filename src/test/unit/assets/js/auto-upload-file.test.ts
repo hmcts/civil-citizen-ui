@@ -1,9 +1,6 @@
-import * as fs from 'fs';
-import * as path from 'path';
 import {JSDOM} from 'jsdom';
 
 describe('auto-upload-file', () => {
-  const scriptSource = fs.readFileSync(path.join(process.cwd(), 'src/main/assets/js/auto-upload-file.js'), 'utf8');
   const HIDDEN_CLASS = 'govuk-!-display-none';
   let dom: JSDOM;
   let document: Document;
@@ -25,7 +22,8 @@ describe('auto-upload-file', () => {
       event.preventDefault();
       submitted += 1;
     });
-    dom.window.eval(scriptSource);
+    Object.assign(global, {window: dom.window, document});
+    jest.isolateModules(() => require('../../../../main/assets/js/auto-upload-file'));
     document.dispatchEvent(new dom.window.Event('DOMContentLoaded'));
   }
 
