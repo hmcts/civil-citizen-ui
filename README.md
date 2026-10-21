@@ -57,6 +57,8 @@ $ yarn start
 
 The application's home page will be available at https://localhost:3001
 
+For isolated synthetic journey previews, see [Restricted local UI preview](docs/ui-preview.md).
+
 ### Running with Docker
 
 Create docker image:

@@ -1,0 +1,243 @@
+{
+  "mappings": [
+    {
+      "name": "ui-preview-court-locations",
+      "priority": 1,
+      "request": {
+        "method": "GET",
+        "urlPath": "/locations/courtLocations"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "jsonBody": [
+          {
+            "code": "7a99abd0-314b-487d-8de4-87455d96ba86",
+            "label": "Barnet Civil and Family Centre - St Mary's Court, Regents Park Road - N3 1BQ"
+          },
+          {
+            "code": "e9d8bbfa-5972-42c5-8810-6138fe34e12a",
+            "label": "Central London County Court - THOMAS MORE BUILDING, ROYAL COURTS OF JUSTICE, STRAND, LONDON - WC2A 2LL"
+          },
+          {
+            "code": "dac300ef-83f7-4c59-b120-965d9f6b9171",
+            "label": "Liverpool Civil and Family Court - 35, Vernon Street, City Square - L2 2BX"
+          }
+        ]
+      }
+    },
+    {
+      "name": "ui-preview-ordnance-survey-postcode",
+      "priority": 1,
+      "request": {
+        "method": "GET",
+        "urlPath": "/search/places/v1/postcode"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "jsonBody": {
+          "results": [
+            {
+              "DPA": {
+                "UPRN": "100023336936",
+                "UDPRN": "1",
+                "ADDRESS": "10 DOWNING STREET, LONDON, SW1A 2AA",
+                "BUILDING_NUMBER": "10",
+                "THOROUGHFARE_NAME": "DOWNING STREET",
+                "POST_TOWN": "LONDON",
+                "POSTCODE": "SW1A 2AA",
+                "COUNTRY_CODE": "E",
+                "X_COORDINATE": 530047.0,
+                "Y_COORDINATE": 179951.0
+              }
+            },
+            {
+              "DPA": {
+                "UPRN": "100023336937",
+                "UDPRN": "2",
+                "ADDRESS": "11 DOWNING STREET, LONDON, SW1A 2AB",
+                "BUILDING_NUMBER": "11",
+                "THOROUGHFARE_NAME": "DOWNING STREET",
+                "POST_TOWN": "LONDON",
+                "POSTCODE": "SW1A 2AB",
+                "COUNTRY_CODE": "E",
+                "X_COORDINATE": 530048.0,
+                "Y_COORDINATE": 179952.0
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "ui-preview-airlines",
+      "priority": 1,
+      "request": {
+        "method": "GET",
+        "urlPath": "/airlines"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "jsonBody": [
+          {
+            "airline": "British Airways",
+            "epimsID": "2113"
+          },
+          {
+            "airline": "easyJet",
+            "epimsID": "2114"
+          },
+          {
+            "airline": "Ryanair",
+            "epimsID": "2115"
+          }
+        ]
+      }
+    },
+    {
+      "name": "ui-preview-fee-ranges",
+      "priority": 1,
+      "request": {
+        "method": "GET",
+        "urlPath": "/fees/ranges"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "jsonBody": [
+          {
+            "min_range": 0.01,
+            "max_range": 300,
+            "current_version": {
+              "version": 4,
+              "description": "Money claim \u00a30.01 to \u00a3300",
+              "status": "approved",
+              "flat_amount": {
+                "amount": 35
+              }
+            }
+          },
+          {
+            "min_range": 300.01,
+            "max_range": 500,
+            "current_version": {
+              "version": 4,
+              "description": "Money claim \u00a3300.01 to \u00a3500",
+              "status": "approved",
+              "flat_amount": {
+                "amount": 50
+              }
+            }
+          },
+          {
+            "min_range": 500.01,
+            "max_range": 1000,
+            "current_version": {
+              "version": 4,
+              "description": "Money claim \u00a3500.01 to \u00a31,000",
+              "status": "approved",
+              "flat_amount": {
+                "amount": 70
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "ui-preview-general-application-fee",
+      "priority": 1,
+      "request": {
+        "method": "POST",
+        "urlPath": "/fees/general-application"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "jsonBody": {
+          "calculatedAmountInPence": 10800,
+          "code": "FEE0442",
+          "version": 1
+        }
+      }
+    },
+    {
+      "name": "ui-preview-calculate-claim-interest",
+      "priority": 1,
+      "request": {
+        "method": "POST",
+        "urlPath": "/fees/claim/calculate-interest"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "jsonBody": 0
+      }
+    },
+    {
+      "name": "ui-preview-calculate-response-deadline",
+      "priority": 1,
+      "request": {
+        "method": "POST",
+        "urlPath": "/cases/response/deadline"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "jsonBody": "2026-08-26T16:00:00.000Z"
+      }
+    },
+    {
+      "request": {
+        "method": "POST",
+        "urlPath": "/testing-support/lease"
+      },
+      "response": {
+        "status": 200,
+        "body": "synthetic-service-token"
+      }
+    },
+    {
+      "request": {
+        "method": "POST",
+        "urlPath": "/lease"
+      },
+      "response": {
+        "status": 200,
+        "body": "synthetic-service-token"
+      }
+    },
+    {
+      "request": {
+        "method": "POST",
+        "urlPath": "/case/document/generateAnyDoc"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "transformers": [
+          "response-template"
+        ],
+        "body": "{{#assign 'documentId'}}{{randomValue type='UUID'}}{{/assign}}{\"createdBy\": \"someID\", \"documentLink\": {\"document_url\": \"http://wiremock:8080/documents/{{documentId}}\", \"document_binary_url\": \"http://wiremock:8080/documents/{{documentId}}/binary\", \"document_filename\": \"synthetic-upload.pdf\"}, \"documentName\": \"synthetic-upload.pdf\", \"documentType\": \"OTHER\", \"documentSize\": 100, \"createdDatetime\": \"2026-10-20T12:00:00.000Z\"}"
+      }
+    }
+  ]
+}

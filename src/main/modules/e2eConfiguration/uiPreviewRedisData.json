@@ -1,0 +1,794 @@
+[
+  {
+    "id": "1645882162449601someID",
+    "jurisdiction": "CIVIL",
+    "case_type_id": "CIVIL",
+    "created_date": "2022-03-01T13:29:22.447",
+    "last_modified": "2022-03-01T13:29:24.971",
+    "security_classification": "PUBLIC",
+    "case_data": {
+      "id": "1645882162449601",
+      "ccdState": "AWAITING_APPLICANT_INTENTION",
+      "caseRole": "[CLAIMANT]",
+      "legacyCaseReference": "000MC601",
+      "totalClaimAmount": 1000,
+      "submittedDate": "2022-05-23T17:02:02.38407",
+      "claimIssuedDate": "2022-03-01T13:29:24.971Z",
+      "responseClaimTrack": "SMALL_CLAIM",
+      "claimFee": {
+        "code": "FEE0204",
+        "version": "4",
+        "calculatedAmountInPence": "7000"
+      },
+      "applicant1": {
+        "type": "INDIVIDUAL",
+        "partyDetails": {
+          "title": "Ms",
+          "firstName": "Jane",
+          "lastName": "Claimant",
+          "partyName": "Jane Claimant",
+          "primaryAddress": {
+            "addressLine1": "1 Claimant Road",
+            "city": "London",
+            "postCode": "SW1A 1AA"
+          }
+        },
+        "emailAddress": {
+          "emailAddress": "claimant@example.com"
+        }
+      },
+      "respondent1": {
+        "type": "INDIVIDUAL",
+        "responseType": "FULL_ADMISSION",
+        "partyDetails": {
+          "title": "Mr",
+          "firstName": "John",
+          "lastName": "Defendant",
+          "partyName": "John Defendant",
+          "primaryAddress": {
+            "addressLine1": "Defendant House",
+            "addressLine2": "21",
+            "addressLine3": "Church Road",
+            "city": "Berkshire",
+            "postCode": "RG4 7AD"
+          }
+        },
+        "emailAddress": {
+          "emailAddress": "defendant@example.com"
+        }
+      },
+      "fullAdmission": {
+        "paymentIntention": {
+          "paymentOption": "INSTALMENTS",
+          "paymentDate": "2027-06-18T00:00:00.000Z",
+          "repaymentPlan": {
+            "paymentAmount": 100,
+            "repaymentFrequency": "MONTH",
+            "firstRepaymentDate": "2026-09-18T00:00:00.000Z"
+          }
+        }
+      },
+      "statementOfMeans": {
+        "explanation": {
+          "text": "I cannot afford to pay the full amount at once."
+        }
+      },
+      "claimantResponse": {
+        "suggestedPaymentIntention": {
+          "paymentOption": "INSTALMENTS",
+          "repaymentPlan": {
+            "paymentAmount": 100,
+            "repaymentFrequency": "MONTH",
+            "firstRepaymentDate": "2026-09-18T00:00:00.000Z"
+          }
+        },
+        "chooseHowToProceed": {
+          "option": "SIGN_A_SETTLEMENT_AGREEMENT"
+        },
+        "signSettlementAgreement": {
+          "signed": "true"
+        },
+        "fullAdmitSetDateAcceptPayment": {
+          "option": "yes"
+        }
+      },
+      "applicant1ResponseDate": "2026-08-18T10:00:00.000Z",
+      "respondent1ResponseDeadline": "2026-12-31T16:00:00.000Z",
+      "respondent1ResponseDate": "2022-09-25T13:46:07.287428"
+    }
+  },
+  {
+    "id": "1645882162449602someID",
+    "jurisdiction": "CIVIL",
+    "case_type_id": "CIVIL",
+    "created_date": "2022-03-01T13:29:22.447",
+    "last_modified": "2022-03-01T13:29:24.971",
+    "security_classification": "PUBLIC",
+    "case_data": {
+      "id": "1645882162449602",
+      "ccdState": "AWAITING_APPLICANT_INTENTION",
+      "caseRole": "[CLAIMANT]",
+      "legacyCaseReference": "000MC602",
+      "totalClaimAmount": 1000,
+      "submittedDate": "2022-05-23T17:02:02.38407",
+      "claimIssuedDate": "2022-03-01T13:29:24.971Z",
+      "responseClaimTrack": "SMALL_CLAIM",
+      "claimFee": {
+        "code": "FEE0204",
+        "version": "4",
+        "calculatedAmountInPence": "7000"
+      },
+      "applicant1": {
+        "type": "INDIVIDUAL",
+        "partyDetails": {
+          "title": "Ms",
+          "firstName": "Jane",
+          "lastName": "Claimant",
+          "partyName": "Jane Claimant",
+          "primaryAddress": {
+            "addressLine1": "1 Claimant Road",
+            "city": "London",
+            "postCode": "SW1A 1AA"
+          }
+        },
+        "emailAddress": {
+          "emailAddress": "claimant@example.com"
+        }
+      },
+      "respondent1": {
+        "type": "INDIVIDUAL",
+        "responseType": "PART_ADMISSION",
+        "partyDetails": {
+          "title": "Mr",
+          "firstName": "John",
+          "lastName": "Defendant",
+          "partyName": "John Defendant",
+          "primaryAddress": {
+            "addressLine1": "Defendant House",
+            "addressLine2": "21",
+            "addressLine3": "Church Road",
+            "city": "Berkshire",
+            "postCode": "RG4 7AD"
+          }
+        },
+        "emailAddress": {
+          "emailAddress": "defendant@example.com"
+        }
+      },
+      "partialAdmission": {
+        "alreadyPaid": {
+          "option": "no"
+        },
+        "howMuchDoYouOwe": {
+          "amount": 400,
+          "totalAmount": 1000
+        },
+        "whyDoYouDisagree": {
+          "text": "I only owe part of the amount claimed."
+        },
+        "paymentIntention": {
+          "paymentOption": "INSTALMENTS",
+          "paymentDate": "2027-06-18T00:00:00.000Z",
+          "repaymentPlan": {
+            "paymentAmount": 100,
+            "repaymentFrequency": "MONTH",
+            "firstRepaymentDate": "2026-09-18T00:00:00.000Z"
+          }
+        }
+      },
+      "statementOfMeans": {
+        "explanation": {
+          "text": "I cannot afford to pay the full amount at once."
+        }
+      },
+      "claimantResponse": {
+        "suggestedPaymentIntention": {
+          "paymentOption": "INSTALMENTS",
+          "repaymentPlan": {
+            "paymentAmount": 100,
+            "repaymentFrequency": "MONTH",
+            "firstRepaymentDate": "2026-09-18T00:00:00.000Z"
+          }
+        }
+      },
+      "respondent1ResponseDeadline": "2026-12-31T16:00:00.000Z",
+      "respondent1ResponseDate": "2022-09-25T13:46:07.287428"
+    }
+  },
+  {
+    "id": "1645882162449603someID",
+    "jurisdiction": "CIVIL",
+    "case_type_id": "CIVIL",
+    "created_date": "2022-03-01T13:29:22.447",
+    "last_modified": "2022-03-01T13:29:24.971",
+    "security_classification": "PUBLIC",
+    "case_data": {
+      "id": "1645882162449603",
+      "ccdState": "CASE_PROGRESSION",
+      "caseRole": "[CLAIMANT]",
+      "legacyCaseReference": "000MC603",
+      "totalClaimAmount": 1500,
+      "submittedDate": "2022-05-23T17:02:02.38407",
+      "claimIssuedDate": "2022-03-01T13:29:24.971Z",
+      "issueDate": "2023-06-03",
+      "responseClaimTrack": "FAST_CLAIM",
+      "claimFee": {
+        "code": "FEE0205",
+        "version": "6",
+        "calculatedAmountInPence": "8000"
+      },
+      "applicant1": {
+        "type": "INDIVIDUAL",
+        "partyDetails": {
+          "title": "Ms",
+          "firstName": "Jane",
+          "lastName": "Claimant",
+          "partyName": "Jane Claimant",
+          "primaryAddress": {
+            "addressLine1": "1 Claimant Road",
+            "city": "London",
+            "postCode": "SW1A 1AA"
+          }
+        }
+      },
+      "respondent1": {
+        "type": "INDIVIDUAL",
+        "responseType": "FULL_DEFENCE",
+        "partyDetails": {
+          "title": "Mr",
+          "firstName": "John",
+          "lastName": "Defendant",
+          "partyName": "John Defendant",
+          "primaryAddress": {
+            "addressLine1": "Defendant House",
+            "addressLine2": "21",
+            "addressLine3": "Church Road",
+            "city": "Berkshire",
+            "postCode": "RG4 7AD"
+          }
+        }
+      },
+      "respondent1ResponseDate": "2022-09-25T13:46:07.287428Z",
+      "caseProgressionHearing": {
+        "hearingDate": "2026-11-12T10:00:00.000Z",
+        "hearingDuration": "MINUTES_60",
+        "hearingFeeInformation": {
+          "hearingFee": {
+            "code": "FEE0204",
+            "version": "4",
+            "calculatedAmountInPence": "7000"
+          },
+          "hearingDueDate": "2026-10-15"
+        }
+      },
+      "caseProgression": {
+        "claimantLastUploadDate": "2022-06-21T14:15:19",
+        "defendantLastUploadDate": "2022-06-21T14:15:19",
+        "claimantUploadDocuments": {
+          "disclosure": [],
+          "witness": [
+            {
+              "documentType": "WITNESS_STATEMENT",
+              "selected": true
+            },
+            {
+              "documentType": "WITNESS_SUMMARY",
+              "selected": false
+            },
+            {
+              "documentType": "NOTICE_OF_INTENTION",
+              "selected": false
+            },
+            {
+              "documentType": "DOCUMENTS_REFERRED",
+              "selected": false
+            }
+          ],
+          "expert": [],
+          "trial": []
+        },
+        "helpFeeReferenceNumberForm": {
+          "option": "yes",
+          "referenceNumber": "HWF-A1B-23C"
+        },
+        "claimantTrialArrangements": {
+          "isCaseReady": "yes",
+          "hasAnythingChanged": {
+            "option": "no",
+            "textArea": "No changes to witnesses or experts since the last hearing."
+          },
+          "otherTrialInformation": "The claimant will need a hearing loop."
+        },
+        "requestForReviewClaimant": {
+          "textArea": "The order did not take into account the witness statement uploaded on 21 June 2022."
+        },
+        "requestForReviewDefendant": {
+          "textArea": "The claimant's comments do not match the hearing notes."
+        },
+        "claimantDocuments": {
+          "documentsForDisclosure": [],
+          "disclosureList": [],
+          "witnessStatement": [],
+          "witnessSummary": [],
+          "noticeOfIntention": [],
+          "documentsReferred": [],
+          "expertReport": [],
+          "expertStatement": [],
+          "questionsForExperts": [],
+          "answersForExperts": [],
+          "trialCaseSummary": [],
+          "trialSkeletonArgument": [],
+          "trialAuthorities": [],
+          "trialCosts": [],
+          "trialDocumentary": []
+        },
+        "defendantDocuments": {
+          "documentsForDisclosure": [],
+          "disclosureList": [],
+          "witnessStatement": [],
+          "witnessSummary": [],
+          "noticeOfIntention": [],
+          "documentsReferred": [],
+          "expertReport": [],
+          "expertStatement": [],
+          "questionsForExperts": [],
+          "answersForExperts": [],
+          "trialCaseSummary": [],
+          "trialSkeletonArgument": [],
+          "trialAuthorities": [],
+          "trialCosts": [],
+          "trialDocumentary": []
+        }
+      },
+      "queries": {
+        "partyName": "All queries",
+        "caseMessages": [
+          {
+            "id": "qm-9603-bundles-wrapper",
+            "value": {
+              "id": "qm-9603-bundles",
+              "subject": "Question about the hearing bundle",
+              "body": "When will the hearing bundle be available to download?",
+              "name": "Jane Claimant",
+              "createdBy": "someID",
+              "createdOn": "2026-08-18T09:00:00.000Z",
+              "isHearingRelated": "Yes",
+              "attachments": [],
+              "hearingDate": "2026-11-12"
+            }
+          },
+          {
+            "id": "qm-9603-interpreter-wrapper",
+            "value": {
+              "id": "qm-9603-interpreter",
+              "subject": "Request for an interpreter",
+              "body": "I need a Welsh interpreter at the hearing on 12 November 2026.",
+              "name": "Jane Claimant",
+              "createdBy": "someID",
+              "createdOn": "2026-08-17T15:20:00.000Z",
+              "isHearingRelated": "Yes",
+              "attachments": [],
+              "hearingDate": "2026-11-12"
+            }
+          },
+          {
+            "id": "qm-9603-evidence-wrapper",
+            "value": {
+              "id": "qm-9603-evidence",
+              "subject": "Request for more time to upload evidence",
+              "body": "I need more time to get a witness statement from my employer. Please can the deadline be extended by 14 days?",
+              "name": "Jane Claimant",
+              "createdBy": "someID",
+              "createdOn": "2026-08-15T11:00:00.000Z",
+              "isHearingRelated": "No",
+              "attachments": []
+            }
+          },
+          {
+            "id": "qm-9603-experts-wrapper",
+            "value": {
+              "id": "qm-9603-experts",
+              "subject": "Question about expert evidence",
+              "body": "Can I rely on an independent surveyor's report at the hearing?",
+              "name": "Jane Claimant",
+              "createdBy": "someID",
+              "createdOn": "2026-08-12T10:30:00.000Z",
+              "isHearingRelated": "No",
+              "attachments": []
+            }
+          },
+          {
+            "id": "qm-9603-experts-reply-wrapper",
+            "value": {
+              "id": "qm-9603-experts-reply",
+              "subject": "Question about expert evidence",
+              "body": "You may apply to rely on expert evidence. Follow the order already made.",
+              "name": "Court staff",
+              "createdBy": "cui-preview-caseworker::CASEWORKER",
+              "createdOn": "2026-08-14T13:00:00.000Z",
+              "isHearingRelated": "No",
+              "attachments": [],
+              "parentId": "qm-9603-experts",
+              "isClosed": "No"
+            }
+          },
+          {
+            "id": "qm-9603-hearing-wrapper",
+            "value": {
+              "id": "qm-9603-hearing",
+              "subject": "Question about the hearing date",
+              "body": "Please can the court confirm whether the hearing on 12 November 2026 will go ahead as listed? I have a medical appointment that morning.",
+              "name": "Jane Claimant",
+              "createdBy": "someID",
+              "createdOn": "2026-08-04T09:15:00.000Z",
+              "isHearingRelated": "Yes",
+              "attachments": [],
+              "hearingDate": "2026-11-12"
+            }
+          },
+          {
+            "id": "qm-9603-hearing-reply-wrapper",
+            "value": {
+              "id": "qm-9603-hearing-reply",
+              "subject": "Question about the hearing date",
+              "body": "The hearing remains listed for 12 November 2026 at 10:00. Contact the court if you cannot attend.",
+              "name": "Court staff",
+              "createdBy": "cui-preview-caseworker::CASEWORKER",
+              "createdOn": "2026-08-11T14:30:00.000Z",
+              "isHearingRelated": "Yes",
+              "attachments": [],
+              "parentId": "qm-9603-hearing",
+              "isClosed": "No",
+              "hearingDate": "2026-11-12"
+            }
+          },
+          {
+            "id": "qm-9603-video-wrapper",
+            "value": {
+              "id": "qm-9603-video",
+              "subject": "Request to attend by video",
+              "body": "Please can I attend the hearing by video link? Travel from my home would take more than three hours.",
+              "name": "Jane Claimant",
+              "createdBy": "someID",
+              "createdOn": "2026-08-06T08:45:00.000Z",
+              "isHearingRelated": "Yes",
+              "attachments": [],
+              "hearingDate": "2026-11-12"
+            }
+          },
+          {
+            "id": "qm-9603-video-reply-wrapper",
+            "value": {
+              "id": "qm-9603-video-reply",
+              "subject": "Request to attend by video",
+              "body": "The judge will consider a remote attendance request. A further update will follow.",
+              "name": "Court staff",
+              "createdBy": "cui-preview-caseworker::CASEWORKER",
+              "createdOn": "2026-08-10T16:00:00.000Z",
+              "isHearingRelated": "Yes",
+              "attachments": [],
+              "parentId": "qm-9603-video",
+              "isClosed": "No",
+              "hearingDate": "2026-11-12"
+            }
+          },
+          {
+            "id": "qm-9603-parking-wrapper",
+            "value": {
+              "id": "qm-9603-parking",
+              "subject": "Question about attending court",
+              "body": "Is there accessible parking at the hearing venue?",
+              "name": "Jane Claimant",
+              "createdBy": "someID",
+              "createdOn": "2026-08-08T12:10:00.000Z",
+              "isHearingRelated": "Yes",
+              "attachments": [],
+              "hearingDate": "2026-11-12"
+            }
+          },
+          {
+            "id": "qm-9603-directions-wrapper",
+            "value": {
+              "id": "qm-9603-directions",
+              "subject": "Question about the directions order",
+              "body": "Please clarify the deadline for exchanging witness statements.",
+              "name": "Jane Claimant",
+              "createdBy": "someID",
+              "createdOn": "2026-08-03T09:40:00.000Z",
+              "isHearingRelated": "No",
+              "attachments": []
+            }
+          },
+          {
+            "id": "qm-9603-directions-reply-wrapper",
+            "value": {
+              "id": "qm-9603-directions-reply",
+              "subject": "Question about the directions order",
+              "body": "Witness statements must be exchanged by 4pm on 15 October 2026.",
+              "name": "Court staff",
+              "createdBy": "cui-preview-caseworker::CASEWORKER",
+              "createdOn": "2026-08-07T11:15:00.000Z",
+              "isHearingRelated": "No",
+              "attachments": [],
+              "parentId": "qm-9603-directions",
+              "isClosed": "No"
+            }
+          },
+          {
+            "id": "qm-9603-closed-wrapper",
+            "value": {
+              "id": "qm-9603-closed",
+              "subject": "Query about trial arrangements",
+              "body": "Please confirm that a hearing loop will be available.",
+              "name": "Jane Claimant",
+              "createdBy": "someID",
+              "createdOn": "2026-07-20T10:00:00.000Z",
+              "isHearingRelated": "Yes",
+              "attachments": [],
+              "hearingDate": "2026-11-12"
+            }
+          },
+          {
+            "id": "qm-9603-closed-reply-wrapper",
+            "value": {
+              "id": "qm-9603-closed-reply",
+              "subject": "Query about trial arrangements",
+              "body": "A hearing loop has been booked for this hearing. This message is now closed.",
+              "name": "Court staff",
+              "createdBy": "cui-preview-caseworker::CASEWORKER",
+              "createdOn": "2026-08-01T16:45:00.000Z",
+              "isHearingRelated": "Yes",
+              "attachments": [],
+              "parentId": "qm-9603-closed",
+              "isClosed": "Yes",
+              "hearingDate": "2026-11-12"
+            }
+          },
+          {
+            "id": "qm-9603-witness-wrapper",
+            "value": {
+              "id": "qm-9603-witness",
+              "subject": "Question about witness expenses",
+              "body": "Can witness travel expenses be claimed before the hearing?",
+              "name": "Jane Claimant",
+              "createdBy": "someID",
+              "createdOn": "2026-07-22T14:00:00.000Z",
+              "isHearingRelated": "No",
+              "attachments": []
+            }
+          },
+          {
+            "id": "qm-9603-witness-reply-wrapper",
+            "value": {
+              "id": "qm-9603-witness-reply",
+              "subject": "Question about witness expenses",
+              "body": "Witness expenses are usually claimed after the hearing. This message is now closed.",
+              "name": "Court staff",
+              "createdBy": "cui-preview-caseworker::CASEWORKER",
+              "createdOn": "2026-07-28T09:30:00.000Z",
+              "isHearingRelated": "No",
+              "attachments": [],
+              "parentId": "qm-9603-witness",
+              "isClosed": "Yes"
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "1645882162449604someID",
+    "jurisdiction": "CIVIL",
+    "case_type_id": "CIVIL",
+    "created_date": "2022-03-01T13:29:22.447",
+    "last_modified": "2022-03-01T13:29:24.971",
+    "security_classification": "PUBLIC",
+    "case_data": {
+      "id": "1645882162449604",
+      "ccdState": "AWAITING_RESPONDENT_ACKNOWLEDGEMENT",
+      "caseRole": "[DEFENDANT]",
+      "legacyCaseReference": "000MC604",
+      "totalClaimAmount": 1000,
+      "submittedDate": "2022-05-23T17:02:02.38407",
+      "claimIssuedDate": "2022-03-01T13:29:24.971Z",
+      "responseClaimTrack": "SMALL_CLAIM",
+      "claimFee": {
+        "code": "FEE0204",
+        "version": "4",
+        "calculatedAmountInPence": "7000"
+      },
+      "applicant1": {
+        "type": "INDIVIDUAL",
+        "partyDetails": {
+          "title": "Ms",
+          "firstName": "Jane",
+          "lastName": "Claimant",
+          "partyName": "Jane Claimant",
+          "primaryAddress": {
+            "addressLine1": "1 Claimant Road",
+            "city": "London",
+            "postCode": "SW1A 1AA"
+          }
+        }
+      },
+      "respondent1": {
+        "type": "INDIVIDUAL",
+        "partyDetails": {
+          "title": "Mr",
+          "firstName": "John",
+          "lastName": "Defendant",
+          "partyName": "John Defendant",
+          "primaryAddress": {
+            "addressLine1": "Defendant House",
+            "addressLine2": "21",
+            "addressLine3": "Church Road",
+            "city": "Berkshire",
+            "postCode": "RG4 7AD"
+          }
+        }
+      },
+      "respondent1ResponseDeadline": "2026-12-31T16:00:00.000Z",
+      "generalApplication": {
+        "applicationTypes": [
+          {
+            "option": "STRIKE_OUT"
+          }
+        ],
+        "agreementFromOtherParty": "no",
+        "informOtherParties": {
+          "option": "yes"
+        },
+        "applicationCosts": "no",
+        "wantToUploadDocuments": "no",
+        "hasUnavailableDatesHearing": "no",
+        "hearingContactDetails": {
+          "telephoneNumber": "01632960001",
+          "emailAddress": "defendant@example.com"
+        },
+        "hearingArrangement": {
+          "option": "PERSON_AT_COURT",
+          "reasonForPreferredHearingType": "I need to speak to the judge in person about the strike-out.",
+          "courtLocation": "7a99abd0-314b-487d-8de4-87455d96ba86"
+        },
+        "orderJudges": [
+          {
+            "text": "Strike out the claimant's statement of case."
+          }
+        ],
+        "requestingReasons": [
+          {
+            "text": "The claim has no real prospect of success."
+          }
+        ],
+        "certificateOfSatisfactionOrCancellation": {
+          "defendantFinalPaymentDate": {
+            "year": "2025",
+            "month": "3",
+            "day": "12",
+            "date": "2025-03-12T00:00:00.000Z"
+          },
+          "debtPaymentEvidence": {
+            "debtPaymentOption": "UNABLE_TO_PROVIDE_EVIDENCE_OF_FULL_PAYMENT",
+            "provideDetails": "Paid the remaining \u00a3400 in cash on 12 March 2025. The receipt has been lost."
+          }
+        },
+        "uploadEvidenceForApplication": [],
+        "applicationFee": {
+          "code": "FEE0442",
+          "version": "1",
+          "calculatedAmountInPence": "10800"
+        }
+      },
+      "generalApplications": [
+        {
+          "id": "717871d3-8ff9-47d3-80c9-f4f211410e6e",
+          "value": {
+            "caseLink": {
+              "CaseReference": "1732194111758649"
+            },
+            "parentClaimantIsApplicant": "no",
+            "generalAppSubmittedDateGAspec": "2024-11-21T13:01:49"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "id": "1645882162449605someID",
+    "jurisdiction": "CIVIL",
+    "case_type_id": "CIVIL",
+    "created_date": "2022-03-01T13:29:22.447",
+    "last_modified": "2022-03-01T13:29:24.971",
+    "security_classification": "PUBLIC",
+    "case_data": {
+      "id": "1645882162449605",
+      "ccdState": "AWAITING_RESPONDENT_ACKNOWLEDGEMENT",
+      "caseRole": "[DEFENDANT]",
+      "legacyCaseReference": "000MC605",
+      "totalClaimAmount": 1000,
+      "submittedDate": "2022-05-23T17:02:02.38407",
+      "claimIssuedDate": "2022-03-01T13:29:24.971Z",
+      "responseClaimTrack": "SMALL_CLAIM",
+      "claimFee": {
+        "code": "FEE0204",
+        "version": "4",
+        "calculatedAmountInPence": "7000"
+      },
+      "applicant1": {
+        "type": "INDIVIDUAL",
+        "partyDetails": {
+          "title": "Ms",
+          "firstName": "Jane",
+          "lastName": "Claimant",
+          "partyName": "Jane Claimant",
+          "primaryAddress": {
+            "addressLine1": "1 Claimant Road",
+            "city": "London",
+            "postCode": "SW1A 1AA"
+          }
+        },
+        "emailAddress": {
+          "emailAddress": "claimant@example.com"
+        }
+      },
+      "respondent1": {
+        "type": "INDIVIDUAL",
+        "responseType": "PART_ADMISSION",
+        "dateOfBirth": {
+          "date": "1985-06-15T00:00:00.000Z"
+        },
+        "partyDetails": {
+          "title": "Mr",
+          "firstName": "John",
+          "lastName": "Defendant",
+          "partyName": "John Defendant",
+          "primaryAddress": {
+            "addressLine1": "Defendant House",
+            "addressLine2": "21",
+            "addressLine3": "Church Road",
+            "city": "Berkshire",
+            "postCode": "RG4 7AD"
+          }
+        },
+        "emailAddress": {
+          "emailAddress": "defendant@example.com"
+        },
+        "partyPhone": {
+          "phone": "01632960001"
+        }
+      },
+      "partialAdmission": {
+        "alreadyPaid": {
+          "option": "no"
+        },
+        "howMuchDoYouOwe": {
+          "amount": 400,
+          "totalAmount": 1000
+        },
+        "whyDoYouDisagree": {
+          "text": "I only owe part of the amount claimed."
+        },
+        "paymentIntention": {
+          "paymentOption": "INSTALMENTS",
+          "repaymentPlan": {
+            "paymentAmount": 100,
+            "repaymentFrequency": "MONTH",
+            "firstRepaymentDate": "2026-09-18T00:00:00.000Z"
+          }
+        }
+      },
+      "statementOfMeans": {
+        "disability": {
+          "option": "no"
+        },
+        "residence": {
+          "type": "OWN_HOME"
+        },
+        "explanation": {
+          "text": "I cannot afford to pay the full amount at once."
+        }
+      },
+      "respondent1ResponseDeadline": "2026-12-31T16:00:00.000Z"
+    }
+  }
+]
