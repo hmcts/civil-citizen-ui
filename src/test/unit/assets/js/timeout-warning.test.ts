@@ -22,7 +22,9 @@ describe('TimeoutWarning', () => {
     dialogSupported: () => boolean;
     startUiCountdown: () => void;
     escClose: (event: {keyCode: number}) => void;
+    minutesTimeOutModalVisible: number;
   };
+  let initTimeoutWarning: () => void;
 
   beforeAll(() => {
     const dom = new JSDOM('<!DOCTYPE html><html><body></body></html>', {
@@ -64,7 +66,8 @@ describe('TimeoutWarning', () => {
     });
 
     // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const {TimeoutWarning} = require('../../../../main/assets/js/timeout-warning.js');
+    const {TimeoutWarning, initTimeoutWarning: initWarning} = require('../../../../main/assets/js/timeout-warning.js');
+    initTimeoutWarning = initWarning;
     moduleInstance = new TimeoutWarning(dialog);
   });
 
@@ -103,6 +106,13 @@ describe('TimeoutWarning', () => {
     expect(document.querySelector('.govuk-timeout-warning-fallback')?.classList.contains('govuk-!-display-block')).toBe(true);
   });
 
+  it('returns early for an invalid stored interaction time', () => {
+    window.localStorage.setItem('timeUserLastInteractedWithPage', 'invalid');
+    const open = jest.spyOn(moduleInstance, 'openDialog');
+    moduleInstance.checkIfShouldHaveTimedOut();
+    expect(open).not.toHaveBeenCalled();
+  });
+
   it('extends the session after activity and opens after the idle period', () => {
     const extend = jest.spyOn(moduleInstance, 'extendTimeOnServer');
     const open = jest.spyOn(moduleInstance, 'openDialog');
@@ -120,6 +130,31 @@ describe('TimeoutWarning', () => {
     expect(dialog.showModal).toHaveBeenCalled();
     expect(document.body.classList.contains('govuk-timeout-warning-overlay')).toBe(true);
     expect(moduleInstance.isDialogOpen()).toBe(true);
+  });
+
+  it('redirects when the countdown expires and announces the remaining time', () => {
+    moduleInstance.minutesTimeOutModalVisible = 1 / 60;
+    jest.spyOn(moduleInstance, 'numberToWords').mockImplementation(() => { throw new Error('unsupported'); });
+    const redirect = jest.spyOn(moduleInstance, 'redirect').mockImplementation(() => undefined);
+
+    moduleInstance.startUiCountdown();
+    jest.advanceTimersByTime(2000);
+    expect(redirect).toHaveBeenCalled();
+    expect(dialog.querySelector('.govuk-timeout-warning__timer')?.textContent).toBe('You are about to be redirected');
+  });
+
+  it('restores focus after closing the dialog', () => {
+    const button = dialog.querySelector('.js-dialog-close') as HTMLElement;
+    button.focus();
+    moduleInstance.openDialog();
+    moduleInstance.closeDialog();
+    jest.runOnlyPendingTimers();
+    expect(document.activeElement).toBe(button);
+  });
+
+  it('initialises the warning module when present', () => {
+    initTimeoutWarning();
+    expect(window.localStorage.getItem('timeUserLastInteractedWithPage')).not.toBeNull();
   });
 
   it('handles missing countdown elements and an already open dialog', () => {
