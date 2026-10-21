@@ -4,6 +4,8 @@
  */
 const {JSDOM} = require('jsdom');
 
+export {};
+
 describe('TimeoutWarning', () => {
   let dialog: HTMLDialogElement;
   let moduleInstance: {
