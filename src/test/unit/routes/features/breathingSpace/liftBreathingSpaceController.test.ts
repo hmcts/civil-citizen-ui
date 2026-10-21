@@ -214,5 +214,53 @@ describe('Lift Breathing Space Controller', () => {
           expect(res.status).toBe(500);
         });
     });
+
+    it('should return error when reason to lift is more than 1000 characters', async () => {
+      const claim = new Claim();
+      mockGetClaimById.mockResolvedValue(claim);
+      mockSaveLiftBreathingSpace.mockResolvedValue({});
+
+      const futureDate = new Date();
+      futureDate.setDate(futureDate.getDate() + 30);
+
+      await request(app)
+        .post(BREATHING_SPACE_LIFT_URL.replace(':id', '123'))
+        .send({
+          year: futureDate.getFullYear().toString(),
+          month: (futureDate.getMonth() + 1).toString().padStart(2, '0'),
+          day: futureDate.getDate().toString().padStart(2, '0'),
+          text: 'a'.repeat(1001),
+        })
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('govuk-error-message');
+          expect(res.text).toContain('Why is breathing space being lifted must be 1000 characters or less');
+          expect(res.text).toContain('text-error');
+        });
+    });
+
+    it('should return no error when reason to lift is exactly than 1000 characters', async () => {
+      const claim = new Claim();
+      mockGetClaimById.mockResolvedValue(claim);
+      mockSaveLiftBreathingSpace.mockResolvedValue({});
+
+      const futureDate = new Date();
+      futureDate.setDate(futureDate.getDate() + 30);
+
+      await request(app)
+        .post(BREATHING_SPACE_LIFT_URL.replace(':id', '123'))
+        .send({
+          year: futureDate.getFullYear().toString(),
+          month: (futureDate.getMonth() + 1).toString().padStart(2, '0'),
+          day: futureDate.getDate().toString().padStart(2, '0'),
+          text: 'a'.repeat(1000),
+        })
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.text).not.toContain('govuk-error-message');
+          expect(res.text).not.toContain('Why is breathing space being lifted must be 1000 characters or less');
+          expect(res.text).not.toContain('text-error');
+        });
+    });
   });
 });
