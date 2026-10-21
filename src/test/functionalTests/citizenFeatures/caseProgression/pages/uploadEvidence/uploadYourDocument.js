@@ -396,7 +396,8 @@ class UploadYourDocument {
     await I.see(content.hearing.authorities[language]);
   }
 
-  async inputDataForFastTrackSections() {
+  async inputDataForFastTrackSections(partyType) {
+    const otherPartyName = partyType === 'LiPvLiP' ? 'Sir John Doe' : 'Test Inc';
     //Disclosure Section
     //Documents for disclosure - Subsection
     await I.fillField('documentsForDisclosure[0][typeOfDocument]', 'Test Data Entry for Document Disclosure 1');
@@ -520,31 +521,27 @@ class UploadYourDocument {
 
     //Questions For Other Party - Subsection
     await I.fillField('questionsForExperts[0][expertName]', 'Questions for Expert 1');
-    await I.selectOption('questionsForExperts[0][otherPartyName]', 'Test Inc');
+    await I.selectOption('questionsForExperts[0][otherPartyName]', otherPartyName);
     await I.fillField('questionsForExperts[0][questionDocumentName]', 'Questions for Expert Document Name 1');
-    await I.selectOption('questionsForExperts[0][otherPartyName]', 'Sir John Doe');
     await I.attachFile('input[name="questionsForExperts[0][fileUpload]"]', 'src/test/functionalTests/citizenFeatures/caseProgression/data/TestJPEG.jpeg');
     await I.waitForElement('button[value="questionsForExperts[0][deleteFile][0]"]', uploadTimeout);
     await I.click('//h2[contains(text(), "Questions for other party\'s expert or joint expert")]/following::button[normalize-space()="Add another"][1]');
     await I.fillField('questionsForExperts[1][expertName]', 'Questions for Expert 2');
-    await I.selectOption('questionsForExperts[1][otherPartyName]', 'Test Inc');
+    await I.selectOption('questionsForExperts[1][otherPartyName]', otherPartyName);
     await I.fillField('questionsForExperts[1][questionDocumentName]', 'Questions for Expert Document Name 2');
-    await I.selectOption('questionsForExperts[1][otherPartyName]', 'Sir John Doe');
     await I.attachFile('input[name="questionsForExperts[1][fileUpload]"]', 'src/test/functionalTests/citizenFeatures/caseProgression/data/TestTXT.txt');
     await I.waitForElement('button[value="questionsForExperts[1][deleteFile][0]"]', uploadTimeout);
 
     //Answers to Questions By Other Party - Subsection
     await I.fillField('answersForExperts[0][expertName]', 'Answers for Expert 1');
-    await I.selectOption('answersForExperts[0][otherPartyName]', 'Test Inc');
+    await I.selectOption('answersForExperts[0][otherPartyName]', otherPartyName);
     await I.fillField('answersForExperts[0][otherPartyQuestionsDocumentName]', 'Answers for Expert Document Name 1');
-    await I.selectOption('answersForExperts[0][otherPartyName]', 'Sir John Doe');
     await I.attachFile('input[name="answersForExperts[0][fileUpload]"]', 'src/test/functionalTests/citizenFeatures/caseProgression/data/TestTXT.txt');
     await I.waitForElement('button[value="answersForExperts[0][deleteFile][0]"]', uploadTimeout);
     await I.click('//h2[contains(text(), "Answers to questions asked by other party")]/following::button[normalize-space()="Add another"][1]');
     await I.fillField('answersForExperts[1][expertName]', 'Answers for Expert 2');
-    await I.selectOption('answersForExperts[1][otherPartyName]', 'Test Inc');
+    await I.selectOption('answersForExperts[1][otherPartyName]', otherPartyName);
     await I.fillField('answersForExperts[1][otherPartyQuestionsDocumentName]', 'Answers for Expert Document Name 2');
-    await I.selectOption('answersForExperts[1][otherPartyName]', 'Sir John Doe');
     await I.attachFile('input[name="answersForExperts[1][fileUpload]"]', 'src/test/functionalTests/citizenFeatures/caseProgression/data/TestTXT.txt');
     await I.waitForElement('button[value="answersForExperts[1][deleteFile][0]"]', uploadTimeout);
 
