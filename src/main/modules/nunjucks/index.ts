@@ -174,24 +174,25 @@ export class Nunjucks {
       req.cookies.nonceDataLayer = nonceDataLayer;
       res.locals.user=req.session.user;
       res.locals.nonceWebChat = crypto.randomBytes(16).toString('base64');
-      res.locals.sessionTimeout = buildSessionTimeoutLocals();
+      res.locals.sessionTimeout = buildSessionTimeoutLocals(res.locals.lang || req.cookies?.lang);
       next();
     });
   }
 }
 
-const buildSessionTimeoutLocals = () => {
+const buildSessionTimeoutLocals = (lang?: string) => {
   const cookieMaxAgeMs = config.get<number>('cookieMaxAge');
   const minutesModalVisible = config.get<number>('sessionTimeout.minutesModalVisible');
   const totalMinutes = Math.max(1, Math.floor(cookieMaxAgeMs / 60000));
   const idleMinutesBeforeWarning = Math.max(1, totalMinutes - minutesModalVisible);
   const fallbackEnd = new Date(Date.now() + cookieMaxAgeMs);
+  const locale = lang === 'cy' ? 'cy-GB' : 'en-GB';
 
   return {
     idleMinutesBeforeWarning,
     minutesModalVisible,
     totalSeconds: Math.floor(cookieMaxAgeMs / 1000),
-    fallbackEndTime: fallbackEnd.toLocaleTimeString('en-GB', {
+    fallbackEndTime: fallbackEnd.toLocaleTimeString(locale, {
       hour: '2-digit',
       minute: '2-digit',
     }),

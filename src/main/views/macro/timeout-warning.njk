@@ -1,11 +1,15 @@
-{% macro timeoutWarning(t, sessionTimeout) %}
 {# MoJ design pattern: https://design-patterns.service.justice.gov.uk/components/timeout-warning/ #}
+{# Fallback must sit inside .govuk-modal-dialogue-inert-container; the dialog must sit outside. #}
+
+{% macro timeoutWarningFallback(t, sessionTimeout) %}
 <div class="govuk-timeout-warning-fallback" data-module="govuk-timeout-warning-fallback">
   <p class="govuk-body">
     {{ t('COMMON.TIMEOUT_WARNING.FALLBACK', { time: sessionTimeout.fallbackEndTime }) }}
   </p>
 </div>
+{% endmacro %}
 
+{% macro timeoutWarning(t, sessionTimeout) %}
 <dialog
   class="govuk-timeout-warning dialog"
   data-module="govuk-timeout-warning"

@@ -1,15 +1,30 @@
 /**
- * @jest-environment jsdom
+ * Uses manual JSDOM setup instead of @jest-environment jsdom to avoid
+ * virtualConsole.sendTo incompatibility with jsdom 28.
  */
-import {TimeoutWarning} from '../../../../main/assets/js/timeout-warning.js';
+const {JSDOM} = require('jsdom');
 
 describe('TimeoutWarning', () => {
-  let dialog;
-  let moduleInstance;
+  let dialog: HTMLDialogElement;
+  let moduleInstance: {
+    numberToWords: (n: number) => string;
+    openDialog: () => void;
+    closeDialog: () => void;
+    isDialogOpen: () => boolean;
+  };
+
+  beforeAll(() => {
+    const dom = new JSDOM('<!DOCTYPE html><html><body></body></html>');
+    (global as unknown as { window: Window }).window = dom.window as unknown as Window;
+    (global as unknown as { document: Document }).document = dom.window.document;
+    (global as unknown as { HTMLDialogElement: unknown }).HTMLDialogElement = dom.window.HTMLDialogElement;
+    (global as unknown as { XMLHttpRequest: unknown }).XMLHttpRequest = dom.window.XMLHttpRequest;
+  });
 
   beforeEach(() => {
+    jest.resetModules();
     document.body.innerHTML = `
-      <div id="main-content"></div>
+      <div id="main-content" class="govuk-modal-dialogue-inert-container"></div>
       <div class="govuk-timeout-warning-fallback"></div>
       <dialog class="govuk-timeout-warning"
         data-module="govuk-timeout-warning"
@@ -25,13 +40,16 @@ describe('TimeoutWarning', () => {
         <button type="button" class="js-dialog-close">Stay signed in</button>
       </dialog>
     `;
-    dialog = document.querySelector('[data-module="govuk-timeout-warning"]');
-    dialog.showModal = jest.fn(function () {
+    dialog = document.querySelector('[data-module="govuk-timeout-warning"]') as HTMLDialogElement;
+    dialog.showModal = jest.fn(function (this: HTMLDialogElement) {
       this.open = true;
     });
-    dialog.close = jest.fn(function () {
+    dialog.close = jest.fn(function (this: HTMLDialogElement) {
       this.open = false;
     });
+
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const {TimeoutWarning} = require('../../../../main/assets/js/timeout-warning.js');
     moduleInstance = new TimeoutWarning(dialog);
   });
 
@@ -47,10 +65,10 @@ describe('TimeoutWarning', () => {
     expect(moduleInstance.isDialogOpen()).toBe(true);
   });
 
-  it('closes the dialog and clears timers', () => {
+  it('closes the dialog and extends the session', () => {
     const xhrOpen = jest.fn();
     const xhrSend = jest.fn();
-    global.XMLHttpRequest = jest.fn(() => ({
+    (global as unknown as { XMLHttpRequest: unknown }).XMLHttpRequest = jest.fn(() => ({
       open: xhrOpen,
       send: xhrSend,
       setRequestHeader: jest.fn(),

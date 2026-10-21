@@ -19,11 +19,12 @@ describe('Session timeout', () => {
   });
 
   describe('GET /session-timeout', () => {
-    it('should display the session timeout page', async () => {
+    it('should display the session timeout page without the timeout warning', async () => {
       const res = await request(app).get(SESSION_TIMEOUT_URL);
       expect(res.status).toBe(200);
       expect(res.text).toContain(t('PAGES.SESSION_TIMEOUT.TITLE'));
       expect(res.text).toContain(t('PAGES.SESSION_TIMEOUT.DESCRIPTION'));
+      expect(res.text).not.toContain('data-module="govuk-timeout-warning"');
     });
   });
 

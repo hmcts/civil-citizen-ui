@@ -24,6 +24,7 @@ import {
   HEARING_FEE_PAYMENT_CONFIRMATION_URL,
   CLAIM_FEE_PAYMENT_CONFIRMATION_URL,
   APPLICATION_FEE_PAYMENT_CONFIRMATION_URL,
+  SESSION_EXTEND_URL,
   SESSION_TIMEOUT_URL,
 } from 'routes/urls';
 
@@ -88,6 +89,10 @@ const isPrivacyPolicyPage = (requestUrl: string): boolean => {
 
 const isSessionTimeoutPage = (requestUrl: string): boolean => {
   return requestUrl.startsWith(SESSION_TIMEOUT_URL);
+};
+
+const isSessionExtendUrl = (requestUrl: string): boolean => {
+  return requestUrl.startsWith(SESSION_EXTEND_URL);
 };
 
 const isMakeClaimPage = (requestUrl: string): boolean => {
@@ -244,7 +249,8 @@ export class OidcMiddleware {
           isTermAndConditionsPage(req.originalUrl) ||
           isPrivacyPolicyPage(req.originalUrl) ||
           isWebchatPage(req.originalUrl) ||
-          isSessionTimeoutPage(req.originalUrl)
+          isSessionTimeoutPage(req.originalUrl) ||
+          isSessionExtendUrl(req.originalUrl)
         ) {
           return next();
         }

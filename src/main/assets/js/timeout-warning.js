@@ -29,7 +29,9 @@ TimeoutWarning.prototype.init = function () {
   }
 
   this.countIdleTime();
-  this.$closeButton.addEventListener('click', this.closeDialog.bind(this));
+  if (this.$closeButton) {
+    this.$closeButton.addEventListener('click', this.closeDialog.bind(this));
+  }
   this.$module.addEventListener('keydown', this.escClose.bind(this));
   window.addEventListener('focus', this.checkIfShouldHaveTimedOut.bind(this));
 };
@@ -40,14 +42,18 @@ TimeoutWarning.prototype.dialogSupported = function () {
   }
 
   try {
-    window.dialogPolyfill.registerDialog(this.$module);
-    return true;
-  } catch (error) {
-    if (this.$fallBackElement) {
-      this.$fallBackElement.classList.add('govuk-!-display-block');
+    if (window.dialogPolyfill && typeof window.dialogPolyfill.registerDialog === 'function') {
+      window.dialogPolyfill.registerDialog(this.$module);
+      return true;
     }
-    return false;
+  } catch (error) {
+    // Fall through to fallback UI
   }
+
+  if (this.$fallBackElement) {
+    this.$fallBackElement.classList.add('govuk-!-display-block');
+  }
+  return false;
 };
 
 TimeoutWarning.prototype.resetIdleTime = function () {
@@ -96,12 +102,15 @@ TimeoutWarning.prototype.startUiCountdown = function () {
   var $module = this;
   var $countdown = this.$countdown;
   var $accessibleCountdown = this.$accessibleCountdown;
+  if (!$countdown || !$accessibleCountdown) {
+    return;
+  }
   var minutes = this.minutesTimeOutModalVisible;
   var timerRunOnce = false;
   var iOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
   var seconds = 60 * minutes;
 
-  $countdown.innerHTML = minutes + ' minute' + (minutes > 1 ? 's' : '');
+  $countdown.textContent = minutes + ' minute' + (minutes > 1 ? 's' : '');
 
   (function runTimer() {
     var minutesLeft = parseInt(seconds / 60, 10);
@@ -131,7 +140,6 @@ TimeoutWarning.prototype.startUiCountdown = function () {
       ? ' ' + atSecondsNumberAsText + ' second' + (secondsLeft > 1 ? 's' : '')
       : '';
 
-    var text = $module.timerText + minutesText + secondsText + '.';
     var atText = $module.timerText + atMinutesText;
     if (atSecondsText) {
       if (minutesLeft > 0) {
@@ -141,27 +149,45 @@ TimeoutWarning.prototype.startUiCountdown = function () {
     } else {
       atText += '.';
     }
-    var extraText = ' ' + $module.timerExtraText;
 
     if (timerExpired) {
-      $countdown.innerHTML = $module.timerRedirectText;
-      $accessibleCountdown.innerHTML = $module.timerRedirectText;
+      $countdown.textContent = $module.timerRedirectText;
+      $accessibleCountdown.textContent = $module.timerRedirectText;
       setTimeout($module.redirect.bind($module), 1000);
       return;
     }
 
     seconds--;
-    $countdown.innerHTML = text + extraText;
+
+    var text = document.createElement('p');
+    text.appendChild(document.createTextNode($module.timerText));
+    var countdown = document.createElement('span');
+    countdown.setAttribute('class', 'countdown');
+    countdown.innerHTML = ' ' + minutesText + secondsText + '.';
+    text.appendChild(countdown);
+
+    $countdown.innerHTML = '';
+    $countdown.appendChild(text);
+    if ($module.timerExtraText) {
+      var extraText = document.createElement('p');
+      extraText.textContent = $module.timerExtraText;
+      $countdown.appendChild(extraText);
+    }
 
     if (minutesLeft < 1 && secondsLeft < 20) {
       $accessibleCountdown.setAttribute('aria-live', 'assertive');
     }
 
     if (!timerRunOnce) {
-      $accessibleCountdown.innerHTML = iOS ? atText : atText + extraText;
       timerRunOnce = true;
+      setTimeout(function () {
+        // Read out extra content once after the modal opens (skipped on iOS VoiceOver).
+        $accessibleCountdown.textContent = iOS
+          ? atText
+          : atText + ' ' + $module.timerExtraText;
+      }, 1000);
     } else if (secondsLeft % 15 === 0) {
-      $accessibleCountdown.innerHTML = atText;
+      $accessibleCountdown.textContent = atText;
     }
 
     $module.timers.push(setTimeout(runTimer, 1000));
