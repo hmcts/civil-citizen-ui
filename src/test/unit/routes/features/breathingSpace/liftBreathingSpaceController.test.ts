@@ -269,5 +269,29 @@ describe('Lift Breathing Space Controller', () => {
           expect(res.text).not.toContain('text-error');
         });
     });
+
+    it('should return no error when reason to lift is less than 1000 characters', async () => {
+      const claim = new Claim();
+      mockGetClaimById.mockResolvedValue(claim);
+      mockSaveLiftBreathingSpace.mockResolvedValue({});
+
+      const futureDate = new Date();
+      futureDate.setDate(futureDate.getDate() + 30);
+
+      await request(app)
+        .post(BREATHING_SPACE_LIFT_URL.replace(':id', '123'))
+        .send({
+          year: futureDate.getFullYear().toString(),
+          month: (futureDate.getMonth() + 1).toString().padStart(2, '0'),
+          day: futureDate.getDate().toString().padStart(2, '0'),
+          text: 'a'.repeat(999),
+        })
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.text).not.toContain('govuk-error-message');
+          expect(res.text).not.toContain('Why is breathing space being lifted must be 1000 characters or less');
+          expect(res.text).not.toContain('text-error');
+        });
+    });
   });
 });
