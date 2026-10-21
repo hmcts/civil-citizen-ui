@@ -103,17 +103,17 @@ function generateErrorMessage(args: ValidationArgs<UnavailableDatePeriodMediatio
       if (args.object.type === UnavailableDateType.SINGLE_DATE) {
         return hasValue ? 'ERRORS.CARM_VALID_DAY_FOR_UNAVAILABILITY' : 'ERRORS.CARM_ENTER_DAY_FOR_UNAVAILABILITY';
       }
-      return 'ERRORS.CARM_ENTER_DAY_FOR_UNAVAILABILITY_FROM';
+      return hasValue ? 'ERRORS.CARM_VALID_DAY_FOR_UNAVAILABILITY_FROM' : 'ERRORS.CARM_ENTER_DAY_FOR_UNAVAILABILITY_FROM';
     case 'startMonth':
       if (args.object.type === UnavailableDateType.SINGLE_DATE) {
         return hasValue ? 'ERRORS.CARM_VALID_MONTH_FOR_UNAVAILABILITY' : 'ERRORS.CARM_ENTER_MONTH_FOR_UNAVAILABILITY';
       }
-      return 'ERRORS.CARM_ENTER_MONTH_FOR_UNAVAILABILITY_FROM';
+      return hasValue ? 'ERRORS.CARM_VALID_MONTH_FOR_UNAVAILABILITY_FROM' : 'ERRORS.CARM_ENTER_MONTH_FOR_UNAVAILABILITY_FROM';
     case 'startYear':
       if (args.object.type === UnavailableDateType.SINGLE_DATE) {
         return hasValue ? 'ERRORS.CARM_VALID_YEAR_FOR_UNAVAILABILITY' : 'ERRORS.CARM_ENTER_YEAR_FOR_UNAVAILABILITY';
       }
-      return 'ERRORS.CARM_ENTER_YEAR_FOR_UNAVAILABILITY_FROM';
+      return hasValue ? 'ERRORS.CARM_VALID_YEAR_FOR_UNAVAILABILITY_FROM' : 'ERRORS.CARM_ENTER_YEAR_FOR_UNAVAILABILITY_FROM';
     case 'until':
       if ((args.object.startDay || args.object.startMonth || args.object.startYear) && !args.object.until) {
         return 'ERRORS.CARM_ENTER_DATE_FOR_UNAVAILABILITY_TO';
