@@ -3,6 +3,7 @@ import {getDraftClaim, updateDraftClaim} from 'modules/draft-store/draftStoreMan
 import {AppRequest} from 'models/AppRequest';
 import {Claim} from 'models/claim';
 import {Party} from '../../../common/models/party';
+import {getResponseDraft, updateResponseDraft} from 'modules/draft-store/response/responseDraftStoreService';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('defendantDetailsService');
@@ -19,6 +20,40 @@ export const getDefendantInformationFromDraft = async (req: AppRequest): Promise
   const draftResult = await getDraftClaim(req);
   const claim = Object.assign(new Claim(), draftResult?.claimResponse?.case_data as unknown as Claim);
   return Object.assign(new Party(), claim.respondent1);
+};
+
+export const getDefendantInformationFromResponseDraft = async (req: AppRequest, caseId: string): Promise<Party> => {
+  const draftResult = await getResponseDraft(req, caseId);
+  const claim = Object.assign(new Claim(), draftResult?.claimResponse?.case_data as unknown as Claim);
+  return Object.assign(new Party(), claim.respondent1);
+};
+
+export const saveDefendantPropertyToResponseDraft = async (req: AppRequest, caseId: string, propertyName: string, value: unknown): Promise<void> => {
+  try {
+    const draftResult = await getResponseDraft(req, caseId);
+    if (!draftResult) {
+      throw new Error('[defendantDetailsService] no response draft found to update');
+    }
+    const claim: Claim = Object.assign(new Claim(), draftResult.claimResponse?.case_data as unknown as Claim);
+    const draftId = draftResult.rawResponse?.draftId;
+
+    if (claim.respondent1) {
+      (claim.respondent1 as unknown as Record<string, unknown>)[propertyName as keyof Party] = value;
+    } else {
+      const defendant = new Party();
+      (defendant as unknown as Record<string, unknown>)[propertyName as keyof Party] = value;
+      claim.respondent1 = defendant;
+    }
+
+    if (draftResult.createdAt && !claim.draftClaimCreatedAt) {
+      claim.draftClaimCreatedAt = new Date(draftResult.createdAt);
+    }
+
+    await updateResponseDraft(req, caseId, claim, draftId);
+  } catch (error) {
+    logger.error(error);
+    throw error;
+  }
 };
 
 export const saveDefendantProperty = async (userId: string, propertyName: string, value: any): Promise<void> => {
