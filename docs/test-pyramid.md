@@ -8,7 +8,7 @@ Related: [functional-tests.md](functional-tests.md) covers browser journeys and 
 
 | Layer | Location | Command | Allowed | Not allowed |
 | --- | --- | --- | --- | --- |
-| Unit | `src/test/unit` | `yarn test` and `yarn test:coverage` | Call a handler, service, guard or model with mocked collaborators. Assert `res.render`, `res.redirect`, `next`, return values. | `request(app)`, `supertest`, `supertest-session`, importing `src/main/app` to hit HTTP, nocking IDAM to reach a page |
+| Unit | `src/test/unit` | `yarn test:coverage` | Call a handler, service, guard or model with mocked collaborators. Assert `res.render`, `res.redirect`, `next`, return values. | `request(app)`, `supertest`, `supertest-session`, importing `src/main/app` to hit HTTP, nocking IDAM to reach a page |
 | In-process integration | `src/integration-test` | `yarn test:integration` | Supertest against the app. Multi-step redirects, cookies, session, rendered HTML, middleware wiring. External I/O still mocked (Redis, Civil Service, IDAM). | Duplicating every page GET/POST already owned by a unit handler test |
 | Browser functional | `src/test/functionalTests` | `yarn test:functional` / reduced-stack | Browser, session and real- or WireMock-backed journeys | Assertions that only need a controller or a route |
 
@@ -112,6 +112,6 @@ Help with fees and the "you've been paid" confirmation are owned by `src/integra
 
 ## Pipeline note
 
-`yarn test` runs `LOG_LEVEL=OFF jest -c jest.config.js` with roots `src/test/unit`. It does not collect coverage and it exits non-zero when Jest fails. `yarn test:coverage` is the same unit config with `--coverage`, which writes `coverage/lcov.info` for Sonar. `yarn test:integration` is unchanged and uses `jest.functionaltest.config.js` (`src/integration-test` only).
+`yarn test:coverage` runs `LOG_LEVEL=OFF jest --coverage --maxWorkers=8 --logHeapUsage --silent`. Jest loads `jest.config.js`, so the roots are `src/test/unit`. The run writes `coverage/lcov.info` for Sonar and exits non-zero when a test fails. `yarn test` prints a message and exits. The shared Node.js pipeline calls `yarn test` and then `yarn test:coverage`, so the unit suite runs once in that stage.
 
-Jenkins `afterSuccess('build')` runs `yarn build` and then `yarn test:integration`. The shared Node.js pipeline test stage runs `yarn test`. That Jenkinsfile does not call `yarn test:coverage`. `cichecks` runs `test:coverage` and then `test:routes`, and `Jenkinsfile_CNP` does not call `cichecks`. The unit stage and the integration stage therefore do not run the same suite. From June 2023 until this change the unit stage was `echo`, so there is no recent HTTP-in-unit duration to compare. The first pipeline on this branch is the new unit-stage time.
+`yarn test:integration` uses `jest.functionaltest.config.js` (`src/integration-test` only). Jenkins `afterSuccess('build')` runs `yarn build` and then `yarn test:integration`. `cichecks` runs `test:coverage` and then `test:routes`. `Jenkinsfile_CNP` does not call `cichecks`.
