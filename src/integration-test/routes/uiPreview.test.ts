@@ -1,12 +1,23 @@
 import {SIGN_IN_URL} from 'routes/urls';
 import {spawnSync} from 'child_process';
+import {mkdtempSync, rmSync} from 'fs';
+import {tmpdir} from 'os';
 import {join} from 'path';
 
 describe('real application preview registration and authentication boundary', () => {
   it.each([['production', 'true'], ['e2eTest', 'false'], ['e2eTest', 'true']])('%s / flag=%s', (mode, flag) => {
-    const child = spawnSync(process.execPath, [join(process.cwd(), 'src/test/utils/uiPreviewApplicationProbe.cjs'), mode, flag], {
-      cwd: process.cwd(), encoding: 'utf8', timeout: 45000, env: {...process.env, LOG_LEVEL: 'ERROR'},
-    });
+    const directory = mkdtempSync(join(tmpdir(), 'preview-application-probe-'));
+    let child;
+    try {
+      child = spawnSync(process.execPath, [join(process.cwd(), 'src/test/utils/uiPreviewApplicationProbe.cjs'), mode, flag], {
+        cwd: process.cwd(), encoding: 'utf8', timeout: 45000,
+        // Jenkins may omit TMPDIR. Exercise the portable fallback in a private directory.
+        env: {...process.env, LOG_LEVEL: 'ERROR', TMPDIR: undefined, TMP: directory, TEMP: directory},
+      });
+    } finally {
+      rmSync(directory, {recursive: true, force: true});
+    }
+    if (child.error || child.status !== 0) throw new Error(`Application probe failed (${mode} / flag=${flag}):\n${child.error?.message || ''}\n${child.stderr}\n${child.stdout?.slice(-12000) || ''}`);
     expect(child.error).toBeUndefined(); expect(child.status).toBe(0);
     const line = child.stdout.split('\n').find(value => value.startsWith('PROBE ')); expect(line).toBeDefined();
     const probe = JSON.parse(line!.slice(6)); const enabled = mode === 'e2eTest' && flag === 'true';
