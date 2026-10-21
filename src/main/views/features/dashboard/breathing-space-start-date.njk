@@ -4,20 +4,14 @@
 {% from "../../macro/csrf.njk" import csrfProtection %}
 {% from "../../macro/heading-with-caption.njk" import headingWithCaption %}
 {% from "../../macro/cancelLink.njk" import cancelLink %}
-{% from "../../macro/error-summary.njk" import errorSummary %}
 
 {% block pageTitle %}
   {{ setPageTitle(t, pageTitle) }}
 {% endblock %}
 
 {% block nestedContent %}
-  {% set errors = form.getAllErrors() %}
   {% set hasDateError = form.hasFieldError('date') or form.hasFieldError('day') or form.hasFieldError('month') or form.hasFieldError('year') %}
   {% set dateError = form.errorFor('date') or form.errorFor('day') or form.errorFor('month') or form.errorFor('year') %}
-
-  {% if form.hasErrors() %}
-    {{ errorSummary(errors, t) }}
-  {% endif %}
 
   {{ headingWithCaption(t, 'PAGES.BREATHING_SPACE_ENTRY.PAGE_TITLE', 'PAGES.BREATHING_SPACE_ENTRY.START_DATE.HEADING') }}
 

@@ -3,17 +3,12 @@
 {% from "govuk/components/warning-text/macro.njk" import govukWarningText %}
 {% from "../../macro/csrf.njk" import csrfProtection %}
 {% from "../../macro/yesNoGenericForm.njk" import yesNoRadioButton %}
-{% from "../../macro/error-summary.njk" import errorSummary %}
 
 {% block pageTitle %}
   {{ setPageTitle(t, pageTitle) }}
 {% endblock %}
 
 {% block nestedContent %}
-  {% if form.hasErrors() %}
-    {{ errorSummary(form.getAllErrors(), t) }}
-  {% endif %}
-
   <h1 class="govuk-heading-l">{{ t('PAGES.BREATHING_SPACE_ENTRY.CANCEL.HEADING') }}</h1>
 
   {{ govukWarningText({
