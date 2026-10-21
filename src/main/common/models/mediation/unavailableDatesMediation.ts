@@ -83,30 +83,35 @@ export class UnavailableDatePeriodMediation {
     this.type = type;
     this.from = DateConverter.convertToDate(paramsFrom?.year, paramsFrom?.month, paramsFrom?.day);
     this.until = DateConverter.convertToDate(paramsUntil?.year, paramsUntil?.month, paramsUntil?.day);
-    this.startYear = Number(paramsFrom?.year);
-    this.startMonth = Number(paramsFrom?.month);
-    this.startDay = Number(paramsFrom?.day);
-    this.endYear = Number(paramsUntil?.year);
-    this.endMonth = Number(paramsUntil?.month);
-    this.endDay = Number(paramsUntil?.day);
+    this.startYear = toOptionalNumber(paramsFrom?.year);
+    this.startMonth = toOptionalNumber(paramsFrom?.month);
+    this.startDay = toOptionalNumber(paramsFrom?.day);
+    this.endYear = toOptionalNumber(paramsUntil?.year);
+    this.endMonth = toOptionalNumber(paramsUntil?.month);
+    this.endDay = toOptionalNumber(paramsUntil?.day);
   }
 }
 
+function toOptionalNumber(value?: string): number {
+  return value === undefined || value === null || String(value).trim() === '' ? undefined : Number(value);
+}
+
 function generateErrorMessage(args: ValidationArgs<UnavailableDatePeriodMediation>): string {
+  const hasValue = args.value !== undefined;
   switch (args.property) {
     case 'startDay':
       if (args.object.type === UnavailableDateType.SINGLE_DATE) {
-        return 'ERRORS.CARM_ENTER_DAY_FOR_UNAVAILABILITY';
+        return hasValue ? 'ERRORS.CARM_VALID_DAY_FOR_UNAVAILABILITY' : 'ERRORS.CARM_ENTER_DAY_FOR_UNAVAILABILITY';
       }
       return 'ERRORS.CARM_ENTER_DAY_FOR_UNAVAILABILITY_FROM';
     case 'startMonth':
       if (args.object.type === UnavailableDateType.SINGLE_DATE) {
-        return 'ERRORS.CARM_ENTER_MONTH_FOR_UNAVAILABILITY';
+        return hasValue ? 'ERRORS.CARM_VALID_MONTH_FOR_UNAVAILABILITY' : 'ERRORS.CARM_ENTER_MONTH_FOR_UNAVAILABILITY';
       }
       return 'ERRORS.CARM_ENTER_MONTH_FOR_UNAVAILABILITY_FROM';
     case 'startYear':
       if (args.object.type === UnavailableDateType.SINGLE_DATE) {
-        return 'ERRORS.CARM_ENTER_YEAR_FOR_UNAVAILABILITY';
+        return hasValue ? 'ERRORS.CARM_VALID_YEAR_FOR_UNAVAILABILITY' : 'ERRORS.CARM_ENTER_YEAR_FOR_UNAVAILABILITY';
       }
       return 'ERRORS.CARM_ENTER_YEAR_FOR_UNAVAILABILITY_FROM';
     case 'until':

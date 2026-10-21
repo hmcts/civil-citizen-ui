@@ -131,6 +131,111 @@ describe('Mediation Unavailability Select Dates Confirmation Controller', () => 
     });
   });
 
+  describe('on POST - single date validation', () => {
+    const futureDate = new Date();
+    futureDate.setDate(futureDate.getDate() + 7);
+    const day = String(futureDate.getDate());
+    const month = String(futureDate.getMonth() + 1);
+    const year = String(futureDate.getFullYear());
+
+    const singleDateBody = (start: Record<string, string>) => ({
+      items: [{type: UnavailableDateType.SINGLE_DATE, single: {start}}],
+    });
+
+    beforeEach(() => {
+      const {getUnavailableDatesMediationForm: actualGetForm} = jest.requireActual('services/features/mediation/unavailableDatesForMediationService');
+      getUnavailableDatesMediationFormMock.mockImplementation(actualGetForm);
+    });
+
+    it.each(['0', '00', '000'])('should return 4-digit year error when year is %s', async (invalidYear) => {
+      await request(app)
+        .post(CONTROLLER_URL)
+        .send(singleDateBody({day, month, year: invalidYear}))
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Unavailable date must include a 4-digit year');
+          expect(res.text).not.toContain('Date you are unavailable must include a year');
+        });
+    });
+
+    it('should return valid month error when month is invalid', async () => {
+      await request(app)
+        .post(CONTROLLER_URL)
+        .send(singleDateBody({day, month: '13', year}))
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Unavailable date must include a valid month');
+          expect(res.text).not.toContain('Date you are unavailable must include a month');
+        });
+    });
+
+    it('should return valid day error when day is invalid', async () => {
+      await request(app)
+        .post(CONTROLLER_URL)
+        .send(singleDateBody({day: '32', month, year}))
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Unavailable date must include a valid day');
+          expect(res.text).not.toContain('Date you are unavailable must include a day');
+        });
+    });
+
+    it('should return day, month and year errors when all are invalid', async () => {
+      await request(app)
+        .post(CONTROLLER_URL)
+        .send(singleDateBody({day: '40', month: '13', year: '0'}))
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Unavailable date must include a valid day');
+          expect(res.text).toContain('Unavailable date must include a valid month');
+          expect(res.text).toContain('Unavailable date must include a 4-digit year');
+        });
+    });
+
+    it('should keep missing field errors when day, month or year are empty', async () => {
+      await request(app)
+        .post(CONTROLLER_URL)
+        .send(singleDateBody({day: '', month: '', year}))
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Date you are unavailable must include a day');
+          expect(res.text).toContain('Date you are unavailable must include a month');
+          expect(res.text).not.toContain('Unavailable date must include a valid day');
+          expect(res.text).not.toContain('Unavailable date must include a valid month');
+        });
+    });
+
+    it('should keep missing date error when date is empty', async () => {
+      await request(app)
+        .post(CONTROLLER_URL)
+        .send(singleDateBody({day: '', month: '', year: ''}))
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Enter the date you are unavailable');
+        });
+    });
+
+    it('should return welsh 4-digit year error when year is invalid', async () => {
+      await request(app)
+        .post(CONTROLLER_URL)
+        .query({lang: 'cy'})
+        .send(singleDateBody({day, month, year: '0'}))
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Rhaid i&#39;r dyddiad nad ydych ar gael gynnwys blwyddyn 4 digid');
+        });
+    });
+
+    it('should redirect when single date is valid', async () => {
+      await request(app)
+        .post(CONTROLLER_URL)
+        .send(singleDateBody({day, month, year}))
+        .expect((res) => {
+          expect(res.status).toBe(302);
+        });
+    });
+  });
+
   describe('on POST - defendant response', () => {
     it('should redirect to task list with single date', async () => {
       //given
