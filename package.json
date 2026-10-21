@@ -184,7 +184,7 @@
     "stylelint": "^17.0.0",
     "stylelint-config-standard-scss": "^17.0.0",
     "supertest": "^7.1.4",
-    "supertest-session": "^4.1.0",
+    "supertest-session": "^5.0.0",
     "totp-generator": "^0.0.14",
     "ts-jest": "^29.3.2",
     "ts-loader": "^9.4.2",

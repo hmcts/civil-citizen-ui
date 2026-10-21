@@ -5827,7 +5827,7 @@ __metadata:
     stylelint: "npm:^17.0.0"
     stylelint-config-standard-scss: "npm:^17.0.0"
     supertest: "npm:^7.1.4"
-    supertest-session: "npm:^4.1.0"
+    supertest-session: "npm:^5.0.0"
     totp-generator: "npm:^0.0.14"
     ts-jest: "npm:^29.3.2"
     ts-loader: "npm:^9.4.2"
@@ -14245,16 +14245,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"supertest-session@npm:^4.1.0":
-  version: 4.1.0
-  resolution: "supertest-session@npm:4.1.0"
+"supertest-session@npm:^5.0.0":
+  version: 5.0.1
+  resolution: "supertest-session@npm:5.0.1"
   dependencies:
     cookiejar: "npm:^2.1.2"
     methods: "npm:^1.1.2"
     object-assign: "npm:^4.0.1"
   peerDependencies:
     supertest: ">= 3.1.0"
-  checksum: 10/13a07944eb1a2f67bcb1b8e6a32f840549e46235bcad415afdb727265685cd068c145900f8ded8c7b5290dd1a596b3471c48bba6e00afcf3778deaa5139028b0
+  checksum: 10/1ac4f986075b3206974370598b31a328d7ae673729c3521e0992112ceca7ad7dc78cdb7bc795c3678373008f1e3d646366504aaa2d028868a0c98eb54c724992
   languageName: node
   linkType: hard
 
