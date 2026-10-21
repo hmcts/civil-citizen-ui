@@ -29,6 +29,24 @@ describe('Session timeout', () => {
       expect(res.text).toContain(t('PAGES.SESSION_TIMEOUT.DESCRIPTION'));
       expect(res.text).not.toContain('data-module="govuk-timeout-warning"');
     });
+
+    it('renders the timeout page when there is no session', () => {
+      const req = {method: 'GET', url: SESSION_TIMEOUT_URL} as unknown as AppRequest;
+      const render = jest.fn();
+      const res = {
+        locals: {user: {id: 'user-id'}, sessionTimeout: {}},
+        render,
+      };
+
+      (sessionTimeoutController as unknown as {handle: (request: AppRequest, response: Response, next: NextFunction) => void})
+        .handle(req, res as unknown as Response, jest.fn() as NextFunction);
+
+      expect(res.locals.user).toBeUndefined();
+      expect(res.locals.sessionTimeout).toBeUndefined();
+      expect(render).toHaveBeenCalledWith('features/public/session-timeout', {
+        pageTitle: 'PAGES.SESSION_TIMEOUT.PAGE_TITLE',
+      });
+    });
   });
 
   describe('GET /session/extend', () => {
