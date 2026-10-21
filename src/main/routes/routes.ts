@@ -1,5 +1,6 @@
 import homeController from './homeController';
 import unauthorisedController from './unauthorisedController';
+import sessionTimeoutController from './sessionTimeoutController';
 import dashboardController from './features/dashboard/dashboardController';
 import phoneDetailsController from './features/response/citizenPhoneNumber/citizenPhoneController';
 import responseDobController from './features/response/citizenDob/citizenDobController';
@@ -450,6 +451,7 @@ export default [
   homeController,
   dashboardController,
   unauthorisedController,
+  sessionTimeoutController,
   responseDetailsController,
   phoneDetailsController,
   responseDobController,

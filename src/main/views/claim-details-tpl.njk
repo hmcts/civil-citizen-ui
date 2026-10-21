@@ -4,6 +4,7 @@
 {% from "./macro/page-title.njk" import setPageTitle %}
 {% from "./macro/header.njk" import headerComponent %}
 {% from "./macro/cookie-banner.njk" import cookieBanner %}
+{% from "./macro/timeout-warning.njk" import timeoutWarning %}
 {% from "./macro/back.njk" import back %}
 
 {% set languageToggle = "<a class='govuk-!-font-size-19 govuk-link language' href='?lang=cy'>Cymraeg</a>"%}
@@ -22,6 +23,11 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 })(window,document,'script','dataLayer','{{ gtmScriptId }}');</script>
 <!-- End Google Tag Manager -->
   {% include "webpack/css.njk" %}
+  {% if user and sessionTimeout %}
+  <noscript>
+    <meta http-equiv="refresh" content="{{ sessionTimeout.totalSeconds }};url={{ urls.SESSION_TIMEOUT_URL }}" />
+  </noscript>
+  {% endif %}
 {% endblock %}
 {% block pageTitle %}
   {{setPageTitle(t, pageTitle)}}
@@ -52,6 +58,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 
 {% block bodyStart %}
+<div class="govuk-modal-dialogue-inert-container">
 <!-- Google Tag Manager (noscript) -->
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id={{ gtmScriptId }}&nojscript=true"
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -136,6 +143,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </div>
 {% endblock %}
 {% block bodyEnd %}
+</div>
+{% if user and sessionTimeout %}
+  {{ timeoutWarning(t, sessionTimeout) }}
+{% endif %}
 {# Run JavaScript at end of the <body>, to avoid blocking the initial render. #}
 {% include "webpack/js.njk" %}
 {% endblock %}
