@@ -10,9 +10,15 @@ describe('TimeoutWarning', () => {
   let dialog: HTMLDialogElement;
   let moduleInstance: {
     numberToWords: (n: number) => string;
+    init: () => void;
     openDialog: () => void;
     closeDialog: () => void;
     isDialogOpen: () => boolean;
+    resetIdleTime: () => void;
+    checkIfShouldHaveTimedOut: () => void;
+    extendTimeOnServer: () => void;
+    redirect: () => void;
+    clearTimers: () => void;
   };
 
   beforeAll(() => {
@@ -66,6 +72,18 @@ describe('TimeoutWarning', () => {
   it('converts numbers to words for screen readers', () => {
     expect(moduleInstance.numberToWords(0)).toBe('zero');
     expect(moduleInstance.numberToWords(21)).toBe('twenty one');
+    expect(moduleInstance.numberToWords(105)).toBe('one hundred five');
+    expect(moduleInstance.numberToWords(1001)).toBe('one thousand one');
+    expect(moduleInstance.numberToWords(1000000000000)).toBe('');
+  });
+
+  it('initialises interaction listeners and records activity', () => {
+    const addEventListener = jest.spyOn(window, 'addEventListener');
+
+    moduleInstance.init();
+
+    expect(addEventListener).toHaveBeenCalledWith('load', expect.any(Function), {passive: true});
+    expect(window.localStorage.getItem('timeUserLastInteractedWithPage')).not.toBeNull();
   });
 
   it('opens the dialog and starts the countdown', () => {
@@ -91,5 +109,45 @@ describe('TimeoutWarning', () => {
     expect(document.body.classList.contains('govuk-timeout-warning-overlay')).toBe(false);
     expect(xhrOpen).toHaveBeenCalledWith('GET', '/session/extend', true);
     expect(xhrSend).toHaveBeenCalled();
+  });
+
+  it('does not close an already closed dialog', () => {
+    moduleInstance.closeDialog();
+    expect(dialog.close).not.toHaveBeenCalled();
+  });
+
+  it('opens the warning when the idle time has elapsed', () => {
+    window.localStorage.setItem('timeUserLastInteractedWithPage', new Date(Date.now() - 26 * 60000).toISOString());
+    const openDialog = jest.spyOn(moduleInstance, 'openDialog');
+
+    moduleInstance.checkIfShouldHaveTimedOut();
+
+    expect(openDialog).toHaveBeenCalled();
+  });
+
+  it('redirects when the idle time and warning period have elapsed', () => {
+    window.localStorage.setItem('timeUserLastInteractedWithPage', new Date(Date.now() - 31 * 60000).toISOString());
+    const replace = jest.spyOn(window.location, 'replace').mockImplementation(() => undefined);
+
+    moduleInstance.checkIfShouldHaveTimedOut();
+
+    expect(replace).toHaveBeenCalledWith('/session-timeout');
+    replace.mockRestore();
+  });
+
+  it('sends the session extension request with JSON accepted', () => {
+    const xhrOpen = jest.fn();
+    const xhrSend = jest.fn();
+    const setRequestHeader = jest.fn();
+    (global as unknown as {XMLHttpRequest: unknown}).XMLHttpRequest = jest.fn(() => ({
+      open: xhrOpen,
+      send: xhrSend,
+      setRequestHeader,
+    }));
+
+    moduleInstance.extendTimeOnServer();
+
+    expect(setRequestHeader).toHaveBeenCalledWith('Accept', 'application/json');
+    expect(xhrSend).toHaveBeenCalledTimes(1);
   });
 });
