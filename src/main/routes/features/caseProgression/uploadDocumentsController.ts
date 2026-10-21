@@ -33,6 +33,7 @@ import {
   removeUploadedFileForAction,
   migrateLegacyCaseDocumentsOnForm,
   uploadAndValidateFile,
+  reportRejectedFiles,
 } from 'common/utils/fileUploadUtils';
 import {ValidationError} from 'class-validator';
 import {getRouteParam} from 'common/utils/routeParamUtils';
@@ -174,6 +175,10 @@ uploadDocumentsController.post(CP_UPLOAD_DOCUMENTS_URL, multerMiddleware, (async
     const uploadDocumentsForm = await Promise.resolve(getUploadDocumentsForm(req));
     const form = new GenericForm(uploadDocumentsForm);
     const isClaimant = claim.isClaimant() ? dqPropertyNameClaimant : dqPropertyName;
+
+    if (!action?.includes('[uploadButton]') && reportRejectedFiles(req, form)) {
+      return await renderView(res, claim, claimId, form);
+    }
 
     if (action?.includes('add_another-')) {
       addAnother(uploadDocumentsForm, action, claimId, userid);

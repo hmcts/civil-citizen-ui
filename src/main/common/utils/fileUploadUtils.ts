@@ -88,6 +88,7 @@ export function clearFileUploadSession(req: { session?: { fileUpload?: string; f
 }
 
 export const MAX_FILES_PER_UPLOAD = 10;
+export const MAX_FILE_INPUTS_PER_FORM = 100;
 
 export const createMulterUpload = (fileSizeLimit: number = FILE_SIZE_LIMIT, maxFiles?: number) => {
   const storage = multer.memoryStorage({
@@ -110,6 +111,13 @@ const handleMulterResultDroppingDisallowedFiles = (req: Request, err: any, logge
     handleMulterResult(req, err, loggerName, next);
     return;
   }
+  if (req.files.length > MAX_FILES_PER_UPLOAD) {
+    Logger.getLogger(loggerName).error(`[MULTER ERROR] Too many files: ${req.files.length}, code=LIMIT_FILE_COUNT`);
+    (req as any).multerError = {code: 'LIMIT_FILE_COUNT', message: 'Too many files'};
+    clearUploadedFiles(req);
+    next();
+    return;
+  }
   const rejected = req.files.filter((file) => !isFileContentAllowed(file.buffer, file.mimetype));
   if (rejected.length) {
     Logger.getLogger(loggerName).error(`[MULTER ERROR] Invalid file content type rejected for ${rejected.length} file(s), code=${createInvalidFileContentError().code}`);
@@ -121,7 +129,7 @@ const handleMulterResultDroppingDisallowedFiles = (req: Request, err: any, logge
 
 export const createMulterErrorMiddleware = (loggerName = 'uploadDocumentsController') => {
   return (req: Request, res: Response, next: NextFunction) => {
-    const upload = createMulterUpload(FILE_SIZE_LIMIT);
+    const upload = createMulterUpload(FILE_SIZE_LIMIT, MAX_FILE_INPUTS_PER_FORM);
     upload.any()(req, res, (err: any) => handleMulterResultDroppingDisallowedFiles(req, err, loggerName, next));
   };
 };
@@ -207,8 +215,11 @@ export const migrateLegacyCaseDocuments = (sections: Array<{caseDocuments?: unkn
   });
 };
 
+const isUploadedCaseDocument = (value: unknown): value is CaseDocument =>
+  Boolean((value as CaseDocument)?.documentLink?.document_binary_url);
+
 export const viewableCaseDocuments = (caseDocuments: CaseDocument | CaseDocument[] | undefined): CaseDocument[] =>
-  normaliseCaseDocuments(caseDocuments).filter((caseDocument) => caseDocument?.documentLink?.document_binary_url);
+  normaliseCaseDocuments(caseDocuments).filter(isUploadedCaseDocument);
 
 export const migrateLegacyCaseDocumentsOnForm = (form: object | undefined): void => {
   if (!form) {
@@ -220,8 +231,6 @@ export const migrateLegacyCaseDocumentsOnForm = (form: object | undefined): void
     }
   });
 };
-
-const isObject = (value: unknown): value is object => typeof value === 'object' && value !== null;
 
 const parseCaseDocumentsJson = (rawCaseDocuments: string): unknown => {
   try {
@@ -238,7 +247,7 @@ export const parseCaseDocuments = (section: Record<string, unknown> | undefined)
     return [];
   }
   const caseDocuments = typeof rawCaseDocuments === 'string' ? parseCaseDocumentsJson(rawCaseDocuments) : rawCaseDocuments;
-  return normaliseCaseDocuments(caseDocuments).filter(isObject) as CaseDocument[];
+  return normaliseCaseDocuments(caseDocuments).filter(isUploadedCaseDocument);
 };
 
 const toListIndex = (value: string, length: number): number | undefined => {
@@ -346,6 +355,16 @@ const validateAndUpload = async (file: Express.Multer.File, upload: SectionUploa
       delete upload.section.fileUpload;
     }
   }
+};
+
+export const reportRejectedFiles = (req: Request, form: {errors?: any[]}): boolean => {
+  const rejectedFields = [...new Set((req as RequestWithRejectedFiles).rejectedFileFields ?? [])];
+  rejectedFields.forEach((fieldName) => {
+    const [category, index] = extractCategoryAndIndex(fieldName);
+    form.errors ??= [];
+    form.errors.push(createFileUploadError(category, index, 'multerError', getMulterErrorConstraint(createInvalidFileContentError())));
+  });
+  return rejectedFields.length > 0;
 };
 
 export const uploadAndValidateFile = async (

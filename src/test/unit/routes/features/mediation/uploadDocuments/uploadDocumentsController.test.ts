@@ -274,6 +274,24 @@ describe('Mediation upload your documents Controller', () => {
         });
     });
 
+    it('should show the wrong file type error when a spoofed file is sent without its upload action', async () => {
+      const validDate = new DateInputFields('12', '11', '2020');
+
+      await request(app)
+        .post(CONTROLLER_URL)
+        .field('action', 'add_another-yourStatement')
+        .field('documentsForYourStatement[0][dateInputFields]', JSON.stringify(validDate))
+        .field('documentsForYourStatement[0][yourName]', 'test document')
+        .attach('documentsForYourStatement[0][fileUpload]', Buffer.from('This is not a real PDF.\n'), {
+          filename: 'spoofed.pdf',
+          contentType: 'application/pdf',
+        })
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Document must be Word, Excel, PowerPoint, PDF');
+        });
+    });
+
     it('should remove item documentsReferred', async () => {
 
       const documentsForYourStatement = {

@@ -33,6 +33,7 @@ import {
 import {caseNumberPrettify} from 'common/utils/stringUtils';
 import {
   uploadAndValidateFile,
+  reportRejectedFiles,
   createMulterErrorMiddleware,
   createFileUploadError,
   getMulterErrorConstraint,
@@ -126,6 +127,10 @@ mediationUploadDocumentsController.post(MEDIATION_UPLOAD_DOCUMENTS, multerMiddle
         
         return renderView(form, uploadDocuments, res, claimId, claim);
       }
+    }
+
+    if (!action?.includes('[uploadButton]') && reportRejectedFiles(req, form)) {
+      return renderView(form, uploadDocuments, res, claimId, claim);
     }
 
     if (action === 'add_another-yourStatement') {

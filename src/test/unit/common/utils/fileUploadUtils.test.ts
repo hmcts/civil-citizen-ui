@@ -18,6 +18,8 @@ import {
   removeUploadedFileForAction,
   viewableCaseDocuments,
   parseCaseDocuments,
+  reportRejectedFiles,
+  MAX_FILE_INPUTS_PER_FORM,
 } from 'common/utils/fileUploadUtils';
 import {FILE_SIZE_LIMIT} from 'form/validators/isFileSize';
 import {CaseDocument} from 'models/document/caseDocument';
@@ -197,6 +199,52 @@ describe('fileUploadUtils', () => {
 
       expect((mockReq as any).multerError).toEqual(multerError);
       expect(mockNext).toHaveBeenCalled();
+    });
+
+    it('should bound how many file inputs a form can send', () => {
+      const multer = require('multer');
+      multer.mockReturnValue({any: jest.fn(() => (req: any, res: any, callback: any) => callback(null))});
+
+      createMulterErrorMiddleware('testLogger')(mockReq as Request, mockRes as Response, mockNext);
+
+      expect(multer).toHaveBeenLastCalledWith(expect.objectContaining({
+        limits: expect.objectContaining({files: MAX_FILE_INPUTS_PER_FORM}),
+      }));
+    });
+
+    it('should reject the upload when more files are chosen than allowed', () => {
+      const multer = require('multer');
+      mockReq.files = Array.from({length: MAX_FILES_PER_UPLOAD + 1}, (_, index) => ({
+        fieldname: 'witnessStatement[0][fileUpload]',
+        originalname: `file-${index}.pdf`,
+        mimetype: 'application/pdf',
+        size: 16,
+        buffer: Buffer.from('%PDF-1.4 file'),
+      } as Express.Multer.File));
+      multer.mockReturnValue({any: jest.fn(() => (req: any, res: any, callback: any) => callback(null))});
+
+      createMulterErrorMiddleware('testLogger')(mockReq as Request, mockRes as Response, mockNext);
+
+      expect((mockReq as any).multerError).toEqual(expect.objectContaining({code: 'LIMIT_FILE_COUNT'}));
+      expect(mockReq.files).toBeUndefined();
+      expect(mockNext).toHaveBeenCalled();
+    });
+
+    it('should accept the maximum number of files', () => {
+      const multer = require('multer');
+      mockReq.files = Array.from({length: MAX_FILES_PER_UPLOAD}, (_, index) => ({
+        fieldname: 'witnessStatement[0][fileUpload]',
+        originalname: `file-${index}.pdf`,
+        mimetype: 'application/pdf',
+        size: 16,
+        buffer: Buffer.from('%PDF-1.4 file'),
+      } as Express.Multer.File));
+      multer.mockReturnValue({any: jest.fn(() => (req: any, res: any, callback: any) => callback(null))});
+
+      createMulterErrorMiddleware('testLogger')(mockReq as Request, mockRes as Response, mockNext);
+
+      expect((mockReq as any).multerError).toBeUndefined();
+      expect(mockReq.files).toHaveLength(MAX_FILES_PER_UPLOAD);
     });
 
     it('should use default logger name when not provided', () => {
@@ -608,9 +656,29 @@ describe('fileUploadUtils', () => {
     });
   });
 
+  describe('reportRejectedFiles', () => {
+    it('adds a wrong file type error to each section with a rejected file', () => {
+      const req = {rejectedFileFields: ['witnessStatement[0][fileUpload]', 'witnessStatement[0][fileUpload]', 'expertReport[2][fileUpload]']} as unknown as Request;
+      const form: {errors?: any[]} = {};
+
+      expect(reportRejectedFiles(req, form)).toBe(true);
+      expect(form.errors).toEqual([
+        createFileUploadError('witnessStatement', '0', 'multerError', 'ERRORS.VALID_MIME_TYPE_FILE'),
+        createFileUploadError('expertReport', '2', 'multerError', 'ERRORS.VALID_MIME_TYPE_FILE'),
+      ]);
+    });
+
+    it('reports nothing when no file was rejected', () => {
+      const form: {errors?: any[]} = {};
+
+      expect(reportRejectedFiles({} as Request, form)).toBe(false);
+      expect(form.errors).toBeUndefined();
+    });
+  });
+
   describe('parseCaseDocuments', () => {
-    const first = {documentName: 'a.pdf'};
-    const second = {documentName: 'b.pdf'};
+    const first = {documentName: 'a.pdf', documentLink: {document_binary_url: 'http://dm-store/a/binary'}};
+    const second = {documentName: 'b.pdf', documentLink: {document_binary_url: 'http://dm-store/b/binary'}};
 
     it('parses a JSON list of case documents', () => {
       expect(parseCaseDocuments({caseDocuments: JSON.stringify([first, second])})).toEqual([first, second]);
@@ -634,6 +702,10 @@ describe('fileUploadUtils', () => {
 
     it('drops entries that are not case documents', () => {
       expect(parseCaseDocuments({caseDocuments: JSON.stringify([null, 'x', 1, first])})).toEqual([first]);
+    });
+
+    it('drops case documents without a document link', () => {
+      expect(parseCaseDocuments({caseDocuments: JSON.stringify([{}, {documentName: 'c.pdf'}, {documentLink: {}}, second])})).toEqual([second]);
     });
 
     it('returns no case documents when there are none', () => {

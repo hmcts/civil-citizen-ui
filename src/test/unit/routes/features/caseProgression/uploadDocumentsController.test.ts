@@ -700,6 +700,23 @@ describe('on POST', () => {
         });
     });
 
+    it('should show the wrong file type error when a spoofed file is sent without its upload action', async () => {
+      (saveCaseProgression as jest.Mock).mockClear();
+
+      await request(app)
+        .post(CP_UPLOAD_DOCUMENTS_URL)
+        .field('action', 'add_another-witnessStatement')
+        .attach('expertReport[0][fileUpload]', Buffer.from('This is not a real PDF.\n'), {
+          filename: 'spoofed.pdf',
+          contentType: 'application/pdf',
+        })
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Document must be Word, Excel, PowerPoint, PDF');
+        });
+      expect(saveCaseProgression).not.toHaveBeenCalled();
+    });
+
     it('should successfully upload valid PDF file', async () => {
       const file = {
         fieldname: 'expertReport[0][fileUpload]',
