@@ -1,0 +1,24 @@
+{% extends "claim-details-tpl-dashboard.njk" %}
+{% from "govuk/components/tag/macro.njk" import govukTag %}
+{% set noCrumbs = true %}
+{% block pageTitle %}Local UI preview{% endblock %}
+{% block nestedContent %}
+<div class="ui-preview-catalogue">
+<h1 class="govuk-heading-l">Local UI preview</h1>
+<p class="govuk-body">Synthetic data only. These links use the application's real routes and templates. Changes are shared by everyone using this local instance; restart to reset.</p>
+{% for group in catalog %}
+<section aria-labelledby="preview-group-{{ loop.index }}">
+<h2 class="govuk-heading-m" id="preview-group-{{ loop.index }}">{{ group.title }}</h2>
+<p class="govuk-body">{{ group.description }}</p>
+<ul class="govuk-list govuk-list--spaced">
+{% for page in group.pages %}
+<li>
+{% if page.status == 'ready' %}<a class="govuk-link" href="{{ page.path }}" data-preview-ready="true">{{ page.title }}</a>
+{% else %}<span>{{ page.title }}</span>{% endif %}
+{{ govukTag({text: 'Ready' if page.status == 'ready' else ('Changes fixture data' if page.status == 'action' else 'Prerequisite required'), classes: 'govuk-tag--green' if page.status == 'ready' else 'govuk-tag--grey'}) }}
+{% if page.notes %}<p class="govuk-hint">{{ page.notes }}</p>{% endif %}
+</li>
+{% endfor %}</ul></section>
+{% endfor %}
+</div>
+{% endblock %}
