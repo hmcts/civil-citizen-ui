@@ -37,22 +37,21 @@ describe('gaFileUpload macro', () => {
     expect(html).toContain('js-auto-upload-button');
   });
 
-  it('shows a read-only section for each uploaded file only', () => {
+  it('leaves uploaded files to the uploaded files list on the page', () => {
     const html = render({id: 'selectedFile', summaryRows: [typeOfDocumentRow, uploadedFileRow('statement.pdf'), uploadedFileRow('evidence.png')]});
 
-    expect(count(html, 'app-uploaded-file-slot"')).toBe(2);
-    expect(html).toContain('app-uploaded-file-slot__name">statement.pdf<');
-    expect(html).toContain('app-uploaded-file-slot__name">evidence.png<');
-    expect(html).not.toContain('app-uploaded-file-slot__name">Type of document<');
+    expect(count(html, 'app-uploaded-file-slot')).toBe(0);
+    expect(html).not.toContain('statement.pdf');
+    expect(html).not.toContain('evidence.png');
     expect(html).toContain('data-has-uploaded-files="true"');
+  });
+
+  it('does not mark files as uploaded when only other rows are listed', () => {
+    expect(render({id: 'selectedFile', summaryRows: [typeOfDocumentRow]})).not.toContain('data-has-uploaded-files');
   });
 
   it('works without a summary list', () => {
     expect(count(render({id: 'selectedFile'}), 'class="row-container')).toBe(1);
-  });
-
-  it('escapes file names', () => {
-    expect(render({id: 'selectedFile', summaryRows: [uploadedFileRow('<script>x</script>.pdf')]})).not.toContain('<script>x</script>');
   });
 
   it('shows the error and puts caller content and save button attributes in the upload box', () => {

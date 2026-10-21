@@ -4,12 +4,6 @@
 {% macro gaFileUpload(t, params) %}
   {% set uploadedRows = (params.summaryRows or []) | selectattr("actions") %}
   <div class="file-upload-slots" data-single-upload-box="true"{% if uploadedRows.length %} data-has-uploaded-files="true"{% endif %}>
-    {% for row in uploadedRows %}
-      <div class="govuk-inset-text app-uploaded-file-slot">
-        <p class="govuk-body govuk-!-font-weight-bold govuk-!-margin-bottom-1">{{ t('PAGES.UPLOAD_DOCUMENTS.UPLOADED_FILE') }}</p>
-        <p class="govuk-body govuk-!-margin-bottom-0 app-uploaded-file-slot__name">{{ row.key.text }}</p>
-      </div>
-    {% endfor %}
     <div class="row-container govuk-inset-text">
       {% if caller %}{{ caller() }}{% endif %}
       {{ govukFileUpload({
