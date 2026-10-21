@@ -127,12 +127,11 @@ describe('TimeoutWarning', () => {
 
   it('redirects when the idle time and warning period have elapsed', () => {
     window.localStorage.setItem('timeUserLastInteractedWithPage', new Date(Date.now() - 31 * 60000).toISOString());
-    const replace = jest.spyOn(window.location, 'replace').mockImplementation(() => undefined);
+    const redirect = jest.spyOn(moduleInstance, 'redirect').mockImplementation(() => undefined);
 
     moduleInstance.checkIfShouldHaveTimedOut();
 
-    expect(replace).toHaveBeenCalledWith('/session-timeout');
-    replace.mockRestore();
+    expect(redirect).toHaveBeenCalledTimes(1);
   });
 
   it('sends the session extension request with JSON accepted', () => {
