@@ -6,3 +6,4 @@ export const SIGNER_NAME_MAX_LENGTH = 70;
 export const SIGNER_ROLE_MAX_LENGTH = 70;
 export const MAX_CLAIM_AMOUNT_TOTAL = 25000;
 export const ADDRESS_LINE_MAX_LENGTH_JO = 35;
+export const ALLOWED_CHARACTER_LIST_FOR_SECURITY = /^[A-Za-z0-9 \t\r\n.,!?'"()&:;@#/$%+=£‘’“”–—…-]*$/;
