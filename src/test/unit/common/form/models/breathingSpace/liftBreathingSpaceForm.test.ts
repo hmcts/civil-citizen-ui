@@ -37,6 +37,14 @@ describe('LiftBreathingSpaceForm', () => {
     expect(genericForm.getErrors().some(e => e.property === 'text')).toBe(false);
   });
 
+  it('should accept breathing space lift reason less than 1000 characters', () => {
+    const startDate = new Date('2024-06-01T00:00:00');
+    const form = new LiftBreathingSpaceForm('2024', '06', '01', 'a'.repeat(999), startDate, STANDARD_BREATHING_SPACE);
+    const genericForm = new GenericForm(form);
+    genericForm.validateSync();
+    expect(genericForm.getErrors().some(e => e.property === 'text')).toBe(false);
+  });
+
   it.each([
     ['Accented characters', 'Café & Résumé'],
     ['Unallowed symbols (<, >)', 'Hello <world>!'],
