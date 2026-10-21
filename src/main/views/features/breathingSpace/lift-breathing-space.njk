@@ -101,16 +101,20 @@
           ]
         }) }}
 
-        {{ govukTextarea({
-          name: "text",
-          id: "text",
-          label: {
-            text: t('PAGES.BREATHING_SPACE.LIFT.WHY_LIFTED'),
-            classes: "govuk-label--m"
-          },
-          value: form.model.text,
-          errorMessage: form.errorFor('text', t)
-        }) }}
+        <div class="govuk-form-group {% if errors.length %} govuk-form-group--error {% endif %}">
+          {{ govukTextarea({
+            name: "text",
+            id: "text",
+            label: {
+              text: t('PAGES.BREATHING_SPACE.LIFT.WHY_LIFTED'),
+              classes: "govuk-label--m"
+            },
+            value: form.model.text,
+             errorMessage: {
+                text: t(form.errorFor('text'))
+             } if form.hasFieldError('text')
+          }) }}
+        </div>
 
         <div class="govuk-button-group">
           {{ govukButton({
