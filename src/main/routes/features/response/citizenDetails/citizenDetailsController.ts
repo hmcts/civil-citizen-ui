@@ -1,20 +1,19 @@
 import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {CITIZEN_DETAILS_URL, CITIZEN_PHONE_NUMBER_URL, DOB_URL, RESPONSE_TASK_LIST_URL} from 'routes/urls';
 import {Party} from 'models/party';
+import {Claim} from 'models/claim';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {
-  getDefendantInformation,
-  saveDefendantProperty,
-} from 'services/features/common/defendantDetailsService';
+import {saveDefendantPropertyToResponseDraft} from 'services/features/common/defendantDetailsService';
 import {ClaimantOrDefendant, PartyType} from 'models/partyType';
 import {GenericForm} from 'form/models/genericForm';
 import {generateCorrespondenceAddressErrorMessages, PartyDetails} from 'form/models/partyDetails';
 import {PartyPhone} from 'models/PartyPhone';
-import {saveTelephoneToStore} from 'services/features/claim/yourDetails/phoneService';
+import {saveTelephoneToResponseDraft} from 'services/features/claim/yourDetails/phoneService';
 import {CitizenTelephoneNumber} from 'form/models/citizenTelephoneNumber';
-import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {getResponseDraft} from 'modules/draft-store/response/responseDraftStoreService';
 import {AppRequest} from 'common/models/AppRequest';
 import {isCarmEnabledForCase} from '../../../../app/auth/launchdarkly/launchDarklyClient';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const citizenDetailsController = Router();
 
@@ -49,12 +48,17 @@ const redirect = (respondent: Party, req: Request, res: Response) => {
   }
 };
 
+const getClaimFromResponseDraft = async (req: AppRequest, caseId: string): Promise<Claim> => {
+  const draftResult = await getResponseDraft(req, caseId);
+  return Object.assign(new Claim(), draftResult?.claimResponse?.case_data as unknown as Claim);
+};
+
 citizenDetailsController.get(CITIZEN_DETAILS_URL, (async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const redisKey = generateRedisKey(<AppRequest>req);
-    const claim = await getCaseDataFromStore(redisKey);
+    const caseId = getRouteParam(req, 'id');
+    const claim = await getClaimFromResponseDraft(<AppRequest>req, caseId);
     const carmEnabled = await isCarmEnabledForCase(claim.submittedDate);
-    const respondent: Party = await getDefendantInformation(generateRedisKey(<AppRequest>req));
+    const respondent: Party = Object.assign(new Party(), claim.respondent1);
     const partyDetails = new GenericForm(respondent.partyDetails);
     const partyPhoneForm = new GenericForm<PartyPhone>(new PartyPhone(respondent.partyPhone?.phone, respondent.partyPhone?.ccdPhoneExist));
     renderPage(res, req, partyDetails, respondent.type, partyPhoneForm, carmEnabled);
@@ -65,10 +69,11 @@ citizenDetailsController.get(CITIZEN_DETAILS_URL, (async (req: Request, res: Res
 
 citizenDetailsController.post(CITIZEN_DETAILS_URL, (async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const redisKey = generateRedisKey(<AppRequest>req);
-    const claim = await getCaseDataFromStore(redisKey);
+    const caseId = getRouteParam(req, 'id');
+    const appReq = <AppRequest>req;
+    const claim = await getClaimFromResponseDraft(appReq, caseId);
     const carmEnabled = await isCarmEnabledForCase(claim.submittedDate);
-    const respondent = await getDefendantInformation(redisKey);
+    const respondent = Object.assign(new Party(), claim.respondent1);
     const partyDetails = new GenericForm(new PartyDetails(req.body, carmEnabled));
     const partyPhone = new GenericForm<PartyPhone>(new PartyPhone(req.body.partyPhone, respondent?.partyPhone?.ccdPhoneExist));
 
@@ -79,10 +84,10 @@ citizenDetailsController.post(CITIZEN_DETAILS_URL, (async (req: Request, res: Re
       generateCorrespondenceAddressErrorMessages(partyDetails);
       renderPage(res, req, partyDetails, respondent.type, partyPhone, carmEnabled);
     } else {
-      await saveDefendantProperty(redisKey, propertyName, partyDetails.model);
+      await saveDefendantPropertyToResponseDraft(appReq, caseId, propertyName, partyDetails.model);
       if (req.body?.partyPhone || (respondent?.partyPhone?.phone && respondent?.partyPhone?.ccdPhoneExist)) {
         const citizenTelephoneNumber = new CitizenTelephoneNumber(req.body.partyPhone, true);
-        await saveTelephoneToStore(redisKey, citizenTelephoneNumber, ClaimantOrDefendant.DEFENDANT);
+        await saveTelephoneToResponseDraft(appReq, caseId, citizenTelephoneNumber, ClaimantOrDefendant.DEFENDANT);
       }
       redirect(respondent, req, res);
     }
