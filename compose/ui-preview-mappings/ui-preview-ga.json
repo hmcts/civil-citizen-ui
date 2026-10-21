@@ -1,0 +1,312 @@
+{
+  "mappings": [
+    {
+      "name": "ui-preview-ga-case-details",
+      "priority": 1,
+      "request": {
+        "method": "GET",
+        "urlPath": "/cases/1645882162449604"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "jsonBody": {
+          "id": "1645882162449604",
+          "state": "AWAITING_RESPONDENT_ACKNOWLEDGEMENT",
+          "last_modified": "2022-03-01T13:29:24.971Z",
+          "case_data": {
+            "legacyCaseReference": "000MC604",
+            "totalClaimAmount": 1000,
+            "ccdState": "AWAITING_RESPONDENT_ACKNOWLEDGEMENT",
+            "submittedDate": "2022-05-23T17:02:02.38407",
+            "claimIssuedDate": "2022-03-01T13:29:24.971Z",
+            "responseClaimTrack": "SMALL_CLAIM",
+            "claimFee": {
+              "code": "FEE0204",
+              "version": "4",
+              "calculatedAmountInPence": "7000"
+            },
+            "applicant1": {
+              "type": "INDIVIDUAL",
+              "partyName": "Jane Claimant",
+              "individualTitle": "Ms",
+              "individualFirstName": "Jane",
+              "individualLastName": "Claimant",
+              "partyEmail": "claimant@example.com",
+              "primaryAddress": {
+                "AddressLine1": "1 Claimant Road",
+                "PostTown": "London",
+                "PostCode": "SW1A 1AA"
+              }
+            },
+            "respondent1": {
+              "type": "INDIVIDUAL",
+              "partyName": "John Defendant",
+              "individualTitle": "Mr",
+              "individualFirstName": "John",
+              "individualLastName": "Defendant",
+              "partyEmail": "defendant@example.com",
+              "primaryAddress": {
+                "AddressLine1": "Defendant House",
+                "AddressLine2": "21",
+                "AddressLine3": "Church Road",
+                "PostTown": "Berkshire",
+                "PostCode": "RG4 7AD"
+              }
+            },
+            "respondent1ResponseDeadline": "2026-12-31T16:00:00.000Z",
+            "generalApplications": [
+              {
+                "id": "717871d3-8ff9-47d3-80c9-f4f211410e6e",
+                "value": {
+                  "caseLink": {
+                    "CaseReference": "1732194111758649"
+                  },
+                  "parentClaimantIsApplicant": "No",
+                  "generalAppSubmittedDateGAspec": "2024-11-21T13:01:49"
+                }
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "name": "ui-preview-ga-user-case-roles",
+      "priority": 1,
+      "request": {
+        "method": "GET",
+        "urlPath": "/cases/1645882162449604/userCaseRoles"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "jsonBody": [
+          "[DEFENDANT]"
+        ]
+      }
+    },
+    {
+      "name": "ui-preview-ga-application-case",
+      "priority": 1,
+      "request": {
+        "method": "GET",
+        "urlPath": "/cases/1732194111758649"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "jsonBody": {
+          "id": "1732194111758649",
+          "state": "AWAITING_RESPONDENT_RESPONSE",
+          "last_modified": "2024-11-21T13:01:49.000Z",
+          "created_date": "2024-11-21T13:01:49.000Z",
+          "case_data": {
+            "applicationTypes": "Strike out",
+            "legacyCaseReference": "000MC604",
+            "generalAppType": {
+              "types": [
+                "STRIKE_OUT"
+              ]
+            },
+            "generalAppUrgencyRequirement": {
+              "generalAppUrgency": "No"
+            },
+            "generalAppRespondentAgreement": {
+              "hasAgreed": "No"
+            },
+            "generalAppInformOtherParty": {
+              "isWithNotice": "Yes"
+            },
+            "generalAppAskForCosts": "No",
+            "generalAppDetailsOfOrder": "Strike out the claimant's statement of case.",
+            "generalAppReasonsOfOrder": "The claim has no real prospect of success.",
+            "generalAppEvidenceDocument": [],
+            "gaAddlDoc": [],
+            "generalAppStatementOfTruth": {
+              "name": "John Defendant"
+            },
+            "generalAppPBADetails": {
+              "fee": {
+                "code": "FEE0442",
+                "version": "1",
+                "calculatedAmountInPence": "10800"
+              },
+              "paymentDetails": {
+                "status": "SUCCESS",
+                "reference": "RC-1234-5678-9012"
+              }
+            },
+            "applicationFeeAmountInPence": "10800",
+            "parentClaimantIsApplicant": "No",
+            "generalAppHearingDetails": {
+              "HearingPreferencesPreferredType": "IN_PERSON",
+              "ReasonForPreferredHearingType": "I need to speak to the judge in person about the strike-out.",
+              "HearingPreferredLocation": null,
+              "HearingDetailsTelephoneNumber": "01632960001",
+              "HearingDetailsEmailID": "defendant@example.com",
+              "unavailableTrialRequiredYesOrNo": "No",
+              "generalAppUnavailableDates": [],
+              "SupportRequirement": []
+            },
+            "judicialDecision": null
+          }
+        }
+      }
+    },
+    {
+      "name": "ui-preview-ga-applications-by-case",
+      "priority": 1,
+      "request": {
+        "method": "GET",
+        "urlPath": "/cases/1645882162449604/ga/applications"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "jsonBody": {
+          "cases": [
+            {
+              "id": "1732194111758649",
+              "state": "AWAITING_RESPONDENT_RESPONSE",
+              "last_modified": "2024-11-21T13:01:49.000Z",
+              "created_date": "2024-11-21T13:01:49.000Z",
+              "case_data": {
+                "applicationTypes": "Strike out",
+                "legacyCaseReference": "000MC604",
+                "generalAppType": {
+                  "types": [
+                    "STRIKE_OUT"
+                  ]
+                },
+                "generalAppUrgencyRequirement": {
+                  "generalAppUrgency": "No"
+                },
+                "generalAppRespondentAgreement": {
+                  "hasAgreed": "No"
+                },
+                "generalAppInformOtherParty": {
+                  "isWithNotice": "Yes"
+                },
+                "generalAppAskForCosts": "No",
+                "generalAppDetailsOfOrder": "Strike out the claimant's statement of case.",
+                "generalAppReasonsOfOrder": "The claim has no real prospect of success.",
+                "generalAppEvidenceDocument": [],
+                "gaAddlDoc": [],
+                "generalAppStatementOfTruth": {
+                  "name": "John Defendant"
+                },
+                "generalAppPBADetails": {
+                  "fee": {
+                    "code": "FEE0442",
+                    "version": "1",
+                    "calculatedAmountInPence": "10800"
+                  },
+                  "paymentDetails": {
+                    "status": "SUCCESS",
+                    "reference": "RC-1234-5678-9012"
+                  }
+                },
+                "applicationFeeAmountInPence": "10800",
+                "parentClaimantIsApplicant": "No",
+                "generalAppHearingDetails": {
+                  "HearingPreferencesPreferredType": "IN_PERSON",
+                  "ReasonForPreferredHearingType": "I need to speak to the judge in person about the strike-out.",
+                  "HearingDetailsTelephoneNumber": "01632960001",
+                  "HearingDetailsEmailID": "defendant@example.com",
+                  "unavailableTrialRequiredYesOrNo": "No",
+                  "generalAppUnavailableDates": [],
+                  "SupportRequirement": []
+                },
+                "judicialDecision": null
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "urlPath": "/cases/1645882162449409/ga/applications"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "jsonBody": {
+          "cases": []
+        }
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "urlPath": "/cases/1645882162449601/ga/applications"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "jsonBody": {
+          "cases": []
+        }
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "urlPath": "/cases/1645882162449602/ga/applications"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "jsonBody": {
+          "cases": []
+        }
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "urlPath": "/cases/1645882162449603/ga/applications"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "jsonBody": {
+          "cases": []
+        }
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "urlPath": "/cases/1645882162449605/ga/applications"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "jsonBody": {
+          "cases": []
+        }
+      }
+    }
+  ]
+}

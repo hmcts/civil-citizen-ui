@@ -11,6 +11,7 @@
 {% block head %}
 
 {% include "./macro/dynatrace.njk" %}
+{% if not isUiPreview %}
 <!-- Google Tag Manager -->
 <script nonce={{ nonceDataLayer }}>
 window.dataLayer = window.dataLayer || [];
@@ -21,6 +22,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
 })(window,document,'script','dataLayer','{{ gtmScriptId }}');</script>
 <!-- End Google Tag Manager -->
+{% endif %}
   {% include "webpack/css.njk" %}
 {% endblock %}
 {% block pageTitle %}
@@ -52,10 +54,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 
 
 {% block bodyStart %}
+{% if not isUiPreview %}
 <!-- Google Tag Manager (noscript) -->
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id={{ gtmScriptId }}&nojscript=true"
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
+{% endif %}
   {{ cookieBanner(t) }}
 {% endblock %}
 

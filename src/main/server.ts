@@ -4,10 +4,12 @@
 // can only instrument those modules as they are required. Anything imported above this line is
 // never instrumented, which is how prod lost all request and dependency telemetry on 5 Nov 2026.
 import './modules/appinsights/bootstrap';
+import {isUiPreviewEnabled, uiPreviewHost} from './common/utils/uiPreviewConfig';
 import {readFileSync} from 'fs';
 import {createServer} from 'https';
 import * as path from 'path';
 
+if (isUiPreviewEnabled()) require('../../bin/ui-preview-network.cjs');
 // Loaded after the bootstrap so its module-level loggers are wrapped and its http use is traced.
 const {app} = require('./app');
 
@@ -40,20 +42,30 @@ process.on('unhandledRejection', (reason: unknown) => {
 // caps time-to-receive request headers, not idle keep-alive, and the two are decoupled in Node 24.
 const keepAliveTimeout = 185000;
 
-if (app.locals.ENV === 'development') {
-  const sslDirectory = path.join(__dirname, 'resources', 'localhost-ssl');
-  const sslOptions = {
-    cert: readFileSync(path.join(sslDirectory, 'localhost.crt')),
-    key: readFileSync(path.join(sslDirectory, 'localhost.key')),
-  };
-  const server = createServer(sslOptions, app);
-  server.keepAliveTimeout = keepAliveTimeout;
-  server.listen(port, () => {
-    logger.info(`Application started: https://localhost:${port}`);
-  });
-} else {
-  const server = app.listen(port, () => {
-    logger.info(`Application started: http://localhost:${port}`);
-  });
-  server.keepAliveTimeout = keepAliveTimeout;
+async function start(): Promise<void> {
+  if (isUiPreviewEnabled()) await app.locals.uiPreviewReady;
+  if (app.locals.ENV === 'development') {
+    const sslDirectory = path.join(__dirname, 'resources', 'localhost-ssl');
+    const sslOptions = {
+      cert: readFileSync(path.join(sslDirectory, 'localhost.crt')),
+      key: readFileSync(path.join(sslDirectory, 'localhost.key')),
+    };
+    const server = createServer(sslOptions, app);
+    server.keepAliveTimeout = keepAliveTimeout;
+    server.listen(port, () => {
+      logger.info(`Application started: https://localhost:${port}`);
+    });
+  } else {
+    const server = isUiPreviewEnabled() ? app.listen(port, uiPreviewHost(), () => {
+      logger.info(`Local UI preview: http://127.0.0.1:${port}/ui-preview`);
+    }) : app.listen(port, () => {
+      logger.info(`Application started: http://localhost:${port}`);
+    });
+    server.keepAliveTimeout = keepAliveTimeout;
+  }
+
 }
+start().catch((error: Error) => {
+  logger.error('Application startup failed', error);
+  process.exitCode = 1;
+});

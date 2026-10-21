@@ -1,0 +1,34 @@
+name: ${UI_PREVIEW_PROJECT:?Choose a unique local preview project name}
+services:
+  wiremock:
+    image: wiremock/wiremock:3.13.2
+    pull_policy: never
+    ports:
+      - "127.0.0.1:1111:8080"
+    volumes:
+      - ${UI_PREVIEW_MAPPING_DIR:?Export validated individual mappings first}:/home/wiremock/mappings:ro
+    # Preview mappings are static and need no chart mappings/state extension.
+    command: ["--disable-gzip"]
+    networks: [preview]
+    security_opt: ["no-new-privileges:true"]
+  citizen-ui:
+    image: cui-ui-preview:local
+    pull_policy: never
+    build:
+      context: ..
+      dockerfile: Dockerfile.ui-preview
+    ports:
+      - "127.0.0.1:3001:3001"
+    depends_on: [wiremock]
+    networks: [preview]
+    read_only: true
+    tmpfs: [/tmp]
+    security_opt: ["no-new-privileges:true"]
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://127.0.0.1:3001/ui-preview',r=>{let b='';r.on('data',d=>b+=d);r.on('end',()=>process.exit(r.statusCode===200&&r.headers['x-ui-preview']==='synthetic-local-only'&&b.includes('Local UI preview')?0:1))}).on('error',()=>process.exit(1))"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+networks:
+  preview:
+    internal: true
