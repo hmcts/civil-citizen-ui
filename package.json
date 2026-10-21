@@ -15,7 +15,7 @@
     "lint:win": "yarn lint -c win.eslint.json",
     "build": "webpack --config webpack.config.js",
     "build:prod": "NODE_ENV=production yarn webpack --mode production --config webpack.config.js",
-    "test": "LOG_LEVEL=OFF jest -c jest.config.js --maxWorkers=8 --logHeapUsage",
+    "test": "echo 'Unit tests run in yarn test:coverage'",
     "test:coverage": "LOG_LEVEL=OFF jest --coverage --maxWorkers=8 --logHeapUsage --silent",
     "test:routes": "jest -c jest.functionaltest.config.js --runInBand",
     "test:integration": "yarn test:routes",
