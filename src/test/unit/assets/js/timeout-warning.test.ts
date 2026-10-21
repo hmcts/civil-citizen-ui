@@ -19,6 +19,9 @@ describe('TimeoutWarning', () => {
     extendTimeOnServer: () => void;
     redirect: () => void;
     clearTimers: () => void;
+    dialogSupported: () => boolean;
+    startUiCountdown: () => void;
+    escClose: (event: {keyCode: number}) => void;
   };
 
   beforeAll(() => {
@@ -34,6 +37,7 @@ describe('TimeoutWarning', () => {
   beforeEach(() => {
     jest.useFakeTimers();
     jest.resetModules();
+    (global as unknown as {HTMLDialogElement: unknown}).HTMLDialogElement = (window as unknown as {HTMLDialogElement: unknown}).HTMLDialogElement;
     document.body.innerHTML = `
       <div id="main-content" class="govuk-modal-dialogue-inert-container"></div>
       <div class="govuk-timeout-warning-fallback"></div>
@@ -86,11 +90,51 @@ describe('TimeoutWarning', () => {
     expect(window.localStorage.getItem('timeUserLastInteractedWithPage')).not.toBeNull();
   });
 
+  it('uses the polyfill or displays the fallback when dialogs are unsupported', () => {
+    (global as unknown as {HTMLDialogElement: unknown}).HTMLDialogElement = undefined;
+    const registerDialog = jest.fn();
+    (window as unknown as {dialogPolyfill: {registerDialog: jest.Mock}}).dialogPolyfill = {registerDialog};
+
+    expect(moduleInstance.dialogSupported()).toBe(true);
+    expect(registerDialog).toHaveBeenCalledWith(dialog);
+
+    registerDialog.mockImplementation(() => { throw new Error('unsupported'); });
+    expect(moduleInstance.dialogSupported()).toBe(false);
+    expect(document.querySelector('.govuk-timeout-warning-fallback')?.classList.contains('govuk-!-display-block')).toBe(true);
+  });
+
+  it('extends the session after activity and opens after the idle period', () => {
+    const extend = jest.spyOn(moduleInstance, 'extendTimeOnServer');
+    const open = jest.spyOn(moduleInstance, 'openDialog');
+
+    moduleInstance.resetIdleTime();
+    jest.advanceTimersByTime(3000);
+    expect(extend).toHaveBeenCalled();
+
+    jest.advanceTimersByTime(25 * 60000);
+    expect(open).toHaveBeenCalled();
+  });
+
   it('opens the dialog and starts the countdown', () => {
     moduleInstance.openDialog();
     expect(dialog.showModal).toHaveBeenCalled();
     expect(document.body.classList.contains('govuk-timeout-warning-overlay')).toBe(true);
     expect(moduleInstance.isDialogOpen()).toBe(true);
+  });
+
+  it('handles missing countdown elements and an already open dialog', () => {
+    const showModal = dialog.showModal;
+    moduleInstance.openDialog();
+    expect(showModal).toHaveBeenCalledTimes(1);
+    moduleInstance.openDialog();
+    expect(showModal).toHaveBeenCalledTimes(1);
+  });
+
+  it('closes on escape and marks the page inaccessible', () => {
+    moduleInstance.openDialog();
+    moduleInstance.escClose({keyCode: 27});
+    expect(dialog.close).toHaveBeenCalled();
+    expect(document.querySelector('#main-content')?.getAttribute('aria-hidden')).toBe('false');
   });
 
   it('closes the dialog and extends the session', () => {
