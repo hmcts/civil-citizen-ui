@@ -1,3 +1,5 @@
+import {isUiPreviewEnabled} from 'common/utils/uiPreviewConfig';
+import {seedUiPreviewFixtures} from './uiPreviewFixtures';
 import {Application} from 'express';
 import {LoggerInstance} from 'winston';
 import RedisStore from 'connect-redis';
@@ -24,6 +26,13 @@ export class DraftStoreCliente2e {
 
     app.locals.draftStoreClient = client;
     this.logger.info(DraftStoreCliente2e.REDIS_CONNECTION_SUCCESS);
+
+    if (isUiPreviewEnabled()) {
+      app.locals.uiPreviewReady = seedUiPreviewFixtures(client, REDIS_DATA, GA_REDIS_DATA);
+      // Attach a rejection handler immediately; startup still awaits/rethrows it.
+      app.locals.uiPreviewReady.catch((error: Error) => this.logger.error('Preview fixture initialization failed', error));
+      return;
+    }
 
     app.locals.draftStoreClient.on('connect', () => {
       REDIS_DATA.forEach((element: any) => {
