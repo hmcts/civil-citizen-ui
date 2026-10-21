@@ -1,12 +1,13 @@
 // Separate process: unit/integration setup mocks cannot replace the real app's
 // OIDC or registration policy. Only non-preview Redis infrastructure is replaced.
 const path = require('node:path');
+const {tmpdir} = require('node:os');
 const root = path.resolve(__dirname, '../../..');
 require(path.join(root, 'node_modules/ts-node/register/transpile-only'));
 require(path.join(root, 'node_modules/tsconfig-paths/register'));
 const mode = process.argv[2];
 const {isolatedEnvironment} = require(path.join(root, 'bin/ui-preview.cjs'));
-Object.assign(process.env, isolatedEnvironment('http://127.0.0.1:1', process.env.TMPDIR), {
+Object.assign(process.env, isolatedEnvironment('http://127.0.0.1:1', tmpdir()), {
   NODE_ENV: mode, UI_PREVIEW_ENABLED: process.argv[3], UI_PREVIEW_FIXTURE_NOW: '2026-10-20T12:00:00Z',
 });
 require(path.join(root, 'bin/ui-preview-network.cjs'));
