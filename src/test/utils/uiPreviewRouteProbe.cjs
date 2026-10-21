@@ -1,11 +1,13 @@
 // Real application/controller/template sweep. Infrastructure is synthetic;
 // OIDC policy, guards, CSRF registration and template assembly are unchanged.
 const path = require('node:path');
+const {tmpdir} = require('node:os');
 const assert = require('node:assert/strict');
 const root = path.resolve(__dirname, '../../..');
+const directory = tmpdir();
 process.chdir(root);
 const {isolatedEnvironment} = require(path.join(root, 'bin/ui-preview.cjs'));
-Object.assign(process.env, isolatedEnvironment('http://127.0.0.1:1', process.env.TMPDIR), {UI_PREVIEW_FIXTURE_NOW: '2026-10-20T12:00:00Z'});
+Object.assign(process.env, isolatedEnvironment('http://127.0.0.1:1', directory), {UI_PREVIEW_FIXTURE_NOW: '2026-10-20T12:00:00Z'});
 require(path.join(root, 'bin/ui-preview-network.cjs'));
 require(path.join(root, 'node_modules/ts-node/register/transpile-only'));
 require(path.join(root, 'node_modules/tsconfig-paths/register'));
@@ -18,7 +20,7 @@ const {createPreviewStubServer} = require(path.join(root, 'bin/ui-preview-stubs.
   const stub = createPreviewStubServer(); await new Promise(resolve => stub.listen(0, '127.0.0.1', resolve));
   const serviceUrl = `http://127.0.0.1:${stub.address().port}`;
   // Configure clients before importing the real app/config singleton.
-  process.env.NODE_CONFIG = isolatedEnvironment(serviceUrl, process.env.TMPDIR).NODE_CONFIG;
+  process.env.NODE_CONFIG = isolatedEnvironment(serviceUrl, directory).NODE_CONFIG;
   const {app} = require(path.join(root, 'src/main/app'));
   const {getUiPreviewPageCatalog} = require(path.join(root, 'src/main/services/features/uiPreview/pageCatalog'));
   const {seedUiPreviewFixtures} = require(path.join(root, 'src/main/modules/e2eConfiguration/uiPreviewFixtures'));
