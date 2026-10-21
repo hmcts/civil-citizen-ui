@@ -39,6 +39,7 @@ import {
   getMulterErrorConstraint,
   extractCategoryAndIndex,
   removeUploadedFileForAction,
+  deleteRemovedDocuments,
 } from 'common/utils/fileUploadUtils';
 import {getRouteParam} from 'common/utils/routeParamUtils';
 
@@ -143,6 +144,11 @@ mediationUploadDocumentsController.post(MEDIATION_UPLOAD_DOCUMENTS, multerMiddle
       removeUploadedFileForAction(form.model, action);
     } else if (action?.includes('[removeButton]')) {
       removeItem(uploadDocumentsForm, action);
+    }
+
+    if (action?.includes('[deleteFile]') || action?.includes('[removeButton]')) {
+      await deleteRemovedDocuments(req, claim.mediationUploadDocuments, uploadDocumentsForm,
+        civilServiceClientForDocRetrieve, 'mediationUploadDocumentsController');
     }
 
     if (action) {

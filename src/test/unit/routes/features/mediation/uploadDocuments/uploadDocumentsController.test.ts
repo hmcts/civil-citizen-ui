@@ -19,6 +19,7 @@ import express from 'express';
 import {CaseDocument} from 'models/document/caseDocument';
 import {DateInputFields} from 'models/caseProgression/uploadDocumentsUserForm';
 import {FileUpload} from 'models/caseProgression/fileUpload';
+import {CivilServiceClient} from 'client/civilServiceClient';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -371,6 +372,54 @@ describe('Mediation upload your documents Controller', () => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(TestMessages.MEDIATION_UPLOAD_DOCUMENTS_TITLE_PAGE);
         });
+    });
+  });
+
+  describe('deleting uploaded documents from document management', () => {
+    const documentAt = (id: string) => ({documentLink: {document_url: `http://dm-store/documents/${id}`, document_binary_url: `http://dm-store/documents/${id}/binary`}});
+    const dateInputFields = {dateDay: '14', dateMonth: '10', dateYear: '2020'};
+    let deleteDocument: jest.SpyInstance;
+
+    beforeEach(() => {
+      deleteDocument = jest.spyOn(CivilServiceClient.prototype, 'deleteDocument').mockResolvedValue(undefined);
+      mockGetCaseData.mockImplementation(async () => {
+        const claim = new Claim();
+        claim.mediationUploadDocuments = new UploadDocuments([
+          new TypeOfDocuments(1, TypeOfMediationDocuments.YOUR_STATEMENT, true,
+            [{caseDocuments: [documentAt('kept'), documentAt('deleted')]}, {caseDocuments: [documentAt('second-section')]}] as any),
+          new TypeOfDocuments(2, TypeOfMediationDocuments.DOCUMENTS_REFERRED_TO_IN_STATEMENT, true),
+        ]);
+        return claim;
+      });
+    });
+
+    afterEach(() => {
+      deleteDocument.mockRestore();
+    });
+
+    const postedStatements = {
+      documentsForYourStatement: [
+        {yourName: 'Jane', dateInputFields, caseDocuments: JSON.stringify([documentAt('kept'), documentAt('deleted')])},
+        {yourName: 'Jane', dateInputFields, caseDocuments: JSON.stringify([documentAt('second-section')])},
+      ],
+    };
+
+    it('deletes the file removed with Delete', async () => {
+      const response = await request(app).post(CONTROLLER_URL)
+        .send({...postedStatements, action: 'documentsForYourStatement[0][deleteFile][1]'});
+
+      expect(response.status).toBe(200);
+      expect(deleteDocument).toHaveBeenCalledTimes(1);
+      expect(deleteDocument).toHaveBeenCalledWith(expect.anything(), 'deleted');
+    });
+
+    it('deletes every file of a removed section', async () => {
+      const response = await request(app).post(CONTROLLER_URL)
+        .send({...postedStatements, action: 'documentsForYourStatement[1][removeButton]'});
+
+      expect(response.status).toBe(200);
+      expect(deleteDocument).toHaveBeenCalledTimes(1);
+      expect(deleteDocument).toHaveBeenCalledWith(expect.anything(), 'second-section');
     });
   });
 });
