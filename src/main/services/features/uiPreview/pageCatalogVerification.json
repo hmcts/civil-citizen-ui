@@ -1,0 +1,951 @@
+{
+  "/home": {
+    "view": "home"
+  },
+  "/privacy-policy": {
+    "view": "features/public/privacy-policy"
+  },
+  "/cookies": {
+    "view": "features/public/cookies/cookies-view"
+  },
+  "/accessibility-statement": {
+    "view": "features/public/accessibility-statement"
+  },
+  "/terms-and-conditions": {
+    "view": "features/public/terms-and-conditions"
+  },
+  "/contact-us": {
+    "view": "features/public/contact-us"
+  },
+  "/contact-cnbc": {
+    "view": "features/public/contact-cnbc"
+  },
+  "/contact-mediation": {
+    "view": "features/public/contact-mediation"
+  },
+  "/make-claim": {
+    "reason": "Current scenario returns 302 and redirects to /claim/bilingual-language-preference."
+  },
+  "/unauthorised": {
+    "view": "unauthorised"
+  },
+  "/eligibility/known-claim-amount": {
+    "view": "features/public/eligibility/known-claim-amount"
+  },
+  "/eligibility/claim-value": {
+    "view": "features/public/eligibility/total-amount"
+  },
+  "/eligibility/single-defendant": {
+    "view": "features/public/eligibility/single-defendant"
+  },
+  "/eligibility/over-18": {
+    "view": "features/public/eligibility/over-18"
+  },
+  "/eligibility/claimant-address": {
+    "view": "features/public/eligibility/claimant-address-eligibility"
+  },
+  "/eligibility/defendant-address": {
+    "view": "features/public/eligibility/defendant-eligible-address"
+  },
+  "/eligibility/claim-type": {
+    "view": "features/public/eligibility/claim-type"
+  },
+  "/eligibility/government-department": {
+    "view": "features/public/eligibility/claim-against-government"
+  },
+  "/eligibility/claim-is-for-tenancy-deposit": {
+    "view": "features/public/eligibility/tenancy-deposit"
+  },
+  "/eligibility/defendant-age": {
+    "view": "features/public/eligibility/defendant-age"
+  },
+  "/eligibility/help-with-fees": {
+    "view": "features/public/eligibility/help-with-fees"
+  },
+  "/eligibility/help-with-fees-reference": {
+    "view": "features/public/eligibility/help-with-fees-reference"
+  },
+  "/eligibility/apply-for-help-with-fees": {
+    "view": "features/public/eligibility/apply-for-help-with-fees"
+  },
+  "/eligibility/information-about-help-with-fees": {
+    "view": "features/public/eligibility/some-useful-info-fees"
+  },
+  "/eligibility/eligible": {
+    "view": "features/public/eligibility/eligible"
+  },
+  "/eligibility/not-eligible": {
+    "view": "features/public/eligibility/not-eligible"
+  },
+  "/eligibility/not-eligible?reason=claim-on-behalf": {
+    "view": "features/public/eligibility/not-eligible"
+  },
+  "/eligibility/not-eligible?reason=claim-value-not-known": {
+    "view": "features/public/eligibility/not-eligible"
+  },
+  "/eligibility/not-eligible?reason=claim-value-over-25000": {
+    "view": "features/public/eligibility/not-eligible"
+  },
+  "/eligibility/not-eligible?reason=under-18": {
+    "view": "features/public/eligibility/not-eligible"
+  },
+  "/eligibility/not-eligible?reason=under-18-defendant": {
+    "view": "features/public/eligibility/not-eligible"
+  },
+  "/eligibility/not-eligible?reason=multiple-claimants": {
+    "view": "features/public/eligibility/not-eligible"
+  },
+  "/eligibility/not-eligible?reason=multiple-defendants": {
+    "view": "features/public/eligibility/not-eligible"
+  },
+  "/eligibility/not-eligible?reason=claimant-address": {
+    "view": "features/public/eligibility/not-eligible"
+  },
+  "/eligibility/not-eligible?reason=defendant-address": {
+    "view": "features/public/eligibility/not-eligible"
+  },
+  "/eligibility/not-eligible?reason=government-department": {
+    "view": "features/public/eligibility/not-eligible"
+  },
+  "/eligibility/not-eligible?reason=claim-is-for-tenancy-deposit": {
+    "view": "features/public/eligibility/not-eligible"
+  },
+  "/first-contact/start": {
+    "view": "features/public/firstContact/signposting"
+  },
+  "/first-contact/claim-reference": {
+    "view": "features/public/firstContact/claim-reference"
+  },
+  "/first-contact/pin": {
+    "view": "features/public/firstContact/pin"
+  },
+  "/first-contact/access-denied": {
+    "view": "features/public/firstContact/access-denied"
+  },
+  "/testing-support/create-draft-claim": {
+    "action": true,
+    "reason": "Testing-support GET creates/replaces the draft. Invoke deliberately; excluded from read-only checks."
+  },
+  "/claim/task-list": {
+    "view": "features/claim/task-list"
+  },
+  "/claim/resolving-this-dispute": {
+    "view": "features/claim/resolving-this-dispute"
+  },
+  "/claim/completing-claim": {
+    "view": "features/claim/completing-claim"
+  },
+  "/claim/claimant-party-type-selection": {
+    "view": "features/claim/claimant-party-type"
+  },
+  "/claim/claimant-individual-details": {
+    "view": "features/claim/yourDetails/claimant-individual-details"
+  },
+  "/claim/claimant-company-details": {
+    "reason": "First select this party type through the party-type page. The shared seeded draft currently contains an individual."
+  },
+  "/claim/claimant-organisation-details": {
+    "reason": "First select this party type through the party-type page. The shared seeded draft currently contains an individual."
+  },
+  "/claim/claimant-sole-trader-details": {
+    "reason": "First select this party type through the party-type page. The shared seeded draft currently contains an individual."
+  },
+  "/claim/claimant-dob": {
+    "view": "features/response/citizenDob/citizen-dob"
+  },
+  "/claim/claimant-phone": {
+    "view": "features/claim/claimant-phone"
+  },
+  "/claim/defendant-party-type-selection": {
+    "view": "features/claim/defendant-party-type"
+  },
+  "/claim/defendant-individual-details": {
+    "view": "features/claim/defendant/defendant-details-individual-or-sole-trader"
+  },
+  "/claim/defendant-company-details": {
+    "reason": "First select this party type through the party-type page. The shared seeded draft currently contains an individual."
+  },
+  "/claim/defendant-organisation-details": {
+    "reason": "First select this party type through the party-type page. The shared seeded draft currently contains an individual."
+  },
+  "/claim/defendant-sole-trader-details": {
+    "reason": "First select this party type through the party-type page. The shared seeded draft currently contains an individual."
+  },
+  "/claim/defendant-email": {
+    "view": "features/claim/yourDetails/defendant-email"
+  },
+  "/claim/defendant-mobile": {
+    "view": "features/public/claim/defendant-phone"
+  },
+  "/claim/amount": {
+    "view": "features/claim/amount/claim-amount-breakdown"
+  },
+  "/claim/delayed-flight": {
+    "view": "features/claim/airlines/delayed-flight"
+  },
+  "/claim/flight-details": {
+    "view": "features/claim/airlines/flight-details"
+  },
+  "/claim/interest": {
+    "view": "features/claim/interest/claim-interest"
+  },
+  "/claim/interest-type": {
+    "view": "features/claim/interest/interest-type"
+  },
+  "/claim/interest-rate": {
+    "view": "features/claim/interest/claimant-interest-rate"
+  },
+  "/claim/interest-total": {
+    "view": "features/claim/interest/total-claim-interest"
+  },
+  "/claim/interest-date": {
+    "view": "features/claim/interest/claimant-interest-from"
+  },
+  "/claim/interest-start-date": {
+    "view": "features/claim/interest/interest-start-date"
+  },
+  "/claim/interest-end-date": {
+    "view": "features/claim/interest/interest-end-date"
+  },
+  "/claim/interest-continue-claiming": {
+    "view": "features/claim/interest/continue-claiming-interest"
+  },
+  "/claim/interest-how-much": {
+    "view": "features/claim/interest/how-much-continue-claiming"
+  },
+  "/claim/reason": {
+    "view": "features/claim/details/reason"
+  },
+  "/claim/timeline": {
+    "view": "features/claim/yourDetails/timeline"
+  },
+  "/claim/evidence": {
+    "view": "features/claim/claimant-evidences"
+  },
+  "/claim/help-with-fees": {
+    "view": "features/claim/details/help-with-fees"
+  },
+  "/claim/bilingual-language-preference": {
+    "view": "features/claim/claim-bilingual-language-preference"
+  },
+  "/claim/incomplete-submission": {
+    "reason": "This is a recovery page, not a completed journey. Reach it after the relevant submission."
+  },
+  "/dashboard": {
+    "view": "features/dashboard/dashboard"
+  },
+  "/dashboard/1645882162449409/defendant": {
+    "view": "features/dashboard/claim-summary-redesign"
+  },
+  "/dashboard/1645882162449409/claimantNewDesign": {
+    "reason": "This is the defendant scenario. Use the claimant dashboard in the case-progression group instead."
+  },
+  "/dashboard/1645882162449409/breathing-space-info": {
+    "view": "features/dashboard/breathing-space-info"
+  },
+  "/dashboard/1645882162449409/contact-them": {
+    "view": "features/dashboard/contact-them"
+  },
+  "/dashboard/1645882162449409/information-claimant": {
+    "view": "features/dashboard/contact-them-new"
+  },
+  "/dashboard/1645882162449409/information-defendant": {
+    "view": "features/dashboard/contact-them-new"
+  },
+  "/case/1645882162449409/response/task-list": {
+    "view": "features/response/task-list"
+  },
+  "/case/1645882162449409/response/claim-details": {
+    "view": "features/response/claimDetails/claim-details-new"
+  },
+  "/case/1645882162449409/response/your-details": {
+    "view": "features/response/citizenDetails/citizen-details"
+  },
+  "/case/1645882162449409/response/your-dob": {
+    "view": "features/response/citizenDob/citizen-dob"
+  },
+  "/case/1645882162449409/response/your-phone": {
+    "view": "features/response/citizenPhoneNumber/citizen-phone"
+  },
+  "/case/1645882162449409/response/response-type": {
+    "view": "features/response/citizenResponseType/citizen-response-type"
+  },
+  "/case/1645882162449409/response/bilingual-language-preference": {
+    "view": "features/response/bilingual-language-preference"
+  },
+  "/case/1645882162449409/response/timeline": {
+    "view": "features/response/timelineOfEvents/defendant-timeline"
+  },
+  "/case/1645882162449409/response/evidence": {
+    "view": "features/response/evidence/evidences"
+  },
+  "/case/1645882162449409/response/your-defence": {
+    "view": "features/response/your-defence"
+  },
+  "/case/1645882162449409/response/reject-all-of-claim": {
+    "view": "features/response/reject-all-of-claim"
+  },
+  "/case/1645882162449409/response/full-rejection/how-much-have-you-paid": {
+    "view": "features/response/admission/how-much-have-you-paid"
+  },
+  "/case/1645882162449409/response/full-rejection/why-do-you-disagree": {
+    "view": "features/response/admission/why-do-you-disagree"
+  },
+  "/case/1645882162449409/response/full-rejection/you-have-paid-less": {
+    "view": "features/response/admission/fullRejection/you-have-paid-less"
+  },
+  "/case/1645882162449409/response/eligibility/under-18": {
+    "view": "features/response/ageEligibility/under-18"
+  },
+  "/case/1645882162449409/response/eligibility/send-your-response-by-email": {
+    "view": "features/response/eligibility/send-your-response-by-email"
+  },
+  "/case/1645882162449409/response/incomplete-submission": {
+    "reason": "This is a recovery page, not a completed journey. Reach it after the relevant submission."
+  },
+  "/case/1645882162449605/response/task-list": {
+    "view": "features/response/task-list"
+  },
+  "/case/1645882162449605/response/partial-admission/already-paid": {
+    "view": "features/response/admission/partialAdmission/already-paid"
+  },
+  "/case/1645882162449605/response/partial-admission/how-much-do-you-owe": {
+    "view": "features/response/admission/partialAdmission/how-much-do-you-owe"
+  },
+  "/case/1645882162449605/response/partial-admission/how-much-have-you-paid": {
+    "view": "features/response/admission/how-much-have-you-paid"
+  },
+  "/case/1645882162449605/response/partial-admission/why-do-you-disagree": {
+    "view": "features/response/admission/why-do-you-disagree"
+  },
+  "/case/1645882162449605/response/partial-admission/payment-option": {
+    "view": "features/response/admission/payment-option"
+  },
+  "/case/1645882162449605/response/partial-admission/payment-date": {
+    "view": "features/response/admission/payment-date"
+  },
+  "/case/1645882162449605/response/partial-admission/payment-plan": {
+    "view": "features/response/repaymentPlan/repaymentPlan"
+  },
+  "/case/1645882162449605/response/full-admission/payment-option": {
+    "view": "features/response/admission/payment-option"
+  },
+  "/case/1645882162449605/response/full-admission/payment-date": {
+    "view": "features/response/admission/payment-date"
+  },
+  "/case/1645882162449605/response/full-admission/payment-plan": {
+    "view": "features/response/repaymentPlan/repaymentPlan"
+  },
+  "/case/1645882162449605/response/statement-of-means/intro": {
+    "view": "features/response/financialDetails/financial-details"
+  },
+  "/case/1645882162449605/response/statement-of-means/disability": {
+    "view": "features/response/statementOfMeans/disability"
+  },
+  "/case/1645882162449605/response/statement-of-means/severe-disability": {
+    "view": "features/response/statementOfMeans/are-you-severely-disabled"
+  },
+  "/case/1645882162449605/response/statement-of-means/residence": {
+    "view": "features/response/statementOfMeans/residence"
+  },
+  "/case/1645882162449605/response/statement-of-means/partner/partner": {
+    "view": "features/response/statementOfMeans/partner/partner"
+  },
+  "/case/1645882162449605/response/statement-of-means/partner/partner-age": {
+    "view": "features/response/statementOfMeans/partner/partner-age"
+  },
+  "/case/1645882162449605/response/statement-of-means/partner/partner-pension": {
+    "view": "features/response/statementOfMeans/partner/partner-pension"
+  },
+  "/case/1645882162449605/response/statement-of-means/partner/partner-disability": {
+    "view": "features/response/statementOfMeans/partner/partner-disability"
+  },
+  "/case/1645882162449605/response/statement-of-means/partner/partner-severe-disability": {
+    "view": "features/response/statementOfMeans/partner/partner-severe-disability"
+  },
+  "/case/1645882162449605/response/statement-of-means/dependants": {
+    "view": "features/response/statementOfMeans/dependants/dependants"
+  },
+  "/case/1645882162449605/response/statement-of-means/dependants/education": {
+    "view": "features/response/statementOfMeans/dependants/between_16_and_19"
+  },
+  "/case/1645882162449605/response/statement-of-means/dependants/children-disability": {
+    "view": "features/response/statementOfMeans/dependants/children-disability"
+  },
+  "/case/1645882162449605/response/statement-of-means/other-dependants": {
+    "view": "features/response/statementOfMeans/otherDependants/other-dependants"
+  },
+  "/case/1645882162449605/response/statement-of-means/carer": {
+    "view": "features/response/statementOfMeans/carer"
+  },
+  "/case/1645882162449605/response/statement-of-means/employment": {
+    "view": "features/response/statementOfMeans/employment/employment-status"
+  },
+  "/case/1645882162449605/response/statement-of-means/employment/employers": {
+    "view": "features/response/statementOfMeans/employment/who-employs-you"
+  },
+  "/case/1645882162449605/response/statement-of-means/unemployment": {
+    "view": "features/response/statementOfMeans/unemployment"
+  },
+  "/case/1645882162449605/response/statement-of-means/employment/self-employment": {
+    "view": "features/response/statementOfMeans/employment/selfEmployed/self-employed-as"
+  },
+  "/case/1645882162449605/response/statement-of-means/employment/self-employment/on-tax-payments": {
+    "view": "features/response/statementOfMeans/employment/selfEmployed/on-tax-payments"
+  },
+  "/case/1645882162449605/response/statement-of-means/bank-accounts": {
+    "view": "features/response/statementOfMeans/citizenBankAndSavings/citizen-bank-accounts"
+  },
+  "/case/1645882162449605/response/statement-of-means/court-orders": {
+    "view": "features/response/statementOfMeans/courtOrders/court-orders"
+  },
+  "/case/1645882162449605/response/statement-of-means/priority-debts": {
+    "view": "features/response/statementOfMeans/priority-debts"
+  },
+  "/case/1645882162449605/response/statement-of-means/debts": {
+    "view": "features/response/statementOfMeans/debts/debts"
+  },
+  "/case/1645882162449605/response/statement-of-means/monthly-expenses": {
+    "view": "features/response/statementOfMeans/expenses/regular-expenses"
+  },
+  "/case/1645882162449605/response/statement-of-means/monthly-income": {
+    "view": "features/response/statementOfMeans/income/regular-income"
+  },
+  "/case/1645882162449605/response/statement-of-means/explanation": {
+    "view": "features/response/statementOfMeans/explanation"
+  },
+  "/case/1645882162449409/mediation/free-telephone-mediation": {
+    "view": "features/mediation/free-telephone-mediation"
+  },
+  "/case/1645882162449409/mediation/telephone-mediation": {
+    "view": "features/mediation/telephone-mediation.njk"
+  },
+  "/case/1645882162449409/mediation/mediation-disagreement": {
+    "view": "features/mediation/mediation-disagreement"
+  },
+  "/case/1645882162449409/mediation/i-dont-want-free-mediation": {
+    "view": "features/mediation/i-dont-want-free-mediation"
+  },
+  "/case/1645882162449409/mediation/can-we-use": {
+    "view": "features/mediation/can-we-use"
+  },
+  "/case/1645882162449409/mediation/can-we-use-company": {
+    "view": "features/mediation/company-telephone-number"
+  },
+  "/case/1645882162449409/mediation/mediation-contact-person": {
+    "reason": "Requires a business-party scenario with a named mediation contact. This individual-defendant fixture has no contact person."
+  },
+  "/case/1645882162449409/mediation/alternative-contact-person": {
+    "view": "features/mediation/alternative-contact-person"
+  },
+  "/case/1645882162449409/mediation/alternative-email": {
+    "view": "features/mediation/alternative-email"
+  },
+  "/case/1645882162449409/mediation/alternative-phone": {
+    "view": "features/mediation/alternative-telephone"
+  },
+  "/case/1645882162449409/mediation/claimant-phone": {
+    "view": "features/mediation/alternative-telephone"
+  },
+  "/case/1645882162449409/mediation/next-three-months": {
+    "view": "features/common/yes-no-common-page"
+  },
+  "/case/1645882162449409/mediation/email-confirmation": {
+    "reason": "Requires a prior submission/session or payment outcome. Not included in read-only ready-page checks."
+  },
+  "/case/1645882162449409/mediation/phone-confirmation": {
+    "reason": "Requires a prior submission/session or payment outcome. Not included in read-only ready-page checks."
+  },
+  "/case/1645882162449409/mediation/unavailable-dates": {
+    "view": "features/mediation/unavailable-dates-mediation"
+  },
+  "/case/1645882162449409/mediation/start-upload-documents": {
+    "view": "features/common/static-page"
+  },
+  "/case/1645882162449409/mediation/type-of-documents": {
+    "view": "features/mediation/uploadDocuments/typeOfDocuments"
+  },
+  "/case/1645882162449409/mediation/upload-documents": {
+    "view": "features/mediation/uploadDocuments/upload-documents"
+  },
+  "/case/1645882162449409/mediation/check-and-send": {
+    "view": "features/mediation/uploadDocuments/check-answers"
+  },
+  "/case/1645882162449409/mediation/confirmation": {
+    "reason": "Requires a prior submission/session or payment outcome. Not included in read-only ready-page checks."
+  },
+  "/case/1645882162449409/mediation/upload-documents/cancel-document-upload": {
+    "view": "features/mediation/uploadDocuments/cancel-your-upload"
+  },
+  "/case/1645882162449409/mediation/view-mediation-documents": {
+    "view": "features/common/viewDocuments"
+  },
+  "/case/1645882162449409/mediation/view-mediation-settlement-agreement-document": {
+    "view": "features/common/viewDocuments"
+  },
+  "/case/1645882162449409/directions-questionnaire/tried-to-settle": {
+    "view": "features/directionsQuestionnaire/tried-to-settle-claim"
+  },
+  "/case/1645882162449409/directions-questionnaire/request-extra-4-weeks": {
+    "view": "features/directionsQuestionnaire/request-extra-4weeks"
+  },
+  "/case/1645882162449409/directions-questionnaire/consider-claimant-documents": {
+    "view": "features/directionsQuestionnaire/consider-claimant-documents"
+  },
+  "/case/1645882162449409/directions-questionnaire/give-evidence-yourself": {
+    "view": "features/directionsQuestionnaire/defendant-yourself-evidence"
+  },
+  "/case/1645882162449409/directions-questionnaire/other-witnesses": {
+    "view": "features/directionsQuestionnaire/witnesses/otherWitnesses/other-witnesses"
+  },
+  "/case/1645882162449409/directions-questionnaire/expert": {
+    "view": "features/directionsQuestionnaire/experts/expert-small-claims"
+  },
+  "/case/1645882162449409/directions-questionnaire/expert-guidance": {
+    "view": "features/directionsQuestionnaire/experts/expert-guidance"
+  },
+  "/case/1645882162449409/directions-questionnaire/permission-for-expert": {
+    "view": "features/directionsQuestionnaire/experts/permission-for-expert"
+  },
+  "/case/1645882162449409/directions-questionnaire/expert-evidence": {
+    "view": "features/directionsQuestionnaire/experts/expert-evidence"
+  },
+  "/case/1645882162449409/directions-questionnaire/expert-details": {
+    "view": "features/directionsQuestionnaire/experts/expert-details"
+  },
+  "/case/1645882162449409/directions-questionnaire/expert-report-details": {
+    "view": "features/directionsQuestionnaire/experts/expert-report-details"
+  },
+  "/case/1645882162449409/directions-questionnaire/shared-expert": {
+    "view": "features/directionsQuestionnaire/experts/shared-expert"
+  },
+  "/case/1645882162449409/directions-questionnaire/expert-can-still-examine": {
+    "view": "features/directionsQuestionnaire/experts/defendant-expert-can-still-examine"
+  },
+  "/case/1645882162449409/directions-questionnaire/sent-expert-reports": {
+    "view": "features/directionsQuestionnaire/experts/sent-expert-reports"
+  },
+  "/case/1645882162449409/directions-questionnaire/support-required": {
+    "view": "features/directionsQuestionnaire/support-required-list"
+  },
+  "/case/1645882162449409/directions-questionnaire/vulnerability": {
+    "view": "features/directionsQuestionnaire/vulnerabilityQuestions/vulnerability"
+  },
+  "/case/1645882162449409/directions-questionnaire/welsh-language": {
+    "view": "features/directionsQuestionnaire/welshLanguageRequirements/welsh-language"
+  },
+  "/case/1645882162449409/directions-questionnaire/determination-without-hearing": {
+    "view": "features/directionsQuestionnaire/hearing/determination-without-hearing"
+  },
+  "/case/1645882162449409/directions-questionnaire/phone-or-video-hearing": {
+    "view": "features/directionsQuestionnaire/hearing/phone-or-video-hearing"
+  },
+  "/case/1645882162449409/directions-questionnaire/cant-attend-hearing-in-next-12-months": {
+    "view": "features/directionsQuestionnaire/hearing/cant-attend-hearing-in-next-12-months"
+  },
+  "/case/1645882162449409/directions-questionnaire/unavailable-for-hearing": {
+    "view": "features/directionsQuestionnaire/hearing/why-unavailable-for-hearing"
+  },
+  "/case/1645882162449409/directions-questionnaire/availability-dates": {
+    "view": "features/directionsQuestionnaire/hearing/unavailable-dates-for-hearing"
+  },
+  "/case/1645882162449409/directions-questionnaire/court-location": {
+    "view": "features/directionsQuestionnaire/hearing/specific-court"
+  },
+  "/case/1645882162449409/directions-questionnaire/confirm-your-details": {
+    "view": "features/directionsQuestionnaire/confirm-your-details-evidence"
+  },
+  "/case/1645882162449409/directions-questionnaire/subject-to-frc": {
+    "view": "features/directionsQuestionnaire/fixedRecoverableCosts/subject-to-frc"
+  },
+  "/case/1645882162449409/directions-questionnaire/frc-band-agreed": {
+    "view": "features/directionsQuestionnaire/fixedRecoverableCosts/frc-band-agreed"
+  },
+  "/case/1645882162449409/directions-questionnaire/assign-complexity-band": {
+    "view": "features/directionsQuestionnaire/fixedRecoverableCosts/choose-complexity-band"
+  },
+  "/case/1645882162449409/directions-questionnaire/reason-for-complexity-band": {
+    "view": "features/directionsQuestionnaire/fixedRecoverableCosts/reason-for-complexity-band"
+  },
+  "/case/1645882162449409/directions-questionnaire/why-not-subject-to-frc": {
+    "view": "features/directionsQuestionnaire/fixedRecoverableCosts/why-not-subject-to-frc"
+  },
+  "/case/1645882162449409/directions-questionnaire/disclosure-of-documents": {
+    "view": "features/directionsQuestionnaire/mintiMultiTrack/disclosure-of-documents"
+  },
+  "/case/1645882162449409/directions-questionnaire/disclosure-non-electronic-documents": {
+    "view": "features/directionsQuestionnaire/mintiMultiTrack/disclosure-non-electronic-documents"
+  },
+  "/case/1645882162449409/directions-questionnaire/disclosure-of-electronic-documents-issues": {
+    "view": "features/directionsQuestionnaire/mintiMultiTrack/disclosure-of-electronic-documents-issues"
+  },
+  "/case/1645882162449409/directions-questionnaire/documents-to-be-considered": {
+    "view": "features/directionsQuestionnaire/mintiMultiTrack/claimant-documents-to-be-considered"
+  },
+  "/case/1645882162449409/directions-questionnaire/documents-to-be-considered-details": {
+    "view": "features/directionsQuestionnaire/mintiMultiTrack/claimant-documents-considered-details"
+  },
+  "/case/1645882162449409/directions-questionnaire/agreement-reached": {
+    "view": "features/directionsQuestionnaire/mintiMultiTrack/agreement-reached"
+  },
+  "/case/1645882162449601/claimant-response/task-list": {
+    "view": "features/claimantResponse/claimant-response-task-list"
+  },
+  "/case/1645882162449601/claimant-response/defendants-response": {
+    "view": "features/claimantResponse/review-defendants-response"
+  },
+  "/case/1645882162449601/claimant-response/accept-payment-method": {
+    "view": "features/claimantResponse/accept-repayment-plan"
+  },
+  "/case/1645882162449601/claimant-response/settle-claim": {
+    "reason": "Requires a full-defence or partial-admission already-paid scenario with a recorded paid amount. This full-admission fixture has no paid amount."
+  },
+  "/case/1645882162449601/claimant-response/settle-admitted": {
+    "reason": "This question requires a partial admission. Use Settle admitted in the part-admission group (\u00a3400 admitted)."
+  },
+  "/case/1645882162449601/claimant-response/rejection-reason": {
+    "view": "features/claimantResponse/rejection-reason"
+  },
+  "/case/1645882162449601/claimant-response/intention-to-proceed": {
+    "view": "features/claimantResponse/claimant-intention-to-proceed"
+  },
+  "/case/1645882162449601/claimant-response/choose-how-to-proceed": {
+    "view": "features/claimantResponse/choose-how-to-proceed"
+  },
+  "/case/1645882162449601/claimant-response/sign-settlement-agreement": {
+    "view": "features/claimantResponse/sign-settlement-agreement"
+  },
+  "/case/1645882162449601/claimant-response/counter-offer-accepted": {
+    "view": "features/claimantResponse/repayment-plan-accepted"
+  },
+  "/case/1645882162449601/claimant-response/court-offered-instalments": {
+    "view": "features/claimantResponse/court-proposed-plan"
+  },
+  "/case/1645882162449601/claimant-response/court-offered-set-date": {
+    "view": "features/claimantResponse/court-proposed-date"
+  },
+  "/case/1645882162449601/claimant-response/payment-option": {
+    "view": "features/response/admission/payment-option"
+  },
+  "/case/1645882162449601/claimant-response/payment-date": {
+    "view": "features/response/admission/payment-date"
+  },
+  "/case/1645882162449601/claimant-response/payment-plan": {
+    "view": "features/claimantResponse/instalments-plan"
+  },
+  "/case/1645882162449601/claimant-response/incomplete-submission": {
+    "reason": "This is a recovery page, not a completed journey. Reach it after the relevant submission."
+  },
+  "/case/1645882162449601/claimant-response/confirmation": {
+    "reason": "Requires a prior submission/session or payment outcome. Not included in read-only ready-page checks."
+  },
+  "/case/1645882162449601/ccj/paid-amount": {
+    "view": "features/claimantResponse/ccj/paid-amount"
+  },
+  "/case/1645882162449601/ccj/paid-amount-summary": {
+    "view": "features/claimantResponse/ccj/judgement-amount-summary"
+  },
+  "/case/1645882162449601/ccj/date-of-birth": {
+    "view": "features/claimantResponse/ccj/defendant-dob"
+  },
+  "/case/1645882162449601/ccj/payment-options": {
+    "view": "features/claimantResponse/ccj/ccj-payment-options"
+  },
+  "/case/1645882162449601/ccj/repayment-plan": {
+    "view": "features/claimantResponse/ccj/repayment-plan-instalments"
+  },
+  "/case/1645882162449601/ccj/pay-by-set-date": {
+    "view": "features/response/admission/payment-date"
+  },
+  "/case/1645882162449601/ccj/check-and-send": {
+    "view": "features/claimantResponse/ccj/check-answers"
+  },
+  "/case/1645882162449601/ccj/repayment-plan-summary/CLAIMANT": {
+    "view": "features/claimantResponse/ccj/repayment-plan-summary-claimant"
+  },
+  "/case/1645882162449601/paid-in-full/date-paid": {
+    "view": "features/claimantResponse/paidInFull/date-paid"
+  },
+  "/case/1645882162449601/paid-in-full/confirmation": {
+    "reason": "Requires a prior submission/session or payment outcome. Not included in read-only ready-page checks."
+  },
+  "/case/1645882162449602/claimant-response/task-list": {
+    "view": "features/claimantResponse/claimant-response-task-list"
+  },
+  "/case/1645882162449602/claimant-response/defendants-response": {
+    "view": "features/claimantResponse/review-defendants-response"
+  },
+  "/case/1645882162449602/claimant-response/accept-payment-method": {
+    "view": "features/claimantResponse/accept-repayment-plan"
+  },
+  "/case/1645882162449602/claimant-response/part-payment-received": {
+    "reason": "Requires a partial-admission already-paid scenario with a recorded paid amount. This fixture admits £400 but says it has not been paid."
+  },
+  "/case/1645882162449602/claimant-response/settle-admitted": {
+    "view": "features/claimantResponse/settle-admitted"
+  },
+  "/case/1645882162449602/claimant-response/intention-to-proceed": {
+    "view": "features/claimantResponse/claimant-intention-to-proceed"
+  },
+  "/case/1645882162449602/claimant-response/choose-how-to-proceed": {
+    "view": "features/claimantResponse/choose-how-to-proceed"
+  },
+  "/dashboard/1645882162449603/claimantNewDesign": {
+    "view": "features/dashboard/claim-summary-redesign"
+  },
+  "/case/1645882162449603/case-progression/upload-your-documents": {
+    "view": "features/caseProgression/upload-your-documents"
+  },
+  "/case/1645882162449603/case-progression/type-of-documents": {
+    "view": "features/caseProgression/typeOfDocuments"
+  },
+  "/case/1645882162449603/case-progression/upload-documents": {
+    "view": "features/caseProgression/upload-documents"
+  },
+  "/case/1645882162449603/case-progression/cancel-document-upload": {
+    "view": "features/caseProgression/cancel-your-upload"
+  },
+  "/case/1645882162449603/case-progression/check-and-send": {
+    "reason": "Start with Upload your documents, select document types and save a file, then Continue. Dashboard refresh replaces the in-progress upload draft; restart that upload journey afterward."
+  },
+  "/case/1645882162449603/case-progression/documents-uploaded": {
+    "view": "features/caseProgression/documents-uploaded"
+  },
+  "/case/1645882162449603/evidence-upload-documents": {
+    "view": "features/caseProgression/evidence-upload-documents"
+  },
+  "/case/1645882162449603/case-progression/finalise-trial-arrangements": {
+    "view": "features/caseProgression/trialArrangements/finalise-trial-arrangements"
+  },
+  "/case/1645882162449603/case-progression/finalise-trial-arrangements/is-case-ready": {
+    "view": "features/caseProgression/trialArrangements/is-case-ready"
+  },
+  "/case/1645882162449603/case-progression/finalise-trial-arrangements/has-anything-changed": {
+    "view": "features/caseProgression/trialArrangements/has-anything-changed"
+  },
+  "/case/1645882162449603/case-progression/finalise-trial-arrangements/hearing-duration-other-info": {
+    "view": "features/caseProgression/trialArrangements/hearing-duration-other-info"
+  },
+  "/case/1645882162449603/case-progression/finalise-trial-arrangements/check-trial-arrangements": {
+    "view": "features/caseProgression/trialArrangements/check-answers"
+  },
+  "/case/1645882162449603/case-progression/finalise-trial-arrangements/confirmation": {
+    "reason": "Requires a prior submission/session or payment outcome. Not included in read-only ready-page checks."
+  },
+  "/case/1645882162449603/case-progression/pay-hearing-fee": {
+    "view": "features/caseProgression/hearingFee/pay-hearing-fee-start"
+  },
+  "/case/1645882162449603/case-progression/pay-hearing-fee/apply-help-fee-selection": {
+    "view": "features/caseProgression/hearingFee/apply-help-fee-selection"
+  },
+  "/case/1645882162449603/case-progression/apply-help-with-fees/start": {
+    "view": "features/caseProgression/hearingFee/apply-help-with-fees"
+  },
+  "/case/1645882162449603/case-progression/apply-help-with-fees/reference-number": {
+    "view": "features/caseProgression/hearingFee/apply-help-fee-reference"
+  },
+  "/case/1645882162449603/case-progression/pay-hearing-fee/confirmation": {
+    "reason": "Requires a prior submission/session or payment outcome. Not included in read-only ready-page checks."
+  },
+  "/case/1645882162449603/case-progression/payment-unsuccessful": {
+    "reason": "Requires a prior submission/session or payment outcome. Not included in read-only ready-page checks."
+  },
+  "/case/1645882162449603/case-progression/request-for-reconsideration": {
+    "view": "features/caseProgression/requestForReconsideration/request-for-review.njk"
+  },
+  "/case/1645882162449603/case-progression/request-for-reconsideration/confirmation": {
+    "reason": "Requires a prior submission/session or payment outcome. Not included in read-only ready-page checks."
+  },
+  "/case/1645882162449603/case-progression/comments-for-reconsideration": {
+    "view": "features/caseProgression/requestForReconsideration/request-for-review.njk"
+  },
+  "/case/1645882162449603/case-progression/comments-for-reconsideration/confirmation": {
+    "reason": "Requires a prior submission/session or payment outcome. Not included in read-only ready-page checks."
+  },
+  "/case/1645882162449603/bundle-overview": {
+    "view": "features/caseProgression/bundles"
+  },
+  "/case/1645882162449603/view-the-hearing": {
+    "view": "features/caseProgression/view-the-hearing"
+  },
+  "/case/1645882162449603/view-the-judgment": {
+    "view": "features/caseProgression/view-the-judgement"
+  },
+  "/case/1645882162449603/view-orders-and-notices": {
+    "view": "features/dashboard/orders-and-notices"
+  },
+  "/case/1645882162449603/view-response-to-claim": {
+    "view": "features/dashboard/view-response-to-claim"
+  },
+  "/case/1645882162449604/general-application/application-type": {
+    "view": "features/generalApplication/application-type"
+  },
+  "/case/1645882162449604/general-application/agreement-from-other-party": {
+    "view": "features/generalApplication/agreement-from-other-party"
+  },
+  "/case/1645882162449604/general-application/inform-other-parties": {
+    "view": "features/generalApplication/inform-other-parties"
+  },
+  "/case/1645882162449604/general-application/claim-application-cost": {
+    "view": "features/generalApplication/claim-application-cost"
+  },
+  "/case/1645882162449604/general-application/application-costs": {
+    "view": "features/generalApplication/application-costs"
+  },
+  "/case/1645882162449604/general-application/paying-for-application": {
+    "view": "features/generalApplication/paying-for-application"
+  },
+  "/case/1645882162449604/general-application/order-judge": {
+    "view": "features/generalApplication/order-judge"
+  },
+  "/case/1645882162449604/general-application/requesting-reason": {
+    "view": "features/generalApplication/requesting-reason"
+  },
+  "/case/1645882162449604/general-application/add-another-application": {
+    "view": "features/generalApplication/add-another-application"
+  },
+  "/case/1645882162449604/general-application/hearing-arrangements-guidance": {
+    "view": "features/generalApplication/hearing_arrangements_guidance"
+  },
+  "/case/1645882162449604/general-application/hearing-arrangement": {
+    "view": "features/generalApplication/hearing-arrangement"
+  },
+  "/case/1645882162449604/general-application/hearing-contact-details": {
+    "view": "features/generalApplication/hearing-contact-details"
+  },
+  "/case/1645882162449604/general-application/hearing-support": {
+    "view": "features/generalApplication/hearing-support"
+  },
+  "/case/1645882162449604/general-application/unavailable-dates": {
+    "view": "features/generalApplication/unavailable-dates-hearing"
+  },
+  "/case/1645882162449604/general-application/unavailability-confirmation": {
+    "reason": "Requires a prior submission/session or payment outcome. Not included in read-only ready-page checks."
+  },
+  "/case/1645882162449604/general-application/want-to-upload-documents": {
+    "view": "features/generalApplication/want-to-upload-documents"
+  },
+  "/case/1645882162449604/general-application/upload-documents": {
+    "view": "features/generalApplication/upload_documents"
+  },
+  "/case/1645882162449604/general-application/check-and-send": {
+    "view": "features/generalApplication/check-answers"
+  },
+  "/case/1645882162449604/general-application/summary": {
+    "view": "features/generalApplication/applications-summary"
+  },
+  "/case/1645882162449604/general-application/application-submitted": {
+    "reason": "Requires a completed fee-exempt hearing-adjournment application with the other party's consent and a hearing more than 14 days ahead. This strike-out scenario has no consent and a £108 application fee."
+  },
+  "/case/1645882162449604/general-application/submit-general-application-confirmation": {
+    "reason": "Requires a prior submission/session or payment outcome. Not included in read-only ready-page checks."
+  },
+  "/case/1645882162449604/submit-application-offline": {
+    "reason": "Requires a prior submission/session or payment outcome. Not included in read-only ready-page checks."
+  },
+  "/case/1645882162449604/general-application/1732194111758649/view-application": {
+    "view": "features/generalApplication/view-applications"
+  },
+  "/case/1645882162449604/general-application/1732194111758649/payment-successful": {
+    "reason": "Requires a prior submission/session or payment outcome. Not included in read-only ready-page checks."
+  },
+  "/case/1645882162449604/general-application/1732194111758649/payment-unsuccessful": {
+    "reason": "Requires a prior submission/session or payment outcome. Not included in read-only ready-page checks."
+  },
+  "/case/1645882162449604/general-application/1732194111758649/apply-help-fee-selection": {
+    "view": "features/generalApplication/applicationFee/help-with-application-fee"
+  },
+  "/case/1645882162449604/general-application/1732194111758649/apply-help-with-fees/start": {
+    "view": "features/generalApplication/applicationFee/help-with-application-fee-content"
+  },
+  "/case/1645882162449604/general-application/1732194111758649/apply-help-with-fees/reference-number": {
+    "view": "features/generalApplication/applicationFee/help-with-application-fee-reference"
+  },
+  "/case/1645882162449604/general-application/1732194111758649/pay-application-fee/confirmation": {
+    "reason": "Requires a prior submission/session or payment outcome. Not included in read-only ready-page checks."
+  },
+  "/case/1645882162449604/response/general-application/1732194111758649/respondent-information": {
+    "view": "features/generalApplication/respondent-request-change-information"
+  },
+  "/case/1645882162449604/response/general-application/1732194111758649/respondent-agreement": {
+    "view": "features/generalApplication/respondent-agreement"
+  },
+  "/case/1645882162449604/response/general-application/1732194111758649/agree-to-order": {
+    "reason": "Requires an application reporting the other party's consent. This service fixture records no agreement; use Respondent agreement for its normal response journey."
+  },
+  "/case/1645882162449604/response/general-application/1732194111758649/accept-defendant-offer": {
+    "reason": "Requires a defendant application to vary judgment payment terms and the corresponding payment offer. This strike-out application has no payment-variation offer."
+  },
+  "/case/1645882162449604/response/general-application/1732194111758649/hearing-preference": {
+    "view": "features/generalApplication/response/respondent-hearing-preference"
+  },
+  "/case/1645882162449604/response/general-application/1732194111758649/want-to-upload-document": {
+    "view": "features/generalApplication/response/respondent-want-to-upload-documents"
+  },
+  "/case/1645882162449604/response/general-application/1732194111758649/upload-documents": {
+    "view": "features/generalApplication/response/respondent-upload-documents"
+  },
+  "/case/1645882162449604/response/general-application/1732194111758649/hearing-arrangement": {
+    "view": "features/generalApplication/hearing-arrangement"
+  },
+  "/case/1645882162449604/response/general-application/1732194111758649/hearing-contact-details": {
+    "view": "features/generalApplication/hearing-contact-details"
+  },
+  "/case/1645882162449604/response/general-application/1732194111758649/hearing-support": {
+    "view": "features/generalApplication/hearing-support"
+  },
+  "/case/1645882162449604/response/general-application/1732194111758649/unavailable-dates": {
+    "view": "features/generalApplication/unavailable-dates-hearing"
+  },
+  "/case/1645882162449604/response/general-application/1732194111758649/unavailability-confirmation": {
+    "reason": "Requires a prior submission/session or payment outcome. Not included in read-only ready-page checks."
+  },
+  "/case/1645882162449604/response/general-application/1732194111758649/confirmation": {
+    "reason": "Requires a prior submission/session or payment outcome. Not included in read-only ready-page checks."
+  },
+  "/case/1645882162449604/response/general-application/summary": {
+    "view": "features/generalApplication/applications-summary"
+  },
+  "/case/1645882162449604/general-application/cosc/debt-payment-evidence": {
+    "view": "features/generalApplication/certOfSorC/debt-payment-evidence"
+  },
+  "/case/1645882162449604/general-application/cosc/ask-proof-of-debt-payment-guidance": {
+    "reason": "Requires a confirm-CCJ-debt-paid application and a compatible certificate fee response. This strike-out scenario supplies the general-application fee, so it cannot demonstrate the certificate fee guidance."
+  },
+  "/case/1645882162449604/general-application/cosc/final-payment-date": {
+    "view": "features/generalApplication/certOfSorC/final-payment-date"
+  },
+  "/case/1645882162449604/general-application/cosc/upload-documents": {
+    "reason": "Requires a confirm-CCJ-debt-paid application. This strike-out draft renders the ordinary application upload form and submits to that route."
+  },
+  "/case/1645882162449604/general-application/cosc/check-your-answers": {
+    "view": "features/generalApplication/check-answers"
+  },
+  "/case/1645882162449604/general-application/cosc/submit-general-application-confirmation": {
+    "reason": "Requires a prior submission/session or payment outcome. Not included in read-only ready-page checks."
+  },
+  "/case/1645882162449603/qm/start": {
+    "view": "features/queryManagement/qm-questions-template.njk"
+  },
+  "/case/1645882162449603/qm/view-query": {
+    "view": "features/queryManagement/qm-view-queries-template"
+  },
+  "/case/1645882162449603/qm/view-query/qm-9603-hearing/query-details": {
+    "view": "features/queryManagement/qm-view-query-details-template"
+  },
+  "/case/1645882162449603/qm/share-query": {
+    "view": "features/queryManagement/qm-share-query-confirmation.njk"
+  },
+  "/case/1645882162449603/qm/confirmation": {
+    "reason": "Requires a prior submission/session or payment outcome. Not included in read-only ready-page checks."
+  },
+  "/case/1645882162449601/settlement-agreement/sign-settlement-agreement": {
+    "view": "features/settlementAgreement/respond-settlement-agreement"
+  },
+  "/case/1645882162449601/judgment-online/confirm-you-have-been-paid": {
+    "view": "features/judgmentOnline/confirm-you-have-been-paid"
+  },
+  "/case/1645882162449601/judgment-online/confirm-you-have-been-paid/confirmation": {
+    "reason": "Requires a prior submission/session or payment outcome. Not included in read-only ready-page checks."
+  }
+}
