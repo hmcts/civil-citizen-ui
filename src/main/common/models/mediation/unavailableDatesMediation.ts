@@ -14,6 +14,7 @@ import {OptionalDateFourDigitValidator} from 'common/form/validators/optionalDat
 import {OptionalDateNotInPastValidator} from 'common/form/validators/optionalDateNotInPastValidator';
 import {DateConverter} from 'common/utils/dateConverter';
 import {addMonths} from 'common/utils/dateUtils';
+import {toOptionalNumber} from 'common/utils/numberConverter';
 import { UnavailableDateType } from '../directionsQuestionnaire/hearing/unavailableDates';
 
 const MAX_MONTHS = 3;
@@ -90,10 +91,6 @@ export class UnavailableDatePeriodMediation {
     this.endMonth = toOptionalNumber(paramsUntil?.month);
     this.endDay = toOptionalNumber(paramsUntil?.day);
   }
-}
-
-function toOptionalNumber(value?: string): number {
-  return value === undefined || value === null || String(value).trim() === '' ? undefined : Number(value);
 }
 
 function generateErrorMessage(args: ValidationArgs<UnavailableDatePeriodMediation>): string {
