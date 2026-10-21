@@ -1,35 +1,40 @@
-import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'models/AppRequest';
 import {getDraftClaim, updateDraftClaim} from 'modules/draft-store/draftStoreManagerService';
+import {getResponseDraft, updateResponseDraft} from 'modules/draft-store/response/responseDraftStoreService';
 import {Claim} from 'common/models/claim';
 import {GenericYesNo} from 'common/form/models/genericYesNo';
 import {ClaimBilingualLanguagePreference} from 'common/models/claimBilingualLanguagePreference';
-import {Request} from 'express';
-import {getClaimById} from 'modules/utilityService';
-import {getRouteParam, normalizeRouteParam, RouteParam} from 'common/utils/routeParamUtils';
+import {DraftClaimManagerResult} from 'models/draft/draftClaim';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('selfEmployedAsService');
 
-const getBilingualLangPreference = async (req: Request): Promise<GenericYesNo> => {
-  try {
-    const claim = await getClaimById(getRouteParam(req, 'id'), req, true);
-    if (claim.claimBilingualLanguagePreference) {
-      return new GenericYesNo(claim.claimBilingualLanguagePreference);
-    }
-    return new GenericYesNo();
-  } catch (error) {
-    logger.error(error);
-    throw error;
+const getBilingualLangPreference = (draftResult: DraftClaimManagerResult): GenericYesNo => {
+  const claim = Object.assign(new Claim(), draftResult.claimResponse?.case_data as unknown as Claim);
+  if (claim.claimBilingualLanguagePreference) {
+    return new GenericYesNo(claim.claimBilingualLanguagePreference);
   }
+  return new GenericYesNo();
 };
 
-const saveBilingualLangPreference = async (claimId: RouteParam, form: GenericYesNo) => {
+const saveBilingualLangPreference = async (req: AppRequest, form: GenericYesNo) => {
   try {
-    const normalizedClaimId = normalizeRouteParam(claimId);
-    const claim = await getClaim(normalizedClaimId);
+    const caseId = getRouteParam(req, 'id');
+    const draftResult = await getResponseDraft(req, caseId);
+    if (!draftResult) {
+      throw new Error('[bilingualLangPreferenceService] no response draft found');
+    }
+
+    const claim = Object.assign(new Claim(), draftResult.claimResponse?.case_data as unknown as Claim);
+    const draftId = draftResult.rawResponse?.draftId;
     claim.claimBilingualLanguagePreference = await getSelectedLanguage(form.option);
-    await saveDraftClaim(normalizedClaimId, claim);
+
+    if (draftResult.createdAt && !claim.draftClaimCreatedAt) {
+      claim.draftClaimCreatedAt = new Date(draftResult.createdAt);
+    }
+
+    await updateResponseDraft(req, caseId, claim, draftId);
   } catch (error) {
     logger.error(error);
     throw error;
@@ -66,13 +71,6 @@ const getSelectedLanguage = async (language: string) => {
     default:
       return undefined;
   }
-};
-const getClaim = async (claimId: RouteParam): Promise<Claim> => {
-  const claim = await getCaseDataFromStore(normalizeRouteParam(claimId));
-  if (!claim.claimBilingualLanguagePreference) {
-    claim.claimBilingualLanguagePreference = undefined;
-  }
-  return claim;
 };
 
 const getCookieLanguage =  (isWelsh: boolean, language: string) => {
