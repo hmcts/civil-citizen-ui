@@ -1,13 +1,14 @@
 #!/usr/bin/env node
 
 /**
- * Fail if Yarn reports npm advisories that are not in yarn-audit-known-issues,
- * or if the production tree has any advisory.
+ * Fail if Yarn reports npm security advisories that are not in yarn-audit-known-issues,
+ * or if the production tree has any security advisory.
  *
  * @remarks Pins and lockfile checksums do not replace a CVE scan. Production
  *   (`dependencies`) must stay clean. Dev/test toolchain findings may be
  *   listed in `yarn-audit-known-issues` after review — do not copy a line
- *   there just to go green. Deprecations are included (Yarn reports them).
+ *   there just to go green. Deprecation notices are excluded from this security
+ *   gate; review them separately as dependency maintenance.
  * @see README.md#dependency-checks
  */
 
@@ -75,7 +76,7 @@ function reviewDetails(record) {
 
 function runYarnAudit(extraArgs) {
   const yarnPath = path.join(root, '.yarn/releases/yarn-4.18.1.cjs');
-  const result = spawnSync(process.execPath, [yarnPath, 'npm', 'audit', '--recursive', '--json', ...extraArgs], {
+  const result = spawnSync(process.execPath, [yarnPath, 'npm', 'audit', '--recursive', '--json', '--no-deprecations', ...extraArgs], {
     cwd: root,
     encoding: 'utf8',
     // Audit talks to the npm registry.
@@ -117,7 +118,7 @@ const errors = [];
 
 const production = runYarnAudit(['--environment', 'production']);
 if (production.length > 0) {
-  errors.push('Production dependency tree has advisories (must be empty — do not allowlist these):');
+  errors.push('Production dependency tree has security advisories (must be empty — do not allowlist these):');
   for (const record of production) {
     errors.push(formatRecord(record));
   }
@@ -148,13 +149,13 @@ for (const [key, records] of current) {
   stale.push(...unmatched);
 }
 if (unexpected.length > 0) {
-  errors.push('New advisories are not in yarn-audit-known-issues (review, then add a line or upgrade):');
+  errors.push('New security advisories are not in yarn-audit-known-issues (review toolchain findings or upgrade; never allowlist production findings):');
   for (const record of unexpected) {
     errors.push(formatRecord(record));
   }
 }
 if (changed.length > 0) {
-  errors.push('Reviewed toolchain advisories changed severity, affected versions or dependency path (review and update the recorded lines):');
+  errors.push('Reviewed toolchain security advisories changed severity, affected versions or dependency path (review and update the recorded lines):');
   for (const record of changed) {
     errors.push(formatRecord(record));
   }
@@ -166,7 +167,7 @@ for (const [key, records] of known) {
   }
 }
 if (stale.length > 0) {
-  errors.push('yarn-audit-known-issues lists advisories Yarn no longer reports (remove the stale lines):');
+  errors.push('yarn-audit-known-issues lists security advisories Yarn no longer reports (remove the stale lines):');
   for (const record of stale) {
     errors.push(formatRecord(record));
   }
@@ -178,4 +179,4 @@ if (errors.length > 0) {
 }
 
 const acceptedCount = [...current.values()].reduce((count, records) => count + records.length, 0);
-console.log(`deps:audit: production tree is clean; ${acceptedCount} accepted toolchain advisories match yarn-audit-known-issues.`);
+console.log(`deps:audit: no production security advisories; ${acceptedCount} accepted toolchain security advisories match yarn-audit-known-issues (deprecation notices excluded).`);
