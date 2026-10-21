@@ -125,7 +125,11 @@ if (production.length > 0) {
 }
 
 const knownText = fs.existsSync(knownIssuesPath) ? fs.readFileSync(knownIssuesPath, 'utf8') : '';
-const known = indexAdvisories(parseAuditNdjson(knownText));
+// Jenkins audits without --no-deprecations and needs its reviewed notices here.
+// Exclude only Yarn's exact deprecation IDs from this security-only comparison.
+const knownSecurityRecords = parseAuditNdjson(knownText).filter(record =>
+  record.children?.ID !== `${record.value} (deprecation)`);
+const known = indexAdvisories(knownSecurityRecords);
 const current = indexAdvisories(runYarnAudit([]));
 
 const unexpected = [];
