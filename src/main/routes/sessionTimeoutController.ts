@@ -1,6 +1,6 @@
 import {Router, Response} from 'express';
 import {AppRequest} from 'models/AppRequest';
-import {SESSION_EXTEND_URL, SESSION_TIMEOUT_URL} from 'routes/urls';
+import {SESSION_EXTEND_URL, SESSION_TIMEOUT_URL, SIGN_OUT_URL} from 'routes/urls';
 
 const sessionTimeoutController = Router();
 
@@ -28,10 +28,9 @@ sessionTimeoutController.get(SESSION_TIMEOUT_URL, (req: AppRequest, res: Respons
   };
 
   if (req.session) {
-    return req.session.destroy(() => {
-      res.clearCookie('citizen-ui-session');
-      renderTimeoutPage();
-    });
+    // Let the normal logout handler destroy the session so it can still read
+    // the user's id_token and pass it as id_token_hint to IDAM.
+    return res.redirect(SIGN_OUT_URL);
   }
 
   return renderTimeoutPage();
