@@ -1,11 +1,7 @@
-import {IsDefined, IsNotEmpty, Validate} from 'class-validator';
-import {PhoneUKValidator} from 'form/validators/phoneUKValidator';
-
+// TEMP DTSCCI-5899 QA: phone validators removed so invalid number can reach civil-service as field_errors.
+// Revert before merge (restore IsDefined, IsNotEmpty, PhoneUKValidator).
 export class AlternativeTelephone {
-  @IsDefined({ message: 'ERRORS.PHONE_NUMBER_REQUIRED_CARM' })
-  @IsNotEmpty({ message: 'ERRORS.PHONE_NUMBER_REQUIRED_CARM' })
-  @Validate(PhoneUKValidator, {message: 'ERRORS.VALID_PHONE_NUMBER'})
-    alternativeTelephone?: string;
+  alternativeTelephone?: string;
 
   constructor(alternativeTelephone?: string) {
     this.alternativeTelephone = alternativeTelephone;
