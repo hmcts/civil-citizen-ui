@@ -1,6 +1,9 @@
 import {HTTPError} from '../../../../HttpError';
 import {GenericForm} from 'common/form/models/genericForm';
 import {FormValidationError} from 'common/form/validationErrors/formValidationError';
+import {SummaryRow} from 'common/models/summaryList/summaryList';
+import {SummarySection} from 'common/models/summaryList/summarySections';
+import {escapeHtml} from 'common/utils/escapeHtml';
 
 /**
  * Shape of the structured body civil-service returns (from DTSCCI-5282) when a
@@ -25,6 +28,11 @@ export interface CallbackErrorResponseBody {
 export interface CcdFieldError {
   id: string;
   message: string;
+}
+
+/** Unmapped field error ready for the CYA fallback inline block. */
+export interface UnmappedCcdFieldInlineError extends CcdFieldError {
+  anchorId: string;
 }
 /**
  * Pull the user-actionable messages out of either envelope a 422 can use:
@@ -93,8 +101,86 @@ export function applyCcdFieldErrorsToForm<T>(form: GenericForm<T>, fieldErrors: 
   }
 }
 
+/**
+ * Attach CCD field_errors to matching CYA summary rows (by ccdFieldId) so the
+ * GDS error summary can link to an inline message next to the answer.
+ * Returns any field errors that could not be mapped to a row (fallback block).
+ */
+export function applyCcdFieldErrorsToSummaryRows(
+  rows: SummaryRow[] | undefined,
+  fieldErrors: CcdFieldError[],
+  errorLabel: string,
+): UnmappedCcdFieldInlineError[] {
+  if (!fieldErrors?.length) {
+    return [];
+  }
+  if (!rows?.length) {
+    return fieldErrors.map(toUnmappedCcdFieldInlineError);
+  }
+
+  const unmapped: UnmappedCcdFieldInlineError[] = [];
+  for (const fieldError of fieldErrors) {
+    const row = rows.find(candidate => candidate.ccdFieldId === fieldError.id);
+    if (!row) {
+      unmapped.push(toUnmappedCcdFieldInlineError(fieldError));
+      continue;
+    }
+    attachCcdFieldErrorToSummaryRow(row, fieldError, errorLabel);
+  }
+  return unmapped;
+}
+
+export function applyCcdFieldErrorsToSummarySections(
+  sections: SummarySection[] | undefined,
+  fieldErrors: CcdFieldError[],
+  errorLabel: string,
+): UnmappedCcdFieldInlineError[] {
+  const rows = sections?.flatMap(section => section?.summaryList?.rows ?? []) ?? [];
+  return applyCcdFieldErrorsToSummaryRows(rows, fieldErrors, errorLabel);
+}
+
+function toUnmappedCcdFieldInlineError(fieldError: CcdFieldError): UnmappedCcdFieldInlineError {
+  return {
+    id: fieldError.id,
+    message: fieldError.message,
+    anchorId: toCcdFieldErrorAnchorId(fieldError.id),
+  };
+}
+
+function attachCcdFieldErrorToSummaryRow(
+  row: SummaryRow,
+  fieldError: CcdFieldError,
+  errorLabel: string,
+): void {
+  const anchorId = toCcdFieldErrorAnchorId(fieldError.id);
+  const errorHtml = buildCcdFieldInlineErrorHtml(anchorId, fieldError.message, errorLabel);
+  const existingValue = row.value?.html
+    ?? (row.value?.text != null ? escapeHtml(row.value.text) : '');
+  row.value = {html: `${errorHtml}${existingValue}`};
+}
+
+export function buildCcdFieldInlineErrorHtml(
+  anchorId: string,
+  message: string,
+  errorLabel: string,
+): string {
+  return `<p class="govuk-error-message" id="${escapeHtml(anchorId)}">`
+    + `<span class="govuk-visually-hidden">${escapeHtml(errorLabel)}:</span> `
+    + `${escapeHtml(message)}</p>`;
+}
+
 export function isCallbackFieldValidationError(error: unknown): error is CallbackError {
   return error instanceof CallbackError
     && error.hasFieldErrors()
     && !(error.callbackErrors?.length);
 }
+
+/** Known CCD case-field ids remounted on LiP Check your answers. */
+export const CcdCyaFieldId = {
+  APPLICANT1_PARTY_PHONE: 'applicant1.partyPhone',
+  RESPONDENT1_PARTY_EMAIL: 'respondent1.partyEmail',
+  RESPONDENT1_PARTY_PHONE: 'respondent1.partyPhone',
+  GA_HEARING_EMAIL: 'HearingDetailsEmailID',
+  GA_HEARING_TELEPHONE: 'HearingDetailsTelephoneNumber',
+} as const;
+
