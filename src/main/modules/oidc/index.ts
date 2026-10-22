@@ -238,6 +238,14 @@ export class OidcMiddleware {
           }
         }
 
+        // A session cookie with no authenticated session means the session
+        // expired or was signed out in another tab. Show the timeout page so
+        // form submissions do not silently send the user back to the
+        // dashboard/sign-in journey.
+        if (req.cookies?.['citizen-ui-session']) {
+          return res.redirect(SESSION_TIMEOUT_URL);
+        }
+
         if (
           requestIsForPinAndPost(req) ||
           requestIsForDownloadPdf(req) ||
