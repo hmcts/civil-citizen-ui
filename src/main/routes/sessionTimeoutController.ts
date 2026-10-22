@@ -21,6 +21,14 @@ sessionTimeoutController.get(SESSION_TIMEOUT_URL, (req: AppRequest, res: Respons
   res.locals.user = undefined;
   res.locals.sessionTimeout = undefined;
 
+  // The session may have expired in the store while its browser cookie is
+  // still present. Clear both cookie parts so "Sign in again" starts a new
+  // authentication journey instead of being redirected back here.
+  if (typeof res.clearCookie === 'function') {
+    res.clearCookie('citizen-ui-session', {path: '/'});
+    res.clearCookie('citizen-ui-session.sig', {path: '/'});
+  }
+
   const renderTimeoutPage = () => {
     res.render('features/public/session-timeout', {
       pageTitle: 'PAGES.SESSION_TIMEOUT.PAGE_TITLE',
