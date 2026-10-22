@@ -169,6 +169,42 @@ export const extractCategoryAndIndex = (submitAction: string): [string, string] 
   return [parts[0], parts[1]];
 };
 
+export const collectDocumentUrls = (value: unknown, urls: Set<string> = new Set<string>(), seen: WeakSet<object> = new WeakSet()): Set<string> => {
+  if (!value || typeof value !== 'object' || seen.has(value)) {
+    return urls;
+  }
+  seen.add(value);
+  Object.entries(value).forEach(([key, child]) => {
+    if (key === 'document_url' && typeof child === 'string' && child) {
+      urls.add(child);
+    } else {
+      collectDocumentUrls(child, urls, seen);
+    }
+  });
+  return urls;
+};
+
+export const deleteRemovedDocuments = async (
+  req: Request,
+  savedDraft: unknown,
+  updatedForm: unknown,
+  civilServiceClient: {deleteDocument: (req: Request, documentId: string) => Promise<void>},
+  loggerName = 'uploadDocumentsController',
+): Promise<void> => {
+  const logger = Logger.getLogger(loggerName);
+  const remaining = collectDocumentUrls(updatedForm);
+  const removed = [...collectDocumentUrls(savedDraft)].filter((url) => !remaining.has(url));
+
+  await Promise.all(removed.map(async (url) => {
+    const documentId = url.substring(url.lastIndexOf('/') + 1);
+    try {
+      await civilServiceClient.deleteDocument(req, documentId);
+    } catch (error) {
+      logger.error(`[DELETE FILE] Could not delete document ${documentId} from document management: ${error?.message || error}`);
+    }
+  }));
+};
+
 export const createUploadOneFileError = () => {
   return [{
     target: {
