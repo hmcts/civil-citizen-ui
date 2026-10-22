@@ -268,6 +268,25 @@ describe('Civil Service Client', () => {
       await expect(civilServiceClient.uploadDocument(appReq, mockFile)).rejects.toThrow(TestMessages.DOCUMENT_UPLOAD_UNSUCCESSFUL);
     });
   });
+  describe('deleteDocument', () => {
+    it('should send a delete request for the document id', async () => {
+      const mockDelete = jest.fn().mockResolvedValue({status: 204});
+      mockedAxios.create.mockReturnValueOnce({delete: mockDelete} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl, true);
+
+      await civilServiceClient.deleteDocument(appReq, 'abc-123');
+
+      expect(mockDelete.mock.calls[0][0]).toEqual('/case/document/abc-123');
+    });
+
+    it('should throw when the delete fails', async () => {
+      const mockDelete = jest.fn().mockRejectedValue(new Error('403'));
+      mockedAxios.create.mockReturnValueOnce({delete: mockDelete} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl, true);
+
+      await expect(civilServiceClient.deleteDocument(appReq, 'abc-123')).rejects.toThrow();
+    });
+  });
   describe('retrieveDocument', () => {
     it('should download document successfully', async () => {
       //Given
