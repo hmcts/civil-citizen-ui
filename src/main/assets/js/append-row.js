@@ -134,6 +134,11 @@ document.addEventListener('DOMContentLoaded', function () {
         if (element.checked) {
           element.checked = false;
         }
+        if (element.hasAttribute('aria-expanded')) {
+          // Cloned from a row where the panel may have been expanded; the checkbox is always
+          // reset to unchecked above, so the reported state must always match that.
+          element.setAttribute('aria-expanded', String(element.checked));
+        }
         element.classList.remove('govuk-input--error', 'govuk-select--error', 'govuk-textarea--error');
         element.parentNode.classList.remove('govuk-form-group--error');
         incrementIndexOnNameAndId(element);
@@ -247,11 +252,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
   function addEventToAddedCheckbox(checkbox) {
     checkbox.addEventListener('click', (event) => {
-      event.target.ariaExpanded = event.target.ariaExpanded === 'true' ? false : true;
       const index = event.target.id.match(checkboxIndexRegex);
       const fieldName = event.target.id.split('-')[2];
       const conditional = document.getElementById(`conditional-declared-${index[1]}-${fieldName}`);
-      if (conditional?.className?.includes(checkboxConditionalHidden)) {
+      // Plain checkboxes (e.g. "Disabled access", "Hearing loop") have no conditional panel at all;
+      // their value still submits normally, there's just nothing here to expand/collapse.
+      if (!conditional) {
+        return;
+      }
+      event.target.ariaExpanded = event.target.ariaExpanded === 'true' ? false : true;
+      if (conditional.className?.includes(checkboxConditionalHidden)) {
         conditional.classList.remove(checkboxConditionalHidden);
       } else {
         conditional.classList.add(checkboxConditionalHidden);
