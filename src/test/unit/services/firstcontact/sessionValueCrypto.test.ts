@@ -14,6 +14,18 @@ describe('first-contact session value encryption', () => {
     expect(decryptSessionValue(savedValue, 'different-secret')).toBe('');
   });
 
+  it.each([0, 1, 2])('rejects tampering with encrypted field %i', field => {
+    const parts = savedValue.split(':');
+    const bytes = Buffer.from(parts[field], 'base64');
+    bytes[0] ^= 1;
+    parts[field] = bytes.toString('base64');
+    expect(decryptSessionValue(parts.join(':'), secret)).toBe('');
+  });
+
+  it.each(['', 'not-an-encrypted-value', 'AAECAwQFBgcICQoL:missing-tag'])('rejects malformed session data %p', value => {
+    expect(decryptSessionValue(value, secret)).toBe('');
+  });
+
   it('round-trips newly saved session values', () => {
     expect(decryptSessionValue(encryptSessionValue('yes', secret), secret)).toBe('yes');
   });

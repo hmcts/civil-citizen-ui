@@ -70,7 +70,7 @@ describe('General Application - Check your answers', () => {
     (draftStoreService.deleteDraftClaimFromStore as jest.Mock).mockResolvedValue(undefined);
     (getClaimById as jest.Mock).mockResolvedValue(claim);
     mockGetCaseData.mockResolvedValue(claim);
-    mockSaveDraftClaim.mockResolvedValue(undefined);
+    mockSaveDraftClaim.mockReset().mockResolvedValue(undefined);
     mockSubmitApplication.mockResolvedValue(claim);
   });
 
