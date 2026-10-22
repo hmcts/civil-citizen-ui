@@ -27,7 +27,7 @@ sessionTimeoutController.get(SESSION_TIMEOUT_URL, (req: AppRequest, res: Respons
     });
   };
 
-  if (req.session) {
+  if (req.session?.user) {
     // Let the normal logout handler destroy the session so it can still read
     // the user's id_token and pass it as id_token_hint to IDAM.
     return res.redirect(SIGN_OUT_URL);
