@@ -1,6 +1,8 @@
 import {GenericForm} from 'common/form/models/genericForm';
 import {
   applyCcdFieldErrorsToForm,
+  applyCcdFieldErrorsToSummaryRows,
+  applyCcdFieldErrorsToSummarySections,
   CallbackError,
   extractCallbackErrorMessages,
   extractCallbackOnlyMessages,
@@ -8,6 +10,7 @@ import {
   isCallbackFieldValidationError,
   toCcdFieldErrorAnchorId,
 } from '../../../../../../main/app/client/common/error/callbackError';
+import {SummaryRow} from 'common/models/summaryList/summaryList';
 
 describe('callbackError helpers', () => {
   describe('extractCallbackOnlyMessages', () => {
@@ -121,6 +124,51 @@ describe('callbackError helpers', () => {
         [],
         [{id: 'email', message: 'Invalid email'}],
       ))).toBe(false);
+    });
+  });
+
+  describe('applyCcdFieldErrorsToSummaryRows', () => {
+    it('attaches the inline message to the matching CYA row and returns unmapped errors', () => {
+      const emailRow: SummaryRow = {
+        key: {text: 'Email'},
+        value: {html: 'notanemail'},
+        ccdFieldId: 'respondent1.partyEmail',
+      };
+      const phoneRow: SummaryRow = {
+        key: {text: 'Phone'},
+        value: {html: '07123456789'},
+        ccdFieldId: 'respondent1.partyPhone',
+      };
+
+      const unmapped = applyCcdFieldErrorsToSummaryRows(
+        [emailRow, phoneRow],
+        [
+          {id: 'respondent1.partyEmail', message: 'notanemail is not a valid Email address'},
+          {id: 'unknown.field', message: 'Something else'},
+        ],
+        'Error',
+      );
+
+      expect(emailRow.value.html).toContain('id="ccd-field-respondent1-partyEmail"');
+      expect(emailRow.value.html).toContain('govuk-error-message');
+      expect(emailRow.value.html).toContain('notanemail is not a valid Email address');
+      expect(emailRow.value.html).toContain('notanemail');
+      expect(phoneRow.value.html).toBe('07123456789');
+      expect(unmapped).toEqual([{
+        id: 'unknown.field',
+        message: 'Something else',
+        anchorId: 'ccd-field-unknown-field',
+      }]);
+    });
+
+    it('returns all field errors as unmapped when there are no rows', () => {
+      expect(applyCcdFieldErrorsToSummarySections(undefined, [
+        {id: 'respondent1.partyEmail', message: 'bad email'},
+      ], 'Error')).toEqual([{
+        id: 'respondent1.partyEmail',
+        message: 'bad email',
+        anchorId: 'ccd-field-respondent1-partyEmail',
+      }]);
     });
   });
 });

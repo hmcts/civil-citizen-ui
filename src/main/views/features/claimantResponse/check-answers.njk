@@ -17,7 +17,7 @@
 
       {% if form.hasErrors() %}
         {{ errorSummary(form.getErrors(), t) }}
-        {{ ccdFieldInlineErrors(form.getErrors(), t) }}
+        {{ ccdFieldInlineErrors(unmappedCcdFieldErrors, t) }}
       {% endif %}
       <div class="govuk-grid-row">
         <div class="govuk-grid-column-two-thirds">

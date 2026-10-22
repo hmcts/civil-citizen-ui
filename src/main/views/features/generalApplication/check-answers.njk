@@ -22,7 +22,7 @@
 
 {% block nestedContent %}
   {% if form and form.hasErrors() %}
-    {{ ccdFieldInlineErrors(form.getErrors(), t) }}
+    {{ ccdFieldInlineErrors(unmappedCcdFieldErrors, t) }}
   {% endif %}
   {{ headingWithCaption(t, headerTitle, 'PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.TITLE') }}
   {% if claimIdPrettified %}

@@ -428,6 +428,18 @@ describe('Claim - Check answers', () => {
         rawResponse: {draftId: 'draft-123'},
         createdAt: '2026-08-01T10:00:00.000Z',
       });
+      mockGetSummarySections.mockReturnValue({
+        sections: [{
+          title: 'Their details',
+          summaryList: {
+            rows: [{
+              key: {text: 'Email'},
+              value: {html: 'notanemail'},
+              ccdFieldId: 'respondent1.partyEmail',
+            }],
+          },
+        }],
+      });
       mockSubmitClaim.mockRejectedValue(new CallbackError(
         [],
         [],
@@ -439,11 +451,16 @@ describe('Claim - Check answers', () => {
 
       expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
         form: expect.any(GenericForm),
+        unmappedCcdFieldErrors: [],
       }));
       const form = (res.render as jest.Mock).mock.calls[0][1].form as GenericForm<unknown>;
       expect(form.hasErrors()).toBe(true);
       expect(form.errorFor('ccd-field-respondent1-partyEmail')).toBe('notanemail is not a valid Email address');
       expect(form.getErrors()[0].href).toBe('#ccd-field-respondent1-partyEmail');
+      const summarySections = (res.render as jest.Mock).mock.calls[0][1].summarySections;
+      expect(summarySections.sections[0].summaryList.rows[0].value.html).toContain('id="ccd-field-respondent1-partyEmail"');
+      expect(summarySections.sections[0].summaryList.rows[0].value.html).toContain('govuk-error-message');
+      expect(summarySections.sections[0].summaryList.rows[0].value.html).toContain('notanemail is not a valid Email address');
       expect(res.redirect).not.toHaveBeenCalled();
       expect(next).not.toHaveBeenCalled();
     });
