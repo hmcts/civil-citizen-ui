@@ -91,10 +91,10 @@ describe('Integration: response check-answers field_errors 422', () => {
     expect(response.text).toContain('href="#ccd-field-respondent1-partyPhone"');
     expect(response.text).toContain('id="ccd-field-respondent1-partyPhone"');
     expect(response.text).toContain('govuk-error-message');
-    const phoneRowIndex = response.text.indexOf('>Phone<');
-    const inlineIdIndex = response.text.indexOf('id="ccd-field-respondent1-partyPhone"');
-    expect(phoneRowIndex).toBeGreaterThan(-1);
-    expect(inlineIdIndex).toBeGreaterThan(phoneRowIndex);
+    // Inline message is on the phone summary-list value (after the key), not only under the GDS summary
+    expect(response.text).toMatch(
+      /govuk-summary-list__key[\s\S]*?Phone[\s\S]*?govuk-summary-list__value[\s\S]*?id="ccd-field-respondent1-partyPhone"[\s\S]*?notaphone/,
+    );
   });
 
   it('should keep the error page for callbackErrors-only 422', async () => {
