@@ -5,6 +5,7 @@ import { SummaryRow, summaryRow, summaryRowWithTextValue } from 'common/models/s
 import { SummarySection, summarySection } from 'common/models/summaryList/summarySections';
 import { generateRedisKey, saveDraftClaim } from 'modules/draft-store/draftStoreService';
 import { uploadEachSelectedFile } from './documentUpload/uploadEachSelectedFile';
+import { deleteRemovedGADocuments } from './documentUpload/deleteUploadedGADocuments';
 import { saveUploadErrorsToSession } from './uploadEvidenceDocumentService';
 import { FILE_UPLOAD_SOURCE } from 'common/utils/fileUploadUtils';
 import { t } from 'i18next';
@@ -37,10 +38,12 @@ export const getSummaryList = (additionalDocumentsList: UploadAdditionalDocument
   return formattedSummary;
 };
 
-export const removeSelectedDocument = async (redisKey: string, claim: Claim, index: number, userId?: string): Promise<void> => {
+export const removeSelectedDocument = async (req: AppRequest, redisKey: string, claim: Claim, index: number, userId?: string): Promise<void> => {
   try {
-    claim?.generalApplication?.uploadAdditionalDocuments?.splice(index, 1);
+    const uploadedDocuments = claim?.generalApplication?.uploadAdditionalDocuments;
+    const removedDocuments = uploadedDocuments?.splice(index, 1);
     await saveDraftClaim(redisKey, claim, false, userId);
+    await deleteRemovedGADocuments(req, removedDocuments, uploadedDocuments, 'additionalDocumentService');
   } catch (error) {
     logger.error(error);
     throw error;

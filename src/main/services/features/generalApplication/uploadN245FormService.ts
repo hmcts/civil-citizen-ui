@@ -10,6 +10,7 @@ import { CivilServiceClient } from 'client/civilServiceClient';
 import config from 'config';
 import { generateRedisKey } from 'modules/draft-store/draftStoreService';
 import { Claim } from 'common/models/claim';
+import { deleteRemovedGADocuments } from './documentUpload/deleteUploadedGADocuments';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClientForDocRetrieve: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl, true);
@@ -44,11 +45,18 @@ export const uploadSelectedFile = async (req: AppRequest, claim: Claim): Promise
   form.validateSync();
   delete uploadedN245Details.fileUpload; // release file memory
   if (!form.hasErrors()) {
+    const previousN245 = claim.generalApplication?.uploadN245Form;
     uploadedN245Details.caseDocument = await civilServiceClientForDocRetrieve.uploadDocument(req, fileUpload);
     await saveN245Form(redisKey, claim, uploadedN245Details);
+    await deleteRemovedGADocuments(req, previousN245, uploadedN245Details, 'uploadN245FormService');
   }
   const documentName = uploadedN245Details.caseDocument?.documentName || claim.generalApplication?.uploadN245Form?.caseDocument?.documentName;
 
   return Promise.resolve({ form, documentName });
 };
 
+export const removeN245Form = async (req: AppRequest, claim: Claim): Promise<void> => {
+  const removedN245 = claim.generalApplication?.uploadN245Form;
+  await saveN245Form(generateRedisKey(req), claim, undefined);
+  await deleteRemovedGADocuments(req, removedN245, undefined, 'uploadN245FormService');
+};

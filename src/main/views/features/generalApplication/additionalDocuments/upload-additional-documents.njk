@@ -5,7 +5,7 @@
 {% from "../../../macro/csrf.njk" import csrfProtection %}
 {% from "../../../macro/heading-with-caption.njk" import headingWithCaption %}
 {% from "../../../macro/button.njk" import addButton %}
-{% from "../../../macro/generalApplication/file-upload.njk" import gaFileUpload %}
+{% from "../../../macro/generalApplication/file-upload.njk" import gaFileUpload, gaDeleteFileButton %}
 {% block pageTitle %}
     {{ setPageTitle(t, 'PAGES.GENERAL_APPLICATION.ADDITIONAL_DOCUMENTS.UPLOAD_DOCUMENTS_TITLE') }}
 {% endblock %}
@@ -65,10 +65,7 @@
                            <p class="govuk-body govuk-!-margin-bottom-0"> {{ row.key.text }}</p>
                         </dt>
                         <dd class="govuk-summary-list__actions">
-                            <a class="govuk-link" href="{{ row.actions.items[0].href }}">
-                                {{ t('COMMON.BUTTONS.DELETE') }}<span class="govuk-visually-hidden">
-                                    {{ row.key.text }}</span>
-                            </a>
+                            {{ gaDeleteFileButton(t, row.key.text, loop.index0 // 2) }}
                         </dd>
                         </div>
                      {% endif %}

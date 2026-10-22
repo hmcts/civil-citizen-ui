@@ -48,6 +48,13 @@ const file = {
   buffer: Buffer.from('Test file content'),
 };
 
+const uploadedDocument = (id: string): UploadGAFiles => {
+  const document = new UploadGAFiles();
+  document.caseDocument = {...mockCaseDocument, documentName: `${id}.pdf`,
+    documentLink: {...mockCaseDocument.documentLink, document_url: `http://dm-store/documents/${id}`}};
+  return document;
+};
+
 describe('General Application - Respondent GA upload evidence documents ', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
@@ -81,22 +88,13 @@ describe('General Application - Respondent GA upload evidence documents ', () =>
         });
     });
 
-    it('should remove the requested file', async () => {
-      const document = new UploadGAFiles();
-      document.caseDocument = mockCaseDocument;
-      document.fileUpload = file;
-      gaResponse.uploadEvidenceDocuments.push(document);
-      gaResponse.uploadEvidenceDocuments.push(document);
+    it('should show a delete button and not remove a file on a GET request', async () => {
+      gaResponse.uploadEvidenceDocuments.push(uploadedDocument('first'), uploadedDocument('second'));
       jest.spyOn(gaStoreResponseService, 'getDraftGARespondentResponse').mockResolvedValue(gaResponse);
-      const res = await request(app)
-        .get(constructResponseUrlWithIdAndAppIdParams('123', '345', GA_RESPONDENT_UPLOAD_DOCUMENT_URL + '?id=1'));
-      expect(res.status).toBe(302);
-      expect(res.header.location).toBe(constructResponseUrlWithIdAndAppIdParams('123', '345', GA_RESPONDENT_UPLOAD_DOCUMENT_URL));
-      expect(gaResponse.uploadEvidenceDocuments.length).toEqual(1);
-      const redirectPath = res.header.location.startsWith('http') ? new URL(res.header.location).pathname : res.header.location;
-      const pageRes = await request(app).get(redirectPath);
-      expect(pageRes.status).toBe(200);
-      expect(pageRes.text).toContain(t('PAGES.GENERAL_APPLICATION.RESPONDENT_UPLOAD_DOCUMENTS.TITLE'));
+      const res = await request(app).get(constructResponseUrlWithIdAndAppIdParams('123', '345', GA_RESPONDENT_UPLOAD_DOCUMENT_URL + '?id=1'));
+      expect(res.status).toBe(200);
+      expect(res.text).toContain('value="deleteFile[1]"');
+      expect(gaResponse.uploadEvidenceDocuments).toHaveLength(2);
     });
     it('should return page with errors when file to be uploaded has unsupported file type', async () => {
       const errors =   [
@@ -174,6 +172,19 @@ describe('General Application - Respondent GA upload evidence documents ', () =>
   });
 
   describe('on POST', () => {
+    it('should delete the requested file from the list and from document management', async () => {
+      gaResponse.uploadEvidenceDocuments.push(uploadedDocument('first'), uploadedDocument('second'));
+      jest.spyOn(gaStoreResponseService, 'getDraftGARespondentResponse').mockResolvedValue(gaResponse);
+      const deleteDocument = jest.spyOn(CivilServiceClient.prototype, 'deleteDocument').mockResolvedValue(undefined);
+      const res = await request(app).post(constructResponseUrlWithIdAndAppIdParams('123', '345', GA_RESPONDENT_UPLOAD_DOCUMENT_URL)).field('action', 'deleteFile[0]');
+      expect(res.status).toBe(302);
+      expect(res.header.location).toBe(constructResponseUrlWithIdAndAppIdParams('123', '345', GA_RESPONDENT_UPLOAD_DOCUMENT_URL));
+      expect(gaResponse.uploadEvidenceDocuments.map((document: UploadGAFiles) => document.caseDocument.documentName)).toEqual(['second.pdf']);
+      expect(deleteDocument).toHaveBeenCalledTimes(1);
+      expect(deleteDocument).toHaveBeenCalledWith(expect.anything(), 'first');
+      deleteDocument.mockRestore();
+    });
+
     it('should throw the error if user click upload file button without uploading', async () => {
       await request(app)
         .post(constructResponseUrlWithIdAndAppIdParams('123', '345', GA_RESPONDENT_UPLOAD_DOCUMENT_URL))

@@ -11,6 +11,7 @@ import { generateRedisKey, saveDraftClaim } from 'modules/draft-store/draftStore
 import { getClaimById } from 'modules/utilityService';
 import { GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL } from 'routes/urls';
 import { TypeOfDocumentSectionMapper } from 'services/features/caseProgression/TypeOfDocumentSectionMapper';
+import { deleteRemovedGADocuments } from 'services/features/generalApplication/documentUpload/deleteUploadedGADocuments';
 import {
   buildSummarySectionForAdditionalDoc, canUploadAddlDoc,
   getClaimDetailsById,
@@ -36,6 +37,7 @@ jest.mock('../../../../../main/modules/draft-store/draftStoreService', () => ({
   generateRedisKey: jest.fn(),
 }));
 jest.mock('../../../../../main/modules/utilityService');
+jest.mock('services/features/generalApplication/documentUpload/deleteUploadedGADocuments');
 jest.mock('i18next', () => ({
   t: jest.fn((key) => key),
 }));
@@ -267,11 +269,14 @@ describe('Additional Documents Service', () => {
         } as GeneralApplication,
       } as Claim;
       const index = 0;
+      const req = {} as AppRequest;
+      const removedDocument = claim.generalApplication.uploadAdditionalDocuments[0];
 
-      await removeSelectedDocument(redisKey, claim, index);
+      await removeSelectedDocument(req, redisKey, claim, index);
 
       expect(saveDraftClaim).toHaveBeenCalledWith(redisKey, claim, false, undefined);
       expect(claim.generalApplication.uploadAdditionalDocuments).toHaveLength(0);
+      expect(deleteRemovedGADocuments).toHaveBeenCalledWith(req, [removedDocument], [], 'additionalDocumentService');
     });
 
     it('should handle error during document removal', async () => {
@@ -283,8 +288,9 @@ describe('Additional Documents Service', () => {
 
       const loggerErrorSpy = jest.spyOn(logger, 'error');
 
-      await expect(removeSelectedDocument(redisKey, claim, index)).rejects.toThrow(error);
+      await expect(removeSelectedDocument({} as AppRequest, redisKey, claim, index)).rejects.toThrow(error);
       expect(loggerErrorSpy).toHaveBeenCalledWith(error);
+      expect(deleteRemovedGADocuments).not.toHaveBeenCalled();
     });
   });
 

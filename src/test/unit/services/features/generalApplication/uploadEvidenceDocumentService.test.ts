@@ -16,11 +16,13 @@ import {ApplicationType, ApplicationTypeOption} from 'models/generalApplication/
 import {FormValidationError} from 'form/validationErrors/formValidationError';
 import {AppRequest} from 'models/AppRequest';
 import {FILE_UPLOAD_SOURCE} from 'common/utils/fileUploadUtils';
+import {deleteRemovedGADocuments} from 'services/features/generalApplication/documentUpload/deleteUploadedGADocuments';
 
 const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
+jest.mock('services/features/generalApplication/documentUpload/deleteUploadedGADocuments');
 
 const mockCaseDocument: CaseDocument = <CaseDocument>{
   createdBy: 'test',
@@ -90,10 +92,13 @@ describe('Upload Evidence Document service', () => {
       mockSaveClaim.mockResolvedValue(() => { return new Claim(); });
 
       //When
-      await removeSelectedDocument('123', 0);
+      const req = {} as AppRequest;
+      await removeSelectedDocument(req, '123', 0);
       //Then
       expect(spy).toBeCalled();
       expect(claim.generalApplication.uploadEvidenceForApplication.length).toEqual(1);
+      expect(deleteRemovedGADocuments).toHaveBeenCalledWith(req, [expect.objectContaining({caseDocument: mockCaseDocument})],
+        claim.generalApplication.uploadEvidenceForApplication, 'uploadEvidenceDocumentService');
     });
   });
   describe('Get SummaryList', () => {

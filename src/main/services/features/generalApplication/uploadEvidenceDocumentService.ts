@@ -11,6 +11,7 @@ import { FormValidationError } from 'common/form/validationErrors/formValidation
 import { t } from 'i18next';
 import {isConfirmYouPaidCCJAppType} from 'services/features/generalApplication/generalApplicationService';
 import { getMulterErrorConstraint, FILE_UPLOAD_SOURCE } from 'common/utils/fileUploadUtils';
+import {deleteRemovedGADocuments} from 'services/features/generalApplication/documentUpload/deleteUploadedGADocuments';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseService');
@@ -37,11 +38,13 @@ export const saveDocumentsToUploaded = async (redisKey: string, uploadDocument: 
   }
 };
 
-export const removeSelectedDocument = async (redisKey: string, index: number) : Promise<void> => {
+export const removeSelectedDocument = async (req: AppRequest, redisKey: string, index: number) : Promise<void> => {
   try {
     const claim = await getCaseDataFromStore(redisKey, true);
-    claim?.generalApplication?.uploadEvidenceForApplication?.splice(index, 1);
+    const uploadedDocuments = claim?.generalApplication?.uploadEvidenceForApplication;
+    const removedDocuments = uploadedDocuments?.splice(index, 1);
     await saveDraftClaim(redisKey, claim);
+    await deleteRemovedGADocuments(req, removedDocuments, uploadedDocuments, 'uploadEvidenceDocumentService');
   } catch(error) {
     logger.error(error);
     throw error;

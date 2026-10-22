@@ -30,6 +30,7 @@ import {
 } from 'common/utils/fileUploadUtils';
 import {getRouteParam} from 'common/utils/routeParamUtils';
 import {handleMulterError} from 'services/features/generalApplication/uploadEvidenceDocumentService';
+import {getDeleteFileIndex} from 'services/features/generalApplication/documentUpload/deleteUploadedGADocuments';
 
 const uploadEvidenceDocumentsForApplicationController = Router();
 const viewPath = 'features/generalApplication/upload_documents';
@@ -69,13 +70,6 @@ uploadEvidenceDocumentsForApplicationController.get([GA_UPLOAD_DOCUMENTS_URL, GA
     if (fileUploadErrors?.length) {
       form = new GenericForm(uploadDocuments, fileUploadErrors);
     }
-    if (req.query?.id) {
-      await removeSelectedDocument(redisKey, Number(req.query.id) - 1);
-      const currentPage = isConfirmYouPaidCCJAppType(claim) ? GA_UPLOAD_DOCUMENTS_COSC_URL : GA_UPLOAD_DOCUMENTS_URL;
-      const baseUrl = constructResponseUrlWithIdParams(claimId, currentPage);
-      const redirectUrl = req.query?.lang ? `${baseUrl}?lang=${req.query.lang}` : baseUrl;
-      return res.redirect(redirectUrl);
-    }
     await getSummaryList(formattedSummary, redisKey, claimId);
     await renderView(form, claim, claimId, res, formattedSummary, index);
   } catch (error) {
@@ -104,6 +98,12 @@ uploadEvidenceDocumentsForApplicationController.post([GA_UPLOAD_DOCUMENTS_URL, G
       return req.session.save(() => {
         res.redirect(`${currentUrl}`);
       });
+    }
+
+    const deleteFileIndex = getDeleteFileIndex(req.body.action);
+    if (deleteFileIndex !== undefined) {
+      await removeSelectedDocument(req, redisKey, deleteFileIndex);
+      return res.redirect(currentUrl);
     }
 
     if (req.body.action === 'uploadButton') {

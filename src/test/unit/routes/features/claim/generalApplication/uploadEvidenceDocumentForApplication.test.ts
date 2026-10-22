@@ -47,6 +47,13 @@ const file = {
   buffer: Buffer.from('Test file content'),
 };
 
+const uploadedDocument = (id: string): UploadGAFiles => {
+  const document = new UploadGAFiles();
+  document.caseDocument = {...mockCaseDocument, documentName: `${id}.pdf`,
+    documentLink: {...mockCaseDocument.documentLink, document_url: `http://dm-store/documents/${id}`}};
+  return document;
+};
+
 describe('General Application - upload evidence docs to support application', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
@@ -92,23 +99,12 @@ describe('General Application - upload evidence docs to support application', ()
           });
       });
 
-    it('should remove the requested file', async () => {
-      const uploadDocument = new UploadGAFiles();
-      uploadDocument.caseDocument = mockCaseDocument;
-      uploadDocument.fileUpload = file;
-
-      claim.generalApplication.uploadEvidenceForApplication.push(uploadDocument);
-      claim.generalApplication.uploadEvidenceForApplication.push(uploadDocument);
-      const currentDocuments = 2;
+    it('should show a delete button and not remove a file on a GET request', async () => {
+      claim.generalApplication.uploadEvidenceForApplication.push(uploadedDocument('first'), uploadedDocument('second'));
       const res = await request(app).get(GA_UPLOAD_DOCUMENTS_URL + '?id=1');
-      expect(res.status).toBe(302);
-      expect(res.header.location).toBeDefined();
-      expect(res.header.location).not.toContain('?id=1');
-      expect(claim.generalApplication.uploadEvidenceForApplication.length).toBe(currentDocuments - 1);
-      const redirectPath = res.header.location.startsWith('http') ? new URL(res.header.location).pathname : res.header.location;
-      const pageRes = await request(app).get(redirectPath);
-      expect(pageRes.status).toBe(200);
-      expect(pageRes.text).toContain(t('PAGES.GENERAL_APPLICATION.UPLOAD_DOCUMENTS.TITLE'));
+      expect(res.status).toBe(200);
+      expect(res.text).toContain('value="deleteFile[1]"');
+      expect(claim.generalApplication.uploadEvidenceForApplication).toHaveLength(2);
     });
 
     it('should return page with errors when file to be uploaded has unsupported file type', async () => {
@@ -187,6 +183,18 @@ describe('General Application - upload evidence docs to support application', ()
   });
 
   describe('on POST', () => {
+    it('should delete the requested file from the list and from document management', async () => {
+      claim.generalApplication.uploadEvidenceForApplication.push(uploadedDocument('first'), uploadedDocument('second'));
+      const deleteDocument = jest.spyOn(CivilServiceClient.prototype, 'deleteDocument').mockResolvedValue(undefined);
+      const res = await request(app).post(GA_UPLOAD_DOCUMENTS_URL).field('action', 'deleteFile[0]');
+      expect(res.status).toBe(302);
+      expect(res.header.location).toContain(GA_UPLOAD_DOCUMENTS_URL);
+      expect(claim.generalApplication.uploadEvidenceForApplication.map((document: UploadGAFiles) => document.caseDocument.documentName)).toEqual(['second.pdf']);
+      expect(deleteDocument).toHaveBeenCalledTimes(1);
+      expect(deleteDocument).toHaveBeenCalledWith(expect.anything(), 'first');
+      deleteDocument.mockRestore();
+    });
+
     it('should throw the error if user click upload file button without uploading', async () => {
       await request(app)
         .post(GA_UPLOAD_DOCUMENTS_URL)

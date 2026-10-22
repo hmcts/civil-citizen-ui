@@ -106,16 +106,17 @@ describe('General Application - uploadDocumentsForRequestMoreInfoController.ts',
         });
     });
 
-    it('should remove the 2nd file from list', async () => {
+    it('should show a delete button for each uploaded file', async () => {
+      const res = await request(app).get(GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_URL);
+      expect(res.status).toBe(200);
+      expect(res.text).toContain('value="deleteFile[0]"');
+      expect(res.text).toContain('value="deleteFile[1]"');
+    });
+
+    it('should not remove a file on a GET request', async () => {
       const res = await request(app).get(GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_URL + '?id=2');
-      expect(res.status).toBe(302);
-      expect(res.header.location).toBeDefined();
-      expect(res.header.location).not.toContain('?id=2');
-      const redirectPath = res.header.location.startsWith('http') ? new URL(res.header.location).pathname : res.header.location;
-      const pageRes = await request(app).get(redirectPath);
-      expect(pageRes.status).toBe(200);
-      expect(pageRes.text).toContain(t('PAGES.GENERAL_APPLICATION.UPLOAD_MORE_INFO_DOCUMENTS.PAGE_TITLE_TO_UPLOAD'));
-      expect(pageRes.text).toContain(uploadDocuments[0].caseDocument.documentName);
+      expect(res.status).toBe(200);
+      expect(uploadDocuments).toHaveLength(2);
     });
 
     it('should return page with errors when file to be uploaded has unsupported file type', async () => {
@@ -194,6 +195,16 @@ describe('General Application - uploadDocumentsForRequestMoreInfoController.ts',
   });
 
   describe('on POST', () => {
+    it('should delete the 2nd file from the list and from document management', async () => {
+      const deleteDocument = jest.spyOn(CivilServiceClient.prototype, 'deleteDocument').mockResolvedValue(undefined);
+      const res = await request(app).post(GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_URL).field('action', 'deleteFile[1]');
+      expect(res.status).toBe(302);
+      expect(uploadDocuments.map((uploadDocument) => uploadDocument.caseDocument.documentName)).toEqual(['Additional information1']);
+      expect(deleteDocument).toHaveBeenCalledTimes(1);
+      expect(deleteDocument).toHaveBeenCalledWith(expect.anything(), '95de9948-e563-4692-a642-5cdd5b2a1047');
+      deleteDocument.mockRestore();
+    });
+
     it('should throw the error if user click upload file button without uploading', async () => {
       await request(app)
         .post(GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_URL)

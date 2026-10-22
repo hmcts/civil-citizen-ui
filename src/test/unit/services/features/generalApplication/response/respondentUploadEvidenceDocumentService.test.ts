@@ -8,9 +8,12 @@ import {CaseDocument} from 'models/document/caseDocument';
 import {summarySection} from 'models/summaryList/summarySections';
 import {GaResponse} from 'models/generalApplication/response/gaResponse';
 import {UploadGAFiles} from 'models/generalApplication/uploadGAFiles';
+import {AppRequest} from 'models/AppRequest';
+import {deleteRemovedGADocuments} from 'services/features/generalApplication/documentUpload/deleteUploadedGADocuments';
 
 import * as draftStoreService from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
 jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
+jest.mock('services/features/generalApplication/documentUpload/deleteUploadedGADocuments');
 jest.mock('../../../../../../main/services/features/generalApplication/response/generalApplicationResponseStoreService', () => ({
   saveDraftGARespondentResponse: jest.fn(),
   getDraftGARespondentResponse: jest.fn(),
@@ -48,10 +51,13 @@ describe('Upload Respondent Evidence Document service', () => {
       const spy = jest.spyOn(draftStoreService, 'saveDraftGARespondentResponse');
 
       //When
-      await removeDocumentFromRedis('123',0);
+      const req = {} as AppRequest;
+      await removeDocumentFromRedis(req, '123', 0);
       //Then
       expect(spy).toBeCalled();
       expect(gaResponse.uploadEvidenceDocuments.length).toEqual(1);
+      expect(deleteRemovedGADocuments).toHaveBeenCalledWith(req, [expect.objectContaining({caseDocument: mockCaseDocument})],
+        gaResponse.uploadEvidenceDocuments, 'respondentUploadEvidenceDocumentsService');
     });
   });
   describe('Get SummaryList', () => {
