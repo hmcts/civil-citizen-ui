@@ -1,15 +1,8 @@
-import {IsNotEmpty, Validate} from 'class-validator';
-import { EmailValidator } from 'common/form/validators/emailValidator';
-import {PhoneUKValidator} from 'form/validators/phoneUKValidator';
-
+// TEMP DTSCCI-5899 QA: phone/email validators removed so invalid values can reach civil-service as field_errors.
+// Revert before merge (restore PhoneUKValidator, EmailValidator, IsNotEmpty).
 export class HearingContactDetails {
-  @Validate(PhoneUKValidator, {message: 'ERRORS.GENERAL_APPLICATION.ENTER_TELEPHONE_NUMBER'})
-  @IsNotEmpty({message: 'ERRORS.GENERAL_APPLICATION.ENTER_TELEPHONE_NUMBER'})
-    telephoneNumber?: string;
-
-  @IsNotEmpty({message: 'ERRORS.GENERAL_APPLICATION.ENTER_VALID_EMAIL'})
-  @Validate(EmailValidator, {message: 'ERRORS.GENERAL_APPLICATION.ENTER_VALID_EMAIL'})
-    emailAddress?: string;
+  telephoneNumber?: string;
+  emailAddress?: string;
 
   constructor(telephoneNumber?: string, emailAddress?: string) {
     this.telephoneNumber = telephoneNumber?.trim();

@@ -73,15 +73,14 @@ describe('General Application - Contact Details', () => {
         });
     });
 
-    it('should show error message if no value entered', async () => {
+    // TEMP DTSCCI-5899 QA: empty/invalid contact details accepted so they can reach civil-service. Restore error expectations on revert.
+    it('should redirect if no value entered', async () => {
       mockGetCaseData.mockImplementation(async () => mockClaim);
       await request(app)
         .post(GA_HEARING_CONTACT_DETAILS_URL)
         .send({telephoneNumber: null, emailAddress: null})
         .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.GENERAL_APPLICATION.ENTER_TELEPHONE_NUMBER'));
-          expect(res.text).toContain(t('ERRORS.GENERAL_APPLICATION.ENTER_VALID_EMAIL'));
+          expect(res.status).toBe(302);
         });
     });
 
