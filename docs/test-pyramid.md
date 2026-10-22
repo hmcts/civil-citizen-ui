@@ -12,7 +12,7 @@ Related: [functional-tests.md](functional-tests.md) covers browser journeys and 
 | In-process integration | `src/integration-test` | `yarn test:integration` | Supertest against the app. Multi-step redirects, cookies, session, rendered HTML, middleware wiring. External I/O still mocked (Redis, Civil Service, IDAM). | Duplicating every page GET/POST already owned by a unit handler test |
 | Browser functional | `src/test/functionalTests` | `yarn test:functional` / reduced-stack | Browser, session and real- or WireMock-backed journeys | Assertions that only need a controller or a route |
 
-`yarn test:routes` is an alias of `yarn test:integration`.
+`yarn test:integration` invokes `yarn test:routes`.
 
 ## Unit tests
 

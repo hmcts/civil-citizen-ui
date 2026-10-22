@@ -17,6 +17,8 @@ import {
   DASHBOARD_CLAIMANT_URL,
   DEFENDANT_SUMMARY_URL,
   GA_RESPONSE_CHECK_ANSWERS_URL,
+  GENERAL_APPLICATION_CONFIRM_URL,
+  GA_COSC_CONFIRM_URL,
 } from '../../../main/routes/urls';
 import applicationTypeController from '../../../main/routes/features/generalApplication/applicationTypeController';
 import payingForApplicationController from '../../../main/routes/features/generalApplication/payingForApplicationController';
@@ -24,6 +26,8 @@ import gaCheckAnswersResponseController
   from '../../../main/routes/features/generalApplication/response/checkAnswersResponseController';
 import applicationResponseConfirmationController
   from '../../../main/routes/features/generalApplication/response/applicationResponseConfirmationController';
+import submitConfirmationController from '../../../main/routes/features/generalApplication/submitGeneralApplicationConfirmationController';
+import coscConfirmationController from '../../../main/routes/features/generalApplication/certOfSorC/submitCoScApplicationConfirmationController';
 jest.mock('modules/draft-store/draftStoreService', () => ({
   generateRedisKey: jest.fn(() => 'redis-claim'),
   generateRedisKeyForGA: jest.fn(() => 'redis-ga'),
@@ -41,6 +45,8 @@ jest.mock('services/features/generalApplication/generalApplicationService', () =
   deleteGAFromClaimsByUserId: jest.fn().mockResolvedValue(undefined),
   getByIndex: jest.fn(),
   getCancelUrl: jest.fn().mockResolvedValue('/dashboard'),
+  getDashboardUrlForParty: jest.requireActual('services/features/generalApplication/generalApplicationService').getDashboardUrlForParty,
+  isConfirmYouPaidCCJAppType: jest.requireActual('services/features/generalApplication/generalApplicationService').isConfirmYouPaidCCJAppType,
   resolveApplicationTypeIndexForGet: jest.fn((_req, claim) =>
     claim.generalApplication?.applicationTypes?.length === 1 ? 0 : undefined,
   ),
@@ -95,6 +101,7 @@ const createControllerApp = (controller: Router) => {
   app.use(express.urlencoded({extended: true}));
   app.use(express.json());
   app.use((req, _res, next) => {
+    req.cookies = {};
     (req as unknown as {session: {user: {id: string}}}).session = {user: {id: 'u1'}};
     next();
   });
@@ -127,6 +134,36 @@ describe('Integration: general application route migration', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     (gaServiceClientMock as unknown as {getApplicationsByCaseId: jest.Mock}).getApplicationsByCaseId = jest.fn();
+  });
+
+  describe.each([
+    {name: 'standard', controller: submitConfirmationController, url: GENERAL_APPLICATION_CONFIRM_URL},
+    {name: 'COSC', controller: coscConfirmationController, url: GA_COSC_CONFIRM_URL},
+  ])('$name confirmation recovery', ({controller, url}) => {
+    it.each([CaseRole.CLAIMANT, CaseRole.DEFENDANT])('uses a non-destructive dashboard redirect for missing or repeated query parameters (%s)', async role => {
+      const claim = buildClaim(role, ApplicationTypeOption.EXTEND_TIME);
+      (getClaimById as jest.Mock).mockResolvedValue(claim);
+      const app = createControllerApp(controller);
+      const dashboard = withId(role === CaseRole.CLAIMANT ? DASHBOARD_CLAIMANT_URL : DEFENDANT_SUMMARY_URL);
+      await request(app).get(withId(url)).expect(302).expect('Location', dashboard);
+      await request(app).get(`${withId(url)}?id=first&id=second&appFee=108`).expect(302).expect('Location', dashboard);
+      await request(app).get(`${withId(url)}?id=selected-entry&appFee=108&appFee=0`).expect(302).expect('Location', dashboard);
+    });
+
+    it('retains an explicit zero fee and collection-item identity through HTTP parsing', async () => {
+      const claim = buildClaim(CaseRole.CLAIMANT, ApplicationTypeOption.EXTEND_TIME);
+      claim.generalApplications = [
+        {id: 'other-entry', value: {caseLink: {CaseReference: '9990000000000001'}}},
+        {id: 'selected-entry', value: {caseLink: {CaseReference: '9990000000000002'}}},
+      ] as Claim['generalApplications'];
+      claim.generalApplication.applicationFee = {calculatedAmountInPence: 99900} as Claim['generalApplication']['applicationFee'];
+      (getClaimById as jest.Mock).mockResolvedValue(claim);
+      const response = await request(createControllerApp(controller))
+        .get(`${withId(url)}?id=selected-entry&appFee=0`).expect(200);
+      const content = response.body.data.confirmationContent;
+      const button = content.find((section: {data: {href?: string}}) => section.data.href?.includes('apply-help-fee-selection'));
+      expect(button.data.href).toBe(`/case/${CLAIM_ID}/general-application/apply-help-fee-selection?id=selected-entry&appFee=0`);
+    });
   });
 
   it('application type: single selected type routes to agreement-from-other-party', async () => {

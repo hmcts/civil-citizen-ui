@@ -1,11 +1,12 @@
 import express, {Request, Response, Router} from 'express';
 import request from 'supertest';
 import controller from 'routes/features/caseProgression/uploadDocumentsController';
+import typeOfDocumentsController from 'routes/features/caseProgression/typeOfDocumentsController';
 import mediationController from 'routes/features/mediation/uploadDocuments/uploadDocumentsController';
 import {MEDIATION_UPLOAD_DOCUMENTS} from 'routes/urls';
 import {UploadDocuments as MediationUploads, TypeOfDocuments, TypeOfMediationDocuments} from 'models/mediation/uploadDocuments/uploadDocuments';
 import {getUploadDocumentsForm as getMediationForm} from 'services/features/mediation/uploadDocuments/uploadDocumentsService';
-import {CP_UPLOAD_DOCUMENTS_URL} from 'routes/urls';
+import {CP_UPLOAD_DOCUMENTS_URL, TYPES_OF_DOCUMENTS_URL} from 'routes/urls';
 import {getClaimById} from 'modules/utilityService';
 import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {CaseRole} from 'form/models/caseRoles';
@@ -37,6 +38,7 @@ function submitted(html: string): Request {
 
 function appFor(router: Router, language: string) {
   const app = express();
+  app.use(express.urlencoded({extended: true}));
   app.use((req, res, next) => {
     req.session = {user: {id: 'local-user'}, save: (callback: () => void) => callback()} as unknown as Request['session'];
     req.cookies = {};
@@ -49,7 +51,7 @@ function appFor(router: Router, language: string) {
   return app;
 }
 
-function post(app: ReturnType<typeof express>, url: string, html: string, action: string, metadata?: {category: string; values: Metadata}) {
+function post(app: ReturnType<typeof express>, url: string, html: string, action: string, metadata?: {category: string; values: Metadata; index?: number}) {
   const values = fields(html);
   function set(name: string, value: string) {
     const matches = values.filter(([field]) => field === name);
@@ -57,7 +59,7 @@ function post(app: ReturnType<typeof express>, url: string, html: string, action
     matches[0][1] = value;
   }
   if (metadata) for (const [key, value] of Object.entries(metadata.values)) {
-    const prefix = `${metadata.category}[2][${key}]`;
+    const prefix = `${metadata.category}[${metadata.index ?? 2}][${key}]`;
     if (typeof value === 'string') set(prefix, value);
     else for (const [part, text] of Object.entries(value)) set(`${prefix}[${part}]`, text);
   }
@@ -79,11 +81,17 @@ function metadataFor(category: string, index: number, otherParty = ''): Metadata
   const dateInputFields = {dateDay: String(index + 1), dateMonth: String(index + 2), dateYear: '2024'};
   switch (category) {
     case 'documentsForDisclosure':
+    case 'trialDocumentary':
     case 'documentsForDocumentsReferred':
       return {typeOfDocument: `Description ${index}`, dateInputFields};
     case 'documentsReferred':
       return {typeOfDocument: `Description ${index}`, witnessName: `Witness ${index}`, dateInputFields};
+    case 'witnessStatement':
+    case 'witnessSummary':
+    case 'noticeOfIntention':
+      return {witnessName: `Witness ${index}`, dateInputFields};
     case 'expertReport':
+    case 'expertStatement':
       return {expertName: `Expert ${index}`, fieldOfExpertise: `Specialism ${index}`, dateInputFields};
     case 'questionsForExperts':
       return {expertName: `Expert ${index}`, otherPartyName: otherParty, questionDocumentName: `Question ${index}`};
@@ -92,6 +100,10 @@ function metadataFor(category: string, index: number, otherParty = ''): Metadata
     case 'documentsForYourStatement':
       return {yourName: `Person ${index}`, dateInputFields};
     case 'disclosureList':
+    case 'trialCaseSummary':
+    case 'trialSkeletonArgument':
+    case 'trialAuthorities':
+    case 'trialCosts':
       return {};
     default:
       throw new Error(`Missing fixture metadata for ${category}`);
@@ -259,3 +271,73 @@ describe.each([false, true])('mediation multipart preservation (claimant=%s)', c
     });
   });
 });
+
+const additionalCategories = [
+  ['documentsForDisclosure', 'documents'], ['disclosureList', 'list'],
+  ['witnessStatement', 'witnessStatement'], ['witnessSummary', 'summary'],
+  ['noticeOfIntention', 'witnessNotice'], ['documentsReferred', 'witnessDocuments'],
+  ['expertReport', 'report'], ['expertStatement', 'statement'],
+  ['questionsForExperts', 'questions'], ['answersForExperts', 'answer'],
+  ['trialCaseSummary', 'case'], ['trialSkeletonArgument', 'skeleton'],
+  ['trialAuthorities', 'legal'], ['trialCosts', 'cost'], ['trialDocumentary', 'documentary'],
+] as const;
+
+it.each(additionalCategories.flatMap(([category, selection]) => [true, false].map(claimant => ({category, selection, claimant}))))(
+  'resumes a sparse saved form and adds $category without losing existing documents (claimant=$claimant)', async ({category, selection, claimant}) => {
+    const claim = dqClaim(claimant);
+    claim.caseRole = claimant ? CaseRole.CLAIMANT : CaseRole.DEFENDANT;
+    const ownKey = claimant ? 'claimantDocuments' : 'defendantDocuments';
+    const otherKey = claimant ? 'defendantDocuments' : 'claimantDocuments';
+    const selectionKey = claimant ? 'claimantUploadDocuments' : 'defendantUploadDocuments';
+    const savedCategory = category === 'disclosureList' ? 'documentsForDisclosure' : 'disclosureList';
+    const savedSelection = savedCategory === 'disclosureList' ? 'list' : 'documents';
+    const initial = getUploadDocumentsForm({body: {
+      [savedCategory]: [0, 1].map(index => row(savedCategory, index, metadataFor(savedCategory, index))),
+    }} as Request);
+    // A stored form may omit an unselected optional collection. Current multipart parsing
+    // supplies empty arrays; the regression specifically resumes an existing sparse draft.
+    delete initial[category];
+    claim.caseProgression = {
+      [selectionKey]: getTypeDocumentForm({body: {[savedSelection]: true}} as Request),
+      [ownKey]: initial,
+      [otherKey]: getUploadDocumentsForm({body: {disclosureList: [row('other-role', 9, {})]}} as Request),
+    };
+    const savedBefore = JSON.stringify(initial[savedCategory]);
+    const otherBefore = JSON.stringify(claim.caseProgression[otherKey]);
+    const persisted: string[] = [];
+    (saveDraftClaim as jest.Mock).mockImplementation(async (_key, draft) => {
+      persisted.push(JSON.stringify(draft.caseProgression));
+    });
+    (getClaimById as jest.Mock).mockResolvedValue(claim);
+    (getCaseDataFromStore as jest.Mock).mockResolvedValue(claim);
+    const routers = Router();
+    routers.use(typeOfDocumentsController, controller);
+    const app = appFor(routers, claimant ? 'en' : 'cy');
+    const id = '1645882162449409';
+    const url = CP_UPLOAD_DOCUMENTS_URL.replace(':id', id);
+    await request(app).get(url).expect(200);
+
+    await request(app).post(TYPES_OF_DOCUMENTS_URL.replace(':id', id))
+      .type('form').send({[savedSelection]: 'on', [selection]: 'on'}).expect(302).expect('Location', url);
+    expect(claim.caseProgression[ownKey][category]).toBeUndefined();
+    const added = await request(app).get(url).expect(200);
+    const rendered = getUploadDocumentsForm(submitted(added.text));
+    expect(rendered[category]).toHaveLength(1);
+    expect(JSON.stringify(rendered[savedCategory])).toBe(savedBefore);
+    const otherParty = claimant ? claim.getDefendantFullName() : claim.getClaimantFullName();
+    const metadata = metadataFor(category, 2, otherParty);
+    const saved = await post(app, url, added.text, `${category}[0][uploadButton]`, {category, values: metadata, index: 0})
+      .attach(`${category}[0][fileUpload]`, Buffer.from('Safe local text'), 'new.txt').expect(200);
+    const expected = getUploadDocumentsForm({body: {
+      [savedCategory]: initial[savedCategory].map(item => ({...item, caseDocument: JSON.stringify(item.caseDocument)})),
+      [category]: [{...metadata, caseDocument: JSON.stringify(newDocument)}],
+    }} as Request);
+    expect(getUploadDocumentsForm(submitted(saved.text))).toEqual(expected);
+    expect(claim.caseProgression[ownKey]).toEqual(expected);
+    expect(JSON.stringify(claim.caseProgression[otherKey])).toBe(otherBefore);
+    expect(mockUploadDocument).toHaveBeenCalledTimes(1);
+    expect(JSON.parse(persisted[persisted.length - 1])).toEqual(JSON.parse(JSON.stringify(claim.caseProgression)));
+    const redisplayed = await request(app).get(url).expect(200);
+    expect(getUploadDocumentsForm(submitted(redisplayed.text))).toEqual(expected);
+  },
+);

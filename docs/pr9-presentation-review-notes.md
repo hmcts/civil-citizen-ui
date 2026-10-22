@@ -999,9 +999,9 @@ PR9 remains ready for review. Merge readiness remains unresolved until these fai
 
 ## PR11 — final fork test reconciliation (21 October 2026)
 
-**Review correction update:** the original implementation and verification below are historical. The appended review-correction section records subsequent test changes, the inherited PR10 harness fix and fresh verification. No production behaviour or dependency change is included.
+**Scope update (22 October 2026):** PR11 now also contains the bounded final integration corrections described in the closing-batch addendum below. The original test-only implementation, inventories, exclusion statements and verification results remain historical. The 719-path ledger and its summary reflect the current dispositions. Dependencies, runtime, deployment and pipeline choices remain unchanged.
 
-**Current added-case count (22 October 2026): 387.** Execution enumerates 381 cases in the 51 new suites and nine cases in the extended encryption suite, compared with three encryption cases at the recorded base. Earlier counts and run totals below remain historical.
+**Historical test-only added-case count (22 October 2026): 387.** Execution enumerates 381 cases in the 51 new suites and nine cases in the extended encryption suite, compared with three encryption cases at the recorded base. Earlier counts and run totals below remain historical.
 
 This section is the PR11 adaptation and verification record. Earlier PR8–PR10 results and unresolved failure histories above remain historical evidence. This is a test/documentation change, not a new production feature or whole-ticket approval.
 
@@ -1215,7 +1215,7 @@ No browser or capture regeneration is performed for this test/documentation delt
 - DTSCCI-5145 and DTSCCI-4187: the series delivers the concrete component/native-interaction, shared-helper, tooling, regression and restricted-preview work recorded by PR1–PR10 and this test reconciliation. The local governing record does not provide authoritative complete acceptance contracts for those two phase tickets; this record does not invent a phase-specific closure. Owner mapping of delivered/deferred items, integrated verification and separate QA/operational evidence remain required for both.
 - DTSCCI-4185 acceptance remains open: review/approved merge, final-commit Jenkins/GitHub security evidence, applicable contracts, live audit, operational checks, authenticated bilingual journeys and a separate QA person's record. Earlier unexplained PR9/PR10 full-run failures remain in their historical sections; a new pass is not their diagnosis.
 
-### PR-description draft
+### Historical test-only PR-description draft
 
 **Title:** DTSCCI-6593 Complete fork test integration and final reconciliation
 
@@ -1231,12 +1231,12 @@ Evidence codes deduplicate repeated explanations; each row has one primary dispo
 
 | Disposition | Paths |
 | --- | ---: |
-| Adapted | 222 |
+| Adapted | 233 |
 | Already integrated | 105 |
-| Covered differently | 82 |
+| Covered differently | 80 |
 | Defer | 8 |
-| Exclude | 252 |
-| Import/adapt | 50 |
+| Exclude | 244 |
+| Import/adapt | 49 |
 
 <details>
 <summary>All 719 fork-changed paths</summary>
@@ -1383,41 +1383,41 @@ Evidence codes deduplicate repeated explanations; each row has one primary dispo
 | `src/main/routes/features/generalApplication/addAnotherApplicationController.ts` | Exclude | R014 |
 | `src/main/routes/features/generalApplication/applicationCostsController.ts` | Exclude | R014 |
 | `src/main/routes/features/generalApplication/applicationSummaryController.ts` | Exclude | R014 |
-| `src/main/routes/features/generalApplication/certOfSorC/submitCoScApplicationConfirmationController.ts` | Exclude | R014 |
+| `src/main/routes/features/generalApplication/certOfSorC/submitCoScApplicationConfirmationController.ts` | Adapted | R014; R087 |
 | `src/main/routes/features/generalApplication/hearingArrangementController.ts` | Exclude | R014 |
 | `src/main/routes/features/generalApplication/hearingContactDetailsController.ts` | Exclude | R014 |
 | `src/main/routes/features/generalApplication/payingForApplicationController.ts` | Exclude | R014 |
-| `src/main/routes/features/generalApplication/submitGeneralApplicationConfirmationController.ts` | Exclude | R014 |
+| `src/main/routes/features/generalApplication/submitGeneralApplicationConfirmationController.ts` | Adapted | R014; R087 |
 | `src/main/routes/features/generalApplication/unavailableHearingDatesControllerConfirmation.ts` | Exclude | R014 |
 | `src/main/routes/features/generalApplication/wantToUploadDocuments.ts` | Exclude | R014 |
 | `src/main/routes/features/public/firstContact/claimSummaryController.ts` | Exclude | R013 |
 | `src/main/routes/features/public/firstContact/pinController.ts` | Exclude | R013 |
 | `src/main/routes/features/response/timelineOfEvents/defendantTimelineController.ts` | Exclude | R011 |
 | `src/main/routes/features/uiPreview/uiPreviewController.ts` | Adapted | R006 |
-| `src/main/routes/guards/partAdmitHowMuchHaveYouPaidGuard.ts` | Exclude | R012 |
+| `src/main/routes/guards/partAdmitHowMuchHaveYouPaidGuard.ts` | Adapted | R012; R086 |
 | `src/main/routes/guards/uploadRateLimitGuard.ts` | Adapted | R008 |
 | `src/main/routes/routes.ts` | Adapted | R008 |
 | `src/main/routes/urls.ts` | Adapted | R008 |
 | `src/main/services/features/caseProgression/checkYourAnswers/checkAnswersService.ts` | Adapted | R005 |
-| `src/main/services/features/caseProgression/disclosureService.ts` | Adapted | R005 |
-| `src/main/services/features/caseProgression/expertService.ts` | Adapted | R005 |
-| `src/main/services/features/caseProgression/trialService.ts` | Adapted | R005 |
-| `src/main/services/features/caseProgression/witnessService.ts` | Adapted | R005 |
+| `src/main/services/features/caseProgression/disclosureService.ts` | Adapted | R005; R085 |
+| `src/main/services/features/caseProgression/expertService.ts` | Adapted | R005; R085 |
+| `src/main/services/features/caseProgression/trialService.ts` | Adapted | R005; R085 |
+| `src/main/services/features/caseProgression/witnessService.ts` | Adapted | R005; R085 |
 | `src/main/services/features/claim/checkAnswers/checkAnswersService.ts` | Adapted | R005 |
 | `src/main/services/features/claimantResponse/claimantSuggestedInstalmentsService.ts` | Adapted | R005 |
 | `src/main/services/features/generalApplication/applicationCostsService.ts` | Exclude | R014 |
 | `src/main/services/features/generalApplication/feeDetailsService.ts` | Exclude | R014 |
 | `src/main/services/features/generalApplication/generalApplicationService.ts` | Exclude | R014 |
 | `src/main/services/features/generalApplication/response/generalApplicationResponseService.ts` | Exclude | R014 |
-| `src/main/services/features/generalApplication/submitGeneralApplicationConfirmationContent.ts` | Exclude | R014 |
+| `src/main/services/features/generalApplication/submitGeneralApplicationConfirmationContent.ts` | Adapted | R014; R087 |
 | `src/main/services/features/mediation/uploadDocuments/documentsForDocumentsReferredService.ts` | Adapted | R005 |
 | `src/main/services/features/mediation/uploadDocuments/yourStatementService.ts` | Adapted | R005 |
 | `src/main/services/features/response/statementOfMeans/bankAccounts/bankAccountConverter.ts` | Already integrated | R004 |
-| `src/main/services/features/response/timelineOfEvents/defendantTimelineService.ts` | Exclude | R011 |
+| `src/main/services/features/response/timelineOfEvents/defendantTimelineService.ts` | Adapted | R011; R086 |
 | `src/main/services/features/uiPreview/pageCatalog.ts` | Adapted | R006 |
 | `src/main/services/firstcontact/sessionValueCrypto.ts` | Exclude | R013 |
 | `src/main/services/translation/convertToCUI/cuiTranslation.ts` | Adapted | R005 |
-| `src/main/views/claim-details-tpl-dashboard.njk` | Adapted | R010 |
+| `src/main/views/claim-details-tpl-dashboard.njk` | Adapted | R010; R088 |
 | `src/main/views/claim-details-tpl.njk` | Adapted | R010 |
 | `src/main/views/features/caseProgression/cancel-your-upload.njk` | Already integrated | R004 |
 | `src/main/views/features/caseProgression/hearingFee/apply-help-fee-reference.njk` | Already integrated | R004 |
@@ -1436,15 +1436,15 @@ Evidence codes deduplicate repeated explanations; each row has one primary dispo
 | `src/main/views/features/claim/interest/claim-interest.njk` | Already integrated | R004 |
 | `src/main/views/features/claim/interest/claimant-interest-rate.njk` | Already integrated | R004 |
 | `src/main/views/features/claim/interest/continue-claiming-interest.njk` | Already integrated | R004 |
-| `src/main/views/features/claim/interest/how-much-continue-claiming.njk` | Adapted | R010 |
-| `src/main/views/features/claim/task-list.njk` | Adapted | R010 |
+| `src/main/views/features/claim/interest/how-much-continue-claiming.njk` | Adapted | R010; R088 |
+| `src/main/views/features/claim/task-list.njk` | Adapted | R010; R088 |
 | `src/main/views/features/claim/yourDetails/timeline.njk` | Adapted | R010 |
 | `src/main/views/features/claimantResponse/ccj/defendant-dob.njk` | Adapted | R010 |
 | `src/main/views/features/claimantResponse/ccj/judgement-amount-summary.njk` | Already integrated | R004 |
 | `src/main/views/features/claimantResponse/ccj/paid-amount.njk` | Already integrated | R004 |
-| `src/main/views/features/claimantResponse/ccj/repayment-plan-instalments.njk` | Adapted | R010 |
+| `src/main/views/features/claimantResponse/ccj/repayment-plan-instalments.njk` | Adapted | R010; R088 |
 | `src/main/views/features/claimantResponse/claimant-intention-to-proceed.njk` | Already integrated | R004 |
-| `src/main/views/features/claimantResponse/claimant-response-task-list.njk` | Adapted | R010 |
+| `src/main/views/features/claimantResponse/claimant-response-task-list.njk` | Adapted | R010; R088 |
 | `src/main/views/features/claimantResponse/instalments-plan.njk` | Adapted | R010 |
 | `src/main/views/features/claimantResponse/paidInFull/date-paid.njk` | Adapted | R010 |
 | `src/main/views/features/claimantResponse/part-payment-received.njk` | Already integrated | R004 |
@@ -1488,8 +1488,8 @@ Evidence codes deduplicate repeated explanations; each row has one primary dispo
 | `src/main/views/features/generalApplication/certOfSorC/final-payment-date.njk` | Adapted | R010 |
 | `src/main/views/features/generalApplication/directionsOrderUpload/upload-documents.njk` | Adapted | R010 |
 | `src/main/views/features/generalApplication/paying-for-application.njk` | Adapted | R010 |
-| `src/main/views/features/generalApplication/respondent-agreement.njk` | Adapted | R010 |
-| `src/main/views/features/generalApplication/response/accept-defendant-offer.njk` | Adapted | R010 |
+| `src/main/views/features/generalApplication/respondent-agreement.njk` | Adapted | R010; R088 |
+| `src/main/views/features/generalApplication/response/accept-defendant-offer.njk` | Adapted | R010; R088 |
 | `src/main/views/features/generalApplication/response/respondent-upload-documents.njk` | Adapted | R010 |
 | `src/main/views/features/generalApplication/response/respondent-want-to-upload-documents.njk` | Already integrated | R004 |
 | `src/main/views/features/generalApplication/unavailable-dates-confirmation.njk` | Already integrated | R004 |
@@ -1515,14 +1515,14 @@ Evidence codes deduplicate repeated explanations; each row has one primary dispo
 | `src/main/views/features/public/eligibility/single-defendant.njk` | Already integrated | R004 |
 | `src/main/views/features/public/eligibility/some-useful-info-fees.njk` | Adapted | R010 |
 | `src/main/views/features/public/eligibility/tenancy-deposit.njk` | Already integrated | R004 |
-| `src/main/views/features/queryManagement/createQuery.njk` | Adapted | R010 |
+| `src/main/views/features/queryManagement/createQuery.njk` | Adapted | R010; R088 |
 | `src/main/views/features/queryManagement/qm-questions-template.njk` | Already integrated | R004 |
 | `src/main/views/features/queryManagement/qm-view-queries-template.njk` | Already integrated | R004 |
 | `src/main/views/features/queryManagement/qm-view-query-details-template.njk` | Already integrated | R004 |
 | `src/main/views/features/queryManagement/sendFollowUpQuery.njk` | Adapted | R010 |
-| `src/main/views/features/response/admission/how-much-have-you-paid.njk` | Adapted | R010 |
+| `src/main/views/features/response/admission/how-much-have-you-paid.njk` | Adapted | R010; R088 |
 | `src/main/views/features/response/admission/partialAdmission/already-paid.njk` | Already integrated | R004 |
-| `src/main/views/features/response/admission/partialAdmission/how-much-do-you-owe.njk` | Adapted | R010 |
+| `src/main/views/features/response/admission/partialAdmission/how-much-do-you-owe.njk` | Adapted | R010; R088 |
 | `src/main/views/features/response/admission/payment-date.njk` | Adapted | R010 |
 | `src/main/views/features/response/admission/payment-option.njk` | Already integrated | R004 |
 | `src/main/views/features/response/bilingual-language-preference.njk` | Already integrated | R004 |
@@ -1534,12 +1534,12 @@ Evidence codes deduplicate repeated explanations; each row has one primary dispo
 | `src/main/views/features/response/responseDeadline/agreed-response-deadline.njk` | Adapted | R010 |
 | `src/main/views/features/response/statementOfMeans/courtOrders/court-order.njk` | Adapted | R010 |
 | `src/main/views/features/response/statementOfMeans/courtOrders/court-orders.njk` | Adapted | R010 |
-| `src/main/views/features/response/statementOfMeans/dependants/dependants.njk` | Adapted | R010 |
+| `src/main/views/features/response/statementOfMeans/dependants/dependants.njk` | Adapted | R010; R088 |
 | `src/main/views/features/response/statementOfMeans/employment/who-employs-you.njk` | Adapted | R010 |
 | `src/main/views/features/response/statementOfMeans/expenses/regular-expenses.njk` | Adapted | R010 |
-| `src/main/views/features/response/statementOfMeans/unemployment.njk` | Adapted | R010 |
-| `src/main/views/features/response/task-list.njk` | Adapted | R010 |
-| `src/main/views/features/response/timelineOfEvents/defendant-timeline.njk` | Adapted | R010 |
+| `src/main/views/features/response/statementOfMeans/unemployment.njk` | Adapted | R010; R088 |
+| `src/main/views/features/response/task-list.njk` | Adapted | R010; R088 |
+| `src/main/views/features/response/timelineOfEvents/defendant-timeline.njk` | Adapted | R010; R088 |
 | `src/main/views/features/response/your-defence.njk` | Already integrated | R004 |
 | `src/main/views/features/settlementAgreement/respond-settlement-agreement.njk` | Already integrated | R004 |
 | `src/main/views/features/ui-preview/index.njk` | Adapted | R010 |
@@ -1760,7 +1760,7 @@ Evidence codes deduplicate repeated explanations; each row has one primary dispo
 | `src/test/unit/routes/features/claim/generalApplication/additionalInfoUpload/respondAddInfoController.test.ts` | Exclude | R062 |
 | `src/test/unit/routes/features/claim/generalApplication/applicationSummaryController.test.ts` | Exclude | R062 |
 | `src/test/unit/routes/features/claim/generalApplication/certOfSorC/askProofOfDebtPaymentGuidanceController.test.ts` | Exclude | R062 |
-| `src/test/unit/routes/features/claim/generalApplication/certOfSorC/submitCoScApplicationConfirmationController.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/features/claim/generalApplication/certOfSorC/submitCoScApplicationConfirmationController.test.ts` | Adapted | R062; R089 |
 | `src/test/unit/routes/features/claim/generalApplication/directionsOrderUpload/checkAnswerController.test.ts` | Exclude | R062 |
 | `src/test/unit/routes/features/claim/generalApplication/directionsOrderUpload/directionsOrderSubmittedConfirmationController.test.ts` | Exclude | R062 |
 | `src/test/unit/routes/features/claim/generalApplication/respondentAgreeToOrderController.test.ts` | Exclude | R062 |
@@ -1770,7 +1770,7 @@ Evidence codes deduplicate repeated explanations; each row has one primary dispo
 | `src/test/unit/routes/features/claim/generalApplication/response/respondentHearingPreferenceController.test.ts` | Exclude | R062 |
 | `src/test/unit/routes/features/claim/generalApplication/response/viewApplicationController.test.ts` | Exclude | R062 |
 | `src/test/unit/routes/features/claim/generalApplication/submitApplicationOfflineController.test.ts` | Exclude | R062 |
-| `src/test/unit/routes/features/claim/generalApplication/submitGeneralApplicationConfirmationController.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/features/claim/generalApplication/submitGeneralApplicationConfirmationController.test.ts` | Adapted | R062; R089 |
 | `src/test/unit/routes/features/claim/generalApplication/uploadN245FormController.test.ts` | Exclude | R062 |
 | `src/test/unit/routes/features/claim/generalApplication/writtenRepresentationDocs/checkAnswerController.test.ts` | Exclude | R062 |
 | `src/test/unit/routes/features/claim/generalApplication/writtenRepresentationDocs/respondWrittenRepController.test.ts` | Exclude | R062 |
@@ -1835,7 +1835,7 @@ Evidence codes deduplicate repeated explanations; each row has one primary dispo
 | `src/test/unit/routes/guards/GaTrackHistory.test.ts` | Exclude | R062 |
 | `src/test/unit/routes/guards/claimantResponsecheckYourAnswersGuard.test.ts` | Exclude | R062 |
 | `src/test/unit/routes/guards/partAdmitGuard.test.ts` | Exclude | R062 |
-| `src/test/unit/routes/guards/partAdmitHowMuchHaveYouPaidGuard.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/guards/partAdmitHowMuchHaveYouPaidGuard.test.ts` | Adapted | R062; R089 |
 | `src/test/unit/routes/guards/pcqGuard.test.ts` | Exclude | R062 |
 | `src/test/unit/routes/guards/pcqGuardClaim.test.ts` | Exclude | R062 |
 | `src/test/unit/routes/guards/redisDataFlushForDJGuard.test.ts` | Exclude | R062 |
@@ -1858,7 +1858,7 @@ Evidence codes deduplicate repeated explanations; each row has one primary dispo
 | `src/test/unit/services/features/caseProgression/trialContentBuilder.test.ts` | Exclude | R063 |
 | `src/test/unit/services/features/caseProgression/uploadYourDocumentsContents.test.ts` | Exclude | R063 |
 | `src/test/unit/services/features/caseProgression/witnessContentBuilder.test.ts` | Exclude | R063 |
-| `src/test/unit/services/features/caseProgression/witnessService.test.ts` | Covered differently | R016 |
+| `src/test/unit/services/features/caseProgression/witnessService.test.ts` | Adapted | R016; R089 |
 | `src/test/unit/services/features/claim/checkAnswers/checkAnswersService.test.ts` | Covered differently | R016 |
 | `src/test/unit/services/features/claim/checkAnswers/claimSection/addEvidence.test.ts` | Covered differently | R067 |
 | `src/test/unit/services/features/claim/checkAnswers/claimSection/addTimeLine.test.ts` | Covered differently | R068 |
@@ -1896,7 +1896,7 @@ Evidence codes deduplicate repeated explanations; each row has one primary dispo
 | `src/test/unit/services/features/generalApplication/generalApplicationService.test.ts` | Covered differently | R016 |
 | `src/test/unit/services/features/generalApplication/response/generalApplicationResponseService.test.ts` | Covered differently | R016 |
 | `src/test/unit/services/features/generalApplication/response/generalApplicationResponseStoreService.test.ts` | Covered differently | R016 |
-| `src/test/unit/services/features/generalApplication/submitGeneralApplicationConfirmationContent.test.ts` | Import/adapt | R075 |
+| `src/test/unit/services/features/generalApplication/submitGeneralApplicationConfirmationContent.test.ts` | Adapted | R075; R089 |
 | `src/test/unit/services/features/mediation/uploadDocuments/buildYourStatementSummaryRows.test.ts` | Exclude | R063 |
 | `src/test/unit/services/features/mediation/uploadDocuments/documentsForDocumentsReferredService.test.ts` | Covered differently | R076 |
 | `src/test/unit/services/features/mediation/uploadDocuments/mediationCancelUploadService.test.ts` | Covered differently | R077 |
@@ -1919,7 +1919,7 @@ Evidence codes deduplicate repeated explanations; each row has one primary dispo
 | `src/test/unit/services/features/response/submitConfirmation/submitConfirmationBuilder/partAdmissionConfirmationContent.test.ts` | Exclude | R063 |
 | `src/test/unit/services/features/response/submitConfirmation/submitConfirmationBuilder/rejectClaimConfirmationContent.test.ts` | Exclude | R063 |
 | `src/test/unit/services/features/response/submitConfirmation/submitConfirmationBuilder/submitConfirmationBuilder.test.ts` | Exclude | R063 |
-| `src/test/unit/services/features/response/timelineOfEvents/defendantTimelineService.test.ts` | Covered differently | R016 |
+| `src/test/unit/services/features/response/timelineOfEvents/defendantTimelineService.test.ts` | Adapted | R016; R089 |
 | `src/test/unit/services/features/settlementAgreement/respondSettlementAgreementConfirmationContentService.test.ts` | Exclude | R063 |
 | `src/test/unit/services/features/settlementAgreement/respondSettlementAgreementService.test.ts` | Exclude | R063 |
 | `src/test/unit/services/features/settlementAgreement/settlementAgreementConfirmationBuilder/confirmationContentBuilder.test.ts` | Exclude | R063 |
@@ -1972,7 +1972,7 @@ Evidence codes deduplicate repeated explanations; each row has one primary dispo
 | --- | --- |
 | R001 | Fork-wide planning/operational/AI documentation not an application requirement; current README/test-pyramid/stage/preview guidance retained; broad future template consolidation remains separately owned. |
 | R002 | Fork retirement already satisfied; path absent. |
-| R003 | Retain reconciled PR2 pins/security/audit/automation and master test pyramid/runtime. Deferred fork runtime majors, obsolete scripts and suppressions excluded; PR11 changes none of these files. |
+| R003 | Retain reconciled PR2 pins/security/audit/automation and master test pyramid/runtime. Deferred fork runtime majors, obsolete scripts and suppressions excluded. PR11 adds the UTC baseline in jest.config.js for host-independent unit date assertions; the other files using this code remain unchanged by PR11. |
 | R004 | Current bytes equal exact fork reference. |
 | R005 | Current staged implementation and master fixes retained; fork whole-file replacement rejected. Relevant current tests and stage records are the review evidence, not remote/whole-ticket approval. |
 | R006 | Restricted PR10 catalogue/fixtures/local service setup replaces unsafe fork exposure; see docs/ui-preview.md and current preview security tests. |
@@ -2016,7 +2016,7 @@ Evidence codes deduplicate repeated explanations; each row has one primary dispo
 | R044 | PR7 dqRepeatedRowTemplates/dq-repeated-rows tests render actual witness fields and interpret submissions through witness services/models; new email/phone validators separately pin optional/invalid behaviour. |
 | R045 | Only assigns constructor arguments/undefined fields. Real claim/GA/hearing payment-reference and persistence tests provide behavioural coverage. |
 | R046 | Only assigns constructor arguments; current actual GA/dashboard rendering retains the rows, links and content. |
-| R047 | Named follow-up: GA support validation semantics. Fork suite expects even selected STEP_FREE_ACCESS without text to fail, despite no detail field being needed; establish the production caller/required-content contract before pinning that assertion. No rule changed. |
+| R047 | Residual GA support coverage: the real HearingSupport model nests validation only for sign-language, language and other-support details; step-free access/hearing loop have no content fields. The fork standalone Support failure assertion is not an oracle for the real POST model. Preserve current rules; any fuller isolated coverage remains outside this selective suite import, not a promised production correction. |
 | R048 | Constructor/default-array smoke checks. Current GA response/draft-store suites preserve submitted models and state. |
 | R049 | Constructor smoke assertions duplicate actual summary-list and rendered-table/template coverage without exercising escaping or navigation. |
 | R050 | Current monthlyIncomeExpensesCalculator tests exercise frequency-to-month calculations; PR7 remaining-repeated-rows tests cover dynamic totals. Static constructor/constant repetition excluded. |
@@ -2054,6 +2054,11 @@ Evidence codes deduplicate repeated explanations; each row has one primary dispo
 | R082 | Fork claimant-mediation coverage strengthened from existence checks to complete individual/decline CCD payloads. |
 | R083 | Fork Yes/No cases cover every public adapter, missing versus No, and independent form values. |
 | R084 | Retain the exact fork simpleFormModelsCoverage.test.ts: it invokes real GenericForm validation for CitizenResponseType, PartyTypeSelection, eligibility ClaimType and RespondAddInfo, including custom message keys and conditional missing-text requirements. These are behavioural assertions, not just constructor smoke coverage. Some default/valid cases overlap existing consumers; the explicit decorator/custom-key and conditional validation contracts justify the isolated suite. |
+| R085 | Closing integration correction: guard only a selected category's missing optional saved-row array in the four case-progression providers. Keep real section builders, persisted values, selection pruning, metadata and ordering. Existing multipart parsing creates empty arrays; regressions explicitly resume sparse saved forms rather than claiming every current upload produces undefined collections. |
+| R086 | Closing response recovery: missing partial-admission answers use the existing task-list redirect, without invented Yes/No values; a translated comment-only timeline uses fresh empty rows while retaining its comment. The fork's comment-dropping fallback is excluded. |
+| R087 | Closing GA confirmation recovery: validate an explicit scalar collection-item ID and finite decimal pounds fee, including zero, before rendering either confirmation. Invalid pairs redirect through getDashboardUrlForParty without cancelling/deleting a draft. Keep exact downstream collection-ID-to-case-reference lookup; exclude first-application and unrelated-draft-fee fallback. |
+| R088 | Closing presentation adaptation: ten numeric missing-value defaults preserve zero/submitted values; query date errors use escaped inline messages and focusable day summary links; respondent agreement has its existing translated title; three task headings and the opponent timeline use valid bounded composition. The existing dashboard shell gains a default-preserving summary block only to support the query override. Fee-change cleanup remains excluded. |
+| R089 | Existing regression owners extended for closing production corrections: real models/builders, saved-state preservation, call-time persistence snapshots, direct GA handlers, raw numeric attributes, bilingual error/title/table behavior and integration journeys. New unit assertions do not construct Express applications; HTTP remains under integration. This is selective adaptation, not assertion-for-assertion fork-suite parity. |
 
 </details>
 
@@ -2362,3 +2367,146 @@ The negative control changed production code only in disposable storage and was 
 The initial offline immutable installation identified missing archives. The permitted exact-archive bootstrap downloaded 109 locked archives / 59,547,909 bytes, with redirects and proxies refused and package identities checked; the URL set matches the earlier archive inventory excluding the same seven already-cached packages. Two optional platform archives came from copied cache. All 1,518 locked npm archive checksums matched; the localhost archive server then closed and the final immutable skip-build installation passed offline. Manifests, lockfile, runtime and production files remain unchanged.
 
 Both review-note documents remain local, unstaged context as requested. This correction changes only the existing hearing-payment test and this local record; it adds no deliverable path. GA confirmation recovery remains separately owned. No staging, commit, push, branch or ref change was performed. Disposable dependencies, caches, downloads, reports and probes are removed at handover.
+
+
+### PR11 closing integration corrections — 22 October 2026
+
+This addendum supersedes the earlier test-only PR11 boundary and historical GA/timeline exclusions. The user authorised finishing the remaining bounded integration corrections in the existing PR11. No further production port is identified by the completed source audit; deliberate exclusions and acceptance gaps below are not automatically additional PRs. This implementation does not establish whole-ticket acceptance.
+
+**Proposed PR title:** DTSCCI-6593 Complete fork integration fixes, regression coverage and reconciliation.
+
+**Proposed PR summary:** complete the selective fork test integration and repair the remaining bounded upload, response, GA confirmation and presentation omissions. Sparse saved upload forms safely render newly selected categories; unanswered partial-admission questions recover through the task list; translated comment-only timelines retain their comment. Both GA confirmations accept an explicit scalar collection-item ID/fee pair, preserve zero and use a non-destructive party-dashboard recovery for unavailable pairs. Numeric missing values, query date errors, respondent titles, task headings and opponent timeline composition are corrected without changing calculations, authentication, dependencies or deployment choices.
+
+#### Actual starting point and final scope
+
+Work started on `DTSCCI-6593-fork-tests-reconciliation` at `6c69851c67d6fd614d34573f5d93b04840db6a8b`. This pre-existing merge already includes PR10 `1ab4da41975fe91e93ef089d0f52393a93d0e751`, including its accessibility-capture selection fix. No checkout, merge, rebase, branch/ref update, staging, commit, push or remote access was performed by this closing implementation. Local master is `eb4ae9ca292aa5e4f9a0ef2d44296c146ec5a3af`; the exact fork remains `486994338cd584ac728dc0dedacbc31cc0b11406`.
+
+The closing diff, including the assertion refinement recorded below, comprises **52 existing paths: 23 production files, 15 unit-test suites, five integration suites, seven captures and two documents**. The original closing batch modified 50 paths; the refinement strengthens two additional existing PR11 suites without adding production changes or test cases. The complete prospective PR11 diff against current PR10 contains 107 paths, including the already committed selective test integration. There are no new files in this closing batch. The pre-existing untracked `docs/pr10-ui-preview-review-notes.md`, excluded historical log and Yarn 3 binary remain untouched and outside delivery. Historical statements excluding this tracked PR9/PR11 reconciliation record are superseded: this record is an intended PR11 deliverable, left unstaged with the rest of the changes for review.
+
+The agreed 22 production corrections required one additional supporting edit to the existing dashboard shell. Its default summary output is unchanged; the new block lets only the query template override date-summary destinations so a model-level date error focuses the actual day input. No new shared helper file was introduced. Fee-change form-wrapper cleanup remains excluded.
+
+| Closing path | Purpose and provenance |
+| --- | --- |
+| `docs/pr9-presentation-review-notes.md` | Current scope, complete path reconciliation, provenance, verification limits and proposed PR description; preserve earlier historical results. |
+| `docs/test-pyramid.md` | Correct alias direction: test:integration invokes test:routes. |
+| `src/integration-test/routes/generalApplication/generalApplication.integration.test.ts` | HTTP parsing of both confirmation routes, repeated query parameters, both party dashboards and zero-fee collection identity. |
+| `src/integration-test/routes/queryManagement/qm.integration.test.ts` | Real consent/session prerequisite and invalid query POST with one date error, preserved fields and a focusable day summary target in English/Welsh. |
+| `src/integration-test/routes/response/rejectAll.integration.test.ts` | Actual guarded-route/task-list/response-choice recovery plus translated comment-only timelines and invalid POST redisplay. |
+| `src/integration-test/routes/uploads/repeatedUploads.integration.test.ts` | Real selection/save/delete/render/upload/redisplay across all 15 categories and both roles from a sparse saved form; retain documents, metadata, order and the other role. |
+| `src/integration-test/services/generalApplication/helpWithFeeService.integration.test.ts` | Preserved exact collection-ID-to-GA-case mapping for card/HWF paths, zero fees and independent call-time HWF payload snapshots. |
+| `src/main/routes/features/generalApplication/certOfSorC/submitCoScApplicationConfirmationController.ts` | Apply the same non-destructive boundary to COSC confirmation. |
+| `src/main/routes/features/generalApplication/submitGeneralApplicationConfirmationController.ts` | Validate the query pair and recover to the party dashboard without cancelling a draft. |
+| `src/main/routes/guards/partAdmitHowMuchHaveYouPaidGuard.ts` | Adapt fork missing-answer guard to the existing task-list recovery. |
+| `src/main/services/features/caseProgression/disclosureService.ts` | Adapt only the fork optional-array guards; keep actual section builders, ordering, validation data and persisted collections. |
+| `src/main/services/features/caseProgression/expertService.ts` | Adapt only the fork optional-array guards; keep actual section builders, ordering, validation data and persisted collections. |
+| `src/main/services/features/caseProgression/trialService.ts` | Adapt only the fork optional-array guards; keep actual section builders, ordering, validation data and persisted collections. |
+| `src/main/services/features/caseProgression/witnessService.ts` | Adapt only the fork optional-array guards; keep actual section builders, ordering, validation data and persisted collections. |
+| `src/main/services/features/generalApplication/submitGeneralApplicationConfirmationContent.ts` | Shared strict scalar query parsing and safe fee-link construction; preserve explicit collection-item identity and zero fees. |
+| `src/main/services/features/response/timelineOfEvents/defendantTimelineService.ts` | Recover absent timeline rows while preserving comments; exclude the fork comment-dropping fallback. |
+| `src/main/views/claim-details-tpl-dashboard.njk` | Default-preserving error-summary block, allowing the query page to point model-level date errors to the day input. |
+| `src/main/views/features/claim/interest/how-much-continue-claiming.njk` | Bounded numeric default: blank for absent values while preserving zero, saved values and invalid submitted text; no calculation/validation change. |
+| `src/main/views/features/claim/task-list.njk` | Ordinary heading composition while preserving copy, IDs, task numbering and destinations. |
+| `src/main/views/features/claimantResponse/ccj/repayment-plan-instalments.njk` | Bounded numeric default: blank for absent values while preserving zero, saved values and invalid submitted text; no calculation/validation change. |
+| `src/main/views/features/claimantResponse/claimant-response-task-list.njk` | Ordinary heading composition while preserving copy, IDs, task numbering and destinations. |
+| `src/main/views/features/generalApplication/respondent-agreement.njk` | Use the existing translated page-specific browser title. |
+| `src/main/views/features/generalApplication/response/accept-defendant-offer.njk` | Bounded numeric default: blank for absent values while preserving zero, saved values and invalid submitted text; no calculation/validation change. |
+| `src/main/views/features/queryManagement/createQuery.njk` | Compose only present escaped date messages and map model-level date summaries to the existing day input. |
+| `src/main/views/features/response/admission/how-much-have-you-paid.njk` | Bounded numeric default: blank for absent values while preserving zero, saved values and invalid submitted text; no calculation/validation change. |
+| `src/main/views/features/response/admission/partialAdmission/how-much-do-you-owe.njk` | Bounded numeric default: blank for absent values while preserving zero, saved values and invalid submitted text; no calculation/validation change. |
+| `src/main/views/features/response/statementOfMeans/dependants/dependants.njk` | Bounded numeric default: blank for absent values while preserving zero, saved values and invalid submitted text; no calculation/validation change. |
+| `src/main/views/features/response/statementOfMeans/unemployment.njk` | Bounded numeric default: blank for absent values while preserving zero, saved values and invalid submitted text; no calculation/validation change. |
+| `src/main/views/features/response/task-list.njk` | Ordinary heading composition while preserving copy, IDs, task numbering and destinations. |
+| `src/main/views/features/response/timelineOfEvents/defendant-timeline.njk` | Official ordered table composition, a separate PDF fallback and no empty table. |
+| `src/test/unit/modules/nunjucks/presentationCaptures.test.ts` | Check the seven narrowly refreshed capture regions without claiming browser or authenticated acceptance. |
+| `src/test/unit/modules/nunjucks/presentationDateErrors.test.ts` | Real query validation, escaped inline messages and actual GOV.UK error-summary activation of the day input. |
+| `src/test/unit/modules/nunjucks/presentationTemplates.test.ts` | 120 raw numeric attribute cases, page titles, escaped ordered timelines and PDF/empty states; real models and templates. |
+| `src/test/unit/modules/nunjucks/taskListTemplates.test.ts` | Retain task ordering/destinations while rejecting orphan legends or heading-only fieldsets. |
+| `src/test/unit/routes/features/claim/generalApplication/certOfSorC/submitCoScApplicationConfirmationController.test.ts` | Direct handlers, 24 invalid query cases per route, valid zero/decimal fees, role-specific recovery and read failures; stub the indirect app collaborator instead of booting Express. |
+| `src/test/unit/routes/features/claim/generalApplication/submitGeneralApplicationConfirmationController.test.ts` | Direct handlers, 24 invalid query cases per route, valid zero/decimal fees, role-specific recovery and read failures; stub the indirect app collaborator instead of booting Express. |
+| `src/test/unit/routes/guards/partAdmitHowMuchHaveYouPaidGuard.test.ts` | Missing intermediate answer states redirect without next(error); existing YES/NO cases remain. |
+| `src/test/unit/services/features/caseProgression/disclosureService.test.ts` | Both roles and selected missing/empty collections using real Claim/form models and section builders; preserve the submitted model. |
+| `src/test/unit/services/features/caseProgression/expertService.test.ts` | Both roles and selected missing/empty collections using real Claim/form models and section builders; preserve the submitted model. |
+| `src/test/unit/services/features/caseProgression/trialService.test.ts` | Both roles and selected missing/empty collections using real Claim/form models and section builders; preserve the submitted model. |
+| `src/test/unit/services/features/caseProgression/witnessService.test.ts` | Both roles and selected missing/empty collections using real Claim/form models and section builders; preserve the submitted model. |
+| `src/test/unit/services/features/generalApplication/submitGeneralApplicationConfirmationContent.test.ts` | Distinct collection IDs and GA case references, exact explicit fee links including zero, invalid direct inputs and honest existing return-route semantics. |
+| `src/test/unit/services/features/queryManagement/viewQueriesService.test.ts` | Strengthen the adapted fork suite's closure assertion to the exact date of the closed message, independently of the parent message's date. |
+| `src/test/unit/services/features/response/timelineOfEvents/defendantTimelineService.test.ts` | Use actual CCD translators and models for both response branches; retain comments and fresh rows without mutating saved data. |
+| `src/test/unit/services/translation/claimantResponse/convertToCCDClaimantLiPResponse.test.ts` | Strengthen the adapted fork suite with populated real questionnaire models and the complete expected CCD payload, including claimant expert ownership and omitted respondent fields. |
+| `src/test/utils/mocks/a11y/mock-case-1645882162449409-ccj-repayment-plan.html` | Refresh only the affected captured title, task heading or missing numeric attribute; retain historical data, links, forms and unrelated DOM. |
+| `src/test/utils/mocks/a11y/mock-case-1645882162449409-claimant-response-task-list.html` | Refresh only the affected captured title, task heading or missing numeric attribute; retain historical data, links, forms and unrelated DOM. |
+| `src/test/utils/mocks/a11y/mock-case-1645882162449409-response-general-application-1720536653906339-accept-defendant-offer.html` | Refresh only the affected captured title, task heading or missing numeric attribute; retain historical data, links, forms and unrelated DOM. |
+| `src/test/utils/mocks/a11y/mock-case-1645882162449409-response-general-application-1720536653906339-respondent-agreement.html` | Refresh only the affected captured title, task heading or missing numeric attribute; retain historical data, links, forms and unrelated DOM. |
+| `src/test/utils/mocks/a11y/mock-case-1645882162449409-response-statement-of-means-dependants.html` | Refresh only the affected captured title, task heading or missing numeric attribute; retain historical data, links, forms and unrelated DOM. |
+| `src/test/utils/mocks/a11y/mock-case-1645882162449409-response-task-list.html` | Refresh only the affected captured title, task heading or missing numeric attribute; retain historical data, links, forms and unrelated DOM. |
+| `src/test/utils/mocks/a11y/mock-claim-task-list.html` | Refresh only the affected captured title, task heading or missing numeric attribute; retain historical data, links, forms and unrelated DOM. |
+
+#### Behavior boundaries and final exclusions
+
+- Upload recovery is specifically for a stored form with a missing optional category collection. Current multipart parsing builds empty arrays. The integration regression resumes a sparse saved draft, selects an additional category through the real controller, saves its file and redisplays the complete result. It does not claim that an ordinary current first upload necessarily creates sparse arrays. Store/document-client/authentication boundaries remain substituted; no authenticated persistence acceptance is claimed.
+- The timeline change supplies only absent rows; it preserves the stored comment and does not replace malformed non-array data with an invented valid model. Missing partial-admission answers retain the existing recovery and submission requirements.
+- A GA query `id` is `generalApplications[].id`. The downstream fee service resolves that exact collection entry to `value.caseLink.CaseReference`; these are distinct identifiers in the new tests. The content builder preserves the supplied valid pair and never borrows a draft fee. Controllers recover invalid pairs using `getDashboardUrlForParty`. `getCancelUrl` remains the existing normal-page return-link behavior, not the automatic recovery destination: its route deletes the selected draft field. No Cancel-controller or downstream payment implementation was changed.
+- Numeric defaults preserve raw zero, saved numbers, invalid strings and NaN; validation and calculations are unchanged. Query date messages are escaped individually, official components own the error wrapper, and existing day/month/year identifiers and form contracts remain.
+- The seven capture edits are limited source-aligned updates to affected headings, missing numeric attributes and the respondent title. They do not regenerate historical scenarios or constitute a browser/accessibility pass. Unrelated captured values, monetary data, navigation, metadata and form contracts remain.
+- Preserve master encryption, security/dependency/deployment choices, strict preview/OIDC boundaries, GA draft/type/fee guards and substantive monetary behavior. Blanket invalid-date blanking, malformed-document-ID fallbacks, silent missing-document defaults and repayment resets remain excluded. Mediation's actual form callers already normalize their collections; no additional provider guard was established as necessary. Dormant editor activation, equivalent markup, unused imports/comments and cosmetic cleanup remain excluded.
+- Case-progression check answers with an absent entire upload draft remains an inherited recovery edge. The fork's empty-summary fallback does not make its submission path safe and is not imported. This is explicitly outside the closing batch rather than silently treated as fixed.
+- The eight Defer entries remain explicit residual coverage/owner-acceptance boundaries, not promises of PR12 or eight further PRs: PCQ needs an independent compatibility oracle; cookie/language DOM edge coverage is not exhausted by bilingual rendering; the repeated expert-report editor is dormant although related models retain translation consumers; the fork's standalone step-free-access Support assertion is not the real nested validation contract; secret-volume isolation and exhaustive GA CYA producer checks are not established. Current behavior and existing protections remain. Accepted delivery/exclusion attribution for DTSCCI-5145 and DTSCCI-4187, operational evidence and separate QA remain owner acceptance work, not invented completed requirements.
+
+The current 719-path ledger retains every ancestor-to-exact-fork path exactly once. R085–R089 record these closing adaptations and mixed-hunk limits; primary disposition counts reflect the current rows. A path disposition does not claim whole-file or assertion-for-assertion parity.
+
+#### Verification actually executed for this batch
+
+The results in this subsection describe the original 50-path closing batch, before the two-suite assertion refinement below. They remain historical evidence for that candidate.
+
+**Fresh locked verification is blocked.** An immutable skip-build installation in a physical disposable candidate copy, with network/scripts/telemetry/hardened online checks disabled, exited 1. Copied local caches supplied 1,409 checksum-matching entries; 116 locked entries remained unavailable, including GOV.UK Frontend 6.5.1 and class-validator 0.15.1. No downloads, live audit, installation hooks, browser/runtime downloads, container pulls or remote operations occurred. The earlier permission for registry access was not treated as overriding the later offline instruction.
+
+Available-dependency checks below are explicitly **diagnostics, not a current locked-install pass**. They used Node 24.21.0, TypeScript 5.9.3 and the existing local dependency tree, whose GOV.UK Frontend is 6.4.0 and class-validator is 0.14.4. Nothing copied or linked that checkout node_modules into the disposable candidate. Ordinary diagnostics read the candidate checkout under an OS write-denial sandbox; caches/reports/temp directories stayed disposable. Negative controls used a separate physical source copy with read-only dependency lookup. No result below is presented as a fresh locked-build, pinned-component browser or authenticated acceptance result.
+
+The macOS sandbox denied checkout writes and external network connections while permitting localhost. A direct check connected to a private localhost server, then observed immediate external socket denial with EPERM, exit 0. No browser was launched. No preview module was preloaded, avoiding the known same-path CommonJS-cache collision.
+
+`J` below is `node --no-sparkplug node_modules/jest/bin/jest.js`. Unit/integration diagnostics used one worker. A disposable Node-environment wrapper logged test failures and retries without changing assertions, discovery, coverage thresholds or existing retry counts. All reports and Jest caches were placed in disposable storage; the integration JUnit file reporter was replaced with the ordinary console reporter to prevent checkout output. No `--forceExit` was used.
+
+| Current closing-batch check | Actual result |
+| --- | --- |
+| `node .yarn/releases/yarn-4.18.1.cjs install --immutable --mode=skip-build` with the required offline/no-hook environment in a physical copy | Exit 1; 116 locked cache entries unavailable; zero downloads |
+| `node node_modules/typescript/bin/tsc --noEmit --incremental false` against available declarations | Exit 0 |
+| ESLint on all 27 changed TypeScript paths | Exit 0; zero errors, four existing no-explicit-any warnings |
+| `J --runInBand --silent --runTestsByPath` with all 13 changed unit suites, private cache/JSON output and logging-only environment | 13 suites / 453 tests passed; ordinary exit 0; no initial failures or retries recorded |
+| `J -c jest.functionaltest.config.js --runInBand --silent --reporters=default --runTestsByPath` with the five changed integration suites plus existing confirmation-content integration | Six suites / 144 tests passed; ordinary exit 0; no initial failures or retries recorded |
+| Nine-production-file negative control: former implementations restored only in disposable source; existing new regression names selected with `--testNamePattern` | Nine suites: 88 expected failures / 32 passes / 82 skipped; ordinary exit 1 |
+| Same selected controls after restoring the disposable current implementations | Nine suites / 120 passed / 82 skipped; ordinary exit 0 |
+| `node bin/check-dependency-pins.mjs` | Exit 0; 61 production / 63 development pins / 58 resolutions; 1,522 npm packages with locked SHA checksums |
+| `node bin/functional-baseline.js check` | Exit 0 |
+| `bash bin/test-civil-shared-import-consumers.sh` | Exit 0 |
+| `node bin/validate-wiremock-mappings.js`; `node bin/ui-preview-mappings.cjs` | 41 chart / 36 preview mappings; both exit 0; server execution not claimed |
+| `git --no-optional-locks diff --check` | Exit 0 |
+
+The immutable install, complete builds, full unit coverage, complete route discovery, Pact/server contracts and pinned-component browser/accessibility checks still need execution with the current locked dependencies. Hosted final-commit checks, applicable authenticated/AAT and operational verification, and separate QA remain acceptance gates. Prior full-suite, Pact and browser results are dated evidence and were not substituted for these blocked checks.
+
+Initial diagnostic failures were retained rather than relabelled as inherited passes:
+
+- The first TypeScript diagnostic found eight new fixture enum/type errors. Fixtures now use the real PartyType enum; later type checking passed.
+- The first unit diagnostic passed 385 cases in ten suites but two new handler suites failed during setup: the real GA service's response-store import attempted to construct the app while the utility boundary was mocked. An explicit app collaborator stand-in prevents application construction; both suites then passed 58 cases. The final 13-suite diagnostic passed 453 cases.
+- The first six-suite integration diagnostic ended with 132 passes and eight failures. Six GA cases lacked req.cookies in the lightweight HTTP fixture; two query cases had not completed the real sharing-consent/session prerequisite. The fixture now supplies cookies and the query test follows consent using an agent; the final 144 cases passed.
+- That first integration run also recorded one retry in an existing defendant disclosure-document removal case. Its initiating error was not captured before logging was enabled, so its cause remains unestablished. The later clean run is not an explanation for this or the earlier timeout/socket/CCJ/COSC/phone/dashboard histories.
+- Initial changed-file lint found five extra-blank-line errors, which were corrected. The four remaining no-explicit-any warnings predate this batch.
+
+The negative control restores complete related former implementations, including all three GA files together, so its failures are behavioral assertions rather than missing-export/setup errors. It demonstrates that the guards, comment preservation and GA query boundary assertions detect the original behavior. All disposable mutations were restored before the positive control.
+
+All closing changes remain unstaged for review. No commit or push was made. Manifest/lockfile, runtime, dependency, deployment and pipeline files, excluded context and pre-existing PR10-note contents are unchanged. The branch, HEAD, refs and raw index are preserved from the actual starting snapshot; the source fork remains unchanged. Disposable copies, caches, reports and probes are removed at handover.
+
+### PR11 assertion refinement — 22 October 2026
+
+The user authorised strengthening two retained assertions and correcting R003 after independent review. The claimant-response test now supplies real questionnaire, hearing and expert models and asserts the complete expected CCD payload, including claimant expert ownership, absent respondent expert data and omitted values. The query test requires `2 January 2024`, the closed reply's date, rather than accepting any truthy closure date. R003 now acknowledges PR11's test-only UTC baseline. No production behavior or test case was added.
+
+Fresh checks used Node 24.21.0 and the available dependency tree under an OS sandbox denying checkout writes and external network connections. Reports, caches and physical source copies stayed disposable. These are available-dependency diagnostics; no installation or download was attempted, and the recorded locked-install and broader acceptance gaps remain.
+
+| Assertion-refinement check | Actual result |
+| --- | --- |
+| Both affected suites, `node --no-sparkplug node_modules/jest/bin/jest.js --runInBand --silent --runTestsByPath …`, private cache/report and logging-only environment | Two suites / nine tests passed; ordinary exit 0; no initial failures or retries |
+| TypeScript `--noEmit --incremental false` | Exit 0 |
+| ESLint on both changed test suites | Exit 0; no warnings |
+| Disposable negative control: translate expert data under respondent ownership and use the parent message's date as the closure date | Two expected failures / seven passes; ordinary exit 1; existing retries retained |
+| Same incorrect production code with only the previous existence/truthiness assertions restored in disposable tests | Nine passed; ordinary exit 0, demonstrating the former assertion weakness |
+| Restore current production and strengthened assertions in the disposable copy | Nine passed; ordinary exit 0; no initial failures or retries |
+
+The original closing batch's recorded results above were not rerun or presented as fresh results for this refinement. The latest changes affect only these two test suites and this document; the complete PR11 path count remains 107. No staging, commit, push, branch/ref change or production edit occurred. Excluded context and pre-existing work remain preserved; disposable resources are removed at handover.
