@@ -159,6 +159,13 @@ describe('claimant Dashboard Controller', () => {
   const idamUrl: string = config.get('idamUrl');
 
   beforeEach(() => {
+    // One-shot results take precedence over a new default implementation. Clear them per request scenario.
+    jest.spyOn(ClaimDetailsService, 'getTotalAmountWithInterestAndFees').mockReset().mockResolvedValue(10);
+    jest.spyOn(UtilityService, 'getClaimById').mockReset();
+    jest.spyOn(UtilityService, 'getDashboardClaimById').mockReset();
+    for (const flag of Object.values(launchDarkly)) {
+      if (jest.isMockFunction(flag)) flag.mockReset();
+    }
     jest.spyOn(draftStoreService, 'getCaseDataFromStore').mockResolvedValue(new Claim());
     jest
       .spyOn(UtilityService, 'getDashboardClaimById')

@@ -16,6 +16,8 @@ Related: [functional-tests.md](functional-tests.md) covers browser journeys and 
 
 ## Unit tests
 
+The unit Jest configuration sets `TZ=UTC` before loading test environments. Date-model tests therefore use the same timezone on every host; suites that depend on the current date must still freeze and restore their clocks. This test-only setting does not change the application's timezone.
+
 A unit test isolates one unit. Controllers are units: extract the GET/POST handler from the Router and call it with mock `req` / `res` / `next`.
 
 Reference: `src/test/utils/getRouteHandler.ts` (used from converted controller tests).

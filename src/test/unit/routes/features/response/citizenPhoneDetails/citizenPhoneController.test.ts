@@ -23,6 +23,10 @@ const isCarmEnabledSpy = (calmEnabled: boolean) => configureSpy(launchDarklyClie
   .mockReturnValue(Promise.resolve(calmEnabled));
 
 describe('Citizen phone number', () => {
+  beforeEach(() => {
+    // The error scenarios install a failing store; every independent case/retry needs its own valid baseline.
+    app.locals.draftStoreClient = mockDraftClaim(cloneDeep(civilClaimResponseMock) as unknown as Claim);
+  });
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
 
