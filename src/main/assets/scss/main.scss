@@ -245,7 +245,7 @@
   .content {
     margin-bottom: 10px;
     white-space: pre-line;
-    word-wrap: break-word;
+    word-wrap: break-word; // stylelint-disable-line property-no-deprecated -- Retain the existing wrapping compatibility alias.
 
     &.expandable {
       height: 125px;
@@ -398,11 +398,11 @@
 }
 
 .wordWrap {
-  word-break: break-word;
+  word-break: break-word; // stylelint-disable-line declaration-property-value-keyword-no-deprecated -- Preserve the existing wrapping and sizing behaviour.
 }
 
 .tableWrap {
-  word-break: break-word;
+  word-break: break-word; // stylelint-disable-line declaration-property-value-keyword-no-deprecated -- Preserve the existing wrapping and sizing behaviour.
   table-layout: fixed;
   width: 100%;
 }
@@ -496,7 +496,7 @@
 
 .hmcts-banner-assistive {
   border: 0;
-  clip: rect(0 0 0 0);
+  clip: rect(0 0 0 0); // stylelint-disable-line property-no-deprecated -- Keep the GOV.UK visually hidden compatibility fallback.
   clip-path: inset(50%);
   height: 1px;
   margin: 0;
