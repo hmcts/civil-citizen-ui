@@ -21,6 +21,7 @@ jest.mock('config');
 import {
   AppInsights,
   DEFAULT_REDACTED_KEYS,
+  _resetRedactionState,
   buildSensitiveQueryParamsRegex,
   getRedactedKeys,
   keepFailuresTelemetryProcessor,
@@ -41,9 +42,10 @@ describe('AppInsights module', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
+    _resetRedactionState();
     mockClient.config.samplingPercentage = undefined;
     mockClient.context.tags = {};
-    mockConfigHas.mockReturnValue(false);
+    mockConfigHas.mockImplementation((key: string) => key === 'appInsights.instrumentationKey');
     mockConfigGet.mockImplementation((key: string) => {
       if (key === 'appInsights.instrumentationKey') {
         return 'test-instrumentation-key';
@@ -60,6 +62,27 @@ describe('AppInsights module', () => {
     it('returns DEFAULT_REDACTED_KEYS when config is not set', () => {
       mockConfigHas.mockReturnValue(false);
       expect(getRedactedKeys()).toEqual(DEFAULT_REDACTED_KEYS);
+    });
+
+    it('returns the same memoized key array reference on subsequent calls with unchanged config', () => {
+      mockConfigHas.mockReturnValue(true);
+      mockConfigGet.mockImplementation((key: string) => {
+        if (key === 'appInsights.redactedKeys') {
+          return ['customSecret', 'customToken'];
+        }
+        return undefined;
+      });
+      const first = getRedactedKeys();
+      const second = getRedactedKeys();
+      expect(second).toBe(first);
+    });
+
+    it('returns DEFAULT_REDACTED_KEYS without reallocation when config has no extra keys', () => {
+      mockConfigHas.mockReturnValue(false);
+      const first = getRedactedKeys();
+      const second = getRedactedKeys();
+      expect(first).toBe(DEFAULT_REDACTED_KEYS);
+      expect(second).toBe(DEFAULT_REDACTED_KEYS);
     });
 
     it('extends the defaults with configured keys array', () => {
@@ -576,10 +599,48 @@ describe('AppInsights module', () => {
           .toEqual({count: 3, flag: true, nothing: null, missing: undefined, fn, token: '[REDACTED]'});
       });
 
-      it('matches sensitive property names on the same boundaries as values', () => {
-        expect(runWithProperties({'x-api-key': 'a', 'db.password': 'b', refresh_token: 'c', keyboard: 'd', monkey: 'e'}))
-          .toEqual({'x-api-key': '[REDACTED]', 'db.password': '[REDACTED]', refresh_token: '[REDACTED]', keyboard: 'd', monkey: 'e'});
+      it('matches sensitive property names on camelCase boundaries and delimiters', () => {
+        expect(runWithProperties({
+          'x-api-key': 'a',
+          'db.password': 'b',
+          refresh_token: 'c',
+          userPassword: 'secret-password',
+          dbSecret: 'database-secret',
+          apiToken: 'jwt-token',
+          myApiKey: 'api-key-123',
+          keyboard: 'd',
+          monkey: 'e',
+          donkey: 'f',
+          author: 'g',
+          tokenizer: 'h',
+        })).toEqual({
+          'x-api-key': '[REDACTED]',
+          'db.password': '[REDACTED]',
+          refresh_token: '[REDACTED]',
+          userPassword: '[REDACTED]',
+          dbSecret: '[REDACTED]',
+          apiToken: '[REDACTED]',
+          myApiKey: '[REDACTED]',
+          keyboard: 'd',
+          monkey: 'e',
+          donkey: 'f',
+          author: 'g',
+          tokenizer: 'h',
+        });
       });
+    });
+
+    it('resets failure reporting flag and memoized caches via _resetRedactionState', () => {
+      mockConfigHas.mockImplementation(() => {
+        throw new Error('config unavailable');
+      });
+      const env = {sampleRate: 1, data: {baseType: 'MessageData', baseData: {message: 'password=p1'}}};
+      const asEnvelope = env as unknown as Parameters<typeof stripCredentialsTelemetryProcessor>[0];
+      expect(stripCredentialsTelemetryProcessor(asEnvelope)).toBe(false);
+
+      _resetRedactionState();
+      mockConfigHas.mockReturnValue(false);
+      expect(stripCredentialsTelemetryProcessor(asEnvelope)).toBe(true);
     });
 
     it('drops the telemetry item instead of sending it unredacted when redaction fails', () => {
@@ -625,6 +686,53 @@ describe('AppInsights module', () => {
   });
 
   describe('enable', () => {
+    it('sets up appInsights using connection string when connection string is configured', () => {
+      const appInsightsSdk = require('applicationinsights');
+      mockConfigHas.mockImplementation((key: string) => key === 'appInsights.connectionString');
+      mockConfigGet.mockImplementation((key: string) => {
+        if (key === 'appInsights.connectionString') {
+          return 'InstrumentationKey=00000000-0000-0000-0000-000000000000;IngestionEndpoint=https://northeurope.in.applicationinsights.azure.com/';
+        }
+        return undefined;
+      });
+      new AppInsights().enable();
+      expect(appInsightsSdk.setup).toHaveBeenCalledWith(
+        'InstrumentationKey=00000000-0000-0000-0000-000000000000;IngestionEndpoint=https://northeurope.in.applicationinsights.azure.com/',
+      );
+      expect(mockStart).toHaveBeenCalled();
+    });
+
+    it('prefers connection string over instrumentation key when both are provided', () => {
+      const appInsightsSdk = require('applicationinsights');
+      mockConfigHas.mockReturnValue(true);
+      mockConfigGet.mockImplementation((key: string) => {
+        if (key === 'appInsights.connectionString') {
+          return 'InstrumentationKey=connection-string-key;IngestionEndpoint=https://azure.com/';
+        }
+        if (key === 'appInsights.instrumentationKey') {
+          return 'fallback-instrumentation-key';
+        }
+        return undefined;
+      });
+      new AppInsights().enable();
+      expect(appInsightsSdk.setup).toHaveBeenCalledWith(
+        'InstrumentationKey=connection-string-key;IngestionEndpoint=https://azure.com/',
+      );
+    });
+
+    it('falls back to instrumentation key when connection string is not configured', () => {
+      const appInsightsSdk = require('applicationinsights');
+      mockConfigHas.mockImplementation((key: string) => key === 'appInsights.instrumentationKey');
+      mockConfigGet.mockImplementation((key: string) => {
+        if (key === 'appInsights.instrumentationKey') {
+          return 'test-instrumentation-key';
+        }
+        return undefined;
+      });
+      new AppInsights().enable();
+      expect(appInsightsSdk.setup).toHaveBeenCalledWith('test-instrumentation-key');
+    });
+
     it('registers credential processor and failure-keeping processor in non-prod', () => {
       process.env.LAUNCH_DARKLY_ENV = 'perftest';
       new AppInsights().enable();
@@ -642,7 +750,8 @@ describe('AppInsights module', () => {
       expect(mockAddTelemetryProcessor).not.toHaveBeenCalledWith(keepFailuresTelemetryProcessor);
     });
 
-    it('logs an error and does not start when no instrumentation key is set', () => {
+    it('logs an error and does not start when no instrumentation key or connection string is set', () => {
+      mockConfigHas.mockReturnValue(false);
       mockConfigGet.mockReturnValue(undefined);
       process.env.LAUNCH_DARKLY_ENV = 'perftest';
       new AppInsights().enable();

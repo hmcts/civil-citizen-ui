@@ -64,25 +64,36 @@ export const DEFAULT_REDACTED_KEYS: string[] = [
   'AccountKey',
 ];
 
+let cachedRawConfigKeys: string | undefined;
+let cachedResolvedKeys: string[] | undefined;
+
 /**
  * Configured keys (appInsights.redactedKeys / APPINSIGHTS_REDACTED_KEYS) extend the defaults rather
  * than replace them, so a mis-set value can never switch off redaction of the OS key.
  */
 export const getRedactedKeys = (): string[] => {
   let extraKeys: string[] = [];
+  let rawKey = '';
   if (config.has('appInsights.redactedKeys')) {
     const configuredKeys = config.get<string[] | string>('appInsights.redactedKeys');
     if (Array.isArray(configuredKeys)) {
+      rawKey = configuredKeys.join('\u0000');
       extraKeys = configuredKeys.map((k) => String(k).trim()).filter(Boolean);
     } else if (typeof configuredKeys === 'string') {
+      rawKey = configuredKeys;
       extraKeys = configuredKeys.split(',').map((k) => k.trim()).filter(Boolean);
     }
   }
   if (extraKeys.length === 0) {
+    cachedRawConfigKeys = '';
+    cachedResolvedKeys = DEFAULT_REDACTED_KEYS;
     return DEFAULT_REDACTED_KEYS;
   }
+  if (cachedResolvedKeys && cachedRawConfigKeys === rawKey) {
+    return cachedResolvedKeys;
+  }
   const seen = new Set<string>();
-  return [...DEFAULT_REDACTED_KEYS, ...extraKeys].filter((k) => {
+  const resolved = [...DEFAULT_REDACTED_KEYS, ...extraKeys].filter((k) => {
     const lower = k.toLowerCase();
     if (seen.has(lower)) {
       return false;
@@ -90,6 +101,9 @@ export const getRedactedKeys = (): string[] => {
     seen.add(lower);
     return true;
   });
+  cachedRawConfigKeys = rawKey;
+  cachedResolvedKeys = resolved;
+  return resolved;
 };
 
 // A key must start the string or follow one of these, so `keyboard` or `monkey` never match but
@@ -129,12 +143,14 @@ const NEVER_MATCH_REGEX = /(?!)/;
 
 interface RedactionRules {
   regex: RegExp;
-  // Property names whose whole value is redacted: `token`, `x-api-key`, `db.password`, but not `keyboard`.
-  sensitiveName: RegExp;
+  // Property names whose whole value is redacted: `token`, `x-api-key`, `db.password`, `userPassword`, but not `keyboard`.
+  sensitiveName: {test: (str: string) => boolean};
 }
 
 let cachedRulesKey: string | undefined;
 let cachedRules: RedactionRules | undefined;
+
+const capitalize = (s: string): string => s.charAt(0).toUpperCase() + s.slice(1);
 
 /**
  * Builds the key-based redaction rules, memoised on the (valid) key list so they are only rebuilt
@@ -152,11 +168,19 @@ const buildRedactionRules = (keys: string[] = DEFAULT_REDACTED_KEYS): RedactionR
   const escaped = validKeys
     .map((k) => k.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
     .join('|');
+  const capitalizedEscaped = validKeys
+    .map((k) => capitalize(k).replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
+    .join('|');
   const keyPart = `${KEY_BOUNDARY}${OPTIONAL_KEY_QUOTE}(?:${escaped})${OPTIONAL_KEY_QUOTE}[ \\t]*[=:][ \\t]*`;
   const values = VALUE_BRANCHES.map(([opener, value]) => `(${opener})(${value})`).join('|');
+  const delimitedName = new RegExp(`(?:^|[._-])(?:${escaped})$`, 'i');
+  const camelCaseName = new RegExp(`[a-z0-9](?:${capitalizedEscaped})$`);
+
   cachedRules = {
     regex: new RegExp(`(${keyPart})(?:${values})`, 'gi'),
-    sensitiveName: new RegExp(`(?:^|[._-])(?:${escaped})$`, 'i'),
+    sensitiveName: {
+      test: (name: string): boolean => delimitedName.test(name) || camelCaseName.test(name),
+    },
   };
   cachedRulesKey = cacheKey;
   return cachedRules;
@@ -288,6 +312,14 @@ const redactEnvelope = (envelope: TelemetryEnvelope): void => {
 
 let redactionFailureReported = false;
 
+export const _resetRedactionState = (): void => {
+  redactionFailureReported = false;
+  cachedRawConfigKeys = undefined;
+  cachedResolvedKeys = undefined;
+  cachedRulesKey = undefined;
+  cachedRules = undefined;
+};
+
 export const stripCredentialsTelemetryProcessor = (envelope: TelemetryEnvelope): boolean => {
   try {
     redactEnvelope(envelope);
@@ -317,11 +349,21 @@ export const keepFailuresTelemetryProcessor = (envelope: TelemetryEnvelope): boo
   return true;
 };
 
+const getConfigValue = (key: string): string | undefined => {
+  try {
+    return config.has(key) ? config.get<string>(key) : undefined;
+  } catch {
+    return undefined;
+  }
+};
+
 export class AppInsights {
   enable(): void {
-    const instrumentationKey = config.get<string>('appInsights.instrumentationKey');
-    if (instrumentationKey) {
-      appInsights.setup(instrumentationKey)
+    const connectionString = getConfigValue('appInsights.connectionString');
+    const instrumentationKey = getConfigValue('appInsights.instrumentationKey');
+    const setupKey = connectionString || instrumentationKey;
+    if (setupKey) {
+      appInsights.setup(setupKey)
         .setSendLiveMetrics(true)
         .start();
 
@@ -340,7 +382,7 @@ export class AppInsights {
 
       client.trackTrace({message: 'App insights activated'});
     } else {
-      logger.error('App Insights instrumentation key not set');
+      logger.error('App Insights connection string or instrumentation key not set');
     }
   }
 }
