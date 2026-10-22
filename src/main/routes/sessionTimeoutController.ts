@@ -9,7 +9,8 @@ sessionTimeoutController.get(SESSION_EXTEND_URL, (req: AppRequest, res: Response
     return res.status(401).json({extended: false});
   }
 
-  // Mark the session dirty and touch it so the rolling cookie (cookieMaxAge) renews.
+  // Mark the session dirty and touch it so the explicit session-extension
+  // request renews the shared cookie for every tab.
   req.session.sessionExtendedAt = Date.now();
   req.session.touch();
   return res.status(200).json({extended: true});
