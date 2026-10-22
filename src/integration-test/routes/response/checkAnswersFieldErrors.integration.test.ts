@@ -20,7 +20,18 @@ jest.mock('services/features/response/checkAnswers/checkAnswersService', () => {
   return {
     ...actual,
     saveStatementOfTruth: jest.fn().mockResolvedValue(undefined),
-    getSummarySections: jest.fn().mockReturnValue({sections: []}),
+    getSummarySections: jest.fn().mockReturnValue({
+      sections: [{
+        title: 'Your details',
+        summaryList: {
+          rows: [{
+            key: {text: 'Phone'},
+            value: {html: 'notaphone'},
+            ccdFieldId: 'respondent1.partyPhone',
+          }],
+        },
+      }],
+    }),
   };
 });
 
@@ -62,11 +73,11 @@ describe('Integration: response check-answers field_errors 422', () => {
     app.locals.draftStoreClient = createDraftStoreClient(claim);
   });
 
-  it('should remount CYA with GDS error summary links and inline messages on field_errors', async () => {
+  it('should remount CYA with GDS error summary links and inline messages on the matching row', async () => {
     mockSubmitResponse.mockRejectedValue(new CallbackError(
       [],
       [],
-      [{id: 'respondent1.partyEmail', message: 'notanemail is not a valid Email address'}],
+      [{id: 'respondent1.partyPhone', message: 'notaphone is not a valid PhoneUK number'}],
     ));
 
     const response = await request(app)
@@ -76,10 +87,14 @@ describe('Integration: response check-answers field_errors 422', () => {
 
     expect(response.status).toBe(200);
     expect(response.text).toContain('govuk-error-summary');
-    expect(response.text).toContain('notanemail is not a valid Email address');
-    expect(response.text).toContain('href="#ccd-field-respondent1-partyEmail"');
-    expect(response.text).toContain('id="ccd-field-respondent1-partyEmail"');
+    expect(response.text).toContain('notaphone is not a valid PhoneUK number');
+    expect(response.text).toContain('href="#ccd-field-respondent1-partyPhone"');
+    expect(response.text).toContain('id="ccd-field-respondent1-partyPhone"');
     expect(response.text).toContain('govuk-error-message');
+    const phoneRowIndex = response.text.indexOf('>Phone<');
+    const inlineIdIndex = response.text.indexOf('id="ccd-field-respondent1-partyPhone"');
+    expect(phoneRowIndex).toBeGreaterThan(-1);
+    expect(inlineIdIndex).toBeGreaterThan(phoneRowIndex);
   });
 
   it('should keep the error page for callbackErrors-only 422', async () => {

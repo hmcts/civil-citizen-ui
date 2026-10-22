@@ -1,17 +1,16 @@
 {#
-  Inline messages for CCD details.field_errors remounted on CYA.
-  Ids match FormValidationError.href from applyCcdFieldErrorsToForm so the
-  GDS error summary can link to each message.
+  Fallback inline messages for CCD details.field_errors that could not be
+  remounted onto a Check your answers summary row. Mapped field errors are
+  attached to the row (id matches FormValidationError.href) instead.
+  Expects { id, message, anchorId } from applyCcdFieldErrorsToSummary*.
 #}
-{% macro ccdFieldInlineErrors(errors, t) %}
-  {% if errors %}
-    {% for error in errors %}
-      {% if error.constraints and error.constraints.ccdFieldError and error.href %}
-        <p class="govuk-error-message" id="{{ error.href | replace('#', '') }}">
-          <span class="govuk-visually-hidden">{{ t('ERRORS.ERROR') }}:</span>
-          {{ t(error.text) }}
-        </p>
-      {% endif %}
+{% macro ccdFieldInlineErrors(fieldErrors, t) %}
+  {% if fieldErrors %}
+    {% for fieldError in fieldErrors %}
+      <p class="govuk-error-message" id="{{ fieldError.anchorId }}">
+        <span class="govuk-visually-hidden">{{ t('ERRORS.ERROR') }}:</span>
+        {{ fieldError.message }}
+      </p>
     {% endfor %}
   {% endif %}
 {% endmacro %}
