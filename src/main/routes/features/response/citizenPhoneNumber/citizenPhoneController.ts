@@ -36,15 +36,17 @@ citizenPhoneController.post(CITIZEN_PHONE_NUMBER_URL,
       const claim = await getCaseDataFromStore(redisKey);
       const carmEnabled = await isCarmEnabledForCase(claim.submittedDate);
       const model: CitizenTelephoneNumber = new CitizenTelephoneNumber(req.body.telephoneNumber === '' ? undefined : req.body.telephoneNumber, undefined, carmEnabled);
-      const citizenTelephoneNumberForm = new GenericForm(model);
-      citizenTelephoneNumberForm.validateSync();
-      if (citizenTelephoneNumberForm.hasErrors()) {
-        renderView(citizenTelephoneNumberForm, res, carmEnabled);
-      } else {
-        await saveTelephoneToStore(generateRedisKey(<AppRequest>req), model, ClaimantOrDefendant.DEFENDANT);
-        const redirectURL = constructResponseUrlWithIdParams(req.params.id, RESPONSE_TASK_LIST_URL);
-        res.redirect(redirectURL);
-      }
+      // TEMP DTSCCI-5899 QA: skip phone validation so invalid number can reach civil-service as field_errors.
+      // Revert before merge (restore GenericForm validateSync + hasErrors branch).
+      // const citizenTelephoneNumberForm = new GenericForm(model);
+      // citizenTelephoneNumberForm.validateSync();
+      // if (citizenTelephoneNumberForm.hasErrors()) {
+      //   renderView(citizenTelephoneNumberForm, res, carmEnabled);
+      // } else {
+      await saveTelephoneToStore(generateRedisKey(<AppRequest>req), model, ClaimantOrDefendant.DEFENDANT);
+      const redirectURL = constructResponseUrlWithIdParams(req.params.id, RESPONSE_TASK_LIST_URL);
+      res.redirect(redirectURL);
+      // }
     } catch (error) {
       next(error);
     }
