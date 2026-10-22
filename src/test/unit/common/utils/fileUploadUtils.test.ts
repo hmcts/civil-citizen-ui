@@ -529,68 +529,6 @@ describe('fileUploadUtils', () => {
     });
   });
 
-  describe('collectDocumentUrls', () => {
-    it('should collect document urls from nested sections', () => {
-      const draft = {
-        witnessStatement: [{caseDocuments: [
-          {documentLink: {document_url: 'http://dm/documents/a'}},
-          {documentLink: {document_url: 'http://dm/documents/b'}},
-        ]}],
-        trialDocumentary: [{caseDocuments: [{documentLink: {document_url: 'http://dm/documents/c'}}]}],
-      };
-      expect([...collectDocumentUrls(draft)]).toEqual(['http://dm/documents/a', 'http://dm/documents/b', 'http://dm/documents/c']);
-    });
-
-    it('should return no urls for empty values', () => {
-      expect(collectDocumentUrls(undefined).size).toBe(0);
-      expect(collectDocumentUrls(null).size).toBe(0);
-    });
-  });
-
-  describe('deleteRemovedDocuments', () => {
-    const req = {} as Request;
-    const doc = (id: string) => ({documentLink: {document_url: `http://dm/documents/${id}`}});
-
-    it('should delete only documents removed from the saved draft', async () => {
-      const client = {deleteDocument: jest.fn().mockResolvedValue(undefined)};
-      const saved = {witnessStatement: [{caseDocuments: [doc('a'), doc('b')]}]};
-      const updated = {witnessStatement: [{caseDocuments: [doc('b')]}]};
-
-      await deleteRemovedDocuments(req, saved, updated, client);
-
-      expect(client.deleteDocument).toHaveBeenCalledTimes(1);
-      expect(client.deleteDocument).toHaveBeenCalledWith(req, 'a');
-    });
-
-    it('should delete every document of a removed section', async () => {
-      const client = {deleteDocument: jest.fn().mockResolvedValue(undefined)};
-      const saved = {witnessStatement: [{caseDocuments: [doc('a')]}, {caseDocuments: [doc('b'), doc('c')]}]};
-      const updated = {witnessStatement: [{caseDocuments: [doc('a')]}]};
-
-      await deleteRemovedDocuments(req, saved, updated, client);
-
-      expect(client.deleteDocument.mock.calls.map((call: any[]) => call[1])).toEqual(['b', 'c']);
-    });
-
-    it('should never delete documents that are only in the posted form', async () => {
-      const client = {deleteDocument: jest.fn().mockResolvedValue(undefined)};
-      const saved = {witnessStatement: [{caseDocuments: [doc('a')]}]};
-      const updated = {witnessStatement: [{caseDocuments: [doc('a'), doc('someone-elses')]}]};
-
-      await deleteRemovedDocuments(req, saved, updated, client);
-
-      expect(client.deleteDocument).not.toHaveBeenCalled();
-    });
-
-    it('should not throw when document management refuses a delete', async () => {
-      const client = {deleteDocument: jest.fn().mockRejectedValue(new Error('403'))};
-      const saved = {witnessStatement: [{caseDocuments: [doc('a')]}]};
-
-      await expect(deleteRemovedDocuments(req, saved, {witnessStatement: []}, client)).resolves.toBeUndefined();
-      expect(client.deleteDocument).toHaveBeenCalledWith(req, 'a');
-    });
-  });
-
   describe('normaliseCaseDocuments', () => {
     it('returns an empty array for undefined or null', () => {
       expect(normaliseCaseDocuments(undefined)).toEqual([]);
@@ -953,6 +891,68 @@ describe('fileUploadUtils', () => {
         expect(form.errors).toHaveLength(1);
         expect(form.errors[0].children[0].children[0].constraints.uploadError).toBe('ERRORS.FILE_UPLOAD_FAILED');
       });
+    });
+  });
+
+  describe('collectDocumentUrls', () => {
+    it('should collect document urls from nested sections', () => {
+      const draft = {
+        witnessStatement: [{caseDocuments: [
+          {documentLink: {document_url: 'http://dm/documents/a'}},
+          {documentLink: {document_url: 'http://dm/documents/b'}},
+        ]}],
+        trialDocumentary: [{caseDocuments: [{documentLink: {document_url: 'http://dm/documents/c'}}]}],
+      };
+      expect([...collectDocumentUrls(draft)]).toEqual(['http://dm/documents/a', 'http://dm/documents/b', 'http://dm/documents/c']);
+    });
+
+    it('should return no urls for empty values', () => {
+      expect(collectDocumentUrls(undefined).size).toBe(0);
+      expect(collectDocumentUrls(null).size).toBe(0);
+    });
+  });
+
+  describe('deleteRemovedDocuments', () => {
+    const req = {} as Request;
+    const doc = (id: string) => ({documentLink: {document_url: `http://dm/documents/${id}`}});
+
+    it('should delete only documents removed from the saved draft', async () => {
+      const client = {deleteDocument: jest.fn().mockResolvedValue(undefined)};
+      const saved = {witnessStatement: [{caseDocuments: [doc('a'), doc('b')]}]};
+      const updated = {witnessStatement: [{caseDocuments: [doc('b')]}]};
+
+      await deleteRemovedDocuments(req, saved, updated, client);
+
+      expect(client.deleteDocument).toHaveBeenCalledTimes(1);
+      expect(client.deleteDocument).toHaveBeenCalledWith(req, 'a');
+    });
+
+    it('should delete every document of a removed section', async () => {
+      const client = {deleteDocument: jest.fn().mockResolvedValue(undefined)};
+      const saved = {witnessStatement: [{caseDocuments: [doc('a')]}, {caseDocuments: [doc('b'), doc('c')]}]};
+      const updated = {witnessStatement: [{caseDocuments: [doc('a')]}]};
+
+      await deleteRemovedDocuments(req, saved, updated, client);
+
+      expect(client.deleteDocument.mock.calls.map((call: any[]) => call[1])).toEqual(['b', 'c']);
+    });
+
+    it('should never delete documents that are only in the posted form', async () => {
+      const client = {deleteDocument: jest.fn().mockResolvedValue(undefined)};
+      const saved = {witnessStatement: [{caseDocuments: [doc('a')]}]};
+      const updated = {witnessStatement: [{caseDocuments: [doc('a'), doc('someone-elses')]}]};
+
+      await deleteRemovedDocuments(req, saved, updated, client);
+
+      expect(client.deleteDocument).not.toHaveBeenCalled();
+    });
+
+    it('should not throw when document management refuses a delete', async () => {
+      const client = {deleteDocument: jest.fn().mockRejectedValue(new Error('403'))};
+      const saved = {witnessStatement: [{caseDocuments: [doc('a')]}]};
+
+      await expect(deleteRemovedDocuments(req, saved, {witnessStatement: []}, client)).resolves.toBeUndefined();
+      expect(client.deleteDocument).toHaveBeenCalledWith(req, 'a');
     });
   });
 });
