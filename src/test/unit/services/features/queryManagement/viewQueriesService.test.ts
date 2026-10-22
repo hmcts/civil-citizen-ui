@@ -105,6 +105,6 @@ describe('ViewQueriesService', () => {
     const detail = ViewQueriesService.buildQueryListItemsByQueryId(claim, userId, 'q1', 'en');
     expect(detail.isQueryClosed).toBe(true);
     expect(detail.lastStatus).toBe('PAGES.QM.VIEW_QUERY.STATUS_CLOSED');
-    expect(detail.queryClosedDate).toBeTruthy();
+    expect(detail.queryClosedDate).toBe('2 January 2024');
   });
 });
