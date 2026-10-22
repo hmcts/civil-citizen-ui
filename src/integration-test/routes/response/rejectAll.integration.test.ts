@@ -34,6 +34,11 @@ import {
   RESPONSE_TASK_LIST_URL,
   RESPONSE_YOUR_DEFENCE_URL,
   SEND_RESPONSE_BY_EMAIL_URL,
+  CITIZEN_RESPONSE_TYPE_URL,
+  CITIZEN_ALREADY_PAID_URL,
+  CITIZEN_AMOUNT_YOU_PAID_URL,
+  CITIZEN_OWED_AMOUNT_URL,
+  CITIZEN_WHY_DO_YOU_DISAGREE_URL,
 } from '../../../main/routes/urls';
 import {
   createClaimWithBasicApplicantDetails,
@@ -317,6 +322,29 @@ describe('Integration: reject-all response coverage', () => {
         expect(res.text).toContain('alt@example.com');
         expect(res.text).toContain('Reasons for disagree');
       });
+  });
+
+  it.each([undefined, {}])('recovers missing partial-admission answers through the task list and response choice: %p', async partialAdmission => {
+    const claim = buildRejectAllDisputeClaim();
+    claim.respondent1.responseType = ResponseType.PART_ADMISSION;
+    claim.partialAdmission = partialAdmission;
+    setDraftClaim(claim);
+    for (const url of [CITIZEN_AMOUNT_YOU_PAID_URL, CITIZEN_OWED_AMOUNT_URL, CITIZEN_WHY_DO_YOU_DISAGREE_URL]) {
+      await request(app).get(route(url)).expect(302).expect('Location', route(RESPONSE_TASK_LIST_URL));
+    }
+    const taskList = await request(app).get(route(RESPONSE_TASK_LIST_URL)).expect(200);
+    const document = new JSDOM(taskList.text);
+    try {
+      expect(document.window.document.querySelector(`a[href="${route(CITIZEN_RESPONSE_TYPE_URL)}"]`)).not.toBeNull();
+    } finally {document.window.close();}
+    await request(app).post(route(CITIZEN_RESPONSE_TYPE_URL)).send({responseType: ResponseType.PART_ADMISSION})
+      .expect(302).expect('Location', route(CITIZEN_ALREADY_PAID_URL));
+    const question = await request(app).get(route(CITIZEN_ALREADY_PAID_URL)).expect(200);
+    const questionDocument = new JSDOM(question.text);
+    try {
+      expect(questionDocument.window.document.querySelector('input[name="option"]:checked')).toBeNull();
+      expect(questionDocument.window.document.querySelectorAll('input[name="option"]')).toHaveLength(2);
+    } finally {questionDocument.window.close();}
   });
 
   it.each([ResponseType.PART_ADMISSION, ResponseType.FULL_DEFENCE])('retains a translated comment-only timeline on GET and invalid POST for %s', async responseType => {

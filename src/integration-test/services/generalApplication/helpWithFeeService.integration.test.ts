@@ -36,6 +36,7 @@ import {getDraftGAHWFDetails, saveDraftGAHWFDetails} from 'modules/draft-store/g
 import {getApplicationFromGAService} from 'services/features/generalApplication/generalApplicationService';
 import {saveUserId} from 'modules/draft-store/paymentSessionStoreService';
 import {getClaimById} from 'modules/utilityService';
+import {civilServiceClientMock} from '../../setup/sharedMocks';
 
 const CLAIM_ID = '1640995200000000';
 const APP_ID = 'GA-1001';
@@ -69,6 +70,43 @@ describe('Integration: GA helpWithFeeService routing branches', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     (saveDraftClaim as jest.Mock).mockResolvedValue(undefined);
+  });
+
+  it.each([YesNo.NO, YesNo.YES])('maps the selected collection item to its own GA case reference for %s without borrowing another fee', async option => {
+    const selectedCase = '9990000000000002';
+    const claim = buildClaim();
+    claim.generalApplication.applicationFee = {calculatedAmountInPence: 99900} as GeneralApplication['applicationFee'];
+    const linked = Object.assign(new Claim(), {generalApplications: [
+      {id: 'unrelated-entry', value: {caseLink: {CaseReference: '9990000000000001'}}},
+      {id: 'selected-entry', value: {caseLink: {CaseReference: selectedCase}}},
+    ]});
+    civilServiceClientMock.retrieveClaimDetails.mockResolvedValue(linked);
+    (getClaimById as jest.Mock).mockResolvedValue(claim);
+    (getGaFeePaymentRedirectInformation as jest.Mock).mockResolvedValue({paymentReference: 'selected-payment', nextUrl: '/selected-payment'});
+    (getGaFeePaymentStatus as jest.Mock).mockResolvedValue({status: 'Pending'});
+    (getDraftGAHWFDetails as jest.Mock).mockResolvedValue({existing: 'keep'});
+    (getApplicationFromGAService as jest.Mock).mockResolvedValue({case_data: {}});
+    const writes: {key: string; value: unknown}[] = [];
+    (saveDraftGAHWFDetails as jest.Mock).mockImplementation(async (key, value) => {
+      writes.push({key, value: JSON.parse(JSON.stringify(value))});
+    });
+    const req = buildReq({query: {id: 'selected-entry', appFee: '0'}});
+    const answer = new GenericYesNo(option);
+
+    const url = await getRedirectUrl(CLAIM_ID, answer, 'applyHelpWithFees', req as never);
+
+    if (option === YesNo.NO) {
+      expect(getGaFeePaymentRedirectInformation).toHaveBeenCalledWith(selectedCase, req);
+      expect(getGaFeePaymentStatus).toHaveBeenCalledWith(selectedCase, 'selected-payment', req);
+      expect(url).toBe('/selected-payment');
+    } else {
+      expect(getApplicationFromGAService).toHaveBeenCalledWith(req, selectedCase);
+      expect(getDraftGAHWFDetails).toHaveBeenCalledWith(selectedCase + USER_ID);
+      expect(writes).toEqual([{key: selectedCase + USER_ID, value: {
+        existing: 'keep', applicationFee: '0', applyHelpWithFees: JSON.parse(JSON.stringify(answer)),
+      }}]);
+      expect(url).toContain(`/case/${CLAIM_ID}/general-application/${selectedCase}/`);
+    }
   });
 
   it('returns confirmation URL when payment status is Success', async () => {

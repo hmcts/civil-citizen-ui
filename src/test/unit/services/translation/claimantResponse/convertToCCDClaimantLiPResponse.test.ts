@@ -8,6 +8,11 @@ import {DirectionQuestionnaire} from 'models/directionsQuestionnaire/directionQu
 import {CourtProposedDate} from 'common/form/models/claimantResponse/courtProposedDate';
 import {CourtProposedDateOptions} from 'common/form/models/claimantResponse/courtProposedDate';
 import {RepaymentDecisionType} from 'models/claimantResponse/RepaymentDecisionType';
+import {GenericYesNo} from 'form/models/genericYesNo';
+import {YesNo, YesNoUpperCamelCase} from 'form/models/yesNo';
+import {Hearing} from 'models/directionsQuestionnaire/hearing/hearing';
+import {PhoneOrVideoHearing} from 'models/directionsQuestionnaire/hearing/phoneOrVideoHearing';
+import {Experts} from 'models/directionsQuestionnaire/experts/experts';
 
 describe('toCCDClaimantLiPResponse', () => {
   it('should map undefined claimant response fields to undefined values', () => {
@@ -24,6 +29,12 @@ describe('toCCDClaimantLiPResponse', () => {
   it('should map populated claimant response fields', () => {
     const claimantResponse = new ClaimantResponse();
     claimantResponse.directionQuestionnaire = new DirectionQuestionnaire();
+    claimantResponse.directionQuestionnaire.defendantYourselfEvidence = new GenericYesNo(YesNo.YES);
+    claimantResponse.directionQuestionnaire.hearing = new Hearing();
+    claimantResponse.directionQuestionnaire.hearing.phoneOrVideoHearing = new PhoneOrVideoHearing(YesNo.YES, 'Attend by video');
+    claimantResponse.directionQuestionnaire.experts = new Experts();
+    claimantResponse.directionQuestionnaire.experts.expertRequired = true;
+    claimantResponse.directionQuestionnaire.experts.expertReportDetails = new GenericYesNo(YesNo.NO);
     claimantResponse.chooseHowToProceed = {option: ChooseHowProceed.REQUEST_A_CCJ};
     claimantResponse.signSettlementAgreement = {signed: 'true'};
     claimantResponse.courtProposedDate = {decision: CourtProposedDateOptions.ACCEPT_REPAYMENT_DATE} as CourtProposedDate;
@@ -35,7 +46,24 @@ describe('toCCDClaimantLiPResponse', () => {
     const result = toCCDClaimantLiPResponse(claimantResponse);
 
     expect(result.applicant1ChoosesHowToProceed).toBe(CCDChoosesHowToProceed.REQUEST_A_CCJ);
-    expect(result.applicant1DQExtraDetails).toBeDefined();
+    expect(result.applicant1DQExtraDetails).toStrictEqual({
+      wantPhoneOrVideoHearing: YesNoUpperCamelCase.YES,
+      whyPhoneOrVideoHearing: 'Attend by video',
+      whyUnavailableForHearing: undefined,
+      giveEvidenceYourSelf: YesNoUpperCamelCase.YES,
+      triedToSettle: undefined,
+      determinationWithoutHearingRequired: undefined,
+      determinationWithoutHearingReason: '',
+      requestExtra4weeks: undefined,
+      considerClaimantDocuments: undefined,
+      considerClaimantDocumentsDetails: '',
+      respondent1DQLiPExpert: undefined,
+      applicant1DQLiPExpert: {
+        caseNeedsAnExpert: YesNoUpperCamelCase.YES,
+        expertCanStillExamineDetails: '',
+        expertReportRequired: YesNoUpperCamelCase.NO,
+      },
+    });
     expect(result.claimantResponseOnCourtDecision).toBe(CourtProposedDateOptions.ACCEPT_REPAYMENT_DATE);
     expect(result.claimantCourtDecision).toBe(RepaymentDecisionType.IN_FAVOUR_OF_CLAIMANT);
     expect(result.applicant1RejectedRepaymentReason).toBe('not acceptable');
