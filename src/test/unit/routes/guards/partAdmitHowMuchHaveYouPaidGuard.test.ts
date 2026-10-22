@@ -32,6 +32,21 @@ describe('Response - PartAdmitHowMuchHaveYouPaidGuard', () => {
   });
 
   describe('on GET', () => {
+    it.each([undefined, {}, {alreadyPaid: {}}, {alreadyPaid: {option: undefined}}])(
+      'redirects an unanswered partial admission without a property error: %p', async partialAdmission => {
+        const claim = new Claim();
+        claim.respondent1 = {responseType: ResponseType.PART_ADMISSION};
+        claim.partialAdmission = partialAdmission;
+        mockGetCaseData.mockResolvedValue(claim);
+
+        await PartAdmitHowMuchHaveYouPaidGuard.apply(RESPONSE_TASK_LIST_URL)(MOCK_REQUEST, MOCK_RESPONSE, MOCK_NEXT);
+
+        expect(MOCK_RESPONSE.redirect).toHaveBeenCalledTimes(1);
+        expect(MOCK_RESPONSE.redirect).toHaveBeenCalledWith(respondentIncompleteSubmissionUrl);
+        expect(MOCK_NEXT).not.toHaveBeenCalled();
+      },
+    );
+
     it('should call next middleware function which will render how much have you paid screen', async () => {
       // Given
       const claim = new Claim();
