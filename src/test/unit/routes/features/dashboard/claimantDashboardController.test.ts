@@ -169,22 +169,22 @@ const linkUrls = (model: DashboardViewModel): Array<string | undefined> =>
 describe('Claimant dashboard controller', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    (getDashboardClaimById as jest.Mock).mockResolvedValue(buildClaim());
-    (getTotalAmountWithInterestAndFees as jest.Mock).mockResolvedValue(10);
-    (getDraftClaim as jest.Mock).mockResolvedValue(null);
-    (updateFieldDraftClaimFromStore as jest.Mock).mockResolvedValue(undefined);
-    (isCarmEnabledForCase as jest.Mock).mockResolvedValue(false);
-    (isGaForLipsEnabled as jest.Mock).mockResolvedValue(false);
-    (isQueryManagementEnabled as jest.Mock).mockResolvedValue(false);
-    (isWelshEnabledForMainCase as jest.Mock).mockResolvedValue(false);
-    (isJudgmentBufferEnabled as jest.Mock).mockResolvedValue(false);
-    (isCarmApplicableAndSmallClaim as jest.Mock).mockReturnValue(false);
-    (getNotifications as jest.Mock).mockResolvedValue(undefined);
-    (getDashboardForm as jest.Mock).mockResolvedValue(mockDashboard);
-    (extractOrderDocumentIdFromNotification as jest.Mock).mockReturnValue('doc-id');
-    (getContactCourtLink as jest.Mock).mockResolvedValue({text: 'Contact the court', url: '/contact-court'});
-    (getHelpSupportTitle as jest.Mock).mockReturnValue('Help and support');
-    (getHelpSupportLinks as jest.Mock).mockReturnValue(helpSupportLinks);
+    (getDashboardClaimById as jest.Mock).mockReset().mockResolvedValue(buildClaim());
+    (getTotalAmountWithInterestAndFees as jest.Mock).mockReset().mockResolvedValue(10);
+    (getDraftClaim as jest.Mock).mockReset().mockResolvedValue(null);
+    (updateFieldDraftClaimFromStore as jest.Mock).mockReset().mockResolvedValue(undefined);
+    (isCarmEnabledForCase as jest.Mock).mockReset().mockResolvedValue(false);
+    (isGaForLipsEnabled as jest.Mock).mockReset().mockResolvedValue(false);
+    (isQueryManagementEnabled as jest.Mock).mockReset().mockResolvedValue(false);
+    (isWelshEnabledForMainCase as jest.Mock).mockReset().mockResolvedValue(false);
+    (isJudgmentBufferEnabled as jest.Mock).mockReset().mockResolvedValue(false);
+    (isCarmApplicableAndSmallClaim as jest.Mock).mockReset().mockReturnValue(false);
+    (getNotifications as jest.Mock).mockReset().mockResolvedValue(undefined);
+    (getDashboardForm as jest.Mock).mockReset().mockResolvedValue(mockDashboard);
+    (extractOrderDocumentIdFromNotification as jest.Mock).mockReset().mockReturnValue('doc-id');
+    (getContactCourtLink as jest.Mock).mockReset().mockResolvedValue({text: 'Contact the court', url: '/contact-court'});
+    (getHelpSupportTitle as jest.Mock).mockReset().mockReturnValue('Help and support');
+    (getHelpSupportLinks as jest.Mock).mockReset().mockReturnValue(helpSupportLinks);
     gaServiceMethods.getApplicationsByCaseId.mockResolvedValue([]);
   });
 
