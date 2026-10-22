@@ -213,6 +213,16 @@ describe('TimeoutWarning', () => {
     expect(redirect).toHaveBeenCalledTimes(1);
   });
 
+  it('closes a warning when another tab records fresh activity', () => {
+    const closeDialog = jest.spyOn(moduleInstance, 'closeDialog');
+    moduleInstance.openDialog();
+    window.localStorage.setItem('timeUserLastInteractedWithPage', new Date().toISOString());
+
+    moduleInstance.checkIfShouldHaveTimedOut();
+
+    expect(closeDialog).toHaveBeenCalledTimes(1);
+  });
+
   it('sends the session extension request with JSON accepted', () => {
     const xhrOpen = jest.fn();
     const xhrSend = jest.fn();

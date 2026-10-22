@@ -292,11 +292,17 @@ TimeoutWarning.prototype.checkIfShouldHaveTimedOut = function () {
     return;
   }
 
-  var seconds = Math.abs((timeUserLastInteractedWithPage - new Date()) / 1000);
+  // A timestamp written by another tab can be slightly ahead of this tab's
+  // clock. It must not be treated as elapsed idle time.
+  var seconds = Math.max(0, (new Date() - timeUserLastInteractedWithPage) / 1000);
   if (seconds > (this.idleMinutesBeforeTimeOut + this.minutesTimeOutModalVisible) * 60) {
     this.redirect();
   } else if (seconds > this.idleMinutesBeforeTimeOut * 60) {
     this.openDialog();
+  } else if (this.isDialogOpen()) {
+    // Another tab has become active (or renewed the session). Cancel the
+    // warning in this tab so its stale countdown cannot sign out the session.
+    this.closeDialog();
   }
 };
 
