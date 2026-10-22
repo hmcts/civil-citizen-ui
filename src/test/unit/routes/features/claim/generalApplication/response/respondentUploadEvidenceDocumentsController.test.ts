@@ -45,7 +45,7 @@ const file = {
   mimetype: 'application/pdf',
   originalname: 'original name',
   size: 1234,
-  buffer: Buffer.from('Test file content'),
+  buffer: Buffer.from('%PDF-1.4\nSynthetic test file\n%%EOF'),
 };
 
 describe('General Application - Respondent GA upload evidence documents ', () => {
@@ -67,7 +67,9 @@ describe('General Application - Respondent GA upload evidence documents ', () =>
     gaResponse = new GaResponse();
     gaResponse.generalApplicationType = [ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT];
     gaResponse.wantToUploadDocuments = YesNo.YES;
-    mockDataFromStore.mockResolvedValue(claim);
+    mockDataFromStore.mockReset().mockResolvedValue(claim);
+    jest.spyOn(CivilServiceClient.prototype, 'uploadDocument').mockReset();
+    jest.mocked(gaStoreResponseService.getDraftGARespondentResponse).mockReset().mockResolvedValue(gaResponse);
   });
 
   describe('General Application - Respondent upload evidence docs to support application', () => {
@@ -165,7 +167,7 @@ describe('General Application - Respondent GA upload evidence documents ', () =>
     it('should return http 500 when has error in the get method', async () => {
       mockDataFromStore.mockRejectedValueOnce(new Error(TestMessages.SOMETHING_WENT_WRONG));
       await request(app)
-        .get(GA_RESPONDENT_UPLOAD_DOCUMENT_URL)
+        .get(constructResponseUrlWithIdAndAppIdParams('123', '345', GA_RESPONDENT_UPLOAD_DOCUMENT_URL))
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
@@ -219,6 +221,10 @@ describe('General Application - Respondent GA upload evidence documents ', () =>
           expect(res.status).toBe(302);
           expect(res.text).toContain(constructResponseUrlWithIdAndAppIdParams('123', '345', GA_RESPONDENT_UPLOAD_DOCUMENT_URL));
         });
+      expect(CivilServiceClient.prototype.uploadDocument).toHaveBeenCalledTimes(1);
+      expect(CivilServiceClient.prototype.uploadDocument).toHaveBeenCalledWith(expect.anything(), expect.objectContaining({
+        originalname: file.originalname, mimetype: file.mimetype, buffer: file.buffer,
+      }));
     });
     it('should return http 500 when has error in the get method', async () => {
       const file = {
@@ -231,13 +237,14 @@ describe('General Application - Respondent GA upload evidence documents ', () =>
       jest.spyOn(CivilServiceClient.prototype, 'uploadDocument').mockRejectedValueOnce(new Error(TestMessages.SOMETHING_WENT_WRONG));
 
       await request(app)
-        .post(GA_RESPONDENT_UPLOAD_DOCUMENT_URL)
+        .post(constructResponseUrlWithIdAndAppIdParams('123', '345', GA_RESPONDENT_UPLOAD_DOCUMENT_URL))
         .field('action', 'uploadButton')
         .attach('selectedFile', file.buffer, { filename: file.originalname, contentType: file.mimetype })
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
         });
+      expect(CivilServiceClient.prototype.uploadDocument).toHaveBeenCalledTimes(1);
     });
   });
 });
