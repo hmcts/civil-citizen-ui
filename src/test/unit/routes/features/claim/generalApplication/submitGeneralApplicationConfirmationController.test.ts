@@ -1,92 +1,103 @@
 import {Response} from 'express';
 import {t} from 'i18next';
-import submitGeneralApplicationConfirmationController from '../../../../../../main/routes/features/generalApplication/submitGeneralApplicationConfirmationController';
+import controller from 'routes/features/generalApplication/submitGeneralApplicationConfirmationController';
+import {GENERAL_APPLICATION_CONFIRM_URL, DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL} from 'routes/urls';
 import {Claim} from 'models/claim';
-import {PartyType} from 'models/partyType';
-import {GeneralApplication} from 'models/generalApplication/GeneralApplication';
-import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {CaseRole} from 'form/models/caseRoles';
+import {AppRequest} from 'models/AppRequest';
 import {getClaimById} from 'modules/utilityService';
-import {createMockResponse, getRouteHandler} from '../../../../../utils/getRouteHandler';
+import {deleteFieldDraftClaimFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {getRouteHandler} from '../../../../../utils/getRouteHandler';
 
+// The GA service imports the response store, whose app reference is an external
+// collaborator here. Keep this handler suite from constructing the application.
+jest.mock('../../../../../../main/app', () => ({app: {locals: {}}}));
+jest.mock('modules/utilityService', () => ({getClaimById: jest.fn()}));
 jest.mock('modules/draft-store/draftStoreService');
-jest.mock('services/features/generalApplication/response/generalApplicationResponseStoreService', () => ({
-  getDraftGARespondentResponse: jest.fn(),
-  saveDraftGARespondentResponse: jest.fn(),
-}));
-jest.mock('modules/utilityService', () => ({
-  getClaimById: jest.fn(),
-}));
 
-describe('GA submission confirmation controller', () => {
-  const getHandler = getRouteHandler(submitGeneralApplicationConfirmationController, 'get');
-  const viewPath = 'features/generalApplication/submit-general-application-confirmation';
-  const claimId = '12345';
+const claimId = '123';
+const collectionId = 'selected-entry';
+const get = getRouteHandler(controller, 'get', GENERAL_APPLICATION_CONFIRM_URL);
+const invalidQueries = [
+  {}, {id: collectionId}, {appFee: '108'},
+  {id: '', appFee: '108'}, {id: ' ', appFee: '108'},
+  {id: 'undefined', appFee: '108'}, {id: 'null', appFee: '108'},
+  {id: 'entry/other', appFee: '108'}, {id: 'entry&other', appFee: '108'},
+  {id: [collectionId, 'other-entry'], appFee: '108'}, {id: {value: collectionId}, appFee: '108'},
+  ...['', ' ', 'undefined', 'null', 'NaN', 'Infinity', '-1', 'wrong', '0x10', '1e2', '1.001'].map(appFee => ({id: collectionId, appFee})),
+  {id: collectionId, appFee: ['108', '19']},
+  {id: collectionId, appFee: {value: '108'}},
+];
+
+describe('GA confirmation parameter boundary', () => {
   let claim: Claim;
-  let req: {
-    params: {id: string};
-    body: Record<string, unknown>;
-    query: Record<string, unknown>;
-    cookies: Record<string, unknown>;
-    session: {user: {id: string}};
-  };
-  let res: ReturnType<typeof createMockResponse>;
+  let req: AppRequest;
+  let res: Response;
+  let render: jest.Mock;
+  let redirect: jest.Mock;
   let next: jest.Mock;
-  const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
-  const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
-  const mockGetClaim = getClaimById as jest.Mock;
-
-  const buildClaim = (): Claim => {
-    const builtClaim = new Claim();
-    builtClaim.applicant1 = {
-      type: PartyType.INDIVIDUAL,
-      partyDetails: {title: 'Mr', firstName: 'Jan', lastName: 'Clark'},
-    } as Claim['applicant1'];
-    builtClaim.generalApplication = new GeneralApplication();
-    builtClaim.generalApplication.applicationFee = {
-      calculatedAmountInPence: 100,
-      code: 'test',
-      version: 1,
-    };
-    return builtClaim;
-  };
-
   beforeEach(() => {
-    jest.clearAllMocks();
-    claim = buildClaim();
-    req = {
-      params: {id: claimId},
-      body: {},
-      query: {},
-      cookies: {},
-      session: {user: {id: 'u1'}},
-    };
-    res = createMockResponse();
-    next = jest.fn();
-    (draftStoreService.generateRedisKey as jest.Mock).mockReturnValue(claimId);
-    (draftStoreService.generateRedisKeyForGA as jest.Mock).mockReturnValue('ga-12345');
-    mockGetCaseData.mockResolvedValue(claim);
-    mockSaveDraftClaim.mockResolvedValue(undefined);
-    mockGetClaim.mockResolvedValue(claim);
+    jest.resetAllMocks();
+    claim = new Claim();
+    claim.caseRole = CaseRole.CLAIMANT;
+    claim.generalApplications = [
+      {id: 'unrelated-entry', value: {caseLink: {CaseReference: '9990000000000001'}}},
+      {id: collectionId, value: {caseLink: {CaseReference: '9990000000000002'}}},
+    ] as Claim['generalApplications'];
+    claim.generalApplication = {applicationFee: {calculatedAmountInPence: 99900}} as Claim['generalApplication'];
+    jest.mocked(getClaimById).mockResolvedValue(claim);
+    req = {params: {id: claimId}, query: {}, cookies: {}, session: {user: {id: 'owner'}}} as unknown as AppRequest;
+    render = jest.fn(); redirect = jest.fn(); next = jest.fn();
+    res = {render, redirect} as unknown as Response;
   });
 
-  describe('on GET', () => {
-    it('should render the submission confirmation page', async () => {
-      await getHandler(req as never, res as unknown as Response, next);
+  it.each(['0', '108', '108.25'])('renders the explicit collection item and fee %s without borrowing the draft fee', async appFee => {
+    req.query = {id: collectionId, appFee};
 
-      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
-        confirmationTitle: t('PAGES.GENERAL_APPLICATION.CONFIRMATION_PAGE.TITLE'),
-        confirmationContent: expect.any(Array),
-      }));
-      expect(next).not.toHaveBeenCalled();
-    });
+    await get(req, res, next);
 
-    it('should call next when loading the claim fails', async () => {
-      const error = new Error('redis failure');
-      mockGetClaim.mockRejectedValue(error);
+    expect(next).not.toHaveBeenCalled();
+    expect(redirect).not.toHaveBeenCalled();
+    expect(render).toHaveBeenCalledTimes(1);
+    expect(render).toHaveBeenCalledWith('features/generalApplication/submit-general-application-confirmation', expect.objectContaining({
+      confirmationTitle: t('PAGES.GENERAL_APPLICATION.CONFIRMATION_PAGE.TITLE'),
+      confirmationContent: expect.any(Array),
+    }));
+    const {confirmationContent} = render.mock.calls[0][1];
+    const button = confirmationContent.find((section: {data: {href?: string}}) => section.data.href?.includes('apply-help-fee-selection'));
+    expect(button.data.href).toBe(`/case/${claimId}/general-application/apply-help-fee-selection?id=${collectionId}&appFee=${appFee}`);
+    expect(JSON.stringify(confirmationContent)).not.toContain('appFee=999');
+    expect(getClaimById).toHaveBeenCalledWith(claimId, req, true);
+  });
 
-      await getHandler(req as never, res as unknown as Response, next);
+  it.each(invalidQueries)('recovers invalid query %p without rendering or deleting draft data', async query => {
+    req.query = query as AppRequest['query'];
 
-      expect(next).toHaveBeenCalledWith(error);
-    });
+    await get(req, res, next);
+
+    expect(redirect).toHaveBeenCalledTimes(1);
+    expect(redirect).toHaveBeenCalledWith(DASHBOARD_CLAIMANT_URL.replace(':id', claimId));
+    expect(render).not.toHaveBeenCalled();
+    expect(next).not.toHaveBeenCalled();
+    expect(deleteFieldDraftClaimFromStore).not.toHaveBeenCalled();
+    expect(saveDraftClaim).not.toHaveBeenCalled();
+  });
+
+  it('recovers a defendant to their own dashboard', async () => {
+    claim.caseRole = CaseRole.DEFENDANT;
+    await get(req, res, next);
+    expect(redirect).toHaveBeenCalledWith(DEFENDANT_SUMMARY_URL.replace(':id', claimId));
+    expect(render).not.toHaveBeenCalled();
+    expect(next).not.toHaveBeenCalled();
+  });
+
+  it('forwards a claim-read failure instead of guessing a recovery or application', async () => {
+    const failure = new Error('claim unavailable');
+    jest.mocked(getClaimById).mockRejectedValue(failure);
+    await get(req, res, next);
+    expect(next).toHaveBeenCalledTimes(1);
+    expect(next).toHaveBeenCalledWith(failure);
+    expect(render).not.toHaveBeenCalled();
+    expect(redirect).not.toHaveBeenCalled();
   });
 });
