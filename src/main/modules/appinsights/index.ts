@@ -4,14 +4,24 @@ const appInsights = require('applicationinsights');
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('appInsights');
 
+interface StackFrame {
+  assembly?: string;
+  fileName?: string;
+  method?: string;
+  [key: string]: unknown;
+}
+
 interface ExceptionDetail {
   message?: string;
+  typeName?: string;
   stack?: string;
+  parsedStack?: StackFrame[];
   [key: string]: unknown;
 }
 
 interface TelemetryEnvelope {
   sampleRate: number;
+  tags?: Record<string, unknown>;
   data: {
     baseType: string;
     baseData: {
@@ -28,17 +38,30 @@ interface TelemetryEnvelope {
   };
 }
 
+const REDACTED = '[REDACTED]';
+
 export const DEFAULT_REDACTED_KEYS: string[] = [
   'key',
   'apiKey',
   'api_key',
   'token',
   'access_token',
+  'accessToken',
+  'refresh_token',
+  'refreshToken',
+  'id_token',
+  'idToken',
   'secret',
   'client_secret',
+  'clientSecret',
   'password',
+  'passphrase',
   'auth',
   'authorization',
+  'serviceAuthorization',
+  'cookie',
+  'sig',
+  'AccountKey',
 ];
 
 /**
@@ -69,43 +92,92 @@ export const getRedactedKeys = (): string[] => {
   });
 };
 
-// Matches nothing; used when there are no keys to redact.
-const NEVER_MATCH_REGEX = /(?!)/;
-let cachedRegexCacheKey: string | undefined;
-let cachedRegex: RegExp | undefined;
+// A key must start the string or follow one of these, so `keyboard` or `monkey` never match but
+// `x-api-key`, `refresh_token` and `config.password` do.
+const KEY_BOUNDARY = '(?:^|[?&;,\\s{\\[(._-])';
+// Optional quote around the key: `"key"`, `'key'` or escaped JSON `\"key\"`.
+const OPTIONAL_KEY_QUOTE = '(?:\\\\?["\'])?';
+// An auth scheme is kept so only the credential after it is redacted.
+const AUTH_SCHEME = '(?:(?:Bearer|Basic|Token|Digest|Negotiate|NTLM)[ \\t]+)?';
 
 /**
- * Builds a regex that captures `$1` (everything up to the secret) and `$2` (the secret), so callers
- * can replace with '$1[REDACTED]'. For each sensitive key it matches:
- *  - query strings / form bodies:  `?key=abc`, `&key=abc`, `; key=abc`, `key=abc,`
- *  - JSON (also escaped JSON):     `{"key":"abc"}`, `"key": 123`, `{\"key\":\"abc\"}`
- *  - header style:                 `key: abc`, `Authorization: Bearer abc`
- * An optional auth scheme (Bearer/Basic/Token) is kept in `$1` so the credential after it is redacted.
- * The value ends at whitespace, a quote, or one of `& # ; , } \`.
- *
- * The regex is memoised on the (valid) key list so it is only rebuilt when the keys change,
- * not for every telemetry envelope. Sharing the global regex is safe because
- * String.prototype.replace resets lastIndex before use.
+ * Value formats, tried in order. Each entry is [opening quote and scheme that are kept, secret value].
  */
-export const buildSensitiveQueryParamsRegex = (keys: string[] = DEFAULT_REDACTED_KEYS): RegExp => {
+const VALUE_BRANCHES: ReadonlyArray<readonly [string, string]> = [
+  // Escaped (double-encoded) JSON: \"key\":\"value\". Inside it a quote is written \\\" and a backslash \\\\.
+  [`\\\\"${AUTH_SCHEME}`, '(?:[^"\\\\]|\\\\[^"\\\\]|\\\\\\\\(?:\\\\.|[^\\\\]))*'],
+  // Double quotes: "key":"value" or key="value". Consumes the whole string, including escapes.
+  [`"${AUTH_SCHEME}`, '(?:[^"\\\\]|\\\\.)*'],
+  // Single quotes: 'key':'value' or key='value' (e.g. util.inspect output).
+  [`'${AUTH_SCHEME}`, '(?:[^\'\\\\]|\\\\.)*'],
+  // Digest parameter lists (`Digest username="u", response="r"`) run to the end of the line.
+  ['Digest[ \\t]+', '[^\\r\\n]+'],
+  // Unquoted: key=value or key: value. Ends at a delimiter, or before a trailing `:line:col` of a stack frame.
+  [AUTH_SCHEME, '[^&#;,\\s"\'\\\\}]+?(?=:\\d+:\\d+\\)?(?:\\s|$)|[&#;,\\s"\'\\\\}]|$)'],
+];
+
+// Cookie headers carry many name=value pairs, so the whole unquoted header value is redacted.
+const COOKIE_HEADER_REGEX = /(\bcookie[ \t]*:[ \t]*)(?!\\?["'])(?:[^\r\n\\]|\\(?![rn]))+/gi;
+// Passwords in URLs, e.g. redis://:password@host:6380 or https://user:password@host.
+// The lookbehind only lets a match start at the beginning of a scheme, keeping long words linear.
+const URL_PASSWORD_REGEX = /(?<![a-z0-9+.-])([a-z][a-z0-9+.-]*:\/\/[^\s:/@]*:)[^\s@/]+(?=@)/gi;
+// JWTs that appear without a key in front of them, e.g. `Token rejected: eyJ...`.
+const JWT_REGEX = /\beyJ[\w-]{5,}\.[\w-]{5,}\.[\w-]*/g;
+
+// Matches nothing; used when there are no keys to redact.
+const NEVER_MATCH_REGEX = /(?!)/;
+
+interface RedactionRules {
+  regex: RegExp;
+  // Property names whose whole value is redacted: `token`, `x-api-key`, `db.password`, but not `keyboard`.
+  sensitiveName: RegExp;
+}
+
+let cachedRulesKey: string | undefined;
+let cachedRules: RedactionRules | undefined;
+
+/**
+ * Builds the key-based redaction rules, memoised on the (valid) key list so they are only rebuilt
+ * when the keys change, not for every telemetry envelope.
+ */
+const buildRedactionRules = (keys: string[] = DEFAULT_REDACTED_KEYS): RedactionRules => {
   const validKeys = (keys || []).filter(Boolean);
   if (validKeys.length === 0) {
-    return NEVER_MATCH_REGEX;
+    return {regex: NEVER_MATCH_REGEX, sensitiveName: NEVER_MATCH_REGEX};
   }
   const cacheKey = validKeys.join('\u0000');
-  if (cachedRegex && cachedRegexCacheKey === cacheKey) {
-    return cachedRegex;
+  if (cachedRules && cachedRulesKey === cacheKey) {
+    return cachedRules;
   }
   const escaped = validKeys
     .map((k) => k.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
     .join('|');
-  const quote = '(?:\\\\?["\'])?';
-  const prefix = `(?:^|[?&;,\\s{\\[(])${quote}(?:${escaped})${quote}[ \\t]*[=:][ \\t]*${quote}(?:(?:Bearer|Basic|Token)[ \\t]+)?`;
-  const value = '[^&#;,\\s"\'\\\\}]+';
-  cachedRegex = new RegExp(`(${prefix})(${value})`, 'gi');
-  cachedRegexCacheKey = cacheKey;
-  return cachedRegex;
+  const keyPart = `${KEY_BOUNDARY}${OPTIONAL_KEY_QUOTE}(?:${escaped})${OPTIONAL_KEY_QUOTE}[ \\t]*[=:][ \\t]*`;
+  const values = VALUE_BRANCHES.map(([opener, value]) => `(${opener})(${value})`).join('|');
+  cachedRules = {
+    regex: new RegExp(`(${keyPart})(?:${values})`, 'gi'),
+    sensitiveName: new RegExp(`(?:^|[._-])(?:${escaped})$`, 'i'),
+  };
+  cachedRulesKey = cacheKey;
+  return cachedRules;
 };
+
+/**
+ * Builds a regex that matches each sensitive key and its value in these forms:
+ *  - query strings / form bodies:  `?key=abc`, `&key=abc`, `; key=abc`, `key=abc,`
+ *  - JSON:                         `{"key":"a b, c"}`, `"key": 123`, `{\"key\":\"abc\"}` (escaped JSON)
+ *  - single quotes:                `{key: 'abc'}`
+ *  - header style:                 `key: abc`, `Authorization: Bearer abc`, `Authorization: Digest ...`
+ * Quoted values are consumed in full, including spaces, punctuation and escaped characters.
+ * Unquoted values end at whitespace, a quote, one of `& # ; , } \`, or a trailing stack frame `:line:col`.
+ *
+ * Group 1 is the key prefix; each value format then adds a pair of groups (kept opener, secret).
+ * Use it through {@link sanitizeCredentials}. The regex is shared and has the `g` flag, so calling
+ * `test()` or `exec()` on it directly carries `lastIndex` between calls; `String.prototype.replace`
+ * resets it.
+ */
+export const buildSensitiveQueryParamsRegex = (keys: string[] = DEFAULT_REDACTED_KEYS): RegExp =>
+  buildRedactionRules(keys).regex;
 
 export const sanitizeCredentials = (
   value?: string,
@@ -123,63 +195,112 @@ export const sanitizeCredentials = (
     regex = buildSensitiveQueryParamsRegex(getRedactedKeys());
   }
 
-  return value.replace(regex, '$1[REDACTED]');
+  return value
+    .replace(COOKIE_HEADER_REGEX, `$1${REDACTED}`)
+    .replace(regex, (match: string, keyPrefix: string, ...groups: unknown[]) => {
+      for (let i = 0; i < VALUE_BRANCHES.length * 2; i += 2) {
+        const secret = groups[i + 1];
+        // Groups of the branches that did not match are undefined.
+        if (typeof secret === 'string') {
+          return secret ? `${keyPrefix}${groups[i]}${REDACTED}` : match;
+        }
+      }
+      return match;
+    })
+    .replace(URL_PASSWORD_REGEX, `$1${REDACTED}`)
+    .replace(JWT_REGEX, REDACTED);
 };
 
-export const stripCredentialsTelemetryProcessor = (envelope: TelemetryEnvelope): boolean => {
-  const {baseType, baseData} = envelope?.data ?? {};
-  if (!baseData) {
-    return true;
+const sanitizeStringFields = (target: Record<string, unknown> | undefined, regex: RegExp): void => {
+  if (!target || typeof target !== 'object') {
+    return;
   }
+  for (const [field, fieldValue] of Object.entries(target)) {
+    if (typeof fieldValue === 'string' && fieldValue) {
+      target[field] = sanitizeCredentials(fieldValue, regex);
+    }
+  }
+};
 
-  const regex = buildSensitiveQueryParamsRegex(getRedactedKeys());
+/**
+ * Converts an object property to the string the SDK will send (see applicationinsights Util.validateStringMap),
+ * so it can be sanitised before the SDK serialises it after the telemetry processors have run.
+ */
+const serialiseProperty = (propVal: object): string => {
+  try {
+    let target: unknown = propVal;
+    if (propVal instanceof Error) {
+      const {message, code, id} = propVal as Error & {code?: unknown; id?: unknown};
+      target = {message, code: code || id || ''};
+    } else if (!Array.isArray(propVal) && typeof (propVal as {toJSON?: unknown}).toJSON === 'function') {
+      target = (propVal as {toJSON: () => unknown}).toJSON();
+    }
+    return target !== null && typeof target === 'object' ? JSON.stringify(target) : String(target);
+  } catch {
+    return '[UNSERIALISABLE]';
+  }
+};
 
-  if (baseType === 'RemoteDependencyData') {
-    if (baseData.data) {
-      baseData.data = sanitizeCredentials(baseData.data, regex);
+const redactProperties = (properties: Record<string, unknown>, rules: RedactionRules): void => {
+  for (const [name, propVal] of Object.entries(properties)) {
+    if (propVal === null || propVal === undefined || typeof propVal === 'function') {
+      continue;
     }
-    if (baseData.target) {
-      baseData.target = sanitizeCredentials(baseData.target, regex);
+    if (rules.sensitiveName.test(name)) {
+      properties[name] = REDACTED;
+    } else if (typeof propVal === 'string') {
+      properties[name] = sanitizeCredentials(propVal, rules.regex);
+    } else if (typeof propVal === 'object') {
+      properties[name] = sanitizeCredentials(serialiseProperty(propVal), rules.regex);
     }
-    if (baseData.name) {
-      baseData.name = sanitizeCredentials(baseData.name, regex);
-    }
-  } else if (baseType === 'RequestData' || baseType === 'PageViewData') {
-    if (baseData.url) {
-      baseData.url = sanitizeCredentials(baseData.url, regex);
-    }
-  } else if (baseType === 'MessageData') {
-    if (baseData.message) {
-      baseData.message = sanitizeCredentials(baseData.message, regex);
-    }
-  } else if (baseType === 'ExceptionData') {
-    if (baseData.message) {
-      baseData.message = sanitizeCredentials(baseData.message, regex);
-    }
-    if (Array.isArray(baseData.exceptions)) {
-      for (const exc of baseData.exceptions) {
-        if (exc?.message) {
-          exc.message = sanitizeCredentials(exc.message, regex);
-        }
-        if (exc?.stack) {
-          exc.stack = sanitizeCredentials(exc.stack, regex);
+  }
+};
+
+const redactEnvelope = (envelope: TelemetryEnvelope): void => {
+  const rules = buildRedactionRules(getRedactedKeys());
+  // Tags such as ai.operation.name can carry the request URL.
+  sanitizeStringFields(envelope?.tags, rules.regex);
+
+  const baseData = envelope?.data?.baseData;
+  if (!baseData) {
+    return;
+  }
+  // Every top-level string on every telemetry type: name, url, data, target, message, ...
+  sanitizeStringFields(baseData, rules.regex);
+
+  if (Array.isArray(baseData.exceptions)) {
+    for (const exc of baseData.exceptions) {
+      // message, typeName and stack
+      sanitizeStringFields(exc, rules.regex);
+      // The SDK sends exception stacks as parsedStack frames rather than a stack string.
+      if (Array.isArray(exc?.parsedStack)) {
+        for (const frame of exc.parsedStack) {
+          sanitizeStringFields(frame, rules.regex);
         }
       }
     }
   }
 
   if (baseData.properties && typeof baseData.properties === 'object') {
-    const sensitiveNames = new Set(getRedactedKeys().map((k) => k.toLowerCase()));
-    for (const [key, propVal] of Object.entries(baseData.properties)) {
-      if (typeof propVal === 'string') {
-        baseData.properties[key] = sensitiveNames.has(key.toLowerCase())
-          ? '[REDACTED]'
-          : sanitizeCredentials(propVal, regex);
-      }
-    }
+    redactProperties(baseData.properties, rules);
   }
+};
 
-  return true;
+let redactionFailureReported = false;
+
+export const stripCredentialsTelemetryProcessor = (envelope: TelemetryEnvelope): boolean => {
+  try {
+    redactEnvelope(envelope);
+    return true;
+  } catch (err) {
+    // Fail closed: if a processor throws, the SDK sends the item anyway, unredacted. Drop it instead.
+    // Only the first failure is logged, and without the envelope, so the log cannot leak or recurse.
+    if (!redactionFailureReported) {
+      redactionFailureReported = true;
+      logger.error(`Credential redaction failed (${(err as Error)?.name}); dropping telemetry item`);
+    }
+    return false;
+  }
 };
 
 /**
