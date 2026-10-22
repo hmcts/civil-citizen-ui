@@ -4,6 +4,8 @@
  * (adapted from the accessible timeout warning prototype)
  */
 function TimeoutWarning($module) {
+  this.lastInteractionKey = 'timeUserLastInteractedWithPage';
+  this.signOutKey = 'civilCitizenSignedOutAt';
   this.$module = $module;
   this.$lastFocusedEl = null;
   this.$closeButton = $module.querySelector('.js-dialog-close');
@@ -34,6 +36,22 @@ TimeoutWarning.prototype.init = function () {
   }
   this.$module.addEventListener('keydown', this.escClose.bind(this));
   window.addEventListener('focus', this.checkIfShouldHaveTimedOut.bind(this));
+  window.addEventListener('storage', this.handleStorageChange.bind(this));
+
+  var signOutLink = document.querySelector('a[href="/logout"]');
+  if (signOutLink) {
+    signOutLink.addEventListener('click', function () {
+      window.localStorage.setItem(this.signOutKey, new Date().toISOString());
+    }.bind(this));
+  }
+};
+
+TimeoutWarning.prototype.handleStorageChange = function (event) {
+  if (event.key === this.signOutKey) {
+    this.redirect();
+  } else if (event.key === this.lastInteractionKey) {
+    this.checkIfShouldHaveTimedOut();
+  }
 };
 
 TimeoutWarning.prototype.dialogSupported = function () {
@@ -71,7 +89,7 @@ TimeoutWarning.prototype.resetIdleTime = function () {
   }.bind(this), 3000);
 
   if (window.localStorage) {
-    window.localStorage.setItem('timeUserLastInteractedWithPage', new Date().toISOString());
+    window.localStorage.setItem(this.lastInteractionKey, new Date().toISOString());
   }
 };
 
@@ -269,7 +287,7 @@ TimeoutWarning.prototype.checkIfShouldHaveTimedOut = function () {
     return;
   }
 
-  var timeUserLastInteractedWithPage = new Date(window.localStorage.getItem('timeUserLastInteractedWithPage'));
+  var timeUserLastInteractedWithPage = new Date(window.localStorage.getItem(this.lastInteractionKey));
   if (Number.isNaN(timeUserLastInteractedWithPage.getTime())) {
     return;
   }
@@ -288,6 +306,11 @@ TimeoutWarning.prototype.redirect = function () {
 
 TimeoutWarning.prototype.extendTimeOnServer = function () {
   var request = new XMLHttpRequest();
+  request.onreadystatechange = function () {
+    if (request.readyState === 4 && request.status === 401) {
+      this.redirect();
+    }
+  }.bind(this);
   request.open('GET', this.extendSessionUrl, true);
   request.setRequestHeader('Accept', 'application/json');
   request.send();
