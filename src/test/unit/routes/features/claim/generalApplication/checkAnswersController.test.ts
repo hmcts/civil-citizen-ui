@@ -136,7 +136,7 @@ describe('General Application - Check your answers', () => {
       futureDate.setDate(now.getDate() + 16);
       mockClaim.caseProgressionHearing = new CaseProgressionHearing();
       mockClaim.caseProgressionHearing.hearingDate = futureDate;
-      mockClaim.generalApplication = new GeneralApplication();
+      mockClaim.generalApplication = new GeneralApplication(new ApplicationType(ApplicationTypeOption.ADJOURN_HEARING));
       mockClaim.generalApplication.applicationFee = {
         calculatedAmountInPence: 25000,
       };
@@ -166,7 +166,7 @@ describe('General Application - Check your answers', () => {
 
     it('should add the id in the url of the ga application', async () => {
       const claim = new Claim();
-      claim.generalApplication = new GeneralApplication();
+      claim.generalApplication = new GeneralApplication(new ApplicationType(ApplicationTypeOption.ADJOURN_HEARING));
       claim.generalApplication.applicationFee = {
         calculatedAmountInPence: 25000,
       };

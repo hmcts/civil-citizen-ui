@@ -1,0 +1,44 @@
+# Restore the pre-cutover preview for like-for-like functional investigation.
+civil-service:
+  java:
+    environment:
+      FEES_API_URL: http://fees-register-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
+      PAYMENTS_API_URL: http://payment-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
+      DOCMOSIS_TORNADO_URL: https://docmosis.aat.platform.hmcts.net
+      CASE_DOCUMENT_AM_URL: http://${SERVICE_NAME}-cdam
+  ccd:
+    ccd:
+      apiGatewayWeb:
+        enabled: true
+    ccd-data-store-api:
+      java:
+        environment:
+          CASE_DOCUMENT_AM_URL: http://${SERVICE_NAME}-cdam
+    postgresql:
+      setup:
+        databases:
+          - name: pr-${CHANGE_ID}-cmc
+          - name: pr-${CHANGE_ID}-data-store
+          - name: pr-${CHANGE_ID}-definition-store
+          - name: pr-${CHANGE_ID}-camunda
+          - name: pr-${CHANGE_ID}-role-assignment
+          - name: pr-${CHANGE_ID}-wa-task-management-api
+          - name: pr-${CHANGE_ID}-wa-case-event-handler
+          - name: pr-${CHANGE_ID}-wa-workflow-api
+          - name: pr-${CHANGE_ID}-cft-task-db
+          - name: pr-${CHANGE_ID}-emstitch
+  xui-webapp:
+    enabled: true
+  em-stitching:
+    enabled: true
+  em-ccdorc:
+    enabled: true
+  ccd-case-document-am-api:
+    enabled: true
+nodejs:
+  environment:
+    ORDNANCE_SURVEY_API_URL: null
+    ORDNANCE_SURVEY_API_KEY: null
+    GOVPAY_URL: https://card.payments.service.gov.uk
+wiremock:
+  enabled: false

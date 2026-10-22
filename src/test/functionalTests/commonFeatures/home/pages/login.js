@@ -110,7 +110,8 @@ class LoginPage {
       config.WaitForText,
     );
 
-    await I.click(buttons.continue);
+    // Allow the authenticated redirect to finish before a step retry can resubmit.
+    await I.click(buttons.continue, null, {timeout: config.WaitForText * 1000});
   }
 
   async #login(email, password, endpoint, attempts = 0) {

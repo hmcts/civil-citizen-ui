@@ -1,90 +1,135 @@
-import {app} from '../../../../../main/app';
-import config from 'config';
-import request from 'supertest';
-import {CLAIMANT_TASK_LIST_URL} from 'routes/urls';
-import nock from 'nock';
-import * as draftStoreService from 'modules/draft-store/draftStoreService';
-import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {Response} from 'express';
+import claimTaskListController from '../../../../../main/routes/features/claim/claimTaskListController';
+import {getDraftClaim, createOrLoadDraft} from 'modules/draft-store/draftStoreManagerService';
 import {Claim} from 'models/claim';
 import {CivilServiceClient} from 'client/civilServiceClient';
+import {AppRequest} from 'models/AppRequest';
+import {CivilClaimResponse} from 'models/civilClaimResponse';
+import {DraftClaimManagerResult} from 'models/draft/draftClaim';
+import {createMockResponse, createMockSession, getRouteHandler} from '../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../main/modules/oidc');
-jest.mock('modules/draft-store/draftStoreService');
-jest.mock('routes/guards/claimIssueTaskListGuard', () => ({
-  claimIssueTaskListGuard: jest.fn((req, res, next) => {
-    next();
-  }),
-}));
+jest.mock('modules/draft-store/draftStoreManagerService');
+
+const mockGetDraftClaim = getDraftClaim as jest.Mock;
+const mockCreateOrLoadDraft = createOrLoadDraft as jest.Mock;
+
+const createMockManagerResult = (claim: Claim, isNew = false): DraftClaimManagerResult => ({
+  claimResponse: {
+    id: '123',
+    case_data: claim as unknown as Claim,
+  } as unknown as CivilClaimResponse,
+  rawResponse: {
+    draftId: 'draft-123',
+    payload: claim,
+  } as unknown as DraftClaimManagerResult['rawResponse'],
+  isNew,
+  createdAt: '2026-08-01T10:00:00.000Z',
+  updatedAt: '2026-08-01T11:00:00.000Z',
+  expiresAt: '2026-09-01T10:00:00.000Z',
+});
 
 describe('Claim TaskList page', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
-  let renderSpy: jest.SpyInstance;
+  const getHandler = getRouteHandler(claimTaskListController, 'get');
+  const viewPath = 'features/claim/task-list';
+  let req: Partial<AppRequest>;
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
+  let createDashboardSpy: jest.SpyInstance;
 
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-    jest.spyOn(CivilServiceClient.prototype, 'createDashboard').mockReturnValue(null);
+  beforeEach(() => {
+    jest.clearAllMocks();
+    req = {
+      session: createMockSession({user: {id: 'user-id'}}),
+      query: {},
+      cookies: {},
+    };
+    res = createMockResponse();
+    next = jest.fn();
+    createDashboardSpy = jest.spyOn(CivilServiceClient.prototype, 'createDashboard')
+      .mockResolvedValue(undefined as never);
   });
 
-  describe('on GET', () => {
-    const createDraftClaimSpy = jest.spyOn(draftStoreService, 'createDraftClaimInStoreWithExpiryTime');
-    beforeEach(() => {
-      jest.clearAllMocks();
-      renderSpy = jest.spyOn(app.response, 'render').mockImplementation(function (view: string, options?: object) {
-        return this.send({view, options});
-      });
-    });
+  it('should load an active in-progress draft and not create another', async () => {
+    const claim = new Claim();
+    claim.draftClaimCreatedAt = new Date();
+    claim.draftClaimCacheTtlDays = 30;
+    mockGetDraftClaim.mockResolvedValue(createMockManagerResult(claim));
 
-    afterEach(() => {
-      renderSpy.mockRestore();
-    });
+    await getHandler(req as AppRequest, res as unknown as Response, next);
 
-    it('should return claim tasklist page with existing draft claim', async () => {
-      const claim = new Claim();
-      claim.draftClaimCreatedAt = new Date();
-      claim.draftClaimCacheTtlDays = 30;
-      (getCaseDataFromStore as jest.Mock).mockResolvedValue(claim);
-      await request(app)
-        .get(CLAIMANT_TASK_LIST_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.body.view).toBe('features/claim/task-list');
-          expect(res.body.options.pageTitle).toBe('PAGES.CLAIM_TASK_LIST.PAGE_TITLE');
-          expect(res.body.options.draftClaimDeletionDate).toBeDefined();
-        });
-      expect(createDraftClaimSpy).not.toBeCalled();
-    });
+    expect(mockGetDraftClaim).toHaveBeenCalledWith(req);
+    expect(mockCreateOrLoadDraft).not.toHaveBeenCalled();
+    expect(createDashboardSpy).not.toHaveBeenCalled();
+    expect(req.session.draftId).toBe('draft-123');
+    expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+      pageTitle: 'PAGES.CLAIM_TASK_LIST.PAGE_TITLE',
+      draftClaimDeletionDate: expect.anything(),
+    }));
+    expect(next).not.toHaveBeenCalled();
+  });
 
-    it('should create a new draft claim after completing eligibility', async () => {
-      app.request.cookies = {eligibilityCompleted: true};
-      const emptyClaim = new Claim();
-      const draftClaim = new Claim();
-      draftClaim.draftClaimCreatedAt = new Date();
-      draftClaim.draftClaimCacheTtlDays = 30;
-      (getCaseDataFromStore as jest.Mock)
-        .mockResolvedValueOnce(emptyClaim)
-        .mockResolvedValueOnce(draftClaim);
-      await request(app)
-        .get(CLAIMANT_TASK_LIST_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.body.view).toBe('features/claim/task-list');
-          expect(res.body.options.pageTitle).toBe('PAGES.CLAIM_TASK_LIST.PAGE_TITLE');
-          expect(res.body.options.draftClaimDeletionDate).toBeDefined();
-        });
-      expect(createDraftClaimSpy).toBeCalled();
-    });
+  it('should create a new draft claim when the store has no draft', async () => {
+    const newClaim = new Claim();
+    newClaim.draftClaimCreatedAt = new Date();
+    newClaim.draftClaimCacheTtlDays = 30;
+    mockGetDraftClaim.mockResolvedValue(null);
+    mockCreateOrLoadDraft.mockResolvedValue(createMockManagerResult(newClaim, true));
 
-    it('should return http 500 when has error in the get method', async () => {
-      (getCaseDataFromStore as jest.Mock).mockRejectedValue(new Error('error'));
-      await request(app)
-        .get(CLAIMANT_TASK_LIST_URL)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.body.view).toBe('error');
-        });
-    });
+    await getHandler(req as AppRequest, res as unknown as Response, next);
+
+    expect(mockCreateOrLoadDraft).toHaveBeenCalled();
+    expect(createDashboardSpy).toHaveBeenCalled();
+    expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+      pageTitle: 'PAGES.CLAIM_TASK_LIST.PAGE_TITLE',
+    }));
+  });
+
+  it('should create a new draft when the draft in the store has expired', async () => {
+    const newClaim = new Claim();
+    newClaim.draftClaimCreatedAt = new Date();
+    newClaim.draftClaimCacheTtlDays = 30;
+    mockGetDraftClaim.mockResolvedValue(null);
+    mockCreateOrLoadDraft.mockResolvedValue(createMockManagerResult(newClaim, true));
+
+    await getHandler(req as AppRequest, res as unknown as Response, next);
+
+    expect(mockGetDraftClaim).toHaveBeenCalledWith(req);
+    expect(mockCreateOrLoadDraft).toHaveBeenCalledWith(req);
+    expect(createDashboardSpy).toHaveBeenCalled();
+    expect(req.session.draftId).toBe('draft-123');
+    expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+      pageTitle: 'PAGES.CLAIM_TASK_LIST.PAGE_TITLE',
+    }));
+    expect(next).not.toHaveBeenCalled();
+  });
+
+  it('should create a new draft when the active draft has already been submitted', async () => {
+    const submittedClaim = new Claim();
+    submittedClaim.id = '1790606730013600';
+    submittedClaim.draftClaimCreatedAt = new Date();
+    const newClaim = new Claim();
+    newClaim.draftClaimCreatedAt = new Date();
+    newClaim.draftClaimCacheTtlDays = 30;
+    mockGetDraftClaim.mockResolvedValue(createMockManagerResult(submittedClaim));
+    mockCreateOrLoadDraft.mockResolvedValue(createMockManagerResult(newClaim, true));
+
+    await getHandler(req as AppRequest, res as unknown as Response, next);
+
+    expect(mockCreateOrLoadDraft).toHaveBeenCalledWith(req);
+    expect(createDashboardSpy).toHaveBeenCalled();
+    expect(req.session.draftId).toBe('draft-123');
+    expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+      pageTitle: 'PAGES.CLAIM_TASK_LIST.PAGE_TITLE',
+    }));
+  });
+
+  it('should call next when loading the claim fails', async () => {
+    const error = new Error('error');
+    mockGetDraftClaim.mockRejectedValue(error);
+
+    await getHandler(req as AppRequest, res as unknown as Response, next);
+
+    expect(next).toHaveBeenCalledWith(error);
+    expect(res.render).not.toHaveBeenCalled();
   });
 });

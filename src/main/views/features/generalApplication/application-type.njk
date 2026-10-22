@@ -84,6 +84,9 @@
 {% endset %}
 
 {% block nestedContent %}
+          {% if form.hasErrors() %}
+            {{ errorSummary(form.getErrors(), t) }}
+          {% endif %}
           {% if isQMEnabled %}
             <h1 class="govuk-caption-l" id="page-caption">{{ t('PAGES.QM.OPTIONS.CHANGE_CASE.TEXT') }}</h1>
           {% else %}

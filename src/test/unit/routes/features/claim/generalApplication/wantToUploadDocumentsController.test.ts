@@ -55,6 +55,12 @@ describe('General Application - Want to upload documents to support hearing', ()
     jest.spyOn(launchDarkly, 'isGaForLipsEnabled').mockResolvedValue(true);
   });
 
+  beforeEach(() => {
+    mockClaim.generalApplication = new GeneralApplication(new ApplicationType(ApplicationTypeOption.ADJOURN_HEARING));
+    mockGetCaseData.mockResolvedValue(mockClaim);
+    mockSaveCaseData.mockResolvedValue(undefined);
+  });
+
   describe('on GET', () => {
     it('should return want to upload document page', async () => {
       mockGetCaseData.mockImplementation(async () => mockClaim);
@@ -110,6 +116,25 @@ describe('General Application - Want to upload documents to support hearing', ()
         });
     });
 
+    it('should keep index 0 when first application is selected in a multi-application journey', async () => {
+      const claim = new Claim();
+      claim.generalApplication = new GeneralApplication();
+      claim.generalApplication.applicationTypes = [
+        new ApplicationType(ApplicationTypeOption.EXTEND_TIME),
+        new ApplicationType(ApplicationTypeOption.STAY_THE_CLAIM),
+      ];
+      claim.generalApplication.uploadEvidenceForApplication = [];
+      mockGetCaseData.mockImplementation(async () => claim);
+
+      await request(app)
+        .post(`${GA_WANT_TO_UPLOAD_DOCUMENTS_URL}?index=0`)
+        .send({option: YesNo.NO})
+        .expect((res) => {
+          expect(res.status).toBe(302);
+          expect(res.headers.location).toContain(`${GA_HEARING_ARRANGEMENTS_GUIDANCE_URL}?index=0`);
+        });
+    });
+
     it('should show error message if radio button not selected', async () => {
       mockGetCaseData.mockImplementation(async () => mockClaim);
       await request(app)
@@ -135,4 +160,3 @@ describe('General Application - Want to upload documents to support hearing', ()
     });
   });
 });
-

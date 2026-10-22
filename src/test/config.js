@@ -200,6 +200,7 @@ module.exports = {
     rejectAllAlreadyPaid: 'REJECT_ALL_ALREADY_PAID',
     rejectAllDisputeAll: 'REJECT_ALL_DISPUTE_ALL',
     rejectAllDisputeAllWithIndividual: 'REJECT_ALL_DISPUTE_ALL_INDIVIDUAL',
+    rejectAllDisputeAllWithIndividualInvalidMediationDate: 'REJECT_ALL_DISPUTE_ALL_INDIVIDUAL_INVALID_MEDIATION_DATE',
     rejectAllAlreadyPaidNotFullWithIndividual: 'REJECT_ALL_ALREADY_PAID_NOT_FULL_INDIVIDUAL',
     rejectAllAlreadyPaidInFullWithIndividual: 'REJECT_ALL_ALREADY_PAID_IN_FULL_INDIVIDUAL',
     admitAllPayImmediateWithIndividual: 'FULLADMIT_PAY_IMMEDIATELY_INDIVIDUAL',

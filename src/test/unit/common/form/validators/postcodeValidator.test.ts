@@ -1,6 +1,6 @@
 import { isPostcodeOnExceptionList, PostcodeValidator } from 'common/form/validators/postcodeValidator';
-import * as osService from 'modules/ordance-survey-key/ordanceSurveyKeyService';
-import { AddressInfoResponse } from 'common/models/ordanceSurveyKey/ordanceSurveyKey';
+import * as osService from 'modules/ordnance-survey-key/ordnanceSurveyKeyService';
+import { AddressInfoResponse } from 'common/models/ordnanceSurveyKey/ordnanceSurveyKey';
 
 describe('PostcodeValidator', () => {
   let validator: PostcodeValidator;
@@ -98,5 +98,21 @@ describe('PostcodeValidator', () => {
     expect(isPostcodeOnExceptionList('WR38YB')).toBe(true);
     expect(isPostcodeOnExceptionList('LA94DQ')).toBe(true);
     expect(isPostcodeOnExceptionList('la9 4uf')).toBe(true);
+  });
+
+  it.each([
+    'CM1 1JE',
+    'S60 2XR',
+    'SW11 2LN',
+    'B4 6AH',
+    'S1 2HH',
+    'OX12 0SG',
+    'NE3 4QB',
+  ])('should accept postcode %s without an Ordnance Survey lookup', async (postcode) => {
+    const lookupSpy = jest.spyOn(osService, 'lookupByPostcodeAndDataSet');
+
+    expect(await validator.validate(postcode)).toBe(true);
+    expect(await validator.validate(postcode.toLowerCase().replace(/\s/g, ''))).toBe(true);
+    expect(lookupSpy).not.toHaveBeenCalled();
   });
 });
