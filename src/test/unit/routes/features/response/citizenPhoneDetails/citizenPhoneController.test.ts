@@ -9,7 +9,6 @@ import {
   civilClaimResponseMock, mockDraftClaim,
 } from '../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import {t} from 'i18next';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {cloneDeep} from 'lodash';
 import {Claim} from 'models/claim';
