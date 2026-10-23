@@ -6,6 +6,7 @@
 
 [![codecov](https://codecov.io/gh/hmcts/civil-citizen-ui/branch/master/graph/badge.svg)](https://codecov.io/gh/hmcts/civil-citizen-ui)
 
+
 ## Contents
 - [UI Test Documentation](#ui-test-documentation)
 - [API Test Documentation](#api-test-documentation)
