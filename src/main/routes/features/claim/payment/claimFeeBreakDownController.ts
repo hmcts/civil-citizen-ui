@@ -78,7 +78,7 @@ claimFeeBreakDownController.post(CLAIM_FEE_BREAKUP, (async (req: AppRequest, res
       await saveUserId(claimId, FeeType.CLAIMISSUED, req.session.user.id);
       try {
         if (!isUsablePathSegment(paymentRedirectInformation?.paymentReference)) {
-          res.redirect(paymentRedirectInformation?.nextUrl);
+          redirectToPaymentOrFeeBreakup(res, claimId, paymentRedirectInformation?.nextUrl);
           return;
         }
         const paymentStatus = await getFeePaymentStatus(claimId, paymentRedirectInformation.paymentReference, FeeType.CLAIMISSUED, req);
@@ -94,14 +94,14 @@ claimFeeBreakDownController.post(CLAIM_FEE_BREAKUP, (async (req: AppRequest, res
           } else {
             claim.claimDetails.claimFeePayment = paymentRedirectInformation;
             await saveClaimIssuePaymentClaim(req, claim, draftId);
-            res.redirect(paymentRedirectInformation?.nextUrl);
+            redirectToPaymentOrFeeBreakup(res, claimId, paymentRedirectInformation?.nextUrl);
           }
         } else {
-          res.redirect(paymentRedirectInformation?.nextUrl);
+          redirectToPaymentOrFeeBreakup(res, claimId, paymentRedirectInformation?.nextUrl);
         }
       } catch (err: unknown) {
         logger.info(`Error retrieving payment status for claim id ${claimId}`);
-        res.redirect(paymentRedirectInformation?.nextUrl);
+        redirectToPaymentOrFeeBreakup(res, claimId, paymentRedirectInformation?.nextUrl);
       }
     }
   } catch (error) {
@@ -109,6 +109,14 @@ claimFeeBreakDownController.post(CLAIM_FEE_BREAKUP, (async (req: AppRequest, res
     next(error);
   }
 }) as RequestHandler);
+
+// CCD restores the payment reference/status without a provider URL; never redirect to a missing value.
+function redirectToPaymentOrFeeBreakup(res: Response, claimId: string, nextUrl?: string): void {
+  const redirectUrl = typeof nextUrl === 'string' && nextUrl.trim().length > 0
+    ? nextUrl
+    : constructResponseUrlWithIdParams(claimId, CLAIM_FEE_BREAKUP);
+  res.redirect(redirectUrl);
+}
 
 async function getRedirectInformation(req: AppRequest) {
   try {
