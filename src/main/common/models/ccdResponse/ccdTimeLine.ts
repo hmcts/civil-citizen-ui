@@ -7,6 +7,9 @@ export interface CCDTimeLineOfEvent {
 
 export interface CCDTimeLineOfEventDetail {
   timelineDate?: string;
+  timelineDay?: string;
+  timelineMonth?: string;
+  timelineYear?: string;
   timelineDescription?: string;
 }
 
@@ -14,11 +17,13 @@ export const toCCDTimelineEvent = (timeline: ClaimantTimeline): CCDTimeLineOfEve
   if (!timeline?.rows) return undefined;
   const ccdTimelines: CCDTimeLineOfEvent[] = [];
   timeline.rows.forEach((row, index) => {
-    const date=row.date.toString().substring(0,10);
     const ccdTimeLine: CCDTimeLineOfEvent = {
       id: index.toString(),
       value: {
-        timelineDate: date,
+        timelineDate: row.date ? row.date.toString().substring(0,10) : undefined,
+        timelineDay: `${row.day}`,
+        timelineMonth: `${row.month}`,
+        timelineYear: `${row.year}`,
         timelineDescription: row.description,
       },
     };

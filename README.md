@@ -163,7 +163,6 @@ PR previews use the optimised deployment by default. `pr-values:noWiremock` rest
 
 `pr-values:skip-functional-tests` can be used for changes that do not impact the functionality of the service and therefore do not require the functional test stage to run in the Jenkins pipeline.
 
-
 ```bash
 $ yarn test:crossbrowser
 ```
