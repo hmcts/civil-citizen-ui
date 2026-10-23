@@ -201,7 +201,9 @@ describe('Breathing Space Start Date Controller', () => {
       .expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain('Start date must include a year');
-        expect(res.text).toContain('href="#startDate-year"');
+        expect(res.text).toContain('href="#year"');
+        expect(res.text).toContain('id="year"');
+        expect(res.text.match(/govuk-error-summary__title/g)).toHaveLength(1);
         expect(breathingSpaceEntryService.saveBreathingSpaceStartDate).not.toHaveBeenCalled();
       });
   });
@@ -218,7 +220,8 @@ describe('Breathing Space Start Date Controller', () => {
       .expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain('Start date must include a month');
-        expect(res.text).toContain('href="#startDate-month"');
+        expect(res.text).toContain('href="#month"');
+        expect(res.text).toContain('id="month"');
         expect(breathingSpaceEntryService.saveBreathingSpaceStartDate).not.toHaveBeenCalled();
       });
   });

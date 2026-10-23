@@ -17,13 +17,13 @@
     {% set summaryErrors = [] %}
     {% for error in form.getAllErrors() %}
       {% if error.property == 'date' %}
-        {% set summaryErrors = summaryErrors.concat([{text: error.text, href: '#date-day'}]) %}
+        {% set summaryErrors = summaryErrors.concat([{text: error.text, href: '#day'}]) %}
       {% elseif error.property == 'day' %}
-        {% set summaryErrors = summaryErrors.concat([{text: error.text, href: '#date-day'}]) %}
+        {% set summaryErrors = summaryErrors.concat([{text: error.text, href: '#day'}]) %}
       {% elseif error.property == 'month' %}
-        {% set summaryErrors = summaryErrors.concat([{text: error.text, href: '#date-month'}]) %}
+        {% set summaryErrors = summaryErrors.concat([{text: error.text, href: '#month'}]) %}
       {% elseif error.property == 'year' %}
-        {% set summaryErrors = summaryErrors.concat([{text: error.text, href: '#date-year'}]) %}
+        {% set summaryErrors = summaryErrors.concat([{text: error.text, href: '#year'}]) %}
       {% else %}
         {% set summaryErrors = summaryErrors.concat([error]) %}
       {% endif %}
@@ -42,7 +42,7 @@
 
         {% set dateErrorMessages %}
           {% for error in summaryErrors %}
-            {% if error.href in ['#date-day', '#date-month', '#date-year'] %}
+            {% if error.href in ['#day', '#month', '#year'] %}
               <span class="govuk-error-message">{{ t(error.text) }}</span>
             {% endif %}
           {% endfor %}

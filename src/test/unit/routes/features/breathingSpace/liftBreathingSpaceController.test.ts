@@ -181,8 +181,10 @@ describe('Lift Breathing Space Controller', () => {
           expect(res.text).toContain('End date must include a day');
           expect(res.text).toContain('End date must include a month');
           expect(res.text).toContain('End date must include a year');
-          expect(res.text).toContain('href="#date-month"');
-          expect(res.text).toContain('href="#date-year"');
+          expect(res.text).toContain('href="#month"');
+          expect(res.text).toContain('href="#year"');
+          expect(res.text).toContain('id="month"');
+          expect(res.text).toContain('id="year"');
         });
     });
 
