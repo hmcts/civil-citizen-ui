@@ -270,7 +270,7 @@ const candidateCatalog = (): PreviewPageGroup[] => [
       page('Upload confirmation', urls.MEDIATION_UPLOAD_DOCUMENTS_CONFIRMATION, def),
       page('Cancel document upload', urls.MEDIATION_UPLOAD_DOCUMENTS_CANCEL, def),
       page('View mediation documents', urls.VIEW_MEDIATION_DOCUMENTS, def),
-      page('View mediation settlement agreement', urls.VIEW_MEDIATION_SETTLEMENT_AGREEMENT_DOCUMENT, def, 'Seeded mediationAgreement document on local service stubs; mapper returns an empty table when CCD omits the file.'),
+      page('View mediation settlement agreement', urls.VIEW_MEDIATION_SETTLEMENT_AGREEMENT_DOCUMENT, def, 'Requires the mediation agreement document supplied by the local service stubs.'),
     ],
   },
   {
