@@ -23,9 +23,9 @@ import {AppRequest} from 'models/AppRequest';
 const liftBreathingSpaceController = Router();
 const liftBreathingSpaceViewPath = 'features/breathingSpace/lift-breathing-space';
 
-const addDateError = (errors: ValidationError[], messageKey: string): void => {
+const addDateError = (errors: ValidationError[], property: string, messageKey: string): void => {
   const error = new ValidationError();
-  error.property = 'date';
+  error.property = property;
   error.constraints = {[messageKey]: messageKey};
   errors.push(error);
 };
@@ -45,13 +45,13 @@ const applyMissingEndDateRule = (form: LiftBreathingSpaceForm, errors: Validatio
     return true;
   }
   if (form.day === undefined) {
-    addDateError(errors, 'ERRORS.VALID_LIFT_END_DATE_DAY');
+    addDateError(errors, 'day', 'ERRORS.VALID_LIFT_END_DATE_DAY');
   }
   if (form.month === undefined) {
-    addDateError(errors, 'ERRORS.VALID_LIFT_END_DATE_MONTH');
+    addDateError(errors, 'month', 'ERRORS.VALID_LIFT_END_DATE_MONTH');
   }
   if (form.year === undefined) {
-    addDateError(errors, 'ERRORS.VALID_LIFT_END_DATE_YEAR');
+    addDateError(errors, 'year', 'ERRORS.VALID_LIFT_END_DATE_YEAR');
   }
   return false;
 };

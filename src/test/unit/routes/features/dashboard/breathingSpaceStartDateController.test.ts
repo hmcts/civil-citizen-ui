@@ -201,6 +201,24 @@ describe('Breathing Space Start Date Controller', () => {
       .expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain('Start date must include a year');
+        expect(res.text).toContain('href="#startDate-year"');
+        expect(breathingSpaceEntryService.saveBreathingSpaceStartDate).not.toHaveBeenCalled();
+      });
+  });
+
+  it('should link missing month errors to the month input', async () => {
+    (getClaimById as jest.Mock).mockResolvedValueOnce(claimWithStandardType());
+    await request(app)
+      .post(BREATHING_SPACE_START_DATE_URL)
+      .send({
+        day: '3',
+        month: '',
+        year: '2026',
+      })
+      .expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain('Start date must include a month');
+        expect(res.text).toContain('href="#startDate-month"');
         expect(breathingSpaceEntryService.saveBreathingSpaceStartDate).not.toHaveBeenCalled();
       });
   });

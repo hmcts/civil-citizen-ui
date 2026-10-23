@@ -12,11 +12,23 @@
 
 {% block nestedContent %}
   {% set errors = form.getAllErrors() %}
+  {% set summaryErrors = [] %}
+  {% for error in errors %}
+    {% if error.property == 'day' %}
+      {% set summaryErrors = summaryErrors.concat([{text: error.text, href: '#startDate-day'}]) %}
+    {% elseif error.property == 'month' %}
+      {% set summaryErrors = summaryErrors.concat([{text: error.text, href: '#startDate-month'}]) %}
+    {% elseif error.property == 'year' %}
+      {% set summaryErrors = summaryErrors.concat([{text: error.text, href: '#startDate-year'}]) %}
+    {% else %}
+      {% set summaryErrors = summaryErrors.concat([error]) %}
+    {% endif %}
+  {% endfor %}
   {% set hasDateError = form.hasFieldError('date') or form.hasFieldError('day') or form.hasFieldError('month') or form.hasFieldError('year') %}
   {% set dateError = form.errorFor('date') or form.errorFor('day') or form.errorFor('month') or form.errorFor('year') %}
 
   {% if form.hasErrors() %}
-    {{ errorSummary(errors, t) }}
+    {{ errorSummary(summaryErrors, t) }}
   {% endif %}
 
   {{ headingWithCaption(t, 'PAGES.BREATHING_SPACE_ENTRY.PAGE_TITLE', 'PAGES.BREATHING_SPACE_ENTRY.START_DATE.HEADING') }}
