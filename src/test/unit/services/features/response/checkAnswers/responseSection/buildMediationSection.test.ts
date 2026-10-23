@@ -17,6 +17,7 @@ import {
 } from 'routes/urls';
 import {getListOfUnavailableDate} from 'services/features/directionsQuestionnaire/hearing/unavailableDatesCalculation';
 import {Claim} from 'models/claim';
+import {CcdCyaFieldId} from 'client/common/error/callbackError';
 
 jest.mock('../../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
@@ -184,9 +185,13 @@ const getMediationSection = (claim: Claim, claimId: string, lang: string, isClai
   t(`COMMON.VARIATION.${phoneOption.toUpperCase()}`, {lng: getLng(lang)}),
   constructResponseUrlWithIdParams(claimId, MEDIATION_PHONE_CONFIRMATION_URL), changeLabel(lang)));
   if (phoneOption === YesNo.NO) {
-    mediationSection.summaryList.rows.push(summaryRow(t('COMMON.CONTACT_NUMBER', {lng: getLng(lang)}),
+    const phoneRow = summaryRow(t('COMMON.CONTACT_NUMBER', {lng: getLng(lang)}),
       isClaimantResponse ? claim.claimantResponse.mediationCarm.alternativeMediationTelephone.alternativeTelephone : claim.mediationCarm.alternativeMediationTelephone.alternativeTelephone,
-      constructResponseUrlWithIdParams(claimId, MEDIATION_ALTERNATIVE_PHONE_URL), changeLabel(lang)));
+      constructResponseUrlWithIdParams(claimId, MEDIATION_ALTERNATIVE_PHONE_URL), changeLabel(lang));
+    phoneRow.ccdFieldId = isClaimantResponse
+      ? CcdCyaFieldId.APPLICANT1_MEDIATION_TELEPHONE
+      : CcdCyaFieldId.RESPONDENT1_MEDIATION_TELEPHONE;
+    mediationSection.summaryList.rows.push(phoneRow);
   }
   //EMAIL SECTION
   const emailOption = isClaimantResponse ? claim.claimantResponse.mediationCarm.isMediationEmailCorrect.option : claim.mediationCarm.isMediationEmailCorrect.option;
@@ -197,9 +202,13 @@ const getMediationSection = (claim: Claim, claimId: string, lang: string, isClai
   t(`COMMON.VARIATION.${emailOption.toUpperCase()}`, {lng: getLng(lang)}),
   constructResponseUrlWithIdParams(claimId, MEDIATION_EMAIL_CONFIRMATION_URL), changeLabel(lang)));
   if (emailOption === YesNo.NO) {
-    mediationSection.summaryList.rows.push(summaryRow(t('COMMON.CONTACT_EMAIL', {lng: getLng(lang)}),
+    const emailRow = summaryRow(t('COMMON.CONTACT_EMAIL', {lng: getLng(lang)}),
       isClaimantResponse ? claim.claimantResponse.mediationCarm.alternativeMediationEmail.alternativeEmailAddress : claim.mediationCarm.alternativeMediationEmail.alternativeEmailAddress,
-      constructResponseUrlWithIdParams(claimId, MEDIATION_ALTERNATIVE_EMAIL_URL), changeLabel(lang)));
+      constructResponseUrlWithIdParams(claimId, MEDIATION_ALTERNATIVE_EMAIL_URL), changeLabel(lang));
+    emailRow.ccdFieldId = isClaimantResponse
+      ? CcdCyaFieldId.APPLICANT1_MEDIATION_EMAIL
+      : CcdCyaFieldId.RESPONDENT1_MEDIATION_EMAIL;
+    mediationSection.summaryList.rows.push(emailRow);
   }
   //UNAVAILABILITY SECTION
   const mediationCarm = isClaimantResponse ? claim.claimantResponse.mediationCarm : claim.mediationCarm;
