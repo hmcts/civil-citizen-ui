@@ -10,10 +10,10 @@
       "CHOOSE_FILE": "Dewis ffeil",
       "DROP_INSTRUCTION": "neu gollwng ffeil",
       "NO_FILE_CHOSEN": "Dim ffeil wedi’i dewis",
-      "FILES_CHOSEN_ONE": "%{count} file chosen",
-      "FILES_CHOSEN_OTHER": "%{count} files chosen",
-      "ENTERED_DROP_ZONE": "Entered drop zone",
-      "LEFT_DROP_ZONE": "Left drop zone"
+      "FILES_CHOSEN_ONE": "%{count} ffeil wedi’i dewis",
+      "FILES_CHOSEN_OTHER": "%{count} ffeiliau wedi’u dewis",
+      "ENTERED_DROP_ZONE": "Wedi dod i mewn i’r parth gollwng",
+      "LEFT_DROP_ZONE": "Wedi gadael y parth gollwng"
     },
     "VIEW_DOCUMENTS": "Gweld y dogfennau",
     "DATE_UPLOADED": "Dyddiad uwchlwytho [{{ uploadedDate }}]",
