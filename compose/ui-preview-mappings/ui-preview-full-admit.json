@@ -1,0 +1,95 @@
+{
+  "mappings": [
+    {
+      "name": "ui-preview-full-admit-case-details",
+      "priority": 1,
+      "request": {
+        "method": "GET",
+        "urlPath": "/cases/1645882162449601"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "jsonBody": {
+          "id": "1645882162449601",
+          "state": "AWAITING_APPLICANT_INTENTION",
+          "last_modified": "2022-03-01T13:29:24.971Z",
+          "case_data": {
+            "legacyCaseReference": "000MC601",
+            "totalClaimAmount": 1000,
+            "ccdState": "AWAITING_APPLICANT_INTENTION",
+            "submittedDate": "2022-05-23T17:02:02.38407",
+            "claimIssuedDate": "2022-03-01T13:29:24.971Z",
+            "responseClaimTrack": "SMALL_CLAIM",
+            "respondent1ClaimResponseTypeForSpec": "FULL_ADMISSION",
+            "defenceAdmitPartPaymentTimeRouteRequired": "SUGGESTION_OF_REPAYMENT_PLAN",
+            "respondent1RepaymentPlan": {
+              "paymentAmount": 10000,
+              "repaymentFrequency": "ONCE_ONE_MONTH",
+              "firstRepaymentDate": "2026-09-18T00:00:00.000Z"
+            },
+            "claimFee": {
+              "code": "FEE0204",
+              "version": "4",
+              "calculatedAmountInPence": "7000"
+            },
+            "applicant1": {
+              "type": "INDIVIDUAL",
+              "partyName": "Jane Claimant",
+              "individualTitle": "Ms",
+              "individualFirstName": "Jane",
+              "individualLastName": "Claimant",
+              "partyEmail": "claimant@example.com",
+              "primaryAddress": {
+                "AddressLine1": "1 Claimant Road",
+                "PostTown": "London",
+                "PostCode": "SW1A 1AA"
+              }
+            },
+            "respondent1": {
+              "type": "INDIVIDUAL",
+              "partyName": "John Defendant",
+              "individualTitle": "Mr",
+              "individualFirstName": "John",
+              "individualLastName": "Defendant",
+              "partyEmail": "defendant@example.com",
+              "primaryAddress": {
+                "AddressLine1": "Defendant House",
+                "AddressLine2": "21",
+                "AddressLine3": "Church Road",
+                "PostTown": "Berkshire",
+                "PostCode": "RG4 7AD"
+              }
+            },
+            "respondent1ResponseDeadline": "2026-12-31T16:00:00.000Z",
+            "respondent1ResponseDate": "2022-09-25T13:46:07.287428",
+            "applicant1ResponseDate": "2026-08-18T10:00:00.000Z",
+            "applicant1AcceptFullAdmitPaymentPlanSpec": "Yes",
+            "applicant1LiPResponse": {
+              "applicant1ChoosesHowToProceed": "SIGN_A_SETTLEMENT_AGREEMENT"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "ui-preview-full-admit-user-case-roles",
+      "priority": 1,
+      "request": {
+        "method": "GET",
+        "urlPath": "/cases/1645882162449601/userCaseRoles"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "jsonBody": [
+          "[CLAIMANT]"
+        ]
+      }
+    }
+  ]
+}

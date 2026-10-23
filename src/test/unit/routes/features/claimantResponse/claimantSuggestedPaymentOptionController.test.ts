@@ -58,7 +58,8 @@ describe('Claimant suggested Payment Option Controller', () => {
   });
 
   describe('on Post', () => {
-    beforeAll(() => {
+    beforeEach(() => {
+      // Deferred retries run after the error case has installed mockRedisFailure.
       app.locals.draftStoreClient = mockCivilClaim;
     });
 

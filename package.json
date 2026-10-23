@@ -67,7 +67,12 @@
     "test:pact:run-and-publish": "yarn test:pact && yarn pact:validate && yarn pact:publish",
     "postinstall": "./bin/pull-latest-civil-shared.sh || true",
     "deps:check": "node ./bin/check-dependency-pins.mjs",
-    "deps:audit": "node ./bin/check-yarn-audit.mjs"
+    "deps:audit": "node ./bin/check-yarn-audit.mjs",
+    "start:ui-preview": "bash bin/ui-preview.sh up",
+    "start:ui-preview:down": "bash bin/ui-preview.sh down",
+    "start:ui-preview:logs": "bash bin/ui-preview.sh logs",
+    "start:ui-preview:reset": "bash bin/ui-preview.sh reset",
+    "ui-preview:validate": "node bin/ui-preview-mappings.cjs"
   },
   "dependencies": {
     "@dr.pogodin/csurf": "1.18.1",
