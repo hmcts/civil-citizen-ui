@@ -29,7 +29,11 @@ const hwfPropertyName = 'applyHelpWithFees';
 async function renderView(res: Response, req: AppRequest | Request, form: GenericForm<GenericYesNo>, claimId: string, lng: string) {
   let paymentSyncError = false;
   if (!form) {
-    const gaHwFDetails = await getDraftGAHWFDetails(generateRedisKeyForGA(<AppRequest>req));
+    // The initial fee-selection route has no application ID until the GA is synced.
+    // Do not look up a shared, invalid "undefined + userId" draft at that stage.
+    const gaHwFDetails = req.params.appId === undefined
+      ? undefined
+      : await getDraftGAHWFDetails(generateRedisKeyForGA(<AppRequest>req));
     const claim: Claim = await getClaimById(claimId, req, true);
     form = new GenericForm(new GenericYesNo(gaHwFDetails?.applyHelpWithFees?.option, t('ERRORS.GENERAL_APPLICATION.PAY_APPLICATION_FEE', { lng })));
     if (claim.paymentSyncError) {
