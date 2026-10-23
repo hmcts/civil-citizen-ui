@@ -131,6 +131,7 @@ The legacy fixed-ID E2E suite under `src/test/e2eTests` has been removed. Those 
 `preview` or `demo`, so routine commands discovered no-op scenarios in other environments. Use the functional
 suite instead:
 
+
 ```bash
 $ yarn test:fullfunctional
 ```
