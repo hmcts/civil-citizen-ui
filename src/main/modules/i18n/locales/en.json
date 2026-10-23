@@ -560,6 +560,24 @@
     "TITLE_WITH_DEFENDANT": "Defendant documents to be considered"
   },
   "PAGES": {
+    "CANCEL_UNISSUED_CLAIM": {
+      "BUTTON": "Cancel unissued claim",
+      "CHARACTERS_AT_LIMIT": "You have 0 characters remaining",
+      "CHARACTERS_OVER_LIMIT_ONE": "You have %{count} character too many",
+      "CHARACTERS_OVER_LIMIT_OTHER": "You have %{count} characters too many",
+      "CHARACTERS_UNDER_LIMIT_ONE": "You have %{count} character remaining",
+      "CHARACTERS_UNDER_LIMIT_OTHER": "You have %{count} characters remaining",
+      "CONFIRMATION_PAGE_TITLE": "Claim cancelled",
+      "CONFIRMATION_TITLE": "This claim is now cancelled",
+      "NO_FURTHER_ACTION": "No further action can be taken on this case as this is now cancelled.",
+      "PAGE_TITLE": "Cancel unissued claim",
+      "REASON_HINT": "You can enter up to %{count} characters",
+      "REASON_LABEL": "Explain why you are cancelling the claim (optional)",
+      "SURVEY_LINK": "What did you think of this service? (opens in a new tab)",
+      "START_NEW_CLAIM": "If you want to start a new claim you can do this from your login portal/page.",
+      "TITLE": "Reasons for cancelling the claim",
+      "WARNING": "If you cancel the claim it will not be issued. It will not count as court proceedings. You will no longer be able to take any action on it and it will be eventually removed from the system."
+    },
     "QM": {
       "CONFIRMATION_PAGE": {
         "TITLE" : "Message sent",
@@ -2647,6 +2665,7 @@
       "PAGE_TITLE": "Claims made by or against you",
       "PREVIOUS": "Previous",
       "STATUS_CLAIMANT": {
+        "UNISSUED_CLAIM_CANCELLED": "Claim is unissued and cancelled",
         "ACCEPTED_PARTIAL_ADMISSION": "You have accepted the defendant’s part admission. They said they would pay immediately.",
         "ADMIT_PAY_IMMEDIATELY_CLAIMANT": "Wait for the defendant to pay you.",
         "AWAITING_JUDGMENT": "Awaiting case outcome.",
@@ -2760,6 +2779,7 @@
         "CASE_DISCONTINUED": "This claim is discontinued."
       },
       "SUPPORT_LINKS": {
+        "CANCEL_UNISSUED_CLAIM": "Cancel unissued claim",
         "APPLYING_TO_COURT_AS_A_CREDITOR":"Applying to the court as a creditor of a debt in breathing space",
         "CONTACT_COURT": "Contact the court to request a change to my case (make an application)",
         "CONTACT_APPLY_COURT": "Contact or apply to the court",
@@ -5501,6 +5521,8 @@
     "SUPPORT_LINKS": "Footer support links"
   },
   "ERRORS": {
+    "CANCEL_UNISSUED_CLAIM_REASON_INVALID_CHARACTERS": "Enter alphanumerical characters or standard punctuation marks only",
+    "CANCEL_UNISSUED_CLAIM_REASON_TOO_LONG": "Explain why you are cancelling the claim must be 200 characters or less",
     "QUERY_MANAGEMENT_YOU_MUST_SELECT": "You must select what you want to do before you can continue.",
     "QUERY_MANAGEMENT_YOU_SELECT_UPDATE_YOU_WANT": "You must select what update you want to get from the court.",
     "QUERY_MANAGEMENT_YOU_MUST_SELECT_SEND_DOCUMENTS": "You must select which documents you want to send.",
