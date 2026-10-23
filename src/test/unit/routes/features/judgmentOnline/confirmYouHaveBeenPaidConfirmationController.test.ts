@@ -1,39 +1,40 @@
-import request from 'supertest';
-import {app} from '../../../../../main/app';
-import nock from 'nock';
-import config from 'config';
-import {
-  CONFIRM_YOU_HAVE_BEEN_PAID_CONFIRMATION_URL,
-} from 'routes/urls';
-import {TestMessages} from '../../../../utils/errorMessageTestConstants';
-import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {Response} from 'express';
+import confirmYouHaveBeenPaidConfirmationController from 'routes/features/judgmentOnline/confirmYouHaveBeenPaidConfirmationController';
+import {CONFIRM_YOU_HAVE_BEEN_PAID_CONFIRMATION_URL, DASHBOARD_CLAIMANT_URL} from 'routes/urls';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {AppRequest} from 'models/AppRequest';
+import {createMockResponse, getRouteHandler} from '../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../main/modules/oidc');
+const claimId = '12345';
+const viewPath = 'features/judgmentOnline/judgment-online-confirmation-page.njk';
 
-const CONTROLLER_URL = CONFIRM_YOU_HAVE_BEEN_PAID_CONFIRMATION_URL;
+const invoke = async () => {
+  const res = createMockResponse();
+  await getRouteHandler(confirmYouHaveBeenPaidConfirmationController, 'get', CONFIRM_YOU_HAVE_BEEN_PAID_CONFIRMATION_URL)(
+    {
+      params: {id: claimId},
+      body: {},
+      query: {},
+      cookies: {},
+    } as unknown as AppRequest,
+    res as unknown as Response,
+    jest.fn(),
+  );
+  return {res};
+};
+
 describe('Confirm you have been paid confirmation controller', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
-
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
-  });
-
   describe('on GET', () => {
-    it('should return ConfirmYouHaveBeenPaidConfirmation page', async () => {
-      await request(app)
-        .get(CONTROLLER_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.CONFIRM_YOU_HAVE_BEEN_PAID_CONFIRMATION_PAGE_TITLE);
-          expect(res.text).toContain(TestMessages.CONFIRM_YOU_HAVE_BEEN_PAID_CONFIRMATION_YOU_CONFIRMED);
-          expect(res.text).toContain(TestMessages.CONFIRM_YOU_HAVE_BEEN_PAID_CONFIRMATION_WHAT_NEXT);
-          expect(res.text).toContain(TestMessages.CONFIRM_YOU_HAVE_BEEN_PAID_CONFIRMATION_NO_FURTHER);
-          expect(res.text).toContain(TestMessages.CONFIRM_YOU_HAVE_BEEN_PAID_CONFIRMATION_CLOSE_AND_RETURN);
-        });
+    it('should render the confirmation page', async () => {
+      const {res} = await invoke();
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        claimId,
+        pageTitle: 'PAGES.CONFIRM_YOU_HAVE_BEEN_PAID_CONFIRM.PAGE_TITLE',
+        panel: {titleText: 'PAGES.CONFIRM_YOU_HAVE_BEEN_PAID_CONFIRM.YOU_CONFIRMED'},
+        dashboardUrl: constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL),
+        content: expect.any(Array),
+      }));
     });
   });
 });
