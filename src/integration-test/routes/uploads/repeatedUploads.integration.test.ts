@@ -413,9 +413,36 @@ describe.each([false, true])('check-and-send recovery after dashboard refresh (c
     expect(deleteDraftClaimFromStore).not.toHaveBeenCalled();
     expect(writes).toHaveLength(writesBefore);
     expect(JSON.stringify(cached)).toBe(before);
+
+    // A copied upload URL has no selected categories after that refresh. Its
+    // Continue POST parses fifteen empty collections; existence is not evidence.
+    const emptyUpload = await request(app).get(uploads).expect(200);
+    const emptyDom = new JSDOM(emptyUpload.text);
+    try {
+      expect(emptyDom.window.document.querySelectorAll('input[type="file"]')).toHaveLength(0);
+    } finally {emptyDom.window.close();}
+    await request(app).post(uploads).type('form')
+      .send(new URLSearchParams(fields(emptyUpload.text)).toString()).expect(302).expect('Location', check);
+    expect(cached.caseProgression[ownKey]).toEqual(getUploadDocumentsForm({body: {}} as Request));
+    const emptyDraft = JSON.stringify(cached);
+    const emptyWrites = writes.length;
+    await request(app).get(check).expect(302).expect('Location', selection);
+    await request(app).post(check).expect(302).expect('Location', selection);
+    await request(app).post(check).type('form').send({}).expect(302).expect('Location', selection);
+    await request(app).post(check).type('form').send({signed: 'true'}).expect(302).expect('Location', selection);
+    expect(client.submitEvent).not.toHaveBeenCalled();
+    expect(client.updateTaskStatus).not.toHaveBeenCalled();
+    expect(deleteDraftClaimFromStore).not.toHaveBeenCalled();
+    expect(writes).toHaveLength(emptyWrites);
+    expect(emptyWrites).toBe(writesBefore + 1);
+    expect(JSON.stringify(cached)).toBe(emptyDraft);
+    const withoutWorkingForm = JSON.parse(emptyDraft);
+    delete withoutWorkingForm.caseProgression[ownKey];
+    expect(withoutWorkingForm).toEqual(JSON.parse(before));
+
     // Recovery reaches the existing actionable category-selection page.
     const recovered = await request(app).get(selection + '?lang=' + language).expect(200);
     expect(fields(recovered.text).some(([name]) => name === 'list')).toBe(true);
-    expect(JSON.stringify(cached)).toBe(before);
+    expect(JSON.stringify(cached)).toBe(emptyDraft);
   });
 });

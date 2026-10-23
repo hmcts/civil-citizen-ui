@@ -23,12 +23,20 @@ export interface CaptureServer {
 // Serve captures with the same built assets used by the application. A missing
 // build must fail setup rather than silently test an unstyled page.
 export async function startCaptureServer(urls: string[], options: {port?: number; publicDirectory?: string} = {}): Promise<CaptureServer> {
+  const template = await readFile(path.resolve(__dirname, '../../../node_modules/govuk-frontend/dist/govuk/template.njk'), 'utf8');
+  const bootstrap = template.match(/<script\b[^>]*>(document\.body\.className[\s\S]*?)<\/script>/)?.[1];
+  if (!bootstrap) throw new Error('Accessibility requires the GOV.UK template bootstrap');
   const app = express();
   app.use(express.static(options.publicDirectory ?? path.resolve(__dirname, '../../main/public')));
   for (const url of urls) {
     app.get(captureUrl(url), async (_req, res, next) => {
       try {
-        const html = await readFile(translateUrlToFilePath(captureUrl(url)), 'utf8');
+        const captured = await readFile(translateUrlToFilePath(captureUrl(url)), 'utf8');
+        // Historical captures predate the supported-browser marker required by
+        // current components. Use the production template's feature detection,
+        // preserving the captured document and any existing script attributes.
+        const html = captured.replace(/(<script\b[^>]*>)\s*document\.body\.className[\s\S]*?<\/script>/i,
+          (_script, opening: string) => `${opening}${bootstrap}</script>`);
         // The real i18n middleware supplies this cookie. Static captures must
         // supply it too when exercising the language script in the built bundle.
         const language = html.match(/<html\b[^>]*\blang=["'](en|cy)["']/i)?.[1];

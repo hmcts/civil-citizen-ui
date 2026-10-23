@@ -26,10 +26,15 @@ const documentUploadCheckAnswerController = Router();
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
-// CCD restores submitted evidence, but not the in-progress upload form. A copied
-// check-and-send URL after a cache refresh must restart selection, not submit it.
+// CCD restores submitted evidence, but not the in-progress upload form. Empty
+// parsed collections or unsaved rows must not become an empty evidence event.
 function hasUploadDraft(claim: Claim): boolean {
-  return !!claim.caseProgression?.[claim.isClaimant() ? 'claimantDocuments' : 'defendantDocuments'];
+  const draft = claim.caseProgression?.[claim.isClaimant() ? 'claimantDocuments' : 'defendantDocuments'];
+  const collections = Object.values(draft ?? {}).filter(Array.isArray);
+  return collections.some(rows => rows.length > 0) && collections.every(rows => rows.every(row => {
+    const reference = row?.caseDocument?.documentLink?.document_binary_url;
+    return typeof reference === 'string' && reference.trim().length > 0;
+  }));
 }
 
 function renderView(res: Response, form: GenericForm<DocumentUploadSubmissionForm>, claim: Claim, claimId: string, isClaimant: boolean, lang: string) {

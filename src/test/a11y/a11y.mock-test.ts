@@ -1,8 +1,9 @@
 const {before, after} = require('mocha');
 import * as urls from 'routes/urls';
 import {IGNORED_URLS} from './ignored-urls';
-import {fail} from 'assert';
+import {deepStrictEqual, fail, strictEqual} from 'assert';
 import {CaptureServer, captureUrl, startCaptureServer} from './captureServer';
+import puppeteer from 'puppeteer';
 
 const urlsList = getChunkAtIndex(Object.values(urls).filter(url => !IGNORED_URLS.includes(url)), parseInt(process.env.A11Y_CHUNKS ?? '1'), parseInt(process.env.A11Y_CHUNKS_INDEX ?? '0'));
 const pa11y = require('pa11y');
@@ -35,7 +36,7 @@ function expectNoErrors(messages: PallyIssue[]): void {
 describe('Accessibility', () => {
   let server: CaptureServer;
   before(async () => {
-    server = await startCaptureServer(urlsList, {port: 3000 + parseInt(process.env.A11Y_CHUNKS_INDEX ?? '0')});
+    server = await startCaptureServer([...new Set([...urlsList, urls.CCJ_DEFENDANT_DOB_URL])], {port: 3000 + parseInt(process.env.A11Y_CHUNKS_INDEX ?? '0')});
   });
   after(async () => {
     await server?.close();
@@ -54,6 +55,28 @@ describe('Accessibility', () => {
       args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-gpu'],
     },
   };
+
+  it('initializes GOV.UK radios and preserves values through native conditional interaction', async () => {
+    const browser = await puppeteer.launch(options.chromeLaunchConfig);
+    try {
+      const page = await browser.newPage();
+      await page.goto(server.baseUrl + captureUrl(urls.CCJ_DEFENDANT_DOB_URL), {waitUntil: 'domcontentloaded'});
+      await page.waitForSelector('[data-module="govuk-radios"][data-govuk-radios-init]', {timeout: 5000});
+      strictEqual(await page.$eval('body', body => body.classList.contains('govuk-frontend-supported')), true);
+      const values = await page.$$eval('#conditional-option input', fields => fields.map(field => [(field as HTMLInputElement).name, (field as HTMLInputElement).value]));
+      strictEqual(await page.$eval('#conditional-option', panel => getComputedStyle(panel).display), 'none');
+      strictEqual(await page.$eval('#option', input => input.getAttribute('aria-expanded')), 'false');
+      await page.click('label[for="option"]');
+      strictEqual(await page.$eval('#option', input => (input as HTMLInputElement).checked), true);
+      strictEqual(await page.$eval('#option', input => input.getAttribute('aria-expanded')), 'true');
+      strictEqual(await page.$eval('#conditional-option', panel => getComputedStyle(panel).display === 'none'), false);
+      await page.click('label[for="option-2"]');
+      strictEqual(await page.$eval('#option-2', input => (input as HTMLInputElement).checked), true);
+      strictEqual(await page.$eval('#option', input => input.getAttribute('aria-expanded')), 'false');
+      strictEqual(await page.$eval('#conditional-option', panel => getComputedStyle(panel).display), 'none');
+      deepStrictEqual(await page.$$eval('#conditional-option input', fields => fields.map(field => [(field as HTMLInputElement).name, (field as HTMLInputElement).value])), values);
+    } finally {await browser.close();}
+  });
 
   for (const url of urlsList) {
     it('Test of '+url, async () => {

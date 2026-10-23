@@ -1,4 +1,4 @@
-import {Response} from 'express';
+import {Request, Response} from 'express';
 import controller from 'routes/features/caseProgression/checkAnswersController';
 import {CP_EVIDENCE_UPLOAD_SUBMISSION_URL, TYPES_OF_DOCUMENTS_URL} from 'routes/urls';
 import {getClaimById} from 'modules/utilityService';
@@ -11,6 +11,7 @@ import {CaseRole} from 'form/models/caseRoles';
 import {AppRequest} from 'models/AppRequest';
 import {GenericForm} from 'form/models/genericForm';
 import {DocumentUploadSubmissionForm} from 'form/models/caseProgression/documentUploadSubmission';
+import {getUploadDocumentsForm} from 'services/features/caseProgression/caseProgressionService';
 import {createMockResponse, createMockSession, getRouteHandler} from '../../../../utils/getRouteHandler';
 
 jest.mock('modules/utilityService', () => ({getClaimById: jest.fn()}));
@@ -45,7 +46,7 @@ describe.each([CaseRole.CLAIMANT, CaseRole.DEFENDANT])('case-progression check a
       documentName: 'saved.pdf', documentLink: {document_binary_url: '/documents/saved/binary'},
     }});
     claim.caseProgression[own] = new UploadDocumentsUserForm(undefined, [savedRow]);
-    claim.caseProgression[other] = new UploadDocumentsUserForm(undefined, [savedRow]);
+    claim.caseProgression[other] = new UploadDocumentsUserForm(undefined, [Object.assign(new FileOnlySection(), structuredClone(savedRow))]);
     req = {params: {id}, query: {}, cookies: {lang: 'en'}, body: {},
       session: createMockSession({user: {id: 'user'}, dashboard: {taskIdHearingUploadDocuments: 'upload-task'}}),
     } as unknown as AppRequest;
@@ -69,15 +70,33 @@ describe.each([CaseRole.CLAIMANT, CaseRole.DEFENDANT])('case-progression check a
     expect(next).not.toHaveBeenCalled();
   });
 
-  describe.each(['missing role draft', 'null role draft', 'missing case progression'])('%s', state => {
+  it.each(Object.keys(new UploadDocumentsUserForm()))('accepts saved evidence in %s', async category => {
+    const saved = claim.caseProgression[own].disclosureList[0];
+    claim.caseProgression[own] = Object.assign(new UploadDocumentsUserForm(), {[category]: [saved]});
+    await get(req, res as unknown as Response, next);
+    expect(getSummarySections).toHaveBeenCalledWith(claim.caseProgression[own], id, claim.isSmallClaimsTrackDQ, 'en');
+    expect(res.render).toHaveBeenCalledTimes(1);
+    expect(res.redirect).not.toHaveBeenCalled();
+    expect(next).not.toHaveBeenCalled();
+  });
+
+  describe.each([
+    'missing role draft', 'null role draft', 'missing case progression', 'empty object', 'empty collections',
+    'unsaved row', 'missing reference', 'blank reference', 'mixed saved and unsaved rows',
+  ])('%s', state => {
     beforeEach(() => {
       if (state === 'missing case progression') delete claim.caseProgression;
       else if (state === 'null role draft') Object.assign(claim.caseProgression, {[own]: null});
-      else delete claim.caseProgression[own];
+      else if (state === 'missing role draft') delete claim.caseProgression[own];
+      else if (state === 'empty object') Object.assign(claim.caseProgression, {[own]: {}});
+      else if (state === 'empty collections') claim.caseProgression[own] = getUploadDocumentsForm({body: {}} as Request);
+      else if (state === 'unsaved row') claim.caseProgression[own].disclosureList = [new FileOnlySection()];
+      else if (state === 'mixed saved and unsaved rows') claim.caseProgression[own].disclosureList.push(new FileOnlySection());
+      else claim.caseProgression[own].disclosureList[0].caseDocument.documentLink.document_binary_url = state === 'blank reference' ? '  ' : undefined;
     });
-    it.each(['GET', 'invalid POST', 'signed POST'])('recovers %s without changing stored data', async method => {
+    it.each(['GET', 'bodyless POST', 'invalid POST', 'signed POST'])('recovers %s without changing stored data', async method => {
       const before = JSON.stringify(claim);
-      req.body = method === 'signed POST' ? {signed: true} : {};
+      req.body = method === 'signed POST' ? {signed: true} : method === 'bodyless POST' ? undefined : {};
       await (method === 'GET' ? get : post)(req, res as unknown as Response, next);
       expect(res.redirect).toHaveBeenCalledTimes(1);
       expect(res.redirect).toHaveBeenCalledWith(TYPES_OF_DOCUMENTS_URL.replace(':id', id));
