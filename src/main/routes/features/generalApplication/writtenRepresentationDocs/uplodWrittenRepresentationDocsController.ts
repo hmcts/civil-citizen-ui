@@ -20,7 +20,7 @@ import {
 } from 'services/features/generalApplication/documentUpload/uploadDocumentsService';
 import { getSummaryList } from 'services/features/generalApplication/writtenRepresentation/writtenRepresentationDocsService';
 import {
-  createMulterErrorMiddlewareForSingleField,
+  createMulterErrorMiddlewareForMultipleFiles,
   createUploadOneFileError,
   getFileUploadErrorsForSource,
   FILE_UPLOAD_SOURCE,
@@ -30,7 +30,7 @@ import {handleMulterError} from 'services/features/generalApplication/uploadEvid
 
 const uploadDocumentsForRequestWrittenRepresentation = Router();
 const viewPath = 'features/generalApplication/additionalInfoUpload/upload-documents';
-const multerMiddleware = createMulterErrorMiddlewareForSingleField('selectedFile', 'uploadDocumentsForRequestWrittenRepresentation');
+const multerMiddleware = createMulterErrorMiddlewareForMultipleFiles('selectedFile', 'uploadDocumentsForRequestWrittenRepresentation');
 
 async function renderView(form: GenericForm<UploadGAFiles>, claim: Claim, claimId: string, gaId: string, res: Response, formattedSummary: SummarySection): Promise<void> {
   const cancelUrl = await getCancelUrl(claimId, claim);

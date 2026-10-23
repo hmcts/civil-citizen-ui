@@ -1,0 +1,42 @@
+{% from "govuk/components/file-upload/macro.njk" import govukFileUpload %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% macro gaFileUpload(t, params) %}
+  {% set uploadedRows = (params.summaryRows or []) | selectattr("actions") %}
+  <div class="file-upload-slots" data-single-upload-box="true"{% if uploadedRows.length %} data-has-uploaded-files="true"{% endif %}>
+    <div class="row-container govuk-inset-text">
+      {% if caller %}{{ caller() }}{% endif %}
+      {{ govukFileUpload({
+        id: params.id,
+        name: "selectedFile",
+        multiple: true,
+        javascript: true,
+        chooseFilesButtonText: t('COMMON.FILE_UPLOAD.CHOOSE_FILE'),
+        dropInstructionText: t('COMMON.FILE_UPLOAD.DROP_INSTRUCTION'),
+        noFileChosenText: t('COMMON.FILE_UPLOAD.NO_FILE_CHOSEN'),
+        multipleFilesChosenText: {
+          one: t('COMMON.FILE_UPLOAD.FILES_CHOSEN_ONE'),
+          other: t('COMMON.FILE_UPLOAD.FILES_CHOSEN_OTHER')
+        },
+        enteredDropZoneText: t('COMMON.FILE_UPLOAD.ENTERED_DROP_ZONE'),
+        leftDropZoneText: t('COMMON.FILE_UPLOAD.LEFT_DROP_ZONE'),
+        label: {
+          text: t('COMMON.UPLOAD_FILE_LABEL'),
+          classes: 'govuk-label--s'
+        },
+        errorMessage: { text: params.errorText } if params.errorText
+      }) }}
+      {{ govukButton({
+        id: 'uploadFileButton',
+        name: 'action',
+        value: 'uploadButton',
+        text: t('COMMON.SAVE_FILE'),
+        classes: "govuk-button--secondary govuk-!-margin-bottom-0 js-auto-upload-button",
+        attributes: params.saveButtonAttributes
+      }) }}
+    </div>
+  </div>
+  <button type="button" class="govuk-button govuk-button--secondary add-file-slot govuk-!-margin-bottom-4">
+    {{ t('PAGES.UPLOAD_DOCUMENTS.ADD_ANOTHER_FILE') }}
+  </button>
+{% endmacro %}

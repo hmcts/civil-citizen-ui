@@ -12,7 +12,7 @@ import { constructResponseUrlWithIdAndAppIdParams } from 'common/utils/urlFormat
 import { getCancelUrl } from 'services/features/generalApplication/generalApplicationService';
 import { getClaimDetailsById, getSummaryList, removeSelectedDocument, uploadSelectedFile } from 'services/features/generalApplication/additionalDocumentService';
 import {
-  createMulterErrorMiddlewareForSingleField,
+  createMulterErrorMiddlewareForMultipleFiles,
   createUploadOneFileError,
   getFileUploadErrorsForSource,
   FILE_UPLOAD_SOURCE,
@@ -23,7 +23,7 @@ import {handleMulterError} from 'services/features/generalApplication/uploadEvid
 const uploadAdditionalDocumentsController = Router();
 
 const viewPath = 'features/generalApplication/additionalDocuments/upload-additional-documents';
-const multerMiddleware = createMulterErrorMiddlewareForSingleField('selectedFile', 'uploadAdditionalDocumentsController');
+const multerMiddleware = createMulterErrorMiddlewareForMultipleFiles('selectedFile', 'uploadAdditionalDocumentsController');
 
 uploadAdditionalDocumentsController.get(GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
