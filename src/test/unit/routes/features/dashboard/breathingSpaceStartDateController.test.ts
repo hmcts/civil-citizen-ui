@@ -66,6 +66,7 @@ describe('Breathing Space Start Date Controller', () => {
       .get(BREATHING_SPACE_START_DATE_URL)
       .expect((res) => {
         expect(res.status).toBe(200);
+        expect(res.text).toContain('Breathing space start date - Your money claims account');
         expect(res.text).toContain('Enter breathing space');
         expect(res.text).toContain('Breathing space start date');
         expect(res.text).toContain('Breathing space will start from today, unless you enter a different start date.');
