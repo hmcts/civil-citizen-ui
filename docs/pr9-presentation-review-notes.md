@@ -1231,11 +1231,11 @@ Evidence codes deduplicate repeated explanations; each row has one primary dispo
 
 | Disposition | Paths |
 | --- | ---: |
-| Adapted | 233 |
+| Adapted | 234 |
 | Already integrated | 105 |
 | Covered differently | 80 |
 | Defer | 8 |
-| Exclude | 244 |
+| Exclude | 243 |
 | Import/adapt | 49 |
 
 <details>
@@ -1375,7 +1375,7 @@ Evidence codes deduplicate repeated explanations; each row has one primary dispo
 | `src/main/modules/nunjucks/index.ts` | Adapted | R008 |
 | `src/main/modules/oidc/index.ts` | Adapted | R008 |
 | `src/main/routes/features/claim/createDraftClaim.ts` | Adapted | R005 |
-| `src/main/routes/features/claim/payment/claimFeeBreakDownController.ts` | Adapted | R005 |
+| `src/main/routes/features/claim/payment/claimFeeBreakDownController.ts` | Adapted | R005; R090 |
 | `src/main/routes/features/claimantResponse/claimantSuggestedInstalmentsController.ts` | Adapted | R005 |
 | `src/main/routes/features/claimantResponse/courtProposedDateController.ts` | Adapted | R005 |
 | `src/main/routes/features/claimantResponse/settleAdmittedController.ts` | Exclude | R012 |
@@ -1775,7 +1775,7 @@ Evidence codes deduplicate repeated explanations; each row has one primary dispo
 | `src/test/unit/routes/features/claim/generalApplication/writtenRepresentationDocs/checkAnswerController.test.ts` | Exclude | R062 |
 | `src/test/unit/routes/features/claim/generalApplication/writtenRepresentationDocs/respondWrittenRepController.test.ts` | Exclude | R062 |
 | `src/test/unit/routes/features/claim/incompleteClaimIssueSubmissionController.test.ts` | Exclude | R062 |
-| `src/test/unit/routes/features/claim/payment/claimFeeBreakDownController.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/features/claim/payment/claimFeeBreakDownController.test.ts` | Adapted | R062; R090 |
 | `src/test/unit/routes/features/claim/payment/claimFeePaymentSuccessfulController.test.ts` | Exclude | R062 |
 | `src/test/unit/routes/features/claim/payment/claimFeePaymentUnsuccessfulController.test.ts` | Exclude | R062 |
 | `src/test/unit/routes/features/claim/paymentSuccessfulController.test.ts` | Exclude | R062 |
@@ -2059,6 +2059,7 @@ Evidence codes deduplicate repeated explanations; each row has one primary dispo
 | R087 | Closing GA confirmation recovery: validate an explicit scalar collection-item ID and finite decimal pounds fee, including zero, before rendering either confirmation. Invalid pairs redirect through getDashboardUrlForParty without cancelling/deleting a draft. Keep exact downstream collection-ID-to-case-reference lookup; exclude first-application and unrelated-draft-fee fallback. |
 | R088 | Closing presentation adaptation: ten numeric missing-value defaults preserve zero/submitted values; query date errors use escaped inline messages and focusable day summary links; respondent agreement has its existing translated title; three task headings and the opponent timeline use valid bounded composition. The existing dashboard shell gains a default-preserving summary block only to support the query override. Fee-change cleanup remains excluded. |
 | R089 | Existing regression owners extended for closing production corrections: real models/builders, saved-state preservation, call-time persistence snapshots, direct GA handlers, raw numeric attributes, bilingual error/title/table behavior and integration journeys. New unit assertions do not construct Express applications; HTTP remains under integration. This is selective adaptation, not assertion-for-assertion fork-suite parity. |
+| R090 | Claim-fee redirect recovery: adapt the fork's missing-nextUrl fallback to all four current redirect paths, including master's invalid-reference early return. Missing, null, empty and whitespace-only URLs return to the fee page; existing provider URLs and successful-payment confirmation remain. Preserve payment-reference validation, draft ownership/loading/saving and retention boundaries. Extend the current isolated controller suite and claim-issue integration owner using real CCD payment translation and call-time saved-payload snapshots; do not import the fork's complete controller or HTTP unit suite. |
 
 </details>
 
@@ -2510,3 +2511,39 @@ Fresh checks used Node 24.21.0 and the available dependency tree under an OS san
 | Restore current production and strengthened assertions in the disposable copy | Nine passed; ordinary exit 0; no initial failures or retries |
 
 The original closing batch's recorded results above were not rerun or presented as fresh results for this refinement. The latest changes affect only these two test suites and this document; the complete PR11 path count remains 107. No staging, commit, push, branch/ref change or production edit occurred. Excluded context and pre-existing work remain preserved; disposable resources are removed at handover.
+
+### PR11 claim-payment redirect amendment — 23 October 2026
+
+The user authorised completing the missing claim-fee redirect port in PR11 before separately correcting PR10's catalogue wording on its own branch. Work started on `DTSCCI-6593-fork-tests-reconciliation` at `3e5b4408f556348160f42ee4d311bbec4d33bff5`, with no tracked changes and only the pre-existing untracked PR10 notes. This amendment does not change the catalogue, GA error summaries, dependencies, pipeline, payment-reference rules or draft retention policy. The older 107-path scope and verification results above remain historical; the current complete prospective diff against local `origin/DTSCCI-6593-frontend-ui-preview` (`62d2c503c64fc659a28607c3a473cb8289734e40`) contains **110 paths: 24 production, 70 unit-suite paths, six integration suites, seven captures, two documents and Jest configuration**. That remote-tracking ref is local evidence, not a freshly fetched remote state.
+
+| Amendment path | Purpose and provenance |
+| --- | --- |
+| `src/main/routes/features/claim/payment/claimFeeBreakDownController.ts` | Adapt the exact fork's `redirectToPaymentOrFeeBreakup` behavior at all four current redirect call sites, including master's later invalid-reference early return. Also reject whitespace-only URLs while passing existing usable provider URLs through unchanged. |
+| `src/test/unit/routes/features/claim/payment/claimFeeBreakDownController.test.ts` | Extend the existing isolated handler suite with four unusable-URL values across all four branches, invalid-reference controls, valid pending URLs and independent call-time persistence snapshots. Repair the existing status-error fixture so it actually reaches the status API. |
+| `src/integration-test/routes/claim/claimIssue.integration.test.ts` | Exercise real CCD payment translation, POST redirects and recovery GET with an enabled payment button. Preserve successful-payment and valid-provider redirects. Store, payment API, payment-session persistence and authentication/session boundaries remain mocked; this is not authenticated backend acceptance. |
+| `docs/pr9-presentation-review-notes.md` | Correct the previously overlooked functional-hunk reconciliation and record scope, evidence and limitations without rewriting prior run results. |
+
+The real `toCUIClaimDetails` translator reconstructs payment reference/status without `nextUrl`. A pending stored payment or failed status lookup therefore reached `res.redirect(undefined)` before this amendment. Missing URLs can also occur in newly returned payment information and failed-payment replacements. The helper returns to the existing claim-fee GET page instead. It does not request a replacement payment for a merely pending payment, invent a reference, change successful-payment confirmation or alter loading/saving ownership and retention. Snapshot assertions independently preserve both the original and replacement payloads at their actual save calls.
+
+R090 now records this mixed-hunk adaptation. The existing controller-test ledger row changes from Exclude to Adapted because its isolated current suite now incorporates the useful regression behavior; the fork's HTTP unit-suite implementation remains excluded. All **719 unique ancestor-to-fork paths** remain accounted for, with current primary counts **234 Adapted, 105 Already integrated, 80 Covered differently, eight Defer, 243 Exclude and 49 Import/adapt**. The amendment adds 23 unit cases and four integration cases; these are not fresh full-suite totals.
+
+Fresh checks used Node 24.21.0, TypeScript 5.9.3 and the available dependency tree, including Express 5.2.1, GOV.UK Frontend 6.4.0, class-validator 0.14.4 and ts-jest 29.4.12. Execution ran under a macOS sandbox denying checkout writes and external network connections while allowing localhost. Caches, logs and reports stayed disposable. No installation or download was attempted. These are available-dependency diagnostics, not proof of an installation from the current lockfile.
+
+`J` below means `node --no-sparkplug node_modules/jest/bin/jest.js`. All Jest executions used `--runInBand --silent`, ordinary exits and the existing two-retry policy; JSON assertion invocation counts were inspected. No `--forceExit` was used.
+
+| Fresh amendment check | Actual result |
+| --- | --- |
+| New controller regressions against unchanged production code, `J --runTestsByPath …` | 22 expected failures / 12 passes; exit 1. Each failing case exhausted the existing retries. |
+| New claim-issue integration cases against unchanged production code, `J -c jest.functionaltest.config.js --reporters=default --runTestsByPath …` | Two expected failures / six passes; exit 1. Both failures observed `302 Location: undefined` and exhausted the existing retries. |
+| Corrected controller suite | One suite / 34 tests passed; exit 0; every case invoked once. |
+| Related draft-service, claim-fee guard, fee-payment service, confirmation-service and route-parameter suites | Five suites / 42 tests passed; exit 0; every case invoked once. |
+| Corrected claim-issue integration suite | One suite / eight tests passed; exit 0; every case invoked once. The recovery GET renders the existing `£100` payment button enabled. |
+| TypeScript `--noEmit --incremental false` | Final exit 0. |
+| ESLint on the three changed TypeScript files | Exit 0; zero errors and two pre-existing unused-catch-variable warnings. |
+| `git --no-optional-locks diff --check` | Exit 0. |
+
+Two fixture corrections occurred during verification. The initial type check found that the new integration fee fixture omitted required `code` and `version` fields; the fixture now supplies them. The first post-fix integration run reached the correct recovery page but its two new cases expected `£100.00`, while the existing template renders `£100`. The final assertion checks the actual payment button's exact text and enabled state without changing the application's monetary formatting. These fixture failures are separate from the before-fix redirect reproductions.
+
+The final positive runs comprise **seven suites / 84 tests**, without initial failures or retries. No full coverage, complete route discovery, build, Pact/server-contract, browser/accessibility, hosted, authenticated or operational check was rerun for this amendment. The previously recorded locked-install and broader acceptance gaps remain. The older intermittent failure histories are not explained by these targeted passes.
+
+All four amendment files remain unstaged and uncommitted for the user's review and push preparation. No branch switch, ref update, commit or push was performed. The pre-existing PR10 notes, excluded historical context, manifests/lockfile and PR10 catalogue wording remain unchanged. Disposable verification resources are removed at handover.
