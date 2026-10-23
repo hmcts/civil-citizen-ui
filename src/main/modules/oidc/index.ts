@@ -144,7 +144,7 @@ export class OidcMiddleware {
     const idamSignOutUrl: string = config.get('services.idam.terminateSessionURL');
     const applicationUrl: string = config.get('services.idam.signOutCallBackURL');
 
-    app.get(SIGN_IN_URL, async (_req: AppRequest, res: Response) => {
+    app.get(SIGN_IN_URL, async (req: AppRequest, res: Response) => {
       // Log the resolved LaunchDarkly flag value on every sign-in so we can confirm in the
       // environment logs whether hmcts-access-migration-enabled is actually toggling.
       // NOTE: the flag does NOT change idamUrlLogin - the /login vs /o/authorize entry point
@@ -155,7 +155,8 @@ export class OidcMiddleware {
       } catch (err) {
         logger.error('Failed to read hmcts-access-migration-enabled flag', err);
       }
-      res.redirect(idamUrlLogin);
+      const prompt = req.query.prompt === 'login' ? '&prompt=login' : '';
+      res.redirect(idamUrlLogin + prompt);
     });
 
     app.get(CALLBACK_URL, async (req: AppRequest, res: Response) => {
