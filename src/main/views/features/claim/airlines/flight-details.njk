@@ -13,10 +13,14 @@
 
 {% block content %}
 
+      {% set errors = form.getErrors() %}
+      {% set dateSummaryErrors = [] %}
+      {% for error in errors %}
+        {% set added = dateSummaryErrors.push({text: error.text, href: '#day' if error.property in ['flightDate'] else error.href}) %}
+      {% endfor %}
       {% if form.hasErrors() %}
-        {% set errors = form.getErrors() %}
         <div class="govuk-grid-row">
-          {{ errorSummary(errors, t) }}
+          {{ errorSummary(dateSummaryErrors, t) }}
         </div>
       {% endif %}
 
@@ -41,6 +45,10 @@
               } if form.errorFor('flightNumber')
             }) }}
 
+            {% set dateErrors = [] %}
+            {% for field in ['flightDate', 'day', 'month', 'year'] %}
+              {% if form.errorFor(field) %}{% set dateErrors = (dateErrors.push(t(form.errorFor(field)) | escape), dateErrors) %}{% endif %}
+            {% endfor %}
             {{ govukDateInput({
               id: "flightDate",
               name: "flightDate",
@@ -55,12 +63,7 @@
                   date: today.getDate() + ' ' + today.getMonth() + ' ' + today.getFullYear()
                 })
               },
-              errorMessage: {
-                html: '<p class="govuk-error-message">' + t(form.errorFor('flightDate')) + '</p>' +
-                '<p class="govuk-error-message">' + t(form.errorFor('day')) + '</p>' +
-                '<p class="govuk-error-message">' + t(form.errorFor('month')) + '</p>' +
-                '<p class="govuk-error-message">' + t(form.errorFor('year')) + '</p>'
-              } if (form.hasFieldError('flightDate') or form.hasFieldError('day') or form.hasFieldError('month') or form.hasFieldError('year')),
+              errorMessage: { html: dateErrors | join('<br>') } if dateErrors.length,
               items: [
                 {
                   classes: "govuk-input--width-2 govuk-input--error" if form.hasFieldError('day') else "govuk-input--width-2",

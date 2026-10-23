@@ -32,7 +32,7 @@
   {{ telephone }}
 {% endmacro %}
 
-{% macro contactUsForHelp(t, widget, open, isCarm=False) %}
+{% macro contactUsForHelp(t, widget, open, isCarm=False, componentId='contact-us-for-help') %}
   {% set ContactUs = t('COMMON.CONTACT_US_FOR_HELP.TITLE') %}
   {% set Email = t('COMMON.EMAIL') %}
   {% if isCarm %}
@@ -57,7 +57,7 @@
   {% set callChargesWidget = _widget(openingHours,Telephone,externalURLs.callChargesUrl,'',callCharges,'0300 123 7050', '_blank') %}
   {% set webChatUnavailableWidget = _widget(webChatUnavailable,webChat,'','','','') %}
   {% set webChatClosedWidget =  _widget(webChatClosed,webChat,'','','','') %}
-  {% set contactUsForHelpComponentId = 'contact-us-for-help' %}
+  {% set contactUsForHelpComponentId = componentId %}
 
   {% set disclosure = t('COMMON.CONTACT_US_FOR_HELP.COURT_STAFF_DISCLOSURE') %}
   {% set sendMessageTitle = t('COMMON.CONTACT_US_FOR_HELP.SEND_MESSAGE') %}
@@ -73,18 +73,23 @@
   {% endif %}
   {% set content = content + emailWidget + callChargesWidget %}
   {% if open %}
-    <div class="govuk-details">
-      {% if isQMFlagEnabled === true %}
-          <p class="govuk-body">{{ t('COMMON.QM_INFORMATION_MESSAGES_DOCUMENTS') }}
-            <a class="govuk-link" href={{ qmContactLink }} rel="noopener noreferrer">
-              {{ t('COMMON.QM_INFORMATION_LINK') }}
-            </a>.
-          </p>
-      {% else %}
-        {{ emailWidget}}
-      {% endif %}
-      {{ callChargesWidget }}
-    </div>
+    {% if isQMFlagEnabled === true %}
+      {% set openHtml %}
+        <p class="govuk-body">{{ t('COMMON.QM_INFORMATION_MESSAGES_DOCUMENTS') }}
+          <a class="govuk-link" href={{ qmContactLink }} rel="noopener noreferrer">
+            {{ t('COMMON.QM_INFORMATION_LINK') }}
+          </a>.
+        </p>
+      {% endset %}
+    {% else %}
+      {% set openHtml = emailWidget %}
+    {% endif %}
+    {{ govukDetails({
+      summaryText: ContactUs,
+      html: openHtml + callChargesWidget,
+      open: true,
+      id: contactUsForHelpComponentId
+    }) }}
   {% else %}
     {% if isQMFlagEnabled %}
       {{ govukDetails({

@@ -1,9 +1,6 @@
-<h2 class="govuk-heading-m">{{ t('PAGES.NOT_ELIGIBLE_FOR_SERVICE.WHERE_TO_SEND_PAPER_FORMS') }}</h2>
-<div class="govuk-summary-list">
-  Civil National Business Centre<br>
-  St Katharine's House<br>
-  21 - 27 St Katharine's Street<br>
-  Northampton<br>
-  NN1 2LH
-</div>
+{% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
 
+<h2 class="govuk-heading-m">{{ t('PAGES.NOT_ELIGIBLE_FOR_SERVICE.WHERE_TO_SEND_PAPER_FORMS') }}</h2>
+{{ govukInsetText({
+  html: "Civil National Business Centre<br>St Katharine's House<br>21 - 27 St Katharine's Street<br>Northampton<br>NN1 2LH"
+}) }}

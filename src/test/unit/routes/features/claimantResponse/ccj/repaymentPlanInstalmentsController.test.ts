@@ -1,3 +1,4 @@
+import {JSDOM} from 'jsdom';
 import config from 'config';
 import nock from 'nock';
 import request from 'supertest';
@@ -306,7 +307,11 @@ describe('CCJ Repayment Plan page', () => {
           })
           .expect((res) => {
             expect(res.status).toBe(200);
-            expect(res.text).toContain(t('ERRORS.VALID_DATE_ONE_MONTH_FROM_TODAY'));
+            const rendered = new JSDOM(res.text);
+            try {
+              expect(rendered.window.document.getElementById('firstPaymentDate-error')?.textContent).toContain(t('ERRORS.VALID_DATE_ONE_MONTH_FROM_TODAY'));
+              expect(rendered.window.document.getElementById('firstPaymentDate-error')?.querySelector('.govuk-error-message')).toBeNull();
+            } finally { rendered.window.close(); }
           });
       });
     });
