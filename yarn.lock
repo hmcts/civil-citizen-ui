@@ -2608,16 +2608,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ministryofjustice/frontend@npm:11.1.0":
-  version: 11.1.0
-  resolution: "@ministryofjustice/frontend@npm:11.1.0"
-  peerDependencies:
-    govuk-frontend: ^6.0.0
-    moment: ^2.30.1
-  checksum: 10/bbb9d11339df08c5fe5ee8655ae3f19706179a23e6f2bdf7a1200ffc1c5f9d268fcf092307cb28c8e403f77afccff1565ebb8fd0b7a5dd41a46b5f8cb2958aa2
-  languageName: node
-  linkType: hard
-
 "@noble/hashes@npm:^1.1.5":
   version: 1.8.0
   resolution: "@noble/hashes@npm:1.8.0"
@@ -5771,7 +5761,6 @@ __metadata:
     "@hmcts/nodejs-logging": "npm:4.0.4"
     "@hmcts/properties-volume": "npm:0.0.14"
     "@launchdarkly/node-server-sdk": "npm:8.2.6"
-    "@ministryofjustice/frontend": "npm:11.1.0"
     "@pact-foundation/pact": "npm:15.0.1"
     "@pact-foundation/pact-node": "npm:10.18.0"
     "@playwright/test": "npm:1.63.0"
@@ -5841,7 +5830,6 @@ __metadata:
     jest-environment-jsdom: "npm:29.7.0"
     jest-junit: "npm:15.0.0"
     jest-launchdarkly-mock: "npm:2.2.1"
-    jquery: "npm:3.7.1"
     jsdom: "npm:28.1.0"
     jwt-decode: "npm:3.1.2"
     lodash: "npm:4.18.1"
@@ -9963,13 +9951,6 @@ __metadata:
   version: 3.1.1
   resolution: "joycon@npm:3.1.1"
   checksum: 10/4b36e3479144ec196425f46b3618f8a96ce7e1b658f091a309cd4906215f5b7a402d7df331a3e0a09681381a658d0c5f039cb3cf6907e0a1e17ed847f5d37775
-  languageName: node
-  linkType: hard
-
-"jquery@npm:3.7.1":
-  version: 3.7.1
-  resolution: "jquery@npm:3.7.1"
-  checksum: 10/17be9929f5fa37697d9848284f0d108c543318ef79ec794e130cd0c49f6c050d60c803a69e8cfa16fa19f5ff7cdb814a6905cceab0831186560c65ed113cd579
   languageName: node
   linkType: hard
 

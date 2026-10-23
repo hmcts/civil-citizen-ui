@@ -1,28 +1,21 @@
 import './assets/scss/main.scss';
-import $ from 'jquery';
 import {initPostcodeLookup} from './assets/js/postcode-lookup.js';
+import {initUploadRows} from './assets/js/upload-rows';
 import {initAppendRow} from './assets/js/append-row.js';
 import './assets/js/calculate-amount.js';
 import './assets/js/calculate-length-repayment.js';
 import './assets/js/calculate-total-amount.js';
-import './assets/js/remove-error-content';
-import './assets/js/conditionally-hide-add-button';
 import {initSelectToggle} from './assets/js/select-toggle';
 import {initAddAnother} from './assets/js/add-another';
-import './assets/js/reindex-add-another-actions';
 import './assets/js/language-toggle';
 import { initAll as initGovukFrontend } from 'govuk-frontend';
-import { initAll as initMojFrontend } from '@ministryofjustice/frontend';
 import './modules/cookie/cookieConfig';
 import './assets/js/cookies-controller.js';
 import './assets/js/disable-submit.js';
 
-// Preserve the existing global bootstrap for remaining consumers during migration.
-window.$ = $;
-
 initGovukFrontend();
-initMojFrontend();
 initSelectToggle();
 initAddAnother(document, scope => initGovukFrontend({scope}));
 initAppendRow(document, scope => initGovukFrontend({scope}));
 initPostcodeLookup();
+initUploadRows();
