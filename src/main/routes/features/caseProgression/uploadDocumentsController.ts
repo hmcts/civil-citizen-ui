@@ -31,6 +31,7 @@ import {
   getMulterErrorConstraint,
   extractCategoryAndIndex,
   removeUploadedFileForAction,
+  deleteRemovedDocuments,
   migrateLegacyCaseDocumentsOnForm,
   uploadAndValidateFile,
   reportRejectedFiles,
@@ -190,6 +191,11 @@ uploadDocumentsController.post(CP_UPLOAD_DOCUMENTS_URL, multerMiddleware, (async
     } else if (action?.includes('[removeButton]')) {
       const [category, index] = action.split(/[[\]]/).filter((word: string) => word !== '');
       (form.model as any)[category].splice(Number(index), 1);
+    }
+
+    if (action?.includes('[deleteFile]') || action?.includes('[removeButton]')) {
+      await deleteRemovedDocuments(req, (claim.caseProgression as any)?.[isClaimant], form.model,
+        civilServiceClientForDocRetrieve, 'uploadDocumentsController');
     }
 
     if (action) {

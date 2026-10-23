@@ -30,6 +30,7 @@ import {getClaimById} from 'modules/utilityService';
 import {addAnother, getUploadDocumentsForm, saveCaseProgression} from 'services/features/caseProgression/caseProgressionService';
 import {CaseDocument} from 'models/document/caseDocument';
 import {EvidenceUploadDisclosure} from 'models/document/documentType';
+import {CivilServiceClient} from 'client/civilServiceClient';
 
 const getTrialContentMock = getTrialContent as jest.Mock;
 
@@ -1064,5 +1065,49 @@ describe('on POST', () => {
       });
 
     validateSyncSpy.mockRestore();
+  });
+
+  describe('deleting uploaded documents from document management', () => {
+    const documentAt = (id: string) => ({documentLink: {document_url: `http://dm-store/documents/${id}`, document_binary_url: `http://dm-store/documents/${id}/binary`}} as CaseDocument);
+    const sectionWith = (...ids: string[]) => Object.assign(new FileOnlySection(), {caseDocuments: ids.map(documentAt)});
+    let deleteDocument: jest.SpyInstance;
+
+    beforeEach(() => {
+      (getClaimById as jest.Mock).mockReset();
+      (saveCaseProgression as jest.Mock).mockResolvedValue(true);
+      deleteDocument = jest.spyOn(CivilServiceClient.prototype, 'deleteDocument').mockResolvedValue(undefined);
+    });
+
+    afterEach(() => {
+      deleteDocument.mockRestore();
+    });
+
+    const postAction = (savedSections: FileOnlySection[], postedSections: FileOnlySection[], action: string) => {
+      const savedClaim = require('../../../../utils/mocks/civilClaimResponseMock.json').case_data;
+      (getClaimById as jest.Mock).mockResolvedValue(Object.assign(new Claim(), savedClaim, {caseProgression: {claimantDocuments: {trialAuthorities: savedSections}}}));
+      (getUploadDocumentsForm as jest.Mock).mockReturnValue(Object.assign(new UploadDocumentsUserForm(), {trialAuthorities: postedSections}));
+      return request(app).post(CP_UPLOAD_DOCUMENTS_URL).send({action});
+    };
+
+    it('deletes the file removed with Delete', async () => {
+      const response = await postAction([sectionWith('kept', 'deleted')], [sectionWith('kept', 'deleted')], 'trialAuthorities[0][deleteFile][1]');
+
+      expect(response.status).toBe(200);
+      expect(deleteDocument).toHaveBeenCalledTimes(1);
+      expect(deleteDocument).toHaveBeenCalledWith(expect.anything(), 'deleted');
+    });
+
+    it('deletes every file of a removed section', async () => {
+      const response = await postAction([sectionWith('kept'), sectionWith('first', 'second')], [sectionWith('kept'), sectionWith('first', 'second')], 'trialAuthorities[1][removeButton]');
+
+      expect(response.status).toBe(200);
+      expect(deleteDocument.mock.calls.map((call) => call[1])).toEqual(['first', 'second']);
+    });
+
+    it('does not delete anything when a file is uploaded', async () => {
+      await postAction([sectionWith('kept')], [sectionWith('kept')], 'trialAuthorities[0][uploadButton]');
+
+      expect(deleteDocument).not.toHaveBeenCalled();
+    });
   });
 });
