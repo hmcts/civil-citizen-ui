@@ -16,6 +16,7 @@ import {
   GA_RESPONSE_UNAVAILABLE_HEARING_DATES_URL, GA_UNAVAILABILITY_RESPONSE_CONFIRMATION_URL,
 } from 'routes/urls';
 import {escapeHtml} from 'common/utils/escapeHtml';
+import {CcdCyaFieldId} from 'client/common/error/callbackError';
 
 export const getSummarySections = (claimId: string, appId: string, gaResponse: GaResponse, lng: string): SummaryRow[] => {
 
@@ -110,14 +111,19 @@ export const getSummarySections = (claimId: string, appId: string, gaResponse: G
 
   const contactDetailsSections = (): SummaryRow[] => {
     const contactDetails = gaResponse?.hearingContactDetails;
-    return [
-      row('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PREFERRED_TELEPHONE',
-        contactDetails?.telephoneNumber,
-        GA_RESPONSE_HEARING_CONTACT_DETAILS_URL),
-      row('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PREFERRED_EMAIL',
-        contactDetails?.emailAddress,
-        constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_RESPONSE_HEARING_CONTACT_DETAILS_URL)),
-    ];
+    const telephoneRow = row('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PREFERRED_TELEPHONE',
+      contactDetails?.telephoneNumber,
+      GA_RESPONSE_HEARING_CONTACT_DETAILS_URL);
+    if (telephoneRow) {
+      telephoneRow.ccdFieldId = CcdCyaFieldId.GA_RESPONSE_HEARING_TELEPHONE;
+    }
+    const emailRow = row('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PREFERRED_EMAIL',
+      contactDetails?.emailAddress,
+      constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_RESPONSE_HEARING_CONTACT_DETAILS_URL));
+    if (emailRow) {
+      emailRow.ccdFieldId = CcdCyaFieldId.GA_RESPONSE_HEARING_EMAIL;
+    }
+    return [telephoneRow, emailRow];
   };
 
   const unavailableDatesSection = (): SummaryRow[] => {
