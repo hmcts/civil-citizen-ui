@@ -24,6 +24,7 @@ module.exports = {
   setupFilesAfterEnv: [
     './jest.setup.redis-mock.js',
     './jest.setup.js',
+    './jest.functionaltest.setup.js',
     '<rootDir>/src/integration-test/setup/testSetup.ts',
   ],
   reporters: [
