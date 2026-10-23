@@ -21,6 +21,7 @@ import {getTypeOfDocumentsContents} from 'services/features/caseProgression/evid
 import {getClaimById} from 'modules/utilityService';
 import {isCuiGaNroEnabled} from '../../../app/auth/launchdarkly/launchDarklyClient';
 import {getRouteParam} from 'common/utils/routeParamUtils';
+import {getFileUploadErrorsForSource, FILE_UPLOAD_SOURCE} from 'common/utils/fileUploadUtils';
 
 const typeOfDocumentsViewPath = 'features/caseProgression/typeOfDocuments';
 const typeOfDocumentsController = Router();
@@ -55,7 +56,8 @@ typeOfDocumentsController.get(TYPES_OF_DOCUMENTS_URL,
       const claimId = getRouteParam(req, 'id');
       const redisKey= generateRedisKey(req);
       const documentsList = await getDocuments(redisKey);
-      const form = new GenericForm(documentsList);
+      const noValidDocumentsErrors = getFileUploadErrorsForSource(req, FILE_UPLOAD_SOURCE.CP_TYPE_OF_DOCUMENTS);
+      const form = new GenericForm(documentsList, noValidDocumentsErrors?.length ? noValidDocumentsErrors : undefined);
       req.session.previousUrl = req.originalUrl;
       await renderView(res,req, claimId,form, constructResponseUrlWithIdParams(claimId, UPLOAD_YOUR_DOCUMENTS_URL));
     } catch (error) {

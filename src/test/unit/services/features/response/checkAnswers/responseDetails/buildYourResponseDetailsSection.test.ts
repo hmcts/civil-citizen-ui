@@ -64,7 +64,6 @@ describe('Partial Admit - Response Details', () => {
       expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[0].value.html).toBe('£100');
       expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[0].actions?.items[0].href).toBe(CITIZEN_AMOUNT_YOU_PAID_URL.replace(':id', constVal.CLAIM_ID));
       expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[0].actions?.items[0].text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_CHANGE);
-
     });
 
     it('should return "When did you pay this amount?" on your response details section', async () => {
@@ -175,6 +174,48 @@ describe('Partial Admit - Response Details', () => {
       expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[5].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.TIMELINE_COMMENTS');
       expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[5].value.text).toBe('');
       expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[5].actions?.items[0].text).toBe(constVal.PAGES_CHECK_YOUR_ANSWER_CHANGE);
+    });
+
+    it('should not throw and return empty timeline when timeline is null', async () => {
+      //Given
+      const claim = ceateClaimWithPartialAdmission(YesNo.YES);
+      claim.partialAdmission = {
+        timeline: null,
+      };
+      //When
+      const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'cimode');
+      //Then
+      expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[4].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.TIMELINE_TITLE');
+      expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[5].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.TIMELINE_COMMENTS');
+      expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[5].value.text).toBe('');
+    });
+
+    it('should not throw and return comment when timeline rows are undefined', async () => {
+      //Given
+      const claim = ceateClaimWithPartialAdmission(YesNo.YES);
+      claim.partialAdmission = {
+        timeline: new DefendantTimeline(undefined, 'Comments about timeline'),
+      };
+      //When
+      const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'cimode');
+      //Then
+      expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[4].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.TIMELINE_TITLE');
+      expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[5].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.TIMELINE_COMMENTS');
+      expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[5].value.text).toBe('Comments about timeline');
+    });
+
+    it('should skip null timeline rows', async () => {
+      //Given
+      const claim = ceateClaimWithPartialAdmission(YesNo.YES);
+      claim.partialAdmission = {
+        timeline: new DefendantTimeline([null, new TimelineRow(6, 11, 2022, 'Event 1')], ''),
+      };
+      //When
+      const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'cimode');
+      //Then
+      expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[5].key.text).toBe('6 November 2022');
+      expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[5].value.text).toBe('Event 1');
+      expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[6].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.TIMELINE_COMMENTS');
     });
 
     it('should return "Your evidence (optional)" on your response details section', async () => {
@@ -336,7 +377,7 @@ describe('Reject Claim - Response Details', () => {
     expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[1].actions?.items[0].href).toBe(CITIZEN_FR_AMOUNT_YOU_PAID_URL.replace(':id', constVal.CLAIM_ID));
   });
 
-  it('should return "How di you pay this amount?" when reject claim', async () => {
+  it('should return "How did you pay this amount?" when reject claim', async () => {
     //Given
     const claim = createClaimWithFullRejection(RejectAllOfClaimType.ALREADY_PAID);
     //When
@@ -368,6 +409,21 @@ describe('Reject Claim - Response Details', () => {
     expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[0].value.html).toBe('£1,000');
     expect(summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows[0].actions?.items[0].href).toBe(CITIZEN_FR_AMOUNT_YOU_PAID_URL.replace(':id', constVal.CLAIM_ID));
   });
+
+  it('should not throw and return empty timeline when reject claim timeline rows are undefined', async () => {
+    //Given
+    const claim = createClaimWithFullRejection(RejectAllOfClaimType.ALREADY_PAID);
+    claim.rejectAllOfClaim.timeline = new DefendantTimeline();
+    //When
+    const summarySections = await getSummarySections(constVal.CLAIM_ID, claim, 'cimode');
+    //Then
+    const rows = summarySections.sections[constVal.INDEX_RESPONSE_DETAILS_SECTION].summaryList.rows;
+    const titleIndex = rows.findIndex(row => row.key.text === 'PAGES.CHECK_YOUR_ANSWER.TIMELINE_TITLE');
+    expect(titleIndex).toBeGreaterThan(-1);
+    expect(rows[titleIndex + 1].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.TIMELINE_COMMENTS');
+    expect(rows[titleIndex + 1].value.text).toBe('');
+  });
+
   it('should return your response details section without totalClaimAmount and amount', async () => {
     //Given
     const claim = createClaimWithBasicRespondentDetails();
@@ -388,8 +444,8 @@ describe('Reject Claim - Response Details', () => {
     expect(summarySections.sections[constVal.INDEX_RESPONSE_CLAIM_SECTION].summaryList.rows[1].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.RESPONSE_WHY_DO_YOU_REJECT_ALL_OF_THIS_CLAIM');
     expect(summarySections.sections[constVal.INDEX_RESPONSE_CLAIM_SECTION].summaryList.rows[1].value.html).toBe('PAGES.CITIZEN_RESPONSE_TYPE.REJECT_ALL_CLAIM_TYPE.DISPUTE');
     expect(summarySections.sections[constVal.INDEX_RESPONSE_CLAIM_SECTION].summaryList.rows[1].actions?.items[0].href).toBe(CITIZEN_REJECT_ALL_CLAIM_URL.replace(':id', constVal.CLAIM_ID));
-
   });
+
   it('should return your response details section with totalClaimAmount and amount', async () => {
     //Given
     const claim = createClaimWithFullRejection(RejectAllOfClaimType.DISPUTE, 100);
@@ -406,6 +462,7 @@ describe('Reject Claim - Response Details', () => {
     expect(summarySections.sections[constVal.INDEX_RESPONSE_CLAIM_SECTION].summaryList.rows[1].value.html).toBe('PAGES.CITIZEN_RESPONSE_TYPE.REJECT_ALL_CLAIM_TYPE.DISPUTE');
     expect(summarySections.sections[constVal.INDEX_RESPONSE_CLAIM_SECTION].summaryList.rows[1].actions?.items[0].href).toBe(CITIZEN_REJECT_ALL_CLAIM_URL.replace(':id', constVal.CLAIM_ID));
   });
+
   it('should return your response details section with rejection text', async () => {
     //Given
     const claim = createClaimWithBasicRespondentDetails();
@@ -427,7 +484,6 @@ describe('Reject Claim - Response Details', () => {
     expect(summarySections.sections[constVal.INDEX_RESPONSE_CLAIM_SECTION].summaryList.rows[1].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.RESPONSE_WHY_DO_YOU_REJECT_ALL_OF_THIS_CLAIM');
     expect(summarySections.sections[constVal.INDEX_RESPONSE_CLAIM_SECTION].summaryList.rows[1].value.html).toBe('PAGES.CITIZEN_RESPONSE_TYPE.REJECT_ALL_CLAIM_TYPE.DISPUTE');
     expect(summarySections.sections[constVal.INDEX_RESPONSE_CLAIM_SECTION].summaryList.rows[1].actions?.items[0].href).toBe(CITIZEN_REJECT_ALL_CLAIM_URL.replace(':id', constVal.CLAIM_ID));
-
   });
 
   it('should return your response details section with defence text', async () => {
@@ -451,7 +507,6 @@ describe('Reject Claim - Response Details', () => {
     expect(summarySections.sections[constVal.INDEX_RESPONSE_CLAIM_SECTION].summaryList.rows[1].key.text).toBe('PAGES.CHECK_YOUR_ANSWER.RESPONSE_WHY_DO_YOU_REJECT_ALL_OF_THIS_CLAIM');
     expect(summarySections.sections[constVal.INDEX_RESPONSE_CLAIM_SECTION].summaryList.rows[1].value.html).toBe('PAGES.CITIZEN_RESPONSE_TYPE.REJECT_ALL_CLAIM_TYPE.DISPUTE');
     expect(summarySections.sections[constVal.INDEX_RESPONSE_CLAIM_SECTION].summaryList.rows[1].actions?.items[0].href).toBe(CITIZEN_REJECT_ALL_CLAIM_URL.replace(':id', constVal.CLAIM_ID));
-
   });
 
 });

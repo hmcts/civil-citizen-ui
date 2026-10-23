@@ -30,6 +30,7 @@ import {getClaimById} from 'modules/utilityService';
 import {addAnother, getUploadDocumentsForm, saveCaseProgression} from 'services/features/caseProgression/caseProgressionService';
 import {CaseDocument} from 'models/document/caseDocument';
 import {EvidenceUploadDisclosure} from 'models/document/documentType';
+import * as fileUploadUtils from 'common/utils/fileUploadUtils';
 
 const getTrialContentMock = getTrialContent as jest.Mock;
 
@@ -183,6 +184,57 @@ describe('Upload document- upload document controller', () => {
       expect(res.text).toContain('Gwrandawiad');
       expect(res.text).toContain('Datgelu');
       expect(res.text).not.toContain('Tystiolaeth tystion');
+    });
+  });
+
+  it.each([
+    ['defendant', '../../../../utils/mocks/civilClaimResponseDocumentUploadedMock.json', 'defendantDocuments'],
+    ['claimant', '../../../../utils/mocks/civilClaimResponseDocumentUploadedClaimantMock.json', 'claimantDocuments'],
+  ])('should display the no valid documents error and keep the %s draft when redirected from check your answers', async (_party, mockPath, documentsProperty: 'defendantDocuments' | 'claimantDocuments') => {
+    const civilClaimDocumentUploaded = require(mockPath);
+    civilClaimDocumentUploaded.case_data.id = civilClaimDocumentUploaded.id;
+    const claim: Claim = civilClaimDocumentUploaded.case_data as Claim;
+    const noValidDocumentsError = fileUploadUtils.createNoValidDocumentsError();
+    const spyFileUploadErrors = jest.spyOn(fileUploadUtils, 'getFileUploadErrorsForSource').mockReturnValueOnce(noValidDocumentsError);
+    const spyDisclosure = jest.spyOn(DisclosureService, 'getDisclosureContent');
+    (getClaimById as jest.Mock).mockResolvedValueOnce(Object.assign(new Claim(), claim));
+
+    await request(app).get(CP_UPLOAD_DOCUMENTS_URL).query({lang: 'en'}).expect((res) => {
+      expect(res.status).toBe(200);
+      expect(res.text).toContain('There was a problem');
+      expect(res.text).toContain('We could not submit your documents. Please upload them again and try submitting.');
+      expect(spyFileUploadErrors).toHaveBeenCalledWith(expect.anything(), fileUploadUtils.FILE_UPLOAD_SOURCE.CP_UPLOAD_DOCUMENTS);
+      expect(spyDisclosure).toHaveBeenCalledWith(expect.anything(), new GenericForm(claim.caseProgression[documentsProperty], noValidDocumentsError));
+    });
+  });
+
+  it('should display the no valid documents error in Welsh when redirected from check your answers', async () => {
+    const civilClaimDocumentUploaded = require('../../../../utils/mocks/civilClaimResponseDocumentUploadedMock.json');
+    civilClaimDocumentUploaded.case_data.id = civilClaimDocumentUploaded.id;
+    const claim: Claim = civilClaimDocumentUploaded.case_data as Claim;
+    jest.spyOn(fileUploadUtils, 'getFileUploadErrorsForSource').mockReturnValueOnce(fileUploadUtils.createNoValidDocumentsError());
+    (getClaimById as jest.Mock).mockResolvedValueOnce(Object.assign(new Claim(), claim));
+
+    await request(app).get(CP_UPLOAD_DOCUMENTS_URL).query({lang: 'cy'}).expect((res) => {
+      expect(res.status).toBe(200);
+      expect(res.text).toContain('Ni allem gyflwyno eich dogfennau. Uwchlwythwch nhw eto a cheisiwch eu cyflwyno.');
+    });
+  });
+
+  it('should display the no valid documents error with empty sections when there is no upload draft', async () => {
+    const civilClaimDocumentUploaded = require('../../../../utils/mocks/civilClaimResponseMock.json');
+    civilClaimDocumentUploaded.case_data.id = civilClaimDocumentUploaded.id;
+    const claim: Claim = Object.assign(new Claim(), civilClaimDocumentUploaded.case_data);
+    claim.caseProgression = undefined;
+    const noValidDocumentsError = fileUploadUtils.createNoValidDocumentsError();
+    jest.spyOn(fileUploadUtils, 'getFileUploadErrorsForSource').mockReturnValueOnce(noValidDocumentsError);
+    const spyDisclosure = jest.spyOn(DisclosureService, 'getDisclosureContent');
+    (getClaimById as jest.Mock).mockResolvedValueOnce(claim);
+
+    await request(app).get(CP_UPLOAD_DOCUMENTS_URL).query({lang: 'en'}).expect((res) => {
+      expect(res.status).toBe(200);
+      expect(res.text).toContain('We could not submit your documents. Please upload them again and try submitting.');
+      expect(spyDisclosure).toHaveBeenCalledWith(expect.anything(), new GenericForm(new UploadDocumentsUserForm([], [], [], [], [], [], [], [], [], [], [], [], [], [], []), noValidDocumentsError));
     });
   });
 
