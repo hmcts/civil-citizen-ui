@@ -301,7 +301,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         </div>
       </div>
       <div class="govuk-grid-row">
-        <form name="accounts" method="post" novalidate>
+        <form name="accounts" method="post" novalidate data-module="cui-append-row" data-row-name-prefix="accounts" data-row-id-prefixes="[]">
 
   <input type="hidden" name="_csrf" value="">
 
@@ -340,13 +340,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 
 
+
         <div class="govuk-grid-column-one-third govuk-!-display-inline">
 
 
+
 <div class="govuk-form-group">
-  <label class="govuk-label govuk-visually-hidden" for="accounts[0][typeOfAccount]">
+  <label class="govuk-label govuk-visually-hidden" data-row-label-template="Account %row% Type of account" for="accounts[0][typeOfAccount]">
     Account 1 Type of account
   </label>
+
 
 
   <select class="govuk-select govuk-grid-column-full" id="accounts[0][typeOfAccount]" name="accounts[0][typeOfAccount]">
@@ -372,16 +375,19 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 
   </select>
+
 </div>
 
         </div>
         <div class="govuk-grid-column-one-third govuk-!-display-inline">
 
 
+
 <div class="govuk-form-group">
-  <label class="govuk-label govuk-visually-hidden" for="accounts[0][joint]">
+  <label class="govuk-label govuk-visually-hidden" data-row-label-template="Account %row% Joint account" for="accounts[0][joint]">
     Account 1 Joint account
   </label>
+
 
 
   <select class="govuk-select govuk-grid-column-full" id="accounts[0][joint]" name="accounts[0][joint]">
@@ -399,19 +405,31 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 
   </select>
+
 </div>
 
         </div>
         <div class="govuk-grid-column-one-third govuk-!-display-inline">
 
 
+
+
+
 <div class="govuk-form-group">
-  <label class="govuk-label govuk-visually-hidden" for="accounts[0][balance]">
+  <label class="govuk-label govuk-visually-hidden" data-row-label-template="Account %row% Balance, in pounds" for="accounts[0][balance]">
     Account 1 Balance, in pounds
   </label>
 
-<div class="govuk-input__wrapper"><div class="govuk-input__prefix" aria-hidden="true">£</div>
-  <input class="govuk-input govuk-grid-column-full" id="accounts[0][balance]" name="accounts[0][balance]" type="text" spellcheck="false"></div>
+
+  <div class="govuk-input__wrapper">
+
+
+    <div class="govuk-input__prefix" aria-hidden="true">£</div>
+
+    <input class="govuk-input govuk-grid-column-full" id="accounts[0][balance]" name="accounts[0][balance]" type="text" spellcheck="false" value="">
+
+
+  </div>
 
 </div>
 
@@ -446,13 +464,16 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 
 
+
         <div class="govuk-grid-column-one-third govuk-!-display-inline">
 
 
+
 <div class="govuk-form-group">
-  <label class="govuk-label govuk-visually-hidden" for="accounts[1][typeOfAccount]">
+  <label class="govuk-label govuk-visually-hidden" data-row-label-template="Account %row% Type of account" for="accounts[1][typeOfAccount]">
     Account 2 Type of account
   </label>
+
 
 
   <select class="govuk-select govuk-grid-column-full" id="accounts[1][typeOfAccount]" name="accounts[1][typeOfAccount]">
@@ -478,16 +499,19 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 
   </select>
+
 </div>
 
         </div>
         <div class="govuk-grid-column-one-third govuk-!-display-inline">
 
 
+
 <div class="govuk-form-group">
-  <label class="govuk-label govuk-visually-hidden" for="accounts[1][joint]">
+  <label class="govuk-label govuk-visually-hidden" data-row-label-template="Account %row% Joint account" for="accounts[1][joint]">
     Account 2 Joint account
   </label>
+
 
 
   <select class="govuk-select govuk-grid-column-full" id="accounts[1][joint]" name="accounts[1][joint]">
@@ -505,19 +529,31 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 
   </select>
+
 </div>
 
         </div>
         <div class="govuk-grid-column-one-third govuk-!-display-inline">
 
 
+
+
+
 <div class="govuk-form-group">
-  <label class="govuk-label govuk-visually-hidden" for="accounts[1][balance]">
+  <label class="govuk-label govuk-visually-hidden" data-row-label-template="Account %row% Balance, in pounds" for="accounts[1][balance]">
     Account 2 Balance, in pounds
   </label>
 
-<div class="govuk-input__wrapper"><div class="govuk-input__prefix" aria-hidden="true">£</div>
-  <input class="govuk-input govuk-grid-column-full" id="accounts[1][balance]" name="accounts[1][balance]" type="text" spellcheck="false"></div>
+
+  <div class="govuk-input__wrapper">
+
+
+    <div class="govuk-input__prefix" aria-hidden="true">£</div>
+
+    <input class="govuk-input govuk-grid-column-full" id="accounts[1][balance]" name="accounts[1][balance]" type="text" spellcheck="false" value="">
+
+
+  </div>
 
 </div>
 
@@ -536,7 +572,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 
 
-<button class="govuk-button govuk-button--secondary append-row" data-module="govuk-button">
+<button type="button" class="govuk-button govuk-button--secondary append-row" data-module="govuk-button" hidden="true">
   Add another account
 </button>
 

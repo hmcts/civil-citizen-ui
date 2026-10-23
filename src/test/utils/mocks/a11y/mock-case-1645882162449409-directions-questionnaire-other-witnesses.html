@@ -327,39 +327,35 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 
 <div class="govuk-form-group">
+  <fieldset class="govuk-fieldset" aria-describedby="option-hint">
+  <legend class="govuk-fieldset__legend govuk-visually-hidden">
+    Do you have other witnesses?
+  </legend>
 
   <div id="option-hint" class="govuk-hint">
-
   </div>
 
-
-  <div class="govuk-radios"
-    data-module="govuk-radios">
+  <div class="govuk-radios" data-module="govuk-radios">
 
 
 
-
-
-
-        <div class="govuk-radios__item">
-          <input class="govuk-radios__input" id="option" name="option" type="radio" value="yes" data-aria-controls="conditional-option">
-          <label class="govuk-label govuk-radios__label" for="option">
+    <div class="govuk-radios__item">
+      <input class="govuk-radios__input" id="option" name="option" type="radio" value="yes" data-aria-controls="conditional-option">
+      <label class="govuk-label govuk-radios__label" for="option">
         <span>Yes</span>
       </label>
-
-        </div>
-
-          <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-option">
-
-
+    </div>
+    <div class="govuk-radios__conditional govuk-radios__conditional--hidden" id="conditional-option">
+      <div data-module="cui-add-another">
+  <div class="cui-add-another__items" id="witnessItems">
 
 
 
+  <fieldset class="govuk-fieldset cui-add-another__item">
+  <legend class="govuk-fieldset__legend govuk-visually-hidden">
+    Do you have other witnesses? <span data-row-number="">1</span>
+  </legend>
 
-
-
-  <div class="row-container">
-    <div class="multiple-row">
 
 
 <div class="govuk-form-group">
@@ -367,8 +363,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     First name
   </label>
 
-<input class="govuk-input govuk-!-width-one-half" id="witnessItems[0][firstName]" name="witnessItems[0][firstName]" type="text" autocomplete="text">
-
+  <input class="govuk-input govuk-!-width-one-half" id="witnessItems[0][firstName]" name="witnessItems[0][firstName]" type="text" value="" autocomplete="text" data-name="witnessItems[%index%][firstName]" data-id="witnessItems[%index%][firstName]">
 </div>
 
 
@@ -378,8 +373,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     Last Name
   </label>
 
-<input class="govuk-input govuk-!-width-one-half" id="witnessItems[0][lastName]" name="witnessItems[0][lastName]" type="text" autocomplete="text">
-
+  <input class="govuk-input govuk-!-width-one-half" id="witnessItems[0][lastName]" name="witnessItems[0][lastName]" type="text" value="" autocomplete="text" data-name="witnessItems[%index%][lastName]" data-id="witnessItems[%index%][lastName]">
 </div>
 
 
@@ -389,8 +383,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     Email address (optional)
   </label>
 
-<input class="govuk-input govuk-!-width-one-half" id="witnessItems[0][email]" name="witnessItems[0][email]" type="text" autocomplete="text">
-
+  <input class="govuk-input govuk-!-width-one-half" id="witnessItems[0][email]" name="witnessItems[0][email]" type="text" value="" autocomplete="text" data-name="witnessItems[%index%][email]" data-id="witnessItems[%index%][email]">
 </div>
 
 
@@ -400,10 +393,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     Phone number (optional)
   </label>
 
-<input class="govuk-input govuk-!-width-one-half" id="witnessItems[0][telephone]" name="witnessItems[0][telephone]" type="text" autocomplete="text">
-
+  <input class="govuk-input govuk-!-width-one-half" id="witnessItems[0][telephone]" name="witnessItems[0][telephone]" type="text" value="" autocomplete="text" data-name="witnessItems[%index%][telephone]" data-id="witnessItems[%index%][telephone]">
 </div>
-
 
 
 <div class="govuk-form-group">
@@ -411,61 +402,37 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     Tell us what they witnessed
   </label>
 
-
-  <textarea class="govuk-textarea govuk-!-width-three-quarters" id="witnessItems[0][details]" name="witnessItems[0][details]" rows="5"></textarea>
+  <textarea class="govuk-textarea govuk-!-width-three-quarters" id="witnessItems[0][details]" name="witnessItems[0][details]" rows="5" data-name="witnessItems[%index%][details]" data-id="witnessItems[%index%][details]"></textarea>
 </div>
 
 
-
-
-
-
-
-
-
-<button class="govuk-button govuk-button--secondary remove-row govuk-visually-hidden" data-module="govuk-button">
+<button type="button" class="govuk-button govuk-button--secondary cui-add-another__remove-button" data-module="govuk-button" hidden="true">
   Remove witness
 </button>
 
-    </div>
+</fieldset>
+
   </div>
 
-
-
-
-
-
-
-
-
-
-<button class="govuk-button govuk-button append-row" data-module="govuk-button">
+<button type="button" class="govuk-button govuk-button cui-add-another__add-button" data-module="govuk-button" hidden="true">
   Add another witness
 </button>
-
-
-          </div>
-
-
+</div>
+    </div>
 
 
 
 
-
-
-        <div class="govuk-radios__item">
-          <input class="govuk-radios__input" id="option-2" name="option" type="radio" value="no">
-          <label class="govuk-label govuk-radios__label" for="option-2">
+    <div class="govuk-radios__item">
+      <input class="govuk-radios__input" id="option-2" name="option" type="radio" value="no">
+      <label class="govuk-label govuk-radios__label" for="option-2">
         <span>No</span>
       </label>
-
-        </div>
-
-
+    </div>
 
 
   </div>
-
+</fieldset>
 </div>
 
 

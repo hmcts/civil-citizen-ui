@@ -1,93 +1,57 @@
-/**
- * This is used for calculating a total amount paid  based on the amount and schedule when the amount is paid. The calculation happens on the server side
- * To use this functionality in the template please add the following classes: div class civil-amountRow which will containt the amount and the schedule inputs.
- * For amount input please add civil-amount class, for schedule radiobuttons please add civil-schedule class.
- * To display the total in your page please add total-monthly-income-expense class where you want the total to be displayed
- */
-document.addEventListener('DOMContentLoaded', async function () {
-  if (document.getElementsByClassName('civil-amountRow')?.length) {
-    addCalculationEventListener();
-    await getCalculation();
-  }
-});
+// Keep the existing calculation endpoint and schedules. Registration is delegated
+// once per form, so adding rows cannot multiply listeners on existing controls.
+const boundForms = new WeakSet();
+const requests = new WeakMap();
+const formFor = scope => scope?.closest?.('form') || (scope?.matches?.('form') ? scope : document.querySelector('.total-monthly-income-expense')?.closest('form'));
 
-function addCalculationEventListener() {
-  document.querySelectorAll('.civil-amountRow .civil-amount')?.forEach(element => element.addEventListener('keyup', debounce(getCalculation, 1000)));
-  document.querySelectorAll('.civil-amountRow .civil-schedule')?.forEach(element => element.addEventListener('change', getCalculation));
-  document.querySelectorAll('.govuk-checkboxes__input').forEach(element => element.addEventListener('change', getCalculation));
-}
-
-function debounce(func, delay) {
-  let debounceTimer;
-  return function () {
-    const context = this;
-    const args = arguments;
-    clearTimeout(debounceTimer);
-    debounceTimer = setTimeout(() => func.apply(context, args), delay);
+export function debounce(func, delay) {
+  let timer;
+  return function (...args) {
+    clearTimeout(timer);
+    timer = setTimeout(() => func.apply(this, args), delay);
   };
 }
 
-function getSelectedInput(inputs) {
-  let selected;
-  for (let i = 0; i < inputs?.length; i++) {
-    if (inputs[i].checked) {
-      selected = inputs[i];
-      break;
-    }
-  }
-  return selected;
-}
-
-function inputsHaveValues(amount, selectedSchedule) {
-  return amount?.length && selectedSchedule && amount[0].value && selectedSchedule.value;
-}
-
-function getCheckbox(element) {
-  if (element.parentNode?.classList.contains('govuk-checkboxes__conditional')) {
-    return element.parentNode;
-  } else {
-    return element.parentNode.parentNode;
-  }
-}
-
-async function getCalculation() {
-  const totalMonthlyIncomeExpense = document.getElementsByClassName('total-monthly-income-expense')[0];
-  const csrfInput = document.getElementsByName('_csrf')[0];
-
-  if (!totalMonthlyIncomeExpense || !csrfInput) {
-    return;
-  }
-  const amountToCalculate = [];
-  const amountRows = Array.from(document.getElementsByClassName('civil-amountRow'));
-  amountRows.forEach(element => {
-    const parent = getCheckbox(element);
-    const amount = element.getElementsByClassName('civil-amount');
-    const schedules = element.querySelectorAll('.civil-schedule input');
-    const selectedSchedule = getSelectedInput(schedules);
-    if (inputsHaveValues(amount, selectedSchedule) && !parent.classList.contains('govuk-checkboxes__conditional--hidden')) {
-      amountToCalculate.push({amount: amount[0].value, schedule: selectedSchedule.value});
-    }
+export function addCalculationEventListener(scope = document) {
+  const forms = scope.matches?.('form') ? [scope] : scope.closest?.('form') ? [scope.closest('form')] : [...scope.querySelectorAll('form')];
+  forms.forEach(form => {
+    if (boundForms.has(form) || !form.querySelector('.total-monthly-income-expense')) return;
+    boundForms.add(form);
+    const calculate = () => getCalculation(form).catch(error => console.error(error));
+    const delayed = debounce(calculate, 1000);
+    form.addEventListener('keyup', event => { if (event.target.matches('.civil-amount')) delayed(); });
+    form.addEventListener('input', event => { if (event.target.matches('.civil-amount')) delayed(); });
+    form.addEventListener('change', event => {
+      if (event.target.matches('.civil-schedule input, .govuk-checkboxes__input, .civil-amount')) calculate();
+    });
   });
-  const options = {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'CSRF-Token': csrfInput.value,
-    },
-    body: JSON.stringify(amountToCalculate),
-  };
-  if (amountToCalculate.length > 0) {
-    const response = await fetch('/total-income-expense-calculation', options);
-    const data = await response.json();
-    totalMonthlyIncomeExpense.innerHTML = data;
-  } else {
-    totalMonthlyIncomeExpense.innerHTML = '0';
-  }
 }
 
-export {
-  getCalculation,
-  addCalculationEventListener,
-  debounce,
-};
+export async function getCalculation(scope = document) {
+  const form = formFor(scope);
+  const total = form?.querySelector('.total-monthly-income-expense'), csrf = form?.querySelector('[name="_csrf"]');
+  if (!total || !csrf) return;
+  const sequence = (requests.get(form) || 0) + 1;
+  requests.set(form, sequence);
+  const amounts = [];
+  form.querySelectorAll('.civil-amountRow').forEach(row => {
+    const amount = row.querySelector('.civil-amount'), selected = row.querySelector('.civil-schedule input:checked');
+    const category = amount?.name.match(/^model\[([^\]]+)]/)?.[1];
+    const declaration = [...form.querySelectorAll('input[name="declared"]')].find(input => input.value === category);
+    const active = declaration ? declaration.checked : !row.closest('.govuk-checkboxes__conditional--hidden');
+    if (active && amount?.value && selected?.value) amounts.push({amount: amount.value, schedule: selected.value});
+  });
+  if (!amounts.length) {total.textContent = '0';return;}
+  const response = await fetch('/total-income-expense-calculation', {
+    method: 'POST', headers: {'Content-Type': 'application/json', 'CSRF-Token': csrf.value}, body: JSON.stringify(amounts),
+  });
+  const data = await response.json();
+  if (requests.get(form) === sequence) total.textContent = data;
+}
 
+document.addEventListener('DOMContentLoaded', () => {
+  addCalculationEventListener();
+  document.querySelectorAll('form').forEach(form => {
+    if (form.querySelector('.total-monthly-income-expense')) getCalculation(form).catch(error => console.error(error));
+  });
+});
