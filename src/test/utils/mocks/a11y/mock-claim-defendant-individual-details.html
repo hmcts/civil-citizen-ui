@@ -353,116 +353,77 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 
 
-  <div class="govuk-form-group postcode-container">
-    <label class="govuk-label" for="primaryAddressPostcode">
-      Enter a UK postcode
-    </label>
-    <div class="govuk-visually-hidden govuk-error-message">
-      We can&#39;t find an address for that postcode.Try again or enter the address manually.
+  <div class="postcode-container" data-module="cui-postcode-lookup" data-address-errors="false">
+    <div data-postcode-lookup hidden>
+<div class="govuk-form-group govuk-!-margin-bottom-2">
+  <label class="govuk-label" for="primaryAddressPostcode">
+    Enter a UK postcode
+  </label>
+  <input
+   class="govuk-input govuk-input--width-10 postcode-val" id="primaryAddressPostcode" name="primaryAddressPostcode" type="text" value="RG4 7AA" autocomplete="postal-code">
+</div>
+      <p id="primaryAddress-postcode-lookup-error" class="govuk-error-message govuk-!-display-none"
+   data-postcode-error="" role="alert" hidden="true">
+  <span class="govuk-visually-hidden">Error:</span> We can&#39;t find an address for that postcode. Try again or enter the address manually.
+</p>
+<button type="button" class="govuk-button govuk-button--secondary" data-module="govuk-button"
+   data-postcode-find="" aria-controls="primaryAddress-postcode-results" aria-expanded="false">
+  Find address
+</button>
     </div>
-    <input class="govuk-input govuk-input--width-10 postcode-val" title="Enter a UK postcode" name="primaryAddressPostcode" type="text" autocomplete="postal-code"/>
-    <button href="#" class="govuk-button govuk-button--secondary" data-module="govuk-button">
-      Find address
-    </button>
-    <div class="govuk-visually-hidden govuk-!-margin-bottom-2">
-
-
+    <div id="primaryAddress-postcode-results" data-postcode-results hidden>
 <div class="govuk-form-group">
   <label class="govuk-label" for="primaryAddresspostcodeAddress">
     Pick an address
   </label>
-
-
   <select class="govuk-select addressList" id="primaryAddresspostcodeAddress" name="addressList">
-
-
-      <option value="">addresses found</option>
-
-
+    <option value="">addresses found</option>
   </select>
 </div>
-
     </div>
-    <div class="">
-      <a aria-controls="enterAddressManually" href="#" class="govuk-body govuk-link">
-        Enter address manually
-      </a>
+    <div data-postcode-manual-control hidden>
+      <a data-postcode-manual href="#primaryAddress-address-fields" aria-controls="primaryAddress-address-fields" aria-expanded="false" class="govuk-body govuk-link">Enter address manually</a>
     </div>
-    <div>
-
-        <div class="govuk-visually-hidden address-form">
-
-
-
-
-
-
-
-
+    <div id="primaryAddress-address-fields" class="address-form">
   <div class=govuk-fieldset__legend--m>
-
   </div>
-
   <div class="">
-
-
 <div class="govuk-form-group">
   <label class="govuk-label" for="primaryAddress[addressLine1]">
     Building and street <span class="govuk-visually-hidden">line 1 of 3</span>
   </label>
-
-<input class="govuk-input govuk-input--width-20" id="primaryAddress[addressLine1]" name="addressLine1" type="text" value="Flat 2" autocomplete="primaryAddressAddressLine-1">
-
+  <input
+   class="govuk-input govuk-input--width-20" id="primaryAddress[addressLine1]" name="addressLine1" type="text" value="Flat 2" autocomplete="primaryAddressAddressLine-1">
 </div>
-
-
-
 <div class="govuk-form-group">
   <label class="govuk-label" for="primaryAddress[addressLine2]">
     <span class="govuk-visually-hidden">Building and street line 2 of 3</span>
   </label>
-
-<input class="govuk-input govuk-input--width-20" id="primaryAddress[addressLine2]" name="addressLine2" type="text" value="Caversham House 18" autocomplete="primaryAddressAddressLine-2">
-
+  <input
+   class="govuk-input govuk-input--width-20" id="primaryAddress[addressLine2]" name="addressLine2" type="text" value="Caversham House 18" autocomplete="primaryAddressAddressLine-2">
 </div>
-
-
-
 <div class="govuk-form-group">
   <label class="govuk-label" for="primaryAddress[addressLine3]">
     <span class="govuk-visually-hidden">Building and street <span class="govuk-visually-hidden">line 3 of 3</span>
   </label>
-
-<input class="govuk-input govuk-input--width-20" id="primaryAddress[addressLine3]" name="addressLine3" type="text" value="Church Road" autocomplete="primaryAddressAddressLine-3">
-
+  <input
+   class="govuk-input govuk-input--width-20" id="primaryAddress[addressLine3]" name="addressLine3" type="text" value="Church Road" autocomplete="primaryAddressAddressLine-3">
 </div>
-
   </div>
-
-
 <div class="govuk-form-group">
   <label class="govuk-label" for="primaryAddress[city]">
     Town or city
   </label>
-
-<input class="govuk-input govuk-input--width-20" id="primaryAddress[city]" name="city" type="text" value="Reading" autocomplete="primaryAddressaddress-level2">
-
+  <input
+   class="govuk-input govuk-input--width-20" id="primaryAddress[city]" name="city" type="text" value="Reading" autocomplete="primaryAddressaddress-level2">
 </div>
-
-
-
 <div class="govuk-form-group">
   <label class="govuk-label" for="primaryAddress[postCode]">
     Postcode
   </label>
-
-<input class="govuk-input govuk-input--width-10" id="primaryAddress[postCode]" name="postCode" type="text" value="RG4 7AA" autocomplete="primaryAddresspostal-code">
-
+  <input
+   class="govuk-input govuk-input--width-10" id="primaryAddress[postCode]" name="postCode" type="text" value="RG4 7AA" autocomplete="primaryAddresspostal-code">
 </div>
-
-
-        </div>
-
     </div>
   </div>
 
