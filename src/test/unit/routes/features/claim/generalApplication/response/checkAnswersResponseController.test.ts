@@ -9,7 +9,9 @@ import {GaResponse} from 'models/generalApplication/response/gaResponse';
 import {ApplicationTypeOption} from 'models/generalApplication/applicationType';
 import {RespondentAgreement} from 'models/generalApplication/response/respondentAgreement';
 import {HearingSupport, SupportType} from 'models/generalApplication/hearingSupport';
+import {HearingContactDetails} from 'models/generalApplication/hearingContactDetails';
 import {YesNo} from 'form/models/yesNo';
+import {GenericForm} from 'form/models/genericForm';
 import {t} from 'i18next';
 import {caseNumberPrettify} from 'common/utils/stringUtils';
 import {constructResponseUrlWithIdAndAppIdParams} from 'common/utils/urlFormatter';
@@ -17,6 +19,7 @@ import {getClaimById} from 'modules/utilityService';
 import {submitApplicationResponse} from 'services/features/generalApplication/response/submitApplicationResponse';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import * as gaStoreResponseService from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
+import {CallbackError} from 'client/common/error/callbackError';
 import {createMockResponse, getRouteHandler} from '../../../../../../utils/getRouteHandler';
 
 jest.mock('modules/draft-store/draftStoreService');
@@ -151,6 +154,34 @@ describe('General application - response - check your answers', () => {
       expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
       expect(mockSaveDraft).not.toHaveBeenCalled();
       expect(mockSubmit).not.toHaveBeenCalled();
+    });
+
+    it('should re-render with GDS errors when submitApplicationResponse throws CallbackError with field errors', async () => {
+      gaResponse.generalApplicationType = [ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT];
+      gaResponse.hasUnavailableDatesHearing = YesNo.NO;
+      gaResponse.hearingContactDetails = {
+        telephoneNumber: '07123456789',
+        emailAddress: 'bad^email@test.com',
+      } as HearingContactDetails;
+      mockGetDraft.mockResolvedValue(gaResponse);
+      mockSubmit.mockRejectedValue(new CallbackError(
+        [],
+        [],
+        [{id: 'hearingDetailsResp.HearingDetailsEmailID', message: 'Enter a valid email'}],
+      ));
+      req.body = {signed: true, name: 'Mr Applicant'};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        form: expect.any(GenericForm),
+      }));
+      const form = (res.render as jest.Mock).mock.calls[0][1].form as GenericForm<unknown>;
+      expect(form.hasErrors()).toBe(true);
+      expect(form.errorFor('ccd-field-hearingDetailsResp-HearingDetailsEmailID')).toBe('Enter a valid email');
+      expect(form.getErrors()[0].href).toBe('#ccd-field-hearingDetailsResp-HearingDetailsEmailID');
+      expect(res.redirect).not.toHaveBeenCalled();
+      expect(next).not.toHaveBeenCalled();
     });
   });
 });

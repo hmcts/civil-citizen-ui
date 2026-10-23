@@ -4,6 +4,7 @@ import {
   applyCcdFieldErrorsToSummaryRows,
   applyCcdFieldErrorsToSummarySections,
   CallbackError,
+  ccdFieldIdsMatch,
   extractCallbackErrorMessages,
   extractCallbackOnlyMessages,
   extractCcdFieldErrors,
@@ -169,6 +170,34 @@ describe('callbackError helpers', () => {
         message: 'bad email',
         anchorId: 'ccd-field-respondent1-partyEmail',
       }]);
+    });
+
+    it('matches nested CCD paths to leaf ccdFieldId and vice versa', () => {
+      const emailRow: SummaryRow = {
+        key: {text: 'Email'},
+        value: {html: 'bad'},
+        ccdFieldId: 'generalAppHearingDetails.HearingDetailsEmailID',
+      };
+
+      const unmapped = applyCcdFieldErrorsToSummaryRows(
+        [emailRow],
+        [{id: 'HearingDetailsEmailID', message: 'Enter a valid email'}],
+        'Error',
+      );
+
+      expect(unmapped).toEqual([]);
+      expect(emailRow.value.html).toContain('Enter a valid email');
+      expect(emailRow.value.html).toContain('id="ccd-field-HearingDetailsEmailID"');
+    });
+  });
+
+  describe('ccdFieldIdsMatch', () => {
+    it('matches exact, nested-to-leaf, and leaf-to-nested ids', () => {
+      expect(ccdFieldIdsMatch('HearingDetailsEmailID', 'HearingDetailsEmailID')).toBe(true);
+      expect(ccdFieldIdsMatch('generalAppHearingDetails.HearingDetailsEmailID', 'HearingDetailsEmailID')).toBe(true);
+      expect(ccdFieldIdsMatch('HearingDetailsEmailID', 'generalAppHearingDetails.HearingDetailsEmailID')).toBe(true);
+      expect(ccdFieldIdsMatch('HearingDetailsTelephoneNumber', 'HearingDetailsEmailID')).toBe(false);
+      expect(ccdFieldIdsMatch(undefined, 'HearingDetailsEmailID')).toBe(false);
     });
   });
 });
