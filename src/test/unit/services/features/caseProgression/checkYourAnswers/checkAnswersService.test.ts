@@ -1,10 +1,12 @@
+import {CCDClaim} from 'models/civilClaimResponse';
 import {
   getDisclosureSummarySection,
   getExpertSummarySection,
   getTrialSummarySection,
   getWitnessSummarySection,
 } from 'services/features/caseProgression/checkYourAnswers/buildEvidenceUploadedSummaryRows';
-import {UploadDocumentsUserForm} from 'models/caseProgression/uploadDocumentsUserForm';
+import {UploadDocumentsUserForm, WitnessSection} from 'models/caseProgression/uploadDocumentsUserForm';
+import {CaseDocument} from 'models/document/caseDocument';
 import {
   getBottomElements,
   getSummarySections,
@@ -212,6 +214,71 @@ describe('checkAnswersServiceTest', () => {
         //then
         expect(mockSubmitEvent).toHaveBeenCalled();
         expect(mockSubmitEvent).toHaveBeenCalledWith('EVIDENCE_UPLOAD_RESPONDENT', req.params.id, createCCDClaimForUploadedDocuments(0,false),  <AppRequest>req);
+      });
+
+      describe('when sections hold several files', () => {
+        const uploadedFile = (documentName: string) => ({
+          documentName,
+          documentLink: {document_url: `http://dm-store/${documentName}`, document_binary_url: `http://dm-store/${documentName}/binary`, document_filename: documentName},
+          createdDatetime: new Date('2022-12-12T00:00:00.000Z'),
+        } as CaseDocument);
+
+        const witnessSection = (caseDocuments?: CaseDocument[]) => {
+          const section = new WitnessSection('12', '12', '2022');
+          section.witnessName = 'John Smith';
+          section.caseDocuments = caseDocuments;
+          return section;
+        };
+
+        const claimWith = (form: UploadDocumentsUserForm) => {
+          const claim = new Claim();
+          claim.caseRole = CaseRole.CLAIMANT;
+          claim.caseProgression = new CaseProgression();
+          claim.caseProgression.claimantDocuments = form;
+          return claim;
+        };
+
+        const submittedClaim = async (claim: Claim) => {
+          const mockSubmitEvent = jest.spyOn(CivilServiceClient.prototype, 'submitEvent');
+          const req = request;
+          req.params = {id: '12345'};
+          await saveUploadedDocuments(claim, <AppRequest>req);
+          return mockSubmitEvent.mock.calls.at(-1)[2] as CCDClaim;
+        };
+
+        const uploadedFileNames = (ccdDocuments: unknown[] | undefined) =>
+          (ccdDocuments ?? []).map((ccdDocument) => JSON.stringify(ccdDocument).match(/dm-store\/([^/"]+)/)[1]);
+
+        it('sends one document per uploaded file', async () => {
+          const form = getMockEmptyUploadDocumentsUserForm();
+          form.witnessStatement = [witnessSection([uploadedFile('first.pdf'), uploadedFile('second.pdf')]), witnessSection([uploadedFile('third.pdf')])];
+
+          const ccdClaim = await submittedClaim(claimWith(form));
+
+          expect(uploadedFileNames(ccdClaim.documentWitnessStatement)).toEqual(['first.pdf', 'second.pdf', 'third.pdf']);
+        });
+
+        it('sends a file saved in a draft from before multiple uploads', async () => {
+          const form = getMockEmptyUploadDocumentsUserForm();
+          const legacySection = witnessSection();
+          (legacySection as WitnessSection & {caseDocument?: CaseDocument}).caseDocument = uploadedFile('legacy.pdf');
+          form.witnessStatement = [legacySection];
+
+          const ccdClaim = await submittedClaim(claimWith(form));
+
+          expect(uploadedFileNames(ccdClaim.documentWitnessStatement)).toEqual(['legacy.pdf']);
+        });
+
+        it('sends nothing for sections without files', async () => {
+          const form = getMockEmptyUploadDocumentsUserForm();
+          form.witnessStatement = [witnessSection(undefined), witnessSection([])];
+          form.witnessSummary = undefined;
+
+          const ccdClaim = await submittedClaim(claimWith(form));
+
+          expect(uploadedFileNames(ccdClaim.documentWitnessStatement)).toEqual([]);
+          expect(uploadedFileNames(ccdClaim.documentWitnessSummary)).toEqual([]);
+        });
       });
     });
   });

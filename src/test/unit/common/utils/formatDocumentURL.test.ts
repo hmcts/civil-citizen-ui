@@ -1,6 +1,7 @@
 import {
   formatDocumentAlignedViewURL,
   formatDocumentViewURL,
+  formatDocumentViewURLs,
   formatDocumentWithHintText,
 } from 'common/utils/formatDocumentURL';
 import {CASE_DOCUMENT_VIEW_URL} from 'routes/urls';
@@ -9,6 +10,7 @@ import {HearingDateTimeFormatter} from 'services/features/caseProgression/hearin
 import {alignText} from 'form/models/alignText';
 import {documentIdExtractor} from 'common/utils/stringUtils';
 import {t} from 'i18next';
+import {CaseDocument} from 'models/document/caseDocument';
 
 describe('format <a> element for document', ()=>{
   it('Should format document details into <a>', ()=>{
@@ -27,6 +29,26 @@ describe('format <a> element for document', ()=>{
     const hrefExpected = CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId', binary);
     const expectedResult = `<a class="govuk-link" target="_blank" href="${hrefExpected}">${fileName}</a>`;
     expect(urlElement).toEqual(expectedResult);
+  });
+});
+
+describe('format <a> elements for several documents', () => {
+  const caseDocument = (documentName: string, binary: string) => ({
+    documentName,
+    documentLink: {document_binary_url: `http://dm-store:8080/documents/${binary}/binary`},
+  } as unknown as CaseDocument);
+
+  it('joins one link per document with a line break', () => {
+    const html = formatDocumentViewURLs([caseDocument('first.pdf', 'aaa'), caseDocument('second.pdf', 'bbb')], '1234');
+
+    expect(html).toEqual([
+      formatDocumentViewURL('first.pdf', '1234', 'http://dm-store:8080/documents/aaa/binary'),
+      formatDocumentViewURL('second.pdf', '1234', 'http://dm-store:8080/documents/bbb/binary'),
+    ].join('<br>'));
+  });
+
+  it('returns an empty string when there are no documents', () => {
+    expect(formatDocumentViewURLs([], '1234')).toEqual('');
   });
 });
 describe('format hint element for document', ()=>{

@@ -33,10 +33,12 @@ import {
 import {caseNumberPrettify} from 'common/utils/stringUtils';
 import {
   uploadAndValidateFile,
+  reportRejectedFiles,
   createMulterErrorMiddleware,
   createFileUploadError,
   getMulterErrorConstraint,
   extractCategoryAndIndex,
+  removeUploadedFileForAction,
 } from 'common/utils/fileUploadUtils';
 import {getRouteParam} from 'common/utils/routeParamUtils';
 
@@ -78,7 +80,7 @@ function renderView(form: GenericForm<UploadDocumentsForm>,uploadDocuments:Uploa
     claimId: caseNumberPrettify(claimId),
     pageTitle: 'PAGES.UPLOAD_YOUR_DOCUMENTS.TITLE',
     subtitle: 'PAGES.UPLOAD_DOCUMENTS.SUBTITLE',
-    paragraph: 'PAGES.MEDIATION.START_PAGE.EACH_DOCUMENT_MUST_WITH_SAVE_FILE',
+    paragraph: 'PAGES.MEDIATION.START_PAGE.EACH_DOCUMENT_MUST',
     sectionTitle: 'PAGES.MEDIATION.UPLOAD_DOCUMENTS.SECTION_TITLE',
     partyInformation: partyInformation(claim),
     backLinkUrl: constructResponseUrlWithIdParams(claimId, MEDIATION_TYPE_OF_DOCUMENTS),
@@ -127,12 +129,18 @@ mediationUploadDocumentsController.post(MEDIATION_UPLOAD_DOCUMENTS, multerMiddle
       }
     }
 
+    if (!action?.includes('[uploadButton]') && reportRejectedFiles(req, form)) {
+      return renderView(form, uploadDocuments, res, claimId, claim);
+    }
+
     if (action === 'add_another-yourStatement') {
       addAnother(uploadDocumentsForm,TypeOfMediationDocuments.YOUR_STATEMENT);
     } else if(action === 'add_another-documentsReferred'){
       addAnother(uploadDocumentsForm,TypeOfMediationDocuments.DOCUMENTS_REFERRED_TO_IN_STATEMENT);
     } else if (action?.includes('[uploadButton]')) {
       await uploadSingleFile(req, res, claimId, action, form);
+    } else if (action?.includes('[deleteFile]')) {
+      removeUploadedFileForAction(form.model, action);
     } else if (action?.includes('[removeButton]')) {
       removeItem(uploadDocumentsForm, action);
     }
