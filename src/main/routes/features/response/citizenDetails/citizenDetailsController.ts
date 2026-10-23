@@ -73,9 +73,11 @@ citizenDetailsController.post(CITIZEN_DETAILS_URL, (async (req: Request, res: Re
     const partyPhone = new GenericForm<PartyPhone>(new PartyPhone(req.body.partyPhone, respondent?.partyPhone?.ccdPhoneExist));
 
     await partyDetails.validate();
-    partyPhone.validateSync();
+    // TEMP DTSCCI-5899 QA: skip phone validation on Confirm your details (ccdPhoneExist path)
+    // so invalid number can reach civil-service as field_errors. Revert before merge.
+    // partyPhone.validateSync();
 
-    if (partyDetails.hasErrors() || partyPhone.hasErrors()) {
+    if (partyDetails.hasErrors() /* || partyPhone.hasErrors() */) {
       generateCorrespondenceAddressErrorMessages(partyDetails);
       renderPage(res, req, partyDetails, respondent.type, partyPhone, carmEnabled);
     } else {

@@ -9,7 +9,6 @@ import {
   civilClaimResponseMock, mockDraftClaim,
 } from '../../../../../utils/mockDraftStore';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import {t} from 'i18next';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {cloneDeep} from 'lodash';
 import {Claim} from 'models/claim';
@@ -113,23 +112,22 @@ describe('Citizen phone number', () => {
       isCarmEnabledSpy(false);
     });
 
-    it('should return error on incorrect input', async () => {
+    // TEMP DTSCCI-5899 QA: invalid phone is accepted so it can reach civil-service. Restore error expectations on revert.
+    it('should redirect on incorrect input', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_PHONE_NUMBER_URL)
         .send('telephoneNumber=abc')
         .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.VALID_PHONE_NUMBER'));
+          expect(res.status).toBe(302);
         });
     });
-    it('should return error on input with interior spaces', async () => {
+    it('should redirect on input with interior spaces', async () => {
       await request(app)
         .post(CITIZEN_PHONE_NUMBER_URL)
         .send('telephoneNumber=123 456')
         .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.VALID_PHONE_NUMBER'));
+          expect(res.status).toBe(302);
         });
     });
     it('should accept input with trailing whitespaces', async () => {
@@ -186,23 +184,22 @@ describe('Citizen phone number', () => {
       isCarmEnabledSpy(true);
     });
 
-    it('should return error on incorrect input', async () => {
+    // TEMP DTSCCI-5899 QA: invalid phone is accepted so it can reach civil-service. Restore error expectations on revert.
+    it('should redirect on incorrect input', async () => {
       app.locals.draftStoreClient = mockCivilClaim;
       await request(app)
         .post(CITIZEN_PHONE_NUMBER_URL)
         .send('telephoneNumber=abc')
         .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.VALID_PHONE_NUMBER'));
+          expect(res.status).toBe(302);
         });
     });
-    it('should return error on input with interior spaces', async () => {
+    it('should redirect on input with interior spaces', async () => {
       await request(app)
         .post(CITIZEN_PHONE_NUMBER_URL)
         .send('telephoneNumber=123 456')
         .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.VALID_PHONE_NUMBER'));
+          expect(res.status).toBe(302);
         });
     });
     it('should accept input with trailing whitespaces', async () => {
@@ -232,7 +229,7 @@ describe('Citizen phone number', () => {
           expect(res.status).toBe(302);
         });
     });
-    it('should return error on empty input', async () => {
+    it('should redirect on empty input', async () => {
       const draftClaim = cloneDeep(civilClaimResponseMock);
       draftClaim.case_data.statementOfMeans = undefined;
       app.locals.draftStoreClient = mockDraftClaim(draftClaim as unknown as Claim);
@@ -240,8 +237,7 @@ describe('Citizen phone number', () => {
         .post(CITIZEN_PHONE_NUMBER_URL)
         .send('telephoneNumber=')
         .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.ENTER_TELEPHONE_NUMBER'));
+          expect(res.status).toBe(302);
         });
     });
     it('should return http 500 when has error in the post method', async () => {

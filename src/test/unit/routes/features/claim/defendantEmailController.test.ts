@@ -77,32 +77,32 @@ describe('Defendant Email', () => {
       expect(res.redirect).toHaveBeenCalledWith(CLAIM_DEFENDANT_PHONE_NUMBER_URL);
     });
 
-    it('should re-render when email is incorrect', async () => {
+    // TEMP DTSCCI-5899 QA: invalid email is accepted so it can reach civil-service. Restore reject expectations on revert.
+    it('should redirect when email is incorrect', async () => {
       req.body = {emailAddress: 'test'};
 
       await postHandler(req as AppRequest, res as unknown as Response, next);
 
-      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({form: expect.any(GenericForm)}));
-      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
-      expect(res.redirect).not.toHaveBeenCalled();
+      expect(mockSaveDefendantEmail).toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(CLAIM_DEFENDANT_PHONE_NUMBER_URL);
     });
 
-    it('should re-render when email is too long', async () => {
+    it('should redirect when email is too long', async () => {
       req.body = {emailAddress: 'x'.repeat(311) + '@gmail.com'};
 
       await postHandler(req as AppRequest, res as unknown as Response, next);
 
-      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({form: expect.any(GenericForm)}));
-      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
+      expect(mockSaveDefendantEmail).toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(CLAIM_DEFENDANT_PHONE_NUMBER_URL);
     });
 
-    it('should re-render when email domain is invalid', async () => {
+    it('should redirect when email domain is invalid', async () => {
       req.body = {emailAddress: 'underscoreindomain@gmail_.com'};
 
       await postHandler(req as AppRequest, res as unknown as Response, next);
 
-      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({form: expect.any(GenericForm)}));
-      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
+      expect(mockSaveDefendantEmail).toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(CLAIM_DEFENDANT_PHONE_NUMBER_URL);
     });
 
     it('should call next when save fails', async () => {

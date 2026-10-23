@@ -7,7 +7,6 @@ import {
   MEDIATION_EMAIL_CONFIRMATION_URL,
 } from 'routes/urls';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
-import {t} from 'i18next';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {Claim} from 'models/claim';
 import {MediationCarm} from 'models/mediation/mediationCarm';
@@ -75,23 +74,24 @@ describe('Mediation Email Mediation Confirmation Controller', () => {
           expect(res.header.location).toEqual(MEDIATION_EMAIL_CONFIRMATION_URL);
         });
     });
-    it('should Valid Telephone when is empty', async () => {
+    // TEMP DTSCCI-5899 QA: invalid/empty phone is accepted so it can reach civil-service. Restore error expectations on revert.
+    it('should redirect when Telephone is empty', async () => {
       await request(app)
         .post(CONTROLLER_URL)
         .send({alternativeTelephone: ''})
         .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.PHONE_NUMBER_REQUIRED_CARM'));
+          expect(res.status).toBe(302);
+          expect(res.header.location).toEqual(MEDIATION_EMAIL_CONFIRMATION_URL);
         });
     });
 
-    it('should should Valid telephone when is invalid', async () => {
+    it('should redirect when telephone is invalid', async () => {
       await request(app)
         .post(CONTROLLER_URL)
         .send({alternativeTelephone: 'aaa'})
         .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.VALID_PHONE_NUMBER_UK);
+          expect(res.status).toBe(302);
+          expect(res.header.location).toEqual(MEDIATION_EMAIL_CONFIRMATION_URL);
         });
     });
 

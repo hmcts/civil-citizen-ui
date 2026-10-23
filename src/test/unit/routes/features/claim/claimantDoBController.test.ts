@@ -86,25 +86,24 @@ describe('Claimant Date of Birth Controller', () => {
   });
 
   describe('on POST', () => {
-    it('should re-render date of birth page if there are form errors', async () => {
+    // TEMP DTSCCI-5899 QA: invalid/under-18 DOB is accepted so it can reach civil-service. Restore error expectations on revert.
+    it('should redirect if there are form errors', async () => {
       await postHandler(req as AppRequest, res as unknown as Response, next);
 
-      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
-        pageTitle,
-        form: expect.any(GenericForm),
-      }));
-      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
+      expect(mockSaveClaimantProperty).toHaveBeenCalledWith(req, 'dateOfBirth', expect.any(DOBDate));
+      expect(res.redirect).toHaveBeenCalledWith(CLAIMANT_PHONE_NUMBER_URL);
+      expect(res.render).not.toHaveBeenCalled();
     });
 
-    it('should re-render when claimant is under 18', async () => {
+    it('should redirect when claimant is under 18', async () => {
       const today = new Date();
       req.body = {day: today.getDate(), month: today.getMonth(), year: today.getFullYear() - 16};
 
       await postHandler(req as AppRequest, res as unknown as Response, next);
 
-      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({form: expect.any(GenericForm)}));
-      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
-      expect(res.redirect).not.toHaveBeenCalled();
+      expect(mockSaveClaimantProperty).toHaveBeenCalledWith(req, 'dateOfBirth', expect.any(DOBDate));
+      expect(res.redirect).toHaveBeenCalledWith(CLAIMANT_PHONE_NUMBER_URL);
+      expect(res.render).not.toHaveBeenCalled();
     });
 
     it('should redirect to the claimant phone number page', async () => {
