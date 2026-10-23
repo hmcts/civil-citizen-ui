@@ -47,4 +47,4 @@ Scenario('LipvLip Applicant GA creation e2e tests - Dismiss an Order', async ({
   const orderMadeGANotif = orderMadeGA();
   await verifyNotificationTitleAndContent(claimNumber, orderMadeGANotif.title, orderMadeGANotif.content);
   await I.click(orderMadeGANotif.nextSteps);
-});
+}).tag('@thin-full-stack');

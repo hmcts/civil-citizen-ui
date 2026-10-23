@@ -25,14 +25,12 @@ Scenario('Claimant and Defendant send message to court and follow up and admin c
   );
   await api.setCaseId(claimRef);
   await api.waitForFinishedBusinessProcess();
-  await I.wait(2);
   caseData = await api.retrieveCaseData(config.adminUser, claimRef);
   claimNumber = caseData.legacyCaseReference;
   console.log(`Created LiP claim. Claim number: ${claimNumber}`);
   const caseId = claimRef;
 
   const claimantQuery = await qm.raiseLipQuery(caseId, config.claimantCitizenUser, PUBLIC_QUERY, false);
-  await I.wait(2);
   await qm.respondToQuery(caseId, config.ctscAdmin, claimantQuery, PUBLIC_QUERY);
   console.log(`Raised and responded to query of type: ${PUBLIC_QUERY}`);
 
@@ -61,4 +59,4 @@ Scenario('Claimant and Defendant send message to court and follow up and admin c
   await I.click(claimNumber);
   console.log(`Opened claim dashboard for user: ${config.defendantCitizenUser.email}`);
   await ResponseSteps.verifyClosedQuery('Defendant Query');
-}).tag('@civil-citizen-master @civil-citizen-pr');
+}).tag('@civil-citizen-master @civil-citizen-pr @thin-full-stack');

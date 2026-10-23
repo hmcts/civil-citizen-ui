@@ -1,25 +1,35 @@
-import request from 'supertest';
-import {app} from '../../../../../../main/app';
-import {
-  ELIGIBILITY_APPLY_HELP_WITH_FEES_URL,
-  ELIGIBILITY_HELP_WITH_FEES_REFERENCE_URL,
-} from '../../../../../../main/routes/urls';
+import {Request, Response} from 'express';
+import applyForHelpWithFeesController from '../../../../../../main/routes/features/public/eligibility/applyForHelpWithFeesController';
+import {ELIGIBILITY_HELP_WITH_FEES_REFERENCE_URL} from '../../../../../../main/routes/urls';
+import {createMockResponse, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
-describe('Some useful information about Help with Fees Controller', () => {
+describe('Apply for Help With Fees Controller', () => {
+  const getHandler = getRouteHandler(applyForHelpWithFeesController, 'get');
+  const postHandler = getRouteHandler(applyForHelpWithFeesController, 'post');
+  let req: Partial<Request>;
+  let res: ReturnType<typeof createMockResponse>;
+
+  beforeEach(() => {
+    req = {cookies: {}, body: {}, query: {}};
+    res = createMockResponse();
+  });
 
   describe('on GET', () => {
-    it('should render Some info about Help with Fees page successfully', async () => {
-      const res = await request(app).get(ELIGIBILITY_APPLY_HELP_WITH_FEES_URL);
-      expect(res.status).toBe(200);
-      expect(res.text).toContain('Apply For Help With Fees');
-    });
+    it('should render Apply For Help With Fees page', () => {
+      getHandler(req as Request, res as unknown as Response, jest.fn());
 
-    describe('on POST', () => {
-      it('should redirect to Apply Help Fees Reference page', async () => {
-        const res = await request(app).post(ELIGIBILITY_APPLY_HELP_WITH_FEES_URL);
-        expect(res.status).toBe(302);
-        expect(res.header.location).toBe(ELIGIBILITY_HELP_WITH_FEES_REFERENCE_URL);
-      });
+      expect(res.render).toHaveBeenCalledWith(
+        'features/public/eligibility/apply-for-help-with-fees',
+        {pageTitle: 'PAGES.ELIGIBILITY_APPLY_FOR_HELP_WITH_FEES.TITLE'},
+      );
+    });
+  });
+
+  describe('on POST', () => {
+    it('should redirect to Help With Fees Reference page', () => {
+      postHandler(req as Request, res as unknown as Response, jest.fn());
+
+      expect(res.redirect).toHaveBeenCalledWith(ELIGIBILITY_HELP_WITH_FEES_REFERENCE_URL);
     });
   });
 });

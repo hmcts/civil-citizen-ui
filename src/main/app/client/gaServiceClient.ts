@@ -16,6 +16,7 @@ import {PaymentInformation} from 'models/feePayment/paymentInformation';
 import {plainToInstance} from 'class-transformer';
 import {ApplicationResponse} from 'common/models/generalApplication/applicationResponse';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {requirePathSegment} from 'common/utils/routeParamUtils';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('gaServiceClient');
@@ -91,9 +92,14 @@ export class GaServiceClient {
   }
 
   async getGaFeePaymentStatus(claimId: string, paymentReference: string, req: AppRequest): Promise<PaymentInformation> {
+    const usableClaimId = requirePathSegment(claimId, 'claimId');
+    const usablePaymentReference = requirePathSegment(paymentReference, 'paymentReference');
     const config = this.getConfig(req);
     try {
-      const response: AxiosResponse<object> = await this.client.get(GA_FEES_PAYMENT_STATUS_URL.replace(':claimId', claimId).replace(':paymentReference', paymentReference), config);
+      const response: AxiosResponse<object> = await this.client.get(
+        GA_FEES_PAYMENT_STATUS_URL.replace(':claimId', usableClaimId).replace(':paymentReference', usablePaymentReference),
+        config,
+      );
 
       return plainToInstance(PaymentInformation, response.data);
     } catch (err: unknown) {
@@ -136,7 +142,7 @@ export class GaServiceClient {
       const response = await this.client.get(constructResponseUrlWithIdParams(caseId, GA_BY_CASE_URL), config);
       return response.data?.cases?.sort((a: any, b: any) => {
         return new Date(a.created_date).getTime() - new Date(b.created_date).getTime();
-      });
+      }) ?? [];
     } catch (err) {
       logger.error('Error when getApplicationsByCaseId', err);
       throw err;

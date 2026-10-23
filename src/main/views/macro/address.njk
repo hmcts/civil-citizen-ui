@@ -1,6 +1,6 @@
 {% from "govuk/components/fieldset/macro.njk" import govukFieldset %}
 {% from "govuk/components/input/macro.njk" import govukInput %}
-{% macro addressForm(t,party, addressType, addressTitle) %}
+{% macro addressForm(t,party, addressType, addressTitle, isClaimant) %}
   {% set fieldSetText = t('COMMON.ADDRESS_FORM.CHANGE_ADDRESS') + t('COMMON.ADDRESS_FORM.ADDRESS_CHANGES_SHARED') %}
   {% set textInputLabel = t('COMMON.ADDRESS_FORM.BUILDING_AND_STREET') %}
   {% set citizenAddress = party.model.primaryAddress %}
@@ -17,7 +17,7 @@
     <h2 class="govuk-heading-m">{{ addressTitle }}</h2>
     {% endif %}
   </div>
-  {% if addressType == 'primaryAddress' and addressTitle.length %}
+  {% if addressType == 'primaryAddress' and addressTitle.length and isClaimant === false %}
     <p class="govuk-body govuk-!-padding-top-4">{{ fieldSetText }}</p>
   {% endif %}
   <div class="{{ govukFormGroupError }}">

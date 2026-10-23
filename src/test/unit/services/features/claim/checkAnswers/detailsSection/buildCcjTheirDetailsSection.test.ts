@@ -3,6 +3,7 @@ import {
   createClaimWithIndividualDetails,
 } from '../../../../../../utils/mockClaimForCheckAnswers';
 import {Email} from 'models/Email';
+import {Address} from 'form/models/address';
 import {getSummarySections} from 'services/features/claimantResponse/ccj/ccjCheckAnswersService';
 import {ClaimantResponse} from 'models/claimantResponse';
 import {CCJRequest} from 'models/claimantResponse/ccj/ccjRequest';
@@ -48,6 +49,22 @@ describe('Citizen Details Section', () => {
     const summarySections = await getSummarySections(CLAIM_ID, claim, 'en');
     //Then
     expect(summarySections.sections[0].summaryList.rows[1].value.html).toBe(address);
+  });
+
+  it('should return address with multi-lines when it exists', async () => {
+    //Given
+    const claim = createClaimWithIndividualDetails();
+    claim.respondent1.partyDetails.primaryAddress = new Address(
+      'line 1',
+      'line 2',
+      'line 3',
+      'city',
+      'postcode',
+    );
+    //When
+    const summarySections = await getSummarySections(CLAIM_ID, claim, 'en');
+    //Then
+    expect(summarySections.sections[0].summaryList.rows[1].value.html).toBe('line 1<br>line 2<br>line 3<br>city<br>postcode');
   });
 
   it('should return full name of a person when full name is present', async () => {

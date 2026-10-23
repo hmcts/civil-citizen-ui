@@ -11,7 +11,7 @@ import {getApplicationSections , getRespondentDocuments, getCourtDocuments, getA
 import mockApplication from '../../../../../utils/mocks/applicationMock.json';
 import { DocumentInformation, DocumentLinkInformation, DocumentsViewComponent } from 'common/form/models/documents/DocumentsViewComponent';
 import { ApplicationState } from 'common/models/generalApplication/applicationSummary';
-import { SummaryRow, summaryRow } from 'common/models/summaryList/summaryList';
+import { SummaryRow, summaryRow, summaryRowHtml } from 'common/models/summaryList/summaryList';
 import { CourtResponseSummaryList, ResponseButton } from 'common/models/generalApplication/CourtResponseSummary';
 import { YesNoUpperCamelCase } from 'common/form/models/yesNo';
 import {getClaimById} from 'modules/utilityService';
@@ -283,13 +283,13 @@ describe('General Application - View application', () => {
       judgeDirectionRows.push(
         summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE'), '1 Aug 2024'),
         summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE'), 'Judge has made order'),
-        summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE'), '<a href="#">Judge Order</a>'));
+        summaryRowHtml(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE'), '<a href="#">Judge Order</a>'));
 
       const hearingNotices = new CourtResponseSummaryList(hearingNoticeRows);
       hearingNoticeRows.push(
         summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE'), '2 Aug 2024'),
         summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE'), 'Hearing Notice has been generated'),
-        summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE'), '<a href="#">Hearing Notice</a>'));
+        summaryRowHtml(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE'), '<a href="#">Hearing Notice</a>'));
 
       responseFromCourt.push(judgeDirections);
       responseFromCourt.push(hearingNotices);
@@ -324,7 +324,7 @@ describe('General Application - View application', () => {
       hearingNoticeRows.push(
         summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.DATE_RESPONSE'), '2 Aug 2024'),
         summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.TYPE_RESPONSE'), 'Hearing Notice has been generated'),
-        summaryRow(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE'), '<a href="#">Hearing Notice</a>'));
+        summaryRowHtml(t('PAGES.GENERAL_APPLICATION.VIEW_APPLICATION.READ_RESPONSE'), '<a href="#">Hearing Notice</a>'));
 
       responseFromCourt.push(hearingNotices);
       return Promise.resolve(responseFromCourt);
@@ -361,4 +361,3 @@ describe('General Application - View application', () => {
       });
   });
 });
-

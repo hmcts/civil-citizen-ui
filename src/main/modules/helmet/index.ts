@@ -115,7 +115,7 @@ export class Helmet {
             defaultSrc: ["'none'"],
             fontSrc: [self, 'data:', 'fonts.gstatic.com'],
             imgSrc: imgSrc,
-            objectSrc: [self],
+            objectSrc: ["'none'"],
             scriptSrc: [
               self,
               googleAnalyticsDomain,
@@ -130,6 +130,10 @@ export class Helmet {
             formAction: [self, loginUrl, ocmcBaseUrl, govPayUrl],
             frameSrc: frameSrc,
           },
+        },
+        strictTransportSecurity: {
+          maxAge: 31536000,
+          preload: false,
         },
         crossOriginOpenerPolicy: {
           policy: 'same-origin-allow-popups',

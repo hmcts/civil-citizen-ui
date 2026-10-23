@@ -7,6 +7,7 @@ import {
 import {ClaimantInterestRate} from 'form/models/claim/interest/claimantInterestRate';
 import {AppRequest} from 'common/models/AppRequest';
 import {getInterest, saveInterest} from 'services/features/claim/interest/interestService';
+import {toNumberOrUndefined} from 'common/utils/numberConverter';
 
 const interestRateController = Router();
 const interestRateViewPath = 'features/claim/interest/claimant-interest-rate';
@@ -19,9 +20,8 @@ function renderView(form: GenericForm<ClaimantInterestRate>, res: Response): voi
 }
 
 interestRateController.get(CLAIM_INTEREST_RATE_URL, (async (req:AppRequest, res: Response, next: NextFunction) => {
-  const claimId = req.session.user?.id;
   try {
-    const interest = await getInterest(claimId);
+    const interest = await getInterest(req);
     renderView(new GenericForm<ClaimantInterestRate>(interest.sameRateInterestSelection),res);
   } catch (error) {
     next(error);
@@ -31,7 +31,8 @@ interestRateController.get(CLAIM_INTEREST_RATE_URL, (async (req:AppRequest, res:
 interestRateController.post(CLAIM_INTEREST_RATE_URL, (async (req: AppRequest | Request, res: Response, next: NextFunction) => {
   const claimId = (<AppRequest>req).session.user?.id;
   try {
-    const sameRateInterestSelection = await getInterestRateForm(req.body.sameRateInterestType,req.body.differentRate,req.body.reason);
+    const differentRate = toNumberOrUndefined(req.body.differentRate);
+    const sameRateInterestSelection = await getInterestRateForm(req.body.sameRateInterestType, differentRate, req.body.reason);
     const form: GenericForm<ClaimantInterestRate> = new GenericForm(new ClaimantInterestRate(sameRateInterestSelection.sameRateInterestType,sameRateInterestSelection.differentRate,sameRateInterestSelection.reason));
     form.validateSync();
     if (form.hasErrors()) {
@@ -39,7 +40,7 @@ interestRateController.post(CLAIM_INTEREST_RATE_URL, (async (req: AppRequest | R
     } else {
       logger.info(`Claim interest rate selection updated for user ${claimId}, sameRateInterestType: ${req.body.sameRateInterestType},
            differentRate: ${req.body.differentRate},reason: ${req.body.reason}`);
-      await saveInterest(claimId,form.model, propertyName);
+      await saveInterest(req as AppRequest,form.model, propertyName);
       res.redirect(CLAIM_INTEREST_DATE_URL);
     }
   } catch (error) {

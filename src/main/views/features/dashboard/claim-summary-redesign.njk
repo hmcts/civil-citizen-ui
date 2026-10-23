@@ -39,6 +39,13 @@
 
         <div class="border-small-top"></div>
          <div class="dashboard-notification">
+          {% if draftClaimDeletionDate %}
+              {{ govukNotificationBanner({
+                 titleText: t('PAGES.DASHBOARD.DRAFT_CLAIM_NOTIFICATION.TITLE'),
+                 html: t('PAGES.DASHBOARD.DRAFT_CLAIM_NOTIFICATION.MESSAGE', {date: draftClaimDeletionDate}) + ' <a class="govuk-notification-banner__link" href="/claim/task-list">' + t('PAGES.DASHBOARD.DRAFT_CLAIM_NOTIFICATION.LINK') + '</a>',
+                 classes: "govuk-!-margin-bottom-4"
+               })  }}
+          {% endif %}
           {% for notification in dashboardNotifications.items %}
               {% set titleId = 'dashboard-notification-banner-title-' ~ loop.index0 %}
               {{ govukNotificationBanner({

@@ -679,13 +679,34 @@ describe('on POST', () => {
         });
     });
 
+    it('should reject non-PDF content spoofed as application/pdf', async () => {
+      const file = {
+        fieldname: 'expertReport[0][fileUpload]',
+        originalname: 'spoofed.pdf',
+        mimetype: 'application/pdf',
+        size: 64,
+        buffer: Buffer.from('This is not a real PDF. There is no PDF signature at the start of this file.\n'),
+      };
+
+      await request(app)
+        .post(CP_UPLOAD_DOCUMENTS_URL)
+        .field('action', 'expertReport[0][uploadButton]')
+        .attach('expertReport[0][fileUpload]', file.buffer, {
+          filename: file.originalname,
+          contentType: file.mimetype,
+        })
+        .expect((res) => {
+          expect(res.status).toBe(200);
+        });
+    });
+
     it('should successfully upload valid PDF file', async () => {
       const file = {
         fieldname: 'expertReport[0][fileUpload]',
         originalname: 'test-document.pdf',
         mimetype: 'application/pdf',
         size: 1024 * 1024, // 1MB
-        buffer: Buffer.from('PDF file content'),
+        buffer: Buffer.from('%PDF-1.4\n1 0 obj<<>>endobj\ntrailer<<>>\n%%EOF\n'),
       };
 
       const mockCaseDocument: CaseDocument = <CaseDocument>{
@@ -720,7 +741,7 @@ describe('on POST', () => {
         originalname: 'test-document.pdf',
         mimetype: 'application/pdf',
         size: 1024 * 1024, // 1MB
-        buffer: Buffer.from('PDF file content'),
+        buffer: Buffer.from('%PDF-1.4\n1 0 obj<<>>endobj\ntrailer<<>>\n%%EOF\n'),
       };
 
       const civilServiceUrl = config.get<string>('services.civilService.url');
@@ -746,7 +767,7 @@ describe('on POST', () => {
         originalname: 'expert-statement.pdf',
         mimetype: 'application/pdf',
         size: 512 * 1024, // 512KB
-        buffer: Buffer.from('Expert statement content'),
+        buffer: Buffer.from('%PDF-1.4\n1 0 obj<<>>endobj\ntrailer<<>>\n%%EOF\n'),
       };
 
       const mockCaseDocument: CaseDocument = <CaseDocument>{
@@ -781,7 +802,7 @@ describe('on POST', () => {
         originalname: 'large-file.pdf',
         mimetype: 'application/pdf',
         size: 1024, // Small buffer to pass multer
-        buffer: Buffer.from('Small buffer'),
+        buffer: Buffer.from('%PDF-1.4\n1 0 obj<<>>endobj\ntrailer<<>>\n%%EOF\n'),
       };
 
       // Mock TypeOfDocumentSectionMapper to return a FileUpload with invalid size
@@ -811,7 +832,7 @@ describe('on POST', () => {
         originalname: 'test.pdf',
         mimetype: 'application/pdf',
         size: 1024,
-        buffer: Buffer.from('Test content'),
+        buffer: Buffer.from('%PDF-1.4\n1 0 obj<<>>endobj\ntrailer<<>>\n%%EOF\n'),
       };
 
       // Mock TypeOfDocumentSectionMapper to throw an error
@@ -963,15 +984,32 @@ describe('on POST', () => {
     const formWithDisclosure = new UploadDocumentsUserForm();
     formWithDisclosure.documentsForDisclosure = [new TypeOfDocumentSection()];
     (getUploadDocumentsForm as jest.Mock).mockReturnValue(formWithDisclosure);
-    (saveCaseProgression as jest.Mock).mockResolvedValue(true);
+    (saveCaseProgression as jest.Mock).mockClear();
 
     const response = await request(app)
       .post(CP_UPLOAD_DOCUMENTS_URL)
-      .send({action: 'add_another-documentsForDisclosure'});
+      .send({action: 'add_another-disclosure'});
 
     expect(response.status).toBe(200);
-    expect(addAnother).toHaveBeenCalledWith(formWithDisclosure, 'add_another-documentsForDisclosure');
-    expect(saveCaseProgression).toHaveBeenCalled();
+    expect(addAnother).toHaveBeenCalledWith(formWithDisclosure, 'add_another-disclosure', expect.any(String), undefined);
+    expect(saveCaseProgression).not.toHaveBeenCalled();
+  });
+
+  it('should not validate the form when add another is submitted', async () => {
+    const formWithDisclosure = new UploadDocumentsUserForm();
+    formWithDisclosure.documentsForDisclosure = [new TypeOfDocumentSection()];
+    formWithDisclosure.documentsForDisclosure[0].typeOfDocument = '';
+    (getUploadDocumentsForm as jest.Mock).mockReturnValue(formWithDisclosure);
+    const validateSyncSpy = jest.spyOn(GenericForm.prototype, 'validateSync');
+
+    const response = await request(app)
+      .post(CP_UPLOAD_DOCUMENTS_URL)
+      .send({action: 'add_another-disclosure'});
+
+    expect(response.status).toBe(200);
+    expect(validateSyncSpy).not.toHaveBeenCalled();
+    expect(addAnother).toHaveBeenCalledWith(formWithDisclosure, 'add_another-disclosure', expect.any(String), undefined);
+    validateSyncSpy.mockRestore();
   });
 
   it('should sanitize unknown/empty validation errors and redirect when no real errors remain', async () => {

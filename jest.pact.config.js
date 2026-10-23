@@ -1,4 +1,6 @@
 module.exports = {
+  maxWorkers: 1,
+  globalSetup: '<rootDir>/src/test/contract/setup.js',
   roots: ['<rootDir>/src/test/contract/consumers'],
   testRegex: '(/src/test/.*|\\.(test|spec))\\.(ts|js)$',
   testEnvironment: 'node',

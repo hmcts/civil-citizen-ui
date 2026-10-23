@@ -93,7 +93,7 @@ describe('General Application - Check your answers', () => {
 
     it('should add the id in the url of the ga application', async () => {
       const claim = new Claim();
-      claim.generalApplication = new GeneralApplication();
+      claim.generalApplication = new GeneralApplication(new ApplicationType(ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID));
       claim.generalApplication.applicationFee = {
         calculatedAmountInPence: 25000,
       };
@@ -109,6 +109,7 @@ describe('General Application - Check your answers', () => {
     });
 
     it('should return http 500 when has error in the post method', async () => {
+      mockGetCaseData.mockImplementation(async () => mockClaim);
       mockSaveCaseData.mockImplementation(async () => {
         throw new Error(TestMessages.REDIS_FAILURE);
       });

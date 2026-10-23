@@ -130,7 +130,6 @@ describe('UploadDocumentsSectionBuilder tests', ()=> {
         category: 'category',
         index: 0,
         text: 'PAGES.UPLOAD_DOCUMENTS.REMOVE_SECTION',
-        href: '#',
         classes: 'govuk-button govuk-button--secondary moj-add-another__remove-button',
       },
     });

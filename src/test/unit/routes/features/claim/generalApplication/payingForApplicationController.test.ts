@@ -5,7 +5,7 @@ import request from 'supertest';
 import {PAYING_FOR_APPLICATION_URL} from 'routes/urls';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {t} from 'i18next';
-import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
+import {mockCivilClaimWithApplicationType, mockRedisFailure} from '../../../../../utils/mockDraftStore';
 import { gaApplicationFeeDetails } from 'services/features/generalApplication/feeDetailsService';
 import { isGaForLipsEnabled } from 'app/auth/launchdarkly/launchDarklyClient';
 
@@ -16,6 +16,11 @@ jest.mock('../../../../../../main/services/features/generalApplication/feeDetail
 jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 jest.mock('../../../../../../main/routes/guards/generalAplicationGuard',() => ({
   isGAForLiPEnabled: jest.fn((req, res, next) => {
+    next();
+  }),
+}));
+jest.mock('../../../../../../main/routes/guards/requireGeneralApplicationDraft',() => ({
+  requireGeneralApplicationDraft: jest.fn((req, res, next) => {
     next();
   }),
 }));
@@ -36,7 +41,7 @@ describe('General Application - Application type', () => {
 
   describe('on GET', () => {
     it('should return page', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      app.locals.draftStoreClient = mockCivilClaimWithApplicationType;
 
       await request(app)
         .get(PAYING_FOR_APPLICATION_URL)
@@ -47,7 +52,7 @@ describe('General Application - Application type', () => {
     });
 
     it('should display proper amount', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      app.locals.draftStoreClient = mockCivilClaimWithApplicationType;
 
       mockGaApplicationFeeDetails.mockResolvedValueOnce({calculatedAmountInPence: 123});
 

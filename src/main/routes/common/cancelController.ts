@@ -1,5 +1,4 @@
-import {CANCEL_URL, DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL} from 'routes/urls';
-import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {CANCEL_URL} from 'routes/urls';
 import {RequestHandler, Router} from 'express';
 import {
   deleteFieldDraftClaimFromStore, generateRedisKey,
@@ -7,6 +6,7 @@ import {
 import {getClaimById} from 'modules/utilityService';
 import {AppRequest} from 'models/AppRequest';
 import {getRouteParam} from 'common/utils/routeParamUtils';
+import {getDashboardUrlForParty} from 'services/features/generalApplication/generalApplicationService';
 
 const cancelController = Router();
 
@@ -17,12 +17,7 @@ cancelController.get(CANCEL_URL, (async (req, res, next) => {
     const propertyName = getRouteParam(req, 'propertyName');
     const claim = await getClaimById(claimId, req, true);
     await deleteFieldDraftClaimFromStore(redisKey, claim, propertyName, (<AppRequest>req).session.user?.id);
-
-    if (claim.isClaimant()){
-      res.redirect(constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL));
-    } else {
-      res.redirect(constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL));
-    }
+    res.redirect(getDashboardUrlForParty(claimId, claim));
   } catch (error) {
     next(error);
   }

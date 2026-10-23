@@ -6,6 +6,12 @@ import {CaseRole} from 'form/models/caseRoles';
 
 import {TaskList} from 'common/models/taskList/taskList';
 
+/** Short-TTL session entry for /userCaseRoles (DTSCCI-5946). role null = negative cache. */
+export interface UserCaseRolesCacheEntry {
+  role: CaseRole | null;
+  expiresAt: number;
+}
+
 export interface AppRequest<T = Partial<Claim>> extends Request {
   session: AppSession;
   locals: {
@@ -13,7 +19,7 @@ export interface AppRequest<T = Partial<Claim>> extends Request {
     lang: string;
     claim?: Claim;
     claimDetailsRequestCache?: Map<string, Promise<Claim>>;
-    userCaseRolesRequestCache?: Map<string, Promise<CaseRole>>;
+    userCaseRolesRequestCache?: Map<string, Promise<CaseRole | undefined>>;
     calculateInterestRequestCache?: Map<string, Promise<number>>;
   };
   body: T;
@@ -33,6 +39,7 @@ export interface PaymentConfirmationContext {
 export interface AppSession extends Session {
   user: UserDetails;
   lang: string | undefined;
+  draftId?: string;
   previousUrl: string;
   claimId: string;
   taskLists: TaskList[];
@@ -47,6 +54,10 @@ export interface AppSession extends Session {
   qmShareConfirmed: boolean;
   caseReference?: string;
   paymentConfirmationContext?: PaymentConfirmationContext;
+  /** When the user was last sent to sign in after a civil-service 401 (DTSCCI-6600). */
+  reauthOn401At?: number;
+  /** Short-TTL session cache for /userCaseRoles (DTSCCI-5946). Key: ucr:userId:caseId */
+  userCaseRolesCache?: Record<string, UserCaseRolesCacheEntry>;
 }
 
 export interface UserDetails {

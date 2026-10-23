@@ -1,4 +1,4 @@
-import {TTLCategory} from './ttlConfig';
+import {TTLCategory, getTTLDaysForCategory} from './ttlConfig';
 import {writeWithTTL} from './redisWriteHelper';
 
 const draftClaim: { id: string, case_data?: CaseData } = {
@@ -9,6 +9,7 @@ const draftClaim: { id: string, case_data?: CaseData } = {
 export interface CaseData {
   id?: string;
   draftClaimCreatedAt?: string;
+  draftClaimCacheTtlDays?: number;
 }
 
 const case_data = {
@@ -45,7 +46,9 @@ const case_data = {
       month: 8,
       day: 28,
     },
-    partyPhone: {},
+    partyPhone: {
+      phone: '07800000000',
+    },
     emailAddress: {
       emailAddress: 'civilmoneyclaimsdemo@gmail.com',
     },
@@ -120,20 +123,20 @@ const case_data = {
   pcqId: '4c10fec5-1278-45f3-89f0-d3d016d47f95',
 };
 
-const saveDraftClaimToCache = async (userId: string, apiData = case_data, isCarmEnabled = false) => {
-  if (isCarmEnabled) {
-    apiData.applicant1.partyPhone = {
-      phone: '07800000000',
-    };
-  }
+const cloneDefaultDraftClaimCaseData = (_isCarmEnabled = false) => {
+  return structuredClone(case_data);
+};
+
+const saveDraftClaimToCache = async (userId: string, apiData = case_data, _isCarmEnabled = false) => {
   const creationTime = new Date();
   const claimToSave = draftClaim;
   claimToSave.case_data = apiData;
   claimToSave.id = userId;
   claimToSave.case_data.id = userId;
   claimToSave.case_data.draftClaimCreatedAt = creationTime.toISOString();
+  claimToSave.case_data.draftClaimCacheTtlDays = getTTLDaysForCategory(TTLCategory.DRAFT_CLAIM);
 
   await writeWithTTL(userId, claimToSave, TTLCategory.DRAFT_CLAIM, {creationDate: creationTime});
 };
 
-export { saveDraftClaimToCache, draftClaim };
+export { saveDraftClaimToCache, draftClaim, cloneDefaultDraftClaimCaseData };

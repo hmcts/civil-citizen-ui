@@ -14,7 +14,7 @@ import {
 } from 'services/dashboard/dashboardService';
 import {Claim} from 'models/claim';
 import {CaseState} from 'common/form/models/claimDetails';
-import {getClaimById, getDashboardClaimById} from 'modules/utilityService';
+import {getDashboardClaimById} from 'modules/utilityService';
 import {AppRequest} from 'models/AppRequest';
 import {ClaimantOrDefendant} from 'models/partyType';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
@@ -34,11 +34,17 @@ import {YesNoUpperCamelCase} from 'form/models/yesNo';
 import {getViewMessagesLink} from 'services/features/queryManagement/viewMessagesService';
 import {getTotalAmountWithInterestAndFees} from 'modules/claimDetailsService';
 import {getRouteParam} from 'common/utils/routeParamUtils';
+import {getDraftClaimDeletionDate} from 'common/utils/draftClaimUtils';
+import {DashboardNotificationList} from 'models/dashboard/dashboardNotificationList';
+import {DashboardNotification} from 'models/dashboard/dashboardNotification';
+import {getDraftClaim} from 'modules/draft-store/draftStoreManagerService';
+import {getTTLDaysForCategory, TTLCategory} from 'modules/draft-store/ttlConfig';
 
 const claimantDashboardViewPath = 'features/dashboard/claim-summary-redesign';
 const claimantDashboardController = Router();
 const HearingUploadDocuments = 'Upload hearing documents';
 const ResponseClaimTrack = 'responseClaimTrack';
+const GenericDraftClaimNotificationTitle = 'This claim has not been submitted';
 
 claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
@@ -53,7 +59,16 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
 
     if(claimId === 'draft') {
       caseRole = ClaimantOrDefendant.CLAIMANT;
-      claim = await getClaimById(userId, req, true);
+      const draftResult = await getDraftClaim(req);
+      claim = draftResult?.claimResponse?.case_data
+        ? Object.assign(new Claim(), draftResult.claimResponse.case_data)
+        : new Claim();
+      if (draftResult?.createdAt) {
+        claim.draftClaimCreatedAt = new Date(draftResult.createdAt);
+      }
+      if (draftResult?.expiresAt) {
+        claim.draftClaimCacheTtlDays = getTTLDaysForCategory(TTLCategory.DRAFT_CLAIM);
+      }
       dashboardId = userId;
     } else {
       claim = await getDashboardClaimById(claimId, req, true);
@@ -78,6 +93,10 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
     const isGAFlagEnable = await isGaForLipsEnabled();
     const isQMFlagEnabled = await isQueryManagementEnabled(claim.submittedDate);
     const dashboard = await getDashboardForm(caseRole, claim, totalAmountWithInterestAndFees, dashboardId, req, isCarmApplicable, isGAFlagEnable);
+    const draftClaimDeletionDate = claimId === 'draft'
+      ? getDraftClaimDeletionDate(claim.draftClaimCreatedAt, claim.draftClaimCacheTtlDays, lng as string)
+      : undefined;
+    const filteredDashboardNotifications = filterGenericDraftClaimNotification(dashboardNotifications, draftClaimDeletionDate);
     const judgmentBufferEnabled = await isJudgmentBufferEnabled();
     const [iWantToTitle, iWantToLinks, helpSupportTitle, helpSupportLinks]
       = await getSupportLinks(req, claim, claimId, lng, isGAFlagEnable, false, judgmentBufferEnabled);
@@ -98,7 +117,8 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
       claimIdPrettified,
       claimAmountFormatted,
       dashboardTaskList: dashboard,
-      dashboardNotifications,
+      dashboardNotifications: filteredDashboardNotifications,
+      draftClaimDeletionDate,
       iWantToTitle,
       iWantToLinks,
       helpSupportTitle,
@@ -113,6 +133,22 @@ claimantDashboardController.get(DASHBOARD_CLAIMANT_URL, (async (req: AppRequest,
     next(error);
   }
 }) as RequestHandler);
+
+const filterGenericDraftClaimNotification = (
+  dashboardNotifications: DashboardNotificationList | undefined,
+  draftClaimDeletionDate: string | undefined,
+): DashboardNotificationList | undefined => {
+  if (!draftClaimDeletionDate || !dashboardNotifications?.items) {
+    return dashboardNotifications;
+  }
+
+  dashboardNotifications.items = dashboardNotifications.items.filter((notification) => !isGenericDraftClaimNotification(notification));
+  return dashboardNotifications;
+};
+
+const isGenericDraftClaimNotification = (notification: DashboardNotification): boolean => {
+  return notification.titleEn === GenericDraftClaimNotificationTitle;
+};
 
 const getSupportLinks = async (req: AppRequest, claim: Claim, claimId: string, lng: string, isGAFlagEnable: boolean, isGAlinkEnabled = false, judgmentBufferEnabled = false) => {
   const isAwaitingDefendantResponse = claim.isAwaitingDefendantResponse(judgmentBufferEnabled);

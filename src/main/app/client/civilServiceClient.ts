@@ -73,8 +73,12 @@ import {
   executeRequest,
   RequestErrorHandler,
 } from 'client/common/civilServiceRequest';
-import {normalizeRouteParam, RouteParam} from 'common/utils/routeParamUtils';
+import {normalizeRouteParam, requirePathSegment, RouteParam} from 'common/utils/routeParamUtils';
 import {ClassConstructor} from 'class-transformer/types/interfaces';
+import {
+  getUserCaseRolesFromSession,
+  storeUserCaseRolesInSession,
+} from 'client/cache/userCaseRolesSessionCache';
 
 const HTTP_STATUS_UNPROCESSABLE_ENTITY = 422;
 
@@ -166,14 +170,14 @@ export class CivilServiceClient {
     return newCache;
   }
 
-  private getUserCaseRolesRequestCache(req: AppRequest): Map<string, Promise<CaseRole>> {
+  private getUserCaseRolesRequestCache(req: AppRequest): Map<string, Promise<CaseRole | undefined>> {
     const requestWithLocals = req as AppRequest & { locals?: AppRequest['locals'] };
     const requestLocals = requestWithLocals.locals ?? (requestWithLocals.locals = {env: '', lang: ''});
     if (requestLocals.userCaseRolesRequestCache) {
       return requestLocals.userCaseRolesRequestCache;
     }
 
-    const newCache = new Map<string, Promise<CaseRole>>();
+    const newCache = new Map<string, Promise<CaseRole | undefined>>();
     requestLocals.userCaseRolesRequestCache = newCache;
     return newCache;
   }
@@ -448,8 +452,8 @@ export class CivilServiceClient {
     return this.submitEvent(CaseEvent.INFORM_AGREED_EXTENSION_DATE_SPEC, claimId, updatedClaim, req);
   }
 
-  async submitDraftClaim(updatedClaim: ClaimUpdate, req: AppRequest):  Promise<Claim> {
-    return this.submitEvent(CaseEvent.CREATE_LIP_CLAIM, 'draft', updatedClaim, req);
+  async submitDraftClaim(updatedClaim: ClaimUpdate, req: AppRequest, submissionId?: string):  Promise<Claim> {
+    return this.submitEvent(CaseEvent.CREATE_LIP_CLAIM, 'draft', updatedClaim, req, submissionId);
   }
 
   async submitClaimAfterPayment(claimId: RouteParam, claim: Claim, req: AppRequest):  Promise<Claim> {
@@ -501,12 +505,13 @@ export class CivilServiceClient {
     return this.submitEvent(CaseEvent.REQUEST_FOR_RECONSIDERATION, claimId, updatedClaim, req);
   }
 
-  async submitEvent(event: CaseEvent, claimId: RouteParam, updatedClaim?: ClaimUpdate, req?: AppRequest): Promise<Claim> {
+  async submitEvent(event: CaseEvent, claimId: RouteParam, updatedClaim?: ClaimUpdate, req?: AppRequest, submissionId?: string): Promise<Claim> {
     const normalizedClaimId = normalizeRouteParam(claimId);
     const userId = req.session?.user?.id;
     const data: EventDto = {
       event: event,
       caseDataUpdate: updatedClaim,
+      ...(submissionId ? {submissionId} : {}),
     };
     assertNonEmpty(userId, 'User id is undefined');
     assertNonEmpty(normalizedClaimId, 'Claim id is undefined');
@@ -639,7 +644,7 @@ export class CivilServiceClient {
       return cachedCaseRolePromise;
     }
 
-    const userCaseRolePromise = this.getUserCaseRolesFromCivilService(normalizedClaimId, req)
+    const userCaseRolePromise = this.resolveUserCaseRoles(normalizedClaimId, req)
       .catch((error) => {
         requestCache.delete(cacheKey);
         throw error;
@@ -648,7 +653,18 @@ export class CivilServiceClient {
     return userCaseRolePromise;
   }
 
-  private async getUserCaseRolesFromCivilService(normalizedClaimId: string, req: AppRequest): Promise<CaseRole> {
+  private async resolveUserCaseRoles(normalizedClaimId: string, req: AppRequest): Promise<CaseRole | undefined> {
+    const sessionCacheResult = await getUserCaseRolesFromSession(req, normalizedClaimId);
+    if (sessionCacheResult.hit) {
+      return sessionCacheResult.role;
+    }
+
+    const role = await this.getUserCaseRolesFromCivilService(normalizedClaimId, req);
+    await storeUserCaseRolesInSession(req, normalizedClaimId, role);
+    return role;
+  }
+
+  private async getUserCaseRolesFromCivilService(normalizedClaimId: string, req: AppRequest): Promise<CaseRole | undefined> {
     const userCaseRolesUrl = (new URL(`${this.client.defaults.baseURL}${CIVIL_SERVICE_USER_CASE_ROLE.replace(':claimId', normalizedClaimId)}`));
     const response = await executeRequest(
       () => this.client.get(userCaseRolesUrl.toString(), buildAuthorizationOnlyConfig(req)),
@@ -680,8 +696,14 @@ export class CivilServiceClient {
   }
 
   async getFeePaymentStatus(claimId: RouteParam, paymentReference: string, feeType: string,  req: AppRequest): Promise<PaymentInformation> {
+    const usableClaimId = requirePathSegment(claimId, 'claimId');
+    const usableFeeType = requirePathSegment(feeType, 'feeType');
+    const usablePaymentReference = requirePathSegment(paymentReference, 'paymentReference');
     const response = await this.authenticatedGet(
-      CIVIL_SERVICE_FEES_PAYMENT_STATUS_URL.replace(':claimId', normalizeRouteParam(claimId)).replace(':feeType', feeType).replace(':paymentReference', paymentReference),
+      CIVIL_SERVICE_FEES_PAYMENT_STATUS_URL
+        .replace(':claimId', usableClaimId)
+        .replace(':feeType', usableFeeType)
+        .replace(':paymentReference', usablePaymentReference),
       req,
       'Error when getting fee payment status',
     );

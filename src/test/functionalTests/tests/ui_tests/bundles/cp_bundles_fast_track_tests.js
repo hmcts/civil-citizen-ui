@@ -39,7 +39,7 @@ Scenario('Case progression journey - Fast Track - Verify Bundles tab', async ({I
     await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
     taskListItem = viewTheBundle();
     await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Available', true);
-    I.click(taskListItem.title);
-    viewBundlePage.verifyPageContent(formattedCaseId, '£15,000.00', uploadDate, partyType);
+    await I.click(taskListItem.title);
+    await viewBundlePage.verifyPageContent(formattedCaseId, '£15,000.00', uploadDate, partyType);
   }
 });
