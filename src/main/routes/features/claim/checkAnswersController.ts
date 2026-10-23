@@ -19,7 +19,8 @@ import {QualifiedStatementOfTruthClaimIssue} from 'form/models/statementOfTruth/
 import {isFirstTimeInPCQ} from 'routes/guards/pcqGuardClaim';
 import {isCarmEnabledForCase, isDraftClaimDatabaseEnabled} from '../../../app/auth/launchdarkly/launchDarklyClient';
 import {ValidationError, Validator} from 'class-validator';
-import {EmailValidationWithMessage} from 'form/models/EmailValidationWithMessage';
+// TEMP DTSCCI-5899 QA: EmailValidationWithMessage import removed with the email re-check below.
+// Demo branch only — do not merge.
 import {PhoneValidationWithMessage} from 'form/models/PhoneValidationWithMessage';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
@@ -91,12 +92,14 @@ claimCheckAnswersController.post(CLAIM_CHECK_ANSWERS_URL, async (req: AppRequest
 
     await form.validate();
 
-    if (claim.applicant1?.emailAddress?.emailAddress) {
-      form.errors = validateFields(new GenericForm(new EmailValidationWithMessage(claim.applicant1.emailAddress.emailAddress, 'ERRORS.ENTER_VALID_EMAIL_CLAIMANT')), form.errors);
-    }
-    if (claim.respondent1?.emailAddress?.emailAddress) {
-      form.errors = validateFields(new GenericForm(new EmailValidationWithMessage(claim.respondent1.emailAddress.emailAddress, 'ERRORS.ENTER_VALID_EMAIL_DEFENDANT')), form.errors);
-    }
+    // TEMP DTSCCI-5899 QA: skip CUI email re-check so invalid defendant email reaches civil-service.
+    // Demo branch only — do not merge. Without this, master blocks on CYA before CCD can 422.
+    // if (claim.applicant1?.emailAddress?.emailAddress) {
+    //   form.errors = validateFields(new GenericForm(new EmailValidationWithMessage(claim.applicant1.emailAddress.emailAddress, 'ERRORS.ENTER_VALID_EMAIL_CLAIMANT')), form.errors);
+    // }
+    // if (claim.respondent1?.emailAddress?.emailAddress) {
+    //   form.errors = validateFields(new GenericForm(new EmailValidationWithMessage(claim.respondent1.emailAddress.emailAddress, 'ERRORS.ENTER_VALID_EMAIL_DEFENDANT')), form.errors);
+    // }
     // fixing CIV-17259
     if (claim.applicant1?.partyPhone === undefined) {
       form.errors = validateFields(new GenericForm(new PhoneValidationWithMessage('invalid phone', 'ERRORS.ENTER_VALID_PHONE_CLAIMANT')), form.errors);
