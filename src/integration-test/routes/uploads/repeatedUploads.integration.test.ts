@@ -1,25 +1,33 @@
 import express, {Request, Response, Router} from 'express';
 import request from 'supertest';
 import controller from 'routes/features/caseProgression/uploadDocumentsController';
+import checkAnswersController from 'routes/features/caseProgression/checkAnswersController';
+import {toCUICaseProgression} from 'services/translation/convertToCUI/convertToCUICaseProgression';
+import {UploadEvidenceDocumentType} from 'models/caseProgression/uploadDocumentsType';
+import {CCDClaim} from 'models/civilClaimResponse';
+import {AppRequest} from 'models/AppRequest';
 import typeOfDocumentsController from 'routes/features/caseProgression/typeOfDocumentsController';
 import mediationController from 'routes/features/mediation/uploadDocuments/uploadDocumentsController';
 import {MEDIATION_UPLOAD_DOCUMENTS} from 'routes/urls';
 import {UploadDocuments as MediationUploads, TypeOfDocuments, TypeOfMediationDocuments} from 'models/mediation/uploadDocuments/uploadDocuments';
 import {getUploadDocumentsForm as getMediationForm} from 'services/features/mediation/uploadDocuments/uploadDocumentsService';
-import {CP_UPLOAD_DOCUMENTS_URL, TYPES_OF_DOCUMENTS_URL} from 'routes/urls';
+import {CP_UPLOAD_DOCUMENTS_URL, TYPES_OF_DOCUMENTS_URL, CP_CHECK_ANSWERS_URL} from 'routes/urls';
 import {getClaimById} from 'modules/utilityService';
-import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {getCaseDataFromStore, saveDraftClaim, deleteDraftClaimFromStore} from 'modules/draft-store/draftStoreService';
 import {CaseRole} from 'form/models/caseRoles';
 import {getTypeDocumentForm, getUploadDocumentsForm} from 'services/features/caseProgression/caseProgressionService';
 import {renderUploadPage} from '../../../test/utils/renderUploadForms';
 import {dqClaim} from '../../../test/utils/renderDqRepeatedRows';
 const {JSDOM} = require('jsdom');
 const qs = require('qs');
-jest.mock('modules/draft-store/draftStoreService', () => ({getCaseDataFromStore: jest.fn(), saveDraftClaim: jest.fn(), generateRedisKey: jest.fn(() => 'local-store')}));
+jest.mock('modules/draft-store/draftStoreService', () => ({getCaseDataFromStore: jest.fn(), saveDraftClaim: jest.fn(), deleteDraftClaimFromStore: jest.fn(), generateRedisKey: jest.fn(() => 'local-store')}));
 jest.mock('modules/utilityService', () => ({getClaimById: jest.fn()}));
 jest.mock('client/civilServiceClient', () => {
   const uploadDocument = jest.fn(async () => ({documentName: 'new.txt', documentLink: {document_url: '/new', document_binary_url: '/new/binary', document_filename: 'new.txt'}}));
-  return {CivilServiceClient: jest.fn().mockImplementation(() => ({uploadDocument})), uploadDocument};
+  const retrieveClaimDetails = jest.fn();
+  const submitEvent = jest.fn();
+  const updateTaskStatus = jest.fn();
+  return {CivilServiceClient: jest.fn().mockImplementation(() => ({uploadDocument, retrieveClaimDetails, submitEvent, updateTaskStatus})), uploadDocument, retrieveClaimDetails, submitEvent, updateTaskStatus};
 });
 
 function fields(html: string) {
@@ -40,7 +48,7 @@ function appFor(router: Router, language: string) {
   const app = express();
   app.use(express.urlencoded({extended: true}));
   app.use((req, res, next) => {
-    req.session = {user: {id: 'local-user'}, save: (callback: () => void) => callback()} as unknown as Request['session'];
+    req.session = {user: {id: 'local-user'}, dashboard: {taskIdHearingUploadDocuments: 'upload-task'}, save: (callback: () => void) => callback()} as unknown as Request['session'];
     req.cookies = {};
     // The actual GET/POST controller supplies the content and page variables.
     // The helper substitutes the outer shell and supplies translations/CSRF.
@@ -341,3 +349,73 @@ it.each(additionalCategories.flatMap(([category, selection]) => [true, false].ma
     expect(getUploadDocumentsForm(submitted(redisplayed.text))).toEqual(expected);
   },
 );
+
+describe.each([false, true])('check-and-send recovery after dashboard refresh (claimant=%s)', claimant => {
+  it.each(['en', 'cy'])('preserves translated evidence and restarts selection without submitting (%s)', async language => {
+    jest.requireMock('app/auth/launchdarkly/launchDarklyClient').isCuiGaNroEnabled = jest.fn().mockResolvedValue(false);
+    const id = '1645882162449409';
+    const role = claimant ? CaseRole.CLAIMANT : CaseRole.DEFENDANT;
+    const ownKey = claimant ? 'claimantDocuments' : 'defendantDocuments';
+    let cached = dqClaim(claimant);
+    cached.id = id;
+    cached.caseRole = role;
+    cached.responseClaimTrack = 'FAST_CLAIM';
+    cached.caseProgression = toCUICaseProgression({} as CCDClaim);
+    jest.mocked(getClaimById).mockImplementation(async () => cached);
+    jest.mocked(getCaseDataFromStore).mockImplementation(async () => cached);
+    const writes: unknown[] = [];
+    jest.mocked(saveDraftClaim).mockImplementation(async (_key, claim) => {
+      writes.push(JSON.parse(JSON.stringify(claim)));
+      cached = claim;
+    });
+    const router = Router();
+    router.use(typeOfDocumentsController, controller, checkAnswersController);
+    const app = appFor(router, language);
+    const selection = TYPES_OF_DOCUMENTS_URL.replace(':id', id);
+    const uploads = CP_UPLOAD_DOCUMENTS_URL.replace(':id', id);
+    const check = CP_CHECK_ANSWERS_URL.replace(':id', id);
+    await request(app).post(selection).type('form').send({list: 'true'}).expect(302);
+    const initial = await request(app).get(uploads).expect(200);
+    await post(app, uploads, initial.text, 'disclosureList[0][uploadButton]')
+      .attach('disclosureList[0][fileUpload]', Buffer.from('New evidence'), 'new.txt').expect(200);
+    const ready = await request(app).get(check + '?lang=' + language).expect(200);
+    expect(ready.text).toContain('new.txt');
+    expect(cached.caseProgression[ownKey].disclosureList[0].caseDocument.documentName).toBe('new.txt');
+
+    // The backend restores submitted evidence, not the in-progress working form.
+    // Use its real translator and the real dashboard cache-refresh utility.
+    const ccd = {
+      documentDisclosureList: [{id: 'claimant-saved', value: {typeOfDocument: 'Previously submitted claimant evidence', documentUpload: {document_url: '/claimant-saved', document_binary_url: '/claimant-saved/binary', document_filename: 'claimant-saved.pdf'}, createdDatetime: '2024-01-01T12:00:00Z'}}],
+      documentDisclosureListRes: [{id: 'defendant-saved', value: {typeOfDocument: 'Previously submitted defendant evidence', documentUpload: {document_url: '/defendant-saved', document_binary_url: '/defendant-saved/binary', document_filename: 'defendant-saved.pdf'}, createdDatetime: '2024-02-02T12:00:00Z'}}],
+    } as unknown as CCDClaim;
+    const refreshed = dqClaim(claimant);
+    refreshed.id = id;
+    refreshed.caseRole = role;
+    refreshed.responseClaimTrack = 'FAST_CLAIM';
+    refreshed.caseProgression = toCUICaseProgression(ccd);
+    const client = jest.requireMock('client/civilServiceClient');
+    client.retrieveClaimDetails.mockResolvedValue(refreshed);
+    const dashboard = jest.requireActual('modules/utilityService').getDashboardClaimById;
+    await dashboard(id, {session: {user: {id: 'local-user'}}, cookies: {}} as AppRequest, true);
+    expect(cached).toBe(refreshed);
+    expect(cached.caseProgression[ownKey]).toBeUndefined();
+    expect((cached.caseProgression.claimantUploadDocuments.disclosure[0].caseDocument as UploadEvidenceDocumentType).documentUpload.document_filename).toBe('claimant-saved.pdf');
+    expect((cached.caseProgression.defendantUploadDocuments.disclosure[0].caseDocument as UploadEvidenceDocumentType).documentUpload.document_filename).toBe('defendant-saved.pdf');
+    const before = JSON.stringify(cached);
+    const writesBefore = writes.length;
+    await request(app).get(check).expect(302).expect('Location', selection);
+    // A stale empty POST may have no parsed body; recovery precedes form access.
+    await request(app).post(check).expect(302).expect('Location', selection);
+    await request(app).post(check).type('form').send({}).expect(302).expect('Location', selection);
+    await request(app).post(check).type('form').send({signed: 'true'}).expect(302).expect('Location', selection);
+    expect(client.submitEvent).not.toHaveBeenCalled();
+    expect(client.updateTaskStatus).not.toHaveBeenCalled();
+    expect(deleteDraftClaimFromStore).not.toHaveBeenCalled();
+    expect(writes).toHaveLength(writesBefore);
+    expect(JSON.stringify(cached)).toBe(before);
+    // Recovery reaches the existing actionable category-selection page.
+    const recovered = await request(app).get(selection + '?lang=' + language).expect(200);
+    expect(fields(recovered.text).some(([name]) => name === 'list')).toBe(true);
+    expect(JSON.stringify(cached)).toBe(before);
+  });
+});

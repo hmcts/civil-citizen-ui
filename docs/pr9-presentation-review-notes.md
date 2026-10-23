@@ -1398,7 +1398,7 @@ Evidence codes deduplicate repeated explanations; each row has one primary dispo
 | `src/main/routes/guards/uploadRateLimitGuard.ts` | Adapted | R008 |
 | `src/main/routes/routes.ts` | Adapted | R008 |
 | `src/main/routes/urls.ts` | Adapted | R008 |
-| `src/main/services/features/caseProgression/checkYourAnswers/checkAnswersService.ts` | Adapted | R005 |
+| `src/main/services/features/caseProgression/checkYourAnswers/checkAnswersService.ts` | Adapted | R005; R091 |
 | `src/main/services/features/caseProgression/disclosureService.ts` | Adapted | R005; R085 |
 | `src/main/services/features/caseProgression/expertService.ts` | Adapted | R005; R085 |
 | `src/main/services/features/caseProgression/trialService.ts` | Adapted | R005; R085 |
@@ -1564,7 +1564,7 @@ Evidence codes deduplicate repeated explanations; each row has one primary dispo
 | `src/main/views/macro/yesNoGenericForm.njk` | Adapted | R010 |
 | `src/test/a11y/a11y-README.md` | Adapted | R015 |
 | `src/test/a11y/a11y-scan.ts` | Adapted | R015 |
-| `src/test/a11y/a11y.mock-test.ts` | Adapted | R015 |
+| `src/test/a11y/a11y.mock-test.ts` | Adapted | R015; R092 |
 | `src/test/a11y/a11y.test.ts` | Covered differently | R016 |
 | `src/test/a11y/a11y.ts` | Adapted | R015 |
 | `src/test/a11y/ignored-urls.ts` | Adapted | R015 |
@@ -2060,6 +2060,8 @@ Evidence codes deduplicate repeated explanations; each row has one primary dispo
 | R088 | Closing presentation adaptation: ten numeric missing-value defaults preserve zero/submitted values; query date errors use escaped inline messages and focusable day summary links; respondent agreement has its existing translated title; three task headings and the opponent timeline use valid bounded composition. The existing dashboard shell gains a default-preserving summary block only to support the query override. Fee-change cleanup remains excluded. |
 | R089 | Existing regression owners extended for closing production corrections: real models/builders, saved-state preservation, call-time persistence snapshots, direct GA handlers, raw numeric attributes, bilingual error/title/table behavior and integration journeys. New unit assertions do not construct Express applications; HTTP remains under integration. This is selective adaptation, not assertion-for-assertion fork-suite parity. |
 | R090 | Claim-fee redirect recovery: adapt the fork's missing-nextUrl fallback to all four current redirect paths, including master's invalid-reference early return. Missing, null, empty and whitespace-only URLs return to the fee page; existing provider URLs and successful-payment confirmation remain. Preserve payment-reference validation, draft ownership/loading/saving and retention boundaries. Extend the current isolated controller suite and claim-issue integration owner using real CCD payment translation and call-time saved-payload snapshots; do not import the fork's complete controller or HTTP unit suite. |
+| R091 | Missing whole case-progression upload draft: adapt the fork's rendering-only recovery at the check-and-send controller boundary on both GET and POST. Redirect to existing document selection for the current role; do not render an empty success summary, submit evidence, update a task, delete a draft or overwrite either role's existing CCD documents. Controller unit tests invoke handlers directly; integration follows a real dashboard cache refresh and CCD translator in both languages/roles with external boundaries mocked. |
+| R092 | Accessibility capture harness: serve actual built CSS/JS and their public assets, require both bundles before testing, provide the capture's i18n cookie prerequisite, and own one loopback server with awaited startup/shutdown. Retain page selection, Pa11y assertions and retries; do not claim previous unstyled passes as styled acceptance. Integration checks real resources, missing CSS/JS, startup failure cleanup and normal shutdown. Source-align 33 stale capture header regions (including two decoded view-source documents) so the real styles exercise current markup; do not mask contrast findings with missing CSS. |
 
 </details>
 
@@ -2449,7 +2451,7 @@ The agreed 22 production corrections required one additional supporting edit to 
 - Numeric defaults preserve raw zero, saved numbers, invalid strings and NaN; validation and calculations are unchanged. Query date messages are escaped individually, official components own the error wrapper, and existing day/month/year identifiers and form contracts remain.
 - The seven capture edits are limited source-aligned updates to affected headings, missing numeric attributes and the respondent title. They do not regenerate historical scenarios or constitute a browser/accessibility pass. Unrelated captured values, monetary data, navigation, metadata and form contracts remain.
 - Preserve master encryption, security/dependency/deployment choices, strict preview/OIDC boundaries, GA draft/type/fee guards and substantive monetary behavior. Blanket invalid-date blanking, malformed-document-ID fallbacks, silent missing-document defaults and repayment resets remain excluded. Mediation's actual form callers already normalize their collections; no additional provider guard was established as necessary. Dormant editor activation, equivalent markup, unused imports/comments and cosmetic cleanup remain excluded.
-- Case-progression check answers with an absent entire upload draft remains an inherited recovery edge. The fork's empty-summary fallback does not make its submission path safe and is not imported. This is explicitly outside the closing batch rather than silently treated as fixed.
+- At this closing-batch checkpoint, an absent whole case-progression upload draft remained an explicitly excluded inherited recovery edge; the fork's rendering-only fallback did not make submission safe. The later R091 amendment below supersedes that exclusion with guarded GET/POST recovery; the earlier optional-category guards alone never fixed it.
 - The eight Defer entries remain explicit residual coverage/owner-acceptance boundaries, not promises of PR12 or eight further PRs: PCQ needs an independent compatibility oracle; cookie/language DOM edge coverage is not exhausted by bilingual rendering; the repeated expert-report editor is dormant although related models retain translation consumers; the fork's standalone step-free-access Support assertion is not the real nested validation contract; secret-volume isolation and exhaustive GA CYA producer checks are not established. Current behavior and existing protections remain. Accepted delivery/exclusion attribution for DTSCCI-5145 and DTSCCI-4187, operational evidence and separate QA remain owner acceptance work, not invented completed requirements.
 
 The current 719-path ledger retains every ancestor-to-exact-fork path exactly once. R085–R089 record these closing adaptations and mixed-hunk limits; primary disposition counts reflect the current rows. A path disposition does not claim whole-file or assertion-for-assertion parity.
@@ -2547,3 +2549,307 @@ Two fixture corrections occurred during verification. The initial type check fou
 The final positive runs comprise **seven suites / 84 tests**, without initial failures or retries. No full coverage, complete route discovery, build, Pact/server-contract, browser/accessibility, hosted, authenticated or operational check was rerun for this amendment. The previously recorded locked-install and broader acceptance gaps remain. The older intermittent failure histories are not explained by these targeted passes.
 
 All four amendment files remain unstaged and uncommitted for the user's review and push preparation. No branch switch, ref update, commit or push was performed. The pre-existing PR10 notes, excluded historical context, manifests/lockfile and PR10 catalogue wording remain unchanged. Disposable verification resources are removed at handover.
+
+
+## PR11 review amendments — whole-draft recovery and verification harness (23 October 2026)
+
+This amendment supersedes the earlier whole-upload-draft exclusion. It remains within PR11's authorised final integration scope. It also repairs the residence fixture's demonstrated ordering dependence and the capture runner's missing assets/server ownership. The PR10 documentation link is intentionally left for the PR10 branch; the pre-existing local PR10 notes remain excluded.
+
+Proposed final title: **DTSCCI-6593 Complete fork integration fixes, regression coverage and reconciliation**.
+
+Proposed description update: preserve the existing selective test integration, bounded production corrections and claim-payment fallback. Add role-specific check-and-send recovery after dashboard refresh, retain submitted CCD evidence, isolate residence test storage, and exercise styled accessibility captures on an owned loopback server. Historical results below remain historical; current locked verification is recorded separately in this amendment. No claim is made that this closes whole-ticket/phase acceptance.
+
+### Current amendment inventory
+
+The amendment has **52 paths**: one production controller, three existing unit suites, two integration suites, two accessibility-support files, 43 captures and this document. Fifty paths are existing modifications and two are new test-support/integration files. The complete candidate against current PR10 has **159 paths**: 25 production, 72 unit suites, seven integration suites, 50 captures, two documents, one Jest configuration and two accessibility-support files. The pre-existing PR10 notes are outside both counts.
+
+| Path | Purpose and provenance |
+| --- | --- |
+| `src/main/routes/features/caseProgression/checkAnswersController.ts` | Adapt the fork's rendering-only missing-draft fallback at both controller entry points, before signature-body access even on a bodyless stale POST. An absent/null current-role working form or absent case progression redirects to existing type selection before summary rendering, validation/submission, task update or draft deletion. Preserve existing nonempty-draft paths and both roles' persisted evidence. |
+| `src/test/unit/routes/features/caseProgression/checkYourAnswersController.test.ts` | Replace legacy application-booting HTTP unit setup with direct handler coverage. Exercise both roles, en/cy, missing/null drafts and missing case progression, unsigned/signed POST, success ordering and independent read/submit/task failures. Real form validation remains. Rendering/journey behaviour moves to the existing integration owner. |
+| `src/integration-test/routes/uploads/repeatedUploads.integration.test.ts` | Retain all 81 existing upload regressions. Add four journeys: select/upload, render check-and-send, execute real dashboard refresh with real CCD translation, recover GET/bodyless POST/unsigned form POST/signed POST, then render actionable selection. Independently snapshot writes and preserved data; distinct submitted documents remain for both roles. Store/client/flags/session and outer-shell boundaries are substituted, so this is not authenticated backend acceptance. |
+| `src/test/unit/routes/features/response/statementOfMeans/residenceController.test.ts` | Re-establish the valid POST store before every test; the intentional failing-store test still installs and exercises its failure. This removes proven fixture ordering dependence, without claiming the original full-run initiating 404 is explained. |
+| `src/test/a11y/a11y.mock-test.ts` | Await server setup/teardown in Mocha hooks; use real owned URLs instead of unconsumed Supertest requests and synchronous suite-definition shutdown. Keep existing page selection, Pa11y assertions/options and retry helper. |
+| `src/test/a11y/captureServer.ts` | New test-support server: loopback-only listener, actual built public assets, startup checks for CSS and JS, fixed capture routes, capture-language cookie matching the real i18n prerequisite, and awaited idempotent cleanup including startup failure. No production server/authentication change. |
+| `src/integration-test/routes/accessibilityCaptures.integration.test.ts` | New HTTP integration owner: actual capture and built asset responses/types, language cookie, missing stylesheet/script failure, release of the failed-startup port, and normal/idempotent shutdown. No browser or download required for these regressions. |
+| `src/test/unit/modules/nunjucks/presentationCaptures.test.ts` | Retain existing payload/title/numeric/heading checks; reject obsolete header classes and browser-view-source wrappers across the entire capture inventory, with 353 current shared headers and one logo-only header. |
+| 33 existing HTML captures (listed below) | Source-align their stale header regions; decode the two Firefox view-source wrappers to the captured document first. Preserve captured page/form values and all content outside the intended header/serialization correction. |
+| `docs/pr9-presentation-review-notes.md` | Preserve PR9 history and superseded PR11 run records; update mixed-hunk ledger evidence R091/R092, scope, current evidence and residual boundaries. |
+
+The whole-draft trigger is established through `toCUICaseProgression` and `getDashboardClaimById`: CCD restores submitted document collections, while the transient claimant/defendant working form is absent after refresh. The recovery never creates an empty success summary, selects the other role's draft, submits an empty evidence event, updates a task or deletes data. Restarting category selection uses the existing workflow; no persistence redesign or reconstructed metadata is introduced. Optional-category guards remain separate protections.
+
+The capture harness previously supplied neither `/main-dev.css` nor `/main-dev.js` and closed its explicit server during suite definition. Supertest could implicitly open another server when a request URL was inspected. The amended harness checks both asset resources before Pa11y and closes the one server it owns after testing. Loading the real bundle also requires the language cookie normally provided by i18next; the fixture supplies the capture's existing en/cy language rather than changing its HTML or disabling the language script. A missing/invalid HTML language is not repaired by a guessed fallback.
+
+R091/R092 add hunk-level evidence without changing primary ledger dispositions or the 719-path membership. The fork's rendering-only empty-summary fallback is still not copied into the service; its useful intent is implemented safely at the controller boundary. Broader empty/malformed-form validation remains with the existing upload workflow. The eight residual coverage boundaries, inherited duplicate GA summary, owner attribution, server/authenticated/operational and separate-QA acceptance remain distinct from this amendment.
+
+### Fresh locked verification
+
+Verification used a physical disposable source copy, Node 24.21.0 and Yarn 4.18.1, with an immutable skip-build installation and scripts/telemetry disabled. Exact missing locked npm archives were retrieved only after checking copied caches; manifests, resolutions and locked checksums were unchanged. A localhost-only archive server converted them into the private Yarn cache, closed, and the final installation passed again offline. Test/build execution used a separate network preloader and macOS write/network sandbox allowing only disposable writes and localhost connections. It did not preload the preview tests' own network module path.
+
+Styled execution initially exposed obsolete header markup retained in 33 captures: 28 used the old text-logo form (two were entire Firefox view-source wrappers), while five had the later SVG logo but still the obsolete header service-name composition. The current production header was already correct. The amendment renders the existing `macro/header.njk` for 32 shared-header captures and the existing `template.njk` logo-only composition for `mock-unauthorised.html`, using locked GOV.UK Frontend 6.5.1. It does not change production header code. The two view-source files are decoded to their captured HTML before this bounded correction, making their actual GA forms testable. Source-derived header navigation replaces obsolete captured navigation; page-body, form action/field/value, document, monetary and scenario data remain. The recovered requesting-reason capture additionally receives the existing production title and three accessible-name attributes (form/textarea `aria-labelledby` and heading ID); no submitted name or value changes. Trailing whitespace in added fixture lines is normalized without altering textarea values.
+
+<details>
+<summary>33 source-aligned capture corrections</summary>
+
+| Capture | Source/serialization correction |
+| --- | --- |
+| `src/test/utils/mocks/a11y/mock-accessibility-statement.html` | `macro/header.njk` |
+| `src/test/utils/mocks/a11y/mock-case-1645882162449409-general-application-requesting-reason.html` | `macro/header.njk`; decode the saved view-source document first |
+| `src/test/utils/mocks/a11y/mock-case-1645882162449409-response-general-application-1720536653906339-agree-to-order.html` | `macro/header.njk`; decode the saved view-source document first |
+| `src/test/utils/mocks/a11y/mock-claim-defendant-mobile.html` | `macro/header.njk` |
+| `src/test/utils/mocks/a11y/mock-contact-cnbc.html` | `macro/header.njk` |
+| `src/test/utils/mocks/a11y/mock-contact-mediation.html` | `macro/header.njk` |
+| `src/test/utils/mocks/a11y/mock-contact-us.html` | `macro/header.njk` |
+| `src/test/utils/mocks/a11y/mock-cookies.html` | `macro/header.njk` |
+| `src/test/utils/mocks/a11y/mock-eligibility-apply-for-help-with-fees.html` | `macro/header.njk` |
+| `src/test/utils/mocks/a11y/mock-eligibility-claim-is-for-tenancy-deposit.html` | `macro/header.njk` |
+| `src/test/utils/mocks/a11y/mock-eligibility-claim-type.html` | `macro/header.njk` |
+| `src/test/utils/mocks/a11y/mock-eligibility-claim-value.html` | `macro/header.njk` |
+| `src/test/utils/mocks/a11y/mock-eligibility-defendant-address.html` | `macro/header.njk` |
+| `src/test/utils/mocks/a11y/mock-eligibility-defendant-age.html` | `macro/header.njk` |
+| `src/test/utils/mocks/a11y/mock-eligibility-eligible.html` | `macro/header.njk` |
+| `src/test/utils/mocks/a11y/mock-eligibility-government-department.html` | `macro/header.njk` |
+| `src/test/utils/mocks/a11y/mock-eligibility-help-with-fees-reference.html` | `macro/header.njk` |
+| `src/test/utils/mocks/a11y/mock-eligibility-help-with-fees.html` | `macro/header.njk` |
+| `src/test/utils/mocks/a11y/mock-eligibility-hwf-eligible-reference.html` | `macro/header.njk` |
+| `src/test/utils/mocks/a11y/mock-eligibility-hwf-eligible.html` | `macro/header.njk` |
+| `src/test/utils/mocks/a11y/mock-eligibility-information-about-help-with-fees.html` | `macro/header.njk` |
+| `src/test/utils/mocks/a11y/mock-eligibility-known-claim-amount.html` | `macro/header.njk` |
+| `src/test/utils/mocks/a11y/mock-eligibility-not-eligible.html` | `macro/header.njk` |
+| `src/test/utils/mocks/a11y/mock-eligibility-over-18.html` | `macro/header.njk` |
+| `src/test/utils/mocks/a11y/mock-eligibility-single-defendant.html` | `macro/header.njk` |
+| `src/test/utils/mocks/a11y/mock-eligibility.html` | `macro/header.njk` |
+| `src/test/utils/mocks/a11y/mock-first-contact-access-denied.html` | `macro/header.njk` |
+| `src/test/utils/mocks/a11y/mock-first-contact-claim-reference.html` | `macro/header.njk` |
+| `src/test/utils/mocks/a11y/mock-first-contact-pin.html` | `macro/header.njk` |
+| `src/test/utils/mocks/a11y/mock-first-contact-start.html` | `macro/header.njk` |
+| `src/test/utils/mocks/a11y/mock-privacy-policy.html` | `macro/header.njk` |
+| `src/test/utils/mocks/a11y/mock-terms-and-conditions.html` | `macro/header.njk` |
+| `src/test/utils/mocks/a11y/mock-unauthorised.html` | `template.njk` |
+
+</details>
+
+
+<details>
+<summary>Exact locked archive retrieval for this amendment</summary>
+
+Only the following exact locked npm archives were retrieved, with TLS verification, redirects/proxies refused and archive package identities checked. There were **116 archives / 59,921,703 bytes**. Yarn then enforced its existing locked checksums; install scripts stayed disabled and execution returned offline. Two platform archives were already present in the copied local cache. No registry metadata, remote Git, browser/runtime, Java, container or backend retrieval was performed for this amendment.
+
+| Exact URL | Bytes | SHA-256 |
+| --- | ---: | --- |
+| `https://registry.npmjs.org/@babel/parser/-/parser-7.29.9.tgz` | 439123 | `8f3b9fbc531e0c08e2c329cf1ff57bbe121e2d10061b65a05614a25b2255cc43` |
+| `https://registry.npmjs.org/@codeceptjs/configure/-/configure-1.0.6.tgz` | 5112 | `1291d31565de676a2ead7469a7bd46cc44d30aeef7056400d8e81fef1bca641d` |
+| `https://registry.npmjs.org/@codeceptjs/detox-helper/-/detox-helper-1.1.14.tgz` | 10906 | `1a6339bc02ba67bddab9f13f01a64fc417b8e22b4118b2bb0335fd6fc6562183` |
+| `https://registry.npmjs.org/@colors/colors/-/colors-1.6.1.tgz` | 11773 | `7c13d093c7dc82ad9b024da4fd31cd480da6cbae65a0c492efb897e34bd73929` |
+| `https://registry.npmjs.org/@csstools/css-syntax-patches-for-csstree/-/css-syntax-patches-for-csstree-1.1.15.tgz` | 20006 | `47ec40a8a7bf32a5d22eb64477d2204c6e782b9ee5d4cfcfbc0c66c49036d07b` |
+| `https://registry.npmjs.org/@csstools/media-query-list-parser/-/media-query-list-parser-5.0.2.tgz` | 12142 | `34e37cc0007f2533b4b40c189a247097a1531f14105afac140c73f22eb9310f7` |
+| `https://registry.npmjs.org/@csstools/selector-specificity/-/selector-specificity-6.0.1.tgz` | 3515 | `49ad805e5071d72662b756cbcb6f01888842ccd33bd708f26fbd81f18d2e2475` |
+| `https://registry.npmjs.org/@cucumber/cucumber-expressions/-/cucumber-expressions-19.0.1.tgz` | 95302 | `f1023fd86e8027eeab71f5765413e60e0b8fc5385c978a1f3390670492adc0e6` |
+| `https://registry.npmjs.org/@cucumber/gherkin/-/gherkin-39.0.0.tgz` | 92734 | `728c368146f3fd2d1d3daddb094d8a16d6837462a28e676b3233b921f8e3c53a` |
+| `https://registry.npmjs.org/@dabh/diagnostics/-/diagnostics-2.0.9.tgz` | 10584 | `c2741b20e37a5916d1e934cc577f450fa1b0af10d516740f4e55c26fe6819b86` |
+| `https://registry.npmjs.org/@dr.pogodin/csurf/-/csurf-1.18.1.tgz` | 17933 | `7a4973c6892680c95aaccadcefc7f93fd9f873359298caa8a4086351894202a0` |
+| `https://registry.npmjs.org/@flatten-js/interval-tree/-/interval-tree-1.1.4.tgz` | 23665 | `1089b9b95fe45f918215aaaa1beef6f4376b1053e8925a45093f443473dcee42` |
+| `https://registry.npmjs.org/@isaacs/ttlcache/-/ttlcache-1.4.1.tgz` | 8167 | `4fdc15b3ad32802b471d1fcc07eb08f8958fbcc5e8d1d5830a12ad1bc5b6dd1a` |
+| `https://registry.npmjs.org/@jest/create-cache-key-function/-/create-cache-key-function-29.7.0.tgz` | 2933 | `8d277e1e25a6400fec9e7117fc47fc4c8eaa384cdd4a301d5080519961abee43` |
+| `https://registry.npmjs.org/@react-native/assets-registry/-/assets-registry-0.81.6.tgz` | 2223 | `7a6c3966bf013e609140e11acf139101b8745db5b5277528ba465c12ab8c9d1f` |
+| `https://registry.npmjs.org/@react-native/codegen/-/codegen-0.81.6.tgz` | 180094 | `2d8fb69cee45cf2a43e51dc73a11dab8a3ec5396e4bc1ad5a0bcae603d763cf3` |
+| `https://registry.npmjs.org/@react-native/community-cli-plugin/-/community-cli-plugin-0.81.6.tgz` | 17720 | `590adf5532428cc89dbec51ce497326b1690dee1dcbe76c18565832f89817bf9` |
+| `https://registry.npmjs.org/@react-native/debugger-frontend/-/debugger-frontend-0.81.6.tgz` | 4516144 | `d44f66224fc380706847fbe2b39cb70047c5bed6ff13c370b428f0d4d19d7c53` |
+| `https://registry.npmjs.org/@react-native/dev-middleware/-/dev-middleware-0.81.6.tgz` | 31602 | `06e4bba8a24c538e277a22464fad5924624ba77a647d445c28d640ce44152e01` |
+| `https://registry.npmjs.org/@react-native/gradle-plugin/-/gradle-plugin-0.81.6.tgz` | 99826 | `5c4a1196a8163b7d7c315c51b1c2365894cf28fd40467cedba6913bf0068ef04` |
+| `https://registry.npmjs.org/@react-native/js-polyfills/-/js-polyfills-0.81.6.tgz` | 8301 | `bfc7b6bcf2251e010200bd98c282b356fef8d12a9b2a7f6c3d3c3cffd4d24a5d` |
+| `https://registry.npmjs.org/@react-native/normalize-colors/-/normalize-colors-0.81.6.tgz` | 4012 | `2e93cfba6bf95dca9faf4b1e014303b9f2f0617a6fec7862f40a6c4340a8331f` |
+| `https://registry.npmjs.org/@react-native/virtualized-lists/-/virtualized-lists-0.81.6.tgz` | 49324 | `15af95564972c161d6c20f5061e4272ae8ca723010a4b1a0dc7749ae35d8a386` |
+| `https://registry.npmjs.org/@wix-pilot/core/-/core-3.4.2.tgz` | 45788 | `a965861228a4c78a309ed17b7851fda34abc0efe319b8d0d0cf40a79364fd422` |
+| `https://registry.npmjs.org/@wix-pilot/detox/-/detox-1.0.13.tgz` | 10382 | `27ea0a9801e6861ae17c09ec8d63251a2c8ff60b0daf4c8bbbe7843175eeaca5` |
+| `https://registry.npmjs.org/@xmldom/xmldom/-/xmldom-0.9.12.tgz` | 109708 | `08245e18c248b957b4c6e07f8549ad5f55ae11b7a8abd4c1113a0fd61ddc67ee` |
+| `https://registry.npmjs.org/anser/-/anser-1.4.10.tgz` | 10267 | `2f2946fb8190da7260762566f9290c694d217137459b5d43a51f26d7ec9611b0` |
+| `https://registry.npmjs.org/babel-plugin-syntax-hermes-parser/-/babel-plugin-syntax-hermes-parser-0.29.1.tgz` | 3011 | `a1f313807d729062b31c883fd47268b90e717b655736a85e9aedf7e82d5a52ce` |
+| `https://registry.npmjs.org/bunyamin/-/bunyamin-1.6.3.tgz` | 89838 | `977658aa517c51a0265d6b7f3c7a1444add1a5dc8188b71077760f24a50f6452` |
+| `https://registry.npmjs.org/bunyan-debug-stream/-/bunyan-debug-stream-3.1.1.tgz` | 17969 | `862466530915fad20dfaa55a72fd4447f572e07e181b3fb59ca003d16b916410` |
+| `https://registry.npmjs.org/bunyan/-/bunyan-2.0.5.tgz` | 60208 | `ae158b859fe22602c35ba869e4859bb875163103701d7952e4d00aec63e6b699` |
+| `https://registry.npmjs.org/caf/-/caf-15.0.1.tgz` | 36025 | `289f1e1f5e4c328768b1e2725747efdf17608d1828b0bb907763336eb04e0a41` |
+| `https://registry.npmjs.org/chromium-edge-launcher/-/chromium-edge-launcher-0.2.0.tgz` | 33251 | `fb36d48484031ef4f55f3772b5d41547a0afb06e4476a0850cc9b8aabc146f25` |
+| `https://registry.npmjs.org/class-validator/-/class-validator-0.15.1.tgz` | 915522 | `f21b8c29a3103c700db59404e8250a5b0812ee82f60164bf66aaff42e4c3229a` |
+| `https://registry.npmjs.org/codeceptjs/-/codeceptjs-3.7.9.tgz` | 515226 | `e4aeaea5c2c30300c432de44df8e0459e9e5576d5493e9676b6aef9d38234a25` |
+| `https://registry.npmjs.org/color-name/-/color-name-2.1.1.tgz` | 2846 | `94fd34b8f6b573fd0a4a07f5f029beaf2c8ee9a2b7cd0d47fdd6c95c89b50125` |
+| `https://registry.npmjs.org/cookie/-/cookie-2.0.1.tgz` | 13277 | `8516126668fc55128916561047c055db77d0401dee1db108adce7267b4b06ff0` |
+| `https://registry.npmjs.org/deepmerge-ts/-/deepmerge-ts-8.0.2.tgz` | 41695 | `262091e7457d221379bc6e7759df137c01af6553461bad6cd6d4aa3ff10f874c` |
+| `https://registry.npmjs.org/detox/-/detox-20.42.0.tgz` | 13825437 | `7a60ff71e476d5c198b3c117b6ef4acb752ce3d71595f04e8ae555262fc61517` |
+| `https://registry.npmjs.org/easy-stack/-/easy-stack-1.0.1.tgz` | 4482 | `e875506628674d741a70a813875426ac8f5302e0ef4f088dcaa4d3dc94bb2d44` |
+| `https://registry.npmjs.org/enhanced-resolve/-/enhanced-resolve-5.26.0.tgz` | 124037 | `81a355d6fa1579cc142118e634ab349c33b6f03f16c0b4450f2a4db9f5c687eb` |
+| `https://registry.npmjs.org/error-stack-parser/-/error-stack-parser-2.1.4.tgz` | 9214 | `e346f48f4fc606d4e52bf75806e439225508d914d147eb741df3076769ac2385` |
+| `https://registry.npmjs.org/event-pubsub/-/event-pubsub-4.3.0.tgz` | 5401 | `fe48af6ed57c10ec87ab6970c23f3aa88c06305e2b35eaeb6fa7592f6d2a4436` |
+| `https://registry.npmjs.org/exeunt/-/exeunt-1.1.0.tgz` | 7247 | `cf779b3bd82ff6f44e2c8cfab101ddf11817b1c89d6edb355e53710103d8008b` |
+| `https://registry.npmjs.org/flow-enums-runtime/-/flow-enums-runtime-0.0.6.tgz` | 3705 | `d5ffdc5e937f8c7b176b992cb286575f42c3d17233491279482dd77da2c84ac1` |
+| `https://registry.npmjs.org/follow-redirects/-/follow-redirects-1.16.1.tgz` | 10076 | `6e075d999dc5ff568916954508397b11a537b18bde615986d7bd8b3d3fa1799f` |
+| `https://registry.npmjs.org/fs-extra/-/fs-extra-11.4.1.tgz` | 16504 | `6eee04ab29b3f37ce2fa75014fb3fd4836d8a24a2945edfae11e571409ffcbfa` |
+| `https://registry.npmjs.org/govuk-frontend/-/govuk-frontend-6.5.1.tgz` | 1151196 | `60fb9472e0e2d588f8e3ba6ae85e8056a558ae1f0e96b94682ed68d8c69ff7dc` |
+| `https://registry.npmjs.org/handlebars/-/handlebars-4.7.10.tgz` | 712317 | `14f356e6cadb5b064a156d2b39dd843abba8f4b1a38ee036935adecc1a13ad9f` |
+| `https://registry.npmjs.org/hermes-estree/-/hermes-estree-0.29.1.tgz` | 54695 | `d47d453e904d8e43c76c40d879f6418ff2c397691de9c86e31a9b4196090e845` |
+| `https://registry.npmjs.org/hermes-estree/-/hermes-estree-0.35.0.tgz` | 57228 | `70a298683920cad85d550a09414653e11a2fcfc0a6e1f6ac4f9800431990a913` |
+| `https://registry.npmjs.org/hermes-parser/-/hermes-parser-0.29.1.tgz` | 402341 | `35e836e78583de48e58327481b5bd3cb219fba307e557b4cc0a86a9866f0c228` |
+| `https://registry.npmjs.org/hermes-parser/-/hermes-parser-0.35.0.tgz` | 441373 | `2143c5622ae2603181d29f6a3210ba0b362b461c27bf1550195203b2c8618556` |
+| `https://registry.npmjs.org/i18next-fs-backend/-/i18next-fs-backend-2.6.8.tgz` | 142895 | `381d93b2038685a9a36ba584a67ac3259fc9ff4226e4f6b2d185bd807e283295` |
+| `https://registry.npmjs.org/i18next-http-middleware/-/i18next-http-middleware-3.9.9.tgz` | 26187 | `f74c3b2504d266456eee02300b494a69ee346e7ed398a653c8a51abe19645dd7` |
+| `https://registry.npmjs.org/ignore/-/ignore-7.0.13.tgz` | 41934 | `006c31a51ed977e98f97fc6c01cc3f330b571e4981a39aa178c6b27d397460db` |
+| `https://registry.npmjs.org/immutable/-/immutable-5.1.9.tgz` | 148909 | `9481d33c209e07f82933a0f8132348ee9325d72ce196ebc47a93b9b2703f3068` |
+| `https://registry.npmjs.org/ip-address/-/ip-address-10.7.4.tgz` | 85495 | `f9e1d0dd369c002f43770c6ee35942c8078e76d080a1e18e89113eef865f26ff` |
+| `https://registry.npmjs.org/jest-environment-emit/-/jest-environment-emit-1.2.0.tgz` | 26751 | `a3cba6509e130e074d762d162d3c9ab53b83b2b9bbec52ae230ba9b5677ed8d9` |
+| `https://registry.npmjs.org/js-message/-/js-message-1.0.7.tgz` | 3211 | `315547a01eed7a15b5b627db54c3f5b7e90442973481dfb5c006527ea4ea9d2d` |
+| `https://registry.npmjs.org/js-queue/-/js-queue-2.0.2.tgz` | 4230 | `4a7cdee6ead28f2a9db0a6edfcedaf60823cf517863524747f137dcfa03d9752` |
+| `https://registry.npmjs.org/jsc-safe-url/-/jsc-safe-url-0.2.4.tgz` | 2771 | `a615038fb0c6a6cbbdc9fa7bfb9ab3e9e2e753789636b60faa906daf277f2dac` |
+| `https://registry.npmjs.org/json-cycle/-/json-cycle-1.5.0.tgz` | 4296 | `fd8eb64104cc89bc02be0986af0a3bd5b49a3b841c891d91b468b72509275de7` |
+| `https://registry.npmjs.org/lodash.throttle/-/lodash.throttle-4.1.1.tgz` | 5554 | `1fc83367c8959627885a11258ed7ae4f87ae3d845705e9ea8631099517cbafcd` |
+| `https://registry.npmjs.org/memoize-one/-/memoize-one-5.2.1.tgz` | 7122 | `2ff208d9302918f17e7f1f46132f5e89cdd78585b0e424ef95f8d55ad861a5e5` |
+| `https://registry.npmjs.org/metro-babel-transformer/-/metro-babel-transformer-0.83.8.tgz` | 3618 | `72b17c448a5e7cfd0ace020655ca2f7e4888b742b962af07b28d9b4bdd972633` |
+| `https://registry.npmjs.org/metro-cache-key/-/metro-cache-key-0.83.8.tgz` | 1215 | `cc77d70f01d0e9918e04cf420ca50988dcf3563bcaf46b5dc84e5c74f825b390` |
+| `https://registry.npmjs.org/metro-cache/-/metro-cache-0.83.8.tgz` | 10478 | `2dcb012759937f3fd45ef235ff8d15ba58c76e2090c2a31b74645b84fb77995e` |
+| `https://registry.npmjs.org/metro-config/-/metro-config-0.83.8.tgz` | 22577 | `1696d6408db6ce15ecc465e8bc9c9e9afa0c40bd3b1ca42feddccdc07e10b122` |
+| `https://registry.npmjs.org/metro-core/-/metro-core-0.83.8.tgz` | 8784 | `be9f15ecbbc8ff4c45649f42942471cfe199ba7240ac8f743d155112e96526c5` |
+| `https://registry.npmjs.org/metro-file-map/-/metro-file-map-0.83.8.tgz` | 115554 | `e3184b47e23c576a62be7bad8151ed7a9ad309f53a9972630e01a2d81e997684` |
+| `https://registry.npmjs.org/metro-minify-terser/-/metro-minify-terser-0.83.8.tgz` | 1893 | `f7be62568393f2540110b0d21b3a6a6cfc5e5e8b2c22229c2032c0cbd03d75b7` |
+| `https://registry.npmjs.org/metro-resolver/-/metro-resolver-0.83.8.tgz` | 31686 | `be274c3467527673433d31714d1f259184245374f365851bdc0259aa35d25274` |
+| `https://registry.npmjs.org/metro-runtime/-/metro-runtime-0.83.8.tgz` | 21394 | `a0358d5309469bc61a745adf3796cb8e45a07fa64c9d68dab4bff4078d0ef5f2` |
+| `https://registry.npmjs.org/metro-source-map/-/metro-source-map-0.83.8.tgz` | 35965 | `230a63a4274d16d3750c3c9ab63ef59cb102433aacfdfaabd28fd6b573514eb7` |
+| `https://registry.npmjs.org/metro-symbolicate/-/metro-symbolicate-0.83.8.tgz` | 30416 | `9ef2febaf8731d9368a748b0678559a4cf92bf4d046b54d2468b478bca0e4385` |
+| `https://registry.npmjs.org/metro-transform-plugins/-/metro-transform-plugins-0.83.8.tgz` | 21816 | `ddde2bacbc1097d0e7bc35b67dddfcf83862fd42c852a3c2f11f6f77072faf74` |
+| `https://registry.npmjs.org/metro-transform-worker/-/metro-transform-worker-0.83.8.tgz` | 10612 | `bdfc61ff726d1e493cd6875ed431601f79245534a025af200d89159a1dd5ef2a` |
+| `https://registry.npmjs.org/metro/-/metro-0.83.8.tgz` | 225777 | `81d624afec660127f3162e89b09a145186dc22f25715c62d36a871c9ca9ff4eb` |
+| `https://registry.npmjs.org/mocha/-/mocha-11.7.5.tgz` | 532408 | `acd4a16fa42b6cfc850764270ac21bdd32376a641ac4d581b3d16e9705b8415c` |
+| `https://registry.npmjs.org/monocart-coverage-reports/-/monocart-coverage-reports-2.12.11.tgz` | 532487 | `4706545c64840906414e6735dcbeb3d56e3d633866dc943df59828fa0c0bfdcf` |
+| `https://registry.npmjs.org/multi-sort-stream/-/multi-sort-stream-1.0.4.tgz` | 2986 | `a1b2811f71e413ab3f549b210e48feebf28b8c488a26d02c773a43902e085fe0` |
+| `https://registry.npmjs.org/nan/-/nan-2.29.0.tgz` | 81426 | `038073cb41dbf5cd49df2cd98439dc7ee73f713801e9989426313420693e8af6` |
+| `https://registry.npmjs.org/nanoid/-/nanoid-3.3.19.tgz` | 5694 | `4e371b71e3d5081fa0052356d5c1904e7a60e049864c26f0724cfd32dc303849` |
+| `https://registry.npmjs.org/node-ipc/-/node-ipc-9.2.1.tgz` | 28328 | `10ac01262e7ba29d85dd4c07a1a50191f535389dd874fc982580064b7faac0aa` |
+| `https://registry.npmjs.org/nullthrows/-/nullthrows-1.1.1.tgz` | 1725 | `9a40efecf9bc160c42e986a8193628745b8913ce7317dd942fc0e5649994c9f2` |
+| `https://registry.npmjs.org/ob1/-/ob1-0.83.8.tgz` | 2283 | `8df53cca9805e83c381235e6b6e51fb71373045e84c35eb650eeac0fdfd8cab4` |
+| `https://registry.npmjs.org/open/-/open-7.4.2.tgz` | 12663 | `95437eb98046ba0225c061412811fd7ab93b92e47abd23242021b144eb8eb1b7` |
+| `https://registry.npmjs.org/pngjs/-/pngjs-7.0.0.tgz` | 160939 | `c4b71873d48a692dd5eeb1dcb62185c7aafe40f2180c7cc7f30ec71e89a080be` |
+| `https://registry.npmjs.org/postcss/-/postcss-8.5.28.tgz` | 52195 | `f63d6d9bce28989cd083add85af717c0264e44323d35c909ae99ac934e9641a6` |
+| `https://registry.npmjs.org/promise/-/promise-8.3.0.tgz` | 15021 | `c600d4acbeff7c7f10f6b52acfd209d2b6cdfd80ab92eccd3ee162f401b0b972` |
+| `https://registry.npmjs.org/promisify-child-process/-/promisify-child-process-4.1.2.tgz` | 6820 | `b1d1b79d1d3d186f426da648732a01153adae1ac2f0a53503e14deb2d7d0c8a2` |
+| `https://registry.npmjs.org/react-devtools-core/-/react-devtools-core-6.1.5.tgz` | 4015904 | `cfe3ed5cdc7f8391d504fd35b2239d49ec4bd91d64990e80cdeebfbfe717f499` |
+| `https://registry.npmjs.org/react-native/-/react-native-0.81.6.tgz` | 24768119 | `f82ad6b768934902a986b97ff7b7f67d27a4c3f5c93fbaebd0887257381d60cd` |
+| `https://registry.npmjs.org/react-refresh/-/react-refresh-0.14.2.tgz` | 15124 | `c504db3a5043fdec8251c84fa2d83002489273338abcc408c667f60f412f3e5b` |
+| `https://registry.npmjs.org/sanitize-filename/-/sanitize-filename-1.6.4.tgz` | 6726 | `42936e205a6243aaf030e457bd3e68dca8036aeaf1b761b5ebd1a5a40fabf3ea` |
+| `https://registry.npmjs.org/sass/-/sass-1.105.1.tgz` | 932694 | `f7fc3d2884afb479e48861eaf5c63cf9eb39a8796c902d9bb33eee18834cb2f6` |
+| `https://registry.npmjs.org/scheduler/-/scheduler-0.26.0.tgz` | 10015 | `1bbc5d3401d25b848a2a76d4f8f77d99cc95cdff6db054483a7d4067c279d72a` |
+| `https://registry.npmjs.org/serialize-javascript/-/serialize-javascript-7.1.2.tgz` | 8893 | `74e5f9d5202df2acfa19c064a50b6d937c2fc8d24b06b461f2abe3150f64c8dd` |
+| `https://registry.npmjs.org/shell-quote/-/shell-quote-1.11.0.tgz` | 9588 | `028be526afacb2bf5c6c008a95d5435b5d205135f68bb48afd0bb947610393f1` |
+| `https://registry.npmjs.org/shelljs/-/shelljs-0.10.0.tgz` | 45667 | `0908d4921a9e304cbf0aacf161f31aafaa7d5920b403c1493d1c99646ace9ff2` |
+| `https://registry.npmjs.org/stackframe/-/stackframe-1.3.4.tgz` | 6439 | `fb928460cb97df0ba99a1dfbeec6cb1dc9b12f9a9838a003fda25019ad9be929` |
+| `https://registry.npmjs.org/stream-chain/-/stream-chain-2.2.5.tgz` | 9889 | `f9539671f2c9a4dd367733f6eb017ab37eede1b769d120a88157aeab95cf8db2` |
+| `https://registry.npmjs.org/stream-json/-/stream-json-1.9.1.tgz` | 16707 | `3f8cf5812a4abb69d5a8837944373a0b9e7d3cec3e91a5850c95f211a06ae7c3` |
+| `https://registry.npmjs.org/stylelint/-/stylelint-17.16.0.tgz` | 207027 | `950b26ca89d53ea55cec1b8ca904ff6aa0d93007d360fe840dffdc174e148f66` |
+| `https://registry.npmjs.org/supertest/-/supertest-7.3.0.tgz` | 12725 | `6d3b734289966f9399b4be724fa9d72b87a04762ef0b78814ba026c5ed538f71` |
+| `https://registry.npmjs.org/supports-hyperlinks/-/supports-hyperlinks-4.6.0.tgz` | 3675 | `1417a6719accf4ba6e41c945277adfabe0f18090a60161852b8d4619df9f3030` |
+| `https://registry.npmjs.org/tar-fs/-/tar-fs-3.1.3.tgz` | 5973 | `7116c8ba6bb20aafdbe5d6c1c5aa2c7120f6c4cdd5cadcfbca97f84f45448b4f` |
+| `https://registry.npmjs.org/telnet-client/-/telnet-client-1.2.8.tgz` | 10984 | `d661c5a7c84f5000d49afdf6323640165eed2cbf6e89036f07ba4ae7e4617445` |
+| `https://registry.npmjs.org/throat/-/throat-5.0.0.tgz` | 3411 | `acdada0100c9fc4695e51636b057ed4200fd75b68da3d59aca9246d93200d23e` |
+| `https://registry.npmjs.org/trace-event-lib/-/trace-event-lib-1.4.1.tgz` | 15233 | `c13595405bc9e3aff28031fadd3f5829dfa6c0c67970b938c07b0040f1354c96` |
+| `https://registry.npmjs.org/ts-jest/-/ts-jest-29.4.14.tgz` | 77484 | `7ca70a3fa5162598d616d838ba28a9a7f6b6cccdaf196c2fdc6ab642e4ca4ac3` |
+| `https://registry.npmjs.org/type-fest/-/type-fest-0.7.1.tgz` | 10110 | `23518bcb4ad6bafc7892e08e83119089732ce23462c87fb002c09ccd701c6293` |
+| `https://registry.npmjs.org/undici/-/undici-7.30.0.tgz` | 401782 | `afa0d7be8598012c601fff7ed0fdea01868184f5a223a6f656a4fce1da077819` |
+| `https://registry.npmjs.org/webpack/-/webpack-5.111.1.tgz` | 2422918 | `6d1f5b3890768c6669417f040363b2811e56cc26a9d90556742aaf598e02a39c` |
+| `https://registry.npmjs.org/ws/-/ws-8.22.0.tgz` | 35094 | `ca9b3798b2e11ce8fac6713f50ef0501aa12b09b330623c1dc409dff94e7abc8` |
+
+</details>
+
+
+### Failures and diagnostic controls retained for this amendment
+
+- Before the controller correction, the new direct-handler suite failed **18 missing-draft cases / 16 controls passed**. The real dashboard-refresh journey then reproduced **four GET 500s / 81 other cases skipped** against the old controller. Restoring the controller guard made both roles/languages recover without submission, task update, deletion or a store write.
+- Moving the existing residence error-store case before the successful POSTs produced **five failures / three passes** with the original shared setup. The same order passed **eight cases** with the per-test valid baseline; the original test order was restored before positive combined checks. This proves ordering independence, not the cause of the earlier full-run initiating 404.
+- New fixture setup initially used JSON where the lightweight app only accepts form encoding, omitted the presentation-only NRO flag mock, and required a union-type narrowing/Mocha hook import correction. Those setup/type errors were corrected without changing application assertions, route guards or dependencies.
+- An initial full lint inspected a temporary error-first residence copy containing an extra blank line; lint passed after restoring normal positive source. Current full lint has 452 existing warnings (two legacy warnings disappeared with the direct-handler unit conversion), and changed-file lint retains the existing no-unused-expressions warning in the Pa11y assertion. No lint policy changed.
+- The first complete route execution passed **325/326 cases** but failed the new missing-JavaScript server-startup test with `ECONNRESET`: process-wide fetch pooling could reuse a closed server's connection during same-port restart. Asset readiness now uses private `http.get` connections with `agent: false`; assertions and retries are unchanged. That run also captured one existing dashboard partial-remission 401 followed by a successful retry. The connection correction does not explain that authentication failure.
+- Initial styled smoke execution lacked the real application's language cookie; the bundle cleared the capture's document language and Pa11y correctly failed it. The capture server now supplies the recorded supported language cookie, without changing language code, HTML language or accessibility rules.
+- Broad styled diagnostics exposed obsolete header contrast errors and were stopped rather than reported as passes. Five later SVG-header variants were identified in the complete fixture inventory, alongside 28 older text-logo captures. Two purported captures were Firefox view-source documents, so they were decoded to their original scenario HTML. A stopped diagnostic retained a listener until its owned process was terminated; no successful gate is claimed from that interrupted execution.
+- The subsequent complete styled run passed **344 captures** and failed the decoded requesting-reason page on a missing textarea name. The actual production template already had the correct associations and translated title. The capture now matches those source attributes/title, a real-model template regression verifies them, and its isolated styled rerun passed. Captured form fields/values and other body content were independently compared against the decoded original.
+- Browser containment intentionally blocks external Google Tag Manager/Dynatrace resources. These produce console network errors; the local built CSS/JS and both GDS font files return 200. No browser/runtime download or uncontained launch is used. Cached Chromium **133.0.6943.16** is available-browser evidence, not proof of the pinned browser, an authenticated journey or separate QA acceptance.
+
+The final sequence below runs ordinary commands sequentially, preserving `--no-sparkplug`, the existing Jest retry/discovery/coverage policy and the Pa11y retry helper. The custom Jest environment only logs initiating failures/retries. Direct Mocha execution omits the package script's inherited `--exit`, so successful completion also checks server/browser cleanup. No Jest `--forceExit` is used.
+
+
+### Verification checkpoint before capture bundle-reference completion
+
+`J` is `node --no-sparkplug node_modules/jest/bin/jest.js`; the coverage runs use four workers and route/affected runs use one. All commands use ordinary exits. Locked versions include GOV.UK Frontend 6.5.1, class-validator 0.15.1, Express 5.2.1, express-rate-limit 8.7.0, ip-address 10.7.4, ts-jest 29.4.14 and Webpack 5.111.1.
+
+| Command/check | Checkpoint result |
+| --- | --- |
+| Immutable installation `node .yarn/releases/yarn-4.18.1.cjs install --immutable --mode=skip-build` | Exit 0, including the final fully offline run; installation hooks disabled. |
+| Development build before application-importing tests | Exit 0; seven existing warnings. Assets were unchanged by the backend recovery correction. |
+| Direct check-and-send, residence and existing summary-service focused suites | Three suites / 49 tests passed; exit 0; no initiating failures/retries. |
+| Original error-first residence negative/positive controls | Old baseline: five failures / three passes, expected exit 1. Per-test baseline: eight passes, exit 0. |
+| Recovery regression against old controller | 18 handler failures / 16 controls passed, expected exit 1; four bilingual/role journey failures, expected exit 1. |
+| Latest `J --coverage --maxWorkers=4 --silent` with logging-only observer | **975 suites / 9,249 tests passed**, exit 0, 158.995 seconds. Four existing cases initially failed and passed on their first existing retry; details below. |
+| Latest `J -c jest.functionaltest.config.js --runInBand --silent` | **25 suites / 326 tests passed**, exit 0, 59.269 seconds; zero initiating failures/retries. Includes bodyless and encoded invalid POST recovery before accessing form data. |
+| Actual capture runner via Mocha/ts-node, default complete selection and unchanged Pa11y rules | **345 styled captures passed**, exit 0, about five minutes; zero retry-helper events. Cached contained Chromium 133.0.6943.16; ordinary exit without `--exit`. |
+| Capture assertions against real RequestingReason/production template | 11 cases passed, exit 0; source title and accessible-name associations match. Included in the full unit run. |
+| Independent capture scenario comparison | All 33 retain form actions/fields/values and links/body data outside the source-aligned header/serialization correction. The requesting-reason title and three accessible-name attributes are the explicit additional correction verified against production. |
+| Production Webpack build (`--mode production`, `NODE_ENV=production`) | Exit 0; seven existing warnings. |
+| TypeScript `--noEmit --incremental false` | Exit 0 on the current source. |
+| Current changed-TypeScript ESLint | Exit 0; zero errors and the one existing unused-expression warning in the retained Pa11y assertion. |
+| Dependency pins and functional baseline | Both exit 0; no dependency/discovery policy change. |
+| Chart/preview mapping validation | 41 / 36 mappings valid, both exit 0. Static mapping evidence is distinct from server execution. |
+| Ledger and final inventory | Exactly 719 unique fork paths, unchanged disposition counts; 52 amendment paths and 159 total prospective PR11 paths against current PR10. |
+
+The earlier completed-tree unit and route passes recorded **zero initiating failures/retries** (975/9,249 and 25/326). Final review additionally moved submission-form construction behind the missing-draft check and added a bodyless POST to the same four journey cases. The latest full runs above cover those exact final bytes. Their unit rerun recorded these four initiating failures, all followed by successful existing retries:
+
+- Claimant dashboard: hide awaiting-response links with a requested judgment/buffer disabled — socket hang-up.
+- Claimant dashboard: Welsh party banner — HTTP 401 instead of 200.
+- Children-disability GET — HTTP 401 instead of 200.
+- GA check answers: submit a valid multi-application application at index 2 — missing redirect instead of the expected confirmation URL.
+
+These failures are retained as unresolved suite-instability evidence. The earlier clean runs do not establish their causes, and the one-line missing-draft boundary correction is not asserted to explain or fix them. The changed check-and-send/residence/capture tests had no initiating failures in the final runs. The current route and styled-capture runs required no retries. No assertions, retry counts, timeouts, discovery or coverage thresholds were relaxed.
+
+This amendment does not establish a fresh live audit/hardened registry check, hosted/Jenkins approval, WireMock server/container contracts, authenticated backend journeys, operational acceptance or separate QA. Earlier evidence for unchanged contract/shared-import areas remains historical. The browser checks exercise static captured pages with current assets and an available contained browser; they do not prove the pinned browser matrix or authenticated user acceptance. Those limits are not reasons for another PR.
+
+The inherited duplicate GA summary and eight residual coverage/owner decisions remain explicitly recorded. The whole-upload-draft recovery exclusion is now resolved in PR11. The PR10 local-note link remains owned by PR10; neither `docs/ui-preview.md` nor the excluded pre-existing PR10 notes is modified here.
+
+
+### Capture bundle-reference completion
+
+The final resource audit identified ten additional captures using saved-browser `_files/` paths or historical hashed CSS/JS bundles. Some produced passing Pa11y results while required scripts/styles did not execute, so that earlier 345-case pass is not presented as complete current-asset evidence. The ten files below now reference `/main-dev.css` and `/main-dev.js`, the actual assets built for the capture runner. Three archive-materialized duplicate GTM script tags are removed while their existing bootstrap remains; one archived Dynatrace URL is restored to the same public URL already recorded by the capture set. External telemetry remains blocked throughout verification and is not downloaded.
+
+The capture-inventory regression requires both exact current bundle URLs and rejects saved-page resource references on all 354 full HTML pages. Three historical redirect-body fixtures are not full pages and are unchanged. Existing page selection/ignored/action URLs are unchanged. Form names/values, scenario data and page navigation remain intact. These ten resource-only changes are distinct from the 33 header/serialization corrections, bringing this amendment to **43 capture paths / 52 paths overall** and prospective PR11 to **159 paths**.
+
+- `src/test/utils/mocks/a11y/mock-case-1645882162449409-general-application-1720536653906339-respond-addln-info.html`
+- `src/test/utils/mocks/a11y/mock-case-1645882162449409-qm-view-query.html`
+- `src/test/utils/mocks/a11y/mock-case-1645882162449409-judgment-online-confirm-you-have-been-paid-confirmation.html`
+- `src/test/utils/mocks/a11y/mock-case-1645882162449409-response-general-application-1720536653906339-confirmation.html`
+- `src/test/utils/mocks/a11y/mock-case-1645882162449409-qm-create-query.html`
+- `src/test/utils/mocks/a11y/mock-case-1645882162449409-judgment-online-confirm-you-have-been-paid.html`
+- `src/test/utils/mocks/a11y/mock-case-1645882162449409-general-application-1720536653906339-payment-unsuccessful.html`
+- `src/test/utils/mocks/a11y/mock-case-1645882162449409-qm-share-query.html`
+- `src/test/utils/mocks/a11y/mock-case-1645882162449409-qm-view-query-1-query-details.html`
+- `src/test/utils/mocks/a11y/mock-case-1645882162449409-qm-1-follow-up-query-cya.html`
+
+The affected presentation suite passed 11 cases, and 17 related styled capture cases passed after these corrections. The complete final sequence is rerun below against the corrected resources with failure/retry observation retained.
+
+
+### Final handover after bundle-reference correction
+
+The exact current non-document amendment bytes match the disposable verification source. The final sequence used the resource-corrected captures and did not change application code or test policy between runs.
+
+| Final check | Actual result |
+| --- | --- |
+| Complete actual Pa11y capture runner, current resources | **345 passed**, ordinary exit 0, zero retry-helper events. All **1,380 local CSS/JS/font responses were HTTP 200**, including **690 font responses**. No missing core assets remain in this run. |
+| Complete locked unit coverage, four workers | **975 suites / 9,249 tests passed**, exit 0, 162.233 seconds. One existing GA application-type matrix case retried twice; details below. |
+| Complete locked route discovery, one worker | **25 suites / 326 tests passed**, exit 0; zero initiating failures/retries. |
+| Current TypeScript and changed-TypeScript lint | Both exit 0; lint retains one existing warning, zero errors. Full lint previously passed with zero errors / 452 existing warnings; the last resource-only assertion additions are covered by current changed-file lint. |
+| Development/production builds | Both passed; seven existing warnings each. Production source/assets did not change during the final resource-only correction. |
+| Dependency pins, functional baseline, chart and preview mappings | All passed again; **41 / 36 mappings**. |
+| Resource-only capture data comparison | All ten corrections preserve form actions/fields/values, page data and navigation; only the documented resource tags change. |
+| Diff hygiene and inventory | No whitespace errors; **52 amendment paths** (50 existing, two new) and **159 prospective PR11 paths** against current PR10. |
+
+The final unit observer recorded two initiating failures in the same existing GA application-type case, “restrict addition of another application type when addition application type is not allowed”: HTTP 404, then HTTP 500, before the second existing retry passed. This does not establish the initiating cause or settle the prior socket/authentication/timeout histories. Earlier checkpoint failures and clean runs above remain part of the evidence; none is replaced by the last green result. The new missing-draft recovery, residence baseline and capture-resource checks had no initiating failures in the final sequence.
+
+The SHA-256 digest over the 51 non-document amendment paths (sorted path, NUL, file SHA-256, newline) is:
+
+`2353877fc88e67b4de575b10041d9100d0fcf7664cb9211e1a27410b6fb2b7d1`
+
+The original PR9 document remains an exact byte prefix. The 719-path ledger's membership and primary counts remain unchanged; R091/R092 now explain the current recovery and verification adaptations. This handover leaves all 52 amendment files unstaged and uncommitted for the user. The two new files are `src/test/a11y/captureServer.ts` and `src/integration-test/routes/accessibilityCaptures.integration.test.ts`; the pre-existing untracked PR10 notes must stay out of the commit.
+
+No branch switch, rebase, ref/index/stack update, commit or push is performed. The branch/HEAD, refs, raw index, stack metadata, protected historical log/Yarn binary, manifests/lockfile, PR10 documentation and pre-existing PR10-note contents are preserved. The source fork is untouched and remains clean at the exact reviewed reference. Disposable installations, caches, archives, probes, reports and profiles are removed at handover. Hosted approval, the pinned browser matrix, server/authenticated/operational evidence, owner acceptance and separate QA remain outside this local verification result.

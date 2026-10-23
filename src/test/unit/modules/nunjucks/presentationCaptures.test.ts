@@ -1,4 +1,6 @@
 import fs from 'fs';
+import {GenericForm} from 'form/models/genericForm';
+import {RequestingReason} from 'models/generalApplication/requestingReason';
 import path from 'path';
 import {JSDOM} from 'jsdom';
 import {configuredPresentationEnvironment, presentationFormContext, renderPresentation} from '../../../utils/renderPresentationPages';
@@ -18,6 +20,14 @@ describe('PR9 bounded accessibility captures', () => {
     let enhanced = 0;
     for (const name of files) {
       const dom = new JSDOM(fs.readFileSync(path.join(directory, name), 'utf8')); const document = dom.window.document;
+      expect(document.querySelector('body#viewsource')).toBeNull();
+      expect(document.querySelector('.govuk-header__logotype-text')).toBeNull();
+      expect(document.querySelector('.govuk-header__service-name')).toBeNull();
+      if (document.querySelector('.govuk-header')) {
+        expect(document.querySelector('link[rel="stylesheet"][href="/main-dev.css"]')).not.toBeNull();
+        expect(document.querySelector('script[src="/main-dev.js"]')).not.toBeNull();
+        expect(document.querySelector('[src*="_files/"], [href*="_files/"]')).toBeNull();
+      }
       const header = document.querySelector('.civil-header');
       if (header) {
         enhanced++;
@@ -36,7 +46,7 @@ describe('PR9 bounded accessibility captures', () => {
       }
       dom.window.close();
     }
-    expect(enhanced).toBe(321);
+    expect(enhanced).toBe(353);
   });
   it('matches the query-start capture legend to the production caption and title', () => {
     const file = 'mock-case-1645882162449409-qm-start.html';
@@ -127,4 +137,24 @@ it('gives the respondent-agreement capture the page-specific title', () => {
   try {
     expect(dom.window.document.title).toContain(formControlTranslate('en')('PAGES.GENERAL_APPLICATION.RESPONDENT_AGREEMENT.TITLE'));
   } finally {dom.window.close();}
+});
+
+it('matches the recovered requesting-reason capture to the production accessible name and title', () => {
+  const file = 'mock-case-1645882162449409-general-application-requesting-reason.html';
+  const captured = new JSDOM(fs.readFileSync(path.join(directory, file), 'utf8'));
+  const current = new JSDOM(renderPresentation('features/generalApplication/requesting-reason.njk', {
+    form: new GenericForm(new RequestingReason('')),
+  }));
+  try {
+    for (const document of [captured.window.document, current.window.document]) {
+      const input = document.querySelector('textarea[name="text"]')!;
+      expect(input.getAttribute('aria-labelledby')).toBe('reason-heading');
+      expect(document.getElementById('reason-heading')!.textContent!.trim()).toBe(formControlTranslate('en')('PAGES.GENERAL_APPLICATION.APPLICATION_REASON.ENTER_REASONS'));
+      expect(input.closest('form')!.getAttribute('aria-labelledby')).toBe('reason-heading');
+      expect(document.title).toContain(formControlTranslate('en')('PAGES.GENERAL_APPLICATION.APPLICATION_REASON.WHY_REQUESTING'));
+    }
+  } finally {
+    captured.window.close();
+    current.window.close();
+  }
 });

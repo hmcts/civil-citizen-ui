@@ -2,7 +2,7 @@ import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {
   CP_CHECK_ANSWERS_URL,
   CP_EVIDENCE_UPLOAD_CANCEL,
-  CP_EVIDENCE_UPLOAD_SUBMISSION_URL, CP_UPLOAD_DOCUMENTS_URL,
+  CP_EVIDENCE_UPLOAD_SUBMISSION_URL, CP_UPLOAD_DOCUMENTS_URL, TYPES_OF_DOCUMENTS_URL,
 } from '../../urls';
 import {
   getBottomElements,
@@ -25,6 +25,13 @@ const checkAnswersViewPath = 'features/caseProgression/check-answers';
 const documentUploadCheckAnswerController = Router();
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
+
+// CCD restores submitted evidence, but not the in-progress upload form. A copied
+// check-and-send URL after a cache refresh must restart selection, not submit it.
+function hasUploadDraft(claim: Claim): boolean {
+  return !!claim.caseProgression?.[claim.isClaimant() ? 'claimantDocuments' : 'defendantDocuments'];
+}
+
 function renderView(res: Response, form: GenericForm<DocumentUploadSubmissionForm>, claim: Claim, claimId: string, isClaimant: boolean, lang: string) {
   const topPageContents = getTopElements(claim);
   let summarySections: DocumentUploadSections;
@@ -50,6 +57,9 @@ documentUploadCheckAnswerController.get(CP_CHECK_ANSWERS_URL, (async (req: AppRe
   try {
     req.session.previousUrl = req.originalUrl;
     const claim = await getClaimById(claimId, req,true);
+    if (!hasUploadDraft(claim)) {
+      return res.redirect(constructResponseUrlWithIdParams(claimId, TYPES_OF_DOCUMENTS_URL));
+    }
     const form = new GenericForm(new DocumentUploadSubmissionForm());
     renderView(res, form, claim, claimId, claim.isClaimant(), lang);
   } catch (error) {
@@ -63,8 +73,11 @@ documentUploadCheckAnswerController.post(CP_CHECK_ANSWERS_URL, (async (req: Requ
   const lang = (req.query.lang as string) || req.cookies.lang;
 
   try {
-    const form = new GenericForm<DocumentUploadSubmissionForm>(new DocumentUploadSubmissionForm(req.body.signed));
     const claim = await getClaimById(claimId, req, true);
+    if (!hasUploadDraft(claim)) {
+      return res.redirect(constructResponseUrlWithIdParams(claimId, TYPES_OF_DOCUMENTS_URL));
+    }
+    const form = new GenericForm<DocumentUploadSubmissionForm>(new DocumentUploadSubmissionForm(req.body.signed));
     await form.validate();
 
     if (form.hasErrors()) {

@@ -48,7 +48,7 @@ describe('Citizen residence', () => {
     });
   });
   describe('on POST', () => {
-    beforeAll(() => {
+    beforeEach(() => {
       app.locals.draftStoreClient = mockResponseFullAdmitPayBySetDate;
     });
 
