@@ -185,6 +185,8 @@ describe('Breathing Space Start Date Controller', () => {
       .expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain('Start date must be a real date');
+        expect(res.text).toContain('href="#day"');
+        expect(res.text).toContain('id="day"');
         expect(breathingSpaceEntryService.saveBreathingSpaceStartDate).not.toHaveBeenCalled();
       });
   });

@@ -4,9 +4,28 @@
 {% from "../../macro/csrf.njk" import csrfProtection %}
 {% from "../../macro/heading-with-caption.njk" import headingWithCaption %}
 {% from "../../macro/cancelLink.njk" import cancelLink %}
+{% from "../../macro/error-summary.njk" import errorSummary %}
 
 {% block pageTitle %}
   {{ setPageTitle(t, pageTitle) }}
+{% endblock %}
+
+{% block errorSummary %}
+  {% set summaryErrors = [] %}
+  {% for error in form.getAllErrors() %}
+    {% if error.property == 'date' or error.property == 'day' %}
+      {% set summaryErrors = summaryErrors.concat([{text: error.text, href: '#day'}]) %}
+    {% elseif error.property == 'month' %}
+      {% set summaryErrors = summaryErrors.concat([{text: error.text, href: '#month'}]) %}
+    {% elseif error.property == 'year' %}
+      {% set summaryErrors = summaryErrors.concat([{text: error.text, href: '#year'}]) %}
+    {% else %}
+      {% set summaryErrors = summaryErrors.concat([error]) %}
+    {% endif %}
+  {% endfor %}
+  {% if form.hasErrors() %}
+    {{ errorSummary(summaryErrors, t) }}
+  {% endif %}
 {% endblock %}
 
 {% block nestedContent %}
