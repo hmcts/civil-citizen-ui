@@ -5,10 +5,13 @@ import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import {
   getTelephone,
   getTelephoneFromStore,
+  getTelephoneFromResponseDraft,
   saveTelephone,
   saveTelephoneToStore,
+  saveTelephoneToResponseDraft,
 } from 'services/features/claim/yourDetails/phoneService';
 import {getDraftClaim, updateDraftClaim} from 'modules/draft-store/draftStoreManagerService';
+import {getResponseDraft, updateResponseDraft} from 'modules/draft-store/response/responseDraftStoreService';
 import {CivilClaimResponse} from 'models/civilClaimResponse';
 import {DraftClaimManagerResult} from 'models/draft/draftClaim';
 import {CitizenTelephoneNumber} from 'form/models/citizenTelephoneNumber';
@@ -19,13 +22,17 @@ import {PartyPhone} from 'models/PartyPhone';
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('modules/draft-store/draftStoreManagerService');
+jest.mock('modules/draft-store/response/responseDraftStoreService');
 
 const mockGetDraftClaim = getDraftClaim as jest.Mock;
 const mockUpdateDraftClaim = updateDraftClaim as jest.Mock;
 const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
+const mockGetResponseDraft = getResponseDraft as jest.Mock;
+const mockUpdateResponseDraft = updateResponseDraft as jest.Mock;
 
 const PHONE_NUMBER = '01632960001';
 const CLAIM_ID = '123';
+const CASE_ID = '123';
 
 const mockReq = {
   session: {
@@ -288,6 +295,66 @@ describe('Claimant Phone Service', () => {
       await expect(
         saveTelephoneToStore(CLAIM_ID, new CitizenTelephoneNumber(PHONE_NUMBER), ClaimantOrDefendant.DEFENDANT),
       ).rejects.toThrow(TestMessages.REDIS_FAILURE);
+    });
+  });
+
+  describe('getTelephoneFromResponseDraft', () => {
+    it('should return populated form when defendant phone exists', async () => {
+      const claim = new Claim();
+      claim.respondent1 = new Party();
+      claim.respondent1.partyPhone = new PartyPhone(PHONE_NUMBER);
+      mockGetResponseDraft.mockResolvedValue(createMockManagerResult(claim));
+
+      const form = await getTelephoneFromResponseDraft(mockReq, CASE_ID, ClaimantOrDefendant.DEFENDANT);
+
+      expect(mockGetResponseDraft).toHaveBeenCalledWith(mockReq, CASE_ID);
+      expect(form.telephoneNumber).toEqual(PHONE_NUMBER);
+    });
+
+    it('should throw when no response draft exists', async () => {
+      mockGetResponseDraft.mockResolvedValue(null);
+
+      await expect(getTelephoneFromResponseDraft(mockReq, CASE_ID, ClaimantOrDefendant.DEFENDANT))
+        .rejects.toThrow('[phoneService] no response draft found');
+    });
+  });
+
+  describe('saveTelephoneToResponseDraft', () => {
+    beforeEach(() => {
+      jest.clearAllMocks();
+    });
+
+    it('should throw when no response draft exists', async () => {
+      mockGetResponseDraft.mockResolvedValue(null);
+
+      await expect(
+        saveTelephoneToResponseDraft(mockReq, CASE_ID, new CitizenTelephoneNumber(PHONE_NUMBER), ClaimantOrDefendant.DEFENDANT),
+      ).rejects.toThrow('[phoneService] no response draft found');
+      expect(mockUpdateResponseDraft).not.toHaveBeenCalled();
+    });
+
+    it('should save defendant phone onto the response draft', async () => {
+      mockGetResponseDraft.mockResolvedValue(createMockManagerResult(new Claim()));
+      mockUpdateResponseDraft.mockResolvedValue({});
+
+      await saveTelephoneToResponseDraft(
+        mockReq,
+        CASE_ID,
+        new CitizenTelephoneNumber(PHONE_NUMBER),
+        ClaimantOrDefendant.DEFENDANT,
+      );
+
+      expect(mockUpdateResponseDraft).toHaveBeenCalledWith(
+        mockReq,
+        CASE_ID,
+        expect.objectContaining({
+          respondent1: expect.objectContaining({
+            partyPhone: expect.objectContaining({phone: PHONE_NUMBER}),
+          }),
+          draftClaimCreatedAt: new Date('2026-08-01T10:00:00.000Z'),
+        }),
+        'draft-123',
+      );
     });
   });
 });

@@ -1,4 +1,4 @@
-import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
+import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {
   getBilingualLangPreference,
@@ -12,9 +12,10 @@ import {
 import {GenericForm} from 'common/form/models/genericForm';
 import {GenericYesNo} from 'common/form/models/genericYesNo';
 import {languagePreferenceGuard} from 'routes/guards/languagePreferenceGuard';
-import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'common/models/AppRequest';
 import {isWelshEnabledForMainCase} from '../../../app/auth/launchdarkly/launchDarklyClient';
+import {createOrLoadResponse} from 'modules/draft-store/response/responseDraftStoreService';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const bilingualLangPreferenceViewPath = 'features/response/bilingual-language-preference';
 const bilingualLangPreferenceController = Router();
@@ -30,10 +31,12 @@ async function renderView(form: GenericForm<GenericYesNo>, res: Response) {
 bilingualLangPreferenceController.get(
   BILINGUAL_LANGUAGE_PREFERENCE_URL,
   languagePreferenceGuard,
-  (req: Request, res: Response, next: NextFunction) => {
+  (req: AppRequest, res: Response, next: NextFunction) => {
     (async () => {
       try {
-        const form: GenericYesNo = await getBilingualLangPreference(req);
+        const caseId = getRouteParam(req, 'id');
+        const draftResult = await createOrLoadResponse(req, caseId);
+        const form: GenericYesNo = getBilingualLangPreference(draftResult);
         await renderView(new GenericForm<GenericYesNo>(form), res);
       } catch (error) {
         logger.error(`Error when getting bilingual language preference - ${error.message}`);
@@ -43,7 +46,7 @@ bilingualLangPreferenceController.get(
   },
 );
 
-bilingualLangPreferenceController.post(BILINGUAL_LANGUAGE_PREFERENCE_URL, (async (req: Request, res: Response, next: NextFunction) => {
+bilingualLangPreferenceController.post(BILINGUAL_LANGUAGE_PREFERENCE_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const form = new GenericForm(new GenericYesNo(req.body.option, 'ERRORS.RESPONSE_LANGUAGE_REQUIRED'));
     form.validateSync();
@@ -51,7 +54,7 @@ bilingualLangPreferenceController.post(BILINGUAL_LANGUAGE_PREFERENCE_URL, (async
       await renderView(form, res);
     } else {
       res.cookie('lang', getCookieLanguage(await isWelshEnabledForMainCase(), form.model.option), {secure: true});
-      await saveBilingualLangPreference(generateRedisKey(<AppRequest>req), form.model);
+      await saveBilingualLangPreference(req, form.model);
       res.redirect(constructResponseUrlWithIdParams(req.params.id, RESPONSE_TASK_LIST_URL));
     }
   } catch (error) {
