@@ -32,8 +32,14 @@ const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServi
 cancelUnissuedClaimController.all([CLAIM_FEE_BREAKUP, CLAIM_FEE_MAKE_PAYMENT_AGAIN_URL], unissuedClaimCancelledGuard);
 
 const renderView = (res: Response, claimId: string, form: GenericForm<CancelUnissuedClaimReason>): void => {
+  // A form error keeps only the first failed rule, but the reason can be too long and have forbidden characters at once
+  const cancelReasonErrors = form.getErrors()
+    .filter(error => error.property === 'cancelReason' && error.constraints)
+    .flatMap(error => Object.values(error.constraints))
+    .map(text => ({text, href: '#cancelReason'}));
   res.render(cancelUnissuedClaimViewPath, {
     form,
+    cancelReasonErrors,
     maxLength: CANCEL_UNISSUED_CLAIM_REASON_MAX_LENGTH,
     dashboardUrl: constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL),
     pageTitle: 'PAGES.CANCEL_UNISSUED_CLAIM.PAGE_TITLE',
