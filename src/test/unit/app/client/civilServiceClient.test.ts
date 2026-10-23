@@ -422,7 +422,8 @@ describe('Civil Service Client', () => {
       await expect(civilServiceClient.submitDefendantResponseEvent('123', {}, appReq)).rejects.toBeInstanceOf(CallbackError);
       await expect(civilServiceClient.submitDefendantResponseEvent('123', {}, appReq)).rejects.toMatchObject({
         status: 422,
-        callbackErrors: ['notanemail is not a valid Email address'],
+        callbackErrors: [],
+        fieldErrors: [{id: 'respondent1.partyEmail', message: 'notanemail is not a valid Email address'}],
       });
     });
 
