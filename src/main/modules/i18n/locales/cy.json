@@ -179,6 +179,14 @@
       "TITLE": "Cwcis ar y gwasanaeth Hawliadau am Arian",
       "VIEW_COOKIES": "Gweld cwcis"
     },
+    "TIMEOUT_WARNING": {
+      "EXTEND_BUTTON": "Aros wedi mewngofnodi",
+      "FALLBACK": "Bydd eich sesiwn yn dod i ben am {{ time }}. Gwneir hyn i ddiogelu eich data.",
+      "TIMER_EXTRA_TEXT": "Gwneir hyn i ddiogelu eich data.",
+      "TIMER_REDIRECT_TEXT": "Rydych ar fin cael eich ailgyfeirio",
+      "TIMER_TEXT": "Byddwn yn eich allgofnodi ymhen ",
+      "TITLE": "Byddwn yn eich allgofnodi cyn hir"
+    },
     "CREATE_DRAFT": {
       "PAGE_TITLE": "Creu hawliad drafft"
     },
@@ -2479,6 +2487,12 @@
       "THE_CLAIM": "Yr hawliad",
       "THE_RESPONSE": "Yr ymateb",
       "DEFENDANT_LR": "Cynrychiolydd cyfreithiol y diffynnydd"
+    },
+    "SESSION_TIMEOUT": {
+      "DESCRIPTION": "Rydym wedi dod â’ch sesiwn i ben oherwydd na wnaethoch chi ddim byd am ychydig. Gwnaethom hyn i gadw eich gwybodaeth yn ddiogel. Bydd angen i chi fewngofnodi eto i barhau.",
+      "PAGE_TITLE": "Rydych wedi cael eich allgofnodi",
+      "SIGN_IN_AGAIN": "Mewngofnodi",
+      "TITLE": "Rydych wedi cael eich allgofnodi"
     },
     "COOKIES": {
       "ADDITIONAL_COOKIES": "Gall gwasanaethau'r llywodraeth osod cwcis ychwanegol ac, os felly, bydd ganddyn nhw eu polisi a'u baner cwcis eu hunain.",

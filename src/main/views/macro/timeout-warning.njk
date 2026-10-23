@@ -1,0 +1,39 @@
+{# MoJ design pattern: https://design-patterns.service.justice.gov.uk/components/timeout-warning/ #}
+{# Fallback must sit inside .govuk-modal-dialogue-inert-container; the dialog must sit outside. #}
+
+{% macro timeoutWarningFallback(t, sessionTimeout) %}
+<div class="govuk-timeout-warning-fallback" data-module="govuk-timeout-warning-fallback">
+  <p class="govuk-body">
+    {{ t('COMMON.TIMEOUT_WARNING.FALLBACK', { time: sessionTimeout.fallbackEndTime }) }}
+  </p>
+</div>
+{% endmacro %}
+
+{% macro timeoutWarning(t, sessionTimeout) %}
+<dialog
+  class="govuk-timeout-warning dialog"
+  data-module="govuk-timeout-warning"
+  id="js-timeout-warning"
+  data-minutes-idle-timeout="{{ sessionTimeout.idleMinutesBeforeWarning }}"
+  data-minutes-modal-visible="{{ sessionTimeout.minutesModalVisible }}"
+  data-url-redirect="{{ urls.SESSION_TIMEOUT_URL }}"
+  data-url-extend="{{ urls.SESSION_EXTEND_URL }}"
+  data-timer-text="{{ t('COMMON.TIMEOUT_WARNING.TIMER_TEXT') }}"
+  data-timer-extra-text="{{ t('COMMON.TIMEOUT_WARNING.TIMER_EXTRA_TEXT') }}"
+  data-timer-redirect-text="{{ t('COMMON.TIMEOUT_WARNING.TIMER_REDIRECT_TEXT') }}"
+  role="dialog"
+  aria-live="polite"
+  aria-labelledby="timeout-warning-dialog-title"
+  aria-describedby="at-timer">
+  <h2 id="timeout-warning-dialog-title" class="govuk-heading-l">
+    {{ t('COMMON.TIMEOUT_WARNING.TITLE') }}
+  </h2>
+  <div class="govuk-body">
+    <div class="govuk-timeout-warning__timer timer" aria-hidden="true" aria-relevant="additions"></div>
+    <div class="govuk-timeout-warning__at-timer at-timer govuk-visually-hidden" role="status" id="at-timer"></div>
+  </div>
+  <button type="button" class="govuk-button dialog-button js-dialog-close" data-module="govuk-button">
+    {{ t('COMMON.TIMEOUT_WARNING.EXTEND_BUTTON') }}
+  </button>
+</dialog>
+{% endmacro %}

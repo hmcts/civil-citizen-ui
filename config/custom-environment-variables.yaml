@@ -85,6 +85,10 @@ caches:
 cookieMaxAge:
   __name: SESSION_COOKIE_MAX_AGE
   __format: number
+sessionTimeout:
+  minutesModalVisible:
+    __name: SESSION_TIMEOUT_MODAL_MINUTES
+    __format: number
 uploadRateLimit:
   enabled: UPLOAD_RATE_LIMIT_ENABLED
   maxRequests:

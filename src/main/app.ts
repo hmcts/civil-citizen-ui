@@ -176,10 +176,13 @@ app.use(session({
   secret: 'local',
   resave: false,
   saveUninitialized: false,
+  // Keep the session as an idle/sliding session. The cookie is shared by all
+  // tabs; the latest request refreshes its expiry for the shared cookie.
   rolling: true,
   cookie: {
     secure: productionMode,
     maxAge: cookieMaxAge,
+    path: '/',
     sameSite: 'lax',
   },
 }) as any);
