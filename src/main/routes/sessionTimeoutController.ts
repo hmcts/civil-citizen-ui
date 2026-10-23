@@ -20,7 +20,7 @@ sessionTimeoutController.get(SESSION_TIMEOUT_URL, (req: AppRequest, res: Respons
   if ((req.session?.user || req.cookies?.['citizen-ui-session']) && req.query?.loggedOut !== '1') {
     // End the SSO session as well as the local session. The logout handler
     // retains the ID token long enough to pass it to IDAM.
-    return res.redirect(`${SIGN_OUT_URL}?returnUrl=${encodeURIComponent(`${SESSION_TIMEOUT_URL}?loggedOut=1`)}`);
+    return res.redirect(SIGN_OUT_URL);
   }
 
   // Avoid rendering the timeout warning on the signed-out page (locals were set earlier).
