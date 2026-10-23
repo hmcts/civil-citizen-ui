@@ -1,0 +1,135 @@
+{% extends "claim-details-tpl-dashboard.njk" %}
+{% from "govuk/components/date-input/macro.njk" import govukDateInput %}
+{% from "govuk/components/textarea/macro.njk" import govukTextarea %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "../../macro/csrf.njk" import csrfProtection %}
+{% from "../../macro/page-title.njk" import setPageTitle %}
+{% from "../../macro/support-links.njk" import supportLinks %}
+{% from "../../macro/contact-us-for-help.njk" import contactUsForHelp with context %}
+{% from "../../macro/error-summary.njk" import errorSummary %}
+
+{% set pageTitle = 'PAGES.BREATHING_SPACE.LIFT.TITLE' %}
+{{ setPageTitle(t, pageTitle) }}
+
+{% block content %}
+<div class="govuk-grid-row">
+  <div class="govuk-grid-column-two-thirds">
+    {% set summaryErrors = [] %}
+    {% for error in form.getAllErrors() %}
+      {% if error.property == 'date' %}
+        {% set summaryErrors = summaryErrors.concat([{text: error.text, href: '#date-day'}]) %}
+      {% else %}
+        {% set summaryErrors = summaryErrors.concat([error]) %}
+      {% endif %}
+    {% endfor %}
+    {% if showErrorSummary and form != null and form.hasErrors() %}
+      {{ errorSummary(summaryErrors, t) }}
+    {% endif %}
+    {% block nestedContent %}
+      <h1 class="govuk-heading-l">
+        <span class="govuk-caption-l">{{ t('PAGES.BREATHING_SPACE.LIFT.CAPTION') }}</span>
+        {{ t('PAGES.BREATHING_SPACE.LIFT.TITLE') }}
+      </h1>
+
+      <form method="post" novalidate>
+        {{ csrfProtection(csrf) }}
+
+        {% set dateErrorMessages %}
+          {% for error in summaryErrors %}
+            {% if error.href == '#date-day' %}
+              <span class="govuk-error-message">{{ t(error.text) }}</span>
+            {% endif %}
+          {% endfor %}
+        {% endset %}
+
+        {{ govukDateInput({
+          id: "date",
+          type: "number",
+          inputmode: "numeric",
+          name: "date",
+          fieldset: {
+            legend: {
+              text: t('PAGES.BREATHING_SPACE.LIFT.WHEN_END'),
+              isPageHeading: false,
+              classes: "govuk-fieldset__legend--m"
+            }
+          },
+          hint: {
+            text: t('PAGES.BREATHING_SPACE.LIFT.DATE_HINT')
+          },
+          errorMessage: {
+            html: dateErrorMessages
+          } if form.hasFieldError('date'),
+          items: [
+            {
+              classes: "govuk-input--width-2 govuk-input--error" if (form.hasFieldError('day') or form.hasFieldError('date')) else "govuk-input--width-2",
+              id: "day",
+              label: t('COMMON.DAY'),
+              name: "day",
+              value: form.model.day,
+              attributes: {
+                maxlength: "2"
+              }
+            },
+            {
+              classes: "govuk-input--width-2 govuk-input--error" if (form.hasFieldError('month') or form.hasFieldError('date')) else "govuk-input--width-2",
+              id: "month",
+              label: t('COMMON.MONTH'),
+              name: "month",
+              value: form.model.month,
+              attributes: {
+                maxlength: "2"
+              }
+            },
+            {
+              classes: "govuk-input--width-4 govuk-input--error" if (form.hasFieldError('year') or form.hasFieldError('date')) else "govuk-input--width-4",
+              id: "year",
+              label: t('COMMON.YEAR'),
+              name: "year",
+              value: form.model.year,
+              attributes: {
+                maxlength: "4"
+              }
+            }
+          ]
+        }) }}
+
+        {{ govukTextarea({
+          name: "text",
+          id: "text",
+          label: {
+            text: t('PAGES.BREATHING_SPACE.LIFT.WHY_LIFTED'),
+            classes: "govuk-label--m"
+          },
+          value: form.model.text,
+          errorMessage: form.errorFor('text', t)
+        }) }}
+
+        <div class="govuk-button-group">
+          {{ govukButton({
+            text: t('COMMON.BUTTONS.CONTINUE')
+          }) }}
+          {{ govukButton({
+            text: t('COMMON.BUTTONS.PREVIOUS'),
+            classes: 'govuk-button--secondary',
+            href: backUrl
+          }) }}
+        </div>
+
+        <p class="govuk-body">
+          <a href="{{ exitUrl }}" class="govuk-link">{{ t('COMMON.BUTTONS.CANCEL') }}</a>
+        </p>
+      </form>
+    {% endblock %}
+  </div>
+  <div class="govuk-grid-column-one-third">
+    {% block sidebar %}
+      <div class="border-small-top"></div>
+      {% if helpSupportLinks != null and helpSupportLinks.length %}
+        {{ supportLinks(t, helpSupportTitle, helpSupportLinks) }}
+      {% endif %}
+      {{ contactUsForHelp(t) }}
+    {% endblock %}
+  </div>
+</div>
+{% endblock %}
