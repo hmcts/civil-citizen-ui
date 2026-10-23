@@ -2853,3 +2853,29 @@ The SHA-256 digest over the 51 non-document amendment paths (sorted path, NUL, f
 The original PR9 document remains an exact byte prefix. The 719-path ledger's membership and primary counts remain unchanged; R091/R092 now explain the current recovery and verification adaptations. This handover leaves all 52 amendment files unstaged and uncommitted for the user. The two new files are `src/test/a11y/captureServer.ts` and `src/integration-test/routes/accessibilityCaptures.integration.test.ts`; the pre-existing untracked PR10 notes must stay out of the commit.
 
 No branch switch, rebase, ref/index/stack update, commit or push is performed. The branch/HEAD, refs, raw index, stack metadata, protected historical log/Yarn binary, manifests/lockfile, PR10 documentation and pre-existing PR10-note contents are preserved. The source fork is untouched and remains clean at the exact reviewed reference. Disposable installations, caches, archives, probes, reports and profiles are removed at handover. Hosted approval, the pinned browser matrix, server/authenticated/operational evidence, owner acceptance and separate QA remain outside this local verification result.
+
+
+## Downstream stack realignment — 23 October 2026
+
+PR3–PR11 are restacked onto corrected PR2 (`28a2ff1c7ca732bb4ca522d3c4bd742ba22fcf36`) by replaying only their own 20 published commits. The intermediate PR3–PR11 trees are byte-identical to their recorded published heads; no earlier PR implementation is replayed as a later PR's own changes. PR1 and PR2 branch tips remain unchanged.
+
+The two files below were present and tested in the completed PR11 working candidate but were omitted from the subsequent 50-file commit `d28da06812c4aff1ecbc23777012b0d43ddc7556`. They are now included in PR11, together with this history record:
+
+- `src/test/a11y/captureServer.ts`
+- `src/integration-test/routes/accessibilityCaptures.integration.test.ts`
+
+Their bytes are unchanged from the earlier locked verification. The 51 non-document amendment paths still match digest `2353877fc88e67b4de575b10041d9100d0fcf7664cb9211e1a27410b6fb2b7d1`. This restack does not constitute fresh unit, route, browser, audit, hosted, operational or QA execution. Earlier verification and retry histories remain recorded above. Dependency-pin/checksum checks, exact tree/diff comparisons and parent ancestry are independently checked for this restack. The pre-existing local PR10 notes remain excluded.
+
+Recorded published heads before realignment:
+
+| PR | Prior head | Own commits replayed |
+| --- | --- | ---: |
+| PR3 | `04b034a3a6c5c5ec5962a20c722606ff564d8622` | 2 |
+| PR4 | `3bf5cc0f132cc34137b8a79bcaf0feea2cb307f3` | 3 |
+| PR5 | `48ee079903c2dd1bcedb4867a3b3d766ba0dd18b` | 1 |
+| PR6 | `ad482968ac2f40fd167952fbf5569cdfe7cfed61` | 3 |
+| PR7 | `1742dc5bfda2fff517a8b4cff30df1cb95421125` | 1 |
+| PR8 | `02ee2aa46e33605455c35a010f5d0eecb0927bc0` | 1 |
+| PR9 | `de84b850131e68b70cbe64c67da7647c94fd0c34` | 1 |
+| PR10 | `f62adf92a68384395a32ca76b57929fdc181fb33` | 4 |
+| PR11 | `d28da06812c4aff1ecbc23777012b0d43ddc7556` | 4 |
