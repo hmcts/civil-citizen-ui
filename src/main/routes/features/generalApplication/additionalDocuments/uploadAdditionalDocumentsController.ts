@@ -19,6 +19,7 @@ import {
 } from 'common/utils/fileUploadUtils';
 import {getRouteParam} from 'common/utils/routeParamUtils';
 import {handleMulterError} from 'services/features/generalApplication/uploadEvidenceDocumentService';
+import {getDeleteFileIndex} from 'services/features/generalApplication/documentUpload/deleteUploadedGADocuments';
 
 const uploadAdditionalDocumentsController = Router();
 
@@ -31,7 +32,6 @@ uploadAdditionalDocumentsController.get(GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL, (asy
     const id = getRouteParam(req, 'id');
     const uploadedDocument = new UploadAdditionalDocument();
     let form = new GenericForm(uploadedDocument);
-    const redisKey = generateRedisKey(req);
     const claim = await getClaimDetailsById(req);
     const gaDetails = claim.generalApplication;
     const lng = req.query.lang ? req.query.lang : req.cookies.lang;
@@ -39,12 +39,6 @@ uploadAdditionalDocumentsController.get(GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL, (asy
     const fileUploadErrors = getFileUploadErrorsForSource(req, FILE_UPLOAD_SOURCE.GA_ADDITIONAL_DOCUMENTS);
     if (fileUploadErrors?.length) {
       form = new GenericForm(uploadedDocument, fileUploadErrors);
-    }
-    if (req.query?.indexId) {
-      await removeSelectedDocument(redisKey, claim, Number(req.query.indexId) - 1, req.session.user?.id);
-      const currentUrl = constructResponseUrlWithIdAndAppIdParams(id, gaId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL);
-      const redirectUrl = req.query?.lang ? `${currentUrl}?lang=${req.query.lang}` : currentUrl;
-      return res.redirect(redirectUrl);
     }
     const cancelUrl = await getCancelUrl(id, claim);
     const backLinkUrl = BACK_URL;
@@ -67,6 +61,12 @@ uploadAdditionalDocumentsController.post(GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL, mul
       return req.session.save(() => {
         res.redirect(`${currentUrl}`);
       });
+    }
+
+    const deleteFileIndex = getDeleteFileIndex(req.body.action);
+    if (deleteFileIndex !== undefined) {
+      await removeSelectedDocument(req, generateRedisKey(req), claim, deleteFileIndex, req.session.user?.id);
+      return res.redirect(currentUrl);
     }
 
     if (req.body.action === 'uploadButton') {

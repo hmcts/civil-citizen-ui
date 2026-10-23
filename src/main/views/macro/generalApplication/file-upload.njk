@@ -40,3 +40,12 @@
     {{ t('PAGES.UPLOAD_DOCUMENTS.ADD_ANOTHER_FILE') }}
   </button>
 {% endmacro %}
+
+{% macro gaDeleteFileButton(t, documentName, index) %}
+  {{ govukButton({
+    name: 'action',
+    value: 'deleteFile[' + index + ']',
+    html: t('COMMON.BUTTONS.DELETE') + '<span class="govuk-visually-hidden"> ' + (documentName | escape) + '</span>',
+    classes: 'govuk-button--secondary govuk-!-margin-bottom-0'
+  }) }}
+{% endmacro %}

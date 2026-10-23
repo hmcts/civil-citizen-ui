@@ -9,6 +9,7 @@ import {uploadEachSelectedFile} from 'services/features/generalApplication/docum
 import {saveUploadErrorsToSession} from 'services/features/generalApplication/uploadEvidenceDocumentService';
 import {FILE_UPLOAD_SOURCE} from 'common/utils/fileUploadUtils';
 import { getDraftGARespondentResponse, saveDraftGARespondentResponse } from './generalApplicationResponseStoreService';
+import {deleteRemovedGADocuments} from 'services/features/generalApplication/documentUpload/deleteUploadedGADocuments';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseService');
@@ -35,11 +36,12 @@ export const saveDocumentsToUploaded = async (redisKey: string, uploadDocument: 
   }
 };
 
-export const removeDocumentFromRedis = async (redisKey: string, index: number) : Promise<void> => {
+export const removeDocumentFromRedis = async (req: AppRequest, redisKey: string, index: number) : Promise<void> => {
   try {
     const gaResponse = await getDraftGARespondentResponse(redisKey);
-    gaResponse?.uploadEvidenceDocuments?.splice(index, 1);
+    const removedDocuments = gaResponse?.uploadEvidenceDocuments?.splice(index, 1);
     await saveDraftGARespondentResponse(redisKey, gaResponse);
+    await deleteRemovedGADocuments(req, removedDocuments, gaResponse?.uploadEvidenceDocuments, 'respondentUploadEvidenceDocumentsService');
   } catch(error) {
     logger.error(error);
     throw error;

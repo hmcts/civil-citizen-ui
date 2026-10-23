@@ -110,7 +110,6 @@ describe('uploadAdditionalDocumentsController', () => {
 
       expect(res.status).toBe(200);
       expect(getClaimDetailsById).toHaveBeenCalledWith(expect.anything());
-      expect(generateRedisKey).toHaveBeenCalledWith(expect.anything());
       expect(getCancelUrl).toHaveBeenCalledWith(claimId, claim);
       expect(getSummaryList).toHaveBeenCalledWith(claim.generalApplication.uploadAdditionalDocuments, claimId, gaId, undefined);
       expect(res.text).toContain('Type of document');
@@ -163,8 +162,7 @@ describe('uploadAdditionalDocumentsController', () => {
       expect(getSummaryList).toHaveBeenCalledWith(claim.generalApplication.uploadAdditionalDocuments, claimId, gaId, 'cy');
     });
 
-    it('should remove the selected doc from the store', async () => {
-
+    it('should show a delete button for each document and not remove a document on a GET request', async () => {
       const additionalDocument = new UploadAdditionalDocument();
       additionalDocument.typeOfDocument = 'testt';
       additionalDocument.caseDocument = {
@@ -181,14 +179,19 @@ describe('uploadAdditionalDocumentsController', () => {
       (getClaimDetailsById as jest.Mock).mockResolvedValue(claim);
       (generateRedisKey as jest.Mock).mockReturnValue(redisKey);
       (getCancelUrl as jest.Mock).mockResolvedValue(cancelUrl);
-      (getSummaryList as jest.Mock).mockReturnValue({});
+      const {getSummaryList: actualGetSummaryList} = jest.requireActual('../../../../../../../main/services/features/generalApplication/additionalDocumentService');
+      (getSummaryList as jest.Mock).mockImplementation(actualGetSummaryList);
       (removeSelectedDocument as jest.Mock).mockReturnValueOnce(void 0);
+
+      claim.generalApplication.uploadAdditionalDocuments = [additionalDocument, additionalDocument];
 
       const res = await request(app).get(constructResponseUrlWithIdAndAppIdParams(claimId, gaId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL)).query({ indexId: 1 });
 
-      expect(res.status).toBe(302);
-      expect(res.header.location).toBe(constructResponseUrlWithIdAndAppIdParams(claimId, gaId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL));
-      expect(removeSelectedDocument).toHaveBeenCalledWith(redisKey, claim, 0, undefined);
+      expect(res.status).toBe(200);
+      expect(res.text).toContain('value="deleteFile[0]"');
+      expect(res.text).toContain('value="deleteFile[1]"');
+      expect(res.text).not.toContain('value="deleteFile[2]"');
+      expect(removeSelectedDocument).not.toHaveBeenCalled();
     });
 
     it('should return page with errors when upload file button clicked without choosing file', async () => {
@@ -239,6 +242,21 @@ describe('uploadAdditionalDocumentsController', () => {
   });
 
   describe('on post request', () => {
+    it('should delete the selected document and redirect to the same page', async () => {
+      const redisKey = 'redis-key';
+      (getClaimDetailsById as jest.Mock).mockResolvedValue(claim);
+      (generateRedisKey as jest.Mock).mockReturnValue(redisKey);
+
+      const res = await request(app)
+        .post(constructResponseUrlWithIdAndAppIdParams(claimId, gaId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL))
+        .field('action', 'deleteFile[1]');
+
+      expect(res.status).toBe(302);
+      expect(res.header.location).toBe(constructResponseUrlWithIdAndAppIdParams(claimId, gaId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL));
+      expect(removeSelectedDocument).toHaveBeenCalledWith(expect.anything(), redisKey, claim, 1, undefined);
+      expect(uploadSelectedFile).not.toHaveBeenCalled();
+    });
+
     it('should handle file upload and redirect to the same page', async () => {
       (getClaimDetailsById as jest.Mock).mockResolvedValue(claim);
       (uploadSelectedFile as jest.Mock).mockResolvedValueOnce(void 0);

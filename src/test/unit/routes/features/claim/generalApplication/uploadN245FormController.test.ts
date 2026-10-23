@@ -23,6 +23,15 @@ jest.mock('../../../../../../main/routes/guards/generalAplicationGuard',() => ({
   }),
 }));
 
+const n245Document: CaseDocument = <CaseDocument>{
+  createdBy: 'test',
+  documentLink: { document_url: 'http://dm-store/documents/n245-doc', document_binary_url: 'http://dm-store/documents/n245-doc/binary', document_filename: 'n245.pdf' },
+  documentName: 'n245.pdf',
+  documentType: null,
+  documentSize: 12345,
+  createdDatetime: new Date(),
+};
+
 describe('General Application - upload n245 form', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
   const idamUrl: string = config.get('idamUrl');
@@ -53,25 +62,12 @@ describe('General Application - upload n245 form', () => {
           expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.UPLOAD_N245_FORM.TITLE'));
         });
     });
-    it('should remove the file upon click', async () => {
-      const mockCaseDocument: CaseDocument = <CaseDocument>{
-        createdBy: 'test',
-        documentLink: { document_url: 'http://test', document_binary_url: 'http://test/binary', document_filename: 'test.png' },
-        documentName: 'test.text',
-        documentType: null,
-        documentSize: 12345,
-        createdDatetime: new Date(),
-      };
-      claim.generalApplication.uploadN245Form.caseDocument = mockCaseDocument;
-      mockDataFromStore.mockResolvedValue(claim);
-      await request(app)
-        .get(`${GA_UPLOAD_N245_FORM_URL}?action=REMOVE_DOC`)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.VARY_JUDGMENT'));
-          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.UPLOAD_N245_FORM.TITLE'));
-          expect(claim.generalApplication.uploadN245Form).toBeUndefined();
-        });
+    it('should show a delete button and not remove the file on a GET request', async () => {
+      claim.generalApplication.uploadN245Form.caseDocument = n245Document;
+      const res = await request(app).get(`${GA_UPLOAD_N245_FORM_URL}?action=REMOVE_DOC`);
+      expect(res.status).toBe(200);
+      expect(res.text).toContain('value="deleteFile[0]"');
+      expect(claim.generalApplication.uploadN245Form.caseDocument).toEqual(n245Document);
     });
     it('should return http 500 when has error in the get method', async () => {
       mockDataFromStore.mockRejectedValueOnce(new Error(TestMessages.SOMETHING_WENT_WRONG));
@@ -85,6 +81,17 @@ describe('General Application - upload n245 form', () => {
   });
 
   describe('on POST', () => {
+    it('should remove the N245 and delete it from document management', async () => {
+      claim.generalApplication.uploadN245Form.caseDocument = n245Document;
+      const deleteDocument = jest.spyOn(CivilServiceClient.prototype, 'deleteDocument').mockResolvedValue(undefined);
+      const res = await request(app).post(GA_UPLOAD_N245_FORM_URL).field('action', 'deleteFile[0]');
+      expect(res.status).toBe(302);
+      expect(res.header.location).toBe(GA_UPLOAD_N245_FORM_URL);
+      expect(claim.generalApplication.uploadN245Form).toBeUndefined();
+      expect(deleteDocument).toHaveBeenCalledWith(expect.anything(), 'n245-doc');
+      deleteDocument.mockRestore();
+    });
+
     it('should throw the error if user click upload file button without uploading', async () => {
       await request(app)
         .post(GA_UPLOAD_N245_FORM_URL)

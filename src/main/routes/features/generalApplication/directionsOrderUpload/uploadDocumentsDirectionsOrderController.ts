@@ -33,6 +33,7 @@ import {
 } from 'common/utils/fileUploadUtils';
 import {getRouteParam} from 'common/utils/routeParamUtils';
 import {handleMulterError} from 'services/features/generalApplication/uploadEvidenceDocumentService';
+import {getDeleteFileIndex} from 'services/features/generalApplication/documentUpload/deleteUploadedGADocuments';
 
 const uploadDocumentsDirectionsOrderController = Router();
 const viewPath = 'features/generalApplication/directionsOrderUpload/upload-documents';
@@ -68,12 +69,6 @@ uploadDocumentsDirectionsOrderController.get(GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER
     if (fileUploadErrors?.length) {
       form = new GenericForm(uploadDocuments, fileUploadErrors);
     }
-    if (req.query?.id) {
-      await removeSelectedDocument(redisKey, Number(req.query.id) - 1);
-      const currentUrl = constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_URL);
-      const redirectUrl = req.query?.lang ? `${currentUrl}?lang=${req.query.lang}` : currentUrl;
-      return res.redirect(redirectUrl);
-    }
     await getSummaryList(formattedSummary, redisKey, claimId, appId);
     await renderView(form, claim, claimId, appId, req, res, formattedSummary);
   } catch (error) {
@@ -92,6 +87,12 @@ uploadDocumentsDirectionsOrderController.post(GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDE
       return req.session.save(() => {
         res.redirect(`${currentUrl}`);
       });
+    }
+
+    const deleteFileIndex = getDeleteFileIndex(req.body.action);
+    if (deleteFileIndex !== undefined) {
+      await removeSelectedDocument(req, generateRedisKeyForGA(req), deleteFileIndex);
+      return res.redirect(currentUrl);
     }
 
     if (req.body.action === 'uploadButton') {
