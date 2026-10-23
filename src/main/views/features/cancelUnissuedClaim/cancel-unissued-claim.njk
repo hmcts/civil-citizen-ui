@@ -10,10 +10,14 @@
   {{ setPageTitle(t, pageTitle) }}
 {% endblock %}
 {% block content %}
-  {% set errors = form.getErrors() %}
   {% if form.hasErrors() %}
-    {{ errorSummary(errors, t) }}
+    {{ errorSummary(cancelReasonErrors, t) }}
   {% endif %}
+  {% set cancelReasonErrorHtml %}
+    {%- for error in cancelReasonErrors -%}
+      {{ t(error.text) }}{% if not loop.last %}<br>{% endif %}
+    {%- endfor -%}
+  {% endset %}
   <div class="govuk-grid-row">
     <div class="govuk-grid-column-two-thirds">
       <h1 class="govuk-heading-l">{{ t('PAGES.CANCEL_UNISSUED_CLAIM.TITLE') }}</h1>
@@ -42,7 +46,7 @@
             other: t('PAGES.CANCEL_UNISSUED_CLAIM.CHARACTERS_OVER_LIMIT_OTHER')
           },
           errorMessage: {
-            text: t(form.errorFor('cancelReason'))
+            html: cancelReasonErrorHtml
           } if form.hasFieldError('cancelReason')
         }) }}
         <div class="govuk-button-group">
