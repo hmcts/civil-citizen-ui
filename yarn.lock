@@ -3636,7 +3636,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/jsdom@npm:^20.0.0":
+"@types/jsdom@npm:20.0.1, @types/jsdom@npm:^20.0.0":
   version: 20.0.1
   resolution: "@types/jsdom@npm:20.0.1"
   dependencies:
@@ -5786,6 +5786,7 @@ __metadata:
     "@types/glob": "npm:8.1.0"
     "@types/jest": "npm:29.5.14"
     "@types/js-yaml": "npm:4.0.9"
+    "@types/jsdom": "npm:20.0.1"
     "@types/lodash": "npm:4.17.25"
     "@types/luxon": "npm:3.7.5"
     "@types/multer": "npm:1.4.13"
