@@ -32,7 +32,7 @@ async function renderView(req: AppRequest, res: Response, claimId: string) {
   const lang = req.query.lang ? String(req.query.lang) : req.cookies.lang;
   const startDateUrl = constructResponseUrlWithIdParams(claimId, BREATHING_SPACE_START_DATE_URL);
   res.render(breathingSpaceCheckAnswersViewPath, {
-    pageTitle: 'PAGES.BREATHING_SPACE_ENTRY.PAGE_TITLE',
+    pageTitle: 'PAGES.BREATHING_SPACE_ENTRY.CYA.PAGE_TITLE',
     backLinkUrl: startDateUrl,
     cancelUrl: constructResponseUrlWithIdParams(claimId, BREATHING_SPACE_CANCEL_URL),
     dashboardUrl: constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL),

@@ -17,7 +17,13 @@
     {% set summaryErrors = [] %}
     {% for error in form.getAllErrors() %}
       {% if error.property == 'date' %}
-        {% set summaryErrors = summaryErrors.concat([{text: error.text, href: '#date-day'}]) %}
+        {% set summaryErrors = summaryErrors.concat([{text: error.text, href: '#day'}]) %}
+      {% elseif error.property == 'day' %}
+        {% set summaryErrors = summaryErrors.concat([{text: error.text, href: '#day'}]) %}
+      {% elseif error.property == 'month' %}
+        {% set summaryErrors = summaryErrors.concat([{text: error.text, href: '#month'}]) %}
+      {% elseif error.property == 'year' %}
+        {% set summaryErrors = summaryErrors.concat([{text: error.text, href: '#year'}]) %}
       {% else %}
         {% set summaryErrors = summaryErrors.concat([error]) %}
       {% endif %}
@@ -36,11 +42,12 @@
 
         {% set dateErrorMessages %}
           {% for error in summaryErrors %}
-            {% if error.href == '#date-day' %}
+            {% if error.href in ['#day', '#month', '#year'] %}
               <span class="govuk-error-message">{{ t(error.text) }}</span>
             {% endif %}
           {% endfor %}
         {% endset %}
+        {% set hasDateError = form.hasFieldError('date') or form.hasFieldError('day') or form.hasFieldError('month') or form.hasFieldError('year') %}
 
         {{ govukDateInput({
           id: "date",
@@ -59,7 +66,7 @@
           },
           errorMessage: {
             html: dateErrorMessages
-          } if form.hasFieldError('date'),
+          } if hasDateError,
           items: [
             {
               classes: "govuk-input--width-2 govuk-input--error" if (form.hasFieldError('day') or form.hasFieldError('date')) else "govuk-input--width-2",

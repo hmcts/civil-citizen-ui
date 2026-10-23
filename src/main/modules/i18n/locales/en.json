@@ -2847,6 +2847,7 @@
         "ARE_YOU_SURE": "Are you sure you want to exit this journey?"
       },
       "CYA": {
+        "PAGE_TITLE": "Check your answers - Enter breathing space",
         "HEADING": "Check your answers",
         "TYPE": "What type is it?",
         "REFERENCE": "Reference number (optional)",

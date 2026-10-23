@@ -66,6 +66,7 @@ describe('Breathing Space Start Date Controller', () => {
       .get(BREATHING_SPACE_START_DATE_URL)
       .expect((res) => {
         expect(res.status).toBe(200);
+        expect(res.text).toContain('Breathing space start date - Your money claims account');
         expect(res.text).toContain('Enter breathing space');
         expect(res.text).toContain('Breathing space start date');
         expect(res.text).toContain('Breathing space will start from today, unless you enter a different start date.');
@@ -184,6 +185,8 @@ describe('Breathing Space Start Date Controller', () => {
       .expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain('Start date must be a real date');
+        expect(res.text).toContain('href="#day"');
+        expect(res.text).toContain('id="day"');
         expect(breathingSpaceEntryService.saveBreathingSpaceStartDate).not.toHaveBeenCalled();
       });
   });
@@ -200,6 +203,27 @@ describe('Breathing Space Start Date Controller', () => {
       .expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain('Start date must include a year');
+        expect(res.text).toContain('href="#year"');
+        expect(res.text).toContain('id="year"');
+        expect(res.text.match(/govuk-error-summary__title/g)).toHaveLength(1);
+        expect(breathingSpaceEntryService.saveBreathingSpaceStartDate).not.toHaveBeenCalled();
+      });
+  });
+
+  it('should link missing month errors to the month input', async () => {
+    (getClaimById as jest.Mock).mockResolvedValueOnce(claimWithStandardType());
+    await request(app)
+      .post(BREATHING_SPACE_START_DATE_URL)
+      .send({
+        day: '3',
+        month: '',
+        year: '2026',
+      })
+      .expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain('Start date must include a month');
+        expect(res.text).toContain('href="#month"');
+        expect(res.text).toContain('id="month"');
         expect(breathingSpaceEntryService.saveBreathingSpaceStartDate).not.toHaveBeenCalled();
       });
   });
