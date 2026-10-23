@@ -18,8 +18,8 @@
 
 Running the application requires the following tools to be installed in your environment:
 
-  * [Node.js](https://nodejs.org/) v14.0.0 or later
-  * [yarn](https://yarnpkg.com/)
+  * [Node.js](https://nodejs.org/) v24.21.0 (set by `.nvmrc`; `package.json` requires at least v24.18.0)
+  * [Yarn 4](https://yarnpkg.com/) (this repository pins Yarn 4.18.1)
   * [Docker](https://www.docker.com)
 
 ### Local Setup
@@ -75,6 +75,20 @@ This will start the frontend container exposing the application's port
 
 In order to test if the application is up, you can visit https://localhost:3001 in your browser.
 
+### Dependency checks
+
+`package.json` uses exact dependency versions. Run `yarn deps:check` to check those pins, their agreement with the lockfile workspace and the presence and format of SHA-512 checksum entries in `yarn.lock`. Yarn verifies downloaded archives against the lockfile during installation and waits seven days before selecting a newly published npm release; an urgent security update can use `YARN_NPM_MINIMAL_AGE_GATE=0` for that one resolution command.
+
+Run `yarn deps:audit` to review registry security advisories. It runs in CI and `cichecks`, failing for any production security advisory or unreviewed toolchain security finding, at every severity. It uses Yarn's `--no-deprecations` option: deprecation notices are maintenance work and do not fail this security gate. Review them separately with `yarn npm audit --recursive`. Both commands need registry access. `yarn-audit-known-issues` records reviewed development-only security findings; it must never allowlist a production security finding. The e2e Redis mock is loaded only in e2e mode and is a development dependency, so production startup does not require it.
+
+Jenkins also runs the shared infrastructure audit without `--no-deprecations`. The two exact OpenTelemetry deprecation entries from master remain in `yarn-audit-known-issues` for that check. The repository checker excludes entries whose ID exactly matches `<package name> (deprecation)` from its security-record comparison, so they are not reported as stale. Security advisories for those packages remain subject to the normal checks.
+
+A live audit of the reconciled lockfile on 12 October 2026 found no production advisories and 15 reviewed development-tool findings under the previous policy, including eight deprecation notices. The seven security records cover `braces`, `extract-zip`, `sprintf-js` through CodeceptJS, and three moderate `stream-json` advisories through optional Detox. Those seven records are retained unchanged; the eight deprecation-only records were removed when the security-only policy was adopted on 21 October 2026. Review the records whenever the lockfile or registry advisories change. The lockfile also pins `@xmldom/xmldom` 0.9.12 and `handlebars` 4.7.10 to address previously reported advisories.
+
+The 21 October 2026 correction pins `follow-redirects` to 1.16.1 for the array-header and `sensitiveHeaders` credential-stripping advisories. Application Insights remains on 2.9.8 with its existing tracing dependencies and telemetry behaviour; replacing deprecated tracing packages and migrating to Application Insights 3 remain separate maintenance work. No telemetry aliases or compatibility patches are required by this correction. The final security-only configuration was prepared offline; a fresh registry audit is still required in CI.
+
+Renovate writes exact pins and waits seven days for routine npm releases. It may automerge minor and patch updates during HMCTS's out-of-hours windows; major and GOV.UK Frontend updates require review. Vulnerability alerts can be raised immediately.
+
 ## Developing
 
 ### Code style
@@ -82,15 +96,16 @@ In order to test if the application is up, you can visit https://localhost:3001 
 We use [ESLint](https://github.com/typescript-eslint/typescript-eslint)
 alongside [stylelint](https://github.com/stylelint/stylelint)
 
-Running the linting with auto fix:
+Run both SCSS and JavaScript/TypeScript linting:
 ```bash
-$ yarn lint --fix
+$ yarn lint
 ```
 
 ### Running the tests
 
 Unit tests must not boot the Express app. In-process HTTP (Supertest) belongs in `src/integration-test`.
 See [docs/test-pyramid.md](docs/test-pyramid.md) for the layer contract and conversion rules.
+`yarn test:a11y` runs the mocked-page accessibility check separately from `cichecks`; a passing aggregate check does not constitute browser or accessibility acceptance.
 
 This template app uses [Jest](https://jestjs.io//) as the test engine. You can run unit tests by executing
 the following command:
