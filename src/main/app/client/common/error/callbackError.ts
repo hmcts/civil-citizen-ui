@@ -182,5 +182,9 @@ export const CcdCyaFieldId = {
   RESPONDENT1_PARTY_PHONE: 'respondent1.partyPhone',
   GA_HEARING_EMAIL: 'HearingDetailsEmailID',
   GA_HEARING_TELEPHONE: 'HearingDetailsTelephoneNumber',
+  APPLICANT1_MEDIATION_EMAIL: 'applicant1LiPResponseCarm.alternativeMediationEmail',
+  APPLICANT1_MEDIATION_TELEPHONE: 'applicant1LiPResponseCarm.alternativeMediationTelephone',
+  RESPONDENT1_MEDIATION_EMAIL: 'respondent1LiPResponseCarm.alternativeMediationEmail',
+  RESPONDENT1_MEDIATION_TELEPHONE: 'respondent1LiPResponseCarm.alternativeMediationTelephone',
 } as const;
 
