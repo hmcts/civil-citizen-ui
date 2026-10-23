@@ -1,61 +1,98 @@
-import request from 'supertest';
-import {app} from '../../../../../../../main/app';
-import nock from 'nock';
-import config from 'config';
-import {GA_COSC_CONFIRM_URL} from 'routes/urls';
-import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
+import {Response} from 'express';
+import controller from 'routes/features/generalApplication/certOfSorC/submitCoScApplicationConfirmationController';
+import {GA_COSC_CONFIRM_URL, DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL} from 'routes/urls';
 import {Claim} from 'models/claim';
+import {CaseRole} from 'form/models/caseRoles';
+import {AppRequest} from 'models/AppRequest';
 import {getClaimById} from 'modules/utilityService';
-import {GeneralApplication} from 'models/generalApplication/GeneralApplication';
-import * as launchDarkly from '../../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
+import {deleteFieldDraftClaimFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {getRouteHandler} from '../../../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../../../main/modules/oidc');
-jest.mock('../../../../../../../main/modules/draft-store');
-jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
+// The GA service imports the response store, whose app reference is an external
+// collaborator here. Keep this handler suite from constructing the application.
+jest.mock('../../../../../../../main/app', () => ({app: {locals: {}}}));
+jest.mock('modules/utilityService', () => ({getClaimById: jest.fn()}));
+jest.mock('modules/draft-store/draftStoreService');
 
-jest.mock('modules/utilityService', () => ({
-  getClaimById: jest.fn(),
-  getRedisStoreForSession: jest.fn(),
-}));
-jest.mock('../../../../../../../main/routes/guards/generalAplicationGuard',() => ({
-  isGAForLiPEnabled: jest.fn((req, res, next) => {
-    next();
-  }),
-}));
+const claimId = '123';
+const collectionId = 'selected-entry';
+const get = getRouteHandler(controller, 'get', GA_COSC_CONFIRM_URL);
+const invalidQueries = [
+  {}, {id: collectionId}, {appFee: '108'},
+  {id: '', appFee: '108'}, {id: ' ', appFee: '108'},
+  {id: 'undefined', appFee: '108'}, {id: 'null', appFee: '108'},
+  {id: 'entry/other', appFee: '108'}, {id: 'entry&other', appFee: '108'},
+  {id: [collectionId, 'other-entry'], appFee: '108'}, {id: {value: collectionId}, appFee: '108'},
+  ...['', ' ', 'undefined', 'null', 'NaN', 'Infinity', '-1', 'wrong', '0x10', '1e2', '1.001'].map(appFee => ({id: collectionId, appFee})),
+  {id: collectionId, appFee: ['108', '19']},
+  {id: collectionId, appFee: {value: '108'}},
+];
 
-describe('GA submission confirmation controller', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
-
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, { id_token: citizenRoleToken });
-    jest.spyOn(launchDarkly, 'isGaForLipsEnabled').mockResolvedValue(true);
+describe('GA confirmation parameter boundary', () => {
+  let claim: Claim;
+  let req: AppRequest;
+  let res: Response;
+  let render: jest.Mock;
+  let redirect: jest.Mock;
+  let next: jest.Mock;
+  beforeEach(() => {
+    jest.resetAllMocks();
+    claim = new Claim();
+    claim.caseRole = CaseRole.CLAIMANT;
+    claim.generalApplications = [
+      {id: 'unrelated-entry', value: {caseLink: {CaseReference: '9990000000000001'}}},
+      {id: collectionId, value: {caseLink: {CaseReference: '9990000000000002'}}},
+    ] as Claim['generalApplications'];
+    claim.generalApplication = {applicationFee: {calculatedAmountInPence: 99900}} as Claim['generalApplication'];
+    jest.mocked(getClaimById).mockResolvedValue(claim);
+    req = {params: {id: claimId}, query: {}, cookies: {}, session: {user: {id: 'owner'}}} as unknown as AppRequest;
+    render = jest.fn(); redirect = jest.fn(); next = jest.fn();
+    res = {render, redirect} as unknown as Response;
   });
 
-  describe('on GET', () => {
-    it('should return cosc ga submit confirmation page', async () => {
-      const claim = new Claim();
-      claim.generalApplication = new GeneralApplication();
-      claim.generalApplication.applicationFee = {
-        calculatedAmountInPence: 100,
-        code: 'test',
-        version: 1,
-      };
-      (getClaimById as jest.Mock).mockResolvedValueOnce(claim);
-      const res = await request(app).get(GA_COSC_CONFIRM_URL);
-      expect(res.status).toBe(200);
-      expect(res.text).toContain('Application created');
-      expect(res.text).toContain('You need to pay the application fee to submit the application');
-      expect(res.text).toContain('Pay the fee');
-    });
+  it.each(['0', '108', '108.25'])('renders the explicit collection item and fee %s without borrowing the draft fee', async appFee => {
+    req.query = {id: collectionId, appFee};
 
-    it('should return http 500 when has error in the get method', async () => {
-      (getClaimById as jest.Mock).mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
-      const res = await request(app).get(GA_COSC_CONFIRM_URL);
-      expect(res.status).toBe(500);
-      expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-    });
+    await get(req, res, next);
+
+    expect(next).not.toHaveBeenCalled();
+    expect(redirect).not.toHaveBeenCalled();
+    expect(render).toHaveBeenCalledTimes(1);
+    const {confirmationContent} = render.mock.calls[0][1];
+    const button = confirmationContent.find((section: {data: {href?: string}}) => section.data.href?.includes('apply-help-fee-selection'));
+    expect(button.data.href).toBe(`/case/${claimId}/general-application/apply-help-fee-selection?id=${collectionId}&appFee=${appFee}`);
+    expect(JSON.stringify(confirmationContent)).not.toContain('appFee=999');
+    expect(getClaimById).toHaveBeenCalledWith(claimId, req, true);
+  });
+
+  it.each(invalidQueries)('recovers invalid query %p without rendering or deleting draft data', async query => {
+    req.query = query as AppRequest['query'];
+
+    await get(req, res, next);
+
+    expect(redirect).toHaveBeenCalledTimes(1);
+    expect(redirect).toHaveBeenCalledWith(DASHBOARD_CLAIMANT_URL.replace(':id', claimId));
+    expect(render).not.toHaveBeenCalled();
+    expect(next).not.toHaveBeenCalled();
+    expect(deleteFieldDraftClaimFromStore).not.toHaveBeenCalled();
+    expect(saveDraftClaim).not.toHaveBeenCalled();
+  });
+
+  it('recovers a defendant to their own dashboard', async () => {
+    claim.caseRole = CaseRole.DEFENDANT;
+    await get(req, res, next);
+    expect(redirect).toHaveBeenCalledWith(DEFENDANT_SUMMARY_URL.replace(':id', claimId));
+    expect(render).not.toHaveBeenCalled();
+    expect(next).not.toHaveBeenCalled();
+  });
+
+  it('forwards a claim-read failure instead of guessing a recovery or application', async () => {
+    const failure = new Error('claim unavailable');
+    jest.mocked(getClaimById).mockRejectedValue(failure);
+    await get(req, res, next);
+    expect(next).toHaveBeenCalledTimes(1);
+    expect(next).toHaveBeenCalledWith(failure);
+    expect(render).not.toHaveBeenCalled();
+    expect(redirect).not.toHaveBeenCalled();
   });
 });

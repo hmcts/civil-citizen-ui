@@ -11,7 +11,7 @@ export class PartAdmitHowMuchHaveYouPaidGuard {
       try {
         const caseData: Claim = await getCaseDataFromStore(generateRedisKey(<AppRequest>req));
         if (caseData.isPartialAdmission() &&
-          (caseData.partialAdmission.alreadyPaid.option === YesNo.YES || caseData.partialAdmission.alreadyPaid.option === YesNo.NO)) {
+          (caseData.partialAdmission?.alreadyPaid?.option === YesNo.YES || caseData.partialAdmission?.alreadyPaid?.option === YesNo.NO)) {
           return next();
         }
         res.redirect(constructResponseUrlWithIdParams(req.params.id, redirectUrl));

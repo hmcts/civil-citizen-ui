@@ -95,7 +95,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 {% block content %}
 {% if form != null and form.hasErrors() %}
 <div class="govuk-grid-row">
-  {{ errorSummary(form.getAllErrors(), t) }}
+  {% block formErrorSummary %}{{ errorSummary(form.getAllErrors(), t) }}{% endblock %}
 </div>
 {% endif %}
 <div class="govuk-grid-row">

@@ -995,3 +995,1942 @@ PR9 remains ready for review. Merge readiness remains unresolved until these fai
 - Excluded decision log SHA-256: `54b2cb74f1716d7150c79c58fb9b644a5ee1aae6078d21772d2970bcf43923d0` (unchanged/excluded).
 - Excluded Yarn 3 SHA-256: `81bf69deb72c6cfebaca4389444e034c914cc1a90ea40e4ac55a5e2a1d7063d2` (unchanged/excluded).
 - Temporary copies, downloaded archives, caches, generated assets, reports and browser profiles are removed at handover. The pre-existing reusable Node/browser/cache resources remain untouched.
+
+
+## PR11 — final fork test reconciliation (21 October 2026)
+
+**Scope update (22 October 2026):** PR11 now also contains the bounded final integration corrections described in the closing-batch addendum below. The original test-only implementation, inventories, exclusion statements and verification results remain historical. The 719-path ledger and its summary reflect the current dispositions. Dependencies, runtime, deployment and pipeline choices remain unchanged.
+
+**Historical test-only added-case count (22 October 2026): 387.** Execution enumerates 381 cases in the 51 new suites and nine cases in the extended encryption suite, compared with three encryption cases at the recorded base. Earlier counts and run totals below remain historical.
+
+This section is the PR11 adaptation and verification record. Earlier PR8–PR10 results and unresolved failure histories above remain historical evidence. This is a test/documentation change, not a new production feature or whole-ticket approval.
+
+### Verified starting state and history
+
+- Branch: `DTSCCI-6593-fork-tests-reconciliation`, already present. No switch, merge, ref update, staging or commit was needed.
+- Exact PR10 base and unchanged HEAD: `5a6f4fb6b887b4ea4e1b85d01b4705310c6e9572`.
+- Exact fork: `486994338cd584ac728dc0dedacbc31cc0b11406`, read from its own clean checkout; ancestor `00e10d5cf52fe14079e4983ff6277f14adf9e94b`.
+- Local PR10 remote-tracking ref: `2b098e84cb7f9dcd23ac414f29140162876a5142`. The `0 behind / 48 ahead` count is local history: **HEAD's tree equals that ref's tree**. There is no 48-commit source delta to re-import or reset. No remote was queried.
+- Local master `4ab9e3a2f92a18473c93c321f8da6d6097a19a5f` and PR2/PR4–PR10 branch tips are ancestors. Current PR1/integration and PR3 branch tips contain only merge/patch-equivalent history outside HEAD (`git log --cherry-pick --right-only --no-merges HEAD...<ref>` is empty). Their current tips must not be described as literal ancestors. Earlier implementation/protection tests are present and unchanged except the explicitly listed extensions.
+- PR2's current audit correction from `c70e15e086` is retained. Jenkins/pipeline/audit/dependency files are unchanged by PR11.
+- Starting status: only untracked `docs/pr10-ui-preview-review-notes.md`. It stays untouched and outside the implementation inventory. The excluded historical decision log and Yarn 3 binary also stay untouched and excluded.
+- Raw index SHA-256: `875c037e4718362f57f63a213e7a945489d432e09e307c6b693c64b583faa912`. HEAD, refs and index remain unchanged; all changes are unstaged.
+
+### Scope and test decisions
+
+The ancestor-to-exact-fork inventory has **719 changed paths**, including **331 changed test suites**. At the PR10 base, those 331 comprise **27 byte-identical, 133 different and 171 absent paths**. Across every fork test suite, including inherited files, the count is 623 identical / 275 different / 172 absent; the additional absent inherited path is the misspelled `modules/ordance-survey-key/ordanceSurveyKeyService.test.ts`. The historical “88 unchanged” figure used a different earlier tree/comparison and is not reused as a current count. Missing filenames do not establish missing behaviours.
+
+PR11 imports/adapts missing isolated validators, model validation, complete CCD translations, task availability/statuses, client callback handling, language/CSRF helpers, draft writes, query grouping and relevant service contracts. Six fork partner-service files are consolidated into one table-driven suite with exact keys and real read-versus-write failure cases. Existing suites are extended rather than overwritten where they protect master.
+
+Deliberate local corrections include deterministic clocks, complete payload assertions, realistic typed upload fixtures, explicit application/fee pairing, cloned draft/default ownership, fixed-format ciphertext tampering and distinguishable CSRF invocation assertions. Fork tests that assert a fabricated object, constructor-only assignment, obsolete runtime/configuration, global accessibility ignores, removed implementations, first-linked-GA guessing or incompatible encryption are excluded. No production fallback is introduced to satisfy a test.
+
+The ledger below assigns every fork-changed path. A file may contain both previously adapted and deliberately excluded hunks: “Adapted” points to the relevant existing stage/consumer record, not a claim that the entire fork file was copied or independently reapproved here. “Covered differently” names current behavioural owners and does not assert line-for-line coverage equivalence. Exclusions of fork HTTP-under-unit ports preserve the current test-pyramid contract; they do not certify every possible extra handler edge.
+
+No source, template, stylesheet, dependency, runtime, fixture capture, pipeline or deployment change is made. Therefore browser/accessibility matrices are not repeated for this test-only delta; current actual-template, preview isolation and upload/repeated-row suites run in combined coverage/routes. Historical browser results remain attributed, and integrated accessibility/authenticated/QA gates remain open.
+
+### Test-fixture failures exposed before retries
+
+An execution-only subclass of the unchanged Node Jest environment captured `test_fn_failure`/`hook_failure` before the existing two retries. It adds logging only; no retry count, discovery, threshold or assertion was weakened. The existing three suites reproduced six initiating failures even in an otherwise green run:
+
+| Suite | Initiating failures | Diagnosis and correction |
+| --- | --- | --- |
+| `routes/guards/responseSubmitDateGuard.test.ts` | “should call next if response submit date is set” | A single shared request retains CivilServiceClient's request-scoped promise from the no-date test. A shared `next` mock then makes the deferred retry pass after the later error test. The unchanged suite passes with the affected case invoked twice. Fresh request/response/next fixtures, a cloned response payload, strict next/redirect checks and consumed HTTP mocks remove the false positive. |
+| `routes/features/dashboard/claimantDashboardController.test.ts` | Support links for case progression; hidden support links; error propagation; disabled-Welsh banner | New default mock implementations do not clear earlier `mockResolvedValueOnce` queues. Reset the claim/dashboard/flag mocks per scenario. The Welsh tests are outside the nested GET setup and also lacked a stable amount-helper result; set the existing synthetic amount default in the outer setup. Retain every expected link/status/banner assertion. |
+| `routes/features/claim/generalApplication/response/respondentUploadEvidenceDocumentsController.test.ts` | POST upload failure expected 500, initially received 302 | The prior “saved file” fixture claimed PDF MIME but contained plain text, so content validation stopped before the upload mock. Its unused one-shot success result survived into the failure case. Use a valid synthetic PDF signature, reset per-case upload/store mocks, use real route IDs and assert that Save/error paths actually call the upload client exactly once with the expected file. |
+
+The first combined correction run passed all 48 tests but still retried the Welsh case; adding the missing outer amount-helper default then passed **3 suites / 48 tests with every invocation count 1 and zero failure events**. No production request-cache, upload validation or dashboard behaviour was changed. This explains these specific deterministic fixture problems, not every historical PR9/PR10 failure. Earlier complexity/debts/mediation/application-type failure records remain preserved and are not retroactively called harmless.
+
+A later full run, after those three corrections, failed the CARM-on phone interior-space case (expected 200, received 500) after three attempts. Other initiating failures were captured in that run before retries; they were not hidden or called harmless. The phone pair passed in an ordinary isolated run, so the initial full-run 500’s initiating cause remains unproven. A controlled reproduction left the suite’s intentional Redis-error fixture active before the phone cases: both then failed. Restoring a fresh valid draft store in each outer `beforeEach` made the same controlled pair pass, and the entire phone suite passed **20 tests with invocation count 1**. Existing intentional failure cases still override that baseline. This removes demonstrated test-order coupling without claiming to diagnose every cause of the earlier full-run failure.
+
+The final combined run passed **973 suites / 8,916 tests**, with **zero captured initiating failures and zero retried test cases**. Route integration passed **24 suites / 270 tests**, also without retries. The final pass follows these bounded test-fixture corrections; it does not erase or explain other historical failures.
+
+### Existing GA recovery finding — separately owned
+
+A temporary direct-handler reproduction used the actual current standard confirmation controller, a real Claim with two linked applications, mocked storage/navigation and empty query parameters. It failed the safety assertion and rendered:
+
+```text
+/case/123/general-application/apply-help-fee-selection&appFee=NaN
+```
+
+`Number(req.query.appFee)` receives `undefined`, while no explicit application ID is supplied. The production controller/content-service bytes match the starting PR10 base. This is an existing missing-parameter recovery defect, not introduced by PR11. The reproduction calls the real handler without booting Express; it does not establish an authenticated end-to-end request result. It is documented instead of shipping an intentionally failing suite or pinning the bad URL as expected behaviour.
+
+Owning follow-up: **GA confirmation identity-and-fee recovery**. Establish the application identity and matching fee or route to clear recovery; cover missing/blank/whitespace/literal undefined/null parameters and multiple linked applications. Do not select the first linked GA and independently borrow a draft fee. PR11's shipped tests protect the valid explicitly paired application/fee path, including a zero fee and unrelated linked/draft data. Owner acceptance of this recovery decision remains outstanding.
+
+### Disposable installation and network record
+
+Node **24.21.0**, tracked Yarn **4.18.1**, locked GOV.UK Frontend **6.5.1**. The retained package cache location from older runs was absent; the Berry archive cache was copied read-only into disposable storage. No checkout node_modules or writable retained-cache link was used.
+
+The first offline attempts showed missing packages. An initial copy placed mirror-format filenames in a project cache; correcting the disposable mirror/project-cache layout identified the actual **116** missing locked archives. After explicit user authorization, only their exact `registry.yarnpkg.com` tarball URLs were downloaded, **59,569,065 bytes** total. Redirects and proxies were rejected; package name/version in each archive was checked. A localhost exact-path responder served them to tracked Yarn, which verified the unchanged lockfile's full cache checksums. The responder was then stopped and immutable installation repeated fully offline.
+
+All installs used `install --immutable --mode=skip-build`, with scripts, telemetry and hardened metadata checking disabled; final execution used `YARN_ENABLE_NETWORK=0`, skip-browser-download flags and `PACT_DO_NOT_TRACK=1`. No install hook, metadata search, remote Git, Jira/GitHub, live audit, browser/runtime/image/Maven download or Pact publication occurred. Disabling hardened mode is not a hardened registry check or clean audit.
+
+An independent copied Node socket/DNS guard permits localhost and blocks external connections. Initially preloading the *same module under test* populated its CommonJS cache before the preview tests replaced socket functions: nine preview-tool assertions failed, with no native external operation (the tests replace the final socket boundary). An explicit controlled comparison, using identical guard bytes, produced `connected=true` for the cached test module and `connected=false` with the expected blocking error for a separate preloader copy. Using the separate verification copy fixed this harness collision without changing the application or tests; all 38 preview-tool tests passed. The initial failed full result is retained below.
+
+Before dependencies were available, locked-TypeScript syntax/transpilation and nine isolated source-contract groups with four negative controls passed; validator registration was stubbed in that limited check. Those are not presented as normal Jest/type-check results. Subsequent complete installation and normal checks supersede that limitation.
+
+### Independently reproduced verification
+
+| Check | Actual result |
+| --- | --- |
+| Offline immutable installation | Exit 0; 0.831 seconds; details below / command record. |
+| TypeScript without emit/incremental | Exit 0; 6.953 seconds; details below / command record. |
+| Lint | Exit 0; 14.056 seconds; details below / command record. |
+| Development build | Exit 0; 11.978 seconds; details below / command record. |
+| Production build | Exit 0; 12.373 seconds; details below / command record. |
+| First 46 focused suites | Exit 0; 2.725 seconds; details below / command record. |
+| Four final model suites | Exit 0; 1.045 seconds; details below / command record. |
+| Three corrected fixture suites | Exit 0; 3.002 seconds; details below / command record. |
+| Initial full coverage (preloader collision) | Exit 1; 175.656 seconds; details below / command record. |
+| Corrected-harness full coverage (before fixture corrections) | Exit 0; 155.914 seconds; details below / command record. |
+| After first fixture corrections — phone failure | Exit 1; 160.642 seconds; details below / command record. |
+| Controlled prior-error phone fixture — before | Exit 1; 8.866 seconds; details below / command record. |
+| Controlled prior-error phone fixture — after | Exit 0; 1.934 seconds; details below / command record. |
+| Independent phone suite | Exit 0; 2.099 seconds; details below / command record. |
+| Final full coverage | Exit 0; 157.798 seconds; details below / command record. |
+| Route integration | Exit 0; 63.664 seconds; details below / command record. |
+| Dependency pins/checksums | Exit 0; 0.04 seconds; details below / command record. |
+| Functional baseline | Exit 0; 0.498 seconds; details below / command record. |
+| Shared import consumers | Exit 0; 0.02 seconds; details below / command record. |
+| Chart mappings | Exit 0; 0.032 seconds; details below / command record. |
+| Preview mappings | Exit 0; 0.032 seconds; details below / command record. |
+| Pact tooling | Exit 0; 4.056 seconds; details below / command record. |
+| Pact consumers | Exit 0; 6.821 seconds; details below / command record. |
+| Pact artifacts | Exit 0; 0.035 seconds; details below / command record. |
+
+Initial full result: **972 suites passed / 1 failed; 8907 tests passed / 9 failed**. Retried cases: 15.
+- claimant Dashboard Controller on GET Dashboard Support Links Test should show support links for claimant with caseRole: [CLAIMANT] and ccdState: CASE_PROGRESSION
+- claimant Dashboard Controller on GET should show support links for claimant with links hidden
+- claimant Dashboard Controller on GET should return status 500 when error thrown
+- claimant Dashboard Controller should not show welsh party banner if Welsh feature disabled
+- General Application - Respondent GA upload evidence documents  on POST should return http 500 when has error in the get method
+- preview tooling boundaries checks resolution of localhost to 192.0.2.1 with custom=false
+- preview tooling boundaries blocks direct connections before reaching the underlying socket
+- preview tooling boundaries blocks connect connections before reaching the underlying socket
+- preview tooling boundaries blocks createConnection connections before reaching the underlying socket
+- preview tooling boundaries blocks positional connections before reaching the underlying socket
+- preview tooling boundaries blocks http connections before reaching the underlying socket
+- preview tooling boundaries blocks https connections before reaching the underlying socket
+- preview tooling boundaries blocks unix-options connections before reaching the underlying socket
+- preview tooling boundaries blocks unix-path connections before reaching the underlying socket
+- Response Submit Date Guard should call next if response submit date is set
+
+Corrected harness full result: **973 suites passed / 0 failed; 8916 tests passed / 0 failed**. Retried cases: 6.
+- claimant Dashboard Controller on GET Dashboard Support Links Test should show support links for claimant with caseRole: [CLAIMANT] and ccdState: CASE_PROGRESSION
+- claimant Dashboard Controller on GET should show support links for claimant with links hidden
+- claimant Dashboard Controller on GET should return status 500 when error thrown
+- claimant Dashboard Controller should not show welsh party banner if Welsh feature disabled
+- General Application - Respondent GA upload evidence documents  on POST should return http 500 when has error in the get method
+- Response Submit Date Guard should call next if response submit date is set
+
+After first fixture corrections (phone failure) full result: **972 suites passed / 1 failed; 8915 tests passed / 1 failed**. Retried cases: 6.
+- on POST File upload validation and error handling should reject non-PDF content spoofed as application/pdf
+- General Application - Application costs on GET should return page with QM LIP on
+- General Application - Respondent GA upload evidence documents  General Application - Respondent upload evidence docs to support application should return upload document page
+- Partner Pension on POST should redirect page when "no" and defendant disabled = no
+- Payment date on POST should redirect to claim task list page on valid payment date
+- Citizen phone number on POST. CARM on should return error on input with interior spaces
+
+Final combined candidate full result: **973 suites passed / 0 failed; 8916 tests passed / 0 failed**. Retried cases: 0.
+
+Final focused coverage comprises **50 suites / 369 tests**, including three previously existing encrypted-session cases: **366 new test cases** are added. Forty-nine new suite files and five existing suite extensions/corrections make **54 test paths**; the two existing documentation updates bring PR11 to **56 changed paths**. Pact tooling passed **1 suite / 14 tests**, consumers passed **15 suites / 127 tests**, and artifact validation accepted **3 complete artifacts**. Dependency checks passed **61 production / 63 development declarations, 58 resolutions and 1,517 required checksums** (20 optional/platform omissions). Functional baseline and shared-import checks passed. Static mapping checks accepted **41 chart / 36 preview mappings**.
+
+WireMock server-contract execution is blocked: the immutable `--mode=skip-build` installation does not contain the standalone JAR, and no cached state extension **0.10.1** was found. The inspected launcher would download the extension from Maven. The available real-checkout standalone JAR was not substituted for the locked disposable installation, and no Maven/Java/image download was requested. Static mapping validation and Pact consumers are separate evidence; neither is claimed as those server contracts.
+
+The first functional-baseline attempt, before installation, failed because `codeceptjs/lib/codecept` was unavailable; the complete-install final check passed. Initial TypeScript/production-build failures caused by the invalid new FileUpload fixture are retained in the command record. No current check table entry is a placeholder.
+
+Five negative controls deliberately broke integer rejection, encrypted-session authentication failure, hearing-reference guarding, application/fee identity and CSRF invocation. Each exited 1 through the intended new assertion; every affected source file was restored byte-for-byte before positive/full checks. These expected failures are not unexplained red runs.
+
+Initial genuine implementation/test mistakes are retained: the new GA fixture incorrectly typed pence as a string, one new CoSC expectation used the wrong existing title order, whitespace from comment removal failed 25 lint checks, and a fork N245 fixture used nonexistent FileUpload.fileName. They were corrected to real current models/content/formatting. No production rule or check was relaxed. The final valid typed upload uses FileUpload.originalname/buffer/mimetype/size.
+
+Warnings: unchanged ts-jest isolatedModules deprecation, DEP0060 where not explicitly suppressed, four existing Yarn peer-provider warnings, 454 lint warnings and seven Sass/deprecation Webpack warnings. No auto-fix or dependency/configuration change is used to hide them.
+
+No browser or capture regeneration is performed for this test/documentation delta. No claim of live audit, hardened metadata verification, Docker-stack approval, WireMock server contracts, authenticated journeys, operational Redis/TTL/rate-limit/telemetry validation, hosted security approval or separate QA follows from these local results.
+
+### Original implementation inventory (before review corrections)
+
+| Path | Purpose / provenance |
+| --- | --- |
+| `src/test/unit/app/client/common/civilServiceRequest.test.ts` | Adapted fork coverage. Verify current session-auth headers, exact request results, callback/log ordering and original failure propagation. |
+| `src/test/unit/app/client/common/error/callbackError.test.ts` | Adapted fork coverage. Combine callback/field errors, filter missing messages and preserve status/warnings and default failure messages. |
+| `src/test/unit/common/form/models/EmailValidationWithMessage.test.ts` | Adapted exact-fork isolated unit coverage; production module unchanged. |
+| `src/test/unit/common/form/models/PhoneValidationWithMessage.test.ts` | Adapted exact-fork isolated unit coverage; production module unchanged. |
+| `src/test/unit/common/form/models/admission/fullAdmission/baseDate.test.ts` | Adapted exact-fork isolated unit coverage; production module unchanged. |
+| `src/test/unit/common/form/models/admission/partialAdmission/partialAdmissionRepaymentPlan.test.ts` | Adapted fork coverage. Preserve inherited repayment fields and the current fixed-clock first-payment-date calculation. |
+| `src/test/unit/common/form/models/citizenTelephoneNumber.test.ts` | Adapted fork coverage. Protect trimming, optional omission, invalid UK numbers and current party-mandatory validation. |
+| `src/test/unit/common/form/models/claim/claimant/citizenDate.test.ts` | Adapted fork coverage. Use a fixed clock to cover valid past dates, invalid parts, future dates and the existing age boundary. |
+| `src/test/unit/common/form/models/claim/claimant/dobDate.test.ts` | Adapted fork coverage. Cover optional missing dates, adult/under-18 validation and invalid day/month parts against a fixed clock. |
+| `src/test/unit/common/form/models/genericYesNoCarmContactPersonConfirmation.test.ts` | Adapted fork coverage. Validate required contact confirmation with current default/custom message keys and saved answers. |
+| `src/test/unit/common/form/models/genericYesNoCarmEmailConfirmation.test.ts` | Adapted fork coverage. Validate required email confirmation with current default/custom message keys and saved answers. |
+| `src/test/unit/common/form/models/genericYesNoKnownClaimAmount.test.ts` | Adapted fork coverage. Validate known-amount answers and current default/custom required-message keys. |
+| `src/test/unit/common/form/models/repaymentPlan/baseRepaymentPlan.test.ts` | Adapted exact-fork isolated unit coverage; production module unchanged. |
+| `src/test/unit/common/form/models/statementOfMeans/debts/debtItems.test.ts` | Adapted fork coverage. Distinguish empty from partially populated debt rows and enforce current positive-currency requirements. |
+| `src/test/unit/common/form/models/statementOfMeans/dependants/numberOfChildren.test.ts` | Adapted fork coverage. Convert blank/string age-band counts, total valid integers and reject negative/fractional counts. |
+| `src/test/unit/common/form/models/statementOfMeans/expensesAndIncome/transactionSource.test.ts` | Adapted fork coverage. Protect scheduled amounts, income/expense validation and contextual amount/name/frequency error interpolation. |
+| `src/test/unit/common/form/validators/emailValidator.test.ts` | Adapted fork coverage. Protect optional missing values, valid email/subdomains and length/domain/TLD rejection with current error keys. |
+| `src/test/unit/common/form/validators/optionalDateFourDigitValidator.test.ts` | Adapted exact-fork isolated unit coverage; production module unchanged. |
+| `src/test/unit/common/form/validators/optionalDateInPastValidator.test.ts` | Fork optional-date cases adapted to a fixed local clock and exact midnight/millisecond boundaries. |
+| `src/test/unit/common/form/validators/optionalDateNotInFutureValidator.test.ts` | Fork optional-date cases adapted to a fixed local clock and exact midnight/millisecond boundaries. |
+| `src/test/unit/common/form/validators/optionalDateNotInPastValidator.test.ts` | Fork optional-date cases adapted to a fixed local clock and exact midnight/millisecond boundaries. |
+| `src/test/unit/common/form/validators/optionalIntegerValidator.test.ts` | Fork optional-integer cases extended with whitespace, exponent, sign and null boundaries. |
+| `src/test/unit/common/form/validators/phoneUKValidator.test.ts` | Adapted fork coverage. Protect optional missing values, UK landline/mobile/international formats and invalid input/error keys. |
+| `src/test/unit/common/models/generalApplication/uploadGAFiles.test.ts` | Adapted fork coverage. Protect master null/empty saved-document guards and additional-document type/file requirements. |
+| `src/test/unit/common/models/generalApplication/uploadN245GAFiles.test.ts` | Adapted fork coverage. Protect the current saved-document guard using a real typed FileUpload fixture; reject absent/null/empty references. |
+| `src/test/unit/common/models/mediation/unavailableDatesMediation.test.ts` | Adapted fork coverage. Use fixed dates to cover single/range from/until validation, missing parts and current CARM past/max-date messages. |
+| `src/test/unit/common/utils/taskList/tasks/checkAndSubmitYourResponse.test.ts` | Adapted fork coverage. Protect the check-and-submit task description, route and incomplete status. |
+| `src/test/unit/common/utils/taskList/tasks/chooseAResponse.test.ts` | Adapted fork coverage. Protect completion and routes when claim data or response type is absent/present. |
+| `src/test/unit/common/utils/taskList/tasks/decideHowYouPay.test.ts` | Adapted fork coverage. Protect payment-option task completion, description and URL. |
+| `src/test/unit/common/utils/taskList/tasks/shareFinancialDetails.test.ts` | Adapted fork coverage. Protect individual/company and complete/incomplete financial-detail task branches. |
+| `src/test/unit/common/utils/taskList/tasks/viewOptionsBeforeDeadline.test.ts` | Adapted fork coverage. Protect current deadline-extension statuses and destinations before/after the deadline with a fixed clock. |
+| `src/test/unit/modules/csrf/index.test.ts` | Adapted fork coverage. Distinguish protected-path csurf invocation from the existing eligibility/first-contact/testing-support exceptions and local token setup. |
+| `src/test/unit/modules/draft-store/draftClaimCache.test.ts` | Fork draft-cache suite rewritten for current master: cloned defaults, complete write/TTL/owner payload and rejected writes; no obsolete CARM phone mutation. |
+| `src/test/unit/modules/i18n/languageService.test.ts` | Adapted fork coverage. Protect query-over-cookie language precedence and default English selection without booting Express. |
+| `src/test/unit/routes/features/claim/generalApplication/response/respondentUploadEvidenceDocumentsController.test.ts` | Local multipart test correction: valid synthetic PDF reaches the mocked upload client, exact calls asserted, one-shot mocks reset and real route IDs supplied; no route behaviour changed. |
+| `src/test/unit/routes/features/dashboard/claimantDashboardController.test.ts` | Local test-isolation correction: reset retained one-shot claim and feature-flag results before each existing scenario; preserve every dashboard assertion. |
+| `src/test/unit/routes/features/response/citizenPhoneDetails/citizenPhoneController.test.ts` | Local test-fixture independence: restore a fresh valid draft store per scenario/retry. Prior-error-state reproduction fails before and passes after; original initial full-run 500 cause is not claimed diagnosed. |
+| `src/test/unit/routes/guards/responseSubmitDateGuard.test.ts` | Local diagnosed test-isolation correction: fresh request/cache and mock callbacks per test; strict redirects/next and consumed HTTP mocks. Original retry hid an invalid cached request and shared next spy. |
+| `src/test/unit/services/features/caseProgression/hearingFee/paymentServiceUtils.test.ts` | Fork hearing-payment suite strengthened for master reference guard, exact claim/fee/owner arguments, pending/failed/error paths; no application boot. |
+| `src/test/unit/services/features/generalApplication/submitGeneralApplicationConfirmationContent.test.ts` | Fork confirmation-content coverage adapted to explicit current application/fee pair; unsafe first-GA/draft-fee/NaN fallback tests excluded. |
+| `src/test/unit/services/features/queryManagement/viewQueriesService.test.ts` | Adapted fork coverage. Protect complete parent/reply grouping, order, thread selection, court/sent/closed states and attachment names. |
+| `src/test/unit/services/features/response/statementOfMeans/employment/employerService.test.ts` | Adapted fork coverage. Read saved/absent employers, filter empty rows, preserve exact draft writes and propagate storage failures. |
+| `src/test/unit/services/features/response/statementOfMeans/employment/employmentConverter.test.ts` | Adapted fork coverage. Protect declared/undeclared employment mapping in both directions and missing input handling. |
+| `src/test/unit/services/features/response/statementOfMeans/partner/partnerServices.test.ts` | Consolidated/adapted six absent fork service suites: exact keys, answer preservation, real read versus write failure, no application boot. |
+| `src/test/unit/services/firstcontact/firstcontactService.test.ts` | Adapted exact-fork isolated unit coverage; production module unchanged. |
+| `src/test/unit/services/firstcontact/sessionValueCrypto.test.ts` | Local extension of PR1 fixed-format encryption fixture: IV/tag/ciphertext tampering and malformed input. |
+| `src/test/unit/services/genericForm/genericFormService.test.ts` | Adapted exact-fork isolated unit coverage; production module unchanged. |
+| `src/test/unit/services/translation/caseProgression/requestForReconsideration/convertToCCDRequestForReconsideration.test.ts` | Adapted exact-fork isolated unit coverage; production module unchanged. |
+| `src/test/unit/services/translation/claimantResponse/convertToCCDClaimantLiPResponse.test.ts` | Adapted exact-fork isolated unit coverage; production module unchanged. |
+| `src/test/unit/services/translation/claimantResponse/convertToCCDClaimantMediation.test.ts` | Fork claimant-mediation coverage strengthened from existence checks to complete individual/decline CCD payloads. |
+| `src/test/unit/services/translation/convertToCUI/convertToCUIFixedRecoverableCosts.test.ts` | Adapted exact-fork isolated unit coverage; production module unchanged. |
+| `src/test/unit/services/translation/convertToCUI/convertToCUIMediationCarm.test.ts` | Adapted exact-fork isolated unit coverage; production module unchanged. |
+| `src/test/unit/services/translation/convertToCUI/convertToCUIYesNo.test.ts` | Fork Yes/No cases cover every public adapter, missing versus No, and independent form values. |
+| `src/test/unit/services/translation/response/convertToCCDFlightDetails.test.ts` | Adapted exact-fork isolated unit coverage; production module unchanged. |
+| `docs/test-pyramid.md` | Correct stale echo-command guidance to the real PR2 commands; retain current test ownership/retry policy. |
+| `docs/pr9-presentation-review-notes.md` | Append this PR11 reconciliation/evidence/PR-description record; earlier history unchanged. |
+
+### Delivered/deferred accounting and gates
+
+- PR1–PR10 production source and preservation tests remain; meaningful fork coverage is selectively integrated. Full translation payloads, saved-document guards, valid payment references, independent draft ownership and master-format encrypted sessions are protected.
+- Eight deliberately deferred test assessments are listed individually in the ledger: PCQ wire-format compatibility, legacy cookie-banner DOM, legacy language-toggle URL behaviour, two dormant expert-report model/editor files, GA support required-content semantics, secret-volume configuration isolation and exhaustive GA CYA producer contracts. They are named follow-up/owner decisions, not silently counted as complete or evidence that current behaviour is absent. No dormant editor or backend recovery is activated here.
+- Current GA missing-parameter confirmation recovery needs its separately described production decision. Substantive monetary, application-selection, timeline recovery, persistence/route decomposition, translation namespaces, multi-party, bulk/DAST and runtime-major work are excluded rather than guessed into this test PR.
+- DTSCCI-5145 and DTSCCI-4187: the series delivers the concrete component/native-interaction, shared-helper, tooling, regression and restricted-preview work recorded by PR1–PR10 and this test reconciliation. The local governing record does not provide authoritative complete acceptance contracts for those two phase tickets; this record does not invent a phase-specific closure. Owner mapping of delivered/deferred items, integrated verification and separate QA/operational evidence remain required for both.
+- DTSCCI-4185 acceptance remains open: review/approved merge, final-commit Jenkins/GitHub security evidence, applicable contracts, live audit, operational checks, authenticated bilingual journeys and a separate QA person's record. Earlier unexplained PR9/PR10 full-run failures remain in their historical sections; a new pass is not their diagnosis.
+
+### Historical test-only PR-description draft
+
+**Title:** DTSCCI-6593 Complete fork test integration and final reconciliation
+
+**Summary:** selectively adapt the exact improvements-fork tests to current master contracts and unit/integration ownership. Add direct validator/model/translation/client/service coverage, strengthen request/draft/payment/crypto protections and correct three diagnosed retry-masked legacy test-fixture defects plus the phone suite’s missing independent draft baseline. Keep production code and dependency/tooling choices unchanged.
+
+**Review decisions:** this section's inventory accounts for every one of the 719 fork-changed paths, including exact matches, earlier adapted components, alternative coverage, incompatible/superficial ports and eight named follow-ups. Do not infer completion from absent-filename counts. Retain the separate GA missing-query recovery finding and operational/QA gates. The untracked PR10 notes and excluded historical log/Yarn binary are not part of this PR.
+
+**Verification:** use the final results and command ledger in this section; retain initial failures and the before-retry diagnostics. Five negative controls demonstrate important assertions. All downloads were exact locked npm archives in disposable storage. No staging, commit, remote ref operation or hosted execution was performed.
+
+### Complete ancestor-to-fork path ledger
+
+Evidence codes deduplicate repeated explanations; each row has one primary disposition, with mixed-hunk caveats above. This is a local source/test reconciliation, not a claim of remote merge status or a replacement for independent review.
+
+| Disposition | Paths |
+| --- | ---: |
+| Adapted | 234 |
+| Already integrated | 105 |
+| Covered differently | 80 |
+| Defer | 8 |
+| Exclude | 243 |
+| Import/adapt | 49 |
+
+<details>
+<summary>All 719 fork-changed paths</summary>
+
+| Path | Disposition | Evidence |
+| --- | --- | --- |
+| `.cursor/README.md` | Exclude | R001 |
+| `.eslintignore` | Already integrated | R002 |
+| `.eslintrc.js` | Already integrated | R002 |
+| `.github/CONTRIBUTING.md` | Adapted | R003 |
+| `.github/renovate.json` | Adapted | R003 |
+| `.github/workflows/ci.yml` | Adapted | R003 |
+| `.github/workflows/stale-branches.yml` | Adapted | R003 |
+| `.github/workflows/stale.yml` | Adapted | R003 |
+| `.github/workflows/update-readme-e2e-tables.yml` | Adapted | R003 |
+| `.github/workflows/update-readme-ftGroup-tables.yml` | Adapted | R003 |
+| `.gitignore` | Already integrated | R004 |
+| `.yarn/patches/yargs-unparser-npm-2.0.0-930f3ff3f6.patch` | Adapted | R003 |
+| `.yarnrc.yml` | Adapted | R005 |
+| `AGENT.md` | Exclude | R001 |
+| `AGENTS.md` | Exclude | R001 |
+| `Dockerfile.ui-preview` | Adapted | R006 |
+| `FRONTEND-RECOMMENDATIONS.md` | Exclude | R001 |
+| `KEYCHANGES.md` | Exclude | R001 |
+| `README.md` | Adapted | R007 |
+| `ai-docs/README.md` | Exclude | R001 |
+| `ai-docs/change-impact-matrix.md` | Exclude | R001 |
+| `ai-docs/conventions.md` | Exclude | R001 |
+| `ai-docs/directory-mirror/INDEX.md` | Exclude | R001 |
+| `ai-docs/directory-mirror/charts-compose-bin.md` | Exclude | R001 |
+| `ai-docs/directory-mirror/config.md` | Exclude | R001 |
+| `ai-docs/directory-mirror/generated-and-ignored.md` | Exclude | R001 |
+| `ai-docs/directory-mirror/github-ci.md` | Exclude | R001 |
+| `ai-docs/directory-mirror/infrastructure.md` | Exclude | R001 |
+| `ai-docs/directory-mirror/playwright.md` | Exclude | R001 |
+| `ai-docs/directory-mirror/root-files.md` | Exclude | R001 |
+| `ai-docs/directory-mirror/src-integration-test.md` | Exclude | R001 |
+| `ai-docs/directory-mirror/src-main-app.md` | Exclude | R001 |
+| `ai-docs/directory-mirror/src-main-assets.md` | Exclude | R001 |
+| `ai-docs/directory-mirror/src-main-common.md` | Exclude | R001 |
+| `ai-docs/directory-mirror/src-main-modules.md` | Exclude | R001 |
+| `ai-docs/directory-mirror/src-main-routes.md` | Exclude | R001 |
+| `ai-docs/directory-mirror/src-main-services.md` | Exclude | R001 |
+| `ai-docs/directory-mirror/src-main-views.md` | Exclude | R001 |
+| `ai-docs/directory-mirror/src-main.md` | Exclude | R001 |
+| `ai-docs/directory-mirror/src-test.md` | Exclude | R001 |
+| `ai-docs/directory-mirror/src.md` | Exclude | R001 |
+| `ai-docs/directory-mirror/webpack.md` | Exclude | R001 |
+| `ai-docs/do-not.md` | Exclude | R001 |
+| `ai-docs/path-aliases-and-imports.md` | Exclude | R001 |
+| `ai-docs/playbooks/add-a-screen.md` | Exclude | R001 |
+| `ai-docs/playbooks/dependency-bump.md` | Exclude | R001 |
+| `ai-docs/playbooks/govuk-frontend-upgrade.md` | Exclude | R001 |
+| `ai-docs/playbooks/moj-frontend-v10-upgrade.md` | Exclude | R001 |
+| `ai-docs/playbooks/moj-frontend.md` | Exclude | R001 |
+| `ai-docs/playbooks/ui-preview-missing-data.md` | Exclude | R001 |
+| `ai-docs/pre-change-protocol.md` | Exclude | R001 |
+| `ai-docs/scripts-and-commands.md` | Exclude | R001 |
+| `ai-docs/service-assessment.md` | Exclude | R001 |
+| `bin/check-dependency-pins.mjs` | Adapted | R003 |
+| `bin/check-yarn-audit.mjs` | Adapted | R003 |
+| `bin/ui-preview.sh` | Adapted | R006 |
+| `compose/ui-preview-mappings/reduced-stack/.gitkeep` | Adapted | R006 |
+| `compose/ui-preview-mappings/ui-preview-case-progression.json` | Already integrated | R004 |
+| `compose/ui-preview-mappings/ui-preview-claims.json` | Adapted | R006 |
+| `compose/ui-preview-mappings/ui-preview-full-admit.json` | Adapted | R006 |
+| `compose/ui-preview-mappings/ui-preview-ga.json` | Adapted | R006 |
+| `compose/ui-preview-mappings/ui-preview-part-admit.json` | Adapted | R006 |
+| `compose/ui-preview-mappings/ui-preview-shared-apis.json` | Adapted | R006 |
+| `compose/ui-preview-mappings/ui-preview-som.json` | Adapted | R006 |
+| `compose/ui-preview.yml` | Adapted | R006 |
+| `config/development.yaml` | Adapted | R003 |
+| `config/e2eTest.yaml` | Adapted | R003 |
+| `docs/README.md` | Exclude | R001 |
+| `docs/architecture.md` | Exclude | R001 |
+| `docs/ci-cd-and-deployment.md` | Exclude | R001 |
+| `docs/citizen-journeys.md` | Exclude | R001 |
+| `docs/configuration.md` | Exclude | R001 |
+| `docs/contributing.md` | Exclude | R001 |
+| `docs/dependency-update-log-2026-08-18.md` | Exclude | R001 |
+| `docs/dependency-update-log-2026-08-21.md` | Exclude | R001 |
+| `docs/dependency-update-log-2026-08-26.md` | Exclude | R001 |
+| `docs/directory-structure.md` | Exclude | R001 |
+| `docs/frontend.md` | Exclude | R001 |
+| `docs/glossary.md` | Exclude | R001 |
+| `docs/integrations.md` | Exclude | R001 |
+| `docs/local-development.md` | Exclude | R001 |
+| `docs/moj-frontend-v10-migration.md` | Exclude | R001 |
+| `docs/moj-frontend.md` | Exclude | R001 |
+| `docs/pii-logging-check.md` | Exclude | R001 |
+| `docs/project-overview.md` | Exclude | R001 |
+| `docs/reduced-stack-wiremock-contracts.md` | Exclude | R001 |
+| `docs/security-and-privacy.md` | Exclude | R001 |
+| `docs/service-assessment.md` | Exclude | R001 |
+| `docs/template-streamlining.md` | Exclude | R001 |
+| `docs/testing.md` | Exclude | R001 |
+| `eslint.config.mjs` | Adapted | R003 |
+| `eslint.config.win.mjs` | Already integrated | R004 |
+| `jest.a11y.config.js` | Adapted | R003 |
+| `jest.config.js` | Adapted | R003 |
+| `jest.routes.config.js` | Adapted | R003 |
+| `jest.setup.silence-deprecations.js` | Adapted | R003 |
+| `package.json` | Adapted | R003 |
+| `playwright/tsconfig.json` | Adapted | R003 |
+| `src/main/app/auth/user/oidc.ts` | Adapted | R008 |
+| `src/main/app/client/civilServiceClient.ts` | Adapted | R008 |
+| `src/main/app/client/serviceAuthProviderClient.ts` | Adapted | R008 |
+| `src/main/assets/js/add-another.js` | Adapted | R009 |
+| `src/main/assets/js/append-row.js` | Adapted | R009 |
+| `src/main/assets/js/calculate-length-repayment.js` | Adapted | R009 |
+| `src/main/assets/js/calculate-total-amount.js` | Adapted | R009 |
+| `src/main/assets/js/conditionally-hide-add-button.js` | Adapted | R009 |
+| `src/main/assets/js/postcode-lookup.js` | Adapted | R009 |
+| `src/main/assets/js/reindex-add-another-actions.js` | Adapted | R009 |
+| `src/main/assets/js/remove-error-content.js` | Adapted | R009 |
+| `src/main/assets/js/select-toggle.js` | Adapted | R009 |
+| `src/main/assets/scss/main.scss` | Adapted | R010 |
+| `src/main/assets/scss/task-list.scss` | Adapted | R010 |
+| `src/main/common/form/validators/emailValidator.ts` | Adapted | R005 |
+| `src/main/common/form/validators/phoneUKValidator.ts` | Adapted | R005 |
+| `src/main/common/mappers/documentViewMapper.ts` | Exclude | R011 |
+| `src/main/common/models/caseProgression/uploadDocumentsSectionBuilder.ts` | Adapted | R009 |
+| `src/main/common/models/claim.ts` | Exclude | R012 |
+| `src/main/common/models/generalApplication/applicationSummary.ts` | Adapted | R005 |
+| `src/main/common/utils/cryptoAes.ts` | Exclude | R013 |
+| `src/main/common/utils/dateUtils.ts` | Exclude | R011 |
+| `src/main/common/utils/repaymentUtils.ts` | Adapted | R005 |
+| `src/main/common/utils/stringUtils.ts` | Adapted | R005 |
+| `src/main/index.js` | Adapted | R009 |
+| `src/main/modules/appinsights/index.ts` | Adapted | R008 |
+| `src/main/modules/e2eConfiguration/index.ts` | Adapted | R008 |
+| `src/main/modules/e2eConfiguration/redisData.json` | Adapted | R008 |
+| `src/main/modules/e2eConfiguration/uiPreviewRedisData.json` | Adapted | R006 |
+| `src/main/modules/error/index.ts` | Adapted | R008 |
+| `src/main/modules/nunjucks/filters/govukTaskListItems.ts` | Adapted | R008 |
+| `src/main/modules/nunjucks/index.ts` | Adapted | R008 |
+| `src/main/modules/oidc/index.ts` | Adapted | R008 |
+| `src/main/routes/features/claim/createDraftClaim.ts` | Adapted | R005 |
+| `src/main/routes/features/claim/payment/claimFeeBreakDownController.ts` | Adapted | R005; R090 |
+| `src/main/routes/features/claimantResponse/claimantSuggestedInstalmentsController.ts` | Adapted | R005 |
+| `src/main/routes/features/claimantResponse/courtProposedDateController.ts` | Adapted | R005 |
+| `src/main/routes/features/claimantResponse/settleAdmittedController.ts` | Exclude | R012 |
+| `src/main/routes/features/document/mediation/viewSettlementAgreementDocumentController.ts` | Adapted | R005 |
+| `src/main/routes/features/generalApplication/addAnotherApplicationController.ts` | Exclude | R014 |
+| `src/main/routes/features/generalApplication/applicationCostsController.ts` | Exclude | R014 |
+| `src/main/routes/features/generalApplication/applicationSummaryController.ts` | Exclude | R014 |
+| `src/main/routes/features/generalApplication/certOfSorC/submitCoScApplicationConfirmationController.ts` | Adapted | R014; R087 |
+| `src/main/routes/features/generalApplication/hearingArrangementController.ts` | Exclude | R014 |
+| `src/main/routes/features/generalApplication/hearingContactDetailsController.ts` | Exclude | R014 |
+| `src/main/routes/features/generalApplication/payingForApplicationController.ts` | Exclude | R014 |
+| `src/main/routes/features/generalApplication/submitGeneralApplicationConfirmationController.ts` | Adapted | R014; R087 |
+| `src/main/routes/features/generalApplication/unavailableHearingDatesControllerConfirmation.ts` | Exclude | R014 |
+| `src/main/routes/features/generalApplication/wantToUploadDocuments.ts` | Exclude | R014 |
+| `src/main/routes/features/public/firstContact/claimSummaryController.ts` | Exclude | R013 |
+| `src/main/routes/features/public/firstContact/pinController.ts` | Exclude | R013 |
+| `src/main/routes/features/response/timelineOfEvents/defendantTimelineController.ts` | Exclude | R011 |
+| `src/main/routes/features/uiPreview/uiPreviewController.ts` | Adapted | R006 |
+| `src/main/routes/guards/partAdmitHowMuchHaveYouPaidGuard.ts` | Adapted | R012; R086 |
+| `src/main/routes/guards/uploadRateLimitGuard.ts` | Adapted | R008 |
+| `src/main/routes/routes.ts` | Adapted | R008 |
+| `src/main/routes/urls.ts` | Adapted | R008 |
+| `src/main/services/features/caseProgression/checkYourAnswers/checkAnswersService.ts` | Adapted | R005; R091 |
+| `src/main/services/features/caseProgression/disclosureService.ts` | Adapted | R005; R085 |
+| `src/main/services/features/caseProgression/expertService.ts` | Adapted | R005; R085 |
+| `src/main/services/features/caseProgression/trialService.ts` | Adapted | R005; R085 |
+| `src/main/services/features/caseProgression/witnessService.ts` | Adapted | R005; R085 |
+| `src/main/services/features/claim/checkAnswers/checkAnswersService.ts` | Adapted | R005 |
+| `src/main/services/features/claimantResponse/claimantSuggestedInstalmentsService.ts` | Adapted | R005 |
+| `src/main/services/features/generalApplication/applicationCostsService.ts` | Exclude | R014 |
+| `src/main/services/features/generalApplication/feeDetailsService.ts` | Exclude | R014 |
+| `src/main/services/features/generalApplication/generalApplicationService.ts` | Exclude | R014 |
+| `src/main/services/features/generalApplication/response/generalApplicationResponseService.ts` | Exclude | R014 |
+| `src/main/services/features/generalApplication/submitGeneralApplicationConfirmationContent.ts` | Adapted | R014; R087 |
+| `src/main/services/features/mediation/uploadDocuments/documentsForDocumentsReferredService.ts` | Adapted | R005 |
+| `src/main/services/features/mediation/uploadDocuments/yourStatementService.ts` | Adapted | R005 |
+| `src/main/services/features/response/statementOfMeans/bankAccounts/bankAccountConverter.ts` | Already integrated | R004 |
+| `src/main/services/features/response/timelineOfEvents/defendantTimelineService.ts` | Adapted | R011; R086 |
+| `src/main/services/features/uiPreview/pageCatalog.ts` | Adapted | R006 |
+| `src/main/services/firstcontact/sessionValueCrypto.ts` | Exclude | R013 |
+| `src/main/services/translation/convertToCUI/cuiTranslation.ts` | Adapted | R005 |
+| `src/main/views/claim-details-tpl-dashboard.njk` | Adapted | R010; R088 |
+| `src/main/views/claim-details-tpl.njk` | Adapted | R010 |
+| `src/main/views/features/caseProgression/cancel-your-upload.njk` | Already integrated | R004 |
+| `src/main/views/features/caseProgression/hearingFee/apply-help-fee-reference.njk` | Already integrated | R004 |
+| `src/main/views/features/caseProgression/hearingFee/apply-help-fee-selection.njk` | Already integrated | R004 |
+| `src/main/views/features/caseProgression/hearingFee/pay-hearing-fee-start.njk` | Adapted | R010 |
+| `src/main/views/features/caseProgression/trialArrangements/has-anything-changed.njk` | Already integrated | R004 |
+| `src/main/views/features/caseProgression/trialArrangements/is-case-ready.njk` | Already integrated | R004 |
+| `src/main/views/features/caseProgression/upload-documents.njk` | Adapted | R010 |
+| `src/main/views/features/claim/airlines/delayed-flight.njk` | Adapted | R010 |
+| `src/main/views/features/claim/airlines/flight-details.njk` | Adapted | R010 |
+| `src/main/views/features/claim/amount/claim-amount-breakdown.njk` | Adapted | R010 |
+| `src/main/views/features/claim/claim-bilingual-language-preference.njk` | Already integrated | R004 |
+| `src/main/views/features/claim/claimant-evidences.njk` | Adapted | R010 |
+| `src/main/views/features/claim/details/help-with-fees.njk` | Already integrated | R004 |
+| `src/main/views/features/claim/fee-change.njk` | Adapted | R010 |
+| `src/main/views/features/claim/interest/claim-interest.njk` | Already integrated | R004 |
+| `src/main/views/features/claim/interest/claimant-interest-rate.njk` | Already integrated | R004 |
+| `src/main/views/features/claim/interest/continue-claiming-interest.njk` | Already integrated | R004 |
+| `src/main/views/features/claim/interest/how-much-continue-claiming.njk` | Adapted | R010; R088 |
+| `src/main/views/features/claim/task-list.njk` | Adapted | R010; R088 |
+| `src/main/views/features/claim/yourDetails/timeline.njk` | Adapted | R010 |
+| `src/main/views/features/claimantResponse/ccj/defendant-dob.njk` | Adapted | R010 |
+| `src/main/views/features/claimantResponse/ccj/judgement-amount-summary.njk` | Already integrated | R004 |
+| `src/main/views/features/claimantResponse/ccj/paid-amount.njk` | Already integrated | R004 |
+| `src/main/views/features/claimantResponse/ccj/repayment-plan-instalments.njk` | Adapted | R010; R088 |
+| `src/main/views/features/claimantResponse/claimant-intention-to-proceed.njk` | Already integrated | R004 |
+| `src/main/views/features/claimantResponse/claimant-response-task-list.njk` | Adapted | R010; R088 |
+| `src/main/views/features/claimantResponse/instalments-plan.njk` | Adapted | R010 |
+| `src/main/views/features/claimantResponse/paidInFull/date-paid.njk` | Adapted | R010 |
+| `src/main/views/features/claimantResponse/part-payment-received.njk` | Already integrated | R004 |
+| `src/main/views/features/claimantResponse/settle-admitted.njk` | Already integrated | R004 |
+| `src/main/views/features/claimantResponse/settle-claim.njk` | Already integrated | R004 |
+| `src/main/views/features/dashboard/claim-summary-redesign.njk` | Adapted | R010 |
+| `src/main/views/features/dashboard/claim-summary.njk` | Adapted | R010 |
+| `src/main/views/features/dashboard/dashboard.njk` | Already integrated | R004 |
+| `src/main/views/features/dashboard/item-content.njk` | Adapted | R010 |
+| `src/main/views/features/dashboard/orders-and-notices.njk` | Already integrated | R004 |
+| `src/main/views/features/dashboard/view-response-to-claim.njk` | Already integrated | R004 |
+| `src/main/views/features/directionsQuestionnaire/consider-claimant-documents.njk` | Already integrated | R004 |
+| `src/main/views/features/directionsQuestionnaire/defendant-yourself-evidence.njk` | Already integrated | R004 |
+| `src/main/views/features/directionsQuestionnaire/experts/expert-details.njk` | Adapted | R010 |
+| `src/main/views/features/directionsQuestionnaire/experts/expert-evidence.njk` | Already integrated | R004 |
+| `src/main/views/features/directionsQuestionnaire/experts/expert-report-details.njk` | Already integrated | R004 |
+| `src/main/views/features/directionsQuestionnaire/experts/permission-for-expert.njk` | Already integrated | R004 |
+| `src/main/views/features/directionsQuestionnaire/experts/sent-expert-reports.njk` | Already integrated | R004 |
+| `src/main/views/features/directionsQuestionnaire/experts/shared-expert.njk` | Already integrated | R004 |
+| `src/main/views/features/directionsQuestionnaire/fixedRecoverableCosts/frc-band-agreed.njk` | Already integrated | R004 |
+| `src/main/views/features/directionsQuestionnaire/fixedRecoverableCosts/subject-to-frc.njk` | Already integrated | R004 |
+| `src/main/views/features/directionsQuestionnaire/hearing/cant-attend-hearing-in-next-12-months.njk` | Already integrated | R004 |
+| `src/main/views/features/directionsQuestionnaire/hearing/determination-without-hearing.njk` | Already integrated | R004 |
+| `src/main/views/features/directionsQuestionnaire/hearing/phone-or-video-hearing.njk` | Already integrated | R004 |
+| `src/main/views/features/directionsQuestionnaire/mintiMultiTrack/claimant-documents-to-be-considered.njk` | Already integrated | R004 |
+| `src/main/views/features/directionsQuestionnaire/request-extra-4weeks.njk` | Adapted | R010 |
+| `src/main/views/features/directionsQuestionnaire/support-required-list.njk` | Adapted | R010 |
+| `src/main/views/features/directionsQuestionnaire/tried-to-settle-claim.njk` | Already integrated | R004 |
+| `src/main/views/features/directionsQuestionnaire/vulnerabilityQuestions/vulnerability.njk` | Already integrated | R004 |
+| `src/main/views/features/directionsQuestionnaire/witnesses/otherWitnesses/other-witness.njk` | Adapted | R010 |
+| `src/main/views/features/directionsQuestionnaire/witnesses/otherWitnesses/other-witnesses.njk` | Adapted | R010 |
+| `src/main/views/features/generalApplication/additionalDocuments/upload-additional-documents.njk` | Adapted | R010 |
+| `src/main/views/features/generalApplication/additionalFee/help-with-additional-fee.njk` | Already integrated | R004 |
+| `src/main/views/features/generalApplication/additionalInfoUpload/additional-info.njk` | Already integrated | R004 |
+| `src/main/views/features/generalApplication/additionalInfoUpload/respondToWrittenRepInfo.njk` | Already integrated | R004 |
+| `src/main/views/features/generalApplication/additionalInfoUpload/upload-documents.njk` | Adapted | R010 |
+| `src/main/views/features/generalApplication/agree-to-order.njk` | Already integrated | R004 |
+| `src/main/views/features/generalApplication/application-type.njk` | Adapted | R010 |
+| `src/main/views/features/generalApplication/applicationFee/help-with-application-fee-reference.njk` | Already integrated | R004 |
+| `src/main/views/features/generalApplication/applicationFee/help-with-application-fee.njk` | Already integrated | R004 |
+| `src/main/views/features/generalApplication/certOfSorC/final-payment-date.njk` | Adapted | R010 |
+| `src/main/views/features/generalApplication/directionsOrderUpload/upload-documents.njk` | Adapted | R010 |
+| `src/main/views/features/generalApplication/paying-for-application.njk` | Adapted | R010 |
+| `src/main/views/features/generalApplication/respondent-agreement.njk` | Adapted | R010; R088 |
+| `src/main/views/features/generalApplication/response/accept-defendant-offer.njk` | Adapted | R010; R088 |
+| `src/main/views/features/generalApplication/response/respondent-upload-documents.njk` | Adapted | R010 |
+| `src/main/views/features/generalApplication/response/respondent-want-to-upload-documents.njk` | Already integrated | R004 |
+| `src/main/views/features/generalApplication/unavailable-dates-confirmation.njk` | Already integrated | R004 |
+| `src/main/views/features/generalApplication/upload-n245-form.njk` | Adapted | R010 |
+| `src/main/views/features/generalApplication/upload_documents.njk` | Adapted | R010 |
+| `src/main/views/features/generalApplication/want-to-upload-documents.njk` | Already integrated | R004 |
+| `src/main/views/features/helpWithFees/help-fees-start.njk` | Already integrated | R004 |
+| `src/main/views/features/mediation/can-we-use.njk` | Already integrated | R004 |
+| `src/main/views/features/mediation/company-telephone-number.njk` | Adapted | R010 |
+| `src/main/views/features/mediation/mediation-disagreement.njk` | Already integrated | R004 |
+| `src/main/views/features/mediation/telephone-mediation.njk` | Adapted | R010 |
+| `src/main/views/features/mediation/unavailable-dates-mediation.njk` | Adapted | R010 |
+| `src/main/views/features/mediation/uploadDocuments/cancel-your-upload.njk` | Already integrated | R004 |
+| `src/main/views/features/mediation/uploadDocuments/upload-documents.njk` | Adapted | R010 |
+| `src/main/views/features/public/eligibility/claim-against-government.njk` | Already integrated | R004 |
+| `src/main/views/features/public/eligibility/claim-type.njk` | Already integrated | R004 |
+| `src/main/views/features/public/eligibility/claimant-address-eligibility.njk` | Already integrated | R004 |
+| `src/main/views/features/public/eligibility/defendant-eligible-address.njk` | Already integrated | R004 |
+| `src/main/views/features/public/eligibility/help-with-fees-reference.njk` | Adapted | R010 |
+| `src/main/views/features/public/eligibility/help-with-fees.njk` | Adapted | R010 |
+| `src/main/views/features/public/eligibility/known-claim-amount.njk` | Already integrated | R004 |
+| `src/main/views/features/public/eligibility/over-18.njk` | Already integrated | R004 |
+| `src/main/views/features/public/eligibility/single-defendant.njk` | Already integrated | R004 |
+| `src/main/views/features/public/eligibility/some-useful-info-fees.njk` | Adapted | R010 |
+| `src/main/views/features/public/eligibility/tenancy-deposit.njk` | Already integrated | R004 |
+| `src/main/views/features/queryManagement/createQuery.njk` | Adapted | R010; R088 |
+| `src/main/views/features/queryManagement/qm-questions-template.njk` | Already integrated | R004 |
+| `src/main/views/features/queryManagement/qm-view-queries-template.njk` | Already integrated | R004 |
+| `src/main/views/features/queryManagement/qm-view-query-details-template.njk` | Already integrated | R004 |
+| `src/main/views/features/queryManagement/sendFollowUpQuery.njk` | Adapted | R010 |
+| `src/main/views/features/response/admission/how-much-have-you-paid.njk` | Adapted | R010; R088 |
+| `src/main/views/features/response/admission/partialAdmission/already-paid.njk` | Already integrated | R004 |
+| `src/main/views/features/response/admission/partialAdmission/how-much-do-you-owe.njk` | Adapted | R010; R088 |
+| `src/main/views/features/response/admission/payment-date.njk` | Adapted | R010 |
+| `src/main/views/features/response/admission/payment-option.njk` | Already integrated | R004 |
+| `src/main/views/features/response/bilingual-language-preference.njk` | Already integrated | R004 |
+| `src/main/views/features/response/citizenDob/citizen-dob.njk` | Adapted | R010 |
+| `src/main/views/features/response/citizenResponseType/citizen-response-type.njk` | Adapted | R010 |
+| `src/main/views/features/response/eligibility/send-your-response-by-email.njk` | Already integrated | R004 |
+| `src/main/views/features/response/evidence/evidences.njk` | Adapted | R010 |
+| `src/main/views/features/response/repaymentPlan/repaymentPlan.njk` | Adapted | R010 |
+| `src/main/views/features/response/responseDeadline/agreed-response-deadline.njk` | Adapted | R010 |
+| `src/main/views/features/response/statementOfMeans/courtOrders/court-order.njk` | Adapted | R010 |
+| `src/main/views/features/response/statementOfMeans/courtOrders/court-orders.njk` | Adapted | R010 |
+| `src/main/views/features/response/statementOfMeans/dependants/dependants.njk` | Adapted | R010; R088 |
+| `src/main/views/features/response/statementOfMeans/employment/who-employs-you.njk` | Adapted | R010 |
+| `src/main/views/features/response/statementOfMeans/expenses/regular-expenses.njk` | Adapted | R010 |
+| `src/main/views/features/response/statementOfMeans/unemployment.njk` | Adapted | R010; R088 |
+| `src/main/views/features/response/task-list.njk` | Adapted | R010; R088 |
+| `src/main/views/features/response/timelineOfEvents/defendant-timeline.njk` | Adapted | R010; R088 |
+| `src/main/views/features/response/your-defence.njk` | Already integrated | R004 |
+| `src/main/views/features/settlementAgreement/respond-settlement-agreement.njk` | Already integrated | R004 |
+| `src/main/views/features/ui-preview/index.njk` | Adapted | R010 |
+| `src/main/views/macro/amount-breakdown.njk` | Already integrated | R004 |
+| `src/main/views/macro/claim-amount.njk` | Adapted | R010 |
+| `src/main/views/macro/contact-us-for-help.njk` | Adapted | R010 |
+| `src/main/views/macro/create-table-documents.njk` | Already integrated | R004 |
+| `src/main/views/macro/employer.njk` | Adapted | R010 |
+| `src/main/views/macro/evidence.njk` | Adapted | R010 |
+| `src/main/views/macro/header.njk` | Adapted | R010 |
+| `src/main/views/macro/paper-form-address.njk` | Already integrated | R004 |
+| `src/main/views/macro/postcode-address-form.njk` | Adapted | R010 |
+| `src/main/views/macro/query-message-card.njk` | Already integrated | R004 |
+| `src/main/views/macro/report-detail.njk` | Adapted | R010 |
+| `src/main/views/macro/support-required.njk` | Adapted | R010 |
+| `src/main/views/macro/task-list.njk` | Adapted | R010 |
+| `src/main/views/macro/task.njk` | Already integrated | R002 |
+| `src/main/views/macro/timeline-summary.njk` | Adapted | R010 |
+| `src/main/views/macro/transaction-details.njk` | Adapted | R010 |
+| `src/main/views/macro/unavailable-date-row.njk` | Adapted | R010 |
+| `src/main/views/macro/uploaded-files-summary.njk` | Adapted | R010 |
+| `src/main/views/macro/yesNoGenericForm.njk` | Adapted | R010 |
+| `src/test/a11y/a11y-README.md` | Adapted | R015 |
+| `src/test/a11y/a11y-scan.ts` | Adapted | R015 |
+| `src/test/a11y/a11y.mock-test.ts` | Adapted | R015; R092 |
+| `src/test/a11y/a11y.test.ts` | Covered differently | R016 |
+| `src/test/a11y/a11y.ts` | Adapted | R015 |
+| `src/test/a11y/ignored-urls.ts` | Adapted | R015 |
+| `src/test/a11y/pa11y-options.ts` | Adapted | R015 |
+| `src/test/contract/consumers/CivilServiceCreateClaim.test.ts` | Covered differently | R016 |
+| `src/test/contract/consumers/CivilServiceFeePayment.test.ts` | Covered differently | R016 |
+| `src/test/contract/consumers/Oidc.test.ts` | Covered differently | R016 |
+| `src/test/contract/consumers/ServiceAuthProvider.test.ts` | Covered differently | R016 |
+| `src/test/contract/tsconfig.pact.json` | Adapted | R015 |
+| `src/test/functionalTests/citizenFeatures/GA/pages/checkAndSend.js` | Adapted | R015 |
+| `src/test/functionalTests/citizenFeatures/caseProgression/util/DateUtilsComponent.js` | Already integrated | R004 |
+| `src/test/functionalTests/citizenFeatures/response/steps/lipDefendantResponseSteps.js` | Adapted | R015 |
+| `src/test/functionalTests/saucelabs.conf.js` | Adapted | R015 |
+| `src/test/functionalTests/specClaimHelpers/api/apiRequest.js` | Adapted | R015 |
+| `src/test/functionalTests/specClaimHelpers/api/caseAssignment.js` | Adapted | R015 |
+| `src/test/functionalTests/specClaimHelpers/api/restHelper.js` | Adapted | R015 |
+| `src/test/functionalTests/specClaimHelpers/api/testingSupport.js` | Adapted | R015 |
+| `src/test/functionalTests/tests/ui_tests/dj/LipvLip_UI_DefaultJudgment_CoSC_tests.js` | Adapted | R015 |
+| `src/test/functionalTests/tests/ui_tests/full-admit/LiPvLiP_FullAdmit_PayImmediately_tests.js` | Adapted | R015 |
+| `src/test/functionalTests/tests/ui_tests/full-admit/LipvLip_FullAdmit_PayInstalments_tests.js` | Adapted | R015 |
+| `src/test/functionalTests/tests/ui_tests/full-admit/LipvLip_FullAdmit_PaySetDate_CCJ_tests.js` | Adapted | R015 |
+| `src/test/functionalTests/tests/ui_tests/full-admit/LipvLip_FullAdmit_PaySetDate_SSA_tests.js` | Adapted | R015 |
+| `src/test/functionalTests/tests/ui_tests/ga/LRvLiP_GA_creation_tests.js` | Adapted | R015 |
+| `src/test/functionalTests/tests/ui_tests/ga/LiPvLiP_GA_DismissAnOrder_tests.js` | Adapted | R015 |
+| `src/test/functionalTests/tests/ui_tests/ga/LiPvLiP_GA_FreeFormOrder_tests.js` | Adapted | R015 |
+| `src/test/functionalTests/tests/ui_tests/ga/LiPvLiP_GA_GiveDirectionsWithoutListing_tests.js` | Adapted | R015 |
+| `src/test/functionalTests/tests/ui_tests/ga/LiPvLiP_GA_ListForHearing_tests.js` | Adapted | R015 |
+| `src/test/functionalTests/tests/ui_tests/ga/LiPvLiP_GA_MakeAnOrder_tests.js` | Adapted | R015 |
+| `src/test/functionalTests/tests/ui_tests/ga/LiPvLiP_GA_RequestForMoreInformation_tests.js` | Adapted | R015 |
+| `src/test/functionalTests/tests/ui_tests/ga/LiPvLiP_GA_WithoutNoticeToWithNotice_tests.js` | Adapted | R015 |
+| `src/test/functionalTests/tests/ui_tests/ga/LiPvLiP_GA_WrittenRepresentations_tests.js` | Adapted | R015 |
+| `src/test/functionalTests/tests/ui_tests/jba/LipvLip_UI_JudgmentByAdmissions_tests.js` | Adapted | R015 |
+| `src/test/functionalTests/tests/ui_tests/judgment-buffer/LRvLip_UI_DJ_buffer_case_discontinued_tests.js` | Adapted | R015 |
+| `src/test/functionalTests/tests/ui_tests/judgment-buffer/LRvLip_UI_DJ_buffer_case_offline_tests.js` | Adapted | R015 |
+| `src/test/functionalTests/tests/ui_tests/judgment-buffer/LRvLip_UI_DJ_buffer_caseworker_settle_tests.js` | Adapted | R015 |
+| `src/test/functionalTests/tests/ui_tests/judgment-buffer/LRvLip_UI_DJ_buffer_dismiss_case_tests.js` | Adapted | R015 |
+| `src/test/functionalTests/tests/ui_tests/judgment-buffer/LRvLip_UI_DJ_buffer_mark_paid_full_tests.js` | Adapted | R015 |
+| `src/test/functionalTests/tests/ui_tests/judgment-buffer/LipvLip_UI_DJ_buffer_case_offline_tests.js` | Adapted | R015 |
+| `src/test/functionalTests/tests/ui_tests/judgment-buffer/LipvLip_UI_DJ_buffer_case_settled_tests.js` | Adapted | R015 |
+| `src/test/functionalTests/tests/ui_tests/judgment-buffer/LipvLip_UI_DJ_buffer_dismiss_case_tests.js` | Adapted | R015 |
+| `src/test/functionalTests/tests/ui_tests/judgment-buffer/LipvLip_UI_DJ_buffer_dismiss_scheduler_tests.js` | Adapted | R015 |
+| `src/test/functionalTests/tests/ui_tests/judgment-buffer/LipvLip_UI_DJ_buffer_grant_notification_tests.js` | Adapted | R015 |
+| `src/test/functionalTests/tests/ui_tests/judgment-buffer/LipvLip_UI_DJ_buffer_grant_welsh_tests.js` | Adapted | R015 |
+| `src/test/functionalTests/tests/ui_tests/judgment-buffer/LipvLip_UI_DJ_buffer_stay_lifted_tests.js` | Adapted | R015 |
+| `src/test/functionalTests/tests/ui_tests/judgment-buffer/LipvLip_UI_DJ_buffer_tests.js` | Adapted | R015 |
+| `src/test/functionalTests/tests/ui_tests/welsh/LipVsLip_claimant_as_welsh_tests.js` | Adapted | R015 |
+| `src/test/unit/a11y/ignoredUrlsMocks.test.ts` | Exclude | R017 |
+| `src/test/unit/app/auth/launchdarkly/launchDarklyClient.test.ts` | Covered differently | R018 |
+| `src/test/unit/app/client/civilServiceUrls.test.ts` | Exclude | R019 |
+| `src/test/unit/app/client/common/civilServiceRequest.test.ts` | Import/adapt | R020 |
+| `src/test/unit/app/client/common/error/callbackError.test.ts` | Import/adapt | R021 |
+| `src/test/unit/app/client/gaServiceUrls.test.ts` | Exclude | R022 |
+| `src/test/unit/app/client/pcq/generatePcqToken.test.ts` | Defer | R023 |
+| `src/test/unit/app/client/pcq/pcqParameters.test.ts` | Exclude | R024 |
+| `src/test/unit/assets/js/add-another.test.ts` | Covered differently | R025 |
+| `src/test/unit/assets/js/append-row.test.ts` | Covered differently | R025 |
+| `src/test/unit/assets/js/calculate-amount.test.ts` | Covered differently | R025 |
+| `src/test/unit/assets/js/calculate-length-repayment.test.ts` | Covered differently | R025 |
+| `src/test/unit/assets/js/calculate-total-amount.test.ts` | Covered differently | R025 |
+| `src/test/unit/assets/js/conditionally-hide-add-button.test.ts` | Covered differently | R025 |
+| `src/test/unit/assets/js/cookies-controller.test.ts` | Defer | R026 |
+| `src/test/unit/assets/js/disable-submit.test.ts` | Import/adapt | R027 |
+| `src/test/unit/assets/js/language-toggle.test.ts` | Defer | R028 |
+| `src/test/unit/assets/js/postcode-lookup.test.ts` | Covered differently | R025 |
+| `src/test/unit/assets/js/reindex-add-another-actions.test.ts` | Covered differently | R025 |
+| `src/test/unit/assets/js/remove-error-content.test.ts` | Covered differently | R025 |
+| `src/test/unit/assets/js/select-toggle.test.ts` | Covered differently | R025 |
+| `src/test/unit/common/common/mappers/documentViewMapper.test.ts` | Covered differently | R016 |
+| `src/test/unit/common/form/models/EmailValidationWithMessage.test.ts` | Import/adapt | R029 |
+| `src/test/unit/common/form/models/PhoneValidationWithMessage.test.ts` | Import/adapt | R029 |
+| `src/test/unit/common/form/models/admission/fullAdmission/baseDate.test.ts` | Import/adapt | R029 |
+| `src/test/unit/common/form/models/admission/partialAdmission/partialAdmissionRepaymentPlan.test.ts` | Import/adapt | R021 |
+| `src/test/unit/common/form/models/citizenTelephoneNumber.test.ts` | Import/adapt | R020 |
+| `src/test/unit/common/form/models/claim/claimant/citizenDate.test.ts` | Import/adapt | R021 |
+| `src/test/unit/common/form/models/claim/claimant/dobDate.test.ts` | Import/adapt | R021 |
+| `src/test/unit/common/form/models/evidence/transformAndRemoveEmptyValues.test.ts` | Already integrated | R004 |
+| `src/test/unit/common/form/models/genericYesNo.test.ts` | Already integrated | R004 |
+| `src/test/unit/common/form/models/genericYesNoCarmContactPersonConfirmation.test.ts` | Import/adapt | R021 |
+| `src/test/unit/common/form/models/genericYesNoCarmEmailConfirmation.test.ts` | Import/adapt | R021 |
+| `src/test/unit/common/form/models/genericYesNoKnownClaimAmount.test.ts` | Import/adapt | R021 |
+| `src/test/unit/common/form/models/judmentOnline/confirmYouHaveBeenPaidForm.test.ts` | Covered differently | R030 |
+| `src/test/unit/common/form/models/repaymentPlan/baseRepaymentPlan.test.ts` | Import/adapt | R029 |
+| `src/test/unit/common/form/models/simpleFormModelsCoverage.test.ts` | Import/adapt | R084 |
+| `src/test/unit/common/form/models/statementOfMeans/debts/debtItems.test.ts` | Import/adapt | R021 |
+| `src/test/unit/common/form/models/statementOfMeans/dependants/numberOfChildren.test.ts` | Import/adapt | R021 |
+| `src/test/unit/common/form/models/statementOfMeans/expensesAndIncome/transactionSource.test.ts` | Import/adapt | R032 |
+| `src/test/unit/common/form/models/statementOfMeans/priorityDebts.test.ts` | Covered differently | R033 |
+| `src/test/unit/common/form/models/timeLineOfEvents/timelineRow.test.ts` | Already integrated | R004 |
+| `src/test/unit/common/form/validators/accountBalanceValidator.test.ts` | Already integrated | R004 |
+| `src/test/unit/common/form/validators/address.test.ts` | Covered differently | R016 |
+| `src/test/unit/common/form/validators/arrayAtLeastOneSelectedValidator.test.ts` | Covered differently | R016 |
+| `src/test/unit/common/form/validators/atLeastOneEmployerValidator.test.ts` | Already integrated | R004 |
+| `src/test/unit/common/form/validators/atLeastOneFieldIsPopulated.test.ts` | Covered differently | R016 |
+| `src/test/unit/common/form/validators/atLeastOnePopulatedRow.test.ts` | Already integrated | R004 |
+| `src/test/unit/common/form/validators/atLeastOneRowIsPopulated.test.ts` | Already integrated | R004 |
+| `src/test/unit/common/form/validators/claimReferenceValidator.test.ts` | Already integrated | R004 |
+| `src/test/unit/common/form/validators/currencyValidator.test.ts` | Already integrated | R004 |
+| `src/test/unit/common/form/validators/dateDayValidator.test.ts` | Already integrated | R004 |
+| `src/test/unit/common/form/validators/dateMonthValidator.test.ts` | Already integrated | R004 |
+| `src/test/unit/common/form/validators/dateNotAfterReferenceDate.test.ts` | Already integrated | R004 |
+| `src/test/unit/common/form/validators/dateNotBeforeReferenceDate.test.ts` | Already integrated | R004 |
+| `src/test/unit/common/form/validators/dateNotMoreThanDurationValidator.test.ts` | Already integrated | R004 |
+| `src/test/unit/common/form/validators/dateYearValidator.test.ts` | Already integrated | R004 |
+| `src/test/unit/common/form/validators/emailValidator.test.ts` | Import/adapt | R020 |
+| `src/test/unit/common/form/validators/equalToOrLessThanPropertyValueValidator.test.ts` | Already integrated | R004 |
+| `src/test/unit/common/form/validators/howMuchOweAmountValidator.test.ts` | Already integrated | R004 |
+| `src/test/unit/common/form/validators/mandatoryValidatorForParty.test.ts` | Already integrated | R004 |
+| `src/test/unit/common/form/validators/numberOfPeopleValidator.test.ts` | Already integrated | R004 |
+| `src/test/unit/common/form/validators/optionalDateFourDigitValidator.test.ts` | Import/adapt | R029 |
+| `src/test/unit/common/form/validators/optionalDateInPastValidator.test.ts` | Import/adapt | R034 |
+| `src/test/unit/common/form/validators/optionalDateNotInFutureValidator.test.ts` | Import/adapt | R034 |
+| `src/test/unit/common/form/validators/optionalDateNotInPastValidator.test.ts` | Import/adapt | R034 |
+| `src/test/unit/common/form/validators/optionalIntegerValidator.test.ts` | Import/adapt | R035 |
+| `src/test/unit/common/form/validators/phoneUKValidator.test.ts` | Import/adapt | R020 |
+| `src/test/unit/common/form/validators/respondAddInfoValidator.test.ts` | Already integrated | R004 |
+| `src/test/unit/common/form/validators/validationConstraints.test.ts` | Exclude | R031 |
+| `src/test/unit/common/models/Email.test.ts` | Covered differently | R036 |
+| `src/test/unit/common/models/caseProgression/bundles/bundle.test.ts` | Exclude | R037 |
+| `src/test/unit/common/models/caseProgression/uploadDocumentsSectionBuilder.test.ts` | Covered differently | R016 |
+| `src/test/unit/common/models/caseProgression/uploadDocumentsUserForm.test.ts` | Covered differently | R038 |
+| `src/test/unit/common/models/ccdResponse/ccdFixedCosts.test.ts` | Covered differently | R039 |
+| `src/test/unit/common/models/claim.test.ts` | Covered differently | R016 |
+| `src/test/unit/common/models/dashboard/dashboard.test.ts` | Exclude | R040 |
+| `src/test/unit/common/models/dashboard/taskList/civilServiceDashboardTask.test.ts` | Exclude | R041 |
+| `src/test/unit/common/models/directionsQuestionnaire/experts/expertReportDetails/expertReportDetails.test.ts` | Defer | R042 |
+| `src/test/unit/common/models/directionsQuestionnaire/experts/expertReportDetails/reportDetail.test.ts` | Defer | R043 |
+| `src/test/unit/common/models/directionsQuestionnaire/witnesses/otherWitnessItems.test.ts` | Covered differently | R044 |
+| `src/test/unit/common/models/feePayment/paymentInformation.test.ts` | Exclude | R045 |
+| `src/test/unit/common/models/generalApplication/CourtResponseSummary.test.ts` | Exclude | R046 |
+| `src/test/unit/common/models/generalApplication/hearingSupport.test.ts` | Defer | R047 |
+| `src/test/unit/common/models/generalApplication/response/gaResponse.test.ts` | Exclude | R048 |
+| `src/test/unit/common/models/generalApplication/uploadGAFiles.test.ts` | Import/adapt | R032 |
+| `src/test/unit/common/models/generalApplication/uploadN245GAFiles.test.ts` | Import/adapt | R032 |
+| `src/test/unit/common/models/mediation/unavailableDatesMediation.test.ts` | Import/adapt | R032 |
+| `src/test/unit/common/models/summaryList/summaryList.test.ts` | Covered differently | R016 |
+| `src/test/unit/common/models/summaryList/summarySections.test.ts` | Exclude | R049 |
+| `src/test/unit/common/utils/calculateMonthlyIncomeExpenses/amountSchedule.test.ts` | Covered differently | R050 |
+| `src/test/unit/common/utils/checkYourAnswer/changeButton.test.ts` | Exclude | R051 |
+| `src/test/unit/common/utils/cryptoAes.test.ts` | Exclude | R052 |
+| `src/test/unit/common/utils/dateFormatter.test.ts` | Already integrated | R004 |
+| `src/test/unit/common/utils/dateUtils.test.ts` | Covered differently | R016 |
+| `src/test/unit/common/utils/documentSizeDisplayFormatter.test.ts` | Already integrated | R004 |
+| `src/test/unit/common/utils/escapeHtml.test.ts` | Already integrated | R004 |
+| `src/test/unit/common/utils/externalURLs.test.ts` | Already integrated | R004 |
+| `src/test/unit/common/utils/numberConverter.test.ts` | Already integrated | R004 |
+| `src/test/unit/common/utils/pageSectionBuilder.test.ts` | Covered differently | R016 |
+| `src/test/unit/common/utils/repaymentUtils.test.ts` | Covered differently | R016 |
+| `src/test/unit/common/utils/requestUtils.test.ts` | Already integrated | R004 |
+| `src/test/unit/common/utils/routeParamUtils.test.ts` | Covered differently | R016 |
+| `src/test/unit/common/utils/taskList/respondToClaimSectionBuilder.test.ts` | Covered differently | R053 |
+| `src/test/unit/common/utils/taskList/tasks/checkAndSubmitYourResponse.test.ts` | Import/adapt | R021 |
+| `src/test/unit/common/utils/taskList/tasks/chooseAResponse.test.ts` | Import/adapt | R021 |
+| `src/test/unit/common/utils/taskList/tasks/decideHowYouPay.test.ts` | Import/adapt | R021 |
+| `src/test/unit/common/utils/taskList/tasks/shareFinancialDetails.test.ts` | Import/adapt | R021 |
+| `src/test/unit/common/utils/taskList/tasks/viewOptionsBeforeDeadline.test.ts` | Import/adapt | R021 |
+| `src/test/unit/common/utils/urlFormatter.test.ts` | Already integrated | R004 |
+| `src/test/unit/development.test.ts` | Exclude | R031 |
+| `src/test/unit/govukFrontend/govukFrontendFixtures.test.ts` | Covered differently | R054 |
+| `src/test/unit/govukFrontend/govukFrontendFixturesHelper.test.ts` | Covered differently | R054 |
+| `src/test/unit/jest.config.coverage.test.ts` | Exclude | R055 |
+| `src/test/unit/modules/appinsights/index.test.ts` | Covered differently | R016 |
+| `src/test/unit/modules/cookie/cookieConfig.test.ts` | Covered differently | R056 |
+| `src/test/unit/modules/csrf/index.test.ts` | Import/adapt | R020 |
+| `src/test/unit/modules/draft-store/draftClaimCache.test.ts` | Import/adapt | R057 |
+| `src/test/unit/modules/draft-store/draftGADocumentService.test.ts` | Covered differently | R016 |
+| `src/test/unit/modules/draft-store/gaHwFeesDraftStore.test.ts` | Covered differently | R016 |
+| `src/test/unit/modules/e2eConfiguration/index.test.ts` | Covered differently | R058 |
+| `src/test/unit/modules/error/index.test.ts` | Covered differently | R016 |
+| `src/test/unit/modules/health/health-migration-flag-off.test.ts` | Exclude | R059 |
+| `src/test/unit/modules/helmet/helmet.test.ts` | Covered differently | R060 |
+| `src/test/unit/modules/i18n/languageService.test.ts` | Import/adapt | R020 |
+| `src/test/unit/modules/nunjucks/filters/dateFilter.test.ts` | Covered differently | R016 |
+| `src/test/unit/modules/nunjucks/filters/govukTaskListItems.test.ts` | Covered differently | R016 |
+| `src/test/unit/modules/properties-volume/propertiesVolume.test.ts` | Defer | R061 |
+| `src/test/unit/routes/features/caseProgression/hearingFee/payHearingFeeConfirmationController.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/features/caseProgression/hearingFee/payHearingFeeStartScreenController.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/features/caseProgression/requestForReconsideration/commentsConfirmationController.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/features/caseProgression/requestForReconsideration/confirmationController.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/features/caseProgression/requestForReconsideration/requestForReviewCommentsController.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/features/caseProgression/requestForReconsideration/requestForReviewController.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/features/caseProgression/trialArrangements/cancelTrialArrangements.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/features/caseProgression/trialArrangements/finaliseTrialArrangementsController.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/features/caseProgression/trialArrangements/hearingDurationAndOtherInformationController.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/features/caseProgression/uploadYourDocumentsController.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/features/claim/airlines/flightDetailsController.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/features/claim/checkAnswersController.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/features/claim/claimTaskListController.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/features/claim/createClaimDraft.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/features/claim/generalApplication/addAnotherApplicationController.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/features/claim/generalApplication/additionalDocuments/submittedController.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/features/claim/generalApplication/additionalInfoUpload/checkAnswerController.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/features/claim/generalApplication/additionalInfoUpload/moreInfoSubmittedConfirmationController.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/features/claim/generalApplication/additionalInfoUpload/respondAddInfoController.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/features/claim/generalApplication/applicationSummaryController.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/features/claim/generalApplication/certOfSorC/askProofOfDebtPaymentGuidanceController.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/features/claim/generalApplication/certOfSorC/submitCoScApplicationConfirmationController.test.ts` | Adapted | R062; R089 |
+| `src/test/unit/routes/features/claim/generalApplication/directionsOrderUpload/checkAnswerController.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/features/claim/generalApplication/directionsOrderUpload/directionsOrderSubmittedConfirmationController.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/features/claim/generalApplication/respondentAgreeToOrderController.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/features/claim/generalApplication/respondentRequestChangeInformationController.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/features/claim/generalApplication/response/checkAnswersResponseController.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/features/claim/generalApplication/response/respondentAgreementController.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/features/claim/generalApplication/response/respondentHearingPreferenceController.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/features/claim/generalApplication/response/viewApplicationController.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/features/claim/generalApplication/submitApplicationOfflineController.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/features/claim/generalApplication/submitGeneralApplicationConfirmationController.test.ts` | Adapted | R062; R089 |
+| `src/test/unit/routes/features/claim/generalApplication/uploadN245FormController.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/features/claim/generalApplication/writtenRepresentationDocs/checkAnswerController.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/features/claim/generalApplication/writtenRepresentationDocs/respondWrittenRepController.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/features/claim/incompleteClaimIssueSubmissionController.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/features/claim/payment/claimFeeBreakDownController.test.ts` | Adapted | R062; R090 |
+| `src/test/unit/routes/features/claim/payment/claimFeePaymentSuccessfulController.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/features/claim/payment/claimFeePaymentUnsuccessfulController.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/features/claim/paymentSuccessfulController.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/features/claim/yourDetails/timelineController.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/features/claimantResponse/ccj/judgmentAmountSummaryController.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/features/claimantResponse/ccj/judgmentAmountSummaryExtendedController.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/features/claimantResponse/ccj/repaymentPlanSummaryDefendantController.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/features/claimantResponse/claimantResponseTasklistController.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/features/claimantResponse/claimantSuggestedInstalmentsController.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/features/claimantResponse/courtProposedDateController.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/features/claimantResponse/courtProposedPlanController.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/features/claimantResponse/rejectionReasonController.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/features/claimantResponse/reviewDefendantsResponseController.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/features/claimantResponse/settleAdmittedController.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/features/dashboard/claimSummaryController.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/features/dashboard/claimantDashboardController.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/features/dashboard/contactThemController.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/features/dashboard/dashboardController.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/features/dashboard/notificationRedirectController.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/features/dashboard/ordersAndNoticesController.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/features/dashboard/viewBreathingSpaceInformationController.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/features/dashboard/viewResponseToClaimController.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/features/directionsQuestionnaire/fixedRecoverableCosts/chooseComplexityBandController.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/features/directionsQuestionnaire/fixedRecoverableCosts/frcBandAgreedController.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/features/directionsQuestionnaire/fixedRecoverableCosts/reasonForChoosingComplexityBandController.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/features/directionsQuestionnaire/fixedRecoverableCosts/subjectToFRCController.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/features/directionsQuestionnaire/fixedRecoverableCosts/whyNotSubjectToFRCController.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/features/directionsQuestionnaire/supportRequiredController.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/features/document/mediation/viewMediationDocumentsController.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/features/document/mediation/viewSettlementAgreementDocumentController.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/features/judgmentOnline/confirmYouHaveBeenPaidController.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/features/mediation/contactNameMediationConfirmationController.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/features/mediation/emailMediationConfirmationController.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/features/mediation/mediationUnavailabilityNextThreeMonthsConfirmationController.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/features/mediation/mediationUnavailabilitySelectDatesController.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/features/mediation/telephoneMediationConfirmationController.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/features/mediation/telephoneMediationController.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/features/mediation/uploadDocuments/checkAnswersController.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/features/public/cookiesController.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/features/public/eligibility/eligibleController.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/features/public/eligibility/tryNewServiceController.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/features/public/eligibility/youCanUseServiceController.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/features/public/firstContact/claimSummaryController.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/features/queryManagement/createQueryCheckYourAnswerController.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/features/queryManagement/qmInformationController.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/features/queryManagement/qmStartController.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/features/queryManagement/qmViewQueriesController.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/features/queryManagement/qmViewQueryDetailsController.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/features/queryManagement/qmWhatToDoController.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/features/queryManagement/shareQueryConfirmationController.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/features/response/eligibility/sendYourResponseByEmailController.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/features/response/incompleteSubmissionController.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/features/response/responseDeadline/newResponseDeadlineController.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/features/response/submitComfirmationController.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/features/settlementAgreement/respondSettlementAgreementConfirmationController.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/features/uiPreview/uiPreviewController.test.ts` | Covered differently | R058 |
+| `src/test/unit/routes/guards/GaTrackHistory.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/guards/claimantResponsecheckYourAnswersGuard.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/guards/partAdmitGuard.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/guards/partAdmitHowMuchHaveYouPaidGuard.test.ts` | Adapted | R062; R089 |
+| `src/test/unit/routes/guards/pcqGuard.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/guards/pcqGuardClaim.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/guards/redisDataFlushForDJGuard.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/guards/uploadRateLimitGuard.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/homeController.test.ts` | Exclude | R062 |
+| `src/test/unit/routes/unauthorisedController.test.ts` | Exclude | R062 |
+| `src/test/unit/services/features/caseProgression/disclosureContentBuilder.test.ts` | Exclude | R063 |
+| `src/test/unit/services/features/caseProgression/documentTableBuilder.test.ts` | Covered differently | R064 |
+| `src/test/unit/services/features/caseProgression/expertContentBuilder.test.ts` | Exclude | R063 |
+| `src/test/unit/services/features/caseProgression/hearingFee/applyHelpFeeReferenceContents.test.ts` | Exclude | R063 |
+| `src/test/unit/services/features/caseProgression/hearingFee/applyHelpFeeSelectionButtonContents.test.ts` | Exclude | R063 |
+| `src/test/unit/services/features/caseProgression/hearingFee/applyHelpFeeSelectionContents.test.ts` | Exclude | R063 |
+| `src/test/unit/services/features/caseProgression/hearingFee/paymentServiceUtils.test.ts` | Import/adapt | R065 |
+| `src/test/unit/services/features/caseProgression/judgement/judgementService.test.ts` | Covered differently | R016 |
+| `src/test/unit/services/features/caseProgression/requestForReconsideration/requestForReviewCommentsContent.test.ts` | Exclude | R063 |
+| `src/test/unit/services/features/caseProgression/requestForReconsideration/requestForReviewContent.test.ts` | Exclude | R063 |
+| `src/test/unit/services/features/caseProgression/requestForReconsideration/requestForReviewService.test.ts` | Covered differently | R066 |
+| `src/test/unit/services/features/caseProgression/trialArrangements/finaliseYourTrialStartScreenContent.test.ts` | Exclude | R063 |
+| `src/test/unit/services/features/caseProgression/trialArrangements/trialArrangementsConfirmationContent.test.ts` | Exclude | R063 |
+| `src/test/unit/services/features/caseProgression/trialContentBuilder.test.ts` | Exclude | R063 |
+| `src/test/unit/services/features/caseProgression/uploadYourDocumentsContents.test.ts` | Exclude | R063 |
+| `src/test/unit/services/features/caseProgression/witnessContentBuilder.test.ts` | Exclude | R063 |
+| `src/test/unit/services/features/caseProgression/witnessService.test.ts` | Adapted | R016; R089 |
+| `src/test/unit/services/features/claim/checkAnswers/checkAnswersService.test.ts` | Covered differently | R016 |
+| `src/test/unit/services/features/claim/checkAnswers/claimSection/addEvidence.test.ts` | Covered differently | R067 |
+| `src/test/unit/services/features/claim/checkAnswers/claimSection/addTimeLine.test.ts` | Covered differently | R068 |
+| `src/test/unit/services/features/claim/partyTypeService.test.ts` | Covered differently | R069 |
+| `src/test/unit/services/features/claim/payment/claimFeePaymentConfirmationContent.test.ts` | Exclude | R063 |
+| `src/test/unit/services/features/claim/payment/claimFeePaymentSuccessfulSectionBuilder.test.ts` | Covered differently | R070 |
+| `src/test/unit/services/features/claim/paymentSuccessfulSectionBuilder.test.ts` | Covered differently | R071 |
+| `src/test/unit/services/features/claimantResponse/checkAnswers/buildFreeTelephoneMediationSection.test.ts` | Exclude | R063 |
+| `src/test/unit/services/features/claimantResponse/checkAnswers/hearing/addSupportRequiredListService.test.ts` | Exclude | R063 |
+| `src/test/unit/services/features/claimantResponse/claimantResponseConfirmation/confirmationContentBuilder/ccjConfirmationBuilder.test.ts` | Exclude | R063 |
+| `src/test/unit/services/features/claimantResponse/claimantResponseConfirmation/confirmationContentBuilder/claimSettleConfirmationBuilder.test.ts` | Exclude | R063 |
+| `src/test/unit/services/features/claimantResponse/claimantResponseConfirmation/confirmationContentBuilder/confirmationContentBuilder.test.ts` | Exclude | R063 |
+| `src/test/unit/services/features/claimantResponse/claimantResponseConfirmation/confirmationContentBuilder/disputeConfirmationContentBuilder.test.ts` | Exclude | R063 |
+| `src/test/unit/services/features/claimantResponse/claimantResponseConfirmation/confirmationContentBuilder/financialDetailsBuilder.test.ts` | Exclude | R063 |
+| `src/test/unit/services/features/claimantResponse/claimantResponseConfirmation/confirmationContentBuilder/mediationConfirmationContentBuilder.test.ts` | Exclude | R063 |
+| `src/test/unit/services/features/claimantResponse/claimantResponseConfirmation/confirmationContentBuilder/partAdmitConfirmationContentBuilder.test.ts` | Exclude | R063 |
+| `src/test/unit/services/features/claimantResponse/claimantResponseTasklistService/claimantResponseTasks/claimantHearingRequirementsSectionTasks.test.ts` | Exclude | R063 |
+| `src/test/unit/services/features/claimantResponse/claimantResponseTasklistService/claimantResponseTasks/howDefendantRespondSectionTaks.test.ts` | Exclude | R063 |
+| `src/test/unit/services/features/claimantResponse/claimantSuggestedInstalmentsService.test.ts` | Covered differently | R016 |
+| `src/test/unit/services/features/claimantResponse/defendantResponse/fullAdmissinionDefendantsResponseContent.test.ts` | Exclude | R063 |
+| `src/test/unit/services/features/claimantResponse/defendantResponse/fullAdmissionPayInstallmentsDefendantResponseContent.test.ts` | Exclude | R063 |
+| `src/test/unit/services/features/claimantResponse/defendantResponse/fullDisputeDefendantsResponseContent.test.ts` | Exclude | R063 |
+| `src/test/unit/services/features/claimantResponse/defendantResponse/partAdmissionAlreadyPaidDefendantsResponseContent.test.ts` | Exclude | R063 |
+| `src/test/unit/services/features/claimantResponse/defendantResponse/partAdmitNotPaidDefendantsResponseContent.test.ts` | Exclude | R063 |
+| `src/test/unit/services/features/claimantResponse/signSettlmentAgreementService.test.ts` | Exclude | R063 |
+| `src/test/unit/services/features/common/claimTimelineService.test.ts` | Covered differently | R072 |
+| `src/test/unit/services/features/dashboard/claimSummary/latestUpdate/latestUpdateContent/claimDismissedHearingDueDateUploadContent.test.ts` | Exclude | R063 |
+| `src/test/unit/services/features/dashboard/claimSummary/latestUpdate/latestUpdateContent/evidenceUploadContent.test.ts` | Exclude | R063 |
+| `src/test/unit/services/features/dashboard/claimSummary/latestUpdate/latestUpdateContent/newUploadContent.test.ts` | Exclude | R063 |
+| `src/test/unit/services/features/eligibility/eligibleService.test.ts` | Covered differently | R073 |
+| `src/test/unit/services/features/generalApplication/applicationCostsService.test.ts` | Covered differently | R016 |
+| `src/test/unit/services/features/generalApplication/applicationFeePaymentConfirmationContent.test.ts` | Exclude | R063 |
+| `src/test/unit/services/features/generalApplication/checkAnswers/addCheckAnswersRows.test.ts` | Defer | R074 |
+| `src/test/unit/services/features/generalApplication/feeDetailsService.test.ts` | Covered differently | R016 |
+| `src/test/unit/services/features/generalApplication/generalApplicationService.test.ts` | Covered differently | R016 |
+| `src/test/unit/services/features/generalApplication/response/generalApplicationResponseService.test.ts` | Covered differently | R016 |
+| `src/test/unit/services/features/generalApplication/response/generalApplicationResponseStoreService.test.ts` | Covered differently | R016 |
+| `src/test/unit/services/features/generalApplication/submitGeneralApplicationConfirmationContent.test.ts` | Adapted | R075; R089 |
+| `src/test/unit/services/features/mediation/uploadDocuments/buildYourStatementSummaryRows.test.ts` | Exclude | R063 |
+| `src/test/unit/services/features/mediation/uploadDocuments/documentsForDocumentsReferredService.test.ts` | Covered differently | R076 |
+| `src/test/unit/services/features/mediation/uploadDocuments/mediationCancelUploadService.test.ts` | Covered differently | R077 |
+| `src/test/unit/services/features/mediation/uploadDocuments/yourStatementService.test.ts` | Covered differently | R078 |
+| `src/test/unit/services/features/queryManagement/viewQueriesService.test.ts` | Import/adapt | R020 |
+| `src/test/unit/services/features/response/checkAnswers/caseProgression/requestForReconsideration/buildRequestForReconsiderationConfirmationSection.test.ts` | Covered differently | R079 |
+| `src/test/unit/services/features/response/checkAnswers/financialSection/buildYourFinancialSection.test.ts` | Exclude | R080 |
+| `src/test/unit/services/features/response/statementOfMeans/bankAccounts/bankAccountConverter.test.ts` | Covered differently | R016 |
+| `src/test/unit/services/features/response/statementOfMeans/employment/employerService.test.ts` | Import/adapt | R021 |
+| `src/test/unit/services/features/response/statementOfMeans/employment/employmentConverter.test.ts` | Import/adapt | R021 |
+| `src/test/unit/services/features/response/statementOfMeans/partner/cohabitingService.test.ts` | Covered differently | R081 |
+| `src/test/unit/services/features/response/statementOfMeans/partner/partnerAgeService.test.ts` | Covered differently | R081 |
+| `src/test/unit/services/features/response/statementOfMeans/partner/partnerDisabilityService.test.ts` | Covered differently | R081 |
+| `src/test/unit/services/features/response/statementOfMeans/partner/partnerPensionService.test.ts` | Covered differently | R081 |
+| `src/test/unit/services/features/response/statementOfMeans/partner/partnerSevereDisabilityService.test.ts` | Covered differently | R081 |
+| `src/test/unit/services/features/response/statementOfMeans/severeDisabilityService.test.ts` | Covered differently | R081 |
+| `src/test/unit/services/features/response/submitConfirmation/submitConfirmationBuilder/admissionSubmitConfirmationContent.test.ts` | Exclude | R063 |
+| `src/test/unit/services/features/response/submitConfirmation/submitConfirmationBuilder/fullDefenceConfirmationContent.test.ts` | Exclude | R063 |
+| `src/test/unit/services/features/response/submitConfirmation/submitConfirmationBuilder/mediationCarmContent.test.ts` | Exclude | R063 |
+| `src/test/unit/services/features/response/submitConfirmation/submitConfirmationBuilder/partAdmissionConfirmationContent.test.ts` | Exclude | R063 |
+| `src/test/unit/services/features/response/submitConfirmation/submitConfirmationBuilder/rejectClaimConfirmationContent.test.ts` | Exclude | R063 |
+| `src/test/unit/services/features/response/submitConfirmation/submitConfirmationBuilder/submitConfirmationBuilder.test.ts` | Exclude | R063 |
+| `src/test/unit/services/features/response/timelineOfEvents/defendantTimelineService.test.ts` | Adapted | R016; R089 |
+| `src/test/unit/services/features/settlementAgreement/respondSettlementAgreementConfirmationContentService.test.ts` | Exclude | R063 |
+| `src/test/unit/services/features/settlementAgreement/respondSettlementAgreementService.test.ts` | Exclude | R063 |
+| `src/test/unit/services/features/settlementAgreement/settlementAgreementConfirmationBuilder/confirmationContentBuilder.test.ts` | Exclude | R063 |
+| `src/test/unit/services/features/uiPreview/pageCatalog.test.ts` | Covered differently | R058 |
+| `src/test/unit/services/features/uiPreview/uiPreviewClaimantResponseFixtures.test.ts` | Covered differently | R058 |
+| `src/test/unit/services/features/uiPreview/uiPreviewSomFixtures.test.ts` | Covered differently | R058 |
+| `src/test/unit/services/firstcontact/firstcontactService.test.ts` | Import/adapt | R029 |
+| `src/test/unit/services/genericForm/genericFormService.test.ts` | Import/adapt | R029 |
+| `src/test/unit/services/translation/caseProgression/requestForReconsideration/convertToCCDRequestForReconsideration.test.ts` | Import/adapt | R029 |
+| `src/test/unit/services/translation/claimantResponse/convertToCCDClaimantLiPResponse.test.ts` | Import/adapt | R029 |
+| `src/test/unit/services/translation/claimantResponse/convertToCCDClaimantMediation.test.ts` | Import/adapt | R082 |
+| `src/test/unit/services/translation/convertToCUI/convertToCUIFixedRecoverableCosts.test.ts` | Import/adapt | R029 |
+| `src/test/unit/services/translation/convertToCUI/convertToCUIMediationCarm.test.ts` | Import/adapt | R029 |
+| `src/test/unit/services/translation/convertToCUI/convertToCUIYesNo.test.ts` | Import/adapt | R083 |
+| `src/test/unit/services/translation/convertToCUI/cuiTranslation.test.ts` | Covered differently | R016 |
+| `src/test/unit/services/translation/response/convertToCCDFlightDetails.test.ts` | Import/adapt | R029 |
+| `src/test/unit/services/translation/response/convertToCCDRespondToClaim.test.ts` | Covered differently | R016 |
+| `src/test/utils/govukFrontendFixturesHelper.ts` | Adapted | R015 |
+| `src/test/utils/mocks/a11y/mock-case-1645882162449409-case-progression-upload-documents.html` | Adapted | R015 |
+| `src/test/utils/mocks/a11y/mock-case-1645882162449409-directions-questionnaire-expert-report-details.html` | Adapted | R015 |
+| `src/test/utils/mocks/a11y/mock-case-1645882162449409-directions-questionnaire-support-required.html` | Adapted | R015 |
+| `src/test/utils/mocks/a11y/mock-case-1645882162449409-mediation-unavailable-dates.html` | Adapted | R015 |
+| `src/test/utils/mocks/a11y/mock-case-1645882162449409-mediation-upload-documents.html` | Adapted | R015 |
+| `src/test/utils/mocks/a11y/mock-case-1645882162449409-response-evidence.html` | Adapted | R015 |
+| `src/test/utils/mocks/a11y/mock-case-1645882162449409-response-statement-of-means-court-orders.html` | Adapted | R015 |
+| `src/test/utils/mocks/a11y/mock-case-1645882162449409-response-timeline.html` | Adapted | R015 |
+| `src/test/utils/mocks/a11y/mock-case-1645882162449409-response-your-details.html` | Adapted | R015 |
+| `src/test/utils/mocks/a11y/mock-claim-1645882162449409-fee-change.html` | Adapted | R015 |
+| `src/test/utils/mocks/a11y/mock-claim-1645882162449409-fee.html` | Adapted | R015 |
+| `src/test/utils/mocks/a11y/mock-claim-evidence.html` | Adapted | R015 |
+| `src/test/utils/mocks/a11y/mock-claim-timeline.html` | Adapted | R015 |
+| `src/test/utils/mocks/a11y/mock-dashboard.html` | Adapted | R015 |
+| `src/test/utils/mocks/a11y/mock-make-claim.html` | Adapted | R015 |
+| `tsconfig.jest.integration.json` | Adapted | R003 |
+| `tsconfig.jest.json` | Adapted | R003 |
+| `tsconfig.json` | Adapted | R003 |
+| `webpack.config.js` | Adapted | R009 |
+| `webpack/ministryOfJusticeFrontend.js` | Already integrated | R002 |
+| `webpack/scss.js` | Adapted | R009 |
+| `win.eslint.json` | Already integrated | R002 |
+| `yarn-audit-known-issues` | Adapted | R003 |
+| `yarn.lock` | Adapted | R003 |
+
+</details>
+
+<details>
+<summary>Evidence and adaptation reasons</summary>
+
+| Code | Reason / current owner |
+| --- | --- |
+| R001 | Fork-wide planning/operational/AI documentation not an application requirement; current README/test-pyramid/stage/preview guidance retained; broad future template consolidation remains separately owned. |
+| R002 | Fork retirement already satisfied; path absent. |
+| R003 | Retain reconciled PR2 pins/security/audit/automation and master test pyramid/runtime. Deferred fork runtime majors, obsolete scripts and suppressions excluded. PR11 adds the UTC baseline in jest.config.js for host-independent unit date assertions; the other files using this code remain unchanged by PR11. |
+| R004 | Current bytes equal exact fork reference. |
+| R005 | Current staged implementation and master fixes retained; fork whole-file replacement rejected. Relevant current tests and stage records are the review evidence, not remote/whole-ticket approval. |
+| R006 | Restricted PR10 catalogue/fixtures/local service setup replaces unsafe fork exposure; see docs/ui-preview.md and current preview security tests. |
+| R007 | Current integrated commands/test ownership and restricted-preview operating guidance replace stale fork instructions. |
+| R008 | Retain current supported libraries, master authentication/telemetry/rate-limiter behaviour and explicitly gated PR10 preview; do not import fork runtime-major adaptations or auth exemptions. |
+| R009 | Current PR3–PR9 CUI/legacy ownership, server-managed uploads, calculation behaviour and proven MOJ/jQuery retirement replace fork-specific wiring; existing regressions retained. |
+| R010 | PR3–PR9 current components/templates preserve master content and contracts; preview-only changes gated in PR10. Exact-fork overwrite excluded; see stage records and actual-template suites. |
+| R011 | Do not blanket-hide invalid dates/missing documents or replace timeline recovery/comments. Presentation-safe adaptations already in PR9 are retained; remaining recovery requires a separate trigger/contract decision. |
+| R012 | Fork admitted-amount/recovery changes are substantive financial behaviour; preserve current master semantics and existing regressions. |
+| R013 | Retain master AES-GCM first-contact rollout format and guards; incompatible fork format is intentionally not integrated. |
+| R014 | Retain current GA identity/type/fee/draft guards and explicitly paired fee/application metadata. Fork broad fallback or recovery changes remain separate production-triggered work; PR11 tests valid explicit pairing. |
+| R015 | Current stage-specific fixtures/helpers/assertions retain approved captured data and test ownership; see PR3–PR10 evidence and current consumers. |
+| R016 | Current same-path suite retained with master/PR1–PR10 behaviour; additional fork-only assertions need the separately recorded route/service assessment, not wholesale overwrite. |
+| R017 | Fork suppression/capture inventory assumptions; current presentationCaptures tests preserve real consumers without importing global accessibility ignores. |
+| R018 | Current PR10 uiPreviewConfig/Fixtures/Isolation suites exercise explicit enablement, local TestData and ordinary-e2e separation; retain SDK 8 API and do not port SDK-major assumptions. |
+| R019 | Constant-expansion smoke tests repeat route constants. Current Pact consumer request paths remain the behavioural contract. |
+| R020 | Adapted fork isolated client/language/validation/query/CSRF coverage; no app boot. Omitted implementation-only metadata and invalid-auth smoke assertions; strengthened invocation/order/payload checks. |
+| R021 | Adapted fork missing-value/boundary/serialization or task-status coverage for unchanged production module; clock fixed where relevant; service writes asserted completely. |
+| R022 | Constant-expansion smoke tests repeat route constants. Current GA Pact consumers check the service request paths. |
+| R023 | Named follow-up: PCQ token wire-format compatibility coverage. Hex/determinism smoke checks lack an independent decoder or legacy ciphertext vector; obtain the protocol contract rather than transplanting a weak cryptographic oracle. |
+| R024 | Assertions test object literals created by the test against TypeScript interfaces; no runtime production behaviour is executed. |
+| R025 | PR3/PR5/PR7 current add-another, dq/remaining-repeated-rows, postcode and PR9 repayment suites test actual rendered markup; deleted legacy implementation ports excluded. |
+| R026 | Named follow-up: isolated legacy cookie-banner DOM coverage with actual cookie-page markup. Fork simplified document fixtures are unrelated to the migrated PR3–PR10 components; preserve existing consent/Dynatrace regressions. |
+| R027 | The exact fork contains five positive payment-path submit-button cases and one nonmatching-path case. Retain these useful assertions in disable-submit.test.ts, adapting execution to an isolated JSDOM window, native submit-event dispatch and per-test window cleanup. No Node global DOM replacement or production script change is needed. |
+| R028 | Named follow-up: legacy language-toggle URL/query preservation using real shell markup. Keep current real-shell language, en/cy template and preview route checks; do not claim those exhaust standalone-script edge cases. |
+| R029 | Adapted exact-fork isolated unit coverage; production module unchanged. |
+| R030 | Current judgmentOnline/confirmYouHaveBeenPaidController tests exercise saved/invalid date submissions and confirmation; BaseDate/optional-date suites now independently cover date ranges. Constructor-only duplication is not imported. |
+| R031 | Import/config/constant/constructor smoke assertions do not add a demonstrated behavioural regression; retain consumer validation tests. |
+| R032 | Adapted fork validation coverage for current CARM dates, financial-source messages or master null/empty saved-document guards; no production change. |
+| R033 | Current priorityDebtsService and convertToCUIPriorityDebts/convertToCCDRecurringIncome suites assert amounts, schedules and active categories; fork constructor/type-only and existence checks are not stronger conversion evidence. |
+| R034 | Fork optional-date cases adapted to a fixed local clock and exact midnight/millisecond boundaries. |
+| R035 | Fork optional-integer cases extended with whitespace, exponent, sign and null boundaries. |
+| R036 | Current partyDetails/address form tests plus new EmailValidator and EmailValidationWithMessage suites cover optional/invalid/valid email and error mapping; a second constructor smoke suite is not imported. |
+| R037 | Two constructor/date-display smoke checks are not adopted as additional behavioural protection; current bundle/document journeys remain. |
+| R038 | PR8 uploadTemplates and repeatedUploads/queryUploads integration tests validate all category/action mappings and surviving complete model data. New GA saved-document guard tests cover null/empty references. Fork constructor-only portions omitted. |
+| R039 | Current CCD translation suites and new toCUIFixedRecoverableCosts cases assert the financial mapping; do not add another mostly constructor/absent-wrapper smoke file. |
+| R040 | Constructor/default-array smoke assertions; actual dashboard/task-list template tests retain ordered data and links. |
+| R041 | Copies constructor arguments into assertions without testing task state, navigation or rendering; PR4 adapter/templates own those behaviours. |
+| R042 | Named follow-up: dormant expert-report editor/model ownership. Its question template does not activate the repeated report-detail editor. Do not adopt or activate that separate editor as test reconciliation. |
+| R043 | Named follow-up: dormant expert-report editor/model ownership and date-validation contract; current active expert-details editor and generic date validators are retained. |
+| R044 | PR7 dqRepeatedRowTemplates/dq-repeated-rows tests render actual witness fields and interpret submissions through witness services/models; new email/phone validators separately pin optional/invalid behaviour. |
+| R045 | Only assigns constructor arguments/undefined fields. Real claim/GA/hearing payment-reference and persistence tests provide behavioural coverage. |
+| R046 | Only assigns constructor arguments; current actual GA/dashboard rendering retains the rows, links and content. |
+| R047 | Residual GA support coverage: the real HearingSupport model nests validation only for sign-language, language and other-support details; step-free access/hearing loop have no content fields. The fork standalone Support failure assertion is not an oracle for the real POST model. Preserve current rules; any fuller isolated coverage remains outside this selective suite import, not a promised production correction. |
+| R048 | Constructor/default-array smoke checks. Current GA response/draft-store suites preserve submitted models and state. |
+| R049 | Constructor smoke assertions duplicate actual summary-list and rendered-table/template coverage without exercising escaping or navigation. |
+| R050 | Current monthlyIncomeExpensesCalculator tests exercise frequency-to-month calculations; PR7 remaining-repeated-rows tests cover dynamic totals. Static constructor/constant repetition excluded. |
+| R051 | Mocks i18next as key passthrough and checks the same returned key; current bilingual actual-template CYA checks are the rendering evidence. |
+| R052 | Fork-only incompatible encryption format; retain firstcontact/sessionValueCrypto fixed legacy ciphertext and tamper cases. |
+| R053 | Current common/utils/taskList/taskListBuilder.test.ts checks full/part admission, defence, task ordering and destinations through buildRespondToClaimSection. New five task-provider suites add missing direct status/availability edges. |
+| R054 | presentationGovukFixtures.test.ts validates nonempty installed fixture discovery and parity; presentationTemplates/Captures assert actual application composition. |
+| R055 | Asserts fork coverage configuration; test ownership/thresholds deliberately retained from master. |
+| R056 | Current cookieConfigDynatraceUser and PR9 real-shell consent/Dynatrace suites preserve event/user/consent behaviour; do not replace with the fork bootstrap mock. |
+| R057 | Fork draft-cache suite rewritten for current master: cloned defaults, complete write/TTL/owner payload and rejected writes; no obsolete CARM phone mutation. |
+| R058 | Current uiPreview unit and route integration suites exercise explicit enablement, real routes, fixture keys and launcher isolation; exclude unconditional fork preview tests. |
+| R059 | Fork adds Supertest under unit ownership. Retain current health module suites and security/journey integration ownership; no new unit HTTP application test is introduced. |
+| R060 | Current modules/helmet.test.ts checks actual security headers; PR9 real-shell and PR10 boundary tests preserve CSP/nonces and disabled-preview behaviour. Do not import an alternative mock-only bootstrap test. |
+| R061 | Named follow-up: configuration/secret-volume unit isolation with explicit environment restoration and fake config; no preview/production secret wiring changes belong to PR11. |
+| R062 | Do not import the fork HTTP-under-unit suite/extra HTTP cases. Retain current handler-level assertions and named integration owners in docs/test-pyramid.md. Additional isolated handler edges can be assessed in their owning journey; no claim that every fork assertion is duplicated. |
+| R063 | Separate fork content-key/existence smoke suite not adopted; current journey/controller/template assertions retain production content. This is a scope decision, not a claim of line-for-line coverage equivalence. |
+| R064 | PR8 upload/document and PR9 document/table rendering tests preserve order, links and empty states from actual builders; a second partial existence/first-row suite is not imported. |
+| R065 | Fork hearing-payment suite strengthened for master reference guard, exact claim/fee/owner arguments, pending/failed/error paths; no application boot. |
+| R066 | Current requestForReview/requestForReviewComments controller suites and confirmation-content tests exercise claimant/defendant models and returned sections; retain current service inputs. |
+| R067 | Current claim checkAnswersService and PR3 real evidence template suites cover empty/populated evidence. Fork title/first-row smoke suite omitted. |
+| R068 | Current claim checkAnswersService, PR7 timeline and PR9 presentationSummaries suites retain ordered dates/descriptions and empty data. No alternate timeline recovery imported. |
+| R069 | Current party-type handler and claimIssue integration tests retain unknown type/not-found behaviour; avoid a duplicate Express render mock suite. |
+| R070 | Current claim payment confirmation and PR9 amount-summary tests assert references/fee data; constructor/first-section existence assertions do not replace those contracts. |
+| R071 | Current claim payment confirmation and section-builder consumers retain payment reference/summary; fork first-string smoke checks omitted. |
+| R072 | Current timeline/table and checkAnswers suites assert actual ordered date/description output; retain master recovery/comments rather than adding shallow empty/first-row duplication. |
+| R073 | Current eligibility.integration and handler suites cover HWF/eligible states and approved content; isolated key-passthrough smoke checks add no distinct submission contract. |
+| R074 | Named follow-up: exhaustive GA CYA producer contracts. Reconcile every row with current summaryRowWithTextValue HTML-safety semantics and real application identity before adopting the fork key/existence assertions. Current GA integration/summary safety tests remain. |
+| R075 | Fork confirmation-content coverage adapted to explicit current application/fee pair; unsafe first-GA/draft-fee/NaN fallback tests excluded. |
+| R076 | Current documentsForDocumentsReferredContentBuilder, PR8 uploadTemplates and repeatedUploads integration suites check saved rows/category/actions; unsafe default-array recovery is not imported. |
+| R077 | Current mediation cancel-upload controller/service/route tests retain action values and draft removal; fork first-content/existence smoke duplication omitted. |
+| R078 | Current yourStatementContentBuilder, PR8 uploadTemplates and repeatedUploads integration suites preserve both mediation collections and actual server-managed submissions; no fallback producer change. |
+| R079 | Current reconsideration controller and response confirmation suites retain claimant/defendant context and comments; fork duplicate content-key construction not imported. |
+| R080 | Only checks that a titled section exists, including a missing model. This does not verify financial field values/decisions; current financial model/service and rendered summaries remain the stronger contracts. |
+| R081 | PR11 partnerServices.test.ts covers six services, exact write keys, survivor fields, and actual write rejection. |
+| R082 | Fork claimant-mediation coverage strengthened from existence checks to complete individual/decline CCD payloads. |
+| R083 | Fork Yes/No cases cover every public adapter, missing versus No, and independent form values. |
+| R084 | Retain the exact fork simpleFormModelsCoverage.test.ts: it invokes real GenericForm validation for CitizenResponseType, PartyTypeSelection, eligibility ClaimType and RespondAddInfo, including custom message keys and conditional missing-text requirements. These are behavioural assertions, not just constructor smoke coverage. Some default/valid cases overlap existing consumers; the explicit decorator/custom-key and conditional validation contracts justify the isolated suite. |
+| R085 | Closing integration correction: guard only a selected category's missing optional saved-row array in the four case-progression providers. Keep real section builders, persisted values, selection pruning, metadata and ordering. Existing multipart parsing creates empty arrays; regressions explicitly resume sparse saved forms rather than claiming every current upload produces undefined collections. |
+| R086 | Closing response recovery: missing partial-admission answers use the existing task-list redirect, without invented Yes/No values; a translated comment-only timeline uses fresh empty rows while retaining its comment. The fork's comment-dropping fallback is excluded. |
+| R087 | Closing GA confirmation recovery: validate an explicit scalar collection-item ID and finite decimal pounds fee, including zero, before rendering either confirmation. Invalid pairs redirect through getDashboardUrlForParty without cancelling/deleting a draft. Keep exact downstream collection-ID-to-case-reference lookup; exclude first-application and unrelated-draft-fee fallback. |
+| R088 | Closing presentation adaptation: ten numeric missing-value defaults preserve zero/submitted values; query date errors use escaped inline messages and focusable day summary links; respondent agreement has its existing translated title; three task headings and the opponent timeline use valid bounded composition. The existing dashboard shell gains a default-preserving summary block only to support the query override. Fee-change cleanup remains excluded. |
+| R089 | Existing regression owners extended for closing production corrections: real models/builders, saved-state preservation, call-time persistence snapshots, direct GA handlers, raw numeric attributes, bilingual error/title/table behavior and integration journeys. New unit assertions do not construct Express applications; HTTP remains under integration. This is selective adaptation, not assertion-for-assertion fork-suite parity. |
+| R090 | Claim-fee redirect recovery: adapt the fork's missing-nextUrl fallback to all four current redirect paths, including master's invalid-reference early return. Missing, null, empty and whitespace-only URLs return to the fee page; existing provider URLs and successful-payment confirmation remain. Preserve payment-reference validation, draft ownership/loading/saving and retention boundaries. Extend the current isolated controller suite and claim-issue integration owner using real CCD payment translation and call-time saved-payload snapshots; do not import the fork's complete controller or HTTP unit suite. |
+| R091 | Missing or empty case-progression working upload draft: adapt the fork's rendering-only recovery at the check-and-send controller boundary on both GET and POST. Require current-role saved document references; parsed empty collections, unsaved rows and incomplete references recover before submission-body access. Redirect to existing document selection without an empty success summary, evidence event, task update, draft deletion or overwrite of either role's CCD documents. Direct-handler tests cover saved references in all 15 categories; integration follows the real dashboard refresh, CCD translator and empty multipart-form path in both languages/roles, with external boundaries mocked. |
+| R092 | Accessibility capture harness: serve actual built CSS/JS/public assets, require both bundles, supply the capture's i18n cookie and the installed official template's feature-detecting bootstrap, and own one loopback server with awaited startup/shutdown. Preserve fixture bytes outside that served bootstrap, existing Pa11y selection, rules and retries. A native browser regression checks actual GOV.UK radio initialization, conditional visibility, aria-expanded and saved values. HTTP integration checks resources, bootstrap/data preservation, missing bundles and cleanup. The earlier 33 header corrections remain; asset/font HTTP 200 and Pa11y passes alone did not prove enhanced components initialized. |
+
+</details>
+
+<details>
+<summary>Exact authorised archive downloads</summary>
+
+| URL | Bytes | SHA-256 |
+| --- | ---: | --- |
+| `https://registry.yarnpkg.com/@babel/parser/-/parser-7.29.9.tgz` | 439123 | `8f3b9fbc531e0c08e2c329cf1ff57bbe121e2d10061b65a05614a25b2255cc43` |
+| `https://registry.yarnpkg.com/@codeceptjs/configure/-/configure-1.0.6.tgz` | 5112 | `1291d31565de676a2ead7469a7bd46cc44d30aeef7056400d8e81fef1bca641d` |
+| `https://registry.yarnpkg.com/@codeceptjs/detox-helper/-/detox-helper-1.1.14.tgz` | 10906 | `1a6339bc02ba67bddab9f13f01a64fc417b8e22b4118b2bb0335fd6fc6562183` |
+| `https://registry.yarnpkg.com/@colors/colors/-/colors-1.6.1.tgz` | 11773 | `7c13d093c7dc82ad9b024da4fd31cd480da6cbae65a0c492efb897e34bd73929` |
+| `https://registry.yarnpkg.com/@cucumber/cucumber-expressions/-/cucumber-expressions-19.0.1.tgz` | 95302 | `f1023fd86e8027eeab71f5765413e60e0b8fc5385c978a1f3390670492adc0e6` |
+| `https://registry.yarnpkg.com/@cucumber/gherkin/-/gherkin-39.0.0.tgz` | 92734 | `728c368146f3fd2d1d3daddb094d8a16d6837462a28e676b3233b921f8e3c53a` |
+| `https://registry.yarnpkg.com/@dabh/diagnostics/-/diagnostics-2.0.9.tgz` | 10584 | `c2741b20e37a5916d1e934cc577f450fa1b0af10d516740f4e55c26fe6819b86` |
+| `https://registry.yarnpkg.com/@dr.pogodin/csurf/-/csurf-1.18.1.tgz` | 17933 | `7a4973c6892680c95aaccadcefc7f93fd9f873359298caa8a4086351894202a0` |
+| `https://registry.yarnpkg.com/@flatten-js/interval-tree/-/interval-tree-1.1.4.tgz` | 23665 | `1089b9b95fe45f918215aaaa1beef6f4376b1053e8925a45093f443473dcee42` |
+| `https://registry.yarnpkg.com/@isaacs/ttlcache/-/ttlcache-1.4.1.tgz` | 8167 | `4fdc15b3ad32802b471d1fcc07eb08f8958fbcc5e8d1d5830a12ad1bc5b6dd1a` |
+| `https://registry.yarnpkg.com/@jest/create-cache-key-function/-/create-cache-key-function-29.7.0.tgz` | 2933 | `8d277e1e25a6400fec9e7117fc47fc4c8eaa384cdd4a301d5080519961abee43` |
+| `https://registry.yarnpkg.com/@react-native/assets-registry/-/assets-registry-0.81.6.tgz` | 2223 | `7a6c3966bf013e609140e11acf139101b8745db5b5277528ba465c12ab8c9d1f` |
+| `https://registry.yarnpkg.com/@react-native/codegen/-/codegen-0.81.6.tgz` | 180094 | `2d8fb69cee45cf2a43e51dc73a11dab8a3ec5396e4bc1ad5a0bcae603d763cf3` |
+| `https://registry.yarnpkg.com/@react-native/debugger-frontend/-/debugger-frontend-0.81.6.tgz` | 4516144 | `d44f66224fc380706847fbe2b39cb70047c5bed6ff13c370b428f0d4d19d7c53` |
+| `https://registry.yarnpkg.com/@react-native/community-cli-plugin/-/community-cli-plugin-0.81.6.tgz` | 17720 | `590adf5532428cc89dbec51ce497326b1690dee1dcbe76c18565832f89817bf9` |
+| `https://registry.yarnpkg.com/@react-native/dev-middleware/-/dev-middleware-0.81.6.tgz` | 31602 | `06e4bba8a24c538e277a22464fad5924624ba77a647d445c28d640ce44152e01` |
+| `https://registry.yarnpkg.com/@react-native/gradle-plugin/-/gradle-plugin-0.81.6.tgz` | 99826 | `5c4a1196a8163b7d7c315c51b1c2365894cf28fd40467cedba6913bf0068ef04` |
+| `https://registry.yarnpkg.com/@react-native/js-polyfills/-/js-polyfills-0.81.6.tgz` | 8301 | `bfc7b6bcf2251e010200bd98c282b356fef8d12a9b2a7f6c3d3c3cffd4d24a5d` |
+| `https://registry.yarnpkg.com/@react-native/normalize-colors/-/normalize-colors-0.81.6.tgz` | 4012 | `2e93cfba6bf95dca9faf4b1e014303b9f2f0617a6fec7862f40a6c4340a8331f` |
+| `https://registry.yarnpkg.com/@react-native/virtualized-lists/-/virtualized-lists-0.81.6.tgz` | 49324 | `15af95564972c161d6c20f5061e4272ae8ca723010a4b1a0dc7749ae35d8a386` |
+| `https://registry.yarnpkg.com/@wix-pilot/core/-/core-3.4.2.tgz` | 45788 | `a965861228a4c78a309ed17b7851fda34abc0efe319b8d0d0cf40a79364fd422` |
+| `https://registry.yarnpkg.com/@wix-pilot/detox/-/detox-1.0.13.tgz` | 10382 | `27ea0a9801e6861ae17c09ec8d63251a2c8ff60b0daf4c8bbbe7843175eeaca5` |
+| `https://registry.yarnpkg.com/@xmldom/xmldom/-/xmldom-0.9.12.tgz` | 109708 | `08245e18c248b957b4c6e07f8549ad5f55ae11b7a8abd4c1113a0fd61ddc67ee` |
+| `https://registry.yarnpkg.com/anser/-/anser-1.4.10.tgz` | 10267 | `2f2946fb8190da7260762566f9290c694d217137459b5d43a51f26d7ec9611b0` |
+| `https://registry.yarnpkg.com/babel-plugin-syntax-hermes-parser/-/babel-plugin-syntax-hermes-parser-0.29.1.tgz` | 3011 | `a1f313807d729062b31c883fd47268b90e717b655736a85e9aedf7e82d5a52ce` |
+| `https://registry.yarnpkg.com/browser-process-hrtime/-/browser-process-hrtime-1.0.0.tgz` | 1887 | `12a753e78dab680f034a1ec22803c10ab0579dd9092f1956be8268f3090134eb` |
+| `https://registry.yarnpkg.com/bunyamin/-/bunyamin-1.6.3.tgz` | 89838 | `977658aa517c51a0265d6b7f3c7a1444add1a5dc8188b71077760f24a50f6452` |
+| `https://registry.yarnpkg.com/bunyan-debug-stream/-/bunyan-debug-stream-3.1.1.tgz` | 17969 | `862466530915fad20dfaa55a72fd4447f572e07e181b3fb59ca003d16b916410` |
+| `https://registry.yarnpkg.com/bunyan/-/bunyan-2.0.5.tgz` | 60208 | `ae158b859fe22602c35ba869e4859bb875163103701d7952e4d00aec63e6b699` |
+| `https://registry.yarnpkg.com/caf/-/caf-15.0.1.tgz` | 36025 | `289f1e1f5e4c328768b1e2725747efdf17608d1828b0bb907763336eb04e0a41` |
+| `https://registry.yarnpkg.com/chromium-edge-launcher/-/chromium-edge-launcher-0.2.0.tgz` | 33251 | `fb36d48484031ef4f55f3772b5d41547a0afb06e4476a0850cc9b8aabc146f25` |
+| `https://registry.yarnpkg.com/ci-info/-/ci-info-2.0.0.tgz` | 4860 | `2959f40b55ad201d6e364db8969537b222067397fb9df1002d28427a332056b9` |
+| `https://registry.yarnpkg.com/class-validator/-/class-validator-0.15.1.tgz` | 915522 | `f21b8c29a3103c700db59404e8250a5b0812ee82f60164bf66aaff42e4c3229a` |
+| `https://registry.yarnpkg.com/codeceptjs/-/codeceptjs-3.7.9.tgz` | 515226 | `e4aeaea5c2c30300c432de44df8e0459e9e5576d5493e9676b6aef9d38234a25` |
+| `https://registry.yarnpkg.com/color-name/-/color-name-2.1.1.tgz` | 2846 | `94fd34b8f6b573fd0a4a07f5f029beaf2c8ee9a2b7cd0d47fdd6c95c89b50125` |
+| `https://registry.yarnpkg.com/cookie/-/cookie-2.0.1.tgz` | 13277 | `8516126668fc55128916561047c055db77d0401dee1db108adce7267b4b06ff0` |
+| `https://registry.yarnpkg.com/deepmerge-ts/-/deepmerge-ts-8.0.2.tgz` | 41695 | `262091e7457d221379bc6e7759df137c01af6553461bad6cd6d4aa3ff10f874c` |
+| `https://registry.yarnpkg.com/detox/-/detox-20.42.0.tgz` | 13825437 | `7a60ff71e476d5c198b3c117b6ef4acb752ce3d71595f04e8ae555262fc61517` |
+| `https://registry.yarnpkg.com/easy-stack/-/easy-stack-1.0.1.tgz` | 4482 | `e875506628674d741a70a813875426ac8f5302e0ef4f088dcaa4d3dc94bb2d44` |
+| `https://registry.yarnpkg.com/enhanced-resolve/-/enhanced-resolve-5.26.0.tgz` | 124037 | `81a355d6fa1579cc142118e634ab349c33b6f03f16c0b4450f2a4db9f5c687eb` |
+| `https://registry.yarnpkg.com/error-stack-parser/-/error-stack-parser-2.1.4.tgz` | 9214 | `e346f48f4fc606d4e52bf75806e439225508d914d147eb741df3076769ac2385` |
+| `https://registry.yarnpkg.com/event-pubsub/-/event-pubsub-4.3.0.tgz` | 5401 | `fe48af6ed57c10ec87ab6970c23f3aa88c06305e2b35eaeb6fa7592f6d2a4436` |
+| `https://registry.yarnpkg.com/exeunt/-/exeunt-1.1.0.tgz` | 7247 | `cf779b3bd82ff6f44e2c8cfab101ddf11817b1c89d6edb355e53710103d8008b` |
+| `https://registry.yarnpkg.com/flow-enums-runtime/-/flow-enums-runtime-0.0.6.tgz` | 3705 | `d5ffdc5e937f8c7b176b992cb286575f42c3d17233491279482dd77da2c84ac1` |
+| `https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.16.1.tgz` | 10076 | `6e075d999dc5ff568916954508397b11a537b18bde615986d7bd8b3d3fa1799f` |
+| `https://registry.yarnpkg.com/fs-extra/-/fs-extra-11.4.1.tgz` | 16504 | `6eee04ab29b3f37ce2fa75014fb3fd4836d8a24a2945edfae11e571409ffcbfa` |
+| `https://registry.yarnpkg.com/govuk-frontend/-/govuk-frontend-6.5.1.tgz` | 1151196 | `60fb9472e0e2d588f8e3ba6ae85e8056a558ae1f0e96b94682ed68d8c69ff7dc` |
+| `https://registry.yarnpkg.com/handlebars/-/handlebars-4.7.10.tgz` | 712317 | `14f356e6cadb5b064a156d2b39dd843abba8f4b1a38ee036935adecc1a13ad9f` |
+| `https://registry.yarnpkg.com/hermes-estree/-/hermes-estree-0.29.1.tgz` | 54695 | `d47d453e904d8e43c76c40d879f6418ff2c397691de9c86e31a9b4196090e845` |
+| `https://registry.yarnpkg.com/hermes-estree/-/hermes-estree-0.35.0.tgz` | 57228 | `70a298683920cad85d550a09414653e11a2fcfc0a6e1f6ac4f9800431990a913` |
+| `https://registry.yarnpkg.com/hermes-parser/-/hermes-parser-0.29.1.tgz` | 402341 | `35e836e78583de48e58327481b5bd3cb219fba307e557b4cc0a86a9866f0c228` |
+| `https://registry.yarnpkg.com/hermes-parser/-/hermes-parser-0.35.0.tgz` | 441373 | `2143c5622ae2603181d29f6a3210ba0b362b461c27bf1550195203b2c8618556` |
+| `https://registry.yarnpkg.com/i18next-http-middleware/-/i18next-http-middleware-3.9.9.tgz` | 26187 | `f74c3b2504d266456eee02300b494a69ee346e7ed398a653c8a51abe19645dd7` |
+| `https://registry.yarnpkg.com/i18next-fs-backend/-/i18next-fs-backend-2.6.8.tgz` | 142895 | `381d93b2038685a9a36ba584a67ac3259fc9ff4226e4f6b2d185bd807e283295` |
+| `https://registry.yarnpkg.com/immutable/-/immutable-5.1.9.tgz` | 148909 | `9481d33c209e07f82933a0f8132348ee9325d72ce196ebc47a93b9b2703f3068` |
+| `https://registry.yarnpkg.com/jest-environment-emit/-/jest-environment-emit-1.2.0.tgz` | 26751 | `a3cba6509e130e074d762d162d3c9ab53b83b2b9bbec52ae230ba9b5677ed8d9` |
+| `https://registry.yarnpkg.com/js-message/-/js-message-1.0.7.tgz` | 3211 | `315547a01eed7a15b5b627db54c3f5b7e90442973481dfb5c006527ea4ea9d2d` |
+| `https://registry.yarnpkg.com/js-queue/-/js-queue-2.0.2.tgz` | 4230 | `4a7cdee6ead28f2a9db0a6edfcedaf60823cf517863524747f137dcfa03d9752` |
+| `https://registry.yarnpkg.com/jsc-safe-url/-/jsc-safe-url-0.2.4.tgz` | 2771 | `a615038fb0c6a6cbbdc9fa7bfb9ab3e9e2e753789636b60faa906daf277f2dac` |
+| `https://registry.yarnpkg.com/json-cycle/-/json-cycle-1.5.0.tgz` | 4296 | `fd8eb64104cc89bc02be0986af0a3bd5b49a3b841c891d91b468b72509275de7` |
+| `https://registry.yarnpkg.com/lodash.throttle/-/lodash.throttle-4.1.1.tgz` | 5554 | `1fc83367c8959627885a11258ed7ae4f87ae3d845705e9ea8631099517cbafcd` |
+| `https://registry.yarnpkg.com/memoize-one/-/memoize-one-5.2.1.tgz` | 7122 | `2ff208d9302918f17e7f1f46132f5e89cdd78585b0e424ef95f8d55ad861a5e5` |
+| `https://registry.yarnpkg.com/metro-babel-transformer/-/metro-babel-transformer-0.83.8.tgz` | 3618 | `72b17c448a5e7cfd0ace020655ca2f7e4888b742b962af07b28d9b4bdd972633` |
+| `https://registry.yarnpkg.com/metro-cache-key/-/metro-cache-key-0.83.8.tgz` | 1215 | `cc77d70f01d0e9918e04cf420ca50988dcf3563bcaf46b5dc84e5c74f825b390` |
+| `https://registry.yarnpkg.com/metro-cache/-/metro-cache-0.83.8.tgz` | 10478 | `2dcb012759937f3fd45ef235ff8d15ba58c76e2090c2a31b74645b84fb77995e` |
+| `https://registry.yarnpkg.com/metro-config/-/metro-config-0.83.8.tgz` | 22577 | `1696d6408db6ce15ecc465e8bc9c9e9afa0c40bd3b1ca42feddccdc07e10b122` |
+| `https://registry.yarnpkg.com/metro-core/-/metro-core-0.83.8.tgz` | 8784 | `be9f15ecbbc8ff4c45649f42942471cfe199ba7240ac8f743d155112e96526c5` |
+| `https://registry.yarnpkg.com/metro-file-map/-/metro-file-map-0.83.8.tgz` | 115554 | `e3184b47e23c576a62be7bad8151ed7a9ad309f53a9972630e01a2d81e997684` |
+| `https://registry.yarnpkg.com/metro-minify-terser/-/metro-minify-terser-0.83.8.tgz` | 1893 | `f7be62568393f2540110b0d21b3a6a6cfc5e5e8b2c22229c2032c0cbd03d75b7` |
+| `https://registry.yarnpkg.com/metro-resolver/-/metro-resolver-0.83.8.tgz` | 31686 | `be274c3467527673433d31714d1f259184245374f365851bdc0259aa35d25274` |
+| `https://registry.yarnpkg.com/metro-runtime/-/metro-runtime-0.83.8.tgz` | 21394 | `a0358d5309469bc61a745adf3796cb8e45a07fa64c9d68dab4bff4078d0ef5f2` |
+| `https://registry.yarnpkg.com/metro-source-map/-/metro-source-map-0.83.8.tgz` | 35965 | `230a63a4274d16d3750c3c9ab63ef59cb102433aacfdfaabd28fd6b573514eb7` |
+| `https://registry.yarnpkg.com/metro-symbolicate/-/metro-symbolicate-0.83.8.tgz` | 30416 | `9ef2febaf8731d9368a748b0678559a4cf92bf4d046b54d2468b478bca0e4385` |
+| `https://registry.yarnpkg.com/metro-transform-plugins/-/metro-transform-plugins-0.83.8.tgz` | 21816 | `ddde2bacbc1097d0e7bc35b67dddfcf83862fd42c852a3c2f11f6f77072faf74` |
+| `https://registry.yarnpkg.com/metro/-/metro-0.83.8.tgz` | 225777 | `81d624afec660127f3162e89b09a145186dc22f25715c62d36a871c9ca9ff4eb` |
+| `https://registry.yarnpkg.com/metro-transform-worker/-/metro-transform-worker-0.83.8.tgz` | 10612 | `bdfc61ff726d1e493cd6875ed431601f79245534a025af200d89159a1dd5ef2a` |
+| `https://registry.yarnpkg.com/mocha/-/mocha-11.7.5.tgz` | 532408 | `acd4a16fa42b6cfc850764270ac21bdd32376a641ac4d581b3d16e9705b8415c` |
+| `https://registry.yarnpkg.com/monocart-coverage-reports/-/monocart-coverage-reports-2.12.11.tgz` | 532487 | `4706545c64840906414e6735dcbeb3d56e3d633866dc943df59828fa0c0bfdcf` |
+| `https://registry.yarnpkg.com/multi-sort-stream/-/multi-sort-stream-1.0.4.tgz` | 2986 | `a1b2811f71e413ab3f549b210e48feebf28b8c488a26d02c773a43902e085fe0` |
+| `https://registry.yarnpkg.com/multipipe/-/multipipe-4.0.0.tgz` | 3162 | `2d067d551109c9d1b41c7573e43173d328197656e4bf4b8ffb8b5a04e1fd46cc` |
+| `https://registry.yarnpkg.com/nan/-/nan-2.29.0.tgz` | 81426 | `038073cb41dbf5cd49df2cd98439dc7ee73f713801e9989426313420693e8af6` |
+| `https://registry.yarnpkg.com/nanoid/-/nanoid-3.3.19.tgz` | 5694 | `4e371b71e3d5081fa0052356d5c1904e7a60e049864c26f0724cfd32dc303849` |
+| `https://registry.yarnpkg.com/node-ipc/-/node-ipc-9.2.1.tgz` | 28328 | `10ac01262e7ba29d85dd4c07a1a50191f535389dd874fc982580064b7faac0aa` |
+| `https://registry.yarnpkg.com/nullthrows/-/nullthrows-1.1.1.tgz` | 1725 | `9a40efecf9bc160c42e986a8193628745b8913ce7317dd942fc0e5649994c9f2` |
+| `https://registry.yarnpkg.com/ob1/-/ob1-0.83.8.tgz` | 2283 | `8df53cca9805e83c381235e6b6e51fb71373045e84c35eb650eeac0fdfd8cab4` |
+| `https://registry.yarnpkg.com/open/-/open-7.4.2.tgz` | 12663 | `95437eb98046ba0225c061412811fd7ab93b92e47abd23242021b144eb8eb1b7` |
+| `https://registry.yarnpkg.com/pngjs/-/pngjs-7.0.0.tgz` | 160939 | `c4b71873d48a692dd5eeb1dcb62185c7aafe40f2180c7cc7f30ec71e89a080be` |
+| `https://registry.yarnpkg.com/postcss-safe-parser/-/postcss-safe-parser-7.0.1.tgz` | 2635 | `075c72a33302e5eab4a52c5a8896f455f9e577b010a1c84861fdfbb94c6cf4fc` |
+| `https://registry.yarnpkg.com/postcss/-/postcss-8.5.28.tgz` | 52195 | `f63d6d9bce28989cd083add85af717c0264e44323d35c909ae99ac934e9641a6` |
+| `https://registry.yarnpkg.com/promise/-/promise-8.3.0.tgz` | 15021 | `c600d4acbeff7c7f10f6b52acfd209d2b6cdfd80ab92eccd3ee162f401b0b972` |
+| `https://registry.yarnpkg.com/promisify-child-process/-/promisify-child-process-4.1.2.tgz` | 6820 | `b1d1b79d1d3d186f426da648732a01153adae1ac2f0a53503e14deb2d7d0c8a2` |
+| `https://registry.yarnpkg.com/react-devtools-core/-/react-devtools-core-6.1.5.tgz` | 4015904 | `cfe3ed5cdc7f8391d504fd35b2239d49ec4bd91d64990e80cdeebfbfe717f499` |
+| `https://registry.yarnpkg.com/react-native/-/react-native-0.81.6.tgz` | 24768119 | `f82ad6b768934902a986b97ff7b7f67d27a4c3f5c93fbaebd0887257381d60cd` |
+| `https://registry.yarnpkg.com/react-refresh/-/react-refresh-0.14.2.tgz` | 15124 | `c504db3a5043fdec8251c84fa2d83002489273338abcc408c667f60f412f3e5b` |
+| `https://registry.yarnpkg.com/sanitize-filename/-/sanitize-filename-1.6.4.tgz` | 6726 | `42936e205a6243aaf030e457bd3e68dca8036aeaf1b761b5ebd1a5a40fabf3ea` |
+| `https://registry.yarnpkg.com/sass/-/sass-1.105.1.tgz` | 932694 | `f7fc3d2884afb479e48861eaf5c63cf9eb39a8796c902d9bb33eee18834cb2f6` |
+| `https://registry.yarnpkg.com/scheduler/-/scheduler-0.26.0.tgz` | 10015 | `1bbc5d3401d25b848a2a76d4f8f77d99cc95cdff6db054483a7d4067c279d72a` |
+| `https://registry.yarnpkg.com/serialize-error/-/serialize-error-2.1.0.tgz` | 1936 | `497427e3ec97f128dc96316e8c57e914348d35b24f2681cf3259f3adb0849363` |
+| `https://registry.yarnpkg.com/serialize-javascript/-/serialize-javascript-7.1.2.tgz` | 8893 | `74e5f9d5202df2acfa19c064a50b6d937c2fc8d24b06b461f2abe3150f64c8dd` |
+| `https://registry.yarnpkg.com/shell-quote/-/shell-quote-1.11.0.tgz` | 9588 | `028be526afacb2bf5c6c008a95d5435b5d205135f68bb48afd0bb947610393f1` |
+| `https://registry.yarnpkg.com/shelljs/-/shelljs-0.10.0.tgz` | 45667 | `0908d4921a9e304cbf0aacf161f31aafaa7d5920b403c1493d1c99646ace9ff2` |
+| `https://registry.yarnpkg.com/stackframe/-/stackframe-1.3.4.tgz` | 6439 | `fb928460cb97df0ba99a1dfbeec6cb1dc9b12f9a9838a003fda25019ad9be929` |
+| `https://registry.yarnpkg.com/stacktrace-parser/-/stacktrace-parser-0.1.11.tgz` | 3673 | `cbf9701441ee1adf6ae59591d2eab4329de8ea15fc03bb99cb3679feb7294e7c` |
+| `https://registry.yarnpkg.com/stream-chain/-/stream-chain-2.2.5.tgz` | 9889 | `f9539671f2c9a4dd367733f6eb017ab37eede1b769d120a88157aeab95cf8db2` |
+| `https://registry.yarnpkg.com/stream-json/-/stream-json-1.9.1.tgz` | 16707 | `3f8cf5812a4abb69d5a8837944373a0b9e7d3cec3e91a5850c95f211a06ae7c3` |
+| `https://registry.yarnpkg.com/supertest/-/supertest-7.3.0.tgz` | 12725 | `6d3b734289966f9399b4be724fa9d72b87a04762ef0b78814ba026c5ed538f71` |
+| `https://registry.yarnpkg.com/tar-fs/-/tar-fs-3.1.3.tgz` | 5973 | `7116c8ba6bb20aafdbe5d6c1c5aa2c7120f6c4cdd5cadcfbca97f84f45448b4f` |
+| `https://registry.yarnpkg.com/telnet-client/-/telnet-client-1.2.8.tgz` | 10984 | `d661c5a7c84f5000d49afdf6323640165eed2cbf6e89036f07ba4ae7e4617445` |
+| `https://registry.yarnpkg.com/throat/-/throat-5.0.0.tgz` | 3411 | `acdada0100c9fc4695e51636b057ed4200fd75b68da3d59aca9246d93200d23e` |
+| `https://registry.yarnpkg.com/trace-event-lib/-/trace-event-lib-1.4.1.tgz` | 15233 | `c13595405bc9e3aff28031fadd3f5829dfa6c0c67970b938c07b0040f1354c96` |
+| `https://registry.yarnpkg.com/ts-jest/-/ts-jest-29.4.14.tgz` | 77484 | `7ca70a3fa5162598d616d838ba28a9a7f6b6cccdaf196c2fdc6ab642e4ca4ac3` |
+| `https://registry.yarnpkg.com/type-fest/-/type-fest-0.7.1.tgz` | 10110 | `23518bcb4ad6bafc7892e08e83119089732ce23462c87fb002c09ccd701c6293` |
+| `https://registry.yarnpkg.com/undici/-/undici-7.30.0.tgz` | 401782 | `afa0d7be8598012c601fff7ed0fdea01868184f5a223a6f656a4fce1da077819` |
+| `https://registry.yarnpkg.com/utf8-byte-length/-/utf8-byte-length-1.0.5.tgz` | 3003 | `afb0f76e4271dbe3bfeae359804c0149ca533254db40c59cc22f5fdd6a4b93b1` |
+| `https://registry.yarnpkg.com/webpack/-/webpack-5.111.1.tgz` | 2422918 | `6d1f5b3890768c6669417f040363b2811e56cc26a9d90556742aaf598e02a39c` |
+| `https://registry.yarnpkg.com/ws/-/ws-8.22.0.tgz` | 35094 | `ca9b3798b2e11ce8fac6713f50ef0501aa12b09b330623c1dc409dff94e7abc8` |
+
+</details>
+
+<details>
+<summary>Commands and ordinary exit status from this run</summary>
+
+- `yarn-config`: exit **0**, 0.14s — `node .yarn/releases/yarn-4.18.1.cjs config --json`
+- `install-cache-mode`: exit **1**, 0.401s — `node .yarn/releases/yarn-4.18.1.cjs install --immutable --mode=skip-build`
+- `install-mirror`: exit **1**, 0.612s — `node .yarn/releases/yarn-4.18.1.cjs install --immutable --mode=skip-build`
+- `pins`: exit **0**, 0.041s — `node bin/check-dependency-pins.mjs`
+- `baseline`: exit **1**, 0.03s — `node bin/functional-baseline.js check`
+- `shared`: exit **0**, 0.02s — `bash bin/test-civil-shared-import-consumers.sh`
+- `mappings`: exit **0**, 0.033s — `node bin/validate-wiremock-mappings.js`
+- `preview-mappings`: exit **0**, 0.029s — `node bin/ui-preview-mappings.cjs`
+- `isolated-contracts`: exit **0**, 0.307s — `node $DISPOSABLE/isolated-checks.cjs`
+- `isolated-contracts-final`: exit **0**, 0.342s — `node $DISPOSABLE/isolated-checks.cjs`
+- `isolated-reviewed`: exit **0**, 0.356s — `node $DISPOSABLE/isolated-checks.cjs`
+- `install-offline-final`: exit **0**, 0.831s — `node .yarn/releases/yarn-4.18.1.cjs install --immutable --mode=skip-build`
+- `focused-new`: exit **1**, 3.909s — `env LOG_LEVEL=OFF node --no-sparkplug node_modules/jest/bin/jest.js --runInBand --detectOpenHandles --silent --runTestsByPath src/test/unit/common/form/validators/optionalDateFourDigitValidator.test.ts src/test/unit/common/form/models/EmailValidationWithMessage.test.ts src/test/unit/common/form/models/PhoneValidationWithMessage.test.ts src/test/unit/common/form/models/admission/fullAdmission/baseDate.test.ts src/test/unit/common/form/models/repaymentPlan/baseRepaymentPlan.test.ts src/test/unit/services/genericForm/genericFormService.test.ts src/test/unit/services/firstcontact/firstcontactService.test.ts src/test/unit/services/translation/caseProgression/requestForReconsideration/convertToCCDRequestForReconsideration.test.ts src/test/unit/services/translation/claimantResponse/convertToCCDClaimantLiPResponse.test.ts src/test/unit/services/translation/convertToCUI/convertToCUIFixedRecoverableCosts.test.ts src/test/unit/services/translation/convertToCUI/convertToCUIMediationCarm.test.ts src/test/unit/services/translation/response/convertToCCDFlightDetails.test.ts src/test/unit/common/form/validators/optionalIntegerValidator.test.ts src/test/unit/common/form/validators/optionalDateInPastValidator.test.ts src/test/unit/common/form/validators/optionalDateNotInPastValidator.test.ts src/test/unit/common/form/validators/optionalDateNotInFutureValidator.test.ts src/test/unit/services/translation/convertToCUI/convertToCUIYesNo.test.ts src/test/unit/services/firstcontact/sessionValueCrypto.test.ts src/test/unit/modules/draft-store/draftClaimCache.test.ts src/test/unit/services/features/caseProgression/hearingFee/paymentServiceUtils.test.ts src/test/unit/services/features/generalApplication/submitGeneralApplicationConfirmationContent.test.ts src/test/unit/services/translation/claimantResponse/convertToCCDClaimantMediation.test.ts src/test/unit/services/features/response/statementOfMeans/partner/partnerServices.test.ts src/test/unit/app/client/common/error/callbackError.test.ts src/test/unit/common/form/models/genericYesNoCarmContactPersonConfirmation.test.ts src/test/unit/common/form/models/genericYesNoCarmEmailConfirmation.test.ts src/test/unit/common/form/models/genericYesNoKnownClaimAmount.test.ts src/test/unit/common/form/models/statementOfMeans/debts/debtItems.test.ts src/test/unit/common/form/models/statementOfMeans/dependants/numberOfChildren.test.ts src/test/unit/common/form/models/claim/claimant/citizenDate.test.ts src/test/unit/common/form/models/claim/claimant/dobDate.test.ts src/test/unit/common/form/models/admission/partialAdmission/partialAdmissionRepaymentPlan.test.ts src/test/unit/common/utils/taskList/tasks/checkAndSubmitYourResponse.test.ts src/test/unit/common/utils/taskList/tasks/chooseAResponse.test.ts src/test/unit/common/utils/taskList/tasks/decideHowYouPay.test.ts src/test/unit/common/utils/taskList/tasks/shareFinancialDetails.test.ts src/test/unit/common/utils/taskList/tasks/viewOptionsBeforeDeadline.test.ts src/test/unit/services/features/response/statementOfMeans/employment/employmentConverter.test.ts src/test/unit/services/features/response/statementOfMeans/employment/employerService.test.ts`
+- `typescript`: exit **2**, 6.796s — `node node_modules/typescript/bin/tsc --noEmit --incremental false`
+- `focused-confirmation-corrected`: exit **0**, 0.729s — `env LOG_LEVEL=OFF node --no-sparkplug node_modules/jest/bin/jest.js --runInBand --detectOpenHandles --silent --runTestsByPath src/test/unit/services/features/generalApplication/submitGeneralApplicationConfirmationContent.test.ts`
+- `typescript-corrected`: exit **0**, 6.393s — `node node_modules/typescript/bin/tsc --noEmit --incremental false`
+- `focused-all`: exit **0**, 2.725s — `env LOG_LEVEL=OFF node --no-sparkplug node_modules/jest/bin/jest.js --runInBand --detectOpenHandles --silent --runTestsByPath src/test/unit/common/form/validators/optionalDateFourDigitValidator.test.ts src/test/unit/common/form/models/EmailValidationWithMessage.test.ts src/test/unit/common/form/models/PhoneValidationWithMessage.test.ts src/test/unit/common/form/models/admission/fullAdmission/baseDate.test.ts src/test/unit/common/form/models/repaymentPlan/baseRepaymentPlan.test.ts src/test/unit/services/genericForm/genericFormService.test.ts src/test/unit/services/firstcontact/firstcontactService.test.ts src/test/unit/services/translation/caseProgression/requestForReconsideration/convertToCCDRequestForReconsideration.test.ts src/test/unit/services/translation/claimantResponse/convertToCCDClaimantLiPResponse.test.ts src/test/unit/services/translation/convertToCUI/convertToCUIFixedRecoverableCosts.test.ts src/test/unit/services/translation/convertToCUI/convertToCUIMediationCarm.test.ts src/test/unit/services/translation/response/convertToCCDFlightDetails.test.ts src/test/unit/common/form/validators/optionalIntegerValidator.test.ts src/test/unit/common/form/validators/optionalDateInPastValidator.test.ts src/test/unit/common/form/validators/optionalDateNotInPastValidator.test.ts src/test/unit/common/form/validators/optionalDateNotInFutureValidator.test.ts src/test/unit/services/translation/convertToCUI/convertToCUIYesNo.test.ts src/test/unit/services/firstcontact/sessionValueCrypto.test.ts src/test/unit/modules/draft-store/draftClaimCache.test.ts src/test/unit/services/features/caseProgression/hearingFee/paymentServiceUtils.test.ts src/test/unit/services/features/generalApplication/submitGeneralApplicationConfirmationContent.test.ts src/test/unit/services/translation/claimantResponse/convertToCCDClaimantMediation.test.ts src/test/unit/services/features/response/statementOfMeans/partner/partnerServices.test.ts src/test/unit/app/client/common/error/callbackError.test.ts src/test/unit/common/form/models/genericYesNoCarmContactPersonConfirmation.test.ts src/test/unit/common/form/models/genericYesNoCarmEmailConfirmation.test.ts src/test/unit/common/form/models/genericYesNoKnownClaimAmount.test.ts src/test/unit/common/form/models/statementOfMeans/debts/debtItems.test.ts src/test/unit/common/form/models/statementOfMeans/dependants/numberOfChildren.test.ts src/test/unit/common/form/models/claim/claimant/citizenDate.test.ts src/test/unit/common/form/models/claim/claimant/dobDate.test.ts src/test/unit/common/form/models/admission/partialAdmission/partialAdmissionRepaymentPlan.test.ts src/test/unit/common/utils/taskList/tasks/checkAndSubmitYourResponse.test.ts src/test/unit/common/utils/taskList/tasks/chooseAResponse.test.ts src/test/unit/common/utils/taskList/tasks/decideHowYouPay.test.ts src/test/unit/common/utils/taskList/tasks/shareFinancialDetails.test.ts src/test/unit/common/utils/taskList/tasks/viewOptionsBeforeDeadline.test.ts src/test/unit/services/features/response/statementOfMeans/employment/employmentConverter.test.ts src/test/unit/services/features/response/statementOfMeans/employment/employerService.test.ts src/test/unit/app/client/common/civilServiceRequest.test.ts src/test/unit/modules/i18n/languageService.test.ts src/test/unit/modules/csrf/index.test.ts src/test/unit/common/form/models/citizenTelephoneNumber.test.ts src/test/unit/services/features/queryManagement/viewQueriesService.test.ts src/test/unit/common/form/validators/emailValidator.test.ts src/test/unit/common/form/validators/phoneUKValidator.test.ts`
+- `build-development`: exit **0**, 12.396s — `node .yarn/releases/yarn-4.18.1.cjs build`
+- `lint`: exit **1**, 14.898s — `node .yarn/releases/yarn-4.18.1.cjs lint`
+- `negative-integer`: exit **1**, 0.603s — `env LOG_LEVEL=OFF node --no-sparkplug node_modules/jest/bin/jest.js --runInBand --silent --json --outputFile=$DISPOSABLE/logs/negative-integer.json --runTestsByPath src/test/unit/common/form/validators/optionalIntegerValidator.test.ts`
+- `negative-crypto`: exit **1**, 0.492s — `env LOG_LEVEL=OFF node --no-sparkplug node_modules/jest/bin/jest.js --runInBand --silent --json --outputFile=$DISPOSABLE/logs/negative-crypto.json --runTestsByPath src/test/unit/services/firstcontact/sessionValueCrypto.test.ts`
+- `negative-hearing`: exit **1**, 0.561s — `env LOG_LEVEL=OFF node --no-sparkplug node_modules/jest/bin/jest.js --runInBand --silent --json --outputFile=$DISPOSABLE/logs/negative-hearing.json --runTestsByPath src/test/unit/services/features/caseProgression/hearingFee/paymentServiceUtils.test.ts`
+- `negative-ga-pair`: exit **1**, 0.883s — `env LOG_LEVEL=OFF node --no-sparkplug node_modules/jest/bin/jest.js --runInBand --silent --json --outputFile=$DISPOSABLE/logs/negative-ga-pair.json --runTestsByPath src/test/unit/services/features/generalApplication/submitGeneralApplicationConfirmationContent.test.ts`
+- `negative-csrf`: exit **1**, 0.49s — `env LOG_LEVEL=OFF node --no-sparkplug node_modules/jest/bin/jest.js --runInBand --silent --json --outputFile=$DISPOSABLE/logs/negative-csrf.json --runTestsByPath src/test/unit/modules/csrf/index.test.ts`
+- `focused-validation-gaps`: exit **0**, 1.045s — `env LOG_LEVEL=OFF node --no-sparkplug node_modules/jest/bin/jest.js --runInBand --detectOpenHandles --silent --runTestsByPath src/test/unit/common/models/mediation/unavailableDatesMediation.test.ts src/test/unit/common/form/models/statementOfMeans/expensesAndIncome/transactionSource.test.ts src/test/unit/common/models/generalApplication/uploadGAFiles.test.ts src/test/unit/common/models/generalApplication/uploadN245GAFiles.test.ts`
+- `typescript-final`: exit **2**, 7.58s — `node node_modules/typescript/bin/tsc --noEmit --incremental false`
+- `build-production`: exit **1**, 13.498s — `node .yarn/releases/yarn-4.18.1.cjs build:prod`
+- `lint-corrected`: exit **0**, 14.429s — `node .yarn/releases/yarn-4.18.1.cjs lint`
+- `ga-missing-query-reproduction`: exit **1**, 0.973s — `env LOG_LEVEL=OFF node --no-sparkplug node_modules/jest/bin/jest.js --runInBand --silent --runTestsByPath src/test/unit/services/features/generalApplication/pr11MissingParameters.reproduction.test.ts`
+- `typescript-verified`: exit **0**, 6.896s — `node node_modules/typescript/bin/tsc --noEmit --incremental false`
+- `build-production-corrected`: exit **0**, 12.308s — `node .yarn/releases/yarn-4.18.1.cjs build:prod`
+- `preview-tools-separate-guard`: exit **0**, 1.858s — `env LOG_LEVEL=OFF node --no-sparkplug node_modules/jest/bin/jest.js --runInBand --silent --runTestsByPath src/test/unit/modules/uiPreview/uiPreviewTools.test.ts`
+- `full-coverage`: exit **1**, 175.656s — `env LOG_LEVEL=OFF node --disable-warning=DEP0060 --no-sparkplug node_modules/jest/bin/jest.js --coverage --maxWorkers=4 --silent --json --outputFile=$DISPOSABLE/logs/full-coverage.json --env=$DISPOSABLE/first-failure-environment.cjs`
+- `request-guard-before`: exit **0**, 1.826s — `env LOG_LEVEL=OFF PR11_CAPTURE_RUN=guard-before node --no-sparkplug node_modules/jest/bin/jest.js --runInBand --silent --json --outputFile=$DISPOSABLE/logs/request-guard-before.json --env=$DISPOSABLE/first-failure-environment.cjs --runTestsByPath src/test/unit/routes/guards/responseSubmitDateGuard.test.ts`
+- `full-coverage-corrected-harness`: exit **0**, 155.914s — `env LOG_LEVEL=OFF PR11_CAPTURE_RUN=corrected node --disable-warning=DEP0060 --no-sparkplug node_modules/jest/bin/jest.js --coverage --maxWorkers=4 --silent --json --outputFile=$DISPOSABLE/logs/full-coverage-corrected.json --env=$DISPOSABLE/first-failure-environment.cjs`
+- `retry-isolation-corrected`: exit **0**, 6.03s — `env LOG_LEVEL=OFF PR11_CAPTURE_RUN=isolation-fixed node --no-sparkplug node_modules/jest/bin/jest.js --runInBand --silent --json --outputFile=$DISPOSABLE/logs/retry-isolation-corrected.json --env=$DISPOSABLE/first-failure-environment.cjs --runTestsByPath src/test/unit/routes/guards/responseSubmitDateGuard.test.ts src/test/unit/routes/features/dashboard/claimantDashboardController.test.ts src/test/unit/routes/features/claim/generalApplication/response/respondentUploadEvidenceDocumentsController.test.ts`
+- `retry-isolation-final`: exit **0**, 3.002s — `env LOG_LEVEL=OFF PR11_CAPTURE_RUN=isolation-final node --no-sparkplug node_modules/jest/bin/jest.js --runInBand --silent --json --outputFile=$DISPOSABLE/logs/retry-isolation-final.json --env=$DISPOSABLE/first-failure-environment.cjs --runTestsByPath src/test/unit/routes/guards/responseSubmitDateGuard.test.ts src/test/unit/routes/features/dashboard/claimantDashboardController.test.ts src/test/unit/routes/features/claim/generalApplication/response/respondentUploadEvidenceDocumentsController.test.ts`
+- `typescript-final-isolation`: exit **0**, 7.677s — `node node_modules/typescript/bin/tsc --noEmit --incremental false`
+- `production-final-isolation`: exit **0**, 13.523s — `node .yarn/releases/yarn-4.18.1.cjs build:prod`
+- `lint-final-isolation`: exit **0**, 15.416s — `node .yarn/releases/yarn-4.18.1.cjs lint`
+- `full-coverage-final`: exit **1**, 160.642s — `env LOG_LEVEL=OFF PR11_CAPTURE_RUN=final node --disable-warning=DEP0060 --no-sparkplug node_modules/jest/bin/jest.js --coverage --maxWorkers=4 --silent --json --outputFile=$DISPOSABLE/logs/full-coverage-final.json --env=$DISPOSABLE/first-failure-environment.cjs`
+- `phone-isolation-before`: exit **0**, 2.559s — `env LOG_LEVEL=OFF PR11_CAPTURE_RUN=phone-before node --no-sparkplug node_modules/jest/bin/jest.js --runInBand --silent --json --outputFile=$DISPOSABLE/logs/phone-isolation-before.json --env=$DISPOSABLE/first-failure-environment.cjs --runTestsByPath src/test/unit/routes/features/response/citizenPhoneDetails/citizenPhoneController.test.ts --testNamePattern 'interior spaces'`
+- `phone-prior-error-before`: exit **1**, 8.866s — `env LOG_LEVEL=OFF node --no-sparkplug node_modules/jest/bin/jest.js --runInBand --silent --setupFilesAfterEnv ./jest.setup.redis-mock.js ./jest.setup.js $DISPOSABLE/prior-store-error.setup.cjs --runTestsByPath src/test/unit/routes/features/response/citizenPhoneDetails/citizenPhoneController.test.ts --testNamePattern 'interior spaces'`
+- `phone-prior-error-after`: exit **0**, 1.934s — `env LOG_LEVEL=OFF node --no-sparkplug node_modules/jest/bin/jest.js --runInBand --silent --setupFilesAfterEnv ./jest.setup.redis-mock.js ./jest.setup.js $DISPOSABLE/prior-store-error.setup.cjs --runTestsByPath src/test/unit/routes/features/response/citizenPhoneDetails/citizenPhoneController.test.ts --testNamePattern 'interior spaces'`
+- `phone-suite-final`: exit **0**, 2.099s — `env LOG_LEVEL=OFF PR11_CAPTURE_RUN=phone-fixed node --no-sparkplug node_modules/jest/bin/jest.js --runInBand --silent --json --outputFile=$DISPOSABLE/logs/phone-suite-final.json --env=$DISPOSABLE/first-failure-environment.cjs --runTestsByPath src/test/unit/routes/features/response/citizenPhoneDetails/citizenPhoneController.test.ts`
+- `typescript-complete`: exit **0**, 6.953s — `node node_modules/typescript/bin/tsc --noEmit --incremental false`
+- `lint-complete`: exit **0**, 14.056s — `node .yarn/releases/yarn-4.18.1.cjs lint`
+- `build-development-complete`: exit **0**, 11.978s — `node .yarn/releases/yarn-4.18.1.cjs build`
+- `build-production-complete`: exit **0**, 12.373s — `node .yarn/releases/yarn-4.18.1.cjs build:prod`
+- `coverage-complete`: exit **0**, 157.798s — `env LOG_LEVEL=OFF PR11_CAPTURE_RUN=complete node --disable-warning=DEP0060 --no-sparkplug node_modules/jest/bin/jest.js --coverage --maxWorkers=4 --silent --json --outputFile=$DISPOSABLE/logs/coverage-complete.json --env=$DISPOSABLE/first-failure-environment.cjs`
+- `routes-final`: exit **0**, 63.664s — `env LOG_LEVEL=ERROR node --no-sparkplug node_modules/jest/bin/jest.js -c jest.functionaltest.config.js --runInBand --silent --json --outputFile=$DISPOSABLE/logs/routes-final.json`
+- `pins-final`: exit **0**, 0.04s — `node bin/check-dependency-pins.mjs`
+- `baseline-final`: exit **0**, 0.498s — `node bin/functional-baseline.js check`
+- `shared-final`: exit **0**, 0.02s — `bash bin/test-civil-shared-import-consumers.sh`
+- `mappings-final`: exit **0**, 0.032s — `node bin/validate-wiremock-mappings.js`
+- `preview-mappings-final`: exit **0**, 0.032s — `node bin/ui-preview-mappings.cjs`
+- `pact-tooling`: exit **0**, 4.056s — `env -u LOG_LEVEL node --no-sparkplug node_modules/jest/bin/jest.js -c jest.pact-tooling.config.js --runInBand`
+- `pact-consumers`: exit **0**, 6.821s — `env -u LOG_LEVEL node --no-sparkplug node_modules/jest/bin/jest.js -c jest.pact.config.js --runInBand`
+- `pact-artifacts`: exit **0**, 0.035s — `env -u LOG_LEVEL node src/test/contract/check-artifacts.js`
+
+Final preservation checks cover all original source fingerprints outside the 7 intended tracked modifications, every source-fork fingerprint, excluded context, pre-existing untracked PR10 notes, manifest, lockfile, refs, HEAD and raw index. The 49 new tests are the only new implementation files. All implementation changes are unstaged.
+
+The archive bootstrap additionally exited zero after 116 localhost archive requests, then shut down. Execution-only diagnostics, downloads, copies, caches, builds, profiles/logs/reports are removed at handover. Original tools/caches are preserved.
+
+</details>
+
+
+### PR11 review corrections — 21 October 2026
+
+The working tree found at the start of this correction had 49 empty staged test files, two empty preview integration files, and the five previously reviewed test corrections absent. The complete reviewed tests were recovered from the byte-identical local saved copies `c27f2978091a82789cdf021af91ee417c28c94b3` and `4fcdecf42aa6ddde93c053654727b1e487e714a5`. The saved copies and branch history were preserved. The pre-existing PR10 review notes were unstaged and remain outside the intended deliverables.
+
+Changes following independent review:
+
+- Employer and all six partner-service persistence tests snapshot the complete claim inside the save mock. Expected updated values and survivor fields are independent of later mutations; exact keys and call counts are checked.
+- The unit Jest configuration explicitly selects UTC before loading test environments. Existing CitizenDate/DOB assertions retain their expected contract regardless of the launching host's timezone. Fixed clocks are still restored per test. Production date parsing and runtime timezone are unchanged.
+- Four preview integration/probe files carry the existing local PR10 correction from `86ff9fcebb4844df71af8d3d3699d52b58fe2ce4`. Each test owns a temporary directory, deliberately clears TMPDIR in the child, supplies portable TMP/TEMP fallbacks and cleans up in finally. Application-probe failures expose stderr. This is inherited PR10 test infrastructure; rebasing onto that corrected base should remove these four paths from PR11's eventual incremental diff.
+- The submit-button and simple-form-validation exclusions were reassessed against the exact fork. Both suites are retained; R027 and R084 now describe their actual assertions. The eight separately named deferrals are unchanged. The 719-path ledger now contains 50 Import/adapt, 252 Exclude, 222 Adapted, 105 Already integrated, 82 Covered differently and eight Defer dispositions.
+- The existing test-pyramid document explains the unit-test timezone. Retry count, test discovery, assertions in earlier-stage protections, coverage policy and package scripts remain unchanged.
+
+The historical defendant claim-summary retry report (three cases retried during one independent full run) remains unresolved initiating-failure evidence. Another independent full run had no retries. Isolated passes do not explain that difference. No speculative production or fixture change is attributed to that history. GA missing-parameter recovery remains the separately owned production follow-up described above.
+
+Additional paths beyond the original 56-path inventory: `jest.config.js`; `src/test/unit/assets/js/disable-submit.test.ts`; `src/test/unit/common/form/models/simpleFormModelsCoverage.test.ts`; `src/integration-test/routes/uiPreview.test.ts`; `src/integration-test/routes/uiPreviewCatalogue.test.ts`; `src/test/utils/uiPreviewApplicationProbe.cjs`; `src/test/utils/uiPreviewRouteProbe.cjs`. Thus the current diff against the recorded old base contains 63 intended paths; four belong to the inherited PR10 correction. The pre-existing PR10 review document is excluded.
+
+#### Fresh correction verification
+
+Verification used Node 24.21.0, tracked Yarn 4.18.1 and a fresh physical candidate copy, with no linked checkout dependencies or Git directory. A macOS sandbox restricted writes to disposable storage and network connections to localhost. The independent Node network preloader had a different module path from the guard exercised by preview tests. Installation scripts, browser downloads, telemetry and hardened registry access were disabled. No browser, remote Git, live audit or hosted checks ran.
+
+The first immutable offline installation exited 1 for missing archives. The permitted exact-archive bootstrap downloaded **109 archives / 59,547,909 bytes**; exact URLs, sizes and SHA-256 values match the PR11 archive table above, excluding the seven already-cached entries `browser-process-hrtime@1.0.0`, `ci-info@2.0.0`, `multipipe@4.0.0`, `postcss-safe-parser@7.0.1`, `serialize-error@2.1.0`, `stacktrace-parser@0.1.11` and `utf8-byte-length@1.0.5`. Redirects and proxies were disabled, package identities checked, and all generated Yarn ZIPs matched the full locked SHA-512 checksums. The localhost archive server then closed; final immutable skip-build installation passed offline. Manifests and lockfile were unchanged.
+
+All commands below ran in the disposable copy. `J` denotes `node --no-sparkplug node_modules/jest/bin/jest.js`. Existing discovery, coverage and retry settings were retained. A disposable Jest environment logged initial failures and retries without changing assertions or retry counts; it was used for affected tests, full coverage, routes and the CCJ diagnostic. No `--forceExit` was used.
+
+| Command/check | Fresh result |
+| --- | --- |
+| `node .yarn/releases/yarn-4.18.1.cjs install --immutable --mode=skip-build` | Final offline exit 0 |
+| `node node_modules/typescript/bin/tsc --noEmit --incremental false` | Exit 0 |
+| `node .yarn/releases/yarn-4.18.1.cjs build` | Exit 0; seven warnings |
+| Six corrected/new pure suites, `J --runInBand --silent --runTestsByPath …`, launched with `TZ=America/Los_Angeles` | 73 tests; exit 0 with the unit configuration selecting UTC |
+| All 56 affected unit suites, `J --runInBand --silent --runTestsByPath …` | **457 tests; exit 0; no recorded initial failures or retries** |
+| `LOG_LEVEL=ERROR node --disable-warning=DEP0060 --no-sparkplug node_modules/jest/bin/jest.js --coverage --maxWorkers=4 --silent` with the logging-only environment and JSON results | **975 suites / 8,936 tests; exit 0; one initial failure and one retry**, 169.509 seconds |
+| `J -c jest.functionaltest.config.js --runInBand --silent`, with `TMPDIR` absent, private `TMP`/`TEMP` and explicit disposable Jest cache | **24 suites / 270 tests; exit 0; no recorded initial failures or retries**, 63.614 seconds |
+| Isolated CCJ suite, `J --coverage --runInBand --silent --runTestsByPath src/test/unit/routes/features/claimantResponse/ccj/ccjCheckAnswersController.test.ts` | Seven tests; exit 0; no recorded initial failures or retries |
+| `node .yarn/releases/yarn-4.18.1.cjs lint` | Exit 0; zero errors / 454 warnings |
+| `node .yarn/releases/yarn-4.18.1.cjs build:prod` | Exit 0; seven warnings |
+| `node bin/check-dependency-pins.mjs` | Exit 0; 61 production / 63 development dependencies, 58 resolutions, 1,517 required checksums |
+| `node bin/functional-baseline.js check`; `bash bin/test-civil-shared-import-consumers.sh` | Both exit 0 |
+| `node bin/validate-wiremock-mappings.js`; `node bin/ui-preview-mappings.cjs` | 41 chart / 36 preview mappings; both exit 0 |
+| `J -c jest.pact-tooling.config.js --runInBand` | One suite / 14 tests; exit 0 |
+| `J -c jest.pact.config.js --runInBand` | 15 suites / 127 tests; exit 0 |
+| `node src/test/contract/check-artifacts.js` | Three complete artifacts; exit 0 |
+
+Pact ran with `LOG_LEVEL` unset and without publishing. Route probes removed their private directories. This verifies the previously failing no-`TMPDIR` condition, not a hosted Jenkins result. The two additional suites contribute 20 cases, bringing the candidate to **51 new suites / 386 added cases** relative to the recorded PR10 base.
+
+The full unit run was executed once. Its first CCJ failure was `should return 500 when error in service` at `ccjCheckAnswersController.test.ts:104`: **expected 500, received 404**; the subsequent error-page text assertion also failed. One retry passed. Inspection confirmed that the case explicitly installs failing storage and submits an invalid form, whose controller path should read the draft and forward the storage error. The isolated coverage diagnostic passed all seven cases without a retry; that does not establish the cause of the original 404. No speculative CCJ correction was made. This new unresolved event is retained alongside, rather than substituted for, the earlier defendant-summary, phone and PR9/PR10 histories. The current full run must not be described as having zero retries.
+
+Disposable negative controls were separate from ordinary gates:
+
+- Moving employer and cohabiting persistence before updating the answers produced five failed assertions, exit 1. The call-time snapshots detect the demonstrated stale-write regression.
+- Leaving the payment submit button enabled produced five failed assertions, exit 1.
+- Removing the UTC setting and running the CitizenDate/DOB suites with `TZ=America/Los_Angeles` produced two failures, exit 1.
+
+All mutations were restored before the ordinary affected/full checks. These results establish assertion sensitivity, not production failures. GA missing-parameter recovery, applicable WireMock/container execution, hosted review, authenticated/operational acceptance and separate QA remain outside these fixes. The optional query-suite consolidation was not required for correctness and was not applied.
+
+The recovered/corrected working-tree contents require staging before commit: the 49 pre-existing staged additions were empty at the start and their index entries were deliberately preserved. Only the pre-existing PR10 notes were unstaged. No commit, push, branch change or ref update was performed.
+
+Final comparison found only the 63 intended implementation paths changed or added. The tested implementation bytes match the checkout. Branch, HEAD and refs are unchanged; production files, manifest, lockfile, excluded context and PR10-note contents are preserved. The raw index is now `acc910e030af6403f56267d3eb197e86c9adfccc322a8c89c313541dcceabac5`; its only entry change is removal of the PR10 notes. Earlier PR9 text is intact. The source fork remains clean at the exact reference. Owned verification processes exited, and disposable copies, dependencies, archives, caches, reports and probes were removed.
+
+### COSC fixture isolation and local ledger correction — 22 October 2026
+
+This section records a later correction; the preceding verification and staging accounts remain historical. The PR9 and PR10 review notes are local context excluded from the intended commit, as requested. Neither document is staged.
+
+The existing COSC check-answers POST error test leaves `saveDraftClaim` rejecting. A later success case, including a deferred Jest retry, can therefore receive HTTP 500 instead of 302. The POST group now resets that mock to successful persistence before each test. The intentional storage-error case still installs its rejection and checks the error response. No production code, assertion, timeout, discovery or retry policy changed.
+
+This establishes the cause of the reproduced save-mock contamination and subsequent 500 responses. It does not explain the initial 401 in the earlier COSC full-run failure, or the other historical timeout, socket, CCJ, phone and dashboard failures. The independent review immediately before this correction recorded 975 suites / 8,937 tests passing without retries; that full run predates this reset and is not a post-change full-suite result.
+
+The ledger summary now agrees with its 719 unique path rows: 252 Exclude, 222 Adapted, 105 Already integrated, 82 Covered differently, 50 Import/adapt and eight Defer. The R084 definition has moved into the evidence-code table. No path disposition changed in this correction.
+
+Fresh verification used Node 24.21.0 and tracked Yarn 4.18.1 in a disposable physical candidate copy. Checkout dependencies were not reused. The explicit macOS sandbox restricted writes to that temporary directory and connections to localhost; a direct check confirmed localhost access and external-connect denial with EPERM. A separate Node preloader avoided the preview guard's module-cache collision.
+
+The first nested-sandbox launch was denied before installation; the explicit sandbox invocation succeeded. Offline installation then identified missing archives. The permitted bootstrap downloaded the same 109 exact locked archives / 59,547,909 bytes recorded above, with redirects and proxies rejected and package identities checked. Two optional platform archives came from local cache. All 1,518 locked cache checksums matched. The localhost archive server closed before the final immutable skip-build installation passed offline. No manifest or lockfile changed.
+
+| Post-change check | Result |
+| --- | --- |
+| `node .yarn/releases/yarn-4.18.1.cjs install --immutable --mode=skip-build` | Final offline exit 0 |
+| `node .yarn/releases/yarn-4.18.1.cjs build` | Exit 0; seven existing warnings |
+| `node node_modules/typescript/bin/tsc --noEmit --incremental false` | Exit 0 |
+| ESLint on the changed COSC test | Exit 0; no warnings |
+| Old COSC test, with the existing error case moved before the success case in disposable storage | One passed / one failed / four skipped; expected exit 1; success case received 500 instead of 302 |
+| Corrected COSC test with the same disposable ordering | Two passed / four skipped; exit 0; no initial failures or retries |
+| Corrected COSC suite in its normal order | Six passed; exit 0; no initial failures or retries |
+
+Jest used `node --no-sparkplug node_modules/jest/bin/jest.js --runInBand --silent --runTestsByPath` with the existing COSC suite. A disposable logging-only environment recorded initial failures and retries. The ordering checks selected the two existing POST cases; the old implementation was a negative control, not an ordinary gate. The candidate copy was restored before the final six-test run. No `--forceExit` was used. Full coverage, hosted CI, browser checks and WireMock server contracts were not rerun for this narrow fixture correction.
+
+This correction adds one existing unit-suite modification to the previous candidate: 51 new unit suites, six existing unit-suite changes, the Jest configuration and `docs/test-pyramid.md` make 59 PR11 deliverable paths. Four inherited PR10 harness paths remain pending base alignment. These two local review documents are excluded context, giving 65 distinct working-tree paths in total. The new-suite and added-case counts remain unchanged by this correction.
+
+GA missing-parameter recovery remains the separately owned production follow-up described above. No staging, commit, push, branch or ref change was made for this correction; the existing index is preserved.
+
+### Hearing-payment persistence assertion and case-count correction — 22 October 2026
+
+The hearing-payment synchronization-failure test now snapshots the complete claim inside the persistence mock. Its expected payload is cloned before invoking production logic, with only `paymentSyncError` changed to true. The assertion checks the exact draft key, owner, error-handling argument, preserved claim fields and one persistence call. A later mutation of the same claim can no longer make an incorrect earlier write pass. No production implementation or additional test case changed.
+
+Fresh execution confirms **387 added cases**: 381 in the 51 new suites, plus six additions to the existing encryption suite (nine current cases minus three at the exact PR11 base). The earlier 386-case summary is superseded by this current count; historical run results are unchanged.
+
+Verification used Node 24.21.0, tracked Yarn 4.18.1 and a fresh physical disposable source copy with no checkout dependencies. A macOS sandbox blocked external connections and writes outside disposable storage; a direct probe confirmed localhost access and external-connect denial with EPERM. The separate Node network preloader did not share the preview guard's module path.
+
+| Check | Result |
+| --- | --- |
+| Corrected hearing-payment suite, serial, `--no-sparkplug` | 12 passed; exit 0; no initial failures or retries |
+| Disposable save-before-update negative control | 11 passed / one failed; expected exit 1; the saved flag was false instead of true, including both existing retries |
+| All 51 new suites plus the encryption suite after restoring the mutation, serial, `--no-sparkplug` | 52 suites / 390 tests passed; exit 0; no initial failures or retries |
+| Exact-base encryption suite, using current unchanged encryption implementation | Three passed; exit 0; no initial failures or retries |
+| TypeScript `--noEmit --incremental false` | Exit 0 |
+| ESLint on the changed hearing-payment test | Exit 0; no warnings |
+
+The negative control changed production code only in disposable storage and was restored before the combined positive run. A disposable result parser initially used the wrong JSON field after the expected negative-control failure; the parser was corrected and the remaining checks continued. Assertions, discovery and the existing retry policy were preserved; no `--forceExit` was used. Full coverage, route integration, builds, Pact, browsers, hosted checks and WireMock server execution were not rerun for this assertion-only correction. Earlier unexplained full-run failures remain unresolved.
+
+The initial offline immutable installation identified missing archives. The permitted exact-archive bootstrap downloaded 109 locked archives / 59,547,909 bytes, with redirects and proxies refused and package identities checked; the URL set matches the earlier archive inventory excluding the same seven already-cached packages. Two optional platform archives came from copied cache. All 1,518 locked npm archive checksums matched; the localhost archive server then closed and the final immutable skip-build installation passed offline. Manifests, lockfile, runtime and production files remain unchanged.
+
+Both review-note documents remain local, unstaged context as requested. This correction changes only the existing hearing-payment test and this local record; it adds no deliverable path. GA confirmation recovery remains separately owned. No staging, commit, push, branch or ref change was performed. Disposable dependencies, caches, downloads, reports and probes are removed at handover.
+
+
+### PR11 closing integration corrections — 22 October 2026
+
+This addendum supersedes the earlier test-only PR11 boundary and historical GA/timeline exclusions. The user authorised finishing the remaining bounded integration corrections in the existing PR11. No further production port is identified by the completed source audit; deliberate exclusions and acceptance gaps below are not automatically additional PRs. This implementation does not establish whole-ticket acceptance.
+
+**Proposed PR title:** DTSCCI-6593 Complete fork integration fixes, regression coverage and reconciliation.
+
+**Proposed PR summary:** complete the selective fork test integration and repair the remaining bounded upload, response, GA confirmation and presentation omissions. Sparse saved upload forms safely render newly selected categories; unanswered partial-admission questions recover through the task list; translated comment-only timelines retain their comment. Both GA confirmations accept an explicit scalar collection-item ID/fee pair, preserve zero and use a non-destructive party-dashboard recovery for unavailable pairs. Numeric missing values, query date errors, respondent titles, task headings and opponent timeline composition are corrected without changing calculations, authentication, dependencies or deployment choices.
+
+#### Actual starting point and final scope
+
+Work started on `DTSCCI-6593-fork-tests-reconciliation` at `6c69851c67d6fd614d34573f5d93b04840db6a8b`. This pre-existing merge already includes PR10 `1ab4da41975fe91e93ef089d0f52393a93d0e751`, including its accessibility-capture selection fix. No checkout, merge, rebase, branch/ref update, staging, commit, push or remote access was performed by this closing implementation. Local master is `eb4ae9ca292aa5e4f9a0ef2d44296c146ec5a3af`; the exact fork remains `486994338cd584ac728dc0dedacbc31cc0b11406`.
+
+The closing diff, including the assertion refinement recorded below, comprises **52 existing paths: 23 production files, 15 unit-test suites, five integration suites, seven captures and two documents**. The original closing batch modified 50 paths; the refinement strengthens two additional existing PR11 suites without adding production changes or test cases. The complete prospective PR11 diff against current PR10 contains 107 paths, including the already committed selective test integration. There are no new files in this closing batch. The pre-existing untracked `docs/pr10-ui-preview-review-notes.md`, excluded historical log and Yarn 3 binary remain untouched and outside delivery. Historical statements excluding this tracked PR9/PR11 reconciliation record are superseded: this record is an intended PR11 deliverable, left unstaged with the rest of the changes for review.
+
+The agreed 22 production corrections required one additional supporting edit to the existing dashboard shell. Its default summary output is unchanged; the new block lets only the query template override date-summary destinations so a model-level date error focuses the actual day input. No new shared helper file was introduced. Fee-change form-wrapper cleanup remains excluded.
+
+| Closing path | Purpose and provenance |
+| --- | --- |
+| `docs/pr9-presentation-review-notes.md` | Current scope, complete path reconciliation, provenance, verification limits and proposed PR description; preserve earlier historical results. |
+| `docs/test-pyramid.md` | Correct alias direction: test:integration invokes test:routes. |
+| `src/integration-test/routes/generalApplication/generalApplication.integration.test.ts` | HTTP parsing of both confirmation routes, repeated query parameters, both party dashboards and zero-fee collection identity. |
+| `src/integration-test/routes/queryManagement/qm.integration.test.ts` | Real consent/session prerequisite and invalid query POST with one date error, preserved fields and a focusable day summary target in English/Welsh. |
+| `src/integration-test/routes/response/rejectAll.integration.test.ts` | Actual guarded-route/task-list/response-choice recovery plus translated comment-only timelines and invalid POST redisplay. |
+| `src/integration-test/routes/uploads/repeatedUploads.integration.test.ts` | Real selection/save/delete/render/upload/redisplay across all 15 categories and both roles from a sparse saved form; retain documents, metadata, order and the other role. |
+| `src/integration-test/services/generalApplication/helpWithFeeService.integration.test.ts` | Preserved exact collection-ID-to-GA-case mapping for card/HWF paths, zero fees and independent call-time HWF payload snapshots. |
+| `src/main/routes/features/generalApplication/certOfSorC/submitCoScApplicationConfirmationController.ts` | Apply the same non-destructive boundary to COSC confirmation. |
+| `src/main/routes/features/generalApplication/submitGeneralApplicationConfirmationController.ts` | Validate the query pair and recover to the party dashboard without cancelling a draft. |
+| `src/main/routes/guards/partAdmitHowMuchHaveYouPaidGuard.ts` | Adapt fork missing-answer guard to the existing task-list recovery. |
+| `src/main/services/features/caseProgression/disclosureService.ts` | Adapt only the fork optional-array guards; keep actual section builders, ordering, validation data and persisted collections. |
+| `src/main/services/features/caseProgression/expertService.ts` | Adapt only the fork optional-array guards; keep actual section builders, ordering, validation data and persisted collections. |
+| `src/main/services/features/caseProgression/trialService.ts` | Adapt only the fork optional-array guards; keep actual section builders, ordering, validation data and persisted collections. |
+| `src/main/services/features/caseProgression/witnessService.ts` | Adapt only the fork optional-array guards; keep actual section builders, ordering, validation data and persisted collections. |
+| `src/main/services/features/generalApplication/submitGeneralApplicationConfirmationContent.ts` | Shared strict scalar query parsing and safe fee-link construction; preserve explicit collection-item identity and zero fees. |
+| `src/main/services/features/response/timelineOfEvents/defendantTimelineService.ts` | Recover absent timeline rows while preserving comments; exclude the fork comment-dropping fallback. |
+| `src/main/views/claim-details-tpl-dashboard.njk` | Default-preserving error-summary block, allowing the query page to point model-level date errors to the day input. |
+| `src/main/views/features/claim/interest/how-much-continue-claiming.njk` | Bounded numeric default: blank for absent values while preserving zero, saved values and invalid submitted text; no calculation/validation change. |
+| `src/main/views/features/claim/task-list.njk` | Ordinary heading composition while preserving copy, IDs, task numbering and destinations. |
+| `src/main/views/features/claimantResponse/ccj/repayment-plan-instalments.njk` | Bounded numeric default: blank for absent values while preserving zero, saved values and invalid submitted text; no calculation/validation change. |
+| `src/main/views/features/claimantResponse/claimant-response-task-list.njk` | Ordinary heading composition while preserving copy, IDs, task numbering and destinations. |
+| `src/main/views/features/generalApplication/respondent-agreement.njk` | Use the existing translated page-specific browser title. |
+| `src/main/views/features/generalApplication/response/accept-defendant-offer.njk` | Bounded numeric default: blank for absent values while preserving zero, saved values and invalid submitted text; no calculation/validation change. |
+| `src/main/views/features/queryManagement/createQuery.njk` | Compose only present escaped date messages and map model-level date summaries to the existing day input. |
+| `src/main/views/features/response/admission/how-much-have-you-paid.njk` | Bounded numeric default: blank for absent values while preserving zero, saved values and invalid submitted text; no calculation/validation change. |
+| `src/main/views/features/response/admission/partialAdmission/how-much-do-you-owe.njk` | Bounded numeric default: blank for absent values while preserving zero, saved values and invalid submitted text; no calculation/validation change. |
+| `src/main/views/features/response/statementOfMeans/dependants/dependants.njk` | Bounded numeric default: blank for absent values while preserving zero, saved values and invalid submitted text; no calculation/validation change. |
+| `src/main/views/features/response/statementOfMeans/unemployment.njk` | Bounded numeric default: blank for absent values while preserving zero, saved values and invalid submitted text; no calculation/validation change. |
+| `src/main/views/features/response/task-list.njk` | Ordinary heading composition while preserving copy, IDs, task numbering and destinations. |
+| `src/main/views/features/response/timelineOfEvents/defendant-timeline.njk` | Official ordered table composition, a separate PDF fallback and no empty table. |
+| `src/test/unit/modules/nunjucks/presentationCaptures.test.ts` | Check the seven narrowly refreshed capture regions without claiming browser or authenticated acceptance. |
+| `src/test/unit/modules/nunjucks/presentationDateErrors.test.ts` | Real query validation, escaped inline messages and actual GOV.UK error-summary activation of the day input. |
+| `src/test/unit/modules/nunjucks/presentationTemplates.test.ts` | 120 raw numeric attribute cases, page titles, escaped ordered timelines and PDF/empty states; real models and templates. |
+| `src/test/unit/modules/nunjucks/taskListTemplates.test.ts` | Retain task ordering/destinations while rejecting orphan legends or heading-only fieldsets. |
+| `src/test/unit/routes/features/claim/generalApplication/certOfSorC/submitCoScApplicationConfirmationController.test.ts` | Direct handlers, 24 invalid query cases per route, valid zero/decimal fees, role-specific recovery and read failures; stub the indirect app collaborator instead of booting Express. |
+| `src/test/unit/routes/features/claim/generalApplication/submitGeneralApplicationConfirmationController.test.ts` | Direct handlers, 24 invalid query cases per route, valid zero/decimal fees, role-specific recovery and read failures; stub the indirect app collaborator instead of booting Express. |
+| `src/test/unit/routes/guards/partAdmitHowMuchHaveYouPaidGuard.test.ts` | Missing intermediate answer states redirect without next(error); existing YES/NO cases remain. |
+| `src/test/unit/services/features/caseProgression/disclosureService.test.ts` | Both roles and selected missing/empty collections using real Claim/form models and section builders; preserve the submitted model. |
+| `src/test/unit/services/features/caseProgression/expertService.test.ts` | Both roles and selected missing/empty collections using real Claim/form models and section builders; preserve the submitted model. |
+| `src/test/unit/services/features/caseProgression/trialService.test.ts` | Both roles and selected missing/empty collections using real Claim/form models and section builders; preserve the submitted model. |
+| `src/test/unit/services/features/caseProgression/witnessService.test.ts` | Both roles and selected missing/empty collections using real Claim/form models and section builders; preserve the submitted model. |
+| `src/test/unit/services/features/generalApplication/submitGeneralApplicationConfirmationContent.test.ts` | Distinct collection IDs and GA case references, exact explicit fee links including zero, invalid direct inputs and honest existing return-route semantics. |
+| `src/test/unit/services/features/queryManagement/viewQueriesService.test.ts` | Strengthen the adapted fork suite's closure assertion to the exact date of the closed message, independently of the parent message's date. |
+| `src/test/unit/services/features/response/timelineOfEvents/defendantTimelineService.test.ts` | Use actual CCD translators and models for both response branches; retain comments and fresh rows without mutating saved data. |
+| `src/test/unit/services/translation/claimantResponse/convertToCCDClaimantLiPResponse.test.ts` | Strengthen the adapted fork suite with populated real questionnaire models and the complete expected CCD payload, including claimant expert ownership and omitted respondent fields. |
+| `src/test/utils/mocks/a11y/mock-case-1645882162449409-ccj-repayment-plan.html` | Refresh only the affected captured title, task heading or missing numeric attribute; retain historical data, links, forms and unrelated DOM. |
+| `src/test/utils/mocks/a11y/mock-case-1645882162449409-claimant-response-task-list.html` | Refresh only the affected captured title, task heading or missing numeric attribute; retain historical data, links, forms and unrelated DOM. |
+| `src/test/utils/mocks/a11y/mock-case-1645882162449409-response-general-application-1720536653906339-accept-defendant-offer.html` | Refresh only the affected captured title, task heading or missing numeric attribute; retain historical data, links, forms and unrelated DOM. |
+| `src/test/utils/mocks/a11y/mock-case-1645882162449409-response-general-application-1720536653906339-respondent-agreement.html` | Refresh only the affected captured title, task heading or missing numeric attribute; retain historical data, links, forms and unrelated DOM. |
+| `src/test/utils/mocks/a11y/mock-case-1645882162449409-response-statement-of-means-dependants.html` | Refresh only the affected captured title, task heading or missing numeric attribute; retain historical data, links, forms and unrelated DOM. |
+| `src/test/utils/mocks/a11y/mock-case-1645882162449409-response-task-list.html` | Refresh only the affected captured title, task heading or missing numeric attribute; retain historical data, links, forms and unrelated DOM. |
+| `src/test/utils/mocks/a11y/mock-claim-task-list.html` | Refresh only the affected captured title, task heading or missing numeric attribute; retain historical data, links, forms and unrelated DOM. |
+
+#### Behavior boundaries and final exclusions
+
+- Upload recovery is specifically for a stored form with a missing optional category collection. Current multipart parsing builds empty arrays. The integration regression resumes a sparse saved draft, selects an additional category through the real controller, saves its file and redisplays the complete result. It does not claim that an ordinary current first upload necessarily creates sparse arrays. Store/document-client/authentication boundaries remain substituted; no authenticated persistence acceptance is claimed.
+- The timeline change supplies only absent rows; it preserves the stored comment and does not replace malformed non-array data with an invented valid model. Missing partial-admission answers retain the existing recovery and submission requirements.
+- A GA query `id` is `generalApplications[].id`. The downstream fee service resolves that exact collection entry to `value.caseLink.CaseReference`; these are distinct identifiers in the new tests. The content builder preserves the supplied valid pair and never borrows a draft fee. Controllers recover invalid pairs using `getDashboardUrlForParty`. `getCancelUrl` remains the existing normal-page return-link behavior, not the automatic recovery destination: its route deletes the selected draft field. No Cancel-controller or downstream payment implementation was changed.
+- Numeric defaults preserve raw zero, saved numbers, invalid strings and NaN; validation and calculations are unchanged. Query date messages are escaped individually, official components own the error wrapper, and existing day/month/year identifiers and form contracts remain.
+- The seven capture edits are limited source-aligned updates to affected headings, missing numeric attributes and the respondent title. They do not regenerate historical scenarios or constitute a browser/accessibility pass. Unrelated captured values, monetary data, navigation, metadata and form contracts remain.
+- Preserve master encryption, security/dependency/deployment choices, strict preview/OIDC boundaries, GA draft/type/fee guards and substantive monetary behavior. Blanket invalid-date blanking, malformed-document-ID fallbacks, silent missing-document defaults and repayment resets remain excluded. Mediation's actual form callers already normalize their collections; no additional provider guard was established as necessary. Dormant editor activation, equivalent markup, unused imports/comments and cosmetic cleanup remain excluded.
+- At this closing-batch checkpoint, an absent whole case-progression upload draft remained an explicitly excluded inherited recovery edge; the fork's rendering-only fallback did not make submission safe. The later R091 amendment below supersedes that exclusion with guarded GET/POST recovery; the earlier optional-category guards alone never fixed it.
+- The eight Defer entries remain explicit residual coverage/owner-acceptance boundaries, not promises of PR12 or eight further PRs: PCQ needs an independent compatibility oracle; cookie/language DOM edge coverage is not exhausted by bilingual rendering; the repeated expert-report editor is dormant although related models retain translation consumers; the fork's standalone step-free-access Support assertion is not the real nested validation contract; secret-volume isolation and exhaustive GA CYA producer checks are not established. Current behavior and existing protections remain. Accepted delivery/exclusion attribution for DTSCCI-5145 and DTSCCI-4187, operational evidence and separate QA remain owner acceptance work, not invented completed requirements.
+
+The current 719-path ledger retains every ancestor-to-exact-fork path exactly once. R085–R089 record these closing adaptations and mixed-hunk limits; primary disposition counts reflect the current rows. A path disposition does not claim whole-file or assertion-for-assertion parity.
+
+#### Verification actually executed for this batch
+
+The results in this subsection describe the original 50-path closing batch, before the two-suite assertion refinement below. They remain historical evidence for that candidate.
+
+**Fresh locked verification is blocked.** An immutable skip-build installation in a physical disposable candidate copy, with network/scripts/telemetry/hardened online checks disabled, exited 1. Copied local caches supplied 1,409 checksum-matching entries; 116 locked entries remained unavailable, including GOV.UK Frontend 6.5.1 and class-validator 0.15.1. No downloads, live audit, installation hooks, browser/runtime downloads, container pulls or remote operations occurred. The earlier permission for registry access was not treated as overriding the later offline instruction.
+
+Available-dependency checks below are explicitly **diagnostics, not a current locked-install pass**. They used Node 24.21.0, TypeScript 5.9.3 and the existing local dependency tree, whose GOV.UK Frontend is 6.4.0 and class-validator is 0.14.4. Nothing copied or linked that checkout node_modules into the disposable candidate. Ordinary diagnostics read the candidate checkout under an OS write-denial sandbox; caches/reports/temp directories stayed disposable. Negative controls used a separate physical source copy with read-only dependency lookup. No result below is presented as a fresh locked-build, pinned-component browser or authenticated acceptance result.
+
+The macOS sandbox denied checkout writes and external network connections while permitting localhost. A direct check connected to a private localhost server, then observed immediate external socket denial with EPERM, exit 0. No browser was launched. No preview module was preloaded, avoiding the known same-path CommonJS-cache collision.
+
+`J` below is `node --no-sparkplug node_modules/jest/bin/jest.js`. Unit/integration diagnostics used one worker. A disposable Node-environment wrapper logged test failures and retries without changing assertions, discovery, coverage thresholds or existing retry counts. All reports and Jest caches were placed in disposable storage; the integration JUnit file reporter was replaced with the ordinary console reporter to prevent checkout output. No `--forceExit` was used.
+
+| Current closing-batch check | Actual result |
+| --- | --- |
+| `node .yarn/releases/yarn-4.18.1.cjs install --immutable --mode=skip-build` with the required offline/no-hook environment in a physical copy | Exit 1; 116 locked cache entries unavailable; zero downloads |
+| `node node_modules/typescript/bin/tsc --noEmit --incremental false` against available declarations | Exit 0 |
+| ESLint on all 27 changed TypeScript paths | Exit 0; zero errors, four existing no-explicit-any warnings |
+| `J --runInBand --silent --runTestsByPath` with all 13 changed unit suites, private cache/JSON output and logging-only environment | 13 suites / 453 tests passed; ordinary exit 0; no initial failures or retries recorded |
+| `J -c jest.functionaltest.config.js --runInBand --silent --reporters=default --runTestsByPath` with the five changed integration suites plus existing confirmation-content integration | Six suites / 144 tests passed; ordinary exit 0; no initial failures or retries recorded |
+| Nine-production-file negative control: former implementations restored only in disposable source; existing new regression names selected with `--testNamePattern` | Nine suites: 88 expected failures / 32 passes / 82 skipped; ordinary exit 1 |
+| Same selected controls after restoring the disposable current implementations | Nine suites / 120 passed / 82 skipped; ordinary exit 0 |
+| `node bin/check-dependency-pins.mjs` | Exit 0; 61 production / 63 development pins / 58 resolutions; 1,522 npm packages with locked SHA checksums |
+| `node bin/functional-baseline.js check` | Exit 0 |
+| `bash bin/test-civil-shared-import-consumers.sh` | Exit 0 |
+| `node bin/validate-wiremock-mappings.js`; `node bin/ui-preview-mappings.cjs` | 41 chart / 36 preview mappings; both exit 0; server execution not claimed |
+| `git --no-optional-locks diff --check` | Exit 0 |
+
+The immutable install, complete builds, full unit coverage, complete route discovery, Pact/server contracts and pinned-component browser/accessibility checks still need execution with the current locked dependencies. Hosted final-commit checks, applicable authenticated/AAT and operational verification, and separate QA remain acceptance gates. Prior full-suite, Pact and browser results are dated evidence and were not substituted for these blocked checks.
+
+Initial diagnostic failures were retained rather than relabelled as inherited passes:
+
+- The first TypeScript diagnostic found eight new fixture enum/type errors. Fixtures now use the real PartyType enum; later type checking passed.
+- The first unit diagnostic passed 385 cases in ten suites but two new handler suites failed during setup: the real GA service's response-store import attempted to construct the app while the utility boundary was mocked. An explicit app collaborator stand-in prevents application construction; both suites then passed 58 cases. The final 13-suite diagnostic passed 453 cases.
+- The first six-suite integration diagnostic ended with 132 passes and eight failures. Six GA cases lacked req.cookies in the lightweight HTTP fixture; two query cases had not completed the real sharing-consent/session prerequisite. The fixture now supplies cookies and the query test follows consent using an agent; the final 144 cases passed.
+- That first integration run also recorded one retry in an existing defendant disclosure-document removal case. Its initiating error was not captured before logging was enabled, so its cause remains unestablished. The later clean run is not an explanation for this or the earlier timeout/socket/CCJ/COSC/phone/dashboard histories.
+- Initial changed-file lint found five extra-blank-line errors, which were corrected. The four remaining no-explicit-any warnings predate this batch.
+
+The negative control restores complete related former implementations, including all three GA files together, so its failures are behavioral assertions rather than missing-export/setup errors. It demonstrates that the guards, comment preservation and GA query boundary assertions detect the original behavior. All disposable mutations were restored before the positive control.
+
+All closing changes remain unstaged for review. No commit or push was made. Manifest/lockfile, runtime, dependency, deployment and pipeline files, excluded context and pre-existing PR10-note contents are unchanged. The branch, HEAD, refs and raw index are preserved from the actual starting snapshot; the source fork remains unchanged. Disposable copies, caches, reports and probes are removed at handover.
+
+### PR11 assertion refinement — 22 October 2026
+
+The user authorised strengthening two retained assertions and correcting R003 after independent review. The claimant-response test now supplies real questionnaire, hearing and expert models and asserts the complete expected CCD payload, including claimant expert ownership, absent respondent expert data and omitted values. The query test requires `2 January 2024`, the closed reply's date, rather than accepting any truthy closure date. R003 now acknowledges PR11's test-only UTC baseline. No production behavior or test case was added.
+
+Fresh checks used Node 24.21.0 and the available dependency tree under an OS sandbox denying checkout writes and external network connections. Reports, caches and physical source copies stayed disposable. These are available-dependency diagnostics; no installation or download was attempted, and the recorded locked-install and broader acceptance gaps remain.
+
+| Assertion-refinement check | Actual result |
+| --- | --- |
+| Both affected suites, `node --no-sparkplug node_modules/jest/bin/jest.js --runInBand --silent --runTestsByPath …`, private cache/report and logging-only environment | Two suites / nine tests passed; ordinary exit 0; no initial failures or retries |
+| TypeScript `--noEmit --incremental false` | Exit 0 |
+| ESLint on both changed test suites | Exit 0; no warnings |
+| Disposable negative control: translate expert data under respondent ownership and use the parent message's date as the closure date | Two expected failures / seven passes; ordinary exit 1; existing retries retained |
+| Same incorrect production code with only the previous existence/truthiness assertions restored in disposable tests | Nine passed; ordinary exit 0, demonstrating the former assertion weakness |
+| Restore current production and strengthened assertions in the disposable copy | Nine passed; ordinary exit 0; no initial failures or retries |
+
+The original closing batch's recorded results above were not rerun or presented as fresh results for this refinement. The latest changes affect only these two test suites and this document; the complete PR11 path count remains 107. No staging, commit, push, branch/ref change or production edit occurred. Excluded context and pre-existing work remain preserved; disposable resources are removed at handover.
+
+### PR11 claim-payment redirect amendment — 23 October 2026
+
+The user authorised completing the missing claim-fee redirect port in PR11 before separately correcting PR10's catalogue wording on its own branch. Work started on `DTSCCI-6593-fork-tests-reconciliation` at `3e5b4408f556348160f42ee4d311bbec4d33bff5`, with no tracked changes and only the pre-existing untracked PR10 notes. This amendment does not change the catalogue, GA error summaries, dependencies, pipeline, payment-reference rules or draft retention policy. The older 107-path scope and verification results above remain historical; the current complete prospective diff against local `origin/DTSCCI-6593-frontend-ui-preview` (`62d2c503c64fc659a28607c3a473cb8289734e40`) contains **110 paths: 24 production, 70 unit-suite paths, six integration suites, seven captures, two documents and Jest configuration**. That remote-tracking ref is local evidence, not a freshly fetched remote state.
+
+| Amendment path | Purpose and provenance |
+| --- | --- |
+| `src/main/routes/features/claim/payment/claimFeeBreakDownController.ts` | Adapt the exact fork's `redirectToPaymentOrFeeBreakup` behavior at all four current redirect call sites, including master's later invalid-reference early return. Also reject whitespace-only URLs while passing existing usable provider URLs through unchanged. |
+| `src/test/unit/routes/features/claim/payment/claimFeeBreakDownController.test.ts` | Extend the existing isolated handler suite with four unusable-URL values across all four branches, invalid-reference controls, valid pending URLs and independent call-time persistence snapshots. Repair the existing status-error fixture so it actually reaches the status API. |
+| `src/integration-test/routes/claim/claimIssue.integration.test.ts` | Exercise real CCD payment translation, POST redirects and recovery GET with an enabled payment button. Preserve successful-payment and valid-provider redirects. Store, payment API, payment-session persistence and authentication/session boundaries remain mocked; this is not authenticated backend acceptance. |
+| `docs/pr9-presentation-review-notes.md` | Correct the previously overlooked functional-hunk reconciliation and record scope, evidence and limitations without rewriting prior run results. |
+
+The real `toCUIClaimDetails` translator reconstructs payment reference/status without `nextUrl`. A pending stored payment or failed status lookup therefore reached `res.redirect(undefined)` before this amendment. Missing URLs can also occur in newly returned payment information and failed-payment replacements. The helper returns to the existing claim-fee GET page instead. It does not request a replacement payment for a merely pending payment, invent a reference, change successful-payment confirmation or alter loading/saving ownership and retention. Snapshot assertions independently preserve both the original and replacement payloads at their actual save calls.
+
+R090 now records this mixed-hunk adaptation. The existing controller-test ledger row changes from Exclude to Adapted because its isolated current suite now incorporates the useful regression behavior; the fork's HTTP unit-suite implementation remains excluded. All **719 unique ancestor-to-fork paths** remain accounted for, with current primary counts **234 Adapted, 105 Already integrated, 80 Covered differently, eight Defer, 243 Exclude and 49 Import/adapt**. The amendment adds 23 unit cases and four integration cases; these are not fresh full-suite totals.
+
+Fresh checks used Node 24.21.0, TypeScript 5.9.3 and the available dependency tree, including Express 5.2.1, GOV.UK Frontend 6.4.0, class-validator 0.14.4 and ts-jest 29.4.12. Execution ran under a macOS sandbox denying checkout writes and external network connections while allowing localhost. Caches, logs and reports stayed disposable. No installation or download was attempted. These are available-dependency diagnostics, not proof of an installation from the current lockfile.
+
+`J` below means `node --no-sparkplug node_modules/jest/bin/jest.js`. All Jest executions used `--runInBand --silent`, ordinary exits and the existing two-retry policy; JSON assertion invocation counts were inspected. No `--forceExit` was used.
+
+| Fresh amendment check | Actual result |
+| --- | --- |
+| New controller regressions against unchanged production code, `J --runTestsByPath …` | 22 expected failures / 12 passes; exit 1. Each failing case exhausted the existing retries. |
+| New claim-issue integration cases against unchanged production code, `J -c jest.functionaltest.config.js --reporters=default --runTestsByPath …` | Two expected failures / six passes; exit 1. Both failures observed `302 Location: undefined` and exhausted the existing retries. |
+| Corrected controller suite | One suite / 34 tests passed; exit 0; every case invoked once. |
+| Related draft-service, claim-fee guard, fee-payment service, confirmation-service and route-parameter suites | Five suites / 42 tests passed; exit 0; every case invoked once. |
+| Corrected claim-issue integration suite | One suite / eight tests passed; exit 0; every case invoked once. The recovery GET renders the existing `£100` payment button enabled. |
+| TypeScript `--noEmit --incremental false` | Final exit 0. |
+| ESLint on the three changed TypeScript files | Exit 0; zero errors and two pre-existing unused-catch-variable warnings. |
+| `git --no-optional-locks diff --check` | Exit 0. |
+
+Two fixture corrections occurred during verification. The initial type check found that the new integration fee fixture omitted required `code` and `version` fields; the fixture now supplies them. The first post-fix integration run reached the correct recovery page but its two new cases expected `£100.00`, while the existing template renders `£100`. The final assertion checks the actual payment button's exact text and enabled state without changing the application's monetary formatting. These fixture failures are separate from the before-fix redirect reproductions.
+
+The final positive runs comprise **seven suites / 84 tests**, without initial failures or retries. No full coverage, complete route discovery, build, Pact/server-contract, browser/accessibility, hosted, authenticated or operational check was rerun for this amendment. The previously recorded locked-install and broader acceptance gaps remain. The older intermittent failure histories are not explained by these targeted passes.
+
+All four amendment files remain unstaged and uncommitted for the user's review and push preparation. No branch switch, ref update, commit or push was performed. The pre-existing PR10 notes, excluded historical context, manifests/lockfile and PR10 catalogue wording remain unchanged. Disposable verification resources are removed at handover.
+
+
+## PR11 review amendments — whole-draft recovery and verification harness (23 October 2026)
+
+This amendment supersedes the earlier whole-upload-draft exclusion. It remains within PR11's authorised final integration scope. It also repairs the residence fixture's demonstrated ordering dependence and the capture runner's missing assets/server ownership. The PR10 documentation link is intentionally left for the PR10 branch; the pre-existing local PR10 notes remain excluded.
+
+Proposed final title: **DTSCCI-6593 Complete fork integration fixes, regression coverage and reconciliation**.
+
+Proposed description update: preserve the existing selective test integration, bounded production corrections and claim-payment fallback. Add role-specific check-and-send recovery after dashboard refresh, retain submitted CCD evidence, isolate residence test storage, and exercise styled accessibility captures on an owned loopback server. Historical results below remain historical; current locked verification is recorded separately in this amendment. No claim is made that this closes whole-ticket/phase acceptance.
+
+### Current amendment inventory
+
+The amendment has **52 paths**: one production controller, three existing unit suites, two integration suites, two accessibility-support files, 43 captures and this document. Fifty paths are existing modifications and two are new test-support/integration files. The complete candidate against current PR10 has **159 paths**: 25 production, 72 unit suites, seven integration suites, 50 captures, two documents, one Jest configuration and two accessibility-support files. The pre-existing PR10 notes are outside both counts.
+
+| Path | Purpose and provenance |
+| --- | --- |
+| `src/main/routes/features/caseProgression/checkAnswersController.ts` | Adapt the fork's rendering-only missing-draft fallback at both controller entry points, before signature-body access even on a bodyless stale POST. An absent/null current-role working form or absent case progression redirects to existing type selection before summary rendering, validation/submission, task update or draft deletion. Preserve existing nonempty-draft paths and both roles' persisted evidence. |
+| `src/test/unit/routes/features/caseProgression/checkYourAnswersController.test.ts` | Replace legacy application-booting HTTP unit setup with direct handler coverage. Exercise both roles, en/cy, missing/null drafts and missing case progression, unsigned/signed POST, success ordering and independent read/submit/task failures. Real form validation remains. Rendering/journey behaviour moves to the existing integration owner. |
+| `src/integration-test/routes/uploads/repeatedUploads.integration.test.ts` | Retain all 81 existing upload regressions. Add four journeys: select/upload, render check-and-send, execute real dashboard refresh with real CCD translation, recover GET/bodyless POST/unsigned form POST/signed POST, then render actionable selection. Independently snapshot writes and preserved data; distinct submitted documents remain for both roles. Store/client/flags/session and outer-shell boundaries are substituted, so this is not authenticated backend acceptance. |
+| `src/test/unit/routes/features/response/statementOfMeans/residenceController.test.ts` | Re-establish the valid POST store before every test; the intentional failing-store test still installs and exercises its failure. This removes proven fixture ordering dependence, without claiming the original full-run initiating 404 is explained. |
+| `src/test/a11y/a11y.mock-test.ts` | Await server setup/teardown in Mocha hooks; use real owned URLs instead of unconsumed Supertest requests and synchronous suite-definition shutdown. Keep existing page selection, Pa11y assertions/options and retry helper. |
+| `src/test/a11y/captureServer.ts` | New test-support server: loopback-only listener, actual built public assets, startup checks for CSS and JS, fixed capture routes, capture-language cookie matching the real i18n prerequisite, and awaited idempotent cleanup including startup failure. No production server/authentication change. |
+| `src/integration-test/routes/accessibilityCaptures.integration.test.ts` | New HTTP integration owner: actual capture and built asset responses/types, language cookie, missing stylesheet/script failure, release of the failed-startup port, and normal/idempotent shutdown. No browser or download required for these regressions. |
+| `src/test/unit/modules/nunjucks/presentationCaptures.test.ts` | Retain existing payload/title/numeric/heading checks; reject obsolete header classes and browser-view-source wrappers across the entire capture inventory, with 353 current shared headers and one logo-only header. |
+| 33 existing HTML captures (listed below) | Source-align their stale header regions; decode the two Firefox view-source wrappers to the captured document first. Preserve captured page/form values and all content outside the intended header/serialization correction. |
+| `docs/pr9-presentation-review-notes.md` | Preserve PR9 history and superseded PR11 run records; update mixed-hunk ledger evidence R091/R092, scope, current evidence and residual boundaries. |
+
+The whole-draft trigger is established through `toCUICaseProgression` and `getDashboardClaimById`: CCD restores submitted document collections, while the transient claimant/defendant working form is absent after refresh. The recovery never creates an empty success summary, selects the other role's draft, submits an empty evidence event, updates a task or deletes data. Restarting category selection uses the existing workflow; no persistence redesign or reconstructed metadata is introduced. Optional-category guards remain separate protections.
+
+The capture harness previously supplied neither `/main-dev.css` nor `/main-dev.js` and closed its explicit server during suite definition. Supertest could implicitly open another server when a request URL was inspected. The amended harness checks both asset resources before Pa11y and closes the one server it owns after testing. Loading the real bundle also requires the language cookie normally provided by i18next; the fixture supplies the capture's existing en/cy language rather than changing its HTML or disabling the language script. A missing/invalid HTML language is not repaired by a guessed fallback.
+
+R091/R092 add hunk-level evidence without changing primary ledger dispositions or the 719-path membership. The fork's rendering-only empty-summary fallback is still not copied into the service; its useful intent is implemented safely at the controller boundary. Broader empty/malformed-form validation remains with the existing upload workflow. The eight residual coverage boundaries, inherited duplicate GA summary, owner attribution, server/authenticated/operational and separate-QA acceptance remain distinct from this amendment.
+
+### Fresh locked verification
+
+Verification used a physical disposable source copy, Node 24.21.0 and Yarn 4.18.1, with an immutable skip-build installation and scripts/telemetry disabled. Exact missing locked npm archives were retrieved only after checking copied caches; manifests, resolutions and locked checksums were unchanged. A localhost-only archive server converted them into the private Yarn cache, closed, and the final installation passed again offline. Test/build execution used a separate network preloader and macOS write/network sandbox allowing only disposable writes and localhost connections. It did not preload the preview tests' own network module path.
+
+Styled execution initially exposed obsolete header markup retained in 33 captures: 28 used the old text-logo form (two were entire Firefox view-source wrappers), while five had the later SVG logo but still the obsolete header service-name composition. The current production header was already correct. The amendment renders the existing `macro/header.njk` for 32 shared-header captures and the existing `template.njk` logo-only composition for `mock-unauthorised.html`, using locked GOV.UK Frontend 6.5.1. It does not change production header code. The two view-source files are decoded to their captured HTML before this bounded correction, making their actual GA forms testable. Source-derived header navigation replaces obsolete captured navigation; page-body, form action/field/value, document, monetary and scenario data remain. The recovered requesting-reason capture additionally receives the existing production title and three accessible-name attributes (form/textarea `aria-labelledby` and heading ID); no submitted name or value changes. Trailing whitespace in added fixture lines is normalized without altering textarea values.
+
+<details>
+<summary>33 source-aligned capture corrections</summary>
+
+| Capture | Source/serialization correction |
+| --- | --- |
+| `src/test/utils/mocks/a11y/mock-accessibility-statement.html` | `macro/header.njk` |
+| `src/test/utils/mocks/a11y/mock-case-1645882162449409-general-application-requesting-reason.html` | `macro/header.njk`; decode the saved view-source document first |
+| `src/test/utils/mocks/a11y/mock-case-1645882162449409-response-general-application-1720536653906339-agree-to-order.html` | `macro/header.njk`; decode the saved view-source document first |
+| `src/test/utils/mocks/a11y/mock-claim-defendant-mobile.html` | `macro/header.njk` |
+| `src/test/utils/mocks/a11y/mock-contact-cnbc.html` | `macro/header.njk` |
+| `src/test/utils/mocks/a11y/mock-contact-mediation.html` | `macro/header.njk` |
+| `src/test/utils/mocks/a11y/mock-contact-us.html` | `macro/header.njk` |
+| `src/test/utils/mocks/a11y/mock-cookies.html` | `macro/header.njk` |
+| `src/test/utils/mocks/a11y/mock-eligibility-apply-for-help-with-fees.html` | `macro/header.njk` |
+| `src/test/utils/mocks/a11y/mock-eligibility-claim-is-for-tenancy-deposit.html` | `macro/header.njk` |
+| `src/test/utils/mocks/a11y/mock-eligibility-claim-type.html` | `macro/header.njk` |
+| `src/test/utils/mocks/a11y/mock-eligibility-claim-value.html` | `macro/header.njk` |
+| `src/test/utils/mocks/a11y/mock-eligibility-defendant-address.html` | `macro/header.njk` |
+| `src/test/utils/mocks/a11y/mock-eligibility-defendant-age.html` | `macro/header.njk` |
+| `src/test/utils/mocks/a11y/mock-eligibility-eligible.html` | `macro/header.njk` |
+| `src/test/utils/mocks/a11y/mock-eligibility-government-department.html` | `macro/header.njk` |
+| `src/test/utils/mocks/a11y/mock-eligibility-help-with-fees-reference.html` | `macro/header.njk` |
+| `src/test/utils/mocks/a11y/mock-eligibility-help-with-fees.html` | `macro/header.njk` |
+| `src/test/utils/mocks/a11y/mock-eligibility-hwf-eligible-reference.html` | `macro/header.njk` |
+| `src/test/utils/mocks/a11y/mock-eligibility-hwf-eligible.html` | `macro/header.njk` |
+| `src/test/utils/mocks/a11y/mock-eligibility-information-about-help-with-fees.html` | `macro/header.njk` |
+| `src/test/utils/mocks/a11y/mock-eligibility-known-claim-amount.html` | `macro/header.njk` |
+| `src/test/utils/mocks/a11y/mock-eligibility-not-eligible.html` | `macro/header.njk` |
+| `src/test/utils/mocks/a11y/mock-eligibility-over-18.html` | `macro/header.njk` |
+| `src/test/utils/mocks/a11y/mock-eligibility-single-defendant.html` | `macro/header.njk` |
+| `src/test/utils/mocks/a11y/mock-eligibility.html` | `macro/header.njk` |
+| `src/test/utils/mocks/a11y/mock-first-contact-access-denied.html` | `macro/header.njk` |
+| `src/test/utils/mocks/a11y/mock-first-contact-claim-reference.html` | `macro/header.njk` |
+| `src/test/utils/mocks/a11y/mock-first-contact-pin.html` | `macro/header.njk` |
+| `src/test/utils/mocks/a11y/mock-first-contact-start.html` | `macro/header.njk` |
+| `src/test/utils/mocks/a11y/mock-privacy-policy.html` | `macro/header.njk` |
+| `src/test/utils/mocks/a11y/mock-terms-and-conditions.html` | `macro/header.njk` |
+| `src/test/utils/mocks/a11y/mock-unauthorised.html` | `template.njk` |
+
+</details>
+
+
+<details>
+<summary>Exact locked archive retrieval for this amendment</summary>
+
+Only the following exact locked npm archives were retrieved, with TLS verification, redirects/proxies refused and archive package identities checked. There were **116 archives / 59,921,703 bytes**. Yarn then enforced its existing locked checksums; install scripts stayed disabled and execution returned offline. Two platform archives were already present in the copied local cache. No registry metadata, remote Git, browser/runtime, Java, container or backend retrieval was performed for this amendment.
+
+| Exact URL | Bytes | SHA-256 |
+| --- | ---: | --- |
+| `https://registry.npmjs.org/@babel/parser/-/parser-7.29.9.tgz` | 439123 | `8f3b9fbc531e0c08e2c329cf1ff57bbe121e2d10061b65a05614a25b2255cc43` |
+| `https://registry.npmjs.org/@codeceptjs/configure/-/configure-1.0.6.tgz` | 5112 | `1291d31565de676a2ead7469a7bd46cc44d30aeef7056400d8e81fef1bca641d` |
+| `https://registry.npmjs.org/@codeceptjs/detox-helper/-/detox-helper-1.1.14.tgz` | 10906 | `1a6339bc02ba67bddab9f13f01a64fc417b8e22b4118b2bb0335fd6fc6562183` |
+| `https://registry.npmjs.org/@colors/colors/-/colors-1.6.1.tgz` | 11773 | `7c13d093c7dc82ad9b024da4fd31cd480da6cbae65a0c492efb897e34bd73929` |
+| `https://registry.npmjs.org/@csstools/css-syntax-patches-for-csstree/-/css-syntax-patches-for-csstree-1.1.15.tgz` | 20006 | `47ec40a8a7bf32a5d22eb64477d2204c6e782b9ee5d4cfcfbc0c66c49036d07b` |
+| `https://registry.npmjs.org/@csstools/media-query-list-parser/-/media-query-list-parser-5.0.2.tgz` | 12142 | `34e37cc0007f2533b4b40c189a247097a1531f14105afac140c73f22eb9310f7` |
+| `https://registry.npmjs.org/@csstools/selector-specificity/-/selector-specificity-6.0.1.tgz` | 3515 | `49ad805e5071d72662b756cbcb6f01888842ccd33bd708f26fbd81f18d2e2475` |
+| `https://registry.npmjs.org/@cucumber/cucumber-expressions/-/cucumber-expressions-19.0.1.tgz` | 95302 | `f1023fd86e8027eeab71f5765413e60e0b8fc5385c978a1f3390670492adc0e6` |
+| `https://registry.npmjs.org/@cucumber/gherkin/-/gherkin-39.0.0.tgz` | 92734 | `728c368146f3fd2d1d3daddb094d8a16d6837462a28e676b3233b921f8e3c53a` |
+| `https://registry.npmjs.org/@dabh/diagnostics/-/diagnostics-2.0.9.tgz` | 10584 | `c2741b20e37a5916d1e934cc577f450fa1b0af10d516740f4e55c26fe6819b86` |
+| `https://registry.npmjs.org/@dr.pogodin/csurf/-/csurf-1.18.1.tgz` | 17933 | `7a4973c6892680c95aaccadcefc7f93fd9f873359298caa8a4086351894202a0` |
+| `https://registry.npmjs.org/@flatten-js/interval-tree/-/interval-tree-1.1.4.tgz` | 23665 | `1089b9b95fe45f918215aaaa1beef6f4376b1053e8925a45093f443473dcee42` |
+| `https://registry.npmjs.org/@isaacs/ttlcache/-/ttlcache-1.4.1.tgz` | 8167 | `4fdc15b3ad32802b471d1fcc07eb08f8958fbcc5e8d1d5830a12ad1bc5b6dd1a` |
+| `https://registry.npmjs.org/@jest/create-cache-key-function/-/create-cache-key-function-29.7.0.tgz` | 2933 | `8d277e1e25a6400fec9e7117fc47fc4c8eaa384cdd4a301d5080519961abee43` |
+| `https://registry.npmjs.org/@react-native/assets-registry/-/assets-registry-0.81.6.tgz` | 2223 | `7a6c3966bf013e609140e11acf139101b8745db5b5277528ba465c12ab8c9d1f` |
+| `https://registry.npmjs.org/@react-native/codegen/-/codegen-0.81.6.tgz` | 180094 | `2d8fb69cee45cf2a43e51dc73a11dab8a3ec5396e4bc1ad5a0bcae603d763cf3` |
+| `https://registry.npmjs.org/@react-native/community-cli-plugin/-/community-cli-plugin-0.81.6.tgz` | 17720 | `590adf5532428cc89dbec51ce497326b1690dee1dcbe76c18565832f89817bf9` |
+| `https://registry.npmjs.org/@react-native/debugger-frontend/-/debugger-frontend-0.81.6.tgz` | 4516144 | `d44f66224fc380706847fbe2b39cb70047c5bed6ff13c370b428f0d4d19d7c53` |
+| `https://registry.npmjs.org/@react-native/dev-middleware/-/dev-middleware-0.81.6.tgz` | 31602 | `06e4bba8a24c538e277a22464fad5924624ba77a647d445c28d640ce44152e01` |
+| `https://registry.npmjs.org/@react-native/gradle-plugin/-/gradle-plugin-0.81.6.tgz` | 99826 | `5c4a1196a8163b7d7c315c51b1c2365894cf28fd40467cedba6913bf0068ef04` |
+| `https://registry.npmjs.org/@react-native/js-polyfills/-/js-polyfills-0.81.6.tgz` | 8301 | `bfc7b6bcf2251e010200bd98c282b356fef8d12a9b2a7f6c3d3c3cffd4d24a5d` |
+| `https://registry.npmjs.org/@react-native/normalize-colors/-/normalize-colors-0.81.6.tgz` | 4012 | `2e93cfba6bf95dca9faf4b1e014303b9f2f0617a6fec7862f40a6c4340a8331f` |
+| `https://registry.npmjs.org/@react-native/virtualized-lists/-/virtualized-lists-0.81.6.tgz` | 49324 | `15af95564972c161d6c20f5061e4272ae8ca723010a4b1a0dc7749ae35d8a386` |
+| `https://registry.npmjs.org/@wix-pilot/core/-/core-3.4.2.tgz` | 45788 | `a965861228a4c78a309ed17b7851fda34abc0efe319b8d0d0cf40a79364fd422` |
+| `https://registry.npmjs.org/@wix-pilot/detox/-/detox-1.0.13.tgz` | 10382 | `27ea0a9801e6861ae17c09ec8d63251a2c8ff60b0daf4c8bbbe7843175eeaca5` |
+| `https://registry.npmjs.org/@xmldom/xmldom/-/xmldom-0.9.12.tgz` | 109708 | `08245e18c248b957b4c6e07f8549ad5f55ae11b7a8abd4c1113a0fd61ddc67ee` |
+| `https://registry.npmjs.org/anser/-/anser-1.4.10.tgz` | 10267 | `2f2946fb8190da7260762566f9290c694d217137459b5d43a51f26d7ec9611b0` |
+| `https://registry.npmjs.org/babel-plugin-syntax-hermes-parser/-/babel-plugin-syntax-hermes-parser-0.29.1.tgz` | 3011 | `a1f313807d729062b31c883fd47268b90e717b655736a85e9aedf7e82d5a52ce` |
+| `https://registry.npmjs.org/bunyamin/-/bunyamin-1.6.3.tgz` | 89838 | `977658aa517c51a0265d6b7f3c7a1444add1a5dc8188b71077760f24a50f6452` |
+| `https://registry.npmjs.org/bunyan-debug-stream/-/bunyan-debug-stream-3.1.1.tgz` | 17969 | `862466530915fad20dfaa55a72fd4447f572e07e181b3fb59ca003d16b916410` |
+| `https://registry.npmjs.org/bunyan/-/bunyan-2.0.5.tgz` | 60208 | `ae158b859fe22602c35ba869e4859bb875163103701d7952e4d00aec63e6b699` |
+| `https://registry.npmjs.org/caf/-/caf-15.0.1.tgz` | 36025 | `289f1e1f5e4c328768b1e2725747efdf17608d1828b0bb907763336eb04e0a41` |
+| `https://registry.npmjs.org/chromium-edge-launcher/-/chromium-edge-launcher-0.2.0.tgz` | 33251 | `fb36d48484031ef4f55f3772b5d41547a0afb06e4476a0850cc9b8aabc146f25` |
+| `https://registry.npmjs.org/class-validator/-/class-validator-0.15.1.tgz` | 915522 | `f21b8c29a3103c700db59404e8250a5b0812ee82f60164bf66aaff42e4c3229a` |
+| `https://registry.npmjs.org/codeceptjs/-/codeceptjs-3.7.9.tgz` | 515226 | `e4aeaea5c2c30300c432de44df8e0459e9e5576d5493e9676b6aef9d38234a25` |
+| `https://registry.npmjs.org/color-name/-/color-name-2.1.1.tgz` | 2846 | `94fd34b8f6b573fd0a4a07f5f029beaf2c8ee9a2b7cd0d47fdd6c95c89b50125` |
+| `https://registry.npmjs.org/cookie/-/cookie-2.0.1.tgz` | 13277 | `8516126668fc55128916561047c055db77d0401dee1db108adce7267b4b06ff0` |
+| `https://registry.npmjs.org/deepmerge-ts/-/deepmerge-ts-8.0.2.tgz` | 41695 | `262091e7457d221379bc6e7759df137c01af6553461bad6cd6d4aa3ff10f874c` |
+| `https://registry.npmjs.org/detox/-/detox-20.42.0.tgz` | 13825437 | `7a60ff71e476d5c198b3c117b6ef4acb752ce3d71595f04e8ae555262fc61517` |
+| `https://registry.npmjs.org/easy-stack/-/easy-stack-1.0.1.tgz` | 4482 | `e875506628674d741a70a813875426ac8f5302e0ef4f088dcaa4d3dc94bb2d44` |
+| `https://registry.npmjs.org/enhanced-resolve/-/enhanced-resolve-5.26.0.tgz` | 124037 | `81a355d6fa1579cc142118e634ab349c33b6f03f16c0b4450f2a4db9f5c687eb` |
+| `https://registry.npmjs.org/error-stack-parser/-/error-stack-parser-2.1.4.tgz` | 9214 | `e346f48f4fc606d4e52bf75806e439225508d914d147eb741df3076769ac2385` |
+| `https://registry.npmjs.org/event-pubsub/-/event-pubsub-4.3.0.tgz` | 5401 | `fe48af6ed57c10ec87ab6970c23f3aa88c06305e2b35eaeb6fa7592f6d2a4436` |
+| `https://registry.npmjs.org/exeunt/-/exeunt-1.1.0.tgz` | 7247 | `cf779b3bd82ff6f44e2c8cfab101ddf11817b1c89d6edb355e53710103d8008b` |
+| `https://registry.npmjs.org/flow-enums-runtime/-/flow-enums-runtime-0.0.6.tgz` | 3705 | `d5ffdc5e937f8c7b176b992cb286575f42c3d17233491279482dd77da2c84ac1` |
+| `https://registry.npmjs.org/follow-redirects/-/follow-redirects-1.16.1.tgz` | 10076 | `6e075d999dc5ff568916954508397b11a537b18bde615986d7bd8b3d3fa1799f` |
+| `https://registry.npmjs.org/fs-extra/-/fs-extra-11.4.1.tgz` | 16504 | `6eee04ab29b3f37ce2fa75014fb3fd4836d8a24a2945edfae11e571409ffcbfa` |
+| `https://registry.npmjs.org/govuk-frontend/-/govuk-frontend-6.5.1.tgz` | 1151196 | `60fb9472e0e2d588f8e3ba6ae85e8056a558ae1f0e96b94682ed68d8c69ff7dc` |
+| `https://registry.npmjs.org/handlebars/-/handlebars-4.7.10.tgz` | 712317 | `14f356e6cadb5b064a156d2b39dd843abba8f4b1a38ee036935adecc1a13ad9f` |
+| `https://registry.npmjs.org/hermes-estree/-/hermes-estree-0.29.1.tgz` | 54695 | `d47d453e904d8e43c76c40d879f6418ff2c397691de9c86e31a9b4196090e845` |
+| `https://registry.npmjs.org/hermes-estree/-/hermes-estree-0.35.0.tgz` | 57228 | `70a298683920cad85d550a09414653e11a2fcfc0a6e1f6ac4f9800431990a913` |
+| `https://registry.npmjs.org/hermes-parser/-/hermes-parser-0.29.1.tgz` | 402341 | `35e836e78583de48e58327481b5bd3cb219fba307e557b4cc0a86a9866f0c228` |
+| `https://registry.npmjs.org/hermes-parser/-/hermes-parser-0.35.0.tgz` | 441373 | `2143c5622ae2603181d29f6a3210ba0b362b461c27bf1550195203b2c8618556` |
+| `https://registry.npmjs.org/i18next-fs-backend/-/i18next-fs-backend-2.6.8.tgz` | 142895 | `381d93b2038685a9a36ba584a67ac3259fc9ff4226e4f6b2d185bd807e283295` |
+| `https://registry.npmjs.org/i18next-http-middleware/-/i18next-http-middleware-3.9.9.tgz` | 26187 | `f74c3b2504d266456eee02300b494a69ee346e7ed398a653c8a51abe19645dd7` |
+| `https://registry.npmjs.org/ignore/-/ignore-7.0.13.tgz` | 41934 | `006c31a51ed977e98f97fc6c01cc3f330b571e4981a39aa178c6b27d397460db` |
+| `https://registry.npmjs.org/immutable/-/immutable-5.1.9.tgz` | 148909 | `9481d33c209e07f82933a0f8132348ee9325d72ce196ebc47a93b9b2703f3068` |
+| `https://registry.npmjs.org/ip-address/-/ip-address-10.7.4.tgz` | 85495 | `f9e1d0dd369c002f43770c6ee35942c8078e76d080a1e18e89113eef865f26ff` |
+| `https://registry.npmjs.org/jest-environment-emit/-/jest-environment-emit-1.2.0.tgz` | 26751 | `a3cba6509e130e074d762d162d3c9ab53b83b2b9bbec52ae230ba9b5677ed8d9` |
+| `https://registry.npmjs.org/js-message/-/js-message-1.0.7.tgz` | 3211 | `315547a01eed7a15b5b627db54c3f5b7e90442973481dfb5c006527ea4ea9d2d` |
+| `https://registry.npmjs.org/js-queue/-/js-queue-2.0.2.tgz` | 4230 | `4a7cdee6ead28f2a9db0a6edfcedaf60823cf517863524747f137dcfa03d9752` |
+| `https://registry.npmjs.org/jsc-safe-url/-/jsc-safe-url-0.2.4.tgz` | 2771 | `a615038fb0c6a6cbbdc9fa7bfb9ab3e9e2e753789636b60faa906daf277f2dac` |
+| `https://registry.npmjs.org/json-cycle/-/json-cycle-1.5.0.tgz` | 4296 | `fd8eb64104cc89bc02be0986af0a3bd5b49a3b841c891d91b468b72509275de7` |
+| `https://registry.npmjs.org/lodash.throttle/-/lodash.throttle-4.1.1.tgz` | 5554 | `1fc83367c8959627885a11258ed7ae4f87ae3d845705e9ea8631099517cbafcd` |
+| `https://registry.npmjs.org/memoize-one/-/memoize-one-5.2.1.tgz` | 7122 | `2ff208d9302918f17e7f1f46132f5e89cdd78585b0e424ef95f8d55ad861a5e5` |
+| `https://registry.npmjs.org/metro-babel-transformer/-/metro-babel-transformer-0.83.8.tgz` | 3618 | `72b17c448a5e7cfd0ace020655ca2f7e4888b742b962af07b28d9b4bdd972633` |
+| `https://registry.npmjs.org/metro-cache-key/-/metro-cache-key-0.83.8.tgz` | 1215 | `cc77d70f01d0e9918e04cf420ca50988dcf3563bcaf46b5dc84e5c74f825b390` |
+| `https://registry.npmjs.org/metro-cache/-/metro-cache-0.83.8.tgz` | 10478 | `2dcb012759937f3fd45ef235ff8d15ba58c76e2090c2a31b74645b84fb77995e` |
+| `https://registry.npmjs.org/metro-config/-/metro-config-0.83.8.tgz` | 22577 | `1696d6408db6ce15ecc465e8bc9c9e9afa0c40bd3b1ca42feddccdc07e10b122` |
+| `https://registry.npmjs.org/metro-core/-/metro-core-0.83.8.tgz` | 8784 | `be9f15ecbbc8ff4c45649f42942471cfe199ba7240ac8f743d155112e96526c5` |
+| `https://registry.npmjs.org/metro-file-map/-/metro-file-map-0.83.8.tgz` | 115554 | `e3184b47e23c576a62be7bad8151ed7a9ad309f53a9972630e01a2d81e997684` |
+| `https://registry.npmjs.org/metro-minify-terser/-/metro-minify-terser-0.83.8.tgz` | 1893 | `f7be62568393f2540110b0d21b3a6a6cfc5e5e8b2c22229c2032c0cbd03d75b7` |
+| `https://registry.npmjs.org/metro-resolver/-/metro-resolver-0.83.8.tgz` | 31686 | `be274c3467527673433d31714d1f259184245374f365851bdc0259aa35d25274` |
+| `https://registry.npmjs.org/metro-runtime/-/metro-runtime-0.83.8.tgz` | 21394 | `a0358d5309469bc61a745adf3796cb8e45a07fa64c9d68dab4bff4078d0ef5f2` |
+| `https://registry.npmjs.org/metro-source-map/-/metro-source-map-0.83.8.tgz` | 35965 | `230a63a4274d16d3750c3c9ab63ef59cb102433aacfdfaabd28fd6b573514eb7` |
+| `https://registry.npmjs.org/metro-symbolicate/-/metro-symbolicate-0.83.8.tgz` | 30416 | `9ef2febaf8731d9368a748b0678559a4cf92bf4d046b54d2468b478bca0e4385` |
+| `https://registry.npmjs.org/metro-transform-plugins/-/metro-transform-plugins-0.83.8.tgz` | 21816 | `ddde2bacbc1097d0e7bc35b67dddfcf83862fd42c852a3c2f11f6f77072faf74` |
+| `https://registry.npmjs.org/metro-transform-worker/-/metro-transform-worker-0.83.8.tgz` | 10612 | `bdfc61ff726d1e493cd6875ed431601f79245534a025af200d89159a1dd5ef2a` |
+| `https://registry.npmjs.org/metro/-/metro-0.83.8.tgz` | 225777 | `81d624afec660127f3162e89b09a145186dc22f25715c62d36a871c9ca9ff4eb` |
+| `https://registry.npmjs.org/mocha/-/mocha-11.7.5.tgz` | 532408 | `acd4a16fa42b6cfc850764270ac21bdd32376a641ac4d581b3d16e9705b8415c` |
+| `https://registry.npmjs.org/monocart-coverage-reports/-/monocart-coverage-reports-2.12.11.tgz` | 532487 | `4706545c64840906414e6735dcbeb3d56e3d633866dc943df59828fa0c0bfdcf` |
+| `https://registry.npmjs.org/multi-sort-stream/-/multi-sort-stream-1.0.4.tgz` | 2986 | `a1b2811f71e413ab3f549b210e48feebf28b8c488a26d02c773a43902e085fe0` |
+| `https://registry.npmjs.org/nan/-/nan-2.29.0.tgz` | 81426 | `038073cb41dbf5cd49df2cd98439dc7ee73f713801e9989426313420693e8af6` |
+| `https://registry.npmjs.org/nanoid/-/nanoid-3.3.19.tgz` | 5694 | `4e371b71e3d5081fa0052356d5c1904e7a60e049864c26f0724cfd32dc303849` |
+| `https://registry.npmjs.org/node-ipc/-/node-ipc-9.2.1.tgz` | 28328 | `10ac01262e7ba29d85dd4c07a1a50191f535389dd874fc982580064b7faac0aa` |
+| `https://registry.npmjs.org/nullthrows/-/nullthrows-1.1.1.tgz` | 1725 | `9a40efecf9bc160c42e986a8193628745b8913ce7317dd942fc0e5649994c9f2` |
+| `https://registry.npmjs.org/ob1/-/ob1-0.83.8.tgz` | 2283 | `8df53cca9805e83c381235e6b6e51fb71373045e84c35eb650eeac0fdfd8cab4` |
+| `https://registry.npmjs.org/open/-/open-7.4.2.tgz` | 12663 | `95437eb98046ba0225c061412811fd7ab93b92e47abd23242021b144eb8eb1b7` |
+| `https://registry.npmjs.org/pngjs/-/pngjs-7.0.0.tgz` | 160939 | `c4b71873d48a692dd5eeb1dcb62185c7aafe40f2180c7cc7f30ec71e89a080be` |
+| `https://registry.npmjs.org/postcss/-/postcss-8.5.28.tgz` | 52195 | `f63d6d9bce28989cd083add85af717c0264e44323d35c909ae99ac934e9641a6` |
+| `https://registry.npmjs.org/promise/-/promise-8.3.0.tgz` | 15021 | `c600d4acbeff7c7f10f6b52acfd209d2b6cdfd80ab92eccd3ee162f401b0b972` |
+| `https://registry.npmjs.org/promisify-child-process/-/promisify-child-process-4.1.2.tgz` | 6820 | `b1d1b79d1d3d186f426da648732a01153adae1ac2f0a53503e14deb2d7d0c8a2` |
+| `https://registry.npmjs.org/react-devtools-core/-/react-devtools-core-6.1.5.tgz` | 4015904 | `cfe3ed5cdc7f8391d504fd35b2239d49ec4bd91d64990e80cdeebfbfe717f499` |
+| `https://registry.npmjs.org/react-native/-/react-native-0.81.6.tgz` | 24768119 | `f82ad6b768934902a986b97ff7b7f67d27a4c3f5c93fbaebd0887257381d60cd` |
+| `https://registry.npmjs.org/react-refresh/-/react-refresh-0.14.2.tgz` | 15124 | `c504db3a5043fdec8251c84fa2d83002489273338abcc408c667f60f412f3e5b` |
+| `https://registry.npmjs.org/sanitize-filename/-/sanitize-filename-1.6.4.tgz` | 6726 | `42936e205a6243aaf030e457bd3e68dca8036aeaf1b761b5ebd1a5a40fabf3ea` |
+| `https://registry.npmjs.org/sass/-/sass-1.105.1.tgz` | 932694 | `f7fc3d2884afb479e48861eaf5c63cf9eb39a8796c902d9bb33eee18834cb2f6` |
+| `https://registry.npmjs.org/scheduler/-/scheduler-0.26.0.tgz` | 10015 | `1bbc5d3401d25b848a2a76d4f8f77d99cc95cdff6db054483a7d4067c279d72a` |
+| `https://registry.npmjs.org/serialize-javascript/-/serialize-javascript-7.1.2.tgz` | 8893 | `74e5f9d5202df2acfa19c064a50b6d937c2fc8d24b06b461f2abe3150f64c8dd` |
+| `https://registry.npmjs.org/shell-quote/-/shell-quote-1.11.0.tgz` | 9588 | `028be526afacb2bf5c6c008a95d5435b5d205135f68bb48afd0bb947610393f1` |
+| `https://registry.npmjs.org/shelljs/-/shelljs-0.10.0.tgz` | 45667 | `0908d4921a9e304cbf0aacf161f31aafaa7d5920b403c1493d1c99646ace9ff2` |
+| `https://registry.npmjs.org/stackframe/-/stackframe-1.3.4.tgz` | 6439 | `fb928460cb97df0ba99a1dfbeec6cb1dc9b12f9a9838a003fda25019ad9be929` |
+| `https://registry.npmjs.org/stream-chain/-/stream-chain-2.2.5.tgz` | 9889 | `f9539671f2c9a4dd367733f6eb017ab37eede1b769d120a88157aeab95cf8db2` |
+| `https://registry.npmjs.org/stream-json/-/stream-json-1.9.1.tgz` | 16707 | `3f8cf5812a4abb69d5a8837944373a0b9e7d3cec3e91a5850c95f211a06ae7c3` |
+| `https://registry.npmjs.org/stylelint/-/stylelint-17.16.0.tgz` | 207027 | `950b26ca89d53ea55cec1b8ca904ff6aa0d93007d360fe840dffdc174e148f66` |
+| `https://registry.npmjs.org/supertest/-/supertest-7.3.0.tgz` | 12725 | `6d3b734289966f9399b4be724fa9d72b87a04762ef0b78814ba026c5ed538f71` |
+| `https://registry.npmjs.org/supports-hyperlinks/-/supports-hyperlinks-4.6.0.tgz` | 3675 | `1417a6719accf4ba6e41c945277adfabe0f18090a60161852b8d4619df9f3030` |
+| `https://registry.npmjs.org/tar-fs/-/tar-fs-3.1.3.tgz` | 5973 | `7116c8ba6bb20aafdbe5d6c1c5aa2c7120f6c4cdd5cadcfbca97f84f45448b4f` |
+| `https://registry.npmjs.org/telnet-client/-/telnet-client-1.2.8.tgz` | 10984 | `d661c5a7c84f5000d49afdf6323640165eed2cbf6e89036f07ba4ae7e4617445` |
+| `https://registry.npmjs.org/throat/-/throat-5.0.0.tgz` | 3411 | `acdada0100c9fc4695e51636b057ed4200fd75b68da3d59aca9246d93200d23e` |
+| `https://registry.npmjs.org/trace-event-lib/-/trace-event-lib-1.4.1.tgz` | 15233 | `c13595405bc9e3aff28031fadd3f5829dfa6c0c67970b938c07b0040f1354c96` |
+| `https://registry.npmjs.org/ts-jest/-/ts-jest-29.4.14.tgz` | 77484 | `7ca70a3fa5162598d616d838ba28a9a7f6b6cccdaf196c2fdc6ab642e4ca4ac3` |
+| `https://registry.npmjs.org/type-fest/-/type-fest-0.7.1.tgz` | 10110 | `23518bcb4ad6bafc7892e08e83119089732ce23462c87fb002c09ccd701c6293` |
+| `https://registry.npmjs.org/undici/-/undici-7.30.0.tgz` | 401782 | `afa0d7be8598012c601fff7ed0fdea01868184f5a223a6f656a4fce1da077819` |
+| `https://registry.npmjs.org/webpack/-/webpack-5.111.1.tgz` | 2422918 | `6d1f5b3890768c6669417f040363b2811e56cc26a9d90556742aaf598e02a39c` |
+| `https://registry.npmjs.org/ws/-/ws-8.22.0.tgz` | 35094 | `ca9b3798b2e11ce8fac6713f50ef0501aa12b09b330623c1dc409dff94e7abc8` |
+
+</details>
+
+
+### Failures and diagnostic controls retained for this amendment
+
+- Before the controller correction, the new direct-handler suite failed **18 missing-draft cases / 16 controls passed**. The real dashboard-refresh journey then reproduced **four GET 500s / 81 other cases skipped** against the old controller. Restoring the controller guard made both roles/languages recover without submission, task update, deletion or a store write.
+- Moving the existing residence error-store case before the successful POSTs produced **five failures / three passes** with the original shared setup. The same order passed **eight cases** with the per-test valid baseline; the original test order was restored before positive combined checks. This proves ordering independence, not the cause of the earlier full-run initiating 404.
+- New fixture setup initially used JSON where the lightweight app only accepts form encoding, omitted the presentation-only NRO flag mock, and required a union-type narrowing/Mocha hook import correction. Those setup/type errors were corrected without changing application assertions, route guards or dependencies.
+- An initial full lint inspected a temporary error-first residence copy containing an extra blank line; lint passed after restoring normal positive source. Current full lint has 452 existing warnings (two legacy warnings disappeared with the direct-handler unit conversion), and changed-file lint retains the existing no-unused-expressions warning in the Pa11y assertion. No lint policy changed.
+- The first complete route execution passed **325/326 cases** but failed the new missing-JavaScript server-startup test with `ECONNRESET`: process-wide fetch pooling could reuse a closed server's connection during same-port restart. Asset readiness now uses private `http.get` connections with `agent: false`; assertions and retries are unchanged. That run also captured one existing dashboard partial-remission 401 followed by a successful retry. The connection correction does not explain that authentication failure.
+- Initial styled smoke execution lacked the real application's language cookie; the bundle cleared the capture's document language and Pa11y correctly failed it. The capture server now supplies the recorded supported language cookie, without changing language code, HTML language or accessibility rules.
+- Broad styled diagnostics exposed obsolete header contrast errors and were stopped rather than reported as passes. Five later SVG-header variants were identified in the complete fixture inventory, alongside 28 older text-logo captures. Two purported captures were Firefox view-source documents, so they were decoded to their original scenario HTML. A stopped diagnostic retained a listener until its owned process was terminated; no successful gate is claimed from that interrupted execution.
+- The subsequent complete styled run passed **344 captures** and failed the decoded requesting-reason page on a missing textarea name. The actual production template already had the correct associations and translated title. The capture now matches those source attributes/title, a real-model template regression verifies them, and its isolated styled rerun passed. Captured form fields/values and other body content were independently compared against the decoded original.
+- Browser containment intentionally blocks external Google Tag Manager/Dynatrace resources. These produce console network errors; the local built CSS/JS and both GDS font files return 200. No browser/runtime download or uncontained launch is used. Cached Chromium **133.0.6943.16** is available-browser evidence, not proof of the pinned browser, an authenticated journey or separate QA acceptance.
+
+The final sequence below runs ordinary commands sequentially, preserving `--no-sparkplug`, the existing Jest retry/discovery/coverage policy and the Pa11y retry helper. The custom Jest environment only logs initiating failures/retries. Direct Mocha execution omits the package script's inherited `--exit`, so successful completion also checks server/browser cleanup. No Jest `--forceExit` is used.
+
+
+### Verification checkpoint before capture bundle-reference completion
+
+`J` is `node --no-sparkplug node_modules/jest/bin/jest.js`; the coverage runs use four workers and route/affected runs use one. All commands use ordinary exits. Locked versions include GOV.UK Frontend 6.5.1, class-validator 0.15.1, Express 5.2.1, express-rate-limit 8.7.0, ip-address 10.7.4, ts-jest 29.4.14 and Webpack 5.111.1.
+
+| Command/check | Checkpoint result |
+| --- | --- |
+| Immutable installation `node .yarn/releases/yarn-4.18.1.cjs install --immutable --mode=skip-build` | Exit 0, including the final fully offline run; installation hooks disabled. |
+| Development build before application-importing tests | Exit 0; seven existing warnings. Assets were unchanged by the backend recovery correction. |
+| Direct check-and-send, residence and existing summary-service focused suites | Three suites / 49 tests passed; exit 0; no initiating failures/retries. |
+| Original error-first residence negative/positive controls | Old baseline: five failures / three passes, expected exit 1. Per-test baseline: eight passes, exit 0. |
+| Recovery regression against old controller | 18 handler failures / 16 controls passed, expected exit 1; four bilingual/role journey failures, expected exit 1. |
+| Latest `J --coverage --maxWorkers=4 --silent` with logging-only observer | **975 suites / 9,249 tests passed**, exit 0, 158.995 seconds. Four existing cases initially failed and passed on their first existing retry; details below. |
+| Latest `J -c jest.functionaltest.config.js --runInBand --silent` | **25 suites / 326 tests passed**, exit 0, 59.269 seconds; zero initiating failures/retries. Includes bodyless and encoded invalid POST recovery before accessing form data. |
+| Actual capture runner via Mocha/ts-node, default complete selection and unchanged Pa11y rules | **345 styled captures passed**, exit 0, about five minutes; zero retry-helper events. Cached contained Chromium 133.0.6943.16; ordinary exit without `--exit`. |
+| Capture assertions against real RequestingReason/production template | 11 cases passed, exit 0; source title and accessible-name associations match. Included in the full unit run. |
+| Independent capture scenario comparison | All 33 retain form actions/fields/values and links/body data outside the source-aligned header/serialization correction. The requesting-reason title and three accessible-name attributes are the explicit additional correction verified against production. |
+| Production Webpack build (`--mode production`, `NODE_ENV=production`) | Exit 0; seven existing warnings. |
+| TypeScript `--noEmit --incremental false` | Exit 0 on the current source. |
+| Current changed-TypeScript ESLint | Exit 0; zero errors and the one existing unused-expression warning in the retained Pa11y assertion. |
+| Dependency pins and functional baseline | Both exit 0; no dependency/discovery policy change. |
+| Chart/preview mapping validation | 41 / 36 mappings valid, both exit 0. Static mapping evidence is distinct from server execution. |
+| Ledger and final inventory | Exactly 719 unique fork paths, unchanged disposition counts; 52 amendment paths and 159 total prospective PR11 paths against current PR10. |
+
+The earlier completed-tree unit and route passes recorded **zero initiating failures/retries** (975/9,249 and 25/326). Final review additionally moved submission-form construction behind the missing-draft check and added a bodyless POST to the same four journey cases. The latest full runs above cover those exact final bytes. Their unit rerun recorded these four initiating failures, all followed by successful existing retries:
+
+- Claimant dashboard: hide awaiting-response links with a requested judgment/buffer disabled — socket hang-up.
+- Claimant dashboard: Welsh party banner — HTTP 401 instead of 200.
+- Children-disability GET — HTTP 401 instead of 200.
+- GA check answers: submit a valid multi-application application at index 2 — missing redirect instead of the expected confirmation URL.
+
+These failures are retained as unresolved suite-instability evidence. The earlier clean runs do not establish their causes, and the one-line missing-draft boundary correction is not asserted to explain or fix them. The changed check-and-send/residence/capture tests had no initiating failures in the final runs. The current route and styled-capture runs required no retries. No assertions, retry counts, timeouts, discovery or coverage thresholds were relaxed.
+
+This amendment does not establish a fresh live audit/hardened registry check, hosted/Jenkins approval, WireMock server/container contracts, authenticated backend journeys, operational acceptance or separate QA. Earlier evidence for unchanged contract/shared-import areas remains historical. The browser checks exercise static captured pages with current assets and an available contained browser; they do not prove the pinned browser matrix or authenticated user acceptance. Those limits are not reasons for another PR.
+
+The inherited duplicate GA summary and eight residual coverage/owner decisions remain explicitly recorded. The whole-upload-draft recovery exclusion is now resolved in PR11. The PR10 local-note link remains owned by PR10; neither `docs/ui-preview.md` nor the excluded pre-existing PR10 notes is modified here.
+
+
+### Capture bundle-reference completion
+
+The final resource audit identified ten additional captures using saved-browser `_files/` paths or historical hashed CSS/JS bundles. Some produced passing Pa11y results while required scripts/styles did not execute, so that earlier 345-case pass is not presented as complete current-asset evidence. The ten files below now reference `/main-dev.css` and `/main-dev.js`, the actual assets built for the capture runner. Three archive-materialized duplicate GTM script tags are removed while their existing bootstrap remains; one archived Dynatrace URL is restored to the same public URL already recorded by the capture set. External telemetry remains blocked throughout verification and is not downloaded.
+
+The capture-inventory regression requires both exact current bundle URLs and rejects saved-page resource references on all 354 full HTML pages. Three historical redirect-body fixtures are not full pages and are unchanged. Existing page selection/ignored/action URLs are unchanged. Form names/values, scenario data and page navigation remain intact. These ten resource-only changes are distinct from the 33 header/serialization corrections, bringing this amendment to **43 capture paths / 52 paths overall** and prospective PR11 to **159 paths**.
+
+- `src/test/utils/mocks/a11y/mock-case-1645882162449409-general-application-1720536653906339-respond-addln-info.html`
+- `src/test/utils/mocks/a11y/mock-case-1645882162449409-qm-view-query.html`
+- `src/test/utils/mocks/a11y/mock-case-1645882162449409-judgment-online-confirm-you-have-been-paid-confirmation.html`
+- `src/test/utils/mocks/a11y/mock-case-1645882162449409-response-general-application-1720536653906339-confirmation.html`
+- `src/test/utils/mocks/a11y/mock-case-1645882162449409-qm-create-query.html`
+- `src/test/utils/mocks/a11y/mock-case-1645882162449409-judgment-online-confirm-you-have-been-paid.html`
+- `src/test/utils/mocks/a11y/mock-case-1645882162449409-general-application-1720536653906339-payment-unsuccessful.html`
+- `src/test/utils/mocks/a11y/mock-case-1645882162449409-qm-share-query.html`
+- `src/test/utils/mocks/a11y/mock-case-1645882162449409-qm-view-query-1-query-details.html`
+- `src/test/utils/mocks/a11y/mock-case-1645882162449409-qm-1-follow-up-query-cya.html`
+
+The affected presentation suite passed 11 cases, and 17 related styled capture cases passed after these corrections. The complete final sequence is rerun below against the corrected resources with failure/retry observation retained.
+
+
+### Final handover after bundle-reference correction
+
+The exact current non-document amendment bytes match the disposable verification source. The final sequence used the resource-corrected captures and did not change application code or test policy between runs.
+
+| Final check | Actual result |
+| --- | --- |
+| Complete actual Pa11y capture runner, current resources | **345 passed**, ordinary exit 0, zero retry-helper events. All **1,380 local CSS/JS/font responses were HTTP 200**, including **690 font responses**. No missing core assets remain in this run. |
+| Complete locked unit coverage, four workers | **975 suites / 9,249 tests passed**, exit 0, 162.233 seconds. One existing GA application-type matrix case retried twice; details below. |
+| Complete locked route discovery, one worker | **25 suites / 326 tests passed**, exit 0; zero initiating failures/retries. |
+| Current TypeScript and changed-TypeScript lint | Both exit 0; lint retains one existing warning, zero errors. Full lint previously passed with zero errors / 452 existing warnings; the last resource-only assertion additions are covered by current changed-file lint. |
+| Development/production builds | Both passed; seven existing warnings each. Production source/assets did not change during the final resource-only correction. |
+| Dependency pins, functional baseline, chart and preview mappings | All passed again; **41 / 36 mappings**. |
+| Resource-only capture data comparison | All ten corrections preserve form actions/fields/values, page data and navigation; only the documented resource tags change. |
+| Diff hygiene and inventory | No whitespace errors; **52 amendment paths** (50 existing, two new) and **159 prospective PR11 paths** against current PR10. |
+
+The final unit observer recorded two initiating failures in the same existing GA application-type case, “restrict addition of another application type when addition application type is not allowed”: HTTP 404, then HTTP 500, before the second existing retry passed. This does not establish the initiating cause or settle the prior socket/authentication/timeout histories. Earlier checkpoint failures and clean runs above remain part of the evidence; none is replaced by the last green result. The new missing-draft recovery, residence baseline and capture-resource checks had no initiating failures in the final sequence.
+
+The SHA-256 digest over the 51 non-document amendment paths (sorted path, NUL, file SHA-256, newline) is:
+
+`2353877fc88e67b4de575b10041d9100d0fcf7664cb9211e1a27410b6fb2b7d1`
+
+The original PR9 document remains an exact byte prefix. The 719-path ledger's membership and primary counts remain unchanged; R091/R092 now explain the current recovery and verification adaptations. This handover leaves all 52 amendment files unstaged and uncommitted for the user. The two new files are `src/test/a11y/captureServer.ts` and `src/integration-test/routes/accessibilityCaptures.integration.test.ts`; the pre-existing untracked PR10 notes must stay out of the commit.
+
+No branch switch, rebase, ref/index/stack update, commit or push is performed. The branch/HEAD, refs, raw index, stack metadata, protected historical log/Yarn binary, manifests/lockfile, PR10 documentation and pre-existing PR10-note contents are preserved. The source fork is untouched and remains clean at the exact reviewed reference. Disposable installations, caches, archives, probes, reports and profiles are removed at handover. Hosted approval, the pinned browser matrix, server/authenticated/operational evidence, owner acceptance and separate QA remain outside this local verification result.
+
+
+## Downstream stack realignment — 23 October 2026
+
+PR3–PR11 are restacked onto corrected PR2 (`28a2ff1c7ca732bb4ca522d3c4bd742ba22fcf36`) by replaying only their own 20 published commits. The intermediate PR3–PR11 trees are byte-identical to their recorded published heads; no earlier PR implementation is replayed as a later PR's own changes. PR1 and PR2 branch tips remain unchanged.
+
+The two files below were present and tested in the completed PR11 working candidate but were omitted from the subsequent 50-file commit `d28da06812c4aff1ecbc23777012b0d43ddc7556`. They are now included in PR11, together with this history record:
+
+- `src/test/a11y/captureServer.ts`
+- `src/integration-test/routes/accessibilityCaptures.integration.test.ts`
+
+Their bytes are unchanged from the earlier locked verification. The 51 non-document amendment paths still match digest `2353877fc88e67b4de575b10041d9100d0fcf7664cb9211e1a27410b6fb2b7d1`. This restack does not constitute fresh unit, route, browser, audit, hosted, operational or QA execution. Earlier verification and retry histories remain recorded above. Dependency-pin/checksum checks, exact tree/diff comparisons and parent ancestry are independently checked for this restack. The pre-existing local PR10 notes remain excluded.
+
+Recorded published heads before realignment:
+
+| PR | Prior head | Own commits replayed |
+| --- | --- | ---: |
+| PR3 | `04b034a3a6c5c5ec5962a20c722606ff564d8622` | 2 |
+| PR4 | `3bf5cc0f132cc34137b8a79bcaf0feea2cb307f3` | 3 |
+| PR5 | `48ee079903c2dd1bcedb4867a3b3d766ba0dd18b` | 1 |
+| PR6 | `ad482968ac2f40fd167952fbf5569cdfe7cfed61` | 3 |
+| PR7 | `1742dc5bfda2fff517a8b4cff30df1cb95421125` | 1 |
+| PR8 | `02ee2aa46e33605455c35a010f5d0eecb0927bc0` | 1 |
+| PR9 | `de84b850131e68b70cbe64c67da7647c94fd0c34` | 1 |
+| PR10 | `f62adf92a68384395a32ca76b57929fdc181fb33` | 4 |
+| PR11 | `d28da06812c4aff1ecbc23777012b0d43ddc7556` | 4 |
+
+## PR11 final corrections — empty evidence and capture initialization (23 October 2026)
+
+These seven existing-file changes complete the two bounded PR11 corrections identified after the restack. Branch and unchanged implementation HEAD are `DTSCCI-6593-fork-tests-reconciliation` / `48d01d39df7ef98d8ee6f0e94df0a860f2d087bd`; current PR10 base is `71def957b7679f563b5733b457fd7f2b1d53081b`. The starting tree has no staged/tracked edits and only the pre-existing untracked PR10 notes. This section supersedes the earlier delegation of structured-empty working forms to the existing upload workflow. It also qualifies the previous asset-loading/Pa11y passes: those did not establish GOV.UK initialization on legacy captures.
+
+### Exact change inventory
+
+| Path | Correction and preserved boundary |
+| --- | --- |
+| `src/main/routes/features/caseProgression/checkAnswersController.ts` | Both existing entry guards require at least one current-role working row and a nonblank saved binary-document reference on every present row. Missing/null forms, empty objects, parsed empty collections, unsaved rows and incomplete references restart existing selection before body access, summary rendering, evidence submission, task updates or deletion. No other-role or submitted-CCD evidence is treated as a working draft. Metadata validation and valid submission/persistence ordering retain their existing owners. |
+| `src/test/unit/routes/features/caseProgression/checkYourAnswersController.test.ts` | Extend direct handlers to 118 cases: all 15 saved-document collections, both roles, missing/empty/incomplete working forms, bodyless/unsigned/signed POSTs, unchanged data and forbidden side effects, plus existing success and independent failures. Give the other role a separate row so a corrupted current-role reference cannot corrupt that preservation fixture too. |
+| `src/integration-test/routes/uploads/repeatedUploads.integration.test.ts` | Extend the existing four bilingual/role refresh journeys: reopen the upload URL after real CCD/dashboard refresh, render no file controls, Continue through the actual parser to fifteen empty collections, then reject empty check-and-send GET/bodyless/unsigned/signed POSTs. Snapshot writes and both roles' submitted documents; retain actionable selection and all existing upload cases. Storage, backend, flags/session and outer-shell boundaries remain substituted; this is not authenticated persistence acceptance. |
+| `src/test/a11y/captureServer.ts` | Read the installed official GOV.UK template's feature-detecting bootstrap and replace only the historical bootstrap in served HTML, preserving script attributes and stored fixture files. Fail setup if the installed template has no recognized bootstrap. Do not hardcode browser support, suppress errors or change production shell/CSP. Existing assets, i18n prerequisite and owned-server lifecycle remain. |
+| `src/integration-test/routes/accessibilityCaptures.integration.test.ts` | Add an HTTP comparison over the actual unchanged 345-capture selection: require the installed production bootstrap and byte-for-byte preservation outside that script. Retain bundle/startup-failure/shutdown checks. Ignored/action URLs remain excluded using the same selection as Pa11y. |
+| `src/test/a11y/a11y.mock-test.ts` | Add one native browser regression proving actual radio initialization, initial hidden state, Yes/No visibility and `aria-expanded`, and unchanged date values. Close its browser in `finally`. Existing 345 Pa11y cases, rules/options and retry helper remain; the extra test is not a 346th capture. The representative route is available in every chunk without adding it to that chunk's Pa11y selection. |
+| `docs/pr9-presentation-review-notes.md` | Update R091/R092 and append this current implementation/verification record; preserve original PR9 history and superseded results. |
+
+The empty state is reachable: dashboard refresh restores submitted CCD documents without the working form; a copied upload URL then renders no selected upload controls, and Continue builds fifteen empty arrays that previously passed validation. The old truthiness check accepted that object. Recovery now preserves existing evidence and does not emit an empty evidence event. A nonempty array alone is also insufficient when its rows have no saved document reference.
+
+The unchanged raw capture inventory contains 354 full pages. Of the 345 selected captures, 262 omit `govuk-frontend-supported`; 52 of those contain conditional controls. The official 6.5.1 bootstrap supplies that marker through browser feature detection. HTTP 200 for a bundle or font cannot establish component initialization. The new native regression fails against the previous served bootstrap and passes after the boundary correction. No capture file is regenerated in this batch.
+
+The candidate still has 159 paths against PR10: all seven amendments are already in that inventory. The 719-path ledger membership and primary disposition counts remain unchanged; R091/R092 now describe these additional mixed-hunk adaptations. The prior 51-path digest remains historical evidence for the earlier amendment, not a digest of this revised source. The broken PR10 documentation link remains owned by PR10; the excluded local PR10 notes are not a deliverable.
+
+### Fresh verification of these corrections
+
+Physical disposable source and cache copies used Node 24.21.0, Yarn 4.18.1, GOV.UK Frontend 6.5.1, class-validator 0.15.1, TypeScript 5.9.3 and ts-jest 29.4.14. The initial offline immutable install lacked 116 archives. Their exact npm URLs, byte sizes and SHA-256 values match the existing 116-entry npm download register above, without differences: 59,921,703 bytes total. Retrieval rejected redirects/proxies and checked package identities. A private localhost archive server filled the cache under write/network containment and closed before the final offline `install --immutable --mode=skip-build` passed. Hooks, telemetry and browser downloads remained disabled; manifests, resolutions and checksums did not change.
+
+All build/test work used an independent localhost-only Node preloader and OS write/network sandbox. The preloader had a different module path from the preview suites' controlled module. Generated assets, output and profiles stayed disposable. No `--forceExit`, retry/discovery/coverage changes, hosted checks, publishing or download-capable wrappers were used.
+
+| Current check | Actual result |
+| --- | --- |
+| Direct check-and-send handlers, serial/open-handle detection | **118 passed**, exit 0, no initiating failures/retries. |
+| Both targeted integration suites after restoration | **90 passed**, exit 0. One existing sparse trial-cost upload case had an HTTP-parser error before its retry passed; see below. |
+| Old guard against current direct-handler tests | **48 expected failures / 70 passes**, exit 1. |
+| Old guard and old capture server against current integration tests | **5 expected failures / 85 passes**, exit 1: four empty-form journeys and the bootstrap comparison. |
+| Old capture server against native initialization regression | **One expected failure**, exit 1: initialization marker never appeared. No missing-export/import failure is counted as behavioral evidence. |
+| Restored native initialization regression | **One passed**, exit 0. |
+| Complete unit coverage, `--no-sparkplug --coverage --maxWorkers=4 --silent` | **975 suites / 9,333 tests passed**, exit 0, 189.424 Jest seconds; five retries in four existing HTTP cases. |
+| Complete routes, `--no-sparkplug -c jest.functionaltest.config.js --runInBand --silent` | **25 suites / 327 tests passed**, exit 0; no initiating failures/retries. |
+| Complete capture runner plus native regression | **345 Pa11y captures + one native interaction passed**, exit 0, no retry-helper events. Final run: 337.647 seconds. |
+| Browser core resources in that final run | **1,384 local CSS/JS/font responses were HTTP 200**, including **692 font responses**; the extra native page accounts for four responses beyond the 345 captures. |
+| Final TypeScript `--noEmit --incremental false` | Passed, exit 0. |
+| Final changed-TypeScript lint | Passed, zero errors/warnings, exit 0. |
+| Full repository lint | Passed, zero errors / 452 warnings, exit 0. |
+| Development and production Webpack builds | Both exit 0, seven warnings each. |
+| Dependency pins and functional baseline | Both exit 0; exact pins remain 61 dependencies, 63 dev dependencies and 58 resolutions. |
+| Diff/source consistency | No whitespace errors; all six tested TypeScript files match the real candidate. Original PR9 prefix and 719 ledger membership/counts remain preserved. |
+
+Browser execution used cached HeadlessChrome 133.0.6943.16 with private profiles/crash outputs and OS containment, rather than claiming pinned-browser acceptance. A verification-only launcher chose an owned ephemeral port; the committed chunk-port behavior is unchanged. The native regression checks the real built bundle rather than manually adding the support marker. One browser error matching the existing language-toggle assumption (`Cannot set properties of undefined (setting 'href')`) was recorded; no error-free-browser claim is made or unrelated production change included.
+
+The full-unit observer recorded HTTP 401s in the existing defendant/small-claim dashboard, GA-link dashboard and stored citizen-response-type cases. The Welsh-party-banner case failed its text assertion twice before passing. That is five initiating failures/retries across four cases. The earlier targeted integration retry was `resumes a sparse saved form and adds trialCosts without losing existing documents (claimant=true)`, with `Parse Error: Expected HTTP/, RTSP/ or ICE/`. The later clean route run does not establish those initiating causes. No new direct-handler case retried.
+
+Initial setup/test-authoring failures remain separate: the first bootstrap comparison included ignored/action URLs and received 404; it now uses the actual existing Pa11y selection. The first native-browser launch bypassed the disposable hook through Puppeteer's default export, and the OS sandbox denied shared Chromium writes. Correcting both export paths selected the cached contained browser without relaxing containment. The intentional negative-control sources were restored before positive/full runs. Existing peer/deprecation, lint and Sass warnings remain recorded.
+
+This batch does not claim fresh Pact/server/container execution, authenticated saving, operational Redis/limiter/telemetry evidence, formal exclusion/phase attribution or separate QA. Earlier results remain historical. The user will commit and push these seven unstaged existing-file changes; no branch/ref/index/stack update, commit or push is part of this work. Protected context, pre-existing local notes and the source fork remain unchanged. Disposable installations, archives, caches, probes, reports and browser profiles are removed at handover.

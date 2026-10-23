@@ -68,6 +68,11 @@ describe('General Application - Check your answers', () => {
   });
 
   describe('on POST', () => {
+    beforeEach(() => {
+      // Restore successful persistence after an error scenario, including deferred retries.
+      mockSaveCaseData.mockReset().mockResolvedValue(undefined);
+    });
+
     it('should send the value and redirect', async () => {
       mockGetCaseData.mockImplementation(async () => mockClaim);
       mockSubmitApplication.mockImplementation(() => mockClaim);

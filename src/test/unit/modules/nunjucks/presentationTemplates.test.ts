@@ -8,6 +8,14 @@ import {Claim} from 'models/claim';
 import {Defence} from 'form/models/defence';
 import {CitizenResponseType} from 'form/models/citizenResponseType';
 import {CaseState} from 'form/models/claimDetails';
+import {GenericForm} from 'form/models/genericForm';
+import {HowMuchContinueClaiming} from 'form/models/interest/howMuchContinueClaiming';
+import {AcceptDefendantOffer} from 'models/generalApplication/response/acceptDefendantOffer';
+import {NumberOfChildren} from 'form/models/statementOfMeans/dependants/numberOfChildren';
+import {Dependants} from 'form/models/statementOfMeans/dependants/dependants';
+import {Unemployment} from 'form/models/statementOfMeans/unemployment/unemployment';
+import {UnemploymentDetails} from 'form/models/statementOfMeans/unemployment/unemploymentDetails';
+import {OtherDetails} from 'form/models/statementOfMeans/unemployment/otherDetails';
 
 const text = (element: Element) => element.textContent!.replace(/\s+/g, ' ').trim();
 const cells = (document: Document) => Array.from(document.querySelectorAll('tbody tr')).map(row => Array.from(row.querySelectorAll('td')).map(text));
@@ -31,6 +39,80 @@ function associations(document: Document) {
 }
 
 describe('PR9 official presentation composition', () => {
+  const numericFields: {view: string; field: string[]; name: string; model?: () => object}[] = [
+    {view: 'features/claim/interest/how-much-continue-claiming.njk', field: ['dailyInterestAmount'], name: 'dailyInterestAmount', model: () => new HowMuchContinueClaiming()},
+    {view: 'features/claimantResponse/ccj/repayment-plan-instalments.njk', field: ['amount'], name: 'amount'},
+    {view: 'features/generalApplication/response/accept-defendant-offer.njk', field: ['amountPerMonth'], name: 'amountPerMonth', model: () => new AcceptDefendantOffer()},
+    {view: 'features/response/admission/how-much-have-you-paid.njk', field: ['amount'], name: 'amount'},
+    {view: 'features/response/admission/partialAdmission/how-much-do-you-owe.njk', field: ['amount'], name: 'amount'},
+    ...['under11', 'between11and15', 'between16and19'].map(name => ({
+      view: 'features/response/statementOfMeans/dependants/dependants.njk', field: ['numberOfChildren', name], name,
+      model: () => new Dependants(true, new NumberOfChildren()),
+    })),
+    ...['years', 'months'].map(name => ({
+      view: 'features/response/statementOfMeans/unemployment.njk', field: ['unemploymentDetails', name], name,
+      model: () => new Unemployment(undefined, new UnemploymentDetails(), new OtherDetails()),
+    })),
+  ];
+  it.each(numericFields.flatMap(input => ['en', 'cy'].flatMap(language =>
+    [undefined, null, 0, 25, 'invalid-number', NaN].map(value => ({...input, language, value})),
+  )))('preserves the raw $name attribute in $view ($language, $value)', ({view, field, name, model: makeModel, language, value}) => {
+    const locals = presentationFormContext(view, language, 'saved');
+    const model = makeModel ? makeModel() : locals.form.model;
+    let target = model as unknown as Record<string, unknown>;
+    for (const key of field.slice(0, -1)) target = target[key] as Record<string, unknown>;
+    target[field[field.length - 1]] = value;
+    const dom = new JSDOM(renderPresentation(view, {...locals, form: new GenericForm(model)}, language));
+    try {
+      const input = dom.window.document.querySelector<HTMLInputElement>(`input[name="${name}"]`)!;
+      expect(input).not.toBeNull();
+      expect(input.getAttribute('value') ?? '').toBe(value == null ? '' : String(value));
+      expect(input.type).toBe('number');
+      expect(input.form!.method).toBe('post');
+      expect(input.form!.querySelector('input[name="_csrf"]')).not.toBeNull();
+    } finally {dom.window.close();}
+  });
+
+  it.each(['en', 'cy'])('uses the respondent agreement title without relying on a controller pageTitle (%s)', language => {
+    const locals = presentationFormContext('features/generalApplication/respondent-agreement.njk', language);
+    const dom = new JSDOM(renderPresentation('features/generalApplication/respondent-agreement.njk', {...locals, pageTitle: undefined}, language));
+    try {
+      expect(dom.window.document.title).toContain(formControlTranslate(language)('PAGES.GENERAL_APPLICATION.RESPONDENT_AGREEMENT.TITLE'));
+      expect(dom.window.document.querySelector('form')!.method).toBe('post');
+    } finally {dom.window.close();}
+  });
+
+  it.each(['en', 'cy'])('renders ordered opponent timeline rows or a separate PDF fallback (%s)', language => {
+    const view = 'features/response/timelineOfEvents/defendant-timeline.njk';
+    const form = new GenericForm({rows: [], comment: 'Saved comment'});
+    const rows = [
+      {value: {timelineDate: '2024-01-01', timelineDescription: 'First <event>'}},
+      {value: {timelineDate: '2024-02-02', timelineDescription: 'Second & last'}},
+    ];
+    for (const theirTimeline of [rows, []]) {
+      const dom = new JSDOM(renderPresentation(view, {form, theirTimeline, pdfUrl: '/timeline.pdf', today: new Date('2026-10-22T00:00:00Z')}, language));
+      try {
+        const document = dom.window.document;
+        if (theirTimeline.length) {
+          expect(Array.from(document.querySelectorAll('tbody tr td:last-child')).map(text)).toEqual(['First <event>', 'Second & last']);
+          expect(document.querySelectorAll('thead th[scope="col"]')).toHaveLength(2);
+          expect(document.getElementById('timeline-link')).toBeNull();
+        } else {
+          expect(document.querySelector('table')).toBeNull();
+          const link = document.getElementById('timeline-link')!;
+          expect(link.getAttribute('href')).toBe('/timeline.pdf');
+          expect(link.getAttribute('target')).toBe('_blank');
+          expect(link.getAttribute('rel')).toContain('noopener');
+          expect(link.closest('table')).toBeNull();
+        }
+        expect(document.querySelector('event')).toBeNull();
+        expect(document.querySelector('textarea[name="comment"]')!.textContent).toBe('Saved comment');
+      } finally {dom.window.close();}
+    }
+    const empty = new JSDOM(renderPresentation(view, {form, theirTimeline: [], today: new Date('2026-10-22T00:00:00Z')}, language));
+    try {expect(empty.window.document.querySelector('table, #timeline-link')).toBeNull();} finally {empty.window.close();}
+  });
+
   const yesNoPostCases = [
     {
       name: 'claim language', view: 'features/claim/claim-bilingual-language-preference.njk',

@@ -1,4 +1,6 @@
 import fs from 'fs';
+import {GenericForm} from 'form/models/genericForm';
+import {RequestingReason} from 'models/generalApplication/requestingReason';
 import path from 'path';
 import {JSDOM} from 'jsdom';
 import {configuredPresentationEnvironment, presentationFormContext, renderPresentation} from '../../../utils/renderPresentationPages';
@@ -18,6 +20,14 @@ describe('PR9 bounded accessibility captures', () => {
     let enhanced = 0;
     for (const name of files) {
       const dom = new JSDOM(fs.readFileSync(path.join(directory, name), 'utf8')); const document = dom.window.document;
+      expect(document.querySelector('body#viewsource')).toBeNull();
+      expect(document.querySelector('.govuk-header__logotype-text')).toBeNull();
+      expect(document.querySelector('.govuk-header__service-name')).toBeNull();
+      if (document.querySelector('.govuk-header')) {
+        expect(document.querySelector('link[rel="stylesheet"][href="/main-dev.css"]')).not.toBeNull();
+        expect(document.querySelector('script[src="/main-dev.js"]')).not.toBeNull();
+        expect(document.querySelector('[src*="_files/"], [href*="_files/"]')).toBeNull();
+      }
       const header = document.querySelector('.civil-header');
       if (header) {
         enhanced++;
@@ -36,7 +46,7 @@ describe('PR9 bounded accessibility captures', () => {
       }
       dom.window.close();
     }
-    expect(enhanced).toBe(321);
+    expect(enhanced).toBe(353);
   });
   it('matches the query-start capture legend to the production caption and title', () => {
     const file = 'mock-case-1645882162449409-qm-start.html';
@@ -90,4 +100,61 @@ describe('PR9 bounded accessibility captures', () => {
     }
     dom.window.close();
   });
+});
+
+it.each([
+  'mock-claim-task-list.html',
+  'mock-case-1645882162449409-response-task-list.html',
+  'mock-case-1645882162449409-claimant-response-task-list.html',
+])('keeps captured task headings outside legends and empty fieldsets: %s', file => {
+  const dom = new JSDOM(fs.readFileSync(path.join(directory, file), 'utf8'));
+  try {
+    const heading = dom.window.document.querySelector('h1')!;
+    expect(heading.closest('legend, fieldset')).toBeNull();
+    expect(heading.classList.contains('govuk-heading-l')).toBe(true);
+    if (file === 'mock-case-1645882162449409-response-task-list.html') expect(heading.id).toBe('task-list-heading');
+  } finally {dom.window.close();}
+});
+
+it.each([
+  {file: 'mock-case-1645882162449409-response-statement-of-means-dependants.html', names: ['under11', 'between11and15', 'between16and19']},
+  {file: 'mock-case-1645882162449409-ccj-repayment-plan.html', names: ['amount']},
+  {file: 'mock-case-1645882162449409-response-general-application-1720536653906339-accept-defendant-offer.html', names: ['amountPerMonth']},
+])('keeps missing captured numeric attributes blank: $file', ({file, names}) => {
+  const dom = new JSDOM(fs.readFileSync(path.join(directory, file), 'utf8'));
+  try {
+    for (const name of names) {
+      const input = dom.window.document.querySelector<HTMLInputElement>(`input[name="${name}"]`)!;
+      expect(input).not.toBeNull();
+      expect(input.getAttribute('value') ?? '').toBe('');
+    }
+  } finally {dom.window.close();}
+});
+
+it('gives the respondent-agreement capture the page-specific title', () => {
+  const file = 'mock-case-1645882162449409-response-general-application-1720536653906339-respondent-agreement.html';
+  const dom = new JSDOM(fs.readFileSync(path.join(directory, file), 'utf8'));
+  try {
+    expect(dom.window.document.title).toContain(formControlTranslate('en')('PAGES.GENERAL_APPLICATION.RESPONDENT_AGREEMENT.TITLE'));
+  } finally {dom.window.close();}
+});
+
+it('matches the recovered requesting-reason capture to the production accessible name and title', () => {
+  const file = 'mock-case-1645882162449409-general-application-requesting-reason.html';
+  const captured = new JSDOM(fs.readFileSync(path.join(directory, file), 'utf8'));
+  const current = new JSDOM(renderPresentation('features/generalApplication/requesting-reason.njk', {
+    form: new GenericForm(new RequestingReason('')),
+  }));
+  try {
+    for (const document of [captured.window.document, current.window.document]) {
+      const input = document.querySelector('textarea[name="text"]')!;
+      expect(input.getAttribute('aria-labelledby')).toBe('reason-heading');
+      expect(document.getElementById('reason-heading')!.textContent!.trim()).toBe(formControlTranslate('en')('PAGES.GENERAL_APPLICATION.APPLICATION_REASON.ENTER_REASONS'));
+      expect(input.closest('form')!.getAttribute('aria-labelledby')).toBe('reason-heading');
+      expect(document.title).toContain(formControlTranslate('en')('PAGES.GENERAL_APPLICATION.APPLICATION_REASON.WHY_REQUESTING'));
+    }
+  } finally {
+    captured.window.close();
+    current.window.close();
+  }
 });
