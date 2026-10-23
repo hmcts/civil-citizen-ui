@@ -4,6 +4,7 @@ import {FILE_SIZE_LIMIT} from 'form/validators/isFileSize';
 import {createInvalidFileContentError, isFileContentAllowed} from 'common/utils/fileContentTypeUtils';
 
 const multer = require('multer');
+const {Logger} = require('@hmcts/nodejs-logging');
 
 const rejectIfFileContentInvalid = (req: Request): boolean => {
   const files: Express.Multer.File[] = [];
@@ -28,7 +29,6 @@ const clearUploadedFiles = (req: Request): void => {
 };
 
 const handleMulterResult = (req: Request, err: any, loggerName: string, next: NextFunction): void => {
-  const {Logger} = require('@hmcts/nodejs-logging');
   const logger = Logger.getLogger(loggerName);
 
   if (err) {
@@ -83,7 +83,9 @@ export function clearFileUploadSession(req: { session?: { fileUpload?: string; f
   }
 }
 
-export const createMulterUpload = (fileSizeLimit: number = FILE_SIZE_LIMIT) => {
+export const MAX_FILES_PER_UPLOAD = 10;
+
+export const createMulterUpload = (fileSizeLimit: number = FILE_SIZE_LIMIT, maxFiles?: number) => {
   const storage = multer.memoryStorage({
     limits: {
       fileSize: fileSizeLimit,
@@ -94,6 +96,7 @@ export const createMulterUpload = (fileSizeLimit: number = FILE_SIZE_LIMIT) => {
     storage: storage,
     limits: {
       fileSize: fileSizeLimit,
+      ...(maxFiles && {files: maxFiles}),
     },
   });
 };
@@ -120,6 +123,16 @@ export const createMulterErrorMiddlewareForSingleField = (
   };
 };
 
+export const createMulterErrorMiddlewareForMultipleFiles = (
+  fieldName: string,
+  loggerName = 'uploadDocumentsController',
+) => {
+  return (req: Request, res: Response, next: NextFunction) => {
+    const upload = createMulterUpload(FILE_SIZE_LIMIT, MAX_FILES_PER_UPLOAD);
+    upload.array(fieldName)(req, res, (err: any) => handleMulterResult(req, err, loggerName, next));
+  };
+};
+
 export const createFileUploadError = (
   category: string,
   index: string | number,
@@ -143,6 +156,8 @@ export const createFileUploadError = (
 export const getMulterErrorConstraint = (multerError: any): string => {
   if (multerError.code === 'LIMIT_FILE_SIZE') {
     return 'ERRORS.VALID_SIZE_FILE';
+  } else if (multerError.code === 'LIMIT_FILE_COUNT') {
+    return 'ERRORS.TOO_MANY_FILES';
   } else if (multerError.code === 'LIMIT_UNEXPECTED_FILE' || multerError.field) {
     return 'ERRORS.VALID_MIME_TYPE_FILE';
   }
@@ -152,6 +167,42 @@ export const getMulterErrorConstraint = (multerError: any): string => {
 export const extractCategoryAndIndex = (submitAction: string): [string, string] => {
   const parts = submitAction.split(/[[\]]/).filter((word: string) => word !== '');
   return [parts[0], parts[1]];
+};
+
+export const collectDocumentUrls = (value: unknown, urls: Set<string> = new Set<string>(), seen: WeakSet<object> = new WeakSet()): Set<string> => {
+  if (!value || typeof value !== 'object' || seen.has(value)) {
+    return urls;
+  }
+  seen.add(value);
+  Object.entries(value).forEach(([key, child]) => {
+    if (key === 'document_url' && typeof child === 'string' && child) {
+      urls.add(child);
+    } else {
+      collectDocumentUrls(child, urls, seen);
+    }
+  });
+  return urls;
+};
+
+export const deleteRemovedDocuments = async (
+  req: Request,
+  savedDraft: unknown,
+  updatedForm: unknown,
+  civilServiceClient: {deleteDocument: (req: Request, documentId: string) => Promise<void>},
+  loggerName = 'uploadDocumentsController',
+): Promise<void> => {
+  const logger = Logger.getLogger(loggerName);
+  const remaining = collectDocumentUrls(updatedForm);
+  const removed = [...collectDocumentUrls(savedDraft)].filter((url) => !remaining.has(url));
+
+  await Promise.all(removed.map(async (url) => {
+    const documentId = url.substring(url.lastIndexOf('/') + 1);
+    try {
+      await civilServiceClient.deleteDocument(req, documentId);
+    } catch (error) {
+      logger.error(`[DELETE FILE] Could not delete document ${documentId} from document management: ${error?.message || error}`);
+    }
+  }));
 };
 
 export const createUploadOneFileError = () => {
