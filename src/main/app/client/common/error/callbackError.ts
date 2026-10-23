@@ -120,7 +120,7 @@ export function applyCcdFieldErrorsToSummaryRows(
 
   const unmapped: UnmappedCcdFieldInlineError[] = [];
   for (const fieldError of fieldErrors) {
-    const row = rows.find(candidate => candidate.ccdFieldId === fieldError.id);
+    const row = rows.find(candidate => ccdFieldIdsMatch(candidate.ccdFieldId, fieldError.id));
     if (!row) {
       unmapped.push(toUnmappedCcdFieldInlineError(fieldError));
       continue;
@@ -128,6 +128,16 @@ export function applyCcdFieldErrorsToSummaryRows(
     attachCcdFieldErrorToSummaryRow(row, fieldError, errorLabel);
   }
   return unmapped;
+}
+
+export function ccdFieldIdsMatch(rowCcdFieldId: string | undefined, fieldErrorId: string): boolean {
+  if (!rowCcdFieldId) {
+    return false;
+  }
+  if (rowCcdFieldId === fieldErrorId) {
+    return true;
+  }
+  return rowCcdFieldId.endsWith(`.${fieldErrorId}`) || fieldErrorId.endsWith(`.${rowCcdFieldId}`);
 }
 
 export function applyCcdFieldErrorsToSummarySections(
@@ -180,8 +190,10 @@ export const CcdCyaFieldId = {
   APPLICANT1_PARTY_PHONE: 'applicant1.partyPhone',
   RESPONDENT1_PARTY_EMAIL: 'respondent1.partyEmail',
   RESPONDENT1_PARTY_PHONE: 'respondent1.partyPhone',
-  GA_HEARING_EMAIL: 'HearingDetailsEmailID',
-  GA_HEARING_TELEPHONE: 'HearingDetailsTelephoneNumber',
+  GA_HEARING_EMAIL: 'generalAppHearingDetails.HearingDetailsEmailID',
+  GA_HEARING_TELEPHONE: 'generalAppHearingDetails.HearingDetailsTelephoneNumber',
+  GA_RESPONSE_HEARING_EMAIL: 'hearingDetailsResp.HearingDetailsEmailID',
+  GA_RESPONSE_HEARING_TELEPHONE: 'hearingDetailsResp.HearingDetailsTelephoneNumber',
   APPLICANT1_MEDIATION_EMAIL: 'applicant1LiPResponseCarm.alternativeMediationEmail',
   APPLICANT1_MEDIATION_TELEPHONE: 'applicant1LiPResponseCarm.alternativeMediationTelephone',
   RESPONDENT1_MEDIATION_EMAIL: 'respondent1LiPResponseCarm.alternativeMediationEmail',

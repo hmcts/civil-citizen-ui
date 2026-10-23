@@ -26,6 +26,8 @@ import {PartyType} from 'models/partyType';
 import {CaseRole} from 'form/models/caseRoles';
 import {GeneralApplication} from 'models/generalApplication/GeneralApplication';
 import {QualifiedStatementOfTruth} from 'models/generalApplication/QualifiedStatementOfTruth';
+import {CallbackError} from 'client/common/error/callbackError';
+import {HearingContactDetails} from 'models/generalApplication/hearingContactDetails';
 
 jest.mock('../../../../../../../main/modules/oidc');
 jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
@@ -170,5 +172,32 @@ describe('General application - response - check your answers', () => {
         });
     });
 
+    it('should re-render with GDS errors when submitApplicationResponse throws CallbackError with field errors', async () => {
+      mockGetCaseData.mockResolvedValue(new Claim());
+      mockGenerateRedisKey.mockReturnValue('123');
+      const gaResponse = new GaResponse();
+      gaResponse.generalApplicationType = [ApplicationTypeOption.VARY_PAYMENT_TERMS_OF_JUDGMENT];
+      gaResponse.hasUnavailableDatesHearing = YesNo.NO;
+      gaResponse.hearingContactDetails = {
+        telephoneNumber: '07123456789',
+        emailAddress: 'bad^email@test.com',
+      } as HearingContactDetails;
+      jest.spyOn(gaStoreResponseService, 'getDraftGARespondentResponse').mockResolvedValue(gaResponse);
+      mockSubmitApplicationResponse.mockRejectedValue(new CallbackError(
+        [],
+        [],
+        [{id: 'hearingDetailsResp.HearingDetailsEmailID', message: 'Enter a valid email'}],
+      ));
+      await request(app)
+        .post(constructResponseUrlWithIdAndAppIdParams('1234567', '345', GA_RESPONSE_CHECK_ANSWERS_URL))
+        .send({signed: true, name: 'Mr Applicant'})
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Enter a valid email');
+          expect(res.text).toContain('href="#ccd-field-hearingDetailsResp-HearingDetailsEmailID"');
+          expect(res.text).toContain('id="ccd-field-hearingDetailsResp-HearingDetailsEmailID"');
+          expect(res.text).toContain('govuk-error-message');
+        });
+    });
   });
 });
