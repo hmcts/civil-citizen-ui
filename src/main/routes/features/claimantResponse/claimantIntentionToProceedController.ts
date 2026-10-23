@@ -34,7 +34,7 @@ claimantIntentionToProceedController.get(CLAIMANT_RESPONSE_INTENTION_TO_PROCEED_
 claimantIntentionToProceedController.post(CLAIMANT_RESPONSE_INTENTION_TO_PROCEED_URL, async (req, res, next) => {
   try {
     const claimId = req.params.id;
-    const claimantIntentionToProceed = new GenericForm(new GenericYesNo(req.body.option, 'ERRORS.VALID_YES_NO_SELECTION'));
+    const claimantIntentionToProceed = new GenericForm(new GenericYesNo(req.body.option, 'ERRORS.VALID_INTENTION_TO_PROCEED'));
     claimantIntentionToProceed.validateSync();
 
     if (claimantIntentionToProceed.hasErrors()) {

@@ -168,7 +168,82 @@ describe('Citizen date of birth', () => {
         .send('day=1')
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.VALID_FOUR_DIGIT_YEAR'));
+          expect(res.text).toContain('Date of birth must include a 4-digit year');
+        });
+    });
+    it.each(['0', '00', '000'])('should return date of birth 4-digit year error when year is %s', async (invalidYear) => {
+      await request(app)
+        .post(DOB_URL)
+        .send(`year=${invalidYear}`)
+        .send('month=1')
+        .send('day=1')
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Date of birth must include a 4-digit year');
+          expect(res.text).not.toContain(t('ERRORS.VALID_FOUR_DIGIT_YEAR'));
+        });
+    });
+    it('should return date of birth valid month error when month is invalid', async () => {
+      await request(app)
+        .post(DOB_URL)
+        .send('year=2000')
+        .send('month=13')
+        .send('day=1')
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Date of birth must include a valid month');
+          expect(res.text).not.toContain(t('ERRORS.VALID_MONTH'));
+        });
+    });
+    it('should return date of birth valid day error when day is invalid', async () => {
+      await request(app)
+        .post(DOB_URL)
+        .send('year=2000')
+        .send('month=1')
+        .send('day=32')
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Date of birth must include a valid day');
+          expect(res.text).not.toContain(t('ERRORS.VALID_DAY'));
+        });
+    });
+    it('should return date of birth day, month and year errors when all are invalid', async () => {
+      await request(app)
+        .post(DOB_URL)
+        .send('year=0')
+        .send('month=13')
+        .send('day=40')
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Date of birth must include a valid day');
+          expect(res.text).toContain('Date of birth must include a valid month');
+          expect(res.text).toContain('Date of birth must include a 4-digit year');
+        });
+    });
+    it('should keep missing field errors when day and month are empty', async () => {
+      await request(app)
+        .post(DOB_URL)
+        .send('year=2000')
+        .send('month=')
+        .send('day=')
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(t('ERRORS.VALID_DAY'));
+          expect(res.text).toContain(t('ERRORS.VALID_MONTH'));
+          expect(res.text).not.toContain('Date of birth must include a valid day');
+          expect(res.text).not.toContain('Date of birth must include a valid month');
+        });
+    });
+    it('should return welsh date of birth 4-digit year error when year is invalid', async () => {
+      await request(app)
+        .post(DOB_URL)
+        .query({lang: 'cy'})
+        .send('year=0')
+        .send('month=1')
+        .send('day=1')
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Rhaid i&#39;r dyddiad geni gynnwys blwyddyn 4 digid');
         });
     });
     it('should accept a valid input', async () => {

@@ -183,7 +183,7 @@ describe('Response - Check answers', () => {
         .expect((res: Response) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(TestMessages.STATEMENT_OF_TRUTH_REQUIRED_MESSAGE);
-          expect(res.text).toContain('Select a court');
+          expect(res.text).toContain('Select a preferred court hearing location');
           expect(res.text).toContain('Tell us why you want the hearing to be held at this court');
         });
     });

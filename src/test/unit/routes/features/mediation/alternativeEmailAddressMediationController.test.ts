@@ -73,13 +73,35 @@ describe('Mediation Email Mediation Confirmation Controller', () => {
           expect(res.header.location).toEqual(MEDIATION_NEXT_3_MONTHS_URL);
         });
     });
-    it('should Valid email when is empty', async () => {
+    it('should return enter alternative email error when is empty', async () => {
       await request(app)
         .post(CONTROLLER_URL)
         .send({alternativeEmailAddress: ''})
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.ENTER_VALID_EMAIL);
+          expect(res.text).toContain('Enter an alternative email address');
+          expect(res.text).not.toContain(TestMessages.ENTER_VALID_EMAIL);
+        });
+    });
+
+    it('should return enter alternative email error when is missing', async () => {
+      await request(app)
+        .post(CONTROLLER_URL)
+        .send({})
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Enter an alternative email address');
+        });
+    });
+
+    it('should return welsh enter alternative email error when is empty', async () => {
+      await request(app)
+        .post(CONTROLLER_URL)
+        .query({lang: 'cy'})
+        .send({alternativeEmailAddress: ''})
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Rhowch gyfeiriad e-bost amgen');
         });
     });
 

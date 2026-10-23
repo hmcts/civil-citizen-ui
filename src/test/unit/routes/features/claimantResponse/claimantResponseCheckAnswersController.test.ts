@@ -127,7 +127,7 @@ describe('Claimant Response - Check answers', () => {
         .expect((res: Response) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain('Tell us if you believe the hearing requirement details on this page are true');
-          expect(res.text).toContain('Select a court');
+          expect(res.text).toContain('Select a preferred court hearing location');
           expect(res.text).toContain('Tell us why you want the hearing to be held at this court');
         });
     });

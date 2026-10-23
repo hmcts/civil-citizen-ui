@@ -14,6 +14,7 @@ import {OptionalDateFourDigitValidator} from 'common/form/validators/optionalDat
 import {OptionalDateNotInPastValidator} from 'common/form/validators/optionalDateNotInPastValidator';
 import {DateConverter} from 'common/utils/dateConverter';
 import {addMonths} from 'common/utils/dateUtils';
+import {toOptionalNumber} from 'common/utils/numberConverter';
 import { UnavailableDateType } from '../directionsQuestionnaire/hearing/unavailableDates';
 
 const MAX_MONTHS = 3;
@@ -64,18 +65,18 @@ export class UnavailableDatePeriodMediation {
     until?: Date;
 
   @ValidateIf(o => o.type === UnavailableDateType.LONGER_PERIOD && (o.endDay || o.endMonth || o.endYear))
-  @Min(1, {message: 'ERRORS.CARM_ENTER_DAY_FOR_UNAVAILABILITY_TO'})
-  @Max(31, {message: 'ERRORS.CARM_ENTER_DAY_FOR_UNAVAILABILITY_TO'})
+  @Min(1, { message: generateErrorMessage })
+  @Max(31, { message: generateErrorMessage })
     endDay?: number;
 
   @ValidateIf(o => o.type === UnavailableDateType.LONGER_PERIOD && (o.endDay || o.endMonth || o.endYear))
-  @Min(1, {message: 'ERRORS.CARM_ENTER_MONTH_FOR_UNAVAILABILITY_TO'})
-  @Max(12, {message: 'ERRORS.CARM_ENTER_MONTH_FOR_UNAVAILABILITY_TO'})
+  @Min(1, { message: generateErrorMessage })
+  @Max(12, { message: generateErrorMessage })
     endMonth?: number;
 
   @ValidateIf(o => o.type === UnavailableDateType.LONGER_PERIOD && (o.endDay || o.endMonth || o.endYear))
   @Validate(OptionalDateFourDigitValidator, {message: 'ERRORS.VALID_FOUR_DIGIT_YEAR'})
-  @Min(1872, {message: 'ERRORS.CARM_ENTER_YEAR_FOR_UNAVAILABILITY_TO'})
+  @Min(1872, { message: generateErrorMessage })
     endYear?: number;
 
   [key: string]: UnavailableDateType | Date | number;
@@ -83,32 +84,39 @@ export class UnavailableDatePeriodMediation {
     this.type = type;
     this.from = DateConverter.convertToDate(paramsFrom?.year, paramsFrom?.month, paramsFrom?.day);
     this.until = DateConverter.convertToDate(paramsUntil?.year, paramsUntil?.month, paramsUntil?.day);
-    this.startYear = Number(paramsFrom?.year);
-    this.startMonth = Number(paramsFrom?.month);
-    this.startDay = Number(paramsFrom?.day);
-    this.endYear = Number(paramsUntil?.year);
-    this.endMonth = Number(paramsUntil?.month);
-    this.endDay = Number(paramsUntil?.day);
+    this.startYear = toOptionalNumber(paramsFrom?.year);
+    this.startMonth = toOptionalNumber(paramsFrom?.month);
+    this.startDay = toOptionalNumber(paramsFrom?.day);
+    this.endYear = toOptionalNumber(paramsUntil?.year);
+    this.endMonth = toOptionalNumber(paramsUntil?.month);
+    this.endDay = toOptionalNumber(paramsUntil?.day);
   }
 }
 
 function generateErrorMessage(args: ValidationArgs<UnavailableDatePeriodMediation>): string {
+  const hasValue = args.value !== undefined;
   switch (args.property) {
     case 'startDay':
       if (args.object.type === UnavailableDateType.SINGLE_DATE) {
-        return 'ERRORS.CARM_ENTER_DAY_FOR_UNAVAILABILITY';
+        return hasValue ? 'ERRORS.CARM_VALID_DAY_FOR_UNAVAILABILITY' : 'ERRORS.CARM_ENTER_DAY_FOR_UNAVAILABILITY';
       }
-      return 'ERRORS.CARM_ENTER_DAY_FOR_UNAVAILABILITY_FROM';
+      return hasValue ? 'ERRORS.CARM_VALID_DAY_FOR_UNAVAILABILITY_FROM' : 'ERRORS.CARM_ENTER_DAY_FOR_UNAVAILABILITY_FROM';
     case 'startMonth':
       if (args.object.type === UnavailableDateType.SINGLE_DATE) {
-        return 'ERRORS.CARM_ENTER_MONTH_FOR_UNAVAILABILITY';
+        return hasValue ? 'ERRORS.CARM_VALID_MONTH_FOR_UNAVAILABILITY' : 'ERRORS.CARM_ENTER_MONTH_FOR_UNAVAILABILITY';
       }
-      return 'ERRORS.CARM_ENTER_MONTH_FOR_UNAVAILABILITY_FROM';
+      return hasValue ? 'ERRORS.CARM_VALID_MONTH_FOR_UNAVAILABILITY_FROM' : 'ERRORS.CARM_ENTER_MONTH_FOR_UNAVAILABILITY_FROM';
     case 'startYear':
       if (args.object.type === UnavailableDateType.SINGLE_DATE) {
-        return 'ERRORS.CARM_ENTER_YEAR_FOR_UNAVAILABILITY';
+        return hasValue ? 'ERRORS.CARM_VALID_YEAR_FOR_UNAVAILABILITY' : 'ERRORS.CARM_ENTER_YEAR_FOR_UNAVAILABILITY';
       }
-      return 'ERRORS.CARM_ENTER_YEAR_FOR_UNAVAILABILITY_FROM';
+      return hasValue ? 'ERRORS.CARM_VALID_YEAR_FOR_UNAVAILABILITY_FROM' : 'ERRORS.CARM_ENTER_YEAR_FOR_UNAVAILABILITY_FROM';
+    case 'endDay':
+      return hasValue ? 'ERRORS.CARM_VALID_DAY_FOR_UNAVAILABILITY_TO' : 'ERRORS.CARM_ENTER_DAY_FOR_UNAVAILABILITY_TO';
+    case 'endMonth':
+      return hasValue ? 'ERRORS.CARM_VALID_MONTH_FOR_UNAVAILABILITY_TO' : 'ERRORS.CARM_ENTER_MONTH_FOR_UNAVAILABILITY_TO';
+    case 'endYear':
+      return hasValue ? 'ERRORS.CARM_VALID_YEAR_FOR_UNAVAILABILITY_TO' : 'ERRORS.CARM_ENTER_YEAR_FOR_UNAVAILABILITY_TO';
     case 'until':
       if ((args.object.startDay || args.object.startMonth || args.object.startYear) && !args.object.until) {
         return 'ERRORS.CARM_ENTER_DATE_FOR_UNAVAILABILITY_TO';

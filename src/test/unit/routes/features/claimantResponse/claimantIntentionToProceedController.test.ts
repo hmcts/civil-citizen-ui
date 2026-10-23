@@ -54,7 +54,14 @@ describe('Claimant intention to proceed Controller', () => {
     it('should return error on empty post', async () => {
       await request(app).post(CLAIMANT_RESPONSE_INTENTION_TO_PROCEED_URL).expect((res) => {
         expect(res.status).toBe(200);
-        expect(res.text).toContain(TestMessages.VALID_YES_NO_SELECTION);
+        expect(res.text).toContain('Select if you want to proceed with the claim or not');
+      });
+    });
+
+    it('should return welsh error on empty post', async () => {
+      await request(app).post(CLAIMANT_RESPONSE_INTENTION_TO_PROCEED_URL).query({lang: 'cy'}).expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain('Dewiswch a ydych am fwrw ymlaen â&#39;r hawliad ai peidio');
       });
     });
 
