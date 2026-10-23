@@ -14,12 +14,7 @@
           {% endfor %}
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
-            <fieldset class="govuk-fieldset">
-              <legend class="govuk-visually-hidden">
-                {{ t('PAGES.GENERAL_APPLICATION.APPLY_HELP_WITH_FEE.WANT_TO_APPLY_HWF_PAGE_TITLE') }}
-              </legend>
-            {{ yesNoRadioButton(t, 'option', 'option', '', form, '', {yes:'COMMON.VARIATION_2.YES', no: 'COMMON.VARIATION_2.NO'}) }}
-            </fieldset>
+            {{ yesNoRadioButton(t, 'option', 'option', t('PAGES.GENERAL_APPLICATION.APPLY_HELP_WITH_FEE.WANT_TO_APPLY_HWF_PAGE_TITLE'), form, '', {yes:'COMMON.VARIATION_2.YES', no: 'COMMON.VARIATION_2.NO', isPageHeading: false, legendClasses: 'govuk-visually-hidden'}) }}
             {% for content in applyHelpWithFeeSelectionButtonContents %}
               {{ itemContent(content,t) }}
             {% endfor %}
