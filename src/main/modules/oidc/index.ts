@@ -215,7 +215,9 @@ export class OidcMiddleware {
     });
 
     app.get(SIGN_OUT_URL, (req: AppRequest, res: Response) => {
-      const returnUrl = req.query.returnUrl === SESSION_TIMEOUT_URL ? SESSION_TIMEOUT_URL : '/';
+      const returnUrl = req.query.returnUrl === `${SESSION_TIMEOUT_URL}?loggedOut=1`
+        ? `${SESSION_TIMEOUT_URL}?loggedOut=1`
+        : '/';
       const params = new URLSearchParams({
         'id_token_hint': req.session.user?.idToken,
         'post_logout_redirect_uri': `${applicationUrl}${returnUrl}`,
