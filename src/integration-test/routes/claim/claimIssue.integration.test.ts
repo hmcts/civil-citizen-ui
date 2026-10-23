@@ -17,6 +17,11 @@ jest.mock('../../../main/modules/draft-store/draftStoreDbService', () => ({
   deleteDraftClaimFromStore: jest.fn().mockResolvedValue(undefined),
 }));
 
+jest.mock('modules/draft-store/paymentSessionStoreService', () => ({
+  ...jest.requireActual('modules/draft-store/paymentSessionStoreService'),
+  saveUserId: jest.fn().mockResolvedValue(undefined),
+}));
+
 jest.mock('routes/guards/checkYourAnswersGuard', () => ({
   checkYourAnswersClaimGuard: (_req: unknown, _res: unknown, next: NextFunction) => next(),
 }));
@@ -32,17 +37,27 @@ import {
   CLAIM_CHECK_ANSWERS_URL,
   CLAIM_COMPLETING_CLAIM_URL,
   CLAIM_CONFIRMATION_URL,
+  CLAIM_FEE_BREAKUP,
+  CLAIM_FEE_PAYMENT_CONFIRMATION_URL,
   CLAIMANT_INDIVIDUAL_DETAILS_URL,
   CLAIMANT_PARTY_TYPE_SELECTION_URL,
   CLAIMANT_TASK_LIST_URL,
 } from '../../../main/routes/urls';
-import {civilServiceClientMock, draftStoreServiceMock} from '../../setup/sharedMocks';
+import {civilServiceClientMock, draftStoreServiceMock, paymentServiceMock} from '../../setup/sharedMocks';
 import {getActiveDraftFromDraftStoreDb} from '../../../main/modules/draft-store/draftStoreDbService';
 import {asUser, installSessionUserInjector} from '../../setup/sessionHelper';
 import {Claim} from '../../../main/common/models/claim';
 import {Party} from '../../../main/common/models/party';
 import {PartyType} from '../../../main/common/models/partyType';
 import {PartyDetails} from '../../../main/common/form/models/partyDetails';
+import {CaseState} from '../../../main/common/form/models/claimDetails';
+import {YesNo} from '../../../main/common/form/models/yesNo';
+import {FeeType} from '../../../main/common/form/models/helpWithFees/feeType';
+import {BusinessProcess} from '../../../main/common/models/businessProcess';
+import {toCUIClaimDetails} from '../../../main/services/translation/convertToCUI/convertToCUIClaimDetails';
+import {saveUserId} from '../../../main/modules/draft-store/paymentSessionStoreService';
+import {t} from 'i18next';
+import {JSDOM} from 'jsdom';
 
 const mockGetActiveDraftFromDb = getActiveDraftFromDraftStoreDb as jest.MockedFunction<
   typeof getActiveDraftFromDraftStoreDb
@@ -191,5 +206,91 @@ describe('Integration: claim-issue journey', () => {
     expect(response.status).toBe(200);
     expect(response.text).toContain('There was a problem');
     expect(response.text).toContain('Select who you are claiming as');
+  });
+
+  describe('payment redirects after CCD rehydration', () => {
+    const paymentReference = 'RC-1234-1234-1234-1234';
+    const feeUrl = CLAIM_FEE_BREAKUP.replace(':id', SUBMITTED_CLAIM_ID);
+    const paymentUrl = 'https://card.payments.service.gov.uk/secure/next';
+    let paymentClaim: Claim;
+    let savedClaims: Claim[];
+
+    beforeEach(() => {
+      paymentClaim = buildSubmittedClaim();
+      paymentClaim.ccdState = CaseState.PENDING_CASE_ISSUED;
+      paymentClaim.claimInterest = YesNo.NO;
+      paymentClaim.claimFee = {calculatedAmountInPence: 10000, code: 'test-fee', version: 1};
+      paymentClaim.businessProcess = Object.assign(new BusinessProcess(), {status: 'FINISHED'});
+      // The real translator restores the reference/status but has no provider nextUrl.
+      paymentClaim.claimDetails = toCUIClaimDetails({
+        claimIssuedPaymentDetails: {reference: paymentReference, status: 'Initiated'},
+      });
+      savedClaims = [];
+      draftStoreServiceMock.getCaseDataFromStore.mockResolvedValue(paymentClaim);
+      draftStoreServiceMock.getDraftClaimFromStore.mockResolvedValue(asStoredDraft(paymentClaim));
+      draftStoreServiceMock.saveDraftClaim.mockImplementation(async (_key: string, claim: Claim) => {
+        savedClaims.push(JSON.parse(JSON.stringify(claim)));
+      });
+      civilServiceClientMock.retrieveClaimDetails.mockResolvedValue(paymentClaim);
+      paymentServiceMock.getFeePaymentStatus.mockReset().mockResolvedValue({status: 'Initiated'});
+      paymentServiceMock.getFeePaymentRedirectInformation.mockReset();
+    });
+
+    afterEach(() => {
+      draftStoreServiceMock.saveDraftClaim.mockReset().mockResolvedValue(undefined);
+      paymentServiceMock.getFeePaymentStatus.mockReset();
+      paymentServiceMock.getFeePaymentRedirectInformation.mockReset();
+    });
+
+    it.each(['pending', 'status lookup failure'])('recovers a translated payment with no URL after %s', async scenario => {
+      const expectedClaim = JSON.parse(JSON.stringify(paymentClaim));
+      expect(paymentClaim.claimDetails.claimFeePayment.nextUrl).toBeUndefined();
+      if (scenario === 'status lookup failure') {
+        paymentServiceMock.getFeePaymentStatus.mockRejectedValue(new Error('status unavailable'));
+      }
+
+      const response = await request(app).post(feeUrl).set(withUser()).set('Cookie', ELIGIBILITY_COOKIE);
+
+      expect(response.status).toBe(302);
+      expect(response.header.location).toBe(feeUrl);
+      expect(paymentServiceMock.getFeePaymentRedirectInformation).not.toHaveBeenCalled();
+      expect(paymentServiceMock.getFeePaymentStatus).toHaveBeenCalledTimes(1);
+      expect(paymentServiceMock.getFeePaymentStatus).toHaveBeenCalledWith(
+        SUBMITTED_CLAIM_ID, paymentReference, FeeType.CLAIMISSUED,
+        expect.objectContaining({session: expect.objectContaining({user: expect.objectContaining({id: USER_ID})})}),
+      );
+      expect(saveUserId).toHaveBeenCalledTimes(1);
+      expect(saveUserId).toHaveBeenCalledWith(SUBMITTED_CLAIM_ID, FeeType.CLAIMISSUED, USER_ID);
+      expect(draftStoreServiceMock.saveDraftClaim).toHaveBeenCalledTimes(1);
+      expect(draftStoreServiceMock.saveDraftClaim).toHaveBeenCalledWith('test-redis-key', paymentClaim, true, USER_ID);
+      expect(savedClaims).toEqual([expectedClaim]);
+
+      const recovery = await request(app).get(response.header.location).set(withUser()).set('Cookie', ELIGIBILITY_COOKIE);
+      expect(recovery.status).toBe(200);
+      expect(recovery.text).toContain(t('PAGES.FEE_AMOUNT.TITLE'));
+      const payButton = JSDOM.fragment(recovery.text).querySelector<HTMLButtonElement>('form button[type="submit"]');
+      expect(payButton?.textContent.trim()).toBe(t('PAGES.FEE_AMOUNT.CONTINUE_TO_PAYMENT') + '(£100)');
+      expect(payButton?.disabled).toBe(false);
+    });
+
+    it('preserves successful payment confirmation without a provider URL', async () => {
+      paymentServiceMock.getFeePaymentStatus.mockResolvedValue({status: 'Success'});
+
+      const response = await request(app).post(feeUrl).set(withUser()).set('Cookie', ELIGIBILITY_COOKIE);
+
+      expect(response.status).toBe(302);
+      expect(response.header.location).toBe(CLAIM_FEE_PAYMENT_CONFIRMATION_URL.replace(':id', SUBMITTED_CLAIM_ID));
+      expect(paymentServiceMock.getFeePaymentRedirectInformation).not.toHaveBeenCalled();
+    });
+
+    it('preserves an existing provider URL for a pending payment', async () => {
+      paymentClaim.claimDetails.claimFeePayment.nextUrl = paymentUrl;
+
+      const response = await request(app).post(feeUrl).set(withUser()).set('Cookie', ELIGIBILITY_COOKIE);
+
+      expect(response.status).toBe(302);
+      expect(response.header.location).toBe(paymentUrl);
+      expect(paymentServiceMock.getFeePaymentRedirectInformation).not.toHaveBeenCalled();
+    });
   });
 });
