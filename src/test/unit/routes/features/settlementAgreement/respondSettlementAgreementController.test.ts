@@ -45,7 +45,7 @@ describe('Respond To Settlement Agreement', () => {
       .reply(200, { id_token: citizenRoleToken });
     nock('http://localhost:4000')
       .post(CIVIL_SERVICE_SUBMIT_EVENT
-        .replace(':submitterId','1234')
+        .replace(':submitterId','550e8400-e29b-41d4-a716-446655440000')
         .replace(':caseId',':id'))
       .reply(200, {});
   });
@@ -237,7 +237,7 @@ describe('Respond To Settlement Agreement', () => {
     it('should redirect to the claimant response task-list if sign agreement checkbox is selected', async () => {
       const mockClaim = getMockClaim();
       (getClaimById as jest.Mock).mockResolvedValueOnce(mockClaim as Claim);
-      app.request.session = <AppSession>{user: <UserDetails>{id: '1234'}};
+      app.request.session = <AppSession>{user: <UserDetails>{id: '550e8400-e29b-41d4-a716-446655440000'}};
       await request(app).post(DEFENDANT_SIGN_SETTLEMENT_AGREEMENT).send({option: 'yes'})
         .expect((res) => {
           expect(res.status).toBe(302);

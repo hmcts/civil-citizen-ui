@@ -219,12 +219,29 @@ export async function createDraftClaimInStoreWithExpiryTime(claimId: string) {
 }
 
 export function generateRedisKey(req: AppRequest) {
-  return getRouteParam(req, 'id') + req.session.user?.id;
+  return buildUserDraftKey(req.params?.id, req.session?.user?.id);
 }
 
 export function generateRedisKeyForGA(req: AppRequest) {
-  return getRouteParam(req, 'appId') + req.session.user?.id;
+  return buildUserDraftKey(req.params?.appId, req.session?.user?.id);
 }
+
+/**
+ * Preserve existing draft keys: a validated UUID is always a 36-character suffix,
+ * so the resource/user boundary is unambiguous without changing persisted keys.
+ * In particular, do not fall back to concatenating missing or arbitrary user IDs.
+ */
+const buildUserDraftKey = (resourceId: unknown, userId: unknown): string => {
+  if (typeof resourceId !== 'string' || !resourceId || /\s/.test(resourceId)
+    || ['undefined', 'null'].includes(resourceId.toLowerCase())) {
+    throw new Error('Invalid draft resource identifier');
+  }
+  if (typeof userId !== 'string' || userId.length !== 36
+    || !/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(userId)) {
+    throw new Error('Invalid draft user identifier');
+  }
+  return resourceId + userId;
+};
 
 export const findClaimIdsbyUserId = async (userId: string): Promise<any> => {
   try {

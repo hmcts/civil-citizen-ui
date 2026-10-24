@@ -15,11 +15,83 @@ import {
 import {app} from '../../../../main/app-instance';
 import {Claim} from 'models/claim';
 import {AppRequest} from 'common/models/AppRequest';
-import {req} from '../../../utils/UserDetails';
 import {TTLCategory} from 'modules/draft-store/ttlConfig';
 
 const REDIS_DATA = require('../../../../main/modules/draft-store/redisData.json');
 const CLAIM_ID = '1645882162449409';
+const USER_ID = '550e8400-e29b-41d4-a716-446655440000';
+
+describe.each([
+  ['claim', 'id', generateRedisKey],
+  ['general application', 'appId', generateRedisKeyForGA],
+] as const)('%s draft key contract', (_journey, param, generateKey) => {
+  const request = (resourceId: unknown, userId: unknown = USER_ID): AppRequest => ({
+    params: {[param]: resourceId}, session: {user: {id: userId}},
+  } as unknown as AppRequest);
+
+  it.each([undefined, null, '', ' ', 'undefined', 'null', 'a b', '123\n', ['123']])(
+    'rejects an invalid resource identifier (%p)', (id) => {
+      expect(() => generateKey(request(id))).toThrow('Invalid draft resource identifier');
+    },
+  );
+
+  it.each([undefined, null, '', ' ', 'undefined', 'null', 'abc', '3abc', '1' + USER_ID, USER_ID + '1', USER_ID + '\n', [USER_ID]])(
+    'rejects an invalid user identifier (%p)', (userId) => {
+      const req = request('123', userId);
+      // Explicitly remove the id for undefined instead of using the helper's default.
+      req.session.user.id = userId as string;
+      expect(() => generateKey(req)).toThrow('Invalid draft user identifier');
+    },
+  );
+
+  it('rejects missing authentication context', () => {
+    expect(() => generateKey({params: {[param]: '123'}} as unknown as AppRequest))
+      .toThrow('Invalid draft user identifier');
+    expect(() => generateKey({params: {[param]: '123'}, session: {}} as AppRequest))
+      .toThrow('Invalid draft user identifier');
+  });
+
+  it('keeps users and resources isolated with the existing fixed-width user suffix', () => {
+    const otherUser = '550e8400-e29b-41d4-a716-446655440001';
+    const keys = [generateKey(request('123')), generateKey(request('12')),
+      generateKey(request('123', otherUser)), generateKey(request('12', otherUser))];
+    expect(new Set(keys).size).toBe(4);
+    expect(keys[0]).toBe('123' + USER_ID);
+    expect(() => generateKey(request('12', '3' + USER_ID))).toThrow();
+  });
+
+  it('preserves opaque resource tokens without trimming or interpreting punctuation', () => {
+    expect(generateKey(request('resource:with-punctuation'))).toBe('resource:with-punctuation' + USER_ID);
+  });
+
+  it('reads, updates and deletes a pre-existing key without migration or TTL reset', async () => {
+    const resourceId = '1645882162449409';
+    const legacyKey = resourceId + USER_ID;
+    const otherKey = resourceId + '550e8400-e29b-41d4-a716-446655440001';
+    const values = new Map([
+      [legacyKey, JSON.stringify({case_data: {id: resourceId, totalClaimAmount: 100}})],
+      [otherKey, JSON.stringify({case_data: {id: resourceId, totalClaimAmount: 200}})],
+    ]);
+    const store = {
+      get: jest.fn(async (key: string) => values.get(key) ?? null),
+      ttl: jest.fn(async () => 120),
+      set: jest.fn(async (key: string, value: string) => values.set(key, value)),
+      del: jest.fn(async (key: string) => values.delete(key)),
+    };
+    app.locals.draftStoreClient = store;
+    const key = generateKey(request(resourceId));
+    const claim = await getCaseDataFromStore(key);
+    expect(claim.totalClaimAmount).toBe(100);
+    claim.totalClaimAmount = 150;
+    await saveDraftClaim(key, claim, false, USER_ID, TTLCategory.JOURNEY_CACHE);
+    expect(store.set).toHaveBeenCalledWith(legacyKey, expect.any(String), 'KEEPTTL');
+    expect((await getCaseDataFromStore(key)).totalClaimAmount).toBe(150);
+    expect((await getCaseDataFromStore(otherKey)).totalClaimAmount).toBe(200);
+    await deleteDraftClaimFromStore(key);
+    expect(values.has(legacyKey)).toBe(false);
+    expect(values.has(otherKey)).toBe(true);
+  });
+});
 
 jest.mock('ioredis', () => {
   return jest.fn().mockImplementation(() => {
@@ -183,22 +255,20 @@ describe('Draft store service to save and retrieve claim', () => {
   });
   it('should generate redis key', async () => {
     //Given
-    const appReq = <AppRequest>req;
-    appReq.params = {id: '12345'};
+    const appReq = {params: {id: '12345'}, session: {user: {id: USER_ID}}} as unknown as AppRequest;
     //When
-    const result = generateRedisKey(<AppRequest>req);
+    const result = generateRedisKey(appReq);
     //Then
-    expect(result).toBe('123451');
+    expect(result).toBe('12345' + USER_ID);
   });
 
   it('should generate redis key for general application', async () => {
     //Given
-    const appReq = <AppRequest>req;
-    appReq.params = {appId: '67890'};
+    const appReq = {params: {appId: '67890'}, session: {user: {id: USER_ID}}} as unknown as AppRequest;
     //When
-    const result = generateRedisKeyForGA(<AppRequest>req);
+    const result = generateRedisKeyForGA(appReq);
     //Then
-    expect(result).toBe('678901');
+    expect(result).toBe('67890' + USER_ID);
   });
 
   it('should remove field from claim data and save on redis', async () => {
@@ -382,12 +452,10 @@ describe('Draft store service to save and retrieve claim', () => {
   it('should delete draft claim using generated redis key when requested', async () => {
     const draftStoreWithData = createMockDraftStore(REDIS_DATA[0]);
     app.locals.draftStoreClient = draftStoreWithData;
-    const appReq = <AppRequest>req;
-    appReq.params = {id: 'draft-id'};
-    appReq.session.user.id = '1';
+    const appReq = {params: {id: 'draft-id'}, session: {user: {id: USER_ID}}} as unknown as AppRequest;
 
     await deleteDraftClaim(appReq, true);
 
-    expect(draftStoreWithData.del).toHaveBeenCalledWith('draft-id1', undefined);
+    expect(draftStoreWithData.del).toHaveBeenCalledWith('draft-id' + USER_ID, undefined);
   });
 });

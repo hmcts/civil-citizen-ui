@@ -13,6 +13,7 @@ const testSession = session(app);
 const citizenRoleToken: string = config.get('citizenRoleToken');
 
 export const USER_DETAILS = {
+  id: '550e8400-e29b-41d4-a716-446655440000',
   accessToken: citizenRoleToken,
   roles: ['citizen'],
 };
