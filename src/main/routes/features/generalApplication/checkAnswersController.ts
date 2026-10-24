@@ -23,20 +23,43 @@ import {convertToPoundsFilter} from 'common/utils/currencyFormat';
 import {YesNo} from 'form/models/yesNo';
 import {QualifiedStatementOfTruth} from 'models/generalApplication/QualifiedStatementOfTruth';
 import {getRouteParam} from 'common/utils/routeParamUtils';
+import {
+  applyCcdFieldErrorsToForm,
+  applyCcdFieldErrorsToSummaryRows,
+  CcdFieldError,
+  isCallbackFieldValidationError,
+} from 'client/common/error/callbackError';
+import {t} from 'i18next';
+import {getLng} from 'common/utils/languageToggleUtils';
 
 const gaCheckAnswersController = Router();
 const viewPath = 'features/generalApplication/check-answers';
 
-async function renderView(claimId: string, claim: Claim, form: GenericForm<StatementOfTruthForm>, req: AppRequest, res: Response): Promise<void> {
+async function renderView(
+  claimId: string,
+  claim: Claim,
+  form: GenericForm<StatementOfTruthForm>,
+  req: AppRequest,
+  res: Response,
+  fieldErrors: CcdFieldError[] = [],
+): Promise<void> {
   const cancelUrl = await getCancelUrl(claimId, claim);
   const claimIdPrettified = caseNumberPrettify(claimId);
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
   const applicationTypeCards = getSummaryCardSections(claimId, claim, lang);
   const summaryRows = getSummarySections(claimId, claim, lang);
+  const unmappedCcdFieldErrors = applyCcdFieldErrorsToSummaryRows(
+    summaryRows,
+    fieldErrors,
+    t('ERRORS.ERROR', {lng: getLng(lang)}),
+  );
   const headerTitle = getDynamicHeaderForMultipleApplications(claim);
   const isBusiness = (claim.isClaimant() && claim.isClaimantBusiness()) || (claim.isDefendant() && claim.isBusiness());
   const backLinkUrl = BACK_URL;
-  res.render(viewPath, { form, cancelUrl, backLinkUrl, headerTitle, claimIdPrettified, claim, applicationTypeCards, summaryRows, isBusiness });
+  res.render(viewPath, {
+    form, cancelUrl, backLinkUrl, headerTitle, claimIdPrettified, claim, applicationTypeCards, summaryRows, isBusiness,
+    unmappedCcdFieldErrors,
+  });
 }
 
 gaCheckAnswersController.get(GA_CHECK_ANSWERS_URL, checkYourAnswersGAGuard, (async (req: AppRequest, res: Response, next: NextFunction) => {
@@ -69,13 +92,21 @@ gaCheckAnswersController.post(GA_CHECK_ANSWERS_URL, checkYourAnswersGAGuard, (as
     if (form.hasErrors()) {
       await renderView(claimId, claim, form, req, res);
       return;
-    } else {
-      await saveStatementOfTruth(redisKey, statementOfTruth);
+    }
+    await saveStatementOfTruth(redisKey, statementOfTruth);
+    try {
       const claimResponse = await submitApplication(req);
       const genApps = claimResponse.generalApplications;
       const genAppId = genApps ? genApps[genApps.length - 1].id : undefined;
       await deleteDraftClaimFromStore(redisKey);
       res.redirect(getRedirectUrl(claimId, claim, applicationFee,genAppId));
+    } catch (error) {
+      if (isCallbackFieldValidationError(error)) {
+        applyCcdFieldErrorsToForm(form, error.fieldErrors);
+        await renderView(claimId, claim, form, req, res, error.fieldErrors);
+        return;
+      }
+      throw error;
     }
   } catch (error) {
     next(error);

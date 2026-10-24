@@ -18,6 +18,7 @@ import {PartyType} from '../../../../../common/models/partyType';
 import {addressToHtml} from '../../../../../common/utils/addressUtils';
 import {YesNo, YesNoUpperCase} from 'form/models/yesNo';
 import {escapeHtml} from 'common/utils/escapeHtml';
+import {CcdCyaFieldId} from 'client/common/error/callbackError';
 
 const changeLabel = (lang: string): string => t('COMMON.BUTTONS.CHANGE', {lng: lang});
 
@@ -55,7 +56,9 @@ export const buildTheirDetailsSection = (claim: Claim, claimId: string, lang: st
     yourDetailsSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.DOB', {lng}), formatDateToFullDate(claim.respondent1.dateOfBirth.date, lng), yourDOBHref, changeLabel(lng), title));
   }
   if (claim.respondent1?.emailAddress?.emailAddress) {
-    yourDetailsSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.EMAIL', {lng}), claim.respondent1.emailAddress.emailAddress, CLAIM_DEFENDANT_EMAIL_URL, changeLabel(lng), title));
+    const emailRow = summaryRow(t('PAGES.CHECK_YOUR_ANSWER.EMAIL', {lng}), claim.respondent1.emailAddress.emailAddress, CLAIM_DEFENDANT_EMAIL_URL, changeLabel(lng), title);
+    emailRow.ccdFieldId = CcdCyaFieldId.RESPONDENT1_PARTY_EMAIL;
+    yourDetailsSection.summaryList.rows.push(emailRow);
   }
   if (claim.isCompany()) {
     const flightDelayed = claim.delayedFlight?.option === YesNo.YES ? YesNoUpperCase.YES : YesNoUpperCase.NO;
@@ -67,6 +70,8 @@ export const buildTheirDetailsSection = (claim: Claim, claimId: string, lang: st
         summaryRow(t('PAGES.CHECK_YOUR_ANSWER.SCHEDULED_DATE_OF_FLIGHT', {lng}), formatDateToFullDate(claim.flightDetails?.flightDate, lng)));
     }
   }
-  yourDetailsSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CONTACT_NUMBER', {lng}), claim.respondent1?.partyPhone?.phone, CLAIM_DEFENDANT_PHONE_NUMBER_URL, changeLabel(lng), title));
+  const phoneRow = summaryRow(t('PAGES.CHECK_YOUR_ANSWER.CONTACT_NUMBER', {lng}), claim.respondent1?.partyPhone?.phone, CLAIM_DEFENDANT_PHONE_NUMBER_URL, changeLabel(lng), title);
+  phoneRow.ccdFieldId = CcdCyaFieldId.RESPONDENT1_PARTY_PHONE;
+  yourDetailsSection.summaryList.rows.push(phoneRow);
   return yourDetailsSection;
 };

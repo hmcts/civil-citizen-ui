@@ -28,6 +28,7 @@ import {
   getApplicationTypeOptionByTypeAndDescription,
 } from 'models/generalApplication/applicationType';
 import {debtPaymentOptions} from 'models/generalApplication/debtPaymentOptions';
+import {CcdCyaFieldId} from 'client/common/error/callbackError';
 import {getListOfNotAllowedAdditionalAppType} from 'services/features/generalApplication/generalApplicationService';
 import {escapeHtml, escapedListItem} from 'common/utils/escapeHtml';
 
@@ -212,16 +213,16 @@ export const addHearingContactDetailsRows = (claimId: string, claim: Claim, lang
   const changeLabel = (): string => t('COMMON.BUTTONS.CHANGE', {lng});
   const rows: SummaryRow[] = [];
   if (claim.generalApplication?.hearingContactDetails) {
-    rows.push(
-      summaryRowWithTextValue(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PREFERRED_TELEPHONE', {lng}),
-        claim.generalApplication.hearingContactDetails.telephoneNumber,
-        constructResponseUrlWithIdParams(claimId, GA_HEARING_CONTACT_DETAILS_URL), changeLabel()),
-    );
-    rows.push(
-      summaryRowWithTextValue(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PREFERRED_EMAIL', {lng}),
-        claim.generalApplication.hearingContactDetails.emailAddress,
-        constructResponseUrlWithIdParams(claimId, GA_HEARING_CONTACT_DETAILS_URL), changeLabel()),
-    );
+    const telephoneRow = summaryRowWithTextValue(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PREFERRED_TELEPHONE', {lng}),
+      claim.generalApplication.hearingContactDetails.telephoneNumber,
+      constructResponseUrlWithIdParams(claimId, GA_HEARING_CONTACT_DETAILS_URL), changeLabel());
+    telephoneRow.ccdFieldId = CcdCyaFieldId.GA_HEARING_TELEPHONE;
+    rows.push(telephoneRow);
+    const emailRow = summaryRowWithTextValue(t('PAGES.GENERAL_APPLICATION.CHECK_YOUR_ANSWER.PREFERRED_EMAIL', {lng}),
+      claim.generalApplication.hearingContactDetails.emailAddress,
+      constructResponseUrlWithIdParams(claimId, GA_HEARING_CONTACT_DETAILS_URL), changeLabel());
+    emailRow.ccdFieldId = CcdCyaFieldId.GA_HEARING_EMAIL;
+    rows.push(emailRow);
   }
   return rows;
 };

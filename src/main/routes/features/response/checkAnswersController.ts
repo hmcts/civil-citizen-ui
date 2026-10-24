@@ -22,6 +22,14 @@ import {ValidationError, Validator} from 'class-validator';
 import {SpecificCourtLocation} from 'models/directionsQuestionnaire/hearing/specificCourtLocation';
 import {getRouteParam} from 'common/utils/routeParamUtils';
 import {validateOtherWitnesses} from 'services/features/directionsQuestionnaire/otherWitnessesService';
+import {
+  applyCcdFieldErrorsToForm,
+  applyCcdFieldErrorsToSummarySections,
+  CcdFieldError,
+  isCallbackFieldValidationError,
+} from 'client/common/error/callbackError';
+import {t} from 'i18next';
+import {getLng} from 'common/utils/languageToggleUtils';
 
 const checkAnswersViewPath = 'features/response/check-answers';
 const validator = new Validator();
@@ -30,13 +38,27 @@ const checkAnswersController = Router();
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('checkAnswersController');
 
-function renderView(req: Request, res: Response, form: GenericForm<StatementOfTruthForm> | GenericForm<QualifiedStatementOfTruth>, claim: Claim, carmApplicable = false, mintiApplicable = false) {
+function renderView(
+  req: Request,
+  res: Response,
+  form: GenericForm<StatementOfTruthForm> | GenericForm<QualifiedStatementOfTruth>,
+  claim: Claim,
+  carmApplicable = false,
+  mintiApplicable = false,
+  fieldErrors: CcdFieldError[] = [],
+) {
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
   const claimId = getRouteParam(req, 'id');
   const summarySections = getSummarySections(claimId, claim, lang, carmApplicable, mintiApplicable);
+  const unmappedCcdFieldErrors = applyCcdFieldErrorsToSummarySections(
+    summarySections?.sections,
+    fieldErrors,
+    t('ERRORS.ERROR', {lng: getLng(lang)}),
+  );
   res.render(checkAnswersViewPath, {
     form,
     summarySections,
+    unmappedCcdFieldErrors,
   });
 }
 
@@ -61,6 +83,8 @@ checkAnswersController.post(RESPONSE_CHECK_ANSWERS_URL, (async (req: Request, re
     const isFullAmountRejected = (req.body.isFullAmountRejected === 'true');
     const redisKey = generateRedisKey(<AppRequest>req);
     const claim = await getCaseDataFromStore(redisKey);
+    const carmApplicable = await isCarmEnabledForCase(claim.submittedDate);
+    const mintiApplicable = await isMintiEnabledForCase(claim.submittedDate);
     const form = new GenericForm((req.body.type === SignatureType.QUALIFIED)
       ? new QualifiedStatementOfTruth(isFullAmountRejected, req.body.signed, req.body.directionsQuestionnaireSigned, req.body.signerName, req.body.signerRole)
       : new StatementOfTruthForm(isFullAmountRejected, req.body.type, req.body.signed, req.body.directionsQuestionnaireSigned));
@@ -76,15 +100,23 @@ checkAnswersController.post(RESPONSE_CHECK_ANSWERS_URL, (async (req: Request, re
     if (form.hasErrors()) {
       const claimId = getRouteParam(req, 'id');
       logger.info(`form has error -  ${claimId}`);
-      renderView(req, res, form, claim);
+      renderView(req, res, form, claim, carmApplicable, mintiApplicable);
       return;
-    } else {
-      logger.info('form has no error');
-      await saveStatementOfTruth(redisKey, form.model);
+    }
+    logger.info('form has no error');
+    await saveStatementOfTruth(redisKey, form.model);
+    try {
       await submitResponse(<AppRequest>req);
       await deleteDraftClaimFromStore(redisKey);
       const claimId = getRouteParam(req, 'id');
       res.redirect(constructResponseUrlWithIdParams(claimId, CONFIRMATION_URL));
+    } catch (error) {
+      if (isCallbackFieldValidationError(error)) {
+        applyCcdFieldErrorsToForm(form, error.fieldErrors);
+        renderView(req, res, form, claim, carmApplicable, mintiApplicable, error.fieldErrors);
+        return;
+      }
+      throw error;
     }
   } catch (error) {
     logger.error(`Error when posting check your answers -  ${error.message}`);

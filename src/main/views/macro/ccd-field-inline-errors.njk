@@ -1,0 +1,16 @@
+{#
+  Fallback inline messages for CCD details.field_errors that could not be
+  remounted onto a Check your answers summary row. Mapped field errors are
+  attached to the row (id matches FormValidationError.href) instead.
+  Expects { id, message, anchorId } from applyCcdFieldErrorsToSummary*.
+#}
+{% macro ccdFieldInlineErrors(fieldErrors, t) %}
+  {% if fieldErrors %}
+    {% for fieldError in fieldErrors %}
+      <p class="govuk-error-message" id="{{ fieldError.anchorId }}">
+        <span class="govuk-visually-hidden">{{ t('ERRORS.ERROR') }}:</span>
+        {{ fieldError.message }}
+      </p>
+    {% endfor %}
+  {% endif %}
+{% endmacro %}

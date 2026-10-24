@@ -15,6 +15,7 @@ import {formatDateToFullDate} from 'common/utils/dateUtils';
 import {PartyType} from 'models/partyType';
 import {addressToHtml} from 'common/utils/addressUtils';
 import {escapeHtml} from 'common/utils/escapeHtml';
+import {CcdCyaFieldId} from 'client/common/error/callbackError';
 
 const changeLabel = (lang: string): string => t('COMMON.BUTTONS.CHANGE', {lng: lang});
 
@@ -52,6 +53,8 @@ export const buildYourDetailsSection = (claim: Claim, claimId: string, lang: str
   if (!claim.isClaimantBusiness() && claim.applicant1?.dateOfBirth?.date) {
     yourDetailsSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.DOB', {lng}), formatDateToFullDate(claim.applicant1.dateOfBirth.date, lng), CLAIMANT_DOB_URL, changeLabel(lng), title));
   }
-  yourDetailsSection.summaryList.rows.push(summaryRow(t(isCarmEnabled? 'PAGES.CHECK_YOUR_ANSWER.CONTACT_NUMBER_NOT_OPTIONAL' : 'PAGES.CHECK_YOUR_ANSWER.CONTACT_NUMBER', {lng}), claim.applicant1?.partyPhone?.phone, CLAIMANT_PHONE_NUMBER_URL, changeLabel(lng), title));
+  const phoneRow = summaryRow(t(isCarmEnabled? 'PAGES.CHECK_YOUR_ANSWER.CONTACT_NUMBER_NOT_OPTIONAL' : 'PAGES.CHECK_YOUR_ANSWER.CONTACT_NUMBER', {lng}), claim.applicant1?.partyPhone?.phone, CLAIMANT_PHONE_NUMBER_URL, changeLabel(lng), title);
+  phoneRow.ccdFieldId = CcdCyaFieldId.APPLICANT1_PARTY_PHONE;
+  yourDetailsSection.summaryList.rows.push(phoneRow);
   return yourDetailsSection;
 };
