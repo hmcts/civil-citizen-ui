@@ -1,11 +1,8 @@
-import {Validate, ValidateIf} from 'class-validator';
-import { EmailValidator } from 'common/form/validators/emailValidator';
-
+// TEMP DTSCCI-5899 QA: EmailValidator removed so invalid email can reach civil-service as field_errors.
+// Demo branch only — do not merge. Revert / delete branch after screenshots.
 export class DefendantEmail {
 
-  @ValidateIf(o => o.emailAddress)
-  @Validate(EmailValidator, {message: 'ERRORS.ENTER_VALID_EMAIL'})
-    emailAddress?: string;
+  emailAddress?: string;
 
   constructor(emailAddress?: string) {
     this.emailAddress = emailAddress;
