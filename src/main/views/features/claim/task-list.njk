@@ -12,9 +12,7 @@
 
       <div class="govuk-grid-row govuk-!-margin-top-0">
         <div class="govuk-grid-column-two-thirds govuk-!-margin-top-0">
-          <legend class="govuk-fieldset__legend govuk-fieldset__legend--l">
-            <h1 class="govuk-fieldset__heading govuk-!-margin-bottom-7">{{ t('PAGES.CLAIM_TASK_LIST.PAGE_TITLE') }}</h1>
-          </legend>
+          <h1 class="govuk-heading-l govuk-!-margin-bottom-7">{{ t('PAGES.CLAIM_TASK_LIST.PAGE_TITLE') }}</h1>
           {% if draftClaimDeletionDate %}
             {{ govukWarningText({
               text: t('PAGES.CLAIM_TASK_LIST.DRAFT_CLAIM_WARNING', {date: draftClaimDeletionDate}),

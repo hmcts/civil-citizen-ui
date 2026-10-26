@@ -42,6 +42,10 @@ describe.each(Object.entries(taskListViews).filter(([name]) => name !== 'dashboa
   it.each(['en', 'cy'])('preserves section numbering, ordering, task copy, status and links (%s)', lang => {
     const fixture = taskListPageFixture(lang);
     const document = parse(renderTaskListPage(view, fixture, lang));
+    expect(document.querySelectorAll('h1')).toHaveLength(1);
+    expect(document.querySelector('h1')!.closest('fieldset, legend')).toBeNull();
+    expect(document.querySelector('legend')).toBeNull();
+    if (view === taskListViews.response) expect(document.querySelector('h1')!.id).toBe('task-list-heading');
     const t = taskListTranslate(lang);
     const sections = journeyTaskListFixture();
     const lists = [...document.querySelectorAll('.govuk-task-list')];
