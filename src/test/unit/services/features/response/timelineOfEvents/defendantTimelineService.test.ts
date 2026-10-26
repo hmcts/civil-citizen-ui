@@ -11,12 +11,36 @@ import {TimelineRow} from '../../../../../../main/common/form/models/timeLineOfE
 import {RejectAllOfClaim} from 'form/models/rejectAllOfClaim';
 import {Party} from 'models/party';
 import {ResponseType} from 'form/models/responseType';
+import {toCUIPartialAdmission} from 'services/translation/convertToCUI/convertToCUIPartialAdmission';
+import {toCUIRejectAllOfClaim} from 'services/translation/convertToCUI/convertToCUIRejectAllOfClaim';
+import {CCDClaim} from 'models/civilClaimResponse';
 
 jest.mock('../../../../../../main/modules/draft-store');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
 
 describe('defendantTimelineService', () => {
   describe('getPartialAdmitTimeline', () => {
+    it.each([ResponseType.PART_ADMISSION, ResponseType.FULL_DEFENCE])(
+      'preserves a comment-only CCD timeline for %s without mutating the stored model', responseType => {
+        const ccd = {respondent1LiPResponse: {timelineComment: 'Saved comment & details'}} as CCDClaim;
+        const claim = new Claim();
+        claim.respondent1 = {responseType};
+        claim.partialAdmission = toCUIPartialAdmission(ccd);
+        claim.rejectAllOfClaim = toCUIRejectAllOfClaim(ccd);
+        const saved = responseType === ResponseType.PART_ADMISSION ? claim.partialAdmission.timeline : claim.rejectAllOfClaim.timeline;
+        expect(saved.rows).toBeUndefined();
+
+        const result = getDefendantTimeline(claim);
+
+        expect(result.comment).toBe('Saved comment & details');
+        expect(result.rows).toHaveLength(4);
+        expect(result.rows.every(row => row.isEmpty())).toBe(true);
+        expect(new Set(result.rows).size).toBe(4);
+        expect(saved.rows).toBeUndefined();
+        expect(saved.comment).toBe('Saved comment & details');
+      },
+    );
+
     it('should return defendant timeline from partial admission when it exists', () => {
       //Given
       const claim = new Claim();
