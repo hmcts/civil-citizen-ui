@@ -44,15 +44,27 @@ export function viewFileStream(res: Response, fileResponse: FileStreamResponse) 
   streamFile(res, fileResponse, fileActionView);
 }
 
+const toContentDisposition = (action: string, fileName: string): string => {
+  // ASCII fallback for old clients; filename* carries the real name (e.g. Welsh characters) per RFC 6266
+  const asciiFallback = fileName.replace(/[^\x20-\x7E]|["\\]/g, '_');
+  return `${action}; filename="${asciiFallback}"; filename*=UTF-8''${encodeURIComponent(fileName)}`;
+};
+
 export function streamFile(res: Response, fileResponse: FileStreamResponse, action: string) {
   const headers: OutgoingHttpHeaders = {
     'Content-Type': fileResponse.contentType,
-    'Content-Disposition': `${action}; filename=${fileResponse.fileName}`,
+    'Content-Disposition': toContentDisposition(action, fileResponse.fileName),
   };
   if (fileResponse.contentLength) {
     headers['Content-Length'] = fileResponse.contentLength;
   }
-  res.writeHead(200, headers);
+  try {
+    res.writeHead(200, headers);
+  } catch (err) {
+    // The stream has not been handed to pipeline yet, so close it here
+    fileResponse.data.destroy();
+    throw err;
+  }
   // Headers are already sent, so a failure here can only be logged; pipeline destroys both streams
   pipeline(fileResponse.data, res, (err) => {
     if (err) {

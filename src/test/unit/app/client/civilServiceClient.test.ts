@@ -388,6 +388,18 @@ describe('Civil Service Client', () => {
       //Then
       await expect(civilServiceClient.retrieveDocumentStream(appReq, 'document-id')).rejects.toEqual({'status': 404});
     });
+
+    it('should destroy the error response stream', async () => {
+      //Given
+      const errorBody = Readable.from(['not found']);
+      const error = {response: {status: 404, data: errorBody}};
+      const mockGet = jest.fn().mockRejectedValueOnce(error);
+      mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl, true);
+      //Then
+      await expect(civilServiceClient.retrieveDocumentStream(appReq, 'document-id')).rejects.toBe(error);
+      expect(errorBody.destroyed).toBe(true);
+    });
   });
   describe('submitDefendantResponseEvent', () => {
     it('should submit defendant response successfully', async () => {

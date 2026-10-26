@@ -449,7 +449,11 @@ export class CivilServiceClient {
         CIVIL_SERVICE_DOWNLOAD_DOCUMENT_URL.replace(':documentId', documentId),
         {...this.getConfig(req), responseType: 'stream'},
       ),
-      `Error when retrieving document, - documentId- ${documentId}`,
+      (err) => {
+        logger.error(`Error when retrieving document, - documentId- ${documentId}`);
+        // The error body is an unread stream; destroy it so the connection to civil-service is released
+        (err as AxiosError<Readable>)?.response?.data?.destroy?.();
+      },
     );
 
     return new FileStreamResponse(getResponseHeaderValue(response.headers['content-type']),
