@@ -1,242 +1,156 @@
-import config from 'config';
-import nock from 'nock';
-import {app} from '../../../../../main/app';
-import {mockCivilClaim} from '../../../../utils/mockDraftStore';
-import {CP_CHECK_ANSWERS_URL} from 'routes/urls';
-import * as checkAnswersService from 'services/features/caseProgression/checkYourAnswers/checkAnswersService';
-import {TestMessages} from '../../../../utils/errorMessageTestConstants';
-import * as draftStoreService from 'modules/draft-store/draftStoreService';
-import {SummarySection, SummarySections} from 'models/summaryList/summarySections';
+import {Request, Response} from 'express';
+import controller from 'routes/features/caseProgression/checkAnswersController';
+import {CP_EVIDENCE_UPLOAD_SUBMISSION_URL, TYPES_OF_DOCUMENTS_URL} from 'routes/urls';
+import {getClaimById} from 'modules/utilityService';
+import {deleteDraftClaimFromStore, generateRedisKey} from 'modules/draft-store/draftStoreService';
+import {getBottomElements, getSummarySections, getTopElements, saveUploadedDocuments} from 'services/features/caseProgression/checkYourAnswers/checkAnswersService';
 import {Claim} from 'models/claim';
+import {CaseProgression} from 'models/caseProgression/caseProgression';
+import {UploadDocumentsUserForm, FileOnlySection} from 'models/caseProgression/uploadDocumentsUserForm';
 import {CaseRole} from 'form/models/caseRoles';
+import {AppRequest} from 'models/AppRequest';
+import {GenericForm} from 'form/models/genericForm';
+import {DocumentUploadSubmissionForm} from 'form/models/caseProgression/documentUploadSubmission';
+import {getUploadDocumentsForm} from 'services/features/caseProgression/caseProgressionService';
+import {createMockResponse, createMockSession, getRouteHandler} from '../../../../utils/getRouteHandler';
 
-jest.mock('modules/draft-store/draftStoreService');
-jest.mock('services/features/caseProgression/checkYourAnswers/checkAnswersService');
-jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
+jest.mock('modules/utilityService', () => ({getClaimById: jest.fn()}));
+jest.mock('modules/draft-store/draftStoreService', () => ({deleteDraftClaimFromStore: jest.fn(), generateRedisKey: jest.fn()}));
+jest.mock('services/features/caseProgression/checkYourAnswers/checkAnswersService', () => ({
+  getTopElements: jest.fn(), getBottomElements: jest.fn(), getSummarySections: jest.fn(), saveUploadedDocuments: jest.fn(),
+}));
+jest.mock('client/civilServiceClient', () => {
+  const updateTaskStatus = jest.fn();
+  return {CivilServiceClient: jest.fn(() => ({updateTaskStatus})), updateTaskStatus};
+});
 
-const mockSummarySections = checkAnswersService.getSummarySections as jest.Mock;
-mockSummarySections.mockReturnValue({} as SummarySections);
-const mockDraftStore = draftStoreService.getCaseDataFromStore as jest.Mock;
-const mockGenerateRedisKey = draftStoreService.generateRedisKey as jest.Mock;
+const updateTaskStatus = jest.requireMock('client/civilServiceClient').updateTaskStatus as jest.Mock;
+const get = getRouteHandler(controller, 'get');
+const post = getRouteHandler(controller, 'post');
+const id = '1645882162449409';
 
-const session = require('supertest-session');
-const testSession = session(app);
-const citizenRoleToken: string = config.get('citizenRoleToken');
+describe.each([CaseRole.CLAIMANT, CaseRole.DEFENDANT])('case-progression check and send (%s)', role => {
+  let claim: Claim;
+  let req: AppRequest;
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
+  const own = role === CaseRole.CLAIMANT ? 'claimantDocuments' : 'defendantDocuments';
+  const other = role === CaseRole.CLAIMANT ? 'defendantDocuments' : 'claimantDocuments';
 
-describe('Evidence Upload - checkYourAnswers Controller', () => {
-  const civilServiceUrl = config.get<string>('services.civilService.url');
-  const idamServiceUrl: string = config.get('services.idam.url');
-
-  const civilClaimResponse = require('../../../../utils/mocks/civilClaimResponseDocumentUploadedMock.json');
-  const civilClaimResponseClaimant = require('../../../../utils/mocks/civilClaimResponseMock.json');
-  const claimId = civilClaimResponse.id;
-
-  beforeAll((done) => {
-    testSession
-      .get('/oauth2/callback')
-      .query('code=ABC')
-      .expect(302)
-      .end(function (err: Error) {
-        if (err) {
-          return done(err);
-        }
-        return done();
-      });
-    nock(idamServiceUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-    nock(civilServiceUrl)
-      .get('/cases/defendant/123')
-      .reply(200, {data: civilClaimResponse });
-    nock(civilServiceUrl)
-      .get('/cases/claimant/123')
-      .reply(200, {data: civilClaimResponse });
+  beforeEach(() => {
+    jest.resetAllMocks();
+    claim = new Claim();
+    claim.caseRole = role;
+    claim.caseProgression = new CaseProgression();
+    const savedRow = Object.assign(new FileOnlySection(), {caseDocument: {
+      documentName: 'saved.pdf', documentLink: {document_binary_url: '/documents/saved/binary'},
+    }});
+    claim.caseProgression[own] = new UploadDocumentsUserForm(undefined, [savedRow]);
+    claim.caseProgression[other] = new UploadDocumentsUserForm(undefined, [Object.assign(new FileOnlySection(), structuredClone(savedRow))]);
+    req = {params: {id}, query: {}, cookies: {lang: 'en'}, body: {},
+      session: createMockSession({user: {id: 'user'}, dashboard: {taskIdHearingUploadDocuments: 'upload-task'}}),
+    } as unknown as AppRequest;
+    res = createMockResponse();
+    next = jest.fn();
+    jest.mocked(getClaimById).mockResolvedValue(claim);
+    jest.mocked(generateRedisKey).mockReturnValue('owned-draft');
+    jest.mocked(getTopElements).mockReturnValue([]);
+    jest.mocked(getBottomElements).mockReturnValue([]);
+    jest.mocked(getSummarySections).mockReturnValue({} as ReturnType<typeof getSummarySections>);
+    jest.mocked(saveUploadedDocuments).mockResolvedValue(claim);
+    jest.mocked(deleteDraftClaimFromStore).mockResolvedValue(undefined);
+    updateTaskStatus.mockResolvedValue(undefined);
   });
 
-  describe('On Get', () => {
-    it('should render page successfully with all sections and summary rows', async () => {
-      //Given
-      const claim: Claim = new Claim();
-      Object.assign(claim, civilClaimResponse.case_data);
-      mockDraftStore.mockReturnValueOnce(claim);
-      mockSummarySections.mockImplementation(() => {
-        return {sections: [] as SummarySection[]} as SummarySections;
-      });
+  it.each(['en', 'cy'])('renders the existing role draft and language (%s)', async language => {
+    req.query.lang = language;
+    await get(req, res as unknown as Response, next);
+    expect(getSummarySections).toHaveBeenCalledWith(claim.caseProgression[own], id, claim.isSmallClaimsTrackDQ, language);
+    expect(res.render).toHaveBeenCalledWith('features/caseProgression/check-answers', expect.objectContaining({form: expect.any(GenericForm), summarySections: {}}));
+    expect(next).not.toHaveBeenCalled();
+  });
 
-      //When
-      await testSession
-        .get(CP_CHECK_ANSWERS_URL.replace(':id', claimId)).query({lang: 'en'})
-        //Then
-        .expect((res: { status: unknown; text: unknown; }) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Check your answers');
-        });
+  it.each(Object.keys(new UploadDocumentsUserForm()))('accepts saved evidence in %s', async category => {
+    const saved = claim.caseProgression[own].disclosureList[0];
+    claim.caseProgression[own] = Object.assign(new UploadDocumentsUserForm(), {[category]: [saved]});
+    await get(req, res as unknown as Response, next);
+    expect(getSummarySections).toHaveBeenCalledWith(claim.caseProgression[own], id, claim.isSmallClaimsTrackDQ, 'en');
+    expect(res.render).toHaveBeenCalledTimes(1);
+    expect(res.redirect).not.toHaveBeenCalled();
+    expect(next).not.toHaveBeenCalled();
+  });
+
+  describe.each([
+    'missing role draft', 'null role draft', 'missing case progression', 'empty object', 'empty collections',
+    'unsaved row', 'missing reference', 'blank reference', 'mixed saved and unsaved rows',
+  ])('%s', state => {
+    beforeEach(() => {
+      if (state === 'missing case progression') delete claim.caseProgression;
+      else if (state === 'null role draft') Object.assign(claim.caseProgression, {[own]: null});
+      else if (state === 'missing role draft') delete claim.caseProgression[own];
+      else if (state === 'empty object') Object.assign(claim.caseProgression, {[own]: {}});
+      else if (state === 'empty collections') claim.caseProgression[own] = getUploadDocumentsForm({body: {}} as Request);
+      else if (state === 'unsaved row') claim.caseProgression[own].disclosureList = [new FileOnlySection()];
+      else if (state === 'mixed saved and unsaved rows') claim.caseProgression[own].disclosureList.push(new FileOnlySection());
+      else claim.caseProgression[own].disclosureList[0].caseDocument.documentLink.document_binary_url = state === 'blank reference' ? '  ' : undefined;
     });
-    it('should render page successfully update task list status', async () => {
-      //Given
-      const claim: Claim = new Claim();
-      Object.assign(claim, civilClaimResponse.case_data);
-      mockDraftStore.mockReturnValueOnce(claim);
-      mockSummarySections.mockImplementation(() => {
-        return {sections: [] as SummarySection[]} as SummarySections;
-      });
-
-      //When
-      await testSession
-        .get(CP_CHECK_ANSWERS_URL.replace(':id', claimId)).query({lang: 'en'})
-        //Then
-        .expect((res: { status: unknown; text: unknown; }) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Check your answers');
-        });
-    });
-    it('should render page successfully in Welsh with all sections and summary rows', async () => {
-      //Given
-      const claim: Claim = new Claim();
-      Object.assign(claim, civilClaimResponse.case_data);
-      mockDraftStore.mockReturnValueOnce(claim);
-      mockSummarySections.mockImplementation(() => {
-        return {sections: [] as SummarySection[]} as SummarySections;
-      });
-
-      //When
-      await testSession
-        .get(CP_CHECK_ANSWERS_URL.replace(':id', claimId)).query({lang: 'cy'})
-        //Then
-        .expect((res: { status: unknown; text: unknown; }) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Gwiriwch eich atebion');
-        });
-    });
-
-    it('should render page successfully with all sections and summary rows when is claimant request', async () => {
-      //Given
-      const claimantClaim: Claim = new Claim();
-      Object.assign(claimantClaim, civilClaimResponseClaimant.case_data);
-
-      mockSummarySections.mockImplementation(() => {
-        return {sections: [] as SummarySection[]} as SummarySections;
-      });
-      mockDraftStore.mockReturnValueOnce(claimantClaim);
-      //When
-      await testSession
-        .get(CP_CHECK_ANSWERS_URL.replace(':id', claimId)).query({lang: 'en'})
-        //Then
-        .expect((res: { status: unknown; text: unknown; }) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Check your answers');
-        });
-    });
-
-    it('should render page successfully with all sections and summary rows when is claimant request', async () => {
-      //Given
-      const claimantClaim: Claim = new Claim();
-      Object.assign(claimantClaim, civilClaimResponseClaimant.case_data);
-
-      mockSummarySections.mockImplementation(() => {
-        return {sections: [] as SummarySection[]} as SummarySections;
-      });
-      mockDraftStore.mockReturnValueOnce(claimantClaim);
-      //When
-      await testSession
-        .get(CP_CHECK_ANSWERS_URL.replace(':id', claimId)).query({lang: 'cy'})
-        //Then
-        .expect((res: { status: unknown; text: unknown; }) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Gwiriwch eich atebion');
-        });
-    });
-
-    it('should return status 500 when error thrown', async () => {
-      //given
-      jest.spyOn(draftStoreService, 'getDraftClaimFromStore')
-        .mockImplementation(() => {
-          throw new Error(TestMessages.REDIS_FAILURE);
-        });
-
-      //when
-      await testSession
-        .get(CP_CHECK_ANSWERS_URL).query({lang:'en'})
-        //then
-        .expect((res: Response) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+    it.each(['GET', 'bodyless POST', 'invalid POST', 'signed POST'])('recovers %s without changing stored data', async method => {
+      const before = JSON.stringify(claim);
+      req.body = method === 'signed POST' ? {signed: true} : method === 'bodyless POST' ? undefined : {};
+      await (method === 'GET' ? get : post)(req, res as unknown as Response, next);
+      expect(res.redirect).toHaveBeenCalledTimes(1);
+      expect(res.redirect).toHaveBeenCalledWith(TYPES_OF_DOCUMENTS_URL.replace(':id', id));
+      expect(res.render).not.toHaveBeenCalled();
+      expect(getTopElements).not.toHaveBeenCalled();
+      expect(getSummarySections).not.toHaveBeenCalled();
+      expect(saveUploadedDocuments).not.toHaveBeenCalled();
+      expect(updateTaskStatus).not.toHaveBeenCalled();
+      expect(deleteDraftClaimFromStore).not.toHaveBeenCalled();
+      expect(JSON.stringify(claim)).toBe(before);
+      expect(next).not.toHaveBeenCalled();
     });
   });
 
-  describe('On POST', () => {
-    test('If the right form is missing, send back to check your answers page.', async () => {
-      //given
-      const claim: Claim = new Claim();
-      Object.assign(claim, civilClaimResponse.case_data);
-      mockDraftStore.mockReturnValueOnce(claim);
+  it('redisplays signature errors when the draft exists', async () => {
+    await post(req, res as unknown as Response, next);
+    const form = res.render.mock.calls[0][1].form as GenericForm<DocumentUploadSubmissionForm>;
+    expect(form.hasErrors()).toBe(true);
+    expect(saveUploadedDocuments).not.toHaveBeenCalled();
+    expect(deleteDraftClaimFromStore).not.toHaveBeenCalled();
+    expect(next).not.toHaveBeenCalled();
+  });
 
-      //when
-      await testSession.post(CP_CHECK_ANSWERS_URL).query({lang: 'en'}).expect((res: { status: unknown; text: unknown; }) => {
-        //then
-        expect(res.status).toBe(200);
-        expect(res.text).toContain('Check your answers');
-      });
-    });
+  it('submits existing evidence, updates its task and deletes only the owned draft', async () => {
+    req.body = {signed: true};
+    await post(req, res as unknown as Response, next);
+    expect(saveUploadedDocuments).toHaveBeenCalledTimes(1);
+    expect(saveUploadedDocuments).toHaveBeenCalledWith(claim, req);
+    expect(updateTaskStatus).toHaveBeenCalledWith('upload-task', req);
+    expect(deleteDraftClaimFromStore).toHaveBeenCalledWith('owned-draft');
+    expect(jest.mocked(saveUploadedDocuments).mock.invocationCallOrder[0]).toBeLessThan(updateTaskStatus.mock.invocationCallOrder[0]);
+    expect(updateTaskStatus.mock.invocationCallOrder[0]).toBeLessThan(jest.mocked(deleteDraftClaimFromStore).mock.invocationCallOrder[0]);
+    expect(res.redirect).toHaveBeenCalledWith(CP_EVIDENCE_UPLOAD_SUBMISSION_URL.replace(':id', id));
+    expect(next).not.toHaveBeenCalled();
+  });
 
-    test('If the right form is missing, send back to check your answers page.', async () => {
-      //given
-      const claim: Claim = new Claim();
-      Object.assign(claim, civilClaimResponse.case_data);
-      mockDraftStore.mockReturnValueOnce(claim);
+  it.each(['GET', 'POST'])('forwards a read failure on %s', async method => {
+    const error = new Error('read failed');
+    jest.mocked(getClaimById).mockRejectedValue(error);
+    await (method === 'GET' ? get : post)(req, res as unknown as Response, next);
+    expect(next).toHaveBeenCalledWith(error);
+    expect(res.redirect).not.toHaveBeenCalled();
+    expect(deleteDraftClaimFromStore).not.toHaveBeenCalled();
+  });
 
-      //when
-      await testSession.post(CP_CHECK_ANSWERS_URL).query({lang: 'cy'}).expect((res: { status: unknown; text: unknown; }) => {
-        //then
-        expect(res.status).toBe(200);
-        expect(res.text).toContain('Gwiriwch eich atebion');
-      });
-    });
-
-    test('If the right form is missing, send back to check your answers page on claimant request.', async () => {
-      //given
-      const claim: Claim = new Claim();
-      Object.assign(claim, civilClaimResponse.case_data);
-      claim.caseRole = CaseRole.CLAIMANT;
-      mockDraftStore.mockReturnValueOnce(claim);
-
-      //when
-      await testSession.post(CP_CHECK_ANSWERS_URL).query({lang: 'cy'}).expect((res: { status: unknown; text: unknown; }) => {
-        //then
-        expect(res.status).toBe(200);
-        expect(res.text).toContain('Gwiriwch eich atebion');
-      });
-    });
-
-    test('If the form is not missing, redirect to new page', async () => {
-      //given
-      const claim: Claim = new Claim();
-      Object.assign(civilClaimResponse, mockCivilClaim);
-      Object.assign(claim, civilClaimResponse.case_data);
-      mockDraftStore.mockReturnValue(claim);
-      mockGenerateRedisKey.mockReturnValue('12345');
-
-      //when
-      await testSession.post(CP_CHECK_ANSWERS_URL).send({signed: true}).expect((res: { status: unknown; text: unknown; }) => {
-        expect(res.status).toBe(302);
-        expect(res.text).toContain('Found. Redirecting to /case/:id/case-progression/documents-uploaded');
-      });
-    });
-    test('Throw error', async () => {
-      //given
-      jest.spyOn(draftStoreService, 'getDraftClaimFromStore')
-        .mockImplementation(() => {
-          throw new Error(TestMessages.REDIS_FAILURE);
-        });
-
-      //when
-      await testSession.post(CP_CHECK_ANSWERS_URL);
-      expect((res: Response) => {
-        expect(res.status).toBe(500);
-        expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-      });
-
-    });
+  it.each(['submit', 'task'])('retains the draft when %s fails', async boundary => {
+    req.body = {signed: true};
+    const error = new Error('write failed');
+    if (boundary === 'submit') jest.mocked(saveUploadedDocuments).mockRejectedValue(error);
+    else updateTaskStatus.mockRejectedValue(error);
+    await post(req, res as unknown as Response, next);
+    expect(next).toHaveBeenCalledWith(error);
+    expect(deleteDraftClaimFromStore).not.toHaveBeenCalled();
+    expect(res.redirect).not.toHaveBeenCalled();
+    if (boundary === 'submit') expect(updateTaskStatus).not.toHaveBeenCalled();
   });
 });
