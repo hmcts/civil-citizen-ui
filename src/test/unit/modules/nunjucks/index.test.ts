@@ -64,4 +64,15 @@ describe('Nunjucks configuration', () => {
       {text: 'translated address.required'},
     ]);
   });
+
+  it('uses the session cookie expiry when it is available', () => {
+    const app = {set: jest.fn(), use: jest.fn()};
+    new Nunjucks(false).enableFor(app as never);
+    const middleware = app.use.mock.calls[0][0] as Middleware;
+    const expiry = new Date(Date.now() + 60000);
+    const req = {path: '/test', cookies: {}, session: {user: {id: 'user-id'}, cookie: {expires: expiry}}} as never;
+    const res = {locals: {lang: 'en'}};
+    middleware(req, res, jest.fn());
+    expect((res.locals.sessionTimeout as {expiresAt: number}).expiresAt).toBe(expiry.getTime());
+  });
 });

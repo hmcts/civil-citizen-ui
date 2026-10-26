@@ -16,6 +16,7 @@ import {
   HEARING_FEE_PAYMENT_CONFIRMATION_URL_WITH_UNIQUE_ID,
   SIGN_IN_URL,
   SIGN_OUT_URL, UNAUTHORISED_URL,
+  SESSION_EXTEND_URL,
 } from 'routes/urls';
 
 import {getOidcResponse, getSessionIssueTime, getUserDetails, OidcResponse} from '../../../../main/app/auth/user/oidc';
@@ -71,6 +72,10 @@ describe('OIDC middleware', () => {
       save: (callback: (err?: any) => void) => callback(),
       destroy: (callback: () => void) => callback(),
     } as unknown as Session;
+  });
+
+  it('allows the session extension endpoint through the authentication guard', async () => {
+    await request(app).post(SESSION_EXTEND_URL).expect(401);
   });
   describe('Sign out', () => {
     beforeEach(() => {
