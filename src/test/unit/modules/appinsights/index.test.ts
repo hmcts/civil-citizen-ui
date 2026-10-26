@@ -498,6 +498,37 @@ describe('AppInsights module', () => {
       expect(Date.now() - started).toBeLessThan(5000);
     });
 
+    it('redacts complete object values for sensitive keys in text', () => {
+      expect(sanitizeCredentials("{ token: { value: 'tok1', inner: { x: 'a}b' } }, ok: 1 }")).toBe(
+        '{ token: [REDACTED], ok: 1 }',
+      );
+      expect(sanitizeCredentials('userPassword: { value: "pw" }')).toBe('userPassword: [REDACTED]');
+
+      const strayQuoteEnv = {
+        sampleRate: 1,
+        data: {baseType: 'MessageData', baseData: {message: '[note " {"token":{"value":"tok2"}}'}},
+      };
+      expect(stripCredentialsTelemetryProcessor(strayQuoteEnv as unknown as Parameters<typeof stripCredentialsTelemetryProcessor>[0])).toBe(true);
+      expect(strayQuoteEnv.data.baseData.message).toBe('[note " {"token":[REDACTED]}');
+
+      const afterFragmentLimitEnv = {
+        sampleRate: 1,
+        data: {baseType: 'MessageData', baseData: {message: `${'[1] '.repeat(1001)}{"token":{"value":"tok3"}}`}},
+      };
+      expect(stripCredentialsTelemetryProcessor(afterFragmentLimitEnv as unknown as Parameters<typeof stripCredentialsTelemetryProcessor>[0])).toBe(true);
+      expect(afterFragmentLimitEnv.data.baseData.message).toContain('{"token":[REDACTED]}');
+      expect(afterFragmentLimitEnv.data.baseData.message).not.toContain('tok3');
+    });
+
+    it('redacts unterminated object credential values in linear time', () => {
+      expect(sanitizeCredentials("token: { value: 'x'")).toBe('token: [REDACTED]');
+
+      const input = 'token: { '.repeat(30000);
+      const started = Date.now();
+      expect(sanitizeCredentials(input)).toBe('token: [REDACTED]');
+      expect(Date.now() - started).toBeLessThan(5000);
+    });
+
     it('scans unmatched and near-valid nested JSON brackets without rescanning the remaining text', () => {
       const unmatched = '[ '.repeat(120000);
       const nestedNearValid = '['.repeat(100) + '1,'.repeat(5000) + 'x' + ']'.repeat(100);

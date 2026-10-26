@@ -130,6 +130,8 @@ const VALUE_BRANCHES: ReadonlyArray<readonly [string, string]> = [
   ['Digest[ \\t]+', '[^\\r\\n]+'],
   // JSON arrays are consumed in full; optional closers also redact an unterminated value to end of input.
   ['', '\\[(?:[^"\\\\\\]]|\\\\.|"(?:[^"\\\\]|\\\\.)*"?)*\\]?'],
+  // Object values are extended through their matching brace by replaceSensitiveValues.
+  ['', '\\{'],
   // Unquoted: key=value or key: value. Ends at a delimiter, or before a trailing `:line:col` of a stack frame.
   [AUTH_SCHEME, '[^&#;,\\s"\'\\\\}]+?(?=:\\d+:\\d+\\)?(?:\\s|$)|[&#;,\\s"\'\\\\}]|$)'],
 ];
@@ -193,6 +195,8 @@ const buildRedactionRules = (keys: string[] = DEFAULT_REDACTED_KEYS): RedactionR
   return cachedRules;
 };
 
+const OBJECT_VALUE_BRANCH_INDEX = 5;
+
 /**
  * Builds a regex that matches each sensitive key and its value in these forms:
  *  - query strings / form bodies:  `?key=abc`, `&key=abc`, `; key=abc`, `key=abc,`
@@ -210,18 +214,72 @@ const buildRedactionRules = (keys: string[] = DEFAULT_REDACTED_KEYS): RedactionR
 export const buildSensitiveQueryParamsRegex = (keys: string[] = DEFAULT_REDACTED_KEYS): RegExp =>
   buildRedactionRules(keys).regex;
 
-const replaceSensitiveValues = (value: string, regex: RegExp): string => value.replace(
-  regex,
-  (match: string, keyPrefix: string, ...groups: unknown[]) => {
-    for (let i = 0; i < VALUE_BRANCHES.length * 2; i += 2) {
-      const secret = groups[i + 1];
-      if (typeof secret === 'string') {
-        return secret ? `${keyPrefix}${groups[i]}${REDACTED}` : match;
+const findObjectEnd = (value: string, openIndex: number): number => {
+  let depth = 0;
+  let quote: '"' | "'" | '`' | undefined;
+  let escaped = false;
+  for (let index = openIndex; index < value.length; index++) {
+    const character = value[index];
+    if (quote) {
+      if (escaped) {
+        escaped = false;
+      } else if (character === '\\') {
+        escaped = true;
+      } else if (character === quote) {
+        quote = undefined;
       }
+      continue;
     }
-    return match;
-  },
-);
+    if (character === '\\') {
+      index++;
+    } else if (character === '"' || character === "'" || character === '`') {
+      quote = character;
+    } else if (character === '{') {
+      depth++;
+    } else if (character === '}' && --depth === 0) {
+      return index + 1;
+    }
+  }
+  return value.length;
+};
+
+const replaceSensitiveValues = (value: string, regex: RegExp): string => {
+  let result = '';
+  let cursor = 0;
+  const isGlobal = regex.global;
+  regex.lastIndex = 0;
+  try {
+    let match: RegExpExecArray | null;
+    while ((match = regex.exec(value)) !== null) {
+      const keyPrefix = match[1];
+      let replacement = match[0];
+      let consumedEnd = match.index + match[0].length;
+      for (let branch = 0; branch < VALUE_BRANCHES.length; branch++) {
+        const opener = match[2 + branch * 2];
+        const secret = match[3 + branch * 2];
+        if (typeof secret === 'string') {
+          if (secret) {
+            replacement = `${keyPrefix}${opener}${REDACTED}`;
+            if (branch === OBJECT_VALUE_BRANCH_INDEX) {
+              const openIndex = match.index + match[0].length - secret.length;
+              consumedEnd = findObjectEnd(value, openIndex);
+            }
+          }
+          break;
+        }
+      }
+      result += value.slice(cursor, match.index) + replacement;
+      cursor = consumedEnd;
+      if (!isGlobal) {
+        break;
+      }
+      regex.lastIndex = Math.max(regex.lastIndex, consumedEnd, match.index + 1);
+    }
+  } finally {
+    regex.lastIndex = 0;
+  }
+  return result + value.slice(cursor);
+};
 
 const sanitizeWithRules = (value: string, rules: RedactionRules): string => {
   const credentialSafe = replaceSensitiveValues(
