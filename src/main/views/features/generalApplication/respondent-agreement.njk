@@ -6,6 +6,10 @@
 {% from "../../macro/button.njk" import addButton %}
 {% from "../../macro/heading-with-caption.njk" import headingWithCaption %}
 
+{% block pageTitle %}
+  {{ setPageTitle(t, 'PAGES.GENERAL_APPLICATION.RESPONDENT_AGREEMENT.TITLE') }}
+{% endblock %}
+
 {% block nestedContent %}
 {{ headingWithCaption(t,caption,'PAGES.GENERAL_APPLICATION.RESPONDENT_AGREEMENT.TITLE' ) }}
   <form method="post" novalidate>
