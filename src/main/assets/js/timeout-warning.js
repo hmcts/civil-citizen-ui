@@ -29,6 +29,7 @@ function TimeoutWarning($module) {
   this.timerRedirectText = $module.getAttribute('data-timer-redirect-text') || 'You are about to be redirected';
   this.idleTimeoutId = null;
   this.extendDebounceId = null;
+  this.previousAriaHidden = null;
 }
 
 TimeoutWarning.prototype.init = function () {
@@ -60,7 +61,11 @@ TimeoutWarning.prototype.handleStorageChange = function (event) {
     // session validity still comes from the server expiry value.
     this.openDialog(false);
   } else if (event.key === this.sessionExpiryKey && event.newValue) {
-    this.sessionExpiresAt = Number(event.newValue) || this.sessionExpiresAt;
+    var updatedExpiry = Number(event.newValue);
+    if (!updatedExpiry || updatedExpiry <= this.sessionExpiresAt) {
+      return;
+    }
+    this.sessionExpiresAt = updatedExpiry;
     // A different tab may dismiss this warning only after it has persisted a
     // successful renewal and published the new expiry.
     if (this.isDialogOpen()) {
@@ -103,15 +108,19 @@ TimeoutWarning.prototype.resetIdleTime = function () {
   clearTimeout(this.extendDebounceId);
 
   this.extendDebounceId = setTimeout(function () {
-    this.extendTimeOnServer();
-    // Re-read the expiry when the warning becomes due. Another tab may have
-    // renewed the shared session since this timer was scheduled.
-    this.idleTimeoutId = setTimeout(function () {
-      if (window.localStorage) {
-        this.sessionExpiresAt = Number(window.localStorage.getItem(this.sessionExpiryKey)) || this.sessionExpiresAt;
+    this.extendTimeOnServer(function (response) {
+      if (!response || response.extended !== true) return;
+      if (response.expiresAt) {
+        this.sessionExpiresAt = Number(response.expiresAt);
+        if (window.localStorage) window.localStorage.setItem(this.sessionExpiryKey, String(this.sessionExpiresAt));
       }
-      this.checkIfShouldHaveTimedOut();
-    }.bind(this), milliSecondsBeforeTimeOut);
+      // Re-read the expiry when the warning becomes due. Another tab may have
+      // renewed the shared session since this timer was scheduled.
+      this.idleTimeoutId = setTimeout(function () {
+        if (window.localStorage) this.sessionExpiresAt = Number(window.localStorage.getItem(this.sessionExpiryKey)) || this.sessionExpiresAt;
+        this.checkIfShouldHaveTimedOut();
+      }.bind(this), milliSecondsBeforeTimeOut);
+    }.bind(this));
   }.bind(this), 3000);
 
   if (window.localStorage) {
@@ -165,6 +174,7 @@ TimeoutWarning.prototype.startUiCountdown = function () {
   $countdown.textContent = minutes + ' minute' + (minutes > 1 ? 's' : '');
 
   (function runTimer() {
+    if ($module.sessionExpiresAt) seconds = Math.max(0, Math.ceil(($module.sessionExpiresAt - Date.now()) / 1000));
     var minutesLeft = parseInt(seconds / 60, 10);
     var secondsLeft = parseInt(seconds % 60, 10);
     var timerExpired = minutesLeft < 1 && secondsLeft < 1;
@@ -272,6 +282,7 @@ TimeoutWarning.prototype.getInertTarget = function () {
 TimeoutWarning.prototype.makePageContentInert = function () {
   var $content = this.getInertTarget();
   if ($content) {
+    this.previousAriaHidden = $content.getAttribute('aria-hidden');
     $content.inert = true;
     $content.setAttribute('aria-hidden', 'true');
   }
@@ -281,7 +292,9 @@ TimeoutWarning.prototype.removeInertFromPageContent = function () {
   var $content = this.getInertTarget();
   if ($content) {
     $content.inert = false;
-    $content.setAttribute('aria-hidden', 'false');
+    if (this.previousAriaHidden === null) $content.removeAttribute('aria-hidden');
+    else $content.setAttribute('aria-hidden', this.previousAriaHidden);
+    this.previousAriaHidden = null;
   }
 };
 
