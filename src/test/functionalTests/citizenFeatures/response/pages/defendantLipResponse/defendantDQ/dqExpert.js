@@ -20,7 +20,7 @@ class DqExpert {
     await I.waitForContent(content.heading[sharedData.language], config.WaitForText);
     await I.waitForVisible(
       fields.continueWithExpert,
-      config.WaitForText
+      config.WaitForText,
     );
     await I.click(fields.continueWithExpert);
   }

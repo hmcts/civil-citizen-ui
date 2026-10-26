@@ -21,7 +21,7 @@ class PartAdmitAlreadyPaid {
     await I.waitForContent(content.heading[sharedData.language], config.WaitForText);
     await I.waitForVisible(
       option === 'yes' ? fields.yesButton : fields.noButton,
-      config.WaitForText
+      config.WaitForText,
     );
     if(option == 'yes'){
       await I.click(fields.yesButton);
