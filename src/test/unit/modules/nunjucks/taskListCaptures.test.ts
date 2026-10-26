@@ -17,4 +17,3 @@ it.each([
     if (file === 'mock-case-1645882162449409-response-task-list.html') expect(heading.id).toBe('task-list-heading');
   } finally {dom.window.close();}
 });
-
