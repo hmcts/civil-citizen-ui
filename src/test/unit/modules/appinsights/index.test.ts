@@ -580,7 +580,7 @@ describe('AppInsights module', () => {
           when: new Date('2026-01-01T00:00:00.000Z'),
         });
         expect(props).toEqual({
-          cfg: '{"headers":{"Authorization":"Bearer [REDACTED]","accept":"json"}}',
+          cfg: '{"headers":{"Authorization":"[REDACTED]","accept":"json"}}',
           list: '["password=[REDACTED]","ok"]',
           err: '{"message":"failed ?key=[REDACTED]","code":"ECONNREFUSED"}',
           when: '2026-01-01T00:00:00.000Z',
@@ -591,6 +591,85 @@ describe('AppInsights module', () => {
         const circular: Record<string, unknown> = {token: 't1'};
         circular.self = circular;
         expect(runWithProperties({circular}).circular).toBe('[UNSERIALISABLE]');
+      });
+
+      describe('nested sensitive values', () => {
+        it('redacts array values of sensitive header names such as Set-Cookie and Authorization', () => {
+          const props = runWithProperties({
+            headers: {
+              'Set-Cookie': ['session=abc123; Path=/; HttpOnly', 'other=def456'],
+              Authorization: ['Bearer jwt.value.here'],
+              accept: ['application/json'],
+            },
+          });
+          expect(JSON.parse(props.headers as string)).toEqual({
+            'Set-Cookie': '[REDACTED]',
+            Authorization: '[REDACTED]',
+            accept: ['application/json'],
+          });
+          expect(props.headers).not.toContain('abc123');
+          expect(props.headers).not.toContain('def456');
+          expect(props.headers).not.toContain('jwt.value.here');
+        });
+
+        it('redacts nested properties whose names end in a sensitive key (userPassword, dbSecret, apiToken)', () => {
+          const props = runWithProperties({
+            payload: {
+              user: {userPassword: 'secret-password', name: 'Jo'},
+              list: [{dbSecret: 'database-secret'}, {apiToken: 'jwt-token'}],
+              keyboard: 'qwerty',
+            },
+          });
+          expect(JSON.parse(props.payload as string)).toEqual({
+            user: {userPassword: '[REDACTED]', name: 'Jo'},
+            list: [{dbSecret: '[REDACTED]'}, {apiToken: '[REDACTED]'}],
+            keyboard: 'qwerty',
+          });
+        });
+
+        it('redacts nested values in an SDK-generated envelope', () => {
+          const appInsightsSdk = jest.requireActual('applicationinsights');
+          const client = new appInsightsSdk.TelemetryClient('00000000-0000-0000-0000-000000000000');
+          const captured: Array<Parameters<typeof stripCredentialsTelemetryProcessor>[0]> = [];
+          client.addTelemetryProcessor((envelope: Parameters<typeof stripCredentialsTelemetryProcessor>[0]) => {
+            captured.push(envelope);
+            return false;
+          });
+          client.trackEvent({
+            name: 'login',
+            properties: {
+              response: {headers: {'set-cookie': ['sid=abc123'], authorization: ['Bearer jwt.value.here']}},
+              user: {userPassword: 'secret-password'},
+            },
+          });
+          expect(captured).toHaveLength(1);
+          expect(stripCredentialsTelemetryProcessor(captured[0])).toBe(true);
+          const serialised = JSON.stringify(captured[0].data.baseData.properties);
+          expect(serialised).not.toContain('abc123');
+          expect(serialised).not.toContain('jwt.value.here');
+          expect(serialised).not.toContain('secret-password');
+        });
+
+        it('still replaces circular structures nested below a property', () => {
+          const inner: Record<string, unknown> = {userPassword: 'p1'};
+          inner.self = inner;
+          expect(runWithProperties({outer: {inner}}).outer).toBe('[UNSERIALISABLE]');
+        });
+
+        it('does not treat a repeated (non-circular) object as circular', () => {
+          const shared = {userPassword: 'p1', name: 'n'};
+          const props = runWithProperties({both: {a: shared, b: shared}});
+          expect(JSON.parse(props.both as string)).toEqual({
+            a: {userPassword: '[REDACTED]', name: 'n'},
+            b: {userPassword: '[REDACTED]', name: 'n'},
+          });
+        });
+
+        it('does not mutate the original property object', () => {
+          const original = {headers: {authorization: ['Bearer x.y.z']}};
+          runWithProperties({original});
+          expect(original.headers.authorization).toEqual(['Bearer x.y.z']);
+        });
       });
 
       it('keeps primitives and empty values, but redacts any value of a sensitive property', () => {

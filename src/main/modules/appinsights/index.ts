@@ -247,19 +247,82 @@ const sanitizeStringFields = (target: Record<string, unknown> | undefined, regex
 };
 
 /**
- * Converts an object property to the string the SDK will send (see applicationinsights Util.validateStringMap),
- * so it can be sanitised before the SDK serialises it after the telemetry processors have run.
+ * Reduces an object to what JSON.stringify would see (see applicationinsights Util.validateStringMap):
+ * errors become {message, code} and toJSON() is honoured.
  */
-const serialiseProperty = (propVal: object): string => {
-  try {
-    let target: unknown = propVal;
-    if (propVal instanceof Error) {
-      const {message, code, id} = propVal as Error & {code?: unknown; id?: unknown};
-      target = {message, code: code || id || ''};
-    } else if (!Array.isArray(propVal) && typeof (propVal as {toJSON?: unknown}).toJSON === 'function') {
-      target = (propVal as {toJSON: () => unknown}).toJSON();
+const toSerialisable = (value: object): unknown => {
+  if (value instanceof Error) {
+    const {message, code, id} = value as Error & {code?: unknown; id?: unknown};
+    return {message, code: code || id || ''};
+  }
+  if (!Array.isArray(value) && typeof (value as {toJSON?: unknown}).toJSON === 'function') {
+    return (value as {toJSON: () => unknown}).toJSON();
+  }
+  return value;
+};
+
+/**
+ * The SDK stringifies object properties before the telemetry processors run, so nested values often arrive
+ * as JSON text. A string holding a JSON object or array is parsed, redacted by property name and
+ * re-serialised; any other string, or text that is not valid JSON, is sanitised with the key patterns.
+ */
+const redactString = (value: string, rules: RedactionRules): string => {
+  const trimmed = value.trim();
+  if ((trimmed.startsWith('{') && trimmed.endsWith('}')) || (trimmed.startsWith('[') && trimmed.endsWith(']'))) {
+    let parsed: unknown;
+    try {
+      parsed = JSON.parse(trimmed);
+    } catch {
+      parsed = undefined;
     }
-    return target !== null && typeof target === 'object' ? JSON.stringify(target) : String(target);
+    if (parsed !== null && typeof parsed === 'object') {
+      return sanitizeCredentials(JSON.stringify(redactValue(parsed, rules, new Set<object>())), rules.regex) as string;
+    }
+  }
+  return sanitizeCredentials(value, rules.regex) as string;
+};
+
+/**
+ * Returns a redacted deep copy of a value without mutating the original. Strings are sanitised, and the
+ * whole value of any property with a sensitive name is replaced, however deeply it is nested and whether
+ * it is a string, array or object. Throws on a circular structure, so the caller can drop that property.
+ */
+const redactValue = (value: unknown, rules: RedactionRules, ancestors: Set<object>): unknown => {
+  if (typeof value === 'string') {
+    return redactString(value, rules);
+  }
+  if (value === null || typeof value !== 'object') {
+    return value;
+  }
+  if (ancestors.has(value)) {
+    throw new TypeError('Circular structure');
+  }
+  ancestors.add(value);
+  try {
+    const source = toSerialisable(value);
+    if (source === null || typeof source !== 'object') {
+      return redactValue(source, rules, ancestors);
+    }
+    if (Array.isArray(source)) {
+      return source.map((item) => redactValue(item, rules, ancestors));
+    }
+    return Object.fromEntries(Object.entries(source).map(([name, child]) => {
+      const isEmpty = child === null || child === undefined || typeof child === 'function';
+      return [name, rules.sensitiveName.test(name) && !isEmpty ? REDACTED : redactValue(child, rules, ancestors)];
+    }));
+  } finally {
+    ancestors.delete(value);
+  }
+};
+
+/**
+ * Converts an object property to the string the SDK will send, redacting it first, because the SDK
+ * serialises it after the telemetry processors have run.
+ */
+const serialiseProperty = (propVal: object, rules: RedactionRules): string => {
+  try {
+    const redacted = redactValue(propVal, rules, new Set<object>());
+    return redacted !== null && typeof redacted === 'object' ? JSON.stringify(redacted) : String(redacted);
   } catch {
     return '[UNSERIALISABLE]';
   }
@@ -273,9 +336,9 @@ const redactProperties = (properties: Record<string, unknown>, rules: RedactionR
     if (rules.sensitiveName.test(name)) {
       properties[name] = REDACTED;
     } else if (typeof propVal === 'string') {
-      properties[name] = sanitizeCredentials(propVal, rules.regex);
+      properties[name] = redactString(propVal, rules);
     } else if (typeof propVal === 'object') {
-      properties[name] = sanitizeCredentials(serialiseProperty(propVal), rules.regex);
+      properties[name] = sanitizeCredentials(serialiseProperty(propVal, rules), rules.regex);
     }
   }
 };
