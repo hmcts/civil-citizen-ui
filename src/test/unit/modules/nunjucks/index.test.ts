@@ -41,6 +41,7 @@ describe('Nunjucks configuration', () => {
       idleMinutesBeforeWarning: expect.any(Number),
       minutesModalVisible: expect.any(Number),
       totalSeconds: expect.any(Number),
+      expiresAt: expect.any(Number),
       fallbackEndTime: expect.any(String),
     }));
     expect(req.cookies.nonceValue).toEqual(expect.any(String));

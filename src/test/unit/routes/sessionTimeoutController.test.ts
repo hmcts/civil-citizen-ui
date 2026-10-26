@@ -87,5 +87,20 @@ describe('Session timeout', () => {
       expect(touch).toHaveBeenCalledTimes(1);
       expect(save).toHaveBeenCalledTimes(1);
     });
+
+    it('returns 401 when persisting the renewal fails', () => {
+      const req = {session: {user: {id: 'user-id'}, touch: jest.fn(), save: (callback: (error: Error) => void) => callback(new Error('store unavailable')), cookie: {maxAge: 1000}}} as unknown as AppRequest;
+      const res = {status: jest.fn().mockReturnThis(), json: jest.fn()};
+      (sessionTimeoutController as unknown as {handle: Function}).handle(req, res, jest.fn());
+      expect(res.status).toHaveBeenCalledWith(401);
+      expect(res.json).toHaveBeenCalledWith({extended: false});
+    });
+
+    it('uses maxAge when the session cookie has no expiry date', () => {
+      const req = {session: {user: {id: 'user-id'}, touch: jest.fn(), save: (callback: () => void) => callback(), cookie: {maxAge: 1000}}} as unknown as AppRequest;
+      const res = {status: jest.fn().mockReturnThis(), json: jest.fn()};
+      (sessionTimeoutController as unknown as {handle: Function}).handle(req, res, jest.fn());
+      expect(res.json).toHaveBeenCalledWith(expect.objectContaining({extended: true, expiresAt: expect.any(Number)}));
+    });
   });
 });
