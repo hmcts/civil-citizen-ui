@@ -99,4 +99,20 @@ describe('PostcodeValidator', () => {
     expect(isPostcodeOnExceptionList('LA94DQ')).toBe(true);
     expect(isPostcodeOnExceptionList('la9 4uf')).toBe(true);
   });
+
+  it.each([
+    'CM1 1JE',
+    'S60 2XR',
+    'SW11 2LN',
+    'B4 6AH',
+    'S1 2HH',
+    'OX12 0SG',
+    'NE3 4QB',
+  ])('should accept postcode %s without an Ordnance Survey lookup', async (postcode) => {
+    const lookupSpy = jest.spyOn(osService, 'lookupByPostcodeAndDataSet');
+
+    expect(await validator.validate(postcode)).toBe(true);
+    expect(await validator.validate(postcode.toLowerCase().replace(/\s/g, ''))).toBe(true);
+    expect(lookupSpy).not.toHaveBeenCalled();
+  });
 });

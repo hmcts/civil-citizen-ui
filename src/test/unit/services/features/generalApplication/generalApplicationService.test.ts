@@ -1489,6 +1489,15 @@ describe('Should get the application index', () => {
     expect(result).toEqual(-1);
   });
 
+  it('should return -1 without throwing when there are no general applications for the claim', async () => {
+    jest
+      .spyOn(GaServiceClient.prototype, 'getApplicationsByCaseId')
+      .mockResolvedValue([]);
+
+    await expect(getApplicationIndex('123', '1234', undefined)).resolves.toEqual(-1);
+    await expect(getApplicationIndex('123', '1234', undefined, true)).resolves.toEqual(0);
+  });
+
   describe('deleteGAFromClaimsByUserId', () => {
     it('should delete GAs by user id', async () => {
       //Given
