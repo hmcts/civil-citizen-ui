@@ -89,7 +89,7 @@ describe('Session timeout', () => {
     });
 
     it('returns 401 when persisting the renewal fails', () => {
-      const req = {session: {user: {id: 'user-id'}, touch: jest.fn(), save: (callback: (error: Error) => void) => callback(new Error('store unavailable')), cookie: {maxAge: 1000}}} as unknown as AppRequest;
+      const req = {method: 'POST', url: SESSION_EXTEND_URL, session: {user: {id: 'user-id'}, touch: jest.fn(), save: (callback: (error: Error) => void) => callback(new Error('store unavailable')), cookie: {maxAge: 1000}}} as unknown as AppRequest;
       const res = {status: jest.fn().mockReturnThis(), json: jest.fn()};
       (sessionTimeoutController as unknown as {handle: (request: AppRequest, response: Response, next: NextFunction) => unknown}).handle(req, res as unknown as Response, jest.fn());
       expect(res.status).toHaveBeenCalledWith(401);
@@ -97,7 +97,7 @@ describe('Session timeout', () => {
     });
 
     it('uses maxAge when the session cookie has no expiry date', () => {
-      const req = {session: {user: {id: 'user-id'}, touch: jest.fn(), save: (callback: () => void) => callback(), cookie: {maxAge: 1000}}} as unknown as AppRequest;
+      const req = {method: 'POST', url: SESSION_EXTEND_URL, session: {user: {id: 'user-id'}, touch: jest.fn(), save: (callback: () => void) => callback(), cookie: {maxAge: 1000}}} as unknown as AppRequest;
       const res = {status: jest.fn().mockReturnThis(), json: jest.fn()};
       (sessionTimeoutController as unknown as {handle: (request: AppRequest, response: Response, next: NextFunction) => unknown}).handle(req, res as unknown as Response, jest.fn());
       expect(res.json).toHaveBeenCalledWith(expect.objectContaining({extended: true, expiresAt: expect.any(Number)}));
