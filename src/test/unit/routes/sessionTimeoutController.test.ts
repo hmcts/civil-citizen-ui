@@ -103,4 +103,22 @@ describe('Session timeout', () => {
       expect(res.json).toHaveBeenCalledWith(expect.objectContaining({extended: true, expiresAt: expect.any(Number)}));
     });
   });
+
+  describe('GET /session-timeout', () => {
+    it('returns 409 when the session is still active', () => {
+      const req = {
+        method: 'GET',
+        url: SESSION_TIMEOUT_URL,
+        query: {loggedOut: '0'},
+        session: {user: {id: 'user-id'}},
+      } as unknown as AppRequest;
+      const res = {status: jest.fn().mockReturnThis(), json: jest.fn()};
+
+      (sessionTimeoutController as unknown as {handle: (request: AppRequest, response: Response, next: NextFunction) => unknown})
+        .handle(req, res as unknown as Response, jest.fn());
+
+      expect(res.status).toHaveBeenCalledWith(409);
+      expect(res.json).toHaveBeenCalledWith({expired: false});
+    });
+  });
 });
