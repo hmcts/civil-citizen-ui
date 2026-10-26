@@ -103,7 +103,6 @@ TimeoutWarning.prototype.resetIdleTime = function () {
     return;
   }
 
-  var milliSecondsBeforeTimeOut = this.idleMinutesBeforeTimeOut * 60000;
   clearTimeout(this.idleTimeoutId);
   clearTimeout(this.extendDebounceId);
 
@@ -114,18 +113,24 @@ TimeoutWarning.prototype.resetIdleTime = function () {
         this.sessionExpiresAt = Number(response.expiresAt);
         if (window.localStorage) window.localStorage.setItem(this.sessionExpiryKey, String(this.sessionExpiresAt));
       }
-      // Re-read the expiry when the warning becomes due. Another tab may have
-      // renewed the shared session since this timer was scheduled.
-      this.idleTimeoutId = setTimeout(function () {
-        if (window.localStorage) this.sessionExpiresAt = Number(window.localStorage.getItem(this.sessionExpiryKey)) || this.sessionExpiresAt;
-        this.checkIfShouldHaveTimedOut();
-      }.bind(this), milliSecondsBeforeTimeOut);
+      this.scheduleWarningFromExpiry();
     }.bind(this));
   }.bind(this), 3000);
 
   if (window.localStorage) {
     window.localStorage.setItem(this.lastInteractionKey, new Date().toISOString());
   }
+};
+
+TimeoutWarning.prototype.scheduleWarningFromExpiry = function () {
+  clearTimeout(this.idleTimeoutId);
+  var delay = this.sessionExpiresAt
+    ? Math.max(0, this.sessionExpiresAt - Date.now() - (this.minutesTimeOutModalVisible * 60000))
+    : this.idleMinutesBeforeTimeOut * 60000;
+  this.idleTimeoutId = setTimeout(function () {
+    if (window.localStorage) this.sessionExpiresAt = Number(window.localStorage.getItem(this.sessionExpiryKey)) || this.sessionExpiresAt;
+    this.checkIfShouldHaveTimedOut();
+  }.bind(this), delay);
 };
 
 TimeoutWarning.prototype.countIdleTime = function () {
@@ -323,7 +328,7 @@ TimeoutWarning.prototype.completeRenewal = function () {
   this.setFocusOnLastFocusedEl();
   this.removeInertFromPageContent();
   this.clearTimers();
-  this.resetIdleTime();
+  this.scheduleWarningFromExpiry();
   if (window.localStorage) {
     window.localStorage.removeItem(this.warningStateKey);
   }

@@ -27,7 +27,7 @@ sessionTimeoutController.get(SESSION_EXTEND_URL, (req: AppRequest, res: Response
 
 sessionTimeoutController.get(SESSION_TIMEOUT_URL, (req: AppRequest, res: Response) => {
   if (req.session?.user && req.query?.loggedOut !== '1') {
-    return res.redirect(req.get('Referrer') || '/');
+    return res.redirect('/');
   }
 
   // Avoid rendering the timeout warning on the signed-out page (locals were set earlier).
