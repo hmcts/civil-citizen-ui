@@ -21,8 +21,6 @@ const createPacedClick = () => {
   };
 };
 
-
-
 const contactUs = new ContactUs();
 
 //const stringUtils = new StringUtilsComponent();
