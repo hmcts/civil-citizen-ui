@@ -6,6 +6,7 @@
 function TimeoutWarning($module) {
   this.lastInteractionKey = 'timeUserLastInteractedWithPage';
   this.signOutKey = 'civilCitizenSignedOutAt';
+  this.sessionExpiryKey = 'civilCitizenSessionExpiresAt';
   this.$module = $module;
   this.$lastFocusedEl = null;
   this.$closeButton = $module.querySelector('.js-dialog-close');
@@ -18,6 +19,7 @@ function TimeoutWarning($module) {
   this.minutesTimeOutModalVisible = Number($module.getAttribute('data-minutes-modal-visible')) || 5;
   this.timeOutRedirectUrl = $module.getAttribute('data-url-redirect') || '/session-timeout';
   this.extendSessionUrl = $module.getAttribute('data-url-extend') || '/session/extend';
+  this.sessionExpiresAt = Number($module.getAttribute('data-session-expires-at')) || 0;
   this.timerText = $module.getAttribute('data-timer-text') || 'Your session will be reset in ';
   this.timerExtraText = $module.getAttribute('data-timer-extra-text') || 'This is to protect your data.';
   this.timerRedirectText = $module.getAttribute('data-timer-redirect-text') || 'You are about to be redirected';
@@ -49,6 +51,15 @@ TimeoutWarning.prototype.init = function () {
 TimeoutWarning.prototype.handleStorageChange = function (event) {
   if (event.key === this.signOutKey) {
     this.redirect();
+  } else if (event.key === this.sessionExpiryKey && event.newValue) {
+    this.sessionExpiresAt = Number(event.newValue) || this.sessionExpiresAt;
+    // A different tab may dismiss this warning only after it has persisted a
+    // successful renewal and published the new expiry.
+    if (this.isDialogOpen()) {
+      this.completeRenewal();
+    } else {
+      this.checkIfShouldHaveTimedOut();
+    }
   } else if (event.key === this.lastInteractionKey) {
     this.checkIfShouldHaveTimedOut();
   }
@@ -260,12 +271,22 @@ TimeoutWarning.prototype.closeDialog = function () {
     return;
   }
 
+  this.extendTimeOnServer(function (response) {
+    if (!response || response.extended !== true) return;
+    if (response.expiresAt) {
+      this.sessionExpiresAt = Number(response.expiresAt);
+      if (window.localStorage) window.localStorage.setItem(this.sessionExpiryKey, String(this.sessionExpiresAt));
+    }
+    this.completeRenewal();
+  }.bind(this));
+};
+
+TimeoutWarning.prototype.completeRenewal = function () {
   document.body.classList.remove(this.overLayClass);
   this.$module.close();
   this.setFocusOnLastFocusedEl();
   this.removeInertFromPageContent();
   this.clearTimers();
-  this.extendTimeOnServer();
   this.resetIdleTime();
 };
 
@@ -295,14 +316,14 @@ TimeoutWarning.prototype.checkIfShouldHaveTimedOut = function () {
   // A timestamp written by another tab can be slightly ahead of this tab's
   // clock. It must not be treated as elapsed idle time.
   var seconds = Math.max(0, (new Date() - timeUserLastInteractedWithPage) / 1000);
-  if (seconds > (this.idleMinutesBeforeTimeOut + this.minutesTimeOutModalVisible) * 60) {
+  var expirySeconds = this.sessionExpiresAt ? (this.sessionExpiresAt - Date.now()) / 1000 : (this.idleMinutesBeforeTimeOut + this.minutesTimeOutModalVisible) * 60;
+  if (expirySeconds <= 0 || (!this.sessionExpiresAt && seconds > expirySeconds)) {
     this.redirect();
-  } else if (seconds > this.idleMinutesBeforeTimeOut * 60) {
+  } else if (expirySeconds <= this.minutesTimeOutModalVisible * 60 || seconds > this.idleMinutesBeforeTimeOut * 60) {
     this.openDialog();
   } else if (this.isDialogOpen()) {
-    // Another tab has become active (or renewed the session). Cancel the
-    // warning in this tab so its stale countdown cannot sign out the session.
-    this.closeDialog();
+    // Activity in another tab is not proof that the server session was
+    // renewed. Keep this warning open until a confirmed expiry is published.
   }
 };
 
@@ -310,13 +331,20 @@ TimeoutWarning.prototype.redirect = function () {
   window.location.replace(this.timeOutRedirectUrl);
 };
 
-TimeoutWarning.prototype.extendTimeOnServer = function () {
+TimeoutWarning.prototype.extendTimeOnServer = function (onSuccess) {
   var request = new XMLHttpRequest();
   request.onreadystatechange = function () {
-    if (request.readyState === 4 && (request.status === 401 || request.status >= 500)) {
+    if (request.readyState !== 4) return;
+    if (request.status >= 200 && request.status < 300) {
+      var response;
+      try { response = JSON.parse(request.responseText); } catch (error) { response = null; }
+      if (onSuccess) onSuccess(response);
+    } else {
       this.redirect();
     }
   }.bind(this);
+  request.onerror = this.redirect.bind(this);
+  request.ontimeout = this.redirect.bind(this);
   request.open('GET', this.extendSessionUrl, true);
   request.setRequestHeader('Accept', 'application/json');
   request.send();
