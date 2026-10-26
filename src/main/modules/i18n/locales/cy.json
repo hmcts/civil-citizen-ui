@@ -180,12 +180,12 @@
       "VIEW_COOKIES": "Gweld cwcis"
     },
     "TIMEOUT_WARNING": {
-      "EXTEND_BUTTON": "Aros wedi mewngofnodi",
+      "EXTEND_BUTTON": "Arhoswch wedi mewngofnodi",
       "FALLBACK": "Bydd eich sesiwn yn dod i ben am {{ time }}. Gwneir hyn i ddiogelu eich data.",
-      "TIMER_EXTRA_TEXT": "Gwneir hyn i ddiogelu eich data.",
+      "TIMER_EXTRA_TEXT": "Byddwch yn colli unrhyw atebion heb eu cadw.",
       "TIMER_REDIRECT_TEXT": "Rydych ar fin cael eich ailgyfeirio",
-      "TIMER_TEXT": "Byddwn yn eich allgofnodi ymhen ",
-      "TITLE": "Byddwn yn eich allgofnodi cyn hir"
+      "TIMER_TEXT": "Er eich diogelwch byddwn yn eich allgofnodi mewn ",
+      "TITLE": "Rydych chi ar fin cael eich allgofnodi"
     },
     "CREATE_DRAFT": {
       "PAGE_TITLE": "Creu hawliad drafft"
