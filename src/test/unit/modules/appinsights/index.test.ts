@@ -2,6 +2,7 @@ import config from 'config';
 
 const mockStart = jest.fn();
 const mockSetSendLiveMetrics = jest.fn(() => ({start: mockStart}));
+const mockSetAutoCollectConsole = jest.fn(() => ({setSendLiveMetrics: mockSetSendLiveMetrics}));
 const mockAddTelemetryProcessor = jest.fn();
 const mockTrackTrace = jest.fn();
 const mockClient = {
@@ -12,7 +13,7 @@ const mockClient = {
 };
 
 jest.mock('applicationinsights', () => ({
-  setup: jest.fn(() => ({setSendLiveMetrics: mockSetSendLiveMetrics})),
+  setup: jest.fn(() => ({setAutoCollectConsole: mockSetAutoCollectConsole})),
   defaultClient: mockClient,
 }));
 
@@ -71,6 +72,7 @@ describe('AppInsights module', () => {
     it('disables sampling and registers the failure-keeping processor in non-prod', () => {
       process.env.LAUNCH_DARKLY_ENV = 'perftest';
       new AppInsights().enable();
+      expect(mockSetAutoCollectConsole).toHaveBeenCalledWith(true, true);
       expect(mockClient.config.samplingPercentage).toBe(100);
       expect(mockAddTelemetryProcessor).toHaveBeenCalledWith(keepFailuresTelemetryProcessor);
       expect(mockTrackTrace).toHaveBeenCalled();
@@ -79,6 +81,7 @@ describe('AppInsights module', () => {
     it('leaves sampling untouched in prod', () => {
       process.env.LAUNCH_DARKLY_ENV = 'prod';
       new AppInsights().enable();
+      expect(mockSetAutoCollectConsole).toHaveBeenCalledWith(true, true);
       expect(mockClient.config.samplingPercentage).toBeUndefined();
       expect(mockAddTelemetryProcessor).not.toHaveBeenCalled();
     });

@@ -71,6 +71,8 @@ import {
   buildAuthorizationOnlyConfig,
   buildJsonOnlyConfig,
   executeRequest,
+  logCivilServiceFailure,
+  reportCivilServiceFailure,
   RequestErrorHandler,
 } from 'client/common/civilServiceRequest';
 import {normalizeRouteParam, requirePathSegment, RouteParam} from 'common/utils/routeParamUtils';
@@ -209,7 +211,7 @@ export class CivilServiceClient {
     const currentPage = req.query?.[pageQueryKey] ?? 1;
     const response = await executeRequest(
       () => this.client.get(`/cases/${role}/${submitterId}?page=${currentPage}`, this.getConfig(req)),
-      (err) => logger.error(onError(submitterId, err)),
+      (err) => logCivilServiceFailure(onError(submitterId, err), err),
     );
     return {
       claims: plainToInstance(itemClass, response.data.claims as object[]),
@@ -273,7 +275,7 @@ export class CivilServiceClient {
   private async retrieveClaimDetailsFromCivilService(normalizedClaimId: string, req: AppRequest): Promise<Claim> {
     const response = await executeRequest(
       () => this.client.get(`/cases/${normalizedClaimId}`, this.getConfig(req)),// nosonar
-      () => logger.error(`Error when retrieving claim details for claim id - ${normalizedClaimId} `),
+      (err) => logCivilServiceFailure(`Error when retrieving claim details for claim id - ${normalizedClaimId} `, err),
     );
     if (!response.data) {
       throw new AssertionError({message: 'Claim details not available!'});
@@ -397,7 +399,7 @@ export class CivilServiceClient {
         logger.info(`Claim ${caseReference} not found or not linked, returning false`);
         return false;
       }
-      logger.error(`Error when checking a claim ${caseReference} is linked to a defendant,caseReference - ${caseReference}`);
+      reportCivilServiceFailure(`Error when checking a claim ${caseReference} is linked to a defendant,caseReference - ${caseReference}`, err);
       throw err;
     }
   }
@@ -527,7 +529,11 @@ export class CivilServiceClient {
         const err = e as AxiosError;
         const status = err.response?.status;
         const body = err.response?.data as CallbackErrorResponseBody;
-        logger.error(`Submit event failed (event=${event}, claimId=${normalizedClaimId}, status=${status})`, { body: safeSubmitEventErrorBody(body) });
+        const failure = e instanceof Error ? e : undefined;
+        logger.error(
+          `Submit event failed (event=${event}, claimId=${normalizedClaimId}, status=${status})${failure?.stack ? `\n${failure.stack}` : ''}`,
+          { body: safeSubmitEventErrorBody(body) },
+        );
         // DTSCCI-5282: civil-service returns 422 with the actionable messages preserved.
         // They arrive either as `callbackErrors` (callback/business-rule rejections) or as
         // `details.field_errors` (CCD field-type validation). Surface either so the user sees
@@ -795,7 +801,7 @@ export class CivilServiceClient {
         {params: new Map()},
         this.getConfig(req),
       ),
-      (err) => logger.error(err),
+      (err) => logCivilServiceFailure('Error when creating dashboard scenario', err),
     );
   }
 
@@ -804,7 +810,7 @@ export class CivilServiceClient {
       CIVIL_SERVICE_RECORD_NOTIFICATION_CLICK_URL.replace(':notificationId', id),
       null,
       req,
-      (err) => logger.error(err),
+      (err) => logCivilServiceFailure('Error when recording notification click', err),
     );
   }
   async updateTaskStatus(taskId: string, req: AppRequest): Promise<void> {
@@ -812,7 +818,7 @@ export class CivilServiceClient {
       CIVIL_SERVICE_UPDATE_TASK_STATUS_URL.replace(':taskItemId', taskId),
       null,
       req,
-      (err) => logger.error(err),
+      (err) => logCivilServiceFailure('Error when updating task status', err),
     );
   }
 }
