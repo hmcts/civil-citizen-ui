@@ -498,6 +498,33 @@ describe('AppInsights module', () => {
       expect(Date.now() - started).toBeLessThan(5000);
     });
 
+    it('redacts lowercase userpassword, pass, passwd and credentials keys in text and property names', () => {
+      expect(sanitizeCredentials('userpassword=pw1&pass=pw2&passwd=pw3')).toBe(
+        'userpassword=[REDACTED]&pass=[REDACTED]&passwd=[REDACTED]',
+      );
+      expect(sanitizeCredentials('{"credentials":"pw4","pass":"pw5"}')).toBe('{"credentials":"[REDACTED]","pass":"[REDACTED]"}');
+      expect(sanitizeCredentials('password=pw6 passport=GB123 bypass=ok')).toBe('password=[REDACTED] passport=GB123 bypass=ok');
+
+      const env = {
+        sampleRate: 1,
+        data: {
+          baseType: 'MessageData',
+          baseData: {
+            message: 'm',
+            properties: {userpassword: 'pw7', pass: 'pw8', passwd: 'pw9', credentials: {pass: 'pw10'}, passport: 'GB123'},
+          },
+        },
+      };
+      expect(stripCredentialsTelemetryProcessor(env as unknown as Parameters<typeof stripCredentialsTelemetryProcessor>[0])).toBe(true);
+      expect(env.data.baseData.properties).toEqual({
+        userpassword: '[REDACTED]',
+        pass: '[REDACTED]',
+        passwd: '[REDACTED]',
+        credentials: '[REDACTED]',
+        passport: 'GB123',
+      });
+    });
+
     it('redacts complete object values for sensitive keys in text', () => {
       expect(sanitizeCredentials("{ token: { value: 'tok1', inner: { x: 'a}b' } }, ok: 1 }")).toBe(
         '{ token: [REDACTED], ok: 1 }',
