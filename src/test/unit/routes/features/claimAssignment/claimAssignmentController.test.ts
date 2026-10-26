@@ -4,64 +4,79 @@ import config from 'config';
 import {ASSIGN_CLAIM_URL, DASHBOARD_URL} from 'routes/urls';
 import {app} from '../../../../../main/app';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import * as utilityService from 'modules/utilityService';
 import { CivilServiceClient } from 'client/civilServiceClient';
 import { Claim } from 'common/models/claim';
-import { Session } from 'express-session';
+import {AppSession} from 'common/models/AppRequest';
 
 jest.mock('../../../../../main/modules/oidc');
 
 describe('claim assignment controller', ()=>{
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
+  const originalSession = app.request.session;
+  const civilServiceUrl = config.get<string>('services.civilService.url');
+  const claim = Object.assign(new Claim(), {respondent1PinToPostLRspec: {accessCode: '123456'}});
+  let session: AppSession;
 
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, { id_token: citizenRoleToken });
+  beforeEach(() => {
+    session = {
+      firstContact: {claimId: '123'},
+      user: {id: 'defendant', accessToken: 'test-token'},
+    } as unknown as AppSession;
+    app.request.session = session;
+    jest.spyOn(utilityService, 'getClaimById').mockResolvedValue(claim);
+    jest.spyOn(draftStoreService, 'deleteDraftClaimFromStore').mockResolvedValue(undefined);
+  });
+
+  afterEach(() => {
+    jest.restoreAllMocks();
+    nock.cleanAll();
+    app.request.session = originalSession;
   });
 
   describe('on GET', ()=>{
-    const civilServiceUrl = config.get<string>('services.civilService.url');
     it('should call civil service api to assign claim to defendant and redirect to dashboard', async () => {
-      const spyDel = jest.spyOn(draftStoreService, 'deleteDraftClaimFromStore');
-      nock(civilServiceUrl)
-        .post('/assignment/case/123/RESPONDENTSOLICITORONE')
+      const assignment = nock(civilServiceUrl)
+        .post('/assignment/case/123/DEFENDANT', {pin: '123456'})
         .reply(200);
-      request(app).post(ASSIGN_CLAIM_URL+'?123')
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.get('location')).toBe(DASHBOARD_URL);
-          expect(spyDel).toBeCalled();
-        });
+      await request(app).get(ASSIGN_CLAIM_URL)
+        .expect(302)
+        .expect('Location', DASHBOARD_URL);
+      expect(assignment.isDone()).toBe(true);
+      expect(utilityService.getClaimById).toHaveBeenCalledWith('123', expect.anything(), false);
+      expect(draftStoreService.deleteDraftClaimFromStore).toHaveBeenCalledWith('123');
+      expect(session.firstContact).toEqual({});
     });
     it('should not call civil service api and redirect to dashboard', async () =>{
-      request(app).post(ASSIGN_CLAIM_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.get('location')).toBe(DASHBOARD_URL);
-        });
+      session.firstContact = {};
+      const assign = jest.spyOn(CivilServiceClient.prototype, 'assignDefendantToClaim');
+      await request(app).get(ASSIGN_CLAIM_URL)
+        .expect(302)
+        .expect('Location', DASHBOARD_URL);
+      expect(utilityService.getClaimById).not.toHaveBeenCalled();
+      expect(assign).not.toHaveBeenCalled();
+      expect(draftStoreService.deleteDraftClaimFromStore).not.toHaveBeenCalled();
     });
-    it('on error should redirect to dashboard', async () => {
+    it('on claim retrieval error should redirect to dashboard', async () => {
       const error = new Error('Test error');
-      jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
-        .mockRejectedValueOnce(error);
-      app.request.session = { firstContact: { 'claimId': 123 } } as unknown as Session;
-      await request(app).get('/assignclaim')
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.get('location')).toBe(DASHBOARD_URL);
-        });
+      jest.spyOn(utilityService, 'getClaimById').mockRejectedValueOnce(error);
+      const assign = jest.spyOn(CivilServiceClient.prototype, 'assignDefendantToClaim');
+      await request(app).get(ASSIGN_CLAIM_URL)
+        .expect(302)
+        .expect('Location', DASHBOARD_URL);
+      expect(assign).not.toHaveBeenCalled();
+      expect(draftStoreService.deleteDraftClaimFromStore).not.toHaveBeenCalled();
+      expect(session.firstContact).toEqual({});
     });
-    it('on success  should redirect to dashboard', async () => {
-     
-      jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
-        .mockResolvedValueOnce({} as Claim);
-      app.request.session = { firstContact: { 'claimId': 123 } } as unknown as Session;
-      await request(app).get('/assignclaim')
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.get('location')).toBe(DASHBOARD_URL);
-        });
+    it('on assignment error should redirect without deleting the draft', async () => {
+      const assignment = nock(civilServiceUrl)
+        .post('/assignment/case/123/DEFENDANT', {pin: '123456'})
+        .reply(500);
+      await request(app).get(ASSIGN_CLAIM_URL)
+        .expect(302)
+        .expect('Location', DASHBOARD_URL);
+      expect(assignment.isDone()).toBe(true);
+      expect(draftStoreService.deleteDraftClaimFromStore).not.toHaveBeenCalled();
+      expect(session.firstContact).toEqual({});
     });
   });
 });
