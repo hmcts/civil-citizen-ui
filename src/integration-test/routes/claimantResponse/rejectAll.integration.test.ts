@@ -1,11 +1,20 @@
 import request from 'supertest';
 import express from 'express';
 import session from 'express-session';
+import {JSDOM} from 'jsdom';
 process.env.NODE_ENV = 'test';
 import '../../setup/testSetup';
 
 import {app} from '../../../main/app';
-import {CLAIMANT_RESPONSE_ACCEPT_REPAYMENT_PLAN_URL, CLAIMANT_RESPONSE_CONFIRMATION_URL, CLAIMANT_RESPONSE_TASK_LIST_URL} from '../../../main/routes/urls';
+import {
+  CLAIMANT_RESPONSE_ACCEPT_REPAYMENT_PLAN_URL,
+  CLAIMANT_RESPONSE_CHECK_ANSWERS_URL,
+  CLAIMANT_RESPONSE_CONFIRMATION_URL,
+  CLAIMANT_RESPONSE_PAYMENT_OPTION_URL,
+  CLAIMANT_RESPONSE_PAYMENT_PLAN_URL,
+  CLAIMANT_RESPONSE_SETTLE_ADMITTED_CLAIM_URL,
+  CLAIMANT_RESPONSE_TASK_LIST_URL,
+} from '../../../main/routes/urls';
 import {t} from 'i18next';
 import {civilServiceClientMock} from '../../setup/sharedMocks';
 import {translateCCDCaseDataToCUIModel} from '../../../main/services/translation/convertToCUI/cuiTranslation';
@@ -32,6 +41,11 @@ import {CaseState} from '../../../main/common/form/models/claimDetails';
 import {Claim} from '../../../main/common/models/claim';
 import {ClaimantResponse} from '../../../main/common/models/claimantResponse';
 import {AppSession} from '../../../main/common/models/AppRequest';
+import {PaymentOptionType} from '../../../main/common/form/models/admission/paymentOption/paymentOptionType';
+import {PaymentDate} from '../../../main/common/form/models/admission/fullAdmission/paymentOption/paymentDate';
+import {CCDRepaymentPlanFrequency} from '../../../main/common/models/ccdResponse/ccdRepaymentPlan';
+import {RepaymentDecisionType} from '../../../main/common/models/claimantResponse/RepaymentDecisionType';
+import {SignSettlmentAgreement} from '../../../main/common/form/models/claimantResponse/signSettlementAgreement';
 
 const CLAIM_ID = '000MC456';
 const SUBMITTED_DATE = '2026-02-03T09:00:00.000Z';
@@ -246,7 +260,7 @@ describe('Integration: claimant reject-all branching', () => {
   });
 });
 
-describe('Integration: claimant confirmation and cache expiry', () => {
+describe('Integration: claimant-response navigation and cache recovery', () => {
   const id = '1645882162449409';
   const redisKey = `${id}local-user`;
   const otherUserKey = `${id}another-user`;
@@ -296,6 +310,56 @@ describe('Integration: claimant confirmation and cache expiry', () => {
 
   // Match the client's envelope mapping after translating the real CCD case_data.
   const restoredClaim = (): Claim => Object.assign(translateCCDCaseDataToCUIModel(ccdClaim()), {id});
+
+  const completePaymentChoice = (paymentOption: PaymentOptionType, partialAdmission = false): Claim => {
+    const data = ccdClaim();
+    if (partialAdmission) {
+      data.respondent1ClaimResponseTypeForSpec = 'PART_ADMISSION';
+      data.respondToAdmittedClaimOwingAmountPounds = '750';
+      data.specDefenceAdmittedRequired = YesNoUpperCamelCase.NO;
+      data.applicant1AcceptAdmitAmountPaidSpec = YesNoUpperCamelCase.YES;
+      data.applicant1AcceptPartAdmitPaymentPlanSpec = YesNoUpperCamelCase.NO;
+    }
+    const claim = Object.assign(translateCCDCaseDataToCUIModel(data), {id});
+    claim.claimantResponse.defendantResponseViewed = true;
+    claim.claimantResponse.courtDecision = RepaymentDecisionType.IN_FAVOUR_OF_CLAIMANT;
+    claim.claimantResponse.signSettlementAgreement = new SignSettlmentAgreement('true');
+    claim.claimantResponse.suggestedPaymentIntention = {
+      paymentOption,
+      paymentDate: new PaymentDate('2032', '6', '14') as unknown as Date,
+      repaymentPlan: {paymentAmount: 100, repaymentFrequency: 'MONTH', firstRepaymentDate: new Date('2032-06-14')},
+    };
+    return claim;
+  };
+
+  const changeLink = (html: string, question: string): string => {
+    const dom = new JSDOM(html);
+    try {
+      const normalize = (text: string) => text.replace(/\s+/g, ' ').trim();
+      const rows = Array.from(dom.window.document.querySelectorAll('.govuk-summary-list__row'));
+      const row = rows.find(row => normalize(row.querySelector('dt')?.textContent ?? '') === normalize(question));
+      expect(row).toBeDefined();
+      const link = row.querySelector('.govuk-summary-list__actions a');
+      expect(link).not.toBeNull();
+      return link.getAttribute('href');
+    } finally {
+      dom.window.close();
+    }
+  };
+
+  const instalmentFields = (html: string) => {
+    const dom = new JSDOM(html);
+    try {
+      const input = (name: string) => dom.window.document.querySelector<HTMLInputElement>(`input[name="${name}"]`).value;
+      return {
+        paymentAmount: input('paymentAmount'),
+        repaymentFrequency: dom.window.document.querySelector<HTMLInputElement>('input[name="repaymentFrequency"]:checked')?.value ?? '',
+        day: input('day'), month: input('month'), year: input('year'),
+      };
+    } finally {
+      dom.window.close();
+    }
+  };
 
   beforeEach(() => {
     originalStore = app.locals.draftStoreClient;
@@ -386,5 +450,137 @@ describe('Integration: claimant confirmation and cache expiry', () => {
     expect(entries.get(otherUserKey)).toBe('unrelated draft');
     expect(civilServiceClientMock.submitClaimantResponseEvent).not.toHaveBeenCalled();
     expect(civilServiceClientMock.submitEvent).not.toHaveBeenCalled();
+  });
+
+  describe.each(['en', 'cy'])('claimant repayment choices in %s', lang => {
+    it.each([PaymentOptionType.IMMEDIATELY, PaymentOptionType.INSTALMENTS, PaymentOptionType.BY_SET_DATE])('follows the full-admission %s Change link to the claimant payment-option page', async paymentOption => {
+      entries.set(redisKey, JSON.stringify({id: redisKey, case_data: completePaymentChoice(paymentOption)}));
+
+      const summary = await request(signedInApp).get(`${route(CLAIMANT_RESPONSE_CHECK_ANSWERS_URL, id)}?lang=${lang}`).expect(200);
+      const href = changeLink(summary.text, t('PAGES.CHECK_YOUR_ANSWER.HOW_DO_WANT_TO_DEFENDANT_TO_PAY', {lng: lang}));
+      expect(href).toBe(route(CLAIMANT_RESPONSE_PAYMENT_OPTION_URL, id));
+
+      const paymentOptions = await request(signedInApp).get(`${href}?lang=${lang}`).expect(200);
+      const dom = new JSDOM(paymentOptions.text);
+      try {
+        expect(dom.window.document.querySelector('h1').textContent.trim()).toBe(t('PAGES.CLAIMANT_RESPONSE_PAYMENT_OPTION.TITLE', {lng: lang}));
+        expect(Array.from(dom.window.document.querySelectorAll<HTMLInputElement>('input[name="paymentType"]')).map(input => input.value))
+          .toEqual([PaymentOptionType.IMMEDIATELY, PaymentOptionType.BY_SET_DATE, PaymentOptionType.INSTALMENTS]);
+        expect(paymentOptions.text).not.toContain('£NaN');
+      } finally {
+        dom.window.close();
+      }
+      expect(entries.get(otherUserKey)).toBe('unrelated draft');
+      expect(civilServiceClientMock.submitClaimantResponseEvent).not.toHaveBeenCalled();
+      expect(civilServiceClientMock.submitEvent).not.toHaveBeenCalled();
+    });
+
+    it('follows each instalment-detail Change link without clearing the saved proposal', async () => {
+      entries.set(redisKey, JSON.stringify({id: redisKey, case_data: completePaymentChoice(PaymentOptionType.INSTALMENTS)}));
+      const original = entries.get(redisKey);
+      const summary = await request(signedInApp).get(`${route(CLAIMANT_RESPONSE_CHECK_ANSWERS_URL, id)}?lang=${lang}`).expect(200);
+
+      for (const question of ['REGULAR_PAYMENTS', 'FREQUENCY_OF_PAYMENTS', 'DATE_FOR_FIRST_INSTALMENT']) {
+        const href = changeLink(summary.text, t(`PAGES.CHECK_YOUR_ANSWER.${question}`, {lng: lang}));
+        expect(href).toBe(route(CLAIMANT_RESPONSE_PAYMENT_PLAN_URL, id));
+        const plan = await request(signedInApp).get(`${href}?lang=${lang}`).expect(200);
+        expect(instalmentFields(plan.text)).toEqual({paymentAmount: '100', repaymentFrequency: 'MONTH', day: '14', month: '6', year: '2032'});
+      }
+      expect(entries.get(redisKey)).toBe(original);
+    });
+
+    it('keeps the partial-admission acceptance Change link on the settlement page', async () => {
+      entries.set(redisKey, JSON.stringify({id: redisKey, case_data: completePaymentChoice(PaymentOptionType.IMMEDIATELY, true)}));
+      const summary = await request(signedInApp).get(`${route(CLAIMANT_RESPONSE_CHECK_ANSWERS_URL, id)}?lang=${lang}`).expect(200);
+      const href = changeLink(summary.text, t('PAGES.CHECK_YOUR_ANSWER.DO_YOU_ACCEPT_OR_REJECT_THE_DEFENDANTS_ADMISSION', {lng: lang}));
+      expect(href).toBe(route(CLAIMANT_RESPONSE_SETTLE_ADMITTED_CLAIM_URL, id));
+
+      const settlement = await request(signedInApp).get(`${href}?lang=${lang}`).expect(200);
+      const dom = new JSDOM(settlement.text);
+      try {
+        expect(dom.window.document.querySelector('h1').textContent).toContain('£750');
+        expect(dom.window.document.querySelector<HTMLInputElement>('input[name="option"]:checked').value).toBe(YesNo.YES);
+        expect(settlement.text).not.toContain('£NaN');
+      } finally {
+        dom.window.close();
+      }
+    });
+
+    it.each([undefined, null, 'not-a-date', '2032-06-14'])('reconstructs CCD instalment date %s after cold-cache hydration without losing amount or frequency', async savedDate => {
+      const data: CCDClaim = {
+        ...ccdClaim(),
+        applicant1RepaymentOptionForDefendantSpec: CCDClaimantPaymentOption.REPAYMENT_PLAN,
+        applicant1SuggestInstalmentsPaymentAmountForDefendantSpec: 100,
+        applicant1SuggestInstalmentsRepaymentFrequencyForDefendantSpec: CCDRepaymentPlanFrequency.ONCE_ONE_MONTH,
+        applicant1SuggestInstalmentsFirstRepaymentDateForDefendantSpec: savedDate,
+      };
+      civilServiceClientMock.retrieveClaimDetails.mockImplementation(async () => Object.assign(translateCCDCaseDataToCUIModel(data), {id}));
+
+      const response = await request(signedInApp).get(`${route(CLAIMANT_RESPONSE_PAYMENT_PLAN_URL, id)}?lang=${lang}`).expect(200);
+
+      expect(instalmentFields(response.text)).toEqual({
+        paymentAmount: '100', repaymentFrequency: 'MONTH',
+        day: savedDate === '2032-06-14' ? '14' : '',
+        month: savedDate === '2032-06-14' ? '6' : '',
+        year: savedDate === '2032-06-14' ? '2032' : '',
+      });
+      expect(civilServiceClientMock.retrieveClaimDetails).toHaveBeenCalledTimes(1);
+      expect(writes).toHaveLength(1);
+      expect(writes[0].key).toBe(redisKey);
+      expect(writes[0].mode).toBe('EX');
+      expect(writes[0].value.case_data.claimantResponse.suggestedPaymentIntention.repaymentPlan).toEqual({
+        paymentAmount: 100, repaymentFrequency: 'MONTH',
+        ...(savedDate === '2032-06-14' ? {firstRepaymentDate: '2032-06-14T00:00:00.000Z'} : {}),
+      });
+      expect(entries.get(otherUserKey)).toBe('unrelated draft');
+      expect(civilServiceClientMock.submitClaimantResponseEvent).not.toHaveBeenCalled();
+      expect(civilServiceClientMock.submitEvent).not.toHaveBeenCalled();
+    });
+
+    it('leaves an older cached null date blank without changing the saved amount and frequency', async () => {
+      const claim = completePaymentChoice(PaymentOptionType.INSTALMENTS);
+      claim.claimantResponse.suggestedPaymentIntention.repaymentPlan.firstRepaymentDate = null;
+      entries.set(redisKey, JSON.stringify({id: redisKey, case_data: claim}));
+      const original = entries.get(redisKey);
+
+      const plan = await request(signedInApp).get(`${route(CLAIMANT_RESPONSE_PAYMENT_PLAN_URL, id)}?lang=${lang}`).expect(200);
+
+      expect(instalmentFields(plan.text)).toEqual({paymentAmount: '100', repaymentFrequency: 'MONTH', day: '', month: '', year: ''});
+      expect(entries.get(redisKey)).toBe(original);
+      expect(writes).toHaveLength(0);
+      expect(civilServiceClientMock.retrieveClaimDetails).not.toHaveBeenCalled();
+    });
+
+    it('opens a blank instalment plan through the normal payment-option journey', async () => {
+      entries.set(redisKey, JSON.stringify({id: redisKey, case_data: completePaymentChoice(PaymentOptionType.INSTALMENTS)}));
+      await request(signedInApp).get(route(CLAIMANT_RESPONSE_PAYMENT_OPTION_URL, id)).expect(200);
+      await request(signedInApp).post(route(CLAIMANT_RESPONSE_PAYMENT_OPTION_URL, id))
+        .send({paymentType: PaymentOptionType.INSTALMENTS}).expect(302).expect('Location', route(CLAIMANT_RESPONSE_PAYMENT_PLAN_URL, id));
+
+      const plan = await request(signedInApp).get(`${route(CLAIMANT_RESPONSE_PAYMENT_PLAN_URL, id)}?lang=${lang}`).expect(200);
+
+      expect(instalmentFields(plan.text)).toEqual({paymentAmount: '', repaymentFrequency: '', day: '', month: '', year: ''});
+      expect(JSON.parse(entries.get(redisKey)).case_data.claimantResponse.suggestedPaymentIntention).toEqual({paymentOption: PaymentOptionType.INSTALMENTS});
+    });
+
+    it('redisplays invalid POST date parts and entered payment values without overwriting the saved plan', async () => {
+      entries.set(redisKey, JSON.stringify({id: redisKey, case_data: completePaymentChoice(PaymentOptionType.INSTALMENTS)}));
+      const original = entries.get(redisKey);
+
+      const response = await request(signedInApp).post(`${route(CLAIMANT_RESPONSE_PAYMENT_PLAN_URL, id)}?lang=${lang}`)
+        .send({paymentAmount: '65', repaymentFrequency: 'MONTH', year: '2032', month: '', day: '12'}).expect(200);
+
+      expect(instalmentFields(response.text)).toEqual({paymentAmount: '65', repaymentFrequency: 'MONTH', day: '12', month: '', year: '2032'});
+      const dom = new JSDOM(response.text);
+      try {
+        expect(dom.window.document.querySelector('.govuk-error-summary a[href="#month"]')).not.toBeNull();
+      } finally {
+        dom.window.close();
+      }
+      expect(entries.get(redisKey)).toBe(original);
+      expect(writes).toHaveLength(0);
+      expect(civilServiceClientMock.submitClaimantResponseEvent).not.toHaveBeenCalled();
+      expect(civilServiceClientMock.submitEvent).not.toHaveBeenCalled();
+    });
   });
 });
