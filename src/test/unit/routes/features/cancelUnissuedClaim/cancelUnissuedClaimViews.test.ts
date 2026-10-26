@@ -62,6 +62,17 @@ describe('Cancel unissued claim views', () => {
     expect(res.text).toContain('Placeholder input text***');
   });
 
+  it('should show both errors in the summary and against the field when the reason is too long and invalid', async () => {
+    const res = await request(app)
+      .post(CANCEL_UNISSUED_CLAIM_URL.replace(':id', claimId))
+      .send({cancelReason: '*'.repeat(201)});
+
+    expect(res.status).toBe(200);
+    expect(res.text.match(new RegExp(t('ERRORS.CANCEL_UNISSUED_CLAIM_REASON_TOO_LONG'), 'g'))).toHaveLength(2);
+    expect(res.text.match(new RegExp(t('ERRORS.CANCEL_UNISSUED_CLAIM_REASON_INVALID_CHARACTERS'), 'g'))).toHaveLength(2);
+    expect(res.text.match(/href="#cancelReason"/g)).toHaveLength(2);
+  });
+
   it('should render the confirmation page', async () => {
     const res = await request(app).get(CANCEL_UNISSUED_CLAIM_CONFIRMATION_URL.replace(':id', claimId));
 
