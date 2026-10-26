@@ -4,7 +4,7 @@ import {AppRequest} from 'models/AppRequest';
 import {req} from '../../../utils/UserDetails';
 import {PaymentInformation} from 'models/feePayment/paymentInformation';
 import {GaServiceClient} from 'client/gaServiceClient';
-import { GA_GET_APPLICATION_URL, GA_SERVICE_CASES_URL } from 'client/gaServiceUrls';
+import { GA_BY_CASE_URL, GA_GET_APPLICATION_URL, GA_SERVICE_CASES_URL } from 'client/gaServiceUrls';
 import { Application } from 'common/models/generalApplication/application';
 import {MissingPaymentReferenceError} from 'common/utils/routeParamUtils';
 
@@ -227,6 +227,46 @@ describe('GA Service Client', () => {
       expect(application).toMatchObject(mockData.cases[0]);
       expect(mockGet).toBeCalledWith('/cases/1645882162449409',
         { headers: { Authorization: 'Bearer 54321', 'Content-Type': 'application/json'} as AxiosRequestConfig});
+    });
+  });
+
+  describe('getApplicationsByCaseId', () => {
+    it('should return an empty array when the response body has no cases field', async () => {
+      const mockGet = jest.fn().mockResolvedValue({data: {}});
+      mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
+      const gaServiceClient = new GaServiceClient(baseUrl);
+
+      const applications = await gaServiceClient.getApplicationsByCaseId('12345', appReq);
+
+      expect(applications).toEqual([]);
+      expect(mockGet.mock.calls[0][0]).toContain(GA_BY_CASE_URL.replace(':id', '12345'));
+    });
+
+    it('should return an empty array when cases is an empty array', async () => {
+      const mockGet = jest.fn().mockResolvedValue({data: {cases: []}});
+      mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
+      const gaServiceClient = new GaServiceClient(baseUrl);
+
+      const applications = await gaServiceClient.getApplicationsByCaseId('12345', appReq);
+
+      expect(applications).toEqual([]);
+    });
+
+    it('should return applications sorted by created_date ascending', async () => {
+      const mockGet = jest.fn().mockResolvedValue({
+        data: {
+          cases: [
+            {id: '2', created_date: '2024-06-02T00:00:00.000Z'},
+            {id: '1', created_date: '2024-06-01T00:00:00.000Z'},
+          ],
+        },
+      });
+      mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
+      const gaServiceClient = new GaServiceClient(baseUrl);
+
+      const applications = await gaServiceClient.getApplicationsByCaseId('12345', appReq);
+
+      expect(applications.map(application => application.id)).toEqual(['1', '2']);
     });
   });
 });
