@@ -11387,7 +11387,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"multer@npm:^2.1.1, multer@npm:^2.5.0":
+"multer@npm:^2.5.0":
   version: 2.5.0
   resolution: "multer@npm:2.5.0"
   dependencies:
