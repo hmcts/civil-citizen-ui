@@ -182,10 +182,10 @@
     "TIMEOUT_WARNING": {
       "EXTEND_BUTTON": "Stay signed in",
       "FALLBACK": "Your session will end at {{ time }}. This is to protect your data.",
-      "TIMER_EXTRA_TEXT": "This is to protect your data.",
+      "TIMER_EXTRA_TEXT": "You will lose any unsaved answers.",
       "TIMER_REDIRECT_TEXT": "You are about to be redirected",
-      "TIMER_TEXT": "We will sign you out in ",
-      "TITLE": "We will sign you out soon"
+      "TIMER_TEXT": "For your security we will sign you out in ",
+      "TITLE": "You're about to be signed out"
     },
     "CREATE_DRAFT": {
       "PAGE_TITLE": "Create draft claim"
