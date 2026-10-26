@@ -443,8 +443,9 @@ class ResponseToDefenceLipVLipSteps {
   }
 
   async verifyDashboardLoaded() {
-    await I.waitForContent('Submit', 3);
-    await I.see('Your response', 'h1');
+    await I.waitForVisible('h1', 60);
+    await I.waitForText('Your response', 60, 'h1');
+    await I.waitForText('Submit', 60);
   }
 
   async verifyDQForSmallClaims(){
