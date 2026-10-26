@@ -207,6 +207,19 @@ describe('Citizen date of birth', () => {
           expect(res.text).not.toContain(t('ERRORS.VALID_DAY'));
         });
     });
+    it.each([
+      ['day', 'year=2000&month=1&day=0', 'Date of birth must include a valid day'],
+      ['month', 'year=2000&month=0&day=1', 'Date of birth must include a valid month'],
+    ])('should only return date of birth valid %s error when it is 0', async (_field, body, expectedError) => {
+      await request(app)
+        .post(DOB_URL)
+        .send(body)
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain(expectedError);
+          expect(res.text).not.toContain(t('ERRORS.VALID_DATE'));
+        });
+    });
     it('should return date of birth day, month and year errors when all are invalid', async () => {
       await request(app)
         .post(DOB_URL)

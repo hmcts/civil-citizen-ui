@@ -393,6 +393,18 @@ describe('Mediation Unavailability Select Dates Confirmation Controller', () => 
           expect(res.status).toBe(200);
           expect(res.text).toContain('Unavailable to date must include a 4-digit year');
           expect(res.text).not.toContain('Date you are unavailable to must include a year');
+          expect(res.text).not.toContain('Date you are unavailable from must be before the date you are unavailable to');
+        });
+    });
+
+    it('should return enter to date error when to date does not exist', async () => {
+      await request(app)
+        .post(CONTROLLER_URL)
+        .send(longerPeriodBody({day: '31', month: '2', year}))
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Enter the date you are unavailable to');
+          expect(res.text).not.toContain('Date you are unavailable from must be before the date you are unavailable to');
         });
     });
 

@@ -7,6 +7,8 @@ import {
   Validate,
   ValidateIf,
   ValidateNested,
+  ValidationArguments,
+  ValidatorConstraint,
 } from 'class-validator';
 import {ValidationArgs} from 'common/form/models/genericForm';
 import {DateNotAfterReferenceDate} from 'common/form/validators/dateNotAfterReferenceDate';
@@ -18,6 +20,14 @@ import {toOptionalNumber} from 'common/utils/numberConverter';
 import { UnavailableDateType } from '../directionsQuestionnaire/hearing/unavailableDates';
 
 const MAX_MONTHS = 3;
+
+@ValidatorConstraint({name: 'dateNotAfterReferenceDateValidator', async: false})
+class DateNotAfterValidUntilDate extends DateNotAfterReferenceDate {
+  validate(inputDate: Date, validationArguments?: ValidationArguments) {
+    return !hasValidEndDateParts(validationArguments.object as UnavailableDatePeriodMediation)
+      || super.validate(inputDate, validationArguments);
+  }
+}
 
 export class UnavailableDatesMediation {
   @ValidateNested()
@@ -39,7 +49,7 @@ export class UnavailableDatePeriodMediation {
   @MaxDate(addMonths(new Date(), MAX_MONTHS), { message: generateErrorMessageForMaxDate })
   @IsDate({ message: generateErrorMessageForIsDate })
   @Validate(OptionalDateNotInPastValidator, {message: generateErrorMessageForDateNotInPastValidator})
-  @Validate(DateNotAfterReferenceDate, ['until'], {message: 'ERRORS.CARM_ENTER_UNAVAILABILITY_FROM_DATE_BEFORE_TO_DATE'})
+  @Validate(DateNotAfterValidUntilDate, ['until'], {message: 'ERRORS.CARM_ENTER_UNAVAILABILITY_FROM_DATE_BEFORE_TO_DATE'})
     from?: Date;
 
   @ValidateIf(o => o.type && (o.startDay || o.startMonth || o.startYear))
@@ -57,7 +67,7 @@ export class UnavailableDatePeriodMediation {
   @Min(1872, { message: generateErrorMessage })
     startYear?: number;
 
-  @ValidateIf(o => o.type === UnavailableDateType.LONGER_PERIOD && ((!!o.endDay && o.endDay < 32 && !!o.endMonth && o.endMonth < 13 && o.endYear > 999) ||
+  @ValidateIf(o => o.type === UnavailableDateType.LONGER_PERIOD && (hasValidEndDateParts(o) ||
     (!o.endDay && !o.endMonth && !o.endYear)))
   @MaxDate(addMonths(new Date(), MAX_MONTHS), {message: 'ERRORS.CARM_ENTER_UNAVAILABILITY_DATE_IN_NEXT_3_MONTHS_TO'})
   @IsDate({ message: generateErrorMessage })
@@ -93,6 +103,10 @@ export class UnavailableDatePeriodMediation {
   }
 }
 
+function hasValidEndDateParts(o: UnavailableDatePeriodMediation): boolean {
+  return !!o.endDay && o.endDay < 32 && !!o.endMonth && o.endMonth < 13 && o.endYear > 999;
+}
+
 function generateErrorMessage(args: ValidationArgs<UnavailableDatePeriodMediation>): string {
   const hasValue = args.value !== undefined;
   switch (args.property) {
@@ -124,7 +138,7 @@ function generateErrorMessage(args: ValidationArgs<UnavailableDatePeriodMediatio
       if (!args.object.from && !args.object.until) {
         return 'ERRORS.CARM_ENTER_DATES_FOR_UNAVAILABILITY';
       }
-      break;
+      return 'ERRORS.CARM_ENTER_DATE_FOR_UNAVAILABILITY_TO';
     default:
       return 'ERRORS.CARM_ENTER_DATE_FOR_UNAVAILABILITY';
   }
