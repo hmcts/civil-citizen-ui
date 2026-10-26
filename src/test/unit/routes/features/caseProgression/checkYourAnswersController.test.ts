@@ -1,335 +1,203 @@
-import {Response} from 'express';
-import {CivilServiceClient} from 'client/civilServiceClient';
-import {CaseRole} from 'form/models/caseRoles';
+import {Request, Response} from 'express';
+import controller from 'routes/features/caseProgression/checkAnswersController';
+import {CP_EVIDENCE_UPLOAD_SUBMISSION_URL, CP_UPLOAD_DOCUMENTS_URL, TYPES_OF_DOCUMENTS_URL} from 'routes/urls';
+import {getClaimById} from 'modules/utilityService';
+import {deleteDraftClaimFromStore, generateRedisKey} from 'modules/draft-store/draftStoreService';
+import {getBottomElements, getSummarySections, getTopElements, saveUploadedDocuments} from 'services/features/caseProgression/checkYourAnswers/checkAnswersService';
 import {Claim} from 'models/claim';
 import {CaseProgression} from 'models/caseProgression/caseProgression';
+import {UploadDocumentsUserForm, FileOnlySection} from 'models/caseProgression/uploadDocumentsUserForm';
 import {UploadDocuments, UploadDocumentTypes} from 'models/caseProgression/uploadDocumentsType';
-import {UploadDocumentsUserForm, WitnessSection} from 'models/caseProgression/uploadDocumentsUserForm';
-import {CaseDocument} from 'models/document/caseDocument';
-import {Party} from 'models/party';
-import {AppRequest} from 'models/AppRequest';
-import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {createNoValidDocumentsError, FILE_UPLOAD_SOURCE} from 'common/utils/fileUploadUtils';
-import {deleteDraftClaimFromStore, generateRedisKey} from 'modules/draft-store/draftStoreService';
-import {getClaimById} from 'modules/utilityService';
-import {
-  getSummarySections,
-  hasValidNewDocuments,
-  saveUploadedDocuments,
-} from 'services/features/caseProgression/checkYourAnswers/checkAnswersService';
-import documentUploadCheckAnswerController from 'routes/features/caseProgression/checkAnswersController';
-import {
-  CP_CHECK_ANSWERS_URL,
-  CP_EVIDENCE_UPLOAD_SUBMISSION_URL,
-  CP_UPLOAD_DOCUMENTS_URL,
-  TYPES_OF_DOCUMENTS_URL,
-} from 'routes/urls';
-import {createMockResponse, getRouteHandler} from '../../../../utils/getRouteHandler';
+import {CaseRole} from 'form/models/caseRoles';
+import {AppRequest} from 'models/AppRequest';
+import {GenericForm} from 'form/models/genericForm';
+import {DocumentUploadSubmissionForm} from 'form/models/caseProgression/documentUploadSubmission';
+import {getUploadDocumentsForm} from 'services/features/caseProgression/caseProgressionService';
+import {createMockResponse, createMockSession, getRouteHandler} from '../../../../utils/getRouteHandler';
 
+jest.mock('modules/utilityService', () => ({getClaimById: jest.fn()}));
+jest.mock('modules/draft-store/draftStoreService', () => ({deleteDraftClaimFromStore: jest.fn(), generateRedisKey: jest.fn()}));
+jest.mock('services/features/caseProgression/checkYourAnswers/checkAnswersService', () => ({
+  getTopElements: jest.fn(), getBottomElements: jest.fn(), getSummarySections: jest.fn(), saveUploadedDocuments: jest.fn(),
+}));
 jest.mock('client/civilServiceClient', () => {
-  const methods = {updateTaskStatus: jest.fn()};
-  return {CivilServiceClient: jest.fn(() => methods)};
+  const updateTaskStatus = jest.fn();
+  return {CivilServiceClient: jest.fn(() => ({updateTaskStatus})), updateTaskStatus};
 });
 
-jest.mock('modules/draft-store/draftStoreService', () => ({
-  generateRedisKey: jest.fn(() => 'redis-key'),
-  deleteDraftClaimFromStore: jest.fn(),
-}));
+const updateTaskStatus = jest.requireMock('client/civilServiceClient').updateTaskStatus as jest.Mock;
+const get = getRouteHandler(controller, 'get');
+const post = getRouteHandler(controller, 'post');
+const id = '1645882162449409';
 
-jest.mock('modules/utilityService', () => ({
-  getClaimById: jest.fn(),
-}));
-
-jest.mock('services/features/caseProgression/checkYourAnswers/checkAnswersService', () => ({
-  getBottomElements: jest.fn((): unknown[] => []),
-  getSummarySections: jest.fn(() => ({sections: [] as unknown[]})),
-  getTopElements: jest.fn((): unknown[] => []),
-  hasValidNewDocuments: jest.fn(() => true),
-  saveUploadedDocuments: jest.fn(),
-}));
-
-const actualCheckAnswersService = jest.requireActual('services/features/caseProgression/checkYourAnswers/checkAnswersService');
-
-const civilServiceMethods = new CivilServiceClient('http://localhost') as unknown as {
-  updateTaskStatus: jest.Mock;
-};
-const mockGetClaimById = getClaimById as jest.Mock;
-const mockGetSummarySections = getSummarySections as jest.Mock;
-const mockSaveUploadedDocuments = saveUploadedDocuments as jest.Mock;
-const mockHasValidNewDocuments = hasValidNewDocuments as jest.Mock;
-
-const claimId = '1645882162449409';
-const viewPath = 'features/caseProgression/check-answers';
-
-const claimWithRole = (caseRole: CaseRole): Claim => {
-  const claim = new Claim();
-  claim.caseRole = caseRole;
-  claim.totalClaimAmount = 1000;
-  claim.applicant1 = new Party();
-  claim.caseProgression = new CaseProgression();
-  claim.caseProgression.claimantDocuments = {documentsForDisclosure: []} as Claim['caseProgression']['claimantDocuments'];
-  claim.caseProgression.defendantDocuments = {documentsForDisclosure: []} as Claim['caseProgression']['defendantDocuments'];
-  return claim;
-};
-
-const withSelectedDocumentTypes = (claim: Claim): Claim => {
-  const documentTypes = new UploadDocuments([new UploadDocumentTypes(true)], [], [], []);
-  claim.caseProgression.claimantUploadDocuments = documentTypes;
-  claim.caseProgression.defendantUploadDocuments = documentTypes;
-  return claim;
-};
-
-const buildAllInvalidDraft = (caseDocument: CaseDocument = undefined): UploadDocumentsUserForm =>
-  new UploadDocumentsUserForm([], [], [{witnessName: 'witness', caseDocument} as WitnessSection], [], [], [], [], [], [], [], [], [], [], [], []);
-
-const sessionWithSave = () => ({save: jest.fn((callback: () => void) => callback())});
-
-const expectNoValidDocumentsRedirect = (req: AppRequest, res: ReturnType<typeof createMockResponse>, url: string, source: string) => {
-  expect(req.session.fileUpload).toBe(JSON.stringify(createNoValidDocumentsError()));
-  expect(req.session.fileUploadSource).toBe(source);
-  expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, url));
-  expect(res.render).not.toHaveBeenCalled();
-};
-
-describe('Evidence Upload - checkYourAnswers Controller', () => {
-  const getHandler = getRouteHandler(documentUploadCheckAnswerController, 'get', CP_CHECK_ANSWERS_URL);
-  const postHandler = getRouteHandler(documentUploadCheckAnswerController, 'post', CP_CHECK_ANSWERS_URL);
+describe.each([CaseRole.CLAIMANT, CaseRole.DEFENDANT])('case-progression check and send (%s)', role => {
+  let claim: Claim;
+  let req: AppRequest;
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
+  const own = role === CaseRole.CLAIMANT ? 'claimantDocuments' : 'defendantDocuments';
+  const other = role === CaseRole.CLAIMANT ? 'defendantDocuments' : 'claimantDocuments';
 
   beforeEach(() => {
-    jest.clearAllMocks();
-    mockSaveUploadedDocuments.mockResolvedValue(undefined);
-    (deleteDraftClaimFromStore as jest.Mock).mockResolvedValue(undefined);
-    civilServiceMethods.updateTaskStatus.mockResolvedValue(undefined);
+    jest.resetAllMocks();
+    claim = new Claim();
+    claim.caseRole = role;
+    claim.caseProgression = new CaseProgression();
+    const savedRow = Object.assign(new FileOnlySection(), {caseDocument: {
+      documentName: 'saved.pdf', documentLink: {document_binary_url: '/documents/saved/binary'},
+    }});
+    claim.caseProgression[own] = new UploadDocumentsUserForm(undefined, [savedRow]);
+    claim.caseProgression[other] = new UploadDocumentsUserForm(undefined, [Object.assign(new FileOnlySection(), structuredClone(savedRow))]);
+    req = {params: {id}, query: {}, cookies: {lang: 'en'}, body: {}, originalUrl: '/check',
+      session: createMockSession({save: jest.fn((callback: () => void) => callback()), user: {id: 'user'}, dashboard: {taskIdHearingUploadDocuments: 'upload-task'}}),
+    } as unknown as AppRequest;
+    res = createMockResponse();
+    next = jest.fn();
+    jest.mocked(getClaimById).mockResolvedValue(claim);
+    jest.mocked(generateRedisKey).mockReturnValue('owned-draft');
+    jest.mocked(getTopElements).mockReturnValue([]);
+    jest.mocked(getBottomElements).mockReturnValue([]);
+    jest.mocked(getSummarySections).mockReturnValue({} as ReturnType<typeof getSummarySections>);
+    jest.mocked(saveUploadedDocuments).mockResolvedValue(claim);
+    jest.mocked(deleteDraftClaimFromStore).mockResolvedValue(undefined);
+    updateTaskStatus.mockResolvedValue(undefined);
   });
 
-  describe('on GET', () => {
-    it('renders defendant answers', async () => {
-      const claim = claimWithRole(CaseRole.DEFENDANT);
-      mockGetClaimById.mockResolvedValue(claim);
-      const res = createMockResponse();
-      const req = {params: {id: claimId}, query: {lang: 'en'}, cookies: {}, originalUrl: '/check', session: {}} as unknown as AppRequest;
-
-      await getHandler(req, res as unknown as Response, jest.fn());
-
-      expect(req.session.previousUrl).toBe('/check');
-      expect(mockGetSummarySections).toHaveBeenCalledWith(claim.caseProgression.defendantDocuments, claimId, claim.isSmallClaimsTrackDQ, 'en');
-      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
-        form: expect.anything(),
-        summarySections: {sections: []},
-      }));
-    });
-
-    it('renders claimant answers', async () => {
-      const claim = claimWithRole(CaseRole.CLAIMANT);
-      mockGetClaimById.mockResolvedValue(claim);
-      const res = createMockResponse();
-
-      await getHandler(
-        {params: {id: claimId}, query: {}, cookies: {lang: 'cy'}, originalUrl: '/check', session: {}} as unknown as AppRequest,
-        res as unknown as Response,
-        jest.fn(),
-      );
-
-      expect(mockGetSummarySections).toHaveBeenCalledWith(claim.caseProgression.claimantDocuments, claimId, claim.isSmallClaimsTrackDQ, 'cy');
-      expect(res.render).toHaveBeenCalledWith(viewPath, expect.any(Object));
-    });
-
-    it.each([
-      ['missing', undefined],
-      ['has no valid documents', buildAllInvalidDraft()],
-    ])('redirects to upload documents with the no valid documents error when the upload draft is %s', async (_variant, defendantDocuments) => {
-      const claim = withSelectedDocumentTypes(claimWithRole(CaseRole.DEFENDANT));
-      claim.caseProgression.defendantDocuments = defendantDocuments;
-      mockGetClaimById.mockResolvedValue(claim);
-      mockGetSummarySections.mockReturnValueOnce(null);
-      const res = createMockResponse();
-      const req = {params: {id: claimId}, query: {lang: 'en'}, cookies: {}, session: sessionWithSave()} as unknown as AppRequest;
-
-      await getHandler(req, res as unknown as Response, jest.fn());
-
-      expect(mockGetSummarySections).toHaveBeenCalledWith(defendantDocuments, claimId, claim.isSmallClaimsTrackDQ, 'en');
-      expectNoValidDocumentsRedirect(req, res, CP_UPLOAD_DOCUMENTS_URL, FILE_UPLOAD_SOURCE.CP_UPLOAD_DOCUMENTS);
-    });
-
-    it('redirects to type of documents when the claim has no case progression', async () => {
-      const claim = claimWithRole(CaseRole.DEFENDANT);
-      claim.caseProgression = undefined;
-      mockGetClaimById.mockResolvedValue(claim);
-      mockGetSummarySections.mockReturnValueOnce(null);
-      const res = createMockResponse();
-      const req = {params: {id: claimId}, query: {lang: 'en'}, cookies: {}, session: sessionWithSave()} as unknown as AppRequest;
-
-      await getHandler(req, res as unknown as Response, jest.fn());
-
-      expect(mockGetSummarySections).toHaveBeenCalledWith(undefined, claimId, claim.isSmallClaimsTrackDQ, 'en');
-      expectNoValidDocumentsRedirect(req, res, TYPES_OF_DOCUMENTS_URL, FILE_UPLOAD_SOURCE.CP_TYPE_OF_DOCUMENTS);
-    });
-
-    it('redirects to type of documents when the upload was cancelled and no document types are selected', async () => {
-      const claim = claimWithRole(CaseRole.DEFENDANT);
-      claim.caseProgression.defendantDocuments = undefined;
-      claim.caseProgression.defendantUploadDocuments = new UploadDocuments([new UploadDocumentTypes(false)], [], [], []);
-      mockGetClaimById.mockResolvedValue(claim);
-      mockGetSummarySections.mockReturnValueOnce(null);
-      const res = createMockResponse();
-      const req = {params: {id: claimId}, query: {lang: 'en'}, cookies: {}, session: sessionWithSave()} as unknown as AppRequest;
-
-      await getHandler(req, res as unknown as Response, jest.fn());
-
-      expectNoValidDocumentsRedirect(req, res, TYPES_OF_DOCUMENTS_URL, FILE_UPLOAD_SOURCE.CP_TYPE_OF_DOCUMENTS);
-    });
-
-    it('calls next when the claim cannot be loaded', async () => {
-      const error = new Error('redis failure');
-      mockGetClaimById.mockRejectedValue(error);
-      const next = jest.fn();
-
-      await getHandler(
-        {params: {id: claimId}, query: {}, cookies: {}, session: {}} as unknown as AppRequest,
-        createMockResponse() as unknown as Response,
-        next,
-      );
-
-      expect(next).toHaveBeenCalledWith(error);
-    });
+  it.each(['en', 'cy'])('renders the existing role draft and language (%s)', async language => {
+    req.query.lang = language;
+    req.cookies.lang = language === 'en' ? 'cy' : 'en';
+    await get(req, res as unknown as Response, next);
+    expect(req.session.previousUrl).toBe('/check');
+    expect(getSummarySections).toHaveBeenCalledWith(claim.caseProgression[own], id, claim.isSmallClaimsTrackDQ, language);
+    expect(res.render).toHaveBeenCalledWith('features/caseProgression/check-answers', expect.objectContaining({form: expect.any(GenericForm), summarySections: {}}));
+    expect(next).not.toHaveBeenCalled();
   });
 
-  describe('on POST', () => {
-    it('re-renders when the declaration is not signed', async () => {
-      mockGetClaimById.mockResolvedValue(claimWithRole(CaseRole.DEFENDANT));
-      const res = createMockResponse();
+  it.each(Object.keys(new UploadDocumentsUserForm()))('accepts saved evidence in %s', async category => {
+    const saved = claim.caseProgression[own].disclosureList[0];
+    claim.caseProgression[own] = Object.assign(new UploadDocumentsUserForm(), {[category]: [saved]});
+    await get(req, res as unknown as Response, next);
+    expect(getSummarySections).toHaveBeenCalledWith(claim.caseProgression[own], id, claim.isSmallClaimsTrackDQ, 'en');
+    expect(res.render).toHaveBeenCalledTimes(1);
+    expect(res.redirect).not.toHaveBeenCalled();
+    expect(next).not.toHaveBeenCalled();
+  });
 
-      await postHandler(
-        {params: {id: claimId}, query: {lang: 'en'}, cookies: {}, body: {}, session: {}} as unknown as AppRequest,
-        res as unknown as Response,
-        jest.fn(),
-      );
-
-      expect(res.render.mock.calls[0][1].form.hasErrors()).toBe(true);
-      expect(mockSaveUploadedDocuments).not.toHaveBeenCalled();
+  describe.each([
+    'missing role draft', 'null role draft', 'missing case progression', 'empty object', 'empty collections',
+    'unsaved row', 'missing reference', 'blank reference', 'mixed saved and unsaved rows',
+  ])('%s', state => {
+    beforeEach(() => {
+      if (state === 'missing case progression') delete claim.caseProgression;
+      else if (state === 'null role draft') Object.assign(claim.caseProgression, {[own]: null});
+      else if (state === 'missing role draft') delete claim.caseProgression[own];
+      else if (state === 'empty object') Object.assign(claim.caseProgression, {[own]: {}});
+      else if (state === 'empty collections') claim.caseProgression[own] = getUploadDocumentsForm({body: {}} as Request);
+      else if (state === 'unsaved row') claim.caseProgression[own].disclosureList = [new FileOnlySection()];
+      else if (state === 'mixed saved and unsaved rows') claim.caseProgression[own].disclosureList.push(new FileOnlySection());
+      else claim.caseProgression[own].disclosureList[0].caseDocument.documentLink.document_binary_url = state === 'blank reference' ? '  ' : undefined;
     });
-
-    it('re-renders claimant answers when the declaration is not signed', async () => {
-      const claim = claimWithRole(CaseRole.CLAIMANT);
-      mockGetClaimById.mockResolvedValue(claim);
-      const res = createMockResponse();
-
-      await postHandler(
-        {params: {id: claimId}, query: {}, cookies: {lang: 'cy'}, body: {}, session: {}} as unknown as AppRequest,
-        res as unknown as Response,
-        jest.fn(),
-      );
-
-      expect(res.render.mock.calls[0][1].form.hasErrors()).toBe(true);
-      expect(mockGetSummarySections).toHaveBeenCalledWith(claim.caseProgression.claimantDocuments, claimId, claim.isSmallClaimsTrackDQ, 'cy');
-    });
-
-    it('saves the documents and redirects to the submission page', async () => {
-      const claim = claimWithRole(CaseRole.DEFENDANT);
-      mockGetClaimById.mockResolvedValue(claim);
-      const res = createMockResponse();
-      const req = {params: {id: claimId}, query: {}, cookies: {}, body: {signed: true}, session: {}} as unknown as AppRequest;
-
-      await postHandler(req, res as unknown as Response, jest.fn());
-
-      expect(mockSaveUploadedDocuments).toHaveBeenCalledWith(claim, req);
-      expect(generateRedisKey).toHaveBeenCalledWith(req);
-      expect(deleteDraftClaimFromStore).toHaveBeenCalledWith('redis-key');
-      expect(civilServiceMethods.updateTaskStatus).not.toHaveBeenCalled();
-      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CP_EVIDENCE_UPLOAD_SUBMISSION_URL));
-    });
-
-    it('updates the hearing task when a task id is on the session', async () => {
-      const claim = claimWithRole(CaseRole.CLAIMANT);
-      mockGetClaimById.mockResolvedValue(claim);
-      const res = createMockResponse();
-      const req = {
-        params: {id: claimId},
-        query: {},
-        cookies: {},
-        body: {signed: true},
-        session: {dashboard: {taskIdHearingUploadDocuments: 'task-1'}},
-      } as unknown as AppRequest;
-
-      await postHandler(req, res as unknown as Response, jest.fn());
-
-      expect(civilServiceMethods.updateTaskStatus).toHaveBeenCalledWith('task-1', req);
-      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CP_EVIDENCE_UPLOAD_SUBMISSION_URL));
-    });
-
-    it('redirects to upload documents without submitting when the upload draft is missing', async () => {
-      const claim = withSelectedDocumentTypes(claimWithRole(CaseRole.DEFENDANT));
-      claim.caseProgression.defendantDocuments = undefined;
-      mockGetClaimById.mockResolvedValue(claim);
-      mockHasValidNewDocuments.mockReturnValueOnce(false);
-      const res = createMockResponse();
-      const req = {params: {id: claimId}, query: {}, cookies: {}, body: {signed: true}, session: sessionWithSave()} as unknown as AppRequest;
-
-      await postHandler(req, res as unknown as Response, jest.fn());
-
-      expect(mockHasValidNewDocuments).toHaveBeenLastCalledWith(undefined);
-      expect(mockSaveUploadedDocuments).not.toHaveBeenCalled();
-      expectNoValidDocumentsRedirect(req, res, CP_UPLOAD_DOCUMENTS_URL, FILE_UPLOAD_SOURCE.CP_UPLOAD_DOCUMENTS);
-    });
-
-    it('redirects to type of documents without submitting when a claimant claim has no case progression', async () => {
-      const claim = claimWithRole(CaseRole.CLAIMANT);
-      claim.caseProgression = undefined;
-      mockGetClaimById.mockResolvedValue(claim);
-      mockHasValidNewDocuments.mockReturnValueOnce(false);
-      const res = createMockResponse();
-      const req = {params: {id: claimId}, query: {}, cookies: {}, body: {signed: true}, session: sessionWithSave()} as unknown as AppRequest;
-
-      await postHandler(req, res as unknown as Response, jest.fn());
-
-      expect(mockHasValidNewDocuments).toHaveBeenLastCalledWith(undefined);
-      expect(mockSaveUploadedDocuments).not.toHaveBeenCalled();
-      expectNoValidDocumentsRedirect(req, res, TYPES_OF_DOCUMENTS_URL, FILE_UPLOAD_SOURCE.CP_TYPE_OF_DOCUMENTS);
-    });
-
-    it.each([
-      ['defendant', CaseRole.DEFENDANT, 'no case document', undefined],
-      ['claimant', CaseRole.CLAIMANT, 'no case document', undefined],
-      ['defendant', CaseRole.DEFENDANT, 'an empty document link', {documentName: 'test.png', documentLink: {}}],
-      ['claimant', CaseRole.CLAIMANT, 'an empty document link', {documentName: 'test.png', documentLink: {}}],
-    ])('redirects to upload documents without submitting when the %s upload draft has only documents with %s', async (_party, caseRole, _variant, caseDocument) => {
-      const claim = withSelectedDocumentTypes(claimWithRole(caseRole));
-      const allInvalidDraft = buildAllInvalidDraft(caseDocument as CaseDocument);
-      claim.caseProgression.claimantDocuments = allInvalidDraft;
-      claim.caseProgression.defendantDocuments = allInvalidDraft;
-      mockGetClaimById.mockResolvedValue(claim);
-      mockHasValidNewDocuments.mockImplementationOnce(actualCheckAnswersService.hasValidNewDocuments);
-      const res = createMockResponse();
-      const req = {
-        params: {id: claimId},
-        query: {},
-        cookies: {},
-        body: {signed: true},
-        session: {...sessionWithSave(), dashboard: {taskIdHearingUploadDocuments: 'task-1'}},
-      } as unknown as AppRequest;
-
-      await postHandler(req, res as unknown as Response, jest.fn());
-
-      expect(mockHasValidNewDocuments).toHaveBeenLastCalledWith(allInvalidDraft);
-      expect(mockHasValidNewDocuments).toHaveLastReturnedWith(false);
-      expect(mockSaveUploadedDocuments).not.toHaveBeenCalled();
+    it.each(['GET', 'bodyless POST', 'invalid POST', 'signed POST'].flatMap(method =>
+      [false, true].map(selected => ({method, selected}))))('recovers $method with selected=$selected without changing stored data', async ({method, selected}) => {
+      const hasSelection = selected && !!claim.caseProgression;
+      if (claim.caseProgression) {
+        const selectedTypes = new UploadDocuments([new UploadDocumentTypes(true)], [], [], []);
+        claim.caseProgression[role === CaseRole.CLAIMANT ? 'defendantUploadDocuments' : 'claimantUploadDocuments'] = selectedTypes;
+        if (hasSelection) claim.caseProgression[role === CaseRole.CLAIMANT ? 'claimantUploadDocuments' : 'defendantUploadDocuments'] = selectedTypes;
+      }
+      const before = JSON.stringify(claim);
+      req.body = method === 'signed POST' ? {signed: true} : method === 'bodyless POST' ? undefined : {};
+      await (method === 'GET' ? get : post)(req, res as unknown as Response, next);
+      expect(res.redirect).toHaveBeenCalledTimes(1);
+      expect(res.redirect).toHaveBeenCalledWith((hasSelection ? CP_UPLOAD_DOCUMENTS_URL : TYPES_OF_DOCUMENTS_URL).replace(':id', id));
+      expect(req.session.fileUpload).toBe(JSON.stringify(createNoValidDocumentsError()));
+      expect(req.session.fileUploadSource).toBe(hasSelection ? FILE_UPLOAD_SOURCE.CP_UPLOAD_DOCUMENTS : FILE_UPLOAD_SOURCE.CP_TYPE_OF_DOCUMENTS);
+      expect(req.session.save).toHaveBeenCalledTimes(1);
+      expect(res.render).not.toHaveBeenCalled();
+      expect(getTopElements).not.toHaveBeenCalled();
+      expect(getSummarySections).not.toHaveBeenCalled();
+      expect(saveUploadedDocuments).not.toHaveBeenCalled();
+      expect(updateTaskStatus).not.toHaveBeenCalled();
       expect(deleteDraftClaimFromStore).not.toHaveBeenCalled();
-      expect(civilServiceMethods.updateTaskStatus).not.toHaveBeenCalled();
-      expectNoValidDocumentsRedirect(req, res, CP_UPLOAD_DOCUMENTS_URL, FILE_UPLOAD_SOURCE.CP_UPLOAD_DOCUMENTS);
+      expect(JSON.stringify(claim)).toBe(before);
+      expect(next).not.toHaveBeenCalled();
     });
+  });
 
-    it('calls next when saving fails', async () => {
-      const error = new Error('redis failure');
-      mockGetClaimById.mockRejectedValue(error);
-      const next = jest.fn();
+  it.each([{}, undefined])('redisplays signature errors when the draft exists with body %s', async body => {
+    req.body = body;
+    req.cookies.lang = 'cy';
+    await post(req, res as unknown as Response, next);
+    expect(getSummarySections).toHaveBeenCalledWith(claim.caseProgression[own], id, claim.isSmallClaimsTrackDQ, 'cy');
+    const form = res.render.mock.calls[0][1].form as GenericForm<DocumentUploadSubmissionForm>;
+    expect(form.hasErrors()).toBe(true);
+    expect(saveUploadedDocuments).not.toHaveBeenCalled();
+    expect(deleteDraftClaimFromStore).not.toHaveBeenCalled();
+    expect(next).not.toHaveBeenCalled();
+  });
 
-      await postHandler(
-        {params: {id: claimId}, query: {}, cookies: {}, body: {signed: true}, session: {}} as unknown as AppRequest,
-        createMockResponse() as unknown as Response,
-        next,
-      );
+  it.each([false, true])('preserves recovery when summary building rejects the draft (selected=%s)', async selected => {
+    if (selected) {
+      claim.caseProgression[role === CaseRole.CLAIMANT ? 'claimantUploadDocuments' : 'defendantUploadDocuments'] =
+        new UploadDocuments([new UploadDocumentTypes(true)], [], [], []);
+    }
+    jest.mocked(getSummarySections).mockReturnValueOnce(null);
+    await get(req, res as unknown as Response, next);
+    expect(res.redirect).toHaveBeenCalledWith((selected ? CP_UPLOAD_DOCUMENTS_URL : TYPES_OF_DOCUMENTS_URL).replace(':id', id));
+    expect(req.session.fileUpload).toBe(JSON.stringify(createNoValidDocumentsError()));
+    expect(req.session.fileUploadSource).toBe(selected ? FILE_UPLOAD_SOURCE.CP_UPLOAD_DOCUMENTS : FILE_UPLOAD_SOURCE.CP_TYPE_OF_DOCUMENTS);
+    expect(res.render).not.toHaveBeenCalled();
+    expect(saveUploadedDocuments).not.toHaveBeenCalled();
+    expect(deleteDraftClaimFromStore).not.toHaveBeenCalled();
+    expect(next).not.toHaveBeenCalled();
+  });
 
-      expect(next).toHaveBeenCalledWith(error);
-    });
+  it('submits existing evidence, updates its task and deletes only the owned draft', async () => {
+    req.body = {signed: true};
+    await post(req, res as unknown as Response, next);
+    expect(saveUploadedDocuments).toHaveBeenCalledTimes(1);
+    expect(saveUploadedDocuments).toHaveBeenCalledWith(claim, req);
+    expect(updateTaskStatus).toHaveBeenCalledWith('upload-task', req);
+    expect(generateRedisKey).toHaveBeenCalledWith(req);
+    expect(deleteDraftClaimFromStore).toHaveBeenCalledWith('owned-draft');
+    expect(jest.mocked(saveUploadedDocuments).mock.invocationCallOrder[0]).toBeLessThan(updateTaskStatus.mock.invocationCallOrder[0]);
+    expect(updateTaskStatus.mock.invocationCallOrder[0]).toBeLessThan(jest.mocked(deleteDraftClaimFromStore).mock.invocationCallOrder[0]);
+    expect(res.redirect).toHaveBeenCalledWith(CP_EVIDENCE_UPLOAD_SUBMISSION_URL.replace(':id', id));
+    expect(next).not.toHaveBeenCalled();
+  });
+
+  it('submits without updating a task when the session has no task id', async () => {
+    req.body = {signed: true};
+    delete req.session.dashboard;
+
+    await post(req, res as unknown as Response, next);
+
+    expect(saveUploadedDocuments).toHaveBeenCalledWith(claim, req);
+    expect(updateTaskStatus).not.toHaveBeenCalled();
+    expect(deleteDraftClaimFromStore).toHaveBeenCalledWith('owned-draft');
+    expect(res.redirect).toHaveBeenCalledWith(CP_EVIDENCE_UPLOAD_SUBMISSION_URL.replace(':id', id));
+    expect(next).not.toHaveBeenCalled();
+  });
+
+  it.each(['GET', 'POST'])('forwards a read failure on %s', async method => {
+    const error = new Error('read failed');
+    jest.mocked(getClaimById).mockRejectedValue(error);
+    await (method === 'GET' ? get : post)(req, res as unknown as Response, next);
+    expect(next).toHaveBeenCalledWith(error);
+    expect(res.redirect).not.toHaveBeenCalled();
+    expect(deleteDraftClaimFromStore).not.toHaveBeenCalled();
+  });
+
+  it.each(['submit', 'task'])('retains the draft when %s fails', async boundary => {
+    req.body = {signed: true};
+    const error = new Error('write failed');
+    if (boundary === 'submit') jest.mocked(saveUploadedDocuments).mockRejectedValue(error);
+    else updateTaskStatus.mockRejectedValue(error);
+    await post(req, res as unknown as Response, next);
+    expect(next).toHaveBeenCalledWith(error);
+    expect(deleteDraftClaimFromStore).not.toHaveBeenCalled();
+    expect(res.redirect).not.toHaveBeenCalled();
+    if (boundary === 'submit') expect(updateTaskStatus).not.toHaveBeenCalled();
   });
 });

@@ -1,3 +1,7 @@
+import {PartyType} from 'models/partyType';
+import {UploadDocuments, UploadDocumentTypes} from 'models/caseProgression/uploadDocumentsType';
+import {CaseRole} from 'form/models/caseRoles';
+import {Claim} from 'models/claim';
 import {CaseState} from 'form/models/claimDetails';
 import {getWitnessContent} from 'services/features/caseProgression/witnessService';
 import {UploadDocumentsUserForm, WitnessSection, WitnessSummarySection} from 'models/caseProgression/uploadDocumentsUserForm';
@@ -279,4 +283,41 @@ describe('Witness service', () => {
     expect(actualContent[0].length).toEqual(2);
   });
 
+});
+
+describe('selected witness categories without a saved row', () => {
+  const categories = [
+    {field: 'witnessStatement', index: 0},
+    {field: 'witnessSummary', index: 1},
+    {field: 'noticeOfIntention', index: 2},
+    {field: 'documentsReferred', index: 3},
+  ] as const;
+
+  it.each(categories.flatMap(category => [CaseRole.CLAIMANT, CaseRole.DEFENDANT].flatMap(role =>
+    [undefined, []].map(rows => ({...category, role, rows})),
+  )))('renders the blank $field section for $role with $rows rows', ({field, index, role, rows}) => {
+    const claim = new Claim();
+    claim.caseRole = role;
+    claim.applicant1 = {type: PartyType.INDIVIDUAL, partyDetails: {firstName: 'Alex', lastName: 'Claimant'}};
+    claim.respondent1 = {type: PartyType.INDIVIDUAL, partyDetails: {firstName: 'Morgan', lastName: 'Defendant'}};
+    const selection = new UploadDocuments(
+      Array.from({length: 2}, () => new UploadDocumentTypes(false)),
+      Array.from({length: 4}, () => new UploadDocumentTypes(false)),
+      Array.from({length: 4}, () => new UploadDocumentTypes(false)),
+      Array.from({length: 5}, () => new UploadDocumentTypes(false)),
+    );
+    selection.witness[index].selected = true;
+    claim.caseProgression = {[role === CaseRole.CLAIMANT ? 'claimantUploadDocuments' : 'defendantUploadDocuments']: selection};
+    const model = Object.assign(new UploadDocumentsUserForm(), {[field]: rows});
+    const form = new GenericForm(model);
+    const before = JSON.stringify(model);
+
+    const content = getWitnessContent(claim, form);
+
+    expect(content).toHaveLength(1);
+    expect(content[0]).toHaveLength(1);
+    expect(content).toEqual(getWitnessContent(claim, null));
+    expect(content[0][0].contentSections.some(section => section.data.category === field)).toBe(true);
+    expect(JSON.stringify(model)).toBe(before);
+  });
 });
