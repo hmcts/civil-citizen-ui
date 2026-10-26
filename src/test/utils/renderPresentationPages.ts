@@ -1,3 +1,4 @@
+import path from 'path';
 import {renderProductionPage} from './renderProductionPage';
 export {configuredProductionEnvironment as configuredPresentationEnvironment} from './renderProductionPage';
 import i18next from 'i18next';
