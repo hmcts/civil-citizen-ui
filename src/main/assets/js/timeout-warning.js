@@ -430,6 +430,7 @@ TimeoutWarning.prototype.extendTimeOnServer = function (onSuccess) {
   request.onerror = failRenewal;
   request.ontimeout = failRenewal;
   request.open('POST', this.extendSessionUrl, true);
+  request.timeout = 30000;
   if (this.csrfToken) request.setRequestHeader('CSRF-Token', this.csrfToken);
   request.setRequestHeader('Accept', 'application/json');
   request.send();
