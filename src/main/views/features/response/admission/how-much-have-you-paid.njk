@@ -20,7 +20,7 @@
         {% set title = t('PAGES.PARTIAL_ADMISSION_HOW_MUCH_HAVE_YOU_PAID.HOW_MUCH') %}
       {% endif %}
       {% set description = t('PAGES.PARTIAL_ADMISSION_HOW_MUCH_HAVE_YOU_PAID.TOTAL_CLAIMED', {totalClaimAmount : totalClaimAmount}) %}
-      {% set amountAsString = '' + form.model.amount %}
+      {% set amountAsString = form.model.amount | default('') %}
       {% set errors = form.getErrors() %}
       {% set dateSummaryErrors = [] %}
       {% for error in errors %}
