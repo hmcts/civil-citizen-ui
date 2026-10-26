@@ -8,6 +8,8 @@ import {
   CLAIMANT_RESPONSE_CHOOSE_HOW_TO_PROCEED_URL,
   CLAIMANT_RESPONSE_INTENTION_TO_PROCEED_URL,
   CLAIMANT_RESPONSE_PART_PAYMENT_RECEIVED_URL,
+  CLAIMANT_RESPONSE_PAYMENT_OPTION_URL,
+  CLAIMANT_RESPONSE_PAYMENT_PLAN_URL,
   CLAIMANT_RESPONSE_REJECTION_REASON_URL,
   CLAIMANT_RESPONSE_SETTLE_ADMITTED_CLAIM_URL,
   CLAIMANT_RESPONSE_SETTLE_CLAIM_URL,
@@ -57,42 +59,43 @@ export const buildSummaryQuestionForDefendantRepaymentPlan = (claim: Claim, clai
 };
 
 export const buildFullAdmitPayImmediatelySummaryRows = (claim: Claim, claimId: string, lng: string): SummaryRow => {
-  const partAdmitAcceptedHref = constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_SETTLE_ADMITTED_CLAIM_URL);
+  const paymentOptionHref = constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_PAYMENT_OPTION_URL);
   return summaryRow(
     t('PAGES.CHECK_YOUR_ANSWER.HOW_DO_WANT_TO_DEFENDANT_TO_PAY', {lng}),
     t('COMMON.PAYMENT_OPTION.IMMEDIATELY', {lng}),
-    partAdmitAcceptedHref,
+    paymentOptionHref,
     changeLabel(lng));
 };
 
 export const buildPartAdmitPayInstallmentsSummaryRows = (claim: Claim, claimId: string, lng: string): SummaryRow[] => {
-  const partAdmitAcceptedHref = constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_SETTLE_ADMITTED_CLAIM_URL);
+  const paymentOptionHref = constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_PAYMENT_OPTION_URL);
+  const paymentPlanHref = constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_PAYMENT_PLAN_URL);
   const summaryRows: SummaryRow [] = [];
   const selectedOption = claim.claimantResponse.suggestedPaymentIntention.repaymentPlan.repaymentFrequency;
   summaryRows.push(summaryRow(
     t('PAGES.CHECK_YOUR_ANSWER.HOW_DO_WANT_TO_DEFENDANT_TO_PAY', {lng}),
     t('COMMON.PAYMENT_OPTION.INSTALMENTS', {lng}),
-    partAdmitAcceptedHref,
+    paymentOptionHref,
     changeLabel(lng)));
   summaryRows.push(summaryRow(
     t('PAGES.CHECK_YOUR_ANSWER.REGULAR_PAYMENTS', {lng}),
     '£' + getEmptyStringIfUndefinedForNumber(claim.claimantResponse.suggestedPaymentIntention.repaymentPlan.paymentAmount),
-    partAdmitAcceptedHref,
+    paymentPlanHref,
     changeLabel(lng)));
   summaryRows.push(summaryRow(
     t('PAGES.CHECK_YOUR_ANSWER.FREQUENCY_OF_PAYMENTS', {lng}),
-    t(RESPONSEFREQUENCY[selectedOption], {lng}), partAdmitAcceptedHref,
+    t(RESPONSEFREQUENCY[selectedOption], {lng}), paymentPlanHref,
     changeLabel(lng)));
   summaryRows.push(summaryRow(
     t('PAGES.CHECK_YOUR_ANSWER.DATE_FOR_FIRST_INSTALMENT', {lng}),
     formatDateToFullDate(claim.claimantResponse.suggestedPaymentIntention.repaymentPlan.firstRepaymentDate, lng),
-    partAdmitAcceptedHref,
+    paymentPlanHref,
     changeLabel(lng)));
   return summaryRows;
 };
 
 export const buildPartAdmitPaySetDateSummaryRows = (claim: Claim, claimId: string, lng: string): SummaryRow[] => {
-  const partAdmitAcceptedHref = constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_SETTLE_ADMITTED_CLAIM_URL);
+  const paymentOptionHref = constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_PAYMENT_OPTION_URL);
   const summaryRows: SummaryRow [] = [];
   const date = claim.claimantResponse.suggestedPaymentIntention.paymentDate as unknown as PaymentDate;
 
@@ -100,7 +103,7 @@ export const buildPartAdmitPaySetDateSummaryRows = (claim: Claim, claimId: strin
   summaryRows.push(summaryRow(
     t('PAGES.CHECK_YOUR_ANSWER.HOW_DO_WANT_TO_DEFENDANT_TO_PAY', {lng}),
     t('PAGES.CHECK_YOUR_ANSWER.IN_FULL', {lng, paymentDate}),
-    partAdmitAcceptedHref,
+    paymentOptionHref,
     changeLabel(lng),
   ))
   ;
