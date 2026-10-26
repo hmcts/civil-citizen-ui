@@ -16,9 +16,11 @@ describe('TimeoutWarning', () => {
     isDialogOpen: () => boolean;
     resetIdleTime: () => void;
     checkIfShouldHaveTimedOut: () => void;
-    extendTimeOnServer: () => void;
+    extendTimeOnServer: (callback?: (response: {extended: boolean; expiresAt: number}) => void) => void;
     redirect: () => void;
     clearTimers: () => void;
+    handleStorageChange: (event: StorageEvent) => void;
+    sessionExpiresAt: number;
     dialogSupported: () => boolean;
     startUiCountdown: () => void;
     escClose: (event: {keyCode: number}) => void;
@@ -39,6 +41,7 @@ describe('TimeoutWarning', () => {
   beforeEach(() => {
     jest.useFakeTimers();
     jest.resetModules();
+    window.localStorage.clear();
     (global as unknown as {HTMLDialogElement: unknown}).HTMLDialogElement = (window as unknown as {HTMLDialogElement: unknown}).HTMLDialogElement;
     document.body.innerHTML = `
       <div id="main-content" class="govuk-modal-dialogue-inert-container"></div>
@@ -116,6 +119,10 @@ describe('TimeoutWarning', () => {
   it('extends the session after activity and opens after the idle period', () => {
     const extend = jest.spyOn(moduleInstance, 'extendTimeOnServer');
     const open = jest.spyOn(moduleInstance, 'openDialog');
+    moduleInstance.sessionExpiresAt = Date.now() + 30 * 60000;
+    extend.mockImplementation((callback?: (response: {extended: boolean; expiresAt: number}) => void) => {
+      callback?.({extended: true, expiresAt: moduleInstance.sessionExpiresAt});
+    });
 
     moduleInstance.resetIdleTime();
     jest.advanceTimersByTime(3000);
@@ -133,6 +140,7 @@ describe('TimeoutWarning', () => {
   });
 
   it('redirects when the countdown expires and announces the remaining time', () => {
+    moduleInstance.sessionExpiresAt = 0;
     moduleInstance.minutesTimeOutModalVisible = 1 / 60;
     jest.spyOn(moduleInstance, 'numberToWords').mockImplementation(() => { throw new Error('unsupported'); });
     const redirect = jest.spyOn(moduleInstance, 'redirect').mockImplementation(() => undefined);
@@ -166,10 +174,16 @@ describe('TimeoutWarning', () => {
   });
 
   it('closes on escape and marks the page inaccessible', () => {
+    (global as unknown as { XMLHttpRequest: unknown }).XMLHttpRequest = jest.fn(() => ({
+      open: jest.fn(), setRequestHeader: jest.fn(),
+      send: function (this: {onreadystatechange: () => void; readyState: number; status: number; responseText: string}) {
+        this.readyState = 4; this.status = 200; this.responseText = '{"extended":true}'; this.onreadystatechange();
+      },
+    }));
     moduleInstance.openDialog();
     moduleInstance.escClose({keyCode: 27});
     expect(dialog.close).toHaveBeenCalled();
-    expect(document.querySelector('#main-content')?.getAttribute('aria-hidden')).toBe('false');
+    expect(document.querySelector('#main-content')?.getAttribute('aria-hidden')).toBeNull();
   });
 
   it('closes the dialog and extends the session', () => {
@@ -177,8 +191,10 @@ describe('TimeoutWarning', () => {
     const xhrSend = jest.fn();
     (global as unknown as { XMLHttpRequest: unknown }).XMLHttpRequest = jest.fn(() => ({
       open: xhrOpen,
-      send: xhrSend,
       setRequestHeader: jest.fn(),
+      send: function (this: {onreadystatechange: () => void; readyState: number; status: number; responseText: string}) {
+        xhrSend(); this.readyState = 4; this.status = 200; this.responseText = '{"extended":true}'; this.onreadystatechange();
+      },
     }));
 
     moduleInstance.openDialog();
@@ -216,9 +232,7 @@ describe('TimeoutWarning', () => {
   it('closes a warning when another tab records fresh activity', () => {
     const closeDialog = jest.spyOn(moduleInstance, 'closeDialog');
     moduleInstance.openDialog();
-    window.localStorage.setItem('timeUserLastInteractedWithPage', new Date().toISOString());
-
-    moduleInstance.checkIfShouldHaveTimedOut();
+    moduleInstance.handleStorageChange({key: 'timeUserLastInteractedWithPage', newValue: new Date().toISOString()} as StorageEvent);
 
     expect(closeDialog).toHaveBeenCalledTimes(1);
   });

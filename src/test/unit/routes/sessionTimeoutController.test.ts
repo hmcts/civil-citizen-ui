@@ -70,7 +70,7 @@ describe('Session timeout', () => {
             maxAge: 5400000,
           },
         },
-        method: 'GET',
+        method: 'POST',
         url: SESSION_EXTEND_URL,
       } as unknown as AppRequest;
       const res = {
