@@ -289,18 +289,14 @@ export const collectDocumentUrls = (value: unknown, urls: Set<string> = new Set<
   return urls;
 };
 
-export const deleteRemovedDocuments = async (
+const deleteDocumentUrls = async (
   req: Request,
-  savedDraft: unknown,
-  updatedForm: unknown,
+  urls: string[],
   civilServiceClient: {deleteDocument: (req: Request, documentId: string) => Promise<void>},
-  loggerName = 'uploadDocumentsController',
+  loggerName: string,
 ): Promise<void> => {
   const logger = Logger.getLogger(loggerName);
-  const remaining = collectDocumentUrls(updatedForm);
-  const removed = [...collectDocumentUrls(savedDraft)].filter((url) => !remaining.has(url));
-
-  await Promise.all(removed.map(async (url) => {
+  await Promise.all(urls.map(async (url) => {
     const documentId = url.substring(url.lastIndexOf('/') + 1);
     try {
       await civilServiceClient.deleteDocument(req, documentId);
@@ -309,6 +305,32 @@ export const deleteRemovedDocuments = async (
     }
   }));
 };
+
+export const savedDocumentUrlsInForm = (savedDraft: unknown, postedForm: unknown): Set<string> => {
+  const posted = collectDocumentUrls(postedForm);
+  return new Set([...collectDocumentUrls(savedDraft)].filter((url) => posted.has(url)));
+};
+
+export const deleteDocumentsRemovedFromForm = async (
+  req: Request,
+  candidateUrls: Set<string>,
+  updatedForm: unknown,
+  civilServiceClient: {deleteDocument: (req: Request, documentId: string) => Promise<void>},
+  loggerName = 'uploadDocumentsController',
+): Promise<void> => {
+  const remaining = collectDocumentUrls(updatedForm);
+  const removed = [...candidateUrls].filter((url) => !remaining.has(url));
+  await deleteDocumentUrls(req, removed, civilServiceClient, loggerName);
+};
+
+export const deleteRemovedDocuments = async (
+  req: Request,
+  savedDraft: unknown,
+  updatedForm: unknown,
+  civilServiceClient: {deleteDocument: (req: Request, documentId: string) => Promise<void>},
+  loggerName = 'uploadDocumentsController',
+): Promise<void> =>
+  deleteDocumentsRemovedFromForm(req, collectDocumentUrls(savedDraft), updatedForm, civilServiceClient, loggerName);
 
 export const createUploadOneFileError = () => {
   return [{

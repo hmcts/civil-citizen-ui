@@ -421,5 +421,30 @@ describe('Mediation upload your documents Controller', () => {
       expect(deleteDocument).toHaveBeenCalledTimes(1);
       expect(deleteDocument).toHaveBeenCalledWith(expect.anything(), 'second-section');
     });
+
+    it('does not delete a file added in another tab', async () => {
+      const staleTab = {
+        documentsForYourStatement: [
+          {yourName: 'Jane', dateInputFields, caseDocuments: JSON.stringify([documentAt('kept')])},
+        ],
+      };
+
+      const response = await request(app).post(CONTROLLER_URL)
+        .send({...staleTab, action: 'documentsForYourStatement[0][deleteFile][0]'});
+
+      expect(response.status).toBe(200);
+      expect(deleteDocument).toHaveBeenCalledTimes(1);
+      expect(deleteDocument).toHaveBeenCalledWith(expect.anything(), 'kept');
+    });
+
+    it('does not delete anything when the draft cannot be saved', async () => {
+      (draftStoreService.saveDraftClaim as jest.Mock).mockRejectedValueOnce(new Error('Redis down'));
+
+      const response = await request(app).post(CONTROLLER_URL)
+        .send({...postedStatements, action: 'documentsForYourStatement[0][deleteFile][1]'});
+
+      expect(response.status).toBe(500);
+      expect(deleteDocument).not.toHaveBeenCalled();
+    });
   });
 });

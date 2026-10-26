@@ -22,6 +22,8 @@ import {
   MAX_FILE_INPUTS_PER_FORM,
   collectDocumentUrls,
   deleteRemovedDocuments,
+  savedDocumentUrlsInForm,
+  deleteDocumentsRemovedFromForm,
 } from 'common/utils/fileUploadUtils';
 import {FILE_SIZE_LIMIT} from 'form/validators/isFileSize';
 import {CaseDocument} from 'models/document/caseDocument';
@@ -909,6 +911,41 @@ describe('fileUploadUtils', () => {
     it('should return no urls for empty values', () => {
       expect(collectDocumentUrls(undefined).size).toBe(0);
       expect(collectDocumentUrls(null).size).toBe(0);
+    });
+  });
+
+  describe('savedDocumentUrlsInForm', () => {
+    const doc = (id: string) => ({documentLink: {document_url: `http://dm/documents/${id}`}});
+
+    it('should keep only documents that are both saved and posted', () => {
+      const saved = {witnessStatement: [{caseDocuments: [doc('a'), doc('b'), doc('added-elsewhere')]}]};
+      const posted = {witnessStatement: [{caseDocuments: [doc('a'), doc('b'), doc('not-saved')]}]};
+
+      expect([...savedDocumentUrlsInForm(saved, posted)]).toEqual(['http://dm/documents/a', 'http://dm/documents/b']);
+    });
+  });
+
+  describe('deleteDocumentsRemovedFromForm', () => {
+    const req = {} as Request;
+    const doc = (id: string) => ({documentLink: {document_url: `http://dm/documents/${id}`}});
+
+    it('should delete only candidates missing from the updated form', async () => {
+      const client = {deleteDocument: jest.fn().mockResolvedValue(undefined)};
+      const candidates = new Set(['http://dm/documents/a', 'http://dm/documents/b']);
+      const updated = {witnessStatement: [{caseDocuments: [doc('b')]}]};
+
+      await deleteDocumentsRemovedFromForm(req, candidates, updated, client);
+
+      expect(client.deleteDocument).toHaveBeenCalledTimes(1);
+      expect(client.deleteDocument).toHaveBeenCalledWith(req, 'a');
+    });
+
+    it('should delete nothing when there are no candidates', async () => {
+      const client = {deleteDocument: jest.fn().mockResolvedValue(undefined)};
+
+      await deleteDocumentsRemovedFromForm(req, new Set<string>(), {}, client);
+
+      expect(client.deleteDocument).not.toHaveBeenCalled();
     });
   });
 

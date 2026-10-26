@@ -39,7 +39,8 @@ import {
   getMulterErrorConstraint,
   extractCategoryAndIndex,
   removeUploadedFileForAction,
-  deleteRemovedDocuments,
+  savedDocumentUrlsInForm,
+  deleteDocumentsRemovedFromForm,
 } from 'common/utils/fileUploadUtils';
 import {getRouteParam} from 'common/utils/routeParamUtils';
 
@@ -134,6 +135,10 @@ mediationUploadDocumentsController.post(MEDIATION_UPLOAD_DOCUMENTS, multerMiddle
       return renderView(form, uploadDocuments, res, claimId, claim);
     }
 
+    const removableDocumentUrls = action?.includes('[deleteFile]') || action?.includes('[removeButton]')
+      ? savedDocumentUrlsInForm(claim.mediationUploadDocuments, uploadDocumentsForm)
+      : new Set<string>();
+
     if (action === 'add_another-yourStatement') {
       addAnother(uploadDocumentsForm,TypeOfMediationDocuments.YOUR_STATEMENT);
     } else if(action === 'add_another-documentsReferred'){
@@ -144,11 +149,6 @@ mediationUploadDocumentsController.post(MEDIATION_UPLOAD_DOCUMENTS, multerMiddle
       removeUploadedFileForAction(form.model, action);
     } else if (action?.includes('[removeButton]')) {
       removeItem(uploadDocumentsForm, action);
-    }
-
-    if (action?.includes('[deleteFile]') || action?.includes('[removeButton]')) {
-      await deleteRemovedDocuments(req, claim.mediationUploadDocuments, uploadDocumentsForm,
-        civilServiceClientForDocRetrieve, 'mediationUploadDocumentsController');
     }
 
     if (action) {
@@ -162,6 +162,8 @@ mediationUploadDocumentsController.post(MEDIATION_UPLOAD_DOCUMENTS, multerMiddle
         documentsForReferred.uploadDocuments = uploadDocumentsForm.documentsForDocumentsReferred;
       }
       await saveUploadDocument(redisKey, uploadDocuments.typeOfDocuments, TYPE_OF_DOCUMENTS_PROPERTY_NAME);
+      await deleteDocumentsRemovedFromForm(req, removableDocumentUrls, uploadDocumentsForm,
+        civilServiceClientForDocRetrieve, 'mediationUploadDocumentsController');
       return renderView(form, uploadDocuments, res, claimId, claim);
     }
 

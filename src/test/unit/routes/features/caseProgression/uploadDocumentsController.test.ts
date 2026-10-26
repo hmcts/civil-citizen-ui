@@ -1109,5 +1109,28 @@ describe('on POST', () => {
 
       expect(deleteDocument).not.toHaveBeenCalled();
     });
+
+    it('does not delete a file added in another tab', async () => {
+      const response = await postAction([sectionWith('kept', 'deleted', 'added-elsewhere')], [sectionWith('kept', 'deleted')], 'trialAuthorities[0][deleteFile][1]');
+
+      expect(response.status).toBe(200);
+      expect(deleteDocument).toHaveBeenCalledTimes(1);
+      expect(deleteDocument).toHaveBeenCalledWith(expect.anything(), 'deleted');
+    });
+
+    it('does not delete a posted file that is not in the saved draft', async () => {
+      await postAction([sectionWith('kept')], [sectionWith('kept', 'not-saved')], 'trialAuthorities[0][deleteFile][1]');
+
+      expect(deleteDocument).not.toHaveBeenCalled();
+    });
+
+    it('does not delete anything when the draft cannot be saved', async () => {
+      (saveCaseProgression as jest.Mock).mockRejectedValue(new Error('Redis down'));
+
+      const response = await postAction([sectionWith('kept', 'deleted')], [sectionWith('kept', 'deleted')], 'trialAuthorities[0][deleteFile][1]');
+
+      expect(response.status).toBe(500);
+      expect(deleteDocument).not.toHaveBeenCalled();
+    });
   });
 });

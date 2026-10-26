@@ -31,7 +31,8 @@ import {
   getMulterErrorConstraint,
   extractCategoryAndIndex,
   removeUploadedFileForAction,
-  deleteRemovedDocuments,
+  savedDocumentUrlsInForm,
+  deleteDocumentsRemovedFromForm,
   migrateLegacyCaseDocumentsOnForm,
   uploadAndValidateFile,
   reportRejectedFiles,
@@ -181,6 +182,11 @@ uploadDocumentsController.post(CP_UPLOAD_DOCUMENTS_URL, multerMiddleware, (async
       return await renderView(res, claim, claimId, form);
     }
 
+    const savedDraft = (claim.caseProgression as any)?.[isClaimant];
+    const removableDocumentUrls = action?.includes('[deleteFile]') || action?.includes('[removeButton]')
+      ? savedDocumentUrlsInForm(savedDraft, form.model)
+      : new Set<string>();
+
     if (action?.includes('add_another-')) {
       addAnother(uploadDocumentsForm, action, claimId, userid);
       return renderView(res, claim, claimId, form);
@@ -193,11 +199,6 @@ uploadDocumentsController.post(CP_UPLOAD_DOCUMENTS_URL, multerMiddleware, (async
       (form.model as any)[category].splice(Number(index), 1);
     }
 
-    if (action?.includes('[deleteFile]') || action?.includes('[removeButton]')) {
-      await deleteRemovedDocuments(req, (claim.caseProgression as any)?.[isClaimant], form.model,
-        civilServiceClientForDocRetrieve, 'uploadDocumentsController');
-    }
-
     if (action) {
       logger.info('Action detected in uploadDocumentsController', {
         claimId,
@@ -206,6 +207,8 @@ uploadDocumentsController.post(CP_UPLOAD_DOCUMENTS_URL, multerMiddleware, (async
         timestamp: new Date().toISOString(),
       });
       await saveCaseProgression(req, form.model, isClaimant);
+      await deleteDocumentsRemovedFromForm(req, removableDocumentUrls, form.model,
+        civilServiceClientForDocRetrieve, 'uploadDocumentsController');
       return await renderView(res, claim, claimId, form);
     }
 
