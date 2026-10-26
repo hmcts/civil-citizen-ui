@@ -52,7 +52,7 @@
                 label: {
                   text: t('COMMON.YEARS')
                 },
-                value: '' + form.model.unemploymentDetails.years,
+                value: form.model.unemploymentDetails.years | default(''),
                 errorMessage: { text: yearNestedError } if yearNestedError else ''
               }) }}
               {{ govukInput({
@@ -64,7 +64,7 @@
                 label: {
                   text: t('COMMON.MONTHS')
                 },
-                value: '' + form.model.unemploymentDetails.months,
+                value: form.model.unemploymentDetails.months | default(''),
                 errorMessage: { text: monthsNestedError } if monthsNestedError else ''
 
               }) }}
