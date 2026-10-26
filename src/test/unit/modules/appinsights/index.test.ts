@@ -144,6 +144,13 @@ describe('AppInsights module', () => {
   });
 
   describe('sanitizeCredentials', () => {
+    it('redacts camelCase credential names, connection-string keys and credential arrays', () => {
+      expect(sanitizeCredentials('userPassword=p1 clientSecret=cs1')).toBe('userPassword=[REDACTED] clientSecret=[REDACTED]');
+      expect(sanitizeCredentials('Endpoint=sb://x/;SharedAccessKey=sak1;Pwd=pwd1;Password=p2'))
+        .toBe('Endpoint=sb://x/;SharedAccessKey=[REDACTED];Pwd=[REDACTED];Password=[REDACTED]');
+      expect(sanitizeCredentials('Authorization:["Bearer opaque1","other"]'))
+        .toBe('Authorization:[REDACTED]');
+    });
     it('redacts sensitive query parameters and preserves non-sensitive parameters', () => {
       const url = 'https://api.os.uk/search/places/v1/postcode?dataset=DPA,LPI&postcode=SW1A1AA&key=32charSecretKey1234567890';
       const sanitized = sanitizeCredentials(url);
@@ -420,8 +427,65 @@ describe('AppInsights module', () => {
       expect(env.data.baseData.message).toBe('Request failed: {"headers":{"key":"[REDACTED]"}}');
       expect(env.data.baseData.exceptions[0].message).toBe('Unauthorized, sent headers key: [REDACTED]');
       expect(env.data.baseData.exceptions[0].stack)
-        .toBe('AxiosError: {"config":{"headers":{"Authorization":"Bearer [REDACTED]"}}}\n at fn()');
+        .toBe('AxiosError: {"config":{"headers":{"Authorization":"[REDACTED]"}}}\n at fn()');
       expect(env.data.baseData.properties.requestHeaders).toBe('accept: json\nkey: [REDACTED]');
+    });
+
+    it('redacts embedded JSON and camelCase credentials in messages, exceptions and properties', () => {
+      const env = {
+        sampleRate: 1,
+        data: {
+          baseType: 'ExceptionData',
+          baseData: {
+            message: 'Request failed: {"user":{"userPassword":"pw1"},"set-cookie":["sid=abc1"],"authorization":["Bearer opaque1"]}',
+            exceptions: [{
+              message: 'Failure context: {"dbSecret":"pw2"}',
+              stack: 'Error: {"apiToken":"pw3"}\\n at run()',
+            }],
+            properties: {note: 'ctx {"userPassword":"pw4"} end', credential: 'userPassword=pw5'},
+          },
+        },
+      };
+      expect(stripCredentialsTelemetryProcessor(env as unknown as Parameters<typeof stripCredentialsTelemetryProcessor>[0])).toBe(true);
+      expect(env.data.baseData.message)
+        .toBe('Request failed: {"user":{"userPassword":"[REDACTED]"},"set-cookie":"[REDACTED]","authorization":"[REDACTED]"}');
+      expect(env.data.baseData.exceptions[0].message).toBe('Failure context: {"dbSecret":"[REDACTED]"}');
+      expect(env.data.baseData.exceptions[0].stack).toBe('Error: {"apiToken":"[REDACTED]"}\\n at run()');
+      expect(env.data.baseData.properties).toEqual({note: 'ctx {"userPassword":"[REDACTED]"} end', credential: 'userPassword=[REDACTED]'});
+    });
+
+    it('redacts rawHeaders name/value arrays and preserves unchanged JSON text verbatim', () => {
+      const props = {
+        raw: {rawHeaders: ['Set-Cookie', 'sid=abc2', 'Authorization', 'Bearer opaque2', 'Accept', 'json']},
+        unchanged: ' pretty { "caseId" : 1234567890123456789 } text ',
+      };
+      const env = {sampleRate: 1, data: {baseType: 'MessageData', baseData: {message: 'm', properties: props}}};
+      expect(stripCredentialsTelemetryProcessor(env as unknown as Parameters<typeof stripCredentialsTelemetryProcessor>[0])).toBe(true);
+      expect(JSON.parse(env.data.baseData.properties.raw as unknown as string)).toEqual({
+        rawHeaders: ['Set-Cookie', '[REDACTED]', 'Authorization', '[REDACTED]', 'Accept', 'json'],
+      });
+      expect(env.data.baseData.properties.unchanged).toBe(' pretty { "caseId" : 1234567890123456789 } text ');
+    });
+
+    it('keeps telemetry when JSON strings or objects exceed the redaction depth limit', () => {
+      const deeplyNestedJson = '['.repeat(20000) + ']'.repeat(20000);
+      let deeplyNestedObject: unknown = 'value';
+      for (let depth = 0; depth < 200; depth++) {
+        deeplyNestedObject = {child: deeplyNestedObject};
+      }
+      const env = {
+        sampleRate: 1,
+        data: {
+          baseType: 'MessageData',
+          baseData: {
+            message: `context ${deeplyNestedJson}`,
+            properties: {json: deeplyNestedJson, object: deeplyNestedObject},
+          },
+        },
+      };
+      expect(stripCredentialsTelemetryProcessor(env as unknown as Parameters<typeof stripCredentialsTelemetryProcessor>[0])).toBe(true);
+      expect(env.data.baseData.message).toBe('context [UNSERIALISABLE]');
+      expect(env.data.baseData.properties).toEqual({json: '[UNSERIALISABLE]', object: '[UNSERIALISABLE]'});
     });
 
     it('redacts sensitive query parameters from MessageData', () => {

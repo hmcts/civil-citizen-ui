@@ -62,6 +62,8 @@ export const DEFAULT_REDACTED_KEYS: string[] = [
   'cookie',
   'sig',
   'AccountKey',
+  'SharedAccessKey',
+  'pwd',
 ];
 
 let cachedRawConfigKeys: string | undefined;
@@ -126,6 +128,8 @@ const VALUE_BRANCHES: ReadonlyArray<readonly [string, string]> = [
   [`'${AUTH_SCHEME}`, '(?:[^\'\\\\]|\\\\.)*'],
   // Digest parameter lists (`Digest username="u", response="r"`) run to the end of the line.
   ['Digest[ \\t]+', '[^\\r\\n]+'],
+  // JSON arrays are consumed in full so a credential cannot survive after the opening bracket.
+  ['', '\\[(?:[^"\\\\\\]]|\\\\.|"(?:[^"\\\\]|\\\\.)*")*\\]'],
   // Unquoted: key=value or key: value. Ends at a delimiter, or before a trailing `:line:col` of a stack frame.
   [AUTH_SCHEME, '[^&#;,\\s"\'\\\\}]+?(?=:\\d+:\\d+\\)?(?:\\s|$)|[&#;,\\s"\'\\\\}]|$)'],
 ];
@@ -143,6 +147,7 @@ const NEVER_MATCH_REGEX = /(?!)/;
 
 interface RedactionRules {
   regex: RegExp;
+  camelRegex: RegExp;
   // Property names whose whole value is redacted: `token`, `x-api-key`, `db.password`, `userPassword`, but not `keyboard`.
   sensitiveName: {test: (str: string) => boolean};
 }
@@ -159,7 +164,7 @@ const capitalize = (s: string): string => s.charAt(0).toUpperCase() + s.slice(1)
 const buildRedactionRules = (keys: string[] = DEFAULT_REDACTED_KEYS): RedactionRules => {
   const validKeys = (keys || []).filter(Boolean);
   if (validKeys.length === 0) {
-    return {regex: NEVER_MATCH_REGEX, sensitiveName: NEVER_MATCH_REGEX};
+    return {regex: NEVER_MATCH_REGEX, camelRegex: NEVER_MATCH_REGEX, sensitiveName: NEVER_MATCH_REGEX};
   }
   const cacheKey = validKeys.join('\u0000');
   if (cachedRules && cachedRulesKey === cacheKey) {
@@ -172,12 +177,14 @@ const buildRedactionRules = (keys: string[] = DEFAULT_REDACTED_KEYS): RedactionR
     .map((k) => capitalize(k).replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
     .join('|');
   const keyPart = `${KEY_BOUNDARY}${OPTIONAL_KEY_QUOTE}(?:${escaped})${OPTIONAL_KEY_QUOTE}[ \\t]*[=:][ \\t]*`;
+  const camelKeyPart = `(?<=[a-z0-9])(?:${capitalizedEscaped})${OPTIONAL_KEY_QUOTE}[ \\t]*[=:][ \\t]*`;
   const values = VALUE_BRANCHES.map(([opener, value]) => `(${opener})(${value})`).join('|');
   const delimitedName = new RegExp(`(?:^|[._-])(?:${escaped})$`, 'i');
   const camelCaseName = new RegExp(`[a-z0-9](?:${capitalizedEscaped})$`);
 
   cachedRules = {
     regex: new RegExp(`(${keyPart})(?:${values})`, 'gi'),
+    camelRegex: new RegExp(`(${camelKeyPart})(?:${values})`, 'g'),
     sensitiveName: {
       test: (name: string): boolean => delimitedName.test(name) || camelCaseName.test(name),
     },
@@ -203,6 +210,32 @@ const buildRedactionRules = (keys: string[] = DEFAULT_REDACTED_KEYS): RedactionR
 export const buildSensitiveQueryParamsRegex = (keys: string[] = DEFAULT_REDACTED_KEYS): RegExp =>
   buildRedactionRules(keys).regex;
 
+const replaceSensitiveValues = (value: string, regex: RegExp): string => value.replace(
+  regex,
+  (match: string, keyPrefix: string, ...groups: unknown[]) => {
+    for (let i = 0; i < VALUE_BRANCHES.length * 2; i += 2) {
+      const secret = groups[i + 1];
+      if (typeof secret === 'string') {
+        return secret ? `${keyPrefix}${groups[i]}${REDACTED}` : match;
+      }
+    }
+    return match;
+  },
+);
+
+const sanitizeWithRules = (value: string, rules: RedactionRules): string => {
+  const credentialSafe = replaceSensitiveValues(
+    replaceSensitiveValues(value.replace(COOKIE_HEADER_REGEX, `$1${REDACTED}`), rules.regex),
+    rules.camelRegex,
+  );
+  return credentialSafe.replace(URL_PASSWORD_REGEX, `$1${REDACTED}`).replace(JWT_REGEX, REDACTED);
+};
+
+const sanitizeWithRegex = (value: string, regex: RegExp): string => replaceSensitiveValues(
+  value.replace(COOKIE_HEADER_REGEX, `$1${REDACTED}`),
+  regex,
+).replace(URL_PASSWORD_REGEX, `$1${REDACTED}`).replace(JWT_REGEX, REDACTED);
+
 export const sanitizeCredentials = (
   value?: string,
   regexOrKeys?: RegExp | string[],
@@ -210,38 +243,20 @@ export const sanitizeCredentials = (
   if (!value || typeof value !== 'string') {
     return value;
   }
-  let regex: RegExp;
   if (regexOrKeys instanceof RegExp) {
-    regex = regexOrKeys;
-  } else if (Array.isArray(regexOrKeys)) {
-    regex = buildSensitiveQueryParamsRegex(regexOrKeys);
-  } else {
-    regex = buildSensitiveQueryParamsRegex(getRedactedKeys());
+    return sanitizeWithRegex(value, regexOrKeys);
   }
-
-  return value
-    .replace(COOKIE_HEADER_REGEX, `$1${REDACTED}`)
-    .replace(regex, (match: string, keyPrefix: string, ...groups: unknown[]) => {
-      for (let i = 0; i < VALUE_BRANCHES.length * 2; i += 2) {
-        const secret = groups[i + 1];
-        // Groups of the branches that did not match are undefined.
-        if (typeof secret === 'string') {
-          return secret ? `${keyPrefix}${groups[i]}${REDACTED}` : match;
-        }
-      }
-      return match;
-    })
-    .replace(URL_PASSWORD_REGEX, `$1${REDACTED}`)
-    .replace(JWT_REGEX, REDACTED);
+  const keys = Array.isArray(regexOrKeys) ? regexOrKeys : getRedactedKeys();
+  return sanitizeWithRules(value, buildRedactionRules(keys));
 };
 
-const sanitizeStringFields = (target: Record<string, unknown> | undefined, regex: RegExp): void => {
+const sanitizeStringFields = (target: Record<string, unknown> | undefined, rules: RedactionRules): void => {
   if (!target || typeof target !== 'object') {
     return;
   }
   for (const [field, fieldValue] of Object.entries(target)) {
     if (typeof fieldValue === 'string' && fieldValue) {
-      target[field] = sanitizeCredentials(fieldValue, regex);
+      target[field] = redactString(fieldValue, rules);
     }
   }
 };
@@ -266,20 +281,105 @@ const toSerialisable = (value: object): unknown => {
  * as JSON text. A string holding a JSON object or array is parsed, redacted by property name and
  * re-serialised; any other string, or text that is not valid JSON, is sanitised with the key patterns.
  */
-const redactString = (value: string, rules: RedactionRules): string => {
-  const trimmed = value.trim();
-  if ((trimmed.startsWith('{') && trimmed.endsWith('}')) || (trimmed.startsWith('[') && trimmed.endsWith(']'))) {
-    let parsed: unknown;
-    try {
-      parsed = JSON.parse(trimmed);
-    } catch {
-      parsed = undefined;
+const MAX_REDACTION_DEPTH = 100;
+const MAX_JSON_FRAGMENTS = 1000;
+
+interface JsonFragment {
+  end: number;
+  tooDeep: boolean;
+}
+
+const findJsonFragment = (value: string, start: number): JsonFragment | undefined => {
+  const open = value[start];
+  if (open !== '{' && open !== '[') {
+    return undefined;
+  }
+  const expectedClosers: string[] = [open === '{' ? '}' : ']'];
+  let inString = false;
+  let escaped = false;
+  let tooDeep = false;
+  for (let index = start + 1; index < value.length; index++) {
+    const character = value[index];
+    if (inString) {
+      if (escaped) {
+        escaped = false;
+      } else if (character === '\\') {
+        escaped = true;
+      } else if (character === '"') {
+        inString = false;
+      }
+      continue;
     }
-    if (parsed !== null && typeof parsed === 'object') {
-      return sanitizeCredentials(JSON.stringify(redactValue(parsed, rules, new Set<object>())), rules.regex) as string;
+    if (character === '"') {
+      inString = true;
+    } else if (character === '{' || character === '[') {
+      expectedClosers.push(character === '{' ? '}' : ']');
+      tooDeep ||= expectedClosers.length > MAX_REDACTION_DEPTH;
+    } else if (character === '}' || character === ']') {
+      if (expectedClosers.pop() !== character) {
+        return undefined;
+      }
+      if (expectedClosers.length === 0) {
+        return {end: index + 1, tooDeep};
+      }
     }
   }
-  return sanitizeCredentials(value, rules.regex) as string;
+  return undefined;
+};
+
+const redactString = (value: string, rules: RedactionRules, depth = 0): string => {
+  try {
+    let result = '';
+    let cursor = 0;
+    let attempts = 0;
+    for (let index = 0; index < value.length; index++) {
+      if (value[index] !== '{' && value[index] !== '[') {
+        continue;
+      }
+      if (attempts++ >= MAX_JSON_FRAGMENTS) {
+        result += value.slice(cursor, index) + '[UNSERIALISABLE]';
+        cursor = value.length;
+        break;
+      }
+      const fragment = findJsonFragment(value, index);
+      if (!fragment) {
+        continue;
+      }
+      const raw = value.slice(index, fragment.end);
+      let parsed: unknown;
+      try {
+        parsed = JSON.parse(raw);
+      } catch {
+        if (fragment.tooDeep) {
+          result += value.slice(cursor, index) + '[UNSERIALISABLE]';
+          cursor = fragment.end;
+          index = fragment.end - 1;
+        }
+        continue;
+      }
+      if (parsed === null || typeof parsed !== 'object') {
+        continue;
+      }
+      result += value.slice(cursor, index);
+      if (fragment.tooDeep) {
+        result += '[UNSERIALISABLE]';
+      } else {
+        const changed = {value: false};
+        try {
+          const redacted = redactValue(parsed, rules, new Set<object>(), depth + 1, changed);
+          result += changed.value ? JSON.stringify(redacted) : raw;
+        } catch {
+          result += '[UNSERIALISABLE]';
+        }
+      }
+      cursor = fragment.end;
+      index = fragment.end - 1;
+    }
+    const withFragments = cursor === value.length ? result : result + value.slice(cursor);
+    return sanitizeWithRules(withFragments, rules);
+  } catch {
+    return '[UNSERIALISABLE]';
+  }
 };
 
 /**
@@ -287,9 +387,20 @@ const redactString = (value: string, rules: RedactionRules): string => {
  * whole value of any property with a sensitive name is replaced, however deeply it is nested and whether
  * it is a string, array or object. Throws on a circular structure, so the caller can drop that property.
  */
-const redactValue = (value: unknown, rules: RedactionRules, ancestors: Set<object>): unknown => {
+const redactValue = (
+  value: unknown,
+  rules: RedactionRules,
+  ancestors: Set<object>,
+  depth = 0,
+  changed: {value: boolean} = {value: false},
+): unknown => {
+  if (depth > MAX_REDACTION_DEPTH) {
+    throw new TypeError('Maximum redaction depth exceeded');
+  }
   if (typeof value === 'string') {
-    return redactString(value, rules);
+    const redacted = redactString(value, rules, depth);
+    changed.value ||= redacted !== value;
+    return redacted;
   }
   if (value === null || typeof value !== 'object') {
     return value;
@@ -301,14 +412,25 @@ const redactValue = (value: unknown, rules: RedactionRules, ancestors: Set<objec
   try {
     const source = toSerialisable(value);
     if (source === null || typeof source !== 'object') {
-      return redactValue(source, rules, ancestors);
+      return redactValue(source, rules, ancestors, depth + 1, changed);
     }
     if (Array.isArray(source)) {
-      return source.map((item) => redactValue(item, rules, ancestors));
+      const isHeaderList = source.length % 2 === 0 && source.every((item) => typeof item === 'string');
+      return source.map((item, index) => {
+        if (isHeaderList && index % 2 === 1 && rules.sensitiveName.test(source[index - 1] as string)) {
+          changed.value = true;
+          return REDACTED;
+        }
+        return redactValue(item, rules, ancestors, depth + 1, changed);
+      });
     }
     return Object.fromEntries(Object.entries(source).map(([name, child]) => {
       const isEmpty = child === null || child === undefined || typeof child === 'function';
-      return [name, rules.sensitiveName.test(name) && !isEmpty ? REDACTED : redactValue(child, rules, ancestors)];
+      if (rules.sensitiveName.test(name) && !isEmpty) {
+        changed.value = true;
+        return [name, REDACTED];
+      }
+      return [name, redactValue(child, rules, ancestors, depth + 1, changed)];
     }));
   } finally {
     ancestors.delete(value);
@@ -338,7 +460,7 @@ const redactProperties = (properties: Record<string, unknown>, rules: RedactionR
     } else if (typeof propVal === 'string') {
       properties[name] = redactString(propVal, rules);
     } else if (typeof propVal === 'object') {
-      properties[name] = sanitizeCredentials(serialiseProperty(propVal, rules), rules.regex);
+      properties[name] = sanitizeWithRules(serialiseProperty(propVal, rules), rules);
     }
   }
 };
@@ -346,23 +468,23 @@ const redactProperties = (properties: Record<string, unknown>, rules: RedactionR
 const redactEnvelope = (envelope: TelemetryEnvelope): void => {
   const rules = buildRedactionRules(getRedactedKeys());
   // Tags such as ai.operation.name can carry the request URL.
-  sanitizeStringFields(envelope?.tags, rules.regex);
+  sanitizeStringFields(envelope?.tags, rules);
 
   const baseData = envelope?.data?.baseData;
   if (!baseData) {
     return;
   }
   // Every top-level string on every telemetry type: name, url, data, target, message, ...
-  sanitizeStringFields(baseData, rules.regex);
+  sanitizeStringFields(baseData, rules);
 
   if (Array.isArray(baseData.exceptions)) {
     for (const exc of baseData.exceptions) {
       // message, typeName and stack
-      sanitizeStringFields(exc, rules.regex);
+      sanitizeStringFields(exc, rules);
       // The SDK sends exception stacks as parsedStack frames rather than a stack string.
       if (Array.isArray(exc?.parsedStack)) {
         for (const frame of exc.parsedStack) {
-          sanitizeStringFields(frame, rules.regex);
+          sanitizeStringFields(frame, rules);
         }
       }
     }
