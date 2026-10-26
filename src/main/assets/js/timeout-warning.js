@@ -406,34 +406,39 @@ TimeoutWarning.prototype.extendTimeOnServer = function (onSuccess) {
   this.renewalInFlight = true;
   if (onSuccess) this.renewalCallbacks.push(onSuccess);
   var request = new XMLHttpRequest();
+  var completed = false;
   request.onreadystatechange = function () {
-    if (request.readyState !== 4) return;
+    if (request.readyState !== 4 || completed) return;
     if (request.status >= 200 && request.status < 300) {
       var response;
       try { response = JSON.parse(request.responseText); } catch (error) { response = null; }
-      this.renewalInFlight = false;
-      var callbacks = this.renewalCallbacks.splice(0);
-      callbacks.forEach(function (callback) { callback(response); });
+      completed = true;
+      this.finishRenewal(response);
     } else {
-      this.renewalInFlight = false;
-      var failedCallbacks = this.renewalCallbacks.splice(0);
-      failedCallbacks.forEach(function (callback) { callback(null); });
-      this.redirect();
+      this.failRenewal(request.status !== 0, function () { completed = true; });
     }
   }.bind(this);
-  var failRenewal = function () {
-    this.renewalInFlight = false;
-    var failedCallbacks = this.renewalCallbacks.splice(0);
-    failedCallbacks.forEach(function (callback) { callback(null); });
-    this.redirect();
-  }.bind(this);
-  request.onerror = failRenewal;
-  request.ontimeout = failRenewal;
+  request.onerror = function () { this.failRenewal(false, function () { completed = true; }); }.bind(this);
+  request.ontimeout = function () { this.failRenewal(false, function () { completed = true; }); }.bind(this);
   request.open('POST', this.extendSessionUrl, true);
   request.timeout = 30000;
   if (this.csrfToken) request.setRequestHeader('CSRF-Token', this.csrfToken);
   request.setRequestHeader('Accept', 'application/json');
   request.send();
+};
+
+TimeoutWarning.prototype.finishRenewal = function (response) {
+  this.renewalInFlight = false;
+  var callbacks = this.renewalCallbacks.splice(0);
+  callbacks.forEach(function (callback) { callback(response); });
+};
+
+TimeoutWarning.prototype.failRenewal = function (shouldRedirect, markCompleted) {
+  if (markCompleted) markCompleted();
+  this.renewalInFlight = false;
+  var callbacks = this.renewalCallbacks.splice(0);
+  callbacks.forEach(function (callback) { callback(null); });
+  if (shouldRedirect) this.redirect();
 };
 
 TimeoutWarning.prototype.numberToWords = function (n) {
