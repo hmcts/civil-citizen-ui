@@ -24,6 +24,10 @@ class DisclosureOfDocuments {
     await I.see(content.descriptionText[language]);
     await I.click(fields.elecDocCheckBox);
     await I.click(fields.nonElecDocCheckBox);
+    await I.waitForVisible(
+      'button.govuk-button[type="submit"], input.govuk-button[type="submit"]',
+      config.WaitForText
+    );
     await I.click(cButtons.saveAndContinue[language]);
   }
 }
