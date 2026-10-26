@@ -17,7 +17,10 @@ it('serves the selected capture with the real built stylesheet and script', asyn
   const html = await response.text();
   expect(html).toContain('main-dev.css');
   expect(html).toContain('main-dev.js');
-  expect(html).toContain('task-list-heading');
+  const original = await readFile(translateUrlToFilePath(captureUrl(urls.RESPONSE_TASK_LIST_URL)), 'utf8');
+  const main = original.match(/<main\b[\s\S]*?<\/main>/)?.[0];
+  expect(main).toBeDefined();
+  expect(html).toContain(main);
   for (const [asset, type] of [['main-dev.css', /text\/css/], ['main-dev.js', /javascript/]] as const) {
     const resource = await fetch(`${server.baseUrl}/${asset}`);
     expect(resource.status).toBe(200);
