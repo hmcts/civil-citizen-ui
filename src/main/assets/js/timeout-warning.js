@@ -32,6 +32,7 @@ function TimeoutWarning($module) {
   this.extendDebounceId = null;
   this.renewalInFlight = false;
   this.renewalCallbacks = [];
+  this.redirectInFlight = false;
   this.previousAriaHidden = null;
 }
 
@@ -381,7 +382,19 @@ TimeoutWarning.prototype.checkIfShouldHaveTimedOut = function () {
 };
 
 TimeoutWarning.prototype.redirect = function () {
-  window.location.replace(this.timeOutRedirectUrl);
+  if (this.redirectInFlight) return;
+  this.redirectInFlight = true;
+  fetch(this.timeOutRedirectUrl, {headers: {Accept: 'application/json'}, credentials: 'same-origin'})
+    .then(function (response) {
+      if (response.status === 409) {
+        this.redirectInFlight = false;
+        return;
+      }
+      window.location.replace(this.timeOutRedirectUrl);
+    }.bind(this))
+    .catch(function () {
+      this.redirectInFlight = false;
+    }.bind(this));
 };
 
 TimeoutWarning.prototype.extendTimeOnServer = function (onSuccess) {

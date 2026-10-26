@@ -25,7 +25,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   {% include "webpack/css.njk" %}
   {% if user and sessionTimeout %}
   <noscript>
-    <meta http-equiv="refresh" content="{{ sessionTimeout.totalSeconds }};url={{ urls.SESSION_TIMEOUT_URL }}" />
   </noscript>
   {% endif %}
 {% endblock %}
