@@ -71,7 +71,7 @@ describe('Nunjucks configuration', () => {
     const middleware = app.use.mock.calls[0][0] as Middleware;
     const expiry = new Date(Date.now() + 60000);
     const req = {path: '/test', cookies: {}, session: {user: {id: 'user-id'}, cookie: {expires: expiry}}} as never;
-    const res = {locals: {lang: 'en'}};
+    const res: {locals: Record<string, unknown>} = {locals: {lang: 'en'}};
     middleware(req, res, jest.fn());
     expect((res.locals.sessionTimeout as {expiresAt: number}).expiresAt).toBe(expiry.getTime());
   });
