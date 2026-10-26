@@ -59,11 +59,16 @@ describe('Session timeout', () => {
     it('should extend an authenticated session and touch it', () => {
       const touch = jest.fn();
       const save = jest.fn((callback: (error?: Error) => void) => callback());
+      const expiresAt = Date.now() + 5400000;
       const req = {
         session: {
           user: {id: 'user-id'},
           touch,
           save,
+          cookie: {
+            expires: new Date(expiresAt),
+            maxAge: 5400000,
+          },
         },
         method: 'GET',
         url: SESSION_EXTEND_URL,
@@ -77,7 +82,7 @@ describe('Session timeout', () => {
         .handle(req, res as unknown as Response, jest.fn() as NextFunction);
 
       expect(res.status).toHaveBeenCalledWith(200);
-      expect(res.json).toHaveBeenCalledWith({extended: true});
+      expect(res.json).toHaveBeenCalledWith({extended: true, expiresAt});
       expect(req.session.sessionExtendedAt).toEqual(expect.any(Number));
       expect(touch).toHaveBeenCalledTimes(1);
       expect(save).toHaveBeenCalledTimes(1);
