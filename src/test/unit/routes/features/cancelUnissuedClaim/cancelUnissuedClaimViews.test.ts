@@ -77,20 +77,20 @@ describe('Cancel unissued claim views', () => {
     const res = await request(app).get(CANCEL_UNISSUED_CLAIM_CONFIRMATION_URL.replace(':id', claimId));
 
     expect(res.status).toBe(200);
-    expect(res.text).toContain(t('PAGES.CANCEL_UNISSUED_CLAIM.CONFIRMATION_TITLE'));
-    expect(res.text).toContain(t('PAGES.CANCEL_UNISSUED_CLAIM.NO_FURTHER_ACTION'));
+    expect(res.text).toContain('This claim has been cancelled');
+    expect(res.text).toContain(t('COMMON.WHAT_HAPPENS_NEXT'));
+    expect(res.text).toContain('No further action can be taken on this case. You can start a new claim by going to your account.');
     expect(res.text).toContain(t('PAGES.SUBMIT_CONFIRMATION.GO_TO_ACCOUNT'));
-    expect(res.text).toContain(t('PAGES.CANCEL_UNISSUED_CLAIM.START_NEW_CLAIM'));
-    expect(res.text).not.toContain(t('COMMON.CONTACT_US_FOR_HELP.TITLE'));
-    expect(res.text).toContain(t('PAGES.CANCEL_UNISSUED_CLAIM.SURVEY_LINK'));
+    expect(res.text).toContain(t('COMMON.CONTACT_US_FOR_HELP.TITLE'));
+    expect(res.text).not.toContain('What did you think of this service?');
   });
 
   it('should render the confirmation page in Welsh', async () => {
     const res = await request(app).get(CANCEL_UNISSUED_CLAIM_CONFIRMATION_URL.replace(':id', claimId) + '?lang=cy');
 
     expect(res.status).toBe(200);
-    expect(res.text).toContain('Mae&#39;r hawliad hwn bellach wedi&#39;i ganslo');
-    expect(res.text).toContain('Beth oeddech chi&#39;n ei feddwl o&#39;r gwasanaeth hwn? (yn agor mewn tab newydd)');
-    expect(res.text).toContain('Ni ellir cymryd unrhyw gamau pellach ar yr achos hwn gan ei fod bellach wedi&#39;i ganslo.');
+    expect(res.text).toContain('Mae&#39;r hawliad hwn wedi&#39;i ganslo');
+    expect(res.text).toContain('Beth fydd yn digwydd nesaf');
+    expect(res.text).toContain('Ni ellir cymryd unrhyw gamau pellach ar yr achos hwn. Gallwch ddechrau hawliad newydd drwy fynd i&#39;ch cyfrif.');
   });
 });
