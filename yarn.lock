@@ -14939,10 +14939,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"undici@npm:7.30.1":
-  version: 7.30.1
-  resolution: "undici@npm:7.30.1"
-  checksum: 10/306a28e4c715652a0e2cd59bcc98cf8b6083b989151054fafaac27bdab6f2bc7e0f33f5847f72f5ba257971226372d04705e0e984b26b42a03271d5a35eb99b1
+"undici@npm:8.12.3":
+  version: 8.12.3
+  resolution: "undici@npm:8.12.3"
+  checksum: 10/8a238fd928ec1791b76b6b1df512eb6b77bdf51eb609d5b2248c3d8545100e2bdeb4d1695cf1594456dd9d085a6a51069ed42be231e56b270f3ee2191bc6517a
   languageName: node
   linkType: hard
 
