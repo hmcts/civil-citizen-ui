@@ -8,11 +8,11 @@ Related: [functional-tests.md](functional-tests.md) covers browser journeys and 
 
 | Layer | Location | Command | Allowed | Not allowed |
 | --- | --- | --- | --- | --- |
-| Unit | `src/test/unit` | `yarn test:coverage` (and `yarn test` once restored) | Call a handler, service, guard or model with mocked collaborators. Assert `res.render`, `res.redirect`, `next`, return values. | `request(app)`, `supertest`, `supertest-session`, importing `src/main/app` to hit HTTP, nocking IDAM to reach a page |
+| Unit | `src/test/unit` | `yarn test:coverage` (or `yarn test`) | Call a handler, service, guard or model with mocked collaborators. Assert `res.render`, `res.redirect`, `next`, return values. | `request(app)`, `supertest`, `supertest-session`, importing `src/main/app` to hit HTTP, nocking IDAM to reach a page |
 | In-process integration | `src/integration-test` | `yarn test:integration` | Supertest against the app. Multi-step redirects, cookies, session, rendered HTML, middleware wiring. External I/O still mocked (Redis, Civil Service, IDAM). | Duplicating every page GET/POST already owned by a unit handler test |
 | Browser functional | `src/test/functionalTests` | `yarn test:functional` / reduced-stack | Browser, session and real- or WireMock-backed journeys | Assertions that only need a controller or a route |
 
-`yarn test:routes` is an alias of `yarn test:integration`.
+`yarn test:integration` invokes `yarn test:routes`.
 
 ## Unit tests
 
@@ -89,4 +89,4 @@ Auth, health, first contact, and the public pages for privacy, terms, cookies, c
 
 ## Pipeline note
 
-`yarn test` is currently a no-op (`echo`) because the unit folder still contains hundreds of HTTP tests and running them twice leaked memory. Do not restore `yarn test` until those tests have left `src/test/unit`. `yarn test:coverage` remains the suite that executes unit tests in CI.
+`yarn test` and `yarn test:coverage` both execute Jest using the tracked package scripts; the dependency/tooling stage restored the real command. The unit folder still contains legacy HTTP suites, so the ownership rules above govern new work and gradual conversion. `yarn test:integration` executes the separate in-process journey suite. Do not add another aggregate invocation that needlessly runs the same suites twice.
