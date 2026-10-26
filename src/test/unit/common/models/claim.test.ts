@@ -53,6 +53,30 @@ jest.mock('../../../../main/modules/i18n/languageService', ()=> ({
   getLanguage: jest.fn(),
 }));
 
+describe('Claim suggested claimant payment option', () => {
+  it.each([undefined, null])('returns no option when the claimant response is %s', claimantResponse => {
+    const claim = new Claim();
+    claim.claimantResponse = claimantResponse;
+
+    expect(claim.getSuggestedPaymentIntentionOptionFromClaimant()).toBeUndefined();
+  });
+
+  it('returns no option when the response has no suggested payment intention', () => {
+    const claim = new Claim();
+    claim.claimantResponse = new ClaimantResponse();
+
+    expect(claim.getSuggestedPaymentIntentionOptionFromClaimant()).toBeUndefined();
+  });
+
+  it.each(Object.values(PaymentOptionType))('preserves the saved %s option', paymentOption => {
+    const claim = new Claim();
+    claim.claimantResponse = new ClaimantResponse();
+    claim.claimantResponse.suggestedPaymentIntention = Object.assign(new PaymentIntention(), {paymentOption});
+
+    expect(claim.getSuggestedPaymentIntentionOptionFromClaimant()).toBe(paymentOption);
+  });
+});
+
 describe('Claim isInterestEnDateUntilSubmitDate', () => {
   const claim = new Claim();
   it('should return undefined', () => {
