@@ -1,6 +1,6 @@
 import {Router, Response} from 'express';
 import {AppRequest} from 'models/AppRequest';
-import {SESSION_EXTEND_URL, SESSION_TIMEOUT_URL, SIGN_OUT_URL} from 'routes/urls';
+import {SESSION_EXTEND_URL, SESSION_TIMEOUT_URL} from 'routes/urls';
 
 const sessionTimeoutController = Router();
 
@@ -19,15 +19,15 @@ sessionTimeoutController.get(SESSION_EXTEND_URL, (req: AppRequest, res: Response
     if (error) {
       return res.status(401).json({extended: false});
     }
-    return res.status(200).json({extended: true});
+    const expiresAt = req.session.cookie.expires?.getTime()
+      || Date.now() + (req.session.cookie.maxAge || 0);
+    return res.status(200).json({extended: true, expiresAt});
   });
 });
 
 sessionTimeoutController.get(SESSION_TIMEOUT_URL, (req: AppRequest, res: Response) => {
-  if ((req.session?.user || req.cookies?.['citizen-ui-session']) && req.query?.loggedOut !== '1') {
-    // End the SSO session as well as the local session. The logout handler
-    // retains the ID token long enough to pass it to IDAM.
-    return res.redirect(SIGN_OUT_URL);
+  if (req.session?.user && req.query?.loggedOut !== '1') {
+    return res.redirect(req.get('Referrer') || '/');
   }
 
   // Avoid rendering the timeout warning on the signed-out page (locals were set earlier).

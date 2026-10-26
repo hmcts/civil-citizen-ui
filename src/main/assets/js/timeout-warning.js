@@ -7,6 +7,7 @@ function TimeoutWarning($module) {
   this.lastInteractionKey = 'timeUserLastInteractedWithPage';
   this.signOutKey = 'civilCitizenSignedOutAt';
   this.sessionExpiryKey = 'civilCitizenSessionExpiresAt';
+  this.warningStateKey = 'civilCitizenTimeoutWarning';
   this.$module = $module;
   this.$lastFocusedEl = null;
   this.$closeButton = $module.querySelector('.js-dialog-close');
@@ -20,6 +21,9 @@ function TimeoutWarning($module) {
   this.timeOutRedirectUrl = $module.getAttribute('data-url-redirect') || '/session-timeout';
   this.extendSessionUrl = $module.getAttribute('data-url-extend') || '/session/extend';
   this.sessionExpiresAt = Number($module.getAttribute('data-session-expires-at')) || 0;
+  if (window.localStorage) {
+    this.sessionExpiresAt = Number(window.localStorage.getItem(this.sessionExpiryKey)) || this.sessionExpiresAt;
+  }
   this.timerText = $module.getAttribute('data-timer-text') || 'Your session will be reset in ';
   this.timerExtraText = $module.getAttribute('data-timer-extra-text') || 'This is to protect your data.';
   this.timerRedirectText = $module.getAttribute('data-timer-redirect-text') || 'You are about to be redirected';
@@ -51,6 +55,10 @@ TimeoutWarning.prototype.init = function () {
 TimeoutWarning.prototype.handleStorageChange = function (event) {
   if (event.key === this.signOutKey) {
     this.redirect();
+  } else if (event.key === this.warningStateKey && event.newValue && !this.isDialogOpen()) {
+    // Keep the warning visible in every tab. This is only a UI signal;
+    // session validity still comes from the server expiry value.
+    this.openDialog(false);
   } else if (event.key === this.sessionExpiryKey && event.newValue) {
     this.sessionExpiresAt = Number(event.newValue) || this.sessionExpiresAt;
     // A different tab may dismiss this warning only after it has persisted a
@@ -96,7 +104,14 @@ TimeoutWarning.prototype.resetIdleTime = function () {
 
   this.extendDebounceId = setTimeout(function () {
     this.extendTimeOnServer();
-    this.idleTimeoutId = setTimeout(this.openDialog.bind(this), milliSecondsBeforeTimeOut);
+    // Re-read the expiry when the warning becomes due. Another tab may have
+    // renewed the shared session since this timer was scheduled.
+    this.idleTimeoutId = setTimeout(function () {
+      if (window.localStorage) {
+        this.sessionExpiresAt = Number(window.localStorage.getItem(this.sessionExpiryKey)) || this.sessionExpiresAt;
+      }
+      this.checkIfShouldHaveTimedOut();
+    }.bind(this), milliSecondsBeforeTimeOut);
   }.bind(this), 3000);
 
   if (window.localStorage) {
@@ -114,10 +129,17 @@ TimeoutWarning.prototype.countIdleTime = function () {
   resetIdleTime();
 };
 
-TimeoutWarning.prototype.openDialog = function () {
+TimeoutWarning.prototype.openDialog = function (broadcast) {
   if (this.isDialogOpen()) {
     return;
   }
+
+  if (broadcast !== false && window.localStorage) {
+    window.localStorage.setItem(this.warningStateKey, String(Date.now()));
+  }
+
+  clearTimeout(this.extendDebounceId);
+  clearTimeout(this.idleTimeoutId);
 
   document.body.classList.add(this.overLayClass);
   this.saveLastFocusedEl();
@@ -134,11 +156,12 @@ TimeoutWarning.prototype.startUiCountdown = function () {
   if (!$countdown || !$accessibleCountdown) {
     return;
   }
-  var minutes = this.minutesTimeOutModalVisible;
+  var seconds = this.sessionExpiresAt
+    ? Math.max(0, Math.ceil((this.sessionExpiresAt - Date.now()) / 1000))
+    : 60 * this.minutesTimeOutModalVisible;
+  var minutes = Math.ceil(seconds / 60);
   var timerRunOnce = false;
   var iOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-  var seconds = 60 * minutes;
-
   $countdown.textContent = minutes + ' minute' + (minutes > 1 ? 's' : '');
 
   (function runTimer() {
@@ -288,6 +311,9 @@ TimeoutWarning.prototype.completeRenewal = function () {
   this.removeInertFromPageContent();
   this.clearTimers();
   this.resetIdleTime();
+  if (window.localStorage) {
+    window.localStorage.removeItem(this.warningStateKey);
+  }
 };
 
 TimeoutWarning.prototype.clearTimers = function () {
