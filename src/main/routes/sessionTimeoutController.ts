@@ -9,11 +9,18 @@ sessionTimeoutController.get(SESSION_EXTEND_URL, (req: AppRequest, res: Response
     return res.status(401).json({extended: false});
   }
 
-  // Mark the session dirty and touch it so the explicit session-extension
-  // request renews the shared cookie for every tab.
+  // Persist the renewal before acknowledging it. `touch()` updates the
+  // expiry, but responding before the store callback completes can leave the
+  // browser believing it has a live session when Redis has already expired
+  // it (or when the renewal failed).
   req.session.sessionExtendedAt = Date.now();
   req.session.touch();
-  return res.status(200).json({extended: true});
+  return req.session.save((error) => {
+    if (error) {
+      return res.status(401).json({extended: false});
+    }
+    return res.status(200).json({extended: true});
+  });
 });
 
 sessionTimeoutController.get(SESSION_TIMEOUT_URL, (req: AppRequest, res: Response) => {
