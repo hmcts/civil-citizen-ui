@@ -128,8 +128,8 @@ const VALUE_BRANCHES: ReadonlyArray<readonly [string, string]> = [
   [`'${AUTH_SCHEME}`, '(?:[^\'\\\\]|\\\\.)*'],
   // Digest parameter lists (`Digest username="u", response="r"`) run to the end of the line.
   ['Digest[ \\t]+', '[^\\r\\n]+'],
-  // JSON arrays are consumed in full so a credential cannot survive after the opening bracket.
-  ['', '\\[(?:[^"\\\\\\]]|\\\\.|"(?:[^"\\\\]|\\\\.)*")*\\]'],
+  // JSON arrays are consumed in full; optional closers also redact an unterminated value to end of input.
+  ['', '\\[(?:[^"\\\\\\]]|\\\\.|"(?:[^"\\\\]|\\\\.)*"?)*\\]?'],
   // Unquoted: key=value or key: value. Ends at a delimiter, or before a trailing `:line:col` of a stack frame.
   [AUTH_SCHEME, '[^&#;,\\s"\'\\\\}]+?(?=:\\d+:\\d+\\)?(?:\\s|$)|[&#;,\\s"\'\\\\}]|$)'],
 ];
@@ -276,107 +276,142 @@ const toSerialisable = (value: object): unknown => {
   return value;
 };
 
+const MAX_REDACTION_DEPTH = 100;
+const MAX_REDACTION_INPUT_LENGTH = 256 * 1024;
+const MAX_JSON_FRAGMENTS = 1000;
+
+interface JsonFragment {
+  start: number;
+  end: number;
+  tooDeep: boolean;
+}
+
+interface JsonFrame {
+  start: number;
+  closer: '}' | ']';
+  maxDepth: number;
+  end?: number;
+}
+
+interface JsonScan {
+  fragments: JsonFragment[];
+  unclosedStart?: number;
+}
+
+const scanJsonFragments = (value: string): JsonScan => {
+  const stack: JsonFrame[] = [];
+  const frames: JsonFrame[] = [];
+  let inString = false;
+  let escaped = false;
+  for (let index = 0; index < value.length; index++) {
+    const character = value[index];
+    if (stack.length > 0) {
+      if (inString) {
+        if (escaped) {
+          escaped = false;
+        } else if (character === '\\') {
+          escaped = true;
+        } else if (character === '"') {
+          inString = false;
+        }
+        continue;
+      }
+      if (character === '"') {
+        inString = true;
+        continue;
+      }
+    }
+    if (character === '{' || character === '[') {
+      const frame: JsonFrame = {start: index, closer: character === '{' ? '}' : ']', maxDepth: 1};
+      frames.push(frame);
+      stack.push(frame);
+    } else if (stack.length > 0 && (character === '}' || character === ']')) {
+      const frame = stack.pop() as JsonFrame;
+      if (frame.closer !== character) {
+        // A mismatched closer invalidates every currently open candidate.
+        stack.length = 0;
+        continue;
+      }
+      frame.end = index + 1;
+      const parent = stack[stack.length - 1];
+      if (parent) {
+        parent.maxDepth = Math.max(parent.maxDepth, frame.maxDepth + 1);
+      }
+    }
+  }
+  return {
+    fragments: frames
+      .filter((frame): frame is JsonFrame & {end: number} => frame.end !== undefined)
+      .map((frame) => ({
+        start: frame.start,
+        end: frame.end,
+        tooDeep: frame.maxDepth > MAX_REDACTION_DEPTH,
+      })),
+    unclosedStart: stack[0]?.start,
+  };
+};
+
 /**
  * The SDK stringifies object properties before the telemetry processors run, so nested values often arrive
  * as JSON text. A string holding a JSON object or array is parsed, redacted by property name and
  * re-serialised; any other string, or text that is not valid JSON, is sanitised with the key patterns.
  */
-const MAX_REDACTION_DEPTH = 100;
-const MAX_JSON_FRAGMENTS = 1000;
+const isTruncationBoundary = (character: string): boolean => /[\s&;,}"'\]]/.test(character);
 
-interface JsonFragment {
-  end: number;
-  tooDeep: boolean;
-}
-
-const findJsonFragment = (value: string, start: number): JsonFragment | undefined => {
-  const open = value[start];
-  if (open !== '{' && open !== '[') {
-    return undefined;
+const getTruncationPoint = (value: string): number => {
+  let end = MAX_REDACTION_INPUT_LENGTH;
+  while (end > 0 && !isTruncationBoundary(value[end - 1])) {
+    end--;
   }
-  const expectedClosers: string[] = [open === '{' ? '}' : ']'];
-  let inString = false;
-  let escaped = false;
-  let tooDeep = false;
-  for (let index = start + 1; index < value.length; index++) {
-    const character = value[index];
-    if (inString) {
-      if (escaped) {
-        escaped = false;
-      } else if (character === '\\') {
-        escaped = true;
-      } else if (character === '"') {
-        inString = false;
-      }
-      continue;
-    }
-    if (character === '"') {
-      inString = true;
-    } else if (character === '{' || character === '[') {
-      expectedClosers.push(character === '{' ? '}' : ']');
-      tooDeep ||= expectedClosers.length > MAX_REDACTION_DEPTH;
-    } else if (character === '}' || character === ']') {
-      if (expectedClosers.pop() !== character) {
-        return undefined;
-      }
-      if (expectedClosers.length === 0) {
-        return {end: index + 1, tooDeep};
-      }
-    }
-  }
-  return undefined;
+  return end;
 };
 
 const redactString = (value: string, rules: RedactionRules, depth = 0): string => {
   try {
+    const truncated = value.length > MAX_REDACTION_INPUT_LENGTH;
+    const source = truncated ? value.slice(0, getTruncationPoint(value)) : value;
+    const {fragments, unclosedStart} = scanJsonFragments(source);
+    // If the ceiling cut through a JSON value, discard that entire fragment rather than
+    // allowing its remaining text to fall back to key-pattern-only redaction.
+    const sourceEnd = truncated && unclosedStart !== undefined ? unclosedStart : source.length;
     let result = '';
     let cursor = 0;
-    let attempts = 0;
-    for (let index = 0; index < value.length; index++) {
-      if (value[index] !== '{' && value[index] !== '[') {
+    let fragmentAttempts = 0;
+    for (const fragment of fragments) {
+      if (fragment.start >= sourceEnd || fragment.start < cursor) {
         continue;
       }
-      if (attempts++ >= MAX_JSON_FRAGMENTS) {
-        result += value.slice(cursor, index) + '[UNSERIALISABLE]';
-        cursor = value.length;
+      if (fragmentAttempts++ >= MAX_JSON_FRAGMENTS) {
         break;
       }
-      const fragment = findJsonFragment(value, index);
-      if (!fragment) {
+      const raw = source.slice(fragment.start, fragment.end);
+      if (fragment.tooDeep) {
+        result += source.slice(cursor, fragment.start) + '[UNSERIALISABLE]';
+        cursor = fragment.end;
         continue;
       }
-      const raw = value.slice(index, fragment.end);
       let parsed: unknown;
       try {
         parsed = JSON.parse(raw);
       } catch {
-        if (fragment.tooDeep) {
-          result += value.slice(cursor, index) + '[UNSERIALISABLE]';
-          cursor = fragment.end;
-          index = fragment.end - 1;
-        }
         continue;
       }
       if (parsed === null || typeof parsed !== 'object') {
         continue;
       }
-      result += value.slice(cursor, index);
-      if (fragment.tooDeep) {
+      result += source.slice(cursor, fragment.start);
+      const changed = {value: false};
+      try {
+        const redacted = redactValue(parsed, rules, new Set<object>(), depth + 1, changed);
+        result += changed.value ? JSON.stringify(redacted) : raw;
+      } catch {
         result += '[UNSERIALISABLE]';
-      } else {
-        const changed = {value: false};
-        try {
-          const redacted = redactValue(parsed, rules, new Set<object>(), depth + 1, changed);
-          result += changed.value ? JSON.stringify(redacted) : raw;
-        } catch {
-          result += '[UNSERIALISABLE]';
-        }
       }
       cursor = fragment.end;
-      index = fragment.end - 1;
     }
-    const withFragments = cursor === value.length ? result : result + value.slice(cursor);
-    return sanitizeWithRules(withFragments, rules);
+    const withFragments = result + source.slice(cursor, sourceEnd);
+    const sanitised = sanitizeWithRules(withFragments, rules);
+    return truncated ? `${sanitised}[TRUNCATED]` : sanitised;
   } catch {
     return '[UNSERIALISABLE]';
   }

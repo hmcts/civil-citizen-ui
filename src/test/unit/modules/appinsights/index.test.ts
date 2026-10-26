@@ -488,6 +488,53 @@ describe('AppInsights module', () => {
       expect(env.data.baseData.properties).toEqual({json: '[UNSERIALISABLE]', object: '[UNSERIALISABLE]'});
     });
 
+    it('redacts unterminated credential arrays without quadratic rescanning', () => {
+      const input = 'key=[ '.repeat(30000);
+      const camelCaseInput = 'aKey=[ '.repeat(30000);
+      const started = Date.now();
+
+      expect(sanitizeCredentials(input)).toBe('key=[REDACTED]');
+      expect(sanitizeCredentials(camelCaseInput)).toBe('aKey=[REDACTED]');
+      expect(Date.now() - started).toBeLessThan(5000);
+    });
+
+    it('scans unmatched and near-valid nested JSON brackets without rescanning the remaining text', () => {
+      const unmatched = '[ '.repeat(120000);
+      const nestedNearValid = '['.repeat(100) + '1,'.repeat(5000) + 'x' + ']'.repeat(100);
+      const manyFragments = '[1] '.repeat(1200) + 'TAIL';
+      const env = {
+        sampleRate: 1,
+        data: {
+          baseType: 'MessageData',
+          baseData: {message: unmatched + nestedNearValid + manyFragments},
+        },
+      };
+      const started = Date.now();
+
+      expect(stripCredentialsTelemetryProcessor(env as unknown as Parameters<typeof stripCredentialsTelemetryProcessor>[0])).toBe(true);
+      expect(Date.now() - started).toBeLessThan(5000);
+      expect(env.data.baseData.message).toContain(unmatched);
+      expect(env.data.baseData.message).toContain('TAIL');
+    });
+
+    it('truncates oversized strings at safe token boundaries', () => {
+      const prefix = 'password=before ';
+      const jsonPrefix = '{"context":"';
+      const filler = 'x'.repeat(256 * 1024 - prefix.length - jsonPrefix.length - 32);
+      const message = `${prefix}${jsonPrefix}${filler} https://user:cutSecret@host tailSecret`;
+      const env = {
+        sampleRate: 1,
+        data: {baseType: 'MessageData', baseData: {message}},
+      };
+
+      expect(stripCredentialsTelemetryProcessor(env as unknown as Parameters<typeof stripCredentialsTelemetryProcessor>[0])).toBe(true);
+      expect(env.data.baseData.message).toMatch(/^password=\[REDACTED\] /);
+      expect(env.data.baseData.message).not.toContain('before');
+      expect(env.data.baseData.message).not.toContain('cutSecret');
+      expect(env.data.baseData.message).not.toContain('tailSecret');
+      expect(env.data.baseData.message).toMatch(/\[TRUNCATED\]$/);
+    });
+
     it('redacts sensitive query parameters from MessageData', () => {
       const msgEnv = {
         sampleRate: 1,
