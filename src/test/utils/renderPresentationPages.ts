@@ -33,10 +33,6 @@ import {getCancelYourUpload as cancelMediation} from 'services/features/mediatio
 import {WhatDoYouWantToDo, WhatToDoTypeOption, RadioButtonItems} from 'form/models/queryManagement/queryManagement';
 import {formControlTranslate} from './renderFormControls';
 
-/** Uses production Nunjucks registration and the real page shell, without application startup.
- * Authentication, middleware locals and service boundaries are not exercised by this helper.
- */
-// Copy the exact production filters/globals into a loader pointing at either comparison tree.
 export const presentationFormViews = [
   'features/claim/airlines/flight-details.njk',
   'features/claim/claim-bilingual-language-preference.njk',
@@ -186,6 +182,9 @@ export function presentationFormContext(view: string, language = 'en', state = '
     applyHelpFeeReferenceContents: getApplyHelpFeeReferenceContents('1645882162449409', 100), applyHelpFeeReferenceButtonContents: getButtonsContents('1645882162449409'), applyHelpFeeSelectionContents: getApplyHelpFeeSelectionContents(language, '1645882162449409', 100), applyHelpFeeSelectionButtonContents: getButtonsContents('1645882162449409'),
     cancelYourUploadContents: view.includes('mediation/') ? cancelMediation('1645882162449409', claim) : cancelCaseProgression('1645882162449409', claim), docUrl: '/document/one', claimId: '1', claimIdPrettified: '0000 0000 0000 0001', nonceValue: 'fixture-nonce', nonceDataLayer: 'fixture-data-nonce'};
 }
+/** Uses production Nunjucks registration and the real page shell, without application startup.
+ * Authentication, middleware locals and service boundaries are not exercised by this helper.
+ */
 export function renderPresentation(view: string, locals: Record<string, unknown> = {}, language = 'en', viewsDirectory?: string) {
   return renderProductionPage(view, locals, language, viewsDirectory);
 }
