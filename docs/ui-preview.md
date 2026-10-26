@@ -102,7 +102,7 @@ The Dockerfile-specific ignore file includes only required source/config/build t
 
 `node bin/ui-preview-mappings.cjs` validates the separate preview mappings. Existing chart validation remains separate. The integration catalogue probe exercises every Ready entry in English and Welsh using real application assembly, both with in-memory fixtures reset between entries and with sequential browsing without per-entry resets. Separate bilingual sequences exercise response-timeline refresh and the real upload prerequisites.
 
-Tests cover the enablement matrix, real OIDC registration, production exclusion, ordinary e2e isolation, telemetry shells, initialization failures, local service configuration, port conflicts, readiness and token-owned shutdown. Browser evidence and actual limitations are recorded in [PR10 review notes](pr10-ui-preview-review-notes.md).
+Tests cover the enablement matrix, real OIDC registration, production exclusion, ordinary e2e isolation, telemetry shells, initialization failures, local service configuration, port conflicts, readiness and token-owned shutdown. The preview uses isolated fixture services. These tests do not establish authenticated backend saving or operational acceptance; those require the appropriate integrated environment.
 
 Do not run browser-installing accessibility wrappers for offline review. Use an installed browser, block external requests and contain profiles/reports. On macOS, Chromium can write shared Crashpad state despite HOME/TMPDIR flags; the review used an explicit write sandbox for final checks. Local rendered-page/POST checks do not establish authenticated persistence or QA acceptance.
 
