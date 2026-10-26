@@ -12,7 +12,7 @@ Related: [functional-tests.md](functional-tests.md) covers browser journeys and 
 | In-process integration | `src/integration-test` | `yarn test:integration` | Supertest against the app. Multi-step redirects, cookies, session, rendered HTML, middleware wiring. External I/O still mocked (Redis, Civil Service, IDAM). | Duplicating every page GET/POST already owned by a unit handler test |
 | Browser functional | `src/test/functionalTests` | `yarn test:functional` / reduced-stack | Browser, session and real- or WireMock-backed journeys | Assertions that only need a controller or a route |
 
-`yarn test:routes` is an alias of `yarn test:integration`.
+`yarn test:integration` invokes `yarn test:routes`.
 
 ## Unit tests
 
@@ -112,6 +112,6 @@ Help with fees and the "you've been paid" confirmation are owned by `src/integra
 
 ## Pipeline note
 
-`yarn test:coverage` runs `LOG_LEVEL=OFF jest --coverage --maxWorkers=8 --logHeapUsage --silent`. Jest loads `jest.config.js`, so the roots are `src/test/unit`. The run writes `coverage/lcov.info` for Sonar and exits non-zero when a test fails. `yarn test` prints a message and exits. The shared Node.js pipeline calls `yarn test` and then `yarn test:coverage`, so the unit suite runs once in that stage.
+`yarn test:coverage` runs `LOG_LEVEL=OFF node --disable-warning=DEP0060 --no-sparkplug ./node_modules/jest/bin/jest.js --coverage --maxWorkers=8 --silent`. Jest loads `jest.config.js`, so the roots are `src/test/unit`. The run writes `coverage/lcov.info` for Sonar and exits non-zero when a test fails. `yarn test` prints a message and exits. The shared Node.js pipeline calls `yarn test` and then `yarn test:coverage`, so the unit suite runs once in that stage.
 
 `yarn test:integration` uses `jest.functionaltest.config.js` (`src/integration-test` only). Jenkins `afterSuccess('build')` runs `yarn build` and then `yarn test:integration`. `cichecks` runs `test:coverage` and then `test:routes`. `Jenkinsfile_CNP` does not call `cichecks`.
