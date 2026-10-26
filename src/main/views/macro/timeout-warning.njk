@@ -9,7 +9,7 @@
 </div>
 {% endmacro %}
 
-{% macro timeoutWarning(t, sessionTimeout) %}
+{% macro timeoutWarning(t, sessionTimeout, csrfToken) %}
 <dialog
   class="govuk-timeout-warning dialog"
   data-module="govuk-timeout-warning"
@@ -19,6 +19,7 @@
   data-url-redirect="{{ urls.SESSION_TIMEOUT_URL }}"
   data-url-extend="{{ urls.SESSION_EXTEND_URL }}"
   data-session-expires-at="{{ sessionTimeout.expiresAt }}"
+  data-csrf-token="{{ csrfToken }}"
   data-timer-text="{{ t('COMMON.TIMEOUT_WARNING.TIMER_TEXT') }}"
   data-timer-extra-text="{{ t('COMMON.TIMEOUT_WARNING.TIMER_EXTRA_TEXT') }}"
   data-timer-redirect-text="{{ t('COMMON.TIMEOUT_WARNING.TIMER_REDIRECT_TEXT') }}"

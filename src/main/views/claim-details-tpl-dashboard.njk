@@ -197,7 +197,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 {% block bodyEnd %}
 </div>
 {% if user and sessionTimeout %}
-  {{ timeoutWarning(t, sessionTimeout) }}
+  {{ timeoutWarning(t, sessionTimeout, csrf) }}
 {% endif %}
 {# Run JavaScript at end of the <body>, to avoid blocking the initial render. #}
 {% include "webpack/js.njk" %}

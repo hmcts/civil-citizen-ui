@@ -21,6 +21,7 @@ function TimeoutWarning($module) {
   this.timeOutRedirectUrl = $module.getAttribute('data-url-redirect') || '/session-timeout';
   this.extendSessionUrl = $module.getAttribute('data-url-extend') || '/session/extend';
   this.sessionExpiresAt = Number($module.getAttribute('data-session-expires-at')) || 0;
+  this.csrfToken = $module.getAttribute('data-csrf-token') || '';
   if (window.localStorage) {
     this.sessionExpiresAt = Number(window.localStorage.getItem(this.sessionExpiryKey)) || this.sessionExpiresAt;
   }
@@ -30,6 +31,7 @@ function TimeoutWarning($module) {
   this.idleTimeoutId = null;
   this.extendDebounceId = null;
   this.renewalInFlight = false;
+  this.renewalCallbacks = [];
   this.previousAriaHidden = null;
 }
 
@@ -383,8 +385,12 @@ TimeoutWarning.prototype.redirect = function () {
 };
 
 TimeoutWarning.prototype.extendTimeOnServer = function (onSuccess) {
-  if (this.renewalInFlight) return;
+  if (this.renewalInFlight) {
+    if (onSuccess) this.renewalCallbacks.push(onSuccess);
+    return;
+  }
   this.renewalInFlight = true;
+  if (onSuccess) this.renewalCallbacks.push(onSuccess);
   var request = new XMLHttpRequest();
   request.onreadystatechange = function () {
     if (request.readyState !== 4) return;
@@ -392,15 +398,18 @@ TimeoutWarning.prototype.extendTimeOnServer = function (onSuccess) {
       var response;
       try { response = JSON.parse(request.responseText); } catch (error) { response = null; }
       this.renewalInFlight = false;
-      if (onSuccess) onSuccess(response);
+      var callbacks = this.renewalCallbacks.splice(0);
+      callbacks.forEach(function (callback) { callback(response); });
     } else {
       this.renewalInFlight = false;
+      this.renewalCallbacks = [];
       this.redirect();
     }
   }.bind(this);
   request.onerror = function () { this.renewalInFlight = false; this.redirect(); }.bind(this);
   request.ontimeout = function () { this.renewalInFlight = false; this.redirect(); }.bind(this);
   request.open('POST', this.extendSessionUrl, true);
+  if (this.csrfToken) request.setRequestHeader('CSRF-Token', this.csrfToken);
   request.setRequestHeader('Accept', 'application/json');
   request.send();
 };
