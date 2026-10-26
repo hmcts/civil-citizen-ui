@@ -568,7 +568,7 @@
       "CHARACTERS_UNDER_LIMIT_ONE": "Mae gennych %{count} nod yn weddill",
       "CHARACTERS_UNDER_LIMIT_OTHER": "Mae gennych %{count} nod yn weddill",
       "CONFIRMATION_PAGE_TITLE": "Claim cancelled",
-      "CONFIRMATION_TITLE": "Mae'r hawliad hwn wedi'i ganslo",
+      "CONFIRMATION_TITLE": "Mae’r hawliad hwn wedi'i ganslo",
       "NO_FURTHER_ACTION": "Ni ellir cymryd unrhyw gamau pellach ar yr achos hwn. Gallwch ddechrau hawliad newydd drwy fynd i'ch cyfrif.",
       "PAGE_TITLE": "Canslo hawliad nad yw wedi'i gyflwyno",
       "REASON_HINT": "You can enter up to %{count} characters",

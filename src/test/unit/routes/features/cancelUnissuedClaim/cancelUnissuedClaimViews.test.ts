@@ -89,7 +89,7 @@ describe('Cancel unissued claim views', () => {
     const res = await request(app).get(CANCEL_UNISSUED_CLAIM_CONFIRMATION_URL.replace(':id', claimId) + '?lang=cy');
 
     expect(res.status).toBe(200);
-    expect(res.text).toContain('Mae&#39;r hawliad hwn wedi&#39;i ganslo');
+    expect(res.text).toContain('Mae’r hawliad hwn wedi&#39;i ganslo');
     expect(res.text).toContain('Beth fydd yn digwydd nesaf');
     expect(res.text).toContain('Ni ellir cymryd unrhyw gamau pellach ar yr achos hwn. Gallwch ddechrau hawliad newydd drwy fynd i&#39;ch cyfrif.');
   });
