@@ -29,6 +29,7 @@ function TimeoutWarning($module) {
   this.timerRedirectText = $module.getAttribute('data-timer-redirect-text') || 'You are about to be redirected';
   this.idleTimeoutId = null;
   this.extendDebounceId = null;
+  this.renewalInFlight = false;
   this.previousAriaHidden = null;
 }
 
@@ -74,7 +75,13 @@ TimeoutWarning.prototype.handleStorageChange = function (event) {
       this.checkIfShouldHaveTimedOut();
     }
   } else if (event.key === this.lastInteractionKey) {
-    this.checkIfShouldHaveTimedOut();
+    if (this.isDialogOpen()) {
+      // Activity in another tab is useful only when it results in a
+      // confirmed server renewal; closeDialog handles that confirmation.
+      this.closeDialog();
+    } else {
+      this.checkIfShouldHaveTimedOut();
+    }
   }
 };
 
@@ -376,20 +383,24 @@ TimeoutWarning.prototype.redirect = function () {
 };
 
 TimeoutWarning.prototype.extendTimeOnServer = function (onSuccess) {
+  if (this.renewalInFlight) return;
+  this.renewalInFlight = true;
   var request = new XMLHttpRequest();
   request.onreadystatechange = function () {
     if (request.readyState !== 4) return;
     if (request.status >= 200 && request.status < 300) {
       var response;
       try { response = JSON.parse(request.responseText); } catch (error) { response = null; }
+      this.renewalInFlight = false;
       if (onSuccess) onSuccess(response);
     } else {
+      this.renewalInFlight = false;
       this.redirect();
     }
   }.bind(this);
-  request.onerror = this.redirect.bind(this);
-  request.ontimeout = this.redirect.bind(this);
-  request.open('GET', this.extendSessionUrl, true);
+  request.onerror = function () { this.renewalInFlight = false; this.redirect(); }.bind(this);
+  request.ontimeout = function () { this.renewalInFlight = false; this.redirect(); }.bind(this);
+  request.open('POST', this.extendSessionUrl, true);
   request.setRequestHeader('Accept', 'application/json');
   request.send();
 };

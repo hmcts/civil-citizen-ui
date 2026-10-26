@@ -186,7 +186,7 @@ describe('TimeoutWarning', () => {
 
     expect(dialog.close).toHaveBeenCalled();
     expect(document.body.classList.contains('govuk-timeout-warning-overlay')).toBe(false);
-    expect(xhrOpen).toHaveBeenCalledWith('GET', '/session/extend', true);
+    expect(xhrOpen).toHaveBeenCalledWith('POST', '/session/extend', true);
     expect(xhrSend).toHaveBeenCalled();
   });
 

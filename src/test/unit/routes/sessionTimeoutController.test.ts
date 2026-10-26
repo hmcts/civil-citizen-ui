@@ -51,7 +51,7 @@ describe('Session timeout', () => {
 
   describe('GET /session/extend', () => {
     it('should return 401 when there is no authenticated session', async () => {
-      const res = await request(app).get(SESSION_EXTEND_URL);
+      const res = await request(app).post(SESSION_EXTEND_URL);
       expect(res.status).toBe(401);
       expect(res.body).toEqual({extended: false});
     });

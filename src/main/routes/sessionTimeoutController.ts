@@ -4,7 +4,7 @@ import {SESSION_EXTEND_URL, SESSION_TIMEOUT_URL} from 'routes/urls';
 
 const sessionTimeoutController = Router();
 
-sessionTimeoutController.get(SESSION_EXTEND_URL, (req: AppRequest, res: Response) => {
+sessionTimeoutController.post(SESSION_EXTEND_URL, (req: AppRequest, res: Response) => {
   if (!req.session?.user) {
     return res.status(401).json({extended: false});
   }
