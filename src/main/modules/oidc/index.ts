@@ -91,7 +91,7 @@ const isSessionTimeoutPage = (requestUrl: string): boolean => {
   return requestUrl.startsWith(SESSION_TIMEOUT_URL);
 };
 
-const isSessionExtendUrl = (requestUrl: string): boolean => {
+export const isSessionExtendUrl = (requestUrl: string): boolean => {
   return requestUrl.startsWith(SESSION_EXTEND_URL);
 };
 

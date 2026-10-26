@@ -22,6 +22,7 @@ import {
 import {getOidcResponse, getSessionIssueTime, getUserDetails, OidcResponse} from '../../../../main/app/auth/user/oidc';
 import {Session} from 'express-session';
 import {TestMessages} from '../../../utils/errorMessageTestConstants';
+import {isSessionExtendUrl} from '../../../../main/modules/oidc';
 
 jest.mock('../../../../main/modules/draft-store');
 const mockDraftStoreClient = {
@@ -64,6 +65,10 @@ const paymentConfirmationUrls = [
 jest.mock('../../../../main/app/auth/user/oidc');
 
 describe('OIDC middleware', () => {
+  it('recognises only the session extension path', () => {
+    expect(isSessionExtendUrl(SESSION_EXTEND_URL)).toBe(true);
+    expect(isSessionExtendUrl('/not-session-extend')).toBe(false);
+  });
   beforeEach(() => {
     jest.clearAllMocks();
     mockDraftStoreClient.ttl.mockResolvedValue(-1);
