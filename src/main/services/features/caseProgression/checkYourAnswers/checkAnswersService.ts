@@ -97,7 +97,7 @@ export const saveUploadedDocuments = async (claim: Claim, req: AppRequest): Prom
   }
 };
 
-const isDocumentLinkPresent = (document: {caseDocument?: CaseDocument}): boolean => !!document?.caseDocument?.documentLink;
+const isDocumentLinkPresent = (document: {caseDocument?: CaseDocument}): boolean => !!document?.caseDocument?.documentLink?.document_binary_url;
 
 export const hasValidNewDocuments = (uploadedDocuments: UploadDocumentsUserForm): boolean => {
   if (!uploadedDocuments) {

@@ -11,6 +11,7 @@ import {Claim} from 'models/claim';
 import {CaseRole} from 'form/models/caseRoles';
 import {UploadDocumentsUserForm, WitnessSection} from 'models/caseProgression/uploadDocumentsUserForm';
 import {CivilServiceClient} from 'client/civilServiceClient';
+import {CaseDocument} from 'models/document/caseDocument';
 
 jest.mock('modules/draft-store/draftStoreService');
 jest.mock('services/features/caseProgression/checkYourAnswers/checkAnswersService');
@@ -29,8 +30,8 @@ const mockGenerateRedisKey = draftStoreService.generateRedisKey as jest.Mock;
 const session = require('supertest-session');
 const testSession = session(app);
 const citizenRoleToken: string = config.get('citizenRoleToken');
-const buildAllInvalidDraft = (): UploadDocumentsUserForm =>
-  new UploadDocumentsUserForm([], [], [{witnessName: 'witness', caseDocument: undefined} as WitnessSection], [], [], [], [], [], [], [], [], [], [], [], []);
+const buildAllInvalidDraft = (caseDocument: CaseDocument = undefined): UploadDocumentsUserForm =>
+  new UploadDocumentsUserForm([], [], [{witnessName: 'witness', caseDocument} as WitnessSection], [], [], [], [], [], [], [], [], [], [], [], []);
 const noValidDocumentsMessage = 'We could not submit your documents. Please upload them again and try submitting.';
 
 const expectNoValidDocumentsErrorShownOnceOnUploadPage = async (claim: Claim, claimId: string) => {
@@ -387,14 +388,16 @@ describe('Evidence Upload - checkYourAnswers Controller', () => {
     });
 
     test.each([
-      ['defendant', CaseRole.DEFENDANT],
-      ['claimant', CaseRole.CLAIMANT],
-    ])('should redirect to upload documents page without submitting when the %s upload draft has no valid documents', async (_party, caseRole) => {
+      ['defendant', CaseRole.DEFENDANT, 'no case document', undefined],
+      ['claimant', CaseRole.CLAIMANT, 'no case document', undefined],
+      ['defendant', CaseRole.DEFENDANT, 'an empty document link', {documentName: 'test.png', documentLink: {}}],
+      ['claimant', CaseRole.CLAIMANT, 'an empty document link', {documentName: 'test.png', documentLink: {}}],
+    ])('should redirect to upload documents page without submitting when the %s upload draft has only documents with %s', async (_party, caseRole, _variant, caseDocument) => {
       //given
       const claim: Claim = new Claim();
       Object.assign(claim, civilClaimResponse.case_data);
       claim.caseRole = caseRole;
-      const allInvalidDraft = buildAllInvalidDraft();
+      const allInvalidDraft = buildAllInvalidDraft(caseDocument as CaseDocument);
       claim.caseProgression = {...claim.caseProgression, claimantDocuments: allInvalidDraft, defendantDocuments: allInvalidDraft} as Claim['caseProgression'];
       mockDraftStore.mockReturnValueOnce(claim);
       mockHasValidNewDocuments.mockImplementationOnce(actualCheckAnswersService.hasValidNewDocuments);
