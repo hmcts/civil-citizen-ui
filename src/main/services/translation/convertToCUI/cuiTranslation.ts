@@ -166,10 +166,12 @@ function translateCCDPaymentDateToCUIccd(paymentDate: string): Date {
 }
 
 function toCUIApplicant1RepaymentPlan(ccdClaim: CCDClaim): RepaymentPlan  {
+  const savedDate = ccdClaim.applicant1SuggestInstalmentsFirstRepaymentDateForDefendantSpec;
+  const firstRepaymentDate = savedDate === null || savedDate === undefined ? undefined : new Date(savedDate);
   return {
     paymentAmount : ccdClaim.applicant1SuggestInstalmentsPaymentAmountForDefendantSpec,
     repaymentFrequency : toCUIRepaymentPlanFrequency(ccdClaim.applicant1SuggestInstalmentsRepaymentFrequencyForDefendantSpec),
-    firstRepaymentDate : new Date(ccdClaim.applicant1SuggestInstalmentsFirstRepaymentDateForDefendantSpec),
+    firstRepaymentDate : firstRepaymentDate && Number.isFinite(firstRepaymentDate.getTime()) ? firstRepaymentDate : undefined,
   };
 }
 
