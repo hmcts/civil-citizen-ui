@@ -8,6 +8,13 @@ import {Claim} from 'models/claim';
 import {Defence} from 'form/models/defence';
 import {CitizenResponseType} from 'form/models/citizenResponseType';
 import {CaseState} from 'form/models/claimDetails';
+import {GenericForm} from 'form/models/genericForm';
+import {HowMuchContinueClaiming} from 'form/models/interest/howMuchContinueClaiming';
+import {NumberOfChildren} from 'form/models/statementOfMeans/dependants/numberOfChildren';
+import {Dependants} from 'form/models/statementOfMeans/dependants/dependants';
+import {Unemployment} from 'form/models/statementOfMeans/unemployment/unemployment';
+import {UnemploymentDetails} from 'form/models/statementOfMeans/unemployment/unemploymentDetails';
+import {OtherDetails} from 'form/models/statementOfMeans/unemployment/otherDetails';
 
 const text = (element: Element) => element.textContent!.replace(/\s+/g, ' ').trim();
 const cells = (document: Document) => Array.from(document.querySelectorAll('tbody tr')).map(row => Array.from(row.querySelectorAll('td')).map(text));
@@ -31,6 +38,39 @@ function associations(document: Document) {
 }
 
 describe('PR9 official presentation composition', () => {
+  const numericFields: {view: string; field: string[]; name: string; model?: () => object}[] = [
+    {view: 'features/claim/interest/how-much-continue-claiming.njk', field: ['dailyInterestAmount'], name: 'dailyInterestAmount', model: () => new HowMuchContinueClaiming()},
+    {view: 'features/claimantResponse/ccj/repayment-plan-instalments.njk', field: ['amount'], name: 'amount'},
+    {view: 'features/response/admission/how-much-have-you-paid.njk', field: ['amount'], name: 'amount'},
+    {view: 'features/response/admission/partialAdmission/how-much-do-you-owe.njk', field: ['amount'], name: 'amount'},
+    ...['under11', 'between11and15', 'between16and19'].map(name => ({
+      view: 'features/response/statementOfMeans/dependants/dependants.njk', field: ['numberOfChildren', name], name,
+      model: () => new Dependants(true, new NumberOfChildren()),
+    })),
+    ...['years', 'months'].map(name => ({
+      view: 'features/response/statementOfMeans/unemployment.njk', field: ['unemploymentDetails', name], name,
+      model: () => new Unemployment(undefined, new UnemploymentDetails(), new OtherDetails()),
+    })),
+  ];
+  it.each(numericFields.flatMap(input => ['en', 'cy'].flatMap(language =>
+    [undefined, null, 0, 25, 'invalid-number', NaN].map(value => ({...input, language, value})),
+  )))('preserves the raw $name attribute in $view ($language, $value)', ({view, field, name, model: makeModel, language, value}) => {
+    const locals = presentationFormContext(view, language, 'saved');
+    const model = makeModel ? makeModel() : locals.form.model;
+    let target = model as unknown as Record<string, unknown>;
+    for (const key of field.slice(0, -1)) target = target[key] as Record<string, unknown>;
+    target[field[field.length - 1]] = value;
+    const dom = new JSDOM(renderPresentation(view, {...locals, form: new GenericForm(model)}, language));
+    try {
+      const input = dom.window.document.querySelector<HTMLInputElement>(`input[name="${name}"]`)!;
+      expect(input).not.toBeNull();
+      expect(input.getAttribute('value') ?? '').toBe(value == null ? '' : String(value));
+      expect(input.type).toBe('number');
+      expect(input.form!.method).toBe('post');
+      expect(input.form!.querySelector('input[name="_csrf"]')).not.toBeNull();
+    } finally {dom.window.close();}
+  });
+
   const yesNoPostCases = [
     {
       name: 'claim language', view: 'features/claim/claim-bilingual-language-preference.njk',
@@ -158,21 +198,41 @@ describe('PR9 official presentation composition', () => {
     } finally {savedDom.window.close(); invalidDom.window.close();}
   });
 
-  it.each(['en', 'cy'])('keeps the saved response in the GET model and characterises the inherited radio-selection gap (%s)', language => {
+  it.each(['en', 'cy'].flatMap(language =>
+    ['FULL_ADMISSION', 'PART_ADMISSION', 'FULL_DEFENCE'].map(responseType => ({language, responseType})),
+  ))('restores saved $responseType selection and native submission ($language)', ({language, responseType}) => {
     const view = 'features/response/citizenResponseType/citizen-response-type.njk';
     const saved = presentationFormContext(view, language, 'saved');
     expect(saved.form.model).toBeInstanceOf(CitizenResponseType);
-    expect(saved.form.model.responseType).toBe('FULL_ADMISSION');
-    const invalid = presentationFormContext(view, language, 'error');
-    expect(invalid.form.model.responseType).toBeUndefined();
-    expect(invalid.form.errorFor('responseType')).toBe('ERRORS.RESPONSE_TYPE_REQUIRED');
+    saved.form.model.responseType = responseType;
     const dom = new JSDOM(renderPresentation(view, saved, language));
     try {
-      expect(Array.from(dom.window.document.querySelectorAll<HTMLInputElement>('input[name="responseType"]')).map(input => input.value))
-        .toEqual(['FULL_ADMISSION', 'PART_ADMISSION', 'FULL_DEFENCE']);
-      // Both PR8 and PR9 read form.responseType instead of form.model.responseType.
-      // Keep the saved model intact so comparisons expose this inherited behaviour.
-      expect(dom.window.document.querySelectorAll('input[name="responseType"]:checked')).toHaveLength(0);
+      const radios = Array.from(dom.window.document.querySelectorAll<HTMLInputElement>('input[name="responseType"]'));
+      expect(radios.map(input => input.value)).toEqual(['FULL_ADMISSION', 'PART_ADMISSION', 'FULL_DEFENCE']);
+      expect(radios.filter(input => input.checked).map(input => input.value)).toEqual([responseType]);
+      expect(new dom.window.FormData(radios[0].form!).getAll('responseType')).toEqual([responseType]);
+    } finally {dom.window.close();}
+  });
+
+  it.each(['en', 'cy'].flatMap(language =>
+    ['blank', 'error'].map(state => ({language, state})),
+  ))('keeps an unanswered $state response unselected ($language)', ({language, state}) => {
+    const view = 'features/response/citizenResponseType/citizen-response-type.njk';
+    const locals = presentationFormContext(view, language, state);
+    expect(locals.form.model.responseType).toBeUndefined();
+    expect(locals.form.errorFor('responseType')).toBe(state === 'error' ? 'ERRORS.RESPONSE_TYPE_REQUIRED' : undefined);
+    const dom = new JSDOM(renderPresentation(view, locals, language));
+    try {
+      const document = dom.window.document;
+      expect(document.querySelectorAll('input[name="responseType"]:checked')).toHaveLength(0);
+      expect(new dom.window.FormData(document.querySelector('form')!).getAll('responseType')).toEqual([]);
+      if (state === 'error') {
+        const message = formControlTranslate(language)('ERRORS.RESPONSE_TYPE_REQUIRED');
+        expect(text(document.querySelector('.govuk-error-summary')!)).toContain(message);
+        expect(text(document.querySelector('#responseType-error')!)).toContain(message);
+      } else {
+        expect(document.querySelector('#responseType-error')).toBeNull();
+      }
     } finally {dom.window.close();}
   });
 
@@ -331,7 +391,16 @@ describe('PR9 official presentation composition', () => {
       expect(document.querySelector('.govuk-error-message .govuk-error-message')).toBeNull();
       if (process.env.PR9_BASE_VIEWS) {
         const base = new JSDOM(renderPresentation(view, locals, language, process.env.PR9_BASE_VIEWS));
-        expect(contracts(document)).toEqual(contracts(base.window.document));
+        const expectedContracts = contracts(base.window.document);
+        if (view === 'features/response/citizenResponseType/citizen-response-type.njk' && state === 'saved') {
+          // Only the saved radio selection intentionally differs from the older baseline.
+          for (const form of expectedContracts) for (const control of form.controls) {
+            if (control.tag === 'INPUT' && control.type === 'radio' && control.name === 'responseType') {
+              control.checked = control.value === locals.form.model.responseType;
+            }
+          }
+        }
+        expect(contracts(document)).toEqual(expectedContracts);
         const links = (doc: Document) => Array.from(doc.querySelectorAll('a[href]')).map(a => [a.getAttribute('href'), text(a)]);
         const expectedLinks = links(base.window.document).map(([href, label]) => {
           const targets: Record<string, string> = {'#flightDate': '#day', '#firstRepaymentDate': '#day', '#date': '#day', '#firstPaymentDate[date]': '#firstPaymentDate[day]'};

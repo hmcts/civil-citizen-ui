@@ -47,7 +47,7 @@
                 {{ govukInput({
                   id: "under11",
                   name: "under11",
-                  value: '' + form.model.numberOfChildren.under11,
+                  value: form.model.numberOfChildren.under11 | default(''),
                   type: "number",
                   classes: "govuk-input--width-3",
                   label: {
@@ -60,7 +60,7 @@
                 {{ govukInput({
                   id: "between11and15",
                   name: "between11and15",
-                  value: '' + form.model.numberOfChildren.between11and15,
+                  value: form.model.numberOfChildren.between11and15 | default(''),
                   type: "number",
                   classes: "govuk-input--width-3",
                   label: {
@@ -73,7 +73,7 @@
                 {{ govukInput({
                   id: "between16and19",
                   name: "between16and19",
-                  value: '' + form.model.numberOfChildren.between16and19,
+                  value: form.model.numberOfChildren.between16and19 | default(''),
                   type: "number",
                   classes: "govuk-input--width-3",
                   label: {
