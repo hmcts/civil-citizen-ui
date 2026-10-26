@@ -60,4 +60,3 @@ it('gives the respondent-agreement capture the page-specific title', () => {
     expect(dom.window.document.title).toContain(formControlTranslate('en')('PAGES.GENERAL_APPLICATION.RESPONDENT_AGREEMENT.TITLE'));
   } finally {dom.window.close();}
 });
-
