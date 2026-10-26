@@ -17,6 +17,14 @@
   {{ setPageTitle(t, pageHeaders.pageTitle) }}
 {% endblock %}
 
+{% block formErrorSummary %}
+  {% set summaryErrors = [] %}
+  {% for error in form.getAllErrors() %}
+    {% set added = summaryErrors.push({text: error.text, href: '#day' if error.property == 'date' else error.href}) %}
+  {% endfor %}
+  {{ errorSummary(summaryErrors, t) }}
+{% endblock %}
+
 {% block nestedContent %}
   {% set uploadErrors = [] %}
   {% for error in form.getAllErrors() %}
@@ -60,6 +68,18 @@
           text: t(form.errorFor('messageDetails'))
         } if form.errorFor('messageDetails')
       }) }}
+        {% set dateErrorMessages %}
+          {% if form.hasFieldError('date') %}{{ t(form.errorFor('date')) }}{% endif %}
+          {% if form.hasFieldError('day') %}
+            {% if form.hasFieldError('date') %}<br>{% endif %}{{ t(form.errorFor('day')) }}
+          {% endif %}
+          {% if form.hasFieldError('month') %}
+            {% if form.hasFieldError('date') or form.hasFieldError('day') %}<br>{% endif %}{{ t(form.errorFor('month')) }}
+          {% endif %}
+          {% if form.hasFieldError('year') %}
+            {% if form.hasFieldError('date') or form.hasFieldError('day') or form.hasFieldError('month') %}<br>{% endif %}{{ t(form.errorFor('year')) }}
+          {% endif %}
+        {% endset %}
         {% set hearingDateHtml %}
           {{ govukDateInput({
             id: "date",
@@ -74,10 +94,7 @@
               }
             },
             errorMessage: {
-              html: '<p class="govuk-error-message">' + t(form.errorFor('date')) + '</p>' +
-              '<p class="govuk-error-message">' + t(form.errorFor('day')) + '</p>' +
-              '<p class="govuk-error-message">' + t(form.errorFor('month')) + '</p>' +
-              '<p class="govuk-error-message">' + t(form.errorFor('year')) + '</p>'
+              html: dateErrorMessages
             } if (form.hasFieldError('date') or form.hasFieldError('day') or form.hasFieldError('month') or form.hasFieldError('year')),
             items: [
               {
