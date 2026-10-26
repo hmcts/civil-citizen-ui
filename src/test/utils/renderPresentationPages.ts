@@ -1,10 +1,8 @@
-import path from 'path';
-import express from 'express';
-import nunjucks from 'nunjucks';
+import {renderProductionPage} from './renderProductionPage';
+export {configuredProductionEnvironment as configuredPresentationEnvironment} from './renderProductionPage';
 import i18next from 'i18next';
 import en from '../../main/modules/i18n/locales/en.json';
 import cy from '../../main/modules/i18n/locales/cy.json';
-import {Nunjucks} from 'modules/nunjucks';
 import {GenericForm} from 'common/form/models/genericForm';
 import {GenericYesNo} from 'common/form/models/genericYesNo';
 import {RepaymentPlanForm} from 'common/form/models/repaymentPlan/repaymentPlanForm';
@@ -38,19 +36,6 @@ import {formControlTranslate} from './renderFormControls';
  * Authentication, middleware locals and service boundaries are not exercised by this helper.
  */
 // Copy the exact production filters/globals into a loader pointing at either comparison tree.
-export function configuredPresentationEnvironment(viewsDirectory?: string): nunjucks.Environment {
-  const app = express();
-  new Nunjucks(false).enableFor(app);
-  const original = app.get('nunjucksEnv') as nunjucks.Environment;
-  const root = path.resolve(__dirname, '../../..');
-  const env = new nunjucks.Environment(new nunjucks.FileSystemLoader([
-    viewsDirectory || path.join(root, 'src/main/views'), path.join(root, 'node_modules/govuk-frontend/dist'),
-  ]), {autoescape: true, noCache: true});
-  Object.entries((original as unknown as {globals: Record<string, unknown>}).globals).forEach(([key, value]) => env.addGlobal(key, value));
-  Object.entries((original as unknown as {filters: Record<string, (...args: unknown[]) => unknown>}).filters).forEach(([key, value]) => env.addFilter(key, value));
-  return env;
-}
-
 export const presentationFormViews = [
   'features/claim/airlines/flight-details.njk',
   'features/claim/claim-bilingual-language-preference.njk',
@@ -201,8 +186,5 @@ export function presentationFormContext(view: string, language = 'en', state = '
     cancelYourUploadContents: view.includes('mediation/') ? cancelMediation('1645882162449409', claim) : cancelCaseProgression('1645882162449409', claim), docUrl: '/document/one', claimId: '1', claimIdPrettified: '0000 0000 0000 0001', nonceValue: 'fixture-nonce', nonceDataLayer: 'fixture-data-nonce'};
 }
 export function renderPresentation(view: string, locals: Record<string, unknown> = {}, language = 'en', viewsDirectory?: string) {
-  return configuredPresentationEnvironment(viewsDirectory).render(view, {
-    t: formControlTranslate(language), lang: language, htmlLang: language, csrf: 'fixture-csrf',
-    claimId: '1', pageTitle: 'PAGES.DASHBOARD.PAGE_TITLE', nonceValue: 'fixture-nonce', nonceDataLayer: 'fixture-data-nonce', ...locals,
-  });
+  return renderProductionPage(view, locals, language, viewsDirectory);
 }
