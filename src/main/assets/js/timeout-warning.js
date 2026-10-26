@@ -113,7 +113,8 @@ TimeoutWarning.prototype.resetIdleTime = function () {
     return;
   }
 
-  clearTimeout(this.idleTimeoutId);
+  // Keep the existing warning timer until renewal succeeds. If the request
+  // fails, the old server-expiry warning remains the safety net.
   clearTimeout(this.extendDebounceId);
 
   this.extendDebounceId = setTimeout(function () {
@@ -415,12 +416,19 @@ TimeoutWarning.prototype.extendTimeOnServer = function (onSuccess) {
       callbacks.forEach(function (callback) { callback(response); });
     } else {
       this.renewalInFlight = false;
-      this.renewalCallbacks = [];
+      var failedCallbacks = this.renewalCallbacks.splice(0);
+      failedCallbacks.forEach(function (callback) { callback(null); });
       this.redirect();
     }
   }.bind(this);
-  request.onerror = function () { this.renewalInFlight = false; this.redirect(); }.bind(this);
-  request.ontimeout = function () { this.renewalInFlight = false; this.redirect(); }.bind(this);
+  var failRenewal = function () {
+    this.renewalInFlight = false;
+    var failedCallbacks = this.renewalCallbacks.splice(0);
+    failedCallbacks.forEach(function (callback) { callback(null); });
+    this.redirect();
+  }.bind(this);
+  request.onerror = failRenewal;
+  request.ontimeout = failRenewal;
   request.open('POST', this.extendSessionUrl, true);
   if (this.csrfToken) request.setRequestHeader('CSRF-Token', this.csrfToken);
   request.setRequestHeader('Accept', 'application/json');
