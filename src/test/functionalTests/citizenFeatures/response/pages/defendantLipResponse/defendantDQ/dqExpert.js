@@ -18,6 +18,10 @@ class DqExpert {
 
   async chooseExpert() {
     await I.waitForContent(content.heading[sharedData.language], config.WaitForText);
+    await I.waitForVisible(
+      fields.continueWithExpert,
+      config.WaitForText
+    );
     await I.click(fields.continueWithExpert);
   }
 }
