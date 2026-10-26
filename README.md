@@ -172,7 +172,7 @@ Make sure all the paths in your application are covered by accessibility tests (
 
 ## Generating CodeceptJS E2E Test Documentation
 
-Generating the documentation JSON:
+Generating the documentation JSON.:
 1. `yarn test:generate:e2e-ui-data` writes `src/test/e2e-documentation/results/e2e-data/e2e-ui-data.json`.
 2. `yarn test:generate:e2e-api-data` writes `src/test/e2e-documentation/results/e2e-data/e2e-api-data.json`.
    - Optional: pass a custom JSON file path as the first argument.
