@@ -30,7 +30,7 @@ import {
 } from 'common/utils/fileUploadUtils';
 import {getRouteParam} from 'common/utils/routeParamUtils';
 import {handleMulterError} from 'services/features/generalApplication/uploadEvidenceDocumentService';
-import {getDeleteFileIndex} from 'services/features/generalApplication/documentUpload/deleteUploadedGADocuments';
+import {getDeleteFileTarget} from 'services/features/generalApplication/documentUpload/deleteUploadedGADocuments';
 
 const uploadEvidenceDocumentsForApplicationController = Router();
 const viewPath = 'features/generalApplication/upload_documents';
@@ -100,9 +100,9 @@ uploadEvidenceDocumentsForApplicationController.post([GA_UPLOAD_DOCUMENTS_URL, G
       });
     }
 
-    const deleteFileIndex = getDeleteFileIndex(req.body.action);
-    if (deleteFileIndex !== undefined) {
-      await removeSelectedDocument(req, redisKey, deleteFileIndex);
+    const deleteFileTarget = getDeleteFileTarget(req.body.action);
+    if (deleteFileTarget) {
+      await removeSelectedDocument(req, redisKey, deleteFileTarget);
       return res.redirect(currentUrl);
     }
 

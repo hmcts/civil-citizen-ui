@@ -188,9 +188,9 @@ describe('uploadAdditionalDocumentsController', () => {
       const res = await request(app).get(constructResponseUrlWithIdAndAppIdParams(claimId, gaId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL)).query({ indexId: 1 });
 
       expect(res.status).toBe(200);
-      expect(res.text).toContain('value="deleteFile[0]"');
-      expect(res.text).toContain('value="deleteFile[1]"');
-      expect(res.text).not.toContain('value="deleteFile[2]"');
+      expect(res.text).toContain('value="deleteFile[0][url]"');
+      expect(res.text).toContain('value="deleteFile[1][url]"');
+      expect(res.text).not.toContain('value="deleteFile[2]["');
       expect(removeSelectedDocument).not.toHaveBeenCalled();
     });
 
@@ -249,11 +249,11 @@ describe('uploadAdditionalDocumentsController', () => {
 
       const res = await request(app)
         .post(constructResponseUrlWithIdAndAppIdParams(claimId, gaId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL))
-        .field('action', 'deleteFile[1]');
+        .field('action', 'deleteFile[1][doc-2]');
 
       expect(res.status).toBe(302);
       expect(res.header.location).toBe(constructResponseUrlWithIdAndAppIdParams(claimId, gaId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL));
-      expect(removeSelectedDocument).toHaveBeenCalledWith(expect.anything(), redisKey, claim, 1, undefined);
+      expect(removeSelectedDocument).toHaveBeenCalledWith(expect.anything(), redisKey, claim, {index: 1, documentId: 'doc-2'}, undefined);
       expect(uploadSelectedFile).not.toHaveBeenCalled();
     });
 

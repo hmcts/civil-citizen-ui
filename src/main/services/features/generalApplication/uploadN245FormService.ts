@@ -10,7 +10,7 @@ import { CivilServiceClient } from 'client/civilServiceClient';
 import config from 'config';
 import { generateRedisKey } from 'modules/draft-store/draftStoreService';
 import { Claim } from 'common/models/claim';
-import { deleteRemovedGADocuments } from './documentUpload/deleteUploadedGADocuments';
+import { DeleteFileTarget, deleteRemovedGADocuments, documentIdOf, isDeleteFileTargetFor } from './documentUpload/deleteUploadedGADocuments';
 
 const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClientForDocRetrieve: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl, true);
@@ -36,7 +36,7 @@ export const getUploadFormContent = (lng: string) => {
     .build();
 };
 
-export const uploadSelectedFile = async (req: AppRequest, claim: Claim): Promise<{ form: GenericForm<UploadGAFiles>, documentName: string }> => {
+export const uploadSelectedFile = async (req: AppRequest, claim: Claim): Promise<{ form: GenericForm<UploadGAFiles>, documentName: string, documentId: string }> => {
   const uploadedN245Details = new UploadGAFiles();
   const redisKey = generateRedisKey(req);
   const fileUpload = TypeOfDocumentSectionMapper.mapToSingleFile(req);
@@ -50,13 +50,18 @@ export const uploadSelectedFile = async (req: AppRequest, claim: Claim): Promise
     await saveN245Form(redisKey, claim, uploadedN245Details);
     await deleteRemovedGADocuments(req, previousN245, uploadedN245Details, 'uploadN245FormService');
   }
-  const documentName = uploadedN245Details.caseDocument?.documentName || claim.generalApplication?.uploadN245Form?.caseDocument?.documentName;
+  const currentN245 = uploadedN245Details.caseDocument ? uploadedN245Details : claim.generalApplication?.uploadN245Form;
+  const documentName = currentN245?.caseDocument?.documentName;
+  const documentId = documentIdOf(currentN245);
 
-  return Promise.resolve({ form, documentName });
+  return Promise.resolve({ form, documentName, documentId });
 };
 
-export const removeN245Form = async (req: AppRequest, claim: Claim): Promise<void> => {
+export const removeN245Form = async (req: AppRequest, claim: Claim, target: DeleteFileTarget): Promise<void> => {
   const removedN245 = claim.generalApplication?.uploadN245Form;
+  if (!isDeleteFileTargetFor(removedN245, target)) {
+    return;
+  }
   await saveN245Form(generateRedisKey(req), claim, undefined);
   await deleteRemovedGADocuments(req, removedN245, undefined, 'uploadN245FormService');
 };

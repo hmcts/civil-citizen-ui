@@ -11,7 +11,7 @@ import { FormValidationError } from 'common/form/validationErrors/formValidation
 import { t } from 'i18next';
 import {isConfirmYouPaidCCJAppType} from 'services/features/generalApplication/generalApplicationService';
 import { getMulterErrorConstraint, FILE_UPLOAD_SOURCE } from 'common/utils/fileUploadUtils';
-import {deleteRemovedGADocuments} from 'services/features/generalApplication/documentUpload/deleteUploadedGADocuments';
+import {DeleteFileTarget, deleteRemovedGADocuments, isDeleteFileTargetFor, withDocumentId} from 'services/features/generalApplication/documentUpload/deleteUploadedGADocuments';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseService');
@@ -23,7 +23,7 @@ export const getSummaryList = async (formattedSummary: SummarySection, redisKey:
   let index = 0;
   claim?.generalApplication?.uploadEvidenceForApplication?.forEach((uploadDocument: UploadGAFiles) => {
     index= index+ 1;
-    formattedSummary.summaryList.rows.push(summaryRow(uploadDocument.caseDocument.documentName, '', constructResponseUrlWithIdParams(claimId, currentPage+'?id='+index), 'Remove document'));
+    formattedSummary.summaryList.rows.push(withDocumentId(summaryRow(uploadDocument.caseDocument.documentName, '', constructResponseUrlWithIdParams(claimId, currentPage+'?id='+index), 'Remove document'), uploadDocument));
   });
 };
 
@@ -38,11 +38,14 @@ export const saveDocumentsToUploaded = async (redisKey: string, uploadDocument: 
   }
 };
 
-export const removeSelectedDocument = async (req: AppRequest, redisKey: string, index: number) : Promise<void> => {
+export const removeSelectedDocument = async (req: AppRequest, redisKey: string, target: DeleteFileTarget) : Promise<void> => {
   try {
     const claim = await getCaseDataFromStore(redisKey, true);
     const uploadedDocuments = claim?.generalApplication?.uploadEvidenceForApplication;
-    const removedDocuments = uploadedDocuments?.splice(index, 1);
+    if (!isDeleteFileTargetFor(uploadedDocuments?.[target.index], target)) {
+      return;
+    }
+    const removedDocuments = uploadedDocuments.splice(target.index, 1);
     await saveDraftClaim(redisKey, claim);
     await deleteRemovedGADocuments(req, removedDocuments, uploadedDocuments, 'uploadEvidenceDocumentService');
   } catch(error) {

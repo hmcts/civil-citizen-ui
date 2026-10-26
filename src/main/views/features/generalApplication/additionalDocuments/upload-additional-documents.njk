@@ -65,7 +65,7 @@
                            <p class="govuk-body govuk-!-margin-bottom-0"> {{ row.key.text }}</p>
                         </dt>
                         <dd class="govuk-summary-list__actions">
-                            {{ gaDeleteFileButton(t, row.key.text, loop.index0 // 2) }}
+                            {{ gaDeleteFileButton(t, row.key.text, loop.index0 // 2, row.documentId) }}
                         </dd>
                         </div>
                      {% endif %}

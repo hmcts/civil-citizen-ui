@@ -41,10 +41,10 @@
   </button>
 {% endmacro %}
 
-{% macro gaDeleteFileButton(t, documentName, index) %}
+{% macro gaDeleteFileButton(t, documentName, index, documentId) %}
   {{ govukButton({
     name: 'action',
-    value: 'deleteFile[' + index + ']',
+    value: 'deleteFile[' + index + '][' + documentId + ']',
     html: t('COMMON.BUTTONS.DELETE') + '<span class="govuk-visually-hidden"> ' + (documentName | escape) + '</span>',
     classes: 'govuk-button--secondary govuk-!-margin-bottom-0'
   }) }}

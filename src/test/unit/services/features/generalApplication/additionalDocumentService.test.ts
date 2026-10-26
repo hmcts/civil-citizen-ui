@@ -37,7 +37,10 @@ jest.mock('../../../../../main/modules/draft-store/draftStoreService', () => ({
   generateRedisKey: jest.fn(),
 }));
 jest.mock('../../../../../main/modules/utilityService');
-jest.mock('services/features/generalApplication/documentUpload/deleteUploadedGADocuments');
+jest.mock('services/features/generalApplication/documentUpload/deleteUploadedGADocuments', () => ({
+  ...jest.requireActual('services/features/generalApplication/documentUpload/deleteUploadedGADocuments'),
+  deleteRemovedGADocuments: jest.fn(),
+}));
 jest.mock('i18next', () => ({
   t: jest.fn((key) => key),
 }));
@@ -147,7 +150,7 @@ describe('Additional Documents Service', () => {
 
       expect(result.summaryList.rows).toHaveLength(4);
       expect(result.summaryList.rows[0]).toEqual(summaryRowWithTextValue('PAGES.UPLOAD_DOCUMENTS.TYPE_OF_DOCUMENT', 'Type1'));
-      expect(result.summaryList.rows[1]).toEqual(summaryRowWithTextValue('Document1', '', `${constructResponseUrlWithIdAndAppIdParams(claimId, gaId,GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL)}?indexId=1`, 'Remove document'));
+      expect(result.summaryList.rows[1]).toEqual({...summaryRowWithTextValue('Document1', '', `${constructResponseUrlWithIdAndAppIdParams(claimId, gaId,GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL)}?indexId=1`, 'Remove document'), documentId: 'ur1'});
     });
   });
 
@@ -268,27 +271,44 @@ describe('Additional Documents Service', () => {
           ],
         } as GeneralApplication,
       } as Claim;
-      const index = 0;
       const req = {} as AppRequest;
       const removedDocument = claim.generalApplication.uploadAdditionalDocuments[0];
 
-      await removeSelectedDocument(req, redisKey, claim, index);
+      await removeSelectedDocument(req, redisKey, claim, {index: 0, documentId: 'ur2'});
 
       expect(saveDraftClaim).toHaveBeenCalledWith(redisKey, claim, false, undefined);
       expect(claim.generalApplication.uploadAdditionalDocuments).toHaveLength(0);
       expect(deleteRemovedGADocuments).toHaveBeenCalledWith(req, [removedDocument], [], 'additionalDocumentService');
     });
 
+    it('should not remove anything when the document at the index has changed', async () => {
+      (saveDraftClaim as jest.Mock).mockClear();
+      (deleteRemovedGADocuments as jest.Mock).mockClear();
+      const claim = {
+        generalApplication: {
+          uploadAdditionalDocuments: [
+            {typeOfDocument: 'Type1', caseDocument: {documentName: 'Document2', documentLink: {document_url: 'ur2'}} as CaseDocument, fileUpload: {} as FileUpload},
+          ],
+        } as GeneralApplication,
+      } as Claim;
+
+      await removeSelectedDocument({} as AppRequest, 'key', claim, {index: 0, documentId: 'ur1'});
+
+      expect(claim.generalApplication.uploadAdditionalDocuments).toHaveLength(1);
+      expect(saveDraftClaim).not.toHaveBeenCalled();
+      expect(deleteRemovedGADocuments).not.toHaveBeenCalled();
+    });
+
     it('should handle error during document removal', async () => {
       const redisKey = 'key';
-      claim.generalApplication.uploadAdditionalDocuments.push({ typeOfDocument: 'Type1', caseDocument: { documentName: 'Document1' } as CaseDocument, fileUpload: {} as FileUpload });
-      const index = 0;
+      claim.generalApplication.uploadAdditionalDocuments.push({ typeOfDocument: 'Type1', caseDocument: { documentName: 'Document1', documentLink: { document_url: 'http://dm/documents/doc-1' } } as CaseDocument, fileUpload: {} as FileUpload });
+      const index = claim.generalApplication.uploadAdditionalDocuments.length - 1;
       const error = new Error('Error');
       (saveDraftClaim as jest.Mock).mockRejectedValue(error);
 
       const loggerErrorSpy = jest.spyOn(logger, 'error');
 
-      await expect(removeSelectedDocument({} as AppRequest, redisKey, claim, index)).rejects.toThrow(error);
+      await expect(removeSelectedDocument({} as AppRequest, redisKey, claim, {index, documentId: 'doc-1'})).rejects.toThrow(error);
       expect(loggerErrorSpy).toHaveBeenCalledWith(error);
       expect(deleteRemovedGADocuments).not.toHaveBeenCalled();
     });

@@ -4,7 +4,7 @@ import {generateRedisKeyForGA} from 'modules/draft-store/draftStoreService';
 import {uploadEachSelectedFile} from 'services/features/generalApplication/documentUpload/uploadEachSelectedFile';
 import {saveUploadErrorsToSession} from 'services/features/generalApplication/uploadEvidenceDocumentService';
 import {getGADocumentsFromDraftStore, saveGADocumentsInDraftStore} from 'modules/draft-store/draftGADocumentService';
-import {deleteRemovedGADocuments} from 'services/features/generalApplication/documentUpload/deleteUploadedGADocuments';
+import {DeleteFileTarget, deleteRemovedGADocuments, isDeleteFileTargetFor} from 'services/features/generalApplication/documentUpload/deleteUploadedGADocuments';
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseService');
 
@@ -30,10 +30,13 @@ export const saveDocuments = async (req: AppRequest, uploadDocument: UploadGAFil
   }
 };
 
-export const removeSelectedDocument = async (req: AppRequest, redisKey: string, index: number) : Promise<void> => {
+export const removeSelectedDocument = async (req: AppRequest, redisKey: string, target: DeleteFileTarget) : Promise<void> => {
   try {
     const uploadedDocuments = await getGADocumentsFromDraftStore(redisKey);
-    const removedDocuments = uploadedDocuments.splice(index, 1);
+    if (!isDeleteFileTargetFor(uploadedDocuments?.[target.index], target)) {
+      return;
+    }
+    const removedDocuments = uploadedDocuments.splice(target.index, 1);
     await saveGADocumentsInDraftStore(redisKey, uploadedDocuments);
     await deleteRemovedGADocuments(req, removedDocuments, uploadedDocuments, 'uploadDocumentsService');
   } catch(error) {

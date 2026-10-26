@@ -9,7 +9,7 @@ import {uploadEachSelectedFile} from 'services/features/generalApplication/docum
 import {saveUploadErrorsToSession} from 'services/features/generalApplication/uploadEvidenceDocumentService';
 import {FILE_UPLOAD_SOURCE} from 'common/utils/fileUploadUtils';
 import { getDraftGARespondentResponse, saveDraftGARespondentResponse } from './generalApplicationResponseStoreService';
-import {deleteRemovedGADocuments} from 'services/features/generalApplication/documentUpload/deleteUploadedGADocuments';
+import {DeleteFileTarget, deleteRemovedGADocuments, isDeleteFileTargetFor, withDocumentId} from 'services/features/generalApplication/documentUpload/deleteUploadedGADocuments';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimantResponseService');
@@ -19,7 +19,7 @@ export const getSummaryList = async (formattedSummary: SummarySection, redisKey:
   let index = 0;
   gaResponse?.uploadEvidenceDocuments?.forEach((uploadDocument: UploadGAFiles) => {
     index= index+ 1;
-    return formattedSummary.summaryList.rows.push(summaryRow(uploadDocument.caseDocument.documentName, '', constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_RESPONDENT_UPLOAD_DOCUMENT_URL + '?id=' + index), 'Remove document'));
+    return formattedSummary.summaryList.rows.push(withDocumentId(summaryRow(uploadDocument.caseDocument.documentName, '', constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_RESPONDENT_UPLOAD_DOCUMENT_URL + '?id=' + index), 'Remove document'), uploadDocument));
   });
   return undefined;
 };
@@ -36,10 +36,13 @@ export const saveDocumentsToUploaded = async (redisKey: string, uploadDocument: 
   }
 };
 
-export const removeDocumentFromRedis = async (req: AppRequest, redisKey: string, index: number) : Promise<void> => {
+export const removeDocumentFromRedis = async (req: AppRequest, redisKey: string, target: DeleteFileTarget) : Promise<void> => {
   try {
     const gaResponse = await getDraftGARespondentResponse(redisKey);
-    const removedDocuments = gaResponse?.uploadEvidenceDocuments?.splice(index, 1);
+    if (!isDeleteFileTargetFor(gaResponse?.uploadEvidenceDocuments?.[target.index], target)) {
+      return;
+    }
+    const removedDocuments = gaResponse.uploadEvidenceDocuments.splice(target.index, 1);
     await saveDraftGARespondentResponse(redisKey, gaResponse);
     await deleteRemovedGADocuments(req, removedDocuments, gaResponse?.uploadEvidenceDocuments, 'respondentUploadEvidenceDocumentsService');
   } catch(error) {

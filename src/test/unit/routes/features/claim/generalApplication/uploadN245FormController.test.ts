@@ -66,7 +66,7 @@ describe('General Application - upload n245 form', () => {
       claim.generalApplication.uploadN245Form.caseDocument = n245Document;
       const res = await request(app).get(`${GA_UPLOAD_N245_FORM_URL}?action=REMOVE_DOC`);
       expect(res.status).toBe(200);
-      expect(res.text).toContain('value="deleteFile[0]"');
+      expect(res.text).toContain('value="deleteFile[0][n245-doc]"');
       expect(claim.generalApplication.uploadN245Form.caseDocument).toEqual(n245Document);
     });
     it('should return http 500 when has error in the get method', async () => {
@@ -84,7 +84,7 @@ describe('General Application - upload n245 form', () => {
     it('should remove the N245 and delete it from document management', async () => {
       claim.generalApplication.uploadN245Form.caseDocument = n245Document;
       const deleteDocument = jest.spyOn(CivilServiceClient.prototype, 'deleteDocument').mockResolvedValue(undefined);
-      const res = await request(app).post(GA_UPLOAD_N245_FORM_URL).field('action', 'deleteFile[0]');
+      const res = await request(app).post(GA_UPLOAD_N245_FORM_URL).field('action', 'deleteFile[0][n245-doc]');
       expect(res.status).toBe(302);
       expect(res.header.location).toBe(GA_UPLOAD_N245_FORM_URL);
       expect(claim.generalApplication.uploadN245Form).toBeUndefined();

@@ -13,7 +13,10 @@ import {deleteRemovedGADocuments} from 'services/features/generalApplication/doc
 
 import * as draftStoreService from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
 jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
-jest.mock('services/features/generalApplication/documentUpload/deleteUploadedGADocuments');
+jest.mock('services/features/generalApplication/documentUpload/deleteUploadedGADocuments', () => ({
+  ...jest.requireActual('services/features/generalApplication/documentUpload/deleteUploadedGADocuments'),
+  deleteRemovedGADocuments: jest.fn(),
+}));
 jest.mock('../../../../../../main/services/features/generalApplication/response/generalApplicationResponseStoreService', () => ({
   saveDraftGARespondentResponse: jest.fn(),
   getDraftGARespondentResponse: jest.fn(),
@@ -52,12 +55,29 @@ describe('Upload Respondent Evidence Document service', () => {
 
       //When
       const req = {} as AppRequest;
-      await removeDocumentFromRedis(req, '123', 0);
+      await removeDocumentFromRedis(req, '123', {index: 0, documentId: 'test'});
       //Then
       expect(spy).toBeCalled();
       expect(gaResponse.uploadEvidenceDocuments.length).toEqual(1);
       expect(deleteRemovedGADocuments).toHaveBeenCalledWith(req, [expect.objectContaining({caseDocument: mockCaseDocument})],
         gaResponse.uploadEvidenceDocuments, 'respondentUploadEvidenceDocumentsService');
+    });
+
+    it('should not remove anything when the document at the index has changed', async () => {
+      const gaResponse = new GaResponse();
+      const uploadDocument = new UploadGAFiles();
+      uploadDocument.caseDocument = mockCaseDocument;
+      gaResponse.uploadEvidenceDocuments.push(uploadDocument);
+      jest.spyOn(draftStoreService, 'getDraftGARespondentResponse').mockResolvedValue(gaResponse);
+      const save = jest.spyOn(draftStoreService, 'saveDraftGARespondentResponse');
+      save.mockClear();
+      (deleteRemovedGADocuments as jest.Mock).mockClear();
+
+      await removeDocumentFromRedis({} as AppRequest, '123', {index: 0, documentId: 'another-document'});
+
+      expect(gaResponse.uploadEvidenceDocuments).toHaveLength(1);
+      expect(save).not.toHaveBeenCalled();
+      expect(deleteRemovedGADocuments).not.toHaveBeenCalled();
     });
   });
   describe('Get SummaryList', () => {

@@ -18,7 +18,7 @@ import {UploadN245GAFiles} from 'models/generalApplication/uploadN245GAFiles';
 import { createMulterErrorMiddlewareForSingleField, getFileUploadErrorsForSource, FILE_UPLOAD_SOURCE } from 'common/utils/fileUploadUtils';
 import {getRouteParam} from 'common/utils/routeParamUtils';
 import { handleMulterError } from 'services/features/generalApplication/uploadEvidenceDocumentService';
-import { getDeleteFileIndex } from 'services/features/generalApplication/documentUpload/deleteUploadedGADocuments';
+import { documentIdOf, getDeleteFileTarget } from 'services/features/generalApplication/documentUpload/deleteUploadedGADocuments';
 
 const uploadN245FormController = Router();
 const viewPath = 'features/generalApplication/upload-n245-form';
@@ -35,6 +35,7 @@ uploadN245FormController.get(GA_UPLOAD_N245_FORM_URL, uploadN245FormControllerGu
     const contentList = getUploadFormContent(lng);
     const uploadedN245Details = claim.generalApplication?.uploadN245Form || new UploadGAFiles();
     const documentName = uploadedN245Details.caseDocument?.documentName;
+    const documentId = documentIdOf(uploadedN245Details);
     const cancelUrl = await getCancelUrl(claimId, claim);
     let form = new GenericForm(uploadedN245Details);
     const fileUploadErrors = getFileUploadErrorsForSource(req, FILE_UPLOAD_SOURCE.GA_UPLOAD_N245);
@@ -47,6 +48,7 @@ uploadN245FormController.get(GA_UPLOAD_N245_FORM_URL, uploadN245FormControllerGu
       currentUrl,
       form,
       documentName,
+      documentId,
       cancelUrl,
       backLinkUrl,
       contentList,
@@ -74,16 +76,18 @@ uploadN245FormController.post(GA_UPLOAD_N245_FORM_URL, multerMiddleware, uploadN
       });
     }
 
-    if (getDeleteFileIndex(req.body.action) !== undefined) {
-      await removeN245Form(req, claim);
+    const deleteFileTarget = getDeleteFileTarget(req.body.action);
+    if (deleteFileTarget) {
+      await removeN245Form(req, claim, deleteFileTarget);
       return res.redirect(currentUrl);
     }
 
     if (req.body.action === uploadButton) {
-      const { form, documentName } = await uploadSelectedFile(req, claim);
+      const { form, documentName, documentId } = await uploadSelectedFile(req, claim);
       return res.render(viewPath, {
         currentUrl,
         documentName,
+        documentId,
         form,
         claimId,
         cancelUrl,

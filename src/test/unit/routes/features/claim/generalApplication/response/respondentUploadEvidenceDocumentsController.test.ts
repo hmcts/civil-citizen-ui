@@ -93,7 +93,7 @@ describe('General Application - Respondent GA upload evidence documents ', () =>
       jest.spyOn(gaStoreResponseService, 'getDraftGARespondentResponse').mockResolvedValue(gaResponse);
       const res = await request(app).get(constructResponseUrlWithIdAndAppIdParams('123', '345', GA_RESPONDENT_UPLOAD_DOCUMENT_URL + '?id=1'));
       expect(res.status).toBe(200);
-      expect(res.text).toContain('value="deleteFile[1]"');
+      expect(res.text).toContain('value="deleteFile[1][second]"');
       expect(gaResponse.uploadEvidenceDocuments).toHaveLength(2);
     });
     it('should return page with errors when file to be uploaded has unsupported file type', async () => {
@@ -176,7 +176,7 @@ describe('General Application - Respondent GA upload evidence documents ', () =>
       gaResponse.uploadEvidenceDocuments.push(uploadedDocument('first'), uploadedDocument('second'));
       jest.spyOn(gaStoreResponseService, 'getDraftGARespondentResponse').mockResolvedValue(gaResponse);
       const deleteDocument = jest.spyOn(CivilServiceClient.prototype, 'deleteDocument').mockResolvedValue(undefined);
-      const res = await request(app).post(constructResponseUrlWithIdAndAppIdParams('123', '345', GA_RESPONDENT_UPLOAD_DOCUMENT_URL)).field('action', 'deleteFile[0]');
+      const res = await request(app).post(constructResponseUrlWithIdAndAppIdParams('123', '345', GA_RESPONDENT_UPLOAD_DOCUMENT_URL)).field('action', 'deleteFile[0][first]');
       expect(res.status).toBe(302);
       expect(res.header.location).toBe(constructResponseUrlWithIdAndAppIdParams('123', '345', GA_RESPONDENT_UPLOAD_DOCUMENT_URL));
       expect(gaResponse.uploadEvidenceDocuments.map((document: UploadGAFiles) => document.caseDocument.documentName)).toEqual(['second.pdf']);

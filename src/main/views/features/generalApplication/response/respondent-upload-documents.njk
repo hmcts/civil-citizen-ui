@@ -36,7 +36,7 @@
                       {{ row.key.text }}
                     </dt>
                   <dd class="govuk-summary-list__actions">
-                    {{ gaDeleteFileButton(t, row.key.text, loop.index0) }}
+                    {{ gaDeleteFileButton(t, row.key.text, loop.index0, row.documentId) }}
                   </dd>
                 </div>
               </dl>

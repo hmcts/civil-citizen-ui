@@ -103,7 +103,7 @@ describe('General Application - upload evidence docs to support application', ()
       claim.generalApplication.uploadEvidenceForApplication.push(uploadedDocument('first'), uploadedDocument('second'));
       const res = await request(app).get(GA_UPLOAD_DOCUMENTS_URL + '?id=1');
       expect(res.status).toBe(200);
-      expect(res.text).toContain('value="deleteFile[1]"');
+      expect(res.text).toContain('value="deleteFile[1][second]"');
       expect(claim.generalApplication.uploadEvidenceForApplication).toHaveLength(2);
     });
 
@@ -186,12 +186,22 @@ describe('General Application - upload evidence docs to support application', ()
     it('should delete the requested file from the list and from document management', async () => {
       claim.generalApplication.uploadEvidenceForApplication.push(uploadedDocument('first'), uploadedDocument('second'));
       const deleteDocument = jest.spyOn(CivilServiceClient.prototype, 'deleteDocument').mockResolvedValue(undefined);
-      const res = await request(app).post(GA_UPLOAD_DOCUMENTS_URL).field('action', 'deleteFile[0]');
+      const res = await request(app).post(GA_UPLOAD_DOCUMENTS_URL).field('action', 'deleteFile[0][first]');
       expect(res.status).toBe(302);
       expect(res.header.location).toContain(GA_UPLOAD_DOCUMENTS_URL);
       expect(claim.generalApplication.uploadEvidenceForApplication.map((document: UploadGAFiles) => document.caseDocument.documentName)).toEqual(['second.pdf']);
       expect(deleteDocument).toHaveBeenCalledTimes(1);
       expect(deleteDocument).toHaveBeenCalledWith(expect.anything(), 'first');
+      deleteDocument.mockRestore();
+    });
+
+    it('should not delete anything when a stale page asks to delete a file that has moved', async () => {
+      claim.generalApplication.uploadEvidenceForApplication.push(uploadedDocument('first'), uploadedDocument('second'));
+      const deleteDocument = jest.spyOn(CivilServiceClient.prototype, 'deleteDocument').mockResolvedValue(undefined);
+      const res = await request(app).post(GA_UPLOAD_DOCUMENTS_URL).field('action', 'deleteFile[0][second]');
+      expect(res.status).toBe(302);
+      expect(claim.generalApplication.uploadEvidenceForApplication.map((document: UploadGAFiles) => document.caseDocument.documentName)).toEqual(['first.pdf', 'second.pdf']);
+      expect(deleteDocument).not.toHaveBeenCalled();
       deleteDocument.mockRestore();
     });
 

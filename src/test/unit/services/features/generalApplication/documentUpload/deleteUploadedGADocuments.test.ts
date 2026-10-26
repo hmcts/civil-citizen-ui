@@ -2,7 +2,10 @@ import {CivilServiceClient} from 'client/civilServiceClient';
 import {AppRequest} from 'models/AppRequest';
 import {
   deleteRemovedGADocuments,
-  getDeleteFileIndex,
+  documentIdOf,
+  getDeleteFileTarget,
+  isDeleteFileTargetFor,
+  withDocumentId,
 } from 'services/features/generalApplication/documentUpload/deleteUploadedGADocuments';
 
 const uploadedDocument = (id: string) => ({
@@ -12,18 +15,47 @@ const uploadedDocument = (id: string) => ({
 describe('deleteUploadedGADocuments', () => {
   afterEach(() => jest.restoreAllMocks());
 
-  describe('getDeleteFileIndex', () => {
-    it('should return the index of a delete file action', () => {
-      expect(getDeleteFileIndex('deleteFile[0]')).toBe(0);
-      expect(getDeleteFileIndex('deleteFile[12]')).toBe(12);
+  describe('getDeleteFileTarget', () => {
+    it('should return the index and document id of a delete file action', () => {
+      expect(getDeleteFileTarget('deleteFile[0][abc-123]')).toEqual({index: 0, documentId: 'abc-123'});
+      expect(getDeleteFileTarget('deleteFile[12][def]')).toEqual({index: 12, documentId: 'def'});
     });
 
     it('should return undefined for any other action', () => {
-      expect(getDeleteFileIndex('uploadButton')).toBeUndefined();
-      expect(getDeleteFileIndex('deleteFile[-1]')).toBeUndefined();
-      expect(getDeleteFileIndex('deleteFile[a]')).toBeUndefined();
-      expect(getDeleteFileIndex(['deleteFile[0]'])).toBeUndefined();
-      expect(getDeleteFileIndex(undefined)).toBeUndefined();
+      expect(getDeleteFileTarget('uploadButton')).toBeUndefined();
+      expect(getDeleteFileTarget('deleteFile[0]')).toBeUndefined();
+      expect(getDeleteFileTarget('deleteFile[0][]')).toBeUndefined();
+      expect(getDeleteFileTarget('deleteFile[-1][abc]')).toBeUndefined();
+      expect(getDeleteFileTarget('deleteFile[a][abc]')).toBeUndefined();
+      expect(getDeleteFileTarget(['deleteFile[0][abc]'])).toBeUndefined();
+      expect(getDeleteFileTarget(undefined)).toBeUndefined();
+    });
+  });
+
+  describe('documentIdOf', () => {
+    it('should return the last part of the document url', () => {
+      expect(documentIdOf(uploadedDocument('abc-123'))).toBe('abc-123');
+    });
+
+    it('should return undefined when there is no document url', () => {
+      expect(documentIdOf(undefined)).toBeUndefined();
+      expect(documentIdOf({caseDocument: {}})).toBeUndefined();
+    });
+  });
+
+  describe('isDeleteFileTargetFor', () => {
+    it('should match only the document with the target id', () => {
+      expect(isDeleteFileTargetFor(uploadedDocument('a'), {index: 0, documentId: 'a'})).toBe(true);
+      expect(isDeleteFileTargetFor(uploadedDocument('b'), {index: 0, documentId: 'a'})).toBe(false);
+      expect(isDeleteFileTargetFor(undefined, {index: 0, documentId: 'a'})).toBe(false);
+    });
+  });
+
+  describe('withDocumentId', () => {
+    it('should add the document id to the summary row', () => {
+      const row = {key: {text: 'file.pdf'}, value: {}};
+
+      expect(withDocumentId(row, uploadedDocument('a'))).toEqual({...row, documentId: 'a'});
     });
   });
 

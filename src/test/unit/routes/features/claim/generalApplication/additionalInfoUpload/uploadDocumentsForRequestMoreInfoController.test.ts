@@ -109,8 +109,8 @@ describe('General Application - uploadDocumentsForRequestMoreInfoController.ts',
     it('should show a delete button for each uploaded file', async () => {
       const res = await request(app).get(GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_URL);
       expect(res.status).toBe(200);
-      expect(res.text).toContain('value="deleteFile[0]"');
-      expect(res.text).toContain('value="deleteFile[1]"');
+      expect(res.text).toContain('value="deleteFile[0][95de9948-e563-4692-a642-5cdd5b2a1046]"');
+      expect(res.text).toContain('value="deleteFile[1][95de9948-e563-4692-a642-5cdd5b2a1047]"');
     });
 
     it('should not remove a file on a GET request', async () => {
@@ -197,7 +197,7 @@ describe('General Application - uploadDocumentsForRequestMoreInfoController.ts',
   describe('on POST', () => {
     it('should delete the 2nd file from the list and from document management', async () => {
       const deleteDocument = jest.spyOn(CivilServiceClient.prototype, 'deleteDocument').mockResolvedValue(undefined);
-      const res = await request(app).post(GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_URL).field('action', 'deleteFile[1]');
+      const res = await request(app).post(GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_URL).field('action', 'deleteFile[1][95de9948-e563-4692-a642-5cdd5b2a1047]');
       expect(res.status).toBe(302);
       expect(uploadDocuments.map((uploadDocument) => uploadDocument.caseDocument.documentName)).toEqual(['Additional information1']);
       expect(deleteDocument).toHaveBeenCalledTimes(1);

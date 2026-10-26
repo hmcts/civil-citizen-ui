@@ -22,7 +22,10 @@ const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
 jest.mock('../../../../../main/modules/draft-store');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
-jest.mock('services/features/generalApplication/documentUpload/deleteUploadedGADocuments');
+jest.mock('services/features/generalApplication/documentUpload/deleteUploadedGADocuments', () => ({
+  ...jest.requireActual('services/features/generalApplication/documentUpload/deleteUploadedGADocuments'),
+  deleteRemovedGADocuments: jest.fn(),
+}));
 
 const mockCaseDocument: CaseDocument = <CaseDocument>{
   createdBy: 'test',
@@ -93,7 +96,7 @@ describe('Upload Evidence Document service', () => {
 
       //When
       const req = {} as AppRequest;
-      await removeSelectedDocument(req, '123', 0);
+      await removeSelectedDocument(req, '123', {index: 0, documentId: 'test'});
       //Then
       expect(spy).toBeCalled();
       expect(claim.generalApplication.uploadEvidenceForApplication.length).toEqual(1);
