@@ -23,7 +23,7 @@ function TimeoutWarning($module) {
   this.sessionExpiresAt = Number($module.getAttribute('data-session-expires-at')) || 0;
   this.csrfToken = $module.getAttribute('data-csrf-token') || '';
   if (window.localStorage) {
-    this.sessionExpiresAt = Number(window.localStorage.getItem(this.sessionExpiryKey)) || this.sessionExpiresAt;
+    this.sessionExpiresAt = this.readSharedExpiry();
   }
   this.timerText = $module.getAttribute('data-timer-text') || 'Your session will be reset in ';
   this.timerExtraText = $module.getAttribute('data-timer-extra-text') || 'This is to protect your data.';
@@ -35,6 +35,22 @@ function TimeoutWarning($module) {
   this.redirectInFlight = false;
   this.previousAriaHidden = null;
 }
+
+TimeoutWarning.prototype.readSharedExpiry = function () {
+  if (!window.localStorage) return this.sessionExpiresAt;
+  return Number(window.localStorage.getItem(this.sessionExpiryKey)) || this.sessionExpiresAt;
+};
+
+TimeoutWarning.prototype.publishExpiry = function (expiresAt) {
+  if (!expiresAt) return;
+  this.sessionExpiresAt = Number(expiresAt);
+  if (window.localStorage) window.localStorage.setItem(this.sessionExpiryKey, String(this.sessionExpiresAt));
+};
+
+TimeoutWarning.prototype.clearWarningTimers = function () {
+  clearTimeout(this.idleTimeoutId);
+  clearTimeout(this.extendDebounceId);
+};
 
 TimeoutWarning.prototype.init = function () {
   if (!this.$module || !this.dialogSupported()) {
@@ -121,8 +137,7 @@ TimeoutWarning.prototype.resetIdleTime = function () {
     this.extendTimeOnServer(function (response) {
       if (!response || response.extended !== true) return;
       if (response.expiresAt) {
-        this.sessionExpiresAt = Number(response.expiresAt);
-        if (window.localStorage) window.localStorage.setItem(this.sessionExpiryKey, String(this.sessionExpiresAt));
+        this.publishExpiry(response.expiresAt);
       }
       this.scheduleWarningFromExpiry();
     }.bind(this));
@@ -139,7 +154,7 @@ TimeoutWarning.prototype.scheduleWarningFromExpiry = function () {
     ? Math.max(0, this.sessionExpiresAt - Date.now() - (this.minutesTimeOutModalVisible * 60000))
     : this.idleMinutesBeforeTimeOut * 60000;
   this.idleTimeoutId = setTimeout(function () {
-    if (window.localStorage) this.sessionExpiresAt = Number(window.localStorage.getItem(this.sessionExpiryKey)) || this.sessionExpiresAt;
+    this.sessionExpiresAt = this.readSharedExpiry();
     this.checkIfShouldHaveTimedOut();
   }.bind(this), delay);
 };
@@ -326,8 +341,7 @@ TimeoutWarning.prototype.closeDialog = function () {
   this.extendTimeOnServer(function (response) {
     if (!response || response.extended !== true) return;
     if (response.expiresAt) {
-      this.sessionExpiresAt = Number(response.expiresAt);
-      if (window.localStorage) window.localStorage.setItem(this.sessionExpiryKey, String(this.sessionExpiresAt));
+      this.publishExpiry(response.expiresAt);
     }
     this.completeRenewal();
   }.bind(this));
@@ -418,8 +432,12 @@ TimeoutWarning.prototype.extendTimeOnServer = function (onSuccess) {
       this.failRenewal(request.status !== 0, function () { completed = true; });
     }
   }.bind(this);
-  request.onerror = function () { this.failRenewal(false, function () { completed = true; }); }.bind(this);
-  request.ontimeout = function () { this.failRenewal(false, function () { completed = true; }); }.bind(this);
+  request.onerror = function () {
+    if (!completed) this.failRenewal(false, function () { completed = true; });
+  }.bind(this);
+  request.ontimeout = function () {
+    if (!completed) this.failRenewal(false, function () { completed = true; });
+  }.bind(this);
   request.open('POST', this.extendSessionUrl, true);
   request.timeout = 30000;
   if (this.csrfToken) request.setRequestHeader('CSRF-Token', this.csrfToken);
