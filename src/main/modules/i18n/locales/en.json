@@ -574,7 +574,7 @@
       "REASON_HINT": "You can enter up to %{count} characters",
       "REASON_LABEL": "Explain why you are cancelling the claim (optional)",
       "TITLE": "Reasons for cancelling the claim",
-      "WARNING": "If you cancel the claim it will not be issued. It will not count as court proceedings. You will no longer be able to take any action on it and it will be eventually removed from the system."
+      "WARNING": "If you cancel the claim, it will not be issued. It will not count as court proceedings. You would not be able to take any further action on it and it will be eventually removed from the system."
     },
     "QM": {
       "CONFIRMATION_PAGE": {
