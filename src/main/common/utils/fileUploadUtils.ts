@@ -106,13 +106,29 @@ export const createMulterUpload = (fileSizeLimit: number = FILE_SIZE_LIMIT, maxF
   });
 };
 
+export const uploadFieldNameFor = (submitAction: string): string => {
+  const [category, index] = extractCategoryAndIndex(submitAction);
+  return `${category}[${index}][fileUpload]`;
+};
+
+const filesCountedForUpload = (req: Request): number => {
+  const files = req.files as Express.Multer.File[];
+  const action = req.body?.action;
+  if (typeof action !== 'string' || !action.includes('[uploadButton]')) {
+    return files.length;
+  }
+  const fieldName = uploadFieldNameFor(action);
+  return files.filter((file) => file.fieldname === fieldName).length;
+};
+
 const handleMulterResultDroppingDisallowedFiles = (req: Request, err: any, loggerName: string, next: NextFunction): void => {
   if (err || !Array.isArray(req.files)) {
     handleMulterResult(req, err, loggerName, next);
     return;
   }
-  if (req.files.length > MAX_FILES_PER_UPLOAD) {
-    Logger.getLogger(loggerName).error(`[MULTER ERROR] Too many files: ${req.files.length}, code=LIMIT_FILE_COUNT`);
+  const filesInUpload = filesCountedForUpload(req);
+  if (filesInUpload > MAX_FILES_PER_UPLOAD) {
+    Logger.getLogger(loggerName).error(`[MULTER ERROR] Too many files: ${filesInUpload}, code=LIMIT_FILE_COUNT`);
     (req as any).multerError = {code: 'LIMIT_FILE_COUNT', message: 'Too many files'};
     clearUploadedFiles(req);
     next();
@@ -411,7 +427,7 @@ export const uploadAndValidateFile = async (
   loggerName = 'uploadDocumentsController',
 ): Promise<void> => {
   const [category, index] = extractCategoryAndIndex(submitAction);
-  const fieldName = `${category}[${index}][fileUpload]`;
+  const fieldName = uploadFieldNameFor(submitAction);
   const files = filesChosenFor(req, fieldName);
   const hasRejectedContent = (req as RequestWithRejectedFiles).rejectedFileFields?.includes(fieldName);
   if (!files.length && !hasRejectedContent) {

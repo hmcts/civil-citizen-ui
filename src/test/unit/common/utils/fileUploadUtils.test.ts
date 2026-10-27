@@ -11,6 +11,7 @@ import {
   extractCategorySectionAndFileIndex,
   createUploadOneFileError,
   uploadAndValidateFile,
+  uploadFieldNameFor,
   normaliseCaseDocuments,
   migrateLegacyCaseDocuments,
   migrateLegacyCaseDocumentsOnForm,
@@ -247,6 +248,59 @@ describe('fileUploadUtils', () => {
 
       expect((mockReq as any).multerError).toBeUndefined();
       expect(mockReq.files).toHaveLength(MAX_FILES_PER_UPLOAD);
+    });
+
+    const pdfsFor = (fieldname: string, count: number) => Array.from({length: count}, (_, index) => ({
+      fieldname,
+      originalname: `${fieldname}-${index}.pdf`,
+      mimetype: 'application/pdf',
+      size: 16,
+      buffer: Buffer.from('%PDF-1.4 file'),
+    } as Express.Multer.File));
+
+    it('should not count files chosen in other sections towards the upload limit', () => {
+      const multer = require('multer');
+      mockReq.body = {action: 'witnessStatement[0][uploadButton]'};
+      mockReq.files = [
+        ...pdfsFor('witnessStatement[0][fileUpload]', 3),
+        ...pdfsFor('documentsReferred[0][fileUpload]', MAX_FILES_PER_UPLOAD),
+      ];
+      multer.mockReturnValue({any: jest.fn(() => (req: any, res: any, callback: any) => callback(null))});
+
+      createMulterErrorMiddleware('testLogger')(mockReq as Request, mockRes as Response, mockNext);
+
+      expect((mockReq as any).multerError).toBeUndefined();
+      expect(mockReq.files).toHaveLength(3 + MAX_FILES_PER_UPLOAD);
+      expect(mockNext).toHaveBeenCalled();
+    });
+
+    it('should reject the upload when the section on the button has more files than allowed', () => {
+      const multer = require('multer');
+      mockReq.body = {action: 'witnessStatement[0][uploadButton]'};
+      mockReq.files = [
+        ...pdfsFor('witnessStatement[0][fileUpload]', MAX_FILES_PER_UPLOAD + 1),
+        ...pdfsFor('documentsReferred[0][fileUpload]', 1),
+      ];
+      multer.mockReturnValue({any: jest.fn(() => (req: any, res: any, callback: any) => callback(null))});
+
+      createMulterErrorMiddleware('testLogger')(mockReq as Request, mockRes as Response, mockNext);
+
+      expect((mockReq as any).multerError).toEqual(expect.objectContaining({code: 'LIMIT_FILE_COUNT'}));
+      expect(mockReq.files).toBeUndefined();
+    });
+
+    it('should count every file when the action is not an upload', () => {
+      const multer = require('multer');
+      mockReq.body = {action: 'witnessStatement[0][removeButton]'};
+      mockReq.files = [
+        ...pdfsFor('witnessStatement[0][fileUpload]', 1),
+        ...pdfsFor('documentsReferred[0][fileUpload]', MAX_FILES_PER_UPLOAD),
+      ];
+      multer.mockReturnValue({any: jest.fn(() => (req: any, res: any, callback: any) => callback(null))});
+
+      createMulterErrorMiddleware('testLogger')(mockReq as Request, mockRes as Response, mockNext);
+
+      expect((mockReq as any).multerError).toEqual(expect.objectContaining({code: 'LIMIT_FILE_COUNT'}));
     });
 
     it('should use default logger name when not provided', () => {
@@ -493,6 +547,12 @@ describe('fileUploadUtils', () => {
       const result = getMulterErrorConstraint(error);
 
       expect(result).toBe('ERRORS.FILE_UPLOAD_FAILED');
+    });
+  });
+
+  describe('uploadFieldNameFor', () => {
+    it('should return the file field for the section on the upload button', () => {
+      expect(uploadFieldNameFor('witnessStatement[2][uploadButton]')).toBe('witnessStatement[2][fileUpload]');
     });
   });
 
