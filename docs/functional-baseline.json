@@ -7,7 +7,8 @@
       "title": "Breathing Space - Lip v Lip - Fast Track: Claimant Lip enters and exit from Mental Health Breathing Space when case is in Case Progression",
       "tags": [
         "@civil-citizen-pr",
-        "@ui-breathing-space"
+        "@ui-breathing-space",
+        "@thin-full-stack"
       ],
       "skipped": false
     },
@@ -16,7 +17,8 @@
       "title": "Breathing Space - Lip v Lip - Fast Track: Claimant Lip enters and exit from Standard Breathing Space when case is Awaiting Defendant Response",
       "tags": [
         "@civil-citizen-pr",
-        "@ui-breathing-space"
+        "@ui-breathing-space",
+        "@thin-full-stack"
       ],
       "skipped": false
     },

@@ -10,7 +10,7 @@ const {verifyNotificationTitleAndContent} = require('../../../specClaimHelpers/e
 const claimType = 'FastTrack';
 let caseData, claimNumber, claimRef, currentDay, currentMonth, currentYear;
 
-Feature('Breathing Space - Lip v Lip - Fast Track').tag('@civil-citizen-pr @ui-breathing-space');
+Feature('Breathing Space - Lip v Lip - Fast Track').tag('@civil-citizen-pr @ui-breathing-space @thin-full-stack');
 
 Before(async ({api}) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
