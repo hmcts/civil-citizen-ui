@@ -40,15 +40,16 @@ claimantDoBController.get(CLAIMANT_DOB_URL, (async (req: AppRequest, res: Respon
 claimantDoBController.post(CLAIMANT_DOB_URL, (async (req: AppRequest, res: Response, next: NextFunction) => {
   try {
     const {year, month, day} = req.body;
-    const form = new GenericForm(new DOBDate(day, month, year));
-    form.validateSync();
-
-    if (form.hasErrors()) {
-      res.render(claimantDoBViewPath, {form, today: new Date(), claimantView: true, maxDateForAge18: getDOBforAgeFromCurrentTime(18), pageTitle});
-    } else {
-      await saveClaimantProperty(req, 'dateOfBirth', new DOBDate(day, month, year));
-      res.redirect(CLAIMANT_PHONE_NUMBER_URL);
-    }
+    // TEMP DTSCCI-5899 QA: skip DOB validation so invalid/under-18 dates can reach civil-service as field_errors.
+    // Revert before merge (restore validateSync + hasErrors branch).
+    // const form = new GenericForm(new DOBDate(day, month, year));
+    // form.validateSync();
+    // if (form.hasErrors()) {
+    //   res.render(claimantDoBViewPath, {form, today: new Date(), claimantView: true, maxDateForAge18: getDOBforAgeFromCurrentTime(18), pageTitle});
+    // } else {
+    await saveClaimantProperty(req, 'dateOfBirth', new DOBDate(day, month, year));
+    res.redirect(CLAIMANT_PHONE_NUMBER_URL);
+    // }
   } catch (error) {
     next(error);
   }

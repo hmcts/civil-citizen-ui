@@ -73,23 +73,25 @@ describe('Mediation Email Mediation Confirmation Controller', () => {
           expect(res.header.location).toEqual(MEDIATION_NEXT_3_MONTHS_URL);
         });
     });
-    it('should Valid email when is empty', async () => {
+    // TEMP DTSCCI-5899 QA: invalid/empty email is accepted so it can reach civil-service.
+    // Restore error expectations when AlternativeEmailAddress validators are restored.
+    it('should redirect when email is empty', async () => {
       await request(app)
         .post(CONTROLLER_URL)
         .send({alternativeEmailAddress: ''})
         .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.ENTER_VALID_EMAIL);
+          expect(res.status).toBe(302);
+          expect(res.header.location).toEqual(MEDIATION_NEXT_3_MONTHS_URL);
         });
     });
 
-    it('should should Valid email when is invalid', async () => {
+    it('should redirect when email is invalid', async () => {
       await request(app)
         .post(CONTROLLER_URL)
-        .send({alternativeEmailAddress: 'aaa'})
+        .send({alternativeEmailAddress: 'notanemail'})
         .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.ENTER_VALID_EMAIL);
+          expect(res.status).toBe(302);
+          expect(res.header.location).toEqual(MEDIATION_NEXT_3_MONTHS_URL);
         });
     });
 
