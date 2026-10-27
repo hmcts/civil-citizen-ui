@@ -5,17 +5,38 @@ import {
   getDefendantTimeline,
   saveDefendantTimeline,
 } from '../../../../../../main/services/features/response/timelineOfEvents/defendantTimelineService';
-import * as draftStoreService from '../../../../../../main/modules/draft-store/draftStoreService';
+import {getResponseDraft, updateResponseDraft} from 'modules/draft-store/response/responseDraftStoreService';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {TimelineRow} from '../../../../../../main/common/form/models/timeLineOfEvents/timelineRow';
 import {RejectAllOfClaim} from 'form/models/rejectAllOfClaim';
 import {Party} from 'models/party';
 import {ResponseType} from 'form/models/responseType';
+import {AppRequest} from 'models/AppRequest';
 
-jest.mock('../../../../../../main/modules/draft-store');
-jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('../../../../../../main/modules/draft-store/response/responseDraftStoreService');
+
+const mockGetResponseDraft = getResponseDraft as jest.Mock;
+const mockUpdateResponseDraft = updateResponseDraft as jest.Mock;
+
+const caseId = '1645882162449409';
+const mockReq = {
+  params: {id: caseId},
+  session: {user: {id: 'user-1', accessToken: 'token'}},
+} as unknown as AppRequest;
+
+const mockDraftResult = (claim: Claim) => ({
+  claimResponse: {id: 'draft-123', case_data: claim},
+  rawResponse: {draftId: 'draft-123', payload: claim},
+  createdAt: '2026-01-01T00:00:00.000Z',
+  updatedAt: '',
+  expiresAt: '',
+});
 
 describe('defendantTimelineService', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
   describe('getPartialAdmitTimeline', () => {
     it('should return defendant timeline from partial admission when it exists', () => {
       //Given
@@ -59,42 +80,76 @@ describe('defendantTimelineService', () => {
       expect(model.comment).toBeUndefined();
     });
   });
+
   describe('savePartialAdmitTimeline', () => {
-    const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
     it('should save partial admission timeline successfully', async () => {
-      //Given
-      mockGetCaseData.mockImplementation(async () => {
-        return new Claim();
-      });
-      const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
-      //When
-      await saveDefendantTimeline('123', DefendantTimeline.buildPopulatedForm([new TimelineRow(12, 2, 2020, 'description')], 'comment'));
-      //Then
-      expect(spySave).toBeCalled();
+      const claim = new Claim();
+      claim.respondent1 = new Party();
+      claim.respondent1.responseType = ResponseType.PART_ADMISSION;
+      mockGetResponseDraft.mockResolvedValue(mockDraftResult(claim));
+      mockUpdateResponseDraft.mockResolvedValue({});
+
+      await saveDefendantTimeline(
+        mockReq,
+        DefendantTimeline.buildPopulatedForm([new TimelineRow(12, 2, 2020, 'description')], 'comment'),
+      );
+
+      expect(mockUpdateResponseDraft).toHaveBeenCalledWith(
+        mockReq,
+        caseId,
+        expect.objectContaining({
+          partialAdmission: expect.objectContaining({
+            timeline: expect.objectContaining({comment: 'comment'}),
+          }),
+          draftClaimCreatedAt: new Date('2026-01-01T00:00:00.000Z'),
+        }),
+        'draft-123',
+      );
     });
+
     it('should save full defence timeline successfully', async () => {
-      //Given
-      mockGetCaseData.mockImplementation(async () => {
-        const claim: Claim = new Claim();
-        claim.respondent1 = new Party();
-        claim.respondent1.responseType = ResponseType.FULL_DEFENCE;
-        return claim;
-      });
-      const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
-      //When
-      await saveDefendantTimeline('123', DefendantTimeline.buildPopulatedForm([new TimelineRow(12, 2, 2020, 'description')], 'comment'));
-      //Then
-      expect(spySave).toBeCalled();
+      const claim = new Claim();
+      claim.respondent1 = new Party();
+      claim.respondent1.responseType = ResponseType.FULL_DEFENCE;
+      mockGetResponseDraft.mockResolvedValue(mockDraftResult(claim));
+      mockUpdateResponseDraft.mockResolvedValue({});
+
+      await saveDefendantTimeline(
+        mockReq,
+        DefendantTimeline.buildPopulatedForm([new TimelineRow(12, 2, 2020, 'description')], 'comment'),
+      );
+
+      expect(mockUpdateResponseDraft).toHaveBeenCalledWith(
+        mockReq,
+        caseId,
+        expect.objectContaining({
+          rejectAllOfClaim: expect.objectContaining({
+            timeline: expect.objectContaining({comment: 'comment'}),
+          }),
+          draftClaimCreatedAt: new Date('2026-01-01T00:00:00.000Z'),
+        }),
+        'draft-123',
+      );
     });
-    it('should throw an exception when there is an error with redis', async () => {
-      //When
-      const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
-      mockSaveDraftClaim.mockImplementation(async () => {
-        throw new Error(TestMessages.REDIS_FAILURE);
-      });
-      //Then
-      await expect(saveDefendantTimeline('123', DefendantTimeline.buildPopulatedForm([new TimelineRow(12, 2, 2020, 'description')], 'comment')))
-        .rejects.toThrow(TestMessages.REDIS_FAILURE);
+
+    it('should throw when no response draft is found', async () => {
+      mockGetResponseDraft.mockResolvedValue(null);
+
+      await expect(saveDefendantTimeline(
+        mockReq,
+        DefendantTimeline.buildPopulatedForm([new TimelineRow(12, 2, 2020, 'description')], 'comment'),
+      )).rejects.toThrow('[defendantTimelineService] no response draft found');
+      expect(mockUpdateResponseDraft).not.toHaveBeenCalled();
+    });
+
+    it('should throw an exception when updateResponseDraft fails', async () => {
+      mockGetResponseDraft.mockResolvedValue(mockDraftResult(new Claim()));
+      mockUpdateResponseDraft.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
+
+      await expect(saveDefendantTimeline(
+        mockReq,
+        DefendantTimeline.buildPopulatedForm([new TimelineRow(12, 2, 2020, 'description')], 'comment'),
+      )).rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
   });
 });

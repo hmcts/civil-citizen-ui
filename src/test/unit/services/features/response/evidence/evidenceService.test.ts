@@ -1,14 +1,32 @@
-import * as draftStoreService from '../../../../../../main/modules/draft-store/draftStoreService';
 import {getEvidence, saveEvidence} from '../../../../../../main/services/features/response/evidence/evidenceService';
+import {getResponseClaimById, getResponseDraft, updateResponseDraft} from 'modules/draft-store/response/responseDraftStoreService';
 import {Claim} from '../../../../../../main/common/models/claim';
 import {EvidenceType} from '../../../../../../main/common/models/evidence/evidenceType';
 import {Evidence} from '../../../../../../main/common/form/models/evidence/evidence';
 import {EvidenceItem} from '../../../../../../main/common/form/models/evidence/evidenceItem';
 import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {DefendantEvidence} from 'models/evidence/evidence';
+import {AppRequest} from 'models/AppRequest';
 
-jest.mock('../../../../../../main/modules/draft-store');
-jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('../../../../../../main/modules/draft-store/response/responseDraftStoreService');
+
+const mockGetResponseClaimById = getResponseClaimById as jest.Mock;
+const mockGetResponseDraft = getResponseDraft as jest.Mock;
+const mockUpdateResponseDraft = updateResponseDraft as jest.Mock;
+
+const caseId = '1645882162449409';
+const mockReq = {
+  params: {id: caseId},
+  session: {user: {id: 'user-1', accessToken: 'token'}},
+} as unknown as AppRequest;
+
+const mockDraftResult = (claim: Claim) => ({
+  claimResponse: {id: 'draft-123', case_data: claim},
+  rawResponse: {draftId: 'draft-123', payload: claim},
+  createdAt: '2026-01-01T00:00:00.000Z',
+  updatedAt: '',
+  expiresAt: '',
+});
 
 const COMMENT = 'Nam ac ante id turpis elementum laoreet. Nunc a erat nec eros iaculis lobortis ut in quam.';
 const EVIDENCE_ITEM = [
@@ -25,111 +43,90 @@ const EVIDENCE_ITEM_EMPTY: EvidenceItem[] = [
   {'type': null, 'description': ''}];
 
 describe('Evidence Service', () => {
-  const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
   describe('getEvidence', () => {
     it('should get empty form when no data exist', async () => {
-      //Given
-      mockGetCaseData.mockImplementation(async () => {
-        const claim = new Claim();
-        claim.evidence = <DefendantEvidence>{};
-        claim.evidence.evidenceItem = EVIDENCE_ITEM_EMPTY;
-        return claim;
-      });
-      //When
-      const form = await getEvidence('123');
-      //Then
+      const claim = new Claim();
+      claim.evidence = <DefendantEvidence>{};
+      claim.evidence.evidenceItem = EVIDENCE_ITEM_EMPTY;
+      mockGetResponseClaimById.mockResolvedValue(claim);
+
+      const form = await getEvidence(mockReq);
+
       expect(form.comment).toBeUndefined();
       expect(form.evidenceItem).toEqual(EVIDENCE_ITEM_EMPTY);
     });
 
     it('should get empty form when evidence does not exist', async () => {
-      //Given
-      mockGetCaseData.mockImplementation(async () => {
-        const claim = new Claim();
-        claim.evidence = {
-          comment: '',
-          evidenceItem: [],
-        };
-        return claim;
-      });
-      //When
-      const form = await getEvidence('123');
-      //Then
-      expect(form.comment).toEqual('');
-      expect(form.evidenceItem).toEqual([]);
-    });
-  });
+      mockGetResponseClaimById.mockResolvedValue(new Claim());
 
-  it('should return populated form when evidence exists', async () => {
-    //Given
-    mockGetCaseData.mockImplementation(async () => {
+      const form = await getEvidence(mockReq);
+
+      expect(form).toEqual(new Evidence());
+    });
+
+    it('should return populated form when evidence exists', async () => {
       const claim = new Claim();
       claim.evidence = {
         comment: COMMENT,
         evidenceItem: EVIDENCE_ITEM,
       };
-      return claim;
-    });
-    //When
-    const form = await getEvidence('123');
+      mockGetResponseClaimById.mockResolvedValue(claim);
 
-    //Then
-    expect(form.comment).toEqual(COMMENT);
-    expect(form.evidenceItem).toEqual(EVIDENCE_ITEM);
-  });
+      const form = await getEvidence(mockReq);
 
-  it('should rethrow error when error occurs', async () => {
-    //When
-    mockGetCaseData.mockImplementation(async () => {
-      throw new Error(TestMessages.REDIS_FAILURE);
+      expect(form.comment).toEqual(COMMENT);
+      expect(form.evidenceItem).toEqual(EVIDENCE_ITEM);
     });
-    //Then
-    await expect(getEvidence('123')).rejects.toThrow(TestMessages.REDIS_FAILURE);
+
+    it('should rethrow error when error occurs', async () => {
+      mockGetResponseClaimById.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
+
+      await expect(getEvidence(mockReq)).rejects.toThrow(TestMessages.REDIS_FAILURE);
+    });
   });
 
   describe('saveEvidence', () => {
     const eventItems: EvidenceItem[] = [];
     beforeEach(() => {
+      eventItems.length = 0;
       eventItems.push({type: EvidenceType.CONTRACTS_AND_AGREEMENTS, description: 'Test evidence details'});
     });
+
     it('should save evidence data successfully when claim exists', async () => {
-      //Given
-      mockGetCaseData.mockImplementation(async () => {
-        return new Claim();
-      });
-      const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
-      //When
-      await saveEvidence('123', new Evidence(
-        COMMENT,
-        eventItems,
-      ));
-      //Then
-      expect(spySave).toBeCalled();
+      mockGetResponseDraft.mockResolvedValue(mockDraftResult(new Claim()));
+      mockUpdateResponseDraft.mockResolvedValue({});
+
+      await saveEvidence(mockReq, new Evidence(COMMENT, eventItems));
+
+      expect(mockUpdateResponseDraft).toHaveBeenCalledWith(
+        mockReq,
+        caseId,
+        expect.objectContaining({
+          evidence: expect.objectContaining({comment: COMMENT}),
+          draftClaimCreatedAt: new Date('2026-01-01T00:00:00.000Z'),
+        }),
+        'draft-123',
+      );
     });
 
-    it('should rethrow error when error occurs on get claim', async () => {
-      //When
-      mockGetCaseData.mockImplementation(async () => {
-        throw new Error(TestMessages.REDIS_FAILURE);
-      });
-      //Then
-      await expect(saveEvidence('123', new Evidence(
-        COMMENT,
-        eventItems,
-      ))).rejects.toThrow(TestMessages.REDIS_FAILURE);
+    it('should throw when no response draft is found', async () => {
+      mockGetResponseDraft.mockResolvedValue(null);
+
+      await expect(saveEvidence(mockReq, new Evidence(COMMENT, eventItems)))
+        .rejects.toThrow('[evidenceService] no response draft found');
+      expect(mockUpdateResponseDraft).not.toHaveBeenCalled();
     });
 
     it('should rethrow error when error occurs on save claim', async () => {
-      //Given
-      const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
-      mockSaveDraftClaim.mockImplementation(async () => {
-        throw new Error(TestMessages.REDIS_FAILURE);
-      });
-      //Then
-      await expect(saveEvidence('123', new Evidence(
-        COMMENT,
-        eventItems,
-      ))).rejects.toThrow(TestMessages.REDIS_FAILURE);
+      mockGetResponseDraft.mockResolvedValue(mockDraftResult(new Claim()));
+      mockUpdateResponseDraft.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
+
+      await expect(saveEvidence(mockReq, new Evidence(COMMENT, eventItems)))
+        .rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
   });
 });
