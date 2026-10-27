@@ -2655,14 +2655,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@opentelemetry/core@npm:^2.8.0":
-  version: 2.11.0
-  resolution: "@opentelemetry/core@npm:2.11.0"
+"@opentelemetry/core@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "@opentelemetry/core@npm:3.0.0"
   dependencies:
     "@opentelemetry/semantic-conventions": "npm:^1.29.0"
   peerDependencies:
-    "@opentelemetry/api": ">=1.0.0 <1.10.0"
-  checksum: 10/934e4c1b9628643365f0a1225734dd2e264e22960eb8b5e484627ffadb94fe4af6e573b4cd568174209c0c9b2a73217af9dfb2b03a97974ea77ab2563d5bb071
+    "@opentelemetry/api": ">=1.10.0 <1.11.0"
+  checksum: 10/bcde51834b4904ad764c9ceac992461ebd9888cb51a4f13722fd45943bc3342769df0394a3c3c61611eb5252b1b32e632b5703e1f0e44cf539690b1f211a684e
   languageName: node
   linkType: hard
 
