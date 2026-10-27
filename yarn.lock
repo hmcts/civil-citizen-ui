@@ -5774,7 +5774,7 @@ __metadata:
     dayjs: "npm:^1.11.7"
     debug: "npm:^4.3.4"
     deep-equal-in-any-order: "npm:^2.0.2"
-    dotenv: "npm:^17.3.1"
+    dotenv: "npm:^18.0.0"
     eslint: "npm:^8.57.1"
     eslint-plugin-codeceptjs: "npm:^1.3.0"
     express: "npm:5.2.1"
@@ -6997,10 +6997,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dotenv@npm:^17.3.1":
-  version: 17.4.2
-  resolution: "dotenv@npm:17.4.2"
-  checksum: 10/ca1b6f54d58e39914901e1518958e86083aca8deb5aa2e7f2a51acd53291d97852479b0ab26ed949b6a45a0e9adcc7b0d1c3c72375e8ea670f7005e341c6daba
+"dotenv@npm:^18.0.0":
+  version: 18.0.9
+  resolution: "dotenv@npm:18.0.9"
+  bin:
+    dotenv: dist/index.cjs
+  checksum: 10/585a2667f55791c4eb854114d56af8dc26fc4f936b829cbd1974e42e74218a98158cbf0d495e1eec517e5dac9a425902cc16646a86a18a077d2cd403a5552dcc
   languageName: node
   linkType: hard
 
