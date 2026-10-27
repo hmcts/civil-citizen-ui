@@ -535,6 +535,7 @@ class CreateClaim {
 
   async verifyClaimSubmitted(isHWFClaim = false) {
     await I.waitForContent('Monday to Friday, 8.30am to 5pm.', 60);
+    await I.waitForText('Claim submitted', 60, 'h1');
     await I.see('Claim submitted', 'h1');
     await I.see('Claim number:');
     const claimReference = await I.grabTextFrom('//div[contains(text(),\'Claim number\')]/strong');
