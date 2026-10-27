@@ -91,6 +91,7 @@ TimeoutWarning.prototype.handleStorageChange = function (event) {
     if (this.isDialogOpen()) {
       this.completeRenewal();
     } else {
+      this.scheduleWarningFromExpiry();
       this.checkIfShouldHaveTimedOut();
     }
   } else if (event.key === this.lastInteractionKey) {
@@ -132,6 +133,9 @@ TimeoutWarning.prototype.resetIdleTime = function () {
   // Keep the existing warning timer until renewal succeeds. If the request
   // fails, the old server-expiry warning remains the safety net.
   clearTimeout(this.extendDebounceId);
+  if (this.idleTimeoutId === null) {
+    this.scheduleWarningFromExpiry();
+  }
 
   this.extendDebounceId = setTimeout(function () {
     this.extendTimeOnServer(function (response) {

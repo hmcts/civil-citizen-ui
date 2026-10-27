@@ -132,6 +132,18 @@ describe('TimeoutWarning', () => {
     expect(open).toHaveBeenCalled();
   });
 
+  it('keeps the original warning deadline when the initial renewal fails', () => {
+    const open = jest.spyOn(moduleInstance, 'openDialog');
+    moduleInstance.sessionExpiresAt = Date.now() + 26 * 60000;
+    jest.spyOn(moduleInstance, 'extendTimeOnServer').mockImplementation((callback) => callback?.(null as never));
+
+    moduleInstance.resetIdleTime();
+    jest.advanceTimersByTime(3000);
+    jest.advanceTimersByTime(21 * 60000);
+
+    expect(open).toHaveBeenCalled();
+  });
+
   it('opens the dialog and starts the countdown', () => {
     moduleInstance.openDialog();
     expect(dialog.showModal).toHaveBeenCalled();
