@@ -207,6 +207,26 @@ describe('Citizen date of birth', () => {
           expect(res.text).not.toContain(t('ERRORS.VALID_DAY'));
         });
     });
+    it('should return date of birth valid day error when date does not exist', async () => {
+      await request(app)
+        .post(DOB_URL)
+        .send('year=2000&month=2&day=31')
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Date of birth must include a valid day');
+          expect(res.text).not.toContain(t('ERRORS.VALID_DATE'));
+        });
+    });
+    it('should return date of birth 4-digit year error when year is more than 4 digits', async () => {
+      await request(app)
+        .post(DOB_URL)
+        .send('year=12345&month=1&day=1')
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Date of birth must include a 4-digit year');
+          expect(res.text).not.toContain(t('ERRORS.VALID_DATE'));
+        });
+    });
     it.each([
       ['day', 'year=2000&month=1&day=0', 'Date of birth must include a valid day'],
       ['month', 'year=2000&month=0&day=1', 'Date of birth must include a valid month'],

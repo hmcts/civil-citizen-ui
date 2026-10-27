@@ -191,6 +191,28 @@ describe('Mediation Unavailability Select Dates Confirmation Controller', () => 
         });
     });
 
+    it('should return valid day error when date does not exist', async () => {
+      await request(app)
+        .post(CONTROLLER_URL)
+        .send(singleDateBody({day: '31', month: '2', year}))
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Unavailable date must include a valid day');
+          expect(res.text).not.toContain('Enter the date you are unavailable<');
+        });
+    });
+
+    it('should return 4-digit year error when year is more than 4 digits', async () => {
+      await request(app)
+        .post(CONTROLLER_URL)
+        .send(singleDateBody({day, month, year: '12345'}))
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Unavailable date must include a 4-digit year');
+          expect(res.text).not.toContain('Date you are unavailable must be in the next 3 months');
+        });
+    });
+
     it('should return day, month and year errors when all are invalid', async () => {
       await request(app)
         .post(CONTROLLER_URL)
@@ -311,6 +333,28 @@ describe('Mediation Unavailability Select Dates Confirmation Controller', () => 
         });
     });
 
+    it('should return from valid day error when date does not exist', async () => {
+      await request(app)
+        .post(CONTROLLER_URL)
+        .send(longerPeriodBody({day: '31', month: '2', year}))
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Unavailable from date must include a valid day');
+          expect(res.text).not.toContain('Enter the date you are unavailable from');
+        });
+    });
+
+    it('should return from 4-digit year error when year is more than 4 digits', async () => {
+      await request(app)
+        .post(CONTROLLER_URL)
+        .send(longerPeriodBody({day, month, year: '12345'}))
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Unavailable from date must include a 4-digit year');
+          expect(res.text).not.toContain('Date you are unavailable from must be in the next 3 months');
+        });
+    });
+
     it('should return from day, month and year errors when all are invalid', async () => {
       await request(app)
         .post(CONTROLLER_URL)
@@ -419,13 +463,26 @@ describe('Mediation Unavailability Select Dates Confirmation Controller', () => 
         });
     });
 
-    it('should return enter to date error when to date does not exist', async () => {
+    it('should return to valid day error when to date does not exist', async () => {
       await request(app)
         .post(CONTROLLER_URL)
         .send(longerPeriodBody({day: '31', month: '2', year}))
         .expect((res) => {
           expect(res.status).toBe(200);
-          expect(res.text).toContain('Enter the date you are unavailable to');
+          expect(res.text).toContain('Unavailable to date must include a valid day');
+          expect(res.text).not.toContain('Enter the date you are unavailable to');
+          expect(res.text).not.toContain('Date you are unavailable from must be before the date you are unavailable to');
+        });
+    });
+
+    it('should return to 4-digit year error when year is more than 4 digits', async () => {
+      await request(app)
+        .post(CONTROLLER_URL)
+        .send(longerPeriodBody({day, month, year: '12345'}))
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Unavailable to date must include a 4-digit year');
+          expect(res.text).not.toContain('Date you are unavailable to must be in the next 3 months');
           expect(res.text).not.toContain('Date you are unavailable from must be before the date you are unavailable to');
         });
     });

@@ -4,15 +4,17 @@ import {OptionalDateNotInFutureValidator} from '../validators/optionalDateNotInF
 import {OptionalDateFourDigitValidator} from '../validators/optionalDateFourDigitValidator';
 import {ValidationArgs} from './genericForm';
 import {toOptionalNumber} from '../../utils/numberConverter';
+import {isInvalidDate} from '../../utils/dateUtils';
 
 export class CitizenDob {
 
-  @ValidateIf(o => (o.day > 0 && o.day <32 && o.month > 0 && o.month<13 && o.year > 999))
-  @IsDate({message: 'ERRORS.VALID_DATE'})
+  @ValidateIf(o => (o.day > 0 && o.day <32 && o.month > 0 && o.month<13 && o.year > 999 && o.year < 10000))
+  @IsDate({message: generateDateErrorMessage})
   @Validate(OptionalDateNotInFutureValidator, {message: 'ERRORS.VALID_DATE'})
     dateOfBirth?: Date;
 
   @Min(1872,{message: generateYearErrorMessage})
+  @Max(9999,{message: generateYearErrorMessage})
   @Validate(OptionalDateFourDigitValidator, {message: generateYearErrorMessage})
     year: number;
 
@@ -32,11 +34,15 @@ export class CitizenDob {
   }
 }
 
+function generateDateErrorMessage(args: ValidationArgs<CitizenDob>): string {
+  return isInvalidDate(args.value) ? 'ERRORS.DOB_VALID_DAY' : 'ERRORS.VALID_DATE';
+}
+
 function generateYearErrorMessage(args: ValidationArgs<CitizenDob>): string {
   if (args.value === undefined) {
     return 'ERRORS.VALID_FOUR_DIGIT_YEAR';
   }
-  if (Number.isNaN(args.value) || args.value < 1000) {
+  if (Number.isNaN(args.value) || args.value < 1000 || args.value > 9999) {
     return 'ERRORS.DOB_VALID_FOUR_DIGIT_YEAR';
   }
   return 'ERRORS.VALID_YEAR';

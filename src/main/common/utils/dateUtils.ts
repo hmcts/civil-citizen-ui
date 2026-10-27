@@ -158,3 +158,7 @@ export const roundOffTwoDecimals = (amount: number) => {
   }
   return Math.round((amount + Number.EPSILON) * 100) / 100;
 };
+
+export const isInvalidDate = (date: Date): boolean => {
+  return Number.isNaN(date?.getTime());
+};
