@@ -205,6 +205,24 @@
         "@ui-welsh"
       ],
       "skipped": false
+    },
+    {
+      "file": "src/test/functionalTests/tests/ui_tests/case-offline/LipvLip_fast_track_breathingSpace_tests.js",
+      "title": "Breathing Space - Lip v Lip - Fast Track: Claimant Lip enters and exit from Mental Health Breathing Space when case is in Case Progression",
+      "tags": [
+        "@civil-citizen-pr",
+        "@ui-breathing-space"
+      ],
+      "skipped": false
+    },
+    {
+      "file": "src/test/functionalTests/tests/ui_tests/case-offline/LipvLip_fast_track_breathingSpace_tests.js",
+      "title": "Breathing Space - Lip v Lip - Fast Track: Claimant Lip enters and exit from Standard Breathing Space when case is Awaiting Defendant Response",
+      "tags": [
+        "@civil-citizen-pr",
+        "@ui-breathing-space"
+      ],
+      "skipped": false
     }
   ]
 }
