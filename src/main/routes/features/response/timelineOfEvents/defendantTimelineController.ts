@@ -11,7 +11,7 @@ import {
   saveDefendantTimeline,
 } from 'services/features/response/timelineOfEvents/defendantTimelineService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {getResponseClaimById} from 'modules/draft-store/response/responseDraftStoreService';
 import {TimeLineOfEvents} from 'models/timelineOfEvents/timeLineOfEvents';
 import {AppRequest} from 'common/models/AppRequest';
 import {getRouteParam} from 'common/utils/routeParamUtils';
@@ -28,10 +28,10 @@ function renderView(form: GenericForm<DefendantTimeline>, theirTimeline: TimeLin
 defendantTimelineController.get(CITIZEN_TIMELINE_URL,
   (async (req, res, next: NextFunction) => {
     try {
-      const claimId = getRouteParam(req, 'id');
-      const claim = await getCaseDataFromStore(generateRedisKey(<AppRequest>req));
+      const caseId = getRouteParam(req, 'id');
+      const claim = await getResponseClaimById(<AppRequest>req, caseId);
       const theirTimeline = claim.timelineOfEvents;
-      const pdfUrl = claim.extractDocumentId() && CASE_TIMELINE_DOCUMENTS_URL.replace(':id', claimId).replace(':documentId', claim.extractDocumentId());
+      const pdfUrl = claim.extractDocumentId() && CASE_TIMELINE_DOCUMENTS_URL.replace(':id', caseId).replace(':documentId', claim.extractDocumentId());
       const form = new GenericForm(getDefendantTimeline(claim));
       renderView(form, theirTimeline, pdfUrl, res);
     } catch (error) {
@@ -41,17 +41,18 @@ defendantTimelineController.get(CITIZEN_TIMELINE_URL,
 
 defendantTimelineController.post(CITIZEN_TIMELINE_URL, (async (req, res, next: NextFunction) => {
   try {
-    const claimId = getRouteParam(req, 'id');
+    const caseId = getRouteParam(req, 'id');
+    const appReq = <AppRequest>req;
     const form = new GenericForm(DefendantTimeline.buildPopulatedForm(req.body.rows, req.body.comment));
-    const redisKey = generateRedisKey(<AppRequest>req);
     await form.validate();
+
     if (form.hasErrors()) {
-      const claim = await getCaseDataFromStore(redisKey);
-      const pdfUrl = claim.extractDocumentId() && CASE_TIMELINE_DOCUMENTS_URL.replace(':id', claimId).replace(':documentId', claim.extractDocumentId());
+      const claim = await getResponseClaimById(appReq, caseId);
+      const pdfUrl = claim.extractDocumentId() && CASE_TIMELINE_DOCUMENTS_URL.replace(':id', caseId).replace(':documentId', claim.extractDocumentId());
       renderView(form, claim.timelineOfEvents, pdfUrl, res);
     } else {
-      await saveDefendantTimeline(redisKey, form.model);
-      res.redirect(constructResponseUrlWithIdParams(claimId, CITIZEN_EVIDENCE_URL));
+      await saveDefendantTimeline(appReq, form.model);
+      res.redirect(constructResponseUrlWithIdParams(caseId, CITIZEN_EVIDENCE_URL));
     }
   } catch (error) {
     next(error);
