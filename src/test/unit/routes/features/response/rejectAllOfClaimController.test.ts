@@ -2,13 +2,15 @@ import {Request, Response} from 'express';
 import rejectAllOfClaimController from '../../../../../main/routes/features/response/rejectAllOfClaimController';
 import {RESPONSE_TASK_LIST_URL, SEND_RESPONSE_BY_EMAIL_URL} from 'routes/urls';
 import {RejectAllOfClaimType} from 'form/models/rejectAllOfClaimType';
-import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import * as rejectAllOfClaimService from 'services/features/response/rejectAllOfClaimService';
+import {getResponseClaimById} from 'modules/draft-store/response/responseDraftStoreService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {Claim} from 'models/claim';
 import {createMockResponse, getRouteHandler} from '../../../../utils/getRouteHandler';
+import {WhyDoYouDisagree} from 'form/models/admission/partialAdmission/whyDoYouDisagree';
+import {HowMuchHaveYouPaid} from 'form/models/admission/howMuchHaveYouPaid';
 
-jest.mock('modules/draft-store/draftStoreService');
+jest.mock('modules/draft-store/response/responseDraftStoreService');
 jest.mock('services/features/response/rejectAllOfClaimService');
 
 describe('rejectAllOfClaim', () => {
@@ -19,8 +21,7 @@ describe('rejectAllOfClaim', () => {
   let req: Partial<Request>;
   let res: ReturnType<typeof createMockResponse>;
   let next: jest.Mock;
-  const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
-  const mockGenerateRedisKey = draftStoreService.generateRedisKey as jest.Mock;
+  const mockGetResponseClaimById = getResponseClaimById as jest.Mock;
   const mockGetRejectAllOfClaim = rejectAllOfClaimService.getRejectAllOfClaim as jest.Mock;
   const mockSaveRejectAllOfClaim = rejectAllOfClaimService.saveRejectAllOfClaim as jest.Mock;
 
@@ -31,16 +32,13 @@ describe('rejectAllOfClaim', () => {
   };
 
   beforeEach(() => {
+    jest.clearAllMocks();
     req = {params: {id: claimId}, body: {}, query: {}, cookies: {}};
     res = createMockResponse();
     next = jest.fn();
-    mockGenerateRedisKey.mockReturnValue(claimId);
-    mockGetCaseData.mockResolvedValue(stubClaim());
+    mockGetResponseClaimById.mockResolvedValue(stubClaim());
     mockGetRejectAllOfClaim.mockResolvedValue({option: undefined});
     mockSaveRejectAllOfClaim.mockResolvedValue(undefined);
-    jest.clearAllMocks();
-    mockGenerateRedisKey.mockReturnValue(claimId);
-    mockGetCaseData.mockResolvedValue(stubClaim());
   });
 
   describe('on GET', () => {
@@ -51,12 +49,14 @@ describe('rejectAllOfClaim', () => {
         rejectAllOfClaimType: RejectAllOfClaimType,
         claimantName: 'Mr. Jan Clark',
       }));
+      expect(mockGetResponseClaimById).toHaveBeenCalled();
+      expect(mockGetRejectAllOfClaim).toHaveBeenCalled();
       expect(next).not.toHaveBeenCalled();
     });
 
     it('should call next when loading the claim fails', async () => {
-      const error = new Error('redis failure');
-      mockGetCaseData.mockRejectedValue(error);
+      const error = new Error('draft failure');
+      mockGetResponseClaimById.mockRejectedValue(error);
 
       await getHandler(req as Request, res as unknown as Response, next);
 
@@ -80,7 +80,14 @@ describe('rejectAllOfClaim', () => {
 
       await postHandler(req as Request, res as unknown as Response, next);
 
-      expect(mockSaveRejectAllOfClaim).toHaveBeenCalled();
+      expect(mockSaveRejectAllOfClaim).toHaveBeenCalledWith(
+        expect.anything(),
+        expect.objectContaining({
+          option: RejectAllOfClaimType.DISPUTE,
+          whyDoYouDisagree: expect.any(WhyDoYouDisagree),
+          howMuchHaveYouPaid: expect.any(HowMuchHaveYouPaid),
+        }),
+      );
       expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, RESPONSE_TASK_LIST_URL));
     });
 
@@ -89,6 +96,7 @@ describe('rejectAllOfClaim', () => {
 
       await postHandler(req as Request, res as unknown as Response, next);
 
+      expect(mockSaveRejectAllOfClaim).toHaveBeenCalled();
       expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, RESPONSE_TASK_LIST_URL));
     });
 
@@ -101,8 +109,8 @@ describe('rejectAllOfClaim', () => {
     });
 
     it('should call next when saving fails', async () => {
-      const error = new Error('redis failure');
-      mockGetCaseData.mockRejectedValue(error);
+      const error = new Error('draft failure');
+      mockSaveRejectAllOfClaim.mockRejectedValue(error);
       req.body = {option: RejectAllOfClaimType.ALREADY_PAID};
 
       await postHandler(req as Request, res as unknown as Response, next);
