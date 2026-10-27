@@ -21,7 +21,7 @@ import { UnavailableDateType } from '../directionsQuestionnaire/hearing/unavaila
 
 const MAX_MONTHS = 3;
 
-@ValidatorConstraint({name: 'dateNotAfterReferenceDateValidator', async: false})
+@ValidatorConstraint({name: 'dateNotAfterValidUntilDateValidator', async: false})
 class DateNotAfterValidUntilDate extends DateNotAfterReferenceDate {
   validate(inputDate: Date, validationArguments?: ValidationArguments) {
     return !hasValidEndDateParts(validationArguments.object as UnavailableDatePeriodMediation)
@@ -104,7 +104,17 @@ export class UnavailableDatePeriodMediation {
 }
 
 function hasValidEndDateParts(o: UnavailableDatePeriodMediation): boolean {
-  return !!o.endDay && o.endDay < 32 && !!o.endMonth && o.endMonth < 13 && o.endYear > 999;
+  return !!o.endDay && o.endDay < 32 && !!o.endMonth && o.endMonth < 13 && o.endYear >= 1872;
+}
+
+function generateYearErrorMessage(value: number, missingYearMessage: string, invalidYearMessage: string): string {
+  if (value === undefined) {
+    return missingYearMessage;
+  }
+  if (Number.isNaN(value) || value < 1000) {
+    return invalidYearMessage;
+  }
+  return 'ERRORS.VALID_YEAR';
 }
 
 function generateErrorMessage(args: ValidationArgs<UnavailableDatePeriodMediation>): string {
@@ -122,15 +132,15 @@ function generateErrorMessage(args: ValidationArgs<UnavailableDatePeriodMediatio
       return hasValue ? 'ERRORS.CARM_VALID_MONTH_FOR_UNAVAILABILITY_FROM' : 'ERRORS.CARM_ENTER_MONTH_FOR_UNAVAILABILITY_FROM';
     case 'startYear':
       if (args.object.type === UnavailableDateType.SINGLE_DATE) {
-        return hasValue ? 'ERRORS.CARM_VALID_YEAR_FOR_UNAVAILABILITY' : 'ERRORS.CARM_ENTER_YEAR_FOR_UNAVAILABILITY';
+        return generateYearErrorMessage(args.value, 'ERRORS.CARM_ENTER_YEAR_FOR_UNAVAILABILITY', 'ERRORS.CARM_VALID_YEAR_FOR_UNAVAILABILITY');
       }
-      return hasValue ? 'ERRORS.CARM_VALID_YEAR_FOR_UNAVAILABILITY_FROM' : 'ERRORS.CARM_ENTER_YEAR_FOR_UNAVAILABILITY_FROM';
+      return generateYearErrorMessage(args.value, 'ERRORS.CARM_ENTER_YEAR_FOR_UNAVAILABILITY_FROM', 'ERRORS.CARM_VALID_YEAR_FOR_UNAVAILABILITY_FROM');
     case 'endDay':
       return hasValue ? 'ERRORS.CARM_VALID_DAY_FOR_UNAVAILABILITY_TO' : 'ERRORS.CARM_ENTER_DAY_FOR_UNAVAILABILITY_TO';
     case 'endMonth':
       return hasValue ? 'ERRORS.CARM_VALID_MONTH_FOR_UNAVAILABILITY_TO' : 'ERRORS.CARM_ENTER_MONTH_FOR_UNAVAILABILITY_TO';
     case 'endYear':
-      return hasValue ? 'ERRORS.CARM_VALID_YEAR_FOR_UNAVAILABILITY_TO' : 'ERRORS.CARM_ENTER_YEAR_FOR_UNAVAILABILITY_TO';
+      return generateYearErrorMessage(args.value, 'ERRORS.CARM_ENTER_YEAR_FOR_UNAVAILABILITY_TO', 'ERRORS.CARM_VALID_YEAR_FOR_UNAVAILABILITY_TO');
     case 'until':
       if ((args.object.startDay || args.object.startMonth || args.object.startYear) && !args.object.until) {
         return 'ERRORS.CARM_ENTER_DATE_FOR_UNAVAILABILITY_TO';

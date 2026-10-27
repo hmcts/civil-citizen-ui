@@ -158,6 +158,17 @@ describe('Mediation Unavailability Select Dates Confirmation Controller', () => 
         });
     });
 
+    it('should return valid year error when year is 4 digits but before 1872', async () => {
+      await request(app)
+        .post(CONTROLLER_URL)
+        .send(singleDateBody({day, month, year: '1500'}))
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Enter a valid year');
+          expect(res.text).not.toContain('Unavailable date must include a 4-digit year');
+        });
+    });
+
     it('should return valid month error when month is invalid', async () => {
       await request(app)
         .post(CONTROLLER_URL)
@@ -264,6 +275,17 @@ describe('Mediation Unavailability Select Dates Confirmation Controller', () => 
           expect(res.status).toBe(200);
           expect(res.text).toContain('Unavailable from date must include a 4-digit year');
           expect(res.text).not.toContain('Date you are unavailable from must include a year');
+        });
+    });
+
+    it('should return valid year error when from year is 4 digits but before 1872', async () => {
+      await request(app)
+        .post(CONTROLLER_URL)
+        .send(longerPeriodBody({day, month, year: '1500'}))
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Enter a valid year');
+          expect(res.text).not.toContain('Unavailable from date must include a 4-digit year');
         });
     });
 
@@ -404,6 +426,18 @@ describe('Mediation Unavailability Select Dates Confirmation Controller', () => 
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain('Enter the date you are unavailable to');
+          expect(res.text).not.toContain('Date you are unavailable from must be before the date you are unavailable to');
+        });
+    });
+
+    it('should return valid year error when to year is 4 digits but before 1872', async () => {
+      await request(app)
+        .post(CONTROLLER_URL)
+        .send(longerPeriodBody({day, month, year: '1500'}))
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Enter a valid year');
+          expect(res.text).not.toContain('Unavailable to date must include a 4-digit year');
           expect(res.text).not.toContain('Date you are unavailable from must be before the date you are unavailable to');
         });
     });
