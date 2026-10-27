@@ -9,10 +9,12 @@ import {Claim} from 'models/claim';
 import {Party} from 'models/party';
 import {ResponseType} from 'form/models/responseType';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {getResponseClaimById} from 'modules/draft-store/response/responseDraftStoreService';
+import {saveResponseType} from 'services/features/response/responseType/citizenResponseTypeService';
 import {createMockResponse, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
-jest.mock('modules/draft-store/draftStoreService');
+jest.mock('modules/draft-store/response/responseDraftStoreService');
+jest.mock('services/features/response/responseType/citizenResponseTypeService');
 
 describe('Citizen response type', () => {
   const getHandler = getRouteHandler(citizenResponseTypeController, 'get');
@@ -22,9 +24,8 @@ describe('Citizen response type', () => {
   let req: Partial<Request>;
   let res: ReturnType<typeof createMockResponse>;
   let next: jest.Mock;
-  const mockGenerateRedisKey = draftStoreService.generateRedisKey as jest.Mock;
-  const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
-  const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
+  const mockGetResponseClaimById = getResponseClaimById as jest.Mock;
+  const mockSaveResponseType = saveResponseType as jest.Mock;
 
   const stubClaim = (): Claim => new Claim();
 
@@ -40,9 +41,8 @@ describe('Citizen response type', () => {
     res = createMockResponse();
     next = jest.fn();
     jest.clearAllMocks();
-    mockGenerateRedisKey.mockReturnValue(claimId);
-    mockGetCaseData.mockResolvedValue(stubClaim());
-    mockSaveDraftClaim.mockResolvedValue(undefined);
+    mockGetResponseClaimById.mockResolvedValue(stubClaim());
+    mockSaveResponseType.mockResolvedValue(undefined);
   });
 
   describe('on GET', () => {
@@ -53,11 +53,12 @@ describe('Citizen response type', () => {
         componentDetailItemsList: expect.any(Array),
       }));
       expect((res.render as jest.Mock).mock.calls[0][1].form.model.responseType).toBeUndefined();
+      expect(mockGetResponseClaimById).toHaveBeenCalled();
       expect(next).not.toHaveBeenCalled();
     });
 
     it('should render the response type stored on the claim', async () => {
-      mockGetCaseData.mockResolvedValue(claimWithResponseType('test'));
+      mockGetResponseClaimById.mockResolvedValue(claimWithResponseType('test'));
 
       await getHandler(req as Request, res as unknown as Response, next);
 
@@ -68,8 +69,8 @@ describe('Citizen response type', () => {
     });
 
     it('should call next when loading the claim fails', async () => {
-      const error = new Error('redis failure');
-      mockGetCaseData.mockRejectedValue(error);
+      const error = new Error('draft failure');
+      mockGetResponseClaimById.mockRejectedValue(error);
 
       await getHandler(req as Request, res as unknown as Response, next);
 
@@ -83,7 +84,7 @@ describe('Citizen response type', () => {
 
       expect(res.render).toHaveBeenCalledWith(viewPath, expect.any(Object));
       expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
-      expect(mockSaveDraftClaim).not.toHaveBeenCalled();
+      expect(mockSaveResponseType).not.toHaveBeenCalled();
     });
 
     it('should save and redirect to the task list for an unrecognised response type', async () => {
@@ -91,7 +92,7 @@ describe('Citizen response type', () => {
 
       await postHandler(req as Request, res as unknown as Response, next);
 
-      expect(mockSaveDraftClaim).toHaveBeenCalled();
+      expect(mockSaveResponseType).toHaveBeenCalledWith(expect.anything(), 'test');
       expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, RESPONSE_TASK_LIST_URL));
     });
 
@@ -100,6 +101,7 @@ describe('Citizen response type', () => {
 
       await postHandler(req as Request, res as unknown as Response, next);
 
+      expect(mockSaveResponseType).toHaveBeenCalledWith(expect.anything(), ResponseType.PART_ADMISSION);
       expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CITIZEN_ALREADY_PAID_URL));
     });
 
@@ -120,8 +122,8 @@ describe('Citizen response type', () => {
     });
 
     it('should call next when saving fails', async () => {
-      const error = new Error('redis failure');
-      mockGetCaseData.mockRejectedValue(error);
+      const error = new Error('draft failure');
+      mockSaveResponseType.mockRejectedValue(error);
       req.body = {responseType: 'test'};
 
       await postHandler(req as Request, res as unknown as Response, next);
