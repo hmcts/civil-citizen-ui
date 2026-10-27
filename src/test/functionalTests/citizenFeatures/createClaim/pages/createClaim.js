@@ -101,7 +101,7 @@ class CreateClaim {
 
   async verifyDashboard() {
     await I.waitForContent('Submit', 60, 'h2');
-    await I.see('Application complete', 'h2');
+    await I.see('Application incomplete', 'h2');
     await I.see('After you have completed all the actions you will be taken to a page where you can check your answers before submitting.');
     await I.see('Consider other options', 'h2');
     await I.see('Prepare your claim', 'h2');
