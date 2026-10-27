@@ -75,6 +75,7 @@ describe('Breathing Space Check Answers Controller', () => {
       .get(BREATHING_SPACE_CYA_URL)
       .expect((res) => {
         expect(res.status).toBe(200);
+        expect(res.text).toContain('Check your answers - Enter breathing space - Your money claims account');
         expect(res.text).toContain('Check your answers');
         expect(res.text).toContain('What type is it?');
         expect(res.text).toContain('Standard Breathing Space');

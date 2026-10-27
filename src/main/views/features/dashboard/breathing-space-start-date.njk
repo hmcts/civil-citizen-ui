@@ -10,14 +10,27 @@
   {{ setPageTitle(t, pageTitle) }}
 {% endblock %}
 
+{% block errorSummary %}
+  {% set summaryErrors = [] %}
+  {% for error in form.getAllErrors() %}
+    {% if error.property == 'date' or error.property == 'day' %}
+      {% set summaryErrors = summaryErrors.concat([{text: error.text, href: '#day'}]) %}
+    {% elseif error.property == 'month' %}
+      {% set summaryErrors = summaryErrors.concat([{text: error.text, href: '#month'}]) %}
+    {% elseif error.property == 'year' %}
+      {% set summaryErrors = summaryErrors.concat([{text: error.text, href: '#year'}]) %}
+    {% else %}
+      {% set summaryErrors = summaryErrors.concat([error]) %}
+    {% endif %}
+  {% endfor %}
+  {% if form.hasErrors() %}
+    {{ errorSummary(summaryErrors, t) }}
+  {% endif %}
+{% endblock %}
+
 {% block nestedContent %}
-  {% set errors = form.getAllErrors() %}
   {% set hasDateError = form.hasFieldError('date') or form.hasFieldError('day') or form.hasFieldError('month') or form.hasFieldError('year') %}
   {% set dateError = form.errorFor('date') or form.errorFor('day') or form.errorFor('month') or form.errorFor('year') %}
-
-  {% if form.hasErrors() %}
-    {{ errorSummary(errors, t) }}
-  {% endif %}
 
   {{ headingWithCaption(t, 'PAGES.BREATHING_SPACE_ENTRY.PAGE_TITLE', 'PAGES.BREATHING_SPACE_ENTRY.START_DATE.HEADING') }}
 
@@ -50,18 +63,21 @@
       items: [
         {
           classes: 'govuk-input--width-2 govuk-input--error' if form.hasFieldError('day') or form.hasFieldError('date') else 'govuk-input--width-2',
+          id: 'day',
           name: 'day',
           label: t('COMMON.DAY'),
           value: form.model.day
         },
         {
           classes: 'govuk-input--width-2 govuk-input--error' if form.hasFieldError('month') or form.hasFieldError('date') else 'govuk-input--width-2',
+          id: 'month',
           name: 'month',
           label: t('COMMON.MONTH'),
           value: form.model.month
         },
         {
           classes: 'govuk-input--width-4 govuk-input--error' if form.hasFieldError('year') or form.hasFieldError('date') else 'govuk-input--width-4',
+          id: 'year',
           name: 'year',
           label: t('COMMON.YEAR'),
           value: form.model.year

@@ -57,6 +57,7 @@ describe('Breathing Space Entry Controller', () => {
       .get(BREATHING_SPACE_ENTER_URL)
       .expect((res) => {
         expect(res.status).toBe(200);
+        expect(res.text).toContain('Breathing space type and reference - Your money claims account');
         expect(res.text).toContain('Enter breathing space');
         expect(res.text).toContain('Breathing space type and reference');
         expect(res.text).toContain('What type of breathing space is it?');
