@@ -11,6 +11,7 @@ module.exports = {
   ],
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
   moduleNameMapper: {
+    '^nock$': '<rootDir>/__mocks__/nockCjs.js',
     '^otplib$': '<rootDir>/__mocks__/otplib.js',
     '^common/(.*)$': '<rootDir>/src/main/common/$1',
     '^models/(.*)$': '<rootDir>/src/main/common/models/$1',
