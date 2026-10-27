@@ -1,4 +1,4 @@
-import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {getResponseDraft, updateResponseDraft} from 'modules/draft-store/response/responseDraftStoreService';
 import {Claim} from 'common/models/claim';
 import {PartialAdmission} from 'common/models/partialAdmission';
 import {RejectAllOfClaim} from 'common/form/models/rejectAllOfClaim';
@@ -6,13 +6,22 @@ import {StatementOfMeans} from 'common/models/statementOfMeans';
 import {Party} from 'common/models/party';
 import {FullAdmission} from 'common/models/fullAdmission';
 import {PaymentIntention} from 'common/form/models/admission/paymentIntention';
+import {AppRequest} from 'models/AppRequest';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('citizenResponseTypeService');
 
-export const saveResponseType = async (claimId: string, citizenResponseType: string) => {
+export const saveResponseType = async (req: AppRequest, citizenResponseType: string) => {
   try {
-    const claim = await getCaseDataFromStore(claimId) || new Claim();
+    const caseId = getRouteParam(req, 'id');
+    const draftResult = await getResponseDraft(req, caseId);
+    if (!draftResult) {
+      throw new Error('[citizenResponseTypeService] no draft response found');
+    }
+    const claim = Object.assign(new Claim(), draftResult.claimResponse?.case_data as unknown as Claim);
+    const draftId = draftResult.rawResponse?.draftId;
+
     if (claim.respondent1) {
       claim.respondent1.responseType = citizenResponseType;
     } else {
@@ -21,7 +30,11 @@ export const saveResponseType = async (claimId: string, citizenResponseType: str
       claim.respondent1 = respondent;
     }
     resetPreviousResponseTypeSetting(claim);
-    await saveDraftClaim(claimId, claim);
+
+    if (draftResult.createdAt && !claim.draftClaimCreatedAt) {
+      claim.draftClaimCreatedAt = new Date(draftResult.createdAt);
+    }
+    await updateResponseDraft(req, caseId, claim, draftId);
   } catch (error) {
     logger.error(error);
     throw error;
