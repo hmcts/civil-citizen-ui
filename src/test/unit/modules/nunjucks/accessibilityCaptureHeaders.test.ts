@@ -44,7 +44,7 @@ describe('accessibility capture headers', () => {
         if (!document.querySelector('.govuk-header')) continue;
         headerCount++;
         if (file === 'mock-unauthorised.html') {
-          const source = new JSDOM(environment.renderString('{% from "govuk/components/header/macro.njk" import govukHeader %}{{ govukHeader({homepageUrl: "#"}) }}'));
+          const source = new JSDOM(environment.renderString('{% from "govuk/components/header/macro.njk" import govukHeader %}{{ govukHeader({homepageUrl: "#"}) }}', {}));
           try {
             expect(links(document.querySelector('.govuk-header'))).toEqual(links(source.window.document.querySelector('.govuk-header')));
           } finally {source.window.close();}
