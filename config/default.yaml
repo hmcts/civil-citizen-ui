@@ -107,7 +107,7 @@ caches:
     enabled: true
     ttlSeconds: 60
     negativeTtlSeconds: 15
-cookieMaxAge: 120000
+cookieMaxAge: 5400000
 # Session timeout warning (MoJ design pattern). Idle time before warning =
 # cookieMaxAge minutes minus minutesModalVisible.
 sessionTimeout:
