@@ -1,13 +1,14 @@
-const {before, after} = require('mocha');
+const {before, after, describe, it} = require('mocha');
+import {createServer} from 'http';
+import {AddressInfo} from 'net';
 import * as urls from 'routes/urls';
 import {IGNORED_URLS} from './ignored-urls';
 import {deepStrictEqual, fail, strictEqual} from 'assert';
 import {CaptureServer, captureUrl, startCaptureServer} from './captureServer';
-import puppeteer from 'puppeteer';
+import {CAPTURE_ATTEMPT_TIMEOUT_MS, CAPTURE_TEST_TIMEOUT_MS, CAPTURE_WORK_TIMEOUT_MS, retryCapture, withCapturePage} from './captureBrowser';
 
 const urlsList = getChunkAtIndex(Object.values(urls).filter(url => !IGNORED_URLS.includes(url)), parseInt(process.env.A11Y_CHUNKS ?? '1'), parseInt(process.env.A11Y_CHUNKS_INDEX ?? '0'));
 const pa11y = require('pa11y');
-import {retry} from '../functionalTests/specClaimHelpers/api/retryHelper.js';
 
 const os = require('os');
 
@@ -51,16 +52,10 @@ describe('Accessibility', () => {
       error: console.error,
       info: console.info,
     },
-    chromeLaunchConfig: {
-      args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-gpu'],
-    },
   };
 
   it('initializes GOV.UK radios and preserves values through native conditional interaction', async () => {
-    const browser = await puppeteer.launch(options.chromeLaunchConfig);
-    try {
-      const page = await browser.newPage();
-      await page.goto(server.baseUrl + captureUrl(urls.CCJ_DEFENDANT_DOB_URL), {waitUntil: 'domcontentloaded'});
+    await withCapturePage(server.baseUrl + captureUrl(urls.CCJ_DEFENDANT_DOB_URL), async page => {
       await page.waitForSelector('[data-module="govuk-radios"][data-govuk-radios-init]', {timeout: 5000});
       strictEqual(await page.$eval('body', body => body.classList.contains('govuk-frontend-supported')), true);
       const values = await page.$$eval('#conditional-option input', fields => fields.map(field => [(field as HTMLInputElement).name, (field as HTMLInputElement).value]));
@@ -75,17 +70,44 @@ describe('Accessibility', () => {
       strictEqual(await page.$eval('#option', input => input.getAttribute('aria-expanded')), 'false');
       strictEqual(await page.$eval('#conditional-option', panel => getComputedStyle(panel).display), 'none');
       deepStrictEqual(await page.$$eval('#conditional-option input', fields => fields.map(field => [(field as HTMLInputElement).name, (field as HTMLInputElement).value])), values);
-    } finally {await browser.close();}
-  });
+    });
+  }).timeout(CAPTURE_ATTEMPT_TIMEOUT_MS + 5_000);
+
+  it('blocks off-origin requests while keeping capture assets available', async () => {
+    let foreignRequests = 0;
+    const foreign = createServer((_req, res) => {
+      foreignRequests++;
+      res.setHeader('Access-Control-Allow-Origin', '*');
+      res.end('This must not be requested by the capture browser');
+    });
+    await new Promise<void>((resolve, reject) => {
+      foreign.once('error', reject);
+      foreign.listen(0, '127.0.0.1', resolve);
+    });
+    try {
+      const foreignUrl = `http://127.0.0.1:${(foreign.address() as AddressInfo).port}/external-resource`;
+      await withCapturePage(server.baseUrl + captureUrl(urls.CCJ_DEFENDANT_DOB_URL), async page => {
+        const loaded = await page.evaluate(url => fetch(url).then(() => true, () => false), foreignUrl);
+        strictEqual(loaded, false);
+        strictEqual(foreignRequests, 0);
+        strictEqual(await page.evaluate(() => fetch('/main-dev.css').then(response => response.status)), 200);
+      });
+    } finally {
+      foreign.closeAllConnections();
+      await new Promise<void>((resolve, reject) => foreign.close(error => error ? reject(error) : resolve()));
+    }
+  }).timeout(CAPTURE_ATTEMPT_TIMEOUT_MS + 5_000);
 
   for (const url of urlsList) {
     it('Test of '+url, async () => {
-      await retry(async () => {
-        const messages = await pa11y(server.baseUrl + captureUrl(url), options);
-        messages.documentTitle == 'Error' ? fail('This page was titled "error", which suggests it did not render correctly.') : null;
-        expectNoErrors(messages.issues);
-      });
-    });
+      const target = server.baseUrl + captureUrl(url);
+      const messages = await retryCapture(() => withCapturePage(target, (page, browser) => pa11y(target, {
+        ...options, page, browser, ignoreUrl: true, timeout: CAPTURE_WORK_TIMEOUT_MS,
+      }))) as {documentTitle: string; issues: PallyIssue[]};
+      // Retry browser/scan failures, not completed accessibility assertions.
+      if (messages.documentTitle === 'Error') fail('This page was titled "error", which suggests it did not render correctly.');
+      expectNoErrors(messages.issues);
+    }).timeout(CAPTURE_TEST_TIMEOUT_MS);
   }
 });
 
