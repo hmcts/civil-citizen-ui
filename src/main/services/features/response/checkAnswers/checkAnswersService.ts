@@ -2,7 +2,6 @@ import {SummarySections} from 'common/models/summaryList/summarySections';
 import {Claim} from 'common/models/claim';
 import {PaymentOptionType} from 'common/form/models/admission/paymentOption/paymentOptionType';
 import {StatementOfTruthForm} from 'common/form/models/statementOfTruth/statementOfTruthForm';
-import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {SignatureType} from 'common/models/signatureType';
 import {isCounterpartyIndividual, isFullDefenceAndNotCounterClaim} from 'common/utils/taskList/tasks/taskListHelpers';
 import {QualifiedStatementOfTruth} from 'common/form/models/statementOfTruth/qualifiedStatementOfTruth';
@@ -18,6 +17,9 @@ import {
 import {YesNo} from 'common/form/models/yesNo';
 import {buildHearingRequirementsSection} from 'services/features/common/buildHearingRequirementsSection';
 import {buildMediationSection} from 'services/features/response/checkAnswers/responseSection/buildMediationSection';
+import {AppRequest} from 'models/AppRequest';
+import {getResponseDraft, updateResponseDraft} from 'modules/draft-store/response/responseDraftStoreService';
+
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('checkAnswersService');
 
@@ -124,13 +126,21 @@ export const getSignatureType = (claim: Claim): SignatureType => {
   return isCounterpartyIndividual(claim.respondent1) ? SignatureType.BASIC : SignatureType.QUALIFIED;
 };
 
-export const saveStatementOfTruth = async (claimId: string, defendantStatementOfTruth: StatementOfTruthForm) => {
+export const saveStatementOfTruth = async (req: AppRequest, caseId: string, defendantStatementOfTruth: StatementOfTruthForm) => {
   try {
-    const claim = await getCaseDataFromStore(claimId);
+    const draftResult = await getResponseDraft(req, caseId);
+    if (!draftResult) {
+      throw new Error('[checkAnswersService] no response draft found');
+    }
+    const claim = Object.assign(new Claim(), draftResult.claimResponse?.case_data as unknown as Claim);
+    const draftId = draftResult.rawResponse?.draftId;
     claim.defendantStatementOfTruth = defendantStatementOfTruth;
-    await saveDraftClaim(claimId, claim);
+    if (draftResult.createdAt && !claim.draftClaimCreatedAt) {
+      claim.draftClaimCreatedAt = new Date(draftResult.createdAt);
+    }
+    await updateResponseDraft(req, caseId, claim, draftId);
   } catch (error) {
-    logger.error(`Error when saving the statement of truth -  ${error.message}`);
+    logger.error(`Error when saving the statement of truth - ${(error as Error).message}`);
     throw error;
   }
 };

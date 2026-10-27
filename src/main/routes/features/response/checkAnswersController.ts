@@ -6,7 +6,6 @@ import {
   saveStatementOfTruth,
 } from 'services/features/response/checkAnswers/checkAnswersService';
 import {GenericForm} from 'form/models/genericForm';
-import {deleteDraftClaimFromStore, generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {getStashedClaimOrFromStore} from 'common/utils/claimRequestLocals';
 import {StatementOfTruthForm} from 'form/models/statementOfTruth/statementOfTruthForm';
 import {Claim} from 'models/claim';
@@ -22,6 +21,7 @@ import {ValidationError, Validator} from 'class-validator';
 import {SpecificCourtLocation} from 'models/directionsQuestionnaire/hearing/specificCourtLocation';
 import {getRouteParam} from 'common/utils/routeParamUtils';
 import {validateOtherWitnesses} from 'services/features/directionsQuestionnaire/otherWitnessesService';
+import {getResponseDraft, getResponseClaimById, deleteResponseDraft} from 'modules/draft-store/response/responseDraftStoreService';
 
 const checkAnswersViewPath = 'features/response/check-answers';
 const validator = new Validator();
@@ -59,8 +59,10 @@ checkAnswersController.get(RESPONSE_CHECK_ANSWERS_URL,
 checkAnswersController.post(RESPONSE_CHECK_ANSWERS_URL, (async (req: Request, res: Response, next: NextFunction) => {
   try {
     const isFullAmountRejected = (req.body.isFullAmountRejected === 'true');
-    const redisKey = generateRedisKey(<AppRequest>req);
-    const claim = await getCaseDataFromStore(redisKey);
+    const caseId = getRouteParam(req, 'id');
+    const appReq = <AppRequest>req;
+    const claim = await getResponseClaimById(appReq, caseId);
+
     const form = new GenericForm((req.body.type === SignatureType.QUALIFIED)
       ? new QualifiedStatementOfTruth(isFullAmountRejected, req.body.signed, req.body.directionsQuestionnaireSigned, req.body.signerName, req.body.signerRole)
       : new StatementOfTruthForm(isFullAmountRejected, req.body.type, req.body.signed, req.body.directionsQuestionnaireSigned));
@@ -74,17 +76,18 @@ checkAnswersController.post(RESPONSE_CHECK_ANSWERS_URL, (async (req: Request, re
       ...validateOtherWitnesses(claim.directionQuestionnaire?.witnesses?.otherWitnesses),
     ];
     if (form.hasErrors()) {
-      const claimId = getRouteParam(req, 'id');
-      logger.info(`form has error -  ${claimId}`);
+      logger.info(`form has error -  ${caseId}`);
       renderView(req, res, form, claim);
       return;
     } else {
       logger.info('form has no error');
-      await saveStatementOfTruth(redisKey, form.model);
-      await submitResponse(<AppRequest>req);
-      await deleteDraftClaimFromStore(redisKey);
-      const claimId = getRouteParam(req, 'id');
-      res.redirect(constructResponseUrlWithIdParams(claimId, CONFIRMATION_URL));
+      await saveStatementOfTruth(appReq, caseId, form.model);
+      const draftResult = await getResponseDraft(appReq, caseId);
+      const draftId = draftResult?.rawResponse?.draftId;
+
+      await submitResponse(appReq);
+      await deleteResponseDraft(appReq, caseId, draftId);
+      res.redirect(constructResponseUrlWithIdParams(caseId, CONFIRMATION_URL));
     }
   } catch (error) {
     logger.error(`Error when posting check your answers -  ${error.message}`);
