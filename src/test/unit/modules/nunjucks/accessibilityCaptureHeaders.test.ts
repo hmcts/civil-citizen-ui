@@ -25,6 +25,20 @@ function links(header: Element) {
 }
 
 describe('accessibility capture headers', () => {
+  it('keeps the requesting-reason capture title aligned with its translated production title', () => {
+    const captured = new JSDOM(fs.readFileSync(path.join(directory, 'mock-case-1645882162449409-general-application-requesting-reason.html'), 'utf8'));
+    try {
+      const translations = JSON.parse(fs.readFileSync(path.resolve('src/main/modules/i18n/locales/en.json'), 'utf8'));
+      const t = (key: string) => key.split('.').reduce((value, part) => value[part], translations);
+      const template = fs.readFileSync(path.resolve('src/main/views/features/generalApplication/requesting-reason.njk'), 'utf8');
+      const titleBlock = template.match(/{% block pageTitle %}([\s\S]*?){% endblock %}/);
+      expect(titleBlock).not.toBeNull();
+      const title = environment.renderString('{% from "macro/page-title.njk" import setPageTitle %}' + titleBlock[1], {t}).trim();
+      expect(title).toContain(translations.PAGES.GENERAL_APPLICATION.APPLICATION_REASON.WHY_REQUESTING);
+      expect(captured.window.document.title).toBe(title);
+    } finally {captured.window.close();}
+  });
+
   it('keeps the saved Welsh confirmation language available to the capture-server cookie bootstrap', () => {
     const captured = new JSDOM(fs.readFileSync(path.join(directory, 'mock-case-1645882162449409-response-general-application-1720536653906339-confirmation.html'), 'utf8'));
     try {
