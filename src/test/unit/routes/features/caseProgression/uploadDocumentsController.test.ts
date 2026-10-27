@@ -871,6 +871,41 @@ describe('on POST', () => {
         });
     });
 
+    const tooManyFilesMessage = 'You can only upload up to 10 documents at a time';
+    const pdfBuffer = Buffer.from('%PDF-1.4\n1 0 obj<<>>endobj\ntrailer<<>>\n%%EOF\n');
+
+    it('should not reject an upload because of files chosen in other sections', async () => {
+      nock(config.get<string>('services.civilService.url'))
+        .post('/case/document/generateAnyDoc')
+        .reply(200, {documentLink: {document_url: 'http://dm/documents/doc-1', document_binary_url: '', document_filename: 'witness.pdf'}, documentName: 'witness.pdf'});
+      const req = request(app)
+        .post(CP_UPLOAD_DOCUMENTS_URL)
+        .field('action', 'witnessStatement[0][uploadButton]')
+        .attach('witnessStatement[0][fileUpload]', pdfBuffer, {filename: 'witness.pdf', contentType: 'application/pdf'});
+      for (let index = 0; index < 11; index++) {
+        req.attach('documentsReferred[0][fileUpload]', pdfBuffer, {filename: `referred-${index}.pdf`, contentType: 'application/pdf'});
+      }
+
+      await req.expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).not.toContain(tooManyFilesMessage);
+      });
+    });
+
+    it('should reject an upload when the section on the button has more than 10 files', async () => {
+      const req = request(app)
+        .post(CP_UPLOAD_DOCUMENTS_URL)
+        .field('action', 'witnessStatement[0][uploadButton]');
+      for (let index = 0; index < 11; index++) {
+        req.attach('witnessStatement[0][fileUpload]', pdfBuffer, {filename: `witness-${index}.pdf`, contentType: 'application/pdf'});
+      }
+
+      await req.expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(tooManyFilesMessage);
+      });
+    });
+
     it('should handle multer error when action includes uploadButton and file size exceeds limit', async () => {
       const civilClaimDocumentUploaded = require('../../../../utils/mocks/civilClaimResponseMock.json');
       const claim: Claim = civilClaimDocumentUploaded.case_data as Claim;
