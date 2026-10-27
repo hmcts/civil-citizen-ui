@@ -1,31 +1,74 @@
 import {CivilServiceClient} from 'client/civilServiceClient';
-import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
+import {AppRequest} from 'models/AppRequest';
 import {Claim} from 'models/claim';
 import {ClaimantResponse} from 'models/claimantResponse';
 import {ChooseHowProceed} from 'models/chooseHowProceed';
-import {ChooseHowToProceed} from 'form/models/claimantResponse/chooseHowToProceed';
 import {RepaymentDecisionType} from 'models/claimantResponse/RepaymentDecisionType';
-import {AppRequest} from 'models/AppRequest';
-import {
-  getPaymentText,
-  getRespondToSettlementAgreementDeadline,
-  getRespondentToImmediateSettlementAgreementDeadLine,
-} from 'services/features/claimantResponse/signSettlmentAgreementService';
+import {ChooseHowToProceed} from 'form/models/claimantResponse/chooseHowToProceed';
+import {SignSettlmentAgreement} from 'form/models/claimantResponse/signSettlementAgreement';
+import {PaymentIntention} from 'form/models/admission/paymentIntention';
+import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
+import {getPaymentText, getRespondToSettlementAgreementDeadline} from 'services/features/claimantResponse/signSettlmentAgreementService';
 
-jest.mock('i18next', () => ({
-  t: (key: string) => key,
-}));
+jest.mock('client/civilServiceClient');
+jest.mock('i18next', () => ({t: (key: string) => key}));
 
-jest.mock('client/civilServiceClient', () => {
-  const methods = {
-    calculateExtendedResponseDeadline: jest.fn(),
-  };
-  return {CivilServiceClient: jest.fn(() => methods)};
+describe('settlement agreement deadline', () => {
+  let claim: Claim;
+  let req: AppRequest;
+  const deadline = new Date(2035, 6, 10);
+  const calculate = jest.mocked(CivilServiceClient.prototype.calculateExtendedResponseDeadline);
+
+  beforeEach(() => {
+    jest.resetAllMocks();
+    jest.useFakeTimers().setSystemTime(new Date(2035, 5, 30, 17, 0, 0));
+    calculate.mockResolvedValue(deadline);
+    req = {params: {id: 'claim-123'}, session: {user: {id: 'user-456'}}} as unknown as AppRequest;
+    claim = new Claim();
+    claim.claimantResponse = new ClaimantResponse();
+    claim.claimantResponse.chooseHowToProceed = new ChooseHowToProceed(ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT);
+    claim.claimantResponse.signSettlementAgreement = new SignSettlmentAgreement('true');
+    claim.claimantResponse.courtDecision = RepaymentDecisionType.IN_FAVOUR_OF_CLAIMANT;
+    claim.claimantResponse.suggestedPaymentIntention = new PaymentIntention();
+  });
+
+  afterEach(() => jest.useRealTimers());
+
+  it.each([undefined, ChooseHowProceed.REQUEST_A_CCJ])('does not request a deadline when the choice is %s', async option => {
+    claim.claimantResponse.chooseHowToProceed = new ChooseHowToProceed(option);
+
+    await expect(getRespondToSettlementAgreementDeadline(req, claim)).resolves.toBeUndefined();
+    expect(calculate).not.toHaveBeenCalled();
+  });
+
+  it.each([
+    [RepaymentDecisionType.IN_FAVOUR_OF_DEFENDANT, PaymentOptionType.IMMEDIATELY],
+    [RepaymentDecisionType.IN_FAVOUR_OF_CLAIMANT, PaymentOptionType.BY_SET_DATE],
+    [RepaymentDecisionType.IN_FAVOUR_OF_CLAIMANT, PaymentOptionType.INSTALMENTS],
+  ])('requests seven days without the immediate cutoff for %s / %s', async (decision, paymentOption) => {
+    claim.claimantResponse.courtDecision = decision as RepaymentDecisionType;
+    claim.claimantResponse.suggestedPaymentIntention.paymentOption = paymentOption as PaymentOptionType;
+
+    await expect(getRespondToSettlementAgreementDeadline(req, claim)).resolves.toBe(deadline);
+    expect(calculate).toHaveBeenCalledTimes(1);
+    expect(calculate).toHaveBeenCalledWith(new Date(2035, 5, 30, 17, 0, 0), 7, req);
+    expect(calculate.mock.calls[0][2]).toBe(req);
+  });
+
+  it.each([
+    [new Date(2035, 5, 30, 15, 59, 59), new Date(2035, 5, 30, 15, 59, 59)],
+    [new Date(2035, 5, 30, 16, 0, 0), new Date(2035, 6, 1, 16, 0, 0)],
+    [new Date(2035, 5, 30, 17, 0, 0), new Date(2035, 6, 1, 17, 0, 0)],
+  ])('requests five days from the correct starting date at %s', async (now, start) => {
+    jest.setSystemTime(now);
+    claim.claimantResponse.suggestedPaymentIntention.paymentOption = PaymentOptionType.IMMEDIATELY;
+
+    await expect(getRespondToSettlementAgreementDeadline(req, claim)).resolves.toBe(deadline);
+    expect(calculate).toHaveBeenCalledTimes(1);
+    expect(calculate).toHaveBeenCalledWith(start, 5, req);
+    expect(calculate.mock.calls[0][2]).toBe(req);
+  });
 });
-
-const civilServiceMethods = new CivilServiceClient('http://localhost') as unknown as {
-  calculateExtendedResponseDeadline: jest.Mock;
-};
 
 const request = {query: {lang: 'en'}, cookies: {lang: 'cy'}} as unknown as AppRequest;
 
@@ -39,11 +82,7 @@ const namedClaim = (): Claim => {
   return claim;
 };
 
-describe('signSettlmentAgreementService', () => {
-  beforeEach(() => {
-    civilServiceMethods.calculateExtendedResponseDeadline.mockResolvedValue(new Date('2024-06-08'));
-  });
-
+describe('settlement agreement payment text', () => {
   it('describes a claimant pay-by-date plan', () => {
     const claim = namedClaim();
     claim.claimantResponse.suggestedPaymentIntention = {
@@ -94,30 +133,5 @@ describe('signSettlmentAgreementService', () => {
     const text = getPaymentText(claim, request) as {paymentText: string};
 
     expect(text.paymentText).toBe('PAGES.CHECK_YOUR_ANSWER.WILL_PAY_BY_PAYMENT_DATE');
-  });
-
-  it('returns the immediate deadline after 4pm and the seven day deadline otherwise', async () => {
-    const claim = namedClaim();
-    claim.claimantResponse.chooseHowToProceed = {option: ChooseHowProceed.SIGN_A_SETTLEMENT_AGREEMENT} as ChooseHowToProceed;
-    claim.claimantResponse.suggestedPaymentIntention = {
-      paymentOption: PaymentOptionType.IMMEDIATELY,
-    } as unknown as ClaimantResponse['suggestedPaymentIntention'];
-    const hours = jest.spyOn(Date.prototype, 'getHours');
-
-    hours.mockReturnValue(16);
-    await getRespondToSettlementAgreementDeadline(request, claim);
-    expect(civilServiceMethods.calculateExtendedResponseDeadline).toHaveBeenCalledWith(expect.any(Date), 5, request);
-
-    hours.mockReturnValue(10);
-    await getRespondentToImmediateSettlementAgreementDeadLine(request, claim);
-    expect(civilServiceMethods.calculateExtendedResponseDeadline).toHaveBeenLastCalledWith(expect.any(Date), 5, request);
-
-    claim.claimantResponse.suggestedPaymentIntention.paymentOption = PaymentOptionType.BY_SET_DATE;
-    await getRespondToSettlementAgreementDeadline(request, claim);
-    expect(civilServiceMethods.calculateExtendedResponseDeadline).toHaveBeenLastCalledWith(expect.any(Date), 7, request);
-
-    claim.claimantResponse.chooseHowToProceed.option = ChooseHowProceed.REQUEST_A_CCJ;
-    await expect(getRespondToSettlementAgreementDeadline(request, claim)).resolves.toBeUndefined();
-    hours.mockRestore();
   });
 });
