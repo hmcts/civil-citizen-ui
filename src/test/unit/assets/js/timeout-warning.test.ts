@@ -21,6 +21,7 @@ describe('TimeoutWarning', () => {
     clearTimers: () => void;
     handleStorageChange: (event: StorageEvent) => void;
     sessionExpiresAt: number;
+    scheduleWarningFromExpiry: () => void;
     dialogSupported: () => boolean;
     startUiCountdown: () => void;
     escClose: (event: {keyCode: number}) => void;
@@ -144,6 +145,24 @@ describe('TimeoutWarning', () => {
     expect(open).toHaveBeenCalled();
   });
 
+  it('keeps the original warning deadline after a renewal network failure', () => {
+    const open = jest.spyOn(moduleInstance, 'openDialog');
+    const redirect = jest.spyOn(moduleInstance, 'redirect').mockImplementation(() => undefined);
+    moduleInstance.sessionExpiresAt = Date.now() + 26 * 60000;
+    (global as unknown as {XMLHttpRequest: unknown}).XMLHttpRequest = jest.fn(() => ({
+      open: jest.fn(),
+      setRequestHeader: jest.fn(),
+      send: function (this: {onerror: () => void}) { this.onerror(); },
+    }));
+
+    moduleInstance.resetIdleTime();
+    jest.advanceTimersByTime(3000);
+    jest.advanceTimersByTime(21 * 60000);
+
+    expect(open).toHaveBeenCalled();
+    expect(redirect).not.toHaveBeenCalled();
+  });
+
   it('opens the dialog and starts the countdown', () => {
     moduleInstance.openDialog();
     expect(dialog.showModal).toHaveBeenCalled();
@@ -239,6 +258,27 @@ describe('TimeoutWarning', () => {
     moduleInstance.checkIfShouldHaveTimedOut();
 
     expect(redirect).toHaveBeenCalledTimes(1);
+  });
+
+  it('reschedules a closed tab when another tab publishes a later expiry', () => {
+    const openDialog = jest.spyOn(moduleInstance, 'openDialog');
+    const now = Date.now();
+    const oldExpiry = now + 10 * 60000;
+    const laterExpiry = now + 20 * 60000;
+    moduleInstance.sessionExpiresAt = oldExpiry;
+    window.localStorage.setItem('timeUserLastInteractedWithPage', new Date(now).toISOString());
+    moduleInstance.scheduleWarningFromExpiry();
+
+    moduleInstance.handleStorageChange({
+      key: 'civilCitizenSessionExpiresAt',
+      newValue: String(laterExpiry),
+    } as StorageEvent);
+
+    jest.advanceTimersByTime(6 * 60000);
+    expect(openDialog).not.toHaveBeenCalled();
+
+    jest.advanceTimersByTime(9 * 60000);
+    expect(openDialog).toHaveBeenCalled();
   });
 
   it('closes a warning when another tab records fresh activity', () => {
