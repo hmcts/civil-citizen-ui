@@ -15,7 +15,7 @@ import {DateNotAfterReferenceDate} from 'common/form/validators/dateNotAfterRefe
 import {OptionalDateFourDigitValidator} from 'common/form/validators/optionalDateFourDigitValidator';
 import {OptionalDateNotInPastValidator} from 'common/form/validators/optionalDateNotInPastValidator';
 import {DateConverter} from 'common/utils/dateConverter';
-import {addMonths} from 'common/utils/dateUtils';
+import {addMonths, isInvalidDate} from 'common/utils/dateUtils';
 import {toOptionalNumber} from 'common/utils/numberConverter';
 import { UnavailableDateType } from '../directionsQuestionnaire/hearing/unavailableDates';
 
@@ -44,7 +44,7 @@ export class UnavailableDatePeriodMediation {
   @IsIn(Object.values(UnavailableDateType), {message: 'ERRORS.SELECT_SINGLE_DATE_OR_PERIOD'})
     type?: UnavailableDateType;
 
-  @ValidateIf(o => o.type && ((!!o.startDay && o.startDay < 32 && !!o.startMonth && o.startMonth < 13 && o.startYear > 999) ||
+  @ValidateIf(o => o.type && ((!!o.startDay && o.startDay < 32 && !!o.startMonth && o.startMonth < 13 && o.startYear > 999 && o.startYear < 10000) ||
     (!o.startDay && !o.startMonth && !o.startYear)))
   @MaxDate(addMonths(new Date(), MAX_MONTHS), { message: generateErrorMessageForMaxDate })
   @IsDate({ message: generateErrorMessageForIsDate })
@@ -65,6 +65,7 @@ export class UnavailableDatePeriodMediation {
   @ValidateIf(o => o.type && (o.startDay || o.startMonth || o.startYear))
   @Validate(OptionalDateFourDigitValidator, {message: 'ERRORS.VALID_FOUR_DIGIT_YEAR'})
   @Min(1872, { message: generateErrorMessage })
+  @Max(9999, { message: generateErrorMessage })
     startYear?: number;
 
   @ValidateIf(o => o.type === UnavailableDateType.LONGER_PERIOD && (hasValidEndDateParts(o) ||
@@ -87,6 +88,7 @@ export class UnavailableDatePeriodMediation {
   @ValidateIf(o => o.type === UnavailableDateType.LONGER_PERIOD && (o.endDay || o.endMonth || o.endYear))
   @Validate(OptionalDateFourDigitValidator, {message: 'ERRORS.VALID_FOUR_DIGIT_YEAR'})
   @Min(1872, { message: generateErrorMessage })
+  @Max(9999, { message: generateErrorMessage })
     endYear?: number;
 
   [key: string]: UnavailableDateType | Date | number;
@@ -104,14 +106,14 @@ export class UnavailableDatePeriodMediation {
 }
 
 function hasValidEndDateParts(o: UnavailableDatePeriodMediation): boolean {
-  return !!o.endDay && o.endDay < 32 && !!o.endMonth && o.endMonth < 13 && o.endYear >= 1872;
+  return !!o.endDay && o.endDay < 32 && !!o.endMonth && o.endMonth < 13 && o.endYear >= 1872 && o.endYear < 10000;
 }
 
 function generateYearErrorMessage(value: number, missingYearMessage: string, invalidYearMessage: string): string {
   if (value === undefined) {
     return missingYearMessage;
   }
-  if (Number.isNaN(value) || value < 1000) {
+  if (Number.isNaN(value) || value < 1000 || value > 9999) {
     return invalidYearMessage;
   }
   return 'ERRORS.VALID_YEAR';
@@ -142,6 +144,10 @@ function generateErrorMessage(args: ValidationArgs<UnavailableDatePeriodMediatio
     case 'endYear':
       return generateYearErrorMessage(args.value, 'ERRORS.CARM_ENTER_YEAR_FOR_UNAVAILABILITY_TO', 'ERRORS.CARM_VALID_YEAR_FOR_UNAVAILABILITY_TO');
     case 'until':
+      // Day, month and year are each in range here, so an invalid date means the day doesn't exist in that month (e.g. 31/02)
+      if (isInvalidDate(args.value)) {
+        return 'ERRORS.CARM_VALID_DAY_FOR_UNAVAILABILITY_TO';
+      }
       if ((args.object.startDay || args.object.startMonth || args.object.startYear) && !args.object.until) {
         return 'ERRORS.CARM_ENTER_DATE_FOR_UNAVAILABILITY_TO';
       }
@@ -162,6 +168,12 @@ function generateErrorMessageForMaxDate(args: ValidationArgs<UnavailableDatePeri
 }
 
 function generateErrorMessageForIsDate(args: ValidationArgs<UnavailableDatePeriodMediation>): string {
+  // Day, month and year are each in range here, so an invalid date means the day doesn't exist in that month (e.g. 31/02)
+  if (isInvalidDate(args.value)) {
+    return args.object.type === UnavailableDateType.SINGLE_DATE
+      ? 'ERRORS.CARM_VALID_DAY_FOR_UNAVAILABILITY'
+      : 'ERRORS.CARM_VALID_DAY_FOR_UNAVAILABILITY_FROM';
+  }
   if (args.object.type === UnavailableDateType.SINGLE_DATE) {
     return 'ERRORS.CARM_ENTER_DATE_FOR_UNAVAILABILITY';
   }
