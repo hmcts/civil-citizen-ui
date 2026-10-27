@@ -4,9 +4,9 @@ const I = actor();
 const contactUs = new ContactUs();
 
 const fields = {
-  startDateDay: 'input[id="startDate-day"]',
-  startDateMonth: 'input[id="startDate-month"]',
-  startDateYear: 'input[id="startDate-year"]',
+  startDateDay: 'input[id="day"]',
+  startDateMonth: 'input[id="month"]',
+  startDateYear: 'input[id="year"]',
   continueButton: 'button[type="submit"]',
   cancelLink: 'a[href$="/breathing-space/cancel"]',
 };
