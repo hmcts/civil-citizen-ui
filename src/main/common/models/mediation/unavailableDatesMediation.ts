@@ -15,7 +15,7 @@ import {DateNotAfterReferenceDate} from 'common/form/validators/dateNotAfterRefe
 import {OptionalDateFourDigitValidator} from 'common/form/validators/optionalDateFourDigitValidator';
 import {OptionalDateNotInPastValidator} from 'common/form/validators/optionalDateNotInPastValidator';
 import {DateConverter} from 'common/utils/dateConverter';
-import {addMonths, isInvalidDate} from 'common/utils/dateUtils';
+import {addMonths, isInvalidDate, getYearErrorMessage} from 'common/utils/dateUtils';
 import {toOptionalNumber} from 'common/utils/numberConverter';
 import { UnavailableDateType } from '../directionsQuestionnaire/hearing/unavailableDates';
 
@@ -109,16 +109,6 @@ function hasValidEndDateParts(o: UnavailableDatePeriodMediation): boolean {
   return !!o.endDay && o.endDay < 32 && !!o.endMonth && o.endMonth < 13 && o.endYear >= 1872 && o.endYear < 10000;
 }
 
-function generateYearErrorMessage(value: number, missingYearMessage: string, invalidYearMessage: string): string {
-  if (value === undefined) {
-    return missingYearMessage;
-  }
-  if (Number.isNaN(value) || value < 1000 || value > 9999) {
-    return invalidYearMessage;
-  }
-  return 'ERRORS.VALID_YEAR';
-}
-
 function generateErrorMessage(args: ValidationArgs<UnavailableDatePeriodMediation>): string {
   const hasValue = args.value !== undefined;
   switch (args.property) {
@@ -134,15 +124,15 @@ function generateErrorMessage(args: ValidationArgs<UnavailableDatePeriodMediatio
       return hasValue ? 'ERRORS.CARM_VALID_MONTH_FOR_UNAVAILABILITY_FROM' : 'ERRORS.CARM_ENTER_MONTH_FOR_UNAVAILABILITY_FROM';
     case 'startYear':
       if (args.object.type === UnavailableDateType.SINGLE_DATE) {
-        return generateYearErrorMessage(args.value, 'ERRORS.CARM_ENTER_YEAR_FOR_UNAVAILABILITY', 'ERRORS.CARM_VALID_YEAR_FOR_UNAVAILABILITY');
+        return getYearErrorMessage(args.value, 'ERRORS.CARM_ENTER_YEAR_FOR_UNAVAILABILITY', 'ERRORS.CARM_VALID_YEAR_FOR_UNAVAILABILITY');
       }
-      return generateYearErrorMessage(args.value, 'ERRORS.CARM_ENTER_YEAR_FOR_UNAVAILABILITY_FROM', 'ERRORS.CARM_VALID_YEAR_FOR_UNAVAILABILITY_FROM');
+      return getYearErrorMessage(args.value, 'ERRORS.CARM_ENTER_YEAR_FOR_UNAVAILABILITY_FROM', 'ERRORS.CARM_VALID_YEAR_FOR_UNAVAILABILITY_FROM');
     case 'endDay':
       return hasValue ? 'ERRORS.CARM_VALID_DAY_FOR_UNAVAILABILITY_TO' : 'ERRORS.CARM_ENTER_DAY_FOR_UNAVAILABILITY_TO';
     case 'endMonth':
       return hasValue ? 'ERRORS.CARM_VALID_MONTH_FOR_UNAVAILABILITY_TO' : 'ERRORS.CARM_ENTER_MONTH_FOR_UNAVAILABILITY_TO';
     case 'endYear':
-      return generateYearErrorMessage(args.value, 'ERRORS.CARM_ENTER_YEAR_FOR_UNAVAILABILITY_TO', 'ERRORS.CARM_VALID_YEAR_FOR_UNAVAILABILITY_TO');
+      return getYearErrorMessage(args.value, 'ERRORS.CARM_ENTER_YEAR_FOR_UNAVAILABILITY_TO', 'ERRORS.CARM_VALID_YEAR_FOR_UNAVAILABILITY_TO');
     case 'until':
       // Day, month and year are each in range here, so an invalid date means the day doesn't exist in that month (e.g. 31/02)
       if (isInvalidDate(args.value)) {

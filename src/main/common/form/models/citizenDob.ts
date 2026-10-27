@@ -4,7 +4,7 @@ import {OptionalDateNotInFutureValidator} from '../validators/optionalDateNotInF
 import {OptionalDateFourDigitValidator} from '../validators/optionalDateFourDigitValidator';
 import {ValidationArgs} from './genericForm';
 import {toOptionalNumber} from '../../utils/numberConverter';
-import {isInvalidDate} from '../../utils/dateUtils';
+import {getYearErrorMessage, isInvalidDate} from '../../utils/dateUtils';
 
 export class CitizenDob {
 
@@ -39,13 +39,7 @@ function generateDateErrorMessage(args: ValidationArgs<CitizenDob>): string {
 }
 
 function generateYearErrorMessage(args: ValidationArgs<CitizenDob>): string {
-  if (args.value === undefined) {
-    return 'ERRORS.VALID_FOUR_DIGIT_YEAR';
-  }
-  if (Number.isNaN(args.value) || args.value < 1000 || args.value > 9999) {
-    return 'ERRORS.DOB_VALID_FOUR_DIGIT_YEAR';
-  }
-  return 'ERRORS.VALID_YEAR';
+  return getYearErrorMessage(args.value, 'ERRORS.VALID_FOUR_DIGIT_YEAR', 'ERRORS.DOB_VALID_FOUR_DIGIT_YEAR');
 }
 
 function generateMonthErrorMessage(args: ValidationArgs<CitizenDob>): string {
