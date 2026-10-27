@@ -1,5 +1,4 @@
 import {AppRequest} from 'models/AppRequest';
-import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {Claim} from 'models/claim';
@@ -9,6 +8,7 @@ import {
   getClaimWithExtendedPaymentDeadline,
 } from 'services/features/response/submitConfirmation/submitConfirmationService';
 import {getRouteParam} from 'common/utils/routeParamUtils';
+import {getResponseClaimById} from 'modules/draft-store/response/responseDraftStoreService';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('submitResponse');
@@ -20,7 +20,7 @@ export const submitResponse = async (req: AppRequest): Promise<Claim> => {
   try {
     logger.info(`submitting the response - ${req.params.id}`);
     const claimId = getRouteParam(req, 'id');
-    const claim = await getCaseDataFromStore(generateRedisKey(req));
+    const claim = await getResponseClaimById(req, claimId);
     const claimFromCivilService = await civilServiceClient.retrieveClaimDetails(claimId, req);
     claim.respondentPaymentDeadline = await getClaimWithExtendedPaymentDeadline(claim, req);
     const isAddressUpdated = addressHasChange(claim.respondent1?.partyDetails?.primaryAddress, claimFromCivilService?.respondent1?.partyDetails?.primaryAddress);
