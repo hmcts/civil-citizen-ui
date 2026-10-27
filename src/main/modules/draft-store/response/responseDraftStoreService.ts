@@ -132,6 +132,14 @@ export const deleteResponseDraft = async (req: AppRequest, caseId: string, draft
   await draftStoreService.deleteDraftClaimFromStore(responseRedisKey(caseId, userId));
 };
 
+export const getResponseClaimById = async (req: AppRequest, caseId: string): Promise<Claim> => {
+  const draftResult = await getResponseDraft(req, caseId);
+  if (draftResult?.claimResponse?.case_data) {
+    return Object.assign(new Claim(), draftResult.claimResponse.case_data as unknown as Claim);
+  }
+  return new Claim();
+}
+
 const responseRedisKey = (caseId: string, userId: string): string => `${caseId}${userId}`;
 
 const withCaseId = (claim: Claim | undefined, caseId: string): Claim => {
