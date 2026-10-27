@@ -1,161 +1,129 @@
-import {NextFunction, Request, Response} from 'express';
+import {Response} from 'express';
 import {AppRequest} from 'common/models/AppRequest';
 import {Claim} from 'common/models/claim';
 import {PartyType} from 'common/models/partyType';
 import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {isPcqShutterOn} from 'app/auth/launchdarkly/launchDarklyClient';
-import {getClaimantIdamDetails} from 'services/translation/response/claimantIdamDetails';
+import {isFirstTimeInPCQ} from 'routes/guards/pcqGuardClaim';
 import {generatePcqUrl, isPcqElegible, isPcqHealthy} from 'client/pcq/pcqClient';
 import {generatePcqId} from 'client/pcq/generatePcqId';
 import {savePcqIdClaim} from 'client/pcq/savePcqIdClaim';
-import {isFirstTimeInPCQ} from 'routes/guards/pcqGuardClaim';
+import {getClaimantIdamDetails} from 'services/translation/response/claimantIdamDetails';
 
-jest.mock('../../../../main/modules/draft-store/draftStoreService');
-jest.mock('../../../../main/app/auth/launchdarkly/launchDarklyClient');
-jest.mock('../../../../main/services/translation/response/claimantIdamDetails');
-jest.mock('client/pcq/pcqClient', () => ({
-  isPcqHealthy: jest.fn(),
-  isPcqElegible: jest.fn(),
-  generatePcqUrl: jest.fn(),
-}));
-jest.mock('client/pcq/generatePcqId', () => ({
-  generatePcqId: jest.fn(() => 'new-pcq-id'),
-}));
-jest.mock('client/pcq/savePcqIdClaim', () => ({
-  savePcqIdClaim: jest.fn(),
-}));
+jest.mock('modules/draft-store/draftStoreService');
+jest.mock('app/auth/launchdarkly/launchDarklyClient');
+jest.mock('client/pcq/pcqClient');
+jest.mock('client/pcq/generatePcqId');
+jest.mock('client/pcq/savePcqIdClaim');
+jest.mock('services/translation/response/claimantIdamDetails');
 
-const mockGetCaseDataFromStore = getCaseDataFromStore as jest.Mock;
-const mockIsPcqShutterOn = isPcqShutterOn as jest.Mock;
-const mockGetClaimantIdamDetails = getClaimantIdamDetails as jest.Mock;
-const mockIsPcqHealthy = isPcqHealthy as jest.Mock;
-const mockIsPcqElegible = isPcqElegible as jest.Mock;
-const mockGeneratePcqUrl = generatePcqUrl as jest.Mock;
-const mockSavePcqIdClaim = savePcqIdClaim as jest.Mock;
-
-const MOCK_RESPONSE = {redirect: jest.fn()} as unknown as Response;
-const MOCK_NEXT = jest.fn() as NextFunction;
-
+// These are direct guard calls, with no application or HTTP server.
 describe('pcqGuardClaim', () => {
-  const mockClaim = new Claim();
-  mockClaim.pcqId = 'existing-pcq-id';
-  mockClaim.applicant1 = {type: PartyType.INDIVIDUAL} as Claim['applicant1'];
+  let claim: Claim;
+  let req: AppRequest;
+  const res = {redirect: jest.fn()} as unknown as Response;
+  const next = jest.fn();
 
   beforeEach(() => {
-    jest.clearAllMocks();
-    mockIsPcqShutterOn.mockResolvedValue(false);
-    mockGetCaseDataFromStore.mockResolvedValue(mockClaim);
-    mockGetClaimantIdamDetails.mockReturnValue({email: 'claimant@example.com'});
-    mockIsPcqHealthy.mockResolvedValue(false);
-    mockIsPcqElegible.mockReturnValue(false);
-    mockGeneratePcqUrl.mockReturnValue('https://pcq.example/start');
-    mockSavePcqIdClaim.mockResolvedValue(undefined);
+    jest.resetAllMocks();
+    claim = new Claim();
+    claim.applicant1 = {
+      type: PartyType.INDIVIDUAL,
+      emailAddress: {emailAddress: 'old-draft-email@example.com'},
+    } as Claim['applicant1'];
+    req = {
+      method: 'GET', originalUrl: '/claim/check-and-send',
+      query: {}, cookies: {lang: 'en'}, headers: {host: 'localhost:3001'},
+      params: {id: '123'}, session: {user: {id: 'user-1'}},
+    } as unknown as AppRequest;
+    jest.mocked(getCaseDataFromStore).mockResolvedValue(claim);
+    jest.mocked(isPcqShutterOn).mockResolvedValue(false);
+    jest.mocked(isPcqHealthy).mockResolvedValue(true);
+    jest.mocked(isPcqElegible).mockReturnValue(true);
+    jest.mocked(generatePcqId).mockReturnValue('new-pcq-id');
+    jest.mocked(generatePcqUrl).mockReturnValue('https://pcq.example/start');
+    jest.mocked(savePcqIdClaim).mockResolvedValue(undefined);
+    jest.mocked(getClaimantIdamDetails).mockReturnValue({email: 'claimant@example.com', id: 'user-1'});
   });
 
-  it('should stash claim on req.locals and call next when PCQ id already exists', async () => {
-    const req = {
-      method: 'GET',
-      originalUrl: '/claim/check-answers',
-      query: {},
-      cookies: {},
-      headers: {},
-      session: {user: {id: 'user-1'}},
-    } as unknown as Request;
+  it('stashes the claim and continues when the PCQ id already exists', async () => {
+    claim.pcqId = 'existing-pcq-id';
+    await isFirstTimeInPCQ(req, res, next);
 
-    await isFirstTimeInPCQ(req as unknown as AppRequest, MOCK_RESPONSE, MOCK_NEXT);
-
-    expect(mockGetCaseDataFromStore).toHaveBeenCalledTimes(1);
-    expect((<AppRequest>req).locals.claim).toBe(mockClaim);
-    expect(MOCK_NEXT).toHaveBeenCalled();
+    expect(getCaseDataFromStore).toHaveBeenCalledTimes(1);
+    expect(req.locals.claim).toBe(claim);
+    expect(next).toHaveBeenCalledTimes(1);
+    expect(next).toHaveBeenCalledWith();
+    expect(generatePcqId).not.toHaveBeenCalled();
+    expect(savePcqIdClaim).not.toHaveBeenCalled();
+    expect(res.redirect).not.toHaveBeenCalled();
   });
 
-  it('should use stashed claim without a second Redis read', async () => {
-    const stashedClaim = new Claim();
-    stashedClaim.pcqId = 'existing-pcq-id';
-    const req = {
-      method: 'GET',
-      originalUrl: '/claim/check-answers',
-      query: {},
-      cookies: {},
-      headers: {},
-      session: {user: {id: 'user-1'}},
-      locals: {env: '', lang: '', claim: stashedClaim},
-    } as unknown as Request;
+  it('uses the stashed claim without a second Redis read', async () => {
+    claim.pcqId = 'existing-pcq-id';
+    req.locals = {env: '', lang: '', claim};
+    await isFirstTimeInPCQ(req, res, next);
 
-    await isFirstTimeInPCQ(req as unknown as AppRequest, MOCK_RESPONSE, MOCK_NEXT);
-
-    expect(mockGetCaseDataFromStore).not.toHaveBeenCalled();
-    expect((<AppRequest>req).locals.claim).toBe(stashedClaim);
-    expect(MOCK_NEXT).toHaveBeenCalled();
+    expect(getCaseDataFromStore).not.toHaveBeenCalled();
+    expect(req.locals.claim).toBe(claim);
+    expect(next).toHaveBeenCalledTimes(1);
+    expect(next).toHaveBeenCalledWith();
+    expect(savePcqIdClaim).not.toHaveBeenCalled();
+    expect(res.redirect).not.toHaveBeenCalled();
   });
 
-  const claimWithoutPcq = () => {
-    const claim = new Claim();
-    claim.applicant1 = {type: PartyType.INDIVIDUAL} as Claim['applicant1'];
-    return claim;
-  };
+  it.each([
+    [{lang: 'cy'}, 'en', 'cy'],
+    [{}, 'cy', 'cy'],
+    [{}, 'en', 'en'],
+  ])('passes the actor, IDAM email and return URL with query %j and cookie %s', async (query, cookie, language) => {
+    req.query = query;
+    req.cookies.lang = cookie;
+    await isFirstTimeInPCQ(req, res, next);
 
-  const requestFor = (claim: Claim, query: Record<string, string> = {}) => ({
-    method: 'GET',
-    originalUrl: '/claim/check-answers',
-    query,
-    cookies: {lang: 'cy'},
-    headers: {host: 'https://civil.example'},
-    session: {user: {id: 'user-1', email: 'claimant@example.com'}},
-    locals: {env: '', lang: '', claim},
-  }) as unknown as Request;
-
-  it('calls next when the PCQ shutter is on', async () => {
-    mockIsPcqShutterOn.mockResolvedValue(true);
-
-    await isFirstTimeInPCQ(requestFor(claimWithoutPcq()) as unknown as AppRequest, MOCK_RESPONSE, MOCK_NEXT);
-
-    expect(MOCK_NEXT).toHaveBeenCalledWith();
-    expect(mockIsPcqHealthy).not.toHaveBeenCalled();
-  });
-
-  it('redirects to PCQ when the service is healthy and the claimant is eligible', async () => {
-    const claim = claimWithoutPcq();
-    mockIsPcqHealthy.mockResolvedValue(true);
-    mockIsPcqElegible.mockReturnValue(true);
-
-    await isFirstTimeInPCQ(requestFor(claim, {lang: 'en'}) as unknown as AppRequest, MOCK_RESPONSE, MOCK_NEXT);
-
-    expect(generatePcqId).toHaveBeenCalled();
-    expect(mockSavePcqIdClaim).toHaveBeenCalledWith('new-pcq-id', expect.anything());
-    expect(claim.pcqId).toBe('new-pcq-id');
-    expect(mockGeneratePcqUrl).toHaveBeenCalledWith(
-      'new-pcq-id',
-      'applicant',
-      'claimant@example.com',
-      expect.stringContaining('https://civil.example'),
-      'en',
+    expect(isPcqElegible).toHaveBeenCalledWith(PartyType.INDIVIDUAL);
+    expect(generatePcqId).toHaveBeenCalledTimes(1);
+    expect(savePcqIdClaim).toHaveBeenCalledTimes(1);
+    expect(savePcqIdClaim).toHaveBeenCalledWith('new-pcq-id', req);
+    expect(jest.mocked(savePcqIdClaim).mock.calls[0][1]).toBe(req);
+    expect(generatePcqUrl).toHaveBeenCalledTimes(1);
+    expect(generatePcqUrl).toHaveBeenCalledWith(
+      'new-pcq-id', 'applicant', 'claimant@example.com',
+      'localhost:3001/claim/check-and-send', language,
     );
-    expect(MOCK_RESPONSE.redirect).toHaveBeenCalledWith('https://pcq.example/start');
+    expect(getClaimantIdamDetails).toHaveBeenCalledWith(req.session.user);
+    expect(req.locals.claim.pcqId).toBe('new-pcq-id');
+    expect(res.redirect).toHaveBeenCalledTimes(1);
+    expect(res.redirect).toHaveBeenCalledWith('https://pcq.example/start');
+    expect(next).not.toHaveBeenCalled();
   });
 
-  it('calls next when the claimant is not eligible for PCQ', async () => {
-    mockIsPcqHealthy.mockResolvedValue(true);
-    mockIsPcqElegible.mockReturnValue(false);
+  it.each(['shutter', 'unhealthy', 'ineligible'])('continues without writing or redirecting when %s', async reason => {
+    jest.mocked(isPcqShutterOn).mockResolvedValue(reason === 'shutter');
+    jest.mocked(isPcqHealthy).mockResolvedValue(reason !== 'unhealthy');
+    jest.mocked(isPcqElegible).mockReturnValue(reason !== 'ineligible');
+    await isFirstTimeInPCQ(req, res, next);
 
-    await isFirstTimeInPCQ(requestFor(claimWithoutPcq()) as unknown as AppRequest, MOCK_RESPONSE, MOCK_NEXT);
-
-    expect(MOCK_NEXT).toHaveBeenCalledWith();
-    expect(MOCK_RESPONSE.redirect).not.toHaveBeenCalled();
+    expect(next).toHaveBeenCalledTimes(1);
+    expect(next).toHaveBeenCalledWith();
+    expect(generatePcqId).not.toHaveBeenCalled();
+    expect(savePcqIdClaim).not.toHaveBeenCalled();
+    expect(generatePcqUrl).not.toHaveBeenCalled();
+    expect(res.redirect).not.toHaveBeenCalled();
+    if (reason === 'shutter') expect(isPcqHealthy).not.toHaveBeenCalled();
   });
 
-  it('passes a store error to next', async () => {
-    const error = new Error('store down');
-    mockGetCaseDataFromStore.mockRejectedValue(error);
-    const req = {
-      query: {},
-      cookies: {},
-      headers: {},
-      session: {user: {id: 'user-1'}},
-    } as unknown as Request;
+  it.each(['read', 'health', 'save'])('forwards an independent %s failure without redirecting', async boundary => {
+    const error = new Error(boundary + ' failed');
+    if (boundary === 'read') jest.mocked(getCaseDataFromStore).mockRejectedValue(error);
+    if (boundary === 'health') jest.mocked(isPcqHealthy).mockRejectedValue(error);
+    if (boundary === 'save') jest.mocked(savePcqIdClaim).mockRejectedValue(error);
+    await isFirstTimeInPCQ(req, res, next);
 
-    await isFirstTimeInPCQ(req as unknown as AppRequest, MOCK_RESPONSE, MOCK_NEXT);
-
-    expect(MOCK_NEXT).toHaveBeenCalledWith(error);
+    expect(next).toHaveBeenCalledTimes(1);
+    expect(next).toHaveBeenCalledWith(error);
+    expect(savePcqIdClaim).toHaveBeenCalledTimes(boundary === 'save' ? 1 : 0);
+    expect(generatePcqUrl).not.toHaveBeenCalled();
+    expect(res.redirect).not.toHaveBeenCalled();
   });
 });
