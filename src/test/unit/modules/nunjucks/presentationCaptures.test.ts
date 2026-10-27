@@ -40,7 +40,9 @@ describe('PR9 bounded accessibility captures', () => {
           const basePath = path.resolve(process.env.PR9_BASE_VIEWS, '../../test/utils/mocks/a11y', name);
           const base = new JSDOM(fs.readFileSync(basePath, 'utf8'));
           const links = (root: Element) => Array.from(root.querySelectorAll('a')).map(a => [a.getAttribute('href'), a.textContent!.replace(/\s+/g, ' ').trim()]);
-          expect(links(header)).toEqual(links(base.window.document.querySelector('header.govuk-header')!));
+          const baseHeader = base.window.document.querySelector('.civil-header') || base.window.document.querySelector('header.govuk-header');
+          expect(baseHeader).not.toBeNull();
+          expect(links(header)).toEqual(links(baseHeader!));
           expect(payload(document)).toEqual(payload(base.window.document)); base.window.close();
         }
       }
