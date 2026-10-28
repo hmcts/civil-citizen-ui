@@ -1,17 +1,21 @@
-import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {getResponseDraft, getResponseClaimById, updateResponseDraft} from 'modules/draft-store/response/responseDraftStoreService';
 import {HowMuchHaveYouPaid} from 'form/models/admission/howMuchHaveYouPaid';
 import {PartialAdmission} from 'models/partialAdmission';
 import {RejectAllOfClaim} from 'form/models/rejectAllOfClaim';
 import {ResponseType} from 'form/models/responseType';
+import {Claim} from 'models/claim';
+import {AppRequest} from 'models/AppRequest';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('howMuchHaveYouPaidService');
 
 class HowMuchHaveYouPaidService {
 
-  public async getHowMuchHaveYouPaid(claimId: string, type: ResponseType): Promise<HowMuchHaveYouPaid> {
+  public async getHowMuchHaveYouPaid(req: AppRequest, type: ResponseType): Promise<HowMuchHaveYouPaid> {
     try {
-      const claim = await getCaseDataFromStore(claimId);
+      const caseId = getRouteParam(req, 'id');
+      const claim = await getResponseClaimById(req, caseId);
       const totalClaimAmount = claim?.totalClaimAmount;
       if (type === ResponseType.PART_ADMISSION) {
         if (claim?.partialAdmission?.howMuchHaveYouPaid) {
@@ -33,25 +37,31 @@ class HowMuchHaveYouPaidService {
     }
   }
 
-  public async saveHowMuchHaveYouPaid(claimId: string, howMuchHaveYouPaid: HowMuchHaveYouPaid, type: ResponseType) {
+  public async saveHowMuchHaveYouPaid(req: AppRequest, howMuchHaveYouPaid: HowMuchHaveYouPaid, type: ResponseType) {
     try {
-      const claim = await getCaseDataFromStore(claimId);
-      if (claim) {
-        howMuchHaveYouPaid.totalClaimAmount = claim.totalClaimAmount;
-        if (type === ResponseType.PART_ADMISSION) {
-          if (!claim.partialAdmission) {
-            claim.partialAdmission = new PartialAdmission();
-          }
-          claim.partialAdmission.howMuchHaveYouPaid = howMuchHaveYouPaid;
-        } else {
-          if (!claim.rejectAllOfClaim) {
-            claim.rejectAllOfClaim = new RejectAllOfClaim();
-          }
-          claim.rejectAllOfClaim.howMuchHaveYouPaid = howMuchHaveYouPaid;
-
-        }
+      const caseId = getRouteParam(req, 'id');
+      const draftResult = await getResponseDraft(req, caseId);
+      if (!draftResult) {
+        throw new Error('[howMuchHaveYouPaidService] no draft response found');
       }
-      await saveDraftClaim(claimId, claim);
+      const claim = Object.assign(new Claim(), draftResult.claimResponse?.case_data as unknown as Claim);
+      const draftId = draftResult.rawResponse?.draftId;
+      howMuchHaveYouPaid.totalClaimAmount = claim.totalClaimAmount;
+      if (type === ResponseType.PART_ADMISSION) {
+        if (!claim.partialAdmission) {
+          claim.partialAdmission = new PartialAdmission();
+        }
+        claim.partialAdmission.howMuchHaveYouPaid = howMuchHaveYouPaid;
+      } else {
+        if (!claim.rejectAllOfClaim) {
+          claim.rejectAllOfClaim = new RejectAllOfClaim();
+        }
+        claim.rejectAllOfClaim.howMuchHaveYouPaid = howMuchHaveYouPaid;
+      }
+      if (draftResult.createdAt && !claim.draftClaimCreatedAt) {
+        claim.draftClaimCreatedAt = new Date(draftResult.createdAt);
+      }
+      await updateResponseDraft(req, caseId, claim, draftId);
     } catch (error) {
       logger.error(error);
       throw error;
