@@ -10,7 +10,6 @@ import {GenericForm} from 'form/models/genericForm';
 import {ResponseType} from 'form/models/responseType';
 import {PartAdmitHowMuchHaveYouPaidGuard} from 'routes/guards/partAdmitHowMuchHaveYouPaidGuard';
 import {AppRequest} from 'common/models/AppRequest';
-import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const whyDoYouDisagreeController = Router();
@@ -22,7 +21,7 @@ function renderView(form: GenericForm<WhyDoYouDisagree>, _claimAmount: number, r
 
 whyDoYouDisagreeController.get(CITIZEN_WHY_DO_YOU_DISAGREE_URL, PartAdmitHowMuchHaveYouPaidGuard.apply(RESPONSE_TASK_LIST_URL), (async (req, res, next: NextFunction) => {
   try {
-    const form = await getWhyDoYouDisagreeForm(generateRedisKey(<AppRequest>req), ResponseType.PART_ADMISSION);
+    const form = await getWhyDoYouDisagreeForm(<AppRequest>req, ResponseType.PART_ADMISSION);
     renderView(new GenericForm(form.whyDoYouDisagree), form.claimAmount, res);
   } catch (error) {
     next(error);
@@ -31,14 +30,14 @@ whyDoYouDisagreeController.get(CITIZEN_WHY_DO_YOU_DISAGREE_URL, PartAdmitHowMuch
 
 whyDoYouDisagreeController.post(CITIZEN_WHY_DO_YOU_DISAGREE_URL, (async (req, res, next: NextFunction) => {
   try {
-    const redisKey = generateRedisKey(<AppRequest>req);
+    const appReq = <AppRequest>req;
     const form = new GenericForm(new WhyDoYouDisagree(req.body.text));
     await form.validate();
     if (form.hasErrors() || form.hasNestedErrors()) {
-      const savedForm = await getWhyDoYouDisagreeForm(redisKey, ResponseType.PART_ADMISSION);
+      const savedForm = await getWhyDoYouDisagreeForm(appReq, ResponseType.PART_ADMISSION);
       renderView(form, savedForm.claimAmount, res);
     } else {
-      await saveWhyDoYouDisagreeData(redisKey, form.model, ResponseType.PART_ADMISSION);
+      await saveWhyDoYouDisagreeData(appReq, form.model, ResponseType.PART_ADMISSION);
       const claimId = getRouteParam(req, 'id');
       res.redirect(constructResponseUrlWithIdParams(claimId, CITIZEN_TIMELINE_URL));
     }
