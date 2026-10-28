@@ -1,5 +1,5 @@
 import {PaymentOption} from 'common/form/models/admission/paymentOption/paymentOption';
-import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {getResponseDraft, updateResponseDraft} from 'modules/draft-store/response/responseDraftStoreService';
 import {Claim} from 'common/models/claim';
 import {ResponseType} from 'common/form/models/responseType';
 import {PaymentOptionType}
@@ -7,6 +7,8 @@ import {PaymentOptionType}
 import {PaymentIntention} from 'common/form/models/admission/paymentIntention';
 import {FullAdmission} from 'common/models/fullAdmission';
 import {getTotalAmountWithInterest} from 'modules/claimDetailsService';
+import {AppRequest} from 'models/AppRequest';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('paymentOptionService');
@@ -34,9 +36,16 @@ const getPaymentOptionType = (claim: Claim, responseType: ResponseType): Payment
   return undefined;
 };
 
-const savePaymentOptionData = async (claimId: string, form: PaymentOption, responseType: ResponseType) => {
+const savePaymentOptionData = async (req: AppRequest, form: PaymentOption, responseType: ResponseType) => {
   try {
-    const claim: Claim = await getCaseDataFromStore(claimId);
+    const caseId = getRouteParam(req, 'id');
+    const draftResult = await getResponseDraft(req, caseId);
+    if (!draftResult) {
+      throw new Error('[paymentOptionService] no response draft found');
+    }
+    const claim = Object.assign(new Claim(), draftResult.claimResponse?.case_data as unknown as Claim);
+    const draftId = draftResult.rawResponse?.draftId;
+
     if (isFullAdmission(responseType)) {
       if (!claim.fullAdmission?.paymentIntention) {
         claim.fullAdmission = new FullAdmission();
@@ -62,7 +71,10 @@ const savePaymentOptionData = async (claimId: string, form: PaymentOption, respo
     if (form.paymentOptionByImmediately()) {
       delete claim.statementOfMeans;
     }
-    await saveDraftClaim(claimId, claim);
+    if (draftResult.createdAt && !claim.draftClaimCreatedAt) {
+      claim.draftClaimCreatedAt = new Date(draftResult.createdAt);
+    }
+    await updateResponseDraft(req, caseId, claim, draftId);
   } catch (error) {
     logger.error(error);
     throw error;
