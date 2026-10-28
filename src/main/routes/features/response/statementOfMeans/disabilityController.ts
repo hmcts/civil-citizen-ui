@@ -4,7 +4,6 @@ import {DisabilityService} from 'services/features/response/statementOfMeans/dis
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {GenericForm} from 'form/models/genericForm';
 import {GenericYesNo} from 'form/models/genericYesNo';
-import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'common/models/AppRequest';
 import {getRouteParam} from 'common/utils/routeParamUtils';
 
@@ -18,7 +17,7 @@ function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
 
 disabilityController.get(CITIZEN_DISABILITY_URL, (async (req, res, next: NextFunction) => {
   try {
-    renderView(await disabilityService.getDisability(generateRedisKey(<AppRequest>req)), res);
+    renderView(await disabilityService.getDisability(<AppRequest>req), res);
   } catch (error) {
     next(error);
   }
@@ -26,18 +25,18 @@ disabilityController.get(CITIZEN_DISABILITY_URL, (async (req, res, next: NextFun
 
 disabilityController.post(CITIZEN_DISABILITY_URL,
   (async (req, res, next: NextFunction) => {
-    const claimId = getRouteParam(req, 'id');
+    const caseId = getRouteParam(req, 'id');
     const form = new GenericForm(new GenericYesNo(req.body.option));
     form.validateSync();
     if (form.hasErrors()) {
       renderView(form, res);
     } else {
       try {
-        await disabilityService.saveDisability(generateRedisKey(<AppRequest>req), form);
+        await disabilityService.saveDisability((<AppRequest>req), form);
         if (form.model.option == 'yes') {
-          res.redirect(constructResponseUrlWithIdParams(claimId, CITIZEN_SEVERELY_DISABLED_URL));
+          res.redirect(constructResponseUrlWithIdParams(caseId, CITIZEN_SEVERELY_DISABLED_URL));
         } else {
-          res.redirect(constructResponseUrlWithIdParams(claimId, CITIZEN_RESIDENCE_URL));
+          res.redirect(constructResponseUrlWithIdParams(caseId, CITIZEN_RESIDENCE_URL));
         }
       } catch (error) {
         next(error);
