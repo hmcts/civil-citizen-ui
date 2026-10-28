@@ -1,3 +1,4 @@
+const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const devMode = process.env.NODE_ENV !== 'production';
@@ -29,7 +30,13 @@ module.exports = {
             url: false,
           },
         },
-        'sass-loader',
+        {
+          loader: 'sass-loader',
+          options: {
+            // The modern Sass API resolves existing node_modules imports from the repository root.
+            sassOptions: {loadPaths: [path.resolve(__dirname, '..')]},
+          },
+        },
       ],
     },
   ],

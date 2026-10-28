@@ -17,7 +17,7 @@ jest.mock('applicationinsights', () => ({
   defaultClient: {
     trackTrace: jest.fn(),
     trackException: jest.fn(),
-    flush: jest.fn(),
+    flush: jest.fn().mockResolvedValue(undefined),
   },
 }));
 
@@ -33,7 +33,7 @@ describe('ErrorHandler', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     const appInsights = require('applicationinsights');
-    appInsights.defaultClient = {trackTrace: jest.fn(), trackException: jest.fn(), flush: jest.fn()};
+    appInsights.defaultClient = {trackTrace: jest.fn(), trackException: jest.fn(), flush: jest.fn().mockResolvedValue(undefined)};
     new ErrorHandler().enableFor(app as any);
   });
 
@@ -57,13 +57,26 @@ describe('ErrorHandler', () => {
         status: '500',
       },
     });
-    expect(getFlushMock()).toHaveBeenCalledWith({
-      isAppCrashing: false,
-      callback: expect.any(Function),
-    });
+    expect(getFlushMock()).toHaveBeenCalledWith();
     expect(getErrorLoggerMock()).toHaveBeenCalled();
     expect(res.status).toHaveBeenCalledWith(500);
     expect(res.render).toHaveBeenCalledWith('error', {error: res.locals.error});
+  });
+
+  it('preserves the original error response when telemetry flushing rejects', async () => {
+    const errorMiddleware = appUse.mock.calls[1][0];
+    const err = new Error('Original route failure');
+    const req = {originalUrl: '/case/123/response', method: 'POST'};
+    const res = {locals: {}, status: jest.fn().mockReturnThis(), render: jest.fn()};
+    getFlushMock().mockRejectedValueOnce(new Error('Telemetry exporter unavailable'));
+
+    errorMiddleware(err, req, res, jest.fn());
+    await Promise.resolve();
+
+    expect(getTrackExceptionMock()).toHaveBeenCalledWith(expect.objectContaining({exception: err}));
+    expect(getFlushMock()).toHaveBeenCalledTimes(1);
+    expect(res.status).toHaveBeenCalledWith(500);
+    expect(res.render).toHaveBeenCalledWith('error', {error: expect.anything()});
   });
 
   it('does not throw if App Insights default client is unavailable', () => {

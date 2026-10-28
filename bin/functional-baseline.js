@@ -10,7 +10,7 @@ const testPath = file => file.replace(/\\/g, '/').replace(/^.*?(?=src\/test\/fun
 const identity = row => `${row.file}::${row.title}`;
 
 // Load declarations through Codecept/Mocha without executing scenarios or hooks.
-function collect(root = repoRoot) {
+async function collect(root = repoRoot) {
   root = fs.realpathSync(root);
   process.chdir(root);
   for (const name of ['TEST_URL', 'URL', 'SERVICE_AUTH_PROVIDER_API_BASE_URL', 'CCD_DATA_STORE_URL', 'DM_STORE_URL', 'IDAM_API_URL', 'IDAM_TEST_SUPPORT_API_URL', 'IDAM_WEB_URL', 'CIVIL_SERVICE_URL', 'WA_TASK_MGMT_URL', 'AAC_API_URL']) {
@@ -20,15 +20,15 @@ function collect(root = repoRoot) {
   delete process.env.PREV_NOT_EXECUTED_TEST_FILES;
   // Verify the complete source inventory, never the narrower worker input.
   delete process.env.FUNCTIONAL_WORKER_PLAN;
-  const Codecept = require('codeceptjs/lib/codecept');
-  const config = require('codeceptjs/lib/config').load(root);
+  const Codecept = require('codeceptjs/lib/codecept').default;
+  const config = await require('codeceptjs/lib/config').default.load(root);
   config.plugins = {};
   const runner = new Codecept(config, {});
-  runner.init(root);
+  await runner.init(root);
   runner.loadTests();
-  const mocha = require('codeceptjs/lib/container').mocha();
+  const mocha = require('codeceptjs/lib/container').default.mocha();
   mocha.files = runner.testFiles;
-  mocha.loadFiles();
+  await mocha.loadFilesAsync();
   const rows = [];
   mocha.suite.eachTest(test => {
     const fullTitle = test.fullTitle();
@@ -89,7 +89,7 @@ function reconcile(expected, reports) {
   return {selected: expected.length, passed: outcomes.filter(r => r.status === 'passed').length, failed: outcomes.filter(r => r.status === 'failed').length, skipped: outcomes.filter(r => r.status === 'skipped').length, outcomes, errors};
 }
 
-function main() {
+async function main() {
   const [command, ...args] = process.argv.slice(2);
   const baseline = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
   if (command === 'worker-plan') {
@@ -97,7 +97,7 @@ function main() {
     return;
   }
   if (command === 'check') {
-    verifySelection(baseline, collect());
+    verifySelection(baseline, await collect());
     console.log('PR/master selection matches the pre-epic baseline; no active scenarios remain unmigrated.');
     return;
   }
@@ -129,5 +129,8 @@ function main() {
   throw new Error('Usage: functional-baseline.js check | worker-plan pr|master | results pr|master DIRECTORY PREFIX | compare STANDARD OPTIMISED');
 }
 
-if (require.main === module) main();
+if (require.main === module) main().catch(error => {
+  console.error(error);
+  process.exitCode = 1;
+});
 module.exports = {normalise, identity, selection, workerPlan, verifySelection, reconcile};

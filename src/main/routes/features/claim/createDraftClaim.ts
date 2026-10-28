@@ -4,7 +4,7 @@ import { BILINGUAL_LANGUAGE_PREFERENCE_URL, CLAIM_CHECK_ANSWERS_URL, TESTING_SUP
 import {createOrLoadDraft, updateDraftClaim} from 'modules/draft-store/draftStoreManagerService';
 import {cloneDefaultDraftClaimCaseData, saveDraftClaimToCache} from 'modules/draft-store/draftClaimCache';
 const createDraftViewPath = 'features/claim/create-draft';
-import jwt_decode from 'jwt-decode';
+import {jwtDecode} from 'jwt-decode';
 import {isCarmEnabledForCase} from '../../../app/auth/launchdarkly/launchDarklyClient';
 import {Claim} from 'models/claim';
 import {saveDraftClaim} from 'modules/draft-store/draftStoreService';
@@ -74,7 +74,7 @@ createDraftClaimController.post(TESTING_SUPPORT_URL, (async (req: Request, res: 
     }
 
     if (req.body?.idToken) {
-      const jwt: IdTokenJwtPayload = jwt_decode(req.body?.idToken);
+      const jwt: IdTokenJwtPayload = jwtDecode(req.body?.idToken);
       userId = jwt?.uid;
       if (appReq.session?.user) {
         appReq.session.user.id = userId;
