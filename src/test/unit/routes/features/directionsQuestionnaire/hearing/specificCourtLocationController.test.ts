@@ -78,27 +78,37 @@ describe('specificCourtController test', () => {
     });
 
     it('should show error message when court location is required but location is not selected and reason for court locaiton is not entered', async ()=>{
-      await request(app).post(DQ_COURT_LOCATION_URL).send({option: 'yes'}).expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain('Select a preferred court hearing location');
-        expect(res.text).toContain('Tell us why you want the hearing to be held at this court');
-      });
+      req.body = {option: 'yes'};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      const form = (res.render as jest.Mock).mock.calls[0][1].form;
+      expect(form.errorFor('courtLocation')).toBe('ERRORS.SPECIFIC_COURT.SELECT_COURT_LOCATION');
+      expect(form.errorFor('reason')).toBe('PAGES.SPECIFIC_COURT.REASON');
     });
 
     it('should show court location error when location is not selected but reason is entered', async ()=>{
-      await request(app).post(DQ_COURT_LOCATION_URL).send({courtLocation: '', reason: 'nearest location'}).expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain('Select a preferred court hearing location');
-      });
+      req.body = {courtLocation: '', reason: 'nearest location'};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      const form = (res.render as jest.Mock).mock.calls[0][1].form;
+      expect(form.errorFor('courtLocation')).toBe('ERRORS.SPECIFIC_COURT.SELECT_COURT_LOCATION');
+      expect(form.hasFieldError('reason')).toBe(false);
+      expect(mockSaveDraftClaim).not.toHaveBeenCalled();
     });
 
     it('should not show court location error when location is selected but reason is not entered', async ()=>{
-      await request(app).post(DQ_COURT_LOCATION_URL).send({courtLocation: 'courtLocation', reason: ''}).expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).not.toContain('Select a preferred court hearing location');
-        expect(res.text).toContain('Tell us why you want the hearing to be held at this court');
-      });
-    
+      req.body = {courtLocation: 'courtLocation', reason: ''};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      const form = (res.render as jest.Mock).mock.calls[0][1].form;
+      expect(form.hasFieldError('courtLocation')).toBe(false);
+      expect(form.errorFor('reason')).toBe('PAGES.SPECIFIC_COURT.REASON');
+      expect(mockSaveDraftClaim).not.toHaveBeenCalled();
+    });
+
     it('should save and redirect to the welsh language page when the court and reason are provided', async () => {
       req.body = {reason: 'reason', courtLocation: 'courtLocation'};
 
