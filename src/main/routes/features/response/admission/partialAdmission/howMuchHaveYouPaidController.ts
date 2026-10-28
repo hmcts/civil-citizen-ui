@@ -41,7 +41,7 @@ howMuchHaveYouPaidController
         });
       } else {
         try {
-          await howMuchHaveYouPaidService.saveHowMuchHaveYouPaid(<AppRequest>req, howMuchHaveYouPaid, ResponseType.PART_ADMISSION);
+          await howMuchHaveYouPaidService.saveHowMuchHaveYouPaid(req as unknown as AppRequest, howMuchHaveYouPaid, ResponseType.PART_ADMISSION);
           const claimId = getRouteParam(req, 'id');
           res.redirect(constructResponseUrlWithIdParams(claimId, RESPONSE_TASK_LIST_URL));
         } catch (error) {
