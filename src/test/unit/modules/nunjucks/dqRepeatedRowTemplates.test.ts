@@ -18,7 +18,7 @@ import cy from '../../../../main/modules/i18n/locales/cy.json';
 
 jest.mock('modules/draft-store/draftStoreService');
 let dom: JSDOM;
-beforeAll(async () => {await i18next.init({lng: 'en', initImmediate: false, resources: {en: {translation: en}, cy: {translation: cy}}});});
+beforeAll(async () => {await i18next.init({lng: 'en', initAsync: false, resources: {en: {translation: en}, cy: {translation: cy}}});});
 afterEach(() => {dom?.window.close();jest.clearAllMocks();});
 const editors = Object.keys(dqRepeatedPages) as DqEditor[];
 
