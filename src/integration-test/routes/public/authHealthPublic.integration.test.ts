@@ -8,8 +8,11 @@ import {launchDarklyClientMock} from '../../setup/sharedMocks';
 import {app} from '../../../main/app';
 import {
   ACCESSIBILITY_STATEMENT_URL,
+<<<<<<< HEAD
   CONTACT_CNBC_URL,
   CONTACT_MEDIATION_URL,
+=======
+>>>>>>> master
   CONTACT_US_URL,
   COOKIES_URL,
   FIRST_CONTACT_CLAIM_REFERENCE_URL,
@@ -95,6 +98,7 @@ describe('Integration: auth, health and public pages', () => {
     }
   });
 
+<<<<<<< HEAD
   it('renders the Civil National Business Centre contact page', async () => {
     const response = await request(app).get(CONTACT_CNBC_URL);
 
@@ -109,6 +113,8 @@ describe('Integration: auth, health and public pages', () => {
     expect(response.text).toContain('Small Claims Mediation Service');
   });
 
+=======
+>>>>>>> master
   it('renders the privacy policy in Welsh when lang is cy', async () => {
     const response = await request(app).get(`${PRIVACY_POLICY_URL}?lang=cy`);
 
