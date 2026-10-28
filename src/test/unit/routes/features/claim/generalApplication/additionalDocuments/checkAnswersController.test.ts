@@ -1,121 +1,120 @@
-import config from 'config';
-import nock from 'nock';
-import request from 'supertest';
-import { app } from '../../../../../../../main/app';
-import { isGaForLipsEnabled } from 'app/auth/launchdarkly/launchDarklyClient';
-import { buildSummarySectionForAdditionalDoc, getClaimDetailsById, prepareCCDData } from 'services/features/generalApplication/additionalDocumentService';
-import { getCancelUrl } from 'services/features/generalApplication/generalApplicationService';
-import { GA_UPLOAD_ADDITIONAL_DOCUMENTS_CYA_URL, GA_UPLOAD_ADDITIONAL_DOCUMENTS_SUBMITTED_URL } from 'routes/urls';
-import { Claim } from 'common/models/claim';
-import { GeneralApplication } from 'common/models/generalApplication/GeneralApplication';
-import { GaServiceClient } from 'client/gaServiceClient';
-import { ApplicationEvent } from 'common/models/gaEvents/applicationEvent';
-import { constructResponseUrlWithIdAndAppIdParams } from 'common/utils/urlFormatter';
+import {Response} from 'express';
+import {GaServiceClient} from 'client/gaServiceClient';
+import {Claim} from 'common/models/claim';
+import {GeneralApplication} from 'common/models/generalApplication/GeneralApplication';
+import {ApplicationEvent} from 'common/models/gaEvents/applicationEvent';
+import {constructResponseUrlWithIdAndAppIdParams} from 'common/utils/urlFormatter';
+import {getClaimById} from 'modules/utilityService';
+import {GA_UPLOAD_ADDITIONAL_DOCUMENTS_SUBMITTED_URL} from 'routes/urls';
+import {
+  buildSummarySectionForAdditionalDoc,
+  prepareCCDData,
+} from 'services/features/generalApplication/additionalDocumentService';
+import gaAdditionalDocCheckAnswerController from '../../../../../../../main/routes/features/generalApplication/additionalDocuments/checkAnswersController';
+import {createMockResponse, getRouteHandler} from '../../../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../../../main/modules/oidc');
-jest.mock('../../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
-jest.mock('../../../../../../../main/services/features/generalApplication/additionalDocumentService', () => ({
-  getClaimDetailsById: jest.fn(),
-  prepareCCDData: jest.fn(),
-  buildSummarySectionForAdditionalDoc: jest.fn(),
+jest.mock('modules/draft-store/draftStoreService');
+jest.mock('modules/utilityService', () => ({
+  getClaimById: jest.fn(),
 }));
-jest.mock('../../../../../../../main/services/features/generalApplication/generalApplicationService', () => ({
-  getCancelUrl: jest.fn(),
+jest.mock('services/features/generalApplication/response/generalApplicationResponseStoreService', () => ({
+  getDraftGARespondentResponse: jest.fn(),
+  saveDraftGARespondentResponse: jest.fn(),
 }));
-jest.mock('../../../../../../../main/routes/guards/generalAplicationGuard',() => ({
-  isGAForLiPEnabled: jest.fn((req, res, next) => {
-    next();
-  }),
-}));
+jest.mock('services/features/generalApplication/additionalDocumentService', () => {
+  const actual = jest.requireActual('services/features/generalApplication/additionalDocumentService');
+  return {
+    ...actual,
+    buildSummarySectionForAdditionalDoc: jest.fn((...args: unknown[]) => actual.buildSummarySectionForAdditionalDoc(...args)),
+    prepareCCDData: jest.fn((...args: unknown[]) => actual.prepareCCDData(...args)),
+  };
+});
 
-describe('General Application - additional docs check answer controller ', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, { id_token: citizenRoleToken });
-    (isGaForLipsEnabled as jest.Mock).mockResolvedValue(true);
-  });
+describe('General Application - additional docs check answer controller', () => {
+  const getHandler = getRouteHandler(gaAdditionalDocCheckAnswerController, 'get');
+  const postHandler = getRouteHandler(gaAdditionalDocCheckAnswerController, 'post');
+  const viewPath = 'features/generalApplication/additionalDocuments/check-answers';
+  const claimId = '12345';
+  const appId = 'GA-1001';
+  const mockGetClaimById = getClaimById as jest.Mock;
+  const submitEvent = jest.spyOn(GaServiceClient.prototype, 'submitEvent');
+  let req: {params: {id: string; appId: string}; body: Record<string, unknown>; query: Record<string, unknown>; cookies: Record<string, unknown>};
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
+
+  const buildClaim = (): Claim => {
+    const claim = new Claim();
+    claim.generalApplication = new GeneralApplication();
+    return claim;
+  };
 
   beforeEach(() => {
     jest.clearAllMocks();
+    req = {params: {id: claimId, appId}, body: {}, query: {}, cookies: {}};
+    res = createMockResponse();
+    next = jest.fn();
+    mockGetClaimById.mockResolvedValue(buildClaim());
+    submitEvent.mockResolvedValue(undefined);
   });
-  describe('GET check your answers', () => {
-    it('should render the check answers page with correct data', async () => {
-      const claimId = '123';
-      const gaId = '456';
-      const claim = new Claim();
-      claim.generalApplication = new GeneralApplication();
-      (getClaimDetailsById as jest.Mock).mockResolvedValue(claim);
-      (getCancelUrl as jest.Mock).mockResolvedValue('/cancel-url');
-      (buildSummarySectionForAdditionalDoc as jest.Mock).mockReturnValue([]);
 
-      const res = await request(app).get(constructResponseUrlWithIdAndAppIdParams(claimId, gaId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_CYA_URL));
+  afterAll(() => {
+    submitEvent.mockRestore();
+  });
 
-      expect(res.status).toBe(200);
-      expect(getClaimDetailsById).toHaveBeenCalledWith(expect.anything());
-      expect(getCancelUrl).toHaveBeenCalledWith(claimId, claim);
-      expect(buildSummarySectionForAdditionalDoc).toHaveBeenCalledWith(claim.generalApplication.uploadAdditionalDocuments, claimId, gaId, undefined);
-      expect(res.text).toContain('Check your answers');
+  describe('on GET', () => {
+    it('should render the check answers page', async () => {
+      await getHandler(req as never, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        cancelUrl: '/case/12345/generalApplication/cancel',
+      }));
+      expect(buildSummarySectionForAdditionalDoc).toHaveBeenCalledWith([], claimId, appId, undefined);
+      expect(next).not.toHaveBeenCalled();
     });
 
-    it('should render the check answers welsh page with correct data', async () => {
-      const claimId = '123';
-      const gaId = '456';
-      const claim = new Claim();
-      claim.generalApplication = new GeneralApplication();
-      (getClaimDetailsById as jest.Mock).mockResolvedValue(claim);
-      (getCancelUrl as jest.Mock).mockResolvedValue('/cancel-url');
-      (buildSummarySectionForAdditionalDoc as jest.Mock).mockReturnValue([]);
+    it('should pass the welsh language into the summary', async () => {
+      req.query = {lang: 'cy'};
 
-      const res = await request(app).get(constructResponseUrlWithIdAndAppIdParams(claimId, gaId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_CYA_URL)).query({lang: 'cy'});
+      await getHandler(req as never, res as unknown as Response, next);
 
-      expect(res.status).toBe(200);
-      expect(getClaimDetailsById).toHaveBeenCalledWith(expect.anything());
-      expect(getCancelUrl).toHaveBeenCalledWith(claimId, claim);
-      expect(buildSummarySectionForAdditionalDoc).toHaveBeenCalledWith(claim.generalApplication.uploadAdditionalDocuments, claimId, gaId, 'cy');
-      expect(res.text).toContain('Gwirio eich atebion');
+      expect(buildSummarySectionForAdditionalDoc).toHaveBeenCalledWith([], claimId, appId, 'cy');
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.any(Object));
     });
 
-    it('should handle errors', async () => {
-      const claimId = '123';
-      const gaId = '456';
-      (getClaimDetailsById as jest.Mock).mockRejectedValue(new Error('Error'));
+    it('should call next when loading the claim fails', async () => {
+      const error = new Error('redis failure');
+      mockGetClaimById.mockRejectedValue(error);
 
-      const res = await request(app).get(constructResponseUrlWithIdAndAppIdParams(claimId, gaId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_CYA_URL));
+      await getHandler(req as never, res as unknown as Response, next);
 
-      expect(res.status).toBe(500);
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 
-  describe('POST /ga-upload-additional-documents-cya', () => {
-    it('should submit the documents and redirect to submitted page', async () => {
-      const claimId = '123';
-      const gaId = '456';
-      const claim = new Claim();
-      claim.generalApplication = new GeneralApplication();
-      (getClaimDetailsById as jest.Mock).mockResolvedValue(claim);
-      (prepareCCDData as jest.Mock).mockReturnValue([]);
-      const mockGaServiceClient = jest.spyOn(GaServiceClient.prototype, 'submitEvent').mockResolvedValueOnce(undefined);
+  describe('on POST', () => {
+    it('should submit the documents and redirect to the submitted page', async () => {
+      await postHandler(req as never, res as unknown as Response, next);
 
-      const res = await request(app).post(constructResponseUrlWithIdAndAppIdParams(claimId, gaId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_CYA_URL));
-
-      expect(res.status).toBe(302);
-      expect(res.header.location).toBe(constructResponseUrlWithIdAndAppIdParams(claimId, gaId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_SUBMITTED_URL));
-      expect(getClaimDetailsById).toHaveBeenCalledWith(expect.anything());
-      expect(prepareCCDData).toHaveBeenCalledWith(claim.generalApplication.uploadAdditionalDocuments);
-      expect(mockGaServiceClient).toHaveBeenCalledWith(ApplicationEvent.UPLOAD_ADDL_DOCUMENTS, gaId, { uploadDocument: [] }, expect.anything());
+      expect(prepareCCDData).toHaveBeenCalledWith([]);
+      expect(submitEvent).toHaveBeenCalledWith(
+        ApplicationEvent.UPLOAD_ADDL_DOCUMENTS,
+        appId,
+        {uploadDocument: []},
+        expect.anything(),
+      );
+      expect(res.redirect).toHaveBeenCalledWith(
+        constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_SUBMITTED_URL),
+      );
+      expect(next).not.toHaveBeenCalled();
     });
 
-    it('should handle errors', async () => {
-      const claimId = '123';
-      const gaId = '456';
-      (getClaimDetailsById as jest.Mock).mockRejectedValue(new Error('Error'));
+    it('should call next when submitting fails', async () => {
+      const error = new Error('submit failure');
+      submitEvent.mockRejectedValue(error);
 
-      const res = await request(app).post(constructResponseUrlWithIdAndAppIdParams(claimId, gaId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_CYA_URL)).send({});
+      await postHandler(req as never, res as unknown as Response, next);
 
-      expect(res.status).toBe(500);
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 });

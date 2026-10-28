@@ -1,130 +1,137 @@
-import {app} from '../../../../../../../main/app';
-import config from 'config';
-import nock from 'nock';
-import request from 'supertest';
-import {GA_APPLY_HELP_ADDITIONAL_FEE_SELECTION_URL} from 'routes/urls';
-import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
+import {Response} from 'express';
+import payAdditionalFeeController from '../../../../../../../main/routes/features/generalApplication/additionalFee/payAdditionalFeeController';
 import {GaHelpWithFees} from 'models/generalApplication/gaHelpWithFees';
-import * as launchDarkly from '../../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {GenericYesNo} from 'form/models/genericYesNo';
 import {YesNo} from 'form/models/yesNo';
-import {t} from 'i18next';
-import {getRedirectUrl} from 'services/features/generalApplication/fee/helpWithFeeService';
+import {Claim} from 'models/claim';
+import {PartyType} from 'models/partyType';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {getClaimById} from 'modules/utilityService';
 import {getDraftGAHWFDetails} from 'modules/draft-store/gaHwFeesDraftStore';
+import {getRedirectUrl} from 'services/features/generalApplication/fee/helpWithFeeService';
+import {createMockResponse, getRouteHandler} from '../../../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../../../main/modules/oidc');
-jest.mock('../../../../../../../main/services/features/generalApplication/fee/helpWithFeeService');
-jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
-jest.mock('../../../../../../../main/modules/draft-store/gaHwFeesDraftStore', () => ({
-  saveDraftGAHWFDetails: jest.fn(),
+jest.mock('modules/draft-store/draftStoreService');
+jest.mock('modules/utilityService', () => ({
+  getClaimById: jest.fn(),
+  getRedisStoreForSession: jest.fn(),
+}));
+
+jest.mock('services/features/generalApplication/response/generalApplicationResponseStoreService', () => ({
+  getDraftGARespondentResponse: jest.fn(),
+  saveDraftGARespondentResponse: jest.fn(),
+}));
+jest.mock('modules/draft-store/gaHwFeesDraftStore', () => ({
   getDraftGAHWFDetails: jest.fn(),
+  saveDraftGAHWFDetails: jest.fn(),
 }));
-jest.mock('../../../../../../../main/routes/guards/generalAplicationGuard',() => ({
-  isGAForLiPEnabled: jest.fn((req, res, next) => {
-    next();
-  }),
+jest.mock('services/features/generalApplication/fee/helpWithFeeService', () => ({
+  getRedirectUrl: jest.fn(),
 }));
-
-const mockGetCaseData = getDraftGAHWFDetails as jest.Mock;
-const mockGetRedirectUrl = getRedirectUrl as jest.Mock;
 
 describe('General Application - Pay additional fee Page', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-    jest.spyOn(launchDarkly, 'isGaForLipsEnabled').mockResolvedValue(true);
+  const getHandler = getRouteHandler(payAdditionalFeeController, 'get');
+  const postHandler = getRouteHandler(payAdditionalFeeController, 'post');
+  const viewPath = 'features/generalApplication/additionalFee/help-with-additional-fee';
+  const claimId = '12345';
+  const appId = '67890';
+  let req: {
+    params: {id: string; appId: string};
+    body: Record<string, unknown>;
+    query: Record<string, string>;
+    cookies: Record<string, string>;
+    session: {user: {id: string}};
+  };
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
+  const mockGetDraft = getDraftGAHWFDetails as jest.Mock;
+  const mockGetRedirectUrl = getRedirectUrl as jest.Mock;
+
+  const buildClaim = (): Claim => {
+    const claim = new Claim();
+    claim.applicant1 = {
+      type: PartyType.INDIVIDUAL,
+      partyDetails: {title: 'Mr', firstName: 'Jan', lastName: 'Clark'},
+    } as Claim['applicant1'];
+    return claim;
+  };
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+    req = {
+      params: {id: claimId, appId},
+      body: {},
+      query: {},
+      cookies: {},
+      session: {user: {id: 'user-1'}},
+    };
+    res = createMockResponse();
+    next = jest.fn();
+    (draftStoreService.generateRedisKeyForGA as jest.Mock).mockReturnValue(appId);
+    (getClaimById as jest.Mock).mockResolvedValue(buildClaim());
+    mockGetDraft.mockImplementation(async () => new GaHelpWithFees());
+    mockGetRedirectUrl.mockResolvedValue('test');
   });
 
   describe('on GET', () => {
-    it('should return Do you want to apply for help with fees page', async () => {
-      const mockGAHwF = new GaHelpWithFees();
-      mockGetCaseData.mockImplementation(async () => mockGAHwF);
-      await request(app)
-        .get(GA_APPLY_HELP_ADDITIONAL_FEE_SELECTION_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.PAY_ADDITIONAL_FEE.HEADING'));
-          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.PAY_ADDITIONAL_FEE.WANT_TO_APPLY_HWF_TITLE'));
-        });
+    it('should render the additional help with fees page', async () => {
+      await getHandler(req as never, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        applyHelpWithFeeSelectionContents: expect.any(Array),
+      }));
+      expect(JSON.stringify((res.render as jest.Mock).mock.calls[0][1].applyHelpWithFeeSelectionContents))
+        .toContain('PAGES.GENERAL_APPLICATION.PAY_ADDITIONAL_FEE.WANT_TO_APPLY_HWF_TITLE');
+      expect(next).not.toHaveBeenCalled();
     });
 
-    it('should return Do you want to apply for help with fees option selection', async () => {
-      const mockGAHwF = new GaHelpWithFees();
-      mockGAHwF.applyHelpWithFees = {option: YesNo.YES};
-      mockGetCaseData.mockImplementation(async () => mockGAHwF);
-      await request(app)
-        .get(GA_APPLY_HELP_ADDITIONAL_FEE_SELECTION_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.PAY_ADDITIONAL_FEE.HEADING'));
-        });
+    it('should render a previously selected yes answer', async () => {
+      const draft = new GaHelpWithFees();
+      draft.applyAdditionalHelpWithFees = new GenericYesNo(YesNo.YES);
+      mockGetDraft.mockResolvedValue(draft);
+
+      await getHandler(req as never, res as unknown as Response, next);
+
+      expect((res.render as jest.Mock).mock.calls[0][1].form.model.option).toBe(YesNo.YES);
     });
 
-    it('should return http 500 when has error in the get method', async () => {
-      mockGetCaseData.mockImplementation(() => {
-        throw new Error(TestMessages.REDIS_FAILURE);
-      });
-      await request(app)
-        .get(GA_APPLY_HELP_ADDITIONAL_FEE_SELECTION_URL)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+    it('should call next when loading the draft fails', async () => {
+      const error = new Error('redis failure');
+      mockGetDraft.mockRejectedValue(error);
+
+      await getHandler(req as never, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 
   describe('on POST', () => {
-    it('should send the value and redirect', async () => {
-      const mockGAHwF = new GaHelpWithFees();
-      mockGetRedirectUrl.mockImplementation(() => 'redirecturl');
-      mockGetCaseData.mockImplementation(async () => mockGAHwF);
-      await request(app)
-        .post(GA_APPLY_HELP_ADDITIONAL_FEE_SELECTION_URL)
-        .send({option: new GenericYesNo(YesNo.YES)})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-        });
+    it('should redirect to the url returned for a yes answer', async () => {
+      req.body = {option: YesNo.YES};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(res.redirect).toHaveBeenCalledWith('test');
     });
 
-    it('should redirect to Do you want to continue to apply for Help with Fees if option is YES', async () => {
-      const mockGAHwF = new GaHelpWithFees();
-      mockGetRedirectUrl.mockImplementation(() => 'test');
-      mockGetCaseData.mockImplementation(async () => mockGAHwF);
-      await request(app)
-        .post(GA_APPLY_HELP_ADDITIONAL_FEE_SELECTION_URL)
-        .send({option: new GenericYesNo(YesNo.YES)})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual('test');
-        });
+    it('should re-render when no answer is selected', async () => {
+      req.body = {option: null};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
+      expect(mockGetRedirectUrl).not.toHaveBeenCalled();
+      expect(res.redirect).not.toHaveBeenCalled();
     });
 
-    it('should show error message if no value selected', async () => {
-      const mockGAHwF = new GaHelpWithFees();
-      mockGetCaseData.mockImplementation(async () => mockGAHwF);
-      await request(app)
-        .post(GA_APPLY_HELP_ADDITIONAL_FEE_SELECTION_URL)
-        .send({option: null})
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.GENERAL_APPLICATION.APPLY_HELP_WITH_FEES'));
-        });
-    });
+    it('should call next when the redirect lookup fails', async () => {
+      const error = new Error('redis failure');
+      mockGetRedirectUrl.mockRejectedValue(error);
+      req.body = {option: YesNo.YES};
 
-    it('should return http 500 when has error in the post method', async () => {
-      mockGetRedirectUrl.mockImplementation(async () => {
-        throw new Error(TestMessages.REDIS_FAILURE);
-      });
-      await request(app)
-        .post(GA_APPLY_HELP_ADDITIONAL_FEE_SELECTION_URL)
-        .send({option: new GenericYesNo(YesNo.YES)})
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 });
