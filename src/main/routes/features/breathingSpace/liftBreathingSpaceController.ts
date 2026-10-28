@@ -17,20 +17,12 @@ import {isQueryManagementEnabled} from '../../../app/auth/launchdarkly/launchDar
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {getClaimById} from 'modules/utilityService';
 import {generateRedisKey} from 'modules/draft-store/draftStoreService';
-import {ValidationError} from 'class-validator';
 import {AppRequest} from 'models/AppRequest';
 
 const liftBreathingSpaceController = Router();
 const liftBreathingSpaceViewPath = 'features/breathingSpace/lift-breathing-space';
 
-const addDateError = (errors: ValidationError[], messageKey: string): void => {
-  const error = new ValidationError();
-  error.property = 'date';
-  error.constraints = {[messageKey]: messageKey};
-  errors.push(error);
-};
-
-const applyMissingEndDateRule = (form: LiftBreathingSpaceForm, errors: ValidationError[]): boolean => {
+const applyDefaultEndDateForNonStandardBreathingSpace = (form: LiftBreathingSpaceForm): boolean => {
   if (form.date) {
     return false;
   }
@@ -43,15 +35,6 @@ const applyMissingEndDateRule = (form: LiftBreathingSpaceForm, errors: Validatio
     form.month = today.getMonth() + 1;
     form.year = today.getFullYear();
     return true;
-  }
-  if (form.day === undefined) {
-    addDateError(errors, 'ERRORS.VALID_LIFT_END_DATE_DAY');
-  }
-  if (form.month === undefined) {
-    addDateError(errors, 'ERRORS.VALID_LIFT_END_DATE_MONTH');
-  }
-  if (form.year === undefined) {
-    addDateError(errors, 'ERRORS.VALID_LIFT_END_DATE_YEAR');
   }
   return false;
 };
@@ -100,8 +83,7 @@ liftBreathingSpaceController.post(BREATHING_SPACE_LIFT_URL, async (req: Request,
     const genericForm = new GenericForm(form);
     genericForm.validateSync();
 
-    if (!genericForm.errors.some(e => e.property === 'date')
-      && applyMissingEndDateRule(form, genericForm.errors)) {
+    if (applyDefaultEndDateForNonStandardBreathingSpace(form)) {
       genericForm.validateSync();
     }
 

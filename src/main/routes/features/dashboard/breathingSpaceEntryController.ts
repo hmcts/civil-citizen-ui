@@ -24,7 +24,7 @@ const breathingSpaceEntryController = Router();
 async function renderView(res: Response, claimId: string, form: GenericForm<BreathingSpaceEnterDraft>) {
   res.render(breathingSpaceEnterViewPath, {
     form,
-    pageTitle: 'PAGES.BREATHING_SPACE_ENTRY.PAGE_TITLE',
+    pageTitle: 'PAGES.BREATHING_SPACE_ENTRY.TYPE_AND_REFERENCE.HEADING',
     backLinkUrl: constructResponseUrlWithIdParams(claimId, BREATHING_SPACE_INFO_URL),
     cancelUrl: constructResponseUrlWithIdParams(claimId, BREATHING_SPACE_CANCEL_URL),
     dashboardUrl: constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL),
