@@ -38,28 +38,17 @@ howMuchHaveYouPaidController
         const claimId = getRouteParam(req, 'id');
         // Always read the claim amount from this user's own draft claim - never cache it at module level,
         // as module state is shared between all users on the same node process.
-        const claim = await getResponseClaimById(<AppRequest>req, claimId);
+        const claim = await getResponseClaimById(req as unknown as AppRequest, claimId);
         const howMuchHaveYouPaid = howMuchHaveYouPaidService.buildHowMuchHaveYouPaid(toNumberOrUndefined(req.body.amount), claim?.totalClaimAmount, req.body.year, req.body.month, req.body.day, req.body.text);
         const form: GenericForm<HowMuchHaveYouPaid> = new GenericForm<HowMuchHaveYouPaid>(howMuchHaveYouPaid);
         await form.validate();
 
-<<<<<<< HEAD
         if (form.hasErrors()) {
           res.render(howMuchHaveYouPaidPath, {
             form: form, lastMonth: getLastMonth(), totalClaimAmount: howMuchHaveYouPaid.totalClaimAmount,
           });
         } else {
-          await howMuchHaveYouPaidService.saveHowMuchHaveYouPaid(<AppRequest>req, howMuchHaveYouPaid, ResponseType.PART_ADMISSION);
-=======
-      if (form.hasErrors()) {
-        res.render(howMuchHaveYouPaidPath, {
-          form: form, lastMonth: lastMonth, totalClaimAmount: howMuchHaveYouPaid.totalClaimAmount,
-        });
-      } else {
-        try {
           await howMuchHaveYouPaidService.saveHowMuchHaveYouPaid(req as unknown as AppRequest, howMuchHaveYouPaid, ResponseType.PART_ADMISSION);
-          const claimId = getRouteParam(req, 'id');
->>>>>>> 79f943be43 (DTSCCI-6622 - fix for app request unknown)
           res.redirect(constructResponseUrlWithIdParams(claimId, RESPONSE_TASK_LIST_URL));
         }
       } catch (error) {
