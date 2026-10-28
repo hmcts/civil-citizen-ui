@@ -1,14 +1,13 @@
 import {NextFunction, Request, Response, Router} from 'express';
-import {PaymentDate} from '../../../../../../common/form/models/admission/fullAdmission/paymentOption/paymentDate';
-import {CITIZEN_PAYMENT_DATE_URL, RESPONSE_TASK_LIST_URL} from '../../../../../urls';
-import {GenericForm} from '../../../../../../common/form/models/genericForm';
-import {constructResponseUrlWithIdParams} from '../../../../../../common/utils/urlFormatter';
+import {PaymentDate} from 'common/form/models/admission/fullAdmission/paymentOption/paymentDate';
+import {CITIZEN_PAYMENT_DATE_URL, RESPONSE_TASK_LIST_URL} from 'routes/urls';
+import {GenericForm} from 'common/form/models/genericForm';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {
   paymentDateService,
-} from '../../../../../../services/features/response/admission/fullAdmission/paymentOption/paymentDateService';
-import {ResponseType} from '../../../../../../common/form/models/responseType';
+} from 'services/features/response/admission/fullAdmission/paymentOption/paymentDateService';
+import {ResponseType} from 'common/form/models/responseType';
 import {AppRequest} from 'common/models/AppRequest';
-import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const paymentDatePath = 'features/response/admission/payment-date';
@@ -19,7 +18,7 @@ paymentDateController
   .get(
     CITIZEN_PAYMENT_DATE_URL, async (req: Request, res: Response, next: NextFunction) => {
       try {
-        const paymentDate = await paymentDateService.getPaymentDate(generateRedisKey(req as unknown as AppRequest), ResponseType.FULL_ADMISSION);
+        const paymentDate = await paymentDateService.getPaymentDate(req as unknown as AppRequest, ResponseType.FULL_ADMISSION);
         res.render(paymentDatePath, {
           form: new GenericForm(paymentDate), title,
         });
@@ -37,7 +36,7 @@ paymentDateController
         res.render(paymentDatePath, {form, title});
       } else {
         try {
-          await paymentDateService.savePaymentDate(generateRedisKey(req as unknown as AppRequest), paymentDate.date, ResponseType.FULL_ADMISSION);
+          await paymentDateService.savePaymentDate(req as unknown as AppRequest, paymentDate.date, ResponseType.FULL_ADMISSION);
           const claimId = getRouteParam(req, 'id');
           res.redirect(constructResponseUrlWithIdParams(claimId, RESPONSE_TASK_LIST_URL));
         } catch (error) {
