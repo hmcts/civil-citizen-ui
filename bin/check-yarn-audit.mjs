@@ -1,14 +1,14 @@
 #!/usr/bin/env node
 
 /**
- * Fail if Yarn reports npm security advisories that are not in yarn-audit-known-issues,
- * or if the production tree has any security advisory.
+ * Fail on unreviewed security advisories or production deprecations, stale review
+ * records, or any production security advisory.
  *
  * @remarks Pins and lockfile checksums do not replace a CVE scan. Production
  *   (`dependencies`) must stay clean. Dev/test toolchain findings may be
  *   listed in `yarn-audit-known-issues` after review — do not copy a line
- *   there just to go green. Deprecation notices are excluded from this security
- *   gate; review them separately as dependency maintenance.
+ *   there just to go green. Production deprecation notices require a separate
+ *   maintenance review and matching records, as in the Jenkins audit.
  * @see README.md#dependency-checks
  */
 
@@ -29,6 +29,10 @@ function advisoryKey(record) {
   const name = record?.value ?? '';
   const id = record?.children?.ID ?? '';
   return `${name}::${id}`;
+}
+
+function isDeprecation(record) {
+  return record.children?.ID === `${record.value} (deprecation)`;
 }
 
 /**
@@ -74,9 +78,10 @@ function reviewDetails(record) {
   ]);
 }
 
-function runYarnAudit(extraArgs) {
+function runYarnAudit(extraArgs, includeDeprecations = false) {
   const yarnPath = path.join(root, '.yarn/releases/yarn-4.18.1.cjs');
-  const result = spawnSync(process.execPath, [yarnPath, 'npm', 'audit', '--recursive', '--json', '--no-deprecations', ...extraArgs], {
+  const deprecationArgs = includeDeprecations ? [] : ['--no-deprecations'];
+  const result = spawnSync(process.execPath, [yarnPath, 'npm', 'audit', '--recursive', '--json', ...deprecationArgs, ...extraArgs], {
     cwd: root,
     encoding: 'utf8',
     // Audit talks to the npm registry.
@@ -116,7 +121,11 @@ function formatRecord(record) {
 
 const errors = [];
 
-const production = runYarnAudit(['--environment', 'production']);
+// Include notices in the production scan so Jenkins-only maintenance failures
+// are caught here too. Only Yarn's exact deprecation IDs are separated out.
+const productionReport = runYarnAudit(['--environment', 'production'], true);
+const production = productionReport.filter(record => !isDeprecation(record));
+const productionDeprecations = productionReport.filter(isDeprecation);
 if (production.length > 0) {
   errors.push('Production dependency tree has security advisories (must be empty — do not allowlist these):');
   for (const record of production) {
@@ -125,12 +134,11 @@ if (production.length > 0) {
 }
 
 const knownText = fs.existsSync(knownIssuesPath) ? fs.readFileSync(knownIssuesPath, 'utf8') : '';
-// Jenkins audits without --no-deprecations and needs its reviewed notices here.
-// Exclude only Yarn's exact deprecation IDs from this security-only comparison.
-const knownSecurityRecords = parseAuditNdjson(knownText).filter(record =>
-  record.children?.ID !== `${record.value} (deprecation)`);
-const known = indexAdvisories(knownSecurityRecords);
-const current = indexAdvisories(runYarnAudit([]));
+const known = indexAdvisories(parseAuditNdjson(knownText));
+// Retain the full-tree security scan: dev-only findings need review even though
+// they do not appear in Jenkins's production-only report.
+const securityRecords = runYarnAudit([]);
+const current = indexAdvisories([...securityRecords, ...productionDeprecations]);
 
 const unexpected = [];
 const changed = [];
@@ -153,13 +161,13 @@ for (const [key, records] of current) {
   stale.push(...unmatched);
 }
 if (unexpected.length > 0) {
-  errors.push('New security advisories are not in yarn-audit-known-issues (review toolchain findings or upgrade; never allowlist production findings):');
+  errors.push('New audit findings are not in yarn-audit-known-issues (review toolchain findings and production deprecations; never allowlist production security advisories):');
   for (const record of unexpected) {
     errors.push(formatRecord(record));
   }
 }
 if (changed.length > 0) {
-  errors.push('Reviewed toolchain security advisories changed severity, affected versions or dependency path (review and update the recorded lines):');
+  errors.push('Reviewed audit findings changed severity, affected versions or dependency path (review and update the recorded lines):');
   for (const record of changed) {
     errors.push(formatRecord(record));
   }
@@ -171,7 +179,7 @@ for (const [key, records] of known) {
   }
 }
 if (stale.length > 0) {
-  errors.push('yarn-audit-known-issues lists security advisories Yarn no longer reports (remove the stale lines):');
+  errors.push('yarn-audit-known-issues lists audit findings Yarn no longer reports (remove the stale lines):');
   for (const record of stale) {
     errors.push(formatRecord(record));
   }
@@ -182,5 +190,4 @@ if (errors.length > 0) {
   process.exit(1);
 }
 
-const acceptedCount = [...current.values()].reduce((count, records) => count + records.length, 0);
-console.log(`deps:audit: no production security advisories; ${acceptedCount} accepted toolchain security advisories match yarn-audit-known-issues (deprecation notices excluded).`);
+console.log(`deps:audit: no production security advisories; ${securityRecords.length} accepted toolchain security advisories and ${productionDeprecations.length} reviewed production deprecations match yarn-audit-known-issues.`);
