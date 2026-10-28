@@ -1,13 +1,15 @@
 import {Request, Response} from 'express';
 import howMuchDoYouOweController from '../../../../../../../main/routes/features/response/admission/partialAdmission/howMuchDoYouOweController';
 import {RESPONSE_TASK_LIST_URL} from 'routes/urls';
-import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {
+  getHowMuchDoYouOweForm,
+  saveHowMuchDoYouOweData,
+} from 'services/features/response/admission/partialAdmission/howMuchDoYouOweService';
+import {HowMuchDoYouOwe} from 'form/models/admission/partialAdmission/howMuchDoYouOwe';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {Claim} from 'models/claim';
-import {Party} from 'models/party';
 import {createMockResponse, getRouteHandler} from '../../../../../../utils/getRouteHandler';
 
-jest.mock('modules/draft-store/draftStoreService');
+jest.mock('services/features/response/admission/partialAdmission/howMuchDoYouOweService');
 
 describe('Partial Admit - How much money do you admit you owe? Controller', () => {
   const getHandler = getRouteHandler(howMuchDoYouOweController, 'get');
@@ -17,16 +19,8 @@ describe('Partial Admit - How much money do you admit you owe? Controller', () =
   let req: Partial<Request>;
   let res: ReturnType<typeof createMockResponse>;
   let next: jest.Mock;
-  const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
-  const mockGenerateRedisKey = draftStoreService.generateRedisKey as jest.Mock;
-  const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
-
-  const stubClaim = (): Claim => {
-    const claim = new Claim();
-    claim.applicant1 = new Party();
-    claim.totalClaimAmount = 110;
-    return claim;
-  };
+  const mockGetHowMuchDoYouOweForm = getHowMuchDoYouOweForm as jest.Mock;
+  const mockSaveHowMuchDoYouOweData = saveHowMuchDoYouOweData as jest.Mock;
 
   const expectValidationError = () => {
     expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
@@ -34,6 +28,7 @@ describe('Partial Admit - How much money do you admit you owe? Controller', () =
     }));
     expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
     expect(res.redirect).not.toHaveBeenCalled();
+    expect(mockSaveHowMuchDoYouOweData).not.toHaveBeenCalled();
   };
 
   beforeEach(() => {
@@ -41,9 +36,8 @@ describe('Partial Admit - How much money do you admit you owe? Controller', () =
     res = createMockResponse();
     next = jest.fn();
     jest.clearAllMocks();
-    mockGenerateRedisKey.mockReturnValue(claimId);
-    mockGetCaseData.mockResolvedValue(stubClaim());
-    mockSaveDraftClaim.mockResolvedValue(undefined);
+    mockGetHowMuchDoYouOweForm.mockResolvedValue(new HowMuchDoYouOwe(undefined, 110));
+    mockSaveHowMuchDoYouOweData.mockResolvedValue(undefined);
   });
 
   describe('on GET', () => {
@@ -53,12 +47,13 @@ describe('Partial Admit - How much money do you admit you owe? Controller', () =
       expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
         form: expect.anything(),
       }));
+      expect(mockGetHowMuchDoYouOweForm).toHaveBeenCalled();
       expect(next).not.toHaveBeenCalled();
     });
 
     it('should call next when loading the claim fails', async () => {
-      const error = new Error('redis failure');
-      mockGetCaseData.mockRejectedValue(error);
+      const error = new Error('draft failure');
+      mockGetHowMuchDoYouOweForm.mockRejectedValue(error);
 
       await getHandler(req as Request, res as unknown as Response, next);
 
@@ -128,15 +123,28 @@ describe('Partial Admit - How much money do you admit you owe? Controller', () =
 
       await postHandler(req as Request, res as unknown as Response, next);
 
-      expect(mockSaveDraftClaim).toHaveBeenCalled();
+      expect(mockSaveHowMuchDoYouOweData).toHaveBeenCalledWith(
+        expect.anything(),
+        expect.objectContaining({amount: 100, totalAmount: 110}),
+      );
       expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, RESPONSE_TASK_LIST_URL));
       expect(next).not.toHaveBeenCalled();
     });
 
     it('should call next when loading the claim fails', async () => {
-      const error = new Error('redis failure');
-      mockGetCaseData.mockRejectedValue(error);
+      const error = new Error('draft failure');
+      mockGetHowMuchDoYouOweForm.mockRejectedValue(error);
       req.body = {amount: 200};
+
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
+    });
+
+    it('should call next when saving fails', async () => {
+      const error = new Error('draft failure');
+      mockSaveHowMuchDoYouOweData.mockRejectedValue(error);
+      req.body = {amount: 100};
 
       await postHandler(req as Request, res as unknown as Response, next);
 
