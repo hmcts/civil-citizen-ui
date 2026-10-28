@@ -26,7 +26,7 @@ class FormShellLoader extends nunjucks.Loader {
 
 export function formControlTranslate(language = 'en') {
   const instance = createInstance();
-  instance.init({lng: language, fallbackLng: 'en', initImmediate: false, resources: {en: {translation: en}, cy: {translation: cy}}, interpolation: {escapeValue: false}});
+  instance.init({lng: language, fallbackLng: 'en', initAsync: false, resources: {en: {translation: en}, cy: {translation: cy}}, interpolation: {escapeValue: false}});
   return (key: string, values: Record<string, unknown> = {}) => key ? String(instance.t(key, values)) : '';
 }
 
