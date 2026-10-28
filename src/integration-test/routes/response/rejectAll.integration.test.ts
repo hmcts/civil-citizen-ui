@@ -41,6 +41,7 @@ import {
 } from '../../../test/utils/mockClaimForCheckAnswers';
 import {mockDefendantResponseSmallClaimFullReject} from '../../../test/utils/mockDraftStore';
 import * as draftStoreService from '../../../main/modules/draft-store/draftStoreService';
+import {asUser, installSessionUserInjector} from '../../setup/sessionHelper';
 import {
   isCarmEnabledForCase,
   isMintiEnabledForCase,
@@ -58,7 +59,9 @@ import {UnavailableDateType} from '../../../main/common/models/directionsQuestio
 import {PartyType} from '../../../main/common/models/partyType';
 import {Claim} from '../../../main/common/models/claim';
 
-const CLAIM_ID = '000MC123';
+const CLAIM_ID = '1645882162449409';
+const USER_ID = 'integration-user';
+const withUser = (): Record<string, string> => asUser(USER_ID);
 const FUTURE_RESPONSE_DEADLINE = new Date('2050-05-15T00:00:00.000Z');
 const SUBMITTED_DATE = '2026-01-02T09:00:00.000Z';
 
@@ -183,6 +186,7 @@ const expectTaskList = (res: request.Response, includes: string[], excludes: str
 
 describe('Integration: reject-all response coverage', () => {
   beforeAll(() => {
+    installSessionUserInjector();
     jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
   });
 
@@ -196,6 +200,7 @@ describe('Integration: reject-all response coverage', () => {
 
     await request(app)
       .get(route(CITIZEN_REJECT_ALL_CLAIM_URL))
+      .set(withUser())
       .expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain('Why do you believe you don');
@@ -208,6 +213,7 @@ describe('Integration: reject-all response coverage', () => {
 
     await request(app)
       .post(route(CITIZEN_REJECT_ALL_CLAIM_URL))
+      .set(withUser())
       .send({})
       .expect((res) => {
         expect(res.status).toBe(200);
@@ -221,6 +227,7 @@ describe('Integration: reject-all response coverage', () => {
 
     await request(app)
       .post(route(CITIZEN_REJECT_ALL_CLAIM_URL))
+      .set(withUser())
       .send({option: RejectAllOfClaimType.DISPUTE})
       .expect(302)
       .expect('Location', route(RESPONSE_TASK_LIST_URL));
@@ -231,6 +238,7 @@ describe('Integration: reject-all response coverage', () => {
 
     await request(app)
       .post(route(CITIZEN_REJECT_ALL_CLAIM_URL))
+      .set(withUser())
       .send({option: RejectAllOfClaimType.COUNTER_CLAIM})
       .expect(302)
       .expect('Location', route(SEND_RESPONSE_BY_EMAIL_URL));
@@ -241,6 +249,7 @@ describe('Integration: reject-all response coverage', () => {
 
     await request(app)
       .get(route(RESPONSE_TASK_LIST_URL))
+      .set(withUser())
       .expect((res) => {
         expectTaskList(
           res,
@@ -255,6 +264,7 @@ describe('Integration: reject-all response coverage', () => {
 
     await request(app)
       .get(route(RESPONSE_TASK_LIST_URL))
+      .set(withUser())
       .expect((res) => {
         expectTaskList(
           res,
@@ -270,6 +280,7 @@ describe('Integration: reject-all response coverage', () => {
 
     await request(app)
       .get(route(RESPONSE_TASK_LIST_URL))
+      .set(withUser())
       .expect((res) => {
         expectTaskList(
           res,
@@ -285,6 +296,7 @@ describe('Integration: reject-all response coverage', () => {
 
     await request(app)
       .get(route(RESPONSE_TASK_LIST_URL))
+      .set(withUser())
       .expect((res) => {
         expectTaskList(
           res,
@@ -300,6 +312,7 @@ describe('Integration: reject-all response coverage', () => {
 
     await request(app)
       .get(route(RESPONSE_CHECK_ANSWERS_URL))
+      .set(withUser())
       .expect((res) => {
         expect(res.status).toBe(200);
         expect(res.text).toContain('Check your answers');
@@ -319,6 +332,7 @@ describe('Integration: reject-all response coverage', () => {
     setDraftClaim(claim);
     await request(app)
       .post(route(RESPONSE_YOUR_DEFENCE_URL))
+      .set(withUser())
       .send({text: 'A detailed defence for the reject-all dispute branch'})
       .expect(302)
       .expect('Location', route(CITIZEN_TIMELINE_URL));
@@ -326,6 +340,7 @@ describe('Integration: reject-all response coverage', () => {
     setDraftClaim(claim);
     await request(app)
       .post(route(CITIZEN_TIMELINE_URL))
+      .set(withUser())
       .send({
         rows: [{
           day: 17,
@@ -341,6 +356,7 @@ describe('Integration: reject-all response coverage', () => {
     setDraftClaim(claim);
     await request(app)
       .post(route(CITIZEN_EVIDENCE_URL))
+      .set(withUser())
       .send({
         comment: 'Evidence comment',
         evidenceItem: [{
@@ -357,18 +373,21 @@ describe('Integration: reject-all response coverage', () => {
 
     await request(app)
       .post(route(DQ_NEXT_12MONTHS_CAN_NOT_HEARING_URL))
+      .set(withUser())
       .send({option: YesNo.YES})
       .expect(302)
       .expect('Location', route(DQ_AVAILABILITY_DATES_FOR_HEARING_URL));
 
     await request(app)
       .post(route(DQ_AVAILABILITY_DATES_FOR_HEARING_URL))
+      .set(withUser())
       .send(buildFutureSingleUnavailableDate())
       .expect(302)
       .expect('Location', route(DQ_PHONE_OR_VIDEO_HEARING_URL));
 
     await request(app)
       .post(route(DQ_AVAILABILITY_DATES_FOR_HEARING_URL))
+      .set(withUser())
       .send(buildLongUnavailablePeriod())
       .expect(302)
       .expect('Location', route(DQ_UNAVAILABLE_FOR_HEARING_URL));
@@ -378,12 +397,14 @@ describe('Integration: reject-all response coverage', () => {
     setDraftClaim(buildRejectAllDisputeClaim());
     await request(app)
       .post(route(DQ_EXPERT_SMALL_CLAIMS_URL))
+      .set(withUser())
       .send({expertYes: YesNo.YES})
       .expect(302)
       .expect('Location', route(DQ_EXPERT_REPORT_DETAILS_URL));
 
     await request(app)
       .post(route(DQ_EXPERT_SMALL_CLAIMS_URL))
+      .set(withUser())
       .send({})
       .expect(302)
       .expect('Location', route(DQ_GIVE_EVIDENCE_YOURSELF_URL));
@@ -393,6 +414,7 @@ describe('Integration: reject-all response coverage', () => {
     setDraftClaim(companyClaim);
     await request(app)
       .post(route(DQ_GIVE_EVIDENCE_YOURSELF_URL))
+      .set(withUser())
       .send({option: YesNo.YES})
       .expect(302)
       .expect('Location', route(DQ_CONFIRM_YOUR_DETAILS_URL));
