@@ -167,7 +167,7 @@ export function presentationFormContext(view: string, language = 'en', state = '
   const airlines: AirlineList[] = key === 'flight-details' ? [{airline: 'Air Example', epimsID: 'fixture-airline'}, {airline: 'OTHER', epimsID: 'fixture-other'}] : [];
   // The production datalist builder uses the shared translator, not the page's t local.
   if (key === 'flight-details' && !i18next.isInitialized) {
-    i18next.init({lng: language, fallbackLng: 'en', initImmediate: false, resources: {en: {translation: en}, cy: {translation: cy}}});
+    i18next.init({lng: language, fallbackLng: 'en', initAsync: false, resources: {en: {translation: en}, cy: {translation: cy}}});
   }
   const datalist = key === 'flight-details' ? buildDataList(airlines, form.hasFieldError('airline'), model.airline, language) : '';
   const repaymentSchedule = getRepaymentScheduleDisplay(model.totalClaimAmount, model.paymentAmount, model.repaymentFrequency);
