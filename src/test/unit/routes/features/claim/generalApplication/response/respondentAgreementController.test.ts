@@ -1,125 +1,119 @@
-import config from 'config';
-import nock from 'nock';
-import request from 'supertest';
-import { GA_RESPONDENT_AGREEMENT_URL } from 'routes/urls';
-import { app } from '../../../../../../../main/app';
-import * as draftService from 'modules/draft-store/draftStoreService';
-import { Claim } from 'common/models/claim';
-import { t } from 'i18next';
-import * as gaStoreResponseService from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
-import { ApplicationTypeOption } from 'common/models/generalApplication/applicationType';
-import { TestMessages } from '../../../../../../utils/errorMessageTestConstants';
-import { isGaForLipsEnabled } from 'app/auth/launchdarkly/launchDarklyClient';
-import { RespondentAgreement } from 'common/models/generalApplication/response/respondentAgreement';
-import { constructResponseUrlWithIdAndAppIdParams } from 'common/utils/urlFormatter';
+import {Response} from 'express';
+import respondentAgreementController from '../../../../../../../main/routes/features/generalApplication/response/respondentAgreementController';
+import {GA_RESPONDENT_WANT_TO_UPLOAD_DOCUMENT_URL} from 'routes/urls';
+import {Claim} from 'models/claim';
+import {PartyType} from 'models/partyType';
 import {GaResponse} from 'models/generalApplication/response/gaResponse';
+import {ApplicationTypeOption} from 'models/generalApplication/applicationType';
+import {YesNo} from 'form/models/yesNo';
+import {constructResponseUrlWithIdAndAppIdParams} from 'common/utils/urlFormatter';
+import {getRespondToApplicationCaption} from 'services/features/generalApplication/response/generalApplicationResponseService';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import * as gaStoreResponseService from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
+import {createMockResponse, getRouteHandler} from '../../../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../../../main/modules/oidc');
-jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
-jest.mock('../../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
-jest.mock('../../../../../../../main/services/features/generalApplication/response/generalApplicationResponseStoreService', () => ({
+jest.mock('modules/draft-store/draftStoreService');
+jest.mock('services/features/generalApplication/response/generalApplicationResponseStoreService', () => ({
   saveDraftGARespondentResponse: jest.fn(),
   getDraftGARespondentResponse: jest.fn(),
 }));
-jest.mock('../../../../../../../main/routes/guards/generalAplicationGuard',() => ({
-  isGAForLiPEnabled: jest.fn((req, res, next) => {
-    next();
-  }),
-}));
 
-describe('General Application - inform other parties', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
-  const mockDataFromStore = jest.spyOn(draftService, 'getCaseDataFromStore');
-  let claim: Claim;
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, { id_token: citizenRoleToken });
-    (isGaForLipsEnabled as jest.Mock).mockResolvedValue(true);
-  });
+describe('General Application - respondent agreement', () => {
+  const getHandler = getRouteHandler(respondentAgreementController, 'get');
+  const postHandler = getRouteHandler(respondentAgreementController, 'post');
+  const viewPath = 'features/generalApplication/respondent-agreement';
+  const claimId = '12345';
+  const appId = 'GA-1001';
+  const applicationType = [ApplicationTypeOption.STAY_THE_CLAIM];
+  let req: {params: {id: string; appId: string}; body: Record<string, unknown>; cookies: {lang: string}; query: Record<string, unknown>};
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
+  let gaResponse: GaResponse;
+  const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
+  const mockGetDraft = gaStoreResponseService.getDraftGARespondentResponse as jest.Mock;
+  const mockSaveDraft = gaStoreResponseService.saveDraftGARespondentResponse as jest.Mock;
+
+  const buildClaim = (): Claim => {
+    const claim = new Claim();
+    claim.applicant1 = {
+      type: PartyType.INDIVIDUAL,
+      partyDetails: {title: 'Mr', firstName: 'Jan', lastName: 'Clark'},
+    } as Claim['applicant1'];
+    return claim;
+  };
 
   beforeEach(() => {
-    claim = new Claim();
-    mockDataFromStore.mockResolvedValue(claim);
+    jest.clearAllMocks();
+    req = {params: {id: claimId, appId}, body: {}, cookies: {lang: 'en'}, query: {}};
+    res = createMockResponse();
+    next = jest.fn();
+    gaResponse = new GaResponse();
+    gaResponse.generalApplicationType = applicationType;
+    (draftStoreService.generateRedisKey as jest.Mock).mockReturnValue(claimId);
+    (draftStoreService.generateRedisKeyForGA as jest.Mock).mockReturnValue('ga-12345');
+    mockGetCaseData.mockResolvedValue(buildClaim());
+    (draftStoreService.saveDraftClaim as jest.Mock).mockResolvedValue(undefined);
+    mockGetDraft.mockResolvedValue(gaResponse);
+    mockSaveDraft.mockResolvedValue(undefined);
   });
 
   describe('on GET', () => {
-    it('should return page', async () => {
-      const gaResponse = new GaResponse();
-      gaResponse.respondentAgreement = new RespondentAgreement();
-      gaResponse.generalApplicationType = [ApplicationTypeOption.STAY_THE_CLAIM];
-      jest.spyOn(gaStoreResponseService, 'getDraftGARespondentResponse').mockResolvedValueOnce(gaResponse);
-      await request(app)
-        .get(constructResponseUrlWithIdAndAppIdParams('123', '345', GA_RESPONDENT_AGREEMENT_URL))
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.RESPONDENT_AGREEMENT.TITLE'));
-          expect(res.text.toLowerCase()).toContain(t('PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.PAUSE').toLowerCase());
-        });
+    it('should render the agreement page with the application caption', async () => {
+      await getHandler(req as never, res as unknown as Response, next);
+      await new Promise((resolve) => setImmediate(resolve));
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        caption: getRespondToApplicationCaption(applicationType, 'en'),
+      }));
+      expect(next).not.toHaveBeenCalled();
     });
 
-    it('should return http 500 when has error in the get method', async () => {
+    it('should reject when loading the claim fails', async () => {
+      const error = new Error('redis failure');
+      mockGetCaseData.mockRejectedValue(error);
 
-      mockDataFromStore.mockRejectedValueOnce(new Error(TestMessages.SOMETHING_WENT_WRONG));
-      await request(app)
-        .get(GA_RESPONDENT_AGREEMENT_URL)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+      await expect(getHandler(req as never, res as unknown as Response, next)).rejects.toBe(error);
     });
   });
 
   describe('on POST', () => {
-    it('should save the value and redirect', async () => {
-      const gaResponse = new GaResponse();
-      gaResponse.respondentAgreement = new RespondentAgreement();
-      gaResponse.generalApplicationType = [ApplicationTypeOption.STAY_THE_CLAIM];
-      jest.spyOn(gaStoreResponseService, 'getDraftGARespondentResponse').mockResolvedValueOnce(gaResponse);
-      await request(app)
-        .post(constructResponseUrlWithIdAndAppIdParams('123', '345', GA_RESPONDENT_AGREEMENT_URL))
-        .send({ option: 'yes' })
-        .expect((res) => {
-          expect(res.status).toBe(302);
-        });
+    it('should save and redirect when the respondent agrees', async () => {
+      req.body = {option: YesNo.YES};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(gaResponse.respondentAgreement?.option).toBe(YesNo.YES);
+      expect(res.redirect).toHaveBeenCalledWith(
+        constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_RESPONDENT_WANT_TO_UPLOAD_DOCUMENT_URL),
+      );
     });
 
-    it('should return errors on no input', async () => {
-      const gaResponse = new GaResponse();
-      gaResponse.respondentAgreement = new RespondentAgreement();
-      gaResponse.generalApplicationType = [ApplicationTypeOption.STAY_THE_CLAIM];
-      jest.spyOn(gaStoreResponseService, 'getDraftGARespondentResponse').mockResolvedValueOnce(gaResponse);
-      await request(app)
-        .post(constructResponseUrlWithIdAndAppIdParams('123', '345', GA_RESPONDENT_AGREEMENT_URL))
-        .send({ option: null })
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.GENERAL_APPLICATION.RESPONDENT_AGREEMENT.NEED_TO_TELL'));
-        });
+    it('should re-render when no option is selected', async () => {
+      req.body = {option: null};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
+      expect(mockSaveDraft).not.toHaveBeenCalled();
     });
-    it('should return errors when selected no and not provided the reason', async () => {
-      const gaResponse = new GaResponse();
-      gaResponse.respondentAgreement = new RespondentAgreement();
-      gaResponse.generalApplicationType = [ApplicationTypeOption.STAY_THE_CLAIM];
-      jest.spyOn(gaStoreResponseService, 'getDraftGARespondentResponse').mockResolvedValueOnce(gaResponse);
-      await request(app)
-        .post(constructResponseUrlWithIdAndAppIdParams('123', '345', GA_RESPONDENT_AGREEMENT_URL))
-        .send({ option: 'no' })
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.GENERAL_APPLICATION.RESPONDENT_AGREEMENT.EXPLAIN_WHY_DISAGREE_APPLICATION'));
-        });
+
+    it('should re-render when no is selected without a reason', async () => {
+      req.body = {option: YesNo.NO};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
+      expect(mockSaveDraft).not.toHaveBeenCalled();
     });
-    it('should return http 500 when has error in the post method', async () => {
-      jest.spyOn(gaStoreResponseService, 'saveDraftGARespondentResponse').mockRejectedValueOnce(new Error(TestMessages.SOMETHING_WENT_WRONG));
-      await request(app)
-        .post(GA_RESPONDENT_AGREEMENT_URL)
-        .send({ option: 'yes' })
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+
+    it('should call next when saving fails', async () => {
+      const error = new Error('redis failure');
+      mockSaveDraft.mockRejectedValue(error);
+      req.body = {option: YesNo.YES};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 });
