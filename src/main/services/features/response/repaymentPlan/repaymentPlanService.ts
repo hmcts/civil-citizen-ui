@@ -1,8 +1,14 @@
-import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {getResponseDraft, updateResponseDraft} from 'modules/draft-store/response/responseDraftStoreService';
 import {RepaymentPlanForm} from 'common/form/models/repaymentPlan/repaymentPlanForm';
 import {Claim} from 'common/models/claim';
 import {RepaymentPlan} from 'common/models/repaymentPlan';
 import {getTotalAmountWithInterest} from 'modules/claimDetailsService';
+import {AppRequest} from 'models/AppRequest';
+import {getRouteParam} from 'common/utils/routeParamUtils';
+import {PartialAdmission} from 'models/partialAdmission';
+import {FullAdmission} from 'models/fullAdmission';
+import {PaymentIntention} from 'form/models/admission/paymentIntention';
+
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('selfEmployedAsService');
 
@@ -40,9 +46,15 @@ const getRepaymentPlanForm = async (claim: Claim, isPartialAdmission?: boolean) 
   }
 };
 
-const saveRepaymentPlanData = async (claimId: string, form: RepaymentPlanForm, isPartialAdmission?: boolean) => {
+const saveRepaymentPlanData = async (req: AppRequest, form: RepaymentPlanForm, isPartialAdmission?: boolean) => {
   try {
-    const claim = await getClaim(claimId, isPartialAdmission);
+    const caseId = getRouteParam(req, 'id');
+    const draftResult = await getResponseDraft(req, caseId);
+    if (!draftResult) {
+      throw new Error('[repaymentPlanService] no response draft found');
+    }
+    const claim = Object.assign(new Claim(), draftResult.claimResponse?.case_data as unknown as Claim);
+    const draftId = draftResult.rawResponse?.draftId;
     const repaymentPlan: RepaymentPlan = {
       paymentAmount: form.paymentAmount,
       firstRepaymentDate: form.firstRepaymentDate,
@@ -50,33 +62,30 @@ const saveRepaymentPlanData = async (claimId: string, form: RepaymentPlanForm, i
     };
 
     if (isPartialAdmission) {
+      if (!claim.partialAdmission) {
+        claim.partialAdmission = new PartialAdmission();
+      }
+      if (!claim.partialAdmission.paymentIntention) {
+        claim.partialAdmission.paymentIntention = new PaymentIntention();
+      }
       claim.partialAdmission.paymentIntention.repaymentPlan = repaymentPlan;
     } else {
+      if (!claim.fullAdmission) {
+        claim.fullAdmission = new FullAdmission();
+      }
+      if (!claim.fullAdmission.paymentIntention) {
+        claim.fullAdmission.paymentIntention = new PaymentIntention();
+      }
       claim.fullAdmission.paymentIntention.repaymentPlan = repaymentPlan;
     }
-    await saveDraftClaim(claimId, claim);
+    if (draftResult.createdAt && !claim.draftClaimCreatedAt) {
+      claim.draftClaimCreatedAt = new Date(draftResult.createdAt);
+    }
+    await updateResponseDraft(req, caseId, claim, draftId);
   } catch (error) {
     logger.error(error);
     throw error;
   }
-};
-
-const getClaim = async (claimId: string, isPartialAdmission?: boolean): Promise<Claim> => {
-  const claim = await getCaseDataFromStore(claimId);
-  const repaymentPlan: RepaymentPlan = {
-    paymentAmount: 0,
-    repaymentFrequency: '',
-    firstRepaymentDate: null,
-  };
-  if (isPartialAdmission) {
-    if (!claim.partialAdmission.paymentIntention.repaymentPlan) {
-      claim.partialAdmission.paymentIntention.repaymentPlan = repaymentPlan;
-    }
-  } else if (!claim.fullAdmission.paymentIntention.repaymentPlan) {
-    claim.fullAdmission.paymentIntention.repaymentPlan = repaymentPlan;
-
-  }
-  return claim;
 };
 
 export {
