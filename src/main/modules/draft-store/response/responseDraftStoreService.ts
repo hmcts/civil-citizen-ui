@@ -138,7 +138,7 @@ export const getResponseClaimById = async (req: AppRequest, caseId: string): Pro
     return Object.assign(new Claim(), draftResult.claimResponse.case_data as unknown as Claim);
   }
   return new Claim();
-}
+};
 
 const responseRedisKey = (caseId: string, userId: string): string => `${caseId}${userId}`;
 
