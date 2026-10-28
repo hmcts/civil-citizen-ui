@@ -1,13 +1,9 @@
 import {Request, Response} from 'express';
 import alreadyPaidController from '../../../../../../../main/routes/features/response/admission/partialAdmission/alreadyPaidController';
 import {RESPONSE_TASK_LIST_URL} from 'routes/urls';
-import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {PartialAdmissionService} from 'services/features/response/admission/partialAdmission/partialAdmissionService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {Claim} from 'models/claim';
-import {Party} from 'models/party';
 import {createMockResponse, getRouteHandler} from '../../../../../../utils/getRouteHandler';
-
-jest.mock('modules/draft-store/draftStoreService');
 
 describe('Already Paid Controller', () => {
   const getHandler = getRouteHandler(alreadyPaidController, 'get');
@@ -17,24 +13,21 @@ describe('Already Paid Controller', () => {
   let req: Partial<Request>;
   let res: ReturnType<typeof createMockResponse>;
   let next: jest.Mock;
-  const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
-  const mockGenerateRedisKey = draftStoreService.generateRedisKey as jest.Mock;
-  const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
-
-  const stubClaim = (): Claim => {
-    const claim = new Claim();
-    claim.applicant1 = new Party();
-    return claim;
-  };
+  let mockGetClaimAlreadyPaid: jest.SpyInstance;
+  let mockSaveClaimAlreadyPaid: jest.SpyInstance;
 
   beforeEach(() => {
     req = {params: {id: claimId}, body: {}, query: {}, cookies: {}};
     res = createMockResponse();
     next = jest.fn();
-    jest.clearAllMocks();
-    mockGenerateRedisKey.mockReturnValue(claimId);
-    mockGetCaseData.mockResolvedValue(stubClaim());
-    mockSaveDraftClaim.mockResolvedValue(undefined);
+    mockGetClaimAlreadyPaid = jest.spyOn(PartialAdmissionService.prototype, 'getClaimAlreadyPaid')
+      .mockResolvedValue(undefined);
+    mockSaveClaimAlreadyPaid = jest.spyOn(PartialAdmissionService.prototype, 'saveClaimAlreadyPaid')
+      .mockResolvedValue(undefined);
+  });
+
+  afterEach(() => {
+    jest.restoreAllMocks();
   });
 
   describe('on GET', () => {
@@ -44,12 +37,13 @@ describe('Already Paid Controller', () => {
       expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
         form: expect.anything(),
       }));
+      expect(mockGetClaimAlreadyPaid).toHaveBeenCalled();
       expect(next).not.toHaveBeenCalled();
     });
 
     it('should call next when loading the claim fails', async () => {
-      const error = new Error('redis failure');
-      mockGetCaseData.mockRejectedValue(error);
+      const error = new Error('draft failure');
+      mockGetClaimAlreadyPaid.mockRejectedValue(error);
 
       await getHandler(req as Request, res as unknown as Response, next);
 
@@ -65,6 +59,7 @@ describe('Already Paid Controller', () => {
         form: expect.anything(),
       }));
       expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
+      expect(mockSaveClaimAlreadyPaid).not.toHaveBeenCalled();
       expect(res.redirect).not.toHaveBeenCalled();
     });
 
@@ -73,6 +68,7 @@ describe('Already Paid Controller', () => {
 
       await postHandler(req as Request, res as unknown as Response, next);
 
+      expect(mockSaveClaimAlreadyPaid).toHaveBeenCalledWith(expect.anything(), 'No');
       expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, RESPONSE_TASK_LIST_URL));
       expect(next).not.toHaveBeenCalled();
     });
@@ -82,8 +78,19 @@ describe('Already Paid Controller', () => {
 
       await postHandler(req as Request, res as unknown as Response, next);
 
+      expect(mockSaveClaimAlreadyPaid).toHaveBeenCalledWith(expect.anything(), 'Yes');
       expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, RESPONSE_TASK_LIST_URL));
       expect(next).not.toHaveBeenCalled();
+    });
+
+    it('should call next when saving fails', async () => {
+      const error = new Error('draft failure');
+      mockSaveClaimAlreadyPaid.mockRejectedValue(error);
+      req.body = {option: 'Yes'};
+
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 });
