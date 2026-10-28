@@ -1,103 +1,123 @@
-import {app} from '../../../../../../../main/app';
-import config from 'config';
-import nock from 'nock';
-import request from 'supertest';
-import {GA_RESPONSE_HEARING_SUPPORT_URL} from 'routes/urls';
-import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
-import {t} from 'i18next';
+import {Response} from 'express';
+import hearingSupportResponseController from '../../../../../../../main/routes/features/generalApplication/response/hearingSupportResponseController';
+import {GA_RESPONSE_CHECK_ANSWERS_URL} from 'routes/urls';
+import {Claim} from 'models/claim';
+import {PartyType} from 'models/partyType';
+import {GaResponse} from 'models/generalApplication/response/gaResponse';
+import {ApplicationTypeOption} from 'models/generalApplication/applicationType';
 import {SupportType} from 'models/generalApplication/hearingSupport';
-import {isGaForLipsEnabled} from '../../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
+import {constructResponseUrlWithIdAndAppIdParams} from 'common/utils/urlFormatter';
+import {getClaimById} from 'modules/utilityService';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import * as gaStoreResponseService from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
-import { GaResponse } from 'common/models/generalApplication/response/gaResponse';
-import { constructResponseUrlWithIdAndAppIdParams } from 'common/utils/urlFormatter';
-import * as utilityService from 'modules/utilityService';
-import { Claim } from 'common/models/claim';
-import { ApplicationTypeOption } from 'common/models/generalApplication/applicationType';
+import {createMockResponse, getRouteHandler} from '../../../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../../../main/modules/oidc');
-jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
-jest.mock('../../../../../../../main/modules/utilityService');
-jest.mock('../../../../../../../main/services/features/claim/details/claimDetailsService');
-jest.mock('../../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
-jest.mock('../../../../../../../main/services/features/generalApplication/response/generalApplicationResponseStoreService', () => ({
+jest.mock('modules/draft-store/draftStoreService');
+jest.mock('modules/utilityService');
+jest.mock('services/features/generalApplication/response/generalApplicationResponseStoreService', () => ({
   saveDraftGARespondentResponse: jest.fn(),
   getDraftGARespondentResponse: jest.fn(),
 }));
 
-const mockGetClaim = utilityService.getClaimById as jest.Mock;
+describe('General Application Response - Hearing support', () => {
+  const getHandler = getRouteHandler(hearingSupportResponseController, 'get');
+  const postHandler = getRouteHandler(hearingSupportResponseController, 'post');
+  const viewPath = 'features/generalApplication/hearing-support';
+  const claimId = '12345';
+  const appId = 'GA-1001';
+  let req: {params: {id: string; appId: string}; body: Record<string, unknown>; cookies: {lang: string}; query: Record<string, unknown>};
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
+  let gaResponse: GaResponse;
+  const mockGetClaim = getClaimById as jest.Mock;
+  const mockGetDraft = gaStoreResponseService.getDraftGARespondentResponse as jest.Mock;
+  const mockSaveDraft = gaStoreResponseService.saveDraftGARespondentResponse as jest.Mock;
 
-describe('General Application Response- Hearing support', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
-
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-    (isGaForLipsEnabled as jest.Mock).mockResolvedValue(true);
-  });
-  beforeEach(() => {
+  const buildClaim = (): Claim => {
     const claim = new Claim();
-    claim.respondentGaAppDetails = [{ generalAppTypes: [ApplicationTypeOption.ADJOURN_HEARING], gaApplicationId: '345', caseState: '', generalAppSubmittedDateGAspec: '' }];
-    mockGetClaim.mockResolvedValueOnce(claim);
+    claim.applicant1 = {
+      type: PartyType.INDIVIDUAL,
+      partyDetails: {title: 'Mr', firstName: 'Jan', lastName: 'Clark'},
+    } as Claim['applicant1'];
+    return claim;
+  };
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+    req = {params: {id: claimId, appId}, body: {}, cookies: {lang: 'en'}, query: {}};
+    res = createMockResponse();
+    next = jest.fn();
+    gaResponse = new GaResponse();
+    gaResponse.generalApplicationType = [ApplicationTypeOption.ADJOURN_HEARING];
+    (draftStoreService.generateRedisKey as jest.Mock).mockReturnValue(claimId);
+    (draftStoreService.generateRedisKeyForGA as jest.Mock).mockReturnValue('ga-12345');
+    (draftStoreService.getCaseDataFromStore as jest.Mock).mockResolvedValue(buildClaim());
+    (draftStoreService.saveDraftClaim as jest.Mock).mockResolvedValue(undefined);
+    mockGetClaim.mockResolvedValue(buildClaim());
+    mockGetDraft.mockResolvedValue(gaResponse);
+    mockSaveDraft.mockResolvedValue(undefined);
   });
 
   describe('on GET', () => {
-    it('should return page', async () => {
-      jest.spyOn(gaStoreResponseService, 'getDraftGARespondentResponse').mockResolvedValueOnce(new GaResponse());
-      await request(app)
-        .get(constructResponseUrlWithIdAndAppIdParams('123', '345', GA_RESPONSE_HEARING_SUPPORT_URL))
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.HEARING_SUPPORT.TITLE'));
-        });
+    it('should render the hearing support page', async () => {
+      await getHandler(req as never, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        form: expect.anything(),
+        pageContent: expect.any(Array),
+      }));
+      expect(next).not.toHaveBeenCalled();
     });
 
-    it('should return http 500 when has error in the get method', async () => {
-      jest.spyOn(gaStoreResponseService, 'getDraftGARespondentResponse').mockRejectedValueOnce(new Error(TestMessages.REDIS_FAILURE));
-      await request(app)
-        .get(GA_RESPONSE_HEARING_SUPPORT_URL)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+    it('should call next when loading the response fails', async () => {
+      const error = new Error('redis failure');
+      mockGetDraft.mockRejectedValue(error);
+
+      await getHandler(req as never, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 
   describe('on POST', () => {
-    it('should send the value and redirect', async () => {
-      jest.spyOn(gaStoreResponseService, 'getDraftGARespondentResponse').mockResolvedValueOnce(new GaResponse());
-      await request(app)
-        .post(constructResponseUrlWithIdAndAppIdParams('123', '345', GA_RESPONSE_HEARING_SUPPORT_URL))
-        .send({requiredSupport: [SupportType.SIGN_LANGUAGE_INTERPRETER, SupportType.LANGUAGE_INTERPRETER, SupportType.OTHER_SUPPORT],
-          signLanguageContent: 'test1', languageContent: 'test2', otherContent: 'test3'})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-        });
+    it('should save and redirect when support details are provided', async () => {
+      req.body = {
+        requiredSupport: [SupportType.SIGN_LANGUAGE_INTERPRETER, SupportType.LANGUAGE_INTERPRETER, SupportType.OTHER_SUPPORT],
+        signLanguageContent: 'test1',
+        languageContent: 'test2',
+        otherContent: 'test3',
+      };
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(gaResponse.hearingSupport?.signLanguageInterpreter?.content).toBe('test1');
+      expect(res.redirect).toHaveBeenCalledWith(
+        constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_RESPONSE_CHECK_ANSWERS_URL),
+      );
     });
 
-    it('should return errors on box selected but no input', async () => {
-      jest.spyOn(gaStoreResponseService, 'getDraftGARespondentResponse').mockResolvedValueOnce(new GaResponse());
-      await request(app)
-        .post(constructResponseUrlWithIdAndAppIdParams('123', '345',GA_RESPONSE_HEARING_SUPPORT_URL))
-        .send({requiredSupport: SupportType.OTHER_SUPPORT, signLanguageContent: '', languageContent: '', otherContent: ''})
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.GENERAL_APPLICATION.MISSING_OTHER'));
-        });
+    it('should re-render when other support is selected without details', async () => {
+      req.body = {
+        requiredSupport: SupportType.OTHER_SUPPORT,
+        signLanguageContent: '',
+        languageContent: '',
+        otherContent: '',
+      };
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
+      expect(mockSaveDraft).not.toHaveBeenCalled();
     });
 
-    it('should return http 500 when has error in the post method', async () => {
-      jest.spyOn(gaStoreResponseService, 'saveDraftGARespondentResponse').mockImplementation(async () => {
-        throw new Error(TestMessages.REDIS_FAILURE);
-      });
-      await request(app)
-        .post(GA_RESPONSE_HEARING_SUPPORT_URL)
-        .send({requiredSupport: [SupportType.STEP_FREE_ACCESS, SupportType.HEARING_LOOP]})
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+    it('should call next when saving fails', async () => {
+      const error = new Error('redis failure');
+      mockSaveDraft.mockRejectedValue(error);
+      req.body = {requiredSupport: [SupportType.STEP_FREE_ACCESS, SupportType.HEARING_LOOP]};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 });
