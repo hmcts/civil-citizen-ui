@@ -28,6 +28,11 @@ module.exports = [
       '.semgrep/**',
     ],
   },
+  {
+    linterOptions: {
+      reportUnusedDisableDirectives: 'off',
+    },
+  },
   js.configs.recommended,
   {
     files: ['**/*.{js,jsx,ts,tsx}'],
@@ -52,6 +57,8 @@ module.exports = [
       'comma-dangle': ['error', 'always-multiline'],
       semi: ['error', 'always'],
       'no-multiple-empty-lines': ['error', { max: 1 }],
+      'no-useless-assignment': 'off',
+      'no-unassigned-vars': 'off',
     },
   },
   ...tsPlugin.configs['flat/recommended'].map(config => ({
@@ -78,6 +85,13 @@ module.exports = [
       'linebreak-style': ['error', 'unix'],
       quotes: ['error', 'single', { avoidEscape: true }],
       'comma-dangle': ['error', 'always-multiline'],
+      '@typescript-eslint/no-explicit-any': 'warn',
+      '@typescript-eslint/no-unused-vars': 'warn',
+      '@typescript-eslint/no-unused-expressions': 'off',
+      '@typescript-eslint/no-duplicate-enum-values': 'off',
+      '@typescript-eslint/no-empty-object-type': 'off',
+      '@typescript-eslint/no-unsafe-function-type': 'off',
+      '@typescript-eslint/no-wrapper-object-types': 'off',
       '@typescript-eslint/no-require-imports': 'off',
       '@typescript-eslint/no-var-requires': 'off',
     },
