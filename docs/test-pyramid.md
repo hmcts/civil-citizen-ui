@@ -54,8 +54,9 @@ Existing journey owners:
 | Query management | `src/integration-test/routes/queryManagement/qm.integration.test.ts` |
 | Defendant reject-all | `src/integration-test/routes/response/rejectAll.integration.test.ts` |
 | Defendant admission and statement of means | `src/integration-test/routes/response/admission.integration.test.ts` |
+| Small-claims directions questionnaire | `src/integration-test/routes/directionsQuestionnaire/smallClaims.integration.test.ts` |
 | Claimant reject-all | `src/integration-test/routes/claimantResponse/rejectAll.integration.test.ts` |
-| General application (thin slice) | `src/integration-test/routes/generalApplication/generalApplication.integration.test.ts` |
+| General application | `src/integration-test/routes/generalApplication/generalApplicationJourney.integration.test.ts` |
 | Draft-store / GA / payment-session TTL | `src/integration-test/modules/draft-store/` |
 
 If a journey has an owner in this table, do not add new `request(app)` tests under `src/test/unit` for the same behaviour. Convert or delete the unit HTTP tests instead.
@@ -67,6 +68,10 @@ The claim-issue dashboard integration owner is notification rendering only. `src
 Claim-issue pages (task list, party type, amount, CYA, confirmation, and the rest of `src/test/unit/routes/features/claim/` excluding general application) are owned by `src/integration-test/routes/claim/claimIssue.integration.test.ts`.
 
 Defendant full admission, part admission, and statement of means are owned by `src/integration-test/routes/response/admission.integration.test.ts`. That suite is a happy path plus one validation error and one guard redirect. Matching unit tests are the files under `admission/fullAdmission`, `admission/partialAdmission`, `statementOfMeans`, `financial-details`, and `citizenResponseType`. Those unit tests call the route handler and must not use `request(app)`. Contact details, deadlines, confirmation, and other response pages are not part of this owner.
+
+Small-claims directions questionnaire pages under `src/test/unit/routes/features/directionsQuestionnaire/` are owned by `src/integration-test/routes/directionsQuestionnaire/smallClaims.integration.test.ts`. That suite is the representative small-claims path plus one validation error. Those unit tests call the route handler and must not use `request(app)`.
+
+General application pages under `src/test/unit/routes/features/claim/generalApplication/` are owned by `src/integration-test/routes/generalApplication/generalApplicationJourney.integration.test.ts`. That suite is an applicant happy path, a respondent happy path, and one validation error. Those unit tests call the route handler and must not use `request(app)`. `generalApplication.integration.test.ts` remains a controller-level slice for application-type branches.
 
 ## Jest retries
 
