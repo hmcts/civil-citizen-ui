@@ -1,99 +1,107 @@
-import {app} from '../../../../../../../main/app';
-import config from 'config';
-import nock from 'nock';
-import request from 'supertest';
-import {GA_PAY_ADDITIONAL_FEE_URL} from 'routes/urls';
-import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
+import {Response} from 'express';
+import additionalFeeController from '../../../../../../../main/routes/features/generalApplication/additionalFee/additionalFeeController';
+import {GA_APPLY_HELP_ADDITIONAL_FEE_SELECTION_URL, GA_VIEW_APPLICATION_URL} from 'routes/urls';
+import {Claim} from 'models/claim';
+import {PartyType} from 'models/partyType';
 import {GeneralApplication} from 'models/generalApplication/GeneralApplication';
 import {ApplicationType, ApplicationTypeOption} from 'models/generalApplication/applicationType';
-import * as generalApplicationService from 'services/features/generalApplication/generalApplicationService';
-import { Claim } from 'common/models/claim';
-import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
-import * as launchDarkly from '../../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
-import {t} from 'i18next';
 import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
-import {GaServiceClient} from 'client/gaServiceClient';
-import {ApplicationState} from 'models/generalApplication/applicationSummary';
+import {constructResponseUrlWithIdAndAppIdParams} from 'common/utils/urlFormatter';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {getClaimById} from 'modules/utilityService';
+import {
+  getApplicationFromGAService,
+  getApplicationIndex,
+} from 'services/features/generalApplication/generalApplicationService';
+import {createMockResponse, getRouteHandler} from '../../../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../../../main/modules/oidc');
-jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
-jest.mock('../../../../../../../main/modules/draft-store');
-jest.mock('services/features/generalApplication/generalApplicationService', () => ({
-  getApplicationFromGAService: jest.fn(),
-  getApplicationIndex: jest.fn(),
+jest.mock('modules/draft-store/draftStoreService');
+jest.mock('modules/utilityService', () => ({
+  getClaimById: jest.fn(),
+  getRedisStoreForSession: jest.fn(),
 }));
-jest.mock('../../../../../../../main/routes/guards/generalAplicationGuard',() => ({
-  isGAForLiPEnabled: jest.fn((req, res, next) => {
-    next();
-  }),
+
+jest.mock('services/features/generalApplication/response/generalApplicationResponseStoreService', () => ({
+  getDraftGARespondentResponse: jest.fn(),
+  saveDraftGARespondentResponse: jest.fn(),
 }));
-const mockGetCaseData = getCaseDataFromStore as jest.Mock;
-const mockClaim = new Claim();
-mockClaim.generalApplication = new GeneralApplication(new ApplicationType(ApplicationTypeOption.ADJOURN_HEARING));
-describe('General Application - Pay additional fee Page', () => {
-  const applicationResponse: ApplicationResponse = {
-    case_data: {
-      applicationTypes: undefined,
-      generalAppType: undefined,
-      generalAppRespondentAgreement: undefined,
-      generalAppInformOtherParty: undefined,
-      generalAppAskForCosts: undefined,
-      generalAppDetailsOfOrder: undefined,
-      generalAppReasonsOfOrder: undefined,
-      generalAppEvidenceDocument: undefined,
-      gaAddlDoc: undefined,
-      generalAppHearingDetails: undefined,
-      generalAppStatementOfTruth: undefined,
-      generalAppPBADetails: undefined,
-      applicationFeeAmountInPence: undefined,
-      parentClaimantIsApplicant: undefined,
-      judicialDecision: undefined,
-    },
-    created_date: '',
-    id: '',
-    last_modified: '',
-    state: undefined,
+jest.mock('services/features/generalApplication/generalApplicationService', () => {
+  const actual = jest.requireActual('services/features/generalApplication/generalApplicationService');
+  return {
+    ...actual,
+    getApplicationFromGAService: jest.fn(),
+    getApplicationIndex: jest.fn(),
   };
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-    jest.spyOn(launchDarkly, 'isGaForLipsEnabled').mockResolvedValue(true);
-  });
-  beforeEach(()=> {
-    jest.spyOn(generalApplicationService, 'getApplicationFromGAService').mockResolvedValue(applicationResponse);
+});
+
+describe('General Application - Pay additional fee Page', () => {
+  const getHandler = getRouteHandler(additionalFeeController, 'get');
+  const viewPath = 'features/generalApplication/additionalFee/additional-fee';
+  const claimId = '12345';
+  const appId = '67890';
+  let claim: Claim;
+  let req: {
+    params: {id: string; appId: string};
+    body: Record<string, unknown>;
+    query: Record<string, string>;
+    cookies: Record<string, string>;
+    session: {user: {id: string}};
+  };
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
+
+  const buildClaim = (): Claim => {
+    const built = new Claim();
+    built.applicant1 = {
+      type: PartyType.INDIVIDUAL,
+      partyDetails: {title: 'Mr', firstName: 'Jan', lastName: 'Clark'},
+    } as Claim['applicant1'];
+    built.generalApplication = new GeneralApplication(new ApplicationType(ApplicationTypeOption.ADJOURN_HEARING));
+    return built;
+  };
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+    claim = buildClaim();
+    req = {
+      params: {id: claimId, appId},
+      body: {},
+      query: {},
+      cookies: {},
+      session: {user: {id: 'user-1'}},
+    };
+    res = createMockResponse();
+    next = jest.fn();
+    (draftStoreService.generateRedisKey as jest.Mock).mockReturnValue(claimId);
+    (getClaimById as jest.Mock).mockResolvedValue(claim);
+    (getApplicationIndex as jest.Mock).mockResolvedValue(0);
+    (getApplicationFromGAService as jest.Mock).mockResolvedValue({
+      id: '1234567890',
+      case_data: {
+        applicationFeeAmountInPence: 10000,
+        generalAppPBADetails: {fee: {calculatedAmountInPence: 5000}},
+      },
+    } as unknown as ApplicationResponse);
   });
 
   describe('on GET', () => {
-    it('should return additional fee page', async () => {
-      mockGetCaseData.mockImplementation(async () => mockClaim);
-      applicationResponse.id = '1234567890';
-      applicationResponse.state = ApplicationState.AWAITING_APPLICATION_PAYMENT,
-      jest
-        .spyOn(GaServiceClient.prototype, 'getApplicationsByCaseId')
-        .mockResolvedValue([applicationResponse]);
-      await request(app)
-        .get(GA_PAY_ADDITIONAL_FEE_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('Additional fee'));
-        });
+    it('should render the additional fee page', async () => {
+      await getHandler(req as never, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        urlNextView: constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_APPLY_HELP_ADDITIONAL_FEE_SELECTION_URL),
+        backLinkUrl: `${constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_VIEW_APPLICATION_URL)}?index=1`,
+      }));
+      expect(next).not.toHaveBeenCalled();
     });
 
-    it('should return 500 error page for redis failure', async () => {
-      //Given
-      mockGetCaseData.mockImplementation(() => {
-        throw new Error(TestMessages.REDIS_FAILURE);
-      });
-      //When //Then
-      await request(app)
-        .get(GA_PAY_ADDITIONAL_FEE_URL)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+    it('should call next when loading the claim fails', async () => {
+      const error = new Error('redis failure');
+      (getClaimById as jest.Mock).mockRejectedValue(error);
+
+      await getHandler(req as never, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 });
