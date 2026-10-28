@@ -43,12 +43,23 @@ howMuchHaveYouPaidController
         const form: GenericForm<HowMuchHaveYouPaid> = new GenericForm<HowMuchHaveYouPaid>(howMuchHaveYouPaid);
         await form.validate();
 
+<<<<<<< HEAD
         if (form.hasErrors()) {
           res.render(howMuchHaveYouPaidPath, {
             form: form, lastMonth: getLastMonth(), totalClaimAmount: howMuchHaveYouPaid.totalClaimAmount,
           });
         } else {
           await howMuchHaveYouPaidService.saveHowMuchHaveYouPaid(<AppRequest>req, howMuchHaveYouPaid, ResponseType.PART_ADMISSION);
+=======
+      if (form.hasErrors()) {
+        res.render(howMuchHaveYouPaidPath, {
+          form: form, lastMonth: lastMonth, totalClaimAmount: howMuchHaveYouPaid.totalClaimAmount,
+        });
+      } else {
+        try {
+          await howMuchHaveYouPaidService.saveHowMuchHaveYouPaid(req as unknown as AppRequest, howMuchHaveYouPaid, ResponseType.PART_ADMISSION);
+          const claimId = getRouteParam(req, 'id');
+>>>>>>> 79f943be43 (DTSCCI-6622 - fix for app request unknown)
           res.redirect(constructResponseUrlWithIdParams(claimId, RESPONSE_TASK_LIST_URL));
         }
       } catch (error) {
