@@ -129,7 +129,7 @@
     "serve-favicon": "2.5.1",
     "ts-node": "10.9.2",
     "tsconfig-paths": "4.2.0",
-    "typescript": "5.9.3",
+    "typescript": "6.0.3",
     "uuid": "14.0.2",
     "validator": "13.15.35"
   },

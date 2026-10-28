@@ -45,6 +45,14 @@
     "typeRoots": [
       "./node_modules/@types",
       "./typings"
-    ]
+    ],
+    "strict": false,
+    "types": [
+      "node",
+      "jest",
+      "multer"
+    ],
+    "ignoreDeprecations": "6.0",
+    "rootDir": "."
   }
 }
