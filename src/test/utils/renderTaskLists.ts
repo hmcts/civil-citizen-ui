@@ -21,7 +21,7 @@ export const taskListViews = {
 
 export function taskListTranslate(lang = 'en') {
   const instance = createInstance();
-  instance.init({lng: lang, fallbackLng: 'en', initImmediate: false, resources: {en: {translation: en}, cy: {translation: cy}}, interpolation: {escapeValue: false}});
+  instance.init({lng: lang, fallbackLng: 'en', initAsync: false, resources: {en: {translation: en}, cy: {translation: cy}}, interpolation: {escapeValue: false}});
   return (key: string, values: Record<string, unknown> = {}) => key ? String(instance.t(key, values)) : '';
 }
 
