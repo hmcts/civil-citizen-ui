@@ -225,6 +225,19 @@ describe('Mediation Unavailability Select Dates Confirmation Controller', () => 
         });
     });
 
+    it.each(['0', 'abc'])('should return day, month and year errors when all are %s', async (invalidValue) => {
+      await request(app)
+        .post(CONTROLLER_URL)
+        .send(singleDateBody({day: invalidValue, month: invalidValue, year: invalidValue}))
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Unavailable date must include a valid day');
+          expect(res.text).toContain('Unavailable date must include a valid month');
+          expect(res.text).toContain('Unavailable date must include a 4-digit year');
+          expect(res.text).not.toContain('Enter the date you are unavailable<');
+        });
+    });
+
     it('should keep missing field errors when day, month or year are empty', async () => {
       await request(app)
         .post(CONTROLLER_URL)
@@ -364,6 +377,19 @@ describe('Mediation Unavailability Select Dates Confirmation Controller', () => 
           expect(res.text).toContain('Unavailable from date must include a valid day');
           expect(res.text).toContain('Unavailable from date must include a valid month');
           expect(res.text).toContain('Unavailable from date must include a 4-digit year');
+        });
+    });
+
+    it.each(['0', 'abc'])('should return from day, month and year errors when all are %s', async (invalidValue) => {
+      await request(app)
+        .post(CONTROLLER_URL)
+        .send(longerPeriodBody({day: invalidValue, month: invalidValue, year: invalidValue}))
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Unavailable from date must include a valid day');
+          expect(res.text).toContain('Unavailable from date must include a valid month');
+          expect(res.text).toContain('Unavailable from date must include a 4-digit year');
+          expect(res.text).not.toContain('Enter the date you are unavailable from<');
         });
     });
 
@@ -530,6 +556,19 @@ describe('Mediation Unavailability Select Dates Confirmation Controller', () => 
           expect(res.text).toContain('Unavailable to date must include a valid day');
           expect(res.text).toContain('Unavailable to date must include a valid month');
           expect(res.text).toContain('Unavailable to date must include a 4-digit year');
+        });
+    });
+
+    it.each(['0', 'abc'])('should return to day, month and year errors when all are %s', async (invalidValue) => {
+      await request(app)
+        .post(CONTROLLER_URL)
+        .send(longerPeriodBody({day: invalidValue, month: invalidValue, year: invalidValue}))
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Unavailable to date must include a valid day');
+          expect(res.text).toContain('Unavailable to date must include a valid month');
+          expect(res.text).toContain('Unavailable to date must include a 4-digit year');
+          expect(res.text).not.toContain('Enter the date you are unavailable to<');
         });
     });
 

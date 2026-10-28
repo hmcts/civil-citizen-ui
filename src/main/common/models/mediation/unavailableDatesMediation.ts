@@ -45,47 +45,47 @@ export class UnavailableDatePeriodMediation {
     type?: UnavailableDateType;
 
   @ValidateIf(o => o.type && ((!!o.startDay && o.startDay < 32 && !!o.startMonth && o.startMonth < 13 && o.startYear > 999 && o.startYear < 10000) ||
-    (!o.startDay && !o.startMonth && !o.startYear)))
+    !hasStartDateInput(o)))
   @MaxDate(addMonths(new Date(), MAX_MONTHS), { message: generateErrorMessageForMaxDate })
   @IsDate({ message: generateErrorMessageForIsDate })
   @Validate(OptionalDateNotInPastValidator, {message: generateErrorMessageForDateNotInPastValidator})
   @Validate(DateNotAfterValidUntilDate, ['until'], {message: 'ERRORS.CARM_ENTER_UNAVAILABILITY_FROM_DATE_BEFORE_TO_DATE'})
     from?: Date;
 
-  @ValidateIf(o => o.type && (o.startDay || o.startMonth || o.startYear))
+  @ValidateIf(o => o.type && hasStartDateInput(o))
   @Min(1, { message: generateErrorMessage })
   @Max(31, { message: generateErrorMessage })
     startDay?: number;
 
-  @ValidateIf(o => o.type && (o.startDay || o.startMonth || o.startYear))
+  @ValidateIf(o => o.type && hasStartDateInput(o))
   @Min(1, { message: generateErrorMessage })
   @Max(12, { message: generateErrorMessage })
     startMonth?: number;
 
-  @ValidateIf(o => o.type && (o.startDay || o.startMonth || o.startYear))
+  @ValidateIf(o => o.type && hasStartDateInput(o))
   @Validate(OptionalDateFourDigitValidator, {message: 'ERRORS.VALID_FOUR_DIGIT_YEAR'})
   @Min(1872, { message: generateErrorMessage })
   @Max(9999, { message: generateErrorMessage })
     startYear?: number;
 
   @ValidateIf(o => o.type === UnavailableDateType.LONGER_PERIOD && (hasValidEndDateParts(o) ||
-    (!o.endDay && !o.endMonth && !o.endYear)))
+    !hasEndDateInput(o)))
   @MaxDate(addMonths(new Date(), MAX_MONTHS), {message: 'ERRORS.CARM_ENTER_UNAVAILABILITY_DATE_IN_NEXT_3_MONTHS_TO'})
   @IsDate({ message: generateErrorMessage })
   @Validate(OptionalDateNotInPastValidator, {message: 'ERRORS.CARM_ENTER_UNAVAILABILITY_DATE_IN_FUTURE_TO'})
     until?: Date;
 
-  @ValidateIf(o => o.type === UnavailableDateType.LONGER_PERIOD && (o.endDay || o.endMonth || o.endYear))
+  @ValidateIf(o => o.type === UnavailableDateType.LONGER_PERIOD && hasEndDateInput(o))
   @Min(1, { message: generateErrorMessage })
   @Max(31, { message: generateErrorMessage })
     endDay?: number;
 
-  @ValidateIf(o => o.type === UnavailableDateType.LONGER_PERIOD && (o.endDay || o.endMonth || o.endYear))
+  @ValidateIf(o => o.type === UnavailableDateType.LONGER_PERIOD && hasEndDateInput(o))
   @Min(1, { message: generateErrorMessage })
   @Max(12, { message: generateErrorMessage })
     endMonth?: number;
 
-  @ValidateIf(o => o.type === UnavailableDateType.LONGER_PERIOD && (o.endDay || o.endMonth || o.endYear))
+  @ValidateIf(o => o.type === UnavailableDateType.LONGER_PERIOD && hasEndDateInput(o))
   @Validate(OptionalDateFourDigitValidator, {message: 'ERRORS.VALID_FOUR_DIGIT_YEAR'})
   @Min(1872, { message: generateErrorMessage })
   @Max(9999, { message: generateErrorMessage })
@@ -103,6 +103,14 @@ export class UnavailableDatePeriodMediation {
     this.endMonth = toOptionalNumber(paramsUntil?.month);
     this.endDay = toOptionalNumber(paramsUntil?.day);
   }
+}
+
+function hasStartDateInput(o: UnavailableDatePeriodMediation): boolean {
+  return o.startDay !== undefined || o.startMonth !== undefined || o.startYear !== undefined;
+}
+
+function hasEndDateInput(o: UnavailableDatePeriodMediation): boolean {
+  return o.endDay !== undefined || o.endMonth !== undefined || o.endYear !== undefined;
 }
 
 function hasValidEndDateParts(o: UnavailableDatePeriodMediation): boolean {
