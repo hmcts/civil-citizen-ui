@@ -46,7 +46,7 @@ module.exports = class BrowserHelpers extends Helper {
       } else {
         return await helper.waitForElement(locator, waitTimeout);
       }
-    } catch (error) {
+    } catch {
       return undefined;
     }
   }
@@ -64,7 +64,7 @@ module.exports = class BrowserHelpers extends Helper {
       } else {
         throw new Error('Helper not recognized. This function supports Playwright and WebDriver.');
       }
-    } catch (error) {
+    } catch {
       return undefined;
     }
   }
