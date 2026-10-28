@@ -1,159 +1,149 @@
-import {app} from '../../../../../../../main/app';
-import config from 'config';
-import nock from 'nock';
-import request from 'supertest';
-import {GA_ASK_PROOF_OF_DEBT_PAYMENT_GUIDANCE_URL} from 'routes/urls';
-import {t} from 'i18next';
+import {Response} from 'express';
+import askProofOfDebtPaymentGuidanceController from '../../../../../../../main/routes/features/generalApplication/certOfSorC/askProofOfDebtPaymentGuidanceController';
+import {BACK_URL} from 'routes/urls';
+import {Claim} from 'models/claim';
+import {PartyType} from 'models/partyType';
 import {GeneralApplication} from 'models/generalApplication/GeneralApplication';
 import {ApplicationType, ApplicationTypeOption} from 'models/generalApplication/applicationType';
-import {Claim} from 'models/claim';
-import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
-import * as launchDarkly from '../../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {CivilServiceClient} from 'client/civilServiceClient';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {getClaimById} from 'modules/utilityService';
+import {createMockResponse, getRouteHandler} from '../../../../../../utils/getRouteHandler';
 
-jest.mock('modules/oidc');
 jest.mock('modules/draft-store/draftStoreService');
-jest.mock('modules/draft-store');
-jest.mock('../../../../../../../main/routes/guards/generalAplicationGuard',() => ({
-  isGAForLiPEnabled: jest.fn((req, res, next) => {
-    next();
-  }),
+jest.mock('modules/utilityService', () => ({
+  getClaimById: jest.fn(),
+  getRedisStoreForSession: jest.fn(),
 }));
 
-const mockGetCaseData = getCaseDataFromStore as jest.Mock;
-const mockClaim = new Claim();
-mockClaim.generalApplication = new GeneralApplication(new ApplicationType(ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID));
-
-const gaFeeDetails = {
-  calculatedAmountInPence: 1400,
-  code: 'FEE0459',
-  version: 0,
-};
+jest.mock('services/features/generalApplication/response/generalApplicationResponseStoreService', () => ({
+  getDraftGARespondentResponse: jest.fn(),
+  saveDraftGARespondentResponse: jest.fn(),
+}));
 
 describe('General Application - ask proof of debt payment guidance', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
+  const getHandler = getRouteHandler(askProofOfDebtPaymentGuidanceController, 'get');
+  const viewPath = 'features/generalApplication/certOfSorC/ask-proof-debtPayment-guidance';
+  const claimId = '12345';
+  const gaFeeDetails = {
+    calculatedAmountInPence: 1400,
+    code: 'FEE0459',
+    version: 0,
+  };
+  let req: {
+    params: {id: string};
+    body: Record<string, unknown>;
+    query: Record<string, string>;
+    cookies: Record<string, string>;
+    session: {user: {id: string}};
+  };
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
+  let getGeneralApplicationFee: jest.SpyInstance;
 
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-    jest.spyOn(launchDarkly, 'isGaForLipsEnabled').mockResolvedValue(true);
-  });
+  const withApplicant = (claim: Claim): Claim => {
+    claim.applicant1 = {
+      type: PartyType.INDIVIDUAL,
+      partyDetails: {title: 'Mr', firstName: 'Jan', lastName: 'Clark'},
+    } as Claim['applicant1'];
+    return claim;
+  };
 
   beforeEach(() => {
-    jest.spyOn(CivilServiceClient.prototype, 'getGeneralApplicationFee').mockResolvedValue(gaFeeDetails);
+    jest.clearAllMocks();
+    req = {
+      params: {id: claimId},
+      body: {},
+      query: {},
+      cookies: {},
+      session: {user: {id: 'user-1'}},
+    };
+    res = createMockResponse();
+    next = jest.fn();
+    (draftStoreService.generateRedisKey as jest.Mock).mockReturnValue(claimId);
+    (draftStoreService.saveDraftClaim as jest.Mock).mockResolvedValue(undefined);
+    getGeneralApplicationFee = jest.spyOn(CivilServiceClient.prototype, 'getGeneralApplicationFee')
+      .mockResolvedValue(gaFeeDetails);
   });
 
   afterEach(() => {
-    jest.mocked(CivilServiceClient.prototype.getGeneralApplicationFee).mockRestore();
+    getGeneralApplicationFee.mockRestore();
   });
 
   describe('on GET', () => {
-    it('should return ask proof of debt payment guidance page', async () => {
-      mockGetCaseData.mockImplementation(async () => mockClaim);
-      await request(app)
-        .get(GA_ASK_PROOF_OF_DEBT_PAYMENT_GUIDANCE_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
+    it('should render the guidance page with the application fee', async () => {
+      const claim = withApplicant(new Claim());
+      claim.generalApplication = new GeneralApplication(new ApplicationType(ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID));
+      (getClaimById as jest.Mock).mockResolvedValue(claim);
 
-          const decodedText = res.text.replace(/&#39;/g, "'");
+      await getHandler(req as never, res as unknown as Response, next);
 
-          expect(decodedText).toContain(t('COMMON.ASK_FOR_PROOF_OF_DEBT_PAYMENT'));
-          expect(decodedText).toContain(t('PAGES.GENERAL_APPLICATION.ASK_FOR_PROOF_OF_DEBT_PAYMENT.PARA_1'));
-          expect(decodedText).toContain(t('PAGES.GENERAL_APPLICATION.ASK_FOR_PROOF_OF_DEBT_PAYMENT.PARA_TITLE_1'));
-          expect(decodedText).toContain(t('PAGES.GENERAL_APPLICATION.ASK_FOR_PROOF_OF_DEBT_PAYMENT.PARA_3'));
-          expect(decodedText).toContain(t('PAGES.GENERAL_APPLICATION.ASK_FOR_PROOF_OF_DEBT_PAYMENT.PARA_4'));
-          expect(decodedText).toContain(t('PAGES.GENERAL_APPLICATION.ASK_FOR_PROOF_OF_DEBT_PAYMENT.PARA_TITLE_3'));
-          expect(decodedText).toContain(t('PAGES.GENERAL_APPLICATION.ASK_FOR_PROOF_OF_DEBT_PAYMENT.PARA_5'));
-          expect(decodedText).toContain(t('PAGES.GENERAL_APPLICATION.ASK_FOR_PROOF_OF_DEBT_PAYMENT.DATE_OF_PAYMENT'));
-          expect(decodedText).toContain(t('PAGES.GENERAL_APPLICATION.ASK_FOR_PROOF_OF_DEBT_PAYMENT.AMOUNT_PAID'));
-          expect(decodedText).toContain(t('PAGES.GENERAL_APPLICATION.ASK_FOR_PROOF_OF_DEBT_PAYMENT.CASE_NUMBER'));
-          expect(decodedText).toContain(t('PAGES.GENERAL_APPLICATION.ASK_FOR_PROOF_OF_DEBT_PAYMENT.PARA_TITLE_4'));
-          expect(decodedText).toContain(t('PAGES.GENERAL_APPLICATION.ASK_FOR_PROOF_OF_DEBT_PAYMENT.PARA_6'));
-          expect(decodedText).toContain(t('PAGES.GENERAL_APPLICATION.ASK_FOR_PROOF_OF_DEBT_PAYMENT.PARA_7'));
-          expect(decodedText).toContain(t('PAGES.GENERAL_APPLICATION.ASK_FOR_PROOF_OF_DEBT_PAYMENT.PARA_TITLE_5'));
-          expect(decodedText).toContain(t('PAGES.GENERAL_APPLICATION.ASK_FOR_PROOF_OF_DEBT_PAYMENT.PARA_8'));
-        });
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        applicationFee: 14,
+        backLinkUrl: BACK_URL,
+      }));
+      expect(next).not.toHaveBeenCalled();
     });
 
-    it('should initialize generalApplication and applicationTypes when claim.generalApplication is undefined', async () => {
-      const claimWithoutGA = new Claim();
-      mockGetCaseData.mockImplementation(async () => claimWithoutGA);
+    it('should initialise generalApplication when it is missing', async () => {
+      const claim = withApplicant(new Claim());
+      (getClaimById as jest.Mock).mockResolvedValue(claim);
 
-      await request(app)
-        .get(GA_ASK_PROOF_OF_DEBT_PAYMENT_GUIDANCE_URL)
-        .expect(200);
+      await getHandler(req as never, res as unknown as Response, next);
 
-      expect(claimWithoutGA.generalApplication).toBeDefined();
-      expect(claimWithoutGA.generalApplication?.applicationTypes).toHaveLength(1);
-      expect(claimWithoutGA.generalApplication?.applicationTypes[0].option).toBe(
-        ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID,
-      );
+      expect(claim.generalApplication?.applicationTypes).toHaveLength(1);
+      expect(claim.generalApplication?.applicationTypes[0].option).toBe(ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID);
+      expect((res.render as jest.Mock).mock.calls[0][1].backLinkUrl)
+        .toBe((res.render as jest.Mock).mock.calls[0][1].cancelUrl);
     });
 
-    it('should inject ApplicationType when generalApplication exists but applicationTypes is empty (EXC-CUI-022 regression test)', async () => {
-      const claimWithEmptyTypes = new Claim();
-      claimWithEmptyTypes.generalApplication = new GeneralApplication();
-      claimWithEmptyTypes.generalApplication.applicationTypes = [];
+    it('should inject the debt application type when applicationTypes is empty', async () => {
+      const claim = withApplicant(new Claim());
+      claim.generalApplication = new GeneralApplication();
+      claim.generalApplication.applicationTypes = [];
+      (getClaimById as jest.Mock).mockResolvedValue(claim);
 
-      mockGetCaseData.mockImplementation(async () => claimWithEmptyTypes);
+      await getHandler(req as never, res as unknown as Response, next);
 
-      await request(app)
-        .get(GA_ASK_PROOF_OF_DEBT_PAYMENT_GUIDANCE_URL)
-        .expect(200);
-
-      expect(claimWithEmptyTypes.generalApplication?.applicationTypes).toHaveLength(1);
-      expect(claimWithEmptyTypes.generalApplication?.applicationTypes[0].option).toBe(
-        ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID,
-      );
+      expect(claim.generalApplication?.applicationTypes).toHaveLength(1);
+      expect(claim.generalApplication?.applicationTypes[0].option).toBe(ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID);
     });
 
-    it('should replace applicationTypes when the draft contains a non-persistable type', async () => {
-      const claimWithInvalidType = new Claim();
-      claimWithInvalidType.generalApplication = new GeneralApplication();
-      claimWithInvalidType.generalApplication.applicationTypes = [new ApplicationType(ApplicationTypeOption.OTHER_OPTION)];
+    it('should replace a non-persistable application type', async () => {
+      const claim = withApplicant(new Claim());
+      claim.generalApplication = new GeneralApplication();
+      claim.generalApplication.applicationTypes = [new ApplicationType(ApplicationTypeOption.OTHER_OPTION)];
+      (getClaimById as jest.Mock).mockResolvedValue(claim);
 
-      mockGetCaseData.mockImplementation(async () => claimWithInvalidType);
+      await getHandler(req as never, res as unknown as Response, next);
 
-      await request(app)
-        .get(GA_ASK_PROOF_OF_DEBT_PAYMENT_GUIDANCE_URL)
-        .expect(200);
-
-      expect(claimWithInvalidType.generalApplication?.applicationTypes).toHaveLength(1);
-      expect(claimWithInvalidType.generalApplication?.applicationTypes[0].option).toBe(
-        ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID,
-      );
+      expect(claim.generalApplication?.applicationTypes).toHaveLength(1);
+      expect(claim.generalApplication?.applicationTypes[0].option).toBe(ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID);
     });
 
-    it('should replace applicationTypes when the draft contains duplicates and fee validation succeeds', async () => {
-      const claimWithDuplicates = new Claim();
-      claimWithDuplicates.generalApplication = new GeneralApplication();
-      claimWithDuplicates.generalApplication.applicationTypes = [
+    it('should replace duplicate application types and request the fee', async () => {
+      const claim = withApplicant(new Claim());
+      claim.generalApplication = new GeneralApplication();
+      claim.generalApplication.applicationTypes = [
         new ApplicationType(ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID),
         new ApplicationType(ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID),
       ];
+      (getClaimById as jest.Mock).mockResolvedValue(claim);
 
-      mockGetCaseData.mockImplementation(async () => claimWithDuplicates);
+      await getHandler(req as never, res as unknown as Response, next);
 
-      await request(app)
-        .get(GA_ASK_PROOF_OF_DEBT_PAYMENT_GUIDANCE_URL)
-        .expect(200);
-
-      expect(claimWithDuplicates.generalApplication?.applicationTypes).toHaveLength(1);
-      expect(claimWithDuplicates.generalApplication?.applicationTypes[0].option).toBe(
-        ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID,
-      );
-      expect(CivilServiceClient.prototype.getGeneralApplicationFee).toHaveBeenCalled();
+      expect(claim.generalApplication?.applicationTypes).toHaveLength(1);
+      expect(claim.generalApplication?.applicationTypes[0].option).toBe(ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID);
+      expect(getGeneralApplicationFee).toHaveBeenCalled();
     });
 
-    it('should call next with error when loading case data fails', async () => {
+    it('should call next when loading the claim fails', async () => {
       const error = new Error('Database connection failed');
-      mockGetCaseData.mockRejectedValueOnce(error);
+      (getClaimById as jest.Mock).mockRejectedValue(error);
 
-      await request(app)
-        .get(GA_ASK_PROOF_OF_DEBT_PAYMENT_GUIDANCE_URL)
-        .expect(500);
+      await getHandler(req as never, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 });

@@ -1,61 +1,110 @@
-import {app} from '../../../../../../main/app';
-import request from 'supertest';
-import {GA_SUBMIT_OFFLINE} from 'routes/urls';
-import {t} from 'i18next';
-import config from 'config';
-import nock from 'nock';
-import {isQueryManagementEnabled} from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
-import * as utilityService from 'modules/utilityService';
+import path from 'path';
+import {Response} from 'express';
+import submitApplicationOfflineController from '../../../../../../main/routes/features/generalApplication/submitApplicationOfflineController';
+import {BACK_URL, DASHBOARD_URL} from 'routes/urls';
 import {Claim} from 'models/claim';
+import {PartyType} from 'models/partyType';
+import {isQueryManagementEnabled} from 'app/auth/launchdarkly/launchDarklyClient';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {getClaimById} from 'modules/utilityService';
+import {createMockResponse, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
-jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
-jest.mock('../../../../../../main/modules/utilityService');
-jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
-jest.mock('../../../../../../main/routes/guards/generalAplicationGuard',() => ({
-  isGAForLiPEnabled: jest.fn((req, res, next) => {
-    next();
-  }),
+jest.mock('modules/draft-store/draftStoreService');
+jest.mock('services/features/generalApplication/response/generalApplicationResponseStoreService', () => ({
+  getDraftGARespondentResponse: jest.fn(),
+  saveDraftGARespondentResponse: jest.fn(),
 }));
+jest.mock('modules/utilityService', () => ({
+  getClaimById: jest.fn(),
+}));
+jest.mock('app/auth/launchdarkly/launchDarklyClient');
 
-const mockGetClaim = utilityService.getClaimById as jest.Mock;
+const i18next = require('i18next');
+const Backend = require('i18next-fs-backend');
 
-describe('General Application - Application costs', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
-
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
+beforeAll(async () => {
+  if (i18next.isInitialized) {
+    return;
+  }
+  await i18next.use(Backend).init({
+    backend: {
+      loadPath: path.join(__dirname, '../../../../../../main/modules/i18n/locales/{{lng}}.json'),
+    },
+    fallbackLng: 'en',
+    supportedLngs: ['en', 'cy'],
+    load: 'languageOnly',
+    initImmediate: false,
   });
+});
+
+describe('General Application - submit application offline', () => {
+  const getHandler = getRouteHandler(submitApplicationOfflineController, 'get');
+  const viewPath = 'features/generalApplication/submit-application-offline';
+  const claimId = '12345';
+  let claim: Claim;
+  let req: {
+    params: {id: string};
+    body: Record<string, unknown>;
+    query: Record<string, unknown>;
+    cookies: Record<string, unknown>;
+    session: {user: {id: string}};
+  };
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
+  const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
+  const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
+  const mockGetClaim = getClaimById as jest.Mock;
+  const isQueryManagementEnabledMock = isQueryManagementEnabled as jest.Mock;
+
+  const buildClaim = (): Claim => {
+    const builtClaim = new Claim();
+    builtClaim.applicant1 = {
+      type: PartyType.INDIVIDUAL,
+      partyDetails: {title: 'Mr', firstName: 'Jan', lastName: 'Clark'},
+    } as Claim['applicant1'];
+    return builtClaim;
+  };
 
   beforeEach(() => {
-    mockGetClaim.mockImplementation(() => {
-      return new Claim();
-    });
+    jest.clearAllMocks();
+    claim = buildClaim();
+    req = {
+      params: {id: claimId},
+      body: {},
+      query: {},
+      cookies: {lang: 'en'},
+      session: {user: {id: 'u1'}},
+    };
+    res = createMockResponse();
+    next = jest.fn();
+    (draftStoreService.generateRedisKey as jest.Mock).mockReturnValue(claimId);
+    (draftStoreService.generateRedisKeyForGA as jest.Mock).mockReturnValue('ga-12345');
+    mockGetCaseData.mockResolvedValue(claim);
+    mockSaveDraftClaim.mockResolvedValue(undefined);
+    mockGetClaim.mockResolvedValue(claim);
+    isQueryManagementEnabledMock.mockResolvedValue(false);
   });
 
   describe('on GET', () => {
-    it('should return page with QM LIP off', async () => {
-      await request(app)
-        .get(GA_SUBMIT_OFFLINE)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.SUBMIT_APPLICATION_OFFLINE.TITLE'));
-          expect(res.text).toContain(t('N244 form'));
-        });
+    it('should render the offline page with the dashboard back link when query management is off', async () => {
+      await getHandler(req as never, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        backLinkUrl: DASHBOARD_URL,
+        pageContent: expect.any(Array),
+      }));
+      expect(next).not.toHaveBeenCalled();
     });
-    it('should return page with QM LIP on', async () => {
-      (isQueryManagementEnabled as jest.Mock).mockReturnValueOnce(true);
-      await request(app)
-        .get(GA_SUBMIT_OFFLINE)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.SUBMIT_APPLICATION_OFFLINE.TITLE'));
-          expect(res.text).toContain(t('N244 form'));
-        });
+
+    it('should render the offline page with the back link when query management is on', async () => {
+      isQueryManagementEnabledMock.mockResolvedValue(true);
+
+      await getHandler(req as never, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        backLinkUrl: BACK_URL,
+        pageContent: expect.any(Array),
+      }));
     });
   });
 });
