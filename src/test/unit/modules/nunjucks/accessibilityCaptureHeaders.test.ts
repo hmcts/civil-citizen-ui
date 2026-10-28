@@ -47,7 +47,7 @@ describe('accessibility capture headers', () => {
     } finally {captured.window.close();}
   });
 
-  it('uses the production header link classes, names and destinations in every captured header', () => {
+  it('uses the production header link classes, names and destinations in every captured header', async () => {
     expect(files.length).toBeGreaterThan(0);
     let headerCount = 0;
     for (const file of files) {
@@ -78,10 +78,14 @@ describe('accessibility capture headers', () => {
             expect(document.getElementById(control.getAttribute('aria-controls'))).not.toBeNull();
           }
         } finally {source.window.close();}
-      } finally {captured.window.close();}
+      } finally {
+        captured.window.close();
+        // Release jsdom resource tasks between captures, including under coverage.
+        await new Promise<void>(resolve => setImmediate(resolve));
+      }
     }
     expect(headerCount).toBeGreaterThan(0);
-  });
+  }, 60000);
 
   it.each(['en', 'cy'])('retains the production navigation labels in %s', language => {
     const translations = JSON.parse(fs.readFileSync(path.resolve('src/main/modules/i18n/locales', `${language}.json`), 'utf8'));

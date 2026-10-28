@@ -126,7 +126,7 @@ exports.config = {
   mocha: {
     bail: true,
     reporterOptions: {
-      'codeceptjs-cli-reporter': {
+      [require.resolve('./bin/codecept-cli-reporter')]: {
         stdout: '-',
         options: {
           steps: false,
