@@ -17,6 +17,7 @@ import {Party} from 'models/party';
 import {PartyPhone} from 'models/PartyPhone';
 import {PartyType} from 'models/partyType';
 import civilClaimResponseMock from '../../../../../utils/mocks/civilClaimResponseMock.json';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store/response/responseDraftStoreService');
@@ -24,6 +25,12 @@ jest.mock('../../../../../../main/services/features/common/defendantDetailsServi
 
 const mockGetResponseDraft = getResponseDraft as jest.Mock;
 const mockSaveDefendantProperty = saveDefendantPropertyToResponseDraft as jest.Mock;
+
+const claimId = '1645882162449409';
+const dobUrl = constructResponseUrlWithIdParams(claimId, DOB_URL);
+const ageEligibilityUrl = constructResponseUrlWithIdParams(claimId, AGE_ELIGIBILITY_URL);
+const phoneNumberUrl = constructResponseUrlWithIdParams(claimId, CITIZEN_PHONE_NUMBER_URL);
+const taskListUrl = constructResponseUrlWithIdParams(claimId, RESPONSE_TASK_LIST_URL);
 
 const mockResponseDraft = (caseData: Partial<Claim> | Record<string, unknown> = {}) => {
   mockGetResponseDraft.mockResolvedValue({
@@ -64,18 +71,19 @@ describe('Citizen date of birth', () => {
     it('should return citizen date of birth page empty when draft has no DOB', async () => {
       mockResponseDraft({});
       await request(app)
-        .get(DOB_URL)
+        .get(dobUrl)
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(TestMessages.ENTER_DATE_OF_BIRTH);
           expect(res.text).not.toContain('NaN');
         });
+      expect(mockGetResponseDraft).toHaveBeenCalled();
     });
 
     it('should return citizen date of birth page with information from response draft', async () => {
       mockResponseDraft(civilClaimResponseMock.case_data);
       await request(app)
-        .get(DOB_URL)
+        .get(dobUrl)
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(TestMessages.ENTER_DATE_OF_BIRTH);
@@ -89,7 +97,7 @@ describe('Citizen date of birth', () => {
         },
       });
       await request(app)
-        .get(DOB_URL)
+        .get(dobUrl)
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain('value="2"');
@@ -107,7 +115,7 @@ describe('Citizen date of birth', () => {
         },
       });
       await request(app)
-        .get(DOB_URL)
+        .get(dobUrl)
         .expect((res) => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(TestMessages.ENTER_DATE_OF_BIRTH);
@@ -118,7 +126,7 @@ describe('Citizen date of birth', () => {
     it('should return http 500 when getResponseDraft fails', async () => {
       mockGetResponseDraft.mockRejectedValueOnce(new Error('Draft error'));
       await request(app)
-        .get(DOB_URL)
+        .get(dobUrl)
         .expect((res) => {
           expect(res.status).toBe(500);
           expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
@@ -129,7 +137,7 @@ describe('Citizen date of birth', () => {
   describe('on POST', () => {
     it('should return errors on no input', async () => {
       await request(app)
-        .post(DOB_URL)
+        .post(dobUrl)
         .send('year=')
         .send('month=')
         .send('day=')
@@ -144,7 +152,7 @@ describe('Citizen date of birth', () => {
 
     it('should return error on year less than 1872', async () => {
       await request(app)
-        .post(DOB_URL)
+        .post(dobUrl)
         .send('year=1871')
         .send('month=1')
         .send('day=1')
@@ -156,7 +164,7 @@ describe('Citizen date of birth', () => {
 
     it('should return error on empty year', async () => {
       await request(app)
-        .post(DOB_URL)
+        .post(dobUrl)
         .send('year=')
         .send('month=1')
         .send('day=1')
@@ -168,7 +176,7 @@ describe('Citizen date of birth', () => {
 
     it('should return error on future date', async () => {
       await request(app)
-        .post(DOB_URL)
+        .post(dobUrl)
         .send('year=2400')
         .send('month=1')
         .send('day=1')
@@ -180,7 +188,7 @@ describe('Citizen date of birth', () => {
 
     it('should return error 4 digit year', async () => {
       await request(app)
-        .post(DOB_URL)
+        .post(dobUrl)
         .send('year=22')
         .send('month=1')
         .send('day=1')
@@ -193,7 +201,7 @@ describe('Citizen date of birth', () => {
     it('should accept a valid input and save to response draft', async () => {
       mockResponseDraft({respondent1: buildRespondent()});
       await request(app)
-        .post(DOB_URL)
+        .post(dobUrl)
         .send('year=2000')
         .send('month=1')
         .send('day=1')
@@ -202,7 +210,7 @@ describe('Citizen date of birth', () => {
         });
       expect(mockSaveDefendantProperty).toHaveBeenCalledWith(
         expect.anything(),
-        expect.any(String),
+        claimId,
         'dateOfBirth',
         expect.anything(),
       );
@@ -211,33 +219,33 @@ describe('Citizen date of birth', () => {
     it('should redirect to under 18 contact court page', async () => {
       mockResponseDraft({respondent1: buildRespondent()});
       await request(app)
-        .post(DOB_URL)
+        .post(dobUrl)
         .send('year=2021')
         .send('month=1')
         .send('day=1')
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.text).toContain(`Redirecting to ${AGE_ELIGIBILITY_URL}`);
+          expect(res.header.location).toEqual(ageEligibilityUrl);
         });
     });
 
     it('should redirect to phone number page on valid DOB', async () => {
       mockResponseDraft({respondent1: buildRespondent()});
       await request(app)
-        .post(DOB_URL)
+        .post(dobUrl)
         .send('year=1981')
         .send('month=1')
         .send('day=1')
         .expect((res) => {
           expect(res.status).toBe(302);
-          expect(res.text).toContain(`Redirecting to ${CITIZEN_PHONE_NUMBER_URL}`);
+          expect(res.header.location).toEqual(phoneNumberUrl);
         });
     });
 
     it('should return http 500 when saveDefendantPropertyToResponseDraft fails', async () => {
       mockSaveDefendantProperty.mockRejectedValueOnce(new Error('Draft error'));
       await request(app)
-        .post(DOB_URL)
+        .post(dobUrl)
         .send('year=1981')
         .send('month=1')
         .send('day=1')
@@ -252,26 +260,26 @@ describe('Citizen date of birth', () => {
         const phone = new PartyPhone('654323472', true);
         mockResponseDraft({respondent1: buildRespondent(phone)});
         await request(app)
-          .post(DOB_URL)
+          .post(dobUrl)
           .send('year=1981')
           .send('month=1')
           .send('day=1')
           .expect((res) => {
             expect(res.status).toBe(302);
-            expect(res.header.location).toEqual(RESPONSE_TASK_LIST_URL);
+            expect(res.header.location).toEqual(taskListUrl);
           });
       });
 
       it('should redirect to phone-number screen if phone-number NOT provided', async () => {
         mockResponseDraft({respondent1: buildRespondent()});
         await request(app)
-          .post(DOB_URL)
+          .post(dobUrl)
           .send('year=1981')
           .send('month=1')
           .send('day=1')
           .expect((res) => {
             expect(res.status).toBe(302);
-            expect(res.header.location).toEqual(CITIZEN_PHONE_NUMBER_URL);
+            expect(res.header.location).toEqual(phoneNumberUrl);
           });
       });
 
@@ -279,13 +287,13 @@ describe('Citizen date of birth', () => {
         const phone = new PartyPhone('', true);
         mockResponseDraft({respondent1: buildRespondent(phone)});
         await request(app)
-          .post(DOB_URL)
+          .post(dobUrl)
           .send('year=1981')
           .send('month=1')
           .send('day=1')
           .expect((res) => {
             expect(res.status).toBe(302);
-            expect(res.header.location).toEqual(CITIZEN_PHONE_NUMBER_URL);
+            expect(res.header.location).toEqual(phoneNumberUrl);
           });
       });
 
@@ -293,13 +301,13 @@ describe('Citizen date of birth', () => {
         const phone = new PartyPhone('654323472', false);
         mockResponseDraft({respondent1: buildRespondent(phone)});
         await request(app)
-          .post(DOB_URL)
+          .post(dobUrl)
           .send('year=1981')
           .send('month=1')
           .send('day=1')
           .expect((res) => {
             expect(res.status).toBe(302);
-            expect(res.header.location).toEqual(CITIZEN_PHONE_NUMBER_URL);
+            expect(res.header.location).toEqual(phoneNumberUrl);
           });
       });
     });
