@@ -1,12 +1,11 @@
 import {Request, Response} from 'express';
 import severeDisabilityController from '../../../../../../main/routes/features/response/statementOfMeans/severeDisabilityController';
 import {CITIZEN_RESIDENCE_URL} from 'routes/urls';
-import {Claim} from 'models/claim';
+import {SevereDisabilityService} from 'services/features/response/statementOfMeans/severeDisabilityService';
+import {GenericForm} from 'form/models/genericForm';
+import {GenericYesNo} from 'form/models/genericYesNo';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {createMockResponse, getRouteHandler} from '../../../../../utils/getRouteHandler';
-
-jest.mock('modules/draft-store/draftStoreService');
 
 describe('SevereDisability', () => {
   const getHandler = getRouteHandler(severeDisabilityController, 'get');
@@ -16,18 +15,21 @@ describe('SevereDisability', () => {
   let req: Partial<Request>;
   let res: ReturnType<typeof createMockResponse>;
   let next: jest.Mock;
-  const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
-  const mockGenerateRedisKey = draftStoreService.generateRedisKey as jest.Mock;
-  const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
+  let mockGetSevereDisability: jest.SpyInstance;
+  let mockSaveSevereDisability: jest.SpyInstance;
 
   beforeEach(() => {
-    jest.clearAllMocks();
     req = {params: {id: claimId}, body: {}, query: {}, cookies: {}};
     res = createMockResponse();
     next = jest.fn();
-    mockGenerateRedisKey.mockReturnValue(claimId);
-    mockGetCaseData.mockResolvedValue(new Claim());
-    mockSaveDraftClaim.mockResolvedValue(undefined);
+    mockGetSevereDisability = jest.spyOn(SevereDisabilityService.prototype, 'getSevereDisability')
+      .mockResolvedValue(new GenericForm(new GenericYesNo()));
+    mockSaveSevereDisability = jest.spyOn(SevereDisabilityService.prototype, 'saveSevereDisability')
+      .mockResolvedValue(undefined);
+  });
+
+  afterEach(() => {
+    jest.restoreAllMocks();
   });
 
   describe('on GET', () => {
@@ -35,12 +37,13 @@ describe('SevereDisability', () => {
       await getHandler(req as Request, res as unknown as Response, next);
 
       expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({form: expect.anything()}));
+      expect(mockGetSevereDisability).toHaveBeenCalled();
       expect(next).not.toHaveBeenCalled();
     });
 
     it('should call next when loading the claim fails', async () => {
-      const error = new Error('redis failure');
-      mockGetCaseData.mockRejectedValue(error);
+      const error = new Error('draft failure');
+      mockGetSevereDisability.mockRejectedValue(error);
 
       await getHandler(req as Request, res as unknown as Response, next);
 
@@ -54,7 +57,7 @@ describe('SevereDisability', () => {
 
       expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({form: expect.anything()}));
       expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
-      expect(mockSaveDraftClaim).not.toHaveBeenCalled();
+      expect(mockSaveSevereDisability).not.toHaveBeenCalled();
     });
 
     it('should save and redirect to residence when no is selected', async () => {
@@ -62,7 +65,7 @@ describe('SevereDisability', () => {
 
       await postHandler(req as Request, res as unknown as Response, next);
 
-      expect(mockSaveDraftClaim).toHaveBeenCalled();
+      expect(mockSaveSevereDisability).toHaveBeenCalled();
       expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CITIZEN_RESIDENCE_URL));
     });
 
@@ -71,12 +74,13 @@ describe('SevereDisability', () => {
 
       await postHandler(req as Request, res as unknown as Response, next);
 
+      expect(mockSaveSevereDisability).toHaveBeenCalled();
       expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CITIZEN_RESIDENCE_URL));
     });
 
     it('should call next when saving fails', async () => {
-      const error = new Error('redis failure');
-      mockGetCaseData.mockRejectedValue(error);
+      const error = new Error('draft failure');
+      mockSaveSevereDisability.mockRejectedValue(error);
       req.body = {option: 'yes'};
 
       await postHandler(req as Request, res as unknown as Response, next);
