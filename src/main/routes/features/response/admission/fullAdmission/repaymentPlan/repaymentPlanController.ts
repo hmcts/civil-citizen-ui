@@ -8,7 +8,7 @@ import {
   saveRepaymentPlanData,
 } from 'services/features/response/repaymentPlan/repaymentPlanService';
 import {CITIZEN_REPAYMENT_PLAN_FULL_URL, RESPONSE_TASK_LIST_URL} from 'routes/urls';
-import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {getResponseClaimById} from 'modules/draft-store/response/responseDraftStoreService';
 import {AppRequest} from 'common/models/AppRequest';
 import {getRouteParam} from 'common/utils/routeParamUtils';
 
@@ -29,7 +29,8 @@ export const getFirstPaymentExampleDate = () => {
 
 repaymentPlanFullAdmissionController.get(CITIZEN_REPAYMENT_PLAN_FULL_URL, (async (req, res, next: NextFunction) => {
   try {
-    const claim = await getCaseDataFromStore(generateRedisKey(<AppRequest>req));
+    const caseId = getRouteParam(req, 'id');
+    const claim = await getResponseClaimById(<AppRequest>req, caseId);
 
     const form = await getRepaymentPlanForm(claim);
     renderView(new GenericForm(form), res);
@@ -41,15 +42,15 @@ repaymentPlanFullAdmissionController.get(CITIZEN_REPAYMENT_PLAN_FULL_URL, (async
 repaymentPlanFullAdmissionController.post(CITIZEN_REPAYMENT_PLAN_FULL_URL,
   (async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const redisKey = generateRedisKey(<AppRequest>req);
-      const claim = await getCaseDataFromStore(redisKey);
+      const caseId = getRouteParam(req, 'id');
+      const claim = await getResponseClaimById(<AppRequest>req, caseId);
       const savedValues = await getRepaymentPlanForm(claim);
       const form: GenericForm<RepaymentPlanForm> = new GenericForm(new RepaymentPlanForm(savedValues.totalClaimAmount, req.body.paymentAmount, req.body.repaymentFrequency, req.body.year, req.body.month, req.body.day));
       form.validateSync();
       if (form.hasErrors()) {
         renderView(form, res);
       } else {
-        await saveRepaymentPlanData(redisKey, form.model);
+        await saveRepaymentPlanData(<AppRequest>req, form.model);
         const claimId = getRouteParam(req, 'id');
         res.redirect(constructResponseUrlWithIdParams(claimId, RESPONSE_TASK_LIST_URL));
       }
