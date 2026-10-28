@@ -52,6 +52,7 @@ afterEach(() => {
   getConfig.mockReset();
 });
 afterAll(() => {
+  nock.restore();
   getConfig.mockRestore();
 });
 
