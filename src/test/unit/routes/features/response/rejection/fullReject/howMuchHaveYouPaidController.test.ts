@@ -1,142 +1,144 @@
-import {app} from '../../../../../../../main/app';
-import nock from 'nock';
-import config from 'config';
-import request from 'supertest';
+import {Request, Response} from 'express';
+import howMuchHaveYouPaidController from '../../../../../../../main/routes/features/response/admission/fullRejection/howMuchHaveYouPaidController';
+import howMuchHaveYouPaidService from 'services/features/response/admission/howMuchHaveYouPaidService';
+import {HowMuchHaveYouPaid} from 'form/models/admission/howMuchHaveYouPaid';
 import {
-  CITIZEN_FR_AMOUNT_YOU_PAID_URL,
   CITIZEN_FULL_REJECTION_YOU_PAID_LESS_URL,
   RESPONSE_TASK_LIST_URL,
 } from 'routes/urls';
-import {
-  mockCivilClaim,
-  mockCivilClaimUndefined,
-  mockNoStatementOfMeans,
-  mockRedisFailure,
-} from '../../../../../../utils/mockDraftStore';
-import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
-import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {ResponseType} from 'form/models/responseType';
+import {createMockResponse, getRouteHandler} from '../../../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../../../main/modules/oidc');
+describe('How Much Have You Paid - Full Rejection', () => {
+  const getHandler = getRouteHandler(howMuchHaveYouPaidController, 'get');
+  const postHandler = getRouteHandler(howMuchHaveYouPaidController, 'post');
+  const viewPath = 'features/response/admission/how-much-have-you-paid';
+  const claimId = '12345';
+  let req: Partial<Request>;
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
+  let mockGetHowMuchHaveYouPaid: jest.SpyInstance;
+  let mockSaveHowMuchHaveYouPaid: jest.SpyInstance;
 
-describe('How Much Have You Paid', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamServiceUrl: string = config.get('services.idam.url');
+  const expectValidationError = () => {
+    expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+      form: expect.anything(),
+      responseType: ResponseType.FULL_DEFENCE,
+    }));
+    expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
+    expect(res.redirect).not.toHaveBeenCalled();
+    expect(mockSaveHowMuchHaveYouPaid).not.toHaveBeenCalled();
+  };
 
-  beforeAll(() => {
-    nock(idamServiceUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
+  beforeEach(async () => {
+    req = {params: {id: claimId}, body: {}, query: {}, cookies: {}};
+    res = createMockResponse();
+    next = jest.fn();
+    mockGetHowMuchHaveYouPaid = jest.spyOn(howMuchHaveYouPaidService, 'getHowMuchHaveYouPaid')
+      .mockResolvedValue(new HowMuchHaveYouPaid({totalClaimAmount: 110}));
+    mockSaveHowMuchHaveYouPaid = jest.spyOn(howMuchHaveYouPaidService, 'saveHowMuchHaveYouPaid')
+      .mockResolvedValue(undefined);
+    // Prime module-level totalClaimAmount used by POST
+    await getHandler(req as Request, res as unknown as Response, next);
+    res = createMockResponse();
+    next = jest.fn();
   });
 
-  describe('on Exception', () => {
-    it('should return http 500 when has error in the get method', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .get(CITIZEN_FR_AMOUNT_YOU_PAID_URL)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
-    });
-
-    it('should return http 500 when has error in the post method', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .post(CITIZEN_FR_AMOUNT_YOU_PAID_URL)
-        .send({amount: 50, totalClaimAmount: 110, year: '2022', month: '1', day: '31', text: 'text'})
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
-    });
+  afterEach(() => {
+    jest.restoreAllMocks();
   });
 
   describe('on GET', () => {
-    it('should return how much have you paid page', async () => {
-      app.locals.draftStoreClient = mockNoStatementOfMeans;
-      await request(app)
-        .get(CITIZEN_FR_AMOUNT_YOU_PAID_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('How much have you paid?');
-        });
+    it('should render the how much have you paid page', async () => {
+      await getHandler(req as Request, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        form: expect.anything(),
+        totalClaimAmount: 110,
+        responseType: ResponseType.FULL_DEFENCE,
+      }));
+      expect(mockGetHowMuchHaveYouPaid).toHaveBeenCalledWith(expect.anything(), ResponseType.FULL_DEFENCE);
+      expect(next).not.toHaveBeenCalled();
     });
-    it('should return how much have you paid with payment amount loaded from Redis', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
-      await request(app)
-        .get(CITIZEN_FR_AMOUNT_YOU_PAID_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('How much have you paid?');
-          expect(res.text).toContain('name="amount" type="number" spellcheck="false" value="20"');
-          expect(res.text).toContain('name="year" type="text" value="2022"');
-          expect(res.text).toContain('name="month" type="text" value="1"');
-          expect(res.text).toContain('name="day" type="text" value="1"');
-        });
+
+    it('should call next when loading the claim fails', async () => {
+      const error = new Error('draft failure');
+      mockGetHowMuchHaveYouPaid.mockRejectedValue(error);
+
+      await getHandler(req as Request, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
+
   describe('on POST', () => {
-    it('should create a new claim if redis gives undefined', async () => {
-      app.locals.draftStoreClient = mockCivilClaimUndefined;
-      await request(app)
-        .post(CITIZEN_FR_AMOUNT_YOU_PAID_URL)
-        .send({amount: 50, totalClaimAmount: 110, year: '2022', month: '1', day: '31', text: 'text'})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(RESPONSE_TASK_LIST_URL);
-        });
+    it('should re-render when no input is provided', async () => {
+      req.body = {
+        amount: undefined,
+        year: undefined,
+        month: undefined,
+        day: undefined,
+        text: undefined,
+      };
+
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expectValidationError();
     });
-    it('should return errors on no input', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
-      await request(app)
-        .post(CITIZEN_FR_AMOUNT_YOU_PAID_URL)
-        .send({
-          amount: undefined,
-          totalClaimAmount: undefined,
-          year: undefined,
-          month: undefined,
-          day: undefined,
-          text: undefined,
-        })
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.ENTER_VALID_AMOUNT);
-          expect(res.text).toContain(TestMessages.VALID_DAY);
-          expect(res.text).toContain(TestMessages.VALID_MONTH);
-          expect(res.text).toContain(TestMessages.VALID_YEAR);
-          expect(res.text).toContain(TestMessages.ENTER_PAYMENT_EXPLANATION);
-        });
+
+    it('should re-render when the date is in the future', async () => {
+      req.body = {amount: 20, year: '2040', month: '1', day: '1', text: 'text'};
+
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expectValidationError();
     });
-    it('should return error on date in future', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
-      await request(app)
-        .post(CITIZEN_FR_AMOUNT_YOU_PAID_URL)
-        .send({amount: 20, totalClaimAmount: 110, year: '2040', month: '1', day: '1', text: 'text'})
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.VALID_DATE_IN_PAST);
-        });
+
+    it('should re-render when the year is not four digits', async () => {
+      req.body = {amount: 20, year: '22', month: '1', day: '1', text: 'text'};
+
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expectValidationError();
     });
-    it('should return error for a 2 digit year', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
-      await request(app)
-        .post(CITIZEN_FR_AMOUNT_YOU_PAID_URL)
-        .send({amount: 20, totalClaimAmount: 110, year: '22', month: '1', day: '1', text: 'text'})
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.VALID_FOUR_DIGIT_YEAR);
-        });
+
+    it('should save and redirect to you paid less when amount is less than claim', async () => {
+      req.body = {amount: 20, year: '2022', month: '1', day: '1', text: 'text'};
+
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expect(mockSaveHowMuchHaveYouPaid).toHaveBeenCalledWith(
+        expect.anything(),
+        expect.objectContaining({amount: 20, text: 'text'}),
+        ResponseType.FULL_DEFENCE,
+      );
+      expect(res.redirect).toHaveBeenCalledWith(
+        constructResponseUrlWithIdParams(claimId, CITIZEN_FULL_REJECTION_YOU_PAID_LESS_URL),
+      );
+      expect(next).not.toHaveBeenCalled();
     });
-    it('should redirect to claim task list page on valid amount, date in past, text', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
-      await request(app)
-        .post(CITIZEN_FR_AMOUNT_YOU_PAID_URL)
-        .send({amount: 20, totalClaimAmount: 110, year: '2022', month: '1', day: '1', text: 'text'})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.text).toContain(`Redirecting to ${CITIZEN_FULL_REJECTION_YOU_PAID_LESS_URL}`);
-        });
+
+    it('should save and redirect to the task list when amount equals claim', async () => {
+      req.body = {amount: 110, year: '2022', month: '1', day: '1', text: 'text'};
+
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expect(mockSaveHowMuchHaveYouPaid).toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(
+        constructResponseUrlWithIdParams(claimId, RESPONSE_TASK_LIST_URL),
+      );
+      expect(next).not.toHaveBeenCalled();
+    });
+
+    it('should call next when saving fails', async () => {
+      const error = new Error('draft failure');
+      mockSaveHowMuchHaveYouPaid.mockRejectedValue(error);
+      req.body = {amount: 50, year: '2022', month: '1', day: '31', text: 'text'};
+
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 });

@@ -1,13 +1,11 @@
 import {Request, Response} from 'express';
 import howMuchHaveYouPaidController from '../../../../../../../main/routes/features/response/admission/partialAdmission/howMuchHaveYouPaidController';
+import howMuchHaveYouPaidService from 'services/features/response/admission/howMuchHaveYouPaidService';
+import {HowMuchHaveYouPaid} from 'form/models/admission/howMuchHaveYouPaid';
 import {RESPONSE_TASK_LIST_URL} from 'routes/urls';
-import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {Claim} from 'models/claim';
-import {Party} from 'models/party';
+import {ResponseType} from 'form/models/responseType';
 import {createMockResponse, getRouteHandler} from '../../../../../../utils/getRouteHandler';
-
-jest.mock('modules/draft-store/draftStoreService');
 
 describe('How Much Have You Paid', () => {
   const getHandler = getRouteHandler(howMuchHaveYouPaidController, 'get');
@@ -17,16 +15,8 @@ describe('How Much Have You Paid', () => {
   let req: Partial<Request>;
   let res: ReturnType<typeof createMockResponse>;
   let next: jest.Mock;
-  const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
-  const mockGenerateRedisKey = draftStoreService.generateRedisKey as jest.Mock;
-  const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
-
-  const stubClaim = (): Claim => {
-    const claim = new Claim();
-    claim.applicant1 = new Party();
-    claim.totalClaimAmount = 110;
-    return claim;
-  };
+  let mockGetHowMuchHaveYouPaid: jest.SpyInstance;
+  let mockSaveHowMuchHaveYouPaid: jest.SpyInstance;
 
   const expectValidationError = () => {
     expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
@@ -34,16 +24,25 @@ describe('How Much Have You Paid', () => {
     }));
     expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
     expect(res.redirect).not.toHaveBeenCalled();
+    expect(mockSaveHowMuchHaveYouPaid).not.toHaveBeenCalled();
   };
 
-  beforeEach(() => {
+  beforeEach(async () => {
     req = {params: {id: claimId}, body: {}, query: {}, cookies: {}};
     res = createMockResponse();
     next = jest.fn();
-    jest.clearAllMocks();
-    mockGenerateRedisKey.mockReturnValue(claimId);
-    mockGetCaseData.mockResolvedValue(stubClaim());
-    mockSaveDraftClaim.mockResolvedValue(undefined);
+    mockGetHowMuchHaveYouPaid = jest.spyOn(howMuchHaveYouPaidService, 'getHowMuchHaveYouPaid')
+      .mockResolvedValue(new HowMuchHaveYouPaid({totalClaimAmount: 110}));
+    mockSaveHowMuchHaveYouPaid = jest.spyOn(howMuchHaveYouPaidService, 'saveHowMuchHaveYouPaid')
+      .mockResolvedValue(undefined);
+    // Prime module-level totalClaimAmount used by POST
+    await getHandler(req as Request, res as unknown as Response, next);
+    res = createMockResponse();
+    next = jest.fn();
+  });
+
+  afterEach(() => {
+    jest.restoreAllMocks();
   });
 
   describe('on GET', () => {
@@ -54,12 +53,13 @@ describe('How Much Have You Paid', () => {
         form: expect.anything(),
         totalClaimAmount: 110,
       }));
+      expect(mockGetHowMuchHaveYouPaid).toHaveBeenCalledWith(expect.anything(), ResponseType.PART_ADMISSION);
       expect(next).not.toHaveBeenCalled();
     });
 
     it('should call next when loading the claim fails', async () => {
-      const error = new Error('redis failure');
-      mockGetCaseData.mockRejectedValue(error);
+      const error = new Error('draft failure');
+      mockGetHowMuchHaveYouPaid.mockRejectedValue(error);
 
       await getHandler(req as Request, res as unknown as Response, next);
 
@@ -103,14 +103,18 @@ describe('How Much Have You Paid', () => {
 
       await postHandler(req as Request, res as unknown as Response, next);
 
-      expect(mockSaveDraftClaim).toHaveBeenCalled();
+      expect(mockSaveHowMuchHaveYouPaid).toHaveBeenCalledWith(
+        expect.anything(),
+        expect.objectContaining({amount: 20, text: 'text'}),
+        ResponseType.PART_ADMISSION,
+      );
       expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, RESPONSE_TASK_LIST_URL));
       expect(next).not.toHaveBeenCalled();
     });
 
     it('should call next when saving fails', async () => {
-      const error = new Error('redis failure');
-      mockGetCaseData.mockRejectedValue(error);
+      const error = new Error('draft failure');
+      mockSaveHowMuchHaveYouPaid.mockRejectedValue(error);
       req.body = {amount: 50, year: '2022', month: '1', day: '31', text: 'text'};
 
       await postHandler(req as Request, res as unknown as Response, next);
