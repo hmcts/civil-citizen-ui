@@ -2,7 +2,7 @@ import {NextFunction, Request, Response, Router, RequestHandler} from 'express';
 import {Evidence, INIT_ROW_COUNT} from 'common/form/models/evidence/evidence';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {getEvidence, saveEvidence} from 'services/features/response/evidence/evidenceService';
-import {CITIZEN_EVIDENCE_URL, RESPONSE_TASK_LIST_URL,} from '../../../urls';
+import {CITIZEN_EVIDENCE_URL, RESPONSE_TASK_LIST_URL} from '../../../urls';
 import {GenericForm} from 'common/form/models/genericForm';
 import * as utilEvidence from 'common/form/models/evidence/transformAndRemoveEmptyValues';
 import {AppRequest} from 'common/models/AppRequest';
