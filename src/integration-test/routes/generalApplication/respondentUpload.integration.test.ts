@@ -2,7 +2,7 @@ import express, {NextFunction, Request, Response} from 'express';
 import request from 'supertest';
 import controller from 'routes/features/generalApplication/response/respondentUploadEvidenceDocmentsController';
 import {GA_RESPONDENT_UPLOAD_DOCUMENT_URL} from 'routes/urls';
-import {CivilServiceClient} from 'client/civilServiceClient';
+import {civilServiceClientMock} from '../../setup/sharedMocks';
 import {generateRedisKeyForGA} from 'modules/draft-store/draftStoreService';
 import {GaResponse} from 'models/generalApplication/response/gaResponse';
 import {CaseDocument} from 'models/document/caseDocument';
@@ -13,7 +13,10 @@ import {
 
 jest.mock('modules/draft-store/draftStoreService');
 jest.mock('modules/utilityService', () => ({getClaimById: jest.fn()}));
-jest.mock('services/features/generalApplication/response/generalApplicationResponseStoreService');
+jest.mock('services/features/generalApplication/response/generalApplicationResponseStoreService', () => ({
+  getDraftGARespondentResponse: jest.fn(),
+  saveDraftGARespondentResponse: jest.fn(),
+}));
 
 describe('respondent GA multipart upload', () => {
   const url = GA_RESPONDENT_UPLOAD_DOCUMENT_URL.replace(':id', '123').replace(':appId', '345');
@@ -23,12 +26,14 @@ describe('respondent GA multipart upload', () => {
     documentName: 'evidence.pdf',
     documentLink: {document_url: '/documents/1', document_filename: 'evidence.pdf'},
   } as CaseDocument;
+  const upload = jest.fn();
   let draft: GaResponse;
   let app: express.Express;
   let errors: unknown[];
 
   beforeEach(() => {
     jest.resetAllMocks();
+    Object.assign(civilServiceClientMock, {uploadDocument: upload});
     draft = new GaResponse();
     errors = [];
     jest.mocked(generateRedisKeyForGA).mockReturnValue(key);
@@ -47,10 +52,8 @@ describe('respondent GA multipart upload', () => {
     });
   });
 
-  afterEach(() => jest.restoreAllMocks());
-
   it('passes the actual multipart file to the client once and saves it to the response draft', async () => {
-    const upload = jest.spyOn(CivilServiceClient.prototype, 'uploadDocument').mockResolvedValue(document);
+    upload.mockResolvedValue(document);
 
     await request(app).post(url).field('action', 'uploadButton')
       .attach('selectedFile', bytes, {filename: 'evidence.pdf', contentType: 'application/pdf'})
@@ -68,7 +71,7 @@ describe('respondent GA multipart upload', () => {
 
   it('forwards a client upload failure without saving a document', async () => {
     const error = new Error('upload unavailable');
-    const upload = jest.spyOn(CivilServiceClient.prototype, 'uploadDocument').mockRejectedValue(error);
+    upload.mockRejectedValue(error);
 
     await request(app).post(url).field('action', 'uploadButton')
       .attach('selectedFile', bytes, {filename: 'evidence.pdf', contentType: 'application/pdf'})
