@@ -1,19 +1,23 @@
-import {getCaseDataFromStore, saveDraftClaim} from '../../../../../modules/draft-store/draftStoreService';
-import {StatementOfMeans} from '../../../../../common/models/statementOfMeans';
-import {GenericForm} from '../../../../../common/form/models/genericForm';
-import {GenericYesNo} from '../../../../../common/form/models/genericYesNo';
+import {getResponseClaimById, getResponseDraft, updateResponseDraft} from 'modules/draft-store/response/responseDraftStoreService';
+import {StatementOfMeans} from 'common/models/statementOfMeans';
+import {GenericForm} from 'common/form/models/genericForm';
+import {GenericYesNo} from 'common/form/models/genericYesNo';
+import {AppRequest} from 'models/AppRequest';
+import {getRouteParam} from 'common/utils/routeParamUtils';
+import {Claim} from 'models/claim';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('partnerPensionService');
 
 export class PartnerPensionService {
 
-  public async getPartnerPension(claimId: string) {
+  public async getPartnerPension(req: AppRequest) {
     try {
-      const case_data = await getCaseDataFromStore(claimId);
-      if (case_data?.statementOfMeans?.partnerPension) {
+      const caseId = getRouteParam(req, 'id');
+      const claim = await getResponseClaimById(req, caseId);
+      if (claim?.statementOfMeans?.partnerPension) {
         const partnerPension = new GenericForm(new GenericYesNo());
-        partnerPension.model.option = case_data.statementOfMeans.partnerPension.option;
+        partnerPension.model.option = claim.statementOfMeans.partnerPension.option;
         return partnerPension;
       }
       return new GenericForm(new GenericYesNo());
@@ -23,17 +27,27 @@ export class PartnerPensionService {
     }
   }
 
-  public async savePartnerPension(claimId: string, partnerPension: GenericForm<GenericYesNo>) {
+  public async savePartnerPension(req: AppRequest, partnerPension: GenericForm<GenericYesNo>) {
     try {
-      const case_data = await getCaseDataFromStore(claimId);
-      if (case_data?.statementOfMeans) {
-        case_data.statementOfMeans.partnerPension = partnerPension.model;
+      const caseId = getRouteParam(req, 'id');
+      const draftResult = await getResponseDraft(req, caseId);
+      if (!draftResult) {
+        throw new Error('[partnerPensionService] no response draft found');
+      }
+      const claim = Object.assign(new Claim(), draftResult.claimResponse?.case_data as unknown as Claim);
+      const draftId = draftResult.rawResponse?.draftId;
+
+      if (claim?.statementOfMeans) {
+        claim.statementOfMeans.partnerPension = partnerPension.model;
       } else {
         const statementOfMeans = new StatementOfMeans();
         statementOfMeans.partnerPension = partnerPension.model;
-        case_data.statementOfMeans = statementOfMeans;
+        claim.statementOfMeans = statementOfMeans;
       }
-      await saveDraftClaim(claimId, case_data);
+      if (draftResult.createdAt && !claim.draftClaimCreatedAt) {
+        claim.draftClaimCreatedAt = new Date(draftResult.createdAt);
+      }
+      await updateResponseDraft(req, caseId, claim, draftId);
     } catch (error) {
       logger.error(error);
       throw error;
