@@ -1,0 +1,19 @@
+{% extends "claim-details-tpl.njk" %}
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% block content %}
+  <div class="govuk-grid-row">
+    <div class="govuk-grid-column-two-thirds">
+      <h1 class="govuk-heading-l" role="status">
+        {{ t('PAGES.SESSION_TIMEOUT.TITLE') }}
+      </h1>
+      <p class="govuk-body" role="status">
+        {{ t('PAGES.SESSION_TIMEOUT.DESCRIPTION') }}
+      </p>
+      {{ govukButton({
+        text: t('PAGES.SESSION_TIMEOUT.SIGN_IN_AGAIN'),
+        href: urls.SIGN_IN_URL + '?prompt=login'
+      }) }}
+    </div>
+  </div>
+{% endblock %}

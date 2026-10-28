@@ -24,6 +24,8 @@ import {
   HEARING_FEE_PAYMENT_CONFIRMATION_URL,
   CLAIM_FEE_PAYMENT_CONFIRMATION_URL,
   APPLICATION_FEE_PAYMENT_CONFIRMATION_URL,
+  SESSION_EXTEND_URL,
+  SESSION_TIMEOUT_URL,
 } from 'routes/urls';
 
 import {
@@ -85,6 +87,14 @@ const isPrivacyPolicyPage = (requestUrl: string): boolean => {
   return requestUrl.startsWith(PRIVACY_POLICY_URL);
 };
 
+const isSessionTimeoutPage = (requestUrl: string): boolean => {
+  return requestUrl.startsWith(SESSION_TIMEOUT_URL);
+};
+
+export const isSessionExtendUrl = (requestUrl: string): boolean => {
+  return requestUrl.startsWith(SESSION_EXTEND_URL);
+};
+
 const isMakeClaimPage = (requestUrl: string): boolean => {
   return requestUrl.startsWith(MAKE_CLAIM);
 };
@@ -134,7 +144,7 @@ export class OidcMiddleware {
     const idamSignOutUrl: string = config.get('services.idam.terminateSessionURL');
     const applicationUrl: string = config.get('services.idam.signOutCallBackURL');
 
-    app.get(SIGN_IN_URL, async (_req: AppRequest, res: Response) => {
+    app.get(SIGN_IN_URL, async (req: AppRequest, res: Response) => {
       // Log the resolved LaunchDarkly flag value on every sign-in so we can confirm in the
       // environment logs whether hmcts-access-migration-enabled is actually toggling.
       // NOTE: the flag does NOT change idamUrlLogin - the /login vs /o/authorize entry point
@@ -145,7 +155,8 @@ export class OidcMiddleware {
       } catch (err) {
         logger.error('Failed to read hmcts-access-migration-enabled flag', err);
       }
-      res.redirect(idamUrlLogin);
+      const prompt = req.query.prompt === 'login' ? '&prompt=login' : '';
+      res.redirect(idamUrlLogin + prompt);
     });
 
     app.get(CALLBACK_URL, async (req: AppRequest, res: Response) => {
@@ -211,6 +222,8 @@ export class OidcMiddleware {
       });
 
       req.session.destroy(() => {
+        res.clearCookie('citizen-ui-session', {path: '/'});
+        res.clearCookie('citizen-ui-session.sig', {path: '/'});
         res.redirect(idamSignOutUrl + '?' + params.toString());
       });
     });
@@ -228,6 +241,14 @@ export class OidcMiddleware {
           }
         }
 
+        // A session cookie with no authenticated session means the session
+        // expired or was signed out in another tab. Show the timeout page so
+        // form submissions do not silently send the user back to the
+        // dashboard/sign-in journey.
+        if (req.cookies?.['citizen-ui-session'] && !isSessionTimeoutPage(req.originalUrl)) {
+          return res.redirect(SESSION_TIMEOUT_URL);
+        }
+
         if (
           requestIsForPinAndPost(req) ||
           requestIsForDownloadPdf(req) ||
@@ -238,7 +259,9 @@ export class OidcMiddleware {
           isContactUsPage(req.originalUrl) ||
           isTermAndConditionsPage(req.originalUrl) ||
           isPrivacyPolicyPage(req.originalUrl) ||
-          isWebchatPage(req.originalUrl)
+          isWebchatPage(req.originalUrl) ||
+          isSessionTimeoutPage(req.originalUrl) ||
+          isSessionExtendUrl(req.originalUrl)
         ) {
           return next();
         }

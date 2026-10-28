@@ -14,6 +14,8 @@ import { initAll as initMojFrontend } from '@ministryofjustice/frontend';
 import './modules/cookie/cookieConfig';
 import './assets/js/cookies-controller.js';
 import './assets/js/disable-submit.js';
+import {initTimeoutWarning} from './assets/js/timeout-warning.js';
 
 initGovukFrontend();
 initMojFrontend();
+initTimeoutWarning();

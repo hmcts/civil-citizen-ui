@@ -174,10 +174,31 @@ export class Nunjucks {
       req.cookies.nonceDataLayer = nonceDataLayer;
       res.locals.user=req.session.user;
       res.locals.nonceWebChat = crypto.randomBytes(16).toString('base64');
+      res.locals.sessionTimeout = buildSessionTimeoutLocals(res.locals.lang || req.cookies?.lang, req);
       next();
     });
   }
 }
+
+const buildSessionTimeoutLocals = (lang?: string, req?: AppRequest) => {
+  const cookieMaxAgeMs = config.get<number>('cookieMaxAge');
+  const minutesModalVisible = config.get<number>('sessionTimeout.minutesModalVisible');
+  const totalMinutes = Math.max(1, Math.floor(cookieMaxAgeMs / 60000));
+  const idleMinutesBeforeWarning = Math.max(1, totalMinutes - minutesModalVisible);
+  const expiry = req?.session?.cookie?.expires ? new Date(req.session.cookie.expires) : new Date(Date.now() + cookieMaxAgeMs);
+  const locale = lang === 'cy' ? 'cy-GB' : 'en-GB';
+
+  return {
+    idleMinutesBeforeWarning,
+    minutesModalVisible,
+    totalSeconds: Math.floor(cookieMaxAgeMs / 1000),
+    expiresAt: expiry.getTime(),
+    fallbackEndTime: expiry.toLocaleTimeString(locale, {
+      hour: '2-digit',
+      minute: '2-digit',
+    }),
+  };
+};
 
 const replaceSpace = (title: string): string => {
   return title.replace(/ /g, '_').replace('\'','');

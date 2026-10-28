@@ -16,11 +16,13 @@ import {
   HEARING_FEE_PAYMENT_CONFIRMATION_URL_WITH_UNIQUE_ID,
   SIGN_IN_URL,
   SIGN_OUT_URL, UNAUTHORISED_URL,
+  SESSION_EXTEND_URL,
 } from 'routes/urls';
 
 import {getOidcResponse, getSessionIssueTime, getUserDetails, OidcResponse} from '../../../../main/app/auth/user/oidc';
 import {Session} from 'express-session';
 import {TestMessages} from '../../../utils/errorMessageTestConstants';
+import {isSessionExtendUrl} from '../../../../main/modules/oidc';
 
 jest.mock('../../../../main/modules/draft-store');
 const mockDraftStoreClient = {
@@ -63,6 +65,10 @@ const paymentConfirmationUrls = [
 jest.mock('../../../../main/app/auth/user/oidc');
 
 describe('OIDC middleware', () => {
+  it('recognises only the session extension path', () => {
+    expect(isSessionExtendUrl(SESSION_EXTEND_URL)).toBe(true);
+    expect(isSessionExtendUrl('/not-session-extend')).toBe(false);
+  });
   beforeEach(() => {
     jest.clearAllMocks();
     mockDraftStoreClient.ttl.mockResolvedValue(-1);
@@ -71,6 +77,10 @@ describe('OIDC middleware', () => {
       save: (callback: (err?: any) => void) => callback(),
       destroy: (callback: () => void) => callback(),
     } as unknown as Session;
+  });
+
+  it('allows the session extension endpoint through the authentication guard', async () => {
+    await request(app).post(SESSION_EXTEND_URL).expect(401);
   });
   describe('Sign out', () => {
     beforeEach(() => {
