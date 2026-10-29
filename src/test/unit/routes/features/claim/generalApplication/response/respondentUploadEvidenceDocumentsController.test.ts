@@ -91,7 +91,8 @@ describe('General Application - Respondent upload evidence documents', () => {
     (draftStoreService.getCaseDataFromStore as jest.Mock).mockResolvedValue(buildClaim());
     (draftStoreService.saveDraftClaim as jest.Mock).mockResolvedValue(undefined);
     mockGetClaim.mockResolvedValue(buildClaim());
-    mockGetDraft.mockResolvedValue(gaResponse);
+    mockGetDraft.mockReset().mockResolvedValue(gaResponse);
+    jest.spyOn(CivilServiceClient.prototype, 'uploadDocument').mockReset();
     mockSaveDraft.mockResolvedValue(undefined);
   });
 
@@ -175,7 +176,8 @@ describe('General Application - Respondent upload evidence documents', () => {
 
       await postHandler(req as never, res as unknown as Response, next);
 
-      expect(uploadDocument).toHaveBeenCalled();
+      expect(uploadDocument).toHaveBeenCalledTimes(1);
+      expect(uploadDocument).toHaveBeenCalledWith(req, expect.objectContaining(uploadedFile));
       expect(mockSaveDraft).toHaveBeenCalled();
       expect(res.redirect).toHaveBeenCalledWith(currentUrl);
     });
@@ -199,6 +201,8 @@ describe('General Application - Respondent upload evidence documents', () => {
       await postHandler(req as never, res as unknown as Response, next);
 
       expect(next).toHaveBeenCalledWith(error);
+      expect(CivilServiceClient.prototype.uploadDocument).toHaveBeenCalledTimes(1);
+      expect(mockSaveDraft).not.toHaveBeenCalled();
     });
   });
 });

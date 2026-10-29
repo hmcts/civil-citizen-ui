@@ -416,6 +416,20 @@ describe('translateCCDCaseDataToCUIModel', () => {
     expect(claim.claimantResponse.suggestedPaymentIntention.repaymentPlan).toEqual(repaymentPlan);
   });
 
+  it.each([undefined, null, '', 'not-a-date'])('does not turn absent or invalid claimant instalment date %s into an epoch date', savedDate => {
+    const input: CCDClaim = {
+      applicant1SuggestInstalmentsPaymentAmountForDefendantSpec: 100,
+      applicant1SuggestInstalmentsRepaymentFrequencyForDefendantSpec: CCDRepaymentPlanFrequency.ONCE_ONE_MONTH,
+      applicant1SuggestInstalmentsFirstRepaymentDateForDefendantSpec: savedDate,
+    };
+
+    const claim = translateCCDCaseDataToCUIModel(input);
+    const repaymentPlan = claim.claimantResponse.suggestedPaymentIntention.repaymentPlan;
+
+    expect(repaymentPlan).toEqual({paymentAmount: 100, repaymentFrequency: 'MONTH', firstRepaymentDate: undefined});
+    expect(JSON.parse(JSON.stringify(repaymentPlan))).toEqual({paymentAmount: 100, repaymentFrequency: 'MONTH'});
+  });
+
   it('should translate claimant suggested immediate repayment deadline date to CUI model for having value', () => {
     //Given
     const paymentDate = new Date('2024-04-30');
