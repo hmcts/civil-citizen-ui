@@ -180,6 +180,11 @@ describe('Upload Evidence Document service', () => {
       expect(req.session.fileUpload).toBeDefined();
       expect(JSON.parse(req.session.fileUpload)).toHaveLength(1);
     });
+    it('should treat a request cut off before the action field as a failed upload', () => {
+      const req = { body: {}, session: { save: (cb: any) => cb() } as any, multerError: new Error('Unexpected end of form') } as any;
+      expect(handleMulterError(req)).toBe(true);
+      expect(JSON.parse(req.session.fileUpload)[0].constraints).toEqual({ multerError: 'ERRORS.FILE_UPLOAD_FAILED' });
+    });
   });
   describe('saveUploadErrorsToSession', () => {
     const chooseFileError = new FormValidationError({
