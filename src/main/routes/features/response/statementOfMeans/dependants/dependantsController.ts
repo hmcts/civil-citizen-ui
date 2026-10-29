@@ -7,11 +7,10 @@ import {
   CITIZEN_OTHER_DEPENDANTS_URL,
 } from 'routes/urls';
 import {GenericForm} from 'form/models/genericForm';
-import dependantsService from '../../../../../services/features/response/statementOfMeans/dependants/dependantsService';
+import dependantsService from 'services/features/response/statementOfMeans/dependants/dependantsService';
 import {hasDisabledChildren} from 'services/features/response/statementOfMeans/dependants/childrenDisabilityService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {AppRequest} from 'common/models/AppRequest';
-import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const residenceViewPath = 'features/response/statementOfMeans/dependants/dependants';
@@ -22,7 +21,7 @@ dependantsController
     CITIZEN_DEPENDANTS_URL,
     (async (req: Request, res: Response, next: NextFunction) => {
       try {
-        const dependants: Dependants = await dependantsService.getDependants(generateRedisKey(<AppRequest>req));
+        const dependants: Dependants = await dependantsService.getDependants(<AppRequest>req);
         res.render(residenceViewPath, {form: new GenericForm(dependants)});
       } catch (error) {
         next(error);
@@ -31,7 +30,7 @@ dependantsController
   .post(
     CITIZEN_DEPENDANTS_URL,
     (async (req: Request, res: Response, next: NextFunction) => {
-      const claimId = getRouteParam(req, 'id');
+      const caseId = getRouteParam(req, 'id');
       const dependants = dependantsService.buildDependants(req.body.declared, req.body.under11,
         req.body.between11and15, req.body.between16and19);
       const form: GenericForm<Dependants> = dependantsService.validateDependants(dependants);
@@ -40,13 +39,13 @@ dependantsController
         res.render(residenceViewPath, {form});
       } else {
         try {
-          const claim = await dependantsService.saveDependants(generateRedisKey(<AppRequest>req), dependants);
+          const claim = await dependantsService.saveDependants(<AppRequest>req, dependants);
           if (dependants.hasChildrenBetween16and19()) {
-            res.redirect(constructResponseUrlWithIdParams(claimId, CITIZEN_DEPENDANTS_EDUCATION_URL));
+            res.redirect(constructResponseUrlWithIdParams(caseId, CITIZEN_DEPENDANTS_EDUCATION_URL));
           } else if (hasDisabledChildren(claim)) {
-            res.redirect(constructResponseUrlWithIdParams(claimId, CHILDREN_DISABILITY_URL));
+            res.redirect(constructResponseUrlWithIdParams(caseId, CHILDREN_DISABILITY_URL));
           } else {
-            res.redirect(constructResponseUrlWithIdParams(claimId, CITIZEN_OTHER_DEPENDANTS_URL));
+            res.redirect(constructResponseUrlWithIdParams(caseId, CITIZEN_OTHER_DEPENDANTS_URL));
           }
         } catch (error) {
           next(error);
