@@ -1,6 +1,7 @@
 const HIDDEN_CLASS = 'govuk-!-display-none';
 const FORM_GROUP_ERROR_CLASS = 'govuk-form-group--error';
 const MAX_FILE_SIZE_BYTES = 100 * 1024 * 1024;
+const MAX_FILES_PER_UPLOAD = 10;
 const ALLOWED_EXTENSIONS = ['doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'pdf', 'rtf', 'txt', 'csv', 'jpg', 'jpeg', 'png', 'bmp', 'tif', 'tiff'];
 
 const fieldRequiredBeforeUploadFor = (saveButton) => {
@@ -18,10 +19,14 @@ const extensionOf = (fileName) => {
   return dot === -1 ? '' : fileName.substring(dot + 1).toLowerCase();
 };
 
-const fileRulesFor = (saveButton) => saveButton.closest('[data-file-type-error], [data-file-size-error]')?.dataset ?? {};
+const fileRulesFor = (saveButton) =>
+  saveButton.closest('[data-file-type-error], [data-file-size-error], [data-too-many-files-error]')?.dataset ?? {};
 
 const fileProblemFor = (files, fileRules) => {
-  const {fileTypeError, fileSizeError} = fileRules;
+  const {fileTypeError, fileSizeError, tooManyFilesError} = fileRules;
+  if (tooManyFilesError && files.length > MAX_FILES_PER_UPLOAD) {
+    return tooManyFilesError;
+  }
   for (const file of files) {
     if (fileTypeError && !ALLOWED_EXTENSIONS.includes(extensionOf(file.name))) {
       return fileTypeError;

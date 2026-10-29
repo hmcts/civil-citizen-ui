@@ -285,6 +285,7 @@
       <div class="file-upload-slots" {%- if content.data.documentNames.length %} data-has-uploaded-files="true"{% endif %}
         data-file-type-error="{{ t('ERRORS.VALID_MIME_TYPE_FILE') }}"
         data-file-size-error="{{ t('ERRORS.VALID_SIZE_FILE') }}"
+        data-too-many-files-error="{{ t('ERRORS.TOO_MANY_FILES') }}"
         data-error-prefix="{{ t('ERRORS.ERROR') }}">
         {% for documentName in content.data.documentNames %}
           <div class="govuk-inset-text app-uploaded-file-slot">
