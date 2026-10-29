@@ -37,6 +37,40 @@ describe('LiftBreathingSpaceForm', () => {
     expect(genericForm.getErrors().some(e => e.property === 'text')).toBe(false);
   });
 
+  it.each([
+    ['Accented characters', 'Café & Résumé'],
+    ['Unallowed symbols (<, >)', 'Hello <world>!'],
+    ['Emojis', 'Great work! 👍'],
+    ['Brackets & Braces', 'User { id: 101, flags: [a, b] }'],
+  ])(
+    'should reject breathing space lift reason when it contains %s (%s)',
+    (description, invalidInput) => {
+      const form = new LiftBreathingSpaceForm(
+        '2024',
+        '06',
+        '01',
+        invalidInput,
+        new Date('2024-06-01T00:00:00'),
+        STANDARD_BREATHING_SPACE);
+      const genericForm = new GenericForm(form);
+
+      genericForm.validateSync();
+
+      expect(genericForm.getErrors().some(e => e.property === 'text')).toBe(true);
+    }
+  );
+
+
+
+  it('should accept breathing space lift reason when it contains only allowed characters', () => {
+    const startDate = new Date('2024-06-01T00:00:00');
+    const validInput = "Hello! Here's a test string (£50) with \"smart quotes” – and multi-line text:\n\tr1 @company #1";
+    const form = new LiftBreathingSpaceForm('2024', '06', '01', validInput, startDate, STANDARD_BREATHING_SPACE);
+    const genericForm = new GenericForm(form);
+    genericForm.validateSync();
+    expect(genericForm.getErrors().some(e => e.property === 'text')).toBe(false);
+  });
+
   it('should accept standard breathing space end date exactly 60 days after start', () => {
     const startDate = new Date('2024-06-01T00:00:00');
     const form = new LiftBreathingSpaceForm('2024', '07', '31', 'Reason', startDate, STANDARD_BREATHING_SPACE);
