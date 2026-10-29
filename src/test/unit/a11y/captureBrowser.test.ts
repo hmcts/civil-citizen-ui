@@ -6,6 +6,8 @@ import {
 
 jest.mock('puppeteer', () => ({__esModule: true, default: {launch: jest.fn()}}));
 
+jest.retryTimes(0);
+
 describe('accessibility capture browser ownership', () => {
   const url = 'http://127.0.0.1:3000/capture';
   const page = {
@@ -127,6 +129,70 @@ describe('accessibility capture browser ownership', () => {
     const issues = {issues: [{type: 'error', code: 'contrast', message: 'Insufficient contrast'}]};
     inspect.mockResolvedValue(issues);
     await expect(retryCapture(() => withCapturePage(url, inspect))).resolves.toBe(issues);
+    expect(puppeteer.launch).toHaveBeenCalledTimes(1);
+  });
+
+  it('does not retry a completed validation failure when cleanup succeeds', async () => {
+    const violation = new Error('Insufficient contrast');
+    const validate = jest.fn(() => { throw violation; });
+
+    await expect(retryCapture(() => withCapturePage(url, inspect), validate)).rejects.toBe(violation);
+
+    expect(validate).toHaveBeenCalledTimes(1);
+    expect(puppeteer.launch).toHaveBeenCalledTimes(1);
+  });
+
+  it.each(['rejects', 'times out'])('preserves completed violations when cleanup %s instead of accepting a later clean scan', async cleanup => {
+    const issues = {documentTitle: 'Capture', issues: [{type: 'error', code: 'contrast', message: 'Insufficient contrast'}]};
+    inspect.mockResolvedValueOnce(issues).mockResolvedValue({documentTitle: 'Capture', issues: []});
+    if (cleanup === 'rejects') browser.close.mockRejectedValueOnce(new Error('Close failed'));
+    else browser.close.mockImplementationOnce(() => new Promise(() => undefined));
+    const violation = new Error('Insufficient contrast');
+    const validate = jest.fn(result => {
+      if (result.issues.length) throw violation;
+    });
+    const outcome = retryCapture(() => withCapturePage(url, inspect), validate).catch(error => error);
+
+    await jest.advanceTimersByTimeAsync(CAPTURE_CLOSE_TIMEOUT_MS + CAPTURE_RETRY_DELAY_MS);
+
+    const error = await outcome;
+    expect(error).toBeInstanceOf(Error);
+    expect(error.cause).toBe(violation);
+    expect(error.cleanupFailure).toEqual(expect.objectContaining({
+      message: expect.stringContaining('browser cleanup failed'), result: issues,
+    }));
+    expect(validate).toHaveBeenCalledTimes(1);
+    expect(validate).toHaveBeenCalledWith(issues);
+    expect(puppeteer.launch).toHaveBeenCalledTimes(1);
+    expect(inspect).toHaveBeenCalledTimes(1);
+    expect(process.kill).toHaveBeenCalledTimes(1);
+    expect(jest.getTimerCount()).toBe(0);
+  });
+
+  it('preserves an Error page title when cleanup fails', async () => {
+    inspect.mockResolvedValueOnce({documentTitle: 'Error', issues: []})
+      .mockResolvedValue({documentTitle: 'Capture', issues: []});
+    browser.close.mockRejectedValueOnce(new Error('Close failed'));
+    const invalidPage = new Error('Page did not render correctly');
+    const validate = jest.fn(result => {
+      if (result.documentTitle === 'Error') throw invalidPage;
+    });
+
+    const error = await retryCapture(() => withCapturePage(url, inspect), validate).catch(error => error);
+
+    expect(error.cause).toBe(invalidPage);
+    expect(error.message).toContain('browser cleanup failed');
+    expect(puppeteer.launch).toHaveBeenCalledTimes(1);
+  });
+
+  it('reports cleanup failure after a clean scan without retrying or skipping validation', async () => {
+    browser.close.mockRejectedValueOnce(new Error('Close failed'));
+    const validate = jest.fn();
+
+    await expect(retryCapture(() => withCapturePage(url, inspect), validate)).rejects.toThrow('browser cleanup failed');
+
+    expect(validate).toHaveBeenCalledWith({issues: []});
+    expect(validate).toHaveBeenCalledTimes(1);
     expect(puppeteer.launch).toHaveBeenCalledTimes(1);
   });
 });

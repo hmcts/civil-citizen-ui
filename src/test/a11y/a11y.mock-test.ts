@@ -101,12 +101,12 @@ describe('Accessibility', () => {
   for (const url of urlsList) {
     it('Test of '+url, async () => {
       const target = server.baseUrl + captureUrl(url);
-      const messages = await retryCapture(() => withCapturePage(target, (page, browser) => pa11y(target, {
+      await retryCapture(() => withCapturePage(target, (page, browser) => pa11y(target, {
         ...options, page, browser, ignoreUrl: true, timeout: CAPTURE_WORK_TIMEOUT_MS,
-      }))) as {documentTitle: string; issues: PallyIssue[]};
-      // Retry browser/scan failures, not completed accessibility assertions.
-      if (messages.documentTitle === 'Error') fail('This page was titled "error", which suggests it did not render correctly.');
-      expectNoErrors(messages.issues);
+      })), (messages: {documentTitle: string; issues: PallyIssue[]}) => {
+        if (messages.documentTitle === 'Error') fail('This page was titled "error", which suggests it did not render correctly.');
+        expectNoErrors(messages.issues);
+      });
     }).timeout(CAPTURE_TEST_TIMEOUT_MS);
   }
 });

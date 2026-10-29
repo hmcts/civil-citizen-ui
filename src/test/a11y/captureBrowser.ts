@@ -28,6 +28,13 @@ function errorMessage(error: unknown): string {
   return error instanceof Error ? error.message : String(error);
 }
 
+// A completed scan must survive failed cleanup and must never be scanned again.
+class CaptureCleanupError<T> extends Error {
+  constructor(readonly result: T, readonly cause: Error) {
+    super(cause.message);
+  }
+}
+
 // Own a fresh browser per attempt, including timed-out work. Supplying the page
 // to Pa11y lets us restrict requests before navigation, without rewriting captures.
 export async function withCapturePage<T>(url: string, inspect: (page: Page, browser: Browser) => Promise<T>): Promise<T> {
@@ -71,25 +78,47 @@ export async function withCapturePage<T>(url: string, inspect: (page: Page, brow
       await within(browser.close(), CAPTURE_CLOSE_TIMEOUT_MS, () => 'browser cleanup timed out');
     } catch (error) {
       // Kill only the browser created by this attempt, never another worker's process.
-      browser.process()?.kill('SIGKILL');
+      try {
+        browser.process()?.kill('SIGKILL');
+      } catch (killError) {
+        console.error(`Capture browser termination failed: ${errorMessage(killError)}`);
+      }
       const cleanupFailure = Object.assign(new Error(`Accessibility capture ${url}: browser cleanup failed: ${errorMessage(error)}`), {cause: error});
       if (failure) console.error(cleanupFailure);
-      else failure = cleanupFailure;
+      else throw new CaptureCleanupError(result, cleanupFailure);
     }
   }
   if (failure) throw failure;
   return result;
 }
 
-export async function retryCapture<T>(scan: () => Promise<T>): Promise<T> {
+export async function retryCapture<T>(scan: () => Promise<T>, validate: (result: T) => void = () => undefined): Promise<T> {
+  let result: T;
+  let cleanupFailure: CaptureCleanupError<T>;
   for (let attempt = 1; attempt <= CAPTURE_ATTEMPTS; attempt++) {
     try {
-      return await scan();
+      result = await scan();
+      break;
     } catch (error) {
+      if (error instanceof CaptureCleanupError) {
+        result = error.result;
+        cleanupFailure = error;
+        break;
+      }
       console.error(`Accessibility capture attempt ${attempt}/${CAPTURE_ATTEMPTS}: ${errorMessage(error)}`);
       if (attempt === CAPTURE_ATTEMPTS) throw error;
       await new Promise(resolve => setTimeout(resolve, CAPTURE_RETRY_DELAY_MS));
     }
   }
-  throw new Error('Accessibility capture attempts exhausted');
+  // Validate only the completed result, outside the retry loop, even if close failed.
+  try {
+    validate(result);
+  } catch (error) {
+    if (cleanupFailure) {
+      throw Object.assign(new Error(`${errorMessage(error)}; ${cleanupFailure.message}`), {cause: error, cleanupFailure});
+    }
+    throw error;
+  }
+  if (cleanupFailure) throw cleanupFailure;
+  return result;
 }
