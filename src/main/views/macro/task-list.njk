@@ -1,17 +1,34 @@
-{% from "./task.njk" import taskComponent %}
+{% from "govuk/components/task-list/macro.njk" import govukTaskList %}
 
-{% macro taskListComponent(dashboardTaskList, t) %}
-  {% for taskList in dashboardTaskList %}
-    <div class="{{ 'govuk-!-display-none' if taskList.tasks.length===0}}">
-      <h2 class="app-task-list__section">
-        <span class="app-task-list__section-number">
-          {{ t(taskList.title) }}
+{% macro taskListComponent(taskLists, t, idPrefix='tasks') %}
+  {% for taskList in taskLists %}
+    {% set sectionId = idPrefix + '-section-' + loop.index %}
+    <div class="{{ 'govuk-!-display-none' if taskList.tasks.length===0 }}" role="group" aria-labelledby="{{ sectionId }}">
+      <h2 class="govuk-heading-m" id="{{ sectionId }}">
+        <span>{{ loop.index }} . </span>{{ t(taskList.title) }}
       </h2>
-      <ol class="app-task-list app-task-list__items">
-        {% for task in taskList.tasks %}
-          {{ taskComponent(task, t) }}
-        {% endfor %}
-      </ol>
+      {{ govukTaskList({
+        idPrefix: idPrefix + '-' + loop.index,
+        attributes: {'aria-labelledby': sectionId},
+        items: toGovukTaskListItems(taskList.tasks, t)
+      }) }}
+    </div>
+  {% endfor %}
+{% endmacro %}
+
+{% macro dashboardTaskListComponent(taskLists, lang, idPrefix='dashboard-tasks') %}
+  {% for taskList in taskLists %}
+    {% set sectionId = idPrefix + '-heading-' + loop.index %}
+    {% set listId = idPrefix + '-' + loop.index %}
+    <div class="{{ 'govuk-!-display-none' if taskList.tasks.length===0 }}" role="group" aria-labelledby="{{ sectionId }}">
+      <h2 class="govuk-heading-m" id="{{ sectionId }}">
+        {{ taskList.categoryCy if lang==='cy' else taskList.categoryEn }}
+      </h2>
+      {{ govukTaskList({
+        idPrefix: listId,
+        attributes: {'aria-labelledby': sectionId},
+        items: toDashboardGovukTaskListItems(taskList.tasks, lang, listId)
+      }) }}
     </div>
   {% endfor %}
 {% endmacro %}

@@ -1,6 +1,6 @@
 {% extends "claim-details-tpl-dashboard.njk" %}
 {% from "../../macro/contact-us-for-help.njk" import contactUsForHelp with context %}
-{% from "../../macro/task-list.njk" import taskListComponent %}
+{% from "../../macro/task-list.njk" import dashboardTaskListComponent %}
 {% from "./claim-summary-content.njk" import claimSummaryContent %}
 {% from "../../macro/notifications.njk" import notifications %}
 {% from "govuk/components/notification-banner/macro.njk" import govukNotificationBanner %}
@@ -56,33 +56,5 @@
                })  }}
           {% endfor %}
          </div>
-          {% for taskList in dashboardTaskList.items %}
-            <div class="{{ 'govuk-!-display-none' if taskList.tasks.length===0}}">
-              <h2 class="app-task-list__section" id="tasklist-heading-{{ loop.index }}">
-                 {% if lang=="cy"%} {{ taskList.categoryCy }} {% else %} {{ taskList.categoryEn}} {% endif %}
-              </h2>
-             <ol class="app-task-list app-task-list__items" role="group" aria-labelledby="tasklist-heading-{{ loop.index }}">
-                {% for task in taskList.tasks %}
-                  <li class="app-task-list__item">
-                    <div class="row">
-                      <div class="column">
-                          <span class="app-task-list__task-name">
-                            {% if lang=="cy"%} {{ task.taskNameCy | safe}} {% else %} {{ task.taskNameEn | safe}} {% endif %}
-                          </span>
-                      </div>
-                      <div class="column">
-                        <strong class="govuk-tag app-task-list__tag {{ task.statusColour}}">
-                          {% if lang=="cy"%}{{ task.statusCy }} {% else %} {{ task.statusEn }} {% endif %}
-                        </strong>
-                      </div>
-                      {% if task.hintTextEn %}
-                        <br/>
-                        <span class="govuk-body-s"> {% if lang=="cy"%} {{ task.hintTextCy }} {% else %} {{ task.hintTextEn }} {% endif %} </span>
-                      {% endif %}
-                    </div>
-                  </li>
-                {% endfor %}
-              </ol>
-            </div>
-          {% endfor %}
+          {{ dashboardTaskListComponent(dashboardTaskList.items, lang, 'dashboard-tasks') }}
 {% endblock %}
