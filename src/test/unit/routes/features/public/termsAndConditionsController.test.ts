@@ -1,14 +1,18 @@
-import request from 'supertest';
-import { app } from '../../../../../main/app';
-import { TERMS_AND_CONDITIONS_URL } from 'routes/urls';
-import { t } from 'i18next';
+import {Request, Response} from 'express';
+import termsAndConditionsController from 'routes/features/public/termsAndConditionsController';
+import {DASHBOARD_URL, TERMS_AND_CONDITIONS_URL} from 'routes/urls';
+import {createMockResponse, getRouteHandler} from '../../../../utils/getRouteHandler';
 
-describe('Privacy policy page', () => {
-  describe('on GET', () => {
-    it('should display Privacy policy page', async () => {
-      const res = await request(app).get(TERMS_AND_CONDITIONS_URL);
-      expect(res.status).toBe(200);
-      expect(res.text).toContain(t('PAGES.TERMS_AND_CONDITIONS.TITLE'));
-    });
+describe('Terms and conditions page', () => {
+  it('renders the terms and conditions view', async () => {
+    const res = createMockResponse();
+
+    await getRouteHandler(termsAndConditionsController, 'get', TERMS_AND_CONDITIONS_URL)(
+      {} as Request,
+      res as unknown as Response,
+      jest.fn(),
+    );
+
+    expect(res.render).toHaveBeenCalledWith('features/public/terms-and-conditions', {dashboardUrl: DASHBOARD_URL});
   });
 });

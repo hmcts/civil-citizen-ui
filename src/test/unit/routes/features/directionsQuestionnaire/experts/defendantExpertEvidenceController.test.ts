@@ -1,87 +1,88 @@
-import config from 'config';
-import nock from 'nock';
-import request from 'supertest';
-import {app} from '../../../../../../main/app';
-import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
-import {
-  DQ_DEFENDANT_EXPERT_EVIDENCE_URL,
-  DQ_GIVE_EVIDENCE_YOURSELF_URL,
-  DQ_SENT_EXPERT_REPORTS_URL,
-} from '../../../../../../main/routes/urls';
-import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
+import {Response} from 'express';
+import expertEvidenceController from '../../../../../../main/routes/features/directionsQuestionnaire/experts/expertEvidenceController';
+import {DQ_GIVE_EVIDENCE_YOURSELF_URL, DQ_SENT_EXPERT_REPORTS_URL} from 'routes/urls';
+import {Claim} from 'models/claim';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {createMockResponse, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
 
 describe('Defendant expert evidence Controller', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
+  const getHandler = getRouteHandler(expertEvidenceController, 'get');
+  const postHandler = getRouteHandler(expertEvidenceController, 'post');
+  const viewPath = 'features/directionsQuestionnaire/experts/expert-evidence';
+  const claimId = '12345';
+  let req: {params: {id: string}; body: Record<string, unknown>};
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
+  const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
+  const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
 
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
+  beforeEach(() => {
+    req = {params: {id: claimId}, body: {}};
+    res = createMockResponse();
+    next = jest.fn();
+    (draftStoreService.generateRedisKey as jest.Mock).mockReturnValue(claimId);
+    mockGetCaseData.mockResolvedValue(new Claim());
+    mockSaveDraftClaim.mockResolvedValue(undefined);
   });
 
   describe('on GET', () => {
-    it('should return expert evidence page', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
-      await request(app).get(DQ_DEFENDANT_EXPERT_EVIDENCE_URL).expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain('Do you want to use expert evidence?');
-      });
+    it('should render the expert evidence page', async () => {
+      await getHandler(req as never, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        pageTitle: 'PAGES.DEFENDANT_EXPERT_EVIDENCE.PAGE_TITLE',
+      }));
+      expect(next).not.toHaveBeenCalled();
     });
 
-    it('should return status 500 when error thrown', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .get(DQ_DEFENDANT_EXPERT_EVIDENCE_URL)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+    it('should call next when loading the claim fails', async () => {
+      const error = new Error('redis failure');
+      mockGetCaseData.mockRejectedValue(error);
+
+      await getHandler(req as never, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 
   describe('on POST', () => {
-    beforeEach(() => {
-      app.locals.draftStoreClient = mockCivilClaim;
+    it('should re-render when no option is selected', async () => {
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.any(Object));
+      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
+      expect(mockSaveDraftClaim).not.toHaveBeenCalled();
     });
 
-    it('should return expert evidence page', async () => {
-      await request(app).post(DQ_DEFENDANT_EXPERT_EVIDENCE_URL).expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain('Do you want to use expert evidence?');
-      });
+    it('should save and redirect to sent expert reports when yes is selected', async () => {
+      req.body = {option: 'yes'};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(mockSaveDraftClaim).toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, DQ_SENT_EXPERT_REPORTS_URL));
     });
 
-    it('should redirect to the defendant expert reports page if option yes is selected', async () => {
-      await request(app).post(DQ_DEFENDANT_EXPERT_EVIDENCE_URL)
-        .send({option: 'yes'})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.get('location')).toBe(DQ_SENT_EXPERT_REPORTS_URL);
-        });
+    it('should save and redirect to give evidence yourself when no is selected', async () => {
+      req.body = {option: 'no'};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(mockSaveDraftClaim).toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, DQ_GIVE_EVIDENCE_YOURSELF_URL));
     });
 
-    it('should redirect to yourself evidence page if option no is selected and reason is provided', async () => {
-      await request(app).post(DQ_DEFENDANT_EXPERT_EVIDENCE_URL)
-        .send({option: 'no'})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.get('location')).toBe(DQ_GIVE_EVIDENCE_YOURSELF_URL);
-        });
-    });
+    it('should call next when saving fails', async () => {
+      const error = new Error('redis failure');
+      mockSaveDraftClaim.mockRejectedValue(error);
+      req.body = {option: 'yes'};
 
-    it('should return status 500 when error thrown', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .post(DQ_DEFENDANT_EXPERT_EVIDENCE_URL)
-        .send({option: 'yes'})
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 });

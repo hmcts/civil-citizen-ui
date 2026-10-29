@@ -14,7 +14,7 @@ if (env.BRANCH_NAME?.startsWith('PR-')) {
   ])
 }
 
-@Library("Infrastructure@2.12.1")
+@Library("Infrastructure@2.13.4")
 import uk.gov.hmcts.contino.AppPipelineConfig
 import uk.gov.hmcts.contino.GithubAPI
 import uk.gov.hmcts.contino.AppPipelineDsl
