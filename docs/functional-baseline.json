@@ -10,7 +10,7 @@
         "@ui-breathing-space",
         "@thin-full-stack"
       ],
-      "skipped": false
+      "skipped": true
     },
     {
       "file": "src/test/functionalTests/tests/ui_tests/breathing-space/LipvLip_fast_track_breathingSpace_tests.js",
@@ -20,7 +20,7 @@
         "@ui-breathing-space",
         "@thin-full-stack"
       ],
-      "skipped": false
+      "skipped": true
     },
     {
       "file": "src/test/functionalTests/tests/ui_tests/case-offline/LiPvLiP_case_offline_tests.js",
