@@ -50,6 +50,14 @@ describe('gaFileUpload macro', () => {
     expect(render({id: 'selectedFile', summaryRows: [typeOfDocumentRow]})).not.toContain('data-has-uploaded-files');
   });
 
+  it('passes the file type and size messages to the upload script', () => {
+    const html = render({id: 'selectedFile', summaryRows: []});
+
+    expect(html).toContain('data-file-type-error="ERRORS.VALID_MIME_TYPE_FILE"');
+    expect(html).toContain('data-file-size-error="ERRORS.VALID_SIZE_FILE"');
+    expect(html).toContain('data-error-prefix="ERRORS.ERROR"');
+  });
+
   it('works without a summary list', () => {
     expect(count(render({id: 'selectedFile'}), 'class="row-container')).toBe(1);
   });
