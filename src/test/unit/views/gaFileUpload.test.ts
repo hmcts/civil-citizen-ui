@@ -56,6 +56,7 @@ describe('gaFileUpload macro', () => {
     expect(html).toContain('data-file-type-error="ERRORS.VALID_MIME_TYPE_FILE"');
     expect(html).toContain('data-file-size-error="ERRORS.VALID_SIZE_FILE"');
     expect(html).toContain('data-too-many-files-error="ERRORS.TOO_MANY_FILES"');
+    expect(html).toContain('data-error-summary-title="ERRORS.THERE_WAS_A_PROBLEM"');
     expect(html).toContain('data-error-prefix="ERRORS.ERROR"');
   });
 
