@@ -6,18 +6,23 @@ describe('auto-upload-file', () => {
   let document: Document;
   let submitted: number;
 
-  function setupDom(saveButtonAttributes = '', uploadSlotsAttributes = '') {
-    dom = new JSDOM(`<!DOCTYPE html><html><body>
+  function setupDom(saveButtonAttributes = '', uploadSlotsAttributes = '', serverErrors = {summary: '', inline: ''}) {
+    dom = new JSDOM(`<!DOCTYPE html><html><body><main id="main-content">
+      <div class="govuk-grid-row">${serverErrors.summary}</div>
       <form>
         <div class="file-upload-slots" ${uploadSlotsAttributes}>
           <div class="row-container govuk-inset-text">
-            <input type="text" id="typeOfDocument" name="typeOfDocument">
-            <input type="file" id="selectedFile" name="selectedFile" multiple>
+            <div class="govuk-form-group">
+              <label for="selectedFile">Upload a file</label>
+              ${serverErrors.inline}
+              <input type="text" id="typeOfDocument" name="typeOfDocument">
+              <input type="file" id="selectedFile" name="selectedFile" multiple>
+            </div>
             <button class="js-auto-upload-button" name="action" value="uploadButton" ${saveButtonAttributes}>Save file</button>
           </div>
         </div>
       </form>
-    </body></html>`, {runScripts: 'dangerously'});
+    </main></body></html>`, {runScripts: 'dangerously'});
     document = dom.window.document;
     submitted = 0;
     document.querySelector('form').addEventListener('submit', (event) => {
@@ -147,6 +152,43 @@ describe('auto-upload-file', () => {
 
     expect(submitted).toBe(0);
     expect(fileProblem().textContent).toBe('Gwall: Document must be Word, Excel, PowerPoint, PDF');
+  });
+
+  it('shows the problem in the error summary at the top of the page and moves focus to it', () => {
+    setupDom(fileRules);
+
+    chooseFiles('notes.foc');
+
+    const summary = document.querySelector('.govuk-error-summary');
+    expect(summary.querySelector('.govuk-error-summary__title').textContent).toBe('There was a problem');
+    const links = summary.querySelectorAll('.govuk-error-summary__list a');
+    expect(links).toHaveLength(1);
+    expect(links[0].textContent).toBe('Document must be Word, Excel, PowerPoint, PDF');
+    expect(links[0].getAttribute('href')).toBe('#selectedFile');
+    expect(document.activeElement).toBe(summary);
+  });
+
+  it('shows only this problem, replacing earlier errors on the page', () => {
+    setupDom(fileRules, '', {
+      summary: '<div class="govuk-error-summary"><h2 class="govuk-error-summary__title">There was a problem</h2>'
+        + '<ul class="govuk-list govuk-error-summary__list"><li><a href="#selectedFile">You need to upload at least one file.</a></li></ul></div>',
+      inline: '<p class="govuk-error-message">You need to upload at least one file.</p>',
+    });
+
+    chooseFileOfSize('scan.pdf', 100 * 1024 * 1024 + 1);
+
+    expect(document.querySelectorAll('.govuk-error-summary')).toHaveLength(1);
+    expect(document.querySelector('.govuk-error-summary__list').textContent.trim()).toBe('Document must be less than 100MB');
+    expect(document.querySelectorAll('.govuk-error-message')).toHaveLength(1);
+    expect(document.body.textContent).not.toContain('You need to upload at least one file.');
+  });
+
+  it('uses the translated error summary title from the page', () => {
+    setupDom('', `${fileRules} data-error-summary-title="Roedd problem"`);
+
+    chooseFiles('notes.foc');
+
+    expect(document.querySelector('.govuk-error-summary__title').textContent).toBe('Roedd problem');
   });
 
   it('uploads any file when the page does not pass the file rules', () => {

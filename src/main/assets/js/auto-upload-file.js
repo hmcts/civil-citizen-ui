@@ -48,14 +48,36 @@ function clearFileProblem(fileInput) {
   }
 }
 
-function showFileProblem(fileInput, message, errorPrefix) {
+function showInErrorSummary(fileInput, message, summaryTitle) {
+  let summary = document.querySelector('.govuk-error-summary');
+  if (!summary) {
+    summary = document.createElement('div');
+    summary.className = 'govuk-error-summary';
+    summary.innerHTML = '<div role="alert"><h2 class="govuk-error-summary__title"></h2>'
+      + '<div class="govuk-error-summary__body"><ul class="govuk-list govuk-error-summary__list"></ul></div></div>';
+    summary.querySelector('.govuk-error-summary__title').textContent = summaryTitle;
+    const summaryArea = document.querySelector('main .govuk-grid-row') || document.querySelector('main') || document.body;
+    summaryArea.prepend(summary);
+  }
+  const link = document.createElement('a');
+  link.href = `#${fileInput.id}`;
+  link.textContent = message;
+  const item = document.createElement('li');
+  item.append(link);
+  summary.querySelector('.govuk-error-summary__list').replaceChildren(item);
+  summary.setAttribute('tabindex', '-1');
+  summary.focus();
+}
+
+function showFileProblem(fileInput, message, fileRules) {
   const formGroup = formGroupOf(fileInput);
+  formGroup.querySelectorAll('.govuk-error-message').forEach((oldError) => oldError.remove());
   const error = document.createElement('p');
   error.id = `${fileInput.id}-file-problem`;
   error.className = 'govuk-error-message js-file-problem';
   const hiddenPrefix = document.createElement('span');
   hiddenPrefix.className = 'govuk-visually-hidden';
-  hiddenPrefix.textContent = `${errorPrefix}: `;
+  hiddenPrefix.textContent = `${fileRules.errorPrefix || 'Error'}: `;
   error.append(hiddenPrefix, message);
   const label = formGroup.querySelector('label');
   if (label) {
@@ -69,7 +91,7 @@ function showFileProblem(fileInput, message, errorPrefix) {
   fileInput.dataset.clearingRejectedFiles = 'true';
   fileInput.dispatchEvent(new window.Event('change'));
   delete fileInput.dataset.clearingRejectedFiles;
-  fileInput.focus();
+  showInErrorSummary(fileInput, message, fileRules.errorSummaryTitle || 'There was a problem');
 }
 
 function wireAutoUpload(saveButton) {
@@ -98,7 +120,7 @@ function wireAutoUpload(saveButton) {
     clearFileProblem(fileInput);
     const problem = fileProblemFor(fileInput.files, fileRules);
     if (problem) {
-      showFileProblem(fileInput, problem, fileRules.errorPrefix || 'Error');
+      showFileProblem(fileInput, problem, fileRules);
       return;
     }
     if (fieldRequiredBeforeUpload && !fieldRequiredBeforeUpload.value.trim()) {
