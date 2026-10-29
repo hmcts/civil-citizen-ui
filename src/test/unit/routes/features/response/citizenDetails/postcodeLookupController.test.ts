@@ -24,7 +24,21 @@ const createResponse = (statusCode: number) => {
 
 describe('Postcode Lookup Controller - HTTP status', () => {
 
-  it('should return 500 as postcode incomplete', async () => {
+  it('should return 404 when postcode has no matching addresses', async () => {
+    mockLookupByPostcodeAndDataSet.mockResolvedValue({
+      addresses: [],
+      valid: true,
+    });
+
+    await request(app)
+      .get(POSTCODE_LOOKUP_URL + '?postcode=SW1A1AA')
+      .expect((res) => {
+        expect(res.status).toBe(404);
+        expect(res.body.error.message).toBe('Postcode not found');
+      });
+  });
+
+  it('should return 500 when ordnance survey service throws 500 error', async () => {
     const error = createResponse(500);
     mockLookupByPostcodeAndDataSet.mockRejectedValue(error);
 
@@ -32,6 +46,17 @@ describe('Postcode Lookup Controller - HTTP status', () => {
       .get(POSTCODE_LOOKUP_URL + '?postcode=BT')
       .expect((res) => {
         expect(res.status).toBe(500);
+      });
+  });
+
+  it('should return 400 when OS service throws 400 error', async () => {
+    const error = createResponse(400);
+    mockLookupByPostcodeAndDataSet.mockRejectedValue(error);
+
+    await request(app)
+      .get(POSTCODE_LOOKUP_URL + '?postcode=AB')
+      .expect((res) => {
+        expect(res.status).toBe(400);
       });
   });
 
@@ -60,7 +85,7 @@ describe('Postcode Lookup Controller', () => {
 
   it('should return list of addresses', async () => {
 
-    mockLookupByPostcodeAndDataSet.mockReturnValue({data : MOCK_API_ADDRESS});
+    mockLookupByPostcodeAndDataSet.mockResolvedValue(MOCK_API_ADDRESS);
     await request(app)
       .get(POSTCODE_LOOKUP_URL + '?postcode=CV56GQ')
       .expect((res) => {
