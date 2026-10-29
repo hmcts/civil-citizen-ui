@@ -33,7 +33,9 @@ describe('auto-upload-file', () => {
 
   const fileInput = () => document.getElementById('selectedFile') as HTMLInputElement;
   const fileProblem = () => document.querySelector('.js-file-problem');
-  const fileRules = 'data-file-type-error="Document must be Word, Excel, PowerPoint, PDF" data-file-size-error="Document must be less than 100MB"';
+  const fileRules = 'data-file-type-error="Document must be Word, Excel, PowerPoint, PDF" data-file-size-error="Document must be less than 100MB"'
+    + ' data-too-many-files-error="You can only upload up to 10 documents at a time"';
+  const pdfNames = (count: number) => Array.from({length: count}, (_, index) => `document-${index + 1}.pdf`);
 
   function chooseFiles(...names: string[]) {
     const files = names.map((name) => new dom.window.File(['%PDF-1.4'], name, {type: 'application/pdf'}));
@@ -100,6 +102,23 @@ describe('auto-upload-file', () => {
 
     expect(submitted).toBe(0);
     expect(fileProblem().textContent).toContain('Document must be less than 100MB');
+  });
+
+  it('does not upload more than 10 files at once and shows the file count error', () => {
+    setupDom(fileRules);
+
+    chooseFiles(...pdfNames(11));
+
+    expect(submitted).toBe(0);
+    expect(fileProblem().textContent).toContain('You can only upload up to 10 documents at a time');
+  });
+
+  it('uploads 10 files at once', () => {
+    setupDom(fileRules);
+
+    chooseFiles(...pdfNames(10));
+
+    expect(submitted).toBe(1);
   });
 
   it('uploads a file of exactly 100MB', () => {
