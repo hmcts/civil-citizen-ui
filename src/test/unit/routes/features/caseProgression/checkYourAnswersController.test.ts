@@ -2,19 +2,27 @@ import config from 'config';
 import nock from 'nock';
 import {app} from '../../../../../main/app';
 import {mockCivilClaim} from '../../../../utils/mockDraftStore';
-import {CP_CHECK_ANSWERS_URL} from 'routes/urls';
+import {CP_CHECK_ANSWERS_URL, CP_UPLOAD_DOCUMENTS_URL, TYPES_OF_DOCUMENTS_URL} from 'routes/urls';
 import * as checkAnswersService from 'services/features/caseProgression/checkYourAnswers/checkAnswersService';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {SummarySection, SummarySections} from 'models/summaryList/summarySections';
 import {Claim} from 'models/claim';
 import {CaseRole} from 'form/models/caseRoles';
+import {UploadDocumentsUserForm, WitnessSection} from 'models/caseProgression/uploadDocumentsUserForm';
+import {CivilServiceClient} from 'client/civilServiceClient';
+import {CaseDocument} from 'models/document/caseDocument';
 
 jest.mock('modules/draft-store/draftStoreService');
 jest.mock('services/features/caseProgression/checkYourAnswers/checkAnswersService');
 jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 
+const actualCheckAnswersService = jest.requireActual('services/features/caseProgression/checkYourAnswers/checkAnswersService');
 const mockSummarySections = checkAnswersService.getSummarySections as jest.Mock;
+const mockSaveUploadedDocuments = checkAnswersService.saveUploadedDocuments as jest.Mock;
+const mockHasValidNewDocuments = checkAnswersService.hasValidNewDocuments as jest.Mock;
+mockHasValidNewDocuments.mockReturnValue(true);
+const mockDeleteDraftClaimFromStore = draftStoreService.deleteDraftClaimFromStore as jest.Mock;
 mockSummarySections.mockReturnValue({} as SummarySections);
 const mockDraftStore = draftStoreService.getCaseDataFromStore as jest.Mock;
 const mockGenerateRedisKey = draftStoreService.generateRedisKey as jest.Mock;
@@ -22,6 +30,47 @@ const mockGenerateRedisKey = draftStoreService.generateRedisKey as jest.Mock;
 const session = require('supertest-session');
 const testSession = session(app);
 const citizenRoleToken: string = config.get('citizenRoleToken');
+const buildAllInvalidDraft = (caseDocument: CaseDocument = undefined): UploadDocumentsUserForm =>
+  new UploadDocumentsUserForm([], [], [{witnessName: 'witness', caseDocument} as WitnessSection], [], [], [], [], [], [], [], [], [], [], [], []);
+const noValidDocumentsMessage = 'We could not submit your documents. Please upload them again and try submitting.';
+
+const expectNoValidDocumentsErrorShownOnceOnUploadPage = async (claim: Claim, claimId: string) => {
+  mockDraftStore.mockReturnValueOnce(claim);
+  await testSession.get(CP_UPLOAD_DOCUMENTS_URL.replace(':id', claimId)).query({lang: 'en'})
+    .expect((res: { status: unknown; text: string; }) => {
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(noValidDocumentsMessage);
+    });
+
+  mockDraftStore.mockReturnValueOnce(claim);
+  await testSession.get(CP_UPLOAD_DOCUMENTS_URL.replace(':id', claimId)).query({lang: 'en'})
+    .expect((res: { status: unknown; text: string; }) => {
+      expect(res.status).toBe(200);
+      expect(res.text).not.toContain(noValidDocumentsMessage);
+    });
+};
+
+const expectNoValidDocumentsErrorShownOnceOnTypeOfDocumentsPage = async (claim: Claim, claimId: string) => {
+  mockDraftStore.mockReturnValueOnce(claim).mockReturnValueOnce(claim);
+  await testSession.get(TYPES_OF_DOCUMENTS_URL.replace(':id', claimId)).query({lang: 'en'})
+    .expect((res: { status: unknown; text: string; }) => {
+      expect(res.status).toBe(200);
+      expect(res.text).toContain(noValidDocumentsMessage);
+    });
+
+  mockDraftStore.mockReturnValueOnce(claim).mockReturnValueOnce(claim);
+  await testSession.get(TYPES_OF_DOCUMENTS_URL.replace(':id', claimId)).query({lang: 'en'})
+    .expect((res: { status: unknown; text: string; }) => {
+      expect(res.status).toBe(200);
+      expect(res.text).not.toContain(noValidDocumentsMessage);
+    });
+};
+
+const unselectDocumentTypes = (claim: Claim): void => {
+  const documentTypes = claim.isClaimant() ? claim.caseProgression.claimantUploadDocuments : claim.caseProgression.defendantUploadDocuments;
+  [documentTypes.disclosure, documentTypes.witness, documentTypes.expert, documentTypes.trial]
+    .forEach(types => types.forEach(type => type.selected = false));
+};
 
 describe('Evidence Upload - checkYourAnswers Controller', () => {
   const civilServiceUrl = config.get<string>('services.civilService.url');
@@ -147,6 +196,82 @@ describe('Evidence Upload - checkYourAnswers Controller', () => {
         });
     });
 
+    it('should redirect to upload documents page when the upload draft is missing', async () => {
+      //Given
+      const claim: Claim = new Claim();
+      Object.assign(claim, civilClaimResponse.case_data);
+      claim.caseProgression = {...claim.caseProgression, defendantDocuments: undefined} as Claim['caseProgression'];
+      mockDraftStore.mockReturnValueOnce(claim);
+      mockSummarySections.mockReturnValueOnce(null);
+
+      //When
+      await testSession
+        .get(CP_CHECK_ANSWERS_URL.replace(':id', claimId)).query({lang: 'en'})
+        //Then
+        .expect((res: { status: unknown; header: { location: string }; }) => {
+          expect(res.status).toBe(302);
+          expect(res.header.location).toBe(CP_UPLOAD_DOCUMENTS_URL.replace(':id', claimId));
+        });
+    });
+
+    it('should redirect to type of documents page when the claim has no case progression', async () => {
+      //Given
+      const claim: Claim = new Claim();
+      Object.assign(claim, civilClaimResponse.case_data);
+      claim.caseProgression = undefined;
+      mockDraftStore.mockReturnValueOnce(claim);
+      mockSummarySections.mockReturnValueOnce(null);
+
+      //When
+      await testSession
+        .get(CP_CHECK_ANSWERS_URL.replace(':id', claimId)).query({lang: 'en'})
+        //Then
+        .expect((res: { status: unknown; header: { location: string }; }) => {
+          expect(res.status).toBe(302);
+          expect(res.header.location).toBe(TYPES_OF_DOCUMENTS_URL.replace(':id', claimId));
+        });
+      expect(mockSummarySections).toHaveBeenLastCalledWith(undefined, claimId.toString(), true, 'en');
+    });
+
+    it('should redirect to type of documents page when the upload was cancelled and no document types are selected', async () => {
+      //Given
+      const claim: Claim = new Claim();
+      Object.assign(claim, structuredClone(civilClaimResponse.case_data));
+      claim.caseProgression = {...claim.caseProgression, defendantDocuments: undefined} as Claim['caseProgression'];
+      unselectDocumentTypes(claim);
+      mockDraftStore.mockReturnValueOnce(claim);
+      mockSummarySections.mockReturnValueOnce(null);
+
+      //When
+      await testSession
+        .get(CP_CHECK_ANSWERS_URL.replace(':id', claimId)).query({lang: 'en'})
+        //Then
+        .expect((res: { status: unknown; header: { location: string }; }) => {
+          expect(res.status).toBe(302);
+          expect(res.header.location).toBe(TYPES_OF_DOCUMENTS_URL.replace(':id', claimId));
+        });
+      await expectNoValidDocumentsErrorShownOnceOnTypeOfDocumentsPage(claim, claimId);
+    });
+
+    it('should redirect to upload documents page when the upload draft has no valid documents', async () => {
+      //Given
+      const claim: Claim = new Claim();
+      Object.assign(claim, civilClaimResponse.case_data);
+      claim.caseProgression = {...claim.caseProgression, defendantDocuments: buildAllInvalidDraft()} as Claim['caseProgression'];
+      mockDraftStore.mockReturnValueOnce(claim);
+      mockSummarySections.mockReturnValueOnce(null);
+
+      //When
+      await testSession
+        .get(CP_CHECK_ANSWERS_URL.replace(':id', claimId)).query({lang: 'en'})
+        //Then
+        .expect((res: { status: unknown; header: { location: string }; }) => {
+          expect(res.status).toBe(302);
+          expect(res.header.location).toBe(CP_UPLOAD_DOCUMENTS_URL.replace(':id', claimId));
+        });
+      await expectNoValidDocumentsErrorShownOnceOnUploadPage(claim, claimId);
+    });
+
     it('should return status 500 when error thrown', async () => {
       //given
       jest.spyOn(draftStoreService, 'getDraftClaimFromStore')
@@ -223,6 +348,78 @@ describe('Evidence Upload - checkYourAnswers Controller', () => {
         expect(res.text).toContain('Found. Redirecting to /case/:id/case-progression/documents-uploaded');
       });
     });
+    test('should redirect to upload documents page without submitting when the upload draft is missing', async () => {
+      //given
+      const claim: Claim = new Claim();
+      Object.assign(claim, civilClaimResponse.case_data);
+      claim.caseProgression = {...claim.caseProgression, defendantDocuments: undefined} as Claim['caseProgression'];
+      mockDraftStore.mockReturnValueOnce(claim);
+      mockHasValidNewDocuments.mockReturnValueOnce(false);
+      mockSaveUploadedDocuments.mockClear();
+
+      //when
+      await testSession.post(CP_CHECK_ANSWERS_URL.replace(':id', claimId)).send({signed: true}).expect((res: { status: unknown; header: { location: string }; }) => {
+        //then
+        expect(res.status).toBe(302);
+        expect(res.header.location).toBe(CP_UPLOAD_DOCUMENTS_URL.replace(':id', claimId));
+      });
+      expect(mockHasValidNewDocuments).toHaveBeenLastCalledWith(undefined);
+      expect(mockSaveUploadedDocuments).not.toHaveBeenCalled();
+    });
+
+    test('should redirect to type of documents page when a claimant claim has no case progression', async () => {
+      //given
+      const claim: Claim = new Claim();
+      Object.assign(claim, civilClaimResponse.case_data);
+      claim.caseRole = CaseRole.CLAIMANT;
+      claim.caseProgression = undefined;
+      mockDraftStore.mockReturnValueOnce(claim);
+      mockHasValidNewDocuments.mockReturnValueOnce(false);
+      mockSaveUploadedDocuments.mockClear();
+
+      //when
+      await testSession.post(CP_CHECK_ANSWERS_URL.replace(':id', claimId)).send({signed: true}).expect((res: { status: unknown; header: { location: string }; }) => {
+        //then
+        expect(res.status).toBe(302);
+        expect(res.header.location).toBe(TYPES_OF_DOCUMENTS_URL.replace(':id', claimId));
+      });
+      expect(mockHasValidNewDocuments).toHaveBeenLastCalledWith(undefined);
+      expect(mockSaveUploadedDocuments).not.toHaveBeenCalled();
+    });
+
+    test.each([
+      ['defendant', CaseRole.DEFENDANT, 'no case document', undefined],
+      ['claimant', CaseRole.CLAIMANT, 'no case document', undefined],
+      ['defendant', CaseRole.DEFENDANT, 'an empty document link', {documentName: 'test.png', documentLink: {}}],
+      ['claimant', CaseRole.CLAIMANT, 'an empty document link', {documentName: 'test.png', documentLink: {}}],
+    ])('should redirect to upload documents page without submitting when the %s upload draft has only documents with %s', async (_party, caseRole, _variant, caseDocument) => {
+      //given
+      const claim: Claim = new Claim();
+      Object.assign(claim, civilClaimResponse.case_data);
+      claim.caseRole = caseRole;
+      const allInvalidDraft = buildAllInvalidDraft(caseDocument as CaseDocument);
+      claim.caseProgression = {...claim.caseProgression, claimantDocuments: allInvalidDraft, defendantDocuments: allInvalidDraft} as Claim['caseProgression'];
+      mockDraftStore.mockReturnValueOnce(claim);
+      mockHasValidNewDocuments.mockImplementationOnce(actualCheckAnswersService.hasValidNewDocuments);
+      mockSaveUploadedDocuments.mockClear();
+      mockDeleteDraftClaimFromStore.mockClear();
+      const spyUpdateTaskStatus = jest.spyOn(CivilServiceClient.prototype, 'updateTaskStatus');
+
+      //when
+      await testSession.post(CP_CHECK_ANSWERS_URL.replace(':id', claimId)).send({signed: true}).expect((res: { status: unknown; header: { location: string }; }) => {
+        //then
+        expect(res.status).toBe(302);
+        expect(res.header.location).toBe(CP_UPLOAD_DOCUMENTS_URL.replace(':id', claimId));
+      });
+      expect(mockHasValidNewDocuments).toHaveBeenLastCalledWith(allInvalidDraft);
+      expect(mockHasValidNewDocuments).toHaveLastReturnedWith(false);
+      expect(mockSaveUploadedDocuments).not.toHaveBeenCalled();
+      expect(mockDeleteDraftClaimFromStore).not.toHaveBeenCalled();
+      expect(spyUpdateTaskStatus).not.toHaveBeenCalled();
+      spyUpdateTaskStatus.mockRestore();
+      await expectNoValidDocumentsErrorShownOnceOnUploadPage(claim, claimId);
+    });
+
     test('Throw error', async () => {
       //given
       jest.spyOn(draftStoreService, 'getDraftClaimFromStore')
