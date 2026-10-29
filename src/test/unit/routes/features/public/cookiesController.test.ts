@@ -1,40 +1,56 @@
-import config from 'config';
-import nock from 'nock';
-import request from 'supertest';
-import {app} from '../../../../../main/app';
-import {
-  COOKIES_URL,
-} from 'routes/urls';
-import {defaultCookiePreferences} from 'routes/features/public/cookiesController';
-import {t} from 'i18next';
+import {Response} from 'express';
+import cookiesController, {defaultCookiePreferences} from 'routes/features/public/cookiesController';
+import {COOKIES_URL, DASHBOARD_URL} from 'routes/urls';
+import {AppRequest} from 'models/AppRequest';
+import {createMockResponse, getRouteHandler} from '../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/draft-store');
+const pageTitle = 'PAGES.COOKIES.TITLE';
+const viewPath = 'features/public/cookies/cookies-view';
+
+const invoke = async (method: 'get' | 'post', req: Partial<AppRequest>) => {
+  const res = createMockResponse();
+  await getRouteHandler(cookiesController, method, COOKIES_URL)(
+    req as AppRequest,
+    res as unknown as Response,
+    jest.fn(),
+  );
+  return res;
+};
 
 describe('Cookies page', () => {
-  // TODO: remove this once paths become publicly available as mocking the response token will not be needed
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
+  it('renders the default cookie preferences', async () => {
+    const res = await invoke('get', {cookies: {}});
 
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
+    expect(res.render).toHaveBeenCalledWith(viewPath, {
+      redirectUrl: DASHBOARD_URL,
+      cookiePreferences: defaultCookiePreferences,
+      pageTitle,
+    });
   });
 
-  describe('on GET', () => {
-    it('should display cookies page', async () => {
-      const res = await request(app).get(COOKIES_URL);
-      expect(res.status).toBe(200);
-      expect(res.text).toContain(t('PAGES.COOKIES.TITLE'));
-    });
+  it('renders the saved cookie preferences', async () => {
+    const saved = {analytics: 'on', apm: 'on'};
+    const res = await invoke('get', {cookies: {'money-claims-cookie-preferences': JSON.stringify(saved)}});
 
-    describe('on POST', () => {
-      it('saved cookie preferences', async () => {
-        const res = await request(app).post(COOKIES_URL).send(defaultCookiePreferences);
-        expect(res.status).toBe(200);
-        expect(res.text).toContain('Success');
-      });
+    expect(res.render).toHaveBeenCalledWith(viewPath, {
+      redirectUrl: DASHBOARD_URL,
+      cookiePreferences: saved,
+      pageTitle,
     });
+  });
+
+  it('saves the posted cookie preferences', async () => {
+    const res = await invoke('post', {cookies: {}, body: {analytics: 'off', apm: 'on'}});
+
+    expect(res.cookie).toHaveBeenCalledWith(
+      'money-claims-cookie-preferences',
+      {analytics: 'off', apm: 'on'},
+      {sameSite: 'lax'},
+    );
+    expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+      cookiePreferences: {analytics: 'off', apm: 'on'},
+      redirectUrl: DASHBOARD_URL,
+      pageTitle,
+    }));
   });
 });

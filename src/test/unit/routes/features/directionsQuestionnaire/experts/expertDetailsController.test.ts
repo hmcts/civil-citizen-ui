@@ -1,113 +1,90 @@
-import config from 'config';
-import nock from 'nock';
-import request from 'supertest';
-import {app} from '../../../../../../main/app';
-import {DQ_EXPERT_DETAILS_URL, DQ_GIVE_EVIDENCE_YOURSELF_URL} from '../../../../../../main/routes/urls';
-import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
-import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import {t} from 'i18next';
+import {Response} from 'express';
+import expertDetailsController from '../../../../../../main/routes/features/directionsQuestionnaire/experts/expertDetailsController';
+import {DQ_GIVE_EVIDENCE_YOURSELF_URL} from 'routes/urls';
+import {Claim} from 'models/claim';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {createMockResponse, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
 
 describe('Expert Report Details Controller', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
+  const getHandler = getRouteHandler(expertDetailsController, 'get');
+  const postHandler = getRouteHandler(expertDetailsController, 'post');
+  const viewPath = 'features/directionsQuestionnaire/experts/expert-details';
+  const claimId = '12345';
+  const validExpert = {
+    firstName: 'Joe',
+    lastName: 'Doe',
+    emailAddress: 'test@test.com',
+    phoneNumber: '07800000000',
+    whyNeedExpert: 'Test',
+    fieldOfExpertise: 'Test',
+    estimatedCost: 100,
+  };
+  let req: {params: {id: string}; body: Record<string, unknown>};
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
+  const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
+  const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
 
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, { id_token: citizenRoleToken });
+  beforeEach(() => {
+    req = {params: {id: claimId}, body: {}};
+    res = createMockResponse();
+    next = jest.fn();
+    (draftStoreService.generateRedisKey as jest.Mock).mockReturnValue(claimId);
+    mockGetCaseData.mockResolvedValue(new Claim());
+    mockSaveDraftClaim.mockResolvedValue(undefined);
   });
 
   describe('on GET', () => {
-    it('should return Expert Details page', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
-      await request(app).get(DQ_EXPERT_DETAILS_URL).expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(t('PAGES.EXPERT_DETAILS.PAGE_TITLE'));
-      });
+    it('should render the expert details page', async () => {
+      await getHandler(req as never, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        pageTitle: 'PAGES.EXPERT_DETAILS.PAGE_TITLE',
+      }));
+      expect(next).not.toHaveBeenCalled();
     });
 
-    it('should return status 500 when error thrown', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .get(DQ_EXPERT_DETAILS_URL)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+    it('should call next when loading the claim fails', async () => {
+      const error = new Error('redis failure');
+      mockGetCaseData.mockRejectedValue(error);
+
+      await getHandler(req as never, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 
   describe('on POST', () => {
-    beforeEach(() => {
-      app.locals.draftStoreClient = mockCivilClaim;
+    it('should re-render when the expert name is missing', async () => {
+      req.body = {items: [{firstName: ''}]};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.any(Object));
+      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
+      expect(mockSaveDraftClaim).not.toHaveBeenCalled();
     });
 
-    it('should return page with error message on empty post', async () => {
-      await request(app).post(DQ_EXPERT_DETAILS_URL).send({
-        items: [{
-          firstName: '',
-        }],
-      }).expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(t('ERRORS.THERE_WAS_A_PROBLEM'));
-      });
+    it('should save and redirect to give evidence yourself when the expert details are valid', async () => {
+      req.body = {items: [validExpert]};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(mockSaveDraftClaim).toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, DQ_GIVE_EVIDENCE_YOURSELF_URL));
     });
 
-    it('should redirect to expert evidence', async () => {
-      await request(app).post(DQ_EXPERT_DETAILS_URL)
-        .send({
-          items: [{
-            firstName: 'Joe',
-            lastName: 'Doe',
-            emailAddress: 'test@test.com',
-            phoneNumber: '07800000000',
-            whyNeedExpert: 'Test',
-            fieldOfExpertise: 'Test',
-            estimatedCost: 100,
-          }],
-        })
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.get('location')).toBe(DQ_GIVE_EVIDENCE_YOURSELF_URL);
-        });
-    });
+    it('should call next when saving fails', async () => {
+      const error = new Error('redis failure');
+      mockSaveDraftClaim.mockRejectedValue(error);
+      req.body = {items: [validExpert]};
 
-    it('should return errors when mandatory fields/phone number email is not right', async () => {
-      await request(app).post(DQ_EXPERT_DETAILS_URL)
-        .send({
-          items: [{
-            firstName: '',
-            lastName: '',
-            emailAddress: 'test',
-            phoneNumber: '920',
-            whyNeedExpert: '',
-            fieldOfExpertise: '',
-            estimatedCost: 100,
-          }],
-        })
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.ENTER_FIRST_NAME'));
-          expect(res.text).toContain(t('ERRORS.ENTER_LAST_NAME'));
-          expect(res.text).toContain(t('ERRORS.ENTER_VALID_EMAIL'));
-          expect(res.text).toContain(t('ERRORS.VALID_PHONE_NUMBER'));
-          expect(res.text).toContain(t('ERRORS.ENTER_WHY_NEED_EXPERT'));
-          expect(res.text).toContain(t('ERRORS.ENTER_EXPERT_FIELD'));
-        });
-    });
+      await postHandler(req as never, res as unknown as Response, next);
 
-    it('should return status 500 when error thrown', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .post(DQ_EXPERT_DETAILS_URL)
-        .send({ hasExpertReports: 'yes', reportDetails: [{ expertName: 'Ahmet', day: '1', month: '3', year: '2022' }] })
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 });
