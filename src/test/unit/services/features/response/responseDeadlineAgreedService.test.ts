@@ -13,7 +13,7 @@ jest.mock('../../../../../main/modules/draft-store');
 jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
 const baseUrl: string = config.get('baseUrl');
-const appReq = <AppRequest>req;
+const appReq = {...req, session: {...req.session, user: {...req.session.user, id: '550e8400-e29b-41d4-a716-446655440000'}}} as unknown as AppRequest;
 appReq.params = {id: '12345'};
 
 describe('Response Deadline Agreed Service', () => {
