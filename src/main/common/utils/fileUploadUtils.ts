@@ -33,6 +33,7 @@ const handleMulterResult = (req: Request, err: any, loggerName: string, next: Ne
 
   if (err) {
     logger.error(`[MULTER ERROR] Multer middleware error: ${err?.message || err}, code=${err?.code}, field=${err?.field}`, err);
+    logger.error(`[MULTER ERROR] code=${err?.code ?? 'none'}, field=${err?.field ?? 'none'}, action=${req.body?.action ?? 'none'}`);
     (req as any).multerError = err;
   } else if (rejectIfFileContentInvalid(req)) {
     const contentError = createInvalidFileContentError();
