@@ -104,20 +104,14 @@
   }
 }
 
-.moj-add-another {
-  &__remove-button {
-    display: none;
-  }
-}
-
 .caseProgression {
-  .moj-add-another__item {
+  .cui-upload-rows__item {
     margin: 0;
     padding: 0;
     position: relative;
   }
 
-  .moj-add-another__remove-button {
+  .cui-upload-rows__remove-button {
     display: block;
     position: absolute;
     right: 0;
@@ -126,7 +120,7 @@
   }
 
   /* Hide remove button when only one row */
-  .moj-add-another__item:only-of-type .moj-add-another__remove-button {
+  .cui-upload-rows__item:only-of-type .cui-upload-rows__remove-button {
     display: none;
   }
 }
