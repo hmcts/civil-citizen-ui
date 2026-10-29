@@ -1,60 +1,92 @@
-import request from 'supertest';
-import {app} from '../../../../../../main/app';
-import nock from 'nock';
-import config from 'config';
-import {GENERAL_APPLICATION_CONFIRM_URL} from 'routes/urls';
-import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
+import {Response} from 'express';
+import {t} from 'i18next';
+import submitGeneralApplicationConfirmationController from '../../../../../../main/routes/features/generalApplication/submitGeneralApplicationConfirmationController';
 import {Claim} from 'models/claim';
-import {getClaimById} from 'modules/utilityService';
+import {PartyType} from 'models/partyType';
 import {GeneralApplication} from 'models/generalApplication/GeneralApplication';
-import * as launchDarkly from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {getClaimById} from 'modules/utilityService';
+import {createMockResponse, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
-jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
-
+jest.mock('modules/draft-store/draftStoreService');
+jest.mock('services/features/generalApplication/response/generalApplicationResponseStoreService', () => ({
+  getDraftGARespondentResponse: jest.fn(),
+  saveDraftGARespondentResponse: jest.fn(),
+}));
 jest.mock('modules/utilityService', () => ({
   getClaimById: jest.fn(),
-  getRedisStoreForSession: jest.fn(),
-}));
-jest.mock('../../../../../../main/routes/guards/generalAplicationGuard',() => ({
-  isGAForLiPEnabled: jest.fn((req, res, next) => {
-    next();
-  }),
 }));
 
 describe('GA submission confirmation controller', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
+  const getHandler = getRouteHandler(submitGeneralApplicationConfirmationController, 'get');
+  const viewPath = 'features/generalApplication/submit-general-application-confirmation';
+  const claimId = '12345';
+  let claim: Claim;
+  let req: {
+    params: {id: string};
+    body: Record<string, unknown>;
+    query: Record<string, unknown>;
+    cookies: Record<string, unknown>;
+    session: {user: {id: string}};
+  };
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
+  const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
+  const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
+  const mockGetClaim = getClaimById as jest.Mock;
 
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, { id_token: citizenRoleToken });
-    jest.spyOn(launchDarkly, 'isGaForLipsEnabled').mockResolvedValue(true);
+  const buildClaim = (): Claim => {
+    const builtClaim = new Claim();
+    builtClaim.applicant1 = {
+      type: PartyType.INDIVIDUAL,
+      partyDetails: {title: 'Mr', firstName: 'Jan', lastName: 'Clark'},
+    } as Claim['applicant1'];
+    builtClaim.generalApplication = new GeneralApplication();
+    builtClaim.generalApplication.applicationFee = {
+      calculatedAmountInPence: 100,
+      code: 'test',
+      version: 1,
+    };
+    return builtClaim;
+  };
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+    claim = buildClaim();
+    req = {
+      params: {id: claimId},
+      body: {},
+      query: {},
+      cookies: {},
+      session: {user: {id: 'u1'}},
+    };
+    res = createMockResponse();
+    next = jest.fn();
+    (draftStoreService.generateRedisKey as jest.Mock).mockReturnValue(claimId);
+    (draftStoreService.generateRedisKeyForGA as jest.Mock).mockReturnValue('ga-12345');
+    mockGetCaseData.mockResolvedValue(claim);
+    mockSaveDraftClaim.mockResolvedValue(undefined);
+    mockGetClaim.mockResolvedValue(claim);
   });
 
   describe('on GET', () => {
-    it('should return ga submit confirmation page', async () => {
-      const claim = new Claim();
-      claim.generalApplication = new GeneralApplication();
-      claim.generalApplication.applicationFee = {
-        calculatedAmountInPence: 100,
-        code: 'test',
-        version: 1,
-      };
-      (getClaimById as jest.Mock).mockResolvedValueOnce(claim);
-      const res = await request(app).get(GENERAL_APPLICATION_CONFIRM_URL);
-      expect(res.status).toBe(200);
-      expect(res.text).toContain('Application created');
-      expect(res.text).toContain('You need to pay the application fee to submit the application');
+    it('should render the submission confirmation page', async () => {
+      await getHandler(req as never, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        confirmationTitle: t('PAGES.GENERAL_APPLICATION.CONFIRMATION_PAGE.TITLE'),
+        confirmationContent: expect.any(Array),
+      }));
+      expect(next).not.toHaveBeenCalled();
     });
 
-    it('should return http 500 when has error in the get method', async () => {
-      (getClaimById as jest.Mock).mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
-      const res = await request(app).get(GENERAL_APPLICATION_CONFIRM_URL);
-      expect(res.status).toBe(500);
-      expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
+    it('should call next when loading the claim fails', async () => {
+      const error = new Error('redis failure');
+      mockGetClaim.mockRejectedValue(error);
+
+      await getHandler(req as never, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 });

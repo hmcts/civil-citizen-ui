@@ -1,294 +1,222 @@
-import config from 'config';
-import nock from 'nock';
-import request from 'supertest';
-import * as draftService from 'modules/draft-store/draftStoreService';
-import * as draftServiceGA from 'modules/draft-store/draftGADocumentService';
-import { Claim } from 'common/models/claim';
-import { t } from 'i18next';
-import { GeneralApplication } from 'common/models/generalApplication/GeneralApplication';
-import {GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_URL, GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_CYA_URL} from 'routes/urls';
-import { CivilServiceClient } from 'client/civilServiceClient';
-import { CaseDocument } from 'common/models/document/caseDocument';
-import {UploadGAFiles} from 'models/generalApplication/uploadGAFiles';
-import { FILE_UPLOAD_SOURCE } from 'common/utils/fileUploadUtils';
-import {Session} from 'express-session';
-import {app} from '../../../../../../../main/app';
-import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
-import * as launchDarkly from '../../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
-import {FileUpload} from 'models/caseProgression/fileUpload';
+import {Response} from 'express';
+import {CivilServiceClient} from 'client/civilServiceClient';
+import {GaServiceClient} from 'client/gaServiceClient';
+import {CaseDocument} from 'common/models/document/caseDocument';
+import {Claim} from 'common/models/claim';
+import {FILE_UPLOAD_SOURCE} from 'common/utils/fileUploadUtils';
+import {constructResponseUrlWithIdAndAppIdParams} from 'common/utils/urlFormatter';
+import {getClaimById} from 'modules/utilityService';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {
+  getGADocumentsFromDraftStore,
+  saveGADocumentsInDraftStore,
+} from 'modules/draft-store/draftGADocumentService';
+import {
+  GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_CYA_URL,
+  GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_URL,
+} from 'routes/urls';
+import uploadDocumentsDirectionsOrderController from '../../../../../../../main/routes/features/generalApplication/directionsOrderUpload/uploadDocumentsDirectionsOrderController';
+import {createMockResponse, getRouteHandler} from '../../../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../../../main/modules/oidc');
-jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
-jest.mock('../../../../../../../main/modules/draft-store/draftGADocumentService');
-jest.mock('../../../../../../../main/modules/draft-store');
-jest.mock('services/features/generalApplication/generalApplicationService', () => ({
-  getCancelUrl: jest.fn(),
-  getApplicationFromGAService: jest.fn(),
+jest.mock('modules/draft-store/draftStoreService');
+jest.mock('modules/utilityService', () => ({
+  getClaimById: jest.fn(),
 }));
-jest.mock('../../../../../../../main/routes/guards/generalAplicationGuard',() => ({
-  isGAForLiPEnabled: jest.fn((req, res, next) => {
-    next();
-  }),
+jest.mock('modules/draft-store/draftGADocumentService', () => ({
+  getGADocumentsFromDraftStore: jest.fn(),
+  saveGADocumentsInDraftStore: jest.fn(),
+  deleteGADocumentsFromDraftStore: jest.fn(),
+}));
+jest.mock('services/features/generalApplication/response/generalApplicationResponseStoreService', () => ({
+  getDraftGARespondentResponse: jest.fn(),
+  saveDraftGARespondentResponse: jest.fn(),
 }));
 
-const mockCaseDocument: CaseDocument = <CaseDocument>{
-  createdBy: 'test',
-  documentLink: { document_url: 'http://test', document_binary_url: 'http://test/binary', document_filename: 'test.png' },
-  documentName: 'test.text',
-  documentType: null,
-  documentSize: 12345,
-  createdDatetime: new Date(),
-};
-const file = {
+const uploadedFile = {
   fieldname: 'selectedFile',
-  originalname: 'test.text',
+  originalname: 'test.txt',
   mimetype: 'text/plain',
-  size: 123,
+  size: Buffer.from('Test file content').length,
   buffer: Buffer.from('Test file content'),
 };
 
-describe('General Application - uploadDocumentsDirectionsOrderController.ts', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
-  const mockDataFromStore = jest.spyOn(draftService, 'getCaseDataFromStore');
-  const mockGADocDataFromStore = jest.spyOn(draftServiceGA, 'getGADocumentsFromDraftStore');
-  let claim: Claim;
-  let uploadDocuments: UploadGAFiles[];
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, { id_token: citizenRoleToken });
-    jest.spyOn(launchDarkly, 'isGaForLipsEnabled').mockResolvedValue(true);
-  });
+const uploadedDocument = (id: string) => ({
+  caseDocument: {documentName: `${id}.pdf`, documentLink: {document_url: `http://dm-store/documents/${id}`}},
+});
+
+describe('General Application - uploadDocumentsDirectionsOrderController', () => {
+  const getHandler = getRouteHandler(uploadDocumentsDirectionsOrderController, 'get');
+  const postHandler = getRouteHandler(uploadDocumentsDirectionsOrderController, 'post');
+  const viewPath = 'features/generalApplication/directionsOrderUpload/upload-documents';
+  const claimId = '12345';
+  const appId = 'GA-1001';
+  const currentUrl = constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_URL);
+  const mockGetClaimById = getClaimById as jest.Mock;
+  const mockGetDocuments = getGADocumentsFromDraftStore as jest.Mock;
+  const uploadDocument = jest.spyOn(CivilServiceClient.prototype, 'uploadDocument');
+  const deleteDocument = jest.spyOn(CivilServiceClient.prototype, 'deleteDocument');
+  const getApplication = jest.spyOn(GaServiceClient.prototype, 'getApplication');
+  let req: {
+    params: {id: string; appId: string};
+    body: Record<string, unknown>;
+    query: Record<string, unknown>;
+    cookies: Record<string, unknown>;
+    session: {save: jest.Mock; fileUpload?: string; fileUploadSource?: string};
+    file?: typeof uploadedFile;
+    multerError?: {code: string};
+  };
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
 
   beforeEach(() => {
-    claim = new Claim();
-    claim.id ='id';
-    claim.generalApplication = new GeneralApplication();
-    mockDataFromStore.mockResolvedValue(claim);
+    jest.clearAllMocks();
+    req = {
+      params: {id: claimId, appId},
+      body: {},
+      query: {},
+      cookies: {},
+      session: {save: jest.fn((callback: () => void) => callback())},
+    };
+    res = createMockResponse();
+    next = jest.fn();
+    mockGetClaimById.mockResolvedValue(new Claim());
+    mockGetDocuments.mockResolvedValue([]);
+    (draftStoreService.generateRedisKeyForGA as jest.Mock).mockReturnValue('ga-redis-key');
+    (saveGADocumentsInDraftStore as jest.Mock).mockResolvedValue(undefined);
+    uploadDocument.mockResolvedValue({documentName: 'test.txt'} as CaseDocument);
+    deleteDocument.mockResolvedValue(undefined);
+    getApplication.mockResolvedValue({} as never);
+  });
 
-    uploadDocuments = [
-      {
-        caseDocument: {
-          documentName: 'Directions order1',
-          createdBy: 'Applicant',
-          documentLink: {
-            document_url: 'http://dm-store:8080/documents/95de9948-e563-4692-a642-5cdd5b2a1046',
-            document_binary_url: 'http://dm-store:8080/documents/95de9948-e563-4692-a642-5cdd5b2a1046',
-            document_filename: 'filename1',
-          },
-          documentType: null,
-          documentSize: 123,
-        } as CaseDocument,
-        fileUpload: {} as FileUpload,
-      },
-      {
-        caseDocument: {
-          documentName: 'Directions order2',
-          createdBy: 'Applicant',
-          documentLink: {
-            document_url: 'http://dm-store:8080/documents/95de9948-e563-4692-a642-5cdd5b2a1047',
-            document_binary_url: 'http://dm-store:8080/documents/95de9948-e563-4692-a642-5cdd5b2a1047',
-            document_filename: 'filename2',
-          },
-          documentType: null,
-          documentSize: 1223,
-        } as CaseDocument,
-        fileUpload: {} as FileUpload,
-      },
-    ];
-    mockGADocDataFromStore.mockResolvedValue(uploadDocuments);
+  afterAll(() => {
+    uploadDocument.mockRestore();
+    deleteDocument.mockRestore();
+    getApplication.mockRestore();
   });
 
   describe('on GET', () => {
-    it('should return upload document page', async () => {
-      await request(app)
-        .get(GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.UPLOAD_DIRECTIONS_ORDER_DOCUMENTS.PAGE_TITLE'));
-        });
+    it('should render the upload page', async () => {
+      await getHandler(req as never, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        headerTitle: 'PAGES.GENERAL_APPLICATION.UPLOAD_DIRECTIONS_ORDER_DOCUMENTS.PAGE_TITLE',
+      }));
+      expect(next).not.toHaveBeenCalled();
     });
 
-    it('should show a delete button for each uploaded file', async () => {
-      const res = await request(app).get(GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_URL);
-      expect(res.status).toBe(200);
-      expect(res.text).toContain('value="deleteFile[0][95de9948-e563-4692-a642-5cdd5b2a1046]"');
-      expect(res.text).toContain('value="deleteFile[1][95de9948-e563-4692-a642-5cdd5b2a1047]"');
+    it('should not remove a document on a GET request', async () => {
+      mockGetDocuments.mockResolvedValue([uploadedDocument('first'), uploadedDocument('second')]);
+      req.query = {id: '2'};
+
+      await getHandler(req as never, res as unknown as Response, next);
+
+      expect(saveGADocumentsInDraftStore).not.toHaveBeenCalled();
+      expect(deleteDocument).not.toHaveBeenCalled();
+      expect(res.render).toHaveBeenCalled();
     });
 
-    it('should not remove a file on a GET request', async () => {
-      const res = await request(app).get(GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_URL + '?id=2');
-      expect(res.status).toBe(200);
-      expect(uploadDocuments).toHaveLength(2);
+    it('should render file upload errors stored in the session', async () => {
+      req.session.fileUpload = JSON.stringify([{property: 'fileUpload', constraints: {isNotEmpty: 'ERRORS.VALID_CHOOSE_THE_FILE'}}]);
+      req.session.fileUploadSource = FILE_UPLOAD_SOURCE.GA_DIRECTIONS_ORDER;
+
+      await getHandler(req as never, res as unknown as Response, next);
+
+      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
     });
 
-    it('should return page with errors when file to be uploaded has unsupported file type', async () => {
-      const errors =   [
-        {
-          value: 'application/json',
-          property: 'fileUpload[mimetype]',
-          constraints: { isAllowedMimeType: 'ERRORS.VALID_MIME_TYPE_FILE' },
-          fieldName: 'fileUpload[mimetype]',
-          text: 'Document must be Word, Excel, PowerPoint, PDF, RTF, TXT, CSV, JPG, JPEG, PNG, BMP, TIF, TIFF',
-          href: '#fileUpload[mimetype]',
-        },
-      ];
+    it('should call next when loading the claim fails', async () => {
+      const error = new Error('redis failure');
+      mockGetClaimById.mockRejectedValue(error);
 
-      app.request.session = { fileUpload: JSON.stringify(errors), fileUploadSource: FILE_UPLOAD_SOURCE.GA_DIRECTIONS_ORDER, save: (cb: any) => cb() } as unknown as Session;
-      await request(app)
-        .get(GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.VALID_MIME_TYPE_FILE'));
-        });
-    });
+      await getHandler(req as never, res as unknown as Response, next);
 
-    it('should return page with errors when file to be uploaded has size > 100MB', async () => {
-      const errors =   [
-        {
-          target: {},
-          value: 162819440,
-          property: 'fileUpload[size]',
-          constraints: { fileSizeValidator: 'ERRORS.VALID_SIZE_FILE' },
-          fieldName: 'fileUpload[size]',
-          text: 'Document must be less than 100MB',
-          href: '#fileUpload[size]',
-        },
-      ];
-
-      app.request.session = { fileUpload: JSON.stringify(errors), fileUploadSource: FILE_UPLOAD_SOURCE.GA_DIRECTIONS_ORDER, save: (cb: any) => cb() } as unknown as Session;
-      await request(app)
-        .get(GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.VALID_SIZE_FILE'));
-        });
-    });
-
-    it('should return page with errors when upload file button clicked without choosing file', async () => {
-      const errors =   [
-        {
-          target: {},
-          property: 'fileUpload',
-          constraints: { isNotEmpty: 'ERRORS.VALID_CHOOSE_THE_FILE' },
-          fieldName: 'fileUpload',
-          text: 'Choose the file you want to upload',
-          href: '#fileUpload',
-        },
-      ];
-
-      app.request.session = { fileUpload: JSON.stringify(errors), fileUploadSource: FILE_UPLOAD_SOURCE.GA_DIRECTIONS_ORDER, save: (cb: any) => cb() } as unknown as Session;
-      await request(app)
-        .get(GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.VALID_CHOOSE_THE_FILE'));
-        });
-    });
-
-    it('should return http 500 when has error in the get method', async () => {
-      mockDataFromStore.mockRejectedValueOnce(new Error(TestMessages.SOMETHING_WENT_WRONG));
-      await request(app)
-        .get(GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_URL)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 
   describe('on POST', () => {
-    it('should delete the 2nd file from the list and from document management', async () => {
-      const deleteDocument = jest.spyOn(CivilServiceClient.prototype, 'deleteDocument').mockResolvedValue(undefined);
-      const res = await request(app).post(GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_URL).field('action', 'deleteFile[1][95de9948-e563-4692-a642-5cdd5b2a1047]');
-      expect(res.status).toBe(302);
-      expect(uploadDocuments.map((uploadDocument) => uploadDocument.caseDocument.documentName)).toEqual(['Directions order1']);
+    it('should delete the selected document from the list and from document management', async () => {
+      const documents = [uploadedDocument('first'), uploadedDocument('second')];
+      mockGetDocuments.mockResolvedValue(documents);
+      req.body = {action: 'deleteFile[1][second]'};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(saveGADocumentsInDraftStore).toHaveBeenCalledWith('ga-redis-key', [documents[0]]);
       expect(deleteDocument).toHaveBeenCalledTimes(1);
-      expect(deleteDocument).toHaveBeenCalledWith(expect.anything(), '95de9948-e563-4692-a642-5cdd5b2a1047');
-      deleteDocument.mockRestore();
+      expect(deleteDocument).toHaveBeenCalledWith(expect.anything(), 'second');
+      expect(res.redirect).toHaveBeenCalledWith(currentUrl);
     });
 
-    it('should throw the error if user click upload file button without uploading', async () => {
-      await request(app)
-        .post(GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_URL)
-        .field('action', 'uploadButton')
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.text).toContain(GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_URL);
-        });
+    it('should not delete anything when the document id does not match the row', async () => {
+      mockGetDocuments.mockResolvedValue([uploadedDocument('first'), uploadedDocument('second')]);
+      req.body = {action: 'deleteFile[1][first]'};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(saveGADocumentsInDraftStore).not.toHaveBeenCalled();
+      expect(deleteDocument).not.toHaveBeenCalled();
     });
 
-    it('should redirect back when file over 100MB (multer LIMIT_FILE_SIZE)', async () => {
-      const save = jest.fn((cb: any) => cb());
-      app.request.session = { save } as unknown as Session;
-      const largeBuffer = Buffer.alloc(101 * 1024 * 1024);
-      largeBuffer.fill('x');
-      const res = await request(app)
-        .post(GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_URL)
-        .field('action', 'uploadButton')
-        .attach('selectedFile', largeBuffer, { filename: 'large.pdf', contentType: 'application/pdf' });
-      expect(res.status).toBe(302);
-      expect(res.header.location).toContain('upload-documents-directions-order');
-      expect(save).toHaveBeenCalledTimes(1);
+    it('should redirect back when the upload button is used without a file', async () => {
+      req.body = {action: 'uploadButton'};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(uploadDocument).not.toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(currentUrl);
     });
 
-    it('should save the file and display', async () => {
-      jest.spyOn(CivilServiceClient.prototype, 'uploadDocument').mockResolvedValueOnce(mockCaseDocument);
-      await request(app)
-        .post(GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_URL)
-        .field('action', 'uploadButton')
-        .attach('selectedFile', file.buffer, { filename: file.originalname, contentType: file.mimetype })
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.text).toContain(GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_URL);
-        });
-    });
-    it('should return http 500 when has error in the get method', async () => {
-      const file = {
-        fieldname: 'selectedFile',
-        originalname: 'test.text',
-        mimetype: 'text/plain',
-        size: 123,
-        buffer: Buffer.from('Test file content'),
-      };
-      jest.spyOn(CivilServiceClient.prototype, 'uploadDocument').mockRejectedValueOnce(new Error(TestMessages.SOMETHING_WENT_WRONG));
-      await request(app)
-        .post(GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_URL)
-        .field('action', 'uploadButton')
-        .attach('selectedFile', file.buffer, { filename: file.originalname, contentType: file.mimetype })
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+    it('should redirect back when multer reports a file error', async () => {
+      req.body = {action: 'uploadButton'};
+      req.multerError = {code: 'LIMIT_FILE_SIZE'};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(uploadDocument).not.toHaveBeenCalled();
+      expect(req.session.save).toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(currentUrl);
     });
 
-    it('should set fileUpload error in session when no documents uploaded and form has fileUpload error', async () => {
-      mockGADocDataFromStore.mockResolvedValueOnce([]);
-      await request(app)
-        .post(GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_URL)
-        .field('action', 'continue')
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header['location']).toContain(GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_URL);
-        });
+    it('should save the file and redirect back to the upload page', async () => {
+      req.body = {action: 'uploadButton'};
+      req.file = uploadedFile;
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(uploadDocument).toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(currentUrl);
     });
 
-    it('should redirect to CYA page when documents are uploaded successfully', async () => {
-      const uploadDocuments = [
-        {
-          caseDocument: mockCaseDocument,
-          fileUpload: {} as FileUpload,
-        },
-      ];
-      mockGADocDataFromStore.mockResolvedValueOnce(uploadDocuments);
-      await request(app)
-        .post(GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_URL)
-        .field('action', 'continue')
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header['location']).toContain(GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_CYA_URL);
-        });
+    it('should call next when the document upload fails', async () => {
+      const error = new Error('upload failure');
+      uploadDocument.mockRejectedValue(error);
+      req.body = {action: 'uploadButton'};
+      req.file = uploadedFile;
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
+    });
+
+    it('should redirect back when continue is used with no documents', async () => {
+      req.body = {action: 'continue'};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(req.session.fileUploadSource).toBe(FILE_UPLOAD_SOURCE.GA_DIRECTIONS_ORDER);
+      expect(res.redirect).toHaveBeenCalledWith(currentUrl);
+    });
+
+    it('should redirect to check your answers when documents are uploaded', async () => {
+      mockGetDocuments.mockResolvedValue([{caseDocument: {documentName: 'test.txt'}}]);
+      req.body = {action: 'continue'};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(res.redirect).toHaveBeenCalledWith(
+        constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_CYA_URL),
+      );
     });
   });
 });

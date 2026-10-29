@@ -1,12 +1,13 @@
-import config from 'config';
-import nock from 'nock';
-import request from 'supertest';
-import * as draftService from 'modules/draft-store/draftStoreService';
-import { Claim } from 'common/models/claim';
-import { t } from 'i18next';
-import { GeneralApplication } from 'common/models/generalApplication/GeneralApplication';
-import { FILE_UPLOAD_SOURCE } from 'common/utils/fileUploadUtils';
-import { app } from '../../../../../../main/app';
+import {Response} from 'express';
+import {CivilServiceClient} from 'client/civilServiceClient';
+import {CaseDocument} from 'common/models/document/caseDocument';
+import {Claim} from 'common/models/claim';
+import {GeneralApplication} from 'common/models/generalApplication/GeneralApplication';
+import {ApplicationType, ApplicationTypeOption} from 'models/generalApplication/applicationType';
+import {FILE_UPLOAD_SOURCE} from 'common/utils/fileUploadUtils';
+import {constructResponseUrlWithIdParams, constructUrlWithIndex} from 'common/utils/urlFormatter';
+import {getClaimById} from 'modules/utilityService';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {
   BACK_URL,
   GA_CHECK_YOUR_ANSWERS_COSC_URL,
@@ -14,314 +15,223 @@ import {
   GA_UPLOAD_DOCUMENTS_COSC_URL,
   GA_UPLOAD_DOCUMENTS_URL,
 } from 'routes/urls';
-import { TestMessages } from '../../../../../utils/errorMessageTestConstants';
-import { CivilServiceClient } from 'client/civilServiceClient';
-import { CaseDocument } from 'common/models/document/caseDocument';
-import * as launchDarkly from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
-import {UploadGAFiles} from 'models/generalApplication/uploadGAFiles';
-import {Session} from 'express-session';
-import {ApplicationType, ApplicationTypeOption} from 'models/generalApplication/applicationType';
+import uploadEvidenceDocumentsForApplicationController from '../../../../../../main/routes/features/generalApplication/uploadEvidenceDocumentForApplication';
+import {createMockResponse, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
-jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
-jest.mock('../../../../../../main/routes/guards/generalAplicationGuard',() => ({
-  isGAForLiPEnabled: jest.fn((req, res, next) => {
-    next();
-  }),
+jest.mock('modules/draft-store/draftStoreService');
+jest.mock('modules/utilityService', () => ({
+  getClaimById: jest.fn(),
+}));
+jest.mock('services/features/generalApplication/response/generalApplicationResponseStoreService', () => ({
+  getDraftGARespondentResponse: jest.fn(),
+  saveDraftGARespondentResponse: jest.fn(),
 }));
 
-const mockCaseDocument: CaseDocument = <CaseDocument>{
-  createdBy: 'test',
-  documentLink: { document_url: 'http://test', document_binary_url: 'http://test/binary', document_filename: 'test.png' },
-  documentName: 'test.text',
-  documentType: null,
-  documentSize: 12345,
-  createdDatetime: new Date(),
-};
-const file = {
+const uploadedFile = {
   fieldname: 'selectedFile',
-  originalname: 'test.text',
+  originalname: 'test.txt',
   mimetype: 'text/plain',
-  size: 123,
+  size: Buffer.from('Test file content').length,
   buffer: Buffer.from('Test file content'),
 };
 
-const uploadedDocument = (id: string): UploadGAFiles => {
-  const document = new UploadGAFiles();
-  document.caseDocument = {...mockCaseDocument, documentName: `${id}.pdf`,
-    documentLink: {...mockCaseDocument.documentLink, document_url: `http://dm-store/documents/${id}`}};
-  return document;
-};
+const uploadedDocument = (id: string) => ({
+  caseDocument: {documentName: `${id}.pdf`, documentLink: {document_url: `http://dm-store/documents/${id}`}},
+}) as never;
 
 describe('General Application - upload evidence docs to support application', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
-  const mockDataFromStore = jest.spyOn(draftService, 'getCaseDataFromStore');
+  const getHandler = getRouteHandler(uploadEvidenceDocumentsForApplicationController, 'get');
+  const postHandler = getRouteHandler(uploadEvidenceDocumentsForApplicationController, 'post');
+  const viewPath = 'features/generalApplication/upload_documents';
+  const claimId = '12345';
+  const mockGetClaimById = getClaimById as jest.Mock;
+  const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
+  const uploadDocument = jest.spyOn(CivilServiceClient.prototype, 'uploadDocument');
+  const deleteDocument = jest.spyOn(CivilServiceClient.prototype, 'deleteDocument');
   let claim: Claim;
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, { id_token: citizenRoleToken });
-    jest.spyOn(launchDarkly, 'isGaForLipsEnabled').mockResolvedValue(true);
-  });
+  let req: {
+    params: {id: string};
+    body: Record<string, unknown>;
+    query: Record<string, unknown>;
+    cookies: Record<string, unknown>;
+    session: {save: jest.Mock; fileUpload?: string; fileUploadSource?: string};
+    file?: typeof uploadedFile;
+    multerError?: {code: string};
+  };
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
+
+  const pageFor = (applicationType: ApplicationTypeOption): string =>
+    applicationType === ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID ? GA_UPLOAD_DOCUMENTS_COSC_URL : GA_UPLOAD_DOCUMENTS_URL;
+
+  const urlWithIndex = (path: string): string =>
+    constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, path), undefined);
+
+  const useApplicationType = (applicationType: ApplicationTypeOption): void => {
+    claim = new Claim();
+    claim.generalApplication = new GeneralApplication();
+    claim.generalApplication.applicationTypes = [new ApplicationType(applicationType)];
+    mockGetClaimById.mockResolvedValue(claim);
+    mockGetCaseData.mockResolvedValue(claim);
+  };
 
   beforeEach(() => {
-    claim = new Claim();
-    claim.id ='id';
-    claim.generalApplication = new GeneralApplication();
-    claim.generalApplication.applicationTypes = [new ApplicationType(ApplicationTypeOption.SET_ASIDE_JUDGEMENT)];
-    mockDataFromStore.mockResolvedValue(claim);
+    jest.clearAllMocks();
+    req = {
+      params: {id: claimId},
+      body: {},
+      query: {},
+      cookies: {},
+      session: {save: jest.fn((callback: () => void) => callback())},
+    };
+    res = createMockResponse();
+    next = jest.fn();
+    useApplicationType(ApplicationTypeOption.SET_ASIDE_JUDGEMENT);
+    (draftStoreService.generateRedisKey as jest.Mock).mockReturnValue(claimId);
+    (draftStoreService.saveDraftClaim as jest.Mock).mockResolvedValue(undefined);
+    uploadDocument.mockResolvedValue({documentName: 'test.txt'} as CaseDocument);
+    deleteDocument.mockResolvedValue(undefined);
+  });
+
+  afterAll(() => {
+    uploadDocument.mockRestore();
+    deleteDocument.mockRestore();
   });
 
   describe('on GET', () => {
-    it.each`
-    requestUrl                        | expectedBackUrl                       | selectedApplicationType                         | expectedText
-    ${GA_UPLOAD_DOCUMENTS_URL}        | ${BACK_URL}    | ${ApplicationTypeOption.SET_ASIDE_JUDGEMENT}    | ${'PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.CANCEL_JUDGMENT'}
-    ${GA_UPLOAD_DOCUMENTS_COSC_URL}   | ${BACK_URL}  | ${ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID}  | ${'Confirm you&#39;ve paid a judgment debt'}
-    `('should return upload document page for $requestUrl with corresponding back url ($expectedUrl)'
-      , async ({requestUrl, expectedBackUrl, selectedApplicationType, expectedText}) => {
-        //Given
-        claim = new Claim();
-        claim.id ='id';
-        claim.generalApplication = new GeneralApplication();
-        claim.generalApplication.applicationTypes = [new ApplicationType(selectedApplicationType)];
-        mockDataFromStore.mockResolvedValue(claim);
-        //When
-        await request(app)
-          .get(requestUrl)
-          //Then
-          .expect((res) => {
-            expect(res.status).toBe(200);
-            expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.UPLOAD_DOCUMENTS.TITLE'));
-            expect(res.text).toContain(t(expectedText));
-            expect(res.text).toContain(expectedBackUrl);
-          });
-      });
+    it.each([
+      [ApplicationTypeOption.SET_ASIDE_JUDGEMENT, 'PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.CANCEL_JUDGMENT'],
+      [ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID, 'COMMON.ASK_FOR_PROOF_OF_DEBT_PAYMENT'],
+    ])('should render the upload page for %s', async (applicationType, headerTitle) => {
+      useApplicationType(applicationType);
 
-    it('should show a delete button and not remove a file on a GET request', async () => {
+      await getHandler(req as never, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        headerTitle,
+        backLinkUrl: BACK_URL,
+      }));
+      expect(next).not.toHaveBeenCalled();
+    });
+
+    it('should not remove a document on a GET request', async () => {
       claim.generalApplication.uploadEvidenceForApplication.push(uploadedDocument('first'), uploadedDocument('second'));
-      const res = await request(app).get(GA_UPLOAD_DOCUMENTS_URL + '?id=1');
-      expect(res.status).toBe(200);
-      expect(res.text).toContain('value="deleteFile[1][second]"');
+      req.query = {id: '1'};
+
+      await getHandler(req as never, res as unknown as Response, next);
+
       expect(claim.generalApplication.uploadEvidenceForApplication).toHaveLength(2);
+      expect(deleteDocument).not.toHaveBeenCalled();
+      expect(res.render).toHaveBeenCalled();
     });
 
-    it('should return page with errors when file to be uploaded has unsupported file type', async () => {
-      const errors =   [
-        {
-          value: 'application/json',
-          property: 'fileUpload[mimetype]',
-          constraints: { isAllowedMimeType: 'ERRORS.VALID_MIME_TYPE_FILE' },
-          fieldName: 'fileUpload[mimetype]',
-          text: 'Document must be Word, Excel, PowerPoint, PDF, RTF, TXT, CSV, JPG, JPEG, PNG, BMP, TIF, TIFF',
-          href: '#fileUpload[mimetype]',
-        },
-      ];
+    it('should render file upload errors stored in the session', async () => {
+      req.session.fileUpload = JSON.stringify([{property: 'fileUpload', constraints: {isNotEmpty: 'ERRORS.VALID_CHOOSE_THE_FILE'}}]);
+      req.session.fileUploadSource = FILE_UPLOAD_SOURCE.GA_UPLOAD_EVIDENCE;
 
-      app.request.session = { fileUpload: JSON.stringify(errors), fileUploadSource: FILE_UPLOAD_SOURCE.GA_UPLOAD_EVIDENCE, save: (cb: any) => cb() } as unknown as Session;
-      await request(app)
-        .get(GA_UPLOAD_DOCUMENTS_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.VALID_MIME_TYPE_FILE'));
-        });
+      await getHandler(req as never, res as unknown as Response, next);
+
+      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
     });
 
-    it('should return page with errors when file to be uploaded has size > 100MB', async () => {
-      const errors =   [
-        {
-          target: {},
-          value: 162819440,
-          property: 'fileUpload[size]',
-          constraints: { fileSizeValidator: 'ERRORS.VALID_SIZE_FILE' },
-          fieldName: 'fileUpload[size]',
-          text: 'Document must be less than 100MB',
-          href: '#fileUpload[size]',
-        },
-      ];
+    it('should call next when loading the claim fails', async () => {
+      const error = new Error('redis failure');
+      mockGetClaimById.mockRejectedValue(error);
 
-      app.request.session = { fileUpload: JSON.stringify(errors), fileUploadSource: FILE_UPLOAD_SOURCE.GA_UPLOAD_EVIDENCE, save: (cb: any) => cb() } as unknown as Session;
-      await request(app)
-        .get(GA_UPLOAD_DOCUMENTS_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.VALID_SIZE_FILE'));
-        });
-    });
+      await getHandler(req as never, res as unknown as Response, next);
 
-    it('should return page with errors when upload file button clicked without choosing file', async () => {
-      const errors =   [
-        {
-          target: {},
-          property: 'fileUpload',
-          constraints: { isNotEmpty: 'ERRORS.VALID_CHOOSE_THE_FILE' },
-          fieldName: 'fileUpload',
-          text: 'Choose the file you want to upload',
-          href: '#fileUpload',
-        },
-      ];
-
-      app.request.session = { fileUpload: JSON.stringify(errors), fileUploadSource: FILE_UPLOAD_SOURCE.GA_UPLOAD_EVIDENCE, save: (cb: any) => cb() } as unknown as Session;
-      await request(app)
-        .get(GA_UPLOAD_DOCUMENTS_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.VALID_CHOOSE_THE_FILE'));
-        });
-    });
-
-    it('should return http 500 when has error in the get method', async () => {
-      mockDataFromStore.mockRejectedValueOnce(new Error(TestMessages.SOMETHING_WENT_WRONG));
-      await request(app)
-        .get(GA_UPLOAD_DOCUMENTS_URL)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 
   describe('on POST', () => {
-    it('should delete the requested file from the list and from document management', async () => {
+    it('should delete the selected document from the list and from document management', async () => {
       claim.generalApplication.uploadEvidenceForApplication.push(uploadedDocument('first'), uploadedDocument('second'));
-      const deleteDocument = jest.spyOn(CivilServiceClient.prototype, 'deleteDocument').mockResolvedValue(undefined);
-      const res = await request(app).post(GA_UPLOAD_DOCUMENTS_URL).field('action', 'deleteFile[0][first]');
-      expect(res.status).toBe(302);
-      expect(res.header.location).toContain(GA_UPLOAD_DOCUMENTS_URL);
-      expect(claim.generalApplication.uploadEvidenceForApplication.map((document: UploadGAFiles) => document.caseDocument.documentName)).toEqual(['second.pdf']);
+      req.body = {action: 'deleteFile[0][first]'};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(claim.generalApplication.uploadEvidenceForApplication).toEqual([uploadedDocument('second')]);
+      expect(draftStoreService.saveDraftClaim).toHaveBeenCalled();
       expect(deleteDocument).toHaveBeenCalledTimes(1);
       expect(deleteDocument).toHaveBeenCalledWith(expect.anything(), 'first');
-      deleteDocument.mockRestore();
+      expect(res.redirect).toHaveBeenCalledWith(urlWithIndex(GA_UPLOAD_DOCUMENTS_URL));
     });
 
-    it('should not delete anything when a stale page asks to delete a file that has moved', async () => {
+    it('should not delete anything when a stale page asks to delete a document that has moved', async () => {
       claim.generalApplication.uploadEvidenceForApplication.push(uploadedDocument('first'), uploadedDocument('second'));
-      const deleteDocument = jest.spyOn(CivilServiceClient.prototype, 'deleteDocument').mockResolvedValue(undefined);
-      const res = await request(app).post(GA_UPLOAD_DOCUMENTS_URL).field('action', 'deleteFile[0][second]');
-      expect(res.status).toBe(302);
-      expect(claim.generalApplication.uploadEvidenceForApplication.map((document: UploadGAFiles) => document.caseDocument.documentName)).toEqual(['first.pdf', 'second.pdf']);
+      req.body = {action: 'deleteFile[0][second]'};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(claim.generalApplication.uploadEvidenceForApplication).toHaveLength(2);
+      expect(draftStoreService.saveDraftClaim).not.toHaveBeenCalled();
       expect(deleteDocument).not.toHaveBeenCalled();
-      deleteDocument.mockRestore();
     });
 
-    it('should throw the error if user click upload file button without uploading', async () => {
-      await request(app)
-        .post(GA_UPLOAD_DOCUMENTS_URL)
-        .field('action', 'uploadButton')
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.text).toContain(GA_UPLOAD_DOCUMENTS_URL);
-        });
+    it('should redirect back when the upload button is used without a file', async () => {
+      req.body = {action: 'uploadButton'};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(uploadDocument).not.toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(urlWithIndex(GA_UPLOAD_DOCUMENTS_URL));
     });
 
-    it('should redirect back when file over 100MB (multer LIMIT_FILE_SIZE)', async () => {
-      const save = jest.fn((cb: any) => cb());
-      app.request.session = { save } as unknown as Session;
-      const largeBuffer = Buffer.alloc(101 * 1024 * 1024);
-      largeBuffer.fill('x');
-      const res = await request(app)
-        .post(GA_UPLOAD_DOCUMENTS_URL)
-        .field('action', 'uploadButton')
-        .attach('selectedFile', largeBuffer, { filename: 'large.pdf', contentType: 'application/pdf' });
-      expect(res.status).toBe(302);
-      expect(res.header.location).toContain('upload-documents');
-      expect(save).toHaveBeenCalledTimes(1);
+    it('should redirect back when multer reports a file error', async () => {
+      req.body = {action: 'uploadButton'};
+      req.multerError = {code: 'LIMIT_FILE_SIZE'};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(uploadDocument).not.toHaveBeenCalled();
+      expect(req.session.save).toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(urlWithIndex(GA_UPLOAD_DOCUMENTS_URL));
     });
 
     it.each([
-      GA_UPLOAD_DOCUMENTS_URL,
-      GA_UPLOAD_DOCUMENTS_COSC_URL,
-    ])('should save the file and display', async (url) => {
-      jest.spyOn(CivilServiceClient.prototype, 'uploadDocument').mockResolvedValueOnce(mockCaseDocument);
-      await request(app)
-        .post(url)
-        .field('action', 'uploadButton')
-        .attach('selectedFile', file.buffer, { filename: file.originalname, contentType: file.mimetype })
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.text).toContain(GA_UPLOAD_DOCUMENTS_URL);
-        });
+      ApplicationTypeOption.ADJOURN_HEARING,
+      ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID,
+    ])('should save the file and redirect back for %s', async (applicationType) => {
+      useApplicationType(applicationType);
+      req.body = {action: 'uploadButton'};
+      req.file = uploadedFile;
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(uploadDocument).toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(urlWithIndex(pageFor(applicationType)));
     });
 
-    it('should throw the error if user click continue button without uploading a file', async () => {
-      await request(app)
-        .post(GA_UPLOAD_DOCUMENTS_URL)
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.text).toContain(GA_UPLOAD_DOCUMENTS_URL);
-        });
-    });
-    it('should return http 500 when has error in the get method', async () => {
-      const file = {
-        fieldname: 'selectedFile',
-        originalname: 'test.text',
-        mimetype: 'text/plain',
-        size: 123,
-        buffer: Buffer.from('Test file content'),
-      };
-      jest.spyOn(CivilServiceClient.prototype, 'uploadDocument').mockRejectedValueOnce(new Error(TestMessages.SOMETHING_WENT_WRONG));
-      await request(app)
-        .post(GA_UPLOAD_DOCUMENTS_URL)
-        .field('action', 'uploadButton')
-        .attach('selectedFile', file.buffer, { filename: file.originalname, contentType: file.mimetype })
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+    it('should redirect back when continue is used with no documents', async () => {
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(req.session.fileUploadSource).toBe(FILE_UPLOAD_SOURCE.GA_UPLOAD_EVIDENCE);
+      expect(res.redirect).toHaveBeenCalledWith(urlWithIndex(GA_UPLOAD_DOCUMENTS_URL));
     });
 
-    it.each`
-    selectedApplicationType                                                     | expectedUrl
-    ${ApplicationTypeOption.ADJOURN_HEARING}                                    | ${GA_UPLOAD_DOCUMENTS_URL+'?index=undefined'}
-    ${ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID}                              | ${GA_UPLOAD_DOCUMENTS_COSC_URL+'?index=undefined'}
-    `('should redirect to current page ($expectedUrl) when application type is $selectedApplicationType',
-      async ({ selectedApplicationType, expectedUrl}) => {
-        //Given
-        claim = new Claim();
-        claim.id ='id';
-        claim.generalApplication = new GeneralApplication();
-        claim.generalApplication.applicationTypes = [new ApplicationType(selectedApplicationType)];
-        mockDataFromStore.mockResolvedValue(claim);
-        //When
-        jest.spyOn(CivilServiceClient.prototype, 'uploadDocument').mockResolvedValueOnce(mockCaseDocument);
-        await request(app)
-          .post(GA_UPLOAD_DOCUMENTS_COSC_URL.replace(':id', '1111'))
-          .field('action', 'uploadButton')
-          .attach('selectedFile', file.buffer, { filename: file.originalname, contentType: file.mimetype })
-          //Then
-          .expect((res: { status: unknown, header: { location: unknown }, text: unknown; }) => {
-            expect(res.status).toBe(302);
-            expect(res.header.location).toEqual(expectedUrl.replace(':id', '1111'));
-          });
-      });
+    it('should call next when the document upload fails', async () => {
+      const error = new Error('upload failure');
+      uploadDocument.mockRejectedValue(error);
+      req.body = {action: 'uploadButton'};
+      req.file = uploadedFile;
 
-    it.each`
-    selectedApplicationType                                                     | expectedUrl
-    ${ApplicationTypeOption.ADJOURN_HEARING}                                    | ${GA_HEARING_ARRANGEMENTS_GUIDANCE_URL+'?index=undefined'}
-    ${ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID}                              | ${GA_CHECK_YOUR_ANSWERS_COSC_URL+'?index=undefined'}
-    `('should redirect to next page ($expectedUrl) when application type is $selectedApplicationType', async ({ selectedApplicationType, expectedUrl}) => {
-      //Given
-      claim = new Claim();
-      claim.id ='id';
-      claim.generalApplication = new GeneralApplication();
-      claim.generalApplication.applicationTypes = [new ApplicationType(selectedApplicationType)];
-      mockDataFromStore.mockResolvedValue(claim);
-      //When
-      jest.spyOn(CivilServiceClient.prototype, 'uploadDocument').mockResolvedValueOnce(mockCaseDocument);
-      await request(app)
-        .post(GA_UPLOAD_DOCUMENTS_COSC_URL.replace(':id', '1111'))
-        .field('action', 'uploadButton')
-        .attach('selectedFile', file.buffer, { filename: file.originalname, contentType: file.mimetype });
-      await request(app)
-        .post(GA_UPLOAD_DOCUMENTS_COSC_URL.replace(':id', '1111'))
-        .field('action', 'submit')
-        //Then
-        .expect((res: { status: unknown, header: { location: unknown }, text: unknown; }) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(expectedUrl.replace(':id', '1111'));
-        });
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
 
+    it.each([
+      [ApplicationTypeOption.ADJOURN_HEARING, GA_HEARING_ARRANGEMENTS_GUIDANCE_URL],
+      [ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID, GA_CHECK_YOUR_ANSWERS_COSC_URL],
+    ])('should redirect to the next page for %s', async (applicationType, nextPage) => {
+      useApplicationType(applicationType);
+      claim.generalApplication.uploadEvidenceForApplication.push({caseDocument: {documentName: 'test.txt'}} as never);
+      req.body = {action: 'submit'};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(res.redirect).toHaveBeenCalledWith(urlWithIndex(nextPage));
+    });
   });
 });

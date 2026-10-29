@@ -1,161 +1,139 @@
-import {app} from '../../../../../../main/app';
-import request from 'supertest';
-import config from 'config';
-import nock from 'nock';
-import {
-  DQ_DEFENDANT_WITNESSES_URL,
-  DQ_NEXT_12MONTHS_CAN_NOT_HEARING_URL,
-} from '../../../../../../main/routes/urls';
-import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import {mockRedisFailure} from '../../../../../utils/mockDraftStore';
-import {t} from 'i18next';
-import {YesNo} from '../../../../../../main/common/form/models/yesNo';
+import {Response} from 'express';
+import otherWitnessesController from '../../../../../../main/routes/features/directionsQuestionnaire/witnesses/otherWitnessesController';
+import {DQ_NEXT_12MONTHS_CAN_NOT_HEARING_URL} from 'routes/urls';
+import {Claim} from 'models/claim';
+import {Party} from 'models/party';
+import {YesNo} from 'form/models/yesNo';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {createMockResponse, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
-
-const otherWitnessMock = {
-  'id': 1645882162449409,
-  'jurisdiction': 'CIVIL',
-  'case_type_id': 'CIVIL',
-  'created_date': '2022-03-01T13:29:22.448',
-  'last_modified': '2022-03-01T13:29:24.971',
-  'state': 'PENDING_CASE_ISSUED',
-  'security_classification': 'PUBLIC',
-  'case_data': {
-    'directionQuestionnaire': {
-      'witnesses': {
-        'otherWitnesses': {
-          'option': '',
-          'witnessItems': [{}],
-        },
-      },
-    },
-  },
-};
-
-const civilClaimResponseMock: string = JSON.stringify(otherWitnessMock);
-const mockOtherWitnesses = {
-  set: jest.fn(() => Promise.resolve({})),
-  get: jest.fn(() => Promise.resolve(civilClaimResponseMock)),
-  expireat: jest.fn(() => Promise.resolve({})),
-  ttl: jest.fn(() => Promise.resolve({})),
-};
+jest.mock('modules/draft-store/draftStoreService');
 
 describe('Other Witnesses', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
+  const getHandler = getRouteHandler(otherWitnessesController, 'get');
+  const postHandler = getRouteHandler(otherWitnessesController, 'post');
+  const viewPath = 'features/directionsQuestionnaire/witnesses/otherWitnesses/other-witnesses';
+  const claimId = '12345';
+  let req: {params: {id: string}; body: Record<string, unknown>};
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
+  const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
+  const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
 
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
+  const witnessItem = (overrides: Record<string, string> = {}) => ({
+    details: 'Details here...',
+    email: 'jane.clarke@version1.com',
+    firstName: 'Jane',
+    lastName: 'Clarke',
+    telephone: '01632960001',
+    ...overrides,
   });
 
-  describe('on Get', () => {
-    test('should return on your other witnesses page successfully', async () => {
-      app.locals.draftStoreClient = mockOtherWitnesses;
-      await request(app).get(DQ_DEFENDANT_WITNESSES_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('PAGES.OTHER_WITNESSES.PAGE_TITLE'));
-        });
+  const buildClaim = (): Claim => {
+    const claim = new Claim();
+    claim.applicant1 = new Party();
+    claim.respondent1 = new Party();
+    return claim;
+  };
+
+  beforeEach(() => {
+    req = {params: {id: claimId}, body: {}};
+    res = createMockResponse();
+    next = jest.fn();
+    (draftStoreService.generateRedisKey as jest.Mock).mockReturnValue(claimId);
+    mockGetCaseData.mockResolvedValue(buildClaim());
+    mockSaveDraftClaim.mockResolvedValue(undefined);
+  });
+
+  describe('on GET', () => {
+    it('should render the other witnesses page', async () => {
+      await getHandler(req as never, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        form: expect.anything(),
+        pageTitle: 'PAGES.OTHER_WITNESSES.TITLE',
+      }));
+      expect(next).not.toHaveBeenCalled();
     });
 
-    it('should return status 500 when error thrown', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .get(DQ_DEFENDANT_WITNESSES_URL)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+    it('should call next when loading the claim fails', async () => {
+      const error = new Error('redis failure');
+      mockGetCaseData.mockRejectedValue(error);
+
+      await getHandler(req as never, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 
-  describe('on Post', () => {
-    test('should redirect with correct input and redirect to availability dates in next 12 months screen', async () => {
-      app.locals.draftStoreClient = mockOtherWitnesses;
-      await request(app)
-        .post(DQ_DEFENDANT_WITNESSES_URL)
-        .send({option: YesNo.NO, witnessItems: []})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(DQ_NEXT_12MONTHS_CAN_NOT_HEARING_URL);
-        });
+  describe('on POST', () => {
+    it('should re-render when no option is selected', async () => {
+      req.body = {witnessItems: []};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        form: expect.anything(),
+      }));
+      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
+      expect(mockSaveDraftClaim).not.toHaveBeenCalled();
     });
 
-    test('should return errors when option selected equal no', async () => {
-      await request(app)
-        .post(DQ_DEFENDANT_WITNESSES_URL)
-        .send({option: undefined, witnessItems: [{}]})
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.DEFENDANT_WITNESS_SELECT_OTHER'));
-        });
+    it('should re-render when yes is selected and the first name is missing', async () => {
+      req.body = {option: YesNo.YES, witnessItems: [witnessItem({firstName: ''})]};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
+      expect(mockSaveDraftClaim).not.toHaveBeenCalled();
     });
 
-    test('should return errors when option selected equal yes and no witness details provided', async () => {
-      await request(app)
-        .post(DQ_DEFENDANT_WITNESSES_URL)
-        .send({
-          option: 'yes',
-          witnessItems: [
-            {
-              details: '',
-              email: '',
-              firstName: '',
-              lastName: '',
-              telephone: '',
-            }],
-        })
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.DEFENDANT_WITNESS_ENTER_FIRST_NAME'));
-          expect(res.text).toContain(t('ERRORS.DEFENDANT_WITNESS_ENTER_LAST_NAME'));
-          expect(res.text).toContain(t('ERRORS.DEFENDANT_WITNESS_WHAT_THEY_WITNESSED'));
-        });
+    it('should re-render when yes is selected and the last name is missing', async () => {
+      req.body = {option: YesNo.YES, witnessItems: [witnessItem({lastName: ''})]};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
     });
 
-    test('should redirect when option selected equal yes and other witness details are provided', async () => {
-      await request(app)
-        .post(DQ_DEFENDANT_WITNESSES_URL)
-        .send({
-          option: 'yes',
-          witnessItems: [
-            {
-              details: 'Details here...',
-              email: 'jane.clarke@version1.com',
-              firstName: 'Jane',
-              lastName: 'Clarke',
-              telephone: '01632960001',
-            }],
-        })
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(DQ_NEXT_12MONTHS_CAN_NOT_HEARING_URL);
-        });
+    it('should re-render when yes is selected and the witness details are missing', async () => {
+      req.body = {option: YesNo.YES, witnessItems: [witnessItem({details: ''})]};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
     });
 
-    it('should return status 500 when error thrown', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .post(DQ_DEFENDANT_WITNESSES_URL)
-        .send({
-          option: 'yes',
-          witnessItems: [
-            {
-              details: 'Details here...',
-              email: 'jane.clarke@version1.com',
-              firstName: 'Jane',
-              lastName: 'Clarke',
-              telephone: '01632960001',
-            }],
-        })
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+    it('should save and redirect when no other witnesses are selected', async () => {
+      req.body = {option: YesNo.NO, witnessItems: []};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(mockSaveDraftClaim).toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(
+        constructResponseUrlWithIdParams(claimId, DQ_NEXT_12MONTHS_CAN_NOT_HEARING_URL),
+      );
+    });
+
+    it('should save and redirect when yes is selected and witness details are provided', async () => {
+      req.body = {option: YesNo.YES, witnessItems: [witnessItem()]};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(res.redirect).toHaveBeenCalledWith(
+        constructResponseUrlWithIdParams(claimId, DQ_NEXT_12MONTHS_CAN_NOT_HEARING_URL),
+      );
+    });
+
+    it('should call next when saving fails', async () => {
+      const error = new Error('redis failure');
+      mockSaveDraftClaim.mockRejectedValue(error);
+      req.body = {option: YesNo.YES, witnessItems: [witnessItem()]};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 });
