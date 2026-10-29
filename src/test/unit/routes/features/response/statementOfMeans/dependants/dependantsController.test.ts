@@ -9,11 +9,10 @@ import {GenericYesNo} from 'form/models/genericYesNo';
 import {YesNo} from 'form/models/yesNo';
 import {Claim} from 'models/claim';
 import {StatementOfMeans} from 'models/statementOfMeans';
+import {Dependants} from 'form/models/statementOfMeans/dependants/dependants';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import dependantsService from 'services/features/response/statementOfMeans/dependants/dependantsService';
 import {createMockResponse, getRouteHandler} from '../../../../../../utils/getRouteHandler';
-
-jest.mock('modules/draft-store/draftStoreService');
 
 describe('Citizen dependants', () => {
   const getHandler = getRouteHandler(dependantsController, 'get');
@@ -23,28 +22,32 @@ describe('Citizen dependants', () => {
   let req: Partial<Request>;
   let res: ReturnType<typeof createMockResponse>;
   let next: jest.Mock;
-  const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
-  const mockGenerateRedisKey = draftStoreService.generateRedisKey as jest.Mock;
-  const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
+  let mockGetDependants: jest.SpyInstance;
+  let mockSaveDependants: jest.SpyInstance;
 
-  const claimWithDisability = (disability: YesNo, severeDisability?: YesNo): Claim => {
+  const claimWithDisability = (disability: YesNo, severeDisability?: YesNo, under11 = '1'): Claim => {
     const claim = new Claim();
     claim.statementOfMeans = new StatementOfMeans();
     claim.statementOfMeans.disability = new GenericYesNo(disability);
     if (severeDisability) {
       claim.statementOfMeans.severeDisability = new GenericYesNo(severeDisability);
     }
+    claim.statementOfMeans.dependants = Dependants.fromObject('yes', under11);
     return claim;
   };
 
   beforeEach(() => {
-    jest.clearAllMocks();
     req = {params: {id: claimId}, body: {}, query: {}, cookies: {}};
     res = createMockResponse();
     next = jest.fn();
-    mockGenerateRedisKey.mockReturnValue(claimId);
-    mockGetCaseData.mockResolvedValue(new Claim());
-    mockSaveDraftClaim.mockResolvedValue(undefined);
+    mockGetDependants = jest.spyOn(dependantsService, 'getDependants')
+      .mockResolvedValue(new Dependants());
+    mockSaveDependants = jest.spyOn(dependantsService, 'saveDependants')
+      .mockResolvedValue(new Claim());
+  });
+
+  afterEach(() => {
+    jest.restoreAllMocks();
   });
 
   describe('on GET', () => {
@@ -52,12 +55,13 @@ describe('Citizen dependants', () => {
       await getHandler(req as Request, res as unknown as Response, next);
 
       expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({form: expect.anything()}));
+      expect(mockGetDependants).toHaveBeenCalled();
       expect(next).not.toHaveBeenCalled();
     });
 
     it('should call next when loading the claim fails', async () => {
-      const error = new Error('redis failure');
-      mockGetCaseData.mockRejectedValue(error);
+      const error = new Error('draft failure');
+      mockGetDependants.mockRejectedValue(error);
 
       await getHandler(req as Request, res as unknown as Response, next);
 
@@ -67,17 +71,17 @@ describe('Citizen dependants', () => {
 
   describe('on POST', () => {
     it('should redirect to other dependants when children under 11 are given and none are treated as disabled', async () => {
-      mockGetCaseData.mockResolvedValue(claimWithDisability(YesNo.YES, YesNo.YES));
+      mockSaveDependants.mockResolvedValue(claimWithDisability(YesNo.YES, YesNo.YES));
       req.body = {declared: 'yes', under11: '1'};
 
       await postHandler(req as Request, res as unknown as Response, next);
 
-      expect(mockSaveDraftClaim).toHaveBeenCalled();
+      expect(mockSaveDependants).toHaveBeenCalled();
       expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CITIZEN_OTHER_DEPENDANTS_URL));
     });
 
     it('should redirect to children disability when children under 11 are given and the defendant is not disabled', async () => {
-      mockGetCaseData.mockResolvedValue(claimWithDisability(YesNo.NO));
+      mockSaveDependants.mockResolvedValue(claimWithDisability(YesNo.NO));
       req.body = {declared: 'yes', under11: '1'};
 
       await postHandler(req as Request, res as unknown as Response, next);
@@ -90,6 +94,7 @@ describe('Citizen dependants', () => {
 
       await postHandler(req as Request, res as unknown as Response, next);
 
+      expect(mockSaveDependants).toHaveBeenCalled();
       expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CITIZEN_DEPENDANTS_EDUCATION_URL));
     });
 
@@ -100,7 +105,7 @@ describe('Citizen dependants', () => {
 
       expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({form: expect.anything()}));
       expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
-      expect(mockSaveDraftClaim).not.toHaveBeenCalled();
+      expect(mockSaveDependants).not.toHaveBeenCalled();
     });
 
     it('should re-render when the under 11 number is negative', async () => {
@@ -128,8 +133,8 @@ describe('Citizen dependants', () => {
     });
 
     it('should call next when saving fails', async () => {
-      const error = new Error('redis failure');
-      mockGetCaseData.mockRejectedValue(error);
+      const error = new Error('draft failure');
+      mockSaveDependants.mockRejectedValue(error);
       req.body = {declared: 'yes', under11: '1'};
 
       await postHandler(req as Request, res as unknown as Response, next);
