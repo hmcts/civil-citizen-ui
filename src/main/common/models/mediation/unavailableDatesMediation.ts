@@ -63,7 +63,7 @@ export class UnavailableDatePeriodMediation {
     startMonth?: number;
 
   @ValidateIf(o => o.type && hasStartDateInput(o))
-  @Validate(OptionalDateFourDigitValidator, {message: 'ERRORS.VALID_FOUR_DIGIT_YEAR'})
+  @Validate(OptionalDateFourDigitValidator, {message: generateErrorMessage})
   @Min(1872, { message: generateErrorMessage })
   @Max(9999, { message: generateErrorMessage })
     startYear?: number;
@@ -86,7 +86,7 @@ export class UnavailableDatePeriodMediation {
     endMonth?: number;
 
   @ValidateIf(o => o.type === UnavailableDateType.LONGER_PERIOD && hasEndDateInput(o))
-  @Validate(OptionalDateFourDigitValidator, {message: 'ERRORS.VALID_FOUR_DIGIT_YEAR'})
+  @Validate(OptionalDateFourDigitValidator, {message: generateErrorMessage})
   @Min(1872, { message: generateErrorMessage })
   @Max(9999, { message: generateErrorMessage })
     endYear?: number;
