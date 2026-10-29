@@ -89,6 +89,39 @@ Running the linting with auto fix:
 $ yarn lint --fix
 ```
 
+### Strict null checks
+
+`tsconfig.strict.json` extends the normal compiler configuration and enables
+`strictNullChecks` for an explicit list of existing passing TypeScript files.
+The separate **Strict null checks** GitHub workflow blocks regressions in that
+list. The normal `tsconfig.json`, build and runtime behaviour are unchanged.
+
+```bash
+yarn tsc --noEmit -p tsconfig.strict.json
+```
+
+To bring another file under the gate, add its exact `src/main/...ts` path to
+`include` in `tsconfig.strict.json`, keeping the list sorted, and run the command
+above. Its imports are also checked by TypeScript. Resolve errors in that
+dependency chain before adding the file; do not hide them with non-null assertions,
+`as any`, `@ts-ignore` or changed compiler options. Do not use a directory glob to
+silently include an unfinished feature area. Model fixes belong to the follow-on
+strict-null tickets.
+
+The workflow also runs the full repository with `strictNullChecks`, prints error
+counts for application code, tests and other files, and uploads the full diagnostics
+as the `strict-null-baseline` artifact. That count is informational, so existing
+errors outside the allowlist do not block delivery. Imported files can still fail
+the allowlist gate. To inspect the same count locally:
+
+```bash
+node bin/strict-null-baseline.cjs
+# Optionally save all diagnostic locations:
+node bin/strict-null-baseline.cjs /tmp/strict-null-baseline.log
+# Check that the gate rejects regressions and that reporting remains non-blocking:
+node --test bin/strict-null-baseline.test.cjs
+```
+
 ### Running the tests
 
 Unit tests must not boot the Express app. In-process HTTP (Supertest) belongs in `src/integration-test`.
