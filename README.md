@@ -18,8 +18,8 @@
 
 Running the application requires the following tools to be installed in your environment:
 
-  * [Node.js](https://nodejs.org/) v14.0.0 or later
-  * [yarn](https://yarnpkg.com/)
+  * [Node.js](https://nodejs.org/) v24.21.0 (set by `.nvmrc`; `package.json` requires at least v24.18.0)
+  * [Yarn 4](https://yarnpkg.com/) (this repository pins Yarn 4.18.1)
   * [Docker](https://www.docker.com)
 
 ### Local Setup
@@ -75,6 +75,20 @@ This will start the frontend container exposing the application's port
 
 In order to test if the application is up, you can visit https://localhost:3001 in your browser.
 
+### Dependency checks
+
+`package.json` uses exact dependency versions. Run `yarn deps:check` to check those pins, their agreement with the lockfile workspace and the presence and format of SHA-512 checksum entries in `yarn.lock`. Yarn verifies downloaded archives against the lockfile during installation and waits seven days before selecting a newly published npm release; an urgent security update can use `YARN_NPM_MINIMAL_AGE_GATE=0` for that one resolution command.
+
+Run `yarn deps:audit` to review registry findings. It runs in CI and `cichecks` and needs registry access. The [checker](bin/check-yarn-audit.mjs) runs a production scan including deprecations and a full-tree security scan with `--no-deprecations`. Any production security advisory fails at every severity, even if a matching record exists in `yarn-audit-known-issues`.
+
+Development-only security findings and production deprecation notices require separate, explicit review in [yarn-audit-known-issues](yarn-audit-known-issues). Only an ID exactly matching `<package name> (deprecation)` is treated as a maintenance notice. The checker rejects missing, stale or changed records, comparing severity, affected/tree versions and immediate dependency paths. This also detects the production deprecation mismatches reported by Jenkins's shared audit. A changed Yarn virtual locator can require re-review even when the package version is unchanged. Do not regenerate the file wholesale to suppress a failure.
+
+`package.json` and `yarn.lock` define the exact dependency versions and scoped resolutions. Review both files when updating dependencies.
+
+Application Insights 3 accepts a full connection string or a bare configured instrumentation key through the application adapter. Configuration and sampling are set before startup, preview remains excluded, and asynchronous export failures do not replace the original error response. Mocked regressions do not establish actual exception/dependency delivery. The Redis mock remains a development dependency loaded only in e2e mode; in-memory tests do not establish real Redis connectivity or TTL behaviour.
+
+Renovate writes exact pins and waits seven days for routine npm releases. It may automerge minor and patch updates during HMCTS's out-of-hours windows; major and GOV.UK Frontend updates require review. Vulnerability alerts can be raised immediately.
+
 ## Developing
 
 ### Code style
@@ -82,15 +96,17 @@ In order to test if the application is up, you can visit https://localhost:3001 
 We use [ESLint](https://github.com/typescript-eslint/typescript-eslint)
 alongside [stylelint](https://github.com/stylelint/stylelint)
 
-Running the linting with auto fix:
+Run both SCSS and JavaScript/TypeScript linting:
 ```bash
-$ yarn lint --fix
+$ yarn lint
 ```
 
 ### Running the tests
 
 Unit tests must not boot the Express app. In-process HTTP (Supertest) belongs in `src/integration-test`.
 See [docs/test-pyramid.md](docs/test-pyramid.md) for the layer contract and conversion rules.
+`yarn test:a11y` runs the mocked-page accessibility check separately from `cichecks`; a passing aggregate check does not constitute browser or accessibility acceptance.
+Build the development assets first with `NODE_ENV=development yarn build`: the capture server requires `/main-dev.css` and `/main-dev.js` and serves the built fonts. `test:a11y` installs the browser expected by the installed Pa11y/Puppeteer chain; `yarn tests:a11y` runs with an already installed browser. Neither command builds those assets. The [test-pyramid guide](docs/test-pyramid.md#accessibility-and-tooling-regressions) describes the capture prerequisites and bounded browser lifecycle.
 
 This template app uses [Jest](https://jestjs.io//) as the test engine. You can run unit tests by executing
 the following command:

@@ -1,6 +1,6 @@
 import Axios, { AxiosResponse } from 'axios';
 import config from 'config';
-import jwt_decode from 'jwt-decode';
+import {jwtDecode} from 'jwt-decode';
 import {UserDetails} from '../../../common/models/AppRequest';
 
 export const getOidcResponse = async(
@@ -27,7 +27,7 @@ export const getUserDetails = (
   responseData: OidcResponse,
 ): UserDetails => {
 
-  const jwt: IdTokenJwtPayload = jwt_decode(responseData.id_token);
+  const jwt: IdTokenJwtPayload = jwtDecode(responseData.id_token);
 
   return {
     accessToken: responseData.access_token,
@@ -44,7 +44,7 @@ export const getSessionIssueTime = (
   responseData: OidcResponse,
 ): number => {
 
-  const jwt: IdTokenJwtPayload = jwt_decode(responseData.id_token);
+  const jwt: IdTokenJwtPayload = jwtDecode(responseData.id_token);
 
   return jwt.iat;
 };

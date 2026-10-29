@@ -2,7 +2,7 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
     "local>hmcts/.github:renovate-config",
-    "local>hmcts/.github//renovate/automerge-all"
+    "local>hmcts/.github//renovate/automerge-minor"
   ],
   "labels": [
     "dependencies",
@@ -14,6 +14,12 @@
     "after 6pm and before 8pm every weekday"
   ],
   "platformAutomerge": false,
+  "ignoreTests": false,
+  "vulnerabilityAlerts": {
+    "enabled": true,
+    "minimumReleaseAge": "0 days",
+    "prCreation": "immediate"
+  },
   "schedule": [
     "after 7am and before 8am every weekday",
     "after 6pm and before 8pm every weekday"
@@ -36,9 +42,29 @@
   ],
   "packageRules": [
     {
+      "description": "Match the seven-day Yarn npm age gate for routine updates",
+      "matchDatasources": [
+        "npm"
+      ],
+      "minimumReleaseAge": "7 days",
+      "internalChecksFilter": "strict",
+      "prCreation": "not-pending"
+    },
+    {
+      "description": "Keep major updates for review",
+      "matchUpdateTypes": [
+        "major"
+      ],
+      "automerge": false
+    },
+    {
       "matchUpdateTypes": [
         "minor",
         "patch"
+      ],
+      "matchPackageNames": [
+        "*",
+        "!govuk-frontend"
       ],
       "groupName": "All non-major updates",
       "groupSlug": "all-non-major",
@@ -49,6 +75,10 @@
       "matchManagers": [
         "helmv3"
       ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
       "groupName": "Helm chart updates",
       "groupSlug": "helm-charts",
       "automerge": true,
@@ -57,6 +87,10 @@
     {
       "matchManagers": [
         "dockerfile"
+      ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
       ],
       "groupName": "Dockerfile updates",
       "groupSlug": "dockerfile",
@@ -69,6 +103,10 @@
         "playwright-core",
         "@axe-core/playwright"
       ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
       "groupName": "Playwright",
       "groupSlug": "playwright",
       "automerge": true,
@@ -77,6 +115,10 @@
     {
       "matchPackagePatterns": [
         "^allure-"
+      ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
       ],
       "groupName": "Allure reporting",
       "groupSlug": "allure",
@@ -93,6 +135,10 @@
         "^@typescript-eslint/",
         "^eslint-"
       ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
       "groupName": "ESLint",
       "groupSlug": "eslint",
       "automerge": true,
@@ -105,10 +151,21 @@
       "matchPackagePatterns": [
         "^@types/"
       ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
       "groupName": "TypeScript",
       "groupSlug": "typescript",
       "automerge": true,
       "automergeType": "pr"
+    },
+    {
+      "description": "Review GOV.UK Frontend updates with rendered fixtures and journeys",
+      "matchPackageNames": [
+        "govuk-frontend"
+      ],
+      "automerge": false
     },
     {
       "description": "typescript-eslint 8 only supports TypeScript <6.1.0. Remove once typescript-eslint supports TypeScript 7.",
@@ -139,18 +196,18 @@
       "allowedVersions": "<11.0.0"
     },
     {
-      "description": "Hold @types/node 22.x; @types/node 26 breaks the type-check (missing Array.prototype.at).",
+      "description": "Keep Node types on the supported Node 24 runtime.",
       "matchPackageNames": [
         "@types/node"
       ],
-      "allowedVersions": "<23.0.0"
+      "allowedVersions": "<25.0.0"
     },
     {
-      "description": "Hold @types/multer 1.x until the code is updated for the 2.x types.",
+      "description": "Keep the Multer 2 types used by the integrated upload handlers.",
       "matchPackageNames": [
         "@types/multer"
       ],
-      "allowedVersions": "<2.0.0"
+      "allowedVersions": "<3.0.0"
     },
     {
       "description": "@types/jest 30 removes matchers (e.g. toBeCalled) still used by the tests.",
@@ -160,18 +217,19 @@
       "allowedVersions": "<30.0.0"
     },
     {
-      "description": "@types/supertest 7 rejects how the integration tests pass the test agent around.",
+      "description": "Keep the Supertest 7 types supported by the integrated route tests.",
       "matchPackageNames": [
         "@types/supertest"
       ],
-      "allowedVersions": "<3.0.0"
+      "allowedVersions": "<8.0.0"
     },
     {
-      "description": "Hold @types/chai 4.x until the tests are updated for the 5.x types.",
+      "description": "Keep the Chai 5 types supported by the integrated test tooling.",
       "matchPackageNames": [
         "@types/chai"
       ],
-      "allowedVersions": "<5.0.0"
+      "allowedVersions": "<6.0.0"
     }
-  ]
+  ],
+  "rangeStrategy": "pin"
 }

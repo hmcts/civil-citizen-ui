@@ -8,9 +8,9 @@ import {toCUICaseProgression} from 'services/translation/convertToCUI/convertToC
 jest.mock('../../../../../main/modules/i18n');
 jest.mock('i18next');
 
-const getTranslateMock = t as jest.Mock;
+const getTranslateMock = jest.mocked(t);
 
-getTranslateMock.mockImplementation((key: string[]) => {
+getTranslateMock.mockImplementation((key: string | string[]) => {
   return key.toString();
 });
 

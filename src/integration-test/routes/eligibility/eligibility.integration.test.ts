@@ -1,4 +1,4 @@
-import request, {Response, SuperTest, Test} from 'supertest';
+import request, {Response} from 'supertest';
 process.env.NODE_ENV = 'test';
 import '../../setup/sharedMocks';
 import {app} from '../../../main/app';
@@ -42,7 +42,7 @@ type JourneyStep = {
 
 const NOT_ELIGIBLE_TITLE = 'You can’t use this service';
 
-const postForm = async (agent: SuperTest<Test>, url: string, form: Record<string, string>): Promise<Response> => {
+const postForm = async (agent: ReturnType<typeof request.agent>, url: string, form: Record<string, string>): Promise<Response> => {
   return agent.post(url).send(form);
 };
 
@@ -68,14 +68,14 @@ const decodeEligibilityCookie = (setCookieHeader?: string[]): EligibilityCookie 
   return JSON.parse(withoutJsonPrefix) as EligibilityCookie;
 };
 
-const postStepAndAssertCookie = async (agent: SuperTest<Test>, step: JourneyStep): Promise<void> => {
+const postStepAndAssertCookie = async (agent: ReturnType<typeof request.agent>, step: JourneyStep): Promise<void> => {
   const response = await postForm(agent, step.url, step.form);
   expect(response.status).toBe(302);
   const eligibilityCookie = decodeEligibilityCookie(getSetCookieHeaders(response.header['set-cookie']));
   expect(eligibilityCookie?.[step.cookieKey]).toBe(step.expectedCookieValue);
 };
 
-const runJourney = async (agent: SuperTest<Test>, steps: JourneyStep[]): Promise<void> => {
+const runJourney = async (agent: ReturnType<typeof request.agent>, steps: JourneyStep[]): Promise<void> => {
   for (const step of steps) {
     await postStepAndAssertCookie(agent, step);
   }

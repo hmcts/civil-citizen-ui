@@ -42,7 +42,7 @@ const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServi
 
 jest.mock('uuid', () => ({ v4: () => '1221' }));
 const mockSubmitEvent = civilServiceClient.submitEvent as jest.Mock;
-const mockTranslate = t as jest.Mock;
+const mockTranslate = jest.mocked(t);
 const mockWitnessSummarySection = getWitnessSummarySection as jest.Mock;
 const mockExpertSummarySection = getExpertSummarySection as jest.Mock;
 const mockDisclosureSummarySection = getDisclosureSummarySection as jest.Mock;

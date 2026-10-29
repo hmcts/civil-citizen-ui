@@ -123,7 +123,7 @@ const setupConfig = {
   },
   mocha: {
     reporterOptions: {
-      'codeceptjs-cli-reporter': {
+      [require.resolve('../../../bin/codecept-cli-reporter')]: {
         stdout: '-',
         options: {
           steps: true,

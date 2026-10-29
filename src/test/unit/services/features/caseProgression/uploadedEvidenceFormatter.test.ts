@@ -19,9 +19,9 @@ import {getDocumentTypeToName} from '../../../../utils/caseProgression/mockDocum
 const lang = 'en';
 jest.mock('i18next');
 jest.mock('common/utils/formatDocumentURL');
-const mockTranslate = t as jest.Mock;
+const mockTranslate = jest.mocked(t);
 
-mockTranslate.mockImplementation((key: string[]) => {
+mockTranslate.mockImplementation((key: string | string[]) => {
   return key.toString();
 });
 
