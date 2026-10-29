@@ -20,6 +20,8 @@ describe('functional reporting plugin with the installed CodeceptJS loader', () 
         require('node:net').Socket.prototype.connect = denyNetwork;
         require('node:tls').connect = denyNetwork;
         const {container, event, store} = require(path.join(root, 'node_modules/codeceptjs'));
+        const {createTest} = require(path.join(root, 'node_modules/codeceptjs/lib/mocha/test.js'));
+        const {Suite} = require(path.join(root, 'node_modules/mocha'));
         const {config} = require(path.join(root, 'codecept.conf.js'));
         const pluginName = 'failedAndNotExecutedTestFilesPlugin';
         const plugin = config.plugins[pluginName];
@@ -36,12 +38,31 @@ describe('functional reporting plugin with the installed CodeceptJS loader', () 
             await listeners[0](value);
           };
           const file = name => path.join(root, 'src/test/functionalTests/tests', name + '.js');
+          const scenario = (name, title) => {
+            const test = createTest(title, async () => {});
+            test.file = file(name);
+            test.addToSuite(new Suite('Reporting ' + name));
+            assert.equal(typeof test.uid, 'string');
+            return test;
+          };
+          const failed = scenario('failed', 'fails');
+          const sibling = scenario('failed', 'passes in the same file');
+          const retried = scenario('passed', 'passes after retry');
+          const retry = scenario('passed', 'passes after retry');
+          assert.notEqual(failed.uid, sibling.uid);
+          assert.equal(retried.uid, retry.uid);
           await fs.mkdir('test-results/functional', {recursive: true});
           await config.bootstrapAll();
           await notify(event.all.before, {testFiles: [file('failed'), file('passed'), file('unexecuted')]});
-          await notify(event.test.failed, {file: file('failed'), uuid: 'failed-scenario'});
-          await notify(event.test.failed, {file: file('passed'), uuid: 'retried-scenario'});
-          await notify(event.test.passed, {file: file('passed'), uuid: 'retried-scenario'});
+          await notify(event.test.failed, failed);
+          await notify(event.test.passed, sibling);
+          await notify(event.test.failed, retried);
+          await notify(event.test.passed, retry);
+          // A passing sibling must not erase another scenario's failure; only
+          // a successful retry of that scenario removes its failed record.
+          assert.deepEqual(JSON.parse(await fs.readFile('test-results/functional/tempFailedTests.json', 'utf8')), [
+            {testId: failed.uid, testFile: './src/test/functionalTests/tests/failed.js'},
+          ]);
           await config.teardownAll();
 
           const report = JSON.parse(await fs.readFile('test-results/functional/testFilesReport.json', 'utf8'));
