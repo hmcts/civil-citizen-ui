@@ -6,7 +6,11 @@ describe('auto-upload-file', () => {
   let document: Document;
   let submitted: number;
 
-  function setupDom(saveButtonAttributes = '', uploadSlotsAttributes = '', serverErrors = {summary: '', inline: ''}) {
+  const plainFileInput = '<input type="file" id="selectedFile" name="selectedFile" multiple>';
+  const govukEnhancedFileInput = '<div class="govuk-file-upload-wrapper"><input type="file" id="selectedFile-input" name="selectedFile" multiple>'
+    + '<button type="button" class="govuk-file-upload-button" id="selectedFile">Choose file</button></div>';
+
+  function setupDom(saveButtonAttributes = '', uploadSlotsAttributes = '', serverErrors = {summary: '', inline: ''}, fileInputHtml = plainFileInput) {
     dom = new JSDOM(`<!DOCTYPE html><html><body><main id="main-content">
       <div class="govuk-grid-row">${serverErrors.summary}</div>
       <form>
@@ -16,7 +20,7 @@ describe('auto-upload-file', () => {
               <label for="selectedFile">Upload a file</label>
               ${serverErrors.inline}
               <input type="text" id="typeOfDocument" name="typeOfDocument">
-              <input type="file" id="selectedFile" name="selectedFile" multiple>
+              ${fileInputHtml}
             </div>
             <button class="js-auto-upload-button" name="action" value="uploadButton" ${saveButtonAttributes}>Save file</button>
           </div>
@@ -36,7 +40,7 @@ describe('auto-upload-file', () => {
 
   const saveButton = () => document.querySelector('.js-auto-upload-button');
 
-  const fileInput = () => document.getElementById('selectedFile') as HTMLInputElement;
+  const fileInput = () => document.querySelector('input[type="file"]') as HTMLInputElement;
   const fileProblem = () => document.querySelector('.js-file-problem');
   const fileRules = 'data-file-type-error="Document must be Word, Excel, PowerPoint, PDF" data-file-size-error="Document must be less than 100MB"'
     + ' data-too-many-files-error="You can only upload up to 10 documents at a time"';
@@ -181,6 +185,15 @@ describe('auto-upload-file', () => {
     expect(document.querySelector('.govuk-error-summary__list').textContent.trim()).toBe('Document must be less than 100MB');
     expect(document.querySelectorAll('.govuk-error-message')).toHaveLength(1);
     expect(document.body.textContent).not.toContain('You need to upload at least one file.');
+  });
+
+  it('points the error summary and error message at the GOV.UK choose file button', () => {
+    setupDom(fileRules, '', {summary: '', inline: ''}, govukEnhancedFileInput);
+
+    chooseFiles('notes.foc');
+
+    expect(document.querySelector('.govuk-error-summary__list a').getAttribute('href')).toBe('#selectedFile');
+    expect(document.getElementById('selectedFile').getAttribute('aria-describedby')).toBe(fileProblem().id);
   });
 
   it('uses the translated error summary title from the page', () => {
