@@ -1,182 +1,154 @@
-import {app} from '../../../../../../../main/app';
-import config from 'config';
-import nock from 'nock';
-import request from 'supertest';
-import {GA_RESPONSE_UNAVAILABLE_HEARING_DATES_URL} from 'routes/urls';
-import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
-import {t} from 'i18next';
-import {isGaForLipsEnabled} from '../../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
-import {UnavailableDateType} from 'models/directionsQuestionnaire/hearing/unavailableDates';
-import {CURRENT_DAY, CURRENT_MONTH, CURRENT_YEAR} from '../../../../../../utils/dateUtils';
-import {getUnavailableDatesForHearingForm} from 'services/features/generalApplication/unavailableHearingDatesService';
-import * as utilityService from 'modules/utilityService';
-import {
-  UnavailableDatePeriodGaHearing,
-  UnavailableDatesGaHearing,
-} from 'models/generalApplication/unavailableDatesGaHearing';
-import { Claim } from 'common/models/claim';
-import { ApplicationTypeOption } from 'common/models/generalApplication/applicationType';
-import { GaResponse } from 'common/models/generalApplication/response/gaResponse';
-import { constructResponseUrlWithIdAndAppIdParams } from 'common/utils/urlFormatter';
+import {Response} from 'express';
+import unavailableHearingDatesResponseController from '../../../../../../../main/routes/features/generalApplication/response/unavailableHearingDatesResponseController';
+import {GA_RESPONSE_HEARING_SUPPORT_URL} from 'routes/urls';
+import {Claim} from 'models/claim';
+import {PartyType} from 'models/partyType';
+import {GaResponse} from 'models/generalApplication/response/gaResponse';
+import {ApplicationTypeOption} from 'models/generalApplication/applicationType';
+import {UnavailableDateType} from 'models/generalApplication/unavailableDatesGaHearing';
+import {constructResponseUrlWithIdAndAppIdParams} from 'common/utils/urlFormatter';
+import {getClaimById} from 'modules/utilityService';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import * as gaStoreResponseService from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
+import {createMockResponse, getRouteHandler} from '../../../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../../../main/modules/oidc');
-jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
-jest.mock('../../../../../../../main/modules/utilityService');
-jest.mock('../../../../../../../main/services/features/claim/details/claimDetailsService');
-jest.mock('../../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
-jest.mock('../../../../../../../main/services/features/generalApplication/unavailableHearingDatesService');
-
-jest.mock('../../../../../../../main/services/features/generalApplication/response/generalApplicationResponseStoreService', () => ({
+jest.mock('modules/draft-store/draftStoreService');
+jest.mock('modules/utilityService');
+jest.mock('services/features/generalApplication/response/generalApplicationResponseStoreService', () => ({
   saveDraftGARespondentResponse: jest.fn(),
   getDraftGARespondentResponse: jest.fn(),
 }));
 
-const mockGetClaim = utilityService.getClaimById as jest.Mock;
-const getUnavailableDatesHearingFormMock = getUnavailableDatesForHearingForm as jest.Mock;
-describe('General Application Response- Unavailable hearing dates', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
+describe('General Application Response - Unavailable hearing dates', () => {
+  const getHandler = getRouteHandler(unavailableHearingDatesResponseController, 'get');
+  const postHandler = getRouteHandler(unavailableHearingDatesResponseController, 'post');
+  const viewPath = 'features/generalApplication/unavailable-dates-hearing';
+  const claimId = '12345';
+  const appId = 'GA-1001';
+  let req: {params: {id: string; appId: string}; body: Record<string, unknown>; cookies: {lang: string}; query: Record<string, unknown>};
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
+  let gaResponse: GaResponse;
+  const mockGetClaim = getClaimById as jest.Mock;
+  const mockGetDraft = gaStoreResponseService.getDraftGARespondentResponse as jest.Mock;
+  const mockSaveDraft = gaStoreResponseService.saveDraftGARespondentResponse as jest.Mock;
 
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-    (isGaForLipsEnabled as jest.Mock).mockResolvedValue(true);
+  const buildClaim = (): Claim => {
+    const claim = new Claim();
+    claim.applicant1 = {
+      type: PartyType.INDIVIDUAL,
+      partyDetails: {title: 'Mr', firstName: 'Jan', lastName: 'Clark'},
+    } as Claim['applicant1'];
+    return claim;
+  };
+
+  const futureDate = (): {day: string; month: string; year: string} => {
+    const date = new Date();
+    date.setDate(date.getDate() + 14);
+    return {
+      day: String(date.getDate()),
+      month: String(date.getMonth() + 1),
+      year: String(date.getFullYear()),
+    };
+  };
+
+  const singleDateItem = (start: {day?: string; month?: string; year?: string}) => ({
+    type: UnavailableDateType.SINGLE_DATE,
+    single: {start},
   });
 
   beforeEach(() => {
-    const mockClaim = new Claim();
-    mockClaim.respondentGaAppDetails = [{ generalAppTypes: [ApplicationTypeOption.ADJOURN_HEARING], gaApplicationId: '345', caseState: '', generalAppSubmittedDateGAspec: '' }];
-    mockGetClaim.mockResolvedValueOnce(mockClaim);
-
+    jest.clearAllMocks();
+    req = {params: {id: claimId, appId}, body: {}, cookies: {lang: 'en'}, query: {}};
+    res = createMockResponse();
+    next = jest.fn();
+    gaResponse = new GaResponse();
+    gaResponse.generalApplicationType = [ApplicationTypeOption.ADJOURN_HEARING];
+    (draftStoreService.generateRedisKey as jest.Mock).mockReturnValue(claimId);
+    (draftStoreService.generateRedisKeyForGA as jest.Mock).mockReturnValue('ga-12345');
+    (draftStoreService.getCaseDataFromStore as jest.Mock).mockResolvedValue(buildClaim());
+    (draftStoreService.saveDraftClaim as jest.Mock).mockResolvedValue(undefined);
+    mockGetClaim.mockResolvedValue(buildClaim());
+    mockGetDraft.mockResolvedValue(gaResponse);
+    mockSaveDraft.mockResolvedValue(undefined);
   });
+
   describe('on GET', () => {
-    it('should return page', async () => {
-      const mockGaResponse = new GaResponse();
-      mockGaResponse.generalApplicationType = [ApplicationTypeOption.ADJOURN_HEARING];
-      jest.spyOn(gaStoreResponseService, 'getDraftGARespondentResponse').mockResolvedValueOnce(mockGaResponse);
-      await request(app)
-        .get(constructResponseUrlWithIdAndAppIdParams('123', '345',GA_RESPONSE_UNAVAILABLE_HEARING_DATES_URL))
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.UNAVAILABLE_HEARING_DATES.TITLE'));
-        });
+    it('should render the unavailable dates page', async () => {
+      await getHandler(req as never, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        form: expect.anything(),
+      }));
+      expect(next).not.toHaveBeenCalled();
     });
 
-    it('should return http 500 when has error in the get method', async () => {
-      jest.spyOn(gaStoreResponseService, 'getDraftGARespondentResponse').mockRejectedValueOnce(new Error(TestMessages.SOMETHING_WENT_WRONG));
-      await request(app)
-        .get(GA_RESPONSE_UNAVAILABLE_HEARING_DATES_URL)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+    it('should call next when loading the response fails', async () => {
+      const error = new Error('redis failure');
+      mockGetDraft.mockRejectedValue(error);
+
+      await getHandler(req as never, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 
   describe('on POST', () => {
-    it('should send the value and redirect', async () => {
-      getUnavailableDatesHearingFormMock.mockImplementation(() => {
-        return new UnavailableDatesGaHearing(
-          [new UnavailableDatePeriodGaHearing(UnavailableDateType.SINGLE_DATE,
-            {'day': CURRENT_DAY.toString(), 'month': CURRENT_MONTH.toString(), 'year': CURRENT_YEAR.toString()})],
-        );
-      });
-      const mockGaResponse = new GaResponse();
-      mockGaResponse.generalApplicationType = [ApplicationTypeOption.ADJOURN_HEARING];
-      jest.spyOn(gaStoreResponseService, 'getDraftGARespondentResponse').mockResolvedValue(mockGaResponse);
-      await request(app)
-        .post(GA_RESPONSE_UNAVAILABLE_HEARING_DATES_URL)
-        .send()
-        .expect((res) => {
-          expect(res.status).toBe(302);
-        });
+    it('should save and redirect when a single date is provided', async () => {
+      req.body = {items: [singleDateItem(futureDate())]};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(gaResponse.unavailableDatesHearing?.items).toHaveLength(1);
+      expect(res.redirect).toHaveBeenCalledWith(
+        constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_RESPONSE_HEARING_SUPPORT_URL),
+      );
     });
 
-    it('should return errors when no information is provided', async () => {
-      getUnavailableDatesHearingFormMock.mockImplementation(() => {
-        return new UnavailableDatesGaHearing(
-          [new UnavailableDatePeriodGaHearing(undefined,
-            {'day': undefined, 'month': undefined, 'year': undefined})],
-        );
-      });
-      const mockGaResponse = new GaResponse();
-      mockGaResponse.generalApplicationType = [ApplicationTypeOption.ADJOURN_HEARING];
-      jest.spyOn(gaStoreResponseService, 'getDraftGARespondentResponse').mockResolvedValue(mockGaResponse);
-      await request(app)
-        .post(GA_RESPONSE_UNAVAILABLE_HEARING_DATES_URL)
-        .send()
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.SELECT_SINGLE_DATE_OR_PERIOD'));
-        });
+    it('should re-render when no date type is selected', async () => {
+      req.body = {items: [{}]};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
+      expect(mockSaveDraft).not.toHaveBeenCalled();
     });
 
-    it('should send action add_another-unavailableDates', async () => {
-      getUnavailableDatesHearingFormMock.mockImplementation(() => {
-        return new UnavailableDatesGaHearing(
-          [new UnavailableDatePeriodGaHearing(UnavailableDateType.SINGLE_DATE,
-            {'day': CURRENT_DAY.toString(), 'month': CURRENT_MONTH.toString(), 'year': CURRENT_YEAR.toString()})],
-        );
-      });
-      const mockGaResponse = new GaResponse();
-      mockGaResponse.generalApplicationType = [ApplicationTypeOption.ADJOURN_HEARING];
-      jest.spyOn(gaStoreResponseService, 'getDraftGARespondentResponse').mockResolvedValue(mockGaResponse);
-      await request(app)
-        .post(GA_RESPONSE_UNAVAILABLE_HEARING_DATES_URL)
-        .send({'action': 'add_another-unavailableDates'})
-        .expect((res) => {
-          expect(res.status).toBe(200);
-        });
+    it('should re-render with an extra row when add another is selected', async () => {
+      req.body = {action: 'add_another-unavailableDates', items: [singleDateItem(futureDate())]};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect((res.render as jest.Mock).mock.calls[0][1].form.model.items).toHaveLength(2);
+      expect(res.redirect).not.toHaveBeenCalled();
     });
 
-    it('should send action remove-unavailableDates', async () => {
-      getUnavailableDatesHearingFormMock.mockImplementation(() => {
-        return new UnavailableDatesGaHearing(
-          [new UnavailableDatePeriodGaHearing(UnavailableDateType.SINGLE_DATE,
-            {'day': CURRENT_DAY.toString(), 'month': CURRENT_MONTH.toString(), 'year': CURRENT_YEAR.toString()})],
-        );
-      });
-      const mockGaResponse = new GaResponse();
-      mockGaResponse.generalApplicationType = [ApplicationTypeOption.ADJOURN_HEARING];
-      jest.spyOn(gaStoreResponseService, 'getDraftGARespondentResponse').mockResolvedValue(mockGaResponse);
-      await request(app)
-        .post(GA_RESPONSE_UNAVAILABLE_HEARING_DATES_URL)
-        .send({'action': 'remove-unavailableDates'})
-        .expect((res) => {
-          expect(res.status).toBe(200);
-        });
+    it('should re-render without the removed date', async () => {
+      req.body = {action: 'remove-unavailableDates', items: [singleDateItem(futureDate())]};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect((res.render as jest.Mock).mock.calls[0][1].form.model.items).toHaveLength(0);
+      expect(res.redirect).not.toHaveBeenCalled();
     });
 
-    it('should return errors on box selected but date input incomplete', async () => {
-      getUnavailableDatesHearingFormMock.mockImplementation(() => {
-        return new UnavailableDatesGaHearing(
-          [new UnavailableDatePeriodGaHearing(UnavailableDateType.SINGLE_DATE,
-            {'month': CURRENT_MONTH.toString(), 'year': CURRENT_YEAR.toString()})],
-        );
-      });
-      const mockGaResponse = new GaResponse();
-      mockGaResponse.generalApplicationType = [ApplicationTypeOption.ADJOURN_HEARING];
-      jest.spyOn(gaStoreResponseService, 'getDraftGARespondentResponse').mockResolvedValue(mockGaResponse);
-      await request(app)
-        .post(constructResponseUrlWithIdAndAppIdParams('123', '345',GA_RESPONSE_UNAVAILABLE_HEARING_DATES_URL))
-        .send()
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.VALID_DAY'));
-        });
+    it('should re-render when the single date is incomplete', async () => {
+      const {month, year} = futureDate();
+      req.body = {items: [singleDateItem({month, year})]};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
+      expect(mockSaveDraft).not.toHaveBeenCalled();
     });
 
-    it('should return http 500 when has error in the post method', async () => {
-      jest.spyOn(gaStoreResponseService, 'getDraftGARespondentResponse').mockRejectedValue(new Error(TestMessages.SOMETHING_WENT_WRONG));
-      await request(app)
-        .post(GA_RESPONSE_UNAVAILABLE_HEARING_DATES_URL)
-        .send()
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+    it('should call next when loading the response fails', async () => {
+      const error = new Error('redis failure');
+      mockGetDraft.mockRejectedValue(error);
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 });
