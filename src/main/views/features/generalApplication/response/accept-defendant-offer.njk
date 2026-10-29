@@ -30,7 +30,7 @@
         text: "£"
       },
       classes: "govuk-!-width-one-half",
-      value: '' + form.model.amountPerMonth,
+      value: form.model.amountPerMonth | default(''),
       errorMessage: {
         text:  t(form.errorFor('amountPerMonth'))
       } if form.hasFieldError('amountPerMonth')
@@ -50,6 +50,11 @@
     }) }}
   {% endset %}
 
+  {% set proposedDateErrorHtml %}
+    {% for field in ['proposedSetDate', 'day', 'month', 'year'] %}
+      {% if form.hasFieldError(field) %}{{ t(form.errorFor(field)) }}<br>{% endif %}
+    {% endfor %}
+  {% endset %}
   {% set bySetDateHtml %}
     <h3 class="govuk-heading-s govuk-!-margin-bottom-1">{{ t('PAGES.GENERAL_APPLICATION.ACCEPT_DEFENDANT_OFFER.PROPOSED_SET_DATE') }}</h3>
     {{ govukDateInput({
@@ -69,11 +74,8 @@
         })
       },
       errorMessage: {
-        html: '<p class="govuk-error-message">' + t(form.errorFor('proposedSetDate')) + '</p>' +
-        '<p class="govuk-error-message">' + t(form.errorFor('day')) + '</p>' +
-        '<p class="govuk-error-message">' + t(form.errorFor('month')) + '</p>' +
-        '<p class="govuk-error-message">' + t(form.errorFor('year')) + '</p>'
-      } if (form.hasFieldError('proposedSetDate') or form.hasFieldError('day') or form.hasFieldError('month') or form.hasFieldError('year')),
+        html: proposedDateErrorHtml
+      } if proposedDateErrorHtml | trim,
       items: [
         {
           classes: "govuk-input--width-2 govuk-input--error" if form.hasFieldError('day') else "govuk-input--width-2",

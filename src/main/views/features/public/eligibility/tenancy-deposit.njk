@@ -21,12 +21,7 @@
           <h1 class="govuk-heading-l">{{t('PAGES.TENANCY_DEPOSIT.TITLE')}}</h1>
           <form method="post" novalidate>
             {{ csrfProtection(csrf) }}
-             <fieldset class="govuk-fieldset">
-                <legend class="govuk-visually-hidden">
-                 {{ t('PAGES.TENANCY_DEPOSIT.TITLE') }}
-                </legend>
-            {{ yesNoRadioButton(t, 'option', 'option', '', form, '', {yes: 'COMMON.VARIATION_4.YES', no: 'COMMON.VARIATION_4.NO', classes: 'govuk-radios--inline'}) }}
-            </fieldset>
+             {{ yesNoRadioButton(t, 'option', 'option', t('PAGES.TENANCY_DEPOSIT.TITLE'), form, '', {yes: 'COMMON.VARIATION_4.YES', no: 'COMMON.VARIATION_4.NO', classes: 'govuk-radios--inline', isPageHeading: false, legendClasses: 'govuk-visually-hidden'}) }}
             <div class="govuk-form-group">
               {{ govukButton({
                 text: t('COMMON.BUTTONS.SAVE_AND_CONTINUE'),
