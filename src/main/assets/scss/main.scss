@@ -539,3 +539,8 @@
     display: none;
   }
 }
+
+// Synthetic catalogue descriptions include long scenario identifiers.
+.ui-preview-catalogue {
+  overflow-wrap: anywhere;
+}

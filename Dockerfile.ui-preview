@@ -1,0 +1,15 @@
+# Preview-only image. Building/pulling requires the operator's explicit network permission.
+FROM node:24.21.0-alpine AS build
+WORKDIR /app
+ENV YARN_ENABLE_SCRIPTS=0 YARN_ENABLE_TELEMETRY=0 PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 PUPPETEER_SKIP_DOWNLOAD=1
+COPY . .
+RUN node .yarn/releases/yarn-4.18.1.cjs install --immutable --mode=skip-build \
+    && node .yarn/releases/yarn-4.18.1.cjs build:prod
+FROM node:24.21.0-alpine
+WORKDIR /app
+COPY --from=build --chown=node:node /app /app
+USER node
+ENV NODE_ENV=e2eTest UI_PREVIEW_ENABLED=true UI_PREVIEW_CONTAINER=true PORT=3001 \
+    NODE_OPTIONS=--require=/app/bin/ui-preview-network.cjs
+EXPOSE 3001
+CMD ["node", "bin/ui-preview-container.cjs"]

@@ -1,4 +1,5 @@
 import config from 'config';
+import {isUiPreviewEnabled} from 'common/utils/uiPreviewConfig';
 
 const appInsights = require('applicationinsights');
 const {Logger} = require('@hmcts/nodejs-logging');
@@ -24,6 +25,7 @@ export function toConnectionString(value: string): string {
 
 export class AppInsights {
   enable(): void {
+    if (isUiPreviewEnabled()) return;
     const instrumentationKey = config.get<string>('appInsights.instrumentationKey');
     if (instrumentationKey) {
       // SDK 3.x: all client config must be applied before start().
