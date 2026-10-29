@@ -38,6 +38,8 @@ Do not import `src/main/app` from a unit test unless the unit under test is the 
 
 An integration test proves that routing, middleware, Nunjucks and guards work together for a journey.
 
+The route Jest configuration also sets `TZ=UTC`. Keep saved-date reconstruction and partial/invalid POST redisplay assertions separate; a stable test timezone does not establish the production host timezone.
+
 Reference: `src/integration-test/routes/eligibility/eligibility.integration.test.ts`.
 
 Keep these tests journey-shaped: happy path plus one validation, redirect or error case. Do not recreate a unit test per field.
