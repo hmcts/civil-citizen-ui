@@ -9,7 +9,9 @@ import {
   isGaForLipsEnabled,
   isQueryManagementEnabled, isWelshEnabledForMainCase,
   isJudgmentBufferEnabled,
+  isBreathingSpaceEnabled,
 } from '../../../app/auth/launchdarkly/launchDarklyClient';
+import {buildDefendantBreathingSpaceNotification} from 'services/dashboard/breathingSpaceDashboardNotification';
 import {
   getCaseProgressionLatestUpdates,
 } from 'services/features/dashboard/claimSummary/latestUpdate/caseProgression/caseProgressionLatestUpdateService';
@@ -63,6 +65,11 @@ claimSummaryController.get(DEFENDANT_SUMMARY_URL, (async (req: AppRequest, res: 
       const isCarmApplicable = isCarmApplicableAndSmallClaim(carmEnabled, claim);
       const totalAmountWithInterestAndFees = (await getTotalAmountWithInterestAndFees(claim, req)).toString();
       const dashboardNotifications = await getNotifications(claimId, claim, totalAmountWithInterestAndFees, caseRole, req as AppRequest, lang);
+      if (await isBreathingSpaceEnabled()
+        && caseRole === ClaimantOrDefendant.DEFENDANT
+        && claim.hasBreathingSpace()) {
+        dashboardNotifications.items.unshift(buildDefendantBreathingSpaceNotification());
+      }
       claim.orderDocumentId = extractOrderDocumentIdFromNotification(dashboardNotifications);
       const dashboardTaskList = await getDashboardForm(caseRole, claim, totalAmountWithInterestAndFees, claimId, req as AppRequest, isCarmApplicable, isGAFlagEnable);
       const [iWantToTitle, iWantToLinks, helpSupportTitle, helpSupportLinks] = await getSupportLinks(req, claim, lang, claimId, isGAFlagEnable);
