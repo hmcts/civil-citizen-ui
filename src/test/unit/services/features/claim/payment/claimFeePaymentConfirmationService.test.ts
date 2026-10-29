@@ -164,4 +164,21 @@ describe('Claim Fee PaymentConfirmation Service', () => {
     expect(actualPaymentRedirectUrl).toBe(`${PAY_CLAIM_FEE_SUCCESSFUL_URL}?lang=en`);
   });
 
+  it.each(['', '   ', 'undefined', 'null'])(
+    'should not request payment status for unusable reference %p',
+    async (paymentReference) => {
+      const req = createReq();
+      const claim = createClaim();
+      claim.claimDetails.claimFeePayment.paymentReference = paymentReference;
+      mockDraft(claim);
+
+      expect(await getRedirectUrl(claimId, req)).toBe(PAY_CLAIM_FEE_UNSUCCESSFUL_URL);
+      expect(mockGetClaimIssuePaymentClaim).toHaveBeenCalledWith(req);
+      expect(mockGetFeePaymentStatus).not.toHaveBeenCalled();
+      expect(mockDeleteDraftClaim).not.toHaveBeenCalled();
+      expect(mockDeleteDraftClaimFromStore).not.toHaveBeenCalled();
+      expect(req.session.draftId).toBe(draftId);
+    },
+  );
+
 });
