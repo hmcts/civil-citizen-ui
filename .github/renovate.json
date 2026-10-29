@@ -8,8 +8,16 @@
     "dependencies",
     "pr-values:elasticsearch"
   ],
-  "automergeSchedule": ["after 8am and before 4pm every weekday"],
-  "schedule": ["after 8am and before 12am every weekday"],
+  "timezone": "Europe/London",
+  "automergeSchedule": [
+    "after 7am and before 8am every weekday",
+    "after 6pm and before 8pm every weekday"
+  ],
+  "platformAutomerge": false,
+  "schedule": [
+    "after 7am and before 8am every weekday",
+    "after 6pm and before 8pm every weekday"
+  ],
   "rebaseWhen": "behind-base-branch",
   "automergeStrategy": "squash",
   "prConcurrentLimit": 5,
@@ -28,62 +36,142 @@
   ],
   "packageRules": [
     {
-      "matchUpdateTypes": ["minor", "patch"],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
       "groupName": "All non-major updates",
       "groupSlug": "all-non-major",
       "automerge": true,
-      "automergeType": "pr",
-      "automergeSchedule": ["before 4pm every weekday"]
+      "automergeType": "pr"
     },
     {
-      "matchManagers": ["helmv3"],
+      "matchManagers": [
+        "helmv3"
+      ],
       "groupName": "Helm chart updates",
       "groupSlug": "helm-charts",
       "automerge": true,
-      "automergeType": "pr",
-      "automergeSchedule": ["before 4pm every weekday"]
+      "automergeType": "pr"
     },
     {
-      "matchManagers": ["dockerfile"],
+      "matchManagers": [
+        "dockerfile"
+      ],
       "groupName": "Dockerfile updates",
       "groupSlug": "dockerfile",
       "automerge": true,
-      "automergeType": "pr",
-      "automergeSchedule": ["before 4pm every weekday"]
+      "automergeType": "pr"
     },
     {
-      "matchPackageNames": ["@playwright/test", "playwright-core", "@axe-core/playwright"],
+      "matchPackageNames": [
+        "@playwright/test",
+        "playwright-core",
+        "@axe-core/playwright"
+      ],
       "groupName": "Playwright",
       "groupSlug": "playwright",
       "automerge": true,
-      "automergeType": "pr",
-      "automergeSchedule": ["before 4pm every weekday"]
+      "automergeType": "pr"
     },
     {
-      "matchPackagePatterns": ["^allure-"],
+      "matchPackagePatterns": [
+        "^allure-"
+      ],
       "groupName": "Allure reporting",
       "groupSlug": "allure",
       "automerge": true,
-      "automergeType": "pr",
-      "automergeSchedule": ["before 4pm every weekday"]
+      "automergeType": "pr"
     },
     {
-      "matchPackageNames": ["eslint", "typescript-eslint"],
-      "matchPackagePatterns": ["^@eslint/", "^@typescript-eslint/", "^eslint-"],
+      "matchPackageNames": [
+        "eslint",
+        "typescript-eslint"
+      ],
+      "matchPackagePatterns": [
+        "^@eslint/",
+        "^@typescript-eslint/",
+        "^eslint-"
+      ],
       "groupName": "ESLint",
       "groupSlug": "eslint",
       "automerge": true,
-      "automergeType": "pr",
-      "automergeSchedule": ["before 4pm every weekday"]
+      "automergeType": "pr"
     },
     {
-      "matchPackageNames": ["typescript"],
-      "matchPackagePatterns": ["^@types/"],
+      "matchPackageNames": [
+        "typescript"
+      ],
+      "matchPackagePatterns": [
+        "^@types/"
+      ],
       "groupName": "TypeScript",
       "groupSlug": "typescript",
       "automerge": true,
-      "automergeType": "pr",
-      "automergeSchedule": ["before 4pm every weekday"]
+      "automergeType": "pr"
+    },
+    {
+      "description": "typescript-eslint 8 only supports TypeScript <6.1.0. Remove once typescript-eslint supports TypeScript 7.",
+      "matchPackageNames": [
+        "typescript"
+      ],
+      "allowedVersions": "<6.1.0"
+    },
+    {
+      "description": "@types/config 4 is an empty stub package (types ship with config itself).",
+      "matchPackageNames": [
+        "@types/config"
+      ],
+      "allowedVersions": "<4.0.0"
+    },
+    {
+      "description": "@types/glob 9 is an empty stub package (types ship with glob itself).",
+      "matchPackageNames": [
+        "@types/glob"
+      ],
+      "allowedVersions": "<9.0.0"
+    },
+    {
+      "description": "@types/uuid 11 is an empty stub package (types ship with uuid itself).",
+      "matchPackageNames": [
+        "@types/uuid"
+      ],
+      "allowedVersions": "<11.0.0"
+    },
+    {
+      "description": "Hold @types/node 22.x; @types/node 26 breaks the type-check (missing Array.prototype.at).",
+      "matchPackageNames": [
+        "@types/node"
+      ],
+      "allowedVersions": "<23.0.0"
+    },
+    {
+      "description": "Hold @types/multer 1.x until the code is updated for the 2.x types.",
+      "matchPackageNames": [
+        "@types/multer"
+      ],
+      "allowedVersions": "<2.0.0"
+    },
+    {
+      "description": "@types/jest 30 removes matchers (e.g. toBeCalled) still used by the tests.",
+      "matchPackageNames": [
+        "@types/jest"
+      ],
+      "allowedVersions": "<30.0.0"
+    },
+    {
+      "description": "@types/supertest 7 rejects how the integration tests pass the test agent around.",
+      "matchPackageNames": [
+        "@types/supertest"
+      ],
+      "allowedVersions": "<3.0.0"
+    },
+    {
+      "description": "Hold @types/chai 4.x until the tests are updated for the 5.x types.",
+      "matchPackageNames": [
+        "@types/chai"
+      ],
+      "allowedVersions": "<5.0.0"
     }
   ]
 }

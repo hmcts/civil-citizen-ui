@@ -1,223 +1,194 @@
-import { app } from '../../../../../../main/app';
-import config from 'config';
-import nock from 'nock';
-import request from 'supertest';
-import {
-  GA_APPLICATION_SUBMITTED_URL,
-  GA_CHECK_ANSWERS_URL,
-  GENERAL_APPLICATION_CONFIRM_URL,
-} from 'routes/urls';
-import { TestMessages } from '../../../../../utils/errorMessageTestConstants';
-import { t } from 'i18next';
-import { GeneralApplication } from 'models/generalApplication/GeneralApplication';
-import {
-  ApplicationType,
-  ApplicationTypeOption,
-} from 'models/generalApplication/applicationType';
-import { Claim } from 'common/models/claim';
-import {
-  getCaseDataFromStore,
-  saveDraftClaim,
-} from 'modules/draft-store/draftStoreService';
-import * as launchDarkly from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
-import { getSummarySections } from 'services/features/generalApplication/checkAnswers/checkAnswersService';
-import { CaseProgressionHearing } from 'models/caseProgression/caseProgressionHearing';
-import { submitApplication } from 'services/features/generalApplication/submitApplication';
-import { YesNo } from 'form/models/yesNo';
+import {Response} from 'express';
+import i18next from 'i18next';
+import en from 'modules/i18n/locales/en.json';
+import {Claim} from 'common/models/claim';
+import {GeneralApplication} from 'models/generalApplication/GeneralApplication';
+import {ApplicationType, ApplicationTypeOption} from 'models/generalApplication/applicationType';
+import {CaseProgressionHearing} from 'models/caseProgression/caseProgressionHearing';
 import {Party} from 'models/party';
 import {PartyType} from 'models/partyType';
 import {CaseRole} from 'form/models/caseRoles';
+import {YesNo} from 'form/models/yesNo';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {getClaimById} from 'modules/utilityService';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {submitApplication} from 'services/features/generalApplication/submitApplication';
+import {
+  GA_APPLICATION_SUBMITTED_URL,
+  GENERAL_APPLICATION_CONFIRM_URL,
+} from 'routes/urls';
+import gaCheckAnswersController from '../../../../../../main/routes/features/generalApplication/checkAnswersController';
+import {createMockResponse, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
-jest.mock('../../../../../../main/services/features/generalApplication/checkAnswers/checkAnswersService');
-jest.mock('../../../../../../main/services/features/generalApplication/submitApplication');
-jest.mock('../../../../../../main/modules/draft-store');
-jest.mock('../../../../../../main/routes/guards/checkYourAnswersGAGuard', () => ({
-  checkYourAnswersGAGuard: jest.fn((req, res, next) => next()),
+jest.mock('modules/draft-store/draftStoreService');
+jest.mock('modules/utilityService', () => ({
+  getClaimById: jest.fn(),
 }));
-jest.mock('../../../../../../main/routes/guards/generalAplicationGuard',() => ({
-  isGAForLiPEnabled: jest.fn((req, res, next) => {
-    next();
-  }),
+jest.mock('services/features/generalApplication/submitApplication');
+jest.mock('services/features/generalApplication/response/generalApplicationResponseStoreService', () => ({
+  getDraftGARespondentResponse: jest.fn(),
+  saveDraftGARespondentResponse: jest.fn(),
 }));
 
-const mockGetCaseData = getCaseDataFromStore as jest.Mock;
-const mockSaveCaseData = saveDraftClaim as jest.Mock;
-const mockedSummaryRows = getSummarySections as jest.Mock;
+const mockGetClaimById = getClaimById as jest.Mock;
 const mockSubmitApplication = submitApplication as jest.Mock;
 
-const mockClaim = new Claim();
-mockClaim.generalApplication = new GeneralApplication(new ApplicationType(ApplicationTypeOption.ADJOURN_HEARING));
-
 describe('General Application - Check your answers', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-    jest.spyOn(launchDarkly, 'isGaForLipsEnabled').mockResolvedValue(true);
+  const getHandler = getRouteHandler(gaCheckAnswersController, 'get');
+  const postHandler = getRouteHandler(gaCheckAnswersController, 'post');
+  const viewPath = 'features/generalApplication/check-answers';
+  const claimId = '12345';
+  let req: {params: {id: string}; body: Record<string, unknown>; query: Record<string, unknown>; cookies: Record<string, unknown>};
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
+
+  const buildClaim = (): Claim => {
+    const claim = new Claim();
+    claim.generalApplication = new GeneralApplication(new ApplicationType(ApplicationTypeOption.ADJOURN_HEARING));
+    claim.generalApplication.applicationFee = {calculatedAmountInPence: 25000} as Claim['generalApplication']['applicationFee'];
+    claim.generalApplication.hasUnavailableDatesHearing = YesNo.NO;
+    return claim;
+  };
+
+  const confirmUrl = (applicationId: string): string =>
+    `${constructResponseUrlWithIdParams(claimId, GENERAL_APPLICATION_CONFIRM_URL)}?appFee=250&id=${applicationId}`;
+
+  beforeAll(async () => {
+    await i18next.init({lng: 'en', fallbackLng: 'en', resources: {en: {translation: en}}});
+  });
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+    req = {params: {id: claimId}, body: {}, query: {}, cookies: {lang: 'en'}};
+    res = createMockResponse();
+    next = jest.fn();
+    const claim = buildClaim();
+    mockGetClaimById.mockResolvedValue(claim);
+    (draftStoreService.generateRedisKey as jest.Mock).mockReturnValue(claimId);
+    (draftStoreService.getCaseDataFromStore as jest.Mock).mockResolvedValue(claim);
+    (draftStoreService.saveDraftClaim as jest.Mock).mockResolvedValue(undefined);
+    (draftStoreService.deleteDraftClaimFromStore as jest.Mock).mockResolvedValue(undefined);
+    mockSubmitApplication.mockResolvedValue({generalApplications: [{id: '123456'}]});
   });
 
   describe('on GET', () => {
-    it('should return Check your answers page', async () => {
-      mockGetCaseData.mockImplementation(async () => mockClaim);
-      mockedSummaryRows.mockImplementation(() => []);
-      await request(app)
-        .get(GA_CHECK_ANSWERS_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('PAGES.CHECK_YOUR_ANSWER.TITLE'));
-        });
+    it('should render the check your answers page', async () => {
+      await getHandler(req as never, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        claimIdPrettified: expect.any(String),
+      }));
+      expect(next).not.toHaveBeenCalled();
     });
 
-    it('should return http 500 when has error in the get method', async () => {
-      mockGetCaseData.mockImplementation(() => {
-        throw new Error(TestMessages.REDIS_FAILURE);
-      });
-      await request(app)
-        .get(GA_CHECK_ANSWERS_URL)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+    it('should call next when loading the claim fails', async () => {
+      const error = new Error('redis failure');
+      mockGetClaimById.mockRejectedValue(error);
+
+      await getHandler(req as never, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 
   describe('on POST', () => {
-    it('should send the value and redirect', async () => {
-      mockGetCaseData.mockImplementation(async () => mockClaim);
-      mockSubmitApplication.mockImplementation(() => mockClaim);
-      await request(app)
-        .post(GA_CHECK_ANSWERS_URL)
-        .send({signed: 'yes', name: 'Mr Applicant'})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-        });
+    it('should re-render when the statement of truth is incomplete', async () => {
+      req.body = {signed: null, name: null};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.any(Object));
+      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
+      expect(mockSubmitApplication).not.toHaveBeenCalled();
     });
 
-    it('should send the value and redirect with title if business', async () => {
-      const claim = new Claim();
+    it('should submit and redirect to the confirmation page', async () => {
+      req.body = {signed: 'yes', name: 'Mr Applicant'};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(mockSubmitApplication).toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(confirmUrl('123456'));
+    });
+
+    it('should submit a business statement of truth that includes a title', async () => {
+      const claim = buildClaim();
+      claim.caseRole = CaseRole.CLAIMANT;
       claim.applicant1 = new Party();
       claim.applicant1.type = PartyType.ORGANISATION;
-      claim.caseRole = CaseRole.APPLICANTSOLICITORONE;
-      claim.generalApplication = new GeneralApplication(new ApplicationType(ApplicationTypeOption.ADJOURN_HEARING));
-      mockGetCaseData.mockImplementation(async () => mockClaim);
-      mockSubmitApplication.mockImplementation(() => mockClaim);
-      await request(app)
-        .post(GA_CHECK_ANSWERS_URL)
-        .send({signed: 'yes', name: 'Mr Applicant', title: 'director'})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-        });
+      mockGetClaimById.mockResolvedValue(claim);
+      (draftStoreService.getCaseDataFromStore as jest.Mock).mockResolvedValue(claim);
+      req.body = {signed: 'yes', name: 'Mr Applicant', title: 'director'};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(res.redirect).toHaveBeenCalledWith(confirmUrl('123456'));
+      expect(claim.generalApplication.statementOfTruth).toEqual(expect.objectContaining({
+        name: 'Mr Applicant',
+        title: 'director',
+      }));
     });
 
-    it('should redirect to submitted page if adjourn hearing and more than 14 days and with consent', async () => {
-      const now = new Date();
-      const futureDate = new Date(now);
-      futureDate.setDate(now.getDate() + 16);
-      mockClaim.caseProgressionHearing = new CaseProgressionHearing();
-      mockClaim.caseProgressionHearing.hearingDate = futureDate;
-      mockClaim.generalApplication.agreementFromOtherParty = YesNo.YES;
-      mockGetCaseData.mockImplementation(async () => mockClaim);
-      await request(app)
-        .post(GA_CHECK_ANSWERS_URL)
-        .send({signed: 'yes', name: 'Mr Applicant'})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toBe(GA_APPLICATION_SUBMITTED_URL);
-        });
+    it('should redirect to the submitted page when an adjournment is with consent and the hearing is more than 14 days away', async () => {
+      const claim = buildClaim();
+      const hearingDate = new Date();
+      hearingDate.setDate(hearingDate.getDate() + 16);
+      claim.caseProgressionHearing = new CaseProgressionHearing();
+      claim.caseProgressionHearing.hearingDate = hearingDate;
+      claim.generalApplication.agreementFromOtherParty = YesNo.YES;
+      mockGetClaimById.mockResolvedValue(claim);
+      (draftStoreService.getCaseDataFromStore as jest.Mock).mockResolvedValue(claim);
+      req.body = {signed: 'yes', name: 'Mr Applicant'};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, GA_APPLICATION_SUBMITTED_URL));
     });
 
-    it('should redirect to confirmation page if adjourn hearing and more than 14 days but not with consent', async () => {
-      const now = new Date();
-      const futureDate = new Date(now);
-      futureDate.setDate(now.getDate() + 16);
-      mockClaim.caseProgressionHearing = new CaseProgressionHearing();
-      mockClaim.caseProgressionHearing.hearingDate = futureDate;
-      mockClaim.generalApplication = new GeneralApplication();
-      mockClaim.generalApplication.applicationFee = {
-        calculatedAmountInPence: 25000,
-      };
-      mockClaim.generalApplication.agreementFromOtherParty = YesNo.NO;
-      mockGetCaseData.mockImplementation(async () => mockClaim);
-      mockSubmitApplication.mockResolvedValueOnce({generalApplications: [{id: '123456', value: {gaApp: 'yes'}}]});
-      await request(app)
-        .post(GA_CHECK_ANSWERS_URL)
-        .send({signed: 'yes', name: 'Mr Applicant'})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toBe(GENERAL_APPLICATION_CONFIRM_URL + '?appFee=250&id=123456');
-        });
+    it('should redirect to the confirmation page when an adjournment is not with consent', async () => {
+      const claim = buildClaim();
+      const hearingDate = new Date();
+      hearingDate.setDate(hearingDate.getDate() + 16);
+      claim.caseProgressionHearing = new CaseProgressionHearing();
+      claim.caseProgressionHearing.hearingDate = hearingDate;
+      claim.generalApplication.agreementFromOtherParty = YesNo.NO;
+      mockGetClaimById.mockResolvedValue(claim);
+      (draftStoreService.getCaseDataFromStore as jest.Mock).mockResolvedValue(claim);
+      req.body = {signed: 'yes', name: 'Mr Applicant'};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(res.redirect).toHaveBeenCalledWith(confirmUrl('123456'));
     });
 
-    it('should show error message if statement of truth not completed', async () => {
-      mockGetCaseData.mockImplementation(async () => mockClaim);
-      await request(app)
-        .post(GA_CHECK_ANSWERS_URL)
-        .send({signed: null, name: null})
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.STATEMENT_OF_TRUTH_REQUIRED_MESSAGE'));
-          expect(res.text).toContain(t('ERRORS.SIGNER_NAME_REQUIRED'));
-        });
-    });
-
-    it('should add the id in the url of the ga application', async () => {
-      const claim = new Claim();
-      claim.generalApplication = new GeneralApplication();
-      claim.generalApplication.applicationFee = {
-        calculatedAmountInPence: 25000,
-      };
-      mockGetCaseData.mockImplementation(async () => claim);
-      mockSubmitApplication.mockResolvedValueOnce({generalApplications: [{id: '123456', value: {gaApp: 'yes'}}]});
-      await request(app)
-        .post(GA_CHECK_ANSWERS_URL)
-        .send({signed: 'yes', name: 'Mr Applicant'})
-        .expect((res) => {
-          expect(res.header.location).toBe(GENERAL_APPLICATION_CONFIRM_URL + '?appFee=250&id=123456');
-          expect(res.status).toBe(302);
-        });
-    });
-
-    it('should submit a valid multi-application GA from index 2', async () => {
-      const claim = new Claim();
-      claim.generalApplication = new GeneralApplication();
+    it('should use the last application id when several applications are submitted', async () => {
+      const claim = buildClaim();
       claim.generalApplication.applicationTypes = [
         new ApplicationType(ApplicationTypeOption.EXTEND_TIME),
         new ApplicationType(ApplicationTypeOption.STRIKE_OUT),
         new ApplicationType(ApplicationTypeOption.OTHER),
       ];
-      claim.generalApplication.applicationFee = {
-        calculatedAmountInPence: 25000,
-      };
-      mockGetCaseData.mockImplementation(async () => claim);
-      mockSaveCaseData.mockResolvedValue(undefined);
-      mockSubmitApplication.mockResolvedValueOnce({generalApplications: [{id: '123454', value: {gaApp: 'yes'}}, {id: '123455', value: {gaApp: 'yes'}}, {id: '123456', value: {gaApp: 'yes'}}]});
+      mockGetClaimById.mockResolvedValue(claim);
+      (draftStoreService.getCaseDataFromStore as jest.Mock).mockResolvedValue(claim);
+      mockSubmitApplication.mockResolvedValue({
+        generalApplications: [{id: '123454'}, {id: '123455'}, {id: '123456'}],
+      });
+      req.body = {signed: 'yes', name: 'Mr Applicant'};
 
-      await request(app)
-        .post(GA_CHECK_ANSWERS_URL + '?index=2')
-        .send({signed: 'yes', name: 'Mr Applicant'})
-        .expect((res) => {
-          expect(res.header.location).toBe(GENERAL_APPLICATION_CONFIRM_URL + '?appFee=250&id=123456');
-          expect(res.status).toBe(302);
-        });
+      await postHandler(req as never, res as unknown as Response, next);
 
       expect(mockSubmitApplication).toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(confirmUrl('123456'));
     });
 
-    it('should return http 500 when has error in the post method', async () => {
-      mockSaveCaseData.mockImplementation(async () => {
-        throw new Error(TestMessages.REDIS_FAILURE);
-      });
-      await request(app)
-        .post(GA_CHECK_ANSWERS_URL)
-        .send({signed: 'yes', name: 'Mr Applicant'})
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+    it('should call next when saving the statement of truth fails', async () => {
+      const error = new Error('redis failure');
+      (draftStoreService.saveDraftClaim as jest.Mock).mockRejectedValue(error);
+      req.body = {signed: 'yes', name: 'Mr Applicant'};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 });

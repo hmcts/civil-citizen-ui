@@ -10,6 +10,7 @@ import {getFeePaymentStatus} from 'services/features/feePayment/feePaymentServic
 import {FeeType} from 'form/models/helpWithFees/feeType';
 import {Claim} from 'models/claim';
 import {getClaimById} from 'modules/utilityService';
+import {isUsablePathSegment} from 'common/utils/routeParamUtils';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('PaymentConfirmationService');
@@ -25,14 +26,20 @@ export const getRedirectUrl = async (claimId: string, req: AppRequest): Promise<
   try {
     const claim: Claim = await getClaimById(claimId, req, true);
 
-    const paymentInfo = claim.caseProgression.hearing.paymentInformation;
+    const paymentInfo = claim.caseProgression?.hearing?.paymentInformation;
+    const paymentReference = paymentInfo?.paymentReference;
 
-    const paymentStatus = await getFeePaymentStatus(claimId, paymentInfo.paymentReference, FeeType.HEARING, req);
+    if (!isUsablePathSegment(paymentReference)) {
+      logger.info(`No payment reference for claimId: ${claimId}`);
+      return PAY_HEARING_FEE_UNSUCCESSFUL_URL;
+    }
+
+    const paymentStatus = await getFeePaymentStatus(claimId, paymentReference, FeeType.HEARING, req);
     logger.info(`Payment status fetched for claimId: ${claimId}, status: ${paymentStatus.status}`);
 
-    paymentInfo.status = paymentStatus.status;
-    paymentInfo.errorCode = paymentStatus.errorCode;
-    paymentInfo.errorDescription = paymentStatus.errorDescription;
+    paymentInfo!.status = paymentStatus.status;
+    paymentInfo!.errorCode = paymentStatus.errorCode;
+    paymentInfo!.errorDescription = paymentStatus.errorDescription;
     logger.info(`Updated payment information for claimId: ${claimId}`);
 
     await saveCaseProgression(req, paymentInfo, paymentInformation, hearing);

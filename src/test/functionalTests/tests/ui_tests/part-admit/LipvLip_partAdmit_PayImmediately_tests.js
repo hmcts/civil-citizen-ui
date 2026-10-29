@@ -21,7 +21,7 @@ Scenario('Response with PartAdmit-PayImmediately Small claims', async ({api}) =>
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
   await ResponseToDefenceLipVsLipSteps.claimantAcceptForDefRespPartAdmitImmediatePayment(claimRef, '200');
   await api.waitForFinishedBusinessProcess();
-}).tag('@civil-citizen-master @civil-citizen-pr');
+}).tag('@civil-citizen-master @civil-citizen-pr @thin-full-stack');
 
 Scenario('Response with PartAdmit-PayImmediately Fast Track', async ({api}) => {
   await createAccount(config.claimantCitizenUser.email, config.claimantCitizenUser.password);

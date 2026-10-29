@@ -1,138 +1,166 @@
-import {app} from '../../../../../../main/app';
-import config from 'config';
-import nock from 'nock';
-import request from 'supertest';
-import {GA_HEARING_ARRANGEMENTS_GUIDANCE_URL, GA_UPLOAD_DOCUMENTS_URL, GA_WANT_TO_UPLOAD_DOCUMENTS_URL} from 'routes/urls';
-import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import {t} from 'i18next';
+import {Response} from 'express';
+import wantToUploadDocumentsController from '../../../../../../main/routes/features/generalApplication/wantToUploadDocuments';
+import {GA_HEARING_ARRANGEMENTS_GUIDANCE_URL, GA_UPLOAD_DOCUMENTS_URL} from 'routes/urls';
 import {YesNo} from 'form/models/yesNo';
+import {Claim} from 'models/claim';
+import {PartyType} from 'models/partyType';
 import {GeneralApplication} from 'models/generalApplication/GeneralApplication';
 import {ApplicationType, ApplicationTypeOption} from 'models/generalApplication/applicationType';
-import { Claim } from 'common/models/claim';
-import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
-import * as launchDarkly from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {UploadGAFiles} from 'models/generalApplication/uploadGAFiles';
 import {CaseDocument} from 'models/document/caseDocument';
+import {constructResponseUrlWithIdParams, constructUrlWithIndex} from 'common/utils/urlFormatter';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {getClaimById} from 'modules/utilityService';
+import {createMockResponse, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
-jest.mock('../../../../../../main/modules/draft-store');
-jest.mock('../../../../../../main/routes/guards/generalAplicationGuard',() => ({
-  isGAForLiPEnabled: jest.fn((req, res, next) => {
-    next();
-  }),
+jest.mock('modules/draft-store/draftStoreService');
+jest.mock('services/features/generalApplication/response/generalApplicationResponseStoreService', () => ({
+  getDraftGARespondentResponse: jest.fn(),
+  saveDraftGARespondentResponse: jest.fn(),
+}));
+jest.mock('modules/utilityService', () => ({
+  getClaimById: jest.fn(),
 }));
 
-const mockGetCaseData = getCaseDataFromStore as jest.Mock;
-const mockSaveCaseData = saveDraftClaim as jest.Mock;
-const mockClaim = new Claim();
-mockClaim.generalApplication = new GeneralApplication(new ApplicationType(ApplicationTypeOption.ADJOURN_HEARING));
-
-const mockCaseDocument: CaseDocument = <CaseDocument>{
-  createdBy: 'test',
-  documentLink: { document_url: 'http://test', document_binary_url: 'http://test/binary', document_filename: 'test.png' },
-  documentName: 'test.text',
-  documentType: null,
-  documentSize: 12345,
-  createdDatetime: new Date(),
-};
-const file = {
-  fieldname: 'selectedFile',
-  originalname: 'test.text',
-  mimetype: 'text/plain',
-  size: 123,
-  buffer: Buffer.from('Test file content'),
-};
-
 describe('General Application - Want to upload documents to support hearing', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
+  const getHandler = getRouteHandler(wantToUploadDocumentsController, 'get');
+  const postHandler = getRouteHandler(wantToUploadDocumentsController, 'post');
+  const viewPath = 'features/generalApplication/want-to-upload-documents';
+  const claimId = '12345';
+  let claim: Claim;
+  let req: {
+    params: {id: string};
+    body: Record<string, unknown>;
+    query: Record<string, unknown>;
+    cookies: Record<string, unknown>;
+    session: {user: {id: string}};
+  };
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
+  const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
+  const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
+  const mockGetClaim = getClaimById as jest.Mock;
 
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-    jest.spyOn(launchDarkly, 'isGaForLipsEnabled').mockResolvedValue(true);
+  const mockCaseDocument = {
+    createdBy: 'test',
+    documentLink: {document_url: 'http://test', document_binary_url: 'http://test/binary', document_filename: 'test.png'},
+    documentName: 'test.text',
+    documentType: null,
+    documentSize: 12345,
+    createdDatetime: new Date(),
+  } as CaseDocument;
+
+  const buildClaim = (): Claim => {
+    const builtClaim = new Claim();
+    builtClaim.applicant1 = {
+      type: PartyType.INDIVIDUAL,
+      partyDetails: {title: 'Mr', firstName: 'Jan', lastName: 'Clark'},
+    } as Claim['applicant1'];
+    builtClaim.generalApplication = new GeneralApplication(new ApplicationType(ApplicationTypeOption.ADJOURN_HEARING));
+    return builtClaim;
+  };
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+    claim = buildClaim();
+    req = {
+      params: {id: claimId},
+      body: {},
+      query: {},
+      cookies: {},
+      session: {user: {id: 'u1'}},
+    };
+    res = createMockResponse();
+    next = jest.fn();
+    (draftStoreService.generateRedisKey as jest.Mock).mockReturnValue(claimId);
+    (draftStoreService.generateRedisKeyForGA as jest.Mock).mockReturnValue('ga-12345');
+    mockGetCaseData.mockResolvedValue(claim);
+    mockSaveDraftClaim.mockResolvedValue(undefined);
+    mockGetClaim.mockResolvedValue(claim);
   });
 
   describe('on GET', () => {
-    it('should return want to upload document page', async () => {
-      mockGetCaseData.mockImplementation(async () => mockClaim);
-      mockClaim.generalApplication.applicationTypes = [new ApplicationType(ApplicationTypeOption.SET_ASIDE_JUDGEMENT)];
-      await request(app)
-        .get(GA_WANT_TO_UPLOAD_DOCUMENTS_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.WANT_TO_UPLOAD_DOCUMENTS.TITLE'));
-          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.CANCEL_JUDGMENT'));
-        });
+    it('should render the want to upload documents page', async () => {
+      claim.generalApplication.applicationTypes = [new ApplicationType(ApplicationTypeOption.SET_ASIDE_JUDGEMENT)];
+
+      await getHandler(req as never, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        headerTitle: 'PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.CANCEL_JUDGMENT',
+      }));
+      expect(next).not.toHaveBeenCalled();
     });
 
-    it('should return http 500 when has error in the get method', async () => {
-      mockGetCaseData.mockImplementation(() => {
-        throw new Error(TestMessages.REDIS_FAILURE);
-      });
-      await request(app)
-        .get(GA_WANT_TO_UPLOAD_DOCUMENTS_URL)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+    it('should call next when loading the claim fails', async () => {
+      const error = new Error('redis failure');
+      mockGetClaim.mockRejectedValue(error);
+
+      await getHandler(req as never, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 
   describe('on POST', () => {
-    it('should send the value and redirect to Upload document page', async () => {
-      mockGetCaseData.mockImplementation(async () => mockClaim);
-      await request(app)
-        .post(GA_WANT_TO_UPLOAD_DOCUMENTS_URL)
-        .send({option: 'yes'})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.text).toContain(GA_UPLOAD_DOCUMENTS_URL);
-        });
+    it('should save and redirect to the upload documents page when the answer is yes', async () => {
+      req.body = {option: 'yes'};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(res.redirect).toHaveBeenCalledWith(
+        constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, GA_UPLOAD_DOCUMENTS_URL), 0),
+      );
     });
 
-    it('should send the value and redirect to application hearing arrangement page', async () => {
+    it('should clear uploaded documents and redirect to hearing arrangements guidance when the answer is no', async () => {
       const uploadDocument = new UploadGAFiles();
       uploadDocument.caseDocument = mockCaseDocument;
-      uploadDocument.fileUpload = file;
+      claim.generalApplication.uploadEvidenceForApplication.push(uploadDocument);
+      req.body = {option: 'no'};
 
-      mockClaim.generalApplication.uploadEvidenceForApplication.push(uploadDocument);
-      mockGetCaseData.mockImplementation(async () => mockClaim);
-      await request(app)
-        .post(GA_WANT_TO_UPLOAD_DOCUMENTS_URL)
-        .send({option: 'no'})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.text).toContain(GA_HEARING_ARRANGEMENTS_GUIDANCE_URL);
-          expect(mockClaim.generalApplication.uploadEvidenceForApplication).toEqual([]);
-        });
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(claim.generalApplication.uploadEvidenceForApplication).toEqual([]);
+      expect(res.redirect).toHaveBeenCalledWith(
+        constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, GA_HEARING_ARRANGEMENTS_GUIDANCE_URL), 0),
+      );
     });
 
-    it('should show error message if radio button not selected', async () => {
-      mockGetCaseData.mockImplementation(async () => mockClaim);
-      await request(app)
-        .post(GA_WANT_TO_UPLOAD_DOCUMENTS_URL)
-        .send({option: null})
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.GENERAL_APPLICATION.WANT_TO_UPLOAD_DOCUMENTS_YES_NO_SELECTION'));
-        });
+    it('should keep index 0 when the first application is selected in a multi-application journey', async () => {
+      claim.generalApplication = new GeneralApplication();
+      claim.generalApplication.applicationTypes = [
+        new ApplicationType(ApplicationTypeOption.EXTEND_TIME),
+        new ApplicationType(ApplicationTypeOption.STAY_THE_CLAIM),
+      ];
+      claim.generalApplication.uploadEvidenceForApplication = [];
+      req.query = {index: '0'};
+      req.body = {option: YesNo.NO};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(res.redirect).toHaveBeenCalledWith(
+        constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, GA_HEARING_ARRANGEMENTS_GUIDANCE_URL), 0),
+      );
     });
 
-    it('should return http 500 when has error in the post method', async () => {
-      mockSaveCaseData.mockImplementation(async () => {
-        throw new Error(TestMessages.REDIS_FAILURE);
-      });
-      await request(app)
-        .post(GA_WANT_TO_UPLOAD_DOCUMENTS_URL)
-        .send({option:YesNo.NO })
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+    it('should re-render when no option is selected', async () => {
+      req.body = {option: null};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.anything());
+      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
+      expect(mockSaveDraftClaim).not.toHaveBeenCalled();
+    });
+
+    it('should call next when saving fails', async () => {
+      const error = new Error('redis failure');
+      mockSaveDraftClaim.mockRejectedValue(error);
+      req.body = {option: YesNo.NO};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 });
-

@@ -39,8 +39,10 @@ describe('Disclosure service', () => {
     expect(actualDisclosureContent.length).toEqual(2);
     expect(actualDisclosureContent[0][0].contentSections.length).toEqual(5);
     expect(actualDisclosureContent[0][0].contentSections[0].data.text).toEqual('PAGES.UPLOAD_DOCUMENTS.DISCLOSURE.DISCLOSURE_DOCUMENTS');
+    expect(actualDisclosureContent[0][0].contentSections[1].data.category).toEqual('documentsForDisclosure');
     expect(actualDisclosureContent[1][0].contentSections.length).toEqual(3);
     expect(actualDisclosureContent[1][0].contentSections[0].data.text).toEqual('PAGES.UPLOAD_DOCUMENTS.DISCLOSURE.DISCLOSURE_LIST');
+    expect(actualDisclosureContent[1][0].contentSections[1].data.category).toEqual('disclosureList');
   });
 
   it('should return both disclosure document and disclosure list content on claimant request', () => {

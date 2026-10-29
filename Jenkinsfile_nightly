@@ -66,7 +66,7 @@ properties([
     ])
 ])
 
-@Library("Infrastructure")
+@Library("Infrastructure@2.13.4")
 
 def type = "nodejs"
 def product = "civil"
@@ -181,6 +181,9 @@ def secrets = [
   's2s-${env}': [
     secret('microservicekey-xui-webapp', 'XUI_S2S_SECRET'),
   ],
+  'ccd-${env}': [
+    secret('ccd-api-gateway-oauth2-client-secret', 'CCD_API_GATEWAY_IDAM_CLIENT_SECRET')
+  ],
   'civil-${env}': [
     secret('microservicekey-civil-service', 'S2S_SECRET'),
     secret('citizen-ui-test-username', 'CITIZEN_USERNAME'),
@@ -237,14 +240,15 @@ withNightlyPipeline(type, product, component) {
   boolean forceGreenBuild = env.FORCE_GREEN_BUILD.toBoolean()
   boolean runPrevFailedAndNotExecutedTestFiles = env.RUN_PREV_FAILED_AND_NOT_EXECUTED_TEST_FILES.toBoolean()
 
-  if(!runPrevFailedAndNotExecutedTestFiles && !forceGreenBuild) {
-    enableCrossBrowserTest()
-
-    afterAlways('crossBrowserTest') {
-      steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'output/**/*'
-      env.IS_CROSSBROWSER = false
-    }
-  }
+  // Cross browser test stage temporarily disabled as the tests were taking over an hour to complete in Saucelabs
+  // if(!runPrevFailedAndNotExecutedTestFiles && !forceGreenBuild) {
+  //   enableCrossBrowserTest()
+  //
+  //   afterAlways('crossBrowserTest') {
+  //     steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'output/**/*'
+  //     env.IS_CROSSBROWSER = false
+  //   }
+  // }
 
   enableFullFunctionalTest(200)
 

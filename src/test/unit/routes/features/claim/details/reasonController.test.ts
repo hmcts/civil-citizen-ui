@@ -1,108 +1,105 @@
-import {app} from '../../../../../../main/app';
-import config from 'config';
-import nock from 'nock';
-import request from 'supertest';
-import {CLAIM_TIMELINE_URL, CLAIM_REASON_URL} from 'routes/urls';
-import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import {t} from 'i18next';
-import {
-  getClaimDetails,
-  saveClaimDetails,
-} from 'services/features/claim/details/claimDetailsService';
-import {Claim} from 'models/claim';
-import {mockCivilClaim} from '../../../../../utils/mockDraftStore';
+import {Response} from 'express';
+import reasonController from '../../../../../../main/routes/features/claim/details/reasonController';
+import {CLAIM_TIMELINE_URL} from 'routes/urls';
+import {AppRequest} from 'models/AppRequest';
+import {GenericForm} from 'form/models/genericForm';
+import {ClaimDetails} from 'form/models/claim/details/claimDetails';
+import {getClaimDetails, saveClaimDetails} from 'services/features/claim/details/claimDetailsService';
+import {createMockResponse, createMockSession, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
-jest.mock('../../../../../../main/services/features/claim/details/claimDetailsService');
-
-const mockClaimDetails = getClaimDetails as jest.Mock;
-const mockSaveClaimDetails = saveClaimDetails as jest.Mock;
+jest.mock('services/features/claim/details/claimDetailsService', () => ({
+  getClaimDetails: jest.fn(),
+  saveClaimDetails: jest.fn(),
+}));
 
 describe('Claim Details - Reason', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
-  app.request.cookies = {eligibilityCompleted: true};
+  const getHandler = getRouteHandler(reasonController, 'get');
+  const postHandler = getRouteHandler(reasonController, 'post');
+  const viewPath = 'features/claim/details/reason';
+  const pageTitle = 'PAGES.REASON.PAGE_TITLE';
+  let req: Partial<AppRequest>;
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
+  const mockGetClaimDetails = getClaimDetails as jest.Mock;
+  const mockSaveClaimDetails = saveClaimDetails as jest.Mock;
 
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-    app.locals.draftStoreClient = mockCivilClaim;
+  beforeEach(() => {
+    req = {
+      session: createMockSession({user: {id: 'user-id'}}),
+      body: {},
+      query: {},
+      cookies: {},
+    };
+    res = createMockResponse();
+    next = jest.fn();
+    mockGetClaimDetails.mockResolvedValue(new ClaimDetails());
+    mockSaveClaimDetails.mockResolvedValue(undefined);
   });
 
   describe('on GET', () => {
-    it('should return reason page empty when dont have information on redis ', async () => {
-      mockClaimDetails.mockImplementation(async () => new Claim());
-      await request(app)
-        .get(CLAIM_REASON_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.REASON_EXPLANATION);
-        });
+    it('should render reason page when there is no information in redis', async () => {
+      await getHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        pageTitle,
+        form: expect.any(GenericForm),
+      }));
     });
 
-    it('should return http 500 when has error in the get method', async () => {
-      mockClaimDetails.mockImplementation(async () => {throw new Error(TestMessages.REDIS_FAILURE);});
-      await request(app)
-        .get(CLAIM_REASON_URL)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+    it('should call next when loading claim details fails', async () => {
+      const error = new Error('error');
+      mockGetClaimDetails.mockRejectedValue(error);
+
+      await getHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 
   describe('on POST', () => {
     it('should create a new claim if redis gives undefined', async () => {
-      mockSaveClaimDetails.mockImplementation(async () => Promise<void>);
-      await request(app)
-        .post(CLAIM_REASON_URL)
-        .send({text: 'reason'})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-        });
+      req.body = {text: 'reason'};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(mockSaveClaimDetails).toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(CLAIM_TIMELINE_URL);
     });
 
-    it('should return errors on no input', async () => {
-      await request(app)
-        .post(CLAIM_REASON_URL)
-        .send({text: ''})
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.REASON_REQUIRED').replace(/'/g, '&#39;'));
-        });
+    it('should re-render on no input', async () => {
+      req.body = {text: ''};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({form: expect.any(GenericForm)}));
+      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
+      expect(res.redirect).not.toHaveBeenCalled();
     });
 
     it('should accept a valid input', async () => {
-      mockSaveClaimDetails.mockImplementation(async () => Promise<void>);
-      await request(app)
-        .post(CLAIM_REASON_URL)
-        .send({text: 'reason'})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-        });
-    });
-    it('should redirect to timeline page', async () => {
-      mockSaveClaimDetails.mockImplementation(async () => Promise<void>);
-      await request(app)
-        .post(CLAIM_REASON_URL)
-        .send({text: 'reason'})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.text).toContain(`Redirecting to ${CLAIM_TIMELINE_URL}`);
-        });
+      req.body = {text: 'reason'};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.redirect).toHaveBeenCalledWith(CLAIM_TIMELINE_URL);
     });
 
-    it('should return http 500 when has error in the post method', async () => {
-      mockSaveClaimDetails.mockImplementation(async () => {throw new Error(TestMessages.REDIS_FAILURE);});
-      await request(app)
-        .post(CLAIM_REASON_URL)
-        .send({text: 'reason'})
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+    it('should redirect to timeline page', async () => {
+      req.body = {text: 'reason'};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.redirect).toHaveBeenCalledWith(CLAIM_TIMELINE_URL);
+    });
+
+    it('should call next when save fails', async () => {
+      const error = new Error('error');
+      mockSaveClaimDetails.mockRejectedValue(error);
+      req.body = {text: 'reason'};
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 });

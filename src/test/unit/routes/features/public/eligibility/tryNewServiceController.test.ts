@@ -1,65 +1,45 @@
-import request from 'supertest';
-import {app} from '../../../../../../main/app';
+import {Request, Response} from 'express';
+import tryNewServiceController from '../../../../../../main/routes/features/public/eligibility/tryNewServiceController';
+
+jest.mock('i18next', () => ({
+  t: (key: string) => key,
+}));
 import {
-  BASE_ELIGIBILITY_URL,
   CLAIM_BILINGUAL_LANGUAGE_PREFERENCE_URL,
   ELIGIBILITY_KNOWN_CLAIM_AMOUNT_URL,
-  MAKE_CLAIM,
-} from 'routes/urls';
-import {t} from 'i18next';
+} from '../../../../../../main/routes/urls';
+import {createMockResponse, createMockSession, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
 describe('Try the new online service', () => {
-  app.request.cookies = {eligibilityCompleted: false};
+  const getHandler = getRouteHandler(tryNewServiceController, 'get');
+  let req: Partial<Request>;
+  let res: ReturnType<typeof createMockResponse>;
 
-  describe('on GET', () => {
-    it.each([
-      [BASE_ELIGIBILITY_URL],
-      [MAKE_CLAIM],
-    ])('should return Try the new online service page when url is %s', async (url) => {
-      await request(app)
-        .get(url)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('PAGES.TRY_NEW_SERVICE.TITLE'));
-        });
-    });
+  beforeEach(() => {
+    req = {cookies: {}, body: {}, query: {}, session: createMockSession()};
+    res = createMockResponse();
+  });
 
-    it.each([
-      [BASE_ELIGIBILITY_URL],
-      [MAKE_CLAIM],
-    ])('should render try new service page when url is %s', async (url) => {
-      await request(app)
-        .get(url)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(BASE_ELIGIBILITY_URL);
-        });
-    });
+  it('should render the try new service page', async () => {
+    await getHandler(req as Request, res as unknown as Response, jest.fn());
 
-    it.each([
-      [BASE_ELIGIBILITY_URL],
-      [MAKE_CLAIM],
-    ])('should return known claim amount page when minti enabled', async (url) => {
-      await request(app)
-        .get(url)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(ELIGIBILITY_KNOWN_CLAIM_AMOUNT_URL);
-        });
-    });
+    expect(res.render).toHaveBeenCalledWith(
+      'features/public/eligibility/try-new-service',
+      expect.objectContaining({
+        urlNextView: ELIGIBILITY_KNOWN_CLAIM_AMOUNT_URL,
+        pageTitle: 'PAGES.TRY_NEW_SERVICE.PAGE_TITLE',
+      }),
+    );
+    expect(res.redirect).not.toHaveBeenCalled();
+  });
 
-    it.each([
-      [BASE_ELIGIBILITY_URL],
-      [MAKE_CLAIM],
-    ])('should return redirect to bilingual preference page if eligibilty and user session is already present and url is %s', async (url ) => {
-      app.request.cookies = {eligibilityCompleted:  true};
-      app.request.session = { user : {id: 123}} as any;
-      await request(app)
-        .get(url)
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.text).toContain(CLAIM_BILINGUAL_LANGUAGE_PREFERENCE_URL);
-        });
-    });
+  it('should redirect to bilingual preference when eligibility is complete and the user is signed in', async () => {
+    req.cookies = {eligibilityCompleted: true};
+    req.session = createMockSession({user: {id: '123'}});
+
+    await getHandler(req as Request, res as unknown as Response, jest.fn());
+
+    expect(res.redirect).toHaveBeenCalledWith(CLAIM_BILINGUAL_LANGUAGE_PREFERENCE_URL);
+    expect(res.render).not.toHaveBeenCalled();
   });
 });

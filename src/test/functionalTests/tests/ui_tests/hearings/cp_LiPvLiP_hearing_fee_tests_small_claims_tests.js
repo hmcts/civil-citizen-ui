@@ -43,7 +43,7 @@ Scenario('Apply for Help with Fees Journey - Small Claims', async ({I, api}) => 
   await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
   await ResponseSteps.SignOut();
   await LoginSteps.EnterCitizenCredentials(config.claimantCitizenUser.email, config.claimantCitizenUser.password);
-  await I.click(claimNumber);
+  await I.click(`//a[normalize-space(.)="${claimNumber}"]`);
   await I.dontSee(notification.title);
   notification = payTheHearingFeeClaimant(feeAmount, hearingFeeDueDate);
   await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
@@ -56,7 +56,7 @@ Scenario('Apply for Help with Fees Journey - Small Claims', async ({I, api}) => 
   await HearingFeeSteps.initiateApplyForHelpWithFeesJourney(claimRef, feeAmount, hearingFeeDueDate, formattedCaseId, claimAmount);
   await api.waitForFinishedBusinessProcess();
   await I.amOnPage('/dashboard');
-  await I.click(claimNumber);
+  await I.click(`//a[normalize-space(.)="${claimNumber}"]`);
   taskListItem = payTheHearingFee(hearingFeeDueDate);
   await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'In progress', false, true, taskListItem.deadline);
 });
@@ -68,9 +68,9 @@ Scenario('Pay the Hearing Fee Journey - Small Claims', async ({I, api}) => {
   await HearingFeeSteps.payHearingFeeJourney(feeAmount);
   await api.waitForFinishedBusinessProcess();
   await I.amOnPage('/dashboard');
-  await I.click(claimNumber);
+  await I.click(`//a[normalize-space(.)="${claimNumber}"]`);
   notification = hearingFeePaidFull();
   await verifyNotificationTitleAndContent(claimNumber, notification.title, notification.content, claimRef);
   taskListItem = payTheHearingFee(hearingFeeDueDate);
   await verifyTasklistLinkAndState(taskListItem.title, taskListItem.locator, 'Done', false, false);
-}).tag('@civil-citizen-pr').tag('@test123');
+}).tag('@civil-citizen-pr @thin-full-stack');

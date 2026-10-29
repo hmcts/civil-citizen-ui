@@ -1,29 +1,37 @@
 import { NextFunction, Request, RequestHandler, Response, Router } from 'express';
 import {
   APPLICATION_TYPE_URL, BACK_URL,
-  GA_AGREEMENT_FROM_OTHER_PARTY_URL, GA_ASK_PROOF_OF_DEBT_PAYMENT_GUIDANCE_URL, ORDER_JUDGE_URL,
+  GA_AGREEMENT_FROM_OTHER_PARTY_URL, GA_ASK_PROOF_OF_DEBT_PAYMENT_GUIDANCE_URL, GA_CHECK_ANSWERS_URL, ORDER_JUDGE_URL,
 } from 'routes/urls';
 import { GenericForm } from 'common/form/models/genericForm';
 import { AppRequest } from 'common/models/AppRequest';
+import { Claim } from 'common/models/claim';
 import {
   ApplicationType,
   ApplicationTypeOption,
   isOtherApplicationTypeOption,
-  LinKFromValues,
+  LinkFromValues,
 } from 'common/models/generalApplication/applicationType';
 import {
   deleteGAFromClaimsByUserId,
   getByIndex,
   getCancelUrl,
-  saveApplicationType, validateAdditionalApplicationtType,
+  isChangeScreenFromCya,
+  resolveApplicationTypeIndexForGet,
+  resolveApplicationTypeIndexForPost,
+  saveApplicationType,
+  validateAdditionalApplicationType,
 } from 'services/features/generalApplication/generalApplicationService';
 import { generateRedisKey } from 'modules/draft-store/draftStoreService';
 import { getClaimById } from 'modules/utilityService';
-import { queryParamNumber } from 'common/utils/requestUtils';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {isQueryManagementEnabled} from '../../../app/auth/launchdarkly/launchDarklyClient';
 import {YesNo} from 'form/models/yesNo';
 import {getRouteParam} from 'common/utils/routeParamUtils';
+import {
+  SHOW_APPLICATION_TYPE_ERROR_QUERY_PARAM,
+  SHOW_DUPLICATE_APPLICATION_TYPE_ERROR_QUERY_PARAM,
+} from 'routes/guards/generalApplication/applicationTypeGuard';
 import {FormValidationError} from 'common/form/validationErrors/formValidationError';
 
 const applicationTypeController = Router();
@@ -36,18 +44,35 @@ applicationTypeController.get(APPLICATION_TYPE_URL, (async (req: AppRequest, res
     const isAskMoreTime:boolean = req.query.isAskMoreTime === 'true';
     const isAmendClaim:boolean = req.query.isAmendClaim === 'true';
     const isAdjournHearing: boolean = req.query.isAdjournHearing === 'true';
-    const applicationIndex = queryParamNumber(req, 'index');
 
-    if (linkFrom === LinKFromValues.start) {
+    if (linkFrom === LinkFromValues.start) {
       await deleteGAFromClaimsByUserId(req.session?.user?.id);
     }
 
     const claimId = getRouteParam(req, 'id');
     const claim = await getClaimById(claimId, req, true);
+    const applicationIndex = resolveApplicationTypeIndexForGet(req, claim);
 
-    const applicationTypeOption = getByIndex(claim.generalApplication?.applicationTypes, applicationIndex)?.option;
+    const showApplicationTypeError = req.query[SHOW_APPLICATION_TYPE_ERROR_QUERY_PARAM] === 'true';
+    const applicationTypeOption = showApplicationTypeError
+      ? undefined
+      : getByIndex(claim.generalApplication?.applicationTypes, applicationIndex)?.option;
     const applicationType = new ApplicationType(applicationTypeOption);
     const form = new GenericForm(applicationType);
+    if (showApplicationTypeError) {
+      form.validateSync();
+    }
+    if (req.query[SHOW_DUPLICATE_APPLICATION_TYPE_ERROR_QUERY_PARAM] === 'true') {
+      form.errors = form.errors || [];
+      form.errors.push(new FormValidationError({
+        target: applicationType,
+        value: applicationType.option,
+        constraints: {
+          duplicateApplicationError: 'ERRORS.GENERAL_APPLICATION.ADDITIONAL_APPLICATION_DUPLICATE',
+        },
+        property: 'option',
+      }));
+    }
     const cancelUrl = await getCancelUrl(claimId, claim);
     const backLinkUrl = BACK_URL;
     const showCCJ  = claim.isDefendant();
@@ -76,7 +101,7 @@ applicationTypeController.post(APPLICATION_TYPE_URL, (async (req: AppRequest | R
     const claim = await getClaimById(claimId, req, true);
     let applicationType: ApplicationType;
 
-    let applicationIndex = queryParamNumber(req, 'index');
+    let applicationIndex = resolveApplicationTypeIndexForPost(req, claim);
 
     if (req.body.option === ApplicationTypeOption.OTHER_OPTION) {
       applicationType = new ApplicationType(req.body.optionOther);
@@ -86,9 +111,7 @@ applicationTypeController.post(APPLICATION_TYPE_URL, (async (req: AppRequest | R
     const form = new GenericForm(applicationType);
     form.validateSync();
     validateOtherApplicationTypeBranch(form, applicationType, req.body.option, req.body.optionOther);
-    if(!applicationIndex && applicationIndex != 0) {
-      validateAdditionalApplicationtType(claim,form.errors,applicationType,req.body);
-    }
+    validateAdditionalApplicationType(claim, form.errors, applicationType, req.body, applicationIndex);
     const cancelUrl = await getCancelUrl(claimId, claim);
     const backLinkUrl = BACK_URL;
 
@@ -96,17 +119,21 @@ applicationTypeController.post(APPLICATION_TYPE_URL, (async (req: AppRequest | R
     if (form.hasErrors()) {
       res.render(viewPath, { form, cancelUrl, backLinkUrl, isOtherSelected: applicationType.isOtherSelected() || req.body.option === ApplicationTypeOption.OTHER_OPTION,  showCCJ: showCCJ});
     } else {
+      const selectedSameApplicationTypeFromCya = isChangeScreenFromCya(req)
+        && getByIndex(claim.generalApplication?.applicationTypes, applicationIndex)?.option === applicationType.option;
+
       await saveApplicationType(redisKey, claim, applicationType, applicationIndex);
 
-      if(!applicationIndex) {
-        applicationIndex = claim.generalApplication.applicationTypes.length - 1;
-      }
-      if (showCCJ && claim.joIsLiveJudgmentExists?.option === YesNo.YES && req.body.option === ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID) {
+      applicationIndex = getSavedApplicationIndex(claim, applicationIndex);
+      if (selectedSameApplicationTypeFromCya) {
+        res.redirect(constructResponseUrlWithIdParams(claimId, GA_CHECK_ANSWERS_URL));
+      } else if (showCCJ && claim.joIsLiveJudgmentExists?.option === YesNo.YES && req.body.option === ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID) {
         res.redirect(constructResponseUrlWithIdParams(claimId, GA_ASK_PROOF_OF_DEBT_PAYMENT_GUIDANCE_URL));
       } else {
         if (claim?.generalApplication?.applicationTypes?.length > 1){
-          res.redirect(constructResponseUrlWithIdParams(claimId,ORDER_JUDGE_URL )
-            + (applicationIndex >= 0 ? `?index=${applicationIndex}` : ''));
+          const redirectUrl = constructResponseUrlWithIdParams(claimId,ORDER_JUDGE_URL )
+            + (applicationIndex >= 0 ? `?index=${applicationIndex}` : '');
+          res.redirect(redirectUrl);
         } else {
           res.redirect(constructResponseUrlWithIdParams(claimId,GA_AGREEMENT_FROM_OTHER_PARTY_URL )
           + (applicationIndex >= 0 ? `?index=${applicationIndex}` : ''));
@@ -136,6 +163,13 @@ const validateOtherApplicationTypeBranch = (form: GenericForm<ApplicationType>, 
     },
     property: 'option',
   }));
+};
+
+const getSavedApplicationIndex = (claim: Claim, applicationIndex: number | undefined): number => {
+  const lastApplicationIndex = claim.generalApplication.applicationTypes.length - 1;
+  return applicationIndex !== undefined && applicationIndex >= 0 && applicationIndex <= lastApplicationIndex
+    ? applicationIndex
+    : lastApplicationIndex;
 };
 
 export default applicationTypeController;

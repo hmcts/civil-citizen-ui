@@ -36,6 +36,7 @@ import { ApplicationTypeOption } from 'models/generalApplication/applicationType
 import {ClaimUpdate} from 'models/events/eventDto';
 import {CCDGeneralApplication} from 'models/gaEvents/eventDto';
 import {isUserCaseRolesSessionCacheEnabled} from '../../../../main/app/auth/launchdarkly/launchDarklyClient';
+import {MissingPaymentReferenceError} from 'common/utils/routeParamUtils';
 
 jest.mock('axios');
 jest.mock('../../../../main/app/auth/launchdarkly/launchDarklyClient');
@@ -735,8 +736,9 @@ describe('Civil Service Client', () => {
       const mockPost = jest.fn().mockResolvedValue({data: mockResponse});
       mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
       const civilServiceClient = new CivilServiceClient(baseUrl);
+      const submissionId = 'user-1:aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee:2026-10-12T10:00:00Z';
       //When
-      const claim = await civilServiceClient.submitDraftClaim(claimUpdate, appReq);
+      const claim = await civilServiceClient.submitDraftClaim(claimUpdate, appReq, submissionId);
       //Then
       expect(mockedAxios.create).toHaveBeenCalledWith({
         baseURL: baseUrl,
@@ -744,6 +746,9 @@ describe('Civil Service Client', () => {
       expect(mockPost.mock.calls[0][0]).toEqual(CIVIL_SERVICE_SUBMIT_EVENT
         .replace(':submitterId', '1')
         .replace(':caseId', 'draft'));
+      expect(mockPost.mock.calls[0][1]).toEqual(expect.objectContaining({
+        submissionId,
+      }));
       expect(claim.issueDate).toEqual(date);
       expect(claim.respondent1ResponseDeadline).toEqual(date);
     });
@@ -1434,6 +1439,19 @@ describe('Civil Service Client', () => {
       //Then
       await expect(civilServiceClient.getFeePaymentStatus('1', mockHearingFeePaymentRedirectInfo.paymentReference,  FeeType.HEARING , appReq)).rejects.toThrow('error');
     });
+
+    it.each([undefined, null, '', 'undefined', 'null', ' UNDEFINED '])(
+      'should not call civil-service when paymentReference is %p',
+      async (paymentReference) => {
+        const mockGet = jest.fn();
+        mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
+        const civilServiceClient = new CivilServiceClient(baseUrl);
+
+        await expect(civilServiceClient.getFeePaymentStatus('1', paymentReference as string, FeeType.HEARING, appReq))
+          .rejects.toThrow(MissingPaymentReferenceError);
+        expect(mockGet).not.toHaveBeenCalled();
+      },
+    );
   });
 
   describe('getDashboard', () => {

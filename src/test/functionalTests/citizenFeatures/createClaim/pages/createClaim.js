@@ -101,7 +101,7 @@ class CreateClaim {
 
   async verifyDashboard() {
     await I.waitForContent('Submit', 60, 'h2');
-    await I.see('Application complete', 'h2');
+    await I.see('Application incomplete', 'h2');
     await I.see('After you have completed all the actions you will be taken to a page where you can check your answers before submitting.');
     await I.see('Consider other options', 'h2');
     await I.see('Prepare your claim', 'h2');
@@ -165,9 +165,8 @@ class CreateClaim {
     await I.see('Title');
     await I.see('First name');
     await I.see('Last name');
-    await I.see('Your postal address', 'h2');
-    await I.see('If your address is not correct you can change it here.');
-    await I.see('Any changes will be shared with the claimant when you submit your response.');
+    await I.see('Your address', 'h2');
+    await I.see('All correspondence will be sent to this address. These details are shared with the person, business or organisation you are claiming from (the defendant).');
     await I.see('Enter a UK postcode');
     await I.see('Correspondence address', 'h2');
     await I.see('Would you like correspondence sent to a different address?');
@@ -536,6 +535,7 @@ class CreateClaim {
 
   async verifyClaimSubmitted(isHWFClaim = false) {
     await I.waitForContent('Monday to Friday, 8.30am to 5pm.', 60);
+    await I.waitForText('Claim submitted', 60, 'h1');
     await I.see('Claim submitted', 'h1');
     await I.see('Claim number:');
     const claimReference = await I.grabTextFrom('//div[contains(text(),\'Claim number\')]/strong');
@@ -559,11 +559,11 @@ class CreateClaim {
     await I.waitForContent('You can ask the defendant to pay back your claim fee as part of the settlement.', 60);
     await I.see('Pay your claim fee', 'h1');
     await I.see('Claim amount');
-    await I.see(claimAmount);
+    await I.see(String(claimAmount));
     await I.see('Claim fee');
-    await I.see(claimFee);
+    await I.see(String(claimFee));
     await I.see('Total claim amount');
-    await I.see(claimAmount+claimFee+interestAmount);
+    await I.see(String(claimAmount+claimFee+interestAmount));
     await I.see('If you settle out of court we won\'t refund your claim fee.');
     await I.waitForText(`continue to payment(£${claimFee})`);
     await I.click('continue to payment');
