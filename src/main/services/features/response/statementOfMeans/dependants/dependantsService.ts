@@ -1,12 +1,11 @@
-import {
-  getCaseDataFromStore,
-  saveDraftClaim,
-} from '../../../../../modules/draft-store/draftStoreService';
-import {StatementOfMeans} from '../../../../../common/models/statementOfMeans';
+import {getResponseClaimById, getResponseDraft, updateResponseDraft} from 'modules/draft-store/response/responseDraftStoreService';
+import {StatementOfMeans} from 'common/models/statementOfMeans';
 import {Validator} from 'class-validator';
-import {Dependants} from '../../../../../common/form/models/statementOfMeans/dependants/dependants';
-import {GenericForm} from '../../../../../common/form/models/genericForm';
-import {Claim} from '../../../../../common/models/claim';
+import {Dependants} from 'common/form/models/statementOfMeans/dependants/dependants';
+import {GenericForm} from 'common/form/models/genericForm';
+import {Claim} from 'common/models/claim';
+import {AppRequest} from 'models/AppRequest';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('dependantsService');
@@ -14,11 +13,12 @@ const validator = new Validator();
 
 class DependantsService {
 
-  public async getDependants(claimId: string): Promise<Dependants> {
+  public async getDependants(req: AppRequest): Promise<Dependants> {
     try {
-      const claimData = await getCaseDataFromStore(claimId);
-      if (claimData?.statementOfMeans?.dependants) {
-        return claimData.statementOfMeans.dependants;
+      const caseId = getRouteParam(req, 'id');
+      const claim = await getResponseClaimById(req, caseId);
+      if (claim?.statementOfMeans?.dependants) {
+        return claim.statementOfMeans.dependants;
       }
       return new Dependants();
     } catch (error) {
@@ -27,18 +27,28 @@ class DependantsService {
     }
   }
 
-  public async saveDependants(claimId: string, dependants: Dependants): Promise<Claim> {
+  public async saveDependants(req: AppRequest, dependants: Dependants): Promise<Claim> {
     try {
-      const claimData = await getCaseDataFromStore(claimId);
-      if (claimData?.statementOfMeans) {
-        claimData.statementOfMeans.dependants = dependants;
+      const caseId = getRouteParam(req, 'id');
+      const draftResult = await getResponseDraft(req, caseId);
+      if (!draftResult) {
+        throw new Error('[dependantsService] no response draft found');
+      }
+      const claim = Object.assign(new Claim(), draftResult.claimResponse?.case_data as unknown as Claim);
+      const draftId = draftResult.rawResponse?.draftId;
+
+      if (claim?.statementOfMeans) {
+        claim.statementOfMeans.dependants = dependants;
       } else {
         const statementOfMeans = new StatementOfMeans();
         statementOfMeans.dependants = dependants;
-        claimData.statementOfMeans = statementOfMeans;
+        claim.statementOfMeans = statementOfMeans;
       }
-      await saveDraftClaim(claimId, claimData);
-      return claimData;
+      if (draftResult.createdAt && !claim.draftClaimCreatedAt) {
+        claim.draftClaimCreatedAt = new Date(draftResult.createdAt);
+      }
+      await updateResponseDraft(req, caseId, claim, draftId);
+      return claim;
     } catch (error) {
       logger.error(`${(error as Error).stack || error}`);
       throw error;
