@@ -3,7 +3,6 @@ import {DateConverter} from 'common/utils/dateConverter';
 import {addDaysToDate} from 'common/utils/dateUtils';
 import {toNumberOrUndefined} from 'common/utils/numberConverter';
 import {LiftBreathingSpaceEndDateValidator} from 'form/validators/liftBreathingSpaceEndDateValidator';
-import { FREE_TEXT_1000_MAX_LENGTH } from 'form/validators/validationConstraints';
 import {ALLOWED_CHARACTER_LIST_FOR_SECURITY, FREE_TEXT_1000_MAX_LENGTH} from 'form/validators/validationConstraints';
 
 export const STANDARD_BREATHING_SPACE = 'STANDARD';
