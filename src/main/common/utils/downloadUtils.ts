@@ -1,5 +1,11 @@
 import {Response} from 'express';
+import {OutgoingHttpHeaders} from 'http';
+import {pipeline} from 'stream';
 import {FileResponse} from 'models/FileResponse';
+import {FileStreamResponse} from 'models/FileStreamResponse';
+
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('downloadUtils');
 
 const fileActionDownload = 'attachment';
 const fileActionView = 'inline';
@@ -28,4 +34,41 @@ export function retrieveFile(res: Response, fileResponse: FileResponse, action: 
     'Content-Length': fileResponse.data.length,
   });
   res.end(fileResponse.data);
+}
+
+export function downloadFileStream(res: Response, fileResponse: FileStreamResponse) {
+  streamFile(res, fileResponse, fileActionDownload);
+}
+
+export function viewFileStream(res: Response, fileResponse: FileStreamResponse) {
+  streamFile(res, fileResponse, fileActionView);
+}
+
+const toContentDisposition = (action: string, fileName: string): string => {
+  // ASCII fallback for old clients; filename* carries the real name (e.g. Welsh characters) per RFC 6266
+  const asciiFallback = fileName.replace(/[^\x20-\x7E]|["\\]/g, '_');
+  return `${action}; filename="${asciiFallback}"; filename*=UTF-8''${encodeURIComponent(fileName)}`;
+};
+
+export function streamFile(res: Response, fileResponse: FileStreamResponse, action: string) {
+  const headers: OutgoingHttpHeaders = {
+    'Content-Type': fileResponse.contentType,
+    'Content-Disposition': toContentDisposition(action, fileResponse.fileName),
+  };
+  if (fileResponse.contentLength) {
+    headers['Content-Length'] = fileResponse.contentLength;
+  }
+  try {
+    res.writeHead(200, headers);
+  } catch (err) {
+    // The stream has not been handed to pipeline yet, so close it here
+    fileResponse.data.destroy();
+    throw err;
+  }
+  // Headers are already sent, so a failure here can only be logged; pipeline destroys both streams
+  pipeline(fileResponse.data, res, (err) => {
+    if (err) {
+      logger.error(`Error streaming document ${fileResponse.fileName}: ${err.message}`);
+    }
+  });
 }
