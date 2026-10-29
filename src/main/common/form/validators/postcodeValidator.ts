@@ -84,7 +84,8 @@ export class PostcodeValidator implements ValidatorConstraintInterface {
         return country === 'England' || country === 'Wales';
       }
     } catch (err) {
-      logger.info('Failed to fetch postcode info', trimmed, err);
+      // Log only the message: axios errors carry config.headers (including the OS key).
+      logger.info(`Failed to fetch postcode info for ${trimmed}: ${(err as Error)?.message}`);
       return false;
     }
     return false;
