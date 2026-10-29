@@ -5919,6 +5919,7 @@
     "VALID_ENTER_A_DATE_BEFORE": "Please enter a date of birth before {{ maxDate }}",
     "VALID_ENTER_AN_EMPLOYER_NAME": "Enter an employer name",
     "VALID_ENTER_AT_LEAST_ONE_COURT_ORDER": "Enter at least one court order",
+    "MAXIMUM_TEN_COURT_ORDERS": "You can enter a maximum of 10 court orders",
     "VALID_ENTER_AT_LEAST_ONE_EMPLOYER": "Enter at least one employer",
     "VALID_ENTER_AT_LEAST_ONE_NUMBER": "Enter a number for at least one field",
     "VALID_ENTER_AT_LEAST_ONE_UPLOAD": "You must select at least one type of document",
