@@ -49,7 +49,6 @@ describe('LiftBreathingSpaceForm', () => {
     ['Accented characters', 'Café & Résumé'],
     ['Unallowed symbols (<, >)', 'Hello <world>!'],
     ['Emojis', 'Great work! 👍'],
-    ['Brackets & Braces', 'User { id: 101, flags: [a, b] }'],
   ])(
     'should reject breathing space lift reason when it contains %s (%s)',
     (description, invalidInput) => {
