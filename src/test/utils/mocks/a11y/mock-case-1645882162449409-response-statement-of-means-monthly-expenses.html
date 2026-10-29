@@ -2157,8 +2157,8 @@ data-module="govuk-service-navigation"
 
           </div>
 
-            <div class="govuk-checkboxes__conditional govuk-checkboxes__conditional--hidden" id="conditional-declared-14">
-
+            <div class="govuk-checkboxes__conditional govuk-checkboxes__conditional--hidden" id="conditional-declared-14"><div data-module="cui-append-row" data-row-name-prefix="model[other][transactionSources]" data-row-id-prefixes="[]">
+  <div id="conditional-other" class="govuk-checkboxes__conditional" aria-label="Other expenses">
   <div class="govuk-form-group">
 
 
@@ -2166,7 +2166,8 @@ data-module="govuk-service-navigation"
 
 
 
-<div class="govuk-form-group civil-amountRow  multiple-row">
+<div class="govuk-form-group civil-amountRow multiple-row row-container">
+
 
 
 <div class="govuk-form-group">
@@ -2174,12 +2175,16 @@ data-module="govuk-service-navigation"
     Source of expense
   </label>
 
-<input class="govuk-input" id="model[other][transactionSources][0][name]" name="model[other][transactionSources][0][name]" type="text">
+
+  <input class="govuk-input" id="model[other][transactionSources][0][name]" name="model[other][transactionSources][0][name]" type="text" value="">
 
 </div>
 
 
     <p class="govuk-label">Amount paid</p>
+
+
+
 
 
 <div class="govuk-form-group">
@@ -2193,10 +2198,20 @@ data-module="govuk-service-navigation"
 
   </div>
 
-<div class="govuk-input__wrapper"><div class="govuk-input__prefix" aria-hidden="true">£</div>
-  <input class="govuk-input govuk-input--width-5 civil-amount" id="model[other][transactionSources][0][amount]" name="model[other][transactionSources][0][amount]" type="number" spellcheck="false" value="undefined" aria-describedby="model[other][transactionSources][0][amount]-hint"></div>
+
+  <div class="govuk-input__wrapper">
+
+
+    <div class="govuk-input__prefix" aria-hidden="true">£</div>
+
+    <input class="govuk-input govuk-input--width-5 civil-amount" id="model[other][transactionSources][0][amount]" name="model[other][transactionSources][0][amount]" type="number" spellcheck="false" value="" aria-describedby="model[other][transactionSources][0][amount]-hint">
+
+
+  </div>
 
 </div>
+
+
 
 
 
@@ -2211,21 +2226,21 @@ data-module="govuk-service-navigation"
   </legend>
 
 
-  <div class="govuk-radios civil-schedule"
-    data-module="govuk-radios">
+  <div class="govuk-radios civil-schedule" data-module="govuk-radios">
 
 
 
 
 
 
-        <div class="govuk-radios__item">
-          <input class="govuk-radios__input" id="model[other][transactionSources][0][schedule]" name="model[other][transactionSources][0][schedule]" type="radio" value="WEEK">
-          <label class="govuk-label govuk-radios__label" for="model[other][transactionSources][0][schedule]">
+
+    <div class="govuk-radios__item">
+      <input class="govuk-radios__input" id="model[other][transactionSources][0][schedule]" name="model[other][transactionSources][0][schedule]" type="radio" value="WEEK">
+      <label class="govuk-label govuk-radios__label" for="model[other][transactionSources][0][schedule]">
         Week
       </label>
 
-        </div>
+    </div>
 
 
 
@@ -2234,13 +2249,13 @@ data-module="govuk-service-navigation"
 
 
 
-        <div class="govuk-radios__item">
-          <input class="govuk-radios__input" id="model[other][transactionSources][0][schedule]-2" name="model[other][transactionSources][0][schedule]" type="radio" value="TWO_WEEKS">
-          <label class="govuk-label govuk-radios__label" for="model[other][transactionSources][0][schedule]-2">
+    <div class="govuk-radios__item">
+      <input class="govuk-radios__input" id="model[other][transactionSources][0][schedule]-2" name="model[other][transactionSources][0][schedule]" type="radio" value="TWO_WEEKS">
+      <label class="govuk-label govuk-radios__label" for="model[other][transactionSources][0][schedule]-2">
         Two weeks
       </label>
 
-        </div>
+    </div>
 
 
 
@@ -2249,13 +2264,13 @@ data-module="govuk-service-navigation"
 
 
 
-        <div class="govuk-radios__item">
-          <input class="govuk-radios__input" id="model[other][transactionSources][0][schedule]-3" name="model[other][transactionSources][0][schedule]" type="radio" value="FOUR_WEEKS">
-          <label class="govuk-label govuk-radios__label" for="model[other][transactionSources][0][schedule]-3">
+    <div class="govuk-radios__item">
+      <input class="govuk-radios__input" id="model[other][transactionSources][0][schedule]-3" name="model[other][transactionSources][0][schedule]" type="radio" value="FOUR_WEEKS">
+      <label class="govuk-label govuk-radios__label" for="model[other][transactionSources][0][schedule]-3">
         Four weeks
       </label>
 
-        </div>
+    </div>
 
 
 
@@ -2264,28 +2279,26 @@ data-module="govuk-service-navigation"
 
 
 
-        <div class="govuk-radios__item">
-          <input class="govuk-radios__input" id="model[other][transactionSources][0][schedule]-4" name="model[other][transactionSources][0][schedule]" type="radio" value="MONTH">
-          <label class="govuk-label govuk-radios__label" for="model[other][transactionSources][0][schedule]-4">
+    <div class="govuk-radios__item">
+      <input class="govuk-radios__input" id="model[other][transactionSources][0][schedule]-4" name="model[other][transactionSources][0][schedule]" type="radio" value="MONTH">
+      <label class="govuk-label govuk-radios__label" for="model[other][transactionSources][0][schedule]-4">
         Month
       </label>
 
-        </div>
+    </div>
 
 
 
 
   </div>
 
-
 </fieldset>
-
 
 </div>
 
 
 
-        <button class="govuk-link-button remove-row govuk-visually-hidden">Remove this expense source</button>
+        <button type="button" hidden="" class="govuk-link-button remove-row govuk-!-display-none">Remove this expense source</button>
 
 
   </div>
@@ -2299,18 +2312,13 @@ data-module="govuk-service-navigation"
 
 
 
-
-
-
-
-
-<button class="govuk-button govuk-button--secondary append-row" data-module="govuk-button">
+<button type="button" class="govuk-button govuk-button--secondary append-row" data-module="govuk-button" hidden="true">
   Add another expense
 </button>
 
   </div>
-
-            </div>
+  </div>
+  </div></div>
 
 
 
