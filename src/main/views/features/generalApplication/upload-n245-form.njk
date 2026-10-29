@@ -22,7 +22,10 @@
   {% endfor %}
   <form method="post" action="{{ currentUrl }}?_csrf={{ csrf }}" enctype='multipart/form-data' novalidate>
     {{ csrfProtection(csrf) }}
-    <div class="govuk-inset-text">
+    <div class="govuk-inset-text"
+      data-file-type-error="{{ t('ERRORS.VALID_MIME_TYPE_FILE') }}"
+      data-file-size-error="{{ t('ERRORS.VALID_SIZE_FILE') }}"
+      data-error-prefix="{{ t('ERRORS.ERROR') }}">
       {{ govukFileUpload({
                   id: idValue,
                   name: "selectedFile",

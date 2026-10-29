@@ -50,6 +50,14 @@ describe('item-content.njk UPLOAD_ARRAY', () => {
     expect(count(render(['statement.pdf']), 'class="row-container')).toBe(1);
   });
 
+  it('passes the file type and size messages to the upload script', () => {
+    const html = render([]);
+
+    expect(html).toContain('data-file-type-error="ERRORS.VALID_MIME_TYPE_FILE"');
+    expect(html).toContain('data-file-size-error="ERRORS.VALID_SIZE_FILE"');
+    expect(html).toContain('data-error-prefix="ERRORS.ERROR"');
+  });
+
   it('escapes file names', () => {
     expect(render(['<script>x</script>.pdf'])).not.toContain('<script>x</script>');
   });
