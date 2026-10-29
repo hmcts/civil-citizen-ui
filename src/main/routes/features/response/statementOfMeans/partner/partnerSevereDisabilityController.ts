@@ -4,7 +4,6 @@ import {PartnerSevereDisabilityService} from 'services/features/response/stateme
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {GenericForm} from 'form/models/genericForm';
 import {GenericYesNo} from 'form/models/genericYesNo';
-import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'common/models/AppRequest';
 import {getRouteParam} from 'common/utils/routeParamUtils';
 
@@ -18,7 +17,7 @@ function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
 
 partnerSevereDisabilityController.get(CITIZEN_PARTNER_SEVERE_DISABILITY_URL, (async (req, res, next: NextFunction) => {
   try {
-    const partnerSevereDisability = await partnerSevereDisabilityService.getPartnerSevereDisability(generateRedisKey(<AppRequest>req));
+    const partnerSevereDisability = await partnerSevereDisabilityService.getPartnerSevereDisability(<AppRequest>req);
     renderView(partnerSevereDisability, res);
   } catch (error) {
     next(error);
@@ -28,14 +27,14 @@ partnerSevereDisabilityController.get(CITIZEN_PARTNER_SEVERE_DISABILITY_URL, (as
 partnerSevereDisabilityController.post(CITIZEN_PARTNER_SEVERE_DISABILITY_URL,
   (async (req, res, next: NextFunction) => {
     try {
-      const claimId = getRouteParam(req, 'id');
+      const caseId = getRouteParam(req, 'id');
       const form: GenericForm<GenericYesNo> = new GenericForm(new GenericYesNo(req.body.option));
       form.validateSync();
       if (form.hasErrors()) {
         renderView(form, res);
       } else {
-        await partnerSevereDisabilityService.savePartnerSevereDisability(generateRedisKey(<AppRequest>req), form);
-        res.redirect(constructResponseUrlWithIdParams(claimId, CITIZEN_DEPENDANTS_URL));
+        await partnerSevereDisabilityService.savePartnerSevereDisability(<AppRequest>req, form);
+        res.redirect(constructResponseUrlWithIdParams(caseId, CITIZEN_DEPENDANTS_URL));
       }
     } catch (error) {
       next(error);
