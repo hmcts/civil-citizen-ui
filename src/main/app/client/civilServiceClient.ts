@@ -1,6 +1,7 @@
 import {Claim} from 'common/models/claim';
 import Axios, {AxiosError, AxiosHeaderValue, AxiosInstance, AxiosResponse} from 'axios';
 import {AssertionError} from 'assert';
+import {Readable} from 'stream';
 import {AppRequest, AppSession} from 'common/models/AppRequest';
 import {CivilClaimResponse, CivilServiceClaimFeeData, ClaimFeeData} from 'common/models/civilClaimResponse';
 import {
@@ -42,6 +43,7 @@ import {CourtLocation} from 'models/courts/courtLocations';
 import {convertToPoundsFilter} from 'common/utils/currencyFormat';
 import {translateCCDCaseDataToCUIModel} from 'services/translation/convertToCUI/cuiTranslation';
 import {FileResponse} from 'common/models/FileResponse';
+import {FileStreamResponse} from 'common/models/FileStreamResponse';
 import {FileUpload} from 'models/caseProgression/fileUpload';
 import {
   DashboardClaimantResponse,
@@ -440,6 +442,26 @@ export class CivilServiceClient {
     return new FileResponse(getResponseHeaderValue(response.headers['content-type']),
       getResponseHeaderValue(response.headers['original-file-name']),
       response.data as Buffer);
+  }
+
+  async retrieveDocumentStream(req: AppRequest, documentId: string): Promise<FileStreamResponse> {
+    // Stream rather than buffer: documents can be up to 1GB, which would not fit in the pod's memory
+    const response = await executeRequest(
+      () => this.client.get<Readable>(
+        CIVIL_SERVICE_DOWNLOAD_DOCUMENT_URL.replace(':documentId', documentId),
+        {...this.getConfig(req), responseType: 'stream'},
+      ),
+      (err) => {
+        logger.error(`Error when retrieving document, - documentId- ${documentId}`);
+        // The error body is an unread stream; destroy it so the connection to civil-service is released
+        (err as AxiosError<Readable>)?.response?.data?.destroy?.();
+      },
+    );
+
+    return new FileStreamResponse(getResponseHeaderValue(response.headers['content-type']),
+      getResponseHeaderValue(response.headers['original-file-name']),
+      getResponseHeaderValue(response.headers['content-length']),
+      response.data);
   }
 
   async submitDefendantResponseEvent(claimId: RouteParam, updatedClaim: ClaimUpdate, req: AppRequest): Promise<Claim> {
