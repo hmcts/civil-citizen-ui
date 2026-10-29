@@ -49,10 +49,11 @@
             {{ t('PAGES.SEND_YOUR_RESPONSE_BY_EMAIL.YOU_MUST_PAY_FEE') }}
             {{ t('PAGES.SEND_YOUR_RESPONSE_BY_EMAIL.DO_NOT_CREATE_NEW_CLAIM') }}
           </p>
-          <div class="govuk-inset-text">
+          {% set deadlineInsetHtml %}
            <h2 class="govuk-heading-s">{{ t('PAGES.SEND_YOUR_RESPONSE_BY_EMAIL.WE_MUST_RECEIVE_COMPLETED_FORM',
               { deadline: responseDeadline }) | safe }}</h2>
-          </div>
+          {% endset %}
+          {{ govukInsetText({ html: deadlineInsetHtml }) }}
 
           <h2 class="govuk-heading-m govuk-!-margin-bottom-4 govuk-!-font-weight-bold">{{ t('PAGES.SEND_YOUR_RESPONSE_BY_EMAIL.HOW_TO_COUNTERCLAIM') }}</h2>
           <span class="govuk-body govuk-!-margin-bottom-4 govuk-!-font-weight-bold">{{ t('PAGES.SEND_YOUR_RESPONSE_BY_EMAIL.STEP_1') }}</span>
@@ -83,19 +84,22 @@
           </p>
           <p class="govuk-body govuk-!-margin-bottom-4">{{ t('PAGES.SEND_YOUR_RESPONSE_BY_EMAIL.SEND_BY_POST') }}:</p>
           {% if signPosting %}
-            <div class="govuk-inset-text govuk-grid-column-two-third">{{ t('PAGES.SEND_YOUR_RESPONSE_BY_EMAIL.SIGN_POST_ADDRESS.NAME') }}
+            {% set addressInsetHtml %}
+              {{ t('PAGES.SEND_YOUR_RESPONSE_BY_EMAIL.SIGN_POST_ADDRESS.NAME') }}
               <p class="govuk-body govuk-!-margin-bottom-0">{{ t('PAGES.SEND_YOUR_RESPONSE_BY_EMAIL.SIGN_POST_ADDRESS.PO_BOX')}}</p>
               <p class="govuk-body govuk-!-margin-bottom-0">{{ t('PAGES.SEND_YOUR_RESPONSE_BY_EMAIL.SIGN_POST_ADDRESS.CITY')}}</p>
               <p class="govuk-body govuk-!-margin-bottom-0">{{ t('PAGES.SEND_YOUR_RESPONSE_BY_EMAIL.SIGN_POST_ADDRESS.POST_CODE')}}</p>
-            </div>
+            {% endset %}
           {% else %}
-            <div class="govuk-inset-text govuk-grid-column-two-third">{{ t('PAGES.SEND_YOUR_RESPONSE_BY_EMAIL.NON_SIGN_POST_ADDRESS.TITLE') }}
+            {% set addressInsetHtml %}
+              {{ t('PAGES.SEND_YOUR_RESPONSE_BY_EMAIL.NON_SIGN_POST_ADDRESS.TITLE') }}
               <p class="govuk-body govuk-!-margin-bottom-0">{{ t('PAGES.SEND_YOUR_RESPONSE_BY_EMAIL.NON_SIGN_POST_ADDRESS.NAME') }}</p>
               <p class="govuk-body govuk-!-margin-bottom-0">{{ t('PAGES.SEND_YOUR_RESPONSE_BY_EMAIL.NON_SIGN_POST_ADDRESS.STREET') }}</p>
               <p class="govuk-body govuk-!-margin-bottom-0">{{ t('PAGES.SEND_YOUR_RESPONSE_BY_EMAIL.NON_SIGN_POST_ADDRESS.CITY') }}</p>
               <p class="govuk-body govuk-!-margin-bottom-0">{{ t('PAGES.SEND_YOUR_RESPONSE_BY_EMAIL.NON_SIGN_POST_ADDRESS.POST_CODE') }}</p>
-             </div>
+            {% endset %}
           {% endif %}
+          {{ govukInsetText({ html: addressInsetHtml, classes: "govuk-grid-column-two-third" }) }}
 
           <div>
               <span class="govuk-body govuk-!-margin-bottom-2 govuk-!-font-weight-bold">{{ t('PAGES.SEND_YOUR_RESPONSE_BY_EMAIL.STEP_3') }}</span>
@@ -106,10 +110,11 @@
                 summaryText: t('PAGES.REJECT_ALL.VIEW_CLAIM_FEES'),
                 html: feesTable
               }) }}
-            <div class="govuk-inset-text govuk-grid-column-two-third">
+            {% set counterclaimInsetHtml %}
               <p class="govuk-body govuk-!-margin-bottom-0">{{ t('PAGES.SEND_YOUR_RESPONSE_BY_EMAIL.DO_NOT_CREATE_NEW_CLAIM_IF_WANT_COUNTERCLAIM') }}
                 {{ t('PAGES.SEND_YOUR_RESPONSE_BY_EMAIL.USE_FORM_N9B') }}</p>
-            </div>
+            {% endset %}
+            {{ govukInsetText({ html: counterclaimInsetHtml, classes: "govuk-grid-column-two-third" }) }}
           </div>
           <div>
           <h2 class="govuk-heading-m govuk-!-margin-bottom-2 govuk-!-font-weight-bold">{{ t('PAGES.SEND_YOUR_RESPONSE_BY_EMAIL.HELP_AND_SUPPORT') }}</h2>

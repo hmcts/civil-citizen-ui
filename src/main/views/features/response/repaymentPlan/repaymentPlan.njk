@@ -30,8 +30,12 @@
         {% set repaymentLengthHintText = t('PAGES.REPAYMENT_PLAN.ADMISSION_LENGTH_HINT_TEXT') %}
       {% endif %}
       {% set firstPaymentExample = t('PAGES.REPAYMENT_PLAN.FOR_EXAMPLE') + paymentExampleDate %}
+      {% set dateSummaryErrors = [] %}
+      {% for error in errors %}
+        {% set added = dateSummaryErrors.push({text: error.text, href: '#day' if error.property in ['firstRepaymentDate'] else error.href}) %}
+      {% endfor %}
       {% if form.hasErrors() %}
-        {{ errorSummary(errors,t,[{keyError:'ERRORS.FIRST_PAYMENT_MESSAGE',keyToReplace:'{{firstPaymentDate}}',valueToReplace:firstPaymentDate}]) }}
+        {{ errorSummary(dateSummaryErrors,t,[{keyError:'ERRORS.FIRST_PAYMENT_MESSAGE',keyToReplace:'{{firstPaymentDate}}',valueToReplace:firstPaymentDate}]) }}
       {% endif %}
 
   <form method="post" novalidate name="repaymentPlan">
@@ -130,7 +134,11 @@
     </div>
     <div class="govuk-grid-row">
       <div class="govuk-grid-column-two-thirds govuk-!-padding-top-5">
-        {{ govukDateInput({
+        {% set dateErrors = [] %}
+            {% for field in ['firstRepaymentDate', 'day', 'month', 'year'] %}
+              {% if form.errorFor(field) %}{% set dateErrors = (dateErrors.push(t(form.errorFor(field), {firstPaymentDate: firstPaymentDate}) | escape), dateErrors) %}{% endif %}
+            {% endfor %}
+            {{ govukDateInput({
           id: "firstRepaymentDate",
           type: "number",
           inputmode: "numeric",
@@ -146,13 +154,8 @@
             attributes: { id: "firstRepaymentDate-hint" }
           },
           attributes: { 'aria-describedby': 'firstRepaymentDate-hint' },
-          errorMessage: {
-            html: '<p class="govuk-error-message">' + t(form.errorFor('firstRepaymentDate'),{firstPaymentDate:firstPaymentDate}) + '</p>' +
-            '<p class="govuk-error-message">' + t(form.errorFor('day')) + '</p>' +
-            '<p class="govuk-error-message">' + t(form.errorFor('month')) + '</p>' +
-            '<p class="govuk-error-message">' + t(form.errorFor('year')) + '</p>'
-          } if (form.hasFieldError('firstRepaymentDate') or form.hasFieldError('day') or form.hasFieldError('month') or form.hasFieldError('year')),
-          items: [
+          errorMessage: { html: dateErrors | join('<br>') } if dateErrors.length,
+              items: [
             {
               label: t('COMMON.DAY'),
               id: "day",

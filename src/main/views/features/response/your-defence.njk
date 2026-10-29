@@ -1,6 +1,7 @@
 {% extends "claim-details-tpl.njk" %}
 {% from "govuk/components/textarea/macro.njk" import govukTextarea %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/inset-text/macro.njk" import govukInsetText %}
 {% from "../../macro/expandableSection.njk" import expandableSection %}
 {% from "../../macro/contact-us-for-help.njk" import contactUsForHelp with context %}
 {% from "../../macro/csrf.njk" import csrfProtection %}
@@ -51,11 +52,12 @@
               } if form.hasFieldError('text')
             }) }}
 
-            <div class="govuk-inset-text">
+            {% set claimantInsetHtml %}
               <p class="govuk-body">
                 {{ t('PAGES.YOUR_DEFENCE.CLAIMANT', { claimantFullName: claimantFullName }) | safe }}
               </p>
-            </div>
+            {% endset %}
+            {{ govukInsetText({ html: claimantInsetHtml }) }}
 
             <div class="govuk-form-group">
               {{ govukButton({

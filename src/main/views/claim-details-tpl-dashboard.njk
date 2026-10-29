@@ -1,5 +1,6 @@
 {% from "govuk/components/skip-link/macro.njk" import govukSkipLink %}
 {% from "govuk/components/phase-banner/macro.njk" import govukPhaseBanner %}
+{% from "govuk/components/breadcrumbs/macro.njk" import govukBreadcrumbs %}
 {% from "govuk/components/footer/macro.njk" import govukFooter %}
 {% from "./macro/page-title.njk" import setPageTitle %}
 {% from "./macro/header.njk" import headerComponent %}
@@ -56,25 +57,26 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 {% if backLinkUrl %}
   {{ back(backLinkUrl, t, false, false) }}
 {% elseif dashboardUrl %}
-    <nav class="govuk-breadcrumbs" aria-label="Breadcrumb">
-      <ol class="govuk-breadcrumbs__list">
-        <li class="govuk-breadcrumbs__list-item">
-          <a class="govuk-breadcrumbs__link" href="{{dashboardUrl}}">{{t('COMMON.HOME_CARM') if isCarm else t('COMMON.HOME')}}</a>
-        </li>
-        <li class="govuk-breadcrumbs__list-item">
-          {{t(pageTitle)}}
-        </li>
-      </ol>
-    </nav>
+  {{ govukBreadcrumbs({
+    items: [
+      {
+        text: t('COMMON.HOME_CARM') if isCarm else t('COMMON.HOME'),
+        href: dashboardUrl
+      },
+      {
+        text: t(pageTitle)
+      }
+    ]
+  }) }}
 {% elseif noCrumbs %}
 {% else %}
-    <nav class="govuk-breadcrumbs" aria-label="Breadcrumb">
-      <ol class="govuk-breadcrumbs__list">
-        <li class="govuk-breadcrumbs__list-item">
-          {{t('COMMON.HOME_CARM') if isCarm else t('COMMON.HOME')}}
-        </li>
-      </ol>
-    </nav>
+  {{ govukBreadcrumbs({
+    items: [
+      {
+        text: t('COMMON.HOME_CARM') if isCarm else t('COMMON.HOME')
+      }
+    ]
+  }) }}
 {% endif %}
 {% endblock %}
 
@@ -87,11 +89,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   {{ cookieBanner(t) }}
 {% endblock %}
 {% block content %}
+{% if form != null and form.hasErrors() %}
 <div class="govuk-grid-row">
-  {% if form != null and form.hasErrors() %}
-    {% block formErrorSummary %}{{ errorSummary(form.getAllErrors(), t) }}{% endblock %}
-  {% endif %}
+  {% block formErrorSummary %}{{ errorSummary(form.getAllErrors(), t) }}{% endblock %}
 </div>
+{% endif %}
 <div class="govuk-grid-row">
   <div class="govuk-grid-column-two-thirds">
     {% block nestedContent %}{% endblock %}
