@@ -5673,6 +5673,7 @@
     "DETAILS_REQUIRED": "Enter details",
     "DIRECTION_QUESTIONNAIRE_REQUIRED_MESSAGE": "Tell us if you believe the hearing requirement details on this page are true",
     "SPECIAL_CHARACTERS": "Special characters are not allowed",
+    "STANDARD_CHARACTERS_ONLY": "Enter alphanumerical characters or standard punctuation marks only",
     "DELAYED_FLIGHT": {
       "CLAIMING_FOR_DELAY_REQUIRED": "Select if you are claiming for a delayed flight or not"
     },
@@ -6099,6 +6100,7 @@
     "VALID_YOU_MUST_ENTER_DOI": "Enter the date the document was issued or message was sent",
     "VALID_DATE_WITNESS_SUMMARY": "Date summary was written is required",
     "VALID_ENTER_SUPPORT": "Enter the support requirements you, your experts or witnesses need",
+    "BREATHING_SPACE_LIFT_REASON_MAX_CHARACTERS": "Why is breathing space being lifted must be 1000 characters or less",
     "MEDIATION_VALID_YOU_MUST_ENTER_DOI": "Enter the date the statement was written or document was produced",
     "GENERAL_APPLICATION": {
       "ERROR_UNAVAILABLE_DATE_CONFIRMATION": "Select yes if there are any dates in the next 3 months when you cannot go to a hearing.",
