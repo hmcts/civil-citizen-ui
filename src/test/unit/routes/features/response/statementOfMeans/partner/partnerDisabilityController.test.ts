@@ -1,12 +1,11 @@
 import {Request, Response} from 'express';
 import partnerDisabilityController from '../../../../../../../main/routes/features/response/statementOfMeans/partner/partnerDisabilityController';
 import {CITIZEN_DEPENDANTS_URL, CITIZEN_PARTNER_SEVERE_DISABILITY_URL} from 'routes/urls';
-import {Claim} from 'models/claim';
+import {GenericForm} from 'form/models/genericForm';
+import {GenericYesNo} from 'form/models/genericYesNo';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {PartnerDisabilityService} from 'services/features/response/statementOfMeans/partner/partnerDisabilityService';
 import {createMockResponse, getRouteHandler} from '../../../../../../utils/getRouteHandler';
-
-jest.mock('modules/draft-store/draftStoreService');
 
 describe('Partner disability', () => {
   const getHandler = getRouteHandler(partnerDisabilityController, 'get');
@@ -16,18 +15,21 @@ describe('Partner disability', () => {
   let req: Partial<Request>;
   let res: ReturnType<typeof createMockResponse>;
   let next: jest.Mock;
-  const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
-  const mockGenerateRedisKey = draftStoreService.generateRedisKey as jest.Mock;
-  const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
+  let mockGetPartnerDisability: jest.SpyInstance;
+  let mockSavePartnerDisability: jest.SpyInstance;
 
   beforeEach(() => {
-    jest.clearAllMocks();
     req = {params: {id: claimId}, body: {}, query: {}, cookies: {}};
     res = createMockResponse();
     next = jest.fn();
-    mockGenerateRedisKey.mockReturnValue(claimId);
-    mockGetCaseData.mockResolvedValue(new Claim());
-    mockSaveDraftClaim.mockResolvedValue(undefined);
+    mockGetPartnerDisability = jest.spyOn(PartnerDisabilityService.prototype, 'getPartnerDisability')
+      .mockResolvedValue(new GenericForm(new GenericYesNo()));
+    mockSavePartnerDisability = jest.spyOn(PartnerDisabilityService.prototype, 'savePartnerDisability')
+      .mockResolvedValue(undefined);
+  });
+
+  afterEach(() => {
+    jest.restoreAllMocks();
   });
 
   describe('on GET', () => {
@@ -35,12 +37,13 @@ describe('Partner disability', () => {
       await getHandler(req as Request, res as unknown as Response, next);
 
       expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({form: expect.anything()}));
+      expect(mockGetPartnerDisability).toHaveBeenCalled();
       expect(next).not.toHaveBeenCalled();
     });
 
     it('should call next when loading the claim fails', async () => {
-      const error = new Error('redis failure');
-      mockGetCaseData.mockRejectedValue(error);
+      const error = new Error('draft failure');
+      mockGetPartnerDisability.mockRejectedValue(error);
 
       await getHandler(req as Request, res as unknown as Response, next);
 
@@ -54,7 +57,7 @@ describe('Partner disability', () => {
 
       expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({form: expect.anything()}));
       expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
-      expect(mockSaveDraftClaim).not.toHaveBeenCalled();
+      expect(mockSavePartnerDisability).not.toHaveBeenCalled();
     });
 
     it('should save and redirect to dependants when no is selected', async () => {
@@ -62,7 +65,7 @@ describe('Partner disability', () => {
 
       await postHandler(req as Request, res as unknown as Response, next);
 
-      expect(mockSaveDraftClaim).toHaveBeenCalled();
+      expect(mockSavePartnerDisability).toHaveBeenCalled();
       expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CITIZEN_DEPENDANTS_URL));
     });
 
@@ -71,12 +74,13 @@ describe('Partner disability', () => {
 
       await postHandler(req as Request, res as unknown as Response, next);
 
+      expect(mockSavePartnerDisability).toHaveBeenCalled();
       expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CITIZEN_PARTNER_SEVERE_DISABILITY_URL));
     });
 
     it('should call next when saving fails', async () => {
-      const error = new Error('redis failure');
-      mockGetCaseData.mockRejectedValue(error);
+      const error = new Error('draft failure');
+      mockSavePartnerDisability.mockRejectedValue(error);
       req.body = {option: 'yes'};
 
       await postHandler(req as Request, res as unknown as Response, next);
