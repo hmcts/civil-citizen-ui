@@ -6,13 +6,15 @@ describe('auto-upload-file', () => {
   let document: Document;
   let submitted: number;
 
-  function setupDom(saveButtonAttributes = '') {
+  function setupDom(saveButtonAttributes = '', uploadSlotsAttributes = '') {
     dom = new JSDOM(`<!DOCTYPE html><html><body>
       <form>
-        <div class="row-container govuk-inset-text">
-          <input type="text" id="typeOfDocument" name="typeOfDocument">
-          <input type="file" id="selectedFile" name="selectedFile" multiple>
-          <button class="js-auto-upload-button" name="action" value="uploadButton" ${saveButtonAttributes}>Save file</button>
+        <div class="file-upload-slots" ${uploadSlotsAttributes}>
+          <div class="row-container govuk-inset-text">
+            <input type="text" id="typeOfDocument" name="typeOfDocument">
+            <input type="file" id="selectedFile" name="selectedFile" multiple>
+            <button class="js-auto-upload-button" name="action" value="uploadButton" ${saveButtonAttributes}>Save file</button>
+          </div>
         </div>
       </form>
     </body></html>`, {runScripts: 'dangerously'});
@@ -29,11 +31,21 @@ describe('auto-upload-file', () => {
 
   const saveButton = () => document.querySelector('.js-auto-upload-button');
 
+  const fileInput = () => document.getElementById('selectedFile') as HTMLInputElement;
+  const fileProblem = () => document.querySelector('.js-file-problem');
+  const fileRules = 'data-file-type-error="Document must be Word, Excel, PowerPoint, PDF" data-file-size-error="Document must be less than 100MB"';
+
   function chooseFiles(...names: string[]) {
-    const fileInput = document.getElementById('selectedFile') as HTMLInputElement;
     const files = names.map((name) => new dom.window.File(['%PDF-1.4'], name, {type: 'application/pdf'}));
-    Object.defineProperty(fileInput, 'files', {value: files, configurable: true});
-    fileInput.dispatchEvent(new dom.window.Event('change'));
+    Object.defineProperty(fileInput(), 'files', {value: files, configurable: true});
+    fileInput().dispatchEvent(new dom.window.Event('change'));
+  }
+
+  function chooseFileOfSize(name: string, size: number) {
+    const file = new dom.window.File(['%PDF-1.4'], name, {type: 'application/pdf'});
+    Object.defineProperty(file, 'size', {value: size});
+    Object.defineProperty(fileInput(), 'files', {value: [file], configurable: true});
+    fileInput().dispatchEvent(new dom.window.Event('change'));
   }
 
   it('hides "Save file" and submits as soon as files are chosen', () => {
@@ -62,5 +74,68 @@ describe('auto-upload-file', () => {
     chooseFiles('evidence.pdf');
 
     expect(submitted).toBe(1);
+  });
+
+  it('limits the file picker to the allowed types when the page passes the file rules', () => {
+    setupDom(fileRules);
+
+    expect(fileInput().getAttribute('accept')).toContain('.pdf');
+    expect(fileInput().getAttribute('accept')).toContain('.tiff');
+  });
+
+  it('does not upload a file type that is not allowed and shows the type error', () => {
+    setupDom(fileRules);
+
+    chooseFiles('evidence.pdf', 'notes.foc');
+
+    expect(submitted).toBe(0);
+    expect(fileProblem().textContent).toContain('Document must be Word, Excel, PowerPoint, PDF');
+    expect(fileInput().getAttribute('aria-describedby')).toBe(fileProblem().id);
+  });
+
+  it('does not upload a file over 100MB and shows the size error', () => {
+    setupDom(fileRules);
+
+    chooseFileOfSize('scan.tif', 100 * 1024 * 1024 + 1);
+
+    expect(submitted).toBe(0);
+    expect(fileProblem().textContent).toContain('Document must be less than 100MB');
+  });
+
+  it('uploads a file of exactly 100MB', () => {
+    setupDom(fileRules);
+
+    chooseFileOfSize('scan.TIFF', 100 * 1024 * 1024);
+
+    expect(submitted).toBe(1);
+    expect(fileProblem()).toBeNull();
+  });
+
+  it('removes the error once an allowed file is chosen', () => {
+    setupDom(fileRules);
+    chooseFiles('notes.foc');
+
+    chooseFiles('evidence.pdf');
+
+    expect(fileProblem()).toBeNull();
+    expect(submitted).toBe(1);
+  });
+
+  it('reads the file rules from the upload area around the button', () => {
+    setupDom('', `${fileRules} data-error-prefix="Gwall"`);
+
+    chooseFiles('notes.foc');
+
+    expect(submitted).toBe(0);
+    expect(fileProblem().textContent).toBe('Gwall: Document must be Word, Excel, PowerPoint, PDF');
+  });
+
+  it('uploads any file when the page does not pass the file rules', () => {
+    setupDom();
+
+    chooseFiles('notes.foc');
+
+    expect(submitted).toBe(1);
+    expect(fileInput().hasAttribute('accept')).toBe(false);
   });
 });
