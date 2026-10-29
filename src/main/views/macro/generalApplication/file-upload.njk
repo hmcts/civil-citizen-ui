@@ -6,6 +6,7 @@
   <div class="file-upload-slots" data-single-upload-box="true"{% if uploadedRows.length %} data-has-uploaded-files="true"{% endif %}
     data-file-type-error="{{ t('ERRORS.VALID_MIME_TYPE_FILE') }}"
     data-file-size-error="{{ t('ERRORS.VALID_SIZE_FILE') }}"
+    data-too-many-files-error="{{ t('ERRORS.TOO_MANY_FILES') }}"
     data-error-prefix="{{ t('ERRORS.ERROR') }}">
     <div class="row-container govuk-inset-text">
       {% if caller %}{{ caller() }}{% endif %}
