@@ -40,6 +40,9 @@ const fileProblemFor = (files, fileRules) => {
 
 const formGroupOf = (fileInput) => fileInput.closest('.govuk-form-group') || fileInput.parentElement;
 
+const focusTargetFor = (fileInput) =>
+  fileInput.closest('.govuk-file-upload-wrapper')?.querySelector('.govuk-file-upload-button') || fileInput;
+
 function clearFileProblem(fileInput) {
   const formGroup = formGroupOf(fileInput);
   formGroup.querySelector('.js-file-problem')?.remove();
@@ -60,7 +63,7 @@ function showInErrorSummary(fileInput, message, summaryTitle) {
     summaryArea.prepend(summary);
   }
   const link = document.createElement('a');
-  link.href = `#${fileInput.id}`;
+  link.href = `#${focusTargetFor(fileInput).id}`;
   link.textContent = message;
   const item = document.createElement('li');
   item.append(link);
@@ -73,7 +76,8 @@ function showFileProblem(fileInput, message, fileRules) {
   const formGroup = formGroupOf(fileInput);
   formGroup.querySelectorAll('.govuk-error-message').forEach((oldError) => oldError.remove());
   const error = document.createElement('p');
-  error.id = `${fileInput.id}-file-problem`;
+  const focusTarget = focusTargetFor(fileInput);
+  error.id = `${focusTarget.id}-file-problem`;
   error.className = 'govuk-error-message js-file-problem';
   const hiddenPrefix = document.createElement('span');
   hiddenPrefix.className = 'govuk-visually-hidden';
@@ -86,7 +90,7 @@ function showFileProblem(fileInput, message, fileRules) {
     formGroup.prepend(error);
   }
   formGroup.classList.add(FORM_GROUP_ERROR_CLASS);
-  fileInput.setAttribute('aria-describedby', error.id);
+  focusTarget.setAttribute('aria-describedby', error.id);
   fileInput.value = '';
   fileInput.dataset.clearingRejectedFiles = 'true';
   fileInput.dispatchEvent(new window.Event('change'));
