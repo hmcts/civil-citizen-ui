@@ -21,6 +21,7 @@ import {
   CIVIL_SERVICE_HEARING_URL,
   CIVIL_SERVICE_SUBMIT_EVENT,
   CIVIL_SERVICE_UPLOAD_DOCUMENT_URL,
+  CIVIL_SERVICE_DELETE_DOCUMENT_URL,
   CIVIL_SERVICE_USER_CASE_ROLE,
   CIVIL_SERVICE_VALIDATE_OCMC_PIN_URL,
   CIVIL_SERVICE_VALIDATE_PIN_URL,
@@ -428,6 +429,13 @@ export class CivilServiceClient {
       return JSON.parse(decodedString) as CaseDocument;
     }
     return response.data as CaseDocument;
+  }
+
+  async deleteDocument(req: AppRequest, documentId: string): Promise<void> {
+    await executeRequest(
+      () => this.client.delete(CIVIL_SERVICE_DELETE_DOCUMENT_URL.replace(':documentId', documentId), this.getConfig(req)),
+      `Error when deleting document, - documentId- ${documentId}`,
+    );
   }
 
   async retrieveDocument(req: AppRequest, documentId: string ) {

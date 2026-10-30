@@ -3,11 +3,15 @@ import {
   createMulterUpload,
   createMulterErrorMiddleware,
   createMulterErrorMiddlewareForSingleField,
+  createMulterErrorMiddlewareForMultipleFiles,
+  MAX_FILES_PER_UPLOAD,
   createFileUploadError,
   getMulterErrorConstraint,
   extractCategoryAndIndex,
   createUploadOneFileError,
   uploadAndValidateFile,
+  collectDocumentUrls,
+  deleteRemovedDocuments,
 } from 'common/utils/fileUploadUtils';
 import {FILE_SIZE_LIMIT} from 'form/validators/isFileSize';
 
@@ -75,6 +79,19 @@ describe('fileUploadUtils', () => {
       expect(multer.memoryStorage).toHaveBeenCalledWith({
         limits: {
           fileSize: customLimit,
+        },
+      });
+    });
+
+    it('should limit the number of files when a maximum is given', () => {
+      const multer = require('multer');
+      createMulterUpload(FILE_SIZE_LIMIT, 3);
+
+      expect(multer).toHaveBeenCalledWith({
+        storage: {},
+        limits: {
+          fileSize: FILE_SIZE_LIMIT,
+          files: 3,
         },
       });
     });
@@ -261,6 +278,82 @@ describe('fileUploadUtils', () => {
     });
   });
 
+  describe('createMulterErrorMiddlewareForMultipleFiles', () => {
+    const pdfFile = (name: string, content: string) => ({
+      fieldname: 'selectedFile',
+      originalname: name,
+      mimetype: 'application/pdf',
+      size: content.length,
+      buffer: Buffer.from(content),
+    } as Express.Multer.File);
+    let mockReq: Partial<Request>;
+    let mockNext: NextFunction;
+    let arrayFieldName: string;
+
+    const mockMulterArray = (error: unknown = null) => {
+      const multer = require('multer');
+      multer.mockReturnValue({
+        any: jest.fn(),
+        array: jest.fn((fieldName: string) => {
+          arrayFieldName = fieldName;
+          return (req: any, res: any, callback: any) => callback(error);
+        }),
+      });
+    };
+
+    beforeEach(() => {
+      mockReq = {headers: {'content-type': 'multipart/form-data'}};
+      mockNext = jest.fn();
+    });
+
+    it('should keep every chosen file for the field', () => {
+      mockReq.files = [pdfFile('first.pdf', '%PDF-1.4 first'), pdfFile('second.pdf', '%PDF-1.4 second')];
+      mockMulterArray();
+
+      createMulterErrorMiddlewareForMultipleFiles('selectedFile', 'testLogger')(mockReq as Request, {} as Response, mockNext);
+
+      expect(arrayFieldName).toBe('selectedFile');
+      expect(mockReq.files).toHaveLength(2);
+      expect((mockReq as any).multerError).toBeUndefined();
+      expect(mockNext).toHaveBeenCalled();
+    });
+
+    it('should reject the upload when any file has spoofed content', () => {
+      mockReq.files = [pdfFile('real.pdf', '%PDF-1.4 real'), pdfFile('spoofed.pdf', 'not a pdf')];
+      mockMulterArray();
+
+      createMulterErrorMiddlewareForMultipleFiles('selectedFile', 'testLogger')(mockReq as Request, {} as Response, mockNext);
+
+      expect((mockReq as any).multerError).toEqual({
+        code: 'LIMIT_UNEXPECTED_FILE',
+        message: 'File content type is not allowed',
+      });
+      expect(mockReq.files).toBeUndefined();
+      expect(mockNext).toHaveBeenCalled();
+    });
+
+    it('should limit how many files can be sent at once', () => {
+      const multer = require('multer');
+      mockMulterArray();
+
+      createMulterErrorMiddlewareForMultipleFiles('selectedFile', 'testLogger')(mockReq as Request, {} as Response, mockNext);
+
+      expect(multer).toHaveBeenLastCalledWith(expect.objectContaining({
+        limits: expect.objectContaining({files: MAX_FILES_PER_UPLOAD}),
+      }));
+    });
+
+    it('should set multerError on request when multer error occurs', () => {
+      const multerError = {code: 'LIMIT_FILE_SIZE', message: 'File too large', field: 'selectedFile'};
+      mockMulterArray(multerError);
+
+      createMulterErrorMiddlewareForMultipleFiles('selectedFile', 'testLogger')(mockReq as Request, {} as Response, mockNext);
+
+      expect((mockReq as any).multerError).toEqual(multerError);
+      expect(mockNext).toHaveBeenCalled();
+    });
+  });
+
   describe('createFileUploadError', () => {
     it('should create correct error structure', () => {
       const error = createFileUploadError('documentsReferred', 0, 'isAllowedMimeType', 'ERRORS.VALID_MIME_TYPE_FILE');
@@ -303,6 +396,13 @@ describe('fileUploadUtils', () => {
       const result = getMulterErrorConstraint(error);
 
       expect(result).toBe('ERRORS.VALID_SIZE_FILE');
+    });
+
+    it('should return TOO_MANY_FILES for LIMIT_FILE_COUNT error', () => {
+      const error = {code: 'LIMIT_FILE_COUNT'};
+      const result = getMulterErrorConstraint(error);
+
+      expect(result).toBe('ERRORS.TOO_MANY_FILES');
     });
 
     it('should return VALID_MIME_TYPE_FILE for LIMIT_UNEXPECTED_FILE error', () => {
@@ -438,6 +538,68 @@ describe('fileUploadUtils', () => {
       await uploadAndValidateFile(mockReq, 'documentsReferred[0][uploadButton]', form, { uploadDocument: mockUploadDocument });
       expect(form.errors).toHaveLength(1);
       expect(form.errors[0].children[0].children[0].constraints.unexpectedError).toBe('ERRORS.FILE_UPLOAD_FAILED');
+    });
+  });
+
+  describe('collectDocumentUrls', () => {
+    it('should collect document urls from nested sections', () => {
+      const draft = {
+        witnessStatement: [{caseDocuments: [
+          {documentLink: {document_url: 'http://dm/documents/a'}},
+          {documentLink: {document_url: 'http://dm/documents/b'}},
+        ]}],
+        trialDocumentary: [{caseDocuments: [{documentLink: {document_url: 'http://dm/documents/c'}}]}],
+      };
+      expect([...collectDocumentUrls(draft)]).toEqual(['http://dm/documents/a', 'http://dm/documents/b', 'http://dm/documents/c']);
+    });
+
+    it('should return no urls for empty values', () => {
+      expect(collectDocumentUrls(undefined).size).toBe(0);
+      expect(collectDocumentUrls(null).size).toBe(0);
+    });
+  });
+
+  describe('deleteRemovedDocuments', () => {
+    const req = {} as Request;
+    const doc = (id: string) => ({documentLink: {document_url: `http://dm/documents/${id}`}});
+
+    it('should delete only documents removed from the saved draft', async () => {
+      const client = {deleteDocument: jest.fn().mockResolvedValue(undefined)};
+      const saved = {witnessStatement: [{caseDocuments: [doc('a'), doc('b')]}]};
+      const updated = {witnessStatement: [{caseDocuments: [doc('b')]}]};
+
+      await deleteRemovedDocuments(req, saved, updated, client);
+
+      expect(client.deleteDocument).toHaveBeenCalledTimes(1);
+      expect(client.deleteDocument).toHaveBeenCalledWith(req, 'a');
+    });
+
+    it('should delete every document of a removed section', async () => {
+      const client = {deleteDocument: jest.fn().mockResolvedValue(undefined)};
+      const saved = {witnessStatement: [{caseDocuments: [doc('a')]}, {caseDocuments: [doc('b'), doc('c')]}]};
+      const updated = {witnessStatement: [{caseDocuments: [doc('a')]}]};
+
+      await deleteRemovedDocuments(req, saved, updated, client);
+
+      expect(client.deleteDocument.mock.calls.map((call: any[]) => call[1])).toEqual(['b', 'c']);
+    });
+
+    it('should never delete documents that are only in the posted form', async () => {
+      const client = {deleteDocument: jest.fn().mockResolvedValue(undefined)};
+      const saved = {witnessStatement: [{caseDocuments: [doc('a')]}]};
+      const updated = {witnessStatement: [{caseDocuments: [doc('a'), doc('someone-elses')]}]};
+
+      await deleteRemovedDocuments(req, saved, updated, client);
+
+      expect(client.deleteDocument).not.toHaveBeenCalled();
+    });
+
+    it('should not throw when document management refuses a delete', async () => {
+      const client = {deleteDocument: jest.fn().mockRejectedValue(new Error('403'))};
+      const saved = {witnessStatement: [{caseDocuments: [doc('a')]}]};
+
+      await expect(deleteRemovedDocuments(req, saved, {witnessStatement: []}, client)).resolves.toBeUndefined();
+      expect(client.deleteDocument).toHaveBeenCalledWith(req, 'a');
     });
   });
 });
