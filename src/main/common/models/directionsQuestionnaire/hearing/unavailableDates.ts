@@ -24,7 +24,7 @@ export class UnavailableDates {
   @ValidateNested()
     items?: UnavailableDatePeriod[];
 
-  [key: string]: UnavailableDatePeriod[];
+  [key: string]: UnavailableDatePeriod[] | undefined;
 
   constructor(items?: UnavailableDatePeriod[]) {
     this.items = items;
@@ -80,7 +80,7 @@ export class UnavailableDatePeriod {
   @Min(1872, {message: 'ERRORS.ENTER_YEAR_FOR_UNAVAILABILITY_TO'})
     endYear?: number;
 
-  [key: string]: UnavailableDateType | Date | number;
+  [key: string]: UnavailableDateType | Date | number | undefined;
   constructor(type?: UnavailableDateType, paramsFrom?: Record<string, string>, paramsUntil?: Record<string, string>) {
     this.type = type;
     this.from = DateConverter.convertToDate(paramsFrom?.year, paramsFrom?.month, paramsFrom?.day);
@@ -118,7 +118,7 @@ function generateErrorMessage(args: ValidationArgs<UnavailableDatePeriod>): stri
       if (!args.object.from && !args.object.until) {
         return 'ERRORS.ENTER_DATES_FOR_UNAVAILABILITY';
       }
-      break;
+      return 'ERRORS.ENTER_DATE_FOR_UNAVAILABILITY_TO';
     default:
       return 'ERRORS.ENTER_DATE_FOR_UNAVAILABILITY';
   }
@@ -138,6 +138,7 @@ function generateErrorMessageForIsDate(args: ValidationArgs<UnavailableDatePerio
   if (args.object.type === UnavailableDateType.LONGER_PERIOD && (args.object.until || args.object.endDay || args.object.endMonth || args.object.endYear)) {
     return 'ERRORS.ENTER_DATE_FOR_UNAVAILABILITY_FROM';
   }
+  return 'ERRORS.ENTER_DATE_FOR_UNAVAILABILITY_FROM';
 }
 
 function generateErrorMessageForDateNotInPastValidator(args: ValidationArgs<UnavailableDatePeriod>): string {
