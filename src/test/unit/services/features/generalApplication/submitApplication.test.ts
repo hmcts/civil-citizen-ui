@@ -1,5 +1,3 @@
-import {app} from '../../../../../main/app';
-import request from 'supertest';
 import {Claim} from 'models/claim';
 import {GeneralApplication} from 'models/generalApplication/GeneralApplication';
 import {ApplicationType, ApplicationTypeOption} from 'models/generalApplication/applicationType';
@@ -15,7 +13,6 @@ jest.mock('../../../../../main/modules/draft-store/draftStoreService');
 jest.mock('../../../../../main/modules/utilityService');
 
 const mockGetClaim = utilityService.getClaimById as jest.Mock;
-request(app);
 
 describe('Submit application to ccd', () => {
   const claim = new Claim();

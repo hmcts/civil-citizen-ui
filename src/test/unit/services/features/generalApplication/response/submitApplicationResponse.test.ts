@@ -1,5 +1,3 @@
-import {app} from '../../../../../../main/app';
-import request from 'supertest';
 import {Claim} from 'models/claim';
 import {req} from '../../../../../utils/UserDetails';
 import {AppRequest} from 'models/AppRequest';
@@ -24,7 +22,6 @@ jest.mock('../../../../../../main/services/features/generalApplication/response/
 
 const mockGetDraftGARespondentResponse = GeneralApplicationResponseStoreService.getDraftGARespondentResponse as jest.Mock;
 const ccdTranslationServiceMock = configureSpy(CcdTraslation, 'toCcdGeneralApplicationWithResponse');
-request(app);
 
 describe('Submit application to ccd', () => {
   const claim = new Claim();
