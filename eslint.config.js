@@ -26,6 +26,7 @@ module.exports = [
       'src/main/types/**',
       'jest.*config.js',
       '.semgrep/**',
+      'performance/**',
     ],
   },
   {
