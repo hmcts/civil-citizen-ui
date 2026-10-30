@@ -3,7 +3,7 @@
 {% from "../../../macro/csrf.njk" import csrfProtection %}
 {% from "../../../macro/heading-with-caption.njk" import headingWithCaption %}
 {% from "../../../macro/button.njk" import addButton %}
-{% from "../../../macro/generalApplication/file-upload.njk" import gaFileUpload, gaDeleteFileButton %}
+{% from "../../../macro/generalApplication/file-upload.njk" import gaFileUpload, gaUploadedFiles %}
 
 {% block pageTitle %}
   {{ setPageTitle(t, 'PAGES.GENERAL_APPLICATION.RESPONDENT_UPLOAD_DOCUMENTS.TITLE') }}
@@ -27,21 +27,7 @@
             errorText: t(errors.text) if errors,
             summaryRows: formattedSummary.summaryList.rows
           }) }}
-          {% if formattedSummary.summaryList.rows.length > 0 %}
-            <h2 class="govuk-heading-m">{{ t('PAGES.GENERAL_APPLICATION.UPLOAD_DOCUMENTS.LIST_TITLE') }}</h2>
-            {% for row in formattedSummary.summaryList.rows  %}
-              <dl class="govuk-summary-list">
-                <div class="govuk-summary-list__row">
-                    <dt class="govuk-summary-list__key">
-                      {{ row.key.text }}
-                    </dt>
-                  <dd class="govuk-summary-list__actions">
-                    {{ gaDeleteFileButton(t, row.key.text, loop.index0, row.documentId) }}
-                  </dd>
-                </div>
-              </dl>
-            {% endfor %}
-          {% endif %}
+          {{ gaUploadedFiles(t, formattedSummary.summaryList.rows) }}
           <div class="govuk-button-group govuk-!-margin-top-8">
           {{ addButton(t, 'CONTINUE', cancelUrl) }}
           </div>
