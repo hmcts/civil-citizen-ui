@@ -33,11 +33,12 @@ export const seedUiPreviewFixtures = async (
   if (!source?.case_data) throw new Error('Missing preview base claim');
   const draft = rows.find(row => row.id === 'someID');
   if (!draft) throw new Error('Missing preview user draft');
-  draft.case_data = JSON.parse(JSON.stringify(source.case_data));
-  delete draft.case_data.id;
-  delete draft.case_data.ccdState;
-  delete draft.case_data.submittedDate;
-  draft.case_data.draftClaimCreatedAt = now.toISOString();
+  const draftData: Record<string, unknown> = JSON.parse(JSON.stringify(source.case_data));
+  delete draftData.id;
+  delete draftData.ccdState;
+  delete draftData.submittedDate;
+  draftData.draftClaimCreatedAt = now.toISOString();
+  draft.case_data = draftData;
   source.case_data.caseRole = '[DEFENDANT]'; // Preview-only ownership metadata.
   const gaRows: Fixture[] = JSON.parse(JSON.stringify(gaBaseline));
   // All writes and expiries finish before readiness. Any failure rejects startup.
