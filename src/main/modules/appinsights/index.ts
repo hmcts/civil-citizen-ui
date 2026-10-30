@@ -1,6 +1,13 @@
 import config from 'config';
 
 const appInsights = require('applicationinsights');
+// @hmcts/nodejs-logging (winston 2) is loaded before Application Insights, from PII
+// redaction in server.ts. Its console transport writes to process.stderr, which
+// console auto-collection does not see. Requiring winston now that the
+// diagnostic-channel publisher is registered patches Logger.prototype, so
+// logger.error calls made afterwards are sent as traces. This must happen
+// before any logger is created in this process.
+require('winston');
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('appInsights');
 
@@ -28,6 +35,7 @@ export class AppInsights {
     const instrumentationKey = config.get<string>('appInsights.instrumentationKey');
     if (instrumentationKey) {
       appInsights.setup(instrumentationKey)
+        .setAutoCollectConsole(true, true)
         .setSendLiveMetrics(true)
         .start();
 

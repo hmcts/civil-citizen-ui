@@ -41,6 +41,9 @@ import {isUserCaseRolesSessionCacheEnabled} from '../../../../main/app/auth/laun
 import {MissingPaymentReferenceError} from 'common/utils/routeParamUtils';
 
 jest.mock('axios');
+jest.mock('applicationinsights', () => ({
+  defaultClient: {trackException: jest.fn()},
+}));
 jest.mock('../../../../main/app/auth/launchdarkly/launchDarklyClient');
 const isUserCaseRolesSessionCacheEnabledMock = isUserCaseRolesSessionCacheEnabled as jest.Mock;
 const mockedAxios = axios as jest.Mocked<typeof axios>;
@@ -907,7 +910,7 @@ describe('Civil Service Client', () => {
 
         //Then
         expect(loggerSpy).toHaveBeenCalledWith(
-          'Submit event failed (event=INITIATE_GENERAL_APPLICATION, claimId=123, status=422)',
+          expect.stringContaining('Submit event failed (event=INITIATE_GENERAL_APPLICATION, claimId=123, status=422)'),
           {
             body: {
               exception: 'CaseValidationException',
@@ -924,6 +927,7 @@ describe('Civil Service Client', () => {
             },
           },
         );
+        expect(loggerSpy.mock.calls[0][0]).toContain(apiError.stack);
         const loggedMetadata = loggerSpy.mock.calls[0][1] as { body: Record<string, unknown> };
         expect(loggedMetadata.body).not.toHaveProperty('caseDataUpdate');
         expect(loggedMetadata.body).not.toHaveProperty('config');
