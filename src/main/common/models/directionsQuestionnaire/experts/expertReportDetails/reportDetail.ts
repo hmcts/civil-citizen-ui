@@ -7,7 +7,7 @@ export class ReportDetail {
   @ValidateIf(o => o.isAtLeastOneFieldPopulated())
   @IsNotEmpty({message: 'ERRORS.EXPERT_NAME_REQUIRED'})
   @IsDefined({message: 'ERRORS.EXPERT_NAME_REQUIRED'})
-    expertName: string;
+    expertName?: string;
 
   @ValidateIf(o => ((o.day > 0 && o.day < 32 && o.month > 0 && o.month < 13 && o.year > 999) ||
     o.isDayAndMonthAndYearNotAvailable()) && o.isAtLeastOneFieldPopulated())
@@ -40,7 +40,7 @@ export class ReportDetail {
     this.day = Number(day);
   }
 
-  static fromObject(value?: Record<string, string>): ReportDetail {
+  static fromObject(value: Record<string, string>): ReportDetail {
     const expertName = value.expertName;
     const year = value.year;
     const month = value.month;
@@ -48,8 +48,8 @@ export class ReportDetail {
     return new ReportDetail(expertName, year, month, day);
   }
 
-  static fromJson(value?: ReportDetail): ReportDetail {
-    const reportDate = new Date(value.reportDate);
+  static fromJson(value: ReportDetail): ReportDetail {
+    const reportDate = new Date(value.reportDate ?? '');
     const expertName = value.expertName;
     const year = reportDate.getFullYear().toString();
     const month = (reportDate.getMonth() + 1).toString();

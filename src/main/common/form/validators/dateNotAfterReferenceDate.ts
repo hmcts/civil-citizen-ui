@@ -8,6 +8,9 @@ import {getNumberOfDaysBetweenTwoDays} from '../../utils/dateUtils';
 export class DateNotAfterReferenceDate implements ValidatorConstraintInterface {
 
   validate(inputDate: Date, validationArguments?: ValidationArguments) {
+    if (!validationArguments) {
+      return true;
+    }
     const property = validationArguments.constraints[0];
     const referenceDate = (validationArguments.object as any)[property];
     const daysBetweenTwoDates = getNumberOfDaysBetweenTwoDays(inputDate, referenceDate);

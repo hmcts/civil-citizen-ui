@@ -46,4 +46,11 @@ describe('Convert to valid Date', () => {
     //Then
     expect(result.toDateString()).toBe('Invalid Date');
   });
+
+  it('should return undefined when any date field is missing', () => {
+    //When
+    const result = DateConverter.convertToDate(undefined, '2', '1');
+    //Then
+    expect(result).toBeUndefined();
+  });
 });

@@ -7,7 +7,7 @@ const generateErrorMessage = (messageName: string): string => {
 
 const withMessage = (buildErrorFn: (messageName: string) => string) => {
   return (args: ValidationArgs<GenericYesNo>): string => {
-    return buildErrorFn(args.object.messageName);
+    return buildErrorFn(args.object.messageName ?? '');
   };
 };
 
