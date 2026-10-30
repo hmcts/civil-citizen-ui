@@ -6,7 +6,7 @@ export class CaseDocumentInfoExtractor {
   static getSystemGeneratedCaseDocumentIdByType = ((systemGeneratedCaseDocuments: SystemGeneratedCaseDocuments[], documentType: DocumentType, defendantOrClaimant?: string) => {
     const sealedDocument = systemGeneratedCaseDocuments.find((document) => {
       if (documentType == DocumentType.DIRECTIONS_QUESTIONNAIRE) {
-        return document.value.documentType === documentType && document.value.documentName.startsWith(defendantOrClaimant);
+        return document.value.documentType === documentType && defendantOrClaimant !== undefined && document.value.documentName.startsWith(defendantOrClaimant);
       }
       if (documentType == DocumentType.SEALED_CLAIM) {
         if (defendantOrClaimant === 'defendant') {

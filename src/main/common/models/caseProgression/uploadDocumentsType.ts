@@ -21,9 +21,9 @@ export class UploadDocuments {
     trial?: UploadDocumentTypes[];
   otherManaged?: UploadDocumentTypes[];
   @Validate(AtLeastOneCheckboxSelectedValidator, {message: 'ERRORS.VALID_ENTER_AT_LEAST_ONE_UPLOAD' })
-    checkboxGrp?: boolean [];
+    checkboxGrp?: (boolean | undefined)[];
 
-  [key: string]: string | UploadDocumentTypes[] | boolean[];
+  [key: string]: string | UploadDocumentTypes[] | (boolean | undefined)[] | undefined;
   constructor(disclosure?: UploadDocumentTypes[],witness?: UploadDocumentTypes[],expert?: UploadDocumentTypes[],trial?: UploadDocumentTypes[], otherManaged?: UploadDocumentTypes[]) {
     this.disclosure = disclosure;
     this.witness = witness;
@@ -56,7 +56,8 @@ export class UploadDocumentTypes {
   }
 
   get createdDateTimeFormatted(): string {
-    return formatStringDateDMY(this.caseDocument?.createdDatetime);
+    const createdDatetime = this.caseDocument?.createdDatetime;
+    return createdDatetime ? formatStringDateDMY(createdDatetime) : '';
   }
 }
 

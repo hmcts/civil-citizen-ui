@@ -2,11 +2,11 @@ export function caseNumberPrettify(caseNumber: string) {
   return caseNumber.replace(/(.{4})(?! )(?=\S)/g, '$1 ');
 }
 
-export function documentIdExtractor(documentBinaryUrl: string){
+export function documentIdExtractor(documentBinaryUrl: string): string | undefined {
   if (documentBinaryUrl){
     const regex = /\/([\w-]+)\/binary$/;
     const match = regex.exec(documentBinaryUrl);
-    return match[1];
+    return match?.[1];
   }
   return documentBinaryUrl;
 }
@@ -34,7 +34,7 @@ export function removeWhiteSpacesIfNoText(text:string): string {
   }
 }
 
-export function convertToArrayOfStrings(data: string | string[]): string[] {
+export function convertToArrayOfStrings(data: string | string[]): string[] | undefined {
   if (typeof data === 'string') {
     // If it's a string, convert it to an array of characters
     return Array.of(data);
