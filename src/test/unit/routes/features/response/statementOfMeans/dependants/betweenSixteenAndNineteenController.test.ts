@@ -3,15 +3,15 @@ import betweenSixteenAndNineteenController from '../../../../../../../main/route
 import {CHILDREN_DISABILITY_URL, CITIZEN_OTHER_DEPENDANTS_URL} from 'routes/urls';
 import {Dependants} from 'form/models/statementOfMeans/dependants/dependants';
 import {NumberOfChildren} from 'form/models/statementOfMeans/dependants/numberOfChildren';
+import {BetweenSixteenAndNineteenDependants} from 'form/models/statementOfMeans/dependants/betweenSixteenAndNineteenDependants';
+import {GenericForm} from 'form/models/genericForm';
 import {GenericYesNo} from 'form/models/genericYesNo';
 import {YesNo} from 'form/models/yesNo';
 import {Claim} from 'models/claim';
 import {StatementOfMeans} from 'models/statementOfMeans';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import * as betweenSixteenAndNineteenService from 'services/features/response/statementOfMeans/dependants/betweenSixteenAndNineteenService';
 import {createMockResponse, getRouteHandler} from '../../../../../../utils/getRouteHandler';
-
-jest.mock('modules/draft-store/draftStoreService');
 
 describe('Dependant Teenagers', () => {
   const getHandler = getRouteHandler(betweenSixteenAndNineteenController, 'get');
@@ -21,9 +21,8 @@ describe('Dependant Teenagers', () => {
   let req: Partial<Request>;
   let res: ReturnType<typeof createMockResponse>;
   let next: jest.Mock;
-  const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
-  const mockGenerateRedisKey = draftStoreService.generateRedisKey as jest.Mock;
-  const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
+  let mockGetForm: jest.SpyInstance;
+  let mockSaveFormToDraftStore: jest.SpyInstance;
 
   const claimWhereChildrenMayBeDisabled = (): Claim => {
     const claim = new Claim();
@@ -34,13 +33,17 @@ describe('Dependant Teenagers', () => {
   };
 
   beforeEach(() => {
-    jest.clearAllMocks();
     req = {params: {id: claimId}, body: {}, query: {}, cookies: {}};
     res = createMockResponse();
     next = jest.fn();
-    mockGenerateRedisKey.mockReturnValue(claimId);
-    mockGetCaseData.mockResolvedValue(new Claim());
-    mockSaveDraftClaim.mockResolvedValue(undefined);
+    mockGetForm = jest.spyOn(betweenSixteenAndNineteenService, 'getForm')
+      .mockResolvedValue(new GenericForm(new BetweenSixteenAndNineteenDependants(undefined, 3)));
+    mockSaveFormToDraftStore = jest.spyOn(betweenSixteenAndNineteenService, 'saveFormToDraftStore')
+      .mockResolvedValue(new Claim());
+  });
+
+  afterEach(() => {
+    jest.restoreAllMocks();
   });
 
   describe('on GET', () => {
@@ -48,12 +51,13 @@ describe('Dependant Teenagers', () => {
       await getHandler(req as Request, res as unknown as Response, next);
 
       expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({form: expect.anything()}));
+      expect(mockGetForm).toHaveBeenCalled();
       expect(next).not.toHaveBeenCalled();
     });
 
     it('should call next when loading the claim fails', async () => {
-      const error = new Error('redis failure');
-      mockGetCaseData.mockRejectedValue(error);
+      const error = new Error('draft failure');
+      mockGetForm.mockRejectedValue(error);
 
       await getHandler(req as Request, res as unknown as Response, next);
 
@@ -67,7 +71,7 @@ describe('Dependant Teenagers', () => {
 
       expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({form: expect.anything()}));
       expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
-      expect(mockSaveDraftClaim).not.toHaveBeenCalled();
+      expect(mockSaveFormToDraftStore).not.toHaveBeenCalled();
     });
 
     it('should re-render when the number is negative', async () => {
@@ -99,12 +103,12 @@ describe('Dependant Teenagers', () => {
 
       await postHandler(req as Request, res as unknown as Response, next);
 
-      expect(mockSaveDraftClaim).toHaveBeenCalled();
+      expect(mockSaveFormToDraftStore).toHaveBeenCalled();
       expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CITIZEN_OTHER_DEPENDANTS_URL));
     });
 
     it('should redirect to children disability when children are treated as disabled', async () => {
-      mockGetCaseData.mockResolvedValue(claimWhereChildrenMayBeDisabled());
+      mockSaveFormToDraftStore.mockResolvedValue(claimWhereChildrenMayBeDisabled());
       req.body = {value: 1, maxValue: 3};
 
       await postHandler(req as Request, res as unknown as Response, next);
@@ -113,8 +117,8 @@ describe('Dependant Teenagers', () => {
     });
 
     it('should call next when saving fails', async () => {
-      const error = new Error('redis failure');
-      mockGetCaseData.mockRejectedValue(error);
+      const error = new Error('draft failure');
+      mockSaveFormToDraftStore.mockRejectedValue(error);
       req.body = {value: 1, maxValue: 3};
 
       await postHandler(req as Request, res as unknown as Response, next);
