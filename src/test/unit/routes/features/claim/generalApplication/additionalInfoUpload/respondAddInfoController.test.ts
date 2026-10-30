@@ -5,7 +5,10 @@ import {GaResponse} from 'models/generalApplication/response/gaResponse';
 import {constructResponseUrlWithIdAndAppIdParams} from 'common/utils/urlFormatter';
 import {getClaimById} from 'modules/utilityService';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
-import {getDraftGARespondentResponse} from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
+import {
+  getDraftGARespondentResponse,
+  saveDraftGARespondentResponse,
+} from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
 import {
   GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_CYA_URL,
   GA_UPLOAD_DOCUMENT_FOR_ADDITIONAL_INFO_URL,
@@ -30,6 +33,7 @@ describe('General Application - respond additional info', () => {
   const appId = 'GA-1001';
   const mockGetClaimById = getClaimById as jest.Mock;
   const mockGetResponse = getDraftGARespondentResponse as jest.Mock;
+  const mockSaveResponse = saveDraftGARespondentResponse as jest.Mock;
   const getApplication = jest.spyOn(GaServiceClient.prototype, 'getApplication');
   let req: {params: {id: string; appId: string}; body: Record<string, unknown>; query: Record<string, unknown>; cookies: Record<string, unknown>};
   let res: ReturnType<typeof createMockResponse>;
@@ -42,8 +46,9 @@ describe('General Application - respond additional info', () => {
     next = jest.fn();
     const response = new GaResponse();
     response.additionalText = 'More info';
-    mockGetClaimById.mockResolvedValue(new Claim());
-    mockGetResponse.mockResolvedValue(response);
+    mockGetClaimById.mockReset().mockResolvedValue(new Claim());
+    mockGetResponse.mockReset().mockResolvedValue(response);
+    mockSaveResponse.mockReset().mockResolvedValue(undefined);
     (draftStoreService.generateRedisKeyForGA as jest.Mock).mockReturnValue('ga-redis-key');
     getApplication.mockResolvedValue({} as never);
   });
@@ -61,9 +66,40 @@ describe('General Application - respond additional info', () => {
       }));
       expect(next).not.toHaveBeenCalled();
     });
+
+    it('should forward the original claim read error without rendering or redirecting', async () => {
+      const error = new Error('GA additional information claim read failed');
+      mockGetClaimById.mockRejectedValueOnce(error);
+
+      await getHandler(req as never, res as unknown as Response, next);
+
+      expect(mockGetClaimById).toHaveBeenCalledWith(claimId, req, true);
+      expect(next).toHaveBeenCalledTimes(1);
+      expect(next.mock.calls[0][0]).toBe(error);
+      expect(res.render).not.toHaveBeenCalled();
+      expect(res.redirect).not.toHaveBeenCalled();
+    });
   });
 
   describe('on POST', () => {
+    it('should forward the original save error without rendering or redirecting', async () => {
+      const error = new Error('GA additional information save failed');
+      req.body = {option: 'yes', additionalText: 'Additional details'};
+      mockSaveResponse.mockRejectedValueOnce(error);
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(mockSaveResponse).toHaveBeenCalledTimes(1);
+      expect(mockSaveResponse).toHaveBeenCalledWith('ga-redis-key', expect.objectContaining({
+        additionalText: 'Additional details',
+        wantToUploadAddlDocuments: 'yes',
+      }));
+      expect(next).toHaveBeenCalledTimes(1);
+      expect(next.mock.calls[0][0]).toBe(error);
+      expect(res.render).not.toHaveBeenCalled();
+      expect(res.redirect).not.toHaveBeenCalled();
+    });
+
     it('should re-render when no option or text is provided', async () => {
       req.body = {option: null, additionalText: null};
 

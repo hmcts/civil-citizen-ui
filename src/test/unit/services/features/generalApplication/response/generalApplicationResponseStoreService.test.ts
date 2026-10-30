@@ -3,13 +3,18 @@ jest.mock('../../../../../../main/app-instance', () => jest.requireActual('../..
 
 import { app } from '../../../../../../main/app-instance';
 import { GaResponse } from 'common/models/generalApplication/response/gaResponse';
-import { saveDraftGARespondentResponse, getDraftGARespondentResponse } from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
+import {
+  saveDraftGARespondentResponse,
+  getDraftGARespondentResponse,
+  deleteDraftGARespondentResponseFromStore,
+} from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
 
 const mockDraftStoreClient = {
   set: jest.fn(),
   ttl: jest.fn(),
   expireat: jest.fn(),
   get: jest.fn(),
+  del: jest.fn(),
 };
 const redisKey = 'test-key';
 let response: GaResponse;
@@ -81,6 +86,17 @@ describe('draftStoreService', () => {
 
       expect(mockDraftStoreClient.get).toHaveBeenCalledWith(redisKey);
       expect(result).toEqual(expect.any(GaResponse));
+    });
+  });
+
+  describe('deleteDraftGARespondentResponseFromStore', () => {
+    it('should delete only the requested respondent response key', async () => {
+      mockDraftStoreClient.del.mockResolvedValueOnce(1);
+
+      await deleteDraftGARespondentResponseFromStore(redisKey);
+
+      expect(mockDraftStoreClient.del).toHaveBeenCalledTimes(1);
+      expect(mockDraftStoreClient.del).toHaveBeenCalledWith(redisKey);
     });
   });
 });
