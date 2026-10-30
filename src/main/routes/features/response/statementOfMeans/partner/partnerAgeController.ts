@@ -10,7 +10,6 @@ import {DisabilityService} from 'services/features/response/statementOfMeans/dis
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {GenericForm} from 'form/models/genericForm';
 import {GenericYesNo} from 'form/models/genericYesNo';
-import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'common/models/AppRequest';
 import {getRouteParam} from 'common/utils/routeParamUtils';
 
@@ -25,7 +24,7 @@ function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
 
 partnerAgeController.get(CITIZEN_PARTNER_AGE_URL, (async (req, res, next: NextFunction) => {
   try {
-    const partnerAge = await partnerAgeService.getPartnerAge(generateRedisKey(<AppRequest>req));
+    const partnerAge = await partnerAgeService.getPartnerAge(<AppRequest>req);
     renderView(partnerAge, res);
   } catch (error) {
     next(error);
@@ -35,21 +34,20 @@ partnerAgeController.get(CITIZEN_PARTNER_AGE_URL, (async (req, res, next: NextFu
 partnerAgeController.post(CITIZEN_PARTNER_AGE_URL,
   (async (req, res, next: NextFunction) => {
     try {
-      const claimId = getRouteParam(req, 'id');
-      const redisKey = generateRedisKey(<AppRequest>req);
+      const caseId = getRouteParam(req, 'id');
       const form: GenericForm<GenericYesNo> = new GenericForm(new GenericYesNo(req.body.option));
       form.validateSync();
       if (form.hasErrors()) {
         renderView(form, res);
       } else {
-        await partnerAgeService.savePartnerAge(redisKey, form);
+        await partnerAgeService.savePartnerAge(<AppRequest>req, form);
         if (form.model.option == 'yes') {
-          res.redirect(constructResponseUrlWithIdParams(claimId, CITIZEN_PARTNER_PENSION_URL));
+          res.redirect(constructResponseUrlWithIdParams(caseId, CITIZEN_PARTNER_PENSION_URL));
         } else {
-          const disability = await disabilityService.getDisability(redisKey);
+          const disability = await disabilityService.getDisability(<AppRequest>req);
           disability.model.option == 'yes'
-            ? res.redirect(constructResponseUrlWithIdParams(claimId, CITIZEN_PARTNER_DISABILITY_URL))
-            : res.redirect(constructResponseUrlWithIdParams(claimId, CITIZEN_DEPENDANTS_URL));
+            ? res.redirect(constructResponseUrlWithIdParams(caseId, CITIZEN_PARTNER_DISABILITY_URL))
+            : res.redirect(constructResponseUrlWithIdParams(caseId, CITIZEN_DEPENDANTS_URL));
         }
       }
     } catch (error) {

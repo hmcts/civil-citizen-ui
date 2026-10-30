@@ -10,7 +10,6 @@ import {toNumberOrUndefined} from 'common/utils/numberConverter';
 import {GenericForm} from 'form/models/genericForm';
 import {PartAdmitHowMuchHaveYouPaidGuard} from 'routes/guards/partAdmitHowMuchHaveYouPaidGuard';
 import {AppRequest} from 'common/models/AppRequest';
-import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const howMuchDoYouOweViewPath = 'features/response/admission/partialAdmission/how-much-do-you-owe';
@@ -23,7 +22,7 @@ function renderView(form: GenericForm<HowMuchDoYouOwe>, res: Response) {
 howMuchDoYouOweController.get(CITIZEN_OWED_AMOUNT_URL, PartAdmitHowMuchHaveYouPaidGuard.apply(RESPONSE_TASK_LIST_URL), (async (req: Request, res: Response, next: NextFunction) => {
   try {
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-    const howMuchDoYouOweForm = await getHowMuchDoYouOweForm(generateRedisKey(<AppRequest>req), lang);
+    const howMuchDoYouOweForm = await getHowMuchDoYouOweForm(<AppRequest>req, lang);
     renderView(new GenericForm(howMuchDoYouOweForm), res);
   } catch (error) {
     next(error);
@@ -33,15 +32,14 @@ howMuchDoYouOweController.get(CITIZEN_OWED_AMOUNT_URL, PartAdmitHowMuchHaveYouPa
 howMuchDoYouOweController.post(CITIZEN_OWED_AMOUNT_URL, (async (req: Request, res: Response, next: NextFunction) => {
   try {
     const lang = req.query.lang ? req.query.lang : req.cookies.lang;
-    const redisKey = generateRedisKey(<AppRequest>req);
-    const savedValues = await getHowMuchDoYouOweForm(redisKey, lang);
+    const savedValues = await getHowMuchDoYouOweForm(<AppRequest>req, lang);
     const howMuchDoYouOwe = new HowMuchDoYouOwe(toNumberOrUndefined(req.body.amount), savedValues.totalAmount);
     const form = new GenericForm(howMuchDoYouOwe);
     await form.validate();
     if (form.hasErrors()) {
       renderView(form, res);
     } else {
-      await saveHowMuchDoYouOweData(redisKey, form.model);
+      await saveHowMuchDoYouOweData(<AppRequest>req, form.model);
       const claimId = getRouteParam(req, 'id');
       res.redirect(constructResponseUrlWithIdParams(claimId, RESPONSE_TASK_LIST_URL));
     }

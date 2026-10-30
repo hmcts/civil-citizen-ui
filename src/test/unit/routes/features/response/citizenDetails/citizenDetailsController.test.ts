@@ -2,7 +2,8 @@ import {app} from '../../../../../../main/app';
 import config from 'config';
 import request from 'supertest';
 import {CITIZEN_DETAILS_URL, CITIZEN_PHONE_NUMBER_URL, DOB_URL, RESPONSE_TASK_LIST_URL} from 'routes/urls';
-import {getDefendantInformation, saveDefendantProperty} from 'services/features/common/defendantDetailsService';
+import {saveDefendantPropertyToResponseDraft} from 'services/features/common/defendantDetailsService';
+import {getResponseDraft} from 'modules/draft-store/response/responseDraftStoreService';
 import {Claim} from 'models/claim';
 import {Party} from 'models/party';
 import {buildAddress} from '../../../../../utils/mockClaim';
@@ -10,19 +11,35 @@ import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 import {PartyType} from 'models/partyType';
 import {PartyDetails} from 'form/models/partyDetails';
 import {PartyPhone} from 'models/PartyPhone';
-import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import * as enVars from '../../../../../../main/modules/i18n/locales/en.json';
 import * as launchDarklyClient from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import * as ordnanceSurveyService from '../../../../../../main/modules/ordnance-survey-key/ordnanceSurveyKeyService';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('../../../../../../main/modules/draft-store/response/responseDraftStoreService');
 jest.mock('../../../../../../main/services/features/common/defendantDetailsService');
+jest.mock('../../../../../../main/services/features/claim/yourDetails/phoneService', () => ({
+  saveTelephoneToResponseDraft: jest.fn().mockResolvedValue(undefined),
+}));
 jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 jest.mock('../../../../../../main/modules/ordnance-survey-key/ordnanceSurveyKeyService');
 
-const mockGetRespondentInformation = getDefendantInformation as jest.Mock;
-const mockSaveRespondent = saveDefendantProperty as jest.Mock;
+const mockGetResponseDraft = getResponseDraft as jest.Mock;
+const mockSaveRespondent = saveDefendantPropertyToResponseDraft as jest.Mock;
+
+const mockRespondent = (respondent: Party = new Party()) => {
+  const draftClaim = new Claim();
+  draftClaim.submittedDate = new Date(2024, 5, 23);
+  draftClaim.respondent1 = respondent;
+  mockGetResponseDraft.mockResolvedValue({
+    claimResponse: {id: 'draft-123', case_data: draftClaim},
+    rawResponse: {draftId: 'draft-123', payload: draftClaim},
+    createdAt: '',
+    updatedAt: '',
+    expiresAt: '',
+  });
+};
 
 const claim = new Claim();
 
@@ -82,8 +99,6 @@ const validDataForPost = {
 
 const mockLookupByPostcode = ordnanceSurveyService.lookupByPostcodeAndDataSet as jest.Mock;
 const configureSpy = (service: any, method: string) => jest.spyOn(service, method).mockReset();
-const getCaseDataFromStoreSpy = (claim: Claim) => jest.spyOn(draftStoreService, 'getCaseDataFromStore')
-  .mockReturnValue(Promise.resolve(claim));
 const carmToggleSpy = (calmEnabled: boolean) => configureSpy(launchDarklyClient, 'isCarmEnabledForCase')
   .mockReturnValue(Promise.resolve(calmEnabled));
 
@@ -103,16 +118,14 @@ describe('Confirm Details page', () => {
       valid: true,
       addresses: [{ country: 'England' }],
     });
-    const mockClaim = { submittedDate: new Date(2024, 5, 23) } as Claim;
-    getCaseDataFromStoreSpy(mockClaim);
+    mockRespondent(new Party());
+    mockSaveRespondent.mockResolvedValue(undefined);
     carmToggleSpy(true);
   });
 
   describe('on Exception', () => {
     it('should return http 500 when has error in the get method', async () => {
-      mockGetRespondentInformation.mockImplementation(async () => {
-        throw new Error(TestMessages.REDIS_FAILURE);
-      });
+      mockGetResponseDraft.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
       await request(app)
         .get(CITIZEN_DETAILS_URL)
         .expect((res) => {
@@ -136,9 +149,7 @@ describe('Confirm Details page', () => {
   });
 
   it('should return your details page with empty information', async () => {
-    mockGetRespondentInformation.mockImplementation(async () => {
-      return new Party();
-    });
+    mockRespondent(new Party());
     await request(app)
       .get(CITIZEN_DETAILS_URL)
       .expect((res) => {
@@ -148,9 +159,7 @@ describe('Confirm Details page', () => {
   });
 
   it('should return your details page with information', async () => {
-    mockGetRespondentInformation.mockImplementation(async () => {
-      return buildClaimOfRespondent();
-    });
+    mockRespondent(buildClaimOfRespondent());
     await request(app)
       .get(CITIZEN_DETAILS_URL)
       .expect((res) => {
@@ -169,9 +178,7 @@ describe('Confirm Details page', () => {
       claim.respondent1.partyDetails.primaryAddress = buildAddress();
       return claim.respondent1;
     };
-    mockGetRespondentInformation.mockImplementation(async () => {
-      return buildClaimOfRespondentWithoutCorrespondent();
-    });
+    mockRespondent(buildClaimOfRespondentWithoutCorrespondent());
     await request(app)
       .get(CITIZEN_DETAILS_URL)
       .expect((res) => {
@@ -181,9 +188,7 @@ describe('Confirm Details page', () => {
   });
 
   it('should return your details company page', async () => {
-    mockGetRespondentInformation.mockImplementation(async () => {
-      return buildClaimOfRespondentType(PartyType.COMPANY);
-    });
+    mockRespondent(buildClaimOfRespondentType(PartyType.COMPANY));
     await request(app)
       .get(CITIZEN_DETAILS_URL)
       .expect((res) => {
@@ -194,9 +199,7 @@ describe('Confirm Details page', () => {
   });
 
   it('should return mandatory contact person label and error on empty contact person - company', async () => {
-    mockGetRespondentInformation.mockImplementation(async () => {
-      return buildClaimOfRespondentType(PartyType.COMPANY);
-    });
+    mockRespondent(buildClaimOfRespondentType(PartyType.COMPANY));
     await request(app)
       .post(CITIZEN_DETAILS_URL)
       .send({
@@ -211,9 +214,7 @@ describe('Confirm Details page', () => {
   });
 
   it('should return optional contact person label when carm toggle disabled - company', async () => {
-    mockGetRespondentInformation.mockImplementation(async () => {
-      return buildClaimOfRespondentType(PartyType.COMPANY);
-    });
+    mockRespondent(buildClaimOfRespondentType(PartyType.COMPANY));
     carmToggleSpy(false);
     await request(app)
       .post(CITIZEN_DETAILS_URL)
@@ -227,9 +228,7 @@ describe('Confirm Details page', () => {
   });
 
   it('should return your details organisation page', async () => {
-    mockGetRespondentInformation.mockImplementation(async () => {
-      return buildClaimOfRespondentType(PartyType.ORGANISATION);
-    });
+    mockRespondent(buildClaimOfRespondentType(PartyType.ORGANISATION));
     await request(app)
       .get(CITIZEN_DETAILS_URL)
       .expect((res) => {
@@ -240,9 +239,7 @@ describe('Confirm Details page', () => {
   });
 
   it('should return mandatory contact person label and error on empty contact person - organisation', async () => {
-    mockGetRespondentInformation.mockImplementation(async () => {
-      return buildClaimOfRespondentType(PartyType.ORGANISATION);
-    });
+    mockRespondent(buildClaimOfRespondentType(PartyType.ORGANISATION));
     await request(app)
       .post(CITIZEN_DETAILS_URL)
       .send({
@@ -257,9 +254,7 @@ describe('Confirm Details page', () => {
   });
 
   it('should return optional contact person label when carm toggle disabled - organisation', async () => {
-    mockGetRespondentInformation.mockImplementation(async () => {
-      return buildClaimOfRespondentType(PartyType.ORGANISATION);
-    });
+    mockRespondent(buildClaimOfRespondentType(PartyType.ORGANISATION));
     carmToggleSpy(false);
     await request(app)
       .post(CITIZEN_DETAILS_URL)
@@ -289,9 +284,7 @@ describe('Confirm Details page', () => {
   });
 
   it('POST/Citizen details - should return error on empty primary address line', async () => {
-    mockGetRespondentInformation.mockImplementation(async () => {
-      return buildClaimOfRespondentType(PartyType.INDIVIDUAL);
-    });
+    mockRespondent(buildClaimOfRespondentType(PartyType.INDIVIDUAL));
     await request(app)
       .post(CITIZEN_DETAILS_URL)
       .send({
@@ -309,9 +302,7 @@ describe('Confirm Details page', () => {
   });
 
   it('POST/Citizen details - should return error on empty primary city', async () => {
-    mockGetRespondentInformation.mockImplementation(async () => {
-      return buildClaimOfRespondentType(PartyType.ORGANISATION);
-    });
+    mockRespondent(buildClaimOfRespondentType(PartyType.ORGANISATION));
     await request(app)
       .post(CITIZEN_DETAILS_URL)
       .send({
@@ -329,9 +320,7 @@ describe('Confirm Details page', () => {
   });
 
   it('POST/Citizen details - should return error on empty primary postcode', async () => {
-    mockGetRespondentInformation.mockImplementation(async () => {
-      return buildClaimOfRespondentType(PartyType.ORGANISATION);
-    });
+    mockRespondent(buildClaimOfRespondentType(PartyType.ORGANISATION));
     await request(app)
       .post(CITIZEN_DETAILS_URL)
       .send({
@@ -349,9 +338,7 @@ describe('Confirm Details page', () => {
   });
 
   it('POST/Citizen details - should return error on input for primary address when postToThisAddress is set to NO', async () => {
-    mockGetRespondentInformation.mockImplementation(async () => {
-      return buildClaimOfRespondentType(PartyType.ORGANISATION);
-    });
+    mockRespondent(buildClaimOfRespondentType(PartyType.ORGANISATION));
     await request(app)
       .post(CITIZEN_DETAILS_URL)
       .send({
@@ -372,9 +359,7 @@ describe('Confirm Details page', () => {
 
   describe('Redirect to Phone or DOB screen (phone number not provided)', () => {
     it('should redirect to confirm phone screen if respondent type is COMPANY', async () => {
-      mockGetRespondentInformation.mockImplementation(async () => {
-        return buildClaimOfRespondentType(PartyType.COMPANY);
-      });
+      mockRespondent(buildClaimOfRespondentType(PartyType.COMPANY));
       await request(app)
         .post(CITIZEN_DETAILS_URL)
         .send(validDataForPost)
@@ -384,9 +369,7 @@ describe('Confirm Details page', () => {
         });
     });
     it('should redirect to confirm phone screen if respondent type is ORGANISATION', async () => {
-      mockGetRespondentInformation.mockImplementation(async () => {
-        return buildClaimOfRespondentType(PartyType.ORGANISATION);
-      });
+      mockRespondent(buildClaimOfRespondentType(PartyType.ORGANISATION));
       await request(app)
         .post(CITIZEN_DETAILS_URL)
         .send(validDataForPost)
@@ -396,9 +379,7 @@ describe('Confirm Details page', () => {
         });
     });
     it('should redirect to confirm DOB screen if respondent type is INDIVIDUAL', async () => {
-      mockGetRespondentInformation.mockImplementation(async () => {
-        return buildClaimOfRespondentType(PartyType.INDIVIDUAL);
-      });
+      mockRespondent(buildClaimOfRespondentType(PartyType.INDIVIDUAL));
       await request(app)
         .post(CITIZEN_DETAILS_URL)
         .send(validDataForPost)
@@ -408,9 +389,7 @@ describe('Confirm Details page', () => {
         });
     });
     it('should redirect to confirm your phone screen if respondent type is SOLE TRADER', async () => {
-      mockGetRespondentInformation.mockImplementation(async () => {
-        return buildClaimOfRespondentType(PartyType.SOLE_TRADER);
-      });
+      mockRespondent(buildClaimOfRespondentType(PartyType.SOLE_TRADER));
       await request(app)
         .post(CITIZEN_DETAILS_URL)
         .send(validDataForPost)
@@ -422,16 +401,8 @@ describe('Confirm Details page', () => {
   });
 
   describe('Redirect to Phone or DOB screen (phone number provided)', () => {
-    const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
     it('should redirect to task-list screen if respondent type is COMPANY', async () => {
-      mockGetRespondentInformation.mockImplementation(async () => {
-        return {...buildClaimOfRespondentTypeWithCcdPhone(PartyType.COMPANY)};
-      });
-      mockGetCaseData.mockImplementation(async () => {
-        const claim = new Claim();
-        claim.respondent1 = buildClaimOfRespondentTypeWithCcdPhone(PartyType.COMPANY);
-        return claim;
-      });
+      mockRespondent({...buildClaimOfRespondentTypeWithCcdPhone(PartyType.COMPANY)} as Party);
       await request(app)
         .post(CITIZEN_DETAILS_URL)
         .send(validDataForPost)
@@ -441,14 +412,7 @@ describe('Confirm Details page', () => {
         });
     });
     it('should redirect to task-list screen if respondent type is ORGANISATION', async () => {
-      mockGetRespondentInformation.mockImplementation(async () => {
-        return {...buildClaimOfRespondentTypeWithCcdPhone(PartyType.ORGANISATION)};
-      });
-      mockGetCaseData.mockImplementation(async () => {
-        const claim = new Claim();
-        claim.respondent1 = buildClaimOfRespondentTypeWithCcdPhone(PartyType.ORGANISATION);
-        return claim;
-      });
+      mockRespondent({...buildClaimOfRespondentTypeWithCcdPhone(PartyType.ORGANISATION)} as Party);
       await request(app)
         .post(CITIZEN_DETAILS_URL)
         .send(validDataForPost)
@@ -458,9 +422,7 @@ describe('Confirm Details page', () => {
         });
     });
     it('should redirect to confirm DOB screen if respondent type is INDIVIDUAL', async () => {
-      mockGetRespondentInformation.mockImplementation(async () => {
-        return {...buildClaimOfRespondentType(PartyType.INDIVIDUAL), partyPhone: '123456'};
-      });
+      mockRespondent({...buildClaimOfRespondentType(PartyType.INDIVIDUAL), partyPhone: '123456'} as unknown as Party);
       await request(app)
         .post(CITIZEN_DETAILS_URL)
         .send(validDataForPost)
@@ -470,14 +432,7 @@ describe('Confirm Details page', () => {
         });
     });
     it('should redirect to task-list  screen if respondent type is SOLE TRADER', async () => {
-      mockGetRespondentInformation.mockImplementation(async () => {
-        return {...buildClaimOfRespondentTypeWithCcdPhone(PartyType.SOLE_TRADER)};
-      });
-      mockGetCaseData.mockImplementation(async () => {
-        const claim = new Claim();
-        claim.respondent1 = buildClaimOfRespondentTypeWithCcdPhone(PartyType.SOLE_TRADER);
-        return claim;
-      });
+      mockRespondent({...buildClaimOfRespondentTypeWithCcdPhone(PartyType.SOLE_TRADER)} as Party);
       await request(app)
         .post(CITIZEN_DETAILS_URL)
         .send(validDataForPost)
@@ -487,14 +442,7 @@ describe('Confirm Details page', () => {
         });
     });
     it('should redirect to phone screen if respondent type is SOLE TRADER with phone is not provided', async () => {
-      mockGetRespondentInformation.mockImplementation(async () => {
-        return {...buildClaimOfRespondentTypeWithoutCcdPhone(PartyType.SOLE_TRADER)};
-      });
-      mockGetCaseData.mockImplementation(async () => {
-        const claim = new Claim();
-        claim.respondent1 = buildClaimOfRespondentTypeWithoutCcdPhone(PartyType.SOLE_TRADER);
-        return claim;
-      });
+      mockRespondent({...buildClaimOfRespondentTypeWithoutCcdPhone(PartyType.SOLE_TRADER)} as Party);
       await request(app)
         .post(CITIZEN_DETAILS_URL)
         .send(validDataForPost)

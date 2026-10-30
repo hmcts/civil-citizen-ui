@@ -4,12 +4,13 @@ import {AGE_ELIGIBILITY_URL, CITIZEN_PHONE_NUMBER_URL, DOB_URL, RESPONSE_TASK_LI
 import {Party} from 'models/party';
 import {Claim} from 'models/claim';
 import {AgeEligibilityVerification} from 'common/utils/ageEligibilityVerification';
-import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {GenericForm} from 'form/models/genericForm';
 import {CitizenDate} from 'form/models/claim/claimant/citizenDate';
-import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {AppRequest} from 'common/models/AppRequest';
+import {getResponseDraft} from 'modules/draft-store/response/responseDraftStoreService';
+import {saveDefendantPropertyToResponseDraft} from 'services/features/common/defendantDetailsService';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const citizenDobController = Router();
 
@@ -30,6 +31,11 @@ function getDateOfBirth(dateOfBirth: unknown): Date | undefined {
   return Number.isNaN(parsedDate.getTime()) ? undefined : parsedDate;
 }
 
+const getClaimFromResponseDraft = async (req: AppRequest, caseId: string): Promise<Claim> => {
+  const draftResult = await getResponseDraft(req, caseId);
+  return Object.assign(new Claim(), draftResult?.claimResponse?.case_data as unknown as Claim);
+};
+
 function redirectToNextPage(req: Request, res: Response, dob: Date, respondent: Party) {
   if (!AgeEligibilityVerification.isOverEighteen(dob)) {
     return res.redirect(constructResponseUrlWithIdParams(req.params.id, AGE_ELIGIBILITY_URL));
@@ -42,11 +48,11 @@ function redirectToNextPage(req: Request, res: Response, dob: Date, respondent: 
 }
 
 citizenDobController.get(DOB_URL, (async (req: Request, res: Response, next: NextFunction) => {
-  const {year, month, day} = req.body;
   try {
-    const citizenDob = new GenericForm(new CitizenDob(year, month, day));
-    const responseDataRedis: Claim = await getCaseDataFromStore(generateRedisKey(<AppRequest>req));
-    const dateOfBirth = getDateOfBirth(responseDataRedis?.respondent1?.dateOfBirth);
+    const caseId = getRouteParam(req, 'id');
+    const claim = await getClaimFromResponseDraft(<AppRequest>req, caseId);
+    const citizenDob = new GenericForm(new CitizenDob());
+    const dateOfBirth = getDateOfBirth(claim?.respondent1?.dateOfBirth);
     if (dateOfBirth) {
       citizenDob.model.day = dateOfBirth.getDate();
       citizenDob.model.month = (dateOfBirth.getMonth() + 1);
@@ -60,24 +66,23 @@ citizenDobController.get(DOB_URL, (async (req: Request, res: Response, next: Nex
 
 citizenDobController.post(DOB_URL, (async (req, res, next: NextFunction) => {
   const {year, month, day} = req.body;
-  const redisKey = generateRedisKey(<AppRequest>req);
   try {
+    const caseId = getRouteParam(req, 'id');
+    const appReq = <AppRequest>req;
     const citizenDob = new GenericForm(new CitizenDob(year, month, day));
     await citizenDob.validate();
+
     if (citizenDob.hasErrors()) {
       renderView(citizenDob, res);
-    } else {
-      const claim = await getCaseDataFromStore(redisKey);
-      if (claim.respondent1) {
-        claim.respondent1.dateOfBirth = new CitizenDate(day, month, year);
-      } else {
-        const respondent = new Party();
-        respondent.dateOfBirth = new CitizenDate(day, month, year);
-        claim.respondent1 = respondent;
-      }
-      await saveDraftClaim(redisKey, claim);
-      redirectToNextPage(req, res, claim.respondent1.dateOfBirth.date, claim.respondent1);
+      return;
     }
+
+    const dateOfBirth = new CitizenDate(day, month, year);
+    await saveDefendantPropertyToResponseDraft(appReq, caseId, 'dateOfBirth', dateOfBirth);
+
+    const claim = await getClaimFromResponseDraft(appReq, caseId);
+    const respondent = Object.assign(new Party(), claim.respondent1);
+    redirectToNextPage(req, res, dateOfBirth.date, respondent);
   } catch (error) {
     next(error);
   }

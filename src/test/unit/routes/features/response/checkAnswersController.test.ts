@@ -14,14 +14,19 @@ import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {isFullAmountReject} from 'modules/claimDetailsService';
 import {setResponseDeadline} from 'services/features/common/responseDeadlineAgreedService';
 import {isPcqShutterOn} from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
-import * as draftStoreService from '../../../../../main/modules/draft-store/draftStoreService';
 import * as utilityService from 'modules/utilityService';
+import {
+  deleteResponseDraft,
+  getResponseClaimById,
+  getResponseDraft,
+} from 'modules/draft-store/response/responseDraftStoreService';
 import {Claim} from 'common/models/claim';
 import {Party} from 'common/models/party';
 import {PartyType} from 'common/models/partyType';
 import {Email} from 'common/models/Email';
 import {DirectionQuestionnaire} from 'models/directionsQuestionnaire/directionQuestionnaire';
 import {Hearing} from 'models/directionsQuestionnaire/hearing/hearing';
+import * as submitResponseModule from 'services/features/response/submission/submitResponse';
 
 const request = require('supertest');
 const {app} = require('../../../../../main/app');
@@ -32,9 +37,11 @@ const data = require('../../../../utils/mocks/defendantClaimsMock.json');
 jest.mock('axios');
 jest.mock('../../../../../main/modules/oidc');
 jest.mock('../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('../../../../../main/modules/draft-store/response/responseDraftStoreService');
 jest.mock('../../../../../main/modules/claimDetailsService');
 jest.mock('../../../../../main/services/features/response/checkAnswers/checkAnswersService');
 jest.mock('../../../../../main/services/features/common/responseDeadlineAgreedService');
+jest.mock('../../../../../main/services/features/response/submission/submitResponse');
 jest.mock('../../../../../main/app/auth/launchdarkly/launchDarklyClient');
 jest.mock('../../../../../main/services/features/common/taskListService', () => ({
   ...jest.requireActual('../../../../../main/services/features/common/taskListService') as Module,
@@ -46,11 +53,14 @@ const mockGetSummarySections = getSummarySections as jest.Mock;
 const mockSaveStatementOfTruth = saveStatementOfTruth as jest.Mock;
 const mockRejectingFullAmount = isFullAmountReject as jest.Mock;
 const mockSetResponseDeadline = setResponseDeadline as jest.Mock;
+const mockGetResponseClaimById = getResponseClaimById as jest.Mock;
+const mockGetResponseDraft = getResponseDraft as jest.Mock;
+const mockDeleteResponseDraft = deleteResponseDraft as jest.Mock;
+const mockSubmitResponse = submitResponseModule.submitResponse as jest.Mock;
 mockRejectingFullAmount.mockImplementation(() => true);
-const mockGetCaseDataFromDraftStore = draftStoreService.getCaseDataFromStore as jest.Mock;
 
 const PARTY_NAME = 'Mrs. Mary Richards';
-const CLAIM_ID = 'aaa';
+const CLAIM_ID = '1645882162449409';
 export const TASK_LISTS = [
   {
     title: 'Task List',
@@ -67,6 +77,14 @@ const respondentCheckAnswersUrl = constructResponseUrlWithIdParams(CLAIM_ID, RES
 
 const mockClaimWithPcqId = new Claim();
 mockClaimWithPcqId.respondentResponsePcqId = '123';
+
+const mockDraftResult = {
+  claimResponse: {id: 'draft-123', case_data: mockClaimWithPcqId},
+  rawResponse: {draftId: 'draft-123', payload: mockClaimWithPcqId},
+  createdAt: '',
+  updatedAt: '',
+  expiresAt: '',
+};
 
 describe('Response - Check answers', () => {
   const citizenRoleToken: string = config.get('citizenRoleToken');
@@ -89,12 +107,19 @@ describe('Response - Check answers', () => {
     });
   });
 
+  beforeEach(() => {
+    jest.clearAllMocks();
+    mockGetResponseClaimById.mockResolvedValue(mockClaimWithPcqId);
+    mockGetResponseDraft.mockResolvedValue(mockDraftResult);
+    mockDeleteResponseDraft.mockResolvedValue(undefined);
+    mockSaveStatementOfTruth.mockResolvedValue(undefined);
+    mockSubmitResponse.mockResolvedValue(mockClaimWithPcqId);
+    mockRejectingFullAmount.mockImplementation(() => true);
+  });
+
   describe('on GET', () => {
     beforeEach((done) => {
       jest.spyOn(utilityService, 'getClaimById').mockResolvedValue(mockClaimWithPcqId);
-      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
-        return mockClaimWithPcqId;
-      });
       session(app)
         .get(constructResponseUrlWithIdParams(CLAIM_ID, RESPONSE_TASK_LIST_URL))
         .expect(200)
@@ -107,9 +132,6 @@ describe('Response - Check answers', () => {
     });
 
     it('should pass english translation via query', async () => {
-      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
-        return mockClaimWithPcqId;
-      });
       await session(app).get(respondentCheckAnswersUrl)
         .query({lang: 'en'})
         .expect((res: Response) => {
@@ -119,9 +141,6 @@ describe('Response - Check answers', () => {
     });
 
     it('should pass cy translation via query', async () => {
-      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
-        return mockClaimWithPcqId;
-      });
       await session(app).get(respondentCheckAnswersUrl)
         .query({lang: 'cy'})
         .expect((res: Response) => {
@@ -129,21 +148,22 @@ describe('Response - Check answers', () => {
           expect(res.text).toContain(checkYourAnswerCy);
         });
     });
+
     it('should redirect to PCQ jouney', async () => {
       isPcqShutterOnMock.mockResolvedValue(false);
-      axios.get = jest.fn().mockResolvedValue({ data: { status: 'UP' } });
+      axios.get = jest.fn().mockResolvedValue({data: {status: 'UP'}});
       const mockClaimToRedirectToPcq = new Claim();
       mockClaimToRedirectToPcq.respondent1 = new Party();
       mockClaimToRedirectToPcq.respondent1.type = PartyType.INDIVIDUAL;
       mockClaimToRedirectToPcq.respondent1.emailAddress = new Email('test@test.com');
       jest.spyOn(utilityService, 'getClaimById').mockResolvedValue(mockClaimToRedirectToPcq);
-      mockGetCaseDataFromDraftStore.mockImplementation(async () => mockClaimToRedirectToPcq);
 
       await session(app).get(respondentCheckAnswersUrl)
         .expect((res: Response) => {
           expect(res.status).toBe(302);
         });
     });
+
     it('should return status 500 when error thrown', async () => {
       mockGetSummarySections.mockImplementation(() => {
         throw new Error(TestMessages.REDIS_FAILURE);
@@ -157,25 +177,16 @@ describe('Response - Check answers', () => {
     });
   });
 
-  describe('claim stashing', () => {
-    it('should not call getCaseDataFromStore on GET when guards stashed the claim', async () => {
-      jest.spyOn(utilityService, 'getClaimById').mockResolvedValue(mockClaimWithPcqId);
-      mockGetCaseDataFromDraftStore.mockClear();
-      await session(app).get(respondentCheckAnswersUrl).query({lang: 'en'});
-      expect(mockGetCaseDataFromDraftStore).not.toHaveBeenCalled();
-    });
-  });
-
   describe('on Post', () => {
     it('should return errors when form is incomplete', async () => {
       mockGetSummarySections.mockImplementation(() => {
         return createClaimWithBasicRespondentDetails();
       });
-      mockGetCaseDataFromDraftStore.mockImplementation(async () => {
-        mockClaimWithPcqId.directionQuestionnaire = new DirectionQuestionnaire();
-        mockClaimWithPcqId.directionQuestionnaire.hearing = new Hearing();
-        return mockClaimWithPcqId;
-      });
+      const claimWithDq = Object.assign(new Claim(), mockClaimWithPcqId);
+      claimWithDq.directionQuestionnaire = new DirectionQuestionnaire();
+      claimWithDq.directionQuestionnaire.hearing = new Hearing();
+      mockGetResponseClaimById.mockResolvedValue(claimWithDq);
+
       const data = {signed: ''};
       await request(app)
         .post(respondentCheckAnswersUrl)
@@ -186,12 +197,42 @@ describe('Response - Check answers', () => {
           expect(res.text).toContain('Select a court');
           expect(res.text).toContain('Tell us why you want the hearing to be held at this court');
         });
+      expect(mockDeleteResponseDraft).not.toHaveBeenCalled();
     });
+
+    it('should save, submit and delete the response draft on successful post', async () => {
+      mockGetSummarySections.mockImplementation(() => createClaimWithBasicRespondentDetails());
+      mockGetResponseClaimById.mockResolvedValue(mockClaimWithPcqId);
+
+      const data = {
+        signed: 'true',
+        type: 'basic',
+        isFullAmountRejected: 'false',
+        directionsQuestionnaireSigned: 'true',
+      };
+      await request(app)
+        .post(respondentCheckAnswersUrl)
+        .send(data)
+        .expect((res: Response) => {
+          expect(res.status).toBe(302);
+        });
+
+      expect(mockSaveStatementOfTruth).toHaveBeenCalledWith(
+        expect.anything(),
+        CLAIM_ID,
+        expect.anything(),
+      );
+      expect(mockGetResponseDraft).toHaveBeenCalled();
+      expect(mockSubmitResponse).toHaveBeenCalled();
+      expect(mockDeleteResponseDraft).toHaveBeenCalledWith(
+        expect.anything(),
+        CLAIM_ID,
+        'draft-123',
+      );
+    });
+
     it('should return 500 when error in service', async () => {
-      mockGetCaseDataFromDraftStore.mockRejectedValueOnce(new Error(TestMessages.REDIS_FAILURE));
-      mockSaveStatementOfTruth.mockImplementation(() => {
-        throw new Error(TestMessages.REDIS_FAILURE);
-      });
+      mockGetResponseClaimById.mockRejectedValueOnce(new Error(TestMessages.REDIS_FAILURE));
       const data = {signed: 'true'};
       await request(app)
         .post(respondentCheckAnswersUrl)

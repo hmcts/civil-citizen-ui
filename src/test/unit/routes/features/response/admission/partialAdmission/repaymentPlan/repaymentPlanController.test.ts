@@ -2,7 +2,6 @@ import {Request, Response} from 'express';
 import repaymentPlanController from '../../../../../../../../main/routes/features/response/admission/partialAdmission/repaymentPlan/repaymentPlanController';
 import {RESPONSE_TASK_LIST_URL} from 'routes/urls';
 import {ResponseType} from 'form/models/responseType';
-import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {Claim} from 'models/claim';
 import {Party} from 'models/party';
@@ -10,9 +9,18 @@ import {PartialAdmission} from 'models/partialAdmission';
 import {HowMuchDoYouOwe} from 'form/models/admission/partialAdmission/howMuchDoYouOwe';
 import {PaymentIntention} from 'form/models/admission/paymentIntention';
 import {getNextYearValue} from '../../../../../../../utils/dateUtils';
+import {getResponseClaimById} from 'modules/draft-store/response/responseDraftStoreService';
+import {saveRepaymentPlanData} from 'services/features/response/repaymentPlan/repaymentPlanService';
 import {createMockResponse, getRouteHandler} from '../../../../../../../utils/getRouteHandler';
 
-jest.mock('modules/draft-store/draftStoreService');
+jest.mock('modules/draft-store/response/responseDraftStoreService');
+jest.mock('services/features/response/repaymentPlan/repaymentPlanService', () => {
+  const actual = jest.requireActual('services/features/response/repaymentPlan/repaymentPlanService');
+  return {
+    ...actual,
+    saveRepaymentPlanData: jest.fn(),
+  };
+});
 
 describe('Repayment Plan', () => {
   const getHandler = getRouteHandler(repaymentPlanController, 'get');
@@ -24,9 +32,8 @@ describe('Repayment Plan', () => {
   let req: Partial<Request>;
   let res: ReturnType<typeof createMockResponse>;
   let next: jest.Mock;
-  const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
-  const mockGenerateRedisKey = draftStoreService.generateRedisKey as jest.Mock;
-  const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
+  const mockGetResponseClaimById = getResponseClaimById as jest.Mock;
+  const mockSaveRepaymentPlanData = saveRepaymentPlanData as jest.Mock;
 
   const stubClaim = (): Claim => {
     const claim = new Claim();
@@ -47,16 +54,20 @@ describe('Repayment Plan', () => {
     }));
     expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
     expect(res.redirect).not.toHaveBeenCalled();
+    expect(mockSaveRepaymentPlanData).not.toHaveBeenCalled();
   };
 
-  beforeEach(() => {
+  beforeEach(async () => {
     req = {params: {id: claimId}, body: {}, query: {}, cookies: {}};
     res = createMockResponse();
     next = jest.fn();
     jest.clearAllMocks();
-    mockGenerateRedisKey.mockReturnValue(claimId);
-    mockGetCaseData.mockResolvedValue(stubClaim());
-    mockSaveDraftClaim.mockResolvedValue(undefined);
+    mockGetResponseClaimById.mockResolvedValue(stubClaim());
+    mockSaveRepaymentPlanData.mockResolvedValue(undefined);
+    // Prime module-level amount used by POST validation re-render
+    await getHandler(req as Request, res as unknown as Response, next);
+    res = createMockResponse();
+    next = jest.fn();
   });
 
   describe('on GET', () => {
@@ -68,12 +79,13 @@ describe('Repayment Plan', () => {
         amount: admittedAmount,
         admission: ResponseType.PART_ADMISSION,
       }));
+      expect(mockGetResponseClaimById).toHaveBeenCalled();
       expect(next).not.toHaveBeenCalled();
     });
 
     it('should call next when loading the claim fails', async () => {
-      const error = new Error('redis failure');
-      mockGetCaseData.mockRejectedValue(error);
+      const error = new Error('draft failure');
+      mockGetResponseClaimById.mockRejectedValue(error);
 
       await getHandler(req as Request, res as unknown as Response, next);
 
@@ -173,7 +185,11 @@ describe('Repayment Plan', () => {
 
       await postHandler(req as Request, res as unknown as Response, next);
 
-      expect(mockSaveDraftClaim).toHaveBeenCalled();
+      expect(mockSaveRepaymentPlanData).toHaveBeenCalledWith(
+        expect.anything(),
+        expect.objectContaining({paymentAmount: 100, repaymentFrequency: 'WEEK'}),
+        true,
+      );
       expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, RESPONSE_TASK_LIST_URL));
       expect(next).not.toHaveBeenCalled();
     });
@@ -197,8 +213,8 @@ describe('Repayment Plan', () => {
     });
 
     it('should call next when loading the claim fails', async () => {
-      const error = new Error('redis failure');
-      mockGetCaseData.mockRejectedValue(error);
+      const error = new Error('draft failure');
+      mockGetResponseClaimById.mockRejectedValue(error);
       req.body = {paymentAmount: '100', repaymentFrequency: 'WEEK', day: '1', month: '08', year: mockFutureYear};
 
       await postHandler(req as Request, res as unknown as Response, next);

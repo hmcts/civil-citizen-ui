@@ -1,17 +1,21 @@
-import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {getResponseClaimById, getResponseDraft, updateResponseDraft} from 'modules/draft-store/response/responseDraftStoreService';
 import {ResponseType} from 'form/models/responseType';
 import {PartialAdmission} from 'models/partialAdmission';
 import {PaymentDate} from 'form/models/admission/fullAdmission/paymentOption/paymentDate';
 import {PaymentIntention} from 'form/models/admission/paymentIntention';
 import {FullAdmission} from 'common/models/fullAdmission';
+import {getRouteParam} from 'common/utils/routeParamUtils';
+import {Claim} from 'models/claim';
+import {AppRequest} from 'models/AppRequest';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('paymentDateService');
 
 export class PaymentDateService {
-  public async getPaymentDate(claimId: string, responseType: ResponseType): Promise<PaymentDate> {
+  public async getPaymentDate(req: AppRequest, responseType: ResponseType): Promise<PaymentDate> {
     try {
-      const claim = await getCaseDataFromStore(claimId);
+      const caseId = getRouteParam(req, 'id');
+      const claim = await getResponseClaimById(req, caseId);
       if (responseType === ResponseType.PART_ADMISSION && claim?.partialAdmission?.paymentIntention?.paymentDate) {
         return this.setDate(claim.partialAdmission.paymentIntention.paymentDate);
       } else if (claim?.fullAdmission?.paymentIntention?.paymentDate) {
@@ -24,31 +28,41 @@ export class PaymentDateService {
     }
   }
 
-  public async savePaymentDate(claimId: string, paymentDate: Date, responseType: ResponseType) {
+  public async savePaymentDate(req: AppRequest, paymentDate: Date, responseType: ResponseType) {
     try {
-      const case_data = await getCaseDataFromStore(claimId);
-      if (responseType === ResponseType.PART_ADMISSION) {
-        if (!case_data.partialAdmission) {
-          case_data.partialAdmission = new PartialAdmission();
-        }
-        if (!case_data.partialAdmission?.paymentIntention?.paymentDate) {
-          const paymentType = case_data.partialAdmission?.paymentIntention?.paymentOption;
-          case_data.partialAdmission.paymentIntention = new PaymentIntention();
-          case_data.partialAdmission.paymentIntention.paymentOption = paymentType;
-        }
-        case_data.partialAdmission.paymentIntention.paymentDate = paymentDate;
-      } else if (responseType === ResponseType.FULL_ADMISSION) {
-        if (!case_data.fullAdmission) {
-          case_data.fullAdmission = new FullAdmission();
-        }
-        if (!case_data.fullAdmission?.paymentIntention?.paymentDate) {
-          const paymentType = case_data.fullAdmission?.paymentIntention?.paymentOption;
-          case_data.fullAdmission.paymentIntention = new PaymentIntention();
-          case_data.fullAdmission.paymentIntention.paymentOption = paymentType;
-        }
-        case_data.fullAdmission.paymentIntention.paymentDate = paymentDate;
+      const caseId = getRouteParam(req, 'id');
+      const draftResult = await getResponseDraft(req, caseId);
+      if (!draftResult) {
+        throw new Error('[paymentDateService] no response draft found');
       }
-      await saveDraftClaim(claimId, case_data);
+      const claim = Object.assign(new Claim(), draftResult.claimResponse?.case_data as unknown as Claim);
+      const draftId = draftResult.rawResponse?.draftId;
+
+      if (responseType === ResponseType.PART_ADMISSION) {
+        if (!claim.partialAdmission) {
+          claim.partialAdmission = new PartialAdmission();
+        }
+        if (!claim.partialAdmission?.paymentIntention?.paymentDate) {
+          const paymentType = claim.partialAdmission?.paymentIntention?.paymentOption;
+          claim.partialAdmission.paymentIntention = new PaymentIntention();
+          claim.partialAdmission.paymentIntention.paymentOption = paymentType;
+        }
+        claim.partialAdmission.paymentIntention.paymentDate = paymentDate;
+      } else if (responseType === ResponseType.FULL_ADMISSION) {
+        if (!claim.fullAdmission) {
+          claim.fullAdmission = new FullAdmission();
+        }
+        if (!claim.fullAdmission?.paymentIntention?.paymentDate) {
+          const paymentType = claim.fullAdmission?.paymentIntention?.paymentOption;
+          claim.fullAdmission.paymentIntention = new PaymentIntention();
+          claim.fullAdmission.paymentIntention.paymentOption = paymentType;
+        }
+        claim.fullAdmission.paymentIntention.paymentDate = paymentDate;
+      }
+      if (draftResult.createdAt && !claim.draftClaimCreatedAt) {
+        claim.draftClaimCreatedAt = new Date(draftResult.createdAt);
+      }
+      await updateResponseDraft(req, caseId, claim, draftId);
     } catch (error) {
       logger.error(error);
       throw error;

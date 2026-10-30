@@ -9,7 +9,6 @@ import {ResponseType} from 'form/models/responseType';
 import {PartAdmitGuard} from 'routes/guards/partAdmitGuard';
 import { DefendantPaymentDate } from 'common/form/models/admission/partialAdmission/defendantPaymentDate';
 import {AppRequest} from 'common/models/AppRequest';
-import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const paymentDatePath = 'features/response/admission/payment-date';
@@ -20,7 +19,7 @@ paymentDateController
   .get(
     CITIZEN_PA_PAYMENT_DATE_URL, PartAdmitGuard.apply(RESPONSE_TASK_LIST_URL),( async (req: Request, res: Response, next: NextFunction) => {
       try {
-        const paymentDate = await paymentDateService.getPaymentDate(generateRedisKey(<AppRequest>req), ResponseType.PART_ADMISSION);
+        const paymentDate = await paymentDateService.getPaymentDate(req as unknown as AppRequest, ResponseType.PART_ADMISSION);
         res.render(paymentDatePath, {
           form: new GenericForm(paymentDate), title,
         });
@@ -38,7 +37,7 @@ paymentDateController
         res.render(paymentDatePath, {form, title});
       } else {
         try {
-          await paymentDateService.savePaymentDate(generateRedisKey(<AppRequest>req), paymentDate.date, ResponseType.PART_ADMISSION);
+          await paymentDateService.savePaymentDate(req as unknown as AppRequest, paymentDate.date, ResponseType.PART_ADMISSION);
           const claimId = getRouteParam(req, 'id');
           res.redirect(constructResponseUrlWithIdParams(claimId, RESPONSE_TASK_LIST_URL));
         } catch (error) {

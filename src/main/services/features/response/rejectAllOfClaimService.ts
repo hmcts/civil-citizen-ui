@@ -1,12 +1,16 @@
-import {getCaseDataFromStore, saveDraftClaim} from '../../../modules/draft-store/draftStoreService';
+import {getResponseClaimById, getResponseDraft, updateResponseDraft} from 'modules/draft-store/response/responseDraftStoreService';
 import {RejectAllOfClaim} from '../../../common/form/models/rejectAllOfClaim';
+import {AppRequest} from 'models/AppRequest';
+import {getRouteParam} from 'common/utils/routeParamUtils';
+import {Claim} from 'models/claim';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('rejectAllOfClaimService');
 
-export const getRejectAllOfClaim = async (claimId: string): Promise<RejectAllOfClaim> => {
+export const getRejectAllOfClaim = async (req: AppRequest): Promise<RejectAllOfClaim> => {
   try {
-    const claim = await getCaseDataFromStore(claimId);
+    const caseId = getRouteParam(req, 'id');
+    const claim = await getResponseClaimById(req, caseId);
     if (claim.rejectAllOfClaim) {
       return new RejectAllOfClaim(claim.rejectAllOfClaim.option);
     }
@@ -17,14 +21,23 @@ export const getRejectAllOfClaim = async (claimId: string): Promise<RejectAllOfC
   }
 };
 
-export const saveRejectAllOfClaim = async (claimId: string, form: RejectAllOfClaim) => {
+export const saveRejectAllOfClaim = async (req: AppRequest, form: RejectAllOfClaim) => {
   try {
-    const claim = await getCaseDataFromStore(claimId);
-    if (!claim.rejectAllOfClaim) {
-      claim.rejectAllOfClaim = new RejectAllOfClaim();
+    const caseId = getRouteParam(req, 'id');
+    const draftResult = await getResponseDraft(req, caseId);
+    if (!draftResult) {
+      throw new Error('[rejectAllOfClaimService] no draft response found');
     }
+
+    const claim = Object.assign(new Claim(), draftResult.claimResponse?.case_data as unknown as Claim);
+    const draftId = draftResult.rawResponse?.draftId;
+
     claim.rejectAllOfClaim = form;
-    await saveDraftClaim(claimId, claim);
+
+    if (draftResult.createdAt && !claim.draftClaimCreatedAt) {
+      claim.draftClaimCreatedAt = new Date(draftResult.createdAt);
+    }
+    await updateResponseDraft(req, caseId, claim, draftId);
   } catch (error) {
     logger.error(error);
     throw error;

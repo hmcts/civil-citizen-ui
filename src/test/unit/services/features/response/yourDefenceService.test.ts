@@ -1,64 +1,89 @@
 import {saveYourDefence} from '../../../../../main/services/features/response/yourDefenceService';
-import * as draftStoreService from '../../../../../main/modules/draft-store/draftStoreService';
+import {getResponseDraft, updateResponseDraft} from 'modules/draft-store/response/responseDraftStoreService';
 import {Claim} from '../../../../../main/common/models/claim';
 import {RejectAllOfClaimType} from '../../../../../main/common/form/models/rejectAllOfClaimType';
 import {RejectAllOfClaim} from '../../../../../main/common/form/models/rejectAllOfClaim';
 import {PartyType} from '../../../../../main/common/models/partyType';
 import {Defence} from '../../../../../main/common/form/models/defence';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
+import {AppRequest} from 'models/AppRequest';
 
-jest.mock('../../../../../main/modules/draft-store');
-jest.mock('../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('../../../../../main/modules/draft-store/response/responseDraftStoreService');
+
+const mockGetResponseDraft = getResponseDraft as jest.Mock;
+const mockUpdateResponseDraft = updateResponseDraft as jest.Mock;
+
+const caseId = '1645882162449409';
+const mockReq = {
+  params: {id: caseId},
+  session: {user: {id: 'user-1', accessToken: 'token'}},
+} as unknown as AppRequest;
+
+const mockDraftResult = (claim: Claim) => ({
+  claimResponse: {id: 'draft-123', case_data: claim},
+  rawResponse: {draftId: 'draft-123', payload: claim},
+  createdAt: '2026-01-01T00:00:00.000Z',
+  updatedAt: '',
+  expiresAt: '',
+});
 
 describe('rejectAllOfClaim defence service', () => {
-  const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
 
   describe('save rejectAllOfClaim defence', () => {
     it('should save data successfully', async () => {
-      //Given
-      const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
-      //When
-      await saveYourDefence(createClaim(), '123', new Defence('Test'));
-      //Then
-      expect(spySave).toBeCalled();
-    });
-    it('should save data successfully without rejectAllofClaim', async () => {
-      //Given
-      const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
-      const claim = new Claim();
-      mockGetCaseData.mockImplementation(async () => {
-        return claim;
-      });
-      //When
-      await saveYourDefence(new Claim(), '123', new Defence('Test'));
-      //Then
-      expect(spySave).toBeCalled();
+      mockGetResponseDraft.mockResolvedValue(mockDraftResult(createClaim()));
+      mockUpdateResponseDraft.mockResolvedValue({});
+
+      await saveYourDefence(mockReq, new Defence('Test'));
+
+      expect(mockUpdateResponseDraft).toHaveBeenCalledWith(
+        mockReq,
+        caseId,
+        expect.objectContaining({
+          rejectAllOfClaim: expect.objectContaining({
+            defence: expect.objectContaining({text: 'Test'}),
+          }),
+          draftClaimCreatedAt: new Date('2026-01-01T00:00:00.000Z'),
+        }),
+        'draft-123',
+      );
     });
 
-    it('should Throw an error when save defence data', async () => {
-      //Given
-      const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
-      mockGetCaseData.mockImplementation(async () => {
-        return undefined;
-      });
-      //When
-      await saveYourDefence(new Claim(), '123', new Defence('Test'));
-      //Then
-      expect(spySave).toBeCalled();
+    it('should save data successfully without rejectAllOfClaim', async () => {
+      mockGetResponseDraft.mockResolvedValue(mockDraftResult(new Claim()));
+      mockUpdateResponseDraft.mockResolvedValue({});
+
+      await saveYourDefence(mockReq, new Defence('Test'));
+
+      expect(mockUpdateResponseDraft).toHaveBeenCalledWith(
+        mockReq,
+        caseId,
+        expect.objectContaining({
+          rejectAllOfClaim: expect.objectContaining({
+            defence: expect.objectContaining({text: 'Test'}),
+          }),
+        }),
+        'draft-123',
+      );
     });
-    it('should fail when redis throws an error', async () => {
-      // Given
-      mockGetCaseData.mockImplementation(async () => {
-        return new Claim();
-      });
-      const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
-      // When
-      mockSaveDraftClaim.mockImplementationOnce(async () => {
-        throw new Error(TestMessages.REDIS_FAILURE);
-      });
-      // Then
-      await expect(saveYourDefence(new Claim(), '123', new Defence('Test'))
-        .catch(() => TestMessages.REDIS_FAILURE));
+
+    it('should throw when no response draft is found', async () => {
+      mockGetResponseDraft.mockResolvedValue(null);
+
+      await expect(saveYourDefence(mockReq, new Defence('Test')))
+        .rejects.toThrow('[yourDefenceService] no response draft found');
+      expect(mockUpdateResponseDraft).not.toHaveBeenCalled();
+    });
+
+    it('should fail when updateResponseDraft throws an error', async () => {
+      mockGetResponseDraft.mockResolvedValue(mockDraftResult(new Claim()));
+      mockUpdateResponseDraft.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
+
+      await expect(saveYourDefence(mockReq, new Defence('Test')))
+        .rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
   });
 });

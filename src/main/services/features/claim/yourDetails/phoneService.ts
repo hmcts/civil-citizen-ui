@@ -1,5 +1,6 @@
 import {getDraftClaim, updateDraftClaim} from '../../../../modules/draft-store/draftStoreManagerService';
 import {getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {getResponseDraft, updateResponseDraft} from 'modules/draft-store/response/responseDraftStoreService';
 import {AppRequest} from 'common/models/AppRequest';
 import {CitizenTelephoneNumber} from '../../../../common/form/models/citizenTelephoneNumber';
 import {ClaimantOrDefendant} from '../../../../common/models/partyType';
@@ -48,6 +49,27 @@ const getTelephoneFromStore = async (claimId: string, citizenType: ClaimantOrDef
   }
 };
 
+const getTelephoneFromResponseDraft = async (req: AppRequest, caseId: string, citizenType: ClaimantOrDefendant) => {
+  try {
+    const draftResult = await getResponseDraft(req, caseId);
+    if (!draftResult) {
+      throw new Error('[phoneService] no response draft found');
+    }
+    const claim = Object.assign(new Claim(), draftResult.claimResponse?.case_data as unknown as Claim);
+
+    if (claim.applicant1 && citizenType === ClaimantOrDefendant.CLAIMANT) {
+      return new CitizenTelephoneNumber(claim.applicant1?.partyPhone?.phone);
+    } else if (claim.respondent1 && citizenType === ClaimantOrDefendant.DEFENDANT) {
+      return new CitizenTelephoneNumber(claim.respondent1?.partyPhone?.phone);
+    }
+
+    return new CitizenTelephoneNumber();
+  } catch (error) {
+    logger.error(error);
+    throw error;
+  }
+};
+
 const saveTelephone = async (req: AppRequest, form: CitizenTelephoneNumber, citizenType: ClaimantOrDefendant) => {
   try {
     const draftResult = await getDraftClaim(req);
@@ -73,6 +95,30 @@ const saveTelephoneToStore = async(claimId: string, form: CitizenTelephoneNumber
   await saveDraftClaim(claimId, claim);
 };
 
+const saveTelephoneToResponseDraft = async (
+  req: AppRequest,
+  caseId: string,
+  form: CitizenTelephoneNumber,
+  citizenType: ClaimantOrDefendant,
+) => {
+  try {
+    const draftResult = await getResponseDraft(req, caseId);
+    if (!draftResult) {
+      throw new Error('[phoneService] no response draft found');
+    }
+    const claim = Object.assign(new Claim(), draftResult.claimResponse?.case_data as unknown as Claim);
+    const draftId = draftResult.rawResponse?.draftId;
+    if (draftResult.createdAt && !claim.draftClaimCreatedAt) {
+      claim.draftClaimCreatedAt = new Date(draftResult.createdAt);
+    }
+    saveForm(claim, form, citizenType);
+    await updateResponseDraft(req, caseId, claim, draftId);
+  } catch (error) {
+    logger.error(error);
+    throw error;
+  }
+};
+
 const saveForm = (claim: Claim, form: CitizenTelephoneNumber, citizenType: ClaimantOrDefendant) => {
   if (citizenType === ClaimantOrDefendant.CLAIMANT) {
     if (!claim.applicant1) {
@@ -92,5 +138,6 @@ export {
   saveTelephone,
   getTelephoneFromStore,
   saveTelephoneToStore,
+  getTelephoneFromResponseDraft,
+  saveTelephoneToResponseDraft,
 };
-

@@ -11,7 +11,6 @@ import {GenericForm} from 'form/models/genericForm';
 import {ResponseType} from 'form/models/responseType';
 import {PartAdmitHowMuchHaveYouPaidGuard} from 'routes/guards/partAdmitHowMuchHaveYouPaidGuard';
 import {AppRequest} from 'common/models/AppRequest';
-import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const whyDoYouDisagreeController = Router();
@@ -24,7 +23,7 @@ function renderView(form: GenericForm<WhyDoYouDisagree>, _claimAmount: number, r
 
 whyDoYouDisagreeController.get(CITIZEN_WHY_DO_YOU_DISAGREE_URL, PartAdmitHowMuchHaveYouPaidGuard.apply(RESPONSE_TASK_LIST_URL), (async (req, res, next: NextFunction) => {
   try {
-    const form = await getWhyDoYouDisagreeForm(generateRedisKey(<AppRequest>req), ResponseType.PART_ADMISSION);
+    const form = await getWhyDoYouDisagreeForm(<AppRequest>req, ResponseType.PART_ADMISSION);
     claimAmount = form.claimAmount;
     renderView(new GenericForm(form.whyDoYouDisagree), claimAmount, res);
   } catch (error) {
@@ -43,7 +42,7 @@ whyDoYouDisagreeController.post(CITIZEN_WHY_DO_YOU_DISAGREE_URL, (async (req, re
     if (form.hasErrors() || form.hasNestedErrors()) {
       renderView(form, whyDoYouDisagreeForm.claimAmount, res);
     } else {
-      await saveWhyDoYouDisagreeData(generateRedisKey(<AppRequest>req), form.model, ResponseType.PART_ADMISSION);
+      await saveWhyDoYouDisagreeData(<AppRequest>req, form.model, ResponseType.PART_ADMISSION);
       const claimId = getRouteParam(req, 'id');
       res.redirect(constructResponseUrlWithIdParams(claimId, CITIZEN_TIMELINE_URL));
     }
