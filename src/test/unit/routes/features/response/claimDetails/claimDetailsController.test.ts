@@ -83,6 +83,24 @@ describe('Claim details page', () => {
     expect(res.render.mock.calls[0][1].timelinePdfUrl).toContain('74bf213e-72dd-4908-9e08-72fefaed9c5c');
   });
 
+  it('should preserve the order and date-description pairing of saved timeline events', async () => {
+    const claim = basicClaim();
+    claim.timelineOfEvents = [
+      {id: 'first', value: {timelineDate: '2021-03-15', timelineDescription: 'Payment was requested'}},
+      {id: 'second', value: {timelineDate: '2020-02-01', timelineDescription: 'Work was completed'}},
+    ];
+    jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockResolvedValueOnce(claim);
+
+    const {res, next} = await invoke({cookies: {lang: 'en'}});
+
+    expect(res.render).toHaveBeenCalledTimes(1);
+    expect(res.render.mock.calls[0][1].timelineRows).toEqual([
+      {timelineDate: '15 March 2021', timelineDescription: 'Payment was requested'},
+      {timelineDate: '1 February 2020', timelineDescription: 'Work was completed'},
+    ]);
+    expect(next).not.toHaveBeenCalled();
+  });
+
   it('should flag documents that are still being translated', async () => {
     const claim = claimFrom(civilClaimResponseMock.case_data);
     claim.ccdState = CaseState.PENDING_CASE_ISSUED;

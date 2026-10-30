@@ -194,6 +194,45 @@ describe('Mediation Email Mediation Confirmation Controller', () => {
       }]);
     });
 
+    it.each([
+      {option: YesNo.YES, expectedPhone: '555111', otherPhone: '555222'},
+      {option: YesNo.NO, expectedPhone: '555222', otherPhone: '555111'},
+    ])('should redisplay the selected company phone for claimant option $option', async ({option, expectedPhone, otherPhone}) => {
+      mockGetCaseData.mockResolvedValue(claimantClaim());
+      mockGetDraftClaim.mockResolvedValue({
+        case_data: {
+          respondent1: {partyPhone: {phone: '999999'}},
+          claimantResponse: {
+            mediation: {
+              companyTelephoneNumber: {
+                option,
+                mediationPhoneNumberConfirmation: '555111',
+                mediationPhoneNumber: '555222',
+              },
+              canWeUse: {mediationPhoneNumber: '333333'},
+            },
+          },
+        },
+      });
+
+      const {res, next} = await invoke('post');
+
+      const view = rendered(res);
+      expect(view.form.hasErrors()).toBe(true);
+      expect(view.pageText).toContain(expectedPhone);
+      expect(view.pageText).not.toContain(otherPhone);
+      expect(view.pageText).not.toContain('333333');
+      expect(view.formatValues).toEqual([{
+        keyError: 'ERRORS.MEDIATION_PHONE_CONFIRMATION_REQUIRED_CLAIMANT',
+        keyToReplace: '[number]',
+        valueToReplace: expectedPhone,
+      }]);
+      expect(res.render).toHaveBeenCalledTimes(1);
+      expect(mockSaveMediationCarm).not.toHaveBeenCalled();
+      expect(res.redirect).not.toHaveBeenCalled();
+      expect(next).not.toHaveBeenCalled();
+    });
+
     it('should return claimant validation error without a phone when no claimant phone source exists', async () => {
       mockGetCaseData.mockResolvedValue(claimantClaim());
       mockGetDraftClaim.mockResolvedValue({case_data: {}});

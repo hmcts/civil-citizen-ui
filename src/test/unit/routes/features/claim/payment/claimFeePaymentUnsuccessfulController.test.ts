@@ -13,6 +13,7 @@ jest.mock('modules/utilityService', () => ({
 
 describe('Claim fee payment unsuccessful', () => {
   const getHandler = getRouteHandler(paymentUnsuccessfulController, 'get');
+  const postHandler = getRouteHandler(paymentUnsuccessfulController, 'post');
   const claimId = '12345';
   let req: Partial<AppRequest>;
   let res: ReturnType<typeof createMockResponse>;
@@ -55,6 +56,17 @@ describe('Claim fee payment unsuccessful', () => {
       await getHandler(req as AppRequest, res as unknown as Response, next);
 
       expect(next).toHaveBeenCalledWith(error);
+    });
+  });
+
+  describe('on POST', () => {
+    it('should return to the claimant dashboard for the requested claim', async () => {
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.redirect).toHaveBeenCalledTimes(1);
+      expect(res.redirect).toHaveBeenCalledWith('/dashboard/12345/claimantNewDesign');
+      expect(res.render).not.toHaveBeenCalled();
+      expect(next).not.toHaveBeenCalled();
     });
   });
 });
