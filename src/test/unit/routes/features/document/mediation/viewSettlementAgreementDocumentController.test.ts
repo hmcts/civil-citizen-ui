@@ -1,77 +1,83 @@
-import config from 'config';
-import nock from 'nock';
+import {Response} from 'express';
+import viewSettlementAgreementDocument from 'routes/features/document/mediation/viewSettlementAgreementDocumentController';
 import {VIEW_MEDIATION_SETTLEMENT_AGREEMENT_DOCUMENT} from 'routes/urls';
-import request from 'supertest';
-import {CIVIL_SERVICE_CASES_URL} from 'client/civilServiceUrls';
-
+import {CivilServiceClient} from 'client/civilServiceClient';
 import {Claim} from 'models/claim';
 import {MediationAgreement} from 'models/mediation/mediationAgreement';
 import {DocumentType} from 'models/document/documentType';
 import {MOCK_MEDIATION_AGREEMENT_DOCUMENT} from '../../../../../utils/mocks/documents/documentsMock';
-import {app} from '../../../../../../main/app';
-import {CaseRole} from 'form/models/caseRoles';
-import {MEDIATION_AGREEMENT_MOCK} from '../../../../../utils/mocks/Mediation/mediationAgreementMock';
-import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
+import {AppRequest} from 'models/AppRequest';
+import {createMockResponse, createMockSession, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../../main/modules/oidc');
+jest.mock('client/civilServiceClient', () => {
+  const methods = {
+    retrieveClaimDetails: jest.fn(),
+  };
+  return {CivilServiceClient: jest.fn(() => methods)};
+});
 
-const civilServiceUrl = config.get<string>('services.civilService.url');
+const civilServiceMethods = new CivilServiceClient('http://localhost') as unknown as {
+  retrieveClaimDetails: jest.Mock;
+};
+
 const claimId = '123';
+const viewPath = 'features/common/viewDocuments';
 
-describe('view mediation settlement agreement document controller', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
-
+const mediationClaim = (): Claim => {
   const claim = new Claim();
-  claim.id = claimId;
-
-  claim.mediationSettlementAgreedAt = new Date('2024-01-01');
+  claim.totalClaimAmount = 1000;
   claim.mediationAgreement = {
     name: 'fileName',
     documentType: DocumentType.MEDIATION_AGREEMENT,
     document: MOCK_MEDIATION_AGREEMENT_DOCUMENT,
+    documentUploadedDatetime: new Date('2024-01-01'),
   } as MediationAgreement;
+  return claim;
+};
 
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-  });
+const invoke = async () => {
+  const res = createMockResponse();
+  const next = jest.fn();
+  await getRouteHandler(viewSettlementAgreementDocument, 'get', VIEW_MEDIATION_SETTLEMENT_AGREEMENT_DOCUMENT)(
+    {
+      params: {id: claimId},
+      body: {},
+      query: {},
+      cookies: {},
+      session: createMockSession(),
+    } as unknown as AppRequest,
+    res as unknown as Response,
+    next,
+  );
+  return {res, next};
+};
 
+describe('view mediation settlement agreement document controller', () => {
   beforeEach(() => {
-    nock(civilServiceUrl)
-      .get(CIVIL_SERVICE_CASES_URL + claimId + '/userCaseRoles')
-      .reply(200, [CaseRole.APPLICANTSOLICITORONE]);
+    jest.clearAllMocks();
   });
 
   describe('on Get', () => {
-    it('should view mediation agreement ', async () => {
-      //Given
-      nock(civilServiceUrl)
-        .get(CIVIL_SERVICE_CASES_URL + claimId)
-        .reply(200, MEDIATION_AGREEMENT_MOCK());
-      //then
-      await request(app)
-        .get(VIEW_MEDIATION_SETTLEMENT_AGREEMENT_DOCUMENT.replace(':id', claimId))
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.VIEW_MEDIATION_SETTLEMENT_AGREEMENT);
-        });
+    it('should render the mediation settlement agreement page', async () => {
+      civilServiceMethods.retrieveClaimDetails.mockResolvedValue(mediationClaim());
+
+      const {res} = await invoke();
+
+      expect(civilServiceMethods.retrieveClaimDetails).toHaveBeenCalledWith(claimId, expect.anything());
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        pageCaption: 'COMMON.MEDIATION',
+        pageTitle: 'PAGES.VIEW_MEDIATION_SETTLEMENT_AGREEMENT_DOCUMENT.PAGE_TITLE',
+        isCarm: true,
+      }));
     });
 
-    it('should return http 500 when has error', async () => {
-      //given
-      nock(civilServiceUrl)
-        .get(CIVIL_SERVICE_CASES_URL + claimId)
-        .reply(500);
+    it('should pass the error to next when retrieving the claim fails', async () => {
+      const error = new Error('civil service failure');
+      civilServiceMethods.retrieveClaimDetails.mockRejectedValue(error);
 
-      //then
-      await request(app)
-        .get(VIEW_MEDIATION_SETTLEMENT_AGREEMENT_DOCUMENT.replace(':id', claimId))
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+      const {next} = await invoke();
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 });
