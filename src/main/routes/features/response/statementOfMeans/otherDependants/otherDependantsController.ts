@@ -8,7 +8,7 @@ import {OtherDependants} from 'form/models/statementOfMeans/otherDependants';
 import {OtherDependantsService} from 'services/features/response/statementOfMeans/otherDependants/otherDependantsService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {Claim} from 'models/claim';
-import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {getResponseClaimById} from 'modules/draft-store/response/responseDraftStoreService';
 import {GenericForm} from 'form/models/genericForm';
 import {AppRequest} from 'common/models/AppRequest';
 import {getRouteParam} from 'common/utils/routeParamUtils';
@@ -23,7 +23,7 @@ function renderView(form: GenericForm<OtherDependants>, res: Response): void {
 
 otherDependantsController.get(CITIZEN_OTHER_DEPENDANTS_URL, (async (req, res, next: NextFunction) => {
   try {
-    const response = await otherDependantsService.getOtherDependants(generateRedisKey(<AppRequest>req));
+    const response = await otherDependantsService.getOtherDependants(<AppRequest>req);
     const otherDependants = response
       ? new GenericForm(new OtherDependants(response.option, response.numberOfPeople, response.details))
       : new GenericForm(new OtherDependants());
@@ -36,20 +36,19 @@ otherDependantsController.get(CITIZEN_OTHER_DEPENDANTS_URL, (async (req, res, ne
 otherDependantsController.post(CITIZEN_OTHER_DEPENDANTS_URL,
   (async (req, res, next: NextFunction) => {
     try {
-      const claimId = getRouteParam(req, 'id');
-      const redisKey = generateRedisKey(<AppRequest>req);
+      const caseId = getRouteParam(req, 'id');
       const form: GenericForm<OtherDependants> = new GenericForm(new OtherDependants(
         req.body.option, req.body.numberOfPeople, req.body.details));
       form.validateSync();
       if (form.hasErrors()) {
         renderView(form, res);
       } else {
-        await otherDependantsService.saveOtherDependants(redisKey, form);
-        const claim: Claim = await getCaseDataFromStore(redisKey);
+        await otherDependantsService.saveOtherDependants(<AppRequest>req, form);
+        const claim: Claim = await getResponseClaimById(<AppRequest>req, caseId);
         if (claim.isDefendantSeverelyDisabledOrDependentsDisabled()) {
-          res.redirect(constructResponseUrlWithIdParams(claimId, CITIZEN_EMPLOYMENT_URL));
+          res.redirect(constructResponseUrlWithIdParams(caseId, CITIZEN_EMPLOYMENT_URL));
         } else {
-          res.redirect(constructResponseUrlWithIdParams(claimId, CITIZEN_CARER_URL));
+          res.redirect(constructResponseUrlWithIdParams(caseId, CITIZEN_CARER_URL));
         }
       }
     } catch (error) {
