@@ -217,6 +217,8 @@
     "src/main/common/models/dashboardContentType.ts",
     "src/main/common/models/directionsQuestionnaire/directionQuestionnaireType.ts",
     "src/main/common/models/directionsQuestionnaire/experts/expertCanStillExamine.ts",
+    "src/main/common/models/directionsQuestionnaire/experts/expertDetails.ts",
+    "src/main/common/models/directionsQuestionnaire/experts/expertDetailsList.ts",
     "src/main/common/models/directionsQuestionnaire/experts/sentExpertReports.ts",
     "src/main/common/models/directionsQuestionnaire/fixedRecoverableCosts/complexityBand.ts",
     "src/main/common/models/directionsQuestionnaire/fixedRecoverableCosts/complexityBandOptions.ts",
