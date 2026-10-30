@@ -1,61 +1,67 @@
-import config from 'config';
-import nock from 'nock';
-import request from 'supertest';
-import { app } from '../../../../../../../main/app';
-import { isGaForLipsEnabled } from 'app/auth/launchdarkly/launchDarklyClient';
-import { getClaimById } from 'modules/utilityService';
-import { generateRedisKeyForGA } from 'modules/draft-store/draftStoreService';
-import { Claim } from 'common/models/claim';
-import {GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_CONFIRMATION_URL} from 'routes/urls';
+import {Response} from 'express';
+import i18next from 'i18next';
+import en from 'modules/i18n/locales/en.json';
+import {Claim} from 'common/models/claim';
+import {getClaimById} from 'modules/utilityService';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {deleteGADocumentsFromDraftStore} from 'modules/draft-store/draftGADocumentService';
+import directionOrderSubmittedConfirmationController from '../../../../../../../main/routes/features/generalApplication/directionsOrderUpload/directionOrderSubmittedConfirmationController';
+import {createMockResponse, getRouteHandler} from '../../../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../../../main/modules/oidc');
-jest.mock('../../../..../../../../../../main/modules/utilityService');
-jest.mock('../../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
-jest.mock('../../../../../../../main/modules/draft-store/draftStoreService', () => ({
-  generateRedisKeyForGA: jest.fn((key) => key),
+jest.mock('modules/draft-store/draftStoreService');
+jest.mock('modules/utilityService', () => ({
+  getClaimById: jest.fn(),
 }));
-jest.mock('../../../../../../../main/modules/draft-store/draftGADocumentService', () => ({
-  deleteGADocumentsFromDraftStore: jest.fn((key) => key),
+jest.mock('modules/draft-store/draftGADocumentService', () => ({
+  getGADocumentsFromDraftStore: jest.fn(),
+  saveGADocumentsInDraftStore: jest.fn(),
+  deleteGADocumentsFromDraftStore: jest.fn(),
+}));
+jest.mock('services/features/generalApplication/response/generalApplicationResponseStoreService', () => ({
+  getDraftGARespondentResponse: jest.fn(),
+  saveDraftGARespondentResponse: jest.fn(),
 }));
 
-describe('General Application - Request More Information Confirmation', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, { id_token: citizenRoleToken });
-    (isGaForLipsEnabled as jest.Mock).mockResolvedValue(true);
+describe('General Application - directions order submitted confirmation', () => {
+  const getHandler = getRouteHandler(directionOrderSubmittedConfirmationController, 'get');
+  const viewPath = 'features/generalApplication/directionsOrderUpload/confirmation-screen';
+  const claimId = '12345';
+  const mockGetClaimById = getClaimById as jest.Mock;
+  let req: {params: {id: string; appId: string}; query: Record<string, unknown>; cookies: Record<string, unknown>};
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
+
+  beforeAll(async () => {
+    await i18next.init({lng: 'en', fallbackLng: 'en', resources: {en: {translation: en}}});
   });
+
   beforeEach(() => {
     jest.clearAllMocks();
+    req = {params: {id: claimId, appId: 'GA-1001'}, query: {}, cookies: {lang: 'en'}};
+    res = createMockResponse();
+    next = jest.fn();
+    mockGetClaimById.mockResolvedValue(new Claim());
+    (draftStoreService.generateRedisKeyForGA as jest.Mock).mockReturnValue('ga-redis-key');
+    (deleteGADocumentsFromDraftStore as jest.Mock).mockResolvedValue(undefined);
   });
-  describe('GET submit controller', () => {
-    it('should render the submitted page with correct data', async () => {
-      const claimId = '123';
-      const claim = new Claim();
-      const redisKey = 'redis-key';
 
-      (getClaimById as jest.Mock).mockResolvedValue(claim);
-      (generateRedisKeyForGA as jest.Mock).mockReturnValue(redisKey);
-      (deleteGADocumentsFromDraftStore as jest.Mock).mockResolvedValue(undefined);
+  it('should render the confirmation page and delete the draft documents', async () => {
+    await getHandler(req as never, res as unknown as Response, next);
 
-      const res = await request(app).get(GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_CONFIRMATION_URL.replace(':id', claimId));
+    expect(mockGetClaimById).toHaveBeenCalledWith(claimId, expect.anything(), true);
+    expect(deleteGADocumentsFromDraftStore).toHaveBeenCalledWith('ga-redis-key');
+    expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+      confirmationTitle: expect.any(String),
+    }));
+    expect(next).not.toHaveBeenCalled();
+  });
 
-      expect(res.status).toBe(200);
-      expect(getClaimById).toHaveBeenCalledWith(claimId, expect.anything(), true);
-      expect(generateRedisKeyForGA).toHaveBeenCalledWith(expect.anything());
-      expect(deleteGADocumentsFromDraftStore).toHaveBeenCalledWith(redisKey);
-      expect(res.text).toContain('uploaded additional documents');
-    });
+  it('should call next when loading the claim fails', async () => {
+    const error = new Error('redis failure');
+    mockGetClaimById.mockRejectedValue(error);
 
-    it('should handle errors', async () => {
-      (getClaimById as jest.Mock).mockRejectedValue(new Error('Error'));
+    await getHandler(req as never, res as unknown as Response, next);
 
-      const res = await request(app).get(GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_CONFIRMATION_URL.replace(':id', '123'));
-
-      expect(res.status).toBe(500);
-    });
+    expect(next).toHaveBeenCalledWith(error);
   });
 });
