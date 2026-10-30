@@ -33,6 +33,7 @@ describe('item-content.njk UPLOAD_ARRAY', () => {
     expect(count(html, 'class="row-container')).toBe(1);
     expect(html).not.toContain('data-has-uploaded-files');
     expect(html).toContain('PAGES.UPLOAD_DOCUMENTS.NO_FILE_UPLOADED');
+    expect(html).not.toMatch(/<input[^>]*type="file"[^>]*multiple/);
   });
 
   it('shows a read-only section and a Delete row for each uploaded file', () => {
@@ -55,7 +56,6 @@ describe('item-content.njk UPLOAD_ARRAY', () => {
 
     expect(html).toContain('data-file-type-error="ERRORS.VALID_MIME_TYPE_FILE"');
     expect(html).toContain('data-file-size-error="ERRORS.VALID_SIZE_FILE"');
-    expect(html).toContain('data-too-many-files-error="ERRORS.TOO_MANY_FILES"');
     expect(html).toContain('data-error-summary-title="ERRORS.THERE_WAS_A_PROBLEM"');
     expect(html).toContain('data-error-prefix="ERRORS.ERROR"');
   });
