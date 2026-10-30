@@ -1,313 +1,206 @@
-import config from 'config';
-import nock from 'nock';
-import request from 'supertest';
-import { FILE_UPLOAD_SOURCE } from 'common/utils/fileUploadUtils';
-import { app } from '../../../../../../../main/app';
-import {
-  getClaimDetailsById,
-  getSummaryList,
-  removeSelectedDocument,
-  uploadSelectedFile,
-} from 'services/features/generalApplication/additionalDocumentService';
-import { generateRedisKey } from 'modules/draft-store/draftStoreService';
-import { getCancelUrl } from 'services/features/generalApplication/generalApplicationService';
+import {Response} from 'express';
+import {CivilServiceClient} from 'client/civilServiceClient';
+import {CaseDocument} from 'common/models/document/caseDocument';
+import {Claim} from 'common/models/claim';
+import {GeneralApplication} from 'common/models/generalApplication/GeneralApplication';
+import {UploadAdditionalDocument} from 'common/models/generalApplication/UploadAdditionalDocument';
+import {FILE_UPLOAD_SOURCE} from 'common/utils/fileUploadUtils';
+import {constructResponseUrlWithIdAndAppIdParams} from 'common/utils/urlFormatter';
+import {getClaimById} from 'modules/utilityService';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {
   GA_UPLOAD_ADDITIONAL_DOCUMENTS_CYA_URL,
   GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL,
 } from 'routes/urls';
-import { Claim } from 'common/models/claim';
-import { GeneralApplication } from 'common/models/generalApplication/GeneralApplication';
-import { isGaForLipsEnabled } from 'app/auth/launchdarkly/launchDarklyClient';
-import { UploadAdditionalDocument } from 'common/models/generalApplication/UploadAdditionalDocument';
-import { CaseDocument } from 'common/models/document/caseDocument';
-import { FileUpload } from 'common/models/caseProgression/uploadDocumentsUserForm';
-import { Session } from 'express-session';
-import { t } from 'i18next';
-import { constructResponseUrlWithIdAndAppIdParams } from 'common/utils/urlFormatter';
+import {getSummaryList} from 'services/features/generalApplication/additionalDocumentService';
+import uploadAdditionalDocumentsController from '../../../../../../../main/routes/features/generalApplication/additionalDocuments/uploadAdditionalDocumentsController';
+import {createMockResponse, getRouteHandler} from '../../../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../../../main/modules/oidc');
-jest.mock('../../../../../../../main/services/features/generalApplication/additionalDocumentService', () => ({
-  getClaimDetailsById: jest.fn(),
-  getSummaryList: jest.fn(),
-  uploadSelectedFile: jest.fn(),
-  removeSelectedDocument: jest.fn(),
+jest.mock('modules/draft-store/draftStoreService');
+jest.mock('modules/utilityService', () => ({
+  getClaimById: jest.fn(),
 }));
-jest.mock('../../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
-jest.mock('../../../../../../../main/modules/draft-store/draftStoreService', () => ({
-  generateRedisKey: jest.fn((key) => key),
+jest.mock('services/features/generalApplication/response/generalApplicationResponseStoreService', () => ({
+  getDraftGARespondentResponse: jest.fn(),
+  saveDraftGARespondentResponse: jest.fn(),
 }));
+jest.mock('services/features/generalApplication/additionalDocumentService', () => {
+  const actual = jest.requireActual('services/features/generalApplication/additionalDocumentService');
+  return {
+    ...actual,
+    getSummaryList: jest.fn((...args: unknown[]) => actual.getSummaryList(...args)),
+  };
+});
 
-jest.mock('../../../../../../../main/services/features/generalApplication/generalApplicationService', () => ({
-  getCancelUrl: jest.fn(),
-  getApplicationIndex: jest.fn(),
-}));
-jest.mock('../../../../../../../main/routes/guards/generalAplicationGuard',() => ({
-  isGAForLiPEnabled: jest.fn((req, res, next) => {
-    next();
-  }),
-}));
+const uploadedFile = {
+  fieldname: 'selectedFile',
+  originalname: 'test.txt',
+  mimetype: 'text/plain',
+  size: Buffer.from('Test file content').length,
+  buffer: Buffer.from('Test file content'),
+};
+
 describe('uploadAdditionalDocumentsController', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
-  const claimId = '123';
-  const gaId = '456';
+  const getHandler = getRouteHandler(uploadAdditionalDocumentsController, 'get');
+  const postHandler = getRouteHandler(uploadAdditionalDocumentsController, 'post');
+  const viewPath = 'features/generalApplication/additionalDocuments/upload-additional-documents';
+  const claimId = '12345';
+  const appId = 'GA-1001';
+  const currentUrl = constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL);
+  const mockGetClaimById = getClaimById as jest.Mock;
+  const uploadDocument = jest.spyOn(CivilServiceClient.prototype, 'uploadDocument');
   let claim: Claim;
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, { id_token: citizenRoleToken });
-    (isGaForLipsEnabled as jest.Mock).mockResolvedValue(true);
-  });
+  let req: {
+    params: {id: string; appId: string};
+    body: Record<string, unknown>;
+    query: Record<string, unknown>;
+    cookies: Record<string, unknown>;
+    session: {save: jest.Mock; fileUpload?: string; fileUploadSource?: string};
+    file?: typeof uploadedFile;
+    multerError?: {code: string};
+  };
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
+
+  const documentOnClaim = (): void => {
+    const additionalDocument = new UploadAdditionalDocument();
+    additionalDocument.typeOfDocument = 'Witness statement';
+    additionalDocument.caseDocument = {documentName: 'test.txt'} as CaseDocument;
+    claim.generalApplication.uploadAdditionalDocuments = [additionalDocument];
+  };
 
   beforeEach(() => {
+    jest.clearAllMocks();
     claim = new Claim();
     claim.generalApplication = new GeneralApplication();
-    jest.clearAllMocks();
+    req = {
+      params: {id: claimId, appId},
+      body: {},
+      query: {},
+      cookies: {},
+      session: {save: jest.fn((callback: () => void) => callback())},
+    };
+    res = createMockResponse();
+    next = jest.fn();
+    mockGetClaimById.mockResolvedValue(claim);
+    (draftStoreService.generateRedisKey as jest.Mock).mockReturnValue(claimId);
+    (draftStoreService.saveDraftClaim as jest.Mock).mockResolvedValue(undefined);
+    uploadDocument.mockResolvedValue({documentName: 'test.txt'} as CaseDocument);
   });
 
-  describe('on Get request', () => {
-    it('should render the upload additional documents page with correct data', async () => {
-      const redisKey = 'redis-key';
-      const cancelUrl = '/cancel-url';
-      const formattedSummaryList = {
-        title: '',
-        summaryList: {
-          rows: [
-            {
-              key: {
-                text: 'Type of document',
-              },
-              value: {
-                text: 'test',
-              },
-            },
-            {
-              key: {
-                text: 'n245form.pdf',
-              },
-              value: {
-                text: '',
-              },
-              actions: {
-                items: [
-                  {
-                    href: '/case/1720536503257495/general-application/1720536653906339/upload-additional-documents?indexId=1',
-                    text: 'Remove document',
-                    visuallyHiddenText: 'n245form.pdf',
-                  },
-                ],
-              },
-            },
-          ],
-        },
-      };
-      (getClaimDetailsById as jest.Mock).mockResolvedValue(claim);
-      (generateRedisKey as jest.Mock).mockReturnValue(redisKey);
-      (getCancelUrl as jest.Mock).mockResolvedValue(cancelUrl);
-      (getSummaryList as jest.Mock).mockReturnValue(formattedSummaryList);
+  afterAll(() => {
+    uploadDocument.mockRestore();
+  });
 
-      const res = await request(app).get(constructResponseUrlWithIdAndAppIdParams(claimId, gaId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL));
+  describe('on GET', () => {
+    it('should render the upload page', async () => {
+      await getHandler(req as never, res as unknown as Response, next);
 
-      expect(res.status).toBe(200);
-      expect(getClaimDetailsById).toHaveBeenCalledWith(expect.anything());
-      expect(generateRedisKey).toHaveBeenCalledWith(expect.anything());
-      expect(getCancelUrl).toHaveBeenCalledWith(claimId, claim);
-      expect(getSummaryList).toHaveBeenCalledWith(claim.generalApplication.uploadAdditionalDocuments, claimId, gaId, undefined);
-      expect(res.text).toContain('Type of document');
-      expect(res.text).toContain('test');
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        cancelUrl: '/case/12345/generalApplication/cancel',
+      }));
+      expect(getSummaryList).toHaveBeenCalledWith([], claimId, appId, undefined);
+      expect(next).not.toHaveBeenCalled();
     });
 
-    it('should render the upload additional documents page with correct welsh data', async () => {
-      const redisKey = 'redis-key';
-      const cancelUrl = '/cancel-url';
-      const formattedSummaryList = {
-        title: '',
-        summaryList: {
-          rows: [
-            {
-              key: {
-                text: 'Type of document',
-              },
-              value: {
-                text: 'test',
-              },
-            },
-            {
-              key: {
-                text: 'n245form.pdf',
-              },
-              value: {
-                text: '',
-              },
-              actions: {
-                items: [
-                  {
-                    href: '/case/1720536503257495/general-application/1720536653906339/upload-additional-documents?indexId=1',
-                    text: 'Remove document',
-                    visuallyHiddenText: 'n245form.pdf',
-                  },
-                ],
-              },
-            },
-          ],
-        },
-      };
-      (getClaimDetailsById as jest.Mock).mockResolvedValue(claim);
-      (generateRedisKey as jest.Mock).mockReturnValue(redisKey);
-      (getCancelUrl as jest.Mock).mockResolvedValue(cancelUrl);
-      (getSummaryList as jest.Mock).mockReturnValue(formattedSummaryList);
+    it('should pass the welsh language into the summary', async () => {
+      req.query = {lang: 'cy'};
 
-      const res = await request(app).get(constructResponseUrlWithIdAndAppIdParams(claimId, gaId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL)).query({lang: 'cy'});
+      await getHandler(req as never, res as unknown as Response, next);
 
-      expect(res.status).toBe(200);
-      expect(getSummaryList).toHaveBeenCalledWith(claim.generalApplication.uploadAdditionalDocuments, claimId, gaId, 'cy');
+      expect(getSummaryList).toHaveBeenCalledWith([], claimId, appId, 'cy');
     });
 
-    it('should remove the selected doc from the store', async () => {
+    it('should remove the selected document and redirect', async () => {
+      documentOnClaim();
+      req.query = {indexId: '1'};
 
-      const additionalDocument = new UploadAdditionalDocument();
-      additionalDocument.typeOfDocument = 'testt';
-      additionalDocument.caseDocument = {
-        documentLink: { document_binary_url: 'binary_url1', document_filename: 'testDoc', document_url: 'url' },
-        documentName: 'testDoc',
-        documentType: null,
-        documentSize: 1000,
-        createdDatetime: new Date(),
-      } as CaseDocument;
-      additionalDocument.fileUpload = new FileUpload();
-      claim.generalApplication.uploadAdditionalDocuments = [additionalDocument];
-      const redisKey = 'redis-key';
-      const cancelUrl = '/cancel-url';
-      (getClaimDetailsById as jest.Mock).mockResolvedValue(claim);
-      (generateRedisKey as jest.Mock).mockReturnValue(redisKey);
-      (getCancelUrl as jest.Mock).mockResolvedValue(cancelUrl);
-      (getSummaryList as jest.Mock).mockReturnValue({});
-      (removeSelectedDocument as jest.Mock).mockReturnValueOnce(void 0);
+      await getHandler(req as never, res as unknown as Response, next);
 
-      const res = await request(app).get(constructResponseUrlWithIdAndAppIdParams(claimId, gaId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL)).query({ indexId: 1 });
-
-      expect(res.status).toBe(302);
-      expect(res.header.location).toBe(constructResponseUrlWithIdAndAppIdParams(claimId, gaId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL));
-      expect(removeSelectedDocument).toHaveBeenCalledWith(redisKey, claim, 0, undefined);
+      expect(claim.generalApplication.uploadAdditionalDocuments).toHaveLength(0);
+      expect(res.redirect).toHaveBeenCalledWith(currentUrl);
     });
 
-    it('should return page with errors when upload file button clicked without choosing file', async () => {
-      const errors = [
-        {
-          target: {},
-          property: 'fileUpload',
-          constraints: { isNotEmpty: 'ERRORS.VALID_CHOOSE_THE_FILE' },
-          fieldName: 'fileUpload',
-          text: 'Choose the file you want to upload',
-          href: '#fileUpload',
-        },
-      ];
-      const additionalDocument = new UploadAdditionalDocument();
-      additionalDocument.typeOfDocument = 'testt';
-      additionalDocument.caseDocument = {
-        documentLink: { document_binary_url: 'binary_url1', document_filename: 'testDoc', document_url: 'url' },
-        documentName: 'testDoc',
-        documentType: null,
-        documentSize: 1000,
-        createdDatetime: new Date(),
-      } as CaseDocument;
-      additionalDocument.fileUpload = new FileUpload();
-      claim.generalApplication.uploadAdditionalDocuments = [additionalDocument];
-      const redisKey = 'redis-key';
-      const cancelUrl = '/cancel-url';
-      (getClaimDetailsById as jest.Mock).mockResolvedValue(claim);
-      (generateRedisKey as jest.Mock).mockReturnValue(redisKey);
-      (getCancelUrl as jest.Mock).mockResolvedValue(cancelUrl);
-      (getSummaryList as jest.Mock).mockReturnValue({});
-      (removeSelectedDocument as jest.Mock).mockReturnValueOnce(void 0);
-      app.request.session = { fileUpload: JSON.stringify(errors), fileUploadSource: FILE_UPLOAD_SOURCE.GA_ADDITIONAL_DOCUMENTS, save: (cb: any) => cb() } as unknown as Session;
-      await request(app)
-        .get(constructResponseUrlWithIdAndAppIdParams(claimId, gaId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL))
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.VALID_CHOOSE_THE_FILE'));
-        });
+    it('should render file upload errors stored in the session', async () => {
+      req.session.fileUpload = JSON.stringify([{property: 'fileUpload', constraints: {isNotEmpty: 'ERRORS.VALID_CHOOSE_THE_FILE'}}]);
+      req.session.fileUploadSource = FILE_UPLOAD_SOURCE.GA_ADDITIONAL_DOCUMENTS;
+
+      await getHandler(req as never, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.any(Object));
+      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
     });
 
-    it('should handle errors', async () => {
-      (getClaimDetailsById as jest.Mock).mockRejectedValue(new Error('Error'));
+    it('should call next when loading the claim fails', async () => {
+      const error = new Error('redis failure');
+      mockGetClaimById.mockRejectedValue(error);
 
-      const res = await request(app).get(constructResponseUrlWithIdAndAppIdParams(claimId, gaId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL));
+      await getHandler(req as never, res as unknown as Response, next);
 
-      expect(res.status).toBe(500);
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 
-  describe('on post request', () => {
-    it('should handle file upload and redirect to the same page', async () => {
-      (getClaimDetailsById as jest.Mock).mockResolvedValue(claim);
-      (uploadSelectedFile as jest.Mock).mockResolvedValueOnce(void 0);
+  describe('on POST', () => {
+    it('should upload the selected file and redirect back', async () => {
+      req.body = {action: 'uploadButton', typeOfDocument: 'Witness statement'};
+      req.file = uploadedFile;
 
-      const res = await request(app)
-        .post(constructResponseUrlWithIdAndAppIdParams(claimId, gaId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL))
-        .field('action', 'uploadButton')
-        .attach('selectedFile', Buffer.from('file content'), 'test-file.txt');
+      await postHandler(req as never, res as unknown as Response, next);
 
-      expect(res.status).toBe(302);
-      expect(res.header['location']).toBe(constructResponseUrlWithIdAndAppIdParams(claimId, gaId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL));
-      expect(uploadSelectedFile).toHaveBeenCalledWith(expect.anything(), claim);
+      expect(uploadDocument).toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(currentUrl);
+      expect(next).not.toHaveBeenCalled();
     });
 
-    it('should redirect back when file over 100MB (multer LIMIT_FILE_SIZE)', async () => {
-      const save = jest.fn((cb: any) => cb());
-      app.request.session = { save } as unknown as Session;
-      const largeBuffer = Buffer.alloc(101 * 1024 * 1024);
-      largeBuffer.fill('x');
-      const res = await request(app)
-        .post(constructResponseUrlWithIdAndAppIdParams(claimId, gaId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL))
-        .field('action', 'uploadButton')
-        .attach('selectedFile', largeBuffer, { filename: 'large.pdf', contentType: 'application/pdf' });
-      expect(res.status).toBe(302);
-      expect(res.header.location).toContain('upload-additional-documents');
-      expect(save).toHaveBeenCalledTimes(1);
+    it('should redirect back when the upload button is used without a file', async () => {
+      req.body = {action: 'uploadButton'};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(uploadDocument).not.toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(currentUrl);
+      expect(req.session.fileUpload).toBeDefined();
     });
 
-    it('should redirect to CYA page if documents are uploaded', async () => {
-      const additionalDocument = new UploadAdditionalDocument();
-      additionalDocument.typeOfDocument = 'testt';
-      additionalDocument.caseDocument = {
-        documentLink: { document_binary_url: 'binary_url1', document_filename: 'testDoc', document_url: 'url' },
-        documentName: 'testDoc',
-        documentType: null,
-        documentSize: 1000,
-        createdDatetime: new Date(),
-      } as CaseDocument;
-      additionalDocument.fileUpload = new FileUpload();
-      claim.generalApplication.uploadAdditionalDocuments = [additionalDocument];
+    it('should redirect back when multer reports a file error', async () => {
+      req.body = {action: 'uploadButton'};
+      req.multerError = {code: 'LIMIT_FILE_SIZE'};
 
-      (getClaimDetailsById as jest.Mock).mockResolvedValue(claim);
+      await postHandler(req as never, res as unknown as Response, next);
 
-      const res = await request(app)
-        .post(constructResponseUrlWithIdAndAppIdParams(claimId, gaId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL));
-
-      expect(res.status).toBe(302);
-      expect(res.header['location']).toBe(constructResponseUrlWithIdAndAppIdParams(claimId, gaId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_CYA_URL));
+      expect(uploadDocument).not.toHaveBeenCalled();
+      expect(req.session.save).toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(currentUrl);
     });
 
-    it('should set fileUpload error in session when no documents are uploaded', async () => {
+    it('should redirect to check your answers when documents are already uploaded', async () => {
+      documentOnClaim();
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(res.redirect).toHaveBeenCalledWith(
+        constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_CYA_URL),
+      );
+    });
+
+    it('should redirect back when continue is used with no documents', async () => {
       claim.generalApplication.uploadAdditionalDocuments = [];
-      (getClaimDetailsById as jest.Mock).mockResolvedValue(claim);
 
-      const res = await request(app)
-        .post(constructResponseUrlWithIdAndAppIdParams(claimId, gaId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL));
+      await postHandler(req as never, res as unknown as Response, next);
 
-      expect(res.status).toBe(302);
-      expect(res.header['location']).toBe(constructResponseUrlWithIdAndAppIdParams(claimId, gaId, GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL));
+      expect(req.session.fileUploadSource).toBe(FILE_UPLOAD_SOURCE.GA_ADDITIONAL_DOCUMENTS);
+      expect(res.redirect).toHaveBeenCalledWith(currentUrl);
     });
 
-    it('should handle errors', async () => {
-      (getClaimDetailsById as jest.Mock).mockRejectedValue(new Error('Error'));
+    it('should call next when loading the claim fails', async () => {
+      const error = new Error('redis failure');
+      mockGetClaimById.mockRejectedValue(error);
+      req.body = {action: 'uploadButton'};
 
-      const res = await request(app)
-        .post(constructResponseUrlWithIdAndAppIdParams('123', '456', GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL))
-        .field('action', 'submit');
+      await postHandler(req as never, res as unknown as Response, next);
 
-      expect(res.status).toBe(500);
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 });
