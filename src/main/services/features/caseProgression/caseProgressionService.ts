@@ -24,6 +24,7 @@ import {AppRequest} from 'models/AppRequest';
 import {getClaimById} from 'modules/utilityService';
 import { constructResponseUrlWithIdParams } from 'common/utils/urlFormatter';
 import { DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL } from 'routes/urls';
+import {parseCaseDocuments} from 'common/utils/fileUploadUtils';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('caseProgressionService');
@@ -269,7 +270,7 @@ const getFormSection = <T>(data: [], bindFunction: (request: unknown) => T): T[]
 const bindRequestToTypeOfDocumentSectionObj = (request: any): TypeOfDocumentSection => {
   const formObj = createSectionWithDate(TypeOfDocumentSection, request);
   formObj.typeOfDocument = toNonEmptyTrimmedString(request?.typeOfDocument);
-  assignCaseDocumentIfPresent(formObj, request);
+  assignCaseDocumentsIfPresent(formObj, request);
   return formObj;
 };
 
@@ -277,21 +278,21 @@ const bindRequestToReferredToInTheStatementSectionObj = (request: any): Referred
   const formObj = createSectionWithDate(ReferredToInTheStatementSection, request);
   formObj.typeOfDocument = toNonEmptyTrimmedString(request?.typeOfDocument);
   formObj.witnessName = toNonEmptyTrimmedString(request?.witnessName);
-  assignCaseDocumentIfPresent(formObj, request);
+  assignCaseDocumentsIfPresent(formObj, request);
   return formObj;
 };
 
 const bindRequestToWitnessSectionObj = (request: any): WitnessSection => {
   const formObj = createSectionWithDate(WitnessSection, request);
   formObj.witnessName = toNonEmptyTrimmedString(request?.witnessName);
-  assignCaseDocumentIfPresent(formObj, request);
+  assignCaseDocumentsIfPresent(formObj, request);
   return formObj;
 };
 
 const bindRequestToWitnessSummarySectionObj = (request: any): WitnessSummarySection => {
   const formObj = createSectionWithDate(WitnessSummarySection, request);
   formObj.witnessName = toNonEmptyTrimmedString(request?.witnessName);
-  assignCaseDocumentIfPresent(formObj, request);
+  assignCaseDocumentsIfPresent(formObj, request);
   return formObj;
 };
 
@@ -303,13 +304,13 @@ const bindRequestToExpertSectionObj = (request: any): ExpertSection => {
   formObj.otherPartyName = toNonEmptyTrimmedString(request?.otherPartyName);
   formObj.questionDocumentName = toNonEmptyTrimmedString(request?.questionDocumentName);
   formObj.otherPartyQuestionsDocumentName = toNonEmptyTrimmedString(request?.otherPartyQuestionsDocumentName);
-  assignCaseDocumentIfPresent(formObj, request);
+  assignCaseDocumentsIfPresent(formObj, request);
   return formObj;
 };
 
 const bindRequestToFileOnlySectionObj = (request: NonNullable<unknown> ): FileOnlySection => {
   const formObj: FileOnlySection = new FileOnlySection();
-  assignCaseDocumentIfPresent(formObj, request);
+  assignCaseDocumentsIfPresent(formObj, request);
   return formObj;
 };
 
@@ -323,26 +324,6 @@ export const getCaseProgressionCancelUrl = async (claimId: string, claim: Claim)
 export function toNonEmptyTrimmedString(value: unknown): string {
   return typeof value === 'string' ? value.trim() : null;
 }
-
-const parseCaseDocument = (request: Record<string, unknown>): CaseDocument | undefined => {
-  const CASE_DOCUMENT = 'caseDocument';
-  const rawCaseDoc = request?.[CASE_DOCUMENT];
-  if (rawCaseDoc === undefined || rawCaseDoc === null || rawCaseDoc === '') {
-    logger.error('Case document is missing');
-    return undefined;
-  }
-  if (typeof rawCaseDoc === 'string') {
-    try {
-      logger.info(`Parsing case document: ${rawCaseDoc}`);
-      return JSON.parse(rawCaseDoc) as CaseDocument;
-    } catch (err: unknown){
-      const message = err instanceof Error ? err.message : String(err);
-      logger.error(`Error parsing case document: ${message}`);
-      return undefined;
-    }
-  }
-  return rawCaseDoc as CaseDocument;
-};
 
 type DateCtor<T> = new (day?: string, month?: string, year?: string) => T;
 
@@ -365,10 +346,7 @@ const createSectionWithDate = <T>(Ctor: DateCtor<T>, request: unknown): T => {
   return new Ctor(day, month, year);
 };
 
-const assignCaseDocumentIfPresent = <T extends { caseDocument?: CaseDocument }>(target: T, request: unknown): void => {
-  const parsed = parseCaseDocument(request as Record<string, unknown>);
-  if (parsed) {
-    target.caseDocument = parsed;
-  }
+const assignCaseDocumentsIfPresent = <T extends { caseDocuments?: CaseDocument[] }>(target: T, request: unknown): void => {
+  target.caseDocuments = parseCaseDocuments(request as Record<string, unknown>);
 };
 

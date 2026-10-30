@@ -47,7 +47,8 @@ export class UploadDocumentsSectionBuilder extends PageSectionBuilder {
     return this;
   }
 
-  addUploadArray(title: string, html: string, category: string, field: string, index = 0, classes?: string, errorMessage?: string, caseDocument?: CaseDocument) {
+  addUploadArray(title: string, html: string, category: string, field: string, index = 0, classes?: string, errorMessage?: string, caseDocuments?: CaseDocument[]) {
+    const documents = caseDocuments ?? [];
     const section = ({
       type: ClaimSummaryType.UPLOAD_ARRAY,
       data: {
@@ -58,8 +59,8 @@ export class UploadDocumentsSectionBuilder extends PageSectionBuilder {
         html: html,
         index: index,
         errorMessage: errorMessage,
-        caseDocument: caseDocument ? JSON.stringify(caseDocument) : '',
-        documentName: caseDocument ? caseDocument.documentName : '',
+        caseDocuments: documents.length ? JSON.stringify(documents) : '',
+        documentNames: documents.map((caseDocument) => caseDocument.documentName),
       },
     });
     this._claimSummarySections.push(section);

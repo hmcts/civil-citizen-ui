@@ -30,6 +30,7 @@ import {getClaimById} from 'modules/utilityService';
 import {addAnother, getUploadDocumentsForm, saveCaseProgression} from 'services/features/caseProgression/caseProgressionService';
 import {CaseDocument} from 'models/document/caseDocument';
 import {EvidenceUploadDisclosure} from 'models/document/documentType';
+import {CivilServiceClient} from 'client/civilServiceClient';
 
 const getTrialContentMock = getTrialContent as jest.Mock;
 
@@ -208,7 +209,7 @@ describe('on POST', () => {
   uploadDocumentsUserForm.documentsForDisclosure[0].dateInputFields.dateDay = '';
   uploadDocumentsUserForm.documentsForDisclosure[0].dateInputFields.dateMonth = '';
   uploadDocumentsUserForm.documentsForDisclosure[0].dateInputFields.dateMonth = '';
-  uploadDocumentsUserForm.documentsForDisclosure[0].caseDocument = undefined;
+  uploadDocumentsUserForm.documentsForDisclosure[0].caseDocuments = [];
   uploadDocumentsUserForm.documentsForDisclosure[0].fileUpload = undefined;
 
   beforeEach(() => {
@@ -487,13 +488,13 @@ describe('on POST', () => {
     uploadDocumentsUserForm.documentsForDisclosure[0].dateInputFields.dateDay = '14';
     uploadDocumentsUserForm.documentsForDisclosure[0].dateInputFields.dateMonth = '10';
     uploadDocumentsUserForm.documentsForDisclosure[0].dateInputFields.dateYear = '2020';
-    uploadDocumentsUserForm.documentsForDisclosure[0].caseDocument = caseDoc;
+    uploadDocumentsUserForm.documentsForDisclosure[0].caseDocuments = [caseDoc];
 
     uploadDocumentsUserForm.answersForExperts = [new ExpertSection()];
     uploadDocumentsUserForm.answersForExperts[0].fileUpload = undefined;
 
     uploadDocumentsUserForm.disclosureList = [new FileOnlySection()];
-    uploadDocumentsUserForm.disclosureList[0].caseDocument = caseDoc;
+    uploadDocumentsUserForm.disclosureList[0].caseDocuments = [caseDoc];
 
     uploadDocumentsUserForm.witnessStatement[0].witnessName = 'witness Name';
     uploadDocumentsUserForm.witnessStatement[0].fileUpload = fileUpload;
@@ -515,7 +516,7 @@ describe('on POST', () => {
     uploadDocumentsUserForm.noticeOfIntention[0].dateInputFields.dateDay = '12';
     uploadDocumentsUserForm.noticeOfIntention[0].dateInputFields.dateMonth = '11';
     uploadDocumentsUserForm.noticeOfIntention[0].dateInputFields.dateYear = '2020';
-    uploadDocumentsUserForm.noticeOfIntention[0].caseDocument = caseDoc;
+    uploadDocumentsUserForm.noticeOfIntention[0].caseDocuments = [caseDoc];
 
     uploadDocumentsUserForm.documentsReferred = [new ReferredToInTheStatementSection()];
     uploadDocumentsUserForm.documentsReferred[0].witnessName = 'witness Name 3';
@@ -525,7 +526,7 @@ describe('on POST', () => {
     uploadDocumentsUserForm.documentsReferred[0].dateInputFields.dateDay = '13';
     uploadDocumentsUserForm.documentsReferred[0].dateInputFields.dateMonth = '11';
     uploadDocumentsUserForm.documentsReferred[0].dateInputFields.dateYear = '2020';
-    uploadDocumentsUserForm.documentsReferred[0].caseDocument = caseDoc;
+    uploadDocumentsUserForm.documentsReferred[0].caseDocuments = [caseDoc];
 
     uploadDocumentsUserForm.expertReport[0].expertName = 'expert Name';
     uploadDocumentsUserForm.expertReport[0].fieldOfExpertise = 'field Of Expertise';
@@ -535,7 +536,7 @@ describe('on POST', () => {
     uploadDocumentsUserForm.expertReport[0].dateInputFields.dateDay = '11';
     uploadDocumentsUserForm.expertReport[0].dateInputFields.dateMonth = '12';
     uploadDocumentsUserForm.expertReport[0].dateInputFields.dateYear = '2020';
-    uploadDocumentsUserForm.expertReport[0].caseDocument = caseDoc;
+    uploadDocumentsUserForm.expertReport[0].caseDocuments = [caseDoc];
 
     uploadDocumentsUserForm.questionsForExperts = [new ExpertSection()];
     uploadDocumentsUserForm.questionsForExperts[0].expertName = 'expert Name 1';
@@ -546,7 +547,7 @@ describe('on POST', () => {
     uploadDocumentsUserForm.questionsForExperts[0].dateInputFields.dateDay = '10';
     uploadDocumentsUserForm.questionsForExperts[0].dateInputFields.dateMonth = '10';
     uploadDocumentsUserForm.questionsForExperts[0].dateInputFields.dateYear = '2020';
-    uploadDocumentsUserForm.questionsForExperts[0].caseDocument = caseDoc;
+    uploadDocumentsUserForm.questionsForExperts[0].caseDocuments = [caseDoc];
 
     uploadDocumentsUserForm.expertStatement = [new ExpertSection()];
     uploadDocumentsUserForm.expertStatement[0].expertName = 'John Dhoe';
@@ -558,7 +559,7 @@ describe('on POST', () => {
     uploadDocumentsUserForm.expertStatement[0].dateInputFields.dateDay = '14';
     uploadDocumentsUserForm.expertStatement[0].dateInputFields.dateMonth = '10';
     uploadDocumentsUserForm.expertStatement[0].dateInputFields.dateYear = '2020';
-    uploadDocumentsUserForm.expertStatement[0].caseDocument = caseDoc;
+    uploadDocumentsUserForm.expertStatement[0].caseDocuments = [caseDoc];
 
     uploadDocumentsUserForm.answersForExperts = [new ExpertSection()];
     uploadDocumentsUserForm.answersForExperts[0].expertName = 'expert Name 2';
@@ -569,19 +570,19 @@ describe('on POST', () => {
     uploadDocumentsUserForm.answersForExperts[0].dateInputFields.dateDay = '14';
     uploadDocumentsUserForm.answersForExperts[0].dateInputFields.dateMonth = '10';
     uploadDocumentsUserForm.answersForExperts[0].dateInputFields.dateYear = '2020';
-    uploadDocumentsUserForm.answersForExperts[0].caseDocument = caseDoc;
+    uploadDocumentsUserForm.answersForExperts[0].caseDocuments = [caseDoc];
 
     uploadDocumentsUserForm.trialCaseSummary = [new FileOnlySection()];
-    uploadDocumentsUserForm.trialCaseSummary[0].caseDocument = caseDoc;
+    uploadDocumentsUserForm.trialCaseSummary[0].caseDocuments = [caseDoc];
 
     uploadDocumentsUserForm.trialSkeletonArgument = [new FileOnlySection()];
-    uploadDocumentsUserForm.trialSkeletonArgument[0].caseDocument = caseDoc;
+    uploadDocumentsUserForm.trialSkeletonArgument[0].caseDocuments = [caseDoc];
 
     uploadDocumentsUserForm.trialAuthorities = [new FileOnlySection()];
-    uploadDocumentsUserForm.trialAuthorities[0].caseDocument = caseDoc;
+    uploadDocumentsUserForm.trialAuthorities[0].caseDocuments = [caseDoc];
 
     uploadDocumentsUserForm.trialCosts = [new FileOnlySection()];
-    uploadDocumentsUserForm.trialCosts[0].caseDocument = caseDoc;
+    uploadDocumentsUserForm.trialCosts[0].caseDocuments = [caseDoc];
 
     uploadDocumentsUserForm.trialDocumentary = [new TypeOfDocumentSection()];
     uploadDocumentsUserForm.trialDocumentary[0].typeOfDocument = 'Word';
@@ -589,7 +590,7 @@ describe('on POST', () => {
     uploadDocumentsUserForm.trialDocumentary[0].dateInputFields.dateDay = '14';
     uploadDocumentsUserForm.trialDocumentary[0].dateInputFields.dateMonth = '11';
     uploadDocumentsUserForm.trialDocumentary[0].dateInputFields.dateYear = '2020';
-    uploadDocumentsUserForm.trialDocumentary[0].caseDocument = caseDoc;
+    uploadDocumentsUserForm.trialDocumentary[0].caseDocuments = [caseDoc];
 
     (saveCaseProgression as jest.Mock).mockResolvedValue(true);
     (getUploadDocumentsForm as jest.Mock).mockReturnValue(uploadDocumentsUserForm);
@@ -698,6 +699,23 @@ describe('on POST', () => {
         .expect((res) => {
           expect(res.status).toBe(200);
         });
+    });
+
+    it('should show the wrong file type error when a spoofed file is sent without its upload action', async () => {
+      (saveCaseProgression as jest.Mock).mockClear();
+
+      await request(app)
+        .post(CP_UPLOAD_DOCUMENTS_URL)
+        .field('action', 'add_another-witnessStatement')
+        .attach('expertReport[0][fileUpload]', Buffer.from('This is not a real PDF.\n'), {
+          filename: 'spoofed.pdf',
+          contentType: 'application/pdf',
+        })
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Document must be Word, Excel, PowerPoint, PDF');
+        });
+      expect(saveCaseProgression).not.toHaveBeenCalled();
     });
 
     it('should successfully upload valid PDF file', async () => {
@@ -853,6 +871,41 @@ describe('on POST', () => {
         });
     });
 
+    const tooManyFilesMessage = 'You can only upload up to 10 documents at a time';
+    const pdfBuffer = Buffer.from('%PDF-1.4\n1 0 obj<<>>endobj\ntrailer<<>>\n%%EOF\n');
+
+    it('should not reject an upload because of files chosen in other sections', async () => {
+      nock(config.get<string>('services.civilService.url'))
+        .post('/case/document/generateAnyDoc')
+        .reply(200, {documentLink: {document_url: 'http://dm/documents/doc-1', document_binary_url: '', document_filename: 'witness.pdf'}, documentName: 'witness.pdf'});
+      const req = request(app)
+        .post(CP_UPLOAD_DOCUMENTS_URL)
+        .field('action', 'witnessStatement[0][uploadButton]')
+        .attach('witnessStatement[0][fileUpload]', pdfBuffer, {filename: 'witness.pdf', contentType: 'application/pdf'});
+      for (let index = 0; index < 11; index++) {
+        req.attach('documentsReferred[0][fileUpload]', pdfBuffer, {filename: `referred-${index}.pdf`, contentType: 'application/pdf'});
+      }
+
+      await req.expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).not.toContain(tooManyFilesMessage);
+      });
+    });
+
+    it('should reject an upload when the section on the button has more than 10 files', async () => {
+      const req = request(app)
+        .post(CP_UPLOAD_DOCUMENTS_URL)
+        .field('action', 'witnessStatement[0][uploadButton]');
+      for (let index = 0; index < 11; index++) {
+        req.attach('witnessStatement[0][fileUpload]', pdfBuffer, {filename: `witness-${index}.pdf`, contentType: 'application/pdf'});
+      }
+
+      await req.expect((res) => {
+        expect(res.status).toBe(200);
+        expect(res.text).toContain(tooManyFilesMessage);
+      });
+    });
+
     it('should handle multer error when action includes uploadButton and file size exceeds limit', async () => {
       const civilClaimDocumentUploaded = require('../../../../utils/mocks/civilClaimResponseMock.json');
       const claim: Claim = civilClaimDocumentUploaded.case_data as Claim;
@@ -959,9 +1012,9 @@ describe('on POST', () => {
       new FileOnlySection(),
     ];
 
-    formWithMultipleDocs.trialAuthorities[0].caseDocument = { documentName: 'Doc 1' } as CaseDocument;
-    formWithMultipleDocs.trialAuthorities[1].caseDocument = { documentName: 'Doc 2' } as CaseDocument;
-    formWithMultipleDocs.trialAuthorities[2].caseDocument = { documentName: 'Doc 3' } as CaseDocument;
+    formWithMultipleDocs.trialAuthorities[0].caseDocuments = [{ documentName: 'Doc 1' } as CaseDocument];
+    formWithMultipleDocs.trialAuthorities[1].caseDocuments = [{ documentName: 'Doc 2' } as CaseDocument];
+    formWithMultipleDocs.trialAuthorities[2].caseDocuments = [{ documentName: 'Doc 3' } as CaseDocument];
 
     (getUploadDocumentsForm as jest.Mock).mockReturnValue(formWithMultipleDocs);
     (saveCaseProgression as jest.Mock).mockResolvedValue(true);
@@ -975,9 +1028,9 @@ describe('on POST', () => {
     expect(response.status).toBe(200);
     expect(formWithMultipleDocs.trialAuthorities).toHaveLength(2);
 
-    expect(formWithMultipleDocs.trialAuthorities[0].caseDocument.documentName).toBe('Doc 1');
-    expect(formWithMultipleDocs.trialAuthorities[1].caseDocument.documentName).toBe('Doc 3');
-    expect(formWithMultipleDocs.trialAuthorities.some(d => d.caseDocument?.documentName === 'Doc 2')).toBe(false);
+    expect(formWithMultipleDocs.trialAuthorities[0].caseDocuments[0].documentName).toBe('Doc 1');
+    expect(formWithMultipleDocs.trialAuthorities[1].caseDocuments[0].documentName).toBe('Doc 3');
+    expect(formWithMultipleDocs.trialAuthorities.some(d => d.caseDocuments?.[0]?.documentName === 'Doc 2')).toBe(false);
   });
 
   it('should handle add another action and render page', async () => {
@@ -1020,7 +1073,7 @@ describe('on POST', () => {
     validForm.documentsForDisclosure[0].dateInputFields.dateMonth = '10';
     validForm.documentsForDisclosure[0].dateInputFields.dateYear = '2020';
     validForm.documentsForDisclosure[0].dateInputFields.date = new Date(2020, 9, 10);
-    validForm.documentsForDisclosure[0].caseDocument = caseDoc;
+    validForm.documentsForDisclosure[0].caseDocuments = [caseDoc];
 
     (getUploadDocumentsForm as jest.Mock).mockReturnValue(validForm);
     (saveCaseProgression as jest.Mock).mockResolvedValue(true);
@@ -1047,5 +1100,72 @@ describe('on POST', () => {
       });
 
     validateSyncSpy.mockRestore();
+  });
+
+  describe('deleting uploaded documents from document management', () => {
+    const documentAt = (id: string) => ({documentLink: {document_url: `http://dm-store/documents/${id}`, document_binary_url: `http://dm-store/documents/${id}/binary`}} as CaseDocument);
+    const sectionWith = (...ids: string[]) => Object.assign(new FileOnlySection(), {caseDocuments: ids.map(documentAt)});
+    let deleteDocument: jest.SpyInstance;
+
+    beforeEach(() => {
+      (getClaimById as jest.Mock).mockReset();
+      (saveCaseProgression as jest.Mock).mockResolvedValue(true);
+      deleteDocument = jest.spyOn(CivilServiceClient.prototype, 'deleteDocument').mockResolvedValue(undefined);
+    });
+
+    afterEach(() => {
+      deleteDocument.mockRestore();
+    });
+
+    const postAction = (savedSections: FileOnlySection[], postedSections: FileOnlySection[], action: string) => {
+      const savedClaim = require('../../../../utils/mocks/civilClaimResponseMock.json').case_data;
+      (getClaimById as jest.Mock).mockResolvedValue(Object.assign(new Claim(), savedClaim, {caseProgression: {claimantDocuments: {trialAuthorities: savedSections}}}));
+      (getUploadDocumentsForm as jest.Mock).mockReturnValue(Object.assign(new UploadDocumentsUserForm(), {trialAuthorities: postedSections}));
+      return request(app).post(CP_UPLOAD_DOCUMENTS_URL).send({action});
+    };
+
+    it('deletes the file removed with Delete', async () => {
+      const response = await postAction([sectionWith('kept', 'deleted')], [sectionWith('kept', 'deleted')], 'trialAuthorities[0][deleteFile][1]');
+
+      expect(response.status).toBe(200);
+      expect(deleteDocument).toHaveBeenCalledTimes(1);
+      expect(deleteDocument).toHaveBeenCalledWith(expect.anything(), 'deleted');
+    });
+
+    it('deletes every file of a removed section', async () => {
+      const response = await postAction([sectionWith('kept'), sectionWith('first', 'second')], [sectionWith('kept'), sectionWith('first', 'second')], 'trialAuthorities[1][removeButton]');
+
+      expect(response.status).toBe(200);
+      expect(deleteDocument.mock.calls.map((call) => call[1])).toEqual(['first', 'second']);
+    });
+
+    it('does not delete anything when a file is uploaded', async () => {
+      await postAction([sectionWith('kept')], [sectionWith('kept')], 'trialAuthorities[0][uploadButton]');
+
+      expect(deleteDocument).not.toHaveBeenCalled();
+    });
+
+    it('does not delete a file added in another tab', async () => {
+      const response = await postAction([sectionWith('kept', 'deleted', 'added-elsewhere')], [sectionWith('kept', 'deleted')], 'trialAuthorities[0][deleteFile][1]');
+
+      expect(response.status).toBe(200);
+      expect(deleteDocument).toHaveBeenCalledTimes(1);
+      expect(deleteDocument).toHaveBeenCalledWith(expect.anything(), 'deleted');
+    });
+
+    it('does not delete a posted file that is not in the saved draft', async () => {
+      await postAction([sectionWith('kept')], [sectionWith('kept', 'not-saved')], 'trialAuthorities[0][deleteFile][1]');
+
+      expect(deleteDocument).not.toHaveBeenCalled();
+    });
+
+    it('does not delete anything when the draft cannot be saved', async () => {
+      (saveCaseProgression as jest.Mock).mockRejectedValue(new Error('Redis down'));
+
+      const response = await postAction([sectionWith('kept', 'deleted')], [sectionWith('kept', 'deleted')], 'trialAuthorities[0][deleteFile][1]');
+
+      expect(response.status).toBe(500);
+      expect(deleteDocument).not.toHaveBeenCalled();
+    });
   });
 });

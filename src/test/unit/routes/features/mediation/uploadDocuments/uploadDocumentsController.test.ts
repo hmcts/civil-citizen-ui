@@ -19,6 +19,7 @@ import express from 'express';
 import {CaseDocument} from 'models/document/caseDocument';
 import {DateInputFields} from 'models/caseProgression/uploadDocumentsUserForm';
 import {FileUpload} from 'models/caseProgression/fileUpload';
+import {CivilServiceClient} from 'client/civilServiceClient';
 
 jest.mock('../../../../../../main/modules/oidc');
 jest.mock('../../../../../../main/modules/draft-store');
@@ -121,7 +122,7 @@ describe('Mediation upload your documents Controller', () => {
                 originalname: 'original name',
                 size: 1234,
               } as FileUpload,
-          caseDocument: caseDoc,
+          caseDocuments: caseDoc,
         }],
       };
 
@@ -146,7 +147,7 @@ describe('Mediation upload your documents Controller', () => {
             'dateMonth': '10',
             'dateYear': '2020',
           },
-          caseDocument: caseDoc,
+          caseDocuments: caseDoc,
         }],
       };
 
@@ -179,7 +180,7 @@ describe('Mediation upload your documents Controller', () => {
                 originalname: 'original name',
                 size: 1234,
               } as FileUpload,
-          caseDocument: caseDoc,
+          caseDocuments: caseDoc,
         }],
       };
 
@@ -204,7 +205,7 @@ describe('Mediation upload your documents Controller', () => {
             'dateMonth': '10',
             'dateYear': '2020',
           },
-          caseDocument: caseDoc,
+          caseDocuments: caseDoc,
         }],
       };
 
@@ -274,6 +275,24 @@ describe('Mediation upload your documents Controller', () => {
         });
     });
 
+    it('should show the wrong file type error when a spoofed file is sent without its upload action', async () => {
+      const validDate = new DateInputFields('12', '11', '2020');
+
+      await request(app)
+        .post(CONTROLLER_URL)
+        .field('action', 'add_another-yourStatement')
+        .field('documentsForYourStatement[0][dateInputFields]', JSON.stringify(validDate))
+        .field('documentsForYourStatement[0][yourName]', 'test document')
+        .attach('documentsForYourStatement[0][fileUpload]', Buffer.from('This is not a real PDF.\n'), {
+          filename: 'spoofed.pdf',
+          contentType: 'application/pdf',
+        })
+        .expect((res) => {
+          expect(res.status).toBe(200);
+          expect(res.text).toContain('Document must be Word, Excel, PowerPoint, PDF');
+        });
+    });
+
     it('should remove item documentsReferred', async () => {
 
       const documentsForYourStatement = {
@@ -285,7 +304,7 @@ describe('Mediation upload your documents Controller', () => {
             'dateMonth': '10',
             'dateYear': '2020',
           },
-          caseDocument: caseDoc,
+          caseDocuments: caseDoc,
         }],
       };
 
@@ -310,7 +329,7 @@ describe('Mediation upload your documents Controller', () => {
             'dateMonth': '10',
             'dateYear': '2020',
           },
-          caseDocument: caseDoc,
+          caseDocuments: caseDoc,
         }],
       };
 
@@ -353,6 +372,79 @@ describe('Mediation upload your documents Controller', () => {
           expect(res.status).toBe(200);
           expect(res.text).toContain(TestMessages.MEDIATION_UPLOAD_DOCUMENTS_TITLE_PAGE);
         });
+    });
+  });
+
+  describe('deleting uploaded documents from document management', () => {
+    const documentAt = (id: string) => ({documentLink: {document_url: `http://dm-store/documents/${id}`, document_binary_url: `http://dm-store/documents/${id}/binary`}});
+    const dateInputFields = {dateDay: '14', dateMonth: '10', dateYear: '2020'};
+    let deleteDocument: jest.SpyInstance;
+
+    beforeEach(() => {
+      deleteDocument = jest.spyOn(CivilServiceClient.prototype, 'deleteDocument').mockResolvedValue(undefined);
+      mockGetCaseData.mockImplementation(async () => {
+        const claim = new Claim();
+        claim.mediationUploadDocuments = new UploadDocuments([
+          new TypeOfDocuments(1, TypeOfMediationDocuments.YOUR_STATEMENT, true,
+            [{caseDocuments: [documentAt('kept'), documentAt('deleted')]}, {caseDocuments: [documentAt('second-section')]}] as any),
+          new TypeOfDocuments(2, TypeOfMediationDocuments.DOCUMENTS_REFERRED_TO_IN_STATEMENT, true),
+        ]);
+        return claim;
+      });
+    });
+
+    afterEach(() => {
+      deleteDocument.mockRestore();
+    });
+
+    const postedStatements = {
+      documentsForYourStatement: [
+        {yourName: 'Jane', dateInputFields, caseDocuments: JSON.stringify([documentAt('kept'), documentAt('deleted')])},
+        {yourName: 'Jane', dateInputFields, caseDocuments: JSON.stringify([documentAt('second-section')])},
+      ],
+    };
+
+    it('deletes the file removed with Delete', async () => {
+      const response = await request(app).post(CONTROLLER_URL)
+        .send({...postedStatements, action: 'documentsForYourStatement[0][deleteFile][1]'});
+
+      expect(response.status).toBe(200);
+      expect(deleteDocument).toHaveBeenCalledTimes(1);
+      expect(deleteDocument).toHaveBeenCalledWith(expect.anything(), 'deleted');
+    });
+
+    it('deletes every file of a removed section', async () => {
+      const response = await request(app).post(CONTROLLER_URL)
+        .send({...postedStatements, action: 'documentsForYourStatement[1][removeButton]'});
+
+      expect(response.status).toBe(200);
+      expect(deleteDocument).toHaveBeenCalledTimes(1);
+      expect(deleteDocument).toHaveBeenCalledWith(expect.anything(), 'second-section');
+    });
+
+    it('does not delete a file added in another tab', async () => {
+      const staleTab = {
+        documentsForYourStatement: [
+          {yourName: 'Jane', dateInputFields, caseDocuments: JSON.stringify([documentAt('kept')])},
+        ],
+      };
+
+      const response = await request(app).post(CONTROLLER_URL)
+        .send({...staleTab, action: 'documentsForYourStatement[0][deleteFile][0]'});
+
+      expect(response.status).toBe(200);
+      expect(deleteDocument).toHaveBeenCalledTimes(1);
+      expect(deleteDocument).toHaveBeenCalledWith(expect.anything(), 'kept');
+    });
+
+    it('does not delete anything when the draft cannot be saved', async () => {
+      (draftStoreService.saveDraftClaim as jest.Mock).mockRejectedValueOnce(new Error('Redis down'));
+
+      const response = await request(app).post(CONTROLLER_URL)
+        .send({...postedStatements, action: 'documentsForYourStatement[0][deleteFile][1]'});
+
+      expect(response.status).toBe(500);
+      expect(deleteDocument).not.toHaveBeenCalled();
     });
   });
 });
