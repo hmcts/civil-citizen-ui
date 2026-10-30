@@ -71,6 +71,15 @@ describe('draftGADocumentService', () => {
     expect(result).toEqual(uploadDocuments);
   });
 
+  it('should return an empty array when the GA document key is missing', async () => {
+    mockDraftStoreClient.get.mockResolvedValueOnce(null);
+
+    await expect(getGADocumentsFromDraftStore(redisKey)).resolves.toEqual([]);
+
+    expect(mockDraftStoreClient.get).toHaveBeenCalledTimes(1);
+    expect(mockDraftStoreClient.get).toHaveBeenCalledWith(redisKey + 'DOCKEY');
+  });
+
   it('should delete GA documents from draft store successfully', async () => {
     await deleteGADocumentsFromDraftStore(redisKey);
     expect(mockDraftStoreClient.del).toHaveBeenCalledWith(redisKey + 'DOCKEY');
