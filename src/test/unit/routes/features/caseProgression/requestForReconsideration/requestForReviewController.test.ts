@@ -1,6 +1,8 @@
 import {Response} from 'express';
 import {CaseRole} from 'form/models/caseRoles';
 import {Claim} from 'models/claim';
+import {CaseProgression} from 'models/caseProgression/caseProgression';
+import {RequestForReviewForm} from 'models/caseProgression/requestForReconsideration/requestForReviewForm';
 import {Party} from 'models/party';
 import {AppRequest} from 'models/AppRequest';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
@@ -42,6 +44,28 @@ describe('Request for Review', () => {
   });
 
   describe('on GET', () => {
+    it.each([
+      {role: CaseRole.CLAIMANT, text: 'Claimant saved reasons'},
+      {role: CaseRole.DEFENDANT, text: 'Defendant saved reasons'},
+    ])('restores the $role saved reasons in the editor', async ({role, text}) => {
+      const claim = claimWithRole(role);
+      claim.caseProgression = new CaseProgression();
+      claim.caseProgression.requestForReviewClaimant = new RequestForReviewForm('Claimant saved reasons');
+      claim.caseProgression.requestForReviewDefendant = new RequestForReviewForm('Defendant saved reasons');
+      mockGetClaimById.mockResolvedValueOnce(claim);
+      const res = createMockResponse();
+      const next = jest.fn();
+
+      await getHandler({params: {id: claimId}} as unknown as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledTimes(1);
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        form: expect.objectContaining({model: new RequestForReviewForm(text)}),
+      }));
+      expect(mockSaveCaseProgression).not.toHaveBeenCalled();
+      expect(next).not.toHaveBeenCalled();
+    });
+
     it('renders the review page for a defendant', async () => {
       mockGetClaimById.mockResolvedValue(claimWithRole(CaseRole.DEFENDANT));
       const res = createMockResponse();
