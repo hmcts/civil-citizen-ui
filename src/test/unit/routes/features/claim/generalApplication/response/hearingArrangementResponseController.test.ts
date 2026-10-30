@@ -1,118 +1,115 @@
-import {app} from '../../../../../../../main/app';
-import config from 'config';
-import nock from 'nock';
-import request from 'supertest';
-import {GA_RESPONSE_HEARING_ARRANGEMENT_URL} from 'routes/urls';
-import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
-import * as gaStoreResponseService from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
-import {t} from 'i18next';
-import { ApplicationTypeOption } from 'models/generalApplication/applicationType';
-import {Claim} from 'common/models/claim';
-import { getCaseDataFromStore } from 'modules/draft-store/draftStoreService';
-import * as launchDarkly from '../../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
-import {CourtLocation} from 'models/courts/courtLocations';
-import { GaResponse } from 'common/models/generalApplication/response/gaResponse';
-import { constructResponseUrlWithIdAndAppIdParams } from 'common/utils/urlFormatter';
+import {Response} from 'express';
+import hearingArrangementResponseController from '../../../../../../../main/routes/features/generalApplication/response/hearingArrangementResponseController';
+import {GA_RESPONSE_HEARING_CONTACT_DETAILS_URL} from 'routes/urls';
+import {Claim} from 'models/claim';
+import {PartyType} from 'models/partyType';
+import {GaResponse} from 'models/generalApplication/response/gaResponse';
+import {ApplicationTypeOption} from 'models/generalApplication/applicationType';
+import {HearingTypeOptions} from 'models/generalApplication/hearingArrangement';
+import {constructResponseUrlWithIdAndAppIdParams} from 'common/utils/urlFormatter';
+import {getClaimById} from 'modules/utilityService';
 import {getListOfCourtLocations} from 'services/features/directionsQuestionnaire/hearing/specificCourtLocationService';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import * as gaStoreResponseService from 'services/features/generalApplication/response/generalApplicationResponseStoreService';
+import {createMockResponse, getRouteHandler} from '../../../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../../../main/modules/oidc');
-jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
-jest.mock('../../../../../../../main/modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
+jest.mock('modules/utilityService');
 jest.mock('services/features/directionsQuestionnaire/hearing/specificCourtLocationService');
-jest.mock('../../../../../../../main/services/features/generalApplication/response/generalApplicationResponseStoreService', () => ({
+jest.mock('services/features/generalApplication/response/generalApplicationResponseStoreService', () => ({
   saveDraftGARespondentResponse: jest.fn(),
   getDraftGARespondentResponse: jest.fn(),
 }));
-jest.mock('../../../../../../../main/routes/guards/generalAplicationGuard',() => ({
-  isGAForLiPEnabled: jest.fn((req, res, next) => {
-    next();
-  }),
-}));
-const mockGetCaseData = getCaseDataFromStore as jest.Mock;
-const mockListOfCourtLocations = getListOfCourtLocations as jest.Mock;
-
-const mockClaim = new Claim();
-mockClaim.respondentGaAppDetails = [{ generalAppTypes: [ApplicationTypeOption.ADJOURN_HEARING], gaApplicationId: '345', caseState: '', generalAppSubmittedDateGAspec: '' }];
-const courtLocation = [new CourtLocation('1', 'location1'), new CourtLocation('2', 'location2')];
 
 describe('General Application Response - Application hearing arrangements', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-    jest.spyOn(launchDarkly, 'isGaForLipsEnabled').mockResolvedValue(true);
-  });
+  const getHandler = getRouteHandler(hearingArrangementResponseController, 'get');
+  const postHandler = getRouteHandler(hearingArrangementResponseController, 'post');
+  const viewPath = 'features/generalApplication/hearing-arrangement';
+  const claimId = '12345';
+  const appId = 'GA-1001';
+  const courtLocations = [{code: '1', label: 'location1'}];
+  let req: {params: {id: string; appId: string}; body: Record<string, unknown>; cookies: {lang: string}; query: Record<string, unknown>};
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
+  let gaResponse: GaResponse;
+  const mockGetClaim = getClaimById as jest.Mock;
+  const mockGetDraft = gaStoreResponseService.getDraftGARespondentResponse as jest.Mock;
+  const mockSaveDraft = gaStoreResponseService.saveDraftGARespondentResponse as jest.Mock;
+  const mockCourtLocations = getListOfCourtLocations as jest.Mock;
+
+  const buildClaim = (): Claim => {
+    const claim = new Claim();
+    claim.applicant1 = {
+      type: PartyType.INDIVIDUAL,
+      partyDetails: {title: 'Mr', firstName: 'Jan', lastName: 'Clark'},
+    } as Claim['applicant1'];
+    return claim;
+  };
 
   beforeEach(() => {
-    jest.spyOn(gaStoreResponseService, 'getDraftGARespondentResponse').mockResolvedValueOnce(new GaResponse());
-  });
-
-  afterAll(() => {
     jest.clearAllMocks();
+    req = {params: {id: claimId, appId}, body: {}, cookies: {lang: 'en'}, query: {}};
+    res = createMockResponse();
+    next = jest.fn();
+    gaResponse = new GaResponse();
+    gaResponse.generalApplicationType = [ApplicationTypeOption.ADJOURN_HEARING];
+    (draftStoreService.generateRedisKey as jest.Mock).mockReturnValue(claimId);
+    (draftStoreService.generateRedisKeyForGA as jest.Mock).mockReturnValue('ga-12345');
+    (draftStoreService.getCaseDataFromStore as jest.Mock).mockResolvedValue(buildClaim());
+    (draftStoreService.saveDraftClaim as jest.Mock).mockResolvedValue(undefined);
+    mockGetClaim.mockResolvedValue(buildClaim());
+    mockGetDraft.mockResolvedValue(gaResponse);
+    mockSaveDraft.mockResolvedValue(undefined);
+    mockCourtLocations.mockResolvedValue(courtLocations);
   });
 
   describe('on GET', () => {
-    it('should return Application hearing arrangements page', async () => {
-      mockGetCaseData.mockImplementation(async () => mockClaim);
-      mockListOfCourtLocations.mockImplementation( async ()=> courtLocation);
-      await request(app)
-        .get(constructResponseUrlWithIdAndAppIdParams('123', '345', GA_RESPONSE_HEARING_ARRANGEMENT_URL))
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.APPLICATION_HEARING_ARRANGEMENTS.TITLE'));
-        });
+    it('should render the hearing arrangements page', async () => {
+      await getHandler(req as never, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({courtLocations}));
+      expect(next).not.toHaveBeenCalled();
     });
 
-    it('should return http 500 when has error in the get method', async () => {
-      mockGetCaseData.mockImplementation(() => {
-        throw new Error(TestMessages.REDIS_FAILURE);
-      });
-      await request(app)
-        .get(GA_RESPONSE_HEARING_ARRANGEMENT_URL)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+    it('should call next when loading the claim fails', async () => {
+      const error = new Error('redis failure');
+      mockGetClaim.mockRejectedValue(error);
+
+      await getHandler(req as never, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 
   describe('on POST', () => {
-    it('should send the value and redirect', async () => {
-      mockGetCaseData.mockImplementation(async () => mockClaim);
-      await request(app)
-        .post(GA_RESPONSE_HEARING_ARRANGEMENT_URL)
-        .send({option: 'PERSON_AT_COURT', reasonForPreferredHearingType: 'Testing'})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-        });
+    it('should save and redirect when a hearing type and reason are provided', async () => {
+      req.body = {option: HearingTypeOptions.PERSON_AT_COURT, reasonForPreferredHearingType: 'Testing'};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(gaResponse.hearingArrangement?.option).toBe(HearingTypeOptions.PERSON_AT_COURT);
+      expect(res.redirect).toHaveBeenCalledWith(
+        constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_RESPONSE_HEARING_CONTACT_DETAILS_URL),
+      );
     });
 
-    it('should show error message if radio button not selected', async () => {
-      mockGetCaseData.mockImplementation(async () => mockClaim);
-      await request(app)
-        .post(constructResponseUrlWithIdAndAppIdParams('123', '345', GA_RESPONSE_HEARING_ARRANGEMENT_URL))
-        .send({option: null, reasonForPreferredHearingType: null})
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.GENERAL_APPLICATION.CHOOSE_HEARING_TYPE'));
-          expect(res.text).toContain(t('ERRORS.GENERAL_APPLICATION.WHY_PREFER_THIS_HEARING_TYPE'));
-        });
+    it('should re-render when the hearing type and reason are missing', async () => {
+      req.body = {option: null, reasonForPreferredHearingType: null};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
+      expect(mockSaveDraft).not.toHaveBeenCalled();
     });
 
-    it('should return http 500 when has error in the post method', async () => {
-      jest.spyOn(gaStoreResponseService, 'saveDraftGARespondentResponse').mockImplementation(async () => {
-        throw new Error(TestMessages.REDIS_FAILURE);
-      });
-      await request(app)
-        .post(GA_RESPONSE_HEARING_ARRANGEMENT_URL)
-        .send({option: 'PERSON_AT_COURT', reasonForPreferredHearingType: 'Testing' })
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+    it('should call next when saving fails', async () => {
+      const error = new Error('redis failure');
+      mockSaveDraft.mockRejectedValue(error);
+      req.body = {option: HearingTypeOptions.PERSON_AT_COURT, reasonForPreferredHearingType: 'Testing'};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 });
-

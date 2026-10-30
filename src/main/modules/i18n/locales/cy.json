@@ -568,14 +568,12 @@
       "CHARACTERS_UNDER_LIMIT_ONE": "Mae gennych %{count} nod yn weddill",
       "CHARACTERS_UNDER_LIMIT_OTHER": "Mae gennych %{count} nod yn weddill",
       "CONFIRMATION_PAGE_TITLE": "Claim cancelled",
-      "CONFIRMATION_TITLE": "Mae'r hawliad hwn bellach wedi'i ganslo",
-      "NO_FURTHER_ACTION": "Ni ellir cymryd unrhyw gamau pellach ar yr achos hwn gan ei fod bellach wedi'i ganslo.",
+      "CONFIRMATION_TITLE": "Mae’r hawliad hwn wedi'i ganslo",
+      "NO_FURTHER_ACTION": "Ni ellir cymryd unrhyw gamau pellach ar yr achos hwn. Gallwch ddechrau hawliad newydd drwy fynd i'ch cyfrif.",
       "PAGE_TITLE": "Canslo hawliad nad yw wedi'i gyflwyno",
       "REASON_HINT": "You can enter up to %{count} characters",
       "REASON_LABEL": "Esboniwch pam eich bod yn canslo'r hawliad (dewisol)",
-      "SURVEY_LINK": "Beth oeddech chi'n ei feddwl o'r gwasanaeth hwn? (yn agor mewn tab newydd)",
-      "START_NEW_CLAIM": "Os ydych chi am ddechrau hawliad newydd, gallwch wneud hyn o'ch porth/tudalen mewngofnodi.",
-      "TITLE": "Reasons for cancelling the claim",
+      "TITLE": "Rhesymau dros ganslo'r hawliad",
       "WARNING": "Os byddwch yn canslo'r hawliad, ni fydd yn cael ei gyflwyno. Ni fydd yn cyfrif fel achos llys. Ni fyddwch yn gallu cymryd unrhyw gamau pellach arno a bydd yn cael ei ddileu o'r system yn y pen draw."
     },
     "QM": {
@@ -5521,7 +5519,7 @@
   },
   "ERRORS": {
     "CANCEL_UNISSUED_CLAIM_REASON_INVALID_CHARACTERS": "Rhowch nodau alffaniwmerig neu farciau atalnodi safonol yn unig",
-    "CANCEL_UNISSUED_CLAIM_REASON_TOO_LONG": "Rhaid i ‘Esboniwch pam rydych chi'n canslo'r hawliad’ fod yn 200 nod neu lai",
+    "CANCEL_UNISSUED_CLAIM_REASON_TOO_LONG": "Rhaid i 'Esboniwch pam rydych chi'n canslo'r hawliad' fod yn 200 nod neu lai",
     "QUERY_MANAGEMENT_YOU_MUST_SELECT": "Mae'n rhaid i chi ddewis beth rydych chi am ei wneud cyn y gallwch chi barhau.",
     "QUERY_MANAGEMENT_YOU_SELECT_UPDATE_YOU_WANT": "Rhaid ichi ddewis pa ddiweddariad rydych eisiau ei dderbyn gan y llys.",
     "QUERY_MANAGEMENT_YOU_MUST_SELECT_SEND_DOCUMENTS": "Mae’n rhaid i chi ddewis pa ddogfennau rydych eisiau eu hanfon.",

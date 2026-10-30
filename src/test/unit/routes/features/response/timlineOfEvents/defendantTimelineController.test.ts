@@ -1,130 +1,89 @@
-import config from 'config';
-import nock from 'nock';
-import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
-import {app} from '../../../../../../main/app';
-import request from 'supertest';
-import {CITIZEN_EVIDENCE_URL, CITIZEN_TIMELINE_URL} from 'routes/urls';
-import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
+import {Response} from 'express';
+import defendantTimelineController from '../../../../../../main/routes/features/response/timelineOfEvents/defendantTimelineController';
+import {CITIZEN_EVIDENCE_URL} from 'routes/urls';
+import {Claim} from 'models/claim';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {createMockResponse, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
 
 describe('defendant timeline controller', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
+  const getHandler = getRouteHandler(defendantTimelineController, 'get');
+  const postHandler = getRouteHandler(defendantTimelineController, 'post');
+  const viewPath = 'features/response/timelineOfEvents/defendant-timeline';
+  const claimId = '12345';
+  let req: {params: {id: string}; body: Record<string, unknown>};
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
+  const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
+  const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
 
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
+  beforeEach(() => {
+    req = {params: {id: claimId}, body: {}};
+    res = createMockResponse();
+    next = jest.fn();
+    (draftStoreService.generateRedisKey as jest.Mock).mockReturnValue(claimId);
+    mockGetCaseData.mockResolvedValue(new Claim());
+    mockSaveDraftClaim.mockResolvedValue(undefined);
   });
 
-  describe('on Get', () => {
-    it('should display the page successfully', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
-      await request(app)
-        .get(CITIZEN_TIMELINE_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Add your timeline of events');
-          expect(res.text).toContain('Their timeline');
-          expect(res.text).toContain('Add your timeline of events (optional)');
-          expect(res.text).toContain('Add another event');
-        });
+  describe('on GET', () => {
+    it('should render the timeline page', async () => {
+      await getHandler(req as never, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        form: expect.anything(),
+      }));
+      expect(next).not.toHaveBeenCalled();
     });
-    it('should return http 500 when has error', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .get(CITIZEN_TIMELINE_URL)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+
+    it('should call next when loading the claim fails', async () => {
+      const error = new Error('redis failure');
+      mockGetCaseData.mockRejectedValue(error);
+
+      await getHandler(req as never, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 
-  describe('on Post', () => {
-    beforeEach(() => {
-      app.locals.draftStoreClient = mockCivilClaim;
+  describe('on POST', () => {
+    it('should re-render when a date is entered without a description', async () => {
+      req.body = {rows: [{day: 17, month: 11, year: 2022, description: ''}]};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({form: expect.anything()}));
+      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
+      expect(mockSaveDraftClaim).not.toHaveBeenCalled();
     });
 
-    it('should return error message when date is entered but no description', async () => {
-      const data = {
-        rows: [
-          {
-            day: 17,
-            month: 11,
-            year: 2022,
-            description: '',
-          },
-        ],
-      };
-      await request(app)
-        .post(CITIZEN_TIMELINE_URL)
-        .send(data)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.DESCRIPTION_REQUIRED);
-        });
+    it('should re-render when a description is entered without a date', async () => {
+      req.body = {rows: [{description: 'something happened'}]};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
     });
-    it('should return error message when date is empty and description is defined', async () => {
-      const data = {
-        rows: [
-          {
-            date: '',
-            description: 'something happened',
-          },
-        ],
-      };
-      await request(app)
-        .post(CITIZEN_TIMELINE_URL)
-        .send(data)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.DATE_REQUIRED);
-        });
+
+    it('should save and redirect to evidence when the timeline is valid', async () => {
+      req.body = {rows: [{day: 17, month: 11, year: 2022, description: 'something happened'}]};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(mockSaveDraftClaim).toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CITIZEN_EVIDENCE_URL));
     });
-    it('should redirect when no errors', async () => {
-      const data = {
-        rows: [
-          {
-            day: 17,
-            month: 11,
-            year: 2022,
-            description: 'something happened',
-          },
-        ],
-      };
-      await request(app)
-        .post(CITIZEN_TIMELINE_URL)
-        .send(data)
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toContain(CITIZEN_EVIDENCE_URL);
-        });
-    });
-    it('should return http 500 on redis error', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      const data = {
-        rows: [
-          {
-            day: 17,
-            month: 11,
-            year: 2022,
-            description: 'something happened',
-          },
-        ],
-      };
-      await request(app)
-        .post(CITIZEN_TIMELINE_URL)
-        .send(data)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+
+    it('should call next when saving fails', async () => {
+      const error = new Error('redis failure');
+      mockSaveDraftClaim.mockRejectedValue(error);
+      req.body = {rows: [{day: 17, month: 11, year: 2022, description: 'something happened'}]};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 });
-
