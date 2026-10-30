@@ -1,6 +1,4 @@
 import {Response} from 'express';
-import i18next from 'i18next';
-import en from 'modules/i18n/locales/en.json';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {CaseDocument} from 'common/models/document/caseDocument';
 import {Claim} from 'common/models/claim';
@@ -14,6 +12,9 @@ import {GA_UPLOAD_N245_FORM_URL, GA_WANT_TO_UPLOAD_DOCUMENTS_URL} from 'routes/u
 import uploadN245FormController from '../../../../../../main/routes/features/generalApplication/uploadN245FormController';
 import {createMockResponse, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
+jest.mock('i18next', () => ({
+  t: (key: string) => key,
+}));
 jest.mock('modules/draft-store/draftStoreService');
 jest.mock('modules/utilityService', () => ({
   getClaimById: jest.fn(),
@@ -52,10 +53,6 @@ describe('General Application - upload n245 form', () => {
   };
   let res: ReturnType<typeof createMockResponse>;
   let next: jest.Mock;
-
-  beforeAll(async () => {
-    await i18next.init({lng: 'en', fallbackLng: 'en', resources: {en: {translation: en}}});
-  });
 
   beforeEach(() => {
     jest.clearAllMocks();

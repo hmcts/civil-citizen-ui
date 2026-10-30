@@ -1,6 +1,4 @@
 import {Response} from 'express';
-import i18next from 'i18next';
-import en from 'modules/i18n/locales/en.json';
 import {Claim} from 'common/models/claim';
 import {getClaimById} from 'modules/utilityService';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
@@ -8,6 +6,9 @@ import {deleteGADocumentsFromDraftStore} from 'modules/draft-store/draftGADocume
 import moreInfoSubmittedConfirmationController from '../../../../../../../main/routes/features/generalApplication/additionalInfoUpload/moreInfoSubmittedConfirmationController';
 import {createMockResponse, getRouteHandler} from '../../../../../../utils/getRouteHandler';
 
+jest.mock('i18next', () => ({
+  t: (key: string) => key,
+}));
 jest.mock('modules/draft-store/draftStoreService');
 jest.mock('modules/utilityService', () => ({
   getClaimById: jest.fn(),
@@ -32,10 +33,6 @@ describe('General Application - Request More Information Confirmation', () => {
   let res: ReturnType<typeof createMockResponse>;
   let next: jest.Mock;
 
-  beforeAll(async () => {
-    await i18next.init({lng: 'en', fallbackLng: 'en', resources: {en: {translation: en}}});
-  });
-
   beforeEach(() => {
     jest.clearAllMocks();
     req = {params: {id: claimId, appId: 'GA-1001'}, query: {}, cookies: {lang: 'en'}};
@@ -52,7 +49,7 @@ describe('General Application - Request More Information Confirmation', () => {
     expect(mockGetClaimById).toHaveBeenCalledWith(claimId, expect.anything(), true);
     expect(deleteGADocumentsFromDraftStore).toHaveBeenCalledWith('ga-redis-key');
     expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
-      confirmationTitle: expect.any(String),
+      confirmationTitle: 'PAGES.GENERAL_APPLICATION.UPLOAD_MORE_INFO_DOCUMENTS.CONFIRMATION_PAGE_TITLE',
       confirmationContent: expect.anything(),
     }));
     expect(next).not.toHaveBeenCalled();
