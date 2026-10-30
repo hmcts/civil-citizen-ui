@@ -1,0 +1,43 @@
+name: Strict null checks
+
+on:
+  pull_request:
+    branches: [master]
+  push:
+    branches: [master]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: strict-null-checks-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  NODE_OPTIONS: --max-old-space-size=4096
+
+jobs:
+  strict-null-checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v7
+        with:
+          node-version-file: .nvmrc
+      - name: Install dependencies
+        run: node .yarn/releases/yarn-4.18.1.cjs install --immutable
+      - name: Verify strict-null gate and baseline reporting
+        run: node --test bin/strict-null-baseline.test.cjs
+      - name: Gate the strict-null allowlist
+        run: node .yarn/releases/yarn-4.18.1.cjs tsc --noEmit -p tsconfig.strict.json
+      - name: Report full-repository strict-null baseline
+        if: ${{ !cancelled() }}
+        continue-on-error: true
+        run: node bin/strict-null-baseline.cjs strict-null-baseline.log
+      - name: Upload strict-null diagnostics
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: strict-null-baseline
+          path: strict-null-baseline.log
+          retention-days: 14
