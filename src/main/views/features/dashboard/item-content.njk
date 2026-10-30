@@ -285,7 +285,6 @@
       <div class="file-upload-slots" {%- if content.data.documentNames.length %} data-has-uploaded-files="true"{% endif %}
         data-file-type-error="{{ t('ERRORS.VALID_MIME_TYPE_FILE') }}"
         data-file-size-error="{{ t('ERRORS.VALID_SIZE_FILE') }}"
-        data-too-many-files-error="{{ t('ERRORS.TOO_MANY_FILES') }}"
         data-error-summary-title="{{ t('ERRORS.THERE_WAS_A_PROBLEM') }}"
         data-error-prefix="{{ t('ERRORS.ERROR') }}">
         {% for documentName in content.data.documentNames %}
@@ -302,14 +301,9 @@
               classes: 'uploadFile govuk-!-width-three-half '+content.data.classes,
               value: content.data.value,
               javascript: true,
-              multiple: true,
               chooseFilesButtonText: t('COMMON.FILE_UPLOAD.CHOOSE_FILE'),
               dropInstructionText: t('COMMON.FILE_UPLOAD.DROP_INSTRUCTION'),
               noFileChosenText: t('COMMON.FILE_UPLOAD.NO_FILE_CHOSEN'),
-              multipleFilesChosenText: {
-                one: t('COMMON.FILE_UPLOAD.FILES_CHOSEN_ONE'),
-                other: t('COMMON.FILE_UPLOAD.FILES_CHOSEN_OTHER')
-              },
               enteredDropZoneText: t('COMMON.FILE_UPLOAD.ENTERED_DROP_ZONE'),
               leftDropZoneText: t('COMMON.FILE_UPLOAD.LEFT_DROP_ZONE'),
               label: {
