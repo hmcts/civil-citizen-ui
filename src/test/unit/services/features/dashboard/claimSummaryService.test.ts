@@ -175,6 +175,21 @@ describe('getDocumentsContent', () => {
 
 describe('getEvidenceUploadContent', () => {
   const evidenceUploadText = {'data': {'text': 'PAGES.CLAIM_SUMMARY.EVIDENCE_UPLOAD_SUMMARY'}, 'type': 'p'};
+  it('should display uploaded documents newest first with their corresponding dates', () => {
+    const claim = new Claim();
+    claim.caseProgression = toCUICaseProgression(createCCDClaimForEvidenceUpload());
+    const [older, newer] = claim.caseProgression.claimantUploadDocuments.disclosure;
+    older.caseDocument = {...older.caseDocument, createdDatetime: new Date('2023-01-01T12:00:00Z')};
+    newer.caseDocument = {...newer.caseDocument, createdDatetime: new Date('2024-01-02T12:00:00Z')};
+
+    const result = getEvidenceUploadContent(claim, lang);
+
+    expect(result[0].contentSections[1].data.tableRows.map(row => row[0].html)).toEqual([
+      `PAGES.CLAIM_SUMMARY.CLAIMANT${newer.documentType.toLowerCase()}<br>PAGES.CLAIM_SUMMARY.DATE_DOCUMENT_UPLOADED02 Jan 2024`,
+      `PAGES.CLAIM_SUMMARY.CLAIMANT${older.documentType.toLowerCase()}<br>PAGES.CLAIM_SUMMARY.DATE_DOCUMENT_UPLOADED01 Jan 2023`,
+    ]);
+  });
+
   it('should return an array with one ClaimSummaryContent object that is empty if no documents uploaded', async () => {
     // Given
 
