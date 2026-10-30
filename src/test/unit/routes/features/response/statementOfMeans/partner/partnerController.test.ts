@@ -1,12 +1,11 @@
 import {Request, Response} from 'express';
 import partnerController from '../../../../../../../main/routes/features/response/statementOfMeans/partner/partnerController';
 import {CITIZEN_DEPENDANTS_URL, CITIZEN_PARTNER_AGE_URL} from 'routes/urls';
-import {Claim} from 'models/claim';
+import {GenericForm} from 'form/models/genericForm';
+import {GenericYesNo} from 'form/models/genericYesNo';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {CohabitingService} from 'services/features/response/statementOfMeans/partner/cohabitingService';
 import {createMockResponse, getRouteHandler} from '../../../../../../utils/getRouteHandler';
-
-jest.mock('modules/draft-store/draftStoreService');
 
 describe('Partner', () => {
   const getHandler = getRouteHandler(partnerController, 'get');
@@ -16,18 +15,21 @@ describe('Partner', () => {
   let req: Partial<Request>;
   let res: ReturnType<typeof createMockResponse>;
   let next: jest.Mock;
-  const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
-  const mockGenerateRedisKey = draftStoreService.generateRedisKey as jest.Mock;
-  const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
+  let mockGetCohabiting: jest.SpyInstance;
+  let mockSaveCohabiting: jest.SpyInstance;
 
   beforeEach(() => {
-    jest.clearAllMocks();
     req = {params: {id: claimId}, body: {}, query: {}, cookies: {}};
     res = createMockResponse();
     next = jest.fn();
-    mockGenerateRedisKey.mockReturnValue(claimId);
-    mockGetCaseData.mockResolvedValue(new Claim());
-    mockSaveDraftClaim.mockResolvedValue(undefined);
+    mockGetCohabiting = jest.spyOn(CohabitingService.prototype, 'getCohabiting')
+      .mockResolvedValue(new GenericForm(new GenericYesNo()));
+    mockSaveCohabiting = jest.spyOn(CohabitingService.prototype, 'saveCohabiting')
+      .mockResolvedValue(undefined);
+  });
+
+  afterEach(() => {
+    jest.restoreAllMocks();
   });
 
   describe('on GET', () => {
@@ -35,12 +37,13 @@ describe('Partner', () => {
       await getHandler(req as Request, res as unknown as Response, next);
 
       expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({form: expect.anything()}));
+      expect(mockGetCohabiting).toHaveBeenCalled();
       expect(next).not.toHaveBeenCalled();
     });
 
     it('should call next when loading the claim fails', async () => {
-      const error = new Error('redis failure');
-      mockGetCaseData.mockRejectedValue(error);
+      const error = new Error('draft failure');
+      mockGetCohabiting.mockRejectedValue(error);
 
       await getHandler(req as Request, res as unknown as Response, next);
 
@@ -54,7 +57,7 @@ describe('Partner', () => {
 
       expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({form: expect.anything()}));
       expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
-      expect(mockSaveDraftClaim).not.toHaveBeenCalled();
+      expect(mockSaveCohabiting).not.toHaveBeenCalled();
     });
 
     it('should save and redirect to dependants when no is selected', async () => {
@@ -62,7 +65,7 @@ describe('Partner', () => {
 
       await postHandler(req as Request, res as unknown as Response, next);
 
-      expect(mockSaveDraftClaim).toHaveBeenCalled();
+      expect(mockSaveCohabiting).toHaveBeenCalled();
       expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CITIZEN_DEPENDANTS_URL));
     });
 
@@ -71,12 +74,13 @@ describe('Partner', () => {
 
       await postHandler(req as Request, res as unknown as Response, next);
 
+      expect(mockSaveCohabiting).toHaveBeenCalled();
       expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CITIZEN_PARTNER_AGE_URL));
     });
 
     it('should call next when saving fails', async () => {
-      const error = new Error('redis failure');
-      mockGetCaseData.mockRejectedValue(error);
+      const error = new Error('draft failure');
+      mockSaveCohabiting.mockRejectedValue(error);
       req.body = {option: 'no'};
 
       await postHandler(req as Request, res as unknown as Response, next);
