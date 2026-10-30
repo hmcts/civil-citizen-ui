@@ -71,4 +71,28 @@ describe('Pay Hearing Fee Start Screen Controller', () => {
     expect(axiosError.status).toBe(500);
     expect(next).toHaveBeenCalledWith(axiosError);
   });
+
+  it('preserves non-404 backend failures', async () => {
+    const error = {response: {status: 503}, status: 503};
+    jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockRejectedValue(error);
+
+    await getHandler(req as Request, res as unknown as Response, next);
+
+    expect(next).toHaveBeenCalledTimes(1);
+    expect(next.mock.calls[0][0]).toBe(error);
+    expect(error).toEqual({response: {status: 503}, status: 503});
+    expect(res.render).not.toHaveBeenCalled();
+  });
+
+  it('forwards a response-less network error without adding a status', async () => {
+    const error = new Error('Connection reset');
+    jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockRejectedValue(error);
+
+    await getHandler(req as Request, res as unknown as Response, next);
+
+    expect(next).toHaveBeenCalledTimes(1);
+    expect(next.mock.calls[0][0]).toBe(error);
+    expect(error).not.toHaveProperty('status');
+    expect(res.render).not.toHaveBeenCalled();
+  });
 });
