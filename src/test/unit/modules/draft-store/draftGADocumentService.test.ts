@@ -17,10 +17,8 @@ const mockDraftStoreClient = {
   del: jest.fn(),
 };
 
-app.locals.draftStoreClient = mockDraftStoreClient;
-
 const redisKey = 'appId123userId456';
-const uploadDocuments = [
+const createUploadDocuments = () => [
   {
     caseDocument: {
       documentName: 'Ga document',
@@ -36,11 +34,14 @@ const uploadDocuments = [
     fileUpload: {} as FileUpload,
   },
 ];
+let uploadDocuments: ReturnType<typeof createUploadDocuments>;
 
 describe('draftGADocumentService', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
+    Object.values(mockDraftStoreClient).forEach(mock => mock.mockReset());
+    app.locals.draftStoreClient = mockDraftStoreClient;
     mockDraftStoreClient.ttl.mockResolvedValue(-1);
+    uploadDocuments = createUploadDocuments();
   });
 
   it('should save GA documents with TTL', async () => {
@@ -49,6 +50,16 @@ describe('draftGADocumentService', () => {
     expect(mockDraftStoreClient.ttl).toHaveBeenCalledWith(redisKey + 'DOCKEY');
     expect(mockDraftStoreClient.set).toHaveBeenCalledWith(redisKey + 'DOCKEY', JSON.stringify(uploadDocuments), 'EX', expect.any(Number));
     expect(mockDraftStoreClient.expireat).not.toHaveBeenCalled();
+  });
+
+  it('should propagate the original error when saving GA documents fails', async () => {
+    const error = new Error('GA document save failed');
+    mockDraftStoreClient.set.mockRejectedValueOnce(error);
+
+    await expect(saveGADocumentsInDraftStore(redisKey, uploadDocuments)).rejects.toBe(error);
+
+    expect(mockDraftStoreClient.set).toHaveBeenCalledTimes(1);
+    expect(mockDraftStoreClient.set).toHaveBeenCalledWith(redisKey + 'DOCKEY', JSON.stringify(uploadDocuments), 'EX', expect.any(Number));
   });
 
   it('should retrieve GA documents from draft store', async () => {
