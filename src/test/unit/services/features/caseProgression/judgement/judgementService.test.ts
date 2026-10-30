@@ -9,6 +9,8 @@ import {toInteger} from 'lodash';
 import {ClaimSummaryType} from 'form/models/claimSummarySection';
 import {FinalOrderDocumentCollection} from 'models/caseProgression/finalOrderDocumentCollectionType';
 import {mockFinalOrderDocument1} from '../../../../../utils/caseProgression/mockCCDFinalOrderDocumentCollection';
+import {CaseRole} from 'form/models/caseRoles';
+import {SystemGeneratedCaseDocuments} from 'models/document/systemGeneratedCaseDocuments';
 
 const lang = 'en';
 const createdBy= 'Jhon';
@@ -20,6 +22,55 @@ const url = CASE_DOCUMENT_VIEW_URL.replace(':id', claimId).replace(':documentId'
 const document = {document_filename: fileName, document_url: url, document_binary_url: binary_url};
 
 describe('getJudgementContent', () =>{
+  const savedDocument = (id: string, documentType: DocumentType): SystemGeneratedCaseDocuments => ({
+    id,
+    value: {
+      ...mockFinalOrderDocument1.value,
+      documentType,
+      documentName: `${id}.pdf`,
+      documentLink: {
+        document_filename: `${id}.pdf`,
+        document_url: `http://documents/${id}`,
+        document_binary_url: `http://documents/${id}/binary`,
+      },
+    },
+  });
+
+  it.each([
+    {role: CaseRole.CLAIMANT, system: true, expected: 'claimant-system'},
+    {role: CaseRole.DEFENDANT, system: true, expected: 'defendant-default'},
+    {role: CaseRole.CLAIMANT, system: false, expected: 'claimant-default'},
+    {role: CaseRole.DEFENDANT, system: false, expected: 'defendant-default'},
+  ])('selects $expected for $role with populated system documents: $system', ({role, system, expected}) => {
+    const claim = new Claim();
+    claim.id = claimId;
+    claim.caseRole = role;
+    claim.systemGeneratedCaseDocuments = system ? [
+      savedDocument('unrelated', DocumentType.HEARING_FORM),
+      savedDocument('claimant-system', DocumentType.JUDGMENT_BY_ADMISSION_CLAIMANT),
+    ] : [];
+    claim.defaultJudgmentDocuments = [
+      savedDocument('claimant-default', DocumentType.JUDGMENT_BY_ADMISSION_CLAIMANT),
+      savedDocument('defendant-default', DocumentType.JUDGMENT_BY_ADMISSION_DEFENDANT),
+    ];
+
+    const rows = getJudgementContent(claimId, claim, lang, '/dashboard')[0].contentSections[1].data.rows;
+
+    expect(rows).toHaveLength(1);
+    expect(rows[0].value.html).toContain(`href="/case/${claimId}/view-documents/${expected}"`);
+    expect(rows[0].value.html).toContain(`${expected}.pdf`);
+  });
+
+  it('does not show an unrelated document when neither collection contains a judgment', () => {
+    const claim = new Claim();
+    claim.id = claimId;
+    claim.caseRole = CaseRole.CLAIMANT;
+    claim.systemGeneratedCaseDocuments = [savedDocument('hearing', DocumentType.HEARING_FORM)];
+    claim.defaultJudgmentDocuments = [savedDocument('other', DocumentType.HEARING_FORM)];
+
+    expect(getJudgementContent(claimId, claim, lang, '/dashboard')[0].contentSections[1].data.rows).toEqual([]);
+  });
+
   const judgementDocumnets : FinalOrderDocumentCollection = {id:'Document test', value: {
     createdBy: createdBy,
     documentLink: document,
