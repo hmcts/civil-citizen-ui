@@ -24,14 +24,11 @@
   "helmv3": {
     "bumpVersion": "patch"
   },
-  "regexManagers": [
+  "customManagers": [
     {
-      "fileMatch": [
-        "^Dockerfile$"
-      ],
-      "matchStrings": [
-        "datasource=(?<datasource>.*?) depName=(?<depName>.*?)( versioning=(?<versioning>.*?))?\\sARG .*?_VERSION=(?<currentValue>.*)\\s"
-      ]
+      "customType": "regex",
+      "managerFilePatterns": ["/^Dockerfile$/"],
+      "matchStrings": ["datasource=(?<datasource>.*?) depName=(?<depName>.*?)( versioning=(?<versioning>.*?))?\\sARG .*?_VERSION=(?<currentValue>.*)\\s"]
     }
   ],
   "packageRules": [
@@ -75,23 +72,21 @@
       "automergeType": "pr"
     },
     {
-      "matchPackagePatterns": [
-        "^allure-"
-      ],
       "groupName": "Allure reporting",
       "groupSlug": "allure",
       "automerge": true,
-      "automergeType": "pr"
+      "automergeType": "pr",
+      "matchPackageNames": [
+        "/^allure-/"
+      ]
     },
     {
       "matchPackageNames": [
         "eslint",
-        "typescript-eslint"
-      ],
-      "matchPackagePatterns": [
-        "^@eslint/",
-        "^@typescript-eslint/",
-        "^eslint-"
+        "typescript-eslint",
+        "/^@eslint//",
+        "/^@typescript-eslint//",
+        "/^eslint-/"
       ],
       "groupName": "ESLint",
       "groupSlug": "eslint",
@@ -100,10 +95,8 @@
     },
     {
       "matchPackageNames": [
-        "typescript"
-      ],
-      "matchPackagePatterns": [
-        "^@types/"
+        "typescript",
+        "/^@types//"
       ],
       "groupName": "TypeScript",
       "groupSlug": "typescript",
