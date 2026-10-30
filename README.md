@@ -13,6 +13,8 @@
 - [Functional Test Group Documentation (API)](#functional-test-group-documentation-api)
 
 ## Getting Started
+## Getting Started
+## Getting Started
 
 ### Prerequisites
 
