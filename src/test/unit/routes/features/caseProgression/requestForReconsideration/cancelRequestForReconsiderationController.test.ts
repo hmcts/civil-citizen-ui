@@ -1,79 +1,82 @@
-import request from 'supertest';
-import {app} from '../../../../../../main/app';
-import nock from 'nock';
-import config from 'config';
-import {
-  DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL, REQUEST_FOR_RECONSIDERATION_CANCEL_URL,
-} from 'routes/urls';
-import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import * as draftStoreService from 'modules/draft-store/draftStoreService';
-import * as utilityService from 'modules/utilityService';
-import {Claim} from 'models/claim';
+import {Response} from 'express';
 import {CaseRole} from 'form/models/caseRoles';
+import {Claim} from 'models/claim';
+import {Party} from 'models/party';
+import {AppRequest} from 'models/AppRequest';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {deleteFieldDraftClaimFromStore, generateRedisKey} from 'modules/draft-store/draftStoreService';
+import {getClaimById} from 'modules/utilityService';
+import cancelRequestForReconsiderationController from 'routes/features/caseProgression/requestForReconsideration/cancelRequestForReconsiderationController';
+import {DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL, REQUEST_FOR_RECONSIDERATION_CANCEL_URL} from 'routes/urls';
+import {createMockResponse, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
-jest.mock('../../../../../../main/modules/utilityService');
-jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
-const mockGetClaimById = utilityService.getClaimById as jest.Mock;
+jest.mock('modules/draft-store/draftStoreService', () => ({
+  generateRedisKey: jest.fn(() => 'redis-key'),
+  deleteFieldDraftClaimFromStore: jest.fn(),
+}));
 
-const CONTROLLER_URL = REQUEST_FOR_RECONSIDERATION_CANCEL_URL;
+jest.mock('modules/utilityService', () => ({
+  getClaimById: jest.fn(),
+}));
 
-describe('Cancel controller ', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
+const mockGetClaimById = getClaimById as jest.Mock;
+const mockDeleteField = deleteFieldDraftClaimFromStore as jest.Mock;
 
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
+const claimId = '12345';
+const propertyName = 'caseProgression';
+
+const claimWithRole = (caseRole: CaseRole): Claim => {
+  const claim = new Claim();
+  claim.caseRole = caseRole;
+  claim.applicant1 = new Party();
+  return claim;
+};
+
+describe('Cancel request for reconsideration', () => {
+  const getHandler = getRouteHandler(cancelRequestForReconsiderationController, 'get', REQUEST_FOR_RECONSIDERATION_CANCEL_URL);
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+    mockDeleteField.mockResolvedValue(undefined);
   });
 
-  describe('on GET', () => {
-    it('should redirect to the Claimant dashboard', async () => {
-      mockGetClaimById.mockImplementation(async () => {
-        const claim = new Claim();
-        claim.caseRole = CaseRole.CLAIMANT;
-        return claim;
-      });
+  it('deletes the draft field and redirects a claimant to the claimant dashboard', async () => {
+    const claim = claimWithRole(CaseRole.CLAIMANT);
+    mockGetClaimById.mockResolvedValue(claim);
+    const res = createMockResponse();
+    const req = {params: {id: claimId, propertyName}, session: {user: {id: 'user-1'}}} as unknown as AppRequest;
 
-      await request(app)
-        .get(CONTROLLER_URL)
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(DASHBOARD_CLAIMANT_URL);
+    await getHandler(req, res as unknown as Response, jest.fn());
 
-        });
-    });
-
-    it('should redirect to the defendant dashboard', async () => {
-      mockGetClaimById.mockImplementation(async () => {
-        const claim = new Claim();
-        claim.caseRole = CaseRole.DEFENDANT;
-        return claim;
-      });
-
-      await request(app)
-        .get(CONTROLLER_URL)
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(DEFENDANT_SUMMARY_URL);
-
-        });
-    });
-
-    it('should return http 500 when has error', async () => {
-      mockGetClaimById.mockImplementation(async () => {
-        throw new Error(TestMessages.REDIS_FAILURE);
-      });
-      await request(app)
-        .get(CONTROLLER_URL)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
-    });
+    expect(mockDeleteField).toHaveBeenCalledWith('redis-key', claim, propertyName, 'user-1');
+    expect(generateRedisKey).toHaveBeenCalledWith(req);
+    expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL));
   });
 
+  it('redirects a defendant to the defendant summary', async () => {
+    mockGetClaimById.mockResolvedValue(claimWithRole(CaseRole.DEFENDANT));
+    const res = createMockResponse();
+
+    await getHandler(
+      {params: {id: claimId, propertyName}, session: {user: {}}} as unknown as AppRequest,
+      res as unknown as Response,
+      jest.fn(),
+    );
+
+    expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL));
+  });
+
+  it('calls next when the claim cannot be loaded', async () => {
+    const error = new Error('redis failure');
+    mockGetClaimById.mockRejectedValue(error);
+    const next = jest.fn();
+
+    await getHandler(
+      {params: {id: claimId, propertyName}, session: {user: {}}} as unknown as AppRequest,
+      createMockResponse() as unknown as Response,
+      next,
+    );
+
+    expect(next).toHaveBeenCalledWith(error);
+  });
 });

@@ -1,162 +1,153 @@
-import {
-  mockCivilClaim,
-  mockCivilClaimDefendantCaseProgression,
-} from '../../../../utils/mockDraftStore';
-import {
-  CP_EVIDENCE_UPLOAD_CANCEL,
-  CP_UPLOAD_DOCUMENTS_URL,
-  DASHBOARD_CLAIMANT_URL,
-  DEFENDANT_SUMMARY_URL,
-} from 'routes/urls';
-import {TestMessages} from '../../../../utils/errorMessageTestConstants';
-import {app} from '../../../../../main/app';
-import config from 'config';
-import nock from 'nock';
-const session = require('supertest-session');
-import {YesNo} from 'form/models/yesNo';
-import {CIVIL_SERVICE_CASES_URL} from 'client/civilServiceUrls';
-import {t} from 'i18next';
+import {Response} from 'express';
 import {CivilServiceClient} from 'client/civilServiceClient';
+import {CaseRole} from 'form/models/caseRoles';
+import {YesNo} from 'form/models/yesNo';
 import {Claim} from 'models/claim';
+import {Party} from 'models/party';
+import {AppRequest} from 'models/AppRequest';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {generateRedisKey} from 'modules/draft-store/draftStoreService';
+import {getClaimById} from 'modules/utilityService';
+import {cancelDocumentUpload} from 'services/features/caseProgression/cancelDocumentUpload';
+import cancelYourUploadController from 'routes/features/caseProgression/cancelYourUploadController';
+import {CP_EVIDENCE_UPLOAD_CANCEL, DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL} from 'routes/urls';
+import {createMockResponse, getRouteHandler} from '../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/draft-store');
-jest.mock('../../../../../main/app/client/civilServiceClient');
+jest.mock('client/civilServiceClient', () => {
+  const methods = {retrieveClaimDetails: jest.fn()};
+  return {CivilServiceClient: jest.fn(() => methods)};
+});
 
-const claim = require('../../../../utils/mocks/civilClaimResponseMock.json');
-const claimDefendant = require('../../../../utils/mocks/civilClaimResponseDefendantMock.json');
-const claimId = claim.id;
-const claimDefendantId = claimDefendant.id;
-const civilServiceUrl = config.get<string>('services.civilService.url');
-const testSession = session(app);
+jest.mock('modules/draft-store/draftStoreService', () => ({
+  generateRedisKey: jest.fn(() => 'redis-key'),
+}));
+
+jest.mock('modules/utilityService', () => ({
+  getClaimById: jest.fn(),
+}));
+
+jest.mock('services/features/caseProgression/cancelDocumentUpload', () => ({
+  cancelDocumentUpload: jest.fn(),
+  getCancelYourUpload: jest.fn(() => [{section: 'cancel'}]),
+}));
+
+const civilServiceMethods = new CivilServiceClient('http://localhost') as unknown as {
+  retrieveClaimDetails: jest.Mock;
+};
+const mockGetClaimById = getClaimById as jest.Mock;
+const mockCancelDocumentUpload = cancelDocumentUpload as jest.Mock;
+
+const claimId = '1645882162449409';
+const viewPath = 'features/caseProgression/cancel-your-upload';
+
+const claimWithRole = (caseRole: CaseRole): Claim => {
+  const claim = new Claim();
+  claim.caseRole = caseRole;
+  claim.totalClaimAmount = 1000;
+  claim.applicant1 = new Party();
+  return claim;
+};
 
 describe('Cancel document upload', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-  });
-  beforeEach(()=> {
-    app.locals.draftStoreClient = mockCivilClaim;
+  const getHandler = getRouteHandler(cancelYourUploadController, 'get', CP_EVIDENCE_UPLOAD_CANCEL);
+  const postHandler = getRouteHandler(cancelYourUploadController, 'post', CP_EVIDENCE_UPLOAD_CANCEL);
+
+  beforeEach(() => {
+    jest.clearAllMocks();
   });
 
-  describe('Cancel document upload - On GET', () => {
+  describe('on GET', () => {
+    it('renders the cancel page', async () => {
+      const claim = claimWithRole(CaseRole.CLAIMANT);
+      civilServiceMethods.retrieveClaimDetails.mockResolvedValue(claim);
+      const res = createMockResponse();
 
-    it('should render page successfully', async () => {
-    // Given
-      const civilClaimDocumentUploaded = require('../../../../utils/mocks/civilClaimResponseMock.json');
-      civilClaimDocumentUploaded.case_data.id = civilClaimDocumentUploaded.id;
-      const claim = Object.assign(new Claim(), civilClaimDocumentUploaded.case_data);
+      await getHandler(
+        {params: {id: claimId}} as unknown as AppRequest,
+        res as unknown as Response,
+        jest.fn(),
+      );
 
-      jest
-        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
-        .mockReturnValue(
-          new Promise((resolve) => resolve(claim)),
-        );
-      //When
-      await testSession
-        .get(CP_EVIDENCE_UPLOAD_CANCEL.replace(':id', '1111'))
-      //Then
-        .expect((res:Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('PAGES.EVIDENCE_UPLOAD_CANCEL.TITLE'));
-        });
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        form: expect.anything(),
+        cancelYourUploadContents: [{section: 'cancel'}],
+      }));
     });
 
-    it('should return "Something went wrong" page when claim does not exist', async () => {
-    // Given
+    it('calls next when the claim cannot be loaded', async () => {
       const error = new Error('Test error');
-      jest
-        .spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails')
-        .mockRejectedValueOnce(error);
-      //When
-      await testSession
-        .get(CP_EVIDENCE_UPLOAD_CANCEL)
-      //Then
-        .expect((res: Response) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+      civilServiceMethods.retrieveClaimDetails.mockRejectedValue(error);
+      const next = jest.fn();
+
+      await getHandler(
+        {params: {id: claimId}} as unknown as AppRequest,
+        createMockResponse() as unknown as Response,
+        next,
+      );
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 
-  describe('Cancel document upload - on POST', () => {
+  describe('on POST', () => {
+    it('re-renders when neither Yes nor No is selected', async () => {
+      mockGetClaimById.mockResolvedValue(claimWithRole(CaseRole.CLAIMANT));
+      const res = createMockResponse();
 
-    it('should redirect to upload-documents page', async () => {
+      await postHandler(
+        {params: {id: claimId}, body: {}, session: {}} as unknown as AppRequest,
+        res as unknown as Response,
+        jest.fn(),
+      );
 
-      //Given
-      nock(civilServiceUrl)
-        .post(CIVIL_SERVICE_CASES_URL + '1111')
-        .reply(200, claimId);
-      await testSession
-        .get(CP_UPLOAD_DOCUMENTS_URL.replace(':id', '1111'));
-      //When
-      await testSession
-        .post(CP_EVIDENCE_UPLOAD_CANCEL.replace(':id', '1111'))
-        .send({option: YesNo.YES})
-      //Then
-        .expect((res: {status: unknown, header: {location: unknown}}) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(DASHBOARD_CLAIMANT_URL.replace(':id', '1111'));
-        });
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        form: expect.anything(),
+      }));
+      expect(res.render.mock.calls[0][1].form.hasErrors()).toBe(true);
+      expect(mockCancelDocumentUpload).not.toHaveBeenCalled();
     });
 
-    it('should display error when neither Yes nor No were selected', async () => {
+    it('redirects a claimant to the claimant dashboard when Yes is selected', async () => {
+      mockGetClaimById.mockResolvedValue(claimWithRole(CaseRole.CLAIMANT));
+      const res = createMockResponse();
 
-      //Given
-      nock(civilServiceUrl)
-        .post(CIVIL_SERVICE_CASES_URL + '1111')
-        .reply(200, claimId);
+      await postHandler(
+        {params: {id: claimId}, body: {option: YesNo.YES}, session: {}} as unknown as AppRequest,
+        res as unknown as Response,
+        jest.fn(),
+      );
 
-      //When
-      await testSession
-        .post(CP_EVIDENCE_UPLOAD_CANCEL.replace(':id', '1111'))
-        .send({})
-      //Then
-        .expect((res: {status: unknown, text: unknown}) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.VALID_YES_NO_OPTION_NAC_YDW'));
-        });
+      expect(mockCancelDocumentUpload).toHaveBeenCalledWith('redis-key');
+      expect(generateRedisKey).toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL));
     });
 
-    it('should redirect to defendant page', async () => {
+    it('redirects a defendant to the defendant summary when Yes is selected', async () => {
+      mockGetClaimById.mockResolvedValue(claimWithRole(CaseRole.DEFENDANT));
+      const res = createMockResponse();
 
-      //Given
-      app.locals.draftStoreClient = mockCivilClaimDefendantCaseProgression;
-      nock(civilServiceUrl)
-        .post(CIVIL_SERVICE_CASES_URL + claimDefendantId)
-        .reply(200, claimDefendantId);
+      await postHandler(
+        {params: {id: claimId}, body: {option: YesNo.YES}, session: {}} as unknown as AppRequest,
+        res as unknown as Response,
+        jest.fn(),
+      );
 
-      //When
-      await testSession
-        .post(CP_EVIDENCE_UPLOAD_CANCEL.replace(':id', claimDefendantId))
-        .send({option: YesNo.YES})
-      //Then
-        .expect((res: {status: unknown, header: {location: unknown}}) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(DEFENDANT_SUMMARY_URL.replace(':id', claimDefendantId));
-        });
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL));
     });
 
-    it('should redirect to claimant page', async () => {
+    it('redirects back to the previous page when No is selected', async () => {
+      const previousUrl = '/case/1645882162449409/case-progression/upload-documents';
+      mockGetClaimById.mockResolvedValue(claimWithRole(CaseRole.CLAIMANT));
+      const res = createMockResponse();
 
-      //Given
-      app.locals.draftStoreClient = mockCivilClaim;
-      nock(civilServiceUrl)
-        .post(CIVIL_SERVICE_CASES_URL + claimId)
-        .reply(200, claimId);
+      await postHandler(
+        {params: {id: claimId}, body: {option: YesNo.NO}, session: {previousUrl}} as unknown as AppRequest,
+        res as unknown as Response,
+        jest.fn(),
+      );
 
-      //When
-      await testSession
-        .post(CP_EVIDENCE_UPLOAD_CANCEL.replace(':id', claimId))
-        .send({option: YesNo.YES})
-      //Then
-        .expect((res: {status: unknown, header: {location: unknown}}) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(DASHBOARD_CLAIMANT_URL.replace(':id', claimId));
-        });
+      expect(mockCancelDocumentUpload).not.toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(previousUrl);
     });
   });
 });

@@ -1,95 +1,115 @@
-import config from 'config';
-import nock from 'nock';
-import request from 'supertest';
-import {app} from '../../../../../main/app';
+import {Response} from 'express';
+import courtProposedDateController from 'routes/features/claimantResponse/courtProposedDateController';
 import {
   CLAIMANT_RESPONSE_COURT_OFFERED_SET_DATE_URL,
   CLAIMANT_RESPONSE_REJECTION_REASON_URL,
   CLAIMANT_RESPONSE_TASK_LIST_URL,
-} from '../../../../../main/routes/urls';
-import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
-import {TestMessages} from '../../../../utils/errorMessageTestConstants';
-import {t} from 'i18next';
-import {CourtProposedDateOptions} from 'common/form/models/claimantResponse/courtProposedDate';
+} from 'routes/urls';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {saveClaimantResponse} from 'services/features/claimantResponse/claimantResponseService';
+import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {Claim} from 'models/claim';
+import {ClaimantResponse} from 'models/claimantResponse';
+import {Party} from 'models/party';
+import {ResponseType} from 'form/models/responseType';
+import {PartialAdmission} from 'models/partialAdmission';
+import {PaymentIntention} from 'form/models/admission/paymentIntention';
+import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
+import {CourtProposedDateOptions} from 'form/models/claimantResponse/courtProposedDate';
+import {AppRequest} from 'models/AppRequest';
+import {createMockResponse, createMockSession, getRouteHandler} from '../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/draft-store');
-jest.mock('modules/utilityService', () => ({
-  getClaimById: jest.fn().mockResolvedValue({ isClaimantIntentionPending: () => true }),
-  getRedisStoreForSession: jest.fn(),
-}));
+jest.mock('services/features/claimantResponse/claimantResponseService');
+jest.mock('modules/draft-store/draftStoreService');
+
+const viewPath = 'features/claimantResponse/court-proposed-date';
+const claimId = '12345';
+
+const datedClaim = (): Claim => {
+  const claim = new Claim();
+  claim.respondent1 = new Party();
+  claim.respondent1.responseType = ResponseType.PART_ADMISSION;
+  claim.partialAdmission = new PartialAdmission();
+  claim.partialAdmission.paymentIntention = new PaymentIntention();
+  claim.partialAdmission.paymentIntention.paymentOption = PaymentOptionType.BY_SET_DATE;
+  claim.partialAdmission.paymentIntention.paymentDate = new Date('2026-12-01');
+  claim.claimantResponse = new ClaimantResponse();
+  return claim;
+};
+
+const invoke = async (method: 'get' | 'post', req: Record<string, unknown> = {}) => {
+  const res = createMockResponse();
+  const next = jest.fn();
+  await getRouteHandler(courtProposedDateController, method, CLAIMANT_RESPONSE_COURT_OFFERED_SET_DATE_URL)(
+    {
+      params: {id: claimId},
+      body: {},
+      query: {},
+      cookies: {},
+      session: createMockSession({user: {id: 'user-1'}}),
+      ...req,
+    } as unknown as AppRequest,
+    res as unknown as Response,
+    next,
+  );
+  return {res, next};
+};
 
 describe('Claimant court proposed date Controller', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
-
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, { id_token: citizenRoleToken });
+  beforeEach(() => {
+    jest.clearAllMocks();
+    (generateRedisKey as jest.Mock).mockReturnValue(claimId);
+    (getCaseDataFromStore as jest.Mock).mockResolvedValue(datedClaim());
+    (saveClaimantResponse as jest.Mock).mockResolvedValue(undefined);
   });
 
   describe('on GET', () => {
     it('should return court proposed date page', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
-      await request(app).get(CLAIMANT_RESPONSE_COURT_OFFERED_SET_DATE_URL).expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(t('PAGES.CLAIMANT_RESPONSE.COURT_PROPOSED_DATE.TITLE'));
-      });
+      const {res} = await invoke('get');
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        pageTitle: 'PAGES.CLAIMANT_RESPONSE.COURT_PROPOSED_DATE.PAGE_TITLE',
+        paymentDate: expect.any(String),
+      }));
     });
 
     it('should return status 500 when error thrown', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .get(CLAIMANT_RESPONSE_COURT_OFFERED_SET_DATE_URL)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+      const error = new Error('redis failure');
+      (getCaseDataFromStore as jest.Mock).mockRejectedValue(error);
+
+      const {next} = await invoke('get');
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 
   describe('on POST', () => {
-    beforeEach(() => {
-      app.locals.draftStoreClient = mockCivilClaim;
-    });
-
     it('should return error on empty post', async () => {
-      await request(app).post(CLAIMANT_RESPONSE_COURT_OFFERED_SET_DATE_URL)
-        .send({decision: null})
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.VALID_YES_NO_SELECTION'));
-        });
+      const {res} = await invoke('post', {body: {decision: null}});
+
+      expect(res.render.mock.calls[0][1].form.hasErrors()).toBe(true);
+      expect(saveClaimantResponse).not.toHaveBeenCalled();
     });
 
     it('should redirect to the claimant response task-list if option ACCEPT_REPAYMENT_DATE is selected', async () => {
-      await request(app).post(CLAIMANT_RESPONSE_COURT_OFFERED_SET_DATE_URL)
-        .send({ decision: CourtProposedDateOptions.ACCEPT_REPAYMENT_DATE })
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.get('location')).toBe(CLAIMANT_RESPONSE_TASK_LIST_URL);
-        });
+      const {res} = await invoke('post', {body: {decision: CourtProposedDateOptions.ACCEPT_REPAYMENT_DATE}});
+
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_TASK_LIST_URL));
     });
 
     it('should redirect to rejection reason if option JUDGE_REPAYMENT_DATE is selected', async () => {
-      await request(app).post(CLAIMANT_RESPONSE_COURT_OFFERED_SET_DATE_URL)
-        .send({ decision: CourtProposedDateOptions.JUDGE_REPAYMENT_DATE })
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.get('location')).toBe(CLAIMANT_RESPONSE_REJECTION_REASON_URL);
-        });
+      const {res} = await invoke('post', {body: {decision: CourtProposedDateOptions.JUDGE_REPAYMENT_DATE}});
+
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_REJECTION_REASON_URL));
     });
 
     it('should return status 500 when error thrown', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .post(CLAIMANT_RESPONSE_COURT_OFFERED_SET_DATE_URL)
-        .send({ decision: CourtProposedDateOptions.JUDGE_REPAYMENT_DATE })
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+      const error = new Error('redis failure');
+      (saveClaimantResponse as jest.Mock).mockRejectedValue(error);
+
+      const {next} = await invoke('post', {body: {decision: CourtProposedDateOptions.JUDGE_REPAYMENT_DATE}});
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 });

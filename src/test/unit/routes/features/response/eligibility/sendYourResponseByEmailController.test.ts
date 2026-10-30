@@ -1,52 +1,79 @@
-import request from 'supertest';
-import {app} from '../../../../../../main/app';
-import nock from 'nock';
-import config from 'config';
+import {Response} from 'express';
+import sendYourResponseByEmailController from 'routes/features/response/eligibility/sendYourResponseByEmailController';
 import {SEND_RESPONSE_BY_EMAIL_URL} from 'routes/urls';
-import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
-import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {CivilServiceClient} from 'client/civilServiceClient';
+import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {Claim} from 'models/claim';
+import {PartyType} from 'models/partyType';
+import {AppRequest} from 'models/AppRequest';
+import {createMockResponse, createMockSession, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../../main/modules/oidc');
+jest.mock('client/civilServiceClient', () => {
+  const methods = {
+    getFeeRanges: jest.fn(),
+  };
+  return {CivilServiceClient: jest.fn(() => methods)};
+});
+jest.mock('modules/draft-store/draftStoreService');
+
+const civilServiceMethods = new CivilServiceClient('http://localhost') as unknown as {
+  getFeeRanges: jest.Mock;
+};
+
+const viewPath = 'features/response/eligibility/send-your-response-by-email';
+const claimId = '12345';
+
+const storedClaim = (): Claim => {
+  const claim = new Claim();
+  claim.applicant1 = {
+    type: PartyType.INDIVIDUAL,
+    partyDetails: {partyName: 'Joe Bloggs', firstName: 'Joe', lastName: 'Bloggs'},
+  };
+  claim.respondent1ResponseDeadline = new Date('2099-06-01T16:00:00.000Z');
+  return claim;
+};
+
+const invoke = async () => {
+  const res = createMockResponse();
+  const next = jest.fn();
+  await getRouteHandler(sendYourResponseByEmailController, 'get', SEND_RESPONSE_BY_EMAIL_URL)(
+    {
+      params: {id: claimId},
+      body: {},
+      query: {},
+      cookies: {},
+      session: createMockSession({user: {id: 'user-1'}}),
+    } as unknown as AppRequest,
+    res as unknown as Response,
+    next,
+  );
+  return {res, next};
+};
 
 describe('Send your response by email', () => {
-  const data = require('../../../../../utils/mocks/feeRangesMock.json');
-  const citizenBaseUrl: string = config.get('services.civilService.url');
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
-
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-    nock(citizenBaseUrl).get('/fees/ranges').reply(200, data);
-    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
+  beforeEach(() => {
+    jest.clearAllMocks();
+    (generateRedisKey as jest.Mock).mockReturnValue(claimId);
+    (getCaseDataFromStore as jest.Mock).mockResolvedValue(storedClaim());
+    civilServiceMethods.getFeeRanges.mockResolvedValue({value: []});
   });
 
-  describe('on GET', () => {
-    it('should return send your response by email page', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
-      await request(app)
-        .get(SEND_RESPONSE_BY_EMAIL_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.SEND_YOUR_RESPONSE_BY_EMAIL);
-          expect(res.text).toContain('How to counterclaim');
-          expect(res.text).toContain('View claim fees');
-          expect(res.text).toContain('How to counterclaim');
-          expect(res.text).toContain('Help and support');
-          expect(res.text).toContain('Email');
-          expect(res.text).toContain('Telephone');
-        });
-    });
-    it('should return http 500 when has error', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .get(SEND_RESPONSE_BY_EMAIL_URL)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
-    });
+  it('should render the send your response by email page', async () => {
+    const {res} = await invoke();
+
+    expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+      form: expect.any(Claim),
+      fees: [[]],
+      responseDeadline: storedClaim().formattedResponseDeadline(undefined),
+    }));
+  });
+
+  it('should return the error when the claim cannot be loaded', async () => {
+    const error = new Error('redis failure');
+    (getCaseDataFromStore as jest.Mock).mockRejectedValue(error);
+
+    const {next} = await invoke();
+
+    expect(next).toHaveBeenCalledWith(error);
   });
 });
