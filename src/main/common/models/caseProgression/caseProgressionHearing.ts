@@ -29,9 +29,9 @@ export class  CaseProgressionHearingDocuments{
 }
 
 export const getHearingDocumentsCaseDocumentIdByType = ((hearingDocuments: CaseProgressionHearingDocuments[], documentType: DocumentType) => {
-  let documentId: string | undefined;
+  let documentId: string | null | undefined;
   if (hearingDocuments?.length) {
-    documentId = CaseDocumentInfoExtractor.getSystemGeneratedCaseDocumentIdByType(hearingDocuments, documentType) ?? undefined;
+    documentId = CaseDocumentInfoExtractor.getSystemGeneratedCaseDocumentIdByType(hearingDocuments, documentType);
   }
   return documentId;
 });

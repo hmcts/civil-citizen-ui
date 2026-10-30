@@ -127,8 +127,8 @@ describe('testing of getHearingDocumentsCaseDocumentIdByType', () => {
     expect(getHearingDocumentsCaseDocumentIdByType(hearingDocuments, DocumentType.HEARING_FORM)).toBe('abc-123');
   });
 
-  it('should return undefined when no document of type exists', () => {
-    expect(getHearingDocumentsCaseDocumentIdByType(hearingDocuments, DocumentType.JUDGE_FINAL_ORDER)).toBeUndefined();
+  it('should return null when no document of type exists', () => {
+    expect(getHearingDocumentsCaseDocumentIdByType(hearingDocuments, DocumentType.JUDGE_FINAL_ORDER)).toBeNull();
   });
 
   it('should return undefined when no hearing documents', () => {
