@@ -23,19 +23,41 @@ import {SpecificCourtLocation} from 'models/directionsQuestionnaire/hearing/spec
 import {ValidationError, Validator} from 'class-validator';
 import {getRouteParam} from 'common/utils/routeParamUtils';
 import {validateOtherWitnesses} from 'services/features/directionsQuestionnaire/otherWitnessesService';
+import {
+  applyCcdFieldErrorsToForm,
+  applyCcdFieldErrorsToSummarySections,
+  CcdFieldError,
+  isCallbackFieldValidationError,
+} from 'client/common/error/callbackError';
+import {t} from 'i18next';
+import {getLng} from 'common/utils/languageToggleUtils';
 
 const checkAnswersViewPath = 'features/claimantResponse/check-answers';
 const validator = new Validator();
 const claimantResponseCheckAnswersController = Router();
 
-async function renderView(req: AppRequest, res: Response, form: GenericForm<StatementOfTruthForm>, claim: Claim, isCarmApplicable: boolean, isMintiApplicable: boolean) {
+async function renderView(
+  req: AppRequest,
+  res: Response,
+  form: GenericForm<StatementOfTruthForm>,
+  claim: Claim,
+  isCarmApplicable: boolean,
+  isMintiApplicable: boolean,
+  fieldErrors: CcdFieldError[] = [],
+) {
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
   const claimFee = convertToPoundsFilter(claim.claimFee?.calculatedAmountInPence);
   const summarySections = await getSummarySections(getRouteParam(req, 'id'), claim, lang, claimFee, isCarmApplicable, isMintiApplicable);
+  const unmappedCcdFieldErrors = applyCcdFieldErrorsToSummarySections(
+    summarySections?.sections,
+    fieldErrors,
+    t('ERRORS.ERROR', {lng: getLng(lang)}),
+  );
 
   res.render(checkAnswersViewPath, {
     form,
     summarySections,
+    unmappedCcdFieldErrors,
     pageTitle: 'PAGES.CHECK_YOUR_ANSWER.CLAIMANT_INTENT_PAGE_TITLE',
   });
 }
@@ -75,10 +97,19 @@ claimantResponseCheckAnswersController.post(CLAIMANT_RESPONSE_CHECK_ANSWERS_URL,
     if (form.hasErrors()) {
       const claim = await getClaimById(claimId, req, true);
       await renderView(<AppRequest>req, res, form, claim, carmEnabled, mintiEnabled);
-    } else {
-      await saveStatementOfTruth(redisKey, form.model);
+      return;
+    }
+    await saveStatementOfTruth(redisKey, form.model);
+    try {
       await submitClaimantResponse(<AppRequest>req);
       res.redirect(constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_CONFIRMATION_URL));
+    } catch (error) {
+      if (isCallbackFieldValidationError(error)) {
+        applyCcdFieldErrorsToForm(form, error.fieldErrors);
+        await renderView(<AppRequest>req, res, form, claim, carmEnabled, mintiEnabled, error.fieldErrors);
+        return;
+      }
+      throw error;
     }
   } catch (error) {
     next(error);

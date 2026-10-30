@@ -440,53 +440,90 @@ describe('Civil Service Client', () => {
   describe('submitEvent 422 callback errors (DTSCCI-5282)', () => {
     const unprocessableEntity = (data: unknown) => ({response: {status: 422, data}});
 
+    const expectCallbackError = async (
+      civilServiceClient: CivilServiceClient,
+      expected: Partial<Omit<CallbackError, 'hasFieldErrors'>> & {hasFieldErrors?: boolean},
+    ) => {
+      try {
+        await civilServiceClient.submitDefendantResponseEvent('123', {}, appReq);
+        fail('expected submitDefendantResponseEvent to reject');
+      } catch (error) {
+        expect(error).toBeInstanceOf(CallbackError);
+        const callbackError = error as CallbackError;
+        expect(callbackError.status).toBe(422);
+        if (expected.callbackErrors !== undefined) {
+          expect(callbackError.callbackErrors).toEqual(expected.callbackErrors);
+        }
+        if (expected.fieldErrors !== undefined) {
+          expect(callbackError.fieldErrors).toEqual(expected.fieldErrors);
+        }
+        if (expected.hasFieldErrors !== undefined) {
+          expect(callbackError.hasFieldErrors()).toBe(expected.hasFieldErrors);
+        }
+      }
+    };
+
     it('should throw a CallbackError carrying the callbackErrors when civil-service returns 422 with a body', async () => {
-      //Given
       const callbackErrors = ['There is a technical issue causing a delay. You do not need to do anything. Please come back later.'];
       const mockPost = jest.fn().mockRejectedValue(unprocessableEntity({callbackErrors, callbackWarnings: []}));
       mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
       const civilServiceClient = new CivilServiceClient(baseUrl);
-      //Then
-      await expect(civilServiceClient.submitDefendantResponseEvent('123', {}, appReq)).rejects.toBeInstanceOf(CallbackError);
-      await expect(civilServiceClient.submitDefendantResponseEvent('123', {}, appReq)).rejects.toMatchObject({
-        status: 422,
+
+      await expectCallbackError(civilServiceClient, {
         callbackErrors,
+        fieldErrors: [],
+        hasFieldErrors: false,
       });
     });
 
     it('should throw a CallbackError carrying CCD field validation errors (details.field_errors)', async () => {
-      //Given - CCD field-type validation (Category A) uses a CaseValidationException envelope
+      const fieldErrors = [{id: 'respondent1.partyEmail', message: 'notanemail is not a valid Email address'}];
       const data = {
         exception: 'uk.gov.hmcts.ccd.endpoint.exceptions.CaseValidationException',
         message: 'Case data validation failed',
-        details: {field_errors: [{id: 'respondent1.partyEmail', message: 'notanemail is not a valid Email address'}]},
+        details: {field_errors: fieldErrors},
       };
       const mockPost = jest.fn().mockRejectedValue(unprocessableEntity(data));
       mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
       const civilServiceClient = new CivilServiceClient(baseUrl);
-      //Then
-      await expect(civilServiceClient.submitDefendantResponseEvent('123', {}, appReq)).rejects.toBeInstanceOf(CallbackError);
-      await expect(civilServiceClient.submitDefendantResponseEvent('123', {}, appReq)).rejects.toMatchObject({
-        status: 422,
-        callbackErrors: ['notanemail is not a valid Email address'],
+
+      await expectCallbackError(civilServiceClient, {
+        callbackErrors: [],
+        fieldErrors,
+        hasFieldErrors: true,
+      });
+    });
+
+    it('should throw a CallbackError with both callbackErrors and fieldErrors when both envelopes are present', async () => {
+      const callbackErrors = ['Business process already in progress'];
+      const fieldErrors = [{id: 'applicant1.emailAddress', message: 'Enter a valid email'}];
+      const mockPost = jest.fn().mockRejectedValue(unprocessableEntity({
+        callbackErrors,
+        details: {field_errors: fieldErrors},
+      }));
+      mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl);
+
+      await expectCallbackError(civilServiceClient, {
+        callbackErrors,
+        fieldErrors,
+        hasFieldErrors: true,
       });
     });
 
     it('should re-throw the original error when 422 has no callbackErrors or field_errors', async () => {
-      //Given
       const mockPost = jest.fn().mockRejectedValue(unprocessableEntity({message: 'nothing actionable here'}));
       mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
       const civilServiceClient = new CivilServiceClient(baseUrl);
-      //Then
+
       await expect(civilServiceClient.submitDefendantResponseEvent('123', {}, appReq)).rejects.not.toBeInstanceOf(CallbackError);
     });
 
     it('should re-throw the original error for a non-422 status', async () => {
-      //Given
       const mockPost = jest.fn().mockRejectedValue({response: {status: 500, data: {callbackErrors: ['ignored']}}});
       mockedAxios.create.mockReturnValueOnce({post: mockPost} as unknown as AxiosInstance);
       const civilServiceClient = new CivilServiceClient(baseUrl);
-      //Then
+
       await expect(civilServiceClient.submitDefendantResponseEvent('123', {}, appReq)).rejects.not.toBeInstanceOf(CallbackError);
     });
   });

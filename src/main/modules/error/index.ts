@@ -56,11 +56,16 @@ export class ErrorHandler {
       // Narrow with instanceof (not just a duck-typed callbackErrors check) so an unrelated
       // 5xx that happens to carry a callbackErrors property isn't misreported as a 422 and
       // skipped for App Insights tracking below.
-      if (err instanceof CallbackError && err.callbackErrors?.length) {
+      if (err instanceof CallbackError && (err.callbackErrors?.length || err.hasFieldErrors())) {
+        const fieldErrorMessages = err.fieldErrors.map(fieldError => fieldError.message);
+        const showGoBackAndAmend = err.hasFieldErrors();
         res.status(err.status || 422);
         return res.render('error', {
           callbackErrors: err.callbackErrors,
           callbackWarnings: err.callbackWarnings,
+          fieldErrorMessages,
+          showGoBackAndAmend,
+          goBackAndAmendUrl: showGoBackAndAmend ? req.originalUrl : undefined,
           error: env === 'development' ? err : {},
         });
       }

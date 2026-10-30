@@ -8,6 +8,7 @@ import {formatDateToFullDate} from '../../../../../common/utils/dateUtils';
 import {constructResponseUrlWithIdParams} from '../../../../../common/utils/urlFormatter';
 import {addressToHtml} from '../../../../../common/utils/addressUtils';
 import {escapeHtml} from 'common/utils/escapeHtml';
+import {CcdCyaFieldId} from 'client/common/error/callbackError';
 
 const changeLabel = (lang: string ): string => t('COMMON.BUTTONS.CHANGE', {lng: getLng(lang)});
 
@@ -31,6 +32,8 @@ export const buildYourDetailsSection = (claim: Claim, claimId: string, lang: str
     const yourDOBHref = DOB_URL.replace(':id', claimId);
     yourDetailsSection.summaryList.rows.push(summaryRow(t('PAGES.CHECK_YOUR_ANSWER.DOB', {lng: getLng(lang)}), formatDateToFullDate(claim.respondent1.dateOfBirth?.date, getLng(lang)), yourDOBHref, changeLabel(lang)));
   }
-  yourDetailsSection.summaryList.rows.push(summaryRow(t(phoneNumberLabel, {lng: getLng(lang)}), claim.respondent1.partyPhone?.phone, phoneNumberHref, changeLabel(lang)));
+  const phoneRow = summaryRow(t(phoneNumberLabel, {lng: getLng(lang)}), claim.respondent1.partyPhone?.phone, phoneNumberHref, changeLabel(lang));
+  phoneRow.ccdFieldId = CcdCyaFieldId.RESPONDENT1_PARTY_PHONE;
+  yourDetailsSection.summaryList.rows.push(phoneRow);
   return yourDetailsSection;
 };

@@ -19,6 +19,7 @@ import {saveClaimFee} from 'services/features/claim/amount/claimFeesService';
 import {calculateInterestToDate} from 'common/utils/interestUtils';
 import {isCarmEnabledForCase, isDraftClaimDatabaseEnabled} from '../../../../../main/app/auth/launchdarkly/launchDarklyClient';
 import {CivilServiceClient} from 'client/civilServiceClient';
+import {CallbackError} from 'client/common/error/callbackError';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {createMockResponse, createMockSession, getRouteHandler} from '../../../../utils/getRouteHandler';
 import * as ccdTranslationService from 'services/translation/claim/ccdTranslation';
@@ -419,6 +420,106 @@ describe('Claim - Check answers', () => {
         expect(res.redirect).toHaveBeenCalledWith(confirmationUrl);
         expect(retryRes.redirect).toHaveBeenCalledWith(confirmationUrl);
       });
+    });
+
+    it('should re-render check answers with GDS errors when submitClaim throws CallbackError with field errors', async () => {
+      mockGetDraftClaim.mockResolvedValue({
+        claimResponse: {case_data: buildClaim(YesNo.YES)},
+        rawResponse: {draftId: 'draft-123'},
+        createdAt: '2026-08-01T10:00:00.000Z',
+      });
+      mockGetSummarySections.mockReturnValue({
+        sections: [{
+          title: 'Their details',
+          summaryList: {
+            rows: [{
+              key: {text: 'Email'},
+              value: {html: 'notanemail'},
+              ccdFieldId: 'respondent1.partyEmail',
+            }],
+          },
+        }],
+      });
+      mockSubmitClaim.mockRejectedValue(new CallbackError(
+        [],
+        [],
+        [{id: 'respondent1.partyEmail', message: 'notanemail is not a valid Email address'}],
+      ));
+      req.body = signedBody;
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        form: expect.any(GenericForm),
+        unmappedCcdFieldErrors: [],
+      }));
+      const form = (res.render as jest.Mock).mock.calls[0][1].form as GenericForm<unknown>;
+      expect(form.hasErrors()).toBe(true);
+      expect(form.errorFor('ccd-field-respondent1-partyEmail')).toBe('notanemail is not a valid Email address');
+      expect(form.getErrors()[0].href).toBe('#ccd-field-respondent1-partyEmail');
+      const summarySections = (res.render as jest.Mock).mock.calls[0][1].summarySections;
+      expect(summarySections.sections[0].summaryList.rows[0].value.html).toContain('id="ccd-field-respondent1-partyEmail"');
+      expect(summarySections.sections[0].summaryList.rows[0].value.html).toContain('govuk-error-message');
+      expect(summarySections.sections[0].summaryList.rows[0].value.html).toContain('notanemail is not a valid Email address');
+      expect(res.redirect).not.toHaveBeenCalled();
+      expect(next).not.toHaveBeenCalled();
+    });
+
+    it('should call next when submitClaim throws CallbackError with only callbackErrors so the error page is used', async () => {
+      mockGetDraftClaim.mockResolvedValue({
+        claimResponse: {case_data: buildClaim(YesNo.YES)},
+        rawResponse: {draftId: 'draft-123'},
+        createdAt: '2026-08-01T10:00:00.000Z',
+      });
+      const callbackError = new CallbackError([
+        'There is a technical issue causing a delay. You do not need to do anything. Please come back later.',
+      ]);
+      mockSubmitClaim.mockRejectedValue(callbackError);
+      req.body = signedBody;
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(callbackError);
+      expect(res.render).not.toHaveBeenCalled();
+      expect(res.redirect).not.toHaveBeenCalled();
+    });
+
+    it('should call next when submitClaim throws mixed callbackErrors and field_errors so both show on the error page', async () => {
+      mockGetDraftClaim.mockResolvedValue({
+        claimResponse: {case_data: buildClaim(YesNo.YES)},
+        rawResponse: {draftId: 'draft-123'},
+        createdAt: '2026-08-01T10:00:00.000Z',
+      });
+      const mixedError = new CallbackError(
+        ['Business process must be finished before you can submit'],
+        [],
+        [{id: 'respondent1.partyEmail', message: 'notanemail is not a valid Email address'}],
+      );
+      mockSubmitClaim.mockRejectedValue(mixedError);
+      req.body = signedBody;
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(mixedError);
+      expect(res.render).not.toHaveBeenCalled();
+      expect(res.redirect).not.toHaveBeenCalled();
+    });
+
+    it('should call next when submitClaim throws a non-CallbackError', async () => {
+      mockGetDraftClaim.mockResolvedValue({
+        claimResponse: {case_data: buildClaim(YesNo.YES)},
+        rawResponse: {draftId: 'draft-123'},
+        createdAt: '2026-08-01T10:00:00.000Z',
+      });
+      const error = new Error('unexpected submit failure');
+      mockSubmitClaim.mockRejectedValue(error);
+      req.body = signedBody;
+
+      await postHandler(req as AppRequest, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
+      expect(res.render).not.toHaveBeenCalled();
+      expect(res.redirect).not.toHaveBeenCalled();
     });
   });
 });

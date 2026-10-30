@@ -22,16 +22,37 @@ import {ApplicationTypeOption} from 'models/generalApplication/applicationType';
 import {constructResponseUrlWithIdAndAppIdParams} from 'common/utils/urlFormatter';
 import {QualifiedStatementOfTruth} from 'models/generalApplication/QualifiedStatementOfTruth';
 import {getRouteParam} from 'common/utils/routeParamUtils';
+import {
+  applyCcdFieldErrorsToForm,
+  applyCcdFieldErrorsToSummaryRows,
+  CcdFieldError,
+  isCallbackFieldValidationError,
+} from 'client/common/error/callbackError';
+import {getLng} from 'common/utils/languageToggleUtils';
 
 const gaCheckAnswersResponseController = Router();
 const viewPath = 'features/generalApplication/response/check-answers';
 
-async function renderView(claimId: string, claim: Claim, form: GenericForm<StatementOfTruthForm>, gaResponse: GaResponse, req: AppRequest, res: Response): Promise<void> {
+async function renderView(
+  claimId: string,
+  claim: Claim,
+  form: GenericForm<StatementOfTruthForm>,
+  gaResponse: GaResponse,
+  req: AppRequest,
+  res: Response,
+  fieldErrors: CcdFieldError[] = [],
+): Promise<void> {
   const cancelUrl = await getCancelUrl(claimId, claim);
   const lang = req.query.lang ? req.query.lang : req.cookies.lang;
   const isBusiness = (claim.isClaimant() && claim.isClaimantBusiness()) || (claim.isDefendant() && claim.isBusiness());
   const backLinkUrl = BACK_URL;
   const appId = getRouteParam(req, 'appId');
+  const summaryRows = getSummarySections(claimId, appId, gaResponse, lang);
+  const unmappedCcdFieldErrors = applyCcdFieldErrorsToSummaryRows(
+    summaryRows,
+    fieldErrors,
+    t('ERRORS.ERROR', {lng: getLng(lang)}),
+  );
   res.render(viewPath, {
     form,
     cancelUrl,
@@ -40,7 +61,8 @@ async function renderView(claimId: string, claim: Claim, form: GenericForm<State
     headerTitle: getTitle(gaResponse.generalApplicationType, lang),
     claimIdPrettified: caseNumberPrettify(claimId),
     claim,
-    summaryRows: getSummarySections(claimId, appId, gaResponse, lang),
+    summaryRows,
+    unmappedCcdFieldErrors,
   });
 }
 
@@ -74,14 +96,23 @@ gaCheckAnswersResponseController.post(GA_RESPONSE_CHECK_ANSWERS_URL, (async (req
     await form.validate();
 
     if (form.hasErrors()) {
-
       const gaResponse = await getDraftGARespondentResponse(generateRedisKeyForGA(req));
       await renderView(claimId, claim, form, gaResponse, req, res);
-    } else {
-      const redisKey = generateRedisKeyForGA(req);
-      await saveRespondentStatementOfTruth(redisKey, statementOfTruth);
+      return;
+    }
+    const redisKey = generateRedisKeyForGA(req);
+    await saveRespondentStatementOfTruth(redisKey, statementOfTruth);
+    try {
       await submitApplicationResponse(req);
       res.redirect(constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_RESPONSE_CONFIRMATION_URL));
+    } catch (error) {
+      if (isCallbackFieldValidationError(error)) {
+        const gaResponse = await getDraftGARespondentResponse(redisKey);
+        applyCcdFieldErrorsToForm(form, error.fieldErrors);
+        await renderView(claimId, claim, form, gaResponse, req, res, error.fieldErrors);
+        return;
+      }
+      throw error;
     }
   } catch (error) {
     next(error);

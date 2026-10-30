@@ -10,6 +10,12 @@ export interface SummaryRow {
   value: Value;
   actions?: Actions;
   classes?: string;
+  /**
+   * Optional CCD case-field id (e.g. respondent1.partyEmail) used to remount
+   * details.field_errors inline on Check your answers (DTSCCI-5899).
+   * Not consumed by the GOV.UK summary-list macro.
+   */
+  ccdFieldId?: string;
 }
 
 export interface SummaryCard {

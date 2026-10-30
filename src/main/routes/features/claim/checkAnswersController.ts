@@ -26,6 +26,14 @@ import {CivilServiceClient} from 'client/civilServiceClient';
 import {saveClaimFee} from 'services/features/claim/amount/claimFeesService';
 import {calculateInterestToDate} from 'common/utils/interestUtils';
 import {clearRedisWorkingDraftForPayment} from 'routes/features/claim/payment/claimIssuePaymentDraftService';
+import {
+  applyCcdFieldErrorsToForm,
+  applyCcdFieldErrorsToSummarySections,
+  CcdFieldError,
+  isCallbackFieldValidationError,
+} from 'client/common/error/callbackError';
+import {t} from 'i18next';
+import {getLng} from 'common/utils/languageToggleUtils';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('claimCheckAnswersController');
@@ -37,9 +45,22 @@ const checkAnswersViewPath = 'features/claim/check-answers';
 //const paymentUrl = 'https://www.payments.service.gov.uk/card_details/:id';
 const claimCheckAnswersController = Router();
 
-function renderView(res: Response, form: GenericForm<object>, claim: Claim, userId: string, lang: string, isCarmEnabled = true) {
+function renderView(
+  res: Response,
+  form: GenericForm<object>,
+  claim: Claim,
+  userId: string,
+  lang: string,
+  isCarmEnabled = true,
+  fieldErrors: CcdFieldError[] = [],
+) {
 
   const summarySections = getSummarySections(userId, claim, lang, isCarmEnabled);
+  const unmappedCcdFieldErrors = applyCcdFieldErrorsToSummarySections(
+    summarySections?.sections,
+    fieldErrors,
+    t('ERRORS.ERROR', {lng: getLng(lang)}),
+  );
   const formModel = form.model as {type?: string};
   const signatureType = formModel?.type;
   let payment;
@@ -49,6 +70,7 @@ function renderView(res: Response, form: GenericForm<object>, claim: Claim, user
   res.render(checkAnswersViewPath, {
     form, summarySections, signatureType,
     payment,
+    unmappedCcdFieldErrors,
     pageTitle: 'PAGES.CHECK_YOUR_ANSWER.TITLE',
   });
 }
@@ -108,11 +130,13 @@ claimCheckAnswersController.post(CLAIM_CHECK_ANSWERS_URL, async (req: AppRequest
     const interestToDate = await calculateInterestToDate(claim, req);
     const claimFeeData = await civilServiceClient.getClaimFeeData(claim.totalClaimAmount + interestToDate, req as AppRequest);
     await saveClaimFee(req as AppRequest, claimFeeData);
-    if (form.hasErrors() ) {
+    if (form.hasErrors()) {
       renderView(res, form, claim, userId, lang, isCarmEnabled);
       return;
-    } else {
-      await saveStatementOfTruth(req, form.model);
+    }
+
+    await saveStatementOfTruth(req, form.model);
+    try {
       const appReq = req as AppRequest;
       const submittedClaim = await submitClaim(appReq);
 
@@ -155,6 +179,13 @@ claimCheckAnswersController.post(CLAIM_CHECK_ANSWERS_URL, async (req: AppRequest
         res.clearCookie('eligibilityCompleted');
       }
       res.redirect(constructResponseUrlWithIdParams(submittedClaim.id, CLAIM_CONFIRMATION_URL));
+    } catch (error) {
+      if (isCallbackFieldValidationError(error)) {
+        applyCcdFieldErrorsToForm(form, error.fieldErrors);
+        renderView(res, form, claim, userId, lang, isCarmEnabled, error.fieldErrors);
+        return;
+      }
+      next(error);
     }
   } catch (error) {
     next(error);
