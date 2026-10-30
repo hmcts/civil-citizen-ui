@@ -55,6 +55,13 @@ describe('General Application - Respondent upload evidence documents', () => {
     createdDatetime: new Date(),
   } as CaseDocument;
 
+  const uploadedDocument = (id: string): UploadGAFiles => {
+    const document = new UploadGAFiles();
+    document.caseDocument = {...mockCaseDocument, documentName: `${id}.pdf`,
+      documentLink: {...mockCaseDocument.documentLink, document_url: `http://dm-store/documents/${id}`}};
+    return document;
+  };
+
   const uploadedFile = {
     fieldname: 'selectedFile',
     originalname: 'evidence.txt',
@@ -105,17 +112,15 @@ describe('General Application - Respondent upload evidence documents', () => {
       expect(next).not.toHaveBeenCalled();
     });
 
-    it('should remove the requested file and redirect back', async () => {
-      const document = new UploadGAFiles();
-      document.caseDocument = mockCaseDocument;
-      gaResponse.uploadEvidenceDocuments.push(document, document);
+    it('should not remove a file on a GET request', async () => {
+      gaResponse.uploadEvidenceDocuments.push(uploadedDocument('first'), uploadedDocument('second'));
       req.query = {id: '1'};
 
       await getHandler(req as never, res as unknown as Response, next);
 
-      expect(gaResponse.uploadEvidenceDocuments).toHaveLength(1);
-      expect(res.redirect).toHaveBeenCalledWith(currentUrl);
-      expect(res.render).not.toHaveBeenCalled();
+      expect(gaResponse.uploadEvidenceDocuments).toHaveLength(2);
+      expect(mockSaveDraft).not.toHaveBeenCalled();
+      expect(res.render).toHaveBeenCalled();
     });
 
     it('should render session file upload errors', async () => {
@@ -141,6 +146,21 @@ describe('General Application - Respondent upload evidence documents', () => {
   });
 
   describe('on POST', () => {
+    it('should delete the requested file from the list and from document management', async () => {
+      gaResponse.uploadEvidenceDocuments.push(uploadedDocument('first'), uploadedDocument('second'));
+      const deleteDocument = jest.spyOn(CivilServiceClient.prototype, 'deleteDocument').mockResolvedValue(undefined);
+      req.body = {action: 'deleteFile[0][first]'};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(gaResponse.uploadEvidenceDocuments.map((document: UploadGAFiles) => document.caseDocument.documentName)).toEqual(['second.pdf']);
+      expect(mockSaveDraft).toHaveBeenCalled();
+      expect(deleteDocument).toHaveBeenCalledTimes(1);
+      expect(deleteDocument).toHaveBeenCalledWith(expect.anything(), 'first');
+      expect(res.redirect).toHaveBeenCalledWith(currentUrl);
+      deleteDocument.mockRestore();
+    });
+
     it('should redirect back when upload is clicked without a file', async () => {
       req.body = {action: 'uploadButton'};
 

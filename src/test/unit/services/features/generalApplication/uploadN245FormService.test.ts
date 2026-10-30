@@ -1,8 +1,10 @@
-import { getUploadFormContent, uploadSelectedFile } from 'services/features/generalApplication/uploadN245FormService';
+import { getUploadFormContent, removeN245Form, uploadSelectedFile } from 'services/features/generalApplication/uploadN245FormService';
 import { CivilServiceClient } from 'client/civilServiceClient';
 import { AppRequest } from 'common/models/AppRequest';
 import { Claim } from 'common/models/claim';
 import { CaseDocument } from 'common/models/document/caseDocument';
+import { GeneralApplication } from 'common/models/generalApplication/GeneralApplication';
+import { UploadGAFiles } from 'common/models/generalApplication/uploadGAFiles';
 
 jest.mock('../../../../../main/modules/draft-store/draftStoreService', () => ({
   generateRedisKey: jest.fn(),
@@ -114,6 +116,7 @@ describe('UploadN245 Form service', () => {
         ],
       },
       documentName: 'test.text',
+      documentId: 'test',
     });
   });
   it('should show error upon invalid file upload', async () => {
@@ -142,6 +145,74 @@ describe('UploadN245 Form service', () => {
         ],
       },
       documentName: undefined,
+    });
+  });
+
+  describe('deleting the N245 from document management', () => {
+    const caseDocument = (id: string) => <CaseDocument>{
+      documentLink: { document_url: `http://dm-store/documents/${id}`, document_binary_url: `http://dm-store/documents/${id}/binary`, document_filename: `${id}.pdf` },
+      documentName: `${id}.pdf`,
+    };
+    const claimWithN245 = (id: string): Claim => {
+      const claim = new Claim();
+      claim.generalApplication = new GeneralApplication();
+      const uploadedN245 = new UploadGAFiles();
+      uploadedN245.caseDocument = caseDocument(id);
+      claim.generalApplication.uploadN245Form = uploadedN245;
+      return claim;
+    };
+    const fileRequest = () => ({
+      file: { fieldname: 'selectedFile', originalname: 'new.text', mimetype: 'text/plain', size: 123, buffer: Buffer.from('Test file content') },
+    }) as unknown as AppRequest;
+
+    afterEach(() => jest.restoreAllMocks());
+
+    it('should delete the previous N245 when it is replaced', async () => {
+      jest.spyOn(CivilServiceClient.prototype, 'uploadDocument').mockResolvedValueOnce(caseDocument('new-doc'));
+      const deleteDocument = jest.spyOn(CivilServiceClient.prototype, 'deleteDocument').mockResolvedValue(undefined);
+      const req = fileRequest();
+
+      await uploadSelectedFile(req, claimWithN245('old-doc'));
+
+      expect(deleteDocument).toHaveBeenCalledTimes(1);
+      expect(deleteDocument).toHaveBeenCalledWith(req, 'old-doc');
+    });
+
+    it('should not delete anything when the new file is invalid', async () => {
+      const deleteDocument = jest.spyOn(CivilServiceClient.prototype, 'deleteDocument').mockResolvedValue(undefined);
+
+      await uploadSelectedFile({ file: '' } as unknown as AppRequest, claimWithN245('old-doc'));
+
+      expect(deleteDocument).not.toHaveBeenCalled();
+    });
+
+    it('should remove the N245 from the draft and delete it', async () => {
+      const deleteDocument = jest.spyOn(CivilServiceClient.prototype, 'deleteDocument').mockResolvedValue(undefined);
+      const claim = claimWithN245('old-doc');
+      const req = {} as AppRequest;
+
+      await removeN245Form(req, claim, {index: 0, documentId: 'old-doc'});
+
+      expect(claim.generalApplication.uploadN245Form).toBeUndefined();
+      expect(deleteDocument).toHaveBeenCalledWith(req, 'old-doc');
+    });
+
+    it('should still remove the N245 when document management refuses the delete', async () => {
+      jest.spyOn(CivilServiceClient.prototype, 'deleteDocument').mockRejectedValue(new Error('403'));
+      const claim = claimWithN245('old-doc');
+
+      await expect(removeN245Form({} as AppRequest, claim, {index: 0, documentId: 'old-doc'})).resolves.toBeUndefined();
+      expect(claim.generalApplication.uploadN245Form).toBeUndefined();
+    });
+
+    it('should keep the N245 when the delete is for a different document', async () => {
+      const deleteDocument = jest.spyOn(CivilServiceClient.prototype, 'deleteDocument').mockResolvedValue(undefined);
+      const claim = claimWithN245('new-doc');
+
+      await removeN245Form({} as AppRequest, claim, {index: 0, documentId: 'old-doc'});
+
+      expect(claim.generalApplication.uploadN245Form).toBeDefined();
+      expect(deleteDocument).not.toHaveBeenCalled();
     });
   });
 });

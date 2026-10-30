@@ -39,6 +39,10 @@ const uploadedFile = {
   buffer: Buffer.from('Test file content'),
 };
 
+const uploadedDocument = (id: string) => ({
+  caseDocument: {documentName: `${id}.pdf`, documentLink: {document_url: `http://dm-store/documents/${id}`}},
+});
+
 describe('General Application - uploadDocumentsForRequestMoreInfoController', () => {
   const getHandler = getRouteHandler(uploadDocumentsForRequestMoreInfoController, 'get');
   const postHandler = getRouteHandler(uploadDocumentsForRequestMoreInfoController, 'post');
@@ -49,6 +53,7 @@ describe('General Application - uploadDocumentsForRequestMoreInfoController', ()
   const mockGetClaimById = getClaimById as jest.Mock;
   const mockGetDocuments = getGADocumentsFromDraftStore as jest.Mock;
   const uploadDocument = jest.spyOn(CivilServiceClient.prototype, 'uploadDocument');
+  const deleteDocument = jest.spyOn(CivilServiceClient.prototype, 'deleteDocument');
   let req: {
     params: {id: string; appId: string};
     body: Record<string, unknown>;
@@ -77,10 +82,12 @@ describe('General Application - uploadDocumentsForRequestMoreInfoController', ()
     (draftStoreService.generateRedisKeyForGA as jest.Mock).mockReturnValue('ga-redis-key');
     (saveGADocumentsInDraftStore as jest.Mock).mockResolvedValue(undefined);
     uploadDocument.mockResolvedValue({documentName: 'test.txt'} as CaseDocument);
+    deleteDocument.mockResolvedValue(undefined);
   });
 
   afterAll(() => {
     uploadDocument.mockRestore();
+    deleteDocument.mockRestore();
   });
 
   describe('on GET', () => {
@@ -93,15 +100,15 @@ describe('General Application - uploadDocumentsForRequestMoreInfoController', ()
       expect(next).not.toHaveBeenCalled();
     });
 
-    it('should remove the selected document and redirect', async () => {
-      const documents = [{caseDocument: {documentName: 'first'}}, {caseDocument: {documentName: 'second'}}];
-      mockGetDocuments.mockResolvedValue(documents);
+    it('should not remove a document on a GET request', async () => {
+      mockGetDocuments.mockResolvedValue([uploadedDocument('first'), uploadedDocument('second')]);
       req.query = {id: '2'};
 
       await getHandler(req as never, res as unknown as Response, next);
 
-      expect(saveGADocumentsInDraftStore).toHaveBeenCalledWith('ga-redis-key', [documents[0]]);
-      expect(res.redirect).toHaveBeenCalledWith(currentUrl);
+      expect(saveGADocumentsInDraftStore).not.toHaveBeenCalled();
+      expect(deleteDocument).not.toHaveBeenCalled();
+      expect(res.render).toHaveBeenCalled();
     });
 
     it('should render file upload errors stored in the session', async () => {
@@ -124,6 +131,29 @@ describe('General Application - uploadDocumentsForRequestMoreInfoController', ()
   });
 
   describe('on POST', () => {
+    it('should delete the selected document from the list and from document management', async () => {
+      const documents = [uploadedDocument('first'), uploadedDocument('second')];
+      mockGetDocuments.mockResolvedValue(documents);
+      req.body = {action: 'deleteFile[1][second]'};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(saveGADocumentsInDraftStore).toHaveBeenCalledWith('ga-redis-key', [documents[0]]);
+      expect(deleteDocument).toHaveBeenCalledTimes(1);
+      expect(deleteDocument).toHaveBeenCalledWith(expect.anything(), 'second');
+      expect(res.redirect).toHaveBeenCalledWith(currentUrl);
+    });
+
+    it('should not delete anything when the document id does not match the row', async () => {
+      mockGetDocuments.mockResolvedValue([uploadedDocument('first'), uploadedDocument('second')]);
+      req.body = {action: 'deleteFile[1][first]'};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(saveGADocumentsInDraftStore).not.toHaveBeenCalled();
+      expect(deleteDocument).not.toHaveBeenCalled();
+    });
+
     it('should redirect back when the upload button is used without a file', async () => {
       req.body = {action: 'uploadButton'};
 

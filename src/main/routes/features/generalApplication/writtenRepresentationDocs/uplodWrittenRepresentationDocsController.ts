@@ -20,17 +20,18 @@ import {
 } from 'services/features/generalApplication/documentUpload/uploadDocumentsService';
 import { getSummaryList } from 'services/features/generalApplication/writtenRepresentation/writtenRepresentationDocsService';
 import {
-  createMulterErrorMiddlewareForSingleField,
+  createMulterErrorMiddlewareForMultipleFiles,
   createUploadOneFileError,
   getFileUploadErrorsForSource,
   FILE_UPLOAD_SOURCE,
 } from 'common/utils/fileUploadUtils';
 import {getRouteParam} from 'common/utils/routeParamUtils';
 import {handleMulterError} from 'services/features/generalApplication/uploadEvidenceDocumentService';
+import {getDeleteFileTarget} from 'services/features/generalApplication/documentUpload/deleteUploadedGADocuments';
 
 const uploadDocumentsForRequestWrittenRepresentation = Router();
 const viewPath = 'features/generalApplication/additionalInfoUpload/upload-documents';
-const multerMiddleware = createMulterErrorMiddlewareForSingleField('selectedFile', 'uploadDocumentsForRequestWrittenRepresentation');
+const multerMiddleware = createMulterErrorMiddlewareForMultipleFiles('selectedFile', 'uploadDocumentsForRequestWrittenRepresentation');
 
 async function renderView(form: GenericForm<UploadGAFiles>, claim: Claim, claimId: string, gaId: string, res: Response, formattedSummary: SummarySection): Promise<void> {
   const cancelUrl = await getCancelUrl(claimId, claim);
@@ -59,12 +60,6 @@ uploadDocumentsForRequestWrittenRepresentation.get(GA_UPLOAD_WRITTEN_REPRESENTAT
     if (fileUploadErrors?.length) {
       form = new GenericForm(uploadDocuments, fileUploadErrors);
     }
-    if (req.query?.id) {
-      await removeSelectedDocument(redisKey, Number(req.query.id) - 1);
-      const currentUrl = constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_UPLOAD_WRITTEN_REPRESENTATION_DOCS_URL);
-      const redirectUrl = req.query?.lang ? `${currentUrl}?lang=${req.query.lang}` : currentUrl;
-      return res.redirect(redirectUrl);
-    }
     await getSummaryList(formattedSummary, redisKey, constructResponseUrlWithIdAndAppIdParams(claimId, appId, GA_UPLOAD_WRITTEN_REPRESENTATION_DOCS_URL));
     await renderView(form, claim, claimId, appId, res, formattedSummary);
   } catch (error) {
@@ -83,6 +78,12 @@ uploadDocumentsForRequestWrittenRepresentation.post(GA_UPLOAD_WRITTEN_REPRESENTA
       return req.session.save(() => {
         res.redirect(`${currentUrl}`);
       });
+    }
+
+    const deleteFileTarget = getDeleteFileTarget(req.body.action);
+    if (deleteFileTarget) {
+      await removeSelectedDocument(req, generateRedisKeyForGA(req), deleteFileTarget);
+      return res.redirect(currentUrl);
     }
 
     if (req.body.action === 'uploadButton') {

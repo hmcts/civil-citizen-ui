@@ -14,6 +14,7 @@ import {ApplicationResponse} from 'models/generalApplication/applicationResponse
 import {documentIdExtractor} from 'common/utils/stringUtils';
 import {getGADocumentsFromDraftStore} from 'modules/draft-store/draftGADocumentService';
 import {escapeHtml} from 'common/utils/escapeHtml';
+import {withDocumentId} from 'services/features/generalApplication/documentUpload/deleteUploadedGADocuments';
 
 export const getDirectionOrderDocumentUrl = (claimId: string, applicationResponse: ApplicationResponse): string => {
   const directionOrderDocument = applicationResponse?.case_data?.directionOrderDocument;
@@ -27,7 +28,7 @@ export const getSummaryList = async (formattedSummary: SummarySection, redisKey:
   let index = 0;
   uploadedDocuments?.forEach((uploadDocument: UploadGAFiles) => {
     index= index+ 1;
-    formattedSummary.summaryList.rows.push(summaryRow(uploadDocument.caseDocument.documentName, '', constructResponseUrlWithIdAndAppIdParams(claimId, gaId, GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_URL+'?id='+index), 'Remove document'));
+    formattedSummary.summaryList.rows.push(withDocumentId(summaryRow(uploadDocument.caseDocument.documentName, '', constructResponseUrlWithIdAndAppIdParams(claimId, gaId, GA_UPLOAD_DOCUMENT_DIRECTIONS_ORDER_URL+'?id='+index), 'Remove document'), uploadDocument));
   });
 };
 

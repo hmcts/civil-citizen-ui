@@ -40,6 +40,11 @@ describe('General Application - upload n245 form', () => {
   const mockGetClaimById = getClaimById as jest.Mock;
   const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
   const uploadDocument = jest.spyOn(CivilServiceClient.prototype, 'uploadDocument');
+  const deleteDocument = jest.spyOn(CivilServiceClient.prototype, 'deleteDocument');
+  const n245Document = {
+    documentName: 'n245.pdf',
+    documentLink: {document_url: 'http://dm-store/documents/n245-doc', document_binary_url: 'http://dm-store/documents/n245-doc/binary', document_filename: 'n245.pdf'},
+  } as CaseDocument;
   let claim: Claim;
   let req: {
     params: {id: string};
@@ -77,10 +82,12 @@ describe('General Application - upload n245 form', () => {
     (draftStoreService.generateRedisKey as jest.Mock).mockReturnValue(claimId);
     (draftStoreService.saveDraftClaim as jest.Mock).mockResolvedValue(undefined);
     uploadDocument.mockResolvedValue({documentName: 'test.txt'} as CaseDocument);
+    deleteDocument.mockResolvedValue(undefined);
   });
 
   afterAll(() => {
     uploadDocument.mockRestore();
+    deleteDocument.mockRestore();
   });
 
   describe('on GET', () => {
@@ -93,16 +100,14 @@ describe('General Application - upload n245 form', () => {
       expect(next).not.toHaveBeenCalled();
     });
 
-    it('should remove the uploaded form', async () => {
-      claim.generalApplication.uploadN245Form.caseDocument = {documentName: 'test.txt'} as CaseDocument;
+    it('should not remove the uploaded form on a GET request', async () => {
+      claim.generalApplication.uploadN245Form.caseDocument = n245Document;
       req.query = {action: 'REMOVE_DOC'};
 
       await getHandler(req as never, res as unknown as Response, next);
 
-      expect(claim.generalApplication.uploadN245Form).toBeUndefined();
-      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
-        documentName: undefined,
-      }));
+      expect(claim.generalApplication.uploadN245Form.caseDocument).toBe(n245Document);
+      expect(deleteDocument).not.toHaveBeenCalled();
     });
 
     it('should call next when loading the claim fails', async () => {
@@ -116,6 +121,18 @@ describe('General Application - upload n245 form', () => {
   });
 
   describe('on POST', () => {
+    it('should remove the N245 and delete it from document management', async () => {
+      claim.generalApplication.uploadN245Form.caseDocument = n245Document;
+      req.body = {action: 'deleteFile[0][n245-doc]'};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(claim.generalApplication.uploadN245Form).toBeUndefined();
+      expect(draftStoreService.saveDraftClaim).toHaveBeenCalled();
+      expect(deleteDocument).toHaveBeenCalledWith(expect.anything(), 'n245-doc');
+      expect(res.redirect).toHaveBeenCalledWith(currentUrl);
+    });
+
     it('should re-render when the upload button is used without a file', async () => {
       req.body = {action: 'uploadButton'};
 

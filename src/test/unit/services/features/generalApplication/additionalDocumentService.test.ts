@@ -11,6 +11,7 @@ import { generateRedisKey, saveDraftClaim } from 'modules/draft-store/draftStore
 import { getClaimById } from 'modules/utilityService';
 import { GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL } from 'routes/urls';
 import { TypeOfDocumentSectionMapper } from 'services/features/caseProgression/TypeOfDocumentSectionMapper';
+import { deleteRemovedGADocuments } from 'services/features/generalApplication/documentUpload/deleteUploadedGADocuments';
 import {
   buildSummarySectionForAdditionalDoc, canUploadAddlDoc,
   getClaimDetailsById,
@@ -36,12 +37,16 @@ jest.mock('../../../../../main/modules/draft-store/draftStoreService', () => ({
   generateRedisKey: jest.fn(),
 }));
 jest.mock('../../../../../main/modules/utilityService');
+jest.mock('services/features/generalApplication/documentUpload/deleteUploadedGADocuments', () => ({
+  ...jest.requireActual('services/features/generalApplication/documentUpload/deleteUploadedGADocuments'),
+  deleteRemovedGADocuments: jest.fn(),
+}));
 jest.mock('i18next', () => ({
   t: jest.fn((key) => key),
 }));
 jest.mock('../../../../../main/services/features/caseProgression/TypeOfDocumentSectionMapper', () => ({
   TypeOfDocumentSectionMapper: {
-    mapToSingleFile: jest.fn(),
+    mapToFiles: jest.fn(),
   },
 }));
 jest.mock('../../../../../main/services/features/generalApplication/generalApplicationService', () => ({
@@ -69,15 +74,34 @@ describe('Additional Documents Service', () => {
         documentType: null,
         documentSize: 123,
       } as CaseDocument;
-      (TypeOfDocumentSectionMapper.mapToSingleFile as jest.Mock).mockReturnValue(fileUpload);
+      (TypeOfDocumentSectionMapper.mapToFiles as jest.Mock).mockReturnValue([fileUpload]);
       const mockValue = jest.spyOn(CivilServiceClient.prototype, 'uploadDocument').mockResolvedValue(uploadedDocument as unknown as CaseDocument);
 
       await uploadSelectedFile(req, claim as Claim);
 
-      expect(TypeOfDocumentSectionMapper.mapToSingleFile).toHaveBeenCalledWith(req);
+      expect(TypeOfDocumentSectionMapper.mapToFiles).toHaveBeenCalledWith(req);
       expect(mockValue).toHaveBeenCalledWith(req, fileUpload);
       expect(claim.generalApplication.uploadAdditionalDocuments).toHaveLength(1);
       expect(saveDraftClaim).toHaveBeenCalledWith(generateRedisKey(req), claim, false, undefined);
+    });
+
+    it('should upload every chosen file with the same type of document', async () => {
+      const req = {
+        body: { typeOfDocument: 'Type1' },
+        session: { save: (cb: any) => cb() } as AppSession,
+      } as unknown as AppRequest;
+      const firstFile = { name: 'first' };
+      const secondFile = { name: 'second' };
+      (TypeOfDocumentSectionMapper.mapToFiles as jest.Mock).mockReturnValue([firstFile, secondFile]);
+      const mockValue = jest.spyOn(CivilServiceClient.prototype, 'uploadDocument').mockResolvedValue({documentName: 'Document1'} as CaseDocument);
+
+      await uploadSelectedFile(req, claim);
+
+      expect(mockValue).toHaveBeenCalledWith(req, firstFile);
+      expect(mockValue).toHaveBeenCalledWith(req, secondFile);
+      expect(claim.generalApplication.uploadAdditionalDocuments).toHaveLength(2);
+      expect(claim.generalApplication.uploadAdditionalDocuments.map((document) => document.typeOfDocument)).toEqual(['Type1', 'Type1']);
+      expect(req.session.fileUpload).toBeUndefined();
     });
 
     it('should set errors in session if validation fails', async () => {
@@ -86,7 +110,7 @@ describe('Additional Documents Service', () => {
         session: { fileUpload: undefined, save: (cb: any) => cb() } as AppSession,
       } as unknown as AppRequest;
 
-      (TypeOfDocumentSectionMapper.mapToSingleFile as jest.Mock).mockReturnValue(undefined);
+      (TypeOfDocumentSectionMapper.mapToFiles as jest.Mock).mockReturnValue([]);
 
       await uploadSelectedFile(req, claim);
 
@@ -126,7 +150,7 @@ describe('Additional Documents Service', () => {
 
       expect(result.summaryList.rows).toHaveLength(4);
       expect(result.summaryList.rows[0]).toEqual(summaryRowWithTextValue('PAGES.UPLOAD_DOCUMENTS.TYPE_OF_DOCUMENT', 'Type1'));
-      expect(result.summaryList.rows[1]).toEqual(summaryRowWithTextValue('Document1', '', `${constructResponseUrlWithIdAndAppIdParams(claimId, gaId,GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL)}?indexId=1`, 'Remove document'));
+      expect(result.summaryList.rows[1]).toEqual({...summaryRowWithTextValue('Document1', '', `${constructResponseUrlWithIdAndAppIdParams(claimId, gaId,GA_UPLOAD_ADDITIONAL_DOCUMENTS_URL)}?indexId=1`, 'Remove document'), documentId: 'ur1'});
     });
   });
 
@@ -247,25 +271,46 @@ describe('Additional Documents Service', () => {
           ],
         } as GeneralApplication,
       } as Claim;
-      const index = 0;
+      const req = {} as AppRequest;
+      const removedDocument = claim.generalApplication.uploadAdditionalDocuments[0];
 
-      await removeSelectedDocument(redisKey, claim, index);
+      await removeSelectedDocument(req, redisKey, claim, {index: 0, documentId: 'ur2'});
 
       expect(saveDraftClaim).toHaveBeenCalledWith(redisKey, claim, false, undefined);
       expect(claim.generalApplication.uploadAdditionalDocuments).toHaveLength(0);
+      expect(deleteRemovedGADocuments).toHaveBeenCalledWith(req, [removedDocument], [], 'additionalDocumentService');
+    });
+
+    it('should not remove anything when the document at the index has changed', async () => {
+      (saveDraftClaim as jest.Mock).mockClear();
+      (deleteRemovedGADocuments as jest.Mock).mockClear();
+      const claim = {
+        generalApplication: {
+          uploadAdditionalDocuments: [
+            {typeOfDocument: 'Type1', caseDocument: {documentName: 'Document2', documentLink: {document_url: 'ur2'}} as CaseDocument, fileUpload: {} as FileUpload},
+          ],
+        } as GeneralApplication,
+      } as Claim;
+
+      await removeSelectedDocument({} as AppRequest, 'key', claim, {index: 0, documentId: 'ur1'});
+
+      expect(claim.generalApplication.uploadAdditionalDocuments).toHaveLength(1);
+      expect(saveDraftClaim).not.toHaveBeenCalled();
+      expect(deleteRemovedGADocuments).not.toHaveBeenCalled();
     });
 
     it('should handle error during document removal', async () => {
       const redisKey = 'key';
-      claim.generalApplication.uploadAdditionalDocuments.push({ typeOfDocument: 'Type1', caseDocument: { documentName: 'Document1' } as CaseDocument, fileUpload: {} as FileUpload });
-      const index = 0;
+      claim.generalApplication.uploadAdditionalDocuments.push({ typeOfDocument: 'Type1', caseDocument: { documentName: 'Document1', documentLink: { document_url: 'http://dm/documents/doc-1' } } as CaseDocument, fileUpload: {} as FileUpload });
+      const index = claim.generalApplication.uploadAdditionalDocuments.length - 1;
       const error = new Error('Error');
       (saveDraftClaim as jest.Mock).mockRejectedValue(error);
 
       const loggerErrorSpy = jest.spyOn(logger, 'error');
 
-      await expect(removeSelectedDocument(redisKey, claim, index)).rejects.toThrow(error);
+      await expect(removeSelectedDocument({} as AppRequest, redisKey, claim, {index, documentId: 'doc-1'})).rejects.toThrow(error);
       expect(loggerErrorSpy).toHaveBeenCalledWith(error);
+      expect(deleteRemovedGADocuments).not.toHaveBeenCalled();
     });
   });
 

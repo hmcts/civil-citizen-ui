@@ -40,6 +40,10 @@ const uploadedFile = {
   buffer: Buffer.from('Test file content'),
 };
 
+const uploadedDocument = (id: string) => ({
+  caseDocument: {documentName: `${id}.pdf`, documentLink: {document_url: `http://dm-store/documents/${id}`}},
+});
+
 describe('General Application - uploadDocumentsDirectionsOrderController', () => {
   const getHandler = getRouteHandler(uploadDocumentsDirectionsOrderController, 'get');
   const postHandler = getRouteHandler(uploadDocumentsDirectionsOrderController, 'post');
@@ -50,6 +54,7 @@ describe('General Application - uploadDocumentsDirectionsOrderController', () =>
   const mockGetClaimById = getClaimById as jest.Mock;
   const mockGetDocuments = getGADocumentsFromDraftStore as jest.Mock;
   const uploadDocument = jest.spyOn(CivilServiceClient.prototype, 'uploadDocument');
+  const deleteDocument = jest.spyOn(CivilServiceClient.prototype, 'deleteDocument');
   const getApplication = jest.spyOn(GaServiceClient.prototype, 'getApplication');
   let req: {
     params: {id: string; appId: string};
@@ -79,11 +84,13 @@ describe('General Application - uploadDocumentsDirectionsOrderController', () =>
     (draftStoreService.generateRedisKeyForGA as jest.Mock).mockReturnValue('ga-redis-key');
     (saveGADocumentsInDraftStore as jest.Mock).mockResolvedValue(undefined);
     uploadDocument.mockResolvedValue({documentName: 'test.txt'} as CaseDocument);
+    deleteDocument.mockResolvedValue(undefined);
     getApplication.mockResolvedValue({} as never);
   });
 
   afterAll(() => {
     uploadDocument.mockRestore();
+    deleteDocument.mockRestore();
     getApplication.mockRestore();
   });
 
@@ -97,15 +104,15 @@ describe('General Application - uploadDocumentsDirectionsOrderController', () =>
       expect(next).not.toHaveBeenCalled();
     });
 
-    it('should remove the selected document and redirect', async () => {
-      const documents = [{caseDocument: {documentName: 'first'}}, {caseDocument: {documentName: 'second'}}];
-      mockGetDocuments.mockResolvedValue(documents);
+    it('should not remove a document on a GET request', async () => {
+      mockGetDocuments.mockResolvedValue([uploadedDocument('first'), uploadedDocument('second')]);
       req.query = {id: '2'};
 
       await getHandler(req as never, res as unknown as Response, next);
 
-      expect(saveGADocumentsInDraftStore).toHaveBeenCalledWith('ga-redis-key', [documents[0]]);
-      expect(res.redirect).toHaveBeenCalledWith(currentUrl);
+      expect(saveGADocumentsInDraftStore).not.toHaveBeenCalled();
+      expect(deleteDocument).not.toHaveBeenCalled();
+      expect(res.render).toHaveBeenCalled();
     });
 
     it('should render file upload errors stored in the session', async () => {
@@ -128,6 +135,29 @@ describe('General Application - uploadDocumentsDirectionsOrderController', () =>
   });
 
   describe('on POST', () => {
+    it('should delete the selected document from the list and from document management', async () => {
+      const documents = [uploadedDocument('first'), uploadedDocument('second')];
+      mockGetDocuments.mockResolvedValue(documents);
+      req.body = {action: 'deleteFile[1][second]'};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(saveGADocumentsInDraftStore).toHaveBeenCalledWith('ga-redis-key', [documents[0]]);
+      expect(deleteDocument).toHaveBeenCalledTimes(1);
+      expect(deleteDocument).toHaveBeenCalledWith(expect.anything(), 'second');
+      expect(res.redirect).toHaveBeenCalledWith(currentUrl);
+    });
+
+    it('should not delete anything when the document id does not match the row', async () => {
+      mockGetDocuments.mockResolvedValue([uploadedDocument('first'), uploadedDocument('second')]);
+      req.body = {action: 'deleteFile[1][first]'};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(saveGADocumentsInDraftStore).not.toHaveBeenCalled();
+      expect(deleteDocument).not.toHaveBeenCalled();
+    });
+
     it('should redirect back when the upload button is used without a file', async () => {
       req.body = {action: 'uploadButton'};
 
