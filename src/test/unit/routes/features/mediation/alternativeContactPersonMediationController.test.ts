@@ -1,94 +1,114 @@
-import request from 'supertest';
-import {app} from '../../../../../main/app';
-import nock from 'nock';
-import config from 'config';
-import {
-  MEDIATION_ALTERNATIVE_CONTACT_PERSON_URL,
-  MEDIATION_PHONE_CONFIRMATION_URL,
-} from 'routes/urls';
-import {TestMessages} from '../../../../utils/errorMessageTestConstants';
-import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {NextFunction, Response} from 'express';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {generateRedisKey} from 'modules/draft-store/draftStoreService';
+import {AppRequest} from 'models/AppRequest';
+import {MediationCarm} from 'models/mediation/mediationCarm';
+import alternativeContactPersonMediationController from 'routes/features/mediation/alternativeContactPersonMediationController';
+import {MEDIATION_ALTERNATIVE_CONTACT_PERSON_URL, MEDIATION_PHONE_CONFIRMATION_URL} from 'routes/urls';
+import {getMediationCarm, saveMediationCarm} from 'services/features/response/mediation/mediationService';
+import {createMockResponse, createMockSession, getRouteHandler} from '../../../../utils/getRouteHandler';
 
-import {mockCivilClaim, mockRedisFailure} from '../../../../utils/mockDraftStore';
+jest.mock('services/features/response/mediation/mediationService', () => ({
+  getMediationCarm: jest.fn(),
+  saveMediationCarm: jest.fn(),
+}));
 
-jest.mock('../../../../../main/modules/oidc');
+jest.mock('modules/draft-store/draftStoreService', () => ({
+  generateRedisKey: jest.fn(),
+}));
 
-const CONTROLLER_URL = MEDIATION_ALTERNATIVE_CONTACT_PERSON_URL;
+const mockGetMediationCarm = getMediationCarm as jest.Mock;
+const mockSaveMediationCarm = saveMediationCarm as jest.Mock;
+const mockGenerateRedisKey = generateRedisKey as jest.Mock;
+
+const claimId = '1111';
+const redisKey = '12345';
+const viewPath = 'features/mediation/alternative-contact-person';
+
+const invoke = async (method: 'get' | 'post', overrides: Partial<AppRequest> = {}) => {
+  const res = createMockResponse();
+  const next = jest.fn() as NextFunction;
+  const req = {
+    params: {id: claimId},
+    body: {},
+    query: {},
+    cookies: {},
+    session: createMockSession({user: {id: 'user-1'}}),
+    ...overrides,
+  };
+  await getRouteHandler(alternativeContactPersonMediationController, method, MEDIATION_ALTERNATIVE_CONTACT_PERSON_URL)(
+    req as AppRequest,
+    res as unknown as Response,
+    next,
+  );
+  return {res, next};
+};
+
+const renderedForm = (res: ReturnType<typeof createMockResponse>) =>
+  (res.render as jest.Mock).mock.calls[0][1].form;
+
 describe('Mediation Alternative Contact Person Confirmation Controller', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
-
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
-  });
-
   beforeEach(() => {
-    app.locals.draftStoreClient = mockCivilClaim;
+    jest.clearAllMocks();
+    mockGenerateRedisKey.mockReturnValue(redisKey);
+    mockGetMediationCarm.mockResolvedValue(new MediationCarm());
+    mockSaveMediationCarm.mockResolvedValue(undefined);
   });
 
   describe('on GET', () => {
     it('should return Alternative Contact Person Mediation page', async () => {
-      await request(app)
-        .get(CONTROLLER_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.MEDIATION_ALTERNATIVE_CONTACT_PERSON);
-        });
+      const {res} = await invoke('get');
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        pageTitle: 'PAGES.MEDIATION_ALTERNATIVE_CONTACT_PERSON.PAGE_TITLE',
+        isCarm: true,
+      }));
     });
 
-    it('should return http 500 when has error', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .get(CONTROLLER_URL)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+    it('should call next when loading the contact person fails', async () => {
+      const error = new Error('redis failure');
+      mockGetMediationCarm.mockRejectedValue(error);
+
+      const {next} = await invoke('get');
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 
   describe('on POST', () => {
-    it('should redirect to the mediation phone confirmation page ', async () => {
-      await request(app)
-        .post(CONTROLLER_URL)
-        .send({alternativeContactPerson: 'Joe Bloggs'})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(MEDIATION_PHONE_CONFIRMATION_URL);
-        });
+    it('should redirect to the mediation phone confirmation page', async () => {
+      const {res} = await invoke('post', {body: {alternativeContactPerson: 'Joe Bloggs'}});
+
+      expect(mockSaveMediationCarm).toHaveBeenCalledWith(redisKey, expect.anything(), 'alternativeMediationContactPerson');
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, MEDIATION_PHONE_CONFIRMATION_URL));
     });
+
     it('should Valid contact person when is empty', async () => {
-      await request(app)
-        .post(CONTROLLER_URL)
-        .send({alternativeContactPerson: ''})
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.ENTER_CONTACT_PERSON);
-        });
+      const {res} = await invoke('post', {body: {alternativeContactPerson: ''}});
+
+      const form = renderedForm(res);
+      expect(form.hasErrors()).toBe(true);
+      expect(form.errorFor('alternativeContactPerson')).toBe('ERRORS.VALID_CONTACT_PERSON');
+      expect(res.redirect).not.toHaveBeenCalled();
     });
 
     it('should should Valid contact person when is invalid', async () => {
-      await request(app)
-        .post(CONTROLLER_URL)
-        .send({alternativeContactPerson: 'aaaaaaaaaabbbbbbbbbbccccccccccddddddddddeeeeeeeeeeffffffffffggggggggggh'})
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.FULL_NAME_TOO_LONG);
-        });
+      const {res} = await invoke('post', {
+        body: {alternativeContactPerson: 'aaaaaaaaaabbbbbbbbbbccccccccccddddddddddeeeeeeeeeeffffffffffggggggggggh'},
+      });
+
+      const form = renderedForm(res);
+      expect(form.hasErrors()).toBe(true);
+      expect(form.errorFor('alternativeContactPerson')).toBe('ERRORS.FULL_NAME_TOO_LONG');
     });
 
-    it('should return http 500 when has error', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .post(CONTROLLER_URL)
-        .send({alternativeContactPerson: 'Joe Bloggs'})
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+    it('should call next when saving the contact person fails', async () => {
+      const error = new Error('redis failure');
+      mockSaveMediationCarm.mockRejectedValue(error);
+
+      const {next} = await invoke('post', {body: {alternativeContactPerson: 'Joe Bloggs'}});
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 });

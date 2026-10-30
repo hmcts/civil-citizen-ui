@@ -1,686 +1,484 @@
-import request from 'supertest';
-import {app} from '../../../../../main/app';
-import nock from 'nock';
-import config from 'config';
+import {NextFunction, Response} from 'express';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {CaseState} from 'form/models/claimDetails';
+import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {Claim} from 'models/claim';
+import {AppRequest} from 'models/AppRequest';
+import {UnavailableDateType} from 'models/directionsQuestionnaire/hearing/unavailableDates';
+import {MediationCarm} from 'models/mediation/mediationCarm';
+import mediationUnavailabilitySelectDatesController from 'routes/features/mediation/mediationUnavailabilitySelectDatesController';
 import {
   CLAIMANT_RESPONSE_TASK_LIST_URL,
   MEDIATION_UNAVAILABLE_SELECT_DATES_URL,
   RESPONSE_TASK_LIST_URL,
 } from 'routes/urls';
-import {TestMessages} from '../../../../utils/errorMessageTestConstants';
-import * as draftStoreService from 'modules/draft-store/draftStoreService';
-import {Claim} from 'models/claim';
-import {Party} from 'models/party';
-import {getUnavailableDatesMediationForm} from 'services/features/mediation/unavailableDatesForMediationService';
-import {UnavailableDatePeriodMediation} from 'models/mediation/unavailableDatesMediation';
-import {UnavailableDateType} from 'models/directionsQuestionnaire/hearing/unavailableDates';
-import {CURRENT_DAY, CURRENT_MONTH, CURRENT_YEAR} from '../../../../utils/dateUtils';
-import {CaseState} from 'form/models/claimDetails';
+import {getMediationCarm, saveMediationCarm} from 'services/features/response/mediation/mediationService';
+import {createMockResponse, createMockSession, getRouteHandler} from '../../../../utils/getRouteHandler';
+import {ValidationError} from 'class-validator';
+import en from 'modules/i18n/locales/en.json';
+import cy from 'modules/i18n/locales/cy.json';
 
-jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/draft-store');
-jest.mock('../../../../../main/modules/draft-store/draftStoreService');
-jest.mock('../../../../../main/services/features/mediation/unavailableDatesForMediationService');
+jest.mock('services/features/response/mediation/mediationService', () => ({
+  getMediationCarm: jest.fn(),
+  saveMediationCarm: jest.fn(),
+}));
 
-const CONTROLLER_URL = MEDIATION_UNAVAILABLE_SELECT_DATES_URL;
+jest.mock('modules/draft-store/draftStoreService', () => ({
+  generateRedisKey: jest.fn(),
+  getCaseDataFromStore: jest.fn(),
+}));
+
+const mockGetMediationCarm = getMediationCarm as jest.Mock;
+const mockSaveMediationCarm = saveMediationCarm as jest.Mock;
+const mockGenerateRedisKey = generateRedisKey as jest.Mock;
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
+
+const claimId = '1111';
+const redisKey = '12345';
+const viewPath = 'features/mediation/unavailable-dates-mediation';
+
+const dateParts = (daysAhead: number): {day: string; month: string; year: string} => {
+  const date = new Date();
+  date.setDate(date.getDate() + daysAhead);
+  return {
+    day: String(date.getDate()),
+    month: String(date.getMonth() + 1),
+    year: String(date.getFullYear()),
+  };
+};
+
+const invoke = async (method: 'get' | 'post', overrides: Partial<AppRequest> = {}) => {
+  const res = createMockResponse();
+  const next = jest.fn() as NextFunction;
+  const req = {
+    params: {id: claimId},
+    body: {},
+    query: {},
+    cookies: {},
+    session: createMockSession({user: {id: 'user-1'}}),
+    ...overrides,
+  };
+  await getRouteHandler(mediationUnavailabilitySelectDatesController, method, MEDIATION_UNAVAILABLE_SELECT_DATES_URL)(
+    req as AppRequest,
+    res as unknown as Response,
+    next,
+  );
+  return {res, next};
+};
+
+const translate = (locale: Record<string, unknown>, key: string): string =>
+  (key.split('.').reduce((value: unknown, part) => (value as Record<string, unknown>)?.[part], locale) as string) ?? key;
+
+const collectConstraints = (errors: ValidationError[] = []): string[] =>
+  errors.flatMap((error) => [...Object.values(error.constraints ?? {}), ...collectConstraints(error.children)]);
+
+const postErrors = async (body: Record<string, unknown>, locale: Record<string, unknown> = en): Promise<string[]> => {
+  const {res} = await invoke('post', {body});
+  return collectConstraints(res.render.mock.calls[0][1].form.errors).map((key) => translate(locale, key));
+};
+
 describe('Mediation Unavailability Select Dates Confirmation Controller', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
-  const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
-  const getUnavailableDatesMediationFormMock = getUnavailableDatesMediationForm as jest.Mock;
-
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
-  });
-
   beforeEach(() => {
-    mockGetCaseData.mockImplementation(async () => {
-      const claim = new Claim();
-      claim.respondent1 = new Party();
-      claim.respondent1.partyPhone = {phone: '111111'};
-      claim.ccdState = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
-      return claim;
-    });
+    jest.clearAllMocks();
+    mockGenerateRedisKey.mockReturnValue(redisKey);
+    const claim = new Claim();
+    claim.ccdState = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
+    mockGetCaseData.mockResolvedValue(claim);
+    mockGetMediationCarm.mockResolvedValue(new MediationCarm());
+    mockSaveMediationCarm.mockResolvedValue(undefined);
   });
 
   describe('on GET', () => {
     it('should return Mediation unavailability dates page', async () => {
-      await request(app)
-        .get(CONTROLLER_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.MEDIATION_UNAVAILABILITY_DATES);
-        });
+      const {res} = await invoke('get');
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        pageTitle: 'PAGES.UNAVAILABILITY_SELECT_DATES_MEDIATION.PAGE_TITLE',
+        isCarm: true,
+      }));
     });
 
-    it('should return http 500 when has error', async () => {
-      mockGetCaseData.mockImplementation(async () => {
-        throw new Error(TestMessages.REDIS_FAILURE);
-      });
-      await request(app)
-        .get(CONTROLLER_URL)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+    it('should call next when loading unavailability dates fails', async () => {
+      const error = new Error('redis failure');
+      mockGetMediationCarm.mockRejectedValue(error);
+
+      const {next} = await invoke('get');
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 
-  describe('on POST - claimant response', () => {
-    beforeEach(() => {
-      mockGetCaseData.mockImplementation(async () => {
-        const claim = new Claim();
-        claim.applicant1 = new Party();
-        claim.applicant1.partyPhone = {phone: '111111'};
-        claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
-        return claim;
+  describe('on POST', () => {
+    it('should redirect to the defendant task list with a single date', async () => {
+      const {res} = await invoke('post', {
+        body: {
+          items: [{
+            type: UnavailableDateType.SINGLE_DATE,
+            single: {start: dateParts(1)},
+          }],
+        },
       });
+
+      expect(mockSaveMediationCarm).toHaveBeenCalledWith(redisKey, true, 'hasAvailabilityMediationFinished');
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, RESPONSE_TASK_LIST_URL));
     });
 
-    it('should redirect to task list with single date', async () => {
-      //given
-      getUnavailableDatesMediationFormMock.mockImplementation(() => {
-        const mockRequest: Record<string, any[]> = {
-          'items': [{
-            'type': UnavailableDateType.SINGLE_DATE,
-            'single': {
-              'start': {'day': CURRENT_DAY, 'month': CURRENT_MONTH, 'year': CURRENT_YEAR},
-            },
+    it('should redirect to the claimant task list with a longer period', async () => {
+      const claim = new Claim();
+      claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
+      mockGetCaseData.mockResolvedValue(claim);
+
+      const {res} = await invoke('post', {
+        body: {
+          items: [{
+            type: UnavailableDateType.LONGER_PERIOD,
+            period: {start: dateParts(1), end: dateParts(2)},
           }],
-        };
-        const mockItem = mockRequest['items'][0];
-        return new UnavailableDatePeriodMediation(UnavailableDateType.SINGLE_DATE, mockItem.single.start);
+        },
       });
 
-      await request(app)
-        .post(CONTROLLER_URL)
-        .send()
-        .expect((res) => {
-          // expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CLAIMANT_RESPONSE_TASK_LIST_URL);
-        });
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CLAIMANT_RESPONSE_TASK_LIST_URL));
     });
 
-    it('should redirect to task list with Long period date', async () => {
-      //given
-      const currentDatePlusOne = new Date();
-      currentDatePlusOne.setDate(currentDatePlusOne.getDate() + 1);
-      getUnavailableDatesMediationFormMock.mockImplementation(() => {
-        const mockRequest: Record<string, any[]> = {
-          'items': [{
-            'type': UnavailableDateType.LONGER_PERIOD,
-            'period': {
-              'start': {'day': CURRENT_DAY, 'month': CURRENT_MONTH, 'year': CURRENT_YEAR},
-              'end': {'day': currentDatePlusOne.getDate(), 'month': currentDatePlusOne.getMonth() + 1, 'year': currentDatePlusOne.getFullYear()},
-            },
+    it('should call next when saving unavailability dates fails', async () => {
+      const error = new Error('redis failure');
+      mockSaveMediationCarm.mockRejectedValue(error);
+
+      const {next} = await invoke('post', {
+        body: {
+          items: [{
+            type: UnavailableDateType.SINGLE_DATE,
+            single: {start: dateParts(1)},
           }],
-        };
-        const mockItem = mockRequest['items'][0];
-        return new UnavailableDatePeriodMediation(UnavailableDateType.LONGER_PERIOD, mockItem.period.start, mockItem.period.end);
+        },
       });
-      await request(app)
-        .post(CONTROLLER_URL)
-        .send({option: 'yes'})
-        .expect((res) => {
-          // expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(CLAIMANT_RESPONSE_TASK_LIST_URL);
-        });
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 
   describe('on POST - single date validation', () => {
-    const futureDate = new Date();
-    futureDate.setDate(futureDate.getDate() + 7);
-    const day = String(futureDate.getDate());
-    const month = String(futureDate.getMonth() + 1);
-    const year = String(futureDate.getFullYear());
+    const {day, month, year} = dateParts(7);
 
     const singleDateBody = (start: Record<string, string>) => ({
       items: [{type: UnavailableDateType.SINGLE_DATE, single: {start}}],
     });
 
-    beforeEach(() => {
-      const {getUnavailableDatesMediationForm: actualGetForm} = jest.requireActual('services/features/mediation/unavailableDatesForMediationService');
-      getUnavailableDatesMediationFormMock.mockImplementation(actualGetForm);
-    });
-
     it.each(['0', '00', '000'])('should return 4-digit year error when year is %s', async (invalidYear) => {
-      await request(app)
-        .post(CONTROLLER_URL)
-        .send(singleDateBody({day, month, year: invalidYear}))
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Unavailable date must include a 4-digit year');
-          expect(res.text).not.toContain('Date you are unavailable must include a year');
-        });
+      const errors = await postErrors(singleDateBody({day, month, year: invalidYear}));
+
+      expect(errors).toContain('Unavailable date must include a 4-digit year');
+      expect(errors).not.toContain('Date you are unavailable must include a year');
     });
 
     it('should return valid year error when year is 4 digits but before 1872', async () => {
-      await request(app)
-        .post(CONTROLLER_URL)
-        .send(singleDateBody({day, month, year: '1500'}))
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Enter a valid year');
-          expect(res.text).not.toContain('Unavailable date must include a 4-digit year');
-        });
+      const errors = await postErrors(singleDateBody({day, month, year: '1500'}));
+
+      expect(errors).toContain('Enter a valid year');
+      expect(errors).not.toContain('Unavailable date must include a 4-digit year');
     });
 
     it('should return valid month error when month is invalid', async () => {
-      await request(app)
-        .post(CONTROLLER_URL)
-        .send(singleDateBody({day, month: '13', year}))
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Unavailable date must include a valid month');
-          expect(res.text).not.toContain('Date you are unavailable must include a month');
-        });
+      const errors = await postErrors(singleDateBody({day, month: '13', year}));
+
+      expect(errors).toContain('Unavailable date must include a valid month');
+      expect(errors).not.toContain('Date you are unavailable must include a month');
     });
 
     it('should return valid day error when day is invalid', async () => {
-      await request(app)
-        .post(CONTROLLER_URL)
-        .send(singleDateBody({day: '32', month, year}))
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Unavailable date must include a valid day');
-          expect(res.text).not.toContain('Date you are unavailable must include a day');
-        });
+      const errors = await postErrors(singleDateBody({day: '32', month, year}));
+
+      expect(errors).toContain('Unavailable date must include a valid day');
+      expect(errors).not.toContain('Date you are unavailable must include a day');
     });
 
     it('should return valid day error when date does not exist', async () => {
-      await request(app)
-        .post(CONTROLLER_URL)
-        .send(singleDateBody({day: '31', month: '2', year}))
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Unavailable date must include a valid day');
-          expect(res.text).not.toContain('Enter the date you are unavailable<');
-        });
+      const errors = await postErrors(singleDateBody({day: '31', month: '2', year}));
+
+      expect(errors).toContain('Unavailable date must include a valid day');
+      expect(errors).not.toContain('Enter the date you are unavailable');
     });
 
     it('should return 4-digit year error when year is more than 4 digits', async () => {
-      await request(app)
-        .post(CONTROLLER_URL)
-        .send(singleDateBody({day, month, year: '12345'}))
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Unavailable date must include a 4-digit year');
-          expect(res.text).not.toContain('Date you are unavailable must be in the next 3 months');
-        });
+      const errors = await postErrors(singleDateBody({day, month, year: '12345'}));
+
+      expect(errors).toContain('Unavailable date must include a 4-digit year');
+      expect(errors).not.toContain('Date you are unavailable must be in the next 3 months');
     });
 
     it('should return day, month and year errors when all are invalid', async () => {
-      await request(app)
-        .post(CONTROLLER_URL)
-        .send(singleDateBody({day: '40', month: '13', year: '0'}))
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Unavailable date must include a valid day');
-          expect(res.text).toContain('Unavailable date must include a valid month');
-          expect(res.text).toContain('Unavailable date must include a 4-digit year');
-        });
+      const errors = await postErrors(singleDateBody({day: '40', month: '13', year: '0'}));
+
+      expect(errors).toEqual(expect.arrayContaining([
+        'Unavailable date must include a valid day',
+        'Unavailable date must include a valid month',
+        'Unavailable date must include a 4-digit year',
+      ]));
     });
 
     it.each(['0', 'abc'])('should return day, month and year errors when all are %s', async (invalidValue) => {
-      await request(app)
-        .post(CONTROLLER_URL)
-        .send(singleDateBody({day: invalidValue, month: invalidValue, year: invalidValue}))
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Unavailable date must include a valid day');
-          expect(res.text).toContain('Unavailable date must include a valid month');
-          expect(res.text).toContain('Unavailable date must include a 4-digit year');
-          expect(res.text).not.toContain('Enter the date you are unavailable<');
-        });
+      const errors = await postErrors(singleDateBody({day: invalidValue, month: invalidValue, year: invalidValue}));
+
+      expect(errors).toEqual(expect.arrayContaining([
+        'Unavailable date must include a valid day',
+        'Unavailable date must include a valid month',
+        'Unavailable date must include a 4-digit year',
+      ]));
+      expect(errors).not.toContain('Enter the date you are unavailable');
     });
 
     it('should keep missing field errors when day, month or year are empty', async () => {
-      await request(app)
-        .post(CONTROLLER_URL)
-        .send(singleDateBody({day: '', month: '', year}))
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Date you are unavailable must include a day');
-          expect(res.text).toContain('Date you are unavailable must include a month');
-          expect(res.text).not.toContain('Unavailable date must include a valid day');
-          expect(res.text).not.toContain('Unavailable date must include a valid month');
-        });
+      const errors = await postErrors(singleDateBody({day: '', month: '', year}));
+
+      expect(errors).toEqual(expect.arrayContaining([
+        'Date you are unavailable must include a day',
+        'Date you are unavailable must include a month',
+      ]));
+      expect(errors).not.toContain('Unavailable date must include a valid day');
+      expect(errors).not.toContain('Unavailable date must include a valid month');
     });
 
     it('should keep missing date error when date is empty', async () => {
-      await request(app)
-        .post(CONTROLLER_URL)
-        .send(singleDateBody({day: '', month: '', year: ''}))
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Enter the date you are unavailable');
-        });
+      const errors = await postErrors(singleDateBody({day: '', month: '', year: ''}));
+
+      expect(errors).toContain('Enter the date you are unavailable');
     });
 
     it('should return welsh 4-digit year error when year is invalid', async () => {
-      await request(app)
-        .post(CONTROLLER_URL)
-        .query({lang: 'cy'})
-        .send(singleDateBody({day, month, year: '0'}))
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Rhaid i&#39;r dyddiad nad ydych ar gael gynnwys blwyddyn 4 digid');
-        });
+      const errors = await postErrors(singleDateBody({day, month, year: '0'}), cy);
+
+      expect(errors).toContain('Rhaid i\'r dyddiad nad ydych ar gael gynnwys blwyddyn 4 digid');
     });
 
     it('should redirect when single date is valid', async () => {
-      await request(app)
-        .post(CONTROLLER_URL)
-        .send(singleDateBody({day, month, year}))
-        .expect((res) => {
-          expect(res.status).toBe(302);
-        });
+      const {res} = await invoke('post', {body: singleDateBody({day, month, year})});
+
+      expect(res.redirect).toHaveBeenCalled();
     });
   });
 
   describe('on POST - longer period from date validation', () => {
-    const fromDate = new Date();
-    fromDate.setDate(fromDate.getDate() + 7);
-    const day = String(fromDate.getDate());
-    const month = String(fromDate.getMonth() + 1);
-    const year = String(fromDate.getFullYear());
-    const toDate = new Date();
-    toDate.setDate(toDate.getDate() + 14);
-    const validEnd = {day: String(toDate.getDate()), month: String(toDate.getMonth() + 1), year: String(toDate.getFullYear())};
+    const {day, month, year} = dateParts(7);
+    const validEnd = dateParts(14);
     const emptyEnd = {day: '', month: '', year: ''};
 
     const longerPeriodBody = (start: Record<string, string>, end: Record<string, string> = validEnd) => ({
       items: [{type: UnavailableDateType.LONGER_PERIOD, period: {start, end}}],
     });
 
-    beforeEach(() => {
-      const {getUnavailableDatesMediationForm: actualGetForm} = jest.requireActual('services/features/mediation/unavailableDatesForMediationService');
-      getUnavailableDatesMediationFormMock.mockImplementation(actualGetForm);
-    });
-
     it.each(['0', '00', '000'])('should return from 4-digit year error when year is %s', async (invalidYear) => {
-      await request(app)
-        .post(CONTROLLER_URL)
-        .send(longerPeriodBody({day, month, year: invalidYear}))
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Unavailable from date must include a 4-digit year');
-          expect(res.text).not.toContain('Date you are unavailable from must include a year');
-        });
+      const errors = await postErrors(longerPeriodBody({day, month, year: invalidYear}));
+
+      expect(errors).toContain('Unavailable from date must include a 4-digit year');
+      expect(errors).not.toContain('Date you are unavailable from must include a year');
     });
 
     it('should return valid year error when from year is 4 digits but before 1872', async () => {
-      await request(app)
-        .post(CONTROLLER_URL)
-        .send(longerPeriodBody({day, month, year: '1500'}))
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Enter a valid year');
-          expect(res.text).not.toContain('Unavailable from date must include a 4-digit year');
-        });
+      const errors = await postErrors(longerPeriodBody({day, month, year: '1500'}));
+
+      expect(errors).toContain('Enter a valid year');
+      expect(errors).not.toContain('Unavailable from date must include a 4-digit year');
     });
 
     it('should return from valid month error when month is invalid', async () => {
-      await request(app)
-        .post(CONTROLLER_URL)
-        .send(longerPeriodBody({day, month: '13', year}))
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Unavailable from date must include a valid month');
-          expect(res.text).not.toContain('Date you are unavailable from must include a month');
-        });
+      const errors = await postErrors(longerPeriodBody({day, month: '13', year}));
+
+      expect(errors).toContain('Unavailable from date must include a valid month');
+      expect(errors).not.toContain('Date you are unavailable from must include a month');
     });
 
     it('should return from valid day error when day is invalid', async () => {
-      await request(app)
-        .post(CONTROLLER_URL)
-        .send(longerPeriodBody({day: '32', month, year}))
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Unavailable from date must include a valid day');
-          expect(res.text).not.toContain('Date you are unavailable from must include a day');
-        });
+      const errors = await postErrors(longerPeriodBody({day: '32', month, year}));
+
+      expect(errors).toContain('Unavailable from date must include a valid day');
+      expect(errors).not.toContain('Date you are unavailable from must include a day');
     });
 
     it('should return from valid day error when date does not exist', async () => {
-      await request(app)
-        .post(CONTROLLER_URL)
-        .send(longerPeriodBody({day: '31', month: '2', year}))
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Unavailable from date must include a valid day');
-          expect(res.text).not.toContain('Enter the date you are unavailable from');
-        });
+      const errors = await postErrors(longerPeriodBody({day: '31', month: '2', year}));
+
+      expect(errors).toContain('Unavailable from date must include a valid day');
+      expect(errors).not.toContain('Enter the date you are unavailable from');
     });
 
     it('should return from 4-digit year error when year is more than 4 digits', async () => {
-      await request(app)
-        .post(CONTROLLER_URL)
-        .send(longerPeriodBody({day, month, year: '12345'}))
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Unavailable from date must include a 4-digit year');
-          expect(res.text).not.toContain('Date you are unavailable from must be in the next 3 months');
-        });
+      const errors = await postErrors(longerPeriodBody({day, month, year: '12345'}));
+
+      expect(errors).toContain('Unavailable from date must include a 4-digit year');
+      expect(errors).not.toContain('Date you are unavailable from must be in the next 3 months');
     });
 
     it('should return from day, month and year errors when all are invalid', async () => {
-      await request(app)
-        .post(CONTROLLER_URL)
-        .send(longerPeriodBody({day: '40', month: '13', year: '0'}))
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Unavailable from date must include a valid day');
-          expect(res.text).toContain('Unavailable from date must include a valid month');
-          expect(res.text).toContain('Unavailable from date must include a 4-digit year');
-        });
+      const errors = await postErrors(longerPeriodBody({day: '40', month: '13', year: '0'}));
+
+      expect(errors).toEqual(expect.arrayContaining([
+        'Unavailable from date must include a valid day',
+        'Unavailable from date must include a valid month',
+        'Unavailable from date must include a 4-digit year',
+      ]));
     });
 
     it.each(['0', 'abc'])('should return from day, month and year errors when all are %s', async (invalidValue) => {
-      await request(app)
-        .post(CONTROLLER_URL)
-        .send(longerPeriodBody({day: invalidValue, month: invalidValue, year: invalidValue}))
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Unavailable from date must include a valid day');
-          expect(res.text).toContain('Unavailable from date must include a valid month');
-          expect(res.text).toContain('Unavailable from date must include a 4-digit year');
-          expect(res.text).not.toContain('Enter the date you are unavailable from<');
-        });
+      const errors = await postErrors(longerPeriodBody({day: invalidValue, month: invalidValue, year: invalidValue}));
+
+      expect(errors).toEqual(expect.arrayContaining([
+        'Unavailable from date must include a valid day',
+        'Unavailable from date must include a valid month',
+        'Unavailable from date must include a 4-digit year',
+      ]));
+      expect(errors).not.toContain('Enter the date you are unavailable from');
     });
 
     it('should keep from missing field errors when day or year are empty', async () => {
-      await request(app)
-        .post(CONTROLLER_URL)
-        .send(longerPeriodBody({day: '', month, year: ''}))
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Date you are unavailable from must include a day');
-          expect(res.text).toContain('Date you are unavailable from must include a year');
-          expect(res.text).not.toContain('Unavailable from date must include a valid day');
-          expect(res.text).not.toContain('Unavailable from date must include a 4-digit year');
-        });
+      const errors = await postErrors(longerPeriodBody({day: '', month, year: ''}));
+
+      expect(errors).toEqual(expect.arrayContaining([
+        'Date you are unavailable from must include a day',
+        'Date you are unavailable from must include a year',
+      ]));
+      expect(errors).not.toContain('Unavailable from date must include a valid day');
+      expect(errors).not.toContain('Unavailable from date must include a 4-digit year');
     });
 
     it('should keep missing from date error when from date is empty', async () => {
-      await request(app)
-        .post(CONTROLLER_URL)
-        .send(longerPeriodBody({day: '', month: '', year: ''}))
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Enter the date you are unavailable from');
-        });
+      const errors = await postErrors(longerPeriodBody({day: '', month: '', year: ''}));
+
+      expect(errors).toContain('Enter the date you are unavailable from');
     });
 
     it('should return from and to errors when from date is invalid and to date is empty', async () => {
-      await request(app)
-        .post(CONTROLLER_URL)
-        .send(longerPeriodBody({day, month, year: '0'}, emptyEnd))
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Unavailable from date must include a 4-digit year');
-          expect(res.text).toContain('Enter the date you are unavailable to');
-        });
+      const errors = await postErrors(longerPeriodBody({day, month, year: '0'}, emptyEnd));
+
+      expect(errors).toEqual(expect.arrayContaining([
+        'Unavailable from date must include a 4-digit year',
+        'Enter the date you are unavailable to',
+      ]));
     });
 
     it('should keep from date before to date error', async () => {
-      await request(app)
-        .post(CONTROLLER_URL)
-        .send(longerPeriodBody(validEnd, {day, month, year}))
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Date you are unavailable from must be before the date you are unavailable to');
-        });
+      const errors = await postErrors(longerPeriodBody(validEnd, {day, month, year}));
+
+      expect(errors).toContain('Date you are unavailable from must be before the date you are unavailable to');
     });
 
     it('should return welsh from 4-digit year error when year is invalid', async () => {
-      await request(app)
-        .post(CONTROLLER_URL)
-        .query({lang: 'cy'})
-        .send(longerPeriodBody({day, month, year: '0'}))
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Rhaid i ddim ar gael o&#39;r dyddiad hwn ymlaen gynnwys blwyddyn 4 digid');
-        });
+      const errors = await postErrors(longerPeriodBody({day, month, year: '0'}), cy);
+
+      expect(errors).toContain('Rhaid i ddim ar gael o\'r dyddiad hwn ymlaen gynnwys blwyddyn 4 digid');
     });
 
     it('should redirect when longer period is valid', async () => {
-      await request(app)
-        .post(CONTROLLER_URL)
-        .send(longerPeriodBody({day, month, year}))
-        .expect((res) => {
-          expect(res.status).toBe(302);
-        });
+      const {res} = await invoke('post', {body: longerPeriodBody({day, month, year})});
+
+      expect(res.redirect).toHaveBeenCalled();
     });
   });
 
   describe('on POST - longer period to date validation', () => {
-    const fromDate = new Date();
-    fromDate.setDate(fromDate.getDate() + 7);
-    const validStart = {day: String(fromDate.getDate()), month: String(fromDate.getMonth() + 1), year: String(fromDate.getFullYear())};
-    const toDate = new Date();
-    toDate.setDate(toDate.getDate() + 14);
-    const day = String(toDate.getDate());
-    const month = String(toDate.getMonth() + 1);
-    const year = String(toDate.getFullYear());
+    const validStart = dateParts(7);
+    const {day, month, year} = dateParts(14);
 
     const longerPeriodBody = (end: Record<string, string>, start: Record<string, string> = validStart) => ({
       items: [{type: UnavailableDateType.LONGER_PERIOD, period: {start, end}}],
     });
 
-    beforeEach(() => {
-      const {getUnavailableDatesMediationForm: actualGetForm} = jest.requireActual('services/features/mediation/unavailableDatesForMediationService');
-      getUnavailableDatesMediationFormMock.mockImplementation(actualGetForm);
-    });
-
     it.each(['0', '00', '000'])('should return to 4-digit year error when year is %s', async (invalidYear) => {
-      await request(app)
-        .post(CONTROLLER_URL)
-        .send(longerPeriodBody({day, month, year: invalidYear}))
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Unavailable to date must include a 4-digit year');
-          expect(res.text).not.toContain('Date you are unavailable to must include a year');
-          expect(res.text).not.toContain('Date you are unavailable from must be before the date you are unavailable to');
-        });
+      const errors = await postErrors(longerPeriodBody({day, month, year: invalidYear}));
+
+      expect(errors).toContain('Unavailable to date must include a 4-digit year');
+      expect(errors).not.toContain('Date you are unavailable to must include a year');
+      expect(errors).not.toContain('Date you are unavailable from must be before the date you are unavailable to');
     });
 
     it('should return to valid day error when to date does not exist', async () => {
-      await request(app)
-        .post(CONTROLLER_URL)
-        .send(longerPeriodBody({day: '31', month: '2', year}))
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Unavailable to date must include a valid day');
-          expect(res.text).not.toContain('Enter the date you are unavailable to');
-          expect(res.text).not.toContain('Date you are unavailable from must be before the date you are unavailable to');
-        });
+      const errors = await postErrors(longerPeriodBody({day: '31', month: '2', year}));
+
+      expect(errors).toContain('Unavailable to date must include a valid day');
+      expect(errors).not.toContain('Enter the date you are unavailable to');
+      expect(errors).not.toContain('Date you are unavailable from must be before the date you are unavailable to');
     });
 
     it('should return to 4-digit year error when year is more than 4 digits', async () => {
-      await request(app)
-        .post(CONTROLLER_URL)
-        .send(longerPeriodBody({day, month, year: '12345'}))
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Unavailable to date must include a 4-digit year');
-          expect(res.text).not.toContain('Date you are unavailable to must be in the next 3 months');
-          expect(res.text).not.toContain('Date you are unavailable from must be before the date you are unavailable to');
-        });
+      const errors = await postErrors(longerPeriodBody({day, month, year: '12345'}));
+
+      expect(errors).toContain('Unavailable to date must include a 4-digit year');
+      expect(errors).not.toContain('Date you are unavailable to must be in the next 3 months');
+      expect(errors).not.toContain('Date you are unavailable from must be before the date you are unavailable to');
     });
 
     it('should return valid year error when to year is 4 digits but before 1872', async () => {
-      await request(app)
-        .post(CONTROLLER_URL)
-        .send(longerPeriodBody({day, month, year: '1500'}))
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Enter a valid year');
-          expect(res.text).not.toContain('Unavailable to date must include a 4-digit year');
-          expect(res.text).not.toContain('Date you are unavailable from must be before the date you are unavailable to');
-        });
+      const errors = await postErrors(longerPeriodBody({day, month, year: '1500'}));
+
+      expect(errors).toContain('Enter a valid year');
+      expect(errors).not.toContain('Unavailable to date must include a 4-digit year');
+      expect(errors).not.toContain('Date you are unavailable from must be before the date you are unavailable to');
     });
 
     it('should return to valid month error when month is invalid', async () => {
-      await request(app)
-        .post(CONTROLLER_URL)
-        .send(longerPeriodBody({day, month: '13', year}))
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Unavailable to date must include a valid month');
-          expect(res.text).not.toContain('Date you are unavailable to must include a month');
-        });
+      const errors = await postErrors(longerPeriodBody({day, month: '13', year}));
+
+      expect(errors).toContain('Unavailable to date must include a valid month');
+      expect(errors).not.toContain('Date you are unavailable to must include a month');
     });
 
     it('should return to valid day error when day is invalid', async () => {
-      await request(app)
-        .post(CONTROLLER_URL)
-        .send(longerPeriodBody({day: '32', month, year}))
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Unavailable to date must include a valid day');
-          expect(res.text).not.toContain('Date you are unavailable to must include a day');
-        });
+      const errors = await postErrors(longerPeriodBody({day: '32', month, year}));
+
+      expect(errors).toContain('Unavailable to date must include a valid day');
+      expect(errors).not.toContain('Date you are unavailable to must include a day');
     });
 
     it('should return to day, month and year errors when all are invalid', async () => {
-      await request(app)
-        .post(CONTROLLER_URL)
-        .send(longerPeriodBody({day: '40', month: '13', year: '0'}))
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Unavailable to date must include a valid day');
-          expect(res.text).toContain('Unavailable to date must include a valid month');
-          expect(res.text).toContain('Unavailable to date must include a 4-digit year');
-        });
+      const errors = await postErrors(longerPeriodBody({day: '40', month: '13', year: '0'}));
+
+      expect(errors).toEqual(expect.arrayContaining([
+        'Unavailable to date must include a valid day',
+        'Unavailable to date must include a valid month',
+        'Unavailable to date must include a 4-digit year',
+      ]));
     });
 
     it.each(['0', 'abc'])('should return to day, month and year errors when all are %s', async (invalidValue) => {
-      await request(app)
-        .post(CONTROLLER_URL)
-        .send(longerPeriodBody({day: invalidValue, month: invalidValue, year: invalidValue}))
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Unavailable to date must include a valid day');
-          expect(res.text).toContain('Unavailable to date must include a valid month');
-          expect(res.text).toContain('Unavailable to date must include a 4-digit year');
-          expect(res.text).not.toContain('Enter the date you are unavailable to<');
-        });
+      const errors = await postErrors(longerPeriodBody({day: invalidValue, month: invalidValue, year: invalidValue}));
+
+      expect(errors).toEqual(expect.arrayContaining([
+        'Unavailable to date must include a valid day',
+        'Unavailable to date must include a valid month',
+        'Unavailable to date must include a 4-digit year',
+      ]));
+      expect(errors).not.toContain('Enter the date you are unavailable to');
     });
 
     it('should keep to missing field errors when day or year are empty', async () => {
-      await request(app)
-        .post(CONTROLLER_URL)
-        .send(longerPeriodBody({day: '', month, year: ''}))
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Date you are unavailable to must include a day');
-          expect(res.text).toContain('Date you are unavailable to must include a year');
-          expect(res.text).not.toContain('Unavailable to date must include a valid day');
-          expect(res.text).not.toContain('Unavailable to date must include a 4-digit year');
-        });
+      const errors = await postErrors(longerPeriodBody({day: '', month, year: ''}));
+
+      expect(errors).toEqual(expect.arrayContaining([
+        'Date you are unavailable to must include a day',
+        'Date you are unavailable to must include a year',
+      ]));
+      expect(errors).not.toContain('Unavailable to date must include a valid day');
+      expect(errors).not.toContain('Unavailable to date must include a 4-digit year');
     });
 
     it('should keep missing to date error when to date is empty', async () => {
-      await request(app)
-        .post(CONTROLLER_URL)
-        .send(longerPeriodBody({day: '', month: '', year: ''}))
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Enter the date you are unavailable to');
-        });
+      const errors = await postErrors(longerPeriodBody({day: '', month: '', year: ''}));
+
+      expect(errors).toContain('Enter the date you are unavailable to');
     });
 
     it('should return from and to errors independently when both are invalid', async () => {
-      await request(app)
-        .post(CONTROLLER_URL)
-        .send(longerPeriodBody({day, month: '13', year}, {...validStart, year: '0'}))
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Unavailable from date must include a 4-digit year');
-          expect(res.text).toContain('Unavailable to date must include a valid month');
-        });
+      const errors = await postErrors(longerPeriodBody({day, month: '13', year}, {...validStart, year: '0'}));
+
+      expect(errors).toEqual(expect.arrayContaining([
+        'Unavailable from date must include a 4-digit year',
+        'Unavailable to date must include a valid month',
+      ]));
     });
 
     it('should return welsh to 4-digit year error when year is invalid', async () => {
-      await request(app)
-        .post(CONTROLLER_URL)
-        .query({lang: 'cy'})
-        .send(longerPeriodBody({day, month, year: '0'}))
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Rhaid i ddim ar gael hyd at y dyddiad hwn gynnwys blwyddyn 4 digid');
-        });
-    });
-  });
+      const errors = await postErrors(longerPeriodBody({day, month, year: '0'}), cy);
 
-  describe('on POST - defendant response', () => {
-    it('should redirect to task list with single date', async () => {
-      //given
-      getUnavailableDatesMediationFormMock.mockImplementation(() => {
-        const mockRequest: Record<string, any[]> = {
-          'items': [{
-            'type': UnavailableDateType.SINGLE_DATE,
-            'single': {
-              'start': {'day': CURRENT_DAY, 'month': CURRENT_MONTH, 'year': CURRENT_YEAR},
-            },
-          }],
-        };
-        const mockItem = mockRequest['items'][0];
-        return new UnavailableDatePeriodMediation(UnavailableDateType.SINGLE_DATE, mockItem.single.start);
-      });
-
-      await request(app)
-        .post(CONTROLLER_URL)
-        .send()
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(RESPONSE_TASK_LIST_URL);
-        });
-    });
-
-    it('should redirect to task list with Long period date', async () => {
-      //given
-      const currentDatePlusOne = new Date();
-      currentDatePlusOne.setDate(currentDatePlusOne.getDate() + 1);
-      getUnavailableDatesMediationFormMock.mockImplementation(() => {
-        const mockRequest: Record<string, any[]> = {
-          'items': [{
-            'type': UnavailableDateType.LONGER_PERIOD,
-            'period': {
-              'start': {'day': CURRENT_DAY, 'month': CURRENT_MONTH, 'year': CURRENT_YEAR},
-              'end': {'day': currentDatePlusOne.getDate(), 'month': currentDatePlusOne.getMonth() + 1, 'year': currentDatePlusOne.getFullYear()},
-            },
-          }],
-        };
-        const mockItem = mockRequest['items'][0];
-        return new UnavailableDatePeriodMediation(UnavailableDateType.LONGER_PERIOD, mockItem.period.start, mockItem.period.end);
-      });
-      await request(app)
-        .post(CONTROLLER_URL)
-        .send({option: 'yes'})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(RESPONSE_TASK_LIST_URL);
-        });
-    });
-
-    it('should return http 500 when has error', async () => {
-      const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
-      mockSaveDraftClaim.mockImplementation(async () => {
-        throw new Error(TestMessages.REDIS_FAILURE);
-      });
-      await request(app)
-        .post(CONTROLLER_URL)
-        .send({option: 'no'})
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+      expect(errors).toContain('Rhaid i ddim ar gael hyd at y dyddiad hwn gynnwys blwyddyn 4 digid');
     });
   });
 });
