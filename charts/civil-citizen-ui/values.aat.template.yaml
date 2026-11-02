@@ -5,8 +5,8 @@ nodejs:
   cpuRequests: 4000m
   memoryLimits: 4Gi
   cpuLimits: 3500m
-  devmemoryRequests: 8Gi
-  devcpuRequests: 4000m
+  devmemoryRequests: 2Gi
+  devcpuRequests: 500m
   devmemoryLimits: 8Gi
   devcpuLimits: 4500m
   ingressHost: civil-citizen-ui-staging.aat.platform.hmcts.net
