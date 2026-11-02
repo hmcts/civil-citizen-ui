@@ -9,7 +9,6 @@ import {
 import {toRegularIncomeForm} from 'common/utils/expenseAndIncome/regularIncomeExpenseCoverter';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {AppRequest} from 'common/models/AppRequest';
-import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const regularIncomeController = Router();
@@ -20,7 +19,7 @@ function renderView(form: GenericForm<RegularIncome>, res: Response) {
 
 regularIncomeController.get(CITIZEN_MONTHLY_INCOME_URL, (async (req, res, next: NextFunction) => {
   try {
-    const model = await getRegularIncome(generateRedisKey(<AppRequest>req));
+    const model = await getRegularIncome(<AppRequest>req);
     renderView(new GenericForm<RegularIncome>(model), res);
   } catch (error) {
     next(error);
@@ -29,14 +28,14 @@ regularIncomeController.get(CITIZEN_MONTHLY_INCOME_URL, (async (req, res, next: 
 
 regularIncomeController.post(CITIZEN_MONTHLY_INCOME_URL, (async (req, res, next: NextFunction) => {
   try {
-    const claimId = getRouteParam(req, 'id');
+    const caseId = getRouteParam(req, 'id');
     const form = new GenericForm(toRegularIncomeForm(req));
     await form.validate();
     if (form.hasErrors()) {
       renderView(form, res);
     } else {
-      await saveRegularIncome(generateRedisKey(<AppRequest>req), form.model);
-      res.redirect(constructResponseUrlWithIdParams(claimId, CITIZEN_EXPLANATION_URL));
+      await saveRegularIncome(<AppRequest>req, form.model);
+      res.redirect(constructResponseUrlWithIdParams(caseId, CITIZEN_EXPLANATION_URL));
     }
   } catch (error) {
     next(error);
