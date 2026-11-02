@@ -1,15 +1,15 @@
 import {NextFunction, RequestHandler, Response, Router} from 'express';
 import {CITIZEN_CARER_URL, CITIZEN_EMPLOYMENT_URL} from 'routes/urls';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {getCarer, saveCarer} from 'services/features/response/statementOfMeans/carerService';
+import {CarerService} from 'services/features/response/statementOfMeans/carerService';
 import {GenericForm} from 'form/models/genericForm';
 import {GenericYesNo} from 'form/models/genericYesNo';
 import {AppRequest} from 'common/models/AppRequest';
-import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const carerViewPath = 'features/response/statementOfMeans/carer';
 const carerController = Router();
+const carerService = new CarerService();
 
 function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
   res.render(carerViewPath, {form});
@@ -17,7 +17,7 @@ function renderView(form: GenericForm<GenericYesNo>, res: Response): void {
 
 carerController.get(CITIZEN_CARER_URL, (async (req, res, next: NextFunction) => {
   try {
-    renderView(new GenericForm(await getCarer(generateRedisKey(<AppRequest>req))), res);
+    renderView(await carerService.getCarer(<AppRequest>req), res);
   } catch (error) {
     next(error);
   }
@@ -25,15 +25,15 @@ carerController.get(CITIZEN_CARER_URL, (async (req, res, next: NextFunction) => 
 
 carerController.post(CITIZEN_CARER_URL,
   (async (req, res, next: NextFunction) => {
-    const claimId = getRouteParam(req, 'id');
-    const carerForm: GenericForm<GenericYesNo> = new GenericForm(new GenericYesNo(req.body.option));
-    carerForm.validateSync();
-    if (carerForm.hasErrors()) {
-      renderView(carerForm, res);
+    const caseId = getRouteParam(req, 'id');
+    const form: GenericForm<GenericYesNo> = new GenericForm(new GenericYesNo(req.body.option));
+    form.validateSync();
+    if (form.hasErrors()) {
+      renderView(form, res);
     } else {
       try {
-        await saveCarer(generateRedisKey(<AppRequest>req), carerForm.model);
-        res.redirect(constructResponseUrlWithIdParams(claimId, CITIZEN_EMPLOYMENT_URL));
+        await carerService.saveCarer(<AppRequest>req, form);
+        res.redirect(constructResponseUrlWithIdParams(caseId, CITIZEN_EMPLOYMENT_URL));
       } catch (error) {
         next(error);
       }
