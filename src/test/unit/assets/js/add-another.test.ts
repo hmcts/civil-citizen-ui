@@ -105,12 +105,15 @@ describe('real court-order markup and the fork component adaptation', () => {
     expect(rows(document)).toHaveLength(2);
   });
 
-  it.each(['en', 'cy'])('renders the submission-limit error and retains excess values (%s)', language => {
-    const document = install(renderAddAnotherPage(courtPage, {declared: true, rows: Array.from({length: 11}, (_, index) => order(index))}, {rows: 'ERRORS.MAXIMUM_TEN_COURT_ORDERS'}, language));
-    expect(document.querySelector('.govuk-error-summary')!.textContent).toContain(language === 'cy' ? 'Gallwch nodi uchafswm o 10 gorchymyn llys' : 'You can enter a maximum of 10 court orders');
+  it.each(['en', 'cy'])('renders existing validation messages and retains excess saved rows (%s)', language => {
+    const savedRows = Array.from({length: 11}, (_, index) => order(index));
+    savedRows[10].amount = 0;
+    const document = install(renderAddAnotherPage(courtPage, {declared: true, rows: savedRows}, {'rows[10][amount]': 'ERRORS.AMOUNT_REQUIRED'}, language));
+    expect(document.querySelector('.govuk-error-summary')!.textContent).toContain(language === 'cy' ? 'Nodwch swm o £1 neu fwy' : 'Enter an amount of £1 or more');
     enhance(document);
     expect(rows(document)).toHaveLength(11);
     expect((rows(document)[10].querySelector('input') as HTMLInputElement).value).toBe('CN10');
+    expect((rows(document)[10].querySelector('[name="rows[10][amount]"]') as HTMLInputElement).value).toBe('0');
     associations(document);
   });
 
