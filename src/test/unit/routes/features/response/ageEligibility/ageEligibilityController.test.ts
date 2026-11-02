@@ -1,43 +1,29 @@
-import request from 'supertest';
-import {app} from '../../../../../../main/app';
-import config from 'config';
-import {AGE_ELIGIBILITY_URL} from '../../../../../../main/routes/urls';
-import {t} from 'i18next';
-jest.mock('../../../../../../main/modules/oidc');
-const nock = require('nock');
-jest.mock('ioredis', () => {
-  return jest.fn().mockImplementation(() => {
-    return {
-      set: jest.fn(async () => {
-        return;
-      }),
-      on: jest.fn(async () => {
-        return;
-      }),
-      ttl: jest.fn(() => Promise.resolve({})),
-      expireat: jest.fn(() => Promise.resolve({})),
-    };
-  });
-});
+import {Response} from 'express';
+import ageEligibilityController from 'routes/features/response/ageEligibility/ageEligibilityController';
+import {AGE_ELIGIBILITY_URL} from 'routes/urls';
+import {AppRequest} from 'models/AppRequest';
+import {createMockResponse, createMockSession, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
-describe('Under 18 Contact court', ()=> {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
+const viewPath = 'features/response/ageEligibility/under-18';
 
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-  });
+describe('Under 18 Contact court', () => {
+  it('should render the under 18 page', async () => {
+    const res = createMockResponse();
+    const next = jest.fn();
 
-  describe('on Get', () => {
-    it('should return under 18 contact cort page', async () => {
-      await request(app)
-        .get(AGE_ELIGIBILITY_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('PAGES.UNDER_18.TITLE'));
-        });
-    });
+    await getRouteHandler(ageEligibilityController, 'get', AGE_ELIGIBILITY_URL)(
+      {
+        params: {},
+        body: {},
+        query: {},
+        cookies: {},
+        session: createMockSession(),
+      } as unknown as AppRequest,
+      res as unknown as Response,
+      next,
+    );
+
+    expect(res.render).toHaveBeenCalledWith(viewPath);
+    expect(next).not.toHaveBeenCalled();
   });
 });
