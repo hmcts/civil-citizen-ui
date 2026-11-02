@@ -6,11 +6,12 @@ import {
   RESPONSE_TASK_LIST_URL,
 } from 'routes/urls';
 import {Claim} from 'models/claim';
-import {generateRedisKey, getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
 import {PartyType} from 'models/partyType';
 import {LoggerInstance as winLogger} from 'winston';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {AppRequest} from 'common/models/AppRequest';
+import {getRouteParam} from 'common/utils/routeParamUtils';
+import {getFinancialDetailsClaim, saveSharedFinancialDetails} from 'services/features/response/financialDetails/financialDetailsService';
 
 const financialDetailsViewPath = 'features/response/financialDetails/financial-details';
 const financialDetailsController = Router();
@@ -29,8 +30,9 @@ financialDetailsController
   .get(
     FINANCIAL_DETAILS_URL, (async (req: Request, res: Response, next: NextFunction) => {
       try {
-        const claim: Claim = await getCaseDataFromStore(generateRedisKey(<AppRequest>req));
-        const claimantDetailsUrl = constructResponseUrlWithIdParams(req.params.id, CITIZEN_CONTACT_THEM_URL);
+        const caseId = getRouteParam(req, 'id');
+        const claim: Claim = await getFinancialDetailsClaim(<AppRequest>req);
+        const claimantDetailsUrl = constructResponseUrlWithIdParams(caseId, CITIZEN_CONTACT_THEM_URL);
         renderView(res, claim, claimantDetailsUrl);
       } catch (error) {
         next(error);
@@ -38,17 +40,16 @@ financialDetailsController
     }) as RequestHandler)
   .post(FINANCIAL_DETAILS_URL, (async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const redisKey = generateRedisKey(<AppRequest>req);
-      const claimantDetailsUrl = constructResponseUrlWithIdParams(req.params.id, CITIZEN_CONTACT_THEM_URL);
-      const claim: Claim = await getCaseDataFromStore(redisKey);
+      const caseId = getRouteParam(req, 'id');
+      const claimantDetailsUrl = constructResponseUrlWithIdParams(caseId, CITIZEN_CONTACT_THEM_URL);
+      const claim: Claim = await getFinancialDetailsClaim(<AppRequest>req);
       const partyType: PartyType = claim.respondent1?.type;
       if (partyType) {
         if (partyType == PartyType.INDIVIDUAL || partyType == PartyType.SOLE_TRADER) {
-          res.redirect(constructResponseUrlWithIdParams(req.params.id, CITIZEN_BANK_ACCOUNT_URL));
+          res.redirect(constructResponseUrlWithIdParams(caseId, CITIZEN_BANK_ACCOUNT_URL));
         } else if (partyType == PartyType.COMPANY || partyType == PartyType.ORGANISATION) {
-          claim.taskSharedFinancialDetails = true;
-          await saveDraftClaim(redisKey, claim);
-          res.redirect(constructResponseUrlWithIdParams(req.params.id, RESPONSE_TASK_LIST_URL));
+          await saveSharedFinancialDetails(<AppRequest>req);
+          res.redirect(constructResponseUrlWithIdParams(caseId, RESPONSE_TASK_LIST_URL));
         }
       } else {
         logger.error('No partyType found.');

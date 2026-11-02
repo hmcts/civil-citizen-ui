@@ -8,10 +8,17 @@ import {Claim} from 'models/claim';
 import {Party} from 'models/party';
 import {PartyType} from 'models/partyType';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import * as financialDetailsService from 'services/features/response/financialDetails/financialDetailsService';
 import {createMockResponse, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
-jest.mock('modules/draft-store/draftStoreService');
+jest.mock('services/features/response/financialDetails/financialDetailsService', () => {
+  const actual = jest.requireActual('services/features/response/financialDetails/financialDetailsService');
+  return {
+    ...actual,
+    getFinancialDetailsClaim: jest.fn(),
+    saveSharedFinancialDetails: jest.fn(),
+  };
+});
 
 const mockLogger = {
   error: jest.fn().mockImplementation((message: string) => message),
@@ -26,9 +33,8 @@ describe('Citizen financial details', () => {
   let req: Partial<Request>;
   let res: ReturnType<typeof createMockResponse>;
   let next: jest.Mock;
-  const mockGenerateRedisKey = draftStoreService.generateRedisKey as jest.Mock;
-  const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
-  const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
+  const mockGetFinancialDetailsClaim = financialDetailsService.getFinancialDetailsClaim as jest.Mock;
+  const mockSaveSharedFinancialDetails = financialDetailsService.saveSharedFinancialDetails as jest.Mock;
 
   const claimForParty = (partyType?: PartyType): Claim => {
     const claim = new Claim();
@@ -46,15 +52,14 @@ describe('Citizen financial details', () => {
     res = createMockResponse();
     next = jest.fn();
     jest.clearAllMocks();
-    mockGenerateRedisKey.mockReturnValue(claimId);
-    mockGetCaseData.mockResolvedValue(claimForParty(PartyType.INDIVIDUAL));
-    mockSaveDraftClaim.mockResolvedValue(undefined);
+    mockGetFinancialDetailsClaim.mockResolvedValue(claimForParty(PartyType.INDIVIDUAL));
+    mockSaveSharedFinancialDetails.mockResolvedValue(undefined);
   });
 
   describe('on GET', () => {
     it('should render financial details for an individual', async () => {
       const claim = claimForParty(PartyType.INDIVIDUAL);
-      mockGetCaseData.mockResolvedValue(claim);
+      mockGetFinancialDetailsClaim.mockResolvedValue(claim);
 
       await getHandler(req as Request, res as unknown as Response, next);
 
@@ -67,7 +72,7 @@ describe('Citizen financial details', () => {
 
     it('should render financial details for an organisation', async () => {
       const claim = claimForParty(PartyType.ORGANISATION);
-      mockGetCaseData.mockResolvedValue(claim);
+      mockGetFinancialDetailsClaim.mockResolvedValue(claim);
 
       await getHandler(req as Request, res as unknown as Response, next);
 
@@ -78,8 +83,8 @@ describe('Citizen financial details', () => {
     });
 
     it('should call next when loading the claim fails', async () => {
-      const error = new Error('redis failure');
-      mockGetCaseData.mockRejectedValue(error);
+      const error = new Error('draft failure');
+      mockGetFinancialDetailsClaim.mockRejectedValue(error);
 
       await getHandler(req as Request, res as unknown as Response, next);
 
@@ -89,25 +94,25 @@ describe('Citizen financial details', () => {
 
   describe('on POST', () => {
     it('should redirect an individual to the bank account page', async () => {
-      mockGetCaseData.mockResolvedValue(claimForParty(PartyType.INDIVIDUAL));
+      mockGetFinancialDetailsClaim.mockResolvedValue(claimForParty(PartyType.INDIVIDUAL));
 
       await postHandler(req as Request, res as unknown as Response, next);
 
-      expect(mockSaveDraftClaim).not.toHaveBeenCalled();
+      expect(mockSaveSharedFinancialDetails).not.toHaveBeenCalled();
       expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CITIZEN_BANK_ACCOUNT_URL));
     });
 
     it('should save and redirect an organisation to the task list', async () => {
-      mockGetCaseData.mockResolvedValue(claimForParty(PartyType.ORGANISATION));
+      mockGetFinancialDetailsClaim.mockResolvedValue(claimForParty(PartyType.ORGANISATION));
 
       await postHandler(req as Request, res as unknown as Response, next);
 
-      expect(mockSaveDraftClaim).toHaveBeenCalled();
+      expect(mockSaveSharedFinancialDetails).toHaveBeenCalled();
       expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, RESPONSE_TASK_LIST_URL));
     });
 
     it('should re-render and log when the respondent has no party type', async () => {
-      mockGetCaseData.mockResolvedValue(claimForParty());
+      mockGetFinancialDetailsClaim.mockResolvedValue(claimForParty());
 
       await postHandler(req as Request, res as unknown as Response, next);
 
@@ -119,8 +124,8 @@ describe('Citizen financial details', () => {
     });
 
     it('should call next when loading the claim fails', async () => {
-      const error = new Error('redis failure');
-      mockGetCaseData.mockRejectedValue(error);
+      const error = new Error('draft failure');
+      mockGetFinancialDetailsClaim.mockRejectedValue(error);
 
       await postHandler(req as Request, res as unknown as Response, next);
 
