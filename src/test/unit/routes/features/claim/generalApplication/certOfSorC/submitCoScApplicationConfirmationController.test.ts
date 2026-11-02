@@ -1,61 +1,86 @@
-import request from 'supertest';
-import {app} from '../../../../../../../main/app';
-import nock from 'nock';
-import config from 'config';
-import {GA_COSC_CONFIRM_URL} from 'routes/urls';
-import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
+import {Response} from 'express';
+import submitCoScApplicationConfirmationController from '../../../../../../../main/routes/features/generalApplication/certOfSorC/submitCoScApplicationConfirmationController';
 import {Claim} from 'models/claim';
-import {getClaimById} from 'modules/utilityService';
+import {PartyType} from 'models/partyType';
 import {GeneralApplication} from 'models/generalApplication/GeneralApplication';
-import * as launchDarkly from '../../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {getClaimById} from 'modules/utilityService';
+import {createMockResponse, getRouteHandler} from '../../../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../../../main/modules/oidc');
-jest.mock('../../../../../../../main/modules/draft-store');
-jest.mock('../../../../../../../main/modules/draft-store/draftStoreService');
-
+jest.mock('modules/draft-store/draftStoreService');
 jest.mock('modules/utilityService', () => ({
   getClaimById: jest.fn(),
   getRedisStoreForSession: jest.fn(),
 }));
-jest.mock('../../../../../../../main/routes/guards/generalAplicationGuard',() => ({
-  isGAForLiPEnabled: jest.fn((req, res, next) => {
-    next();
-  }),
+
+jest.mock('services/features/generalApplication/response/generalApplicationResponseStoreService', () => ({
+  getDraftGARespondentResponse: jest.fn(),
+  saveDraftGARespondentResponse: jest.fn(),
 }));
 
 describe('GA submission confirmation controller', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
+  const getHandler = getRouteHandler(submitCoScApplicationConfirmationController, 'get');
+  const viewPath = 'features/generalApplication/submit-general-application-confirmation';
+  const claimId = '12345';
+  let req: {
+    params: {id: string};
+    body: Record<string, unknown>;
+    query: Record<string, string>;
+    cookies: Record<string, string>;
+    session: {user: {id: string}};
+  };
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
 
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, { id_token: citizenRoleToken });
-    jest.spyOn(launchDarkly, 'isGaForLipsEnabled').mockResolvedValue(true);
+  const buildClaim = (): Claim => {
+    const claim = new Claim();
+    claim.applicant1 = {
+      type: PartyType.INDIVIDUAL,
+      partyDetails: {title: 'Mr', firstName: 'Jan', lastName: 'Clark'},
+    } as Claim['applicant1'];
+    claim.generalApplication = new GeneralApplication();
+    claim.generalApplication.applicationFee = {
+      calculatedAmountInPence: 100,
+      code: 'test',
+      version: 1,
+    };
+    return claim;
+  };
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+    req = {
+      params: {id: claimId},
+      body: {},
+      query: {appFee: '1'},
+      cookies: {},
+      session: {user: {id: 'user-1'}},
+    };
+    res = createMockResponse();
+    next = jest.fn();
+    (draftStoreService.generateRedisKey as jest.Mock).mockReturnValue(claimId);
+    (getClaimById as jest.Mock).mockResolvedValue(buildClaim());
   });
 
   describe('on GET', () => {
-    it('should return cosc ga submit confirmation page', async () => {
-      const claim = new Claim();
-      claim.generalApplication = new GeneralApplication();
-      claim.generalApplication.applicationFee = {
-        calculatedAmountInPence: 100,
-        code: 'test',
-        version: 1,
-      };
-      (getClaimById as jest.Mock).mockResolvedValueOnce(claim);
-      const res = await request(app).get(GA_COSC_CONFIRM_URL);
-      expect(res.status).toBe(200);
-      expect(res.text).toContain('Application created');
-      expect(res.text).toContain('You need to pay the application fee to submit the application');
-      expect(res.text).toContain('Pay the fee');
+    it('should render the certificate of satisfaction confirmation page', async () => {
+      await getHandler(req as never, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        confirmationContent: expect.any(Array),
+      }));
+      expect(JSON.stringify((res.render as jest.Mock).mock.calls[0][1].confirmationContent))
+        .toContain('PAGES.GENERAL_APPLICATION.CONFIRMATION_PAGE.COSC_PAY_FEE');
+      expect(next).not.toHaveBeenCalled();
     });
 
-    it('should return http 500 when has error in the get method', async () => {
-      (getClaimById as jest.Mock).mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
-      const res = await request(app).get(GA_COSC_CONFIRM_URL);
-      expect(res.status).toBe(500);
-      expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
+    it('should call next when loading the claim fails', async () => {
+      const error = new Error('redis failure');
+      (getClaimById as jest.Mock).mockRejectedValue(error);
+
+      await getHandler(req as never, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 });

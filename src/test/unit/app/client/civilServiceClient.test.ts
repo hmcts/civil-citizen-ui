@@ -21,6 +21,8 @@ import {CaseDocument} from 'models/document/caseDocument';
 
 import {FileUpload} from 'models/caseProgression/fileUpload';
 import {FileResponse} from 'models/FileResponse';
+import {FileStreamResponse} from 'models/FileStreamResponse';
+import {Readable} from 'stream';
 import {documentIdExtractor} from 'common/utils/stringUtils';
 import {CaseRole} from 'form/models/caseRoles';
 import {Claim} from 'models/claim';
@@ -353,6 +355,50 @@ describe('Civil Service Client', () => {
       const civilServiceClient = new CivilServiceClient(baseUrl, true);
       //Then
       await expect(civilServiceClient.retrieveDocument(appReq, documentId)).rejects.toEqual({'status': 404});
+    });
+  });
+  describe('retrieveDocumentStream', () => {
+    it('should request the document as a stream', async () => {
+      //Given
+      const mockStream = Readable.from(['test']);
+      const mockGet = jest.fn().mockResolvedValue({
+        data: mockStream,
+        headers: {
+          'content-type': 'application/pdf',
+          'original-file-name': 'example.pdf',
+          'content-length': '4',
+        }});
+      mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl, true);
+
+      //When
+      const fileResponse: FileStreamResponse = await civilServiceClient.retrieveDocumentStream(appReq, 'document-id');
+
+      //Then
+      expect(mockGet.mock.calls[0][0]).toEqual(CIVIL_SERVICE_DOWNLOAD_DOCUMENT_URL.replace(':documentId', 'document-id'));
+      expect(mockGet.mock.calls[0][1].responseType).toEqual('stream');
+      expect(fileResponse).toEqual(new FileStreamResponse('application/pdf', 'example.pdf', '4', mockStream));
+    });
+
+    it('should return error', async () => {
+      //Given
+      const mockGet = jest.fn().mockRejectedValueOnce({ status: 404 });
+      mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl, true);
+      //Then
+      await expect(civilServiceClient.retrieveDocumentStream(appReq, 'document-id')).rejects.toEqual({'status': 404});
+    });
+
+    it('should destroy the error response stream', async () => {
+      //Given
+      const errorBody = Readable.from(['not found']);
+      const error = {response: {status: 404, data: errorBody}};
+      const mockGet = jest.fn().mockRejectedValueOnce(error);
+      mockedAxios.create.mockReturnValueOnce({get: mockGet} as unknown as AxiosInstance);
+      const civilServiceClient = new CivilServiceClient(baseUrl, true);
+      //Then
+      await expect(civilServiceClient.retrieveDocumentStream(appReq, 'document-id')).rejects.toBe(error);
+      expect(errorBody.destroyed).toBe(true);
     });
   });
   describe('submitDefendantResponseEvent', () => {

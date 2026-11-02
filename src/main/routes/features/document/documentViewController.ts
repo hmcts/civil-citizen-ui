@@ -2,7 +2,7 @@ import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import config from 'config';
 import {CASE_DOCUMENT_VIEW_URL} from '../../urls';
 import {CivilServiceClient} from 'client/civilServiceClient';
-import {viewFile} from 'common/utils/downloadUtils';
+import {viewFileStream} from 'common/utils/downloadUtils';
 import {AppRequest} from 'models/AppRequest';
 import {getRouteParam} from 'common/utils/routeParamUtils';
 
@@ -12,8 +12,8 @@ const civilServiceClientForDocRetrieve: CivilServiceClient = new CivilServiceCli
 
 documentViewController.get(CASE_DOCUMENT_VIEW_URL, (async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const document = await civilServiceClientForDocRetrieve.retrieveDocument(<AppRequest> req, getRouteParam(req, 'documentId'));
-    viewFile(res, document);
+    const document = await civilServiceClientForDocRetrieve.retrieveDocumentStream(<AppRequest> req, getRouteParam(req, 'documentId'));
+    viewFileStream(res, document);
   } catch (error) {
     next(error);
   }

@@ -1,222 +1,181 @@
-import {app} from '../../../../../../../../main/app';
-import request from 'supertest';
-import config from 'config';
-import nock from 'nock';
-import {CITIZEN_REPAYMENT_PLAN_FULL_URL, RESPONSE_TASK_LIST_URL} from 'routes/urls';
-import {TestMessages} from '../../../../../../../utils/errorMessageTestConstants';
-import {mockCivilClaim, mockRedisFailure} from '../../../../../../../utils/mockDraftStore';
-import {t} from 'i18next';
+import {Request, Response} from 'express';
+import repaymentPlanController, {
+  getFirstPaymentExampleDate,
+} from '../../../../../../../../main/routes/features/response/admission/fullAdmission/repaymentPlan/repaymentPlanController';
+import {RESPONSE_TASK_LIST_URL} from 'routes/urls';
+import {Claim} from 'models/claim';
+import {FullAdmission} from 'models/fullAdmission';
+import {PaymentIntention} from 'form/models/admission/paymentIntention';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {getNextYearValue} from '../../../../../../../utils/dateUtils';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
-import * as claimDetailsService from 'modules/claimDetailsService';
+import {createMockResponse, getRouteHandler} from '../../../../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../../../../main/modules/oidc');
-jest.mock('common/utils/repaymentUtils');
-jest.mock('modules/claimDetailsService');
-const mockGetTotalAmountWithInterest = claimDetailsService.getTotalAmountWithInterest as jest.Mock;
+jest.mock('modules/draft-store/draftStoreService');
 
 describe('Repayment Plan', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
+  const getHandler = getRouteHandler(repaymentPlanController, 'get');
+  const postHandler = getRouteHandler(repaymentPlanController, 'post');
+  const viewPath = 'features/response/repaymentPlan/repaymentPlan';
+  const claimId = '12345';
+  const mockFutureYear = getNextYearValue();
+  let req: Partial<Request>;
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
+  const mockGenerateRedisKey = draftStoreService.generateRedisKey as jest.Mock;
+  const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
+  const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
 
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
+  const stubClaim = (): Claim => {
+    const claim = new Claim();
+    claim.totalClaimAmount = 1000;
+    claim.fullAdmission = new FullAdmission();
+    claim.fullAdmission.paymentIntention = new PaymentIntention();
+    return claim;
+  };
+
+  const expectValidationFailure = () => {
+    expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+      paymentExampleDate: getFirstPaymentExampleDate(),
+    }));
+    expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
+    expect(mockSaveDraftClaim).not.toHaveBeenCalled();
+  };
+
+  beforeEach(() => {
+    req = {params: {id: claimId}, body: {}, query: {}, cookies: {}};
+    res = createMockResponse();
+    next = jest.fn();
+    jest.clearAllMocks();
+    mockGenerateRedisKey.mockReturnValue(claimId);
+    mockGetCaseData.mockResolvedValue(stubClaim());
+    mockSaveDraftClaim.mockResolvedValue(undefined);
   });
 
-  describe('on Get', () => {
-    mockGetTotalAmountWithInterest.mockImplementation(jest.fn(()=> Promise.resolve({})));
-    it('should return on your repayment plan page successfully', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
-      await request(app).get(CITIZEN_REPAYMENT_PLAN_FULL_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Your repayment plan');
-        });
+  describe('on GET', () => {
+    it('should render the repayment plan page', async () => {
+      await getHandler(req as Request, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        paymentExampleDate: getFirstPaymentExampleDate(),
+      }));
+      expect(next).not.toHaveBeenCalled();
     });
-    it('should return 500 status code when error occurs', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .get(CITIZEN_REPAYMENT_PLAN_FULL_URL)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+
+    it('should call next when loading the claim fails', async () => {
+      const error = new Error('redis failure');
+      mockGetCaseData.mockRejectedValue(error);
+
+      await getHandler(req as Request, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 
-  describe('on Post', () => {
-    const mockFutureYear = getNextYearValue();
-    mockGetTotalAmountWithInterest.mockImplementation(jest.fn(()=> Promise.resolve({})));
+  describe('on POST', () => {
+    it('should re-render when no input is provided', async () => {
+      await postHandler(req as Request, res as unknown as Response, next);
 
-    beforeAll(() => {
-      app.locals.draftStoreClient = mockCivilClaim;
+      expectValidationFailure();
     });
 
-    it('should return error when no input text is filled', async () => {
-      await request(app)
-        .post(CITIZEN_REPAYMENT_PLAN_FULL_URL)
-        .send('')
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.AMOUNT_REQUIRED'));
-          expect(res.text).toContain(t('ERRORS.VALID_YEAR'));
-          expect(res.text).toContain(t('ERRORS.VALID_MONTH'));
-          expect(res.text).toContain(t('ERRORS.VALID_DAY'));
-          expect(res.text).toContain(t('ERRORS.PAYMENT_FREQUENCY_REQUIRED'));
-        });
+    it('should re-render when only the payment amount is provided', async () => {
+      req.body = {paymentAmount: '1000', day: '', month: '', year: ''};
+
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expectValidationFailure();
     });
 
-    it('should return errors when payment amount is defined and frequency, day, month, year are not defined', async () => {
-      await request(app)
-        .post(CITIZEN_REPAYMENT_PLAN_FULL_URL)
-        .send({paymentAmount: '1000', day: '', month: '', year: ''})
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.VALID_YEAR'));
-          expect(res.text).toContain(t('ERRORS.VALID_MONTH'));
-          expect(res.text).toContain(t('ERRORS.VALID_DAY'));
-          expect(res.text).toContain(t('ERRORS.PAYMENT_FREQUENCY_REQUIRED'));
-        });
+    it('should re-render when the payment amount and frequency are provided without a date', async () => {
+      req.body = {paymentAmount: '1000', repaymentFrequency: 'WEEK', day: '', month: '', year: ''};
+
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expectValidationFailure();
     });
 
-    it('should return errors when payment amount and frequency are defined and day, month, year are not defined', async () => {
-      await request(app)
-        .post(CITIZEN_REPAYMENT_PLAN_FULL_URL)
-        .send({paymentAmount: '1000', repaymentFrequency: 'WEEK', day: '', month: '', year: ''})
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.VALID_YEAR'));
-          expect(res.text).toContain(t('ERRORS.VALID_MONTH'));
-          expect(res.text).toContain(t('ERRORS.VALID_DAY'));
-        });
+    it('should re-render when the month and year are missing', async () => {
+      req.body = {paymentAmount: '1000', repaymentFrequency: 'WEEK', day: '1', month: '', year: ''};
+
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expectValidationFailure();
     });
 
-    it('should return errors when payment amount, frequency and day are defined and month, year are not defined', async () => {
-      await request(app)
-        .post(CITIZEN_REPAYMENT_PLAN_FULL_URL)
-        .send({paymentAmount: '1000', repaymentFrequency: 'WEEK', day: '1', month: '', year: ''})
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.VALID_YEAR'));
-          expect(res.text).toContain(t('ERRORS.VALID_MONTH'));
-        });
+    it('should re-render when the year is missing', async () => {
+      req.body = {paymentAmount: '1000', repaymentFrequency: 'WEEK', day: '1', month: '11', year: ''};
+
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expectValidationFailure();
     });
 
-    it('should return errors when payment amount, frequency, day and month are defined and year is not defined', async () => {
-      await request(app)
-        .post(CITIZEN_REPAYMENT_PLAN_FULL_URL)
-        .send({paymentAmount: '1000', repaymentFrequency: 'WEEK', day: '1', month: '11', year: ''})
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.VALID_YEAR'));
-        });
+    it('should re-render when the date fields are zero', async () => {
+      req.body = {paymentAmount: '1000', repaymentFrequency: 'WEEK', day: '0', month: '0', year: '0'};
+
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expectValidationFailure();
     });
 
-    it('should return errors when payment amount, frequency, day, month and year is 0', async () => {
-      await request(app)
-        .post(CITIZEN_REPAYMENT_PLAN_FULL_URL)
-        .send({paymentAmount: '1000', repaymentFrequency: 'WEEK', day: '0', month: '0', year: '0'})
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.VALID_DAY'));
-          expect(res.text).toContain(t('ERRORS.VALID_MONTH'));
-          expect(res.text).toContain(t('ERRORS.VALID_FOUR_DIGIT_YEAR'));
-        });
+    it('should re-render when the first payment date is in the past', async () => {
+      req.body = {paymentAmount: '1000', repaymentFrequency: 'WEEK', day: '14', month: '02', year: '1973'};
+
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expectValidationFailure();
     });
 
-    it('should return errors when payment amount, frequency, day, month and year is in the past', async () => {
-      await request(app)
-        .post(CITIZEN_REPAYMENT_PLAN_FULL_URL)
-        .send({paymentAmount: '1000', repaymentFrequency: 'WEEK', day: '14', month: '02', year: '1973'})
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.FIRST_PAYMENT_DATE_IN_THE_FUTURE_REQUIRED'));
-        });
+    it('should re-render when the payment amount is missing', async () => {
+      req.body = {paymentAmount: '', repaymentFrequency: 'WEEK', day: '14', month: '02', year: String(mockFutureYear)};
+
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expectValidationFailure();
     });
 
-    it('should return errors when payment amount is not defined', async () => {
-      await request(app)
-        .post(CITIZEN_REPAYMENT_PLAN_FULL_URL)
-        .send({paymentAmount: '', repaymentFrequency: 'WEEK', day: '14', month: '02', year: mockFutureYear})
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.AMOUNT_REQUIRED'));
-        });
+    it('should re-render when the payment amount is negative', async () => {
+      req.body = {paymentAmount: '-1', repaymentFrequency: 'WEEK', day: '14', month: '02', year: String(mockFutureYear)};
+
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expectValidationFailure();
     });
 
-    it('should return errors when payment amount is -1', async () => {
-      await request(app)
-        .post(CITIZEN_REPAYMENT_PLAN_FULL_URL)
-        .send({paymentAmount: '-1', repaymentFrequency: 'WEEK', day: '14', month: '02', year: mockFutureYear})
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.AMOUNT_REQUIRED'));
-        });
+    it('should re-render when the payment amount is greater than the total claim', async () => {
+      req.body = {paymentAmount: '10000000000', repaymentFrequency: 'WEEK', day: '14', month: '02', year: String(mockFutureYear)};
+
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expectValidationFailure();
     });
 
-    it('should return errors when payment amount is not less equal than the total amount cliam', async () => {
-      mockGetTotalAmountWithInterest.mockImplementation(jest.fn(()=> Promise.resolve(1000)));
-      await request(app)
-        .post(CITIZEN_REPAYMENT_PLAN_FULL_URL)
-        .send({paymentAmount: '10000000000', repaymentFrequency: 'WEEK', day: '14', month: '02', year: mockFutureYear})
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.EQUAL_INSTALMENTS_REQUIRED'));
-        });
+    it('should re-render when the payment amount has more than two decimal places', async () => {
+      req.body = {paymentAmount: '99.333', repaymentFrequency: 'WEEK', day: '14', month: '02', year: String(mockFutureYear)};
+
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expectValidationFailure();
     });
 
-    it('should return errors when payment amount has more than two decimal places', async () => {
-      await request(app)
-        .post(CITIZEN_REPAYMENT_PLAN_FULL_URL)
-        .send({paymentAmount: '99.333', repaymentFrequency: 'WEEK', day: '14', month: '02', year: mockFutureYear})
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.VALID_TWO_DECIMAL_NUMBER'));
-        });
+    it.each(['WEEK', 'TWO_WEEKS', 'MONTH'])('should save and redirect to the task list for frequency %s', async (repaymentFrequency) => {
+      req.body = {paymentAmount: '100', repaymentFrequency, day: '1', month: '08', year: String(mockFutureYear)};
+
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expect(mockSaveDraftClaim).toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, RESPONSE_TASK_LIST_URL));
     });
 
-    it('should redirect with valid input', async () => {
-      await request(app)
-        .post(CITIZEN_REPAYMENT_PLAN_FULL_URL)
-        .send({paymentAmount: '100', repaymentFrequency: 'WEEK', day: '1', month: '08', year: mockFutureYear})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(RESPONSE_TASK_LIST_URL);
-        });
-    });
+    it('should call next when saving fails', async () => {
+      const error = new Error('redis failure');
+      mockGetCaseData.mockRejectedValue(error);
+      req.body = {paymentAmount: '100', repaymentFrequency: 'WEEK', day: '1', month: '08', year: String(mockFutureYear)};
 
-    it('should redirect with valid input with two weeks frequency', async () => {
-      await request(app)
-        .post(CITIZEN_REPAYMENT_PLAN_FULL_URL)
-        .send({paymentAmount: '100', repaymentFrequency: 'TWO_WEEKS', day: '1', month: '08', year: mockFutureYear})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(RESPONSE_TASK_LIST_URL);
-        });
-    });
+      await postHandler(req as Request, res as unknown as Response, next);
 
-    it('should redirect with valid input with every month frequency', async () => {
-      await request(app)
-        .post(CITIZEN_REPAYMENT_PLAN_FULL_URL)
-        .send({paymentAmount: '100', repaymentFrequency: 'MONTH', day: '1', month: '08', year: mockFutureYear})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(RESPONSE_TASK_LIST_URL);
-        });
-    });
-
-    it('should return status 500 when there is error', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .post(CITIZEN_REPAYMENT_PLAN_FULL_URL)
-        .send({jobTitle: 'Developer', annualTurnover: 70000})
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 });

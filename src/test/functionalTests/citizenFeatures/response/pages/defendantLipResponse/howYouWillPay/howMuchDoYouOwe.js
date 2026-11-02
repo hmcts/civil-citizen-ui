@@ -27,7 +27,7 @@ class HowMuchDoYouOwe {
     await I.see(content.hintText(totalAmount)[language]);
     await I.fillField(fields.amount, amount);
     await I.click(cButtons.saveAndContinue[language]);
-    await I.see('Respond to a money claim');
+    await I.waitForContent('Respond to a money claim', config.WaitForText);
   }
 
   async enterHowMuchMoneyDoYouOweError(claimRef, amount) {

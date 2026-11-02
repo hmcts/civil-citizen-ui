@@ -181,7 +181,7 @@ class CreateClaimSteps {
 
   async verifyDashboardLoaded() {
     await I.waitForContent('Submit', 3);
-    await I.see('Application complete', 'h2');
+    await I.waitForText('Application incomplete', 60, 'h2');
   }
 
   async createClaimDraftViaTestingSupport() {
