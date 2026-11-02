@@ -1,75 +1,122 @@
-import {getCarer, saveCarer} from 'services/features/response/statementOfMeans/carerService';
-import * as draftStoreService from '../../../../../../main/modules/draft-store/draftStoreService';
+import {CarerService} from 'services/features/response/statementOfMeans/carerService';
+import {getResponseClaimById, getResponseDraft, updateResponseDraft} from 'modules/draft-store/response/responseDraftStoreService';
 import {Claim} from 'models/claim';
 import {StatementOfMeans} from 'models/statementOfMeans';
-import {YesNo} from 'form/models/yesNo';
+import {GenericForm} from 'form/models/genericForm';
 import {GenericYesNo} from 'form/models/genericYesNo';
+import {YesNo} from 'form/models/yesNo';
+import {AppRequest} from 'models/AppRequest';
+import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
 
-jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
-jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('modules/draft-store/response/responseDraftStoreService');
 
-const claimId = '123';
+const mockGetResponseClaimById = getResponseClaimById as jest.Mock;
+const mockGetResponseDraft = getResponseDraft as jest.Mock;
+const mockUpdateResponseDraft = updateResponseDraft as jest.Mock;
 
-describe('Carer service', () => {
-  describe('get carer form model', () => {
-    it('should return an empty form model when no data retrieved', async () => {
-      //Given
-      const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
-      const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
-      mockGetCaseData.mockImplementation(async () => {
-        return new Claim();
-      });
-      //When
-      const result = await getCarer(claimId);
-      //Then
-      expect(spyGetCaseDataFromStore).toBeCalled();
-      expect(result).toEqual(new GenericYesNo());
+const caseId = '1645882162449409';
+const mockReq = {
+  params: {id: caseId},
+  session: {user: {id: 'user-1', accessToken: 'token'}},
+} as unknown as AppRequest;
+
+const mockDraftResult = (claim: Claim) => ({
+  claimResponse: {id: 'draft-123', case_data: claim},
+  rawResponse: {draftId: 'draft-123', payload: claim},
+  createdAt: '2026-01-01T00:00:00.000Z',
+  updatedAt: '',
+  expiresAt: '',
+});
+
+const carerService = new CarerService();
+
+describe('Carer Service', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  describe('getCarer', () => {
+    it('should return empty form when carer is not set', async () => {
+      mockGetResponseClaimById.mockResolvedValue(new Claim());
+
+      const form = await carerService.getCarer(mockReq);
+
+      expect(form.model.option).toBeUndefined();
+      expect(mockGetResponseClaimById).toHaveBeenCalledWith(mockReq, caseId);
     });
-    it('should return populated form model when data exists', async () => {
-      //Given
-      const spyGetCaseDataFromStore = jest.spyOn(draftStoreService, 'getCaseDataFromStore');
-      const claim = createClaim();
-      const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
-      mockGetCaseData.mockImplementation(async () => {
-        return claim;
-      });
-      //When
-      const result = await getCarer(claimId);
-      //Then
-      expect(spyGetCaseDataFromStore).toBeCalled();
-      expect(result).not.toBeNull();
-      expect(result.option).toBeTruthy();
+
+    it('should return populated form when carer exists', async () => {
+      const claim = new Claim();
+      claim.statementOfMeans = new StatementOfMeans();
+      claim.statementOfMeans.carer = new GenericYesNo(YesNo.YES);
+      mockGetResponseClaimById.mockResolvedValue(claim);
+
+      const form = await carerService.getCarer(mockReq);
+
+      expect(form.model.option).toBe(YesNo.YES);
+    });
+
+    it('should throw when getResponseClaimById fails', async () => {
+      mockGetResponseClaimById.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
+
+      await expect(carerService.getCarer(mockReq)).rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
   });
 
-  describe('save carer data', () => {
-    it('should save data successfully', async () => {
-      //Given
-      const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
-      //When
-      await saveCarer(claimId, new GenericYesNo(YesNo.YES));
-      //Then
-      expect(spySave).toBeCalled();
+  describe('saveCarer', () => {
+    it('should throw when no response draft is found', async () => {
+      mockGetResponseDraft.mockResolvedValue(null);
+
+      await expect(carerService.saveCarer(mockReq, new GenericForm(new GenericYesNo(YesNo.NO))))
+        .rejects.toThrow('[carerService] no response draft found');
+      expect(mockUpdateResponseDraft).not.toHaveBeenCalled();
     });
-    it('should save carer data if statementOfMeans does´t exist', async () => {
-      //Given
-      const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
-      const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
-      mockGetCaseData.mockImplementation(async () => {
-        return new Claim();
-      });
-      //When
-      await saveCarer(claimId, new GenericYesNo(YesNo.YES));
-      //Then
-      expect(spySave).toBeCalled();
+
+    it('should save when statement of means does not exist', async () => {
+      mockGetResponseDraft.mockResolvedValue(mockDraftResult(new Claim()));
+      mockUpdateResponseDraft.mockResolvedValue({});
+
+      await carerService.saveCarer(mockReq, new GenericForm(new GenericYesNo(YesNo.YES)));
+
+      expect(mockUpdateResponseDraft).toHaveBeenCalledWith(
+        mockReq,
+        caseId,
+        expect.objectContaining({
+          statementOfMeans: expect.objectContaining({
+            carer: expect.objectContaining({option: YesNo.YES}),
+          }),
+          draftClaimCreatedAt: new Date('2026-01-01T00:00:00.000Z'),
+        }),
+        'draft-123',
+      );
+    });
+
+    it('should save when statement of means already exists', async () => {
+      const claim = new Claim();
+      claim.statementOfMeans = new StatementOfMeans();
+      mockGetResponseDraft.mockResolvedValue(mockDraftResult(claim));
+      mockUpdateResponseDraft.mockResolvedValue({});
+
+      await carerService.saveCarer(mockReq, new GenericForm(new GenericYesNo(YesNo.NO)));
+
+      expect(mockUpdateResponseDraft).toHaveBeenCalledWith(
+        mockReq,
+        caseId,
+        expect.objectContaining({
+          statementOfMeans: expect.objectContaining({
+            carer: expect.objectContaining({option: YesNo.NO}),
+          }),
+        }),
+        'draft-123',
+      );
+    });
+
+    it('should throw when updateResponseDraft fails', async () => {
+      mockGetResponseDraft.mockResolvedValue(mockDraftResult(new Claim()));
+      mockUpdateResponseDraft.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
+
+      await expect(carerService.saveCarer(mockReq, new GenericForm(new GenericYesNo(YesNo.YES))))
+        .rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
   });
 });
-
-function createClaim() {
-  const claim = new Claim();
-  const statementOfMeans = new StatementOfMeans();
-  statementOfMeans.carer = new GenericYesNo(YesNo.YES);
-  claim.statementOfMeans = statementOfMeans;
-  return claim;
-}
