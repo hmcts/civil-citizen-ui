@@ -83,9 +83,8 @@ export class PostcodeValidator implements ValidatorConstraintInterface {
       if (country) {
         return country === 'England' || country === 'Wales';
       }
-    } catch (err) {
-      // Log only the message: axios errors carry config.headers (including the OS key).
-      logger.info(`Failed to fetch postcode info for ${trimmed}: ${(err as Error)?.message}`);
+    } catch {
+      logger.info('Postcode validation failed due to Ordnance Survey lookup failure');
       return false;
     }
     return false;
