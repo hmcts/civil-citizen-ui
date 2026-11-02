@@ -1,30 +1,64 @@
-import config from 'config';
-import nock from 'nock';
-import request from 'supertest';
-import {app} from '../../../../../../main/app';
-import {CCJ_REPAYMENT_PLAN_DEFENDANT_URL} from 'routes/urls';
-import {mockCivilClaim} from '../../../../../utils/mockDraftStore';
+import {Response} from 'express';
 import {t} from 'i18next';
+import repaymentPlanSummaryDefendantController from 'routes/features/claimantResponse/ccj/repaymentPlanSummaryDefendantController';
+import {CCJ_REPAYMENT_PLAN_DEFENDANT_URL} from 'routes/urls';
+import {getClaimById} from 'modules/utilityService';
+import {Claim} from 'models/claim';
+import {Party} from 'models/party';
+import {ResponseType} from 'form/models/responseType';
+import {PartialAdmission} from 'models/partialAdmission';
+import {PaymentIntention} from 'form/models/admission/paymentIntention';
+import {PaymentOptionType} from 'form/models/admission/paymentOption/paymentOptionType';
+import {HowMuchDoYouOwe} from 'form/models/admission/partialAdmission/howMuchDoYouOwe';
+import {TransactionSchedule} from 'form/models/statementOfMeans/expensesAndIncome/transactionSchedule';
+import {AppRequest} from 'models/AppRequest';
+import {createMockResponse, createMockSession, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('modules/utilityService', () => ({
+  getClaimById: jest.fn(),
+}));
+
+const viewPath = 'features/claimantResponse/ccj/repayment-plan-summary';
+const claimId = '12345';
+
+const repaymentClaim = (): Claim => {
+  const claim = new Claim();
+  claim.totalClaimAmount = 1000;
+  claim.respondent1 = new Party();
+  claim.respondent1.responseType = ResponseType.PART_ADMISSION;
+  claim.partialAdmission = new PartialAdmission();
+  claim.partialAdmission.howMuchDoYouOwe = new HowMuchDoYouOwe(200, 1000);
+  claim.partialAdmission.paymentIntention = new PaymentIntention();
+  claim.partialAdmission.paymentIntention.paymentOption = PaymentOptionType.INSTALMENTS;
+  claim.partialAdmission.paymentIntention.paymentDate = new Date('2026-12-01');
+  claim.partialAdmission.paymentIntention.repaymentPlan = {
+    paymentAmount: 50,
+    repaymentFrequency: TransactionSchedule.MONTH,
+    firstRepaymentDate: new Date('2026-12-01'),
+  };
+  return claim;
+};
 
 describe('CCJ - repayment plan', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
+  it('should return repayment plan page', async () => {
+    (getClaimById as jest.Mock).mockResolvedValue(repaymentClaim());
+    const res = createMockResponse();
 
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-  });
+    await getRouteHandler(repaymentPlanSummaryDefendantController, 'get', CCJ_REPAYMENT_PLAN_DEFENDANT_URL)(
+      {
+        params: {id: claimId},
+        query: {},
+        cookies: {lang: 'en'},
+        session: createMockSession(),
+      } as unknown as AppRequest,
+      res as unknown as Response,
+      jest.fn(),
+    );
 
-  describe('on GET', () => {
-    it('should return repayment plan page', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
-      const res = await request(app).get(CCJ_REPAYMENT_PLAN_DEFENDANT_URL);
-      expect(res.status).toBe(200);
-      expect(res.text).toContain(t('PAGES.REPAYMENT_PLAN_SUMMARY.CLAIMANTS_REPAYMENT_PLAN'));    });
-
+    expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+      paymentOption: PaymentOptionType.INSTALMENTS,
+      amount: 200,
+      pageTitle: t('PAGES.REPAYMENT_PLAN_SUMMARY.CLAIMANTS_REPAYMENT_PLAN', {lng: 'en'}),
+    }));
   });
 });
