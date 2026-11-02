@@ -1,328 +1,227 @@
-import request from 'supertest';
-import {app} from '../../../../../main/app';
-import nock from 'nock';
-import config from 'config';
+import {NextFunction, Response} from 'express';
+import i18next from 'i18next';
+import en from 'modules/i18n/locales/en.json';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {CaseState} from 'form/models/claimDetails';
+import {GenericYesNoCarmEmailConfirmation} from 'form/models/genericYesNoCarmEmailConfirmation';
+import {YesNo} from 'form/models/yesNo';
+import {generateRedisKey, getCaseDataFromStore, getDraftClaimFromStore} from 'modules/draft-store/draftStoreService';
+import {Claim} from 'models/claim';
+import {AppRequest} from 'models/AppRequest';
+import {MediationCarm} from 'models/mediation/mediationCarm';
+import emailMediationConfirmationController from 'routes/features/mediation/emailMediationConfirmationController';
 import {
   MEDIATION_ALTERNATIVE_EMAIL_URL,
   MEDIATION_EMAIL_CONFIRMATION_URL,
   MEDIATION_NEXT_3_MONTHS_URL,
 } from 'routes/urls';
-import {TestMessages} from '../../../../utils/errorMessageTestConstants';
-import * as draftStoreService from 'modules/draft-store/draftStoreService';
-import {Claim} from 'models/claim';
-import {Party} from 'models/party';
-import {CaseState} from 'form/models/claimDetails';
-import {CCDClaim, CivilClaimResponse} from 'models/civilClaimResponse';
-import {MediationCarm} from 'models/mediation/mediationCarm';
-import {GenericYesNoCarmEmailConfirmation} from 'form/models/genericYesNoCarmEmailConfirmation';
+import {getMediationCarm, saveMediationCarm} from 'services/features/response/mediation/mediationService';
+import {createMockResponse, createMockSession, getRouteHandler} from '../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../main/modules/oidc');
-jest.mock('../../../../../main/modules/draft-store');
-jest.mock('../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('services/features/response/mediation/mediationService', () => ({
+  getMediationCarm: jest.fn(),
+  saveMediationCarm: jest.fn(),
+}));
+
+jest.mock('modules/draft-store/draftStoreService', () => ({
+  generateRedisKey: jest.fn(),
+  getCaseDataFromStore: jest.fn(),
+  getDraftClaimFromStore: jest.fn(),
+}));
+
+const mockGetMediationCarm = getMediationCarm as jest.Mock;
+const mockSaveMediationCarm = saveMediationCarm as jest.Mock;
+const mockGenerateRedisKey = generateRedisKey as jest.Mock;
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
+const mockGetDraftClaim = getDraftClaimFromStore as jest.Mock;
+
+const claimId = '1111';
+const redisKey = '12345';
+const viewPath = 'features/common/yes-no-common-page';
+
+const defendantClaim = (): Claim => {
+  const claim = new Claim();
+  claim.ccdState = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
+  return claim;
+};
+
+const claimantClaim = (): Claim => {
+  const claim = new Claim();
+  claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
+  return claim;
+};
+
+const invoke = async (method: 'get' | 'post', overrides: Partial<AppRequest> = {}) => {
+  const res = createMockResponse();
+  const next = jest.fn() as NextFunction;
+  const req = {
+    params: {id: claimId},
+    body: {},
+    query: {},
+    cookies: {lang: 'en'},
+    session: createMockSession({user: {id: 'user-1'}}),
+    ...overrides,
+  };
+  await getRouteHandler(emailMediationConfirmationController, method, MEDIATION_EMAIL_CONFIRMATION_URL)(
+    req as AppRequest,
+    res as unknown as Response,
+    next,
+  );
+  return {res, next};
+};
+
+const rendered = (res: ReturnType<typeof createMockResponse>) =>
+  (res.render as jest.Mock).mock.calls[0][1];
 
 describe('Mediation Email Mediation Confirmation Controller', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
-  const mockDraftClaimFromStore = draftStoreService.getDraftClaimFromStore as jest.Mock;
-  const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
-
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
+  beforeAll(async () => {
+    await i18next.init({lng: 'en', fallbackLng: 'en', resources: {en: {translation: en}}});
   });
 
   beforeEach(() => {
-    mockDraftClaimFromStore.mockImplementation(async () => {
-      const claim = new Claim();
-      claim.respondent1 = new Party();
-      claim.respondent1.emailAddress = {emailAddress: 'test@test.com'};
-      claim.ccdState = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
-      const civilClaimResponse = new CivilClaimResponse();
-      civilClaimResponse.case_data = claim as unknown as CCDClaim;
-      return civilClaimResponse;
+    jest.clearAllMocks();
+    mockGenerateRedisKey.mockReturnValue(redisKey);
+    mockGetCaseData.mockResolvedValue(defendantClaim());
+    mockGetDraftClaim.mockResolvedValue({
+      case_data: {respondent1: {emailAddress: {emailAddress: 'test@test.com'}}},
     });
-    mockGetCaseData.mockImplementation(async () => {
-      const claim = new Claim();
-      claim.respondent1 = new Party();
-      claim.respondent1.emailAddress = {emailAddress: 'test@test.com'};
-      claim.ccdState = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
-      return claim;
-    });
+    mockGetMediationCarm.mockResolvedValue(new MediationCarm());
+    mockSaveMediationCarm.mockResolvedValue(undefined);
   });
 
   describe('on GET', () => {
     it('should return Email Mediation Confirmation page', async () => {
-      await request(app)
-        .get(MEDIATION_EMAIL_CONFIRMATION_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.MEDIATION_EMAIL_CONFIRMATION);
-        });
-    });
+      const {res} = await invoke('get');
 
-    it('should support explicit language query parameter', async () => {
-      await request(app)
-        .get(`${MEDIATION_EMAIL_CONFIRMATION_URL}?lang=en`)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.MEDIATION_EMAIL_CONFIRMATION);
-        });
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        pageTitle: 'PAGES.MEDIATION_EMAIL_CONFIRMATION.PAGE_TITLE',
+        pageText: expect.stringContaining('test@test.com'),
+        isCarm: true,
+      }));
     });
 
     it('should return claimant mediation email confirmation page when claimant response is pending', async () => {
-      mockGetCaseData.mockImplementation(async () => {
-        const claim = new Claim();
-        claim.applicant1 = new Party();
-        claim.applicant1.emailAddress = {emailAddress: 'claimant-email@test.com'};
-        claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
-        jest.spyOn(claim, 'isClaimantIntentionPending').mockReturnValue(true);
-        return claim;
-      });
-      mockDraftClaimFromStore.mockImplementation(async () => {
-        const claim = new Claim();
-        claim.applicant1 = new Party();
-        claim.applicant1.emailAddress = {emailAddress: 'claimant-email@test.com'};
-        claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
-        const civilClaimResponse = new CivilClaimResponse();
-        civilClaimResponse.case_data = claim as unknown as CCDClaim;
-        return civilClaimResponse;
+      mockGetCaseData.mockResolvedValue(claimantClaim());
+      mockGetDraftClaim.mockResolvedValue({
+        case_data: {applicant1: {emailAddress: {emailAddress: 'claimant-email@test.com'}}},
       });
 
-      await request(app)
-        .get(MEDIATION_EMAIL_CONFIRMATION_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('claimant-email@test.com');
-        });
+      const {res} = await invoke('get');
+
+      expect(rendered(res).pageText).toEqual(expect.stringContaining('claimant-email@test.com'));
     });
 
     it('should preselect option when mediation email answer already exists', async () => {
-      mockGetCaseData.mockImplementation(async () => {
-        const claim = new Claim();
-        claim.respondent1 = new Party();
-        claim.respondent1.emailAddress = {emailAddress: 'test@test.com'};
-        claim.mediationCarm = new MediationCarm(undefined, undefined, new GenericYesNoCarmEmailConfirmation('yes'));
-        claim.ccdState = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
-        return claim;
-      });
+      mockGetMediationCarm.mockResolvedValue(
+        new MediationCarm(undefined, undefined, new GenericYesNoCarmEmailConfirmation(YesNo.YES)),
+      );
 
-      await request(app)
-        .get(MEDIATION_EMAIL_CONFIRMATION_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('checked');
-        });
+      const {res} = await invoke('get');
+
+      expect(rendered(res).form.model.option).toBe(YesNo.YES);
     });
 
     it('should use partyEmail when emailAddress is not available', async () => {
-      mockDraftClaimFromStore.mockImplementation(async () => {
-        const claim = new Claim();
-        claim.respondent1 = new Party();
-        Object.assign(claim.respondent1, {partyEmail: 'party-email@test.com'});
-        claim.ccdState = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
-        const civilClaimResponse = new CivilClaimResponse();
-        civilClaimResponse.case_data = claim as unknown as CCDClaim;
-        return civilClaimResponse;
+      mockGetDraftClaim.mockResolvedValue({
+        case_data: {respondent1: {partyEmail: 'party-email@test.com'}},
       });
 
-      await request(app)
-        .get(MEDIATION_EMAIL_CONFIRMATION_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('party-email@test.com');
-        });
+      const {res} = await invoke('get');
+
+      expect(rendered(res).pageText).toEqual(expect.stringContaining('party-email@test.com'));
     });
 
-    it('should return http 500 when has error', async () => {
-      mockGetCaseData.mockImplementation(async () => {
-        throw new Error(TestMessages.REDIS_FAILURE);
-      });
-      await request(app)
-        .get(MEDIATION_EMAIL_CONFIRMATION_URL)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+    it('should call next when loading the email confirmation fails', async () => {
+      const error = new Error('redis failure');
+      mockGetCaseData.mockRejectedValue(error);
+
+      const {next} = await invoke('get');
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 
   describe('on POST', () => {
-    describe('defendant response', () => {
-      it('should redirect page when NO', async () => {
-        await request(app)
-          .post(MEDIATION_EMAIL_CONFIRMATION_URL)
-          .send({option: 'no'})
-          .expect((res) => {
-            expect(res.status).toBe(302);
-            expect(res.header.location).toEqual(MEDIATION_ALTERNATIVE_EMAIL_URL);
-          });
-      });
-      it('should redirect page when Yes', async () => {
-        await request(app)
-          .post(MEDIATION_EMAIL_CONFIRMATION_URL)
-          .send({option: 'yes'})
-          .expect((res) => {
-            expect(res.status).toBe(302);
-            expect(res.header.location).toEqual(MEDIATION_NEXT_3_MONTHS_URL);
-          });
-      });
+    it('should redirect page when NO', async () => {
+      const {res} = await invoke('post', {body: {option: 'no'}});
+
+      expect(mockSaveMediationCarm).toHaveBeenCalledWith(redisKey, expect.anything(), 'isMediationEmailCorrect');
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, MEDIATION_ALTERNATIVE_EMAIL_URL));
     });
 
-    describe('claimant response', () => {
-      beforeEach(() => {
-        mockGetCaseData.mockImplementation(async () => {
-          const claim = new Claim();
-          claim.applicant1 = new Party();
-          claim.applicant1.emailAddress = {emailAddress: 'test@test.com'};
-          claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
-          return claim;
-        });
-      });
-      it('should redirect page when NO', async () => {
-        await request(app)
-          .post(MEDIATION_EMAIL_CONFIRMATION_URL)
-          .send({option: 'no'})
-          .expect((res) => {
-            expect(res.status).toBe(302);
-            expect(res.header.location).toEqual(MEDIATION_ALTERNATIVE_EMAIL_URL);
-          });
-      });
-      it('should redirect page when Yes', async () => {
-        await request(app)
-          .post(MEDIATION_EMAIL_CONFIRMATION_URL)
-          .send({option: 'yes'})
-          .expect((res) => {
-            expect(res.status).toBe(302);
-            expect(res.header.location).toEqual(MEDIATION_NEXT_3_MONTHS_URL);
-          });
-      });
+    it('should redirect page when Yes', async () => {
+      const {res} = await invoke('post', {body: {option: 'yes'}});
+
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, MEDIATION_NEXT_3_MONTHS_URL));
     });
 
     it('should return error on incorrect input', async () => {
-      await request(app)
-        .post(MEDIATION_EMAIL_CONFIRMATION_URL)
-        .send()
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Select if the mediation team can contact you on test@test.com about your mediation appointment or not');
-        });
+      const {res, next} = await invoke('post');
+
+      const view = rendered(res);
+      expect(view.form.hasErrors()).toBe(true);
+      expect(view.formatValues).toEqual([{
+        keyError: 'ERRORS.MEDIATION_EMAIL_CONFIRMATION_REQUIRED_RESPONDENT',
+        keyToReplace: '[email]',
+        valueToReplace: 'test@test.com',
+      }]);
+      expect(res.redirect).not.toHaveBeenCalled();
+      expect(next).not.toHaveBeenCalled();
     });
 
     it('should use claimantUserDetails email for claimant response when applicant email is missing', async () => {
-      mockGetCaseData.mockImplementation(async () => {
-        const claim = new Claim();
-        claim.applicant1 = new Party();
-        claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
-        jest.spyOn(claim, 'isClaimantIntentionPending').mockReturnValue(true);
-        return claim;
-      });
-      mockDraftClaimFromStore.mockImplementation(async () => {
-        const claim = new Claim();
-        claim.applicant1 = new Party();
-        claim.claimantUserDetails = {email: 'claimant-user@test.com', id: 'id-1'};
-        claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
-        const civilClaimResponse = new CivilClaimResponse();
-        civilClaimResponse.case_data = claim as unknown as CCDClaim;
-        return civilClaimResponse;
+      mockGetCaseData.mockResolvedValue(claimantClaim());
+      mockGetDraftClaim.mockResolvedValue({
+        case_data: {
+          applicant1: {},
+          claimantUserDetails: {email: 'claimant-user@test.com', id: 'id-1'},
+        },
       });
 
-      await request(app)
-        .post(MEDIATION_EMAIL_CONFIRMATION_URL)
-        .send()
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Select if the mediation team can contact you on claimant-user@test.com about your mediation appointment or not');
-        });
+      const {res} = await invoke('post');
+
+      expect(rendered(res).form.hasErrors()).toBe(true);
+      expect(rendered(res).formatValues).toEqual([{
+        keyError: 'ERRORS.MEDIATION_EMAIL_CONFIRMATION_REQUIRED_CLAIMANT',
+        keyToReplace: '[email]',
+        valueToReplace: 'claimant-user@test.com',
+      }]);
     });
 
-    it('should return claimant validation error without placeholder when no claimant email source exists', async () => {
-      mockGetCaseData.mockImplementation(async () => {
-        const claim = new Claim();
-        claim.ccdState = CaseState.AWAITING_APPLICANT_INTENTION;
-        jest.spyOn(claim, 'isClaimantIntentionPending').mockReturnValue(true);
-        return claim;
-      });
-      mockDraftClaimFromStore.mockImplementation(async () => {
-        const civilClaimResponse = new CivilClaimResponse();
-        civilClaimResponse.case_data = {} as CCDClaim;
-        return civilClaimResponse;
-      });
+    it('should return claimant validation error without an email when no claimant email source exists', async () => {
+      mockGetCaseData.mockResolvedValue(claimantClaim());
+      mockGetDraftClaim.mockResolvedValue({case_data: {}});
 
-      await request(app)
-        .post(MEDIATION_EMAIL_CONFIRMATION_URL)
-        .send()
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('about your mediation appointment or not');
-          expect(res.text).not.toContain('[email]');
-        });
+      const {res} = await invoke('post');
+
+      expect(rendered(res).form.hasErrors()).toBe(true);
+      expect(rendered(res).formatValues).toEqual([{
+        keyError: 'ERRORS.MEDIATION_EMAIL_CONFIRMATION_REQUIRED_CLAIMANT',
+        keyToReplace: '[email]',
+        valueToReplace: '',
+      }]);
     });
 
-    it('should return defendant validation error without placeholder when defendant party is missing', async () => {
-      mockDraftClaimFromStore.mockImplementation(async () => {
-        const civilClaimResponse = new CivilClaimResponse();
-        civilClaimResponse.case_data = {} as CCDClaim;
-        return civilClaimResponse;
-      });
+    it('should return defendant validation error without an email when defendant party email is missing', async () => {
+      mockGetDraftClaim.mockResolvedValue({case_data: {respondent1: {}}});
 
-      await request(app)
-        .post(MEDIATION_EMAIL_CONFIRMATION_URL)
-        .send()
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('about your mediation appointment or not');
-          expect(res.text).not.toContain('[email]');
-        });
+      const {res} = await invoke('post');
+
+      expect(rendered(res).form.hasErrors()).toBe(true);
+      expect(rendered(res).formatValues).toEqual([{
+        keyError: 'ERRORS.MEDIATION_EMAIL_CONFIRMATION_REQUIRED_RESPONDENT',
+        keyToReplace: '[email]',
+        valueToReplace: '',
+      }]);
     });
 
-    it('should not render [email] placeholder when no email value is available', async () => {
-      mockDraftClaimFromStore.mockImplementation(async () => {
-        const claim = new Claim();
-        claim.respondent1 = new Party();
-        claim.ccdState = CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT;
-        const civilClaimResponse = new CivilClaimResponse();
-        civilClaimResponse.case_data = claim as unknown as CCDClaim;
-        return civilClaimResponse;
-      });
+    it('should call next when saving the email confirmation fails', async () => {
+      const error = new Error('redis failure');
+      mockSaveMediationCarm.mockRejectedValue(error);
 
-      await request(app)
-        .post(MEDIATION_EMAIL_CONFIRMATION_URL)
-        .send()
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('about your mediation appointment or not');
-          expect(res.text).not.toContain('[email]');
-        });
-    });
+      const {next} = await invoke('post', {body: {option: 'no'}});
 
-    it('should return empty email when draft case data is unavailable', async () => {
-      mockDraftClaimFromStore.mockImplementation(async () => {
-        return new CivilClaimResponse();
-      });
-
-      await request(app)
-        .post(MEDIATION_EMAIL_CONFIRMATION_URL)
-        .send()
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).not.toContain('[email]');
-        });
-    });
-
-    it('should return http 500 when has error', async () => {
-      const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
-      mockSaveDraftClaim.mockImplementation(async () => {
-        throw new Error(TestMessages.REDIS_FAILURE);
-      });
-      await request(app)
-        .post(MEDIATION_EMAIL_CONFIRMATION_URL)
-        .send({option: 'no'})
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 });
