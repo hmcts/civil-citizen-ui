@@ -16,6 +16,12 @@ jest.mock('../../../../../main/modules/i18n/languageService', ()=> ({
 
 jest.mock('services/features/caseProgression/hearingDurationFormatter');
 
+jest.mock('@hmcts/nodejs-logging', () => {
+  const logger = {warn: jest.fn(), error: jest.fn(), info: jest.fn(), debug: jest.fn()};
+  return {Logger: {getLogger: () => logger}};
+});
+const mockLogger = require('@hmcts/nodejs-logging').Logger.getLogger();
+
 const hearingLocation =  new HearingLocation(  {
   code: '1',
   label: 'test - test',
@@ -83,16 +89,23 @@ describe('testing of caseProgressionHearingFee class', ()=> {
 describe('testing of caseProgressionHearing class with missing values', () => {
   const caseProgressionHearing = new CaseProgressionHearing();
 
-  it('should return empty string for hearing time when not set', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it('should return empty string and log warning for hearing time when not set', () => {
     expect(caseProgressionHearing.getHearingTimeHourMinuteFormatted()).toBe('');
+    expect(mockLogger.warn).toHaveBeenCalledWith('[CaseProgressionHearing.getHearingTimeHourMinuteFormatted] hearingTimeHourMinute missing, returning empty string');
   });
 
-  it('should return empty string for hearing date when not set', () => {
+  it('should return empty string and log warning for hearing date when not set', () => {
     expect(caseProgressionHearing.getHearingDateFormatted('en')).toBe('');
+    expect(mockLogger.warn).toHaveBeenCalledWith('[CaseProgressionHearing.getHearingDateFormatted] hearingDate missing, returning empty string');
   });
 
-  it('should return empty string for court name when location value not set', () => {
+  it('should return empty string and log warning for court name when location value not set', () => {
     expect(new HearingLocation().getCourtName()).toBe('');
+    expect(mockLogger.warn).toHaveBeenCalledWith('[HearingLocation.getCourtName] hearing location label missing, returning empty court name');
   });
 
   it('should return undefined for duration of days when hearing date not set', () => {
@@ -139,17 +152,24 @@ describe('testing of getHearingDocumentsCaseDocumentIdByType', () => {
 describe('testing of caseProgressionHearingFee class with missing values', () => {
   const hearingFeeInformation = new HearingFeeInformation();
 
-  it('should return undefined for hearing fee when not set', () => {
-    expect(hearingFeeInformation.getHearingFeeFormatted()).toBeUndefined();
+  beforeEach(() => {
+    jest.clearAllMocks();
   });
 
-  it('should return zero for hearing fee when amount is zero', () => {
+  it('should return undefined and log warning for hearing fee when not set', () => {
+    expect(hearingFeeInformation.getHearingFeeFormatted()).toBeUndefined();
+    expect(mockLogger.warn).toHaveBeenCalledWith('[HearingFeeInformation.getHearingFeeFormatted] calculatedAmountInPence missing, returning undefined');
+  });
+
+  it('should return zero for hearing fee when amount is zero without logging', () => {
     const zeroFeeInformation = new HearingFeeInformation({calculatedAmountInPence: '0', code: 'test', version: '1'});
     expect(zeroFeeInformation.getHearingFeeFormatted()).toBe(0);
+    expect(mockLogger.warn).not.toHaveBeenCalled();
   });
 
-  it('should return undefined for hearing due date when not set', () => {
+  it('should return undefined and log warning for hearing due date when not set', () => {
     expect(hearingFeeInformation.getHearingDueDateFormatted('en')).toBeUndefined();
+    expect(mockLogger.warn).toHaveBeenCalledWith('[HearingFeeInformation.getHearingDueDateFormatted] hearingDueDate missing, returning undefined');
   });
 });
 

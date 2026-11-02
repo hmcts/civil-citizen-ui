@@ -2,6 +2,9 @@ import {convertToPoundsFilter} from 'common/utils/currencyFormat';
 import {CCDClaimFee} from 'models/ccdResponse/ccdClaimFee';
 import {HearingDateTimeFormatter} from 'services/features/caseProgression/hearingDateTimeFormatter';
 
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('hearingFee');
+
 export class HearingFee implements CCDClaimFee {
   calculatedAmountInPence: string;
   code: string;
@@ -19,11 +22,19 @@ export class HearingFeeInformation {
 
   getHearingFeeFormatted(): number | undefined {
     const amountInPence = this.hearingFee?.calculatedAmountInPence;
-    return amountInPence ? convertToPoundsFilter(amountInPence) : undefined;
+    if (amountInPence === undefined || amountInPence === null) {
+      logger.warn('[HearingFeeInformation.getHearingFeeFormatted] calculatedAmountInPence missing, returning undefined');
+      return undefined;
+    }
+    return convertToPoundsFilter(amountInPence);
   }
 
   getHearingDueDateFormatted(lang: string): string | undefined {
-    return this.hearingDueDate ? HearingDateTimeFormatter.getHearingDateFormatted(this.hearingDueDate, lang) : undefined;
+    if (!this.hearingDueDate) {
+      logger.warn('[HearingFeeInformation.getHearingDueDateFormatted] hearingDueDate missing, returning undefined');
+      return undefined;
+    }
+    return HearingDateTimeFormatter.getHearingDateFormatted(this.hearingDueDate, lang);
   }
 }
 

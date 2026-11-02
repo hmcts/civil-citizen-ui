@@ -27,11 +27,10 @@ describe('case number formatter', () => {
     expect(result).toEqual(undefined);
   });
 
-  it('should return undefined when url does not match binary pattern', () => {
-    //When
-    const result = documentIdExtractor('http://dm-store/documents/testId');
-    //Then
-    expect(result).toEqual(undefined);
+  it('should throw a descriptive error when url does not match binary pattern', () => {
+    //When-Then
+    expect(() => documentIdExtractor('http://dm-store/documents/testId'))
+      .toThrow('[documentIdExtractor] document binary URL does not match expected /{documentId}/binary format');
   });
 });
 describe('removeWhiteSpacesIfNoText', () => {

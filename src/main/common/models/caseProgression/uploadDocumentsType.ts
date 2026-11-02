@@ -9,6 +9,9 @@ import {AtLeastOneCheckboxSelectedValidator} from 'form/validators/atLeastOneChe
 import {Document} from 'common/models/document/document';
 import {formatStringDateDMY} from 'common/utils/dateUtils';
 
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('uploadDocumentsType');
+
 export class UploadDocuments {
 
   @ValidateNested()
@@ -57,7 +60,11 @@ export class UploadDocumentTypes {
 
   get createdDateTimeFormatted(): string {
     const createdDatetime = this.caseDocument?.createdDatetime;
-    return createdDatetime ? formatStringDateDMY(createdDatetime) : '';
+    if (!createdDatetime) {
+      logger.warn('[UploadDocumentTypes.createdDateTimeFormatted] caseDocument.createdDatetime missing, returning empty string');
+      return '';
+    }
+    return formatStringDateDMY(createdDatetime);
   }
 }
 

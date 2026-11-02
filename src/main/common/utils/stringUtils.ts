@@ -6,7 +6,10 @@ export function documentIdExtractor(documentBinaryUrl: string): string | undefin
   if (documentBinaryUrl){
     const regex = /\/([\w-]+)\/binary$/;
     const match = regex.exec(documentBinaryUrl);
-    return match?.[1];
+    if (!match) {
+      throw new Error('[documentIdExtractor] document binary URL does not match expected /{documentId}/binary format');
+    }
+    return match[1];
   }
   return documentBinaryUrl;
 }

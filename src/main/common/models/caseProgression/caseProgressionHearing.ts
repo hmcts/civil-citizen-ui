@@ -8,6 +8,9 @@ import {HearingFeeInformation} from 'models/caseProgression/hearingFee/hearingFe
 import {PaymentDetails} from 'models/PaymentDetails';
 import { getNumberOfDaysBetweenTwoDays } from 'common/utils/dateUtils';
 
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('caseProgressionHearing');
+
 export class HearingLocation {
   value?: {
     code: string;
@@ -19,7 +22,11 @@ export class HearingLocation {
   }
 
   getCourtName():string{
-    return this.value?.label ? CourtNameExtractor.extractCourtName(this.value.label): '';
+    if (!this.value?.label) {
+      logger.warn('[HearingLocation.getCourtName] hearing location label missing, returning empty court name');
+      return '';
+    }
+    return CourtNameExtractor.extractCourtName(this.value.label);
   }
 }
 
@@ -65,12 +72,19 @@ export class CaseProgressionHearing {
   }
 
   getHearingTimeHourMinuteFormatted(): string {
-    return this.hearingTimeHourMinute ? HearingDateTimeFormatter.getHearingTimeHourMinuteFormatted(this.hearingTimeHourMinute) : '';
-
+    if (!this.hearingTimeHourMinute) {
+      logger.warn('[CaseProgressionHearing.getHearingTimeHourMinuteFormatted] hearingTimeHourMinute missing, returning empty string');
+      return '';
+    }
+    return HearingDateTimeFormatter.getHearingTimeHourMinuteFormatted(this.hearingTimeHourMinute);
   }
 
   getHearingDateFormatted(lang: string): string {
-    return this.hearingDate ? HearingDateTimeFormatter.getHearingDateFormatted(this.hearingDate, lang): '';
+    if (!this.hearingDate) {
+      logger.warn('[CaseProgressionHearing.getHearingDateFormatted] hearingDate missing, returning empty string');
+      return '';
+    }
+    return HearingDateTimeFormatter.getHearingDateFormatted(this.hearingDate, lang);
   }
 
   getDurationOfDaysForHearing(): number | undefined {
