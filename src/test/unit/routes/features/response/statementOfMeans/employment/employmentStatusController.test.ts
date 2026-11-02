@@ -5,12 +5,20 @@ import {
   CITIZEN_UNEMPLOYED_URL,
   CITIZEN_WHO_EMPLOYS_YOU_URL,
 } from 'routes/urls';
-import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {Claim} from 'models/claim';
+import {GenericForm} from 'form/models/genericForm';
+import {EmploymentForm} from 'form/models/statementOfMeans/employment/employmentForm';
+import * as employmentService from 'services/features/response/statementOfMeans/employment/employmentService';
 import {createMockResponse, getRouteHandler} from '../../../../../../utils/getRouteHandler';
 
-jest.mock('modules/draft-store/draftStoreService');
+jest.mock('services/features/response/statementOfMeans/employment/employmentService', () => {
+  const actual = jest.requireActual('services/features/response/statementOfMeans/employment/employmentService');
+  return {
+    ...actual,
+    getEmploymentForm: jest.fn(),
+    saveEmploymentData: jest.fn(),
+  };
+});
 
 describe('Employment status', () => {
   const getHandler = getRouteHandler(employmentStatusController, 'get');
@@ -20,24 +28,23 @@ describe('Employment status', () => {
   let req: Partial<Request>;
   let res: ReturnType<typeof createMockResponse>;
   let next: jest.Mock;
-  const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
-  const mockGenerateRedisKey = draftStoreService.generateRedisKey as jest.Mock;
-  const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
+  const mockGetEmploymentForm = employmentService.getEmploymentForm as jest.Mock;
+  const mockSaveEmploymentData = employmentService.saveEmploymentData as jest.Mock;
 
   beforeEach(() => {
     req = {params: {id: claimId}, body: {}, query: {}, cookies: {}};
     res = createMockResponse();
     next = jest.fn();
     jest.clearAllMocks();
-    mockGenerateRedisKey.mockReturnValue(claimId);
-    mockGetCaseData.mockResolvedValue(new Claim());
-    mockSaveDraftClaim.mockResolvedValue(undefined);
+    mockGetEmploymentForm.mockResolvedValue(new GenericForm(new EmploymentForm()));
+    mockSaveEmploymentData.mockResolvedValue(undefined);
   });
 
   describe('on GET', () => {
     it('should render the employment status page', async () => {
       await getHandler(req as Request, res as unknown as Response, next);
 
+      expect(mockGetEmploymentForm).toHaveBeenCalled();
       expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
         form: expect.anything(),
       }));
@@ -45,8 +52,8 @@ describe('Employment status', () => {
     });
 
     it('should call next when loading the claim fails', async () => {
-      const error = new Error('redis failure');
-      mockGetCaseData.mockRejectedValue(error);
+      const error = new Error('draft failure');
+      mockGetEmploymentForm.mockRejectedValue(error);
 
       await getHandler(req as Request, res as unknown as Response, next);
 
@@ -59,7 +66,7 @@ describe('Employment status', () => {
       await postHandler(req as Request, res as unknown as Response, next);
 
       expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
-      expect(mockSaveDraftClaim).not.toHaveBeenCalled();
+      expect(mockSaveEmploymentData).not.toHaveBeenCalled();
     });
 
     it('should re-render when yes is selected and no employment type is chosen', async () => {
@@ -76,6 +83,7 @@ describe('Employment status', () => {
 
       await postHandler(req as Request, res as unknown as Response, next);
 
+      expect(mockSaveEmploymentData).toHaveBeenCalled();
       expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CITIZEN_SELF_EMPLOYED_URL));
     });
 
@@ -104,8 +112,8 @@ describe('Employment status', () => {
     });
 
     it('should call next when saving fails', async () => {
-      const error = new Error('redis failure');
-      mockGetCaseData.mockRejectedValue(error);
+      const error = new Error('draft failure');
+      mockSaveEmploymentData.mockRejectedValue(error);
       req.body = {option: 'no'};
 
       await postHandler(req as Request, res as unknown as Response, next);

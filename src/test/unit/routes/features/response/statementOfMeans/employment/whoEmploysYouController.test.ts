@@ -1,14 +1,32 @@
 import {Request, Response} from 'express';
 import whoEmploysYouController from '../../../../../../../main/routes/features/response/statementOfMeans/employment/whoEmploysYouController';
 import {CITIZEN_COURT_ORDERS_URL, CITIZEN_SELF_EMPLOYED_URL} from 'routes/urls';
-import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {Claim} from 'models/claim';
-import {StatementOfMeans} from 'models/statementOfMeans';
+import {GenericForm} from 'form/models/genericForm';
+import {EmploymentForm} from 'form/models/statementOfMeans/employment/employmentForm';
 import {EmploymentCategory} from 'form/models/statementOfMeans/employment/employmentCategory';
+import {Employers} from 'form/models/statementOfMeans/employment/employers';
+import {Employer} from 'form/models/statementOfMeans/employment/employer';
+import {YesNo} from 'form/models/yesNo';
+import * as employerService from 'services/features/response/statementOfMeans/employment/employerService';
+import * as employmentService from 'services/features/response/statementOfMeans/employment/employmentService';
 import {createMockResponse, getRouteHandler} from '../../../../../../utils/getRouteHandler';
 
-jest.mock('modules/draft-store/draftStoreService');
+jest.mock('services/features/response/statementOfMeans/employment/employerService', () => {
+  const actual = jest.requireActual('services/features/response/statementOfMeans/employment/employerService');
+  return {
+    ...actual,
+    getEmployers: jest.fn(),
+    saveEmployers: jest.fn(),
+  };
+});
+jest.mock('services/features/response/statementOfMeans/employment/employmentService', () => {
+  const actual = jest.requireActual('services/features/response/statementOfMeans/employment/employmentService');
+  return {
+    ...actual,
+    getEmploymentForm: jest.fn(),
+  };
+});
 
 describe('Who employs you', () => {
   const getHandler = getRouteHandler(whoEmploysYouController, 'get');
@@ -19,16 +37,9 @@ describe('Who employs you', () => {
   let req: Partial<Request>;
   let res: ReturnType<typeof createMockResponse> & {status: jest.Mock};
   let next: jest.Mock;
-  const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
-  const mockGenerateRedisKey = draftStoreService.generateRedisKey as jest.Mock;
-  const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
-
-  const claimWithEmployment = (employmentType: EmploymentCategory[]): Claim => {
-    const claim = new Claim();
-    claim.statementOfMeans = new StatementOfMeans();
-    claim.statementOfMeans.employment = {declared: true, employmentType};
-    return claim;
-  };
+  const mockGetEmployers = employerService.getEmployers as jest.Mock;
+  const mockSaveEmployers = employerService.saveEmployers as jest.Mock;
+  const mockGetEmploymentForm = employmentService.getEmploymentForm as jest.Mock;
 
   beforeEach(() => {
     req = {params: {id: claimId}, body: {}, query: {}, cookies: {}};
@@ -36,16 +47,16 @@ describe('Who employs you', () => {
     res.status.mockReturnValue(res);
     next = jest.fn();
     jest.clearAllMocks();
-    mockGenerateRedisKey.mockReturnValue(claimId);
-    mockGetCaseData.mockResolvedValue(new Claim());
-    mockSaveDraftClaim.mockResolvedValue(undefined);
-    res.status.mockReturnValue(res);
+    mockGetEmployers.mockResolvedValue(new Employers([new Employer()]));
+    mockSaveEmployers.mockResolvedValue(undefined);
+    mockGetEmploymentForm.mockResolvedValue(new GenericForm(new EmploymentForm(YesNo.YES, [EmploymentCategory.EMPLOYED])));
   });
 
   describe('on GET', () => {
     it('should render the who employs you page', async () => {
       await getHandler(req as Request, res as unknown as Response, next);
 
+      expect(mockGetEmployers).toHaveBeenCalled();
       expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
         form: expect.anything(),
       }));
@@ -53,8 +64,8 @@ describe('Who employs you', () => {
     });
 
     it('should call next when loading the claim fails', async () => {
-      const error = new Error('redis failure');
-      mockGetCaseData.mockRejectedValue(error);
+      const error = new Error('draft failure');
+      mockGetEmployers.mockRejectedValue(error);
 
       await getHandler(req as Request, res as unknown as Response, next);
 
@@ -69,7 +80,7 @@ describe('Who employs you', () => {
       await postHandler(req as Request, res as unknown as Response, next);
 
       expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
-      expect(mockSaveDraftClaim).not.toHaveBeenCalled();
+      expect(mockSaveEmployers).not.toHaveBeenCalled();
     });
 
     it('should re-render when the job title is missing', async () => {
@@ -82,16 +93,21 @@ describe('Who employs you', () => {
     });
 
     it('should redirect to court orders when the defendant is employed', async () => {
-      mockGetCaseData.mockResolvedValue(claimWithEmployment([EmploymentCategory.EMPLOYED]));
+      mockGetEmploymentForm.mockResolvedValue(
+        new GenericForm(new EmploymentForm(YesNo.YES, [EmploymentCategory.EMPLOYED])),
+      );
       req.body = employer;
 
       await postHandler(req as Request, res as unknown as Response, next);
 
+      expect(mockSaveEmployers).toHaveBeenCalled();
       expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CITIZEN_COURT_ORDERS_URL));
     });
 
     it('should redirect to self-employment when the defendant is employed and self-employed', async () => {
-      mockGetCaseData.mockResolvedValue(claimWithEmployment([EmploymentCategory.EMPLOYED, EmploymentCategory.SELF_EMPLOYED]));
+      mockGetEmploymentForm.mockResolvedValue(
+        new GenericForm(new EmploymentForm(YesNo.YES, [EmploymentCategory.EMPLOYED, EmploymentCategory.SELF_EMPLOYED])),
+      );
       req.body = employer;
 
       await postHandler(req as Request, res as unknown as Response, next);
@@ -100,7 +116,9 @@ describe('Who employs you', () => {
     });
 
     it('should render an error when the stored employment is self-employed only', async () => {
-      mockGetCaseData.mockResolvedValue(claimWithEmployment([EmploymentCategory.SELF_EMPLOYED]));
+      mockGetEmploymentForm.mockResolvedValue(
+        new GenericForm(new EmploymentForm(YesNo.YES, [EmploymentCategory.SELF_EMPLOYED])),
+      );
       req.body = employer;
 
       await postHandler(req as Request, res as unknown as Response, next);
@@ -111,8 +129,8 @@ describe('Who employs you', () => {
     });
 
     it('should call next when saving fails', async () => {
-      const error = new Error('redis failure');
-      mockGetCaseData.mockRejectedValue(error);
+      const error = new Error('draft failure');
+      mockSaveEmployers.mockRejectedValue(error);
       req.body = employer;
 
       await postHandler(req as Request, res as unknown as Response, next);
