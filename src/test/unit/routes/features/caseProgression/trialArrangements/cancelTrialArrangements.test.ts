@@ -1,51 +1,78 @@
-import {
-  mockCivilClaimFastTrack, mockRedisFailure,
-} from '../../../../../utils/mockDraftStore';
-import {CANCEL_TRIAL_ARRANGEMENTS, DEFENDANT_SUMMARY_URL} from 'routes/urls';
-import {app} from '../../../../../../main/app';
-import config from 'config';
-import nock from 'nock';
-const session = require('supertest-session');
+import {Response} from 'express';
+import {CaseRole} from 'form/models/caseRoles';
+import {Claim} from 'models/claim';
+import {Party} from 'models/party';
+import {AppRequest} from 'models/AppRequest';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {deleteDraftClaim} from 'modules/draft-store/draftStoreService';
+import {getClaimById} from 'modules/utilityService';
+import cancelTrialArrangementsController from 'routes/features/caseProgression/trialArrangements/cancelTrialArrangementsController';
+import {CANCEL_TRIAL_ARRANGEMENTS, DASHBOARD_CLAIMANT_URL, DEFENDANT_SUMMARY_URL} from 'routes/urls';
+import {createMockResponse, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService', () => ({
+  deleteDraftClaim: jest.fn(),
+}));
 
-const claim = require('../../../../../utils/mocks/civilClaimResponseMock.json');
-const claimId = claim.id;
-const testSession = session(app);
+jest.mock('modules/utilityService', () => ({
+  getClaimById: jest.fn(),
+}));
 
-describe('Is case ready - On GET', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
+const mockGetClaimById = getClaimById as jest.Mock;
+const mockDeleteDraftClaim = deleteDraftClaim as jest.Mock;
 
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
+const claimId = '1645882162449409';
+
+const claimWithRole = (caseRole: CaseRole): Claim => {
+  const claim = new Claim();
+  claim.caseRole = caseRole;
+  claim.applicant1 = new Party();
+  return claim;
+};
+
+describe('Cancel trial arrangements', () => {
+  const getHandler = getRouteHandler(cancelTrialArrangementsController, 'get', CANCEL_TRIAL_ARRANGEMENTS);
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+    mockDeleteDraftClaim.mockResolvedValue(undefined);
   });
 
-  it('should redirect to defendant page', async () => {
-    //Given
-    app.locals.draftStoreClient = mockCivilClaimFastTrack;
-    //When
-    await testSession
-      .get(CANCEL_TRIAL_ARRANGEMENTS.replace(':id', claimId))
-    //Then
-      .expect((res: { status: unknown; header: {location: unknown} }) => {
-        expect(res.status).toBe(302);
-        expect(res.header.location).toEqual(DEFENDANT_SUMMARY_URL.replace(':id', claimId));
-      });
+  it('redirects a defendant to the defendant summary', async () => {
+    mockGetClaimById.mockResolvedValue(claimWithRole(CaseRole.DEFENDANT));
+    const res = createMockResponse();
+    const req = {params: {id: claimId}} as unknown as AppRequest;
+
+    await getHandler(req, res as unknown as Response, jest.fn());
+
+    expect(mockDeleteDraftClaim).toHaveBeenCalledWith(req);
+    expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL));
   });
 
-  it('should return "Something went wrong" page when claim does not exist', async () => {
-    //Given
-    app.locals.draftStoreClient = mockRedisFailure;
-    //When
-    await testSession
-      .get(CANCEL_TRIAL_ARRANGEMENTS.replace(':id', '1111'))
-    //Then
-      .expect((res: { status: unknown; text: unknown; }) => {
-        expect(res.status).toBe(500);
-      });
+  it('redirects a claimant to the claimant dashboard', async () => {
+    mockGetClaimById.mockResolvedValue(claimWithRole(CaseRole.CLAIMANT));
+    const res = createMockResponse();
+
+    await getHandler(
+      {params: {id: claimId}} as unknown as AppRequest,
+      res as unknown as Response,
+      jest.fn(),
+    );
+
+    expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL));
+  });
+
+  it('calls next when the claim cannot be loaded', async () => {
+    const error = new Error('redis failure');
+    mockGetClaimById.mockRejectedValue(error);
+    const next = jest.fn();
+
+    await getHandler(
+      {params: {id: '1111'}} as unknown as AppRequest,
+      createMockResponse() as unknown as Response,
+      next,
+    );
+
+    expect(next).toHaveBeenCalledWith(error);
   });
 });
