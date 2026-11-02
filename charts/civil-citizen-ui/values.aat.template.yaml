@@ -380,6 +380,9 @@ civil-service:
           memory: "512Mi"
 
     logstash:
+      # Use the namespace service account, which has automountServiceAccountToken: false
+      rbac:
+        serviceAccountName: civil
       image: hmctsprod.azurecr.io/imported/elastic/logstash
       imageTag: 9.2.3
       imagePullPolicy: "IfNotPresent"
