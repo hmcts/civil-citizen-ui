@@ -4,6 +4,7 @@ import {
   checkEvidenceUploadTime, dateTimeFormat,
   formatStringDateDMY,
   formatStringTimeHMS,
+  formatTimelineDate,
   getDOBforAgeFromCurrentTime,
   isDateOnOrAfterSpecificDate,
 } from '../../../../main/common/utils/dateUtils';
@@ -248,5 +249,31 @@ describe('dateTimeFormat', () => {
     const formattedDate = dateTimeFormat(dateString, 'cy');
 
     expect(formattedDate).toBe('1 Gorffennaf 2024, 1:00:00 yh');
+  });
+});
+
+describe('formatTimelineDate', () => {
+  it('should format month and year when day is missing', () => {
+    expect(formatTimelineDate({month: 6, year: 2023})).toBe('June 2023');
+  });
+
+  it('should format month and year in Welsh when day is missing', () => {
+    expect(formatTimelineDate({day: '', month: '7', year: '2024'}, 'cy')).toBe('Gorffennaf 2024');
+  });
+
+  it('should format the full date when date is present', () => {
+    expect(formatTimelineDate({date: '2024-03-15T00:00:00.000Z', day: 15, month: 3, year: 2024})).toBe('15 March 2024');
+  });
+
+  it('should format the full date from parts when date is missing', () => {
+    expect(formatTimelineDate({day: '15', month: '3', year: '2024'})).toBe('15 March 2024');
+  });
+
+  it('should format a stored date when parts are missing', () => {
+    expect(formatTimelineDate({date: '2023-06-01'})).toBe('1 June 2023');
+  });
+
+  it('should return empty string when nothing is present', () => {
+    expect(formatTimelineDate(undefined)).toBe('');
   });
 });

@@ -13,6 +13,8 @@ export interface CCDTimeLineOfEventDetail {
   timelineDescription?: string;
 }
 
+export const toCCDDatePart = (value?: number | string): string => value ? `${value}` : undefined;
+
 export const toCCDTimelineEvent = (timeline: ClaimantTimeline): CCDTimeLineOfEvent[] => {
   if (!timeline?.rows) return undefined;
   const ccdTimelines: CCDTimeLineOfEvent[] = [];
@@ -21,9 +23,9 @@ export const toCCDTimelineEvent = (timeline: ClaimantTimeline): CCDTimeLineOfEve
       id: index.toString(),
       value: {
         timelineDate: row.date ? row.date.toString().substring(0,10) : undefined,
-        timelineDay: `${row.day}`,
-        timelineMonth: `${row.month}`,
-        timelineYear: `${row.year}`,
+        timelineDay: toCCDDatePart(row.day),
+        timelineMonth: toCCDDatePart(row.month),
+        timelineYear: toCCDDatePart(row.year),
         timelineDescription: row.description,
       },
     };

@@ -35,8 +35,16 @@ export function toCUIHowMuchHaveYouPaid(respondToAdmittedClaim: CCDRespondToClai
   return howMuchHaveYouPaid;
 }
 
+const toCUIDatePart = (value?: string): number => value ? Number(value) : undefined;
+
 export function toCUIResponseTimelineOfEvents(timelineOfEvents: CCDTimeLineOfEvents[], timelineComment: string): DefendantTimeline {
-  const timelineRows = timelineOfEvents?.map(event => ({date: event.value?.timelineDate, description: event.value?.timelineDescription})) as TimelineRow[];
+  const timelineRows = timelineOfEvents?.map(event => ({
+    date: event.value?.timelineDate,
+    day: toCUIDatePart(event.value?.timelineDay),
+    month: toCUIDatePart(event.value?.timelineMonth),
+    year: toCUIDatePart(event.value?.timelineYear),
+    description: event.value?.timelineDescription,
+  })) as TimelineRow[];
   return new DefendantTimeline(timelineRows, timelineComment);
 }
 

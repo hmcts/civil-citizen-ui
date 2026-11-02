@@ -15,7 +15,7 @@ import {
   CITIZEN_WHY_DO_YOU_DISAGREE_URL,
   RESPONSE_YOUR_DEFENCE_URL,
 } from 'routes/urls';
-import {formatDateToFullDate} from 'common/utils/dateUtils';
+import {formatDateToFullDate, formatTimelineDate} from 'common/utils/dateUtils';
 import {DefendantTimeline} from 'form/models/timeLineOfEvents/defendantTimeline';
 import {YesNo} from 'form/models/yesNo';
 import {ResponseType} from 'form/models/responseType';
@@ -40,9 +40,8 @@ const addTimeline = (claimId: string, lang: string , section: SummarySection, ti
   );
 
   for (const item of rows) {
-    const timelineDate = formatDateToFullDate(new Date(item.date), lang);
     section.summaryList.rows.push(
-      summaryRowWithTextValue(timelineDate.toString(), item.description, yourTimelineHref, changeLabel(lang)),
+      summaryRowWithTextValue(formatTimelineDate(item, lang), item.description, yourTimelineHref, changeLabel(lang)),
     );
   }
 

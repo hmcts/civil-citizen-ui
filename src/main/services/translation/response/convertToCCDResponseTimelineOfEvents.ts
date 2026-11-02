@@ -2,6 +2,7 @@ import {CCDTimeLineOfEvents, CCDTimeLineOfEventsItem} from 'models/ccdResponse/c
 import {DefendantTimeline} from 'form/models/timeLineOfEvents/defendantTimeline';
 import {TimelineRow} from 'form/models/timeLineOfEvents/timelineRow';
 import {Claim} from 'models/claim';
+import {toCCDDatePart} from 'models/ccdResponse/ccdTimeLine';
 
 export const toCCDResponseTimelineOfEvents = (claim: Claim): CCDTimeLineOfEvents [] => {
   const events: DefendantTimeline = claim.isPartialAdmission()
@@ -17,6 +18,9 @@ export const toCCDResponseTimelineOfEvents = (claim: Claim): CCDTimeLineOfEvents
     ccdEvents[i] = <CCDTimeLineOfEvents>{};
     ccdEvents[i].value = <CCDTimeLineOfEventsItem>{};
     ccdEvents[i].value.timelineDate = e.date;
+    ccdEvents[i].value.timelineDay = toCCDDatePart(e.day);
+    ccdEvents[i].value.timelineMonth = toCCDDatePart(e.month);
+    ccdEvents[i].value.timelineYear = toCCDDatePart(e.year);
     ccdEvents[i].value.timelineDescription = e.description;
   }
 

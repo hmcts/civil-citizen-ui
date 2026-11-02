@@ -129,6 +129,29 @@ describe('translate partial admission to cui model', () => {
       expect(cuiResponseTimelineOfEvents.comment).toBeUndefined();
     });
 
+    it('should translate CCD month and year only TOEs to CUI DefendantTimeline model', () => {
+      // Given
+      const timelineOfEvents: CCDTimeLineOfEvents[] = [
+        <CCDTimeLineOfEvents>{
+          value: <CCDTimeLineOfEventsItem>{
+            timelineMonth: '6',
+            timelineYear: '2023',
+            timelineDescription: 'you might have signed a contract',
+          },
+        },
+      ];
+      // When
+      const cuiResponseTimelineOfEvents = toCUIResponseTimelineOfEvents(timelineOfEvents, undefined);
+      // Then
+      expect(cuiResponseTimelineOfEvents.rows[0]).toEqual({
+        date: undefined,
+        day: undefined,
+        month: 6,
+        year: 2023,
+        description: 'you might have signed a contract',
+      });
+    });
+
     it('should translate CCD data to CUI DefendantTimeline model with TOEs and comment', () => {
       // Given
       const timelineOfEvents: CCDTimeLineOfEvents[] = [

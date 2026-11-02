@@ -1,12 +1,17 @@
 import {Claim} from 'models/claim';
 import {TimeLineOfEventDetails} from 'models/timelineOfEvents/timeLineOfEvents';
-import {formatDateToFullDate} from 'common/utils/dateUtils';
+import {formatTimelineDate} from 'common/utils/dateUtils';
 
 const getClaimTimeline = (claim: Claim, lng: string) : TimeLineOfEventDetails[] => {
   const timeline : TimeLineOfEventDetails[] = [];
   if (claim.timelineOfEvents) {
     claim.timelineOfEvents.forEach(event => timeline.push({
-      timelineDate: formatDateToFullDate(new Date(event.value.timelineDate), lng),
+      timelineDate: formatTimelineDate({
+        date: event.value.timelineDate,
+        day: event.value.timelineDay,
+        month: event.value.timelineMonth,
+        year: event.value.timelineYear,
+      }, lng),
       timelineDescription: event.value.timelineDescription,
     }));
   }

@@ -42,4 +42,28 @@ describe('convert to response timeline of events', () => {
     expect(result[0].value.timelineDate).toEqual(new Date(events.rows[0].date.toString()));
     expect(result[0].value.timelineDescription).toEqual(events.rows[0].description);
   });
+
+  it('returning day, month and year for converted timeline events', () => {
+    // Given
+    const claim: Claim = new Claim();
+    claim.respondent1 = new Party();
+    claim.respondent1.responseType = ResponseType.FULL_DEFENCE;
+    claim.rejectAllOfClaim = new RejectAllOfClaim();
+    claim.rejectAllOfClaim.timeline = new DefendantTimeline([
+      new TimelineRow(5, 11, 2022, 'Event 1'),
+      new TimelineRow(undefined, 6, 2023, 'Event 2'),
+    ]);
+    // When
+    const result = toCCDResponseTimelineOfEvents(claim);
+
+    // Then
+    expect(result[0].value).toMatchObject({timelineDay: '5', timelineMonth: '11', timelineYear: '2022'});
+    expect(result[1].value).toEqual({
+      timelineDate: undefined,
+      timelineDay: undefined,
+      timelineMonth: '6',
+      timelineYear: '2023',
+      timelineDescription: 'Event 2',
+    });
+  });
 });

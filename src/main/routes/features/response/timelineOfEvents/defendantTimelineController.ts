@@ -12,14 +12,16 @@ import {
 } from 'services/features/response/timelineOfEvents/defendantTimelineService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
-import {TimeLineOfEvents} from 'models/timelineOfEvents/timeLineOfEvents';
+import {TimeLineOfEventDetails} from 'models/timelineOfEvents/timeLineOfEvents';
 import {AppRequest} from 'common/models/AppRequest';
 import {getRouteParam} from 'common/utils/routeParamUtils';
+import {getClaimTimeline} from 'services/features/common/claimTimelineService';
+import {getLng} from 'common/utils/languageToggleUtils';
 
 const defendantTimelineController = Router();
 const defendantTimelineView = 'features/response/timelineOfEvents/defendant-timeline';
 
-function renderView(form: GenericForm<DefendantTimeline>, theirTimeline: TimeLineOfEvents[], pdfUrl: string, res: Response) {
+function renderView(form: GenericForm<DefendantTimeline>, theirTimeline: TimeLineOfEventDetails[], pdfUrl: string, res: Response) {
   res.render(defendantTimelineView, {
     form, theirTimeline, pdfUrl,
   });
@@ -30,7 +32,8 @@ defendantTimelineController.get(CITIZEN_TIMELINE_URL,
     try {
       const claimId = getRouteParam(req, 'id');
       const claim = await getCaseDataFromStore(generateRedisKey(<AppRequest>req));
-      const theirTimeline = claim.timelineOfEvents;
+      const lang = req.query.lang ? req.query.lang : req.cookies.lang;
+      const theirTimeline = getClaimTimeline(claim, getLng(lang));
       const pdfUrl = claim.extractDocumentId() && CASE_TIMELINE_DOCUMENTS_URL.replace(':id', claimId).replace(':documentId', claim.extractDocumentId());
       const form = new GenericForm(getDefendantTimeline(claim));
       renderView(form, theirTimeline, pdfUrl, res);
@@ -48,7 +51,8 @@ defendantTimelineController.post(CITIZEN_TIMELINE_URL, (async (req, res, next: N
     if (form.hasErrors()) {
       const claim = await getCaseDataFromStore(redisKey);
       const pdfUrl = claim.extractDocumentId() && CASE_TIMELINE_DOCUMENTS_URL.replace(':id', claimId).replace(':documentId', claim.extractDocumentId());
-      renderView(form, claim.timelineOfEvents, pdfUrl, res);
+      const lang = req.query.lang ? req.query.lang : req.cookies.lang;
+      renderView(form, getClaimTimeline(claim, getLng(lang)), pdfUrl, res);
     } else {
       await saveDefendantTimeline(redisKey, form.model);
       res.redirect(constructResponseUrlWithIdParams(claimId, CITIZEN_EVIDENCE_URL));

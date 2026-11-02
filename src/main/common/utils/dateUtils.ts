@@ -49,6 +49,29 @@ export const formatDateToFullDate = (date: Date, lang?: string): string => {
   return dateTime.toLocaleString(DateTime.DATE_FULL, {locale: localeValue});
 };
 
+export interface TimelineDateParts {
+  date?: Date | string;
+  day?: number | string;
+  month?: number | string;
+  year?: number | string;
+}
+
+export const formatTimelineDate = (parts: TimelineDateParts, lang?: string): string => {
+  const localeValue = lang === 'cy' ? 'cy' : 'en-gb';
+  const month = Number(parts?.month);
+  const year = Number(parts?.year);
+  if (!parts?.day && month && year) {
+    return DateTime.fromObject({year, month, day: 1}).setLocale(localeValue).toFormat('LLLL yyyy');
+  }
+  if (parts?.date) {
+    return formatDateToFullDate(new Date(parts.date), lang);
+  }
+  if (parts?.day && month && year) {
+    return DateTime.fromObject({year, month, day: Number(parts.day)}).setLocale(localeValue).toLocaleString(DateTime.DATE_FULL);
+  }
+  return '';
+};
+
 export function dateTimeFormat(value: string, lang?: string,  isUTC = false): string {
   const language = lang === 'cy' ? 'cy' : 'en-gb';
   const date = isUTC ?  DateTime.fromJSDate(new Date(value), { zone: 'Europe/London' }) : DateTime.fromJSDate(new Date(value));
