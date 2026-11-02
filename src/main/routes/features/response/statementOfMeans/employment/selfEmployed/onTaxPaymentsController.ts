@@ -10,7 +10,6 @@ import {
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {GenericForm} from 'form/models/genericForm';
 import {AppRequest} from 'common/models/AppRequest';
-import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const citizenOnTaxPaymentsViewPath = 'features/response/statementOfMeans/employment/selfEmployed/on-tax-payments';
@@ -22,7 +21,7 @@ function renderView(form: GenericForm<OnTaxPayments>, res: Response) {
 
 onTaxPaymentsController.get(ON_TAX_PAYMENTS_URL, (async (req, res, next: NextFunction) => {
   try {
-    renderView(await getOnTaxPaymentsForm(generateRedisKey(<AppRequest>req)), res);
+    renderView(await getOnTaxPaymentsForm(<AppRequest>req), res);
   } catch (error) {
     next(error);
   }
@@ -31,13 +30,13 @@ onTaxPaymentsController.get(ON_TAX_PAYMENTS_URL, (async (req, res, next: NextFun
 onTaxPaymentsController.post(ON_TAX_PAYMENTS_URL, (async (req, res, next: NextFunction) => {
   const form = new GenericForm(new OnTaxPayments(req.body.option, Number(req.body.amountYouOwe), req.body.reason));
   try {
-    const claimId = getRouteParam(req, 'id');
+    const caseId = getRouteParam(req, 'id');
     form.validateSync();
     if (form.hasErrors()) {
       renderView(form, res);
     } else {
-      await saveTaxPaymentsData(generateRedisKey(<AppRequest>req), form);
-      res.redirect(constructResponseUrlWithIdParams(claimId, CITIZEN_COURT_ORDERS_URL));
+      await saveTaxPaymentsData(<AppRequest>req, form);
+      res.redirect(constructResponseUrlWithIdParams(caseId, CITIZEN_COURT_ORDERS_URL));
     }
   } catch (error) {
     next(error);
