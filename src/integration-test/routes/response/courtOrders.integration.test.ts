@@ -40,7 +40,7 @@ function payload(count: number) {
   return params.toString();
 }
 
-describe('court-order submission limit', () => {
+describe('court-order submission', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     (getCaseDataFromStore as jest.Mock).mockResolvedValue({});
@@ -54,12 +54,15 @@ describe('court-order submission limit', () => {
     expect((saveDraftClaim as jest.Mock).mock.calls[0][1].statementOfMeans.courtOrders.rows).toHaveLength(10);
   });
 
-  it('rejects eleven orders, keeps every value for correction and makes no save request', async () => {
-    const response = await request(app).post(CITIZEN_COURT_ORDERS_URL.replace(':id', 'fixture')).send(payload(11));
+  it('redisplays an invalid amount, retains every submitted row and makes no save request', async () => {
+    const params = new URLSearchParams(payload(11));
+    params.set('rows[10][amount]', '0');
+    const response = await request(app).post(CITIZEN_COURT_ORDERS_URL.replace(':id', 'fixture')).send(params.toString());
     expect(response.status).toBe(200);
-    expect(response.body.errors).toEqual(expect.arrayContaining([expect.objectContaining({property: 'rows', text: 'ERRORS.MAXIMUM_TEN_COURT_ORDERS'})]));
+    expect(response.body.errors).toEqual(expect.arrayContaining([expect.objectContaining({property: 'rows[10][amount]', text: 'ERRORS.AMOUNT_REQUIRED'})]));
     expect(response.body.model.rows).toHaveLength(11);
     expect(response.body.model.rows[10].claimNumber).toBe('CN10');
+    expect(response.body.model.rows[10].amount).toBe(0);
     expect(saveDraftClaim).not.toHaveBeenCalled();
   });
 });
