@@ -1,137 +1,130 @@
-import request from 'supertest';
-import {app} from '../../../../../../main/app';
-import nock from 'nock';
-import config from 'config';
-import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {
-  setFinancialDetailsControllerLogger,
-} from 'routes/features/response/financialDetails/financialDetailsController';
+import {Request, Response} from 'express';
 import {LoggerInstance} from 'winston';
-import {FINANCIAL_DETAILS_URL} from 'routes/urls';
-import {mockRedisFailure} from '../../../../../utils/mockDraftStore';
-import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
+import financialDetailsController, {
+  setFinancialDetailsControllerLogger,
+} from '../../../../../../main/routes/features/response/financialDetails/financialDetailsController';
+import {CITIZEN_BANK_ACCOUNT_URL, CITIZEN_CONTACT_THEM_URL, RESPONSE_TASK_LIST_URL} from 'routes/urls';
+import {Claim} from 'models/claim';
+import {Party} from 'models/party';
+import {PartyType} from 'models/partyType';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {createMockResponse, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
-const claimIndividualMock = require('./claimIndividualMock.json');
-const claimIndividualMockNoType = require('./claimIndividualMockNoType.json');
-const claimOrganisationMock = require('./claimOrganisationMock.json');
-const claimIndividual: string = JSON.stringify(claimIndividualMock);
-const claimIndividualNoType: string = JSON.stringify(claimIndividualMockNoType);
-const claimOrganisation: string = JSON.stringify(claimOrganisationMock);
-
-jest.mock('../../../../../../main/modules/oidc');
+jest.mock('modules/draft-store/draftStoreService');
 
 const mockLogger = {
   error: jest.fn().mockImplementation((message: string) => message),
   info: jest.fn().mockImplementation((message: string) => message),
 } as unknown as LoggerInstance;
 
-const mockIndividualDraftStore = {
-  set: jest.fn(() => Promise.resolve({data: {}})),
-  get: jest.fn(() => Promise.resolve(claimIndividual)),
-  ttl: jest.fn(() => Promise.resolve({})),
-  expireat: jest.fn(() => Promise.resolve({})),
-};
-
-const mockOrganisationDraftStore = {
-  set: jest.fn(() => Promise.resolve({data: {}})),
-  get: jest.fn(() => Promise.resolve(claimOrganisation)),
-  ttl: jest.fn(() => Promise.resolve({})),
-  expireat: jest.fn(() => Promise.resolve({})),
-};
-
-const mockNoIndividualTypeDraftStore = {
-  set: jest.fn(() => Promise.resolve({data: {}})),
-  get: jest.fn(() => Promise.resolve(claimIndividualNoType)),
-  ttl: jest.fn(() => Promise.resolve({})),
-  expireat: jest.fn(() => Promise.resolve({})),
-};
-
 describe('Citizen financial details', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
+  const getHandler = getRouteHandler(financialDetailsController, 'get');
+  const postHandler = getRouteHandler(financialDetailsController, 'post');
+  const viewPath = 'features/response/financialDetails/financial-details';
+  const claimId = '12345';
+  let req: Partial<Request>;
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
+  const mockGenerateRedisKey = draftStoreService.generateRedisKey as jest.Mock;
+  const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
+  const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
+
+  const claimForParty = (partyType?: PartyType): Claim => {
+    const claim = new Claim();
+    claim.respondent1 = new Party();
+    claim.respondent1.type = partyType;
+    return claim;
+  };
 
   beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
     setFinancialDetailsControllerLogger(mockLogger);
-    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
+  });
+
+  beforeEach(() => {
+    req = {params: {id: claimId}, body: {}, query: {}, cookies: {}};
+    res = createMockResponse();
+    next = jest.fn();
+    jest.clearAllMocks();
+    mockGenerateRedisKey.mockReturnValue(claimId);
+    mockGetCaseData.mockResolvedValue(claimForParty(PartyType.INDIVIDUAL));
+    mockSaveDraftClaim.mockResolvedValue(undefined);
   });
 
   describe('on GET', () => {
-    it('should return individual financial details page', async () => {
-      app.locals.draftStoreClient = mockIndividualDraftStore;
-      await request(app)
-        .get(constructResponseUrlWithIdParams('1646818997929180', FINANCIAL_DETAILS_URL))
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('details of your finances');
-        });
+    it('should render financial details for an individual', async () => {
+      const claim = claimForParty(PartyType.INDIVIDUAL);
+      mockGetCaseData.mockResolvedValue(claim);
+
+      await getHandler(req as Request, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        claim,
+        claimantDetailsUrl: constructResponseUrlWithIdParams(claimId, CITIZEN_CONTACT_THEM_URL),
+      }));
+      expect(next).not.toHaveBeenCalled();
     });
-    it('should return organisation financial details page', async () => {
-      app.locals.draftStoreClient = mockOrganisationDraftStore;
-      await request(app)
-        .get(constructResponseUrlWithIdParams('1646768947464020', FINANCIAL_DETAILS_URL))
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('your company or organisation&#39;s most recent statement of accounts');
-        });
+
+    it('should render financial details for an organisation', async () => {
+      const claim = claimForParty(PartyType.ORGANISATION);
+      mockGetCaseData.mockResolvedValue(claim);
+
+      await getHandler(req as Request, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        claim,
+        claimantDetailsUrl: constructResponseUrlWithIdParams(claimId, CITIZEN_CONTACT_THEM_URL),
+      }));
     });
-    it('should not match expected string, and log error, if draft store fails to return anything', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .get(constructResponseUrlWithIdParams('1646768947464020', FINANCIAL_DETAILS_URL))
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).not.toContain('your company or organisation&#39;s most recent statement of accounts');
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+
+    it('should call next when loading the claim fails', async () => {
+      const error = new Error('redis failure');
+      mockGetCaseData.mockRejectedValue(error);
+
+      await getHandler(req as Request, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 
   describe('on POST', () => {
-    it('should redirect for individual', async () => {
-      app.locals.draftStoreClient = mockIndividualDraftStore;
-      await request(app)
-        .post(constructResponseUrlWithIdParams('1646818997929180', FINANCIAL_DETAILS_URL))
-        .expect((res) => {
-          expect(res.status).toBe(302);
-        });
+    it('should redirect an individual to the bank account page', async () => {
+      mockGetCaseData.mockResolvedValue(claimForParty(PartyType.INDIVIDUAL));
+
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expect(mockSaveDraftClaim).not.toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CITIZEN_BANK_ACCOUNT_URL));
     });
-    it('should redirect for organisation', async () => {
-      app.locals.draftStoreClient = mockOrganisationDraftStore;
-      await request(app)
-        .post(constructResponseUrlWithIdParams('1646768947464020', FINANCIAL_DETAILS_URL))
-        .expect((res) => {
-          expect(res.status).toBe(302);
-        });
+
+    it('should save and redirect an organisation to the task list', async () => {
+      mockGetCaseData.mockResolvedValue(claimForParty(PartyType.ORGANISATION));
+
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expect(mockSaveDraftClaim).toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, RESPONSE_TASK_LIST_URL));
     });
-    it('should not redirect, and log error, if draft store fails to return anything', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .post(constructResponseUrlWithIdParams('1646768947464020', FINANCIAL_DETAILS_URL))
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+
+    it('should re-render and log when the respondent has no party type', async () => {
+      mockGetCaseData.mockResolvedValue(claimForParty());
+
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expect(mockLogger.error).toHaveBeenCalledWith('No partyType found.');
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        claimantDetailsUrl: constructResponseUrlWithIdParams(claimId, CITIZEN_CONTACT_THEM_URL),
+      }));
+      expect(res.redirect).not.toHaveBeenCalled();
     });
-    it('should be 404 for no caseId in path', async () => {
-      app.locals.draftStoreClient = mockOrganisationDraftStore;
-      await request(app)
-        .post(constructResponseUrlWithIdParams('', FINANCIAL_DETAILS_URL))
-        .expect((res) => {
-          expect(res.status).toBe(404);
-        });
-    });
-    it('should be error for no respondent type in JSON', async () => {
-      app.locals.draftStoreClient = mockNoIndividualTypeDraftStore;
-      await request(app)
-        .post(constructResponseUrlWithIdParams('1646818997929180', FINANCIAL_DETAILS_URL))
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(mockLogger.error).toHaveBeenCalledWith('No partyType found.');
-        });
+
+    it('should call next when loading the claim fails', async () => {
+      const error = new Error('redis failure');
+      mockGetCaseData.mockRejectedValue(error);
+
+      await postHandler(req as Request, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 });

@@ -1,160 +1,135 @@
-import {
-  DEFENDANT_SUMMARY_URL,
-  TRIAL_ARRANGEMENTS_CHECK_YOUR_ANSWERS,
-  TRIAL_ARRANGEMENTS_HEARING_DURATION,
-} from 'routes/urls';
-import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import {app} from '../../../../../../main/app';
-import config from 'config';
-import nock from 'nock';
-const session = require('supertest-session');
-import {CIVIL_SERVICE_CASES_URL} from 'client/civilServiceUrls';
-import {mockCivilClaim, mockCivilClaimFastTrack, mockRedisFailure} from '../../../../../utils/mockDraftStore';
-import * as draftStoreService from 'modules/draft-store/draftStoreService';
-import civilClaimResponseFastTrackMock from '../../../../../utils/mocks/civilClaimResponseFastTrackMock.json';
+import {Response} from 'express';
+import {CaseRole} from 'form/models/caseRoles';
+import {Claim} from 'models/claim';
+import {Party} from 'models/party';
+import {AppRequest} from 'models/AppRequest';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {getClaimById} from 'modules/utilityService';
+import {saveCaseProgression} from 'services/features/caseProgression/caseProgressionService';
+import {getHearingDurationAndOtherInformation} from 'services/features/caseProgression/trialArrangements/hearingDurationAndOtherInformation';
+import hearingDurationController from 'routes/features/caseProgression/trialArrangements/hearingDurationAndOtherInformationController';
+import {TRIAL_ARRANGEMENTS_CHECK_YOUR_ANSWERS, TRIAL_ARRANGEMENTS_HEARING_DURATION} from 'routes/urls';
+import {createMockResponse, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
-jest.mock('services/features/caseProgression/trialArrangements/hearingDurationAndOtherInformation');
-jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
+jest.mock('modules/utilityService', () => ({
+  getClaimById: jest.fn(),
+}));
 
-const claim = require('../../../../../utils/mocks/civilClaimResponseMock.json');
-const claimId = claim.id;
-const civilServiceUrl = config.get<string>('services.civilService.url');
-const testSession = session(app);
+jest.mock('services/features/caseProgression/caseProgressionService', () => ({
+  saveCaseProgression: jest.fn(),
+}));
 
-describe('Hearing duration & other info - On GET', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
+jest.mock('services/features/caseProgression/trialArrangements/hearingDurationAndOtherInformation', () => ({
+  getHearingDurationAndOtherInformation: jest.fn((): unknown[] => []),
+}));
 
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-  });
-  it('should render page successfully in English if cookie has correct values', async () => {
-    //Given
-    app.locals.draftStoreClient = mockCivilClaimFastTrack;
-    //When
-    await testSession
-      .get(TRIAL_ARRANGEMENTS_HEARING_DURATION.replace(':id', claimId)).query({lang: 'en'})
-      //Then
-      .expect((res: { status: unknown; text: unknown; }) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain('Finalise your trial arrangements');
-        expect(res.text).toContain('Other Information');
-      });
-  });
+const mockGetClaimById = getClaimById as jest.Mock;
+const mockSaveCaseProgression = saveCaseProgression as jest.Mock;
+const mockContents = getHearingDurationAndOtherInformation as jest.Mock;
 
-  it('should render page successfully in Welsh if query is cy', async () => {
-    //Given
-    app.locals.draftStoreClient = mockCivilClaimFastTrack;
-    //When
-    await testSession
-      .get(TRIAL_ARRANGEMENTS_HEARING_DURATION.replace(':id', claimId)).query({lang: 'cy'})
-      //Then
-      .expect((res: { status: unknown; text: unknown; }) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain('Cwblhau trefniadau eich treial');
-        expect(res.text).toContain('Other Information');
-      });
-  });
+const claimId = '1111';
+const viewPath = 'features/caseProgression/trialArrangements/hearing-duration-other-info';
 
-  it('should return "Something went wrong" page when claim does not exist', async () => {
-    //Given
-    app.locals.draftStoreClient = mockRedisFailure;
-    //When
-    await testSession
-      .get(TRIAL_ARRANGEMENTS_HEARING_DURATION.replace(':id', '1111')).query({lang: 'en'})
-      //Then
-      .expect((res: { status: unknown; text: unknown; }) => {
-        expect(res.status).toBe(500);
-        expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-      });
-  });
-});
+const claim = (): Claim => {
+  const loaded = new Claim();
+  loaded.caseRole = CaseRole.DEFENDANT;
+  loaded.totalClaimAmount = 15000;
+  loaded.applicant1 = new Party();
+  return loaded;
+};
 
-describe('Hearing duration & other information - on POST', () => {
+describe('Hearing duration & other info', () => {
+  const getHandler = getRouteHandler(hearingDurationController, 'get', TRIAL_ARRANGEMENTS_HEARING_DURATION);
+  const postHandler = getRouteHandler(hearingDurationController, 'post', TRIAL_ARRANGEMENTS_HEARING_DURATION);
 
   beforeEach(() => {
-    app.locals.draftStoreClient = mockCivilClaimFastTrack;
+    jest.clearAllMocks();
+    mockGetClaimById.mockResolvedValue(claim());
+    mockSaveCaseProgression.mockResolvedValue(undefined);
   });
 
-  it('should redirect when other information is filled in', async () => {
-    //Given
-    nock(civilServiceUrl)
-      .post(CIVIL_SERVICE_CASES_URL + '1111')
-      .reply(200, claimId);
+  describe('on GET', () => {
+    it('renders the page', async () => {
+      const loaded = claim();
+      mockGetClaimById.mockResolvedValue(loaded);
+      const res = createMockResponse();
 
-    //When
-    await testSession
-      .post(TRIAL_ARRANGEMENTS_HEARING_DURATION.replace(':id', '1111'))
-      .send({otherInformation: 'Info put in'})
-      //Then
-      .expect((res: {status: unknown, header: {location: unknown}, text: unknown;}) => {
-        expect(res.status).toBe(302);
-        expect(res.header.location).toEqual(TRIAL_ARRANGEMENTS_CHECK_YOUR_ANSWERS.replace(':id', '1111'));
-      });
+      await getHandler(
+        {params: {id: claimId}, query: {lang: 'en'}, cookies: {}} as unknown as AppRequest,
+        res as unknown as Response,
+        jest.fn(),
+      );
+
+      expect(mockContents).toHaveBeenCalledWith(claimId, loaded, 'en');
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        form: expect.anything(),
+        hearingDurationContents: [],
+        backLinkUrl: expect.any(String),
+        cancelUrl: expect.any(String),
+      }));
+    });
+
+    it('calls next when the claim cannot be loaded', async () => {
+      const error = new Error('redis failure');
+      mockGetClaimById.mockRejectedValue(error);
+      const next = jest.fn();
+
+      await getHandler(
+        {params: {id: claimId}, query: {}, cookies: {}} as unknown as AppRequest,
+        createMockResponse() as unknown as Response,
+        next,
+      );
+
+      expect(next).toHaveBeenCalledWith(error);
+    });
   });
 
-  it('should return "Something went wrong" page when nothing filled in', async () => {
-    //Given
-    nock(civilServiceUrl)
-      .post(CIVIL_SERVICE_CASES_URL + '1111')
-      .reply(200, claimId);
+  describe('on POST', () => {
+    it('saves the other information and redirects to check your answers', async () => {
+      const res = createMockResponse();
+      const req = {params: {id: claimId}, body: {otherInformation: 'Info put in'}} as unknown as AppRequest;
 
-    //When
-    await testSession
-      .post(TRIAL_ARRANGEMENTS_HEARING_DURATION.replace(':id', '1111'))
-      //Then
-      .expect((res: {status: unknown, header: {location: unknown}, text: unknown;}) => {
-        expect(res.status).toBe(500);
-        expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-      });
-  });
+      await postHandler(req, res as unknown as Response, jest.fn());
 
-  it('should save an empty field when only spaces filled in', async () => {
-    //Given
-    nock(civilServiceUrl)
-      .post(CIVIL_SERVICE_CASES_URL + '1111')
-      .reply(200, claimId);
+      expect(mockSaveCaseProgression).toHaveBeenCalledWith(req, 'Info put in', 'otherTrialInformation', 'defendantTrialArrangements');
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, TRIAL_ARRANGEMENTS_CHECK_YOUR_ANSWERS));
+    });
 
-    const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
+    it('saves an empty field when only spaces are entered', async () => {
+      const res = createMockResponse();
+      const req = {params: {id: claimId}, body: {otherInformation: '    '}} as unknown as AppRequest;
 
-    //When
-    await testSession
-      .post(TRIAL_ARRANGEMENTS_HEARING_DURATION.replace(':id', '1111'))
-      .send({otherInformation: '    '});
-    const testClaim = civilClaimResponseFastTrackMock;
-    testClaim.case_data.caseProgression.defendantTrialArrangements.otherTrialInformation = '';
+      await postHandler(req, res as unknown as Response, jest.fn());
 
-    //Then;
-    expect(spySave).toHaveBeenCalledWith(expect.anything(), expect.objectContaining(testClaim.case_data));
-  });
+      expect(mockSaveCaseProgression).toHaveBeenCalledWith(req, '', 'otherTrialInformation', 'defendantTrialArrangements');
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, TRIAL_ARRANGEMENTS_CHECK_YOUR_ANSWERS));
+    });
 
-  it('should return "Something went wrong" page when claim does not exist', async () => {
-    //Given
-    app.locals.draftStoreClient = mockRedisFailure;
-    //When
-    await testSession
-      .post(TRIAL_ARRANGEMENTS_HEARING_DURATION.replace(':id', '1111'))
-      //Then
-      .expect((res: { status: unknown; text: unknown; }) => {
-        expect(res.status).toBe(500);
-        expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-      });
-  });
+    it('calls next when other information is missing', async () => {
+      const next = jest.fn();
 
-  it('should redirect to latestUpload screen when is small claim', async () => {
-    //Given
-    app.locals.draftStoreClient = mockCivilClaim;
-    //When
-    await testSession
-      .post(TRIAL_ARRANGEMENTS_HEARING_DURATION.replace(':id', '1111'))
-      //Then
-      .expect((res: {status: unknown, header: {location: unknown}, text: unknown;}) => {
-        expect(res.status).toBe(302);
-        expect(res.header.location).toEqual(DEFENDANT_SUMMARY_URL.replace(':id', '1111'));
-      });
+      await postHandler(
+        {params: {id: claimId}, body: {}} as unknown as AppRequest,
+        createMockResponse() as unknown as Response,
+        next,
+      );
+
+      expect(next).toHaveBeenCalledWith(expect.any(TypeError));
+      expect(mockSaveCaseProgression).not.toHaveBeenCalled();
+    });
+
+    it('calls next when the claim cannot be loaded', async () => {
+      const error = new Error('redis failure');
+      mockGetClaimById.mockRejectedValue(error);
+      const next = jest.fn();
+
+      await postHandler(
+        {params: {id: claimId}, body: {otherInformation: 'Info put in'}} as unknown as AppRequest,
+        createMockResponse() as unknown as Response,
+        next,
+      );
+
+      expect(next).toHaveBeenCalledWith(error);
+    });
   });
 });
