@@ -9,7 +9,6 @@ import {
   savePriorityDebts,
 } from 'services/features/response/statementOfMeans/priorityDebtsService';
 import {AppRequest} from 'common/models/AppRequest';
-import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const priorityDebtsController = Router();
@@ -21,7 +20,7 @@ function renderForm(form: GenericForm<PriorityDebts>, res: Response) {
 
 priorityDebtsController.get(CITIZEN_PRIORITY_DEBTS_URL, (async (req, res, next: NextFunction) => {
   try {
-    const priorityDebts = await getPriorityDebts(generateRedisKey(<AppRequest>req));
+    const priorityDebts = await getPriorityDebts(<AppRequest>req);
     renderForm(new GenericForm<PriorityDebts>(priorityDebts), res);
   } catch (error) {
     next(error);
@@ -35,9 +34,9 @@ priorityDebtsController.post(CITIZEN_PRIORITY_DEBTS_URL, (async (req, res, next:
     if (form.hasErrors()) {
       renderForm(form, res);
     } else {
-      await savePriorityDebts(generateRedisKey(<AppRequest>req), form.model);
-      const claimId = getRouteParam(req, 'id');
-      res.redirect(constructResponseUrlWithIdParams(claimId, CITIZEN_DEBTS_URL));
+      await savePriorityDebts(<AppRequest>req, form.model);
+      const caseId = getRouteParam(req, 'id');
+      res.redirect(constructResponseUrlWithIdParams(caseId, CITIZEN_DEBTS_URL));
     }
   } catch (error) {
     next(error);
