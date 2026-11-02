@@ -1,12 +1,20 @@
 import {Request, Response} from 'express';
 import selfEmployedAsController from '../../../../../../../main/routes/features/response/statementOfMeans/employment/selfEmployed/selfEmployedAsController';
 import {ON_TAX_PAYMENTS_URL} from 'routes/urls';
-import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {Claim} from 'models/claim';
+import {GenericForm} from 'form/models/genericForm';
+import {SelfEmployedAsForm} from 'form/models/statementOfMeans/employment/selfEmployed/selfEmployedAsForm';
+import * as selfEmployedAsService from 'services/features/response/statementOfMeans/employment/selfEmployed/selfEmployedAsService';
 import {createMockResponse, getRouteHandler} from '../../../../../../utils/getRouteHandler';
 
-jest.mock('modules/draft-store/draftStoreService');
+jest.mock('services/features/response/statementOfMeans/employment/selfEmployed/selfEmployedAsService', () => {
+  const actual = jest.requireActual('services/features/response/statementOfMeans/employment/selfEmployed/selfEmployedAsService');
+  return {
+    ...actual,
+    getSelfEmployedAsForm: jest.fn(),
+    saveSelfEmployedAsData: jest.fn(),
+  };
+});
 
 describe('Self Employed As', () => {
   const getHandler = getRouteHandler(selfEmployedAsController, 'get');
@@ -16,24 +24,23 @@ describe('Self Employed As', () => {
   let req: Partial<Request>;
   let res: ReturnType<typeof createMockResponse>;
   let next: jest.Mock;
-  const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
-  const mockGenerateRedisKey = draftStoreService.generateRedisKey as jest.Mock;
-  const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
+  const mockGetSelfEmployedAsForm = selfEmployedAsService.getSelfEmployedAsForm as jest.Mock;
+  const mockSaveSelfEmployedAsData = selfEmployedAsService.saveSelfEmployedAsData as jest.Mock;
 
   beforeEach(() => {
     req = {params: {id: claimId}, body: {}, query: {}, cookies: {}};
     res = createMockResponse();
     next = jest.fn();
     jest.clearAllMocks();
-    mockGenerateRedisKey.mockReturnValue(claimId);
-    mockGetCaseData.mockResolvedValue(new Claim());
-    mockSaveDraftClaim.mockResolvedValue(undefined);
+    mockGetSelfEmployedAsForm.mockResolvedValue(new GenericForm(new SelfEmployedAsForm()));
+    mockSaveSelfEmployedAsData.mockResolvedValue(undefined);
   });
 
   describe('on GET', () => {
     it('should render the self-employed page', async () => {
       await getHandler(req as Request, res as unknown as Response, next);
 
+      expect(mockGetSelfEmployedAsForm).toHaveBeenCalled();
       expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
         form: expect.anything(),
       }));
@@ -41,8 +48,8 @@ describe('Self Employed As', () => {
     });
 
     it('should call next when loading the claim fails', async () => {
-      const error = new Error('redis failure');
-      mockGetCaseData.mockRejectedValue(error);
+      const error = new Error('draft failure');
+      mockGetSelfEmployedAsForm.mockRejectedValue(error);
 
       await getHandler(req as Request, res as unknown as Response, next);
 
@@ -55,7 +62,7 @@ describe('Self Employed As', () => {
       await postHandler(req as Request, res as unknown as Response, next);
 
       expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
-      expect(mockSaveDraftClaim).not.toHaveBeenCalled();
+      expect(mockSaveSelfEmployedAsData).not.toHaveBeenCalled();
     });
 
     it('should save and redirect when the job title and turnover are valid', async () => {
@@ -63,13 +70,13 @@ describe('Self Employed As', () => {
 
       await postHandler(req as Request, res as unknown as Response, next);
 
-      expect(mockSaveDraftClaim).toHaveBeenCalled();
+      expect(mockSaveSelfEmployedAsData).toHaveBeenCalled();
       expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, ON_TAX_PAYMENTS_URL));
     });
 
     it('should call next when saving fails', async () => {
-      const error = new Error('redis failure');
-      mockGetCaseData.mockRejectedValue(error);
+      const error = new Error('draft failure');
+      mockSaveSelfEmployedAsData.mockRejectedValue(error);
       req.body = {jobTitle: 'Developer', annualTurnover: 70000};
 
       await postHandler(req as Request, res as unknown as Response, next);

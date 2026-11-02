@@ -14,7 +14,6 @@ import {
 } from 'services/features/response/statementOfMeans/employment/employmentService';
 import {GenericForm} from 'form/models/genericForm';
 import {AppRequest} from 'common/models/AppRequest';
-import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const citizenEmploymentStatusViewPath = 'features/response/statementOfMeans/employment/employment-status';
@@ -24,25 +23,25 @@ function renderView(form: GenericForm<EmploymentForm>, res: Response): void {
   res.render(citizenEmploymentStatusViewPath, {form, EmploymentCategory: EmploymentCategory});
 }
 
-function redirectToNextPage(form: GenericForm<EmploymentForm>, claimId: string, res: Response) {
+function redirectToNextPage(form: GenericForm<EmploymentForm>, caseId: string, res: Response) {
   if (form.model.optionYesDefined()) {
-    redirectToEmployersPage(form, claimId, res);
+    redirectToEmployersPage(form, caseId, res);
   } else {
-    res.redirect(constructResponseUrlWithIdParams(claimId, CITIZEN_UNEMPLOYED_URL));
+    res.redirect(constructResponseUrlWithIdParams(caseId, CITIZEN_UNEMPLOYED_URL));
   }
 }
 
-function redirectToEmployersPage(form: GenericForm<EmploymentForm>, claimId: string, res: Response) {
+function redirectToEmployersPage(form: GenericForm<EmploymentForm>, caseId: string, res: Response) {
   if (form.model.isSelfEmployed()) {
-    res.redirect(constructResponseUrlWithIdParams(claimId, CITIZEN_SELF_EMPLOYED_URL));
+    res.redirect(constructResponseUrlWithIdParams(caseId, CITIZEN_SELF_EMPLOYED_URL));
   } else {
-    res.redirect(constructResponseUrlWithIdParams(claimId, CITIZEN_WHO_EMPLOYS_YOU_URL));
+    res.redirect(constructResponseUrlWithIdParams(caseId, CITIZEN_WHO_EMPLOYS_YOU_URL));
   }
 }
 
 employmentStatusController.get(CITIZEN_EMPLOYMENT_URL, (async (req, res, next: NextFunction) => {
   try {
-    const form = await getEmploymentForm(generateRedisKey(<AppRequest>req));
+    const form = await getEmploymentForm(<AppRequest>req);
     renderView(form, res);
   } catch (error) {
     next(error);
@@ -56,9 +55,9 @@ employmentStatusController.post(CITIZEN_EMPLOYMENT_URL, (async (req, res, next: 
     if (form.hasErrors()) {
       renderView(form, res);
     } else {
-      await saveEmploymentData(generateRedisKey(<AppRequest>req), form);
-      const claimId = getRouteParam(req, 'id');
-      redirectToNextPage(form, claimId, res);
+      await saveEmploymentData(<AppRequest>req, form);
+      const caseId = getRouteParam(req, 'id');
+      redirectToNextPage(form, caseId, res);
     }
   } catch (error) {
     next(error);
