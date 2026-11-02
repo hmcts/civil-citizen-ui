@@ -1,12 +1,11 @@
 import {Request, Response} from 'express';
 import bankAccountsController from '../../../../../../../main/routes/features/response/statementOfMeans/bankAccounts/bankAccountsController';
 import {CITIZEN_DISABILITY_URL} from 'routes/urls';
-import * as draftStoreService from 'modules/draft-store/draftStoreService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {Claim} from 'models/claim';
+import {BankAccounts} from 'form/models/bankAndSavings/bankAccounts';
+import {BankAccount} from 'form/models/bankAndSavings/bankAccount';
+import {BankAccountService} from 'services/features/response/statementOfMeans/bankAccounts/bankAccountService';
 import {createMockResponse, getRouteHandler} from '../../../../../../utils/getRouteHandler';
-
-jest.mock('modules/draft-store/draftStoreService');
 
 describe('Bank Accounts and Savings', () => {
   const getHandler = getRouteHandler(bankAccountsController, 'get');
@@ -16,18 +15,21 @@ describe('Bank Accounts and Savings', () => {
   let req: Partial<Request>;
   let res: ReturnType<typeof createMockResponse>;
   let next: jest.Mock;
-  const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
-  const mockGenerateRedisKey = draftStoreService.generateRedisKey as jest.Mock;
-  const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
+  let mockGetBankAccounts: jest.SpyInstance;
+  let mockSaveBankAccounts: jest.SpyInstance;
 
   beforeEach(() => {
     req = {params: {id: claimId}, body: {}, query: {}, cookies: {}};
     res = createMockResponse();
     next = jest.fn();
-    jest.clearAllMocks();
-    mockGenerateRedisKey.mockReturnValue(claimId);
-    mockGetCaseData.mockResolvedValue(new Claim());
-    mockSaveDraftClaim.mockResolvedValue(undefined);
+    mockGetBankAccounts = jest.spyOn(BankAccountService.prototype, 'getBankAccounts')
+      .mockResolvedValue(new BankAccounts([new BankAccount(), new BankAccount()]));
+    mockSaveBankAccounts = jest.spyOn(BankAccountService.prototype, 'saveBankAccounts')
+      .mockResolvedValue(undefined);
+  });
+
+  afterEach(() => {
+    jest.restoreAllMocks();
   });
 
   describe('on GET', () => {
@@ -37,6 +39,7 @@ describe('Bank Accounts and Savings', () => {
       expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
         form: expect.anything(),
       }));
+      expect(mockGetBankAccounts).toHaveBeenCalled();
       expect(next).not.toHaveBeenCalled();
     });
   });
@@ -56,7 +59,7 @@ describe('Bank Accounts and Savings', () => {
         form: expect.anything(),
       }));
       expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
-      expect(mockSaveDraftClaim).not.toHaveBeenCalled();
+      expect(mockSaveBankAccounts).not.toHaveBeenCalled();
     });
 
     it('should save and redirect when the account is valid', async () => {
@@ -69,7 +72,7 @@ describe('Bank Accounts and Savings', () => {
 
       await postHandler(req as Request, res as unknown as Response, next);
 
-      expect(mockSaveDraftClaim).toHaveBeenCalled();
+      expect(mockSaveBankAccounts).toHaveBeenCalled();
       expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CITIZEN_DISABILITY_URL));
       expect(next).not.toHaveBeenCalled();
     });
