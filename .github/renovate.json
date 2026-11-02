@@ -109,6 +109,69 @@
       "groupSlug": "typescript",
       "automerge": true,
       "automergeType": "pr"
+    },
+    {
+      "description": "typescript-eslint 8 only supports TypeScript <6.1.0. Remove once typescript-eslint supports TypeScript 7.",
+      "matchPackageNames": [
+        "typescript"
+      ],
+      "allowedVersions": "<6.1.0"
+    },
+    {
+      "description": "@types/config 4 is an empty stub package (types ship with config itself).",
+      "matchPackageNames": [
+        "@types/config"
+      ],
+      "allowedVersions": "<4.0.0"
+    },
+    {
+      "description": "@types/glob 9 is an empty stub package (types ship with glob itself).",
+      "matchPackageNames": [
+        "@types/glob"
+      ],
+      "allowedVersions": "<9.0.0"
+    },
+    {
+      "description": "@types/uuid 11 is an empty stub package (types ship with uuid itself).",
+      "matchPackageNames": [
+        "@types/uuid"
+      ],
+      "allowedVersions": "<11.0.0"
+    },
+    {
+      "description": "Hold @types/node 22.x; @types/node 26 breaks the type-check (missing Array.prototype.at).",
+      "matchPackageNames": [
+        "@types/node"
+      ],
+      "allowedVersions": "<23.0.0"
+    },
+    {
+      "description": "Hold @types/multer 1.x until the code is updated for the 2.x types.",
+      "matchPackageNames": [
+        "@types/multer"
+      ],
+      "allowedVersions": "<2.0.0"
+    },
+    {
+      "description": "@types/jest 30 removes matchers (e.g. toBeCalled) still used by the tests.",
+      "matchPackageNames": [
+        "@types/jest"
+      ],
+      "allowedVersions": "<30.0.0"
+    },
+    {
+      "description": "@types/supertest 7 rejects how the integration tests pass the test agent around.",
+      "matchPackageNames": [
+        "@types/supertest"
+      ],
+      "allowedVersions": "<3.0.0"
+    },
+    {
+      "description": "Hold @types/chai 4.x until the tests are updated for the 5.x types.",
+      "matchPackageNames": [
+        "@types/chai"
+      ],
+      "allowedVersions": "<5.0.0"
     }
   ]
 }
