@@ -1,100 +1,127 @@
-import {mockCivilClaim} from '../../../../../utils/mockDraftStore';
+import {Response} from 'express';
+import {CivilServiceClient} from 'client/civilServiceClient';
+import {getClaimRequestForReconsideration} from '../../../../../utils/mockClaimForCheckAnswers';
+import {AppRequest} from 'models/AppRequest';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {deleteDraftClaim} from 'modules/draft-store/draftStoreService';
+import {getClaimById} from 'modules/utilityService';
+import * as checkAnswersService from 'services/features/caseProgression/requestForReconsideration/requestForReviewService';
+import requestForReconsiderationCommentsCheckAnswersController from 'routes/features/caseProgression/requestForReconsideration/checkAnswersCommentsController';
 import {
+  REQUEST_FOR_RECONSIDERATION_CANCEL_URL,
   REQUEST_FOR_RECONSIDERATION_COMMENTS_CONFIRMATION_URL,
   REQUEST_FOR_RECONSIDERATION_COMMENTS_CYA_URL,
+  REQUEST_FOR_RECONSIDERATION_COMMENTS_URL,
 } from 'routes/urls';
-import {app} from '../../../../../../main/app';
-import config from 'config';
-import nock from 'nock';
-const session = require('supertest-session');
-import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import {CivilServiceClient} from 'client/civilServiceClient';
-import {
-  getClaimRequestForReconsideration,
-} from '../../../../../utils/mockClaimForCheckAnswers';
-import * as checkAnswersService from '../../../../../../main/services/features/caseProgression/requestForReconsideration/requestForReviewService';
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
-jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
+import {createMockResponse, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
-const claim = getClaimRequestForReconsideration();
-const claimId = '1692795793361508';
-const testSession = session(app);
-
-describe('Request for Reconsideration comments check answers - On GET', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
-
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-  });
-
-  it('should render page successfully in English with all sections and summary rows', async () => {
-    //Given
-    app.locals.draftStoreClient = mockCivilClaim;
-    //When
-    await testSession
-      .get(REQUEST_FOR_RECONSIDERATION_COMMENTS_CYA_URL.replace(':id', claimId)).query({lang: 'en'})
-    //Then
-      .expect((res: { status: unknown; text: unknown; }) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain('Check your answers');
-        expect(res.text).toContain('Case number: 1692 7957 9336 1508');
-        expect(res.text).toContain('Claim amount:');
-      });
-  });
-
-  it('should render page successfully in Welsh with all sections and summary rows if Welsh query', async () => {
-    //Given
-    app.locals.draftStoreClient = mockCivilClaim;
-    //When
-    await testSession
-      .get(REQUEST_FOR_RECONSIDERATION_COMMENTS_CYA_URL.replace(':id', claimId)).query({lang: 'cy'})
-      //Then
-      .expect((res: { status: unknown; text: unknown; }) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain('Gwiriwch eich atebion');
-        expect(res.text).toContain('Rhif yr achos: 1692 7957 9336 1508');
-        expect(res.text).toContain('Swm yr hawliad:');
-      });
-  });
-
-  it('should return status 500 when error thrown', async () => {
-    jest.spyOn(checkAnswersService, 'getSummarySectionsComments')
-      .mockImplementation(() => {
-        throw new Error(TestMessages.REDIS_FAILURE);
-      });
-
-    await session(app)
-      .get(REQUEST_FOR_RECONSIDERATION_COMMENTS_CYA_URL)
-      .expect((res: Response) => {
-        expect(res.status).toBe(500);
-        expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-      });
-  });
+jest.mock('client/civilServiceClient', () => {
+  const methods = {submitRequestForReconsideration: jest.fn()};
+  return {CivilServiceClient: jest.fn(() => methods)};
 });
 
-describe('Request for Reconsideration - on POST', () => {
+jest.mock('modules/draft-store/draftStoreService', () => ({
+  deleteDraftClaim: jest.fn(),
+}));
+
+jest.mock('modules/utilityService', () => ({
+  getClaimById: jest.fn(),
+}));
+
+const civilServiceMethods = new CivilServiceClient('http://localhost') as unknown as {
+  submitRequestForReconsideration: jest.Mock;
+};
+const mockGetClaimById = getClaimById as jest.Mock;
+const mockDeleteDraftClaim = deleteDraftClaim as jest.Mock;
+
+const claimId = '1692795793361508';
+const viewPath = 'features/caseProgression/requestForReconsideration/check-answers';
+
+describe('Request for Reconsideration comments check answers', () => {
+  const getHandler = getRouteHandler(
+    requestForReconsiderationCommentsCheckAnswersController,
+    'get',
+    REQUEST_FOR_RECONSIDERATION_COMMENTS_CYA_URL,
+  );
+  const postHandler = getRouteHandler(
+    requestForReconsiderationCommentsCheckAnswersController,
+    'post',
+    REQUEST_FOR_RECONSIDERATION_COMMENTS_CYA_URL,
+  );
+
   beforeEach(() => {
-    app.locals.draftStoreClient = mockCivilClaim;
+    jest.clearAllMocks();
+    const claim = getClaimRequestForReconsideration();
+    claim.totalClaimAmount = 1000;
+    mockGetClaimById.mockResolvedValue(claim);
+    civilServiceMethods.submitRequestForReconsideration.mockResolvedValue(claim);
+    mockDeleteDraftClaim.mockResolvedValue(undefined);
   });
 
-  it('should call ccd when submitted and redirected to the confirmation page', async () => {
-    const CivilServiceClientServiceMock = jest
-      .spyOn(CivilServiceClient.prototype, 'submitRequestForReconsideration')
-      .mockReturnValue(
-        new Promise((resolve) => resolve(claim),
-        ),
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
+  describe('on GET', () => {
+    it('renders the comments summary', async () => {
+      const res = createMockResponse();
+
+      await getHandler(
+        {params: {id: claimId}, query: {lang: 'en'}, cookies: {}} as unknown as AppRequest,
+        res as unknown as Response,
+        jest.fn(),
       );
 
-    await session(app)
-      .post(REQUEST_FOR_RECONSIDERATION_COMMENTS_CYA_URL.replace(':id', claimId))
-      .expect((res: {status: unknown, header: {location: unknown}, text: unknown;}) => {
-        expect(res.status).toBe(302);
-        expect(res.header.location).toEqual(REQUEST_FOR_RECONSIDERATION_COMMENTS_CONFIRMATION_URL.replace(':id', claimId));
-        expect(CivilServiceClientServiceMock).toBeCalled();
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        backLinkUrl: constructResponseUrlWithIdParams(claimId, REQUEST_FOR_RECONSIDERATION_COMMENTS_URL),
+        cancelUrl: REQUEST_FOR_RECONSIDERATION_CANCEL_URL.replace(':id', claimId).replace(':propertyName', 'caseProgression'),
+        summarySections: expect.objectContaining({sections: expect.any(Array)}),
+      }));
+    });
+
+    it('calls next when building the summary fails', async () => {
+      const error = new Error('redis failure');
+      jest.spyOn(checkAnswersService, 'getSummarySectionsComments').mockImplementation(() => {
+        throw error;
       });
+      const next = jest.fn();
+
+      await getHandler(
+        {params: {id: claimId}, query: {}, cookies: {}} as unknown as AppRequest,
+        createMockResponse() as unknown as Response,
+        next,
+      );
+
+      expect(next).toHaveBeenCalledWith(error);
+    });
+  });
+
+  describe('on POST', () => {
+    it('submits the comments and redirects to confirmation', async () => {
+      const res = createMockResponse();
+      const req = {params: {id: claimId}} as unknown as AppRequest;
+
+      await postHandler(req, res as unknown as Response, jest.fn());
+
+      expect(civilServiceMethods.submitRequestForReconsideration).toHaveBeenCalledWith(claimId, expect.any(Object), req);
+      expect(mockDeleteDraftClaim).toHaveBeenCalledWith(req);
+      expect(res.redirect).toHaveBeenCalledWith(
+        constructResponseUrlWithIdParams(claimId, REQUEST_FOR_RECONSIDERATION_COMMENTS_CONFIRMATION_URL),
+      );
+    });
+
+    it('calls next when submission fails', async () => {
+      const error = new Error('ccd failure');
+      civilServiceMethods.submitRequestForReconsideration.mockRejectedValue(error);
+      const next = jest.fn();
+
+      await postHandler(
+        {params: {id: claimId}} as unknown as AppRequest,
+        createMockResponse() as unknown as Response,
+        next,
+      );
+
+      expect(next).toHaveBeenCalledWith(error);
+    });
   });
 });

@@ -1,146 +1,131 @@
-import request from 'supertest';
-import {app} from '../../../../../../main/app';
-import nock from 'nock';
-import config from 'config';
-import {GA_APPLICATION_SUBMITTED_URL, GA_PAYMENT_SUCCESSFUL_COSC_URL, GA_PAYMENT_SUCCESSFUL_URL} from 'routes/urls';
-import { Claim } from 'common/models/claim';
-import { isGaForLipsEnabled } from 'app/auth/launchdarkly/launchDarklyClient';
-import * as draftService from 'modules/draft-store/draftStoreService';
-import { GeneralApplication } from 'common/models/generalApplication/GeneralApplication';
-import { ApplicationType, ApplicationTypeOption } from 'common/models/generalApplication/applicationType';
-import { CaseProgressionHearing } from 'common/models/caseProgression/caseProgressionHearing';
-import { t } from 'i18next';
-import { TestMessages } from '../../../../../utils/errorMessageTestConstants';
-import { PaymentInformation } from 'common/models/feePayment/paymentInformation';
-import * as generalApplicationService from 'services/features/generalApplication/generalApplicationService';
+import {Response} from 'express';
+import applicationFeePaymentSuccessfulController from '../../../../../../main/routes/features/generalApplication/applicationFeePaymentSuccessfulController';
+import {Claim} from 'models/claim';
+import {PartyType} from 'models/partyType';
+import {GeneralApplication} from 'models/generalApplication/GeneralApplication';
+import {ApplicationType, ApplicationTypeOption} from 'models/generalApplication/applicationType';
+import {CaseProgressionHearing} from 'models/caseProgression/caseProgressionHearing';
+import {PaymentInformation} from 'models/feePayment/paymentInformation';
 import {ApplicationResponse} from 'models/generalApplication/applicationResponse';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {getClaimById} from 'modules/utilityService';
+import {getApplicationFromGAService} from 'services/features/generalApplication/generalApplicationService';
+import {createMockResponse, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
-jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
-jest.mock('services/features/generalApplication/generalApplicationService', () => ({
-  getCancelUrl: jest.fn(),
-  getApplicationFromGAService: jest.fn(),
-  shouldDisplaySyncWarning: jest.fn(),
+jest.mock('modules/draft-store/draftStoreService');
+jest.mock('modules/utilityService', () => ({
+  getClaimById: jest.fn(),
+  getRedisStoreForSession: jest.fn(),
 }));
-jest.mock('../../../../../../main/routes/guards/generalAplicationGuard',() => ({
-  isGAForLiPEnabled: jest.fn((req, res, next) => {
-    next();
-  }),
+
+jest.mock('services/features/generalApplication/response/generalApplicationResponseStoreService', () => ({
+  getDraftGARespondentResponse: jest.fn(),
+  saveDraftGARespondentResponse: jest.fn(),
 }));
+jest.mock('services/features/generalApplication/generalApplicationService', () => {
+  const actual = jest.requireActual('services/features/generalApplication/generalApplicationService');
+  return {
+    ...actual,
+    getApplicationFromGAService: jest.fn(),
+  };
+});
 
 describe('Claim fee payment confirmation', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
-  const mockDataFromStore = jest.spyOn(draftService, 'getCaseDataFromStore');
+  const getHandler = getRouteHandler(applicationFeePaymentSuccessfulController, 'get');
+  const viewPath = 'features/generalApplication/payment-successful';
+  const claimId = '12345';
+  const appId = '67890';
   let claim: Claim;
   let applicationResponse: ApplicationResponse;
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, { id_token: citizenRoleToken });
-    (isGaForLipsEnabled as jest.Mock).mockResolvedValue(true);
-  });
+  let req: {
+    params: {id: string; appId?: string};
+    body: Record<string, unknown>;
+    query: Record<string, string>;
+    cookies: Record<string, string>;
+    session: {user: {id: string}};
+  };
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
+  const mockGetApplication = getApplicationFromGAService as jest.Mock;
+
+  const buildClaim = (): Claim => {
+    const built = new Claim();
+    built.applicant1 = {
+      type: PartyType.INDIVIDUAL,
+      partyDetails: {title: 'Mr', firstName: 'Jan', lastName: 'Clark'},
+    } as Claim['applicant1'];
+    built.generalApplication = new GeneralApplication(new ApplicationType(ApplicationTypeOption.STAY_THE_CLAIM));
+    built.generalApplication.applicationFeePaymentDetails = new PaymentInformation();
+    built.generalApplication.applicationFeePaymentDetails.paymentReference = 'REF-123-123';
+    built.caseProgressionHearing = new CaseProgressionHearing();
+    return built;
+  };
 
   beforeEach(() => {
-    claim = new Claim();
-    claim.generalApplication = new GeneralApplication();
-    claim.generalApplication.applicationFeePaymentDetails = new PaymentInformation();
-    claim.generalApplication.applicationFeePaymentDetails.paymentReference = 'REF-123-123';
-    claim.caseProgressionHearing = new CaseProgressionHearing();
-
+    jest.clearAllMocks();
+    claim = buildClaim();
     applicationResponse = {
       case_data: {
-        applicationTypes: undefined,
-        generalAppType: undefined,
-        generalAppRespondentAgreement: undefined,
-        generalAppInformOtherParty: undefined,
-        generalAppAskForCosts: undefined,
-        generalAppDetailsOfOrder: undefined,
-        generalAppReasonsOfOrder: undefined,
-        generalAppEvidenceDocument: undefined,
-        gaAddlDoc: undefined,
-        generalAppHearingDetails: undefined,
-        generalAppStatementOfTruth: undefined,
         generalAppPBADetails: {
-          fee: undefined,
+          fee: {calculatedAmountInPence: 1400},
           paymentDetails: {
             status: 'SUCCESS',
             reference: 'REF-123-123',
           },
-          additionalPaymentDetails: {
-            status: 'SUCCESS',
-            reference: undefined,
-          },
-          serviceRequestReference: undefined,
         },
-        applicationFeeAmountInPence: undefined,
-        parentClaimantIsApplicant: undefined,
-        judicialDecision: undefined,
       },
-      created_date: '',
-      id: '',
-      last_modified: '',
-      state: undefined,
+    } as unknown as ApplicationResponse;
+    req = {
+      params: {id: claimId, appId},
+      body: {},
+      query: {},
+      cookies: {},
+      session: {user: {id: 'user-1'}},
     };
+    res = createMockResponse();
+    next = jest.fn();
+    (draftStoreService.generateRedisKey as jest.Mock).mockReturnValue(claimId);
+    (getClaimById as jest.Mock).mockResolvedValue(claim);
+    mockGetApplication.mockResolvedValue(applicationResponse);
   });
 
   describe('on GET', () => {
-    it('should return resolving successful payment page', async () => {
-      jest.spyOn(generalApplicationService, 'getApplicationFromGAService').mockResolvedValueOnce(applicationResponse);
-      claim.generalApplication.applicationTypes = [new ApplicationType(ApplicationTypeOption.STAY_THE_CLAIM)];
-      mockDataFromStore.mockResolvedValueOnce(claim);
-      await request(app)
-        .get(GA_PAYMENT_SUCCESSFUL_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Application fee');
-          expect(res.text).toContain('REF-123-123');
-          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.GA_PAYMENT_SUCCESSFUL.WHAT_HAPPENS_NEXT'));
-          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.GA_PAYMENT_SUCCESSFUL.WHAT_HAPPENS_NEXT_PARA_1'));
-          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.GA_PAYMENT_SUCCESSFUL.CHOOSEN_NOT_TO_INFORM_OTHER_PARTY_PARA_2'));
-        });
+    it('should render the successful payment page with the payment reference', async () => {
+      await getHandler(req as never, res as unknown as Response, next);
 
+      expect(mockGetApplication).toHaveBeenCalled();
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        pageTitle: 'PAGES.GENERAL_APPLICATION.GA_PAYMENT_SUCCESSFUL.TITLE',
+        noCrumbs: true,
+      }));
+      expect(JSON.stringify((res.render as jest.Mock).mock.calls[0][1].gaPaymentSuccessfulPanel)).toContain('REF-123-123');
+      expect(JSON.stringify((res.render as jest.Mock).mock.calls[0][1].gaPaymentSuccessfulBody))
+        .toContain('PAGES.GENERAL_APPLICATION.GA_PAYMENT_SUCCESSFUL.WHAT_HAPPENS_NEXT');
+      expect(next).not.toHaveBeenCalled();
     });
-    it('should return resolving successful application submitted', async () => {
+
+    it('should render the application submitted page when there is no application id', async () => {
       claim.generalApplication.applicationTypes = [new ApplicationType(ApplicationTypeOption.ADJOURN_HEARING)];
       claim.caseProgressionHearing.hearingDate = new Date('2026-01-01');
-      mockDataFromStore.mockResolvedValueOnce(claim);
-      await request(app)
-        .get(GA_APPLICATION_SUBMITTED_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Application fee');
-          expect(res.text).toContain('Application Submitted');
-          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.GA_PAYMENT_SUCCESSFUL.WHAT_HAPPENS_NEXT'));
-        });
+      delete req.params.appId;
 
+      await getHandler(req as never, res as unknown as Response, next);
+
+      expect(mockGetApplication).not.toHaveBeenCalled();
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        pageTitle: 'PAGES.GENERAL_APPLICATION.GA_PAYMENT_SUCCESSFUL.TITLE',
+      }));
+      expect(JSON.stringify((res.render as jest.Mock).mock.calls[0][1].gaPaymentSuccessfulPanel))
+        .toContain('govuk-!-font-size-36');
     });
 
-    it('should return error if there is no claim fee data', async () => {
-      mockDataFromStore.mockRejectedValueOnce(new Error(TestMessages.SOMETHING_WENT_WRONG));
-      await request(app)
-        .get(GA_PAYMENT_SUCCESSFUL_URL)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
-    });
+    it('should call next when loading the claim fails', async () => {
+      const error = new Error('redis failure');
+      (getClaimById as jest.Mock).mockRejectedValue(error);
 
-    it('should return resolving successful payment page for COSC application', async () => {
-      jest.spyOn(generalApplicationService, 'getApplicationFromGAService').mockResolvedValueOnce(applicationResponse);
-      claim.generalApplication.applicationTypes = [new ApplicationType(ApplicationTypeOption.STAY_THE_CLAIM)];
-      mockDataFromStore.mockResolvedValueOnce(claim);
-      await request(app)
-        .get(GA_PAYMENT_SUCCESSFUL_COSC_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Application fee');
-          expect(res.text).toContain('REF-123-123');
-          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.GA_PAYMENT_SUCCESSFUL.WHAT_HAPPENS_NEXT'));
-          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.GA_PAYMENT_SUCCESSFUL.WHAT_HAPPENS_NEXT_PARA_1'));
-          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.GA_PAYMENT_SUCCESSFUL.CHOOSEN_NOT_TO_INFORM_OTHER_PARTY_PARA_2'));
-        });
+      await getHandler(req as never, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 });
