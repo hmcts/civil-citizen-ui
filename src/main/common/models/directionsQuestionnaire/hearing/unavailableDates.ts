@@ -135,9 +135,6 @@ function generateErrorMessageForIsDate(args: ValidationArgs<UnavailableDatePerio
   if (args.object.type === UnavailableDateType.SINGLE_DATE) {
     return 'ERRORS.ENTER_DATE_FOR_UNAVAILABILITY';
   }
-  if (args.object.type === UnavailableDateType.LONGER_PERIOD && (args.object.until || args.object.endDay || args.object.endMonth || args.object.endYear)) {
-    return 'ERRORS.ENTER_DATE_FOR_UNAVAILABILITY_FROM';
-  }
   return 'ERRORS.ENTER_DATE_FOR_UNAVAILABILITY_FROM';
 }
 

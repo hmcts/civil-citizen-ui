@@ -11,7 +11,7 @@ const getErrorText = (form: GenericForm<UnavailableDatePeriod>, property: string
 
 describe('UnavailableDatePeriod', () => {
 
-  it('should return error message for until when end date does not exist for longer period', () => {
+  it('should return error message for until when end date is invalid for longer period', () => {
     //Given
     const startDate = new Date();
     startDate.setMonth(startDate.getMonth() + 1);

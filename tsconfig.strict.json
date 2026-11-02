@@ -221,6 +221,7 @@
     "src/main/common/models/directionsQuestionnaire/experts/expertDetails.ts",
     "src/main/common/models/directionsQuestionnaire/experts/expertDetailsList.ts",
     "src/main/common/models/directionsQuestionnaire/experts/expertReportDetails/expertReportDetails.ts",
+    "src/main/common/models/directionsQuestionnaire/experts/expertReportDetails/reportDetail.ts",
     "src/main/common/models/directionsQuestionnaire/experts/sentExpertReports.ts",
     "src/main/common/models/directionsQuestionnaire/fixedRecoverableCosts/complexityBand.ts",
     "src/main/common/models/directionsQuestionnaire/fixedRecoverableCosts/complexityBandOptions.ts",
