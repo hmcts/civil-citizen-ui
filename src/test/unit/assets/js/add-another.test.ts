@@ -287,6 +287,50 @@ describe.each(evidencePages)('real evidence page %s', view => {
     associations(document);
   });
 
+  it.each(['saved', 'added'])('shows only the matching evidence hint in a %s row', state => {
+    const document = install(renderAddAnotherPage(view, {evidenceItem: [{type: EvidenceType.PHOTO, description: 'saved photo'}]}));
+    enhance(document);
+    if (state === 'added') add(document);
+    const row = rows(document)[state === 'added' ? 1 : 0];
+    const select = row.querySelector('select') as HTMLSelectElement;
+    const panel = row.querySelector('.panel') as HTMLElement;
+    const hints = [...row.querySelectorAll<HTMLElement>('[data-evidence-type]')];
+
+    for (const {type, text} of [
+      {type: EvidenceType.PHOTO, text: 'Describe this evidence in more detail (optional). For example, a photo of the work you carried out.'},
+      {type: EvidenceType.RECEIPTS, text: 'Describe this evidence in more detail (optional). For example, a receipt showing the amount you\'ve paid.'},
+    ]) {
+      select.value = type;
+      select.dispatchEvent(new dom.window.Event('change', {bubbles: true}));
+      expect(panel.hidden).toBe(false);
+      expect(hints.filter(hint => !hint.hidden).map(hint => hint.textContent!.replace(/\s+/g, ' ').trim())).toEqual([text]);
+      expect(hints.filter(hint => !hint.classList.contains('govuk-visually-hidden')).map(hint => hint.textContent!.replace(/\s+/g, ' ').trim())).toEqual([text]);
+    }
+  });
+
+  it.each(['saved', 'added'])('clears the description and hides the panel when a %s row selection is cleared', state => {
+    const document = install(renderAddAnotherPage(view, {evidenceItem: [{type: EvidenceType.PHOTO, description: 'saved photo'}]}));
+    enhance(document);
+    if (state === 'added') add(document);
+    const row = rows(document)[state === 'added' ? 1 : 0];
+    const select = row.querySelector('select') as HTMLSelectElement;
+    const description = row.querySelector('textarea') as HTMLTextAreaElement;
+    const panel = row.querySelector('.panel') as HTMLElement;
+    select.value = EvidenceType.PHOTO;
+    select.dispatchEvent(new dom.window.Event('change', {bubbles: true}));
+    description.value = 'Description to clear';
+    expect(panel.hidden).toBe(false);
+
+    select.value = '';
+    select.dispatchEvent(new dom.window.Event('change', {bubbles: true}));
+    expect(description.value).toBe('');
+    expect(panel.hidden).toBe(true);
+    if (state === 'added') {
+      expect((rows(document)[0].querySelector('textarea') as HTMLTextAreaElement).value).toBe('saved photo');
+      expect((rows(document)[0].querySelector('.panel') as HTMLElement).hidden).toBe(false);
+    }
+  });
+
   it.each(['en', 'cy'])('renders translated Remove controls for each evidence row (%s)', language => {
     const document = install(renderAddAnotherPage(view, {evidenceItem: [{type: EvidenceType.PHOTO}, {type: EvidenceType.RECEIPTS}]}, {}, language));
     enhance(document);
