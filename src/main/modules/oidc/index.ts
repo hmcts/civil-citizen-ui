@@ -245,7 +245,14 @@ export class OidcMiddleware {
         // expired or was signed out in another tab. Show the timeout page so
         // form submissions do not silently send the user back to the
         // dashboard/sign-in journey.
-        if (req.cookies?.['citizen-ui-session'] && !isSessionTimeoutPage(req.originalUrl)) {
+        // Logout must remain reachable when the browser has a stale session
+        // cookie. Otherwise an expired local session is redirected to the
+        // timeout page before the logout handler can clear the IDAM session.
+        if (
+          req.cookies?.['citizen-ui-session'] &&
+          !isSessionTimeoutPage(req.originalUrl) &&
+          !req.originalUrl.startsWith(SIGN_OUT_URL)
+        ) {
           return res.redirect(SESSION_TIMEOUT_URL);
         }
 
