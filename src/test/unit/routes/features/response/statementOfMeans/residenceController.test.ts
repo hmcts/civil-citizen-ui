@@ -2,13 +2,20 @@ import {Request, Response} from 'express';
 import residenceController from '../../../../../../main/routes/features/response/statementOfMeans/residenceController';
 import {CITIZEN_PARTNER_URL} from 'routes/urls';
 import {ResidenceType} from 'form/models/statementOfMeans/residence/residenceType';
+import {Residence} from 'form/models/statementOfMeans/residence/residence';
 import {FREE_TEXT_MAX_LENGTH} from 'form/validators/validationConstraints';
-import {Claim} from 'models/claim';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import * as residenceService from 'services/features/response/statementOfMeans/residence/residenceService';
 import {createMockResponse, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
-jest.mock('modules/draft-store/draftStoreService');
+jest.mock('services/features/response/statementOfMeans/residence/residenceService', () => {
+  const actual = jest.requireActual('services/features/response/statementOfMeans/residence/residenceService');
+  return {
+    ...actual,
+    getResidence: jest.fn(),
+    saveResidence: jest.fn(),
+  };
+});
 
 describe('Citizen residence', () => {
   const getHandler = getRouteHandler(residenceController, 'get');
@@ -19,31 +26,30 @@ describe('Citizen residence', () => {
   let req: Partial<Request>;
   let res: ReturnType<typeof createMockResponse>;
   let next: jest.Mock;
-  const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
-  const mockGenerateRedisKey = draftStoreService.generateRedisKey as jest.Mock;
-  const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
+  const mockGetResidence = residenceService.getResidence as jest.Mock;
+  const mockSaveResidence = residenceService.saveResidence as jest.Mock;
 
   beforeEach(() => {
     jest.clearAllMocks();
     req = {params: {id: claimId}, body: {}, query: {}, cookies: {}};
     res = createMockResponse();
     next = jest.fn();
-    mockGenerateRedisKey.mockReturnValue(claimId);
-    mockGetCaseData.mockResolvedValue(new Claim());
-    mockSaveDraftClaim.mockResolvedValue(undefined);
+    mockGetResidence.mockResolvedValue(new Residence());
+    mockSaveResidence.mockResolvedValue(undefined);
   });
 
   describe('on GET', () => {
     it('should render the residence page', async () => {
       await getHandler(req as Request, res as unknown as Response, next);
 
+      expect(mockGetResidence).toHaveBeenCalled();
       expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({form: expect.anything()}));
       expect(next).not.toHaveBeenCalled();
     });
 
     it('should call next when loading the claim fails', async () => {
-      const error = new Error('redis failure');
-      mockGetCaseData.mockRejectedValue(error);
+      const error = new Error('draft failure');
+      mockGetResidence.mockRejectedValue(error);
 
       await getHandler(req as Request, res as unknown as Response, next);
 
@@ -57,7 +63,7 @@ describe('Citizen residence', () => {
 
       await postHandler(req as Request, res as unknown as Response, next);
 
-      expect(mockSaveDraftClaim).toHaveBeenCalled();
+      expect(mockSaveResidence).toHaveBeenCalled();
       expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CITIZEN_PARTNER_URL));
     });
 
@@ -68,7 +74,7 @@ describe('Citizen residence', () => {
 
       expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({form: expect.anything()}));
       expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
-      expect(mockSaveDraftClaim).not.toHaveBeenCalled();
+      expect(mockSaveResidence).not.toHaveBeenCalled();
     });
 
     it('should re-render when other is selected without housing details', async () => {
@@ -85,6 +91,7 @@ describe('Citizen residence', () => {
 
       await postHandler(req as Request, res as unknown as Response, next);
 
+      expect(mockSaveResidence).toHaveBeenCalled();
       expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, CITIZEN_PARTNER_URL));
     });
 
@@ -98,8 +105,8 @@ describe('Citizen residence', () => {
     });
 
     it('should call next when saving fails', async () => {
-      const error = new Error('redis failure');
-      mockGetCaseData.mockRejectedValue(error);
+      const error = new Error('draft failure');
+      mockSaveResidence.mockRejectedValue(error);
       req.body = {type: ResidenceType.OTHER, housingDetails: 'Palace'};
 
       await postHandler(req as Request, res as unknown as Response, next);
