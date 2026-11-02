@@ -1,76 +1,99 @@
-import config from 'config';
-import nock from 'nock';
-import request from 'supertest';
-import {
-  DQ_COURT_LOCATION_URL, DQ_WELSH_LANGUAGE_URL,
-} from 'routes/urls';
-import * as specificCourtLocationService from 'services/features/directionsQuestionnaire/hearing/specificCourtLocationService';
-import * as directionQuestionnaireService
-  from 'services/features/directionsQuestionnaire/directionQuestionnaireService';
-import {SpecificCourtLocation} from 'models/directionsQuestionnaire/hearing/specificCourtLocation';
-import {app} from '../../../../../../main/app';
-import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
+import {Response} from 'express';
+import specificCourtController from '../../../../../../main/routes/features/directionsQuestionnaire/hearing/specificCourtController';
+import {DQ_WELSH_LANGUAGE_URL} from 'routes/urls';
+import {Claim} from 'models/claim';
+import {PartyType} from 'models/partyType';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {createMockResponse, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
-jest.mock('modules/oidc');
-jest.mock('modules/draft-store');
-jest.mock('services/features/directionsQuestionnaire/hearing/specificCourtLocationService');
-jest.mock('services/features/directionsQuestionnaire/directionQuestionnaireService');
+jest.mock('modules/draft-store/draftStoreService');
+jest.mock('client/civilServiceClient', () => ({
+  CivilServiceClient: jest.fn().mockImplementation(() => ({
+    getCourtLocations: jest.fn().mockResolvedValue([]),
+  })),
+}));
 
-const getSpecificCourtLocation = specificCourtLocationService.getSpecificCourtLocationForm as jest.Mock;
-const saveDirectionQuestionnaire = directionQuestionnaireService.saveDirectionQuestionnaire as jest.Mock;
-describe('specificCourtController test', ()=>{
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
+describe('specificCourtController test', () => {
+  const getHandler = getRouteHandler(specificCourtController, 'get');
+  const postHandler = getRouteHandler(specificCourtController, 'post');
+  const viewPath = 'features/directionsQuestionnaire/hearing/specific-court';
+  const claimId = '12345';
+  let req: {params: {id: string}; body: Record<string, unknown>};
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
+  const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
+  const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
 
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
+  const buildClaim = (): Claim => {
+    const claim = new Claim();
+    claim.applicant1 = {
+      type: PartyType.INDIVIDUAL,
+      partyDetails: {title: 'Mr', firstName: 'Jan', lastName: 'Clark'},
+    } as Claim['applicant1'];
+    return claim;
+  };
+
+  beforeEach(() => {
+    req = {params: {id: claimId}, body: {}};
+    res = createMockResponse();
+    next = jest.fn();
+    (draftStoreService.generateRedisKey as jest.Mock).mockReturnValue(claimId);
+    mockGetCaseData.mockResolvedValue(buildClaim());
+    mockSaveDraftClaim.mockResolvedValue(undefined);
   });
-  describe('on GET', ()=>{
-    it('should return view successfully', async () => {
-      getSpecificCourtLocation.mockImplementation(async() => {
-        return new SpecificCourtLocation();
-      });
-      await request(app).get(DQ_COURT_LOCATION_URL).expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain('Please select your preferred court hearing location.');
-      });
+
+  describe('on GET', () => {
+    it('should render the specific court page', async () => {
+      await getHandler(req as never, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        courtLocations: [],
+        pageTitle: 'PAGES.SPECIFIC_COURT.PAGE_TITLE',
+      }));
+      expect(next).not.toHaveBeenCalled();
     });
-    it('should show error page if there is an error', async ()=>{
-      getSpecificCourtLocation.mockImplementation(async() => {
-        throw new Error(TestMessages.REDIS_FAILURE);
-      });
-      await request(app).get(DQ_COURT_LOCATION_URL).expect((res) => {
-        expect(res.status).toBe(500);
-        expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-      });
+
+    it('should call next when loading the claim fails', async () => {
+      const error = new Error('redis failure');
+      mockGetCaseData.mockRejectedValue(error);
+
+      await getHandler(req as never, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
-  describe('on POST', ()=> {
 
-    it('should show error message when court location is required but location is not selected and reason for court locaiton is not entered', async ()=>{
-      await request(app).post(DQ_COURT_LOCATION_URL).send({option: 'yes'}).expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain('Select a court');
-        expect(res.text).toContain('Tell us why you want the hearing to be held at this court');
-      });
+  describe('on POST', () => {
+    it('should re-render when the court and reason are missing', async () => {
+      req.body = {option: 'yes'};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        courtLocations: [],
+      }));
+      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
+      expect(mockSaveDraftClaim).not.toHaveBeenCalled();
     });
 
-    it('should redirect to next page successfully when there are no errors and yes is selected', async () =>{
-      await request(app).post(DQ_COURT_LOCATION_URL).send({reason:'reason', courtLocation:'courtLocation'}).expect((res) => {
-        expect(res.status).toBe(302);
-        expect(res.get('location')).toBe(DQ_WELSH_LANGUAGE_URL);
-      });
+    it('should save and redirect to the welsh language page when the court and reason are provided', async () => {
+      req.body = {reason: 'reason', courtLocation: 'courtLocation'};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(mockSaveDraftClaim).toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, DQ_WELSH_LANGUAGE_URL));
     });
-    it('should show error page when there is an error', async ()=>{
-      saveDirectionQuestionnaire.mockImplementation(async() => {
-        throw new Error(TestMessages.REDIS_FAILURE);
-      });
-      await request(app).post(DQ_COURT_LOCATION_URL).send({reason:'reason', courtLocation:'courtLocation'}).expect((res) => {
-        expect(res.status).toBe(500);
-        expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-      });
+
+    it('should call next when saving fails', async () => {
+      const error = new Error('redis failure');
+      mockSaveDraftClaim.mockRejectedValue(error);
+      req.body = {reason: 'reason', courtLocation: 'courtLocation'};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 });

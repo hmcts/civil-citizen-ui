@@ -1,82 +1,88 @@
-import config from 'config';
-import nock from 'nock';
-import request from 'supertest';
-import {app} from '../../../../../../main/app';
-import {DQ_EXPERT_DETAILS_URL, DQ_SHARE_AN_EXPERT_URL} from '../../../../../../main/routes/urls';
-import {mockCivilClaim, mockRedisFailure} from '../../../../../utils/mockDraftStore';
-import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import {t} from 'i18next';
+import {Response} from 'express';
+import sharedExpertController from '../../../../../../main/routes/features/directionsQuestionnaire/experts/sharedExpertController';
+import {DQ_EXPERT_DETAILS_URL} from 'routes/urls';
+import {Claim} from 'models/claim';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {createMockResponse, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
+jest.mock('modules/draft-store/draftStoreService');
 
 describe('Shared Expert Controller', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
+  const getHandler = getRouteHandler(sharedExpertController, 'get');
+  const postHandler = getRouteHandler(sharedExpertController, 'post');
+  const viewPath = 'features/directionsQuestionnaire/experts/shared-expert';
+  const claimId = '12345';
+  let req: {params: {id: string}; body: Record<string, unknown>};
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
+  const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
+  const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
 
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
+  beforeEach(() => {
+    req = {params: {id: claimId}, body: {}};
+    res = createMockResponse();
+    next = jest.fn();
+    (draftStoreService.generateRedisKey as jest.Mock).mockReturnValue(claimId);
+    mockGetCaseData.mockResolvedValue(new Claim());
+    mockSaveDraftClaim.mockResolvedValue(undefined);
   });
 
   describe('on GET', () => {
-    it('should return shared expert page', async () => {
-      app.locals.draftStoreClient = mockCivilClaim;
-      await request(app).get(DQ_SHARE_AN_EXPERT_URL).expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(t('PAGES.SHARED_EXPERT.TITLE'));
-      });
+    it('should render the shared expert page', async () => {
+      await getHandler(req as never, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        pageTitle: 'PAGES.SHARED_EXPERT.TITLE',
+      }));
+      expect(next).not.toHaveBeenCalled();
     });
 
-    it('should return status 500 when error thrown', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .get(DQ_SHARE_AN_EXPERT_URL)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+    it('should call next when loading the claim fails', async () => {
+      const error = new Error('redis failure');
+      mockGetCaseData.mockRejectedValue(error);
+
+      await getHandler(req as never, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 
   describe('on POST', () => {
-    beforeAll(() => {
-      app.locals.draftStoreClient = mockCivilClaim;
+    it('should re-render when no option is selected', async () => {
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.any(Object));
+      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
+      expect(mockSaveDraftClaim).not.toHaveBeenCalled();
     });
 
-    it('should return shared expert page on empty post', async () => {
-      await request(app).post(DQ_SHARE_AN_EXPERT_URL).expect((res) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(t('ERRORS.VALID_SHARED_EXPERT'));
-      });
+    it('should save and redirect to expert details when yes is selected', async () => {
+      req.body = {option: 'yes'};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(mockSaveDraftClaim).toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, DQ_EXPERT_DETAILS_URL));
     });
 
-    it('should redirect to the expert details page if option yes is selected', async () => {
-      await request(app).post(DQ_SHARE_AN_EXPERT_URL).send({option: 'yes'})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.get('location')).toBe(DQ_EXPERT_DETAILS_URL);
-        });
+    it('should save and redirect to expert details when no is selected', async () => {
+      req.body = {option: 'no'};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(mockSaveDraftClaim).toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, DQ_EXPERT_DETAILS_URL));
     });
 
-    it('should redirect to the expert details page if option no is selected', async () => {
-      await request(app).post(DQ_SHARE_AN_EXPERT_URL).send({option: 'no'})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.get('location')).toBe(DQ_EXPERT_DETAILS_URL);
-        });
-    });
+    it('should call next when saving fails', async () => {
+      const error = new Error('redis failure');
+      mockSaveDraftClaim.mockRejectedValue(error);
+      req.body = {option: 'yes'};
 
-    it('should return status 500 when error thrown', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .post(DQ_SHARE_AN_EXPERT_URL)
-        .send({option: 'yes'})
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 });
