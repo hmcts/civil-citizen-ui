@@ -1,14 +1,19 @@
-import {getCaseDataFromStore, saveDraftClaim} from '../../../../../modules/draft-store/draftStoreService';
-import {Employer} from '../../../../../common/form/models/statementOfMeans/employment/employer';
-import {Employers} from '../../../../../common/form/models/statementOfMeans/employment/employers';
-import {StatementOfMeans} from '../../../../../common/models/statementOfMeans';
+import {getResponseDraft, getResponseClaimById, updateResponseDraft} from 'modules/draft-store/response/responseDraftStoreService';
+import {Employer} from 'common/form/models/statementOfMeans/employment/employer';
+import {Employers} from 'common/form/models/statementOfMeans/employment/employers';
+import {StatementOfMeans} from 'common/models/statementOfMeans';
+import {AppRequest} from 'models/AppRequest';
+import {Claim} from 'models/claim';
+import {getRouteParam} from 'common/utils/routeParamUtils';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('employmentService');
 
-export const getEmployers = async (claimId: string): Promise<Employers> => {
+export const getEmployers = async (req: AppRequest): Promise<Employers> => {
   try {
-    const claim = await getCaseDataFromStore(claimId);
+    const caseId = getRouteParam(req, 'id');
+    const claim = await getResponseClaimById(req, caseId);
+
     if (claim.statementOfMeans?.employers?.rows.length) {
       const employers = claim.statementOfMeans.employers.rows.map(employer => new Employer(employer.employerName, employer.jobTitle));
       return new Employers(employers);
@@ -20,15 +25,25 @@ export const getEmployers = async (claimId: string): Promise<Employers> => {
   }
 };
 
-export const saveEmployers = async (claimId: string, employers: Employers) => {
+export const saveEmployers = async (req: AppRequest, employers: Employers) => {
   try {
-    const claim = await getCaseDataFromStore(claimId);
+    const caseId = getRouteParam(req, 'id');
+    const draftResult = await getResponseDraft(req, caseId);
+    if (!draftResult) {
+      throw new Error('[employerService] no response draft found');
+    }
+    const claim = Object.assign(new Claim(), draftResult.claimResponse?.case_data as unknown as Claim);
+    const draftId = draftResult.rawResponse?.draftId;
+
     const filteredEmployers: Employers = filterEmptyEmployers(employers);
     if (!claim.statementOfMeans) {
       claim.statementOfMeans = new StatementOfMeans();
     }
     claim.statementOfMeans.employers = filteredEmployers;
-    await saveDraftClaim(claimId, claim);
+    if (draftResult.createdAt && !claim.draftClaimCreatedAt) {
+      claim.draftClaimCreatedAt = new Date(draftResult.createdAt);
+    }
+    await updateResponseDraft(req, caseId, claim, draftId);
   } catch (error) {
     logger.error(error);
     throw error;
