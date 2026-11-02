@@ -115,7 +115,7 @@ TimeoutWarning.prototype.dialogSupported = function () {
       window.dialogPolyfill.registerDialog(this.$module);
       return true;
     }
-  } catch (error) {
+  } catch {
     // Fall through to fallback UI
   }
 
@@ -225,7 +225,7 @@ TimeoutWarning.prototype.startUiCountdown = function () {
     try {
       atMinutesNumberAsText = $module.numberToWords(minutesLeft);
       atSecondsNumberAsText = $module.numberToWords(secondsLeft);
-    } catch (e) {
+    } catch {
       atMinutesNumberAsText = minutesLeft;
       atSecondsNumberAsText = secondsLeft;
     }
@@ -429,7 +429,7 @@ TimeoutWarning.prototype.extendTimeOnServer = function (onSuccess) {
     if (request.readyState !== 4 || completed) return;
     if (request.status >= 200 && request.status < 300) {
       var response;
-      try { response = JSON.parse(request.responseText); } catch (error) { response = null; }
+      try { response = JSON.parse(request.responseText); } catch { response = null; }
       completed = true;
       this.finishRenewal(response);
     } else {
