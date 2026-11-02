@@ -1,19 +1,24 @@
-import {getCaseDataFromStore, saveDraftClaim} from '../../../../../modules/draft-store/draftStoreService';
-import {Unemployment} from '../../../../../common/form/models/statementOfMeans/unemployment/unemployment';
-import {UnemploymentDetails} from '../../../../../common/form/models/statementOfMeans/unemployment/unemploymentDetails';
-import {OtherDetails} from '../../../../../common/form/models/statementOfMeans/unemployment/otherDetails';
-import {StatementOfMeans} from '../../../../../common/models/statementOfMeans';
-import {UnemploymentCategory} from '../../../../../common/form/models/statementOfMeans/unemployment/unemploymentCategory';
+import {getResponseDraft, getResponseClaimById, updateResponseDraft} from 'modules/draft-store/response/responseDraftStoreService';
+import {Unemployment} from 'common/form/models/statementOfMeans/unemployment/unemployment';
+import {UnemploymentDetails} from 'common/form/models/statementOfMeans/unemployment/unemploymentDetails';
+import {OtherDetails} from 'common/form/models/statementOfMeans/unemployment/otherDetails';
+import {StatementOfMeans} from 'common/models/statementOfMeans';
+import {UnemploymentCategory} from 'common/form/models/statementOfMeans/unemployment/unemploymentCategory';
+import {AppRequest} from 'models/AppRequest';
+import {getRouteParam} from 'common/utils/routeParamUtils';
+import {Claim} from 'models/claim';
 
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('employmentService');
-const unemployment = new Unemployment();
 
 export class UnemploymentService {
-  public async getUnemployment(claimId: string) {
+
+  public async getUnemployment(req: AppRequest) {
     try {
-      const claim = await getCaseDataFromStore(claimId);
+      const caseId = getRouteParam(req, 'id');
+      const claim = await getResponseClaimById(req, caseId);
       if (claim.statementOfMeans?.unemployment) {
+        const unemployment = new Unemployment();
         unemployment.option = claim.statementOfMeans.unemployment.option;
         switch (unemployment.option) {
           case UnemploymentCategory.UNEMPLOYED:
@@ -34,14 +39,25 @@ export class UnemploymentService {
     }
   }
 
-  public async saveUnemployment(claimId: string, unemploymentToSave: Unemployment) {
+  public async saveUnemployment(req: AppRequest, unemploymentToSave: Unemployment) {
     try {
-      const case_data = await getCaseDataFromStore(claimId);
-      if (!case_data.statementOfMeans) {
-        case_data.statementOfMeans = new StatementOfMeans();
+      const caseId = getRouteParam(req, 'id');
+      const draftResult = await getResponseDraft(req, caseId);
+      if (!draftResult) {
+        throw new Error('[unemploymentService] no response draft found');
       }
-      case_data.statementOfMeans.unemployment = unemploymentToSave;
-      await saveDraftClaim(claimId, case_data);
+      const claim = Object.assign(new Claim(), draftResult.claimResponse?.case_data as unknown as Claim);
+      const draftId = draftResult.rawResponse?.draftId;
+
+      if (!claim.statementOfMeans) {
+        claim.statementOfMeans = new StatementOfMeans();
+      }
+      claim.statementOfMeans.unemployment = unemploymentToSave;
+
+      if (draftResult.createdAt && !claim.draftClaimCreatedAt) {
+        claim.draftClaimCreatedAt = new Date(draftResult.createdAt);
+      }
+      await updateResponseDraft(req, caseId, claim, draftId);
     } catch (error) {
       logger.error(error);
       throw error;
