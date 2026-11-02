@@ -1,4 +1,4 @@
-import {getResponseDraft, getResponseClaimById, updateResponseDraft,} from 'modules/draft-store/response/responseDraftStoreService';
+import {getResponseDraft, getResponseClaimById, updateResponseDraft} from 'modules/draft-store/response/responseDraftStoreService';
 import {StatementOfMeans} from 'common/models/statementOfMeans';
 import {Residence} from 'common/form/models/statementOfMeans/residence/residence';
 import {ResidenceType} from 'common/form/models/statementOfMeans/residence/residenceType';

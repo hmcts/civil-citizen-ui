@@ -1,5 +1,5 @@
 import {OtherDependants} from 'common/form/models/statementOfMeans/otherDependants';
-import {getResponseClaimById, getResponseDraft, updateResponseDraft,} from 'modules/draft-store/response/responseDraftStoreService';
+import {getResponseClaimById, getResponseDraft, updateResponseDraft} from 'modules/draft-store/response/responseDraftStoreService';
 import {StatementOfMeans} from 'common/models/statementOfMeans';
 import {GenericForm} from 'common/form/models/genericForm';
 import {YesNo} from 'common/form/models/yesNo';
