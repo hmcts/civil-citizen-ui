@@ -1,14 +1,21 @@
-import request from 'supertest';
-import { app } from '../../../../../main/app';
-import { CONTACT_US_URL } from 'routes/urls';
-import { t } from 'i18next';
+import {Request, Response} from 'express';
+import contactUsController from 'routes/features/public/contactUsController';
+import {CONTACT_US_URL, DASHBOARD_URL} from 'routes/urls';
+import {createMockResponse, getRouteHandler} from '../../../../utils/getRouteHandler';
 
 describe('Contact us page', () => {
-  describe('on GET', () => {
-    it('should display Contact us page', async () => {
-      const res = await request(app).get(CONTACT_US_URL);
-      expect(res.status).toBe(200);
-      expect(res.text).toContain(t('PAGES.CONTACT_US.TITLE'));
+  it('renders the contact us view', async () => {
+    const res = createMockResponse();
+
+    await getRouteHandler(contactUsController, 'get', CONTACT_US_URL)(
+      {} as Request,
+      res as unknown as Response,
+      jest.fn(),
+    );
+
+    expect(res.render).toHaveBeenCalledWith('features/public/contact-us', {
+      dashboardUrl: DASHBOARD_URL,
+      pageTitle: 'PAGES.CONTACT_US.TITLE',
     });
   });
 });

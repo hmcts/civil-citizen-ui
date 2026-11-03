@@ -1,111 +1,129 @@
-import request from 'supertest';
-import {app} from '../../../../../../main/app';
-import nock from 'nock';
-import config from 'config';
-import {MEDIATION_TYPE_OF_DOCUMENTS, MEDIATION_UPLOAD_DOCUMENTS} from 'routes/urls';
-import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {NextFunction, Response} from 'express';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {Claim} from 'models/claim';
+import {AppRequest} from 'models/AppRequest';
 import {Party} from 'models/party';
-import {
-  TypeOfMediationDocuments,
-  UploadDocuments,
-} from 'models/mediation/uploadDocuments/uploadDocuments';
+import {TypeOfMediationDocuments, UploadDocuments} from 'models/mediation/uploadDocuments/uploadDocuments';
+import mediationTypeOfDocumentsController from 'routes/features/mediation/uploadDocuments/typeOfDocumentsController';
+import {MEDIATION_TYPE_OF_DOCUMENTS, MEDIATION_UPLOAD_DOCUMENTS} from 'routes/urls';
+import {saveUploadDocument} from 'services/features/mediation/uploadDocuments/uploadDocumentsService';
 import {getTypeOfDocuments} from '../../../../../utils/mocks/Mediation/uploadFilesMediationMocks';
+import {createMockResponse, createMockSession, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
-jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('modules/draft-store/draftStoreService', () => ({
+  generateRedisKey: jest.fn(),
+  getCaseDataFromStore: jest.fn(),
+}));
 
-const CONTROLLER_URL = MEDIATION_TYPE_OF_DOCUMENTS;
+jest.mock('services/features/mediation/uploadDocuments/uploadDocumentsService', () => {
+  const actual = jest.requireActual('services/features/mediation/uploadDocuments/uploadDocumentsService');
+  return {
+    ...actual,
+    saveUploadDocument: jest.fn(),
+  };
+});
+
+const mockGenerateRedisKey = generateRedisKey as jest.Mock;
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
+const mockSaveUploadDocument = saveUploadDocument as jest.Mock;
+
+const claimId = '1111';
+const redisKey = '12345';
+const viewPath = 'features/mediation/uploadDocuments/typeOfDocuments';
+
+const claimWithDocuments = (): Claim => {
+  const claim = new Claim();
+  claim.respondent1 = new Party();
+  claim.respondent1.partyDetails = {firstName: 'John', lastName: 'Smith'};
+  claim.mediationUploadDocuments = new UploadDocuments(getTypeOfDocuments());
+  return claim;
+};
+
+const invoke = async (method: 'get' | 'post', overrides: Partial<AppRequest> = {}) => {
+  const res = createMockResponse();
+  const next = jest.fn() as NextFunction;
+  const req = {
+    params: {id: claimId},
+    body: {},
+    query: {},
+    cookies: {},
+    session: createMockSession({user: {id: 'user-1'}}),
+    originalUrl: MEDIATION_TYPE_OF_DOCUMENTS,
+    ...overrides,
+  };
+  await getRouteHandler(mediationTypeOfDocumentsController, method, MEDIATION_TYPE_OF_DOCUMENTS)(
+    req as AppRequest,
+    res as unknown as Response,
+    next,
+  );
+  return {res, next};
+};
+
+const renderedForm = (res: ReturnType<typeof createMockResponse>) =>
+  (res.render as jest.Mock).mock.calls[0][1].form;
 
 describe('Mediation Type Of Document Controller', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
-  const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
-
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-    jest.spyOn(draftStoreService, 'generateRedisKey').mockReturnValue('12345');
-  });
-
   beforeEach(() => {
-    mockGetCaseData.mockImplementation(async () => {
-      const claim = new Claim();
-      claim.respondent1 = new Party();
-      claim.respondent1.partyDetails = {firstName: 'John', lastName: 'Smith'};
-      claim.mediationUploadDocuments = new UploadDocuments(getTypeOfDocuments());
-      return claim;
-    });
+    jest.clearAllMocks();
+    mockGenerateRedisKey.mockReturnValue(redisKey);
+    mockGetCaseData.mockResolvedValue(claimWithDocuments());
+    mockSaveUploadDocument.mockResolvedValue(undefined);
   });
 
   describe('on GET', () => {
     it('should open Mediation type of document page', async () => {
-      await request(app)
-        .get(CONTROLLER_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.MEDIATION_UPLOAD_DOCUMENTS_TITLE_PAGE);
-        });
+      const {res} = await invoke('get');
+
+      const form = renderedForm(res);
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        pageTitle: 'PAGES.UPLOAD_YOUR_DOCUMENTS.TITLE',
+      }));
+      expect(form.model.typeOfDocuments.some((item: {checked: boolean}) => item.checked)).toBe(true);
     });
 
     it('should open Mediation type of document page when uploadDocument is missing', async () => {
-      mockGetCaseData.mockImplementation(async () => {
-        return new Claim();
-      });
-      await request(app)
-        .get(CONTROLLER_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.MEDIATION_UPLOAD_DOCUMENTS_TITLE_PAGE);
-        });
+      mockGetCaseData.mockResolvedValue(new Claim());
+
+      const {res} = await invoke('get');
+
+      const form = renderedForm(res);
+      expect(form.model.typeOfDocuments.every((item: {checked: boolean}) => !item.checked)).toBe(true);
     });
 
-    it('should return http 500 when has error', async () => {
-      mockGetCaseData.mockImplementation(async () => {
-        throw new Error(TestMessages.REDIS_FAILURE);
-      });
-      await request(app)
-        .get(CONTROLLER_URL)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+    it('should call next when loading the type of documents fails', async () => {
+      const error = new Error('redis failure');
+      mockGetCaseData.mockRejectedValue(error);
+
+      const {next} = await invoke('get');
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
+
   describe('on POST', () => {
-    it('should redirect to the mediation Upload documents page ', async () => {
-      await request(app)
-        .post(CONTROLLER_URL)
-        .send({typeOfDocuments: TypeOfMediationDocuments.YOUR_STATEMENT})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(MEDIATION_UPLOAD_DOCUMENTS);
-        });
-    });
-    it('should Valid checkbox when they are not checked', async () => {
-      await request(app)
-        .post(CONTROLLER_URL)
-        .send({typeOfDocuments: ''})
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.MEDIATION_UPLOAD_DOCUMENTS_TITLE_PAGE);
-        });
+    it('should redirect to the mediation Upload documents page', async () => {
+      const {res} = await invoke('post', {body: {typeOfDocuments: TypeOfMediationDocuments.YOUR_STATEMENT}});
+
+      expect(mockSaveUploadDocument).toHaveBeenCalledWith(redisKey, expect.any(Array), 'typeOfDocuments');
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, MEDIATION_UPLOAD_DOCUMENTS));
     });
 
-    it('should return http 500 when has error', async () => {
-      mockGetCaseData.mockImplementation(async () => {
-        throw new Error(TestMessages.REDIS_FAILURE);
-      });
-      await request(app)
-        .post(CONTROLLER_URL)
-        .send({alternativeContactPerson: 'Joe Bloggs'})
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+    it('should Valid checkbox when they are not checked', async () => {
+      const {res} = await invoke('post', {body: {typeOfDocuments: ''}});
+
+      const form = renderedForm(res);
+      expect(form.hasErrors()).toBe(true);
+      expect(res.redirect).not.toHaveBeenCalled();
+    });
+
+    it('should call next when saving the type of documents fails', async () => {
+      const error = new Error('redis failure');
+      mockGetCaseData.mockRejectedValue(error);
+
+      const {next} = await invoke('post', {body: {typeOfDocuments: TypeOfMediationDocuments.YOUR_STATEMENT}});
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 });

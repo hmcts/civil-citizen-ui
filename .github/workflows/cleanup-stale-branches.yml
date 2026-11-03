@@ -32,7 +32,7 @@ jobs:
       DAYS_BEFORE: ${{ inputs.days_before || '90' }}
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/github-script@v8
+      - uses: actions/github-script@v9
         with:
           script: |
             const { run } = require('./.github/scripts/cleanup-stale-branches.cjs');

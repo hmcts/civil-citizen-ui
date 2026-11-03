@@ -6,9 +6,15 @@ module.exports = {
   testEnvironment: 'node',
   transform: {
     '^.+\\.ts?$': ['ts-jest', { tsconfig: '<rootDir>/src/test/contract/tsconfig.pact.json' }],
+    // ESM-only deps: transform so Jest can load them
+    '.*/node_modules/(nock|@mswjs/interceptors|rettime|@open-draft|strict-event-emitter|outvariant|is-node-process|headers-polyfill|@mswjs)/.+\\.(js|mjs|cjs)$': 'babel-jest',
   },
+  transformIgnorePatterns: [
+    '/node_modules/(?!(nock|@mswjs/interceptors|rettime|@open-draft|strict-event-emitter|outvariant|is-node-process|headers-polyfill|@mswjs)/)',
+  ],
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
   moduleNameMapper: {
+    '^nock$': '<rootDir>/__mocks__/nockCjs.js',
     '^otplib$': '<rootDir>/__mocks__/otplib.js',
     '^client/(.*)$': '<rootDir>/src/main/app/client/$1',
     '^common/(.*)$': '<rootDir>/src/main/common/$1',

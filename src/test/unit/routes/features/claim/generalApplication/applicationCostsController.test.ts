@@ -1,82 +1,100 @@
-import {app} from '../../../../../../main/app';
-import request from 'supertest';
-import {GA_APPLICATION_COSTS_URL} from 'routes/urls';
-import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import {t} from 'i18next';
-import {getApplicationCostsContent} from 'services/features/generalApplication/applicationCostsService';
-import {PageSectionBuilder} from 'common/utils/pageSectionBuilder';
+import {Response} from 'express';
+import applicationCostsController from '../../../../../../main/routes/features/generalApplication/applicationCostsController';
 import {Claim} from 'models/claim';
+import {PartyType} from 'models/partyType';
 import {GeneralApplication} from 'models/generalApplication/GeneralApplication';
 import {ApplicationType, ApplicationTypeOption} from 'models/generalApplication/applicationType';
-import * as utilityService from 'modules/utilityService';
-import config from 'config';
-import nock from 'nock';
-import {isGaForLipsEnabled} from '../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
-import { gaApplicationFeeDetails } from 'services/features/generalApplication/feeDetailsService';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {getClaimById} from 'modules/utilityService';
+import {createMockResponse, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
-jest.mock('../../../../../../main/modules/utilityService');
-jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
-jest.mock('../../../../../../main/services/features/generalApplication/applicationCostsService');
-jest.mock('../../../../../../main/services/features/generalApplication/feeDetailsService');
-jest.mock('../../../../../../main/routes/guards/generalAplicationGuard',() => ({
-  isGAForLiPEnabled: jest.fn((req, res, next) => {
-    next();
-  }),
+jest.mock('modules/draft-store/draftStoreService');
+jest.mock('services/features/generalApplication/response/generalApplicationResponseStoreService', () => ({
+  getDraftGARespondentResponse: jest.fn(),
+  saveDraftGARespondentResponse: jest.fn(),
 }));
-
-const mockGetClaim = utilityService.getClaimById as jest.Mock;
+jest.mock('modules/utilityService', () => ({
+  getClaimById: jest.fn(),
+}));
+jest.mock('client/civilServiceClient', () => {
+  const getGeneralApplicationFee = jest.fn().mockResolvedValue({
+    calculatedAmountInPence: 11900,
+    code: 'FEE',
+    version: '1',
+  });
+  const retrieveClaimDetails = jest.fn().mockResolvedValue({});
+  const CivilServiceClient = jest.fn().mockImplementation(() => ({
+    getGeneralApplicationFee,
+    retrieveClaimDetails,
+  }));
+  return {CivilServiceClient};
+});
 
 describe('General Application - Application costs', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
+  const getHandler = getRouteHandler(applicationCostsController, 'get');
+  const viewPath = 'features/generalApplication/application-costs';
+  const claimId = '12345';
+  let claim: Claim;
+  let req: {
+    params: {id: string};
+    body: Record<string, unknown>;
+    query: Record<string, unknown>;
+    cookies: Record<string, unknown>;
+    session: {user: {id: string}};
+  };
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
+  const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
+  const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
+  const mockGetClaim = getClaimById as jest.Mock;
 
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-    (isGaForLipsEnabled as jest.Mock).mockResolvedValue(true);
-  });
+  const buildClaim = (): Claim => {
+    const builtClaim = new Claim();
+    builtClaim.applicant1 = {
+      type: PartyType.INDIVIDUAL,
+      partyDetails: {title: 'Mr', firstName: 'Jan', lastName: 'Clark'},
+    } as Claim['applicant1'];
+    builtClaim.generalApplication = new GeneralApplication(new ApplicationType(ApplicationTypeOption.SETTLE_BY_CONSENT));
+    return builtClaim;
+  };
 
   beforeEach(() => {
-    mockGetClaim.mockImplementation(() => {
-      const claim = new Claim();
-      claim.generalApplication = new GeneralApplication(new ApplicationType(ApplicationTypeOption.SETTLE_BY_CONSENT));
-      return claim;
-    });
-  });
-
-  const mockContent = getApplicationCostsContent as jest.Mock;
-  mockContent.mockImplementation(() => {
-    return new PageSectionBuilder().build();
+    jest.clearAllMocks();
+    claim = buildClaim();
+    req = {
+      params: {id: claimId},
+      body: {},
+      query: {},
+      cookies: {},
+      session: {user: {id: 'u1'}},
+    };
+    res = createMockResponse();
+    next = jest.fn();
+    (draftStoreService.generateRedisKey as jest.Mock).mockReturnValue(claimId);
+    (draftStoreService.generateRedisKeyForGA as jest.Mock).mockReturnValue('ga-12345');
+    mockGetCaseData.mockResolvedValue(claim);
+    mockSaveDraftClaim.mockResolvedValue(undefined);
+    mockGetClaim.mockResolvedValue(claim);
   });
 
   describe('on GET', () => {
-    it('should return page', async () => {
-      (gaApplicationFeeDetails as jest.Mock).mockResolvedValueOnce({
-        calculatedAmountInPence: 1400,
-        code: 'Fe124',
-        version: 0,
-      });
-      await request(app)
-        .get(GA_APPLICATION_COSTS_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.APPLICATION_COSTS.TITLE'));
-        });
+    it('should render the application costs page', async () => {
+      await getHandler(req as never, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        applicationType: 'PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.SETTLING',
+        applicationCostsContent: expect.any(Array),
+      }));
+      expect(next).not.toHaveBeenCalled();
     });
 
-    it('should return http 500 when has error in the get method', async () => {
-      mockGetClaim.mockImplementation(() => {
-        throw new Error(TestMessages.REDIS_FAILURE);
-      });
-      await request(app)
-        .get(GA_APPLICATION_COSTS_URL)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+    it('should call next when loading the claim fails', async () => {
+      const error = new Error('redis failure');
+      mockGetClaim.mockRejectedValue(error);
+
+      await getHandler(req as never, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 });

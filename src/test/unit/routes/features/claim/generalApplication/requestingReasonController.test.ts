@@ -1,108 +1,133 @@
-import {app} from '../../../../../../main/app';
-import config from 'config';
-import nock from 'nock';
-import request from 'supertest';
-import {GA_CHECK_ANSWERS_URL, GA_REQUESTING_REASON_URL} from 'routes/urls';
-import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import {t} from 'i18next';
-import {
-  mockCivilClaimWithApplicationType,
-  mockCivilClaimWithApplicationTypeAndFee,
-  mockRedisFailure,
-} from '../../../../../utils/mockDraftStore';
-import { isGaForLipsEnabled } from 'app/auth/launchdarkly/launchDarklyClient';
+import {Response} from 'express';
+import requestingReasonController from '../../../../../../main/routes/features/generalApplication/requestingReasonController';
+import {GA_ADD_ANOTHER_APPLICATION_URL, GA_CHECK_ANSWERS_URL} from 'routes/urls';
+import {Claim} from 'models/claim';
+import {PartyType} from 'models/partyType';
+import {GeneralApplication} from 'models/generalApplication/GeneralApplication';
+import {ApplicationType, ApplicationTypeOption} from 'models/generalApplication/applicationType';
+import {constructResponseUrlWithIdParams, constructUrlWithIndex} from 'common/utils/urlFormatter';
+import * as draftStoreService from 'modules/draft-store/draftStoreService';
+import {getClaimById} from 'modules/utilityService';
+import {createMockResponse, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
-jest.mock('../../../../../../main/services/features/claim/details/claimDetailsService');
-jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
-jest.mock('../../../../../../main/routes/guards/generalAplicationGuard',() => ({
-  isGAForLiPEnabled: jest.fn((req, res, next) => {
-    next();
-  }),
+jest.mock('modules/draft-store/draftStoreService');
+jest.mock('services/features/generalApplication/response/generalApplicationResponseStoreService', () => ({
+  getDraftGARespondentResponse: jest.fn(),
+  saveDraftGARespondentResponse: jest.fn(),
 }));
-jest.mock('../../../../../../main/routes/guards/requireGeneralApplicationDraft',() => ({
-  requireGeneralApplicationDraft: jest.fn((req, res, next) => {
-    next();
-  }),
+jest.mock('modules/utilityService', () => ({
+  getClaimById: jest.fn(),
 }));
 
 describe('General Application - Requesting reason', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
+  const getHandler = getRouteHandler(requestingReasonController, 'get');
+  const postHandler = getRouteHandler(requestingReasonController, 'post');
+  const viewPath = 'features/generalApplication/requesting-reason';
+  const claimId = '12345';
+  let claim: Claim;
+  let req: {
+    params: {id: string};
+    body: Record<string, unknown>;
+    query: Record<string, unknown>;
+    cookies: Record<string, unknown>;
+    session: {user: {id: string}};
+  };
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
+  const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
+  const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
+  const mockGetClaim = getClaimById as jest.Mock;
 
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-    (isGaForLipsEnabled as jest.Mock).mockResolvedValue(true);
+  const buildClaim = (): Claim => {
+    const builtClaim = new Claim();
+    builtClaim.applicant1 = {
+      type: PartyType.INDIVIDUAL,
+      partyDetails: {title: 'Mr', firstName: 'Jan', lastName: 'Clark'},
+    } as Claim['applicant1'];
+    builtClaim.generalApplication = new GeneralApplication(new ApplicationType(ApplicationTypeOption.ADJOURN_HEARING));
+    return builtClaim;
+  };
+
+  beforeEach(() => {
+    jest.clearAllMocks();
+    claim = buildClaim();
+    req = {
+      params: {id: claimId},
+      body: {},
+      query: {},
+      cookies: {},
+      session: {user: {id: 'u1'}},
+    };
+    res = createMockResponse();
+    next = jest.fn();
+    (draftStoreService.generateRedisKey as jest.Mock).mockReturnValue(claimId);
+    (draftStoreService.generateRedisKeyForGA as jest.Mock).mockReturnValue('ga-12345');
+    mockGetCaseData.mockResolvedValue(claim);
+    mockSaveDraftClaim.mockResolvedValue(undefined);
+    mockGetClaim.mockResolvedValue(claim);
   });
 
   describe('on GET', () => {
-    it('should return page', async () => {
-      app.locals.draftStoreClient = mockCivilClaimWithApplicationType;
+    it('should render the requesting reason page', async () => {
+      await getHandler(req as never, res as unknown as Response, next);
 
-      await request(app)
-        .get(GA_REQUESTING_REASON_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('PAGES.GENERAL_APPLICATION.APPLICATION_REASON.WHY_REQUESTING'));
-        });
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        applicationType: 'PAGES.GENERAL_APPLICATION.SELECTED_APPLICATION_TYPE.CHANGE_HEARING',
+        contentList: expect.anything(),
+      }));
+      expect(next).not.toHaveBeenCalled();
     });
 
-    it('should return http 500 when has error in the get method', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .get(GA_REQUESTING_REASON_URL)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+    it('should call next when loading the claim fails', async () => {
+      const error = new Error('redis failure');
+      mockGetClaim.mockRejectedValue(error);
+
+      await getHandler(req as never, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 
   describe('on POST', () => {
-    it('should send the value and redirect', async () => {
-      app.locals.draftStoreClient = mockCivilClaimWithApplicationType;
-      await request(app)
-        .post(GA_REQUESTING_REASON_URL)
-        .send({text: 'test'})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-        });
+    it('should save and redirect to add another application', async () => {
+      req.body = {text: 'test'};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(mockSaveDraftClaim).toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(
+        constructUrlWithIndex(constructResponseUrlWithIdParams(claimId, GA_ADD_ANOTHER_APPLICATION_URL), 0),
+      );
     });
 
-    it('should return to CYA after saving from CYA change screen', async () => {
-      app.locals.draftStoreClient = mockCivilClaimWithApplicationTypeAndFee;
-      await request(app)
-        .post(`${GA_REQUESTING_REASON_URL}?index=0&changeScreen=true`)
-        .send({text: 'test'})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.headers.location).toEqual(GA_CHECK_ANSWERS_URL);
-        });
+    it('should return to check your answers after saving from the check your answers change screen', async () => {
+      claim.generalApplication.applicationFee = {calculatedAmountInPence: 5000};
+      req.query = {index: '0', changeScreen: 'true'};
+      req.body = {text: 'test'};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, GA_CHECK_ANSWERS_URL));
     });
 
-    it('should return errors on empty textarea', async () => {
-      app.locals.draftStoreClient = mockCivilClaimWithApplicationType;
-      await request(app)
-        .post(GA_REQUESTING_REASON_URL)
-        .send({text: ''})
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.GENERAL_APPLICATION.ENTER_REQUESTING_REASON'));
-        });
+    it('should re-render when the reason is empty', async () => {
+      req.body = {text: ''};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.anything());
+      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
+      expect(mockSaveDraftClaim).not.toHaveBeenCalled();
     });
 
-    it('should return http 500 when has error in the post method', async () => {
-      app.locals.draftStoreClient = mockRedisFailure;
-      await request(app)
-        .post(GA_REQUESTING_REASON_URL)
-        .send({text: 'test'})
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+    it('should call next when saving fails', async () => {
+      const error = new Error('redis failure');
+      mockSaveDraftClaim.mockRejectedValue(error);
+      req.body = {text: 'test'};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 });

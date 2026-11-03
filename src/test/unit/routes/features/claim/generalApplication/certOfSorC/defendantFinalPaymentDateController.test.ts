@@ -1,145 +1,118 @@
-import {app} from '../../../../../../../main/app';
-import nock from 'nock';
-import config from 'config';
-import request from 'supertest';
-import {COSC_FINAL_PAYMENT_DATE_URL} from 'routes/urls';
-import {mockCivilClaimWithApplicationType} from '../../../../../../utils/mockDraftStore';
-import * as launchDarkly from '../../../../../../../main/app/auth/launchdarkly/launchDarklyClient';
+import {Response} from 'express';
+import defendantPaymentDateController from '../../../../../../../main/routes/features/generalApplication/certOfSorC/defendantFinalPaymentDateController';
+import {GA_DEBT_PAYMENT_EVIDENCE_COSC_URL} from 'routes/urls';
+import {Claim} from 'models/claim';
+import {PartyType} from 'models/partyType';
+import {GeneralApplication} from 'models/generalApplication/GeneralApplication';
+import {ApplicationType, ApplicationTypeOption} from 'models/generalApplication/applicationType';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import * as draftStoreService from 'modules/draft-store/draftStoreService';
-import {TestMessages} from '../../../../../../utils/errorMessageTestConstants';
-import {
-  getCertificateOfSatisfactionOrCancellation,
-} from 'services/features/generalApplication/certOfSorC/certificateOfSatisfactionOrCancellationService';
-import {CertificateOfSatisfactionOrCancellation} from 'models/generalApplication/CertificateOfSatisfactionOrCancellation';
+import {getClaimById} from 'modules/utilityService';
+import {createMockResponse, getRouteHandler} from '../../../../../../utils/getRouteHandler';
 
-jest.mock('modules/oidc');
-jest.mock('modules/draft-store');
-jest.mock(
-  'services/features/generalApplication/certOfSorC/certificateOfSatisfactionOrCancellationService',
-);
+jest.mock('modules/draft-store/draftStoreService');
+jest.mock('modules/utilityService', () => ({
+  getClaimById: jest.fn(),
+  getRedisStoreForSession: jest.fn(),
+}));
 
-const mockGetCertificateOfSatisfactionOrCancellation =
-  getCertificateOfSatisfactionOrCancellation as jest.Mock;
-
-jest.mock(
-  '../../../../../../../main/routes/guards/generalAplicationGuard',
-  () => ({
-    isGAForLiPEnabled: jest.fn((req, res, next) => {
-      next();
-    }),
-  }),
-);
-
-jest.mock(
-  '../../../../../../../main/routes/guards/requireGeneralApplicationDraft',
-  () => ({
-    requireGeneralApplicationDraft: jest.fn((req, res, next) => {
-      next();
-    }),
-  }),
-);
+jest.mock('services/features/generalApplication/response/generalApplicationResponseStoreService', () => ({
+  getDraftGARespondentResponse: jest.fn(),
+  saveDraftGARespondentResponse: jest.fn(),
+}));
 
 describe('CoSorS - defendant Payment date', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamServiceUrl: string = config.get('services.idam.url');
+  const getHandler = getRouteHandler(defendantPaymentDateController, 'get');
+  const postHandler = getRouteHandler(defendantPaymentDateController, 'post');
+  const viewPath = 'features/generalApplication/certOfSorC/final-payment-date';
+  const claimId = '12345';
+  let claim: Claim;
+  let req: {
+    params: {id: string};
+    body: Record<string, unknown>;
+    query: Record<string, string>;
+    cookies: Record<string, string>;
+    session: {user: {id: string}};
+  };
+  let res: ReturnType<typeof createMockResponse>;
+  let next: jest.Mock;
 
-  beforeAll(() => {
-    jest
-      .spyOn(launchDarkly, 'isGaForLipsEnabled')
-      .mockResolvedValue(true);
-
-    nock(idamServiceUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-  });
+  const buildClaim = (): Claim => {
+    const built = new Claim();
+    built.applicant1 = {
+      type: PartyType.INDIVIDUAL,
+      partyDetails: {title: 'Mr', firstName: 'Jan', lastName: 'Clark'},
+    } as Claim['applicant1'];
+    built.generalApplication = new GeneralApplication(new ApplicationType(ApplicationTypeOption.CONFIRM_CCJ_DEBT_PAID));
+    return built;
+  };
 
   beforeEach(() => {
-    app.locals.draftStoreClient = mockCivilClaimWithApplicationType;
-
-    jest
-      .spyOn(draftStoreService, 'generateRedisKey')
-      .mockReturnValue('12345');
-
-    mockGetCertificateOfSatisfactionOrCancellation.mockResolvedValue(
-      new CertificateOfSatisfactionOrCancellation(),
-    );
+    jest.clearAllMocks();
+    claim = buildClaim();
+    req = {
+      params: {id: claimId},
+      body: {},
+      query: {},
+      cookies: {},
+      session: {user: {id: 'user-1'}},
+    };
+    res = createMockResponse();
+    next = jest.fn();
+    (draftStoreService.generateRedisKey as jest.Mock).mockReturnValue(claimId);
+    (draftStoreService.saveDraftClaim as jest.Mock).mockResolvedValue(undefined);
+    (getClaimById as jest.Mock).mockResolvedValue(claim);
   });
 
   describe('on GET', () => {
-    it('should return payment date page', async () => {
-      await request(app)
-        .get(COSC_FINAL_PAYMENT_DATE_URL)
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('name="year" type="text"');
-          expect(res.text).toContain('name="month" type="text"');
-          expect(res.text).toContain('name="day" type="text"');
-        });
+    it('should render the payment date page', async () => {
+      await getHandler(req as never, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        title: 'COMMON.ASK_FOR_PROOF_OF_DEBT_PAYMENT',
+        form: expect.anything(),
+      }));
+      expect(next).not.toHaveBeenCalled();
     });
   });
 
   describe('on POST', () => {
-    it('should return errors on no input', async () => {
-      await request(app)
-        .post(COSC_FINAL_PAYMENT_DATE_URL)
-        .type('form')
-        .send({
-          year: '',
-          month: '',
-          day: '',
-        })
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.VALID_DAY);
-          expect(res.text).toContain(TestMessages.VALID_MONTH);
-          expect(res.text).toContain(TestMessages.VALID_YEAR);
-        });
+    it('should re-render when the date is empty', async () => {
+      req.body = {year: '', month: '', day: ''};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
+      expect(res.redirect).not.toHaveBeenCalled();
     });
 
-    it('should return errors on invalid month', async () => {
-      await request(app)
-        .post(COSC_FINAL_PAYMENT_DATE_URL)
-        .type('form')
-        .send({
-          year: '2023',
-          month: '13',
-          day: '1',
-        })
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(TestMessages.VALID_MONTH);
-        });
+    it('should re-render when the month is invalid', async () => {
+      req.body = {year: '2023', month: '13', day: '1'};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
+      expect(res.redirect).not.toHaveBeenCalled();
     });
 
-    it('should not return error on date in the past', async () => {
-      await request(app)
-        .post(COSC_FINAL_PAYMENT_DATE_URL)
-        .type('form')
-        .send({
-          year: '1999',
-          month: '1',
-          day: '1',
-        })
-        .expect((res) => {
-          expect(res.status).toBe(302);
-        });
+    it('should redirect when the date is in the past', async () => {
+      req.body = {year: '1999', month: '1', day: '1'};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect(draftStoreService.saveDraftClaim).toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(
+        constructResponseUrlWithIdParams(claimId, GA_DEBT_PAYMENT_EVIDENCE_COSC_URL),
+      );
     });
 
-    it('should show a message to add a valid payment date', async () => {
-      await request(app)
-        .post(COSC_FINAL_PAYMENT_DATE_URL)
-        .type('form')
-        .send({
-          year: '9999',
-          month: '1',
-          day: '1',
-        })
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(
-            TestMessages.VALID_DATE_NOT_IN_THE_FUTURE,
-          );
-        });
+    it('should re-render when the date is in the future', async () => {
+      req.body = {year: '9999', month: '1', day: '1'};
+
+      await postHandler(req as never, res as unknown as Response, next);
+
+      expect((res.render as jest.Mock).mock.calls[0][1].form.hasErrors()).toBe(true);
+      expect(res.redirect).not.toHaveBeenCalled();
     });
   });
 });
