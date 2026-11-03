@@ -283,6 +283,7 @@
     "src/main/common/models/partyType.ts",
     "src/main/common/models/pinToPost.ts",
     "src/main/common/models/queryManagement/caseQueries.ts",
+    "src/main/common/models/queryManagement/sendFollowUpQuery.ts",
     "src/main/common/models/repaymentPlan.ts",
     "src/main/common/models/responseDeadline.ts",
     "src/main/common/models/selfEmployedAs.ts",
