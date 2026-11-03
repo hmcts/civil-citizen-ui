@@ -20,9 +20,6 @@
           <form method="post" novalidate autocomplete="off">
             {{ csrfProtection(csrf) }}
                 <h1 class="govuk-heading-l">{{ t('PAGES.DELAYED_FLIGHT.CLAIMING_FOR_DELAYED') }}</h1>
-             <span id="delayed-flight-hint" class="govuk-hint govuk-visually-hidden">
-               {{ t('PAGES.DELAYED_FLIGHT.CLAIMING_FOR_DELAYED') }}
-             </span>
               {{ yesNoRadioButton(t, 'option', 'option', t('PAGES.DELAYED_FLIGHT.CLAIMING_FOR_DELAYED'), form, '', {classes: 'govuk-radios--inline', isPageHeading: false, legendClasses: 'govuk-visually-hidden'}) }}
             <div class="govuk-form-group">
               {{ govukButton({
