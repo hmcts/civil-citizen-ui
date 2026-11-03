@@ -11,6 +11,14 @@
 {% from "govuk/components/textarea/macro.njk" import govukTextarea %}
 {% from "govuk/components/date-input/macro.njk" import govukDateInput %}
 
+{% block formErrorSummary %}
+  {% set dateSummaryErrors = [] %}
+  {% for error in form.getAllErrors() %}
+    {% set added = dateSummaryErrors.push({text: error.text, href: '#day' if error.property == 'proposedSetDate' else error.href}) %}
+  {% endfor %}
+  {{ errorSummary(dateSummaryErrors, t) }}
+{% endblock %}
+
 {% block nestedContent %}
 
 {% set byInstalmentsHtml %}

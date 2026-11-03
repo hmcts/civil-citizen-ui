@@ -13,6 +13,14 @@
 
 {% set hint = t('PAGES.GENERAL_APPLICATION.FINAL_DEFENDANT_PAYMENT_DATE.FOR_EXAMPLE', {nextDate: nextMonth.getDate(), nextMonth: nextMonth.getMonth() + 1,nextYear: nextMonth.getFullYear()}) %}
 
+{% block formErrorSummary %}
+  {% set dateSummaryErrors = [] %}
+  {% for error in form.getAllErrors() %}
+    {% set added = dateSummaryErrors.push({text: error.text, href: '#day' if error.property == 'date' else error.href}) %}
+  {% endfor %}
+  {{ errorSummary(dateSummaryErrors, t) }}
+{% endblock %}
+
 {% block nestedContent %}
       {% set firstPaymentDate = "now" | addDaysTranslated(30, t,'GB') %}
       {% set errors = form.getErrors() %}
