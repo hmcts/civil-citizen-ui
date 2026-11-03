@@ -32,7 +32,7 @@
   {{ telephone }}
 {% endmacro %}
 
-{% macro contactUsForHelp(t, widget, open, isCarm=False, componentId='contact-us-for-help') %}
+{% macro contactUsForHelp(t, widget, open, isCarm=False) %}
   {% set ContactUs = t('COMMON.CONTACT_US_FOR_HELP.TITLE') %}
   {% set Email = t('COMMON.EMAIL') %}
   {% if isCarm %}
@@ -57,7 +57,7 @@
   {% set callChargesWidget = _widget(openingHours,Telephone,externalURLs.callChargesUrl,'',callCharges,'0300 123 7050', '_blank') %}
   {% set webChatUnavailableWidget = _widget(webChatUnavailable,webChat,'','','','') %}
   {% set webChatClosedWidget =  _widget(webChatClosed,webChat,'','','','') %}
-  {% set contactUsForHelpComponentId = componentId %}
+  {% set contactUsForHelpComponentId = 'contact-us-for-help' %}
 
   {% set disclosure = t('COMMON.CONTACT_US_FOR_HELP.COURT_STAFF_DISCLOSURE') %}
   {% set sendMessageTitle = t('COMMON.CONTACT_US_FOR_HELP.SEND_MESSAGE') %}

@@ -48,14 +48,21 @@ describe('PR9 amount, timeline, document and contact summaries', () => {
     expect(t.mock.calls.some(([key]) => key === '19 October 2026')).toBe(false);
   });
 
-  it.each(['en', 'cy'])('preserves contact information and supports open/closed independently identified instances (%s)', language => {
-    const source = '{% from "macro/contact-us-for-help.njk" import contactUsForHelp with context %}{{ contactUsForHelp(t, "", true) }}{{ contactUsForHelp(t, "", false, false, "secondary-contact") }}';
-    const dom = new JSDOM(configuredPresentationEnvironment().renderString(source, {t: formControlTranslate(language)}));
-    expect(dom.window.document.querySelectorAll('details')).toHaveLength(2);
-    expect(dom.window.document.querySelectorAll('details[open]')).toHaveLength(1);
-    expect(dom.window.document.querySelectorAll('a[href="mailto:contactocmc@justice.gov.uk"]')).toHaveLength(2);
-    expect(text(dom.window.document.body)).toContain('0300 123 7050');
-    const ids = Array.from(dom.window.document.querySelectorAll('[id]')).map(element => element.id); expect(new Set(ids).size).toBe(ids.length);
-    dom.window.close();
-  });
+  it.each(['en', 'cy'].flatMap(language => [true, false].map(open => ({language, open}))))(
+    'preserves contact information and the default ID (language=$language, open=$open)', ({language, open}) => {
+      const source = '{% from "macro/contact-us-for-help.njk" import contactUsForHelp with context %}{{ contactUsForHelp(t, "", open) }}';
+      const translate = formControlTranslate(language);
+      const dom = new JSDOM(configuredPresentationEnvironment().renderString(source, {t: translate, open}));
+      try {
+        const document = dom.window.document;
+        expect(document.querySelectorAll('details')).toHaveLength(1);
+        const details = document.querySelector('details')!;
+        expect(details.id).toBe('contact-us-for-help');
+        expect(details.hasAttribute('open')).toBe(open);
+        expect(text(details.querySelector('summary')!)).toBe(translate('COMMON.CONTACT_US_FOR_HELP.TITLE'));
+        expect(document.querySelectorAll('a[href="mailto:contactocmc@justice.gov.uk"]')).toHaveLength(1);
+        expect(text(document.body)).toContain('0300 123 7050');
+      } finally {dom.window.close();}
+    },
+  );
 });
