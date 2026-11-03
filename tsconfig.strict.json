@@ -196,6 +196,7 @@
     "src/main/common/models/ccdResponse/ccdSmallClaimHearing.ts",
     "src/main/common/models/ccdResponse/ccdSpecificCourtLocations.ts",
     "src/main/common/models/ccdResponse/ccdStatementOfTruth.ts",
+    "src/main/common/models/ccdResponse/ccdTimeLine.ts",
     "src/main/common/models/ccdResponse/ccdTimeLineOfEvents.ts",
     "src/main/common/models/ccdResponse/ccdTrialArrangementsHearingRequirements.ts",
     "src/main/common/models/ccdResponse/ccdUnemploymentDetails.ts",
