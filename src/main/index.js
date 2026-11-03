@@ -1,5 +1,4 @@
 import './assets/scss/main.scss';
-import $ from 'jquery';
 import {initPostcodeLookup} from './assets/js/postcode-lookup.js';
 import './assets/js/append-row.js';
 import './assets/js/calculate-amount.js';
@@ -16,9 +15,6 @@ import { initAll as initMojFrontend } from '@ministryofjustice/frontend';
 import './modules/cookie/cookieConfig';
 import './assets/js/cookies-controller.js';
 import './assets/js/disable-submit.js';
-
-// Preserve the existing global bootstrap for remaining consumers during migration.
-window.$ = $;
 
 initGovukFrontend();
 initMojFrontend();
