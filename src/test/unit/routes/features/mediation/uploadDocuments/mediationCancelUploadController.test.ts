@@ -1,131 +1,137 @@
-import request from 'supertest';
-import {app} from '../../../../../../main/app';
-import nock from 'nock';
-import config from 'config';
+import {NextFunction, Response} from 'express';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {YesNo} from 'form/models/yesNo';
+import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {CaseRole} from 'form/models/caseRoles';
+import {Claim} from 'models/claim';
+import {AppRequest} from 'models/AppRequest';
+import mediationCancelUploadController from 'routes/features/mediation/uploadDocuments/mediationCancelUploadController';
 import {
-  MEDIATION_UPLOAD_DOCUMENTS_CANCEL,
   DASHBOARD_CLAIMANT_URL,
   DEFENDANT_SUMMARY_URL,
+  MEDIATION_UPLOAD_DOCUMENTS_CANCEL,
 } from 'routes/urls';
-import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import * as draftStoreService from 'modules/draft-store/draftStoreService';
-import {Claim} from 'models/claim';
-import {YesNo} from 'form/models/yesNo';
-import {t} from 'i18next';
+import {cancelMediationDocumentUpload} from 'services/features/mediation/uploadDocuments/mediationCancelUploadService';
+import {createMockResponse, createMockSession, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
-jest.mock('../../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('modules/draft-store/draftStoreService', () => ({
+  generateRedisKey: jest.fn(),
+  getCaseDataFromStore: jest.fn(),
+}));
 
-const CONTROLLER_URL = MEDIATION_UPLOAD_DOCUMENTS_CANCEL;
+jest.mock('services/features/mediation/uploadDocuments/mediationCancelUploadService', () => {
+  const actual = jest.requireActual('services/features/mediation/uploadDocuments/mediationCancelUploadService');
+  return {
+    ...actual,
+    cancelMediationDocumentUpload: jest.fn(),
+  };
+});
+
+const mockGenerateRedisKey = generateRedisKey as jest.Mock;
+const mockGetCaseData = getCaseDataFromStore as jest.Mock;
+const mockCancelUpload = cancelMediationDocumentUpload as jest.Mock;
+
+const claimId = '1111';
+const redisKey = '12345';
+const viewPath = 'features/mediation/uploadDocuments/cancel-your-upload';
+
+const claimWithAmount = (): Claim => {
+  const claim = new Claim();
+  claim.totalClaimAmount = 1000;
+  return claim;
+};
+
+const invoke = async (method: 'get' | 'post', overrides: Partial<AppRequest> = {}) => {
+  const res = createMockResponse();
+  const next = jest.fn() as NextFunction;
+  const req = {
+    params: {id: claimId},
+    body: {},
+    query: {},
+    cookies: {},
+    session: createMockSession({user: {id: 'user-1'}}),
+    ...overrides,
+  };
+  await getRouteHandler(mediationCancelUploadController, method, MEDIATION_UPLOAD_DOCUMENTS_CANCEL)(
+    req as AppRequest,
+    res as unknown as Response,
+    next,
+  );
+  return {res, next};
+};
+
+const renderedForm = (res: ReturnType<typeof createMockResponse>) =>
+  (res.render as jest.Mock).mock.calls[0][1].form;
 
 describe('Mediation Cancel Document Upload Controller', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
-  const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
-  const mockGenerateRedisKey = draftStoreService.generateRedisKey as jest.Mock;
-
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-    mockGenerateRedisKey.mockReturnValue('12345');
-  });
-
   beforeEach(() => {
-    mockGetCaseData.mockImplementation(async () => {
-      const claim = new Claim();
-      claim.totalClaimAmount = 1000;
-      return claim;
-    });
+    jest.clearAllMocks();
+    mockGenerateRedisKey.mockReturnValue(redisKey);
+    mockGetCaseData.mockResolvedValue(claimWithAmount());
+    mockCancelUpload.mockResolvedValue(undefined);
   });
 
   describe('on GET', () => {
     it('should render page successfully', async () => {
-      await request(app)
-        .get(CONTROLLER_URL.replace(':id', '1111'))
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('PAGES.EVIDENCE_UPLOAD_CANCEL.TITLE'));
-        });
+      const {res} = await invoke('get');
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        cancelYourUploadContents: expect.any(Array),
+      }));
     });
 
-    it('should return http 500 when has error', async () => {
-      mockGetCaseData.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
-      await request(app)
-        .get(CONTROLLER_URL)
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+    it('should call next when loading the cancel page fails', async () => {
+      const error = new Error('redis failure');
+      mockGetCaseData.mockRejectedValue(error);
+
+      const {next} = await invoke('get');
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 
   describe('on POST', () => {
     it('should redirect to claimant dashboard when YES is selected and user is claimant', async () => {
-      mockGetCaseData.mockImplementation(async () => {
-        const claim = new Claim();
-        claim.totalClaimAmount = 1000;
-        jest.spyOn(claim, 'isClaimant').mockReturnValue(true);
-        return claim;
-      });
+      const claim = claimWithAmount();
+      claim.caseRole = CaseRole.CLAIMANT;
+      mockGetCaseData.mockResolvedValue(claim);
 
-      await request(app)
-        .post(CONTROLLER_URL.replace(':id', '1111'))
-        .send({option: YesNo.YES})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(DASHBOARD_CLAIMANT_URL.replace(':id', '1111'));
-        });
+      const {res} = await invoke('post', {body: {option: YesNo.YES}});
+
+      expect(mockCancelUpload).toHaveBeenCalledWith(redisKey, claim, 'user-1');
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, DASHBOARD_CLAIMANT_URL));
     });
 
     it('should redirect to defendant summary when YES is selected and user is defendant', async () => {
-      mockGetCaseData.mockImplementation(async () => {
-        const claim = new Claim();
-        claim.totalClaimAmount = 1000;
-        jest.spyOn(claim, 'isClaimant').mockReturnValue(false);
-        return claim;
-      });
+      const {res} = await invoke('post', {body: {option: YesNo.YES}});
 
-      await request(app)
-        .post(CONTROLLER_URL.replace(':id', '1111'))
-        .send({option: YesNo.YES})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          expect(res.header.location).toEqual(DEFENDANT_SUMMARY_URL.replace(':id', '1111'));
-        });
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, DEFENDANT_SUMMARY_URL));
     });
 
-    it('should redirect to previous page when NO is selected', async () => {
-      await request(app)
-        .post(CONTROLLER_URL.replace(':id', '1111'))
-        .send({option: YesNo.NO})
-        .expect((res) => {
-          expect(res.status).toBe(302);
-          // Default fallback in controller if session.previousUrl is missing
-          expect(res.header.location).toContain('/mediation/upload-documents');
-        });
+    it('should redirect to the upload documents page when NO is selected and there is no previous url', async () => {
+      const {res} = await invoke('post', {body: {option: YesNo.NO}});
+
+      expect(mockCancelUpload).not.toHaveBeenCalled();
+      expect(res.redirect).toHaveBeenCalledWith(`/case/${claimId}/mediation/upload-documents`);
     });
 
     it('should show error when no option is selected', async () => {
-      await request(app)
-        .post(CONTROLLER_URL.replace(':id', '1111'))
-        .send({option: ''})
-        .expect((res) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain(t('ERRORS.VALID_YES_NO_OPTION_NAC_YDW'));
-        });
+      const {res, next} = await invoke('post', {body: {option: ''}});
+
+      const form = renderedForm(res);
+      expect(form.hasErrors()).toBe(true);
+      expect(form.errorFor('option')).toBe('ERRORS.VALID_YES_NO_OPTION_NAC_YDW');
+      expect(res.redirect).not.toHaveBeenCalled();
+      expect(next).not.toHaveBeenCalled();
     });
 
-    it('should return http 500 when has error', async () => {
-      mockGetCaseData.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
-      await request(app)
-        .post(CONTROLLER_URL)
-        .send({option: YesNo.YES})
-        .expect((res) => {
-          expect(res.status).toBe(500);
-          expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-        });
+    it('should call next when cancelling the upload fails', async () => {
+      const error = new Error('redis failure');
+      mockGetCaseData.mockRejectedValue(error);
+
+      const {next} = await invoke('post', {body: {option: YesNo.YES}});
+
+      expect(next).toHaveBeenCalledWith(error);
     });
   });
 });
