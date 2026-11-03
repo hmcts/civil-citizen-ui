@@ -1,5 +1,5 @@
 import {NextFunction, Request, Response} from 'express';
-import {RESPONSE_TASK_LIST_URL} from '../../routes/urls';
+import {RESPONSE_TASK_LIST_URL} from 'routes/urls';
 import {getResponseClaimById} from 'modules/draft-store/response/responseDraftStoreService';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {isNotPayImmediatelyResponse, isPaymentOptionExisting} from 'common/utils/taskList/tasks/taskListHelpers';
