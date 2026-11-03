@@ -19,6 +19,10 @@ function install(html: string) {
 const rows = (root: Element) => [...root.querySelectorAll<HTMLElement>(root.getAttribute('data-row-selector') || '.row-container')];
 const fields = (root: Element) => [...root.querySelectorAll<HTMLInputElement>('input:not([type=submit]):not([type=button]),select,textarea')];
 const values = (root: Element) => fields(root).map(field => [field.name, field.value, field.checked]);
+function expectClaimTotal(doc: Document, total: string) {
+  expect(doc.querySelector<HTMLInputElement>('input.total-claim-amount').value).toBe(total);
+  expect(doc.querySelector('span.total-claim-amount').textContent).toBe(total);
+}
 function enhance(doc: Document, framework = true) {
   if (framework) govuk.initAll();
   const {initAppendRow} = require('../../../../main/assets/js/append-row');
@@ -99,6 +103,41 @@ it('updates displayed and submitted claim totals with delegated listeners on add
   expect(root.querySelector<HTMLInputElement>('input.total-claim-amount').value).toBe('42.85');expect(root.querySelector('span.total-claim-amount').textContent).toBe('42.85');
 });
 
+it.each([
+  {state: 'saved' as const, total: '40.50'},
+  {state: 'blank' as const, total: '0.00'},
+])('calculates both claim totals on initial load for $state rows', ({state, total}) => {
+  const doc = install(renderRemainingPage('amount', {state}));
+  doc.querySelector<HTMLInputElement>('input.total-claim-amount').value = 'not calculated';
+  doc.querySelector('span.total-claim-amount').textContent = 'not calculated';
+  jest.isolateModules(() => {require('../../../../main/assets/js/calculate-total-amount');});
+  doc.dispatchEvent(new dom.window.Event('DOMContentLoaded'));
+  expectClaimTotal(doc, total);
+});
+
+it.each(['input', 'keyup'])('updates both claim totals after %s stops, resetting the pending delay', eventName => {
+  const doc = install(renderRemainingPage('amount'));
+  const {populateTotalClaimAmount, addTotalClaimAmountCalculationEventListener} = require('../../../../main/assets/js/calculate-total-amount');
+  populateTotalClaimAmount(doc);
+  addTotalClaimAmountCalculationEventListener(doc);
+  const input = doc.querySelector<HTMLInputElement>('.civil-claim-amount');
+  jest.useFakeTimers();
+  try {
+    input.value = '100';
+    input.dispatchEvent(new dom.window.Event(eventName, {bubbles: true}));
+    jest.advanceTimersByTime(500);
+    expectClaimTotal(doc, '40.50');
+    input.value = '125';
+    input.dispatchEvent(new dom.window.Event(eventName, {bubbles: true}));
+    jest.advanceTimersByTime(500);
+    expectClaimTotal(doc, '40.50');
+    jest.advanceTimersByTime(499);
+    expectClaimTotal(doc, '40.50');
+    jest.advanceTimersByTime(1);
+    expectClaimTotal(doc, '153.00');
+  } finally {jest.clearAllTimers();}
+});
+
 it.each(['income', 'expenses'] as RemainingEditor[])('%s calculation keeps CSRF/active categories, ignores stale responses and registers once', async editor => {
   const doc = install(renderRemainingPage(editor)), root = doc.querySelector('[data-module="cui-append-row"]'), form = doc.querySelector('form');
   const {getCalculation, addCalculationEventListener} = require('../../../../main/assets/js/calculate-amount');
@@ -108,18 +147,60 @@ it.each(['income', 'expenses'] as RemainingEditor[])('%s calculation keeps CSRF/
   const inactive = [...form.querySelectorAll<HTMLElement>('.civil-amountRow')].find(row => !root.contains(row));
   inactive.querySelector<HTMLInputElement>('.civil-amount').value = '1000';
   inactive.querySelector<HTMLInputElement>('.civil-schedule input[value=MONTH]').checked = true;
+  rows(root)[1].querySelector<HTMLInputElement>('.civil-schedule input[value=WEEK]').checked = true;
+  const expectedAmounts = [{amount: '12.5', schedule: 'MONTH'}, {amount: '13.5', schedule: 'WEEK'}, {amount: '14.5', schedule: 'MONTH'}];
   const old = getCalculation(form);expect(fetch).toHaveBeenCalledTimes(1);
-  const options = fetch.mock.calls[0][1];expect(fetch.mock.calls[0][0]).toBe('/total-income-expense-calculation');expect(options.headers['CSRF-Token']).toBe('fixture-csrf');expect(JSON.parse(options.body)).toHaveLength(3);expect(JSON.parse(options.body).some((amount: {amount: string}) => amount.amount === '1000')).toBe(false);
+  expect(fetch).toHaveBeenNthCalledWith(1, '/total-income-expense-calculation', {
+    method: 'POST', headers: {'Content-Type': 'application/json', 'CSRF-Token': 'fixture-csrf'}, body: JSON.stringify(expectedAmounts),
+  });
   fields(rows(root)[0]).find(field => field.classList.contains('civil-amount')).value = '20';const newer = getCalculation(form);
+  expect(JSON.parse(fetch.mock.calls[1][1].body)).toEqual([{amount: '20', schedule: 'MONTH'}, ...expectedAmounts.slice(1)]);
   pending[1]({json: async () => 'new total'});await newer;pending[0]({json: async () => 'old total'});await old;
   expect(form.querySelector('.total-monthly-income-expense').textContent).toBe('new total');
   const schedule = rows(root)[0].querySelector<HTMLInputElement>('.civil-schedule input[value=WEEK]');
   schedule.checked = true;schedule.dispatchEvent(new dom.window.Event('change', {bubbles: true}));
   expect(fetch).toHaveBeenCalledTimes(3);
+  expect(JSON.parse(fetch.mock.calls[2][1].body)).toEqual([{amount: '20', schedule: 'WEEK'}, ...expectedAmounts.slice(1)]);
   const declaration = doc.querySelector<HTMLInputElement>('input[name=declared][value=other]');declaration.checked = false;declaration.dispatchEvent(new dom.window.Event('change', {bubbles: true}));
   expect(fetch).toHaveBeenCalledTimes(3);expect(form.querySelector('.total-monthly-income-expense').textContent).toBe('0');
   pending[2]({json: async () => 'late selected total'});await new Promise(resolve => setImmediate(resolve));
   expect(form.querySelector('.total-monthly-income-expense').textContent).toBe('0');
+});
+
+describe.each(['income', 'expenses'] as RemainingEditor[])('%s typed calculations', editor => {
+  it.each(['input', 'keyup'])('posts the latest amounts once after %s stops', async eventName => {
+    const doc = install(renderRemainingPage(editor));
+    // Let this document finish loading before testing only the delegated typing path.
+    if (doc.readyState === 'loading') await new Promise<void>(resolve => doc.addEventListener('DOMContentLoaded', () => resolve(), {once: true}));
+    const {addCalculationEventListener} = require('../../../../main/assets/js/calculate-amount');
+    addCalculationEventListener(doc);
+    const fetch = jest.fn().mockResolvedValue({json: async () => '53.00'});
+    Object.assign(global, {fetch});
+    const input = doc.querySelector<HTMLInputElement>('[data-module="cui-append-row"] .civil-amount');
+    const total = doc.querySelector('.total-monthly-income-expense');
+    total.textContent = 'previous total';
+    jest.useFakeTimers();
+    try {
+      input.value = '20';
+      input.dispatchEvent(new dom.window.Event(eventName, {bubbles: true}));
+      jest.advanceTimersByTime(500);
+      expect(fetch).not.toHaveBeenCalled();
+      input.value = '25';
+      input.dispatchEvent(new dom.window.Event(eventName, {bubbles: true}));
+      jest.advanceTimersByTime(500);
+      expect(fetch).not.toHaveBeenCalled();
+      jest.advanceTimersByTime(499);
+      expect(fetch).not.toHaveBeenCalled();
+      expect(total.textContent).toBe('previous total');
+      await jest.advanceTimersByTimeAsync(1);
+      expect(fetch).toHaveBeenCalledTimes(1);
+      expect(fetch).toHaveBeenCalledWith('/total-income-expense-calculation', {
+        method: 'POST', headers: {'Content-Type': 'application/json', 'CSRF-Token': 'fixture-csrf'},
+        body: JSON.stringify([{amount: '25', schedule: 'MONTH'}, {amount: '13.5', schedule: 'MONTH'}, {amount: '14.5', schedule: 'MONTH'}]),
+      });
+      expect(total.textContent).toBe('53.00');
+    } finally {jest.clearAllTimers();}
+  });
 });
 
 it.each(dateEditors)('%s retains the existing functional period IDs when cloning a saved single date', editor => {

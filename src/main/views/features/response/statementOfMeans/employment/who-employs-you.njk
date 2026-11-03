@@ -29,7 +29,7 @@
             </p>
            {% endif %}
           {% for employer in form.model.rows %}
-            {{employerRow(employer, loop.index0, form.errorFor,t, formErrors)}}
+            {{employerRow(employer, loop.index0, form.errorFor,t)}}
           {% endfor %}
         </div>
         <div class="govuk-grid-row">
