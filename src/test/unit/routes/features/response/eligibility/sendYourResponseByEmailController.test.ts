@@ -2,7 +2,7 @@ import {Response} from 'express';
 import sendYourResponseByEmailController from 'routes/features/response/eligibility/sendYourResponseByEmailController';
 import {SEND_RESPONSE_BY_EMAIL_URL} from 'routes/urls';
 import {CivilServiceClient} from 'client/civilServiceClient';
-import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {getResponseClaimById} from 'modules/draft-store/response/responseDraftStoreService';
 import {Claim} from 'models/claim';
 import {PartyType} from 'models/partyType';
 import {AppRequest} from 'models/AppRequest';
@@ -14,7 +14,9 @@ jest.mock('client/civilServiceClient', () => {
   };
   return {CivilServiceClient: jest.fn(() => methods)};
 });
-jest.mock('modules/draft-store/draftStoreService');
+jest.mock('modules/draft-store/response/responseDraftStoreService');
+
+const mockGetResponseClaimById = getResponseClaimById as jest.Mock;
 
 const civilServiceMethods = new CivilServiceClient('http://localhost') as unknown as {
   getFeeRanges: jest.Mock;
@@ -53,14 +55,14 @@ const invoke = async () => {
 describe('Send your response by email', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    (generateRedisKey as jest.Mock).mockReturnValue(claimId);
-    (getCaseDataFromStore as jest.Mock).mockResolvedValue(storedClaim());
+    mockGetResponseClaimById.mockResolvedValue(storedClaim());
     civilServiceMethods.getFeeRanges.mockResolvedValue({value: []});
   });
 
   it('should render the send your response by email page', async () => {
     const {res} = await invoke();
 
+    expect(mockGetResponseClaimById).toHaveBeenCalled();
     expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
       form: expect.any(Claim),
       fees: [[]],
@@ -69,8 +71,8 @@ describe('Send your response by email', () => {
   });
 
   it('should return the error when the claim cannot be loaded', async () => {
-    const error = new Error('redis failure');
-    (getCaseDataFromStore as jest.Mock).mockRejectedValue(error);
+    const error = new Error('draft failure');
+    mockGetResponseClaimById.mockRejectedValue(error);
 
     const {next} = await invoke();
 
