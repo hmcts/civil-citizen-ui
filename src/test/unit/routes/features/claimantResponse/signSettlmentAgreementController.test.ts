@@ -53,9 +53,15 @@ describe('Sign Settlement Agreement', () => {
 
   describe('on GET', () => {
     it('should return sign settlement agreement page', async () => {
+      const claim = new Claim();
+      (getCaseDataFromStore as jest.Mock).mockResolvedValue(claim);
+
       const {res} = await invoke('get');
 
-      expect(getPaymentText).toHaveBeenCalled();
+      expect(getPaymentText).toHaveBeenCalledWith(claim, expect.objectContaining({
+        params: {id: claimId},
+        cookies: {},
+      }));
       expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
         pageTitle: 'PAGES.CLAIMANT_TERMS_OF_AGREEMENT.PAGE_TITLE',
         data: paymentData,
