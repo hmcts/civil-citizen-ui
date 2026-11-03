@@ -279,6 +279,7 @@
     "src/main/common/models/mediation/mediationAgreement.ts",
     "src/main/common/models/mediation/uploadDocuments/mapperCaseDocumentToCCDDocuments.ts",
     "src/main/common/models/mediation/uploadDocuments/mediationDocumentUploadSections.ts",
+    "src/main/common/models/mediation/uploadDocuments/uploadDocumentsCCD.ts",
     "src/main/common/models/ordnanceSurveyKey/ordnanceSurveyKey.ts",
     "src/main/common/models/partyType.ts",
     "src/main/common/models/pinToPost.ts",
