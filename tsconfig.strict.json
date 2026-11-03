@@ -237,6 +237,7 @@
     "src/main/common/models/document/caseDocument.ts",
     "src/main/common/models/document/document.ts",
     "src/main/common/models/document/documentType.ts",
+    "src/main/common/models/document/systemGeneratedCaseDocuments.ts",
     "src/main/common/models/eligibility/claimTypeOptions.ts",
     "src/main/common/models/eligibility/totalAmount.ts",
     "src/main/common/models/eligibility/totalAmountOptions.ts",
