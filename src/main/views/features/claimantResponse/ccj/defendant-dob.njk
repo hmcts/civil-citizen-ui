@@ -17,8 +17,12 @@
 {% block content %}
 
       {% if form.hasErrors() %}
+        {% set dateSummaryErrors = [] %}
+        {% for error in errors %}
+          {% set added = dateSummaryErrors.push({text: error.text, href: '#dob[day]' if error.property == 'dob[dateOfBirth]' else error.href}) %}
+        {% endfor %}
         <div class="govuk-grid-row">
-          {{ errorSummary(errors,t,[{keyError:'ERRORS.VALID_ENTER_A_DATE_BEFORE',keyToReplace:'{{ maxDate }}',valueToReplace:maxDate}]) }}
+          {{ errorSummary(dateSummaryErrors,t,[{keyError:'ERRORS.VALID_ENTER_A_DATE_BEFORE',keyToReplace:'{{ maxDate }}',valueToReplace:maxDate}]) }}
         </div>
       {% endif %}
       <div class="govuk-grid-row">

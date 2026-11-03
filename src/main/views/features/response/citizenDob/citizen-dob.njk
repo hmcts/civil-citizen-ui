@@ -25,7 +25,7 @@
       {# Focus the first editable date field for errors applying to the whole date. #}
       {% set dateSummaryErrors = [] %}
       {% for error in errors %}
-        {% set added = dateSummaryErrors.push({text: error.text, href: '#day' if error.property == 'dateOfBirth' else error.href}) %}
+        {% set added = dateSummaryErrors.push({text: error.text, href: '#day' if error.property in ['dateOfBirth', 'date'] else error.href}) %}
       {% endfor %}
       {% if maxDateForAge18 %}
         {% set maxDate = maxDateForAge18.toJSON() | addDaysTranslated(1, t) %}

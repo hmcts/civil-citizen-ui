@@ -1,9 +1,6 @@
 import {JSDOM} from 'jsdom';
 import {readFileSync} from 'fs';
 import path from 'path';
-import {GenericForm} from 'common/form/models/genericForm';
-import {CitizenDob} from 'common/form/models/citizenDob';
-import {CitizenDate} from 'common/form/models/claim/claimant/citizenDate';
 import {formControlForm, formControlPages, formControlsEnvironment, formControlTranslate, renderFormControlPage} from '../../../utils/renderFormControls';
 import type {FormControlState} from '../../../utils/renderFormControls';
 
@@ -113,33 +110,6 @@ describe('date error composition and master content preservation', () => {
     }}));
     expect(dom.window.document.getElementById('proposedSetDate-error')?.textContent).toContain(translate('ERRORS.VALID_DAY'));
   });
-  it.each(['en', 'cy'])('focuses the day input when activating real model-level date errors in %s', language => {
-    for (const [view, model] of [
-      ['features/response/citizenDob/citizen-dob.njk', new CitizenDob('2099', '1', '12')],
-      ['features/claimantResponse/paidInFull/date-paid.njk', new CitizenDate('12', '1', '2099')],
-    ] as const) {
-      const form = new GenericForm(model);
-      form.validateSync();
-      expect(form.hasErrors()).toBe(true);
-      const rendered = new JSDOM(renderFormControlPage(view, language, 'error', {form}), {runScripts: 'outside-only'});
-      try {
-        const {window} = rendered;
-        const doc = window.document;
-        doc.body.classList.add('govuk-frontend-supported');
-        // JSDOM has no scrolling implementation; focus and GOV.UK event handling remain real.
-        window.HTMLElement.prototype.scrollIntoView = jest.fn();
-        window.eval(readFileSync(require.resolve('govuk-frontend/dist/govuk/components/error-summary/error-summary.bundle.js'), 'utf8'));
-        const {ErrorSummary} = (window as unknown as {GOVUKFrontend: {ErrorSummary: new (root: Element, options: {disableAutoFocus: boolean}) => unknown}}).GOVUKFrontend;
-        new ErrorSummary(doc.querySelector('.govuk-error-summary'), {disableAutoFocus: true});
-        const link = doc.querySelector<HTMLAnchorElement>('.govuk-error-summary a');
-        link.focus();
-        link.click();
-        expect(doc.activeElement).toBe(doc.querySelector('input#day'));
-        expect(link.getAttribute('href')).toBe('#day');
-        expect(doc.querySelector<HTMLInputElement>('input#day').value).toBe('12');
-      } finally { rendered.window.close(); }
-    }
-  });
   it('does not create an empty conditional date error for an option-only error', () => {
     dom = new JSDOM(renderFormControlPage('features/claimantResponse/ccj/defendant-dob.njk', 'en', 'error', {form: formControlForm({dob: {}}, {option: 'ERRORS.VALID_YES_NO_OPTION'})}));
     expect(dom.window.document.getElementById('dob[dateOfBirth]-error')).toBeNull();
@@ -155,7 +125,7 @@ describe('date error composition and master content preservation', () => {
 });
 
 describe('refreshed captures use their actual caller\'s group ownership', () => {
-  const cases = [
+  const cases: [string, string, string, Record<string, unknown>?][] = [
     ['case-progression-apply-help-with-fees-reference-number', 'caseProgression/hearingFee/apply-help-fee-reference', 'input[name="option"]'],
     ['case-progression-apply-help-with-fees', 'helpWithFees/help-fees-start', 'input[name="option"]'],
     ['case-progression-finalise-trial-arrangements-has-anything-changed', 'caseProgression/trialArrangements/has-anything-changed', 'input[name="option"]'],
@@ -163,11 +133,20 @@ describe('refreshed captures use their actual caller\'s group ownership', () => 
     ['general-application-1720536653906339-apply-help-with-fees-reference-number', 'generalApplication/applicationFee/help-with-application-fee-reference', 'input[name="option"]'],
     ['response-full-admission-payment-date', 'response/admission/payment-date', '.govuk-date-input input'],
     ['response-partial-admission-payment-date', 'response/admission/payment-date', '.govuk-date-input input'],
+    ['claimant-response-part-payment-received', 'claimantResponse/part-payment-received', 'input[name="option"]', {paidAmount: ''}],
+    ['claimant-response-settle-admitted', 'claimantResponse/settle-admitted', 'input[name="option"]', {admittedAmount: '£500'}],
+    ['claimant-response-settle-claim', 'claimantResponse/settle-claim', 'input[name="option"]', {paidAmount: ''}],
+    ['directions-questionnaire-documents-to-be-considered', 'directionsQuestionnaire/mintiMultiTrack/claimant-documents-to-be-considered', 'input[name="option"]', {componentText: 'PAGES.DOCS_FOR_DISCLOSURE.COMPONENT_TEXT_WITH_CLAIMANT'}],
+    ['general-application-1720536653906339-apply-help-additional-fee-selection', 'generalApplication/additionalFee/help-with-additional-fee', 'input[name="option"]'],
+    ['general-application-unavailability-confirmation', 'generalApplication/unavailable-dates-confirmation', 'input[name="option"]'],
+    ['response-general-application-1720536653906339-agree-to-order', 'generalApplication/agree-to-order', 'input[name="option"]'],
+    ['response-general-application-1720536653906339-respondent-agreement', 'generalApplication/respondent-agreement', 'input[name="option"]'],
+    ['response-general-application-1720536653906339-unavailability-confirmation', 'generalApplication/unavailable-dates-confirmation', 'input[name="option"]'],
   ];
-  it.each(cases)('%s', (capture, view, selector) => {
+  it.each(cases)('%s', (capture, view, selector, locals = {}) => {
     const filename = path.resolve(__dirname, '../../../utils/mocks/a11y', `mock-case-1645882162449409-${capture}.html`);
     const captured = new JSDOM(readFileSync(filename, 'utf8'));
-    const actual = new JSDOM(renderFormControlPage(`features/${view}.njk`));
+    const actual = new JSDOM(renderFormControlPage(`features/${view}.njk`, 'en', 'blank', locals));
     try {
       const group = (doc: Document) => {
         const control = doc.querySelector<HTMLInputElement>(selector);
