@@ -1,8 +1,11 @@
 import config from 'config';
 import axios from 'axios';
 import { lookupByPostcodeAndDataSet } from 'modules/ordnance-survey-key/ordnanceSurveyKeyService';
+import { AddressInfoResponse } from 'models/ordnanceSurveyKey/ordnanceSurveyKey';
 import { MOCK_API_ADDRESS, MOCK_API_RESPONSE } from '../../../utils/mocks/ordnanceSurvey/osMocks';
-import { AssertionError } from 'assert';
+
+const { Logger } = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('ordnanceSurveyKeyService');
 
 jest.mock('axios');
 jest.mock('config', () => ({
@@ -12,9 +15,18 @@ jest.mock('config', () => ({
 describe('lookupByPostcodeAndDataSet', () => {
   const mockApiKey = 'mock-api-key';
   const mockApiUrl = 'mock-api-url';
+  let loggerErrorSpy: jest.SpyInstance;
+  let loggerWarnSpy: jest.SpyInstance;
+
+  beforeEach(() => {
+    loggerErrorSpy = jest.spyOn(logger, 'error').mockImplementation();
+    loggerWarnSpy = jest.spyOn(logger, 'warn').mockImplementation();
+  });
 
   afterEach(() => {
     jest.clearAllMocks();
+    loggerErrorSpy.mockRestore();
+    loggerWarnSpy.mockRestore();
   });
 
   it('should call OS API with correct URL and return mapped AddressInfoResponse', async () => {
@@ -86,7 +98,7 @@ describe('lookupByPostcodeAndDataSet', () => {
     expect(goneAddress).toBeUndefined();
   });
 
-  it('should throw AssertionError if OS API returns no results', async () => {
+  it('should return empty AddressInfoResponse if OS API returns no results', async () => {
     (config.get as jest.Mock).mockImplementation((key: string) => {
       if (key.includes('ApiKey')) return mockApiKey;
       if (key.includes('ApiUrl')) return mockApiUrl;
@@ -95,10 +107,11 @@ describe('lookupByPostcodeAndDataSet', () => {
 
     (axios.get as jest.Mock).mockResolvedValue({ data: { results: [] } });
 
-    await expect(lookupByPostcodeAndDataSet('SW1A 1AA')).rejects.toThrowError(AssertionError);
+    const result = await lookupByPostcodeAndDataSet('SW1A 1AA');
+    expect(result).toEqual(new AddressInfoResponse([], true));
   });
 
-  it('should throw AssertionError if OS API returns undefined data', async () => {
+  it('should return empty AddressInfoResponse if OS API returns undefined data', async () => {
     (config.get as jest.Mock).mockImplementation((key: string) => {
       if (key.includes('ApiKey')) return mockApiKey;
       if (key.includes('ApiUrl')) return mockApiUrl;
@@ -107,7 +120,8 @@ describe('lookupByPostcodeAndDataSet', () => {
 
     (axios.get as jest.Mock).mockResolvedValue({ data: undefined });
 
-    await expect(lookupByPostcodeAndDataSet('SW1A 1AA')).rejects.toThrowError(AssertionError);
+    const result = await lookupByPostcodeAndDataSet('SW1A 1AA');
+    expect(result).toEqual(new AddressInfoResponse([], true));
   });
 
   it('should prioritize DPA results over LPI results for the same address', async () => {
@@ -160,5 +174,130 @@ describe('lookupByPostcodeAndDataSet', () => {
     // In LPI it's also 'D'.
     // Let's check udprn. DPA has udprn '25748129', LPI has udprn source.UDPRN ?? source.UPRN which would be '10091853817'.
     expect(result.addresses[0].udprn).toBe('25748129');
+  });
+
+  it('should log error and throw when API key is not configured', async () => {
+    (config.get as jest.Mock).mockImplementation((key: string) => {
+      if (key.includes('ApiKey')) return '';
+      if (key.includes('ApiUrl')) return mockApiUrl;
+      return '';
+    });
+
+    await expect(lookupByPostcodeAndDataSet('SW1A 1AA')).rejects.toThrow('Ordnance Survey API key is not configured');
+    expect(loggerErrorSpy).toHaveBeenCalledWith('Ordnance Survey API key is missing or not configured');
+  });
+
+  it('should log error when OS API returns 401 with InvalidApiKey fault', async () => {
+    (config.get as jest.Mock).mockImplementation((key: string) => {
+      if (key.includes('ApiKey')) return mockApiKey;
+      if (key.includes('ApiUrl')) return mockApiUrl;
+      return '';
+    });
+
+    const axiosError = {
+      isAxiosError: true,
+      message: 'Request failed with status code 401',
+      response: {
+        status: 401,
+        data: {
+          fault: {
+            faultstring: 'Invalid ApiKey',
+            detail: {
+              errorcode: 'oauth.v2.InvalidApiKey',
+            },
+          },
+        },
+      },
+    };
+    (axios.isAxiosError as unknown as jest.Mock) = jest.fn().mockReturnValue(true);
+    (axios.get as jest.Mock).mockRejectedValue(axiosError);
+
+    await expect(lookupByPostcodeAndDataSet('SW1A 1AA')).rejects.toEqual(axiosError);
+    expect(loggerErrorSpy).toHaveBeenCalledWith('Ordnance Survey API authentication failed (401): Invalid ApiKey');
+  });
+
+  it('should log error when OS API returns 403 status', async () => {
+    (config.get as jest.Mock).mockImplementation((key: string) => {
+      if (key.includes('ApiKey')) return mockApiKey;
+      if (key.includes('ApiUrl')) return mockApiUrl;
+      return '';
+    });
+
+    const axiosError = {
+      isAxiosError: true,
+      message: 'Request failed with status code 403',
+      response: {
+        status: 403,
+        data: {
+          fault: {
+            faultstring: 'Forbidden',
+          },
+        },
+      },
+    };
+    (axios.isAxiosError as unknown as jest.Mock) = jest.fn().mockReturnValue(true);
+    (axios.get as jest.Mock).mockRejectedValue(axiosError);
+
+    await expect(lookupByPostcodeAndDataSet('SW1A 1AA')).rejects.toEqual(axiosError);
+    expect(loggerErrorSpy).toHaveBeenCalledWith('Ordnance Survey API authentication failed (403): Forbidden');
+  });
+
+  it('should log a warning when OS API returns 400 status', async () => {
+    (config.get as jest.Mock).mockImplementation((key: string) => {
+      if (key.includes('ApiKey')) return mockApiKey;
+      if (key.includes('ApiUrl')) return mockApiUrl;
+      return '';
+    });
+
+    const axiosError = {
+      isAxiosError: true,
+      message: 'Request failed with status code 400',
+      response: {
+        status: 400,
+        data: { fault: { faultstring: 'Invalid postcode' } },
+      },
+    };
+    (axios.get as jest.Mock).mockRejectedValue(axiosError);
+
+    await expect(lookupByPostcodeAndDataSet('AB')).rejects.toEqual(axiosError);
+    expect(loggerWarnSpy).toHaveBeenCalledWith('Ordnance Survey API request rejected with status 400: Invalid postcode');
+    expect(loggerErrorSpy).not.toHaveBeenCalled();
+  });
+
+  it('should log error when OS API returns 500 status', async () => {
+    (config.get as jest.Mock).mockImplementation((key: string) => {
+      if (key.includes('ApiKey')) return mockApiKey;
+      if (key.includes('ApiUrl')) return mockApiUrl;
+      return '';
+    });
+
+    const axiosError = {
+      isAxiosError: true,
+      message: 'Request failed with status code 500',
+      response: {
+        status: 500,
+        data: 'Internal Server Error',
+      },
+    };
+    (axios.isAxiosError as unknown as jest.Mock) = jest.fn().mockReturnValue(true);
+    (axios.get as jest.Mock).mockRejectedValue(axiosError);
+
+    await expect(lookupByPostcodeAndDataSet('SW1A 1AA')).rejects.toEqual(axiosError);
+    expect(loggerErrorSpy).toHaveBeenCalledWith('Ordnance Survey API request failed with status 500: Request failed with status code 500');
+  });
+
+  it('should log error for non-axios errors', async () => {
+    (config.get as jest.Mock).mockImplementation((key: string) => {
+      if (key.includes('ApiKey')) return mockApiKey;
+      if (key.includes('ApiUrl')) return mockApiUrl;
+      return '';
+    });
+
+    const genericError = new Error('Network timeout');
+    (axios.isAxiosError as unknown as jest.Mock) = jest.fn().mockReturnValue(false);
+    (axios.get as jest.Mock).mockRejectedValue(genericError);
+
+    await expect(lookupByPostcodeAndDataSet('SW1A 1AA')).rejects.toThrow('Network timeout');
+    expect(loggerErrorSpy).toHaveBeenCalledWith('Ordnance Survey API request failed: Network timeout');
   });
 });
