@@ -1,14 +1,16 @@
 import {Response} from 'express';
 import youHavePaidLessController from 'routes/features/response/admission/fullRejection/youHavePaidLessController';
 import {CITIZEN_FULL_REJECTION_YOU_PAID_LESS_URL, RESPONSE_TASK_LIST_URL} from 'routes/urls';
-import {generateRedisKey, getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
+import {getResponseClaimById} from 'modules/draft-store/response/responseDraftStoreService';
 import {Claim} from 'models/claim';
 import {PartyType} from 'models/partyType';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {AppRequest} from 'models/AppRequest';
 import {createMockResponse, createMockSession, getRouteHandler} from '../../../../../../utils/getRouteHandler';
 
-jest.mock('modules/draft-store/draftStoreService');
+jest.mock('modules/draft-store/response/responseDraftStoreService');
+
+const mockGetResponseClaimById = getResponseClaimById as jest.Mock;
 
 const viewPath = 'features/response/admission/fullRejection/you-have-paid-less';
 const claimId = '12345';
@@ -46,8 +48,7 @@ const invoke = async (method: 'get' | 'post') => {
 describe('You Have Paid Less Controller', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    (generateRedisKey as jest.Mock).mockReturnValue(claimId);
-    (getCaseDataFromStore as jest.Mock).mockResolvedValue(storedClaim());
+    mockGetResponseClaimById.mockResolvedValue(storedClaim());
   });
 
   describe('on GET', () => {
@@ -55,14 +56,15 @@ describe('You Have Paid Less Controller', () => {
       const claim = storedClaim();
       const {res} = await invoke('get');
 
+      expect(mockGetResponseClaimById).toHaveBeenCalled();
       expect(res.render).toHaveBeenCalledWith(viewPath, {
         claimantName: claim.getClaimantFullName(),
       });
     });
 
     it('should return the error when the claim cannot be loaded', async () => {
-      const error = new Error('redis failure');
-      (getCaseDataFromStore as jest.Mock).mockRejectedValue(error);
+      const error = new Error('draft failure');
+      mockGetResponseClaimById.mockRejectedValue(error);
 
       const {next} = await invoke('get');
 
