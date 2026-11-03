@@ -23,5 +23,22 @@ describe('translate TimeLine to CCD model', () => {
     );
     const timelineResponseCCD = toCCDTimelineEvent(claim.claimDetails.timeline);
     expect(timelineResponseCCD).toHaveLength(2);
+    expect(timelineResponseCCD[0]?.value.timelineDay).toBe('1');
+    expect(timelineResponseCCD[0]?.value.timelineMonth).toBe('1');
+    expect(timelineResponseCCD[0]?.value.timelineYear).toBe('2001');
+  });
+
+  it('should translate month and year only timeline to CCD without a day or date', () => {
+    const timeline = new ClaimantTimeline([new TimelineRow(undefined, 6, 2023, 'test 1')]);
+
+    const timelineResponseCCD = toCCDTimelineEvent(timeline);
+
+    expect(timelineResponseCCD[0].value).toEqual({
+      timelineDate: undefined,
+      timelineDay: undefined,
+      timelineMonth: '6',
+      timelineYear: '2023',
+      timelineDescription: 'test 1',
+    });
   });
 });

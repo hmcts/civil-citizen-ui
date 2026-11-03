@@ -1,14 +1,11 @@
-import {IsDate, IsDefined, IsNotEmpty, MaxLength, Validate, ValidateIf} from 'class-validator';
+import {IsDefined, IsNotEmpty, MaxLength, Validate, ValidateIf} from 'class-validator';
 import {FREE_TEXT_MAX_LENGTH} from '../../validators/validationConstraints';
 import {DateConverter} from 'common/utils/dateConverter';
-import {OptionalDateNotInFutureValidator} from 'form/validators/optionalDateNotInFutureValidator';
+import {TimelineDateValidator} from '../../validators/timelineDateValidator';
 
 export class TimelineRow {
   @ValidateIf(o => o.isAtLeastOneFieldPopulated())
-  @IsDefined({message: 'ERRORS.DATE_REQUIRED'})
-  @IsNotEmpty({message: 'ERRORS.DATE_REQUIRED'})
-  @IsDate({message: 'ERRORS.VALID_DATE'})
-  @Validate(OptionalDateNotInFutureValidator, {message: 'ERRORS.CORRECT_DATE_NOT_IN_FUTURE'})
+  @Validate(TimelineDateValidator)
     date?: Date;
 
   year?: number;

@@ -4,7 +4,7 @@ import {ClaimSummarySection, ClaimSummaryType} from 'form/models/claimSummarySec
 import {EvidenceItem} from 'form/models/evidence/evidenceItem';
 import {TimelineRow} from 'form/models/timeLineOfEvents/timelineRow';
 import {TableCell} from 'models/summaryList/summaryList';
-import {formatDateToFullDate} from 'common/utils/dateUtils';
+import {formatDateToFullDate, formatTimelineDate} from 'common/utils/dateUtils';
 import {convertToEvidenceTypeToTranslationKey} from 'models/evidence/evidenceType';
 import {getLng} from 'common/utils/languageToggleUtils';
 import {CASE_DOCUMENT_DOWNLOAD_URL} from 'routes/urls';
@@ -16,7 +16,7 @@ import {CCDHowWasThisAmountPaid} from 'models/ccdResponse/ccdRespondToClaim';
 export const generateTableRowsForTOEs = (theirTOERows: TimelineRow[], lng: string): TableCell[][] => {
   return theirTOERows.map(row => {
     return [{
-      text: formatDateToFullDate(new Date(row?.date?.toString()), lng ),
+      text: formatTimelineDate(row, lng),
     }, {
       text: row?.description,
     }];

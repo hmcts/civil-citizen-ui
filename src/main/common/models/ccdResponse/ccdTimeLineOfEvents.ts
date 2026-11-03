@@ -5,5 +5,8 @@ export interface CCDTimeLineOfEvents {
 
 export interface CCDTimeLineOfEventsItem {
   timelineDate?: Date;
+  timelineDay?: string;
+  timelineMonth?: string;
+  timelineYear?: string;
   timelineDescription?: string;
 }

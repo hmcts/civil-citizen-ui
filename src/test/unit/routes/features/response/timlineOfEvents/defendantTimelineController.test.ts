@@ -13,14 +13,14 @@ describe('defendant timeline controller', () => {
   const postHandler = getRouteHandler(defendantTimelineController, 'post');
   const viewPath = 'features/response/timelineOfEvents/defendant-timeline';
   const claimId = '12345';
-  let req: {params: {id: string}; body: Record<string, unknown>};
+  let req: {params: {id: string}; body: Record<string, unknown>; query: Record<string, string>; cookies: Record<string, string>};
   let res: ReturnType<typeof createMockResponse>;
   let next: jest.Mock;
   const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
   const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
 
   beforeEach(() => {
-    req = {params: {id: claimId}, body: {}};
+    req = {params: {id: claimId}, body: {}, query: {}, cookies: {}};
     res = createMockResponse();
     next = jest.fn();
     (draftStoreService.generateRedisKey as jest.Mock).mockReturnValue(claimId);
@@ -36,6 +36,24 @@ describe('defendant timeline controller', () => {
         form: expect.anything(),
       }));
       expect(next).not.toHaveBeenCalled();
+    });
+
+    it('should render the claimant timeline with formatted dates', async () => {
+      const claim = new Claim();
+      claim.timelineOfEvents = [
+        {id: '1', value: {timelineDate: '2024-03-15', timelineDescription: 'Contract signed'}},
+        {id: '2', value: {timelineDate: undefined, timelineMonth: '6', timelineYear: '2023', timelineDescription: 'Goods delivered'}},
+      ];
+      mockGetCaseData.mockResolvedValue(claim);
+
+      await getHandler(req as never, res as unknown as Response, next);
+
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        theirTimeline: [
+          {timelineDate: '15 March 2024', timelineDescription: 'Contract signed'},
+          {timelineDate: 'June 2023', timelineDescription: 'Goods delivered'},
+        ],
+      }));
     });
 
     it('should call next when loading the claim fails', async () => {

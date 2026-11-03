@@ -5,5 +5,8 @@ export interface TimeLineOfEvents {
 
 export interface TimeLineOfEventDetails {
   timelineDate: string,
+  timelineDay?: string,
+  timelineMonth?: string,
+  timelineYear?: string,
   timelineDescription: string,
 }
