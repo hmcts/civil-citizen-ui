@@ -38,11 +38,18 @@ function choose(id: string, block = root()) {
   select(block).dispatchEvent(new dom.window.Event('change', {bubbles: true}));
 }
 function manual(block = root()) {(block.querySelector('[data-postcode-manual]') as HTMLAnchorElement).click();}
-function deferred() {
+function deferredResult() {
   let resolve!: (value: unknown) => void;
   let reject!: (value: unknown) => void;
   const promise = new Promise((yes, no) => {resolve = yes; reject = no;});
-  const task = {resolve, reject}; pending.push(task); fetchMock.mockReturnValueOnce(promise);return task;
+  const task = {promise, resolve, reject};
+  pending.push(task);
+  return task;
+}
+function deferred() {
+  const task = deferredResult();
+  fetchMock.mockReturnValueOnce(task.promise);
+  return task;
 }
 
 beforeEach(() => {
@@ -198,6 +205,37 @@ describe('late responses and recoverable errors', () => {
     await flush();expect([...select().options].map(option=>option.value)).toEqual(['','new']);expect(root().querySelector<HTMLElement>('[data-postcode-error]')!.hidden).toBe(true);expect(root().querySelector('[data-postcode-find]')!.getAttribute('aria-busy')).toBeNull();
   });
 
+  it.each(['success', 'failure'])('ignores an older JSON %s after parsing has started and a newer search completes', async outcome => {
+    const document = install();
+    initPostcodeLookup(document);
+    const parsed = deferredResult();
+    const json = jest.fn().mockReturnValue(parsed.promise);
+    fetchMock.mockResolvedValueOnce({ok: true, json});
+    start(root(), 'AA1 1AA');
+    await flush();
+    expect(json).toHaveBeenCalledTimes(1);
+    expect(root().querySelector('[data-postcode-find]')!.getAttribute('aria-busy')).toBe('true');
+
+    fetchMock.mockResolvedValueOnce(response([address('new', {buildingNumber: '34', postcode: 'BB1 1BB'})]));
+    start(root(), 'BB1 1BB');
+    expect(fetchMock.mock.calls[0][1].signal.aborted).toBe(true);
+    await flush();
+    choose('new');
+    expect(document.activeElement).toBe(select());
+
+    if (outcome === 'failure') parsed.reject(new SyntaxError('Late JSON parsing failure'));
+    else parsed.resolve({addresses: [address('old')], valid: true});
+    await flush();
+
+    expect([...select().options].map(option => option.value)).toEqual(['', 'new']);
+    expect(select().value).toBe('new');
+    expect(values()).toEqual(['34 Street', '', '', 'Town', 'BB1 1BB']);
+    expect(document.activeElement).toBe(select());
+    expect(root().querySelector<HTMLElement>('[data-postcode-results]')!.hidden).toBe(false);
+    expect(root().querySelector<HTMLElement>('[data-postcode-error]')!.hidden).toBe(true);
+    expect(root().querySelector('[data-postcode-find]')!.getAttribute('aria-busy')).toBeNull();
+  });
+
   it.each(['input','change','programmatic'])('ignores results for a changed postcode (%s)', async event => {
     const document = install();initPostcodeLookup(document);const request=deferred();start();input().value='XY1 2ZZ';if(event!=='programmatic')input().dispatchEvent(new dom.window.Event(event,{bubbles:true}));
     request.resolve(response([address()]));await flush();expect(select().options).toHaveLength(1);expect(root().querySelector<HTMLElement>('[data-postcode-error]')!.hidden).toBe(true);expect(root().querySelector('[data-postcode-find]')!.getAttribute('aria-busy')).toBeNull();
@@ -226,11 +264,18 @@ describe('late responses and recoverable errors', () => {
   });
 
   it('retains results when moving focus commits the unchanged postcode value', async () => {
-    const document = install();initPostcodeLookup(document);start();await flush();
+    const document = install();
+    initPostcodeLookup(document);
+    const addressForm = root().querySelector<HTMLElement>('.address-form')!;
+    expect(addressForm.hidden).toBe(true);
+    expect(addressForm.getAttribute('aria-hidden')).toBe('true');
+    start();await flush();
     // Browsers emit change when the edited postcode loses focus to results.
     input().dispatchEvent(new dom.window.Event('change', {bubbles: true}));
     expect(select().options).toHaveLength(2);expect(root().querySelector<HTMLElement>('[data-postcode-results]')!.hidden).toBe(false);
     choose('123');expect(values()[0]).toBe('12 Street');expect(document.activeElement).toBe(select());
+    expect(addressForm.hidden).toBe(false);
+    expect(addressForm.getAttribute('aria-hidden')).toBe('false');
   });
 
   it('keeps keyboard selection focus on results and does not show aborted request errors', async () => {
