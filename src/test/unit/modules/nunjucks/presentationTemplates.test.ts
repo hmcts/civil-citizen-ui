@@ -15,6 +15,7 @@ import {Dependants} from 'form/models/statementOfMeans/dependants/dependants';
 import {Unemployment} from 'form/models/statementOfMeans/unemployment/unemployment';
 import {UnemploymentDetails} from 'form/models/statementOfMeans/unemployment/unemploymentDetails';
 import {OtherDetails} from 'form/models/statementOfMeans/unemployment/otherDetails';
+import {BASE_ELIGIBILITY_URL, CLAIMANT_TASK_LIST_URL} from 'routes/urls';
 
 const text = (element: Element) => element.textContent!.replace(/\s+/g, ' ').trim();
 const cells = (document: Document) => Array.from(document.querySelectorAll('tbody tr')).map(row => Array.from(row.querySelectorAll('td')).map(text));
@@ -38,6 +39,33 @@ function associations(document: Document) {
 }
 
 describe('PR9 official presentation composition', () => {
+  it.each(['en', 'cy'].flatMap(language =>
+    [BASE_ELIGIBILITY_URL, CLAIMANT_TASK_LIST_URL].map(redirectUrl => ({language, redirectUrl})),
+  ))('preserves fee-change content and navigation without a POST form ($language, $redirectUrl)', ({language, redirectUrl}) => {
+    const claimFee = 80.25;
+    const translate = formControlTranslate(language);
+    const dom = new JSDOM(renderPresentation('features/claim/fee-change.njk', {
+      claimFee, redirectUrl, pageTitle: 'PAGES.FEE_CHANGE.PAGE_TITLE',
+    }, language));
+    try {
+      const document = dom.window.document;
+      const main = document.querySelector('main')!;
+      expect(text(main.querySelector('h1')!)).toBe(translate('PAGES.FEE_CHANGE.TITLE'));
+      expect(Array.from(main.querySelectorAll('.govuk-grid-column-two-thirds > p')).map(text)).toEqual([
+        translate('PAGES.FEE_CHANGE.PARAGRAPH_1'),
+        translate('PAGES.FEE_CHANGE.PARAGRAPH_2', {claimFee}),
+        translate('PAGES.FEE_CHANGE.PARAGRAPH_3'),
+      ]);
+      const links = main.querySelectorAll('a.govuk-button');
+      expect(links).toHaveLength(1);
+      expect(links[0].getAttribute('href')).toBe(redirectUrl);
+      expect(text(links[0])).toBe(translate('PAGES.FEE_CHANGE.BUTTON_LABEL'));
+      expect(links[0].closest('form')).toBeNull();
+      expect(main.querySelector('form')).toBeNull();
+      expect(main.querySelector('button[type="submit"], input[type="submit"], input[type="image"], input[name="_csrf"]')).toBeNull();
+    } finally {dom.window.close();}
+  });
+
   const numericFields: {view: string; field: string[]; name: string; model?: () => object}[] = [
     {view: 'features/claim/interest/how-much-continue-claiming.njk', field: ['dailyInterestAmount'], name: 'dailyInterestAmount', model: () => new HowMuchContinueClaiming()},
     {view: 'features/claimantResponse/ccj/repayment-plan-instalments.njk', field: ['amount'], name: 'amount'},
