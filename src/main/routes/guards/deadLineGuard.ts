@@ -1,6 +1,5 @@
 import {NextFunction, Request, Response} from 'express';
 import {Claim} from '../../common/models/claim';
-import {generateRedisKey, getCaseDataFromStore} from '../../modules/draft-store/draftStoreService';
 import {isPastDeadline} from '../../common/utils/dateUtils';
 import {getViewOptionsBeforeDeadlineTask} from '../../common/utils/taskList/tasks/viewOptionsBeforeDeadline';
 import {TaskStatus} from '../../common/models/taskList/TaskStatus';
@@ -9,6 +8,7 @@ import {RESPONSE_TASK_LIST_URL} from '../../routes/urls';
 import {AppRequest} from 'common/models/AppRequest';
 import {getRouteParam} from 'common/utils/routeParamUtils';
 import {stashClaimOnRequest} from 'common/utils/claimRequestLocals';
+import {getResponseClaimById} from 'modules/draft-store/response/responseDraftStoreService';
 
 export const deadLineGuard = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -25,12 +25,12 @@ export const deadLineGuard = async (req: Request, res: Response, next: NextFunct
 };
 
 export const isUnauthorized = async (req: Request) => {
-  const redisKey = generateRedisKey(<AppRequest>req);
-  const caseData: Claim = await getCaseDataFromStore(redisKey);
+  const appReq = <AppRequest>req;
+  const caseId = getRouteParam(req, 'id');
+  const caseData: Claim = await getResponseClaimById(appReq, caseId);
   stashClaimOnRequest(req, caseData);
   const isDeadlinePassed = isPastDeadline(caseData.respondent1ResponseDeadline);
-  const claimId = getRouteParam(req, 'id');
-  const viewOptionsBeforeDeadlineTask = getViewOptionsBeforeDeadlineTask(caseData, claimId, 'en');
+  const viewOptionsBeforeDeadlineTask = getViewOptionsBeforeDeadlineTask(caseData, caseId, 'en');
 
   const isTaskComplete = viewOptionsBeforeDeadlineTask.status === TaskStatus.COMPLETE;
   const deadlineIsExtended = isTaskComplete && caseData.isDeadlineExtended();
