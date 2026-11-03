@@ -8,6 +8,7 @@ import {renderTaskListPage, taskListPageFixture, taskListTranslate, taskListView
 
 const {JSDOM} = require('jsdom');
 const nunjucks = require('nunjucks');
+const claimTaskLocators = require('../../../functionalTests/specClaimHelpers/claimTaskListLocators');
 const claimantTaskLocators = require('../../../functionalTests/specClaimHelpers/claimantResponseTaskListLocators');
 const doms: InstanceType<typeof JSDOM>[] = [];
 function parse(html: string): Document {
@@ -79,6 +80,32 @@ describe.each(Object.entries(taskListViews).filter(([name]) => name !== 'dashboa
     expect(rows[1].querySelector('a')).toBeNull();
     expect(rows[2].querySelector('a')).toBeNull();
     associations(document);
+  });
+});
+
+describe.each([TaskStatus.INCOMPLETE, TaskStatus.COMPLETE])('claim creation functional task-link selectors (%s)', status => {
+  it.each([
+    ['resolving_this_dispute', 'RESOLVING_DISPUTE', urls.CLAIM_RESOLVING_DISPUTE_URL],
+    ['confirming_your_claim', 'COMPLETING_CLAIM', urls.CLAIM_COMPLETING_CLAIM_URL],
+    ['your_details', 'YOUR_DETAILS', urls.CLAIMANT_PARTY_TYPE_SELECTION_URL],
+    ['their_details', 'THEIR_DETAILS', urls.CLAIM_DEFENDANT_PARTY_TYPE_URL],
+    ['claim_amount', 'CLAIM_AMOUNT', urls.CLAIM_AMOUNT_URL],
+    ['claim_details', 'CLAIM_DETAILS', urls.CLAIM_REASON_URL],
+    ['check_and_submit_your_claim', 'CHECK_AND_SUBMIT', urls.CLAIM_CHECK_ANSWERS_URL],
+  ])('finds only the intended link for %s despite component whitespace', (locator, key, href) => {
+    const description = taskListTranslate()('PAGES.CLAIM_TASK_LIST.' + key);
+    const tasks = [
+      new TaskItem(description, href, status),
+      new TaskItem(description + ' (previous)', '/fixture/other-task', status),
+      new TaskItem(description, '/fixture/unavailable', TaskStatus.NOT_AVAILABLE_YET),
+    ];
+    const document = parse(renderTaskListPage(taskListViews.claim, {
+      ...taskListPageFixture(), taskLists: [{title: 'PAGES.CLAIM_TASK_LIST.PREPARE_CLAIM', tasks}],
+    }));
+    const matches = document.evaluate(claimTaskLocators[locator], document, null,
+      document.defaultView!.XPathResult.ORDERED_NODE_SNAPSHOT_TYPE, null);
+    expect(matches.snapshotLength).toBe(1);
+    expect((matches.snapshotItem(0) as HTMLAnchorElement).getAttribute('href')).toBe(href);
   });
 });
 
