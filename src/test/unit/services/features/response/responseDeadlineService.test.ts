@@ -1,58 +1,86 @@
-import * as draftStoreService from '../../../../../main/modules/draft-store/draftStoreService';
-import {Claim} from '../../../../../main/common/models/claim';
-import {ResponseDeadlineService} from '../../../../../main/services/features/response/responseDeadlineService';
-import {ResponseOptions} from '../../../../../main/common/form/models/responseDeadline';
+import {getResponseDraft, updateResponseDraft} from 'modules/draft-store/response/responseDraftStoreService';
+import {Claim} from 'models/claim';
+import {ResponseDeadlineService} from 'services/features/response/responseDeadlineService';
+import {ResponseOptions} from 'form/models/responseDeadline';
 import {TestMessages} from '../../../../utils/errorMessageTestConstants';
-import {AdditionalTimeOptions} from '../../../../../main/common/form/models/additionalTime';
-import {mockClaim} from '../../../../utils/mockClaim';
+import {AdditionalTimeOptions} from 'form/models/additionalTime';
+import {AppRequest} from 'models/AppRequest';
 
-jest.mock('../../../../../main/modules/draft-store');
-jest.mock('../../../../../main/modules/draft-store/draftStoreService');
+jest.mock('modules/draft-store/response/responseDraftStoreService');
+
+const mockGetResponseDraft = getResponseDraft as jest.Mock;
+const mockUpdateResponseDraft = updateResponseDraft as jest.Mock;
+
+const caseId = '1645882162449409';
+const mockReq = {
+  params: {id: caseId},
+  session: {user: {id: 'user-1', accessToken: 'token'}},
+} as unknown as AppRequest;
+
+const mockDraftResult = (claim: Claim) => ({
+  claimResponse: {id: 'draft-123', case_data: claim},
+  rawResponse: {draftId: 'draft-123', payload: claim},
+  createdAt: '2026-01-01T00:00:00.000Z',
+  updatedAt: '',
+  expiresAt: '',
+});
 
 const responseDeadlineService = new ResponseDeadlineService();
 
 describe('Response Deadline Service', () => {
-  const mockGetCaseData = draftStoreService.getCaseDataFromStore as jest.Mock;
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
 
   describe('saveDeadlineResponse', () => {
-    it('should save successfully if deadline response object is defined', async () => {
+    it('should save when response deadline already exists', async () => {
       const claim = new Claim();
-      claim.responseDeadline = {
-        option: undefined,
-      };
-      mockGetCaseData.mockImplementation(async () => {
-        return claim;
-      });
-      const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
-      await responseDeadlineService.saveDeadlineResponse('validClaimId', ResponseOptions.YES);
-      expect(spySave).toBeCalled();
-    });
-    it('should save successfully if deadline response object is not defined', async () => {
-      mockGetCaseData.mockImplementation(async () => {
-        return new Claim();
-      });
-      const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
-      await responseDeadlineService.saveDeadlineResponse('validClaimId', ResponseOptions.NO);
-      expect(spySave).toBeCalled();
+      claim.responseDeadline = {option: undefined};
+      mockGetResponseDraft.mockResolvedValue(mockDraftResult(claim));
+      mockUpdateResponseDraft.mockResolvedValue({});
+
+      await responseDeadlineService.saveDeadlineResponse(mockReq, ResponseOptions.YES);
+
+      expect(mockUpdateResponseDraft).toHaveBeenCalledWith(
+        mockReq,
+        caseId,
+        expect.objectContaining({
+          responseDeadline: expect.objectContaining({option: ResponseOptions.YES}),
+          draftClaimCreatedAt: new Date('2026-01-01T00:00:00.000Z'),
+        }),
+        'draft-123',
+      );
     });
 
-    it('should save successfully for valid response option', async () => {
-      const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
-      await responseDeadlineService.saveDeadlineResponse('validClaimId', ResponseOptions.ALREADY_AGREED);
-      expect(spySave).toBeCalled();
+    it('should save when response deadline does not exist', async () => {
+      mockGetResponseDraft.mockResolvedValue(mockDraftResult(new Claim()));
+      mockUpdateResponseDraft.mockResolvedValue({});
+
+      await responseDeadlineService.saveDeadlineResponse(mockReq, ResponseOptions.NO);
+
+      expect(mockUpdateResponseDraft).toHaveBeenCalledWith(
+        mockReq,
+        caseId,
+        expect.objectContaining({
+          responseDeadline: expect.objectContaining({option: ResponseOptions.NO}),
+        }),
+        'draft-123',
+      );
     });
 
-    it('should save successfully for valid response option', async () => {
-      const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
-      await responseDeadlineService.saveDeadlineResponse('validClaimId', ResponseOptions.REQUEST_REFUSED);
-      expect(spySave).toBeCalled();
+    it('should throw when no response draft is found', async () => {
+      mockGetResponseDraft.mockResolvedValue(null);
+
+      await expect(responseDeadlineService.saveDeadlineResponse(mockReq, ResponseOptions.YES))
+        .rejects.toThrow('[responseDeadlineService] no response draft found');
+      expect(mockUpdateResponseDraft).not.toHaveBeenCalled();
     });
 
-    it('should fail when redis throws an error', async () => {
-      mockGetCaseData.mockImplementation(async () => {
-        throw new Error(TestMessages.REDIS_FAILURE);
-      });
-      await expect(responseDeadlineService.saveDeadlineResponse('validClaimId', ResponseOptions.NO))
+    it('should throw when updateResponseDraft fails', async () => {
+      mockGetResponseDraft.mockResolvedValue(mockDraftResult(new Claim()));
+      mockUpdateResponseDraft.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
+
+      await expect(responseDeadlineService.saveDeadlineResponse(mockReq, ResponseOptions.NO))
         .rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
   });
@@ -63,7 +91,7 @@ describe('Response Deadline Service', () => {
         .toEqual(AdditionalTimeOptions.MORE_THAN_28_DAYS);
     });
 
-    it('should return valid option if "up-to28-days"', () => {
+    it('should return valid option if "up-to-28-days"', () => {
       expect(responseDeadlineService.getAdditionalTime('up-to-28-days'))
         .toEqual(AdditionalTimeOptions.UP_TO_28_DAYS);
     });
@@ -75,67 +103,70 @@ describe('Response Deadline Service', () => {
   });
 
   describe('saveAdditionalTime', () => {
-    it('should save successfully if additional time object is defined', async () => {
+    it('should save when response deadline already exists', async () => {
       const claim = new Claim();
-      claim.responseDeadline = {
-        option: undefined,
-        additionalTime: undefined,
-      };
-      mockGetCaseData.mockImplementation(async () => {
-        return claim;
-      });
-      const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
-      await responseDeadlineService.saveAdditionalTime('validClaimId', AdditionalTimeOptions.MORE_THAN_28_DAYS);
-      expect(spySave).toBeCalled();
-    });
-    it('should save successfully if additional time object is not defined', async () => {
-      mockGetCaseData.mockImplementation(async () => {
-        return new Claim();
-      });
-      const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
-      await responseDeadlineService.saveAdditionalTime('validClaimId', AdditionalTimeOptions.UP_TO_28_DAYS);
-      expect(spySave).toBeCalled();
-    });
-    it('should save successfully for valid additional time', async () => {
-      const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
-      await responseDeadlineService.saveAdditionalTime('validClaimId', AdditionalTimeOptions.MORE_THAN_28_DAYS);
-      expect(spySave).toBeCalled();
+      claim.responseDeadline = {option: undefined, additionalTime: undefined};
+      mockGetResponseDraft.mockResolvedValue(mockDraftResult(claim));
+      mockUpdateResponseDraft.mockResolvedValue({});
+
+      await responseDeadlineService.saveAdditionalTime(mockReq, AdditionalTimeOptions.MORE_THAN_28_DAYS);
+
+      expect(mockUpdateResponseDraft).toHaveBeenCalledWith(
+        mockReq,
+        caseId,
+        expect.objectContaining({
+          responseDeadline: expect.objectContaining({additionalTime: AdditionalTimeOptions.MORE_THAN_28_DAYS}),
+        }),
+        'draft-123',
+      );
     });
 
-    it('should save successfully for valid additional time', async () => {
-      const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
-      await responseDeadlineService.saveAdditionalTime('validClaimId', AdditionalTimeOptions.UP_TO_28_DAYS);
-      expect(spySave).toBeCalled();
+    it('should save when response deadline does not exist', async () => {
+      mockGetResponseDraft.mockResolvedValue(mockDraftResult(new Claim()));
+      mockUpdateResponseDraft.mockResolvedValue({});
+
+      await responseDeadlineService.saveAdditionalTime(mockReq, AdditionalTimeOptions.UP_TO_28_DAYS);
+
+      expect(mockUpdateResponseDraft).toHaveBeenCalledWith(
+        mockReq,
+        caseId,
+        expect.objectContaining({
+          responseDeadline: expect.objectContaining({additionalTime: AdditionalTimeOptions.UP_TO_28_DAYS}),
+        }),
+        'draft-123',
+      );
     });
 
-    it('should fail when redis throws an error', async () => {
-      const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
-      mockSaveDraftClaim.mockImplementationOnce(async () => {
-        throw new Error(TestMessages.REDIS_FAILURE);
-      });
-      await expect(responseDeadlineService.saveAdditionalTime('validClaimId', AdditionalTimeOptions.UP_TO_28_DAYS))
+    it('should throw when no response draft is found', async () => {
+      mockGetResponseDraft.mockResolvedValue(null);
+
+      await expect(responseDeadlineService.saveAdditionalTime(mockReq, AdditionalTimeOptions.UP_TO_28_DAYS))
+        .rejects.toThrow('[responseDeadlineService] no response draft found');
+    });
+
+    it('should throw when updateResponseDraft fails', async () => {
+      mockGetResponseDraft.mockResolvedValue(mockDraftResult(new Claim()));
+      mockUpdateResponseDraft.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
+
+      await expect(responseDeadlineService.saveAdditionalTime(mockReq, AdditionalTimeOptions.UP_TO_28_DAYS))
         .rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
   });
 
   describe('getAgreedResponseDeadline', () => {
-    it('should return undefined when empty claim retrieved', async () => {
-      // Given
+    it('should return undefined when empty claim retrieved', () => {
       const claim = new Claim();
-      // When
       const agreedResponseDeadline = responseDeadlineService.getAgreedResponseDeadline(claim);
-      // Then
       expect(agreedResponseDeadline).toBeUndefined();
     });
 
-    it('should return agreedResponseDeadline when date retrieved', async () => {
-      // Given
+    it('should return agreedResponseDeadline when date retrieved', () => {
       const mockAgreedResponseDeadline = new Date('2022-05-15T02:59:59');
       const claim = new Claim();
       claim.responseDeadline = {agreedResponseDeadline: mockAgreedResponseDeadline};
-      // When
+
       const agreedResponseDeadline = responseDeadlineService.getAgreedResponseDeadline(claim);
-      // Then
+
       expect(agreedResponseDeadline).not.toBeNull();
       expect(agreedResponseDeadline.date).toEqual(mockAgreedResponseDeadline);
       expect(agreedResponseDeadline.year).toEqual(mockAgreedResponseDeadline.getFullYear());
@@ -146,62 +177,53 @@ describe('Response Deadline Service', () => {
 
   describe('saveAgreedResponseDeadline', () => {
     const mockAgreedResponseDeadline = new Date('2022-01-24T15:59:59');
-    it('should save successfully if deadline response object is not defined', async () => {
-      // Given
-      mockGetCaseData.mockImplementation(async () => {
-        return mockClaim;
-      });
-      const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
-      // When
-      await responseDeadlineService.saveAgreedResponseDeadline('validClaimId', mockAgreedResponseDeadline);
-      // Then
-      expect(spySave).toBeCalled();
+
+    it('should save when response deadline does not exist', async () => {
+      mockGetResponseDraft.mockResolvedValue(mockDraftResult(new Claim()));
+      mockUpdateResponseDraft.mockResolvedValue({});
+
+      await responseDeadlineService.saveAgreedResponseDeadline(mockReq, mockAgreedResponseDeadline);
+
+      expect(mockUpdateResponseDraft).toHaveBeenCalledWith(
+        mockReq,
+        caseId,
+        expect.objectContaining({
+          responseDeadline: expect.objectContaining({agreedResponseDeadline: mockAgreedResponseDeadline}),
+        }),
+        'draft-123',
+      );
     });
 
-    it('should save successfully if deadline response object is defined', async () => {
-      // Given
+    it('should save when response deadline already exists', async () => {
       const claim = new Claim();
-      claim.responseDeadline = {
-        agreedResponseDeadline: undefined,
-      };
-      mockGetCaseData.mockImplementation(async () => {
-        return claim;
-      });
-      const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
-      // When
-      await responseDeadlineService.saveAgreedResponseDeadline('validClaimId', mockAgreedResponseDeadline);
-      // Then
-      expect(spySave).toBeCalled();
+      claim.responseDeadline = {agreedResponseDeadline: undefined};
+      mockGetResponseDraft.mockResolvedValue(mockDraftResult(claim));
+      mockUpdateResponseDraft.mockResolvedValue({});
+
+      await responseDeadlineService.saveAgreedResponseDeadline(mockReq, mockAgreedResponseDeadline);
+
+      expect(mockUpdateResponseDraft).toHaveBeenCalledWith(
+        mockReq,
+        caseId,
+        expect.objectContaining({
+          responseDeadline: expect.objectContaining({agreedResponseDeadline: mockAgreedResponseDeadline}),
+        }),
+        'draft-123',
+      );
     });
 
-    it('should save successfully for valid agreed response deadline', async () => {
-      // Given
-      const claim = new Claim();
-      claim.responseDeadline = {
-        agreedResponseDeadline: new Date('2022-01-01T00:00:00.000Z'),
-      };
-      mockGetCaseData.mockImplementation(async () => {
-        return claim;
-      });
-      const spySave = jest.spyOn(draftStoreService, 'saveDraftClaim');
-      // When
-      await responseDeadlineService.saveAgreedResponseDeadline('validClaimId', mockAgreedResponseDeadline);
-      // Then
-      expect(spySave).toBeCalled();
+    it('should throw when no response draft is found', async () => {
+      mockGetResponseDraft.mockResolvedValue(null);
+
+      await expect(responseDeadlineService.saveAgreedResponseDeadline(mockReq, mockAgreedResponseDeadline))
+        .rejects.toThrow('[responseDeadlineService] no response draft found');
     });
 
-    it('should fail when redis throws an error', async () => {
-      // Given
-      mockGetCaseData.mockImplementation(async () => {
-        return new Claim();
-      });
-      const mockSaveDraftClaim = draftStoreService.saveDraftClaim as jest.Mock;
-      // When
-      mockSaveDraftClaim.mockImplementationOnce(async () => {
-        throw new Error(TestMessages.REDIS_FAILURE);
-      });
-      // Then
-      await expect(responseDeadlineService.saveAgreedResponseDeadline('validClaimId', mockAgreedResponseDeadline))
+    it('should throw when updateResponseDraft fails', async () => {
+      mockGetResponseDraft.mockResolvedValue(mockDraftResult(new Claim()));
+      mockUpdateResponseDraft.mockRejectedValue(new Error(TestMessages.REDIS_FAILURE));
+
+      await expect(responseDeadlineService.saveAgreedResponseDeadline(mockReq, mockAgreedResponseDeadline))
         .rejects.toThrow(TestMessages.REDIS_FAILURE);
     });
   });

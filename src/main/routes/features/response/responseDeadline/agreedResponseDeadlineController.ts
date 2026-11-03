@@ -1,14 +1,9 @@
 import {NextFunction, Request, RequestHandler, Response, Router} from 'express';
 import {AgreedResponseDeadline} from 'form/models/agreedResponseDeadline';
-import {
-  AGREED_TO_MORE_TIME_URL,
-  RESPONSE_DEADLINE_OPTIONS_URL,
-  NEW_RESPONSE_DEADLINE_URL,
-} from 'routes/urls';
+import {AGREED_TO_MORE_TIME_URL, RESPONSE_DEADLINE_OPTIONS_URL, NEW_RESPONSE_DEADLINE_URL} from 'routes/urls';
 import {GenericForm} from 'form/models/genericForm';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {ResponseDeadlineService} from 'services/features/response/responseDeadlineService';
-import {generateRedisKey} from 'modules/draft-store/draftStoreService';
 import {getStashedClaimOrFromStore} from 'common/utils/claimRequestLocals';
 import {deadLineGuard} from 'routes/guards/deadLineGuard';
 import {AppRequest} from 'common/models/AppRequest';
@@ -45,7 +40,6 @@ agreedResponseDeadlineController
   .post(
     AGREED_TO_MORE_TIME_URL, deadLineGuard,( async (req, res, next: NextFunction) => {
       const {year, month, day} = req.body;
-      const redisKey = generateRedisKey(<AppRequest>req);
       const claimId = getRouteParam(req, 'id');
       const backLink = constructResponseUrlWithIdParams(claimId, RESPONSE_DEADLINE_OPTIONS_URL);
       try {
@@ -65,7 +59,7 @@ agreedResponseDeadlineController
             isReleaseTwoEnabled,
           });
         } else {
-          await responseDeadlineService.saveAgreedResponseDeadline(redisKey, agreedResponseDeadlineDate.date);
+          await responseDeadlineService.saveAgreedResponseDeadline(<AppRequest>req, agreedResponseDeadlineDate.date);
           res.redirect(constructResponseUrlWithIdParams(claimId, NEW_RESPONSE_DEADLINE_URL));
         }
       } catch (error) {

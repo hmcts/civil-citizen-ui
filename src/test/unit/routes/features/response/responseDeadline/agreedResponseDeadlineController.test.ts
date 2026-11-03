@@ -1,12 +1,13 @@
 import {Response} from 'express';
 import agreedResponseDeadlineController from 'routes/features/response/responseDeadline/agreedResponseDeadlineController';
 import {AGREED_TO_MORE_TIME_URL, NEW_RESPONSE_DEADLINE_URL} from 'routes/urls';
-import {generateRedisKey, getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {getCaseDataFromStore} from 'modules/draft-store/draftStoreService';
 import {Claim} from 'models/claim';
 import {PartyType} from 'models/partyType';
 import {ResponseDeadline} from 'form/models/responseDeadline';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
 import {AppRequest} from 'models/AppRequest';
+import {ResponseDeadlineService} from 'services/features/response/responseDeadlineService';
 import {createMockResponse, createMockSession, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
 jest.mock('modules/draft-store/draftStoreService');
@@ -53,11 +54,17 @@ const invoke = async (method: 'get' | 'post', req: Record<string, unknown> = {})
 };
 
 describe('Agreed response date', () => {
+  let mockSaveAgreedResponseDeadline: jest.SpyInstance;
+
   beforeEach(() => {
     jest.clearAllMocks();
-    (generateRedisKey as jest.Mock).mockReturnValue(claimId);
     (getCaseDataFromStore as jest.Mock).mockResolvedValue(storedClaim());
-    (saveDraftClaim as jest.Mock).mockResolvedValue(undefined);
+    mockSaveAgreedResponseDeadline = jest.spyOn(ResponseDeadlineService.prototype, 'saveAgreedResponseDeadline')
+      .mockResolvedValue(undefined);
+  });
+
+  afterEach(() => {
+    jest.restoreAllMocks();
   });
 
   describe('on GET', () => {
@@ -99,29 +106,26 @@ describe('Agreed response date', () => {
 
       expect(res.render.mock.calls[0][0]).toBe(viewPath);
       expect(res.render.mock.calls[0][1].form.hasErrors()).toBe(true);
-      expect(saveDraftClaim).not.toHaveBeenCalled();
+      expect(mockSaveAgreedResponseDeadline).not.toHaveBeenCalled();
     });
 
     it('should re-render when the agreed date is more than 28 days after the original deadline', async () => {
       const {res} = await invoke('post', {body: {year: '2050', month: '6', day: '13'}});
 
       expect(res.render.mock.calls[0][1].form.hasErrors()).toBe(true);
-      expect(saveDraftClaim).not.toHaveBeenCalled();
+      expect(mockSaveAgreedResponseDeadline).not.toHaveBeenCalled();
     });
 
     it('should save the 28th day after the original deadline and redirect', async () => {
       const {res} = await invoke('post', {body: {year: '2050', month: '6', day: '12'}});
 
-      expect(saveDraftClaim).toHaveBeenCalled();
-      const saved = (saveDraftClaim as jest.Mock).mock.calls[0][1] as Claim;
-      const agreedDate = (saved.responseDeadline as unknown as {agreedResponseDeadline?: Date}).agreedResponseDeadline;
-      expect(agreedDate).toEqual(expect.any(Date));
+      expect(mockSaveAgreedResponseDeadline).toHaveBeenCalledWith(expect.anything(), expect.any(Date));
       expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, NEW_RESPONSE_DEADLINE_URL));
     });
 
     it('should return the error when saving the agreed date fails', async () => {
-      const error = new Error('redis failure');
-      (saveDraftClaim as jest.Mock).mockRejectedValue(error);
+      const error = new Error('draft failure');
+      mockSaveAgreedResponseDeadline.mockRejectedValue(error);
 
       const {next} = await invoke('post', {body: {year: '2050', month: '6', day: '12'}});
 

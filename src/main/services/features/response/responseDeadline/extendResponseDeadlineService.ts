@@ -1,4 +1,4 @@
-import {generateRedisKey, getCaseDataFromStore, saveDraftClaim} from 'modules/draft-store/draftStoreService';
+import {getResponseDraft, updateResponseDraft} from 'modules/draft-store/response/responseDraftStoreService';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {AppRequest} from 'models/AppRequest';
@@ -12,17 +12,31 @@ const civilServiceApiBaseUrl = config.get<string>('services.civilService.url');
 const civilServiceClient: CivilServiceClient = new CivilServiceClient(civilServiceApiBaseUrl);
 
 const {Logger} = require('@hmcts/nodejs-logging');
-const logger = Logger.getLogger('partialAdmissionService');
+const logger = Logger.getLogger('extendResponseDeadlineService');
+
+async function loadDraftClaim(req: AppRequest) {
+  const caseId = getRouteParam(req, 'id');
+  const draftResult = await getResponseDraft(req, caseId);
+  if (!draftResult) {
+    throw new Error('[extendResponseDeadlineService] no response draft found');
+  }
+  const claim = Object.assign(new Claim(), draftResult.claimResponse?.case_data as unknown as Claim);
+  const draftId = draftResult.rawResponse?.draftId;
+  return {caseId, claim, draftId, draftResult};
+}
 
 const getClaimWithExtendedResponseDeadline = async (req: AppRequest): Promise<Claim> => {
   try {
-    const redisKey = generateRedisKey(req);
-    const claim = await getCaseDataFromStore(redisKey);
+    const {caseId, claim, draftId, draftResult} = await loadDraftClaim(req);
+
     if (!claim.responseDeadline?.agreedResponseDeadline) {
       throw new Error('No extended response deadline found');
     }
     claim.responseDeadline.calculatedResponseDeadline = await civilServiceClient.calculateExtendedResponseDeadline(claim.responseDeadline?.agreedResponseDeadline, 0, req);
-    await saveDraftClaim(redisKey, claim);
+    if (draftResult.createdAt && !claim.draftClaimCreatedAt) {
+      claim.draftClaimCreatedAt = new Date(draftResult.createdAt);
+    }
+    await updateResponseDraft(req, caseId, claim, draftId);
     return claim;
   } catch (error) {
     logger.error(error);
@@ -32,12 +46,11 @@ const getClaimWithExtendedResponseDeadline = async (req: AppRequest): Promise<Cl
 
 const submitExtendedResponseDeadline = async (req: AppRequest) => {
   try {
-    const redisKey = generateRedisKey(req);
-    const claim = await getCaseDataFromStore(redisKey);
-    const claimId = getRouteParam(req, 'id');
-    const viewOptionsBeforeDeadlineTask = getViewOptionsBeforeDeadlineTask(claim, claimId, 'en');
+    const {caseId, claim, draftId, draftResult} = await loadDraftClaim(req);
+
+    const viewOptionsBeforeDeadlineTask = getViewOptionsBeforeDeadlineTask(claim, caseId, 'en');
     if (viewOptionsBeforeDeadlineTask.status === TaskStatus.INCOMPLETE) {
-      await civilServiceClient.submitAgreedResponseExtensionDateEvent(claimId, {
+      await civilServiceClient.submitAgreedResponseExtensionDateEvent(caseId, {
         respondentSolicitor1AgreedDeadlineExtension:
         claim.responseDeadline.calculatedResponseDeadline,
         respondent1LiPResponse: {
@@ -45,7 +58,10 @@ const submitExtendedResponseDeadline = async (req: AppRequest) => {
         }}, req);
       claim.respondent1ResponseDeadline = claim.responseDeadline.calculatedResponseDeadline;
       claim.respondentSolicitor1AgreedDeadlineExtension = claim.responseDeadline.calculatedResponseDeadline;
-      await saveDraftClaim(redisKey, claim);
+      if (draftResult.createdAt && !claim.draftClaimCreatedAt) {
+        claim.draftClaimCreatedAt = new Date(draftResult.createdAt);
+      }
+      await updateResponseDraft(req, caseId, claim, draftId);
     }
   } catch (error) {
     logger.error(error);
@@ -57,4 +73,3 @@ export {
   getClaimWithExtendedResponseDeadline,
   submitExtendedResponseDeadline,
 };
-
