@@ -4,11 +4,12 @@ import {
   getTrialSummarySection,
   getWitnessSummarySection,
 } from 'services/features/caseProgression/checkYourAnswers/buildEvidenceUploadedSummaryRows';
-import {UploadDocumentsUserForm} from 'models/caseProgression/uploadDocumentsUserForm';
+import {UploadDocumentsUserForm, WitnessSection} from 'models/caseProgression/uploadDocumentsUserForm';
 import {
   getBottomElements,
   getSummarySections,
   getTopElements,
+  hasValidNewDocuments,
   saveUploadedDocuments,
 } from 'services/features/caseProgression/checkYourAnswers/checkAnswersService';
 import {DocumentUploadSections} from 'models/caseProgression/documentUploadSections';
@@ -21,7 +22,7 @@ import {t} from 'i18next';
 import config from 'config';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {CaseProgression} from 'models/caseProgression/caseProgression';
-import {UploadDocuments} from 'models/caseProgression/uploadDocumentsType';
+import {UploadDocuments, UploadEvidenceWitness} from 'models/caseProgression/uploadDocumentsType';
 import {
   getMockEmptyUploadDocumentsUserForm,
   getMockFullUploadDocumentsUserForm,
@@ -32,6 +33,9 @@ import {currencyFormatWithNoTrailingZeros} from 'common/utils/currencyFormat';
 import {caseNumberPrettify} from 'common/utils/stringUtils';
 import {AppRequest} from 'models/AppRequest';
 import {request} from 'express';
+import {CCDClaim} from 'models/civilClaimResponse';
+const {Logger} = require('@hmcts/nodejs-logging');
+const logger = Logger.getLogger('checkAnswersService');
 
 jest.mock('i18next');
 jest.mock('client/civilServiceClient');
@@ -64,7 +68,7 @@ describe('checkAnswersServiceTest', () => {
   describe('return page elements', () => {
     test('return all evidence sections', () => {
       //given
-      const uploadedDocuments = new UploadDocumentsUserForm();
+      const uploadedDocuments = getMockFullUploadDocumentsUserForm();
       const claimId = '1234';
       const isSmallClaims = true;
       const lang = 'en';
@@ -79,6 +83,67 @@ describe('checkAnswersServiceTest', () => {
         trialEvidenceSection: returnValue,
       } as DocumentUploadSections;
       expect(summarySectionActual).toEqual(summarySectionExpected);
+    });
+
+    test('should return null without building sections when uploaded documents are undefined', () => {
+      //given
+      mockWitnessSummarySection.mockClear();
+      mockDisclosureSummarySection.mockClear();
+      mockExpertSummarySection.mockClear();
+      mockTrialSummarySection.mockClear();
+      //when
+      const actualSummarySection = getSummarySections(undefined, '1234', false, 'en');
+      //then
+      expect(actualSummarySection).toBeNull();
+      expect(mockWitnessSummarySection).not.toHaveBeenCalled();
+      expect(mockDisclosureSummarySection).not.toHaveBeenCalled();
+      expect(mockExpertSummarySection).not.toHaveBeenCalled();
+      expect(mockTrialSummarySection).not.toHaveBeenCalled();
+    });
+
+    test('should return null when uploaded documents are null', () => {
+      //when
+      const actualSummarySection = getSummarySections(null, '1234', false, 'en');
+      //then
+      expect(actualSummarySection).toBeNull();
+    });
+
+    test('should return null when no uploaded documents have a document link', () => {
+      //given
+      const uploadedDocuments = new UploadDocumentsUserForm();
+      uploadedDocuments.witnessStatement = [{witnessName: 'witness', caseDocument: undefined} as WitnessSection];
+      //when
+      const actualSummarySection = getSummarySections(uploadedDocuments, '1234', false, 'en');
+      //then
+      expect(actualSummarySection).toBeNull();
+    });
+
+    describe('hasValidNewDocuments', () => {
+      test.each([
+        ['undefined', undefined],
+        ['null', null],
+        ['an empty draft', getMockEmptyUploadDocumentsUserForm()],
+        ['a draft whose only document has no case document', new UploadDocumentsUserForm(undefined, undefined, [{witnessName: 'witness', caseDocument: undefined} as WitnessSection])],
+        ['a draft whose only document has no document link', new UploadDocumentsUserForm(undefined, undefined, [{witnessName: 'witness', caseDocument: {documentName: 'test.png'}} as WitnessSection])],
+        ['a draft whose only document is null', new UploadDocumentsUserForm(undefined, undefined, [null])],
+        ['a draft whose only document has an empty document link', new UploadDocumentsUserForm(undefined, undefined, [{witnessName: 'witness', caseDocument: {documentName: 'test.png', documentLink: {}}} as WitnessSection])],
+        ['a draft whose only document link has no binary url', new UploadDocumentsUserForm(undefined, undefined, [{witnessName: 'witness', caseDocument: {documentName: 'test.png', documentLink: {document_url: 'http://dm-store/documents/1'}}} as WitnessSection])],
+      ])('should return false for %s', (_description, uploadedDocuments) => {
+        //when
+        const actual = hasValidNewDocuments(uploadedDocuments as UploadDocumentsUserForm);
+        //then
+        expect(actual).toBe(false);
+      });
+
+      test('should return true when at least one document has a document link', () => {
+        //given
+        const uploadedDocuments = getMockFullUploadDocumentsUserForm();
+        uploadedDocuments.witnessStatement[0] = {...uploadedDocuments.witnessStatement[0], caseDocument: undefined} as WitnessSection;
+        //when
+        const actual = hasValidNewDocuments(uploadedDocuments);
+        //then
+        expect(actual).toBe(true);
+      });
     });
 
     test('return top page elements', () => {
@@ -212,6 +277,304 @@ describe('checkAnswersServiceTest', () => {
         //then
         expect(mockSubmitEvent).toHaveBeenCalled();
         expect(mockSubmitEvent).toHaveBeenCalledWith('EVIDENCE_UPLOAD_RESPONDENT', req.params.id, createCCDClaimForUploadedDocuments(0,false),  <AppRequest>req);
+      });
+
+      test('For claimant - should not throw when uploaded documents are undefined', async () => {
+        //given
+        const mockSubmitEvent = jest.spyOn(CivilServiceClient.prototype, 'submitEvent');
+        const claimWithNoDraft = new Claim();
+        claimWithNoDraft.caseRole = CaseRole.CLAIMANT;
+        claimWithNoDraft.caseProgression = new CaseProgression();
+        const req = request;
+        req.params = {
+          id: '12345',
+        };
+
+        //when
+        await saveUploadedDocuments(claimWithNoDraft, <AppRequest>req);
+
+        //then
+        expect(mockSubmitEvent).toHaveBeenCalledWith('EVIDENCE_UPLOAD_APPLICANT', req.params.id, createCCDClaimForUploadedDocuments(0, true), <AppRequest>req);
+      });
+
+      test('For defendant - should not throw when uploaded documents are undefined', async() => {
+        //given
+        const mockSubmitEvent = jest.spyOn(CivilServiceClient.prototype, 'submitEvent');
+        const claimWithNoDraft = new Claim();
+        claimWithNoDraft.caseRole = CaseRole.DEFENDANT;
+        claimWithNoDraft.caseProgression = new CaseProgression();
+        const req = request;
+        req.params = {
+          id: '12345',
+        };
+
+        //when
+        await saveUploadedDocuments(claimWithNoDraft, <AppRequest>req);
+
+        //then
+        expect(mockSubmitEvent).toHaveBeenCalledWith('EVIDENCE_UPLOAD_RESPONDENT', req.params.id, createCCDClaimForUploadedDocuments(0, false), <AppRequest>req);
+      });
+
+      test('For claimant - should not throw when existing uploaded documents are undefined', async () => {
+        //given
+        const mockSubmitEvent = jest.spyOn(CivilServiceClient.prototype, 'submitEvent');
+        const claimWithNoExistingDocuments = new Claim();
+        claimWithNoExistingDocuments.caseProgression = new CaseProgression();
+        jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockResolvedValue(claimWithNoExistingDocuments);
+        claimWithUploadedDocuments.caseRole = CaseRole.CLAIMANT;
+        const req = request;
+        req.params = {
+          id: '12345',
+        };
+
+        //when
+        await saveUploadedDocuments(claimWithUploadedDocuments, <AppRequest>req);
+
+        //then
+        expect(mockSubmitEvent).toHaveBeenCalledWith('EVIDENCE_UPLOAD_APPLICANT', req.params.id, createCCDClaimForUploadedDocuments(2, true), <AppRequest>req);
+      });
+
+      test('For defendant - should not throw when existing case progression is undefined', async () => {
+        //given
+        const mockSubmitEvent = jest.spyOn(CivilServiceClient.prototype, 'submitEvent');
+        jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockResolvedValue(new Claim());
+        claimWithUploadedDocuments.caseRole = CaseRole.DEFENDANT;
+        const req = request;
+        req.params = {
+          id: '12345',
+        };
+
+        //when
+        await saveUploadedDocuments(claimWithUploadedDocuments, <AppRequest>req);
+
+        //then
+        expect(mockSubmitEvent).toHaveBeenCalledWith('EVIDENCE_UPLOAD_RESPONDENT', req.params.id, createCCDClaimForUploadedDocuments(2, false), <AppRequest>req);
+      });
+
+      test('For claimant - should not throw when some existing document arrays are undefined', async () => {
+        //given
+        const mockSubmitEvent = jest.spyOn(CivilServiceClient.prototype, 'submitEvent');
+        const claimWithPartialDocuments = new Claim();
+        claimWithPartialDocuments.caseProgression = new CaseProgression();
+        claimWithPartialDocuments.caseProgression.claimantUploadDocuments = {disclosure: []} as UploadDocuments;
+        jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockResolvedValue(claimWithPartialDocuments);
+        claimWithUploadedDocuments.caseRole = CaseRole.CLAIMANT;
+        const req = request;
+        req.params = {
+          id: '12345',
+        };
+
+        //when
+        await saveUploadedDocuments(claimWithUploadedDocuments, <AppRequest>req);
+
+        //then
+        expect(mockSubmitEvent).toHaveBeenCalledWith('EVIDENCE_UPLOAD_APPLICANT', req.params.id, createCCDClaimForUploadedDocuments(2, true), <AppRequest>req);
+      });
+
+      test('For claimant - should not throw when claim case progression is undefined', async () => {
+        //given
+        const mockSubmitEvent = jest.spyOn(CivilServiceClient.prototype, 'submitEvent');
+        const claimWithNoCaseProgression = new Claim();
+        claimWithNoCaseProgression.caseRole = CaseRole.CLAIMANT;
+        const req = request;
+        req.params = {
+          id: '12345',
+        };
+
+        //when
+        await saveUploadedDocuments(claimWithNoCaseProgression, <AppRequest>req);
+
+        //then
+        expect(mockSubmitEvent).toHaveBeenCalledWith('EVIDENCE_UPLOAD_APPLICANT', req.params.id, createCCDClaimForUploadedDocuments(0, true), <AppRequest>req);
+      });
+
+      test('For claimant - should not throw when existing case progression is undefined', async () => {
+        //given
+        const mockSubmitEvent = jest.spyOn(CivilServiceClient.prototype, 'submitEvent');
+        jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockResolvedValue(new Claim());
+        claimWithUploadedDocuments.caseRole = CaseRole.CLAIMANT;
+        const req = request;
+        req.params = {
+          id: '12345',
+        };
+
+        //when
+        await saveUploadedDocuments(claimWithUploadedDocuments, <AppRequest>req);
+
+        //then
+        expect(mockSubmitEvent).toHaveBeenCalledWith('EVIDENCE_UPLOAD_APPLICANT', req.params.id, createCCDClaimForUploadedDocuments(2, true), <AppRequest>req);
+      });
+
+      test('For defendant - should not throw when claim case progression is undefined', async () => {
+        //given
+        const mockSubmitEvent = jest.spyOn(CivilServiceClient.prototype, 'submitEvent');
+        const claimWithNoCaseProgression = new Claim();
+        claimWithNoCaseProgression.caseRole = CaseRole.DEFENDANT;
+        const req = request;
+        req.params = {
+          id: '12345',
+        };
+
+        //when
+        await saveUploadedDocuments(claimWithNoCaseProgression, <AppRequest>req);
+
+        //then
+        expect(mockSubmitEvent).toHaveBeenCalledWith('EVIDENCE_UPLOAD_RESPONDENT', req.params.id, createCCDClaimForUploadedDocuments(0, false), <AppRequest>req);
+      });
+
+      test('should skip documents with a missing document link and log the claim id', async () => {
+        //given
+        const mockSubmitEvent = jest.spyOn(CivilServiceClient.prototype, 'submitEvent');
+        const loggerSpy = jest.spyOn(logger, 'warn').mockImplementation();
+        const claimWithMissingLink = new Claim();
+        claimWithMissingLink.caseRole = CaseRole.CLAIMANT;
+        claimWithMissingLink.caseProgression = new CaseProgression();
+        claimWithMissingLink.caseProgression.claimantDocuments = getMockFullUploadDocumentsUserForm();
+        claimWithMissingLink.caseProgression.claimantDocuments.witnessStatement[0] = {
+          ...claimWithMissingLink.caseProgression.claimantDocuments.witnessStatement[0],
+          caseDocument: undefined,
+        } as WitnessSection;
+        const req = request;
+        req.params = {
+          id: '12345',
+        };
+
+        //when
+        await saveUploadedDocuments(claimWithMissingLink, <AppRequest>req);
+
+        //then
+        const submittedClaim = mockSubmitEvent.mock.calls[mockSubmitEvent.mock.calls.length - 1][2] as CCDClaim;
+        expect(submittedClaim.documentWitnessStatement).toHaveLength(1);
+        expect(submittedClaim.documentWitnessSummary).toHaveLength(2);
+        expect(loggerSpy).toHaveBeenCalledTimes(1);
+        expect(loggerSpy).toHaveBeenCalledWith(expect.stringContaining('ClaimId: 12345'));
+        loggerSpy.mockRestore();
+      });
+
+      test.each([
+        ['documentsForDisclosure', 'documentForDisclosure'],
+        ['disclosureList', 'documentDisclosureList'],
+        ['witnessSummary', 'documentWitnessSummary'],
+        ['noticeOfIntention', 'documentHearsayNotice'],
+        ['documentsReferred', 'documentReferredInStatement'],
+        ['expertStatement', 'documentJointStatement'],
+        ['expertReport', 'documentExpertReport'],
+        ['questionsForExperts', 'documentQuestions'],
+        ['answersForExperts', 'documentAnswers'],
+        ['trialCaseSummary', 'documentCaseSummary'],
+        ['trialSkeletonArgument', 'documentSkeletonArgument'],
+        ['trialAuthorities', 'documentAuthorities'],
+        ['trialCosts', 'documentCosts'],
+        ['trialDocumentary', 'documentEvidenceForTrial'],
+      ] as [keyof UploadDocumentsUserForm, keyof CCDClaim][])('should skip %s documents with a missing document link', async (uploadField, ccdField) => {
+        //given
+        const mockSubmitEvent = jest.spyOn(CivilServiceClient.prototype, 'submitEvent');
+        const loggerSpy = jest.spyOn(logger, 'warn').mockImplementation();
+        const claimWithMissingLink = new Claim();
+        claimWithMissingLink.caseRole = CaseRole.CLAIMANT;
+        claimWithMissingLink.caseProgression = new CaseProgression();
+        claimWithMissingLink.caseProgression.claimantDocuments = getMockFullUploadDocumentsUserForm();
+        const documents = claimWithMissingLink.caseProgression.claimantDocuments[uploadField] as {caseDocument?: unknown}[];
+        documents[0] = {...documents[0], caseDocument: undefined};
+        const req = request;
+        req.params = {
+          id: '12345',
+        };
+
+        //when
+        await saveUploadedDocuments(claimWithMissingLink, <AppRequest>req);
+
+        //then
+        const submittedClaim = mockSubmitEvent.mock.calls[mockSubmitEvent.mock.calls.length - 1][2] as CCDClaim;
+        expect(submittedClaim[ccdField]).toHaveLength(1);
+        expect(loggerSpy).toHaveBeenCalledTimes(1);
+        expect(loggerSpy).toHaveBeenCalledWith(expect.stringContaining('ClaimId: 12345'));
+        loggerSpy.mockRestore();
+      });
+
+      test.each([
+        ['a null document', null],
+        ['a case document without a document link', {caseDocument: {documentName: 'test.png'}}],
+        ['a case document with an empty document link', {caseDocument: {documentName: 'test.png', documentLink: {}}}],
+      ])('should skip %s', async (_description, document) => {
+        //given
+        const mockSubmitEvent = jest.spyOn(CivilServiceClient.prototype, 'submitEvent');
+        const loggerSpy = jest.spyOn(logger, 'warn').mockImplementation();
+        const claimWithInvalidDocument = new Claim();
+        claimWithInvalidDocument.caseRole = CaseRole.CLAIMANT;
+        claimWithInvalidDocument.caseProgression = new CaseProgression();
+        claimWithInvalidDocument.caseProgression.claimantDocuments = getMockFullUploadDocumentsUserForm();
+        claimWithInvalidDocument.caseProgression.claimantDocuments.witnessStatement[0] = document as WitnessSection;
+        const req = request;
+        req.params = {
+          id: '12345',
+        };
+
+        //when
+        await saveUploadedDocuments(claimWithInvalidDocument, <AppRequest>req);
+
+        //then
+        const submittedClaim = mockSubmitEvent.mock.calls[mockSubmitEvent.mock.calls.length - 1][2] as CCDClaim;
+        expect(submittedClaim.documentWitnessStatement).toHaveLength(1);
+        expect(loggerSpy).toHaveBeenCalledTimes(1);
+        loggerSpy.mockRestore();
+      });
+
+      test.each([
+        ['documentsForDisclosure', 'documentForDisclosure', 'documentIssuedDate'],
+        ['witnessSummary', 'documentWitnessSummary', 'witnessOptionUploadDate'],
+        ['noticeOfIntention', 'documentHearsayNotice', 'witnessOptionUploadDate'],
+        ['documentsReferred', 'documentReferredInStatement', 'documentIssuedDate'],
+        ['expertStatement', 'documentJointStatement', 'expertOptionUploadDate'],
+        ['expertReport', 'documentExpertReport', 'expertOptionUploadDate'],
+        ['trialDocumentary', 'documentEvidenceForTrial', 'documentIssuedDate'],
+      ] as [keyof UploadDocumentsUserForm, keyof CCDClaim, string][])('should still submit %s documents when the date input fields are missing', async (uploadField, ccdField, dateField) => {
+        //given
+        const mockSubmitEvent = jest.spyOn(CivilServiceClient.prototype, 'submitEvent');
+        const claimWithMissingDate = new Claim();
+        claimWithMissingDate.caseRole = CaseRole.CLAIMANT;
+        claimWithMissingDate.caseProgression = new CaseProgression();
+        claimWithMissingDate.caseProgression.claimantDocuments = getMockFullUploadDocumentsUserForm();
+        const documents = claimWithMissingDate.caseProgression.claimantDocuments[uploadField] as {dateInputFields?: unknown}[];
+        documents[0] = {...documents[0], dateInputFields: undefined};
+        const req = request;
+        req.params = {
+          id: '12345',
+        };
+
+        //when
+        await saveUploadedDocuments(claimWithMissingDate, <AppRequest>req);
+
+        //then
+        const submittedClaim = mockSubmitEvent.mock.calls[mockSubmitEvent.mock.calls.length - 1][2] as CCDClaim;
+        const submittedDocuments = submittedClaim[ccdField] as {value: Record<string, unknown>}[];
+        expect(submittedDocuments).toHaveLength(2);
+        expect(submittedDocuments[0].value[dateField]).toBeUndefined();
+      });
+
+      test('should still submit documents when the date input fields are missing', async () => {
+        //given
+        const mockSubmitEvent = jest.spyOn(CivilServiceClient.prototype, 'submitEvent');
+        const claimWithMissingDate = new Claim();
+        claimWithMissingDate.caseRole = CaseRole.CLAIMANT;
+        claimWithMissingDate.caseProgression = new CaseProgression();
+        claimWithMissingDate.caseProgression.claimantDocuments = getMockFullUploadDocumentsUserForm();
+        claimWithMissingDate.caseProgression.claimantDocuments.witnessStatement[0] = {
+          ...claimWithMissingDate.caseProgression.claimantDocuments.witnessStatement[0],
+          dateInputFields: undefined,
+        } as WitnessSection;
+        const req = request;
+        req.params = {
+          id: '12345',
+        };
+
+        //when
+        await saveUploadedDocuments(claimWithMissingDate, <AppRequest>req);
+
+        //then
+        const submittedClaim = mockSubmitEvent.mock.calls[mockSubmitEvent.mock.calls.length - 1][2] as CCDClaim;
+        expect(submittedClaim.documentWitnessStatement).toHaveLength(2);
+        expect((submittedClaim.documentWitnessStatement[0].value as UploadEvidenceWitness).witnessOptionUploadDate).toBeUndefined();
       });
     });
   });

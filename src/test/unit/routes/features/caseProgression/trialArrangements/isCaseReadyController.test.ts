@@ -1,129 +1,103 @@
-import {
-  mockCivilClaim,
-  mockCivilClaimFastTrack, mockRedisFailure,
-} from '../../../../../utils/mockDraftStore';
-import {DEFENDANT_SUMMARY_URL, HAS_ANYTHING_CHANGED_URL, IS_CASE_READY_URL} from 'routes/urls';
-import {TestMessages} from '../../../../../utils/errorMessageTestConstants';
-import {app} from '../../../../../../main/app';
-import config from 'config';
-import nock from 'nock';
-const session = require('supertest-session');
+import {Response} from 'express';
+import {CaseRole} from 'form/models/caseRoles';
 import {YesNo} from 'form/models/yesNo';
-import {CIVIL_SERVICE_CASES_URL} from 'client/civilServiceUrls';
-import {t} from 'i18next';
+import {Claim} from 'models/claim';
+import {Party} from 'models/party';
+import {AppRequest} from 'models/AppRequest';
+import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {getClaimById} from 'modules/utilityService';
+import {saveCaseProgression} from 'services/features/caseProgression/caseProgressionService';
+import isCaseReadyController from 'routes/features/caseProgression/trialArrangements/isCaseReadyController';
+import {HAS_ANYTHING_CHANGED_URL, IS_CASE_READY_URL} from 'routes/urls';
+import {createMockResponse, getRouteHandler} from '../../../../../utils/getRouteHandler';
 
-jest.mock('../../../../../../main/modules/oidc');
-jest.mock('../../../../../../main/modules/draft-store');
-jest.mock('../../../../../../main/app/auth/launchdarkly/launchDarklyClient');
+jest.mock('modules/utilityService', () => ({
+  getClaimById: jest.fn(),
+}));
 
-const claim = require('../../../../../utils/mocks/civilClaimResponseMock.json');
-const claimId = claim.id;
-const civilServiceUrl = config.get<string>('services.civilService.url');
-const testSession = session(app);
+jest.mock('services/features/caseProgression/caseProgressionService', () => ({
+  saveCaseProgression: jest.fn(),
+}));
 
-describe('Is case ready - On GET', () => {
-  const citizenRoleToken: string = config.get('citizenRoleToken');
-  const idamUrl: string = config.get('idamUrl');
+const mockGetClaimById = getClaimById as jest.Mock;
+const mockSaveCaseProgression = saveCaseProgression as jest.Mock;
 
-  beforeAll(() => {
-    nock(idamUrl)
-      .post('/o/token')
-      .reply(200, {id_token: citizenRoleToken});
-  });
+const claimId = '1111';
+const viewPath = 'features/caseProgression/trialArrangements/is-case-ready';
 
-  it('should render page successfully in English if cookie has correct values', async () => {
-    //Given
-    app.locals.draftStoreClient = mockCivilClaimFastTrack;
-    //When
-    await testSession
-      .get(IS_CASE_READY_URL.replace(':id', claimId))
-    //Then
-      .expect((res: { status: unknown; text: unknown; }) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain('Is the case ready for trial?');
-      });
-  });
+const claim = (): Claim => {
+  const loaded = new Claim();
+  loaded.caseRole = CaseRole.DEFENDANT;
+  loaded.totalClaimAmount = 15000;
+  loaded.applicant1 = new Party();
+  return loaded;
+};
 
-  it('should render page successfully in Welsh when query is cy and cookie has correct values', async () => {
-    //Given
-    app.locals.draftStoreClient = mockCivilClaimFastTrack;
-    //When
-    await testSession
-      .get(IS_CASE_READY_URL.replace(':id', claimId)).query({lang: 'cy'})
-      //Then
-      .expect((res: { status: unknown; text: unknown; }) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain('A yw’r achos yn barod ar gyfer treial?');
-      });
-  });
+describe('Is case ready', () => {
+  const getHandler = getRouteHandler(isCaseReadyController, 'get', IS_CASE_READY_URL);
+  const postHandler = getRouteHandler(isCaseReadyController, 'post', IS_CASE_READY_URL);
 
-  it('should return "Something went wrong" page when claim does not exist', async () => {
-    //Given
-    app.locals.draftStoreClient = mockRedisFailure;
-    //When
-    await testSession
-      .get(IS_CASE_READY_URL.replace(':id', '1111')).query({lang: 'en'})
-    //Then
-      .expect((res: { status: unknown; text: unknown; }) => {
-        expect(res.status).toBe(500);
-        expect(res.text).toContain(TestMessages.SOMETHING_WENT_WRONG);
-      });
-  });
-});
-
-describe('Is case ready - on POST', () => {
   beforeEach(() => {
-    app.locals.draftStoreClient = mockCivilClaimFastTrack;
-  });
-  it('should display error when neither Yes nor No were selected', async () => {
-
-    //Given
-    nock(civilServiceUrl)
-      .post(CIVIL_SERVICE_CASES_URL + '1111')
-      .reply(200, claimId);
-
-    //When
-    await testSession
-      .post(IS_CASE_READY_URL.replace(':id', '1111'))
-      .send({})
-    //Then
-      .expect((res: {status: unknown, text: unknown}) => {
-        expect(res.status).toBe(200);
-        expect(res.text).toContain(t('ERRORS.VALID_YES_NO_OPTION_TRIAL_ARR'));
-      });
+    jest.clearAllMocks();
+    mockGetClaimById.mockResolvedValue(claim());
+    mockSaveCaseProgression.mockResolvedValue(undefined);
   });
 
-  it('should redirect to "Has anything changed" page when one option is selected', async () => {
+  describe('on GET', () => {
+    it('renders the page', async () => {
+      const res = createMockResponse();
 
-    //Given
-    nock(civilServiceUrl)
-      .post(CIVIL_SERVICE_CASES_URL + '1111')
-      .reply(200, claimId);
+      await getHandler(
+        {params: {id: claimId}} as unknown as AppRequest,
+        res as unknown as Response,
+        jest.fn(),
+      );
 
-    //When
-    await testSession
-      .post(IS_CASE_READY_URL.replace(':id', '1111'))
-      .send({option: YesNo.NO})
-      //Then
-      .expect((res: {status: unknown, header: {location: unknown}, text: unknown;}) => {
-        expect(res.status).toBe(302);
-        expect(res.header.location).toEqual(HAS_ANYTHING_CHANGED_URL.replace(':id', '1111'));
-      });
+      expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
+        form: expect.anything(),
+        isCaseReadyContents: expect.anything(),
+        cancelUrl: expect.any(String),
+        backLinkUrl: expect.any(String),
+      }));
+    });
+
+    it('calls next when the claim cannot be loaded', async () => {
+      const error = new Error('redis failure');
+      mockGetClaimById.mockRejectedValue(error);
+      const next = jest.fn();
+
+      await getHandler(
+        {params: {id: claimId}} as unknown as AppRequest,
+        createMockResponse() as unknown as Response,
+        next,
+      );
+
+      expect(next).toHaveBeenCalledWith(error);
+    });
   });
 
-  it('should redirect to latestUpload screen when is small claim', async () => {
+  describe('on POST', () => {
+    it('re-renders when neither Yes nor No is selected', async () => {
+      const res = createMockResponse();
 
-    //Given
-    app.locals.draftStoreClient = mockCivilClaim;
-    //When
-    await testSession
-      .post(IS_CASE_READY_URL.replace(':id', '1111'))
-      .send({option: YesNo.NO})
-      //Then
-      .expect((res: {status: unknown, header: {location: unknown}, text: unknown;}) => {
-        expect(res.status).toBe(302);
-        expect(res.header.location).toEqual(DEFENDANT_SUMMARY_URL.replace(':id', '1111'));
-      });
+      await postHandler(
+        {params: {id: claimId}, body: {}} as unknown as AppRequest,
+        res as unknown as Response,
+        jest.fn(),
+      );
+
+      expect(res.render.mock.calls[0][1].form.hasErrors()).toBe(true);
+      expect(mockSaveCaseProgression).not.toHaveBeenCalled();
+    });
+
+    it('saves the answer and redirects to has anything changed', async () => {
+      const res = createMockResponse();
+      const req = {params: {id: claimId}, body: {option: YesNo.NO}} as unknown as AppRequest;
+
+      await postHandler(req, res as unknown as Response, jest.fn());
+
+      expect(mockSaveCaseProgression).toHaveBeenCalledWith(req, YesNo.NO, 'isCaseReady', 'defendantTrialArrangements');
+      expect(res.redirect).toHaveBeenCalledWith(constructResponseUrlWithIdParams(claimId, HAS_ANYTHING_CHANGED_URL));
+    });
   });
-
 });
