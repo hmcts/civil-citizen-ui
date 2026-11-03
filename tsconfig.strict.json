@@ -258,6 +258,7 @@
     "src/main/common/models/generalApplication/CourtResponseSummary.ts",
     "src/main/common/models/generalApplication/QualifiedStatementOfTruth.ts",
     "src/main/common/models/generalApplication/application.ts",
+    "src/main/common/models/generalApplication/applicationResponse.ts",
     "src/main/common/models/generalApplication/applicationSummary.ts",
     "src/main/common/models/generalApplication/applicationType.ts",
     "src/main/common/models/generalApplication/claimGeneralApplication.ts",
