@@ -1,7 +1,8 @@
 import {Application, NextFunction, Request, Response} from 'express';
 import config from 'config';
+import {isAxiosError} from 'axios';
 import {AppRequest, PaymentConfirmationContext} from 'models/AppRequest';
-import {getOidcResponse, getSessionIssueTime, getUserDetails} from '../../app/auth/user/oidc';
+import {getOidcResponse, getSessionIssueTime, getUserDetails, OidcResponse} from '../../app/auth/user/oidc';
 import {isHmctsAccessMigrationEnabled} from '../../app/auth/launchdarkly/launchDarklyClient';
 import {
   ASSIGN_CLAIM_URL,
@@ -154,7 +155,37 @@ export class OidcMiddleware {
           return res.redirect(DASHBOARD_URL);
         }
 
-        const responseData = await getOidcResponse(redirectUri, req.query.code);
+        // Only an explicitly rejected grant is recoverable. Other IDAM and
+        // session-store failures must retain their normal error handling.
+        let responseData: OidcResponse;
+        try {
+          responseData = await getOidcResponse(redirectUri, req.query.code);
+        } catch (error) {
+          if (!isAxiosError(error) || error.response?.status !== 400 || error.response?.data?.error !== 'invalid_grant') {
+            throw error;
+          }
+
+          // A concurrent callback may have saved a login after this request
+          // loaded its session. Read the shared store instead of trusting that
+          // stale snapshot or sharing token responses between requests/pods.
+          const sessionExists = await new Promise<boolean>((resolve, reject) => {
+            req.session.reload((reloadError: NodeJS.ErrnoException) => {
+              if (!reloadError) {
+                resolve(true);
+              } else if (reloadError.message === 'failed to load session' || reloadError.code === 'ENOENT') {
+                resolve(false);
+              } else {
+                reject(reloadError);
+              }
+            });
+          });
+          logger.info('IDAM rejected an authorisation grant; redirecting to an authenticated session or fresh sign-in');
+          const user = sessionExists ? req.session.user : undefined;
+          if (!user?.accessToken) {
+            return res.redirect(SIGN_IN_URL);
+          }
+          return res.redirect(user.roles?.includes(citizenRole) ? DASHBOARD_URL : UNAUTHORISED_URL);
+        }
         req.session.user = getUserDetails(responseData);
         req.session.issuedAt = getSessionIssueTime(responseData);
 
@@ -200,7 +231,6 @@ export class OidcMiddleware {
       } catch (err) {
         logger.error('Error in the callback of idam', err);
         throw err;
-        //Alt: res.redirect(UNAUTHORISED_URL); instead of throw err -> 'Something went wrong'
       }
     });
 

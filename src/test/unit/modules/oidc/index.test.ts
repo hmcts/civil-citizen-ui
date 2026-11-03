@@ -1,6 +1,7 @@
 import {Application, NextFunction, RequestHandler, Response} from 'express';
 import express from 'express';
 import config from 'config';
+import {AxiosError, AxiosHeaders} from 'axios';
 import {AppRequest} from 'models/AppRequest';
 import {FeeType} from 'form/models/helpWithFees/feeType';
 import {
@@ -57,6 +58,7 @@ type SessionDouble = {
   assignClaimURL?: string;
   claimIssueTasklist?: boolean;
   paymentConfirmationContext?: {claimId: string; feeType: FeeType};
+  reload: (callback: (err?: Error) => void) => void;
   save: (callback: (err?: Error) => void) => void;
   destroy: (callback: () => void) => void;
 };
@@ -95,6 +97,7 @@ const userDetails = {
 };
 
 const createSession = (): SessionDouble => ({
+  reload: (callback) => callback(),
   save: (callback) => callback(),
   destroy: (callback) => callback(),
 });
@@ -204,6 +207,71 @@ describe('OIDC middleware', () => {
 
       expect(res.redirect).toHaveBeenCalledWith(paymentUrl);
       expect(mockDeletePaymentConfirmationUrl).toHaveBeenCalled();
+    });
+
+    const grantError = (status = 400, error = 'invalid_grant') => new AxiosError(
+      'Token request rejected', 'ERR_BAD_REQUEST', undefined, undefined,
+      {status, statusText: 'Bad Request', headers: {}, config: {headers: new AxiosHeaders()}, data: {error}},
+    );
+
+    it('uses the session saved by a concurrent callback rather than the stale request snapshot', async () => {
+      mockGetOidcResponse.mockRejectedValue(grantError());
+      const req = {query: {code: 'used-code'}, session: createSession()};
+      const save = jest.fn();
+      req.session.reload = callback => {
+        req.session = {...createSession(), user: userDetails, save};
+        callback();
+      };
+      const {res} = await invoke(routeHandler('get', CALLBACK_URL), req);
+      expect(res.redirect).toHaveBeenCalledWith(DASHBOARD_URL);
+      expect(mockGetUserDetails).not.toHaveBeenCalled();
+      expect(mockGetPaymentConfirmationUrl).not.toHaveBeenCalled();
+      expect(save).not.toHaveBeenCalled();
+      expect(mockGetOidcResponse).toHaveBeenCalledTimes(1);
+    });
+
+    it('starts a fresh sign-in if the other callback has not saved an authenticated session yet', async () => {
+      mockGetOidcResponse.mockRejectedValue(grantError());
+      const {res} = await invoke(routeHandler('get', CALLBACK_URL), {query: {code: 'used-code'}, session: createSession()});
+      expect(res.redirect).toHaveBeenCalledWith(SIGN_IN_URL);
+    });
+
+    it('does not trust an authenticated snapshot when the session has expired in the store', async () => {
+      mockGetOidcResponse.mockRejectedValue(grantError());
+      const session = {...createSession(), user: userDetails};
+      session.reload = callback => callback(new Error('failed to load session'));
+      const {res} = await invoke(routeHandler('get', CALLBACK_URL), {query: {code: 'used-code'}, session});
+      expect(res.redirect).toHaveBeenCalledWith(SIGN_IN_URL);
+    });
+
+    it('retains the citizen-role check for an existing authenticated session', async () => {
+      mockGetOidcResponse.mockRejectedValue(grantError());
+      const session = {...createSession(), user: {...userDetails, roles: [] as string[]}};
+      const {res} = await invoke(routeHandler('get', CALLBACK_URL), {query: {code: 'used-code'}, session});
+      expect(res.redirect).toHaveBeenCalledWith(UNAUTHORISED_URL);
+    });
+
+    it.each([[401, 'invalid_grant'], [500, 'invalid_grant'], [400, 'invalid_client']])(
+      'does not disguise a token failure with status %s and error %s as a replay', async (status, error) => {
+        const failure = grantError(status as number, error as string);
+        mockGetOidcResponse.mockRejectedValue(failure);
+        await expect(invoke(routeHandler('get', CALLBACK_URL), {
+          query: {code: 'code'}, session: createSession(),
+        })).rejects.toBe(failure);
+      },
+    );
+
+    it('propagates session-store outages without a success redirect', async () => {
+      mockGetOidcResponse.mockRejectedValue(grantError());
+      const session = createSession();
+      const failure = new Error('Session store unavailable');
+      session.reload = callback => callback(failure);
+      const res = createMockResponse();
+      await expect(routeHandler('get', CALLBACK_URL)(
+        {query: {code: 'used-code'}, session} as unknown as AppRequest,
+        res as unknown as Response, jest.fn(),
+      )).rejects.toBe(failure);
+      expect(res.redirect).not.toHaveBeenCalled();
     });
 
     it('throws when the IDAM token request fails', async () => {
