@@ -1,5 +1,5 @@
-export function toNumberOrUndefined(value: string): number {
-  const numberValue: number = Number.parseFloat(value);
+export function toNumberOrUndefined(value?: string): number | undefined {
+  const numberValue: number = Number.parseFloat(value ?? '');
   return Number.isNaN(numberValue) ? undefined : numberValue;
 }
 

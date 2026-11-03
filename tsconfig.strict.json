@@ -206,6 +206,7 @@
     "src/main/common/models/citizenBankAccount.ts",
     "src/main/common/models/claimBilingualLanguagePreference.ts",
     "src/main/common/models/claimResponseStatus.ts",
+    "src/main/common/models/claimantResponse/ClaimantProposedPlan.ts",
     "src/main/common/models/claimantResponse/RepaymentDecisionType.ts",
     "src/main/common/models/claimantResponse/checkAnswers.ts",
     "src/main/common/models/courts/courtLocations.ts",

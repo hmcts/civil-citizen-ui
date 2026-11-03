@@ -5,7 +5,7 @@ import {
 import {RepaymentPlan} from 'models/repaymentPlan';
 import {convertToPence} from 'services/translation/claim/moneyConversation';
 
-export const toCCDRepaymentPlanFrequency = (frequency: string): CCDRepaymentPlanFrequency => {
+export const toCCDRepaymentPlanFrequency = (frequency?: string): CCDRepaymentPlanFrequency | undefined => {
   switch (frequency) {
     case 'WEEK':
       return CCDRepaymentPlanFrequency.ONCE_ONE_WEEK;
@@ -20,7 +20,7 @@ export const toCCDRepaymentPlanFrequency = (frequency: string): CCDRepaymentPlan
   }
 };
 
-export const toCCDRepaymentPlan = (repaymentPlan: RepaymentPlan): CCDRepaymentPlan => {
+export const toCCDRepaymentPlan = (repaymentPlan?: RepaymentPlan): CCDRepaymentPlan | undefined => {
   if (repaymentPlan) {
     return {
       paymentAmount: convertToPence(repaymentPlan?.paymentAmount),
@@ -28,5 +28,6 @@ export const toCCDRepaymentPlan = (repaymentPlan: RepaymentPlan): CCDRepaymentPl
       firstRepaymentDate: repaymentPlan?.firstRepaymentDate,
     };
   }
+  return undefined;
 };
 
