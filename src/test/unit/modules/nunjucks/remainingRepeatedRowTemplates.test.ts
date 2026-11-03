@@ -33,6 +33,28 @@ describe.each(Object.keys(remainingPages) as RemainingEditor[])('%s production t
   });
 });
 
+it.each(['en', 'cy'])('keeps employer errors on the invalid job and preserves both jobs (%s)', language => {
+  const dom = new JSDOM(renderRemainingPage('employers', {language, count: 2, state: 'error'}));
+  try {
+    const doc = dom.window.document;
+    const jobs = [...doc.querySelectorAll('.row-container')];
+    expect(jobs).toHaveLength(2);
+    expect(jobs.map(job => [...job.querySelectorAll<HTMLInputElement>('input')].map(input => [input.name, input.value])))
+      .toEqual([
+        [['rows[0][employerName]', 'Employer 0 in 2026'], ['rows[0][jobTitle]', '']],
+        [['rows[1][employerName]', 'Employer 1 in 2026'], ['rows[1][jobTitle]', 'Role 1']],
+      ]);
+    expect(jobs[1].querySelector('.govuk-form-group--error, .govuk-input--error, .govuk-error-message')).toBeNull();
+    const message = formControlTranslate(language)('ERRORS.JOB_TITLE_REQUIRED');
+    expect(jobs[0].querySelector('.govuk-error-message').textContent).toContain(message);
+    expect(doc.getElementById('rows[0][jobTitle]').classList.contains('govuk-input--error')).toBe(true);
+    expect(doc.getElementById('rows[0][employerName]').classList.contains('govuk-input--error')).toBe(false);
+    const links = [...doc.querySelectorAll('.govuk-error-summary a')];
+    expect(links.map(link => link.getAttribute('href'))).toEqual(['#rows[0][jobTitle]']);
+    expect(links[0].textContent).toContain(message);
+  } finally {dom.window.close();}
+});
+
 it('preserves the defendant timeline PDF fallback', () => {
   const dom = new JSDOM(renderRemainingPage('defendantTimeline', {pdf: true}));
   try {expect(dom.window.document.querySelector('#timeline-link').getAttribute('href')).toBe('/local-opponent-timeline.pdf');}finally{dom.window.close();}
