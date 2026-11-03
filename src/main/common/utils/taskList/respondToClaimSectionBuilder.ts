@@ -45,6 +45,10 @@ const isRejectAllAndCounterClaim = (caseData: Claim): boolean => {
   return caseData.rejectAllOfClaim?.option === RejectAllOfClaimType.COUNTER_CLAIM;
 };
 
+const isRejectAllWithoutOption = (caseData: Claim): boolean => {
+  return caseData.isFullDefence() && !caseData.rejectAllOfClaim?.option;
+};
+
 const isChooseAResponseComplete = (task: Task): boolean => {
   return task.status === TaskStatus.COMPLETE;
 };
@@ -76,6 +80,12 @@ const shouldShowFullDefenceWhyDisagreeAmount = (caseData: Claim): boolean => {
 
 const applyCounterClaimRule = (caseData: Claim, chooseAResponseTask: Task): void => {
   if (isRejectAllAndCounterClaim(caseData)) {
+    chooseAResponseTask.status = TaskStatus.INCOMPLETE;
+  }
+};
+
+const applyRejectAllOptionRule = (caseData: Claim, chooseAResponseTask: Task): void => {
+  if (isRejectAllWithoutOption(caseData)) {
     chooseAResponseTask.status = TaskStatus.INCOMPLETE;
   }
 };
@@ -139,6 +149,7 @@ const buildFullDefenceTasks = (caseData: Claim, claimId: string, lang: string, t
 export const buildRespondToClaimTasks = (caseData: Claim, claimId: string, lang: string): Task[] => {
   const tasks = getRespondToClaimTasks(caseData, claimId, lang);
   applyCounterClaimRule(caseData, tasks.chooseAResponseTask);
+  applyRejectAllOptionRule(caseData, tasks.chooseAResponseTask);
 
   const sectionTasks: Task[] = [tasks.chooseAResponseTask];
   if (!isChooseAResponseComplete(tasks.chooseAResponseTask)) {
