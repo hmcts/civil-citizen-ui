@@ -222,7 +222,7 @@ TimeoutWarning.prototype.startUiCountdown = function () {
   var minutes = Math.ceil(seconds / 60);
   var timerRunOnce = false;
   var iOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-    $countdown.textContent = minutes + ' ' + (minutes > 1 ? this.minutesText : this.minuteText);
+  $countdown.textContent = minutes + ' ' + (minutes > 1 ? this.minutesText : this.minuteText);
 
   (function runTimer() {
     if ($module.sessionExpiresAt) seconds = Math.max(0, Math.ceil(($module.sessionExpiresAt - Date.now()) / 1000));
