@@ -24,4 +24,5 @@
 .yarn/cache
 .yarn/install-state.gz
 src/main/public
-src/main/views/webpack
+src/main/views/webpack/css.njk
+src/main/views/webpack/js.njk

@@ -14,7 +14,7 @@ describe('mounted secrets with properties-volume', () => {
   const actualVolume = jest.requireActual<typeof propertiesVolume>('@hmcts/properties-volume');
   const settings = config as unknown as Record<string, unknown>;
   const server = express();
-  server.locals.ENV = 'production';
+  const originalEnvironment = {...process.env};
   let directory: string;
   let mountPoint: string;
 
@@ -23,6 +23,9 @@ describe('mounted secrets with properties-volume', () => {
     // The secrets load once per process, so each test has to start from an unloaded state or it
     // would assert against a no-op.
     _resetPropertiesVolume();
+    server.locals.ENV = 'production';
+    process.env.NODE_ENV = 'production';
+    delete process.env.UI_PREVIEW_ENABLED;
     for (const key of Object.keys(settings)) {
       if (key !== 'get' && key !== 'has') delete settings[key];
     }
@@ -35,7 +38,36 @@ describe('mounted secrets with properties-volume', () => {
   });
 
   afterEach(() => {
+    process.env = {...originalEnvironment};
     rmSync(directory, {recursive: true, force: true});
+  });
+
+  it.each([
+    {environment: 'e2eTest', flag: 'true', loadsSecrets: false},
+    {environment: 'e2eTest', flag: 'false', loadsSecrets: true},
+    {environment: 'e2eTest', flag: undefined, loadsSecrets: true},
+    {environment: 'production', flag: 'true', loadsSecrets: true},
+    {environment: 'development', flag: 'true', loadsSecrets: false},
+  ])('respects secret loading for $environment with preview flag $flag', ({environment, flag, loadsSecrets}) => {
+    server.locals.ENV = environment;
+    process.env.NODE_ENV = environment;
+    if (flag === undefined) delete process.env.UI_PREVIEW_ENABLED;
+    else process.env.UI_PREVIEW_ENABLED = flag;
+    const vault = join(mountPoint, 'civil-cui');
+    mkdirSync(vault, {recursive: true});
+    writeFileSync(join(vault, 'citizen-ui-idam-secret'), 'mounted-test-secret');
+
+    new PropertiesVolume().enableFor(server);
+
+    if (loadsSecrets) {
+      expect(propertiesVolume.addTo).toHaveBeenCalledTimes(1);
+      expect(config.get('services.idam.clientSecret')).toBe('mounted-test-secret');
+    } else {
+      expect(propertiesVolume.addTo).not.toHaveBeenCalled();
+      expect(config.has).not.toHaveBeenCalled();
+      expect(config.get('services.idam.clientSecret')).toBe('configured-default');
+      expect(config.has('secrets')).toBe(false);
+    }
   });
 
   it('reads and trims mounted secrets through the application mapping while preserving other settings', () => {
