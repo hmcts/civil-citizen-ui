@@ -193,7 +193,7 @@ const getSupportLinks = async (req: AppRequest, claim: Claim, claimId: string, l
     iWantToLinks.push({ text: t('PAGES.DASHBOARD.SUPPORT_LINKS.CANCEL_UNISSUED_CLAIM', { lng }), url: constructResponseUrlWithIdParams(claimId, CANCEL_UNISSUED_CLAIM_URL) });
   }
 
- const contactCourtLink = await getContactCourtLink(claimId, claim, isGAFlagEnable, lng);
+  const contactCourtLink = await getContactCourtLink(claimId, claim, isGAFlagEnable, lng);
   if (contactCourtLink) {
     iWantToLinks.push(contactCourtLink);
   }
