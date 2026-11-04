@@ -7,6 +7,7 @@ import {
 import { translate } from 'common/models/dashboard/dashboardItem';
 
 import config from 'config';
+import {t} from 'i18next';
 import {Claim} from 'models/claim';
 
 const ocmcBaseUrl = config.get<string>('services.cmc.url');
@@ -17,7 +18,7 @@ jest.mock('../../../../../main/modules/i18n/languageService', ()=> ({
   getLanguage: jest.fn(),
 }));
 jest.mock('i18next', () => ({
-  t: (i: string | unknown) => i,
+  t: jest.fn((i: string | unknown) => i),
   use: jest.fn(),
 }));
 
@@ -226,6 +227,29 @@ describe('Dashboard Items', ()=> {
 
       // Then
       expect(result).toBe(expectedTranslation);
+    });
+
+    it('should default to english when no lang is provided and no params are provided', () => {
+      // Given
+      const translationKey = 'PAGES.DASHBOARD.STATUS_DEFENDANT.CLAIMANT_CONFIRMED_PAYMENT';
+
+      // When
+      translate(translationKey);
+
+      // Then
+      expect(t).toHaveBeenLastCalledWith(translationKey, {lng: 'en'});
+    });
+
+    it('should default to english when no lang is provided and params are provided', () => {
+      // Given
+      const translationKey = 'PAGES.DASHBOARD.STATUS_DEFENDANT.NO_RESPONSE_ON_TIME';
+      const params: DashboardStatusTranslationParam[] = [{key: 'numberOfDays', value: '5'}];
+
+      // When
+      translate(translationKey, params);
+
+      // Then
+      expect(t).toHaveBeenLastCalledWith(translationKey, {numberOfDays: '5', lng: 'en'});
     });
 
     it('should return translated status for claim discontinued', () => {
