@@ -109,6 +109,8 @@ Tooling regressions under `src/test/unit/bin` may start a contained Node subproc
 
 The isolated `propertiesVolume.test.ts` tests actual mounted-secret parsing with temporary files and a fake config, including absent-volume defaults. `azureIdentityCompatibility.test.ts` substitutes the HTTP transport. `uploadRateLimitStore.test.ts` substitutes Redis commands to distinguish NOSCRIPT recovery from an ambiguous connection failure. These protect dependency adapters without contacting a secret store, identity endpoint or Redis server. They do not establish live-service compatibility.
 
+`modules/appinsights/liveMetricsRedaction.test.ts` executes the installed Azure Monitor entry points with startup side effects replaced, then uses their processor order with real in-memory OpenTelemetry providers and Live Metrics document conversion. It checks requests, dependencies, logs, exceptions and redaction failure without starting SDK network clients. The scoped Yarn patch for `@azure/monitor-opentelemetry` 1.20.1 runs configured redaction before Live Metrics copies records as well as before normal export. Live Metrics remains enabled. Review this patch and its resolution when upgrading Application Insights; remove it only when the installed SDK preserves this ordering without it. These tests do not establish delivery to Azure.
+
 ## Jest retries
 
 `jest.retryTimes` is for integration flakiness only. Unit setup (`jest.setup.js`) does not retry. Integration retries live in `jest.functionaltest.setup.js`, which is loaded only by `jest.functionaltest.config.js`.

@@ -201,6 +201,7 @@
   "resolutions": {
     "jsdom/undici": "8.12.3",
     "@azure/identity/@azure/msal-node": "7.1.0",
+    "applicationinsights/@azure/monitor-opentelemetry": "patch:@azure/monitor-opentelemetry@npm%3A1.20.1#./.yarn/patches/azure-monitor-opentelemetry-1.20.1-processor-order.patch",
     "@pact-foundation/pact/body-parser": "2.4.0",
     "flatted": "3.4.4",
     "undici": "7.30.1",

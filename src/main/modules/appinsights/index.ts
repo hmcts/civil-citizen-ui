@@ -624,12 +624,13 @@ interface OpenTelemetryRecord {
   severityText?: string;
   attributes: Record<string, unknown>;
   status?: {code: number; message?: string};
-  events?: Array<{name: string; attributes?: Record<string, unknown>; [key: string]: unknown}>;
-  links?: Array<{attributes?: Record<string, unknown>; [key: string]: unknown}>;
+  events?: Array<{name: string; attributes?: Record<string, unknown>}>;
+  links?: Array<{attributes?: Record<string, unknown>}>;
 }
 
-// SDK 3 ignores addTelemetryProcessor. These processors run before its batch
-// exporters, so credentials are removed before transmission or disk retries.
+// SDK 3 ignores addTelemetryProcessor. The scoped Azure Monitor Yarn patch runs
+// these processors before Live Metrics takes copies and before batch export,
+// so credentials are removed before either transmission path or disk retries.
 export const redactOpenTelemetryRecord = (record: OpenTelemetryRecord): void => {
   try {
     const rules = buildRedactionRules(getRedactedKeys());
