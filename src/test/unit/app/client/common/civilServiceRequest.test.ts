@@ -13,11 +13,12 @@ jest.mock('applicationinsights', () => ({
 
 import {AxiosResponse} from 'axios';
 import {executeRequest} from 'client/common/civilServiceRequest';
+import {isAppInsightsExceptionTracked} from 'modules/appinsights/trackedException';
 
 const getLoggerError = () => require('@hmcts/nodejs-logging').Logger.getLogger('civilServiceClient').error as jest.Mock;
 const getTrackException = () => require('applicationinsights').defaultClient.trackException as jest.Mock;
 
-const axiosError = (status: number): Error => {
+const axiosError = (status: number, config?: {method?: string; url?: string}): Error => {
   const error = new Error(`Request failed with status code ${status}`);
   const stack = `AxiosError: Request failed with status code ${status}\n    at Client.request (civilServiceClient.ts:10:5)`;
   error.stack = stack;
@@ -25,6 +26,7 @@ const axiosError = (status: number): Error => {
     isAxiosError: true,
     status,
     response: {status},
+    config,
   });
 };
 
@@ -33,8 +35,11 @@ describe('executeRequest', () => {
     jest.clearAllMocks();
   });
 
-  it('logs the error stack and tracks a 4xx exception', async () => {
-    const error = axiosError(409);
+  it('logs the error stack and tracks an unexpected 4xx with the request, ids removed', async () => {
+    const error = axiosError(409, {
+      method: 'get',
+      url: '/cases/1738173817381738/citizen/11111111-1111-4111-8111-111111111111/event?pin=secret',
+    });
     const operation = jest.fn().mockRejectedValue(error);
 
     await expect(executeRequest(operation, 'Error when getting agreed deadline response date'))
@@ -48,7 +53,38 @@ describe('executeRequest', () => {
       properties: {
         source: 'civilServiceClient',
         status: '409',
+        method: 'GET',
+        url: '/cases/{id}/citizen/{id}/event',
         message: 'Error when getting agreed deadline response date',
+      },
+    });
+    expect(isAppInsightsExceptionTracked(error)).toBe(true);
+  });
+
+  it.each([400, 401, 404])('logs a %s but does not track it as an exception', async (status) => {
+    const error = axiosError(status, {method: 'post', url: '/assignment/reference/1738173817381738'});
+    const operation = jest.fn().mockRejectedValue(error);
+
+    await expect(executeRequest(operation, 'Error when verifying pin')).rejects.toBe(error);
+
+    expect(getLoggerError()).toHaveBeenCalled();
+    expect(getTrackException()).not.toHaveBeenCalled();
+    expect(isAppInsightsExceptionTracked(error)).toBe(false);
+  });
+
+  it('tracks a function-handler failure with method and url and no message', async () => {
+    const error = axiosError(403, {method: 'put', url: '/fees/hearing/RC-1234-5678-9012'});
+    const operation = jest.fn().mockRejectedValue(error);
+
+    await expect(executeRequest(operation, () => undefined)).rejects.toBe(error);
+
+    expect(getTrackException()).toHaveBeenCalledWith({
+      exception: error,
+      properties: {
+        source: 'civilServiceClient',
+        status: '403',
+        method: 'PUT',
+        url: '/fees/hearing/{id}',
       },
     });
   });

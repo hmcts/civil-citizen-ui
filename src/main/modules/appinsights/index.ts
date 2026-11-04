@@ -5,8 +5,9 @@ const appInsights = require('applicationinsights');
 // redaction in server.ts. Its console transport writes to process.stderr, which
 // console auto-collection does not see. Requiring winston now that the
 // diagnostic-channel publisher is registered patches Logger.prototype, so
-// logger.error calls made afterwards are sent as traces. This must happen
-// before any logger is created in this process.
+// later logger calls are sent as traces. dropBelowWarningTracesTelemetryProcessor
+// then drops Verbose and Information, so only warnings and errors are ingested.
+// This must happen before any logger is created in this process.
 require('winston');
 const {Logger} = require('@hmcts/nodejs-logging');
 const logger = Logger.getLogger('appInsights');
@@ -38,6 +39,7 @@ interface TelemetryEnvelope {
       name?: string;
       url?: string;
       message?: string;
+      severityLevel?: number;
       exceptions?: ExceptionDetail[];
       properties?: Record<string, unknown>;
       [key: string]: unknown;
@@ -624,6 +626,20 @@ export const stripCredentialsTelemetryProcessor = (envelope: TelemetryEnvelope):
   }
 };
 
+// Application Insights SeverityLevel: Verbose 0, Information 1, Warning 2, Error 3, Critical 4.
+// Winston info and debug become traces once the logger is patched. Drop those so only
+// warnings and errors are ingested.
+const TRACE_SEVERITY_WARNING = 2;
+
+export const dropBelowWarningTracesTelemetryProcessor = (envelope: TelemetryEnvelope): boolean => {
+  const {baseType, baseData} = envelope?.data ?? {};
+  if (baseType !== 'MessageData') {
+    return true;
+  }
+  const severityLevel = baseData?.severityLevel;
+  return typeof severityLevel === 'number' && severityLevel >= TRACE_SEVERITY_WARNING;
+};
+
 /**
  * Belt-and-braces: never sample out failures, even if a workspace/component data cap re-imposes
  * sampling. The SDK's sampling processor keeps anything with sampleRate >= 100.
@@ -652,14 +668,17 @@ export class AppInsights {
     const instrumentationKey = getConfigValue('appInsights.instrumentationKey');
     const setupKey = connectionString || instrumentationKey;
     if (setupKey) {
+      // The first argument collects winston. The second collects console.log/error, which
+      // bypasses PII redaction, so leave it off.
       appInsights.setup(setupKey)
-        .setAutoCollectConsole(true, true)
+        .setAutoCollectConsole(true, false)
         .setSendLiveMetrics(true)
         .start();
 
       const client = appInsights.defaultClient;
       client.context.tags[client.context.keys.cloudRole] = 'civil-citizen-ui';
 
+      client.addTelemetryProcessor(dropBelowWarningTracesTelemetryProcessor);
       client.addTelemetryProcessor(stripCredentialsTelemetryProcessor);
 
       // Non-prod only: capture all telemetry to aid diagnosis (e.g. perftest load runs,

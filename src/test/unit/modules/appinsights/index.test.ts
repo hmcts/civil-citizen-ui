@@ -25,6 +25,7 @@ import {
   _resetRedactionState,
   buildSensitiveQueryParamsRegex,
   getRedactedKeys,
+  dropBelowWarningTracesTelemetryProcessor,
   keepFailuresTelemetryProcessor,
   sanitizeCredentials,
   stripCredentialsTelemetryProcessor,
@@ -908,6 +909,33 @@ describe('AppInsights module', () => {
     });
   });
 
+  describe('dropBelowWarningTracesTelemetryProcessor', () => {
+    const trace = (severityLevel?: number) => ({
+      sampleRate: 1,
+      data: {baseType: 'MessageData', baseData: {severityLevel}},
+    });
+
+    it('drops information and verbose traces', () => {
+      expect(dropBelowWarningTracesTelemetryProcessor(trace(0))).toBe(false);
+      expect(dropBelowWarningTracesTelemetryProcessor(trace(1))).toBe(false);
+    });
+
+    it('keeps warning, error and critical traces', () => {
+      expect(dropBelowWarningTracesTelemetryProcessor(trace(2))).toBe(true);
+      expect(dropBelowWarningTracesTelemetryProcessor(trace(3))).toBe(true);
+      expect(dropBelowWarningTracesTelemetryProcessor(trace(4))).toBe(true);
+    });
+
+    it('drops a trace with no severity', () => {
+      expect(dropBelowWarningTracesTelemetryProcessor(trace())).toBe(false);
+    });
+
+    it('keeps exceptions and requests', () => {
+      expect(dropBelowWarningTracesTelemetryProcessor(envelope('ExceptionData'))).toBe(true);
+      expect(dropBelowWarningTracesTelemetryProcessor(envelope('RequestData', false))).toBe(true);
+    });
+  });
+
   describe('keepFailuresTelemetryProcessor', () => {
     it('forces sampleRate to 100 for exceptions', () => {
       const env = envelope('ExceptionData');
@@ -985,8 +1013,9 @@ describe('AppInsights module', () => {
     it('registers credential processor and failure-keeping processor in non-prod', () => {
       process.env.LAUNCH_DARKLY_ENV = 'perftest';
       new AppInsights().enable();
-      expect(mockSetAutoCollectConsole).toHaveBeenCalledWith(true, true);
+      expect(mockSetAutoCollectConsole).toHaveBeenCalledWith(true, false);
       expect(mockClient.config.samplingPercentage).toBe(100);
+      expect(mockAddTelemetryProcessor).toHaveBeenCalledWith(dropBelowWarningTracesTelemetryProcessor);
       expect(mockAddTelemetryProcessor).toHaveBeenCalledWith(stripCredentialsTelemetryProcessor);
       expect(mockAddTelemetryProcessor).toHaveBeenCalledWith(keepFailuresTelemetryProcessor);
       expect(mockTrackTrace).toHaveBeenCalled();
@@ -995,8 +1024,9 @@ describe('AppInsights module', () => {
     it('registers credential processor but leaves sampling untouched in prod', () => {
       process.env.LAUNCH_DARKLY_ENV = 'prod';
       new AppInsights().enable();
-      expect(mockSetAutoCollectConsole).toHaveBeenCalledWith(true, true);
+      expect(mockSetAutoCollectConsole).toHaveBeenCalledWith(true, false);
       expect(mockClient.config.samplingPercentage).toBeUndefined();
+      expect(mockAddTelemetryProcessor).toHaveBeenCalledWith(dropBelowWarningTracesTelemetryProcessor);
       expect(mockAddTelemetryProcessor).toHaveBeenCalledWith(stripCredentialsTelemetryProcessor);
       expect(mockAddTelemetryProcessor).not.toHaveBeenCalledWith(keepFailuresTelemetryProcessor);
     });

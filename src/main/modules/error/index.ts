@@ -8,6 +8,7 @@ import {HTTPError} from '../../HttpError';
 import {CallbackError} from 'client/common/error/callbackError';
 import {AppRequest} from 'models/AppRequest';
 import {SIGN_IN_URL} from 'routes/urls';
+import {isAppInsightsExceptionTracked} from 'modules/appinsights/trackedException';
 
 const env = process.env.NODE_ENV || 'development';
 const REAUTH_ON_401_WINDOW_MS = 5 * 60 * 1000;
@@ -65,7 +66,9 @@ export class ErrorHandler {
         });
       }
 
-      if (status >= 500) {
+      // A civil-service 4xx may already have been tracked, then rewritten to 500
+      // before next(error). Sending it again records one failure as two exceptions.
+      if (status >= 500 && !isAppInsightsExceptionTracked(err)) {
         const appInsightsClient = appInsights.defaultClient;
         appInsightsClient?.trackException({
           exception: err,
