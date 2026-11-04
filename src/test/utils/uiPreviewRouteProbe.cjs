@@ -128,6 +128,52 @@ const {createPreviewStubServer} = require(path.join(root, 'bin/ui-preview-stubs.
       assert.equal(summary.response.status, 200);
       assert.match(summary.html, /synthetic-upload\.pdf/);
       journeys++;
+
+      // Dashboard refresh replaces the mediation draft too. Re-enter through
+      // the real document selection instead of relying on the initial overlay.
+      const mediation = '/case/1645882162449409/mediation';
+      assert.equal((await request('/dashboard/1645882162449409/defendant', language)).response.status, 200);
+      const mediationTypes = await request(`${mediation}/type-of-documents`, language);
+      assert.equal(mediationTypes.response.status, 200);
+      const mediationSelection = new URLSearchParams(fields(mediationTypes.html));
+      mediationSelection.set('typeOfDocuments', 'YOUR_STATEMENT');
+      const mediationChoice = await request(`${mediation}/type-of-documents`, language, {
+        method: 'POST', headers: {'Content-Type': 'application/x-www-form-urlencoded'}, body: mediationSelection.toString(),
+      });
+      assert.equal(mediationChoice.response.status, 302);
+      assert.equal(mediationChoice.response.headers.get('location'), `${mediation}/upload-documents`);
+      const mediationUpload = await request(`${mediation}/upload-documents`, language);
+      assert.equal(mediationUpload.response.status, 200);
+      inspect(mediationUpload.html, document => {
+        assert.ok(document.querySelector('input[type="file"][name="documentsForYourStatement[0][fileUpload]"]'));
+        assert.ok(document.querySelector('button[value="documentsForYourStatement[0][uploadButton]"]'));
+        assert.ok(document.querySelector('button[value="add_another-yourStatement"]'));
+      });
+      const mediationForm = new FormData();
+      for (const [name, value] of fields(mediationUpload.html)) mediationForm.append(name, value);
+      mediationForm.set('documentsForYourStatement[0][yourName]', 'John Defendant');
+      mediationForm.set('documentsForYourStatement[0][dateInputFields][dateDay]', '1');
+      mediationForm.set('documentsForYourStatement[0][dateInputFields][dateMonth]', '10');
+      mediationForm.set('documentsForYourStatement[0][dateInputFields][dateYear]', '2026');
+      mediationForm.set('action', 'documentsForYourStatement[0][uploadButton]');
+      mediationForm.set('documentsForYourStatement[0][fileUpload]', new Blob(['%PDF-1.4\nMediation statement\n%%EOF'], {type: 'application/pdf'}), 'mediation-statement.pdf');
+      const mediationSaved = await request(uploadAction(mediationUpload.html), language, {method: 'POST', body: mediationForm});
+      assert.equal(mediationSaved.response.status, 200);
+      const mediationNext = new FormData();
+      for (const [name, value] of fields(mediationSaved.html)) mediationNext.append(name, value);
+      const mediationContinued = await request(uploadAction(mediationSaved.html), language, {method: 'POST', body: mediationNext});
+      assert.equal(mediationContinued.response.status, 302);
+      assert.equal(mediationContinued.response.headers.get('location'), `${mediation}/check-and-send`);
+      const mediationSummary = await request(`${mediation}/check-and-send`, language);
+      assert.equal(mediationSummary.response.status, 200);
+      inspect(mediationSummary.html, document => {
+        const rows = document.querySelectorAll('.govuk-summary-list__row');
+        assert.ok(rows.length > 0);
+        const summaryText = [...rows].map(row => row.textContent).join(' ');
+        assert.match(summaryText, /John Defendant/);
+        assert.match(summaryText, /synthetic-upload\.pdf/);
+      });
+      journeys++;
     }
     console.log('ROUTE_PROBE ' + JSON.stringify({count, pages: pages.length, journeys, failures}));
     if (failures.length) process.exitCode = 1;
