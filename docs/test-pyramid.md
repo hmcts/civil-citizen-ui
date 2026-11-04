@@ -8,7 +8,7 @@ Related: [functional-tests.md](functional-tests.md) covers browser journeys and 
 
 | Layer | Location | Command | Allowed | Not allowed |
 | --- | --- | --- | --- | --- |
-| Unit | `src/test/unit` | `yarn test:coverage` (and `yarn test` once restored) | Call a handler, service, guard or model with mocked collaborators. Assert `res.render`, `res.redirect`, `next`, return values. | `request(app)`, `supertest`, `supertest-session`, importing `src/main/app` to hit HTTP, nocking IDAM to reach a page |
+| Unit | `src/test/unit` | `yarn test:coverage` | Call a handler, service, guard or model with mocked collaborators. Assert `res.render`, `res.redirect`, `next`, return values. | `request(app)`, `supertest`, `supertest-session`, importing `src/main/app` to hit HTTP, nocking IDAM to reach a page |
 | In-process integration | `src/integration-test` | `yarn test:integration` | Supertest against the app. Multi-step redirects, cookies, session, rendered HTML, middleware wiring. External I/O still mocked (Redis, Civil Service, IDAM). | Duplicating every page GET/POST already owned by a unit handler test |
 | Browser functional | `src/test/functionalTests` | `yarn test:functional` / reduced-stack | Browser, session and real- or WireMock-backed journeys | Assertions that only need a controller or a route |
 
@@ -101,7 +101,7 @@ Help with fees and the "you've been paid" confirmation are owned by `src/integra
 
 ## Jest retries
 
-`jest.retryTimes` is for integration flakiness only. It still lives in `jest.setup.js` because that file is shared by unit and integration. `request(app)` has left `src/test/unit`. Three unit files still boot a session with `supertest-session`: `dashboardController.test.ts`, `claimSummaryController.test.ts`, and `confirmYouHaveBeenPaidController.test.ts`. After those have left the unit folder, remove retries from unit setup and keep them on `jest.functionaltest.config.js` if they are still required.
+`jest.retryTimes` is for integration flakiness only. Unit setup (`jest.setup.js`) does not retry. Integration retries live in `jest.functionaltest.setup.js`, which is loaded only by `jest.functionaltest.config.js`.
 
 ## Converting an existing HTTP unit test
 
@@ -112,4 +112,6 @@ Help with fees and the "you've been paid" confirmation are owned by `src/integra
 
 ## Pipeline note
 
-`yarn test` is currently a no-op (`echo`). `request(app)` has left `src/test/unit`. Do not restore `yarn test` until the three `supertest-session` controller tests have left as well, because running the app from the unit suite twice leaked memory. `yarn test:coverage` remains the suite that executes unit tests in CI.
+`yarn test:coverage` runs `LOG_LEVEL=OFF jest --coverage --maxWorkers=8 --logHeapUsage --silent`. Jest loads `jest.config.js`, so the roots are `src/test/unit`. The run writes `coverage/lcov.info` for Sonar and exits non-zero when a test fails. `yarn test` prints a message and exits. The shared Node.js pipeline calls `yarn test` and then `yarn test:coverage`, so the unit suite runs once in that stage.
+
+`yarn test:integration` uses `jest.functionaltest.config.js` (`src/integration-test` only). Jenkins `afterSuccess('build')` runs `yarn build` and then `yarn test:integration`. `cichecks` runs `test:coverage` and then `test:routes`. `Jenkinsfile_CNP` does not call `cichecks`.
