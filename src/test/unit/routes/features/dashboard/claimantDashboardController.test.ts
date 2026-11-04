@@ -338,6 +338,16 @@ describe('Claimant dashboard controller', () => {
     expect(model.helpSupportLinks).toBe(helpSupportLinks);
   });
 
+  it('should not show the cancel unissued claim link once the claim fee is paid and claim issue is still pending', async () => {
+    const claim = buildClaim(CaseRole.CLAIMANT, CaseState.PENDING_CASE_ISSUED);
+    claim.issueDate = new Date('2024-01-02');
+    (getDashboardClaimById as jest.Mock).mockResolvedValue(claim);
+
+    const {res} = await invoke();
+
+    expect(linkUrls(rendered(res))).not.toContain(constructResponseUrlWithIdParams(claimId, CANCEL_UNISSUED_CLAIM_URL));
+  });
+
   it('should not show the cancel unissued claim link once the claim has been issued', async () => {
     (getDashboardClaimById as jest.Mock).mockResolvedValue(buildClaim(CaseRole.CLAIMANT, CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT));
 
