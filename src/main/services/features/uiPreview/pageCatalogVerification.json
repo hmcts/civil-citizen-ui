@@ -466,10 +466,10 @@
     "view": "features/mediation/uploadDocuments/typeOfDocuments"
   },
   "/case/1645882162449409/mediation/upload-documents": {
-    "view": "features/mediation/uploadDocuments/upload-documents"
+    "reason": "Select Type of documents before uploading. A fresh preview includes Your statement, but visiting a dashboard clears this selection."
   },
   "/case/1645882162449409/mediation/check-and-send": {
-    "view": "features/mediation/uploadDocuments/check-answers"
+    "reason": "Requires a saved mediation upload draft. Select Type of documents, enter the document details, save a file and Continue."
   },
   "/case/1645882162449409/mediation/confirmation": {
     "reason": "Requires a prior submission/session or payment outcome. Not included in read-only ready-page checks."
