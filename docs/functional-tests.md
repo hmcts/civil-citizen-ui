@@ -1,5 +1,7 @@
 # Functional tests
 
+This guide covers browser functional tests and deployed PR preview environments. The local `/ui-preview` catalogue is a separate tool for browsing pages with synthetic data.
+
 ## Running tests
 
 Configure the environment URLs and credentials as described in the [README](../README.md).
@@ -16,7 +18,7 @@ Configure the environment URLs and credentials as described in the [README](../R
 
 The local mocked runner starts CUI, WireMock and in-memory session/draft stores. Logs go to `${TMPDIR:-/tmp}/civil-citizen-ui-mocked-functional`. It is separate from the optimised preview baseline.
 
-## Optimised preview
+## Optimised PR preview
 
 Both modes run the same baseline journeys and assertions. Optimised execution loads only baseline files and gives each file its own worker: 18 for PRs and 16 for master, compared with 13 standard workers. PR previews use optimised execution by default. `pr-values:noWiremock` restores the previous standard deployment and complete baseline selection; it does not enable extra Work Allocation or messaging services. Both modes run the complete baseline again on reruns. Master and nightly deployment remain unchanged.
 
@@ -42,11 +44,13 @@ node bin/functional-baseline.js compare standard-baseline-results.json optimised
 
 Use [test-pyramid.md](test-pyramid.md) for unit and integration ownership. Keep migration plans, approval records and run-by-run evidence in Jira/PRs.
 
-The baseline inventory check establishes scenario selection, not successful CodeceptJS startup. CodeceptJS 4 loads configured plugins through native module import: local plugin paths must include the filename extension. The enabled `failedAndNotExecutedTestFilesPlugin` entry in [codecept.conf.js](../codecept.conf.js) names its `.js` file explicitly. The offline [plugin-loading regression](../src/test/unit/bin/codeceptPluginLoading.test.ts) covers the native loader and scenario identities in failed, passed/retried and unexecuted file reports using Codecept-created tests. It awaits reporting handlers directly without launching workers or browsers. Full worker execution remains a separate check.
+The baseline check verifies scenario selection. It does not start CodeceptJS or its workers.
+
+CodeceptJS 4 imports plugins through the native module loader. Keep the `.js` extension on the reporting plugin path in [codecept.conf.js](../codecept.conf.js). The [plugin-loading regression](../src/test/unit/bin/codeceptPluginLoading.test.ts) checks loading and failed, passed/retried and unexecuted reports using Codecept-created scenario identities. It awaits the reporting handlers directly, without starting workers or browsers.
 
 ## Maintaining mocks and contracts
 
-Preview mappings and synthetic fixtures live in [charts/civil-citizen-ui/wiremock](../charts/civil-citizen-ui/wiremock). Update the production client tests, mappings and fixtures together when a boundary changes. Run:
+Deployed PR preview mappings and synthetic fixtures live in [charts/civil-citizen-ui/wiremock](../charts/civil-citizen-ui/wiremock). Update the production client tests, mappings and fixtures together when a boundary changes. Run:
 
 ```sh
 yarn wiremock:validate
@@ -60,8 +64,8 @@ WireMock and its state extension are pinned by the preview bootstrap. Keep one m
 
 ## Investigating failures
 
-Start with `test-results/functional/functional-failure-summary.json`, then follow its artifact links to screenshots, traces, Mochawesome and Allure results. Failure classification is advisory; the original test failure remains authoritative even if report publication also fails.
+Start with `test-results/functional/functional-failure-summary.json`, then follow its artefact links to screenshots, traces, Mochawesome and Allure results. Failure classification is advisory; the original test failure remains authoritative even if report publication also fails.
 
 If no reports exist, first inspect the earlier startup error. A plugin import failure can stop execution before any scenario runs; a subsequent `No functional reports found` assertion then describes the missing output, not a second journey failure. Deprecation warnings alone do not establish that cause.
 
-Optimised runs archive sanitised unmatched requests, near misses and request journals under `test-results/functional/wiremock/`. Any unmatched request fails verification, even if the browser passed. Raw logs may contain credentials or personal data; use the sanitised artifacts when sharing evidence.
+Optimised runs archive sanitised unmatched requests, near misses and request journals under `test-results/functional/wiremock/`. Any unmatched request fails verification, even if the browser passed. Raw logs may contain credentials or personal data; use the sanitised artefacts when sharing evidence.
