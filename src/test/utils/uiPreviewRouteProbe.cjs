@@ -7,8 +7,6 @@ const root = path.resolve(__dirname, '../../..');
 const directory = tmpdir();
 process.chdir(root);
 const {isolatedEnvironment} = require(path.join(root, 'bin/ui-preview.cjs'));
-Object.assign(process.env, isolatedEnvironment('http://127.0.0.1:1', directory), {UI_PREVIEW_FIXTURE_NOW: '2026-10-20T12:00:00Z'});
-require(path.join(root, 'bin/ui-preview-network.cjs'));
 require(path.join(root, 'node_modules/ts-node/register/transpile-only'));
 require(path.join(root, 'node_modules/tsconfig-paths/register'));
 const express = require(path.join(root, 'node_modules/express'));
