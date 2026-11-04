@@ -29,6 +29,7 @@ import {
   getNotifications,
 } from 'services/dashboard/dashboardService';
 import {GaServiceClient} from 'client/gaServiceClient';
+import {getViewMessagesLink} from 'services/features/queryManagement/viewMessagesService';
 import {Claim} from 'models/claim';
 import {Party} from 'models/party';
 import {CaseRole} from 'form/models/caseRoles';
@@ -346,6 +347,20 @@ describe('Claimant dashboard controller', () => {
     const {res} = await invoke();
 
     expect(linkUrls(rendered(res))).not.toContain(constructResponseUrlWithIdParams(claimId, CANCEL_UNISSUED_CLAIM_URL));
+  });
+
+  it('should show no i want to links but keep help and support when the claim fee is paid and no contact court link', async () => {
+    const claim = buildClaim(CaseRole.CLAIMANT, CaseState.PENDING_CASE_ISSUED);
+    claim.issueDate = new Date('2024-01-02');
+    (getDashboardClaimById as jest.Mock).mockResolvedValue(claim);
+    (getContactCourtLink as jest.Mock).mockResolvedValue(undefined);
+    (getViewMessagesLink as jest.Mock).mockReturnValueOnce(undefined);
+
+    const {res} = await invoke();
+    const model = rendered(res);
+
+    expect(model.iWantToLinks).toEqual([]);
+    expect(model.helpSupportLinks).toBe(helpSupportLinks);
   });
 
   it('should not show the cancel unissued claim link once the claim has been issued', async () => {
