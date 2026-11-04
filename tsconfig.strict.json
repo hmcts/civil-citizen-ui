@@ -275,6 +275,7 @@
     "src/main/common/models/generalApplication/response/respondentGaAppDetail.ts",
     "src/main/common/models/generalApplication/response/urgencyRequirement.ts",
     "src/main/common/models/generalApplication/statementOfTruthForm.ts",
+    "src/main/common/models/generalApplication/unavailableDatesGaHearing.ts",
     "src/main/common/models/judgmentOnline/ccdJudgmentPaidInFull.ts",
     "src/main/common/models/judgmentOnline/cuiJudgmentPaidInFull.ts",
     "src/main/common/models/judgmentOnline/judgmentOnline.ts",
