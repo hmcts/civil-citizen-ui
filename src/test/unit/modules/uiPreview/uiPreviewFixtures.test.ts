@@ -10,15 +10,146 @@ import {ApplicationTypeOption} from 'models/generalApplication/applicationType';
 import {convertToPoundsFilter} from 'common/utils/currencyFormat';
 import {JSDOM} from 'jsdom';
 import {renderPresentation} from '../../../utils/renderPresentationPages';
+import {translateCCDCaseDataToCUIModel} from 'services/translation/convertToCUI/cuiTranslation';
+import {getClaimantResponseTaskLists} from 'services/features/claimantResponse/claimantResponseTasklistService/claimantResponseTasklistService';
+import {CCDClaim} from 'models/civilClaimResponse';
+import {CaseState} from 'form/models/claimDetails';
+import {CaseRole} from 'form/models/caseRoles';
+import {YesNo} from 'form/models/yesNo';
+import {GenericForm} from 'form/models/genericForm';
+import {UploadDocumentsForm} from 'form/models/mediation/uploadDocuments/uploadDocumentsForm';
+import {getUploadDocuments} from 'services/features/mediation/uploadDocuments/uploadDocumentsService';
+import {getYourStatementContent} from 'services/features/mediation/uploadDocuments/yourStatementService';
+import {getDocumentsForDocumentsReferred} from 'services/features/mediation/uploadDocuments/documentsForDocumentsReferredService';
+import {getMediationSummarySection} from 'services/features/mediation/uploadDocuments/buildYourStatementSummaryRows';
 
 const dataPath = join(__dirname, '../../../../main/modules/e2eConfiguration');
 const baseline = JSON.parse(readFileSync(join(dataPath, 'redisData.json'), 'utf8'));
 const ga = JSON.parse(readFileSync(join(dataPath, 'gaRedisData.json'), 'utf8'));
 
+const translatedFixture = (mappingFile: string, claimId: string): Claim => {
+  const mappings = JSON.parse(readFileSync(join(process.cwd(), 'compose/ui-preview-mappings', mappingFile), 'utf8')).mappings;
+  const mapping = mappings.find((entry: {request: {method: string; urlPath?: string}}) =>
+    entry.request.method === 'GET' && entry.request.urlPath === `/cases/${claimId}`);
+  expect(mapping).toBeDefined();
+  const response = mapping.response.jsonBody as {id: string; state: CaseState; case_data: CCDClaim};
+  const roleMapping = mappings.find((entry: {request: {method: string; urlPath?: string}}) =>
+    entry.request.method === 'GET' && entry.request.urlPath === `/cases/${claimId}/userCaseRoles`);
+  expect(roleMapping).toBeDefined();
+  const roles = roleMapping.response.jsonBody as CaseRole[];
+  expect(roles).toHaveLength(1);
+  expect(Object.values(CaseRole)).toContain(roles[0]);
+  // CivilServiceClient supplies the separately retrieved role before translation.
+  const claim = translateCCDCaseDataToCUIModel({...response.case_data, caseRole: roles[0]});
+  claim.id = String(response.id);
+  claim.ccdState = response.state;
+  return claim;
+};
+
+const seededFixture = async (claimId: string): Promise<Claim> => {
+  const values = new Map<string, string>();
+  await seedUiPreviewFixtures({
+    set: async (key, value) => {values.set(key, value);},
+    expire: async () => undefined,
+  }, baseline, ga, previewFixtureClock('2026-10-20'));
+  return Object.assign(new Claim(), JSON.parse(values.get(claimId + 'someID')!).case_data);
+};
+
 describe('isolated preview scenarios', () => {
   const original = {...process.env};
   beforeEach(() => {process.env.NODE_ENV = 'e2eTest'; process.env.UI_PREVIEW_ENABLED = 'true';});
   afterEach(() => {process.env = {...original};});
+
+  it.each([
+    {claimId: '1645882162449601', mapping: 'ui-preview-full-admit.json', source: 'CCD'},
+    {claimId: '1645882162449602', mapping: 'ui-preview-part-admit.json', source: 'CCD'},
+    {claimId: '1645882162449601', mapping: 'ui-preview-full-admit.json', source: 'draft'},
+    {claimId: '1645882162449602', mapping: 'ui-preview-part-admit.json', source: 'draft'},
+  ])('preserves the repayment offer and claimant tasks for $claimId from $source', async ({claimId, mapping, source}) => {
+    const claim = source === 'CCD' ? translatedFixture(mapping, claimId) : await seededFixture(claimId);
+    expect(claim.id).toBe(claimId);
+    expect(claim.isClaimant()).toBe(true);
+    const intention = claimId === '1645882162449601'
+      ? claim.fullAdmission.paymentIntention : claim.partialAdmission.paymentIntention;
+    expect(intention.paymentOption).toBe('INSTALMENTS');
+    expect(intention.repaymentPlan).toMatchObject({paymentAmount: 100, repaymentFrequency: 'MONTH'});
+    expect(new Date(String(intention.repaymentPlan.firstRepaymentDate)).toISOString()).toBe('2026-09-18T00:00:00.000Z');
+    const taskLists = getClaimantResponseTaskLists(claim, claimId, 'en', false, false);
+    expect(taskLists.length).toBeGreaterThan(0);
+    expect(taskLists[0].tasks.length).toBeGreaterThan(0);
+    expect(taskLists.flatMap(group => group.tasks).some(task =>
+      task.url === `/case/${claimId}/claimant-response/defendants-response`)).toBe(true);
+  });
+
+  it.each(['CCD', 'draft'])('preserves the defendant statement-of-means answers from %s', async source => {
+    const claimId = '1645882162449605';
+    const claim = source === 'CCD' ? translatedFixture('ui-preview-som.json', claimId) : await seededFixture(claimId);
+    expect(claim.isPartialAdmission()).toBe(true);
+    expect(claim.isClaimant()).toBe(false);
+    expect(claim.isDefendant()).toBe(true);
+    expect(claim.partialAdmission.alreadyPaid.option).toBe(YesNo.NO);
+    expect(claim.partialAdmission.howMuchDoYouOwe.amount).toBe(400);
+    expect(claim.partialAdmission.whyDoYouDisagree.text).toBe('I only owe part of the amount claimed.');
+    expect(claim.partialAdmission.paymentIntention.paymentOption).toBe('INSTALMENTS');
+  });
+
+  it('retains the mediation agreement identity when the service fixture is translated', () => {
+    const claim = translatedFixture('ui-preview-claims.json', '1645882162449409');
+    const document = claim.mediationAgreement.document;
+    expect(document.document_filename).toBe('mediation-agreement.pdf');
+    expect(document.document_url).toMatch(/\/documents\/[^/]+$/);
+    expect(document.document_binary_url).toBe(`${document.document_url}/binary`);
+  });
+
+  it.each(['en', 'cy'])('provides fresh mediation upload controls and advertises their prerequisites in %s', async language => {
+    const before = JSON.stringify([baseline, ga]);
+    const claimId = '1645882162449409';
+    const claim = await seededFixture(claimId);
+    const uploadDocuments = getUploadDocuments(claim);
+    expect(uploadDocuments.typeOfDocuments).toEqual([
+      {id: 1, type: 'YOUR_STATEMENT', checked: true, uploadDocuments: []},
+    ]);
+    const form = new GenericForm(new UploadDocumentsForm([], []));
+    const dom = new JSDOM(renderPresentation('features/mediation/uploadDocuments/upload-documents.njk', {
+      form,
+      yourStatementContent: getYourStatementContent(uploadDocuments, form),
+      documentsReferredContent: getDocumentsForDocumentsReferred(uploadDocuments, form),
+      partyInformation: {claimantName: claim.getClaimantFullName(), defendantName: claim.getDefendantFullName()},
+      claimId,
+      pageTitle: 'PAGES.UPLOAD_YOUR_DOCUMENTS.TITLE',
+      subtitle: 'PAGES.UPLOAD_DOCUMENTS.SUBTITLE',
+      paragraph: 'PAGES.MEDIATION.START_PAGE.EACH_DOCUMENT_MUST_WITH_SAVE_FILE',
+      sectionTitle: 'PAGES.MEDIATION.UPLOAD_DOCUMENTS.SECTION_TITLE',
+      currentUrl: `/case/${claimId}/mediation/upload-documents`,
+      backLinkUrl: `/case/${claimId}/mediation/type-of-documents`,
+      cancelUrl: `/case/${claimId}/mediation/upload-documents/cancel-document-upload`,
+    }, language));
+    try {
+      const document = dom.window.document;
+      expect(document.querySelector('input[type="file"][name="documentsForYourStatement[0][fileUpload]"]')).not.toBeNull();
+      expect(document.querySelector('button[value="documentsForYourStatement[0][uploadButton]"]')).not.toBeNull();
+      expect(document.querySelector('button[value="add_another-yourStatement"]')).not.toBeNull();
+      expect(document.querySelector('input[name="documentsForYourStatement[0][yourName]"]')).not.toBeNull();
+    } finally {dom.window.close();}
+    expect(getMediationSummarySection(uploadDocuments, claimId, language).sections).toEqual([]);
+    expect(JSON.stringify([baseline, ga])).toBe(before);
+
+    const catalog = getUiPreviewPageCatalog();
+    const catalogueDom = new JSDOM(renderPresentation('features/ui-preview/index.njk', {catalog}, language));
+    try {
+      for (const [path, prerequisite] of [
+        [`/case/${claimId}/mediation/upload-documents`, 'Select Type of documents'],
+        [`/case/${claimId}/mediation/check-and-send`, 'Requires a saved mediation upload draft'],
+      ]) {
+        const entry = catalog.flatMap(group => group.pages).find(page => page.path === path);
+        expect(entry?.status).toBe('prerequisite');
+        expect(entry?.notes).toContain(prerequisite);
+        expect(catalogueDom.window.document.querySelector(`a[href="${path}"]`)).toBeNull();
+        expect(catalogueDom.window.document.querySelector('main')?.textContent).toContain(entry?.notes);
+      }
+    } finally {catalogueDom.window.close();}
+  });
+
   it('seeds current journey keys without mutating shared fixture objects', async () => {
     const before = JSON.stringify([baseline, ga]); const values = new Map<string, string>();
     const client = {set: jest.fn(async (k: string, v: string) => {values.set(k, v);}), expire: jest.fn(async (): Promise<void> => undefined)};

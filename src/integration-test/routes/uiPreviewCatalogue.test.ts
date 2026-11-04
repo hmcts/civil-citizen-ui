@@ -20,5 +20,5 @@ it('ready pages and upload prerequisites work in isolated and sequential bilingu
   const record = result.stdout.split('\n').find(line => line.startsWith('ROUTE_PROBE ')); expect(record).toBeDefined();
   const report = JSON.parse(record!.slice(12));
   expect(report.pages).toBeGreaterThan(250); expect(report.count).toBe(report.pages * 4);
-  expect(report.journeys).toBe(4); expect(report.failures).toEqual([]);
+  expect(report.journeys).toBe(6); expect(report.failures).toEqual([]);
 }, 130000);

@@ -2,6 +2,7 @@ import config from 'config';
 import * as propertiesVolume from '@hmcts/properties-volume';
 import type { Application } from 'express';
 import { get, set } from 'lodash';
+import {isUiPreviewEnabled} from 'common/utils/uiPreviewConfig';
 
 // express is imported for its type only, so requiring this module never loads express itself. The
 // App Insights bootstrap pulls it in before express, and OpenTelemetry can only instrument express
@@ -21,7 +22,7 @@ export class PropertiesVolume {
    * only through the properties volume, never as an environment variable.
    */
   static enable(env: string): void {
-    if (loaded || env === 'development') {
+    if (loaded || env === 'development' || isUiPreviewEnabled()) {
       return;
     }
     loaded = true;

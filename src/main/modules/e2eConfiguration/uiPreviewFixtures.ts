@@ -40,6 +40,9 @@ export const seedUiPreviewFixtures = async (
   draftData.draftClaimCreatedAt = now.toISOString();
   draft.case_data = draftData;
   source.case_data.caseRole = '[DEFENDANT]'; // Preview-only ownership metadata.
+  source.case_data.mediationUploadDocuments = {
+    typeOfDocuments: [{id: 1, type: 'YOUR_STATEMENT', checked: true, uploadDocuments: []}],
+  };
   const gaRows: Fixture[] = JSON.parse(JSON.stringify(gaBaseline));
   // All writes and expiries finish before readiness. Any failure rejects startup.
   await Promise.all([...rows, ...gaRows].map(async row => {
