@@ -2,7 +2,7 @@ import config from 'config';
 import {readFileSync} from 'node:fs';
 import {dirname, join} from 'node:path';
 import {runInNewContext} from 'node:vm';
-import {ModuleKind, transpileModule} from 'typescript';
+import {ModuleKind, ScriptTarget, transpileModule} from 'typescript';
 import {SpanKind} from '@opentelemetry/api';
 import {BasicTracerProvider, InMemorySpanExporter, SimpleSpanProcessor, SpanProcessor} from '@opentelemetry/sdk-trace-base';
 import {InMemoryLogRecordExporter, LoggerProvider, LogRecordProcessor, SimpleLogRecordProcessor} from '@opentelemetry/sdk-logs';
@@ -14,7 +14,24 @@ jest.mock('applicationinsights', () => ({}));
 const azureRoot = dirname(require.resolve('@azure/monitor-opentelemetry'));
 const {AzureMonitorSpanProcessor} = require(join(azureRoot, 'traces/spanProcessor.js'));
 const {AzureLogRecordProcessor} = require(join(azureRoot, 'logs/logRecordProcessor.js'));
-const {LiveMetrics} = require(join(azureRoot, 'metrics/quickpulse/liveMetrics.js'));
+const {LogApi} = require('applicationinsights/out/src/shim/logsApi');
+const {logToEnvelope} = require(join(dirname(require.resolve('@azure/monitor-opentelemetry-exporter')), 'utils/logUtils.js'));
+
+// Exercise both patched conversion implementations. Unchanged supporting modules
+// use their CommonJS exports; no Live Metrics constructor or network timer runs.
+function loadQuickPulse(format: string, name: string): ReturnType<typeof require> {
+  const commonRoot = join(azureRoot, 'metrics/quickpulse');
+  if (format === 'commonjs') return require(join(commonRoot, name));
+  const filename = join(azureRoot, '..', format, 'metrics/quickpulse', name);
+  const exports = {};
+  runInNewContext(transpileModule(readFileSync(filename, 'utf8'), {compilerOptions: {module: ModuleKind.CommonJS, target: ScriptTarget.ES2022}}).outputText, {
+    exports, process, URL,
+    require: (dependency: string) => dependency === './utils.js'
+      ? loadQuickPulse(format, 'utils.js')
+      : require(dependency.startsWith('.') ? join(commonRoot, dependency) : dependency),
+  }, {filename, timeout: 1000});
+  return exports;
+}
 
 interface ProcessorConfiguration {
   spanProcessors: SpanProcessor[];
@@ -25,6 +42,7 @@ interface ProcessorConfiguration {
 // Replace network/exporter setup and instrumentation; keep the Azure processors
 // and Live Metrics document conversion real. Never start the Live Metrics timer.
 function createPipeline(format: string) {
+  const {LiveMetrics} = loadQuickPulse(format, 'liveMetrics.js');
   const live = Object.assign(Object.create(LiveMetrics.prototype), {
     isCollectingData: true, documents: [],
     validDocumentFilterConjuctionGroupInfos: new Map(), validDerivedMetrics: new Map(),
@@ -150,6 +168,67 @@ describe.each(['commonjs', 'esm'])('Live Metrics redaction using the installed %
         expect(savedSpans[0].attributes).toEqual({...attributes, 'http.url': 'https://example.test/?key=[REDACTED]'});
         expect(savedLogs[0].body).toBe('password=[REDACTED]');
       }
+    } finally {
+      await tracer.shutdown();
+      await logger.shutdown();
+    }
+  });
+
+  it.each([false, true])('preserves SDK-generated exception and trace records (redaction failure=%s)', async fail => {
+    const {live, logs, tracer, logger} = createPipeline(format);
+    const error = new TypeError('Payment failed: token=dummySecret');
+    error.stack = 'TypeError: Payment failed\n    at pay (/app/payment.js?key=dummySecret:25:12)';
+    const properties = {url: '/payment?key=dummySecret', status: '500'};
+    try {
+      if (fail) (config.has as jest.Mock).mockImplementation(() => {throw new Error('config unavailable');});
+      const api = new LogApi(logger.getLogger('sdk-manual-records'));
+      api.trackException({exception: error, properties, measurements: {attempt: 2}});
+      api.trackTrace({message: 'Payment retry: token=dummySecret', properties: {attempt: 2}});
+      await logger.forceFlush();
+
+      const documents = live.getDocuments();
+      const records = logs.getFinishedLogRecords();
+      expect(documents).toHaveLength(2);
+      expect(records).toHaveLength(2);
+      expect(JSON.stringify(documents)).not.toContain('dummySecret');
+      expect(JSON.stringify(records.map(record => ({body: record.body, attributes: record.attributes})))).not.toContain('dummySecret');
+      expect(error.message).toBe('Payment failed: token=dummySecret');
+      expect(error.stack).toContain('key=dummySecret');
+      expect(properties.url).toBe('/payment?key=dummySecret');
+
+      const envelopes = records.map(record => logToEnvelope(record, 'test-key'));
+      if (fail) {
+        expect(documents).toEqual([
+          expect.objectContaining({documentType: 'Trace', message: '[REDACTED]'}),
+          expect.objectContaining({documentType: 'Trace', message: '[REDACTED]'}),
+        ]);
+        expect(live.totalExceptionCount).toBe(0);
+        expect(envelopes.every(envelope => envelope.data.baseData.message === '[REDACTED]')).toBe(true);
+      } else {
+        expect(documents).toEqual([
+          expect.objectContaining({
+            documentType: 'Exception', exceptionType: 'TypeError', exceptionMessage: 'Payment failed: token=[REDACTED]',
+            properties: expect.arrayContaining([{key: 'url', value: '/payment?key=[REDACTED]'}, {key: 'status', value: '500'}]),
+          }),
+          expect.objectContaining({documentType: 'Trace', message: 'Payment retry: token=[REDACTED]'}),
+        ]);
+        expect(live.totalExceptionCount).toBe(1);
+        const {getLogData} = loadQuickPulse(format, 'utils.js');
+        expect(getLogData(records[0]).StackTrace).toBe('at pay (/app/payment.js?key=[REDACTED]:25:12)');
+        expect(envelopes[0].data).toEqual(expect.objectContaining({
+          baseType: 'ExceptionData',
+          baseData: expect.objectContaining({
+            exceptions: [expect.objectContaining({
+              typeName: 'TypeError', message: 'Payment failed: token=[REDACTED]', hasFullStack: true,
+              parsedStack: [expect.objectContaining({assembly: 'at pay (/app/payment.js?key=[REDACTED]:25:12)', line: 25})],
+            })],
+            measurements: {attempt: 2},
+          }),
+        }));
+        expect(envelopes[1].data.baseType).toBe('MessageData');
+        expect(envelopes[1].data.baseData.message).toBe('Payment retry: token=[REDACTED]');
+      }
+      expect(JSON.stringify(envelopes)).not.toContain('dummySecret');
     } finally {
       await tracer.shutdown();
       await logger.shutdown();

@@ -324,7 +324,7 @@ __metadata:
 
 "@azure/monitor-opentelemetry@patch:@azure/monitor-opentelemetry@npm%3A1.20.1#./.yarn/patches/azure-monitor-opentelemetry-1.20.1-processor-order.patch::locator=civil-citizen-ui%40workspace%3A.":
   version: 1.20.1
-  resolution: "@azure/monitor-opentelemetry@patch:@azure/monitor-opentelemetry@npm%3A1.20.1#./.yarn/patches/azure-monitor-opentelemetry-1.20.1-processor-order.patch::version=1.20.1&hash=86afe3&locator=civil-citizen-ui%40workspace%3A."
+  resolution: "@azure/monitor-opentelemetry@patch:@azure/monitor-opentelemetry@npm%3A1.20.1#./.yarn/patches/azure-monitor-opentelemetry-1.20.1-processor-order.patch::version=1.20.1&hash=05187e&locator=civil-citizen-ui%40workspace%3A."
   dependencies:
     "@azure-rest/core-client": "npm:^2.5.2"
     "@azure/core-auth": "npm:^1.10.1"
@@ -357,7 +357,7 @@ __metadata:
     "@opentelemetry/semantic-conventions": "npm:^1.43.0"
     "@opentelemetry/winston-transport": "npm:^0.31.0"
     tslib: "npm:^2.8.1"
-  checksum: 10/367805335c8264955aeb8d5830aab591ad51647604e2ee34f3255882d45a3930dae2d5031931937330d2d50fed0c34e6eefd7e90ccb318bc387097a7172759de
+  checksum: 10/fc8f84c6769b41c827f5798c516109da81a19f352e5db33589dd74a922e3627d7b88fa29df7e564aea24f56dc2724eaef089cdfb46427d35f637f9a55c2e525c
   languageName: node
   linkType: hard
 

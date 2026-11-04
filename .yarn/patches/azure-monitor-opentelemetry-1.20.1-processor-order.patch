@@ -19,6 +19,56 @@ diff --git a/dist/commonjs/index.js b/dist/commonjs/index.js
              traceHandler.getBatchSpanProcessor(),
          ],
          resourceDetectors: resourceDetectorsList,
+diff --git a/dist/commonjs/metrics/quickpulse/utils.js b/dist/commonjs/metrics/quickpulse/utils.js
+--- a/dist/commonjs/metrics/quickpulse/utils.js
++++ b/dist/commonjs/metrics/quickpulse/utils.js
+@@ -326,19 +326,27 @@
+ }
+ function getLogData(log) {
+     const customDims = createCustomDimsFromAttributes(log.attributes);
++    // Manual Application Insights calls keep their data in the body, not native OTel attributes.
++    const legacyException = log.attributes["_MS.baseType"] === "ExceptionData"
++        ? log.body?.exceptions?.[0]
++        : undefined;
+     if ((0, utils_js_1.isExceptionTelemetry)(log)) {
+         return {
+             // eslint-disable-next-line @typescript-eslint/no-base-to-string
+-            Message: String(log.attributes[semantic_conventions_1.SEMATTRS_EXCEPTION_MESSAGE]),
++            Message: String(legacyException ? legacyException.message ?? "" : log.attributes[semantic_conventions_1.SEMATTRS_EXCEPTION_MESSAGE]),
+             // eslint-disable-next-line @typescript-eslint/no-base-to-string
+-            StackTrace: String(log.attributes[semantic_conventions_1.SEMATTRS_EXCEPTION_STACKTRACE]),
++            StackTrace: legacyException
++                ? (legacyException.parsedStack?.length
++                    ? legacyException.parsedStack.map(frame => frame.assembly).join("\n")
++                    : String(legacyException.stack ?? ""))
++                : String(log.attributes[semantic_conventions_1.SEMATTRS_EXCEPTION_STACKTRACE]),
+             CustomDimensions: customDims,
+         };
+     }
+     else {
+         return {
+             // eslint-disable-next-line @typescript-eslint/no-base-to-string
+-            Message: String(log.body),
++            Message: String(log.attributes["_MS.baseType"] === "MessageData" ? log.body?.message : log.body),
+             CustomDimensions: customDims,
+         };
+     }
+diff --git a/dist/commonjs/metrics/quickpulse/liveMetrics.js b/dist/commonjs/metrics/quickpulse/liveMetrics.js
+--- a/dist/commonjs/metrics/quickpulse/liveMetrics.js
++++ b/dist/commonjs/metrics/quickpulse/liveMetrics.js
+@@ -480,7 +480,11 @@
+                 documentConfiguration =
+                     this.validDocumentFilterConjuctionGroupInfos.get("Exception") ||
+                         new Map();
+-                this.applyDocumentFilters(documentConfiguration, columns, logRecord.attributes[semantic_conventions_1.SEMATTRS_EXCEPTION_TYPE]);
++                // Read the legacy type without changing the record used by normal export.
++                const exceptionType = logRecord.attributes["_MS.baseType"] === "ExceptionData"
++                    ? logRecord.body?.exceptions?.[0]?.typeName
++                    : logRecord.attributes[semantic_conventions_1.SEMATTRS_EXCEPTION_TYPE];
++                this.applyDocumentFilters(documentConfiguration, columns, exceptionType);
+                 derivedMetricInfos = this.validDerivedMetrics.get("Exception") || [];
+                 this.totalExceptionCount++;
+             }
 diff --git a/dist/esm/index.js b/dist/esm/index.js
 --- a/dist/esm/index.js
 +++ b/dist/esm/index.js
@@ -40,3 +90,53 @@ diff --git a/dist/esm/index.js b/dist/esm/index.js
              traceHandler.getBatchSpanProcessor(),
          ],
          resourceDetectors: resourceDetectorsList,
+diff --git a/dist/esm/metrics/quickpulse/utils.js b/dist/esm/metrics/quickpulse/utils.js
+--- a/dist/esm/metrics/quickpulse/utils.js
++++ b/dist/esm/metrics/quickpulse/utils.js
+@@ -298,19 +298,27 @@
+ }
+ export function getLogData(log) {
+     const customDims = createCustomDimsFromAttributes(log.attributes);
++    // Manual Application Insights calls keep their data in the body, not native OTel attributes.
++    const legacyException = log.attributes["_MS.baseType"] === "ExceptionData"
++        ? log.body?.exceptions?.[0]
++        : undefined;
+     if (isExceptionTelemetry(log)) {
+         return {
+             // eslint-disable-next-line @typescript-eslint/no-base-to-string
+-            Message: String(log.attributes[SEMATTRS_EXCEPTION_MESSAGE]),
++            Message: String(legacyException ? legacyException.message ?? "" : log.attributes[SEMATTRS_EXCEPTION_MESSAGE]),
+             // eslint-disable-next-line @typescript-eslint/no-base-to-string
+-            StackTrace: String(log.attributes[SEMATTRS_EXCEPTION_STACKTRACE]),
++            StackTrace: legacyException
++                ? (legacyException.parsedStack?.length
++                    ? legacyException.parsedStack.map(frame => frame.assembly).join("\n")
++                    : String(legacyException.stack ?? ""))
++                : String(log.attributes[SEMATTRS_EXCEPTION_STACKTRACE]),
+             CustomDimensions: customDims,
+         };
+     }
+     else {
+         return {
+             // eslint-disable-next-line @typescript-eslint/no-base-to-string
+-            Message: String(log.body),
++            Message: String(log.attributes["_MS.baseType"] === "MessageData" ? log.body?.message : log.body),
+             CustomDimensions: customDims,
+         };
+     }
+diff --git a/dist/esm/metrics/quickpulse/liveMetrics.js b/dist/esm/metrics/quickpulse/liveMetrics.js
+--- a/dist/esm/metrics/quickpulse/liveMetrics.js
++++ b/dist/esm/metrics/quickpulse/liveMetrics.js
+@@ -476,7 +476,11 @@
+                 documentConfiguration =
+                     this.validDocumentFilterConjuctionGroupInfos.get("Exception") ||
+                         new Map();
+-                this.applyDocumentFilters(documentConfiguration, columns, logRecord.attributes[SEMATTRS_EXCEPTION_TYPE]);
++                // Read the legacy type without changing the record used by normal export.
++                const exceptionType = logRecord.attributes["_MS.baseType"] === "ExceptionData"
++                    ? logRecord.body?.exceptions?.[0]?.typeName
++                    : logRecord.attributes[SEMATTRS_EXCEPTION_TYPE];
++                this.applyDocumentFilters(documentConfiguration, columns, exceptionType);
+                 derivedMetricInfos = this.validDerivedMetrics.get("Exception") || [];
+                 this.totalExceptionCount++;
+             }
