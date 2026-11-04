@@ -3,7 +3,6 @@ import {Task} from 'models/taskList/task';
 import {getTaskLists, outstandingTasksFromTaskLists} from 'services/features/common/taskListService';
 import assert from 'assert';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
-import {Claim} from 'models/claim';
 import {setResponseDeadline} from 'services/features/common/responseDeadlineAgreedService';
 import {AppRequest} from 'models/AppRequest';
 import {getResponseClaimById} from 'modules/draft-store/response/responseDraftStoreService';
