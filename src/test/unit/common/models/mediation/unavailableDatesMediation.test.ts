@@ -69,4 +69,26 @@ describe('UnavailableDatePeriodMediation error messages', () => {
     const missingBoth = new UnavailableDatePeriodMediation(UnavailableDateType.LONGER_PERIOD);
     expect(await messages(missingBoth)).toContain('ERRORS.CARM_ENTER_DATES_FOR_UNAVAILABILITY');
   });
+
+  it('returns an empty from message for a longer period with no from or to input', async () => {
+    const period = new UnavailableDatePeriodMediation(UnavailableDateType.LONGER_PERIOD);
+    const errors = await validate(period);
+    const fromError = errors.find(error => error.property === 'from');
+    expect(fromError?.constraints?.isDate).toBe('');
+  });
+
+  it('does not flag from as after until when the end year is missing', async () => {
+    const period = new UnavailableDatePeriodMediation(UnavailableDateType.LONGER_PERIOD,
+      {day: '10', month: '1', year: '2000'}, {day: '1', month: '1'});
+    expect(await messages(period)).not.toContain('ERRORS.CARM_ENTER_UNAVAILABILITY_FROM_DATE_BEFORE_TO_DATE');
+  });
+
+  it('flags from as after until when all end date parts are valid', async () => {
+    const from = addMonths(new Date(), 2);
+    const until = addMonths(new Date(), 1);
+    const period = new UnavailableDatePeriodMediation(UnavailableDateType.LONGER_PERIOD,
+      {day: String(from.getDate()), month: String(from.getMonth() + 1), year: String(from.getFullYear())},
+      {day: String(until.getDate()), month: String(until.getMonth() + 1), year: String(until.getFullYear())});
+    expect(await messages(period)).toContain('ERRORS.CARM_ENTER_UNAVAILABILITY_FROM_DATE_BEFORE_TO_DATE');
+  });
 });

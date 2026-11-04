@@ -281,6 +281,7 @@
     "src/main/common/models/judgmentOnline/judgmentOnline.ts",
     "src/main/common/models/mediation/canWeUse.ts",
     "src/main/common/models/mediation/mediationAgreement.ts",
+    "src/main/common/models/mediation/unavailableDatesMediation.ts",
     "src/main/common/models/mediation/uploadDocuments/mapperCaseDocumentToCCDDocuments.ts",
     "src/main/common/models/mediation/uploadDocuments/mediationDocumentUploadSections.ts",
     "src/main/common/models/mediation/uploadDocuments/uploadDocumentsCCD.ts",
