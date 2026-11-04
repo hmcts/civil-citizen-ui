@@ -45,9 +45,9 @@ describe('Request for Review', () => {
 
   describe('on GET', () => {
     it.each([
-      {role: CaseRole.CLAIMANT, text: 'Claimant saved reasons'},
-      {role: CaseRole.DEFENDANT, text: 'Defendant saved reasons'},
-    ])('restores the $role saved reasons in the editor', async ({role, text}) => {
+      {role: CaseRole.CLAIMANT, text: 'Claimant saved reasons', dashboardUrl: `/dashboard/${claimId}/claimantNewDesign`},
+      {role: CaseRole.DEFENDANT, text: 'Defendant saved reasons', dashboardUrl: `/dashboard/${claimId}/defendant`},
+    ])('restores the $role saved reasons and dashboard link in the editor', async ({role, text, dashboardUrl}) => {
       const claim = claimWithRole(role);
       claim.caseProgression = new CaseProgression();
       claim.caseProgression.requestForReviewClaimant = new RequestForReviewForm('Claimant saved reasons');
@@ -61,6 +61,7 @@ describe('Request for Review', () => {
       expect(res.render).toHaveBeenCalledTimes(1);
       expect(res.render).toHaveBeenCalledWith(viewPath, expect.objectContaining({
         form: expect.objectContaining({model: new RequestForReviewForm(text)}),
+        dashboardUrl,
       }));
       expect(mockSaveCaseProgression).not.toHaveBeenCalled();
       expect(next).not.toHaveBeenCalled();
