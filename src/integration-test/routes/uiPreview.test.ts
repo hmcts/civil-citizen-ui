@@ -3,18 +3,27 @@ import {spawnSync} from 'child_process';
 import {mkdtempSync, rmSync} from 'fs';
 import {tmpdir} from 'os';
 import {join} from 'path';
+const {uiPreviewProbeEnvironment} = require('../../test/utils/uiPreviewProbeEnvironment.cjs');
 
 describe('real application preview registration and authentication boundary', () => {
   it.each([['production', 'true'], ['e2eTest', 'false'], ['e2eTest', 'true']])('%s / flag=%s', (mode, flag) => {
     const directory = mkdtempSync(join(tmpdir(), 'preview-application-probe-'));
+    const originalEnvironment = process.env;
     let child;
     try {
-      child = spawnSync(process.execPath, [join(process.cwd(), 'src/test/utils/uiPreviewApplicationProbe.cjs'), mode, flag], {
+      // Exercise real application startup despite conflicting developer/CI settings.
+      process.env = {...originalEnvironment,
+        CIVIL_SERVICE_URL: 'https://unrelated.invalid', IDAM_API_URL: 'https://unrelated.invalid',
+        HTTP_PROXY: 'http://unrelated.invalid', HTTPS_PROXY: 'http://unrelated.invalid',
+        NODE_CONFIG_DIR: join(directory, 'missing-config'), TS_NODE_PROJECT: join(directory, 'missing-tsconfig.json'),
+        NODE_OPTIONS: '--require=missing-preview-preloader', APPINSIGHTS_KEY: 'unrelated-key',
+      };
+      child = spawnSync(process.execPath, [join(process.cwd(), 'src/test/utils/uiPreviewApplicationProbe.cjs')], {
         cwd: process.cwd(), encoding: 'utf8', timeout: 45000,
-        // Jenkins may omit TMPDIR. Exercise the portable fallback in a private directory.
-        env: {...process.env, LOG_LEVEL: 'ERROR', TMPDIR: undefined, TMP: directory, TEMP: directory},
+        env: uiPreviewProbeEnvironment(directory, mode, flag),
       });
     } finally {
+      process.env = originalEnvironment;
       rmSync(directory, {recursive: true, force: true});
     }
     if (child.error || child.status !== 0) throw new Error(`Application probe failed (${mode} / flag=${flag}):\n${child.error?.message || ''}\n${child.stderr}\n${child.stdout?.slice(-12000) || ''}`);
