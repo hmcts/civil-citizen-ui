@@ -129,8 +129,10 @@ This template app uses [Jest](https://jestjs.io//) as the test engine. You can r
 the following command:
 
 ```bash
-$ yarn test
+$ yarn test:coverage
 ```
+
+`yarn test` prints a message and exits. The Jenkins unit stage calls `yarn test` and then `yarn test:coverage`, so the unit suite runs once and writes `coverage/lcov.info` for Sonar.
 
 Here's how to run route integration tests (Jest + Supertest):
 
