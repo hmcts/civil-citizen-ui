@@ -678,6 +678,10 @@ export class AppInsights {
       const client = appInsights.defaultClient;
       client.context.tags[client.context.keys.cloudRole] = 'civil-citizen-ui';
 
+      // SDK 2 only. Application Insights 3 (PR 8319) ignores addTelemetryProcessor and
+      // filters records in its OpenTelemetry log processor instead. This severity filter
+      // has to be ported into that hook when the two changes meet, or logger.info is
+      // ingested with no rate limit in front of it.
       client.addTelemetryProcessor(dropBelowWarningTracesTelemetryProcessor);
       client.addTelemetryProcessor(stripCredentialsTelemetryProcessor);
 
@@ -689,7 +693,9 @@ export class AppInsights {
         client.addTelemetryProcessor(keepFailuresTelemetryProcessor);
       }
 
-      client.trackTrace({message: 'App insights activated'});
+      // Information is dropped by the severity filter. Warning keeps the trace that
+      // shows App Insights started.
+      client.trackTrace({message: 'App insights activated', severity: TRACE_SEVERITY_WARNING});
     } else {
       logger.error('App Insights connection string or instrumentation key not set');
     }

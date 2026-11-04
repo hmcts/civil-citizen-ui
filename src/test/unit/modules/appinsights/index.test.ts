@@ -1018,7 +1018,10 @@ describe('AppInsights module', () => {
       expect(mockAddTelemetryProcessor).toHaveBeenCalledWith(dropBelowWarningTracesTelemetryProcessor);
       expect(mockAddTelemetryProcessor).toHaveBeenCalledWith(stripCredentialsTelemetryProcessor);
       expect(mockAddTelemetryProcessor).toHaveBeenCalledWith(keepFailuresTelemetryProcessor);
-      expect(mockTrackTrace).toHaveBeenCalled();
+      expect(mockTrackTrace).toHaveBeenCalledWith({
+        message: 'App insights activated',
+        severity: 2,
+      });
     });
 
     it('registers credential processor but leaves sampling untouched in prod', () => {
