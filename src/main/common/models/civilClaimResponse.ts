@@ -94,10 +94,10 @@ import {CaseQueries} from 'models/queryManagement/caseQueries';
 import {CcdFixedCosts} from 'models/ccdResponse/ccdFixedCosts';
 
 export class CivilClaimResponse {
-  id: string;
-  case_data: CCDClaim;
-  state: CaseState;
-  last_modified: Date;
+  id?: string;
+  case_data?: CCDClaim;
+  state?: CaseState;
+  last_modified?: Date;
 
   constructor(
     id?: string,
