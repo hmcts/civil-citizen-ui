@@ -49,6 +49,17 @@ describe('cancelUnissuedClaimGuard', () => {
     expect(res.redirect).toHaveBeenCalledWith(dashboardUrl);
   });
 
+  it('should redirect to dashboard when claim fee is paid and claim issue is still pending', async () => {
+    const claim = buildClaim(CaseState.PENDING_CASE_ISSUED);
+    claim.issueDate = new Date('2024-01-02');
+    mockGetClaimById.mockResolvedValueOnce(claim);
+
+    const {res, next} = await runGuard(cancelUnissuedClaimGuard);
+
+    expect(res.redirect).toHaveBeenCalledWith(dashboardUrl);
+    expect(next).not.toHaveBeenCalled();
+  });
+
   it('should redirect to dashboard when user is the defendant', async () => {
     mockGetClaimById.mockResolvedValueOnce(buildClaim(CaseState.PENDING_CASE_ISSUED, CaseRole.DEFENDANT));
 

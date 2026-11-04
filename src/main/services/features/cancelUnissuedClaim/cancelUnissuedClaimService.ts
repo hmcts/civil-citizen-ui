@@ -5,4 +5,4 @@ export const isUnissuedClaimCancelled = (claim: Claim): boolean =>
   claim?.ccdState === CaseState.UNISSUED_CLAIM_CANCELLED;
 
 export const isCancelUnissuedClaimAvailable = (claim: Claim): boolean =>
-  !!claim?.isClaimant() && claim.ccdState === CaseState.PENDING_CASE_ISSUED;
+  !!claim?.isClaimant() && claim.ccdState === CaseState.PENDING_CASE_ISSUED && !claim.issueDate;
