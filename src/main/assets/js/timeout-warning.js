@@ -26,6 +26,10 @@ function TimeoutWarning($module) {
     this.sessionExpiresAt = this.readSharedExpiry();
   }
   this.timerText = $module.getAttribute('data-timer-text') || 'Your session will be reset in ';
+  this.minuteText = $module.getAttribute('data-timer-minute') || 'minute';
+  this.minutesText = $module.getAttribute('data-timer-minutes') || 'minutes';
+  this.secondText = $module.getAttribute('data-timer-second') || 'second';
+  this.secondsText = $module.getAttribute('data-timer-seconds') || 'seconds';
   this.timerExtraText = $module.getAttribute('data-timer-extra-text') || 'This is to protect your data.';
   this.timerRedirectText = $module.getAttribute('data-timer-redirect-text') || 'You are about to be redirected';
   this.idleTimeoutId = null;
@@ -125,7 +129,7 @@ TimeoutWarning.prototype.dialogSupported = function () {
   return false;
 };
 
-TimeoutWarning.prototype.resetIdleTime = function () {
+TimeoutWarning.prototype.resetIdleTime = function (renewImmediately) {
   if (this.isDialogOpen()) {
     return;
   }
@@ -137,7 +141,7 @@ TimeoutWarning.prototype.resetIdleTime = function () {
     this.scheduleWarningFromExpiry();
   }
 
-  this.extendDebounceId = setTimeout(function () {
+  var renew = function () {
     this.extendTimeOnServer(function (response) {
       if (!response || response.extended !== true) return;
       if (response.expiresAt) {
@@ -145,7 +149,16 @@ TimeoutWarning.prototype.resetIdleTime = function () {
       }
       this.scheduleWarningFromExpiry();
     }.bind(this));
-  }.bind(this), 3000);
+  }.bind(this);
+
+  // A radio/select change is often followed immediately by form navigation.
+  // Do not defer renewal in that case because navigation can cancel the timer
+  // before the request reaches the server.
+  if (renewImmediately) {
+    renew();
+  } else {
+    this.extendDebounceId = setTimeout(renew, 3000);
+  }
 
   if (window.localStorage) {
     window.localStorage.setItem(this.lastInteractionKey, new Date().toISOString());
@@ -169,6 +182,9 @@ TimeoutWarning.prototype.countIdleTime = function () {
   ['load', 'mousemove', 'mousedown', 'click', 'scroll', 'keypress', 'keyup', 'touchstart'].forEach(function (eventName) {
     window.addEventListener(eventName, resetIdleTime, {passive: true});
   });
+  window.addEventListener('change', function () {
+    resetIdleTime(true);
+  }, {passive: true});
 
   resetIdleTime();
 };
@@ -206,7 +222,7 @@ TimeoutWarning.prototype.startUiCountdown = function () {
   var minutes = Math.ceil(seconds / 60);
   var timerRunOnce = false;
   var iOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-  $countdown.textContent = minutes + ' minute' + (minutes > 1 ? 's' : '');
+    $countdown.textContent = minutes + ' ' + (minutes > 1 ? this.minutesText : this.minuteText);
 
   (function runTimer() {
     if ($module.sessionExpiresAt) seconds = Math.max(0, Math.ceil(($module.sessionExpiresAt - Date.now()) / 1000));
@@ -214,10 +230,10 @@ TimeoutWarning.prototype.startUiCountdown = function () {
     var secondsLeft = parseInt(seconds % 60, 10);
     var timerExpired = minutesLeft < 1 && secondsLeft < 1;
     var minutesText = minutesLeft > 0
-      ? '<span class="tabular-numbers">' + minutesLeft + '</span> minute' + (minutesLeft > 1 ? 's' : '')
+      ? '<span class="tabular-numbers">' + minutesLeft + '</span> ' + ($module.minutesText && minutesLeft > 1 ? $module.minutesText : $module.minuteText)
       : '';
     var secondsText = secondsLeft >= 1
-      ? ' <span class="tabular-numbers">' + secondsLeft + '</span> second' + (secondsLeft > 1 ? 's' : '')
+      ? ' <span class="tabular-numbers">' + secondsLeft + '</span> ' + ($module.secondsText && secondsLeft > 1 ? $module.secondsText : $module.secondText)
       : '';
     var atMinutesNumberAsText;
     var atSecondsNumberAsText;
@@ -231,7 +247,7 @@ TimeoutWarning.prototype.startUiCountdown = function () {
     }
 
     var atMinutesText = minutesLeft > 0
-      ? atMinutesNumberAsText + ' minute' + (minutesLeft > 1 ? 's' : '')
+      ? atMinutesNumberAsText + ' ' + ($module.minutesText && minutesLeft > 1 ? $module.minutesText : $module.minuteText)
       : '';
     var atSecondsText = secondsLeft >= 1
       ? ' ' + atSecondsNumberAsText + ' second' + (secondsLeft > 1 ? 's' : '')

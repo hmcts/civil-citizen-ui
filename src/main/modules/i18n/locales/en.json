@@ -183,7 +183,11 @@
       "EXTEND_BUTTON": "Stay signed in",
       "FALLBACK": "Your session will end at {{ time }}. This is to protect your data.",
       "TIMER_EXTRA_TEXT": "You will lose any unsaved answers.",
+      "TIMER_MINUTE": "minute",
+      "TIMER_MINUTES": "minutes",
       "TIMER_REDIRECT_TEXT": "You are about to be redirected",
+      "TIMER_SECOND": "second",
+      "TIMER_SECONDS": "seconds",
       "TIMER_TEXT": "For your security we will sign you out in ",
       "TITLE": "You're about to be signed out"
     },

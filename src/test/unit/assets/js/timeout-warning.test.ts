@@ -97,6 +97,17 @@ describe('TimeoutWarning', () => {
     expect(window.localStorage.getItem('timeUserLastInteractedWithPage')).not.toBeNull();
   });
 
+  it('renews the session immediately when a form value changes', () => {
+    const extend = jest.spyOn(moduleInstance, 'extendTimeOnServer').mockImplementation((callback) => {
+      callback?.({extended: true, expiresAt: Date.now() + 120000});
+    });
+
+    moduleInstance.init();
+    window.dispatchEvent(new Event('change'));
+
+    expect(extend).toHaveBeenCalledTimes(1);
+  });
+
   it('uses the polyfill or displays the fallback when dialogs are unsupported', () => {
     (global as unknown as {HTMLDialogElement: unknown}).HTMLDialogElement = undefined;
     const registerDialog = jest.fn();

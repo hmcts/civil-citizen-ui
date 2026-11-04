@@ -183,7 +183,11 @@
       "EXTEND_BUTTON": "Arhoswch wedi mewngofnodi",
       "FALLBACK": "Bydd eich sesiwn yn dod i ben am {{ time }}. Gwneir hyn i ddiogelu eich data.",
       "TIMER_EXTRA_TEXT": "Byddwch yn colli unrhyw atebion heb eu cadw.",
+      "TIMER_MINUTE": "munud",
+      "TIMER_MINUTES": "munud",
       "TIMER_REDIRECT_TEXT": "Rydych ar fin cael eich ailgyfeirio",
+      "TIMER_SECOND": "eiliad",
+      "TIMER_SECONDS": "eiliad",
       "TIMER_TEXT": "Er eich diogelwch byddwn yn eich allgofnodi mewn ",
       "TITLE": "Rydych chi ar fin cael eich allgofnodi"
     },
