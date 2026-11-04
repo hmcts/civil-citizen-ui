@@ -1,8 +1,11 @@
 import {Response} from 'express';
+import i18next from 'i18next';
+import en from 'modules/i18n/locales/en.json';
 import claimSummaryController from 'routes/features/dashboard/claimSummaryController';
 import {DEFENDANT_SUMMARY_URL} from 'routes/urls';
 import {CivilServiceClient} from 'client/civilServiceClient';
 import {
+  isBreathingSpaceEnabled,
   isCarmEnabledForCase,
   isDashboardEnabledForCase,
   isGaForLipsEnabled,
@@ -34,107 +37,10 @@ import {Party} from 'models/party';
 import {CaseRole} from 'form/models/caseRoles';
 import {ClaimantOrDefendant} from 'models/partyType';
 import {ClaimBilingualLanguagePreference} from 'models/claimBilingualLanguagePreference';
-<<<<<<< HEAD
+import {DashboardNotification} from 'models/dashboard/dashboardNotification';
+import {DashboardNotificationList} from 'models/dashboard/dashboardNotificationList';
 import {BreathingSpaceEnterInfo} from 'models/breathingSpace/breathingSpaceEnterInfo';
 import {BreathingSpaceType} from 'models/breathingSpace/breathingSpaceType';
-import {DashboardNotificationList} from 'models/dashboard/dashboardNotificationList';
-import * as dashboardService from 'services/dashboard/dashboardService';
-import {DashboardNotification} from 'models/dashboard/dashboardNotification';
-
-const nock = require('nock');
-const session = require('supertest-session');
-const citizenRoleToken: string = config.get('citizenRoleToken');
-const testSession = session(app);
-const claimSummaryService = require('services/features/dashboard/claimSummaryService');
-const getDocumentsContentMock = claimSummaryService.getDocumentsContent as jest.Mock;
-const getEvidenceUploadContentMock = claimSummaryService.getEvidenceUploadContent as jest.Mock;
-const getLatestUpdateContentMock = getLatestUpdateContent as jest.Mock;
-const isCarmApplicableAndSmallClaimMock = isCarmApplicableAndSmallClaim as jest.Mock;
-const isCarmEnabledForCaseMock = launchDarklyClient.isCarmEnabledForCase as jest.Mock;
-const isDashboardEnabledForCase = launchDarklyClient.isDashboardEnabledForCase as jest.Mock;
-const isGAForLiPEnabledMock = launchDarklyClient.isGaForLipsEnabled as jest.Mock;
-const isWelshEnabledForMainCaseMock = launchDarklyClient.isWelshEnabledForMainCase as jest.Mock;
-const isBreathingSpaceEnabledMock = launchDarklyClient.isBreathingSpaceEnabled as jest.Mock;
-const getNotificationsMock = dashboardService.getNotifications as jest.Mock;
-
-const mockExpectedDashboardInfo=
-  [{
-    'categoryEn': 'Hearing',
-    'categoryCy': 'Hearing Welsh',
-    tasks: [{
-      'id': '8c2712da-47ce-4050-bbee-650134a7b9e5',
-      'status': 'ACTION_NEEDED',
-      'taskNameEn': 'task_name_en',
-      'hintTextEn': 'hint_text_en',
-      'taskNameCy': 'task_name_cy',
-      'hintTextCy': 'hint_text_cy',
-    }, {
-      'id': '8c2712da-47ce-4050-bbee-650134a7b9e6',
-      'status': 'ACTION_NEEDED',
-      'taskNameEn': 'task_name_en',
-      'hintTextEn': 'hint_text_en',
-      'taskNameCy': 'task_name_cy',
-      'hintTextCy': 'hint_text_cy',
-    }],
-  },
-  {
-    'categoryEn': 'Hearing',
-    'categoryCy': 'Hearing Welsh',
-    tasks: [{
-      'id': '8c2712da-47ce-4050-bbee-650134a7b9e5',
-      'status': 'ACTION_NEEDED',
-      'taskNameEn': 'task_name_en',
-      'hintTextEn': 'hint_text_en',
-      'taskNameCy': 'task_name_cy',
-      'hintTextCy': 'hint_text_cy',
-    }, {
-      'id': '8c2712da-47ce-4050-bbee-650134a7b9e6',
-      'status': 'ACTION_NEEDED',
-      'taskNameEn': 'task_name_en',
-      'hintTextEn': 'hint_text_en',
-      'taskNameCy': 'task_name_cy',
-      'hintTextCy': 'hint_text_cy',
-    }],
-  },
-  {
-    'categoryEn': 'Claim',
-    'categoryCy': 'Claim Welsh',
-    tasks:[{
-      'id': '8c2712da-47ce-4050-bbee-650134a7b9e7',
-      'statusEn': 'ACTION_NEEDED',
-      'statusCy': 'ACTION_NEEDED',
-      'statusColour': 'govuk-red',
-      'taskNameEn': 'task_name_en2',
-      'hintTextEn': 'hint_text_en2',
-      'taskNameCy': 'task_name_cy2',
-      'hintTextCy': 'hint_text_cy2',
-    },
-    {
-      'id': '8c2712da-47ce-4050-bbee-650134a7b9e8',
-      'statusEn': 'ACTION_NEEDED',
-      'statusCy': 'ACTION_NEEDED',
-      'statusColour': 'govuk-red',
-      'taskNameEn': 'task_name_en2',
-      'hintTextEn': 'hint_text_en2',
-      'taskNameCy': 'task_name_cy2',
-      'hintTextCy': 'hint_text_cy2',
-    },
-    {
-      'id': '8c2712da-47ce-4050-bbee-650134a7b9e8',
-      'statusEn': 'ACTION_NEEDED',
-      'statusCy': 'ACTION_NEEDED',
-      'statusColour': 'govuk-red',
-      'taskNameEn': 'Hearings Upload hearing documents',
-      'hintTextEn': 'hint_text_en2',
-      'taskNameCy': 'task_name_cy2',
-      'hintTextCy': 'hint_text_cy2',
-    }] as DashboardTask[],
-  }] as DashboardTaskList[];
-const dashboard = new Dashboard(mockExpectedDashboardInfo);
-jest.mock('../../../../../main/app/auth/user/oidc', () => ({
-  ...jest.requireActual('../../../../../main/app/auth/user/oidc') as Module,
-  getUserDetails: jest.fn(() => USER_DETAILS),
-=======
 import {CaseProgression} from 'models/caseProgression/caseProgression';
 import {TabId, TabLabel} from 'routes/tabs';
 import {AppRequest} from 'models/AppRequest';
@@ -147,6 +53,7 @@ jest.mock('client/civilServiceClient', () => {
   return {CivilServiceClient: jest.fn(() => methods)};
 });
 jest.mock('app/auth/launchdarkly/launchDarklyClient', () => ({
+  isBreathingSpaceEnabled: jest.fn(),
   isDashboardEnabledForCase: jest.fn(),
   isCarmEnabledForCase: jest.fn(),
   isGaForLipsEnabled: jest.fn(),
@@ -173,7 +80,6 @@ jest.mock('services/features/caseProgression/bundles/bundlesService', () => ({
 jest.mock('modules/draft-store/draftStoreService', () => ({
   generateRedisKey: jest.fn(),
   updateFieldDraftClaimFromStore: jest.fn(),
->>>>>>> 75ffe5cb26 (DTSCCI-6282: run the unit suite once and clean Sonar exclusions (#8380))
 }));
 jest.mock('services/dashboard/dashboardService', () => ({
   extractOrderDocumentIdFromNotification: jest.fn(),
@@ -256,6 +162,7 @@ describe('Claim Summary Controller Defendant', () => {
     jest.clearAllMocks();
     claim = buildClaim();
     civilServiceMethods.retrieveClaimDetails.mockResolvedValue(claim);
+    (isBreathingSpaceEnabled as jest.Mock).mockResolvedValue(false);
     (isDashboardEnabledForCase as jest.Mock).mockResolvedValue(false);
     (isCarmEnabledForCase as jest.Mock).mockResolvedValue(true);
     (isCarmApplicableAndSmallClaim as jest.Mock).mockReturnValue(true);
@@ -473,95 +380,78 @@ describe('Claim Summary Controller Defendant', () => {
       expect(res.render).not.toHaveBeenCalled();
     });
 
-    it('should show breathing space Important banner for defendant when claim is in standard BS', async () => {
-      const claim = new Claim();
-      claim.caseRole = CaseRole.DEFENDANT;
-      claim.ccdState = CaseState.CASE_ISSUED;
-      claim.totalClaimAmount = 649;
-      claim.submittedDate = new Date();
-      claim.enterBreathing = new BreathingSpaceEnterInfo(BreathingSpaceType.STANDARD);
+    describe('breathing space', () => {
+      beforeAll(async () => {
+        if (!i18next.isInitialized) {
+          await i18next.init({lng: 'en', fallbackLng: 'en', resources: {en: {translation: en}}});
+        }
+      });
 
-      jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockResolvedValueOnce(claim);
-      isDashboardEnabledForCase.mockResolvedValue(true);
-      isBreathingSpaceEnabledMock.mockResolvedValue(true);
-      getNotificationsMock.mockResolvedValue(new DashboardNotificationList([]));
-      jest.spyOn(draftStoreService, 'updateFieldDraftClaimFromStore');
+      const notificationList = () => new DashboardNotificationList([
+        new DashboardNotification(
+          'keep-this',
+          'Keep this notification',
+          'Cadwch yr hysbysiad hwn',
+          'This notification should still be rendered',
+          'Dylai\'r hysbysiad hwn gael ei ddangos o hyd',
+          '',
+          undefined,
+          undefined,
+          '',
+          '',
+        ),
+      ]);
 
-      await testSession
-        .get(`/dashboard/${claimId}/defendant`)
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Case is in breathing space');
-          expect(res.text).toContain('Important');
-        });
-    });
+      const renderedNotifications = (res: {render: jest.Mock}): DashboardNotificationList =>
+        (res.render.mock.calls[0][1] as {dashboardNotifications: DashboardNotificationList}).dashboardNotifications;
 
-    it('should show breathing space Important banner for defendant when claim is in mental health BS', async () => {
-      const claim = new Claim();
-      claim.caseRole = CaseRole.DEFENDANT;
-      claim.ccdState = CaseState.CASE_ISSUED;
-      claim.totalClaimAmount = 649;
-      claim.submittedDate = new Date();
-      claim.enterBreathing = new BreathingSpaceEnterInfo(BreathingSpaceType.MENTAL_HEALTH);
+      it('should show the defendant banner while standard breathing space is active', async () => {
+        claim.enterBreathing = new BreathingSpaceEnterInfo(BreathingSpaceType.STANDARD);
+        (isDashboardEnabledForCase as jest.Mock).mockResolvedValue(true);
+        (isBreathingSpaceEnabled as jest.Mock).mockResolvedValue(true);
+        (getNotifications as jest.Mock).mockResolvedValue(notificationList());
 
-      jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockResolvedValueOnce(claim);
-      isDashboardEnabledForCase.mockResolvedValue(true);
-      isBreathingSpaceEnabledMock.mockResolvedValue(true);
-      getNotificationsMock.mockResolvedValue(new DashboardNotificationList([]));
-      jest.spyOn(draftStoreService, 'updateFieldDraftClaimFromStore');
+        const {res} = await invoke();
+        const items = renderedNotifications(res).items;
 
-      await testSession
-        .get(`/dashboard/${claimId}/defendant`)
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).toContain('Case is in breathing space');
-          expect(res.text).toContain('Important');
-        });
-    });
+        expect(items.map((item) => item.id)).toEqual(['breathing-space-defendant', 'keep-this']);
+        expect(items[0].titleEn).toBe('Important');
+        expect(items[0].descriptionEn).toContain('Case is in breathing space');
+      });
 
-    it('should not show breathing space banner when claim is not in breathing space', async () => {
-      const claim = new Claim();
-      claim.caseRole = CaseRole.DEFENDANT;
-      claim.ccdState = CaseState.CASE_ISSUED;
-      claim.totalClaimAmount = 649;
-      claim.submittedDate = new Date();
+      it('should show the defendant banner for a mental health breathing space', async () => {
+        claim.enterBreathing = new BreathingSpaceEnterInfo(BreathingSpaceType.MENTAL_HEALTH);
+        (isDashboardEnabledForCase as jest.Mock).mockResolvedValue(true);
+        (isBreathingSpaceEnabled as jest.Mock).mockResolvedValue(true);
+        (getNotifications as jest.Mock).mockResolvedValue(notificationList());
 
-      jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockResolvedValueOnce(claim);
-      isDashboardEnabledForCase.mockResolvedValue(true);
-      isBreathingSpaceEnabledMock.mockResolvedValue(true);
-      getNotificationsMock.mockResolvedValue(new DashboardNotificationList([
-        new DashboardNotification('other', 'Important', 'Important', '<p>Other</p>', '<p>Other</p>', '', undefined, undefined, '', undefined),
-      ]));
-      jest.spyOn(draftStoreService, 'updateFieldDraftClaimFromStore');
+        const {res} = await invoke();
+        const items = renderedNotifications(res).items;
 
-      await testSession
-        .get(`/dashboard/${claimId}/defendant`)
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).not.toContain('Case is in breathing space');
-        });
-    });
+        expect(items[0].id).toBe('breathing-space-defendant');
+        expect(items[0].descriptionEn).toContain('Case is in breathing space');
+      });
 
-    it('should not show breathing space banner when breathing space feature is disabled', async () => {
-      const claim = new Claim();
-      claim.caseRole = CaseRole.DEFENDANT;
-      claim.ccdState = CaseState.CASE_ISSUED;
-      claim.totalClaimAmount = 649;
-      claim.submittedDate = new Date();
-      claim.enterBreathing = new BreathingSpaceEnterInfo(BreathingSpaceType.STANDARD);
+      it('should not show a breathing space banner when the claim is not in breathing space', async () => {
+        (isDashboardEnabledForCase as jest.Mock).mockResolvedValue(true);
+        (isBreathingSpaceEnabled as jest.Mock).mockResolvedValue(true);
+        (getNotifications as jest.Mock).mockResolvedValue(notificationList());
 
-      jest.spyOn(CivilServiceClient.prototype, 'retrieveClaimDetails').mockResolvedValueOnce(claim);
-      isDashboardEnabledForCase.mockResolvedValue(true);
-      isBreathingSpaceEnabledMock.mockResolvedValue(false);
-      getNotificationsMock.mockResolvedValue(new DashboardNotificationList([]));
-      jest.spyOn(draftStoreService, 'updateFieldDraftClaimFromStore');
+        const {res} = await invoke();
 
-      await testSession
-        .get(`/dashboard/${claimId}/defendant`)
-        .expect((res: Response) => {
-          expect(res.status).toBe(200);
-          expect(res.text).not.toContain('Case is in breathing space');
-        });
+        expect(renderedNotifications(res).items.map((item) => item.id)).toEqual(['keep-this']);
+      });
+
+      it('should not show a breathing space banner when the feature is disabled', async () => {
+        claim.enterBreathing = new BreathingSpaceEnterInfo(BreathingSpaceType.STANDARD);
+        (isDashboardEnabledForCase as jest.Mock).mockResolvedValue(true);
+        (isBreathingSpaceEnabled as jest.Mock).mockResolvedValue(false);
+        (getNotifications as jest.Mock).mockResolvedValue(notificationList());
+
+        const {res} = await invoke();
+
+        expect(renderedNotifications(res).items.map((item) => item.id)).toEqual(['keep-this']);
+      });
     });
   });
 });
