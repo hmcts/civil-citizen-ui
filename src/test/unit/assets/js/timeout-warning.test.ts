@@ -103,7 +103,7 @@ describe('TimeoutWarning', () => {
     });
 
     moduleInstance.init();
-    window.dispatchEvent(new Event('change'));
+    window.dispatchEvent(new window.Event('change'));
 
     expect(extend).toHaveBeenCalledTimes(1);
   });
