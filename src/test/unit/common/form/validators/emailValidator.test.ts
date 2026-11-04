@@ -55,9 +55,10 @@ describe('EmailValidator', () => {
 
     it('should return false for email exceeding max length', () => {
 
-      const longLocal = 'a'.repeat(310);
+      const longLocal = 'a'.repeat(314);
       const value = `${longLocal}@ex.com`;
 
+      expect(value).toHaveLength(321);
       const result = validator.validate(value);
 
       expect(result).toEqual(false);
