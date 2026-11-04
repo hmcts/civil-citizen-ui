@@ -28,7 +28,8 @@ describe('defendantTimelineService', () => {
         claim.partialAdmission = toCUIPartialAdmission(ccd);
         claim.rejectAllOfClaim = toCUIRejectAllOfClaim(ccd);
         const saved = responseType === ResponseType.PART_ADMISSION ? claim.partialAdmission.timeline : claim.rejectAllOfClaim.timeline;
-        expect(saved.rows).toBeUndefined();
+        const savedRows = saved.rows;
+        expect(savedRows).toEqual([]);
 
         const result = getDefendantTimeline(claim);
 
@@ -36,7 +37,8 @@ describe('defendantTimelineService', () => {
         expect(result.rows).toHaveLength(4);
         expect(result.rows.every(row => row.isEmpty())).toBe(true);
         expect(new Set(result.rows).size).toBe(4);
-        expect(saved.rows).toBeUndefined();
+        expect(saved.rows).toBe(savedRows);
+        expect(saved.rows).toEqual([]);
         expect(saved.comment).toBe('Saved comment & details');
       },
     );
