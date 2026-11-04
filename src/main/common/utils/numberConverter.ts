@@ -3,7 +3,7 @@ export function toNumberOrUndefined(value?: string): number | undefined {
   return Number.isNaN(numberValue) ? undefined : numberValue;
 }
 
-export function toOptionalNumber(value?: string): number {
+export function toOptionalNumber(value?: string): number | undefined {
   return value === undefined || value === null || String(value).trim() === '' ? undefined : Number(value);
 }
 

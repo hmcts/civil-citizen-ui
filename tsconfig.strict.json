@@ -318,6 +318,7 @@
     "src/main/common/utils/fileContentTypeUtils.ts",
     "src/main/common/utils/htmlFormConverter.ts",
     "src/main/common/utils/languageToggleUtils.ts",
+    "src/main/common/utils/numberConverter.ts",
     "src/main/common/utils/pageSectionBuilder.ts",
     "src/main/common/utils/routeParamUtils.ts",
     "src/main/common/utils/taskList/tasks/checkAndSubmitYourResponse.ts",
