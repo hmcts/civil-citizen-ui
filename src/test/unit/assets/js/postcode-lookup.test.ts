@@ -1,4 +1,5 @@
 import axios from 'axios';
+import config from 'config';
 import {readFileSync} from 'fs';
 import {lookupByPostcodeAndDataSet} from 'modules/ordnance-survey-key/ordnanceSurveyKeyService';
 import {MOCK_API_RESPONSE} from '../../../utils/mocks/ordnanceSurvey/osMocks';
@@ -74,6 +75,11 @@ describe('preserving master address formatting through actual macro fields', () 
   });
 
   it('uses current DPA/LPI service outputs and UPRN identifier fallback', async () => {
+    jest.spyOn(config, 'get').mockImplementation((key: string) => {
+      if (key === 'services.postcodeLookup.ordnanceSurveyApiKey') return 'postcode-test-key';
+      if (key === 'services.postcodeLookup.ordnanceSurveyApiUrl') return 'https://postcode.example.test';
+      throw new Error(`Unexpected configuration key: ${key}`);
+    });
     jest.spyOn(axios, 'get').mockResolvedValue({data: {results: MOCK_API_RESPONSE}});
     const data = await lookupByPostcodeAndDataSet('W1J 7NT');
     expect(data.addresses.every(item => item.country === 'England' || item.country === 'Wales')).toBe(true);
