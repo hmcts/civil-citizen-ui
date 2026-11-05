@@ -1,6 +1,7 @@
 import {Response} from 'express';
 import {Claim} from 'common/models/claim';
 import {GeneralApplication} from 'models/generalApplication/GeneralApplication';
+import {QualifiedStatementOfTruth} from 'models/generalApplication/QualifiedStatementOfTruth';
 import {ApplicationType, ApplicationTypeOption} from 'models/generalApplication/applicationType';
 import {CaseProgressionHearing} from 'models/caseProgression/caseProgressionHearing';
 import {Party} from 'models/party';
@@ -117,6 +118,7 @@ describe('General Application - Check your answers', () => {
       await postHandler(req as never, res as unknown as Response, next);
 
       expect(res.redirect).toHaveBeenCalledWith(confirmUrl('123456'));
+      expect(claim.generalApplication.statementOfTruth).toBeInstanceOf(QualifiedStatementOfTruth);
       expect(claim.generalApplication.statementOfTruth).toEqual(expect.objectContaining({
         name: 'Mr Applicant',
         title: 'director',
