@@ -17,6 +17,9 @@ export class HowMuchOweAmountValidator implements ValidatorConstraintInterface {
    * For example @Validate(NumberEqualToPropertyValueOrLessValidator, ['maxValue']
    */
   validate(value: number, validationArguments?: ValidationArguments): Promise<boolean> | boolean {
+    if (!validationArguments) {
+      return true;
+    }
     if (validationArguments.constraints && validationArguments.constraints.length > 0) {
       const property = validationArguments.constraints[0];
       const propertyValue = (validationArguments.object as any)[property];

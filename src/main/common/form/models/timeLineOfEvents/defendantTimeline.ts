@@ -6,7 +6,7 @@ const MINIMUM_ROWS = 4;
 
 export class DefendantTimeline {
   @ValidateNested({each: true})
-    rows: TimelineRow[];
+    rows?: TimelineRow[];
 
   @ValidateIf(o => o.comment !== undefined)
   @MaxLength(FREE_TEXT_MAX_LENGTH, {message: 'ERRORS.TEXT_TOO_MANY'})

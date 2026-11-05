@@ -13,6 +13,14 @@ describe('HowMuchOweAmountValidator', () => {
   });
 
   describe('validate', () => {
+    it('should return true when validation arguments are undefined', () => {
+      //Given
+      //When
+      const result = validator.validate(10, undefined);
+      //Then
+      expect(result).toEqual(true);
+    });
+
     it('should return true when constraints are missing', () => {
       //Given
       const validationArguments = buildArgs({}, []);
