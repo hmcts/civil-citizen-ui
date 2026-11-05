@@ -19,13 +19,13 @@ import {formatDateSlash} from 'common/utils/dateUtils';
 
 jest.mock('i18next');
 jest.mock('services/features/caseProgression/uploadedEvidenceFormatter');
-const mockTranslate = t as jest.Mock;
+const mockTranslate = jest.mocked(t);
 const mockDocumentLink = UploadedEvidenceFormatter.getDocumentLink as jest.Mock;
 const mockDocumentType = UploadedEvidenceFormatter.getDocumentTypeName as jest.Mock;
 const lang = 'en';
 const documentURL = 'document url';
 
-mockTranslate.mockImplementation( (key: string[]) => {
+mockTranslate.mockImplementation( (key: string | string[]) => {
   return key.toString();
 });
 
