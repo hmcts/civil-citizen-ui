@@ -6,7 +6,7 @@ import {AxiosError, AxiosHeaders} from 'axios';
 const {OidcMiddleware} = jest.requireActual('modules/oidc') as typeof import('modules/oidc');
 import {AppRequest} from 'models/AppRequest';
 import {getOidcResponse, getUserDetails, getSessionIssueTime} from 'app/auth/user/oidc';
-import {CALLBACK_URL, DASHBOARD_URL, SIGN_IN_URL} from 'routes/urls';
+import {ASSIGN_CLAIM_URL, CALLBACK_URL, DASHBOARD_URL, SIGN_IN_URL, UNAUTHORISED_URL} from 'routes/urls';
 
 jest.mock('app/auth/user/oidc');
 jest.mock('app/auth/launchdarkly/launchDarklyClient', () => ({
@@ -30,10 +30,12 @@ const createApp = () => {
   const store = new session.MemoryStore();
   app.use(session({secret: 'callback-integration-test', store, resave: false, saveUninitialized: false}));
   app.get('/seed', (req, res) => {
-    (req as AppRequest).session.claimIssueTasklist = false;
+    (req as AppRequest).session.assignClaimURL = req.query.assignClaim ? ASSIGN_CLAIM_URL : undefined;
+    (req as AppRequest).session.claimIssueTasklist = Boolean(req.query.taskList);
     res.sendStatus(204);
   });
   new OidcMiddleware().enableFor(app);
+  app.get(UNAUTHORISED_URL, (_req, res) => res.sendStatus(403));
   app.get(DASHBOARD_URL, (_req, res) => res.sendStatus(200));
   return app;
 };
@@ -105,5 +107,35 @@ describe('duplicate OIDC callbacks with a shared session store', () => {
     expect(response.status).toBe(302);
     expect(response.headers.location).toBe(SIGN_IN_URL);
     expect(getUserDetails).not.toHaveBeenCalled();
+  });
+
+  it.each(['', '?assignClaim=true', '?taskList=true'])(
+    'ends a non-citizen sign-in at the unauthorised page, including saved journeys (%s)', async seedQuery => {
+      const agent = request.agent(createApp());
+      await agent.get(`/seed${seedQuery}`);
+      (getUserDetails as jest.Mock).mockReturnValue({...user, roles: ['caseworker']});
+      (getOidcResponse as jest.Mock).mockResolvedValue({id_token: 'test-id-token', access_token: 'test-access-token'});
+
+      const callback = await agent.get(CALLBACK_URL).query({code: 'non-citizen-code'});
+      expect(callback.headers.location).toBe(UNAUTHORISED_URL);
+      expect((await agent.get(callback.headers.location)).status).toBe(403);
+      expect(getOidcResponse).toHaveBeenCalledTimes(1);
+      expect((await agent.get(DASHBOARD_URL)).headers.location).toBe(SIGN_IN_URL);
+    },
+  );
+
+  it('ends a rejected non-citizen grant at the unauthorised page without restarting sign-in', async () => {
+    const agent = request.agent(createApp());
+    (getUserDetails as jest.Mock).mockReturnValue({...user, roles: ['caseworker']});
+    (getOidcResponse as jest.Mock)
+      .mockResolvedValueOnce({id_token: 'test-id-token', access_token: 'test-access-token'})
+      .mockRejectedValueOnce(invalidGrant());
+    await agent.get(CALLBACK_URL).query({code: 'non-citizen-code'});
+
+    const replay = await agent.get(CALLBACK_URL).query({code: 'non-citizen-code'});
+    expect(replay.headers.location).toBe(UNAUTHORISED_URL);
+    expect((await agent.get(replay.headers.location)).status).toBe(403);
+    expect(getUserDetails).toHaveBeenCalledTimes(1);
+    expect((await agent.get(DASHBOARD_URL)).headers.location).toBe(SIGN_IN_URL);
   });
 });

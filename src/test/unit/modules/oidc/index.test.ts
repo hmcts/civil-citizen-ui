@@ -28,6 +28,9 @@ import {getClaimId, getFeeTypeFromUrl, isTestingSupportDraftUrl, OidcMiddleware}
 import {createMockResponse} from '../../../utils/getRouteHandler';
 
 jest.mock('app/auth/user/oidc');
+jest.mock('modules/oidc/callbackDiagnostics', () => ({
+  recordCallbackDiagnostics: jest.fn(() => jest.fn()),
+}));
 jest.mock('app/auth/launchdarkly/launchDarklyClient', () => ({
   isHmctsAccessMigrationEnabled: jest.fn().mockResolvedValue(false),
 }));
@@ -195,6 +198,22 @@ describe('OIDC middleware', () => {
       expect(res.redirect).toHaveBeenCalledWith(UNAUTHORISED_URL);
     });
 
+    it('does not look up a payment destination for a non-citizen with a saved journey', async () => {
+      mockGetUserDetails.mockReturnValue({...userDetails, roles: ['caseworker']});
+      mockGetPaymentConfirmationUrl.mockResolvedValue(paymentUrl);
+      const session = createSession();
+      session.assignClaimURL = ASSIGN_CLAIM_URL;
+      session.paymentConfirmationContext = {claimId: paymentClaimId, feeType: FeeType.CLAIMISSUED};
+
+      const {res} = await invoke(routeHandler('get', CALLBACK_URL), {
+        query: {code: 'non-citizen-code'}, session, originalUrl: CALLBACK_URL,
+      });
+
+      expect(res.redirect).toHaveBeenCalledWith(UNAUTHORISED_URL);
+      expect(mockGetPaymentConfirmationUrl).not.toHaveBeenCalled();
+      expect(mockDeletePaymentConfirmationUrl).not.toHaveBeenCalled();
+    });
+
     it('redirects back to the stored payment confirmation URL after login', async () => {
       mockGetPaymentConfirmationUrl.mockResolvedValue(paymentUrl);
       const session = createSession();
@@ -295,6 +314,19 @@ describe('OIDC middleware', () => {
   });
 
   describe('authentication gate', () => {
+    it.each([undefined, {id: 'non-citizen', roles: ['caseworker']}])(
+      'allows the unauthorised page to render without another sign-in (%j)', async user => {
+        const {res, next} = await invoke(authGate, {
+          path: UNAUTHORISED_URL,
+          originalUrl: UNAUTHORISED_URL,
+          session: {...createSession(), user},
+        });
+
+        expect(next).toHaveBeenCalledWith();
+        expect(res.redirect).not.toHaveBeenCalled();
+      },
+    );
+
     it('allows a signed-in citizen through', async () => {
       const {res, next} = await invoke(authGate, {
         originalUrl: DASHBOARD_URL,
