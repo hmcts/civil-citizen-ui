@@ -23,7 +23,11 @@ function TimeoutWarning($module) {
   this.sessionExpiresAt = Number($module.getAttribute('data-session-expires-at')) || 0;
   this.csrfToken = $module.getAttribute('data-csrf-token') || '';
   if (window.localStorage) {
-    this.sessionExpiresAt = this.readSharedExpiry();
+    // A new login can happen after the previous session timed out. In that
+    // case localStorage still contains the old session's expired timestamp;
+    // never let it override the fresh server-rendered expiry.
+    this.sessionExpiresAt = Math.max(this.sessionExpiresAt, this.readSharedExpiry());
+    this.publishExpiry(this.sessionExpiresAt);
   }
   this.timerText = $module.getAttribute('data-timer-text') || 'Your session will be reset in ';
   this.minuteText = $module.getAttribute('data-timer-minute') || 'minute';
