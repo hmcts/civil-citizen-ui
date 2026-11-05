@@ -2,12 +2,15 @@ import {isDecimal, toNumberOrString, toNumberOrUndefined, toOptionalNumber} from
 
 describe('numberConverter', () => {
   describe('toNumberOrUndefined', () => {
-    it('should return a number when value is numeric', () => {
-      expect(toNumberOrUndefined('12.5')).toBe(12.5);
+    it('should parse valid number strings', () => {
+      expect(toNumberOrUndefined('12.5')).toEqual(12.5);
+      expect(toNumberOrUndefined('0')).toEqual(0);
+      expect(toNumberOrUndefined('-3')).toEqual(-3);
     });
 
-    it('should return undefined when value is not numeric', () => {
+    it('should return undefined for non-numeric strings', () => {
       expect(toNumberOrUndefined('abc')).toBeUndefined();
+      expect(toNumberOrUndefined('')).toBeUndefined();
     });
 
     it('should return undefined when value is undefined', () => {
@@ -39,22 +42,30 @@ describe('numberConverter', () => {
   });
 
   describe('toNumberOrString', () => {
-    it('should return a number when value is numeric', () => {
-      expect(toNumberOrString('7')).toBe(7);
+    it('should return number when parseable', () => {
+      expect(toNumberOrString('42')).toEqual(42);
+      expect(toNumberOrString('3.14')).toEqual(3.14);
     });
 
-    it('should return the original string when value is not numeric', () => {
-      expect(toNumberOrString('abc')).toBe('abc');
+    it('should return original string when not parseable', () => {
+      expect(toNumberOrString('not-a-number')).toEqual('not-a-number');
     });
   });
 
   describe('isDecimal', () => {
-    it('should return true for a decimal number', () => {
+    it('should return true for decimal numbers', () => {
       expect(isDecimal(1.5)).toBe(true);
+      expect(isDecimal(-2.25)).toBe(true);
     });
 
-    it('should return false for an integer', () => {
+    it('should return false for integers', () => {
       expect(isDecimal(2)).toBe(false);
+      expect(isDecimal(0)).toBe(false);
+    });
+
+    it('should return false for non-number values', () => {
+      expect(isDecimal(NaN)).toBe(false);
+      expect(isDecimal('1.5' as unknown as number)).toBe(false);
     });
   });
 });

@@ -1,54 +1,76 @@
 import {ValidationArguments} from 'class-validator';
 import {DateNotAfterReferenceDate} from 'form/validators/dateNotAfterReferenceDate';
 
-const buildArgs = (until?: Date): ValidationArguments => ({
-  value: undefined,
-  constraints: ['until'],
-  targetName: 'UnavailableDatePeriodGaHearing',
-  object: {until},
-  property: 'from',
-});
-
 describe('DateNotAfterReferenceDate', () => {
   const validator = new DateNotAfterReferenceDate();
 
-  it('should return true when validationArguments are not provided', () => {
-    //When
-    const result = validator.validate(new Date(2025, 0, 15));
-    //Then
-    expect(result).toBe(true);
+  const buildArgs = (object: Record<string, unknown>, constraints: unknown[] = ['toDate']): ValidationArguments => ({
+    constraints,
+    object,
+    property: 'fromDate',
+    targetName: '',
+    value: undefined,
   });
 
-  it('should return true when input date is before the reference date', () => {
-    //When
-    const result = validator.validate(new Date(2025, 0, 10), buildArgs(new Date(2025, 0, 15)));
-    //Then
-    expect(result).toBe(true);
+  describe('validate', () => {
+    it('should return true when validationArguments are not provided', () => {
+      //When
+      const result = validator.validate(new Date('2024-06-15'));
+      //Then
+      expect(result).toEqual(true);
+    });
+
+    it('should return true for null input date', () => {
+      //Given
+      const toDate = new Date('2024-06-15');
+      const validationArguments = buildArgs({toDate});
+      //When
+      const result = validator.validate(null, validationArguments);
+      //Then
+      expect(result).toEqual(true);
+    });
+
+    it('should return true when input date is before reference date', () => {
+      //Given
+      const toDate = new Date('2024-06-15');
+      const fromDate = new Date('2024-06-10');
+      const validationArguments = buildArgs({toDate});
+      //When
+      const result = validator.validate(fromDate, validationArguments);
+      //Then
+      expect(result).toEqual(true);
+    });
+
+    it('should return true when input date equals reference date', () => {
+      //Given
+      const toDate = new Date('2024-06-15');
+      const fromDate = new Date('2024-06-15');
+      const validationArguments = buildArgs({toDate});
+      //When
+      const result = validator.validate(fromDate, validationArguments);
+      //Then
+      expect(result).toEqual(true);
+    });
+
+    it('should return false when input date is after reference date', () => {
+      //Given
+      const toDate = new Date('2024-06-15');
+      const fromDate = new Date('2024-06-20');
+      const validationArguments = buildArgs({toDate});
+      //When
+      const result = validator.validate(fromDate, validationArguments);
+      //Then
+      expect(result).toEqual(false);
+    });
   });
 
-  it('should return true when input date is the same as the reference date', () => {
-    //When
-    const result = validator.validate(new Date(2025, 0, 15), buildArgs(new Date(2025, 0, 15)));
-    //Then
-    expect(result).toBe(true);
-  });
-
-  it('should return false when input date is after the reference date', () => {
-    //When
-    const result = validator.validate(new Date(2025, 0, 20), buildArgs(new Date(2025, 0, 15)));
-    //Then
-    expect(result).toBe(false);
-  });
-
-  it('should return true when input date is null', () => {
-    //When
-    const result = validator.validate(null as unknown as Date, buildArgs(new Date(2025, 0, 15)));
-    //Then
-    expect(result).toBe(true);
-  });
-
-  it('should return the default error message', () => {
-    //Then
-    expect(validator.defaultMessage()).toBe('ERRORS.ENTER_UNAVAILABILITY_FROM_DATE_BEFORE_TO_DATE');
+  describe('defaultMessage', () => {
+    it('should return the expected error message', () => {
+      //Given
+      //When
+      const message = validator.defaultMessage();
+      //Then
+      expect(message).toEqual('ERRORS.ENTER_UNAVAILABILITY_FROM_DATE_BEFORE_TO_DATE');
+    });
   });
 });
