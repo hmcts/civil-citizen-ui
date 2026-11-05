@@ -3,6 +3,7 @@ import claimantDashboardController from 'routes/features/dashboard/claimantDashb
 import {
   APPLICATION_TYPE_URL,
   BREATHING_SPACE_INFO_URL,
+  CANCEL_UNISSUED_CLAIM_URL,
   DASHBOARD_CLAIMANT_URL,
   DATE_PAID_URL,
   GA_APPLICATION_SUMMARY_URL,
@@ -44,6 +45,7 @@ import {ApplicationResponse} from 'models/generalApplication/applicationResponse
 import {ApplicationState} from 'models/generalApplication/applicationSummary';
 import {AppRequest} from 'models/AppRequest';
 import {constructResponseUrlWithIdParams} from 'common/utils/urlFormatter';
+import {feesHelpUrl} from 'common/utils/externalURLs';
 import {caseNumberPrettify} from 'common/utils/stringUtils';
 import {currencyFormatWithNoTrailingZeros} from 'common/utils/currencyFormat';
 import {createMockResponse, createMockSession, getRouteHandler} from '../../../../utils/getRouteHandler';
@@ -326,6 +328,37 @@ describe('Claimant dashboard controller', () => {
     expect(urls).not.toContain(constructResponseUrlWithIdParams(claimId, BREATHING_SPACE_INFO_URL));
   });
 
+  it('should show the cancel unissued claim link for a claimant when claim issue is pending', async () => {
+    (getDashboardClaimById as jest.Mock).mockResolvedValue(buildClaim(CaseRole.CLAIMANT, CaseState.PENDING_CASE_ISSUED));
+
+    const {res} = await invoke();
+    const model = rendered(res);
+
+    expect(linkUrls(model)).toContain(constructResponseUrlWithIdParams(claimId, CANCEL_UNISSUED_CLAIM_URL));
+    expect(model.helpSupportLinks).toBe(helpSupportLinks);
+  });
+
+  it('should not show the cancel unissued claim link once the claim has been issued', async () => {
+    (getDashboardClaimById as jest.Mock).mockResolvedValue(buildClaim(CaseRole.CLAIMANT, CaseState.AWAITING_RESPONDENT_ACKNOWLEDGEMENT));
+
+    const {res} = await invoke();
+
+    expect(linkUrls(rendered(res))).not.toContain(constructResponseUrlWithIdParams(claimId, CANCEL_UNISSUED_CLAIM_URL));
+  });
+
+  it('should show no i want to links and hide help with fees when the unissued claim is cancelled', async () => {
+    const findMediationLink = {text: 'Find out more about mediation', url: '/mediation'};
+    (getDashboardClaimById as jest.Mock).mockResolvedValue(buildClaim(CaseRole.CLAIMANT, CaseState.UNISSUED_CLAIM_CANCELLED));
+    (getHelpSupportLinks as jest.Mock).mockReturnValue([{text: 'Help with fees', url: feesHelpUrl}, findMediationLink]);
+
+    const {res} = await invoke();
+    const model = rendered(res);
+
+    expect(model.iWantToLinks).toEqual([]);
+    expect(getContactCourtLink).not.toHaveBeenCalled();
+    expect(model.helpSupportLinks).toEqual([findMediationLink]);
+  });
+
   it('should add the view-all-applications link when general applications exist', async () => {
     (getDashboardClaimById as jest.Mock).mockResolvedValue(buildClaim(CaseRole.CLAIMANT, CaseState.CASE_ISSUED));
     (isGaForLipsEnabled as jest.Mock).mockResolvedValue(true);
@@ -376,6 +409,17 @@ describe('Claimant dashboard controller', () => {
     expect(model.showWelshPartyBanner).toBe(true);
     expect(model.showErrorAwaitingTranslation).toBe(true);
     expect(model.lang).toBe('en');
+  });
+
+  it('should not show the Welsh party banner once the unissued claim is cancelled', async () => {
+    const claim = buildClaim(CaseRole.CLAIMANT, CaseState.UNISSUED_CLAIM_CANCELLED);
+    claim.claimantBilingualLanguagePreference = ClaimBilingualLanguagePreference.WELSH;
+    (getDashboardClaimById as jest.Mock).mockResolvedValue(claim);
+    (isWelshEnabledForMainCase as jest.Mock).mockResolvedValue(true);
+
+    const {res} = await invoke();
+
+    expect(rendered(res).showWelshPartyBanner).toBe(false);
   });
 
   it('should hide Welsh dashboard state when the Welsh feature is disabled', async () => {
